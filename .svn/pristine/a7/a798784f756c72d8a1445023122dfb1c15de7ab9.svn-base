@@ -1,0 +1,34 @@
+<?page title="Desbloqueo de Asientos" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndDesbloqueoAsientos" title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndDesbloqueoAsientos" width="930px">
+	<panel id="panel" title="::: DESBLOQUEO DE ASIENTOS :::" framable="true" width="auto" border="normal" closable="true" onClose="wndDesbloqueoAsientos.closeTabWindow()">
+        <panelchildren>
+		<!-- 	<groupbox closable="false" mold="3d"> -->
+		<!-- 	<caption label="ASIENTOS BLOQUEADOS" /> -->
+			<div align="right">
+				<hbox>
+					<button id="btnBuscar" visible="false" label="Refrescar" image="resources/mp_refrescarEnabled.png" onClick="wndDesbloqueoAsientos.listarRegistros()" />
+					<button label="Cerra" visible="false" image="resources/mp_cerrar.png" onClick="wndDesbloqueoAsientos.closeTabWindow()" />
+				</hbox>
+			</div>	
+				<separator height="1px" />
+				<listbox id="lbxAsientosBloqueados" mold="paging" pageSize="8"  >
+					<listhead >
+		<!-- 				<listheader label="N° BUS" width="50px" align="center" /> -->
+		<!-- 				<listheader label="ITINERARIO" width="65px" /> -->
+						<listheader label="RUTA" width="160px" />
+						<listheader label="F.PARTIDA" width="70px" />
+						<listheader label="H.PARTIDA" width="60px" align="center" />
+						<listheader label="ASIENTO" width="50px" align="center" />
+						<listheader label="FECHA BLOQUEO" width="100px" />
+						<listheader label="AGENCIA BLOQUEO" width="215px" />
+						<listheader label="USUARIO BLOQUEO" width="215px"  />
+						<listheader label="" width="43px"><toolbarbutton image="resources/mp_refrescarEnabled.png" tooltiptext="Refrescar Asientos Bloqueados" onClick="wndDesbloqueoAsientos.listarRegistros()" /> </listheader>
+					</listhead>
+				</listbox>
+		<!-- 	</groupbox> -->
+		<!-- 	<separator height="1px"/> -->
+		</panelchildren>
+	</panel>
+ </window>
+</zk>

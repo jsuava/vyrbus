@@ -1,0 +1,208 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndEnvio"  title="" border="normal" use="com.cystesoft.vyrbus.view.ctrl.WndEnvioEspecieValorada" width="760px">
+ <caption label="REGISTRO DEL ENVIO DE ESPECIES VALORADAS" /> 
+	<tabbox>
+		<tabs>
+			<tab id="tbListSolicitud" label="Lista de Solicitudes / Envíos"/>
+			<tab id="tbEnvio" label="Envio de Especie Valorada"/>
+		</tabs>
+		<tabpanels>
+			<tabpanel>
+				<grid>
+					<rows>
+						<row>
+							<radiogroup orient="horizontal">
+								<radio id="rbListaSolicitudes" label="Solicitudes" checked="true" onCheck="wndEnvio.onCheckSolicitudes()"/><space width="30px"/>
+								<radio id="rbListaEnvios"  label="Envíos" onCheck="wndEnvio.onCheckEnvios()" /><space width="30px"/>
+								<radio id="rbListaEstadoCorrAgencia"  label="Estado de Correlativos por Agencia" onCheck="wndEnvio.onCheckEstadoCorrAgencia()" />
+								<separator />
+							</radiogroup>
+						</row>
+						<row >
+							<hbox align="center">
+								<label id="lblMesAnio" value="Mes - Anio"  sclass="label-size11"/>
+								<datebox id="dtxMesAnio"  format="MMMM - yyyy" readonly="true" width="150px" /><separator width="5px" />
+								<label value="Agencia"  sclass="label-size11"/>
+								<combobox id="cmbAgenciaBq" readonly="true" /><separator width="5px" />
+								<label value="Tipo Comprobante"  sclass="label-size11"/>
+								<combobox id="cmbTipoComprobanteBq" width="100px" readonly="true" />
+								<label value="Serie"  sclass="label-size11"/>
+								<intbox id="ibxSerieBq" maxlength="4" width="50px" />
+								<image id="imgBusq" onClick="wndEnvio.listEstadoCorrAgencia();" src="/resources/mp_buscarEnabled.png" style="cursor:pointer" tooltiptext="Buscar"/>
+							</hbox>
+						</row>
+					</rows>	
+				</grid>
+				<separator height="1px" />
+				<listbox id="lbxListaSolicitudes" rows="9">
+					<listhead sizable="true">
+						<listheader label="#" width="30px"/>
+						<listheader label="FECHA" width="80px" sort="auto" />
+						<listheader label="AGENCIA" width="120px" sort="auto" />
+						<listheader label="COMPROBANTE" width="110px"  sort="auto" />
+						<listheader label="SERIE" width="40px" sort="auto" />
+						<listheader label="CANTIDAD" width="60px" sort="auto" />
+						<listheader label="USUARIO SOLICITANTE" sort="auto" />
+					</listhead>
+				</listbox>
+				<listbox id="lbxListaEnvios" visible="false" rows="9">
+					<listhead sizable="true">
+						<listheader label="#" width="30px"/>
+						<listheader label="FECHA" sort="auto" />
+						<listheader label="AGENCIA" sort="auto" />
+						<listheader label="COMPROBANTE" sort="auto" />
+						<listheader label="SERIE" sort="auto" />
+						<listheader label="ULTIMO CORR. ENVIADO" sort="auto" tooltiptext="Ultimo Correlativo Enviado"/>
+					</listhead>
+				</listbox>
+				<listbox id="lbxListaEstadoCorrAgencia" visible="false" rows="9">
+					<listhead sizable="true">
+						<listheader label="#" width="30px"/>
+						<listheader label="AGENCIA" width="120px" sort="auto" />
+						<listheader label="COMPROBANTE" width="110px" sort="auto" tooltiptext="Tipo Comprobante"/>
+						<listheader label="SERIE" width="40px" align="center" sort="auto" tooltiptext="Número de Serie"/>
+						<listheader label="ULTIMO ENVIADO" width="85px" align="right" sort="auto" tooltiptext="Ultimo correlativo enviado"/>
+						<listheader label="ULTIMO EMITIDO" width="85px" align="right" sort="auto" tooltiptext="Ultimo correlativo emitido"/>
+						<listheader label="PROMD.X DIA" width="70px" align="right"  sort="auto" tooltiptext="Promedio de correlativos emitidos por día"/>
+						<listheader label= "% UTILIZADO" width="70px" align="right" sort="auto" tooltiptext="Porcentaje de especies valoradas utilizadas por la agencia"/>
+						   
+						<listheader label="FECHA ULTIMO ENVIO" width="110px" align="center" sort="auto" tooltiptext="Fecha en que se realizó el ultimo envío" />
+						<listheader label="DIAS TRANSC" width="70px" align="center" sort="auto" tooltiptext="Días transcurridos desde el Ultimo envío" />
+					</listhead>
+				</listbox>
+			</tabpanel> 
+			<tabpanel>
+				<groupbox id="gbxDatosSolicitud" mold="3d" closable="false" visible="false">
+				<caption label="DATOS DE LA SOLICITUD" />
+					<grid style="border:none">	
+						<columns>
+							<column width="80px" />
+							<column width="110px" />
+						</columns>
+						<rows>
+							<row>
+								<label value="Fecha Solicitud"  sclass="label-size11" />
+								<datebox id="dtxFechaSolicitud" format="dd/MM/yyyy" disabled="true"/>
+								<hbox align="center">
+									<label value="Agencia" sclass="label-size11" /><separator width="2px" />
+									<combobox id="cmbAgenciaSolicita" disabled="true"/><separator width="5px" />
+									<label value="Tipo Comprobante" sclass="label-size11" /><separator width="5px" />
+									<combobox id="cmbTipoComprobanteSolicita"  disabled="true"/>
+								</hbox>
+							</row>
+							<row>
+								<label value="Nro. Serie" sclass="label-size11" />
+								<intbox id="ibxSerieSolicita" disabled="true" width="88px"/>
+								<hbox align="center">
+									<label value="Cantidad" sclass="label-size11"/><separator width="1px" />
+									<intbox id="ibxCantidadSolicita" disabled="true" width="127px"/><separator width="5px" />
+									<label value="Usuario Solicita" sclass="label-size11"/><separator width="20px" />
+									<textbox id="txtUsuarioSolicita" disabled="true" width="200px" />
+								</hbox>
+							</row>
+						</rows>
+					</grid>
+				</groupbox>
+				<separator height="1px" />
+				<hbox>
+					<vbox>
+						<groupbox closable="false" mold="3d" width="480px">
+						<caption label="DATOS DEL ENVIO" />
+							<grid style="border:none" >
+								<columns>
+									<column width="130px" />
+									<column width="130px" />
+									<column width="54px" />
+								</columns>
+								<rows>
+									<row>
+										<label value="Fecha Envío" sclass="label-size11"/>
+										<datebox id="dtxFechaEnvio" format="dd/MM/yyyy" readonly="true" disabled="true" width="115px" />
+										<label value="Agencia" sclass="label-size11"/>
+										<combobox id="cmbAgencia" disabled="true" readonly="true" onChange="wndEnvio.ultimosCorrelativos()"/>
+									</row>
+									<row>
+										<label value="Tipo Comprobante" sclass="label-size11"/>
+										<combobox id="cmbTipoComprobanteEnvio" onChange="wndEnvio.ultimosCorrelativos()" disabled="true" readonly="true" width="115px"  />
+										<label value="Nro. Serie" sclass="label-size11"/>
+										<intbox id="ibxNumeroSerieEnvio" onChange="wndEnvio.ultimosCorrelativos()" disabled="true" maxlength="4" width="60px" style="font-size:11px !important" />
+									</row>
+									<row>
+										<label value="Ultimo correlativo" sclass="label-size11"/>
+										<intbox id="ibxUltCorrEnvio" disabled="true" maxlength="10" width="105px" style="font-size:11px !important"  />
+										<label value="Cantidad" sclass="label-size11" />
+										<intbox id="ibxCantidadEnvio" maxlength="10" width="60px" />
+									</row>
+									<row height="28px" spans="0,3">
+										<separator  />
+									</row>
+									
+								</rows>
+							</grid>
+						</groupbox>
+						
+						<hbox>
+							<button id="btnNuevoEnvio" label="Nuevo Envío" onClick="wndEnvio.onNuevoEnvio()" image="/resources/mp_nuevoEnabled.png" />
+							<separator width="175px" />
+							<button id="btnCancelar" disabled="true" label="Cancelar" onClick="wndEnvio.onCancelar()" style="cursor:default" image="/resources/mp_cancelarDisabled.png" />
+							<button id="btnGuardar" disabled="true" label="Gurdar" onClick="wndEnvio.onGuardar()" style="cursor:default" image="/resources/mp_guardarDisabled.png" />
+						</hbox>
+					</vbox>
+					<separator width="1px" />
+					<groupbox closable="false" mold="3d" width="240px">
+					<caption label="INFO AGENCIA - ULTIMOS CORRELATIVOS" />
+						<grid style="border:none">
+							<columns>
+								<column width="140px" />
+							</columns>
+							<rows>
+								<row>
+									<label value="Ultimo Correlativo Emitido" sclass="label-size11"/>
+									<textbox  id="txtUltimoCorrelativoEmitido" readonly="true"  width="70px" style="font-size:12px !important;text-align: right ;color:blue" />
+								</row>
+								<row>
+									<label value="Promedio Correlativos x día" sclass="label-size11"/>
+									<doublebox  id="dbxPromedioBoletosPorDia" readonly="true"  width="70px" format="" style="font-size:12px !important; color:blue " />
+								</row>
+								<row>
+									<label value="% Utilizado" sclass="label-size11"/>
+									<textbox  id="txtXUtilizado" readonly="true"  width="70px" style="font-size:12px !important; text-align: right; color:blue" />
+								</row>
+								<row>
+									<label value="Ultimo Correlativo Enviado" sclass="label-size11"/>
+									<textbox  id="txtUltimoCorrelativoEnviado" readonly="true"  width="70px" style="font-size:12px !important;text-align: right; color:blue " />
+								</row>
+								<row>
+									<label value="Fecha Ultimo Envio" sclass="label-size11"/>
+									<textbox  id="txtFechaUltimoEnvio" readonly="true"  width="70px" style="font-size:12px !important; text-align: right; color:blue" />
+								</row>
+							</rows>
+						</grid>
+					</groupbox>
+				</hbox>
+				
+				<groupbox id="gbxVerificaCorrelativo" closable="false" visible="false">
+				<caption label="Verificación de cortes en los Correlativos " />
+					<listbox id="lbxVerificaCorrelativos">
+						<listhead>
+							<listheader label="Agencia" width="100px" />
+							<listheader label="Tipo Comprobante"  width="110px" />
+							<listheader label="Serie" width="40px" />
+							<listheader label="Inicio" width="65px" />
+							<listheader label="Fin"  width="65px"/>
+							<listheader label="Estado" />
+							
+						</listhead>
+					</listbox>
+				</groupbox>
+				
+			</tabpanel>
+		</tabpanels>
+	</tabbox>
+	<div align="right" style="border:1px !important">
+		<button label="Cerrar" image="/resources/mp_cerrar.png" onClick="wndEnvio.closeTabWindow()" />
+	</div>
+	
+</window>
+</zk>

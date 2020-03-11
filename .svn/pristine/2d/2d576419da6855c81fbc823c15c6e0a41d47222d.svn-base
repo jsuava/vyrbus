@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+	<table name="VRMPROMOCION" schema="VYR"
+		class="com.tepsa.sisvyr.model.bean.Promocion">
+		<primary-key>
+			<generator class="sequence"></generator>
+			<key-column name="PROMOCION_ID" property="id" />
+		</primary-key>
+		<column name="C_RUTAS" property="rutas"></column>
+		<column name="C_SERVICIOS" property="servicios"></column>
+		<column name="C_PUNVEN" property="puntoVenta"></column>
+		<column name="C_CANVEN" property="canalVenta"></column>
+		<column name="C_PASNUE" property="pasajeroNuevo"></column>
+		<column name="C_CANVIAPAS" property="cantidadViajesPasajero"></column>
+		<column name="C_ASIENTOS" property="asientos"></column>
+		<column name="C_EDAPAS" property="edadPasajero"></column>
+		<column name="C_CLIENTE" property="cliente"></column>
+		<column name="C_IDAVUE" property="idaVuelta"></column>
+		<column name="C_VALDES" property="valosDescuento"></column>
+		<column name="C_TIPDES" property="tipoDescuento"></column>
+		<column name="C_PORIMP" property="porImporte"></column>
+		<column name="C_FORPAG" property="formaPago"></column>
+		<column name="C_TIPPAG" property="tipoPago"></column>
+		<column name="C_TARCRE" property="tarjetaCredito"></column>
+		<column name="C_ENTEMP" property="enTemporada"></column>
+		<column name="D_FECINI" property="fechaInicio"></column>
+		<column name="D_FECFIN" property="fechaFin"></column>
+		<column name="C_ESTREG" property="estadoRegistro"></column>
+		<column name="AUDFECINS" property="fechaInsercion"></column>
+		<column name="AUDUSUINS" property="usuarioInsercion"></column>
+		<column name="AUDIPINSE" property="ipInsercion"></column>
+		<column name="AUDFECMOD" property="fechaModificacion"></column>
+		<column name="AUDUSUMOD" property="usuarioModificacion"></column>
+		<column name="AUDIPMODI" property="ipModificacion"></column>
+	</table>
+	<table name="VRTPUNPAXFRE" schema="VYR"
+		class="com.tepsa.sisvyr.model.bean.PuntosPasajeroFrecuente">
+		<primary-key>
+			<generator class="sequence"></generator>
+			<key-column name="PUNPAXFRE_ID" property="id" />
+		</primary-key>
+		<column name="VENPAS_ID" property="ventaPasaje"></column>
+		<column name="PAXFRE_ID" property="pasajeroFrecuente"></column>
+		<column name="N_PUNACU" property="puntosAcumulados"></column>
+		<column name="D_FECEMI" property="fechaEmision"></column>
+		<column name="D_FECCAD" property="fechaCaducidad"></column>
+		<column name="D_FECCAN" property="fechaCanje"></column>
+		<column name="D_FECANU" property="fechaAnulacion"></column>
+		<column name="C_ESTREG" property="estadoRegistro"></column>
+		<column name="AUDFECINS" property="fechaInsercion"></column>
+		<column name="AUDUSUINS" property="usuarioInsercion"></column>
+		<column name="AUDIPINS" property="ipInsercion"></column>
+		<column name="AUDFECMOD" property="fechaModificacion"></column>
+		<column name="AUDUSUMOD" property="usuarioModificacion"></column>
+		<column name="AUDIPMODI" property="ipModificacion "></column>
+	</table>
+	<table name="VRMPARAMETROS" schema="VYR"
+		class="com.tepsa.sisvyr.model.bean.Parametros">
+		<primary-key>
+			<generator class="sequence"></generator>
+			<key-column name="PARAMETROS_ID" property="id" />
+		</primary-key>
+		<column name="N_TIEEXPRES" property="tiempoExpiraReserva"></column>
+		<column name="N_TIEPROPAXFRE"
+			property="tiempoProgramaPasajeroFrecuente">
+		</column>
+		<column name="N_VIAREQPAXFRE"
+			property="viajesRequeridosPasajeroFrecuente">
+		</column>
+		<column name="N_TIECADBOV" property="tiempoCaducidadBoleto"></column>
+		<column name="N_PUNACUPAXFRE"
+			property="puntosAcumuladosPasajeroFrecuente">
+		</column>
+		<column name="N_PENPOS" property="penalidadPostergacion"></column>
+		<column name="N_PENREI" property="penalidadReimpresion"></column>
+		<column name="N_MAXPOS" property="maximoPostergaciones"></column>
+		<column name="N_TIEPOS" property="tiempoPostergacion"></column>
+		<column name="N_RANCANCUM" property="rangoCanjeCumpleanios"></column>
+		<column name="N_TIECADPUN" property="tiempoCaducidadPuntos"></column>
+		<column name="C_ESTREG" property="estadoRegistro"></column>
+		<column name="AUDFECINS" property="fechaInsercion"></column>
+		<column name="AUDUSUINS" property="usuarioInsercion"></column>
+		<column name="AUDIPINSE" property="ipInsercion"></column>
+		<column name="AUDFECMOD" property="fechaModificacion"></column>
+		<column name="AUDUSUMOD" property="usuarioModificacion"></column>
+		<column name="AUDIPMODI" property="ipModificacion"></column>
+	</table>
+	<table name="VRTBOLCAN" schema="VYR"
+		class="com.tepsa.sisvyr.model.bean.BoletoCancelado">
+		<primary-key>
+			<generator class="sequence"></generator>
+			<key-column name="BOLCAN_ID" property="id" />
+		</primary-key>
+		<column name="VENPAS_ID" property="ventaPasaje"></column>
+		<column name="C_NUMDOCCLI" property="numeroDocumentoCliente"></column>
+		<column name="C_NUMCOMBAN" property="numeroComprobanteBanco"></column>
+		<column name="C_CODBAN" property="codigoBanco"></column>
+		<column name="D_FECOPE" property="fechaOperacion"></column>
+		<column name="D_FECEMI" property="fechaEmision"></column>
+		<column name="N_IMPPAG" property="importePagado"></column>
+		<column name="C_RUCCLICRE" property="rucClienteCredito"></column>
+		<column name="CLIENTE_ID" property="Cliente"></column>
+	</table>
+<table name="VRMTERMINOS" schema="VYR"
+	class="com.tepsa.sisvyr.model.bean.TerminosVenta">
+	<primary-key>
+		<generator class="sequence"></generator>
+		<key-column name="TERMINOS_ID" property="id" />
+	</primary-key>
+	<column name="C_DENOMINACION" property="denominacion"></column>
+	<column name="C_IDIOMA" property="idioma"></column>
+	<column name="N_ORDEN" property="orden"></column>
+</table>
+</hibernate-reverse-engineering>

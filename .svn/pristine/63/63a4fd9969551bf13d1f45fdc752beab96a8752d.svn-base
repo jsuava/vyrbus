@@ -1,0 +1,84 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: José Abanto
+ * Fecha		: 08/09/2016
+ * Hora			: 14:28:49
+ */
+package com.tepsa.sisvyr.model.dao.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import com.tepsa.sisvyr.model.bean.OcupacionAsientosBloqueadosPool;
+import com.tepsa.sisvyr.model.dao.OcupacionAsientosBloqueadosPoolDAO;
+
+/**
+ * @author jabanto
+ *
+ */
+@SuppressWarnings("unchecked")
+public class OcupacionAsientosBloqueadosPoolDAOImpl extends GenericDAOImpl implements OcupacionAsientosBloqueadosPoolDAO {
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.OcupacionAsientosBloqueadosPoolDAO#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
+	 */	
+	@Override
+	public ArrayList<OcupacionAsientosBloqueadosPool> buscarPorEstadoRegistro(
+			String estado, String criterioOrden) {
+		// TODO Auto-generated method stub
+		return (ArrayList<OcupacionAsientosBloqueadosPool>) super.findByEstadoRegistro(OcupacionAsientosBloqueadosPool.class, estado, criterioOrden);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.OcupacionAsientosBloqueadosPoolDAO#buscarPorX(java.util.TreeMap, java.util.List)
+	 */
+	@Override
+	public ArrayList<OcupacionAsientosBloqueadosPool> buscarPorX(
+			TreeMap<String, Object> criteriosBusqueda,
+			List<String> criteriosOrdenar) {
+		// TODO Auto-generated method stub
+		return (ArrayList<OcupacionAsientosBloqueadosPool>) super.findByX(OcupacionAsientosBloqueadosPool.class, criteriosBusqueda, criteriosOrdenar);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.OcupacionAsientosBloqueadosPoolDAO#buscarPorId(java.lang.Long)
+	 */
+	@Override
+	public OcupacionAsientosBloqueadosPool buscarPorId(Long id) {
+		// TODO Auto-generated method stub
+		return (OcupacionAsientosBloqueadosPool) super.findById(OcupacionAsientosBloqueadosPool.class, id);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.OcupacionAsientosBloqueadosPoolDAO#guardar(com.tepsa.sisvyr.model.bean.OcupacionAsientosBloqueadosPool)
+	 */
+	@Override
+	public void guardar(OcupacionAsientosBloqueadosPool ocupacionAsientosBloqueadosPool) {
+		// TODO Auto-generated method stub
+		super.save(ocupacionAsientosBloqueadosPool);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.OcupacionAsientosBloqueadosPoolDAO#actualizar(com.tepsa.sisvyr.model.bean.OcupacionAsientosBloqueadosPool)
+	 */
+	@Override
+	public void actualizar(
+			OcupacionAsientosBloqueadosPool ocupacionAsientosBloqueadosPool) {
+		// TODO Auto-generated method stub
+		super.update(ocupacionAsientosBloqueadosPool);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.OcupacionAsientosBloqueadosPoolDAO#delete(java.lang.String)
+	 */
+	@Override
+	public void delete(String codeTransaction) {
+		// TODO Auto-generated method stub
+		String sql="Delete From VRTTMPOCUASIPOOL Where c_codtra='"+codeTransaction+"'";
+		getSession().createSQLQuery(sql).executeUpdate();
+	}
+
+}

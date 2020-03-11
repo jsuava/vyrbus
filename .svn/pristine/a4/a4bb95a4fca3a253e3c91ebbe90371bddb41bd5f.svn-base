@@ -1,0 +1,175 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: José Sullo Avalos
+ * Fecha		: 09/07/2012
+ */
+package com.tepsa.sisvyr.model.bean;
+
+import java.io.Serializable;
+import java.util.Date;
+
+/**
+ *
+ * @author José Sullo Avalos
+ * @since JDK1.6
+ */
+public class OcupacionAsientosDesbloqueados extends GenericBean implements Serializable {
+	private static final long serialVersionUID = 1L;
+	private OcupacionAsientosDesbloqueadosID ocupacionAsientosDesbloqueadosID;
+	private UsuarioHardware usuarioHardware;
+	private Usuario usuario;
+	private Ruta ruta;
+	private Itinerario itinerario;
+	private Integer numeroAsiento;
+	private String fechaPartida;
+	private String horaPartida;
+	private Integer numeroPiso;
+	private Date fechaBloqueo;
+	private Date fechaExpiracionBloqueo;
+	
+	
+
+	/**
+	 * @return the ocupacionAsientosDesbloqueadosID
+	 */
+	public OcupacionAsientosDesbloqueadosID getOcupacionAsientosDesbloqueadosID() {
+		return ocupacionAsientosDesbloqueadosID;
+	}
+	/**
+	 * @param ocupacionAsientosDesbloqueadosID the ocupacionAsientosDesbloqueadosID to set
+	 */
+	public void setOcupacionAsientosDesbloqueadosID(
+			OcupacionAsientosDesbloqueadosID ocupacionAsientosDesbloqueadosID) {
+		this.ocupacionAsientosDesbloqueadosID = ocupacionAsientosDesbloqueadosID;
+	}
+	/**
+	 * @return Objeto usuarioHardware.
+	 */
+	public UsuarioHardware getUsuarioHardware() {
+		return usuarioHardware;
+	}
+	/**
+	 * @param usuarioHardware	: Setea el objeto usuarioHardware.
+	 */
+	public void setUsuarioHardware(UsuarioHardware usuarioHardware) {
+		this.usuarioHardware = usuarioHardware;
+	}
+	
+	/**
+	 * @return Objeto usuario.
+	 */
+	public Usuario getUsuario() {
+		return usuario;
+	}
+	/**
+	 * @param usuario	: Setea el objeto usuario.
+	 */
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+	
+	/**
+	 * @return Objeto ruta.
+	 */
+	public Ruta getRuta() {
+		return ruta;
+	}
+	/**
+	 * @param ruta	: Setea el objeto ruta.
+	 */
+	public void setRuta(Ruta ruta) {
+		this.ruta = ruta;
+	}
+	
+	/**
+	 * @return Objeto itinerario.
+	 */
+	public Itinerario getItinerario() {
+		return itinerario;
+	}
+	/**
+	 * @param itinerario	: Setea el objeto itinerario.
+	 */
+	public void setItinerario(Itinerario itinerario) {
+		this.itinerario = itinerario;
+	}
+	
+	/**
+	 * @return Objeto numeroAsiento.
+	 */
+	public Integer getNumeroAsiento() {
+		return numeroAsiento;
+	}
+	/**
+	 * @param numeroAsiento	: Setea el objeto numeroAsiento.
+	 */
+	public void setNumeroAsiento(Integer numeroAsiento) {
+		this.numeroAsiento = numeroAsiento;
+	}
+	
+	/**
+	 * @return the numeroPiso
+	 */
+	public Integer getNumeroPiso() {
+		return numeroPiso;
+	}
+	/**
+	 * @param numeroPiso the numeroPiso to set
+	 */
+	public void setNumeroPiso(Integer numeroPiso) {
+		this.numeroPiso = numeroPiso;
+	}
+	
+	/**
+	 * @return Objeto fechaPartida.
+	 */
+	public String getFechaPartida() {
+		return fechaPartida;
+	}
+	/**
+	 * @param fechaPartida	: Setea el objeto fechaPartida.
+	 */
+	public void setFechaPartida(String fechaPartida) {
+		this.fechaPartida = fechaPartida;
+	}
+	
+	/**
+	 * @return Objeto horaPartida.
+	 */
+	public String getHoraPartida() {
+		return horaPartida;
+	}
+	/**
+	 * @param horaPartida	: Setea el objeto horaPartida.
+	 */
+	public void setHoraPartida(String horaPartida) {
+		this.horaPartida = horaPartida;
+	}
+	/**
+	 * @return the fechaBloqueo
+	 */
+	public Date getFechaBloqueo() {
+		return fechaBloqueo;
+	}
+	/**
+	 * @param fechaBloqueo the fechaBloqueo to set
+	 */
+	public void setFechaBloqueo(Date fechaBloqueo) {
+		this.fechaBloqueo = fechaBloqueo;
+	}
+	/**
+	 * @return the fechaExpiracionBloqueo
+	 */
+	public Date getFechaExpiracionBloqueo() {
+		return fechaExpiracionBloqueo;
+	}
+	/**
+	 * @param fechaExpiracionBloqueo the fechaExpiracionBloqueo to set
+	 */
+	public void setFechaExpiracionBloqueo(Date fechaExpiracionBloqueo) {
+		this.fechaExpiracionBloqueo = fechaExpiracionBloqueo;
+	}
+	
+}

@@ -1,0 +1,57 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+    
+<window id="wndRolOpcionMenu" title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndRolOpcionMenu" >
+
+	<div id="divMantenimiento">
+		<groupbox closable="false" mold="3d" width="370px" >
+		<caption label="ROL OPCIONES MENUS" />
+ 			<grid > 
+ 				<columns> 
+  					<column width="100px" /> 
+ 				</columns> 
+ 				<rows> 
+ 					<row > 
+						<label value="Rol"  sclass="label-size11" /> 
+						<div>
+ 							<combobox id="cmbRol" readonly="true" onChange="wndRolOpcionMenu.onSelectChange()" /> 
+ 						</div> 
+ 					</row>
+ 				</rows>
+ 			</grid> 
+								
+  			<tree id="trmenus" rows="15" multiple="true" checkmark="true" onSelect="wndRolOpcionMenu.onSelectChangeTree()" >
+  				<treecols>
+  					<treecol label="MENUS DEL SISTEMA" align="left" />
+  				</treecols>
+  			</tree>
+  		
+  			<grid>
+  				<columns>
+  					<column width="90px" />
+  					<column width="90px" />
+  					<column width="90px" />
+  				</columns>
+  				<rows>
+  					<row>
+  						<separator></separator>
+						<toolbar>
+							<toolbarbutton  label="Cerrar"  id="tbtCancelar" style="color:black"  image="resources/toolbar/mp_toolbarCancelar.png" 
+										onClick="wndRolOpcionMenu.onClose()" width="80px" />
+						</toolbar>
+						<toolbar>
+							<toolbarbutton  label="Guargar"  id="tbtGuardar" style="color:black"  image="resources/toolbar/mp_toolbarGuardar.png"
+											onClick="wndRolOpcionMenu.onSave()" width="80px" />
+						</toolbar>
+						<separator></separator>
+  					</row>
+  				</rows>
+  			</grid>
+  			
+			
+					
+		</groupbox>
+	</div>
+
+</window>
+</zk>

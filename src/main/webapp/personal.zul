@@ -1,0 +1,123 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndPersonal">
+<div id="divLista">
+	<listbox id="listboxLista">
+		<listhead sizable="true">
+			<listheader width="50px" label="#" />
+			<listheader label="TIPO PEROSNAL" sort="auto" />
+			<listheader label="CODIGO" sort="auto" />
+			<listheader label="TIPO DOCUMETO" sort="auto" />
+			<listheader label="NRO. DOCUMENTO" sort="auto" />
+			<listheader label="APELLIDO PATERNO" sort="auto" />
+			<listheader label="APELLIDO MATERNO" sort="auto" />
+			<listheader label="NOMBRE" sort="auto" />
+			<listheader label="FECHA NACIMIENTO" />
+			<listheader label="SEXO" sort="auto" />
+		</listhead>
+	</listbox>
+</div>
+
+<div id="divMantenimiento" >
+	<groupbox mold="3d" closable="false">
+		<caption label="DATOS LABORALES" />
+		<grid>
+			<columns>
+				<column width="120px" align="right"/>
+				<column width="230px" />
+				<column width="120px" align="right"/>
+			</columns>
+			<rows>
+				<row>
+					<label value="TIPO DE PERSONAL (*) :" />
+					<combobox id="cboTipoPersonal" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtCodigo)" />
+					<label value="CÓDIGO (*) :" />
+					<textbox id="txtCodigo" maxlength="5" width="130px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNumeroLicencia)"/> 
+				</row>
+				<row>
+					<label value="Nº DE LICENCIA :" />
+					<textbox id="txtNumeroLicencia" maxlength="15" width="130px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtCategoria)" />
+					<label value="CATEGORÍA :" />
+					<textbox id="txtCategoria" maxlength="5" width="130px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cboTipoDocumento)"/>
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+	<separator />
+	<groupbox mold="3d" closable="false">
+		<caption label="DATOS PERSONALES" />
+		<grid>
+			<columns>
+				<column width="120px" align="right"/>
+				<column width="230px" />
+				<column width="120px" align="right"/>
+			</columns>
+			<rows>
+				<row>
+					<label value="TIPO DOCUMENTO (*) :" />
+					<div>
+						<textbox id="textboxId" />					
+						<combobox id="cboTipoDocumento" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNumeroDocumento)" />		
+					</div>
+					<label value="NRO. DOCUMENTO (*) :" />
+					<textbox id="txtNumeroDocumento" maxlength="15" width="130px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtApellidoPaterno)"/>
+				</row>
+				<row>
+					<label value="APELLIDO PARTERNO (*) :" />
+					<textbox id="txtApellidoPaterno" maxlength="20" width="130px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtApellidoMaterno)" /> 
+					<label value="APELLIDO MATERNO (*) :" />
+					<textbox id="txtApellidoMaterno" maxlength="20" width="130px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNombre)"/>
+				</row>
+				<row>
+					<label value="NOMBRES (*) :" />
+					<textbox id="txtNombre" maxlength="25" width="130px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cboSexo)"/>
+					<label value="SEXO (*) :" />
+					<combobox id="cboSexo" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cboNacionalidad)" />
+				</row>
+				
+				<row>
+					<label value="NACIONALIDAD (*) :" />
+					<combobox id="cboNacionalidad" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cboEstadoCivil)"/>
+					<label value="ESTADO CIVIL (*) :" />
+					<combobox id="cboEstadoCivil" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(dbFechaNacimiento)"/>
+				</row>
+				<row>
+					<label value="FECHA DE NACIMIENTO :" />
+					<datebox id="dbFechaNacimiento" format="dd/MM/yyyy" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtLugarNacimiento)"/>
+					<label value="LUGAR DE NACIMIENTO :" />
+					<textbox id="txtLugarNacimiento" maxlength="100" width="130px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtDireccion)"/>
+				</row>
+				<row>
+					<label value="DIRECCIÓN :" />
+					<textbox id="txtDireccion"  maxlength="100" rows="2"  onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(btnUbicacionGeografica)"/>
+					<label value="UBICACIÓN GEOGRÁFICA (*) :"  />
+					<hbox align="end">
+						<textbox id="txtIdUbigeo" readonly="true" visible="false" />
+						<textbox id="txtUbicacionGeografica" rows="2" readonly="true" width="190px"  />
+						<button id="btnUbicacionGeografica" tooltiptext="Seleccionar ubicación geográfica" image="resources/mp_buscarEnabled.png"/>
+					</hbox>
+				</row>
+				<row>
+					<label value="TELÉFONO :" />
+					<textbox id="txtTelefono" maxlength="20" width="130px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtCorreoElectronico)"/>
+					<label value="E-MAIL :" />
+					<textbox id="txtCorreoElectronico" maxlength="70" style="text-transform:lowercase;" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cboTipoVia)" />
+				</row>
+				<row>
+					<label value="TIPO DE VÍA (*) :" />
+					<combobox id="cboTipoVia" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNombreVia)" />
+					<label value="NOMBRE DE LA VÍA :" />
+					<textbox id="txtNombreVia" maxlength="50" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cboTipoZona)" />
+				</row>
+				<row>
+					<label value="TIPO DE ZONA (*) :" />
+					<combobox id="cboTipoZona" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNombreZona)"/>
+					<label value="NOMBRE DE LA ZONA :" />
+					<textbox id="txtNombreZona" maxlength="50" />
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+</div>
+</window>
+</zk>

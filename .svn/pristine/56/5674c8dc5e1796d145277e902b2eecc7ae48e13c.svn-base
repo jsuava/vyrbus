@@ -1,0 +1,10 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndLoadPrinters">
+	<div>
+		<applet id="listPrinters" code="com.tepsa.sisvyr.view.applet.ListPrinters" archive="ListPrinters.jar"
+ 			width="520px" height="110px" style="border:2px" z.autohide="true"/>
+	</div>
+	
+</window>
+</zk>

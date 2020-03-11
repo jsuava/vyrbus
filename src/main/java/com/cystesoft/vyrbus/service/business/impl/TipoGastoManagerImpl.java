@@ -1,0 +1,157 @@
+package com.cystesoft.vyrbus.service.business.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import com.cystesoft.vyrbus.model.bean.TipoGasto;
+import com.cystesoft.vyrbus.model.dao.TipoGastoDAO;
+import com.cystesoft.vyrbus.service.business.TipoGastoManager;
+import com.cystesoft.vyrbus.service.exceptions.DenominacionDuplicadaException;
+import com.cystesoft.vyrbus.service.exceptions.NombreCortoDuplicadoException;
+import com.cystesoft.vyrbus.service.util.Constantes;
+
+/**
+ * 
+ * @author JABANTO
+ *
+ */
+
+public class TipoGastoManagerImpl implements TipoGastoManager {
+	
+	private TipoGastoDAO tipoGastoDAO;
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public TipoGastoDAO getGastoDAO (){
+		return tipoGastoDAO;
+	}
+	
+	/**
+	 * 
+	 * @param tipoGastoDAO
+	 */
+	public void setTipoGastoDAO (TipoGastoDAO tipoGastoDAO){
+		this.tipoGastoDAO=tipoGastoDAO;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.TipoGastoManager#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public ArrayList<TipoGasto> buscarPorEstadoRegistro(String estado,String criterioOrden) throws Exception {
+		return getGastoDAO().buscarPorEstadoRegistro(estado, criterioOrden);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.TipoGastoManager#buscarPorX(java.util.TreeMap, java.util.List)
+	 */
+	@Override
+	public ArrayList<TipoGasto> buscarPorX(TreeMap<String, Object> criteriosBusqueda,List<String> criteriosOrdenar) throws Exception {
+		return getGastoDAO().buscarPorX(criteriosBusqueda, criteriosOrdenar);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.TipoGastoManager#buscarPorId(java.lang.Long)
+	 */
+	@Override
+	public TipoGasto buscarPorId(Long id) throws Exception {
+		return getGastoDAO().buscarPorId(id);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.TipoGastoManager#guardar(com.tepsa.sisvyr.model.bean.TipoGasto)
+	 */
+	@Override
+	@Transactional
+	public void guardar(TipoGasto tipoGasto) throws Exception {
+		try{
+			/*Valida duplicidad de la denominación*/
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			criteriosBusqueda.put("denominacion", tipoGasto.getDenominacion());
+			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+			List<?> resultDenominacion = getGastoDAO().buscarPorX(criteriosBusqueda, null);
+			if(resultDenominacion.size()>0)
+				throw new DenominacionDuplicadaException();
+			
+			
+			/*Valida duplicidad del nombre corto*/
+			criteriosBusqueda = new TreeMap<String, Object>();
+			criteriosBusqueda.put("nombreCorto", tipoGasto.getNombreCorto());
+			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+			List<?> resultNombCorto = getGastoDAO().buscarPorX(criteriosBusqueda, null);
+			if (resultNombCorto.size()>0)
+				throw new NombreCortoDuplicadoException();
+			
+		
+			getGastoDAO().guardar(tipoGasto);
+			
+		}catch (DenominacionDuplicadaException rsdex){
+			throw new DenominacionDuplicadaException();
+		}catch (NombreCortoDuplicadoException ncdex){
+			throw new NombreCortoDuplicadoException();
+		}catch(Exception ex){
+			throw new Exception(ex);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.TipoGastoManager#actualizar(com.tepsa.sisvyr.model.bean.TipoGasto)
+	 */
+	@Override
+	@Transactional
+	public void actualizar(TipoGasto tipoGasto) throws Exception {
+		try{
+			/*Valida duplicidad de la denominación*/
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			criteriosBusqueda.put("denominacion", tipoGasto.getDenominacion());
+			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+			List<?> resultDenominacion = getGastoDAO().buscarPorX(criteriosBusqueda, null);
+			for(int r = 0; r < resultDenominacion.size(); r ++) {
+				TipoGasto oTipoGasto = (TipoGasto) resultDenominacion.get(r);
+					if (!(oTipoGasto.getId().equals(tipoGasto.getId())) )
+						throw new DenominacionDuplicadaException();
+			}
+					
+			/*Valida duplicidad del nombre corto*/
+			criteriosBusqueda = new TreeMap<String, Object>();
+			criteriosBusqueda.put("nombreCorto", tipoGasto.getNombreCorto());
+			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+			List<?> resultNombCorto = getGastoDAO().buscarPorX(criteriosBusqueda, null);
+			for(int r = 0; r < resultNombCorto.size(); r ++) {
+				TipoGasto oTipoGasto = (TipoGasto) resultNombCorto.get(r);
+					if (!(oTipoGasto.getId().equals(tipoGasto.getId())) )
+						throw new NombreCortoDuplicadoException();
+			}
+			
+			getGastoDAO().actualizar(tipoGasto);
+		
+		}catch (DenominacionDuplicadaException rsdex){
+			throw new DenominacionDuplicadaException();
+		}catch (NombreCortoDuplicadoException ncdex){
+			throw new NombreCortoDuplicadoException();
+		}catch(Exception ex){
+			throw new Exception(ex);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.TipoGastoManager#inactivar(java.lang.Long)
+	 */
+	@Override
+	public void inactivar(Long id) throws Exception {
+		getGastoDAO().inactivar(id);
+	}
+	
+
+}

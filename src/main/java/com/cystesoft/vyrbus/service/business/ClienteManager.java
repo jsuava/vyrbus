@@ -1,0 +1,43 @@
+package com.cystesoft.vyrbus.service.business;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import com.cystesoft.vyrbus.model.bean.Cliente;
+
+public interface ClienteManager {
+	public ArrayList<Cliente> buscarPorEstadoRegistro(String estado, String criterioOrden)throws Exception;
+	public ArrayList<Cliente> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar)throws Exception;
+	public Cliente buscarPorId(Long id)throws Exception;
+	public void guardar(Cliente cliente)throws Exception;
+	public void actualizar(Cliente cliente)throws Exception;
+	public void inactivar(Long id)throws Exception;
+	
+	/**
+	 * Returna los clientes que realizaron la solicitud contado o credito
+	 * @return
+	 */
+	public List<Cliente> cargaClientesSolicitud();
+	/**
+	 * Realiza la busqueda de los clientes por Razon Social, aplicando el indice FTI.
+	 * @param razonSocial	: Criterio de busqueda.
+	 * @return Array de ocurrencias.
+	 * @throws Exception
+	 */
+	public ArrayList<Cliente> buscarPorRazonSocial(String[] razonSocial)throws Exception;
+	
+	/**
+	 * Realiza la busqueda del Cliente por el número de Ruc, en el Modulo de Servicios Espesiales
+	 * @param Ruc : Número de Ruc del Cliente.
+	 * @return 
+	 * @throws Exception
+	 */
+	public Cliente buscarCliente_ServicioEspecial(String Ruc) throws Exception;
+	/**
+	 * Realiza la busqueda del cliente para la la generacion de las agencias.
+	 * @param ruc	: Numero de RUC del cliente.
+	 * @return Cliente
+	 */
+	public List<Cliente> buscarClienteAgencia(String ruc)throws Exception;
+}

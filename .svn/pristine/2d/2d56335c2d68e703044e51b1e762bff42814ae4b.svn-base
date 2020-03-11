@@ -1,0 +1,176 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndPromociones" border="none" use="com.tepsa.sisvyr.view.ctrl.WndPromociones">
+	<groupbox mold="3d" closable="false">
+		<caption label="CRITERIOS PARA LA PROMOCION"/>
+		<toolbarbutton id="tlbrbtnNuevo" label="Nuevo" image="resources/toolbar/mp_toolbarNuevo.png"/>
+		<toolbarbutton id="tlbrbtnBuscar" label="Buscar" image="resources/toolbar/mp_toolbarBuscar.png"/>
+		<toolbarbutton id="tlbrbtnCancelar" label="Cancelar" image="resources/toolbar/mp_toolbarCancelar.png" disabled="true"/>
+		<space bar="true"/>
+		<toolbarbutton id="tlbrbtnCerrar" label="Cerrar" image="resources/toolbar/mp_toolbarCerrar.png" onClick="wndPromociones.closeTabWindow()"/>		
+		<grid id="grdCriterios" visible="false">
+			<columns>
+				<column width="90px" align="right"/>
+				<column width="240px"/>
+				<column width="100px" align="right"/>
+				<column width="180px"/>
+				<column/>
+			</columns>
+			<rows>
+				<row spans="1, 4">
+					<label value="DENOMINACION :"/>
+					<textbox id="txtDenominacionB" width="450px" maxlength="60"/>					
+				</row>
+				<row>
+					<label value="RUTA :"/>
+					<combobox id="cmbRutaB"/>
+					<label value="SERVICIO :"/>
+					<combobox id="cmbServicioB"/>
+					<label/>
+				</row>
+				<row>
+					<label value="CLIENTE :"/>
+					<textbox id="txtClienteB"/>
+					<label value="TIPO DESCUENTO :"/>
+					<combobox id="cmbTipoDescuentoB"/>
+					<button id="btnBuscar" label="Buscar" image="resources/mp_buscarEnabled.png" height="27px"/>
+				</row>
+			</rows>
+		</grid>
+		<grid>
+			<columns>
+				<column align="right" width="105px"/>
+				<column width="160px"/>
+				<column align="right" width="105px"/>
+				<column width="160px"/>
+				<column align="right" width="115px"/>
+				<column />
+			</columns>
+			<rows>
+				<row spans="1,5">
+					<label value="PROMOCION (*) :"/>
+					<textbox id="txtDenominacion" width="50%" placeholder="Ingrese el nombre de la Promocion" disabled="true"/>
+				</row>
+				<row>
+					<label value="RUTA :"/>
+					<hlayout valign="middle">
+						<textbox id="txtRuta" width="120px" ctrlKeys="^a#f5" readonly="true" tooltiptext="Presione la tecla F5 para seleccionar los criterios."/>
+						<image id="imgRuta" src="resources/mp_buscarEnabled.png" style="cursor:pointer" tooltiptext="Haga click aqui para seleccionar las Rutas de la promoción."/>
+					</hlayout>
+					<label value="SERVICIO :"/>
+					<hlayout valign="middle">
+						<textbox id="txtServicio" width="120px" ctrlKeys="^a#f5" readonly="true" tooltiptext="Presione la tecla F5 para seleccionar los criterios."/>
+						<image id="imgServicio" src="resources/mp_buscarEnabled.png" style="cursor:pointer" tooltiptext="Haga click aqui para seleccionar los Servicios de la promoción."/>
+					</hlayout>
+					<label value="PUNTO VENTA :"/>
+					<hlayout valign="middle">
+						<textbox id="txtPuntoVenta" width="120px" ctrlKeys="^a#f5" readonly="true" tooltiptext="Presione la tecla F5 para seleccionar los criterios."/>
+						<image id="imgPuntoVenta" src="resources/mp_buscarEnabled.png" style="cursor:pointer" tooltiptext="Haga click aqui para seleccionar los Puntos de Venta de la promoción."/>
+					</hlayout>
+				</row>
+				<row>
+					<label value="CANAL VENTA :"/>
+					<hlayout valign="middle">
+						<textbox id="txtCanalVenta" width="120px" ctrlKeys="^a#f5" readonly="true" tooltiptext="Presione la tecla F5 para seleccionar los criterios."/>
+						<image id="imgCanalVenta" src="resources/mp_buscarEnabled.png" style="cursor:pointer" tooltiptext="Haga click aqui para seleccionar los Canales de Venta de la promoción."/>
+					</hlayout>
+					<label value="CLIENTE :"/>
+					<hlayout valign="middle">
+						<textbox id="txtCliente" width="40px" ctrlKeys="^a#f5" readonly="true" tooltiptext="Presione la tecla F5 para seleccionar el Cliente."/>
+						<image id="imgCliente" src="resources/mp_buscarEnabled.png" style="cursor:pointer" tooltiptext="Haga click aqui para seleccionar el Cliente de la promoción."/>
+						<label id="lblCliente" style="color:blue; font-weight:bold"/>
+					</hlayout>	
+					<label value="CANTIDAD VIAJES :"/>
+					<intbox id="intbxCantidadViajes" width="30px"/>									
+				</row>
+				<row spans="1,3,1,1">
+					<label value="ASIENTOS :"/>
+					<hlayout>
+						<textbox id="txtAsientos" width="120px"/>
+						<spinner id="spnnrInicio" width="50px" visible="false" placeholder="1" onOK="spnnrFin.setFocus(true)"/>
+						<label id="lblSeparador" value=" - " visible="false"/>
+						<spinner id="spnnrFin" width="50px" visible="false" placeholder="44" />
+						<checkbox id="chkbxPorRango" label="Por rango"/>
+					</hlayout>
+					<label value="TEMPORADA :"/>
+					<combobox id="cmbTemporada" width="130px"/>					
+				</row>
+				<row>
+					<label value="FORMA PAGO :"/>
+					<combobox id="cmbFormaPago" width="130px" readonly="true"/>
+					<label value="TIPO FORMA PAGO :"/>
+					<combobox id="cmbTipoFormaPago" width="130px" disabled="true" readonly="true"/>
+					<label value="TARJETA CREDITO :"/>
+					<hlayout valign="middle">
+						<textbox id="txtTarjeta" width="120px" disabled="true" ctrlKeys="^a#f5" readonly="true" tooltiptext="Presione la tecla F5 para seleccionar los criterios."/>
+						<image id="imgTarjeta" src="resources/mp_buscarEnabled.png" visible="false" style="cursor:pointer" tooltiptext="Haga click aqui para seleccionar las Tarjetas de la promoción."/>
+					</hlayout>
+				</row>
+				<row>
+					<label value="IDA y VUELTA :"/>
+					<checkbox id="chkIdaVuelta"/>
+					<label value="PAX FRECUENTE :"/>
+					<checkbox id="chkPaxFre"/>
+					<label value="PASAJERO NUEVO :"/>
+					<checkbox id="chkPasajeroNuevo"/>					
+				</row>
+<!-- 				<row spans="1,1,1,1,2"> -->
+				<row >
+					<label value="FECHA INICIO (*) :"/>
+					<datebox id="dtbxFechaInicio" format="dd/MM/yyyy"/>
+					<label value="FECHA FIN (*) :"/>
+					<datebox id="dtbxFechaFin" disabled="true" format="dd/MM/yyyy"/>
+					<label value="HORA PARTIDA :"/>
+					<hbox align="center">
+						<hbox align="center">
+							<textbox id="txtHoraPartida" readonly="true" width="120px" style="font-size:11px !important"/>	
+							<image id="imgAddhoraPartida" src="/resources/mp_addEnabled.png" visible="false" onClick="wndPromociones.onCreateVentanaHoraPartida()"/>
+						</hbox>
+						<space orient="horizontal" width="60px"/>
+						<button id="btnAgregarPromocion" label="Agregar Promocion" image="resources/mp_agregarEnabled.png" disabled="true" height="28px"/>
+					</hbox>										
+				</row>
+				<row>
+					<label value="TIPO DESCUENTO (*) :"/>
+					<combobox id="cmbTipoDescuento" width="130px" readonly="true"/>
+					<label id="lblDescuento" value="DESCUENTO* :"/>
+					<doublebox id="dblbxDescuento" format="##0.00" locale="US"/>
+					<label id="lblPermitirDescuento" value="PERMITIR DESCUENTO :" visible="false" />
+					<checkbox id="chbxPermitirDescuento" visible="false" />
+									
+					<!-- <label value="POR IMPORTE :"/>
+					<doublebox id="dblbxImporte" format="##0.00" locale="US"/>-->									
+				</row>				
+			</rows>
+		</grid>
+		<listbox id="lbxPromociones" width="100%" height="340px" mold="paging" pageSize="11">
+			<frozen columns="1" style="background: #99D9EA" >
+			<div style="padding: 0 10px;" /></frozen>
+			<listhead>
+				<listheader label="DENOMINACION" width="280px"/>
+				<listheader label="RUTA" width="240px"/>
+				<listheader label="SERVICIO" width="180px"/>
+				<listheader label="P.VENTA" width="180px"/>
+				<listheader label="C.VENTA" width="180px"/>
+				<listheader label="CLIENTE" width="210px"/>
+				<listheader label="ASIENTOS" width="90px"/>
+				<listheader label="VIAJES" width="40px" align="center"/>
+				<listheader label="IMPORTE" width="50px" align="right"/>
+				<listheader label="VAL.DESC" width="50px" align="right"/>
+				<listheader label="TIP.DESC" width="90px" align="center"/>
+				<listheader label="TEMPORADA" width="100px"/>
+				<listheader label="F.PAGO" width="80px"/>
+				<listheader label="TIPO F.PAGO" width="80px"/>
+				<listheader label="TARJETA" width="140px"/>
+				<listheader label="F.INICIO" width="60px" align="center"/>
+				<listheader label="F.FIN" width="60px" align="center"/>
+				<listheader label="PAX NEW" width="50px" align="center"/>
+				<listheader label="IDA.VUELTA" width="60px" align="center"/>
+				<listheader label="PAXFRE" width="45px" align="center"/>
+				<listheader label="HORAS PARTIDA" width="100px" align="center"/>
+				<listheader label="ACCION" width="180px"/>
+			</listhead>
+		</listbox>
+	</groupbox>
+</window>
+</zk>

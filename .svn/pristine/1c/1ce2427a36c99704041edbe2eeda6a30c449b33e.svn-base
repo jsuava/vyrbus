@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.tepsa.sisvyr.model.bean.Cortesia" table="VRTCORTESIA">
+        <comment>Entidad que almacena las cortesias que estan autorizadas.</comment>
+        <id name="id" type="java.lang.Long">
+            <column name="CORTESIA_ID" precision="10" scale="0" />
+            <generator class="sequence">
+                <param name="sequence">SEQ_VRTCORTESIA_ID</param>
+            </generator>
+        </id>
+        <many-to-one name="pasajero" class="com.tepsa.sisvyr.model.bean.Pasajero" fetch="select">
+            <column name="PASAJERO_ID" precision="10" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 10.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="tipoFormaPago" class="com.tepsa.sisvyr.model.bean.TipoFormaPago" fetch="select">
+            <column name="TIPFORPAG_ID" precision="2" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 2.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="ventaPasaje" class="com.tepsa.sisvyr.model.bean.VentaPasaje" fetch="select">
+            <column name="VENPAS_ID" precision="18" scale="0">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 18.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="personal" class="com.tepsa.sisvyr.model.bean.Personal">
+            <column name="PERSONAL_ID" precision="10" scale="0">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 10.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="ruta" class="com.tepsa.sisvyr.model.bean.Ruta">
+            <column name="RUTA_ID" precision="5" scale="0">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="motivoCortesia" class="com.tepsa.sisvyr.model.bean.MotivoCortesia">
+            <column name="MOTCOR_ID" precision="5" scale="0">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="autorizadorCortesia" class="com.tepsa.sisvyr.model.bean.AutorizadorCortesia">
+            <column name="AUTCOR_ID" precision="5" scale="0">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+            </column>
+        </many-to-one>
+        <property name="fechaInicio" type="java.util.Date">
+            <column name="D_FECINI" length="7" >
+            	<comment>Inicio de vigencia de la solicitud de cortesia.</comment>
+            </column>
+        </property>
+        <property name="fechaViaje" type="java.util.Date">
+            <column name="D_FECVIA" length="7">
+            	<comment>Fecha de viaje de la cortesia.</comment>
+            </column>
+        </property>
+        <property name="fechaCaducidad" type="java.util.Date">
+            <column name="D_FECCAD" length="7" >
+                <comment>Fecha en la que caduca la cortesia.</comment>
+            </column>
+        </property>
+        <property name="personaAutoriza" type="java.lang.String">
+            <column name="C_PERAUT" length="30" >
+                <comment>Persona que autoriza la cortesia.</comment>
+            </column>
+        </property>
+        <property name="anioCumpleanios" type="java.lang.Integer">
+            <column name="N_ANIOCUM" precision="4" scale="0">
+                <comment>Anio al cual pertenece la cortesia en el caso de cosrtesias por cumpleanios.</comment>
+            </column>
+        </property>
+        <property name="porcentaje" type="java.lang.Integer">
+            <column name="N_PORCENTAJE" precision="4" scale="0" not-null="true">
+                <comment>Porcentaje al que asciende el descuento.</comment>
+            </column>
+        </property>
+        <property name="detalleMotivoCortesia" type="java.lang.String">
+        	<column name="C_DETMOTCOR" length="255">
+        		<comment>Detalle del motivo de la cortesia en caso el motivo sea OTRO.</comment>
+        	</column>
+        </property>
+        <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+        <property name="estadoRegistro" type="java.lang.String">
+            <column name="C_ESTREG" length="1" not-null="true">
+                <comment>Estado de registro A(Activo), I(Inactivo).</comment>
+            </column>
+        </property>
+        <property name="fechaInsercion" type="java.util.Date">
+            <column name="AUDFECINS" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioInsercion" type="java.lang.String">
+            <column name="AUDUSUINS" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipInsercion" type="java.lang.String">
+            <column name="AUDIPINSE" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="fechaModificacion" type="java.util.Date">
+            <column name="AUDFECMOD" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioModificacion" type="java.lang.String">
+            <column name="AUDUSUMOD" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipModificacion" type="java.lang.String">
+            <column name="AUDIPMODI" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <!-- 		END CAMPOS DE AUDITORIA	 	-->
+    </class>
+</hibernate-mapping>

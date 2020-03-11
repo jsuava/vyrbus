@@ -1,0 +1,119 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:n="client">
+<window id="wndManifiestoMantenimiento" title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndManifiestoMantenimiento">
+<panel id="panel" title="::: HISTORIAL DE MANIFIESTOS :::" style="font-size:9px !important" framable="true" width="805px" closable="true" onClose="wndManifiestoMantenimiento.closeTabWindow()">
+ 	<panelchildren>
+<!-- 		<div > -->
+			<groupbox closable="false" mold="3d">
+				<caption label="PARÁMETOS DE BUSQUEDA" />
+				<grid style="border:none">
+					<columns>
+						<column width="95px" align="right"/>
+						<column width="140px" />
+						<column width="65px" align="right"/>
+						<column width="150px" />
+						<column />
+					</columns>
+					<rows>
+						<row spans="1,4">
+							<label value="AGENCIA EMISIÓN :" />
+							<combobox id="cmbAgencia" width="320px" onChange="wndManifiestoMantenimiento.onChange_cmbAgencia()" />
+						</row>					
+						<row>
+							<label value="FECHA INICIO :" />
+							<datebox id="dbFechaInicio" format="dd/MM/yyyy" readonly="true" />
+							<label value="ORIGEN :" />
+							<combobox id="cmbOrigen"  readonly="true" width="115px" />
+							<separator/>
+						</row>
+						<row>
+							<label value="FECHA FIN :" />
+							<datebox id="dbFechaFin" format="dd/MM/yyyy" readonly="true" />
+							<label value="DESTINO :"  />
+							<combobox id="cmbDestino"  readonly="true" width="115px" />
+							<hbox align="center">
+								<label value="BUS :"  />
+								<combobox id="cmbBus"  readonly="true" width="110px" />
+								<separator width="25px" />
+								<button id="btnBuscar" label="Buscar" image="/resources/mp_buscarEnabled.png"  onClick="wndManifiestoMantenimiento.onSearchManifiesto()"  style="cursor:pointer" height="30px"/>
+							</hbox>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>	
+			<separator height="2px" />
+			<listbox  rows="6" id="listManifiestos" mold="paging" pageSize="6" onSelect="wndManifiestoMantenimiento.onSelectManifiesto()" >
+				<listhead>
+					<listheader label="ITEM" width="30px"  />
+					<listheader label="MANIFIESTO" width="80px" />
+					<listheader label="BUS" width="40px" align="center" />	
+					<listheader label="ITINERARIO" width="70px" />
+					<listheader label="FECHA PARTIDA" width="80px" align="center" />
+					<listheader label="HORA PARTIDA" width="90px" align="center" />
+					<listheader label="ORIGEN" width="100px" />
+					<listheader label="DESTINO" width="100px" />
+					<listheader label="ESTADO" width="70px" />
+					<listheader />
+				</listhead>
+			</listbox>
+			<separator height="2px" />
+			<groupbox closable="false" mold="3d">
+				<caption label="DETALLES DEL MANIFIESTO"/>
+				<grid style="border:none">
+					<columns>
+						<column width="90px" align="right" />
+						<column width="100px" />
+						<column width="90px" align="right"/>
+						<column width="90px" />
+						<column width="120px" align="right"/>
+						<column />
+					</columns>
+					<rows>
+						<row>
+							<label value="MANIFIESTO :" />
+							<label id="lbManifiesto" style="font-size: 11px !important; color:#0000CF"  />
+							<label value="BUS :" />
+							<label id="lbBus" style="font-size: 11px !important; color:#0000CF" />
+							<label value="FECHA/HORA IMPR :" />
+							<label id="lbFechaHoraImpresion" style="font-size: 11px !important; color:#0000CF" />
+						</row>
+						<row>
+							<label value="ORIGEN :" />
+							<label id="lbOrigen" style="font-size: 11px !important; color:#0000CF"  />
+							<label value="DESTINO :" />
+							<label id="lbDestino" style="font-size: 11px !important; color:#0000CF" />
+							<label value="FECHA/HORA ANUL :" />
+							<label id="lbFechaHoraAnulacion" style="font-size: 11px !important; color:#0000CF" />
+						</row>
+						<row > 
+							<label value="FECHA PARTIDA :" />
+							<label id="lbFechaPartida" style="font-size: 11px !important; color:#0000CF" />
+							<label value="HORA PARTIDA :" />
+							<label id="lbHoraPartida" style="font-size: 11px !important; color:#0000CF" />
+							<label value="SERVICIO :" />
+							<label id="lbServicio" style="font-size: 11px !important; color:#0000CF" />
+						</row>
+						<row spans="1,5">
+							<label value="PILOTO :" />
+							<hbox align="center">
+								<div width="260px"><label id="lbPiloto" style="font-size: 11px !important; color:#0000CF" /></div>
+								<label value="COPILOTO :" />
+								<label id="lbCopiloto" style="font-size: 11px !important; color:#0000CF" />
+							</hbox>
+						</row>
+						<row spans="1,5">
+							<label value="COPILOTO AUX :" />
+							<hbox align="center">
+								<div width="250px"><label id="lbCopilotoAux" style="font-size: 11px !important; color:#0000CF" /></div>
+								<label value="TRIPULANTE :" />
+								<label id="lbTripulante" style="font-size: 11px !important; color:#0000CF"  />
+							</hbox>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>	
+<!-- 		</div> -->
+	</panelchildren>
+</panel>		
+</window>
+</zk>

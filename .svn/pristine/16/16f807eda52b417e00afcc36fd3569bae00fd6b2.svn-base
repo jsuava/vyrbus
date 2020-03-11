@@ -1,0 +1,62 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: José Sullo Avalos
+ * Fecha		: 20/11/2013
+ */
+package com.tepsa.sisvyr.service.business.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import com.tepsa.sisvyr.model.bean.SerieEspecieValorada;
+import com.tepsa.sisvyr.model.dao.SerieEspecieValoradaDAO;
+import com.tepsa.sisvyr.service.business.SerieEspecieValoradaManager;
+
+/**
+ * @author JABANTO
+ *
+ */
+public class SerieEspecieValoradaManagerImpl implements SerieEspecieValoradaManager {
+	private SerieEspecieValoradaDAO serieEspecieValoradaDAO;
+	
+	/**
+	 * @return the serieEspecieValoradaDAO
+	 */
+	public SerieEspecieValoradaDAO getSerieEspecieValoradaDAO() {
+		return serieEspecieValoradaDAO;
+	}
+
+	/**
+	 * @param serieEspecieValoradaDAO the serieEspecieValoradaDAO to set
+	 */
+	public void setSerieEspecieValoradaDAO(SerieEspecieValoradaDAO serieEspecieValoradaDAO) {
+		this.serieEspecieValoradaDAO = serieEspecieValoradaDAO;
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.SerieEspecieValoradaManager#buscarPorID(java.lang.String, java.lang.Integer)
+	 */
+	@Override
+	public SerieEspecieValorada buscarPorID(String numeroSerie,Integer idTipoComprobante) throws Exception {
+		// TODO Auto-generated method stub
+		return getSerieEspecieValoradaDAO().buscarPorID(numeroSerie, idTipoComprobante);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.SerieEspecieValoradaManager#buscarPorX(java.util.TreeMap, java.util.List)
+	 */
+	@Override
+	public ArrayList<SerieEspecieValorada> buscarPorX(TreeMap<String, Object> criteriosBusqueda,List<String> criteriosOrdenar) {
+		// TODO Auto-generated method stub
+		return getSerieEspecieValoradaDAO().buscarPorX(criteriosBusqueda, criteriosOrdenar);
+	}
+
+
+
+	
+	
+}

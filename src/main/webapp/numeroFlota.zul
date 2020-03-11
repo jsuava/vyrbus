@@ -1,0 +1,45 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="" use="com.cystesoft.vyrbus.view.ctrl.WndNumeroFlota">
+<div id="divLista">
+	<listbox id="listboxLista">
+		<listhead sizable="true">
+			<listheader label="#" width="50px"/>
+			<listheader label="DENOMINACION" sort="auto" />
+			<listheader label="CODIGO" sort="auto" />
+			<listheader label="NOMBRE CORTO (o sufijo)" sort="auto" />
+		</listhead>
+	</listbox>
+</div>
+
+<div id="divMantenimiento">
+	<groupbox mold="3d" closable="false">
+		<caption label="Datos personales" />
+		<grid>
+			<columns>
+				<column width="100px" align="right" />
+				<column width="230px" />
+				<column width="70px" align="right" />
+			</columns>
+			<rows>
+				<row>
+					<div>
+						<label value="DENOMINACIÓN (*) :" />
+						<textbox id="textboxId" />
+					</div>
+					<textbox id="txtDenominacion" maxlength="20" onOK="txtCodigo.setFocus(true)"/>
+					<label value="CÓDIGO (*) :" />
+					<textbox id="txtCodigo" maxlength="5" onOK="txtNombreCorto.setFocus(true)" />
+				</row>
+				<row>
+					<label value="NOMBRE CORTO :" />
+					<textbox id="txtNombreCorto" maxlength="18"  />
+					<separator />
+					<separator />
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+</div>
+</window>
+</zk>

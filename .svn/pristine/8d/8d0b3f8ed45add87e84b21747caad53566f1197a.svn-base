@@ -1,0 +1,246 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk  xmlns:n="clien">
+<window id="wndCortesia" title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndCortesia" >
+	<div id="divLista">
+		<listbox id="listboxLista" onSelect="wndCortesia.onSelectList()">
+			<listhead sizable="true">
+				<listheader label="#" width="35px" />
+				<listheader label="PASAJERO" width="200px"  sort="auto" />
+				<listheader label="TIPO FORMA PAGO" width="120px" sort="auto" />
+				<listheader label="RUTA" width="180px" sort="auto" />
+				<listheader label="FECHA INICIO" width="80px" sort="auto" align="center"/>
+				<listheader label="FECHA CADUCIDAD" width="100px" sort="auto"  align="center"/>
+				<listheader label="% DESCT." width="55px" sort="auto" align="right" />
+				<listheader label="ESTADO" width="80px" sort="auto" />
+				<listheader label="NRO. CONTROL" width="80px" sort="auto" />
+				<listheader label="NRO. BOLETO" width="80px" sort="auto" />
+			</listhead>
+		</listbox>
+	</div>
+		
+	<div id="divMantenimiento">
+		<groupbox closable="false" mold="3d"  >
+		<caption label="PASAJERO" />
+			<grid>
+				<rows>
+					<row>
+						<radiogroup>
+							<radio id="rdPorDocumento" label="Por número de documento" selected="true" onCheck="txtBuscarPax.setFocus(true)"/>
+							<separator width="20px" orient="vertical"/>
+							<radio id="rdPorApellidos" label="Por Apellidos" onCheck="txtBuscarPax.setFocus(true)" />
+						</radiogroup>
+						<separator />
+					</row>
+					<row>
+						<hbox align="center">
+							<label value="BUSCAR :"/>
+ 							<textbox id="txtBuscarPax" style="font-size:12px !important" onOK="wndCortesia.buscarPasajero()"/> 
+							<button id="btnBuscarPax" autodisable="self" tooltiptext="Buscar Pasajero" image="/resources/mp_buscarEnabled.png" onClick="wndCortesia.buscarPasajero()"/>
+						</hbox>	
+						<div align="right">
+							<button id="btnNuevoPax" label="Nuevo" image="/resources/mp_nuevoEnabled.png" onClick="wndCortesia.onNewEdit(wndCortesia.ACTION_NEW)" style="cursor:pointer" tooltiptext="Nuevo Pasajero."/>
+							<button id="btnEditarPax" label="Editar" image="/resources/mp_editarDisabled.png" disabled="true" onClick="wndCortesia.onNewEdit(wndCortesia.ACTION_MODIFY)" tooltiptext="Editar Pasajero."/>
+						</div>				
+					</row>
+				</rows>
+			</grid>
+			<listbox id="lisboxPasajeros" height="100px" width="386px" visible="false">
+				<listhead>
+					<listheader label="Documento" width="65px"/>
+					<listheader label="Número" width="75px"/>
+					<listheader label="Nombres"/>
+				</listhead>
+			</listbox>
+			
+			<div><textbox id="txtidPasajero" visible="false" /></div>
+ 			<grid  id="grInfoPax" style="border:none">
+ 				<columns>
+ 					<column width="105px" align="right" />
+ 					<column width="100px"/>
+ 					<column width="90px" align="right"/> 					
+ 				</columns>
+ 				<rows>
+					<row>
+						<label value="NRO. DOCUMENTO :" />
+						<hbox align="center">
+							<label id="lbNumeroDocumento"  sclass="label-size11" style="color:blue"/>
+							<separator/>
+							<image id="imgValidacionDNISearch" height="11px" style="cursor:pointer" />
+						</hbox>
+ 						<label value="PASAJERO :" />
+ 						<label id="lbPasajero"   sclass="label-size11" style="color:blue"/>
+ 					</row>
+ 					<row>
+ 						<label value="FECHA NACIMIENTO :" />
+ 						<label id="lbFechaNacimiento" sclass="label-size11" style="color:blue"/>
+ 						<label value="UBIGEO :" />
+ 						<label id="lbUbigeo"   sclass="label-size11" style="color:blue"/>
+ 					</row>
+ 				</rows>
+ 			</grid>
+		</groupbox>
+		<separator height="2px" />
+		<groupbox id="gbxMantPasajero" mold="3d" closable="false" visible="false">
+		<caption>
+			<div align="center">
+				<label value="DATOS DEL PASAJERO" sclass="label-size11-bold" style="color:blue" />
+			</div>
+		</caption>
+			<grid>
+				<columns>
+					<column width="115px" align="right"/>
+					<column width="190px"/>
+					<column width="150px" align="right"/>
+					</columns>
+				<rows>
+					<row>
+						<label value="TIPO DOCUMENTO (*) :" />
+						<div>
+							<combobox id="cmbDocumentoIdentificacion" readonly="true"  onOK="com.tepsa.sisvyr.service.util.Util.setFocus(txtNumeroDocumento)" 
+							onChange='txtApellidoMaterno.setDisabled(false);txtApellidoPaterno.setDisabled(false);txtNombre.setDisabled(false);imgValidacionDNI.setSrc("");txtNumeroDocumento.setText("");txtNumeroDocumento.setFocus(true);' />
+						</div>
+						<label value="Nº DOCUMENTO (*) :" />
+						<div>
+							<hbox align="center">
+								<textbox id="txtNumeroDocumento" onChange="wndCortesia.verificarPaxReniec()" maxlength="15" width="170px" style="font-size:11px !important" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(txtApellidoPaterno)" />
+								<image id="imgValidacionDNI" height="13px" style="cursor:pointer" />
+							</hbox>
+						</div>
+					</row>
+					<row>
+						<label value="APELLIDO PATERNO (*) :" />
+						<textbox id="txtApellidoPaterno" maxlength="20" width="170px" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(txtApellidoMaterno)" /> 
+						<label value="APELLIDO PATERNO :" />
+						<textbox id="txtApellidoMaterno" maxlength="20" width="170px"  onOK="com.tepsa.sisvyr.service.util.Util.setFocus(txtNombre)"/>
+					</row>
+					<row>
+						<label value="NOMBRES (*) :" />
+						<textbox id="txtNombre" maxlength="30" width="170px" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(dbfechaNacimiento)" />
+						<label value="FECHA NACIMIENTO :" />
+						<datebox id="dbfechaNacimiento" format="dd/MM/yyyy"  maxlength="10" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(cmbSexo)" />
+					</row>
+					<row>
+						<label value="SEXO (*) :" />
+						<combobox id="cmbSexo" readonly="true" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(cmbEstadoCivil)" />
+						<label value="ESTADO CIVIL :" />
+						<combobox id="cmbEstadoCivil" readonly="true" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(txtDireccion)"/>
+					</row>
+					<row>
+						<label value="DIRECCIÓN :" />
+						<textbox id="txtDireccion" width="170px" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(btnUbicacionGeografica)"/>
+						<label value="UBICACIÓN GEOGRÁFICA (*) :" />
+						<hlayout>
+							<textbox id="txtIdUbigeo" visible="false" readonly="true" />
+							<div>
+							<textbox id="txtUbicacionGeografica" readonly="true" width="180px"/>
+							<button id="btnUbicacionGeografica" label="..." tooltiptext="Seleccionar ubigeo."/>
+							</div>
+						</hlayout>								
+					</row>
+					<row>
+						<label value="TELÉFONO :" />
+						<textbox id="txtTelefono" width="170px" style="font-size:11px !important" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(txtCorreoElectronico)"/>
+						<label value="CORREO ELECTRÓNICO :" />
+						<textbox id="txtCorreoElectronico" maxlength="40"  style="text-transform:lowercase; font-size:12px !important" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(btnGuardar)"/>
+					</row>
+					<row>
+						<separator />
+						<div align="right">
+							<button id="btnCancelar" label="Cancelar" image="/resources/mp_cancelarEnabled.png" onClick="wndCortesia.onClousePax()" style="cursor:pointer" tooltiptext="Cancelar operación"/> 
+						</div>
+						<button id="btnGuardar" label="Guardar" autodisable="self" onClick="wndCortesia.onSavePax()" image="/resources/mp_guardarEnabled.png" style="cursor:pointer" tooltiptext="Guarda Pasajero" />
+						<separator />
+					</row>
+				</rows>
+			</grid>		
+		</groupbox>
+		
+		<groupbox id="gbxDatosCortesia" closable="false" mold="3d" >
+		<caption label="DATOS DE LA CORTESIA" />
+			<grid>
+				<columns>
+					<column width="150px" align="right" />
+					<column width="210px" />
+ 					<column width="110px" align="right" />
+				</columns>
+				<rows>
+					<row>
+						<label value="CIUDAD ORIGEN :" />
+						<combobox id="cmbCiudadOrigen"   readonly="true" onChange="wndCortesia.onChangeRutas()" onOK="cmbRuta.setFocus(true);cmbRuta.select() " />
+							<label value="RUTA :" />
+							<combobox id="cmbRuta"   readonly="true" onOK="cmbTipoFormaPago.setFocus(true); cmbTipoFormaPago.select()" />
+					</row>
+					<row>
+						<!-- <label value="FECHA INICIO :" />
+						<datebox id="dbFechaInicio" onChange="wndCortesia.fechaCaducidad()" onOK="dbFechaCaducidad.setFocus(true); dbFechaCaducidad.select()" readonly="true"  width="135px" format="dd/MM/yyyy" /> -->
+						<label value="TIPO FORMA DE PAGO :" />
+						<combobox id="cmbTipoFormaPago" onOK="dbFechaCaducidad.setFocus(true)"  readonly="true" onSelect="wndCortesia.onSelectTipoFormaPago()"/>
+						<label value="FECHA CADUCIDAD :" />
+						<datebox id="dbFechaCaducidad" onOK="cmbTipoFormaPago.setFocus(true); cmbAutorizadorCortesia.select()" readonly="true"  width="135px" format="dd/MM/yyyy" />
+					</row>
+					<row >
+						<!-- <label value="FECHA DE VIAJE :"   />
+						<datebox id="dbxFechaViaje" format="dd/MM/yyyy" readonly="true" width="135px"
+									 onOK="if (!(cmbAutorizadorCortesia.isDisabled())){
+											 cmbAutorizadorCortesia.setFocus(true); 
+											 cmbAutorizadorCortesia.select();
+										  }if (cmbAutorizadorCortesia.isDisabled()) itProcentejeDescuento.setFocus(true);"  />
+						 -->
+					</row>
+					<row>		
+						<label value="AUTORIZADOR DE CORTESIA :" />			
+						<div>
+							<textbox id="textboxId" />
+							<combobox id="cmbAutorizadorCortesia" onSelect="wndCortesia.cargarMotivoCortesia()" onOK="cmbMotivoCortesia.setFocus(true); cmbMotivoCortesia.select()" readonly="true"  width="200px"  onChange="" />	
+						</div>
+							<label value="MOTIVO CORTESIA :" />
+							<combobox id="cmbMotivoCortesia" onOK="itProcentejeDescuento.setFocus(true);"   readonly="true" />
+					</row>
+					<row id="rowDetalleCortesia" spans="1,3" visible="false">
+						<label value="DETALLE CORTESIA :"/>
+						<textbox id="txtDetalleCortesia" width="440px"/>
+					</row>
+					<row spans="1,1,2">
+<!-- 						<label value="AÑO QUE CORRESPONDE EL CUMPLEANIOS :" /> -->
+<!-- 						<intbox id="itAnioCortesia" width="40px" maxlength="4" onOK="itProcentejeDescuento.setFocus(true); itAnioCortesia.select()" />									 -->
+						<label value="% DESCUENTO :" />  
+						<intbox id="itProcentejeDescuento" style="text-align: right;"  width="40px" maxlength="3" />
+						<label id="lblCliente" style="color:#008db7; font-weight:bold; font-size:10px"/>
+					</row>
+					<row id="rowCanje" visible="false">
+						<label value="RUC CLIENTE :"/>
+						<hlayout valign="middle">
+							<textbox id="txtRuc" width="80px" onOK="wndCortesia.buscarCliente()"/>
+							<button id="btnBuscarCliente" image="resources/mp_buscarEnabled.png" onClick="wndCortesia.buscarCliente()"/>
+						</hlayout>
+						<label value="RAZON SOCIAL :"/>
+						<textbox id="txtRazonSocial" readonly="true"/>
+					</row>
+				</rows>
+			</grid>
+		</groupbox>	
+<!-- 		<separator height="1px" /> -->
+<!-- 		<groupbox id="gbxViajesPax" visible="false" closable="false"> -->
+<!-- 		<caption id="cpViajesPax" /> -->
+<!-- 			<listbox id="listViajesPax" > -->
+<!-- 				<listhead> -->
+<!-- 					<listheader label="#" width="20px" /> -->
+<!-- 					<listheader label="F.EMISION" width="70px" tooltiptext="Fecha de emisión de la cortesia" /> -->
+<!-- 					<listheader label="N°.BOLETO" width="80px" tooltiptext="Número de boleto" /> -->
+<!-- 					<listheader id="lstHeaderAnio" label="AÑO" width="35px" tooltiptext="Año al cual corresponde el boleto" visible="false"/> -->
+<!-- 					<listheader label="RUTA" width="100px" /> -->
+<!-- 					<listheader label="SERVICIO" width="150px" /> -->
+<!-- 					<listheader label="F.VIAJE" width="60px" tooltiptext="Fecha de viaje" /> -->
+<!-- 					<listheader label="REP.VENTA" width="200px" tooltiptext="Usuario quién emitió la cortesia"/> -->
+<!-- 				</listhead> -->
+<!-- 			</listbox> -->
+<!-- 			<separator height="2px" /> -->
+<!-- 			<hbox> -->
+<!-- 				<label value="Cantidad Viajes :" sclass="label-size11-bold"/> -->
+<!-- 				<label id="lbCantViajesPax" sclass="label-size11-bold" style="color:blue"/> -->
+<!-- 			</hbox> -->
+			
+<!-- 		</groupbox>	 -->
+</div>
+</window>
+</zk>

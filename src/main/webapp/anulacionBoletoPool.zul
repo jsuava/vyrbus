@@ -1,0 +1,47 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndAnulacionBoletoPool" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndAnulacionBoletoPool">
+	<grid style="border:none">
+		<columns>
+			<column align="right" width="85px"/>
+			<column width="230px"/>
+			<column align="right" width="110px"/>
+			<column />
+		</columns>
+		<rows>
+			<row spans="1,4">
+				<label value="NRO. BOLETO : " />
+				<textbox id="txtNumeroBoleto" width="100px" focus="true" style="font-size:11px !important"/>
+			</row>
+			<row>
+				<label value="FECHA INICIO : " />
+				<datebox id="dtbxFechaInicio" format="dd/MM/yyyy" readonly="true" onChange="wndAnulacionBoletoPool.onValidateFecha()"/>
+				<label value="FECHA FIN : " />
+				<datebox id="dtbxFechaFin" format="dd/MM/yyyy" readonly="true" onChange="wndAnulacionBoletoPool.onValidateFecha()"/>
+			</row>
+			<row>
+				<label value="LOCAL : " />
+				<combobox id="cmbLocal" width="220px" autocomplete="true"/>
+				<label value="COUNTER : " />
+				<hbox align="center">
+					<combobox id="cmbCounter" width="220px" autocomplete="true"/>
+					<button id="btnBuscar" label="Buscar" onClick="wndAnulacionBoletoPool.buscar()" image="/resources/mp_buscarEnabled.png" autodisable="self" />
+				</hbox>
+			</row>
+		</rows>
+	</grid>
+	<listbox id="ltxResultados" mold="paging" pageSize="10">
+		<listhead>
+			<listheader label="OPERADO POR " width="115PX" align="left" />
+			<listheader label="BOLETO" width="78px"/>
+			<listheader label="PASAJERO" width="200px"/>
+			<listheader label="RUTA" width="120px"/>
+			<listheader label="FEC.PARTIDA" width="75px" tooltiptext="Fecha de Partida."/>
+			<listheader label="HOR.PARTIDA" width="75px" tooltiptext="Hora de Partida."/>
+			<listheader label="SERVICIO" width="80px"/>
+			<listheader label="IMPORTE" width="80px" align="right"/>
+			<listheader/>
+		</listhead>
+	</listbox>
+</window>
+</zk>

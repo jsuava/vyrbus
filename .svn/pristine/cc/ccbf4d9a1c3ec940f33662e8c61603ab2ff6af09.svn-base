@@ -1,0 +1,206 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndPasajero" title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndPasajero">
+
+<div id="divLista">
+	<listbox id="listboxLista" mold="paging" pageSize="15" >
+		<listhead sizable="true">
+			<listheader label="#" width="50px"/>
+			<listheader label="TIPO DOCUMENTO" width="100px" />
+			<listheader label="Nº DOCUMENTO" width="100px" />
+			<listheader label="NOMBRES Y APELLIDOS DEL PASAJERO" sort="auto" />
+			<listheader label="F. NACIMIENTO" width="100px" sort="auto" />
+			<listheader label="SEXO" sort="auto" width="100px" />
+			<listheader label="HISTORICO" width="120px"/>
+<!-- 			<listheader label="¿PAXFREE?" align="center" width="70px" sort="auto" /> -->
+<!-- 			<listheader label="AGENCIA REGISTRO" width="150px" sort="auto" /> -->
+		</listhead>
+	</listbox>
+</div>
+
+<div id="divMantenimiento">
+	<tabbox id="tbPasajero">
+		<tabs>
+			<tab label="Pasajero" />
+			<tab id="tabPaxFree" label="Pasajero frecuente" />
+		</tabs>
+		<tabpanels>
+			<tabpanel>
+				<groupbox mold="3d" closable="false">
+					<caption label="Datos personales" />
+					<grid>
+						<columns>
+							<column width="115px" align="right"/>
+							<column width="230px"/>
+							<column width="130px" align="right"/>
+						</columns>
+						<rows>
+							<row>
+								<label value="TIPO DOCUMENTO (*) :" />
+								<div>
+									<textbox id="textboxId"/>
+									<combobox id="cboDocumentoIdentificacion" readonly="true" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(txtNumeroIdentificacion)"/>
+								</div>
+								<label value="Nº DOCUMENTO :"/>
+								<div>
+									<hbox align="center">
+										<textbox id="txtNumeroIdentificacion" onChange="wndPasajero.verificarPaxReniec()" width="185px" maxlength="15"  style="font-size:11px !important" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(txtApellidoPaterno)" />
+										<image id="imgValidacionDNI" height="12px"/>
+									</hbox>
+								</div>
+							</row>
+							<row>
+								<label value="APELLIDO PATERNO (*) :" />
+								<textbox id="txtApellidoPaterno" maxlength="30" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(txtApellidoMaterno)" /> 
+								<label value="APELLIDO MATERNO :" />
+								<textbox id="txtApellidoMaterno" maxlength="30" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(txtNombre)" />
+							</row>
+							<row>
+								<label value="NOMBRES (*) :" />
+								<textbox id="txtNombre" maxlength="30" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(dbfechaNacimiento)" />
+								<label value="FECHA NACIMIENTO (*) :" />
+								<datebox id="dbfechaNacimiento" format="dd/MM/yyyy" constraint="no empty"  maxlength="10" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(cboSexo)"/>
+							</row>
+							<row>
+								<label value="SEXO (*) :" />
+								<combobox id="cboSexo" readonly="true" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(cboEstadoCivil)"/>
+								<label value="ESTADO CIVIL :" />
+								<combobox id="cboEstadoCivil" readonly="true" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(txtDireccion)"/>
+							</row>
+							<row>
+								<label value="DIRECCIÓN :" />
+								<textbox id="txtDireccion" rows="2" height="27px" maxlength="100" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(btnUbicacionGeografica)"/>
+								<label value="UBICACIÓN GEOGRÁFICA (Dep. / Prov. / Dist.) (*)" />
+								<hlayout>
+									<textbox id="txtIdUbigeo" visible="false" readonly="true" />
+									<textbox id="txtUbicacionGeografica" rows="2" readonly="true" height="27px" width="180px"/>
+									<button id="btnUbicacionGeografica" label="..." />
+								</hlayout>								
+							</row>
+							<row>
+								<label value="TELÉFONO :" />
+								<textbox id="txtTelefono"  style="font-size:11px !important" maxlength="30" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(txtCorreoElectronico)"/>
+								<label value="CORREO ELECTRÓNICO :" />
+								<textbox id="txtCorreoElectronico" maxlength="70"  style="text-transform:lowercase; font-size:12px !important" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(cmbAgencia)"/>
+							</row>
+<!-- 							<row> -->
+<!-- 								<label value="AGENCIA REGISTRO(*):" /> -->
+<!-- 								<combobox id="cmbAgencia"  readonly="true" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(chkPersonaNoGrata)"/> -->
+<!-- 								<separator></separator> -->
+<!-- 								<separator></separator> -->
+<!-- 							</row> -->
+						</rows>
+					</grid>		
+				</groupbox>
+				<separator />
+				<groupbox mold="3d" closable="false">
+					<caption label="OBSERVACIONES" />
+					<grid>
+						<columns>
+							<column width="180px" />
+							<column width="30px"/>
+							<column width="240px"/>
+						</columns>
+						<rows>
+							<row>
+								<label value="MARCAR COMO PERSONA NO GRATA :" />
+								<checkbox id="chkPersonaNoGrata"  />
+								<label value="MOTIVO POR EL CUAL SE CONCIDERA NO GRATA :" />
+								<textbox id="txtMotivoNoGrata" maxlength="255" multiline="true" rows="2" />
+							</row>
+						</rows>
+					</grid>
+				</groupbox>
+			</tabpanel>
+			<tabpanel>
+				
+				<grid>
+					<columns>	
+						<column width="140px" align="right"/>
+						<column width="180px" />
+						<column width="150px" align="right"/>
+					</columns>
+					<rows>
+						<row>
+							<label value="KILÓMETROS ACUMULADOS :" />
+							<div>
+								<textbox id="txtIdPasajeroFrecuente" visible="false" />
+								<label id="lblKilometrosAcumulados"   style="font-size:12px !important;color:blue; font-weight: bold;" />
+<!-- 								<intbox id="ibKilometrosAcumulados" style="font-size:11px !important" readonly="true" width="130px"  /> -->
+							</div>
+							<label value="ACTIVAR/INACTIVAR PAXFREE :" />
+							<hlayout>
+								<checkbox id="chkPasajeroFrecuente" onClick="wndPasajero.onchkPasajeroFrecuente()"  />
+								<separator width="10px" />
+								<label value="PAX FREE:" style="font-size:12px !important; font-weight: bold; color:red" />
+								<label id="lbEstado" value="INACTIVO" style="font-size:14px !important; font-weight: bold; color:red" />
+							</hlayout>
+						</row>
+						<row>
+							<label value="Nº DE TARJETA :" />
+							<textbox id="txtNumeroTarjeta" width="130px" style="font-size:11px !important; font-weight: bold;" />
+							<label value="FECHA INGRESO :" />
+							<label id="lblFechaIngreso" style="font-size:11px !important;color:blue;; font-weight: bold;" />
+<!-- 							<datebox id="dbFechaIngreso" format="dd/MM/yyyy HH:mm:ss" readonly="true" buttonVisible="false" /> -->
+						</row>
+						<row>
+							<label value="PUNTOS ACUMULADOS :" />
+							<label id="lblPuntosAcumulados" style="font-size:12px !important;color:blue; font-weight: bold;" />
+<!-- 							<textbox id="txtPuntosAcumulados" readonly="true" width="130px" style="font-size:11px !important"/> -->
+							<label value="PUNTOS UTILIZADOS :" />
+							<label id="lblPuntosUtilizados" style="font-size:12px !important; font-weight: bold; color:blue" />
+<!-- 							<textbox id="txtPuntosUtilizados" readonly="true" style="font-size:11px !important"/> -->
+						</row>
+						<row>
+							<label value="PUNTOS DISPONIBLES :" />
+							<label id="lblPuntosDisponibles" style="font-size:12px !important; font-weight: bold; color:blue" />
+<!-- 							<textbox id="txtPuntosDisponibles" readonly="true" width="130px" style="font-size:11px !important"/> -->
+							<label value="FECHA ACTIVACIÓN :" />
+							<label id="lblFechaActivacion" style="font-size:12px !important; font-weight: bold; color:blue" />
+<!-- 							<datebox id="dbFechaActivacion" format="dd/MM/yyyy HH:mm:ss" readonly="true" buttonVisible="false" width="140px"/> -->
+						</row>
+						<row>
+							<label value="FECHA CADUCIDAD :" />
+							<label id="lblFechaCaducidad" style="font-size:12px !important; font-weight: bold; color:blue" />
+<!-- 							<datebox id="dbFechaCaducidad" format="dd/MM/yyyy HH:mm:ss" readonly="true" buttonVisible="false" /> -->
+							<label value="FECHA SUSPENSIÓN :" />
+							<label id="lblFechaSuspension" style="font-size:12px !important; font-weight: bold; color:blue" />
+<!-- 							<datebox id="dbFechaSuspension" format="dd/MM/yyyy HH:mm:ss" readonly="true" buttonVisible="false" width="140px"/> -->
+<!--  							<label id="lbPersoAutoira" sclass="label-size11" visible="false"/> -->
+<!-- 							<textbox id="txtPersonaAutoriza" visible="false"/> -->
+						</row>
+					</rows>
+				</grid>
+				<separator height="1px" />
+				<listbox id="listPasajesAcumulados" mold="paging" pageSize="5">
+					<listhead>
+						<listheader label="BOLETO" width="80px" />
+						<listheader label="SERVICIO" width="120px" />
+						<listheader label="RUTA" width="145px" />
+						<listheader label="F.VIAJE" width="70px" />
+						<listheader label="FORMA PAGO" width="80px" />
+						<listheader label="ASIENTO" width="50px" />
+						<listheader label="IMPORTE" width="50px" />
+						<listheader label="F.EMISION" width="70px" />
+						<listheader label="TIPO MOVIMIENTO" width="110px" />
+						<listheader label="REP.VENTA" width="180px" />
+						<listheader label="RUC" width="90px" />
+						<listheader label="RAZON SOCIAL" width="250px" />
+					</listhead>
+				</listbox>
+				<separator height="1px" />		
+				<label id="lbViajesAcumulados" value="Viajes acumulados en los últimos 6 meses: 0" style="color:blue; font-size:12px !important; font-weight: bold;" />
+				<hbox align="center">
+					<label id="lbtotalViajes"  style="color:#61380B; font-size:12px !important; font-weight: bold;" />
+				</hbox>
+				<hbox align="center">
+					<label id="lbtotalViajesValidos"  style="color:#61380B; font-size:12px !important; font-weight: bold;" />
+				</hbox>
+				
+			</tabpanel>
+		</tabpanels>
+	</tabbox>
+	
+</div>
+</window>
+</zk>

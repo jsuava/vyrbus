@@ -1,0 +1,139 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndLiquidacionOficina" title="LIQUIDACIÓN DE OFICINA" border="normal" width="650px" use="com.tepsa.sisvyr.view.ctrl.WndLiquidacionOficina">
+	<grid>
+		<columns>
+			<column width="60px" align="right"/>
+			<column width="145px"/>
+			<column width="250px" />
+			<column width="100px" align="right"/>
+ 			<column width="45px" />
+<!-- 			<column width="160px" align="right"/> -->
+
+		</columns>
+		<rows>
+			<row>
+			 	<label value="AGENCIA :" />
+			 	<combobox id="cmbAgencia" readonly="true" />
+			 	<separator/><separator/><separator/><separator/>
+			</row>
+			<row>
+				<label value="FECHA :" />
+			 	<datebox id="dbFecha" format="dd/MM/yyyy" readonly="true" width="135px" onChange="wndLiquidacionOficina.onSelecFechaLiq()" />
+			 	<button id="btnBuscar" label="Buscar" height="30px" width="82px" image="resources/mp_buscarEnabled.png" />
+			 	<button id="btnLiquidar" label="Liquidar" height="30px"  image="resources/mp_aceptarEnabled.png" />
+			 	<button id="btnPrevio" label="" height="30px"  image="resources/mp_preliminar.png" />
+		     	<button id="btnImprimir" label="" height="30px"  image="resources/mp_imprimir.png" />
+			</row>
+		</rows>	
+	</grid>
+	 <separator height="5px" />
+	 <tabbox>
+	 	<tabs>
+	 		<tab id="lisquidacionesPendientes" label="Liquidación de Cajas" />
+	 		<tab id="lisquidacionesLiquidadas" label="Gastos" />
+	 	</tabs>
+	 	<tabpanels>
+	 		<tabpanel>
+				 <hlayout  style="padding:10px" >
+					<groupbox width="250px"  closable="false" mold="3d" height="200px">
+					<caption label="CAJAS DEL COUNTER CERRADAS" />
+					    <listbox id="listCajasPendientes" hflex="1" vflex="true"  rows="8" checkmark="true" multiple="true"  style="border:none">
+					        <listhead>
+					        </listhead>
+					    </listbox>
+					</groupbox>
+					
+					<separator  width="2px"/>		
+							
+				    <groupbox width="320px"  closable="false" mold="3d" height="200px">
+					<caption label="CAJAS LIQUIDADAS" />
+					    <listbox id="listCajasLiquidadas" hflex="1" vflex="true" rows="8"  style="border:none">
+					        <listhead>
+					        </listhead>
+					    </listbox>
+				    </groupbox>
+				</hlayout>	 		
+	 		</tabpanel>
+	 		<tabpanel>
+	 			<toolbar orient="horizontal">
+			  	 	<toolbarbutton  label="Nuevo" id="tbtNuevo" sclass="font-weight:bold" style="color:black"  image="resources/toolbar/mp_toolbarNuevo.png" width="80px"/>
+			  	 	<toolbarbutton  label="Modificar"  id="tbtModificar" style="color:black"  image="resources/toolbar/mp_toolbarModificar.png" width="80px" />
+			  	 	<toolbarbutton  label="Cancelar"  id="tbtCancelar" style="color:black"  image="resources/toolbar/mp_toolbarCancelar.png" width="80px" />
+			  	 	<toolbarbutton  label="Guargar"  id="tbtGuardar" style="color:black"  image="resources/toolbar/mp_toolbarGuardar.png" width="80px" /> 
+			  	 	<toolbarbutton  label="Eliminar"  id="tbtEliminar" style="color:black"  image="resources/toolbar/mp_toolbarEliminar.png" width="80px" />
+			 	</toolbar>
+	 			<tabbox id="tbgastos">
+	 				<tabs style="border:none">
+	 					<tab id="listaGastos" label="Lista de Gastos" />
+	 					<tab id="ManteGastos" label="Manenimiento de Gastos" />
+	 				</tabs>
+	 				<tabpanels>
+	 					<tabpanel>
+			 					<grid style="border:none">
+			 						<rows>
+			 							<row>
+			 								<listbox id="listGastos" hflex="1" vflex="true" rows="4" style="border:none" onSelect="wndLiquidacionOficina.onSelectListGastos()" >
+										        <listhead>
+										        	<listheader label="#" width="30px" />
+										        	<listheader label="TIPO GASTO" width="150px" />
+										        	<listheader label="MONTO" width="80px" />
+										        	<listheader label="OBSERVACIONES"  />
+										        </listhead>
+										    </listbox>
+			 							</row>
+			 						</rows>
+			 					</grid>
+		 				</tabpanel>
+	 					<tabpanel>
+		 					<grid style="border:none">
+								<columns>
+									<column width="110px" align="right"/>
+									<column width="180px"/>
+									<column width="100px" align="right"/>
+<!-- 									<column width="264px"/> -->
+								</columns>
+								<rows>
+									<row>
+										<div>
+											<textbox id="txtID" visible="false"/>
+											<label value="FECHA (*) :" />	
+											<textbox id="textboxId" visible="false" />
+										</div>
+										<datebox id="dbFechaGasto" format="dd/MM/yyyy" readonly="true" />
+										<label value="TIPO DE GASTO (*) :" />
+										<combobox id="cmbTipoGasto" readonly="true" />
+									</row>
+									<row>
+										<label value="NRO. DOCUMENTO :" />
+										<textbox id="txtNroDocumento" width="90px" maxlength="20" />				
+										<label value="MONTO :" />
+										<doublebox id="dbMonto" format="##0.00" width="130px" />
+									</row>
+									<row>
+										<label value="NOMBRE DEL PILOTO :" />
+										<textbox id="txtNombrePiloto" width="150px" maxlength="30" />
+										<label value="BUS :" />
+										<textbox id="txtBus" maxlength="5" width="130px"/>
+									</row>
+									<row>
+										<label value="CONSIGNADO :" />
+										<textbox id="txtConsignado" width="150px"  maxlength="30" />
+										<label value="OBSERVACIONES :" />
+										<textbox id="txtObservacion" width="190px" rows="2"  maxlength="200" />
+									</row>
+								</rows>
+							</grid>
+		 				</tabpanel>
+	 				</tabpanels>
+	 			</tabbox>
+	 			
+	 		</tabpanel>
+	 	</tabpanels>
+	 </tabbox>
+	 <div align="right">
+	 	<button id="btnCerrarVentana" label="Cerrar" height="30px"  image="resources/mp_cerrar.png" />
+	 </div>
+     
+</window>
+</zk>

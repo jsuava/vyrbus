@@ -1,0 +1,78 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndAnulacion" title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndAnulacionDocumentos">
+	<radiogroup>
+		<radio id="rdAnulacionRegular" label="Anulacion regular" checked="true" style="color:blue;" onCheck="wndAnulacion.onCheckedAnulacionRegular()"/>
+		<space width="40px" />
+		<radio id="rdAnulacionPersonalizada" label="Anulacion personalizada" style="color:blue;" onCheck="wndAnulacion.onCheckedAnulacionPersonalizada()"/>
+	</radiogroup>
+	
+	<grid id="grAnulacionRegular" style="border:none">
+		<columns>
+			<column width="120px" align="right" />
+			<column width="120px"/>
+			<column width="90px" align="right" />
+			<column/>
+		</columns>	
+		<rows>
+			<row spans="1,2">
+				<label value="NRO. COMPROBANTE : " />
+				<div align="left">
+					<hbox align="center">
+						<textbox id="txtNumeroComprobante" focus="true" width="190px" style="font-size:11px !important"/><space width="15px"/>
+					</hbox>
+				</div>
+				<button id="btnBuscar" label="Buscar" image="/resources/mp_buscarEnabled.png" autodisable="self"  />
+			</row>
+			<row id="rowRangoFechas" visible="false">
+				<label value="FECHA INICIO : " />
+				<datebox id="dtbxFechaInicio" format="dd/MM/yyyy" width="110px" readonly="true"/>
+				<label value="FECHA FIN : " />
+				<datebox id="dtbxFechaFin" format="dd/MM/yyyy" width="110px" readonly="true"/>
+			</row>
+			<row id="rowAgencia" visible="false">
+				<label value="TIPO AGENCIA : " />
+				<combobox id="cmbTipoAgencia" width="110px" readonly="true"/>
+				<label value="AGENCIA : " />
+				<combobox id="cmbAgencia" autocomplete="true" width="350px" onChange="wndAnulacion.onchangeAgencia()"/>
+			</row>
+			<row id="rowOpcionNC" spans="4" visible="false">
+				<div align="left">
+					<radiogroup>
+						<label value="OPCIONES PARA LA APLICACION DE N.C."  style="color:red"/>
+						<hbox align="center">
+							<space width="35px"/>
+							<radio id="rdRegular" label="Anulación regular" onCheck="ckbxGeneraMovimientoSistema.setChecked(true);ckbxGeneraMovimientoSistema.setDisabled(true)" checked="true"/> <space width="10px"/>
+							<radio id="rdSoloNC" label="Aplicar N.C" onCheck="ckbxGeneraMovimientoSistema.setDisabled(false)" /> <space width="10px"/>
+							<radio id="rdNCNuevoComprobante" onCheck="ckbxGeneraMovimientoSistema.setChecked(true);ckbxGeneraMovimientoSistema.setDisabled(true)" label="Aplicar N.C y emitir un nuevo Comprobante"/>
+						</hbox>
+					</radiogroup>
+				</div>
+			</row>
+			<row id="rowAplicar" spans="4" visible="false">
+				<div align="left">
+					<space width="35px" /> 
+					<checkbox id="ckbxGeneraMovimientoSistema" label="¿Quitar Comprobantes de la Ocupabilidad?" checked="true"/>
+					<space width="300px" />  
+					<button id="btnAplicar" label="Aplicar" image="/resources/mp_aceptarEnabled.png" autodisable="self" />
+				</div>
+			</row>
+		</rows>
+	</grid>
+
+	<listbox id="ltbxAnulacionComprobantes">
+		<listhead>
+			<listheader label="F.EMISION" width="90px" align="center"/>
+<!-- 			<listheader label="T.COMPROBANTE" width="100px"/> -->
+			<listheader label="N° COMPROBANTE" width="95px" align="center" tooltiptext="Número de comprobante"/>
+			<listheader label="F.PAGO" width="60px"/>
+			<listheader label="RUTA" width="160px"/>
+			<listheader label="F/H HORATIDA" width="100px"/>
+			<listheader label="ASIENTO" width="50px"/>
+			<listheader label="PASAJERO" width="200px"/>
+			<listheader label="CLIENTE" width="200px"/>
+		</listhead>
+	</listbox>
+	<label id="lblInfoAnulMasivo" value="*El modo Anulación Masiva solamente se puede aplicar a un máximo de 20 Comprobantes.*" style="color:red;font-weight: bold;font:size:11px !important" visible="false" />
+</window>
+</zk>

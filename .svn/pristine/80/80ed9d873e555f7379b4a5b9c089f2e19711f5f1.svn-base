@@ -1,0 +1,253 @@
+<?page title="Programaci�n de Servicios" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:n="client">
+<window id="wndProgramacionServicios" title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndProgramacionServicios" >
+	<grid width="800px">
+		<columns>
+			<column  width="465px" />
+			<column  width="335px" />
+		</columns>
+		<rows>
+			<row>
+				<!-- BUSQUEDA DE ITINERARIOS -->
+				<groupbox id="grpItinerario" closable="false" mold="3d" style="overflow:auto" width="460px" >
+					<caption label ="BUSQUEDA DE ITINERARIOS" /> 
+					<grid sclass="grid-no-border">
+						<columns>
+							<column  width="75px" align="right"/>
+							<column  width="145px" />
+							<column  width="85px" align="right"/>
+						</columns>
+						<rows>
+							<row mold="">
+								<div>
+								<label value="ITINERARIO :" />
+								<textbox id="textboxId" visible="false"  />
+							</div>
+							<intbox id="ibItinerario"  width="75px" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(cmbServicio)"/>
+							
+							<label value="TIPO SERVICIO :" />
+							<combobox id="cmbServicio" width="130px" readonly="true" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(cmbOrigen)" />	
+							</row>
+							<row>
+								<label value="ORIGEN :" />
+								<combobox id="cmbOrigen" width="140px" readonly="true" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(dbFechaPartida)"/>
+								
+								<label value="FECHA PARTIDA :" />
+								<datebox   id="dbFechaPartida" format="dd/MM/yyyy" readonly="true" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(cmbDestino)"/>
+							</row>
+							<row>
+								<label value="DESTINO :" />
+								<combobox id="cmbDestino"  width="140px" readonly="true" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(dbFechaLlegada)"/>
+								
+								<label value="FECHA LLEGADA:" />
+								<datebox   id="dbFechaLlegada" format="dd/MM/yyyy" readonly="true" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(cmdBuscar)"/>
+							</row>
+						</rows>
+					</grid>	
+				</groupbox>
+					
+				<grid sclass="grid-no-border">
+					<columns>
+						<column  width="100%" />
+					</columns>
+					<rows>
+						<row>
+							<groupbox closable="false" mold="3d" style="overflow:auto" >
+								<caption label ="ESTADOS DE LOS SERVICIOS" />
+								<grid sclass="grid-no-border">
+									<columns>
+										<column   />
+									</columns>
+									<rows><row>
+										<radiogroup>
+											<!-- <radio id="rdAmbos" label="Ambos" /> -->
+											<separator width="19px" orient="vertical" />
+<!--  											<radio id="rdProgramados" label="PROGRAMADOS" style="font-size:10px !important" onClick="wndProgramacionServicios.onSearch()"/> -->
+ 											<radio id="rdProgramados" label="PROGRAMADOS" style="font-size:10px !important" onClick="wndProgramacionServicios.onCheckProgramadosNoProgramados()"/>
+											<separator width="17px" orient="vertical" />
+<!--  											<radio id="rdNoProgramados" selected="true" label="NO PROGRAMADOS" style="font-size:10px !important" onClick="wndProgramacionServicios.onSearch()" /> -->
+											<radio id="rdNoProgramados" selected="true" label="NO PROGRAMADOS" style="font-size:10px !important" onClick="wndProgramacionServicios.onCheckProgramadosNoProgramados()" />	
+										</radiogroup>
+									</row></rows>
+								</grid>
+							</groupbox>			
+						</row>
+						<row>
+							<separator></separator>
+						</row>
+						<row>
+							<button id="cmdBuscar"  image="resources/mp_buscarEnabled.png"  label="Buscar" style="cursor:pointer"   onClick="wndProgramacionServicios.onSearch()"/>
+						</row>
+					</rows>
+				</grid>	
+						
+						
+			</row>
+		</rows>
+	</grid>
+		
+	<!-- LISTA DE ITINERARIOS -->
+<groupbox  id="grbListaItinerarios" mold="3d" closable="false" height="175px" style="overflow:auto" width="802px" >
+	<caption label ="LISTA DE ITINERARIOS"/> 
+	<div 	id="divListaItinerarios"> 
+	<listbox id="listboxItinerarios" rows="4" height="140px" onSelect="wndProgramacionServicios.onClickLisBox()" >
+		<listhead sizable="true">
+			<listheader label="#" width="20px" />
+			<listheader label="Itinerario" sort="none" align="left" width="50px"/>
+			<listheader label="Tipo de Servicio" sort="none" align="left"/>
+			<listheader label="Oriegen" sort="none" align="left" width="80px"/>
+			<listheader label="Agencia Partida" sort="none" align="left" width="auto" />
+			<listheader label="Fecha Partida" sort="none" align="center" width="80px"/>
+			<listheader label="Hora Partida" sort="none" align="center" width="65px" />
+			<listheader label="Destino" sort="none" align="left" width="80px"/>
+			<listheader label="Agenica Llegada" sort="none" align="left" />
+		</listhead>
+	</listbox>	
+	</div>
+</groupbox>	
+
+<!-- INGRESO DE DATOS ITINERARIOS --> 
+		<grid   width="800px"  >
+			<columns>
+				<column width="39%"/>
+				<column />
+<!-- 				<column /> width="58%" -->
+			</columns>
+			<rows>
+				<row>
+					<!-- INGRESO DE DATOS -->
+					<groupbox id="grpIngresoDatos"  closable="false" mold="3d" style="overflow:auto" height="190px" width="307px" >
+					<caption label ="INGRESO DE DATOS"/>
+					<grid style="border:none">
+						<columns>
+							<column  width="75px" />
+							<column  width="220px" />
+						</columns>
+						<rows>
+							<row>
+								<label value="BUS :" />
+								<combobox id="cmbbus" readonly="true" width="100px" style="font-size:11px !important" onChange="wndProgramacionServicios.onChangeBus()" />
+							</row>
+							<row>
+								<label value="PILOTO :" />
+								<combobox id="cmbPiloto" mold="rounded" width="215px"  onOK="com.tepsa.sisvyr.service.util.Util.setFocus(cmbCopiloto)" />
+							</row>
+							<row>
+								<label value="COPILOTO :" />
+								<combobox id="cmbCopiloto" mold="rounded" width="215px"  onOK="com.tepsa.sisvyr.service.util.Util.setFocus(cmbTripulante)"/>
+							</row>
+							<row>
+								<label value="COPILOTO AUX:" />
+								<combobox id="cmbCopilotoAuxiliar" mold="rounded" width="215px"  onOK="com.tepsa.sisvyr.service.util.Util.setFocus(cmbTripulante)"/>
+							</row>
+							<row>
+								<label value="TRIPULANTE :" />
+								<combobox id="cmbTripulante" mold="rounded" width="215px" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(cmbbus)"/>
+							</row>
+						</rows>
+					</grid>			
+					</groupbox>
+					
+					<!-- PREVIO DE LA PROGRAMACION -->
+					<groupbox id="grpPrevioProgramacion"  closable="false" mold="3d" height="190px" style="overflow:auto" >
+					<caption label ="PREVIO PROGRAMACION"/>
+					<grid style="border:none">
+						<columns>
+							<column width="100%" /> 
+						</columns>
+						<rows>
+							<row>
+								<grid sclass="grid-no-border">
+									<columns>
+										<column align="right"  width="120px" />
+										<column width="110px" /> <!--  -->
+										<column align="right" width="80px" />
+										<column   /> <!-- AGENCIA -->
+									</columns>
+									<rows>
+										<row>
+											<label value="NRO. BUS :"   style="color:black"/>
+											<label id="lblBus" sclass="label-size11" style="color:blue"/>
+											<label value="SERVICIO :" style="color:black"/>
+											<label id="lblTipoServicio"  style="color:blue"/>
+										</row>
+										<row >
+											<label value="ORIGEN :" sclass="label-size11-bold" style="color:black"/>
+											<label id="lblOrigen" sclass="label-size11"  style="color:blue;font-weight: bold"/>
+											<label value="DESTINO :" sclass="label-size11-bold" style="color:black"/>
+											<label id="lblDestino" sclass="label-size11" style="color:blue;font-weight: bold"/>
+										</row>
+										<row>
+											<label value="FECHA/HORA PARTIDA :" style="color:black"/>
+											<label id="lblFechaPartida" sclass="label-size11" style="color:blue"/>
+											<label value="AG.PARTIDA :" style="color:black"/>
+											<label id="lblAgenciaPartida"  style="color:blue"/>
+										</row>
+<!-- 										<row spans="1,3"> -->
+<!-- 											<label value="CIUDAD DESTINO :" sclass="label-size11-bold" style="color:black"/> -->
+<!-- 											<label id="lblDestino" sclass="label-size11" style="color:blue;font-weight: bold"/> -->
+<!-- 										</row> -->
+										<row>
+											<label value="FECHA/HORA LLEGADA :" style="color:black"/>
+											<label id="lblFechaLlegada" sclass="label-size11" style="color:blue"/>
+											<label value="AG.LLEGADA :"  style="color:black"/>
+											<label id="lblAgenciaLlegada"  style="color:blue"/>
+										</row>
+										<row spans="1,4">
+											<label value="PILOTO :" style="color:black"/>
+											<label id="lblPiloto"  style="color:blue"/>
+										</row>
+										<row spans="1,4">
+											<label value="COPILOTO :" style="color:black"/>
+											<label id="lblCopiloto"  style="color:blue"/>
+										</row>
+										<row spans="1,4">
+											<label value="PILOTO AUXILIAR:" style="color:black"/>
+											<label id="lblCopilotoAux"   style="color:blue"/>
+										</row>
+										<row spans="1,4">
+											<label value="TRIPULANTE :" style="color:black"/>
+											<label id="lblTripulante"   style="color:blue"/>
+										</row>
+									</rows>
+								</grid>	
+							</row>
+						</rows>
+					</grid>
+					</groupbox>	
+				</row>	
+			</rows>
+		</grid>
+		
+		<separator height="1px"/>
+		<!-- BOTONES; NUEVO, EDITAR, ANULAR, GUARDAR Y CANCELAR -->
+<!-- 		<toolbar mold="3d" width="798px" > -->
+		<grid width="800px">
+			<columns>
+				<column width="88px"/>
+				<column width="88px"/>
+				<column width="88px"/>
+				<column width="88px"/>
+				<column width="88px"/>
+			</columns>
+			<rows>
+				<row>
+					<toolbarbutton  label="Nuevo" id="tbtNuevo" sclass="font-weight:bold"  image="resources/mp_nuevoDisabled.png" 
+					 					onClick="wndProgramacionServicios.onNuevaProgramacion()" width="80px"  />
+					<toolbarbutton  label="Modificar" autodisable="self" id="tbtModificar"  image="resources/mp_editarDisabled.png"
+												onClick="wndProgramacionServicios.onModificar()" width="80px" />			
+					<toolbarbutton  label="Guardar" autodisable="cmbbus,cmbPiloto,cmbCopiloto,cmbCopilotoAuxiliar,cmbTripulante, cmdBuscar,tbtGuardar,tbtCancelar" id="tbtGuardar"  image="resources/mp_guardarDisabled.png"
+												onClick="wndProgramacionServicios.onGuardarProgramacion()" width="80px" />	
+					<toolbarbutton  label="Cancelar"  id="tbtCancelar" image="resources/mp_cancelarDisabled.png" 
+												onClick="wndProgramacionServicios.onCancelar() " width="80px" />			
+					<toolbarbutton  label="Eliminar"  id="tbtanular"  image="resources/toolbar/mp_toolbarEliminar.png" 
+												width="80px" onClick="wndProgramacionServicios.onAnularProgramacion()"/>											
+					<toolbarbutton  label="Cerrar"  id="tbtCerrar"  image="resources/toolbar/mp_toolbarCerrar.png" 
+												onClick="wndProgramacionServicios.cerrar()" width="80px"/>		
+				</row>
+			</rows>
+		</grid>
+																													 					
+<!-- 		</toolbar> -->
+</window>
+</zk>

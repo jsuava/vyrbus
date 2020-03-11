@@ -1,0 +1,79 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: José Abanto
+ * Fecha		: 05/01/2017
+ * Hora			: 15:43:51
+ */
+package com.cystesoft.vyrbus.model.dao.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import com.cystesoft.vyrbus.model.bean.TipoPrecio;
+import com.cystesoft.vyrbus.model.dao.TipoPrecioDAO;
+
+/**
+ * @author Jose Abanto
+ *
+ */
+@SuppressWarnings("unchecked")
+public class TipoPrecioDAOImpl extends GenericDAOImpl implements TipoPrecioDAO{
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.TipoPrecioDAO#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
+	 */	
+	@Override
+	public ArrayList<TipoPrecio> buscarPorEstadoRegistro(String estado,String criterioOrden) {
+		// TODO Auto-generated method stub
+		return (ArrayList<TipoPrecio>) super.findByEstadoRegistro(TipoPrecio.class, estado, criterioOrden);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.TipoPrecioDAO#buscarPorX(java.util.TreeMap, java.util.List)
+	 */
+	@Override
+	public ArrayList<TipoPrecio> buscarPorX(TreeMap<String, Object> criteriosBusqueda,List<String> criteriosOrdenar) {
+		// TODO Auto-generated method stub
+		return (ArrayList<TipoPrecio>) super.findByX(TipoPrecio.class, criteriosBusqueda, criteriosOrdenar);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.TipoPrecioDAO#buscarPorId(java.lang.Long)
+	 */
+	@Override
+	public TipoPrecio buscarPorId(Long id) {
+		// TODO Auto-generated method stub
+		return (TipoPrecio) super.findById(TipoPrecio.class, id);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.TipoPrecioDAO#guardar(com.tepsa.sisvyr.model.bean.TipoPrecio)
+	 */
+	@Override
+	public void guardar(TipoPrecio tipoPrecio) {
+		// TODO Auto-generated method stub
+		super.save(tipoPrecio);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.TipoPrecioDAO#actualizar(com.tepsa.sisvyr.model.bean.TipoPrecio)
+	 */
+	@Override
+	public void actualizar(TipoPrecio tipoPrecio) {
+		// TODO Auto-generated method stub
+		super.update(tipoPrecio);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.TipoPrecioDAO#inactivar(java.lang.Long)
+	 */
+	@Override
+	public void inactivar(Long id) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+}

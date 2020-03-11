@@ -1,0 +1,129 @@
+<?page title="" contentType="text/html;charset=ISO-8859-1"?>
+<zk>
+<window id="wndConfirmarFechaAbierta" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndConfirmarFechaAbierta" style="overflow:auto">
+	<tabbox mold="accordion-lite">
+		<tabs>
+			<tab id="tabBusqueda" label="CRITERIOS DE BUSQUEDA"/>
+			<tab id="tabListado" label="LISTADO DE VENTAS FECHA ABIERTA"/>
+			<tab id="tabDetalle" label="CONFIRMACION DE FECHA ABIERTA"/>
+		</tabs>
+		<tabpanels>
+			<tabpanel>
+				<grid>
+					<columns>
+						<column width="122px" align="right"/>
+						<column/>
+						<column width="122px" align="right"/>
+						<column/>
+						<column width="90px"/>
+					</columns>
+					<rows>
+						<row>
+							<label value="NRO CONTROL :"/>
+							<textbox id="txtNumeroControl" width="115px" onOK="wndConfirmarFechaAbierta.buscarVentasFechaAbierta()"/>
+							<label value="NRO BOLETO :"/>
+							<textbox id="txtNumeroBoleto" width="115px" onOK="wndConfirmarFechaAbierta.buscarVentasFechaAbierta()"/>
+							<cell rowspan="2" style="background:#f5f5f5">
+								<button label="Buscar" autodisable="self" image="resources/mp_buscarEnabled.png"  sclass="btn-vyrbus"
+								height="29px" width="85px" onClick="wndConfirmarFechaAbierta.buscarVentasFechaAbierta()"/>
+							</cell>						
+						</row>
+						<row>
+							<label value="ORIGEN :"/>
+							<combobox id="cmbOrigen" autodrop="true" readonly="true" onOK="wndConfirmarFechaAbierta.buscarVentasFechaAbierta()"/>
+							<label value="DESTINO :"/>
+							<combobox id="cmbDestino" autodrop="true" readonly="true" onOK="wndConfirmarFechaAbierta.buscarVentasFechaAbierta()"/>
+						</row>
+						<row>
+							<label value="NUMERO DOCUMENTO :"/>
+							<textbox id="txtNumeroDocumento" width="115px"  onOK="wndConfirmarFechaAbierta.buscarVentasFechaAbierta()"/>
+							<label value="NOMBRE PASAJERO :"/>
+							<textbox id="txtPasajero"  onOK="wndConfirmarFechaAbierta.buscarVentasFechaAbierta()" width="220px"/>
+							<cell style="background:#f5f5f5">
+								<button label="Cerrar" image="resources/mp_cerrarEnabled.png" sclass="btn-vyrbus" 
+									height="29px" width="80px" onClick="wndConfirmarFechaAbierta.closeTabWindow()"/>
+							</cell>
+						</row>
+					</rows>
+				</grid>
+			</tabpanel>
+			<tabpanel>
+				<listbox id="lbxVentasFechaAbierta" width="100%" mold="paging" pageSize="8" >
+					<listhead>
+						<listheader label="VENTA_ID" width="5%"/>
+						<!-- <listheader label="ITINERARIO" width="7%"/> -->
+						<listheader label="FORMA PAGO" width="7%"/>
+						<listheader label="TIPO PAGO" width="7%"/>
+						<listheader label="RUTA" width="13%"/>
+						<listheader label="PASAJERO" width="21%"/>
+						<listheader label="CLIENTE" width="21%"/>
+						<listheader label="NRO CONTROL" width="8%"/>
+						<listheader label="IMPORTE" width="5%" align="right"/>
+						<listheader label="ACCCION" width="12%" align="center"/>
+					</listhead>
+				</listbox>					
+			</tabpanel>
+			<tabpanel>
+				<div id="divItinerario" visible="false">
+					<grid style="background:#B4B4B4; border:none;">
+						<columns>
+							<column width="70px" align="right"/>
+							<column width="180px"/>
+							<column/>
+						</columns>
+						<rows>
+							<row style="background:#B4B4B4; border:none;">
+								<label value="ORIGEN :" sclass="label-size11"/>
+								<combobox id="cmbOrigenItinerario" autodrop="true" readonly="true" width="160px" onOK="cmbDestino.setFocus(true)"/>
+								<cell rowspan="2">
+									<button id="btnBuscarItinerario" label="Buscar" image="/resources/mp_buscarEnabled.png" 
+										onClick="wndConfirmarFechaAbierta.onBuscarItinerarios()" height="27px" sclass="btn-vyrbus"/>
+								</cell>											
+							</row>
+							<row style="background:#B4B4B4; border:none;">
+								<label value="DESTINO :" sclass="label-size11"/>
+								<combobox id="cmbDestinoItinerario" autodrop="true" readonly="true" width="160px" onOK="btnBuscarItinerario.setFocus(true)"/>
+							</row>
+						</rows>
+					</grid>
+					<grid style="background:white">					
+						<columns>
+							<column width="236px"/>
+							<column width="370px"/>
+							<column/>
+						</columns>
+						<rows>
+							<row id="rowIda" valign="top" style="background:white">
+								<vlayout>
+									<label value="FECHA PARTIDA" sclass="label-size11"/>
+									<calendar id="cldrFechaPartida" onChange="wndConfirmarFechaAbierta.onSelectCalendar()"/>
+								</vlayout>
+								<vlayout>
+									<label value="SERVICIO DE PARTIDA" sclass="label-size11"/>
+									<listbox id="lbxItinerarios" mold="paging" pageSize="4" onSelect="wndConfirmarFechaAbierta.onSelectItinerario()">
+										<listhead>
+											<listheader label="SERVICIO" width="120px"/>
+											<listheader label="RUTA" width="130px"/>
+											<listheader label="HORPAR" width="60px" align="center"/>
+											<listheader label="TARIFA" width="50px" align="right"/>
+										</listhead>
+									</listbox>
+								</vlayout>
+								<cell rowspan="2" align="right" valign="bottom">
+									<vbox>
+										<button id="btnSiguiente" label="Siguiente" image="resources/mp_next.png" width="76px" disabled="true" 
+											orient="vertical" sclass="btn-vyrbus" onClick="wndConfirmarFechaAbierta.completarVenta()"/>
+										<button id="btnCancelar" label="Cancelar" image="resources/mp_cancelarEnabled.png" width="76px" 
+											sclass="btn-vyrbus" orient="vertical"/>
+									</vbox>
+								</cell>
+							</row>								
+						</rows>
+					</grid>
+				</div>
+				<include id="incConfirmacion" mode="instant"/>
+			</tabpanel>
+		</tabpanels>
+	</tabbox>	
+</window>
+</zk>

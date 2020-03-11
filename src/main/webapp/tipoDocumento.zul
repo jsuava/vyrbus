@@ -1,0 +1,70 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndTipoDocumento">
+<div id="divLista">
+	<listbox id="listboxLista">
+		<listhead sizable="true">
+			<listheader label="#" width="50px" sort="auto" />
+			<listheader label="DENOMINACIÓN" sort="auto" />
+			<listheader label="NOMBRE CORTO (o sufijo)" sort="auto" />
+			<listheader label="MASCARA O FORMATO DE INGRESO DE DATOS" />
+			<listheader label="¿ES DOCUMENTACIÓN DEL BUS?" sort="auto" />
+		</listhead>
+	</listbox>
+</div>
+<div id="divMantenimiento" >
+	<groupbox closable="false" mold="3d">
+		<caption label="Datos del tipo de documento" />
+		<grid>
+			<columns>
+				<column width="130px" align="right"/>
+				<column width="170px" />
+				<column width="170px" align="right"/>
+			</columns>
+			<rows>
+				<row>
+					<div>
+						<label value="DENOMINACIÓN (*) :" />
+						<textbox id="textboxId" />
+					</div>
+					<textbox id="txtDenominacion"  maxlength="40" width="150px" onOK="txtNombreCortoSufijo.setFocus(true)"/>
+					<label value="NOMBRE CORTO :" />
+					<textbox id="txtNombreCortoSufijo"  maxlength="15" width="150px" onOK="txtMascaraFormatoIngresoDatos.setFocus(true)"/>
+				</row>
+				<row>
+					<label value="MASCARA O FORMATO DE INGRESO DE DATOS :" />
+					<textbox id="txtMascaraFormatoIngresoDatos" maxlength="14" width="150px" onOK="chkMarcarDocumentacionBus.setFocus(true)" />
+					<label value="ES DOCUMENTACIÓN DEL BUS? :"/>
+					<checkbox id="chkMarcarDocumentacionBus" value="1"  />
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+	<separator />
+	<groupbox closable="false" mold="3d">
+		<caption label="Configuración" />
+		<grid>
+			<columns>
+				<column width="130px" align="right"/>
+				<column width="170px" />
+				<column width="170px" align="right"/>
+			</columns>
+			<rows>
+				<row>
+					<label value="ALERTA :" />
+					<intbox id="ibAlerta" width="150px" onOK="txtColorAlerta.setFocus(true)"/>
+					<label value="COLOR ALERTA :" />
+					<textbox id="txtColorAlerta" width="150px" onOK="ibSegundaAlerta.setFocus(true)"/>
+				</row>
+				<row>
+					<label value="SEGUNDA ALERTA :" />
+					<intbox id="ibSegundaAlerta" width="150px" onOK="txtColorSegundaAlerta.setFocus(true)"/>
+					<label value="COLOR SEGUNDA ALERTA :" />
+					<textbox id="txtColorSegundaAlerta" width="150px"/>
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+</div>
+</window>
+</zk>

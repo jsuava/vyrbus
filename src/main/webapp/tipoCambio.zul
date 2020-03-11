@@ -1,0 +1,45 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndTipoCambio">
+	<div id="divLista">
+		<listbox id="listboxLista">
+			<listhead sizable="true">
+				<listheader label="#" width="50px"/>
+				<listheader label="FECHA" sort="auto" width="150px"/>
+				<listheader label="TIPO MONEDA" sort="auto" width="200px" />
+				<listheader label="TIPO CAMBIO" sort="auto" align="right" width="100px"/>
+				<listheader label="FECHA/HORA REGISTRO" sort="auto" width="180px" />
+			</listhead>
+		</listbox>
+	</div>
+	
+	<div id="divMantenimiento" >
+		<groupbox mold="3d" closable="false">
+			<caption label="Datos" />
+			<grid>
+				<columns>
+					<column width="120px" align="right" />
+					<column/>
+				</columns>
+				<rows>
+					<row>
+						<div>
+							<label value="FECHA (*) :" />
+							<textbox id="textboxId"/>					
+						</div>
+						<datebox id="dtbxFecha" format="dd/MM/yyyy" readonly="true" width="120px"/>
+					</row>
+					<row>
+						<label value="TIPO MONEDA (*) :" />
+						<combobox id="cmbTipoMoneda" readonly="true" width="120px"/>
+					</row>
+					<row>
+						<label value="TIPO CAMBIO" />
+						<doublebox id="dlbxTipoCambio" format="##0.000000" width="110px"/>
+					</row>
+				</rows>
+			</grid>
+		</groupbox>
+	</div>
+</window>
+</zk>

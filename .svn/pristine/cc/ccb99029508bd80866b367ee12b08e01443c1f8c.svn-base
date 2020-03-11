@@ -1,0 +1,18 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: Clase para controlar el tiempo minimo antes de que salga el bus para realizar la postergacion.
+ * Autor		: José Sullo Avalos
+ * Fecha		: 28/01/2013
+ */
+package com.tepsa.sisvyr.service.exceptions;
+
+import java.io.Serializable;
+
+/**
+ * @author Jose
+ *
+ */
+public class PostergacionByFechaLimitePostergarException extends Exception implements Serializable {
+	private static final long serialVersionUID = 1L;
+}

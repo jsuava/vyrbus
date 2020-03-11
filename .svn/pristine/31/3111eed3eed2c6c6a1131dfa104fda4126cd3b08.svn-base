@@ -1,0 +1,98 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: José Abanto
+ * Fecha		: 02/09/2016
+ * Hora			: 13:56:11
+ */
+package com.tepsa.sisvyr.model.bean;
+
+import org.zkoss.zul.Button;
+import org.zkoss.zul.Listbox;
+
+import cruzdelsur.ws.com.pe.Horario;
+
+/**
+ * @author jabanto
+ *
+ */
+public class ObjectCruzdelsur {
+	private Horario horario;
+	private String localidadEmbarque;
+	private String localidadDesembarque;
+	private Listbox listAsientos;
+	private Button btnNextTabVenta;
+
+	/**
+	 * @return the horario
+	 */
+	public Horario getHorario() {
+		return horario;
+	}
+
+	/**
+	 * @param horario the horario to set
+	 */
+	public void setHorario(Horario horario) {
+		this.horario = horario;
+	}
+
+	/**
+	 * @return the localidadEmbarque
+	 */
+	public String getLocalidadEmbarque() {
+		return localidadEmbarque;
+	}
+
+	/**
+	 * @param localidadEmbarque the localidadEmbarque to set
+	 */
+	public void setLocalidadEmbarque(String localidadEmbarque) {
+		this.localidadEmbarque = localidadEmbarque;
+	}
+
+	/**
+	 * @return the localidadDesembarque
+	 */
+	public String getLocalidadDesembarque() {
+		return localidadDesembarque;
+	}
+
+	/**
+	 * @param localidadDesembarque the localidadDesembarque to set
+	 */
+	public void setLocalidadDesembarque(String localidadDesembarque) {
+		this.localidadDesembarque = localidadDesembarque;
+	}
+
+	/**
+	 * @return the listAsientos
+	 */
+	public Listbox getListAsientos() {
+		return listAsientos;
+	}
+
+	/**
+	 * @param listAsientos the listAsientos to set
+	 */
+	public void setListAsientos(Listbox listAsientos) {
+		this.listAsientos = listAsientos;
+	}
+
+	/**
+	 * @return the btnNextTabVenta
+	 */
+	public Button getBtnNextTabVenta() {
+		return btnNextTabVenta;
+	}
+
+	/**
+	 * @param btnNextTabVenta the btnNextTabVenta to set
+	 */
+	public void setBtnNextTabVenta(Button btnNextTabVenta) {
+		this.btnNextTabVenta = btnNextTabVenta;
+	}
+
+	
+}

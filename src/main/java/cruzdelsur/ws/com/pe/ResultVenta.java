@@ -1,0 +1,137 @@
+package cruzdelsur.ws.com.pe;
+
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlType;
+
+/**
+ * <p>
+ * Java class for ResultVenta complex type.
+ * 
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
+ * 
+ * <pre>
+ * &lt;complexType name="ResultVenta">
+ *   &lt;complexContent>
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       &lt;sequence>
+ *         &lt;element name="error" type="{http://schemas.datacontract.org/2004/07/wscruzdelsur.Entities}Error" minOccurs="0"/>
+ *         &lt;element name="isCorrect" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
+ *         &lt;element name="numeroBoleto" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="resultadoTransaccion" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *       &lt;/sequence>
+ *     &lt;/restriction>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
+ * </pre>
+ * 
+ * 
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "ResultVenta", propOrder = { "error", "isCorrect",
+		"numeroBoleto", "resultadoTransaccion" })
+public class ResultVenta {
+
+	@XmlElementRef(name = "error", namespace = "http://schemas.datacontract.org/2004/07/wscruzdelsur.Entities", type = JAXBElement.class)
+	protected JAXBElement<Error> error;
+	protected Boolean isCorrect;
+	@XmlElementRef(name = "numeroBoleto", namespace = "http://schemas.datacontract.org/2004/07/wscruzdelsur.Entities", type = JAXBElement.class)
+	protected JAXBElement<String> numeroBoleto;
+	@XmlElementRef(name = "resultadoTransaccion", namespace = "http://schemas.datacontract.org/2004/07/wscruzdelsur.Entities", type = JAXBElement.class)
+	protected JAXBElement<String> resultadoTransaccion;
+
+	/**
+	 * Gets the value of the error property.
+	 * 
+	 * @return possible object is {@link JAXBElement }{@code <}{@link Error }
+	 *         {@code >}
+	 * 
+	 */
+	public JAXBElement<Error> getError() {
+		return error;
+	}
+
+	/**
+	 * Sets the value of the error property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link JAXBElement }{@code <}{@link Error }
+	 *            {@code >}
+	 * 
+	 */
+	public void setError(JAXBElement<Error> value) {
+		this.error = ((JAXBElement<Error>) value);
+	}
+
+	/**
+	 * Gets the value of the isCorrect property.
+	 * 
+	 * @return possible object is {@link Boolean }
+	 * 
+	 */
+	public Boolean isIsCorrect() {
+		return isCorrect;
+	}
+
+	/**
+	 * Sets the value of the isCorrect property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link Boolean }
+	 * 
+	 */
+	public void setIsCorrect(Boolean value) {
+		this.isCorrect = value;
+	}
+
+	/**
+	 * Gets the value of the numeroBoleto property.
+	 * 
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
+	 *         {@code >}
+	 * 
+	 */
+	public JAXBElement<String> getNumeroBoleto() {
+		return numeroBoleto;
+	}
+
+	/**
+	 * Sets the value of the numeroBoleto property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
+	 *            {@code >}
+	 * 
+	 */
+	public void setNumeroBoleto(JAXBElement<String> value) {
+		this.numeroBoleto = ((JAXBElement<String>) value);
+	}
+
+	/**
+	 * Gets the value of the resultadoTransaccion property.
+	 * 
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
+	 *         {@code >}
+	 * 
+	 */
+	public JAXBElement<String> getResultadoTransaccion() {
+		return resultadoTransaccion;
+	}
+
+	/**
+	 * Sets the value of the resultadoTransaccion property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
+	 *            {@code >}
+	 * 
+	 */
+	public void setResultadoTransaccion(JAXBElement<String> value) {
+		this.resultadoTransaccion = ((JAXBElement<String>) value);
+	}
+
+}

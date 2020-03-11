@@ -1,0 +1,298 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndEstadoVyRVerVenta" use="com.tepsa.sisvyr.view.ctrl.WndEstadoVentaReservaVerVenta" title="INFORMACION DE LA VENTA" border="none" width="750px" closable="true"  ventaPasaje="${arg.ventaPasaje}" >
+<!-- 	<groupbox mold="3d" closable="false"> -->
+<!-- 		<caption label="INFORMACIÓN DE LA VENTA" /> -->
+		<grid>
+			<columns>
+				<column width="100px" align="right"/>
+				<column width="150px" />
+				<column width="110px" align="right"/>
+			</columns>
+			<rows>
+				<row>
+					<label value="TIPO MOVIMIENTO :" />
+					<label id="lblTipoOperacion" style="font-size:11px !important;color:red;font-weight: bold"/>
+					<label value="SERVICIO :" />
+					<label id="lblServicio" style="font-size:11px !important; color:blue"/>
+				</row>
+				<row spans="1,3">
+					<label value="CANAL VENTA :" style="font-size:11px !important;font-weight: bold" />
+					<label id="lblCanalVenta"  style="font-size:12px !important; color:red;font-weight: bold;"/>
+				</row>
+				<row>
+					<label value="ORIGEN :" />
+					<label id="lblOrigen" style="font-size:11px !important; color:blue"/>
+					<label value="DESTINO :" />
+					<label id="lblDestino" style="font-size:11px !important; color:blue"/>
+				</row>
+				<row>
+					<label value="PTO. EMBARQUE :" />
+					<label id="lblPtoEmbarque" style="font-size:11px !important; color:blue"/>
+					<label value="PTO. LLEGADA :" />
+					<label id="lblPtoLlegada" style="font-size:11px !important; color:blue"/>
+				</row>
+				<row>
+					<label value="FECHA PARTIDA :" />
+					<label id="lblFechaPartida" style="font-size:11px !important; color:blue"/>
+					<label value="FECHA LLEGADA :" />
+					<label id="lblFechaLlegada" style="font-size:11px !important; color:blue"/>
+				</row>
+				<row>
+					<label value="HORA PARTIDA :" />
+					<label id="lblHoraPartida" style="font-size:11px !important; color:blue"/>
+					<label value="HORA LLEGADA :" />
+					<label id="lblHoraLlegada" style="font-size:11px !important; color:blue"/>
+				</row>
+				<row>
+					<label value="NRO. ASIENTO :" />
+					<label id="lblNroAsiento" style="font-size:11px !important; color:blue"/>
+					<label id="lblLabelTarifa" value="TARIFA :" />
+					<label id="lblTarifa" style="font-size:11px !important; color:blue"/>
+				</row>
+				<row>
+					<label value="NRO. BOLETO :" />
+					<label id="lblNroBoleto" style="font-size:11px !important; color:blue"/>
+					<label value="ALIMENTACIÓN :" />
+					<label id="lblAlimentacion" style="font-size:11px !important; color:blue"/>
+				</row>
+				<row >
+					<label value="NRO. BOLETO REF :" />
+					<label id="lblNroBoletoRef" style="font-size:11px !important; color:blue"/>
+					<label value="OBSERVACIONES :" />
+					<label id="lblObservaciones" style="font-size:11px !important; color:blue"/>
+<!-- 					<textbox id="txtObservacionesIda" readonly="true" multiline="true" height="30px" width="50%" maxlength="255" /> -->
+				</row>
+				<row>
+					<label value="FECHA EMISIÓN :" />
+					<label id="lblFechaEmision" style="font-size:11px !important; color:blue"/>
+					<label value="USUARIO EMISION :" />
+					<label id="lblUsuarioEmision" style="font-size:11px !important; color:blue"/>
+				</row>
+			</rows>
+		</grid>	
+<!-- 	</groupbox> -->
+	<tabbox >
+		<tabs>
+			<tab label="Pasajero"/>
+			<tab label="Cliente"/>
+			<tab label="Pago"/>
+			<tab id="tbCortesia" label="Cortesia"  />
+			<tab id="tbDoctReferencia" />
+		</tabs>
+		<tabpanels>
+			<tabpanel>
+				<grid>
+					<columns>
+						<column width="110px" align="right" />
+						<column width="180px" />
+						<column width="110px" align="right" />
+					</columns>
+					<rows>
+						<row>
+							<label value="TIPO DOCUMENTO :"/>
+							<label id="lblPaxTipoDocumento" style="font-size:11px !important; color:blue"/>			
+							<label value="NRO. DOCUMENTO :"/>
+							<label id="lblPaxNroDocumento" style="font-size:11px !important; color:blue"/>
+						</row>
+						<row>
+							<label value="APELLIDO PATERNO :"/>
+							<label id="lblPaxApellidoPaterno" style="font-size:11px !important; color:blue"/>			
+							<label value="APELLIDO MATERNO :"/>
+							<label id="lblPaxApellidoMaterno" style="font-size:11px !important; color:blue"/>
+						</row>
+						<row>
+							<label value="NOMBRES :"/>
+							<label id="lblPaxNombres" style="font-size:11px !important; color:blue"/>			
+							<label value="DIRECCIÓN :"/>
+							<label id="lblPaxDireccion" style="font-size:11px !important; color:blue"/>
+						</row>
+						<row>
+							<label value="TELEFONO :"/>
+							<label id="lblPaxTelefono" style="font-size:11px !important; color:blue"/>			
+							<label value="UBIGEO :"/>
+							<label id="lblPaxUbigeo" style="font-size:11px !important; color:blue"/>
+						</row>
+						<row>
+							<label value="E-MAIL :"/>
+							<label id="lblPaxEmail" style="font-size:11px !important; color:blue"/>			
+							<label value="FEC. NACIMIENTO :"/>
+							<label id="lblPaxFechaNacimiento" style="font-size:11px !important; color:blue"/>
+						</row>
+						<row>
+							<label value="SEXO :"/>
+							<label id="lblPaxSexo" style="font-size:11px !important; color:blue"/>			
+							<label value="ESTADO CIVIL :"/>
+							<label id="lblPaxEstadoCivil" style="font-size:11px !important; color:blue"/>
+						</row>
+					</rows>
+				</grid>
+			</tabpanel>
+			<tabpanel>
+				<grid>
+					<columns>
+						<column width="110px" align="right"/>
+						<column width="180px"/>
+						<column width="110px" align="right"/>
+					</columns>
+					<rows>	
+						<row>
+							<label value="RUC :"/>
+							<label id="lblCliRuc" style="font-size:11px !important; color:blue"/>			
+							<label value="RAZÓN SOCIAL :"/>
+							<label id="lblCliRazonSocial" style="font-size:11px !important; color:blue"/>
+						</row>
+						<row>
+							<label value="TELEFONO 1 :"/>
+							<label id="lblCliTelefono1" style="font-size:11px !important; color:blue"/>			
+							<label value="DIRECCIÓN :"/>
+							<label id="lblCliDireccion" style="font-size:11px !important; color:blue"/>
+						</row>
+						<row>
+							<label value="TELEFONO 2 :"/>
+							<label id="lblCliTelefono2" style="font-size:11px !important; color:blue"/>			
+							<label value="UBIGEO :"/>
+							<label id="lblCliUbigeo" style="font-size:11px !important; color:blue"/>
+						</row>
+						<row spans="1,3">
+							<label value="E-MAIL :"/>
+							<label id="lblCliEmail" style="font-size:11px !important; color:blue"/>			
+						</row>
+					</rows>
+				</grid>
+			</tabpanel>
+			<tabpanel>
+				<grid>
+					<columns>
+						<column width="110px" align="right"/>
+						<column width="250px"/>
+						<column width="110px" align="right"/>
+					</columns>
+					<rows>
+						<row>
+							<label value="TARIFA :"/>
+							<div align="right" width="35px">
+								<label id="lblPagoTarifa" style="font-size:11px !important; color:blue"/>
+							</div>										
+							<label value="TIPO COMPROBANTE :"/>
+							<label id="lblPagoTipoComprobante" style="font-size:11px !important; color:blue"/>
+						</row>
+						<row>
+							<label value="RECARGO :"/>
+							<div align="right" width="35px">
+								<label id="lblPagoRecargo" style="font-size:11px !important; color:blue"/>
+							</div>	
+							<label value="FORMA PAGO :"/>
+							<label id="lblPagoFormaPago" style="font-size:11px !important; color:blue"/>
+						</row>
+						<row>
+							<label value="DESCUENTO :"/>
+							<div align="right" width="35px">
+								<label id="lblPagoDescuento" style="font-size:11px !important; color:blue"/>
+							</div>
+							<label value="TIPO FORMA PAGO :"/>
+							<label id="lblPagoTipoFormaPago" style="font-size:11px !important; color:blue"/>
+						</row>
+						<row>
+							<label value="IMPORTE :"/>
+							<hbox align="center">
+								<div align="right" width="35px" >
+									<label id="lblPagoImporte" style="font-size:11px !important; color:blue"/>
+								</div>
+								<checkbox id="chbxPagoMixto" label="Pago Mixto" disabled="true"/>
+							</hbox>	
+							
+							<label value="OPERADOR TARJETA :"/>
+							<label id="lblPagoOperadorTarjeta" style="font-size:11px !important; color:blue"/>
+						</row>
+						<row>
+							<label id="lblPagoLabelImporteEfectivo" visible="false" value="IMPORTE EFECTIVO :"/>
+							<label id="lblPagoImporteEfectivo" visible="false" style="font-size:11px !important; color:blue"/>
+							<label  value="TARJETA CRÉDITO :"/>
+							<label id="lblPagoTarjetaCredito" style="font-size:11px !important; color:blue"/>
+						</row>
+						<row>
+							<label id="lblPagoLabelImporteTarjeta" visible="false" value="IMPORTE TARJETA :"/>
+							<label id="lblPagoImporteTarjeta" visible="false" style="font-size:11px !important; color:blue"/>
+							<label value="NUMERO OPERACIÓN :"/>
+							<label id="lblPagoNumeroOperacion" style="font-size:11px !important; color:blue"/>
+						</row>
+						<row spans="4">
+							<div align="left">
+								<label id="lblDescPromocion" style="color:red" />
+							</div>
+							
+						</row>
+					</rows>
+				</grid>
+			</tabpanel>
+			<tabpanel>
+				<grid>
+					<columns>
+						<column width="130px" align="right"/>
+						<column  />
+					</columns>
+					<rows>
+						<row>
+							<label value="TIPO :" />
+							<label id="lblCortesiaTipo" style="font-size:11px !important; color:blue" />
+						</row>
+						<row>
+							<label value="MOTIVO :" />
+							<label id="lblCortesiaMotivo" style="font-size:11px !important; color:blue" />
+						</row>
+						<row>
+							<label value="USUARIO AUTORIZADOR :" />
+							<label id="lblCortesiaUsuarioAuto" style="font-size:11px !important; color:blue" />
+						</row>
+						<row>
+							<label value="USUARIO EMISIÓN :" />
+							<label id="lblCortesiaUsuarioEmision" style="font-size:11px !important; color:blue" />
+						</row>
+						<row>
+							<label value="AGENCIA EMISIÓN :" />
+ 							<label id="lblCortesiaAgenciaEmision" style="font-size:11px !important; color:blue" />
+						</row>
+					</rows>
+				</grid>
+			</tabpanel>
+			<tabpanel>
+				<grid>
+					<columns>
+						<column width="130px" align="right" />
+						<column />
+					</columns>
+					<rows>
+						<row>
+							<label value="TIPO DOCTO. :" />
+							<label id="lblDocRefTipoDocumento" style="font-size:11px !important; color:blue" />							
+						</row>
+						<row>
+							<label value="NÚMERO :" />
+							<label id="lblDocRefNumerodo" style="font-size:11px !important; color:blue" />
+						</row>
+						<row>
+							<label value="FECHA EMISIÓN :" />
+							<label id="lblDocRefFechaEmision" style="font-size:11px !important; color:blue" />
+						</row>
+						<row>
+							<label value="MOTIVO :" />
+							<label id="lblDocRefMotivo" style="font-size:11px !important; color:blue" />
+						</row>
+						<row>
+							<label value="AG./USUARIO EMISIÓN :" />
+							<label id="lblDocRefAgenciaUsuario" style="font-size:11px !important; color:blue" />
+						</row>
+					</rows>
+				</grid>
+			</tabpanel>
+		</tabpanels>
+	</tabbox>
+<!-- 	<button id="btnEnviarSunat" label="Enviar Sunat" onClick="wndEstadoVyRVerVenta.enviarSunat()" autodisable="self" /> -->
+	
+<!-- 	<div align="right"> -->
+<!-- 		<button label="Cerrar" onClick="wndEstadoVyRVerVenta.onClose()" image="/resources/mp_cerrar.png"/> -->
+<!-- 	</div> -->
+	
+</window>
+</zk>

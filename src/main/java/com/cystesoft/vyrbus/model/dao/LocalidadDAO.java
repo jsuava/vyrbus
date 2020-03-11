@@ -1,0 +1,28 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: jM
+ * Fecha		: 04/05/2012
+ */
+package com.cystesoft.vyrbus.model.dao;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import com.cystesoft.vyrbus.model.bean.Localidad;
+
+/**
+ *
+ * @author jM
+ * @since JDK1.6
+ */
+public interface LocalidadDAO extends GenericDAO {
+	public ArrayList<Localidad> buscarPorEstadoRegistro(String estado, String criterioOrden);
+	public ArrayList<Localidad> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
+	public Localidad buscarPorId(Long id);
+	public void guardar(Localidad localidad);
+	public void actualizar(Localidad localidad);
+	public void inactivar(Long id);
+}

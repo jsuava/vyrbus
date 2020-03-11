@@ -1,0 +1,74 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndEmbarquePasajero" title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndEmbarquePasajero">
+	<grid >
+		<columns>
+			<column width="70px" align="right" />
+			<column />
+		</columns>
+		<rows>
+			<row spans="1,2">
+				<label value="ITINERARIO :" />
+				<hbox align="center">
+					<longbox id="lbxItinerario" readonly="true" width="50px" />
+					<button id="btnBuscarItinerario" autodisable="self,btnRefress" image="resources/mp_buscarEnabled.png"  style="cursor:pointer" />
+					<button id="btnRefress" visible="false" autodisable="self,btnBuscarItinerario" image="resources/mp_refrescarDisabled.png" onClick="wndEmbarquePasajero.onRefress()" disabled="true" />
+				</hbox>
+			</row>
+			<row>
+				<label value="BUS :" style="font-size:15px !important;color:black" />
+				<hbox align="center">
+					<label id="lbBus" style="font-size:15px !important;color:blue" />
+					<separator width="20px"/>
+					<label value="RUTA :" style="font-size:15px !important;color:black"/>
+					<label id="lbRuta" style="font-size:15px !important;color:blue"  />
+					<separator width="20px"/>
+					<label value="SERVICIO :" style="font-size:15px !important;color:black"/>
+					<label id="lbServicio" style="font-size:15px !important;color:blue" />
+					<separator width="20px"/>
+					<label value="SALIDA :" style="font-size:15px !important;color:black"/>
+					<label id="lbSalida" style="font-size:15px !important;color:blue"/>
+				</hbox>
+			</row>
+			<row>
+				<separator/>
+				<hbox align="center">
+					<label value="TIPO DOCUMENTO : " />
+					<combobox id="cmbTipoDocumento" readonly="true" width="100px"/>
+					<separator width="20px"/>
+					<label value="N° DOCUMENTO : " />
+					<textbox id="txtNumeroDocumento" width="150px" onChanging="wndEmbarquePasajero.Onchanging_txtNumeroDocumento(event.value,event);" style="font-size:13px !important" />
+					<separator width="20px"/>
+					<button label="Abrir Embarque" id="btnAbrirEmbarque" autodisable="self" visible="false" image="/resources/mp_openEmbarque.png" onClick="wndEmbarquePasajero.abrirEmbarque()" />
+					<button label="Cerrar Embarque"  id="btnCerrarEmbarque" autodisable="self" visible="false" image="/resources/mp_aceptarEnabled.png" onClick="wndEmbarquePasajero.cerraDespacho()"/>
+					<button label="Cerrar" id="btnCerrar" image="/resources/mp_cerrar.png" onClick="wndEmbarquePasajero.closeTabWindow()"  style="cursor:pointer"/>
+				</hbox>
+			</row>
+		</rows>
+	</grid>
+	<separator height="1px"/>
+	<listbox id="lbxPasajerosPiso1" height="400px">
+		<listhead>
+			<listheader label="ASIENTO" width="60px" align="center"/>
+			<listheader label="N°.COMPROBANTE" width="100px" align="center" />
+			<listheader label="PASAJERO" width="220px" />
+			<listheader label="TIPO DOCT." width="80px" />
+			<listheader label="N°.DOCUMENTO" width="85px" />
+			<listheader label="RUTA" width="130px" />
+			<listheader  align="left"/>
+		</listhead>
+	</listbox>
+
+	<listbox id="lbxPasajerosPiso2" visible="false" height="350px">
+		<listhead>
+			<listheader label="ASIENTO" width="60px" align="center"/>
+			<listheader label="N°.COMPROBANTE" width="100px" align="center" />
+			<listheader label="PASAJERO" width="220px" />
+			<listheader label="TIPO DOCT." width="80px" />
+			<listheader label="N°.DOCUMENTO" width="85px" />
+			<listheader label="RUTA" width="130px" />
+			<listheader  align="left"/>
+		</listhead>
+	</listbox>	
+</window>
+</zk>

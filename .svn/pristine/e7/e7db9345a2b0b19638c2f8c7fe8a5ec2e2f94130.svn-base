@@ -1,0 +1,41 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:c="client">
+
+<window id="wndCambiarPassword" title="" border="none" use="com.tepsa.sisvyr.view.ui.WndCambiarPassword" width="320px">
+	<groupbox closable="false" mold="3d">
+	<caption label="CAMBIO DE PASSWORD"/>
+		<grid  style="border:none">
+			<columns>
+				<column width="130px" />
+						
+			</columns>
+			<rows>
+				<row>
+					<label value="Nombre Usuario"  sclass="label-size11"/>
+					<textbox  id="txtNombreUsuario" height="16px" disabled="true" width="120px" style="font-size:10px !important;text-transform:none" />		
+				</row>
+				<row>
+					<label value="Password actual"  sclass="label-size11"/>
+					<textbox type="password" id="txtPasswordActual" height="16px"  width="120px" style="font-size:11px !important;text-transform:none" />		
+				</row>	
+				<row>
+					<label value="Nuevo Password "  sclass="label-size11"/>
+					<textbox  type="password" id="txtNuevoPassword" height="16px"   width="120px" style="font-size:11px !important"/>		
+				</row>
+				<row>
+					<label value="Confirmación de Password "  sclass="label-size11"/>
+					<textbox  type="password" id="txtConfirmarPassword" height="16px"  width="120px" style="font-size:11px !important"/>		
+				</row>
+			</rows>
+		</grid>
+		<separator height="1px"/>
+		<hlayout >
+			<separator width="50px"/>
+			<button label="Cancelar" image="resources/mp_cerrar.png" onClick="wndCambiarPassword.closeTabWindow()"  />
+			<button label="Aceptar" image="resources/mp_aceptarEnabled.png" onClick="wndCambiarPassword.saved()"  />
+		</hlayout>
+			
+	</groupbox>
+	
+</window>
+</zk>

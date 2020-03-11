@@ -1,0 +1,40 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndRptCenasRutas"  border="none" use="com.cystesoft.vyrbus.view.ctrl.WndRptCenasRuta">
+	<grid>
+		<columns>
+			<column width="90px" />
+			<column width="120px" />
+			<column width="90px" />
+			<column width="160px" />
+		</columns>
+		<rows>
+			<row>
+				<label value="Fecha Inicial" sclass="label-size11-bold"/>
+				<datebox id="dbxFechaInicial" readonly="true"  format="dd/MM/yyyy"/>
+				<label value="Tipo Consulta" sclass="label-size11-bold" />
+				<combobox id="cmbTipoConsulta" readonly="true" />
+				<hlayout>
+					<button label="Exportar" image="/resources/mp_excel.png" onClick="wndRptCenasRutas.exportar()" />
+				</hlayout>
+			</row>
+			<row>
+				<label value="Fecha Final" sclass="label-size11-bold"/>
+				<datebox id="dbxFechaFinal" readonly="true"  format="dd/MM/yyyy"/>
+<!-- 				<label value="Transacción" sclass="label-size11-bold" /> -->
+<!-- 				<combobox id="cmbTransaccion" readonly="true" /> -->
+
+					<separator/>
+					<separator/>
+					<hlayout>
+						<button label="Buscar" sclass="btn-vyrbus" image="/resources/mp_buscarEnabled.png" 
+							onClick="wndRptCenasRutas.cargarAvanceXrutas()" />
+						<button label="Cerrar" sclass="btn-vyrbus" image="/resources/mp_cerrar.png" onClick="wndRptCenasRutas.closeTabWindow()" />
+ 				    </hlayout>
+					
+			</row>
+		</rows>
+	</grid>
+	<separator height="1px" />
+</window>
+</zk>

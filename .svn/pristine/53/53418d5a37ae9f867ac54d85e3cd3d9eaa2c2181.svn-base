@@ -1,0 +1,156 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: Implementacion de metodos que permiten el acceso al modelo.
+ * Autor		: José Sullo Avalos
+ * Fecha		: 27/09/2012
+ */
+package com.tepsa.sisvyr.service.business.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.tepsa.sisvyr.model.bean.Servicio;
+import com.tepsa.sisvyr.model.dao.ServicioDAO;
+import com.tepsa.sisvyr.service.business.ServicioManager;
+import com.tepsa.sisvyr.service.exceptions.DenominacionDuplicadaException;
+import com.tepsa.sisvyr.service.exceptions.NombreCortoDuplicadoException;
+import com.tepsa.sisvyr.service.util.Constantes;
+
+/**
+ * @author Jose
+ *
+ */
+public class ServicioManagerImpl implements ServicioManager {
+	private ServicioDAO servicioDAO;
+	
+	/**
+	 * @return the servicioDAO
+	 */
+	public ServicioDAO getServicioDAO() {
+		return servicioDAO;
+	}
+	/**
+	 * @param servicioDAO the servicioDAO to set
+	 */
+	public void setServicioDAO(ServicioDAO servicioDAO) {
+		this.servicioDAO = servicioDAO;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.ServicioManager#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public ArrayList<Servicio> buscarPorEstadoRegistro(String estado, String criterioOrden) throws Exception {
+		return getServicioDAO().buscarPorEstadoRegistro(estado, criterioOrden);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.ServicioManager#buscarPorX(java.util.TreeMap, java.util.List)
+	 */
+	@Override
+	public ArrayList<Servicio> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar) throws Exception {
+		return getServicioDAO().buscarPorX(criteriosBusqueda, criteriosOrdenar);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.ServicioManager#buscarPorId(java.lang.Long)
+	 */
+	@Override
+	public Servicio buscarPorId(Long id) throws Exception {
+		return getServicioDAO().buscarPorId(id);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.ServicioManager#guardar(com.tepsa.sisvyr.model.bean.Servicio)
+	 */
+	@Override
+	@Transactional
+	public void guardar(Servicio servicio) throws Exception {
+		try{
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			criteriosBusqueda.put("denominacion", servicio.getDenominacion());
+			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+			List<?> resultDenominacion = getServicioDAO().buscarPorX(criteriosBusqueda, null);
+			/*Valida duplicidad de la denominación*/
+			if(resultDenominacion.size()>0)
+				throw new DenominacionDuplicadaException();
+			
+			criteriosBusqueda.remove("denominacion");
+			criteriosBusqueda.put("nombreCorto", servicio.getNombreCorto());
+			List<?> resultNombreCorto = getServicioDAO().buscarPorX(criteriosBusqueda, null);
+			/*Valida duplicidad del Nombre corto*/
+			if (resultNombreCorto.size()>0)
+				throw new NombreCortoDuplicadoException();
+			
+			getServicioDAO().guardar(servicio);
+			
+		}catch (DenominacionDuplicadaException rsdex){
+			throw new DenominacionDuplicadaException();
+		}catch(NombreCortoDuplicadoException rdnex){
+			throw new NombreCortoDuplicadoException();
+		}catch(Exception ex){
+			throw new Exception(ex);
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.ServicioManager#actualizar(com.tepsa.sisvyr.model.bean.Servicio)
+	 */
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED)
+	public void actualizar(Servicio servicio) throws Exception {
+		try{		
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			criteriosBusqueda.put("denominacion", servicio.getDenominacion());
+			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+			List<?> resultDenominacion = getServicioDAO().buscarPorX(criteriosBusqueda, null);
+			//Valida duplicidad de la denominación
+			for(int r = 0; r < resultDenominacion.size(); r ++) {
+				Servicio oservicio = (Servicio) resultDenominacion.get(r);
+					if (!(oservicio.getId() == servicio.getId()))
+						throw new DenominacionDuplicadaException();
+				}
+			
+			criteriosBusqueda.remove("denominacion");
+			criteriosBusqueda.put("nombreCorto", servicio.getNombreCorto());
+			List<?> resultNombreCorto = getServicioDAO().buscarPorX(criteriosBusqueda, null);
+			//Valida duplicidad del Nombre corto
+			for(int r = 0; r < resultNombreCorto.size(); r ++) {
+				Servicio oservicio = (Servicio) resultNombreCorto.get(r);
+					if (!(oservicio.getId() == servicio.getId()))
+						throw new NombreCortoDuplicadoException();
+				}
+			
+			getServicioDAO().actualizar(servicio);
+			
+		}catch (DenominacionDuplicadaException rsdex){
+			throw new DenominacionDuplicadaException();
+		}catch(NombreCortoDuplicadoException rdnex){
+			throw new NombreCortoDuplicadoException();
+		}catch(Exception ex){
+			throw new Exception(ex);
+		}
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.ServicioManager#inactivar(java.lang.Long)
+	 */
+	@Override
+	@Transactional
+	public void inactivar(Long id) throws Exception {
+		getServicioDAO().inactivar(id);
+	}
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.ServicioManager#buscarPorX(java.lang.String, java.lang.Object[], java.util.List, java.lang.String)
+	 */
+	@Override
+	public List<Servicio> buscarPorX(String campo, Object[] criterios, List<String> criteriosOrdenar, String estadoRegistro) throws Exception {
+		return getServicioDAO().buscarPorX(campo, criterios, criteriosOrdenar, estadoRegistro);
+	}
+}

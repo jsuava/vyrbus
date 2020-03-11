@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="SISVYR" default="limpiar">
+	<description>Creacion de Applet de Seguridad</description>
+	<property name="build" location="${basedir}/target"/>
+	<property name="cert" location="D:\Temp\Certificados_SISVYR"/>
+	<property name="class" location="${build}/classes"/>
+	<property name="class-applet" location="${basedir}/target/class-applet"/>
+	<property name="java-files" location="${basedir}/src/main/java"/>
+	<property name="web-files" location="${basedir}/src/main/webapp"/>
+	<property name="keystore" value="sisvyrtepsac.jks"/>
+	<property name="jarSecurity-file" value="address.jar"/>
+	<property name="jarPrinter-file" value="Printer.jar"/>
+	<property name="jarComPrinter-file" value="PortPrinter.jar"/>
+	<property name="jarJavaTest-file" value="JavaTest.jar"/>
+	<property name="jarListPrinters-file" value="ListPrinters.jar"/>
+	<property name="pwd" value="10sisvyrjam91"/>
+	<property name="alias" value="sisvyrjam"/>
+	<property name="dominio" value="ventas.tepsa.com.pe"/>
+	
+	<target name="copyCertified" description="Copiando el certificado para firmar los archivos">
+		<echo message="----------- Copiando el certificado para firmar los archivos ---------------"/>
+		<copy todir="${build}" file="${cert}/${keystore}" description="Copiando el keystore"/>
+	</target>
+		
+	<target name="build-MacAddres" depends="copyCertified" description="Creando el jar de Seguridad">
+		<echo message="-------------- Creando el directorio de compilacion del applet --------------"/>
+		<mkdir dir="${class-applet}"/>
+		<echo message="-------------- Compilando el archivo MacAddres.java --------------"/>
+		<javac destdir="${class-applet}" srcdir="${java-files}" includeantruntime="false">
+			<exclude name="**/com/tepsa/sisvyr/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/model/bean/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/model/dao/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/model/dao/impl/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/model/titan/bean/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/model/titan/connection/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/model/titan/dao/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/model/titan/dao/impl/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/business/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/business/impl/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/excel/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/exceptions/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/locator/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/mappers/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/report/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/servlet/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/excel/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/util/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/ctrl/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/tuentrada/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/ui/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/applet/Boleto.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/applet/JavaTest.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/applet/PrintBoleto.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/applet/Printer.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/applet/ListPrinters.java"/>
+		</javac>
+		<echo message="-------------- Creando el archivo address.jar  --------------"/>
+		<jar destfile="${build}/${jarSecurity-file}">
+			<fileset dir="${class-applet}"/>
+			<manifest>
+				<attribute name="Codebase" value="${dominio}"/>
+				<attribute name="Permissions" value="all-permissions"/>
+				<attribute name="Application-Name" value="Sistema de Ventas TEPSA"/>
+			</manifest>
+		</jar>
+		<echo message="-------------- Firmando el jar para distribuirlo --------------"/>
+		<exec executable="jarsigner" dir="${build}">
+			<arg line="-keystore ${keystore} -keypass ${pwd} -storepass ${pwd} ${jarSecurity-file} ${alias}"/>
+		</exec>	
+		<echo message="-------------- Copiando el jar a la carpeta WEBAPP --------------"/>
+		<copy todir="${web-files}" file="${build}/${jarSecurity-file}"></copy>
+	</target>
+	
+	<target name="build-Printer" depends="build-MacAddres" description="Creando el jar de Impresion">
+		<echo message="-------------- Limpiando directorios --------------"/>
+		<delete dir="${class-applet}"/>
+		<echo message="-------------- Creando el directorio de compilacion del applet --------------"/>
+		<mkdir dir="${class-applet}"/>
+		<echo message="-------------- Compilando el archivo Printer.java --------------"/>
+		<javac destdir="${class-applet}" srcdir="${java-files}" includeantruntime="false">
+			<exclude name="**/com/tepsa/sisvyr/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/model/bean/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/model/dao/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/model/dao/impl/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/model/titan/bean/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/model/titan/connection/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/model/titan/dao/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/model/titan/dao/impl/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/business/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/business/impl/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/excel/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/exceptions/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/locator/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/mappers/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/report/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/servlet/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/util/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/excel/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/ctrl/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/tuentrada/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/ui/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/applet/Boleto.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/applet/JavaTest.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/applet/MacAddress.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/applet/PrintBoleto.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/applet/ListPrinters.java"/>
+		</javac>
+		<echo message="-------------- Creando el archivo Printer.jar  --------------"/>
+		<jar destfile="${build}/${jarPrinter-file}">
+			<fileset dir="${class-applet}"/>
+			<manifest>
+				<attribute name="Codebase" value="${dominio}"/>
+				<attribute name="Permissions" value="all-permissions"/>
+				<attribute name="Application-Name" value="Sistema de Ventas TEPSA"/>
+			</manifest>
+		</jar>
+		<echo message="-------------- Firmando el jar para distribuirlo --------------"/>
+		<exec executable="jarsigner" dir="${build}">
+			<arg line="-keystore ${keystore} -keypass ${pwd} -storepass ${pwd} ${jarPrinter-file} ${alias}"/>
+		</exec>	
+		<echo message="-------------- Copiando el jar a la carpeta WEBAPP --------------"/>
+		<copy todir="${web-files}" file="${build}/${jarPrinter-file}"></copy>
+	</target>
+	
+	<target name="build-ComPrinter" depends="build-Printer" description="Creando el jar de Impresion por el Puerto Serial">
+		<echo message="-------------- Limpiando directorios --------------"/>
+		<delete dir="${class-applet}"/>
+		<echo message="-------------- Creando el directorio de compilacion del applet --------------"/>
+		<mkdir dir="${class-applet}"/>
+		<echo message="-------------- Compilando el archivo PortPrinter y URLLabel.java --------------"/>
+		<javac destdir="${class-applet}" srcdir="${java-files}" includeantruntime="false">
+			<exclude name="**/com/tepsa/sisvyr/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/model/bean/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/model/dao/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/model/dao/impl/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/model/titan/bean/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/model/titan/connection/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/model/titan/dao/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/model/titan/dao/impl/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/business/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/business/impl/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/excel/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/exceptions/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/locator/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/mappers/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/report/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/servlet/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/util/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/applet/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/ctrl/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/ui/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/tuentrada/LiquidacionTuentrada.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/tuentrada/PortConfiguration.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/tuentrada/WndLiquidacionTuentrada.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/tuentrada/WndTicketTuentrada.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/tuentrada/WndTicketTuentradaRetorno.java"/>
+		</javac>
+		<echo message="-------------- Creando el archivo PortPrinter.jar  --------------"/>
+		<jar destfile="${build}/${jarComPrinter-file}">
+			<fileset dir="${class-applet}"/>
+			<manifest>
+				<attribute name="Codebase" value="${dominio}"/>
+				<attribute name="Permissions" value="all-permissions"/>
+				<attribute name="Application-Name" value="Sistema de Ventas TEPSA"/>
+			</manifest>
+		</jar>
+		<echo message="-------------- Firmando el jar para distribuirlo --------------"/>
+		<exec executable="jarsigner" dir="${build}">
+			<arg line="-keystore ${keystore} -keypass ${pwd} -storepass ${pwd} ${jarComPrinter-file} ${alias}"/>
+		</exec>	
+		<echo message="-------------- Copiando el jar a la carpeta WEBAPP --------------"/>
+		<copy todir="${web-files}" file="${build}/${jarComPrinter-file}"></copy>
+	</target>
+	
+	<target name="build-JavaTest" depends="build-ComPrinter" description="Creando el jar que verifica la instalación de Java">
+		<echo message="-------------- Limpiando directorios --------------"/>
+		<delete dir="${class-applet}"/>
+		<echo message="-------------- Creando el directorio de compilacion del applet --------------"/>
+		<mkdir dir="${class-applet}"/>
+		<echo message="-------------- Compilando el archivo Printer.java --------------"/>
+		<javac destdir="${class-applet}" srcdir="${java-files}" includeantruntime="false">
+			<exclude name="**/com/tepsa/sisvyr/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/model/bean/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/model/dao/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/model/dao/impl/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/model/titan/bean/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/model/titan/connection/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/model/titan/dao/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/model/titan/dao/impl/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/business/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/business/impl/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/excel/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/exceptions/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/locator/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/mappers/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/report/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/servlet/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/service/util/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/ctrl/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/tuentrada/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/ui/*.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/applet/Boleto.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/applet/MacAddress.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/applet/PrintBoleto.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/applet/Printer.java"/>
+			<exclude name="**/com/tepsa/sisvyr/view/applet/ListPrinters.java"/>
+		</javac>
+		<echo message="-------------- Copiando imagenes para el jar de testing  --------------"/>
+		<copy todir="${class-applet}/com/tepsa/sisvyr/view/applet" file="${basedir}/src/main/java/com/tepsa/sisvyr/view/applet/ok.png"/>
+		<copy todir="${class-applet}/com/tepsa/sisvyr/view/applet" file="${basedir}/src/main/java/com/tepsa/sisvyr/view/applet/error.png"/>
+		<echo message="-------------- Creando el archivo Printer.jar  --------------"/>
+		<jar destfile="${build}/${jarJavaTest-file}">
+			<fileset dir="${class-applet}"/>
+			<manifest>
+				<attribute name="Codebase" value="${dominio}"/>
+				<attribute name="Permissions" value="all-permissions"/>
+				<attribute name="Application-Name" value="Sistema de Ventas TEPSA"/>
+			</manifest>
+		</jar>
+		<echo message="-------------- Firmando el jar para distribuirlo --------------"/>
+		<exec executable="jarsigner" dir="${build}">
+			<arg line="-keystore ${keystore} -keypass ${pwd} -storepass ${pwd} ${jarJavaTest-file} ${alias}"/>
+		</exec>	
+		<echo message="-------------- Copiando el jar a la carpeta WEBAPP --------------"/>
+		<copy todir="${web-files}" file="${build}/${jarJavaTest-file}"></copy>
+	</target>
+	
+	
+	<target name="build-ListPrinters" depends="build-JavaTest" description="Creando el jar que obtiene las impresoras instaladas en el Equipo">
+			<echo message="-------------- Limpiando directorios --------------"/>
+			<delete dir="${class-applet}"/>
+			<echo message="-------------- Creando el directorio de compilacion del applet --------------"/>
+			<mkdir dir="${class-applet}"/>
+			<echo message="-------------- Compilando el archivo ListPrinters.java --------------"/>
+			<javac destdir="${class-applet}" srcdir="${java-files}" includeantruntime="false">
+				<exclude name="**/com/tepsa/sisvyr/*.java"/>
+				<exclude name="**/com/tepsa/sisvyr/model/bean/*.java"/>
+				<exclude name="**/com/tepsa/sisvyr/model/dao/*.java"/>
+				<exclude name="**/com/tepsa/sisvyr/model/dao/impl/*.java"/>
+				<exclude name="**/com/tepsa/sisvyr/model/titan/bean/*.java"/>
+				<exclude name="**/com/tepsa/sisvyr/model/titan/connection/*.java"/>
+				<exclude name="**/com/tepsa/sisvyr/model/titan/dao/*.java"/>
+				<exclude name="**/com/tepsa/sisvyr/model/titan/dao/impl/*.java"/>
+				<exclude name="**/com/tepsa/sisvyr/service/business/*.java"/>
+				<exclude name="**/com/tepsa/sisvyr/service/business/impl/*.java"/>
+				<exclude name="**/com/tepsa/sisvyr/service/excel/*.java"/>
+				<exclude name="**/com/tepsa/sisvyr/service/exceptions/*.java"/>
+				<exclude name="**/com/tepsa/sisvyr/service/locator/*.java"/>
+				<exclude name="**/com/tepsa/sisvyr/service/mappers/*.java"/>
+				<exclude name="**/com/tepsa/sisvyr/service/report/*.java"/>
+				<exclude name="**/com/tepsa/sisvyr/service/servlet/*.java"/>
+				<exclude name="**/com/tepsa/sisvyr/service/util/*.java"/>
+				<exclude name="**/com/tepsa/sisvyr/view/ctrl/*.java"/>
+				<exclude name="**/com/tepsa/sisvyr/view/tuentrada/*.java"/>
+				<exclude name="**/com/tepsa/sisvyr/view/ui/*.java"/>
+				<exclude name="**/com/tepsa/sisvyr/view/applet/Boleto.java"/>
+				<exclude name="**/com/tepsa/sisvyr/view/applet/MacAddress.java"/>
+				<exclude name="**/com/tepsa/sisvyr/view/applet/PrintBoleto.java"/>
+				<exclude name="**/com/tepsa/sisvyr/view/applet/Printer.java"/>
+			</javac>
+			<echo message="-------------- Creando el archivo ListPrinters.jar  --------------"/>
+			<jar destfile="${build}/${jarListPrinters-file}">
+				<fileset dir="${class-applet}"/>
+				<manifest>
+					<attribute name="Codebase" value="${dominio}"/>
+					<attribute name="Permissions" value="all-permissions"/>
+					<attribute name="Application-Name" value="Sistema de Ventas TEPSA"/>
+				</manifest>
+			</jar>
+			<echo message="-------------- Firmando el jar para distribuirlo --------------"/>
+			<exec executable="jarsigner" dir="${build}">
+				<arg line="-keystore ${keystore} -keypass ${pwd} -storepass ${pwd} ${jarListPrinters-file} ${alias}"/>
+			</exec>	
+			<echo message="-------------- Copiando el jar a la carpeta WEBAPP --------------"/>
+			<copy todir="${web-files}" file="${build}/${jarListPrinters-file}"></copy>
+		</target>
+	
+	
+	
+	<target name="limpiar" depends="build-ListPrinters" description="Limpiando directorios">
+		<echo message="-------------- Limpiando directorios --------------"/>
+		<delete dir="${class-applet}"/>
+		<delete file="${build}/${keystore}"/>
+		<delete file="${build}/${jarSecurity-file}"/>
+		<delete file="${build}/${jarPrinter-file}"/>
+		<delete file="${build}/${jarComPrinter-file}"/>
+		<delete file="${build}/${jarJavaTest-file}"/>
+		<delete file="${build}/${jarListPrinters-file}" />
+	</target>		
+</project>

@@ -1,0 +1,80 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:n="client">
+<window  id="wndControlEspecieValorada" title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndControlEspecieValorada">
+	<div id="divLista">
+		<listbox id="listboxLista">
+			<listhead sizable="true">
+				<listheader width="35px" label="#" />
+				<listheader label="TIPO COMPROBANTE" width="140px" sort="auto" />
+				<listheader label="USUARIO HARDWARE" sort="auto" />
+				<listheader label="Nº DE SERIE" width="80px" sort="auto" />
+				<listheader label="Nº CORRELATIVO INICIAL" sort="auto" />
+				<listheader label="Nº CORRELATIVO FINAL" sort="auto" />
+				<listheader label="Nº CORRELATIVO ACTUAL" sort="auto" />
+				<listheader label="AGENCIA" width="180px" sort="auto" />
+			</listhead>
+		</listbox>
+	</div>
+
+	<div id="divMantenimiento">
+	<groupbox closable="false" mold="3d">
+		<caption label="Datos" />
+		<grid>
+			<columns>
+				<column width="140px" align="right" />
+				<column width="220px" />
+				<column width="130px" align="right"/>
+			</columns>
+			<rows>
+				<row>
+					<div>
+						<label value="AGENCIA (*) :" />
+						<textbox id="textboxId"/>
+					</div>
+					<combobox id="cmbAgencia" onSelect="wndControlEspecieValorada.cargarEspecieValorada();wndControlEspecieValorada.cargaCoprobantesAutorizados(cmbAgencia,cmbTipoComprobante,true); 
+					com.tepsa.sisvyr.service.util.UtilData.cargarUsuarioHasrdware(cmbUsuarioHardware, false, ((com.tepsa.sisvyr.model.bean.Agencia)cmbAgencia.getSelectedItem().getValue()))" readonly="true"
+					onOK="com.tepsa.sisvyr.service.util.Util.setFocus(cmbTipoComprobante)" width="170px" />
+					<separator/>
+					<separator/>
+				</row>
+				<row>
+					<label value="TIPO DE COMPROBANTE (*) :"  />
+					<combobox id="cmbTipoComprobante" readonly="true" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(cmbUsuarioHardware)" width="170px"/>
+					<label value="USUARIO HARDWARE (*) :"/>
+					<combobox id="cmbUsuarioHardware" readonly="true" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(txtSerie)" width="170px"/>
+				</row>
+				<row>
+					<label value="SERIE (*) :" />
+					<textbox id="txtSerie" maxlength="4" width="160px" style="font-size:11px !important" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(itCorrelativoInicio)"/>
+					<label value="CORRELATIVO INICIAL (*) :" />
+					<longbox id="itCorrelativoInicio" maxlength="10" width="162px" onChange="itCorrelativoActual.setValue(itCorrelativoInicio.getValue())"  onOK="com.tepsa.sisvyr.service.util.Util.setFocus(itCorrelativoFin)" />
+				</row>
+				<row>
+					<label value="CORRELATIVO FINAL (*) :" />
+					<longbox id="itCorrelativoFin" maxlength="10" width="161px" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(itCorrelativoActual)"/>
+					<label value="CORRELATIVO ACTUAL (*) :" />
+					<longbox id="itCorrelativoActual" maxlength="10" width="162px" />
+				</row>
+				
+			</rows>
+		</grid>
+		<separator height="3px" />
+		<groupbox id="gbxCompAuts">
+		<caption label="Comprobantes y especies valoradas permitidas en la Agencia" style="color:red"/>
+			<listbox id="listboxCompAuts" mold="paging" pageSize="5">
+			<listhead sizable="false">
+				<listheader width="30px" label="#" />
+				<listheader label="TIPO COMPROBANTE" width="200px"/>
+				<listheader label="Nº DE SERIE" />
+				<listheader label="Nº CORRELATIVO INICIAL" />
+				<listheader label="Nº CORRELATIVO FINAL" />
+			</listhead>
+		</listbox>
+		</groupbox>
+		
+	</groupbox>
+</div>
+
+
+</window>
+</zk>

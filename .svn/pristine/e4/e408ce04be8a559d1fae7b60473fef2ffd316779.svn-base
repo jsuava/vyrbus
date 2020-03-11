@@ -1,0 +1,64 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndRptTransbordo" title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndRptTransbordos">
+	<groupbox mold="3d" closable="false">
+		<caption label="REPORTE DE PASAJEROS TRANSBORDADOS" />
+		<grid>
+			<columns>
+				<column width="100px" align="right" />
+				<column width="180px" />
+				<column width="100px" align="right" />
+			</columns>
+			<rows>
+				<row>
+					<label value="FECHA INCIO :" />
+					<datebox id="dtbxFechaInicio"  format="dd/MM/yyyy" readonly="true"/>
+					<label value="FECHA FIN :" />
+					<datebox id="dtbxFechaFin"  format="dd/MM/yyyy" readonly="true"/>
+				</row>
+				<row>
+					<label value="ORIGEN :" />
+					<combobox id="cmbOrigen" readonly="true" width="150px" />
+					<label value="DESTINO :" />
+					<hbox align="center">
+						<combobox id="cmbDestino" readonly="true" width="150px"/>
+						<separator width="72px" />
+						<button image="/resources/mp_excel.png" onClick="wndRptTransbordo.exportarExcel()" />
+					</hbox>
+					
+				</row>
+				<row>
+					<label value="NÚMERO BOLETO :" />
+					<textbox id="txtNumeroBoleto" width="140px" />
+					<label value="PASAJERO :" />
+					<hbox align="center">
+						<textbox id="txtPasajero" readonly="true" />
+						<button label="Buscar" image="/resources/mp_buscarEnabled.png" onClick="wndRptTransbordo.buscar()"/>
+						<button label="Cerrar" image="/resources/mp_cerrar.png" onClick="wndRptTransbordo.closeTabWindow()" />
+					</hbox>
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+	<listbox id="lstTransbordos" mold="paging" pageSize="14">
+		<listhead>
+			<listheader label="F.TRANSBORDO" width="130px" align="center" />
+			<listheader label="TIPO" width="50px" />
+			<listheader label="NRO.BOLETO" width="80px" />
+			<listheader label="PASAJERO" width="220px" />
+			<listheader label="RUTA" width="120px"/>
+			<listheader label="SERVICIO ORIGEN" width="125px" />
+			<listheader label="F.PARTIDA ORIGEN" width="100px" />
+			<listheader label="H.PARTIDA ORIGEN" width="100px" />
+			<listheader label="ASIENTO ORIGEN" width="97px" align="center" />
+			<listheader label="SERVICIO DESTINO" width="125px" />
+			<listheader label="F.PARTIDA DESTINO" width="100px" />
+			<listheader label="H.PARTIDA DESTINO" width="100px" />
+			<listheader label="ASIENTO DESTINO" width="97px" align="center" />
+			<listheader label="U.TRANSBORDO" width="220px" />
+		</listhead>
+	</listbox>
+	
+	
+</window>
+</zk>

@@ -1,0 +1,64 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: José Abanto
+ * Fecha		: 07/10/2016
+ * Hora			: 18:20:27
+ */
+package com.cystesoft.vyrbus.service.xml;
+
+import java.io.Serializable;
+
+import javax.xml.bind.annotation.XmlType;
+
+/**
+ * @author jabanto
+ *
+ */
+@XmlType
+public class XmlItem implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String v1_DetalleServicio;
+	private String v2_Cantidad;
+	private String v3_Tarifa;
+	/**
+	 * @return the v1_DetalleServicio
+	 */
+	public String getV1_DetalleServicio() {
+		return v1_DetalleServicio;
+	}
+	/**
+	 * @param v1_DetalleServicio the v1_DetalleServicio to set
+	 */
+	public void setV1_DetalleServicio(String v1_DetalleServicio) {
+		this.v1_DetalleServicio = v1_DetalleServicio;
+	}
+	/**
+	 * @return the v2_Cantidad
+	 */
+	public String getV2_Cantidad() {
+		return v2_Cantidad;
+	}
+	/**
+	 * @param v2_Cantidad the v2_Cantidad to set
+	 */
+	public void setV2_Cantidad(String v2_Cantidad) {
+		this.v2_Cantidad = v2_Cantidad;
+	}
+	/**
+	 * @return the v3_Tarifa
+	 */
+	public String getV3_Tarifa() {
+		return v3_Tarifa;
+	}
+	/**
+	 * @param v3_Tarifa the v3_Tarifa to set
+	 */
+	public void setV3_Tarifa(String v3_Tarifa) {
+		this.v3_Tarifa = v3_Tarifa;
+	}
+}

@@ -1,0 +1,21 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndvidoTutorial" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndVideoTutorial" >
+	<grid>
+		
+		<rows>
+			<row>
+				<toolbar>
+					<toolbarbutton id="tbnAgencias" image="resources/windows/win_videoAgencia.png" style="font-weight: bold;" label="Agencias de Viaje" onClick="wndvidoTutorial.agencias()"/>
+					<separator width="20px" orient="vertical"/>
+					<toolbarbutton id="tbnCorporativos" image="resources/windows/win_videoCorporativo.png" style="font-weight: bold;" label="Clientes Corporativos" onClick="wndvidoTutorial.corporativos()" />
+					<separator width="20px" orient="vertical"/>
+					<toolbarbutton id="tbnCerrar" image="resources/mp_cerrar.png" style="font-weight: bold;" label="Cerrar" onClick="wndvidoTutorial.closeTabWindow()" />	
+				</toolbar>
+				
+			</row>
+		</rows>
+	</grid>
+
+</window>
+</zk>

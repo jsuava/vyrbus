@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.cystesoft.vyrbus.model.bean.TipoComprobante" table="VRMTIPCOM" schema="VYR">
+        <comment>Entidad que almacena los distintos tipos de comprobante BOLETO, RECIBO DE CAJA.</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="TIPCOM_ID" precision="2" scale="0" />
+            <generator class="sequence">
+                <param name="sequence">SEQ_VRMTIPCOM_ID</param>
+            </generator>
+        </id>
+        <property name="denominacion" type="java.lang.String">
+            <column name="C_DENOMINACION" length="30" not-null="true">
+                <comment>Nombre del tipo de comprobante BOLETA, FACTURA, BOLETO</comment>
+            </column>
+        </property>
+        <property name="abreviatura" type="java.lang.String">
+            <column name="C_ABREVIATURA" length="3" not-null="true">
+                <comment>Abreviatura del tipo de comprobante BOL, BOV, FAC</comment>
+            </column>
+        </property>
+        <property name="rubro" type="java.lang.Integer">
+        	<column name="N_RUBRO" precision="1" scale="0" not-null="true">
+        		<comment>Indica si el tipo de comprobante pertence al rubro de PASAJES(0), CARGA(1) o AMBOS(2).</comment>
+        	</column>
+        </property>
+        <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+        <property name="estadoRegistro" type="java.lang.String">
+            <column name="C_ESTREG" length="1" not-null="true">
+                <comment>Estado de registro A(Activo), I(Inactivo).</comment>
+            </column>
+        </property>
+        <property name="fechaInsercion" type="java.util.Date">
+            <column name="AUDFECINS" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioInsercion" type="java.lang.String">
+            <column name="AUDUSUINS" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipInsercion" type="java.lang.String">
+            <column name="AUDIPINSE" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="fechaModificacion" type="java.util.Date">
+            <column name="AUDFECMOD" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioModificacion" type="java.lang.String">
+            <column name="AUDUSUMOD" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipModificacion" type="java.lang.String">
+            <column name="AUDIPMODI" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <!-- 		END CAMPOS DE AUDITORIA	 	-->
+    </class>
+</hibernate-mapping>

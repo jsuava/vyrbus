@@ -1,0 +1,181 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:w="client">
+<window id="wndDetLiqAg" title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndDetalleLiquidacionAgencia" width="100%" >
+<!-- <panel id="panel" title="::: DETALLE DE VENTAS:::" framable="true" border="normal" closable="true" onClose="wndDetLiqAg.closeTabWindow()"> -->
+<!--     <panelchildren> -->
+    
+	<groupbox mold="3d" closable="false">
+		<caption label="DETALLE DE VENTAS" />
+		<grid id="grid">
+			<columns>
+				<column width="45px" align="right" />
+				<column width="100px"/>
+				<column width="60px" align="right"/>
+				<column width="270px"  />
+			</columns>
+			<rows>
+				<row>
+					<label value="INICIO :"/>
+					<datebox id="dtbxFechaInicio" width="94px" readonly="true" format="dd/MM/yyyy" />
+					<label value="AGENCIA :"/>
+					<hbox align="center">
+						<combobox id="cmbAgencia" width="160px" onFocus="cmbAgencia.select()" onOK="wndDetLiqAg.cargarListaVentas()" />
+						<label id="lblEstado" value="ESTADO"/>
+						<combobox id="cmbEstado" width="65px" onFocus="cmbAgencia.select()"  />
+					</hbox>
+					<button id="btnPreliminar" mold="trendy" autodisable="self" onClick="wndDetLiqAg.rptVentasRealizadas()" label="Preliminar" disabled="true" image="/resources/mp_preliminar.png"/>
+				</row>
+				<row>
+					<label value="FIN :"/>
+					<datebox id="dtbxFechaFin" width="94px" readonly="true" format="dd/MM/yyyy"/>
+					<label value="USUARIO :"/>
+					<hbox align="center">
+						<combobox id="cmbCounter" width="265px" readonly="true"/><separator width="2px"/>	
+						<combobox id="cmbTipoMoneda" visible="false" tooltiptext="Tipo de moneda" width="115px" readonly="true"/>
+ 					</hbox>
+ 					<hbox align="center">
+						<button id="btnBuscar" mold="trendy" autodisable="self" tooltiptext="Buscar" onClick="wndDetLiqAg.cargarListaVentas()" image="/resources/mp_buscarEnabled.png" />
+						<button id="btnExportar" mold="trendy" tooltiptext="Exportar a formato Excel(.xls)" onClick="wndDetLiqAg.exportarExcel()" image="/resources/mp_excel.png" />
+						<button id="btnCerrar" tooltiptext="Cerrar ventana" mold="trendy" image="/resources/mp_cerrar.png" onClick="wndDetLiqAg.closeTabWindow()"/>
+<!-- 						<button label="Print2" mold="trendy" onClick="Clients.print();"/> -->
+<!-- 						<button label="Print" mold="trendy"> -->
+<!-- 							 <attribute w:name="onClick"> -->
+<!--             					print(this,'lstbxVentas',500,800,true); -->
+<!--         					</attribute> -->
+<!-- 						</button> -->
+					</hbox>
+				</row>
+			</rows>
+		</grid>
+		<space height="1px" />
+		<tabbox>
+			<tabs>
+				<tab id="tabListaVouchers" label="Lista de Vouchers"/>
+				<tab id="tabPrevio" label="Vista prelimimar"/>
+				<tab id="tabReimpresionTicket" label="Reimpresión de Tickets"/>
+			</tabs>				
+			<tabpanels>
+				<tabpanel>
+					<listbox id="lstbxVentas" mold="paging" rows="11" pageSize="10" >
+						<listhead>
+							<listheader label="ITEM" width="30px" />
+							<listheader label="FEC.VENTA"  width="70px"/>
+							<listheader label="TIPO" width="60px"/>
+							<listheader label="N° CONTROL" width="118px" />
+							<listheader label="N° VOUCHER" width="80px" />
+							<listheader label="N° BOLETO" width="90px"/>
+							<listheader label="PASAJERO" width="180px"/>
+							<listheader label="TIPO PAGO" width="80px" />
+							<listheader label="BRUTO" width="65px" align="right"/>
+							<listheader label="DSCTO." width="60px" align="right"/>
+							<listheader label="NETO" width="65px" align="right"/>
+							<listheader label="EXPORTAR" width="60px" align="center" />
+							<listheader label="C.COSTO"  width="60px"/>
+							<listheader label="ORIGEN"  width="110px"/>
+							<listheader label="DESTINO"  width="110px"/>
+							<listheader label="FEC.VIAJE"  width="70px"/>
+							<listheader label="USUARIO" width="150px" />
+							<listheader label="ESTADO" width="70px" />
+						</listhead>						
+					</listbox>
+				</tabpanel>
+				
+				<tabpanel id="tabPanelPrevio" >
+				</tabpanel>
+				<tabpanel id="tabPanelReimpresionTicket">
+				<hbox align="center">
+					<grid width="460px">
+						<columns>
+							<column width="80px"  align="right"/>
+							<column width="100px" />
+							<column width="80px"  align="right"/>
+							<column/>
+						</columns>
+						<rows>
+							<row spans="4">
+								<div align="left">
+									<checkbox id="ckbxByFechaReimpresion" label="Buscar comprobantes electrónicos por fecha de Emisión." style="color:blue"/>
+								</div>
+							</row>
+							<row>
+								<label value="FECHA INICIO : " />
+								<datebox id="dtbxFechaInicioByEmision" readonly="true" format="dd/MM/yyyy" disabled="true"/>
+								<label value="FECHA FIN : " />
+								<hbox align="center">
+									<datebox id="dtbxFechaFinByEmision" readonly="true" format="dd/MM/yyyy" disabled="true"/>
+									<button id="btnBuscarByFechaEmision" autodisable="self" label="Buscar" image="/resources/mp_buscarEnabled.png" onClick="wndDetLiqAg.buscarByFechaEmision()" disabled="true"/>
+								</hbox>
+							</row>
+						</rows>
+					</grid>
+					<grid width="400px" visible="false">
+						<columns>
+							<column width="80px"  align="right"/>
+							<column width="100px" />
+							<column width="80px"  align="right"/>
+							<column/>
+						</columns>
+						<rows>
+							<row spans="4">
+								<div align="left">
+									<checkbox id="ckbxEmisonNotacredito" label="Emitir Notas de Crédito (Máximo 30 comprobantes)" style="color:blue"/>
+								</div>
+							</row>
+							<row spans="4">
+								<div align="left">
+									<radiogroup>
+										<hbox align="center">
+											<radio id="rdSoloNotaCredito" label="Solamente N.C." style="color:red" tooltiptext="Aplicar solamente Notas de Crédito" disabled="true"/>
+											<radio id="rdSoloNotaCreditoNuevoComprobante" label="N.C. y nuevo Comprobante" style="color:red" tooltiptext="Aplicar Notas de Crédito y generar un nuevo Comprobante " disabled="true"/>
+											<button id="btnAplicarNotaCredito" label="Aplicar" image="/resources/mp_aceptarEnabled.png" disabled="true" autodisable="self" onClick="wndDetLiqAg.emitriNotaCredito()"/>
+										</hbox>
+									</radiogroup>
+								</div>
+							</row>
+						</rows>
+					</grid>
+				</hbox>
+				
+				<grid>
+					<columns>
+						<column align="right" width="110px"/>
+						<column/>
+					</columns>
+					<rows>
+						<row id="rowCentroCosto" spans="1,3">
+							<label value="CENTRO COSTO : " />
+							<hbox align="center">
+								<combobox id="cmbCentroCosto" readonly="true" width="265px" />
+								<space width="10px"/>
+								<button label="Reimprimir" mold="trendy" onClick="wndDetLiqAg.reimprimirTickts()" autodisable="self,btnBuscar,btnExportar,btnPreliminar,btnCerrar"/>
+							</hbox>
+						</row>
+					</rows>
+				</grid>
+					<listbox id="lstbxVentasReimpresion" multiple="true" checkmark="true" rows="10">
+						<listhead>
+							<listheader label="" width="30px" />
+							<listheader label="ITEM" width="30px" />
+							<listheader label="FEC.VENTA"  width="70px"/>
+							<listheader label="N° BOLETO" width="90px" sort="auto" />
+							<listheader label="PASAJERO" width="230px"/>
+							<listheader label="BRUTO" width="65px" align="right"/>
+							<listheader label="DSCTO." width="60px" align="right"/>
+							<listheader label="NETO" width="65px" align="right"/>
+							<listheader label="C.COSTO"  width="60px"/>
+							<listheader label="ORIGEN"  width="110px"/>
+							<listheader label="DESTINO"  width="110px"/>
+							<listheader label="FEC.VIAJE"  width="70px"/>
+<!-- 							<listheader label="USUARIO" width="150px" /> -->
+							<listheader label="ESTADO" width="70px" />
+						</listhead>						
+					</listbox>
+				</tabpanel>
+			</tabpanels>			
+		</tabbox>
+		
+ 	</groupbox>
+<!-- 	</panelchildren> -->
+<!-- </panel>	 -->
+</window>
+</zk>

@@ -1,0 +1,15 @@
+<?page title="Acceso no permitido" contentType="text/html;charset=UTF-8"?>
+<?meta http-equiv="Refresh" content="5;url=http://www.tepsa.com.pe"?>
+<?link rel="shortcut icon" href="resources/favicon.ico" ?>
+<zk>
+<window border="none">
+	<div align="center">
+		<vlayout>
+			<separator orient="vertical" height="200px"/>
+			Este equipo no tiene permitido acceder al Sistema de Ventas y Reservas...
+			<label value="Propiedad de Transportes El Pino SAC."/>
+			<label value="En breve sera redireccionado..."/>
+		</vlayout>
+	</div>
+</window>
+</zk>

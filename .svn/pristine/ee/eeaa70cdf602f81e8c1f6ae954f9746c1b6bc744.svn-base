@@ -1,0 +1,546 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: José Abanto
+ * Fecha		: 01/09/2016
+ * Hora			: 11:12:13
+ */
+package com.tepsa.sisvyr.service.util;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.bind.JAXBElement;
+import javax.xml.namespace.QName;
+
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zul.Button;
+import org.zkoss.zul.Caption;
+import org.zkoss.zul.Div;
+import org.zkoss.zul.Grid;
+import org.zkoss.zul.Groupbox;
+import org.zkoss.zul.Image;
+import org.zkoss.zul.Label;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Row;
+import org.zkoss.zul.Rows;
+
+import com.tepsa.sisvyr.model.bean.Agencia;
+import com.tepsa.sisvyr.model.bean.DestinatariosEmails;
+import com.tepsa.sisvyr.model.bean.DetalleItinerario;
+import com.tepsa.sisvyr.model.bean.Itinerario;
+import com.tepsa.sisvyr.model.bean.PoolLocalidad;
+import com.tepsa.sisvyr.model.bean.ObjectCruzdelsur;
+import com.tepsa.sisvyr.model.bean.OcupacionAsientosBloqueadosPool;
+import com.tepsa.sisvyr.model.bean.Ruta;
+import com.tepsa.sisvyr.model.bean.Servicio;
+import com.tepsa.sisvyr.model.bean.TipoItinerario;
+import com.tepsa.sisvyr.model.bean.Usuario;
+import com.tepsa.sisvyr.service.locator.ServiceLocator;
+import com.tepsa.sisvyr.view.ui.DlgMessage;
+import com.tepsa.sisvyr.view.ui.Events;
+
+import cruzdelsur.ws.com.pe.ArrayOfDistribucion;
+import cruzdelsur.ws.com.pe.ArrayOfGeneric;
+import cruzdelsur.ws.com.pe.ArrayOfHorario;
+import cruzdelsur.ws.com.pe.Distribucion;
+import cruzdelsur.ws.com.pe.Generic;
+import cruzdelsur.ws.com.pe.Horario;
+import cruzdelsur.ws.com.pe.IServicecruzdelsur;
+import cruzdelsur.ws.com.pe.Pasajero;
+import cruzdelsur.ws.com.pe.ResultAnularBoleto;
+import cruzdelsur.ws.com.pe.ResultBloquearAsiento;
+import cruzdelsur.ws.com.pe.ResultDesbloquearAsiento;
+import cruzdelsur.ws.com.pe.ResultVenta;
+import cruzdelsur.ws.com.pe.Servicecruzdelsur;
+
+/**
+ * @author jabanto
+ *
+ */
+public class WSCruzdelsur implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	public static String NAMESPACE="http://schemas.datacontract.org/2004/07/wscruzdelsur.Entities";
+	private static IServicecruzdelsur iServicecruzdelsur;
+	/**
+	 * 
+	 */
+	private static IServicecruzdelsur getSoap()throws Exception{
+		
+		try {
+			System.setProperty("http.proxyHost", "192.168.50.1");
+			System.setProperty("http.proxyPort", "8080");
+			
+			if(iServicecruzdelsur==null){
+				Servicecruzdelsur servicecruzdelsur= new Servicecruzdelsur();
+				iServicecruzdelsur=servicecruzdelsur.getBasicHttpBindingIServicecruzdelsur();
+			}
+			
+			return iServicecruzdelsur;	
+		} catch (Exception e) {
+			DestinatariosEmails window= new DestinatariosEmails();
+			window.setEmails("jabanto@tepsa.com.pe");
+			Sendmail.enviaEmail(e.getMessage(), "Error GetSoap()", window);
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	/**
+	 * Realiza la busqueda de los itinerarios
+	 * @param fechaProgramacion	: Fecha de viaje
+	 * @param localidad_IDOrigen	: Identificador de la localidad origen - TEPSA
+	 * @param localidad_IDDestino : Identificador de la localidad destino - TEPSA
+	 * @return
+	 */
+	public static List<DetalleItinerario> getHorarios(String fechaProgramacion, Integer localidad_IDOrigen, Integer localidad_IDDestino)throws Exception{
+		List<DetalleItinerario>result= new ArrayList<>();
+		try {
+			/*Consulta si es una ruta compartida con Cruz del sur*/
+			String localidadEmbarque=null,localidadDesembarque=null;
+			List<PoolLocalidad>integracionOrigen=ServiceLocator.getPoolLocalidadManager().buscarByLocalidadID(localidad_IDOrigen);
+			if(integracionOrigen.size()>0){
+				List<PoolLocalidad>integracionDestino=ServiceLocator.getPoolLocalidadManager().buscarByLocalidadID(localidad_IDDestino);
+				if(integracionDestino.size()>0){
+					/*Obtiene los identificadores de los origenes*/
+					for(PoolLocalidad localidadIntegracion: integracionOrigen){
+						if(localidadIntegracion.getRuc().equals(Constantes.RUC_CRUZ_DEL_SUR)){
+							localidadEmbarque=localidadIntegracion.getLocalidadDestinoPoolID();
+							break;
+						}
+					}
+					/*Obtiene los identificadores de los destinos*/
+					for(PoolLocalidad localidadIntegracion: integracionDestino){
+						if(localidadIntegracion.getRuc().equals(Constantes.RUC_CRUZ_DEL_SUR)){
+							localidadDesembarque=localidadIntegracion.getLocalidadDestinoPoolID();
+							break;
+						}
+					}
+				}
+			}
+			
+			/*Valida si las localidades origen y destino*/
+//			localidadDesembarque="AQP";
+			if(localidadEmbarque!=null && localidadDesembarque!=null){
+				ArrayOfHorario arrayOfHorario=getSoap().obtenerHorarios(fechaProgramacion, localidadEmbarque, localidadDesembarque);
+				if(arrayOfHorario==null){
+					return result;
+				}
+				for(Horario horario : arrayOfHorario.getHorario()){
+					DetalleItinerario detalleItinerario=new DetalleItinerario();
+					Agencia agenciaPartida= new Agencia();
+					agenciaPartida.setNombreCorto(horario.getAgenciaEmbarque1().getValue());
+					detalleItinerario.setAgenciaPartida(agenciaPartida);
+					Servicio servicio= new Servicio();
+					servicio.setDenominacion(horario.getServicio().getValue().toUpperCase());
+					Itinerario itinerario= new Itinerario();
+					itinerario.setServicio(servicio);
+					itinerario.setOperadoPor(Constantes.OPERADO_POR_CRUZ_DEL_SUR);
+					TipoItinerario tipoItinerario= new TipoItinerario();
+					tipoItinerario.setId(Constantes.ID_TIPITI_REGULAR);
+					itinerario.setTipoItinerario(tipoItinerario); 
+					detalleItinerario.setItinerario(itinerario);
+					Ruta ruta= new Ruta();
+					ruta.setOrigen(horario.getRuta().getValue().trim().split("-")[0].trim().toUpperCase());
+					ruta.setDestino(horario.getRuta().getValue().trim().split("-")[1].trim().toUpperCase());
+					detalleItinerario.setRuta(ruta);
+					detalleItinerario.setHoraPartida(horario.getFechaHoraEmbarque1().getValue().split(" ")[1].trim());
+					detalleItinerario.setFechaPartida(Constantes.FORMAT_DATE.parse(horario.getFechaHoraEmbarque1().getValue().split(" ")[0].trim()));
+					detalleItinerario.setTarifa(horario.getTarifaPrimerPiso()!=null?horario.getTarifaPrimerPiso():.00);
+					detalleItinerario.setTarifaSegundoPiso(horario.getTarifaSegundoPiso()!=null?horario.getTarifaSegundoPiso():.00);
+					
+					ObjectCruzdelsur objectCruzdelsur= new ObjectCruzdelsur();
+					objectCruzdelsur.setHorario(horario);
+					objectCruzdelsur.setLocalidadEmbarque(localidadEmbarque);
+					objectCruzdelsur.setLocalidadDesembarque(localidadDesembarque);
+					detalleItinerario.setObjectCruzdelsur(objectCruzdelsur);
+					result.add(detalleItinerario);
+				}
+			}
+				
+			return result;
+			
+		} catch (Exception e) {
+			DlgMessage.information("El Servicio de Cruz del Sur ha retornado el Siguiente error: \n"+e.getMessage());
+			return result;
+		}
+	}
+	
+	public static void crearEstructura(Groupbox grpbxParent, DetalleItinerario detalleItinerario, Grid gridOcupabilidad, Agencia agencia, Usuario usuario)throws Exception{
+		try {
+			inicializarEstructura(grpbxParent);
+			ObjectCruzdelsur objectCruzdelsur=detalleItinerario.getObjectCruzdelsur();
+			Horario horario=objectCruzdelsur.getHorario();
+			ArrayOfDistribucion arrayOfDistribucion=getSoap().obtenerAsientosDisponibles(horario.getCodigoRuta().getValue()
+																						,horario.getServicioLlave().getValue()
+																						,horario.getProgramacionLlave().getValue()
+																						,Integer.valueOf(horario.getNumeroServicio().getValue())
+																						,horario.getAgenciaEmbarqueLlave1().getValue()
+																						,horario.getAgenciaDesembarqueLlave1().getValue()
+																						,horario.getUnidadLlave().getValue());
+			
+			Image imagen = generarImagen("/resources/mapa/bus_primerPiso.png", 247, 35);
+			Div divPiso1=new Div();
+			divPiso1.appendChild(imagen);
+			
+			imagen = generarImagen("/resources/mapa/bus_segundoPiso.png", 245, 30);
+			Div divPiso2=new Div();
+			divPiso2.appendChild(imagen);
+			
+			int asientosOcupados=0;
+			Div divMapaPriso1=new Div();
+			Div divMapaPriso2=null;
+			int heightDivPiso1=0;
+			int heightDivPiso2=0;
+			for(Distribucion distribucion:arrayOfDistribucion.getDistribucion()){
+				if(distribucion.getDisponible().intValue()!=-1){
+					int Y=distribucion.getY1()+41;
+					int piso=Integer.valueOf(distribucion.getNivelPiso().getValue());
+					if(piso==2){
+						Y+=+30;
+					}
+					int W=distribucion.getAnchoObjeto();
+					int H=distribucion.getAltoObjeto()-1;
+					
+					AsientoPool asiento=new AsientoPool();
+					asiento.setWidth(String.valueOf(W)+"px");
+					asiento.setHeight(String.valueOf(H)+"px");				
+					
+					/*Colocando en su posicion correcta a cada asiento*/
+					String styleAsiento="position: absolute;left: "+(distribucion.getX1()-7)+"px;top: "+Y+"px;background-color: #D1CFCF;";
+					/*Validando el estado del asientos*/
+					if(distribucion.getDisponible().intValue()==Constantes.TRUE_VALUE){
+						styleAsiento+="cursor:pointer;";
+						Label label= new Label((distribucion.getAsiento().getValue().toString().length()==1?"0"+distribucion.getAsiento().getValue().toString():distribucion.getAsiento().getValue().toString()));
+						int X_2=((W/2)-label.getValue().length())-5,Y_2=(H/2)-6;
+						String styleLabel="cursor:pointer;font-size:12px !important;color:black;position: absolute;left: "+X_2+"px;top: "+Y_2+"px;";
+						label.setStyle(styleLabel);	
+						asiento.appendChild(label);
+						asiento.setObjectCruzdelsur(objectCruzdelsur);
+						asiento.setNivelAsiento(Integer.valueOf(distribucion.getNivelPiso().getValue()));
+						asiento.setNumeroAsiento(label.getValue());
+						asiento.setDisponible(distribucion.getDisponible());
+						asiento.setTarifa(distribucion.getTarifatotal());
+						asiento.setAgencia(agencia);
+						asiento.setUsuario(usuario);
+						asiento.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+							@Override
+							public void onEvent(Event event) throws Exception {
+								try {
+									
+									onClickAsiento(event);
+									
+								} catch (Exception e) {
+									e.printStackTrace();
+									DlgMessage.error(e.getMessage());
+								}															
+							}
+						});
+					}else if (distribucion.getDisponible().intValue()==Constantes.FALSE_VALUE){
+						imagen=generarImagen(AsientoPool.imagenOcupado, null, 18);
+						imagen.setStyle("position: absolute;left:10px;top:4px;");
+						asiento.appendChild(imagen);
+						asientosOcupados++;
+					}
+					asiento.setStyle(styleAsiento);
+					
+					/*Calculando el alto de cada Div del piso*/
+					if(piso==1)
+						divMapaPriso1.appendChild(asiento);
+					else if (piso==2){
+						if(divMapaPriso2==null)
+							divMapaPriso2= new Div();
+						divMapaPriso2.appendChild(asiento);
+					}
+
+					if(heightDivPiso1<Y && piso==1)
+						heightDivPiso1=Y;
+					else if(heightDivPiso2<Y && piso==2)
+						heightDivPiso2=Y;
+				}
+			}
+			divMapaPriso1.setWidth("245px");
+			divMapaPriso1.setHeight(String.valueOf(heightDivPiso1-20)+"px");
+			divMapaPriso1.setStyle("background:#99D9EA");
+			
+			if(divMapaPriso2!=null){
+				divMapaPriso2.setWidth("245px");
+				divMapaPriso2.setHeight(String.valueOf((heightDivPiso2-heightDivPiso1))+"px");
+				divMapaPriso2.setStyle("background:#99D9EA");	
+			}
+				
+			grpbxParent.appendChild(divPiso1);
+			grpbxParent.appendChild(divMapaPriso1);
+			if(divMapaPriso2!=null){
+				grpbxParent.appendChild(divPiso2);
+				grpbxParent.appendChild(divMapaPriso2);
+			}
+			
+			
+			int asientosDisponibles=horario.getAsientoDisponiblePrimerPiso()+(horario.getAsientoDisponibleSegundoPiso()!=null?horario.getAsientoDisponibleSegundoPiso():0);
+			gridOcupabilidad.getRows().detach();
+			Rows rows = new Rows();
+			
+			Row row = new Row();
+			Label label = new Label(detalleItinerario.getRuta().toString());
+			row.appendChild(label);
+			label = new Label(String.valueOf(asientosOcupados));
+			row.appendChild(label);
+			label = new Label(String.valueOf(asientosDisponibles));
+			row.appendChild(label);
+			rows.appendChild(row);
+			gridOcupabilidad.appendChild(rows);
+		} catch (Exception e) {
+			DlgMessage.information("El Servicio de Cruz del Sur ha retornado el Siguiente error: \n"+e.getMessage());
+		}
+	}
+	
+	private static void onClickAsiento(Event e)throws Exception{
+		AsientoPool asiento= (AsientoPool) e.getTarget();
+		ObjectCruzdelsur objectCruzdelsur =asiento.getObjectCruzdelsur();
+		Horario horario=objectCruzdelsur.getHorario();
+		Listbox listAsientos=objectCruzdelsur.getListAsientos();
+		Button btnNextTabVenta=objectCruzdelsur.getBtnNextTabVenta();
+		
+		if(asiento.getDisponible().intValue()==Constantes.TRUE_VALUE){
+			/*Bloquea el asiento seleccionado*/
+			ResultBloquearAsiento resultBloquearAsiento=getSoap().bloquearAsiento(horario.getCodigoRuta().getValue()
+																				, objectCruzdelsur.getLocalidadEmbarque(), objectCruzdelsur.getLocalidadDesembarque()
+																				, horario.getNumeroServicio().getValue()
+																				, horario.getProgramacionLlave().getValue(), horario.getServicioLlave().getValue()
+																				, asiento.getNumeroAsiento().toString(), asiento.getNivelAsiento().toString());
+			if(resultBloquearAsiento.isIsCorrect()){
+				asiento.setDisponible(Constantes.ASIENTO_BLOQUEADO);
+				asiento.setResultBloquearAsiento(resultBloquearAsiento);
+				
+				for(Component component : asiento.getChildren()){
+					if(component instanceof Label && ((Label)component).getValue().equals(asiento.getNumeroAsiento())){
+						Label label=(Label)component;
+						label.setVisible(false);
+						break;
+					}
+				}
+				
+				Image imagen=generarImagen(AsientoPool.imagenBloqueado, null, 18);
+				imagen.setStyle("position: absolute;left:10px;top:4px;");
+				asiento.appendChild(imagen);
+				
+				/*Agrega el asiento seleccionado a la lista de asientos seleccionados*/
+				Listitem listitemAsientos = new Listitem();
+				Listcell cell = new Listcell(horario.getRuta().getValue().toString().toUpperCase());
+				listitemAsientos.appendChild(cell);
+				cell = new Listcell(asiento.getNumeroAsiento());
+				listitemAsientos.setValue(asiento);
+				listitemAsientos.appendChild(cell);
+				listAsientos.appendChild(listitemAsientos);
+				
+				/*Registra el bloqueo del asiento*/
+				registrarBloqueoAsiento(asiento);
+			}else{
+				DlgMessage.information(resultBloquearAsiento.getError().getValue().getMessage().getValue());
+			}
+		}else if (asiento.getDisponible().intValue()==Constantes.ASIENTO_BLOQUEADO){
+			/*Desbloquea el asiento*/
+			ResultDesbloquearAsiento resultDesbloquearAsiento= desbloquearAsiento(asiento);
+			if(resultDesbloquearAsiento.isIsCorrect()){
+				//Elimina el asiento del listbox				
+				List<Listitem> items = listAsientos.getItems();
+				for(int i=0; i<items.size(); i++){
+					AsientoPool asiento2 = items.get(i).getValue();
+					if(asiento2.getNumeroAsiento().equals(asiento.getNumeroAsiento())){
+						listAsientos.removeItemAt(i);
+						break;
+					}
+				}
+								
+			}else{
+				DlgMessage.information(resultDesbloquearAsiento.getError().getValue().getMessage().getValue());
+			}
+		}
+		
+		/*	Habilita o deshablita el boton para pasar a la siguiente pestana	*/
+		if(listAsientos.getItems().size()==0)
+			btnNextTabVenta.setDisabled(true);
+		else
+			btnNextTabVenta.setDisabled(false);
+	}
+	
+	/**
+	 * Desbloquea un asiento
+	 * @param asiento : Objeto asientoPool
+	 * @return
+	 * @throws Exception
+	 */
+	public static ResultDesbloquearAsiento desbloquearAsiento(AsientoPool asiento)throws Exception{
+		ResultDesbloquearAsiento resultDesbloquearAsiento=getSoap().desbloquearAsiento(asiento.getResultBloquearAsiento().getCodigoTransaccion().getValue());
+		if(resultDesbloquearAsiento.isIsCorrect()){
+			/*Elimnia el registro de la db con el bloqueo*/
+			eliminarBloqueoAsiento(asiento.getResultBloquearAsiento().getCodigoTransaccion().getValue());
+			
+			asiento.setDisponible(Constantes.TRUE_VALUE); //Coloca el estado nuevamente como Disponible
+			asiento.setResultBloquearAsiento(null);
+		
+			Component componentImage=null;
+			for(Component component : asiento.getChildren()){
+				if(component instanceof Label && ((Label)component).getValue().equals(asiento.getNumeroAsiento())){
+					Label label=(Label)component;
+					label.setVisible(true);
+				}else if(component instanceof Image && ((Image)component).getSrc().equals(AsientoPool.imagenBloqueado)){
+					componentImage=component;
+				}
+			}
+			if(componentImage!=null)
+				asiento.removeChild(componentImage);
+		}
+		return resultDesbloquearAsiento;
+	}
+	
+	/***
+	 * Desbloquea todos los asientos bloqueados
+	 * @param listAsientos : Listbox con los asientos bloqueados
+	 * @throws Exception
+	 */
+	public static void desbloquearAsientos(Listbox listAsientos)throws Exception{
+		for(Listitem item :listAsientos.getItems()){
+			AsientoPool asiento=item.getValue();
+			desbloquearAsiento(asiento);
+		}
+		
+		Util.limpiarListbox(listAsientos);
+	}
+	
+	
+	public static ResultVenta enviarVenta(String codigoTransaccion, String agenciaEmbarqueLlave, String agenciaDesembarqueLlave,com.tepsa.sisvyr.model.bean.Pasajero oPasajero, List<Generic> menus, String numeroBoleto)throws Exception{		
+		Pasajero pasajero= new Pasajero();
+		/*Tipo de identidad*/
+		switch (oPasajero.getTipoDocumento().getId().intValue()) {
+		case Constantes.ID_TIPDOC_DNI:
+			pasajero.setCodigoTipoDocumento(new JAXBElement<String>(new QName(NAMESPACE,"codigoTipoDocumento"), String.class, "DNI"));
+			break;
+		case Constantes.ID_TIPDOC_PASAPORTE:
+			pasajero.setCodigoTipoDocumento(new JAXBElement<String>(new QName(NAMESPACE,"codigoTipoDocumento"), String.class, "PAS"));
+			break;
+		case Constantes.ID_TIPDOC_CARNET_EXTRANJERIA:
+			pasajero.setCodigoTipoDocumento(new JAXBElement<String>(new QName(NAMESPACE,"codigoTipoDocumento"), String.class, "CEX"));
+			break;
+		case Constantes.ID_TIPDOC_CEDULA_IDENTIDAD:
+			pasajero.setCodigoTipoDocumento(new JAXBElement<String>(new QName(NAMESPACE,"codigoTipoDocumento"), String.class, "CID"));
+			break;
+		case Constantes.ID_TIPDOC_SN:
+			pasajero.setCodigoTipoDocumento(new JAXBElement<String>(new QName(NAMESPACE,"codigoTipoDocumento"), String.class, "SID"));
+			break;
+		default:
+			pasajero.setCodigoTipoDocumento(new JAXBElement<String>(new QName(NAMESPACE,"codigoTipoDocumento"), String.class, "CID"));
+			break;
+		}
+		if(oPasajero.getNumeroDocumento()!=null)
+			pasajero.setNumeroDocumento(new JAXBElement<String>(new QName(NAMESPACE,"numeroDocumento"), String.class, oPasajero.getNumeroDocumento()));
+		else
+			pasajero.setNumeroDocumento(new JAXBElement<String>(new QName(NAMESPACE,"numeroDocumento"), String.class, ""));
+		pasajero.setFechaNacimiento(new JAXBElement<String>(new QName(NAMESPACE,"fechaNacimiento"), String.class, oPasajero.getFechaNacimiento()));
+		pasajero.setEdad(Util.calculaEdad(oPasajero.getFechaNacimiento()));
+		pasajero.setTipoTarifa(new JAXBElement<String>(new QName(NAMESPACE,"tipoTarifa"), String.class, "A")); //Por default
+		pasajero.setCodigoNacionalidad(new JAXBElement<String>(new QName(NAMESPACE,"codigoNacionalidad"), String.class, "01")); //Peru
+		pasajero.setApellidoPaterno(new JAXBElement<String>(new QName(NAMESPACE,"apellidoPaterno"), String.class, oPasajero.getApellidoPaterno()));
+		if(oPasajero.getApellidoMaterno()!=null)
+			pasajero.setApellidoMaterno(new JAXBElement<String>(new QName(NAMESPACE,"apellidoMaterno"), String.class, oPasajero.getApellidoMaterno()));
+		pasajero.setNombres(new JAXBElement<String>(new QName(NAMESPACE,"nombres"), String.class, oPasajero.getNombre()));
+		
+		String telelefono=oPasajero.getTelefono();
+		if(telelefono.trim().length()>10){
+			telelefono=telelefono.substring(0,11);
+		}
+		
+		pasajero.setTelefono(new JAXBElement<String>(new QName(NAMESPACE,"telefono"), String.class, telelefono));
+		pasajero.setNumeroBoleto(new JAXBElement<String>(new QName(NAMESPACE,"numeroBoleto"), String.class, numeroBoleto));
+		/*Pasando la alimentacion*/
+		ArrayOfGeneric arrayOfMenu= new ArrayOfGeneric();
+		for(Generic generic : menus){
+			arrayOfMenu.getGeneric().add(generic);	
+		}
+		pasajero.setMenus(new JAXBElement<ArrayOfGeneric>(new QName(NAMESPACE,"menus"), ArrayOfGeneric.class, arrayOfMenu));
+		
+		ResultVenta resultVenta=getSoap().venderPasaje(codigoTransaccion, agenciaEmbarqueLlave, agenciaDesembarqueLlave, pasajero);
+		return resultVenta;
+	}
+	
+	/**
+	 * Inicializa(limpia los objetos existentes) el contenedor de los asientos.
+	 */
+	private static void inicializarEstructura(Groupbox groupbox){
+		for(int i=groupbox.getChildren().size()-1; i>-1; i--){
+			Component component = (Component)groupbox.getChildren().get(i);
+			if(!(component instanceof Caption))
+				groupbox.removeChild(component);
+		}
+	}
+	/**
+	 * Genera el objeto imagen para los pisos del bus
+	 * @param src		: Path de la imagen a mostrar.
+	 * @param width		: Ancho de la imagen.
+	 * @param height	: Alto de la imagen.
+	 * @return Image.
+	 */
+	private static Image generarImagen(String src, Integer width, Integer height){
+		Image imagen = new Image();
+		imagen.setSrc(src);
+		if(width!=null)
+			imagen.setWidth(String.valueOf(width)+"px");
+		if(height!=null)
+			imagen.setHeight(String.valueOf(height)+"px");
+		return imagen;
+	}
+	
+	public static void registrarBloqueoAsiento(AsientoPool asiento)throws Exception{
+		OcupacionAsientosBloqueadosPool bloqueadosPool= new OcupacionAsientosBloqueadosPool();
+		bloqueadosPool.setAgencia(asiento.getAgencia());
+		bloqueadosPool.setCodigoTransaccion(asiento.getResultBloquearAsiento().getCodigoTransaccion().getValue());
+		bloqueadosPool.setFechaPartida(Constantes.FORMAT_DATE.parse(asiento.getObjectCruzdelsur().getHorario().getFechaHoraEmbarque1().getValue().split(" ")[0].trim()));
+		bloqueadosPool.setHoraPartida(asiento.getObjectCruzdelsur().getHorario().getFechaHoraEmbarque1().getValue().split(" ")[1].trim());
+		bloqueadosPool.setOperacion(Constantes.OPERADO_POR_CRUZ_DEL_SUR);
+		bloqueadosPool.setNumeroAsiento(asiento.getNumeroAsiento());
+		bloqueadosPool.setPiso(asiento.getNivelAsiento());
+		bloqueadosPool.setRuta(asiento.getObjectCruzdelsur().getHorario().getRuta().getValue().toUpperCase());
+		bloqueadosPool.setUsuario(asiento.getUsuario());
+		bloqueadosPool.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+		UtilData.auditarRegistro(bloqueadosPool, asiento.getUsuario(), Executions.getCurrent());
+		ServiceLocator.getOcupacionAsientosBloqueadosPoolManager().guardar(bloqueadosPool);
+	}
+	
+	
+	public static void eliminarBloqueoAsiento(String codigoTransaccion)throws Exception{
+		ServiceLocator.getOcupacionAsientosBloqueadosPoolManager().delete(codigoTransaccion);
+	}
+	
+	/**
+	 * Realiza la anulacion de Boleto
+	 * @param numeroBoleto : numero de boleto de Cruz del Sur
+	 * @throws Exception
+	 */
+	public static void anularBoleto(String numeroBoleto)throws Exception{
+		String serie=numeroBoleto.split("-")[0];
+		String numero=numeroBoleto.split("-")[1];
+		
+		ResultAnularBoleto resultAnularBoleto=getSoap().anularBoleto(serie, numero);
+		if(resultAnularBoleto.isAnulado()){
+			
+		}else{
+			if(resultAnularBoleto.getError().getValue()==null){
+				throw new Exception("No se pudo anular el Boleto.");
+			}else{
+				throw new Exception(resultAnularBoleto.getError().getValue().getMessage().getValue());
+			}
+		}
+	}
+	
+}

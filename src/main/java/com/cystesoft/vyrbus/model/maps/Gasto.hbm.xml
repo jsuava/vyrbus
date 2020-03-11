@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.cystesoft.vyrbus.model.bean.Gasto" table="VRTGASTO" schema="VYR">
+        <comment>Entida que almacena los diferentes conceptos de lo gastos.</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="GASTO_ID" precision="5" scale="0" />
+            <generator class="sequence">
+                <param name="sequence">SEQ_VRTGASTO_ID</param>
+            </generator>
+        </id>
+        <many-to-one name="tipoGasto" class="com.cystesoft.vyrbus.model.bean.TipoGasto" fetch="select">
+            <column name="TIPGAS_ID" precision="2" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 2.</comment>
+            </column>
+        </many-to-one>
+        <property name="numeroDocumento" type="java.lang.String">
+            <column name="C_NUMDOC" length="20">
+                <comment>Numero de documento que sustenta el gasto en caso este lo tuviese.</comment>
+            </column>
+        </property>
+        <property name="monto" type="java.lang.Double">
+            <column name="N_MONTO" precision="10" scale="2" not-null="true">
+                <comment>Monto al cual asciende el gasto.</comment>
+            </column>
+        </property>
+        <property name="nombrePiloto" type="java.lang.String">
+            <column name="C_NOMPIL" length="30">
+                <comment>Nombre de la persona a la que se entrega el dinero para el gasto.</comment>
+            </column>
+        </property>
+        <property name="codigoBus" type="java.lang.String">
+            <column name="C_CODBUS" length="5">
+                <comment>Codigo del bus al cual va designado el gasto en caso de peajes.</comment>
+            </column>
+        </property>
+        <property name="consignado" type="java.lang.String">
+            <column name="C_CONSIGNADO" length="30">
+                <comment>Nombre de la persona que recibira el dinero en el caso de giros.</comment>
+            </column>
+        </property>
+        <property name="observacion" type="java.lang.String">
+            <column name="C_OBSERVACION" length="200">
+                <comment>Descripcion que sustenta el gasto.</comment>
+            </column>
+        </property>
+        <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+        <property name="estadoRegistro" type="java.lang.String">
+            <column name="C_ESTREG" length="1" not-null="true">
+                <comment>Estado de registro A(Activo), I(Inactivo).</comment>
+            </column>
+        </property>
+        <property name="fechaInsercion" type="java.util.Date">
+            <column name="AUDFECINS" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioInsercion" type="java.lang.String">
+            <column name="AUDUSUINS" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipInsercion" type="java.lang.String">
+            <column name="AUDIPINSE" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="fechaModificacion" type="java.util.Date">
+            <column name="AUDFECMOD" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioModificacion" type="java.lang.String">
+            <column name="AUDUSUMOD" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipModificacion" type="java.lang.String">
+            <column name="AUDIPMODI" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <!-- 		END CAMPOS DE AUDITORIA	 	-->
+    </class>
+</hibernate-mapping>

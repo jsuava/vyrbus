@@ -1,0 +1,1395 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Fecha		: 24/06/2014
+ */
+package com.tepsa.sisvyr.view.ctrl;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
+import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.WrongValueException;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Button;
+import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Comboitem;
+import org.zkoss.zul.Datebox;
+import org.zkoss.zul.Image;
+import org.zkoss.zul.Label;
+import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Separator;
+import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Toolbarbutton;
+import org.zkoss.zul.Window;
+
+import com.tepsa.sisvyr.model.bean.Liquidacion;
+import com.tepsa.sisvyr.model.bean.Nacionalidad;
+import com.tepsa.sisvyr.model.bean.Pasajero;
+import com.tepsa.sisvyr.model.bean.TipoMovimiento;
+import com.tepsa.sisvyr.model.bean.Ubigeo;
+import com.tepsa.sisvyr.model.bean.VSAfiliacion;
+import com.tepsa.sisvyr.model.bean.VSAsegurado;
+import com.tepsa.sisvyr.model.bean.VSCiudad;
+import com.tepsa.sisvyr.model.bean.VSEstadoCivil;
+import com.tepsa.sisvyr.model.bean.VSLiquidacion;
+import com.tepsa.sisvyr.model.bean.VSSexo;
+import com.tepsa.sisvyr.model.bean.VSTipoDocumento;
+import com.tepsa.sisvyr.model.bean.VSTipoPersona;
+import com.tepsa.sisvyr.model.bean.VSTipoRegistro;
+import com.tepsa.sisvyr.model.bean.VentaPasaje;
+import com.tepsa.sisvyr.service.exceptions.VSAfialiacionException;
+import com.tepsa.sisvyr.service.locator.ServiceLocator;
+import com.tepsa.sisvyr.service.util.Constantes;
+import com.tepsa.sisvyr.service.util.CreateDocument;
+import com.tepsa.sisvyr.service.util.Messages;
+import com.tepsa.sisvyr.service.util.Util;
+import com.tepsa.sisvyr.service.util.UtilData;
+import com.tepsa.sisvyr.view.ui.DlgMessage;
+import com.tepsa.sisvyr.view.ui.WndBase;
+import com.tepsa.sisvyr.view.ui.WndImprimir;
+
+
+/**
+ * @author JABANTO
+ *
+ */
+public class WndVSAfiliacion extends WndBase {
+	private static final long serialVersionUID = 1L;
+	//Parametros de Busqueda
+	private Textbox txtNumeroBoleto;
+	private Image imgBuscar;
+	private Label lblInfoPax;
+	//Datos del Asegurado
+	private Combobox cmbTipoDocumento;
+	private Textbox txtNumeroDucumento;
+	private Textbox txtApellidoPaterno;
+	private Textbox txtApellidoMaterno;
+	private Textbox txtNombres;
+	private Datebox dtbxFechaNacimineto;
+	private Combobox cmbSexo;
+	private Textbox txtDireccion;
+	private Textbox txtUbigeo;
+	private Textbox txtIdUbigeo;
+	private Textbox txtTelefonoDomicilio;
+	private Textbox txtTelefonoCelular;
+	private Combobox cmbEstadoCivil;
+	private Button btnBuscarUbigeo;
+	private Toolbarbutton tbbAseguradoEditar;
+	private Toolbarbutton tbbAseguradoGuardar;
+	private Toolbarbutton tbbAseguradoCancelar;
+	private Combobox cmbNacionalidad;
+	private Textbox txtUrbanizacion;
+	private Textbox txtEmail;
+	//Datos de la afiliacion
+	private Label lblTipoRegistro;
+	private Label lblCertificado;
+	private Label lblTipoPersona;
+	private Label lblCiudadDestino;
+	private Label lblFechaVenta;
+	private Label lblRuta;
+	private Label lblFechaVigenciaInicial;
+	private Label lblFechaVigenciaFinal;
+	private Label lblCostoSeguro;
+	private Label lblImportePagar;
+	private Label lblBoleto;
+	private Toolbarbutton tbbAfiliacionGrabar;
+	private Toolbarbutton tbbAfiliacionCancelar;
+	private Separator sepToolsAfiliacion;
+	
+	private VSAsegurado vsAsegurado;
+	private VentaPasaje ventaPasaje;
+	private VSLiquidacion vsLiquidacion;
+	private VSAfiliacion afiliacion;
+	//Otras variables
+	private int actionAsegurado;
+	private String imageEnabled="/resources/mp_buscarEnabled.png";
+	private String imageDisabled="/resources/mp_buscarDisabled.png";
+	private String labelPaxFree="PAXFREE";
+	private List<VSCiudad>listCiudades=new ArrayList<VSCiudad>();
+	private Integer VIGENCIA_SEGURO=10; //Expresado en días
+	private Double COSTO_X_SEGURO_PAXFREE=0.00;
+	private Double COSTO_X_SEGURO=2.00;
+	private Integer ID_TIPREG_ASEGURADO=3;
+	private String LABEL_TIPREG_ASEGURADO="ASEGURADO";
+	private Integer ID_TIPPER_NATURAL=1;
+	private String LABEL_TIPPER_NATURAL="NATURAL";
+	Date fechaTope=new Date();
+	
+	//Controles de la Anulacion de Certificado
+	private Textbox txtNumeroBoletoAnular;
+	private Label lblNumeroCertificado;
+	private Label lblFechaCertificado;
+	private Label lblPasajero;
+	private Label lblBoletoAnulacion;
+	private Checkbox chbxAnularBoleto;
+	private Toolbarbutton btnAnularCertificado;
+	
+	/* (non-Javadoc)
+	 * @see com.tepsa.vs.view.ui.IBase#initComponents()
+	 */
+	@Override
+	public void initComponents() {
+		// TODO Auto-generated method stub
+		
+		ScriptEngineManager mgr = new ScriptEngineManager();
+		ScriptEngine engine = mgr.getEngineByName("JavaScript");
+		String expresion = "40+2-5";
+		
+		try {
+			System.out.println(engine.eval(expresion));
+			
+		} catch (ScriptException e) {
+			e.printStackTrace();
+		}
+		
+		
+		//Parametros de busqueda
+		txtNumeroBoleto=(Textbox)this.getFellow("txtNumeroBoleto");
+		imgBuscar=(Image)this.getFellow("imgBuscar");
+		lblInfoPax=(Label)this.getFellow("lblInfoPax");
+		//Datos del Asegurado
+		cmbTipoDocumento=(Combobox)this.getFellow("cmbTipoDocumento");
+		txtNumeroDucumento=(Textbox)this.getFellow("txtNumeroDucumento");
+		txtApellidoPaterno=(Textbox)this.getFellow("txtApellidoPaterno");
+		txtApellidoMaterno=(Textbox)this.getFellow("txtApellidoMaterno");
+		txtNombres=(Textbox)this.getFellow("txtNombres");
+		dtbxFechaNacimineto=(Datebox)this.getFellow("dtbxFechaNacimineto");
+		cmbSexo=(Combobox)this.getFellow("cmbSexo");
+		txtDireccion=(Textbox)this.getFellow("txtDireccion");
+		txtUbigeo=(Textbox)this.getFellow("txtUbigeo");
+		txtTelefonoDomicilio=(Textbox)this.getFellow("txtTelefonoDomicilio");
+		txtTelefonoCelular=(Textbox)this.getFellow("txtTelefonoCelular");
+		cmbEstadoCivil=(Combobox)this.getFellow("cmbEstadoCivil");
+		txtIdUbigeo=(Textbox)this.getFellow("txtIdUbigeo");
+		btnBuscarUbigeo=(Button)this.getFellow("btnBuscarUbigeo");
+		cmbNacionalidad=(Combobox)this.getFellow("cmbNacionalidad");
+		txtUrbanizacion=(Textbox)this.getFellow("txtUrbanizacion");
+		txtEmail=(Textbox)this.getFellow("txtEmail");
+		//Datos de la afiliacion
+		lblTipoRegistro=(Label)this.getFellow("lblTipoRegistro");
+		lblTipoPersona=(Label)this.getFellow("lblTipoPersona");
+		lblCertificado=(Label)this.getFellow("lblCertificado");
+		lblFechaVenta=(Label)this.getFellow("lblFechaVenta");
+		lblFechaVigenciaInicial=(Label)this.getFellow("lblFechaVigenciaInicial");
+		lblFechaVigenciaFinal=(Label)this.getFellow("lblFechaVigenciaFinal");
+		lblCostoSeguro=(Label)this.getFellow("lblCostoSeguro");
+		lblCiudadDestino=(Label)this.getFellow("lblCiudadDestino");
+		lblImportePagar=(Label)this.getFellow("lblImportePagar");
+		lblRuta=(Label)this.getFellow("lblRuta");
+		lblBoleto=(Label)this.getFellow("lblBoleto");
+		sepToolsAfiliacion=(Separator)this.getFellow("sepToolsAfiliacion");
+		//toolbar asegurado
+		tbbAseguradoEditar=(Toolbarbutton)this.getFellow("tbbAseguradoEditar");
+		tbbAseguradoGuardar=(Toolbarbutton)this.getFellow("tbbAseguradoGuardar");
+		tbbAseguradoCancelar=(Toolbarbutton)this.getFellow("tbbAseguradoCancelar");
+		//ToolBar afiliacion
+		tbbAfiliacionGrabar=(Toolbarbutton)this.getFellow("tbbAfiliacionGrabar");
+		tbbAfiliacionCancelar=(Toolbarbutton)this.getFellow("tbbAfiliacionCancelar");
+		
+		/*Anulacion de certificado*/
+		txtNumeroBoletoAnular=(Textbox)this.getFellow("txtNumeroBoletoAnular");
+		lblNumeroCertificado=(Label)this.getFellow("lblNumeroCertificado");
+		lblFechaCertificado=(Label)this.getFellow("lblFechaCertificado");
+		lblPasajero=(Label)this.getFellow("lblPasajero");
+		lblBoletoAnulacion=(Label)this.getFellow("lblBoletoAnulacion");
+		chbxAnularBoleto=(Checkbox)this.getFellow("chbxAnularBoleto");
+		btnAnularCertificado=(Toolbarbutton)this.getFellow("btnAnularCertificado");
+		
+		imgBuscar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				if(imgBuscar.getSrc().equals(imageEnabled))
+					buscarBoleto();
+			}
+		});
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.tepsa.vs.view.ui.WndBase#onCreate()
+	 */
+	@Override
+	public void onCreate() throws Exception {
+		//Valida si el usuario tiene una liquidacon abierta en el SISVYR
+		Liquidacion liquidacion=ServiceLocator.getLiquidacionManager().buscarUltimaLiquidacion(getAgencia().getId(), getUsuario().getId(), Constantes.TRUE_VALUE);
+		if(liquidacion!=null){
+			//Verifica si el usuario tiene una liquidacion abierta para la venta de seguros
+			vsLiquidacion=ServiceLocator.getVentaSeguroManager().buscarLiquidacion(getUsuario().getId().intValue(),getAgencia().getId().intValue(), Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()),null);
+			if(vsLiquidacion==null){
+				//Apertura una liquidacion con la misma fecha de la del SISVYR
+				vsLiquidacion=new VSLiquidacion();
+				vsLiquidacion.setAnio(liquidacion.getAnio());
+				vsLiquidacion.setUsuarioID(getUsuario().getId());
+				vsLiquidacion.setNombreUsuario(getUsuario().getLogin());
+				vsLiquidacion.setAgenciaID(getAgencia().getId());
+				vsLiquidacion.setFechaLiquidacion(liquidacion.getFechaLiquidacion());
+				vsLiquidacion.setMontoIngresado(0.00);
+				vsLiquidacion.setEstadoLiquidacion(Constantes.TRUE_VALUE);
+				vsLiquidacion.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+				UtilData.auditarRegistro(vsLiquidacion, getUsuario(), Executions.getCurrent());
+				ServiceLocator.getVentaSeguroManager().aperturarLiquidacion(vsLiquidacion);
+			}else{
+				//Valida si la liquidacion encontrada este abierta.
+				if(vsLiquidacion.getEstadoLiquidacion().intValue()==Constantes.FALSE_VALUE){
+					DlgMessage.information("La liquidación de fecha "+Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion())+" para la venta de seguros ya fue Cerrada. ");
+					closeTabWindow();
+					return;
+				}
+			}
+			
+			cargarTipoDocumento(cmbTipoDocumento);
+			cargarSexo(cmbSexo);
+			cargarEstoCivil(cmbEstadoCivil);
+			UtilData.cargarDataCombo(cmbNacionalidad, Nacionalidad.class, false);
+			//Carga las ciudades destino
+			listCiudades=ServiceLocator.getVentaSeguroManager().buscarCiudadesPorEstado(Constantes.VALUE_ACTIVO);
+			
+			UtilData.enlazarUbigeo(txtIdUbigeo, txtUbigeo, btnBuscarUbigeo,null);
+			cmbTipoDocumento.setSelectedIndex(0);
+			cmbSexo.setSelectedIndex(0);
+			cmbEstadoCivil.setSelectedIndex(0);
+			
+			fechaTope=Constantes.FORMAT_DATE.parse("01/01/1914");
+			String fecha = Util.DatetoString(fechaTope, "yyyyMMdd");
+			dtbxFechaNacimineto.setConstraint("after "+fecha);
+			
+			
+			sepToolsAfiliacion.setHeight("18px");
+		}else{
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noLiquidacion"));
+			closeTabWindow();
+			return;
+		}
+	}
+
+	/* ********************ASEGURADO***********************/
+	/**
+	 * Realiza la busqueda del Asegurado
+	 * @throws Exception
+	 */
+	public void buscarBoleto() throws Exception{
+		limpiaControlsAsegurado();
+		limpiaControlesAfiliacion();
+		disabledBtnEditar(true, tbbAseguradoEditar, accesoModificar());
+		disabledBtnGuardar(true, tbbAseguradoGuardar, accesoGrabar());
+		disabledBtnCancelar(true, tbbAfiliacionCancelar);
+		disabledBtnGuardar(true, tbbAfiliacionGrabar, accesoGrabar());
+		
+		if(!(txtNumeroBoleto.getText().trim().isEmpty())){
+			txtNumeroBoleto.setText(Util.autocompleNumberBoleto(txtNumeroBoleto.getText().trim()));
+			ventaPasaje=ServiceLocator.getVentaPasajesManager().buscarBoletoByAsegurado(txtNumeroBoleto.getText().trim());
+			if(ventaPasaje!=null){
+				
+				/*Valida que la fecha de emision del boleto corresponda al mismo día (Solo permite)*/
+				Date fechaActual=Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date()));
+				if(ventaPasaje.getFechaPartida().getTime()<fechaActual.getTime()){
+					DlgMessage.information("No puede registrar una Afiliación cuya fecha de viaje sea menor a la de hoy (Fecha viaje "+Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida())+")" );
+					return;
+				}
+				
+				/* Valida si el pasajero existe en la DB ventaSeguro*/
+				vsAsegurado=ServiceLocator.getVentaSeguroManager().buscarAseguradoByDocumento(ventaPasaje.getPasajero().getTipoDocumento().getId(), ventaPasaje.getPasajero().getNumeroDocumento());
+				if(vsAsegurado==null){//No se encontro el asegurado.
+					Pasajero pasajero=ventaPasaje.getPasajero();
+					vsAsegurado=new VSAsegurado();
+					vsAsegurado.setVsTipoDocumento(new VSTipoDocumento(pasajero.getTipoDocumento().getId()));
+					vsAsegurado.setNumeroDocumento(pasajero.getNumeroDocumento()!=null?pasajero.getNumeroDocumento():"");
+					vsAsegurado.setApellidoPaterno(pasajero.getApellidoPaterno());
+					vsAsegurado.setApellidoMaterno(pasajero.getApellidoMaterno()!=null?pasajero.getApellidoMaterno():null);
+					vsAsegurado.setNombres(pasajero.getNombre());
+					vsAsegurado.setFechaNacimiento(pasajero.getFechaNacimiento()!=null?Constantes.FORMAT_DATE.parse(pasajero.getFechaNacimiento()):null);
+					vsAsegurado.setVsSexo(new VSSexo(pasajero.getSexo().getId()));
+					vsAsegurado.setDireccion(pasajero.getDireccion()!=null?pasajero.getDireccion():null);
+					vsAsegurado.setUbigeoDepartamento(pasajero.getUbigeo().getCodigoDepartamento());
+					vsAsegurado.setUbigeoProvincia(pasajero.getUbigeo().getCodigoProvincia());
+					vsAsegurado.setUbigeoDistrito(pasajero.getUbigeo().getCodigoDistrito());
+					vsAsegurado.setUbigeo(pasajero.getUbigeo());
+					vsAsegurado.setNacionalidadID(pasajero.getNacionalidad()!=null?pasajero.getNacionalidad().getId():null);
+					vsAsegurado.setEmail(pasajero.getEmail()!=null?pasajero.getEmail():null);
+					if(pasajero.getTelefono()!=null)
+						vsAsegurado.setTelefono(pasajero.getTelefono());
+					if(pasajero.getEstadoCivil()!=null)
+						vsAsegurado.setVsEstadoCivil(new VSEstadoCivil(pasajero.getEstadoCivil().getId()));						
+				}
+				cargarDatosAsegurado(vsAsegurado);
+				cargarDatosAfiliacion(ventaPasaje);
+//				lblCertificado.setDisabled(false);
+//				lblCertificado.setFocus(true);	
+				disabledBtnGuardar(false, tbbAfiliacionGrabar, accesoGrabar());
+				disabledBtnCancelar(false, tbbAfiliacionCancelar);
+			}else
+				DlgMessage.information(Messages.getString("WndVSAfiliacion.information.noResulBusuqeda"),txtNumeroBoleto);
+		}
+	}	
+	/**
+	 * Cargar los datos del asegurado.
+	 * @param asegurado	: Objeto asegurado.
+	 * @throws Exception
+	 */
+	private void cargarDatosAsegurado(VSAsegurado asegurado) throws Exception{
+		//Valida si es pasajero frecuente
+		if(ventaPasaje.getPasajero().isPaxFree())
+			lblInfoPax.setValue(labelPaxFree);
+		else
+			lblInfoPax.setValue("");
+		//Sea el id del ubigeo
+		Ubigeo ubigeo=new Ubigeo();
+		ubigeo.setId(asegurado.getUbigeoDepartamento()+""+asegurado.getUbigeoProvincia()+""+asegurado.getUbigeoDistrito());
+		asegurado.setUbigeo(ubigeo);;
+		
+		if(asegurado.getVsTipoDocumento().getId().intValue()!=Constantes.ID_TIPDOC_SN){
+			Util.seleccionarValorItemCombo(VSTipoDocumento.class, cmbTipoDocumento, asegurado.getVsTipoDocumento().getId());
+			if(cmbTipoDocumento.getSelectedIndex()==-1)
+				cmbTipoDocumento.setSelectedIndex(0);
+			txtNumeroDucumento.setText(asegurado.getNumeroDocumento());
+		}else{
+			cmbTipoDocumento.setSelectedIndex(0);
+			txtNumeroDucumento.setText("");
+		}
+		txtApellidoPaterno.setText(asegurado.getApellidoPaterno());
+		txtApellidoMaterno.setText(asegurado.getApellidoMaterno()!=null?asegurado.getApellidoMaterno():"");
+		txtNombres.setText(asegurado.getNombres());
+		if(asegurado.getFechaNacimiento()!=null)
+			dtbxFechaNacimineto.setValue(asegurado.getFechaNacimiento());
+		else
+			dtbxFechaNacimineto.setValue(null);
+		Util.seleccionarValorItemCombo(VSSexo.class, cmbSexo, asegurado.getVsSexo().getId());
+		if(cmbSexo.getSelectedIndex()==-1)
+			cmbSexo.setSelectedIndex(0);
+		if(asegurado.getVsEstadoCivil()!=null){
+			Util.seleccionarValorItemCombo(VSEstadoCivil.class, cmbEstadoCivil, asegurado.getVsEstadoCivil().getId());
+			if(cmbEstadoCivil.getSelectedIndex()==-1)
+				cmbEstadoCivil.setSelectedIndex(0);
+		}else 
+			cmbEstadoCivil.setSelectedIndex(0);
+		txtUbigeo.setText(ServiceLocator.getUbigeoManager().ubicacionGeografica(asegurado.getUbigeo().getId()));
+		txtIdUbigeo.setText(asegurado.getUbigeo().getId());
+		txtDireccion.setText(asegurado.getDireccion()!=null?asegurado.getDireccion():"");
+		if(asegurado.getTelefono()!=null){
+			if(asegurado.getTelefono().length()<=12)
+				txtTelefonoDomicilio.setText(asegurado.getTelefono());
+			else
+				txtTelefonoDomicilio.setText(asegurado.getTelefono().substring(0,12));
+				
+		}
+		
+		/*si es dni la nacionalidad es PERU*/
+		if(asegurado.getNacionalidadID()==null && asegurado.getVsTipoDocumento().getId().intValue()==Constantes.ID_TIPDOC_DNI)
+			asegurado.setNacionalidadID(184);
+				
+		if(asegurado.getNacionalidadID()!=null)
+			Util.seleccionarValorItemCombo(Nacionalidad.class, cmbNacionalidad, asegurado.getNacionalidadID());
+		
+		if(asegurado.getUrbanizacion()!=null)
+			txtUrbanizacion.setText(asegurado.getUrbanizacion());
+		if(asegurado.getEmail()!=null)
+			txtEmail.setText(asegurado.getEmail());
+		if(asegurado.getCelular()!=null){
+			if(asegurado.getCelular().length()<=12)
+				txtTelefonoCelular.setText(asegurado.getCelular());
+			else
+				txtTelefonoCelular.setText(asegurado.getCelular().substring(0,12));
+		}
+		
+		
+		disabledBtnEditar(false, tbbAseguradoEditar, accesoModificar());
+		
+		sepToolsAfiliacion.setHeight("0px");
+	}
+	/**
+	 * Carga datos para la afiliacion.
+	 * @param ventaPasaje
+	 * @throws Exception 
+	 */
+	private void cargarDatosAfiliacion(VentaPasaje ventaPasaje) throws Exception{
+		lblTipoRegistro.setValue(LABEL_TIPREG_ASEGURADO);
+		lblTipoPersona.setValue(LABEL_TIPPER_NATURAL);
+		VSCiudad ciudad=getCiudadDestino(ventaPasaje.getRuta().getDestino());
+		if(ciudad!=null)
+			lblCiudadDestino.setValue(ciudad.getDenominacion());
+//		lblFechaVenta.setValue(Constantes.FORMAT_DATE.format(ventaPasaje.getFechaLiquidacion()));
+		lblFechaVenta.setValue(Constantes.FORMAT_DATE.format(vsLiquidacion.getFechaLiquidacion()));
+		lblRuta.setValue(ventaPasaje.getRuta().toString());
+		lblFechaVigenciaInicial.setValue(Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida()));
+		/* Calcula la fecha de vigencia final*/
+		Long fechaInicial=Constantes.FORMAT_DATE.parse(lblFechaVigenciaInicial.getValue()).getTime();
+		Long diasVigencia=Constantes.MILISEGUNDOS_X_DIA*VIGENCIA_SEGURO;
+		Date fechaFinVigencia=new Date(fechaInicial+diasVigencia);
+		lblFechaVigenciaFinal.setValue(Constantes.FORMAT_DATE.format(fechaFinVigencia));
+		lblCostoSeguro.setValue(Util.toNumberFormat(COSTO_X_SEGURO,2));
+		lblBoleto.setValue(txtNumeroBoleto.getText().trim());
+		
+		/*Conbierte el Nro de boleto a Certificado*/
+		String serie=txtNumeroBoleto.getText().substring(0,txtNumeroBoleto.getText().indexOf("-"));
+		String numero=txtNumeroBoleto.getText().substring(txtNumeroBoleto.getText().indexOf("-")+1,txtNumeroBoleto.getText().length());
+		lblCertificado.setValue(serie+""+numero);
+		
+		/* Valida si es frecuente o no*/
+		if(ventaPasaje.getPasajero().isPaxFree())
+			lblImportePagar.setValue(Util.toNumberFormat(COSTO_X_SEGURO_PAXFREE,2));
+		else
+			lblImportePagar.setValue(Util.toNumberFormat(COSTO_X_SEGURO,2));
+	}
+	/**
+	 * Busca la ciudad destino, en base a la loacalidad destino del sisvyr
+	 * @param localidadDestino : Nombre de la licalidad destino.
+	 * @return
+	 */
+	private VSCiudad getCiudadDestino(String localidadDestino){
+		VSCiudad ciudadDestino=null;
+		for(VSCiudad ciudad: listCiudades){
+			if(ciudad.getDenominacion().toUpperCase().equals(localidadDestino.toUpperCase())){
+				ciudadDestino=ciudad;
+				break;
+			}
+		}
+		return ciudadDestino;
+	}
+	/**
+	 * Evento editar asegurado	
+	 */
+	public void editarAsegurado(){
+		disabledControlsAsegurado(false);
+		disabledBtnGuardar(false, tbbAseguradoGuardar, accesoGrabar());
+		disabledBtnCancelar(false, tbbAseguradoCancelar);
+		disabledBtnEditar(true, tbbAseguradoEditar, accesoModificar());
+		txtNumeroBoleto.setDisabled(true);
+		disabledImageBuscar(imageDisabled);
+		actionAsegurado=Constantes.ACTION_MODIFY;
+	}
+	/**
+	 * Evento Cancelar operacion asegurado
+	 * @throws Exception 
+	 */
+	public void cancelarOperacionAsegurado() throws Exception{
+		disabledControlsAsegurado(true);
+		disabledBtnEditar(false, tbbAseguradoEditar, accesoModificar());
+		disabledBtnGuardar(true, tbbAseguradoGuardar, accesoGrabar());
+		disabledBtnCancelar(true, tbbAseguradoCancelar);
+		cargarDatosAsegurado(vsAsegurado);	
+		txtNumeroBoleto.setDisabled(false);
+		disabledImageBuscar(imageEnabled);
+	}
+	/**
+	 * Guarda un asegurado
+	 * @param SolictaConsfir : indica si se debe solicitar confirmacion al usuario.
+	 */
+	public void guardarAsegurado(Boolean SolictaConsfir) throws Exception{
+		try{
+			if(validarDatosAsegurado()==false)
+				return;
+	 		if(vsAsegurado.getId()==null)
+				actionAsegurado=Constantes.ACTION_NEW;
+			else
+				actionAsegurado=Constantes.ACTION_MODIFY;
+			
+			Ubigeo ubigeo=ServiceLocator.getUbigeoManager().buscarPorId(txtIdUbigeo.getText().trim());
+			if(actionAsegurado==Constantes.ACTION_NEW)
+				vsAsegurado=new VSAsegurado();
+			vsAsegurado.setVsTipoDocumento((VSTipoDocumento)cmbTipoDocumento.getSelectedItem().getValue());
+			vsAsegurado.setNumeroDocumento(txtNumeroDucumento.getText().trim().toUpperCase());
+			vsAsegurado.setApellidoPaterno(txtApellidoPaterno.getText().trim().toUpperCase());
+			vsAsegurado.setApellidoMaterno(txtApellidoMaterno.getText().trim().toUpperCase());
+			vsAsegurado.setNombres(txtNombres.getText().trim().toUpperCase());
+			if(dtbxFechaNacimineto.getValue()!=null)
+				vsAsegurado.setFechaNacimiento(dtbxFechaNacimineto.getValue());
+			vsAsegurado.setVsSexo((VSSexo)cmbSexo.getSelectedItem().getValue());
+			vsAsegurado.setUbigeo(new Ubigeo(txtIdUbigeo.getText()));
+			vsAsegurado.setUbigeoDepartamento(ubigeo.getCodigoDepartamento());
+			vsAsegurado.setUbigeoProvincia(ubigeo.getCodigoProvincia());
+			vsAsegurado.setUbigeoDistrito(ubigeo.getCodigoDistrito());
+			vsAsegurado.setDireccion(txtDireccion.getText().trim().toUpperCase());
+			vsAsegurado.setTelefono(txtTelefonoDomicilio.getText().trim());
+			vsAsegurado.setCelular(txtTelefonoCelular.getText().trim());
+			vsAsegurado.setVsEstadoCivil((VSEstadoCivil)cmbEstadoCivil.getSelectedItem().getValue());
+			if(cmbNacionalidad.getSelectedItem().getValue() instanceof Nacionalidad)
+				vsAsegurado.setNacionalidadID(((Nacionalidad)cmbNacionalidad.getSelectedItem().getValue()).getId());
+			vsAsegurado.setUrbanizacion(txtUrbanizacion.getText().trim().toUpperCase());
+			vsAsegurado.setEmail(txtEmail.getText().trim().toUpperCase());
+			vsAsegurado.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+						
+			if(SolictaConsfir){
+				Messagebox.show(Messages.getString("Generales.query.guardar"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
+					@Override
+					public void onEvent(Event e) throws Exception {
+						if(e.getName().equals("onYes")){
+							switch (actionAsegurado) {
+								case Constantes.ACTION_NEW:
+									UtilData.auditarRegistro(vsAsegurado, getUsuario(), Executions.getCurrent());
+									ServiceLocator.getVentaSeguroManager().guardarAsegurado(vsAsegurado);
+									break;
+								case Constantes.ACTION_MODIFY:
+									UtilData.auditarRegistro(vsAsegurado, true, getUsuario(), Executions.getCurrent());
+									ServiceLocator.getVentaSeguroManager().actualizarAsegurado(vsAsegurado);
+									break;
+							}
+							disabledControlsAsegurado(true);
+							txtNumeroBoleto.setDisabled(false);		
+							disabledImageBuscar(imageEnabled);
+							disabledBtnEditar(false, tbbAseguradoEditar, accesoModificar());
+							disabledBtnGuardar(true, tbbAseguradoGuardar, accesoGrabar());
+							disabledBtnCancelar(true, tbbAseguradoCancelar);
+							
+							//Realiza la compraracion de los datos del Asegurado con los registrados en la tabla VRMPASAJEROS, para actualizarlos.
+//							comprarDatosPaxAsegurado(vsAsegurado);
+						}
+					}
+				});
+			}else{
+				switch (actionAsegurado) {
+					case Constantes.ACTION_NEW:
+						/* Valida si el pasajero existe en la DB ventaSeguro*/
+					    VSAsegurado	ovsAsegurado=ServiceLocator.getVentaSeguroManager().buscarAseguradoByDocumento(vsAsegurado.getVsTipoDocumento().getId(), vsAsegurado.getNumeroDocumento());
+					    if(ovsAsegurado==null){
+					    	UtilData.auditarRegistro(vsAsegurado, getUsuario(), Executions.getCurrent());
+							ServiceLocator.getVentaSeguroManager().guardarAsegurado(vsAsegurado);	
+					    }else{
+					    	UtilData.auditarRegistro(vsAsegurado, true, getUsuario(), Executions.getCurrent());
+							ServiceLocator.getVentaSeguroManager().actualizarAsegurado(vsAsegurado);
+					    }
+						break;
+					case Constantes.ACTION_MODIFY:
+						UtilData.auditarRegistro(vsAsegurado, true, getUsuario(), Executions.getCurrent());
+						ServiceLocator.getVentaSeguroManager().actualizarAsegurado(vsAsegurado);
+						break;
+				}
+				disabledControlsAsegurado(true);
+				txtNumeroBoleto.setDisabled(false);		
+				disabledImageBuscar(imageEnabled);
+				disabledBtnEditar(false, tbbAseguradoEditar, accesoModificar());
+				disabledBtnGuardar(true, tbbAseguradoGuardar, accesoGrabar());
+				disabledBtnCancelar(true, tbbAseguradoCancelar);
+				
+				//Realiza la compraracion de los datos del Asegurado con los registrados en la tabla VRMPASAJEROS, para actualizarlos.
+//				comprarDatosPaxAsegurado(vsAsegurado);
+			}
+			
+		}catch (WrongValueException fr){
+			DlgMessage.information(Messages.getString("WndVSAfiliacion.information.FechaNacimientoFueraRango"),dtbxFechaNacimineto);
+		}catch (Exception ex){
+			vsAsegurado=null;
+			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
+			ex.printStackTrace();
+		}
+	}
+//	/**
+//	 * Realiza la compraracion de los datos del Asegurado con los registrados en la tabla VRMPASAJEROS, para actualizarlos.
+//	 * @param vsAsegurado
+//	 * @throws Exception 
+//	 */
+//	private void comprarDatosPaxAsegurado(VSAsegurado vsAsegurado) throws Exception{
+//		Pasajero pasajero=ventaPasaje.getPasajero();
+//		int EST_CIV_CASADO=1;
+//		int EST_CIV_SOLTERO=2;
+//		int EST_CIV_VIUDO=3;
+//		int EST_CIV_DIVORCIADO=4;
+//		Boolean updatePax=false;
+//		Boolean updateNumDoc=false;
+//		
+//		//Tipo y numero de documento.
+//		if(pasajero.getTipoDocumento().getId().intValue()==Constantes.ID_TIPDOC_SN){
+//			if(vsAsegurado.getVsTipoDocumento().getId().intValue()==4){//Si es carnet de extrangeria
+//				pasajero.setTipoDocumento(new TipoDocumento(Constantes.ID_TIPDOC_CARNET_EXTRANJERIA));
+//			}else{
+//				pasajero.setTipoDocumento(new TipoDocumento(vsAsegurado.getVsTipoDocumento().getId()));
+//			}
+//			pasajero.setNumeroDocumento(vsAsegurado.getNumeroDocumento());
+//			updatePax=true;
+//			updateNumDoc=true;
+//		}else if (vsAsegurado.getVsTipoDocumento().getId().intValue()==Constantes.ID_TIPDOC_DNI && pasajero.getNumeroDocumento().length()!=8){
+//			//Cuando el tipo de documento es DNI y la longitud es diferente 8 digitos.
+//			pasajero.setNumeroDocumento(vsAsegurado.getNumeroDocumento());
+//			updateNumDoc=true;
+//		}
+//		//Apellido Materno
+//		if(pasajero.getApellidoMaterno()==null){
+//			pasajero.setApellidoMaterno(vsAsegurado.getApellidoMaterno());
+//			updatePax=true;
+//		}
+//		//Estado Civil
+//		if(pasajero.getEstadoCivil()==null){
+//			switch (vsAsegurado.getVsEstadoCivil().getId().intValue()) {
+//			case 1://Soltero(a)
+//				pasajero.setEstadoCivil(new EstadoCivil(EST_CIV_SOLTERO));
+//				updatePax=true;
+//				break;
+//			case 2://Casado(a)
+//				pasajero.setEstadoCivil(new EstadoCivil(EST_CIV_CASADO));
+//				updatePax=true;
+//				break;
+//			case 4://Divorciado(a)
+//				pasajero.setEstadoCivil(new EstadoCivil(EST_CIV_DIVORCIADO));
+//				updatePax=true;
+//				break;
+//			case 5://Viudo(a)
+//				pasajero.setEstadoCivil(new EstadoCivil(EST_CIV_VIUDO));
+//				updatePax=true;
+//				break;
+//			}
+//		}
+//		//Direccion
+//		if(pasajero.getDireccion()==null){
+//			pasajero.setDireccion(vsAsegurado.getDireccion());
+//			updatePax=true;
+//		}
+//		//Telefono
+//		if(pasajero.getTelefono()==null){
+//			pasajero.setTelefono(vsAsegurado.getTelefono()!=null?vsAsegurado.getTelefono():vsAsegurado.getCelular()!=null?vsAsegurado.getCelular():null);
+//			if(!(pasajero.getTelefono()==null))
+//				updatePax=true;
+//		}
+//		
+//		//Si existen cambios
+//		if(updatePax || updateNumDoc){
+//			Pasajero oPasajero=ServiceLocator.getPasajeroManager().buscarPorId(pasajero.getId());
+//			if(oPasajero.getTipoDocumento().getId().intValue()!=pasajero.getTipoDocumento().getId().intValue())
+//				oPasajero.setTipoDocumento(pasajero.getTipoDocumento());
+//			if(updateNumDoc || oPasajero.getNumeroDocumento()==null)
+//				oPasajero.setNumeroDocumento(pasajero.getNumeroDocumento()!=null?pasajero.getNumeroDocumento():null);
+//			if(oPasajero.getApellidoMaterno()==null)
+//				oPasajero.setApellidoMaterno(pasajero.getApellidoMaterno());
+//			if(oPasajero.getEstadoCivil()==null)
+//				oPasajero.setEstadoCivil(pasajero.getEstadoCivil()!=null?pasajero.getEstadoCivil():null);
+//			if(oPasajero.getDireccion()==null)
+//				oPasajero.setDireccion(pasajero.getDireccion());
+//			if(oPasajero.getTelefono()==null)
+//				oPasajero.setTelefono(pasajero.getTelefono());
+//			ServiceLocator.getPasajeroManager().actualizar(oPasajero);
+//		}
+		
+//	}
+	
+	
+	/**
+	 * Valida los datos del asegurado.
+	 * @return true, si los datos son correctos, false lo contrario
+	 * @throws Exception
+	 */
+	private boolean validarDatosAsegurado()throws Exception{
+		if(!(cmbTipoDocumento.getSelectedItem().getValue() instanceof VSTipoDocumento)){
+			DlgMessage.information(Messages.getString("WndVSAfiliacion.information.notipoDocumentoAsegurado"),cmbTipoDocumento);
+			return false;
+		}else if (txtNumeroDucumento.getText().isEmpty()){
+			DlgMessage.information(Messages.getString("WndVSAfiliacion.information.noNumeroDocumentoAsegurado"),txtNumeroDucumento);
+			return false;
+		}else if(((VSTipoDocumento)cmbTipoDocumento.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPDOC_DNI &&
+				txtNumeroDucumento.getText().length()!=8){
+			DlgMessage.information(Messages.getString("WndVSAfiliacion.information.noInvalidNumeroDocumento"),txtApellidoPaterno);
+			return false;
+		}else if (txtApellidoPaterno.getText().trim().isEmpty()){
+			DlgMessage.information(Messages.getString("WndVSAfiliacion.information.noApellidoPaterno"),txtApellidoPaterno);
+			return false;
+		}else if (txtApellidoMaterno.getText().trim().isEmpty()){
+			DlgMessage.information(Messages.getString("WndVSAfiliacion.information.noApellidoMaterno"),txtApellidoMaterno);
+			return false;
+		}else if(dtbxFechaNacimineto.getValue()==null){
+			DlgMessage.information(Messages.getString("WndVSAfiliacion.information.noFechaNacimiento"),dtbxFechaNacimineto);
+			return false;
+		}else if (dtbxFechaNacimineto.getValue().getTime()>new Date().getTime()){
+			DlgMessage.information(Messages.getString("WndVSAfiliacion.information.FechaNacimientoFueraRango"),dtbxFechaNacimineto);
+			return false;
+		}else if (!(cmbSexo.getSelectedItem().getValue() instanceof VSSexo)){
+			DlgMessage.information(Messages.getString("WndVSAfiliacion.information.noSexo"),cmbSexo);
+			return false;
+		}else if (!(cmbEstadoCivil.getSelectedItem().getValue() instanceof VSEstadoCivil)){
+			DlgMessage.information(Messages.getString("WndVSAfiliacion.information.noEstadoCivil"),cmbEstadoCivil);
+			return false;
+		}else if (txtUbigeo.getText().trim().isEmpty()){
+			DlgMessage.information(Messages.getString("WndVSAfiliacion.information.noUbigeo"),btnBuscarUbigeo);
+			return false;
+		}else if (txtDireccion.getText().trim().isEmpty() || txtDireccion.getText().trim().length()<=2){
+			DlgMessage.information(Messages.getString("WndVSAfiliacion.information.noDireccion"),txtDireccion);
+			return false;
+		}else if (((VSTipoDocumento)cmbTipoDocumento.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPDOC_DNI){
+			if(txtNumeroDucumento.getText().trim().length()!=8){
+				DlgMessage.information(Messages.getString("WndVSAfiliacion.information.numeroDniIncompleto"),txtNumeroDucumento);
+				return false;
+			}else if(txtNumeroDucumento.getText().trim().equals("00000000")){
+				DlgMessage.information(Messages.getString("WndVSAfiliacion.information.invalidNumeroDocumento"),txtNumeroDucumento);
+				return false;
+			}
+		}
+		if(!(txtEmail.getText().trim().isEmpty())){
+			/*Valida Email*/
+			if(!(UtilData.validateEmail(txtEmail.getText().trim().toLowerCase()))){
+				DlgMessage.information(Messages.getString("WndVSAfiliacion.information.emailIcorrecto"));
+				return false;
+			}
+		}
+		
+		if(isCaracteresInvalidos())//Valida caracteres no permitidos por la positiva.
+			return false;
+		
+		return true;
+	}
+	
+	private Boolean isCaracteresInvalidos(){
+		String chrApePaterno=Util.validarCaracteresEspeciales(txtApellidoPaterno.getText().trim());
+		String chrApeMaterno=Util.validarCaracteresEspeciales(txtApellidoMaterno.getText().trim());
+		String chrNombres=Util.validarCaracteresEspeciales(txtNombres.getText().trim());
+		String chrDireccion=Util.validarCaracteresEspeciales(txtDireccion.getText().trim());
+		String chrNumDocumento=Util.validarCaracteresEspeciales(txtNumeroDucumento.getText().trim());
+		String chrTelefono=Util.validarCaracteresEspeciales(txtTelefonoDomicilio.getText().trim());
+		String chrCelular=Util.validarCaracteresEspeciales(txtTelefonoCelular.getText().trim());
+		if(chrApePaterno.length()>0){
+			DlgMessage.information(Messages.getString("Se ha encontrado caracteres no válidos en el Campo Apellido Parteno del Asegurado:")+"( "+chrApePaterno+" ). Se debe corregir para continuar.",txtApellidoPaterno);
+			return true;
+		}else if (chrApeMaterno.length()>0){
+			DlgMessage.information(Messages.getString("Se ha encontrado caracteres no válidos en el Campo Apellido Materno del Asegurado:")+"( "+chrApeMaterno+" ). Se debe corregir para continuar.",txtApellidoMaterno);
+			return true;
+		}else if (chrNombres.length()>0){
+			DlgMessage.information(Messages.getString("Se ha encontrado caracteres no válidos en el Campo Nombres del Asegurado:")+"( "+chrNombres+" ). Se debe corregir para continuar.",txtNombres);
+			return true;
+		}else if (chrDireccion.length()>0){
+			DlgMessage.information(Messages.getString("Se ha encontrado caracteres no válidos en el Campo Dirección del Asegurado:")+"( "+chrDireccion+" ). Se debe corregir para continuar.",txtDireccion);
+			return true;
+		}else if (chrNumDocumento.length()>0){
+			DlgMessage.information(Messages.getString("Se ha encontrado caracteres no válidos en el Campo Número de Documento del Asegurado:")+"( "+chrNumDocumento+" ). Se debe corregir para continuar.",txtNumeroDucumento);
+			return true;
+		}else if (chrTelefono.length()>0){
+			DlgMessage.information(Messages.getString("Se ha encontrado caracteres no válidos en el Campo Teléfono Domicilio del Asegurado:")+"( "+chrTelefono+" ). Se debe corregir para continuar.",txtTelefonoDomicilio);
+			return true;
+		}else if (chrCelular.length()>0){
+			DlgMessage.information(Messages.getString("Se ha encontrado caracteres no válidos en el Campo Teléfono Celular del Asegurado:")+"( "+chrCelular+" ). Se debe corregir para continuar.",txtTelefonoCelular);
+			return true;
+		}
+		
+		return false;
+	}
+	/**
+	 * Habilita/Desabilita controles del Asegurado
+	 * @param isDisabled : true desabilita controles, false habilita controles
+	 */
+	private void disabledControlsAsegurado(boolean isDisabled){
+		cmbTipoDocumento.setDisabled(isDisabled);
+		txtNumeroDucumento.setDisabled(isDisabled);
+		txtApellidoPaterno.setDisabled(isDisabled);
+		txtApellidoMaterno.setDisabled(isDisabled);
+		txtNombres.setDisabled(isDisabled);
+		dtbxFechaNacimineto.setDisabled(isDisabled);
+		cmbSexo.setDisabled(isDisabled);
+		txtDireccion.setDisabled(isDisabled);
+		txtUbigeo.setDisabled(isDisabled);
+		btnBuscarUbigeo.setDisabled(isDisabled);
+		txtTelefonoDomicilio.setDisabled(isDisabled);
+		txtTelefonoCelular.setDisabled(isDisabled);
+		cmbEstadoCivil.setDisabled(isDisabled);
+		txtUbigeo.setDisabled(isDisabled);
+		btnBuscarUbigeo.setDisabled(isDisabled);
+		cmbNacionalidad.setDisabled(isDisabled);
+		txtUrbanizacion.setDisabled(isDisabled);
+		txtEmail.setDisabled(isDisabled);
+	}
+	/**
+	 * Limpia controles del Asegurado
+	 */
+	private void limpiaControlsAsegurado(){
+		cmbTipoDocumento.setSelectedIndex(0);
+		txtNumeroDucumento.setText("");
+		txtApellidoPaterno.setText("");
+		txtApellidoMaterno.setText("");
+		txtNombres.setText("");
+		dtbxFechaNacimineto.setValue(null);
+		cmbSexo.setSelectedIndex(0);
+		txtDireccion.setText("");
+		txtUbigeo.setText("");
+		txtIdUbigeo.setText("");
+		txtTelefonoDomicilio.setText("");
+		txtTelefonoCelular.setText("");
+		cmbEstadoCivil.setSelectedIndex(0);
+		lblInfoPax.setValue("");
+		cmbNacionalidad.setSelectedIndex(0);
+		txtUbigeo.setText("");
+		txtEmail.setText("");
+		vsAsegurado=null;
+		ventaPasaje=null;
+		txtUrbanizacion.setText("");
+	}
+	
+	
+	
+	/* ****************AFILIACION******************** */
+	/**
+	 * Evento cancelar operacion de la afiliacion
+	 * @throws Exception 
+	 */
+	public void cancelarOperacionAfiliacion() throws Exception{
+		limpiaControlsAsegurado();
+		txtNumeroBoleto.setText("");
+			
+		limpiaControlesAfiliacion();
+//		lblCertificado.setDisabled(true);
+		disabledBtnEditar(true, tbbAseguradoEditar, accesoModificar());
+		disabledBtnGuardar(true, tbbAseguradoGuardar, accesoGrabar());
+		disabledBtnCancelar(true, tbbAseguradoCancelar);
+		disabledBtnGuardar(true, tbbAfiliacionGrabar, accesoGrabar());
+		disabledBtnCancelar(true, tbbAfiliacionCancelar);
+		disabledImageBuscar(imageEnabled);
+		
+		disabledControlsAsegurado(true);
+		txtNumeroBoleto.setDisabled(false);
+		txtNumeroBoleto.setFocus(true);
+				
+		
+		sepToolsAfiliacion.setHeight("18px");
+	}
+	/**
+	 * Limpia controles de la afiliacion
+	 */
+	private void limpiaControlesAfiliacion(){
+		lblTipoRegistro.setValue("");
+		lblTipoPersona.setValue("");
+		lblCiudadDestino.setValue("");
+		lblCertificado.setValue("");
+		lblRuta.setValue("");
+		lblFechaVenta.setValue("");
+		lblFechaVigenciaInicial.setValue("");
+		lblFechaVigenciaFinal.setValue("");
+		lblCostoSeguro.setValue("");
+		lblImportePagar.setValue("");
+		lblBoleto.setValue("");
+	}
+	/**
+	 * Guarda la Afiliacion
+	 * @throws Exception
+	 */
+	public void guardarAfiliacion()throws Exception{
+		if(vsAsegurado!=null){
+			try{
+				if(tbbAseguradoGuardar.isDisabled()==false){
+					DlgMessage.information(Messages.getString("WndVSAfiliacion.information.noSavedAsegurado"),tbbAseguradoGuardar);
+					return;
+				}
+//				//Valida si el asegurado esta o no registrado, si no esta lo registra.
+//				if(vsAsegurado.getId()==null){
+//				guardarAsegurado(false);
+//				if(vsAsegurado.getId()==null)//Para controlar por si al momento de guardar el asegurado se produce alguna excepcion.
+//					return;
+//				}else if(!(validarDatosAsegurado()))
+//					return;
+				
+				/*Vuelve a validar los datos del asegudado*/
+				if(!(validarDatosAsegurado()))
+					return;
+				if(lblTipoRegistro.getValue().isEmpty()){
+					DlgMessage.information(Messages.getString("WndVSAfiliacion.information.noTipoRegistro"));
+					return;
+//				}else if (lblCertificado.getText().trim().isEmpty()){
+//					DlgMessage.information(Messages.getString("WndVSAfiliacion.information.noCertificado"),lblCertificado);
+//					return;
+				}else if (lblTipoPersona.getValue().isEmpty()){
+					DlgMessage.information(Messages.getString("WndVSAfiliacion.information.noTipoPersona"));
+					return;
+				}else if(lblCiudadDestino.getValue().isEmpty()){
+					DlgMessage.information(Messages.getString("WndVSAfiliacion.information.noCiudadDestino"));
+					return;
+				}else if (lblFechaVenta.getValue().isEmpty()){
+					DlgMessage.information(Messages.getString("WndVSAfiliacion.information.noFechaVenta"));
+					return;
+				}else if (lblFechaVigenciaInicial.getValue().isEmpty()){
+					DlgMessage.information(Messages.getString("WndVSAfiliacion.information.noFechaInicio"));
+					return;
+				}else if (lblFechaVigenciaFinal.getValue().isEmpty()){
+					DlgMessage.information(Messages.getString("WndVSAfiliacion.information.noFechaFin"));
+					return;
+				}else if (lblBoleto.getValue().isEmpty()){
+					DlgMessage.information(Messages.getString("WndVSAfiliacion.information.noBoleto"));
+					return;
+				}else if (lblCostoSeguro.getValue().isEmpty()){
+					DlgMessage.information(Messages.getString("WndVSAfiliacion.information.noCostoSeguro"));
+					return;
+				}
+				final VSCiudad vsCiudad=getCiudadDestino(lblCiudadDestino.getValue());
+				if(vsCiudad==null){
+					DlgMessage.information(Messages.getString("WndVSAfiliacion.information.noCiudadDestino"));
+					return;
+				}
+					
+				/* Realiza la validacion del Certificado, para determinar si la agencia que la esta emitiendo este le corresponde. */
+				//Comentado 30/09/2014 el certificado se cambio a ser el boleto 
+//				List<VSAsignacionCertificados>  lstAsignacionCertificados=ServiceLocator.getVentaSeguroManager().buscarAsignacionCertificados(getAgencia().getId());
+//				if(lstAsignacionCertificados.size()>0){
+//					Long numeroInio=(long)0, numeroFinal=(long)0;
+//					Long numeroCertificado=lblCertificado.getValue();
+//					Boolean isCertificadoCorrecto=false;
+//					for(VSAsignacionCertificados asignacionCertificados: lstAsignacionCertificados){
+//						numeroInio=asignacionCertificados.getCorrelativoInicial();
+//						numeroFinal=asignacionCertificados.getCorrelativoFinal();
+//						
+//						if(numeroCertificado>=numeroInio && numeroCertificado<=numeroFinal){
+//							isCertificadoCorrecto=true;
+//							break;
+//						}
+//					}
+//					if (!(isCertificadoCorrecto)){
+//						DlgMessage.information(Messages.getString("WndVSAfiliacion.information.certificadoNotAgencia"));
+//						return;
+//					}
+//				}else{
+//					DlgMessage.information(Messages.getString("WndVSAfiliacion.information.certificadoNotAgencia"));
+//					return;
+//				}
+				
+				
+				afiliacion= new VSAfiliacion();
+				afiliacion.setVsAsegurado(vsAsegurado);
+				afiliacion.setVsTipoRegistro(new VSTipoRegistro(ID_TIPREG_ASEGURADO));
+				afiliacion.setVsTipoPersona(new VSTipoPersona(ID_TIPPER_NATURAL));
+				afiliacion.setFechaVenta(vsLiquidacion.getFechaLiquidacion());
+				afiliacion.setFechaVigenciaInicial(Constantes.FORMAT_DATE.parse(lblFechaVigenciaInicial.getValue()));
+				afiliacion.setFechaVigenciaFinal(Constantes.FORMAT_DATE.parse(lblFechaVigenciaFinal.getValue()));
+				afiliacion.setImportePagado(Double.valueOf(lblCostoSeguro.getValue()));
+				afiliacion.setUsuarioID(getUsuario().getId());
+				afiliacion.setAgenciaID(getAgencia().getId());
+				afiliacion.setNumeroBoleto(lblBoleto.getValue());
+				afiliacion.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+				afiliacion.setVsLiquidacion(vsLiquidacion);
+				afiliacion.setVsCiudad(vsCiudad);
+
+//				String certificado=autoCompletaCerosCertificado(10,lblCertificado.getText());
+//				afiliacion.setNumeroCertificado(certificado);							
+				afiliacion.setNumeroCertificado(lblCertificado.getValue());
+				afiliacion.setEsPasajeroFrecuente(ventaPasaje.getPasajero().isPaxFree()?"S":"N");
+				UtilData.auditarRegistro(afiliacion, getUsuario(), Executions.getCurrent());
+								
+				//Valida que el boleto no este asociado ha un seguro.
+				Boolean existeBoleto=ServiceLocator.getVentaSeguroManager().validarBoletoAfiliacion(afiliacion.getNumeroBoleto());
+				if(existeBoleto){//Si el Boleto existe.
+					Messagebox.show(Messages.getString("WndVSAfiliacion.information.duplicityBoleto"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
+						@Override
+						public void onEvent(Event e) throws Exception {
+							if(e.getName().equals("onYes")){
+								Messagebox.show("Se va a realizar la afiliación del Seguro asociado al Boleto "+lblBoleto.getValue()+". \n ¿Realmente desea guardar?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+									@Override
+									public void onEvent(Event e) throws Exception {
+										if(e.getName().equals("onYes")){
+											try{
+												/*Valida si el asegurado esta o no registrado, si no esta lo registra.*/
+												if(vsAsegurado.getId()==null){
+													/*Guarda el asegurado si este aún no esta registrado*/
+													guardarAsegurado(false);
+												}
+												if(vsAsegurado.getId()==null)//Para controlar por si al momento de guardar el asegurado se produce alguna excepcion.
+													throw new Exception(Messages.getString("WndVSAfiliacion.information.ErrorSaveAsegurado"));
+												
+												/*Guarda la Afiliación*/
+												ServiceLocator.getVentaSeguroManager().guardarAfiliacion(afiliacion);
+												disabledBtnGuardar(true, tbbAfiliacionGrabar, accesoGrabar());
+												disabledBtnCancelar(true, tbbAfiliacionCancelar);
+												disabledBtnEditar(true, tbbAseguradoEditar, accesoModificar());
+												txtNumeroBoleto.setText("");
+												
+												//Confirma
+//												DlgMessage.information(Messages.getString("Generales.information.exitoGuardar"),txtNumeroBoleto);
+												
+												//Imprime el Certificado.
+												CreateDocument.creaCertificadoSeguro(afiliacion);
+//												String fileCertificado = Constantes.URL_FORMATOS_CERTIFICADOS+afiliacion.getNumeroCertificado()+".txt";
+												String fileCertificado = Constantes.URL_FORMATOS_CERTIFICADOS +Constantes.CLAVE_PAHT + afiliacion.getNumeroCertificado()+".txt";
+												Window win = (Window)Executions.createComponents("imprimir.zul", null, null);
+												win.setAttribute("formato", WndImprimir.FORMAT_BOLETO_IDA_VUELTA);
+												win.setAttribute("msg", "Imprimiendo el Certificado: "+ afiliacion.getNumeroCertificado()+"... ");
+												win.setAttribute("urlDocumento", fileCertificado);
+												win.doPopup();
+												
+											}catch(VSAfialiacionException aex){
+												if(aex.getTipo().intValue()==VSAfialiacionException.DUPLICITY_CERTIFICADO)
+													DlgMessage.information(Messages.getString("WndVSAfiliacion.information.duplicityCertificado"),lblCertificado);
+											}catch (Exception ex) {
+												ex.printStackTrace();
+												DlgMessage.information(ex.getMessage());
+											}
+										}
+									}
+								});
+							}
+						}
+					});
+				}else{//Si el Boleto no Existe.
+					Messagebox.show(Messages.getString("Generales.query.guardar"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+						@Override
+						public void onEvent(Event e) throws Exception {
+							if(e.getName().equals("onYes")){
+								try{
+									/*Valida si el asegurado esta o no registrado, si no esta lo registra.*/
+									if(vsAsegurado.getId()==null){
+										/*Guarda el asegurado si este aún no esta registrado*/
+										guardarAsegurado(false);
+									}
+									if(vsAsegurado.getId()==null)//Para controlar por si al momento de guardar el asegurado se produce alguna excepcion.
+										throw new Exception(Messages.getString("WndVSAfiliacion.information.ErrorSaveAsegurado"));
+									
+									/*Guarda la Afiliación*/
+									ServiceLocator.getVentaSeguroManager().guardarAfiliacion(afiliacion);
+									disabledBtnGuardar(true, tbbAfiliacionGrabar, accesoGrabar());
+									disabledBtnCancelar(true, tbbAfiliacionCancelar);
+									disabledBtnEditar(true, tbbAseguradoEditar, accesoModificar());
+									txtNumeroBoleto.setText("");
+																	
+									//Imprime el Certificado.
+									File file=CreateDocument.creaCertificadoSeguro(afiliacion);
+									if(getUsuarioHardware().getPrintApplet().intValue()==Constantes.TRUE_VALUE){
+//										String fileCertificado = Constantes.URL_FORMATOS_CERTIFICADOS+afiliacion.getNumeroCertificado()+".txt";
+										String fileCertificado = Constantes.URL_FORMATOS_CERTIFICADOS+Constantes.CLAVE_PAHT+afiliacion.getNumeroCertificado()+".txt";
+										Window win = (Window)Executions.createComponents("imprimir.zul", null, null);
+										win.setAttribute("formato", WndImprimir.FORMAT_BOLETO_IDA_VUELTA);
+										win.setAttribute("msg", "Imprimiendo el Certificado: "+ afiliacion.getNumeroCertificado()+"... ");
+										win.setAttribute("urlDocumento", fileCertificado);
+										win.doPopup();
+									}else{
+										//Descarga el archivo para la impresion
+										Util.descargarArchivo(file);
+									}
+									
+									//Confirma
+//									DlgMessage.information(Messages.getString("Generales.information.exitoGuardar"),txtNumeroBoleto);
+									
+								}catch(VSAfialiacionException aex){
+									if(aex.getTipo().intValue()==VSAfialiacionException.DUPLICITY_CERTIFICADO)
+										DlgMessage.information(Messages.getString("WndVSAfiliacion.information.duplicityCertificado"));
+								}catch (Exception ex) {
+									ex.printStackTrace();
+									DlgMessage.information(ex.getMessage());
+								}
+							}
+						}
+					});
+				}
+			}catch (Exception ex){
+				DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
+				ex.printStackTrace();
+			}
+		}else{
+			DlgMessage.information(Messages.getString("WndAfiliacion.information.noAsegurado"),txtNumeroBoleto);
+		}
+	}
+
+	/**
+	 * Carga Estado civil
+	 * @param combobox	: Control donde se va ha mostrar.
+	 * @throws Exception
+	 */
+	private void cargarEstoCivil(Combobox combobox) throws Exception{
+		List<VSEstadoCivil>lstEstadoCivil=ServiceLocator.getVentaSeguroManager().buscarEstadoCivilPorEstado(Constantes.VALUE_ACTIVO);
+		
+		UtilData.cargarGenericData(combobox, false);
+		for(VSEstadoCivil estadoCivil:lstEstadoCivil){
+			Comboitem comboitem=new Comboitem();
+			comboitem.setLabel(estadoCivil.getDenominacion());
+			comboitem.setValue(estadoCivil);
+			
+			combobox.appendChild(comboitem);
+		}
+	}
+	/**
+	 * Cargar el sexo del asegurado
+	 * @param combobox	: control donde se va ha mostrar.
+	 * @throws Exception
+	 */
+	private void cargarSexo(Combobox combobox) throws Exception{
+		List<VSSexo>lstSexo=ServiceLocator.getVentaSeguroManager().buscarSexoPorEstado(Constantes.VALUE_ACTIVO);
+		
+		UtilData.cargarGenericData(combobox, false);
+		for(VSSexo sexo:lstSexo){
+			Comboitem comboitem=new Comboitem();
+			comboitem.setLabel(sexo.getDenominacion());
+			comboitem.setValue(sexo);
+			
+			combobox.appendChild(comboitem);
+		}
+	}
+	/**
+	 * Cargar los Tipos de docuemtnos.
+	 * @param combobox : control donde se va ha mostrar.
+	 * @throws Exception
+	 */
+	private void cargarTipoDocumento(Combobox combobox) throws Exception{
+		List<VSTipoDocumento>lstTipoDocumento=ServiceLocator.getVentaSeguroManager().buscarTipoDocumentoPorEstado(Constantes.VALUE_ACTIVO);
+		
+		UtilData.cargarGenericData(combobox, false);
+		for(VSTipoDocumento tipoDocumento:lstTipoDocumento){
+			Comboitem comboitem=new Comboitem();
+			comboitem.setLabel(tipoDocumento.getDenominacion());
+			comboitem.setValue(tipoDocumento);
+			
+			combobox.appendChild(comboitem);
+		}
+	}
+	
+	private void disabledImageBuscar(String src){
+		if(src.equals(imageEnabled)){
+			imgBuscar.setSrc(imageEnabled);
+			imgBuscar.setTooltiptext("Haga click para realizar la búsqueda");
+			imgBuscar.setStyle("cursor:pointer");
+		}else{
+			imgBuscar.setSrc(imageDisabled);
+			imgBuscar.setTooltiptext("");
+			imgBuscar.setStyle("cursor:default");
+		}
+	}
+	/**
+	 * Activa o desactiva el button editar cliente (Editar)
+	 * @param activar : (true)se activara el button, (false) se desactivará el button
+	 * @param button  : button al que se activa e inactivará.
+	 */
+	public static void disabledBtnEditar(boolean disabled, Button btnEditar,Boolean accesoModificar){
+		if(!(disabled) && accesoModificar){
+			btnEditar.setImage("/resources/toolbar/mp_toolbarModificar.png");
+			btnEditar.setStyle("cursor:pointer");
+		}else{
+			btnEditar.setImage("/resources/toolbar/mp_toolbarModificarDisabled.png");
+			btnEditar.setStyle("cursor:default");
+		}
+		
+		if(accesoModificar)
+			btnEditar.setDisabled(disabled);
+		else 
+			btnEditar.setDisabled(true);
+	}
+	/**
+	 * Activa o desactiva el button Guarbar cliente (Nuevo)
+	 * @param activar : (true)se activara el button, (false) se desactivará el button
+	 */
+	public static void disabledBtnCancelar(boolean disabled,Button btnCancelar){
+		if(!(disabled)){
+			btnCancelar.setImage("/resources/toolbar/mp_toolbarCancelar.png");
+			btnCancelar.setStyle("cursor:pointer");
+		}else{
+			btnCancelar.setImage("/resources/toolbar/mp_toolbarCancelarDisabled.png");
+			btnCancelar.setStyle("cursor:default");
+		}
+		btnCancelar.setDisabled(disabled);
+	}
+	/**
+	 * Activa o desactiva el button Guarbar cliente (Nuevo)
+	 * @param activar : (true)se activara el button, (false) se desactivará el button
+	 */
+	public static void disabledBtnGuardar(boolean disabled,Button btnGuardar,Boolean accesoGuardar){
+		if(!(disabled) && accesoGuardar){
+			btnGuardar.setImage("/resources/toolbar/mp_toolbarGuardar.png");
+			btnGuardar.setStyle("cursor:pointer");
+		}else{
+			btnGuardar.setImage("/resources/toolbar/mp_toolbarGuardarDisabled.png");
+			btnGuardar.setStyle("cursor:default");
+		}
+		if(accesoGuardar)
+			btnGuardar.setDisabled(disabled);
+		else 
+			btnGuardar.setDisabled(true);
+	}
+	/**
+	 * Genera ceros a la izquierda
+	 * @param longitud	: Longitud que debe de tener el campo
+	 * @param valor		: Valor al que se le debe aplicar.
+	 * @return
+	 */
+	public static String autoCompletaCerosCertificado(Integer longitud, String valor){
+		String ceros="";
+		if(longitud<valor.length())
+			valor=valor.substring(0,longitud);
+		for(int i=0; i<longitud-valor.length();i++){
+			ceros+="0";
+		}
+		String svalor=ceros+""+valor;
+		return svalor;
+	}
+	
+	/**
+	 * busca el certificado a anular
+	 * @throws Exception
+	 */
+	public void buscarCertificadoByAnular()throws Exception{
+		try {
+			/*Limapia los controles*/
+			limpiarControlesAnulacion(false);
+						
+			if(!(txtNumeroBoletoAnular.getText().trim().isEmpty())){
+				txtNumeroBoletoAnular.setText(Util.autocompleNumberBoleto(txtNumeroBoletoAnular.getText().trim()));
+				List<VSAfiliacion>result=ServiceLocator.getVentaSeguroManager().buscarAfiliacionesByConsulta(null, null, null, null, null, null,txtNumeroBoletoAnular.getText().trim());
+				if(result.size()==0){
+					DlgMessage.information(Messages.getString("WndVSAfiliacion.anulacion.information.noResults"),txtNumeroBoletoAnular);
+				}else if(result.size()==1){
+					VSAfiliacion afiliacion=result.get(0);
+					
+					if(getRol().getId().intValue()!=Constantes.ID_ROL_SUPER_USUARIO){
+						if(afiliacion.getUsuario().getId().intValue()!=vsLiquidacion.getUsuarioID().intValue()){/*Valida el usuario*/
+							DlgMessage.information(Messages.getString("WndVSAfiliacion.anulacion.inrmation.noUsuario"));
+							return;
+						}else if (vsLiquidacion==null || vsLiquidacion.getEstadoLiquidacion().intValue()==Constantes.FALSE_VALUE){
+							DlgMessage.information(Messages.getString("WndVSAfiliacion.anulacion.information.liquidacionCerrada"));
+							return;
+						}else if (vsLiquidacion.getFechaLiquidacion().getTime()!=afiliacion.getFechaVenta().getTime()){/*Valida la fecha del cetificado*/
+							DlgMessage.information(Messages.getString("WndVSAfiliacion.anulacion.inforrmation.fechaMenor"));
+							return;
+						}
+					}
+					if(afiliacion.getFechaProcesoAfiliacion()!=null){/*Valida que el certificado aun no haya sido procesado.*/
+						DlgMessage.information(Messages.getString("WndVSAfiliacion.anulacion.inforrmation.certificadoProcesado"));
+						return;
+					}
+					
+					/*Carga datos basicos de la afiliacion*/
+					lblNumeroCertificado.setValue(afiliacion.getNumeroCertificado());
+					lblFechaCertificado.setValue(Constantes.FORMAT_DATE.format(afiliacion.getFechaVenta()));
+					lblBoletoAnulacion.setValue(afiliacion.getNumeroBoleto().trim());
+					lblPasajero.setValue(afiliacion.getVsAsegurado().toString());
+					chbxAnularBoleto.setDisabled(false);
+					btnAnularCertificado.setDisabled(false);
+				}else if(result.size()>1){
+					DlgMessage.information(Messages.getString("WndVSAfiliacion.anulacion.information.masResult"),txtNumeroBoletoAnular);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			DlgMessage.error(e.getMessage());
+		}
+	}
+	
+	/**
+	 * Anula el certificado.
+	 */
+	public void anularCertificado(){
+		try {
+			if(!(lblNumeroCertificado.getValue().trim().isEmpty())){
+				final String certificado=lblNumeroCertificado.getValue();
+				
+				
+				if(chbxAnularBoleto.isChecked()){
+					/*Busca el boleto por su numero*/
+					final VentaPasaje boleto=ServiceLocator.getVentaPasajesManager().buscarBoletoByAsegurado(lblBoletoAnulacion.getValue());
+					
+					/*Si no encuentra el boleto*/
+					if(boleto==null){
+						Messagebox.show(Messages.getString("WndVSAfiliacion.anulacion.information.noFindBoleto"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+							@Override
+							public void onEvent(Event e) throws Exception {
+								if(e.getName().equals("onYes")){
+									try{
+										/*Anula el certificado*/
+										ServiceLocator.getVentaSeguroManager().anularCertificado(certificado);
+										
+										/*Limapia los controles*/
+										limpiarControlesAnulacion(true);
+										
+										/*Muestra confirmacion de la anulacion*/
+										DlgMessage.information(Messages.getString("WndVSAfiliacion.anulacion.information.confirmacion"),txtNumeroBoletoAnular);
+									}catch (Exception ex){
+										ex.printStackTrace();
+										DlgMessage.error(ex.getMessage());
+									}
+								}
+							}
+						});
+					}else{
+						/*Busca por su identificador*/
+						final VentaPasaje ventaOriginal=ServiceLocator.getVentaPasajesManager().buscarVentaById(boleto.getId());
+						
+						/*Validacion previa a la anulacion del boleto*/
+						if (getRol().getId().intValue()!=Constantes.ID_ROL_SUPER_USUARIO && !(ventaOriginal.getUsuario().getId().equals(getUsuario().getId()))){
+							DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.otroUsuario"));
+							return;
+						}else if(!(Constantes.FORMAT_DATE.format(ventaOriginal.getFechaInsercion()).equals(Constantes.FORMAT_DATE.format(new Date())))){
+							DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.fechaPasada"));
+							return;
+						}else if(ventaOriginal.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION){
+							DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.boletoAnulado"));
+							return;
+						}else if (ventaOriginal.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_DEVOLUCION){
+							DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.boletoDevuelto"));
+							return;
+						}else if(ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(boleto.getId())){
+							DlgMessage.information(Messages.getString("Generales.information.manifiestoImpreso"));
+							return;
+						}
+						
+						Messagebox.show(Messages.getString("WndVSAfiliacion.anulacion.question.anularCertificadoAndBoleto"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+							@Override
+							public void onEvent(Event e) throws Exception {
+								if(e.getName().equals("onYes")){
+									try{
+										/*Anula el certificado*/
+										ServiceLocator.getVentaSeguroManager().anularCertificado(certificado);
+																				
+										/*Anula el Boleto*/
+										VentaPasaje ventaOriginal1=ventaOriginal;
+										ventaOriginal1.setTarifa(0.0);
+										ventaOriginal1.setRecargo(0.0);
+										ventaOriginal1.setDescuento(0.0);
+										ventaOriginal1.setImportePagado(0.0);
+										ventaOriginal1.setAcuenta(0.0);
+										ventaOriginal1.setImportePagado(0.0);
+										ventaOriginal1.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_ANULACION));
+										UtilData.auditarRegistro(ventaOriginal1, true, getUsuario(), Executions.getCurrent());
+										ServiceLocator.getVentaPasajesManager().anularMovimiento(ventaOriginal1,false);
+																					
+										/*Limapia los controles*/
+										limpiarControlesAnulacion(true);
+										
+										/*Muestra confirmacion de la anulacion*/
+										DlgMessage.information(Messages.getString("WndVSAfiliacion.anulacion.information.confirmacionInBoloto"),txtNumeroBoletoAnular);	
+									}catch(Exception ex){
+										ex.printStackTrace();
+										DlgMessage.error(ex.getMessage());
+									}
+								}
+							}
+						});
+					}
+				}else{
+					Messagebox.show(Messages.getString("WndVSAfiliacion.anulacion.question.anularCertificado"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+						@Override
+						public void onEvent(Event e) throws Exception {
+							if(e.getName().equals("onYes")){
+								try{
+									/*Anula el certificado*/
+									ServiceLocator.getVentaSeguroManager().anularCertificado(certificado);
+										
+									/*Limapia los controles*/
+									limpiarControlesAnulacion(true);
+									
+									/*Muestra confirmacion de la anulacion*/
+									DlgMessage.information(Messages.getString("WndVSAfiliacion.anulacion.information.confirmacion"),txtNumeroBoletoAnular);
+									
+								}catch (Exception ex){
+									ex.printStackTrace();
+									DlgMessage.error(ex.getMessage());
+								}
+							}
+						}
+					});
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			DlgMessage.error(e.getMessage());
+		}
+	}
+	
+	/**
+	 * Limpia los controles de la anulacion
+	 * @throws Exception
+	 */
+	private void limpiarControlesAnulacion(boolean limpiarCabecera)throws Exception{
+		/*Limapia los controles*/
+		if(limpiarCabecera)
+			txtNumeroBoletoAnular.setText("");
+		lblNumeroCertificado.setValue("");
+		lblFechaCertificado.setValue("");
+		lblBoletoAnulacion.setValue("");
+		lblPasajero.setValue("");
+		chbxAnularBoleto.setChecked(false);
+		chbxAnularBoleto.setDisabled(true);
+		btnAnularCertificado.setDisabled(true);
+	}
+}

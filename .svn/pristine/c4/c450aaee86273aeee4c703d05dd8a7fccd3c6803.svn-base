@@ -1,0 +1,44 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+
+<window id="wndClientesCredito" border="none" use="com.tepsa.sisvyr.view.ctrl.WndClienteCredito" width="940px">
+<panel id="panel" title="::: ESTADO DE CUENTA DE CLIENTES CON CRÉDITO :::" framable="true" width="auto" border="normal" closable="true" onClose="wndClientesCredito.closeTabWindow()">
+	<panelchildren>
+		<grid id="grClientesCredito">
+			<columns>
+				<column width="70px" align="right" />
+			</columns>
+			<rows>
+				<row>
+					<label value="RUC :"  sclass="label-size11-bold"/>
+					<hbox align="center">
+						<textbox id="txtNumeroRuc" focus="true" onOK="wndClientesCredito.listarclientesCredito()" width="120px" style="font-size:12px !important" /><separator width="10px" />
+						<label value="TIPO CLIENTE :" sclass="label-size11-bold" />
+						<combobox id="cmbTipoCliente" readonly="true"  onChange="wndClientesCredito.onSelectTipoCliente()" />
+						<separator width="10px" />
+						<label value="CLIENTE :" sclass="label-size11-bold" />
+						<combobox id="cmbCliente" width="240px" /><separator width="10px" />
+						<separator width="15px" />
+						<button id="btnBuscarClientes" label="Buscar" autodisable="self" onClick="wndClientesCredito.listarclientesCredito()" image="/resources/mp_buscarEnabled.png" style="cursor:pointer" />
+					</hbox>
+				</row>
+			</rows>
+		</grid>
+		<listbox id="listClientesCredito" mold="paging" pageSize="16" height="350px">
+			<listhead>
+<!-- 				<listheader label="#" width="30px" /> -->
+				<listheader label="CLIENTE" width="180px" />
+				<listheader label="TIPO DE CLIENTE" width="118PX" />
+				<listheader label="CREDITO" width="80px" align="center" />
+				<listheader label="SOBREGIRO" width="60px" align="center"  />
+				<listheader label="SALDO" width="70px" align="center"/>
+				<listheader label="ESTADO" width="55px" />
+				<listheader label="FUNCIONARIO" width="150px" />
+				<listheader  />
+				
+			</listhead>
+		</listbox>
+	</panelchildren>
+</panel>
+</window>
+</zk>

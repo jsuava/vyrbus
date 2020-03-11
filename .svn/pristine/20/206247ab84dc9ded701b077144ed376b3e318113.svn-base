@@ -1,0 +1,1077 @@
+System.title=TEPSA - VyR
+Generales.query.guardar=¿Realmente desea guardar?
+Generales.information.exitoGuardar=Registro guardado satisfactoriamente.
+Generales.information.errorGuardar=No se pudo guardar el registro..., revise los datos e intente nuevamente!
+Generales.information.connectService=Error al momento de leer el archivo de configuraci\u00F3n.
+Generales.information.mailIncorrecto = El E-Mail ingresado no es correcto.
+Generales.information.noIngresoDenominacion = Debe ingresar la Denominación.
+Generales.information.noIngresoDescripcion = Debe ingresar la Descripción.
+Generales.information.noIngresoNombreCorto = Debe ingresar el Nombre un Corto.
+Generales.information.noIngresoCodigo = Debe ingresar el código.
+Generales.information.noSeleccionoCanalVenta = Debe seleccionar el Canal de Venta.
+Generales.information.noSeleccionoAgencia = Debe seleccionar la Agencia.
+Generales.information.denominacionDuplicada = La Denominación ingresada ya existe en el Sistema.
+Generales.information.descripcionDuplicada = La descripcion ingresada ya existe en el Sistema
+Generales.information.nombreCortoDuplicado = El Nombre Corto o Abreviatura ingresado ya existe en el Sistema.
+Generales.information.codigoDuplicado = El código ingresado ya existe en el sistema.
+Generales.information.noSeleccionoUsuario = Debe seleccionar un Usuario.
+Generales.information.noSuchAlgorithm = No se puede realizar la generacion del código utilizando el algoritmo.
+Generales.information.errorCargarParametros = Ha ocurrido un error al cargar los parámetros del Sistema.
+Generales.information.liquidacionAbierta = Asegurese de verificar los datos de correlativos para no tener problemas con su CIERRE DE CAJA.
+Generales.information.manifiestoImpreso = No se puede completar la operación por que el Manifiesto de Pasajeros ya fue impreso.
+Generales.information.noDatosEncontrados = No se encontraron registros con los criterios de busqueda ingresados.
+Generales.information.noDatosExportar = No hay ventas para exportar.
+Generales.question.inactivate=¿Realmenete desea Inactivar el Registro ?
+Generales.question.delete=¿Realmente desea Eliminar el Registro?
+Generales.information.noGenerateGastoAdministrativo=Ha ocurrido un error al generar el Gasto Administrativo.
+
+WndLogin.title = Acceso al Sistema
+WndLogin.information.usuarioIncorrecto = El nombre de usuario es incorrecto.
+WndLogin.information.passwordIncorrecto = La contraseña del usuario es incorrecta.
+WndLogin.information.noUsuario = El usuario no esta registrado.
+WndLogin.information.usuario = Debe ingresar un nombre de usuario valido.
+WndLogin.information.password = Debe ingresar la contraseña valida del usuario.
+WndLogin.information.captcha = Debe ingresar el c\u00F3digo mostrado en la imagen.
+WndLogin.information.captchaNoEquals = El Código ingresado no es correcto.
+WndLogin.information.pcNoAutorizada = La computadora de donde esta ingresando no esta autorizada para ingresar al Sistema.
+WndLogin.information.usuarioSinRol = El usuario ingresado, no tiene un rol asignado.
+WndLogin.information.rolNoSelect=Debe seleccionar un Rol.
+WndLogin.information.canalNoSession=Sus credenciales de acceso no se encuentran activas para el inicio de sessión.
+WndLogin.information.noCodigoAcceso = Debe de ingresar su Código de Acceso.
+WndLogin.information.noExisteCodigoAcceso = El C\u00F3digo de Acceso no existe o ya no es v\u00E1lido.
+WndLogin.information.codigoAccesoExpiro = Su C\u00F3digo de Acceso ha Expirado, vuelva a generar otro. 
+
+WndSeleccionarUbigeo.information.nombreUbicacionNull=Debe ingresar el Nombre de la Ubicación Geográfica.
+
+WndVentaReserva.information.asientoBloqueado = El asiento elegido se encuentra bloqueado por otro usuario. Por favor presione el boton refrescar para tener una vista actualizada del estado de los asientos.
+WndVentaReserva.information.asientoNoDisponible = Seleccione un asiento que este disponible.
+WndVentaReserva.information.noItinerariosIda = No se encontraron Itinerarios de Ida para la fecha seleccionada.
+WndVentaReserva.information.noItinerariosRetorno = No se encontraron Itinerarios de Retorno para la fecha seleccionada.
+WndVentaReserva.information.noPasajerosEncontrados = No se encontraron pasajeros para los criterios ingresados.
+WndVentaReserva.information.noClientesEncontrados = No se encontraron clientes para los criterios ingresados.
+WndVentaReserva.information.noSelectionTipoDocumento = Debe seleccionar el Tipo de Documento del Pasajero.
+WndVentaReserva.information.noDocumentoPax = Debe ingresar el Número de Documento del Pasajero.
+WndVentaReserva.information.noValidDocumentPax=El número de documento no es válido.
+WndVentaReserva.information.noApellidoPaterno = Debe ingresar el Apellido Paterno del Pasajero.
+WndVentaReserva.information.noNombres = Debe ingresar los Nombres del Pasajero.
+WndVentaReserva.information.noUbigeo = Debe ingresar el Ubigeo del Pasajero.
+WndVentaReserva.information.noSelectionSexo = Debe seleccionar el Sexo del Pasajero.
+WndVentaReserva.information.noSeleccionoNacionalidad = Debe seleccionar la Nacionalidad del Pasajero.
+WndVentaReserva.information.noIngresoEmail = Debe ingresar la dirección de correo del Pasajero.
+WndVentaReserva.information.ingreseCorreoValido = Debe ingresar una direccion de correo valida.
+WndVentaReserva.information.noDocumentoCliente = Debe ingresar el Número de RUC del Cliente.
+WndVentaReserva.information.DocumentoClienteNoValido=Debe ingresar un Número de RUC Válido.
+WndVentaReserva.information.noRazonSocial = Debe ingresar la Razón Social de Cliente.
+WndVentaReserva.information.rucInvalido = Debe ingresar un numero de RUC valido.
+WndVentaReserva.information.rucDuplicado = El número de RUC ingresado ya se encuentra registrado en el Sistema.
+WndVentaReserva.information.noOrigenSeleccionado = Debe seleccionar el Origen para poder continuar con la busqueda.
+WndVentaReserva.information.noDestinoSeleccionado = Debe seleccionar el Destino cuando se trata de una Venta Ida y Vuelta.
+WndVentaReserva.information.noItinerarioIdaSeleccionado = Debe seleccionar el Itinerario de Ida para poder continuar.
+WndVentaReserva.information.noSeleccionoTipoAgencia = Debe seleccionar el Tipo de Agencia Remota.
+WndVentaReserva.information.noAgenciaRemota=Debe seleccionar la Agencia Remota.
+WndVentaReserva.information.noUsuarioRemoto=Debe seleccionar el Usuario Remoto
+WndVentaReserva.information.noSeleccionoUsuarioHardware = Debe de seleccionar el tipo de comprobante a emitir.
+WndVentaReserva.information.noItinerarioRetornoSeleccionado = Debe seleccionar el Itinerario de Retorno cuando se trata de una venta ida y vuelta.
+WndVentaReserva.information.noTarifaItinerario = El itinerario seleccionado no tiene Tarifa, no se puede continuar con la venta.
+WndVentaReserva.information.noTarifaItinerarioIda = El itinerario de ida seleccionado no tiene Tarifa, no se puede continuar con la venta.
+WndVentaReserva.information.noTarifaItinerarioRetorno = El itinerario de retorno seleccionado no tiene Tarifa, no se puede continuar con la venta.
+WndVentaReserva.information.noAsientoSeleccionado = Debe seleccionar el asiento que desea vender.
+WndVentaReserva.information.noAgenciaPartidaSeleccionada = Debe seleccionar el Punto de Embarque.
+WndVentaReserva.information.noAgenciallegadaSeleccionada = Debe seleccionar la Agencia de Llegada.
+WndVentaReserva.information.noSeleccionoAgenciaPartidaRetorno = Debe seleccionar el Punto de Embarque del Retorno.
+WndVentaReserva.information.noSeleccionoAgenciaLlegadaRetorno = Debe seleccionar la Agencia de Llegada del Retorno.
+WndVentaReserva.information.noPreferenciaAlimentaria = Debe seleccionar las Preferencias Alimentarias del Pasajero.
+WndVentaReserva.information.noSeleccionoPreferenciaAlimentariaRetorno = Debe seleccionar la Preferencia Alimentaria del Retorno.
+WndVentaReserva.information.noNumeroBoleto = No se puede continuar con la venta, no tiene asignado Especies Valoradas.
+WndVentaReserva.information.noPasajero = Debe especificar los datos del Pasajero.
+WndVentaReserva.information.noTipoComprobante = Debe seleccionar el Tipo de Comprobante.
+WndVentaReserva.information.noFormaPago = Debe seleccionar la Forma de Pago.
+WndVentaReserva.information.noTipoFormaPago = Debe seleccionar el Tipo de Forma de Pago.
+WndVentaReserva.information.noOperadorTarjetaCredito = Debe seleccionar el Operador de la Tarjeta de Crédito.
+WndVentaReserva.information.noTarjetaCredito = Debe seleccionar la tarjeta de Crédito.
+WndVentaReserva.information.noNumeroOperacionBancaria = Debe ingresar el Número de operación Bancaria.
+WndVentaReserva.information.asientoVendido = El asiento ya ha sido tomado, por favor refresque el mapa del bus y seleccione otro asiento.
+WndVentaReserva.information.numeroBoletoVendido = El número de boleto ya fue vendido, por favor consulte el Número de Boleto nuevamente.
+WndVentaReserva.information.changeCapacidad = La capacidad del bus ha cambiado, el nuevo servicio es ahora 
+WndVentaReserva.information.exitoGuardar = Registro guardado satisfactoriamente.
+WndVentaReserva.information.exitoActualizar = Registro modificado satisfactoriamente.
+WndVentaReserva.information.confirmacionGuardarVenta = Se va a registrar la Venta, ¿Desea continuar?
+WndVentaReserva.information.exitoGuardarVenta = La venta se registro correctamente.\nEl N\u00FAmero de Control es \:
+WndVentaReserva.information.exitoGuardarVentaIdaVuelta = La venta ida y vuelta se registro correctamente.\nLos N\u00FAmeros de Control son \:
+WndVentaReserva.information.confirmacionGuardarReserva = Se va a registrar la Reserva, ¿Desea continuar?
+WndVentaReserva.information.exitoGuardarReserva = La Reserva se registro correctamente.
+WndVentaReserva.information.noEqualsSeatSelections = Esta realizando una Venta Ida y Vuelta y la cantidad de asientos de IDA y RETORNO debe ser la misma, no puede continuar a la siguiente pesta\u00F1a.
+WndVentaReserva.information.pasajeroIndeseable = Existen razones para no realizar Venta de Pasajes a este Pasajero, conversar con la Administraci\u00F3n. 
+WndVentaReserva.information.noRutaPuntaje = La Ruta seleccionada no cuenta con un Puntaje asociado para el canje.
+WndVentaReserva.information.noPuntosSuficientes = El Pasajero no cuenta el puntaje necesario para realizar el Canje.
+WndVentaReserva.information.openDateOnCreditNotAllowed = No se permite realizar ventas a fecha Abierta con forma de pago Crédito.
+WndVentaReserva.information.EmailIncorrecto=Ingrese una dirección de correo valida.
+WndVentaReserva.information.razonSocialIncorrect=Debe de ingresar una Razón Social válida.
+WndVentaReserva.information.noDireccionCliente=Debe de ingresar la dirección del Cliente.
+WndVentaReserva.information.direccionIncorrect=Debe de ingresar una dirección válida.
+WndVentaReserva.information.FechaViajeNoValida=Debe seleccionar una fecha de partida NO menor a la actual. 
+WndVentaReserva.information.noLiquidacion=Debe tener una liquidación aperturada.
+WndVentaReserva.information.saldoInsuficiente=El Cliente no cuenta con saldo suficiente para realizar la Venta.
+WndVentaReserva.information.agenciaSaldoInsuficiente=No cuenta con Saldo suficiente.
+WndVentaReserva.information.noCliente=No se encontro el registro del cliente. 
+WndVentaReserva.information.importeMixtoCero=Ha seleccionado la opción de Pago Mixto, debera de ingresar los montos en Efectivo y con Tarjeta de Credito.
+WndVentaReserva.information.importeMixtoNotEquals=La sumatoria del Importe Mixto ingresado no coincide con el Importe Pagado, por favor corregir para poder continuar.
+WndVentaReserva.information.importeMixtoNoSeleccionoEfectivo = Debe seleccionar EFECTIVO como Tipo de Forma de Pago.
+WndVentaReserva.information.importeMixtoNoSeleccionoTarjeta = Debe seleccionar TARJETA como Tipo de Forma de Pago.
+WndVentaReserva.information.noDNICorrecto = Ingrese un numero de DNI valido.
+WndVentaPasajes.information.muchasPromocionesPaxFre = Existe mas de una promoción para los Pasajeros Frecuentes.
+WndVentaPasajes.information.muchasPromocionesCliente = Existe mas de una promoción para el Cliente.
+WndVentaReserva.information.expiroTiempoBloqueoAsiento = El tiempo máximo para tener el asiento bloqueado ha expirado, refresque el mapa del bus y vuelva a seleccionar el asiento.
+WndVentaReserva.question.guardarPasajero = ¿Realmente desea guardar los datos del Pasajero?
+WndVentaReserva.question.actualizarPasajero = ¿Realmente desea actualizar los datos del Pasajero?
+WndVentaReserva.question.guardarCliente = ¿Realmente desea guardar los datos del Cliente?
+WndVentaReserva.question.actualizarCliente = ¿Realmente desea actualizar los datos del Cliente?
+WndVentaReserva.information.noPromociones = No existen promociones vigentes.
+WndVentaReserva.information.noPasajeroPromocion = Primero debe seleccionar el Pasajero para consultar las Promociones.
+WndVentaReserva.warning.fechaRetornoNoValida = Debe seleccionar una fecha de retorno valida, recuerde que la fecha de retorno debe ser mayor a la fecha de partida.
+WndVentaReserva.information.fidelizarPasajero = Primero debe convertir al Pasajero en Frecuente para poder continuar con la venta.
+WndVentaReserva.information.fidelizacionRealizada = La activacion del Pasajero Frecuente se realizo correctamente.
+WndVentaReserva.information.fidelizacionNoRealizada = La activacion del Pasajero Frecuente no se pudo realizar, informe del error a SISTEMAS.
+WndVentaReserva.question.fidelizarPasajeroFrecuente = Se va a convertir el Pasajero en Frecuente, esta seguro?
+WndVentaReserva.question.promocionNoAplicableAlRetorno = La promoción no es aplicable al Boleto de Retorno, ¿Desea seleccionar otra promoción?
+WndVentaReserva.information.noSavedPax=Tiene pendiente por guardar los datos del Pasajero, por favor realícelo antes de continuar.
+WndVentaReserva.information.noTieneLiquidacionAbierta = El Usuario Remoto no tiene liquidacion aperturada, no se puede continuar con la Venta Remota.
+WndVentaReserva.information.noConcecionario=No se encontro el registro del Concesionario.
+WndVentaReserva.information.noTieneTarifaIda = No se puede continuar porque el itinerario seleccionado no tiene Tarifa.
+WndVentaReserva.information.noTieneTarifaRetorno = No se puede continuar porque el itinerario seleccionado de retorno no tiene Tarifa.
+WndVentaReserva.information.noSelectTipoMoneda=No pude continuar, por que no tiene asignado el tipo de moneda de su país.
+WndVentaReserva.information.longitudDocumento = La longitud del DNI debe ser de 8 digitos.
+WndVentaReserva.information.fechaNacimientoDiaInvalidadPax=El día de la fecha de nacimiento no es válido.
+WndVentaReserva.information.fechaNacimientoMesInvalidadPax=El mes de la fecha de nacimiento no es v\u00E1lido. 
+WndVentaReserva.information.fechaNacimientoAnioInvalidadPax=El anio de la fecha de nacimiento no es válido.
+WndVentaReserva.information.noIngresoEdad = Debe ingresar la edad del Pasajero para poder continuar.
+WndVentaReserva.information.noHoraMenorServicio=La hora del Servicio seleccionado es menor a la hora actual, probablemente el bus haya partido. \n\n \u00BFRealmente desea continuar?
+WndVentaReserva.information.docPaxIncorrect=El Número de Documento es incorrecto.
+WndVentaReserva.information.fechaExiraReservaMayor=El tiempo Máximo para realizar la reserva es
+WndVentaReserva.information.fechaExiraReservaMenorFechaActual=La fecha y/o hora de expiración de la reserva no puede ser menor a la fecha y/o hora actual.
+WndVentaReserva.information.ventaNoPermitida=Esta ruta a\u00FAn no esta habilitada para la Venta de Pasajes. 
+WndVentaReserva.infomration.promosDesabled=No existen promociones habilitadas para esta Ruta.
+WndVentaReserva.information.noComillaSimple=El Carácter Comillas Simple(') no esta permitido
+WndVentaReserva.information.noFechaNacimiento=Debe de ingresar la fecha de nacimiento.
+WndVentaReserva.information.noFechaNacimientoInvalida=La fecha de Nacimiento no es Válida.
+
+WndLiquidacionDiariaVentas.information.fechaInicioMenor = La fecha de inicio no puede ser mayor a la fecha final del intervalo de busqueda.
+WndLiquidacionDiariaVentas.information.confirmaDuplicado = Recuerde que esta acci\u00F3n anulara el Boleto Actual y no se podra volver a utilizar\n\u00BFRealmente desea realizar esta operaci\u00F3n?.
+WndLiquidacionDiariaVentas.information.confirmarAnulacion = ¿Esta seguro de querer Anular el Boleto, esta acción no se podra deshacer?
+WndLiquidacionDiariaVentas.information.boletoLiquidado = No se puede realizar esta operación porque el Boleto ya fue liquidado por el Counter.
+WndLiquidacionDiariaVentas.information.boletoAnulado=No se puede realizar esta operaci\u00F3n, porque el Boleto se encuentra anulado.
+WndLiquidacionDiariaVentas.information.boletoDevuelto = No se puede realizar esta operaci\u00F3n, porque el Boleto se encuentra devuelto.
+WndLiquidacionDiariaVentas.information.exitoDuplicado = El Duplicado de Boleto se registro correctamente.\nEl nuevo N\u00FAmero de Control es \:
+WndLiquidacionDiariaVentas.information.exitoAnulacion = La Anulaci\u00F3n del boleto se realizo correctamente.
+WndLiquidacionDiariaVentas.information.numeroBoletoVendido = El número de boleto ya fue vendido, por favor consulte el Número de Boleto nuevamente.
+#WndLiquidacionDiariaVentas.information.manifiestoImpreso = No se puede completar la operación por que el Manifiesto de Pasajeros ya fue impreso.
+WndLiquidacionDiariaVentas.information.noVentas = No se encontraron Liquidaciones para los criterios de busqueda ingresados.
+WndLiquidacionDiariaVentas.information.fechaPasada= No se puede realizar esta operaci\u00F3n, porque la fecha de emisi\u00F3n del Boleto no corresponde al d\u00EDa actual. 
+WndLiquidacionDiariaVentas.information.otroUsuario=No se puede realiza esta operación, porque este Boleto corresponde a otro usuario.
+WndLiquidacionDiariaVentas.information.noBoleto=No se puede realizar el duplicado para este Comprobante.
+WndLiquidacionDiariaVentas.information.RCReimpreso=No puede anular el Recibo de Caja, este ya fue reimpreso.
+WndLiquidacionDiariaVentas.information.tiempoMaximoAlcanzado = No se puede completar la operación, por que ya paso el tiempo máximo para poder realizar el duplicado del boleto.
+WndLiquidacionDiariaVentas.information.noMotivoAnulacion=Debe de ingresar el motivo por el cual se esta realizando la anulación.
+WndLiquidacionDiariaVentas.cambioFormapago.question=¿Realmente desea guardar los Cambios?
+WndLiquidacionDiariaVentas.information.noAnulacion=No se puede completar la operación, por que este Boleto ya tiene otros movimientos.
+WndLiquidacionDiariaVentas.information.noDuplicado=No puede realizar esta operación de un Boleto con monto a pagara 0.
+
+WndConfirmarReserva.information.noEsAgenciaTepsa=Solo se permite confirmar reservas a Agencias TEPSA.
+WndConfirmarReserva.information.noReservas = No se encontraron Reservas por Confirmar para los criterios ingresados.
+WndConfirmarReserva.warning.noExisteIngresoBusqueda = No se ha ingresado ningun patron de busqueda.
+WndConfirmarReserva.information.confirmaAnularReserva = ¿Realmente desea anular la reserva?
+WndConfirmarReserva.information.reservaAnulada = La reserva se anulo satisfactoriamente.
+WndConfirmarReserva.information.reservaNoAnulada = No se pudo anular la reserva.
+WndConfirmarReserva.information.confirmaAnularReservaMasiva=¿Realmente desea anular todas las reservas seleccionadas?
+WndConfirmarReserva.information.reservaAnuladaMasiva=Las reservas fueron anuladas satisfactoriamente.
+
+WndConfirmarFechaAbierta.information.noReservas = No se ha encotrado ninguna Venta Fecha Abierta para los criterios ingresados.
+WndConfirmarFechaAbierta.warning.noExistePatronBusqueda = No se ha ingresado ningun patron de busqueda.
+WndConfirmarFechaAbierta.information.boletoCaducado=El Boleto ha caducado, no es posible realizar la Confirmaci\u00F3n.
+WndConfirmarFechaAbierta.information.noAplicaBoleto=No se puede confirmar una venta emitida con Boleto de Viaje.   
+
+WndPostergacion.informacion.noFechaViaje = Debe ingresar la Fecha de Partida del boleto.
+WndPostergacion.informacion.noCriteriosbusqueda = Es necesario ingresar mas criterios de busqueda.
+WndPostergacion.information.noVentas = No se encontraron Ventas para los criterios ingresados.
+WndPostergacion.information.noItinerarioSeleccionado = No ha seleccionado ningun Itinerario.
+WndPostergacion.information.noAsientoSeleccionado = Debe seleccionar el asiento que desea vender.
+WndPostergacion.information.noAgenciaPartidaSeleccionada = Debe seleccionar el Punto de Embarque.
+WndPostergacion.information.noNumeroBoleto = No se puede continuar con la venta, no tiene asignado Especies Valoradas.
+WndPostergacion.information.noTipoComprobante = Debe seleccionar el Tipo de Comprobante.
+WndPostergacion.information.noFormaPago = Debe seleccionar la Forma de Pago.
+WndPostergacion.information.noTipoFormaPago = Debe seleccionar el Tipo de Forma de Pago.
+WndPostergacion.information.noOperadorTarjetaCredito = Debe seleccionar el Operador de la Tarjeta de Crédito.
+WndPostergacion.information.noTarjetaCredito = Debe seleccionar la Tarjeta de Crédito.
+WndPostergacion.information.limiteSecuencial = Se ha llegado al Numero Maximo de postergaciones, razón por la cual esta operación no se puede completar.
+WndPostergacion.information.fechaCaducidad = No se puede completar la operación porque el Boleto excedio su fecha de Caducidad.
+WndPostergacion.information.confirmacionPostergacion = ¿Realmente desea guardar?
+WndPostergacion.information.exitoPostergacion = La Postergación se realizo correctamente, el nuevo Número de Control es :
+WndPostergacion.information.postergacionByAnulacionNoPermitido = No se puede realizar la Postergación debido a que el boleto esta ANULADO.
+WndPostergacion.information.postergacionByFechaAbiertaNoPermitido = No se puede realizar la Postergación de un Boleto Fecha Abierta.
+WndPostergacion.information.postergacionByCortesiaNoPermitido = No se puede Postergar los boletos emitidos como Cortesia.
+WndPostergacion.information.postergacionByCorporativoNoPermitido = No se puede Postergar los boletos emitidos por clientes Corporativos.
+WndPostergacion.information.postergacionByFechaLimitePostergar = No se puede Postergar el boleto, porque ya se vencio el plazo permitido para esta operación.
+WndPostergacion.information.postergacionByItinerarioDespachado = No se puede completar la operación, porque el Itinerario ya no esta disponible.
+WndPostergacion.information.noCambioNombre=No ha realizado el cambio de Nombre del Pasajero.
+WndPostergacion.information.noCambioRazonSocial= No ha realizado el cambio de Razón Social.
+WndPostergacion.information.noTipoNota=Ha ocurrido un error al asignar el tipo de nota de crédito, por favor reinicie el Sistema y vuelva a intentarlo.
+WndPostergacion.information.noCambioDireccionFiscal= No ha realizado el cambio de la Dirección Fiscal.
+WndPostergacion.information.noCambioBoletaFactura=No ha ingresado el Número de RUC del Cliente.
+WndPostergacion.information.noClienteSinDireccion=El Cliente no tiene Direcci\u00F3n Fiscal, este es obligatorio, por lo que debe registrarlo. 
+WndPostergacion.informacion.cambioRazonSocialNoNuevaRazonSocial=Debe de ingresar la Razón Social por la cual se va acambir la actual.
+WndPostergacion.informacion.cambioRazonSocialInvalidNuevaRazonSocial=La Razón Social no es válida.
+WndPostergacion.informacion.cambioDireccionNoNuevaDireccion=Debe de ingresar la Dirección Fiscal del Cliente.
+WndPostergacion.informacion.cambioDireccionNoInvalidDireccion=La Dirección que ha ingresado no es válida.
+
+
+WndReimprimirBoleto.question.confirmarReimpresion = ¿Realmente desea continuar con la Reimpesion del Boleto?
+WndReimprimirBoleto.information.reimpresionByAnulacionNoPermitido = No se puede reimprimir un Boleto anulado.
+WndReimprimirBoleto.information.reimpresionByDevolucionNoPermitido = No se puede reimprimir el Boleto porque fue Devuelto.
+WndReimprimirBoleto.information.fechaPartida = Debe seleccionar la Fecha de Partida del Boleto.
+WndReimprimirBoleto.information.criteriosBusqueda = Debe ingresar o el nombre del Pasajero o el N\u00FAmero de Documento del Pasajero. 
+WndReimprimirBoleto.information.exitoReimpresion = La Reimpresion del Boleto se realizo correctamente.\nEl N\u00FAmero de Control es \:
+WndReimprimirBoleto.information.numeroBoletoVendido = El número de boleto ya fue vendido, por favor consulte el Número de Boleto nuevamente.
+WndReimprimirBoleto.information.reimpresionAntesFecha=La Reimpresi\u00F3n de un Voucher Corporativo solo es posible hasta un d\u00EDa antes de la fecha de Viaje.
+WndReimprimirBoleto.question.reimprimir=\u00BFRealmente esta seguro de realizar la reimpresi\u00F3n del Comprobante Electronico? 
+
+WndDevolucionBoleto.warning.noExisteCriteriosBusqueda = No se ha ingresado ningun criterio de Busqueda.
+WndDevolucionBoleto.question.confirmarDevolucion = ¿Realmente desea continuar con la Devolución?
+WndDevolucionBoleto.information.exitoDevolucion = La devolución se ha realizado satisfactoriamente.
+WndDevolucionBoleto.information.noVentas = No se han encontrado ventas para los criterios ingresados.
+WndDevolucionBoleto.information.noPorcentajeDevolucion = No ha seleccionado el porcentaje de la Devolución.
+WndDevolucionBoleto.information.noMotivoDevolucion = No ha ingresado el motivo de la Devolución.
+WndDevolucionBoleto.information.noDevolucionCorporativo = No se puede realizar la devolución del Boleto porque el Cliente es CORPORATIVO.
+WndDevolucionBoleto.question.noDevolucionCortesia = No deberia realizar la devoluci\u00F3n de boletos emitidos como CORTESIA.\n\u00BFEsta seguro de querer realizar esta operaci\u00F3n?
+WndDevolucionBoleto.question.noDevolucionBoletoUtilizado = Esta a punto de realizar la devoluci\u00F3n de un Boleto que ya fue utilizado.\n\u00BFEsta seguro de querer continuar?
+WndDevolucionBoleto.information.noDevolucionBoletoCaducado = No se permite realizar la devolución del Boleto porque este ya Caduco.
+WndDevolucionBoleto.information.noDevolucionByDevuelto = No se puede realizar la devolución de un Boleto que ya fue devuelto.
+WndDevolucionBoleto.information.noDevolucionAnulacion = No se puede realizar la devolución de un Boleto Anulado.
+WndDevolucionBoleto.information.notipoComprobante=Debe de seleleccionar el tipo de Comprobante.
+WndDevolucionBoleto.information.noNumeroEspecieValorada=No tiene Especies Valoradas asignadas a su Agencia.
+WndDevolucionBoleto.information.noTipoFormaPago=Debe de seleccionar la forma de pago. 
+WndDevolucionBoleto.information.noOperadorTarjetaCredito=Debe de seleccionar el operador de la tarjeta de Crédito.
+WndDevolucionBoleto.information.noTarjetaCredito=Debe de seleccionar la Tarjeta de Crédito.
+WndDevolucionBoleto.information.noImportePagar=El valor del Importe a pagar no es válido.
+WndDevolucionBoleto.information.noCliente=Debe de ingresar el cliente.
+WndDevolucionBoleto.information.niResponsable=Debe de Seleccionar el Responble de la Devolución.
+
+WndComprobantesSinBoleto.information.noComprobantesSinBoleto = No se han encontrado comprobantes validos sin Boleto de Viaje.
+WndComprobantesSinBoleto.question.confirmarReimpresion = ¿Realmente desea continuar con la Reimpesion del Boleto?
+WndComprobantesSinBoleto.information.exitoReimpresion = La Reimpresion del Boleto se realizo correctamente.\nEl N\u00FAmero de Control es \:
+WndComprobantesSinBoleto.information.numeroBoletoVendido = El número de boleto ya fue vendido, por favor consulte el Número de Boleto nuevamente.
+WndComprobantesSinBoleto.information.comprovanteReimpreso= ya fue reimpreso y/o anulado.
+WndComprobantesSinBoleto.information.expiracionBloqueo=Ha expirado el tiempo para realizar la reimpresión, por favor pulse el botón "Cancelar" y luego vuelva a intentarlo.
+WndComprobantesSinBoleto.information.reimpresionOtroUsuario=Parece que ha tardado un poco en realizar la reimpresi\u00F3n. \nEste comprobante ya esta siendo reimpreso por otro Usuario.
+WndComprobantesSinBoleto.information.reimpresionEnOtroEquipo=Parece que ha tardado un poco en realizar la reimpresi\u00F3n. \nEste comprobante ya esta siendo reimpreso desde otro equipo
+WndComprobantesSinBoleto.information.otroUsuarioReimpresion=El comprobante ya esta siendo reimpreso por otro usuario.
+
+
+WndPasajero.information.noDocumentoPaxDuplicado=El número de documento del pasajero, ya esta registrado.
+WndPasajero.information.PaxMotivoNoGrata=Debe ingresar el motivo por el cual se considera persona no grata.
+WndPasajero.information.PaxFreNumeroTarjeta=Debe ingresar el Número de tarjeta del Pasajero Frecuente.
+WndPasajero.information.CorreoElectronico=Debe ingresar un Correo Eletr\u00F3nico del Pasajero Frecuente.  
+WndPasajero.information.Telefono=Debe ingresar un Número de Teléfono del Pasajero Frecuente.
+WndPasajero.information.Direccion=Debe ingresar una Dirección del Pasajero Frecuente.
+WndPasajero.information.ApellidoMaterno=Debe ingresar una Dirección del Pasajero Frecuente.
+WndPasajero.information.NoAgencia=Debe Seleccionar la Agencia de Registro del Pasajero.
+WndPasajero.information.DuplicaTarjeta=El número de tarjeta ya existe en el Sistema.
+WndPasajero.information.NoFechaNacimiento=Debe ingresar la fecha de nacimineto.
+WndPasajero.information.validacionDniOk=DNI validado correctamente con la Reniec.
+WndPasajero.information.validacionDniError=DNI no registrado en la RENIEC.
+
+WndConcesionario.information.numeroRucInvalido = El Número de RUC ingresado, ya esta existe en el Sistema.
+WndConcesionario.information.noIngresoNumeroRuc = Debe ingresar el Número de RUC.
+WndConcesionario.information.noIngresoRazonSocial = Debe ingresar la Razón Social.
+WndConcesionario.information.razonSocialDuplicada = La Razón Social ingresada ya existe en el Sistema.
+WndConcesionario.information.noSeleccionoFechaActivacion = Debe ingresar la fecha de Activacion.
+WndConcesionario.information.numeroRucDuplicado = El número de Ruc no es válido.
+WndConcesionario.information.noSeleccionoRegistro = Seleccione el Registro a Eliminar
+WndConcesionario.information.noComision = Debe ingresar la Comisión.
+WndConcesionario.information.noSelectedTipoComision = Seleccione el tipo de Comisión.
+
+WndServicio.information.noIngresoNumeroPisos = Debe ingresar el Número de Pisos.
+WndServicio.information.noIngresoNumeroAsientos = Debe ingresar el Número de Asientos.
+WndServicio.information.noIngresoNumeroFilas = Debe ingresar el Número de Filas.
+WndServicio.information.noIngresoCantidadColumnas = Debe ingresar la Cantidad de Columnas.
+
+WndAgencia.information.noSeleccionoTipoAgencia = Debe seleccionar el Tipo de Agencia.
+WndAgencia.information.noSeleccionoLocalidad = Debe seleccionar la Localidad.
+WndAgencia.information.noSeleccionoConcesionario = Debe seleccionar un Concesionario.
+WndAgencia.information.noIngresoUbigeo = Debe ingresar la Ubicación Geográfica.
+WndAgencia.information.noCodigo=Debe de ingresar el Centro de costro (C.C).
+
+WndRuta.information.LocalidadOrigen=Debe seleccionar la Localidad Origen.
+WndRuta.information.LocalidadDestino=Debe seleccionar la Localidad Destino.
+WndRuta.information.Kilometros=Debe ingresar el Número de Kilometros.
+WndRuta.information.HorasViaje=Debe ingresar las Horas de Viaje.
+WndRuta.information.RutaDuplicada=La ruta seleccionada ya exsiste.
+WndRuta.information.LocalidadOrigenDestinoIguales=La Localidad Origen y la Destino no pueden ser iguales.
+WndRuta.information.NoPuntaje=Debe ingresar el Puntaje para esta Ruta.
+
+WndTipoFormaPago.information.noSeleccionoFormaPago = Debe seleccionar la Forma de Pago.
+WndTipoFormaPago.information.noSeleccionoTipoIngresoLiquidacion = Debe seleccionar el Tipo de Ingreso Liquidación.
+
+WndTarjetaCredito.information.TarjetaCredito=Debe seleccionar el Operador de la Tarjeta de Crédito.
+
+WndDescuentoRecargo.information.Monto=Debe ingresar un Monto Válido.
+
+WndTipoComprobante.Information.Norubro=Debe seleccionar el Rubro.
+
+WndEspecieValorada.information.TipoComprobante=Debe Seleccionar el Tipo de Comprobante.
+WndEspecieValorada.information.NumeroSerie=Debe ingresar el Número de Serie.
+WndEspecieValorada.information.Agencia=Debe Seleccionar la Agencia.
+WndEspecieValorada.information.CorrelativoInicial=Debe ingresar el Número del Correlativo Inicial.
+WndEspecieValorada.information.CorrelativoFinal=Debe ingresar el Número de Correlativo Final.
+WndEspecieValorada.information.CorrelativoActual=Debe ingresar el Número de Correlativo Actual.
+WndEspecieValorada.information.NumeroAutorizacionSunat=Debe ingresar el Número de Autorización de la SUNAT.
+WndEspecieValorada.information.CorrelativoFinalMenorInicial=El Correlativo Final debe ser Mayor o Igual al Inicial .
+WndEspecieValorada.information.CorrelativoActualMenorInicial=El Correlativo Actual debe estar entre los rangos del inicial y final.
+WndEspecieValorada.information.CorrelativoActualMayorFinal=El Correlativo Actual debe estar entre los rangos del inicial y final.
+WndEspecieValorada.information.NumeroSerieDuplicado=El N\u00FAmero de Serie del tipo de comprobante seleccionado, ya esta registrada en esta Agencia. 
+WndEspecieValorada.information.duplcateCorrelativoAgencia=La Agencia seleccionada ya tiene un correlativo asignado.
+WndEspecieValorada.information.noSerieRegistrada=El Número de Serie aún no se ha registrado en el maestro de series y agencias.
+WndEspecieValorada.information.correlativoInicalMenorUltimoDB=El correlativo inical no puede ser menor o igual al ultimo regsitrado en el sistema.
+WndEspecieValorada.information.correlativoFinallMenorUltimoDB=El correlativo final no puede ser menor o igual al ultimo registrado en el sistema.
+WndEspecieValorada.information.noFormato=Debe de seleccionar el fomrato del Boleto, el cual va utilizar en la impresión.
+
+WndPersonal.information.TipoPerosnal=Debe seleccionar el Tipo de Personal.
+WndPersonal.information.CodigoPerosnal=Debe ingresar el Código.
+WndPersonal.information.TipoDocumento=Debe seleccionar el Tipo de Documento.
+WndPersonal.information.NumeroDocuento=Debe ingresar el Número de Documento.
+WndPersonal.information.Nombre=Debe ingresar el Nombre.
+WndPersonal.information.Sexo=Debe seleccionar el Sexo.
+WndPersonal.information.Nacionalidad=Debe seleccionar la Nacionalidad.
+WndPersonal.information.EstadoCivil=Debe seleccionar el Estado Civil.
+WndPersonal.information.Ubigeo=Debe ingresar la Ubicación Geografica.
+WndPersonal.information.TipoVia=Debe seleccionar el Tipo de Vía.
+WndPersonal.information.NombreVia=Debe ingresar el Nombre de la Vía.
+WndPersonal.information.TipoZona=Debe seleccionar el Tipo de la Zona.
+WndPersonal.information.NombreZona=Debe ingresar el Nombre de la Zona.
+WndPersonal.information.CodigoPersonalDuplicado=El Código ingresado, ya exsiste en el Sistema.
+WndPersonal.information.LicenciaPersonalDuplicada=La Licencia ingresada, ya exsiste en el Sistema.
+WndPersonal.information.NumeroDocumentoDuplicado=El Número de Documento ingresado, ya exsiste en el Sistema.
+WndPersonal.information.lenDniInvalid=El Número del DNI es incorrecto, debe tener 8 dígitos.
+WndPersonal.information.noLicencia=Debe de ingresar le número de la Licencia de Conducir del Pioto/Copiloto.
+WndPersonal.information.licenicaInvalid=El número de la Licencia de Conducir no es válida.
+
+WndBus.information.TipoFlota=Debe seleecionar el Tipo de Flota.
+WndBus.information.Servicio=Debe seleecionar el Servicio.
+WndBus.information.Numeroflota=Debe seleecionar el Número de Flota.
+WndBus.information.GrupoMantenimiento=Debe seleecionar el Grupo de Mantenimiento.
+WndBus.information.NumeroBus=Debe ingresar el Número del Bus.
+WndBus.information.KilRecorridoXDia=Debe ingresar el Kilometraje Promedio de Recorrido Diario. 
+WndBus.information.KilAcumuladoOdometro=Debe ingresear los Kilometraje Acumulado del Odómetro.
+WndBus.information.NumeroPlaca=Debe ingresear el número de Placa.
+WndBus.information.NumeroChasis=Debe ingresear el número del Chasis.
+WndBus.information.NumeroBusDuplicado=El Número de Bus ingresado, ya existe en el Sistema.
+WndBus.information.NumeroPlacaDuplicado=El Número de Placa ingresado, ya existe en el Sistema.
+WndBus.information.NumeroChasisDuplicado=El Número de Chasis ingresado, ya existe en el Sistema.
+WndBus.information.NumeroMotorDuplicado=El Número de Motor ingresado, ya existe en el Sistema.
+
+WndObjetoBus.information.TipoObjeto=Debe se seleccionar el Tipo de Objeto.
+WndObjetoBus.information.RutaImagen=Debe ingresar la Ruta de la Imágen.
+
+WndEstadosBus.information.Estado=Debe seleecionar un Estado.
+
+WndDucmentoBus.information.EstadoDocumento=Debe seleccionar el Estado de Documento.
+WndDucmentoBus.information.FechaExpedicion=Debe ingresar la Fecha de Expedición.
+WndDucmentoBus.information.EstadoVencimiento=Debe ingresar la Fecha de Vencimiento.
+WndDucmentoBus.information.TipoDocBusDuplicado=El Bus seleccionado, ya tiene asociado este Tipo de Documento. 
+
+WndEstadoDocumentosBus.information.TipoEstado=Debe seleccionar el Tipo de Estado.
+
+WndCliente.information.RucDuplicado=El Número de Ruc ingresado, ya exsiste en el sistema.
+WndCliente.information.RazonSocialDuplicado=La Razón Social ingresada, ya exsiste en el sistema.
+WndCliente.information.NoAgencia=Debe Seleccionar la Agencia de Registro del Cliente.
+WndCliente.information.CantidadTrabajadoresNull=Debe ingresar la cantidad de trabajadores.
+ 
+
+WndItinerario.information.TipoItinerario=Debe seleccionar el Tipo de Itinerario.
+WndItinerario.information.TipoServicio=Debe seleccionar el Tipo de Servicio.
+WndItinerario.information.Origen=Debe seleccionar el Origen.
+WndItinerario.information.Ruta=Debe seleccionar la Ruta.
+WndItinerario.information.FechaItinerario=Debe ingresar la Fecha del Itinerario.
+WndItinerario.information.HoraPartida=Debe ingresar la Hora (Recuerde que debe ser en Formato de 24 Horas).
+WndItinerario.information.TerminalOrigen=Debe seleccionar el Terminal Origen.
+WndItinerario.information.TerminalDestino=Debe seleccionar el Terminal Destino.
+WndItinerario.information.SeleccionarTramo=Debe Seleccionar el Tramo.
+WndItinerario.information.NoEditarTramo=No puede modificar el tramo seleccionado, por exister tramos dependientes al mismo.
+WndItinerario.information.NoBorrarTramo=Debe Borra el ultimo Tramo.
+WndItinerario.information.Terminal=El Terminal seleccionado ya existe en la Lista.
+WndItinerario.information.EliminaTerminalPartida=No puede Eliminar el terminal de partida, modifique el Tramo Inicial.
+WndItinerario.information.EliminaTerminalLlegada=No puede Eliminar el terminal de llegada, modifique el Tramo Final.
+WndItinerario.information.TramosDiferentes=El Origen del Nuevo Tramo debe ser igual al destino del tramo anterior para seguir la secuencia del Itinerario.
+WndItinerario.information.ValidacionTipoItinerario=El Tipo de Itinerario debe ser igual al de los tramos ya ingresados.
+WndItinerario.information.ValidacionServicio=El Servicio debe ser igual al de los tramos ya ingresados.
+WndItinerario.information.ValidacionFechaPartida=La fecha del siguiente tramo debe ser mayor o igual que del anterior.
+WndItinerario.information.ValidacionHoraPartida=La Hora del siguiente tramo debe ser iguial o mayor que el anterior.
+WndItinerario.information.TerminalPartidaDuplicado=El terminal seleccionado, ya existe en la lista de terminales de Partida.
+WndItinerario.information.TerminalLlegadaDuplicado=El terminal seleccionado, ya existe en la lista de terminales de Llegada.
+WndItinerario.information.NewHoraMenor=La Hora debe ser Mayor a la ultima ingresada.
+WndItinerario.information.ItinerarioNull=No hay itinerarios ingresados.
+WndItinerario.information.ItinerarioAgenciaPartidaNull=No se puede Guardar, debe ingresar correctamente la(s) Agencia(s) de Partida.
+WndItinerario.information.ItinerarioAgenciaLlegadaNull=No se puede Guardar, debe ingresar correctamente la(s) Agencia(s) de Llegada.
+WndItinerario.information.EditarItinerario=No podrá modificar el Itinerario por ser de fecha pasada.
+WndItinerario.information.TramosDuplicados=La ruta que va a registrar ya existe
+WndItinerario.information.FechaItinerarioMenorALaActual=La fecha del Itinerario no puede ser menor a la Actual.
+WndItinerario.information.CapacidadServicioMayor=Existen ventas con asientos mayores a la capacidad del servicio que ha seleccionado. No se puede realizar el cambio de Servicio.
+WndItinerario.information.ItinerarioTieneVentas=No se puede guardar los cambios. El itinerario tiene Ventas.
+WndItinerario.information.ItinerarioConVentas=Los siguientes Itinerarios no se actualizarón por contener alguna Venta o Reserva.
+WndItinerario.information.itinerarioConVentas=No se puede anular, el Ititnerario tiene Ventas o Reservas asociadas.
+WndItinerario.information.itineararioProgramado=No podr\u00E1 modificar el Itinerario por que este ya est\u00E1 programado. \n Si desea modificarlo primero debe Eliminar la programaci\u00F3n.
+WndItinerario.information.HREAsociado=El Itinerario tiene una HRE asociada. \n Si realmente desea anular el itinerario, primero debe anular la HRE.
+
+WndItinerario.Question.ConfirmaCloseVentanaVentas=Aseg\u00FArese de haber tomado nota de los Itinerarios no actualizados, para su regularizaci\u00F3n. \u00BFRealmente desea cerrar la ventana? 
+WndItinerario.Question.ConfirmarUpdates=Se van a actualizar los itinerarios según rango de Fechas seleccionado para la programación. ¿Desea Continuar?
+WndItinerario.Question.ConfirmarUpdate=Se va a actualizar el Itinerario. ¿Desea continuar?
+WndItinerario.Question.ConfirmaInsert=Se va a registrar el Itinerario. ¿Desea Continuar?
+WndItinerario.Question.ConfirmaInserts=Se van a registrar los Itinerarios seg\u00FAn rago de fechas seleccionado para la programaci\u00F3n. \u00BFDesea continuar?
+
+WndItinerario.question.TramosDuplicados=El Itinerario que va a registrar ya esta registrado: Desea continuar?
+WndItinerario.question.BorrarTramo=Desea Borrar el tramo seleccionado ?
+WndItinerario.question.EliminaTerminal=Desea Borrar el Terminal Seleccionado ?
+
+WndCreacionMapaBus.information.draggedAsiento = Solo se permite un asiento por celda.
+WndCreacionMapaBus.information.validateAsientos = Debe distribuir todos los asientos del Pasajero.
+WndCreacionMapaBus.information.exitoGuardarMapa = El mapa del Bus se ha guardado satisfactoriamente.
+WndCreacionMapaBus.information.noDatosGuardar = No existen datos para guardar en el Mapa del Bus.
+WndCreacionMapaBus.information.noUpdateMapaBus = No se puede realizar los cambios al Mapa del Bus debido a que este ya tiene Ventas asignadas.
+
+WndProgramacionServicios.Information.SeleccionItinerario=Debe seleccionar un Itinerario.
+WndProgramacionServicios.Information.TripulanteNoExiste=La (El) Tripulante Ingresado no Existe.
+WndProgramacionServicios.Information.SeleccioneTripulante=Debe Ingresar la (El) Tripulante.
+WndProgramacionServicios.Information.PiloNoexiste=El Pilo Ingresado no Existe.
+WndProgramacionServicios.Information.SeleccionePilo=Debe Seleccionar el Pilo.
+WndProgramacionServicios.Information.CopilotoNoExiste=El Copiloto Ingresado no Existe.
+WndProgramacionServicios.Information.SeleccionCopiloto=Debe Seleccionar el Copiloto.
+WndProgramacionServicios.Information.SeleccioneBus=Debe Seleccionar el Bus.
+WndProgramacionServicios.Information.SeleccioneItinerario=Debe Seleccionar el Itinerario.
+WndProgramacionServicios.Information.GuardoCorrectamente=La Programación se registró Correctamente.
+WndProgramacionServicios.Information.ActualizadoCorrectamente=La Programcón se Actualizó Correctamente.
+WndProgramacionServicios.Information.PilotosIguales=El piloto y copiloto deben de ser diferentes.
+WndProgramacionServicios.Information.EdicionNoPermitida=El servicio ya tiene Manifiesto. No se puede Modificar.
+WndProgramacionServicios.Information.EliminacionNoPermitida=El servicio ya tiene Manifiesto. No se puede Eliminar.
+WndProgramacionServicios.question.BusProgramado=El Bus seleccionado ya esta Programado para esta fecha. ¿Desea continuar?
+WndProgramacionServicios.question.AnularProgramacion=¿Realmente desea anular la programación seleccionada ?
+WndProgramacionServicios.Information.programacionFueraFecha=No es posible hacer una programación con fecha diferente a la de hoy.
+WndProgramacionServicios.Information.duplicate=Ya existe una programación para el servcio seleccionado.
+WndProgramacionServicios.Information.modifiServicioHRE=El servicio ya esta asociado a una HRE. No se puede Modificar.
+WndProgramacionServicios.Information.deleteServicioHRE=El servicio ya esta asociado a una HRE. No se puede Eliminar.
+
+
+WndControlEspecieValorada.Information.UsuarioHarware=Debe seleccionar el Usuario Hardware.
+WndControlEspecieValorada.Information.DuplicidadTipoComprobanteUsuarioHarware=El Tipo de Comprobante y Usuario Hardware Seleccionados, ya existen.
+WndControlEspecieValorada.Information.ControlEspecieValoradaNull= No tiene asignado Especies Valoradas. Debe Configurarlas.
+WndControlEspecieValorada.Information.ControlEspecieValoradaVericar=Verifique, que la especie valorada actualmente configurada en el sistema, sea la misma a la del f\u00EDsico.
+WndControlEspecieValorada.Information.SerieNoValida=El N\u00FAmero de Serie o el Tipo de Comprobante, no corresponde a la Agencia, por favor verifique nuevamente su serie y vuelva a intentarlo.
+WndControlEspecieValorada.Information.correlativosFueraDeRango=Los correlativos Inicial o Final, est\u00E1n fuera del rango asignado para esta Agencia.
+WndControlEspecieValorada.Information.evUYaRegistradas=El Rango de Especies Valoradas que ha Ingresado, ya est\u00E1n registradas en la Caja\:
+WndControlEspecieValorada.information.title = Control de Especies Valoradas
+
+WndUsuarioSistema.information.noIngresoApellidoPaterno = Debe ingresar el Apellido Paterno del Usuario.
+WndUsuarioSistema.information.noIngresoNombres = Debe ingresar el Nombre del Usuario.
+WndUsuarioSistema.information.noIngresoLogin = Debe ingresar el Nombre de Usuario.
+WndUsuarioSistema.information.noIngresoPassword = Debe ingresar el Password para el Usuario.
+WndUsuarioSistema.information.noIngresoPasswordConfirmacion = Se bebe de Confirmar el Password.
+WndUsuarioSistema.information.passwordNoCoinciden = Los Password son difenerentes, vuelva a ingresarlos.
+WndUsuarioSistema.information.usuarioDuplicado = El Usuario ingresado ya existe.
+WndUsuarioSistema.information.noSeleccionoAgencia = Debe seleccionar la agencia a la que pertenece el usuario.
+
+WndCortesia.information.noIngresoCriterioBusqueda = Debe ingresar el patrón de busqueda.
+WndCortesia.information.noSeleccionoTipoFormaPago = Debe seleccionar el tipo de forma de pago.
+WndCortesia.information.noSeleccionoMotivoCortesia = Debe seleccionar el motivo de la cortesia.
+WndCortesia.information.noIngresoFechaInicio = Debe ingresar la fecha inicio.
+WndCortesia.information.noIngresoFechaCaducidad = Debe ingresar la fecha de caducidad.
+WndCortesia.information.noSeleccionoAutorizador = Debe seleccionar el nombre de la persona que autoriza la cortesia.
+WndCortesia.information.noIngresoPorcentajeDescuento = Debe ingresar el porcentaje de descuento.
+WndCortesia.information.noPasajeroEncontrado = No se ha encontrado al Pasajero. No se puede editar.
+WndCortesia.information.pasajeroIndeseable = Existen razones para no emitir Boletos de Cortesia a \u00E9ste Pasajero, conversar con la Administraci\u00F3n.
+WndCortesia.information.exitoGuardarPasajero = Los datos del pasajero se grabaron correctamente.
+WndCortesia.information.exitoActualizarPasajero = Los datos del pasajero fueron actualizados correctamente.
+WndCortesia.information.cortesiaCumpleaniosNoPermitida = El Pasajero ya realiz\u00F3 un canje por Cumpleanios en el anio 
+WndCortesia.information.paxFreeInactivo = El Pasajero Frecuente se encuentra INACTIVO. No se puede emitir la Cortesia.
+WndCortesia.information.paxFreeNoRegistrado = El Pasajero no es Pasajero Frecuente.
+WndCortesia.information.noSeleccionoPasajero = Debe se ingresar el Pasajero al cual se le emitirá la Cortesia.
+WndCortesia.information.noSeleccionoRuta = Debe seleccionar la Ruta.
+WndCortesia.information.rutaSinPuntaje = La ruta no cuenta con un puntaje asociado.
+WndCortesia.information.noIngresoAnioCumpleanios = Debe ingresar el año al que corresponde la Cortesia por Cumpleaños.
+WndCortesia.information.cumpleaniosFueraDelRangoPermitido = No se puede emitir la cortesia por cumpleanios para el anio ingresado.
+WndCortesia.information.noSePuedeAnularCortesia = Esta Cortesia  ya fue confirmada. No se puede Anular y/o Eliminar. 
+WndCortesia.information.noIngresoPassword = Debe ingresar la contraseña de Autorizador.
+WndCortesia.information.passwordIncorrecto = La contraseña ingresada es incorrecta.
+WndCortesia.information.confirmaGuardarCortesia = Se va a registrar la cortesia. ¿Desea continuar?
+WndCortesia.information.noSeleccionoFechaViaje = Debe seleccionar una fecha de viaje.
+WndCortesia.information.noSeleccionoAsiento = Debe seleccionar el Asiento.
+WndCortesia.information.noSeleccionoServicio = Debe seleccionar el Servicio.
+WndCortesia.information.asientoNoPermitido = El asiento seleccionado no esta permitido para emitirlo como cortesia en el servicio
+WndCortesia.information.numeroDocumentoIncorrecto = Debe ingresar un Número de Documento Válido.
+WndCortesia.information.fechaViajeFueraRango=La fecha de viaje esta fuera del rango permitido.
+WndCortesia.information.noIngresoCliente = Debe ingresar el RUC del Cliente para poder emitir la cortesia por Canje Publicitario.
+WndCortesia.information.clienteSinCanje = El Cliente no cuenta con Linea de Crédito para Canje Publicitario.
+WndCortesia.information.noDetalleCortesia=Debe de ingresar el detalle de la Cortesia.
+
+
+WndManifiesto.information.noTieneCertificadoHabilitacionBus = No tiene configurado el N\u00FAmero de Certificado de Habilitaci\u00F3n.
+WndManifiesto.information.correlativosAgotados = El correlativo para el Manifiesto ya esta agotado. no podrá imprimir manifiestos hasta regularizar lo indicado.
+WndManifiesto.information.utilizacionCorrelativosManifiesto = El correlativo para el Manifiesto ya esta utilizado en un 
+WndManifiesto.information.servicioNoProgramado = Este Servicio aún no ha sido Programado. No es posible imprimir el Manifiesto.
+WndManifiesto.information.comprobantesPendientesPorImprimir = Existen comprobantes que están pendientes por Asociar a un Boleto de Viaje. No se podrá imprimier el manifiesto hasta regualarizarlos.
+WndManifiesto.question.confirmarAnulacion = Desea anular le Manifiesto Selecionado.
+WndManifiesto.question.confirmarImpresion = Se va Imprimir el Manifiesto de Pasajeros. \u00BFDesea continuar?
+WndManifiesto.information.noCorrelativoManifiesto=No tiene configurado el correlativo para la emisi\u00F3n del Manifiesto.
+WndManifiesto.information.DuplicateManifiesto=El Número de manifiesto ya fue impreso.
+
+WndUsuarioAprobador.information.noMailUser=El Usuario seleccionado para Usuario Aprobador debe tiener configurado un E-Mail, el cual es necesario para el envio de las alertas. No puede continuar.
+
+WndCanalVenta.information.noIngresoColor = Debe ingresar el Color con el que se pintara la venta o reserva.
+
+WndUsuarioRol.information.noSeleccionoRol = Debe seleccionar un Rol para el Usuario.
+WndUsuarioRol.information.noIngresoUsuario = Debe ingresar un Usuario Válido.
+WndUsuarioRol.information.noIngresoEmailUsuario = El Rol seleccionado requiere que el usuario tenga un correo configurado. No puede continuar.
+WndUsuarioRol.information.noIngresoEmailEnvioCredenciales = Es necesario que ingrese el email al cual se enviara la informacion para el acceso al sistema.
+WndUsuarioRol.information.usuarioTieneRol = El Usuario que ha seleccionado tiene un rol activo. Debe buscar el registro y editarlo si desea asignarle un rol. 
+WndUsuarioRol.information.usuarioRolDuplicado = El usuario y rol seleccionado  ya existen.
+
+
+WndOpcionMenu.Information.NoOrdenOpcionMenu=Debe ingresar el Orden para la Opción del Menu.
+WndOpcionMenu.Information.NoMenuPadre=Debe seleccionar el menu Padre.
+WndOpcionMenu.Information.NoNombreObjeto=Debe ingresar el nombre del Objeto.
+WndOpcionMenu.Information.NoUrl=Debe ingresar la URL.
+
+
+WndRolOpcionMenu.Information.NoOpcionesMenu=Debe seleccionar los menus para el rol seleccionado.
+WndRolOpcionMenu.Information.NoRol=Debe seleccionar el Rol.
+WndRolOpcionMenu.Information.OperacionCorrecta=Registro Actualizados.
+
+WndLiquidacionBus.Questin.QuitarGasto=Se va a quitar el Gasto seleccionado ¿Dese Continuar?
+WndLiquidacionBus.Information.SeleccioneIndex=Debe seleccionar el Item a Eliminar.
+WndLiquidacionBus.Information.ItinerarioNull=Debe ingresar el número del Itinerario.
+WndLiquidacionBus.Information.BusNull=Debe seleccionar el Bus.
+WndLiquidacionBus.Information.GastosXBusNull=Debe ingresar los Gastos realizados en el Bus.
+WndLiquidacionBus.Information.OperacionNull=Debe seleccionar la Operación.
+WndLiquidacionBus.Information.MontoGastoNull=Debe ingresar el Monto gastado.
+WndLiquidacionBus.Information.TipoGastoNull=Debe seleccionar el Tipo de Gasto.
+ 
+WndCierreCaja.Information.CerrarCaja=Esta seguro de efectuar su Cierre de Caja? Esta acción no se podra deshacer.
+WndCierreCaja.Information.CajaCerrada=La Caja selecciona esta cerrada.
+WndCierreCaja.Information.SeleccionCaja=Debe seleccionar la liquidación.
+WndCierreCaja.Information.SolicitaPasswordInvalido=El Usuario o Password que ha ingresado, no son correctos.
+WndCierreCaja.Information.UsuarioNull=Debe ingresar el Nombre de Usuario.
+WndCierreCaja.Information.PasswordNull=Debe ingresar el Password.
+WndCierreCaja.Information.questionCerrarCaja=¿Realmente esta seguro de cerrar su Liquidación?
+WndCierreCaja.Information.liquidacionReaperturada=Se ha reaperturado la Liquidación correctamente.
+WndCierreCaja.Question.reaperturarLiquidacion=¿Realmente desea reaperturar la liquidación?
+WndCierreCaja.Question.Impresion=¿Desea imprimir la Liquidación?
+WndCierreCaja.Qestion.montoByLiquidarDifTotalLiquidacion=El Monto que ha ingresado es diferente al monto Total a Liquidar, por favor revise su Liquidación.
+
+
+WndGasto.Information.LiquidacionNull=No se ha encontrado una liquidación aperturada para esta fecha. No se puede registrar el gasto.
+WndGasto.Information.MontoGasotNull=Debe ingresar el Monto del gasto.
+WndGasto.Information.TipoGastoNull=Debe seleccionar el tipo de gasto.
+WndGasto.Information.MontoMayorVentas=La Suma de gastos superan el de las ventas en efectivo.No puede registrar este gasto.
+WndGasto.Information.BusNull=Debe seleccionar el número del Bus.
+WndGasto.Information.PilotoNull=Debe ingresar el nombre del piloto.
+WndGasto.Information.DocumentoNull=Debe ingresar el número de documento del Consignado.
+WndGasto.Information.ConsignadoNull=Debe ingresar el consigndo.
+WndGasto.Information.ObservacionesNull=Se sugiere ingresar alguna Observación acerca del Gasto.
+WndGasto.Information.DocumenoInvalido=Debe ingresar un Documento válido.
+WndGasto.Information.LiquidacionCerrada=La liquidación está cerrda, no es posible realizar modiciones en el Gasto.
+WndGasto.Question.EliminarGasto=Se eliminará el Gasto selecciondo! ¿Desea continuar ?
+
+WndLiquidacionOficina.Information.Liquidar=Se liquidará a las Cajas Seleccionadas! ¿Desea continuar?
+WndLiquidacionOficina.Information.LiquidacionesPendientesSelecNull=Debe seleccionar por lo menos una caja.
+
+UtilData.information.noUniqueEspecieValorada = Se encontro mas de un registro activo para el Tipo de Comprobante asignado al PC.
+UtilData.information.noAsignacionEspecieValorada = No se encontro Especies Valoradas asignadas al equipo.
+UtilData.information.notAvailableEspecieValorada = No se encontro Especies Valoradas disponibles, revise o solicite mas Especies Valoradas. 
+UtilData.information.noSequece=No se pudo generar el correlativo, pueda que el secuenciador aún no este creada.
+
+WndTransbordos.information.itinerarioConDespacho = El Asiento seleccionado para transbordar corresponde a un servicio ya despachado. No se puede realizar transbordos de este Itinerario.
+WndTransbordos.information.noSeleccionoItinerarios = No ha seleccionado los Itinerarios ORIGEN o DESTINO.
+WndTransbordos.information.rutasDiferentes = La ruta o tramo no son iguales. No se puede realizar el Transbordo.
+WndTransbordos.information.noSeleccionAsientoOrigen = Debe seleccionar el asiento del Bus que desea Transbordar. 
+WndTransbordos.information.noSeleccionoAsientoDestino = Debe seleccionar el asiento donde será transbordado el Pasajero.
+WndTransbordos.information.asientoDesocupado = El asiento seleccionado para transbordar, se encuentra desocupado o en un estado no permitido para el transbordo. Seleccione otro asiento.
+WndTransbordos.information.asientoOcupado = El asiento donde desea transbordar el pasajero se encuentra ocupado.
+WndTransbordos.information.transbordoNoPermitido = Esta modalidad de transbordo no esta permitida para itinerarios iguales.
+WndTransbordos.information.fechaIncorrecta=No se permite el transbordo de servicios o a servicios con fecha pasada.
+WndTransbordos.information.asientosDuplicados=Se ha encontrado asientos duplicados\: 
+
+
+
+wndTmpOcupabilidad.information.confirmaDesbloqueo=¿Está seguro de eliminar el registro ? Recuerde: SERA REGISTRADO!!
+
+wndCambioPassword.information.PasswordActualNull=Debe ingresar su Password actual.
+wndCambioPassword.information.PassrowdNuevoNull=Debe ingresar su Nuevo Password.
+wndCambioPassword.information.PasswordConfirmarNull=Debe confirma su Password.
+wndCambioPassword.information.PasswordDiferentes=El nuevo passwrod debe ser igual al de la confirmación.
+wndCambioPassword.information.PasswordActualIncorrecto=El Password actual es incorrecto.
+wndCambioPassword.information.PasswordCambiado=Su password ha sido actualizado correctamente.
+
+wndDespachoPasajeros.information.PasajeroNull=No se encontraron resultados. Por favor pulse el Boton Refress y luego realize nuevamente lbusqueda. 
+wndDespachoPasajeros.information.PasajeroDuplicado=El número de documento ingresado, ya existe.
+wndDespachoPasajeros.information.AseintoDuplicado=El Número de asiento que ha ingresado ya está ingresaso.
+wndDespachoPasajeros.information.PasajeroNotDocument=El Pasajero no tiene registrado el número de documento, ¿Desea registrarlo?
+wndDespachoPasajeros.question.cerrarDespacho=Se va a realizar el Cierre del Embarque de Pasajeros. \n \u00BFDesea continuar?
+wndDespachoPasajerosUpdateDocPax.information.TipoDocumentoNull=Debe seleccionar el Tipo de documento.
+wndDespachoPasajerosUpdateDocPax.information.NumeroDocNull=Debe ingresar el número de documento.
+wndDespachoPasajerosUpdateDocPax.information.NumeroDocIncorrecto=El número de DNI no es correcto. Debe tener 8 dígitos.
+wndDespachoPasajerosUpdateDocPax.information.noManifiesto=No se ha encontrado el Manifiesto para el Itinerario seleccionado.
+wndDespachoPasajerosUpdateDocPax.information.ItineDobleManifiesto=Se ha encontrado más de un Manifiesto activo para este itinerario. Por favor revise en el histirial de Manifiestos.
+wndDespachoPasajerosUpdateDocPax.information.noPasajerosCierre=No se encontraron pasajeros.
+wndDespachoPasajerosUpdateDocPax.question.PasajerosSinDocto=Existen Pasajeros sin documento, los que deben ser regularizados.\n \u00BFDe todas formas desea cerrar el Depacho?
+wndDespachoPasajeros.question.apertura=¿Realmente esta seguro de realizar la Apertura del Embarque?
+
+
+wndAutoprizadorCortesia.information.buscarCliente=Debe ingresar el patron de busqueda.
+wndAutoprizadorCortesia.information.PersonalNull=Debe seleccionar la Persona que autoriza.
+wndAutoprizadorCortesia.information.MotivoCortesiaNull=Debe se seleccionar el Motivo o Motivos de la Cortesia.
+wndAutoprizadorCortesia.information.AutorizadorDuplicado=La Persona que Autoriza y el Motido de la Cortesia, ya están registrados.
+wndAutoprizadorCortesia.information.PasswordCanfirmaNull=Debe confirmar el Password.
+wndAutoprizadorCortesia.information.PasswordDiferentes=Los Password's deben de ser iguales.
+wndAutoprizadorCortesia.information.PasswordActualNull=Debe ingresar su Password actual.
+wndAutoprizadorCortesia.information.PasswordActualDiferente=El Password actual no es válido.
+wndAutoprizadorCortesia.information.PasswordNull=Por seguridad es necesario que ingrese un Password, para la validación en la emisión de la Cortesia.
+wndAutoprizadorCortesia.information.PasswordNuevoNull=Debe ingresar el Nuevo Password.
+
+wndSolicitudCartera.information.saveCliente=El Cliente fue registrado correctamente.
+wndSolicitudCartera.information.updateCliente=El Cliente fue actualizado correctamente.
+wndSolicitudCartera.information.clienteNoEncontrado=No se encontradon resultados. 
+wndSolicitudCartera.information.clienteNull=Debe Ingresar el Cliente.
+wndSolicitudCartera.information.FormaCobranzaNull=Debe seleccionar la Forma de Cobranza que se Manejará con el Cliente.
+wndSolicitudCartera.information.DireccionFacturacionNull=Debe ingresar la Direccion de Facturación del Cliente.
+wndSolicitudCartera.information.DescuentoBajaNull=Debe ingresar el Porcentaje del Descuento.
+wndSolicitudCartera.information.OrigenNullException=Debe seleccionar el Origen.
+wndSolicitudCartera.information.SobregiroNull=Debe ingresar el Sobregiro.
+wndSolicitudCartera.information.LineaCreditoSolicitadaNull=Debe ingresar la linea de crédito que solicitará para el Cliente.
+wndSolicitudCartera.information.TipoClienteNull=Debe seleccionar el Tipo de Cliente.
+wndSolicitudCartera.information.TipoConvenioNull=Debe seleccionar el Tipo de Convenio que se tendrá con el Cliente.
+wndSolicitudCartera.information.DirecionNull=Debe ingresar la dirección del Cliente.
+wndSolicitudCartera.information.ContactoApellidoNull=Debe ingresar los Apellidos del Contacto.
+wndSolicitudCartera.information.ContactoNombreNull=Debe ingresar el Nombre del Contacto.
+wndSolicitudCartera.information.ContactoFinacieroApellidosNull=Debe ingresar los Apellidos del Contacto financiero.
+wndSolicitudCartera.information.ContactoFinacieroNombreNull=Debe ingresar el Nombre del Contacto financiero.
+wndSolicitudCartera.information.TelefonoNull=Debe ingresar el Teléfono del Cliente.
+wndSolicitudCartera.information.SaveSolicitud=Su solicitud fue enviada.
+wndSolicitudCartera.information.UpdateSolicitud=Se actualizó la solicitud y se realizo el envio de la misma.
+wndSolicitudCartera.information.ClienteSolicitadoCartera=Este Cliente tiene una solicitud pendiente por Aprobar. No es posible realizar la solicitud. 
+wndSolicitudCartera.information.ClienteAsignadoCartera=El Cliente ingresado ya esta asignado a una Cartera. No es posible realizar la solicitud.
+wndSolicitudCartera.question.ConfirmaEnvioSolicitud=Se va a enviar la solicitud. ¿Desa continuar?
+wndSolicitudCartera.question.ConfirmaAnulacionSolicitud=Se va a anular la Solicitud. ¿Desea Continuar?
+wndSolicitudCartera.information.AmpliacionCreditoNoValido=La linea de Crédito a solicitar para la Ampliación, debe ser mayor a la actual.
+wndSolicitudCartera.information.incorrecRuc=Debe se ingrear un número de RUC válido.
+wndSolicitudCartera.information.noMailFunc=Su cuenta de usuario no tiene un E-Mail configurado. No se puede enviar la solicitud.
+wndSolicitudCartera.information.lineaCreditoMenorMinimo=El monto de la Linea de crédito que esta intentando solicitar no es Válido.
+wndSolicitudCartera.information.porcentajeSobregiroMayorMaximo=Ha excedido el porcentaje M\u00E1ximo permitido para el Sobregiro, el cual esta establecido en un m\u00E1ximo de  
+wndSolicitudCartera.information.porcentajeSobregiroMenorMinimo=Ha excedido el porcentaje Mínimo requerido para el sobregiro, el cual esta establecido en un mínimo de
+
+wndApruebaCartera.question.ConfirmaEnvioSolicitud=Se va a Enviar la Solicitud. ¿Desea Continuar?
+wndApruebaCartera.infomation.MotivoDesapuebraNull=Debe ingresar el Motivo de la Anulación.
+wndApruebaCartera.infomation.UsuarioAprobadorNull=No tiene el nivel requerido para ingresar.
+
+wndAprobarLineaCredito.question.Aprobar=Se va a Aprobar la Solicitud de Linea de Crédito. ¿Desea Continuar?
+wndAprobarLineaCredito.question.Desaprobar=Se va a desaprobar la Solicitud de Linea de Cr\u00E9dito. \u00BFDesea Continuar? 
+wndAprobarLineaCredito.information.ModificarCredito=Debe ingresar en el Campo Observaciones el motivo por lo que se esta modificando la Linea de Crédito.
+wndAprobarLineaCredito.information.LicreditoAprobadaNull=Debe ingresar la Linea de Crédito a Aprobar.
+wndAprobarLineaCredito.information.MotivoDesapruebaNull=Debe ingresar el motivo por el que se esta desaprobando la Linea de Crédito.
+
+
+wndAprobarLineaCreditoN3.information.SolicitudClienteCreditoAnulada=La Solicitud seleccionada ha sido Modificada o Anulada. Realice la busqueda nuevamente.
+wndAprobarLineaCreditoN3.information.ClienteSinFuncionario=El Cliente no tiene Asociado a un funcionario. No se puede Aprobar la Solicitud. 
+
+wndAprobarCredito.information.CreditoReconsiderarNull=Debe ingresar el monto de la Linea de Credito a Reconsiderar, por parte del área de Finanzas.
+wndAprobarCredito.information.ObservacionesNull=Debe ingresar en el Campo Observaciones el Motivo de la debolución de la Solicitud.
+wndAprobarCredito.information.MotivoDesapruebaNull=Debe ingresar el Motivo por lo que se está desaprobando la Solcitud.
+wndAprobarCredito.question.devuelveSolicitudAFinanzas=Se va a realizar la devolución de la Solciitud al Aréa de Finanzas.
+wndAprobarCredito.question.confirmaDesaprobacion=Se va a desaprobar el Credito para el Cliente seleccionado. ¿Desea continuar?
+wndAprobarCredito.information.noAccesoAprobar=No puede aprobar esta solicitud, su Usuario no tiene el nivel necesario.
+
+wndReduccionCredito.Information.ReduccionIncorrecta=El Monto para la nueva Linea de Crédito debe ser Menor al crédito actual.
+wndReduccionCredito.Information.ObservacionesNull=Debe ingresar el Motivo de la Reducción.
+wndReduccionCredito.Information.NuevoCreditoNull=Debe ingresar la Nueva Linea de Crédito para el Cliente.
+wndReduccionCredito.question.confirmaReduccion=Se va a reducir la Linea de Crédito. ¿Desea continuar?
+
+wndDesactivarCredito.question.DesactivarCredito=Se va a desactivar la Linea de Crédito del Cliente Seleccionado. ¿Desea continuar?
+wndReactivarCredito.question.ReactivarCredito=Se va a activar la Linea de Crédito del Cliente Seleccionado. ¿Desea continuar?
+wndDesactivarCredito.information.noMotivo=Debe de ingresar el motivo por el cual se esta desactivando la Linea de Crédito.
+
+wndReasignacionCartera.information.noSelecFuncionarioOr=Debe seleccionar el funcionario.
+wndReasignacionCartera.information.noSelecFuncionarioDs=Debe seleccionar el funcionario a quién se le va a asignar los Clientes.
+wndReasignacionCartera.information.noClientesReasg=No hay clientes que reasignar.
+wndReasignacionCartera.information.funcionariosIguales=El funcionario a quien se le va a reasignar los clientes es el mismo.
+wndReasignacionCartera.question.confirmarReasignacion=Se va a realizar la reasignaci\u00F3n. \u00BFDesea continuar? 
+
+wndServicioEspecial.information.nullNombre=En el archivo excel que est\u00E1 importando, hay una fila de la columna NOMBRE que est\u00E1 Vac\u00EDa. 
+wndServicioEspecial.information.nullApPaterno=En el archivo excel que está importando, hay una fila de la columna APELLIDO PATERNO que está Vacía.
+wndServicioEspecial.information.nullTipoDocumento=En el archivo excel que está importando, hay una fila de la columna TIPO DOCUMENTO que está Vacía.
+wndServicioEspecial.information.nullNumeroDocumento=En el archivo excel que está importando, hay una fila de la columna N°. DOCUMENTO que está Vacía.
+wndServicioEspecial.information.nullSexo=En el archivo excel que está importando, hay una fila de la columna SEXO que está Vacía.
+wndServicioEspecial.information.nullAsiento=En el archivo excel que está importando, hay una fila de la columna NÚMERO ASIENTO que está Vacía.
+wndServicioEspecial.information.numeroPisoErronio=El Número de Piso que ha ingresado no es Válido para el Servicio seleccionado. Revise el Archivo.
+wndServicioEspecial.information.nullItinerarioOrNoconinciden=Debe buscar el nuevamente el Itinerario. 
+wndServicioEspecial.information.TipoDocumentoNoExiste=El tipo de documento del Pasajero
+wndServicioEspecial.information.SexoNoExiste=La denominación del Sexo para pasajero
+wndServicioEspecial.information.FormatoNumeroDocumentoInvalido=El formato del Número de Documento del Pasajero
+wndServicioEspecial.information.AsientoDuplicado=Se ha detectado Asientos duplicados. Debe revisar el archivo excel que est\u00E1 importando. 
+wndServicioEspecial.information.nullItinerario=Debe seleccionar el Itinerario.
+wndServicioEspecial.information.nullPtoEmbarque=Debe seleccionar el Punto de Embarque.
+wndServicioEspecial.information.nullAgenciaLlegada=Debe seleccionar la Agencia de Llegada.
+wndServicioEspecial.information.nullSerieBoletoViaje=Debe ingresar el Número de Serie del Boleto de Viaje.
+wndServicioEspecial.information.nullNumeroBoletoInicial=Debe ingresar el Número del Boleto Inical.
+wndServicioEspecial.information.nullSerieFactura=Debe ingresar el Número de Serie de la Factura.
+wndServicioEspecial.information.nullNumeroFactura=Debe ingresar el Número de Factura.
+wndServicioEspecial.information.nullListPasajeros=No se ha encontrado Pasajeros para generar la Venta.
+wndServicioEspecial.information.pasajerosExcedenCapacidadServicio=El Número de pasajeros exceden a la capacidad del Servicio.
+wndServicioEspecial.information.numeroDoctPasajeroIncorrecto=El Número de Documento del Pasajero es incorrecto. Pasajero:
+wndServicioEspecial.information.nullNumeroDoctPasajero=Debe ingresar el Número de Documento del Pasajero:
+wndServicioEspecial.information.nullTipoDocumentoPasajero=Debe ingresar el Tipo de Documento del Pasajero:
+wndServicioEspecial.information.nullNombresApellidosPasajero=Se ha encontrado uno o varios Pasajeros sin Nombres ni Apellidos.
+wndServicioEspecial.information.nullSexoPasajero=Debe ingresar el Sexo del Pasajero:
+wndServicioEspecial.information.asientosDuplicadosPasajero=Se ha encontrado Asientos duplicados en los Pasajeros
+wndServicioEspecial.information.nullAsientoPasajero=Debe ingresar el Número de Asiento del Pasajero:
+wndServicioEspecial.information.confirmaGuardado=Las Ventas se registraron correctamente. 
+wndServicioEspecial.information.asientosOcupados=Los siguientes asientos están Ocupados:
+wndServicioEspecial.information.asientoFuerraDeRango=Hay un Número de Asiento que es mayor a la Capacidad del Piso del Bus. Revise el Archivo.
+wndServicioEspecial.information.clienteNoEncontrado=El Número de RUC ingresado no existe.
+wndServicioEspecial.information.nullCliente=Debe ingresar el Cliente.
+wndServicioEspecial.information.nullFechaNacimiento=Debe ingresar la fecha de nacimiento del Pasajero 
+wndServicioEspecial.question.confimarProceso=Se van a registrar las ventas para los Pasajeros importados. ¿Desea continuar?
+
+wndTempAlta.Information.nullDenominacion=Debe seleccionar el Motivo.
+wndTempAlta.Information.anioAperturaErronio=Debe ingresar un Anio al que corresponde la Operación.
+wndTempAlta.Information.nullAnio=Debe ingresar el Anio.
+wndTempAlta.Information.anioDiferente=El Anio de la fecha a agregar debe ser la misma con la que se aperturó.
+wndTempAlta.Information.fechaMenorCalendario=El d\u00EDa debe ser mayor al \u00FAltima d\u00EDa del mes programado como temporada alta.
+wndTempAlta.Information.diaExisteBD=El d\u00EDa que   
+wndTempAlta.question.saved=Se va Guardar la Programaci\u00F3n de las temporadas altas. \u00BFDesea Continuar?
+wndTempAlta.Information.fechaPasada=El día debe ser mayor a la fecha actual.
+wndTempAlta.question.update=Se va a Actualizar el la Programación de las temporadas altas. ¿Desea Continuar?
+wndTempAlta.question.anularTodo=Se van a Anular todas las Temporadas Altas. ¿Desea continuar?
+
+wndMotivoTemporadaAlta.Information.NombreMotivoNull=Debe ingresar el Nombre del Motivo.
+wndMotivoTemporadaAlta.Information.NombreMotivoDuplicado=El Nombre del Motivo ya existe.
+
+WndPromociones.information.noSelectionItemLeft = Debe seleccionar el criterio que desea agregar.
+WndPromociones.information.noSelectionItemRight = Debe seleccionar el criterio que desea quitar.
+WndPromociones.information.noItemsMoveToRight = No hay mas criterios para agregar.
+WndPromociones.information.noItemsMoveToLeft = No hay mas criterios para quitar.
+WndPromociones.information.noPatronBusqueda = Debe ingresar el texto a buscar.
+WndPromociones.information.noClienteSeleccionado = Debe seleccionar un cliente de la lista para continuar, de lo contrario haga click en cancelar.
+WndPromociones.information.noDenominacion = Debe ingresar el nombre de la Promocion.
+WndPromociones.information.noTipoDescuento = Debe seleccionar el tipo de descuento.
+WndPromociones.information.noValorDescuento = Debe ingresar el descuento de la promoción.
+WndPromociones.information.noPorcentajeDescuento = Debe ingresar el porcentaje de descuento de la promoción.
+WndPromociones.information.noTarifaDescuento = Debe ingresar la tarifa de la promoción.
+WndPromociones.information.noDescuentoImporte = Debe ingresar el descuento o el importe (En caso de ser el monto de la tarifa) de la promoci\u00F3n.
+WndPromociones.information.descuentoImporte = Solo debe ingresar el Descuento o el Importe pero no ambos.
+WndPromociones.information.denominacionDuplicada =Ya existe una promocion con el mismo nombre, por favor cambie el nombre de la promoci\u00F3n.
+WndPromociones.information.confirmacionGuardarPromocion = ¿Realmente desea agregar la promoción?
+WndPromociones.information.noPermitirDescuento=\u00A1Est\u00E1 a punto de agregar una promoci\u00F3n por tarifa, la cual NO va permitir aplicar otros descuentos, como por Ejemplo la de PaxFree, Clientes Corporativos,etc.\! \n\n \u00BFRealmente desea continuar?
+WndPromociones.information.permitirDescuento=\u00A1Est\u00E1 a punto de agregar una promoci\u00F3n por tarifa, la cual va permitir aplicar otros descuentos, como por Ejemplo la de PaxFree, Clientes Corporativos,etc.\! \n\n \u00BFRealmente desea continuar?
+WndPromociones.information.exitoGuardarPromocion = La promocion ha sido agregada satisfactoriamente.
+WndPromociones.information.noPromociones =No se encontraron promociones activas.
+WndPromociones.information.noRuta = La promocion no es aplicable para la Ruta seleccionada.
+WndPromociones.information.noServicio =  La promocion no es aplicable para el Servicio seleccionado.
+WndPromociones.information.noCanalVenta = La promocion no es aplicable porque usted no es un Canal de Venta autorizado.
+WndPromociones.information.noPuntoVenta = La promocion no es aplicable porque usted no es una Punto de Venta autorizado.
+WndPromociones.information.noPasajeroNuevo = La promocion no es aplicable porque no es un Pasajero nuevo.
+WndPromociones.information.noCantidadViajes = La promocion no es aplicable porque el Pasajero no cumple con la Cantidad de Viajes requeridos.
+WndPromociones.information.noAsiento = La promocion no es aplicable porque el Asiento seleccionado no esta dentro de los asientos promocionados.
+WndPromociones.information.noCliente = La promocion no es aplicable porque el Cliente no tiene promociones.
+WndPromociones.information.noIdaVuelta = La promocion no es aplicable porque no es una venta Ida y Vuelta.
+WndPromociones.information.noFormaPago = La promocion no es aplicable porque la Forma de Pago seleccionada no incluye promocion alguna.
+WndPromociones.information.noTipoFormaPago = La promocion no es aplicable para el medio de pago seleccionado. 
+WndPromociones.information.noTarjetaCredito = La promocion no es aplicable para la Tarjeta de Credito seleccionada.
+WndPromociones.information.noTemporada = La promocion no es aplicable en Temporada Alta. 
+WndPromociones.information.noPaxFre =La promocion no es aplicable porque no es Pasajero Frecuente.
+WndPromociones.information.fechaInicio = Debe ingresar la fecha del inicio de la promocion.
+WndPromociones.information.fechaFin =Debe ingresar la fecha de finalizacion de la promocion.
+WndPromociones.information.fechaFinalMenorFechaInicial = La fecha final no puede ser menor que la fecha inicial.
+
+WndEstadoCuentaPuntos.Information.noPasajero=El N\u00FAmero de documento no existe.
+
+wndParametros.information.noTiempoExpiraReserva=Debe ingresar el tiempo de expiración de una reserva.
+wndParametros.information.noTiempoAcumulaViajesParaPaxFree=Debe ingresar el tiempo a considerar para un Pasajero acumule n viajes para ingresar al Programa Pasajero Frecuente.
+wndParametros.information.noViajesRequeridosIngresarPaxFre=Debe ingresar el número de viajes requerido para ingresar al programa Pasajero Frecuente.
+wndParametros.information.noTiempoBoletoValido=Debe ingresar el tempo en que un boleto es válido una vez emitido.
+wndParametros.information.noPuntosAcumulaPorVentaPaxFre=Debe ingresar el n\u00FAmero de puntos que se acumulan en la cuenta de Pasajero Frecuente por cada venta realizada. 
+wndParametros.information.noMontocobrarPostergacion=Debe ingresar el monto a cobrar por una postergaci\u00F3n. 
+wndParametros.information.noMontoCobrarReimpresion=Debe ingresar el monto a cobrar por una reimpresión.
+wndParametros.information.noMaximoPostergacionesBoleto=Debe ingresar el número máximo de postergaciones por boleto.
+wndParametros.information.noTiempoPuedeRealizarPostergacion=Debe ingresar el tiempo en el que se puede realizar una postergación.
+wndParametros.information.noTiempoPaxCanjeBoletoCumpleanios=Debe ingresar el tiempo en el que un pasajero puede realizar el canje de su boleto de cortesia por cumpleanios.
+wndParametros.information.noTiempoCaducanPuntosOptenidosPaxfreevDebe= de ingresar el tiempo en que caducarán los puntos optenidos por el pasajero frecuente.
+wndParametros.information.noAlertaEnvioEspecieValorada=Debe ingresar el porcentaje para la alerta del envío de especies valoradas (Abastecimientos).
+wndParametros.information.noAlertaSolicitaManifiestoPax=Debe ingresar el porcentaje para la alerta de la solicitud de manifiestos de pasajeros (Despacho de Pasajeros).
+wndParametros.information.noSelctUsuarioGeneciaAprobador=Debe seleccionar el Usuario Gerencia Comercial aprobador.
+wndParametros.information.noSelctUsuarioComercialAprobador=Debe seleccionar el Usuario Comercial aprobador.
+wndParametros.information.noSelctUsuarioFinanzasAprobador=Debe seleccionar el Usuario Finanzas aprobador.
+wndParametros.information.noSelctUsuarioGenrenciaComercial=Debe seleccionar el Usuario Gerencia Comercial.
+wndParametros.information.noMaximoAsientosSeleccionados=Debe ingresar la cantidad maxima de asientos que se pueden seleccionar.
+wndParametros.question.confirmaUpdate=Se va a actualizar los parámetros del sistema. ¿Desea continuar?
+
+wndTarifa.information.NoTipoModoficacionTarifa=Debe seleccionar el modo de actualización de la Tarifa.
+wndTarifa.information.NoMonto=Debe ingresar el Importe.
+wndTarifa.information.NoSelectRutas=No ha seleccionado ninguna Ruta.
+wndTarifa.information.confirmaUpdate=La actualización ha finalizado correctamente.
+wndTarifa.question.confirmarUpdateTarifa=Se va a realizar la actualizaci\u00F3n de la tarifa a la(s) Ruta(s) seleccionada(s), seg\u00FAn el rango de fechas que haya seleccionado. \u00BFRealmente desea actualizarlas? 
+wndTarifa.question.confirmarUpdateIncrementeTarifa=Se va a realizar el incremento de la tarifa a la(s) Ruta(s) seleccionada(s), según el rango de fechas que haya seleccionado. ¿Realmente desea actualizarlas?
+
+tblLineaCreditoCliente.information.lineaNoActiva = La Linea de Credito no se encuentra Activa.
+tblLineaCreditoCliente.information.noSaldoDisponible = El cliente no cuenta con Saldo suficiente para emitir boletos.
+
+WndBuscarPasajero.information.noIngresoDocumento = Debe ingresar el Número de Documento del Pasajero.
+WndBuscarPasajero.information.noIngresoNombre = Debe ingresar el Nombre del Pasajero.
+WndBuscarPasajero.information.noIngresoApellidoPaterno =Debe ingresar el Apellido Paterno del Pasajero.
+
+WndAsistenteAgencias.information.muchasOcurrenciasCliente = Se encontraron más de una ocurrencia para el RUC ingresado, comunique del error a SISTEMAS...
+WndAsistenteAgencias.information.faltaIngresarRUC = Debe ingresar el RUC del cliente para realizar la busqueda.
+WndAsistenteAgencias.information.noHayOcurrenciasCliente =No se encontraron ocurrencias para el RUC ingresado.
+WndAsistenteAgencias.information.faltaConcesionarioCentroCosto = Debe seleccionar el Concesionario.
+WndAsistenteAgencias.information.faltaDenominacionCentroCosto = Debe ingresar el nombre del Centro de Costo.
+WndAsistenteAgencias.information.faltaCodigoCentroCosto = Debe ingresar el código del Centro de Costo.
+WndAsistenteAgencias.information.faltaEstadoCentroCosto = Debe seleccionar el estado del Centro de Costo.
+WndAsistenteAgencias.information.exitoGuardarCentroCosto = Centro de Costo guardado satisfactoriamente.
+WndAsistenteAgencias.information.exitoActualizarCentroCosto = Centro de Costo actualizado satisfactoriamente.
+WndAsistenteAgencias.information.errorGuardarCentroCosto = Se produjo un error al intentar actualizar el Centro de Costo.
+WndAsistenteAgencias.information.errorActualizarCentroCosto = Se produjo un error al intentar guardar el Centro de Costo.
+WndAsistenteAgencias.information.exitoGuardarAgencia = Agencia guardada satisfactoriamente.
+WndAsistenteAgencias.information.exitoActualizarAgencia = Agencia actualizada satisfactoriamente.
+WndAsistenteAgencias.information.errorGuardarAgencia = Se produjo un error al intentar guardar los datos de la Agencia.
+WndAsistenteAgencias.information.errorActualizarAgencia = Se produjo un error al intentar actualizar la Agencia.
+WndAsistenteAgencias.information.errorGuardarConcesionario = Se produjo un error al intentar guardar los datos del Concesionario.
+WndAsistenteAgencias.information.errorGuardarUsuarioHardware = se produjo un error al intentar guardar los datos del usuario Harware.
+WndAsistenteAgencias.information.usuariosNoEncontrados = No se encontraron usuarios asociados a la Agencia.
+WndAsistenteAgencias.information.usuarioDuplicado = El nombre de usuario utilizado ya se encuentra registrado.
+WndAsistenteAgencias.information.exitoGuardarUsuario = Usuario guardado satisfactoriamente.
+WndAsistenteAgencias.information.exitoActualizarUsuario = Usuario actualizado satisfactoriamente.
+WndAsistenteAgencias.information.errorGuardarUsuario = Se produjo un error al intentar actualizar el Usuario.
+WndAsistenteAgencias.information.errorActualizarUsuario = Se produjo un error al intentar guardar el Usuario.
+WndAsistenteAgencias.information.noSeleccionoRol = Debe seleccionar el Rol del usuario.
+WndAsistenteAgencias.information.noApellidoPaterno = Debe ingresar el Apellido Paterno del usuario.
+WndAsistenteAgencias.information.noNombres = Debe ingresar los nombres del usuario.
+WndAsistenteAgencias.information.noLogin = Debe ingresar el login de acceso para el usuario.
+WndAsistenteAgencias.information.noPassword = Debe hacer click en la imagen para generar la contraseñ de acceso.
+WndAsistenteAgencias.information.noSeleccionoAgencia = Debe seleccionar la agencia.
+WndAsistenteAgencias.information.noSeleccionoEstado = Debe seleccionar el estado del usuario.
+WndAsistenteAgencias.information.noSeleccionoTipoAgencia = Debe seleccionar el Tipo de Agencia.
+WndAsistenteAgencias.information.noSeleccionoLocalidad = Debe seleccionar la Localidad.
+WndAsistenteAgencias.information.noSeleccionoConcesionario = Debe seleccionar el Concesionario.
+WndAsistenteAgencias.information.noSeleccionoUbigeo = Debe seleccionar el Ubigeo.
+WndAsistenteAgencias.information.noIngresoNombre = Debe ingresar el nombre de la Agencia.
+WndAsistenteAgencias.information.noIngresoNombreCorto = Debe ingresar el nombre corto de la Agencia. 
+WndAsistenteAgencias.information.denominacionDuplicadaAgencia = Se encontro una Agencia registrada con el mismo nombre, cambie la denominacion.
+WndAsistenteAgencias.information.nombreCortoDuplicadoAgencia = Se encontro una Agencia registrada con el mismo Nombre Corto, cambie en nombre corto.
+WndAsistenteAgencias.question.guardarCentroCosto = ¿Realmente desea guardar los datos del Centro de Costo?
+WndAsistenteAgencias.question.actualizarCentroCosto = ¿Realmente desea actualizar los datos del Centro de Costo?
+WndAsistenteAgencias.question.guardarUsuario = ¿Realmente desea guardar los datos del usuario?
+WndAsistenteAgencias.question.actualizarUsuario = ¿Realmente desea actualizar los datos del Usuario?
+WndAsistenteAgencias.information.noCorrelativo=No se pudo generar el correlativo para el Tipo de Agencia seleccionada. No puede continuar.
+WndAsistenteAgencias.information.emailinvalid=Por favor ingrese una dirección de e-mail valida, para enviar la informacion de acceso al sistema.
+WndAsistenteAgencias.information.questionNoComision=No ha ingresado la comisión para el concesionario. ¿Está seguro de continuar?
+
+WndAsistenteAgencias.information.faltaDenominacionTipoCentroCosto=Debe ingresar el nombre del Grupo para el Centro de Costo.
+WndAsistenteAgencias.information.faltaTipoEstadoCentroCosto=Debe de seleccionar el estado del Grupo para el Centro de Costo.
+WndAsistenteAgencias.question.guardarTipoCentroCosto=¿Realmente desea guardar los datos del Grupo para el Centro de Costo?
+WndAsistenteAgencias.question.actualizarTipoCentroCosto=¿Realmente desea actualizar los datos del Grupo para el Centro de Costo?
+
+
+WndDetalleLiquidacionAgencia.information.noAgencia=Debe seleccionar una Agencia.
+
+WndVouchers.information.noTipoComprobante=Debe seleccionar el tipo de coprobante.
+WndVouchers.information.noParameters=Debe ingresar algún parámetro para la búsqueda.
+WndVouchers.information.voucherConBoleto=No puede anular el voucher por que ya tiene Boleto impreso. 
+WndVouchers.information.exitoAnulacion = La Anulaci\u00F3n del Voucher se realizo correctamente.
+WndVouchers.information.confirmarAnulacion = ¿Esta seguro de querer Anular el Voucher, esta acción no se podra deshacer?
+WndVouchers.information.noRegistros=No hay resultados para la búsqueda.
+
+WndEstadoVentasReservas.information.noSelectFechas=Debe se ingresar por lo menos el rango de fechas de venta (Incio y Fin) o la fecha de partida del servicio.
+WndEstadoVentasReservas.information.noSelectFechaFin=Debe ingresar la fecha Fin.
+WndEstadoVentasReservas.information.noSelectFechaInicio=Debe ingresar la fecha de Inicio. 
+
+wndOperacionesRemotas.information.devolucion.noLiquidacionAbierta=El usuario de la agencia remota que se ha seleccionado, no tiene una liquidaci\u00F3n abierta.
+wndOperacionesRemotas.information.devolucion.noAgenciaRemota=Debe seleccionar la Agencia Remota.
+wndOperacionesRemotas.information.devolucion.noUsuarioRemoto=Debe seleccionar el usuario a quien se le va asignar la devoluci\u00F3n.\=\=\=\=\=\=\=
+wndOperacionesRemotas.information.noLiquidacionAbierta=El usuario de la agencia remota que se ha seleccionado, no tiene una liquidaci\u00F3n abierta.
+wndOperacionesRemotas.information.noAgenciaRemota=Debe seleccionar la Agencia Remota.
+wndOperacionesRemotas.information.noUsuarioRemoto=Debe seleccionar el Usuario Remoto.
+wndOperacionesRemotas.information.noEspecieValorada=Debe seleccionar la Especie Valorada
+wndOperacionesRemotas.information.noPasswordAutorizador=Debe ingresar el password del autorizador.
+wndOperacionesRemotas.information.noPasswordAutorizadorIncorrect=El password del Autorizador no es correcto.
+
+wndCambioAsiento.information.noAsientoOcupado=Debe seleccionar el Asiento que desea cambiar, pero este debe estar ocupado por un Pasajero.
+wndCambioAsiento.information.asientoBloqueado=El Asiento que ha seleccionado esta bloqueado por otro usuario. Pulse el bot\u00F3n refrescar para actualizar el Mapa.
+wndCambioAsiento.information.noNuevoAsiento=Debe ingresar el Nuevo número de Asiento que se le va asignar al Pasajero.
+wndCambioAsiento.information.noAientoMayorCap=El Número de asiento que ha ingresado es mayor a la Capacidad del Bus.
+wndCambioAsiento.information.noPiso=Debe seleccionar el Número de piso.
+wndCambioAsiento.information.asientoConManifiesto=No es posible realizar cambios en este servicio por que este ya tiene un Manifiesto asociado.  
+wndCambioAsiento.question.aplicaCambios=Se va aplicar el cambio de asiento. \u00BFDesea continuar?  
+
+WndLiberarBoletoMAnifiesto.question.confirmLiberarcion=\u00BFRealmente desea liberar el Boleto del Manifiesto?
+WndLiberarBoletoMAnifiesto.onformation.confirmLiberarcion=El Boleto fue liberado correctamente del Manifiesto.
+
+WndAnulacionBoletoCredito.information.noParametrosBusqueda=Debe ingresar algún parametro para la búsqueda.
+WndAnulacionBoletoCredito.information.boletoPagado=No se puede anular este Boleto Crédito, este ya se encuentra pagado por el Cliente.
+WndAnulacionBoletoCredito.information.noObservaciones=Debe de ingresar información de quién realiza la autorización para realizar la Anulación del Boleto Crédito.
+WndAnulacionBoletoCredito.information.noAnulacionOtrosMovimientos=No se puede anular el Boleto Cr\u00E9dito, por tener ya otros movimientos. \n Boleto Ref.  
+WndAnulacionBoletoCredito.question.confirmAnulacion=¿Realmente esta seguro de anular el Boleto Crédito?
+WndAnulacionBoletoCredito.question.confirmAnulacionPerdidaServicio=Este Boleto se podr\u00EDa considerar como perdida de servicio, por estar a pocas horas de la hora de viaje. \n \u00BFRealmente desea continuar?
+
+WndVSAfiliacion.information.notipoDocumentoAsegurado=Debe se seleccionar el Tipo de Documento del Asegurado.
+WndVSAfiliacion.information.noNumeroDocumentoAsegurado=Debe de ingresar el Número de Documento  del Asegurado.
+WndVSAfiliacion.information.noInvalidNumeroDocumento=El Número de DNI del asegurado no es válido, debe tener 8 dígitos.
+WndVSAfiliacion.information.noApellidoPaterno=Debe de ingresar el Apellido Paterno del Asegurado.
+WndVSAfiliacion.information.noApellidoMaterno=Debe de ingresar el Apellido Materno del Asegurado.
+WndVSAfiliacion.information.noFechaNacimiento=Debe de ingresar la fecha de Nacimiento del Asegurado.
+WndVSAfiliacion.information.noSexo=Debe se seleccionar el Sexo del Asegurado.
+WndVSAfiliacion.information.ErrorSaveAsegurado=Ha ocurrido un error al registrar el Asegurado, por favor vuelva a intentarlo o reinicie el Sistema.
+WndVSAfiliacion.information.noEstadoCivil=Debe de seleccionar el Estado Civil del Asegurado.
+WndVSAfiliacion.information.numeroDniIncompleto=El N\u00FAmero de documento no es correcto, debe tener 8 d\u00EDgitos.
+WndVSAfiliacion.information.noUbigeo=Debe de seleccionar el Ubigeo del Asegurado.
+WndVSAfiliacion.information.noDireccion=Debe de ingresar una Dirección del Asegurado.
+WndVSAfiliacion.information.invalidNumeroDocumento=El n\u00FAmero de documento es invalido.
+WndVSAfiliacion.information.noSavedAsegurado=Primero debe guardar los datos del Asegurado.
+WndVSAfiliacion.information.noResulBusuqeda=El N\u00FAmero de Boleto no existe.
+WndVSAfiliacion.information.noTipoRegistro=No se ha encontrado el Tipo de Registro.
+WndVSAfiliacion.information.noCertificado=Debe de ingresar el Número de Certificado.
+WndVSAfiliacion.information.noTipoPersona=No se ha encontrado el Tipo de Persona.
+WndVSAfiliacion.information.noCiudadDestino=No se ha encontrado la Ciudad Destino.
+WndVSAfiliacion.information.noFechaVenta=No se ha encontrado la Fecha de Venta.
+WndVSAfiliacion.information.noFechaInicio=No se ha encontrado la Fecha que inicia la Vigencia del Seguro.
+WndVSAfiliacion.information.noFechaFin=No se ha encontrado la Fecha final del Vigencia del Seguro.
+WndVSAfiliacion.information.noBoleto=No se ha encontrado el Número de Boleto.
+WndVSAfiliacion.information.noCostoSeguro=No se ha encontrado el Costo por el Seguro.
+WndVSAfiliacion.information.duplicityBoleto=Este Boleto ya esta asociado un Seguro. \n\n \u00BFRealmente esta seguro de volver a registarlo?
+WndVSAfiliacion.information.duplicityCertificado=El Número de Certificado que ha ingresado ya existe.
+WndVSAfiliacion.information.certificadoNotAgencia=El Número de Certificado no corresponde a esta Agencia.
+WndVSAfiliacion.information.FechaNacimientoFueraRango=La fecha de nacimiento del Asegurado no es válida.
+WndVSAfiliacion.information.emailIcorrecto=El Correo Electrónico no es válido.
+WndVSAfiliacion.information.fechaDestiempo=La fecha de Emision del Boleto
+WndVSAfiliacion.anulacion.information.masResult=Se ha encontrado más de un Certificado asociado al boleto, por favor comuniquese con Sistemas.
+WndVSAfiliacion.anulacion.information.noResults=No se encontrarion resultados.
+WndVSAfiliacion.anulacion.information.fechaMenor=No puede anular un certificado que fue emitido en una fecha menor a la de Hoy.
+WndVSAfiliacion.anulacion.information.certificadoProcesado=El Certificado ya fue procesado.   
+WndVSAfiliacion.anulacion.information.noUsuario=No puede anular un Certificado emitido por otro Usuario.
+WndVSAfiliacion.anulacion.information.liquidacionCerrada=Su liquidación esta cerrada, ya no es posible realizar anulaciones.
+WndVSAfiliacion.anulacion.question.anularCertificado=¿Realmente desea anular el Certificado?
+WndVSAfiliacion.anulacion.question.anularCertificadoAndBoleto=¿Realmente desea anular el Certificado y también el Boleto?
+WndVSAfiliacion.anulacion.information.confirmacionInBoloto=El Certificado y el Boleto se anularon correctamente.
+WndVSAfiliacion.anulacion.information.confirmacion=El Certificado fue anulado correctamente.
+WndVSAfiliacion.anulacion.information.noFindBoleto=No se ha encontrado el Boleto, posiblemente este ya se encuentre anulado. ¿Desea omitir y continuar con la anulación del Certificado?
+
+WndVSProcesaAfiliacion.question.generarArchivo=¿Realmente esta seguro de generar el Archivo?
+WndProcesaAfiliacion.information.procesoAfiliacionFin=El Archivo se ha generado correctamente.
+WndProcesaAfiliacion.information.noAsegurados=Debe se seleccionar las Afiliaciones a Procesar.
+
+WndVsAsignacionCertificados.information.noAgencia=Debe de seleccionar la Agencia.
+WndVsAsignacionCertificados.information.noCorrelativoInicial=Debe de ingresar el Correlativo Incial.
+WndVsAsignacionCertificados.information.noCorrelativoFinal=Debe de ingresar el Correlativo Final.
+WndVsAsignacionCertificados.information.correlativoInicialMayorFinal=El Correlativo Inicial es mayor al Final.
+WndVsAsignacionCertificados.information.correlativoInicialUtilizado=El correlativo Inicial ya esta asignado a la Agencia
+WndVsAsignacionCertificados.information.correlativoFinalUtilizado=El correlativo Final ya esta asignado a la Agencia
+
+WndEmisonhre.question.generarMe=\u00BFEst\u00E1 seguro de Generar el ME? \n este Proceso no se prodr\u00E1 deshacer.
+WndEmisonhre.question.generarhre=\u00BFEst\u00E1 seguro de Generar la HRE? \n este Proceso no se prodr\u00E1 deshacer.
+WndEmisonhre.information.confirmaGenerarhre=La HRE se ha generado correctamente.
+WndEmisonhre.information.confirmaGenerarMe=El Manifiesto Electrónico se ha generado correctamente.
+WndEmisonhre.information.confirmaFinalizahre=Ha finalizado correctamente.
+WndEmisonhre.information.noTerminalPartida=El Terminal de partida del Servicio no esta registrado en el MTC.   
+WndEmisonhre.information.noTerminalLlegada=El Terminal de llegada del Servicio no esta registrado en el MTC.
+WndEmisonhre.information.noRuta=La Ruta del servicio no esta registrada en el MTC.
+WndEmisonhre.information.noHoraLlegadaRela=Debe ingresar la hora real de Llegada del Servicio. 
+WndEmisonhre.information.duplicate=Este Servicio ya tiene una HRE generada, por favor vuelva a buscar para que se actualice la información.
+WndEmisonhre.information.noSelectPilotoInicio=Debe de seleccionar el Piloto que iniciará a conducir.
+WndEmisonhre.question.finalizaHRE=¿Realmente esta seguro de Finalizar la Emisión de la Hoja de Ruta electrónica?
+WndEmisonhre.information.confirAnulacionHre=La Hoja de Ruta Eletr\u00F3nica se anul\u00F3 correctamente. 
+WndEmisonhre.question.anularHre=\u00BFRealmente esta seguro de anular la Hoja de Ruta Electr\u00F3nica?
+WndEmisonhre.information.noSelectAgencia=Debe de seleccionar la Agencia del punto de partida del Servicio. 
+
+WndEmisonme.information.noManifiesto=El manifiesto aún no ha sodo impreso, no puede continuar.
+WndEmisonme.information.noTripulante=No se ha encontrado el(la) tripulante, por favor verificar.
+WndEmisonme.information.noHRE=No se encontro la Hoja de Ruta Electr\u00F3nica, al parecer \u00E9sta a\u00FAn no ha sido emitida. 
+
+
+WndAsociaRutasMtcSisvyr.information.noRutaMtc=Debe de seleccionar la ruta del MTC.
+
+WndProgramacionVentaTramos.information.noSelectItinerario=Debe de seleccionar la ruta, la cual desea Programar.
+WndProgramacionVentaTramos.information.noSelectDetalleItinerario=Debe de seleccionar el Tramo, el cual desea Programar.
+WndProgramacionVentaTramos.information.tramosDuplicate=El tramo(s) seleccionado ya se encuentran programado en el rango de fechas seleccionado.
+
+WndMotivoCortesia.information.noCodigotitan=Debe de ingresar el Código de TITAN, con el cual se debe asociar este Motivo.
+
+wndConfigImpresora.information.noImpresoras=No Se han encontrado ninguna impresora configuradad.
+wndConfigImpresora.question.save=\u00BFRealmente desea aplicar los cambios?
+
+wndTipoCambio.information.noFecha=Debe de ingresar la fecha a la que corresponde el tipo de cambio.
+wndTipoCambio.information.noSelectTipoMoneda=Debe de seleccionar el Tipo de Moneda. 
+wndTipoCambio.information.noTipoCambio=Debe de ingresar el monto del Tipo de Cambio.
+wndTipoCambio.information.duplicate=Ya existe un tipo de cambio ingresado para esta Fecha y tipo de moneda.
+
+wndTarifacliente.information.fechaActivacionMayorFechaCaducidad = La fecha de activación no debe ser mayor a la de Caducidad.
+wndTarifacliente.information.noCliente=El Número de RUC del Cliente no Existe.
+wndTarifacliente.information.noOrigen=Debe de seleccionar el Origen.
+wndTarifacliente.information.noDestino=Debe de seleccionar el Destino.
+wndTarifacliente.information.noServicio=Debe de seleccionar el Servicio.
+wndTarifacliente.information.noFechaActivacion=Debe de ingresar la fecha de activacion de la Tarifa.
+wndTarifacliente.information.noFechaCaducidad=Debe de seleccionar la fecha de caducidad de la Tarifa.
+wndTarifacliente.information.noAsientoExcedeCapacidadBus=El Número de Asiento Fin Excede la Capasidad del Bus.
+wndTarifacliente.information.noTarifa=Debe de ingresar la tarifa para el rango de asiento ingresado.
+wndTarifacliente.information.noAsientoInicio=Debe de ingresar el Número de Asiento Inicio.
+wndTarifacliente.information.asientoInicioMayorFin=El número de Asiento Inicio no debe ser Mayor al Asiento Fin.
+wndTarifacliente.information.noAsientoFin=Debe de ingresar el Número de Asiento Fin.
+wndTarifacliente.information.noTipoAsiento=Debe de seleccionar el Tipo de Asiento.
+wndTarifacliente.information.asientoInicioMayorUtilmo=El Número de Asiento Inicio no debe ser menor o igual al último ingresado.
+wndTarifacliente.information.noRutaOrigenDestinoSelect=No exista la Ruta para el Oriegen y Destino Seleccionados.
+wndTarifacliente.information.taridaProgramada= Ya existe una tarifa programada para las fechas seleccionadas y/o rango de asientos.
+
+wndGastosAdministrativos.information.noTipoComprobanteApplica=Debe de seleccionar el Tipo de comprobante, del documento al cual va aplicar el Gasto Administrativo.
+wndGastosAdministrativos.information.noNumeroTipoComprobanteApplica=Debe de ingresar el Número del tipo de comprobante al cual va aplicar el gasto administrativo.
+wndGastosAdministrativos.information.noSearchComprobanteAplica=El Número de Comprobante no Existe.
+wndGastosAdministrativos.information.noComprobanteAplica=Primero debe buscar el N\u00FAmero de comprobante al cual va aplicar el Gasto Administrativo. 
+wndGastosAdministrativos.information.noTipoComprobante=Debe seleccionar el tipo de comprobante.
+wndGastosAdministrativos.information.noCorrelativo=No tiene tiene un correlativo asignado para el tipo de comprobante que ha seleccionado.
+wndGastosAdministrativos.information.noNumeroComprobante=Debe de ingresar el Número del Comprobante.
+wndGastosAdministrativos.information.noCliente=Debe de buscar el Cliente, ingresando el Número de RUC.
+wndGastosAdministrativos.information.noFormaPago=Debe de seleccionar una forma de Pago.
+wndGastosAdministrativos.information.noOperadorTarjeta=Debe de seleccionar el Operador de la Tarjeta de crédito o débito.
+wndGastosAdministrativos.information.noTarjetaCredito=Debe de seleccionar la Tarjeta de crédito o débito.
+wndGastosAdministrativos.information.noImportePagado=El monto del importe Pagado no es válido.
+wndGastosAdministrativos.information.noMotivo=Debe de ingresar el Motivo por el cual esta emitiendo el Gasto Administrativo.
+wndGastosAdministrativos.information.noMotivoInvalid=Debe de ingresar un motivo con una longitud mínima de 10 caracteres.
+wndGastosAdministrativos.information.noConfirmaGuardado=Gasto Administrativo registrado correctamente. 
+wndGastosAdministrativos.question.noconfirmar=Realmente desea guardar el Gasto Administrativo, recuerde que este proceso NO genera notas de cr\u00E9dito.
+wndGastosAdministrativos.information.noComprobanteInvalid=El Número del Comprobante que ha ingresado no es válido.
+wndGastosAdministrativos.information.noNumeroSerieInvalid=El Número de Serie que ha ingresado no es válido.
+wndGastosAdministrativos.information.noCorrelativoInvalid=El Correlativo que ha ingresado no es v\u00E1lido.
+
+wndAsientos.information.noServicio=Debe de seleccionar el Servicio.
+wndAsientos.information.noPisoBus=Debe de seleccionar el Piso del Bus al que corresponde el rango de asientos que va agregar.
+wndAsientos.information.noTipoAsiento=Debe de seleccionar el Tipo de Asiento al que corresponde el rango de asientos que va agregar.
+wndAsientos.information.noAsientosDesde=Debe de ingresar el Inicio del Rango de Asientos.
+wndAsientos.information.noAsientosHasta=Debe de ingresar el Fin del Rango de Asientos.
+wndAsientos.information.asientoDesdeMenorAsientoHasta=El Número de Asiento no válido.
+wndAsientos.information.asientoExcedeMaximoPiso1=El Número de Asiento excede la Capacidad Máxima del piso del Bus.
+wndAsientos.information.excedePisosBus = El Piso seleccionado excede el Número de Pisos del Bus.
+wndAsientos.information.asientoIniRangoInter=El Asiento que inicia el Rango hace intersección con los ya agregados.
+wndAsientos.information.asientoFinRangoInter=El Asiento que finaliza el Rango hace intersección con los ya agregados.
+wndAsientos.information.asientoEnDesorden=El Número de asiento que inicia el rango no debe ser menor a los ya agregados.
+wndAsientos.information.asientoInicioServicioDuplicate=El Número de asiento que incia el rango ya esta registrado en el Sistema.
+wndAsientos.information.asientoFinServicioDuplicate=El Número de asiento que finaliza el rango ya esta registrado en el Sistema.
+
+wndConfigPrint.information.noAgencia=Debe de seleccionar la Agencia.
+wndConfigPrint.information.noUsuarioHardware=Debe de seleccionar la PC.
+wndConfigPrint.information.noNombreImpresora=Debe de ingresar el Nombre de la Impresora.
+wndConfigPrint.information.noPuerto=Debe de Selectionar el Puerto.
+wndConfigPrint.information.noBistPorSegundo=Debe de seleccionar los Bist por Segundo.
+wndConfigPrint.information.noBistDatos=Debe de seleccionar los Bist de Datos.
+wndConfigPrint.information.noParidad=Debe de seleccionar la Paridad.
+wndConfigPrint.information.noBistParada=Debe de seleccionar los Bist de Parada.
+
+wndAnulacionComprobantes.information.noSelectTipoAgencia=Debe de seleccionar el Tipo de Agencia.
+wndAnulacionComprobantes.information.noSelectAgencia=Debe de seleccionar la Agencia.
+wndAnulacionComprobantes.information.max30Dias=No puede hacer una consulta mayor a 30 días.
+
+wndProgramacionTarifa.information.noFechaDesde=Debe de ingresar la fecha de Inicio.
+wndProgramacionTarifa.information.noFechaHasta=Debe de ingresar la fecha Fin.
+wndProgramacionTarifa.information.fechaDesdeMayor=La fecha de inicio no puede ser mayor a la Final.
+wndProgramacionTarifa.information.noTarifaSaved=No ha ingresado ninguna tarifa.

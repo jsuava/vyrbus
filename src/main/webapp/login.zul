@@ -1,0 +1,187 @@
+
+<?page title="Control de Acceso" contentType="text/html;charset=UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?link rel="shortcut icon" href="resources/favicon_1.ico" ?>
+<zk xmlns:c="client">
+
+<script type="text/javascript"><![CDATA[
+	function getMacAddress(){
+		var pwdWidget = zk.Widget.$("$txtMAC");
+		var apl = zk.Widget.$("$mac");
+		alert("JAVASCRIPT");
+		pwdWidget.setValue("DEMO");
+		alert( "Mac Address = " + apl.getMacAddress() );
+    }
+]]>
+</script>
+	
+<style> 
+	.z-button-cm, .z-textbox, div.z-list-header-cnt, .z-label, div.z-list-cell-cnt, .z-listbox{ 
+		font-size:10px; 
+	} 
+	.z-loading { 
+        background-color:#808080; 
+        border:0px outset #A0A0A0; 
+        font-weight: bold; 
+        padding:2px; 
+     } 
+    .z-loading-indicator { 
+		color: gray;
+        border:0 none;
+     } 
+     .z-loading-icon { 
+     	background: transparent no-repeat center;  
+     	background-image: url(${c:encodeURL('~./zk/img/progress3.gif')}); 
+     } 
+     .body-center{
+	     	background-image: url(${c:encodeURL('/resources/fondo_1.jpg')}); 
+	     	background-repeat:repeat-x;
+<!-- 	      border-radius:20px; -->
+<!-- 	     	width:499px; -->
+
+	 }
+</style> 
+	<div align="center">
+		<separator height="100px"/>
+			<window id="wndLogin"  border="none"  width="600px" height="350px" use="com.cystesoft.vyrbus.view.ctrl.WndLogin">
+			<borderlayout>
+				<west border="normal" size="250px" >
+					<borderlayout>
+<!-- 						<north border="none" size="100px" style="background:#4285F4">
+						</north>  -->
+						<center border="none" sclass="body-center">
+							<div height="350px" width="250px" align="center" >
+								<separator height="90px" />
+								<label value="Bienvenido a VYRBUS" style="color:white;font-size:25px"></label>
+								<separator height="15px"></separator>
+								<separator orient="horizontal" width="15px"></separator>
+								<label value="Ingrese su usuario y contraseña" style="color:white;font-size:12px" />
+								<separator  height="2px"></separator>
+								<separator orient="horizontal" width="15px"></separator>
+								<label value="y la imagen de la figura" style="color:white;font-size:12px" />
+								<separator  height="2px"></separator>
+								<separator orient="horizontal" width="15px"></separator>
+								<label value="para acceder al sistema." 
+									style="color:white;font-size:12px" />
+							</div>
+						</center>
+						<!-- <south border="none" size="100px" style="background:#4285F4">
+						</south> -->
+					</borderlayout>
+				</west>
+				<center border="none" style="background:#e0e0e0">
+					<div align="left">
+						<separator orient="vertical" height="50px"/>
+
+						<hlayout>
+							<separator orient="horizontal" width="50px"/>
+							<div height="24px" width="80px" align="right">
+								<separator height="5px"/>
+<!--  								<label value="USUARIO :" style="font-size:10px; font-weight:bold; color:#000066"/> -->
+								<image src="resources/user.png" height="22px" />
+							</div>
+							<textbox id="txtLogin" height="22px" width="140px" placeholder="Nombre de usuario" onChange="wndLogin.txtLogin_onchange()" focus="true" onOK="txtPassword.setFocus(true);" style="font-size:12px" />
+							
+						</hlayout>
+						<separator height="5px"></separator>
+						<hlayout>
+							<separator orient="horizontal" width="50px"/>
+							<div height="24px" width="80px" align="right">
+								<separator height="4px"/>
+<!-- 								<label value="CONTRASEÑA :" style="font-size:10px; font-weight:bold; color:#000066"/>  -->
+								<image src="resources/lock.png" height="22px"/>
+							</div>
+							<textbox id="txtPassword" height="22px" type="password" placeholder="Ingrese su contraseña" width="140px" onOK="txtImagen.setFocus(true)" style="font-size:12px"/>
+						</hlayout>
+						<separator height="5px"></separator>
+						<hlayout>
+							<separator orient="horizontal" width="10px"/>
+							<div width="120px" align="right">
+								<separator height="10px" />
+								<label value="Ingrese el código que se muestra en la imagen" style="font-size:11px"/>
+							</div>
+							<vlayout>
+								<zscript><![CDATA[
+		    						import org.zkforge.bwcaptcha.Captcha;
+					    		]]></zscript>
+								<bw.captcha id="cpaImagen"  width="145px" >
+									<attribute name="onCreate">
+										<![CDATA[
+									         /*cpaImagen.setBgColor(0xCACACA);*/
+									         //cpaImagen.setFontColor(0xF0F000);
+									         /*cpaImagen.setFontColor(0x86A87);*/
+									         /*cpaImagen.setFontBgColor(0xF0F000);*/
+									         //cpaImagen.setFontBgColor(0x55AA55);
+									         cpaImagen.setHeight("50px");
+									         cpaImagen.setBgColor(0xCACACA);
+									         cpaImagen.setFontColor(0x014282);
+									         cpaImagen.setFontBgColor(0xCACACA);
+										]]>
+									</attribute>
+								</bw.captcha>
+							</vlayout>
+						</hlayout>
+						
+						<separator  height="5px" />	
+						<hbox>
+							<div width="135px" />
+							<textbox id="txtImagen" maxlength="5" cols="5" style="text-transform: uppercase;"  onOK="if(!(hlyoutCodigoAcceso.isVisible()))wndLogin.onAccess(); else txtCodigoAcceso.setFocus(true);"  />
+							<toolbarbutton id="tbbRecargar" label="Refrescar código" style="color:#054283;font-size:11px;font-weight:bold">
+								<attribute name="onClick">
+									cpaImagen.randomValue();
+									txtImagen.setText("");
+									txtImagen.setFocus(true);
+								</attribute>
+							</toolbarbutton>
+						</hbox>	
+						
+						<separator  height="5px" />
+						<hlayout id="hlyoutCodigoAcceso" visible="false">
+							<separator orient="horizontal" width="50px"/>
+							<div height="24px" width="80px" align="right">
+								<separator height="4px"/>
+								<label value="COD. ACCESO :" style="font-size:10px; font-weight:bold; color:#000066"/>
+							</div>
+							<hbox align="center">
+								<textbox id="txtCodigoAcceso" disabled="false" placeholder="Ingrese su código de acceso" width="140px" onOK="wndLogin.onAccess()" style="font-size:11px"/>
+								<checkbox id="chkOmitirCodigoAcceso" checked="false" label="Omitir" onCheck="if(self.isChecked()){txtCodigoAcceso.setText(null); txtCodigoAcceso.setDisabled(true);}else{txtCodigoAcceso.setDisabled(false);}" />
+							</hbox>
+						</hlayout>
+														
+						<hbox align="center">
+<!--  							<div width="105px" /> -->
+ 							<separator orient="horizontal" width="108px"/>
+							<div id="divRol" visible="false">
+								<separator height="5px"/>
+<!-- 							    <label value="ROL : " style="font-size:10px; font-weight:bold; color:#000066"/>  --> 
+							    <image src="resources/roles.png" height="22px"/>
+								<combobox id="cmbRol" height="24px" onOK="wndLogin.onAccess()" readonly="true" width="180" style="font-size:10px; color:#000066; cursor:pointer" />
+							</div>
+						</hbox>
+						
+						
+						<separator id="spBtnIngresar"  orient="vertical" height="14px"/>
+
+						<hlayout>
+							<separator orient="horizontal" width="133px" ></separator>
+							<div align="center">
+								<button id="btnIngresar" mold="default" label="Ingresar"  width="148px" autodisable="self,txtLogin, txtPassword, txtImagen,txtCodigoAcceso" height="30px"  onClick="wndLogin.onAccess()" style="cursor:pointer;font-size:14px;background-color:#4285F4;color:#FFFFFF;border-width: 2px" />
+							</div>
+						</hlayout>
+						<separator height="15px" />
+						<hbox>
+							<separator orient="horizontal" width="170px"/>
+							<label id="lblVersion" style="font-weight:bold;font-size:10px;color:#014282"/>								
+						</hbox>
+						<separator orient="vertical" height="10px"/>						
+						<hlayout>
+							<separator  orient="horizontal" width="135px"/>
+							<label id="lblCopyRigth" style="color:#014282;font-weight:bold;font-size:10px"/>
+						</hlayout>						
+					</div>					
+				</center>
+			</borderlayout>			
+		</window>		
+	</div>
+
+</zk>

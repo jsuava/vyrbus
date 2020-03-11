@@ -1,0 +1,145 @@
+<?page title=":: Configura Servicio ::" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="ConfiguraServicio" title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndMapa" height="100%" width="70%">
+	<borderlayout>
+		<west border="none" title="Configuración de servicio" collapsible="true" width="300px">
+			<grid>
+				<rows>
+					<row>
+						<label value="Nombre servicio" />
+						<textbox id="txtNombreServicio" />
+					</row>
+					<row>
+						<label value="Descripción" />
+						<textbox rows="3" />
+					</row>
+					<row>
+						<separator/>
+						<separator/>
+					</row>
+					<row>
+						<label value="1er Piso" />
+						<separator/>
+					</row>
+					<row>
+						<label value="Nº Asientos" />
+						<spinner id="spAsientos" value="44" constraint="no empty min 10 max 60" />
+					</row>
+					<row>
+						<label value="Filas" />
+						<spinner id="spFilas" value="17" constraint="no empty" />
+					</row>
+					<row>
+						<label value="Columnas" />
+						<spinner id="spColumnas" value="5" constraint="no empty" />
+					</row>
+					<row>
+						<separator/>
+						<separator/>
+					</row>
+					<row>
+						<checkbox id="chk2Piso" label="2do Piso" onCheck="ConfiguraServicio.habilitaControles()"/>
+						<separator/>
+					</row>
+					<row>
+						<label value="Nº Asientos" />
+						<spinner id="spAsientos2" value="38" constraint="no empty min 10 max 60" disabled="true" />
+					</row>
+					<row>
+						<label value="Filas" />
+						<spinner id="spFilas2" value="13" constraint="no empty" disabled="true" />
+					</row>
+					<row>
+						<label value="Columnas" />
+						<spinner id="spColumnas2" value="5" constraint="no empty" disabled="true" />
+					</row>
+					<row>
+						<separator/>
+						<separator/>
+					</row>
+					<row>
+						<separator />
+						<button label="Generar estructura" sclass="btn-vyrbus" onClick="ConfiguraServicio.generarEstructura()" />
+					</row>
+				</rows>
+			</grid>
+		</west>
+		<center  border="none" title=" " >
+			<div id="divContenedorBus" height="100%" droppable="true">
+				<hbox id="hboBus"/>
+			</div>
+		</center>
+		<east border="none" title="Paleta de elementos" collapsible="true" width="400px">
+			<grid>
+				<rows>
+					<row>
+						<label value="Separador" />
+						<separator />
+						<div id="divSeparador"></div> 
+					</row>
+					<row>
+						<separator/>
+						<separator/>
+						<separator />
+					</row>
+					<row>
+						<label value="TV" />
+						<separator />
+						<div id="divTv"></div>
+					</row>
+					<row>
+						<separator/>
+						<separator/>
+						<separator />
+					</row>
+					<row>
+						<label value="Asiento" />
+						<combobox id="cboAsiento">
+							<comboitem label="piloto" value="3"/>
+							<comboitem label="copiloto" value="4"/>
+							<comboitem label="tripulante" value="5"/>
+						</combobox>
+						<div id="divAsiento"></div>
+					</row>
+					<row>
+						<separator/>
+						<label value="Pasajero" />
+						<div id="divNumeroAsiento" width="115px" />
+					</row>
+					<row>
+						<separator/>
+						<separator/>
+						<separator />
+					</row>
+					<row>
+						<label value="Cafeteria" />
+						<separator />
+						<div id="divCafeteria"></div>
+					</row>
+					<row>
+						<separator/>
+						<separator/>
+						<separator />
+					</row>
+					<row>
+						<label value="SS.HH." />
+						<separator />
+						<div id="divSshh"></div>
+					</row>
+				</rows>
+			</grid>
+		</east>
+		<south border="none">
+			<div>
+				<grid>
+					<rows>
+						<row style="text-align:right">
+							<button label="Grabar" sclass="btn-vyrbus" onClick="ConfiguraServicio.grabar()" />
+						</row>
+					</rows>
+				</grid>
+			</div>
+		</south>
+	</borderlayout>
+</window>
+</zk>

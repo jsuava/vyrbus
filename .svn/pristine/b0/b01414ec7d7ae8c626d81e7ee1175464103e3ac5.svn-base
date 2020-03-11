@@ -1,0 +1,71 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: José Abanto
+ * Fecha		: 07/07/2016
+ * Hora			: 11:21:06
+ */
+package com.tepsa.sisvyr.model.dao.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import com.tepsa.sisvyr.model.bean.TarifaCliente;
+import com.tepsa.sisvyr.model.dao.TarifaClienteDAO;
+
+/**
+ * @author jabanto
+ *
+ */
+public class TarifaClienteDAOImpl extends GenericDAOImpl implements TarifaClienteDAO{
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.TarifaClienteDAO#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ArrayList<TarifaCliente> buscarPorEstadoRegistro(String estado,String criterioOrden) {
+		// TODO Auto-generated method stub
+		return (ArrayList<TarifaCliente>) super.findByEstadoRegistro(TarifaCliente.class, estado, criterioOrden);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.TarifaClienteDAO#buscarPorX(java.util.TreeMap, java.util.List)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ArrayList<TarifaCliente> buscarPorX(TreeMap<String, Object> criteriosBusqueda,List<String> criteriosOrdenar) {
+		// TODO Auto-generated method stub
+		return (ArrayList<TarifaCliente>) super.findByX(TarifaCliente.class, criteriosBusqueda, criteriosOrdenar);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.TarifaClienteDAO#buscarPorId(java.lang.Long)
+	 */
+	@Override
+	public TarifaCliente buscarPorId(Long id) {
+		// TODO Auto-generated method stub
+		return (TarifaCliente) super.findById(TarifaCliente.class, id);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.TarifaClienteDAO#guardar(com.tepsa.sisvyr.model.bean.TarifaCliente)
+	 */
+	@Override
+	public void guardar(TarifaCliente tarifaCliente) {
+		// TODO Auto-generated method stub
+		super.save(tarifaCliente);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.TarifaClienteDAO#actualizar(com.tepsa.sisvyr.model.bean.TarifaCliente)
+	 */
+	@Override
+	public void actualizar(TarifaCliente tarifaCliente) {
+		// TODO Auto-generated method stub
+		super.update(tarifaCliente);
+	}
+
+}

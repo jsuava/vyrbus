@@ -1,0 +1,253 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndAfiliacion" title="" border="none" width="680px" use="com.cystesoft.vyrbus.view.ctrl.WndVSAfiliacion">
+<panel  framable="true">
+	<panelchildren>
+	<tabbox  >
+			<tabs>
+				<tab id="tabAfiliacion" label="::: Venta de Seguros :::" onClick="txtNumeroBoleto.setFocus(true)" />
+				<tab id="tabAnulacion" label="::: Anulación de Seguros :::" onClick="txtNumeroBoletoAnular.setFocus(true)"/>
+			</tabs>
+			<tabpanels>
+				<tabpanel>
+<!-- 					<groupbox closable="false" mold="3d"> -->
+<!-- 					<caption label="::: VENTA DE SEGUROS ::: "/> -->
+						<grid >
+							<columns>
+								<column width="145px" align="right" />
+								<column width="180px"/>
+								<column align="right" />
+							</columns>
+							<rows>
+								<row>
+									<label value="INGRESE N° BOLETO :" width="80px" style="font-weight: bold;color:blue;font-size:12px !important"/>
+									<hbox align="center">
+										<textbox id="txtNumeroBoleto" onOK="wndAfiliacion.buscarBoleto()" focus="true" style="font-size:13px !important;font-weight: bold;color:black"   width="115px" maxlength="15" />
+										<image id="imgBuscar" src="/resources/mp_buscarEnabled.png"  tooltiptext="Haga click para realizar la búsqueda" style="cursor:pointer"/>
+									</hbox>
+									
+									<hbox align="center">
+										<label id="lblInfoPax" style="font-size: 15px !important;font-weight:bold;color:red"/>
+										<separator width="8px" />
+									</hbox>
+									
+								</row>
+							</rows>
+						</grid>
+						
+						<separator height="2px" />
+						
+						<groupbox closable="false" open="false" mold="3d" style="border:none">
+						<caption label="DATOS DEL ASEGURADO"/>
+						</groupbox>
+						<hbox>
+							<grid >
+								<columns>
+									<column width="115px" align="right"/>
+									<column width="180px" />
+									<column width="120px" align="right"/>
+								</columns>
+								<rows>
+									<row>
+										<label value="TIPO DOCUMENTO (*) :"/>
+										<combobox id="cmbTipoDocumento" readonly="true" disabled="true" width="120px" onOK="txtNumeroDucumento.setFocus(true)" />
+										<label value="N°. DOCUMENTO (*) :"/>
+										<textbox id="txtNumeroDucumento" style="font-size:11px !important" disabled="true"  width="110px" maxlength="15" onOK="txtApellidoPaterno.setFocus(true)"/>
+									</row>
+									<row>
+										<label value="APELIDO PATERNO (*) :"/>
+										<textbox id="txtApellidoPaterno" disabled="true" width="110px" maxlength="30" onOK="txtApellidoMaterno.setFocus(true)"/>
+										<label value="APELLIDO MATERNO (*) :"/>
+										<textbox id="txtApellidoMaterno" disabled="true" width="110px" maxlength="30" onOK="txtNombres.setFocus(true)"/>
+									</row>
+									<row>	
+										<label value="NOMBRES (*) :"/>
+										<textbox id="txtNombres" disabled="true" width="110px" maxlength="30" onOK="dtbxFechaNacimineto.setFocus(true)"/>
+										<label value="FECHA NACIMINETO (*) :"/>
+										<datebox id="dtbxFechaNacimineto" disabled="true" format="dd/MM/yyyy" width="120px" onOK="cmbSexo.setFocus(true)"/>
+									</row>
+									<row>
+										<label value="SEXO (*) :"/>
+										<combobox id="cmbSexo" readonly="true" disabled="true" width="120px" onOK="cmbEstadoCivil.setFocus(true)"/>
+										<label value="ESTADO CIVIL (*) :"/>
+										<combobox id="cmbEstadoCivil" readonly="true" disabled="true" width="120px" onOK="btnBuscarUbigeo.setFocus(true)" />
+									</row>
+									<row >
+										<label value="UBIGEO (*) :"/>
+										<hbox align="center">
+											<textbox id="txtUbigeo" width="168px" readonly="true" disabled="true"/>
+											<textbox  visible="false" id="txtIdUbigeo" />
+										</hbox>
+										<hbox align="center">
+											<button id="btnBuscarUbigeo" label="..." disabled="true"/>
+											<label value="NACIONALIDAD (*) :"/>
+										</hbox>
+										
+										<combobox id="cmbNacionalidad" disabled="true" readonly="true" width="120px" onOK="txtDireccion.setFocus(true)" />
+									</row>
+									<row spans="1,3">
+										<label value="DIRECCIÓN (*) :"/>
+										<textbox id="txtDireccion" disabled="true" width="410px" maxlength="100" onOK="txtUrbanizacion.setFocus(true)" />
+									</row>
+									<row>
+										<label value="URBANIZACIÓN  :"/>
+										<textbox id="txtUrbanizacion" disabled="true" width="168px" maxlength="100" onOK="txtTelefonoDomicilio.setFocus(true)" />
+										<label value="TELF.DOMICILIO :"/>
+										<textbox id="txtTelefonoDomicilio" disabled="true" width="110px" maxlength="12" onOK="txtTelefonoCelular.setFocus(true)"/>
+									</row>
+									<row>
+										<label value="TELF.CELULAR :"/>
+										<textbox id="txtTelefonoCelular" disabled="true" width="110px" maxlength="12" onOK="txtEmail.setFocus(true)"/>
+										<label value="E-MAIL :"/>
+										<textbox id="txtEmail" disabled="true" width="110px" maxlength="100" onOK="tbbAseguradoGuardar.setFocus(true)"/>
+									</row>
+								</rows>
+							</grid>
+							
+							<grid width="90px" >
+								<rows >
+									<row ><toolbarbutton id="tbbAseguradoEditar" onClick="wndAfiliacion.editarAsegurado()" label="Editar" tooltiptext="Editar los datos del Asegurado" disabled="true" width="80px" image="/resources/toolbar/mp_toolbarModificarDisabled.png" /></row>
+									<row ><toolbarbutton id="tbbAseguradoGuardar" autodisable="self" onClick="wndAfiliacion.guardarAsegurado(true)" label="Guardar" tooltiptext="Guardar los datos del Asegurado" disabled="true" width="80px" image="/resources/toolbar/mp_toolbarGuardarDisabled.png" /></row>
+									<row ><toolbarbutton id="tbbAseguradoCancelar" onClick="wndAfiliacion.cancelarOperacionAsegurado()" label="Cancelar" tooltiptext="Cancelar operación" disabled="true" width="80px" image="/resources/toolbar/mp_toolbarCancelarDisabled.png" /></row>
+									<row><separator height="82px"/></row>
+								</rows>
+							</grid>
+						</hbox>
+<!-- 					</groupbox> -->
+					
+					<separator height="1px"/>
+					
+					<groupbox closable="false" mold="3d" open="false">
+						<caption label="DATOS DE LA AFILIACIÓN"/>
+					</groupbox>	
+						<hbox>
+							<grid>
+								<columns>
+									<column width="140px" align="right"/>
+									<column width="130px" />
+									<column width="140px" align="right"/>
+								</columns>
+								<rows>
+									<row>
+										<label value="TIPO REGISTRO :" />
+										<label id="lblTipoRegistro" style="font-weight: bold;color:black; font-size:11px !important"/>
+										<label value="N° CERTIFICADO :" />
+										<label id="lblCertificado" style="font-weight: bold;color:black; font-size:12px !important" />
+			<!-- 							<intbox id="itbxCertificado" style="font-size:12px !important;font-weight: bold;" onOK="tbbAfiliacionGrabar.setFocus(true); wndAfiliacion.guardarAfiliacion()" disabled="true" maxlength="10" width="110px"/> -->
+									</row>
+									<row>
+										<label value="TIPO PERSONA :" />
+										<label id="lblTipoPersona" style="font-weight: bold;color:black; font-size:11px !important"/>
+										<label value="CIUDAD DESTINO :" />
+										<label id="lblCiudadDestino" style="font-weight: bold;color:black; font-size:11px !important"/>
+									</row>
+									<row>
+										<label value="FECHA VENTA :" />
+										<label id="lblFechaVenta"  style="font-weight: bold;color:black; font-size:12px !important"/>
+										<label value="FECHA VIGENCIA INICIAL :" />
+										<label id="lblFechaVigenciaInicial" style="font-weight: bold;color:black; font-size:12px !important"/>							
+									</row>
+									<row>
+										<label value="FECHA VIGENCIA FINAL :" />
+										<label id="lblFechaVigenciaFinal" style="font-weight: bold;color:black; font-size:12px !important"/>
+										<label value="RUTA :"/>
+										<label id="lblRuta" style="font-weight: bold;color:red; font-size:11px !important"/>
+									</row>
+									<row>
+										<label value="COSTO SEGURO :" />
+										<label id="lblCostoSeguro" style="font-weight: bold;color:black; font-size:12px !important" />
+										<label value="N°BOLETO :" />
+										<label id="lblBoleto" style="font-weight: bold; color:red; font-size:12px !important" />
+									</row>
+									<row spans="3">
+										<label value="IMPORTE A PAGAR :" style="font-weight: bold; color:red; font-size:14px !important"/>
+										<label id="lblImportePagar" style="font-weight: bold; color:red; font-size:14px !important" />
+									</row>
+									<row spans="4">
+										<separator id="sepToolsAfiliacion" />
+									</row>
+								</rows>
+							</grid>
+							
+							<grid id="grControlsAfi" width="90px" >
+								<rows >
+									<row>
+										<toolbarbutton id="tbbAfiliacionGrabar" autodisable="self" onClick="wndAfiliacion.guardarAfiliacion()" label="Guardar" tooltiptext="Guardar Afiliación" disabled="true" width="80px" image="/resources/toolbar/mp_toolbarGuardarDisabled.png" />
+									</row>
+									<row >
+										<toolbarbutton id="tbbAfiliacionCancelar" onClick="wndAfiliacion.cancelarOperacionAfiliacion()" label="Cancelar" tooltiptext="Cancelar operación" disabled="true" width="80px" image="/resources/toolbar/mp_toolbarCancelarDisabled.png" />
+									</row>
+									<row >
+										<toolbarbutton label="Cerrar" onClick="wndAfiliacion.closeTabWindow()" tooltiptext="Cerrar venta de afiliación" width="80px" image="/resources/toolbar/mp_toolbarCerrar.png" />
+									</row>
+									<row>
+										<separator height="12px"/>
+									</row>
+								</rows>
+							</grid>
+						</hbox>
+<!-- 					</groupbox> -->
+<!-- 				</groupbox> -->
+				</tabpanel>
+				<tabpanel>
+					<grid>
+						<columns>
+							<column width="120px" align="right"/>
+							<column/>
+						</columns>
+						<rows>
+							<row spans="1,3">
+								<label value="NRO. BOLETO :" style="font-weight: bold; color:black; font-size:12px !important"  />
+								<hbox align="center">
+									<textbox id="txtNumeroBoletoAnular" onOK="wndAfiliacion.buscarCertificadoByAnular()" width="120px" style="font-weight: bold; color:black; font-size:13px !important" />
+									<image id="imgBuscarSeguro" onClick="wndAfiliacion.buscarCertificadoByAnular()" src="/resources/mp_buscarEnabled.png"  tooltiptext="Haga click para realizar la búsqueda" style="cursor:pointer"/>
+								</hbox>
+							</row>
+						</rows>
+					</grid>
+					<separator height="1px" />
+					<groupbox mold="3d" closable="false" open="false">
+					<caption label="DATOS DEL CERTIFICADO A ANULAR"/>
+					</groupbox>
+					<grid>
+						<columns>
+							<column width="120px" align="right"/>
+							<column width="100px"/>
+							<column width="120px" align="right" />
+							<column/>
+						</columns>
+						<rows>
+							<row>
+								<label value="CERTIFICADO :" style="color:blue;"/>
+								<label id="lblNumeroCertificado" style="font-weight: bold; font-size:11px !important"/>
+								<label value="FECHA EMISIÓN :" style="color:blue;"/>
+								<label id="lblFechaCertificado" style="font-weight: bold; font-size:11px !important"/>
+							</row>
+							<row spans="1,4">
+								<label value="BOLETO :" style="color:blue;"/>
+								<label id="lblBoletoAnulacion" style="font-weight: bold;font-size:11px !important"/>
+							</row>
+							<row spans="1,4">
+								<label value="PASAJERO :" style="color:blue;"/>
+								<label id="lblPasajero" style="font-weight: bold;"/>
+							</row>
+							<row spans="1,4">
+								<separator/>
+								<checkbox id="chbxAnularBoleto" label="Incluir anulación del Boleto" style="color:blue;font-weight:bold;" />
+							</row>
+						</rows>
+					</grid>
+					<toolbar width="100%">
+						<space width="200px" />
+						<toolbarbutton id="btnAnularCertificado" autodisable="self" onClick="wndAfiliacion.anularCertificado()" label="Anular" disabled="true" image="/resources/mp_anularEnabled.png" style="font-weight:bold;color:red;font-size:12px !important"/>
+						<toolbarbutton label="Cancelar" width="110px" image="/resources/mp_cancelarEnabled.png"  Style="text-align: center;font-weight: bold; color:black;" onClick="tabAfiliacion.setSelected(true); txtNumeroBoleto.setFocus(true)" />
+					</toolbar>
+				</tabpanel>
+			</tabpanels>
+		</tabbox>			
+				
+	
+   </panelchildren>
+</panel>	
+</window>
+</zk>

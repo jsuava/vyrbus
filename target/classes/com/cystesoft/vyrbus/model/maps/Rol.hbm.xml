@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.cystesoft.vyrbus.model.bean.Rol" table="VRMROL" schema="VYR">
+        <comment>Entidad que almacena los roles disponibles en el sistema para el acceso a las diferentes opciones, por parte de los usuarios.</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="ROL_ID" precision="2" scale="0" />
+            <generator class="sequence">
+            	<param name="sequence">SEQ_VRMROL_ID</param>
+            </generator>
+        </id>
+        <property name="denominacion" type="java.lang.String">
+            <column name="C_DENOMINACION" length="30" not-null="true">
+                <comment>Nombre del rol.</comment>
+            </column>
+        </property>
+        <property name="nuevo" type="java.lang.Integer">
+            <column name="N_NUEVO" precision="1" scale="0" not-null="true">
+                <comment>Habilita el acceso a la opcion Nuevo(1), (0) deshabilita.</comment>
+            </column>
+        </property>
+        <property name="modificar" type="java.lang.Integer">
+            <column name="N_MODIFICAR" precision="1" scale="0" not-null="true">
+                <comment>Habilita el acceso a la opcion Modificar(1), (0) deshabilita.</comment>
+            </column>
+        </property>
+        <property name="grabar" type="java.lang.Integer">
+            <column name="N_GRABAR" precision="1" scale="0" not-null="true">
+                <comment>Habilita el acceso a la opcion Grabar(1), (0) deshabilita.</comment>
+            </column>
+        </property>
+        <property name="eliminar" type="java.lang.Integer">
+            <column name="N_ELIMINAR" precision="1" scale="0" not-null="true">
+                <comment>Habilita el acceso a la opcion Eliminar(1), (0) deshabilita.</comment>
+            </column>
+        </property>
+        <property name="consultar" type="java.lang.Integer">
+            <column name="N_CONSULTAR" precision="1" scale="0" not-null="true">
+                <comment>Habilita el acceso a la opcion Consultar(1), (0) deshabilita.</comment>
+            </column>
+        </property>
+        <property name="imprimir" type="java.lang.Integer">
+            <column name="N_IMPRIMIR" precision="1" scale="0" not-null="true">
+                <comment>Habilita el acceso a la opcion Imprimir (1), (0) deshabilita.</comment>
+            </column>
+        </property>
+        <property name="exportar" type="java.lang.Integer">
+            <column name="N_EXPORTAR" precision="1" scale="0" not-null="true">
+                <comment>Habilita el acceso a la opcion Exportar(1), (0) deshabilita.</comment>
+            </column>
+        </property>
+        <property name="sistema" type="java.lang.Integer">
+            <column name="N_SISTEMA" precision="1" scale="0">
+                <comment>Sistema el cual se va realizar la validacion, Sisvyr (0), Siit(1)</comment>
+            </column>
+        </property>
+        
+        <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+        <property name="estadoRegistro" type="java.lang.String">
+            <column name="C_ESTREG" length="1" not-null="true">
+                <comment>Estado de registro A(Activo), I(Inactivo).</comment>
+            </column>
+        </property>
+        <property name="fechaInsercion" type="java.util.Date">
+            <column name="AUDFECINS" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioInsercion" type="java.lang.String">
+            <column name="AUDUSUINS" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipInsercion" type="java.lang.String">
+            <column name="AUDIPINSE" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="fechaModificacion" type="java.util.Date">
+            <column name="AUDFECMOD" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioModificacion" type="java.lang.String">
+            <column name="AUDUSUMOD" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipModificacion" type="java.lang.String">
+            <column name="AUDIPMODI" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <!-- 		END CAMPOS DE AUDITORIA	 	-->
+    </class>
+</hibernate-mapping>

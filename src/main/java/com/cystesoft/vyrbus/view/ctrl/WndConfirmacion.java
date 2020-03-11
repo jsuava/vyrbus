@@ -1,0 +1,3262 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: Clase que se utilizara para la confirmación de Reservas y para las Fechas Abiertas.
+ * Autor		: José Sullo Avalos
+ * Fecha		: 08/11/2012
+ */
+package com.cystesoft.vyrbus.view.ctrl;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.TreeMap;
+
+import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.WrongValueException;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Button;
+import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Comboitem;
+import org.zkoss.zul.Doublebox;
+import org.zkoss.zul.Groupbox;
+import org.zkoss.zul.Image;
+import org.zkoss.zul.Intbox;
+import org.zkoss.zul.Label;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Row;
+import org.zkoss.zul.Tab;
+import org.zkoss.zul.Tabbox;
+import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Toolbarbutton;
+import org.zkoss.zul.Window;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import pe.gob.mtc.wshr.ResultIdentidad;
+
+import com.cystesoft.vyrbus.model.bean.Agencia;
+import com.cystesoft.vyrbus.model.bean.CanalVenta;
+import com.cystesoft.vyrbus.model.bean.Cliente;
+import com.cystesoft.vyrbus.model.bean.Cortesia;
+import com.cystesoft.vyrbus.model.bean.DetalleItinerario;
+import com.cystesoft.vyrbus.model.bean.EspecieValorada;
+import com.cystesoft.vyrbus.model.bean.EstadoCivil;
+import com.cystesoft.vyrbus.model.bean.FormaPago;
+import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaLlegada;
+import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartida;
+import com.cystesoft.vyrbus.model.bean.LineaCreditoCliente;
+import com.cystesoft.vyrbus.model.bean.Nacionalidad;
+import com.cystesoft.vyrbus.model.bean.OperadorTarjetaCredito;
+import com.cystesoft.vyrbus.model.bean.Pasajero;
+import com.cystesoft.vyrbus.model.bean.PasajeroFrecuente;
+import com.cystesoft.vyrbus.model.bean.PreferenciaAlimentaria;
+import com.cystesoft.vyrbus.model.bean.Promocion;
+import com.cystesoft.vyrbus.model.bean.Reniec;
+import com.cystesoft.vyrbus.model.bean.Servicio;
+import com.cystesoft.vyrbus.model.bean.Sexo;
+import com.cystesoft.vyrbus.model.bean.TarjetaCredito;
+import com.cystesoft.vyrbus.model.bean.TipoComprobante;
+import com.cystesoft.vyrbus.model.bean.TipoDocumento;
+import com.cystesoft.vyrbus.model.bean.TipoFormaPago;
+import com.cystesoft.vyrbus.model.bean.TipoMovimiento;
+import com.cystesoft.vyrbus.model.bean.TipoNota;
+import com.cystesoft.vyrbus.model.bean.Ubigeo;
+import com.cystesoft.vyrbus.model.bean.Usuario;
+import com.cystesoft.vyrbus.model.bean.UsuarioHardware;
+import com.cystesoft.vyrbus.model.bean.VentaPasaje;
+import com.cystesoft.vyrbus.service.exceptions.ApellidoPaternoNullException;
+import com.cystesoft.vyrbus.service.exceptions.CapacityExceedsException;
+import com.cystesoft.vyrbus.service.exceptions.ClienteException;
+import com.cystesoft.vyrbus.service.exceptions.DocumentoPaxDuplicadoException;
+import com.cystesoft.vyrbus.service.exceptions.DuplicateSeatException;
+import com.cystesoft.vyrbus.service.exceptions.EmailNullException;
+import com.cystesoft.vyrbus.service.exceptions.FormaPagoNullException;
+import com.cystesoft.vyrbus.service.exceptions.ImporteMixtoNullException;
+import com.cystesoft.vyrbus.service.exceptions.ItinerarioException;
+import com.cystesoft.vyrbus.service.exceptions.MailIncorectoException;
+import com.cystesoft.vyrbus.service.exceptions.NacionalidadException;
+import com.cystesoft.vyrbus.service.exceptions.NombresNullException;
+import com.cystesoft.vyrbus.service.exceptions.NumeroAsientoFueraRangoException;
+import com.cystesoft.vyrbus.service.exceptions.NumeroAsientoNullException;
+import com.cystesoft.vyrbus.service.exceptions.NumeroBoletoDuplicadoException;
+import com.cystesoft.vyrbus.service.exceptions.NumeroBoletoNullException;
+import com.cystesoft.vyrbus.service.exceptions.NumeroDocumentoNullException;
+import com.cystesoft.vyrbus.service.exceptions.NumeroOperacionBancariaNullException;
+import com.cystesoft.vyrbus.service.exceptions.OperadorTarjetaCreditoNullException;
+import com.cystesoft.vyrbus.service.exceptions.PasajeroException;
+import com.cystesoft.vyrbus.service.exceptions.PasajeroIndeseableException;
+import com.cystesoft.vyrbus.service.exceptions.PasajeroNoSavedExeption;
+import com.cystesoft.vyrbus.service.exceptions.PreferenciaAlimentariaException;
+import com.cystesoft.vyrbus.service.exceptions.RazonSocialDuplicadoException;
+import com.cystesoft.vyrbus.service.exceptions.RazonSocialNullException;
+import com.cystesoft.vyrbus.service.exceptions.RucDuplicadoException;
+import com.cystesoft.vyrbus.service.exceptions.RucInvalidoException;
+import com.cystesoft.vyrbus.service.exceptions.SaldoInsuficienteException;
+import com.cystesoft.vyrbus.service.exceptions.SexoNullException;
+import com.cystesoft.vyrbus.service.exceptions.TarjetaCreditoNullException;
+import com.cystesoft.vyrbus.service.exceptions.TiempoExpiracionBloqueoException;
+import com.cystesoft.vyrbus.service.exceptions.TipoComprobanteNullException;
+import com.cystesoft.vyrbus.service.exceptions.TipoDocumentoNullException;
+import com.cystesoft.vyrbus.service.exceptions.TipoFormaPagoNullException;
+import com.cystesoft.vyrbus.service.exceptions.UbigeoNullException;
+import com.cystesoft.vyrbus.service.locator.ServiceLocator;
+import com.cystesoft.vyrbus.service.util.AplicarPromocion;
+import com.cystesoft.vyrbus.service.util.Constantes;
+import com.cystesoft.vyrbus.service.util.Messages;
+import com.cystesoft.vyrbus.service.util.Util;
+import com.cystesoft.vyrbus.service.util.UtilData;
+import com.cystesoft.vyrbus.service.util.WSFE;
+import com.cystesoft.vyrbus.view.ui.DlgMessage;
+import com.cystesoft.vyrbus.view.ui.IConfirmacion;
+import com.cystesoft.vyrbus.view.ui.WndBase;
+import com.cystesoft.vyrbus.view.ui.WndMapaBus;
+
+/**
+ * @author Jose
+ * 
+ */
+public class WndConfirmacion extends WndBase implements IConfirmacion {
+	public static final int SEARCH_BY_DOCUMENTO = 1;
+	public static final int SEARCH_BY_NOMBRES = 2;
+	public static final int SEARCH_BY_RAZON = 3;
+	private static final long serialVersionUID = 1L;
+	private Tab tabPasajero;
+	private Tab tabCliente;
+	private Tab tabPagos;
+	private Combobox cmbPtoEmbarque;
+	private Combobox cmbPtoDesembarque;
+	private Combobox cmbTipoDocumento;
+	private Combobox cmbSexo;
+	private Combobox cmbEstadoCivil;
+	private Combobox cmbTipoComprobante;
+	private Combobox cmbFormaPago;
+	private Combobox cmbTipoFormaPago;
+	private Combobox cmbOperadorTarjetaCredito;
+	private Combobox cmbTarjetaCredito;
+	private Combobox cmbAlimentacion;
+	private Combobox cmbNacionalidad;
+	private Combobox cmbDia;
+	private Combobox cmbMes;
+	private Combobox cmbAnio;
+	private Textbox txtNumeroAsiento;
+	private Textbox txtNumeroPiso;
+	private Textbox txtNumeroBoleto;
+	private Textbox txtDocumentoPax;
+	private Image imgValidacionDNI;
+	private Textbox txtApePat;
+	private Textbox txtApeMat;
+	private Textbox txtNombres;
+	private Textbox txtDireccionPax;
+	private Textbox txtTelefono;
+	private Textbox txtUbigeoPax;
+	private Textbox txtUbigeoIdPax;
+	private Textbox txtEmailPax;
+	private Textbox txtDocumentoCliente;
+	private Textbox txtRazonSocial;
+	private Textbox txtContactoCliente;
+	private Textbox txtDireccionCliente;
+	private Textbox txtTelefonoClienteOne;
+	private Textbox txtTelefonoClienteTwo;
+	private Textbox txtEmailCliente;
+	private Textbox txtUbigeoCliente;
+	private Textbox txtUbigeoIdCliente;
+	private Textbox txtOperacionBancaria;
+	private Textbox txtIdPromocion;
+	private Textbox txtRubro;
+	private Textbox txtObservaciones;
+//	private Datebox dtbxFechaNacimiento;
+	private Listbox lbxPasajeros;
+	private Listbox lbxClientes;
+	private Button btnUbigeoPax;
+	private Toolbarbutton tlbbtnNuevoPax;
+	private Toolbarbutton tlbbtnLimpiarPax;
+	private Toolbarbutton tlbbtnModificarPax;
+	private Toolbarbutton tlbbtnCancelarPax;
+	private Toolbarbutton tlbbtnGuardarPax;
+	private Toolbarbutton tlbbtnNuevoClient;
+	private Toolbarbutton tlbbtnLimpiarClient;
+	private Toolbarbutton tlbbtnModificarClient;
+	private Toolbarbutton tlbbtnCancelarClient;
+	private Toolbarbutton tlbbtnGuardarClient;
+	private Button btnUbigeoCliente;
+	private Label lblOrigen;
+	private Label lblDestino;
+	private Label lblFechaPartida;
+	private Label lblFechaLlegada;
+//	private Label lblHoraPartida;
+//	private Label lblHoraLlegada;
+	private Label lblTarifa;
+	private Label lblInformativo1;
+	private Label lblInformativo2;
+	private Label lblInformativo3;
+	private Label lblEmail;
+	private Label lblImporteEfectivo;
+	private Label lblImporteTarjeta;
+	private Label lblDescuento;
+	private Label lblPromocion;
+	private Label lblBoleto;
+	private Label lblNuevoBoleto;
+	private Label lblImporte;
+	private Groupbox grpbxListaPasajeros;
+	private Groupbox grpbxListaClientes;
+	private Doublebox dblTarifa;
+	private Doublebox dblRecargo;
+	private Doublebox dblDescuento;
+	private Doublebox dblPagado;
+	private Doublebox dblImporte;
+	private Doublebox dblImporteEfectivo;
+	private Doublebox dblImporteTarjeta;
+	private Image imgPasajero;
+	private Image imgMostrarMapa;
+	private Image imgDetalleMotivo;
+	private Image imgPromocion;
+	private Image imgQuitarPromocion;
+	private Row rowNacionalidad;
+	private Row rowAdicional;
+	private Window wndConfirmacion;
+	private Checkbox chkPrepagado;
+	private Checkbox chkPagoMixto;
+	private Intbox ibxCantidadTrabajadores;
+
+	private Row rowNuevoBoleto;
+	private Textbox txtNuevoBoleto;
+	
+	
+	private VentaPasaje ventaPasaje;
+	private VentaPasaje objetoConfirmar;
+	private DetalleItinerario detailItinerary = null;
+	private Integer usuhar = null;
+	private Date fechaLiquidacion;
+	private Agencia agencia = null;
+	private Usuario usuario = null;
+	private CanalVenta canalVenta = null;
+	private Pasajero oPasajero = null;
+	private Cliente oCliente = null;
+	private LineaCreditoCliente lineaCreditoCliente = null;
+	private Promocion promocionAplicada = null;
+	private Boolean tieneDescuento=false;
+	private Promocion promocionTarifa=null;
+	
+	private int action = Constantes.FAILURE;
+	
+	private final String LABEL_IMPPAG_TO_TEPSA="IMPORTE TOTAL PAGAR";
+	private final String LABEL_IMPPAG_TO_PASAJERO="IMPORTE TOTAL A DEVOLVER";
+	
+	/**
+	 * @return the reservaPasaje
+	 */
+	public VentaPasaje getObjetoConfirmar() {
+		return objetoConfirmar;
+	}
+
+	/**
+	 * @param objetoConfirmar the reservaPasaje to set
+	 */
+	public void setObjetoConfirmar(VentaPasaje objetoConfirmar) {
+		this.objetoConfirmar = objetoConfirmar;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tepsa.sisvyr.view.ui.IBase#onCreate()
+	 */
+	@Override
+	public void onCreate() throws Exception {
+		/* ********************************************************************************************************* */
+		UsuarioHardware usuarioHardware = (UsuarioHardware) this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO_HARDWARE);
+		agencia = (Agencia) this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
+		usuario = (Usuario) this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO);
+		canalVenta = (CanalVenta) this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_CANAL_VENTA);
+		usuhar = usuarioHardware.getId();
+		// tipcom = tipoComprobante.getId();
+		fechaLiquidacion = (Date) this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION);
+		/* ********************************************************************************************************* */
+		
+		dblTarifa.setLocale(Locale.US);
+		dblRecargo.setLocale(Locale.US);
+		dblDescuento.setLocale(Locale.US);
+		dblPagado.setLocale(Locale.US);
+		dblImporte.setLocale(Locale.US);
+		dblImporteEfectivo.setLocale(Locale.US);
+		dblImporteTarjeta.setLocale(Locale.US);
+				
+//		UtilData.cargarDataCombo(cmbTipoDocumento, TipoDocumento.class, false);
+		TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+		criteriosBusqueda.put("tipo", TipoDocumento.PERSONALES);			//Usar los alias de los campos segun el xml de mapeo
+		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);	//Usar los alias de los campos segun el xml de mapeo
+		UtilData.cargarDataCombo(cmbTipoDocumento, TipoDocumento.class, criteriosBusqueda, false);
+		Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, Constantes.ID_TIPDOC_DNI);	
+		
+		UtilData.cargarDataCombo(cmbSexo, Sexo.class, false);
+		UtilData.cargarDataCombo(cmbEstadoCivil, EstadoCivil.class, false);
+		UtilData.cargarDataCombo(cmbNacionalidad, Nacionalidad.class, false);
+		UtilData.enlazarUbigeo(txtUbigeoIdPax, txtUbigeoPax, btnUbigeoPax,null);
+		UtilData.enlazarUbigeo(txtUbigeoIdCliente, txtUbigeoCliente,btnUbigeoCliente,null);
+
+		criteriosBusqueda = new TreeMap<String, Object>();
+		criteriosBusqueda.put("rubro", TipoComprobante.RUBRO_PASAJES);
+		UtilData.cargarDataCombo(cmbTipoComprobante, TipoComprobante.class,criteriosBusqueda, false);
+		UtilData.cargarDataCombo(cmbFormaPago, FormaPago.class, false);
+		UtilData.cargarDataCombo(cmbAlimentacion, PreferenciaAlimentaria.class,false);
+
+		loadInformacion();
+		disabledControlsPax(true);
+		Util.loadAnios(cmbAnio);
+		Util.loadMeses(cmbMes);	
+		if (getObjetoConfirmar().getTipoMovimiento().getId() == Constantes.ID_TIPMOV_FECHA_ABIERTA || 
+				getObjetoConfirmar().getTipoMovimiento().getId() == Constantes.ID_TIPMOV_POSTERGACION_FA){
+			chkPrepagado.setDisabled(true);
+			imgPromocion.setVisible(false);
+			tabCliente.setDisabled(true);
+			txtIdPromocion.setText(getObjetoConfirmar().getPromocion()==null?"":getObjetoConfirmar().getPromocion().getId().toString());
+			
+		}else{
+			chkPrepagado.setDisabled(false);
+			imgPromocion.setVisible(true);
+			tabCliente.setDisabled(false);
+		}
+		
+		/*Implementado 01/10/2014 - jabanto, para controlar que a una promocion se le aplique mas de una*/
+		if(promocionTarifa!=null && (promocionTarifa.getEsAcumulable().intValue()==Constantes.FALSE_VALUE))
+			imgPromocion.setVisible(false);
+		
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tepsa.sisvyr.view.ui.IBase#initComponents()
+	 */
+	@Override
+	public void initComponents() {
+		wndConfirmacion = (Window) this.getFellow("wndConfirmacion");
+		/* TAB INFORMACION DE LA VENTA */
+		lblOrigen = (Label) this.getFellow("lblOrigen");
+		lblDestino = (Label) this.getFellow("lblDestino");
+		lblFechaPartida = (Label) this.getFellow("lblFechaPartida");
+		lblFechaLlegada = (Label) this.getFellow("lblFechaLlegada");
+//		lblHoraPartida = (Label) this.getFellow("lblHoraPartida");
+//		lblHoraLlegada = (Label) this.getFellow("lblHoraLlegada");
+		txtNumeroAsiento = (Textbox) this.getFellow("txtNumeroAsiento");
+		txtNumeroPiso = (Textbox) this.getFellow("txtNumeroPiso");
+		imgMostrarMapa = (Image) this.getFellow("imgMostrarMapa");
+		lblTarifa = (Label) this.getFellow("lblTarifa");
+		txtNumeroBoleto = (Textbox) this.getFellow("txtNumeroBoleto");
+		cmbPtoEmbarque = (Combobox) this.getFellow("cmbPtoEmbarque");
+		cmbPtoDesembarque = (Combobox) this.getFellow("cmbPtoDesembarque");
+		cmbAlimentacion = (Combobox) this.getFellow("cmbAlimentacion");
+		txtObservaciones = (Textbox)this.getFellow("txtObservaciones");
+		tabPasajero = (Tab) this.getFellow("tabPasajero");
+		tabCliente = (Tab)this.getFellow("tabCliente");
+		tabPagos = (Tab) this.getFellow("tabPagos");
+		rowNuevoBoleto=(Row)this.getFellow("rowNuevoBoleto");
+		txtNuevoBoleto=(Textbox)this.getFellow("txtNuevoBoleto");
+		lblBoleto=(Label)this.getFellow("lblBoleto");
+		lblNuevoBoleto=(Label)this.getFellow("lblNuevoBoleto");
+		lblImporte=(Label)this.getFellow("lblImporte");
+		/* TAB PASAJERO */
+		grpbxListaPasajeros = (Groupbox) this.getFellow("grpbxListaPasajeros");
+		lbxPasajeros = (Listbox) this.getFellow("lbxPasajeros");
+		cmbTipoDocumento = (Combobox) this.getFellow("cmbTipoDocumento");
+		txtDocumentoPax = (Textbox) this.getFellow("txtDocumentoPax");
+		imgValidacionDNI=(Image)this.getFellow("imgValidacionDNI");
+		txtApePat = (Textbox) this.getFellow("txtApePat");
+		txtApeMat = (Textbox) this.getFellow("txtApeMat");
+		txtNombres = (Textbox) this.getFellow("txtNombres");
+		txtDireccionPax = (Textbox) this.getFellow("txtDireccionPax");
+		txtTelefono = (Textbox) this.getFellow("txtTelefono");
+		txtUbigeoPax = (Textbox) this.getFellow("txtUbigeoPax");
+		txtUbigeoIdPax = (Textbox) this.getFellow("txtUbigeoIdPax");
+		btnUbigeoPax = (Button) this.getFellow("btnUbigeoPax");
+		txtEmailPax = (Textbox) this.getFellow("txtEmailPax");
+//		dtbxFechaNacimiento = (Datebox) this.getFellow("dtbxFechaNacimiento");
+		cmbDia = (Combobox)this.getFellow("cmbDia");
+		cmbMes = (Combobox)this.getFellow("cmbMes");
+		cmbAnio = (Combobox)this.getFellow("cmbAnio");
+		cmbSexo = (Combobox) this.getFellow("cmbSexo");
+		cmbEstadoCivil = (Combobox) this.getFellow("cmbEstadoCivil");
+		cmbNacionalidad = (Combobox)this.getFellow("cmbNacionalidad");
+		rowNacionalidad = (Row)this.getFellow("rowNacionalidad");
+		lblEmail = (Label)this.getFellow("lblEmail");
+		imgPasajero = (Image) this.getFellow("imgPasajero");
+		rowAdicional = (Row) this.getFellow("rowAdicional");
+		imgDetalleMotivo = (Image) this.getFellow("imgDetalleMotivo");
+		lblInformativo1 = (Label) this.getFellow("lblInformativo1");
+		lblInformativo2 = (Label) this.getFellow("lblInformativo2");
+		lblInformativo3 = (Label) this.getFellow("lblInformativo3");
+		tlbbtnNuevoPax = (Toolbarbutton) this.getFellow("tlbbtnNuevoPax");
+		tlbbtnLimpiarPax = (Toolbarbutton) this.getFellow("tlbbtnLimpiarPax");
+		tlbbtnModificarPax = (Toolbarbutton) this.getFellow("tlbbtnModificarPax");
+		tlbbtnCancelarPax = (Toolbarbutton) this.getFellow("tlbbtnCancelarPax");
+		tlbbtnGuardarPax = (Toolbarbutton) this.getFellow("tlbbtnGuardarPax");
+		/* TAB CLIENTE */
+		lblDescuento = (Label) this.getFellow("lblDescuento");
+		grpbxListaClientes = (Groupbox) this.getFellow("grpbxListaClientes");
+		lbxClientes = (Listbox) this.getFellow("lbxClientes");
+		txtDocumentoCliente = (Textbox) this.getFellow("txtDocumentoCliente");
+		txtRazonSocial = (Textbox) this.getFellow("txtRazonSocial");
+		txtContactoCliente = (Textbox) this.getFellow("txtContactoCliente");
+		txtDireccionCliente = (Textbox) this.getFellow("txtDireccionCliente");
+		txtTelefonoClienteOne = (Textbox) this.getFellow("txtTelefonoClienteOne");
+		txtTelefonoClienteTwo = (Textbox) this.getFellow("txtTelefonoClienteTwo");
+		txtEmailCliente = (Textbox) this.getFellow("txtEmailCliente");
+		txtUbigeoCliente = (Textbox) this.getFellow("txtUbigeoCliente");
+		txtUbigeoIdCliente = (Textbox) this.getFellow("txtUbigeoIdCliente");
+		btnUbigeoCliente = (Button) this.getFellow("btnUbigeoCliente");
+		tlbbtnNuevoClient = (Toolbarbutton) this.getFellow("tlbbtnNuevoClient");
+		tlbbtnLimpiarClient = (Toolbarbutton) this.getFellow("tlbbtnLimpiarClient");
+		tlbbtnModificarClient = (Toolbarbutton) this.getFellow("tlbbtnModificarClient");
+		tlbbtnCancelarClient = (Toolbarbutton) this.getFellow("tlbbtnCancelarClient");
+		tlbbtnGuardarClient = (Toolbarbutton) this.getFellow("tlbbtnGuardarClient");
+		txtRubro=(Textbox)this.getFellow("txtRubro");
+		ibxCantidadTrabajadores=(Intbox)this.getFellow("ibxCantidadTrabajadores");
+		/* TAB PAGOS */
+		dblTarifa = (Doublebox) this.getFellow("dblTarifa");
+		dblRecargo = (Doublebox) this.getFellow("dblRecargo");
+		dblDescuento = (Doublebox) this.getFellow("dblDescuento");
+		txtIdPromocion = (Textbox)this.getFellow("txtIdPromocion");
+		imgPromocion = (Image)this.getFellow("imgPromocion");
+		imgQuitarPromocion = (Image)this.getFellow("imgQuitarPromocion");
+		dblPagado = (Doublebox) this.getFellow("dblPagado");
+		dblImporte = (Doublebox) this.getFellow("dblImporte");
+		chkPagoMixto = (Checkbox)this.getFellow("chkPagoMixto");
+		lblImporteEfectivo = (Label)this.getFellow("lblImporteEfectivo");
+		lblImporteTarjeta = (Label)this.getFellow("lblImporteTarjeta");
+		dblImporteEfectivo = (Doublebox)this.getFellow("dblImporteEfectivo");
+		dblImporteTarjeta = (Doublebox)this.getFellow("dblImporteTarjeta");
+		txtOperacionBancaria = (Textbox) this.getFellow("txtOperacionBancaria");
+		cmbTipoComprobante = (Combobox) this.getFellow("cmbTipoComprobante");
+		cmbFormaPago = (Combobox) this.getFellow("cmbFormaPago");
+		cmbTipoFormaPago = (Combobox) this.getFellow("cmbTipoFormaPago");
+		cmbOperadorTarjetaCredito = (Combobox) this.getFellow("cmbOperadorTarjetaCredito");
+		cmbTarjetaCredito = (Combobox) this.getFellow("cmbTarjetaCredito");
+		chkPrepagado = (Checkbox) this.getFellow("chkPrepagado");
+		lblPromocion = (Label) this.getFellow("lblPromocion");
+
+		imgMostrarMapa.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			public void onEvent(Event e) {
+//				Map<String, Object> params = new HashMap<String, Object>();
+//				params.put("ventaPasaje", getObjetoConfirmar());
+//				params.put("detalleItinerario", detailItinerary);
+//				params.put("txtAsientoSeleccionado", txtNumeroAsiento);
+//				params.put("txtPisoSeleccionado", txtNumeroPiso);
+//				if(getObjetoConfirmar().getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_POSTERGACION_FA 
+//						|| getObjetoConfirmar().getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_FECHA_ABIERTA)
+//					params.put("selectAsiento", true);
+//				else
+//					params.put("selectAsiento", false);
+//				Window win = (Window) Executions.createComponents("mapa.zul", null, params);
+//				win.setMode(MODAL);
+				enlazarMapaBus();
+				
+			}
+		});
+
+		chkPrepagado.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
+			public void onEvent(Event e) throws Exception {
+				if (chkPrepagado.isChecked()) {
+					for (Comboitem comboitem : cmbTipoComprobante.getItems()) {
+						if (comboitem.getValue() instanceof TipoComprobante
+								&& ((TipoComprobante) comboitem.getValue()).getId().intValue() == Constantes.ID_TIPCOM_RECIBO_CAJA)
+							cmbTipoComprobante.setSelectedItem(comboitem);
+						
+					}
+					
+				} else {
+					for (Comboitem comboitem : cmbTipoComprobante.getItems()) {
+						if (comboitem.getValue() instanceof TipoComprobante
+								&& ((TipoComprobante) comboitem.getValue()).getId().intValue() == Constantes.ID_TIPCOM_BOLETO_VIAJE)
+							cmbTipoComprobante.setSelectedItem(comboitem);
+					}
+				}
+				onLoadEspecieValorada();
+			}
+		});
+		
+		lbxPasajeros.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
+			public void onEvent(Event e) {
+				mantenimientoRegistroPax(new Long((String) lbxPasajeros.getSelectedItem().getValue()));
+				grpbxListaPasajeros.setVisible(false);
+			}
+		});
+		
+		lbxClientes.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
+			public void onEvent(Event e) {
+				mantenimientoRegistroClient(new Long((String) lbxClientes.getSelectedItem().getValue()));
+				grpbxListaClientes.setVisible(false);
+			}
+		});
+
+		txtDocumentoPax.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			public void onEvent(Event e){
+				if(action!=Constantes.ACTION_NEW && action!=Constantes.ACTION_MODIFY){
+					if(txtDocumentoPax.getText().trim().equals(""))
+						DlgMessage.information(Messages.getString("WndVentaReserva.information.noDocumentoPax"), txtDocumentoPax);
+					else
+						onSearchPax(SEARCH_BY_DOCUMENTO);
+				}else
+					txtApePat.setFocus(true);
+			}
+		});
+		
+		
+		txtDocumentoPax.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				verificarPaxReniec();
+			}
+		});
+		
+		
+		txtApePat.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			public void onEvent(Event e){
+				if(action!=Constantes.ACTION_NEW && action!=Constantes.ACTION_MODIFY){
+					if(txtApePat.getText().trim().equals(""))
+						DlgMessage.information(Messages.getString("WndVentaReserva.information.noApellidoPaterno"), txtApePat);
+					else if(txtNombres.getText().trim().equals(""))
+						DlgMessage.information(Messages.getString("WndVentaReserva.information.noNombres"), txtNombres);
+					else
+						onSearchPax(SEARCH_BY_NOMBRES);
+				}else
+					txtApeMat.setFocus(true);
+			}
+		});
+		
+		txtApeMat.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			public void onEvent(Event e){
+				if(action!=Constantes.ACTION_NEW && action!=Constantes.ACTION_MODIFY){
+					if(txtApePat.getText().trim().equals(""))
+						DlgMessage.information(Messages.getString("WndVentaReserva.information.noApellidoPaterno"), txtApePat);
+					else if(txtNombres.getText().trim().equals(""))
+						DlgMessage.information(Messages.getString("WndVentaReserva.information.noNombres"), txtNombres);
+					else
+						onSearchPax(SEARCH_BY_NOMBRES);
+				}else
+					txtNombres.setFocus(true);
+			}
+		});
+		
+		txtNombres.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			public void onEvent(Event e){
+				if(action!=Constantes.ACTION_NEW && action!=Constantes.ACTION_MODIFY){
+					if(txtApePat.getText().trim().equals(""))
+						DlgMessage.information(Messages.getString("WndVentaReserva.information.noApellidoPaterno"), txtApePat);
+					else if(txtNombres.getText().trim().equals(""))
+						DlgMessage.information(Messages.getString("WndVentaReserva.information.noNombres"), txtNombres);
+					else
+						onSearchPax(SEARCH_BY_NOMBRES);
+				}else
+					txtDireccionPax.setFocus(true);
+			}
+		});
+		
+		txtDocumentoCliente.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			public void onEvent(Event e){
+				if(action!=Constantes.ACTION_NEW && action!=Constantes.ACTION_MODIFY){
+					if(txtDocumentoCliente.getText().trim().equals(""))
+						DlgMessage.information(Messages.getString("WndVentaReserva.information.noDocumentoCliente"), txtDocumentoCliente);
+					else
+						onSearchClient(SEARCH_BY_DOCUMENTO);
+				}else
+					txtRazonSocial.setFocus(true);
+			}
+		});
+		
+		txtRazonSocial.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			public void onEvent(Event e){
+				if(action!=Constantes.ACTION_NEW && action!=Constantes.ACTION_MODIFY){
+					if(txtRazonSocial.getText().trim().equals(""))
+						DlgMessage.information(Messages.getString("WndVentaReserva.information.noRazonSocial"), txtRazonSocial);
+					else
+						onSearchClient(SEARCH_BY_RAZON);
+				}else
+					txtContactoCliente.setFocus(true);
+			}
+		});
+		
+		tabPasajero.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+			public void onEvent(Event e){
+				cmbTipoDocumento.setFocus(true);
+			}
+		});
+		
+		tabCliente.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+			public void onEvent(Event e){
+				txtDocumentoCliente.setFocus(true);
+			}
+		});
+		
+		tabPagos.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+			public void onEvent(Event e){
+				cmbTipoFormaPago.setFocus(true);
+			}
+		});
+		
+		imgPromocion.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			public void onEvent(Event e){
+				imgPromocion_loadPromociones();
+			}
+		});
+		
+		imgQuitarPromocion.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			public void onEvent(Event e){
+				quitarPromocion();
+			}
+		});
+		
+		cmbMes.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			public void onEvent(Event e){
+				if(cmbMes.getSelectedItem().getValue() instanceof Integer)
+					Util.loadDias(cmbDia, (Integer)cmbMes.getSelectedItem().getValue(), (Integer)cmbAnio.getSelectedItem().getValue());
+			}
+		});
+		
+		cmbAnio.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			public void onEvent(Event e){
+				Util.loadMeses(cmbMes);
+				cmbDia.setSelectedIndex(-1);
+				cmbDia.setText("");
+			}
+		});
+		
+		txtNumeroAsiento.addEventListener(Events.ON_CHANGING, new EventListener<Event>() {
+			public void onEvent(Event e){
+				aplicarPromocionPorTarifa();
+			}
+		});
+	}
+
+	/**
+	 * Carga la información de la reserva para la confirmación.
+	 */
+	private void loadInformacion() {
+		try {
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			criteriosBusqueda.put("itinerario.id", getObjetoConfirmar().getItinerario().getId());
+			criteriosBusqueda.put("ruta.id", getObjetoConfirmar().getRuta().getId());
+						
+			List<DetalleItinerario> lstDetalles = ServiceLocator.getDetalleItinerarioManager().buscarPorX(criteriosBusqueda, null);
+			if (lstDetalles.size() == 1) {
+				detailItinerary = lstDetalles.get(0);
+				onLoadDatosVenta(detailItinerary);
+				txtNumeroAsiento.setText(getObjetoConfirmar().getNumeroAsiento() == null ? "" : (getObjetoConfirmar().getNumeroAsiento()==0?"":getObjetoConfirmar().getNumeroAsiento().toString()));
+				txtNumeroPiso.setText(getObjetoConfirmar().getNumeroPiso() == null ? "": getObjetoConfirmar().getNumeroPiso().toString());
+				onLoadPuntoEmbarque(detailItinerary);
+				onLoadPuntoDesembarque(detailItinerary);
+				onLoadPagos(detailItinerary);
+				onSelectDefaultFormaPago();
+//				onSelectDefaultTipoComprobante();
+//				onLoadEspecieValorada();
+				mantenimientoRegistroPax(getObjetoConfirmar().getPasajero().getId());
+//				onLoadEspecieValorada();
+				if (getObjetoConfirmar().getCliente() != null)
+					mantenimientoRegistroClient(getObjetoConfirmar().getCliente().getId());
+				
+				onSelectDefaultTipoComprobante();
+				onLoadEspecieValorada();
+			}
+			/* Seleccionando las Preferencias Alimenticias */
+			if (getObjetoConfirmar().getPreferenciaAlimentaria() != null) {
+				for (int i = 0; i < cmbAlimentacion.getItemCount(); i++) {
+					if (cmbAlimentacion.getItemAtIndex(i).getValue() instanceof PreferenciaAlimentaria
+							&& ((PreferenciaAlimentaria) cmbAlimentacion.getItemAtIndex(i).getValue()).getId().intValue() == getObjetoConfirmar().getPreferenciaAlimentaria().getId().intValue()){
+						cmbAlimentacion.setSelectedIndex(i);
+						break;
+					}
+				}
+			}
+			txtObservaciones.setText(getObjetoConfirmar().getObservaciones()==null?"":getObjetoConfirmar().getObservaciones());
+			
+			/**	
+			 * Esta seccion es para obtener las promociones que son por tarifa	
+			 * y que reeemplazaran la tarifa real del servicio.
+			 */
+			aplicarPromocionPorTarifa();
+		} catch (Exception ex) {
+			DlgMessage.error(this.getClass().getSimpleName() + " " + ex.getMessage());
+			ex.printStackTrace();
+			log.error(ex);
+		}
+	}
+
+	/**
+	 * Realiza la carga de los pagos que se debe realizar.
+	 * @param detalleItinerario	: tarifa del servicio de acuerdo al Itinerario.
+	 */
+	private void onLoadPagos(DetalleItinerario detalleItinerario)throws Exception {
+		dblTarifa.setValue(detalleItinerario.getTarifa());
+		dblRecargo.setValue(getObjetoConfirmar().getRecargo());		
+		dblDescuento.setValue(getObjetoConfirmar().getDescuento());
+		
+		/*Valida si es una confirmacion de F.A. - 22/02/2017 - jabanto*/
+//		if(objetoConfirmar.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA)){
+//			dblDescuento.setValue(0.00);
+//		}		
+		
+		/*Valida si es una confirmacion de F.A. - 29/12/2016 - jabanto*/
+//		if(objetoConfirmar.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA)){
+//			dblDescuento.setValue(0.00);
+//		}
+//		else{
+			/*End begin 29/12/2016 - jabanto*/
+//			//Si lo pagado es mayor a la nueva tarifa
+//			if(getObjetoConfirmar().getTarifa().doubleValue()>=detalleItinerario.getTarifa().doubleValue()){
+//				dblTarifa.setValue(getObjetoConfirmar().getTarifa());
+//				dblDescuento.setValue(getObjetoConfirmar().getDescuento());
+//				dblPagado.setValue(getObjetoConfirmar().getTarifa() + getObjetoConfirmar().getRecargo() - getObjetoConfirmar().getDescuento());
+//				dblImporte.setValue(0.0);
+//				tieneDescuento = true;
+//			}else{
+						
+			//Si tiene promocion aun que nunca deberia tener - Luego comentar este codigo.
+//			if(getObjetoConfirmar().getPromocion()!=null){
+//				TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+//				criteriosBusqueda.put("id", getObjetoConfirmar().getPromocion().getId());
+//				List<Promocion> lstPromocion = ServiceLocator.getPromocionManager().buscarPorX(criteriosBusqueda, null, Util.DatetoString(getObjetoConfirmar().getFechaPartida(), Constantes.DATE_FORMAT));
+//				if(lstPromocion.size()==0)
+//					dblDescuento.setValue(0.0);
+//				else{
+//					double descuento = 0.0;
+//					if(lstPromocion.get(0).getTipoDescuento().equals("S"))
+//						descuento = lstPromocion.get(0).getValorDescuento();
+//					else if(lstPromocion.get(0).getTipoDescuento().equals("P"))
+//						descuento = (detalleItinerario.getTarifa()*lstPromocion.get(0).getValorDescuento())/100;
+//					dblDescuento.setValue(descuento);
+//				}
+//				tieneDescuento = true;
+//			}else{
+//				dblDescuento.setValue(getObjetoConfirmar().getDescuento());
+//				tieneDescuento = false;
+//			}
+//		}
+		
+		dblPagado.setValue(getObjetoConfirmar().getTarifa() + getObjetoConfirmar().getRecargo() - getObjetoConfirmar().getDescuento());
+//		dblImporte.setValue(dblTarifa.getValue() - dblDescuento.getValue() - dblPagado.getValue() + dblRecargo.getValue());
+		double saldo= dblTarifa.getValue() - dblDescuento.getValue() - dblPagado.getValue() + dblRecargo.getValue();
+
+		lblImporte.setValue(LABEL_IMPPAG_TO_TEPSA);
+		if(saldo>=0)
+			dblImporte.setValue(saldo+dblRecargo.getValue());
+		else{
+			saldo=(saldo*-1); /*Lo convierte en un valor positivo*/
+			dblImporte.setValue(saldo+dblRecargo.getValue());
+			lblImporte.setValue(LABEL_IMPPAG_TO_PASAJERO);
+		}
+		
+		dblImporteEfectivo.setValue(0.0);
+		dblImporteTarjeta.setValue(0.0);
+	}
+	
+	/**
+	 * Muestra los datos del itinerario que figura en la reserva.
+	 * @param detalleItinerario	: Itinerario seleccionado.
+	 */
+	private void onLoadDatosVenta(DetalleItinerario detalleItinerario) {
+		lblOrigen.setValue(detalleItinerario.getRuta().getOrigen());
+		lblDestino.setValue(detalleItinerario.getRuta().getDestino());
+		lblTarifa.setValue(Util.toNumberFormat(detalleItinerario.getTarifa(), 2));
+		lblFechaPartida.setValue(Util.DatetoString(detalleItinerario.getFechaPartida(), Constantes.DATE_FORMAT)+" "+detalleItinerario.getHoraPartida());
+		lblFechaLlegada.setValue(Util.DatetoString(detalleItinerario.getFechaLlegada(), Constantes.DATE_FORMAT)+" "+(detalleItinerario.getHoraLlegada()!=null?detalleItinerario.getHoraLlegada():""));
+//		lblHoraPartida.setValue(detalleItinerario.getHoraPartida());
+//		lblHoraLlegada.setValue(detalleItinerario.getHoraLlegada());
+	}
+
+	/**
+	 * Cargamos los puntos de embarque.
+	 * @param detItinerario	: Itinerario del cual deseamos cargar los puntos de embarque.
+	 * @throws Exception
+	 */
+	private void onLoadPuntoEmbarque(DetalleItinerario detItinerario) {
+		try {
+			cmbPtoEmbarque.getItems().clear();
+
+			ArrayList<ItinerarioAgenciaPartida> arrayItiAgePartida = new ArrayList<ItinerarioAgenciaPartida>();
+			/*	Si la agencia de partida del itinerario es la misma del tramo seleccionado	*/
+			if (detItinerario.getItinerario().getAgenciaPartida().getId().intValue() == detItinerario.getAgenciaPartida().getId().intValue())
+				arrayItiAgePartida = ServiceLocator.getItinerarioManager().buscarAgenciasPartida(detItinerario.getItinerario().getId(),Constantes.VALUE_ACTIVO);
+			else {
+				ItinerarioAgenciaPartida itiAgePartida = new ItinerarioAgenciaPartida();
+				Agencia agencia = new Agencia();
+				agencia.setId(detItinerario.getAgenciaPartida().getId());
+				agencia.setDenominacion(detItinerario.getAgenciaPartida().getDenominacion());
+				itiAgePartida.setAgencia(agencia);
+				itiAgePartida.setHoraPartida(detItinerario.getAgenciaPartida().getHoraPartida());
+				arrayItiAgePartida.add(itiAgePartida);
+			}
+			UtilData.cargarGenericData(cmbPtoEmbarque, false);
+			/*	Llenado de los puntos de embarque	*/
+			for (ItinerarioAgenciaPartida itiAgePartida : arrayItiAgePartida) {
+				Comboitem item = new Comboitem(itiAgePartida.getAgencia().getDenominacion());
+				item.setValue(itiAgePartida);
+				cmbPtoEmbarque.appendChild(item);
+				String fechaPartida="";
+				if (arrayItiAgePartida.size() == 1) {
+					cmbPtoEmbarque.setSelectedItem(item);
+										
+					if(lblFechaPartida.getValue().length()>=10)
+						fechaPartida=lblFechaPartida.getValue().substring(0,10);
+					lblFechaPartida.setValue(fechaPartida+" "+(itiAgePartida.getHoraPartida()!=null?itiAgePartida.getHoraPartida():""));	
+						
+//					lblHoraPartida.setValue(itiAgePartida.getHoraPartida());
+				} else if (getObjetoConfirmar().getAgenciaPartida() != null && itiAgePartida.getAgencia().getId().intValue() == getObjetoConfirmar().getAgenciaPartida().getId()) {
+					cmbPtoEmbarque.setSelectedItem(item);
+										
+					if(lblFechaPartida.getValue().length()>=10)
+						fechaPartida=lblFechaPartida.getValue().substring(0,10);
+					lblFechaPartida.setValue(fechaPartida+" "+(itiAgePartida.getHoraPartida()!=null?itiAgePartida.getHoraPartida():""));
+					
+//					lblHoraPartida.setValue(itiAgePartida.getHoraPartida());
+				}
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			DlgMessage.error(this.getClass().getName() + " " + ex.getMessage());
+			log.error(ex);
+		}
+	}
+
+	/**
+	 * Cargamos los puntos de desembarque.
+	 * @param detItinerario	: Itinerario del cual deseamos cargar los puntos de desembarque.
+	 * @throws Exception
+	 */
+	private void onLoadPuntoDesembarque(DetalleItinerario detItinerario) {
+		try {
+			cmbPtoDesembarque.getItems().clear();
+			ArrayList<ItinerarioAgenciaLlegada> arrayItiAgeLlegada = new ArrayList<ItinerarioAgenciaLlegada>();
+			/*	Si la agencia de llegada del itinerario es la misma del tramo seleccionado	*/
+			if (detItinerario.getItinerario().getAgenciaLlegada().getId().intValue() == detItinerario.getAgenciaLlegada().getId().intValue())
+				arrayItiAgeLlegada = ServiceLocator.getItinerarioManager().buscarAgenciasLlegada(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO);
+			else {
+				ItinerarioAgenciaLlegada itiAgeLlegada = new ItinerarioAgenciaLlegada();
+				Agencia agencia = new Agencia();
+				agencia.setId(detItinerario.getAgenciaLlegada().getId());
+				agencia.setDenominacion(detItinerario.getAgenciaLlegada().getDenominacion());
+				itiAgeLlegada.setAgencia(agencia);
+				itiAgeLlegada.setHoraLlegada(detItinerario.getAgenciaLlegada().getHoraPartida());
+				arrayItiAgeLlegada.add(itiAgeLlegada);
+			}
+
+			UtilData.cargarGenericData(cmbPtoDesembarque, false);
+			/*	Llenado de los puntos de desembarque	*/
+			for (ItinerarioAgenciaLlegada itiAgeLlegada : arrayItiAgeLlegada) {
+				Comboitem item = new Comboitem(itiAgeLlegada.getAgencia().getDenominacion());
+				item.setValue(itiAgeLlegada);
+				cmbPtoDesembarque.appendChild(item);
+				String fechaLlagada="";
+				
+				if (arrayItiAgeLlegada.size() == 1) {
+					cmbPtoDesembarque.setSelectedItem(item);
+//					lblHoraLlegada.setValue(itiAgeLlegada.getHoraLlegada());
+					if(lblFechaLlegada.getValue().length()>=10)
+						fechaLlagada=lblFechaLlegada.getValue().substring(0,10);
+					lblFechaLlegada.setValue(fechaLlagada+" "+(itiAgeLlegada.getHoraLlegada()!=null?itiAgeLlegada.getHoraLlegada():""));
+				} else if (getObjetoConfirmar().getAgenciaLlegada() != null
+						&& itiAgeLlegada.getAgencia().getId().intValue() == getObjetoConfirmar().getAgenciaLlegada().getId()) {
+					cmbPtoDesembarque.setSelectedItem(item);
+//					lblHoraLlegada.setValue(itiAgeLlegada.getHoraLlegada());
+					if(lblFechaLlegada.getValue().length()>=10)
+						fechaLlagada=lblFechaLlegada.getValue().substring(0,10);
+					lblFechaLlegada.setValue(fechaLlagada+" "+(itiAgeLlegada.getHoraLlegada()!=null?itiAgeLlegada.getHoraLlegada():""));
+				}
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			DlgMessage.error(this.getClass().getName() + " " + ex.getMessage());
+			log.error(ex);
+		}
+	}
+
+	/**
+	 * Realiza la busqueda del correlativo para el boleto a emitir.
+	 * @throws Exception 
+	 */
+	private void onLoadEspecieValorada() throws Exception {
+		rowNuevoBoleto.setVisible(false);
+		txtNuevoBoleto.setText("");
+		System.out.println(dblImporte.getValue());
+//		if (dblImporte.getValue() > 0.0 || getObjetoConfirmar().getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA //Cortesias
+//										|| getObjetoConfirmar().getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO) { //Canje publicitario
+		if (lblImporte.getValue().equals(LABEL_IMPPAG_TO_TEPSA) || getObjetoConfirmar().getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA //Cortesias
+				|| getObjetoConfirmar().getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO) { //Canje publicitario
+			
+			EspecieValorada especieValorada=null;
+			//Carga el nuevo boleto cuando es un CFA 
+			if(getObjetoConfirmar().getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA)){
+				rowNuevoBoleto.setVisible(true);
+				txtNumeroBoleto.setValue(getObjetoConfirmar().getNumeroBoleto());
+				/*Begin 25/10/2016*/
+				if(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE)
+					especieValorada=UtilData.buscarEspecieValorada(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(), false);
+				else
+					especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_BOLETA_VENTA, getAgencia(), false);
+				
+				txtNuevoBoleto.setValue(especieValorada.toString());
+				if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA)
+					lblNuevoBoleto.setValue("NUEVA BOLETA :");
+				else if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPCOM_FACTURA)
+					lblNuevoBoleto.setValue("NUEVA FACTURA :");
+//				txtNuevoBoleto.setValue(UtilData.buscarEspecieValorada(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId(), usuhar));
+			}else{
+				/*Begin 25/10/2016*/
+				if(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE)
+					especieValorada=UtilData.buscarEspecieValorada(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(), false);
+				else
+					especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_BOLETA_VENTA, getAgencia(), false);
+				txtNumeroBoleto.setValue(especieValorada.toString());
+				
+				/*End Begin 25/10/2016 - jabanto*/
+//				if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPCOM_RECIBO_CAJA){
+//					txtNumeroBoleto.setValue(UtilData.buscarEspecieValorada(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia()));
+//				}else{
+//					txtNumeroBoleto.setValue(UtilData.buscarEspecieValorada(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId(), usuhar));
+//				}
+			}
+		}else{
+			txtNumeroBoleto.setValue(getObjetoConfirmar().getNumeroBoleto());
+		}
+	}
+
+	/**
+	 * Para seleccionar el Tipo de Comprobante por defecto
+	 */
+	private void onSelectDefaultTipoComprobante() {
+		for (Comboitem comboitem : cmbTipoComprobante.getItems()) {
+			/* Si la agencia pertenece a TEPSA */
+			if (agencia.getTipoAgencia().getId().intValue() == Constantes.ID_TIPAGE_TEPSA) {
+				if (comboitem.getValue() instanceof TipoComprobante) {
+					if (((TipoComprobante) comboitem.getValue()).getId().intValue() == Constantes.ID_TIPCOM_BOLETO_VIAJE 
+							&& objetoConfirmar.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE && oCliente==null){
+						if(objetoConfirmar.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA)){
+							/*Cuando la reserva este registrada con la version anterior a la electronica*/
+							Util.seleccionarValorItemCombo(TipoComprobante.class, cmbTipoComprobante, Constantes.ID_TIPCOM_BOLETA_VENTA);
+							lblBoleto.setValue("N° BOLETA :");
+							break;
+						}else{
+							cmbTipoComprobante.setSelectedItem(comboitem);	
+							lblBoleto.setValue("N° BOLETO :");
+						}
+					}if(((TipoComprobante) comboitem.getValue()).getId().intValue() == Constantes.ID_TIPCOM_FACTURA &&  oCliente!=null){
+						cmbTipoComprobante.setSelectedItem(comboitem);
+						lblBoleto.setValue("N° FACTURA :");
+					}else if(((TipoComprobante) comboitem.getValue()).getId().intValue() == Constantes.ID_TIPCOM_BOLETA_VENTA && oCliente==null){
+						cmbTipoComprobante.setSelectedItem(comboitem);
+						lblBoleto.setValue("N° BOLETA :");
+					}
+					
+				}
+					
+
+//				if (comboitem.getValue() instanceof TipoComprobante
+//						&& ((TipoComprobante) comboitem.getValue()).getId().intValue() == Constantes.ID_TIPCOM_BOLETO_VIAJE)
+//					cmbTipoComprobante.setSelectedItem(comboitem);
+			}
+		}
+		cmbTipoComprobante.setDisabled(true);
+	}
+
+	/**
+	 * Selecciona por defecto el item del Combo Forma de Pago.
+	 */
+	private void onSelectDefaultFormaPago() {
+		/* Seleccionamos por defecto la Forma de pago */
+		for (Comboitem comboitem : cmbFormaPago.getItems()) {
+			/* Si la agencia pertenece a TEPSA */
+			if(agencia.getTipoAgencia().getId().intValue() == Constantes.ID_TIPAGE_TEPSA) {
+								
+				//Cuando es una reserva a fecha abierta y su forma de pago es CORTESIA. - Impl: 04/05/2013
+				if(objetoConfirmar.getFormaPago()!=null && (objetoConfirmar.getFormaPago().getId().equals(Constantes.ID_FORPAG_CORTESIA)) ){ 
+					//Obtenemos la cortesia otorgada
+					Cortesia cortesia= ServiceLocator.getCortesiaManager().buscarXIDventa(objetoConfirmar.getId());
+					//Selecciona la forma de pago CORTESIA por default.
+					if(cortesia.getPorcentaje().intValue()==100){
+						if(comboitem.getValue() instanceof FormaPago && ((FormaPago) comboitem.getValue()).getId().intValue() == Constantes.ID_FORPAG_CORTESIA) {
+							cmbFormaPago.setSelectedItem(comboitem);
+							onLoadTipoFormaPago();
+							
+							//selecciona el TIPO DE FORMA DE PAGO de la cortesia y desactiva el control tipo formar pago.
+							Util.seleccionarValorItemCombo(TipoFormaPago.class, cmbTipoFormaPago, objetoConfirmar.getTipoFormaPago().getId());
+							cmbTipoFormaPago.setDisabled(true);
+							
+	//						//realiza el descuento según el porcentaje de descuento que contenga la cortesia
+	//						
+	//						if(cortesia!=null){
+	//							Double tarifa=Double.valueOf(lblTarifa.getValue());
+	//							Double desct= (tarifa*cortesia.getPorcentaje())/100;
+	//							dblDescuento.setValue(desct);
+	//							dblImporte.setValue((tarifa-desct)+.00001);
+	//							if(desct)
+	//						}
+							break;
+						}
+					}else if(comboitem.getValue() instanceof FormaPago && ((FormaPago) comboitem.getValue()).getId().intValue() == Constantes.ID_FORPAG_CONTADO) {
+						cmbFormaPago.setSelectedItem(comboitem);
+						onLoadTipoFormaPago();
+						cmbTipoFormaPago.setDisabled(false);
+					}
+				}else{/*	Si la forma de pago es contado	*/
+					if (comboitem.getValue() instanceof FormaPago && ((FormaPago) comboitem.getValue()).getId().intValue() == Constantes.ID_FORPAG_CONTADO) {
+						cmbFormaPago.setSelectedItem(comboitem);
+						onLoadTipoFormaPago();						
+						for (Comboitem item : cmbTipoFormaPago.getItems()) {
+							if (item.getValue() instanceof TipoFormaPago && ((TipoFormaPago) item.getValue()).getId().intValue() == Constantes.ID_TIPFORPAG_EFECTIVO){
+								cmbTipoFormaPago.setSelectedItem(item);
+								break;
+							}
+						}
+						break;
+					}
+				}				
+			}
+		}
+		cmbFormaPago.setDisabled(true);
+	}
+
+	/**
+	 * Muestra la hora de embarque segun el punto de embarque seleccionado
+	 */
+	public void onSelectPtoEmbarque() {
+		String horaPartida="",fechaPartida="";
+		if (cmbPtoEmbarque.getSelectedItem().getValue() instanceof ItinerarioAgenciaPartida){
+//			lblHoraPartida.setValue(((ItinerarioAgenciaPartida) cmbPtoEmbarque.getSelectedItem().getValue()).getHoraPartida());
+			horaPartida=((ItinerarioAgenciaPartida) cmbPtoEmbarque.getSelectedItem().getValue()).getHoraPartida();
+		}//else
+//			lblHoraPartida.setValue("");
+		
+		if(lblFechaPartida.getValue().length()>=10)
+			fechaPartida=lblFechaPartida.getValue().substring(0,10);
+		
+		lblFechaPartida.setValue(fechaPartida+" "+(horaPartida!=null?horaPartida:""));
+	}
+
+	/**
+	 * Muestrala hora de llegada segun el punto de desembarque seleccionado.
+	 */
+	public void onSelectPtoDesembarque() {
+		String horaLlegada="",fechaLlegada="";
+		if (cmbPtoDesembarque.getSelectedItem().getValue() instanceof ItinerarioAgenciaLlegada){
+//			lblHoraLlegada.setValue(((ItinerarioAgenciaLlegada) cmbPtoDesembarque.getSelectedItem().getValue()).getHoraLlegada());
+			horaLlegada=((ItinerarioAgenciaLlegada) cmbPtoDesembarque.getSelectedItem().getValue()).getHoraLlegada();
+		}//else
+			//lblHoraLlegada.setValue("");
+		
+		if(lblFechaLlegada.getValue().length()>=10)
+			fechaLlegada=lblFechaLlegada.getValue().substring(0,10);
+		
+		lblFechaLlegada.setValue(fechaLlegada+" "+(horaLlegada!=null?horaLlegada:""));
+	}
+
+	/*
+	 * ******************************* IMPLEMENTACIONES PARA EL PASAJERO	********************************************	*/
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.view.ui.IConfirmacion#onNewPax()
+	 */
+	public void onNewPax() {
+		onCleanControlsPax();
+		disabledControlsPax(false);
+		action = Constantes.ACTION_NEW;
+		tlbbtnNuevoPax.setDisabled(true);
+		tlbbtnModificarPax.setDisabled(true);
+		tlbbtnCancelarPax.setDisabled(false);
+		tlbbtnGuardarPax.setDisabled(false);
+//		cmbTipoDocumento.setFocus(true);
+		oPasajero=null;
+		
+		Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, Constantes.ID_TIPDOC_DNI);
+		txtDocumentoPax.setFocus(true);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.view.ui.IConfirmacion#onModifyPax()
+	 */
+	public void onModifyPax() {
+		action = Constantes.ACTION_MODIFY;
+		// rowPaxFree.setVisible(false);
+		disabledControlsPax(false);
+		tlbbtnNuevoPax.setDisabled(true);
+		tlbbtnModificarPax.setDisabled(true);
+		tlbbtnCancelarPax.setDisabled(false);
+		tlbbtnGuardarPax.setDisabled(false);
+		cmbTipoDocumento.setFocus(true);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.view.ui.IConfirmacion#onCancelPax()
+	 */
+	@Override
+	public void onCancelPax() {
+		tlbbtnNuevoPax.setDisabled(false);
+		tlbbtnLimpiarPax.setDisabled(false);
+		tlbbtnModificarPax.setDisabled(true);
+		tlbbtnCancelarPax.setDisabled(true);
+		tlbbtnGuardarPax.setDisabled(true);
+		
+		disabledControlsPax(true);
+		
+		txtApeMat.setDisabled(false);
+		txtApePat.setDisabled(false);
+		txtNombres.setDisabled(false);
+		
+		if(action == Constantes.ACTION_NEW)
+			onCleanControlsPax();
+		action = Constantes.FAILURE;
+		txtDocumentoPax.setFocus(true);
+		
+	}
+
+	/**
+	 * Limpia los controles del pasajero.
+	 */
+	public void onCleanControlsPax() {
+		if(oPasajero!=null && oPasajero.isDescuentoAutoByPaxFree()){
+			if(oCliente==null || oCliente.isDescuentoAutoByCliente()==false)
+				quitarPromocion();
+			else if(oCliente.isDescuentoAutoByCliente()==true){
+				oPasajero = null;
+				mantenimientoRegistroClient(oCliente.getId());
+			}
+		}
+		
+		cmbTipoDocumento.setSelectedIndex(0);
+		txtDocumentoPax.setText("");
+		txtApePat.setText("");
+		txtApeMat.setText("");
+		txtNombres.setText("");
+		txtDireccionPax.setText("");
+		txtTelefono.setText("");
+		txtEmailPax.setText("");
+		txtUbigeoPax.setText("");
+		txtUbigeoIdPax.setText("");
+//		dtbxFechaNacimiento.setValue(Constantes.FECHA_NULL);
+		cmbSexo.setSelectedIndex(0);
+		cmbEstadoCivil.setSelectedIndex(0);
+		cmbNacionalidad.setSelectedIndex(0);
+		rowAdicional.setVisible(false);
+		oPasajero = null;
+		cmbTipoDocumento.setFocus(true);
+		cmbAnio.setSelectedIndex(-1);
+		cmbMes.setSelectedIndex(-1);
+		cmbDia.setSelectedIndex(-1);
+		
+		imgValidacionDNI.setSrc("");
+		txtApeMat.setDisabled(false);
+		txtApePat.setDisabled(false);
+		txtNombres.setDisabled(false);
+	}
+
+	/**
+	 * Deshabilita o habilita los controles relacionados al pasajero.
+	 * @param arg	: Boolean
+	 */
+	public void disabledControlsPax(boolean arg) {
+		
+		tlbbtnNuevoPax.setDisabled(false);
+		tlbbtnLimpiarPax.setDisabled(false);
+		cmbTipoDocumento.setDisabled(false);
+		txtDocumentoPax.setDisabled(false);
+		txtApePat.setDisabled(false);
+		txtApeMat.setDisabled(false);
+		txtNombres.setDisabled(false);
+		//Implementado 05/08/2014 - jabanto  (Solicitado por Marco Oscco)
+		/*No permite el cambio de nombre cuando es confirmacion de fecha abierta*/
+		if(getObjetoConfirmar()!=null && getObjetoConfirmar().getTipoMovimiento()!=null){
+			if (getObjetoConfirmar().getTipoMovimiento().getId() == Constantes.ID_TIPMOV_FECHA_ABIERTA || 
+					getObjetoConfirmar().getTipoMovimiento().getId() == Constantes.ID_TIPMOV_POSTERGACION_FA){
+				tlbbtnNuevoPax.setDisabled(true);
+				tlbbtnLimpiarPax.setDisabled(true);
+				cmbTipoDocumento.setDisabled(true);
+				txtDocumentoPax.setDisabled(true);
+				txtApePat.setDisabled(true);
+				txtApeMat.setDisabled(true);
+				txtNombres.setDisabled(true);
+			}
+		}
+		
+		txtDireccionPax.setDisabled(arg);
+		txtTelefono.setDisabled(arg);
+		txtEmailPax.setDisabled(arg);
+		txtUbigeoPax.setDisabled(arg);
+//		dtbxFechaNacimiento.setDisabled(arg);
+		cmbSexo.setDisabled(arg);
+		cmbEstadoCivil.setDisabled(arg);
+		btnUbigeoPax.setDisabled(arg);
+		cmbNacionalidad.setDisabled(arg);
+		cmbAnio.setDisabled(arg);
+		cmbMes.setDisabled(arg);
+		cmbDia.setDisabled(arg);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tepsa.sisvyr.view.ui.IConfirmacion#onSearchPax()
+	 */
+	public void onSearchPax(Integer criterio){
+		try{
+			oPasajero=null;
+			TreeMap<String, Object> criterioBusqueda = new TreeMap<String, Object>();
+			ArrayList<Pasajero> lstPasajeros = null;
+			if(criterio.intValue()==SEARCH_BY_DOCUMENTO){
+				criterioBusqueda.put("numeroDocumento", txtDocumentoPax.getText().toUpperCase()+"%");
+				List<String> criteriosOrdenar = new ArrayList<String>();
+				criteriosOrdenar.add("apellidoPaterno");
+				criteriosOrdenar.add("apellidoMaterno");
+				criteriosOrdenar.add("nombre");
+				lstPasajeros = ServiceLocator.getPasajeroManager().buscarPorX(criterioBusqueda, criteriosOrdenar);
+			}else{
+				String nombres = txtApePat.getText().trim().toUpperCase() + 
+						(txtApeMat.getText().trim().equals("")?"":(" " + txtApeMat.getText().trim().toUpperCase())) + 
+						" " + txtNombres.getText().trim().toUpperCase();
+				String[] str1 = nombres.trim().split(" ");
+				lstPasajeros = ServiceLocator.getPasajeroManager().buscarPorFullTextIndex(str1);
+			}
+			
+			listarRegistrosPax(lstPasajeros);
+		}catch(Exception ex){
+			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());ex.printStackTrace();
+			log.error(ex);
+		}
+	}
+
+	/**
+	 * Lista los resultados de la busqueda
+	 * @param lstRegistros	: Lista de resultados.
+	 * @throws Exception
+	 */
+	private void listarRegistrosPax(ArrayList<Pasajero> lstRegistros)throws Exception {
+		ArrayList<Object> lstPasajeros = new ArrayList<Object>();
+		grpbxListaPasajeros.setVisible(false);
+		
+		if(lstRegistros.size()==1){
+			mantenimientoRegistroPax(lstRegistros.get(0).getId());
+		}else if(lstRegistros.size()>1){
+			for (int r = 0; r < lstRegistros.size(); r++) {
+				Pasajero oPasajero = lstRegistros.get(r);
+				ArrayList<Object> lstFila = new ArrayList<Object>();
+				lstFila.add(oPasajero.getId());
+				lstFila.add(r + 1);
+				lstFila.add(oPasajero.getTipoDocumento().getDenominacion());
+				lstFila.add(oPasajero.getNumeroDocumento());
+				lstFila.add(oPasajero.toString());
+				lstFila.add(Util.toNumberFormat(oPasajero.getKilometros(), 2));
+				lstPasajeros.add(lstFila);
+			}
+			Util.llenarListbox(lbxPasajeros, lstPasajeros, true);
+			grpbxListaPasajeros.setVisible(true);
+		}else{
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noPasajerosEncontrados"));
+			onCleanControlsPax();
+		}
+		disabledControlsPax(true);
+		
+	}
+	
+//	/**
+//	 * Verifica si el Pasajero existe el la reniec si es que se registrando un nuevo Pas
+//	 * @throws Exception 
+//	 * @throws WrongValueException 
+//	 */
+//	public void validarPax_MuestraBDReniec() throws WrongValueException, Exception{
+//		if(action==Constantes.ACTION_NEW  && !(txtDocumentoPax.getText().trim().isEmpty()) ){
+//			Reniec reniec= ServiceLocator.getReniecManager().buscarPax(txtDocumentoPax.getText().trim());
+//			if(reniec!=null){
+//				Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, Constantes.ID_TIPDOC_DNI);
+//				txtApePat.setText(reniec.getApellidoPaterno());
+//				txtApeMat.setText(reniec.getApellidoMaterno());
+//				txtNombres.setText(reniec.getNombres());
+////				dtbxFechaNacimiento.setValue(Constantes.FORMAT_DATE.parse(reniec.getFechaNacimiento()));
+//				mostrarFechaNacimiento(reniec.getFechaNacimiento());
+//				Util.seleccionarValorItemCombo(Sexo.class, cmbSexo, Integer.valueOf(reniec.getSexo()));
+//				
+//			}else{
+//				String numeroDocumento=txtDocumentoPax.getText().trim();
+//				Integer idTipoDocumento= null;
+//				if(cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento)
+//					idTipoDocumento=((TipoDocumento)cmbTipoDocumento.getSelectedItem().getValue()).getId();
+//				
+//				onCleanControlsPax();
+//				//recupera valores ingresado por el usuario
+//				txtDocumentoPax.setText(numeroDocumento);
+//				if(idTipoDocumento!=null) Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, idTipoDocumento);
+//				txtApePat.setFocus(true);
+//			}
+//		}
+//	}
+//	
+//	/**
+//	 * Reliza la validacion del pasajero con el metodop getIdentifidad del WS del mtc en funcion al parametro configurado.
+//	 * @throws WrongValueException
+//	 * @throws Exception
+//	 */
+//	public void verificarPaxReniec() throws WrongValueException, Exception{
+//		imgValidacionDNI.setSrc("");
+//		Parametros parametros=ServiceLocator.getParametrosManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO);
+//		if(parametros.getValidarDNIgetIdentidad()!=null && parametros.getValidarDNIgetIdentidad().intValue()==Constantes.TRUE_VALUE)
+//			validarPax_getIdentidadMTC();
+//		else
+//			validarPax_MuestraBDReniec();
+//	}
+
+	/**
+	 * Verifica si el Pasajero existe el la reniec si es que se registrando un nuevo Pas - 04/04/2015 - jabanto
+	 * @throws Exception 
+	 * @throws WrongValueException 
+	 */
+	public void verificarPaxReniec() throws WrongValueException, Exception{
+		txtApePat.setDisabled(false);
+		txtApeMat.setDisabled(false);
+		txtNombres.setDisabled(false);	
+		
+		if(action==Constantes.ACTION_NEW  
+				&& !(txtDocumentoPax.getText().trim().isEmpty()) 
+				&& cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento 
+				&& ((TipoDocumento)cmbTipoDocumento.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPDOC_DNI){
+				
+			String numerodocumento=txtDocumentoPax.getText().trim();
+			
+			/*Consulta DNI con la reniec a travez del Ws del MTC*/
+			ResultIdentidad resultIdentidad=Util.getResultIdentidad(numerodocumento,imgValidacionDNI);
+			if(resultIdentidad!=null){	
+				Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, Constantes.ID_TIPDOC_DNI);
+				/*si el DNI es correcto*/
+				if(resultIdentidad.isReturn()){
+					/*Para no permitir la modificacion de los appellidos y nombres al usuario*/
+					txtApePat.setDisabled(true);
+					txtApeMat.setDisabled(true);
+					txtNombres.setDisabled(true);
+					/*Carga los apellidos y nombres retornados por la reniec*/
+					txtApePat.setText(resultIdentidad.getPaterno()!=null && !(resultIdentidad.getPaterno().trim().isEmpty()) ?resultIdentidad.getPaterno().trim():"");
+					txtApeMat.setText(resultIdentidad.getMaterno()!=null && !(resultIdentidad.getMaterno().trim().isEmpty()) ? resultIdentidad.getMaterno().trim():"");
+					txtNombres.setText(resultIdentidad.getNombre().trim());
+					/*Obtiene datos como la fecha de nacimiento y el sexo de NUESTRA base de datos de la Reniec*/
+					if(resultIdentidad.getReniec()!=null){
+						mostrarFechaNacimiento(resultIdentidad.getReniec().getFechaNacimiento());
+						Util.seleccionarValorItemCombo(Sexo.class, cmbSexo, Integer.valueOf(resultIdentidad.getReniec().getSexo()));
+					}
+					txtDireccionPax.setFocus(true);
+				}	
+			}else{
+				/*Consulta con NUESTRA BD reniec*/
+				Reniec reniec= ServiceLocator.getReniecManager().buscarPax(numerodocumento);
+				if(reniec!=null){
+					Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, Constantes.ID_TIPDOC_DNI);
+					txtApePat.setText(reniec.getApellidoPaterno());
+					txtApeMat.setText(reniec.getApellidoMaterno());
+					txtNombres.setText(reniec.getNombres());
+					mostrarFechaNacimiento(reniec.getFechaNacimiento());
+					Util.seleccionarValorItemCombo(Sexo.class, cmbSexo, Integer.valueOf(reniec.getSexo()));
+				}else{
+					String numeroDocumento=txtDocumentoPax.getText().trim();
+					Integer idTipoDocumento= null;
+					if(cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento)
+						idTipoDocumento=((TipoDocumento)cmbTipoDocumento.getSelectedItem().getValue()).getId();
+					onCleanControlsPax();
+					//recupera valores ingresado por el usuario
+					txtDocumentoPax.setText(numeroDocumento);
+					if(idTipoDocumento!=null) Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, idTipoDocumento);
+					txtApePat.setFocus(true);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Muestra los datos del registro que se va a modificar.
+	 * @param id	: Identificador del registro a modificar
+	 * @throws Exception
+	 */
+	private void mantenimientoRegistroPax(Long idPasajero) {
+		try {
+			promocionAplicada = null;
+			lblPromocion.setValue("");
+			imgQuitarPromocion.setVisible(false);
+			tlbbtnModificarPax.setDisabled(true);
+			oPasajero = ServiceLocator.getPasajeroManager().buscarPorId(idPasajero);
+			
+			/* Implementado 07/06/2014 - jabanto */
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			criteriosBusqueda.put("pasajero.id", oPasajero.getId());
+			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+			List<PasajeroFrecuente> lstPaxfree = ServiceLocator.getPasajeroFrecuenteManager().buscarPorX(criteriosBusqueda, null);
+			if (lstPaxfree.size() > 0) {
+				oPasajero.setPaxFree(true);
+			}
+			
+			
+			Ubigeo oUbigeo = oPasajero.getUbigeo();
+			EstadoCivil oEstadoCivil = oPasajero.getEstadoCivil();
+			TipoDocumento oTipoDocumento = oPasajero.getTipoDocumento();
+			Sexo oSexo = oPasajero.getSexo();
+			Nacionalidad oNacionalidad = oPasajero.getNacionalidad();
+			String idUbigeo = new String();
+			String ubicacionCompleta = new String();
+
+			if(oUbigeo!=null) {
+				idUbigeo = oUbigeo.getId();
+				ubicacionCompleta = ServiceLocator.getUbigeoManager().ubicacionGeografica(oUbigeo);
+			}
+			
+			if(oEstadoCivil!=null)
+				Util.seleccionarValorItemCombo(EstadoCivil.class, cmbEstadoCivil, oPasajero.getEstadoCivil().getId());
+			else
+				cmbEstadoCivil.setSelectedIndex(0);
+			
+			if(oTipoDocumento!=null)
+				Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, oPasajero.getTipoDocumento().getId());
+			else
+				cmbTipoDocumento.setSelectedIndex(0);
+			
+			if(oSexo!=null)
+				Util.seleccionarValorItemCombo(Sexo.class, cmbSexo, oPasajero.getSexo().getId());
+			else
+				cmbSexo.setSelectedIndex(0);
+			
+			if(oNacionalidad!=null)
+				Util.seleccionarValorItemCombo(Nacionalidad.class, cmbNacionalidad, oNacionalidad.getId());
+			else
+				cmbNacionalidad.setSelectedIndex(0);
+			
+			habilitarNacionalidad();
+			
+			txtDocumentoPax.setText(oPasajero.getNumeroDocumento());
+			txtApePat.setText(oPasajero.getApellidoPaterno());
+			txtApeMat.setText(oPasajero.getApellidoMaterno());
+			txtNombres.setText(oPasajero.getNombre());
+			if(oPasajero.getFechaNacimiento() != null)
+				mostrarFechaNacimiento(oPasajero.getFechaNacimiento());
+			else
+				mostrarFechaNacimiento(null);
+			txtDireccionPax.setText(oPasajero.getDireccion());
+			txtUbigeoIdPax.setText(idUbigeo);
+			txtUbigeoPax.setText(ubicacionCompleta);
+			txtTelefono.setText(oPasajero.getTelefono());
+			txtEmailPax.setText(oPasajero.getEmail());
+
+			if(oPasajero.getIndeseable().intValue() == Constantes.TRUE_VALUE) {
+				lblInformativo1.setVisible(false);
+				lblInformativo2.setValue("***  RESTRICCION DEL PASAJERO  ***");
+				lblInformativo3.setValue(oPasajero.getMotivo());
+				imgDetalleMotivo.setVisible(true);
+			}else{
+				lblInformativo1.setVisible(true);
+				lblInformativo2.setValue("");
+				lblInformativo3.setValue("");
+				imgDetalleMotivo.setVisible(false);
+			}
+
+			if (oPasajero.getSexo() == null) {
+				imgPasajero.setSrc("");
+			} else if (oPasajero.getSexo().getDenominacion().equals("FEMENINO"))
+				imgPasajero.setSrc("resources/mp_woman.png");
+			else
+				imgPasajero.setSrc("resources/mp_man.png");
+
+			rowAdicional.setVisible(true);
+//			/* RECUPERANDO LOS DATOS DEL PASAJERO FRECUENTE */
+//			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+//			criteriosBusqueda.put("pasajero.id", oPasajero.getId());
+//			criteriosBusqueda.put("estado", Constantes.TRUE_VALUE);
+//			List<PasajeroFrecuente> lstPaxfree = ServiceLocator.getPasajeroFrecuenteManager().buscarPorX(criteriosBusqueda, null);
+//
+//			String finicio = "";
+//			String ffin = "";
+//			Integer totalViajes = 0;
+			/*
+			 * Validando que el pasajero no sea Indeseable para hacer la validacion de PAXFREE
+			 */
+			if (oPasajero.getIndeseable().intValue() == Constantes.FALSE_VALUE) {
+				//Si no se trata de una reserva o cortesia
+//				if(!getObjetoConfirmar().getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA) 
+//						&& getObjetoConfirmar().getFormaPago().getId().intValue()!=Constantes.ID_FORPAG_CORTESIA){
+				if(getObjetoConfirmar().getFormaPago()==null || getObjetoConfirmar().getFormaPago().getId().intValue()!=Constantes.ID_FORPAG_CORTESIA){
+					validarPaxFree();
+//					if (lstPaxfree.size() > 0) {
+//						finicio = Constantes.FORMAT_DATE_TIME_24H.format(lstPaxfree.get(0).getFechaActivacion());
+//						ffin = Constantes.FORMAT_DATE_TIME_24H.format(lstPaxfree.get(0).getFechaCaducidad());
+//						
+//						totalViajes = ServiceLocator.getVentaPasajesManager().contarViajesValidos(oPasajero.getId(), finicio, ffin);
+//						lblInformativo1.setValue("PASAJERO FRECUENTE");
+//						lblInformativo3.setValue("NUMERO DE VIAJES DEL " + finicio.substring(0,10) + "  AL  " + ffin.substring(0,10) + " : " + totalViajes);
+//						oPasajero.setPaxFree(true);
+//						oPasajero.setPasajeroFrecuente(lstPaxfree.get(0));
+//						/*	Buscamos la promocion del Pasajero Frecuente	*/
+//						criteriosBusqueda = new TreeMap<String, Object>();
+//						criteriosBusqueda.put("cliente", "*");
+//						criteriosBusqueda.put("pasajeroFrecuente", "S");
+//						criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+//						/*	Validando que el PAXFRE se encuentre activo	*/
+//						if(oPasajero.getPasajeroFrecuente().getEstado().intValue()==Constantes.TRUE_VALUE){
+//							if(getObjetoConfirmar().getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_RESERVA){
+//								List<Promocion> lstPromocion = ServiceLocator.getPromocionManager().buscarPorX(criteriosBusqueda, null, Util.DatetoString(detailItinerary.getFechaPartida(), Constantes.DATE_FORMAT));
+//								if(lstPromocion!=null && lstPromocion.size()==1){
+//									AplicarPromocion aplicarPromocion = createObjectAplicarPromocion();
+//									promocionAplicada = aplicarPromocion.executePromocion(lstPromocion.get(0).getId().toString(), false);
+//									imgQuitarPromocion.setVisible(true);
+//								}else if(lstPromocion.size()>1)
+//									DlgMessage.information(Messages.getString("WndVentaPasajes.information.muchasPromocionesPaxFre"));
+//							}
+//						}else{
+//							dblDescuento.setValue(0.00);
+//							dblDescuento.setTooltiptext("");
+//							dblImporte.setValue(dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue()-dblPagado.getValue());
+//	//						promocionAplicada = null;
+//						}
+//					}else {
+//						oPasajero.setPaxFree(false);
+//						oPasajero.setPasajeroFrecuente(null);
+//						Long tiempo = new Date().getTime() - (Constantes.MILISEGUNDOS_X_DIA * Constantes.TIEMPO_PASAR_PAXFREE);
+//						finicio = Util.DatetoString(new Date(tiempo), Constantes.DATE_FORMAT);
+//						ffin = Util.DatetoString(new Date(), Constantes.DATE_FORMAT);
+//						totalViajes = ServiceLocator.getVentaPasajesManager().contarViajesValidos(oPasajero.getId(), finicio, ffin);
+//						lblInformativo1.setValue("NUMERO DE VIAJES ULTIMOS SEIS MESES : " + totalViajes.toString());
+//						if (totalViajes.intValue() >= Constantes.NUMERO_VIAJES_PAXFREE)
+//							lblInformativo3.setValue("EL CLIENTE CALIFICA PARA SER PASAJERO FRECUENTE");
+//						else
+//							lblInformativo3.setValue("");
+//						dblDescuento.setValue(0.00);
+//						dblDescuento.setTooltiptext("");
+//						
+//						dblImporte.setValue(dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue()-dblPagado.getValue());
+//					}
+//				}else if(getObjetoConfirmar().getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA)){
+//					if (lstPaxfree.size() > 0) {
+//						finicio = Constantes.FORMAT_DATE_TIME_24H.format(lstPaxfree.get(0).getFechaActivacion());
+//						ffin = Constantes.FORMAT_DATE_TIME_24H.format(lstPaxfree.get(0).getFechaCaducidad());
+//						
+//						totalViajes = ServiceLocator.getVentaPasajesManager().contarViajesValidos(oPasajero.getId(), finicio, ffin);
+//						lblInformativo1.setValue("PASAJERO FRECUENTE");
+//						lblInformativo3.setValue("NUMERO DE VIAJES DEL " + finicio.substring(0,10) + "  AL  " + ffin.substring(0,10) + " : " + totalViajes);
+//						oPasajero.setPaxFree(true);
+//						oPasajero.setPasajeroFrecuente(lstPaxfree.get(0));
+//						/*	Buscamos la promocion del Pasajero Frecuente	*/
+//						criteriosBusqueda = new TreeMap<String, Object>();
+//						criteriosBusqueda.put("cliente", "*");
+//						criteriosBusqueda.put("pasajeroFrecuente", "S");
+//						criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+//						/*	Validando que el PAXFRE se encuentre activo	*/
+//						if(oPasajero.getPasajeroFrecuente().getEstado().intValue()==Constantes.TRUE_VALUE){
+//							if(getObjetoConfirmar().getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_RESERVA){
+//								List<Promocion> lstPromocion = ServiceLocator.getPromocionManager().buscarPorX(criteriosBusqueda, null, Util.DatetoString(detailItinerary.getFechaPartida(), Constantes.DATE_FORMAT));
+//								if(lstPromocion!=null && lstPromocion.size()==1){
+//									AplicarPromocion aplicarPromocion = createObjectAplicarPromocion();
+//									promocionAplicada = aplicarPromocion.executePromocion(lstPromocion.get(0).getId().toString(), false);
+//									imgQuitarPromocion.setVisible(true);
+//								}else if(lstPromocion.size()>1)
+//									DlgMessage.information(Messages.getString("WndVentaPasajes.information.muchasPromocionesPaxFre"));
+//							}
+//						}else{
+//							dblDescuento.setValue(0.00);
+//							dblDescuento.setTooltiptext("");
+//							dblImporte.setValue(dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue());
+//						}
+//					}
+//					validarPaxFree();
+				}
+				
+//				tlbbtnModificarPax.setDisabled(oPasajero.isPaxFree());
+				
+				/*Establece la imagen segun validacion del DNI del pasajero con la reniec - 04/04/2015 - jabanto*/
+				if(oPasajero.getTipoDocumento().getId().intValue()==Constantes.ID_TIPDOC_DNI)
+					Util.imagenValidacionDNIReniec(oPasajero.getValidadoReniec(), imgValidacionDNI);
+				
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			DlgMessage.error(this.getClass().getSimpleName() + " " + ex.getMessage());	
+			log.error(ex);
+		}
+	}
+	
+	private void validarPaxFree(){
+		try{
+			/*Cunado es una confirmacion de F.A. no aplica descuento de paxfri - 21/12/2016 - jabanto*/
+			if(getObjetoConfirmar().getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA) || getObjetoConfirmar().getEsFechaAbierta().intValue()==Constantes.TRUE_VALUE)
+				return;
+			
+			if(getObjetoConfirmar().getFormaPago()==null || getObjetoConfirmar().getFormaPago().getId().intValue()!=Constantes.ID_FORPAG_CORTESIA){
+				if(getObjetoConfirmar().getTarifa().doubleValue() < detailItinerary.getTarifa().doubleValue() && !tieneDescuento){
+					/* RECUPERANDO LOS DATOS DEL PASAJERO FRECUENTE */
+					TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+					criteriosBusqueda.put("pasajero.id", oPasajero.getId());
+					criteriosBusqueda.put("estado", Constantes.TRUE_VALUE);
+					List<PasajeroFrecuente> lstPaxfree = ServiceLocator.getPasajeroFrecuenteManager().buscarPorX(criteriosBusqueda, null);
+			
+					String finicio = "";
+					String ffin = "";
+					Integer totalViajes = 0;
+					
+					if(lstPaxfree.size() > 0) {
+						finicio = Constantes.FORMAT_DATE_TIME_24H.format(lstPaxfree.get(0).getFechaActivacion());
+						ffin = Constantes.FORMAT_DATE_TIME_24H.format(lstPaxfree.get(0).getFechaCaducidad());
+						
+						oPasajero.setPaxFree(true);
+						oPasajero.setPasajeroFrecuente(lstPaxfree.get(0));
+											
+						totalViajes = ServiceLocator.getVentaPasajesManager().contarViajesValidos(oPasajero.getId(), finicio, ffin);
+						/*	Validando que el PAXFRE se encuentre activo	*/
+						if(oPasajero.getPasajeroFrecuente().getEstado().intValue()==Constantes.TRUE_VALUE){
+							lblInformativo1.setValue("PASAJERO FRECUENTE");
+							lblInformativo3.setValue("NUMERO DE VIAJES DEL " + finicio.substring(0,10) + "  AL  " + ffin.substring(0,10) + " : " + totalViajes);
+//							oPasajero.setPaxFree(true);
+//							oPasajero.setPasajeroFrecuente(lstPaxfree.get(0));
+												
+							if(getObjetoConfirmar().getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_RESERVA){
+								/*	Buscamos la promocion del Pasajero Frecuente	*/
+								criteriosBusqueda = new TreeMap<String, Object>();
+								criteriosBusqueda.put("cliente", "*");
+								criteriosBusqueda.put("pasajeroFrecuente", "S");
+								criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+								List<Promocion> lstPromocion = ServiceLocator.getPromocionManager().buscarPorX(criteriosBusqueda, null, Util.DatetoString(detailItinerary.getFechaPartida(), Constantes.DATE_FORMAT));
+								if(lstPromocion!=null && lstPromocion.size()==1){
+									/*Implementado 01/10/2014 - jabanto, para controlar que a una promocion se le aplique mas de una*/
+									if(promocionTarifa==null || promocionTarifa.getEsAcumulable().intValue()==Constantes.TRUE_VALUE){
+										AplicarPromocion aplicarPromocion = createObjectAplicarPromocion();
+										promocionAplicada = aplicarPromocion.executePromocion(lstPromocion.get(0).getId().toString(), false);
+										imgQuitarPromocion.setVisible(true);
+										oPasajero.setDescuentoAutoByPaxFree(true);
+									}else if(promocionTarifa!=null)
+										lblPromocion.setValue("Promoción : "+promocionTarifa.getDenominacion());
+									
+								}else if(lstPromocion.size()>1)
+									DlgMessage.information(Messages.getString("WndVentaPasajes.information.muchasPromocionesPaxFre"));
+							}
+						}else{
+							lblInformativo1.setValue("");
+							lblInformativo3.setValue("");
+							oPasajero.setPaxFree(false);
+							oPasajero.setPasajeroFrecuente(null);
+							dblDescuento.setValue(0.00);
+							imgQuitarPromocion.setVisible(false);
+							dblDescuento.setTooltiptext("");						
+							dblImporte.setValue(dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue()-dblPagado.getValue());					
+						}
+					}else {
+						oPasajero.setPaxFree(false);
+						oPasajero.setPasajeroFrecuente(null);
+						Long tiempo = new Date().getTime() - (Constantes.MILISEGUNDOS_X_DIA * Constantes.TIEMPO_PASAR_PAXFREE);
+						finicio = Util.DatetoString(new Date(tiempo), Constantes.DATE_FORMAT);
+						ffin = Util.DatetoString(new Date(), Constantes.DATE_FORMAT);
+						totalViajes = ServiceLocator.getVentaPasajesManager().contarViajesValidos(oPasajero.getId(), finicio, ffin);
+						lblInformativo1.setValue("NUMERO DE VIAJES ULTIMOS SEIS MESES : " + totalViajes.toString());
+						if (totalViajes.intValue() >= Constantes.NUMERO_VIAJES_PAXFREE)
+							lblInformativo3.setValue("EL CLIENTE CALIFICA PARA SER PASAJERO FRECUENTE");
+						else
+							lblInformativo3.setValue("");
+						dblDescuento.setValue(0.00);
+						imgQuitarPromocion.setVisible(false);
+						dblDescuento.setTooltiptext("");
+						
+						dblImporte.setValue(dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue()-dblPagado.getValue());
+						if(getObjetoConfirmar().getCliente()!=null)
+							mantenimientoRegistroClient(getObjetoConfirmar().getCliente().getId());
+						else{
+							/*Recupera el descuento automatico del Cliente, si es que este lo tubiera*/
+							if(oCliente!=null && oCliente.isDescuentoAutoByCliente())
+								mantenimientoRegistroClient(oCliente.getId());
+						}
+						
+						
+					}
+				}
+			}	
+		}catch(Exception ex){
+			ex.printStackTrace();
+			DlgMessage.error(this.getClass().getSimpleName() + " " + ex.getMessage());	
+			log.error(ex);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tepsa.sisvyr.view.ui.IConfirmacion#onSavePax()
+	 */
+	@Override
+	public void onSavePax() {
+		try {
+			if (!(cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento))
+				throw new TipoDocumentoNullException();
+			else if (!cmbTipoDocumento.getText().equals("S/D") && txtDocumentoPax.getText().equals(""))
+				throw new NumeroDocumentoNullException();
+			else if (txtApePat.getText().equals(""))
+				throw new ApellidoPaternoNullException();
+			else if (txtNombres.getText().equals(""))
+				throw new NombresNullException();
+			else if (txtUbigeoPax.getText().equals(""))
+				throw new UbigeoNullException();
+			else if (!(cmbSexo.getSelectedItem().getValue() instanceof Sexo))
+				throw new SexoNullException();
+			else if(cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento && 
+					((TipoDocumento)cmbTipoDocumento.getSelectedItem().getValue()).getId().intValue()!=Constantes.ID_TIPDOC_DNI){
+				if(!(cmbNacionalidad.getSelectedItem().getValue() instanceof Nacionalidad))
+					throw new NacionalidadException();
+				else if(txtEmailPax.getText().equals(""))
+					throw new EmailNullException();
+			}else if(cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento && 
+					((TipoDocumento)cmbTipoDocumento.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPDOC_DNI){
+				if(txtDocumentoPax.getText().trim().length()<8)
+					DlgMessage.information(Messages.getString("WndVentaReserva.information.noDNICorrecto"), txtDocumentoPax);
+			}
+			
+			if (!(txtEmailPax.getText().trim().isEmpty())){
+				if (!(UtilData.validateEmail(txtEmailPax.getText().trim())))
+					throw new MailIncorectoException();
+			}
+			
+			/*Validando que los apellidos y nombres no incluyan comillas simples - jabanto */
+			if(txtApePat.getText().trim().indexOf("'")>=0){
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noComillaSimple")+", revice el Apellido Parteno del Pasajero.",txtApePat);
+				return;
+			}else if(txtApeMat.getText().trim().indexOf("'")>=0){
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noComillaSimple")+", revice el Apellido Parteno del Materno.",txtApeMat);
+				return;
+			}else if(txtNombres.getText().trim().indexOf("'")>0){
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noComillaSimple")+", revice los Nombres del Pasajero.",txtNombres);
+				return;
+			}
+
+			if (action == Constantes.ACTION_NEW)
+				oPasajero = new Pasajero();
+
+			Ubigeo oUbigeo = new Ubigeo();
+			oUbigeo.setId(txtUbigeoIdPax.getText());
+			
+			oPasajero.setApellidoPaterno(txtApePat.getText().trim().toUpperCase());
+			oPasajero.setApellidoMaterno(txtApeMat.getText().trim().equals("")?null:txtApeMat.getText().trim().toUpperCase());
+			oPasajero.setNombre(txtNombres.getText().trim().toUpperCase());
+			oPasajero.setTipoDocumento((TipoDocumento) cmbTipoDocumento.getSelectedItem().getValue());
+			oPasajero.setNumeroDocumento(txtDocumentoPax.getText().trim().toUpperCase());
+			oPasajero.setSexo((Sexo) cmbSexo.getSelectedItem().getValue());
+			oPasajero.setEstadoCivil(cmbEstadoCivil.getSelectedItem().getValue() instanceof EstadoCivil ? (EstadoCivil) cmbEstadoCivil.getSelectedItem().getValue() : null);
+			oPasajero.setUbigeo(oUbigeo);
+			oPasajero.setDireccion(txtDireccionPax.getText().trim().toUpperCase());
+			oPasajero.setEmail(txtEmailPax.getText().trim());
+			oPasajero.setTelefono(txtTelefono.getText().trim().toUpperCase());
+			oPasajero.setAgencia(agencia);
+//			oPasajero.setFechaNacimiento(Util.DatetoString(dtbxFechaNacimiento.getValue(), Constantes.DATE_FORMAT).
+//					equals(Util.DatetoString(Constantes.FECHA_NULL,Constantes.DATE_FORMAT)) ? null : Util.DatetoString(dtbxFechaNacimiento.getValue(),Constantes.DATE_FORMAT));
+			oPasajero.setFechaNacimiento(generarFechaNacimiento());
+			oPasajero.setNacionalidad(cmbNacionalidad.getSelectedItem().getValue() instanceof Nacionalidad?(Nacionalidad)cmbNacionalidad.getSelectedItem().getValue():null);
+			oPasajero.setNombresApellidos(oPasajero.getNombre()+" "+oPasajero.getApellidoPaterno()+(oPasajero.getApellidoMaterno()==null?"":(" "+oPasajero.getApellidoMaterno())));
+
+			if (action == Constantes.ACTION_NEW) {
+				oPasajero.setIndeseable(Constantes.FALSE_VALUE);
+				oPasajero.setMotivo("");
+				oPasajero.setKilometros(0.00);
+				UtilData.auditarRegistro(oPasajero, false, usuario, Executions.getCurrent());
+			} else {
+				UtilData.auditarRegistro(oPasajero, true, usuario, Executions.getCurrent());
+			}
+			
+			/*Valida si es DNI y si fue validado correctamente por la RENIEC. - 06/04/2015*/
+			oPasajero.setValidadoReniec(Constantes.FALSE_VALUE);
+			if(oPasajero.getTipoDocumento().getId().intValue()==Constantes.ID_TIPDOC_DNI){
+				if(imgValidacionDNI.getSrc()!=null && !(imgValidacionDNI.getSrc().trim().isEmpty()) && imgValidacionDNI.getSrc().equals(Constantes.IMAGE_VALIDACION_DNI_OK))
+					oPasajero.setValidadoReniec(Constantes.TRUE_VALUE);
+			}
+			
+			oPasajero.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+
+			String msg = "";
+			if (action == Constantes.ACTION_NEW)
+				msg = Messages.getString("WndVentaReserva.question.guardarPasajero");
+			else
+				msg = Messages.getString("WndVentaReserva.question.actualizarPasajero");
+
+			Messagebox.show(msg, DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, EventSavePax(oPasajero));
+		}catch (EmailNullException emaex){
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noIngresoEmail"), txtEmailPax);
+		} catch (TipoDocumentoNullException tdnex) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noSelectionTipoDocumento"), cmbTipoDocumento);			
+		} catch (NumeroDocumentoNullException ndnex) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noDocumentoPax"), txtDocumentoPax);
+		} catch (ApellidoPaternoNullException apnex) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noApellidoPaterno"), txtApePat);
+		} catch (NombresNullException nnex) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noNombres"), txtNombres);
+		} catch (UbigeoNullException unex) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noUbigeo"), btnUbigeoPax);
+		} catch (SexoNullException snex) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noSelectionSexo"), cmbSexo);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			DlgMessage.error(this.getClass().getName() + " " + ex.getMessage());
+			log.error(ex);
+		}
+	}
+
+	/**
+	 * Evento para controlar el guardado del registro de Pasajero.
+	 * @param action	: Indica si es una insercion o actualizacion.
+	 * @param oPasajero	: Objeto a guardar.
+	 * @return Event
+	 */
+	private EventListener<Event> EventSavePax(final Pasajero oPasajero) {
+		EventListener<Event> ev = new EventListener<Event>() {
+			public void onEvent(Event e) {
+				try {
+					if (e.getName().equals("onYes")) {
+						if (action == Constantes.ACTION_NEW) {
+							ServiceLocator.getPasajeroManager().guardar(oPasajero);
+							DlgMessage.information(Messages.getString("WndVentaReserva.information.exitoGuardar"));
+						} else {
+							ServiceLocator.getPasajeroManager().actualizar(oPasajero);
+							DlgMessage.information(Messages.getString("WndVentaReserva.information.exitoActualizar"));
+						}
+						tlbbtnNuevoPax.setDisabled(false);
+						tlbbtnModificarPax.setDisabled(true);
+						tlbbtnCancelarPax.setDisabled(true);
+						tlbbtnGuardarPax.setDisabled(true);
+						action = Constantes.FAILURE;
+						disabledControlsPax(true);
+					}
+				} catch (DocumentoPaxDuplicadoException dpdnex) {
+					DlgMessage.information(Messages.getString("WndPasajero.information.noDocumentoPaxDuplicado"), txtDocumentoPax);
+				} catch (Exception ex) {
+					DlgMessage.error(this.getClass().getSimpleName() + " " + ex.getMessage());
+					log.error(ex);
+				}
+			}
+		};
+		return ev;
+	}
+
+	/* ******************************* IMPLEMENTACIONES PARA EL CLIENTE	*********************************************/
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.view.ui.IConfirmacion#onNewClient()
+	 */
+	@Override
+	public void onNewClient() throws Exception {
+		onCleanControlsClient();
+		disabledControlsClient(false);
+		action = Constantes.ACTION_NEW;
+		tlbbtnNuevoClient.setDisabled(true);
+		tlbbtnModificarClient.setDisabled(true);
+		tlbbtnCancelarClient.setDisabled(false);
+		tlbbtnGuardarClient.setDisabled(false);
+		txtDocumentoCliente.setFocus(true);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.view.ui.IConfirmacion#onModifyClient()
+	 */
+	@Override
+	public void onModifyClient() {
+		action = Constantes.ACTION_MODIFY;
+		disabledControlsClient(false);
+		tlbbtnNuevoClient.setDisabled(true);
+		tlbbtnModificarClient.setDisabled(true);
+		tlbbtnCancelarClient.setDisabled(false);
+		tlbbtnGuardarClient.setDisabled(false);
+		txtDocumentoCliente.setFocus(true);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.view.ui.IConfirmacion#onCancelClient()
+	 */
+	@Override
+	public void onCancelClient() throws Exception {
+		disabledControlsPax(true);
+		tlbbtnNuevoClient.setDisabled(false);
+		tlbbtnModificarClient.setDisabled(true);
+		tlbbtnCancelarClient.setDisabled(true);
+		tlbbtnGuardarClient.setDisabled(true);
+		tlbbtnLimpiarClient.setDisabled(false);
+		if(action==Constantes.ACTION_NEW)
+			onCleanControlsClient();
+		action = Constantes.FAILURE;
+		txtDocumentoCliente.setFocus(true);		
+	}
+
+	/**
+	 * Limpia los controles del cliente.
+	 * @throws Exception 
+	 */
+	public void onCleanControlsClient() throws Exception {
+		/*Si el cliente no tiene promosion, recupera la promocion del paxfree si es que este lo tubiera*/
+//		if(oPasajero!=null && oPasajero.isDescuentoAutoByPaxFree()){
+//			validarPaxFree();
+//		}else if (promocionTarifa==null || promocionTarifa.getEsAcumulable().intValue()==Constantes.TRUE_VALUE)
+//			quitarPromocion();
+		/*Si el cliente no tiene promosion, recupera la promocion del paxfree si es que este lo tubiera*/
+		if(oCliente!=null && oCliente.isDescuentoAutoByCliente()){
+			if(oPasajero==null || oPasajero.isDescuentoAutoByPaxFree()==false)
+				quitarPromocion();
+			else if(oPasajero.isDescuentoAutoByPaxFree()){
+				try {
+					oCliente = null;
+					validarPaxFree();
+				} catch (Exception e) {}
+			}
+		}
+		
+		txtDocumentoCliente.setText("");
+		txtRazonSocial.setText("");
+		txtDireccionCliente.setText("");
+		txtTelefonoClienteOne.setText("");
+		txtTelefonoClienteTwo.setText("");
+		txtEmailCliente.setText("");
+		txtUbigeoCliente.setText("");
+		txtUbigeoIdCliente.setText("");
+		txtContactoCliente.setText("");
+		txtRubro.setText("");
+		ibxCantidadTrabajadores.setText("");
+		oCliente = null;
+		lineaCreditoCliente=null;
+//		lineaContadoCliente=null;
+		txtDocumentoCliente.setFocus(true);
+		
+		/*21/10/2016 - jabanto*/
+		onSelectDefaultTipoComprobante();
+		onLoadEspecieValorada();
+	}
+
+	/**
+	 * Deshabilita o habilita los controles relacionados al cliente.
+	 * @param arg	= Boolean
+	 */
+	public void disabledControlsClient(boolean arg) {
+		txtDireccionCliente.setDisabled(arg);
+		txtTelefonoClienteOne.setDisabled(arg);
+		txtTelefonoClienteTwo.setDisabled(arg);
+		txtEmailCliente.setDisabled(arg);
+		txtContactoCliente.setDisabled(arg);
+		txtUbigeoCliente.setDisabled(arg);
+		txtRubro.setDisabled(arg);
+		ibxCantidadTrabajadores.setDisabled(arg);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.view.ui.IConfirmacion#onSearchClient(java.lang.Integer)
+	 */
+	@Override
+	public void onSearchClient(Integer criterio){
+		try{
+			TreeMap<String, Object> criterioBusqueda = new TreeMap<String, Object>();
+			ArrayList<Cliente> lstClientes = null;
+			if(criterio.intValue()==SEARCH_BY_DOCUMENTO){
+				criterioBusqueda.put("numeroDocumento", txtDocumentoCliente.getText().toUpperCase()+"%");
+				List<String> criteriosOrdenar = new ArrayList<String>();
+				criteriosOrdenar.add("razonSocial");
+				criteriosOrdenar.add("numeroDocumento");
+				lstClientes = ServiceLocator.getClienteManager().buscarPorX(criterioBusqueda, criteriosOrdenar);
+			}else{
+				String[] str1 = txtRazonSocial.getText().trim().toUpperCase().split(" ");
+				lstClientes = ServiceLocator.getClienteManager().buscarPorRazonSocial(str1);
+			}
+			listarClientes(lstClientes);
+		}catch(Exception ex){
+			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
+			ex.printStackTrace();
+			log.error(ex);
+		}
+	}
+	
+	private void listarClientes(ArrayList<Cliente> lstRegistros)throws Exception{
+		ArrayList<Object> lstClientes = new ArrayList<Object>();
+		grpbxListaClientes.setVisible(false);
+		
+		if(lstRegistros.size()==1){
+			Cliente cliente = lstRegistros.get(0);
+			mantenimientoRegistroClient(cliente.getId());
+		}else if(lstRegistros.size()>0){
+			for (int r = 0; r < lstRegistros.size(); r++) {
+				Cliente oCliente = lstRegistros.get(r);
+				ArrayList<Object> lstFila = new ArrayList<Object>();
+				lstFila.add(oCliente.getId());
+				lstFila.add(r + 1);
+				lstFila.add(oCliente.getNumeroDocumento());
+				lstFila.add(oCliente.getRazonSocial());
+				lstFila.add(oCliente.getContacto());
+				lstClientes.add(lstFila);
+			}
+			Util.llenarListbox(lbxClientes, lstClientes, true);
+			grpbxListaClientes.setVisible(true);			
+		}else{
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noClientesEncontrados"));
+			onCleanControlsClient();
+		}
+		disabledControlsPax(true);
+	}
+
+	/**
+	 * Muestra los datos del registro que se va a modificar.
+	 * @param id	: Identificador del registro a modificar.
+	 * @throws Exception
+	 */
+	 private void mantenimientoRegistroClient(Long id) {
+		try {
+						
+			promocionAplicada = null;
+			tlbbtnModificarClient.setDisabled(false);
+			oCliente = ServiceLocator.getClienteManager().buscarPorId(id);
+			Ubigeo oUbigeo = oCliente.getUbigeo();
+			String idUbigeo = new String();
+			String ubicacionCompleta = new String();
+			if (oUbigeo != null) {
+				idUbigeo = oUbigeo.getId();
+				ubicacionCompleta = ServiceLocator.getUbigeoManager().ubicacionGeografica(oUbigeo);
+			}
+
+			txtRazonSocial.setText(oCliente.getRazonSocial());
+			txtDocumentoCliente.setText(oCliente.getNumeroDocumento());
+			txtDireccionCliente.setText(oCliente.getDireccion());
+			txtUbigeoIdCliente.setText(idUbigeo);
+			txtUbigeoCliente.setText(ubicacionCompleta);
+			txtContactoCliente.setText(oCliente.getContacto());
+			txtTelefonoClienteOne.setText(oCliente.getTelefonoFijo());
+			txtTelefonoClienteTwo.setText(oCliente.getTelefonoFijo2());
+			txtEmailCliente.setText(oCliente.getEmail());
+			txtRubro.setText(oCliente.getRubro());
+			ibxCantidadTrabajadores.setText(oCliente.getCantidadTrabajadores().toString());
+			
+			lineaCreditoCliente=null;
+			
+			lblDescuento.setValue("");
+			
+			/*	Habilitando  deshabilitando la edicion del cliente	*/
+			if(getObjetoConfirmar().getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_FECHA_ABIERTA 
+					|| getObjetoConfirmar().getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_POSTERGACION_FA){
+				tlbbtnModificarClient.setDisabled(true);
+				txtDocumentoCliente.setDisabled(true);
+				txtRazonSocial.setDisabled(true);
+			}else{
+				tlbbtnModificarClient.setDisabled(false);
+				txtDocumentoCliente.setDisabled(false);
+				txtRazonSocial.setDisabled(false);
+			}
+			
+			/*	Si la venta es desde un punto TEPSA	*/
+			if(agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_TEPSA){
+				/* Valida si el cliente tiene credito- Implementado 17/03/2013 */
+				LineaCreditoCliente lineaCreditoCliente = ServiceLocator.getLineaCreditoClienteManager().validacionCreditoCliente(oCliente.getId());
+				/*	Si tiene linea de credito*/
+				if(lineaCreditoCliente != null) {
+					/* Desactiva el button "Modificar cliente" */
+					tlbbtnModificarClient.setDisabled(true);
+					tlbbtnModificarClient.setImage("resources/mp_editarDisabled.png");
+					if(lineaCreditoCliente.getEsCanje().equals(Constantes.SI)) {
+						lblDescuento.setValue(Constantes.TIPCONVCLI_CREDITO_CANJE_PUBLICITARIO);
+					}else{
+						lblDescuento.setValue(Constantes.TIPCONVCLI_CORPORATIVO);
+					}
+					this.lineaCreditoCliente = lineaCreditoCliente;
+
+					if(getObjetoConfirmar().getFormaPago()!=null && getObjetoConfirmar().getTipoFormaPago()!=null && getObjetoConfirmar().getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO 
+							&& getObjetoConfirmar().getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_CANJE_PUBLICITARIO){
+						Util.seleccionarValorItemCombo(FormaPago.class,cmbFormaPago, Constantes.ID_FORPAG_CREDITO);
+						onLoadTipoFormaPago();
+					}else{
+						Util.seleccionarValorItemCombo(FormaPago.class,cmbFormaPago, Constantes.ID_FORPAG_CONTADO);
+						onLoadTipoFormaPago();
+					}					
+				}else {
+					lblDescuento.setValue(Constantes.TIPCONVCLI_CONTADO);
+					cmbFormaPago.setDisabled(true);
+					tlbbtnModificarClient.setDisabled(false);
+					tlbbtnModificarClient.setImage("resources/mp_editarEnabled.png");
+				}
+			}
+			
+			if(!getObjetoConfirmar().getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA) 
+					&& getObjetoConfirmar().getFormaPago().getId().intValue()!=Constantes.ID_FORPAG_CORTESIA){
+				/*	Buscando si existe promocion por Cliente	*/
+				TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+				criteriosBusqueda.put("cliente", oCliente.getId().toString());
+				criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+				List<Promocion> lstPromocion = ServiceLocator.getPromocionManager().buscarPorX(criteriosBusqueda, null, Util.DatetoString(detailItinerary.getFechaPartida(), Constantes.DATE_FORMAT));
+				for(int i=0; i<lstPromocion.size(); i++){
+					
+					/*Implementado 01/10/2014 - jabanto, para controlar que a una promocion se le aplique mas de una*/
+					if(promocionTarifa==null || (promocionTarifa.getEsAcumulable().intValue()==Constantes.TRUE_VALUE)){
+						lblPromocion.setValue("");
+						AplicarPromocion aplicarPromocion = createObjectAplicarPromocion();
+						promocionAplicada = aplicarPromocion.executePromocion(lstPromocion.get(i).getId().toString(), false);
+						if(promocionAplicada!=null){
+							break;
+						}
+						imgQuitarPromocion.setVisible(true);
+					}else if(promocionTarifa!=null)
+						lblPromocion.setValue("Promoción : "+promocionTarifa.getDenominacion());
+					
+				}
+				Double importe=(dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue())-dblPagado.getValue();
+				if(importe<0)
+					dblImporte.setValue(0.00);
+				else
+					dblImporte.setValue(importe);
+			}if(getObjetoConfirmar().getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA)){
+				
+				/*Implementado 01/10/2014 - jabanto, para controlar que a una promocion se le aplique mas de una*/
+				if(promocionTarifa==null || (promocionTarifa.getEsAcumulable().intValue()==Constantes.TRUE_VALUE)){
+					lblPromocion.setValue("");
+					/*	Buscando si existe promocion por Cliente	*/
+					TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+					criteriosBusqueda.put("cliente", oCliente.getId().toString());
+					criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+					List<Promocion> lstPromocion = ServiceLocator.getPromocionManager().buscarPorX(criteriosBusqueda, null, Util.DatetoString(detailItinerary.getFechaPartida(), Constantes.DATE_FORMAT));
+					for(int i=0; i<lstPromocion.size(); i++){
+						AplicarPromocion aplicarPromocion = createObjectAplicarPromocion();
+						promocionAplicada = aplicarPromocion.executePromocion(lstPromocion.get(i).getId().toString(), false);
+						if(promocionAplicada!=null){
+							oCliente.setDescuentoAutoByCliente(true);
+							break;
+						}
+						imgQuitarPromocion.setVisible(true);
+					}
+					
+					/*Si el cliente no tiene promosion, recupera la promocion del paxfree si es que este lo tubiera*/
+					if(promocionAplicada==null && oPasajero!=null && oPasajero.isDescuentoAutoByPaxFree()){
+						validarPaxFree();
+					}else if (promocionAplicada==null && (oPasajero==null || oPasajero.isDescuentoAutoByPaxFree()==false))
+						quitarPromocion();
+					
+					Double importe=(dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue())-dblPagado.getValue();
+					if(importe<0)
+						dblImporte.setValue(0.00);
+					else
+						dblImporte.setValue(importe);
+					
+				}else if(promocionTarifa!=null)
+					lblPromocion.setValue("Promoción : "+promocionTarifa.getDenominacion());
+				
+				/*21/10/2016 - jabanto*/
+				onSelectDefaultTipoComprobante();
+				onLoadEspecieValorada();
+			}
+		}catch (Exception ex) {
+			DlgMessage.error(this.getClass().getSimpleName() + " " + ex.getMessage());
+			log.error(ex);
+		}
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tepsa.sisvyr.view.ui.IConfirmacion#onSaveClient()
+	 */
+	@Override
+	public void onSaveClient(){
+		try{
+			if(txtDocumentoCliente.getText().trim().equals(""))
+				throw new NumeroDocumentoNullException();
+			else if(txtRazonSocial.getText().trim().equals(""))
+				throw new RazonSocialNullException();
+			else if(txtUbigeoCliente.getText().trim().equals(""))
+				throw new UbigeoNullException();
+			else if (txtRazonSocial.getText().trim().length()<=5){
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.razonSocialIncorrect"), txtRazonSocial);
+				return;
+			}else if (txtDireccionCliente.getText().trim().isEmpty()){
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noDireccionCliente"), txtDireccionCliente);
+				return;
+			}else if (txtDireccionCliente.getText().trim().length()<10){
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.direccionIncorrect"), txtDireccionCliente);
+				return;
+			}
+			if (!(txtEmailCliente.getText().trim().isEmpty())){
+				if (!(UtilData.validateEmail(txtEmailCliente.getText().trim())))
+					throw new MailIncorectoException();
+			}
+			
+			if(!Util.validarRUC(txtDocumentoCliente.getText().trim()))
+				throw new RucInvalidoException();
+			
+			/*Validando que los datos del cliente no incluyan comillas simples - 14/12/2016 - jabanto */
+			if(txtRazonSocial.getText().trim().indexOf("'")>=0){
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noComillaSimple")+", revice la Razón Social del Cliente.",txtRazonSocial);
+				return;
+			}else if(txtDireccionCliente.getText().trim().indexOf("'")>=0){
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noComillaSimple")+", revice la Dirección del Cliente.",txtDireccionCliente);
+				return;
+			}
+			
+			if (action == Constantes.ACTION_NEW)
+				oCliente = new Cliente();
+			
+			Ubigeo oUbigeo = new Ubigeo();
+			oUbigeo.setId(txtUbigeoIdCliente.getText());
+			
+			oCliente.setNumeroDocumento(txtDocumentoCliente.getValue().toString());
+			oCliente.setRazonSocial(txtRazonSocial.getText().toUpperCase());
+			oCliente.setContacto(txtContactoCliente.getText().toUpperCase());
+			oCliente.setDireccion(txtDireccionCliente.getText().toUpperCase());
+			oCliente.setTelefonoFijo(txtTelefonoClienteOne.getText().toUpperCase());
+			oCliente.setTelefonoFijo2(txtTelefonoClienteTwo.getText().toUpperCase());
+			oCliente.setEmail(txtEmailCliente.getText());
+			oCliente.setRubro(txtRubro.getText().trim().toUpperCase());
+			oCliente.setCantidadTrabajadores(ibxCantidadTrabajadores.getValue());
+			oCliente.setUbigeo(oUbigeo);
+			oCliente.setAgencia(agencia);
+			
+			if(oCliente.getId()==null){
+				oCliente.setKilometros(0.00);
+				UtilData.auditarRegistro(oCliente, false, usuario, Executions.getCurrent()); 
+			}else{
+				UtilData.auditarRegistro(oCliente, true, usuario, Executions.getCurrent());
+			}
+			oCliente.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+			
+			String msg = "";
+			if(action == Constantes.ACTION_NEW)
+				msg = Messages.getString("WndVentaReserva.question.guardarCliente");
+			else
+				msg = Messages.getString("WndVentaReserva.question.actualizarCliente");
+			
+			Messagebox.show(msg, DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, EventSaveClient(oCliente));			
+		}catch (MailIncorectoException miec){
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.EmailIncorrecto"), txtEmailCliente);
+		}catch(NumeroDocumentoNullException ndnex){
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noDocumentoCliente"), txtDocumentoCliente);
+		}catch(RazonSocialNullException rsnex){
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noRazonSocial"));
+			txtRazonSocial.setFocus(true);
+		}catch(UbigeoNullException unex){
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noUbigeo"));
+			txtUbigeoCliente.setFocus(true);
+		}catch(RucInvalidoException riex){
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.rucInvalido"), txtDocumentoCliente);
+		}catch(Exception ex){
+			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
+			log.error(ex);
+		}
+	}
+
+	/**
+	 * Evento para controlar el guardado del registro de Cliente.
+	 * @param action	: Indica si es una insercion o actualizacion.
+	 * @param oCliente	: Objeto a guardar.
+	 * @return Event
+	 */
+	private EventListener<Event> EventSaveClient(final Cliente oCliente){
+		EventListener<Event> ev = new EventListener<Event>() {
+			public void onEvent(Event e) {
+				try {
+					if (e.getName().equals("onYes")) {
+						if (action == Constantes.ACTION_NEW) {
+							ServiceLocator.getClienteManager().guardar(oCliente);
+							DlgMessage.information(Messages.getString("WndVentaReserva.information.exitoGuardar"));
+						} else {
+							ServiceLocator.getClienteManager().actualizar(oCliente);
+							DlgMessage.information(Messages.getString("WndVentaReserva.information.exitoActualizar"));
+						}
+						tlbbtnNuevoClient.setDisabled(false);
+						tlbbtnModificarClient.setDisabled(false);
+						tlbbtnCancelarClient.setDisabled(true);
+						tlbbtnGuardarClient.setDisabled(true);
+						action = Constantes.FAILURE;
+						disabledControlsClient(true);	
+						
+						/*21/10/2016 - jabanto*/
+						onSelectDefaultTipoComprobante();
+						onLoadEspecieValorada();
+					}
+				} catch (RucDuplicadoException rdex) {
+					DlgMessage.information(Messages.getString("WndCliente.information.RucDuplicado"), txtDocumentoCliente);
+				} catch (RazonSocialDuplicadoException rsdex) {
+					DlgMessage.information(Messages.getString("WndCliente.information.RazonSocialDuplicado"), txtRazonSocial);
+				} catch (Exception ex) {ex.printStackTrace();
+					DlgMessage.error(this.getClass().getSimpleName() + " " + ex.getMessage());
+					log.error(ex);
+				}
+			}
+		};		
+		return ev;
+	}
+
+	/**
+	 * Carga los tipos de Forma de pago.
+	 */
+	public void onLoadTipoFormaPago() {
+		try {
+			cmbTipoFormaPago.getItems().clear();
+
+			/* Implementado 17-03-2013 - jabanto */
+			cmbOperadorTarjetaCredito.getItems().clear();
+			cmbTarjetaCredito.getItems().clear();
+			cmbTipoFormaPago.setText(null);
+			cmbOperadorTarjetaCredito.setText(null);
+			cmbTarjetaCredito.setText(null);
+			cmbOperadorTarjetaCredito.setDisabled(true);
+			cmbOperadorTarjetaCredito.setDisabled(true);
+			cmbTarjetaCredito.setDisabled(true);
+
+			if (cmbFormaPago.getSelectedItem().getValue() instanceof FormaPago) {
+				FormaPago formaPago = cmbFormaPago.getSelectedItem().getValue();
+				TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+				criteriosBusqueda.put("formaPago.id", formaPago.getId());
+				List<String> criteriosOrdenar = new ArrayList<String>();
+				criteriosOrdenar.add("denominacion");
+				List<TipoFormaPago> lstTipoFormasPago = ServiceLocator.getTipoFormaPagoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
+				UtilData.cargarGenericData(cmbTipoFormaPago, false);
+				for (TipoFormaPago tipoFormaPago : lstTipoFormasPago) {
+					Comboitem item = new Comboitem();
+					item.setLabel(tipoFormaPago.getDenominacion());
+					item.setValue(tipoFormaPago);
+					cmbTipoFormaPago.appendChild(item);
+				}
+				cmbTipoFormaPago.setDisabled(false);
+
+				/*
+				 * Valida si el Cliente credito cuenta con saldo suficiente -
+				 * Implementado 15/03/2013 jabanto
+				 */
+				if (agencia.getTipoAgencia().getId().equals(Constantes.ID_TIPAGE_TEPSA)) {
+					cmbTipoFormaPago.setDisabled(false);
+
+					if (formaPago.getId().equals(Constantes.ID_FORPAG_CREDITO)) {
+						if (lineaCreditoCliente != null) {
+							if (lineaCreditoCliente.getSaldo() <= 0 || lineaCreditoCliente.getSaldo() < (dblImporte.getValue() != null ? dblImporte.getValue() : .00)) {
+								cmbFormaPago.setSelectedIndex(0);
+								cmbTipoFormaPago.getItems().clear();
+								cmbTipoFormaPago.setText(null);
+								cmbTipoFormaPago.setDisabled(true);
+								throw new SaldoInsuficienteException();
+							}
+							if (lineaCreditoCliente != null && lineaCreditoCliente.getEsCanje().equals(Constantes.SI)) {
+								Util.seleccionarValorItemCombo(TipoFormaPago.class, cmbTipoFormaPago,Constantes.ID_TIPFORPAG_CANJE_PUBLICITARIO);
+								cmbTipoFormaPago.setDisabled(true);
+							} else if (lineaCreditoCliente != null && lineaCreditoCliente.getEsCanje().equals(Constantes.NO)) {
+								Util.seleccionarValorItemCombo(TipoFormaPago.class, cmbTipoFormaPago, Constantes.ID_TIPFORPAG_CREDITO);
+								cmbTipoFormaPago.setDisabled(true);
+							}
+						}
+					} else if (formaPago.getId().equals(Constantes.ID_FORPAG_CONTADO))
+						Util.seleccionarValorItemCombo(TipoFormaPago.class, cmbTipoFormaPago, Constantes.ID_TIPFORPAG_EFECTIVO);
+				} else
+					Util.seleccionarValorItemCombo(TipoFormaPago.class, cmbTipoFormaPago, Constantes.ID_TIPFORPAG_CREDITO);
+
+			} else
+				cmbTipoFormaPago.setDisabled(true);
+
+		}catch(SaldoInsuficienteException siex){
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.saldoInsuficiente"));
+		}catch (Exception ex) {
+			DlgMessage.error(this.getClass().getSimpleName() + " " + ex.getMessage());
+			log.error(ex);
+		}
+	}
+
+	/**
+	 * Realiza una validación del Tipo de Forma de Pago, para habilitar o
+	 * deshabilitar algunos controles.
+	 * 
+	 * @throws Exception
+	 */
+	public void onValidateTipoFormaPago() throws Exception {
+		cmbOperadorTarjetaCredito.getItems().clear();
+		cmbOperadorTarjetaCredito.setText("");
+		cmbOperadorTarjetaCredito.setDisabled(true);
+		cmbTarjetaCredito.getItems().clear();
+		cmbTarjetaCredito.setText("");
+		cmbTarjetaCredito.setDisabled(true);
+		
+		if (cmbTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago) {
+			/* Si es tarjeta cargamos los operadores de tarjeta de credito */
+			if (cmbTipoFormaPago.getText().equals("TARJETA")) {
+				cmbOperadorTarjetaCredito.getItems().clear();
+				UtilData.cargarDataCombo(cmbOperadorTarjetaCredito,OperadorTarjetaCredito.class, false);
+				cmbOperadorTarjetaCredito.setDisabled(false);
+			} else if (cmbTipoFormaPago.getText().equals("TRANSFERENCIA")) // Si es una transferecnia bancaria
+				txtOperacionBancaria.setDisabled(false);
+			else {
+				txtOperacionBancaria.setDisabled(true);
+				cmbOperadorTarjetaCredito.setDisabled(true);
+			}
+		} else {
+			txtOperacionBancaria.setDisabled(true);
+			cmbOperadorTarjetaCredito.setDisabled(true);
+		}
+	}
+
+	/**
+	 * Carga los diferentes tarjetas de credito, de acuerdo al operador
+	 * seleccionado.
+	 */
+	public void onLoadTarjetas() {
+		try {
+			cmbTarjetaCredito.getItems().clear();
+			cmbTarjetaCredito.setText(null);
+			cmbTarjetaCredito.setDisabled(true);
+
+			if (cmbOperadorTarjetaCredito.getSelectedItem().getValue() instanceof OperadorTarjetaCredito) {
+				OperadorTarjetaCredito operadorTarjetaCredito = cmbOperadorTarjetaCredito.getSelectedItem().getValue();
+				TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+				criteriosBusqueda.put("operadorTarjetaCredito.id",operadorTarjetaCredito.getId());
+				List<String> criteriosOrdenar = new ArrayList<String>();
+				criteriosOrdenar.add("denominacion");
+				List<TarjetaCredito> lstTarjetaCredito = ServiceLocator.getTarjetaCreditoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
+				UtilData.cargarGenericData(cmbTarjetaCredito, false);
+				for (TarjetaCredito tarjetaCredito : lstTarjetaCredito) {
+					Comboitem item = new Comboitem();
+					item.setLabel(tarjetaCredito.getDenominacion());
+					item.setValue(tarjetaCredito);
+					cmbTarjetaCredito.appendChild(item);
+				}
+				cmbTarjetaCredito.setDisabled(false);
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			log.error(ex);
+		}
+	}
+
+	public void onGuardarVenta() {
+		try {
+
+			ventaPasaje = new VentaPasaje();
+
+			if (detailItinerary == null)
+				throw new ItinerarioException(ItinerarioException.NO_SELECT);// ItinerarioNotSelectedException();
+			else if (!(cmbPtoEmbarque.getSelectedItem().getValue() instanceof ItinerarioAgenciaPartida))
+				throw new ItinerarioException(ItinerarioException.AGENCIA_PARTIDA_NULL); // ItinerarioAgenciaPartidaNullException();
+			else if (!(cmbPtoDesembarque.getSelectedItem().getValue() instanceof ItinerarioAgenciaLlegada))
+				throw new ItinerarioException(ItinerarioException.AGENCIA_LLEGADA_NULL); //ItinerarioAgenciaLlegadaNullException();
+			else if(txtNumeroAsiento.getText().trim().equals(""))
+				throw new NumeroAsientoNullException();
+			else if (txtNumeroBoleto.getText().trim().equals(""))
+				throw new NumeroBoletoNullException();
+			else if (!(cmbAlimentacion.getSelectedItem().getValue() instanceof PreferenciaAlimentaria))
+				throw new PreferenciaAlimentariaException();			
+			else if (!(tlbbtnGuardarPax.isDisabled()))// 06/09/2013 - jabanto
+				throw new PasajeroNoSavedExeption();
+			else if (oPasajero == null)
+				throw new PasajeroException();
+			else if (!(cmbTipoComprobante.getSelectedItem().getValue() instanceof TipoComprobante))
+				throw new TipoComprobanteNullException();
+			else if (!(cmbFormaPago.getSelectedItem().getValue() instanceof FormaPago))
+				throw new FormaPagoNullException();
+			else if (!(cmbTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago))
+				throw new TipoFormaPagoNullException();
+			else if (cmbTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago
+					&& cmbTipoFormaPago.getText().equals(TipoFormaPago.TIPO_TARJETA)) {
+				if (!(cmbOperadorTarjetaCredito.getSelectedItem().getValue() instanceof OperadorTarjetaCredito))
+					throw new OperadorTarjetaCreditoNullException();
+				else if (!(cmbTarjetaCredito.getSelectedItem().getValue() instanceof TarjetaCredito))
+					throw new TarjetaCreditoNullException();
+			} else if (cmbTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago
+					&& cmbTipoFormaPago.getText().equals(TipoFormaPago.TIPO_TRANSFERENCIA)) {
+				if (txtOperacionBancaria.getText().trim().equals(""))
+					throw new NumeroOperacionBancariaNullException();
+			} else if (oPasajero.getIndeseable().intValue() == Constantes.TRUE_VALUE){
+				throw new PasajeroIndeseableException();
+			}else if (oCliente!=null && (oCliente.getDireccion()==null || oCliente.getDireccion().trim().isEmpty())){
+				throw new ClienteException(ClienteException.NO_DIRECCION);
+			}
+			
+			if(getObjetoConfirmar().getFormaPago()!=null){
+				int idServicio=detailItinerary.getItinerario().getServicio().getId();
+				if( (idServicio==Constantes.ID_SERVICIO_TEPSASUITE || idServicio==Constantes.ID_SERVICIO_TEPSACAMASUITE) 
+						&& getObjetoConfirmar().getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA 
+						&& Integer.valueOf(txtNumeroAsiento.getText())<=10){
+					throw new NumeroAsientoFueraRangoException();
+				}
+			}
+			
+//			if(getObjetoConfirmar().getTipoFormaPago()!=null){
+//				if(detailItinerary.getItinerario().getServicio().getId().intValue()==Constantes.ID_SERVICIO_TEPSASUITE 
+//						&& getObjetoConfirmar().getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_CORTESIA 
+//						&& Integer.valueOf(txtNumeroAsiento.getText())<=10){
+//					throw new NumeroAsientoFueraRangoException();
+//				}
+//			}
+//			else{
+//				if(detailItinerary.getItinerario().getServicio().getId().intValue()==Constantes.ID_SERVICIO_TEPSASUITE  
+//						&& Integer.valueOf(txtNumeroAsiento.getText())<=10){
+//					throw new NumeroAsientoFueraRangoException();
+//				}
+//			}
+			
+			/*Si es una F.A emitida con boleto de viaje y hay diferencia en la tarifa - 27/10/2016 jabanto*/
+			if(objetoConfirmar.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE 
+					&& objetoConfirmar.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA)){
+//					&& dblImporte.getValue()>0.00){
+				DlgMessage.information(Messages.getString("WndConfirmarFechaAbierta.information.noAplicaBoleto"));
+				return;
+			}
+			
+			
+			
+			if(detailItinerary.getTarifa()==0.0)
+				throw new ItinerarioException(ItinerarioException.TARIFA_IDA_CERO);
+
+			/* Valida el credito del cliente, si la venta es al Credito */
+			if (((FormaPago) cmbFormaPago.getSelectedItem().getValue()).getId().equals(Constantes.ID_FORPAG_CREDITO)) {
+				lineaCreditoCliente = null;
+				lineaCreditoCliente = ServiceLocator.getLineaCreditoClienteManager().validacionCreditoCliente(oCliente.getId());
+
+				if (lineaCreditoCliente != null) {
+					if (lineaCreditoCliente.getSaldo() <= 0 || lineaCreditoCliente.getSaldo() < dblImporte.getValue())
+						throw new SaldoInsuficienteException();
+				} else
+					throw new SaldoInsuficienteException();
+				
+				if(oCliente.getNumeroDocumento()!=null)
+					ventaPasaje.setRucClienteCredito(oCliente.getNumeroDocumento());
+				else{
+					Cliente cliente=ServiceLocator.getClienteManager().buscarPorId(oCliente.getId());
+					ventaPasaje.setRucClienteCredito(cliente.getNumeroDocumento());
+				}
+			}
+			
+			DetalleItinerario detalleItinerario = detailItinerary;
+			
+			if(chkPagoMixto.isChecked()){
+				if(dblImporteEfectivo.getValue()<=0.0 || dblImporteTarjeta.getValue()<=0.0)
+					throw new ImporteMixtoNullException(ImporteMixtoNullException.IMPORTE_MIXTO_CERO);
+			}
+			
+			/*	Validando que el monto en efectivo + el monto en tarjeta sumen el importe pagado	*/
+			if(chkPagoMixto.isChecked()){
+				if(dblImporte.getValue().doubleValue()!=(dblImporteEfectivo.getValue().doubleValue()+dblImporteTarjeta.getValue().doubleValue()))
+					throw new ImporteMixtoNullException(ImporteMixtoNullException.IMPORTE_MIXTO_NOT_EQUALS);
+			}
+			
+			ventaPasaje.setItinerario(detalleItinerario.getItinerario());
+			ventaPasaje.setRuta(detalleItinerario.getRuta());
+			ventaPasaje.setCliente(oCliente);
+			ventaPasaje.setPasajero(oPasajero);
+			FormaPago formaPago = (FormaPago) cmbFormaPago.getSelectedItem().getValue();
+			ventaPasaje.setFormaPago(formaPago);
+			
+			ventaPasaje.setServicio(detalleItinerario.getItinerario().getServicio());
+			TipoComprobante tipoComprobante = (TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue();
+			ventaPasaje.setTipoComprobante(tipoComprobante);
+			/* Validando si el objeto a confirmar es FA o RESERVA */
+			if (getObjetoConfirmar().getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA)) {
+				ventaPasaje.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_CONFIRMACION_FA));
+				ventaPasaje.setNumeroBoletoAnterior(getObjetoConfirmar().getNumeroBoleto());
+				
+				/*Valida si la diferencia a es a favor de tepsa*/
+				if(lblImporte.getValue().equals(LABEL_IMPPAG_TO_TEPSA))
+					ventaPasaje.setImportePagadoByDiferencia(dblImporte.getValue());
+				else
+					ventaPasaje.setImportePagadoByDiferencia(0.00);
+				
+				if(rowNuevoBoleto.isVisible())
+					ventaPasaje.setNumeroBoleto(txtNuevoBoleto.getText());
+				else
+					ventaPasaje.setNumeroBoleto(txtNumeroBoleto.getText());
+			} else {
+				ventaPasaje.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_EFECTIVO));
+				ventaPasaje.setNumeroBoleto(txtNumeroBoleto.getText());
+				ventaPasaje.setImportePagadoByDiferencia(0.00);
+			}
+			ventaPasaje.setVentaOriginal(getObjetoConfirmar().getVentaOriginal());
+			TipoFormaPago tipoFormaPago = (TipoFormaPago) cmbTipoFormaPago.getSelectedItem().getValue();
+			ventaPasaje.setTipoFormaPago(tipoFormaPago);
+			if (cmbTarjetaCredito.getSelectedItem() != null && cmbTarjetaCredito.getSelectedItem().getValue() instanceof TarjetaCredito) {
+				TarjetaCredito tarjetaCredito = (TarjetaCredito) cmbTarjetaCredito.getSelectedItem().getValue();
+				ventaPasaje.setTarjetaCredito(tarjetaCredito);
+			}
+			
+			ventaPasaje.setNumeroAsiento(Integer.valueOf(txtNumeroAsiento.getText()));
+			ventaPasaje.setNumeroPiso(Integer.valueOf(txtNumeroPiso.getText()));
+			ItinerarioAgenciaPartida itinerarioAgenciaPartida = (ItinerarioAgenciaPartida) cmbPtoEmbarque.getSelectedItem().getValue();
+			ventaPasaje.setAgenciaPartida(itinerarioAgenciaPartida.getAgencia());
+			ventaPasaje.setFechaPartida(detalleItinerario.getFechaPartida());
+			ventaPasaje.setHoraPartida(detalleItinerario.getHoraPartida());
+			ItinerarioAgenciaLlegada itinerarioAgenciaLlegada = (ItinerarioAgenciaLlegada) cmbPtoDesembarque.getSelectedItem().getValue();
+			ventaPasaje.setAgenciaLlegada(itinerarioAgenciaLlegada.getAgencia());
+			ventaPasaje.setFechaLlegada(detalleItinerario.getFechaLlegada());
+			ventaPasaje.setHoraLllegada(detalleItinerario.getHoraLlegada());
+			PreferenciaAlimentaria preferenciaAlimentaria = (PreferenciaAlimentaria) cmbAlimentacion.getSelectedItem().getValue();
+			ventaPasaje.setPreferenciaAlimentaria(preferenciaAlimentaria);
+			ventaPasaje.setSecuencial(getObjetoConfirmar().getSecuencial());
+			ventaPasaje.setTarifa(dblTarifa.getValue());
+			ventaPasaje.setRecargo(dblRecargo.getValue());
+			ventaPasaje.setDescuento(dblDescuento.getValue());
+			ventaPasaje.setPenalidad(0.0);
+			ventaPasaje.setAcuenta(getObjetoConfirmar().getImportePagado());
+			ventaPasaje.setImportePagadoEfectivo(dblImporteEfectivo.getValue());
+			ventaPasaje.setImportePagadoTarjeta(dblImporteTarjeta.getValue());
+			/*Calcula la fecha de caducidad del boleto - 14/12/2016 - jabanto*/
+			String fechaCaducidad=Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida())+" "+ventaPasaje.getHoraPartida();
+			Date dateCaducidad=Constantes.FORMAT_LONG.parse(fechaCaducidad);
+			ventaPasaje.setFechaCaducidad(dateCaducidad);
+			
+			if(lblImporte.getValue().equals(LABEL_IMPPAG_TO_TEPSA)){//Si el importe es a favor de tepsa
+				ventaPasaje.setImportePagado(dblImporte.getValue()+dblPagado.getValue());
+			}else{
+				ventaPasaje.setImportePagado(dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue());
+			}
+			
+//			ventaPasaje.setImportePagado(dblImporte.getValue()+dblPagado.getValue());
+//			if(dblImporte.getValue()>0.00)
+//				ventaPasaje.setImportePagado(dblImporte.getValue()+dblPagado.getValue());
+//			else
+//				ventaPasaje.setImportePagado(dblImporte.getValue());
+			
+			ventaPasaje.setTipoTransaccion(Constantes.TIPO_OPERACION_VENTA);
+			ventaPasaje.setAgencia(agencia);
+			ventaPasaje.setUsuario(usuario);
+			ventaPasaje.setCanalVenta(canalVenta);
+			ventaPasaje.setNumeroOperacionBancaria(txtOperacionBancaria.getText().equals("") ? null : txtOperacionBancaria.getText());
+			ventaPasaje.setVentaPasaje(getObjetoConfirmar());
+			ventaPasaje.setLiquidacion(null);
+			ventaPasaje.setFechaTransferencia(null);
+			ventaPasaje.setFechaLiquidacion(fechaLiquidacion);
+			ventaPasaje.setIdaRetorno(getObjetoConfirmar().getIdaRetorno());
+			ventaPasaje.setEsFechaAbierta(Constantes.FALSE_VALUE);
+			ventaPasaje.setEsRemoto(false);
+			//Para el caso de las cortesias que tienen descuento del 100%  --> 23/05/2014 jabanto.
+			if(ventaPasaje.getFormaPago().getId().intValue()!=Constantes.ID_FORPAG_CONTADO && dblImporte.getValue()==0.00){
+				ventaPasaje.setDescuento(0.00);
+				ventaPasaje.setImportePagado(ventaPasaje.getTarifa());
+			}
+			
+			//Valida el estado del boleto, todos los boleto de forma de pago contado y cortesia se graban como PAG.
+			if(ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO)
+				ventaPasaje.setEstadoDocumento(Constantes.ESTADO_DOCUMENTO_ACTIVO);
+			else
+				ventaPasaje.setEstadoDocumento(Constantes.ESTADO_DOCUMENTO_PAGADO);
+
+			ventaPasaje.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+			ventaPasaje.setPromocion(txtIdPromocion.getText().trim().isEmpty()?null:new Promocion(Long.valueOf(txtIdPromocion.getText().trim())));
+			ventaPasaje.setObservaciones(getObjetoConfirmar().getObservaciones());
+			/* ********************************************************************************************************* */
+			ventaPasaje.setNumeroControl(getObjetoConfirmar().getNumeroControl());
+			/* ********************************************************************************************************* */
+			UtilData.auditarRegistro(ventaPasaje, false, usuario, Executions.getCurrent());
+			ventaPasaje.setUsuarioHardware(new UsuarioHardware(usuhar));
+
+			Messagebox.show(Messages.getString("WndVentaReserva.information.confirmacionGuardarVenta"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event e) {
+					try {
+						if (e.getName().equals("onYes")) {
+							try{
+								int result = Constantes.FAILURE;
+								VentaPasaje notaCredito=null;
+								if (ventaPasaje.getTipoMovimiento().getId().intValue() == Constantes.ID_TIPMOV_EFECTIVO){
+									boolean validarBloqueo = false;
+									if(getObjetoConfirmar().getNumeroAsiento()!=null && getObjetoConfirmar().getNumeroAsiento().intValue()!=ventaPasaje.getNumeroAsiento().intValue())
+										validarBloqueo = true;
+									result = ServiceLocator.getVentaPasajesManager().guardarVenta(ventaPasaje,false, false, validarBloqueo,true);
+								}else{
+									//Confirmacion de F.A.
+									TipoNota tipoNotaCredito=null;
+									tipoNotaCredito=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CREDITO_DIFERENCIA_TARIFA_FA);
+									
+									
+									/*Realiza la busqueda del tipo de nota de credito, por concepto de diferencia en tarifa*/
+//									if(ventaPasaje.getImportePagado()>0.00)
+//										tipoNotaCredito=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CREDITO_DIFERENCIA_TARIFA_FA);
+//									else{
+//										ventaPasaje.setEnviadoSFE(objetoConfirmar.getEnviadoSFE()!=null?objetoConfirmar.getEnviadoSFE():null);
+//										ventaPasaje.setFechaEnvioSFE(objetoConfirmar.getFechaEnvioSFE()!=null?objetoConfirmar.getFechaEnvioSFE():null);
+//									}
+									notaCredito = ServiceLocator.getVentaPasajesManager().confirmarFechaAbierta(ventaPasaje,tipoNotaCredito);
+									result = Constantes.CORRECT;
+								}
+//								ventaPasaje.setImportePagadoTarjeta(0.00);
+//								if (dblTarifa.getValue() - (dblPagado.getValue()+dblDescuento.getValue()) > 0.0) {
+								if (ventaPasaje.getImportePagado() > 0.00 || ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA
+																 || ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO) {
+									if (ventaPasaje.getTipoComprobante().getId().intValue() != Constantes.ID_TIPCOM_RECIBO_CAJA) {
+										Servicio servicio=ServiceLocator.getServicioManager().buscarPorId(ventaPasaje.getServicio().getId().longValue());
+										ventaPasaje.setServicio(servicio);
+										ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarPorId(ventaPasaje.getId());
+										
+										/*Begin 25/10/2016 - jabanto*/
+										List<VentaPasaje>listVentaPasaje= new ArrayList<>();
+										listVentaPasaje.add(ventaPasaje);
+										WSFE.sendVenta(listVentaPasaje, wndConfirmacion, true, notaCredito);
+										
+										
+										/*###End begin 25/10/2016 - jabanto*/
+//										/*Implementacion para el nuevo formato 01/02/2016 - jabanto */
+//										boolean formato=UtilData.getFormatoImprecion(getAgencia().getId(), getTipocomprobante().getId(), getUsuarioHardware().getId());
+//										File file= CreateDocument.crearBoleto(ventaPasaje,formato);
+//										
+//										if(getUsuarioHardware().getPrintApplet().intValue()==Constantes.TRUE_VALUE){
+////											String fileBoleto = Constantes.URL_FORMATOS_BOLETOS+ ventaPasaje.getNumeroControl()+ ".txt";
+//											String fileBoleto = Constantes.URL_FORMATOS_BOLETOS+Constantes.CLAVE_PAHT+ ventaPasaje.getNumeroControl()+ ".txt";
+//											Window win = (Window) Executions.createComponents("imprimir.zul",null, null);
+//											win.setAttribute("formato",WndImprimir.FORMAT_BOLETO);
+//											win.setAttribute("msg", "Imprimiendo boleto de viaje "+ventaPasaje.getNumeroBoleto()+"...");
+//											win.setAttribute("urlDocumento",fileBoleto);
+//											win.doPopup();
+//										}else{
+//											//Descarga el archivo para la impresion
+//											Util.descargarArchivo(file);
+//										}
+//										
+									} 
+									/*###End begin 25/10/2016 - jabanto*/
+//									else{
+//										File file=CreateDocument.crearRecibCaja(ventaPasaje);
+////										String fileRC = Constantes.URL_FORMATOS_RECIBO_CAJA+ventaPasaje.getNumeroControl()+".txt";
+//										if(getUsuarioHardware().getPrintApplet().intValue()==Constantes.TRUE_VALUE){
+//											String fileRC = Constantes.URL_FORMATOS_RECIBO_CAJA+Constantes.CLAVE_PAHT+ventaPasaje.getNumeroControl()+".txt";
+//											Window win = (Window)Executions.createComponents("imprimir.zul", null, null);
+//											win.setAttribute("formato", WndImprimir.FORMAT_RECIBO_CAJA);
+//											win.setAttribute("msg", "Imprimiendo el Recibo de Caja "+ ventaPasaje.getNumeroBoleto()+"... ");
+//											win.setAttribute("urlDocumento", fileRC);
+////											if(lbxAsientos.getItems().size() == 1 && !cmbTipoOperacion.getSelectedItem().getValue().toString().equals(Constantes.TIPO_OPERACION_RESERVA)){
+////												win.setAttribute("showCalculator", true);
+////												win.setAttribute("detalleCalculadora", lstDetalleCalculadora.clone());
+////											}else
+////												win.setAttribute("showCalculator", false);
+//											String msg = "La venta se registro correctamente, Número de Control : "+ventaPasaje.getNumeroControl();
+//											win.setAttribute("numeroControl", msg);
+//											win.doPopup();
+//										}else{
+//											/*Nueva implementacion- 20/12/2015*/
+//											Util.descargarArchivo(file);
+//											/* **********************************************/
+//										}
+//									}
+								}
+								
+								/* Resta el saldo de LC del Cliente */
+								if (((FormaPago) cmbFormaPago.getSelectedItem().getValue()).getId().equals(Constantes.ID_FORPAG_CREDITO))
+									ServiceLocator.getLineaCreditoClienteManager().restarSaldo(lineaCreditoCliente.getSaldo(), ventaPasaje.getImportePagado(),lineaCreditoCliente.getId());
+								
+								if (result == Constantes.CORRECT) {
+									DlgMessage.information(Messages.getString("WndVentaReserva.information.exitoGuardarVenta")+ ventaPasaje.getNumeroControl());
+									onCleanControlsPax();
+									onCleanControlsClient();
+									onCleanInformacionVenta();
+									onCleanPagos();
+									wndConfirmacion.getDesktop().getSession().removeAttribute("asientoSeleccionado");
+									wndConfirmacion.onClose();
+								}
+							}catch(NumeroBoletoDuplicadoException nbdex){
+								DlgMessage.information(Messages.getString("WndVentaReserva.information.numeroBoletoVendido"));
+							}
+							
+						}
+					}catch (CapacityExceedsException ceex) {
+						DlgMessage.information(Messages.getString("WndVentaReserva.information.changeCapacidad"));
+					}catch (DuplicateSeatException dsex) {
+						DlgMessage.information(Messages.getString("WndVentaReserva.information.asientoVendido"));
+					}catch(TiempoExpiracionBloqueoException tebex){
+						DlgMessage.information(Messages.getString("WndVentaReserva.information.expiroTiempoBloqueoAsiento"));
+						tiempoExpiracionBloqueo();
+					}catch (Exception ex) {
+						DlgMessage.error(this.getClass().getName() + " " + ex.getMessage());
+						log.error(ex);
+					}
+				}
+			});
+		}catch (ItinerarioException iex){
+			if(iex.getTipo().intValue()==ItinerarioException.NO_SELECT)
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noAsientoSeleccionado"));
+			else if (iex.getTipo().intValue()==ItinerarioException.AGENCIA_LLEGADA_NULL){
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noAgenciallegadaSeleccionada"), cmbPtoDesembarque);
+			}else if(iex.getTipo().intValue()==ItinerarioException.AGENCIA_PARTIDA_NULL){
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noAgenciaPartidaSeleccionada"), cmbPtoEmbarque);
+			}else if(iex.getTipo().intValue()==ItinerarioException.TARIFA_IDA_CERO){
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noTarifaItinerario"));
+			}
+		}catch (PreferenciaAlimentariaException panex) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noPreferenciaAlimentaria"));
+			cmbAlimentacion.setFocus(true);
+		}catch(NumeroAsientoNullException nanex){
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noAsientoSeleccionado"));
+		}catch (NumeroBoletoNullException nbnex) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noNumeroBoleto"));
+		}catch (PasajeroException pnex) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noPasajero"));
+			tabPasajero.setSelected(true);
+		}catch (TipoComprobanteNullException tcnex) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noTipoComprobante"));
+			tabPagos.setSelected(true);
+			cmbTipoComprobante.setFocus(true);
+		}catch (FormaPagoNullException fpnex) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noFormaPago"));
+			tabPagos.setSelected(true);
+			cmbFormaPago.setFocus(true);
+		}catch (TipoFormaPagoNullException tfpnex) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noTipoFormaPago"));
+			tabPagos.setSelected(true);
+			cmbTipoFormaPago.setFocus(true);
+		}catch (OperadorTarjetaCreditoNullException otcnex) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noOperadorTarjetaCredito"));
+			tabPagos.setSelected(true);
+			cmbOperadorTarjetaCredito.setFocus(true);
+		}catch (TarjetaCreditoNullException tcnex) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noTarjetaCredito"));
+			tabPagos.setSelected(true);
+			cmbTarjetaCredito.setFocus(true);
+		}catch (NumeroOperacionBancariaNullException nobnex) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noNumeroOperacionBancaria"));
+			tabPagos.setSelected(true);
+			txtOperacionBancaria.setFocus(true);
+		}catch (PasajeroIndeseableException piex) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.pasajeroIndeseable"));
+		}catch(ImporteMixtoNullException imnex){
+			if(imnex.getTipoError().intValue()==ImporteMixtoNullException.IMPORTE_MIXTO_CERO)
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.importeMixtoCero"), dblImporteEfectivo);
+			else
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.importeMixtoNotEquals"), dblImporteEfectivo);
+		}catch (PasajeroNoSavedExeption pns){
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noSavedPax"));
+			tabPasajero.setSelected(true);
+		}catch(NumeroAsientoFueraRangoException nafrex){
+			liberarAsientos();
+			txtNumeroAsiento.setText("");
+			txtNumeroPiso.setText("");
+			DlgMessage.information(Messages.getString("WndCortesia.information.asientoNoPermitido")+" "+getObjetoConfirmar().getServicio().getDenominacion()+".");
+		}catch (ClienteException cex){
+			if(cex.getTipo().intValue()==ClienteException.NO_DIRECCION){
+				tabCliente.setSelected(true);
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noDireccionCliente"),txtDireccionCliente);
+			}
+		}catch (Exception ex) {
+			DlgMessage.error(this.getClass().getName() + " " + ex.getMessage());
+			ex.printStackTrace();
+			log.error(ex);
+		}
+	}
+	
+	private void tiempoExpiracionBloqueo(){
+		txtNumeroAsiento.setText(getObjetoConfirmar().getNumeroAsiento()==null?"":getObjetoConfirmar().getNumeroAsiento().toString());
+//		onCleanControlsPax();
+//		if(agencia.getTipoAgencia().getId().intValue()!=Constantes.ID_TIPAGE_CORPORATIVO)
+//			onCleanControlsClient();
+//		else{
+//			if(cmbCentroCosto.getItems().size()>0)
+//				cmbCentroCosto.setSelectedIndex(0);
+//		}
+//		onCleanPagos();
+////		onCleanPartialListAsientosSeleccionados();
+//		onCleanInformacionVenta();
+//		tabPasajero.setSelected(true);
+	}
+	
+	/**
+	 * Limpia la informacion de la venta
+	 */
+	private void onCleanInformacionVenta() {
+		lblOrigen.setValue("");
+		lblDestino.setValue("");
+		cmbPtoEmbarque.getItems().clear();
+		cmbPtoEmbarque.setText("");
+		cmbPtoDesembarque.getItems().clear();
+		cmbPtoDesembarque.setText("");
+		lblFechaPartida.setValue("");
+		lblFechaLlegada.setValue("");
+//		lblHoraPartida.setValue("");
+//		lblHoraLlegada.setValue("");
+		txtNumeroAsiento.setText("");
+		txtNumeroPiso.setText("");
+		lblTarifa.setValue("");
+		txtNumeroBoleto.setText("");
+		txtObservaciones.setText("");
+		cmbAlimentacion.setSelectedIndex(0);
+		detailItinerary = null;
+		ventaPasaje = null;
+	}
+
+	/**
+	 * Limpiala informacion de los controles relacionados con los pagos.
+	 */
+	private void onCleanPagos() {
+		cmbTipoComprobante.setSelectedIndex(0);
+		cmbFormaPago.setSelectedIndex(0);
+		cmbTipoFormaPago.getItems().clear();
+		cmbTipoFormaPago.setText("");
+		cmbTipoFormaPago.setDisabled(true);
+		cmbOperadorTarjetaCredito.getItems().clear();
+		cmbOperadorTarjetaCredito.setText("");
+		cmbOperadorTarjetaCredito.setDisabled(true);
+		cmbTarjetaCredito.getItems().clear();
+		cmbTarjetaCredito.setText("");
+		cmbTarjetaCredito.setDisabled(true);
+		dblTarifa.setValue(null);
+		dblRecargo.setValue(null);
+		dblDescuento.setValue(null);
+		dblImporte.setValue(null);
+		txtOperacionBancaria.setText("");
+		promocionAplicada=null;
+		onSelectDefaultTipoComprobante();
+		onSelectDefaultFormaPago();
+		lblPromocion.setValue("");
+		imgQuitarPromocion.setVisible(false);
+	}
+
+	/**
+	 * Realiza la liberarcion de asientos.
+	 */
+	public void liberarAsientos() {
+		try {
+			ServiceLocator.getTmpOcupacionAsientosManager().desbloquearAsientoByUsuarioHardware(usuhar);
+		} catch (Exception ex) {
+			DlgMessage.error(this.getClass().getSimpleName() + " " + ex.getMessage());
+			log.error(ex);
+		}
+	}
+	
+	/**
+	 * Realiza la habilitacion del control de nacionalidades
+	 */
+	public void habilitarNacionalidad(){
+		TipoDocumento tipoDocumento = cmbTipoDocumento.getSelectedItem().getValue();
+		txtDocumentoPax.setText("");
+		if(tipoDocumento instanceof TipoDocumento && tipoDocumento.getId().intValue()!=Constantes.ID_TIPDOC_DNI){
+			rowNacionalidad.setVisible(true);
+			lblEmail.setValue("EMAIL (*) :");
+			txtDocumentoPax.setMaxlength(20);
+		}else{
+			rowNacionalidad.setVisible(false);
+			lblEmail.setValue("EMAIL :");
+			txtDocumentoPax.setMaxlength(8);
+		}
+		
+		txtApeMat.setDisabled(false);
+		txtApePat.setDisabled(false);
+		txtNombres.setDisabled(false);
+		imgValidacionDNI.setSrc("");
+		
+		txtDocumentoPax.setFocus(true);
+	}
+	
+	/**
+	 * Realiza la habilitacion de los controles relacionados con el pago mixto
+	 */
+	public void habilitarPagoMixto(){
+		boolean arg = false;
+		if(chkPagoMixto.isChecked())
+			arg = true;
+		
+		lblImporteEfectivo.setVisible(arg);
+		lblImporteTarjeta.setVisible(arg);
+		dblImporteEfectivo.setVisible(arg);
+		dblImporteTarjeta.setVisible(arg);
+		dblImporteEfectivo.setValue(0.0);
+		dblImporteTarjeta.setValue(0.0);
+		dblImporteEfectivo.setFocus(true);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.zkoss.zul.Window#onClose()
+	 */
+	@Override
+	public void onClose() {
+		if(this.getParent().getParent().getParent().getParent() instanceof Tabbox)
+			((Tabbox)this.getParent().getParent().getParent().getParent()).setSelectedIndex(0);
+		super.onClose();
+	}
+	
+	/**
+	 * 	Crea un objeto AplicarPromocion pasando parámetros al constructor
+	 */
+	private AplicarPromocion createObjectAplicarPromocion(){
+		AplicarPromocion aplicarPromocion = null;
+		aplicarPromocion = new AplicarPromocion(getObjetoConfirmar().getRuta().getId(), getObjetoConfirmar().getServicio().getId(), 
+				getAgencia().getId(), getUsuarioHardware().getCanalVenta().getId(), null, null, 
+				txtNumeroAsiento.getText().equals("")?"*":txtNumeroAsiento.getText(), oCliente==null?null:oCliente.getId(), 
+				getObjetoConfirmar().getIdaRetorno().intValue()==Constantes.TRUE_VALUE?true:false, 
+				((FormaPago)cmbFormaPago.getSelectedItem().getValue()).getId(), 
+				((TipoFormaPago)cmbTipoFormaPago.getSelectedItem().getValue()).getId(), 
+				(cmbTarjetaCredito.getSelectedItem()==null?null:((TarjetaCredito)cmbTarjetaCredito.getSelectedItem().getValue()).getId()), 
+				(lblFechaPartida.getValue().equals("")?null:Util.StringtoDate(lblFechaPartida.getValue(), Constantes.DATE_FORMAT)), 
+				(oPasajero==null?false:oPasajero.isPaxFree()), dblTarifa, dblDescuento, dblImporte, dblRecargo, lblPromocion, imgQuitarPromocion, txtIdPromocion,
+				(getObjetoConfirmar().getHoraPartida()));
+		
+		return aplicarPromocion;
+	}
+	
+	/**
+	 * Obtiene las promociones vigentes de la base de datos y las muestras en pantalla.
+	 */
+	private void imgPromocion_loadPromociones(){
+		try{
+			boolean paxfre = false;
+			if(oPasajero==null){
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noPasajeroPromocion"), txtDocumentoPax);
+				tabPasajero.setSelected(true);
+				return;
+			}
+				
+			if(oPasajero.isPaxFree())
+				paxfre=true;
+			String idCliente = null;
+			if(oCliente!=null)
+				idCliente = oCliente.getId().toString();
+			
+			AplicarPromocion aplicarPromocion = createObjectAplicarPromocion();
+			Window win = aplicarPromocion.loadPromociones(paxfre, idCliente, lblFechaPartida.getValue().substring(0,10));
+			/*	Validando que el Objeto Window sea distinto de null	*/
+			if(win!=null){
+				this.appendChild(win);
+				win.doModal();
+			}
+		}catch(Exception ex){
+			DlgMessage.information(this.getClass().getSimpleName()+" "+ex.getMessage());
+			log.error(ex);
+		}
+	}
+	
+	private void quitarPromocion(){
+		lblPromocion.setValue("");
+		dblDescuento.setTooltiptext("");
+		dblDescuento.setValue(0.0);
+		dblImporte.setValue(dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue());
+		txtIdPromocion.setText("");
+		imgQuitarPromocion.setVisible(false);
+	}
+	
+	private void mostrarFechaNacimiento(String fechaNacimiento){
+		if(fechaNacimiento != null){
+			String dia = fechaNacimiento.substring(0, 2);
+			String mes = fechaNacimiento.substring(3, 5);
+			String anio = fechaNacimiento.substring(6);
+			for(int i=0; i<cmbAnio.getItems().size(); i++){
+				if(cmbAnio.getItems().get(i).getValue().toString().equals(anio))
+					cmbAnio.setSelectedIndex(i);
+			}
+			
+			for(int i=0; i<cmbMes.getItems().size(); i++){
+				if(((Integer)cmbMes.getItems().get(i).getValue()).intValue()==Integer.valueOf(mes)){
+					cmbMes.setSelectedIndex(i);
+					Util.loadDias(cmbDia, (Integer)cmbMes.getSelectedItem().getValue(), (Integer)cmbAnio.getSelectedItem().getValue());
+				}
+			}
+			
+			for(int i=0; i<cmbDia.getItems().size(); i++){
+				if(((Integer)cmbDia.getItems().get(i).getValue()).intValue() == Integer.valueOf(dia))
+					cmbDia.setSelectedIndex(i);
+			}
+//			dtbxFechaNacimiento.setText(oPasajero.getFechaNacimiento().toString());
+		}else{
+			cmbAnio.setSelectedIndex(-1);
+			cmbAnio.setText("");
+			cmbMes.setSelectedIndex(-1);
+			cmbMes.setText("");
+			cmbDia.setSelectedIndex(-1);
+			cmbDia.setText("");
+//			dtbxFechaNacimiento.setText(null);
+		}
+	}
+	
+	private String generarFechaNacimiento(){
+		String fechaNacimiento = null;
+		if(cmbAnio.getSelectedIndex()>=0 && cmbMes.getSelectedIndex()>=0 && cmbDia.getSelectedIndex()>=0){
+			String dia = "00"+ cmbDia.getText();
+			String mes = "00" + cmbMes.getSelectedItem().getValue();
+			fechaNacimiento = dia.substring(dia.length()-2) + "/" + mes.substring(mes.length()-2) + "/" + cmbAnio.getText();
+		}
+		return fechaNacimiento;
+	}
+	
+	private void enlazarMapaBus(){
+		try{
+			final WndMapaBus oWndMapaBus = new WndMapaBus();
+			oWndMapaBus.load();
+			oWndMapaBus.setVentaPasaje(getObjetoConfirmar());
+			oWndMapaBus.setDetalleItinerario(detailItinerary);
+			oWndMapaBus.setUsuarioHardware(getUsuarioHardware());
+			oWndMapaBus.setTxtAsientoSeleccionado(txtNumeroAsiento);
+			oWndMapaBus.setTxtPisoSeleccionado(txtNumeroPiso);
+			if(getObjetoConfirmar().getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_POSTERGACION_FA 
+					|| getObjetoConfirmar().getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_FECHA_ABIERTA)
+				oWndMapaBus.setSelectAsiento(true);
+			else
+				oWndMapaBus.setSelectAsiento(false);
+			oWndMapaBus.initComponents();
+			oWndMapaBus.onCreate();
+			this.appendChild(oWndMapaBus);
+			oWndMapaBus.setMode(MODAL);
+			oWndMapaBus.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+				public void onEvent(Event e){
+					getObjetoConfirmar().setNumeroAsiento(Integer.valueOf(txtNumeroAsiento.getText()));
+					getObjetoConfirmar().setNumeroPiso(Integer.valueOf(txtNumeroPiso.getText()));									
+					
+					/**	
+					 * Esta seccion es para obtener las promociones que son por tarifa	
+					 * y que reeemplazaran la tarifa real del servicio.
+					 */
+					try {
+						aplicarPromocionPorTarifa();
+						
+					} catch (Exception ex) {
+						DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
+						ex.printStackTrace();
+					}
+				}
+			});
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	private void aplicarPromocionPorTarifa(){
+		try {
+			/*	Obtenemos las promociones que reemplazaran a la tarifa	*/
+			List<Promocion>lstPromocion=ServiceLocator.getPromocionManager().buscarPorTarifa(Util.DatetoString(detailItinerary.getFechaPartida(), Constantes.DATE_FORMAT), detailItinerary.getRuta().getId().toString(), detailItinerary.getItinerario().getServicio().getId().toString(),detailItinerary.getHoraPartida().replaceAll(":", "."));
+			Promocion promo = null;
+			String nAsiento = null;
+			if(txtNumeroAsiento.getText().equals("") && getObjetoConfirmar().getNumeroAsiento()!=null)
+				nAsiento = getObjetoConfirmar().getNumeroAsiento().toString();
+			else
+				nAsiento = txtNumeroAsiento.getText();
+				
+			/*	Validando si la promocion cumple con el requisito del Servicio y la Ruta	*/	
+			for(int i=0; i<lstPromocion.size(); i++){
+				String[] rutas = lstPromocion.get(i).getRutas().split(",");
+				String[] servicios = lstPromocion.get(i).getServicios().split(",");
+				String[] asientos = lstPromocion.get(i).getAsientos().split(",");
+				for(int j=0; j<rutas.length; j++){
+					if(rutas[j].equals(detailItinerary.getRuta().getId().toString())){
+						for(int k=0; k<servicios.length; k++){
+							if(asientos.length==0)
+								promo = lstPromocion.get(i);
+							else{
+								for(int m=0; m<asientos.length; m++){
+									if(getObjetoConfirmar().getNumeroAsiento()!=null && asientos[m].equals(nAsiento)){
+										promo = lstPromocion.get(i);
+										break;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			promocionTarifa=null;
+			if(promo!=null){
+				AplicarPromocion aplicarPromocion=createObjectAplicarPromocion();
+				promocionAplicada= aplicarPromocion.executePromocion(promo.getId().toString(), false);
+				if(promocionAplicada!=null){
+					/*29/12/2016 - jabanto*/
+					lblTarifa.setValue(Util.toNumberFormat(promocionAplicada.getPorImporte(),2));
+					dblTarifa.setValue(promocionAplicada.getPorImporte());
+					promocionTarifa=(Promocion) promocionAplicada.clone();
+					
+					/*End Begin 29/12/2016 - jabanto*/
+//					if(getObjetoConfirmar().getTarifa().doubleValue()<detailItinerary.getTarifa().doubleValue()){
+//						lblTarifa.setValue(Util.toNumberFormat(promocionAplicada.getPorImporte(),2));
+//						dblTarifa.setValue(promocionAplicada.getPorImporte());
+//						promocionTarifa=(Promocion) promocionAplicada.clone();
+//					}else{
+//						lblTarifa.setValue(Util.toNumberFormat(getObjetoConfirmar().getTarifa(), 2));
+//						dblTarifa.setValue(getObjetoConfirmar().getTarifa());
+//					}
+				}
+			}else{
+				/*29/12/2016 - jabanto*/
+				lblTarifa.setValue(Util.toNumberFormat(detailItinerary.getTarifa(), 2));
+				dblTarifa.setValue(detailItinerary.getTarifa());
+				
+				/*End Begin 29/12/2016 - jabanto*/
+//				if(getObjetoConfirmar().getTarifa().doubleValue()>=detailItinerary.getTarifa().doubleValue()){
+//					lblTarifa.setValue(Util.toNumberFormat(getObjetoConfirmar().getTarifa(), 2));
+//					dblTarifa.setValue(getObjetoConfirmar().getTarifa());
+//				}else{
+//					lblTarifa.setValue(Util.toNumberFormat(detailItinerary.getTarifa(), 2));
+//					dblTarifa.setValue(detailItinerary.getTarifa());
+//				}
+			}
+			
+			/*Valida si es una confirmacion de una F.A*/
+			if(objetoConfirmar.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA)){
+				onLoadEspecieValorada();
+				/*Implementado 01/10/2014 - jabanto, para controlar que a una promocion se le aplique mas de una*/
+				imgPromocion.setVisible(false);
+				imgQuitarPromocion.setVisible(false);
+				if(promocionTarifa!=null && promocionTarifa.getEsAcumulable().intValue()==Constantes.FALSE_VALUE){
+					dblDescuento.setValue(.00);
+					lblPromocion.setValue("Promoción : "+promocionTarifa.getDenominacion());
+				}
+				
+				double saldo = dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue()-dblPagado.getValue();
+				
+				lblImporte.setValue(LABEL_IMPPAG_TO_TEPSA);
+				if(saldo>=0)
+					dblImporte.setValue(saldo+dblRecargo.getValue());
+				else{
+					saldo=(saldo*-1); /*Lo convierte en un valor positivo*/
+					dblImporte.setValue(saldo+dblRecargo.getValue());
+					lblImporte.setValue(LABEL_IMPPAG_TO_PASAJERO);
+				}
+				
+//				dblImporte.setValue(saldo<0.0?0.0:saldo);
+			}else{
+				double saldo = dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue()-dblPagado.getValue();
+				dblImporte.setValue(saldo<0.0?0.0:saldo);
+				onLoadEspecieValorada();
+				if(getObjetoConfirmar().getFormaPago()==null || getObjetoConfirmar().getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA)){
+					if(getObjetoConfirmar().getCliente()!=null)
+						mantenimientoRegistroClient(getObjetoConfirmar().getCliente().getId());
+				}
+				
+				/*Implementado 01/10/2014 - jabanto, para controlar que a una promocion se le aplique mas de una*/
+				imgPromocion.setVisible(true);
+				if(promocionTarifa!=null && promocionTarifa.getEsAcumulable().intValue()==Constantes.FALSE_VALUE){
+					dblDescuento.setValue(.00);
+					lblPromocion.setValue("Promoción : "+promocionTarifa.getDenominacion());
+					imgPromocion.setVisible(false);
+					imgQuitarPromocion.setVisible(false);
+					saldo = dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue()-dblPagado.getValue();
+					dblImporte.setValue(saldo<0.0?0.0:saldo);
+				}else 
+					/*Valida si es una confirmacion de fecha abieta para no permitir aplicar promociones*/
+					if (getObjetoConfirmar().getTipoMovimiento().getId() == Constantes.ID_TIPMOV_FECHA_ABIERTA || 
+						getObjetoConfirmar().getTipoMovimiento().getId() == Constantes.ID_TIPMOV_POSTERGACION_FA){
+						imgPromocion.setVisible(false);
+						
+						//Para el caso de las cortesias
+						if(getObjetoConfirmar().getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA) && getObjetoConfirmar().getFormaPago()!=null){
+							Cortesia cortesia = ServiceLocator.getCortesiaManager().buscarXIDventa(getObjetoConfirmar().getId());
+							Double descuento = (cortesia.getPorcentaje()*dblTarifa.getValue())/100;
+							dblDescuento.setValue(descuento);
+							dblPagado.setValue(0.0);
+							dblImporte.setValue(dblTarifa.getValue()-dblDescuento.getValue());
+							tieneDescuento = true;
+						}
+					}
+			}
+			
+//			validarCambioRuta();
+		} catch (Exception ex) {
+			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
+			ex.printStackTrace();
+			log.error(ex);
+		}
+	}
+	
+//	private void validarCambioRuta() throws Exception{
+//		VentaPasaje ventaOriginal = ServiceLocator.getVentaPasajesManager().buscarPorId(getObjetoConfirmar().getId());
+//		if(getObjetoConfirmar().getRuta().getId().intValue()!=ventaOriginal.getRuta().getId().intValue() && dblImporte.getValue()==0.0){
+//			dblImporte.setValue(Constantes.PENALIDAD_REIMPRESION);
+//			onLoadEspecieValorada();
+//		}
+//	}
+}

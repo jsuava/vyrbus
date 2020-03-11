@@ -1,0 +1,92 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndCierreCaja" title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndCierreCaja">
+<panel id="panel" title="::: CIERRE DE CAJA :::" framable="true" width="790px" border="normal" closable="true" onClose="wndCierreCaja.closeTabWindow()">
+     <panelchildren>
+<!--      	<caption label="CIERRE DE CAJA" /> -->
+	<grid >
+		<columns>
+ 			<column width="80px" align="right"/>
+ 			<column />
+ 		</columns>
+		<rows>
+			<row>
+				<label value="FECHA INICIO :" />
+				<hbox align="center">
+					<datebox id="dbFechaInicio" format="dd/MM/yyyy" readonly="true" onChange="wndCierreCaja.onLoadDatosDefault()"/>
+					<separator width="20px" />
+					<label value="FECHA FIN :" />
+					<datebox id="dbFechaFin" format="dd/MM/yyyy" readonly="true" />
+				</hbox>
+			</row>
+			<row>
+				<label value="AGENCIA :" />
+				<hbox align="center">
+					<combobox id="cmbAgencia" width="260px"  onChange="wndCierreCaja.onLoadDatosDefault();" onFocus="cmbAgencia.select();"/>
+					<separator width="15px" />
+					<label value="USUARIO :" />
+					<combobox id="cmbUsuario" width="240px" style="font-size:10px !important" autocomplete="true" onFocus="cmbUsuario.select();" />
+					<separator width="10px" />
+					<button id="btnBuscar" mold="trendy" autodisable="self" label="Buscar" height="30px" width="90px" image="resources/mp_buscarEnabled.png" onClick="wndCierreCaja.buscarLiquidacion()"/>
+				</hbox>
+			</row>
+		</rows>
+	</grid>	
+
+	<grid style="border:none">
+		<rows>
+			<row><hbox>
+				<listbox id="listLiquidacion" height="300px" width="100%">
+					<listhead sizable="true">
+						<listheader label="#" width="25px"  />
+						<listheader label="DATOS DEL USUARIO" sort="auto"  width="200px"/>
+						<listheader label="USUARIO" sort="auto" width="95px" />
+						<listheader label="FECHA" sort="auto" width="70px" />
+						<listheader label="AGENCIA" sort="auto" width="105px" />
+						<listheader label="ESTADO" sort="auto" width="60px" />
+						<listheader label="FECHA HORA CIERRE" sort="auto" width="105px" />
+						<listheader label="LIQUIDACIÓN" width="90px" align="left"/>
+					</listhead>
+				</listbox>
+				<separator width="2px" />
+				<vbox visible="false">
+<!-- 				<grid width="117px" > -->
+<!-- 					<rows> -->
+<!-- 						<row> -->
+							<groupbox  closable="false">
+							 <caption label="Liq. Cerrada" />
+							 <vbox>
+								<button id="btnLqAtPreliminar" label="Preliminar" image="resources/mp_preliminar.png" tooltiptext="Preliminar - Liquidación Anterior" width="97px"  height="28px"/>
+								<button id="btnLqAtImprimir" label="Imprimir" image="resources/mp_imprimir.png" tooltiptext="Imprimir - Liquidación Anterior" width="97px" height="28px"/>
+							 </vbox>
+							</groupbox>			
+<!-- 						</row> -->
+<!-- 						<row> -->
+<!--  							<separator height="44px" /> -->
+<!-- 						</row> -->
+<!-- 						<row> -->
+							<groupbox closable="false">
+							<caption label="Liq. Abierta" />
+							 	<vbox align="center" >
+							 	<button id="btnLqAcPreliminar" label="Preliminar" image="resources/mp_preliminar.png" width="97px" tooltiptext="Preliminar - Liquidación Actual" height="28px" />
+								<button id="btnCierreCaja" label="Cierre Caja" image="resources/mp_cierreCaja.png" tooltiptext="Cerrar Caja"  height="28px" />
+								</vbox>
+							</groupbox>
+<!-- 						</row> -->
+<!-- 						<row> -->
+<!-- 							<div align="center"> -->
+								<button id="btnCerrar" visible="false" label="Cerrar" height="30px" width="97px" image="resources/mp_cerrar.png"/>
+<!-- 							</div> -->
+<!-- 						</row>		 -->
+<!-- 					</rows> -->
+<!-- 				</grid> -->
+				</vbox>
+			</hbox></row>	
+		</rows>
+	</grid>	
+     </panelchildren>
+</panel>     
+        
+ 			
+</window>
+</zk>

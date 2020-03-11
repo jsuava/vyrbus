@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.tepsa.sisvyr.model.bean.HRE" table="VRTHOJRUTELE" schema="VYR">
+        <comment>Entidad que almacena las hojas de ruta electronica</comment>
+         <composite-id name="numeroHojaRutaID" class="com.tepsa.sisvyr.model.bean.NumeroHojaRutaID">
+            <key-property name="idNumeroHojaRuta" type="java.lang.String">
+                <column name="C_NUMHOJRUT" length="15" />
+            </key-property>
+        </composite-id>
+        
+<!--         <property name="numeroHRE" type="java.lang.String" update="false" insert="false" > -->
+<!--             <column name="C_NUMHOJRUT" length="15" > -->
+<!--                 <comment>Numero de hoja de ruta electronica</comment> -->
+<!--             </column> -->
+<!--         </property> -->
+        <many-to-one name="ruta" class="com.tepsa.sisvyr.model.bean.Ruta" fetch="select">
+            <column name="RUTA_ID" precision="5" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+            </column>
+        </many-to-one>
+        <property name="mtcCodigoRuta" type="java.lang.String">
+            <column name="C_NRORUT" length="10" not-null="true">
+                <comment>Identificador del MTC para la Ruta concesionada a TEPSA.</comment>
+            </column>
+        </property>
+       <property name="numeroPlaca" type="java.lang.String">
+            <column name="C_NUMPLA" length="10" not-null="true">
+                <comment>Numero de Placa del bus.</comment>
+            </column>
+        </property>
+        <property name="numeroBus" type="java.lang.String">
+            <column name="C_NROBUS" length="4" not-null="true">
+                <comment>Numero de Bus de TEPSA</comment>
+            </column>
+        </property>
+        <property name="mtcCodigoTerminalSalida" type="java.lang.Integer">
+            <column name="N_TERSAL" precision="10" not-null="true">
+                <comment>Identificador del MTC para el terminal de salida.</comment>
+            </column>
+        </property>
+        <many-to-one name="agenciaSalida" class="com.tepsa.sisvyr.model.bean.Agencia" fetch="select">
+            <column name="AGENCIA_IDSALIDA" precision="5" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+            </column>
+        </many-to-one>
+        <property name="mtcCodigoTerminalLlegada" type="java.lang.Integer">
+            <column name="N_TERLLE" precision="10" not-null="true">
+                <comment>Identificador del MTC para el terminal de salida.</comment>
+            </column>
+        </property>
+        <many-to-one name="agenciaLlegada" class="com.tepsa.sisvyr.model.bean.Agencia" fetch="select">
+            <column name="AGENCIA_IDLLEGADA" precision="5" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+            </column>
+        </many-to-one>
+        <property name="fechaSalida" type="java.util.Date">
+            <column name="D_FECSAL" length="7" not-null="true">
+                <comment>Fecha de salida del servicio</comment>
+            </column>
+        </property>
+        <property name="horaSalida" type="java.lang.String">
+            <column name="C_HORSAL" length="8" not-null="true">
+                <comment>Hora de salida del servicio</comment>
+            </column>
+        </property>
+        <property name="fechaEstimacionLlegada" type="java.util.Date">
+            <column name="D_FECESTLLE" length="7" not-null="true">
+                <comment>Fecha Estimacion Llegada</comment>
+            </column>
+        </property>
+        <property name="horaEstimacionLlegada" type="java.lang.String">
+            <column name="C_HORESTLLE" length="8" not-null="true">
+                <comment>Hora Estimacion Llegada</comment>
+            </column>
+        </property>
+        <property name="fechaLlegadaReal" type="java.util.Date">
+            <column name="D_FECLLEREA" length="7" >
+                <comment>Fecha de llegada Real, este dato se almacenara al finalizar la HRE.</comment>
+            </column>
+        </property>
+        <property name="horaLlegadaReal" type="java.lang.String">
+            <column name="C_HORLLEREA" length="8" >
+                <comment>Hora de Llegada Real, parametro que se actualizara al momento de finalizar la HRE.</comment>
+            </column>
+        </property>
+        <many-to-one name="mtcTerminalSalida" class="com.tepsa.sisvyr.model.bean.MTCDireccionTerminal" fetch="select">
+            <column name="MTCDIRTER_IDSAL" precision="5" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="mtcTerminalLlegada" class="com.tepsa.sisvyr.model.bean.MTCDireccionTerminal" fetch="select">
+            <column name="MTCDIRTER_IDLLE" precision="5" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="mtcRuta" class="com.tepsa.sisvyr.model.bean.MTCRuta" fetch="select">
+            <column name="MTCRUTA_ID" precision="7" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="itinerario" class="com.tepsa.sisvyr.model.bean.Itinerario" fetch="select">
+            <column name="ITINERARIO_ID" precision="18" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 18.</comment>
+            </column>
+        </many-to-one>
+        
+        <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+        <property name="estadoRegistro" type="java.lang.String">
+            <column name="C_ESTREG" length="1" not-null="true">
+                <comment>Estado de registro A(Activo), I(Inactivo).</comment>
+            </column>
+        </property>
+        <property name="fechaInsercion" type="java.util.Date">
+            <column name="AUDFECINS" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioInsercion" type="java.lang.String">
+            <column name="AUDUSUINS" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipInsercion" type="java.lang.String">
+            <column name="AUDIPINS" length="20">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="fechaModificacion" type="java.util.Date">
+            <column name="AUDFECMOD" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioModificacion" type="java.lang.String">
+            <column name="AUDUSUMOD" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipModificacion" type="java.lang.String">
+            <column name="AUDIPMOD" length="20">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <!-- 		END CAMPOS DE AUDITORIA	 	-->
+    </class>
+</hibernate-mapping>

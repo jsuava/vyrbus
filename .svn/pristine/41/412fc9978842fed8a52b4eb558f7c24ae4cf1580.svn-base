@@ -1,0 +1,155 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:n="client">
+<window id="wndManifiesto" title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndManifiesto">
+<panel id="panel" title="::: DESPACHO DE BUSES :::" framable="true" width="860px" border="normal" closable="true" onClose="wndManifiesto.closeTabWindow()">
+        <panelchildren>
+				<grid style="background: ">
+					<columns>
+		 				<column width="60px"  /> <!-- Itinerario 		     -->
+						<column width="92px"  /> <!-- TextBox itinerario	 -->
+						<column width="80px"  /> <!-- Button Buscar 	     -->
+						<column width="85px"  /> <!-- Label punto control    -->
+						<column width="85px"  /> <!-- BomboBox punto control -->
+						<column width="65px"  /> <!-- Button refresh         -->
+						<column width="53px"  /> <!-- Label Imprimir      	 -->
+						<column width="165px"  /> <!-- ComboBox Imprimir      -->
+						<column width="37px"  /> <!-- Button Previo          -->
+					</columns>
+					<rows>
+						<row>
+							<label value="ITINERARIO"  />
+							<div>
+								<textbox id="txtIdManifiesto" visible="false" />
+								<textbox id="txtItinerario"  maxlength="18" width="75px" readonly="true" />
+							</div>
+							<button id="cmdBuscarItinerario" label="..."  height="25px"  image="/resources/mp_buscarEnabled.png" style="cursor:pointer" />
+							<label value="PUNTO CONTROL"/>
+		 					<combobox id="cmbPuntocontrol"  readonly="true" width="80px" onChange="wndManifiesto.onChangePtoControl()" />
+		 					<button id="cmdRefrescar"  image="/resources/mp_refrescarEnabled.png"  height="27px" width="32px" onClick="wndManifiesto.onRefresh()" tooltiptext="Refrescar Manifiesto" style="cursor:pointer" />
+							<label value="IMPRIMIR" />
+							<combobox id="cmbImprimir" readonly="true" width="160px" onChange="wndManifiesto.validaImpresionManifiesto()" />
+							<button id="cmdPrevio" image="/resources/mp_preliminar.png" height="30px" tooltiptext="Vista Preliminar" style="cursor:pointer"/>
+							<button id="cmdImprimir" image="/resources/mp_imprimir.png" height="30px" width="32px" tooltiptext="Imprimir"  style="cursor:pointer" />
+						</row>
+					</rows>
+				</grid>
+			
+				<grid style="border:none" > 
+					<rows>
+						<row>
+							<grid >
+								<columns>
+									<column width="110px" align="right" /> 
+									<column width="110px" />
+									<column width="120px" align="right"/>
+									<column   />
+								</columns>
+								<rows>
+									<row>
+										<label value="RUTA :" />
+										<label id="lbRuta"  style="color:#0000CF" />
+										<label value="BUS :" />
+										
+										<hbox align="center">
+											<div width="102px" ><label id="lbBus"  style="color:#0000CF; font-size: 11px !important" /></div>
+											<label value="SERVICIO :" />
+											<div width="155px"><label  id="lbServicio"   style="color:#0000CF" /></div>
+											<toolbarbutton id="tbbVerMapa" label="Ver Mapa" style="color:red; font-size:11px!important; font-weight:bold"  onClick="wndManifiesto.enlazarVerMapa()" />
+											<separator width="10px" />
+											<toolbarbutton id="tbbVerPax" label="Ver Pasajero" style="color:red; font-size:11px!important; font-weight:bold"  onClick="wndManifiesto.ventanaVerPasajero()" />
+										</hbox>								
+									</row>
+									<row>
+										<label value="FECHA/HORA SALIDA :"  />
+										<label  id="lbFechaSalida"  style="font-size: 11px !important; color:#0000CF " />					
+										<label value="FECHA/HORA LLEGADA :" />
+										<hbox align="center">
+											<div width="90px"><label  id="lbFechaLlegada"   style="font-size: 11px !important; color:#0000CF" /></div>
+											<label value="TRIPULANTE :" />
+											<label  id="lbTripulante"  style="color:#0000CF" />	
+										</hbox>
+									</row>
+									<row spans="1,4">
+										<label value="PILOTO :" />
+										<hbox align="center">
+											<div width="190px"><label  id="lbPiloto"   style="color:#0000CF" /></div>
+											<label value="COPILOTO :" />
+											<div width="190px"><label  id="lbcopiloto"   style="color:#0000CF" /></div>
+											<label value="COPILOTO AUX :" tooltiptext="Copiloto Auxiliar" />
+											<label  id="lbCopilotoAux"   style="color:#0000CF" />	
+												
+										</hbox>
+									</row>
+								</rows>
+							</grid>
+						</row>
+						<row>
+							<groupbox closable="false" >
+							<caption label="Lista de Pasajeros"/>
+								<listbox  rows="7" id="ListPasajeros" height="190px"  width="835px" droppable="true">
+									<listhead>
+										<listheader label="Asiento" width="40px" />
+										<listheader label="N° Control" width="95px" />	
+										<listheader label="N°Boleto" width="95px" />
+										<listheader label="Pasajero" width="200px" />
+										<listheader label="Edad" width="40px" />
+										<listheader label="Tip.Docto" width="65px" />
+										<listheader label="N°Documento" width="75px" />
+										<listheader label="Origen" width="75px" />
+										<listheader label="Destino" width="75px" />
+										<listheader label="Importe" width="50px" />
+										<listheader label="Alimento" width="100px" />
+										<listheader label="Pto.Embarque" width="140px" />
+									 </listhead>
+								</listbox>
+						</groupbox>
+					</row>
+					
+					<row>
+						<grid  style="border:none;" >
+							<columns>
+								<column width="450px" />
+								<column width="40px"  />
+		 						<column align="right"  /> 
+							</columns>
+							<rows>
+								<row>
+									<groupbox closable="false" >
+									<caption label="Resumen - Pasajeros por Ruta"/>
+										<listbox  id="listDetaPaxRuta" height="140px">
+											<listhead>
+												<listheader label="Origen" width="130px" />
+												<listheader label="Destino" width="130px" />
+												<listheader label="Pasajeros" width="60px" align="center" />
+												<listheader label=""  />
+											</listhead>
+										</listbox>
+					 				</groupbox>
+					 				<separator></separator>							
+					 					<groupbox closable="false" >
+					 						<caption label="Resumen - Pasajeros por forma de pago." style="text-align: left;"/>
+					 					<listbox id="listPaxFormaPago" height="140px" >
+					 						<listhead>
+					 							<listheader label="Forma Pago" width="180px" align="left" />
+					 							<listheader label="Pasajeros" width="60px" align="center"/>
+					 							<listheader align="left"/>
+					 						</listhead>
+					 					</listbox>
+		<!-- 							<caption label="Resumen"/> -->
+		<!-- 								<label  value="Total Pasajeros: " sclass="label-size11-bold" /> -->
+		<!-- 								<label id="lbTotalPasajeros" style="font-size: 11px !important; color:#0000CF" /> -->
+									</groupbox>			
+								</row>
+								
+							</rows>
+						</grid>
+						
+		 				
+					</row>
+				</rows>
+			</grid>
+<!-- 			</groupbox>	 -->
+		</panelchildren>
+	</panel>
+</window>
+</zk>

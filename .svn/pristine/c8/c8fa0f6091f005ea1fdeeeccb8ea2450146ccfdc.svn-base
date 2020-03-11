@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 04/05/2012 12:43:35 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.tepsa.sisvyr.model.bean.TarifaCliente" table="VRTTARCLI" schema="VYR">
+        <comment>Entidad que almacena la tarifa a considerar a determinados clientes.</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="TARCLI_ID" precision="5" scale="0" />
+            <generator class="sequence">
+                <param name="sequence">SEQ_VRTTARCLI_ID</param>
+            </generator>
+        </id>
+        <many-to-one name="cliente" class="com.tepsa.sisvyr.model.bean.Cliente">
+        	<column name="CLIENTE_ID" precision="10" scale="0" not-null="true">
+        		<comment>Identificador unico de la entidad, tamanio de la clave primaria 10.</comment>
+        	</column>
+        </many-to-one>
+        <many-to-one name="ruta" class="com.tepsa.sisvyr.model.bean.Ruta">
+        	<column name="RUTA_ID" precision="5" scale="0" not-null="true">
+        		<comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+        	</column>
+        </many-to-one>
+        <many-to-one name="servicio" class="com.tepsa.sisvyr.model.bean.Servicio">
+        	<column name="SERVICIO_ID" precision="5" scale="0" not-null="true">
+        		<comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+        	</column>
+        </many-to-one>
+        <property name="fechaActivacion" type="java.util.Date">
+            <column name="D_FECACT" length="7">
+                <comment>fecha de activacion de la tarifa.</comment>
+            </column>
+        </property>
+        <property name="fechaCaducidad" type="java.util.Date">
+            <column name="D_FECCAD" length="7">
+                <comment>Fecha de caducidad de la tarifa.</comment>
+            </column>
+        </property>
+        <property name="fechaSuspension" type="java.util.Date">
+            <column name="D_FECSUS" length="7">
+                <comment>Fecha de suspension de la tarifa.</comment>
+            </column>
+        </property>
+        
+        
+        
+        <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+        <property name="estadoRegistro" type="java.lang.String">
+            <column name="C_ESTREG" length="1" not-null="true">
+                <comment>Estado de registro A(Activo), I(Inactivo).</comment>
+            </column>
+        </property>
+        <property name="fechaInsercion" type="java.util.Date">
+            <column name="AUDFECINS" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioInsercion" type="java.lang.String">
+            <column name="AUDUSUINS" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipInsercion" type="java.lang.String">
+            <column name="AUDIPINSE" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="fechaModificacion" type="java.util.Date">
+            <column name="AUDFECMOD" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioModificacion" type="java.lang.String">
+            <column name="AUDUSUMOD" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipModificacion" type="java.lang.String">
+            <column name="AUDIPMODI" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <!-- 		END CAMPOS DE AUDITORIA	 	-->
+    </class>
+</hibernate-mapping>

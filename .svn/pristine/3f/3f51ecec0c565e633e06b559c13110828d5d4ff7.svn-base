@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk>
+	<!-- [Optional]
+	Uncomment if you want to defines the application's name 
+	
+	<preference>
+		<name>org.zkoss.zk.ui.WebApp.name</name>
+		<value>sisvyr</value>
+	</preference>
+	 -->
+	 <system-config>
+		<disable-event-thread>true</disable-event-thread>
+	</system-config>
+	
+	<library-property>
+	    <name>org.zkoss.theme.preferred</name>
+	    <value>myBlueTheme</value> <!--myBlueTheme or breeze, sapphire, silvertail, atlantic -->
+	</library-property>
+	
+<!-- 	<library-property> -->
+<!-- 		<name>org.zkoss.theme.preferred</name> -->
+<!-- 		<value>myBlueTheme</value> -->
+<!-- 	</library-property> -->
+	
+	<library-property>
+     	<name>org.zkoss.zul.Button.autodisable</name>
+    	<value>self</value>
+    </library-property>
+
+<!-- </library-property> -->
+<!-- <library-property> -->
+<!--     <name>org.zkoss.zul.Button.mold</name> -->
+<!--     <value>trendy</value> -->
+<!-- </library-property> -->
+	
+
+	
+	<!-- <desktop-config>
+		<theme-provider-class>com.twg.wls.ui.themes.ThemeProvider</theme-provider-class>
+	</desktop-config> -->
+	
+	<!-- Uncomment it if you prefer to turn on the event processing thread.
+	Default: disabled (since ZK 5.0)-->
+	<!--<system-config>
+		<disable-event-thread>true</disable-event-thread>
+	</system-config>-->
+	
+	<!--
+	<listener>
+ 		<description>ThreadLocal Variables Synchronizer</description>
+ 		<listener-class>org.zkoss.zkplus.util.ThreadLocalListener</listener-class>
+	</listener>
+
+	<preference>
+ 		<name>ThreadLocal</name>
+ 		<value>
+    		org.springframework.transaction.support.TransactionSynchronizationManager=resources,synchronizations,currentTransactionName,currentTransactionReadOnly,actualTransactionActive;
+   			org.springframework.orm.hibernate3.SessionFactoryUtils=deferredCloseHolder;
+   			org.springframework.transaction.interceptor.TransactionAspectSupport=transactionInfoHolder;
+  		</value>
+	</preference>-->
+</zk>

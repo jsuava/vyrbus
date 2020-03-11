@@ -1,0 +1,360 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndPostergacion" border="none" use="com.tepsa.sisvyr.view.ctrl.WndPostergacion">
+	<tabbox mold="accordion-lite">
+		<tabs>
+			<tab id="tabBusqueda" label="CRITERIOS DE BUSQUEDA"/>
+			<tab id="tabListado" label="LISTADO DE OCURRENCIAS ENCONTRADAS"/>
+			<tab id="tabDetalle" label="POSTERGACION DE PASAJES"/>
+		</tabs>
+		<tabpanels>
+			<tabpanel>
+				<grid>
+					<columns>
+						<column width="86px" align="right"/>
+						<column/>
+						<column width="100px" align="right"/>
+						<column/>
+						<column width="95px"/>
+					</columns>
+					<rows>
+						<row>
+							<label value="NRO CONTROL :"/>
+							<textbox id="txtNumeroControl" width="128px" onOK="wndPostergacion.buscarVentas()"/>
+							<label value="N° COMPROBANTE :"/>
+							<textbox id="txtNumeroBoleto" width="128px" style="font-size:11px !important" onOK="wndPostergacion.buscarVentas()"/>
+							<cell rowspan="2" style="background:white">
+								<button label="Buscar" image="resources/mp_buscarEnabled.png" autodisable="self" height="29px" width="85px" style="cursor:pointer" onClick="wndPostergacion.buscarVentas()"/>
+							</cell>
+						</row>
+						<row>
+							<label value="FECHA PARTIDA :"/>
+							<datebox id="dtbxFechaPartida" format="dd/MM/yyyy" onOK="wndPostergacion.buscarVentas()"/>
+							<label value="PASAJERO :"/>
+							<textbox id="txtPasajero" onOK="wndPostergacion.buscarVentas()"/>														
+						</row>
+						<row>
+							<label value="ORIGEN :"/>
+							<combobox id="cmbOrigen" autodrop="true" readonly="true" onOK="wndPostergacion.buscarVentas()"/>
+							<label value="DESTINO :"/>
+							<combobox id="cmbDestino" autodrop="true" readonly="true" onOK="wndPostergacion.buscarVentas()"/>
+							<cell style="background:none">
+								<button label="Cerrar" image="resources/mp_cerrarEnabled.png" height="29px" width="80px" style="cursor:pointer" onClick="wndPostergacion.cerrar()"/>
+							</cell>
+						</row>
+					</rows>
+				</grid>
+			</tabpanel>
+			<tabpanel>
+				<listbox id="lbxVentas" width="100%" mold="paging" pageSize="8" >
+					<listhead>
+						<listheader label="VENTA_ID" width="5%"/>
+						<listheader label="TIPO" width="10%"/>
+						<listheader label="N° CONTROL" width="9%"/>
+						<listheader label="N° BOLETO" width="10%"/>
+						<listheader label="PASAJERO" width="22%"/>
+						<listheader label="TIP DOC" width="10%"/>
+						<listheader label="DOCUMENTO" width="8%"/>
+						<listheader label="ORIGEN" width="8%"/>
+						<listheader label="DESTINO" width="7%"/>
+						<listheader label="FECHA EMISION" width="10%"/>
+					</listhead>
+				</listbox>
+			</tabpanel>
+			<tabpanel>
+				<grid id="grdPostergacion" style="border:none" visible="false">
+				<columns>
+					<column width="25%" />
+					<column />
+				</columns>
+					<rows>
+						<row>
+							<groupbox closable="false" mold="3d">
+								<caption label="SITUACIÓN ACTUAL"/>
+								<grid style="border:none">
+									<columns>
+										<column align="right" width="70px"/>
+										<column  />
+										<column align="right"/>
+										<column/>
+									</columns>
+									<rows>
+										<row spans="1,3">
+											<label value="N° CONTROL :"/>
+											<textbox id="txtNumeroControlActual" width="90px" readonly="true"/>
+										</row>
+										<row spans="1,3">
+											<label value="ITINERARIO :"/>
+											<textbox id="txtItinerarioActual" width="60px" readonly="true" style="text-align:center"/>
+										</row>
+										<row spans="1,3">
+											<label value="N° ASIENTO :"/>
+											<textbox id="txtNumeroAsientoActual" width="25px" readonly="true" style="text-align:center"/>
+										</row>
+										<row spans="1,3">
+											<label value="PASAJERO :"/>
+											<textbox id="txtPasajeroActual" readonly="true" width="97%"/>
+										</row>
+										<row spans="1,3">
+											<label value="CLIENTE :"/>
+											<textbox id="txtClienteActual" readonly="true" width="97%"/>
+										</row>
+										<row spans="1,3">
+											<label value="N° BOLETO :"/>
+											<textbox id="txtNumeroBoletoActual" width="80px" readonly="true"/>
+										</row>
+										<row spans="1,3">
+											<label value="ORIGEN :"/>
+											<textbox id="txtOrigenActual" width="80px" readonly="true"/>											
+										</row>
+										<row spans="1,3">
+											<label value="DESTINO :"/>
+											<textbox id="txtDestinoActual" width="80px" readonly="true"/>
+										</row>
+										<row spans="1,3">
+											<label value="EMBARQUE :"/>
+											<textbox id="txtEmbarqueActual" width="160px" readonly="true"/>
+										</row>
+										<row spans="1,3">
+											<label value="SALIDA :"/>
+											<textbox id="txtSalidaActual" width="80px" readonly="true"/>
+										</row>
+										<row spans="1,3" visible="false">
+											<label value="HORA EMB. :"/>
+											<textbox id="txtHoraEmbarqueActual" width="80px" readonly="true"/>
+										</row>
+										<row spans="1,3">
+											<label value="SERVICIO :"/>
+											<textbox id="txtServicioActual" width="160px" readonly="true"/>											
+										</row>										
+										<row spans="4">
+ 											<separator height="12px" />
+ 										</row>
+									</rows>
+								</grid>
+							</groupbox>
+							
+							<hbox align="center">
+								<groupbox closable="false" mold="3d" style="background: #E6F4FB" width="100%">
+									<caption label="NUEVOS DATOS DE LA VENTA" />
+ 									<grid style="border:none;background: #E6F4FB">
+ 										<columns>
+ 											<column width="370px" />
+ 											<column/>
+										</columns>
+ 										<rows>
+ 											<row style="background: #E6F4FB">
+												<grid style="border:none;">
+													<columns>
+														<column align="right" width="80px"/>
+														<column width="112px"/>
+														<column align="right" width="53px"/>
+														<column/>
+													</columns>
+													<rows>
+														<row spans="1,3" style="background: #E6F4FB">
+															<label value="ITINERARIO :"/>
+															<hlayout>
+																<textbox id="txtItinerarioPostergado" width="50px" readonly="true"/>
+																<image id="imgBuscarItinerario" src="resources/mp_buscarEnabled.png" style="cursor:pointer" tooltiptext="Seleccionar itinerario"/>
+															</hlayout>
+														</row>
+														<row spans="1,3" style="background: #E6F4FB">
+																<label value="N° ASIENTO :"/>
+															<hlayout>
+																<textbox id="txtNumeroAsientoPostergado" width="25px" readonly="true" style="text-align:center"/>
+																<image id="imgSeleccionarAsiento" src="resources/mp_buscarEnabled.png" style="cursor:pointer" visible="false" tooltiptext="Seleccionar asiento"/>
+																<textbox id="txtNumeroPisoPostergado" visible="false"/>
+															</hlayout>
+														</row>
+														<row style="background: #E6F4FB">
+															<label value="T.COMPROBANTE:"/>
+															<combobox id="cmbtipoComprobantePostergado" disabled="true" width="110px" />
+															<label value="NÚMERO :"/>
+															<textbox id="txtNumeroBoletoPostergado" width="85px" readonly="true" style="font-size:11px !important"/>
+														</row>
+														<row spans="1,3" style="background: #E6F4FB">
+															<label value="N° CONTROL :"/>
+															<textbox id="txtNumeroControlPostergado" width="103px" readonly="true"/>
+														</row>
+														<row spans="1,4" style="background: #E6F4FB">
+															<label value="PASAJERO :"/>
+															<hlayout>
+																<textbox id="txtPasajeroPostergado" readonly="true" width="250px"/>
+																<image id="imgBuscarPasajero" src="resources/mp_buscarEnabled.png" style="cursor:pointer" tooltiptext="Seleccionar pasajero." visible="false"/>												
+															</hlayout>
+														</row>
+														<row spans="1,3" style="background: #E6F4FB">
+															 <label value="RUC :" />
+															 <hlayout>
+																<textbox id="txtClienteRuc" readonly="true" width="103px"/>
+																<image id="imgBuscarClienteRuc" src="resources/mp_buscarEnabled.png" style="cursor:pointer" visible="false"/>												
+															</hlayout>
+														</row>
+														<row spans="1,3" style="background: #E6F4FB">
+															 <label value="RAZON SOCIAL :" />
+															 <hlayout>
+																<textbox id="txtClientePostergado" readonly="true" width="250px"/>
+																<image id="imgBuscarCliente" src="resources/mp_buscarEnabled.png" style="cursor:pointer" tooltiptext="Cambiar razón social." visible="false"/>												
+															</hlayout>
+														</row>
+														<row spans="1,3" style="background: #E6F4FB">
+															 <label value="DIRECCION :" />
+															 <hlayout>
+																<textbox id="txtClienteDireccion" readonly="true" width="250px"/>
+																<image id="imgBuscarClienteDireccion" src="resources/mp_buscarEnabled.png" style="cursor:pointer" tooltiptext="Cambiar dirección fiscal." visible="false"/>												
+															</hlayout>
+														</row>
+														<row style="background: #E6F4FB">
+															<label value="ORIGEN :"/>
+															<textbox id="txtOrigenPostergado" width="103px" readonly="true"/>
+															<label value="DESTINO :"/>
+															<textbox id="txtDestinoPostergado" width="85px" readonly="true"/>
+														</row>
+														<row style="background: #E6F4FB">
+															<label value="EMBARQUE :"/>
+															<combobox id="cmbEmbarquePostergado" width="110px" onChange="wndPostergacion.onSelectPtoEmbarque()"/>
+															<label value="H. EMB. :"/>
+															<textbox id="txtHoraEmbarquePostergado" width="85px" readonly="true"/>
+														</row>
+														<row style="background: #E6F4FB">
+															<label value="SERVICIO :"/>
+															<textbox id="txtServicioPostergado" width="103px" readonly="true"/>
+															<label value="SALIDA :"/>
+															<textbox id="txtSalidaPostergado" width="85px" readonly="true"/>
+														</row>
+													</rows>
+												</grid>
+												
+												<vlayout>
+													<groupbox closable="false">
+														<caption label="Operaciones Antes del Viaje" style="font-weight: bold; font-size:13px !important;color:blue"/>
+														<grid style="border:none">
+															<rows>
+																<row style="background: #E6F4FB">
+																	<vlayout>
+																		<checkbox id="chkFechaAbierta" label="Fecha Abierta" style="color:blue"/>
+																		<checkbox id="chkCambioDestino" label="Cambio de destino" disabled="true" style="color:blue"/>
+																		<checkbox id="chkCambioServicio" label="Cambio de Servicio" disabled="true" style="color:blue"/>
+																		<checkbox id="chkCambioNombre" label="Cambio de Nombre" style="color:blue"/>
+																	</vlayout>
+																</row>
+															</rows>
+														</grid>								
+													</groupbox>
+													<groupbox closable="false">
+														<caption label="Op.antes/despues del viaje" style="font-weight: bold; font-size:13px !important;color:blue"/>
+														<grid style="border:none">
+															<rows>
+																<row style="background: #E6F4FB">
+																	<vlayout>
+																		<checkbox id="chkCambioRuc" label="Cambio de Ruc" style="color:blue"/>
+																		<checkbox id="chkCambioRazonSocial" label="Cambio de razón social" style="color:blue"/>
+																		<checkbox id="chkCambioDireccionFiscal" label="Cambio dirección fiscal" style="color:blue"/>
+																		<checkbox id="chkCambioBoletaFactura" label="De Boleta a Factura" style="color:blue"/>
+																		<checkbox id="chkCambioFacturaBoleta" label="De Factura a Boleta" style="color:blue" visible="false"/>
+																	</vlayout>
+																</row>
+															</rows>
+														</grid>								
+													</groupbox>
+												</vlayout>										
+ 											</row>
+ 										</rows>
+ 									</grid>
+								</groupbox>
+									
+ 							</hbox>							
+						</row>
+						
+						<row spans="2">
+							<groupbox closable="false" style="background: #E6F4FB">
+								<grid style="border:none;background: #E6F4FB">
+									<columns>
+										<column width="120px" align="right"/>
+										<column/>
+										<column width="120px" align="right"/>
+										<column/>
+										<column width="85px"/>
+									</columns>
+									<rows>
+										<row style="background: #E6F4FB">
+											<label value="MONTO ANTERIOR :"/>
+											<doublebox id="dblbxMontoAnterior" format="##0.00" width="50px" readonly="true"/>
+											<label value="TIPO COMPROBANTE :" visible="false"/>
+											<combobox id="cmbTipoComprobante" readonly="true" visible="false"/>
+											<cell rowspan="6" style="background:white" valign="bottom">
+												<vlayout>
+													<button label="Cancelar" image="/resources/mp_cancelarEnabled.png" onClick="wndPostergacion.cancelar()"/>
+													<button label="Guardar" image="/resources/mp_guardarEnabled.png" onClick="wndPostergacion.guardar()"/>
+												</vlayout>													
+											</cell>
+										</row>
+										<row style="background: #E6F4FB">
+											<label value="TARIFA :"/>
+											<hlayout>
+												<doublebox id="dblbxTarifa" format="##0.00" width="50px" readonly="true"/>
+												<label id="lblDescuento" style="color:blue; font-weight:bold; font-size:11px"/>
+											</hlayout>
+											<label value="FORMA PAGO :" />
+											<combobox id="cmbFormaPago" readonly="true" onChange="wndPostergacion.onLoadTipoFormaPago()"/>
+										</row>
+										<row style="background: #E6F4FB">
+											<label value="DESCUENTO :"/>
+											<hlayout>
+												<doublebox id="dblbxDescuento" format="##0.00" width="50px" readonly="true"/>
+												<textbox id="txtIdPromocion" visible="false"/>
+												<image id="imgQuitarPromocion" src="resources/mp_quitarPromocion.png" visible="false" style="cursor:pointer" tooltiptext="Quitar promoción"/>
+											</hlayout>
+											<label value="TIPO FORMA PAGO :" />
+											<combobox id="cmbTipoFormaPago" readonly="true" disabled="true" onChange="wndPostergacion.onValidateTipoFormaPago()"/>
+										</row>
+										<row style="background: #E6F4FB">
+											<label id="lblSaldo" value="SALDO :"/>
+											<doublebox id="dblbxSaldo" format="##0.00" width="50px" readonly="true"/>
+											<label value="OPERADOR TARJETA :" />
+											<combobox id="cmbOperadorTarjetaCredito" readonly="true" disabled="true" onChange="wndPostergacion.onLoadTarjetas()"/>
+										</row>
+										<row style="background: #E6F4FB">
+											<label value="PENALIDAD :"/>
+											<doublebox id="dblbxPenalidad" format="##0.00" width="50px" readonly="true"/>
+											<label value="TARJETA CREDITO :" />
+											<combobox id="cmbTarjetaCredito" readonly="true" disabled="true"/>
+										</row>
+										<row style="background: #E6F4FB">
+											<label id="lblImportePagar" value="IMPORTE TOTAL PAGAR :" style="font-size:12px !important;font-weight: bold;color:red"/>
+											<hlayout>
+												<doublebox id="dblbxImporteTotal" format="##0.00" width="50px" readonly="true" style="font-size:15px !important;font-weight: bold;color:red"/>
+												<checkbox id="chkPagoMixto" label="Pago Mixto" onClick="wndPostergacion.habilitarPagoMixto()"/>
+											</hlayout>
+											<label/>
+											<label/>
+										</row>
+										<row style="background: #E6F4FB">
+											<label id="lblImporteEfectivo" value="IMPORTE EFECTIVO :" visible="false"/>
+											<doublebox id="dblbxImporteEfectivo" format="#,##0.00" visible="false"/>
+											<label/>
+											<label/>
+										</row>
+										<row style="background: #E6F4FB">
+											<label id="lblImporteTarjeta" value="IMPORTE TARJETA :" visible="false"/>
+											<doublebox id="dblbxImporteTarjeta" format="#,##0.00" visible="false"/>
+											<label/>
+											<label/>
+										</row>
+										<row spans="4" style="background: #E6F4FB">
+											<div align="left">
+												<label id="lblPromocion" style="font-size:12px !important;font-weight:bold;color:RED"/>
+											</div>												
+										</row>
+									</rows>
+								</grid>
+							</groupbox>
+						</row>
+					</rows>
+				</grid>					
+			</tabpanel>
+		</tabpanels>
+	</tabbox>
+</window>
+</zk>

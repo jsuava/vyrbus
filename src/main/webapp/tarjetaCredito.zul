@@ -1,0 +1,38 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndTarjetaCredito">
+<div id="divLista">
+	<listbox id="listboxLista">
+		<listhead sizable="true">
+			<listheader label="#" width="50px"/>
+			<listheader label="OPERADOR DE TARJETA DE CRÉDITO" sort="auto" />
+			<listheader label="DENOMINACIÓN" sort="auto" />
+		</listhead>
+	</listbox>
+</div>
+
+<div id="divMantenimiento" >
+	<groupbox mold="3d" closable="false">
+		<caption label="Datos" />
+		<grid>
+			<columns>
+				<column width="190px" align="right" />
+				<column width="165px" />
+				<column width="120px" align="right"/>
+			</columns>
+			<rows>
+				<row>
+					<div>
+						<label value="OPERADOR TARJETA DE CRÉEDITO (*) :" />
+						<textbox id="textboxId"/>					
+					</div>
+					<combobox id="cboOperadorTarjetaCredito" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtDenominacion)"/>
+					<label value="DENOMINACIÓN (*) :" />
+					<textbox id="txtDenominacion" maxlength="25" />
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+</div>
+</window>
+</zk>

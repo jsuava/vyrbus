@@ -1,0 +1,58 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndReasignar" title="REASIGNACION DE CARTERAS" border="normal" use="com.tepsa.sisvyr.view.ctrl.WndReasignarCartera" width="783px">
+				
+	<hlayout  style="paddingtop:5px" >
+		<groupbox width="360px"  closable="false" mold="3d" >
+		<caption label="CLIENTES A REASIGNAR" />
+			<hbox align="center">
+				<label value="Funcionario"  sclass="label-size11"/>
+				<combobox id="cmbFuncionarioAnterior"  width="230px" readonly="true"/><separator width="8px" />
+				<button  onClick="wndReasignar.cargarClientes()" image="/resources/mp_buscarEnabled.png" style="cursor:pointer"/>
+			</hbox><separator height="1px"/>
+			<hbox>
+				<listbox id="listClientesAReasignar"  hflex="1" vflex="true"  rows="8" checkmark="true" multiple="true" >
+		       <listhead>
+		        	<listheader label="CLIENTE"/>
+		        </listhead>
+		    </listbox>
+			</hbox>				
+		</groupbox>
+					
+		<vbox >
+			<separator height="100px" />
+			<image id="imDerecha" src="/resources/mp_rightArrowDisabled.png"  width="30px" height="30px"/>
+			<image id="imDerechaDer" src="/resources/mp_allRightArrowDisabled.png" width="30px" height="30px" />
+			<image id="imIzqierda" src="/resources/mp_leftArrowDisabled.png" width="30px" height="30px"/>
+			<image id="imIzquierdaIzq" src="/resources/mp_allLeftArrowDisabled.png" width="30px" height="30px" />
+		</vbox>	
+							
+		<groupbox width="360px"  closable="false" mold="3d" >
+		<caption label="CLIENTES REASIGNADOS" />
+			<hbox align="center">
+				<label value="Funcionario"  sclass="label-size11"/>
+				<combobox id="cmbNuevoFuncionario"  width="230px" readonly="true"/><separator width="15px" />
+			</hbox><separator height="3px"/>
+			<hbox>
+				<listbox id="listClientesReasignados" hflex="1" vflex="true" rows="8" checkmark="true" multiple="true" >
+		        <listhead>
+		        	<listheader label="CLIENTE" />
+			    </listhead>
+			  </listbox>
+			</hbox>
+		</groupbox>
+	</hlayout>
+		 
+	
+		<hbox>
+			<div width="362px" align="right">
+				<button label="Cerrar"  style="cursor:pinter" image="/resources/mp_cerrar.png" onClick="wndReasignar.closeTabWindow()" />
+			</div>
+ 				<separator orient="vertical" width="27px"/>
+			<div width="360px">
+				<button id="btnGuardar" label="Guardar" style="cursor:pointer" image="/resources/mp_guardarEnabled.png" onClick="wndReasignar.onSave()" />
+			</div>
+		</hbox>
+
+</window>
+</zk>

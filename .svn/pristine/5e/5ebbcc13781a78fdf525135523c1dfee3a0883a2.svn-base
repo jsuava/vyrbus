@@ -1,0 +1,101 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: José Abanto
+ * Fecha		: 01/09/2016
+ * Hora			: 18:08:19
+ */
+package com.tepsa.sisvyr.model.bean;
+
+/**
+ * @author jabanto
+ *
+ */
+public class PoolLocalidad extends GenericBean {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Integer id;
+	private Localidad localidadDestino;
+	private String localidadDestinoPoolID;
+	private Ruta rutaMayor;
+	private String ruc;
+	private String razonSocial;
+	/**
+	 * @return the id
+	 */
+	public Integer getId() {
+		return id;
+	}
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	/**
+	 * @return the localidadDestino
+	 */
+	public Localidad getLocalidadDestino() {
+		return localidadDestino;
+	}
+	/**
+	 * @param localidadDestino the localidadDestino to set
+	 */
+	public void setLocalidadDestino(Localidad localidadDestino) {
+		this.localidadDestino = localidadDestino;
+	}
+	/**
+	 * @return the localidadDestinoPoolID
+	 */
+	public String getLocalidadDestinoPoolID() {
+		return localidadDestinoPoolID;
+	}
+	/**
+	 * @param localidadDestinoPoolID the localidadDestinoPoolID to set
+	 */
+	public void setLocalidadDestinoPoolID(String localidadDestinoPoolID) {
+		this.localidadDestinoPoolID = localidadDestinoPoolID;
+	}
+	/**
+	 * @return the rutaMayor
+	 */
+	public Ruta getRutaMayor() {
+		return rutaMayor;
+	}
+	/**
+	 * @param rutaMayor the rutaMayor to set
+	 */
+	public void setRutaMayor(Ruta rutaMayor) {
+		this.rutaMayor = rutaMayor;
+	}
+	/**
+	 * @return the ruc
+	 */
+	public String getRuc() {
+		return ruc;
+	}
+	/**
+	 * @param ruc the ruc to set
+	 */
+	public void setRuc(String ruc) {
+		this.ruc = ruc;
+	}
+	/**
+	 * @return the razonSocial
+	 */
+	public String getRazonSocial() {
+		return razonSocial;
+	}
+	/**
+	 * @param razonSocial the razonSocial to set
+	 */
+	public void setRazonSocial(String razonSocial) {
+		this.razonSocial = razonSocial;
+	}
+	
+	
+	
+}

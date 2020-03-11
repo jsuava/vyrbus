@@ -1,0 +1,9 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<?link rel="shortcut icon" href="resources/favicon.ico" ?>
+<zk>
+<window border="none" use="com.tepsa.sisvyr.view.ctrl.WndGenerateAddress">
+	<div align="center">
+		<applet id="address" archive="address.jar" code="com.tepsa.sisvyr.view.applet.MacAddress" width="200px" height="100px" style="border:1px"/>
+	</div>	
+</window>
+</zk>

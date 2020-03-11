@@ -1,0 +1,25 @@
+package com.tepsa.sisvyr.service.business;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import com.tepsa.sisvyr.model.bean.Servicio;
+
+public interface ServicioManager {
+	public ArrayList<Servicio> buscarPorEstadoRegistro(String estado, String criterioOrden)throws Exception;
+	public ArrayList<Servicio> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar)throws Exception;
+	public Servicio buscarPorId(Long id)throws Exception;
+	public void guardar(Servicio servicio)throws Exception;
+	public void actualizar(Servicio servicio)throws Exception;
+	public void inactivar(Long id)throws Exception;
+	/**
+	 * Realiza la busqueda de los Servicios de acuerdo a lso criterios enviados
+	 * @param campo				: Campo que debera cumplir con los criterios enviados.
+	 * @param criterios			: Identificadores de los servicios separados por comas.
+	 * @param criteriosOrdenar	: Criterios a utilizar para ordenar la informacion.
+	 * @param estadoRegistro	: Estado de los registros.
+	 * @return Lista de Servicios.
+	 */
+	public List<Servicio> buscarPorX(String campo, Object[] criterios, List<String> criteriosOrdenar, String estadoRegistro) throws Exception;
+}

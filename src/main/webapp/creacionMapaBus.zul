@@ -1,0 +1,156 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndMapaBus" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndCreacionMapaBus">
+	<div id="divLista">
+		<listbox id="listboxLista">
+			<listhead sizable="true">
+				<listheader label="#" width="50px" />
+				<listheader label="DENOMINACION" sort="auto"/>
+				<listheader label="NOMBRE CORTO (o sufijo)" sort="auto"/>
+				<listheader label="PISOS DEL BUS" sort="auto"/>
+				<listheader label="TOTAL ASIENTOS" sort="auto"/>
+				<listheader label="TOTAL FILAS" sort="auto"/>
+				<listheader label="TOTAL COLUMNAS" sort="auto"/>
+				<listheader label="ESTRUCTURA" width="170px" />
+			</listhead>
+		</listbox>
+	</div>
+	<div id="divMantenimiento">
+		<tabbox id="tbMantenimiento">
+			<tabs>
+				<tab label="Servicio" />
+				<tab id="tabEstructura" label="Estructura del bus" visible="false"/>
+			</tabs>
+			<tabpanels>
+				<tabpanel>
+					<groupbox mold="3d" closable="false">
+						<caption label="DATOS DEL SERVICIO" />
+						<grid width="600px">
+							<columns>
+								<column align="right" width="120px"/>
+								<column width="180px"/>
+								<column align="right" width="120px"/>
+								<column width="180px"/>
+							</columns>
+							<rows>
+								<row>
+									<label value="DENOMINACION :" />
+									<div>
+										<textbox id="textboxId" />
+										<textbox id="txtDenominacion" maxlength="20" constraint="no empty" width="90%" />
+									</div>
+									<label value="NOMBRE CORTO :" />
+									<textbox id="txtNombreCorto" maxlength="15" width="90%"/>
+								</row>
+								<row>
+									<label value="BUS DE 2 PISOS :" />
+									<checkbox id="chkBusDosPisos" onCheck="wndMapaBus.habilitarSegundoPiso(self.isChecked())" />
+									<separator />
+									<separator />
+								</row>
+							</rows>
+						</grid>
+					</groupbox>
+					<separator/>
+					<groupbox mold="3d" closable="false">
+						<caption label="DATOS DEL PRIMER PISO" />
+						<grid width="600px">
+							<columns>
+								<column align="right" width="120px"/>
+								<column width="160px"/>
+								<column align="right" width="140px"/>
+								<column width="180px"/>
+							</columns>
+							<rows>
+								<row>
+									<label value="NUMERO DE ASIENTOS :" />
+									<spinner id="spAsientos" value="44" constraint="no empty min 9 max 60" width="50px" />
+									<separator />
+									<separator />
+								</row>
+								<row>
+									<label value="NUMERO DE FILAS :" />
+									<spinner id="spFilas" value="17" width="50px"/>
+									<label value="NUMERO DE COLUMNAS :" />
+									<spinner id="spColumnas" value="5" width="50px"/>
+								</row>
+							</rows>
+						</grid>
+					</groupbox>
+					<separator />
+					<groupbox id="grpSegundoPiso" mold="3d" closable="false" visible="false">
+						<caption label="DATOS DEL SEGUNDO PISO" />
+						<grid width="600px">
+							<columns>
+								<column align="right" width="120px"/>
+								<column width="160px"/>
+								<column align="right" width="140px"/>
+								<column width="180px"/>
+							</columns>
+							<rows>
+								<row>
+									<label value="NUMERO DE ASIENTOS :" />
+									<spinner id="spAsientos2" constraint="min 9 max 60" width="50px" />
+									<separator />
+									<separator />
+								</row>
+								<row>
+									<label value="NUMERO DE FILAS :" />
+									<spinner id="spFilas2" width="50px" />
+									<label value="NUMERO DE COLUMNAS :" />
+									<spinner id="spColumnas2" width="50px" />
+								</row>
+							</rows>
+						</grid>			
+					</groupbox>				
+				</tabpanel>
+				<tabpanel height="100%" style="overflow:auto">
+					<hbox>
+						<groupbox closable="false" mold="3d">
+							<caption label="PALETA DE OBJETOS"/>
+							<grid width="180px">
+								<columns>
+									<column align="right" width="40%"/>
+									<column width="60%"/>
+								</columns>
+								<rows>
+									<row>
+										<label value="TELEVISOR :"/>
+										<div id="divTv"/>
+									</row>
+									<row>
+										<label value="CAFETERIA :"/>
+										<div id="divCafeteria"/>
+									</row>
+									<row>
+										<label value="SS.HH.:"/>
+										<div id="divSSHH"/>
+									</row>
+									<row>
+										<label value="ASIENTOS :"/>
+										<div id="divAsientos"/>
+									</row>
+									<row>
+										<label value="PAPELERA :"/>
+										<div id="divPapelera"/>
+									</row>
+									<row spans="2">
+										<button id="btnGuardarEstructura" sclass="btn-vyrbus" label="Grabar Estructura Bus" height="28px" style="cursor:pointer" image="resources/mp_guardarEnabled.png" onClick="wndMapaBus.grabarEstructura()"/>
+									</row>
+									<row spans="2">
+										<button id="btnCancelar" sclass="btn-vyrbus" label="Cancelar Edición" height="28px" style="cursor:pointer" image="resources/mp_cancelarEnabled.png" onClick="wndMapaBus.cancelarCreacion()"/>
+									</row>
+								</rows>
+							</grid>
+						</groupbox>
+						<separator orient="horizontal" width="40px"/>
+						<div id="divContenedorBus">
+							<vbox id="vbxEstructuraBus"/>
+						</div>
+					</hbox>
+				</tabpanel>
+			</tabpanels>
+		</tabbox>
+	</div>
+</window>
+</zk>

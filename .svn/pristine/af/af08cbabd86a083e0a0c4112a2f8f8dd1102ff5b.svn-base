@@ -1,0 +1,674 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: José Abanto
+ * Fecha		: 27/01/2017
+ * Hora			: 16:07:10
+ */
+package com.tepsa.sisvyr.view.ctrl;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Button;
+import org.zkoss.zul.Caption;
+import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Column;
+import org.zkoss.zul.Columns;
+import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Comboitem;
+import org.zkoss.zul.Datebox;
+import org.zkoss.zul.Div;
+import org.zkoss.zul.Grid;
+import org.zkoss.zul.Label;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Radio;
+import org.zkoss.zul.Row;
+import org.zkoss.zul.Rows;
+import org.zkoss.zul.Separator;
+import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Toolbarbutton;
+import org.zkoss.zul.Window;
+
+import com.tepsa.sisvyr.model.bean.Agencia;
+import com.tepsa.sisvyr.model.bean.Liquidacion;
+import com.tepsa.sisvyr.model.bean.TipoAgencia;
+import com.tepsa.sisvyr.model.bean.Usuario;
+import com.tepsa.sisvyr.model.bean.VentaPasaje;
+import com.tepsa.sisvyr.service.locator.ServiceLocator;
+import com.tepsa.sisvyr.service.util.Constantes;
+import com.tepsa.sisvyr.service.util.Messages;
+import com.tepsa.sisvyr.service.util.MyTime;
+import com.tepsa.sisvyr.service.util.Util;
+import com.tepsa.sisvyr.service.util.UtilData;
+import com.tepsa.sisvyr.service.util.VentasNotas;
+import com.tepsa.sisvyr.service.util.WSFE;
+import com.tepsa.sisvyr.view.ui.DlgMessage;
+import com.tepsa.sisvyr.view.ui.WndBase;
+
+/**
+ * @author Jose Abanto
+ *
+ */
+public class WndAnulacionDocumentos extends WndBase{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Radio rdAnulacionRegular;
+	private Radio rdAnulacionPersonalizada;
+	private Textbox txtNumeroComprobante;
+	private Row rowRangoFechas;
+	private Row rowAgencia;
+	private Row rowOpcionNC;
+	private Row rowAplicar;
+	private Datebox dtbxFechaInicio;
+	private Datebox dtbxFechaFin;
+	private Combobox cmbTipoAgencia;
+	private Combobox cmbAgencia;
+	private Radio rdRegular;
+	private Radio rdSoloNC;
+	private Radio rdNCNuevoComprobante;
+	private Checkbox ckbxGeneraMovimientoSistema;
+	private Listbox ltbxAnulacionComprobantes;
+	private Button btnBuscar;
+	private Label lblInfoAnulMasivo;
+	private Button btnAplicar;
+	
+	private Label lblAdvertencia= null;
+	private Combobox cmbUsuarioLiq= null;
+	private Combobox cmbAgenciaLiq=null;
+	private Liquidacion liquidacion=null;
+	private Button btnProcesarAnulacion=null;
+	private Textbox txtMotivoAnulacion=null;
+	private Window wndAnulacionBoleto;
+	
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
+	 */
+	@Override
+	public void onCreate() throws Exception {
+		dtbxFechaInicio.setValue(new Date());
+		dtbxFechaFin.setValue(new Date());
+		
+		/*Caga los tipos de agencia*/
+		List<TipoAgencia>tiposAgencias=ServiceLocator.getTipoAgenciaManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
+		UtilData.cargarGenericData(cmbTipoAgencia, false);
+		for(TipoAgencia tipoAgencia:tiposAgencias){
+			if(tipoAgencia.getId().intValue()!=Constantes.ID_TIPAGE_TEPSA){
+				Comboitem comboitem= new Comboitem(tipoAgencia.getDenominacion());
+				comboitem.setValue(tipoAgencia);
+				cmbTipoAgencia.appendChild(comboitem);
+			}
+		}
+		cmbTipoAgencia.setSelectedIndex(0);
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
+	 */
+	@Override
+	public void initComponents() {
+		rdAnulacionRegular=(Radio)this.getFellow("rdAnulacionRegular");
+		rdAnulacionPersonalizada=(Radio)this.getFellow("rdAnulacionPersonalizada");
+		txtNumeroComprobante=(Textbox)this.getFellow("txtNumeroComprobante");
+		rowRangoFechas=(Row)this.getFellow("rowRangoFechas");
+		rowAgencia=(Row)this.getFellow("rowAgencia");
+		rowOpcionNC=(Row)this.getFellow("rowOpcionNC");
+		rowAplicar=(Row)this.getFellow("rowAplicar");
+		dtbxFechaInicio=(Datebox)this.getFellow("dtbxFechaInicio");
+		dtbxFechaFin=(Datebox)this.getFellow("dtbxFechaFin");
+		cmbTipoAgencia=(Combobox)this.getFellow("cmbTipoAgencia");
+		cmbAgencia=(Combobox)this.getFellow("cmbAgencia");
+		rdRegular=(Radio)this.getFellow("rdRegular");
+		rdSoloNC=(Radio)this.getFellow("rdSoloNC");
+		rdNCNuevoComprobante=(Radio)this.getFellow("rdNCNuevoComprobante");
+		ckbxGeneraMovimientoSistema=(Checkbox)this.getFellow("ckbxGeneraMovimientoSistema");
+		ltbxAnulacionComprobantes=(Listbox)this.getFellow("ltbxAnulacionComprobantes");
+		btnBuscar=(Button)this.getFellow("btnBuscar");
+		lblInfoAnulMasivo=(Label)this.getFellow("lblInfoAnulMasivo");
+		btnAplicar=(Button)this.getFellow("btnAplicar");
+		
+		cmbTipoAgencia.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onLoadAgencias();					
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}				
+			}
+		});
+		
+		btnBuscar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					if(!(txtNumeroComprobante.getText().trim().isEmpty())){
+						txtNumeroComprobante.setText(Util.autocompleNumberBoleto(txtNumeroComprobante.getText()));
+						buscarComprobanteByNumero();
+					}else
+						buscarComprobantesByFechas();										
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+		
+		txtNumeroComprobante.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					if(!(txtNumeroComprobante.getText().trim().isEmpty())){
+						txtNumeroComprobante.setText(Util.autocompleNumberBoleto(txtNumeroComprobante.getText()));
+						buscarComprobanteByNumero();
+					}else
+						buscarComprobantesByFechas();										
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+		
+		btnAplicar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				if(ltbxAnulacionComprobantes.getSelectedItems().size()>0){
+					aplicar();
+				}
+			}
+		});
+	}
+	
+	public void onCheckedAnulacionPersonalizada(){
+		try {
+				Util.limpiarListbox(ltbxAnulacionComprobantes);
+				habilitarAnulacionPersonalizada(rdAnulacionPersonalizada.isChecked());
+				limpiarControlesAnulacionPersonalizada();
+		} catch (Exception e) {
+			e.printStackTrace();
+			DlgMessage.error(e.getMessage());
+		}
+	}
+	
+	public void onCheckedAnulacionRegular(){
+		try {
+			Util.limpiarListbox(ltbxAnulacionComprobantes);
+			habilitarAnulacionPersonalizada(rdAnulacionPersonalizada.isChecked());
+			limpiarControlesAnulacionPersonalizada();			
+		} catch (Exception e) {
+			e.printStackTrace();
+			DlgMessage.error(e.getMessage());
+		}
+	}
+	
+	private void limpiarControlesAnulacionPersonalizada()throws Exception{
+		Util.limpiarCombobox(cmbAgencia);
+		txtNumeroComprobante.setText("");
+		dtbxFechaInicio.setValue(new Date());
+		dtbxFechaFin.setValue(new Date());
+		cmbTipoAgencia.setSelectedIndex(0);
+		UtilData.cargarGenericData(cmbAgencia, false);
+		rdRegular.setChecked(true);
+		ckbxGeneraMovimientoSistema.setChecked(true);
+		ckbxGeneraMovimientoSistema.setDisabled(true);
+		
+	}
+	
+	/**
+	 * habilita los controles para la anulacion personalizada
+	 * @param enabled: true=habilta: false=Dseshabilita
+	 * @throws Exception
+	 */
+	private void habilitarAnulacionPersonalizada(boolean visible)throws Exception{
+		rowRangoFechas.setVisible(visible);
+		rowAgencia.setVisible(visible);
+		rowOpcionNC.setVisible(visible);
+		rowAplicar.setVisible(visible);
+	}
+	
+	/**
+	 * Carga las agencias, segun el tipo de agencia seleccionada
+	 * @throws Exception
+	 */
+	private void onLoadAgencias()throws Exception{
+		Util.limpiarCombobox(cmbAgencia);		
+		if(cmbTipoAgencia.getSelectedItem().getValue() instanceof TipoAgencia)
+			UtilData.cargarAgenciaXtipoAgencia(cmbAgencia, ((TipoAgencia)cmbTipoAgencia.getSelectedItem().getValue()).getId(), false);
+		else
+			UtilData.cargarGenericData(cmbAgencia, false);
+		cmbAgencia.setSelectedIndex(0);
+	}
+	
+	public void onchangeAgencia()throws Exception{
+		/* *******************************************************************/
+		/* DE FORMA EXCLUCIVA PARA EL CLIENTE CORPORATIVO MOTA ENGIL - (SE HABILITO PARA TODOS - 03/02/2016) - 
+		 * Ya que es posible que a la hora de anular el comprobante con N.C. no sea necesario anular el registro con un tipo de movimiento del Sistema (5)*/
+		/* *******************************************************************/
+//		ckbxGeneraMovimientoSistema.setDisabled(true);
+//		if(cmbAgencia.getSelectedIndex()>0){
+//			if(((Agencia)cmbAgencia.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_AGENCIA_MOTA_ENGIL)
+//				ckbxGeneraMovimientoSistema.setDisabled(false);
+//		}
+	}
+	
+	/**
+	 * Realiza la busqueda del comprobante por su numero
+	 * @throws Exception
+	 */
+	private void buscarComprobanteByNumero()throws Exception{		
+		List<VentaPasaje> lstVentaPasaje = ServiceLocator.getVentaPasajesManager().buscarBoletosDevolucion(null, null, txtNumeroComprobante.getText().trim().toUpperCase());
+		if(lstVentaPasaje.size()>0){
+			/*Busca por el ultimo movimiento agrupado por numero de control*/
+			List<VentaPasaje> lstResult= ServiceLocator.getVentaPasajesManager().buscarBoletosDevolucion(null, lstVentaPasaje.get(0).getNumeroControl(), null);
+			/*Busca por el identificador del ultmio movimiento, el registro a validar*/
+			final VentaPasaje ventaAnular=ServiceLocator.getVentaPasajesManager().buscarVentaById(lstResult.get(0).getId());
+			if(ventaAnular.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA)
+				lstVentaPasaje= new ArrayList<>();
+			else if (ventaAnular.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION)
+				lstVentaPasaje= new ArrayList<>();
+			else if(ventaAnular.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_DEVOLUCION)
+				lstVentaPasaje= new ArrayList<>();
+		}
+		onLoadComprobantes(lstVentaPasaje);		
+	}
+	/**
+	 * Realiza la busqueda de los comprobantes por rango de fechas y segun otros parametros seleccionados
+	 * @throws Exception
+	 */
+	private void buscarComprobantesByFechas()throws Exception{
+		/*Siempre da prioridad a la busqueda por numero de Comprobante*/
+		if(!(rdAnulacionRegular.isChecked())){
+			if(!(cmbTipoAgencia.getSelectedItem().getValue() instanceof TipoAgencia)){
+				DlgMessage.information(Messages.getString("wndAnulacionComprobantes.information.noSelectTipoAgencia"),cmbTipoAgencia);
+				return;
+			}else if (cmbAgencia.getSelectedIndex()<=0){
+				DlgMessage.information(Messages.getString("wndAnulacionComprobantes.information.noSelectAgencia"),cmbAgencia);
+				return;
+			}else{
+				/*Valida que no se exceda los 30 días de consulta*/
+				Date dateFin=Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(dtbxFechaFin.getValue()));
+				Date dateIni=Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(dtbxFechaInicio.getValue()));
+				long numDias=(dateFin.getTime()-dateIni.getTime())/Constantes.MILISEGUNDOS_X_DIA;
+				if(numDias>30){
+					DlgMessage.information(Messages.getString("wndAnulacionComprobantes.information.max30Dias"),dtbxFechaFin);
+					return;
+				}
+			}
+			String orderByX="FechaVenta, boleto";
+			String fechaInicio=Constantes.FORMAT_DATE.format(dtbxFechaInicio.getValue());
+			String fechaFin=Constantes.FORMAT_DATE.format(dtbxFechaFin.getValue());
+			Integer agenciaId=((Agencia)cmbAgencia.getSelectedItem().getValue()).getId();
+			Agencia agencia=ServiceLocator.getAgenciaManager().buscarPorId(agenciaId.longValue());
+			
+			List<VentaPasaje> lstVentaPasaje =ServiceLocator.getVentaPasajesManager().buscarDetalleVentasAgencia(fechaInicio, fechaFin, agencia.getConcesionario().getRuc(), null,orderByX,true,true,null,null,true);
+			onLoadComprobantes(lstVentaPasaje);
+		}else{
+			buscarComprobanteByNumero();
+		}
+	}
+	
+	/**
+	 * carga los comprobantes
+	 * @param lstComprobantes	: lista de comprobantes a cargar
+	 * @throws Exception
+	 */
+	private void onLoadComprobantes(List<VentaPasaje> lstComprobantes)throws Exception{
+		Util.limpiarListbox(ltbxAnulacionComprobantes);
+		ltbxAnulacionComprobantes.setCheckmark(false);
+		ltbxAnulacionComprobantes.setMultiple(false);
+		ltbxAnulacionComprobantes.setRows(0);
+		lblInfoAnulMasivo.setVisible(false);
+		if(lstComprobantes.size()>1){
+			ltbxAnulacionComprobantes.setCheckmark(true);
+			ltbxAnulacionComprobantes.setMultiple(true);
+			lblInfoAnulMasivo.setVisible(true);
+		}
+		if(lstComprobantes.size()>10)
+			ltbxAnulacionComprobantes.setRows(10);
+		
+		for(VentaPasaje ventaPasaje : lstComprobantes){
+			if(ventaPasaje.getTipoMovimiento().getId().intValue()!=Constantes.ID_TIPMOV_ANULACION && 
+					ventaPasaje.getTipoMovimiento().getId().intValue()!=Constantes.ID_TIPMOV_DEVOLUCION &&
+					ventaPasaje.getTipoMovimiento().getId().intValue()!=Constantes.ID_TIPMOV_ANULACION_SISTEMA){
+				Listitem item=new Listitem();
+				Listcell cell= new Listcell(Constantes.FORMAT_DATE.format(ventaPasaje.getFechaLiquidacion()));
+				cell.setStyle("font-size:11px !important");
+				item.appendChild(cell);
+				cell= new Listcell(ventaPasaje.getNumeroBoleto());
+				cell.setStyle("font-size:11px !important");
+				item.appendChild(cell);
+				cell= new Listcell(ventaPasaje.getFormaPago().getDenominacion());
+				item.appendChild(cell);
+				cell= new Listcell(ventaPasaje.getRuta().toString());
+				item.appendChild(cell);
+				cell= new Listcell(ventaPasaje.getFechaPartida()!=null?Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida())+" "+ventaPasaje.getHoraPartida():"");
+				cell.setStyle("font-size:11px !important");
+				item.appendChild(cell);
+				cell= new Listcell(ventaPasaje.getNumeroAsiento()!=null?ventaPasaje.getNumeroAsiento().toString():"");
+				cell.setStyle("font-size:11px !important");
+				item.appendChild(cell);
+				cell= new Listcell(ventaPasaje.getPasajero().toString());
+				item.appendChild(cell);
+				cell= new Listcell(ventaPasaje.getCliente()!=null?ventaPasaje.getCliente().toString():"");
+				item.appendChild(cell);
+				if(rdAnulacionRegular.isChecked()){
+					Toolbarbutton btnAnular= new Toolbarbutton("Anular");
+					btnAnular.setStyle("text-transform:none;color:red");
+					cell= new Listcell();
+					cell.appendChild(btnAnular);
+					item.appendChild(cell);
+					btnAnular.setAttribute(VentaPasaje.class.getName(), ventaPasaje);
+					btnAnular.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+						@Override
+						public void onEvent(Event event) throws Exception {
+							try {
+								
+								createWindowAnulacion((VentaPasaje)event.getTarget().getAttribute(VentaPasaje.class.getName()));
+								
+							} catch (Exception e) {
+								e.printStackTrace();
+								DlgMessage.error(e.getMessage());
+							}
+						}
+					});
+				}
+				item.setValue(ventaPasaje);
+				ltbxAnulacionComprobantes.appendChild(item);	
+			}
+		}
+	}
+	
+	/**
+	 * Realiza la anulacion o aplica la nota de credito al o los comprobantes seleccionados 
+	 */
+	private void aplicar(){
+		try {
+			if(ltbxAnulacionComprobantes.getSelectedItems().size()==0){
+				DlgMessage.information("Debe de seleccionar el comprobante que desea Anular");
+				return;
+			}else if (ltbxAnulacionComprobantes.getSelectedItems().size()>20){
+				DlgMessage.information("El modo Anulación Masiva solamente se puede aplicar a un máximo de 20 Comprobantes");
+				return;
+			}
+				
+			VentaPasaje ventaPasaje=null;
+			if(rdRegular.isChecked() && ltbxAnulacionComprobantes.getSelectedItems().size()==1)
+				ventaPasaje=ltbxAnulacionComprobantes.getSelectedItem().getValue();
+			
+			createWindowAnulacion(ventaPasaje);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			DlgMessage.error(e.getMessage());
+		}
+	}
+	
+	/**
+	 * crea la venta para confirmar la anulacion
+	 * @throws Exception
+	 */
+	@SuppressWarnings("deprecation")
+	private void createWindowAnulacion(final VentaPasaje ventaPasaje)throws Exception{
+		final boolean isAnulacionSinNC=isAnulacionSinNC(ventaPasaje);
+		
+		final Window win = new Window("", "normal", true);
+		win.setWidth("500px");
+		
+		Caption caption = new Caption(":::CONFIRMAR ANULACION:::", "");
+		win.appendChild(caption);
+		
+//		Groupbox groupbox= new Groupbox();		
+//		caption= new Caption("Datos de la Liquidación a quién se asignaran los comprobantes que se tengan que generar");
+//		groupbox.appendChild(caption);
+		
+		Grid grid= new Grid();
+		grid.setStyle("border:none");
+		Columns columns= new Columns();
+		Column column= new Column();
+		column.setWidth("120px");
+		column.setAlign("right");
+		columns.appendChild(column);
+		columns.appendChild(new Column());
+		grid.appendChild(columns);
+		
+		Rows rows= new Rows();
+		Row row= new Row();
+		row.setSpans("2");
+		Div div= new Div();
+		div.setAlign("left");
+		Label lblinfo= new Label("Datos de la Liquidación a quién se asignaran los comprobantes que se tengan que generar");
+		lblinfo.setStyle("color:blue;font-size:12px !important;text-transform:none;");
+		div.appendChild(lblinfo);
+		row.appendChild(div);
+		rows.appendChild(row);
+		
+		row= new Row();
+		row.appendChild(new Label("AGENCIA : "));
+		cmbAgenciaLiq= new Combobox();
+		cmbAgenciaLiq.setReadonly(true);
+		cmbAgenciaLiq.setWidth("250px");
+		UtilData.cargarAgenciaXtipoAgencia(cmbAgenciaLiq, Constantes.ID_TIPAGE_TEPSA, false);
+		Util.seleccionarValorItemCombo(Agencia.class, cmbAgenciaLiq, getAgencia().getId());
+		cmbAgenciaLiq.setDisabled(getRol().getId().intValue()!=Constantes.ID_ROL_SUPER_USUARIO);
+		row.appendChild(cmbAgenciaLiq);
+		row.setVisible(isAnulacionSinNC?false:true);
+		rows.appendChild(row);
+		
+		row= new Row();
+		row.appendChild(new Label("USUARIO : "));
+		cmbUsuarioLiq= new Combobox();
+		cmbUsuarioLiq.setReadonly(true);
+		cmbUsuarioLiq.setWidth("250px");
+		cmbUsuarioLiq.setDisabled(getRol().getId().intValue()!=Constantes.ID_ROL_SUPER_USUARIO);
+		row.appendChild(cmbUsuarioLiq);
+		row.setVisible(isAnulacionSinNC?false:true);
+		rows.appendChild(row);
+		
+		row= new Row();
+		row.appendChild(new Label("MOTIVO ANULACION (*) : "));
+		txtMotivoAnulacion= new Textbox();
+		txtMotivoAnulacion.setMultiline(true);
+		txtMotivoAnulacion.setRows(3);
+		txtMotivoAnulacion.setMaxlength(150);
+		txtMotivoAnulacion.setWidth("250px");
+		row.appendChild(txtMotivoAnulacion);
+		rows.appendChild(row);
+		
+		row= new Row();
+		row.setSpans("2");
+		div= new Div();
+		div.setAlign("center");
+		lblAdvertencia= new Label();
+		lblAdvertencia.setVisible(false);
+		lblAdvertencia.setStyle("color:red;font-size:11px !important;text-transform:none;font-weight: bold;");
+		div.appendChild(lblAdvertencia);
+		row.appendChild(div);
+		rows.appendChild(row);
+		
+		grid.appendChild(rows);
+		win.appendChild(grid);
+		win.appendChild(new Separator("horizontal"));
+		
+		div= new Div();
+		div.setAlign("center");
+		btnProcesarAnulacion= new Button("Procesar Anulación","/resources/mp_anular.png");
+		btnProcesarAnulacion.setAutodisable("self");
+		div.appendChild(btnProcesarAnulacion);
+		win.appendChild(div);
+		
+		/*Realiza la busqueda de una liquidacion del usuario que esta realizando la anulacion*/
+		if(isAnulacionSinNC==false){
+			btnProcesarAnulacion.setDisabled(true);
+			liquidacion=UtilData.estadoLiquidacionUsuario(getUsuario(), getAgencia());
+			String fechaLiquidacion=Constantes.FORMAT_DATE.format(new Date());
+			UtilData.cargarUsuariosLiquidacion(cmbUsuarioLiq, fechaLiquidacion,fechaLiquidacion, false,((Agencia)cmbAgenciaLiq.getSelectedItem().getValue()).getId());
+			validarLiquidacion(liquidacion);
+			if(liquidacion!=null)
+				Util.seleccionarValorItemCombo(Usuario.class, cmbUsuarioLiq, liquidacion.getUsuario().getId());	
+		}
+		
+		cmbAgenciaLiq.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {				
+				Util.limpiarCombobox(cmbUsuarioLiq);
+				if(cmbAgenciaLiq.getSelectedItem().getValue() instanceof Agencia){
+					String fechaLiquidacion=Constantes.FORMAT_DATE.format(Constantes.FORMAT_DATE.parse(MyTime.dateTimeServer()));
+					UtilData.cargarUsuariosLiquidacion(cmbUsuarioLiq, fechaLiquidacion,fechaLiquidacion, false,((Agencia)cmbAgenciaLiq.getSelectedItem().getValue()).getId());	
+				}else
+					UtilData.cargarGenericData(cmbUsuarioLiq, false);
+			}
+		});
+		
+		cmbUsuarioLiq.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				liquidacion=UtilData.estadoLiquidacionUsuario((Usuario)cmbUsuarioLiq.getSelectedItem().getValue(), (Agencia)cmbAgenciaLiq.getSelectedItem().getValue());
+				validarLiquidacion(liquidacion);
+			}
+		});
+		
+		btnProcesarAnulacion.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					if(isAnulacionSinNC==false && !(cmbUsuarioLiq.getSelectedItem().getValue() instanceof Usuario)){
+						DlgMessage.information("Debe de seleccionar el usuario",cmbUsuarioLiq);
+						return;
+					}else if(txtMotivoAnulacion.getText().trim().isEmpty()){
+						DlgMessage.information("Debe de ingresar el Motivo de la anulación.",txtMotivoAnulacion);
+						return;
+					}else if (txtMotivoAnulacion.getText().trim().length()<5){
+						DlgMessage.information("El Motivo que ha ingresado no es válido.",txtMotivoAnulacion);
+						return;
+					}
+					Messagebox.show("Este proceso puede tardar varos minutos. \n ¿Realmente desea continual con la Anulación de los Comprobantes Seleccionados?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
+						@Override
+						public void onEvent(Event e){
+							try {
+								if(e.getName().equals("onYes")){
+									procesarAnulacion(ventaPasaje,win);
+								}
+							} catch (Exception e2) {
+								e2.printStackTrace();
+								DlgMessage.error(e2.getMessage());
+							}
+						}
+					});
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+		
+		wndAnulacionBoleto = win;
+		this.appendChild(wndAnulacionBoleto);
+		wndAnulacionBoleto.setMode(MODAL);
+	}
+	
+	private void validarLiquidacion(Liquidacion liquidacion)throws Exception{
+		lblAdvertencia.setVisible(false);
+		btnProcesarAnulacion.setDisabled(true);		
+		
+		if(btnProcesarAnulacion.isDisabled()){
+			if(liquidacion!=null && liquidacion.getestadoLiquidacion().intValue()==Constantes.TRUE_VALUE){
+				Date date=Constantes.FORMAT_DATE.parse(MyTime.dateTimeServer());
+				if(date.getTime()!=liquidacion.getFechaLiquidacion().getTime()){
+					lblAdvertencia.setValue("* La fecha de su Liquidación no es válida, esta debe ser del día. *");
+				}else
+					btnProcesarAnulacion.setDisabled(false);
+			}else{
+				lblAdvertencia.setValue("El Usuario Seleccionado no tiene una Liquidación aperturada, esta es necesaria para continuar con el proceso de Anulación.");
+				lblAdvertencia.setVisible(true);
+			}	
+		}
+	}
+	
+	private boolean isAnulacionSinNC(VentaPasaje ventaPasaje)throws Exception{
+		boolean isAnualcion=false;
+		/*Valida que la anulacion este dentro de las 72 horas, desde el dia siguiente a la emision*/
+		if(ventaPasaje!=null && (rdAnulacionRegular.isChecked() || rdRegular.isChecked())){
+			Integer horas_maximo=Constantes.HORAS_MAXIMO_ANULACION;
+			Date dateStartLimit= new Date(ventaPasaje.getFechaLiquidacion().getTime()+Constantes.MILISEGUNDOS_X_DIA);
+			Long horasTrans= (new Date().getTime()-dateStartLimit.getTime())/Constantes.MILISEGUNDOS_X_HORA;
+			if(horasTrans<=horas_maximo)
+				isAnualcion=true;
+		}
+		
+		return isAnualcion;
+	}
+	
+	/**
+	 * Procesa la anulacion
+	 * @throws Exception
+	 */
+	private void procesarAnulacion(VentaPasaje ventaPasaje, Window window)throws Exception{		
+		List<VentaPasaje>lstVentas= new ArrayList<>();
+		if(ventaPasaje!=null){
+			VentaPasaje anulacion= ServiceLocator.getVentaPasajesManager().buscarVentaById(ventaPasaje.getId());
+			anulacion.setObservaciones(txtMotivoAnulacion.getText().trim().toUpperCase());
+			lstVentas.add(anulacion);
+		}else{
+			for(Listitem item:ltbxAnulacionComprobantes.getSelectedItems()){
+				VentaPasaje anulacion= ServiceLocator.getVentaPasajesManager().buscarVentaById(((VentaPasaje)item.getValue()).getId());
+				anulacion.setObservaciones(txtMotivoAnulacion.getText().trim().toUpperCase());
+				lstVentas.add(anulacion);
+			}
+		}
+		/*Determina el tipo de anulacion*/
+		int tipoAnulacion=0;
+		boolean anularMovimiento=true;
+		if(rdAnulacionRegular.isChecked())
+			tipoAnulacion=Constantes.TIPO_ANULACION_REGULAR;
+		else{
+			if(rdRegular.isChecked())
+				tipoAnulacion=Constantes.TIPO_ANULACION_REGULAR;
+			else if (rdSoloNC.isChecked())
+				tipoAnulacion=Constantes.TIPO_ANULACION_NC;
+			else if (rdNCNuevoComprobante.isChecked())
+				tipoAnulacion=Constantes.TIPO_ANULACION_NC_NEW_COMPROBANTE;
+			
+			if(ckbxGeneraMovimientoSistema.isDisabled()==false)
+				anularMovimiento=ckbxGeneraMovimientoSistema.isChecked();
+		}
+		
+		VentasNotas ventasNotas= ServiceLocator.getVentaPasajesManager().procesarAnulacionBy(lstVentas, tipoAnulacion, anularMovimiento, this.liquidacion);
+		/*Realiza el envio de las nuevas ventas generadas al Servidor F.E.*/
+		List<VentaPasaje> lstVentasenviar= new ArrayList<>();
+		for(VentaPasaje venta:ventasNotas.getListVentas()){
+			VentaPasaje envioVenta=ServiceLocator.getVentaPasajesManager().buscarVentaById(venta.getId());
+			lstVentasenviar.add(envioVenta);
+		}
+		if(lstVentasenviar.size()>0)
+			WSFE.sendVenta(lstVentasenviar, window, false, null);
+		
+		/*Realiza el envio de las notas de credito generadas al Servidor F.E.*/
+		for(VentaPasaje notaCredito:ventasNotas.getListNotasCredito()){
+			WSFE.sendNota(notaCredito);
+		}
+		
+		if(!(txtNumeroComprobante.getText().trim().isEmpty())){
+			txtNumeroComprobante.setText(Util.autocompleNumberBoleto(txtNumeroComprobante.getText()));
+			buscarComprobanteByNumero();
+		}else
+			buscarComprobantesByFechas();	
+		
+		DlgMessage.information("El Proceso de anulación termino correctamente");
+		
+		window.onClose();
+	}
+}

@@ -1,0 +1,99 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndRptVtaPromo" title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndRptVentaPromocion" width="980px">
+	<hbox>
+		<vbox>
+			<grid width="420px" >
+				<columns>
+					<column width="70px" align="right" />
+					<column width="100px"/>
+	 				<column width="50px" align="right"/>
+				</columns>
+				<rows>
+					<row>
+						<label value="DESDE :" />
+						<datebox id="dtbxFechaInicio" format="dd/MM/yyyy" width="90PX" readonly="true" onChange="wndRptVtaPromo.cargarPromociones()"/>
+						<label value="HASTA :" />
+						<datebox id="dtbxFechaFinal" format="dd/MM/yyyy" width="90PX" readonly="true" onChange="wndRptVtaPromo.cargarPromociones()" />
+					</row>
+					<row spans="1,3">
+						<label value="PROMOCIÓN :" />
+						<combobox id="cmbPromocion" width="240px" onOK="wndRptVtaPromo.buscarVentasPromocion()" />
+					</row>
+					<row spans="1,3">
+						<label value="T.DESCTO :" />
+						<hbox align="center">
+							<combobox id="cmbTipoDescuento" width="120px"  readonly="true" />
+						</hbox>
+					</row>
+					<row spans="1,3">
+						<separator height="40px" />
+						<separator />
+					</row>
+				</rows>
+			</grid>
+			
+			<grid width="420px">
+				<columns>
+					<column align="left" />
+					<column align="right"/>
+				</columns>
+				<rows>
+					<row>
+						<button label="Detallar selección" width="160px" image="/resources/mp_preliminar.png" onClick="wndRptVtaPromo.buscarVentasPromocionDetalle()"  />
+						<button label="Buscar Resumen" width="160px" image="/resources/mp_buscarEnabled.png" onClick="wndRptVtaPromo.buscarVentasPromocion()" />
+					</row>
+					<row>
+						<button label="Exportar Detallado" width="160px" image="/resources/mp_excel.png" onClick="wndRptVtaPromo.exportarDetalle()" />
+						<button label="Exportar Resumen" width="160px" image="/resources/mp_excel.png" onClick="wndRptVtaPromo.exportar()" />
+					</row>
+					<row>
+						<separator/>
+						<button label="Cerrar" image="/resources/mp_cerrar.png" onClick="wndRptVtaPromo.closeTabWindow()" />
+					</row>
+				</rows>
+			</grid>
+		</vbox>
+		
+		<vbox>
+			<listbox id="lstVentasPromocion" rows="8" width="535px">
+				<listhead>
+					<listheader label="PROMOCIÓN"  sort="auto"/>
+					<listheader label="VAL.DESC" width="50px" align="center" sort="auto" tooltiptext="Valor del descuento" />
+					<listheader label="CANT." width="50px" align="right" sort="auto" tooltiptext="Cantidad ventas"/>
+					<listheader label="T.DESC." width="80px" align="right" sort="auto" tooltiptext="Total descuento"/>
+					<listheader label="T.VENTA" width="80px" align="right" sort="auto" tooltiptext="Total venta"/>
+				</listhead>
+			</listbox>
+			
+			<div width="520px" align="right" visible="false">
+				<textbox id="txtTotalDesceunto" readonly="true" width="68px" style="font-weight: bold; font-size:11px !important;color:red;text-align: right;" />
+				<textbox id="txtTotalVenta" readonly="true" width="68px" style="font-weight: bold; font-size:11px !important;color:red;text-align: right;"/>
+			</div>
+		</vbox>
+	</hbox>
+	<groupbox width="965px" mold="3d" closable="false">
+		<caption label="DETALLE DE LA PROMOCIÓN SELECCIONADA" />
+		<listbox id="lstVentasPromocionDeta" rows="10">
+			<listhead>
+				<listheader label="NRO." width="40px"/>
+				<listheader label="F.VENTA" width="80px" sort="auto" />
+				<listheader label="NRO.BOLETO" width="100px" align="center" sort="auto" />
+				<listheader label="NOMBRES DEL PASAJERO" width="280px" sort="auto"/>
+				<listheader label="RUTA" width="180px" sort="auto" />
+				<listheader label="SERVICIO" width="130px" sort="auto" />
+				<listheader label="F.PARTIDA" width="80px" align="center" sort="auto" />
+				<listheader label="H.PARTIDA" width="70px" align="center" sort="auto" />
+				<listheader label="TARIFA" width="60px" align="center" sort="auto" />
+				<listheader label="DESC." width="60px" align="center" sort="auto" />
+				<listheader label="TOTAL" width="60px" align="center" sort="auto" />
+				<listheader label="USUARIO VENTA" width="280px" sort="auto" />
+				<listheader label="AGENCIA VENTA" width="190px" sort="auto" />
+			</listhead>
+		</listbox>
+	</groupbox>
+	
+	
+	
+</window>
+</zk>

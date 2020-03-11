@@ -1,0 +1,165 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndParametros" title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndParametros"  width="845px" >
+	<groupbox mold="3d" closable="false">
+	<caption label="PARÁMETROS DEL SISTEMA" />
+		<grid>
+			<columns>
+				<column width="500px"/>
+			</columns>
+			<rows>
+				<row>
+					<label value="Tiempo de expiración de una reserva" sclass="label-size11" />
+					<hbox align="center">
+						<intbox id="itTiempoExpiraReserva" maxlength="2" width="30px" style="text-align: right;" />
+						<label value="Horas" sclass="label-size11" />
+					</hbox>
+				</row>
+				<row>
+					<label value="Tiempo a considerar para un Pasajero acumule n viajes para ingresar al Programa Pasajero Frecuente" sclass="label-size11" />
+					<hbox align="center">
+						<intbox id="itTiempoAcumulaViajesParaPaxFree" maxlength="3" width="30px" style="text-align: right;" />
+						<label value="Días" sclass="label-size11" />
+					</hbox>
+				</row>
+				<row>
+					<label value="Número de viajes requerido para ingresar al programa Pasajero Frecuente" sclass="label-size11" />
+					<hbox align="center">
+						<intbox id="itViajesRequeridosIngresarPaxFre" maxlength="2" width="30px" style="text-align: right;" />
+						<label value="Viajes" sclass="label-size11" />
+					</hbox>
+				</row>
+				<row>
+					<label value="Tempo en que un boleto es válido una vez emitido" sclass="label-size11" />
+					<hbox align="center">
+						<intbox id="itTiempoBoletoValido" maxlength="3" width="30px" style="text-align: right;" />
+						<label value="Días" sclass="label-size11" />
+					</hbox>
+				</row>
+				<row>
+					<label value="Número de puntos que se acumulan en la cuenta de Pasajero Frecuente por cada venta realizada" sclass="label-size11" />
+					<hbox align="center">
+						<intbox id="itPuntosAcumulaPorVentaPaxFre" maxlength="2" width="30px" style="text-align: right;" />
+						<label value="Puntos" sclass="label-size11" />
+					</hbox>
+				</row>
+				<row>
+					<label value="Monto a cobrar por una postergación" sclass="label-size11" />
+					<hbox align="center">
+						<intbox id="itMontocobrarPostergacion" maxlength="2" width="30px" style="text-align: right;" />
+						<label value="Soles" sclass="label-size11" />
+					</hbox>
+				</row>
+				<row>
+					<label value="Monto a cobrar por una reimpresión" sclass="label-size11" />
+					<hbox align="center">
+						<intbox id="itMontoCobrarReimpresion" maxlength="2" width="30px" style="text-align: right;" />
+						<label value="Soles" sclass="label-size11" />
+					</hbox>
+				</row>
+				<row>
+					<label value="Número máximo de postergaciones por boleto" sclass="label-size11" />
+					<hbox align="center">
+						<intbox id="itMaximoPostergacionesBoleto" maxlength="2" width="30px" style="text-align: right;" />
+						<label value="Postergaciones" sclass="label-size11" />					
+					</hbox>
+				</row>
+				<row>
+					<label value="Tiempo en el que se puede realizar una postergación" sclass="label-size11" />
+					<hbox align="center">
+						<intbox id="itTiempoPuedeRealizarPostergacion" maxlength="2" width="30px" style="text-align: right;" />
+						<label value="Horas" sclass="label-size11" />
+					</hbox>
+				</row>
+				<row>
+					<label value="Tiempo en el que un pasajero puede realizar el canje de su boleto de cortesia por cumpleanios" sclass="label-size11" />
+					<hbox align="center">
+						<intbox id="itTiempoPaxCanjeBoletoCumpleanios" maxlength="3" width="30px" style="text-align: right;" />
+						<label value="Días antes o despues" sclass="label-size11" />
+					</hbox>
+				</row>
+				<row>
+					<label value="Tiempo en que caducarán los puntos optenidos por el pasajero frecuente" sclass="label-size11" />
+					<hbox align="center">
+						<intbox id="itTiempoCaducanPuntosOptenidosPaxfree" maxlength="3" width="30px" style="text-align: right;" />
+						<label value="Días" sclass="label-size11" />
+					</hbox>
+				</row>
+				<row>
+					<label value="Porcentaje para la alerta del envío de especies valoradas (Abastecimientos)" sclass="label-size11" />
+					<hbox align="center">
+						<intbox id="itAlertaEnvioEspecieValorada" maxlength="3" width="30px" style="text-align: right;" />
+						<label value="%" sclass="label-size11" />
+					</hbox>
+				</row>
+				<row>
+					<label value="Porcentaje para la alerta de la solicitud de manifiestos de pasajeros (Despacho de Pasajeros)" sclass="label-size11" />
+					<hbox align="center">
+						<intbox id="itAlertaSolicitaManifiestoPax" maxlength="3" width="30px" style="text-align: right;" />
+						<label value="%" sclass="label-size11" />
+					</hbox>
+				</row>
+				<row>
+					<label value="Cantidad maxima de asientos que se puede seleccionar en una sola transaccion" sclass="label-size11" />
+					<hbox align="center">
+						<intbox id="itMaximoAsientosSeleccionados" maxlength="2" width="30px" style="text-align: right;" />
+						<label value="Asientos" sclass="label-size11" />
+					</hbox>
+				</row>
+				<row>
+					
+				</row>
+			</rows>
+		</grid>
+		<separator height="1px"/>
+		<hbox>
+		<groupbox closable="false" mold="3d"  >
+			<caption>
+				<div align="center">
+					<label value="USUARIOS APROBADORES" sclass="label-size11-bold"/>
+				</div>
+			</caption>
+			<hbox>
+				<listbox id="lbxUsuarioGerenciaComercialAprobador" width="200px"  rows="3" checkmark="true" multiple="true">
+					<listhead>
+						<listheader label="Usuario Gerencia Comercial" />
+					</listhead>
+				</listbox>
+						
+				<listbox id="lbxUsuarioComercialAprobador" width="200px" hflex="1" vflex="true"  rows="3" checkmark="true" multiple="true">
+					<listhead>
+						<listheader label="Usuario Comercial" />
+					</listhead>
+				</listbox>
+							
+				<listbox id="lbxUsuarioFinazasAprobador" width="200px" hflex="1" vflex="true"  rows="3" checkmark="true" multiple="true">
+					<listhead>
+						<listheader label="Usuario Finanzas" />
+					</listhead>
+				</listbox>
+			</hbox>
+		</groupbox>
+		<listbox id="lbxUsuarioGerenciaComercial" width="200px" hflex="1" vflex="true"  rows="4" checkmark="true" multiple="true">
+			<listhead>
+				<listheader label="Usuario Gerencia Comercial" />
+			</listhead>
+		</listbox>
+		</hbox>
+		<separator height="1px"/>			
+		<grid>
+			<rows>
+				<row>
+					<hbox>
+						<separator width="250px" />
+						<div>
+							<button label="Cerrar" image="/resources/mp_cerrar.png" onClick="wndParametros.closeTabWindow()"/>
+							<button label="Guardar" image="/resources/mp_guardarEnabled.png" onClick="wndParametros.GuardarParametros()"/>
+						</div>	
+					</hbox>
+				</row>
+			</rows>
+		</grid>
+	</groupbox>	
+	
+</window>
+</zk>

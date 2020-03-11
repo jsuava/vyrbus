@@ -1,0 +1,174 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: José Abanto
+ * Fecha		: 05/01/2017
+ * Hora			: 15:40:01
+ */
+package com.tepsa.sisvyr.service.business.impl;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.TreeMap;
+
+import org.springframework.transaction.annotation.Transactional;
+import org.zkoss.zk.ui.Executions;
+
+import com.tepsa.sisvyr.model.bean.DetalleButaca;
+import com.tepsa.sisvyr.model.bean.MapaBus;
+import com.tepsa.sisvyr.model.bean.Usuario;
+import com.tepsa.sisvyr.model.dao.DetalleButacaDAO;
+import com.tepsa.sisvyr.service.business.DetalleButacaManager;
+import com.tepsa.sisvyr.service.locator.ServiceLocator;
+import com.tepsa.sisvyr.service.util.Constantes;
+import com.tepsa.sisvyr.service.util.UtilData;
+
+/**
+ * @author Jose Abanto
+ *
+ */
+public class DetalleButacaManagerImpl implements DetalleButacaManager{
+	private DetalleButacaDAO detalleButacaDAO;
+
+	/**
+	 * @return the detalleButacaDAO
+	 */
+	public DetalleButacaDAO getDetalleButacaDAO() {
+		return detalleButacaDAO;
+	}
+
+	/**
+	 * @param detalleButacaDAO the detalleButacaDAO to set
+	 */
+	public void setDetalleButacaDAO(DetalleButacaDAO detalleButacaDAO) {
+		this.detalleButacaDAO = detalleButacaDAO;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.DetalleButacaManager#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public ArrayList<DetalleButaca> buscarPorEstadoRegistro(String estado,String criterioOrden) {
+		// TODO Auto-generated method stub
+		return getDetalleButacaDAO().buscarPorEstadoRegistro(estado, criterioOrden);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.DetalleButacaManager#buscarPorX(java.util.TreeMap, java.util.List)
+	 */
+	@Override
+	public ArrayList<DetalleButaca> buscarPorX(TreeMap<String, Object> criteriosBusqueda,List<String> criteriosOrdenar) {
+		// TODO Auto-generated method stub
+		return getDetalleButacaDAO().buscarPorX(criteriosBusqueda, criteriosOrdenar);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.DetalleButacaManager#buscarPorId(java.lang.Long)
+	 */
+	@Override
+	public DetalleButaca buscarPorId(Long id) {
+		// TODO Auto-generated method stub
+		return getDetalleButacaDAO().buscarPorId(id);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.DetalleButacaManager#guardar(com.tepsa.sisvyr.model.bean.DetalleButaca)
+	 */
+	@Transactional
+	@Override
+	public void guardar(DetalleButaca detalleButaca) {
+		// TODO Auto-generated method stub
+		getDetalleButacaDAO().guardar(detalleButaca);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.DetalleButacaManager#actualizar(com.tepsa.sisvyr.model.bean.DetalleButaca)
+	 */
+	@Transactional
+	@Override
+	public void actualizar(DetalleButaca detalleButaca) {
+		// TODO Auto-generated method stub
+		getDetalleButacaDAO().actualizar(detalleButaca);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.DetalleButacaManager#inactivar(java.lang.Long)
+	 */
+	@Override
+	public void inactivar(Long id) {
+		// TODO Auto-generated method stub
+		getDetalleButacaDAO().inactivar(id);
+	}
+
+	/* 
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.DetalleButacaManager#guardar(java.util.List, java.lang.String, java.lang.String, java.lang.Integer, com.tepsa.sisvyr.model.bean.Usuario)
+	 */
+	@Override
+	@Transactional
+	public int guardar(List<DetalleButaca> detalleButacas, String fechaInicial, String fechaFinal, Integer servicioId, Usuario usuario) throws Exception {
+		int isCorrect=Constantes.FAILURE;
+		System.out.println(Constantes.FORMAT_DATE_TIME_24H.format(new Date())+" - Buscando asientos..");
+		List<MapaBus> lstMApabus=ServiceLocator.getMapaBusManager().buscarMapaBus(servicioId, Constantes.VALUE_ACTIVO);;
+		
+		Date _fechaInicial=Constantes.FORMAT_DATE.parse(fechaInicial);
+		Date _fechaFinal=Constantes.FORMAT_DATE.parse(fechaFinal);
+		long cantDias=(long)1;
+		cantDias+= (_fechaFinal.getTime()-_fechaInicial.getTime())/Constantes.MILISEGUNDOS_X_DIA;
+		for(int x=0; x<(int)cantDias;x++){						
+			Date fecha= new Date(_fechaInicial.getTime()+(x*Constantes.MILISEGUNDOS_X_DIA));
+			System.out.println(Constantes.FORMAT_DATE_TIME_24H.format(new Date())+" - Obteniendo fecha "+Constantes.FORMAT_DATE.format(fecha)+"...");
+			for(DetalleButaca detalleButaca : detalleButacas) {
+				//Busca el registro del mapabus
+				for(MapaBus oMapaBus:lstMApabus){
+					System.out.println(Constantes.FORMAT_DATE_TIME_24H.format(new Date())+" - Buscando asiento y tipo de asiento ...");
+					if(oMapaBus.getTipoObjeto().intValue()==0 && oMapaBus.getNumeroAsiento()!=null && oMapaBus.getTipoAsiento()!=null){
+						if(oMapaBus.getNumeroAsiento().intValue()==detalleButaca.getMapaBus().getNumeroAsiento().intValue() &&
+								oMapaBus.getTipoAsiento().getId().intValue()==detalleButaca.getMapaBus().getTipoAsiento().getId().intValue()){
+							
+							DetalleButaca nuevaTarifa=(DetalleButaca) detalleButaca.clone();
+							nuevaTarifa.setMapaBus(oMapaBus);
+							nuevaTarifa.setFecha(fecha);
+							nuevaTarifa.setEstadoRegistro(Constantes.VALUE_ACTIVO);		
+							
+							System.out.println(Constantes.FORMAT_DATE_TIME_24H.format(new Date())+" - Validando existencia de tarifa para el asiento ("+oMapaBus.getNumeroAsiento()+") ...");
+							/*Valida si existe una tarifa con los mismos parametros*/
+							List<DetalleButaca> result= getDetalleButacaDAO().validarExisteTarifa(nuevaTarifa);
+							if(result.size()>0){
+								DetalleButaca _detalleButaca=result.get(0);
+								_detalleButaca.setEstadoRegistro(Constantes.VALUE_INACTIVO);
+								UtilData.auditarRegistro(_detalleButaca, true, usuario, Executions.getCurrent());
+								
+								System.out.println(Constantes.FORMAT_DATE_TIME_24H.format(new Date())+" - Anulando tarifa...");
+								getDetalleButacaDAO().actualizar(_detalleButaca);
+								
+								nuevaTarifa.setDetalleButacaRef(_detalleButaca);
+								nuevaTarifa.setDetalleButacaOriginal(_detalleButaca.getDetalleButacaOriginal());
+							}
+							System.out.println(Constantes.FORMAT_DATE_TIME_24H.format(new Date())+" - insertanto nueva tarifa...");
+							/*Inserta la nueva tarifa*/
+							UtilData.auditarRegistro(nuevaTarifa, usuario, Executions.getCurrent());
+							getDetalleButacaDAO().guardar(nuevaTarifa);
+							
+							/* actualiza el idoriginal si es que un null (va ser null cuando es una tarifa completamente nueva) */
+							if(nuevaTarifa.getDetalleButacaOriginal()==null){
+								System.out.println(Constantes.FORMAT_DATE_TIME_24H.format(new Date())+" - actualizando id original...");
+								nuevaTarifa.setDetalleButacaOriginal(nuevaTarifa.getId());
+								getDetalleButacaDAO().actualizar(nuevaTarifa);
+							}
+							break;
+						}
+					}
+				}
+			}
+		}
+		
+
+		
+		isCorrect=Constantes.CORRECT;
+		
+		return isCorrect;
+	}
+}

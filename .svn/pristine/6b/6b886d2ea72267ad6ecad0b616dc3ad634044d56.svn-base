@@ -1,0 +1,43 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: Interfaz donde declaramos los metodos que manipularan datos con hibernate.
+ * Autor		: José Sullo Avalos
+ * Fecha		: 07/04/2012
+ */
+package com.tepsa.sisvyr.model.dao;
+
+import java.util.List;
+
+/**
+ * Interfaz donde declaramos los metodos que se utilizaran con Hibernate
+ * @author José Sullo Avalos
+ * @since JDK1.6
+ */
+public interface GenericDAO {
+	/**
+	 * Guarda un objeto mediante hibernate.
+	 * @param object	: Objeto a guardar.
+	 */
+	public void save(Object object);
+	/**
+	 * Actualiza un objeto mediante hibernate.
+	 * @param object	: Objeto a actualizar.
+	 */
+    public void update(Object object);
+    /**
+     * Elimina un objeto mediante hibernate.
+     * @param object	: Objeto a eliminar.
+     */
+    public void delete(Object object);
+    /**
+     * Busca de acuerdo a los criterios enviados, utiliza un objeto Criteria.
+     * @param oClass			: Clase en la cual se buscara.
+     * @param campo				: Alias del campo de la tabla en el cual se realizara la busqueda. 
+     * @param criterios			: condiciones que debera cumplir el alias.
+     * @param criteriosOrdenar	: Criterios a utilizar para ordenar la información.
+     * @param estadoRegistro	: Estado del Registro Activo o inactivo.
+     * @return Lista de registros encontrados.
+     */
+    public List<?> findByX(Class<?> oClass, String campo, Object[] criterios, List<String> criteriosOrdenar, String estadoRegistro);
+}

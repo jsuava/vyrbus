@@ -1,0 +1,40 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndAvance" title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndAvanceBuses">
+	<grid>
+		<columns>
+			<column width="60px" align="right" />
+			<column width="110px" align="left"/>
+			<column width="60px" align="right"/>
+			<column width="150px" align="left"/>
+			<column width="70px" align="right"/>
+			<column width="120px" align="left"/>
+			<column/>
+		</columns>
+		<rows>
+			<row>
+				<label value="INICIO :"/>
+				<datebox id="dtbxFechaInicio" width="95px" format="dd/MM/yyyy" readonly="true" />
+				<label value="ORIGEN :"/>
+				<combobox id="cmbLocalidadOrigen" readonly="true"  />
+				<label value="SERVICIO :"/>
+				<combobox id="cmbServicio" readonly="true" width="108px" />
+				<separator/>
+			</row>
+			<row>
+				<label value="FIN :"/>
+				<datebox id="dtbxFechafin" width="95px" format="dd/MM/yyyy" readonly="true" />
+				<label value="DESTINO :"/>
+				<combobox id="cmbLocalidadDestino" readonly="true"  />
+				<label value="BUS :"/>
+				<combobox id="cmbBus" readonly="true" width="108px" />
+				<hbox  align="center">
+					<button label="Buscar" image="/resources/mp_buscarEnabled.png" autodisable="self" onClick="wndAvance.buscar()" />
+					<button label="Cerrar" image="/resources/mp_cerrar.png" onClick="wndAvance.closeTabWindow()"/>
+				</hbox>
+			</row>
+		</rows>
+	</grid>
+
+</window>
+</zk>

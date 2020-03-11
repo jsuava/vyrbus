@@ -1,0 +1,663 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripci�n	: 
+ * Fecha		: 25/06/2014
+ */
+package com.cystesoft.vyrbus.model.dao.impl;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.zkoss.zk.ui.Executions;
+
+import com.cystesoft.vyrbus.model.bean.Agencia;
+import com.cystesoft.vyrbus.model.bean.Usuario;
+import com.cystesoft.vyrbus.model.bean.VSAfiliacion;
+import com.cystesoft.vyrbus.model.bean.VSAsegurado;
+import com.cystesoft.vyrbus.model.bean.VSAsignacionCertificados;
+import com.cystesoft.vyrbus.model.bean.VSCiudad;
+import com.cystesoft.vyrbus.model.bean.VSContratante;
+import com.cystesoft.vyrbus.model.bean.VSEncabezadoAfiliacion;
+import com.cystesoft.vyrbus.model.bean.VSEstadoCivil;
+import com.cystesoft.vyrbus.model.bean.VSEstructuraAsegurado;
+import com.cystesoft.vyrbus.model.bean.VSEstructuraContratante;
+import com.cystesoft.vyrbus.model.bean.VSEstructuraDeclaracion;
+import com.cystesoft.vyrbus.model.bean.VSLiquidacion;
+import com.cystesoft.vyrbus.model.bean.VSSexo;
+import com.cystesoft.vyrbus.model.bean.VSTipoDocumento;
+import com.cystesoft.vyrbus.model.bean.VSTipoPersona;
+import com.cystesoft.vyrbus.model.bean.VSTipoProceso;
+import com.cystesoft.vyrbus.model.bean.VSTipoRegistro;
+import com.cystesoft.vyrbus.model.dao.VentaSeguroDAO;
+import com.cystesoft.vyrbus.service.util.Constantes;
+import com.cystesoft.vyrbus.service.util.UtilData;
+
+/**
+ * @author JABANTO
+ *
+ */
+@SuppressWarnings("unchecked")
+public class VentaSeguroDAOImpl extends GenericDAOImpl implements VentaSeguroDAO{
+
+	/** TRANSACCIONES REFERIDAS AL TIPO DE DOCUMENTO*/
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#buscarTipoDocumentoPorEstado(java.lang.String)
+	 */
+	@Override
+	public List<VSTipoDocumento> buscarTipoDocumentoPorEstado(String estado)throws Exception {
+		return (List<VSTipoDocumento>) findByEstadoRegistro(VSTipoDocumento.class, estado, "denominacion");
+	}
+
+	
+	/** TRANSACCIONES REFERIDAS SEXO DEL ASEGURADO*/
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#buscarSexoPorEstado(java.lang.String)
+	 */
+	@Override
+	public List<VSSexo> buscarSexoPorEstado(String estado) throws Exception {
+		return (List<VSSexo>) findByEstadoRegistro(VSSexo.class, estado, "denominacion");
+	}
+
+	
+	/** TRANSACCIONES REFERIDAS ESTADO CIVIL */
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#buscarEstadoCivilPorEstado(java.lang.String)
+	 */
+	@Override
+	public List<VSEstadoCivil> buscarEstadoCivilPorEstado(String estado)throws Exception {
+		return (List<VSEstadoCivil>) findByEstadoRegistro(VSEstadoCivil.class, estado, "denominacion");
+	}
+
+	
+	/** TRANSACCIONES REFERIDAS A LAS CIUDADES */
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#buscarCiudadesPorEstado(java.lang.String)
+	 */
+	@Override
+	public List<VSCiudad> buscarCiudadesPorEstado(String estado)throws Exception {
+		return (List<VSCiudad>) findByEstadoRegistro(VSCiudad.class, estado, "denominacion");
+	}
+
+
+	/** TRANSACCIONES REFERIDAS AL ASEGURADO */
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#buscarAseguradoByDocumento(java.lang.Integer, java.lang.String)
+	 */
+	@Override
+	public VSAsegurado buscarAseguradoByDocumento(Integer idTipoDocumento,String numeroDocumento) throws Exception {
+		
+		String hql="FROM VSAsegurado ag WHERE ag.vsTipoDocumento.id="+idTipoDocumento+" AND ag.numeroDocumento='"+numeroDocumento+"' AND ag.estadoRegistro='A' ";
+		VSAsegurado asegurado=(VSAsegurado) getSession().createQuery(hql).uniqueResult();
+		
+		return asegurado;
+	}
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#aseguradoActualizar(com.tepsa.sisvyr.model.bean.VSAsegurado)
+	 */
+	@Override
+	public void actualizarAsegurado(VSAsegurado asegurado) throws Exception {
+		super.update(asegurado);		
+	}
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#aseguradoGuardar(com.tepsa.sisvyr.model.bean.VSAsegurado)
+	 */
+	@Override
+	public void guardarAsegurado(VSAsegurado asegurado) throws Exception {
+		super.save(asegurado);
+	}
+
+	
+	/** TRANSACCIONES REFERIDAS A LA LIQUIDACION */
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#buscarLiquidacion(java.lang.Integer, java.lang.String, java.lang.Integer)
+	 */
+	@Override
+	public VSLiquidacion buscarLiquidacion(Integer idUsuario,Integer idAgencia,String fechaLiquidacion, Integer estado) throws Exception {
+		String hql="FROM VSLiquidacion lq WHERE lq.usuarioID="+idUsuario+" AND fechaLiquidacion='"+fechaLiquidacion+"' AND lq.agenciaID="+idAgencia+" "+ 
+				 "AND estadoRegistro='A' ";
+		if(estado!=null)
+			hql+="AND estadoLiquidacion="+estado+" ";
+				
+		VSLiquidacion vsLiquidacion=(VSLiquidacion) getSession().createQuery(hql).uniqueResult();
+		
+		return vsLiquidacion;
+	}
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#aperturarLiquidacion(com.tepsa.sisvyr.model.bean.VSLiquidacion)
+	 */
+	@Override
+	public void aperturarLiquidacion(VSLiquidacion vsLiquidacion)throws Exception {
+		super.save(vsLiquidacion);		
+	}
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#cerrarLiquidacion(com.tepsa.sisvyr.model.bean.VSLiquidacion)
+	 */
+	@Override
+	public void cerrarLiquidacion(VSLiquidacion vsLiquidacion) throws Exception {
+		super.update(vsLiquidacion);
+	}
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#ventasLiquidar(java.lang.Integer)
+	 */
+	@Override
+	public VSLiquidacion buscarLiquidacionVentas(Integer idLiquidacion) throws Exception {
+		String sql="SELECT  af.c_paxfre "+
+					      ",COUNT(af.c_paxfre) as Cantidad "+
+					      ",SUM(af.n_imppag) as monto "+
+				   "FROM LAPOSITIVA.svtafiliacion af  "+
+				   "WHERE af.liquidacion_id="+idLiquidacion+" "+
+				   	 "AND af.c_estreg='A' "+
+				   "GROUP BY af.c_paxfre ";	
+		List<?>result=getSession().createSQLQuery(sql).list();
+		VSLiquidacion vsLiquidacion=new VSLiquidacion();;
+		
+		Integer cantidadTotal=0;
+		Double montoTotal=0.00;
+		for(int i=0;i<result.size();i++){
+			Object[] obj=(Object[]) result.get(i);
+								
+			if(obj[0].toString().equals("S")){//Si es pasajero Frecuente
+				vsLiquidacion.setCantidadVentasPaxFree(((BigDecimal)obj[1]).intValue());
+				vsLiquidacion.setMontoVentasPaxFree(((BigDecimal)obj[2]).doubleValue());
+			}else if(obj[0].toString().equals("N")){//Si es pasajero normal
+				vsLiquidacion.setCantidadVentasPaxNromal(((BigDecimal)obj[1]).intValue());
+				vsLiquidacion.setMontoVentasPaxNromal(((BigDecimal)obj[2]).doubleValue());
+			}
+			
+			cantidadTotal+=((BigDecimal)obj[1]).intValue();
+			montoTotal+=((BigDecimal)obj[2]).doubleValue();		
+		}
+		
+		vsLiquidacion.setCantidadVentasTotal(cantidadTotal);
+		vsLiquidacion.setMontoVentasTotal(montoTotal);
+		
+		return vsLiquidacion;
+	}
+
+
+	/** TRANSACCIONES REFERIDAS HA LA AFILIACION */
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#guardarAfiliacion(com.tepsa.sisvyr.model.bean.VSAfiliacion)
+	 */
+	@Override
+	public void guardarAfiliacion(VSAfiliacion vsAfiliacion) throws Exception {
+		super.save(vsAfiliacion);
+	}
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#validarBoletoAfiliacion(java.lang.String)
+	 */
+	@Override
+	public Boolean validarBoletoAfiliacion(String numeroBoleto)throws Exception {
+		String hql="FROM VSAfiliacion af WHERE af.numeroBoleto='"+numeroBoleto+"' AND estadoRegistro='A' ";
+		
+		if(getSession().createQuery(hql).list().size()>0)
+			return true;
+		else
+			return false;
+	}
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#validarCertificadoAfiliacion(java.lang.String)
+	 */
+	@Override
+	public Boolean validarCertificadoAfiliacion(String numeroCertificado)throws Exception {
+		String hql="FROM VSAfiliacion af WHERE af.numeroCertificado='"+numeroCertificado+"' AND estadoRegistro='A' ";
+		
+		if(getSession().createQuery(hql).list().size()>0)
+			return true;
+		else
+			return false;
+	}
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#buscarAfiliacionesByProceso(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public List<VSAfiliacion> buscarAfiliacionesByProceso(String fechaInicio,String fechaFin) throws Exception {
+		String sql="SELECT tr.tipreg_id "+ //0
+			      ",tr.c_denominacion AS tipoRegsitro "+ //1
+			      ",tr.n_codigo AS codigoRegistro "+ //2
+			      ",tper.tipper_id "+ //3
+			      ",tper.c_denominacion AS tipoPersona "+ //4
+			      ",tper.c_codigo AS codigoPersona "+ //5
+			      ",td.tipdoc_id  "+ //6
+			      ",td.c_denominacion AS tipoDocumento "+ //7
+			      ",td.n_codigo AS codigoDocumento "+ //8
+			      ",sx.sexo_id "+ //9
+			      ",sx.c_Denominacion As Sexo "+ //10
+			      ",sx.c_codigo AS codigoSexo "+ //11
+			      ",ec.estciv_id "+ //12
+			      ",ec.c_denominacion AS estadoCivil "+ //13
+			      ",ec.n_codigo AS codigoEstadoCivil "+ //14
+			      ",ase.asegurado_id "+ //15
+			      ",ase.c_numdoc AS numeroDocumento "+ //16
+			      ",ase.c_apepat AS apellidoPaterno "+ //17
+			      ",ase.c_apemat AS apellidoMaterno "+ //18
+			      ",ase.c_nombre AS nombre "+ //19
+			      ",ase.d_fecnac AS fechaNacimiento "+ //20
+			      ",ase.c_Direccion AS direccion "+ //21
+			      ",ase.c_ubidep AS ubigeoDepto "+ //22
+			      ",ase.c_ubipro AS ubigeoProv "+ //23
+			      ",ase.c_ubidis AS ubigeoDist "+ //24
+			      ",ase.c_telefono "+ //25
+			      ",ase.c_celular "+ //26
+			      ",af.afiliacion_id "+//27
+			      ",af.n_adicional "+ //28
+			      ",af.c_numcer AS numeroCertificado "+ //29
+			      ",af.n_imppag AS importePagado "+ //30
+			      ",af.d_fecvigini AS fechaVigenciaInicial "+ //31
+			      ",af.d_fecvigfin AS fechaVigenciaFinal "+ //32
+			      ",af.d_fecven AS fechaVenta "+ //33
+			      ",af.usuario_id "+ //34
+			      ",c.ciudad_id "+ //35
+			      ",c.c_denominacion as ciudad "+ //36
+			      ",c.c_codigo as codigociudad "+ //37
+			"FROM LAPOSITIVA.SVTAFILIACION af "+ 
+			     "INNER JOIN LAPOSITIVA.SVMTIPREG tr ON (tr.tipreg_id=af.tipreg_id) "+
+			     "INNER JOIN LAPOSITIVA.SVMTIPPER tper ON (tper.tipper_id=af.tipper_id) "+
+			     "INNER JOIN LAPOSITIVA.SVMASEGURADO ase ON (ase.asegurado_id=af.asegurado_id) "+
+			     "INNER JOIN LAPOSITIVA.SVMTIPDOC td ON (td.tipdoc_id=ase.tipdoc_id) "+
+			     "INNER JOIN LAPOSITIVA.SVMSEXO sx ON (sx.sexo_id=ase.sexo_id) "+
+			     "INNER JOIN LAPOSITIVA.SVMESTCIV ec ON (ec.estciv_id=ase.estciv_id) " +
+			     "INNER JOIN LAPOSITIVA.SVMCIUDAD c ON (c.ciudad_id=af.ciudad_id) "+
+			"WHERE af.d_fecven BETWEEN to_date('"+fechaInicio+"','"+Constantes.DATE_FORMAT+"') AND to_date('"+fechaFin+"','"+Constantes.DATE_FORMAT+"') "+
+			"AND af.c_estreg='A' "+
+			"AND af.d_fecproafi IS NULL ";
+						     
+		log.info(sql);
+		List<?> result = getSession().createSQLQuery(sql).list();
+		List<VSAfiliacion> lstResult = new ArrayList<VSAfiliacion>();
+		for(int i=0; i<result.size(); i++){
+			Object[] obj = (Object[])result.get(i);
+			
+			VSTipoRegistro tipoRegistro=new VSTipoRegistro();
+			tipoRegistro.setId(((BigDecimal)obj[0]).intValue());
+			tipoRegistro.setDenominacion(obj[1].toString());
+			tipoRegistro.setCodigo(((BigDecimal)obj[2]).intValue());
+			
+			VSTipoPersona tipoPersona=new VSTipoPersona();
+			tipoPersona.setId(((BigDecimal)obj[3]).intValue());
+			tipoPersona.setDenominacion(obj[4].toString());
+			tipoPersona.setCodigo(obj[5].toString());
+			
+			VSTipoDocumento tipoDocumento=new VSTipoDocumento();
+			tipoDocumento.setId(((BigDecimal)obj[6]).intValue());
+			tipoDocumento.setDenominacion(obj[7].toString());
+			tipoDocumento.setCodigo(((BigDecimal)obj[8]).intValue());
+			
+			VSSexo sexo= new VSSexo();
+			sexo.setId(((BigDecimal)obj[9]).intValue());
+			sexo.setDenominacion(obj[10].toString());
+			sexo.setCodigo(obj[11].toString());
+			
+			VSEstadoCivil estadoCivil=new VSEstadoCivil();
+			estadoCivil.setId(((BigDecimal)obj[12]).intValue());
+			estadoCivil.setDenominacion(obj[13].toString());
+			estadoCivil.setCodigo(((BigDecimal)obj[14]).intValue());
+			
+			VSCiudad ciudad=new VSCiudad();
+			ciudad.setId(((BigDecimal)obj[35]).intValue());
+			ciudad.setDenominacion(obj[6].toString());
+			ciudad.setCodigo(obj[37].toString());
+			
+			VSAsegurado asegurado=new VSAsegurado();
+			asegurado.setId(((BigDecimal)obj[15]).longValue());
+			asegurado.setNumeroDocumento(obj[16]!=null?obj[16].toString():"");
+			asegurado.setApellidoPaterno(obj[17]!=null?obj[17].toString():"");
+			asegurado.setApellidoMaterno(obj[18]!=null?obj[18].toString():"");
+			asegurado.setNombres(obj[16]!=null?obj[19].toString():"");
+			asegurado.setFechaNacimiento(obj[20]!=null?(Date)obj[20]:null);
+			asegurado.setDireccion(obj[21]!=null?obj[21].toString():"");
+			asegurado.setUbigeoDepartamento(obj[22]!=null?obj[22].toString():"");
+			asegurado.setUbigeoProvincia(obj[23]!=null?obj[23].toString():"");
+			asegurado.setUbigeoDistrito(obj[24]!=null?obj[24].toString():"");
+			asegurado.setTelefono(obj[25]!=null?obj[25].toString():"");
+			asegurado.setCelular(obj[26]!=null?obj[26].toString():"");
+			asegurado.setVsTipoDocumento(tipoDocumento);
+			asegurado.setVsSexo(sexo);
+			asegurado.setVsEstadoCivil(estadoCivil);
+						
+			VSAfiliacion afiliacion=new VSAfiliacion();
+			afiliacion.setId(((BigDecimal)obj[27]).longValue());
+			afiliacion.setAdicional(obj[28]!=null?((BigDecimal)obj[28]).intValue():0);
+			afiliacion.setNumeroCertificado(obj[29]!=null?obj[29].toString():"");
+			afiliacion.setImportePagado(((BigDecimal)obj[30]).doubleValue());
+			afiliacion.setFechaVigenciaInicial((Date)obj[31]);
+			afiliacion.setFechaVigenciaFinal((Date)obj[32]);
+			afiliacion.setFechaVenta((Date)obj[33]);
+			afiliacion.setUsuarioID(((BigDecimal)obj[34]).intValue());
+			afiliacion.setVsTipoRegistro(tipoRegistro);
+			afiliacion.setVsTipoPersona(tipoPersona);
+			afiliacion.setVsAsegurado(asegurado);
+			afiliacion.setVsCiudad(ciudad);
+			
+			lstResult.add(afiliacion);
+		}
+		
+		return lstResult;
+	}
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#actualizaFechaProcesoAfiliacion(java.lang.String)
+	 */
+	@Override
+	public void actualizaFechaProcesoAfiliacion(String Ids) throws Exception {
+		VSAfiliacion afiliacion= new VSAfiliacion();
+		Usuario usuario=(Usuario) Executions.getCurrent().getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO);
+		UtilData.auditarRegistro(afiliacion, true, usuario, Executions.getCurrent());
+				
+		String sql="UPDATE LAPOSITIVA.SVTAFILIACION SET D_FECPROAFI= SYSDATE, AUDUSUMOD='"+afiliacion.getUsuarioModificacion()+"', " +
+				   "AUDIPMODI='"+afiliacion.getIpModificacion()+"' WHERE AFILIACION_ID IN ("+Ids+")";
+		
+		log.info(sql);
+		getSession().createSQLQuery(sql).executeUpdate();
+	}
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#buscarAfiliacionesByConsulta(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer, java.lang.String)
+	 */
+	@Override
+	public List<VSAfiliacion> buscarAfiliacionesByConsulta(String fechaInicio,String fechaFin, String tipoPasajero, String numDoctoPax,Integer idUsuario, Integer idAgencia, String boleto)throws Exception {
+		
+		tipoPasajero=tipoPasajero!=null?"'"+tipoPasajero+"'":null;
+		boleto=boleto!=null?"'"+boleto+"'":null;
+		
+		String sql="SELECT  asg.c_apepat as apePaternoAseg "+
+					      ",asg.c_apemat as apeMaternoAseg "+
+					      ",asg.c_nombre as nombresAseg "+
+					      ",asg.c_numdoc as nroDocumento "+
+					      ",cd.c_denominacion as ciudadDestino "+
+					      ",DECODE(af.c_paxfre,'S','FRECUENTE','NORMAL') as tipoPax "+
+					      ",af.d_Fecven as fecha "+
+					      ",af.c_numcer as certificado "+
+					      ",af.d_fecvigini as vigenciaInicial "+
+					      ",af.d_fecvigfin as vigenciaFinal "+
+					      ",af.n_imppag as importe "+
+					      ",af.c_numboleto as boleto "+
+					      ",af.d_fecproafi as fechaProcesoAfiliacion "+
+					      ",af.c_fecpropag as fechaProcesoPago "+
+					      ",u.c_Apepat as apePaternoUsu "+
+					      ",u.c_Apemat as apeMaternoUsu "+
+					      ",u.c_nombre as nombresUsu  "+
+					      ",ag.c_nomcor as agencia "+
+					      ",u.usuario_id "+
+					"FROM LAPOSITIVA.svtafiliacion af  "+
+					    "INNER JOIN LAPOSITIVA.svmasegurado asg ON (asg.asegurado_id=af.asegurado_id) "+ 
+					    "INNER JOIN LAPOSITIVA.svmciudad cd ON (cd.ciudad_id=af.ciudad_id) "+
+					    "INNER JOIN VRMUSUARIO u ON (u.usuario_id=af.usuario_id) "+
+					    "LEFT JOIN VRMAGENCIA ag ON (ag.agencia_id=af.agencia_id) "+
+					//"WHERE af.d_fecven BETWEEN to_date('"+fechaInicio+"','dd/MM/yyyy') AND to_date('"+fechaFin+"','dd/MM/yyyy') "+
+					  //  "AND af.c_paxfre=NVL("+tipoPasajero+",af.c_paxfre) "+
+					 "WHERE af.c_paxfre=NVL("+tipoPasajero+",af.c_paxfre) "+
+					    "AND af.usuario_id=NVL("+idUsuario+",af.usuario_id) "+
+						"AND asg.c_numdoc=NVL("+numDoctoPax+",asg.c_numdoc) ";
+					if(fechaInicio!=null && fechaFin!=null)
+						sql+="AND af.d_fecven BETWEEN to_date('"+fechaInicio+"','dd/MM/yyyy') AND to_date('"+fechaFin+"','dd/MM/yyyy') ";
+					if(boleto!=null)    
+					    sql+="AND af.c_numboleto=NVL("+boleto+",af.c_numboleto) ";
+					if(idAgencia!=null)
+					    sql+="AND af.agencia_id=NVL("+idAgencia+",af.agencia_id) ";
+					
+				 sql+="AND af.c_estreg='A' "+
+					"ORDER BY af.d_fecven,ag.c_nomcor,af.c_numcer,u.c_Apepat||''||u.c_Apemat||','||u.c_nombre  ";
+		log.info(sql);
+		List<?>result=getSession().createSQLQuery(sql).list();
+		List<VSAfiliacion>lstAfiliaciones =new ArrayList<VSAfiliacion>();
+		for(int x=0; x<result.size();x++){
+			Object[] obj=(Object[])result.get(x);
+
+			VSAsegurado asegurado=new VSAsegurado();
+			asegurado.setApellidoPaterno(obj[0].toString());
+			asegurado.setApellidoMaterno(obj[1]!=null?obj[1].toString():null);
+			asegurado.setNombres(obj[2].toString());
+			asegurado.setNumeroDocumento(obj[3].toString());
+			asegurado.setTipoPasajero(obj[5].toString());
+
+			VSCiudad ciudad=new VSCiudad();
+			ciudad.setDenominacion(obj[4].toString());
+
+			VSAfiliacion afiliacion=new VSAfiliacion();
+			afiliacion.setFechaVenta((Date)obj[6]);
+			afiliacion.setNumeroCertificado(obj[7].toString());
+			afiliacion.setFechaVigenciaInicial((Date)obj[8]);
+			afiliacion.setFechaVigenciaFinal((Date)obj[9]);
+			afiliacion.setImportePagado(((BigDecimal)obj[10]).doubleValue());
+			afiliacion.setNumeroBoleto(obj[11]!=null?obj[11].toString():null);
+			afiliacion.setFechaProcesoAfiliacion(obj[12]!=null?(Date)obj[12]:null);
+			afiliacion.setFechaProcesoPago(obj[13]!=null?(Date)obj[12]:null);
+
+			Usuario usuario=new Usuario();
+			usuario.setApellidoPaterno(obj[14].toString());
+			usuario.setApellidoMaterno(obj[15]!=null?obj[15].toString():null);
+			usuario.setNombre(obj[16].toString());
+			usuario.setId(((BigDecimal)obj[18]).intValue());
+
+			Agencia agencia=null;
+			if(obj[17]!=null){
+				agencia=new Agencia();
+				agencia.setNombreCorto(obj[17].toString());
+			}
+
+			afiliacion.setVsCiudad(ciudad);
+			afiliacion.setVsAsegurado(asegurado);
+			afiliacion.setUsuario(usuario);
+			afiliacion.setAgencia(agencia);
+			
+			lstAfiliaciones.add(afiliacion);
+		}
+		
+		return lstAfiliaciones;
+	}
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#buscarAgenciasAfiliacionesByConsulta(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public List<Agencia> buscarAgenciasAfiliacionesByConsulta(String fechaInicio, String fechaFin) throws Exception {
+		String sql="SELECT DISTINCT(ag.agencia_id) agencia_id "+
+			      ",ag.c_nomcor as agencia  "+
+			"FROM lapositiva.svtafiliacion af "+
+			     "INNER JOIN vyr.vrmagencia ag ON (ag.agencia_id=af.agencia_id) "+ 
+			"WHERE af.d_fecven BETWEEN to_date('"+fechaInicio+"','dd/MM/yyyy') AND to_date('"+fechaFin+"','dd/MM/yyyy') "+
+			    "AND af.c_estreg='A'  ";
+		log.info(sql);
+		List<?>result=getSession().createSQLQuery(sql).list();
+		List<Agencia>lstAgencias=new ArrayList<Agencia>();
+		for(int x=0; x<result.size();x++){
+			Object[] obj=(Object[])result.get(x);
+			Agencia agencia=new Agencia(((BigDecimal)obj[0]).intValue());
+			agencia.setNombreCorto(obj[1].toString());
+			
+			lstAgencias.add(agencia);
+			
+		}
+		return lstAgencias;
+	}
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#buscarUsuariosAfiliacionesByConsulta(java.lang.String, java.lang.String, java.lang.Integer)
+	 */
+	@Override
+	public List<Usuario> buscarUsuariosAfiliacionesByConsulta(String fechaInicio, String fechaFin, Integer idAgencia)throws Exception {		
+		String sql="SELECT DISTINCT(u.usuario_id)usuario_id "+
+					      ",u.c_apepat  "+
+					      ",u.c_apemat "+
+					      ",u.c_nombre  "+
+					"FROM lapositiva.svtafiliacion af "+
+					     "INNER JOIN vyr.vrmusuario u ON (u.usuario_id=af.usuario_id) "+ 
+					"WHERE af.d_fecven BETWEEN to_date('"+fechaInicio+"','dd/MM/yyyy') AND to_date('"+fechaFin+"','dd/MM/yyyy') "+
+					    "AND af.agencia_id="+idAgencia+ " "+
+					    "AND af.c_estreg='A'  ";
+		log.info(sql);
+		List<?>result=getSession().createSQLQuery(sql).list();
+		List<Usuario>lstUsuario=new ArrayList<Usuario>();
+		for(int x=0;x<result.size();x++){
+			Object[] obj=(Object[])result.get(x);
+			Usuario usuario=new Usuario(((BigDecimal)obj[0]).intValue());
+			usuario.setApellidoPaterno(obj[0]!=null?obj[1].toString():null);
+			usuario.setApellidoMaterno(obj[1]!=null?obj[2].toString():null);
+			usuario.setNombre(obj[3]!=null?obj[3].toString():null);
+			
+			lstUsuario.add(usuario);
+		}
+		
+		return lstUsuario;
+	}
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#anularCertificado(java.lang.String)
+	 */
+	@Override
+	public void anularCertificado(String numeroCertificado) throws Exception {
+		// TODO Auto-generated method stub
+		String sql="UPDATE lapositiva.svtafiliacion SET c_estreg='I' WHERE c_numcer='"+numeroCertificado+"' ";
+		getSession().createSQLQuery(sql).executeUpdate();
+	}
+	
+	/** TRANSACCIONES REFERIDAS AL TIPO DE PROCESO*/
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#buscarTipoProcesoPorEstado(java.lang.String)
+	 */
+	@Override
+	public List<VSTipoProceso> buscarTipoProcesoPorEstado(String estado)throws Exception {
+		return (List<VSTipoProceso>) super.findByEstadoRegistro(VSTipoProceso.class, estado, "denominacion");
+	}
+
+
+	/** TRANSACCIONES REFERIDAS AL CONTRATANTE*/
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#buscarContratantePorID(java.lang.Integer)
+	 */
+	@Override
+	public VSContratante buscarContratantePorID(Integer id) throws Exception {
+		// TODO Auto-generated method stub
+		return (VSContratante) super.findById(VSContratante.class, id.longValue());
+	}
+
+	
+	/** TRANSACCIONES REFERIDAS AL ENCABEZADO DE LA AFILIACION*/
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#guardarEncabezadoAfiliacion(com.tepsa.sisvyr.model.bean.VSEncabezadoAfiliacion)
+	 */
+	@Override
+	public void guardarEncabezadoAfiliacion(VSEncabezadoAfiliacion vsEncabezadoAfiliacion) throws Exception {
+		super.save(vsEncabezadoAfiliacion);
+	}
+
+
+	/** TRANSACCIONES REFERIDAS A LA ESTRUCTURA DE LA DECLARACION*/
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#guardarEstructuraDeclaracion(com.tepsa.sisvyr.model.bean.VSEstructuraDeclaracion)
+	 */
+	@Override
+	public void guardarEstructuraDeclaracion(VSEstructuraDeclaracion vsEstructuraDeclaracion) throws Exception {
+		super.save(vsEstructuraDeclaracion);
+	}
+
+
+	/** TRANSACCIONES REFERIDAS A LA ESTRUCTURA DEL CONTRATANTE*/
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#guardarEstructuraContrantante(com.tepsa.sisvyr.model.bean.VSEstructuraContratante)
+	 */
+	@Override
+	public void guardarEstructuraContrantante(VSEstructuraContratante vsEstructuraContratante) throws Exception {
+		super.save(vsEstructuraContratante);
+	}
+
+
+	/** TRANSACCIONES REFERIDAS A LA ESTRUCTURA DEL ASEGURADO*/
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#guardarEstructuraAsegurado(com.tepsa.sisvyr.model.bean.VSEstructuraAsegurado)
+	 */
+	@Override
+	public void guardarEstructuraAsegurado(VSEstructuraAsegurado vsEstructuraAsegurado) throws Exception {
+		super.save(vsEstructuraAsegurado);
+	}
+
+
+	/** TRANSACCIONES REFERIDAS A LA ASIGNACION DE CERTIFICADOS*/
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#buscarAsignacionCertificados(java.lang.Integer)
+	 */
+	@Override
+	public VSAsignacionCertificados buscarAsignacionCertificadosPorIdAgencia(Integer idAgencia) throws Exception {
+		String hql="FROM VSAsignacionCertificados ac WHERE ac.agenciaID="+idAgencia+" AND ac.estadoRegistro='A' ";	
+		VSAsignacionCertificados vsAsignacionCertificados=(VSAsignacionCertificados) getSession().createQuery(hql).uniqueResult();
+		
+		return vsAsignacionCertificados;
+	}
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#buscarAsignacionCertificadosPorX(java.util.TreeMap, java.util.List)
+	 */
+	@Override
+	public List<VSAsignacionCertificados> buscarAsignacionCertificados(Integer idAgencia) throws Exception {
+		String sql="SELECT ag.agencia_id "+
+					     ",ag.c_nomcor AS agencia "+
+					     ",ac.asicer_id "+
+					     ",ac.n_corini AS correlativoInicial "+
+					     ",ac.n_corfin AS correlativoFin "+
+				   "FROM LAPOSITIVA.SVMASICER ac "+
+					   "INNER JOIN VRMAGENCIA ag ON (ag.agencia_id=ac.agencia_id) "+
+				   "WHERE ac.c_estreg='A' "+
+					    "AND ac.agencia_id=NVL("+idAgencia+",ac.agencia_id) "+
+				   "ORDER BY ag.c_nomcor,ac.n_corini ";
+		log.info(sql);
+		List<?>result=getSession().createSQLQuery(sql).list();
+		List<VSAsignacionCertificados>lstAsigCertificados=new ArrayList<VSAsignacionCertificados>();
+		for(int x=0; x<result.size();x++){
+			Object[] obj=(Object[]) result.get(x);
+			Agencia agencia=new Agencia();
+			agencia.setId(((BigDecimal)obj[0]).intValue());
+			agencia.setNombreCorto(obj[1]!=null?obj[1].toString():null);
+			
+			
+			VSAsignacionCertificados asignacionCertificados=new  VSAsignacionCertificados();
+			asignacionCertificados.setId(((BigDecimal)obj[2]).intValue());
+			asignacionCertificados.setCorrelativoInicial(((BigDecimal)obj[3]).longValue());
+			asignacionCertificados.setCorrelativoFinal(((BigDecimal)obj[4]).longValue());
+			asignacionCertificados.setAgenciaID(agencia.getId());
+			asignacionCertificados.setAgencia(agencia);
+			lstAsigCertificados.add(asignacionCertificados);
+		}
+		
+		return lstAsigCertificados;
+	}
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#inactivarAsignacionCertificado(java.lang.Integer)
+	 */
+	@Override
+	public void inactivarAsignacionCertificado(Integer id)throws Exception {
+		// TODO Auto-generated method stub
+		super.inactivate(VSAsignacionCertificados.class, id.longValue());
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#ValidarAsignacionCertificado(java.lang.Long)
+	 */
+	@Override
+	public VSAsignacionCertificados ValidarAsignacionCertificado(Long correlativo) throws Exception {
+		String sql="SELECT ac.Asicer_Id "+
+			       ",ac.agencia_id "+
+			       ",ac.n_corini "+
+			       ",ac.n_corfin "+
+				   "FROM LAPOSITIVA.SVMASICER AC "+
+				   "WHERE "+correlativo+" BETWEEN AC.N_CORINI AND AC.N_CORFIN";
+		
+		List<?>result=getSession().createSQLQuery(sql).list();
+		VSAsignacionCertificados asignacionCertificados=null;
+		for(int x=0; x<result.size();x++){
+			Object[] obj=(Object[]) result.get(x);
+			asignacionCertificados=new VSAsignacionCertificados();
+			asignacionCertificados.setId(((BigDecimal)obj[0]).intValue());
+			asignacionCertificados.setAgenciaID(((BigDecimal)obj[1]).intValue());
+			asignacionCertificados.setCorrelativoInicial(((BigDecimal)obj[2]).longValue());
+			asignacionCertificados.setCorrelativoFinal(((BigDecimal)obj[3]).longValue());
+			
+		}
+		
+		return asignacionCertificados;
+	}
+
+
+	
+
+	
+}

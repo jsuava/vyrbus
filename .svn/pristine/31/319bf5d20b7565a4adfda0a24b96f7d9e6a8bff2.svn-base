@@ -1,0 +1,86 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndAbout" width="288px" border="none" use="com.tepsa.sisvyr.view.ctrl.About">
+	<!-- <style>
+		div.z-grid.body-window, tr.z-row td.z-row-inner{
+     	background-color:#8DA7C0;
+     	background:#6482A2;
+     }     
+	</style> -->
+	<grid>
+		<columns>
+			<!-- <column width="126px"/> -->
+			<column width="286px"/>
+		</columns>
+		<rows>
+			<row>
+				<!-- <image width="120px" src="resources/about.png"/> -->
+				<vbox height="100%">
+					<groupbox  closable="false" mold="3d">
+						<caption label="TRANSPORTES EL PINO S.A.C." style="font-weight:bold;font-size:12px !important;color:#0E3A99"/>
+						<grid >
+							<columns width="250px">
+								<column align="center"/>
+							</columns>
+							<rows>
+								<row style="background:#8DA7C0;border:none">
+									<label value="Sistema de Ventas y Reservas" style="color:white;font-size:11px !important;font-weight:bold"/>
+								</row>
+								<row style="background:#8DA7C0;border:none">
+									<label id="lblVersion" style="color:white;font-size:11px !important"/>
+								</row>
+								<row style="background:#8DA7C0;border:none">
+									<label value="Derechos Reservados" style="color:white;font-size:11px !important"/>
+								</row>
+								<row style="background:#8DA7C0;border:none">
+									<label value="Lima - Perú" style="color:white;font-size:10px !important"/>
+								</row>
+							</rows>
+						</grid>
+						<grid style="border:none">
+							<columns>
+								<column align="right"/>
+								<column/>
+							</columns>
+							<rows>
+								<row style="border:none">
+									<label value="Jefe de Proyecto :" style="font-size:11px !important"/>
+									<label value="Oscco Espinoza Marco" style="font-size:11px !important; font-weight:bold"/>
+								</row>
+								<row style="border:none">
+									<label value="Email :" style="font-size:11px !important"/>
+									<label value="moscco@tepsa.com.pe" style="font-size:11px !important;color:#0E3A99; font-weight:bold"/>
+								</row>
+								<row style="border:none">
+									<label value="Analista Programador :" style="font-size:11px !important"/>
+									<label value="Avalos Sullo José" style="font-size:11px !important; font-weight:bold"/>
+								</row>
+								<row style="border:none">
+									<label value="Email :" style="font-size:11px !important"/>
+									<label value="javalos@tepsa.com.pe" style="font-size:11px !important;color:#0E3A99; font-weight:bold"/>
+								</row>
+								<row style="border:none">
+									<label value="Programador :" style="font-size:11px !important"/>
+									<label value="Abanto Abanto José" style="font-size:11px !important; font-weight:bold"/>
+								</row>
+								<row style="border:none">
+									<label value="Email :" style="font-size:11px !important"/>
+									<label value="jabanto@tepsa.com.pe" style="font-size:11px !important;color:#0E3A99; font-weight:bold"/>
+								</row>
+							</rows>
+						</grid>
+					</groupbox>
+				</vbox>				
+			</row>
+			<row>
+				<separator bar="true"/>
+			</row>
+			<row>
+				<div align="center">
+					<button label="Cerrar" onClick="wndAbout.closeTabWindow()" image="resources/mp_cerrarEnabled.png" height="27px"/>
+				</div>				
+			</row>
+		</rows>
+	</grid>
+</window>
+</zk>

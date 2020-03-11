@@ -1,0 +1,61 @@
+package com.cystesoft.vyrbus.model.bean;
+// default package
+
+
+/**
+ * 
+ * @author JABANTO
+ *
+ */
+public class VSTipoProceso  extends GenericBean implements java.io.Serializable {
+	private static final long serialVersionUID = 1L;
+
+    // Fields    
+	private Integer id;
+     private String denominacion;
+     private String codigo;
+
+
+    // Constructors
+
+    /** default constructor */
+    public VSTipoProceso() {
+    }
+
+    /**
+	 * @param value
+	 */
+	public VSTipoProceso(Integer id) {
+		// TODO Auto-generated constructor stub
+		this.id=id;
+	}
+
+	// Property accessors
+    public Integer getId() {
+        return this.id;
+    }
+    
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getDenominacion() {
+        return this.denominacion;
+    }
+    
+    public void setDenominacion(String denominacion) {
+        this.denominacion = denominacion;
+    }
+
+    public String getCodigo() {
+        return this.codigo;
+    }
+    
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+
+
+
+}

@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.cystesoft.vyrbus.model.bean.Reniec" table="RENIEC.BDRENIEC" schema="VYR">
+        <comment>Entidad que almacena los datos de las personas registradas en la RENIC</comment>
+        <id name="numeroDocumento" type="java.lang.String">
+            <column name="NUM_DOC" length="8"  />
+        </id>
+        <property name="apellidoPaterno" type="java.lang.String">
+            <column name="APE_PAT" length="50" >
+                <comment>Apellido Paterno.</comment>
+            </column>
+        </property>
+        <property name="apellidoMaterno" type="java.lang.String">
+            <column name="APE_MAT" length="50" >
+                <comment>Apellido Materno.</comment>
+            </column>
+        </property>
+        <property name="nombres" type="java.lang.String" >
+            <column name="NOM_PER" length="50" >
+                <comment>Nombres</comment>
+            </column>
+        </property>
+        <property name="fechaNacimiento" type="java.lang.String">
+            <column name="FEC_NAC" length="6" >
+                <comment>Fecha de Nacimiento</comment>
+            </column>
+        </property>
+        <property name="sexo" type="java.lang.String">
+        	<column name="COD_SEX" length="1" >
+               <comment>sexo</comment>
+            </column>
+        </property>
+        <property name="tipoDocumento" type="java.lang.String">
+        	<column name="TIP_DOC" length="1" >
+               <comment>tipo de documento</comment>
+            </column>
+        </property>
+        
+    </class>
+</hibernate-mapping>

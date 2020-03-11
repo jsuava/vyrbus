@@ -1,0 +1,270 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: José Abanto
+ * Fecha		: 05/01/2017
+ * Hora			: 14:59:06
+ */
+package com.tepsa.sisvyr.model.bean;
+
+import java.io.Serializable;
+import java.util.Date;
+
+/**
+ * @author Jose Abanto
+ *
+ */
+public class DetalleButaca extends GenericBean implements Serializable, Cloneable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Long id;
+	private DetalleButaca detalleButacaRef;
+	private Long detalleButacaOriginal;
+	private MapaBus mapaBus;
+	private CanalVenta canalVenta;
+	private Ruta ruta;
+	private TipoPrecio tipoPrecio;
+	private Itinerario itinerario;
+	private Agencia agencia;
+	private Usuario usuario;
+	private Double precio;
+	private Double precioMinimo=0.0;
+	private Double precioMaximo=0.0;
+	private Date fecha;
+	
+	private TipoAsiento tipoAsiento; //No mapeado
+	private String ragoAsientos;	 //No mapeado
+//	private String rangoFechas;		 //No mapeado
+//	private Servicio servicio;		 //No mapeado	
+	/**
+	 * @return the id
+	 */
+	public Long getId() {
+		return id;
+	}
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
+	/**
+	 * @return the mapaBus
+	 */
+	public MapaBus getMapaBus() {
+		return mapaBus;
+	}
+	/**
+	 * @param mapaBus the mapaBus to set
+	 */
+	public void setMapaBus(MapaBus mapaBus) {
+		this.mapaBus = mapaBus;
+	}
+	/**
+	 * @return the canalVenta
+	 */
+	public CanalVenta getCanalVenta() {
+		return canalVenta;
+	}
+	/**
+	 * @param canalVenta the canalVenta to set
+	 */
+	public void setCanalVenta(CanalVenta canalVenta) {
+		this.canalVenta = canalVenta;
+	}
+	/**
+	 * @return the ruta
+	 */
+	public Ruta getRuta() {
+		return ruta;
+	}
+	/**
+	 * @param ruta the ruta to set
+	 */
+	public void setRuta(Ruta ruta) {
+		this.ruta = ruta;
+	}
+	/**
+	 * @return the tipoPrecio
+	 */
+	public TipoPrecio getTipoPrecio() {
+		return tipoPrecio;
+	}
+	/**
+	 * @param tipoPrecio the tipoPrecio to set
+	 */
+	public void setTipoPrecio(TipoPrecio tipoPrecio) {
+		this.tipoPrecio = tipoPrecio;
+	}
+	/**
+	 * @return the itinerario
+	 */
+	public Itinerario getItinerario() {
+		return itinerario;
+	}
+	/**
+	 * @param itinerario the itinerario to set
+	 */
+	public void setItinerario(Itinerario itinerario) {
+		this.itinerario = itinerario;
+	}
+	/**
+	 * @return the agencia
+	 */
+	public Agencia getAgencia() {
+		return agencia;
+	}
+	/**
+	 * @param agencia the agencia to set
+	 */
+	public void setAgencia(Agencia agencia) {
+		this.agencia = agencia;
+	}
+	/**
+	 * @return the usuario
+	 */
+	public Usuario getUsuario() {
+		return usuario;
+	}
+	/**
+	 * @param usuario the usuario to set
+	 */
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+	/**
+	 * @return the precio
+	 */
+	public Double getPrecio() {
+		return precio;
+	}
+	/**
+	 * @param precio the precio to set
+	 */
+	public void setPrecio(Double precio) {
+		this.precio = precio;
+	}
+	/**
+	 * @return the precioMinimo
+	 */
+	public Double getPrecioMinimo() {
+		return precioMinimo;
+	}
+	/**
+	 * @param precioMinimo the precioMinimo to set
+	 */
+	public void setPrecioMinimo(Double precioMinimo) {
+		this.precioMinimo = precioMinimo;
+	}
+	/**
+	 * @return the precioMaximo
+	 */
+	public Double getPrecioMaximo() {
+		return precioMaximo;
+	}
+	/**
+	 * @param precioMaximo the precioMaximo to set
+	 */
+	public void setPrecioMaximo(Double precioMaximo) {
+		this.precioMaximo = precioMaximo;
+	}
+	/**
+	 * @return the fecha
+	 */
+	public Date getFecha() {
+		return fecha;
+	}
+	/**
+	 * @param fecha the fecha to set
+	 */
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+	/**
+	 * @return the ragoAsientos
+	 */
+	public String getRagoAsientos() {
+		return ragoAsientos;
+	}
+	/**
+	 * @param ragoAsientos the ragoAsientos to set
+	 */
+	public void setRagoAsientos(String ragoAsientos) {
+		this.ragoAsientos = ragoAsientos;
+	}
+//	/**
+//	 * @return the rangoFechas
+//	 */
+//	public String getRangoFechas() {
+//		return rangoFechas;
+//	}
+//	/**
+//	 * @param rangoFechas the rangoFechas to set
+//	 */
+//	public void setRangoFechas(String rangoFechas) {
+//		this.rangoFechas = rangoFechas;
+//	}
+	/**
+	 * @return the tipoAsiento
+	 */
+	public TipoAsiento getTipoAsiento() {
+		return tipoAsiento;
+	}
+	/**
+	 * @param tipoAsiento the tipoAsiento to set
+	 */
+	public void setTipoAsiento(TipoAsiento tipoAsiento) {
+		this.tipoAsiento = tipoAsiento;
+	}
+//	/**
+//	 * @return the servicio
+//	 */
+//	public Servicio getServicio() {
+//		return servicio;
+//	}
+//	/**
+//	 * @param servicio the servicio to set
+//	 */
+//	public void setServicio(Servicio servicio) {
+//		this.servicio = servicio;
+//	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#clone()
+	 */
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		// TODO Auto-generated method stub
+		return super.clone();
+	}
+	/**
+	 * @return the detalleButacaRef
+	 */
+	public DetalleButaca getDetalleButacaRef() {
+		return detalleButacaRef;
+	}
+	/**
+	 * @param detalleButacaRef the detalleButacaRef to set
+	 */
+	public void setDetalleButacaRef(DetalleButaca detalleButacaRef) {
+		this.detalleButacaRef = detalleButacaRef;
+	}
+	/**
+	 * @return the detalleButacaOriginal
+	 */
+	public Long getDetalleButacaOriginal() {
+		return detalleButacaOriginal;
+	}
+	/**
+	 * @param detalleButacaOriginal the detalleButacaOriginal to set
+	 */
+	public void setDetalleButacaOriginal(Long detalleButacaOriginal) {
+		this.detalleButacaOriginal = detalleButacaOriginal;
+	}
+
+}

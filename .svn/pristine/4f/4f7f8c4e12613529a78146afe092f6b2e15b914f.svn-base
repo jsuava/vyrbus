@@ -1,0 +1,57 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndReimprimirBoleto" border="none" use="com.tepsa.sisvyr.view.ctrl.WndReimprimirBoleto">
+	<tabbox mold="accordion-lite">
+		<tabs>
+			<tab id="tabBusqueda" label="CRITERIOS DE BUSQUEDA"/>
+			<tab id="tabListado" label="LISTADO OCURRENCIAS"/>
+		</tabs>
+		<tabpanels>
+			<tabpanel>
+				<grid>
+					<columns>
+						<column width="100px" align="right"/>
+						<column/>
+						<column width="95px" align="right"/>
+						<column/>
+						<column width="95px"/>
+					</columns>
+					<rows>
+						<row>
+							<label value="FECHA PARTIDA (*) :"/>
+							<datebox id="dtbxFechaPartida" format="dd/MM/yyyy" width="86px" onOK="wndReimprimirBoleto.buscarBoleto()"/>
+							<label value="NRO DOCUMENTO :"/>
+							<textbox id="txtNumeroDocumento" width="100px" style="font-size:11px !important" onOK="wndReimprimirBoleto.buscarBoleto()"/>
+							<cell style="background:white">
+								<button label="Buscar" autodisable="self" image="resources/mp_buscarEnabled.png" height="29px" width="85px" onClick="wndReimprimirBoleto.buscarBoleto()"/>
+							</cell>
+						</row>
+						<row spans="1,3,1">
+							<label value="PASAJERO :"/>
+							<textbox id="txtPasajero" onOK="wndReimprimirBoleto.buscarBoleto()" width="50%"/>
+							<cell style="background:white">
+								<button label="Cerrar" image="resources/mp_cerrarEnabled.png" height="29px" width="85px" onClick="wndReimprimirBoleto.closeTabWindow()"/>
+							</cell>
+						</row>					
+					</rows>
+				</grid>
+			</tabpanel>
+			<tabpanel>
+				<listbox id="lbxVentas" width="100%" mold="paging" pageSize="8" >
+					<listhead>
+						<listheader label="VENTA_ID" width="5%"/>
+						<listheader label="TIPO MOVIMIENTO" width="10%"/>
+						<listheader label="RUTA" width="13%"/>
+						<listheader label="PASAJERO" width="21%"/>
+						<listheader label="FECHA PARTIDA" width="10%"/>
+						<listheader label="HORA PARTIDA" width="10%"/>
+						<listheader label="NRO CONTROL" width="8%"/>
+						<listheader label="IMPORTE" width="5%" align="right"/>
+						<listheader label="ACCCION" width="12%" align="center"/>
+					</listhead>
+				</listbox>					
+			</tabpanel>
+		</tabpanels>
+	</tabbox>
+</window>
+</zk>

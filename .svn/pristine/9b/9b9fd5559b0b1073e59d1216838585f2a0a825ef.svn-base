@@ -1,0 +1,30 @@
+package com.tepsa.sisvyr.model.dao;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import com.tepsa.sisvyr.model.bean.ItinerarioAgenciaLlegada;
+
+public interface ItinerarioAgenciaLlegadaDAO extends GenericDAO {
+	/**
+	 * 
+	 * @param criteriosBusqueda
+	 * @param criteriosOrdenar
+	 * @return
+	 */
+	public ArrayList<ItinerarioAgenciaLlegada> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public ItinerarioAgenciaLlegada buscarPorId(Long id);
+	
+	/**
+	 * 
+	 * @param idItinerario
+	 * @throws Exception
+	 */
+	public void delete (Long idItinerario) throws Exception;
+}

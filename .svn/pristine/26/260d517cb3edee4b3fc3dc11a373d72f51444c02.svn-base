@@ -1,0 +1,93 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndTempalta"   border="none" use="com.tepsa.sisvyr.view.ctrl.WndTemporadaAlta" >
+ 	<hbox align="center">
+ 		<toolbar width="805px">
+ 			<toolbarbutton id="tbbAperturaCalendario" label="Aperturar Calendario" onClick="wndTempalta.onAperturaCalendario()" image="/resources/mp_calendarEnabled.png" sclass="font-weight:bold" />
+ 			<toolbarbutton id="tbbBusqueda" label="Busqueda"  onClick="wndTempalta.onBuscar()" image="/resources/mp_buscarEnabled.png" sclass="font-weight:bold" />
+ 			<toolbarbutton id="tbbModificar" label="Modificar"  onClick="wndTempalta.onModificar()" image="/resources/mp_editarDisabled.png" sclass="font-weight:bold" disabled="true" />
+ 			<toolbarbutton id="tbbCancelar" label="Cancelar"  onClick="wndTempalta.onCancelar()" image="/resources/mp_cancelarDisabled.png" sclass="font-weight:bold" disabled="true"/>
+ 			<toolbarbutton id="tbbGurdar" label="Guardar"  onClick="wndTempalta.onGuardarCalendario()" image="/resources/mp_guardarDisabled.png" sclass="font-weight:bold" disabled="true"/>
+ 			<toolbarbutton id="tbbAnularTodo" label="Anular todo" visible="false"  onClick="wndTempalta.onAnularTodo()" image="/resources/mp_anularDisabled.png" sclass="font-weight:bold" disabled="true" />
+ 			<toolbarbutton id="tbbCerra" label="Cerrar"  onClick="wndTempalta.closeTabWindow()" image="/resources/mp_cerrar.png" sclass="font-weight:bold" />
+ 		</toolbar>
+ 	</hbox>
+ 	<separator height="1px" />
+ 	<hbox>
+	 	<vbox>
+		 	<grid width="300px">
+		 		<columns>
+		 			<column width="40px" align="right" />
+		 			<column width="60px" />
+		 			<column width="40px" align="right"/>
+		 			
+		 		</columns>
+		 		<rows>
+		 			<row>
+		 				<label value="ANIO :" />
+				 		<intbox id="ibxAnio" onChange="wndTempalta.onChangeAnio()" maxlength="4" width="40px" style="font-size:12px !important" readonly="true" />
+				 		<label value="MES :" sclass="label-size11" />
+				 		<hbox>
+				 			<combobox id="cmbMes" readonly="true" width="135px" disabled="true" />
+				 			<image id="imgBuscar" src="/resources/mp_buscarDisabled.png" onClick="wndTempalta.buscarTemporadaAlta()" />		
+				 		</hbox>
+				 		
+		 			</row>
+		 		</rows>
+		 	</grid>
+		 	
+			<grid width="300px">	
+				<rows>
+					<row>
+						<vbox>
+							<groupbox mold="3d" closable="false">
+								<caption label="INICIO TEMPORADA ALTA" style="color:red;"/>
+								<calendar id="calInicioTempAlta" width="270px" />
+							</groupbox>
+							<separator height="1px" />
+							<groupbox id="gbFinTempAlta" mold="3d" closable="false" visible="false">
+								<caption label="FIN TEMPORADA ALTA" style="color:red;" />
+								<calendar id="calFinTempalta" width="270px" />
+							</groupbox>
+							<separator height="1px" />
+							<vbox>
+								<hbox align="center">
+									<checkbox id="cbxRangoFechas"  onCheck="wndTempalta.onCheck_XRango()" style="font-size:11px !important; color:blue;" disabled="true"/>
+ 	 								<label value="X RANGO"  sclass="label-size11"  style="color:blue; cursor:pointer" 
+ 	 								   		onClick="if(!(cbxRangoFechas.isDisabled())){
+	 	 								   				if(cbxRangoFechas.isChecked()) cbxRangoFechas.setChecked(false);
+	 	 								   				else cbxRangoFechas.setChecked(true); wndTempalta.onCheck_XRango();
+	 	 								   			 }"/>
+									<separator width="15px" />
+									<label  value="SELECCIÓN (" sclass="label-size11-bold" style="cursor:default"/>
+									<label id="lblDel"  width="60px" style="font-size:11px !important;  font-weight: bold; color:red"/>	
+									<label value=" - "  sclass="label-size11" style="cursor:default"/>
+									<label id="lblAl"  width="60px" style="font-size:11px !important;  font-weight: bold; color:red" />
+									<label  value=" )" sclass="label-size11-bold" style="cursor:default"/>
+								</hbox>
+							</vbox>
+							
+							<hbox align="center">
+								<label value="NOMBRE MOTIVO :" />
+								<combobox id="cmbMotivoTemporadaAlta" readonly="true" disabled="true" width="180px" />
+								<image id="imgAdd" src="/resources/mp_rightArrowDisabled.png" tooltiptext="Agregar temporada alta"
+								onClick="wndTempalta.addTempAlta(lblDel.getValue(), lblAl.getValue())" />
+							</hbox>
+						</vbox>
+					</row>
+				</rows>
+			</grid>
+		</vbox>		
+		<tree id="trTempAlta" onSelect="" height="450px"  width="500px" visible="true"  >
+  			<treecols>
+ 		        <treecol width="150px" label="Mes"  /> 
+ 		        <treecol label="Denominación" />
+ 		        <treecol id="tcDelete" width="40px" align="center" /> 
+  			</treecols>
+  		</tree>
+  			
+	</hbox>
+
+	
+</window>
+</zk>

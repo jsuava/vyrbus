@@ -1,0 +1,28 @@
+/**
+ * Proyecto		: VYRBUS
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: José Abanto
+ * Fecha		: 25 oct. 2019
+ * Hora			: 13:57:18
+ */
+package com.cystesoft.vyrbus.model.dao;
+
+import java.util.List;
+
+import com.cystesoft.vyrbus.model.bean.TarifaRegular;
+
+/**
+ * @author Marco
+ *
+ */
+public interface TarifaRegularDAO extends GenericDAO {
+	
+//	public List<TarifaRegular> buscarTarifaPorServicio(Integer canalVentaID, Integer servicioID, 
+//													   Integer rutaID, String fechaTarifa) throws Exception;
+	
+	public List<TarifaRegular> buscarTarifaPorServicio(Integer canalVentaID, Integer servicioID, 
+													   Integer rutaID, String fechaTarifa, Integer piso, 
+													   Integer zona) throws Exception;
+
+}

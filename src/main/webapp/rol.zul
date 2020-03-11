@@ -1,0 +1,79 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:n="clien">
+<window id="wndRol" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndRol" >
+	<div id="divLista">
+		<listbox id="listboxLista" rows="16">
+			<listhead sizable="true">
+				<listheader width="35px" label="#" />
+				<listheader label="DENOMINACIÓN" width="250px" />
+				<listheader label="NUEVO" sort="auto" />
+				<listheader label="MODIFICAR" sort="auto" />
+				<listheader label="GRABAR" sort="auto" />
+				<listheader label="ELIMINAR" sort="auto" />
+				<listheader label="CONSULTAR" sort="auto" />
+				<listheader label="IMPRIMIR" sort="auto" />
+				<listheader label="EXPORTAR" sort="auto" />
+			</listhead>
+		</listbox>
+	</div>
+	
+	<div id="divMantenimiento">
+		<groupbox closable="false" mold="3d" >
+		<caption label="ROLES DE ACCESO" />
+			<vbox>
+<!-- 				<vbox> -->
+				<grid  width="357px">
+					<columns>
+		 				<column width="90px" /> 
+					</columns>
+					<rows>
+						<row>
+							<label value="DENOMINACIÓN :"/>
+							<div>
+								<textbox id="textboxId" />
+								<textbox id="txtDenominacion"   />
+							</div>
+						</row>
+					</rows>
+				</grid>
+				
+				<groupbox closable="false"  width="357px">
+				<caption label="Accesos" />
+					<grid style="border:none" >
+						<columns>
+							<column  width="21px" /><column  width="70px" />
+							<column  width="21px" /><column  width="70px" />
+							<column  width="21px" /><column  width="55px" />
+							<column  width="21px" /><column  width="65px" />
+						</columns>
+						<rows>
+							<row>
+								<checkbox id="cbNuevo"   /><label value="NUEVO" style="cursor:pointer" onClick="if(cbNuevo.isChecked()) cbNuevo.setChecked(false); else cbNuevo.setChecked(true) ;" /> 
+								<checkbox id="cbModificar" /><label value="MODIFICAR" style="cursor:pointer" onClick="if(cbModificar.isChecked()) cbModificar.setChecked(false); else cbModificar.setChecked(true);" />
+								<checkbox id="cbGrabar" /><label value="GRABAR" style="cursor:pointer" onClick="if(cbGrabar.isChecked()) cbGrabar.setChecked(false); else cbGrabar.setChecked(true);" />
+								<checkbox id="cbEliminar" /><label value="ELIMINAR" style="cursor:pointer" onClick="if(cbEliminar.isChecked()) cbEliminar.setChecked(false); else cbEliminar.setChecked(true);" />
+							</row>
+							<row >
+								<checkbox id="cbConsultar" /><label value="CONSULTAR" style="cursor:pointer" onClick="if(cbConsultar.isChecked()) cbConsultar.setChecked(false); else cbConsultar.setChecked(true);" />
+								<checkbox id="cbImprimir" /><label value="IMPRIMIR" style="cursor:pointer" onClick="if(cbImprimir.isChecked()) cbImprimir.setChecked(false); else cbImprimir.setChecked(true);"/>
+								<checkbox id="cbExportar" /><label value="EXPORTAR" style="cursor:pointer" onClick="if(cbExportar.isChecked()) cbExportar.setChecked(false); else cbExportar.setChecked(true);"/>
+								<separator/><separator/>
+							</row>
+						</rows>
+					</grid>
+				</groupbox>
+				
+								
+			<tree  id="trmenus"  width="356px" zclass="z-dottree" rows="15" multiple="true" checkmark="true" >
+		  		<treecols>
+		  			<treecol label="Menús del Sistema" align="left" />
+		  		</treecols>
+		  	</tree>
+		</vbox>		
+		
+		</groupbox>		
+	</div>
+		
+
+</window>
+</zk>

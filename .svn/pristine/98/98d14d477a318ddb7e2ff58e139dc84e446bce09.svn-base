@@ -1,0 +1,506 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: Clase 
+ * Autor		: José Sullo Avalos
+ * Fecha		: 09/09/2013
+ */
+package com.tepsa.sisvyr.view.ui;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zul.Button;
+import org.zkoss.zul.Caption;
+import org.zkoss.zul.Column;
+import org.zkoss.zul.Columns;
+import org.zkoss.zul.Div;
+import org.zkoss.zul.Grid;
+import org.zkoss.zul.Groupbox;
+import org.zkoss.zul.Label;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listhead;
+import org.zkoss.zul.Listheader;
+import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Radio;
+import org.zkoss.zul.Radiogroup;
+import org.zkoss.zul.Row;
+import org.zkoss.zul.Rows;
+import org.zkoss.zul.Space;
+import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Window;
+
+import com.tepsa.sisvyr.model.bean.Cliente;
+import com.tepsa.sisvyr.model.bean.Pasajero;
+import com.tepsa.sisvyr.service.exceptions.PasajeroException;
+import com.tepsa.sisvyr.service.locator.ServiceLocator;
+import com.tepsa.sisvyr.service.util.Constantes;
+import com.tepsa.sisvyr.service.util.Messages;
+import com.tepsa.sisvyr.service.util.Util;
+
+/**
+ * @author Jose
+ *
+ */
+public class WndBuscarPasajero extends WndBase implements Serializable {
+	private static final long serialVersionUID = 1L;
+	public Window oThisWindow = this;
+	public Radio rdPorDocumento;
+	public Radio rdPorNombres;
+	private Textbox txtDocumento;
+	private Textbox txtNombre;
+	private Textbox txtApePat;
+	private Textbox txtApeMat;
+	private Row rowDocumento;
+	public Row rowNombre;
+	public Row rowApePat;
+	public Row rowApeMat;
+	private Listbox lbxPasajeros;
+	private Button btnAceptar;
+	
+
+	public Label lblNombre= new Label("NOMBRE (*) :");
+	public Boolean buscaPax=true; //true indica que se realizará la busqueda del un pasajero, false la de un cliente
+	
+	@SuppressWarnings("rawtypes")
+	private EventListener oEventListenerSelect;
+	
+	private Long idPasajero;
+	private Pasajero pasajero;
+	
+	private Cliente cliente;
+	
+	
+	/**
+	 * 
+	 */
+	public WndBuscarPasajero() {
+		super();
+		initComponents();
+	}
+	
+	/**
+	 * @return the idPasajero
+	 */
+	public Long getIdPasajero() {
+		return idPasajero;
+	}
+	/**
+	 * @param idPasajero the idPasajero to set
+	 */
+	public void setIdPasajero(Long idPasajero) {
+		this.idPasajero = idPasajero;
+	}
+
+	/**
+	 * @return the pasajero
+	 */
+	public Pasajero getPasajero() {
+		return pasajero;
+	}
+	/**
+	 * @param pasajero the pasajero to set
+	 */
+	public void setPasajero(Pasajero pasajero) {
+		this.pasajero = pasajero;
+	}
+
+	/**
+	 * @return the cliente
+	 */
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	/**
+	 * @param cliente the cliente to set
+	 */
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.zkoss.zk.ui.AbstractComponent#addEventListener(java.lang.String, org.zkoss.zk.ui.event.EventListener)
+	 */
+	public boolean addEventListener(String evtnm, EventListener<? extends Event> listener) {
+		boolean resultadoEvento = true;
+		if (evtnm.equals(com.tepsa.sisvyr.view.ui.Events.ON_SELECT)) {
+			oEventListenerSelect = listener;
+		}else {
+			resultadoEvento = super.addEventListener(evtnm, listener);
+		}
+		return resultadoEvento;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
+	 */
+	@Override
+	@SuppressWarnings("deprecation")
+	public void initComponents() {
+		this.setTitle("Buscar Pasajero");
+		this.setBorder("normal");
+		this.setMaximizable(false);
+		this.setMinimizable(false);
+//		this.setSizable(false);
+		this.setWidth("400px");
+		this.setVisible(true);
+		
+		EventListener<Event> selectEventListener = new EventListener<Event>(){
+			@SuppressWarnings("unchecked")
+			public void onEvent(Event e) throws Exception{
+				if(!(e.getTarget() instanceof Listbox && ((Listbox)e.getTarget()).getSelectedIndex() < 0)){
+					if(lbxPasajeros.getSelectedIndex() > -1 && oEventListenerSelect !=null){
+						//Valida si se trata de la busqueda de pasajero
+						if(buscaPax){
+							setIdPasajero(Long.valueOf(lbxPasajeros.getSelectedItem().getValue().toString()));
+							setPasajero(ServiceLocator.getPasajeroManager().buscarPorId(getIdPasajero()));
+						}else{
+							//Cuando se  trata de la buqueda de clientes
+							setCliente((Cliente)lbxPasajeros.getSelectedItem().getValue());
+						}
+						
+						oEventListenerSelect.onEvent(new Event(com.tepsa.sisvyr.view.ui.Events.ON_SELECT));
+						oThisWindow.onClose();
+					}
+				}
+			}
+		};
+		
+		Groupbox groupbox = new Groupbox();
+		Caption caption = new Caption("Criterios de Busqueda");
+//		groupbox.setMold("3d");
+		groupbox.appendChild(caption);
+		groupbox.setClosable(false);
+		
+		Grid grid = new Grid();
+		Columns columns = new Columns();
+		Column column = new Column();
+		column.setWidth("32%");
+		columns.appendChild(column);
+		column = new Column();
+		column.setWidth("68%");
+		columns.appendChild(column);
+		grid.appendChild(columns);
+		
+		Rows rows = new Rows();
+		Row row = new Row();
+		row.setSpans("2");
+		
+		Radiogroup radiogroup = new Radiogroup();
+		rdPorDocumento= new Radio("Número Documento");
+		rdPorDocumento.setSelected(true);
+		rdPorDocumento.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
+			public void onEvent(Event e){
+				habilitarDocumento();
+				limpiar();				
+			}
+		});
+		radiogroup.appendChild(rdPorDocumento);
+		Space space = new Space();
+		space.setWidth("30px");
+		radiogroup.appendChild(space);
+		rdPorNombres = new Radio("Nombres");
+		rdPorNombres.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
+			public void onEvent(Event e){
+				habilitarNombres();
+				limpiar();
+			}
+		});
+		radiogroup.appendChild(rdPorNombres);
+		space = new Space();
+		space.setWidth("30px");
+		radiogroup.appendChild(space);
+		Button button = new Button("Buscar");
+		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			public void onEvent(Event e) throws Exception{
+				if(buscaPax)
+					buscar();
+				else
+					buscarCliente();
+			}
+		});
+		button.setHeight("27px");
+		button.setImage("resources/mp_buscarEnabled.png");
+		radiogroup.appendChild(button);
+		groupbox.appendChild(radiogroup);
+		row.appendChild(radiogroup);
+		
+		rows.appendChild(row);
+		grid.appendChild(rows);
+		
+		rowDocumento = new Row();
+		Label label = new Label("DOCUMENTO (*) :");
+		rowDocumento.appendChild(label);
+		txtDocumento = new Textbox();
+		txtDocumento.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			public void onEvent(Event e) throws Exception{
+				if(buscaPax)
+					buscar();
+				else
+					buscarCliente();
+			}
+		});
+		txtDocumento.setWidth("120px");
+		rowDocumento.appendChild(txtDocumento);
+		rows.appendChild(rowDocumento);
+		
+		rowNombre = new Row();
+//		label = new Label("NOMBRE (*) :");
+//		rowNombre.appendChild(label);
+		rowNombre.appendChild(lblNombre);
+		txtNombre = new Textbox();
+		txtNombre.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			public void onEvent(Event e) throws Exception{
+				if(buscaPax)
+					txtApePat.setFocus(true);
+				else
+					buscarCliente();
+			}
+		});
+		txtNombre.setWidth("160px");
+		rowNombre.appendChild(txtNombre);
+		rows.appendChild(rowNombre);
+		
+		rowApePat = new Row();
+		label = new Label("APELLIDO PATERNO (*) :");
+		rowApePat.appendChild(label);
+		txtApePat = new Textbox();
+		txtApePat.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			public void onEvent(Event e){
+				txtApeMat.setFocus(true);
+			}
+		});
+		txtApePat.setWidth("160px");
+		rowApePat.appendChild(txtApePat);
+		rows.appendChild(rowApePat);
+		
+		rowApeMat = new Row();
+		label = new Label("APELLIDO MATERNO :");
+		rowApeMat.appendChild(label);
+		txtApeMat = new Textbox();
+		txtApeMat.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			public void onEvent(Event e) throws Exception{
+					buscar();
+			}
+		});
+		txtApeMat.setWidth("160px");
+		rowApeMat.appendChild(txtApeMat);
+		rows.appendChild(rowApeMat);
+		
+		grid.appendChild(rows);
+		groupbox.appendChild(grid);
+		this.appendChild(groupbox);
+		
+		grid = new Grid();
+		rows = new Rows();
+		row = new Row();
+//		row.setSpans("2");
+//		row.appendChild(radiogroup);
+//		rows.appendChild(row);
+		
+//		row = new Row();
+		
+		
+		row = new Row();
+		row.setSpans("2");
+		lbxPasajeros = new Listbox();
+		lbxPasajeros.setWidth("390px");
+		lbxPasajeros.setHeight("300px");
+		lbxPasajeros.setMold("paging");
+		Listhead listhead = new Listhead();
+		Listheader listheader = new Listheader("#");
+		listheader.setWidth("25px");
+		listhead.appendChild(listheader);
+		listheader = new Listheader("DOCUMENTO");
+		listheader.setWidth("100px");
+		listhead.appendChild(listheader);
+		listheader = new Listheader("NOMBRES");
+		listhead.appendChild(listheader);
+		lbxPasajeros.appendChild(listhead);
+		row.appendChild(lbxPasajeros);
+		rows.appendChild(row);
+		
+		row = new Row();
+		Div div = new Div();
+		div.setAlign("center");
+		btnAceptar = new Button("Aceptar");
+		btnAceptar.setImage("resources/mp_aceptarEnabled.png");
+		btnAceptar.setHeight("27px");
+		div.appendChild(btnAceptar);
+		row.appendChild(div);
+		
+		div = new Div();
+		div.setAlign("center");
+		button = new Button("Cancelar");
+		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			public void onEvent(Event e){
+				oThisWindow.onClose();
+			}
+		});
+		button.setImage("resources/mp_cancelarEnabled.png");
+		button.setHeight("27px");
+		div.appendChild(button);
+		row.appendChild(div);
+		rows.appendChild(row);
+		
+		grid.appendChild(rows);
+		oThisWindow.appendChild(grid);
+		
+		lbxPasajeros.addEventListener(Events.ON_DOUBLE_CLICK, selectEventListener);
+		btnAceptar.addEventListener(Events.ON_CLICK, selectEventListener);		
+	}
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
+	 */
+	@Override
+	public void onCreate() throws Exception {
+		habilitarDocumento();
+	}
+	
+	private void habilitarDocumento(){
+		rowDocumento.setVisible(true);
+		rowNombre.setVisible(false);
+		rowApePat.setVisible(false);
+		rowApeMat.setVisible(false);
+		txtDocumento.setFocus(true);
+	}
+	
+	private void habilitarNombres(){
+		rowDocumento.setVisible(false);
+		rowNombre.setVisible(true);
+		if(buscaPax){
+			rowApePat.setVisible(true);
+			rowApeMat.setVisible(true);
+		}
+		txtNombre.setFocus(true);
+		
+	}
+	
+	private void limpiar(){
+		txtDocumento.setText("");
+		txtNombre.setText("");
+		txtApePat.setText("");
+		txtApeMat.setText("");
+		lbxPasajeros.getItems().clear();
+	}
+	
+	private void buscar(){
+		try{
+			ArrayList<Pasajero> lstPasajeros = null;
+			if(rdPorDocumento.isChecked()){
+				if(txtDocumento.getText().trim().equals(""))
+					throw new PasajeroException(PasajeroException.NUMERO_DOCUMENTO_NULL);
+				TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+				criteriosBusqueda.put("numeroDocumento", txtDocumento.getText().toUpperCase()+"%");
+				List<String> criteriosOrdenar = new ArrayList<String>();
+				criteriosOrdenar.add("apellidoPaterno");
+				criteriosOrdenar.add("apellidoMaterno");
+				criteriosOrdenar.add("nombre");
+				lstPasajeros = ServiceLocator.getPasajeroManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
+			}else{
+				if(txtNombre.getText().trim().equals(""))
+					throw new PasajeroException(PasajeroException.NOMBRE_NULL);
+				else if(txtApePat.getText().trim().equals(""))
+					throw new PasajeroException(PasajeroException.APELLIDO_PATERNO_NULL);
+				
+				String nombres = txtApePat.getText().trim().toUpperCase() + 
+						(txtApeMat.getText().trim().equals("")?"":(" " + txtApeMat.getText().trim().toUpperCase())) + 
+						" " + txtNombre.getText().trim().toUpperCase();
+				String[] str1 = nombres.trim().split(" ");
+				lstPasajeros = ServiceLocator.getPasajeroManager().buscarPorFullTextIndex(str1);
+			}
+			listarRegistrosPax(lstPasajeros);
+		}catch(PasajeroException pex){
+			if(pex.getTipo().intValue()==PasajeroException.NUMERO_DOCUMENTO_NULL)
+				DlgMessage.information(Messages.getString("WndBuscarPasajero.information.noIngresoDocumento"), txtDocumento);
+			else if(pex.getTipo().intValue()==PasajeroException.NOMBRE_NULL)
+				DlgMessage.information(Messages.getString("WndBuscarPasajero.information.noIngresoNombre"), txtNombre);
+			else if(pex.getTipo().intValue()==PasajeroException.APELLIDO_PATERNO_NULL)
+				DlgMessage.information(Messages.getString("WndBuscarPasajero.information.noIngresoApellidoPaterno"), txtApePat);
+		}catch(Exception ex){
+			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
+		}
+	}
+	
+	/**
+	 * Lista los resultados de la busqueda
+	 * @param lstRegistros	: Lista de resultados.
+	 * @throws Exception
+	 */
+	private void listarRegistrosPax(ArrayList<Pasajero> lstRegistros)throws Exception {
+		ArrayList<Object> lstPasajeros = new ArrayList<Object>();
+//		grpbxListaPasajeros.setVisible(false);
+		
+		if(lstRegistros.size()>0){
+//			mantenimientoRegistroPax(lstRegistros.get(0).getId());
+//		}else if(lstRegistros.size()>1){
+			for (int r = 0; r < lstRegistros.size(); r++) {
+				Pasajero oPasajero = lstRegistros.get(r);
+				ArrayList<Object> lstFila = new ArrayList<Object>();
+				lstFila.add(oPasajero.getId());
+				lstFila.add(r + 1);
+//				lstFila.add(oPasajero.getTipoDocumento().getDenominacion());
+				lstFila.add(oPasajero.getNumeroDocumento());
+				lstFila.add(oPasajero.toString());
+//				lstFila.add(Util.toNumberFormat(oPasajero.getKilometros(), 2));
+				lstPasajeros.add(lstFila);
+			}
+			Util.llenarListbox(lbxPasajeros, lstPasajeros, true);
+//			grpbxListaPasajeros.setVisible(true);
+		}else{
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noPasajerosEncontrados"));
+			limpiar();
+		}
+//		disabledControlsPax(true);
+	}
+	
+	
+	private void buscarCliente() throws Exception{
+		TreeMap<String, Object>criterisoBusqueda= new TreeMap<String, Object>();
+//		if(rdPorDocumento.isChecked()){
+			if(rdPorDocumento.isChecked())
+				criterisoBusqueda.put("numeroDocumento", txtDocumento.getText().trim());
+			else
+				criterisoBusqueda.put("razonSocial", txtNombre.getText().trim().toUpperCase()+"%");
+			criterisoBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+			List<Cliente> listCliente=ServiceLocator.getClienteManager().buscarPorX(criterisoBusqueda, null);
+			
+			Util.limpiarListbox(lbxPasajeros);
+			
+			int x=0;
+			for (Cliente cliente: listCliente){
+				x++;
+				
+				Listitem item= new Listitem();
+				Listcell cell=null;
+				
+				cell=new Listcell(String.valueOf(x));
+				cell.setStyle("font-size:11px !important");
+				item.appendChild(cell);
+				
+				cell=new Listcell(cliente.getNumeroDocumento());
+				cell.setStyle("font-size:11px !important");
+				item.appendChild(cell);
+				
+				cell=new Listcell(cliente.getRazonSocial());
+				item.appendChild(cell);
+				
+				item.setValue(cliente);
+				lbxPasajeros.appendChild(item);
+				
+			}
+			
+//		}
+		
+	}
+
+	
+}

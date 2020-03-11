@@ -1,0 +1,171 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: Implementacion de metodos que permiten el acceso al modelo.
+ * Autor		: José Sullo Avalos
+ * Fecha		: 27/09/2012
+ */
+package com.tepsa.sisvyr.service.business.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import com.tepsa.sisvyr.model.bean.NumeroFlota;
+import com.tepsa.sisvyr.model.dao.NumeroFlotaDAO;
+import com.tepsa.sisvyr.service.business.NumeroFlotaManager;
+import com.tepsa.sisvyr.service.exceptions.CodigoDuplicadoException;
+import com.tepsa.sisvyr.service.exceptions.DenominacionDuplicadaException;
+import com.tepsa.sisvyr.service.exceptions.NombreCortoDuplicadoException;
+import com.tepsa.sisvyr.service.util.Constantes;
+
+/**
+ * @author Jose
+ *
+ */
+public class NumeroFlotaManagerImpl implements NumeroFlotaManager {
+	private NumeroFlotaDAO numeroFlotaDAO;
+	
+	/**
+	 * @return the numeroFlotaDAO
+	 */
+	public NumeroFlotaDAO getNumeroFlotaDAO() {
+		return numeroFlotaDAO;
+	}
+	/**
+	 * @param numeroFlotaDAO the numeroFlotaDAO to set
+	 */
+	public void setNumeroFlotaDAO(NumeroFlotaDAO numeroFlotaDAO) {
+		this.numeroFlotaDAO = numeroFlotaDAO;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.NumeroFlotaManager#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
+	 */
+	@Override
+	@Transactional(readOnly=true)
+	public ArrayList<NumeroFlota> buscarPorEstadoRegistro(String estado, String criterioOrden) throws Exception {
+		return getNumeroFlotaDAO().buscarPorEstadoRegistro(estado, criterioOrden);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.NumeroFlotaManager#buscarPorX(java.util.TreeMap, java.util.List)
+	 */
+	@Override
+	@Transactional(readOnly=true)
+	public ArrayList<NumeroFlota> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar) throws Exception {
+		return getNumeroFlotaDAO().buscarPorX(criteriosBusqueda, criteriosOrdenar);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.NumeroFlotaManager#buscarPorId(java.lang.Long)
+	 */
+	@Override
+	@Transactional(readOnly=true)
+	public NumeroFlota buscarPorId(Long id) throws Exception {
+		return getNumeroFlotaDAO().buscarPorId(id);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.NumeroFlotaManager#guardar(com.tepsa.sisvyr.model.bean.NumeroFlota)
+	 */
+	@Override
+	@Transactional
+	public void guardar(NumeroFlota numeroFlota) throws Exception {
+		try{
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			criteriosBusqueda.put("denominacion", numeroFlota.getDenominacion());
+			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+			List<?> resultDenominacion = getNumeroFlotaDAO().buscarPorX(criteriosBusqueda, null);
+			/*Valida duplicidad de la denominación*/
+			if(resultDenominacion.size()>0)
+				throw new DenominacionDuplicadaException();
+			
+			criteriosBusqueda.remove("denominacion");
+			criteriosBusqueda.put("nombreCorto", numeroFlota.getNombreCorto());
+			List<?> resultnombreCorto = getNumeroFlotaDAO().buscarPorX(criteriosBusqueda, null);
+			/*Valida duplicidad del Nombre corto*/
+			if (resultnombreCorto.size()>0)
+				throw new NombreCortoDuplicadoException();
+			
+			criteriosBusqueda.remove("denominacion"); criteriosBusqueda.remove("nombreCorto");
+			criteriosBusqueda.put("codigo", numeroFlota.getCodigo());
+			List<?> resultcodigo = getNumeroFlotaDAO().buscarPorX(criteriosBusqueda, null);
+			/*Valida duplicidad del Nombre corto*/
+			if (resultcodigo.size()>0)
+				throw new CodigoDuplicadoException();
+			
+			getNumeroFlotaDAO().guardar(numeroFlota);
+			
+		}catch (DenominacionDuplicadaException rsdex){
+			throw new DenominacionDuplicadaException();
+		}catch(NombreCortoDuplicadoException rdnex){
+			throw new NombreCortoDuplicadoException();
+		}catch(Exception ex){
+			throw new Exception(ex);
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.NumeroFlotaManager#actualizar(com.tepsa.sisvyr.model.bean.NumeroFlota)
+	 */
+	@Override
+	@Transactional
+	public void actualizar(NumeroFlota numeroFlota) throws Exception {
+		try{
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			criteriosBusqueda.put("denominacion", numeroFlota.getDenominacion());
+			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+			List<?> resultDenominacion = getNumeroFlotaDAO().buscarPorX(criteriosBusqueda, null);
+			/*Valida duplicidad de la denominación*/
+			for(int r = 0; r < resultDenominacion.size(); r ++) {
+				NumeroFlota oNumeroFlota = (NumeroFlota) resultDenominacion.get(r);
+				if (!(oNumeroFlota.getId() == numeroFlota.getId()))
+					throw new DenominacionDuplicadaException();
+			}
+			
+			criteriosBusqueda.remove("denominacion");
+			criteriosBusqueda.put("nombreCorto", numeroFlota.getNombreCorto());
+			List<?> resultnombreCorto = getNumeroFlotaDAO().buscarPorX(criteriosBusqueda, null);
+			/*Valida duplicidad del Nombre corto*/
+			for(int r = 0; r < resultnombreCorto.size(); r ++) {
+				NumeroFlota onumeroFlota= (NumeroFlota) resultnombreCorto.get(r);
+				if (!(onumeroFlota.getId() == numeroFlota.getId()))
+					throw new NombreCortoDuplicadoException();
+			}	
+			
+			criteriosBusqueda.remove("denominacion"); criteriosBusqueda.remove("nombreCorto");
+			criteriosBusqueda.put("codigo", numeroFlota.getCodigo());
+			List<?> resultcodigo = getNumeroFlotaDAO().buscarPorX(criteriosBusqueda, null);
+			/*Valida duplicidad del Código*/
+			for(int r = 0; r < resultcodigo.size(); r ++) {
+				NumeroFlota onumeroFlota= (NumeroFlota) resultcodigo.get(r);
+				if (!(onumeroFlota.getId() == numeroFlota.getId()))
+					throw new CodigoDuplicadoException();
+			}
+			
+			getNumeroFlotaDAO().actualizar(numeroFlota);
+		
+		}catch (DenominacionDuplicadaException rsdex){
+			throw new DenominacionDuplicadaException();
+		}catch(NombreCortoDuplicadoException rdnex){
+			throw new NombreCortoDuplicadoException();
+		}catch(CodigoDuplicadoException cdex){
+			throw new CodigoDuplicadoException();	
+		}catch(Exception ex){
+			throw new Exception(ex);
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.NumeroFlotaManager#inactivar(java.lang.Long)
+	 */
+	@Override
+	@Transactional
+	public void inactivar(Long id) throws Exception {
+		getNumeroFlotaDAO().inactivar(id);
+	}
+
+}

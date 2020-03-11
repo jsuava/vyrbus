@@ -1,0 +1,70 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: José Abanto
+ * Fecha		: 04/05/2016
+ * Hora			: 12:08:30
+ */
+package com.tepsa.sisvyr.model.dao.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import com.tepsa.sisvyr.model.bean.Session;
+import com.tepsa.sisvyr.model.dao.SessionDAO;
+
+/**
+ * @author jabanto
+ *
+ */
+@SuppressWarnings("unchecked")
+public class SessionDAOImpl extends GenericDAOImpl implements SessionDAO{
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.SessionDAO#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public ArrayList<Session> buscarPorEstadoRegistro(String estado,String criterioOrden) {
+		// TODO Auto-generated method stub
+		return (ArrayList<Session>) super.findByEstadoRegistro(Session.class, estado, criterioOrden);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.SessionDAO#buscarPorX(java.util.TreeMap, java.util.List)
+	 */
+	@Override
+	public ArrayList<Session> buscarPorX(TreeMap<String, Object> criteriosBusqueda,List<String> criteriosOrdenar) {
+		// TODO Auto-generated method stub
+		return (ArrayList<Session>) super.findByX(Session.class, criteriosBusqueda, criteriosOrdenar);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.SessionDAO#buscarPorId(java.lang.Long)
+	 */
+	@Override
+	public Session buscarPorId(Long id) {
+		// TODO Auto-generated method stub
+		return (Session) super.findById(Session.class, id);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.SessionDAO#guardar(com.tepsa.sisvyr.model.bean.Session)
+	 */
+	@Override
+	public void guardar(Session session) {
+		// TODO Auto-generated method stub
+		super.save(session);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.SessionDAO#actualizar(com.tepsa.sisvyr.model.bean.Session)
+	 */
+	@Override
+	public void actualizar(Session session) {
+		// TODO Auto-generated method stub
+		super.update(session);
+	}
+
+}

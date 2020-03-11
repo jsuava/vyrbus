@@ -1,0 +1,379 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndConfirmacion" border="none" use="com.tepsa.sisvyr.view.ctrl.WndConfirmacion" objetoConfirmar="${arg.objetoConfirmar}" style="overflow:auto">
+	<div id="divConfirmacion" style="overflow:auto">
+		<hlayout>			
+			<vlayout>
+				<hlayout>
+					<groupbox mold="3d" closable="false">
+						<caption label="INFORMACIÓN DE LA VENTA"/>
+						<grid style="border:none" width="450px">
+							<columns>
+								<column align="right" width="100px"/>
+								<column align="left" width="125px"/>
+								<column align="right" width="100px"/>
+								<column align="left"/>
+							</columns>
+							<rows>
+								<row>
+									<label value="ORIGEN :"/>
+									<label id="lblOrigen" sclass="label-size11" style="color:blue"/>
+									<label value="DESTINO :"/>
+									<label id="lblDestino" sclass="label-size11" style="color:blue"/>
+								</row>
+								<row>
+									<label value="PTO. EMBARQUE :"/>
+									<combobox id="cmbPtoEmbarque" width="110px" onChange="wndConfirmacion.onSelectPtoEmbarque()"/>
+									<label value="AG. LLEGADA :"/>
+									<combobox id="cmbPtoDesembarque" width="110px" onChange="wndConfirmacion.onSelectPtoDesembarque()"/>
+								</row>
+								<row>
+									<label value="FECHA PARTIDA :"/>
+									<label id="lblFechaPartida" sclass="label-size11" style="color:blue"/>
+ 									<label value="FECHA LLEGADA :"/>
+ 									<label id="lblFechaLlegada" sclass="label-size11" style="color:blue"/>
+								</row>
+								<row>
+<!-- 									<label value="HORA PARTIDA :"/> -->
+<!-- 									<label id="lblHoraPartida" sclass="label-size11" style="color:blue"/> -->
+<!-- 									<label value="HORA LLEGADA :"/> -->
+<!-- 									<label id="lblHoraLlegada" sclass="label-size11" style="color:blue"/> -->
+
+									<label value="NRO ASIENTO :"/>
+									<hlayout>
+										<textbox id="txtNumeroAsiento" width="16px" readonly="true" sclass="label-size11" style="color:blue"/>
+										<textbox id="txtNumeroPiso" readonly="true" visible="false" width="16px"/>
+										<image id="imgMostrarMapa" src="resources/mp_buscarEnabled.png" style="cursor:pointer"/>
+									</hlayout>
+									<label value="TARIFA :"/>
+									<label id="lblTarifa" sclass="label-size11" style="color:blue"/>
+								</row>
+<!-- 								<row> -->
+<!-- 									<label value="NRO ASIENTO :"/> -->
+<!-- 									<hlayout> -->
+<!-- 										<textbox id="txtNumeroAsiento" width="16px" readonly="true" sclass="label-size11" style="color:blue"/> -->
+<!-- 										<textbox id="txtNumeroPiso" readonly="true" visible="false" width="16px"/> -->
+<!-- 										<image id="imgMostrarMapa" src="resources/mp_buscarEnabled.png" style="cursor:pointer"/> -->
+<!-- 									</hlayout> -->
+<!-- 									<label value="TARIFA :"/> -->
+<!-- 									<label id="lblTarifa" sclass="label-size11" style="color:blue"/> -->
+<!-- 								</row> -->
+								<row>
+									<label id="lblBoleto" value="N° BOLETO :" style="color:blue; font-weight:bold; font-size:13px !important"/>
+									<textbox id="txtNumeroBoleto" width="100px" readonly="true" style="text-align:center; color:blue; font-weight:bold; font-size:13px !important"/>
+									<label value="ALIMENTACION :"/>
+									<combobox id="cmbAlimentacion" readonly="true" autodrop="true" width="110px"/>
+								</row>
+								<row id="rowNuevoBoleto" spans="1,3">
+									<label id="lblNuevoBoleto" value="NUEVO BOLETO :" style="color:blue; font-weight:bold; font-size:13px !important"/>
+									<textbox id="txtNuevoBoleto" width="100px" readonly="true" style="text-align:center; color:blue; font-weight:bold; font-size:13px !important" />
+								</row>
+								<row spans="1,3">
+									<label value="OBSERVACIONES :"/>
+									<textbox id="txtObservaciones" width="325px" disabled="true" height="37px" multiline="true"/>
+								</row>
+							</rows>								
+						</grid>
+					</groupbox>
+					<vlayout>
+						<separator height="88px" orient="vertical"/>
+						<grid width="186px" sclass="grid-no-border">
+							<columns>
+								<column align="right"/>
+							</columns>
+							<rows>
+								<row style="background:white">
+									<button label="Grabar" image="resources/mp_guardarEnabled.png" autodisable = "self" height="30px" width="93px" sclass="cursor-button" onClick="wndConfirmacion.onGuardarVenta()"/>									
+								</row>
+								<row style="background:white">
+									<button label="Cancelar" image="resources/mp_cancelarEnabled.png" height="30px" width="93px" sclass="cursor-button" onClick="wndConfirmacion.liberarAsientos(); wndConfirmacion.onClose()"/>
+								</row>
+							</rows>
+						</grid>
+					</vlayout>									
+				</hlayout>
+				<tabbox>
+					<tabs>
+						<tab id="tabPasajero" label="Pasajero"/>
+						<tab id="tabCliente" label="Cliente" />
+						<tab id="tabPagos" label="Pagos" />
+					</tabs>
+					<tabpanels>
+						<tabpanel><!-- DATOS DEL PASAJERO -->
+							<vlayout>
+								<groupbox id="grpbxListaPasajeros" mold="3d" closable="false" visible="false">
+									<caption label="LISTADO DE RESULTADOS"/>
+									<listbox id="lbxPasajeros" mold="paging" pageSize="5" width="500px">
+										<listhead>
+											<listheader label="#" width="30px"/>
+											<listheader label="DOCUMENTO" width="68px"/>
+											<listheader label="NUMERO" width="75px"/>
+											<listheader label="NOMBRES"/>
+											<listheader label="KMS" width="70px" align="right"/>
+										</listhead>
+									</listbox>
+								</groupbox>
+								<groupbox mold="3d" closable="false">
+									<caption label="INFORMACIÓN DEL PASAJERO"/>
+									<toolbar>
+										<toolbarbutton id="tlbbtnNuevoPax"  label="Nuevo" image="resources/toolbar/mp_toolbarNuevo.png" onClick="wndConfirmacion.onNewPax()"/>
+										<toolbarbutton id="tlbbtnModificarPax" label="Modificar" image="resources/toolbar/mp_toolbarModificar.png" onClick="wndConfirmacion.onModifyPax()" disabled="true"/>
+										<toolbarbutton id="tlbbtnLimpiarPax" label="Limpiar" image="resources/toolbar/mp_toolbarLimpiar.png" onClick="wndConfirmacion.onCleanControlsPax()"/>
+										<toolbarbutton id="tlbbtnCancelarPax" label="Cancelar" image="resources/toolbar/mp_toolbarCancelar.png" onClick="wndConfirmacion.onCancelPax()" disabled="true"/>
+										<toolbarbutton id="tlbbtnGuardarPax" autodisable = "self" label="Guardar" image="resources/toolbar/mp_toolbarGuardar.png" onClick="wndConfirmacion.onSavePax()" disabled="true"/>
+									</toolbar>
+									<grid >
+										<columns>
+											<column width="15%" align="right"/>
+											<column width="25%"/>
+											<column width="15%" align="right"/>
+											<column width="30%"/>
+											<column width="15%"/>
+										</columns>
+										<rows>
+											<row sclass="background-gris">
+												<label value="TIPO DOCUMENTO (*) :"/>
+												<combobox id="cmbTipoDocumento" readonly="true" onOK="txtDocumentoPax.setFocus(true)" onChange="wndConfirmacion.habilitarNacionalidad()"/>
+												<label value="NUMERO DOCUMENTO (*) :" style="color:blue; font-weight:bold"/>
+												<hbox align="center">
+														<textbox id="txtDocumentoPax" width="120px" onChange="" maxlength="15"/>
+														<image id="imgValidacionDNI" height="13px" style="cursor:pointer" />
+												</hbox>
+<!-- 												<textbox id="txtDocumentoPax" width="120px"/> -->
+												<cell rowspan="7" align="center" style="background:#F7F7F7">
+													<image id="imgPasajero" src="/resources/mp_man.png" height="90px" width="90px"/>																														
+												</cell>
+											</row>
+											<row sclass="background-gris">
+												<label value="APELLIDO PATERNO (*) :" style="color:blue; font-weight:bold"/>
+												<textbox id="txtApePat" width="120px"/>
+												<label value="APELLIDO MATERNO :" style="color:blue; font-weight:bold"/>
+												<textbox id="txtApeMat" width="120px"/>
+											</row>
+											<row style="background:#F7F7F7" spans="1,3">
+												<label value="NOMBRES (*) :" style="color:blue; font-weight:bold"/>
+												<textbox id="txtNombres" width="200px"/>												
+											</row>
+											<row spans="1,3" style="background:#F7F7F7">
+												<label value="DIRECCIÓN :"/>
+												<textbox id="txtDireccionPax" width="75%" onOK="txtTelefono.setFocus(true)"/>
+											</row>
+											<row style="background:#F7F7F7">
+												<label value="TELÉFONO :"/>
+												<textbox id="txtTelefono" onOK="btnUbigeoPax.setFocus(true)"/>
+												<label value="UBIGEO (*) :"/>
+												<hbox align="center">
+													<textbox id="txtUbigeoPax" width="170px" readonly="true" onOK="txtEmailPax.setFocus(true)"/>
+													<textbox id="txtUbigeoIdPax" visible="false"/>
+													<button id="btnUbigeoPax" label="..." />
+												</hbox>
+											</row>
+											<row style="background:#F7F7F7">
+												<label id="lblEmail" value="EMAIL :"/>
+												<textbox id="txtEmailPax" style="text-transform:none !important" onOK="cmbAnio.setFocus(true)"/>
+												<label value="FEC. NACIMIENTO AÑO :"/>
+												<hlayout valign="middle">
+													<combobox id="cmbAnio" width="50px" autodrop="true" placeholder="1920" onOK="cmbMes.setFocus(true)" buttonVisible="false"/>
+													<label value="MES :"/>
+													<combobox id="cmbMes" width="80px" autodrop="true" placeholder="Enero" onOK="cmbDia.setFocus(true)"/>
+													<label value="DIA :"/>
+													<combobox id="cmbDia" width="50px" autodrop="true" placeholder="01" onOK="cmbSexo.setFocus(true)"/>
+												</hlayout>
+											</row>
+											<row style="background:#F7F7F7">
+												<label value="SEXO (*) :"/>
+												<combobox id="cmbSexo" readonly="true" onOK="cmbEstadoCivil.setFocus(true)"/>
+												<label value="ESTADO CIVIL :"/>
+												<combobox id="cmbEstadoCivil" readonly="true"/>
+											</row>
+											<row id="rowNacionalidad" visible="false">
+												<label value="NACIONALIDAD (*) :"/>
+												<combobox id="cmbNacionalidad" readonly="true"/>
+												<label/>
+												<label/>
+												<label/>
+											</row>
+											<row id="rowAdicional" visible="false" spans="5">
+												<vbox>
+													<label id="lblInformativo1" sclass="label-size12-bold-alert"/>
+													<label id="lblInformativo2" style="color:red; font-size:13px !important; font-weight:bold"/>
+													<hbox spacing="0px">
+														<label id="lblInformativo3" maxlength="52" style="font-size:10px !important; font-weight:bold"/>
+														<image id="imgDetalleMotivo" src="/resources/mp_information.png" sclass="cursor-button" visible="false">
+															<attribute name="onClick">
+																Window wnd = new Window("SISVYR", "normal", false);
+																Caption caption = new Caption("Information","/resources/mp_information.png");
+																wnd.setPosition("center:center");
+																wnd.appendChild(caption);
+																Vbox vbox = new Vbox();
+																vbox.setAlign("center");															
+																Textbox txtInformation = new Textbox(lblInformativo3.getValue());
+																txtInformation.setMultiline(true);
+																txtInformation.setWidth("324px");
+																txtInformation.setHeight("80px");
+																txtInformation.setReadonly(true);
+																Button btnClose = new Button("Cerrar", "/resources/mp_cerrarEnabled.png");
+																btnClose.addEventListener("onClick", new org.zkoss.zk.ui.event.EventListener(){
+																	public void onEvent(Event e){
+																		wnd.onClose();
+																	}
+																});
+																vbox.appendChild(txtInformation);
+																vbox.appendChild(btnClose);
+																wnd.appendChild(vbox);
+																wndConfirmacion.appendChild(wnd);
+																wnd.onModal();
+															</attribute>
+														</image>
+													</hbox>
+												</vbox>																			
+											</row>											
+										</rows>
+									</grid>
+								</groupbox>
+							</vlayout>
+						</tabpanel>
+						<tabpanel><!-- DATOS DEL CLIENTE -->
+							<vlayout>
+								<hlayout>
+									<groupbox id="grpbxListaClientes" mold="3d" closable="false" visible="false">
+										<caption label="LISTADO DE CLIENTES"/>										
+										<listbox id="lbxClientes" mold="paging" pageSize="5">
+											<listhead>
+												<listheader label="#" width="30px"/>
+												<listheader label="DOCUMENTO" width="75px"/>
+												<listheader label="RAZON SOCIAL"/>
+												<listheader label="CONTACTO" width="130px"/>
+											</listhead>
+										</listbox>
+									</groupbox>
+								</hlayout>
+								<groupbox mold="3d">
+									<caption label="INFORMACIÓN DEL CLIENTE"/>
+									<toolbar>
+										<toolbarbutton id="tlbbtnNuevoClient" label="Nuevo" image="resources/toolbar/mp_toolbarNuevo.png" onClick="wndConfirmacion.onNewClient()"/>
+										<toolbarbutton id="tlbbtnModificarClient" label="Modificar" image="resources/toolbar/mp_toolbarModificar.png" onClick="wndConfirmacion.onModifyClient()" disabled="true"/>
+										<toolbarbutton id="tlbbtnLimpiarClient" label="Limpiar" image="resources/toolbar/mp_toolbarLimpiar.png" onClick="wndConfirmacion.onCleanControlsClient()"/>
+										<toolbarbutton id="tlbbtnCancelarClient" label="Cancelar" image="resources/toolbar/mp_toolbarCancelar.png" onClick="wndConfirmacion.onCancelClient()" disabled="true"/>
+										<toolbarbutton id="tlbbtnGuardarClient" autodisable = "self" label="Guardar" image="resources/toolbar/mp_toolbarGuardar.png" onClick="wndConfirmacion.onSaveClient()" disabled="true"/>
+									</toolbar>
+									<grid sclass="grid-no-border">
+										<columns>
+											<column width="15%" align="right"/>
+											<column width="35%"/>
+											<column width="15%" align="right"/>
+											<column width="35%"/>											
+										</columns>
+										<rows>
+											<row spans="1,1,2">
+												<label value="RUC (*) :" style="color:blue; font-weight:bold"/>
+												<textbox id="txtDocumentoCliente" width="120px" maxlength="11"/>
+												<label id="lblDescuento" value="CLIENTE CREDITO / DESCUENTO CORPORATIVO" sclass="label-size12-bold-alert"/>
+											</row>
+											<row>
+												<label value="RAZON SOCIAL (*) :" style="color:blue; font-weight:bold"/>
+												<textbox id="txtRazonSocial" width="90%"/>
+												<label value="CONTACTO :"/>
+												<textbox id="txtContactoCliente" onOK="txtDireccionCliente.setFocus(true)"/>
+											</row>
+											<row>
+												<label value="DIRECCIÓN :"/>
+												<textbox id="txtDireccionCliente" width="90%" onOK="ibxCantidadTrabajadores.setFocus(true)"/>
+												<label value="CANTIDAD TRABAJADORES :"/>
+												<intbox id="ibxCantidadTrabajadores" width="100px" onOK="txtTelefonoClienteOne.setFocus(true)"/>
+											</row>
+											<row>
+												<label value="TELÉFONO 1 :"/>
+													<hbox align="center">
+														<textbox id="txtTelefonoClienteOne" width="135px" onOK="txtTelefonoClienteTwo.setFocus(true)"/><separator width="5px" />
+														<label value="TELÉFONO 2 :"/>
+														<textbox id="txtTelefonoClienteTwo" width="134px" onOK="txtRubro.setFocus(true)"/>
+													</hbox>
+													<label value="RUBRO :"/>
+													<textbox id="txtRubro" onOK="txtEmailCliente.setFocus(true)"/>
+											</row>
+											<row>
+												<label value="EMAIL :"/>
+												<textbox id="txtEmailCliente" style="text-transform:none !important" onOK="btnUbigeoCliente.setFocus(true)"/>
+												<label value="UBIGEO :"/>
+												<hbox align="center" width="100%">
+													<textbox id="txtUbigeoCliente" width="170px" readonly="true"/>
+													<textbox id="txtUbigeoIdCliente" visible="false"/>
+													<button id="btnUbigeoCliente" label="..."/>
+												</hbox>
+											</row>
+										</rows>
+									</grid>
+								</groupbox>
+							</vlayout>
+						</tabpanel>
+						<tabpanel><!-- PAGOS -->
+							<hlayout>
+								<grid width="600px" style="border:none;">
+									<rows>
+										<row>
+											<label value="TARIFA :"/>
+											<doublebox id="dblTarifa" format="##0.00" readonly="true"/>
+											<label value="TIPO COMPROBANTE :"/>
+											<combobox id="cmbTipoComprobante" readonly="true"/>										
+										</row>
+										<row>
+											<label value="RECARGO :"/>
+											<doublebox id="dblRecargo" format="##0.00" readonly="true"/>
+											<label value="FORMA PAGO :"/>
+											<combobox id="cmbFormaPago" readonly="true" onChange="wndConfirmacion.onLoadTipoFormaPago()"/>
+										</row>
+										<row>
+											<label value="DESCUENTO :"/>
+											<hlayout>
+												<doublebox id="dblDescuento" format="##0.00" readonly="true"/>
+												<textbox id="txtIdPromocion" visible="false"/>
+												<image id="imgPromocion" src="resources/mp_promocion.png" style="cursor:pointer" tooltiptext="Seleccionar promoción"/>
+												<image id="imgQuitarPromocion" src="resources/mp_quitarPromocion.png" visible="false" style="cursor:pointer" tooltiptext="Quitar promoción"/>
+											</hlayout>
+											<label value="TIPO FORMA PAGO :"/>
+											<combobox id="cmbTipoFormaPago" readonly="true" disabled="true" onChange="wndConfirmacion.onValidateTipoFormaPago()"/>
+										</row>
+										<row>
+											<label value="PAGADO :"/>
+											<doublebox id="dblPagado" format="##0.00" readonly="true"/>
+											<label value="OPERADOR TARJETA :"/>
+											<combobox id="cmbOperadorTarjetaCredito" readonly="true" disabled="true" onChange="wndConfirmacion.onLoadTarjetas()"/>
+										</row>
+										<row>
+											<label id="lblImporte" value="IMPORTE TOTAL PAGAR :" style="font-size:12px !important;font-weight: bold;color:red"/>
+											<hlayout>
+												<doublebox id="dblImporte" format="##0.00" readonly="true" style="font-size:15px !important;font-weight: bold;color:red"/>
+												<checkbox id="chkPagoMixto" label="Pago Mixto" onClick="wndConfirmacion.habilitarPagoMixto()" visible="false"/>
+											</hlayout>
+											<label value="TARJETA CREDITO :"/>
+											<combobox id="cmbTarjetaCredito" readonly="true" disabled="true"/>
+										</row>
+										<row>
+											<label id="lblImporteEfectivo" value="IMPORTE EFECTIVO :" visible="false"/>
+											<doublebox id="dblImporteEfectivo" format="#,##0.00" visible="false"/>
+											<label value="NUMERO OPERACION :"/>
+											<textbox id="txtOperacionBancaria" mold="default" disabled="true" width="90px"/>
+										</row>
+										<row>
+											<label id="lblImporteTarjeta" value="IMPORTE TARJETA :" visible="false"/>
+											<doublebox id="dblImporteTarjeta" format="#,##0.00" visible="false"/>
+											<label/>
+											<checkbox id="chkPrepagado" label="BOLETO PREPAGADO" visible="false" style="font-size:10px; font-weight:bold; color:blue"/>																						
+										</row>
+										<row spans="4">
+											<div align="left">
+												<label id="lblPromocion" style="font-size:12px !important;font-weight:bold;color:RED"/>
+											</div>												
+										</row>
+									</rows>
+								</grid>									
+							</hlayout>
+						</tabpanel>
+					</tabpanels>
+				</tabbox>
+			</vlayout>							
+		</hlayout>
+	</div>
+</window>
+</zk>

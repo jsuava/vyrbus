@@ -1,0 +1,102 @@
+package com.cystesoft.vyrbus.service.business;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import com.cystesoft.vyrbus.model.bean.Usuario;
+
+public interface UsuarioManager {
+	/**
+	 * Busca en la tabla usuarios si el login existe.	
+	 * @param login	: Nombre o texto a buscar.
+	 * @return <b>True</b> si el usuario existe, de lo contrario devuelve <b>False</b>.
+	 * @throws Exception
+	 */
+	public Usuario buscarUsuarioPorLogin(String login, String estado)throws Exception;
+	/**
+	 * Busca el usuario por su login y password.
+	 * @param login		: Nombre del usuario.
+	 * @param password	: Contraseña del usuario.
+	 * @return Usuario que coincide con los datos ingresados.
+	 * @throws Exception
+	 */
+	public Usuario buscarUsuarioPorLoginPassword(String login, String password, String estado) throws Exception;
+	
+	/**
+	 * Busqueda por estado registro
+	 * @param estado		:Estado del Registro.
+	 * @param criterioOrden	: Criterios para el orden de los datos.
+	 * @return
+	 */
+	public ArrayList<Usuario> buscarPorEstadoRegistro(String estado, String criterioOrden) throws Exception;
+	
+	/**
+	 * Busqueda por un array de criterios.
+	 * @param criteriosBusqueda: Array de criterios de busqueda
+	 * @param criteriosOrdenar : Lista de criterios para el Orden de los Datos
+	 * @return : 
+	 */
+	public ArrayList<Usuario> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar) throws Exception;
+	
+	/**
+	 * Busqueda por Id 
+	 * @param id : Identificador del Usuario
+	 * @return : 
+	 */
+	public Usuario buscarPorId(Long id) throws Exception;
+	
+	/**
+	 * Guarda
+	 * @param tipoGasto :clase Usuario
+	 */
+	public int guardar(Usuario usuario) throws Exception;
+	
+	/**
+	 * Actualizar
+	 * @param tipoItinerario : Clase Usuario
+	 */
+	public void actualizar(Usuario usuario) throws Exception;
+	
+	/**
+	 * Inactivar Usuario
+	 * @param id : Identificador del Usuario
+	 */
+	public void inactivar(Long id) throws Exception;
+	
+	/**
+	 * Activar Usuario.
+	 * @param id : Identificador del Usuario
+	 * @throws Exception
+	 */
+	public void activar(Long id) throws Exception;
+	
+	/**
+	 * Busca los usuarios que tengan una liquidacion 
+	 * @param fechaInicio	: Fecha inicial de la búsqueda
+	 * @param fechaFinal   	: Fecha final de la búsqueda
+	 * @param idAgencia		: Identificador de la agencia.
+	 * @param estadoLiquidacion : Estado de la liquidacion. (0 Cerrada, 1 Abierta, null ambos)
+	 * @return lista de usuarios
+	 * @throws Exception
+	 */
+	public List<Usuario> buscarUsuarioLiquidacion(String fechaInicio, String fechaFinal, Integer idAgencia,Integer estadoLiquidacion) throws Exception;
+	
+	/**
+	 * Busqueda por Id, recupera el usuario con los datos del password tal como esta en la DB
+	 * @param id : Identificador del Usuario
+	 * @return : 
+	 */
+	public Usuario buscarXId(Long id) throws Exception;
+	
+	/**
+	 * Realiza la busqueda de los usuarios de acuerdo a lso criterios enviados
+	 * @param campo				: Campo que debera cumplir con los criterios enviados.
+	 * @param criterios			: Identificadores de los usuarios separados por comas.
+	 * @param criteriosOrdenar	: Criterios a utilizar para ordenar la informacion.
+	 * @param estadoRegistro	: Estado de los registros.
+	 * @return Lista de Agencias.
+	 */
+	public List<Usuario> buscarPorX(String campo, Object[] criterios, List<String> criteriosOrdenar, String estadoRegistro) throws Exception;
+	
+}

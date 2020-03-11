@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.tepsa.sisvyr.model.bean.Agencia" table="VRMAGENCIA" schema="VYR">
+        <comment>Entidad que sirve para realizar reservas y ventas de pasajes, puede funcionar como un terminal permiendo embarque y desembarque de pasajeros, pueden ser: Propios,
+        externos, y Agencias de Viaje.</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="AGENCIA_ID" precision="5" scale="0" />
+            <generator class="sequence">
+                <param name="sequence">SEQ_VRMAGENCIA_ID</param>
+            </generator>
+        </id>
+        <many-to-one name="tipoAgencia" class="com.tepsa.sisvyr.model.bean.TipoAgencia" fetch="select">
+            <column name="TIPAGE_ID" precision="2" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 2.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="concesionario" class="com.tepsa.sisvyr.model.bean.Concesionario" fetch="select">
+            <column name="CONCESIONARIO_ID" precision="5" scale="0">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="localidad" class="com.tepsa.sisvyr.model.bean.Localidad" fetch="select">
+            <column name="LOCALIDAD_ID" precision="5" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="ubigeo" class="com.tepsa.sisvyr.model.bean.Ubigeo" fetch="select">
+            <column name="UBIGEO_ID"  length="6" not-null="true">
+            </column>
+        </many-to-one>
+        <property name="denominacion" type="java.lang.String">
+            <column name="C_DENOMINACION" length="60" not-null="true">
+                <comment>Nombre de la agencia.</comment>
+            </column>
+        </property>
+        <property name="nombreCorto" type="java.lang.String">
+            <column name="C_NOMCOR" length="20">
+                <comment>Denominacion corta de la agencia.</comment>
+            </column>
+        </property>
+        <property name="direccion" type="java.lang.String">
+            <column name="C_DIRECCION" length="100">
+                <comment>Dirección de la agencia.</comment>
+            </column>
+        </property>
+        <property name="codigo" type="java.lang.String">
+            <column name="C_CODIGO" length="20">
+                <comment>Denominacion corta de la agencia.</comment>
+            </column>
+        </property>
+        <property name="esTerminal" type="java.lang.Boolean">
+            <column name="N_ESTERMINAL" not-null="true">
+                <comment>Indica si la agencia es un punto de embarque 0(NORMAL) 1(PTO EMBARQUE)</comment>
+            </column>
+        </property>
+        <many-to-one name="nacionalidad" class="com.tepsa.sisvyr.model.bean.Nacionalidad" fetch="select">
+            <column name="NACIONALIDAD_ID" precision="5" scale="0">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+            </column>
+        </many-to-one>
+<!--         <many-to-one name="tipoMoneda" class="com.tepsa.sisvyr.model.bean.TipoMoneda" fetch="select"> -->
+<!--             <column name="TIPMON_ID" precision="5" scale="0" not-null="true" > -->
+<!--                 <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment> -->
+<!--             </column> -->
+<!--         </many-to-one> -->
+        <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+        <property name="estadoRegistro" type="java.lang.String">
+            <column name="C_ESTREG" length="1" not-null="true">
+                <comment>Estado de registro A(Activo), I(Inactivo).</comment>
+            </column>
+        </property>
+        <property name="fechaInsercion" type="java.util.Date">
+            <column name="AUDFECINS" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioInsercion" type="java.lang.String">
+            <column name="AUDUSUINS" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipInsercion" type="java.lang.String">
+            <column name="AUDIPINSE" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="fechaModificacion" type="java.util.Date">
+            <column name="AUDFECMOD" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioModificacion" type="java.lang.String">
+            <column name="AUDUSUMOD" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipModificacion" type="java.lang.String">
+            <column name="AUDIPMODI" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <!-- 		END CAMPOS DE AUDITORIA	 	-->
+    </class>
+</hibernate-mapping>

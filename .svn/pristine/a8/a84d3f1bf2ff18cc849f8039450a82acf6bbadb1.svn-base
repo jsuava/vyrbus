@@ -1,0 +1,6 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="EVoucher" width="640px" height="590px" border="normal" use="com.tepsa.sisvyr.view.ctrl.WndEVoucher" closable="true" onClose="EVoucher.onClose()">
+	<caption label="E-Voucher"/>
+</window>
+</zk>

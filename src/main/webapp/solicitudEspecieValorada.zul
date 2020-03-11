@@ -1,0 +1,52 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndSolicituEspecieValorada" title="" border="none"  use="com.cystesoft.vyrbus.view.ctrl.WndSolicitudEspecieValorada" >
+	<div id="divLista">
+		<listbox id="listboxLista">
+			<listhead sizable="true">
+				<listheader label="#" width="50px"/>
+				<listheader label="FECHA" sort="auto" />
+				<listheader label="AGENCIA" sort="auto" />
+				<listheader label="TIPO COMPROBANTE" sort="auto" />
+				<listheader label="NRO. SERIE" sort="auto" />
+				<listheader label="CANTIDAD" sort="auto" />
+			</listhead>
+		</listbox>
+	</div>
+
+	<div id="divMantenimiento" >
+		<groupbox mold="3d" closable="false">
+		<caption label="SOLICITUD DE ESPECIES VALORADAS" />
+			<grid>	
+				<columns>
+					<column width="100px" />
+					<column width="170px" />
+					<column width="57px" />
+				</columns>
+				<rows>
+					<row>
+						<label value="Fecha"  sclass="label-size11" />
+						<div>
+							<textbox id="textboxId" />
+							<datebox id="dbxFecha" format="dd/MM/yyyy" disabled="true"/>
+						</div>			
+						<label value="Agencia" sclass="label-size11" />
+						<combobox id="cmbAgencia" width="175px" readonly="true" />
+					</row>
+					<row>
+						<label value="Tipo Comprobante" sclass="label-size11" />
+						<combobox id="cmbTipoComprobante"  readonly="true"/>
+						
+						<label value="Nro. Serie" sclass="label-size11" />
+						<hbox align="center">
+							<intbox id="ibxSerie" maxlength="4" width="50px"/><separator width="5px" />
+							<label value="Cantidad" sclass="label-size11"/>
+							<intbox id="ibxCantidad" maxlength="6" width="50px"/>
+						</hbox>
+					</row>
+				</rows>
+			</grid>
+		</groupbox>
+	</div>
+</window>
+</zk>

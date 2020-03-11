@@ -1,0 +1,195 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: Implementacion de metodos que permiten el acceso al modelo.
+ * Autor		: José Sullo Avalos
+ * Fecha		: 27/09/2012
+ */
+package com.cystesoft.vyrbus.service.business.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import com.cystesoft.vyrbus.model.bean.Bus;
+import com.cystesoft.vyrbus.model.dao.BusDAO;
+import com.cystesoft.vyrbus.service.business.BusManager;
+import com.cystesoft.vyrbus.service.exceptions.NumeroBusDuplicadoException;
+import com.cystesoft.vyrbus.service.exceptions.NumeroChasisDuplicadoException;
+import com.cystesoft.vyrbus.service.exceptions.NumeroMotorDuplicadoException;
+import com.cystesoft.vyrbus.service.exceptions.NumeroPlacaDuplicadoException;
+import com.cystesoft.vyrbus.service.util.Constantes;
+
+/**
+ * @author Jose
+ *
+ */
+public class BusManagerImpl implements BusManager {
+	private BusDAO busDAO;
+	
+	/**
+	 * @return the busDAO
+	 */
+	public BusDAO getBusDAO() {
+		return busDAO;
+	}
+	/**
+	 * @param busDAO the busDAO to set
+	 */
+	public void setBusDAO(BusDAO busDAO) {
+		this.busDAO = busDAO;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.BusManager#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
+	 */
+	@Override
+	@Transactional(readOnly=true)
+	public ArrayList<Bus> buscarPorEstadoRegistro(String estado, String criterioOrden) throws Exception {
+		return getBusDAO().buscarPorEstadoRegistro(estado, criterioOrden);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.BusManager#buscarPorX(java.util.TreeMap, java.util.List)
+	 */
+	@Override
+	@Transactional (readOnly=true)
+	public ArrayList<Bus> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar) throws Exception {
+		return getBusDAO().buscarPorX(criteriosBusqueda, criteriosOrdenar);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.BusManager#buscarPorId(java.lang.Long)
+	 */
+	@Override
+	@Transactional (readOnly=true)
+	public Bus buscarPorId(Long id) throws Exception {
+		return getBusDAO().buscarPorId(id);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.BusManager#guardar(com.tepsa.sisvyr.model.bean.Bus)
+	 */
+	@Override
+	@Transactional
+	public void guardar(Bus bus) throws Exception {
+		try{
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			criteriosBusqueda.put("codigo", bus.getCodigo());
+			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+			List<?> resultCodigo = getBusDAO().buscarPorX(criteriosBusqueda, null);
+			/*Valida duplicidad codigo del bus "Número del Bus"*/
+			if(resultCodigo.size()>0)
+				throw new NumeroBusDuplicadoException();
+			
+			criteriosBusqueda.remove("codigo");
+			criteriosBusqueda.put("numeroPlaca", bus.getNumeroPlaca());
+			List<?> resultPlaca = getBusDAO().buscarPorX(criteriosBusqueda, null);
+			/*Valida duplicidad del Número de la Placa*/
+			if (resultPlaca.size()>0)
+				throw new NumeroPlacaDuplicadoException();
+			
+			criteriosBusqueda.remove("codigo");criteriosBusqueda.remove("numeroPlaca");
+			criteriosBusqueda.put("numeroChasis", bus.getNumeroChasis());
+			List<?> resultChasis = getBusDAO().buscarPorX(criteriosBusqueda, null);
+			/*Valida duplicidad del Número de Chasis*/
+			if (resultChasis.size()>0)
+				throw new NumeroChasisDuplicadoException();
+			
+			criteriosBusqueda.remove("codigo");criteriosBusqueda.remove("numeroPlaca"); criteriosBusqueda.remove("numeroChasis");
+			criteriosBusqueda.put("numeroMotor", bus.getNumeroMotor());
+			List<?> resultMotor = getBusDAO().buscarPorX(criteriosBusqueda, null);
+			/*Valida duplicidad del Número del Motor*/
+			if (resultMotor.size()>0)
+				throw new NumeroMotorDuplicadoException();
+			
+			getBusDAO().guardar(bus);
+			
+		}catch (NumeroBusDuplicadoException nbdex){
+			throw new NumeroBusDuplicadoException();
+		}catch (NumeroPlacaDuplicadoException npdex){
+			throw new NumeroPlacaDuplicadoException();
+		}catch (NumeroChasisDuplicadoException ncdex){
+			throw new NumeroChasisDuplicadoException();
+		}catch (NumeroMotorDuplicadoException nmdex){
+			throw new NumeroMotorDuplicadoException();
+		}catch (Exception ex){
+			throw new Exception(ex); 
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.BusManager#actualizar(com.tepsa.sisvyr.model.bean.Bus)
+	 */
+	@Override
+	@Transactional
+	public void actualizar(Bus bus) throws Exception {
+		try{
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			criteriosBusqueda.put("codigo", bus.getCodigo());
+			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+			List<?> resultCodigo = getBusDAO().buscarPorX(criteriosBusqueda, null);
+			/*Valida duplicidad codigo del bus "Número del Bus"*/
+			for(int r = 0; r < resultCodigo.size(); r ++) {
+				Bus obusCodigo = (Bus) resultCodigo.get(r);
+					if (!(obusCodigo.getId() == bus.getId()))
+						throw new NumeroBusDuplicadoException();
+			}
+			
+			criteriosBusqueda.remove("codigo");
+			criteriosBusqueda.put("numeroPlaca", bus.getNumeroPlaca());
+			List<?> resultPlaca = getBusDAO().buscarPorX(criteriosBusqueda, null);
+			/*Valida duplicidad del Número de la Placa*/
+			for(int r = 0; r < resultPlaca.size(); r ++) {
+				Bus obusPlaca= (Bus) resultPlaca.get(r);
+					if (!(obusPlaca.getId() == bus.getId()))
+						throw new NumeroPlacaDuplicadoException();
+			}	
+			
+			criteriosBusqueda.remove("codigo");criteriosBusqueda.remove("numeroPlaca");
+			criteriosBusqueda.put("numeroChasis", bus.getNumeroChasis());
+			List<?> resultChasis = getBusDAO().buscarPorX(criteriosBusqueda, null);
+			/*Valida duplicidad del Número de Chasis*/
+			for(int r = 0; r < resultChasis.size(); r ++) {
+				Bus obusChasis= (Bus) resultChasis.get(r);
+					if (!(obusChasis.getId() == bus.getId()))
+						throw new NumeroChasisDuplicadoException();
+			}
+			
+			criteriosBusqueda.remove("codigo");criteriosBusqueda.remove("numeroPlaca"); criteriosBusqueda.remove("numeroChasis");
+			criteriosBusqueda.put("numeroMotor", bus.getNumeroMotor());
+			List<?> resultMotor = getBusDAO().buscarPorX(criteriosBusqueda, null);
+			/*Valida duplicidad del Número del Motor*/
+			for(int r = 0; r < resultMotor.size(); r ++) {
+				Bus obusMotor= (Bus) resultMotor.get(r);
+					if (!(obusMotor.getId() == bus.getId()))
+						throw new NumeroMotorDuplicadoException();
+			}
+			
+			getBusDAO().actualizar(bus);	
+			
+		}catch (NumeroBusDuplicadoException nbdex){
+			throw new NumeroBusDuplicadoException();
+		}catch (NumeroPlacaDuplicadoException npdex){
+			throw new NumeroPlacaDuplicadoException();
+		}catch (NumeroChasisDuplicadoException ncdex){
+			throw new NumeroChasisDuplicadoException();
+		}catch (NumeroMotorDuplicadoException nmdex){
+			throw new NumeroMotorDuplicadoException();
+		}catch (Exception ex){
+			throw new Exception(ex); 
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.BusManager#innactivar(long)
+	 */
+	@Override
+	@Transactional
+	public void inactivar(long id) throws Exception {
+		getBusDAO().inactivar(id);
+	}
+
+}

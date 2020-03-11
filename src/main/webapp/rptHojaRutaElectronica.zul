@@ -1,0 +1,59 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndRptHREEmitidas" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndRptHREEmitidas">
+	<groupbox mold="3d" closable="false">
+		<caption label="CONSULTA DE LAS HRE EMITIDAS"/>
+		
+		<grid>
+			<columns>
+				<column width="100px" align="right" />
+				<column width="190px"  />
+				<column width="100px" align="right" />
+				<column  />
+			</columns>
+			<rows>
+				<row>
+					<label value="FECHA INICIAL :" />
+					<datebox id="dtbxFechaInicial" format="dd/MM/yyyy" readonly="true"/>
+					
+					<label value="FECHA FINAL :"  />
+					<datebox id="dtbxFechaFinal" format="dd/MM/yyyy" readonly="true"/>
+				</row>
+				<row>
+					<label value="ORIGEN :"/>
+					<combobox id="cmbOrigen" readonly="true" width="150px"/>
+					
+					<label value="DESTINO :"/>
+					<hbox align="center">
+						<combobox id="cmbDestino" readonly="true" width="150px"/>
+						
+						<button label="Buscar" sclass="btn-vyrbus" image="/resources/mp_buscarEnabled.png" onClick="wndRptHREEmitidas.buscar()" />
+						<button label="Exportar" sclass="btn-vyrbus" image="/resources/mp_excel.png" onClick="wndRptHREEmitidas.Exportar()"/>
+						<button label="Cerrar" sclass="btn-vyrbus" image="/resources/mp_cerrar.png" onClick="wndRptHREEmitidas.closeTabWindow()"/>
+					</hbox>
+				</row>
+			</rows>
+		</grid>	
+		<listbox id="lsbxHREEmitidas" mold="paging" pageSize="12">
+			<listhead>
+				<listheader label="F.SALIDA" width="70px" tooltiptext="Fecha de Salida"/>
+				<listheader label="H.SALIDA" width="60px" tooltiptext="Hora de Salida"/>
+				<listheader label="RUTA" width="150px"/>
+				<listheader label="SERVICIO" width="120px"/>
+				<listheader label="BUS" width="50px"/>
+				<listheader label="F.E.LLEGADA" width="80px" tooltiptext="Fecha estimación llegada"/>
+				<listheader label="H.E.LLEGADA" width="80px" tooltiptext="Hora estimación llegada"/>
+				<listheader label="HOJA RUTA" width="80px"/>
+				<listheader label="F.R.LLEGADA" width="80px" tooltiptext="Fecha real llegada"/>
+				<listheader label="H.R.LLEGADA" width="80px" tooltiptext="Hora real llegada"/>
+				<listheader label="TRIPULANTE" width="190px"/>
+				<listheader label="PILOTO" width="190px"/>
+				<listheader label="COPILOTO" width="190px"/>
+				<listheader label="COPILOTO AUXILIAR" width="170px" />
+			</listhead>
+		</listbox>	
+	</groupbox>
+	
+	
+</window>
+</zk>

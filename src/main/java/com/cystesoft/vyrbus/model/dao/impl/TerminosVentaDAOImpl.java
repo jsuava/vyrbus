@@ -1,0 +1,72 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: Implementación de metodos relacionados con los Terminos de la Venta.
+ * Autor		: José Sullo Avalos
+ * Fecha		: 14/10/2013
+ */
+package com.cystesoft.vyrbus.model.dao.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import com.cystesoft.vyrbus.model.bean.TerminosVenta;
+import com.cystesoft.vyrbus.model.dao.TerminosVentaDAO;
+
+/**
+ * @author Jose
+ *
+ */
+@SuppressWarnings("unchecked")
+public class TerminosVentaDAOImpl extends GenericDAOImpl implements TerminosVentaDAO {
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.TerminosVentaDAO#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public ArrayList<TerminosVenta> buscarPorEstadoRegistro(String estado, String criterioOrden) {
+		return (ArrayList<TerminosVenta>) super.findByEstadoRegistro(TerminosVenta.class, estado, criterioOrden);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.TerminosVentaDAO#buscarPorX(java.util.TreeMap, java.util.List)
+	 */
+	@Override
+	public ArrayList<TerminosVenta> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar) {
+		return (ArrayList<TerminosVenta>) super.findByX(TerminosVenta.class, criteriosBusqueda, criteriosOrdenar);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.TerminosVentaDAO#buscarPorId(java.lang.Long)
+	 */
+	@Override
+	public TerminosVenta buscarPorId(Long id) {
+		return (TerminosVenta) super.findById(TerminosVenta.class, id);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.TerminosVentaDAO#guardar(com.tepsa.sisvyr.model.bean.TerminosVenta)
+	 */
+	@Override
+	public void guardar(TerminosVenta terminosVenta) {
+		super.save(terminosVenta);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.TerminosVentaDAO#actualizar(com.tepsa.sisvyr.model.bean.TerminosVenta)
+	 */
+	@Override
+	public void actualizar(com.cystesoft.vyrbus.model.bean.TerminosVenta terminosVenta) {
+		super.update(terminosVenta);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.TerminosVentaDAO#inactivar(java.lang.Long)
+	 */
+	@Override
+	public void inactivar(Long id) {
+		super.inactivate(TerminosVenta.class, id);
+	}
+
+}

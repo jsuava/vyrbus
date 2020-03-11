@@ -1,0 +1,84 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndConfirmarReserva" border="none" use="com.tepsa.sisvyr.view.ctrl.WndConfirmarReserva" style="overflow:auto">
+	<vlayout>
+		<tabbox mold="accordion-lite">
+			<tabs>
+				<tab id="tabBusqueda" label="CRITERIOS DE BUSQUEDA"/>
+				<tab id="tabListado" label="LISTADO DE RESERVAS ENCONTRADAS"/>
+				<tab id="tabDetalle" label="DETALLE DE LA RESERVA"/>
+			</tabs>
+			<tabpanels>
+				<tabpanel>
+					<grid>
+						<columns>
+							<column width="96px" align="right"/>
+							<column/>
+							<column width="94px" align="right"/>
+							<column/>
+							<column width="90px"/>
+						</columns>
+						<rows>
+							<row>
+								<label value="AGENCIA :"/>
+								<combobox id="cmbAgencia" width="200px" disabled="true"/>
+								<label value="FECHA PARTIDA :"/>
+								<datebox id="dtbxFechaPartida" format="dd/MM/yyyy" onOK="wndConfirmarReserva.buscarReservas()"/>
+								<cell rowspan="2" style="background:white">
+									<button label="Buscar" autodisable="self" image="resources/mp_buscarEnabled.png" style="cursor:pointer" height="29px" width="85px" onClick="wndConfirmarReserva.buscarReservas()"/>
+								</cell>
+							</row>
+							<row>
+								<label value="ORIGEN :"/>
+								<combobox id="cmbOrigen" autodrop="true" readonly="true" onOK="wndConfirmarReserva.buscarReservas()"/>
+								<label value="DESTINO :"/>
+								<combobox id="cmbDestino" autodrop="true" readonly="true" onOK="wndConfirmarReserva.buscarReservas()"/>
+							</row>
+							<row>
+								<label value="NRO DOCUMENTO :"/>
+								<textbox id="txtNumeroDocumento" width="100px" onOK="wndConfirmarReserva.buscarReservas()"/>
+								<label value="PASAJERO :"/>
+								<textbox id="txtPasajero" onOK="wndConfirmarReserva.buscarReservas()" width="220px"/>
+								<cell style="background:none">
+									<button label="Cerrar" image="resources/mp_cerrarEnabled.png" style="cursor:pointer" height="29px" width="80px" onClick="wndConfirmarReserva.closeTabWindow()"/>
+								</cell>
+							</row>
+						</rows>
+					</grid>
+				</tabpanel>
+				<tabpanel>
+					<listbox id="lbxReservas" width="100%" mold="paging" pageSize="8" >
+						<listhead>
+							<listheader id="listHeaderCheck" width="3%" visible="false" />
+							<listheader label="VENTA_ID" width="5%"/>
+							<listheader label="ITINERARIO" width="7%"/>
+							<listheader label="RUTA" width="13%"/>
+							<listheader label="PASAJERO" width="20%"/>
+							<listheader label="CLIENTE" width="19%"/>
+							<listheader label="ASIENTO" width="5%"/>
+							<listheader label="NRO CONTROL" width="8%"/>
+							<listheader label="F.PARTIDA" width="7%"/>
+							<listheader label="IMPORTE" width="5%"/>
+							<listheader label="ALIMENTACION" width="7%"/>
+							<listheader label="ANULAR" width="4%" align="center"/>
+						</listhead>
+						
+						<listfoot id="listFootAnulacionMasiva" visible="false">
+							<listfooter />
+							<listfooter span="5" align="left" >
+								<checkbox id="chbxActivaAnulacionMasiva" visible="true" label="Activar anulación masiva (Cuando esta opción este habilitada, no se podrán confirmar reservas)" onCheck="wndConfirmarReserva.activarAnulacionMasiva()"/>
+							</listfooter>
+							<listfooter span="7" align="right">
+								<button autodisable="self" mold="trendy" label="Anular Selección" image="resources/mp_anular.png" onClick="wndConfirmarReserva.anulacionMasiva()" tooltiptext="Anula todas las reservas seleccionadas." />
+							</listfooter>
+						</listfoot>
+					</listbox>
+				</tabpanel>
+				<tabpanel>
+					<include id="incConfirmacion" mode="instant"/>
+				</tabpanel>
+			</tabpanels>
+		</tabbox>
+	</vlayout>	
+</window>
+</zk>

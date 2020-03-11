@@ -1,0 +1,37 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: José Sullo Avalos
+ * Fecha		: 28/01/2013
+ */
+package com.tepsa.sisvyr.service.exceptions;
+
+import java.io.Serializable;
+
+/**
+ * @author Jose
+ *
+ */
+public class PostergacionByFormaPagoNoPermitidoException extends Exception implements Serializable {
+	private static final long serialVersionUID = 1L;
+	private Integer formapago;
+
+	public PostergacionByFormaPagoNoPermitidoException(Integer formapago) {
+		super();
+		this.formapago = formapago;
+	}
+	
+	/**
+	 * @return the formapago
+	 */
+	public Integer getFormapago() {
+		return formapago;
+	}
+	/**
+	 * @param formapago the formapago to set
+	 */
+	public void setFormapago(Integer formapago) {
+		this.formapago = formapago;
+	}
+}

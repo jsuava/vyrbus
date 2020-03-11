@@ -1,0 +1,96 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndLiquidacionBus" title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndLiquidacionBus" >
+	<div 	id="divLista">
+		<listbox id="listboxLista" rows="15">
+			<listhead sizable="true">
+				<listheader label="#" width="50px" />
+				<listheader label="BUS" sort="auto" />
+				<listheader label="ITINERARIO" sort="auto" />
+				<listheader label="TOTAL" sort="auto" />
+			</listhead>
+		</listbox>	
+	</div>
+	
+<div id="divMantenimiento" >
+	<groupbox mold="3d" closable="false" width="766px" >
+		<caption label="LIQUIDACION DEL BUS"/>
+		<grid>
+			<columns>
+				<column width="90px" align="right" />
+				<column width="180px" />
+				<column width="60px" align="right" />
+<!-- 				<column width="180px" /> -->
+			</columns>
+			<rows>
+				<row>
+					<div>
+						<label value="ITINERARIO (*) :" />
+						<textbox id="textboxId" />
+					</div>
+					<hbox>
+						<longbox id="lbitinerario" readonly="true" />
+						<button id="btnBuscar" label="..."  image="/resources/mp_buscarEnabled.png"  style="cursor:pointer" tooltiptext="Buscar Itinerario" />
+					</hbox>
+					
+					<label value="BUS (*) :" />
+					<combobox id="cmbBus" readonly="true" />
+					<separator></separator><separator></separator>
+				</row>
+				<row>
+					<separator></separator><separator></separator>
+					<separator></separator><separator></separator>
+					<hbox>
+						<button id="btnAdd" image="/resources/mp_nuevoEnabled.png" width="50px" height="25px"
+									onClick="wndLiquidacionBus.AddFilaGastoXBuss(false)" tooltiptext="Insertar nuevo Item" />
+						<button id="btnDelete" image="/resources/mp_cerrar.png" width="50px" height="25px"
+									tooltiptext="Eliminar  Item" />
+					</hbox>	
+					<separator></separator>		
+				</row>
+			</rows>
+		</grid>
+		
+		<grid style="border:none" >
+		<columns>
+			<column width="754px"/>
+			<column />
+		</columns>
+		<rows>
+			<row>
+				<listbox id="listGastosXBus" rows="6">
+					<listhead sizable="false">
+						<listheader label="#" width="25px" />
+						<listheader label="TIPO DE GASTO" width="140px" align="center"/>
+						<listheader label="MONTO" width="80px"  align="center"/>
+						<listheader label="OPERACION" width="105px"  align="center" />
+						<listheader label="FECHA OPERACION" width="110px"  align="center" />
+						<listheader label="OBSERVACIONES" align="center" width="250px"/>
+						<listheader label=" " align="center" />
+					</listhead>
+				</listbox>				
+			</row>
+			<row>
+				<grid >
+					<columns>
+						<column width="184px" align="right"/>
+						<column />
+					</columns>
+					<rows>
+						<row>
+							<label value="Total" sclass="label-size11" />
+							<doublebox id="dbTotal" format="##0.00" width="80px" />
+						</row>					
+					</rows>
+				</grid>	
+				
+			</row>
+		</rows>		
+		</grid>
+		
+	</groupbox>
+	
+</div>	
+	
+</window>
+</zk>

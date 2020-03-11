@@ -1,0 +1,87 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: José Sullo Avalos
+ * Fecha		: 03/04/2014
+ */
+package com.cystesoft.vyrbus.service.business.impl;
+
+import java.util.List;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import com.cystesoft.vyrbus.model.bean.TarifaFechaAbierta;
+import com.cystesoft.vyrbus.model.dao.TarifaFechaAbiertaDAO;
+import com.cystesoft.vyrbus.service.business.TarifaFechaAbiertaManager;
+
+/**
+ * @author JABANTO
+ *
+ */
+public class TarifaFechaAbiertaManagerImpl implements TarifaFechaAbiertaManager {
+	
+	private TarifaFechaAbiertaDAO tarifaFechaAbiertaDAO;
+
+	/**
+	 * @return the tarifaFechaAbiertaDAO
+	 */
+	public TarifaFechaAbiertaDAO getTarifaFechaAbiertaDAO() {
+		return tarifaFechaAbiertaDAO;
+	}
+
+	/**
+	 * @param tarifaFechaAbiertaDAO the tarifaFechaAbiertaDAO to set
+	 */
+	public void setTarifaFechaAbiertaDAO(TarifaFechaAbiertaDAO tarifaFechaAbiertaDAO) {
+		this.tarifaFechaAbiertaDAO = tarifaFechaAbiertaDAO;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.TarifaFechaAbiertaManager#buscarTarifa(java.lang.Integer, java.lang.Integer)
+	 */
+	@Override
+	public Double buscarTarifa(Integer idRuta, Integer idServicio)throws Exception {
+		return getTarifaFechaAbiertaDAO().buscarTarifa(idRuta, idServicio);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.TarifaFechaAbiertaManager#buscarTarifas(java.lang.Integer, java.lang.Integer)
+	 */
+	@Override
+	public List<TarifaFechaAbierta> buscarTarifas(Integer idOrigen,Integer idDestino, Integer idServicio) throws Exception {
+		// TODO Auto-generated method stub
+		return getTarifaFechaAbiertaDAO().buscarTarifas(idOrigen,idDestino, idServicio);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.TarifaFechaAbiertaManager#guardar(com.tepsa.sisvyr.model.bean.TarifaFechaAbierta)
+	 */
+	@Override
+	@Transactional
+	public void guardar(TarifaFechaAbierta tarifaFechaAbierta) throws Exception {
+		// TODO Auto-generated method stub
+		getTarifaFechaAbiertaDAO().guardar(tarifaFechaAbierta);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.TarifaFechaAbiertaManager#actualizar(com.tepsa.sisvyr.model.bean.TarifaFechaAbierta)
+	 */
+	@Override
+	@Transactional
+	public void actualizar(TarifaFechaAbierta tarifaFechaAbierta)throws Exception {
+		// TODO Auto-generated method stub
+		getTarifaFechaAbiertaDAO().actualizar(tarifaFechaAbierta);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.TarifaFechaAbiertaManager#inactivate(java.lang.Long)
+	 */
+	@Override
+	@Transactional
+	public void inactivate(Long id) throws Exception {
+		// TODO Auto-generated method stub
+		getTarifaFechaAbiertaDAO().inactivate(id);
+	}
+	
+}

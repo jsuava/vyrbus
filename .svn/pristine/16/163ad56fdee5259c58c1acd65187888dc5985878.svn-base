@@ -1,0 +1,37 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: jM
+ * Fecha		: 04/05/2012
+ */
+package com.tepsa.sisvyr.model.dao;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import com.tepsa.sisvyr.model.bean.TarjetaCredito;
+
+/**
+ *
+ * @author jM
+ * @since JDK1.6
+ */
+public interface TarjetaCreditoDAO extends GenericDAO {
+	public ArrayList<TarjetaCredito> buscarPorEstadoRegistro(String estado, String criterioOrden);
+	public ArrayList<TarjetaCredito> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
+	public TarjetaCredito buscarPorId(Long id);
+	public void guardar(TarjetaCredito tarjetaCredito);
+	public void actualizar(TarjetaCredito tarjetaCredito);
+	public void inactivar(Long id);
+	/**
+	 * Realiza la busqueda de las Tarjetas de Credito de acuerdo a lso criterios enviados
+	 * @param campo				: Campo que debera cumplir con los criterios enviados.
+	 * @param criterios			: Identificadores de las Tarjetas de Credito separados por comas.
+	 * @param criteriosOrdenar	: Criterios a utilizar para ordenar la informacion.
+	 * @param estadoRegistro	: Estado de los registros.
+	 * @return Lista de Tarjetas de Credito.
+	 */
+	public List<TarjetaCredito> buscarPorX(String campo, Object[] criterios, List<String> criteriosOrdenar, String estadoRegistro) throws Exception;
+}

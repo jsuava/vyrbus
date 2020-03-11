@@ -1,0 +1,71 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndAgencia" title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndAgencia">
+<div id="divLista">
+	<listbox id="listboxLista">
+		<listhead sizable="true">
+			<listheader label="#" width="50px"/>
+			<listheader label="TIPO DE AGENCIA" width="130px" sort="auto" />
+			<listheader label="LOCALIDAD" width="85px" sort="auto" />
+			<listheader label="CONCESIONARIO" width="170px" sort="auto" />
+			<listheader label="UBICACIÓN GEOGRÁFICA" sort="auto"/>
+			<listheader label="DENOMINACIÓN"  sort="auto" />
+			<listheader label="NOMBRE CORTO" sort="auto" />
+			<listheader label="¿ES TERMINAL?" width="80px" sort="auto" />
+		</listhead>
+	</listbox>
+</div>
+
+<div id="divMantenimiento">
+	<groupbox mold="3d" closable="false" >
+		<caption label="Datos" />
+		<grid>
+			<columns>
+				<column width="130px" align="right"/>
+				<column width="200px" />
+				<column width="110px" align="right"/>
+			</columns>
+			<rows>
+				<row>
+					<div>
+						<label value="TIPO DE AGENCIA (*) :"/>
+						<textbox id="textboxId" />
+					</div>
+					<combobox id="cboTipoAgencia" readonly="true" width="188px" onOK="cboLocalidad.setFocus(true);cboLocalidad.select() " />
+					<label value="LOCALIDAD (*) :" />
+					<combobox id="cboLocalidad" readonly="true" onOK="cboConcesionario.setFocus(true); cboConcesionario.select()"/>
+				</row>
+				<row>
+					<label value="CONCESIONARIO (*)" />
+					<combobox id="cboConcesionario" readonly="true" width="188px" onOK="btnUbicacionGeografica.setFocus(true)" />
+					<label value="UBICACIÓN GEOGRÁFICA (*) :" />
+					<hbox align="end">
+						<textbox id="txtIdUbigeo" visible="false" />
+						<textbox id="txtUbicacionGeografica" rows="2"  readonly="true" height="26px"/>
+						<button id="btnUbicacionGeografica" image="resources/mp_buscarEnabled.png" onClick="txtDenominacion.setFocus(true)"  />
+					</hbox>
+				</row>
+				<row>
+					<label value="DENOMINACIÓN (*):" />
+					<textbox id="txtDenominacion" maxlength="60" width="180px" onOK="txtNombreCorto.setFocus(true)" />
+					<label value="NOMBRE CORTO (*) :"  />
+					<textbox id="txtNombreCorto" maxlength="20" onOK="chkMarcarTerminal.setFocus(true)" />
+				</row>
+				<row>
+					<label value="DIRECCIÓN :" />
+					<textbox id="txtDireccion" maxlength="100" width="180px" onOK="txtNombreCorto.setFocus(true)" />
+					<label value="C.C. (*) :"  />
+					<textbox id="txtCodigo" tooltiptext="Centro de Costo" maxlength="6" onOK="chkMarcarTerminal.setFocus(true)" />
+				</row>
+				<row>
+					<label value="MARCAR COMO TERMINAL :"/>
+					<checkbox id="chkMarcarTerminal" />
+					<separator />
+					<separator />
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+</div>
+</window>
+</zk>

@@ -1,0 +1,61 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: Interfaz donde definimos las reglas del negocio para la tabla Terminos de Venta VRMTERMINOS.
+ * Autor		: José Sullo Avalos
+ * Fecha		: 14/10/2013
+ */
+package com.tepsa.sisvyr.service.business;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import com.tepsa.sisvyr.model.bean.TerminosVenta;
+
+/**
+ * @author Jose
+ *
+ */
+public interface TerminosVentaManager {
+	/**
+	 * Busqueda por estado registro
+	 * @param estado		: Estado del Registro.
+	 * @param criterioOrden	: Criterios para el orden de los datos.
+	 * @return
+	 */
+	public ArrayList<TerminosVenta> buscarPorEstadoRegistro(String estado, String criterioOrden);
+	
+	/**
+	 * Busqueda por un array de criterios.
+	 * @param criteriosBusqueda: Array de criterios de busqueda
+	 * @param criteriosOrdenar : Lista de criterios para el Orden de los Datos
+	 * @return : Array de Terminos de Venta-
+	 */
+	public ArrayList<TerminosVenta> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
+	
+	/**
+	 * Busqueda por Id del Termino de Venta
+	 * @param id : Identificador del Termino de Venta
+	 * @return : Lista de terminos de venta.
+	 */
+	public TerminosVenta buscarPorId(Long id);
+	
+	/**
+	 * Guarda el Termino de venta.
+	 * @param terminosVenta : Clase TerminosVenta
+	 */
+	public void guardar(TerminosVenta terminosVenta);
+	
+	/**
+	 * Actualiza el termino de venta.
+	 * @param terminosVenta : Clase TerminosVenta
+	 */
+	public void actualizar(TerminosVenta terminosVenta);
+	
+	/**
+	 * Inactivar
+	 * @param id : Identificador del Termino de Venta
+	 */
+	public void inactivar(Long id);
+}

@@ -1,0 +1,93 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: José Abanto
+ * Fecha		: 28/11/2016
+ * Hora			: 09:55:45
+ */
+package com.tepsa.sisvyr.service.business.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import com.tepsa.sisvyr.model.bean.DetalleEmbarquePasajero;
+import com.tepsa.sisvyr.model.dao.DetalleEmbarquePasajeroDAO;
+import com.tepsa.sisvyr.service.business.DetalleEmbarquePasajeroManager;
+
+/**
+ * @author Jose Abanto
+ *
+ */
+public class DetalleEmbarquePasajeroManagerImpl implements DetalleEmbarquePasajeroManager{
+	private DetalleEmbarquePasajeroDAO detalleEmbarquePasajeroDAO;
+
+	/**
+	 * @return the detalleEmbarquePasajeroDAO
+	 */
+	public DetalleEmbarquePasajeroDAO getDetalleEmbarquePasajeroDAO() {
+		return detalleEmbarquePasajeroDAO;
+	}
+
+	/**
+	 * @param detalleEmbarquePasajeroDAO the detalleEmbarquePasajeroDAO to set
+	 */
+	public void setDetalleEmbarquePasajeroDAO(DetalleEmbarquePasajeroDAO detalleEmbarquePasajeroDAO) {
+		this.detalleEmbarquePasajeroDAO = detalleEmbarquePasajeroDAO;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.DetalleEmbarquePasajeroManager#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public ArrayList<DetalleEmbarquePasajero> buscarPorEstadoRegistro(
+			String estado, String criterioOrden) {
+		// TODO Auto-generated method stub
+		return getDetalleEmbarquePasajeroDAO().buscarPorEstadoRegistro(estado, criterioOrden);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.DetalleEmbarquePasajeroManager#buscarPorX(java.util.TreeMap, java.util.List)
+	 */
+	@Override
+	public ArrayList<DetalleEmbarquePasajero> buscarPorX(
+			TreeMap<String, Object> criteriosBusqueda,
+			List<String> criteriosOrdenar) {
+		// TODO Auto-generated method stub
+		return getDetalleEmbarquePasajeroDAO().buscarPorX(criteriosBusqueda, criteriosOrdenar);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.DetalleEmbarquePasajeroManager#buscarPorId(java.lang.Long)
+	 */
+	@Override
+	public DetalleEmbarquePasajero buscarPorId(Long id) {
+		// TODO Auto-generated method stub
+		return getDetalleEmbarquePasajeroDAO().buscarPorId(id);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.DetalleEmbarquePasajeroManager#guardar(com.tepsa.sisvyr.model.bean.DetalleEmbarquePasajero)
+	 */
+	@Transactional
+	@Override
+	public void guardar(DetalleEmbarquePasajero detalleEmbarquePasajero) {
+		// TODO Auto-generated method stub
+		getDetalleEmbarquePasajeroDAO().guardar(detalleEmbarquePasajero);;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.DetalleEmbarquePasajeroManager#actualizar(com.tepsa.sisvyr.model.bean.DetalleEmbarquePasajero)
+	 */
+	@Transactional
+	@Override
+	public void actualizar(DetalleEmbarquePasajero detalleEmbarquePasajero) {
+		// TODO Auto-generated method stub
+		getDetalleEmbarquePasajeroDAO().actualizar(detalleEmbarquePasajero);
+	}
+	
+	
+}

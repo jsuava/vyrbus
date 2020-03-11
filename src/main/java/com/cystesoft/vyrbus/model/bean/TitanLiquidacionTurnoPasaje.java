@@ -1,0 +1,199 @@
+
+package com.cystesoft.vyrbus.model.bean;
+
+import java.util.Date;
+
+/**
+ * @author JABANTO
+ *
+ */
+public class TitanLiquidacionTurnoPasaje {
+	private Long id;
+	private Date fechaApertura;
+	private Integer cantidadCredito;
+	private Double totalCredito;
+	private Integer isTransferencia;
+	private Long liquidacionSisVyrID;
+	private Date fechaRegistro;
+	private Double montoEfectivo;
+	private Integer cantidadReciboCaja;
+	private Double totalReciboCaja;
+	private Integer cantidadTarjetaCredito;
+	private Double totalTarjetaCredito;
+	private Integer cantidadDevolucion;
+	private Double totalDevolucion;
+	
+	
+	
+	/**
+	 * @return the id
+	 */
+	public Long getId() {
+		return id;
+	}
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
+	/**
+	 * @return the fechaApertura
+	 */
+	public Date getFechaApertura() {
+		return fechaApertura;
+	}
+	/**
+	 * @param fechaApertura the fechaApertura to set
+	 */
+	public void setFechaApertura(Date fechaApertura) {
+		this.fechaApertura = fechaApertura;
+	}
+	/**
+	 * @return the cantidadCredito
+	 */
+	public Integer getCantidadCredito() {
+		return cantidadCredito;
+	}
+	/**
+	 * @param cantidadCredito the cantidadCredito to set
+	 */
+	public void setCantidadCredito(Integer cantidadCredito) {
+		this.cantidadCredito = cantidadCredito;
+	}
+	/**
+	 * @return the totalCredito
+	 */
+	public Double getTotalCredito() {
+		return totalCredito;
+	}
+	/**
+	 * @param totalCredito the totalCredito to set
+	 */
+	public void setTotalCredito(Double totalCredito) {
+		this.totalCredito = totalCredito;
+	}
+	/**
+	 * @return the isTransferencia
+	 */
+	public Integer getIsTransferencia() {
+		return isTransferencia;
+	}
+	/**
+	 * @param isTransferencia the isTransferencia to set
+	 */
+	public void setTransferencia(Integer isTransferencia) {
+		this.isTransferencia = isTransferencia;
+	}
+	/**
+	 * @return the liquidacionSisVyrID
+	 */
+	public Long getLiquidacionSisVyrID() {
+		return liquidacionSisVyrID;
+	}
+	/**
+	 * @param liquidacionSisVyrID the liquidacionSisVyrID to set
+	 */
+	public void setLiquidacionSisVyrID(Long liquidacionSisVyrID) {
+		this.liquidacionSisVyrID = liquidacionSisVyrID;
+	}
+	/**
+	 * @return the fechaRegistro
+	 */
+	public Date getFechaRegistro() {
+		return fechaRegistro;
+	}
+	/**
+	 * @param fechaRegistro the fechaRegistro to set
+	 */
+	public void setFechaRegistro(Date fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
+	}
+	/**
+	 * @return the montoEfectivo
+	 */
+	public Double getMontoEfectivo() {
+		return montoEfectivo;
+	}
+	/**
+	 * @param montoEfectivo the montoEfectivo to set
+	 */
+	public void setMontoEfectivo(Double montoEfectivo) {
+		this.montoEfectivo = montoEfectivo;
+	}
+	/**
+	 * @return the cantidadReciboCaja
+	 */
+	public Integer getCantidadReciboCaja() {
+		return cantidadReciboCaja;
+	}
+	/**
+	 * @param cantidadReciboCaja the cantidadReciboCaja to set
+	 */
+	public void setCantidadReciboCaja(Integer cantidadReciboCaja) {
+		this.cantidadReciboCaja = cantidadReciboCaja;
+	}
+	/**
+	 * @return the totalReciboCaja
+	 */
+	public Double getTotalReciboCaja() {
+		return totalReciboCaja;
+	}
+	/**
+	 * @param totalReciboCaja the totalReciboCaja to set
+	 */
+	public void setTotalReciboCaja(Double totalReciboCaja) {
+		this.totalReciboCaja = totalReciboCaja;
+	}
+	/**
+	 * @return the cantidadTarjetaCredito
+	 */
+	public Integer getCantidadTarjetaCredito() {
+		return cantidadTarjetaCredito;
+	}
+	/**
+	 * @param cantidadTarjetaCredito the cantidadTarjetaCredito to set
+	 */
+	public void setCantidadTarjetaCredito(Integer cantidadTarjetaCredito) {
+		this.cantidadTarjetaCredito = cantidadTarjetaCredito;
+	}
+	/**
+	 * @return the totalTarjetaCredito
+	 */
+	public Double getTotalTarjetaCredito() {
+		return totalTarjetaCredito;
+	}
+	/**
+	 * @param totalTarjetaCredito the totalTarjetaCredito to set
+	 */
+	public void setTotalTarjetaCredito(Double totalTarjetaCredito) {
+		this.totalTarjetaCredito = totalTarjetaCredito;
+	}
+	/**
+	 * @return the cantidadDevolucion
+	 */
+	public Integer getCantidadDevolucion() {
+		return cantidadDevolucion;
+	}
+	/**
+	 * @param cantidadDevolucion the cantidadDevolucion to set
+	 */
+	public void setCantidadDevolucion(Integer cantidadDevolucion) {
+		this.cantidadDevolucion = cantidadDevolucion;
+	}
+	/**
+	 * @return the totalDevolucion
+	 */
+	public Double getTotalDevolucion() {
+		return totalDevolucion;
+	}
+	/**
+	 * @param totalDevolucion the totalDevolucion to set
+	 */
+	public void setTotalDevolucion(Double totalDevolucion) {
+		this.totalDevolucion = totalDevolucion;
+	}
+	
+	
+	
+}

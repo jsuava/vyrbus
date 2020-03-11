@@ -1,0 +1,304 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: jM
+ * Fecha		: 21/06/2012
+ */
+package com.cystesoft.vyrbus.view.ctrl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Textbox;
+
+import com.cystesoft.vyrbus.model.bean.ObjetoBus;
+import com.cystesoft.vyrbus.service.exceptions.CancelaGrabacionException;
+import com.cystesoft.vyrbus.service.exceptions.DenominacionDuplicadaException;
+import com.cystesoft.vyrbus.service.exceptions.DenominacionNullException;
+import com.cystesoft.vyrbus.service.exceptions.RutaImagenNullException;
+import com.cystesoft.vyrbus.service.exceptions.TipoObjetoNullException;
+import com.cystesoft.vyrbus.service.locator.ServiceLocator;
+import com.cystesoft.vyrbus.service.util.Constantes;
+import com.cystesoft.vyrbus.service.util.Messages;
+import com.cystesoft.vyrbus.service.util.Util;
+import com.cystesoft.vyrbus.service.util.UtilData;
+import com.cystesoft.vyrbus.view.ui.DlgMessage;
+import com.cystesoft.vyrbus.view.ui.WndFiltrarParametros;
+import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
+
+/**
+ *
+ * @author jM
+ * @since JDK1.6
+ */
+public class WndObjetoBus extends WndOpcionesMantenimiento {
+
+	private static final long serialVersionUID = 840536814791612125L;
+	
+	private Combobox cboTipoObjeto;
+	private Textbox txtDenominacion;
+	private Textbox txtRutaImagen;
+	
+	private ObjetoBus oObjetoBus = null;
+
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+	private List<String> criteriosOrdenar = null;
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.ui.IBase#onCreate()
+	 */
+	@Override
+	public void onCreate() throws Exception {
+		UtilData.cargarTipoObjeto(cboTipoObjeto);
+		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar.add("denominacion");
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.ui.IBase#initComponents()
+	 */
+	@Override
+	public void initComponents() {
+		cboTipoObjeto = (Combobox) getFellow("cboTipoObjeto");
+		txtDenominacion = (Textbox) getFellow("txtDenominacion");
+		txtRutaImagen = (Textbox) getFellow("txtRutaImagen"); 
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onNew()
+	 */
+	@Override
+	public void onNew() {
+		cboTipoObjeto.setSelectedIndex(0);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onSearch()
+	 */
+	@Override
+	public void onSearch() throws Exception {
+		final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
+		
+		oWndFiltrar.addParameter("Denominación", String.class);
+
+		this.appendChild(oWndFiltrar);
+		oWndFiltrar.setMode("modal");
+		oWndFiltrar.addEventListener(com.cystesoft.vyrbus.view.ui.Events.ON_FILTER, new EventListener<Event>() {
+
+			@Override
+			public void onEvent(Event event) throws Exception {
+				String denominacion = (String) oWndFiltrar.getParameterValue("Denominación");
+				String estadoRegistro = Constantes.VALUE_ACTIVO;
+				
+				if(denominacion.trim().equals("")) {
+					criteriosBusqueda.remove("denominacion");
+				}else{criteriosBusqueda.put("denominacion", "%" + denominacion + "%");}
+
+				criteriosBusqueda.put("estadoRegistro", estadoRegistro);
+
+				listarRegistros(ServiceLocator.getObjetoBusManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
+			}
+		});
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onRefresh(int)
+	 */
+	@Override
+	public void onRefresh(int tab) throws Exception {
+		if (!criteriosBusqueda.isEmpty()) {
+			this.listarRegistros(ServiceLocator.getObjetoBusManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onModify(int)
+	 */
+	@Override
+	public void onModify(int tab) throws Exception {
+		Long id = new Long(0);
+		id = new Long((String) listboxLista.getSelectedItem().getValue());
+		this.mantenimientoRegistro(id);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onCancel(int)
+	 */
+	@Override
+	public void onCancel(int action) throws Exception {
+		switch (action) {
+			case ACTION_NEW:
+				break;
+	
+			case ACTION_MODIFY:
+				this.mantenimientoRegistro(new Long(textboxId.getText()));
+				break;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onSave(int)
+	 */
+	@Override
+	public void onSave(int action) throws Exception {
+		try {
+			if (cboTipoObjeto.getSelectedIndex() ==0)
+				throw new TipoObjetoNullException();
+			else if (txtDenominacion.getText().trim().equals(""))
+				throw new DenominacionNullException();
+			else if (txtRutaImagen.getText().trim().equals(""))
+				throw new RutaImagenNullException();
+			
+			if (action==ACTION_NEW)
+				oObjetoBus = new ObjetoBus();
+					
+			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
+			oObjetoBus.setId(id);
+			oObjetoBus.setDenominacion(txtDenominacion.getText().trim().toUpperCase());
+			oObjetoBus.setPath(txtRutaImagen.getText());
+			oObjetoBus.setTipoObjeto((Integer) cboTipoObjeto.getSelectedItem().getValue());
+			oObjetoBus.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+
+			switch (action) {
+				case ACTION_NEW:
+					UtilData.auditarRegistro(oObjetoBus, getUsuario(), Executions.getCurrent());
+					ServiceLocator.getObjetoBusManager().guardar(oObjetoBus);
+					textboxId.setText((new Long(oObjetoBus.getId()).toString()));
+					break;
+
+				case ACTION_MODIFY:
+					UtilData.auditarRegistro(oObjetoBus, true, getUsuario(), Executions.getCurrent());
+					ServiceLocator.getObjetoBusManager().actualizar(oObjetoBus);
+					break;
+			}
+			/*RECUEPRA EL REGISTRO ACTUALIZADO O EL NUEVO*/
+			criteriosBusqueda.remove("denominacion");
+			criteriosBusqueda.put("denominacion", oObjetoBus.getDenominacion());
+			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+			listarRegistros(ServiceLocator.getObjetoBusManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
+
+		}catch (TipoObjetoNullException tonex){
+			DlgMessage.information(Messages.getString("WndObjetoBus.information.TipoObjeto"),cboTipoObjeto);
+			throw new CancelaGrabacionException();
+		}catch (DenominacionNullException dnex){
+			DlgMessage.information(Messages.getString("Denominacion"),txtDenominacion);
+			throw new CancelaGrabacionException();
+		}catch (RutaImagenNullException rinex){
+			DlgMessage.information(Messages.getString("WndObjetoBus.information.RutaImagen"),txtRutaImagen);
+			throw new CancelaGrabacionException();
+		}catch (DenominacionDuplicadaException ddex){
+			DlgMessage.information(Messages.getString("DenominacionDuplicada"),txtDenominacion);
+			throw new CancelaGrabacionException();
+		}catch (Exception ex){
+			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
+			ex.printStackTrace(); throw new CancelaGrabacionException();
+		}
+				
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onDelete(int)
+	 */
+	@Override
+	public void onDelete(int tab) throws Exception {
+		Long id = (long) 0;
+
+		switch (tab) {
+			case TAB_LIST:
+				id = new Long((String) listboxLista.getSelectedItem().getValue());
+				break;
+
+			case TAB_MAINTENANCE:
+				id = new Long(textboxId.getText());
+				break;
+		}
+
+		ServiceLocator.getObjetoBusManager().inactivar(id);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onPrint(int)
+	 */
+	@Override
+	public void onPrint(int tab) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onExport(int)
+	 */
+	@Override
+	public void onExport(int tab) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onHelp()
+	 */
+	@Override
+	public void onHelp() {
+		// TODO Auto-generated method stub
+
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onChangeTab(int)
+	 */
+	@Override
+	public void onChangeTab(int tab) throws Exception {
+		switch (tab) {
+			case TAB_LIST:
+				break;
+	
+			case TAB_MAINTENANCE:
+				if (listboxLista.getSelectedIndex() > -1) {
+					this.mantenimientoRegistro(new Long((String) listboxLista.getSelectedItem().getValue()));
+				}
+				break;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onClose()
+	 */
+	@Override
+	public void onClose() {
+		closeTabWindow();
+	}
+
+	private void listarRegistros(ArrayList<ObjetoBus> lstRegistros) {
+		ArrayList<Object> lstObjetosBus = new ArrayList<Object>();
+
+		for(int r = 0; r < lstRegistros.size(); r ++) {
+			ObjetoBus oObjetoBus = lstRegistros.get(r);
+			ArrayList<Object> lstFila = new ArrayList<Object>();
+
+			lstFila.add(oObjetoBus.getId());
+			lstFila.add(r + 1);
+			lstFila.add(oObjetoBus.getDenominacion());
+			lstFila.add(oObjetoBus.getPath());
+			lstFila.add((oObjetoBus.getTipoObjeto() == 1 ? "ASIENTO" : "GENERICO"));
+
+			lstObjetosBus.add(lstFila);
+		}
+
+		Util.llenarListbox(listboxLista, lstObjetosBus, true);
+	}
+
+	private void mantenimientoRegistro(Long id) throws Exception {
+		oObjetoBus = ServiceLocator.getObjetoBusManager().buscarPorId(id);
+		
+		textboxId.setText((new Long(oObjetoBus.getId())).toString());
+		txtDenominacion.setText(oObjetoBus.getDenominacion());
+		Util.seleccionarValorItemCombobox(cboTipoObjeto, oObjetoBus.getTipoObjeto());
+		txtRutaImagen.setText(oObjetoBus.getPath());
+	}
+}

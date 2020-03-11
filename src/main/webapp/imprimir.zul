@@ -1,0 +1,29 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="VYRBUS :: Impresión" border="normal" width="440px" use="com.cystesoft.vyrbus.view.ui.WndImprimir" mode="modal">
+	<vbox>
+		<grid id="grdApplet">
+			<rows>
+				<row style="background:#FFFFFF">
+					<label id="lblStatus" style="font-size:12px !important; font-weight:bold; color:blue"/>
+				</row>
+				<row style="background:#FFFFFF">
+					<applet id="apltPrinter" code="com.cystesoft.vyrbus.view.applet.Printer" archive="Printer.jar" 
+					width="420px" height="50px" style="border:1px" z.autohide="true"/>					
+				</row>
+				<row style="background:#FFFFFF">
+					<label id="lblNumeroControl" style="font-size:11px !important; font-weight:bold; color:#0054a4"/>
+				</row>
+				<row align="center" style="background:#FFFFFF">
+					<button id="btnCerrar" label="Cerrar" sclass="btn-vyrbus" image="resources/mp_cerrarEnabled.png" height="26px">
+						<attribute name="onClick">
+							((Window)btnCerrar.getParent().getParent().getParent().getParent().getParent()).setVisible(false);
+						</attribute>
+					</button>
+				</row>
+			</rows>
+		</grid>
+		<grid id="grdCalculadora"/>		
+	</vbox>
+</window>
+</zk>

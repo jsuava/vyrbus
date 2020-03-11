@@ -1,0 +1,54 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndRptTarifario" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndRptTarifario">
+	<grid>
+		<columns>
+			<column width="80px" align="right" />
+			<column width="130px" />
+			<column width="80px" align="right" />
+			<column width="135px" />
+ 			<column align="left"/>
+			
+		</columns>
+		<rows>
+			<row>
+				<label value="Fecha Inicial :" sclass="label-size11-bold" />
+				<datebox id="dbxFechaInicial" format="dd/MM/yyyy" />
+				<label value="Fecha Final :" sclass="label-size11-bold" />
+				<datebox id="dbxFechaFinal" format="dd/MM/yyyy" />
+				<checkbox id="chbxTarifaCero" label="Incluir tarifa cero" checked="true"  />	
+			</row>
+			<row>
+				<label value="Servicio :" sclass="label-size11-bold" />
+				<combobox id="cmbServicio" readonly="true" width="116px" />
+				<label value="Localidad :"  sclass="label-size11-bold" />
+				<combobox id="cmbLocalidad" readonly="true" width="116px" onChange="wndRptTarifario.cargarRutas()" />
+				<hbox align="center">
+					<label value="Ruta :"  sclass="label-size11-bold" />
+					<combobox id="cmbRuta" readonly="true"  />
+					<button id="btnBuscar" onClick="wndRptTarifario.cargaPasajeros()" label="Buscar" sclass="btn-vyrbus" 
+						image="/resources/mp_buscarEnabled.png" />
+					<button id="btnExportar"  label="Exportar" sclass="btn-vyrbus" image="/resources/mp_excel.png" 
+						onClick="wndRptTarifario.exportar()" />
+					<button  label="Cerrar" sclass="btn-vyrbus" image="/resources/mp_cerrar.png" onClick="wndRptTarifario.closeTabWindow()"/>	
+				</hbox>				
+			</row>
+		</rows>
+	</grid>
+	
+	<listbox id="lstbxTarifario" mold="paging" pageSize="15">
+		<listhead>
+			<listheader label="#" width="30px" sort="auto"/>
+			<listheader label="RUTA ITINERARIO" width="auto" sort="auto"/>
+			<listheader label="PARTIDA ITINERARIO" width="auto" sort="auto"/>
+			<listheader label="SERVICIO" width="auto" sort="auto"/>
+			<listheader label="RUTA" width="auto"   sort="auto"/>
+			<listheader label="FEHCA HORA PARTIDA" width="auto" sort="auto"/>
+			<listheader label="TARIFA" width="100px"  sort="auto"/>
+		</listhead>
+	</listbox>
+	
+
+
+</window>
+</zk>

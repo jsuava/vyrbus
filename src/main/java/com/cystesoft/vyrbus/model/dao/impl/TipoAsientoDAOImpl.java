@@ -1,0 +1,71 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: José Abanto
+ * Fecha		: 11/07/2016
+ * Hora			: 17:31:19
+ */
+package com.cystesoft.vyrbus.model.dao.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import com.cystesoft.vyrbus.model.bean.TipoAsiento;
+import com.cystesoft.vyrbus.model.dao.TipoAsientoDAO;
+
+/**
+ * @author jabanto
+ *
+ */
+public class TipoAsientoDAOImpl extends GenericDAOImpl implements TipoAsientoDAO {
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.TipoAsientoDAO#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ArrayList<TipoAsiento> buscarPorEstadoRegistro(String estado,String criterioOrden) throws Exception {
+		// TODO Auto-generated method stub
+		return (ArrayList<TipoAsiento>) super.findByEstadoRegistro(TipoAsiento.class, estado, criterioOrden);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.TipoAsientoDAO#buscarPorX(java.util.TreeMap, java.util.List)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ArrayList<TipoAsiento> buscarPorX(TreeMap<String, Object> criteriosBusqueda,List<String> criteriosOrdenar) throws Exception {
+		// TODO Auto-generated method stub
+		return (ArrayList<TipoAsiento>) super.findByX(TipoAsiento.class, criteriosBusqueda, criteriosOrdenar);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.TipoAsientoDAO#buscarPorId(java.lang.Long)
+	 */
+	@Override
+	public TipoAsiento buscarPorId(Long id) throws Exception {
+		// TODO Auto-generated method stub
+		return (TipoAsiento) super.findById(TipoAsiento.class, id);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.TipoAsientoDAO#guardar(com.tepsa.sisvyr.model.bean.TipoAsiento)
+	 */
+	@Override
+	public void guardar(TipoAsiento tipoAsiento) throws Exception {
+		// TODO Auto-generated method stub
+		super.save(tipoAsiento);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.TipoAsientoDAO#actualizar(com.tepsa.sisvyr.model.bean.TipoAsiento)
+	 */
+	@Override
+	public void actualizar(TipoAsiento tipoAsiento) throws Exception {
+		// TODO Auto-generated method stub
+		super.update(tipoAsiento);
+	}
+
+}

@@ -1,0 +1,51 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndAnulBolCre" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndAnulacionBoletoCredito">
+	<groupbox>
+		<grid style="border:none">
+			<columns>
+				<column width="120px" align="right"/>
+				<column  />
+			</columns>
+			<rows>
+				<row visible="false">
+					<label value="NRO. VOUCHER :" />
+					<textbox id="txtNumeroVoucher" width="160px" style="font-size:11px !important" onOK="wndAnulBolCre.buscar()" />
+				</row>
+				<row>
+					<label value="NRO. BOLETO :" />
+					<hbox align="center">
+						<textbox id="txtNumeroBoleto" focus="true" width="160px" style="font-size:11px !important" onOK="wndAnulBolCre.buscar()" /><separator height="10px" />
+						<button label="Buscar" sclass="btn-vyrbus" autodisable="self" image="/resources/mp_buscarEnabled.png" onClick="wndAnulBolCre.buscar()" />
+						<button label="Cerrar" sclass="btn-vyrbus" image="/resources/mp_cerrar.png" onClick="wndAnulBolCre.closeTabWindow()" />
+					</hbox>
+				</row>
+			</rows>
+		</grid>
+		<separator height="1px" />
+		<listbox id="lsbxBoleto" height="470px" mold="paging" pageSize="10">
+			<listhead>
+				<listheader label="CLIENTE / AGENCIA" width="250px" />
+				<listheader label="VOUCHER" width="80px" align="center" />
+				<listheader label="BOLETO" width="80px" align="center"/>
+				<listheader label="RUTA" width="120px"/>
+				<listheader label="F.PARTIDA" width="70px" />
+				<listheader label="H.PARTIDA" align="center" width="65px"/>
+				<listheader label="F.EMISIÓN" align="center" width="90px"/>
+				<listheader label="REP.VENTA" />
+				<listheader label="AGENCIA REIMPRESIÓN BOLETO" />
+				<listheader width="50px"/>
+			</listhead>
+		</listbox>
+		<hbox align="center">
+			<label value="Registro anulado:" style="font-size:11px !important; color:blue"/>
+			<textbox style="background:red" width="15px" height="10px" readonly="true" />
+			<space width="14px"/>
+			<label value="Registro activo:" style="font-size:11px !important; color:blue"/>
+			<textbox style="background:black" width="15px" height="10px" readonly="true"/>
+		</hbox>
+		
+		
+	</groupbox>
+</window>
+</zk>

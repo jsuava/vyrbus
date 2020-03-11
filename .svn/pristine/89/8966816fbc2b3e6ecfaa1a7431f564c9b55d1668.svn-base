@@ -1,0 +1,96 @@
+package com.tepsa.sisvyr.view.applet;
+
+import java.awt.Graphics;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class PrintBoleto implements Printable {
+	private Boleto boleto;
+	private static final String FORMATO = "dd/MM/yyyy";
+	/*	Para expresar el tiempo en milisegundos	*/
+	public static final long MILISEGUNDOS_X_DIA = 86400000;
+	
+	
+	public PrintBoleto(Boleto boleto) {
+		super();
+		this.boleto = boleto;
+	}
+
+	@Override
+	public int print(Graphics g, PageFormat pageFormat, int pageIndex) throws PrinterException {
+		if (pageIndex > 0) { /* We have only one page, and 'page' is zero-based */
+            return NO_SUCH_PAGE;
+        }
+		try{
+			//Linea 1
+			String fecEmision = boleto.getFechaEmision();
+			String fecCaducidad = boleto.getFechaCaducidad();
+			g.drawString(fecEmision, 30, 0);
+			g.drawString(fecCaducidad, 190, 0);
+			g.drawString(fecEmision, 340, 0);
+			g.drawString(fecCaducidad.substring(0, 10), 430, 0);
+			//Linea 2
+			if(boleto.getRazonSocial()!=null){
+				g.drawString(boleto.getRazonSocial(), 5, 22);
+				g.drawString(boleto.getRuc(), 190, 22);
+				g.drawString(boleto.getRazonSocial(), 345, 22);
+				g.drawString(boleto.getRuc(), 440, 22);
+			}
+			//Linea 3
+			g.drawString(boleto.getPasajero().toString(), 5, 32);
+			if(boleto.getFechaNacimiento()!=null){
+				Long edad = (new Date().getTime()-StringtoDate(boleto.getFechaNacimiento(), FORMATO).getTime())/(MILISEGUNDOS_X_DIA*365);
+				g.drawString(edad.toString(), 190, 32);
+				g.drawString(edad.toString(), 440, 32);
+			}
+			g.drawString(boleto.getPasajero().toString(), 335, 32);
+			//Linea 4
+			g.drawString(boleto.getTipoDocumento(), 5, 42);
+			g.drawString(boleto.getNumeroDocumento(), 190, 42);
+			g.drawString(boleto.getOrigen(), 345, 42);
+			g.drawString(boleto.getDestino(), 410, 42);
+			
+			//Linea 5
+			g.drawString(boleto.getOrigen(), 5, 52);
+			g.drawString(boleto.getDestino(), 180, 52);
+			
+			//Linea 6
+			g.drawString(boleto.getFechaPartida(), 330, 62);
+			g.drawString(boleto.getHoraPartida(), 400, 62);
+			String asiento = "00"+boleto.getNumeroAsiento();
+			g.drawString(asiento.substring(asiento.length()-2), 440, 62);
+			
+			//Linea 7
+			g.drawString(boleto.getImportePagado(), 230, 72);
+			//Linea 8
+			g.drawString(boleto.getFechaPartida(), -30, 82);
+			g.drawString(boleto.getHoraPartida(), 25, 82);
+			g.drawString(asiento.substring(asiento.length()-2), 70, 84);
+			g.drawString(boleto.getImportePagado(), 430, 84);
+			return PAGE_EXISTS;
+		}catch(Exception ex){
+			return NO_SUCH_PAGE;
+		}
+	}
+	
+	/**
+	 * Convierte un String a Date de acuerdo a un formato
+	 * @param text		: Fecha en formatotexto a convertir
+	 * @param pattern	: Formato al cual se desea convertir
+	 * @return Objeto Date
+	 */
+	public static Date StringtoDate(String text,String pattern){
+		Date date=null;
+		try{
+			DateFormat dateFormat=new SimpleDateFormat(pattern);
+			date=dateFormat.parse(text);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return date;
+	}
+}

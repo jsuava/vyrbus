@@ -1,0 +1,208 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: Clase que permite cargar el Applet de Impresión
+ * Autor		: José Sullo Avalos
+ * Fecha		: 08/11/2012
+ */
+package com.cystesoft.vyrbus.view.ui;
+
+import java.util.ArrayList;
+
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Applet;
+import org.zkoss.zul.Button;
+import org.zkoss.zul.Column;
+import org.zkoss.zul.Columns;
+import org.zkoss.zul.Doublebox;
+import org.zkoss.zul.Grid;
+import org.zkoss.zul.Label;
+import org.zkoss.zul.Row;
+import org.zkoss.zul.Rows;
+import org.zkoss.zul.Textbox;
+
+import com.cystesoft.vyrbus.service.mappers.DetalleCalculadora;
+import com.cystesoft.vyrbus.service.util.Util;
+
+public class WndImprimir extends WndBase {
+	private static final long serialVersionUID = 1L;
+	private Label lblStatus;
+	private Label lblNumeroControl;
+	private Applet apltPrinter;
+	private Button btnCerrar;
+//	private Grid grdApplet;
+	private Grid grdCalculadora;
+	/*	Para la calculadora	*/
+	private Double totalPagar=0.0;
+	private Textbox txtVuelto;
+//	private Button button;
+	
+	private String formato;
+	private String msg;
+	private String urlDocumento;
+	private String urlDocumento1;
+	private String urlDocumento2;
+		
+	public static final String FORMAT_BOLETO="BOLETO";
+	public static final String FORMAT_BOLETO_IDA_VUELTA="BOLETO_IDA_VUELTA";
+	public static final String FORMAT_LIQUIDACION_TURNO="LIQUIDACION_TURNO";
+	public static final String FORMAT_LIQUIDACION_OFICINA="LIQUIDACION_OFICINA";
+	public static final String FORMAT_CARPETADESPACHO_PAX="CARPETADESPACHO_PAX";
+	public static final String FORMAT_MANIFIESTO_PAX="MANIFIESTO_PAX";
+	public static final String FORMAT_LISTADO_PAX="LISTADO_PAX";
+	public static final String FORMAT_CROQUIS_BUS="CROQUIS_BUS";
+	public static final String FORMAT_RECIBO_CAJA="RECIBO_CAJA";
+	public static final String FORMAT_DETALLE_LIQUIDACION="DETALLE_LIQUIDACION";
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public void onCreate() throws Exception {
+		super.onCreate();
+		try{
+			formato = (String)this.getAttribute("formato");
+			msg = (String)this.getAttribute("msg");
+			String nControl = (String)this.getAttribute("numeroControl");
+			Boolean showCalculator = (Boolean)this.getAttribute("showCalculator");
+			final ArrayList<DetalleCalculadora>lstDetalleCalculadora = (ArrayList<DetalleCalculadora>)this.getAttribute("detalleCalculadora");
+			lblStatus.setValue(msg);
+			urlDocumento = (String)this.getAttribute("urlDocumento");
+			apltPrinter.setParam("urlDocumento", urlDocumento);
+			
+			/*Prueba*/
+//			apltPrinter.setParam("namePrinter", "EPSON LX-300+ /II");
+			
+			//Para identificar si se trata del Manifiesto de Pasajeros
+			apltPrinter.setParam("formato", formato);
+			
+			if(formato!=null && formato.equals(FORMAT_MANIFIESTO_PAX)){
+				urlDocumento1 = (String)this.getAttribute("urlDocumento1");
+				urlDocumento2 = (String)this.getAttribute("urlDocumento2");
+				apltPrinter.setParam("urlDocumento1", urlDocumento1);
+				apltPrinter.setParam("urlDocumento2", urlDocumento2);
+			}else if(formato!=null && formato.equals(FORMAT_BOLETO_IDA_VUELTA)){
+				urlDocumento1 = (String)this.getAttribute("urlDocumento1");
+				apltPrinter.setParam("urlDocumento1", urlDocumento1);
+			}
+			
+			if(nControl!=null)
+				lblNumeroControl.setValue(nControl);
+			
+			if(showCalculator!=null && showCalculator){
+//				grdApplet.setVisible(false);
+//				grdCalculadora.setWidth("280px");
+				Columns columns = new Columns();
+				Column column = new Column();
+				column = new Column("Descripción", null, "300px");
+				column.setAlign("right");
+				columns.appendChild(column);
+				column = new Column("Tarifa", null, "90px");
+				columns.appendChild(column);
+				grdCalculadora.appendChild(columns);
+				
+				Rows rows = new Rows();
+				Row row = null;
+				Label label = null;
+				Textbox textbox = null;
+				Double dsct = 0.0;
+				Double total = 0.0;
+				for(DetalleCalculadora detalle : lstDetalleCalculadora){
+					row = new Row();
+					label = new Label(detalle.getDenominacion());
+					row.appendChild(label);
+					textbox = new Textbox(Util.toNumberFormat(detalle.getTarifa(), 2));
+					textbox.setStyle("text-align:right");
+					textbox.setWidth("40px");
+					textbox.setDisabled(true);
+					row.appendChild(textbox);
+					rows.appendChild(row);
+					dsct = dsct + detalle.getDescuento();
+					total = total + detalle.getTarifa();
+				}
+				row = new Row();
+				label = new Label("DESCUENTO");
+				row.appendChild(label);
+				textbox = new Textbox(Util.toNumberFormat(dsct, 2));
+				textbox.setStyle("text-align:right");
+				textbox.setWidth("40px");
+				textbox.setDisabled(true);
+				row.appendChild(textbox);
+				rows.appendChild(row);
+				
+				totalPagar = total-dsct;
+				row = new Row();
+				label = new Label("TOTAL A PAGAR");
+				row.appendChild(label);
+				textbox = new Textbox(Util.toNumberFormat(totalPagar, 2));
+				textbox.setStyle("text-align:right");
+				textbox.setWidth("40px");
+				textbox.setDisabled(true);
+				row.appendChild(textbox);
+				rows.appendChild(row);
+				
+				row = new Row();
+				label = new Label("EFECTIVO");
+				row.appendChild(label);
+				final Doublebox dblbxEfectivo = new Doublebox();
+				dblbxEfectivo.setStyle("font-size:10px");
+				dblbxEfectivo.addEventListener(Events.ON_OK, new EventListener<Event>() {
+					public void onEvent(Event e){
+						if(dblbxEfectivo.getValue()!=null && dblbxEfectivo.getValue()>0 && dblbxEfectivo.getValue() >= totalPagar){
+							txtVuelto.setValue(Util.toNumberFormat((dblbxEfectivo.getValue() - totalPagar), 2));
+							btnCerrar.setFocus(true);
+						}else
+							btnCerrar.setFocus(true);
+					}
+				});
+				row.appendChild(dblbxEfectivo);
+				rows.appendChild(row);
+				
+				row = new Row();
+				label = new Label("VUELTO");
+				row.appendChild(label);
+				txtVuelto = new Textbox();
+				txtVuelto.setStyle("text-align:right");
+				txtVuelto.setWidth("40px");
+				row.appendChild(txtVuelto);
+				rows.appendChild(row);
+				
+//				row = new Row();
+//				row.setSpans("2");
+//				row.setAlign("center");
+//				button = new Button("ACEPTAR", "/resources/mp_aceptarEnabled.png");
+//				button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+//					public void onEvent(Event e){
+//						lstDetalleCalculadora.clear();
+//						grdApplet.setVisible(true);
+//						((Window)btnCerrar.getParent().getParent().getParent().getParent().getParent()).setVisible(false);
+//					}
+//				});
+//				button.setStyle("font-size:10px");
+//				row.appendChild(button);
+//				rows.appendChild(row);
+				
+				grdCalculadora.appendChild(rows);
+				this.appendChild(grdCalculadora);
+				dblbxEfectivo.setFocus(true);
+			}
+			//COMENTAR ESTA LINEA SI DESEA MOSTRAR EL APPLET
+//			apltPrinter.invoke("print");
+			//DESCOMENTAR ESTA LINEA SI DESEA MOSTRAR EL APPLET
+			this.doModal();
+		}catch(Exception ex){
+			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
+		}
+	}
+
+	@Override
+	public void initComponents() {
+		super.initComponents();
+		lblStatus = (Label)this.getFellow("lblStatus");
+		lblNumeroControl = (Label)this.getFellow("lblNumeroControl");
+		apltPrinter = (Applet)this.getFellow("apltPrinter");
+		btnCerrar = (Button)this.getFellow("btnCerrar");
+		grdCalculadora = (Grid)this.getFellow("grdCalculadora");
+//		grdApplet = (Grid)this.getFellow("grdApplet");
+	}
+}

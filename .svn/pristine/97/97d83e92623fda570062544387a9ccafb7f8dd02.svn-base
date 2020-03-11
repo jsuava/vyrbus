@@ -1,0 +1,151 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<!-- <style>         -->
+
+<!--         .returned .z-row-cnt, .returned td.z-row-inner -->
+<!--         { -->
+<!--         background: none repeat scroll 0% 0% #D0C791; -->
+<!--         } -->
+
+<!--         .returned tr.z-row td.z-row-inner, .returned tr.z-row .z-cell { -->
+<!--         background: none repeat scroll 0% 0% #D0C791; -->
+<!--         } -->
+
+<!--         .returned .z-row { -->
+<!--         background-color: #D0C791; -->
+<!--         } -->
+
+<!--         .returned .z-label, .returned .z-button .z-button-cm { -->
+<!--         color:  #EFE9CE; -->
+<!--         } -->
+<!-- </style> -->
+<window id="wndPRogramacionTarifa" title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndProgramacionTarifa">
+	<tabbox>
+		<tabs>
+			<tab id="tabBusqueda" label="Búsqueda"/>
+			<tab id="tabMantenimiento" label="Mantenimiento"/>
+		</tabs>
+		<tabpanels>
+			<tabpanel>
+				<groupbox closable="false" mold="3d" >
+					<caption label=":::PARAMETROS DE BÚSQUEDA:::" />
+					<grid>
+						<columns>
+							<column width="90px" align="right" />
+							<column width="180px"/>
+							<column width="100px" align="right" />
+							<column/>
+						</columns>
+						<rows>
+							<row>
+								<label value="FECHA INICIO : " />
+								<datebox id="dtbxFechaInicio" readonly="true" format="dd/MM/yyyy" />
+								<label value="FECHA FIN : " />
+								<datebox id="dtbxFechaFin" readonly="true" format="dd/MM/yyyy" />
+							</row>
+							<row>
+								<label value="ORIGEN : " />
+								<combobox id="cmbOrigen" readonly="true" width="160px"/>
+								<label value="DESTINO : " />
+								<combobox id="cmbDestino" readonly="true" width="160px"/>
+							</row>
+							<row>
+								<label value="SERVICIO : " />
+								<combobox id="cmbServicio" readonly="true" width="160px"/>
+								<separator/>
+								<hbox align="center">
+									<button id="btnBuscar" label="Buscar" image="/resources/mp_buscarEnabled.png" autodisable="self,btnNuevo" />
+									<button id="btnNuevo" label="Nuevo" image="/resources/mp_addEnabled.png" onClick="wndPRogramacionTarifa.ventanaNuevo()" autodisable="self,btnBuscar" />
+								</hbox>
+							</row>
+						</rows>
+					</grid>	
+					<grid>
+						<columns menupopup="auto" >
+							<column label="FECHA" width="80px" sort="auto" align="center"/>
+							<column label="SERVICIO" width="130px" sort="auto" align="center"/>
+							<column label="TIPO ASIENTO" width="80px" sort="auto" align="center"/>
+							<column label="ASIENTOS" width="100px" sort="auto" align="center"/>
+							<column label="RUTA" width="150px" sort="auto" align="center"/>
+							<column label="TIPO PRECIO" width="80px" sort="auto" align="center"/>	
+							<column label="PRECIO" width="80px" sort="auto" align="center"/>
+							<column label="PRECIO MIN" sort="auto" visible="false" align="center"/>
+							<column label="PRECIO MAX" sort="auto" visible="false" align="center"/>
+							<column label="CANAL VENTA" sort="auto" visible="false" align="center"/>
+							<column label="ITINERARIO" sort="auto" visible="false" align="center"/>
+							<column label="AGENCIA" sort="auto" visible="false" align="center"/>
+							<column label="USUARIO" sort="auto" visible="false" align="center"/>
+						</columns>
+						<rows>
+							<row style="background: none repeat scroll 0% 0% #D0C791;">
+								<label value="09/01/2017" />
+							</row>
+							<row>
+								<label value="10/01/2017" />
+							</row>
+						</rows>
+					</grid>
+					
+				</groupbox>	
+			</tabpanel>
+			<tabpanel>
+				<grid>
+					<columns>
+						<column width="100px"/>
+						<column width="100px"/>
+						<column width="100px"/>
+						<column width="110px"/>
+						<column/>
+					</columns>
+					<rows>
+						<row>
+							<toolbarbutton id="btnNuevaTarifa" label="Nueva tarifa" autodisable="self,btnCopiarTarifa" style="color:black" image="resources/toolbar/mp_toolbarNuevo.png" onClick="wndPRogramacionTarifa.onClick_btnNuevaTarifa()" width="95%"  />
+							<toolbarbutton id="btnCopiarTarifa" label="Copiar tarifa" autodisable="self,btnNuevaTarifa" style="color:black" image="resources/toolbar/mp_toolbarCopiarEnabled.png" onClick="wndPRogramacionTarifa.onClick_btnCopiarTarifa()" width="95%"/>			
+							<toolbarbutton id="btnCancelar" label="Cancelar" autodisable="self" style="color:black" disabled="true" image="resources/toolbar/mp_toolbarCancelar.png" onClick="wndPRogramacionTarifa.onClick_btnCancelar()" width="95%" />
+							<toolbarbutton id="btnGuardarTarifa" label="Guardar tarifa" autodisable="self,btnCancelar" style="color:black" disabled="true" image="resources/toolbar/mp_toolbarGuardar.png" onClick="wndPRogramacionTarifa.onClick_btnGuardarTarifa()" width="95%" />
+							<separator/>							
+						</row>
+					</rows>
+				</grid>
+				<div id="divNuevaTarifa" visible="false">
+					<grid>
+						<columns>
+							<column width="130px" align="right" />
+							<column width="120px"/>
+							<column width="100px" align="right" />
+							<column />
+						</columns>
+						<rows>
+							<row>
+								<label value="FECHA INICIO : (*)" style="font-size:11px !important;font-weight: bold;"/>
+								<datebox id="dtbxDesde" readonly="true" format="dd/MM/yyyy" width="110px"/>
+								<label value="FECHA FIN : (*)" style="font-size:11px !important;font-weight: bold;"/>
+								<datebox id="dtbxHasta" readonly="true" format="dd/MM/yyyy" width="110px"/>
+							</row>
+							<row spans="1,3">
+								<label value="TIPO SERVICIO : (*)" style="font-size:11px !important;font-weight: bold;"/>
+								<combobox id="cmbTipoServicio" onChange="wndPRogramacionTarifa.onChange_cmbTipoServicio()" readonly="true" width="200px" style="font-size:13px !important;font-weight: bold;color:red"/>
+							</row>
+						</rows>
+					</grid>
+					<listbox id="ltbxMantoTarifario" rows="12" visible="false">
+						<listhead>
+							<listheader label="ORIGEN" align="center" width="120px"/>
+							<listheader label="DESTINO" align="center" width="120px"/>
+							<listheader label="TIPO ASIENTO" width="80px"/>
+							<listheader label="ASIENTOS" align="center" width="120px"/>
+							<listheader label="TIPO PRECIO" width="90px"/>
+							<listheader label="PRECIO" align="center" width="80px"/>
+							<listheader label="CANAL VENTA" align="center" width="120px"/>
+							<listheader label="ITINERARIO (F1)" align="center" width="80px"/>
+							<listheader/>
+						</listhead>
+					</listbox>
+				</div>
+				
+			</tabpanel>
+		</tabpanels>
+	</tabbox>
+		
+</window>
+</zk>

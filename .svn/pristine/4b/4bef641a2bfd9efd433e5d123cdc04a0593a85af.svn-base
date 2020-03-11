@@ -1,0 +1,288 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndApruebaCartera"  border="none" use="com.tepsa.sisvyr.view.ctrl.WndApruebaCarteraN1" width="850px">
+<panel title="::: APROBACIÓN CARTERA Y/O CRÉDITO :::" framable="true"  border="normal" closable="true" onClose="wndApruebaCartera.closeTabWindow()">
+	<panelchildren>
+	
+	<tabbox>
+		<tabs>
+			<tab id="tabPendientes" label="Solicitudes Pendientes por Aprobar" />
+			<tab id="tabHistSilicitudes" label="Solicitudes Aprobadas y/o Anuladas" />
+		</tabs>
+		<tabpanels>
+			<tabpanel>
+				<grid id="grPendientes">
+					<columns>
+						<column width="70px" />
+					</columns>
+					<rows>
+						<row>
+							<label value="Cliente" sclass="label-size11-bold" />
+							<hbox align="center">
+								<combobox id="cmbCliente" readonly="true" width="240px" />
+								
+								<button id="btnBuscar" label="Buscar" onClick="wndApruebaCartera.CargarListaPendientes()" tooltiptext="Actualizar solicitudes pendientes por aprobar" image="/resources/mp_buscarEnabled.png" style="cursor:pointer" />
+							</hbox>
+						</row>
+					</rows>
+				</grid>
+				
+				<separator height="4px" />
+				<listbox id="listPendientes" mold="paging" rows="10" >
+					<listhead >
+						<listheader label="#" width="30px" />
+						<listheader label="FUNCIONARIO" width="180px" sort="auto" />
+						<listheader label="RUC" width="80px" sort="auto"/>
+						<listheader label="RAZÓN SOCIAL" width="220px" sort="auto"/>
+						<listheader label="F.SOLICITUD" width="70px" sort="auto" tooltiptext="Fecha de la Solicitud"/>
+						<listheader label="TIPO" width="90px" />
+						<listheader label="VER SOLICITUD" />
+					</listhead>
+				</listbox>
+				
+				
+ 				<separator height="2px" /> 
+				<groupbox id="grbSolicitud" mold="3d" closable="false">
+					<grid id="grContado" style="border:none">
+						<columns>
+							<column width="116px" align="right"/>
+							<column width="120px"/>	
+							<column width="110px" align="right"/>
+							<column width="250px" />
+						</columns>
+						<rows>
+							<row>
+								<label value="FECHA SOLICITUD :" />
+								<textbox id="txtFechaSolcitud_Contado" readonly="true" style="font-size:11px !important" width="90px"/>
+								<label value="FUNCIONARIO :" />
+								<textbox id="txtFuncionario_Contado"  readonly="true"/>
+								<hbox align="center">
+									<checkbox id="chbEsComisionable_Contado" checked="false" disabled="true"  />
+									<label value="COMISIONABLE" style="cursor:default"/>
+								</hbox>	
+							</row>
+							<row>
+								<label value="DEST.BAJA" />
+								<hbox align="center">
+									<doublebox id="dbxDescuentoBaja_Contado" format="##0.00" readonly="true" />
+									<label value="%" sclass="label-size11-bold"/>
+								</hbox>
+								<label value="DESCT. ALTA" />
+								<hbox>	
+									<doublebox id="dbxDescuentoAlta_Contado" format="##0.00" readonly="true"/>
+									<label value="%" sclass="label-size11-bold"/>
+								</hbox>
+								<separator/>
+							</row>
+							
+							
+						</rows>
+					</grid>
+					<groupbox id="grbAproDesaContado" mold="3d" closable="false">
+						<grid style="border:none">
+							<columns>
+								<column width="120px" />
+								<column width="120px" />
+							</columns>
+							<rows>
+								<row>
+									<radio id="rbAprueba_Contado" label="Aprobar" style="color:blue" onCheck="if(rbAprueba_Contado.isChecked()) rbAnular_Contado.setChecked(false);if(rbAprueba_Contado.isChecked()) txtMotivoAnulacion_Contado.setReadonly(true)"/>
+										<radio id="rbAnular_Contado" label="Desaprobar" style="color:red"  onCheck="if(rbAnular_Contado.isChecked()) rbAprueba_Contado.setChecked(false);if(rbAnular_Contado.isChecked()) txtMotivoAnulacion_Contado.setReadonly(false);if(rbAnular_Contado.isChecked()) txtMotivoAnulacion_Contado.setFocus(true);if(rbAnular_Contado.isChecked()) btnAceptar.setVisible(true)" />
+									<hbox align="end">
+										<label value="Motivo  Anulación" sclass="label-size11-bold"/>
+										<textbox id="txtMotivoAnulacion_Contado" readonly="true" />
+									</hbox>
+								</row>
+							</rows>
+						</grid>
+					</groupbox>	
+					
+				<groupbox id="grbCliente" mold="3d" closable="false">
+					<caption label="DATOS DE LA SOLICITUD" />
+					<grid id="grCliente" style="border:none">
+						<columns>
+							<column width="120px"  align="right"/>
+							<column width="110px" />
+							<column width="100px" align="right"/>
+						</columns>
+						<rows>
+							<row>
+								<label value="N° RUC :"  />
+								<label id="lblRuc" style="color:blue;font-size:11px !important" />
+<!-- 								<textbox id="txtRuc"  readonly="true" width="90px" style="font-size:11px !important"/> -->
+								<label value="RAZÓN SOCIAL :" />
+								<label id="lblRazonSocial" style="color:blue;" />
+<!-- 								<textbox id="txtRazonSocial"  readonly="true"/> -->
+							</row>
+							<row>
+								<label value="ORIGEN :" />
+								<label id="lblOrigen" style="color:blue;" />
+								<label value="BASE HISTORICA :" visible="false" />
+								<label id="lblBaseHistorica" style="color:blue;font-size:11px !important" visible="false"/>
+								
+<!-- 								<textbox id="txtOrigen"  readonly="true"/> -->
+							</row>
+						</rows>
+					</grid>
+					<!-- SOLICITUD CREDITO -->
+					<grid id="grCredito" style="border:none">
+						<columns>
+							<column width="120px"  align="right"/>
+							<column width="110px" />
+							<column width="100px" align="right"/>
+						</columns>
+						<rows>
+							<row>
+								<label value="FECHA SOLICITUD :" />
+								<label id="lblFechaSolicitud" style="color:blue;font-size:11px !important" />
+<!-- 								<textbox id="txtFechaSolcitud_Credito" readonly="true" style="font-size:11px !important" width="90px"/> -->
+								<label value="FUNCIONARIO :" />
+								<label id="lblFuncionario" style="color:blue;" />
+<!-- 								<textbox id="txtFuncionario_Credito"  readonly="true"/> -->
+							</row>
+							<row>	
+								<label value="CRÉDITO SOLICITADO :"/>
+								<label id="lblCreditoSolicitado" style="color:blue;font-size:11px !important" />
+<!-- 								<doublebox id="dbxCreditoSolcitado" format="#,##0.00"  width="90px" readonly="true" /> -->
+								<label value="SOBREGIRO :" />
+								<hbox align="center">
+									<label id="lblSobregiro" style="color:blue;font-size:11px !important" />
+									<label id="lblMontoSobregiro" style="color:blue;font-size:11px !important" />
+<!-- 									<doublebox id="dbxSobregiro"  onChange="wndApruebaCartera.onChangeSobregiro()" readonly="true" format="#,##0.00" width="33px" maxlength="5"/> -->
+<!-- 									<doublebox id="dbxMontoSobregiro"C format="#,##0.00" width="60px" readonly="true"/> -->
+								</hbox>
+							</row>
+							<row spans="1,3">
+								<hbox align="center">
+									<checkbox  id="chbesCanje" checked="false" disabled="true" />
+									<label value="CANJE" sclass="label-size11-bold"	 style="cursor:default"/>
+								</hbox>
+								<div width="410px" >
+									<hbox align="center">
+										<separator width="10px" />
+										<checkbox id="chbEsAmpliacion" checked="false" disabled="true"  />
+										<label id="lblAmpliacion" value="AMPLIACIÓN" sclass="label-size11-bold" style="cursor:default"/>
+										<separator width="15px" />										
+										<checkbox id="chbEsComisionable_Credito" checked="false" disabled="true"  />
+										<label value="COMISIONABLE" sclass="label-size11-bold" style="cursor:pointer"/>
+									</hbox>	
+								</div>
+<!-- 								<separator/> -->
+<!-- 								<hbox align="center"> -->
+<!-- 									<checkbox id="chbEsComisionable_Credito" checked="false" disabled="true"  /> -->
+<!-- 									<label value="COMISIONABLE" sclass="label-size11-bold" style="cursor:pointer"/> -->
+<!-- 								</hbox> -->
+								
+									
+<!-- 								<hbox align="center"> -->
+<!-- 									<label value="Desct. Baja :" sclass="label-size11-bold" /> -->
+<!-- 									<doublebox id="dbxDescuentoBaja_Credito" format="##0.00" maxlength="5" readonly="true" /> -->
+<!-- 									<label value="%" sclass="label-size11-bold" /> -->
+									
+<!-- 									<separator width="10px"/> -->
+<!-- 									<label value="Desct.Alta" sclass="label-size11-bold" /> -->
+<!-- 									<doublebox id="dbxDescuentoAlta_Credito" format="##0.00" maxlength="5" readonly="true" /> -->
+<!-- 									<label value="%" sclass="label-size11-bold" /> -->
+<!-- 								</hbox> -->
+							</row>	
+							<row spans="1,3">
+								<label value="OBSERVACIONES :"/>
+								<textbox id="txtObservaciones" width="430px" readonly="true" />
+							</row>
+							
+						</rows>
+					</grid>
+					</groupbox>
+				</groupbox>	
+				<separator height="2px" />
+				<groupbox id="grbAproDesaCredito" mold="3d" closable="false">
+ 					<caption label="APROBACIÓN SOLICITUD CRÉDITO" />
+					<grid style="border:none">
+						<columns>
+							<column width="100px" />
+						</columns>
+						<rows>
+							<row>
+								<hbox>
+									<radio id="rbAprueba_Credito" label="Aprobar" style="color:blue" onCheck="if(rbAprueba_Credito.isChecked()) rbAnular_Credito.setChecked(false);if(rbAprueba_Credito.isChecked()) txtMotivoAnulacion_Credito.setReadonly(true);if(rbAprueba_Credito.isChecked()) dbxCreditoAprobado.setValue(dbxCreditoSolcitado.getValue());if(rbAprueba_Credito.isChecked()) dbxCreditoAprobado.setReadonly(false);if(rbAprueba_Credito.isChecked()) dbxCreditoAprobado.setFocus(true);"/>
+								</hbox>
+								<hbox align="end">
+									<separator width="8px" />
+									<label value="CRÉDITO APROBADO :" /><separator width="3px" />
+									<doublebox id="dbxCreditoAprobado" onChange="wndApruebaCartera.onChangeSobregiro()" format="#,##0.00" width="80px" focus="true" />
+								</hbox>
+							</row>
+							<row>
+								<hbox>
+									<radio id="rbAnular_Credito" label="Desaprobar" style="color:red"  onCheck="if(rbAnular_Credito.isChecked()) rbAprueba_Credito.setChecked(false);if(rbAnular_Credito.isChecked()) txtMotivoAnulacion_Credito.setReadonly(false);if(rbAnular_Credito.isChecked()) txtMotivoAnulacion_Credito.setFocus(true);if(rbAnular_Credito.isChecked()) dbxCreditoAprobado.setReadonly(true);if(rbAnular_Credito.isChecked()) dbxCreditoAprobado.setText(null);" />
+								</hbox>
+								<hbox align="end">
+									<label value="Motivo  Desaprueba :" sclass="label-size11-bold"/><separator width="4px" />
+									<textbox id="txtMotivoAnulacion_Credito" readonly="true" width="321px" />
+								</hbox>																																	
+							</row>
+						</rows>
+					</grid>
+				</groupbox>
+				<separator width="5px" />
+				<div align="center">
+					<hbox>
+						<button id="btnCancelar" label="Cancelar" onClick="wndApruebaCartera.onClickCancelAprobacion()" tooltiptext="Cancelar Aprobanción" visible="false" image="/resources/mp_cancelarEnabled.png" style="cursor:pointer" />
+						<separator width="10px" />
+						<button id="btnAceptar" label="Aceptar" onClick="wndApruebaCartera.onClikAceptar()" tooltiptext="Aprobar Solicutud" visible="false" image="/resources/mp_aceptarEnabled.png" style="cursor:pointer" />
+					</hbox>
+				</div>
+			</tabpanel>
+			
+			<tabpanel>
+				<grid>
+					<columns>
+						<column width="110px"/>
+						<column width="150px"/>
+						<column width="70px"/>
+					</columns>		
+					<rows>
+						<row>
+							<label value="Fecha Inicio" sclass="label-size11-bold" />
+							<datebox id="dtxFechaInicio" format="dd/MM/yyyy" />
+							<label value="Fecha Final" sclass="label-size11-bold" />
+							<hbox>
+								<datebox id="dtxFechaFinal" format="dd/MM/yyyy" />
+								<button id="btnBuscarSolApro" label="Buscar" onClick="wndApruebaCartera.cargarSolicitudesAproDesapro()"  image="/resources/mp_buscarEnabled.png" style="cursor:pointer" />
+							</hbox>
+						</row>
+						<row>
+							<label value="Estado Solicitud" sclass="label-size11-bold"  />
+							<combobox id="cmbEstadoSolicitud"  readonly="true"  />
+							
+							<label value="Cliente" sclass="label-size11-bold" />
+							<combobox id="cmbClienteHist" readonly="true" width="240px" />
+						</row>
+						
+					</rows>
+				</grid>
+			
+				<separator height="4px" />
+				<listbox id="listHistSolicitudes" mold="paging" rows="10" >
+					<listhead >
+						<listheader label="#" width="30px" />
+						<listheader label="FUNCIONARIO" width="180px" sort="auto" />
+						<listheader label="CLIENTE" width="200px" sort="auto"/>
+						<listheader label="F.SOLICITUD" width="70px" sort="auto" tooltiptext="Fecha de la Solicitud"/>
+						<listheader label="F.APROBACIÓN" width="100px" sort="auto" tooltiptext="Fecha de Aprobación"/>
+						<listheader label="ESTADO " width="90px" sort="auto" tooltiptext="Estado Cartera"/>
+						<listheader label="TIPO" width="60px" align="center" />
+ 						<listheader label="ACCIÓN" /> 
+					</listhead>
+				</listbox>	
+			</tabpanel>
+		</tabpanels>
+	</tabbox>
+
+<!-- 	<div align="right"> -->
+<!-- 		<button label="Cerrar" tooltiptext="Cerra ventana." image="resources/mp_cerrar.png" style="cursor:pointer" onClick="wndApruebaCartera.closeTabWindow()"/> -->
+<!-- 	</div> -->
+	</panelchildren>
+</panel>	
+</window>
+</zk>

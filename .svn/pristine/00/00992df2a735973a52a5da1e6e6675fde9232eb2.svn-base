@@ -1,0 +1,61 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: Interfaz donde declaramos los metodos de acceso a datos de la tabla Centro de Costo VRMCENCOS.
+ * Autor		: José Sullo Avalos
+ * Fecha		: 16/09/2013
+ */
+package com.tepsa.sisvyr.model.dao;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import com.tepsa.sisvyr.model.bean.CentroCosto;
+
+/**
+ * @author Jose
+ *
+ */
+public interface CentroCostoDAO extends GenericDAO {
+	/**
+	 * Busqueda por estado registro
+	 * @param estado		:Estado del Registro.
+	 * @param criterioOrden	: Criterios para el orden de los datos.
+	 * @return
+	 */
+	public ArrayList<CentroCosto> buscarPorEstadoRegistro(String estado, String criterioOrden) throws Exception;
+	
+	/**
+	 * Busqueda por un array de criterios.
+	 * @param criteriosBusqueda: Array de criterios de busqueda.
+	 * @param criteriosOrdenar : Lista de criterios para el Orden de los Datos.
+	 * @return : Array de Centros de Costo.
+	 */
+	public ArrayList<CentroCosto> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar) throws Exception;
+	
+	/**
+	 * Busqueda por Id del Centro de Costo.
+	 * @param id : Identificador del Centro de Costo.
+	 * @return Lista de Centro de Costo.
+	 */
+	public CentroCosto buscarPorId(Long id) throws Exception;
+	
+	/**
+	 * Guarda el Centro de Costo.
+	 * @param centroCosto : Objeto que se guardara.
+	 */
+	public void guardar(CentroCosto centroCosto) throws Exception;
+	
+	/**
+	 * Actualiza Tipo de Gasto.
+	 * @param centroCosto : Objeto que se actualizara.
+	 */
+	public void actualizar(CentroCosto centroCosto) throws Exception;
+	
+	/**
+	 * Inactivar
+	 * @param id : Identificador del Centro de Costo
+	 */
+	public void inactivar(Long id) throws Exception;
+}

@@ -1,0 +1,75 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndConcesionario" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndConcesionario">
+<div id="divLista">
+	<listbox id="listboxLista">
+		<listhead sizable="true">
+			<listheader label="#" width="50px"/>
+			<listheader label="RUC" width="100px" sort="auto" />
+			<listheader label="RAZÓN SOCIAL" sort="auto" />
+			<listheader label="DIRECCIÓN" sort="auto" />
+			<listheader label="F.ACTIVACIÓN" tooltiptext="Fecha de Activación" width="90px" sort="auto" />
+<!-- 			<listheader label="F.CADUCIDAD" tooltiptext="Fecha de Caducidad" width="90px" sort="auto" /> -->
+<!-- 			<listheader label="F.SUSPENSIÓN" tooltiptext="Fecha de Suspención" width="90px" sort="auto" /> -->
+		</listhead>
+	</listbox>
+</div>
+
+<div id="divMantenimiento" >
+	<groupbox mold="3d" closable="false" >
+		<caption label="Datos del concesionarios"  />
+		<grid>
+			<columns>
+				<column width="120px" align="right"/>
+				<column width="260px"/>
+				<column width="130px" align="right"/>
+			</columns>
+			<rows>
+				<row>
+					<div>
+						<label value="RAZÓN SOCIAL (*) :" />
+						<textbox id="textboxId" />					
+					</div>
+					<textbox id="txtRazonSocial" maxlength="100" onOK="txtRuc.setFocus(true)"/>
+					<label value="Nº RUC (*) :" />
+					<textbox id="txtRuc" maxlength="11" style="font-size:11px !important" onOK="txtDireccion.setFocus(true)" constraint="/[0-9]{11}/: Número de Ruc no válido" width="90px" />	
+				</row>
+				<row>
+					<label value="DIRECCIÓN :" />
+					<textbox id="txtDireccion" maxlength="70" onOK="dbFechaActivacion.setFocus(true)"/>
+					<label value="FECHA DE ACTIVACIÓN (*)" />
+					<datebox id="dbFechaActivacion" format="dd/MM/yyyy" onOK="dbFechaCaducidad.setFocus(true)"/>
+				</row>
+				<row>
+					<label value="FECHA DE CADUCIDAD :" />
+					<datebox id="dbFechaCaducidad" format="dd/MM/yyyy" readonly="true" onOK="dbFechaSuspension.setFocus(true)" />
+					<label value="FECHA DE SUSPENSIÓN :" />
+					<datebox id="dbFechaSuspension" format="dd/MM/yyyy" readonly="true" onOK="wndConcesionario.btnGuardar.setFocus(true)" />
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+	<separator height="1px"/>
+	<groupbox mold="3d" closable="false">
+		<caption label="DATOS DE LA COMISÓN" />
+		<grid style="border:none">
+			<columns>
+				<column width="120px" align="right"/>
+				<column width="120px" />
+				<column width="100px" align="right" />
+				<column width="160px" />
+			</columns>
+		 	<rows>
+		 		<row>
+					<label value="COMISIÓN :" />
+					<intbox id="itbxComision" width="80px" maxlength="3" />
+					<label value="TIPO DE COMISIÓN :" />
+					<combobox id="cmbTipoComision" readonly="true" />		
+					<checkbox id="chbxIncluyeIgv" label="INCLUYE EL IGV" style="cursor:pointer" />		
+				</row>
+		 	</rows>
+		</grid>
+	</groupbox>
+</div>
+</window>
+</zk>

@@ -1,0 +1,70 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndAnulaVouches" title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndAnulacionVouchers">
+	<groupbox>
+		<grid style="border:none">
+			<columns>
+				<column width="120px" align="right"/>
+				<column width="180px" />
+				<column width="83px" align="right"/>
+				<column  />
+			</columns>
+			<rows>
+				<row>
+					<label value=" TIPO COMPROBANTE (*) :" />
+					<combobox id="cmbTipoComprobante" width="170px" readonly="true" onChange="wndAnulaVouches.cargarClientes(cmbCliente)" />
+					<label id="lblisCliente" value="CLIENTE :" />
+					<combobox id="cmbCliente" width="270px" readonly="false" onOK="wndAnulaVouches.buscar()" />
+				</row>
+				<row>
+					<label value="FECHA PARTIDA :" />
+					<datebox id="dtbxFechaPartida" readonly="true" width="170px" format="dd/MM/yyyy" onOK="wndAnulaVouches.buscar()"/>
+					<label value="HORA PARTIDA:"  />
+					<timebox id="tbxHoraPartida" format="HH:mm" onOK="wndAnulaVouches.buscar()" />
+				</row>
+				<row>
+					<label value="NRO. VOUCHER :" />
+					<textbox id="txtNumeroVoucher" width="160px" style="font-size:11px !important" onOK="wndAnulaVouches.buscar()" />
+					
+					<label value="NRO. CONTROL :"  />
+					<hbox align="center">
+						<textbox id="txtNumeroControl" width="150px" style="font-size:11px !important" onOK="wndAnulaVouches.buscar()" /><space width="5px"/>
+						<button label="Buscar" image="/resources/mp_buscarEnabled.png" onClick="wndAnulaVouches.buscar()" />
+						<button label="Cerrar" image="/resources/mp_cerrar.png" onClick="wndAnulaVouches.closeTabWindow()" />
+					</hbox>
+				</row>
+				<row>
+					
+				</row>
+			</rows>
+		</grid>
+		<separator height="1px" />
+		<listbox id="lsbxVouchers" height="430px" mold="paging" pageSize="10">
+			<listhead>
+				<listheader label="CLIENTE / AGENCIA" width="150px" />
+				<listheader label="PASAJERO" width="150px" />
+				<listheader label="VOUCHER" width="80px" align="center" />
+				<listheader label="BOLETO" width="80px" align="center"/>
+				<listheader label="NRO.CONTROL" width="110px" />
+				<listheader label="RUTA" width="120px"/>
+				<listheader label="F.PARTIDA" width="70px" />
+				<listheader label="H.PARTIDA" align="center" width="65px"/>
+				<listheader label="ASIENTO" align="center" width="60px"/>
+				<listheader label="F.EMISIÓN" align="center" width="110px"/>
+				<listheader label="REP.VENTA" />
+				<listheader width="45px"/>
+			</listhead>
+		</listbox>
+		
+		<hbox align="center">
+			<label value="Registro anulado:" style="font-size:11px !important; color:blue"/>
+			<textbox style="background:red" width="15px" height="10px" readonly="true" />
+			<space width="14px"/>
+			<label value="Registro activo:" style="font-size:11px !important; color:blue"/>
+			<textbox style="background:black" width="15px" height="10px" readonly="true"/>
+		</hbox>
+	</groupbox>
+	
+
+</window>
+</zk>

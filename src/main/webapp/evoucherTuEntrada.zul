@@ -1,0 +1,6 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="EVoucherTuEntrada" width="640px" height="590px" border="normal" use="com.cystesoft.vyrbus.view.ctrl.WndEVoucherTuEntrada" closable="true" onClose="EVoucherTuEntrada.onClose()">
+	<caption label="E-Voucher"/>
+</window>
+</zk>

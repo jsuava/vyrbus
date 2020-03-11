@@ -1,0 +1,52 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndRuta">
+<div id="divLista">
+	<listbox id="listboxLista" mold="paging" pageSize="17">
+		<listhead sizable="true">
+			<listheader label="#" width="50px"/>
+			<listheader label="LOCALIDAD ORIGEN" sort="auto" />
+			<listheader label="LOCALIDAD DESTINO" sort="auto" />
+			<listheader label="KILOMETROS" sort="auto" />
+			<listheader label="HORAS DE VIAJE" />
+		</listhead>
+	</listbox>
+</div>
+<div id="divMantenimiento" >
+	<groupbox mold="3d" closable="false">
+		<caption label="Datos" />
+		<grid>
+			<columns>
+				<column width="120px" align="right"/>
+				<column width="180px" />
+				<column width="120px" align="right"/>
+			</columns>
+			<rows>
+				<row>
+					<div>
+						<label value="LOCALIDAD ORIGEN (*) :" />
+						<textbox id="textboxId" />
+					</div>
+					<combobox id="cboLocalidadOrigen" readonly="true" onOK="cboLocalidadDestino.setFocus(true); cboLocalidadDestino.select()"/>
+					<label value="LOCALIDAD DESTINO (*) :" />
+					<combobox id="cboLocalidadDestino" readonly="true" onOK="dbKilometros.setFocus(true); dbKilometros.select()" />
+				</row>
+				<row>
+					<label value="KILOMETROS (*) :" />
+					<doublebox id="dbKilometros" format="##0.00" width="120px" onOK="spHorasViaje.setFocus(true); spHorasViaje.select()" />
+					<label value="HORAS DE VIAJE (*) :" />
+					<doublebox id="spHorasViaje" format="##0.00" width="120px" onOK="itPuntaje.setFocus(true)"/>
+				</row>
+				<row>
+					<label value="PUNTAJE (*) :" />
+					<doublebox id="itPuntaje" maxlength="3" format="##0" width="120px"  />
+<!-- 					<timebox id="tbxHorasViaje" format="HH:mm" /> -->
+					<separator></separator>
+					<separator></separator>
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+</div>
+</window>
+</zk>

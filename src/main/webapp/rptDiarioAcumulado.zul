@@ -1,0 +1,61 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndDiarioAcumulado" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndRptDiarioAcumulado">
+	<grid>
+		<columns>
+			<column width="80px" />
+			<column width="190px"/>
+			<column width="100px"/>
+			<column width="150px"/>
+			<column width="92px"/>
+		</columns>
+		<rows>
+			<row>
+				<label value="Fecha Inicial" sclass="label-size11-bold" />
+				<datebox id="dbxFechaInicial" format="dd/MM/yyyy"/>
+				
+				<label value="Fecha Final" sclass="label-size11-bold" />
+				<datebox id="dbxFechaFinal" format="dd/MM/yyyy"/>
+				
+				<separator />
+				<separator />
+			</row>
+			<row>
+				<label value="Servicio" sclass="label-size11-bold" />
+				<combobox id="cmbServicio" readonly="true" />
+				
+				<label value="Ruta Itinerario" sclass="label-size11-bold" />
+				<combobox id="cmbrutaItinerario" readonly="true" />
+				
+				<button label="Exportar"  image="/resources/mp_excel.png" onClick="wndDiarioAcumulado.exportarExcel()" />
+				<separator />
+			</row>
+			<row>
+				<separator/>
+				<checkbox id="cbxCuadroIngresos" label="Mostrar cuadro de ingresos" />
+				<checkbox id="cbxDetallado" label="Detallado" />
+				<separator/>
+				<button label="Buscar" sclass="btn-vyrbus" width="80px" onClick="wndDiarioAcumulado.cargarDiarioAcumulado()"  
+					image="/resources/mp_buscarEnabled.png"/>
+				<button label="Cerrar" sclass="btn-vyrbus"  image="/resources/mp_cerrar.png" onClick="wndDiarioAcumulado.closeTabWindow()"/>
+			</row>
+		</rows>
+	</grid>
+ 	<separator height="2px" />
+<!--  	<listbox id="lbReporte" mold="paging" pageSize="600" height="100%" vflex="true"> -->
+<!-- 		<listhead> -->
+<!-- 			<listheader label="." /> -->
+<!-- 		</listhead> -->
+<!-- 	</listbox>  -->
+<!-- 	<listbox id="lstbxDiarioAcumulado" mold="paging" pageSize="15"> -->
+<!-- 		<listhead> -->
+<!-- 			<listheader label="#" width="30px" /> -->
+<!-- 			<listheader label="SERVICIO" width="auto" /> -->
+<!-- 			<listheader label="CAP." width="auto" /> -->
+<!-- 			<listheader label="SALIDA" width="auto" /> -->
+<!-- 			<listheader label="RUTA ITINERARIO" width="auto" /> -->
+<!-- 			<listheader label=" #" width="auto" /> -->
+<!-- 		</listhead> -->
+<!-- 	</listbox> -->
+</window>
+</zk>

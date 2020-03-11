@@ -1,0 +1,62 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndDevolucionBoleto" border="none" use="com.tepsa.sisvyr.view.ctrl.WndDevolucionBoleto">
+	
+	<tabbox mold="accordion-lite">
+		<tabs>
+			<tab id="tabBusqueda" label="CRITERIOS DE BUSQUEDA"/>
+			<tab id="tabListado" label="LISTADO DE OCURRENCIAS ENCONTRADAS"/>
+		</tabs>
+		<tabpanels>
+			<tabpanel>
+				<grid>
+					<columns>
+						<column width="110px" align="right"/>
+						<column/>
+						<column width="84px" align="right"/>
+						<column/>
+						<column width="100px"/>
+					</columns>
+					<rows>
+						<row>
+							<label value="NRO COMPROBANTE :"/>
+							<textbox id="txtNumeroBoleto" width="100px" style="font-size:11px !important" onOK="wndDevolucionBoleto.buscarVentas()"/>
+							<label value="NRO CONTROL :"/>
+							<textbox id="txtNumeroControl" width="100px" style="font-size:11px !important" onOK="wndDevolucionBoleto.buscarVentas()"/>
+							<cell style="background:white">
+								<button label="Buscar" image="resources/mp_buscarEnabled.png" autodisable="self" height="29px" width="85px" onClick="wndDevolucionBoleto.buscarVentas()"/>
+							</cell>
+						</row>
+						<row>
+							<label value="NRO DOCUMENTO :"/>
+							<textbox id="txtNumeroDocumento" width="100px" style="font-size:11px !important" onOK="wndDevolucionBoleto.buscarVentas()"/>
+							<label/>
+							<label/>
+							<cell style="background:white">
+								<button label="Cerrar" image="resources/mp_cerrarEnabled.png" height="29px" width="80px" onClick="wndDevolucionBoleto.closeTabWindow()"/>
+							</cell>
+						</row>
+					</rows>
+				</grid>
+			</tabpanel>
+			<tabpanel>
+				<listbox id="lbxVentas" width="100%" mold="paging" pageSize="8" >
+					<listhead>
+						<listheader label="TIPO" width="10%"/>
+						<listheader label="N° CONTROL" width="9%"/>
+						<listheader label="N° BOLETO" width="10%"/>
+						<listheader label="PASAJERO" width="22%"/>
+						<listheader label="DOCUMENTO" width="8%"/>
+						<listheader label="RUTA" width="8%"/>
+						<listheader label="FECHA VIAJE" width="7%"/>
+						<listheader label="HORA VIAJE" width="7%"/>
+						<listheader label="ASIENTO" width="7%"/>
+						<listheader label="FECHA EMISION" width="10%"/>
+						<listheader label="ACCION" width="10%"/>							
+					</listhead>
+				</listbox>
+			</tabpanel>
+		</tabpanels>
+	</tabbox>
+</window>
+</zk>

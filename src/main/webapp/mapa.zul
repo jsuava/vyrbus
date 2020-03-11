@@ -1,0 +1,82 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndMapa" use="com.cystesoft.vyrbus.view.ctrl.WndMapa" ventaPasaje="${arg.ventaPasaje}" detalleItinerario="${arg.detalleItinerario}" txtAsientoSeleccionado="${arg.txtAsientoSeleccionado}" txtPisoSeleccionado="${arg.txtPisoSeleccionado}" selectAsiento="${arg.selectAsiento}" dblbxTarifa="${arg.dblbxTarifa}">
+	<div id="divContenedorBus">
+		<hlayout>
+			<vbox id="vbxEstructuraBus"/>
+			<vlayout>
+				<groupbox mold="3d" closable="false">
+					<caption label="Leyenda de imagenes"/>
+					<grid width="280px">
+						<rows>
+							<row>
+								<hbox width="260px" align="center">
+									<hbox align="center" width="26px"><image src="/resources/asientos/asientoDisponible_1.png" style="font-size:9px"/></hbox>
+									<hbox align="center" width="100px"><label value="Disponible" style="font-size:9px"/></hbox>
+									<hbox align="center" width="26px"><image src="/resources/asientos/asientoReservado_1.png"/></hbox>
+									<hbox align="center" width="100px"><label value="Reservado" style="font-size:9px"/></hbox>																															
+								</hbox>
+							</row>
+							<row>
+								<hbox width="260px" align="center">
+									<hbox align="center" width="26px"><image src="/resources/asientos/asientoReservadoDelivery_1.png"/></hbox>
+									<hbox align="center" width="100px"><label value="Reservado x Delivery" style="font-size:9px"/></hbox>
+									<hbox align="center" width="26px"><image src="/resources/asientos/asientoReservadoAgente_1.png"/></hbox>
+									<hbox align="center" width="100px"><label value="Reservado x Agente" style="font-size:9px"/></hbox>
+								</hbox>
+							</row>
+							<row>
+								<hbox width="260px" align="center">
+									<hbox align="center" width="26px"><image src="/resources/asientos/asientoVendidoFemale_1.png"/></hbox>
+									<hbox align="center" width="100px"><label value="Vendido" style="font-size:9px"/></hbox>
+									<hbox align="center" width="26px"><image src="/resources/asientos/asientoVendidoMale_1.png"/></hbox>
+									<hbox align="center" width="100px"><label value="Vendido" style="font-size:9px"/></hbox>																				
+								</hbox>
+							</row>
+							<row>
+								<hbox width="260px" align="center">
+									<hbox  width="26px"><image src="/resources/asientos/asientoBloqueado_1.png"/></hbox>
+									<hbox  width="100px"><label value="Bloqueado" style="font-size:9px"/></hbox>
+									<hbox align="center" width="26px"><image src="/resources/asientos/asientoSemiOcupado_1.png"/></hbox>
+									<hbox align="center" width="100px"><label value="Prioridad de Venta en Tramo" style="font-size:9px"/></hbox>
+								</hbox>
+							</row>
+						</rows>
+					</grid>
+				</groupbox>
+				<separator orient="vertical" />
+				<grid id="grdOcupabilidad" width="292px" style="padding:0px">
+					<auxhead>
+						<auxheader label="Ocupabilidad del servicio" colspan="3"/>
+					</auxhead>
+					<columns>
+						<column label="RUTA" width="40%"/>
+						<column label="OCUPADOS" width="30%" align="center"/>
+						<column label="DISPONIBLES" width="30%" align="center"/>
+					</columns>
+					<rows/>
+				</grid>
+				<hlayout>
+					<label value="Asiento Seleccionado :"/>
+					<textbox id="txtAsiento" width="20px" readonly="true" style="color:blue; font-weight:bold"/>
+					<textbox id="txtPiso" width="20px" readonly="true" visible="false"/>
+				</hlayout>			
+				<grid style="border:none" width="290px">
+					<rows>
+						<row style="background:white">
+							<button label="Refrescar Mapa" sclass="btn-vyrbus" image="/resources/mp_refrescarEnabled.png" height="28px" 
+								onClick="wndMapa.onRefreshMap()"/>
+						</row>
+						<row style="background:white">
+							<hlayout>
+								<button label="Aceptar" sclass="btn-vyrbus" onClick="wndMapa.onAceptar()" image="/resources/mp_aceptarEnabled.png"/>
+								<button label="Cancelar" sclass="btn-vyrbus" onClick="wndMapa.onClose()" image="/resources/mp_cancelarEnabled.png"/>
+							</hlayout>
+						</row>
+					</rows>
+				</grid>
+			</vlayout>
+		</hlayout>		
+	</div>
+</window>
+</zk>

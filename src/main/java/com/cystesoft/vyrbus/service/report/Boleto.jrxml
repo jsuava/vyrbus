@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Eticket" pageWidth="435" pageHeight="240" orientation="Landscape" columnWidth="395" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30" uuid="70742164-e81c-47b8-9054-57db786f40e1">
+	<property name="com.jasperassistant.designer.Grid" value="false"/>
+	<property name="com.jasperassistant.designer.SnapToGrid" value="false"/>
+	<property name="com.jasperassistant.designer.GridWidth" value="12"/>
+	<property name="com.jasperassistant.designer.GridHeight" value="12"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<style name="Style_Arial_9N" fontName="Arial" fontSize="9" isBold="true"/>
+	<style name="Style_Arial_9" fontName="Arial" fontSize="10" isBold="false"/>
+	<field name="voucher" class="java.lang.String">
+		<fieldDescription><![CDATA[Numero de voucher emitido]]></fieldDescription>
+	</field>
+	<field name="origen" class="java.lang.String">
+		<fieldDescription><![CDATA[Localidad origen]]></fieldDescription>
+	</field>
+	<field name="destino" class="java.lang.String">
+		<fieldDescription><![CDATA[Localidad destino]]></fieldDescription>
+	</field>
+	<field name="pasajero" class="java.lang.String">
+		<fieldDescription><![CDATA[Pasajero]]></fieldDescription>
+	</field>
+	<field name="documentoIdentidad" class="java.lang.String">
+		<fieldDescription><![CDATA[Numero de documento de indentidad]]></fieldDescription>
+	</field>
+	<field name="importe" class="java.lang.String">
+		<fieldDescription><![CDATA[Importe pagado]]></fieldDescription>
+	</field>
+	<field name="asiento" class="java.lang.String">
+		<fieldDescription><![CDATA[Numero de asiento]]></fieldDescription>
+	</field>
+	<field name="puntoEmbarque" class="java.lang.String">
+		<fieldDescription><![CDATA[Punto de embarque]]></fieldDescription>
+	</field>
+	<field name="numeroControl" class="java.lang.String">
+		<fieldDescription><![CDATA[Numero de control]]></fieldDescription>
+	</field>
+	<field name="fechaPartida" class="java.lang.String">
+		<fieldDescription><![CDATA[Fecha de partida]]></fieldDescription>
+	</field>
+	<field name="horaPartida" class="java.lang.String">
+		<fieldDescription><![CDATA[Hora de partida]]></fieldDescription>
+	</field>
+	<field name="usuario" class="java.lang.String">
+		<fieldDescription><![CDATA[Usuario]]></fieldDescription>
+	</field>
+	<field name="fechaOperacion" class="java.lang.String">
+		<fieldDescription><![CDATA[Fecha operacion]]></fieldDescription>
+	</field>
+	<field name="empresa" class="java.lang.String">
+		<fieldDescription><![CDATA[Empresa]]></fieldDescription>
+	</field>
+	<field name="rucEmpresa" class="java.lang.String">
+		<fieldDescription><![CDATA[Ruc Empresa]]></fieldDescription>
+	</field>
+	<detail>
+		<band height="179">
+			<staticText>
+				<reportElement uuid="a65be733-db1a-4879-8dd6-3a29d229ca6f" key="" style="Style_Arial_9" x="40" y="-20" width="100" height="20"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[29/09/2015 11:30:45]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="517480e0-3288-4276-ad81-2691560ceb01" style="Style_Arial_9" x="150" y="-20" width="70" height="20"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[27/03/2016]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

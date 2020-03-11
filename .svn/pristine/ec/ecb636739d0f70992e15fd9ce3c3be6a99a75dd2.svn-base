@@ -1,0 +1,112 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: José Abanto
+ * Fecha		: 20/08/2015
+ * Hora			: 15:55:21
+ */
+package com.tepsa.sisvyr.service.servlet;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+
+import com.tepsa.sisvyr.model.bean.Liquidacion;
+import com.tepsa.sisvyr.service.report.ReporteLiquidacionTuEntrada;
+
+/**
+ * @author jabanto
+ *
+ */
+public class LiquidacionTuEntradaServlet  extends HttpServlet {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public LiquidacionTuEntradaServlet(){
+		super();
+	}
+	
+	/**
+	 * Destruction of the servlet. <br>
+	 */
+	public void destroy() {
+		super.destroy(); // Just puts "destroy" string in log
+		// Put your code here
+	}
+
+	
+	/**
+	 * The doGet method of the servlet. <br>
+	 *
+	 * This method is called when a form has its tag value method equals to get.
+	 * 
+	 * @param request the request send by the client to the server
+	 * @param response the response send by the server to the client
+	 * @throws ServletException if an error occurred
+	 * @throws IOException if an error occurred
+	 */
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		processRequest(request, response);
+	}
+
+	/**
+	 * The doPost method of the servlet. <br>
+	 *
+	 * This method is called when a form has its tag value method equals to post.
+	 * 
+	 * @param request the request send by the client to the server
+	 * @param response the response send by the server to the client
+	 * @throws ServletException if an error occurred
+	 * @throws IOException if an error occurred
+	 */
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		processRequest(request, response);
+	}
+
+	/**
+	 * Initialization of the servlet. <br>
+	 *
+	 * @throws ServletException if an error occurs
+	 */
+	public void init() throws ServletException {
+		// Put your code here
+	}
+	
+	@SuppressWarnings({"deprecation", "unchecked"})
+	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	    response.setHeader("Cache-Control", "no-cache");
+	    response.setHeader("Pragma", "no-cache");
+	    response.setDateHeader("Expires", 0);
+	    response.setContentType("application/pdf");
+		
+		List<Liquidacion> lstLiquidacion = (List<Liquidacion>)request.getSession().getAttribute("lstLiquidacion");
+		try{
+//			JRTextExporter
+			JasperReport reporte = (JasperReport)JRLoader.loadObject(getServletContext().getRealPath("WEB-INF/jasper/LiquidacionTuEntrada.jasper"));
+			
+			Map<String, Object> parameters = new HashMap<String, Object>();
+			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, new ReporteLiquidacionTuEntrada(lstLiquidacion));
+			JasperPrintManager.printReport(jasperPrint, false);
+			
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	
+}

@@ -1,0 +1,68 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:n="clien">
+<window id="wndOpcionMenu" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndOpcionMenu" >
+	<div id="divLista">
+		<listbox id="listboxLista" rows="16"  onSelect="">
+			<listhead sizable="true">
+				<listheader width="35px" label="#" />
+				<listheader label="MENU PADRE" sort="auto" />
+				<listheader label="MENU" sort="auto" />
+				<listheader label="NOMBRE DEL OBJETO" sort="auto" />
+				<listheader label="URL" sort="auto" />
+				<listheader label="ORDEN" sort="auto" width="50px" />
+				<listheader label="ESTADO" sort="auto" />
+			</listhead>
+		</listbox>
+	</div>
+	
+	
+	
+	
+	<div id="divMantenimiento">
+		<groupbox closable="false" mold="3d" >
+		<caption label="OPCION MENÚ" />
+			<grid id="grmante" style="border:none">
+				<columns>
+ 					<column width="100px" align="right" /> 
+ 					<column width="230px" />
+ 					<column width="140px" align="right"/>
+				</columns>
+				<rows>
+					<row>
+<!-- 						<label value="TIPO MENU :"    /> -->
+						<separator />	
+						<div>
+							<textbox id="textboxId" />
+							<checkbox id="ckbMenuPadre" label="ES MENU PADRE ?" onCheck="wndOpcionMenu.onCheckEsMenuPadre()"/>
+						</div>
+						
+						<label value="MUENU PADRE :"    />
+						<combobox id="cmbOpcionMenuPadre" readonly="true"  width="225px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtDenominacion)"/>
+					</row>
+					<row>
+						<label value="DENOMINACIÓN :" />
+						<textbox id="txtDenominacion" maxlength="30" style="text-transform:none;font-size:12px!important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNombreObjeto)"/>
+						<label value="NOMBRE OBJETO :" />
+						<textbox id="txtNombreObjeto"   maxlength="30" style="text-transform:none; font-size:12px!important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtUrl)"/>
+					</row>
+					<row>
+						<label value="URL :" />
+						<textbox id="txtUrl"   maxlength="100" style="text-transform:none; font-size:12px!important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(spOrden)" />			
+						<label value="ORDEN OPCIÓN MENU :"    />
+						<spinner  id="spOrden" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(ckbHabilitado)" />					
+					</row>
+					<row>
+						<separator></separator>
+						<checkbox id="ckbHabilitado" label="HABILITADO" />
+						<separator></separator><separator></separator>
+					</row>
+				</rows>
+			</grid>
+			
+			
+			
+		</groupbox>
+	</div>
+
+</window>
+</zk>

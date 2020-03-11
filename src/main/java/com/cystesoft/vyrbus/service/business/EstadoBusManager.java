@@ -1,0 +1,16 @@
+package com.cystesoft.vyrbus.service.business;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import com.cystesoft.vyrbus.model.bean.EstadoBus;
+
+public interface EstadoBusManager {
+	public ArrayList<EstadoBus> buscarPorEstadoRegistro(String estado, String criterioOrden)throws Exception;
+	public ArrayList<EstadoBus> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar)throws Exception;
+	public EstadoBus buscarPorId(Long id)throws Exception;
+	public void guardar(EstadoBus estadoBus)throws Exception;
+	public void actualizar(EstadoBus estadoBus)throws Exception;
+	public void inactivar(Long id)throws Exception;
+}

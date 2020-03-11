@@ -1,0 +1,170 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndActivacionTramoVenta" title="" border="none" width="800px" use="com.cystesoft.vyrbus.view.ctrl.WndProgramacionTramoVenta" >
+<panel id="panel" title="::: PROGRAMACIóN DE TRAMOS PARA LA VENTA :::" framable="true"  border="normal" closable="true" onClose="wndActivacionTramoVenta.closeTabWindow()">
+	<panelchildren>
+		<tabbox>
+			<tabs>
+				<tab id="tabLista" label="Lista de Tramos Programados" />
+				<tab id="tabTramos" label="Programación de Tramos para la venta." onClick=""/>
+			</tabs>
+			<tabpanels>
+				<tabpanel>
+					<grid>
+						<columns>
+							<column width="100px" align="right"/>
+							<column width="120px"/>
+							<column width="100px" align="right"/>
+							<column />
+						</columns>
+						<rows>
+							<row>
+								<label value="FECHA INICIAL :"/>
+								<datebox id="dtbxFechaInicial" readonly="true" format="dd/MM/yyyy" width="115px" onChange="dtbxFechaFinal.setValue(dtbxFechaInicial.getValue())" />
+								<label value="FECHA FINAL :"/>
+								<datebox id="dtbxFechaFinal" readonly="true" format="dd/MM/yyyy" width="115px" />
+							</row>
+							<row>
+								<label value="ORIGEN :"/>
+								<combobox id="cmbOrigenList" readonly="true" width="115px" />
+								<label value="ORIGEN :"/>
+								<hbox align="center">
+									<combobox id="cmbDestinoList" readonly="true" width="115px" />
+									<separator width="15px"/>
+									<button label="Buscar" sclass="btn-vyrbus" image="/resources/mp_buscarEnabled.png" 
+										onClick="wndActivacionTramoVenta.buscarTramosProgramados()" />
+								</hbox>
+								
+							</row>
+						</rows>
+					</grid>
+					<listbox id="lsbxListaTramosProgramados" rows="10" mold="paging" >
+						<listhead>
+							<listheader label="ITEM" width="35px" />
+							<listheader label="ITINERARIO" width="80px" />
+							<listheader label="ORIGEN" width="110px"/>
+							<listheader label="DESTINO" width="110px"/>
+							<listheader label="SERVICIO" width="120px" />
+							<listheader label="F.PARTIDA" width="70px" />
+ 							<listheader label="H.PARTIDA" width="60px"/>
+<!-- 							<listheader label="TIPO" width="110px"/> -->
+<!-- 							<listheader width="80px" /> -->
+						</listhead>
+					</listbox>
+				</tabpanel>
+				<tabpanel>
+					<vbox>
+						<grid>
+							<columns>
+								<column width="100px" align="right"/>
+								<column width="150px" />
+								<column width="100px" align="right"/>
+								<column/>
+							</columns>
+							<rows>
+								<row spans="4">
+									<div align="left">
+										<groupbox closable="false" open="false">
+										<caption label="Parámetros de búsqueda" style="font-weight: bold;font-size:11px !important" />
+										</groupbox>
+									</div>
+								</row>
+								<row>
+									<label value="ORIGEN :" />
+									<combobox id="cmbOrigen" readonly="true" width="115px" />
+									<label value="DESTINO :" />
+									<combobox id="cmbDestino" readonly="true" width="115px"/>
+								</row>
+								<row>
+									<label value="FECHA PARTIDA :" />
+									<datebox id="dtbxFechaPartida" readonly="true" format="dd/MM/yyyy" />
+									<label value="HORA PARTIDA :" />
+									<hbox align="center">
+										<timebox id="tmbxHoraPartida" format="HH:mm" />
+										<separator width="25px"/>
+										<button label="Buscar" sclass="btn-vyrbus" image="/resources/mp_buscarEnabled.png" 
+											onClick="wndActivacionTramoVenta.buscarItinerarios()" />
+									</hbox>
+								</row>
+							</rows>
+						</grid>
+					</vbox>
+					<separator height="1px" />
+					<grid>
+						<rows>
+							<row>
+								<vbox>
+									<groupbox closable="false"  width="555px" open="false">
+									<caption label="Lista de Itinerarios" style="font-weight: bold;font-size:11px !important" />
+									</groupbox>
+									<listbox id="lsbxitinerarios" height="110px" width="555px" onSelect="wndActivacionTramoVenta.buscarDetalleItinerario()" >
+										<listhead>
+											<listheader label="ITEM" width="35px" />
+											<listheader label="ORIGEN" width="120px" />
+											<listheader label="DESTINO" width="120px" />
+											<listheader label="SERVICIO" width="130px" />
+											<listheader label="F.PARTIDA" width="70px" />
+											<listheader label="H.PARTIDA" width="60px" />
+										</listhead>
+									</listbox>
+								</vbox>
+							</row>
+							<row>
+								<hbox>
+									<vbox>
+										<groupbox closable="false"  width="555px" open="false">
+										<caption label="Detalle del Itinerario" style="font-weight: bold;font-size:11px !important" />
+										</groupbox>
+										<listbox id="lsbxDetalleItinerario" height="165px" width="555px" checkmark="true" multiple="true" onSelect="wndActivacionTramoVenta.onSelectDetalleItinerario()" >
+											<listhead>
+												<listheader width="30px" />
+												<listheader label="ITEM" width="35px" />
+												<listheader label="TRAMO" width="210px" />
+												<listheader label="F.PARTIDA" width="70px" />
+												<listheader label="H.PARTIDA" width="60px" />
+												<listheader label="TARIFA" width="60px" align="right" />
+											</listhead>
+										</listbox>
+									</vbox>
+									
+									<hbox>
+										<separator width="30px"/>
+										<div>
+											<checkbox id="chbxVentaAdelantada" label="Venta Adelantada" style="font-size:12px !important;font-weight: bold;color:red" onCheck="if(chbxVentaAdelantada.isChecked()){ itbxTiempo.setDisabled(true);itbxTiempo.setValue(0); }else itbxTiempo.setDisabled(false);" />
+											<separator height="20px"/>
+											<hbox align="center">
+												<label value="DESDE :" />
+												<datebox id="dtbxDesde" format="dd/MM/yyyy" readonly="true"/>
+											</hbox>	
+											<separator height="5px"/>
+											<hbox align="center">
+												<label value="HASTA :" />
+												<datebox id="dtbxHasta" format="dd/MM/yyyy" readonly="true"/>
+											</hbox>
+											<separator height="5px"/>
+											<hbox align="center">
+												<label value="TIEMPO :" tooltiptext="Tiempo desde que debe permitir la venta,una vez el servicio haya partido del punto inicial de la ruta." />
+												<intbox id="itbxTiempo" width="50px" value="0" tooltiptext="Tiempo desde que debe permitir la venta,una vez el servicio haya partido del punto inicial de la ruta."/>
+												<label value="minutos" style="font-size:11px !important" />
+											</hbox>
+											<separator height="20px"/>
+											<hbox>
+												<separator width="30px"/>
+												<button id="btnGuardar" label="Guardar" sclass="btn-vyrbus" image="/resources/mp_guardarEnabled.png" 
+													onClick="wndActivacionTramoVenta.Guardar()" />
+											</hbox>
+										</div>
+									</hbox>
+								</hbox>
+								
+							</row>
+						</rows>
+					</grid>
+				</tabpanel>
+			</tabpanels>
+		</tabbox>	
+		
+	</panelchildren>
+</panel>	
+</window>
+</zk>

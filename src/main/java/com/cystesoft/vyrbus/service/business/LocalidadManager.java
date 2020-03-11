@@ -1,0 +1,16 @@
+package com.cystesoft.vyrbus.service.business;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import com.cystesoft.vyrbus.model.bean.Localidad;
+
+public interface LocalidadManager {
+	public ArrayList<Localidad> buscarPorEstadoRegistro(String estado, String criterioOrden)throws Exception;
+	public ArrayList<Localidad> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar)throws Exception;
+	public Localidad buscarPorId(Long id)throws Exception;
+	public void guardar(Localidad localidad)throws Exception;
+	public void actualizar(Localidad localidad)throws Exception;
+	public void inactivar(Long id)throws Exception;
+}

@@ -1,0 +1,48 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: Clase que maneja las Excepciones provocadas por la Linea de Credito
+ * Autor		: José Sullo Avalos
+ * Fecha		: 19/08/2013
+ */
+package com.cystesoft.vyrbus.service.exceptions;
+
+import java.io.Serializable;
+
+/**
+ * @author Jose
+ *
+ */
+public class LineaCreditoClienteException extends Exception implements Serializable {
+	private static final long serialVersionUID = 1L;
+	public static final int LINEA_CREDITO_NO_ACTIVO = 1;
+	public static final int LINEA_CREDITO_SIN_SALDO = 2;
+	private Integer tipo;
+	/**
+	 * 
+	 */
+	public LineaCreditoClienteException() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	/**
+	 * @param tipo
+	 */
+	public LineaCreditoClienteException(Integer tipo) {
+		super();
+		this.tipo = tipo;
+	}
+	
+	/**
+	 * @return the tipo
+	 */
+	public Integer getTipo() {
+		return tipo;
+	}
+	/**
+	 * @param tipo the tipo to set
+	 */
+	public void setTipo(Integer tipo) {
+		this.tipo = tipo;
+	}
+}

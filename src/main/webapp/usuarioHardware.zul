@@ -1,0 +1,56 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:n="client">
+<window id="wndUsuarioHardware" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndUsuarioHardware">
+	<div id="divLista">
+		<listbox id="listboxLista">
+			<listhead sizable="true">
+				<listheader width="50px" label="#" />
+				<listheader label="DIRECCION MAC" width="100px" sort="auto"/>
+				<listheader label="CODIGO" width="" sort="auto" />
+				<listheader label="DESCRIPCION" sort="auto" />
+				<listheader label="AGENCIA" sort="auto" />
+				<listheader label="CANAL VENTA" sort="auto" />
+			</listhead>
+		</listbox>
+	</div>
+
+	<div id="divMantenimiento">
+	<groupbox closable="false" mold="3d">
+		<caption label="DATOS USUARIO HARDWARE" />
+		<grid>
+			<columns>
+				<column width="90px" align="right"/>
+				<column width="150px" />
+				<column width="90px" align="right"/>
+<!-- 				<column width="385px"></column> -->
+			</columns>
+			<rows>
+				<row>
+					<label value="CANAL VENTA :"/>
+					<div>
+						<textbox id="textboxId"/>
+						<combobox id="cmbCanalVenta" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbAgencia)"/>
+					</div>
+					<label value="AGENCIA :"/>
+					<combobox id="cmbAgencia" readonly="false" width="200px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtDireccionMAC)"/>
+				</row>
+				<row>
+					<label value="DIRECCION MAC :"/>
+					<textbox id="txtDireccionMAC" maxlength="17" width="130px" style="font-size:11px !important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtCodigo)"/>
+					<label value="CODIGO :"/>
+					<hlayout>
+						<textbox id="txtCodigo" maxlength="100" readonly="true" width="345px" style="text-transform:none !important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtDescripcion)"/>
+						<image src="resources/mp_ayuda.png" onClick="wndUsuarioHardware.generarCodigo(txtDireccionMAC.getText())"/>
+					</hlayout>					
+				</row>
+				<row spans="1,3">
+					<label value="DESCRIPCION :"/>
+					<textbox id="txtDescripcion" maxlength="30" width="98%"/>
+				</row>				
+			</rows>
+		</grid>
+	</groupbox>
+</div>
+
+</window>
+</zk>

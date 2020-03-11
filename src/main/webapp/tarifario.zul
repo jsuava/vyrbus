@@ -1,0 +1,101 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndTarifario" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndTarifario" width="820px">
+<panel id="panel" title="::: ACTUALIZACIÓN DE TARIFAS :::" framable="true" border="normal" closable="true" onClose="wndTarifario.closeTabWindow()">
+	<panelchildren>
+		<separator/>
+		<hbox align="center"><separator/>
+			<label value="FECHA INICIO :"  />
+			<datebox id="dtbxFechaInicio" width="100px" format="dd/MM/yyyy"   onChange="com.cystesoft.vyrbus.service.util.Util.limpiarListbox(lsbxRutas)"/>
+			<div width="65px" align="right">
+				<label value="ORIGEN :" />
+			</div>
+			<combobox id="cmbOrigen" width="100px" readonly="true" onSelect="com.cystesoft.vyrbus.service.util.Util.limpiarListbox(lsbxRutas)" />
+			<div width="65px" align="right">
+				<label value="SERVICIO :" />
+			</div>
+			<combobox id="cmbServicio" width="167px" readonly="true" onSelect="com.cystesoft.vyrbus.service.util.Util.limpiarListbox(lsbxRutas)" />
+			<label value="TIPO ITINERARIO :"/>
+			<combobox id="cmbTipoItinerario" width="85px" readonly="true" onSelect="com.cystesoft.vyrbus.service.util.Util.limpiarListbox(lsbxRutas)" />
+		</hbox>
+		<hbox align="center"><separator/>
+			<div width="65px" align="right">
+				<label value="FECHA FINAL :" />
+			</div> 
+			<datebox id="dtbxFechaFinal" width="100px" format="dd/MM/yyyy"  onChange="com.cystesoft.vyrbus.service.util.Util.limpiarListbox(lsbxRutas)" />
+			<div width="65px" align="right">
+				<label value="DESTINO :" />
+			</div>
+			<combobox id="cmbDestino" width="100px" readonly="true" onSelect="com.cystesoft.vyrbus.service.util.Util.limpiarListbox(lsbxRutas)"/>
+			<div width="65px" align="right">
+				<label value="ITINERARIO :" />
+			</div>
+			<hbox align="center">
+				<intbox id="ibItinerario" width="48px" onChange="com.cystesoft.vyrbus.service.util.Util.limpiarListbox(lsbxRutas)"/>
+				<separator width="2px"/> 
+				<label value="HORA :" />
+			</hbox>
+			<hbox>
+				<timebox id="tmbxHoraPartida" format="HH:mm" width="60px" onChange="com.cystesoft.vyrbus.service.util.Util.limpiarListbox(lsbxRutas)" />
+			</hbox>
+
+			<button id="btnBuscar"  sclass="btn-vyrbus" autodisable="self" label="Buscar" height="28px" width="85px" image="/resources/mp_buscarEnabled.png" onClick="wndTarifario.buscar()" />
+		</hbox>
+		<separator height="1px" />
+		<listbox id="lsbxRutas" height="320px"  checkmark="true" multiple="true" class="z-listbox-header-bg" >
+			<listhead class="z-listbox-header-bg">
+				<listheader label="ITINERARIO " id="lstheaItinerario" width="85px" />
+ 				<listheader label="RUTA" width="150px"/>
+ 				<listheader label="SERVICIO" width="120px"/>
+ 				<listheader label="FECHA PARTIDA" id="lstheaFecha"  width="200px" />
+ 				<listheader label="H. PARTIDA" id="lstheaHora" align="center" width="60px" />
+ 				<listheader label="TARIFA" align="center" width="50px" />
+ 				<listheader label="TARIFA F.A." align="center" width="60px"/>
+ 				<listheader label="TARIFA LISTA" align="center" />
+			</listhead>
+		</listbox>
+		<separator height="1px" />
+		<grid>
+ 			<columns>
+ 				<column width="130px"/>
+ 				<column width="450px" align="right"/>
+ 				<column />
+ 			</columns>
+			<rows>
+				<row style="padding: 0px">
+					<checkbox id="ckbxDetalle"  label="MOSTRAR DETALLE" checked="true" style="font-size:10px !important" onCheck="com.cystesoft.vyrbus.service.util.Util.limpiarListbox(lsbxRutas)" />
+ 					<hbox align="center">
+						<radiogroup >
+							<radio id="rbActualizaTarifa" label="ACTUALIZAR TARIFA" style="font-size:10px !important" checked="true" onCheck="wndTarifario.onCkeckRbActualizaTarifa()" /><space width="15px"/>
+							<radio id="rbIncrementoTarifa" label="INCREMENTO DE TARIFA" style="font-size:10px !important"  onCheck="wndTarifario.onCheckRbIncrementaTarifa()" />
+						</radiogroup>
+					</hbox>
+					<hbox align="center">
+						<space width="41px"/>
+						<vbox align="center">
+							<label value="TARIFA" style="font-size:10px !important;font-weight: bold;color:green"/>
+							<doublebox id="dlbxTarifa" onChange="dlbxTarifaLista.setValue(dlbxTarifa.getValue())" tooltiptext="Tarifa para la Venta." format="###,###,##0.00" width="40px" style="font-weight: bold;color:green"/>
+						</vbox>
+						
+						<vbox align="center">
+							<label value="TARIFA F.A." style="font-size:10px !important; color:blue;font-weight: bold;"/>
+							<doublebox id="dlbxTarifaFa" tooltiptext="Tarifa para Fecha Abierta." format="###,###,##0.00" width="40px" style="font-weight: bold;color:blue"/>	
+						</vbox>
+						<vbox align="center">
+							<label value="TARIFA LISTA" style="font-size:10px !important; font-weight: bold;"/>
+							<doublebox id="dlbxTarifaLista" tooltiptext="Tarifa Lista y/o referencial para la venta  online." format="###,###,##0.00" width="40px" style="font-weight: bold;"/>	
+						</vbox>
+					</hbox>
+				</row>
+			</rows>
+		</grid>
+		<toolbar width="100%">
+ 			<hbox align="center">
+				<separator width="669px"/>
+				<button id="btnAplicar" sclass="btn-vyrbus"  label="Aplicar" image="/resources/mp_aceptarEnabled.png" width="120px"  onClick="wndTarifario.guardar()" height="28px" />
+ 			</hbox>
+		</toolbar>
+	</panelchildren>
+	</panel>
+</window>
+</zk>

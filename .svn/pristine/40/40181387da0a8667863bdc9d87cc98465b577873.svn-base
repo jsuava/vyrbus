@@ -1,0 +1,159 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: Implementación de métodos que permiten el acceso al modelo.
+ * Autor		: José Sullo Avalos
+ * Fecha		: 28/09/2012
+ */
+package com.tepsa.sisvyr.service.business.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import com.tepsa.sisvyr.model.bean.ControlEspecieValorada;
+import com.tepsa.sisvyr.model.bean.ControlEspecieValoradaID;
+import com.tepsa.sisvyr.model.dao.ControlEspecieValoradaDAO;
+import com.tepsa.sisvyr.service.business.ControlEspecieValoradaManager;
+import com.tepsa.sisvyr.service.exceptions.CorrelativoException;
+import com.tepsa.sisvyr.service.util.Constantes;
+
+/**
+ * @author Jose
+ *
+ */
+public class ControlEspecieValoradaManagerImpl implements ControlEspecieValoradaManager {
+	private ControlEspecieValoradaDAO controlEspecieValoradaDAO;
+	
+	/**
+	 * @return the controlEspecieValoradaDAO
+	 */
+	public ControlEspecieValoradaDAO getControlEspecieValoradaDAO() {
+		return controlEspecieValoradaDAO;
+	}
+	/**
+	 * @param controlEspecieValoradaDAO the controlEspecieValoradaDAO to set
+	 */
+	public void setControlEspecieValoradaDAO(
+			ControlEspecieValoradaDAO controlEspecieValoradaDAO) {
+		this.controlEspecieValoradaDAO = controlEspecieValoradaDAO;
+	}
+
+	
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.ControlEspecieValoradaManager#buscarPorX(java.util.TreeMap, java.util.List)
+	 */
+	@Override
+	public ArrayList<ControlEspecieValorada> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar) throws Exception {
+		return getControlEspecieValoradaDAO().buscarPorX(criteriosBusqueda, criteriosOrdenar);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.ControlEspecieValoradaManager#guardar(com.tepsa.sisvyr.model.bean.ControlEspecieValorada)
+	 */
+	@Override
+	@Transactional
+	public int guardar(ControlEspecieValorada controlEspecieValorada) throws Exception {
+		try{
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			criteriosBusqueda.put("tipoComprobante", controlEspecieValorada.getTipoComprobante());
+			criteriosBusqueda.put("usuarioHardware", controlEspecieValorada.getUsuarioHardware());
+			//criteriosBusqueda.put("estadoRegistro", Constantes.ACTIVO);
+			List<?> result = getControlEspecieValoradaDAO().buscarPorX(criteriosBusqueda, null);
+			
+			/*Valida duplicidad del tipo comprobante y UsuarioHardware*/
+			if(result.size()>0)
+				throw new CorrelativoException(CorrelativoException.DUPLICADO); //ControlEspecieValoradaDuplicidadException();
+			
+			/*Inserta el control especie valorada*/
+			getControlEspecieValoradaDAO().guardar(controlEspecieValorada);
+			
+			/*Inserta los correlativos para para la validacion*/
+//			guardarValidacionEspecieValorada(controlEspecieValorada);
+			
+			return Constantes.CORRECT;
+			
+		}catch (CorrelativoException c){
+			if(c.getTipo().intValue()==CorrelativoException.DUPLICADO)
+				throw new CorrelativoException(CorrelativoException.DUPLICADO);
+			else
+				throw new Exception(c);
+		}catch(Exception ex){
+			throw new Exception(ex);
+		}	
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.ControlEspecieValoradaManager#actualizar(com.tepsa.sisvyr.model.bean.ControlEspecieValorada)
+	 */
+	@Override
+	@Transactional
+	public int actualizar(ControlEspecieValorada controlEspecieValorada) throws Exception {
+		/*actualiza el control especie valorada*/
+		getControlEspecieValoradaDAO().actualizar(controlEspecieValorada);
+		
+		/*Inserta los correlativos para para la validacion*/
+//		guardarValidacionEspecieValorada(controlEspecieValorada);
+		
+		return Constantes.CORRECT;
+	}
+	
+	@Override
+	@Transactional
+	public void inactivar(ControlEspecieValoradaID controlEspecieValoradaID)throws Exception {
+		 getControlEspecieValoradaDAO().inactivar(controlEspecieValoradaID);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.ControlEspecieValoradaManager#buscarEspecieValoradas(java.lang.Integer, java.lang.Integer)
+	 */
+	@Override
+	public List<ControlEspecieValorada> buscarEspecieValoradas(Integer idAgencia, Integer idTipoComprobante, Integer idUsuarioHardware) throws Exception {
+		return getControlEspecieValoradaDAO().buscarEspecieValoradas(idAgencia, idTipoComprobante,idUsuarioHardware);
+	}
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.ControlEspecieValoradaManager#validaEVOtrasCajas(java.lang.Integer, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public List<ControlEspecieValorada> validaEVOtrasCajas(Integer idUsuarioHardware,String serie, String inicial, String Final) throws Exception {
+		return getControlEspecieValoradaDAO().validaEVOtrasCajas(idUsuarioHardware, serie, inicial, Final);
+	}
+	/**
+	 * Busca las especies valoradas asignadas por maquina de acuerdo a la agencia.
+	 * @param idAgencia	: Identificador de la agencia.
+	 * @return Lista de Maquinas Pc con sus respectivas especies valoradas asignadas.
+	 * @throws Exception
+	 */
+	public List<ControlEspecieValorada> buscarEspecieValoradaPorAgencia(Integer idAgencia)throws Exception{
+		return getControlEspecieValoradaDAO().buscarEspecieValoradaPorAgencia(idAgencia);
+	}
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.ControlEspecieValoradaDAO#actualizarCorrelativoEspecieValorada(java.lang.Integer, java.lang.Integer, java.lang.String, int)
+	 */
+	@Override
+	public int actualizarCorrelativoEspecieValorada(Integer idTipCom, Integer idUsuHar, String serie, long correlativo) throws Exception {
+		return getControlEspecieValoradaDAO().actualizarCorrelativoEspecieValorada(idTipCom, idUsuHar, serie, correlativo);	
+	}
+	
+//	@Transactional
+//	/**
+//	 * Guarda los correlativos para la validacion al momento del cierre de caja.
+//	 * @param controlEspecieValorada
+//	 * @throws Exception
+//	 */
+//	private void guardarValidacionEspecieValorada(ControlEspecieValorada controlEspecieValorada)throws Exception{
+//		ValidacionEspecieValorada validacionEspecieValorada=new ValidacionEspecieValorada();
+//		validacionEspecieValorada.setFechaLiquidacion(new Date());
+//		validacionEspecieValorada.setTipoComprobante(controlEspecieValorada.getTipoComprobante());
+//		validacionEspecieValorada.setUsuarioHardware(controlEspecieValorada.getUsuarioHardware());
+//		validacionEspecieValorada.setSerie(controlEspecieValorada.getSerie());
+//		validacionEspecieValorada.setCorrelativoInicial(controlEspecieValorada.getCorrelativoInicio());
+//		validacionEspecieValorada.setCorrelativoFinal(controlEspecieValorada.getCorrelativoFin());
+//		validacionEspecieValorada.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+//		UtilData.auditarRegistro(validacionEspecieValorada, new Usuario(controlEspecieValorada.getUsuarioModificacion()), Executions.getCurrent());
+//		getValidacionEspecieValoradaDAO().guardar(validacionEspecieValorada);
+//	}
+}

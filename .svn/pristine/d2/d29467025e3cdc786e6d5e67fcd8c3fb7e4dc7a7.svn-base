@@ -1,0 +1,70 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: José Abanto
+ * Fecha		: 05/01/2017
+ * Hora			: 15:30:23
+ */
+package com.tepsa.sisvyr.model.dao;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import com.tepsa.sisvyr.model.bean.DetalleButaca;
+
+/**
+ * @author Jose Abanto
+ *
+ */
+public interface DetalleButacaDAO extends GenericDAO{
+	/**
+	 * 
+	 * @param estado
+	 * @param criterioOrden
+	 * @return
+	 */
+	public ArrayList<DetalleButaca> buscarPorEstadoRegistro(String estado, String criterioOrden);
+	
+	/**
+	 * 
+	 * @param criteriosBusqueda
+	 * @param criteriosOrdenar
+	 * @return
+	 */
+	public ArrayList<DetalleButaca> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
+	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public DetalleButaca buscarPorId(Long id);
+	
+	/**
+	 * 
+	 * @param detalleButaca
+	 */
+	public void guardar(DetalleButaca detalleButaca);
+	
+	/**
+	 * 
+	 * @param detalleButaca
+	 */
+	public void actualizar(DetalleButaca detalleButaca);
+	
+	/**
+	 * 
+	 * @param id
+	 */
+	public void inactivar(Long id);
+	
+	/**
+	 * 
+	 * @param detalleButaca
+	 * @return
+	 * @throws Exception
+	 */
+	public List<DetalleButaca> validarExisteTarifa(DetalleButaca detalleButaca)throws Exception;
+}

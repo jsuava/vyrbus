@@ -1,0 +1,155 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndServicioEspecial"  use="com.cystesoft.vyrbus.view.ctrl.WndServicioEspecial" title="SERVICIOS ESPECIALES"  border="normal" width="820px" >
+	<hbox>
+		<grid   width="482px" height="118px">
+			<columns>
+				<column width="85px" align="right"/>
+				<column width="130px" />
+				<column width="87px" align="right"/>
+				<column width="180px" />	
+			</columns>
+			<rows>
+				<row>
+					<label value="N° ITINERARIO : "  />
+					<hbox align="center">
+						<textbox id="txtItinerario" maxlength="8" readonly="true" width="70px" style="font-size:11px !important" />
+						<button id="btnBuscarItinerario" label="" image="/resources/mp_buscarEnabled.png" style="cursor:pointer"/>
+					</hbox>
+					<label value="SERVICIO : "  />
+					<label id="lblServicio"  style="color:blue"/>		    	    					    		    	    		
+				</row>
+				<row>
+					<label value="ORIGEN : " />
+					<label id="lblOrigen"  style="color:blue"  />	
+					<label value="DESTINO : " />
+					<label id="lblDestino" style="color:blue" />
+				</row>
+				<row>
+					<label value="FECHA PARTIDA : " />
+					<label id="lblFechaPartida" sclass="label-size11" style="color:blue" />
+					<label value="FECHA LLEGADA : "  />
+					<label id="lblFechaLlegada" sclass="label-size11" style="color:blue" />
+				</row>
+				<row>
+					<label value="PTO.EMBARQUE : " />
+					<combobox id="cmbPtoEmbarque" readonly="true" width="125px" onSelect="wndServicioEspecial.onSelectPtoEmbarque()"/>
+					<label value="AGE.LLEGADA : " />
+					<combobox id="cmbAgeLlegada" readonly="true" width="160px" onSelect="wndServicioEspecial.onSelectPtoDesembarque()"/>
+				</row>
+				<row>
+					<label value="HORA PARTIDA : " />
+					<label id="lblHoraPartida" sclass="label-size11" style="color:blue" />				
+					<label value="HORA LLEGADA : " />
+					<hbox align="center">
+						<label id="lblHoraLlegada" sclass="label-size11" style="color:blue" /><separator width="45px" />
+						<label value="TARIFA : " />
+						<label id="lblTarifa" sclass="label-size11" style="color:blue" />
+					</hbox>
+				</row>
+			</rows>
+		</grid>	
+		
+		<grid >
+			<rows>
+				<row>
+					<radiogroup>
+						<groupbox closable="false" mold="3d">
+						<caption label="COMPROBANTES ELECTRONICOS - COUNTER" />	
+							<div>
+<!-- 								<radio id="rdBoletos" label="Boleta Electrónica"  -->
+<!-- 										onCheck="if(rdBoletos.isChecked()){ibxSerie.setReadonly(false);txtInicio.setReadonly(false); -->
+<!-- 												    txtSerieFactura.setText(null);txtNumeroFactura.setText(null);ibxSerie.setFocus(true);	 -->
+<!-- 												   txtSerieFactura.setReadonly(true);txtNumeroFactura.setReadonly(true);}"/> <space width="7px" /> -->
+
+								<radio id="rdBoleta" label="Boleta Electrónica" onCheck="txtSerieFactura.setReadonly(true);txtNumeroFactura.setReadonly(true);txtSerieFactura.setText(null);txtNumeroFactura.setText(null)"/> 
+							    <space width="7px" />
+								<radio id="rdFactura" label="Factura Eletrónica" onCheck="txtSerieFactura.setReadonly(true);txtNumeroFactura.setReadonly(true);txtSerieFactura.setText(null);txtNumeroFactura.setText(null)"/>
+								<div visible="false">
+									<label value="Serie" sclass="label-size11" />
+									<intbox id="ibxSerie" maxlength="3" width="35px" readonly="true" style="font-weight: bold; color : #0000FF;"/><space width="7px" />
+									<label value="Inicio" sclass="label-size11" />
+									<textbox id="txtInicio" onChange="txtInicio.setText(wndServicioEspecial.generaCerosIzquierda(txtInicio.getText().trim()))" width="80px" style="font-size:12px !important; font-weight: bold; color : #0000FF;" readonly="true" maxlength="7"/>
+								</div>																			
+							</div>
+						</groupbox>
+						<separator height="1px" />
+						<groupbox closable="false" mold="3d">
+						<caption label="FACTUARA ESPECIAL" />	
+							<div>
+								<radio id="rdFacturaEspecial" label="Factura : " checked="true" onCheck="txtSerieFactura.setReadonly(false);txtNumeroFactura.setReadonly(false);txtSerieFactura.setFocus(true)"/>
+								<space width="7px" />			
+								<label value="Serie" sclass="label-size11" />
+								<textbox id="txtSerieFactura" maxlength="4" width="35px" style="font-weight: bold; color : #0000FF;font-size:12px !important" />
+								<label value="Número" sclass="label-size11"/>	
+								<textbox id="txtNumeroFactura" width="75px" style="font-size:12px !important; font-weight: bold; color : #0000FF;" maxlength="8" onChange="txtNumeroFactura.setText(wndServicioEspecial.generaCerosIzquierda(txtNumeroFactura.getText().trim()))" />
+							</div>
+						</groupbox>
+					</radiogroup>
+				</row>
+			</rows>
+		</grid>
+	</hbox>
+    <separator height="1px" />
+    <grid>
+    	<columns>
+    		<column width="85px" align="right" />
+    		<column width="130px"  />
+    		<column width="85px" align="right" />
+    		<column width="250px"  />
+    		<column width="55px" />
+    	</columns>
+    	<rows>
+    		<row>
+    			<div>
+    				<label value="RUC CLIENTE: " sclass="" />
+    				<textbox id="txtIdCliente" visible="false" />
+    			</div>
+    			<hbox align="center">
+    				<textbox id="txtRuc" onOK="wndServicioEspecial.buscarCliente(txtRuc.getText().trim())" maxlength="11" style="font-size:11px !important" width="85px" />
+    				<image id="imgBuscarCliente"  onClick="wndServicioEspecial.buscarCliente(txtRuc.getText().trim())" src="/resources/mp_buscarEnabled.png" style="cursor:pointer" tooltiptext="Buscar Cliente" />
+    			</hbox>
+    			<label value="RAZON SOCIAL :" />
+    			<label id="lblRazonSocial" sclass="label-size11" style="color:blue" />
+    			<label visible="false" value="% DESCT. :" />
+    			<label visible="false" id="lblDescuento" sclass="label-size11" style="color:blue" />
+    		</row>
+    	</rows>
+    </grid>
+    <separator height="1px" />
+	<listbox id="listPasajeros" rows="8">
+		<listhead>
+			<listheader label="NOMBRES Y APELLIDOS DEL PASAJERO" width="260px" align="center"/>
+			<listheader label="TIPO DOCUMENTO" width="100px" align="center" />
+			<listheader label="N°. DOCUMENTO" width="110px" align="center"/>
+			<listheader label="SEXO" width="90px" align="center"/>
+			<listheader label="F.NACIMIENTO" width="120px" align="center"/>
+			<listheader label="ASIENTO" width="50px" align="center"/>
+			<listheader id="lhPiso" visible="false" label="PISO" width="30px" align="center"/>
+		</listhead>
+	</listbox>
+	<separator height="2px" />
+	<hbox >
+		<label value="N°.Pasajeros:" sclass="label-size11-bold"/>
+		<label id="lblNumeroPasajeros" sclass="label-size11" style="color:blue"/>
+		
+		<separator width="190px" />
+		<button id="btnCargarArchivo" label="Cargar Archivo" sclass="btn-vyrbus" image="/resources/mp_excelDisabled.png" upload="true,maxsize=4000" disabled="true">
+			<attribute name="onUpload"><![CDATA[
+			      org.zkoss.util.media.Media media = event.getMedia();
+			      if(com.cystesoft.vyrbus.service.util.Util.uploadFile(media)){
+			    	  	com.cystesoft.vyrbus.service.util.Util.limpiarListbox(listPasajeros);
+				       	wndServicioEspecial.openFileExel(media);
+			      }else
+				      	com.cystesoft.vyrbus.view.ui.DlgMessage.information("Ha Ocurrido un Error al subir el Archivo al Servidor. Intentedo nuevamente");  
+			]]></attribute>
+		</button>
+		<button id="btnGuardarVentas" label="Guardar" sclass="btn-vyrbus" autodisable="self" onClick="wndServicioEspecial.guardarVentas()" 
+			image="/resources/mp_guardarDisabled.png" disabled="true" height="27px"/>
+		<separator width="205px" />
+		<button label="Cerrar" sclass="btn-vyrbus" image="/resources/mp_cerrar.png" onClick="wndServicioEspecial.closeTabWindow()" height="27px"/>
+	</hbox>
+	
+</window >
+
+</zk>

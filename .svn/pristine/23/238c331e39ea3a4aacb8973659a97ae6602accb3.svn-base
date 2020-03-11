@@ -1,0 +1,97 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: Clase donde implementamos las reglas del negocio para la tabla Terminos Venta VRMTERMINOSS.
+ * Autor		: José Sullo Avalos
+ * Fecha		: 14/10/2013
+ */
+package com.tepsa.sisvyr.service.business.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import com.tepsa.sisvyr.model.bean.TerminosVenta;
+import com.tepsa.sisvyr.model.dao.TerminosVentaDAO;
+import com.tepsa.sisvyr.service.business.TerminosVentaManager;
+
+/**
+ * @author Jose
+ *
+ */
+public class TerminosVentaManagerImpl implements TerminosVentaManager {
+	private TerminosVentaDAO terminosVentaDAO;
+
+	/**
+	 * @return the terminosVentaDAO
+	 */
+	public TerminosVentaDAO getTerminosVentaDAO() {
+		return terminosVentaDAO;
+	}
+	/**
+	 * @param terminosVentaDAO the terminosVentaDAO to set
+	 */
+	public void setTerminosVentaDAO(TerminosVentaDAO terminosVentaDAO) {
+		this.terminosVentaDAO = terminosVentaDAO;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.TerminosVentaManager#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public ArrayList<TerminosVenta> buscarPorEstadoRegistro(String estado, String criterioOrden) {
+		// TODO Auto-generated method stub
+		return getTerminosVentaDAO().buscarPorEstadoRegistro(estado, criterioOrden);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.TerminosVentaManager#buscarPorX(java.util.TreeMap, java.util.List)
+	 */
+	@Override
+	public ArrayList<TerminosVenta> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar) {
+		// TODO Auto-generated method stub
+		return getTerminosVentaDAO().buscarPorX(criteriosBusqueda, criteriosOrdenar);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.TerminosVentaManager#buscarPorId(java.lang.Long)
+	 */
+	@Override
+	public TerminosVenta buscarPorId(Long id) {
+		// TODO Auto-generated method stub
+		return getTerminosVentaDAO().buscarPorId(id);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.TerminosVentaManager#guardar(com.tepsa.sisvyr.model.bean.TerminosVenta)
+	 */
+	@Override
+	@Transactional
+	public void guardar(TerminosVenta terminosVenta) {
+		// TODO Auto-generated method stub
+		getTerminosVentaDAO().guardar(terminosVenta);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.TerminosVentaManager#actualizar(com.tepsa.sisvyr.model.bean.TerminosVenta)
+	 */
+	@Override
+	@Transactional
+	public void actualizar(TerminosVenta terminosVenta) {
+		// TODO Auto-generated method stub
+		getTerminosVentaDAO().actualizar(terminosVenta);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.TerminosVentaManager#inactivar(java.lang.Long)
+	 */
+	@Override
+	@Transactional
+	public void inactivar(Long id) {
+		// TODO Auto-generated method stub
+		getTerminosVentaDAO().inactivar(id);
+	}
+
+}

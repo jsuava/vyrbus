@@ -1,0 +1,198 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:n="client">
+<window id="wndItinerario" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndItinerario" >
+	<div 	id="divLista"> 
+		<listbox id="listboxLista" rows="15" >
+			<listhead sizable="true">
+				<listheader label="#" width="30px" />
+					<listheader label="ITNERARIO" sort="auto" align="center" width="60px" />
+					<listheader label="ORIGEN" sort="auto" align="left"   width="110px" />
+					<listheader label="DESTINO" sort="auto" align="left"  width="110px" />
+					<listheader label="SERVICIO" sort="auto" align="left" width="140px" />
+					<listheader label="FECHA PARTIDA" sort="auto" align="center" width="93px" />
+					<listheader label="HORA PARTIDA" sort="auto" align="center" width="85px"/>
+					<listheader label="FECHA LLEGADA" sort="auto" align="center" width="93px"/>
+					<listheader label="HORA LLEGADA" sort="auto" align="center" width="85px"/>
+					<listheader label="TERMINAL PARTIDA" sort="auto" align="left" />
+					<listheader label="TERMINAL LLEGADA" sort="auto" align="left" />
+			</listhead>
+		</listbox>	
+	</div>
+	
+	<div id="divMantenimiento" >
+		<hbox >
+			<!-- DATOS DEL ITINERARIO -->
+			<groupbox id="grpItinerario" closable="false" mold="3d" width="548px">
+			<caption label="DATOS DEL ITINERARIO" />
+				<grid style="border:none">
+					<columns>
+						<column width="99px;" align="right" /> 
+						<column width="125px;" />
+						<column width="85px;" align="right"/> 
+					</columns>
+					<rows>
+						<row>
+							<div>
+								<label value="TIPO ITINERARIO :" />
+								<textbox id="textboxId" />
+							</div>
+							<combobox id="cmbTipoItinerario" readonly="true" width="100px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbServicio)" /> 
+							<label value="TIPO SERVICIO :" />
+							<combobox id="cmbServicio" readonly="true" width="220px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbOrigen)" />	
+						</row>		
+						<row>
+							<label value="ORIGEN :" />
+							<combobox id="cmbOrigen" readonly="true" width="100px" onChange="wndItinerario.onChangeRutas()" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbRuta)" />
+							<label value="RUTA :" />
+							<combobox id="cmbRuta" readonly="true" onChange="wndItinerario.onchangeTerminalDestino(cmbTermDestino)" width="220px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(dbFechaItinerario)"/>
+						</row>
+						<row>		
+							<label value="FECHA ITINERARIO :" />
+							<datebox id="dbFechaItinerario" format="dd/MM/yyyy" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(tbHoraPartida)" />
+							<label value="HORA PARTIDA :" />
+							<timebox id="tbHoraPartida"  width="90px" format="HH:mm" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbTermOrigen)"/>
+						</row>
+						<row>
+							<label value="TER. ORIGEN :" />
+							<combobox id="cmbTermOrigen" readonly="true" width="120px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbTermDestino)" />
+							<label value="TER. DESTINO :"/>
+							<hbox align="center">
+								<combobox id="cmbTermDestino" readonly="true"  width="132px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmdAgregarTramo)" />
+								<button id="cmdAgregarTramo" sclass="btn-vyrbus" label="Agregar" onClick="wndItinerario.agregarTramo()" image="/resources/mp_agregarEnabled.png"  tooltiptext="Agregar Tramo"/>
+							</hbox>			
+						</row>
+					</rows>
+				</grid>	
+			</groupbox>
+							 
+			<grid id="grdRutasTrifas"   height="142px">
+				<auxhead>
+					<auxheader label="RUTAS Y TARIFAS" colspan="3" align="center" />
+				</auxhead>
+				<columns >
+					<column label="idRuta" width="0" visible="false" />
+					<column label="#" width="10%" />
+					<column label="RUTA" width="65%"/>
+					<column label="TARIFA"  align="center"/>
+				</columns>
+				<rows id="rutaTarifas"/>
+			</grid>
+		</hbox>	
+	
+		<separator height="1px" />
+		
+		<!-- DETALLE DEL ITINERARIO -->
+		<groupbox mold="3d" closable="false" >
+			<caption label="DETALLE DEL ITINERARIO"/>
+			<div 	id="divDetalleItinerario"> 
+				<listbox id="listboxDetalleItinerario" rows="5"  >
+					<listhead sizable="true"  >
+						<listheader label="#" width="20px" />
+<!-- 						<listheader label="Origen" sort="none" align="left" width="80px" /> -->
+						<listheader label="Ruta" sort="none" align="left" width="145px" />
+						<listheader label="Tipo Servicio" sort="none" align="left" width="120px" />
+						<listheader label="Fecha Salida" sort="none" align="center" width="93px" />
+						<listheader label="Hr.Salida" sort="none" align="center" width="45px" tooltiptext="Hora de Salida" />
+						<listheader label="Fecha Llegada" sort="none" align="center" width="93px" />
+						<listheader label="Hr.Llegada" sort="none" align="center" width="50px" tooltiptext="Hora de Llegada"/>
+						<listheader label="Terminal Origen" sort="none" align="left" width="105px" />
+						<listheader label="Terminal Destino" sort="none" align="left" width="105px" /> 
+						<listheader label="" sort="none"  />
+					</listhead>
+				</listbox>
+			</div>
+		</groupbox>	
+		
+		<separator height="1px" />
+		
+		<hbox>
+			<!-- Rango de Fecha para la generacion de los itinerarios -->
+			<groupbox mold="3d" closable="false" height="141px" width="115px">
+			<caption label="INICIO Y FIN DE LA PROGRAMACIÓN"/>
+				<grid  height="100%" style="border:none">
+					<columns>
+<!-- 						<column  width="35%" align="right" /> -->
+<!-- 						<column  width="65%" align="right"/> -->
+					</columns>
+					<rows><row>
+						<vbox>
+							<label value="FECHA INICIO"  />
+							<datebox id="dbFechaInicio" format="dd/MM/yyyy" readonly="true" width="100px" />
+						</vbox>
+					</row><row>
+						<vbox>
+							<label value="FECHA FIN" />
+							<datebox id="dbFechafin" format="dd/MM/yyyy"  readonly="true" width="100px" />
+						</vbox>
+					</row></rows>
+				</grid>
+			</groupbox>
+			
+			<!-- Terminal de Partida -->
+			<grid>
+				<columns>
+					<column width="99%" align="right"/>
+				</columns>
+				<rows><row>
+			  		<hbox align="center">
+			  			<label value="TER.PARTIDA:"/>
+			  			<combobox id="cmbTerminalPartida"  width="100px" readonly="true" onSelect="if(cmbTerminalPartida.getSelectedItem().getValue() instanceof com.cystesoft.vyrbus.model.bean.Agencia)
+			  																							com.cystesoft.vyrbus.service.util.Util.disabledBtnAgregar(false,cmdAddTerPartida,true);
+			  																					  else
+			  																					  		com.cystesoft.vyrbus.service.util.Util.disabledBtnAgregar(true,cmdAddTerPartida,true); " 
+			  					onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(tbterHoraPartida)"/>
+			  			
+			  			<label value="HORA PARTIDA:" />
+			  			<timebox id="tbterHoraPartida" format="HH:mm" width="56px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmdAddTerPartida)" />
+				  		<button id="cmdAddTerPartida"  image="/resources/mp_mp_agregarEnabled.png" width="100%" tooltiptext="Agregar Terminal Partida" 
+													   onClick="wndItinerario.addTerminal(com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartida.class, listboxTerminalPartida, cmbTerminalPartida, tbterHoraPartida)"/>
+			  		</hbox>
+			  	</row><row>
+					<!-- Lista de Terminal(es) Llegada -->
+			  		<listbox id="listboxTerminalPartida" height="100px" >
+						<listhead sizable="false">
+							<listheader label="#" sort="none" align="center"  width="25px"/>
+							<listheader label="Terminal(es) Partida" sort="none" align="left"  width="180px"/>
+							<listheader label="Hora Partida" sort="none" align="center"  width="65px" />
+							<listheader   />
+						</listhead>
+					</listbox>			
+					<button visible="false" id="cmdDeleteTerPartida" image="/resources/mp_cerrar.png" width="100%" tooltiptext="Quitar Terminal Partida" onClick="wndItinerario.quitaTerminal(true, listboxTerminalPartida)" />
+				</row></rows>	  		
+			</grid>
+			
+			<grid>
+				<columns>
+					<column width="99%" align="right" />
+				</columns>
+				<rows><row>
+			  		<hbox align="center">
+			  			<label value="TER.LLEGADA:" />
+			  			<combobox id="cmbTerminalLlegada"  width="95px" readonly="true" onSelect="if(cmbTerminalLlegada.getSelectedItem().getValue() instanceof com.cystesoft.vyrbus.model.bean.Agencia)
+			  																							com.cystesoft.vyrbus.service.util.Util.disabledBtnAgregar(false,cmdAddTerLlegada,true);
+			  																			  		 else
+			  																					  		com.cystesoft.vyrbus.service.util.Util.disabledBtnAgregar(true,cmdAddTerLlegada,true); " 
+			  					onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(tbterHoraLlegada)"/>
+			  			<label value="HORA LLEGADA:" />
+			  			<timebox id="tbterHoraLlegada" format="HH:mm" width="56px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmdAddTerLlegada)"/>
+			  			<button id="cmdAddTerLlegada" sclass="btn-vyrbus" image="/resources/mp_agregarEnabled.png" width="100%" tooltiptext="Agregar Terminal Llegada"
+									onClick="wndItinerario.addTerminal(com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaLlegada.class, listboxTerminalLlegada, cmbTerminalLlegada, tbterHoraLlegada)"/>
+			  		</hbox>
+			  	</row><row>
+					<!-- Lista de Terminal(es) Llegada -->	
+			  		<listbox id="listboxTerminalLlegada" height="100px" >
+						<listhead sizable="false">
+							<listheader label="#" sort="none" align="left"  width="25px"/>
+							<listheader label="Terminal(es) Llegada" sort="none" align="left"  width="180px"/>
+							<listheader label="Hora Llegada" sort="none" align="center"  width="65px" />
+							<listheader />
+						</listhead>
+					</listbox>			
+					<button id="cmdDeleteTerLlegada" sclass="btn-vyrbus" image="/resources/mp_cerrar.png" width="100%" tooltiptext="Quitar Terminal Llegada" onClick="wndItinerario.quitaTerminal(false, listboxTerminalLlegada)"/>
+				</row></rows>	  		
+			</grid>
+		</hbox>	
+			
+	</div>	
+</window>
+</zk>

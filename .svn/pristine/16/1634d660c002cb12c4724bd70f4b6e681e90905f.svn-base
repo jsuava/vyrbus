@@ -1,0 +1,215 @@
+<?page title="Sistema de Ventas" contentType="text/html;charset=UTF-8"?>
+<?link rel="shortcut icon" href="resources/favicon_1.ico" ?>
+<zk>
+<style src="css/style.css"></style>
+<script src="http://cloud.github.com/downloads/digitalBush/jquery.maskedinput/jquery.maskedinput-1.3.js" type="text/javascript"></script>
+<window id="wndPrincipal" border="none" width="100%" height="100%" use="com.tepsa.sisvyr.view.ctrl.WndPrincipal" contentStyle="overflow:auto !important">
+	<borderlayout>
+		<north size="38px">
+			<grid style="border:none">
+				<columns>
+					<column width="114px"/>
+					<column width="21%"/>
+					<column width="20%"/>
+					<column width="21%"/>
+					<column width="30%" align="right"/>
+				</columns>
+				<rows>
+					<row style="border:none; background:#004181">
+						<image src="/resources/mp_isotipo.png"/>
+						<hbox>
+							<label value="Usuario: " style="font-weight:bold;color:white"/>
+							<label id="lblUsuario"  style="color:white"/>
+						</hbox>
+						<hbox>
+							<label value="Agencia: " style="font-weight:bold;color:white"/>
+							<label id="lblAgencia"  style="color:white"/>
+						</hbox>
+						<hbox>
+							<label value="Equipo: " style="font-weight:bold;color:white"/>
+							<label id="lblPC"  style="color:white"/>
+						</hbox>
+						<toolbarbutton label="Salir del sistema" onClick="wndPrincipal.cerrarSesion()" image="/resources/mp_logout.png" tooltiptext="Cerrar sesión" style="font-size:10px;font-weight:bold;color:white"/>				
+					</row>					
+				</rows>
+			</grid>
+		</north>
+	
+		<west title="Menu de Opciones" collapsible="true" width="170px">
+			<menubar id="menubarMenu" orient="vertical" height="750px">
+				<!-- <menu label="Administración">
+					<menupopup>
+						<menu label="Maestros">
+							<menupopup>
+								<menuitem label="Servicios" id="miServicio" value="servicio.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "servicio.zul")' />
+								<menuitem label="Concesionario" id="miConcesionario" value="concesionario.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "concesionario.zul")' />
+								<menuitem label="Agencias" id="miAgencia" value="agencia.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "agencia.zul")' />
+								<menuitem label="Tipo de agencia" id="miTipoAgencia"  value="tipoAgencia.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "tipoAgencia.zul")' />
+								<menuitem label="Rutas" id="miRuta" value="ruta.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "ruta.zul")' />
+								<menuitem label="Localidades" id="miLocalidad" value="localidad.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "localidad.zul")' />
+								<menuitem label="Forma de pago" id="miFormaPago" value="formaPago.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "formaPago.zul")' />
+								<menuitem label="Tipo de forma de pago" id="miTipoFormaPago" value="tipoFormaPago.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "tipoFormaPago.zul")' />
+								<menuitem label="Canal de venta" id="miCanalVenta" value="canalVenta.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "canalVenta.zul")' />
+								<menuitem label="Tipo Movimiento" id="miTipoMovimiento" value="tipoMovimiento.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "tipoMovimiento.zul")' />
+								<menuitem label="Tipo de comprobante" id="miTipoComprobante" value="tipoComprobante.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "tipoComprobante.zul")' />
+								<menuitem label="Operador de tarjeta de crédito" id="miOperadorTarjetaCredito"  value="operadorTarjetaCredito.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "operadorTarjetaCredito.zul")' />
+								<menuitem label="Tipo de documento" id="miTipoDocumento" value="tipoDocumento.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "tipoDocumento.zul")' />
+								<menuitem label="Sexo" id="miSexo" value="sexo.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "sexo.zul")' />
+								<menuitem label="Tipo de personal" id="miTipoPersona" value="tipoPersonal.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "tipoPersonal.zul")' />
+								<menuitem label="Tipo de vía" id="miTipoVia" value="tipoVia.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "tipoVia.zul")' />
+								<menuitem label="Tipo de zona" id="miTipoZona" value="tipoZona.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "tipoZona.zul")' />
+								<menuitem label="Tipo de Gasto" id="miTipoGasto" value="tipoGasto.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "tipoGasto.zul")' />						
+							</menupopup>
+						</menu>
+						<menu label="Flota">
+							<menupopup>
+								<menuitem label="Grupos de Mantenimiento" id="miGrupoMantenimiento" value="grupoMantenimiento.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "grupoMantenimiento.zul")' />
+								<menuitem label="Buses" id="miBus" value="bus.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "bus.zul")'/>
+								<menuitem label="Objetos del bus" id="miObjetoBus" value="objetoBus.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "objetoBus.zul")' />
+								<menuitem label="Creacion Mapa del bus" id="miMapaBus" value="creacionMapaBus.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "creacionMapaBus.zul")' />
+								<menuitem label="Tipo de Flota" id="miTipoFlota" value="tipoFlota.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "tipoFlota.zul")' />
+								<menuitem label="Número de Flota" id="miNumeroFlota" value="numeroFlota.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "numeroFlota.zul")' />
+								<menuitem label="Estados del Bus" id="miEstadoBus" value="estadoBus.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "estadoBus.zul")' />
+								<menuitem label="Documentación del Bus" id="miDocumentoBus" value="documentoBus.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "documentoBus.zul")' />
+								<menuitem label="Estado Documentación del Bus" id="miEstadoDocumentoBus" value="estadoDocumentoBus.zul"  onClick='wndPrincipal.mostrarVentana(self.getLabel(), "estadoDocumentoBus.zul")' />
+							</menupopup>
+						</menu>
+						<menu label="Seguridad">
+							<menupopup>
+								<menuitem label="Usuario Harware" id="miUsuarioHardware" value="usuarioHardware.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "usuarioHardware.zul")' />
+								<menuitem label="Usuario del Sistema" id="miUsuarioSistema" value="usuarioSistema.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "usuarioSistema.zul")'/>
+								<menuitem label="Roles" id="miRol" value="rol.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "rol.zul")' />
+								<menuitem label="Opción Menu" id="miOpcionMenu" value="opcionMenu.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "opcionMenu.zul")' />
+							</menupopup>
+						</menu>
+					</menupopup>
+				</menu>
+				<menu label="Operaciones">
+					<menupopup>
+						<menuitem label="Clientes" id="micliente" value="cliente.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "cliente.zul")' />
+						<menuitem label="Pasajeros" id="miPasajero" value="pasajero.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "pasajero.zul")' />
+						<menuitem label="Gastos" id="miGasto" value="gasto.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "gasto.zul")' />
+						<menuitem label="Liquidacion del Bus" id="miLiquidacionBus" value="liquidacionBus.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "liquidacionBus.zul")' />
+						<menuseparator />
+						<menuitem label="Ventas y Reservas" id="miVentaReserva" value="ventaReserva.zul" image="resources/menu/menu_ventasReservas.png" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "ventaReserva.zul")'/>
+						<menuitem label="Comprobantes sin Boleto" id="miComprobanteSinBoleto" value="comprobanteSinBoleto.zul" image="resources/menu/menu_ventasReservas.png" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "comprobanteSinBoleto.zul")'/>
+						<menu label="Mantenimiento de Ventas/Reservas">
+							<menupopup>
+								<menuitem id="miConfirmarReserva" label="Confirmar Reserva" value="confirmarReserva.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "confirmarReserva.zul")'/>
+								<menuitem id="miConfirmarFA" label="Confirmar Fecha Abierta" value="confirmarFechaAbierta.zul" image="resources/menu/menu_confirmarFechaAbierta.png" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "confirmarFechaAbierta.zul")'/>
+								<menuitem id="miPostergarBoleto" label="Postergar Boleto" value="postergacion.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "postergacion.zul")'/>
+								<menuitem id="miReimprimirBoleto" label="Reimprimir Boleto" value="reimprimirBoleto.zul" image="resources/menu/menu_reimprimir.png" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "reimprimirBoleto.zul")'/>
+								<menuitem id="miDevolucionVenta" label="Devolución de Boleto" value="devolucionBoleto.zul" image="resources/menu/menu_devolucion.png" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "devolucionBoleto.zul")'/>
+							</menupopup>
+						</menu>
+						<menuitem label="Liquidación diaria de ventas" id="miLiquidacionDiariaVentas" value="liquidacionDiariaVentas.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "liquidacionDiariaVentas.zul")'/>
+						<menuitem label="Cierre de Caja" id="miCierreCaja" value="cierreCaja.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "cierreCaja.zul")'/>
+						<menuitem label="Liquidación de Oficina" id="miLiquidacionOficina" value="liquidacionOficina.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "liquidacionOficina.zul")'/>
+						<menuseparator />
+						<menuitem label="Autorizador de Cortesias" id="miAutorizadorCortesia" value="autorizadorCortesia.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "autorizadorCortesia.zul")'/>
+						<menuitem label="Autorización de Cortesias" id="miAutorizaCortesia" value="cortesia.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "cortesia.zul")'/>
+						<menuseparator />
+						<menuitem label="Despacho de buses" id="miManifiestoPasajeros" value="manifiesto.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "manifiesto.zul")' />
+						<menuitem label="Despacho de Pasajeros" id="miDespachoPasajeros" value="despachoPasajeros" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "despachoPasajeros.zul")' />
+						<menuitem label="Historial de Manifiestos" id="miMantenimientoManifiesto" value="manifiestoMantenimiento.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "manifiestoMantenimiento.zul")' />
+						<menuseparator />
+						<menuitem label="Desbloqueo de Asientos" id="miDesbloqueoAsientos" value="desbloqueoAsientos.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "desbloqueoAsientos.zul")'/>
+						<menuitem label="Transbordo de Pasajeros" id="miTransbordo" value="transbordo.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "transbordo.zul")' />
+						<menuseparator />
+						<menuitem label="Promociones" id="miPromociones" value="promociones.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "promociones.zul")'/>
+						<menuitem label="Servicios Especiales" id="miServicioEspecial" value="servicioEspecial.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "servicioEspecial.zul")' />
+						<menuitem label="Beneficios de pasajero frecuente" id="miBeneficiosPaxFree" value="beneficiosPaxFree.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "beneficiosPaxFree.zul")' />
+						<menuitem label="Asistente de Agencias" id="miAsistenteAgencias" value="asistenteAgencias.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "asistenteAgencias.zul")' />
+					</menupopup>
+				</menu>
+				
+				<menu label="Liquidación Agencias">
+					<menupopup>
+						<menuitem label="Detalle Liquidacion"  id="miDetalleLiquidacionAgencia" value="detalleLiquidacionAgencia.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "detalleLiquidacionAgencia.zul")'/>
+					</menupopup>
+				</menu>
+				
+				<menu label="Crédito">
+					<menupopup>
+						<menuitem label="Cartera de Clientes" id="misolicitudCartera" value="solicitudCartera.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "solicitudCartera.zul")' />
+						<menuitem label="Aprobación Ingreso Cartera y/o Crédito" id="miApruebaCarteraN1" value="apruebaCarteraN1.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "apruebaCarteraN1.zul")' />
+						<menuitem label="Aprobación Linea de Crédito - Finanzas" id="miAprobarLineaCreditoN2" value="aprobarLineaCreditoN2.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "aprobarLineaCreditoN2.zul")' />
+						<menuitem label="Aprobación Crédito - Gerencia Comercial" id="miAprobarCreditoN3" value="aprobarCreditoN3.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "aprobarCreditoN3.zul")' />
+						<menuitem label="Estado cuenta Clientes" id="miClienteCredito" value="clienteCredito.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "clienteCredito.zul")' />
+						<menuitem label="Reasignación de Cartera" id="miReasignacionCartera" value="reasignacionCartera.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "reasignacionCartera.zul")' />
+						<menuitem label="Usuario Aprobador" id="miUsuarioAprobador" value="usuarioAprobador.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "usuarioAprobador.zul")' />
+						<menuitem label="Tipo Cobranza" id="miTipoCobranza" value="tipoCobranza.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "tipoCobranza.zul")' />
+						<menuitem label="Vouches Agencias/Corporativos " id="miVouchers" value="vouchers.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "vouchers.zul")' />
+					</menupopup>
+				</menu>
+				<menu label="Especie Valorada">
+					<menupopup>
+						<menuitem label="Especies valoradas" id="miEspecieValorada"  value="especieValorada.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "especieValorada.zul")' />
+						<menuitem label="Control Especie Valorada" id="miControlEspecieValorada" value="controlEspecieValorada.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "controlEspecieValorada.zul")' />
+						<menuseparator />
+						<menuitem label="Solicitud" id="miSolicitudEspecieValorada" value="solicitudEspecieValorada.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "solicitudEspecieValorada.zul")' />
+						<menuitem label="Envío - Abastecimientos" id="miEnvioEspecieValorada" value="envioEspecieValorada.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "envioEspecieValorada.zul")' />
+					</menupopup>
+				</menu>
+				<menu label="Mantenimientos">
+					<menupopup>
+						<menuitem label="Preferencia alimentaria" id="miPreferenciaAlimenticia" value="preferenciaAlimenticia.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "preferenciaAlimentaria.zul")' />
+						<menuitem label="Tarjeta de crédito" id="miTarjetaCredito" value="tarjetaCredito.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "tarjetaCredito.zul")' />
+						<menuitem label="Descuento recargo" id="miDescuentoRecargo" value="descuentoRecargo.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "descuentoRecargo.zul")' />
+						<menuitem label="Motivo Cortesia" id="miMotivoCortesia" value="motivoCortesia.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "motivoCortesia.zul")'/>
+						<menuitem label="Personal" id="miPersonal" value="personal.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "personal.zul")' />
+						<menuitem label="Estado civil" id="miEstadoCivil" value="estadoCivil.zul"  onClick='wndPrincipal.mostrarVentana(self.getLabel(), "estadoCivil.zul")' />
+						<menuitem label="Nacionalidad" id="miNacionalidad" value="nacionalidad.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "nacionalidad.zul")' />
+						<menuseparator />
+						<menuitem label="Itinerarios" id="miItinerario" value="itinerario.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "itinerario.zul")'/>
+						<menuitem label="Programación de Servicios" id="miProgramacionServicio" value="programacionServicios.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "programacionServicios.zul")'/>
+						<menuitem label="Tipo de Itinerario" id="miTipoItinerario" value="tipoItinerario.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "tipoItinerario.zul")'/>
+						<menuitem label="Temporada Alta" id="miTemporadaAlta" value="temporadaAlta.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "temporadaAlta.zul")'/>
+						<menuitem label="Motivo Temporada Alta" id="miMotivoTemporadaAlta" value="motivoTemporadaAlta.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "motivoTemporadaAlta.zul")'/>
+						<menuitem label="Tarifario" id="miTarifario" value="tarfario.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "tarifario.zul")'/>
+					</menupopup>
+				</menu>
+
+				<menu label="Análisis y Desempeño">
+					<menupopup>
+						<menuitem label="Avance semanal de Ventas" id="miavenceSemanalVentas" value="avanceSemanalVentas.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "avanceSemanalVentas.zul")' />
+						<menuitem label="Avence semanal de Ventas por rutas" id="miAvanceSemanalVentasRutas" value="avancelSemanalVentasRutas.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "avancelSemanalVentasRutas.zul")' />
+						<menuitem label="Estado de cuenta de Clientes" id="miEstadoCuentaClientes"/>
+						<menuitem label="Tarifario"  id="miRptTarifario" value="rptTarifario.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "rptTarifario.zul")' />
+						<menuitem label="Tarifas" id="miTarifas"/>
+						<menuitem label="Diario Acumulado" id="miDiarioAcumulado" value="rptDiarioAcumulado.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "rptDiarioAcumulado.zul")' />
+						<menuitem label="Resulado por destino"  id="miResultadoXDestino"/>
+						<menuitem label="Venta mensual por Agencia"  id="miVentaMensualXAgencia"/>
+						<menuitem label="Estado de cuenta de puntos Paxfree" id="miEstadoCuentaPuntosPaxFree" value="estadoCuentaPuntosPaxFree.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "estodoCuentaPuntosPaxFree.zul")' />
+					</menupopup>
+				</menu>
+				<menu label="Configuración">
+					<menupopup>
+						<menuitem label="Parámetros del Sistema" id="miParametros" value="parametros.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "parametros.zul")' />
+					</menupopup>
+				</menu>
+				<menu label="Ayuda">
+					<menupopup>
+						<menuitem label="Acerca de ..." id="miAbout" value="about.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "about.zul")'/>
+						<menuitem label="Manual de Ayuda" />
+ 						<menuitem label="Cambiar Contraseña" id="miCambiarPassword" value="cambiarPassword.zul" onClick='wndPrincipal.mostrarVentana(self.getLabel(), "cambiarPassword.zul")' />
+						<menuitem label="Reportar Incidencia" />
+						<menuitem label="Cerrar sesión" onClick="wndPrincipal.cerrarSesion()" />
+					</menupopup>
+				</menu> -->
+			</menubar>
+		</west>
+		<center id="layoutCenter" autoscroll="true" flex="true" >
+			<tabbox >
+				<tabs id="tabsVentana">
+					<tab label="Bienvenido (a)" />
+				</tabs>
+				<tabpanels id="tabpanelsVentana">
+					<tabpanel >
+					</tabpanel>
+				</tabpanels>
+			</tabbox>
+		</center>		
+	</borderlayout>
+</window>
+</zk>

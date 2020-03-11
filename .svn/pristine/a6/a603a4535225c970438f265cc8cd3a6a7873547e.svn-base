@@ -1,0 +1,182 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: Clase que captura la direccion MAC de la interfaz de RED.
+ * Autor		: José Avalos Sullo
+ * Fecha		: 06/03/2013
+ */
+package com.tepsa.sisvyr.view.applet;
+
+import java.applet.AppletContext;
+import java.awt.Label;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.URL;
+import java.net.UnknownHostException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+import javax.swing.JApplet;
+import javax.swing.JOptionPane;
+
+/**
+ * @author Jose
+ *
+ */
+public class MacAddress extends JApplet {
+	private static final long serialVersionUID = 1L;
+	private Label lblMsg;
+	public static String MD2 = "MD2";
+	public static String MD5 = "MD5";
+	public static String SHA1 = "SHA-1";
+	public static String SHA256 = "SHA-256";
+	public static String SHA384 = "SHA-384";
+	public static String SHA512 = "SHA-512";
+
+	/* (non-Javadoc)
+	 * @see java.applet.Applet#init()
+	 */
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+		super.init();
+		lblMsg = new Label();
+		this.add(lblMsg);
+		lblMsg.setText("Creando la direccion de destino, espere por favor...");
+		String address = getAddress();
+		String cripto = getStringMessageDigest(address, SHA256);
+		try {
+			AppletContext context = getAppletContext();
+//			URL url = new URL("http://192.168.50.40:8080/sisvyr/validateAccess.zul?address="+cripto);
+			/*	PRODUCCION	*/
+			URL url = new URL("http://ventas.tepsa.com.pe/sisvyr/validateAccess.zul?address="+cripto);
+			context.showDocument(url, "_self");			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+//		} catch (URISyntaxException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+		}
+		
+	}
+	
+	/**
+	 * Obtenemos la direccion MAC de la Interfaz de Red.
+	 */
+	public String getAddress(){
+    	InetAddress ip;
+    	String result = null;
+    	try {
+    		ip = InetAddress.getLocalHost();
+    		System.out.println("Current IP address : " + ip.getHostAddress());
+    		NetworkInterface network = NetworkInterface.getByInetAddress(ip);
+    		byte[] mac = network.getHardwareAddress();
+    		System.out.print("Current MAC address : ");
+    		StringBuilder sb = new StringBuilder();
+    		for (int i = 0; i < mac.length; i++) {
+    			sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
+    		}
+    		System.out.println(sb.toString());
+    		result = sb.toString();
+    	} catch (UnknownHostException ex) {
+    		lblMsg.setText("No se pudo obtener la información necesaria para realizar el inicio de sesion...");
+    		ex.printStackTrace();
+    	} catch (SocketException sex){
+    		showErrorMessage(sex.getMessage(), true);
+    	}
+    	return result;
+    }
+	
+	private void showErrorMessage(String errorMessage, boolean showErrorMessage){
+        if(showErrorMessage)
+            JOptionPane.showMessageDialog(this, errorMessage, "TEPSA VyR", JOptionPane.ERROR_MESSAGE);
+    }
+	
+	/**
+     * Convierte un arreglo de bytes a String usando valores hexadecimales
+     * @param digest arreglo de bytes a convertir
+     * @return String creado a partir de <code>digest</code>
+     */
+    private String toHexadecimal(byte[] digest){
+        String hash = "";
+        for(byte aux : digest) {
+            int b = aux & 0xff;
+            if (Integer.toHexString(b).length() == 1) hash += "0";
+            hash += Integer.toHexString(b);
+        }
+        return hash;
+    }
+
+    /**
+     * Encripta un mensaje de texto mediante algoritmo de resumen de mensaje.
+     * @param message texto a encriptar
+     * @param algorithm algoritmo de encriptacion, puede ser: MD2, MD5, SHA-1, SHA-256, SHA-384, SHA-512
+     * @return mensaje encriptado
+     */
+    public  String getStringMessageDigest(String message, String algorithm){
+        byte[] digest = null;
+        byte[] buffer = message.trim().getBytes();
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance(algorithm);
+            messageDigest.reset();
+            messageDigest.update(buffer);
+            digest = messageDigest.digest();
+        }catch (NoSuchAlgorithmException ex) {
+            showErrorMessage("Error creando Digest", true);
+        }
+        return toHexadecimal(digest);
+    }
+    
+//    /* (non-Javadoc)
+//	 * @see java.applet.Applet#init()
+//	 */
+//	@Override
+//	public void init() {
+//		// TODO Auto-generated method stub
+//		super.init();
+//		String link_Text = "google";
+//		Button b = new Button(link_Text);
+//		b.addActionListener(this);
+//		add(b);
+//		postRequest();
+//	}
+//	
+//	public void actionPerformed(ActionEvent e) {
+//		try {
+//			AppletContext a = getAppletContext();
+//			URL url = new URL("http://localhost:8080/sisvyr/login.zul");
+//			a.showDocument(url, "_self");
+//		} catch(MalformedURLException ex) {
+//			System.out.println(ex.getMessage());
+//		}catch(Exception ex){
+//			ex.printStackTrace();
+//		}
+//	}
+//	
+//	public static void postRequest() {
+//	    try {
+//	        String urlParameters = "param1=a&param2=b&param3=c";
+//	    	
+//	    	URL url = new URL("http://localhost:8080/sisvyr/parame.zul");
+//
+//            URLConnection conn = url.openConnection();
+//            conn.setDoOutput(true);
+//            OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream());
+//            //Aquí enviamos los parámetros
+//            writer.write(urlParameters);
+//            writer.flush();
+////            String line;
+//            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+////            while ((line = reader.readLine()) != null) {
+////                System.out.println(line);
+////            }
+//            writer.close();
+//            reader.close();
+//	    } catch (Exception e) {
+//	        e.printStackTrace();
+//	    }
+//	}
+}

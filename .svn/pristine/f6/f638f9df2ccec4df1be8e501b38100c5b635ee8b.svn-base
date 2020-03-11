@@ -1,0 +1,77 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="" use="com.tepsa.sisvyr.view.ctrl.WndCliente">
+<div id="divLista">
+	<listbox id="listboxLista" >
+		<listhead sizable="true">
+			<listheader label="#" width="20px"/>
+			<listheader label="Nº DE RUC" sort="auto" width="70px" />
+			<listheader label="RAZON SOCIAL" sort="auto" />
+			<listheader label="NOMBRE DEL CONTACTO" sort="auto" />
+			<listheader label="Nº TELEFONO" sort="auto" width="80px" />
+			<listheader label="Nº MOVIL" sort="auto"  width="70px" />
+			<listheader label="CORREO ELECTRONICO" sort="auto"  width="180px"/>
+			<listheader label="AGENCIA REGISTRO" sort="auto" width="120px"/>
+		</listhead>
+	</listbox>
+</div>
+
+<div id="divMantenimiento">
+	<groupbox mold="3d" closable="false">
+		<caption label="DATOS PERSONALES" />
+		<grid>
+			<columns>
+				<column width="120px" align="right"/>
+				<column width="250pxpx" />
+				<column width="120px" align="right"/>
+			</columns>
+			<rows>
+				<row>
+					<div>
+						<label value="Nº RUC (*) :" />
+						<textbox id="textboxId" />
+					</div>
+					<textbox id="txtNumeroDocumento" maxlength="11" style="font-size:11px !important" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(txtRazonSocial)" />
+					<label value="RAZÓN SOCIAL (*) :" />
+					<textbox id="txtRazonSocial" maxlength="100" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(txtDireccion)" />
+				</row>
+				<row>
+					<label value="DIRECCIÓN :" />
+					<textbox id="txtDireccion" rows="2" maxlength="100" height="27px" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(btnUbicacionGeografica)" />
+					<label value="UBICACIÓN GEOGRÁFICA (Dep. / Prov. / Dist.) (*) :" />
+					<hbox align="center">
+						<textbox id="txtIdUbigeo" readonly="true" visible="false" />
+						<textbox id="txtUbicacionGeografica" rows="2" readonly="true" height="27px" width="180px"/>
+						<button id="btnUbicacionGeografica" label="..." sclass="label-size11"/>
+					</hbox>
+				</row>
+				<row>
+					<label value="NOMB. DEL CONTACTO :" />
+					<textbox id="txtContacto" maxlength="50" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(txtTelefono)" />
+					<label value="Nº TELÉFONO FIJO" />
+					<textbox id="txtTelefono"  maxlength="10" style="font-size:11px !important" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(txtTelefono2)"/>
+				</row>
+				<row>
+					<label value="Nº TELÉFONO MOVIL :" />
+					<textbox id="txtTelefono2" maxlength="10" style="font-size:11px !important" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(txtCorreoElectronico)"/>
+					<label value="CORREO ELECTRÓNICO" />
+					<textbox id="txtCorreoElectronico" maxlength="70" style="text-transform:lowercase; font-size:12px !important" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(dbNumeroKilometros)"/>
+				</row>
+				<row>
+					<label value="Nº KILÓMETRO (*) :" />
+					<doublebox id="dbNumeroKilometros" maxlength="12" format="#,##0.00"  width="120px" style="text-align:left;" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(cmbAgencia)"/>
+					<label value="AGENCIA REGISTRO (*) :" />
+					<combobox id="cmbAgencia" readonly="true" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(txtRubro)"/>
+				</row>
+				<row>
+					<label value="RUBRO :" />
+					<textbox id="txtRubro"  maxlength="80" style="font-size:11px !important" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(ibxCantidadTrabajadores)"/>
+					<label value="TRABAJADORES (*) :" />
+					<intbox id="ibxCantidadTrabajadores" maxlength="7" width="130px" tooltiptext="Cantidad de Trabajadores del Cliente." style="font-size:11px !important" />
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+</div>
+</window>
+</zk>

@@ -1,0 +1,42 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: José Sullo Avalos
+ * Fecha		: 14/05/2013
+ */
+package com.tepsa.sisvyr.service.business;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import com.tepsa.sisvyr.model.bean.Parametros;
+
+/**
+ * @author JABANTO
+ *
+ */
+public interface ParametrosManager  {
+	/**
+	 * Busca por el estado registro
+	 * @param estado	: estado a considerar
+	 * @return
+	 */
+	public Parametros buscarPorEstadoRegistro(String estado);
+	
+
+	/**
+	 * Guarda Parametros
+	 * @param parametros	
+	 * @throws Exception
+	 */
+	@Transactional
+	public void guardar(Parametros parametros) throws Exception;
+	
+	/**
+	 * Actualizar parámetros
+	 * @param parametros
+	 * @throws Exception
+	 */
+	public void actualizar(Parametros parametros) throws Exception;
+
+}

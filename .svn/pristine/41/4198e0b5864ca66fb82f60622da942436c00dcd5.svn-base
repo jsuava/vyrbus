@@ -1,0 +1,117 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndCambioAsiento" title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndCambioAsiento">
+	
+<!-- 	<separator height="1px"/> -->
+	<groupbox  closable="false" mold="3d" style="background:#FCF8F8;">
+		<caption label="TRANSBORDO DE ASIENTOS EN UN MISMO SERVICIO" />
+		<grid>
+			<rows><row>
+				<hbox align="center" >
+					<label value="ITINERARIO :" /><space width="15px"/>
+					<textbox id="txtItinerario" readonly="true" width="70px" style="font-size:11px !important" />
+					<image id="imgItinerario" src="/resources/mp_buscarEnabled.png" style="cursor:pointer" /><space id="spaceBtnCerar" width="40px" />
+					<button id="btnCerrar" label="Cerrar" image="/resources/mp_cerrar.png" onClick="wndCambioAsiento.closeTabWindow()"/>	
+				</hbox>
+			</row></rows>
+		</grid>
+		<separator height="1px"/>
+		<hbox>
+			<groupbox id="gbxMapa" width="165px" visible="false" >
+				<grid id="grdMapa" style="border:none" />
+			</groupbox>
+			<vbox>
+				<groupbox  width="300px" closable="false" mold="3d">
+					<caption label="DATOS DEL SERVICIO " />
+					<grid style="border:none">
+						<columns>
+							<column width="90px" align="right" />
+						</columns>
+						<rows>
+							<row>
+								<label value="SERVICIO :" />
+								<label id="lblServicio" style="font-size:11px !important; color:blue;" />
+							</row>
+							<row>
+								<label value="ORIGEN :"/>
+								<label id="lblOrigen" style="font-size:11px !important; color:blue;"/>
+							</row>
+							<row>
+								<label value="DESTINO :"/>
+								<label id="lblDestino" style="font-size:11px !important; color:blue;"/>
+							</row>
+							<row>
+								<label value="FECHA PARTIDA :" />
+								<label id="lblFechaPartidaServicio" style="font-size:11px !important; color:blue;" />
+							</row>
+							<row>
+								<label value="HORA PARTIDA :" />
+								<label id="lblHoraPartidaServicio" style="font-size:11px !important; color:blue;" />
+							</row>
+							<row>
+								<label value="CAPACIDAD :"/>
+								<label id="lblCapacidad" style="font-size:11px !important; color:blue;"/>
+							</row>
+							<row>
+								<label value="OCUPADOS :"/>
+								<label id="lblOcupados" style="font-size:11px !important; color:blue;"/>
+							</row>
+							<row>
+								<label value="DISPONIBLES :"/>
+								<label id="lblDisponibles" style="font-size:11px !important; color:blue;"/>
+							</row>
+						</rows>
+					</grid>	
+				</groupbox>
+				<groupbox  width="300px" closable="false" mold="3d">
+					<caption label="DATOS DEL ASIENTO SELECCIONADO" />
+					<grid style="border:none">
+						<columns>
+							<column width="90px" align="right" />
+						</columns>
+						<rows>
+							<row>
+								<label value="PASAJERO :" />
+								<label id="lblPasajero" style="font-size:11px !important; color:blue;" />
+							</row>
+							<row>
+								<label value="ASIENTO :" />
+								<label id="lblAsientoSeleccionado" style="font-size:12px !important; color:red;" />		
+							</row>
+							<row>
+								<label value="RUTA :" />
+								<label id="lblRuta" style="font-size:11px !important; color:blue;" />
+							</row>
+							<row>
+								<label value="FECHA PARTIDA :" />
+								<label id="lblFechaPartida" style="font-size:11px !important; color:blue;" />
+							</row>
+							<row>
+								<label value="HORA PARTIDA :" />
+								<label id="lblHoraPartida" style="font-size:11px !important; color:blue;" />
+							</row>
+							<row>
+								<label value="PTO. EMBARQUE :" />
+								<label id="lblPuntoEmbarque" style="font-size:11px !important; color:blue;" />
+							</row>
+							<row>
+								<label value="NUEVO ASIENTO :" />
+								<hbox align="center">
+									<intbox id="ibxNuevoAsiento" onFocus="ibxNuevoAsiento.select()" onOK="wndCambioAsiento.aplicarCambio()" width="50px" maxlength="2" disabled="true"/>
+									<button id="btnAplicarCambios" label="Aplicar cambio" onClick="wndCambioAsiento.aplicarCambio()" style="cursor:default" disabled="true" image="/resources/mp_aceptarDisabled.png"/>
+								</hbox>
+							</row>
+							<row>
+								<label id="lblNumeroPiso" value="NUEMRO PISO :" visible="false" />
+								<combobox id="cmbNumeroPiso" width="60px" readonly="true" visible="false" />
+							</row>
+						</rows>
+					</grid>
+			</groupbox>
+			<button id="btnRefrescar" label="Refrescar Mapa" visible="false" image="/resources/mp_refrescarEnabled.png" onClick="wndCambioAsiento.refrescarMapa()" />
+			</vbox>
+			
+		</hbox>
+	</groupbox>
+</window>
+</zk>

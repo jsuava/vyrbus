@@ -1,0 +1,106 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndProAfiliacion" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndVSProcesarAfiliaciones" width="750px">
+<panel  framable="true"  border="normal" >
+	<panelchildren>
+	<groupbox closable="false" mold="3d">
+		<caption label="::: PROCESO DE AFILIACINES :::"/>
+		<hbox>
+			<grid>
+				<rows>
+					<row>
+						<label value="PARAMETROS DE BUSQUEDA:" style="font-weight: bold;color:blue" />
+					</row>
+					<row>
+						<hbox align="center">
+							<label value="FECHA INICIO :" />
+							<datebox id="dtbxBusuqedaFechaInico" onChange="lblFechaInicio.setValue(com.cystesoft.vyrbus.service.util.Constantes.FORMAT_DATE.format(dtbxBusuqedaFechaInico.getValue())); dtbxBusuqedaFechafin.setValue(dtbxBusuqedaFechaInico.getValue());lblFechaFin.setValue(com.cystesoft.vyrbus.service.util.Constantes.FORMAT_DATE.format(dtbxBusuqedaFechaInico.getValue()));" readonly="true" format="dd/MM/yyyy" width="120px"/><separator width="20px"/>
+							<label value="FECHA FIN :" />
+							<datebox id="dtbxBusuqedaFechafin" onChange="lblFechaFin.setValue(com.cystesoft.vyrbus.service.util.Constantes.FORMAT_DATE.format(dtbxBusuqedaFechafin.getValue()))" readonly="true" format="dd/MM/yyyy" width="120px"/><separator width="10px"/>
+							<image id="imgBuscar" onClick="wndProAfiliacion.buscarAfiliaciones()" src="/resources/mp_buscarEnabled.png"  tooltiptext="Haga click para realizar la búsqueda" style="cursor:pointer"/>
+						</hbox>
+					</row>
+				</rows>
+			</grid>
+			<grid width="250px" height="44px">
+				<rows>
+					<row>
+						<separator height="1px"/> 
+						<separator height="1px"/>
+					</row>
+					<row>
+						<toolbarbutton id="tbbGenerarArchivo" disabled="true" label="Generar Archivo" onClick="wndProAfiliacion.generaArchivo()" tooltiptext="Haga click para Generar el archivo de Afiliaciones" image="/resources/mp_filtrar.png" />
+						<toolbarbutton label="Cerrar" onClick="wndProAfiliacion.closeTabWindow()" tooltiptext="Cerrar venta" image="/resources/toolbar/mp_toolbarCerrar.png" />
+					</row>
+				</rows>
+			</grid>
+			
+		</hbox>
+		
+		<separator height="5px"/>
+		<groupbox closable="false" mold="3d">
+			<caption label="LISTA DE AFILIACIONES"/>
+			<listbox id="lsbxAfiliados"  height="240px" checkmark="true" multiple="true" onSelect="wndProAfiliacion.onSelectListAsegurados()" >
+				<listhead>
+					<listheader label="" width="30px" />
+					<listheader label="FECHA AFILIACIÓN" width="100px" />
+					<listheader label="TIPO REGISTRO" width="100px"/>
+					<listheader label="TIPO PERSONA" width="100px" />
+	 				<listheader label="ASEGURADO" width="200PX" />
+	 				<listheader label="N°.CERTIFICADO" width="100px" />
+	 				<listheader label="IMPORTE" width="70px"/>
+				</listhead>
+			</listbox>
+		</groupbox>
+	</groupbox>
+
+	 <groupbox closable="false" mold="3d">
+ 		<caption label="DATOS BASICOS PARA LA GENERACIÓN DEL ARCHIVO DE AFILIACIONES"/>
+ 		<grid>
+ 			<columns>
+ 				<column width="130px" align="right"/>
+ 				<column width="110px" />
+ 				<column width="125px" align="right"/>			
+ 				<column width="110px" />
+ 				<column width="130px" align="right"/>
+ 			</columns>
+ 			<rows>
+ 				<row>
+ 					<label value="CÓDIGO PATROCINADOR :" />
+ 					<label id="lblCodigoPatrocinador" style="color:blue; font-size:12px !important"/>
+ 					<label value="NÚMERO RAMO :" />
+ 					<label id="lblNumeroRamo" style="color:blue; font-size:12px !important"/>
+ 					<label value="CÓDIGO PRODUCTO :" />
+					<label id="lblCodigoProducto" style="color:blue; font-size:12px !important"/>
+ 				</row>
+ 				<row>
+ 					<label value="FECHA PROCESO :" />
+					<label id="lblFechaProceso" style="color:blue; font-size:12px !important"/>
+					<label value="NÚMERO POLIZA :" />
+					<label id="lblNumeroPoliza" style="color:blue; font-size:12px !important"/>
+					<label value="TIPO DECLARACIÓN :" />
+					<label id="lblTipoDeclaracion" style="color:blue; font-size:12px !important" />
+ 				</row>
+ 				<row>
+ 					<label value="FECHA INICIO :" />
+ 					<label id="lblFechaInicio" style="color:blue; font-size:12px !important" />
+ 					<label value="FECHA FIN :" />
+ 					<label id="lblFechaFin" style="color:blue; font-size:12px !important" />
+ 					<label value="NRO. DECLARACIONES :" />
+ 					<label id="lblCantidadRegistro" style="color:blue; font-size:12px !important" />
+ 				</row>
+ 				<row>
+ 					<label value="CANTIDAD MOVIMIENTOS :" />
+ 					<label id="lblCantidadMovimientos" style="color:blue; font-size:12px !important"/>
+ 					<label value="MONTO :" />
+ 					<label id="lblMonto" style="color:blue; font-size:12px !important" />
+ 					<label value="MONEDA :" />
+ 					<label id="lblMoneda" style="color:blue; font-size:12px !important" />
+ 				</row>
+ 			</rows>
+ 		</grid>
+ 	</groupbox>
+ 	</panelchildren>
+ 	</panel>
+</window>
+</zk>

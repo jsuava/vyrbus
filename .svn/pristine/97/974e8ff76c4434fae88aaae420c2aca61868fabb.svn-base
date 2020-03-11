@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      video {
+        width: auto;
+        height: 520px;
+        border: 1px solid black;
+      }
+      
+      .video-container {
+        display: inline-block;
+        text-align: center;
+      }
+      
+      p {
+        font: 14px Arial;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="video-container">
+      <video autoplay poster="portenito.png" controls>
+        <source  src="videos_tutorial\corporativos.mp4" type='video/mp4;codecs="avc1.42E01E, mp4a.40.2"' ></source>
+      </video>
+    </div>
+  </body>
+</html>

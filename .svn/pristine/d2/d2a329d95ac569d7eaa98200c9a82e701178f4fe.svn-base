@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 22/12/2009 05:34:14 PM by Hibernate Tools 3.2.4.GA -->
+<hibernate-mapping>
+    <class name="com.tepsa.sisvyr.model.bean.Personal" table="VRMPERSONAL" schema="VYR" >
+        <id name="id" type="java.lang.Long">
+            <column name="PERSONAL_ID" precision="10" scale="0" />
+            <generator class="sequence">
+                <param name="sequence">SEQ_VRMPERSONAL_ID</param>
+            </generator>
+        </id>
+        <many-to-one name="tipoPersonal" class="com.tepsa.sisvyr.model.bean.TipoPersonal" fetch="select">
+            <column name="TIPPER_ID" precision="5" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="tipoDocumento" class="com.tepsa.sisvyr.model.bean.TipoDocumento" fetch="select">
+            <column name="TIPDOC_ID" precision="5" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="ubigeo" class="com.tepsa.sisvyr.model.bean.Ubigeo" fetch="select">
+        	<column name="UBIGEO_ID" precision="6" not-null="true"/>
+        </many-to-one>
+        <property name="codigo" type="java.lang.String">
+            <column name="C_CODIGO" length="10" not-null="true" />
+        </property>
+        <property name="nroDocumento" type="java.lang.String">
+            <column name="C_NUMDOC" length="15" not-null="true" />
+        </property>
+        <property name="nombre" type="java.lang.String">
+            <column name="C_NOMBRE" length="25" not-null="true" />
+        </property>
+        <property name="apellidoPaterno" type="java.lang.String">
+            <column name="C_APEPAT" length="20" />
+        </property>
+        <property name="apellidoMaterno" type="java.lang.String">
+            <column name="C_APEMAT" length="20" />
+        </property>
+        <property name="fechaNacimiento" type="java.util.Date">
+            <column name="D_FECNAC" length="7" />
+        </property>
+        <property name="lugarNacimiento" type="java.lang.String">
+            <column name="C_LUGNAC" length="100" />
+        </property>
+        <many-to-one name="estadoCivil" class="com.tepsa.sisvyr.model.bean.EstadoCivil" fetch="select">
+            <column name="ESTCIV_ID" precision="2" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="sexo" class="com.tepsa.sisvyr.model.bean.Sexo" fetch="select">
+            <column name="SEXO_ID" precision="2" scale="0" not-null="true">
+            	<comment>Sexo del pasajero.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="nacionalidad" class="com.tepsa.sisvyr.model.bean.Nacionalidad" fetch="select">
+            <column name="NACIONALIDAD_ID" precision="5" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="telefono" type="java.lang.String">
+            <column name="C_TELEFONO" length="20" />
+        </property>
+        <property name="email" type="java.lang.String">
+            <column name="C_EMAIL" length="70" />
+        </property>
+        <property name="licencia" type="java.lang.String">
+            <column name="C_LICENCIA" length="15" />
+        </property>
+        <property name="categoria" type="java.lang.String">
+            <column name="C_CATEGORIA" length="5" />
+        </property>
+        <many-to-one name="tipoVia" class="com.tepsa.sisvyr.model.bean.TipoVia" fetch="select">
+            <column name="TIPVIA_ID" precision="2" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="nombreVia" type="java.lang.String">
+            <column name="C_NOMVIA" length="50" />
+        </property>
+         <many-to-one name="tipoZona" class="com.tepsa.sisvyr.model.bean.TipoZona" fetch="select">
+            <column name="TIPZON_ID" precision="2" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="nombreZona" type="java.lang.String">
+            <column name="C_NOMZON" length="50" />
+        </property>
+        <property name="direccion" type="java.lang.String">
+            <column name="C_DIRECCION" length="100" />
+        </property>
+        <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+        <property name="estadoRegistro" type="java.lang.String">
+            <column name="C_ESTREG" length="1" not-null="true">
+                <comment>Estado de registro A(Activo), I(Inactivo).</comment>
+            </column>
+        </property>
+        <property name="fechaInsercion" type="java.util.Date">
+            <column name="AUDFECINS" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioInsercion" type="java.lang.String">
+            <column name="AUDUSUINS" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipInsercion" type="java.lang.String">
+            <column name="AUDIPINSE" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="fechaModificacion" type="java.util.Date">
+            <column name="AUDFECMOD" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioModificacion" type="java.lang.String">
+            <column name="AUDUSUMOD" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipModificacion" type="java.lang.String">
+            <column name="AUDIPMODI" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <!-- 		END CAMPOS DE AUDITORIA	 	-->
+    </class>
+</hibernate-mapping>

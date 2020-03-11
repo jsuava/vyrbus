@@ -1,0 +1,58 @@
+package com.tepsa.sisvyr.service.business;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import com.tepsa.sisvyr.model.bean.TipoItinerario;
+
+/**
+ * 
+ * @author JABANTO
+ *
+ */
+public interface TipoItinerarioManager {
+	/**
+	 * Busqueda por estado registro
+	 * @param estado		:Estado del Registro.
+	 * @param criterioOrden	: Criterios para el orden de los datos.
+	 * @return
+	 */
+	public ArrayList<TipoItinerario> buscarPorEstadoRegistro(String estado, String criterioOrden)throws Exception;
+	
+	/**
+	 * Busqueda por un array de criterios.
+	 * @param criteriosBusqueda: Array de criterios de busqueda
+	 * @param criteriosOrdenar : Lista de criterios para el Orden de los Datos
+	 * @return : Array de Tipos de Itinerarios
+	 * 
+	 */
+	public ArrayList<TipoItinerario> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar)throws Exception;
+	
+	/**
+	 * Busqueda por Id del Tipo de Itinerario 
+	 * @param id : Identificador del Tipo de Itinerario
+	 * @return : Lista de tipos de itinerarios
+	 */
+	public TipoItinerario buscarPorId(Long id)throws Exception;
+	
+	/**
+	 * Guarda el Tipo de Itinerario.
+	 * @param tipoItinerario :clase TipoItinerario
+	 */
+	public void guardar(TipoItinerario tipoItinerario)throws Exception;
+	
+	/**
+	 * 
+	 * @param tipoItinerario
+	 * @throws Exception
+	 */
+	public void actualizar(TipoItinerario tipoItinerario)throws Exception;
+	
+	/**
+	 * 
+	 * @param id
+	 * @throws Exception
+	 */
+	public void inactivar(Long id)throws Exception;
+}

@@ -1,0 +1,26 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndTipoOperacion" border="none" width="450px" height="350px" use="com.tepsa.sisvyr.view.ctrl.WndTipoOperacion">
+	<groupbox closable="false" mold="3d" >
+		<caption label="APERTURAR CAJA"/>
+		<vlayout>
+			<label id="lblInformativo1" sclass="label-size11-bold"/>
+			<label id="lblInformativo2" sclass="label-size11-bold"/>						
+		</vlayout>
+		<separator height="1px" />
+		<div align="center">
+			<button id="btnMostrarCalendario" label="Seleccionar Fecha" image="resources/mp_calendarEnabled.png" height="42px" orient="vertical"/>
+			<button id="btnCerrar" label="Cerrar" height="42px" width="80px" image="resources/mp_cerrarEnabled.png" orient="vertical" onClick="wndTipoOperacion.closeTabWindow()" visible="false"/>
+		</div>
+	</groupbox>
+	<separator height="1px" />
+	<groupbox id="grpbxFecha" mold="3d" visible="false" closable="false">
+		<caption label="SELECCIONAR FECHA"/>
+		<hbox align="center">			
+			<datebox id="dtbxFechaLiquidacion" format="dd/MM/yyyy"/>
+			<button label="Cerrar" height="28px" width="80px" image="resources/mp_cerrarEnabled.png" onClick="wndTipoOperacion.closeTabWindow()"/>	
+			<button id="btnCaja" label="Caja" height="28px" width="80px" image="/resources/windows/window_aperturaCaja.png"/>
+		</hbox>
+	</groupbox>
+</window>
+</zk>

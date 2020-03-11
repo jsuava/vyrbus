@@ -1,0 +1,45 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndTipoFormaPago">
+<div id="divLista">
+	<listbox id="listboxLista">
+		<listhead sizable="true">
+			<listheader width="50px" label="#" />
+			<listheader label="FORMA DE PAGO" sort="auto" />
+			<listheader label="DENOMINACIÓN" sort="auto" />
+			<listheader label="NOMBRE CORTO (o sufijo)" sort="auto" />
+			<listheader label="TIPO DE INGRESO LIQUIDACIÓN" sort="auto" />
+		</listhead>
+	</listbox>
+</div>
+<div id="divMantenimiento" >
+	<groupbox closable="true" mold="3d">
+		<caption label="Tipo Forma de Pago" />
+	<grid>
+		<columns>
+			<column width="120px" align="right" />
+			<column width="165px"/>
+			<column width="150px" align="right" />
+		</columns>
+		<rows>
+			<row>
+				<label value="FORMA DE PAGO (*) :" />
+				<div>
+					<textbox id="textboxId" />
+					<combobox id="cboFormaPago" readonly="true" onOK="txtDenominacion.setFocus(true)"/>
+				</div>
+				<label value="DENOMINACIÓN (*) :" />
+				<textbox id="txtDenominacion" maxlength="25" onOK="txtNombreCorto.setFocus(true)" />
+			</row>
+			<row>
+				<label value="NOMBRE CORTO (*) :" />
+				<textbox id="txtNombreCorto" maxlength="15" width="130px" onOK="cboTipoIngresoLiquidacion.setFocus(true); cboTipoIngresoLiquidacion.select()" />
+				<label value="TIPO DE INGRESO LIQUIDACIÓN (*) :" />
+				<combobox id="cboTipoIngresoLiquidacion" readonly="true" />
+			</row>
+		</rows>
+	</grid>
+	</groupbox>
+</div>
+</window>
+</zk>

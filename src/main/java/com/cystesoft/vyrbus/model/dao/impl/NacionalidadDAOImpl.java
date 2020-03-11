@@ -1,0 +1,72 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: jM
+ * Fecha		: 04/05/2012
+ */
+package com.cystesoft.vyrbus.model.dao.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import com.cystesoft.vyrbus.model.bean.Nacionalidad;
+import com.cystesoft.vyrbus.model.dao.NacionalidadDAO;
+
+/**
+ *
+ * @author jM
+ * @since JDK1.6
+ */
+@SuppressWarnings("unchecked")
+public class NacionalidadDAOImpl extends GenericDAOImpl implements NacionalidadDAO {
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.dao.NacionalidadDAO#buscarPorEstadoRegistro(java.lang.String)
+	 */
+	@Override
+	public ArrayList<Nacionalidad> buscarPorEstadoRegistro(String estado, String criterioOrden) {
+		return (ArrayList<Nacionalidad>) super.findByEstadoRegistro(Nacionalidad.class, estado, criterioOrden);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.dao.NacionalidadDAO#buscarPorX(java.util.TreeMap)
+	 */
+	@Override
+	public ArrayList<Nacionalidad> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar) {
+		return (ArrayList<Nacionalidad>) super.findByX(Nacionalidad.class, criteriosBusqueda, criteriosOrdenar);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.dao.NacionalidadDAO#buscarPorId(java.lang.Long)
+	 */
+	@Override
+	public Nacionalidad buscarPorId(Long id) {
+		return (Nacionalidad) super.findById(Nacionalidad.class, id);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.dao.NacionalidadDAO#guardar(com.tepsa.sisvyr.domain.Nacionalidad)
+	 */
+	@Override
+	public void guardar(Nacionalidad nacionalidad) {
+		super.save(nacionalidad);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.dao.NacionalidadDAO#actualizar(com.tepsa.sisvyr.domain.Nacionalidad)
+	 */
+	@Override
+	public void actualizar(Nacionalidad nacionalidad) {
+		super.update(nacionalidad);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.dao.NacionalidadDAO#inactivar(java.lang.Long)
+	 */
+	@Override
+	public void inactivar(Long id) {
+		super.inactivate(Nacionalidad.class, id);
+	}
+}

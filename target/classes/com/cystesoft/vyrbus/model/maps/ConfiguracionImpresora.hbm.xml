@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.cystesoft.vyrbus.model.bean.ConfiguracionImpresora" table="VRTCONIMP">
+        <comment>Entidad que almacena los todos los buses.</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="CONIMP_ID" precision="5" scale="0" />
+            <generator class="sequence">
+                <param name="sequence">SEQ_VRTCONIMP_ID</param>
+            </generator>
+        </id>
+        <many-to-one name="usuarioHardware" class="com.cystesoft.vyrbus.model.bean.UsuarioHardware" fetch="select">
+            <column name="USUHARD_ID" precision="5" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+            </column>
+        </many-to-one>
+        <property name="impresora" type="java.lang.String">
+            <column name="C_IMPRESORA" length="100" not-null="true">
+                <comment>Nombre de la impresora</comment>
+            </column>
+        </property>
+        <property name="puerto" type="java.lang.String">
+            <column name="C_PUERTO" length="15">
+                <comment>Nombre del puerto, el cual  se va a utilizar para la impresion (COM1).</comment>
+            </column>
+        </property>
+        <property name="bistPorSegundo" type="java.lang.Long">
+            <column name="N_BIST_SEGUNDO" precision="10" scale="0" >
+                <comment>Bist por Segundo</comment>
+            </column>
+        </property>
+        <property name="bistDatos" type="java.lang.Long">
+            <column name="N_BIST_DATOS" precision="10" scale="0" >
+                <comment>Bist de Datos.</comment>
+            </column>
+        </property>
+        <property name="paridad" type="java.lang.Integer">
+            <column name="N_PARIDAD" precision="2" scale="0" >
+                <comment>Paridad.</comment>
+            </column>
+        </property>
+        <property name="bistParada" type="java.lang.Integer">
+            <column name="N_BIST_PARADA" precision="2" scale="0" >
+                <comment>Bist de parada.</comment>
+            </column>
+        </property>
+        
+        <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+        <property name="estadoRegistro" type="java.lang.String">
+            <column name="C_ESTREG" length="1" not-null="true">
+                <comment>Estado de registro A(Activo), I(Inactivo).</comment>
+            </column>
+        </property>
+        <property name="fechaInsercion" type="java.util.Date">
+            <column name="AUDFECINS" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioInsercion" type="java.lang.String">
+            <column name="AUDUSUINS" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipInsercion" type="java.lang.String">
+            <column name="AUDIPINSE" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="fechaModificacion" type="java.util.Date">
+            <column name="AUDFECMOD" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioModificacion" type="java.lang.String">
+            <column name="AUDUSUMOD" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipModificacion" type="java.lang.String">
+            <column name="AUDIPMODI" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <!-- 		END CAMPOS DE AUDITORIA	 	-->
+    </class>
+</hibernate-mapping>

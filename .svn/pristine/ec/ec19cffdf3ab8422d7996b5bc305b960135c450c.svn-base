@@ -1,0 +1,35 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndestadoCuenta" title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndEstadoCuentaPuntosPaxFree">
+
+
+<grid>
+	<columns>
+		<column width="90px" />
+		<column width="120px" />
+		<column width="110px" />
+		<column width="120px" />
+	</columns>
+	<rows>
+		<row>
+			<label value="Fecha Inico" sclass="label-size11"/>
+			<datebox id="dtbFechaInicio" format="dd/MM/yyyy" readonly="true" />
+			<label value="Fecha Fin" sclass="label-size11"/>
+			<datebox id="dtbFechaFin" format="dd/MM/yyyy" readonly="true" />			
+		</row>
+		<row>
+			<label value="Nro. Documento del Cliente"  sclass="label-size11" />
+			<textbox id="txtDocumentoPaxfree" width="90px" maxlength="15" onOK="wndestadoCuenta.consultaEstadoCuenta()"  style="font-size:11px !important"/>
+			<button label="Consultar" image="/resources/mp_buscarEnabled.png" onClick="wndestadoCuenta.consultaEstadoCuenta()" />
+			<button label="Cerrar"  image="/resources/mp_cerrar.png" onClick="wndestadoCuenta.closeTabWindow()"/>
+		</row>
+	</rows>
+</grid>
+
+
+
+
+
+
+</window>
+</zk>

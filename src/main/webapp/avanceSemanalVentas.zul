@@ -1,0 +1,55 @@
+<?page title="Avance Semanal de Ventas" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndAvanceSemanalVentas" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndAvanceSemanalVentas" >
+	<div>  
+<!-- 	width="658px" -->
+		<grid>
+			<columns>
+				<column width="70px" />
+				<column width="130px" />
+				<column width="70px" />
+				<column width="165px" />
+				<column width="70px" />
+				<column width="150px" />
+			</columns>
+			<rows>
+				<row>
+					<label value="Desde" sclass="label-size11-bold" />
+					<datebox id="dbDesde" format="dd/MM/yyyy" readonly="true"/>
+					<label value="Origen" sclass="label-size11-bold" />
+					<combobox id="cmbOrigen" readonly="true" />
+					<label value="Tipo" sclass="label-size11-bold" />
+					<combobox id="cmbTipo" readonly="true" />
+					<hlayout>
+						<button  onClick="wndAvanceSemanalVentas.btnExportar_OnClick()"  image="resources/mp_excel.png" tooltiptext="Exportar a Excel."/>
+						<button  image="resources/mp_preliminar.png" tooltiptext="Visualizar preliminar de impresión."/>
+<!-- 						<button image="resources/mp_imprimir.png" xmlns:w="http://www.zkoss.org/2005/zk/client" w:onClick="window.print();" tooltiptext="Imprimir Avance semanal de ventas"/> -->
+						<button image="resources/mp_imprimir.png" onClick="wndAvanceSemanalVentas.initSetup()"  tooltiptext="Imprimir Avance semanal de ventas"/>
+					</hlayout>
+				</row>
+				<row>
+					<label value="Hasta" sclass="label-size11-bold" />
+					<datebox id="dbHasta" format="dd/MM/yyyy"  readonly="true"/>
+					<label value="Destino" sclass="label-size11-bold" />
+					<combobox id="cmbDestino" readonly="true" />
+					<label value="Servicio" sclass="label-size11-bold" />
+					<combobox id="cmbServicio" readonly="true" />
+					<hlayout>
+						<button label="Buscar" sclass="btn-vyrbus" image="resources/mp_buscarEnabled.png" tooltiptext="Haga click aqui para realizar la busqueda." onClick="wndAvanceSemanalVentas.onBuscarAvance()"/>
+						<button label="Cerrar" sclass="btn-vyrbus" image="resources/mp_cerrarEnabled.png" tooltiptext="Haga click aqui para cerrar la ventana." onClick="wndAvanceSemanalVentas.closeTabWindow()"/>
+					</hlayout>
+				</row>
+			</rows>	
+		</grid>
+		<separator height="2px" />
+<!-- 		<listbox id="lbxAvance" mold="paging" pageSize="10"> -->
+<!-- 			<listhead> -->
+<!-- 				<listheader label="#" width="30px"/> -->
+<!-- 				<listheader label="HORA" width="70px"/> -->
+<!-- 				<listheader label="RUTA" width="150px"/> -->
+<!-- 				<listheader label="CLASE" width="140px"/> -->
+<!-- 			</listhead> -->
+<!-- 		</listbox> -->
+	</div>
+</window>
+</zk>

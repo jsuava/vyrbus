@@ -1,0 +1,72 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: jM
+ * Fecha		: 04/05/2012
+ */
+package com.tepsa.sisvyr.model.dao.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import com.tepsa.sisvyr.model.dao.FormaPagoDAO;
+import com.tepsa.sisvyr.model.bean.FormaPago;
+
+/**
+ *
+ * @author jM
+ * @since JDK1.6
+ */
+@SuppressWarnings("unchecked")
+public class FormaPagoDAOImpl extends GenericDAOImpl implements FormaPagoDAO {
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.dao.FormaPagoDAO#buscarPorEstadoRegistro(java.lang.String)
+	 */
+	@Override
+	public ArrayList<FormaPago> buscarPorEstadoRegistro(String estado, String criterioOrden) {
+		return (ArrayList<FormaPago>) super.findByEstadoRegistro(FormaPago.class, estado, criterioOrden);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.dao.FormaPagoDAO#buscarPorX(java.util.TreeMap)
+	 */
+	@Override
+	public ArrayList<FormaPago> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar) {
+		return (ArrayList<FormaPago>) super.findByX(FormaPago.class, criteriosBusqueda, criteriosOrdenar);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.dao.FormaPagoDAO#buscarPorId(java.lang.Long)
+	 */
+	@Override
+	public FormaPago buscarPorId(Long id) {
+		return (FormaPago) super.findById(FormaPago.class, id);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.dao.FormaPagoDAO#guardar(com.tepsa.sisvyr.domain.FormaPago)
+	 */
+	@Override
+	public void guardar(FormaPago formaPago) {
+		super.save(formaPago);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.dao.FormaPagoDAO#actualizar(com.tepsa.sisvyr.domain.FormaPago)
+	 */
+	@Override
+	public void actualizar(FormaPago formaPago) {
+		super.update(formaPago);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.dao.FormaPagoDAO#inactivar(java.lang.Long)
+	 */
+	@Override
+	public void inactivar(Long id) {
+		super.inactivate(FormaPago.class, id);
+	}
+}

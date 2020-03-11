@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.tepsa.sisvyr.model.bean.FormaPago" table="VRMFORPAG" schema="VYR">
+        <comment>Entidad que almacena las forma de pago CONTADO, CREDITO, CORTESIA,</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="FORPAG_ID" precision="2" scale="0" />
+            <generator class="sequence">
+                <param name="sequence">SEQ_VRMFORPAG_ID</param>
+            </generator>
+        </id>
+        <property name="denominacion" type="java.lang.String">
+            <column name="C_DENOMINACION" length="20" not-null="true">
+                <comment>Nombre de la forma de pago Contado, credito</comment>
+            </column>
+        </property>
+        <property name="esPromocion" type="java.lang.Integer">
+        	<column name="N_ESPROMOCION" precision="1" scale="0" not-null="true">
+        		<comment>Permite filtrar el registro en las promociones (1), por defecto (0).</comment>
+        	</column>
+        </property>
+        <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+        <property name="estadoRegistro" type="java.lang.String">
+            <column name="C_ESTREG" length="1" not-null="true">
+                <comment>Estado de registro A(Activo), I(Inactivo).</comment>
+            </column>
+        </property>
+        <property name="fechaInsercion" type="java.util.Date">
+            <column name="AUDFECINS" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioInsercion" type="java.lang.String">
+            <column name="AUDUSUINS" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipInsercion" type="java.lang.String">
+            <column name="AUDIPINSE" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="fechaModificacion" type="java.util.Date">
+            <column name="AUDFECMOD" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioModificacion" type="java.lang.String">
+            <column name="AUDUSUMOD" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipModificacion" type="java.lang.String">
+            <column name="AUDIPMODI" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <!-- 		END CAMPOS DE AUDITORIA	 	-->
+    </class>
+</hibernate-mapping>

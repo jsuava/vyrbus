@@ -1,0 +1,66 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?link rel="shortcut icon" href="/resources/favicon.ico" ?>
+<zk>
+<style>
+		.body-top{
+	     	background-image: url(${c:encodeURL('/resources/fondos/fondo-top.png')});
+	     	border-radius:6px;
+	     	border: 1px solid #dfe1e3;
+	     }
+	     .body-bottom{
+	     	background-image: url(${c:encodeURL('/resources/fondos/fondo-bottom.png')}); 
+	     	border-radius:6px;
+	     	background-repeat:repeat-x;
+	     }
+	     .body-center{
+	     	background-image: url(${c:encodeURL('/resources/fondos/fondo-center.png')}); 
+	     	border-radius:8px;
+	     	background-repeat:repeat-x;
+	     }
+	     .pointer{
+			cursor:pointer;
+		 }
+	</style>
+	
+<window id="wndJavaTest" border="none" height="100%" width="100%" use="com.cystesoft.vyrbus.view.ui.WndJavaTest" >
+	<div align="center" height="350px" width="100%">
+		<borderlayout width="800px">
+			<!-- <north sclass="body-top" height="80px">
+				<div align="left">
+					<hlayout>
+						<image src="resources/fondos/logo.png"/>
+					</hlayout>
+				</div>
+			</north>-->
+			<center sclass="body-center" border="none">
+				<div align="center">
+					<vlayout width="781px" style="background:#ff0000; padding:0px">
+						<separator height="25px" orient="horizontal" style="background:#dfe1e3; padding:0px"/>
+						<image src="resources/fondos/javaTest.jpg"/>
+						<grid id="grdApplet" style="border:0px;">
+							<rows>
+								<row style="background:#dfe1e3; padding:0px; border:none" align="center">
+									<applet id="javaTest" code="com.cystesoft.vyrbus.view.applet.JavaTest" archive="JavaTest.jar" 
+									width="520px" height="110px" style="border:2px" z.autohide="true"/>					
+								</row>
+								<row align="center" style="background:#dfe1e3;">
+									<button id="btnCerrar" label="Cerrar" image="resources/mp_cerrarEnabled.png" height="28px">
+										<attribute name="onClick">
+											wndJavaTest.closeTabWindow();
+										</attribute>
+									</button>
+								</row>
+							</rows>
+						</grid>
+						
+					</vlayout>
+				</div>
+			</center>
+			<!-- <south sclass="body-bottom" border="none" height="80px">
+				
+			</south> -->
+		</borderlayout>
+	</div>
+</window>
+</zk>

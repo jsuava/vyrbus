@@ -1,0 +1,81 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: José Abanto
+ * Fecha		: 26/08/2014
+ * Hora			: 09:16:57
+ */
+package com.cystesoft.vyrbus.model.dao.impl;
+
+import java.util.List;
+
+import com.cystesoft.vyrbus.model.bean.MTCDetalleRuta;
+import com.cystesoft.vyrbus.model.dao.MTCDetalleRutaDAO;
+import com.cystesoft.vyrbus.service.util.Constantes;
+
+/**
+ * @author JABANTO
+ *
+ */
+@SuppressWarnings("unchecked")
+public class MTCDetalleRutaDAOImpl extends GenericDAOImpl implements MTCDetalleRutaDAO{
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.MTCDetalleRutaDAO#buscarPorIdRuta(java.lang.Integer)
+	 */
+	@Override
+	public MTCDetalleRuta buscarPorIdRuta(Integer idRutaVyr) throws Exception {
+		String hql="FROM MTCDetalleRuta dr WHERE dr.ruta.id="+idRutaVyr+" AND dr.estadoRegistro='"+Constantes.VALUE_ACTIVO+"' ";
+		
+		log.info(hql);
+		MTCDetalleRuta mtcDetalleRuta=(MTCDetalleRuta) getSession().createQuery(hql).uniqueResult();
+		
+		return mtcDetalleRuta;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.MTCDetalleRutaDAO#guardar(com.tepsa.sisvyr.model.bean.MTCDetalleRuta)
+	 */
+	@Override
+	public void guardar(MTCDetalleRuta detalleRuta) throws Exception {
+		// TODO Auto-generated method stub
+		super.save(detalleRuta);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.MTCDetalleRutaDAO#actualizar(com.tepsa.sisvyr.model.bean.MTCDetalleRuta)
+	 */
+	@Override
+	public void actualizar(MTCDetalleRuta detalleRuta) throws Exception {
+		// TODO Auto-generated method stub
+		super.update(detalleRuta);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.MTCDetalleRutaDAO#buscarPorIdRutaMtc(java.lang.Integer)
+	 */
+	@Override
+	public List<MTCDetalleRuta> buscarPorIdRutaMtc(Integer idRutaMtc)throws Exception {
+		// TODO Auto-generated method stub
+		String hql="FROM MTCDetalleRuta dr WHERE dr.mtcRuta.id="+idRutaMtc+" AND dr.estadoRegistro='"+Constantes.VALUE_ACTIVO+"' ";
+		
+		log.info(hql);
+		List<?> lstDetalleRuta= getSession().createQuery(hql).list();		
+		
+		return (List<MTCDetalleRuta>) lstDetalleRuta;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.MTCDetalleRutaDAO#buscarPorEstado(java.lang.String)
+	 */
+	@Override
+	public List<MTCDetalleRuta> buscarPorEstado(String estado) throws Exception {
+		// TODO Auto-generated method stub
+		return (List<MTCDetalleRuta>) super.findByEstadoRegistro(MTCDetalleRuta.class, estado, "id");
+	}
+	
+	
+	
+	
+}

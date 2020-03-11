@@ -1,0 +1,36 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndUsuarioAprobador">
+	<div id="divLista">
+		<listbox id="listboxLista">
+			<listhead sizable="true">
+				<listheader label="#" width="50px" sort="auto" />
+				<listheader label="USUARIO" sort="auto" />
+				<listheader label="NIVEL APROBACION" sort="auto" />
+			</listhead>
+		</listbox>
+	</div>
+	<div id="divMantenimiento" >
+		<grid>
+			<columns>
+				<column width="90px"/>
+				<column width="240px"/>
+				<column width="110px"/>
+			</columns>
+			<rows>
+				<row>
+					<label value="Usuario" sclass="label-size11" />
+					<div>
+						<textbox id="textboxId"/>
+						<combobox id="cmbUsuario" mold="rounded" width="230px" />
+					</div>
+					
+					<label value="Nivel Aprobación" sclass="label-size11"/>
+					<intbox id="itbNivelAprobacion" maxlength="1" width="35px"/>
+				</row>
+				
+			</rows>
+		</grid>
+	</div>
+</window>
+</zk>

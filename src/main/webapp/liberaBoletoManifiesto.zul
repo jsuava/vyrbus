@@ -1,0 +1,43 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndLiberaBoletoManifiesto" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndLiberaBoletoManifiesto">
+	
+	<grid>
+		<columns>
+			<column width="105px" align="right" />
+			<column />
+		</columns>
+		<rows>
+			<row>
+				<label value="NRO.BOLETO :"  />
+				<hbox align="center">
+					<textbox id="txtNroBoleto" onOK="wndLiberaBoletoManifiesto.buscarBoleto()" focus="true" width="130px" 
+						style="font-size:11px !important" />
+									 	
+					<separator width="20px" />
+					<button id="btnBuscar" label="Buscar" sclass="btn-vyrbus" image="/resources/mp_buscarEnabled.png" 
+						onClick="wndLiberaBoletoManifiesto.buscarBoleto()" />
+					<separator width="20px" />
+					<button id="btnCerrar" label="Cerrar" sclass="btn-vyrbus" image="/resources/mp_cerrar.png" 
+						onClick="wndLiberaBoletoManifiesto.closeTabWindow()" />
+				</hbox>
+			</row>
+		</rows>
+	</grid>
+	<separator height="1px" />
+	<listbox id="lsbxPasajeros">
+		<listhead>
+			<listheader label="NRO.BOLETO" width="80px" />
+			<listheader label="PASAJERO" width="200px"/>
+			<listheader label="TIP.DOC" width="60px"/>
+			<listheader label="NRO.DOC" width="90px"/>
+			<listheader label="RUTA" width="150px"/>
+			<listheader label="ASIENTO" width="55px" align="center"/>
+			<listheader label="PTO.EMBARQUE" width="120px"/>
+			<listheader label="ACCION" width="110PX"/>
+		</listhead>
+	</listbox>
+	
+
+</window>
+</zk>

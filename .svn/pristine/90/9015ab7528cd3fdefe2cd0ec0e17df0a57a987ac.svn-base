@@ -1,0 +1,107 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: José Abanto
+ * Fecha		: 10/11/2014
+ * Hora			: 14:30:53
+ */
+package com.tepsa.sisvyr.service.business.impl;
+
+import java.util.List;
+import java.util.TreeMap;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import com.tepsa.sisvyr.model.bean.Itinerario;
+import com.tepsa.sisvyr.model.bean.Ruta;
+import com.tepsa.sisvyr.model.bean.VentaTramo;
+import com.tepsa.sisvyr.model.dao.VentaTramoDAO;
+import com.tepsa.sisvyr.service.business.VentaTramoManager;
+
+/**
+ * @author JABANTO
+ *
+ */
+public class VentaTramoManagerImpl implements VentaTramoManager{
+	private VentaTramoDAO ventaTramoDAO;
+	/**
+	 * @return the ventaTramoDAO
+	 */
+	public VentaTramoDAO getVentaTramoDAO() {
+		return ventaTramoDAO;
+	}
+
+
+	/**
+	 * @param ventaTramoDAO the ventaTramoDAO to set
+	 */
+	public void setVentaTramoDAO(VentaTramoDAO ventaTramoDAO) {
+		this.ventaTramoDAO = ventaTramoDAO;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.VentaTramoManager#buscarByRuta(java.lang.Integer)
+	 */
+	@Override
+	public List<VentaTramo> buscarByRuta(Integer idRuta, String fechaPartida) throws Exception {
+		// TODO Auto-generated method stub
+		return getVentaTramoDAO().buscarByRuta(idRuta, fechaPartida);
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.VentaTramoManager#guardar(com.tepsa.sisvyr.model.bean.VentaTramo)
+	 */
+	@Transactional
+	@Override
+	public void guardar(VentaTramo ventaTramo) throws Exception {
+		// TODO Auto-generated method stub
+		getVentaTramoDAO().guardar(ventaTramo);
+	}
+
+
+	/* 
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.VentaTramoManager#buscarPorItinerarioRuta(com.tepsa.sisvyr.model.bean.Itinerario, com.tepsa.sisvyr.model.bean.Ruta)
+	 */
+	@Override
+	public VentaTramo buscarPorItinerarioRuta(Itinerario itinerario, Ruta ruta)throws Exception {
+		// TODO Auto-generated method stub
+		return getVentaTramoDAO().buscarPorItinerarioRuta(itinerario, ruta);
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.VentaTramoManager#buscarPor(java.util.TreeMap, java.util.List)
+	 */
+	@Override
+	public List<VentaTramo> buscarPor(TreeMap<String, Object> criteriosBusqueda,List<String> criteriosOrden) throws Exception {
+		// TODO Auto-generated method stub
+		return getVentaTramoDAO().buscarPor(criteriosBusqueda, criteriosOrden);
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.VentaTramoManager#buscarPor(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer)
+	 */
+	@Override
+	public List<VentaTramo> buscarPor(String fechaInicial, String fechaFinal,Integer origenId, Integer destinoId) throws Exception {
+		// TODO Auto-generated method stub
+		return getVentaTramoDAO().buscarPor(fechaInicial, fechaFinal, origenId, destinoId);
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.VentaTramoManager#anular(java.lang.Long)
+	 */
+	@Override
+	public void anular(Long id) throws Exception {
+		// TODO Auto-generated method stub
+		getVentaTramoDAO().anular(id);
+	}
+
+
+
+
+}

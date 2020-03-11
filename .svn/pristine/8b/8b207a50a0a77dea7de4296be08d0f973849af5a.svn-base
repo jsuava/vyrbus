@@ -1,0 +1,15 @@
+<?page title="Control de Acceso" contentType="text/html;charset=UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?link rel="shortcut icon" href="resources/favicon_1.ico" ?>
+<zk>
+	<!--<window title="Hello World!!" border="normal" width="500px" apply="com.tepsa.sisvyr.DemoWindowComposer">
+		<label value="Esto es una prueba con ZK CE 6.0.0"/>
+	</window>-->
+<!-- 	<window border="none" onCreate='Executions.sendRedirect("prueba.zul")'></window> -->
+ 	<zscript>
+ 		<![CDATA[ 
+ 		         Executions.createComponents("login.zul", null, null);
+ 		         
+ 		]]>
+ 	</zscript>
+</zk>

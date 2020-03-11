@@ -1,0 +1,602 @@
+<?page title="Ventas y Reservas de Pasajes" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:c="client">
+<style>
+	.red{
+		background: red important;
+	}
+</style>
+<window id="wndVentaTerceros" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndVentaTerceros">
+	<tabbox>
+		<tabs>
+			<tab id="tabItinerario" label="Selección de Itinerario" onClick="wndVentaTerceros.selectedTabItinerario()"/>
+			<tab id="tabAsientos" label="Selección de Asientos" onClick="wndVentaTerceros.selectedTabAsientos()"/>
+			<tab id="tabVenta" label="Información de la Venta"/>
+		</tabs>
+		<tabpanels>
+			<tabpanel><!-- SELECCION DE ITINERARIO -->
+				<groupbox mold="3d" style="overflow:auto">
+					<caption label="INFORMACION DE LA VENTA REMOTA"/>
+					<grid>
+						<columns>
+							<column width="400px"/>
+						</columns>
+						<rows>
+							<row>
+								<grid style="border:none">
+									<columns>
+										<column align="right" width="100px"/>
+									</columns>
+									<rows>
+										<row id="rowTipoAgenciaRemota">
+											<label value="TIPO AGENCIA :" sclass="label-size9-bold"/>
+											<combobox id="cmbTipoAgenciaRemota" autodrop="true" width="270px" autocomplete="true" disabled="true"/>
+										</row>
+										<row>
+											<label value="AGENCIA REMOTA :" sclass="label-size9-bold"/>
+											<combobox id="cmbAgenciaRemota" autodrop="true" width="270px" autocomplete="true"/>
+										</row>
+										<row>
+											<label value="USUARIO REMOTO :" sclass="label-size9-bold"/>
+											<combobox id="cmbUsuarioRemoto" autodrop="true" width="270px"/>
+										</row>
+										<row>
+											<label value="NOMBRE PC :" sclass="label-size9-bold"/>
+											<bandbox id="bndbxUsuarioHardware" mold="rounded" autodrop="true" width="270px" style="font-size:9px">
+												<bandpopup>
+													<listbox id="lbxUsuarioHardware" width="350px">
+														<listhead>
+															<listheader label="NOMBRE" width="200px"/>
+															<listheader label="SERIE" width="50px" align="center"/>
+															<listheader label="CORRELATIVO" width="80px" align="center"/>
+														</listhead>
+													</listbox>
+												</bandpopup>
+											</bandbox>
+										</row>
+									</rows>
+								</grid>
+							</row>
+							<row style="background:#B4B4B4; padding:0px">
+								<grid style="background:#B4B4B4; border:none;">
+									<columns>
+										<column width="70px" align="right"/>
+										<column width="180px"/>
+										<column/>
+									</columns>
+									<rows>
+										<row style="background:#B4B4B4; border:none;">
+											<label value="ORIGEN :" sclass="label-size11"/>
+											<combobox id="cmbOrigen" autodrop="true" width="160px" onOK="cmbDestino.setFocus(true)"/>
+											<cell rowspan="2">
+												<button id="btnBuscarItinerario" label="Buscar" sclass="btn-vyrbus" height="29px" width="76px" 
+													image="/resources/mp_buscarEnabled.png" onClick="wndVentaTerceros.onBuscarItinerarios()"/>
+											</cell>											
+										</row>
+										<row style="background:#B4B4B4; border:none;">
+											<label value="DESTINO :" sclass="label-size11"/>
+											<combobox id="cmbDestino" autodrop="true" width="160px" onOK="btnBuscarItinerario.setFocus(true)"/>
+										</row>
+									</rows>
+								</grid>
+							</row>
+						</rows>
+					</grid>
+					<separator orient="horizontal" width="2px"/>
+					<grid style="background:white">					
+						<columns>
+							<column width="236px"/>
+							<column width="370px"/>
+							<column/>
+						</columns>
+						<rows>
+							<row id="rowIda" valign="top" style="background:white">
+								<vlayout id="vLayoutCalendarIda">
+									<label value="FECHA PARTIDA" sclass="label-size11"/>
+									<calendar id="cldrFechaPartida" onChange="wndVentaTerceros.onSelectCalendarIda()"/>
+								</vlayout>
+								<vlayout>
+									<label value="SERVICIO DE PARTIDA" sclass="label-size11"/>
+									<listbox id="lbxItinerariosIda" mold="paging" pageSize="4" onSelect="wndVentaTerceros.onSelectItinerario(com.cystesoft.vyrbus.service.util.Constantes.SERVICIO_IDA)">
+										<listhead>
+											<listheader label="SERVICIO" width="120px"/>
+											<listheader label="RUTA" width="130px"/>
+											<listheader label="HORPAR" width="60px" align="center"/>
+											<listheader label="TARIFA" width="50px" align="right"/>
+										</listhead>
+									</listbox>
+								</vlayout>
+								<cell rowspan="2" align="right" valign="bottom">
+									<vlayout>
+										<button id="btnNextTabAsientos" label="Siguiente" sclass="btn-vyrbus" image="resources/mp_next.png" 
+											disabled="true" orient="vertical" width="76px" onClick="wndVentaTerceros.next()"/>
+										<button label="Cerrar" sclass="btn-vyrbus" orient="vertical" image="resources/mp_cerrarEnabled.png" 
+											onClick="wndVentaTerceros.closeTabWindow()" width="76px"/>
+									</vlayout>
+								</cell>
+							</row>
+						</rows>
+					</grid>
+				</groupbox>
+			</tabpanel>
+			<tabpanel><!-- MAPA DEL BUS -->
+				<hlayout>
+					<groupbox id="grpbxMapaIda" closable="false">
+						<caption label="Seleccione asientos"/>									
+					</groupbox>
+					<separator orient="horizontal" width="30px"/>
+					<vlayout>
+						<groupbox mold="3d" closable="false">
+							<caption label="Leyenda de imagenes"/>
+							<grid width="280px">
+								<rows>
+									<row>
+										<hbox width="260px" align="center">
+											<hbox align="center" width="26px"><image src="/resources/asientos/asientoDisponible_1.png" style="font-size:9px"/></hbox>
+											<hbox align="center" width="100px"><label value="Disponible" style="font-size:9px"/></hbox>
+											<hbox align="center" width="26px"><image src="/resources/asientos/asientoReservado_1.png"/></hbox>
+											<hbox align="center" width="100px"><label value="Reservado" style="font-size:9px"/></hbox>																															
+										</hbox>
+									</row>
+									<row>
+										<hbox width="260px" align="center">
+											<hbox align="center" width="26px"><image src="/resources/asientos/asientoReservadoDelivery_1.png"/></hbox>
+											<hbox align="center" width="100px"><label value="Reservado x Delivery" style="font-size:9px"/></hbox>
+											<hbox align="center" width="26px"><image src="/resources/asientos/asientoReservadoAgente_1.png"/></hbox>
+											<hbox align="center" width="100px"><label value="Reservado x Agente" style="font-size:9px"/></hbox>
+										</hbox>
+									</row>
+									<row>
+										<hbox width="260px" align="center">
+											<hbox align="center" width="26px"><image src="/resources/asientos/asientoVendidoFemale_1.png"/></hbox>
+											<hbox align="center" width="100px"><label value="Vendido" style="font-size:9px"/></hbox>
+											<hbox align="center" width="26px"><image src="/resources/asientos/asientoVendidoMale_1.png"/></hbox>
+											<hbox align="center" width="100px"><label value="Vendido" style="font-size:9px"/></hbox>																				
+										</hbox>
+									</row>
+									<row>
+										<hbox width="260px" align="center">
+											<hbox  width="26px"><image src="/resources/asientos/asientoBloqueado_1.png"/></hbox>
+											<hbox  width="100px"><label value="Bloqueado" style="font-size:9px"/></hbox>
+											<hbox align="center" width="26px"><image src="/resources/asientos/asientoSemiOcupado_1.png"/></hbox>
+											<hbox align="center" width="100px"><label value="Prioridad de Venta en Tramo" style="font-size:9px"/></hbox>
+										</hbox>
+									</row>
+								</rows>
+							</grid>
+						</groupbox>
+						<separator orient="vertical" />
+						<grid id="grdOcupabilidadIda" width="292px" style="padding:0px">
+							<auxhead>
+								<auxheader label="Ocupabilidad del servicio" colspan="3"/>
+							</auxhead>
+							<columns>
+								<column label="RUTA" width="40%"/>
+								<column label="OCUPADOS" width="30%" align="center"/>
+								<column label="DISPONIBLES" width="30%" align="center"/>
+							</columns>
+							<rows/>
+						</grid>
+						<grid style="border:none" width="290px">
+							<rows>
+								<row style="background:white">
+									<button label="Refrescar Mapa" image="/resources/mp_refrescarEnabled.png" height="28px" width="130px" onClick="wndVentaTerceros.onRefreshMap()"/>
+								</row>
+								<row style="background:white">
+									<button id="btnNextTabVenta" label="Siguiente" sclass="btn-vyrbus" image="/resources/mp_next.png" 
+										disabled="true" height="28px" onClick="wndVentaTerceros.next()"/>
+								</row>
+								<row style="background:white">
+									<button label="Cerrar" sclass="btn-vyrbus" image="resources/mp_cerrarEnabled.png" 
+										onClick="wndVentaTerceros.liberarAsientos(); wndVentaTerceros.closeTabWindow()" height="28px"/>
+								</row>
+							</rows>
+						</grid>
+					</vlayout>						
+				</hlayout>	
+			</tabpanel>
+			<tabpanel><!-- INFORMACION DE LA VENTA -->
+				<vlayout>
+					<hlayout>
+						<tabbox mold="accordion-lite">
+							<tabs>
+								<tab label="ASIENTOS SELECCIONADOS"/>
+							</tabs>
+							<tabpanels>
+								<tabpanel style="padding:2px !important">
+									<listbox id="lbxAsientos" width="185px" height="185px" onSelect="wndVentaTerceros.lbxAsientos_onSelect()">
+										<listhead>
+											<listheader label="RUTA" width="130px"/>
+											<listheader label="ASIENTO" width="55px" align="center"/>
+										</listhead>
+									</listbox>
+								</tabpanel>
+							</tabpanels>
+						</tabbox>						
+						<tabbox mold="accordion-lite">
+							<tabs>
+								<tab id="tabInformacionVentaIda" label="INFORMACIÓN DE LA VENTA DE IDA"/>
+							</tabs>
+							<tabpanels>
+								<tabpanel style="padding:2px !important">
+									<grid style="border:none" width="470px">
+										<columns>
+											<column align="right" width="100px"/>
+											<column align="left" width="125px"/>
+											<column align="right" width="100px"/>
+											<column align="left"/>
+										</columns>
+										<rows>
+											<row>
+												<label value="ORIGEN :"/>
+												<label id="lblOrigen" sclass="label-size11-bold-blue"/>
+												<label value="DESTINO :"/>
+												<label id="lblDestino" sclass="label-size11-bold-blue"/>
+											</row>
+											<row>
+												<label value="PTO. EMBARQUE :"/>
+												<combobox id="cmbPtoEmbarque" width="115px" onChange="wndVentaTerceros.onSelectPtoEmbarque()"/>
+												<label value="AG. LLEGADA :"/>
+												<combobox id="cmbPtoDesembarque" width="130px" onChange="wndVentaTerceros.onSelectPtoDesembarque()"/>
+											</row>
+											<row>
+												<label value="FECHA PARTIDA :"/>
+												<label id="lblFechaPartida" sclass="label-size11-bold-blue"/>
+												<label value="FECHA LLEGADA :"/>
+												<label id="lblFechaLlegada" sclass="label-size11-bold-blue"/>
+											</row>
+											<row>
+												<label value="HORA PARTIDA :"/>
+												<label id="lblHoraPartida" sclass="label-size11-bold-blue"/>
+												<label value="HORA LLEGADA :"/>
+												<label id="lblHoraLlegada" sclass="label-size11-bold-blue"/>
+											</row>
+											<row>
+												<label value="NRO ASIENTO :"/>
+												<label id="lblNroAsiento" sclass="label-size11-bold-blue"/>
+												<label id="lblTarifaDeno" value="TARIFA :"/>
+												<label id="lblTarifa" sclass="label-size11-bold-blue"/>												
+											</row>
+											<row>
+												<label value="N° BOLETO :"/>
+												<hlayout>
+													<textbox id="txtNumeroBoleto" width="90px" readonly="true" style="text-align:center; color:blue; font-weight:bold; font-size:13px !important"/>
+													<image id="imgRefreshBoleto" src="resources/mp_refrescarEnabled.png" style="cursor:pointer" visible="false" tooltiptext="Haga click aqui para refrescar el Número de Boleto"/>
+												</hlayout>
+												<label value="ALIMENTACION :"/>
+												<combobox id="cmbAlimentacion" readonly="true" autodrop="true" width="125px"/>
+											</row>
+											<row spans="1,3">
+												<label value="OBSERVACIONES :"/>
+												<textbox id="txtObservacionesIda" multiline="true" height="30px" width="97%" maxlength="255"/>
+											</row>
+										</rows>								
+									</grid>
+								</tabpanel>
+							</tabpanels>
+						</tabbox>
+							
+						<vlayout>
+							<separator height="22px" orient="vertical"/>
+							<grid width="136px" sclass="grid-no-border">
+								<columns>
+									<column align="right"/>
+								</columns>
+								<rows>
+									<row style="background:white">
+										<label id="lblTotalPagarPreliminar" value="TOTAL A PAGAR S/." style="color:blue; font-size:14px; font-weight:bold" visible="false"/>
+									</row>
+									<row style="background:white">
+										<button label="Grabar" sclass="btn-vyrbus" image="resources/mp_guardarEnabled.png" height="30px" 
+											width="93px" onClick="wndVentaTerceros.onGuardarVentaReserva()"  
+											tooltiptext="Realiza el guardado de la Venta."/>									
+									</row>
+									<row style="background:white">
+										<button label="Cancelar" sclass="btn-vyrbus" image="resources/mp_cancelarEnabled.png" height="30px" 
+											width="93px" onClick="wndVentaTerceros.selectedTabItinerario(); tabItinerario.setSelected(true)" 
+											tooltiptext="Borra todo el proceso y regresa a la pestaña de Selección de itinerario."/>
+									</row>
+									<row style="background:white">
+										<button label="Cerrar" sclass="btn-vyrbus" image="resources/mp_cerrarEnabled.png" height="30px" 
+											width="93px" onClick="wndVentaTerceros.liberarAsientos(); wndVentaTerceros.closeTabWindow()" 
+											tooltiptext="cierra la ventana de la Venta"/>
+									</row>
+								</rows>
+							</grid>
+						</vlayout>									
+					</hlayout>
+					<tabbox>
+						<tabs>
+							<tab id="tabPasajero" label="Pasajero"/>
+							<tab id="tabCliente" label="Cliente" />
+							<tab id="tabPagos" label="Pagos" />
+						</tabs>
+						<tabpanels>
+							<tabpanel><!-- DATOS DEL PASAJERO -->
+								<vlayout>
+									<groupbox id="grpbxListaPasajeros" mold="3d" closable="false" visible="false">
+										<caption label="LISTADO DE RESULTADOS"/>
+										<listbox id="lbxPasajeros" mold="paging" pageSize="5" width="500px">
+											<listhead>
+												<listheader label="#" width="30px"/>
+												<listheader label="DOCUMENTO" width="68px"/>
+												<listheader label="NUMERO" width="75px"/>
+												<listheader label="NOMBRES"/>
+												<listheader label="KMS" width="70px" align="right"/>
+											</listhead>
+										</listbox>
+									</groupbox>
+									<groupbox mold="3d" closable="false">
+									<caption label="INFORMACIÓN DEL PASAJERO"/>
+										<toolbar>
+											<toolbarbutton id="tlbbtnNuevoPax" label="Nuevo" image="resources/toolbar/mp_toolbarNuevo.png" onClick="wndVentaTerceros.onNewPax()"/>
+											<toolbarbutton id="tlbbtnModificarPax" label="Modificar" image="resources/toolbar/mp_toolbarModificar.png" onClick="wndVentaTerceros.onModifyPax()" disabled="true"/>
+											<toolbarbutton id="tlbbtnLimpiarPax" label="Limpiar" image="resources/toolbar/mp_toolbarLimpiar.png" onClick="wndVentaTerceros.onCleanControlsPax()"/>
+											<toolbarbutton id="tlbbtnCancelarPax" label="Cancelar" image="resources/toolbar/mp_toolbarCancelar.png" onClick="wndVentaTerceros.onCancelPax()" disabled="true"/>
+											<toolbarbutton id="tlbbtnGuardarPax" label="Guardar" image="resources/toolbar/mp_toolbarGuardar.png" onClick="wndVentaTerceros.onSavePax()" disabled="true"/>
+										</toolbar>
+										<grid >
+											<columns>
+												<column width="15%" align="right"/>
+												<column width="25%"/>
+												<column width="15%" align="right"/>
+												<column width="30%"/>
+												<column width="15%"/>
+											</columns>
+											<rows>
+												<row sclass="background-gris">
+													<label value="TIPO DOCUMENTO (*) :"/>
+													<combobox id="cmbTipoDocumento" readonly="true" onOK="txtDocumentoPax.setFocus(true)" onChange="wndVentaTerceros.habilitarNacionalidad()"/>
+													<label value="NUMERO DOCUMENTO (*) :" style="color:blue; font-weight:bold" />
+													<textbox id="txtDocumentoPax" width="120px" onChange="wndVentaTerceros.verificarPaxReniec()" maxlength="15"/>
+													<cell rowspan="7" align="center" style="background:#F7F7F7">
+														<image id="imgPasajero" height="90px" width="90px"/>																														
+													</cell>
+												</row>
+												<row sclass="background-gris">
+													<label value="APELLIDO PATERNO (*) :" style="color:blue; font-weight:bold"/>
+													<textbox id="txtApePat" width="120px" maxlength="30"/>
+													<label value="APELLIDO MATERNO :" style="font-weight:bold" maxlength="30"/>
+													<textbox id="txtApeMat" width="120px"/>
+												</row>
+												<row style="background:#F7F7F7" spans="1,3">
+													<label value="NOMBRES (*) :" style="color:blue; font-weight:bold" maxlength="30"/>
+													<textbox id="txtNombres" width="200px"/>													
+												</row>
+												<row spans="1,3" style="background:#F7F7F7">
+													<label value="DIRECCIÓN :"/>
+													<textbox id="txtDireccionPax" width="75%" onOK="txtTelefono.setFocus(true)" maxlength="100"/>
+												</row>
+												<row style="background:#F7F7F7">
+													<label value="TELÉFONO :"/>
+													<textbox id="txtTelefono" onOK="btnUbigeoPax.setFocus(true)" maxlength="30"/>
+													<label value="UBIGEO (*) :"/>
+													<hbox align="center">
+														<textbox id="txtUbigeoPax" width="170px" readonly="true" onOK="txtEmailPax.setFocus(true)"/>
+														<textbox id="txtUbigeoIdPax" visible="false"/>
+														<button id="btnUbigeoPax" label="..." sclass="btn-vyrbus" />
+													</hbox>
+												</row>
+												<row style="background:#F7F7F7">
+													<label id="lblEmail" value="EMAIL :"/>
+													<textbox id="txtEmailPax" style="text-transform:none !important" onOK="cmbAnio.setFocus(true)" maxlength="50"/>
+													<label value="FEC. NACIMIENTO AÑO:"/>
+													<hlayout valign="middle">
+														<combobox id="cmbAnio" width="50px" autodrop="true" placeholder="1920" onOK="cmbMes.setFocus(true)" buttonVisible="false"/>
+														<label value="MES :"/>
+														<combobox id="cmbMes" width="80px" autodrop="true" placeholder="Enero" onOK="cmbDia.setFocus(true)"/>
+														<label value="DIA :"/>
+														<combobox id="cmbDia" width="50px" autodrop="true" placeholder="01" onOK="cmbSexo.setFocus(true)"/>
+													</hlayout>													
+												</row>
+												<row style="background:#F7F7F7">
+													<label value="SEXO (*) :"/>
+													<combobox id="cmbSexo" readonly="true" onOK="cmbEstadoCivil.setFocus(true)"/>
+													<label value="ESTADO CIVIL :"/>
+													<combobox id="cmbEstadoCivil" readonly="true"/>
+												</row>
+												<row id="rowNacionalidad" visible="false">
+													<label value="NACIONALIDAD (*) :"/>
+													<combobox id="cmbNacionalidad" readonly="true"/>
+													<label/>
+													<label/>
+													<label/>
+												</row>
+												<row id="rowAdicional" visible="false" spans="5">
+													<div align="left">
+													<vbox width="100%">
+														<label id="lblInformativo1" sclass="label-size12-bold-alert"/>
+														<label id="lblInformativo2" style="color:red; font-size:13px !important; font-weight:bold"/>
+														<hbox spacing="0px">
+															<hlayout valign="middle">
+																<label id="lblInformativo3" maxlength="60" sclass="label-size11-bold-alert"/>
+																<image id="imgFidelizarPasajero" visible="false" tooltiptext="Haga click aqui para realizar la fidelización del Cliente y convertirlo en Pasajero Frecuente." style="cursor:pointer" />
+															</hlayout>
+															<image id="imgDetalleMotivo" src="/resources/mp_information.png" sclass="cursor-button" visible="false">
+																<attribute name="onClick">
+																	Window wnd = new Window("SISVYR", "normal", false);
+																	Caption caption = new Caption("Information","/resources/mp_information.png");
+																	wnd.setPosition("center:center");
+																	wnd.appendChild(caption);
+																	Vbox vbox = new Vbox();
+																	vbox.setAlign("center");															
+																	Textbox txtInformation = new Textbox(lblInformativo3.getValue());
+																	txtInformation.setMultiline(true);
+																	txtInformation.setWidth("324px");
+																	txtInformation.setHeight("80px");
+																	txtInformation.setReadonly(true);
+																	Button btnClose = new Button("Cerrar", "/resources/mp_cerrarEnabled.png");
+																	btnClose.setClass("btn-vyrbus");
+																	btnClose.addEventListener("onClick", new org.zkoss.zk.ui.event.EventListener(){
+																		public void onEvent(Event e){
+																			wnd.onClose();
+																		}
+																	});
+																	vbox.appendChild(txtInformation);
+																	vbox.appendChild(btnClose);
+																	wnd.appendChild(vbox);
+																	wndVentaTerceros.appendChild(wnd);
+																	wnd.onModal();
+																</attribute>
+															</image>
+														</hbox>
+													</vbox>
+													</div>																		
+												</row>											
+											</rows>
+										</grid>
+									</groupbox>
+								</vlayout>
+							</tabpanel>
+							<tabpanel><!-- DATOS DEL CLIENTE -->
+								<vlayout>
+									<hlayout>
+										<groupbox id="grpbxListaClientes" mold="3d" closable="false" visible="false">
+											<caption label="LISTADO DE CLIENTES"/>										
+											<listbox id="lbxClientes" mold="paging" pageSize="5" width="500px">
+												<listhead>
+													<listheader label="#" width="30px"/>
+													<listheader label="DOCUMENTO" width="75px"/>
+													<listheader label="RAZON SOCIAL"/>
+													<listheader label="CONTACTO" width="130px"/>
+												</listhead>
+											</listbox>
+										</groupbox>
+									</hlayout>
+									<groupbox mold="3d">
+										<caption label="INFORMACIÓN DEL CLIENTE"/>
+										<toolbar>
+											<toolbarbutton id="tlbbtnNuevoClient" label="Nuevo" image="resources/toolbar/mp_toolbarNuevo.png" onClick="wndVentaTerceros.onNewClient()"/>
+											<toolbarbutton id="tlbbtnModificarClient" label="Modificar" image="resources/toolbar/mp_toolbarModificar.png" onClick="wndVentaTerceros.onModifyClient()" disabled="true"/>
+											<toolbarbutton id="tlbbtnLimpiarClient" label="Limpiar" image="resources/toolbar/mp_toolbarLimpiar.png" onClick="wndVentaTerceros.onCleanControlsClient()"/>
+											<toolbarbutton id="tlbbtnCancelarClient" label="Cancelar" image="resources/toolbar/mp_toolbarCancelar.png" onClick="wndVentaTerceros.onCancelClient()" disabled="true"/>
+											<toolbarbutton id="tlbbtnGuardarClient" label="Guardar" image="resources/toolbar/mp_toolbarGuardar.png" onClick="wndVentaTerceros.onSaveClient()" disabled="true"/>
+										</toolbar>
+										<grid sclass="grid-no-border">
+											<columns>
+												<column width="15%" align="right"/>
+												<column width="35%"/>
+												<column width="15%" align="right"/>
+												<column width="35%"/>											
+											</columns>
+											<rows>
+												<row spans="1,1,2">
+													<label value="RUC (*) :" style="color:blue; font-weight:bold"/>
+													<textbox id="txtDocumentoCliente" width="120px" maxlength="11"/>
+													<label id="lblDescuento" value="CLIENTE CREDITO / DESCUENTO CORPORATIVO" sclass="label-size12-bold-alert"/>
+												</row>
+												<row>
+													<label value="RAZON SOCIAL (*) :" style="color:blue; font-weight:bold" maxlength="100"/>
+													<textbox id="txtRazonSocial" width="90%"/>													
+													<label value="CONTACTO :"/>
+													<textbox id="txtContactoCliente" onOK="txtDireccionCliente.setFocus(true)" maxlength="50"/>
+												</row>
+												<row >
+													<label value="DIRECCIÓN :"/>
+													<textbox id="txtDireccionCliente" width="90%" onOK="ibxCantidadTrabajadores.setFocus(true)" maxlength="100"/>
+													<label visible="false" value="CANTIDAD TRABAJADORES :"/>
+													<intbox visible="false" id="ibxCantidadTrabajadores" width="100px" onOK="txtTelefonoClienteOne.setFocus(true)"/>
+												</row>
+												<row>
+													<label value="TELÉFONO 1 :"/>
+													<hbox align="center">
+														<textbox id="txtTelefonoClienteOne" width="135px" onOK="txtTelefonoClienteTwo.setFocus(true)" maxlength="10"/><separator width="5px" />
+														<label value="TELÉFONO 2 :"/>
+														<textbox id="txtTelefonoClienteTwo" width="134px" onOK="txtRubro.setFocus(true)" maxlength="10"/>
+													</hbox>
+													<label value="RUBRO :"/>
+													<textbox id="txtRubro" onOK="txtEmailCliente.setFocus(true)" maxlength="80"/>
+												</row>
+												<row>
+													<label value="EMAIL :"/>
+													<textbox id="txtEmailCliente" style="text-transform:none !important" onOK="btnUbigeoCliente.setFocus(true)" maxlength="50"/>
+													<label value="UBIGEO (*) :"/>
+													<hbox align="center" width="100%">
+														<textbox id="txtUbigeoCliente" width="170px" readonly="true"/>
+														<textbox id="txtUbigeoIdCliente" visible="false"/>
+														<button id="btnUbigeoCliente" label="..." sclass="btn-vyrbus" />
+													</hbox>
+												</row>
+												<row spans="1,3">
+													<label id="lblCentroCosto" value="CENTRO COSTO :" visible="false"/>
+													<combobox id="cmbCentroCosto" width="200px" visible="false" style="font-size:9px"/>													
+												</row>
+											</rows>
+										</grid>
+									</groupbox>
+								</vlayout>
+							</tabpanel>
+							<tabpanel><!-- PAGOS -->
+								<vlayout>
+									<grid width="600px" style="border:none;">
+										<columns>
+											<column align="right" width="120px"/>
+											<column/>
+											<column align="right"/>
+											<column/>
+										</columns>
+										<rows>
+											<row>
+												<label value="TARIFA :"/>
+												<hlayout>
+													<doublebox id="dblTarifa" format="##0.00" readonly="true"/>
+													<doublebox id="dblTarifaRetorno" format="##0.00" visible="false"/>
+												</hlayout>
+												<label value="TIPO COMPROBANTE :"/>
+												<combobox id="cmbTipoComprobante" readonly="true"/>										
+											</row>
+											<row>
+												<label value="RECARGO :"/>
+												<doublebox id="dblRecargo" format="##0.00" readonly="true"/>
+												<label value="FORMA PAGO :"/>
+												<combobox id="cmbFormaPago" readonly="true" onChange="wndVentaTerceros.onLoadTipoFormaPago()"/>
+											</row>
+											<row>
+												<label value="DESCUENTO :"/>
+												<hlayout>
+													<doublebox id="dblDescuento" format="##0.00" readonly="true"/>
+													<doublebox id="dblDescuentoRetorno" format="##0.00" visible="false" readonly="true"/>
+													<textbox id="txtIdPromocion" visible="false"/>
+													<image id="imgPromocion" src="resources/mp_promocion.png" style="cursor:pointer" tooltiptext="Seleccionar promoción"/>
+													<image id="imgQuitarPromocion" src="resources/mp_quitarPromocion.png" visible="false" style="cursor:pointer" tooltiptext="Quitar promoción"/>
+												</hlayout>
+												<label value="TIPO FORMA PAGO :"/>
+												<combobox id="cmbTipoFormaPago" readonly="true" disabled="true" onChange="wndVentaTerceros.onValidateTipoFormaPago()"/>
+											</row>
+											<row>
+												<label value="IMPORTE :"/>
+												<hlayout>
+													<doublebox id="dblImporte" format="##0.00" readonly="true"/>
+													<checkbox id="chkPagoMixto" label="Pago Mixto" onClick="wndVentaTerceros.habilitarPagoMixto()"/>
+												</hlayout>
+												<label value="OPERADOR TARJETA :"/>
+												<combobox id="cmbOperadorTarjetaCredito" readonly="true" disabled="true" onChange="wndVentaTerceros.onLoadTarjetas()"/>
+											</row>
+											<row>
+												<label id="lblImporteEfectivo" value="IMPORTE EFECTIVO :" visible="false"/>
+												<doublebox id="dblImporteEfectivo" format="#,##0.00" visible="false"/>
+												<label value="TARJETA CREDITO :"/>
+												<combobox id="cmbTarjetaCredito" readonly="true" disabled="true"/>
+											</row>
+											<row>
+												<label id="lblImporteTarjeta" value="IMPORTE TARJETA :" visible="false"/>
+												<doublebox id="dblImporteTarjeta" format="#,##0.00" visible="false"/>
+												<label value="NUMERO OPERACION :"/>
+												<textbox id="txtOperacionBancaria" mold="default" disabled="true" width="90px"/>												
+											</row>
+											<row spans="4">
+												<div align="left">
+													<label id="lblPromocion" style="font-size:12px !important;font-weight:bold;color:RED"/>
+												</div>												
+											</row>
+										</rows>
+									</grid>									
+								</vlayout>
+							</tabpanel>
+						</tabpanels>
+					</tabbox>
+				</vlayout>
+			</tabpanel>
+		</tabpanels>
+	</tabbox>	
+</window>
+</zk>

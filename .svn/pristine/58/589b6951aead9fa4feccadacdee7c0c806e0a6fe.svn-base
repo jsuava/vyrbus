@@ -1,0 +1,106 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndTarifarioCliente" title="" use="com.tepsa.sisvyr.view.ctrl.WndTarifarioCliente" width="800px">
+	<groupbox mold="3d" closable="false">
+		<caption label="BUSCAR CLIENTE" />
+		<vbox align="center">
+			<hbox align="center">
+				<label value="INGRESE RUC :" />
+				<textbox id="txtRucCliente" width="100px" style="font-size:11px !important" focus="true" onOK="wndTarifarioCliente.buscarCliente()"/>
+				<image src="/resources/mp_buscarEnabled.png" tooltiptext="Buscar Cliente" style="cursor:pointer" onClick="wndTarifarioCliente.buscarCliente()" />
+				
+				<space width="15px"/>
+				<label id="lblRaziónSocial" style="font-size:11px !important;font-weight: bold;color:blue"/>
+			</hbox>
+		</vbox>
+	</groupbox>
+	<groupbox id="gpbxDatosTarifa" mold="3d" closable="true" open="false" >
+		<caption label="DATOS DE LA TARIFA" />
+		<tabbox>
+			<tabs>
+				<tab id="tabLista" label="Lista de Tarifas"  />
+				<tab id="tabMantenimiento" label="Mantenimiento"  />
+			</tabs>
+			<tabpanels>
+				<tabpanel>
+					<listbox id="listbxDatosTarifa" mold="paging" pageSize="10">
+						<listhead>
+							<listheader label="#" width="30px" />
+							<listheader label="RUTA" width="170px" sort="auto" />
+							<listheader label="SERVICIO" width="110px" sort="auto"/>
+							<listheader label="F.ACTIVACION" tooltiptext="Fecha de Activación" width="70px" sort="auto"/>
+							<listheader label="F.CADUCIDAD" tooltiptext="Fecha de Caducidad" width="70px" sort="auto"/>
+							<listheader label="ASIENTOS" width="80px" sort="auto"/>
+							<listheader label="T.ASIENTO" width="80px" sort="auto"/>
+							<listheader label="TARIFA" width="65px" align="right" sort="auto"/>
+						</listhead>
+					</listbox>			
+				</tabpanel>
+				<tabpanel>
+					<vbox>
+						<hbox align="center">
+							<div align="right" width="100px"><label value="ORIGEN : " /></div>
+							<div width="190px"><combobox id="cmbOrigen" readonly="true" width="150px" onOK="cmbDestino.setFocus(true);cmbDestino.open()" /></div>
+							<space width="15px"/>
+							<div align="right" width="100px"><label value="DESTINO : " /></div>
+							<combobox id="cmbDestino" readonly="true" width="150px" onOK="cmbServicio.setFocus(true);cmbServicio.open()" />
+							<space width="15px"/>
+							<button id="btnNuevo" mold="trendy"  label="Nuevo" width="100px" image="/resources/mp_nuevoEnabled.png" autodisable="self" onClick="wndTarifarioCliente.nuevo()"/>
+						</hbox>
+						<hbox align="center">
+							<div align="right" width="100px"><label value="SERVICIO : " /></div>
+							<combobox id="cmbServicio" readonly="true" width="150px" onOK="dtbxFechaActivacion.setFocus(true)"/>
+							<space width="334px"/>
+							<button id="btnGuardar" mold="trendy"  label="Guardar" width="100px" image="/resources/mp_guardarEnabled.png" autodisable="self" onClick="wndTarifarioCliente.grabar()"/>
+						</hbox>
+						<hbox align="center">
+							<div align="right" width="100px"><label value="FECHA ACTIVACION : " /></div>
+							<div width="190px"><datebox id="dtbxFechaActivacion" readonly="true" format="dd/MM/yyyy" width="150px" onOK="dtbxFechaCaducidad.setFocus(true)"/></div>
+							<space width="15px"/>
+							<div align="right" width="100px"><label value="FECHA CADUCIDAD : " /></div>
+							<datebox id="dtbxFechaCaducidad" readonly="true" format="dd/MM/yyyy" width="150px" onOK="itbxAsientoInicio.setFocus(true)" constraint="no past"/>
+							<space width="15px"/>
+							<button id="btnCancelar" mold="trendy"  label="Cancelar" width="100px" image="/resources/mp_cancelarEnabled.png" autodisable="self" onClick="wndTarifarioCliente.cancelar()"/>
+						</hbox>
+					</vbox>
+					<separator height="15px"/>
+					<groupbox mold="3d" closable="false">
+						<caption label="DETALLE DE LA TARIFA" />
+						<toolbar width="100%">
+							<vbox>
+								<hbox align="center">
+									<label value="N° ASIENTO INICIO :" />
+									<intbox id="itbxAsientoInicio"  width="20px" onOK="itbxAsientoFin.setFocus(true)"/>
+									<space width="10px"/>
+									<label value="N° ASIENTO FIN :" />
+									<intbox id="itbxAsientoFin"  width="20px" onOK="cmbTipoAsiento.setFocus(true);cmbTipoAsiento.open()"/>
+									<space width="10px"/>
+									<label value="TIPO ASIENTO :" />
+									<combobox id="cmbTipoAsiento" readonly="true" width="120px" onOK="dbbxTarifa.setFocus(true)"/>
+									<space width="10px"/>
+									<label value="TARIFA :" />
+									<doublebox id="dbbxTarifa" width="60px" onOK="btnAgregar.setFocus(true)"/>
+									<space width="10px"/>
+									<button id="btnAgregar" mold="trendy"  label="Agregar" image="/resources/mp_addEnabled.png" autodisable="self" onClick="wndTarifarioCliente.agregarDetalleTarifa()" disabled="true"/>
+								</hbox>
+							</vbox>
+						</toolbar>
+						<listbox id="listbxDetalleTarifa">
+							<listhead>
+								<listheader label="ASIENTO INICIO" width="80px" />
+								<listheader label="ASIENTO FIN" width="80px"/>
+								<listheader label="TIPO ASIENTO" width="150px"/>
+								<listheader label="TARIFA" align="right" width="100px"/>
+								<listheader />
+							</listhead>
+						</listbox>
+					</groupbox>
+				</tabpanel>
+			</tabpanels>
+		</tabbox>
+		
+		
+	</groupbox>
+
+</window>
+</zk>

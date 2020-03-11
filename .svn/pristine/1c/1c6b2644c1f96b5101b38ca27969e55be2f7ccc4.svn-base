@@ -1,0 +1,88 @@
+<?page title="Configurar impresora Boca" contentType="text/html;charset=UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?link rel="shortcut icon" href="/resources/favicon.ico" ?>
+<zk>
+<style>
+		.body-top{
+	     	background-image: url(${c:encodeURL('/resources/fondos/fondo-top.png')});
+	     	border-radius:6px;
+	     	border: 1px solid #dfe1e3;
+	     }
+	     .body-bottom{
+	     	background-image: url(${c:encodeURL('/resources/fondos/fondo-bottom.png')}); 
+	     	border-radius:6px;
+	     	background-repeat:repeat-x;
+	     }
+	     .body-center{
+	     	background-image: url(${c:encodeURL('/resources/fondos/fondo-center.png')}); 
+	     	border-radius:8px;
+	     	background-repeat:repeat-x;
+	     }
+	     .pointer{
+			cursor:pointer;
+		 }
+	</style>
+	
+<window id="wndConfigurarBoca" border="none" height="100%" width="100%" use="com.tepsa.sisvyr.view.ui.WndJavaTest" >
+	<div align="center" height="450px" width="100%">
+		<borderlayout width="800px">
+			<!-- <north sclass="body-top" height="80px">
+				<div align="left">
+					<hlayout>
+						<image src="resources/fondos/logo.png"/>
+					</hlayout>
+				</div>
+			</north>-->
+			<center sclass="body-center" border="none">
+				<div align="center">
+					<vlayout width="781px" style="background:#ff0000; padding:0px">
+						<separator height="25px" orient="horizontal" style="background:#dfe1e3; padding:0px"/>
+						<image src="resources/fondos/configurarBoca.jpg"/>
+						<grid id="grdApplet" style="border:0px;">
+							<rows>
+								<row>
+									<vlayout>
+										<label value="GUIA DE CONFIGURACION :" style="font-size:12px !important; font-weight:bold; color:#00255c"/>
+										<label value="1.- Haga click en el boton Descargar para obtener el archivo de instalación." style="font-size:12px !important"/>
+										<label value="2.- Haga doble click sobre el archivo descargado para proceder con la instalación." style="font-size:12px !important"/>
+										<label value="3.- Terminada la instalación se abrira la ventana de configuración de la Impresora BOCA" style="font-size:12px !important"/>
+										<label value="4.- Ingrese los parametros de la impresora y haga click en el boton guardar." style="font-size:12px !important"/>
+										<label value="5.- En este momento debería estar en capacidad de poder imprimir a travez de su impresora BOCA." style="font-size:12px !important"/>
+										<label/>
+										<label value="NOTA :" style="font-size:12px !important; font-weight:bold; color:#00255c"/>
+										<label value="Si desea volver a configurar la impresora, en el menú inicio se han creado los accesor directos (Configuración impresora BOCA)." style="font-size:12px !important"/>
+									</vlayout>
+								</row>
+								<row style="background:#dfe1e3; padding:0px; border:none" align="center">
+									<vlayout>
+										<separator height="10px" orient="horizontal"/>
+										<button label="Descargar ..." image="resources/mp_download.png" style="color:red; font-weight:bold">
+											<attribute name="onClick">
+												Filedownload.save(WebApps.getCurrent().getResource("installer.exe"), "application/exe");
+											</attribute>
+										</button>
+									</vlayout>
+								</row>
+								<row align="center" style="background:#dfe1e3;">
+									<vlayout>
+										<separator height="20px" orient="horizontal"/>
+										<button id="btnCerrar" label="Cerrar" image="resources/mp_cerrarEnabled.png" height="28px">
+											<attribute name="onClick">
+												wndConfigurarBoca.closeTabWindow();
+											</attribute>
+										</button>
+									</vlayout>
+								</row>
+							</rows>
+						</grid>
+						
+					</vlayout>
+				</div>
+			</center>
+			<!-- <south sclass="body-bottom" border="none" height="80px">
+				
+			</south> -->
+		</borderlayout>
+	</div>
+</window>
+</zk>

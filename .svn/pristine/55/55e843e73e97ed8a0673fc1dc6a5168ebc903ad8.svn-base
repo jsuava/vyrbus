@@ -1,0 +1,120 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndEstadoVyR" title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndEstadoVentaReserva">
+	<groupbox mold="3d" closable="false">
+		<caption label="PARÁMETROS DE BÚSQUEDA" />
+		<grid>
+			<columns>
+				<column width="320px" />
+				<column  align="left"/>
+			</columns>
+			<rows>
+				<row >
+					<hbox align="center">
+						<vbox>
+<!-- 						RANGO DE FECHAS DE VENTA -->
+							<groupbox closable="false" width="300px" height="55px">
+								<caption label="Rango fecha de Venta"/><separator height="2px"/>
+								<label value="INICIO :" />
+								<datebox id="dtbxFechaInicioVenta" width="105px" onChange="wndEstadoVyR.onLoadUsuarios(cmbUsuario)"  focus="true" format="dd/MM/yyyy" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(dtbxFechaFinVenta)" /><space width="15px" />
+								<label value="FIN :" />
+								<datebox id="dtbxFechaFinVenta" width="105px" onChange="wndEstadoVyR.onLoadUsuarios(cmbUsuario)"  format="dd/MM/yyyy" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(rdByDocumento)"/>
+							</groupbox>
+							
+<!-- 						BUSQUEDA POR PASAJERO -->
+							<groupbox closable="false" width="300px">
+								<caption label="Búsqueda por Pasajero"/>
+								<radiogroup>
+									<radio id="rdByDocumento" checked="true" label="Nro. Documento" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(rdByNombres)"/>
+									<radio id="rdByNombres" label="Nombres y/o Apellidos" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(txtBusquedaPasajero)" />
+								</radiogroup>
+								<vbox><separator height="1px"/><hbox align="center">
+									<space width="2px" /> <textbox id="txtBusquedaPasajero" width="240px" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(rdByRuc)" />
+									<button label="..." onClick="wndEstadoVyR.buscarPasajero()"/>
+								</hbox></vbox>
+							</groupbox>	
+							
+<!-- 						BUSQUEDA POR CLIENTE -->
+							<groupbox closable="false" width="300px" >
+								<caption label="Búsqueda por Cliente"/>
+								<radiogroup>
+									<radio id="rdByRuc" checked="true" label="Nro. Ruc" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(rdByRazonSocial)" /><space width="35px"/>
+									<radio id="rdByRazonSocial" label="Razón Social" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(txtBusquedaCliente)" />
+								</radiogroup>
+								<vbox><separator height="1px"/> <hbox align="center">
+										<space width="2px" /> <textbox id="txtBusquedaCliente" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(dtbxFechaPartida)" width="240px" />
+										<button label="..." onClick="wndEstadoVyR.buscarCliente()"/>
+								</hbox></vbox>
+							</groupbox>	
+						</vbox>
+					</hbox>
+					<vbox>
+						<grid style="border:none">
+							<columns>
+								<column width="100px" align="right" />
+							</columns>
+							<rows>
+								<row>
+									<label value="FECHA PARTIDA :" />
+									<datebox id="dtbxFechaPartida" format="dd/MM/yyyy" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(cmbUsuario)" />
+								</row>
+								<row>
+									<label value="USUARIO :" />
+									<combobox id="cmbUsuario" readonly="true" width="160px" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(cmbTipomovimiento)"/>									
+								</row>
+								<row>
+									<label value="TIPO MOVIMIENTO :" />
+									<combobox id="cmbTipomovimiento" readonly="true" width="160px" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(cmbOrigen)" />
+								</row>
+								<row>
+									<label value="ORIGEN :" />
+									<combobox id="cmbOrigen" readonly="true" width="160px" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(cmbDestino)" />
+								</row>
+								<row>
+									<label value="DESTINO :" />
+									<combobox id="cmbDestino" readonly="true" width="160px" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(txtNumeroControl)" />
+								</row>
+								<row>
+									<label value="NRO. CONTROL :" />
+									<textbox id="txtNumeroControl" maxlength="20" style="font-size:11px !important" width="150px" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(txtNumeroBoleto)" />
+								</row>
+								<row>
+									<label value="NRO. COMPROBANTE :" />
+									<hbox align="center">
+										<textbox id="txtNumeroBoleto" maxlength="15" onOK="wndEstadoVyR.buscar()"  style="font-size:11px !important" width="150px" />
+										<hbox align="center">
+											<button label="Buscar" autodisable="self" height="29px" width="85px" onClick="wndEstadoVyR.buscar()" image="/resources/mp_buscarEnabled.png"/>
+											<button label="Cerrar" height="29px" width="81px" onClick="wndEstadoVyR.closeTabWindow()" image="/resources/mp_cerrar.png"/>
+										</hbox>
+									</hbox>
+								</row>
+							</rows>
+						</grid>
+					</vbox>
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+	<separator height="1px"/>
+	<listbox id="lstbxListaMovimientos" mold="paging" pageSize="8">
+		<listhead>
+			<listheader label="F.EMISION" tooltiptext="Fecha de Emisión" width="70px" sort="auto" />
+			<listheader label="TIPO MOVIMIENTO" width="110px" sort="auto" />
+			<listheader label="TIPO COMPROBANTE" width="110px" sort="auto" />
+			<listheader label="NRO. COMP." width="90px" sort="auto" tooltiptext="Número de Comprobante"/>
+<!-- 			<listheader label="NRO.CONTROL" width="90px" sort="auto" /> -->
+			<listheader label="RUTA" width="140px" sort="auto"/>
+			<listheader label="F.PARTIDA" tooltiptext="Fecha de Partida" width="70px" sort="auto" />
+			<listheader label="H.PART." tooltiptext="Hora de Partida" width="50px" sort="auto" />
+			<listheader label="PASAJERO" width="180px" sort="auto" />
+			<listheader label="CLIENTE" width="180px" sort="auto" />
+			<listheader label="ASIENTO" width="50px" align="center" sort="auto" />
+<!-- 			<listheader label="ESTADO" width="90px" sort="auto" /> -->
+			<listheader label=" " width="75px" />
+		</listhead>
+	</listbox>
+
+
+	
+</window>
+</zk>

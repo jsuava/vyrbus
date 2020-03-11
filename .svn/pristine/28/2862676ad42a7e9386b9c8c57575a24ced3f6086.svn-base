@@ -1,0 +1,309 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window  id="wndsolicitud" title="" border="none" width="900px"  use="com.tepsa.sisvyr.view.ctrl.WndSolicitudCartera">
+<panel id="panel" title="::: SOLICITUD Y/O CARTERA DE CLIENTES:::" framable="true" border="normal" closable="true" onClose="wndsolicitud.closeTabWindow()">
+    <panelchildren>
+    	<tabbox>
+			<tabs>
+				<tab id="tabClientes" label="Clientes en Cartera" onClick="hbxEstadoLc.setVisible(true)" />
+				<tab id="tabSolicitud" label="Solicitud" onClick="txtBuscarCliente.setFocus(true);hbxEstadoLc.setVisible(false)"/>
+				<tab id="tabHistorialSolicitudes" label="Historial de Solicitudes" onClick="hbxEstadoLc.setVisible(false)"/>
+			</tabs>
+			<tabpanels>
+	<!-- 		CLIENTES ASIGNADOS A CARTERA -->
+				<tabpanel>
+					<grid>
+						<columns>
+							<column width="80px" />
+							<column width="260px" />
+							<column width="45px" />
+						</columns>
+						<rows>
+							<row>
+								<label  value="Funcionario" sclass="label-size11-bold"/>
+								<combobox id="cmbFuncionario" readonly="true" width="215px" onSelect="wndsolicitud.onSelectfuncionario(cmbFuncionario, cmbCliente)" />
+								<label  value="Cliente" sclass="label-size11-bold" />
+	 							<hbox align="center">
+	 								<combobox id="cmbCliente" readonly="true" width="315px" />
+	 								<button id="btnBuscaClienteCartera" label="" tooltiptext="Buscar" onClick="wndsolicitud.listClientesCartera()"  image="/resources/mp_buscarEnabled.png" style="cursor:pointer" />
+	 								<button id="btnEditarClienteCartera" label="" tooltiptext="Editar cliente" onClick="wndsolicitud.onClickEditarClienteCartera()" disabled="true" image="/resources/mp_editarDisabled.png"  />
+	 								<button id="btnExportar" tooltiptext="Exportar a Excel" image="/resources/mp_excel.png" onClick="wndsolicitud.exportarCartera()" style="cursor:pointer" />
+	 							</hbox>
+							</row>
+						</rows>
+					</grid>
+					<listbox id="listClientesCartera" mold="paging" pageSize="9" height="350px">
+						<listhead>
+							<listheader label="RUC" width="80px" sort="auto" />
+							<listheader label="RAZÓN SOCIAL" width="205px" sort="auto" />
+							<listheader label="F.ASIGNACIÓN" width="75px" sort="auto" />
+							<listheader label="TIPO" width="55px" sort="auto" />
+							<listheader label="LC" width="70px" sort="auto" align="center" tooltiptext="Linea de Crédito aprobada"/>
+							<listheader label="SOBREGIRO" width="60px" align="center" sort="auto" tooltiptext="Porcentaje del Sobregiro" />
+							<listheader label="SALDO" width="70px" align="center" sort="auto" />
+							<listheader label="FUNCIONARIO" width="180px" sort="auto"/>
+							<listheader label="SOLICITUD" align="center" />
+						</listhead>
+					</listbox>	
+				</tabpanel>
+				
+	<!-- 			SOLICITUD	 -->
+				<tabpanel>
+					<groupbox mold="3d" closable="false">
+					<caption label="CLIENTE" style="font-size: 9px !important; color:blue" />
+					<!--BUSQUEDA,REGISTRO O EDICION DEL CLINETE	 -->
+						<grid style="border:none">
+							<rows>
+								<row>
+									<radiogroup>
+										<radio id="rdPorRuc" label="POR NUMERO DE RUC" selected="true" style="font-size:10px !important"/>
+										<separator width="20px" orient="vertical"/>
+										<radio id="rdRazonSocial" label="POR RAZÓN SOCIAL" onCheck="" visible="false" />
+									</radiogroup>
+									<separator />
+								</row>
+								<row>
+									<hbox align="center">
+											<label value="BUSCAR :"/>
+				 							<textbox id="txtBuscarCliente" style="font-size:12px !important" onOK="wndsolicitud.searchCliente()" focus="true" maxlength="11"/> 
+											<image id="imgBuscar" tooltiptext="Buscar Cliente." src="/resources/mp_buscarEnabled.png" style="cursor:pointer" onClick="wndsolicitud.searchCliente()"/>
+									</hbox>	
+									<div align="right">
+										<button id="btnNuevo" label="Nuevo" onClick="wndsolicitud.onNewCliente()" image="/resources/mp_nuevoEnabled.png"  style="cursor:pointer" tooltiptext="Nuevo Pasajero."/>
+										<button id="btnEditar" label="Editar" onClick="wndsolicitud.onEditCliente()" image="/resources/mp_editarDisabled.png" disabled="true"  tooltiptext="Editar Cliente."/>
+									</div>		
+								</row>
+							</rows>
+						</grid>
+						<separator height="1px"/>
+						<grid>
+							<columns>
+								<column width="95px" align="right"/>
+								<column width="290px"/>
+								<column width="115px" align="right"/>
+								<column />
+							</columns>
+							<rows>
+								<row>
+									<label value="RUC (*) :" />
+									<longbox id="txtNumeroRuc"  width="270px" style="font-size:11px !important" maxlength="11" />
+									<label value="RAZÓN SOCIAL (*) :" />
+									<textbox id="txtRazonSocial" width="273px" style="font-size:11px !important" maxlength="100"/>
+								</row>
+								<row>
+									<label value="DIRECCIÓN (*) :" />
+									<textbox id="txtDireccion"  style="font-size:11px !important" width="267px"  maxlength="100"/>
+									<label value="UBIGEO (*) :"  />
+									<hbox align="center">
+										<textbox id="txtUbigeo" readonly="true" style="font-size:11px !important" width="243px"  />
+										<button id="btnBuscarUbigeo" label="..."  />
+										<textbox id="txtIdUbigeo" visible="false" />
+									</hbox>	
+								</row>
+								<row>
+									<label value="TELÉFONO (*) :"  />
+									<hbox align="center">
+										<textbox id="txtTelefono" style="font-size:11px !important" width="90px" maxlength="10" /><separator width="26px" />
+										<label value="MOVIL 1 :"  />
+										<textbox id="txtMovil1" style="font-size:11px !important" width="90px" maxlength="10" />
+									</hbox>
+									<label value="MOVIL 2 :"  />
+									<hbox align="center">									
+										<textbox id="txtMovil2" style="font-size:11px !important" width="73px" maxlength="10" /><separator width="2px"/>
+										<label value="E-MAIL :"  />
+										<textbox id="txtEmail" style="text-transform:none; font-size:11px !important" width="144px"  maxlength="50" />
+									</hbox>
+								</row>
+								<row>
+									<label value="CONTACTO (*) :"  />
+									<div>
+										<grid width="273px">
+											<columns><column width="75px" align="right"/></columns>
+											<rows>
+												<row>
+													<label value="APELLIDOS (*) :" />
+													<textbox id="txtConApellidos" style="font-size:11px !important" maxlength="30" width="180px"/>
+												</row>
+												<row>	
+													<label value="NOMBRES (*) :" />
+													<textbox id="txtConNombres" style="font-size:11px !important" maxlength="40" width="180px"/>
+												</row>
+											</rows>
+										</grid>
+									</div>
+									
+									<label value="CONTACTO FINANCIERO :"  />
+									<div>
+										<grid width="277px">
+											<columns><column width="65px" align="right"/></columns>
+											<rows>
+												<row>
+													<label value="APELLIDOS :" />
+													<textbox id="txtConFinApellidos" style="font-size:11px !important" maxlength="30" width="198px"/>
+												</row>
+												<row>	
+													<label value="NOMBRES :" />
+													<textbox id="txtConFinNombres" style="font-size:11px !important" maxlength="40" width="198px"/>
+												</row>
+											</rows>
+										</grid>
+									</div>
+								</row>
+								<row>
+									<label id="lblDirFact" value="DIRECCIÓN FAC (*) :" />
+									<textbox id="txtDireccionFactuaracion" width="267px" style="font-size:11px !important"  maxlength="150" tooltiptext="Dirección de Facturación."/>
+									<label id="lblTipCombranza" value="TIPO COBRANZA :" />
+									<hbox align="center">
+										<combobox id="cmbTipoCobranza"  readonly="true" width="66px"/><separator width="5px" />
+										<label value="ORIGEN (*) :" />
+										<combobox id="cmbOrigen" readonly="true" width="145px" />			
+									</hbox>
+								</row> 
+								<row>
+									<label value="RUBRO (*) :" />
+									<textbox id="txtRubro"  width="267px" style="font-size:11px !important"  maxlength="80" />
+									<label value="TRABAJADORES (*) :" />
+									<intbox id="ibxCantidadTrabajadores" width="55px" maxlength="7" tooltiptext="Cantidad de trabajadores del Cliente." />
+								</row>
+								<row>
+									<separator />
+									<div align="right"><button id="btnCancelar" label="Cancelar" tooltiptext="Cancelar Operación." onClick="wndsolicitud.onCancelCliente()" image="/resources/mp_cancelarEnabled.png" style="cursor:pointer" /></div> 
+									<separator />
+									<button id="btnGuardar" label="Guardar" onClick="wndsolicitud.onSaveCliente()" tooltiptext="Guardar Cliente" image="/resources/mp_guardarEnabled.png" style="cursor:pointer" />
+								</row>
+							</rows>
+						</grid>
+					</groupbox>
+					<separator height="1px" />
+					
+					<!--SOLICITUD-->
+					<groupbox id="gbxSolicitud" mold="3d" closable="false">
+					<caption label="DATOS PARA LA SOLICITUD" style="font-size: 9px !important; color:blue; font-weight:bold" />
+						<grid style="border:none">
+							<columns>
+								<column width="115px" align="right" />
+								<column width="180px"/>
+								<column width="120px"/>
+								<column width="120px" align="right" />
+							</columns>
+							<rows>
+								<row>
+									<label value="TIPO CONVENIO :" />
+									<combobox id="cmbTipoConvenio" readonly="true" onSelect="wndsolicitud.onSelectTipoConvenio()"/>
+									<hbox align="center">
+										<checkbox  id="chbEsComisionable" checked="false" onCheck="wndsolicitud.onChekedComisionable()" />
+										<label value="COMISIONABLE" style="cursor:pointer" onClick="wndsolicitud.onChekedComisionable()"/>
+									</hbox>
+									<label value="FECHA SOLICITUD :" />
+									<datebox id="dbxFechaSolicitud" format="dd/MM/yyyy" disabled="true" />						
+								</row>
+							</rows>
+						</grid>
+						
+						<grid id="grCredito" style="border:none">
+						<!-- SOLICITA CREDITO -->
+	 						<columns>
+	 							<column width="115px" />
+								<column  />
+	 						</columns>
+							<rows>
+								<row>	
+									<label value="CRÉDITO A SOLICITAR :"  />
+	 								<hbox align="center">
+										<doublebox id="dbxLineaCreditoSolicita" format="#,##0.00"  width="75px" onOK="dbxSobregiroPermitido.setFocus(true)" onChange="wndsolicitud.onChangeLineaCreditoSolicita()"/>	
+										<separator width="5px" />
+										<label value="% SOBREGIRO :" />
+										<doublebox id="dbxSobregiroPermitido" onChange="wndsolicitud.onChangeSobregiro()" onOK="txtObservaciones.setFocus(true)" format="#,##0.00" width="33px" maxlength="5"/>
+										<doublebox id="dbxMontoSobregiro" format="#,##0.00" width="55px" readonly="true"/>
+									
+										<separator width="42px" />
+										<hbox align="center">
+											<checkbox  id="chbesCanje" checked="false" onCheck="wndsolicitud.onChekedCanje()"/>
+											<label value="CANJE"/>
+										</hbox>
+										
+										<separator width="15px" />
+										<hbox align="center">
+											<checkbox  id="chbEsAmpliacion" disabled="true" checked="false" onCheck="wndsolicitud.onChekedAmpliacion()"/>
+											<label id="lblAmpliacion" value="AMPLIACIÓN"/>
+										</hbox>
+	 								</hbox>
+								</row>
+								<row>
+									<label value="OBSERVACIONES :" />
+									<textbox id="txtObservaciones" style="font-size:11px !important" onOK="btnEnviarSolicitud.setFocus(true)" maxlength="120" width="475px" />
+								</row>	
+							</rows>
+						</grid>
+					</groupbox>
+					<separator height="5px"/>
+					<hbox align="center">
+						<button  label="Nueva Solicitud" id="btnNuevaSolicitud" image="/resources/mp_nuevoEnabled.png" onClick="wndsolicitud.onClikNuevaSolicitud()" style="cursor:pointer"/>
+						<separator width="350px" />
+						<button id="btnCancelarSolicitud" label="Cancelar" image="/resources/mp_cancelarEnabled.png" disabled="false" onClick="wndsolicitud.onClickCancelarSolicitud()"  />
+						<button id="btnEnviarSolicitud" label="Enviar Solicitud" image="/resources/mp_aceptarDisabled.png" disabled="true" onClick="wndsolicitud.onSaveSolicitud()"  tooltiptext="Enviar Solicitud."/>	
+					</hbox>	
+				</tabpanel>
+				
+	<!-- 			HISTORIAL DE SOLICITUDES -->
+				<tabpanel>
+					<grid>
+						<columns>
+							<column width="80px" />
+						</columns>
+						<rows>
+							<row>
+								<label value="Fecha Inicial" sclass="label-size11"/>
+								<hbox align="center">
+									<datebox id="dtFechaInicialHistSoli"  format="dd/MM/yyyy" readonly="true"/>
+									<separator width="15px" />
+									<label value="Fecha Final" sclass="label-size11"/>
+									<datebox id="dtFechaFinalHistSoli"  format="dd/MM/yyyy" readonly="true"/>
+									<separator width="15px" />
+									<button id="btnBuscarHistSoli" label="Buscar" onClick="wndsolicitud.listHistorial()" image="/resources/mp_buscarEnabled.png" style="cursor:pointer" />
+								</hbox>							
+							</row>
+							<row>
+								<label value="Funcionario" sclass="label-size11"/>
+								<hbox align="center">
+									<combobox id="cmbFuncionarioHistSoli" readonly="true" width="200px" onSelect="wndsolicitud.onSelectfuncionario(cmbFuncionarioHistSoli, cmbClienteHistSoli)"/>
+									<separator width="15px" />
+									<label value="Cliente" sclass="label-size11"/>
+									<combobox id="cmbClienteHistSoli" readonly="true" width="200px"/>
+									<separator width="180px" />
+									<button id="btnAnulaSoli" label="Anular" tooltiptext="Anular Solicitud" onClick="wndsolicitud.onClickAnulaSolicitud()" disabled="true" image="/resources/mp_anularDisabled.png" />
+									<button id="btnEditarSoli" visible="false" label="Editar" tooltiptext="Editar Solicitud" onClick=" " disabled="true" image="/resources/mp_editarDisabled.png" />
+								</hbox>
+							</row>
+						</rows>
+					</grid>
+					<listbox id="listHistirialSolicitudes" onSelect="wndsolicitud.listHistirialSolicitudes_onSelect()" mold="paging" pageSize="13" height="350px">
+						<listhead>
+							<listheader label="#" width="25px"/>
+	 						<listheader label="FUNCIONARIO" width="180px"/>
+							<listheader label="RUC CLIENTE" width="80px"/>
+							<listheader label="RAZON SOCIAL" width="200px"/>
+							<listheader label="F.SOLICITUD" width="70px"/>
+							<listheader label="ESTADO" width="75px"/>
+							<listheader label="TIPO" width="80px"/>
+							<listheader label="ACCIÓN" align="center"/>
+							
+						</listhead>
+					</listbox>
+				</tabpanel>
+			</tabpanels>
+		</tabbox>	
+		<hbox align="center" id="hbxEstadoLc">
+			<label value="Linea de Crédito en proceso de activación" style="font-size:11px !important; color:blue"/>
+			<textbox style="background:#59B808" width="15px" height="10px" readonly="true"/>
+			<space width="14px"/>
+			<label value="Linea de Crédito Activa" style="font-size:11px !important; color:blue"/>
+			<textbox style="background:black" width="15px" height="10px" readonly="true"/>
+			<space width="14px"/>
+			<label value="Linea de Crédito Inactiva" style="font-size:11px !important; color:blue"/>
+			<textbox style="background:red" width="15px" height="10px" readonly="true" />
+		</hbox>
+    </panelchildren>
+  </panel>
+</window>
+</zk>

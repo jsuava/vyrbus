@@ -1,0 +1,62 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndEspecieValorada" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndEspecieValorada">
+<div id="divLista">
+	<listbox id="listboxLista">
+		<listhead sizable="true">
+			<listheader width="30px" label="#" />
+			<listheader label="AGENCIA" width="250px" sort="auto" />
+			<listheader label="TIPO COMPROBANTE" sort="auto" />
+			<listheader label="SERIE" width="50px" align="right" sort="auto" />
+			<listheader label="CORRELATIVO INICIAL" align="right" width="110px" sort="auto" />
+			<listheader label="CORRELATIVO FINAL" align="right" width="110px" sort="auto" />
+			<listheader label="CORRELATIVO ACTUAL" align="right" width="110px" sort="auto" />
+			<listheader label="AUTORIZACIÓN SUNAT"  width="110px" sort="auto" />
+		</listhead>
+	</listbox>
+</div>
+
+<div id="divMantenimiento" >
+	<groupbox closable="false" mold="3d">
+		<caption label="Datos" />
+		<grid>
+			<columns>
+				<column width="155px" align="right"/>
+				<column width="230px" />
+				<column width="150px" align="right"/>
+			</columns>
+			<rows>
+				<row>
+					<label value="AGENCIA (*) :" />
+					<div>
+						<textbox id="textboxId"/>
+						<combobox id="cboAgencia" readonly="false" width="220px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cboTipoComprobante)" />	
+					</div>
+					<label value="TIPO COMPROBANTE (*) :" />
+					<combobox id="cboTipoComprobante" readonly="true" width="170px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNumeroSerie)" />
+				</row>
+				<row>
+					<label value="Nº SERIE OTORGADA SUNAT (*) :" />
+					<textbox id="txtNumeroSerie" maxlength="4" width="170px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(spCorrelativoInicial)" />
+					<label value="Nº CORRELATIVO INICIAL (*) :" />
+					<spinner id="spCorrelativoInicial" width="170px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(spCorrelativoFinal)" />
+				</row>
+				<row>
+					<label value="Nº CORRELATIVO FINAL (*) :" />
+					<spinner id="spCorrelativoFinal" width="178px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(spCorrelativoActual)"/>
+					<label value="Nº CORRELATIVO ACTUAL (*) :" />
+					<spinner id="spCorrelativoActual" width="170px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbFormato)"/>
+				</row>
+				<row>
+					<label value="FORMATO (*) : " />
+					<combobox id="cmbFormato" readonly="true" />
+					<label value="N° AUTORIZACIÓN SUNAT  :" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtAutorizacionSunat)"/>
+					<textbox id="txtAutorizacionSunat" maxlength="20" width="170px" style="font-size:12px !important;"  />	
+				</row>
+				
+			</rows>
+		</grid>
+	</groupbox>
+</div>
+</window>
+</zk>

@@ -1,0 +1,139 @@
+package fetepsa.ws.com.pe;
+
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlType;
+
+/**
+ * <p>
+ * Java class for Result complex type.
+ * 
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
+ * 
+ * <pre>
+ * &lt;complexType name="Result">
+ *   &lt;complexContent>
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       &lt;sequence>
+ *         &lt;element name="IsCorrect" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
+ *         &lt;element name="Message" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="barcode" type="{http://www.w3.org/2001/XMLSchema}base64Binary" minOccurs="0"/>
+ *         &lt;element name="listDetalleVenta" type="{http://schemas.datacontract.org/2004/07/FEService.Input}ArrayOfDetalleVenta" minOccurs="0"/>
+ *       &lt;/sequence>
+ *     &lt;/restriction>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
+ * </pre>
+ * 
+ * 
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "Result", namespace = "http://schemas.datacontract.org/2004/07/FEService.Util", propOrder = {
+		"isCorrect", "message", "barcode", "listDetalleVenta" })
+public class Result {
+
+	@XmlElement(name = "IsCorrect")
+	protected Boolean isCorrect;
+	@XmlElementRef(name = "Message", namespace = "http://schemas.datacontract.org/2004/07/FEService.Util", type = JAXBElement.class)
+	protected JAXBElement<String> message;
+	@XmlElementRef(name = "barcode", namespace = "http://schemas.datacontract.org/2004/07/FEService.Util", type = JAXBElement.class)
+	protected JAXBElement<byte[]> barcode;
+	@XmlElementRef(name = "listDetalleVenta", namespace = "http://schemas.datacontract.org/2004/07/FEService.Util", type = JAXBElement.class)
+	protected JAXBElement<ArrayOfDetalleVenta> listDetalleVenta;
+
+	/**
+	 * Gets the value of the isCorrect property.
+	 * 
+	 * @return possible object is {@link Boolean }
+	 * 
+	 */
+	public Boolean isIsCorrect() {
+		return isCorrect;
+	}
+
+	/**
+	 * Sets the value of the isCorrect property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link Boolean }
+	 * 
+	 */
+	public void setIsCorrect(Boolean value) {
+		this.isCorrect = value;
+	}
+
+	/**
+	 * Gets the value of the message property.
+	 * 
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
+	 *         {@code >}
+	 * 
+	 */
+	public JAXBElement<String> getMessage() {
+		return message;
+	}
+
+	/**
+	 * Sets the value of the message property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
+	 *            {@code >}
+	 * 
+	 */
+	public void setMessage(JAXBElement<String> value) {
+		this.message = ((JAXBElement<String>) value);
+	}
+
+	/**
+	 * Gets the value of the barcode property.
+	 * 
+	 * @return possible object is {@link JAXBElement }{@code <}{@link byte[]}
+	 *         {@code >}
+	 * 
+	 */
+	public JAXBElement<byte[]> getBarcode() {
+		return barcode;
+	}
+
+	/**
+	 * Sets the value of the barcode property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link JAXBElement }{@code <}{@link byte[]}
+	 *            {@code >}
+	 * 
+	 */
+	public void setBarcode(JAXBElement<byte[]> value) {
+		this.barcode = ((JAXBElement<byte[]>) value);
+	}
+
+	/**
+	 * Gets the value of the listDetalleVenta property.
+	 * 
+	 * @return possible object is {@link JAXBElement }{@code <}
+	 *         {@link ArrayOfDetalleVenta }{@code >}
+	 * 
+	 */
+	public JAXBElement<ArrayOfDetalleVenta> getListDetalleVenta() {
+		return listDetalleVenta;
+	}
+
+	/**
+	 * Sets the value of the listDetalleVenta property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link JAXBElement }{@code <}
+	 *            {@link ArrayOfDetalleVenta }{@code >}
+	 * 
+	 */
+	public void setListDetalleVenta(JAXBElement<ArrayOfDetalleVenta> value) {
+		this.listDetalleVenta = ((JAXBElement<ArrayOfDetalleVenta>) value);
+	}
+
+}

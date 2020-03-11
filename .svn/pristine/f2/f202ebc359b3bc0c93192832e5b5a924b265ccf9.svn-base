@@ -1,0 +1,69 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndAsociarRutasMtcSisvyr" title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndAsociarRutasMtcSisvyr">
+	<panel id="panel" title="::: RUTAS DEL MTC ASOCIADAS A LAS DEL SISVYR:::" framable="true" width="805px" border="normal" closable="true" onClose="wndAsociarRutasMtcSisvyr.closeTabWindow()">
+        <panelchildren>
+        	<vbox>
+        		<grid>
+        			<columns>
+        				<column width="80px" align="right" />
+        				<column/>
+        			</columns>
+        			<rows>
+        				<row>
+        					<label value="RUTA MTC" />
+        					<combobox id="cmbRutaMtc" width="700px"  readonly="true" onChange="wndAsociarRutasMtcSisvyr.cargarRutasAsociadasAlMTC()"/>
+        				</row>
+        			</rows>
+        		</grid>
+        		<hbox>
+        			<grid width="375px">
+		        		<rows>
+		        			<row>
+		        				<listbox id="lsbxRutas" height="300px" hflex="1" vflex="true" rows="8" checkmark="true" multiple="true">
+				        			<listhead>
+				        				<listheader label="" width="50px" align="center" />
+				        				<listheader label="RUTAS "  />
+				        			</listhead>
+				        		</listbox>
+		        			</row>
+		        		</rows>
+	        		</grid>
+	        		
+	        		<vbox >
+						<separator height="100px" />
+						<image id="imgAsocia" src="/resources/mp_rightArrowDisabled.png"  width="30px" height="30px"/>
+<!-- 						<image id="imDerechaDer" src="/resources/mp_allRightArrowDisabled.png" width="30px" height="30px" /> -->
+						<image id="imgDeshasocia" src="/resources/mp_leftArrowDisabled.png" width="30px" height="30px"/>
+<!-- 						<image id="imIzquierdaIzq" src="/resources/mp_allLeftArrowDisabled.png" width="30px" height="30px" /> -->
+					</vbox>	
+	        		
+	        		<grid width="375px">
+		        		<rows>
+		        			<row>
+		        				<listbox id="lsbxRutasAsociadasMtc" height="300px" hflex="1" vflex="true" rows="8" checkmark="true" multiple="true">
+				        			<listhead>
+				        				<listheader label="" width="50px" align="center" />
+				        				<listheader label="RUTAS ASOCIADAS A LAS DEL MTC"  />
+				        			</listhead>
+				        		</listbox>
+		        			</row>
+		        		</rows>
+	        		</grid>
+        		</hbox>
+        		        		
+        		<hbox align="center">
+        			<label id="lblTotalRutas" style="font-size:11px !important;font-weight: bold;color:red"/>
+        			<separator width="320px"/>
+					
+					<div width="250px" align="center">
+						<button id="btnGuardar" label="Guardar" style="cursor:pointer" image="/resources/mp_guardarEnabled.png" onClick="wndAsociarRutasMtcSisvyr.guardar()" />
+ 					</div>
+<!--  					<separator width="20px"/> -->
+ 					<label id="lblRutasAsociadas" value="Rutas Asociadas : 0" style="font-size:11px !important;font-weight: bold;color:red"/>
+				</hbox>
+        	</vbox>
+        </panelchildren>
+    </panel>
+</window>
+</zk>

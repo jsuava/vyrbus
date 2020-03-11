@@ -1,0 +1,46 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:n="client">
+<window  title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndTipoGasto">
+	<div id="divLista">
+			<listbox id="listboxLista">
+				<listhead sizable="true">
+					<listheader width="35px" label="#" />
+					<listheader label="DENOMINACION" sort="auto" />
+					<listheader label="NOMBRE CORTO" sort="auto" />
+					<listheader label="MASCARA DE FORMATO" sort="auto" />
+				</listhead>
+			</listbox>
+		</div>
+
+		<div id="divMantenimiento">
+			<groupbox closable="false" mold="3d" >
+			<caption label="DATOS TIPO DE GASTOS" />
+			<grid>
+				<columns>
+					<column width="120px" align="right" />
+					<column width="240px" />
+					<column width="100px" align="right"/>
+				</columns>
+				<rows>
+					<row>
+						<label value="DENOMINACIÓN (*) :" />
+						<div>
+							<textbox id="textboxId" />
+							<textbox id="txtDenominacion"  maxlength="30" onOK="txtNombreCorto.setFocus(true)" />
+						</div>
+						<label value="NOMBRE CORTO (*)" />
+						<textbox id="txtNombreCorto"  maxlength="15"  width="130px" onOK="txtMaskFormato.setFocus(true)"/>
+					</row>
+					<row>
+						<label value="MASCARA DE FORMATO :" />
+						<textbox id="txtMaskFormato" maxlength="20" />
+						<separator></separator>
+						<separator></separator>
+					</row>
+				</rows>
+			</grid>
+			</groupbox>
+		</div>
+		
+</window>
+</zk>

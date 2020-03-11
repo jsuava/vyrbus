@@ -1,0 +1,73 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndEmisionHRE" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndEmisonHRE" width="830px" >
+<panel id="panel" title="::: EMISION HOJA DE RUTA ELECTRÓNICA (HRE) Y MANIFIESTO ELECTRÓNICO (ME) :::" framable="true" border="normal" closable="true" onClose="wndEmisionHRE.closeTabWindow()">
+	<panelchildren>
+		<hbox align="center">
+			<radiogroup >
+				<hbox> <radio id="rdSalida" label="Salida" style="color:blue;font-weight: bold" 
+							  onCheck='com.cystesoft.vyrbus.service.util.Util.limpiarListbox(lstbxSalidas);lblNorServicios.setValue("0");lblServicioAsociadosHRE.setValue("0");
+							  lblServicioFinalizadosHRE.setValue("0");lblManifiestosEmitidos.setValue("0")' />
+				</hbox>
+				<radio id="rdLlegada" label="Llegada" style="color:blue;font-weight: bold" 
+				        onCheck='com.cystesoft.vyrbus.service.util.Util.limpiarListbox(lstbxSalidas);lblNorServicios.setValue("0");lblServicioAsociadosHRE.setValue("0");
+							  lblServicioFinalizadosHRE.setValue("0");lblManifiestosEmitidos.setValue("0")'/>
+			</radiogroup> 
+			<div width="65px" align="right">
+				<label value="AGENCIA :" />
+			</div>
+		
+		<combobox id="cmbAgencia" readonly="true" width="180px" onChange="cmbBus.setSelectedIndex(0)" />
+		<div align="right" width="70px"> <label value="FECHA :"/></div>
+		<datebox id="dtbxFecha" readonly="true" width="110px" format="dd/MM/yyyy" />
+	    <div align="right" width="50px" > <label value="BUS :"/></div>
+			<div width="97px"><hbox align="center">
+				<combobox id="cmbBus" style="font-size:11px !important" readonly="true" width="70px" />
+				<image src="/resources/mp_refrescarEnabled.png" style="cursor:pointer" onClick="wndEmisionHRE.cargarBuses()" tooltiptext="Actualizar Buses"/>	
+			</hbox></div>
+			<button label="Buscar" sclass="btn-vyrbus" width="90px" autodisable="self" height="28px"  onClick="wndEmisionHRE.buscar()" 
+				image="/resources/mp_buscarEnabled.png" />
+		</hbox>
+		<separator height="1px"/>
+		<listbox id="lstbxSalidas"  height="330px">
+			<listhead>
+				<listheader label="F.SALIDA" width="70px" tooltiptext="Fecha de Salida" align="center" />
+				<listheader label="H.SALIDA" width="60px" tooltiptext="Hora de Salida" align="center" sort="auto" />
+				<listheader label="RUTA" width="130px" align="center" sort="auto"/>
+				<listheader label="SERVICIO" width="130px" align="center" sort="auto"/>
+				<listheader label="F.LLEGADA" width="70px" tooltiptext="Fecha de Llegada" align="center" sort="auto"/>
+				<listheader label="H.LLEGADA" width="60px" tooltiptext="Hora de Llegada" align="center" sort="auto"/>
+				<listheader label="BUS" width="50px" align="center" sort="auto"/>
+				<listheader label="HOJA RUTA" width="100px" align="center" sort="auto"/>
+				<listheader id="lshdHRE" width="90px" tooltiptext="Hoja de Ruta Electrónica." align="center" label="HRE"  />
+				<listheader id="lshdME" width="40px" tooltiptext="Manifiesto Electrónico." align="center" label="ME" />
+			</listhead>
+		</listbox>
+		<separator height="2px"/>
+		<hbox align="center">
+			<separator width="5px" />
+			<div width="250px">
+				<label value="SERVICIOS :" style="font-size:9px !important; color:red;"/>
+				<label id="lblNorServicios" style="font-size:12px !important;color:red;font-weight: bold" />
+			</div>
+			
+			<separator width="350px"/>
+			<div id="divHREFinalizadas" visible="false" align="right" >
+				<label value="HRE FINALIZADAS :" style="font-size:9px !important; color:red;"/>
+				<label id="lblServicioFinalizadosHRE" style="font-size:12px !important;color:red;font-weight: bold" />
+			</div>
+			<separator width="50px"/>
+			<div id="divHREEmitidas">
+				<label value="HRE :" style="font-size:9px !important; color:red;" tooltiptext="Total Hojas de rutas Emitidas."/>
+				<label id="lblServicioAsociadosHRE" style="font-size:12px !important;color:red;font-weight: bold" />
+			</div>
+			<separator width="29px"/>
+			<div id="divMEEmitidas" align="right">
+				<label value="ME :" style="font-size:9px !important; color:red;" tooltiptext="Total Manifiestos Electrónicos Emitidos"/>
+				<label id="lblManifiestosEmitidos" style="font-size:12px !important;color:red;font-weight: bold" />
+			</div>
+		</hbox>
+	</panelchildren>
+</panel>
+</window>
+</zk>

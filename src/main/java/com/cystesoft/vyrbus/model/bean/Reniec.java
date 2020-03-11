@@ -1,0 +1,108 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: José Abanto
+ * Fecha		: 05/09/2013
+ */
+package com.cystesoft.vyrbus.model.bean;
+
+/**
+ * @author JABANTO
+ *
+ */
+public class Reniec {
+	private String numeroDocumento;
+	private String apellidoPaterno;
+	private String apellidoMaterno;
+	private String nombres;
+	private String fechaNacimiento;
+	private String sexo;
+	private String tipoDocumento;
+	/**
+	 * @return the numeroDocumento
+	 */
+	public String getNumeroDocumento() {
+		return numeroDocumento;
+	}
+	/**
+	 * @param numeroDocumento the numeroDocumento to set
+	 */
+	public void setNumeroDocumento(String numeroDocumento) {
+		this.numeroDocumento = numeroDocumento;
+	}
+	/**
+	 * @return the apellidoPaterno
+	 */
+	public String getApellidoPaterno() {
+		return apellidoPaterno;
+	}
+	/**
+	 * @param apellidoPaterno the apellidoPaterno to set
+	 */
+	public void setApellidoPaterno(String apellidoPaterno) {
+		this.apellidoPaterno = apellidoPaterno;
+	}
+	/**
+	 * @return the apellidoMaterno
+	 */
+	public String getApellidoMaterno() {
+		return apellidoMaterno;
+	}
+	/**
+	 * @param apellidoMaterno the apellidoMaterno to set
+	 */
+	public void setApellidoMaterno(String apellidoMaterno) {
+		this.apellidoMaterno = apellidoMaterno;
+	}
+	/**
+	 * @return the nombres
+	 */
+	public String getNombres() {
+		return nombres;
+	}
+	/**
+	 * @param nombres the nombres to set
+	 */
+	public void setNombres(String nombres) {
+		this.nombres = nombres;
+	}
+	/**
+	 * @return the fechaNacimiento
+	 */
+	public String getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+	/**
+	 * @param fechaNacimiento the fechaNacimiento to set
+	 */
+	public void setFechaNacimiento(String fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
+	}
+	/**
+	 * @return the sexo
+	 */
+	public String getSexo() {
+		return sexo;
+	}
+	/**
+	 * @param sexo the sexo to set
+	 */
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
+	/**
+	 * @return the tipoDocumento
+	 */
+	public String getTipoDocumento() {
+		return tipoDocumento;
+	}
+	/**
+	 * @param tipoDocumento the tipoDocumento to set
+	 */
+	public void setTipoDocumento(String tipoDocumento) {
+		this.tipoDocumento = tipoDocumento;
+	}
+	
+	
+}

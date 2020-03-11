@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 17/04/2013 12:00:01 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+ <class name="com.tepsa.sisvyr.model.bean.MotivoTemporadaAlta" schema="VYR" table="VRMMOTTEMALT">
+  <comment>Entidad que sirve para almacenar los motivos de las temporadas altas</comment>
+  <id name="id" type="java.lang.Integer">
+   <column name="MOTTEMALT_ID" precision="5" scale="0"/>
+   <generator class="sequence">
+    <param name="sequence">SEQ_VRMMOTTEMALT_ID</param>
+   </generator>
+  </id>
+  
+  <property name="nombreMotivo" type="java.lang.String">
+     <column name="C_NOMMOT" precision="150" scale="0"  >
+     	<comment>Nombre del motivo.</comment>
+	 </column>
+  </property>
+  
+  
+  <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+  <property name="estadoRegistro" type="java.lang.String">
+     <column name="C_ESTREG" length="1"   >
+     	<comment>Estado de registro  A(Activo), I(Inactivo).</comment>
+	 </column>
+  </property>
+  <property generated="never" lazy="false" name="fechaInsercion" type="java.util.Date">
+   <column length="7" name="AUDFECINS">
+    <comment>Fecha de insercion/modificacion.</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="usuarioInsercion" type="java.lang.String">
+   <column length="30" name="AUDUSUINS">
+    <comment>Usuario de insercion/modificacion.</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="ipInsercion" type="java.lang.String">
+   <column length="15" name="AUDIPINSE">
+    <comment>IP de insercion/modificacion.</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="fechaModificacion" type="java.util.Date">
+   <column length="7" name="AUDFECMOD">
+    <comment>Fecha de insercion/modificacion.</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="usuarioModificacion" type="java.lang.String">
+   <column length="30" name="AUDUSUMOD">
+    <comment>Usuario de insercion/modificacion.</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="ipModificacion" type="java.lang.String">
+   <column length="15" name="AUDIPMODI">
+    <comment>IP de insercion/modificacion.</comment>
+   </column>
+  </property>
+ </class>
+ 
+</hibernate-mapping>

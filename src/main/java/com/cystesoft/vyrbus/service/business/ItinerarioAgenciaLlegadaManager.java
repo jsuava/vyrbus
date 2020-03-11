@@ -1,0 +1,50 @@
+package com.cystesoft.vyrbus.service.business;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaLlegada;
+
+public interface ItinerarioAgenciaLlegadaManager {
+	/**
+	 * 
+	 * @param criteriosBusqueda	: Array de parametros para la busqueda.
+	 * @param criteriosOrdenar	: lista de parametros para el orden.
+	 * @return Array con el resultado de la busqueda
+	 * @throws Exception
+	 */
+	public ArrayList<ItinerarioAgenciaLlegada> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar)throws Exception;
+	
+	/**
+	 * 
+	 * @param id : Identidicador unico para la busqueda.
+	 * @return Agencia(s) de partida del itinerario..
+	 */
+	public ItinerarioAgenciaLlegada buscarPorId(Long id);
+	/**
+	 * 
+	 * @param itinerarioAgenciaLlegada
+	 * @throws Exception
+	 */
+	public void guardar(ItinerarioAgenciaLlegada itinerarioAgenciaLlegada)throws Exception;
+	/**
+	 * 
+	 * @param itinerarioAgenciaLlegada
+	 * @throws Exception
+	 */
+	public void actualizar(ItinerarioAgenciaLlegada itinerarioAgenciaLlegada)throws Exception;
+	/**
+	 * 
+	 * @param id
+	 * @throws Exception
+	 */
+	public void inactivar(Long id)throws Exception;
+	/**
+	 * 
+	 * @param idItinerario
+	 * @throws Exception
+	 */
+	public void delete (Long idItinerario) throws Exception;
+	
+}

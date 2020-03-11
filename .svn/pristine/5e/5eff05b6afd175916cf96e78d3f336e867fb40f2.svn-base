@@ -1,0 +1,59 @@
+package com.tepsa.sisvyr.model.bean;
+// default package
+
+
+/**
+ * 
+ * @author JABANTO
+ *
+ */
+public class VSTipoRegistro  extends GenericBean implements java.io.Serializable {
+	private static final long serialVersionUID = 1L;
+
+    // Fields    
+	private Integer id;
+     private String denominacion;
+     private Integer codigo;
+
+
+    // Constructors
+    /** default constructor */
+    public VSTipoRegistro() {
+    }
+
+   
+    /**
+	 * @param tipRegDeclaracion
+	 */
+	public VSTipoRegistro(Integer id) {
+		// TODO Auto-generated constructor stub
+		this.id=id;
+	}
+
+
+	// Property accessors
+    public Integer getId() {
+        return this.id;
+    }
+    
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getDenominacion() {
+        return this.denominacion;
+    }
+    
+    public void setDenominacion(String denominacion) {
+        this.denominacion = denominacion;
+    }
+
+    public Integer getCodigo() {
+        return this.codigo;
+    }
+    
+    public void setCodigo(Integer codigo) {
+        this.codigo = codigo;
+    }
+
+}

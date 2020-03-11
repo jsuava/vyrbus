@@ -1,0 +1,252 @@
+package com.cystesoft.vyrbus.model.bean;
+
+import java.util.Date;
+// default package
+
+/**
+ * 
+ * @author JABANTO
+ *
+ */
+public class VSEstructuraAsegurado extends GenericBean  implements java.io.Serializable {
+	private static final long serialVersionUID = 1L;
+
+    // Fields    
+	private Long id;
+     private VSSexo vsSexo;
+     private VSTipoRegistro vsTipoRegistro;
+     private VSEstadoCivil vsEstadoCivil;
+     private VSEncabezadoAfiliacion vsEncabezadoAfiliacion;
+     private VSTipoDocumento vsTipoDocumento;
+     private VSTipoPersona vsTipoPersona;
+     private String numeroDocumento;
+     private String apellidoParterno;
+     private String apellidoMaterno;
+     private String nombres;
+     private Date fechaNacimiento;
+     private String direccion;
+     private String ubigeoDepartamento;
+     private String ubigeoProvincia;
+     private String ubigeoDistrito;
+     private String telefono;
+     private String celular;
+     private Integer adicional;
+     private String numeroCertificado;
+
+    // Constructors
+
+    /** default constructor */
+    public VSEstructuraAsegurado() {
+    }
+
+   
+    // Property accessors
+    public Long getId() {
+        return this.id;
+    }
+    
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNumeroDocumento() {
+        return this.numeroDocumento;
+    }
+    
+    public void setNumeroDocumento(String numeroDocumento) {
+        this.numeroDocumento = numeroDocumento;
+    }
+
+    public String getApellidoParterno() {
+        return this.apellidoParterno;
+    }
+    
+    public void setApellidoParterno(String apellidoParterno) {
+        this.apellidoParterno = apellidoParterno;
+    }
+
+    public String getApellidoMaterno() {
+        return this.apellidoMaterno;
+    }
+    
+    public void setApellidoMaterno(String apellidoMaterno) {
+        this.apellidoMaterno = apellidoMaterno;
+    }
+
+    public String getNombres() {
+        return this.nombres;
+    }
+    
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
+    }
+
+    public Date getFechaNacimiento() {
+        return this.fechaNacimiento;
+    }
+    
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public String getDireccion() {
+        return this.direccion;
+    }
+    
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getUbigeoDepartamento() {
+        return this.ubigeoDepartamento;
+    }
+    
+    public void setUbigeoDepartamento(String ubigeoDepartamento) {
+        this.ubigeoDepartamento = ubigeoDepartamento;
+    }
+
+    public String getUbigeoProvincia() {
+        return this.ubigeoProvincia;
+    }
+    
+    public void setUbigeoProvincia(String ubigeoProvincia) {
+        this.ubigeoProvincia = ubigeoProvincia;
+    }
+
+    public String getUbigeoDistrito() {
+        return this.ubigeoDistrito;
+    }
+    
+    public void setUbigeoDistrito(String ubigeoDistrito) {
+        this.ubigeoDistrito = ubigeoDistrito;
+    }
+
+    public String getTelefono() {
+        return this.telefono;
+    }
+    
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getCelular() {
+        return this.celular;
+    }
+    
+    public void setCelular(String celular) {
+        this.celular = celular;
+    }
+
+    public Integer getAdicional() {
+        return this.adicional;
+    }
+    
+    public void setAdicional(Integer adicional) {
+        this.adicional = adicional;
+    }
+
+    public String getNumeroCertificado() {
+        return this.numeroCertificado;
+    }
+    
+    public void setNumeroCertificado(String numeroCertificado) {
+        this.numeroCertificado = numeroCertificado;
+    }
+
+
+	/**
+	 * @return the vsSexo
+	 */
+	public VSSexo getVsSexo() {
+		return vsSexo;
+	}
+
+
+	/**
+	 * @param vsSexo the vsSexo to set
+	 */
+	public void setVsSexo(VSSexo vsSexo) {
+		this.vsSexo = vsSexo;
+	}
+
+
+	/**
+	 * @return the vsTipoRegistro
+	 */
+	public VSTipoRegistro getVsTipoRegistro() {
+		return vsTipoRegistro;
+	}
+
+
+	/**
+	 * @param vsTipoRegistro the vsTipoRegistro to set
+	 */
+	public void setVsTipoRegistro(VSTipoRegistro vsTipoRegistro) {
+		this.vsTipoRegistro = vsTipoRegistro;
+	}
+
+
+	/**
+	 * @return the vsEstadoCivil
+	 */
+	public VSEstadoCivil getVsEstadoCivil() {
+		return vsEstadoCivil;
+	}
+
+
+	/**
+	 * @param vsEstadoCivil the vsEstadoCivil to set
+	 */
+	public void setVsEstadoCivil(VSEstadoCivil vsEstadoCivil) {
+		this.vsEstadoCivil = vsEstadoCivil;
+	}
+
+
+	/**
+	 * @return the vsEncabezadoAfiliacion
+	 */
+	public VSEncabezadoAfiliacion getVsEncabezadoAfiliacion() {
+		return vsEncabezadoAfiliacion;
+	}
+
+
+	/**
+	 * @param vsEncabezadoAfiliacion the vsEncabezadoAfiliacion to set
+	 */
+	public void setVsEncabezadoAfiliacion(VSEncabezadoAfiliacion vsEncabezadoAfiliacion) {
+		this.vsEncabezadoAfiliacion = vsEncabezadoAfiliacion;
+	}
+
+
+	/**
+	 * @return the vsTipoDocumento
+	 */
+	public VSTipoDocumento getVsTipoDocumento() {
+		return vsTipoDocumento;
+	}
+
+
+	/**
+	 * @param vsTipoDocumento the vsTipoDocumento to set
+	 */
+	public void setVsTipoDocumento(VSTipoDocumento vsTipoDocumento) {
+		this.vsTipoDocumento = vsTipoDocumento;
+	}
+
+
+	/**
+	 * @return the vsTipoPersona
+	 */
+	public VSTipoPersona getVsTipoPersona() {
+		return vsTipoPersona;
+	}
+
+
+	/**
+	 * @param vsTipoPersona the vsTipoPersona to set
+	 */
+	public void setVsTipoPersona(VSTipoPersona vsTipoPersona) {
+		this.vsTipoPersona = vsTipoPersona;
+	}
+
+}

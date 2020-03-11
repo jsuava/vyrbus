@@ -1,0 +1,7 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<?link rel="shortcut icon" href="resources/favicon.ico" ?>
+<zk>
+<window border="none" use="com.tepsa.sisvyr.view.ctrl.WndValidateAccess">
+	
+</window>
+</zk>

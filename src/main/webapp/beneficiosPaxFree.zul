@@ -1,0 +1,185 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk  xmlns:n="clien">
+<window id="wndCortesia" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndBeneficiosPaxFree" >
+	<div id="divLista">
+		<listbox id="listboxLista">
+			<listhead sizable="true">
+				<listheader width="30px" label="#" />
+				<listheader label="TIPO COMP." width="60px"  sort="auto" />
+				<listheader label="N° COMP." width="90px"  sort="auto" />
+				<listheader label="PASAJERO" width="150px"  sort="auto" />
+				<listheader label="RUTA" width="120px" sort="auto" />
+				<listheader label="SERVICIO" width="110px"  sort="auto" />
+				<listheader label="F.VIAJE" width="70px" align="center" sort="auto" />
+				<listheader label="H.VIAJE" width="50px" align="center" sort="auto" />
+				<listheader label="ASIENTO" width="50px" align="center" sort="auto" />
+				<listheader label="CORTESIA POR?" sort="auto" />
+			</listhead>
+		</listbox>
+	</div>
+		
+	<div id="divMantenimiento">
+		<groupbox closable="false" mold="3d"  >
+		<caption label="PASAJERO" />
+			<grid>
+				<rows>
+					<row>
+						<radiogroup>
+							<textbox id="textboxId" visible="false" /> 
+							<radio id="rdPorDocumento" label="Por número de documento" selected="true" onCheck="txtBuscarPax.setFocus(true)"/>
+							<separator width="20px" orient="vertical"/>
+							<radio id="rdPorApellidos" label="Por Apellidos" onCheck="txtBuscarPax.setFocus(true)" />
+						</radiogroup>
+						
+					</row>
+					<row>
+						<hbox align="center">
+							<label value="BUSCAR :"/>
+ 							<textbox id="txtBuscarPax" style="font-size:12px !important" onOK="wndCortesia.buscarPasajero()"/> 
+							<button id="btnBuscarPax" sclass="btn-vyrbus" tooltiptext="Buscar Pasajero" image="/resources/mp_buscarEnabled.png" onClick="wndCortesia.buscarPasajero()"/>
+						</hbox>	
+					</row>
+				</rows>
+			</grid>
+			<listbox id="lisboxPasajeros" height="100px" width="386px" visible="false">
+				<listhead>
+					<listheader label="Documento" width="65px"/>
+					<listheader label="Número" width="75px"/>
+					<listheader label="Nombres"/>
+				</listhead>
+			</listbox>
+			
+			<div><textbox id="txtidPasajero" visible="false" /></div>
+ 			<grid  id="grInfoPax" style="border:none">
+ 				<columns>
+ 					<column width="105px" align="right" />
+ 					<column width="100px"/>
+ 					<column width="90px" align="right"/> 					
+  					<column width="260px" /> 
+ 				</columns>
+ 				<rows>
+					<row>
+						<label value="NRO. DOCUMENTO :" />
+						<label id="lbNumeroDocuemnto"  sclass="label-size11" style="color:blue"/> 
+ 						<label value="PASAJERO :" />
+ 						<label id="lbPasajero"   sclass="label-size11" style="color:blue"/>
+ 					
+						<hbox align="center">
+							<separator width="9px"/>
+							<label id="lbPuntosPax" style="font-size:14px !important; font-weight: bold; color:red"/>
+						</hbox>
+ 							
+ 					</row>
+ 					<row>
+ 						<label value="FECHA NACIMIENTO :" />
+ 						<label id="lbFechaNacimiento"   sclass="label-size11" style="color:blue"/>
+ 						<label value="UBIGEO :" />
+ 						<label id="lbUbigeo"   sclass="label-size11" style="color:blue"/>
+						<label id="lbPaxfri" style="font-size:14px !important; font-weight: bold; color:red"/>
+ 					</row>
+ 				</rows>
+ 			</grid>
+		</groupbox>
+		<separator height="2px" />
+		
+		<groupbox id="gbxDatosCortesia" closable="false" mold="3d" >
+		<caption label="DATOS DE LA CORTESIA" />
+			<grid>
+				<columns>
+					<column width="120px" align="right" />
+					<column width="190px" />
+ 					<column width="130px" align="right" />
+				</columns>
+				<rows>
+					<row >
+						<label value="NRO. BOLETA :" style="color:blue;font-weight:bold" />
+						<hbox>
+							<textbox id="txtNumeroBoleto" width="130px" readonly="true" style="font-size:12px !important"/>
+							<image id="imgRefreshBoleto" src="resources/mp_refrescarEnabled.png" style="cursor:pointer" tooltiptext="Haga click aqui para refrescar el Número de Boleto"/>
+						</hbox>
+						<label value="TIPO FORMA DE PAGO (*) :" />
+						<combobox id="cmbTipoFormaPago" width="200px" onOK="dbxFechaViaje.setFocus(true)"  readonly="true" onSelect="wndCortesia.onSelectTipoFormaPago()"/>
+					</row>
+					<row>
+						<label value="FECHA DE VIAJE (*) :" />
+						<datebox id="dbxFechaViaje" format="dd/MM/yyyy" readonly="true" width="160px" onChange="wndCortesia.cargarServicios()" />
+						<label value="CIUDAD ORIGEN (*) :" />
+						<combobox id="cmbCiudadOrigen" width="200px"  readonly="true" onChange="wndCortesia.onChangeRutas()" onOK="cmbRuta.setFocus(true);cmbRuta.select() " />
+					</row>
+					<row >
+						<label value="RUTA (*) :" />
+						<combobox id="cmbRuta"  width="160px" readonly="true" onOK="cmbTipoFormaPago.setFocus(true)" onSelect="wndCortesia.cargarServicios()"  />
+						<label value="SERVICIO (*) :" />
+						<bandbox id="bdbxServicios"  autodrop="true" readonly="true" width="200px"  >
+							<bandpopup>
+								<listbox id="lstServicios" width="260px" onSelect="wndCortesia.onSelectServicio((com.cystesoft.vyrbus.model.bean.DetalleItinerario)lstServicios.getSelectedItem().getValue())" >
+									<listhead>
+										<listheader label="SERVICIO" width="180px" />
+										<listheader label="HORA PARTIDA" width="80px"/>
+									</listhead>
+								</listbox>
+							</bandpopup>
+						</bandbox>
+					</row>
+					<row>
+ 						<label value="PUNTO EMBARQUE (*) :" />
+ 						<combobox id="cmbPuntoEmbarque" onSelect="wndCortesia.onSelectPtoEmbarque()" readonly="true" width="160px"/>
+ 						<label value="PUNTO LLEGADA (*) :" />
+ 						<combobox id="cmbPuntoLlegada" onSelect="wndCortesia.onSelectPtoDesembarque()" readonly="true" width="200px"/>
+					</row>
+					<row>
+						<label value="FECHA PARTIDA :"/>
+						<label id="lblFechaPartida" sclass="label-size11" style="color:blue;font-weight:bold"/>
+						<label value="FECHA LLEGADA :"/>
+						<label id="lblFechaLlegada" sclass="label-size11" style="color:blue;font-weight:bold"/>						
+					</row>
+					<row>
+						<label value="HORA PARTIDA :"/>
+						<label id="lblHoraPartida" sclass="label-size11" style="color:blue;font-weight:bold"/>
+						<label value="HORA LLEGADA :"/>
+						<label id="lblHoraLlegada" sclass="label-size11" style="color:blue;font-weight:bold"/>
+					</row>
+					<row>
+						<label value="ASIENTO (*) :" />
+ 						<hbox align="center">
+ 							<textbox id="txtAsiento" width="80px" style="font-size:12px important!"/>
+ 							<image id="imgSelectAsiento" src="resources/mp_buscarDisabled.png"  />	
+ 						</hbox>
+						<label value="ALIMENTACIÓN (*) :" />
+						<combobox id="cmbAlimentacion" width="200px" readonly="true" onSelect="itAnioCortesia.setFocus(true)"/>
+ 						
+					</row>
+					<row >
+						<label value="AÑO CUMPLEAÑOS :" />
+						<intbox id="itAnioCortesia" width="80px" maxlength="4" />
+						<label value="OBSERVACIONES :" />
+						<textbox id="txtObserveaciones" width="200px" />
+					</row>
+				</rows>
+			</grid>
+		</groupbox>	
+		<separator height="1px" />
+		<groupbox id="gbxViajesPax" visible="false" closable="false">
+		<caption id="cpViajesPax" />
+			<listbox id="listViajesPax" >
+				<listhead>
+					<listheader label="#" width="20px" />
+					<listheader label="F.EMISION" width="70px" tooltiptext="Fecha de emisión de la cortesia" />
+					<listheader label="N°.BOLETO" width="80px" tooltiptext="Número de boleto" />
+					<listheader id="lstHeaderAnio" label="AÑO" width="35px" tooltiptext="Año al cual corresponde el boleto" visible="false"/>
+					<listheader label="RUTA" width="100px" />
+					<listheader label="SERVICIO" width="150px" />
+					<listheader label="F.VIAJE" width="60px" tooltiptext="Fecha de viaje" />
+					<listheader label="REP.VENTA" width="200px" tooltiptext="Usuario quién emitió la cortesia"/>
+				</listhead>
+			</listbox>
+			<separator height="2px" />
+			<hbox>
+				<label value="Cantidad Viajes :" sclass="label-size11-bold"/>
+				<label id="lbCantViajesPax" sclass="label-size11-bold" style="color:blue"/>
+			</hbox>
+			
+		</groupbox>	
+</div>
+</window>
+</zk>

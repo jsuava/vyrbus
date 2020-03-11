@@ -1,0 +1,458 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: jM
+ * Fecha		: 01/06/2012
+ */
+package com.tepsa.sisvyr.view.ui;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Button;
+import org.zkoss.zul.Cell;
+import org.zkoss.zul.Column;
+import org.zkoss.zul.Columns;
+import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Comboitem;
+import org.zkoss.zul.Grid;
+import org.zkoss.zul.Hbox;
+import org.zkoss.zul.Label;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listhead;
+import org.zkoss.zul.Listheader;
+import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Row;
+import org.zkoss.zul.Rows;
+import org.zkoss.zul.Separator;
+import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Window;
+
+import com.tepsa.sisvyr.model.bean.Ubigeo;
+import com.tepsa.sisvyr.service.exceptions.UbigeoNullException;
+import com.tepsa.sisvyr.service.locator.ServiceLocator;
+import com.tepsa.sisvyr.service.util.Messages;
+import com.tepsa.sisvyr.service.util.Util;
+
+/**
+ * Ventana de selección de Ubigeo
+ * @author jM
+ * @since JDK1.6
+ */
+public class WndSeleccionarUbigeo extends WndBase {
+
+	private static final long serialVersionUID = -4154314853244446135L;
+
+	private Window oThisWindow = this;
+	@SuppressWarnings("rawtypes")
+	private EventListener oEventListenerFilter;
+	
+	private Textbox txtNombreUbigeo = new Textbox();
+	private Combobox cmbBuscarEn = new Combobox();
+	private Button btnBuscar = new Button();
+	private Button btnAceptar = new Button();
+	private Listbox lbxUbicacionGeografica = new Listbox();
+	
+	private final int BUSCAR_TODO_PAIS = 0;
+	private final int BUSCAR_DEPARTAMENTO = 1;
+	private final int BUSCAR_PROVINCIA = 2;
+	private final int BUSCAR_DISTRITO = 3;
+
+	private String idUbigeo;
+	private String ubicacionGeografica;
+
+	/**
+	 * Constructor
+	 */
+	public WndSeleccionarUbigeo() {
+		super();
+		this.initComponents();
+	}
+
+	/**
+	 * Constructor
+	 * @param title
+	 * @param border
+	 * @param closable
+	 */
+	public WndSeleccionarUbigeo(String title, String border, boolean closable) {
+		super(title, border, closable);
+		this.initComponents();
+	}
+
+	public boolean addEventListener(String evtnm, EventListener<? extends Event> listener) {
+		boolean resultadoEvento = true;
+
+		if (evtnm.equals(com.tepsa.sisvyr.view.ui.Events.ON_SELECT)) {
+			oEventListenerFilter = listener;
+		}else if(evtnm.equals(com.tepsa.sisvyr.view.ui.Events.ON_OK)){
+			oEventListenerFilter = listener;
+		}else {
+			resultadoEvento = super.addEventListener(evtnm, listener);
+		}
+
+		return resultadoEvento;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.ui.IBase#onCreate()
+	 */
+	@Override
+	public void onCreate() throws Exception {
+
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.ui.IBase#initComponents()
+	 */
+	@Override
+	public void initComponents() {
+		Grid oGrid = new Grid();
+		Rows oRows = new Rows();
+		Row oRow = new Row();
+		Row oRow2 = new Row();
+//		Row oRow3 = new Row();
+		Cell oCell = new Cell();
+		Comboitem oComboitem = new Comboitem();
+		Comboitem oComboitem2 = new Comboitem();
+		Comboitem oComboitem3 = new Comboitem();
+		Comboitem oComboitem4 = new Comboitem();
+		Listhead oListhead = new Listhead();
+		Listheader oListheader = new Listheader();
+		Listheader oListheader2 = new Listheader();
+		Listheader oListheader3 = new Listheader();
+		Listheader oListheader4 = new Listheader();
+		Listheader oListheader5 = new Listheader();
+
+		/*Columnas del Grid*/
+		Columns columns= new Columns();
+		Column column= new Column();
+		column.setWidth("170px");
+		column.setAlign("right");
+		columns.appendChild(column);
+		column= new Column();
+		column.setWidth("200px");
+		columns.appendChild(column);
+		column= new Column();
+		column.setWidth("60px");
+		columns.appendChild(column);
+		column= new Column();
+		column.setWidth("150px");
+		columns.appendChild(column);
+		
+		oGrid.appendChild(columns);
+		
+		EventListener<Event> selectedEventListener = new EventListener<Event>() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void onEvent(Event event) throws Exception {
+				if (!(event.getTarget() instanceof Listbox && ((Listbox) event.getTarget()).getSelectedIndex() < 0 )) {
+
+					if (lbxUbicacionGeografica.getSelectedIndex() > -1 && oEventListenerFilter != null) {
+						Ubigeo ubigeo=lbxUbicacionGeografica.getSelectedItem().getValue();
+						setIdUbigeo(ubigeo.getId());
+						setUbicacionGeografica(ServiceLocator.getUbigeoManager().ubicacionGeografica(getIdUbigeo()));
+
+						oEventListenerFilter.onEvent(new Event(com.tepsa.sisvyr.view.ui.Events.ON_SELECT));
+						oThisWindow.onClose();
+					}
+				}
+			}
+		};
+		
+//		lbxUbicacionGeografica.addEventListener(Events.ON_OK, new EventListener<Event>() {
+//			@Override
+//			public void onEvent(Event event) throws Exception {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//		});
+		
+		
+		Label label=new Label("Ubicación Gográfica : ");
+		label.setSclass("label-size11");
+		oRow.appendChild(label);
+
+		txtNombreUbigeo.setWidth("150px");
+		oRow.appendChild(txtNombreUbigeo);
+		
+		label=new Label("Buscar en : ");
+		label.setSclass("label-size11");
+		oRow.appendChild(label);
+
+		oComboitem.setLabel("(Todo el pais)");
+		oComboitem.setValue(BUSCAR_TODO_PAIS);
+		oComboitem2.setLabel("Departamento");
+		oComboitem2.setValue(BUSCAR_DEPARTAMENTO);
+		oComboitem3.setLabel("Provincia");
+		oComboitem3.setValue(BUSCAR_PROVINCIA);
+		oComboitem4.setLabel("Distrito");
+		oComboitem4.setValue(BUSCAR_DISTRITO);
+
+		cmbBuscarEn.appendChild(oComboitem);
+		cmbBuscarEn.appendChild(oComboitem2);
+		cmbBuscarEn.appendChild(oComboitem3);
+		cmbBuscarEn.appendChild(oComboitem4);
+		cmbBuscarEn.setReadonly(true);
+
+		oRow.appendChild(cmbBuscarEn);
+
+
+//		btnBuscarUbicacionGeografica.setLabel("Buscar");
+//		btnBuscarUbicacionGeografica.setStyle("cursor:pointer");
+//		btnBuscarUbicacionGeografica.setImage("resources/mp_buscarEnabled.png");
+//		btnBuscarUbicacionGeografica.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+
+		btnBuscar.setLabel("Buscar");
+		btnBuscar.setImage("resources/mp_buscarEnabled.png");
+		btnBuscar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try{
+					if(txtNombreUbigeo.getText().trim().isEmpty())
+						throw new UbigeoNullException();
+					
+					TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+
+					switch ((Integer) cmbBuscarEn.getSelectedItem().getValue()) {
+						case BUSCAR_TODO_PAIS:
+							break;
+						case BUSCAR_DEPARTAMENTO:
+							break;
+						case BUSCAR_PROVINCIA:
+							break;
+						case BUSCAR_DISTRITO:
+							break;
+					}
+
+					criteriosBusqueda.put("nombreUbigeo", "%" + txtNombreUbigeo.getText().trim() + "%");
+					criteriosBusqueda.put("estadoRegistro", "A");
+					List<String> criteriosOrdenar = new ArrayList<String>();
+					criteriosOrdenar.add("nombreUbigeo");
+					ArrayList<Ubigeo> lstUbigeosFiltrados = ServiceLocator.getUbigeoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
+					listarUbigeos(lstUbigeosFiltrados);
+					
+				}catch(UbigeoNullException ub){
+					DlgMessage.information(Messages.getString("WndSeleccionarUbigeo.information.nombreUbicacionNull"));
+				}
+			}
+		});
+		btnBuscar.setHeight("27px");
+		btnBuscar.setStyle("cursor:pointer");
+
+		txtNombreUbigeo.addEventListener(Events.ON_OK,new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try{
+					if(txtNombreUbigeo.getText().trim().isEmpty())
+						throw new UbigeoNullException();
+					
+					TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+
+					switch ((Integer) cmbBuscarEn.getSelectedItem().getValue()) {
+						case BUSCAR_TODO_PAIS:
+							break;
+						case BUSCAR_DEPARTAMENTO:
+							break;
+						case BUSCAR_PROVINCIA:
+							break;
+						case BUSCAR_DISTRITO:
+							break;
+					}
+
+					criteriosBusqueda.put("nombreUbigeo", "%" + txtNombreUbigeo.getText().trim() + "%");
+					criteriosBusqueda.put("estadoRegistro", "A");
+					List<String> criteriosOrdenar = new ArrayList<String>();
+					criteriosOrdenar.add("nombreUbigeo");
+					ArrayList<Ubigeo> lstUbigeosFiltrados = ServiceLocator.getUbigeoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
+					listarUbigeos(lstUbigeosFiltrados);
+					if(lbxUbicacionGeografica.getItemCount()>0){
+						lbxUbicacionGeografica.setSelectedIndex(0);
+						lbxUbicacionGeografica.setFocus(true);
+					}
+					
+				}catch(UbigeoNullException ub){
+					DlgMessage.information(Messages.getString("WndSeleccionarUbigeo.information.nombreUbicacionNull"));
+				}
+			}
+		});
+		
+		oRow.appendChild(btnBuscar);
+		
+
+		//fila 2
+		oListheader.setLabel("#");
+		oListheader.setWidth("50px");
+		oListheader2.setLabel("CODIGO");oListheader2.setWidth("70px");
+		oListheader3.setLabel("DEPARTAMENTO");
+		oListheader4.setLabel("PROVINCIA");
+		oListheader5.setLabel("DISTRITO");
+		oListheader2.setSort("auto");
+		oListheader3.setSort("auto");
+		oListheader4.setSort("auto");
+		oListheader5.setSort("auto");
+
+		oListhead.setSizable(true);
+		oListhead.appendChild(oListheader);
+		oListhead.appendChild(oListheader2);
+		oListhead.appendChild(oListheader3);
+		oListhead.appendChild(oListheader4);
+		oListhead.appendChild(oListheader5);
+
+		lbxUbicacionGeografica.setHeight("300px");
+		lbxUbicacionGeografica.setMold("paging");
+		lbxUbicacionGeografica.setPageSize(100);
+		lbxUbicacionGeografica.appendChild(oListhead);
+		lbxUbicacionGeografica.addEventListener(Events.ON_DOUBLE_CLICK, selectedEventListener);
+
+		oCell.setColspan(5);
+		oCell.appendChild(lbxUbicacionGeografica);
+		oRow2.appendChild(oCell);
+		oRow2.setStyle("background:white; padding:0px");
+
+		Hbox hbox=new Hbox();
+		Separator separator=new  Separator();
+		separator.setWidth("605px");
+		hbox.appendChild(separator);
+		
+//<<<<<<< .mine
+//		Button button=new Button("Cancelar");
+//		button.setStyle("cursor:pointer");
+//		button.setImage("resources/mp_cancelarEnabled.png");
+//		button.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
+//=======
+		Button btnCancelar=new Button("Cancelar");
+		btnCancelar.setImage("resources/mp_cancelarEnabled.png");
+		btnCancelar.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
+//>>>>>>> .r183
+			@Override
+			public void onEvent(Event event) throws Exception {
+				oThisWindow.onClose();
+			}
+		});
+		btnCancelar.setHeight("27px");
+		btnCancelar.setStyle("cursor:pointer");
+		hbox.appendChild(btnCancelar);
+		
+//<<<<<<< .mine
+//		btnSeleccionarUbicacionGeografica.setLabel("Aceptar");
+//		btnSeleccionarUbicacionGeografica.setStyle("cursor:pointer");
+//		btnSeleccionarUbicacionGeografica.setImage("resources/mp_aceptarEnabled.png");
+//		btnSeleccionarUbicacionGeografica.addEventListener(Events.ON_CLICK, selectedEventListener);
+//		hbox.appendChild(btnSeleccionarUbicacionGeografica);
+//=======
+		btnAceptar.setLabel("Aceptar");
+		btnAceptar.setHeight("27px");
+		btnAceptar.setImage("resources/mp_aceptarEnabled.png");
+		btnAceptar.setStyle("cursor:pointer");
+		btnAceptar.addEventListener(Events.ON_CLICK, selectedEventListener);
+		hbox.appendChild(btnAceptar);
+
+		
+		oRows.appendChild(oRow);
+		oRows.appendChild(oRow2);
+
+		oGrid.appendChild(oRows);
+
+		appendChild(oGrid);
+		appendChild(hbox);
+		
+		this.setTitle(Messages.getString("System.title"));
+		this.setMaximizable(false);
+		this.setMinimizable(false);
+		this.setSizable(true);
+		this.setClosable(true);
+		this.setStyle("padding: 2px");
+		this.setWidth("800px");
+		this.setVisible(true);
+
+		cmbBuscarEn.setSelectedIndex(0);
+		txtNombreUbigeo.setFocus(true);
+		oThisWindow.setBorder("none");
+		oThisWindow.setSizable(false);
+	}
+
+	private void listarUbigeos(ArrayList<Ubigeo> lstUbigeosFiltrados) throws Exception{
+		Listitem item=null;
+		Listcell cell=null;
+		int x=0;
+		Util.limpiarListbox(lbxUbicacionGeografica);
+		
+		for(Ubigeo ubigeo : lstUbigeosFiltrados){
+			if(!(ubigeo.getCodigoProvincia().equals("00")) && !(ubigeo.getCodigoDistrito().equals("00"))){
+				String ubicacionGeografica = ServiceLocator.getUbigeoManager().ubicacionGeografica(ubigeo.getId());
+				String departamento = ubicacionGeografica.split("/")[0].trim(); 
+				String provincia = ubicacionGeografica.split("/")[1].trim();
+				String distrito = ubicacionGeografica.split("/")[2].trim();
+				
+				x++;
+				item=new Listitem();
+				cell=new Listcell(String.valueOf(x));
+				cell.setStyle("font-size:11px !important");
+				item.appendChild(cell);
+				cell=new Listcell(ubigeo.getId());
+				cell.setStyle("font-size:11px !important");
+				item.appendChild(cell);
+				cell=new Listcell(departamento);
+				item.appendChild(cell);
+				cell=new Listcell(provincia);
+				item.appendChild(cell);
+				cell=new Listcell(distrito);
+				item.appendChild(cell);
+				
+				item.addEventListener(Events.ON_OK, new EventListener<Event>() {
+					@SuppressWarnings("unchecked")
+					@Override
+					public void onEvent(Event event) throws Exception {
+						// TODO Auto-generated method stub
+						Ubigeo ubigeo=lbxUbicacionGeografica.getSelectedItem().getValue();
+						setIdUbigeo(ubigeo.getId());
+						setUbicacionGeografica(ServiceLocator.getUbigeoManager().ubicacionGeografica(getIdUbigeo()));
+						
+						oEventListenerFilter.onEvent(new Event(com.tepsa.sisvyr.view.ui.Events.ON_OK));
+						oThisWindow.onClose();
+					}					
+				});
+				
+				
+				item.setValue(ubigeo);
+				lbxUbicacionGeografica.appendChild(item);
+			}
+		}
+	}
+	
+	/**
+	 * @return Objeto idUbigeo.
+	 */
+	public String getIdUbigeo() {
+		return idUbigeo;
+	}
+
+	/**
+	 * @param idUbigeo	: Setea el objeto idUbigeo.
+	 */
+	private void setIdUbigeo(String idUbigeo) {
+		this.idUbigeo = idUbigeo;
+	}
+
+	/**
+	 * @param ubicacionGeografica	: Setea el objeto ubicacionGeografica.
+	 */
+	private void setUbicacionGeografica(String ubicacionGeografica) {
+		this.ubicacionGeografica = ubicacionGeografica;
+	}
+
+	/**
+	 * @return Objeto ubicacionGeografica.
+	 */
+	public String getUbicacionGeografica() {
+		return ubicacionGeografica;
+	}
+}

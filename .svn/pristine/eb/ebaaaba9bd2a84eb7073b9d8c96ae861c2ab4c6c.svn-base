@@ -1,0 +1,79 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndVsVenta" title="" border=""  use="com.tepsa.sisvyr.view.ctrl.WndVSRptVentaSeguros" >
+	<groupbox closable="false" mold="3d" >
+		<caption label="PARAMETROS DE BUSQUEDA" />
+		<grid>
+			<columns>
+				<column width="110px" align="right" />
+				<column width="200px" />
+				<column width="110px" align="right" />
+			</columns>
+			<rows>
+				<row>
+					<label value="FECHA INICIO :"  />
+					<datebox id="dtbxFechaInico" onChange="wndVsVenta.cargarAgencias()" readonly="true" width="110px" format="dd/MM/yyyy" />
+					<label value="FECHA FIN :"  />
+					<datebox id="dtbxFechaFin" onChange="wndVsVenta.cargarAgencias()" readonly="true" width="110px" format="dd/MM/yyyy" />
+				</row>
+				<row>
+					<label value="AGENCIA :" />
+					<combobox id="cmbAgencias" readonly="true" width="190px" onChange="wndVsVenta.cargarUsuarios(); wndVsVenta.buscarAfiliaciones()"  />
+					<label value="USUARIO :"  />
+					<combobox id="cmbUsuario" readonly="true" onChange="wndVsVenta.buscarAfiliaciones()" width="190px" />
+				</row>
+				<row>
+					<label value="TIPO PASAJERO :"  />
+					<combobox id="cmbTipoPasajero" readonly="true" width="190px" />
+					<label value="N°.DOCTO. CLIENTE :"  />
+					<textbox id="txtDocumentoPasajero" onOK="wndVsVenta.buscarAfiliaciones()" style="font-size:11px !important" width="110px" />
+				</row>
+				<row>
+					<label value="NÚMERO BOLETO :" />
+					<textbox id="txtNumeroBoleto" onOK="wndVsVenta.buscarAfiliaciones()" style="font-size:11px !important" width="110px" />
+					<separator/>
+					<hbox align="center">
+						<button id="btnBuscar" onClick="wndVsVenta.buscarAfiliaciones()" label="Buscar" image="/resources/mp_buscarEnabled.png" />
+						<button id="btnExportar" onClick="wndVsVenta.exportarExcel()" label="Exportar" image="/resources/mp_excel.png" />
+						<button id="btnImprimir" onClick="wndVsVenta.imprimir()" label="Imprimir" image="/resources/mp_imprimir.png" />
+						<button id="btnCerra" onClick="wndVsVenta.closeTabWindow()" label="Cerrar" image="/resources/mp_cerrar.png" />
+					</hbox>
+					
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+	<separator height="1px"/>
+	<listbox id="lsbxAfiliaciones" mold="paging" pageSize="12" >
+		<listhead>
+			<listheader label="FECHA" width="70px" sort="auto" align="center" tooltiptext="Fecha en que se realiza la Venta del Seguro"/>
+			<listheader label="BOLETO" width="80px" sort="auto" tooltiptext="Número de Boleto asociado al Seguro." />
+			<listheader label="PASAJERO" width="210px" sort="auto" />
+			<listheader label="TIPO PAX" width="70px" sort="auto" />
+			<listheader label="N° DOCUMENTO" width="90px" />
+			<listheader label="CIUDAD DESTINO" width="100px" sort="auto" />
+			<listheader label="CERTIFICADO" width="73px" />
+			<listheader label="F.VIG.INICIAL" width="70px" sort="auto" align="center" tooltiptext="Fecha vigencia incial" />
+			<listheader label="F.VIG.FINAL" width="70px" sort="auto" align="center" tooltiptext="Fecha vigencia final" />
+			<listheader label="IMPORTE" width="45px" sort="auto" align="center"/>
+			<listheader label="AGENCIA VENTA" width="105px" sort="auto"  tooltiptext="Agencia en donde se ha realizado la venta." />
+			<listheader label="USUARIO VENTA" width="180px" sort="auto"  tooltiptext="Usuario que realizó la venta del seguro." />
+			<listheader label="F.PROCESO" width="70px" sort="auto" align="center" tooltiptext="Fecha en que se realiza el Proceso de envío de las Afiliaciones a la Positiva." />
+<!-- 			<listheader label="F.PAGO" width="70px" sort="auto" align="center" tooltiptext="Fecha proceso de pago" /> -->
+		</listhead>
+	</listbox>
+	<separator height="7px"/>
+	<hbox align="center">
+		<separator width="670px" />
+		<label id="lblTotalPaxNormal" visible="false" value="TOTAL PAX NORMAL " style="color:blue"/>
+		<textbox id="txtTotalPaxNormal" visible="false" value="0.00" width="100px" style="text-align: right;font-size:12px !important" readonly="true" />
+	</hbox>	
+	<separator height="2px"/>
+	<hbox align="center">
+		<separator width="670px" />
+		<label id="lblTotalPaxFree" visible="false" value="TOTAL PAXFREE " style="color:blue" /><separator width="12px" />
+		<textbox id="txtTotalPaxFree" visible="false" value="0.00" width="100px" style="text-align: right;font-size:12px !important" readonly="true" />
+	</hbox>
+	
+</window>
+</zk>

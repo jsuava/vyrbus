@@ -1,0 +1,64 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndLiquidacionDiariaVentas" border="none" use="com.tepsa.sisvyr.view.ctrl.WndLiquidacionDiariaVentas">
+	<grid>
+		<columns>
+			<column align="right" width="80px"/>
+			<column/>
+			<column align="right" width="80px"/>
+			<column/>
+			<column align="right" width="70px"/>
+			<column/>
+			<column/>
+		</columns>
+		<rows>
+			<row>
+				<label value="FECHA INICIO :"/>
+				<datebox id="dtbxFechaInicio" format="dd/MM/yyyy" onChange="wndLiquidacionDiariaVentas.onValidateFecha()" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(dtbxFechaFin)"/>
+				<label value="FECHA FIN :"/>
+				<datebox id="dtbxFechaFin" format="dd/MM/yyyy" onChange="wndLiquidacionDiariaVentas.onValidateFecha()" onOK="com.tepsa.sisvyr.service.util.Util.setFocus(cmbAgencia)"/>
+				<label/>
+				<label/>
+				<hlayout>
+					<button id="btnExportar" image="resources/mp_excel.png"  tooltiptext="Exportar a Excel."/>
+					<button image="resources/mp_preliminar.png" tooltiptext="Visualizar preliminar de impresión." onClick="wndLiquidacionDiariaVentas.previoDetalle(true)"/>
+					<button image="resources/mp_imprimir.png" tooltiptext="Imprimir detallado de ventas." onClick="wndLiquidacionDiariaVentas.previoDetalle(false)"/>
+				</hlayout>
+			</row>
+			<row>
+				<label value="LOCAL :"/>
+				<combobox id="cmbAgencia" width="200px" onChange="wndLiquidacionDiariaVentas.onLoadCounters()"/>
+				<label value="COUNTER :"/>
+				<combobox id="cmbCounter" width="180px" disabled="true"/>
+				<label value="TIPO :"/>
+				<combobox id="cmbTipoMovimiento"/>				
+				<hlayout>
+					<button label="Buscar" autodisable="self" image="resources/mp_buscarEnabled.png" height="28px" tooltiptext="Haga click aqui para realizar la busqueda." onClick="wndLiquidacionDiariaVentas.onBuscarVentas()"/>
+					<button label="Cerrar" image="resources/mp_cerrarEnabled.png" height="28px" tooltiptext="Haga click aqui para cerrar la ventana." onClick="wndLiquidacionDiariaVentas.closeTabWindow()"/>
+				</hlayout>
+			</row>
+		</rows>
+	</grid>
+	<listbox id="lbxVentas" mold="paging" pageSize="10">
+		<listhead>
+			<listheader label="#" width="30px"/>
+			<listheader label="TIPO" width="100px" sort="auto"/>
+			<listheader label="N° CONTROL" width="70px" sort="auto"/>
+			<listheader label="N° COMPROB" width="95px" sort="auto" tooltiptext="Número de Comprobante"/>
+			<listheader label="N° BOL. REF." width="95px"/>
+			<listheader label="TARIFA" align="right" width="50px"/>
+			<listheader label="RECARGO" align="right" width="60px"/>
+			<listheader label="DESCUENTO" align="right" width="60px"/>
+			<listheader label="A CUENTA" align="right" width="60px"/>
+			<listheader label="PENALIDAD" align="right" width="60px"/>
+			<listheader label="NETO" align="right" width="65px"/>
+			<listheader label="USUARIO VENTA" width="180px"/>
+			<listheader label="FECHA VENTA" width="100px" sort="auto"/>
+			<listheader label="ACCION" width="140px"/>
+		</listhead>
+		
+	</listbox>
+		
+	
+</window>
+</zk>

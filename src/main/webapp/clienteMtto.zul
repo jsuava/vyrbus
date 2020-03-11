@@ -1,0 +1,93 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndClienteMtto" border="none">
+	<vlayout>
+		<hlayout>
+			<groupbox mold="3d" closable="false" width="400px">
+				<caption label="CRITERIOS DE BUSQUEDA"/>
+				<grid>
+					<rows>
+						<row>
+							<radiogroup>
+								<radio id="rdPorRuc" label="Por RUC" selected="true"/>
+								<separator width="20px" orient="vertical"/>
+								<radio id="rdPorRazonSocial" label="Por Razón Social"/>
+							</radiogroup>
+						</row>
+						<row>
+							<hbox align="center">
+								<label value="BUSCAR :"/>
+								<textbox id="txtBuscarCliente" onOK="wndVentaReserva.buscarCliente()"/>
+								<button label="Buscar" sclass="btn-vyrbus" image="/resources/mp_buscarEnabled.png" onClick="wndVentaReserva.buscarCliente()"/>
+							</hbox>											
+						</row>
+					</rows>
+				</grid>
+				<listbox id="lbxClientes" height="150px" width="386px" visible="false">
+					<listhead>
+						<listheader label="Documento" width="75px"/>
+						<listheader label="Razon Social"/>
+						<listheader label="Contacto" width="130px"/>
+					</listhead>
+				</listbox>
+			</groupbox>
+			<groupbox id="grpbxAdicionalesCliente" width="370px" mold="3d" closable="false" visible="true">
+				<caption label="Tipo Cliente/Descuentos"/>
+				<label id="lblDescuento" value="CLIENTE CREDITO / DESCUENTO CORPORATIVO" sclass="label-size12-bold-alert"/>
+			</groupbox>
+		</hlayout>
+		<groupbox mold="3d">
+			<caption label="INFORMACIÓN DEL CLIENTE"/>
+			<grid sclass="grid-no-border">
+				<columns>
+					<column width="15%" align="right"/>
+					<column width="25%"/>
+					<column width="15%" align="right"/>
+					<column width="30%"/>
+					<column width="15%"/>
+				</columns>
+				<rows>
+					<row spans="1,3,1">
+						<label value="RUC (*) :"/>
+						<textbox id="txtDocumentoCliente" width="120px"/>
+						<cell rowspan="7" align="center" style="background:#F7F7F7">
+							<vbox align="center">
+								<separator height="100px"/>
+								<button id="btnNuevoCliente" label="Nuevo" image="/resources/mp_nuevoEnabled.png" width="90px" onClick="wndVentaReserva.nuevoCliente(); wndVentaReserva.changeImagen()"/>
+								<button id="btnModificarCliente" label="Modificar" image="/resources/mp_editarDisabled.png" disabled="true" onClick="wndVentaReserva.editarCancelarCliente(); wndVentaReserva.changeImagen()"/>
+								<button id="btnGuardarCliente" label="Guardar" image="/resources/mp_guardarDisabled.png" disabled="true" width="90px" onClick="wndVentaReserva.guardarCliente(); wndVentaReserva.changeImagen()"/>
+							</vbox>																
+						</cell>
+					</row>
+					<row>
+						<label value="RAZON SOCIAL (*) :"/>
+						<textbox id="txtRazonSocial" width="90%"/>													
+						<label value="CONTACTO :"/>
+						<textbox id="txtContactoCliente"/>
+					</row>
+					<row spans="1,3">
+						<label value="DIRECCIÓN :"/>
+						<textbox id="txtDireccionCliente" width="50%"/>
+					</row>
+					<row>
+						<label value="TELÉFONO 1 :"/>
+						<textbox id="txtTelefonoClienteOne"/>
+						<label value="TELÉFONO 2 :"/>
+						<textbox id="txtTelefonoClienteTwo"/>
+					</row>
+					<row>
+						<label value="EMAIL :"/>
+						<textbox id="txtEmailCliente" style="text-transform:none !important"/>
+						<label value="UBIGEO :"/>
+						<hbox align="center" width="100%">
+							<textbox id="txtUbigeoCliente" width="170px" readonly="true"/>
+							<textbox id="txtUbigeoIdCliente" visible="false"/>
+							<button id="btnUbigeoCliente" label="..."/>
+						</hbox>
+					</row>
+				</rows>
+			</grid>
+		</groupbox>
+	</vlayout>
+</window>
+</zk>

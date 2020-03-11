@@ -1,0 +1,40 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:n="client">
+<window title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndMotivocortesia">
+	<div id="divLista">
+			<listbox id="listboxLista">
+				<listhead sizable="true">
+					<listheader width="35px" label="#" />
+					<listheader label="DENOMINACION" sort="auto" />
+					<listheader label="CODIGO TITAN" />
+				</listhead>
+			</listbox>
+		</div>
+		
+		<div id="divMantenimiento">
+			<groupbox closable="false" mold="3d" >
+			<caption label="DATOS TIPO DE GASTOS" />
+			<grid>
+				<columns>
+					<column width="100px" align="right"/>
+<!-- 					<column width="250px"/> -->
+				</columns>
+				<rows>
+					<row>
+						<label value="DENOMINACIÓN (*) :" />
+						<div>
+							<textbox id="textboxId" />
+							<textbox id="txtDenominacion"  maxlength="100" />
+						</div>
+					</row>
+					<row>
+						<label value="CÓDIGO TITAN (*) :" />
+						<intbox id="intbxCodigoTitan"  />
+					</row>
+				</rows>
+			</grid>
+			</groupbox>
+		</div>
+		
+</window>
+</zk>

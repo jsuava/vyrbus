@@ -1,0 +1,54 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: jM
+ * Fecha		: 04/05/2012
+ */
+package com.cystesoft.vyrbus.model.dao;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import com.cystesoft.vyrbus.model.bean.Cliente;
+
+/**
+ *
+ * @author jM
+ * @since JDK1.6
+ */
+public interface ClienteDAO extends GenericDAO {
+	public ArrayList<Cliente> buscarPorEstadoRegistro(String estado, String criterioOrden);
+	public ArrayList<Cliente> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
+	public Cliente buscarPorId(Long id);
+	public void guardar(Cliente cliente);
+	public void actualizar(Cliente cliente);
+	public void inactivar(Long id);
+	/**
+	 * Retorna los clientes que realizaron la solicitud contado o credito
+	 * @return
+	 */
+	public List<Cliente> cargaClientesSolicitud();
+	/**
+	 * Realiza la busqueda de los clientes por Razon Social, aplicando el indice FTI.
+	 * @param razonSocial	: Criterio de busqueda.
+	 * @return Array de ocurrencias.
+	 * @throws Exception
+	 */
+	public ArrayList<Cliente> buscarPorRazonSocial(String[] razonSocial)throws Exception;
+	
+	/**
+	 * Realiza la busqueda del Cliente por el número de Ruc, en el Modulo de Servicios Espesiales
+	 * @param Ruc : Número de Ruc del Cliente.
+	 * @return 
+	 * @throws Exception
+	 */
+	public Cliente buscarCliente_ServicioEspecial(String Ruc) throws Exception;
+	/**
+	 * Realiza la busqueda del cliente para la la generacion de las agencias.
+	 * @param ruc	: Numero de RUC del cliente.
+	 * @return Cliente
+	 */
+	public List<Cliente> buscarClienteAgencia(String ruc)throws Exception;
+}

@@ -1,0 +1,34 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndMotivoTemporadaAlta">
+	<div id="divLista">
+		<listbox id="listboxLista">
+			<listhead sizable="true">
+				<listheader width="35px" label="#" />
+				<listheader label="DENOMINACION" sort="auto" />
+			</listhead>
+		</listbox>
+	</div>
+
+	<div id="divMantenimiento">
+		<groupbox closable="false" mold="3d" >
+		<caption label="DATOS TIPO DE GASTOS" />
+			<grid>
+				<columns>
+					<column width="120px" />
+				</columns>
+				<rows>
+					<row>
+						<label value="NOMBRE MOTIVO (*) :" sclass="label-size11"/>
+						<div>
+							<textbox id="textboxId" />
+							<textbox id="txtNombreMotivo"  maxlength="30" />
+						</div>
+					</row>
+				</rows>
+			</grid>
+		</groupbox>
+	</div>
+
+</window>
+</zk>

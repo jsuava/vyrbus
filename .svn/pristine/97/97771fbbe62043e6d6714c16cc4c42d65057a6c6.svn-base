@@ -1,0 +1,36 @@
+/**
+ * Proyecto		: SYSVYR
+ * Sistema		: Sistema de Mantenimiento de Buses
+ * Descripción	: 
+ * Autor		: José Sullo Avalos
+ * Fecha		: 31/10/2010
+ */
+package com.tepsa.sisvyr.model.bean;
+
+import java.io.Serializable;
+
+/**
+ * @author Jose
+ *
+ */
+public class Sexo extends GenericBean implements Serializable {
+
+	private static final long serialVersionUID = -1L;
+
+	private Integer id;
+	private String denominacion;
+	
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
+	public String getDenominacion() {
+		return denominacion;
+	}
+	public void setDenominacion(String denominacion) {
+		this.denominacion = denominacion;
+	}
+}

@@ -1,0 +1,68 @@
+package com.tepsa.sisvyr.model.bean;
+
+import java.io.Serializable;
+import java.util.List;
+
+/**
+ * 
+ * @author Jose Avalos
+ *
+ */
+public class AutorizadorMotivoCortesia extends GenericBean implements Serializable {
+	private static final long serialVersionUID = 1L;	
+	private Integer id;
+	private AutorizadorCortesia autorizadorCortesia;
+	private MotivoCortesia motivoCortesia;
+	private List<String> listMotivos;		//No mapeado;
+	
+	/**
+	 * @return the id
+	 */
+	public Integer getId() {
+		return id;
+	}
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
+	/**
+	 * @return the autorizadorCortesia
+	 */
+	public AutorizadorCortesia getAutorizadorCortesia() {
+		return autorizadorCortesia;
+	}
+	/**
+	 * @param autorizadorCortesia the autorizadorCortesia to set
+	 */
+	public void setAutorizadorCortesia(AutorizadorCortesia autorizadorCortesia) {
+		this.autorizadorCortesia = autorizadorCortesia;
+	}
+	
+	/**
+	 * @return the motivoCortesia
+	 */
+	public MotivoCortesia getMotivoCortesia() {
+		return motivoCortesia;
+	}
+	/**
+	 * @param motivoCortesia the motivoCortesia to set
+	 */
+	public void setMotivoCortesia(MotivoCortesia motivoCortesia) {
+		this.motivoCortesia = motivoCortesia;
+	}
+	/**
+	 * @return the listMotivos
+	 */
+	public List<String> getListMotivos() {
+		return listMotivos;
+	}
+	/**
+	 * @param listMotivos the listMotivos to set
+	 */
+	public void setListMotivos(List<String> listMotivos) {
+		this.listMotivos = listMotivos;
+	}
+}

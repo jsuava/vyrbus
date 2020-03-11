@@ -1,0 +1,56 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndOperacionesRemotas" use="com.tepsa.sisvyr.view.ctrl.WndOperacionesRemotas" title="" border="none">
+	<groupbox mold="3d" closable="false">
+		<caption label="PARAMETROS DE BÚSQUEDA" />
+		<grid>
+			<columns>
+				<column width="110px" align="right" />
+				<column width="180px"  />
+				<column width="110px" align="right" />
+			</columns>
+			<rows>
+				<row>
+					<label value="ORIGEN :" />
+					<combobox id="cmbOrigen" readonly="true" width="120px"/>
+					<label value="DESTINO :" />
+					<combobox id="cmbDestino" readonly="true" width="120px"/>
+				</row>
+				<row spans="" >
+					<label value="FECHA PARTIDA :" />
+					<datebox id="dtbxFechaPartida" format="dd/MM/yyyy" readonly="true" width="120px" />
+					<label value="NRO. BOLETO :" />
+					<textbox id="txtNumeroBoleto" width="110px" />
+				</row>
+				<row>
+					<label value="NRO. CONTROL :" />
+					<textbox id="txtNumeroControl" width="110px" />
+					<label value="NRO. DOCUMENTO :" />
+					<hbox align="center">
+						<textbox id="txtNumeroDocumetoPasajero" width="110px" />
+						<button label="Buscar" image="/resources/mp_buscarEnabled.png" height="29px" width="80px" onClick="wndOperacionesRemotas.buscarVentas()" />						
+						<button label="Cerrar" image="/resources/mp_cerrar.png" height="29px" width="80px" onClick="wndOperacionesRemotas.closeTabWindow()" />
+					</hbox>
+					
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+	<listbox id="lsbxVentas" mold="paging" pageSize="8" >
+		<listhead >
+			<listheader label="NRO.BOLETO" width="100px"/>
+			<listheader label="NRO.CONTROL" width="120px"/>
+			<listheader label="PASAJERO" width="200px"/>
+			<listheader label="SERVICIO" width="140px"/>
+			<listheader label="RUTA" width="120px"/>
+			<listheader label="F.PARTIDA" tooltiptext="Fecha de Partida" width="70px"/>
+			<listheader label="H.PARTIDA" align="center" tooltiptext="Hora de Partida" width="70px"/>
+			<listheader label="ASIENTO" align="center" width="50px" />
+			<listheader label="ACCIONES" width="100px"/>
+		</listhead>
+	</listbox>
+	
+	
+	
+</window>
+</zk>

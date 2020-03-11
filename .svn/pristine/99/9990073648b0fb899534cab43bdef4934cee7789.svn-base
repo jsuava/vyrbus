@@ -1,0 +1,248 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndTransbordoPasajeros" title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndTransbordo">
+	<panel id="panel" title="::: TRANSBORDO DE PASAJEROS :::" framable="true" width="805px" border="normal" closable="true" onClose="wndTransbordoPasajeros.closeTabWindow()">
+        <panelchildren>
+        	<div>
+				<grid style="border: none">
+					<columns>
+						<column width="375px" />
+						<column width="45px"/>
+						<column width="375px"/>
+					</columns>
+					<rows>
+						<row>				
+							<groupbox closable="false" mold="3d" width="365px" >
+							<caption>
+							 	<div align="center"><label value="DESDE" style="font-weight: bold; color:blue" /></div>
+							</caption>
+								<grid style="border:none">
+						 			<columns>
+						 				<column width="170px"/>
+						 				<column  align="left"/>
+									</columns>
+									<rows>
+										<row>				
+											<groupbox id="gbxMapaDesde" height="340px" >
+												<grid id="grdMapaDesde" style="border:none">
+												</grid>
+											</groupbox>					
+											<grid id="gritnerarioDesde"  width="183px" style="border:none" >
+												<columns>
+													<column width="63px" align="right" />
+						  							<column width="120px" />
+												</columns>
+												<rows>
+													<row>
+														<label value="ITINERARIO" />
+														<hbox align="center" >
+															<longbox id="lbxItinerario" width="48px" readonly="true"/>
+															<button id="btnBuscar" style="cursor:pointer" image="/resources/mp_buscarEnabled.png"  tooltiptext="Busqueda del Itinerario." />
+														</hbox>
+													</row>
+													<row>
+														<label value="ORIGEN :" />
+														<label id="lbOrigen" sclass="label-size11" style="color: #0000FF" />
+													</row>
+													<row>
+														<label value="DESTINO :" />
+														<label id="lbDestino" sclass="label-size11" style="color: #0000FF" />
+														<separator />
+													</row>	
+													<row>
+														<label value="SALIDA :" />
+														<label id="lbSalida" sclass="label-size11" style="color: #0000FF" />
+														<separator />
+													</row>	
+													<row>
+														<label value="FECHA :" />
+														<label id="lbFecha" sclass="label-size11" style="color: #0000FF"/>
+														<separator />
+													</row>	
+													<row>
+														<label value="BUS :" />
+														<label id="lbBus" sclass="label-size11" style="color: #0000FF" />
+														<separator />
+													</row>	
+													<row>	
+														<label value="SERVICIO :" />
+														<label id="lbServicio" sclass="label-size11" style="color: #0000FF"  />
+														<separator />
+													</row>	
+													<row>
+														<label value="OCUPADOS :" />
+														<label id="lbOcupados" sclass="label-size11" style="color: #0000FF" />
+														<separator />
+													</row>	
+													<row>
+														<label value="DISPONIBLE:" />
+														<label id="lbDisponibles" sclass="label-size11" style="color: #0000FF" />
+														<separator />
+													</row>									
+													<row>
+														<label value="SELECCIÓN" />
+														<hbox align="center">
+															<intbox id="ibxSeleccion" style="font-size:15px !important; font-weight: bold; color:red" readonly="true" width="50px" />
+															<button id="btnVerPasajero" disabled="true" image="/resources/mp_preliminarDisabled.png" />
+														</hbox>
+													</row>
+													<row>
+														<separator id="separator_c1" height="40px"/>
+						 								<separator id="separator_c2"/>
+						  								<separator id="separator_c3"/>
+													</row>
+													<row>
+														<separator id="separator"/>
+						 								<vbox width="150px">
+															<button id="btnRefrescar" style="cursor:pointer" label="Refresh" image="/resources/mp_refrescarEnabled.png" onClick="wndTransbordoPasajeros.onRefrescarMapa(btnRefrescar)"/>
+														</vbox>
+													</row>
+													<row id="rwLeft" >
+														<separator/><separator/>
+													</row>
+												</rows>
+											</grid>		
+										</row>
+									</rows>
+								</grid>
+								</groupbox>	
+								
+								<grid style="border:none">
+									<rows>
+										<row>
+											<image id="imgDerercha" 
+													onClick="if(imgDerercha.getSrc().equals(wndTransbordoPasajeros.enabledImgDerecha))
+																wndTransbordoPasajeros.transbordarDeizquierdaADerecha()" 
+													src="/resources/mp_rightArrowDisabled.png" width="30px" tooltiptext="Transbordar el pasajero seleccionado"/>
+										</row>
+										<row>
+											<image id="imgAllDerecha" 
+													onClick="if(imgAllDerecha.getSrc().equals(wndTransbordoPasajeros.enabledImgAllDerecha))
+																wndTransbordoPasajeros.transbordarAllDeIzquieraADerecha()" 
+													src="/resources/mp_allRightArrowDisabled.png" width="30px" tooltiptext="Transbordar todos los pasajeros"/>
+										</row>
+										<row><separator height="70px" /></row>
+										<row>
+											<image id="imgIzquierda" 
+													onClick="if(imgIzquierda.getSrc().equals(wndTransbordoPasajeros.enabledImgIzquierda))
+																wndTransbordoPasajeros.transbordarDeDerechaAIzquierda()" 
+													src="/resources/mp_leftArrowDisabled.png" width="30px" tooltiptext="Transbordar el pasajero seleccionado"/>									
+										</row>
+										<row>
+											<image id="imgAllIzquierda" 
+													onClick="if(imgAllIzquierda.getSrc().equals(wndTransbordoPasajeros.enabledImgAllIzquierda))
+																wndTransbordoPasajeros.transbordarAllDeDerechaAIzquierda()" 
+													src="/resources/mp_allLeftArrowDisabled.png" width="30px" tooltiptext="Transbordar todos los pasajeros"/>
+										</row>
+									</rows>
+								</grid>
+								
+								
+		<!-- 						ITINERARIO HACIA EL CUAL SE ARA EL TRANSBORDO -->
+								<groupbox closable="false" mold="3d" width="370px">
+								<caption>
+								 	<div align="center"><label value="HACIA" style="font-weight: bold; color:blue" /></div>
+								</caption>
+									<grid style="border:none">
+							 			<columns>
+							 				<column width="173px" />
+							 				<column  align="left"/>
+										</columns>
+										<rows>
+											<row>				
+												<groupbox id="gbxMapaHacia" height="340px" >
+													<grid id="grdMapaHacia" style="border:none">
+													</grid>
+												</groupbox>
+																		
+												<grid id="gritnerarioHacia"  width="190px" style="border:none" > 
+													<columns>
+														<column width="70px" align="right"/>
+							  							<column width="120px" /> 	
+													</columns>
+													<rows>
+														<row>
+															<label value="ITINERARIO" />
+															<hbox align="center" >
+																<longbox id="lbxItinerarioH" width="48px" readonly="true"/>
+																<button id="btnBuscarH" style="cursor:pointer" image="/resources/mp_buscarEnabled.png" tooltiptext="Busqueda del Itinerario." />
+															</hbox>
+														</row>
+														<row>
+															<label value="ORIGEN :" />
+															<label id="lbOrigenH" sclass="label-size11" style="color: #0000FF" />
+														</row>
+														<row>
+															<label value="DESTINO :"/>
+															<label id="lbDestinoH"  sclass="label-size11" style="color: #0000FF" />
+															<separator />
+														</row>	
+														<row>
+															<label value="SALIDA :" sclass="label-size11" />
+															<label id="lbSalidaH"  sclass="label-size11" style="color: #0000FF" />
+															<separator />
+														</row>	
+														<row>
+															<label value="FECHA :" sclass="label-size11" />
+															<label id="lbFechaH"  sclass="label-size11" style="color: #0000FF"/>
+															<separator />
+														</row>	
+														<row>
+															<label value="BUS :" sclass="label-size11" />
+															<label id="lbBusH"  sclass="label-size11" style="color: #0000FF" />
+															<separator />
+														</row>	
+														<row>	
+															<label value="SERVICIO :" sclass="label-size11" />
+															<label id="lbServicioH" sclass="label-size11" style="color: #0000FF"  />
+															<separator />
+														</row>	
+														<row>
+															<label value="OCUPADOS :" sclass="label-size11" />
+															<label id="lbOcupadosH"  sclass="label-size11" style="color: #0000FF" />
+															<separator />
+														</row>	
+														<row>
+															<label value="DISPONIBLE:" sclass="label-size11" />
+															<label id="lbDisponiblesH"  sclass="label-size11" style="color: #0000FF" />
+															<separator />
+														</row>	
+																						
+														<row>
+															<label value="SELECCIÓN" sclass="label-size11" />
+															<hbox align="center">
+																<intbox id="ibxSeleccionH" style="font-size:15px !important; font-weight: bold; color:red" readonly="true" width="50px" />
+																<button  id="btnVerPasajeroH" disabled="true" image="/resources/mp_preliminarDisabled.png" />
+															</hbox>
+														</row>
+														<row>
+															<separator id="separator_c1H" height="40px"/>
+							 								<separator id="separator_c2H"/>
+							  								<separator id="separator_c3H"/>
+														</row>
+														<row >
+							 								<separator id="separator1H"/>
+							 								<vbox width="150px">
+																<button id="btnRefrescarH" style="cursor:pointer" label="Refresh" image="/resources/mp_refrescarEnabled.png" onClick="wndTransbordoPasajeros.onRefrescarMapa(btnRefrescarH)"/>
+															</vbox>
+														</row>
+														<row id="rwRight" >
+															<separator/><separator/>
+														</row>
+													</rows>
+												</grid>				
+											</row>
+										</rows>
+									</grid>
+								</groupbox>	
+						</row>
+					</rows>
+				</grid>
+<!-- 				<div align="right" width="790px"> -->
+<!-- 					<button id="btnCerrar" label="Cerrar" image="/resources/mp_cerrar.png" style="cursor:pointer" tooltiptext="Cerrar Ventana transbordo de Pasajeros." onClick="wndTransbordoPasajeros.liberarAsientos(); wndTransbordoPasajeros.closeTabWindow()"/> -->
+<!-- 				</div> -->
+			</div>
+        </panelchildren>
+    </panel>    
+</window>
+</zk>
