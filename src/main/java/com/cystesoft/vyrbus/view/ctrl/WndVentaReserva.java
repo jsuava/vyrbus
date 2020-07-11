@@ -1425,7 +1425,7 @@ public class WndVentaReserva extends WndBase {
 							if(detalleItinerario.getItinerario().getOperadoPor()==null){ //Operado por tepsa
 								
 								//Tarifa Estandar, en soles								
-								List<TarifaRegular> lstTarifaRegular = ServiceLocator.getTarifaRegularManager().buscarTarifaPorServicio(3, 
+								List<TarifaRegular> lstTarifaRegular = ServiceLocator.getTarifaRegularManager().buscarTarifaPorServicio(1, 
 										detalleItinerario.getItinerario().getServicio().getId(),
 										detalleItinerario.getRuta().getId(), fechaPartida, null, null);
 								String strTarifas="";
@@ -1584,7 +1584,7 @@ public class WndVentaReserva extends WndBase {
 							cell.setTooltiptext("Hora de Partida");
 							item.appendChild(cell);
 							/*Tarifa Estandar, en soles*/
-							List<TarifaRegular> lstTarifaRegular = ServiceLocator.getTarifaRegularManager().buscarTarifaPorServicio(3, 
+							List<TarifaRegular> lstTarifaRegular = ServiceLocator.getTarifaRegularManager().buscarTarifaPorServicio(1, 
 									detalleItinerario.getItinerario().getServicio().getId(),
 									detalleItinerario.getRuta().getId(), fechaRetorno, null, null);
 							String strTarifas="";
@@ -2641,7 +2641,7 @@ public class WndVentaReserva extends WndBase {
 						//MAOE: La idea es que cada asiento seleccionado tenga su tarifa de acuerdo al nuevo modelo 
 						//Obtener la tarifa regular del asiento y almacenarlo en DetalleItinerario del asientoSeleccionado
 						List<TarifaRegular> lstTarifaRegular = ServiceLocator.getTarifaRegularManager().buscarTarifaPorServicio(
-								3, asientoSeleccionado.getDetalleItinerario().getItinerario().getServicio().getId(), 
+								1, asientoSeleccionado.getDetalleItinerario().getItinerario().getServicio().getId(), 
 								asientoSeleccionado.getDetalleItinerario().getRuta().getId(),
 								Util.DatetoString(asientoSeleccionado.getDetalleItinerario().getFechaPartida(), Constantes.DATE_FORMAT),
 								asientoSeleccionado.getPiso(),

@@ -84,11 +84,11 @@
 							<rows>
 								<row style="background:white">
 									<button label="Grabar" sclass="btn-vyrbus" image="resources/mp_guardarEnabled.png" autodisable = "self" 
-										height="30px" width="93px" sclass="btn-vyrbus" onClick="wndConfirmacion.onGuardarVenta()"/>									
+										height="30px" width="93px"  onClick="wndConfirmacion.onGuardarVenta()"/>									
 								</row>
 								<row style="background:white">
 									<button label="Cancelar" sclass="btn-vyrbus" image="resources/mp_cancelarEnabled.png" height="30px" 
-										width="93px" sclass="btn-vyrbus" onClick="wndConfirmacion.liberarAsientos(); wndConfirmacion.onClose()"/>
+										width="93px"  onClick="wndConfirmacion.liberarAsientos(); wndConfirmacion.onClose()"/>
 								</row>
 							</rows>
 						</grid>

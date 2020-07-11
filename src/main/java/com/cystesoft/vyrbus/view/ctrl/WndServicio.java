@@ -14,7 +14,10 @@ import java.util.TreeMap;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Groupbox;
 import org.zkoss.zul.Intbox;
+import org.zkoss.zul.Spinner;
 import org.zkoss.zul.Textbox;
 
 import com.cystesoft.vyrbus.model.bean.Servicio;
@@ -45,12 +48,28 @@ public class WndServicio extends WndOpcionesMantenimiento {
 
 	private static final long serialVersionUID = 1998913859947825458L;
 
-	private Textbox txtDenominacion;
+/*	private Textbox txtDenominacion;
 	private Textbox txtNombreCorto;
 	private Intbox itPisos;
 	private Intbox itAsientos;
 	private Intbox itFilas;
 	private Intbox itColumnas;
+	private Intbox itFilas2;
+	private Intbox itColumnas2;
+	*/
+	
+	private Textbox txtDenominacion;
+	private Textbox txtNombreCorto;
+	private Checkbox chkBusDosPisos;
+	private Spinner spAsientos;
+	private Spinner spFilas;
+	private Spinner spColumnas;
+	private Spinner spAsientos2;
+	private Spinner spFilas2;
+	private Spinner spColumnas2;
+	private Groupbox grpSegundoPiso;
+	
+	
 	private Servicio oServicio = null;
 	
 	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
@@ -70,12 +89,27 @@ public class WndServicio extends WndOpcionesMantenimiento {
 	 */
 	@Override
 	public void initComponents() {
-		txtDenominacion = (Textbox) getFellow("txtDenominacion");
+/*		txtDenominacion = (Textbox) getFellow("txtDenominacion");
 		txtNombreCorto = (Textbox) getFellow("txtNombreCorto");
 		itPisos = (Intbox) getFellow("itPisos");
 		itAsientos = (Intbox) getFellow("itAsientos");
 		itFilas = (Intbox) getFellow("itFilas");
 		itColumnas = (Intbox) getFellow("itColumnas");
+		itFilas2 = (Intbox) getFellow("itFilas2");
+		itColumnas2 = (Intbox) getFellow("itColumnas2");	
+		*/
+		
+		txtDenominacion = (Textbox) getFellow("txtDenominacion");
+		txtNombreCorto = (Textbox) getFellow("txtNombreCorto");
+		chkBusDosPisos = (Checkbox) getFellow("chkBusDosPisos");
+		spAsientos = (Spinner) getFellow("spAsientos");
+		spFilas = (Spinner) getFellow("spFilas");
+		spColumnas = (Spinner) getFellow("spColumnas");
+		spAsientos2 = (Spinner) getFellow("spAsientos2");
+		spFilas2 = (Spinner) getFellow("spFilas2");
+		spColumnas2 = (Spinner) getFellow("spColumnas2");
+		grpSegundoPiso = (Groupbox)this.getFellow("grpSegundoPiso");		
+		
 	}
 
 	/* (non-Javadoc)
@@ -83,6 +117,7 @@ public class WndServicio extends WndOpcionesMantenimiento {
 	 */	
 	@Override
 	public void onNew() {
+		habilitarSegundoPiso(false);
 	}
 
 	/* (non-Javadoc)
@@ -172,31 +207,56 @@ public class WndServicio extends WndOpcionesMantenimiento {
 				throw new DenominacionNullException();
 			else if (txtNombreCorto.getText().trim().equals(""))
 				throw new NombreCortoNullException();
-			else if (itPisos.getText().trim().equals(""))
-				throw new NumeroPisosNullException();
-			else if (itAsientos.getText().trim().equals(""))
-				throw new NumeroAsientoNullException();
-			else if (itFilas.getText().trim().equals(""))
-				throw new NumeroFilasNullException();
-			else if (itColumnas.getText().trim().equals(""))
-				throw new NumeroColumnasNullException();
+			else if (spAsientos.getValue().intValue()<=0)
+				throw new NumeroAsientoNullException(1);
+			else if (spFilas.getValue().intValue()==0)
+				throw new NumeroFilasNullException(1);
+			else if (spColumnas.getValue().intValue()==0)
+				throw new NumeroColumnasNullException(1);
+			else if(chkBusDosPisos.isChecked()){
+				if (spAsientos2.getValue().intValue()<=0)
+					throw new NumeroAsientoNullException(2);
+				else if (spFilas2.getValue().intValue()==0)
+					throw new NumeroFilasNullException(2);
+				else if (spColumnas2.getValue().intValue()==0)
+					throw new NumeroColumnasNullException(2);
+			}
 			
 			if(action==ACTION_NEW)
 				oServicio = new Servicio();
 			
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
+			/*
 			Integer Pisos = itPisos.getValue();
 			Integer Asientos = itAsientos.getValue();
 			Integer Filas = itFilas.getValue();
 			Integer Columnas = itColumnas.getValue();
+			Integer Filas2 = 0;
+			Integer Columnas2 = 0;
+
 			
+			if(Pisos > 1){
+				Filas2 = itFilas2.getValue();
+				Columnas2 = itColumnas2.getValue();
+			}
+			*/
 			oServicio.setId(id);
 			oServicio.setDenominacion(txtDenominacion.getText().toUpperCase());
 			oServicio.setNombreCorto(txtNombreCorto.getText().toUpperCase());
-			oServicio.setNumeroPisos(Pisos);
-			oServicio.setNumeroAsientosPiso1(Asientos);
-			oServicio.setNumeroFilasPiso1(Filas);
-			oServicio.setNumeroColumnasPiso1(Columnas);		
+			oServicio.setNumeroPisos(chkBusDosPisos.isChecked()?2:1);
+			oServicio.setNumeroAsientosPiso1(spAsientos.getValue());
+			oServicio.setNumeroFilasPiso1(spFilas.getValue());
+			oServicio.setNumeroColumnasPiso1(spColumnas.getValue());
+			oServicio.setNumeroAsientosPiso2(spAsientos2.getValue()==0?null:spAsientos2.getValue());
+			oServicio.setNumeroFilasPiso2(spFilas2.getValue()==0?null:spFilas2.getValue());
+			oServicio.setNumeroColumnasPiso2(spColumnas2.getValue()==0?null:spColumnas2.getValue());
+
+			/*
+			if(Pisos > 1) {
+				oServicio.setNumeroFilasPiso2(Filas2);
+				oServicio.setNumeroColumnasPiso2(Columnas2);
+			}
+			*/
 			oServicio.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 			
 			switch (action) {
@@ -225,17 +285,23 @@ public class WndServicio extends WndOpcionesMantenimiento {
 		}catch (NombreCortoNullException ncnex){
 			DlgMessage.information(Messages.getString("Generales.information.noIngresoNombreCorto"),txtNombreCorto);
 			throw new CancelaGrabacionException();
-		}catch (NumeroPisosNullException npnex){
-			DlgMessage.information(Messages.getString("WndServicio.information.NumeroPisos"),itPisos);
-			throw new CancelaGrabacionException();
 		}catch (NumeroAsientoNullException nanex){
-			DlgMessage.information(Messages.getString("WndServicio.information.NumeroAsientos"),itAsientos);
+			if(nanex.getNumeroPiso().intValue()==1)
+				DlgMessage.information(Messages.getString("WndServicio.information.noIngresoNumeroAsientos")+" del Primer Piso");
+			else
+				DlgMessage.information(Messages.getString("WndServicio.information.noIngresoNumeroAsientos")+" del Segundo Piso",spAsientos);
 			throw new CancelaGrabacionException();
 		}catch (NumeroFilasNullException nfnex){
-			DlgMessage.information(Messages.getString("WndServicio.information.NumeroFilas"),itFilas);
+			if(nfnex.getNumeroPiso().intValue()==1)
+				DlgMessage.information(Messages.getString("WndServicio.information.noIngresoNumeroFilas")+" del Primer Piso");
+			else
+				DlgMessage.information(Messages.getString("WndServicio.information.noIngresoNumeroFilas")+" del Segundo Piso",spFilas);
 			throw new CancelaGrabacionException();
 		}catch (NumeroColumnasNullException ncnex){
-			DlgMessage.information(Messages.getString("WndServicio.information.CantidadColumnas"),itColumnas);
+			if(ncnex.getNumeroPiso().intValue()==1)
+				DlgMessage.information(Messages.getString("WndServicio.information.noIngresoCantidadColumnas")+" del Primer Piso");
+			else
+				DlgMessage.information(Messages.getString("WndServicio.information.noIngresoCantidadColumnas")+" del Segundo Piso", spColumnas);
 			throw new CancelaGrabacionException();
 		}catch (DenominacionDuplicadaException rsdex){
 			DlgMessage.information(Messages.getString("Generales.information.denominacionDuplicada"),txtDenominacion);
@@ -350,10 +416,34 @@ public class WndServicio extends WndOpcionesMantenimiento {
 		textboxId.setText(oServicio.getId().toString());
 		txtDenominacion.setText(oServicio.getDenominacion());
 		txtNombreCorto.setText(oServicio.getNombreCorto());
-		itPisos.setValue(oServicio.getNumeroPisos());
-		itAsientos.setValue(oServicio.getNumeroAsientosPiso1());
-		itFilas.setValue(oServicio.getNumeroFilasPiso1());
-		itColumnas.setValue(oServicio.getNumeroColumnasPiso1());
+		if(oServicio.getNumeroPisos().intValue()==2){
+			chkBusDosPisos.setChecked(true);
+			spAsientos2.setValue(oServicio.getNumeroAsientosPiso2());
+			spFilas2.setValue(oServicio.getNumeroFilasPiso2());
+			spColumnas2.setValue(oServicio.getNumeroColumnasPiso2());
+			grpSegundoPiso.setVisible(true);
+		}else{
+			chkBusDosPisos.setChecked(false);
+			spAsientos2.setValue(0);
+			spFilas2.setValue(0);
+			spColumnas2.setValue(0);
+			grpSegundoPiso.setVisible(false);
+		}
+		spAsientos.setValue(oServicio.getNumeroAsientosPiso1());
+		spFilas.setValue(oServicio.getNumeroFilasPiso1());
+		spColumnas.setValue(oServicio.getNumeroColumnasPiso1());
 	}
+	
+	public void habilitarSegundoPiso(boolean habilitar) {
+		grpSegundoPiso.setVisible(habilitar);
+		spAsientos2.setDisabled(!habilitar);
+		spFilas2.setDisabled(!habilitar);
+		spColumnas2.setDisabled(!habilitar);
+		spAsientos2.setValue(0);
+		spFilas2.setValue(0);
+		spColumnas2.setValue(0);
+	}
+	
+	
 
 }

@@ -416,6 +416,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 		}catch (NombreCortoNullException ncnex){
 			DlgMessage.information(Messages.getString("Generales.information.noIngresoNombreCorto"),txtNombreCorto);
 			throw new CancelaGrabacionException();
+			
 		}catch (NumeroAsientoNullException nanex){
 			if(nanex.getNumeroPiso().intValue()==1)
 				DlgMessage.information(Messages.getString("WndServicio.information.noIngresoNumeroAsientos")+" del Primer Piso");
@@ -434,6 +435,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 			else
 				DlgMessage.information(Messages.getString("WndServicio.information.noIngresoCantidadColumnas")+" del Segundo Piso", spColumnas);
 			throw new CancelaGrabacionException();
+			
 		}catch (DenominacionDuplicadaException rsdex){
 			DlgMessage.information(Messages.getString("Generales.information.denominacionDuplicada"),txtDenominacion);
 			throw new CancelaGrabacionException();
@@ -526,7 +528,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 			deshabilitarToolbar(true);
 			servicio = ServiceLocator.getServicioManager().buscarPorId(Long.valueOf(idServicio));
 			int nPisos = servicio.getNumeroPisos();
-			int nAsientos = servicio.getNumeroAsientosPiso1();
+			int nAsientos = servicio.getNumeroAsientosPiso1() + servicio.getNumeroAsientosPiso2();
 			int nFilas = servicio.getNumeroFilasPiso1();
 			int nColumnas = servicio.getNumeroColumnasPiso1();
 			prefijoAsiento = "imgAsientoPiso1_";
@@ -536,11 +538,11 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 				generarImagen();
 			
 			Image imagen = generarImagen(IMAGE_PRIMER_PISO, 154, 43);
-			
+			numeroAsiento = 0;
 			for(int i=0; i<nPisos; i++){
 				String idGrid = "grdPiso1";
 				if(i==1){
-					nAsientos = servicio.getNumeroAsientosPiso2();
+//					nAsientos = servicio.getNumeroAsientosPiso2();
 					nFilas = servicio.getNumeroFilasPiso2();
 					nColumnas = servicio.getNumeroColumnasPiso2();
 					prefijoAsiento = "imgAsientoPiso2_";
@@ -558,7 +560,8 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 				row.appendChild(imagen);
 				row.setStyle("background:white; padding:0px");
 				rows.appendChild(row);
-				numeroAsiento = 0;
+//				Se comento para probar si los asientos se crean continuadamente
+//				numeroAsiento = 0;
 				for(int j=0; j<nFilas; j++){
 					row = new Row();
 					for(int k=0; k<nColumnas; k++){

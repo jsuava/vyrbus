@@ -339,7 +339,7 @@ public class Constantes {
 	public static final int ID_ROL_FLOTA=20;
 	
 	/*Constantes que refieren a la Localidad*/
-	public static final int ID_LOC_LIMA=13;
+	public static final int ID_LOC_LIMA=1;
 	
 	/*	Constantes que referencian al tipo de movimiento	*/
 	public static final int ID_TIPMOV_EFECTIVO = 1;
@@ -389,7 +389,7 @@ public class Constantes {
 	public static final int ID_TIPAGE_CORPORATIVO = 3;
 	
 	/*	Constantes que referencian a los tipos de moneda	*/
-	public static final int ID_TIPMON_SOLES=2;
+	public static final int ID_TIPMON_SOLES=1;
 	
 	/*	Constantes que referencian a los Tipos de Comprobante	*/
 	public static final int ID_TIPCOM_BOLETO_VIAJE=1;

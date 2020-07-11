@@ -78,6 +78,7 @@ import com.cystesoft.vyrbus.model.bean.Promocion;
 import com.cystesoft.vyrbus.model.bean.Reniec;
 import com.cystesoft.vyrbus.model.bean.Servicio;
 import com.cystesoft.vyrbus.model.bean.Sexo;
+import com.cystesoft.vyrbus.model.bean.TarifaRegular;
 import com.cystesoft.vyrbus.model.bean.TarjetaCredito;
 import com.cystesoft.vyrbus.model.bean.TipoComprobante;
 import com.cystesoft.vyrbus.model.bean.TipoDocumento;
@@ -664,6 +665,27 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			List<DetalleItinerario> lstDetalles = ServiceLocator.getDetalleItinerarioManager().buscarPorX(criteriosBusqueda, null);
 			if (lstDetalles.size() == 1) {
 				detailItinerary = lstDetalles.get(0);
+				
+				
+				//Obetenr el piso y la zona de mapa bus
+				Integer piso = getObjetoConfirmar().getNumeroPiso() ;
+				Integer zona = 1;
+				
+				//MAOE: La idea es que cada asiento seleccionado tenga su tarifa de acuerdo al nuevo modelo 
+				//Obtener la tarifa regular del asiento y almacenarlo en DetalleItinerario del asientoSeleccionado
+				List<TarifaRegular> lstTarifaRegular = ServiceLocator.getTarifaRegularManager().buscarTarifaPorServicio(
+						1, detailItinerary.getItinerario().getServicio().getId(), 
+						detailItinerary.getRuta().getId(),
+						Util.DatetoString(detailItinerary.getFechaPartida(), Constantes.DATE_FORMAT),
+						piso,
+						zona);
+				if(lstTarifaRegular.size()>0)
+					detailItinerary.setTarifa(lstTarifaRegular.get(0).getMonto()!=null
+																		 ?lstTarifaRegular.get(0).getMonto()
+																		 :0.00);
+				else
+					detailItinerary.setTarifa(0.00);				
+				
 				onLoadDatosVenta(detailItinerary);
 				txtNumeroAsiento.setText(getObjetoConfirmar().getNumeroAsiento() == null ? "" : (getObjetoConfirmar().getNumeroAsiento()==0?"":getObjetoConfirmar().getNumeroAsiento().toString()));
 				txtNumeroPiso.setText(getObjetoConfirmar().getNumeroPiso() == null ? "": getObjetoConfirmar().getNumeroPiso().toString());
@@ -780,6 +802,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	private void onLoadDatosVenta(DetalleItinerario detalleItinerario) {
 		lblOrigen.setValue(detalleItinerario.getRuta().getOrigen());
 		lblDestino.setValue(detalleItinerario.getRuta().getDestino());
+		
 		lblTarifa.setValue(Util.toNumberFormat(detalleItinerario.getTarifa(), 2));
 		lblFechaPartida.setValue(Util.DatetoString(detalleItinerario.getFechaPartida(), Constantes.DATE_FORMAT)+" "+detalleItinerario.getHoraPartida());
 		lblFechaLlegada.setValue(Util.DatetoString(detalleItinerario.getFechaLlegada(), Constantes.DATE_FORMAT)+" "+(detalleItinerario.getHoraLlegada()!=null?detalleItinerario.getHoraLlegada():""));

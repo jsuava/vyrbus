@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.cystesoft.vyrbus.model.bean.Reniec" table="RENIEC.BDRENIEC" schema="VYR">
+    <class name="com.cystesoft.vyrbus.model.bean.Reniec" table="RENIEC.BDRENIEC" schema="VYRBUSTRANSMAR">
         <comment>Entidad que almacena los datos de las personas registradas en la RENIC</comment>
         <id name="numeroDocumento" type="java.lang.String">
             <column name="NUM_DOC" length="8"  />

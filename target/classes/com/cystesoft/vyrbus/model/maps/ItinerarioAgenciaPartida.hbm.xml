@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartida" table="VRTITIAGEPAR" schema="VYR">
+    <class name="com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartida" table="VRTITIAGEPAR" schema="VYRBUSTRANSMAR">
         <comment>Agencias de partida o puntos de embarque del itinerario.</comment>
         <composite-id name="itinerarioAgenciaPartidaID" class="com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartidaID">
         	<key-property name="idItinerario" type="java.lang.Long"  column="ITINERARIO_ID"/>
