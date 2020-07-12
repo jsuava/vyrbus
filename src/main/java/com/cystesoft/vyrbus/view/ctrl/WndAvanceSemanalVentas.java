@@ -159,8 +159,9 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 			}
 
 			addAvance(columnFechas, lstAvance);
-			String pasBackground="#929fba";
-			String ocuBackground="#7283a7";
+			String pasBackground="#3F51B5";
+			String ocuBackground="#5c6bc0";
+			String totalesBackground = "#3949ab";
 			
 			//*Agrega avace de retorno, solamente si origen y destono están seleccionados en todos.
 			if(idOrigen.isEmpty() && idDestino.isEmpty()){
@@ -224,9 +225,9 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 			}
 			
 			//Agraga total pasajeros
-			addResumen(columnFechas,"Total Pasajeros","#59698d",null);
+			addResumen(columnFechas,"Total Pasajeros","#3949ab",null);
 			//Calcula el total Ocupalidad
-			addOcupabilidad(columnFechas,"%OCUPABILIDAD TOTAL","#59698d",null);
+			addOcupabilidad(columnFechas,"%OCUPABILIDAD TOTAL","#3949ab",null);
 			this.appendChild(lbxAvance);
 			
 
@@ -302,7 +303,7 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 		}
 		cell.setStyle(style);
 		item.appendChild(cell);
-		item.setStyle("background:#59698d");
+		item.setStyle("background:#3949ab");
 		lbxAvance.appendChild(item);	
 	}
 	
@@ -556,7 +557,7 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 		
 		cell.setStyle(style);
 		item.appendChild(cell);
-		item.setStyle("background:#59698d");
+		item.setStyle("background:#3949ab");
 		lbxAvance.appendChild(item);
 	}
 	

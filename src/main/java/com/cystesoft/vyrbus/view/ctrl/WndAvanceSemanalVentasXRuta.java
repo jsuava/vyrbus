@@ -301,7 +301,7 @@ public class WndAvanceSemanalVentasXRuta extends WndBase implements Serializable
 						rowRutas.appendChild(treecellHijo);
 						
 						treecellHijo = new Treecell(String.valueOf(ventaRutas.getCantidadPax()));
-						treecellHijo.setStyle("font-weight:bold;color:#424242");
+						treecellHijo.setStyle("font-weight:bold;color:#5c6bc0");
 						rowRutas.appendChild(treecellHijo);
 						
 						rowRutas.setStyle("background:#eeeeee");
