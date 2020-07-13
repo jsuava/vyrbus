@@ -25,6 +25,7 @@ public interface TarifaFechaAbiertaDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public Double buscarTarifa(Integer idRuta, Integer idServicio)throws Exception;
+	
 	/**
 	 * Busca las tarifas a fecha abierta, según los parametros enviados.
 	 * @param idOrigen		: Identificador del origen.
@@ -34,18 +35,21 @@ public interface TarifaFechaAbiertaDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public List<TarifaFechaAbierta> buscarTarifas(Integer idOrigen,Integer idDestino, Integer idServicio)throws Exception;
+	
 	/**
 	 * Guarda una nueva tarifa a fecha abierta.
 	 * @param tarifaFechaAbierta	
 	 * @throws Exception
 	 */
 	public void guardar(TarifaFechaAbierta tarifaFechaAbierta)throws Exception;
+	
 	/**
 	 * Actualiza una tarifa a fecha abierta
 	 * @param tarifaFechaAbierta
 	 * @throws Exception
 	 */
 	public void actualizar(TarifaFechaAbierta tarifaFechaAbierta)throws Exception;
+	
 	/**
 	 * Inactiva el registro
 	 * @param id	: Identificador de la tarifa a fecha abierta.

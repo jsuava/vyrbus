@@ -92,7 +92,13 @@
 		<toolbar width="100%">
  			<hbox align="center">
 				<separator width="669px"/>
-				<button id="btnAplicar" sclass="btn-vyrbus"  label="Aplicar" image="/resources/mp_aceptarEnabled.png" width="120px"  onClick="wndTarifario.guardar()" height="28px" />
+				<button id="btnAplicar" 
+					sclass="btn-vyrbus"  
+					label="Aplicar" 
+					image="/resources/mp_aceptarEnabled.png" 
+					width="120px"  
+					onClick="wndTarifario.guardar()" 
+					height="28px" />
  			</hbox>
 		</toolbar>
 	</panelchildren>

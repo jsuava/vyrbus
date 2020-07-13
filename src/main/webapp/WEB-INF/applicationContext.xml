@@ -358,6 +358,9 @@
    	<bean id="reimpresionAnticipadaDAO" class="com.cystesoft.vyrbus.model.dao.impl.ReimpresionAnticipadaDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
+   	<bean id="tarifaDAO" class="com.cystesoft.vyrbus.model.dao.impl.TarifaDAOImpl">
+   		<property name="sessionFactory" ref="sessionFactory" />
+   	</bean>   	
    	<bean id="tarifaRegularDAO" class="com.cystesoft.vyrbus.model.dao.impl.TarifaRegularDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>   	
@@ -730,6 +733,9 @@
 	</bean>
 	<bean id="reimpresionAnticipadaManager" class="com.cystesoft.vyrbus.service.business.impl.ReimpresionAnticipadaManagerImpl">
 		<property name="reimpresionAnticipadaDAO" ref="reimpresionAnticipadaDAO" />
+	</bean>
+	<bean id="tarifaManager" class="com.cystesoft.vyrbus.service.business.impl.TarifaManagerImpl">
+		<property name="tarifaDAO" ref="tarifaDAO" />
 	</bean>
 	<bean id="tarifaRegularManager" class="com.cystesoft.vyrbus.service.business.impl.TarifaRegularManagerImpl">
 		<property name="tarifaRegularDAO" ref="tarifaRegularDAO" />

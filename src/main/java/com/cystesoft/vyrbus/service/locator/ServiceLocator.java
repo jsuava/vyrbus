@@ -915,6 +915,11 @@ public class ServiceLocator {
 		return (ComprobantesBloqueadosManager) SpringUtil.getBean("comprobantesBloqueadosManager",ComprobantesBloqueadosManager.class);
 	}
 	
+	public static TarifaManager getTarifaManager(){
+		return (TarifaManager) SpringUtil.getBean("tarifaManager", TarifaManager.class);
+	}
+	
+	
 	public static TarifaRegularManager getTarifaRegularManager(){
 		return (TarifaRegularManager) SpringUtil.getBean("tarifaRegularManager", TarifaRegularManager.class);
 	}

@@ -156,6 +156,13 @@ public class WndTarifario extends WndBase implements Serializable {
 		List<DetalleItinerario>lstRutas=ServiceLocator.getItinerarioManager().buscarRutas(dtbxFechaInicio.getText(), dtbxFechaFinal.getText(),
 																  idServicio,idOrigen,idDestino,horaPartida,idItinerario, 
 																  mostrarDetalle,idTipoItinerario);
+		
+		/*
+		 * 12/07/2020
+		 * MAOE
+		 * En esta parte recuperar las tarifas regulares
+		 * 
+		 */
 				
 		/* Recupera las tarifas a fecha abierta */
 		List<TarifaFechaAbierta>lstTarifaFA=ServiceLocator.getTarifaFechaAbierta().buscarTarifas(idOrigen, idDestino, idServicio);

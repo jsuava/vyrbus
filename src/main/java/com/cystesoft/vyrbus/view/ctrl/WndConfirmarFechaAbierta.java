@@ -26,6 +26,7 @@ import org.zkoss.zul.Textbox;
 
 import com.cystesoft.vyrbus.model.bean.DetalleItinerario;
 import com.cystesoft.vyrbus.model.bean.Localidad;
+import com.cystesoft.vyrbus.model.bean.TarifaRegular;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.service.exceptions.ItinerarioException;
 import com.cystesoft.vyrbus.service.exceptions.LiquidacionNullException;
@@ -308,6 +309,35 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 						item.appendChild(cell);
 						cell = new Listcell(detalleItinerario.getHoraPartida());
 						item.appendChild(cell);
+						
+						/*
+						 * 12/07/2020 
+						 * MAOE
+						 * Codigo para recuperar las tarifas por itinerario
+						 */
+						
+						List<TarifaRegular> lstTarifaRegular = ServiceLocator.getTarifaRegularManager().buscarTarifaPorServicio(1, 
+								detalleItinerario.getItinerario().getServicio().getId(),
+								detalleItinerario.getRuta().getId(), fechaPartida, null, null);
+						String strTarifas="";
+						if(lstTarifaRegular.size()>0){
+							for(TarifaRegular tarifa: lstTarifaRegular){
+								strTarifas += tarifa.getMonto().toString();
+								if(lstTarifaRegular.size()>1)
+									strTarifas += " / ";
+							}
+							if(lstTarifaRegular.size()>1)
+								strTarifas = strTarifas.substring(0, strTarifas.length()-3);								
+						}
+						else
+							strTarifas="0.00";
+
+						detalleItinerario.setTarifa(Double.valueOf(strTarifas.substring(0, 2)));						
+						
+						/*
+						 * 	FINAL RECUPERACION DE TARIFAS
+						 */
+						
 						cell = new Listcell(Util.toNumberFormat(detalleItinerario.getTarifa(), 2));
 						item.appendChild(cell);
 						
@@ -357,6 +387,7 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 			ventaFechaAbierta.setHoraPartida(detalleItinerario.getHoraPartida());
 			ventaFechaAbierta.setFechaLlegada(detalleItinerario.getFechaLlegada());
 			ventaFechaAbierta.setHoraLllegada(detalleItinerario.getHoraLlegada());
+			ventaFechaAbierta.setDetalleItinerario(detalleItinerario);
 //			ventaFechaAbierta.setTarifa(detalleItinerario.getTarifa());			
 			btnSiguiente.setDisabled(false);
 		}

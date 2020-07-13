@@ -731,7 +731,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 					asientoSeleccionado.setDetalleItinerario(ventaPasaje.getDetalleItinerario());
 					
 					List<TarifaRegular> lstTarifaRegular = ServiceLocator.getTarifaRegularManager().buscarTarifaPorServicio(
-							3, ventaPasaje.getServicio().getId(), 
+							1, ventaPasaje.getServicio().getId(), 
 							ventaPasaje.getRuta().getId(),
 							Util.DatetoString(ventaPasaje.getFechaPartida(), Constantes.DATE_FORMAT),
 							asientoSeleccionado.getPiso(),
