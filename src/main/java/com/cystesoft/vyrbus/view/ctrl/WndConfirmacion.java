@@ -677,6 +677,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 						1, detailItinerary.getItinerario().getServicio().getId(), 
 						detailItinerary.getRuta().getId(),
 						Util.DatetoString(detailItinerary.getFechaPartida(), Constantes.DATE_FORMAT),
+						detailItinerary.getHoraPartida(),
 						piso,
 						zona);
 				if(lstTarifaRegular.size()>0)

@@ -14,7 +14,9 @@ import java.util.Date;
 import java.util.List;
 
 import com.cystesoft.vyrbus.model.bean.CanalVenta;
+import com.cystesoft.vyrbus.model.bean.DetalleItinerario;
 import com.cystesoft.vyrbus.model.bean.Itinerario;
+import com.cystesoft.vyrbus.model.bean.Localidad;
 import com.cystesoft.vyrbus.model.bean.Ruta;
 import com.cystesoft.vyrbus.model.bean.Servicio;
 import com.cystesoft.vyrbus.model.bean.Tarifa;
@@ -32,20 +34,22 @@ public class TarifaRegularDAOImpl extends GenericDAOImpl implements TarifaRegula
 	 */
 	@Override
 	public List<TarifaRegular> buscarTarifaPorServicio(Integer canalVentaID, Integer servicioID, Integer rutaID, 
-													   String fechaTarifa, Integer piso, Integer zona) throws Exception {
+													   String fechaTarifa, String horaPartida, Integer piso, Integer zona) throws Exception {
 		// TODO Auto-generated method stub
-		return buscarTarifa(canalVentaID, servicioID, rutaID, fechaTarifa, piso, zona);
+		return buscarTarifa(canalVentaID, servicioID, rutaID, fechaTarifa, horaPartida, piso, zona);
 	}
 	
 	
-	private List<TarifaRegular> buscarTarifa(Integer canalVentaID, Integer servicioID, Integer rutaID, String fechaTarifa, Integer piso, Integer zona){
+	private List<TarifaRegular> buscarTarifa(Integer canalVentaID, Integer servicioID, Integer rutaID, 
+					String fechaTarifa, String horaPartida, Integer piso, Integer zona){
 		
 		String sql = "SELECT "  
 					+ "tr.tarreg_id, ta.tarifa_id, ta.canven_id, ta.servicio_id, ta.ruta_id, ta.n_pisbus, " 
 					+ "ta.n_zonbus, tr.d_fectar, tr.c_horpar, tr.itinerario_id,  tr.n_monto " 
 					+ "FROM vrttarifa ta inner join vrttarreg tr on (ta.tarifa_id = tr.tarifa_id) "
 					+ "WHERE ta.canven_id= " + canalVentaID + " AND ta.servicio_id = " + servicioID + " AND ta.ruta_id= " + rutaID + " "
-					+ "AND tr.d_fectar=to_date('" + fechaTarifa + "', 'dd/mm/yyyy') ";
+					+ "AND tr.d_fectar = to_date('" + fechaTarifa + "', 'dd/mm/yyyy') "
+					+ "AND tr.c_horpar = '" + horaPartida + "' " ; 
 		
 		if(piso!=null && zona!=null)
 			sql += "AND ta.n_pisbus=" + piso + " AND ta.n_zonbus=" + zona + " ";
@@ -89,12 +93,150 @@ public class TarifaRegularDAOImpl extends GenericDAOImpl implements TarifaRegula
 
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.model.dao.TarifaRegularDAO#buscarTarifaPorServicio(java.lang.Integer, java.lang.Integer, java.lang.Integer, java.lang.String, java.lang.Integer, java.lang.Integer)
+	 * con_o_sin_tarifa: Este parametro permite devolver servicios 0: Sin tarifa, solo contarifa: 1 y en el caso de ambos
+	 * 					 debera tener la ausencia de la clausula NVL(Tar.CANVENID, 0)=1
 	 */
-//	@Override
-//	public List<TarifaRegular> buscarTarifaPorServicio(Integer canalVentaID, Integer servicioID, Integer rutaID,
-//			String fechaTarifa, Integer piso, Integer zona) throws Exception {
-//		// TODO Auto-generated method stub
-//		return buscarTarifa(canalVentaID, servicioID, rutaID, fechaTarifa, piso, zona);
-//	}
+	@Override
+	public List<TarifaRegular> listarTarifasPorServicios(Integer canalVentaID,
+														Integer servicioID,
+														Integer origenID,
+														Integer destinoID,
+														Integer tipoItinerarioID,
+														String fechaInicio,
+														String fechaFin,
+														String horaPartida,
+														Integer con_o_sin_tarifa) throws Exception {
+		// TODO Auto-generated method stub
+		String strHorPar1="";
+		String strHorPar2="";
+		String strConTarifa=" ";
+		if(horaPartida!=null) {
+			strHorPar1="AND di.c_horpar='"+horaPartida+"'  ";
+			strHorPar2="AND tr.c_horpar='"+horaPartida+"'  ";
+		}
+		
+		//Para devolver Servicios tanto con tarifa como sin tarifa
+		//strConTarifa debe ser vacia.
+		if(con_o_sin_tarifa == 0)
+			strConTarifa = "AND NVL(Tar.TARIFA, 0) = 0 ";
+		else if(con_o_sin_tarifa == 1)
+			strConTarifa = "AND NVL(Tar.TARIFA, 0) > 0 ";
+		
+		String strSql= "SELECT " + 
+			  "iT.idItinerario, Tar.TARIFAID, Tar.TARREGID, " +			//2
+			  "Tar.CANVENID, Tar.CANAL, It.ruta_id, It.c_horpar, " +  		//6
+			  "It.Origen, It.Destino, It.servicio_id, It.Servicio,  " + 	//10
+			  "It.d_fecpar, It.itinerarioDetalle,  " +		//12
+			  "Tar.PISO, Tar.ZONABUS, NVL(Tar.TARIFA, 0) Tarifa " +  		//15
+			"FROM  " +
+			"(SELECT  " +
+			  "r.ruta_id, di.c_horpar, r.c_origen as Origen, r.c_destino as Destino, s.servicio_id, s.c_denominacion as Servicio, " + 
+			  "di.d_fecpar, di.detiti_id as itinerarioDetalle,  " +
+			  "i.itinerario_id as idItinerario   " +
+			"FROM  " +
+			  "vrtitinerario i " + 
+			  "INNER JOIN vrtdetiti di ON (di.itinerario_id=i.itinerario_id) " + 
+			  "INNER JOIN vrmruta r ON (r.ruta_id=di.ruta_id)  " +
+			  "INNER JOIN vrmservicio s ON (s.servicio_id=i.servicio_id) " + 
+			"WHERE  " +
+			  "di.d_fecpar BETWEEN to_date('"+ fechaInicio +"', 'dd/MM/yyyy') AND to_date('"+ fechaFin +"', 'dd/MM/yyyy') " + 
+			  "AND i.c_estreg='A'  " +
+			  "AND i.n_esanulado=0  " +
+			  "AND di.c_estreg='A'   " +
+			  "AND i.tipIti_id = NVL("+ tipoItinerarioID + ", i.tipIti_id) " + 
+			  "AND i.servicio_id = NVL(" + servicioID+ ", i.servicio_id)" +
+			  "AND r.localidad_idOrigen = NVL("+ origenID + ", r.localidad_idorigen)" +  
+			  "AND r.localidad_idDestino = NVL("+ destinoID +", r.localidad_iddestino) " + 
+			  strHorPar1 +
+			"ORDER BY di.d_fecpar, di.c_horpar) It " + 
+			"LEFT JOIN  " +
+			"(SELECT  " +
+			       "t.tarifa_id TARIFAID, " +
+			       "tr.tarreg_id TARREGID,  " +
+			       "cv.c_denominacion CANAL, " +
+			       "t.canven_id CANVENID,  " +
+			       "t.ruta_id RUTAID,  " +
+			       "t.servicio_id SERVICIOID, " +
+			       "tr.d_fectar FECPAR, " +
+			       "tr.c_horpar HORPAR, " +
+//			       "decode(t.n_pisbus, 0, '1P', 1, '2P') PISO, " +
+					"t.n_pisbus PISO, " +
+			       "t.n_zonbus ZONABUS, " +
+			       "tr.n_monto TARIFA " +
+			"FROM vrttarifa t  " +
+			"INNER JOIN vrttarreg tr ON (t.tarifa_id = tr.tarifa_id) " +
+			"INNER JOIN vrmcanven cv ON (t.canven_id = cv.canven_id) " +
+			"INNER JOIN vrmservicio s ON (t.servicio_id = s.servicio_id) " +
+			"INNER JOIN vrmruta r  ON (t.ruta_id = r.ruta_id) " +
+			"WHERE  " +
+			"r.localidad_idorigen=NVL("+ origenID + ",r.localidad_idorigen) AND " +
+			"r.localidad_iddestino=NVL("+ destinoID +",r.localidad_iddestino) AND " +
+			"tr.d_fectar BETWEEN TO_DATE('"+ fechaInicio +"','dd/mm/yyyy') AND TO_DATE('"+ fechaFin +"','dd/mm/yyyy')"  +
+			strHorPar2 +
+//			"AND t.n_pisbus=1
+//			"and t.canven_id=2			
+			") Tar " +
+			"ON  " +
+			"( " +
+			  "It.ruta_id = Tar.RUTAID AND " +
+			  "It.servicio_id = Tar.SERVICIOID AND " + 
+			  "It.d_fecpar = Tar.FECPAR AND  " +
+			  "It.c_horpar  = Tar.HORPAR " +
+			") " +
+//			--Eligiendo canales
+			"WHERE NVL(Tar.CANVENID, 0) = NVL(" +canalVentaID+",  NVL(Tar.CANVENID, 0)) "+
+//			--Sin tarifa =0; con tarifa >0 ambos sin el where
+			 strConTarifa +
+			"ORDER BY " +
+			      "It.d_fecpar, It.c_horpar, Tar.CANAL "; 		
+
+		log.info(strSql);
+		List<?>result =getSession().createSQLQuery(strSql).list();
+		List<TarifaRegular> lstTarifaRegular = new ArrayList<>();
+		for(int i=0;i<result.size();i++){
+			Object[] obj = (Object[]) result.get(i);
+			Itinerario itinerario = new Itinerario();
+			itinerario.setId(((BigDecimal)obj[0]).longValue());
+			TarifaRegular tarifaRegular = new TarifaRegular();
+			tarifaRegular.setItinerario(itinerario);
+			tarifaRegular.setId(obj[2]!=null ? ((BigDecimal)obj[2]).intValue() : null);
+			Tarifa tarifa = new Tarifa();
+			tarifa.setId(obj[1]!=null?((BigDecimal)obj[1]).intValue():null);
+			
+			CanalVenta canalVenta = new CanalVenta();
+			canalVenta.setId(obj[3]!=null ? ((BigDecimal)obj[3]).intValue() : null);
+			canalVenta.setDenominacion(obj[4]!=null ? obj[4].toString() : null);
+			tarifa.setCanalVenta(canalVenta);
+			
+			Ruta ruta = new Ruta();
+			ruta.setId(((BigDecimal)obj[5]).intValue());
+			Localidad localidadOrigen = new Localidad();
+			Localidad localidadDestino = new Localidad();
+			localidadOrigen.setDenominacion(obj[7]!=null?obj[7].toString():null);
+			localidadDestino.setDenominacion(obj[8]!=null?obj[8].toString():null);
+			ruta.setLocalidadOrigen(localidadOrigen);
+			ruta.setLocalidadDestino(localidadDestino);
+			tarifa.setRuta(ruta);
+			
+			Servicio servicio = new Servicio();
+			servicio.setId(((BigDecimal)obj[9]).intValue());
+			servicio.setDenominacion(obj[10]!=null?obj[10].toString():null);
+			tarifa.setServicio(servicio);
+			
+			tarifa.setPisoBus(obj[13]!=null ? ((BigDecimal)obj[13]).intValue() : null);
+			tarifa.setZonaBus(obj[14]!=null ? ((BigDecimal)obj[14]).intValue() : null);
+			
+			tarifaRegular.setTarifa(tarifa);
+			tarifaRegular.setFechaTarifa((Date)obj[11]);
+			tarifaRegular.setHoraPartida(obj[6]!=null?obj[6].toString():null);
+//			tarifaRegular.setItinerario(obj[9]!=null? new Itinerario(((BigDecimal)obj[9]).longValue()):null);
+			tarifaRegular.setMonto(((BigDecimal)obj[15]).doubleValue());
+			
+		
+			lstTarifaRegular.add(tarifaRegular);
+		}
+		
+		return lstTarifaRegular;
+	}
 
 }

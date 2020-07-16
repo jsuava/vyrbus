@@ -47,7 +47,7 @@
 							<combobox id="cmbDestino" readonly="true"  width="120px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(dbFechaPartida)"/>
 						</row>
 						<row>		
-							<label value="FECHA PARTIDA :" />
+							<label value="FECHA INICIO :" />
 							<datebox id="dbFechaPartida" format="dd/MM/yyyy" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(tbHoraPartida)" />
 							<label value="HORA PARTIDA :" />
 							<timebox id="tbHoraPartida"  width="90px" format="HH:mm" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbTermOrigen)"/>
@@ -58,7 +58,7 @@
 					</rows>
 				</grid>	
 			</groupbox>
-							 
+			<!-- 				 
 			<grid id="grdRutasTarifas"   height="142px">
 				<auxhead>
 					<auxheader label="RUTAS Y TARIFAS" colspan="3" align="center" />
@@ -71,6 +71,7 @@
 				</columns>
 				<rows id="rutaTarifas"/>
 			</grid>
+			 -->
 		</hbox>	
 	
 		<separator height="1px" />

@@ -342,7 +342,7 @@ public class WndFiltrarParametros extends WndBase {
 					}
 					else if (oComponent instanceof Datebox) {
 						final Datebox oDatebox = (Datebox) oComponent;
-						oDatebox.setFormat("dd/mm/yyyy");
+						oDatebox.setFormat("dd/MM/yyyy");
 											
 						lstParametrosValor.put(key, oDatebox.getValue());
 					}

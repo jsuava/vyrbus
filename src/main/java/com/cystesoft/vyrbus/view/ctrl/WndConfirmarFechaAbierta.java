@@ -318,7 +318,8 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 						
 						List<TarifaRegular> lstTarifaRegular = ServiceLocator.getTarifaRegularManager().buscarTarifaPorServicio(1, 
 								detalleItinerario.getItinerario().getServicio().getId(),
-								detalleItinerario.getRuta().getId(), fechaPartida, null, null);
+								detalleItinerario.getRuta().getId(), fechaPartida, 
+								detalleItinerario.getHoraPartida(), null, null);
 						String strTarifas="";
 						if(lstTarifaRegular.size()>0){
 							for(TarifaRegular tarifa: lstTarifaRegular){

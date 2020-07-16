@@ -1427,7 +1427,8 @@ public class WndVentaReserva extends WndBase {
 								//Tarifa Estandar, en soles								
 								List<TarifaRegular> lstTarifaRegular = ServiceLocator.getTarifaRegularManager().buscarTarifaPorServicio(1, 
 										detalleItinerario.getItinerario().getServicio().getId(),
-										detalleItinerario.getRuta().getId(), fechaPartida, null, null);
+										detalleItinerario.getRuta().getId(), fechaPartida, 
+										detalleItinerario.getHoraPartida(), null, null);
 								String strTarifas="";
 								if(lstTarifaRegular.size()>0){
 									for(TarifaRegular tarifa: lstTarifaRegular){
@@ -1457,9 +1458,17 @@ public class WndVentaReserva extends WndBase {
 //								criteriosBusqueda.put("esAcumulable", Constantes.TRUE_VALUE);
 //								criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 //								List<Promocion> resultPromo = ServiceLocator.getPromocionManager().buscarPorX(criteriosBusqueda, null, Constantes.FORMAT_DATE.format(detalleItinerario.getFechaPartida()));
-								Listcell cellTarifaSuite = new Listcell();
-								cellTarifaSuite.setStyle("font-size:11px !important");
-								cellTarifaSuite.setTooltiptext("Tarifa Suite");
+								
+								/*
+								 * 12/07/2020
+								 * MAOE
+								 * Comentado porque no aplica el tema del Suite
+								 */
+//								Listcell cellTarifaSuite = new Listcell();
+//								cellTarifaSuite.setStyle("font-size:11px !important");
+//								cellTarifaSuite.setTooltiptext("Tarifa Suite");
+								
+								
 //								if(resultPromo.size()==1){
 //									cellTarifaSuite.setLabel(Util.toNumberFormat(detalleItinerario.getTarifa(), 2));
 //									cellTarifaStandar.setLabel(Util.toNumberFormat(resultPromo.get(0).getPorImporte(), 2));
@@ -1500,7 +1509,11 @@ public class WndVentaReserva extends WndBase {
 //										cellTarifaSuite.setStyle("font-size:10px !important;text-transform:none");
 //									}
 //								}else
-									cellTarifaSuite.setLabel("0.00");
+								
+								/*
+								 * Comentado por MAOE 16/07/2020
+								 */
+//									cellTarifaSuite.setLabel("0.00");
 															
 								
 								/*BEGIN 11/07/2016 - JABANTO (Tarifario personalizado por cliente)*/
@@ -1512,15 +1525,21 @@ public class WndVentaReserva extends WndBase {
 																					detalleItinerario.getItinerario().getServicio().getId(), 
 																					fechaPartida);
 									for(TarifaClienteDetalle tarifaClienteDetalle :result){
-										if(tarifaClienteDetalle.getTipoAsiento().getId().intValue()==Constantes.ID_TIPASI_SUITE) //Si es suite
-											cellTarifaSuite.setLabel(Util.toNumberFormat(tarifaClienteDetalle.getTarifa(), 2));
-										else //Es regular
+										/*
+										 * Comentado el 16/07/2020 por MAOE porque el Suite no aplica
+										 */
+//										if(tarifaClienteDetalle.getTipoAsiento().getId().intValue()==Constantes.ID_TIPASI_SUITE) //Si es suite
+//											cellTarifa.setLabel(Util.toNumberFormat(tarifaClienteDetalle.getTarifa(), 2));
+//										else //Es regular
 											cellTarifaStandar.setLabel(Util.toNumberFormat(tarifaClienteDetalle.getTarifa(), 2));
 									}
 								}
 																
 								item.appendChild(cellTarifaStandar); //Tarifa estandar
-								item.appendChild(cellTarifaSuite);//Tarifa Suite
+								/*
+								 * Comentado el 16/07/2020 por MAOE porque el Suite no aplica
+								 */
+//								item.appendChild(cellTarifaSuite);//Tarifa Suite
 								
 								/*Tarifa en otra moneda, segun la configuracion de la agencia*/
 								if(tipoMonedaAgencia!=null && tipoMonedaAgencia.getId().intValue()!=Constantes.ID_TIPMON_SOLES){
@@ -1586,7 +1605,8 @@ public class WndVentaReserva extends WndBase {
 							/*Tarifa Estandar, en soles*/
 							List<TarifaRegular> lstTarifaRegular = ServiceLocator.getTarifaRegularManager().buscarTarifaPorServicio(1, 
 									detalleItinerario.getItinerario().getServicio().getId(),
-									detalleItinerario.getRuta().getId(), fechaRetorno, null, null);
+									detalleItinerario.getRuta().getId(), fechaRetorno, 
+									detalleItinerario.getHoraPartida(), null, null);
 							String strTarifas="";
 							if(lstTarifaRegular.size()>0){
 								for(TarifaRegular tarifa: lstTarifaRegular){
@@ -2644,6 +2664,7 @@ public class WndVentaReserva extends WndBase {
 								1, asientoSeleccionado.getDetalleItinerario().getItinerario().getServicio().getId(), 
 								asientoSeleccionado.getDetalleItinerario().getRuta().getId(),
 								Util.DatetoString(asientoSeleccionado.getDetalleItinerario().getFechaPartida(), Constantes.DATE_FORMAT),
+								asientoSeleccionado.getDetalleItinerario().getHoraPartida(),
 								asientoSeleccionado.getPiso(),
 								asientoSeleccionado.getNumeroZona());
 						if(lstTarifaRegular.size()>0)

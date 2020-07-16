@@ -56,7 +56,7 @@ public class WndProgramacionTarifa extends WndOpcionesMantenimiento{
 	private Datebox	dbFechaPartida;
 	private Timebox	tbHoraPartida;
 	
-	private Grid grdRutasTarifas;
+//	private Grid grdRutasTarifas;
 	private Datebox dbFechaInicio;
 	private Datebox dbFechafin;
 	private Div divMantenimiento;
@@ -135,7 +135,7 @@ public class WndProgramacionTarifa extends WndOpcionesMantenimiento{
 		cmbDestino=(Combobox)this.getFellow("cmbDestino");
 		dbFechaPartida=(Datebox)this.getFellow("dbFechaPartida");
 		tbHoraPartida=(Timebox)this.getFellow("tbHoraPartida");
-		grdRutasTarifas=(Grid)this.getFellow("grdRutasTarifas");
+//		grdRutasTarifas=(Grid)this.getFellow("grdRutasTarifas");
 		dbFechaInicio=(Datebox)this.getFellow("dbFechaInicio");
 		dbFechafin=(Datebox)this.getFellow("dbFechafin");
 
@@ -332,7 +332,7 @@ public class WndProgramacionTarifa extends WndOpcionesMantenimiento{
 //		Util.limpiarListbox(listboxDetalleItinerario);
 //		Util.limpiarListbox(listboxTerminalPartida);
 //		Util.limpiarListbox(listboxTerminalLlegada);
-		Util.limpiarGrid(grdRutasTarifas);
+//		Util.limpiarGrid(grdRutasTarifas);
 	}
 	
 	public void cargaComboDefaul(){
