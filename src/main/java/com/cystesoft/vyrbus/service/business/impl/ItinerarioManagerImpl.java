@@ -61,20 +61,22 @@ public class ItinerarioManagerImpl implements ItinerarioManager {
 		return getItinerarioDAO().buscarItinerariosFechaAbierta(fechaPartida, origen, destino);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.tepsa.sisvyr.service.business.ItinerarioManager#buscarAgenciasPartida(java.lang.Long, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.ItinerarioManager#buscarAgenciasPartida(java.lang.Long, java.lang.String, java.lang.Integer)
 	 */
 	@Override
-	public ArrayList<ItinerarioAgenciaPartida> buscarAgenciasPartida(Long idItinerario, String estado) throws Exception {
-		return getItinerarioDAO().buscarAgenciasPartida(idItinerario, estado);
+	public ArrayList<ItinerarioAgenciaPartida> buscarAgenciasPartida(Long idItinerario, String estado, Integer idLocalidad) throws Exception {
+		return getItinerarioDAO().buscarAgenciasPartida(idItinerario, estado, idLocalidad);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.tepsa.sisvyr.service.business.ItinerarioManager#buscarAgenciasLlegada(java.lang.Long, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.ItinerarioManager#buscarAgenciasLlegada(java.lang.Long, java.lang.String, java.lang.Integer)
 	 */
 	@Override
-	public ArrayList<ItinerarioAgenciaLlegada> buscarAgenciasLlegada(Long idItinerario, String estado) throws Exception {
-		return getItinerarioDAO().buscarAgenciasLlegada(idItinerario, estado);
+	public ArrayList<ItinerarioAgenciaLlegada> buscarAgenciasLlegada(Long idItinerario, String estado, Integer idLocalidad) throws Exception {
+		return getItinerarioDAO().buscarAgenciasLlegada(idItinerario, estado, idLocalidad);
 	}
 	
 	/*

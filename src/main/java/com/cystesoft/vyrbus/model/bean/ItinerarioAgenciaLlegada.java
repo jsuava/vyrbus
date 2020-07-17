@@ -14,6 +14,7 @@ public class ItinerarioAgenciaLlegada extends GenericBean implements Serializabl
 	private Itinerario itinerario;
 	private Agencia agencia;
 	private String horaLlegada;
+	private Localidad localidad;
 	
 	public ItinerarioAgenciaLlegada() {
 		
@@ -72,5 +73,19 @@ public class ItinerarioAgenciaLlegada extends GenericBean implements Serializabl
 	 */
 	public void setHoraLlegada(String horaLlegada) {
 		this.horaLlegada = horaLlegada;
+	}
+
+	/**
+	 * @return the localidad
+	 */
+	public Localidad getLocalidad() {
+		return localidad;
+	}
+
+	/**
+	 * @param localidad the localidad to set
+	 */
+	public void setLocalidad(Localidad localidad) {
+		this.localidad = localidad;
 	}	
 }

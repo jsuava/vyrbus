@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartida" table="VRTITIAGEPAR" schema="VYRBUSTRANSMAR">
+    <class name="com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartida" table="VRTITIAGEPAR" schema="VYR">
         <comment>Agencias de partida o puntos de embarque del itinerario.</comment>
         <composite-id name="itinerarioAgenciaPartidaID" class="com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartidaID">
         	<key-property name="idItinerario" type="java.lang.Long"  column="ITINERARIO_ID"/>
@@ -17,6 +17,11 @@
         <many-to-one name="itinerario" class="com.cystesoft.vyrbus.model.bean.Itinerario"  insert="false" update="false" fetch="select">
             <column name="ITINERARIO_ID" precision="18" scale="0" not-null="true">
                 <comment>Identificador unico de la entidad, tamanio de la clave primaria 18.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="localidad" class="com.cystesoft.vyrbus.model.bean.Localidad" fetch="select">
+            <column name="LOCALIDAD_ID" precision="5" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
             </column>
         </many-to-one>
         <property name="horaPartida" type="java.lang.String">

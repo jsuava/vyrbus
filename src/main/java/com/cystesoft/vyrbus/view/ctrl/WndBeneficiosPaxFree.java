@@ -1663,20 +1663,21 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 			cmbPuntoEmbarque.getItems().clear();
 			
 			ArrayList<ItinerarioAgenciaPartida> arrayItiAgePartida = new ArrayList<ItinerarioAgenciaPartida>();
+			arrayItiAgePartida = ServiceLocator.getItinerarioManager().buscarAgenciasPartida(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO, detItinerario.getRuta().getLocalidadOrigen().getId());
 			/*	Si la agencia de partida del itinerario es la misma a la agencia de la ruta seleccionada	*/
 //			arrayItiAgePartida = ServiceLocator.getItinerarioManager().buscarAgenciasPartida(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO);
-			if(detItinerario.getItinerario().getAgenciaPartida().getId().intValue()==detItinerario.getAgenciaPartida().getId().intValue())
-				arrayItiAgePartida = ServiceLocator.getItinerarioManager().buscarAgenciasPartida(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO);
-			else{
-				ItinerarioAgenciaPartida itiAgePartida = new ItinerarioAgenciaPartida();
-				Agencia agencia = new Agencia();
-				agencia.setId(detItinerario.getAgenciaPartida().getId());
-				agencia.setDenominacion(detItinerario.getAgenciaPartida().getDenominacion());
-				itiAgePartida.setAgencia(agencia);
-//				itiAgePartida.setHoraPartida(detItinerario.getAgenciaPartida().getHoraPartida());
-				itiAgePartida.setHoraPartida(detItinerario.getHoraPartida());
-				arrayItiAgePartida.add(itiAgePartida);
-			}
+//			if(detItinerario.getItinerario().getAgenciaPartida().getId().intValue()==detItinerario.getAgenciaPartida().getId().intValue())
+//				arrayItiAgePartida = ServiceLocator.getItinerarioManager().buscarAgenciasPartida(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO);
+//			else{
+//				ItinerarioAgenciaPartida itiAgePartida = new ItinerarioAgenciaPartida();
+//				Agencia agencia = new Agencia();
+//				agencia.setId(detItinerario.getAgenciaPartida().getId());
+//				agencia.setDenominacion(detItinerario.getAgenciaPartida().getDenominacion());
+//				itiAgePartida.setAgencia(agencia);
+////				itiAgePartida.setHoraPartida(detItinerario.getAgenciaPartida().getHoraPartida());
+//				itiAgePartida.setHoraPartida(detItinerario.getHoraPartida());
+//				arrayItiAgePartida.add(itiAgePartida);
+//			}
 			UtilData.cargarGenericData(cmbPuntoEmbarque, false);
 			/*	Cargamos los puntos de embarque	*/
 			for(ItinerarioAgenciaPartida itiAgePartida : arrayItiAgePartida){
@@ -1709,18 +1710,18 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 			ArrayList<ItinerarioAgenciaLlegada> arrayItiAgeLlegada = new ArrayList<ItinerarioAgenciaLlegada>();
 			/*	Si la agencia de llegada del itinerario es la misma a la agencia de llegada de la ruta seleccionada	*/
 //			arrayItiAgeLlegada = ServiceLocator.getItinerarioManager().buscarAgenciasLlegada(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO);
-			
-			if(detItinerario.getItinerario().getAgenciaLlegada().getId().intValue()==detItinerario.getAgenciaLlegada().getId().intValue())
-				arrayItiAgeLlegada = ServiceLocator.getItinerarioManager().buscarAgenciasLlegada(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO);
-			else{
-				ItinerarioAgenciaLlegada itiAgeLlegada = new ItinerarioAgenciaLlegada();
-				Agencia agencia = new Agencia();
-				agencia.setId(detItinerario.getAgenciaLlegada().getId());
-				agencia.setDenominacion(detItinerario.getAgenciaLlegada().getDenominacion());
-				itiAgeLlegada.setAgencia(agencia);
-				itiAgeLlegada.setHoraLlegada(detItinerario.getAgenciaLlegada().getHoraPartida());
-				arrayItiAgeLlegada.add(itiAgeLlegada);
-			}
+			arrayItiAgeLlegada = ServiceLocator.getItinerarioManager().buscarAgenciasLlegada(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO, detItinerario.getRuta().getLocalidadDestino().getId());
+//			if(detItinerario.getItinerario().getAgenciaLlegada().getId().intValue()==detItinerario.getAgenciaLlegada().getId().intValue())
+//				arrayItiAgeLlegada = ServiceLocator.getItinerarioManager().buscarAgenciasLlegada(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO);
+//			else{
+//				ItinerarioAgenciaLlegada itiAgeLlegada = new ItinerarioAgenciaLlegada();
+//				Agencia agencia = new Agencia();
+//				agencia.setId(detItinerario.getAgenciaLlegada().getId());
+//				agencia.setDenominacion(detItinerario.getAgenciaLlegada().getDenominacion());
+//				itiAgeLlegada.setAgencia(agencia);
+//				itiAgeLlegada.setHoraLlegada(detItinerario.getAgenciaLlegada().getHoraPartida());
+//				arrayItiAgeLlegada.add(itiAgeLlegada);
+//			}
 			
 			UtilData.cargarGenericData(cmbPuntoLlegada, false);
 			for(ItinerarioAgenciaLlegada itiAgeLlegada : arrayItiAgeLlegada){

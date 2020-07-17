@@ -54,4 +54,11 @@ public interface AgenciaDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public List<Agencia> buscarAgenciasByDetalleCorporativo()throws Exception;
+	/**
+	 * Realiza la busqueda de las Agencias segun la localidad
+	 * @param localidades	: Localidades a filtrar
+	 * @return
+	 * @throws Exception
+	 */
+	public List<Agencia>buscarAgenciaByLocalidad(String localidades)throws Exception;
 }

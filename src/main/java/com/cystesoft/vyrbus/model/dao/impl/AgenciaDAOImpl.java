@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.TreeMap;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
+import com.cystesoft.vyrbus.model.bean.Localidad;
 import com.cystesoft.vyrbus.model.dao.AgenciaDAO;
 import com.cystesoft.vyrbus.service.util.Constantes;
 
@@ -137,5 +138,29 @@ public class AgenciaDAOImpl extends GenericDAOImpl implements AgenciaDAO {
 		
 		List<Agencia> lstAgencias = getSession().createQuery(hql).list();
 		return lstAgencias;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.AgenciaDAO#buscarAgenciaByLocalidad(java.lang.String)
+	 */
+	public List<Agencia>buscarAgenciaByLocalidad(String localidades)throws Exception{
+		String sql = "SELECT agencia_id, c_denominacion, c_direccion, localidad_id, c_nomcor "
+				+ "FROM vrmagencia WHERE localidad_id in ("+localidades+") and n_esterminal=1 and c_estreg='A' "
+						+ "ORDER BY c_nomcor";
+		List<?> result = getSession().createSQLQuery(sql).list();
+		List<Agencia> lstResult = new ArrayList<Agencia>();
+		for(int i=0; i<result.size(); i++) {
+			Object[] obj = (Object[])result.get(i);
+			Agencia agencia = new Agencia();
+			agencia.setId(((BigDecimal)obj[0]).intValue());
+			agencia.setDenominacion(obj[1].toString());
+			agencia.setDireccion(obj[2].toString());
+			Localidad localidad = new Localidad(((BigDecimal)obj[3]).intValue());
+			agencia.setLocalidad(localidad);
+			agencia.setNombreCorto(obj[4].toString());
+			lstResult.add(agencia);
+		}
+		return lstResult;
 	}
 }

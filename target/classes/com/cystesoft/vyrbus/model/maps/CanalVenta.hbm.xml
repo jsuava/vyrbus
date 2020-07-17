@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.cystesoft.vyrbus.model.bean.CanalVenta" table="VRMCANVEN" schema="VYRBUSTRANSMAR">
+    <class name="com.cystesoft.vyrbus.model.bean.CanalVenta" table="VRMCANVEN" schema="VYR">
         <comment>Entidad que almacena los distintos canales de venta de pasajes, DELIVERY, WEB, AGENTE, AGENCIA VIAJES, COUNTER, CORPORATIVO, etc.</comment>
         <id name="id" type="java.lang.Integer">
             <column name="CANVEN_ID" precision="2" scale="0" />

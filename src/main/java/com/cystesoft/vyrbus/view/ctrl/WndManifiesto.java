@@ -766,7 +766,7 @@ public class WndManifiesto extends WndBase {
 	public void validaImpresionManifiesto(){
 		if (cmbImprimir.getSelectedItem().getValue().equals(IMPRESION_MANIFIESTO_PASAJEROS)){
 			if (!(especieValoradaSunat.getAutorizacionSunat() ==null && especieValoradaSunat.getSerie() ==null && especieValoradaSunat.getCorrelativoActual() == null )){
-				/*Habili/Desabilita seg�n la configuracion del rol del usuario*/
+				/*Habili/Desabilita segun la configuracion del rol del usuario*/
 				/*IMPRIMIR*/
 				cmdImprimir.setDisabled(accesoImprimir()?false:true);
 				cmdPrevio.setDisabled(false);

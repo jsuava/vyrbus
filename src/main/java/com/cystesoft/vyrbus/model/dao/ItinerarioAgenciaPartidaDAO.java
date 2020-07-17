@@ -27,6 +27,14 @@ public interface ItinerarioAgenciaPartidaDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public void delete (Long idItinerario) throws Exception;
-
+	/**
+	 * Busca las agencias de partida por las localidades enviadas
+	 * @param idItinerario	: Identificador del itinerario
+	 * @param estado		: Estado de los registros
+	 * @param strLocalidad	: Identificadores de localidad
+	 * @return
+	 * @throws Exception
+	 */
+	public List<ItinerarioAgenciaPartida> buscarAgenciasPartida(Long idItinerario, String estado, String strLocalidad)throws Exception;
 	
 }

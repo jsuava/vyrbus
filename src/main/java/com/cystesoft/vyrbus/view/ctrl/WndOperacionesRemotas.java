@@ -2818,17 +2818,18 @@ public class WndOperacionesRemotas extends WndBase {
 			cmbEmbarquePostergado.getItems().clear();
 			
 			ArrayList<ItinerarioAgenciaPartida> arrayItiAgePartida = new ArrayList<ItinerarioAgenciaPartida>();
-			if(detItinerario.getItinerario().getAgenciaPartida().getId().intValue()==detItinerario.getAgenciaPartida().getId().intValue())
-				arrayItiAgePartida = ServiceLocator.getItinerarioManager().buscarAgenciasPartida(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO);
-			else{
-				ItinerarioAgenciaPartida itiAgePartida = new ItinerarioAgenciaPartida();
-				Agencia agencia = new Agencia();
-				agencia.setId(detItinerario.getAgenciaPartida().getId());
-				agencia.setDenominacion(detItinerario.getAgenciaPartida().getDenominacion());
-				itiAgePartida.setAgencia(agencia);
-				itiAgePartida.setHoraPartida(detItinerario.getAgenciaPartida().getHoraPartida());
-				arrayItiAgePartida.add(itiAgePartida);
-			}
+			arrayItiAgePartida = ServiceLocator.getItinerarioManager().buscarAgenciasPartida(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO, detItinerario.getRuta().getLocalidadOrigen().getId());
+//			if(detItinerario.getItinerario().getAgenciaPartida().getId().intValue()==detItinerario.getAgenciaPartida().getId().intValue())
+//				arrayItiAgePartida = ServiceLocator.getItinerarioManager().buscarAgenciasPartida(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO);
+//			else{
+//				ItinerarioAgenciaPartida itiAgePartida = new ItinerarioAgenciaPartida();
+//				Agencia agencia = new Agencia();
+//				agencia.setId(detItinerario.getAgenciaPartida().getId());
+//				agencia.setDenominacion(detItinerario.getAgenciaPartida().getDenominacion());
+//				itiAgePartida.setAgencia(agencia);
+//				itiAgePartida.setHoraPartida(detItinerario.getAgenciaPartida().getHoraPartida());
+//				arrayItiAgePartida.add(itiAgePartida);
+//			}
 			UtilData.cargarGenericData(cmbEmbarquePostergado, false);
 			String horaEmbarque="";
 			for(ItinerarioAgenciaPartida itiAgePartida : arrayItiAgePartida){

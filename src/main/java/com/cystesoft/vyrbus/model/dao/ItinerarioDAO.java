@@ -49,18 +49,20 @@ public interface ItinerarioDAO extends GenericDAO {
 	 * Busca las agencias que serviran de punto de embarque para el itinerario.
 	 * @param idItinerario	: Identificador unico del itinerario.
 	 * @param estado		: Estado de los registros a buscar.
+	 * @param idLocalidad	: Identificador de localidad de partida.
 	 * @return Array con los puntos de embarque.
 	 * @throws Exception
 	 */
-	public ArrayList<ItinerarioAgenciaPartida> buscarAgenciasPartida(Long idItinerario, String estado)throws Exception;
+	public ArrayList<ItinerarioAgenciaPartida> buscarAgenciasPartida(Long idItinerario, String estado, Integer idLocalidad)throws Exception;
 	/**
 	 * Busca las agencias que serviran de punto de desembarque para el itinerario.
 	 * @param idItinerario	: Identificador unico del itinerario.
 	 * @param estado		: Estado de los registros a buscar.
+	 * @param idLocalidad	: Identificador de localidad de llegada.
 	 * @return Array con los puntos de desembarque.
 	 * @throws Exception
 	 */
-	public ArrayList<ItinerarioAgenciaLlegada> buscarAgenciasLlegada(Long idItinerario, String estado)throws Exception;
+	public ArrayList<ItinerarioAgenciaLlegada> buscarAgenciasLlegada(Long idItinerario, String estado, Integer idLocalidad)throws Exception;
 
 	/**
 	 * Realiza la busqueda de los itinerarios disponibles para la fecha y origen destino seleccionado.
@@ -222,4 +224,5 @@ public interface ItinerarioDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public List<Itinerario>buscarItinerariosByVentaTramo(String fechaInicial, String fechaFinal,Integer rutaIdMayor, Integer rutaIdTramo,String horaPartidaTramo,String horaPartidaItinerario)throws Exception;
+	
 }

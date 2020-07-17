@@ -219,13 +219,14 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see com.tepsa.sisvyr.dao.ItinerarioDAO#buscarAgenciasPartida(java.lang.Long, java.lang.String)
+	 * @see com.cystesoft.vyrbus.model.dao.ItinerarioDAO#buscarAgenciasPartida(java.lang.Long, java.lang.String, java.lang.Integer)
 	 */
-	public ArrayList<ItinerarioAgenciaPartida> buscarAgenciasPartida(Long idItinerario, String estado)throws Exception{
-		String sql = "SELECT iap.itinerario_id, iap.agencia_id, a.c_denominacion, iap.c_horpar, a.c_nomcor " +
+	public ArrayList<ItinerarioAgenciaPartida> buscarAgenciasPartida(Long idItinerario, String estado, Integer idLocalidad)throws Exception{
+		String sql = "SELECT iap.itinerario_id, iap.agencia_id, a.c_denominacion, iap.c_horpar, a.c_nomcor, l.localidad_id, l.c_denominacion " +
 				"FROM vrtitiagepar iap " +
 				"INNER JOIN vrmagencia a ON a.agencia_id=iap.agencia_id " +
-				"WHERE iap.itinerario_id="+idItinerario+" AND iap.c_estreg IN ('"+Constantes.VALUE_ACTIVO+"','"+estado+"')";
+				"INNER JOIN vrmlocalidad l ON l.localidad_id=iap.localidad_id " +
+				"WHERE iap.itinerario_id="+idItinerario+" AND iap.c_estreg IN ('"+Constantes.VALUE_ACTIVO+"','"+estado+"') AND iap.localidad_id="+idLocalidad;
 		List<?> result = getSession().createSQLQuery(sql).list();
 		ArrayList<ItinerarioAgenciaPartida> lstResult = new ArrayList<ItinerarioAgenciaPartida>();
 		for(int i=0; i<result.size(); i++){
@@ -238,19 +239,26 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 			agencia.setNombreCorto(obj[4]==null?null:obj[4].toString());
 			itAgePartida.setAgencia(agencia);
 			itAgePartida.setHoraPartida(obj[3].toString());
+			if(obj[5]!=null) {
+				Localidad localidad = new Localidad();
+				localidad.setId(((BigDecimal)obj[5]).intValue());
+				localidad.setDenominacion(obj[6].toString());
+				itAgePartida.setLocalidad(localidad);				
+			}
 			lstResult.add(itAgePartida);
 		}
 		return lstResult;
 	}
 	/*
 	 * (non-Javadoc)
-	 * @see com.tepsa.sisvyr.dao.ItinerarioDAO#buscarAgenciasLlegada(java.lang.Long, java.lang.String)
+	 * @see com.cystesoft.vyrbus.model.dao.ItinerarioDAO#buscarAgenciasLlegada(java.lang.Long, java.lang.String, java.lang.Integer)
 	 */
-	public ArrayList<ItinerarioAgenciaLlegada> buscarAgenciasLlegada(Long idItinerario, String estado)throws Exception{
-		String sql = "SELECT iad.itinerario_id, iad.agencia_id, a.c_denominacion, iad.c_horlle, a.c_nomcor " +
+	public ArrayList<ItinerarioAgenciaLlegada> buscarAgenciasLlegada(Long idItinerario, String estado, Integer idLocalidad)throws Exception{
+		String sql = "SELECT iad.itinerario_id, iad.agencia_id, a.c_denominacion, iad.c_horlle, a.c_nomcor, l.localidad_id, l.c_denominacion " +
 				"FROM vrtitiagelle iad " +
 				"INNER JOIN vrmagencia a ON a.agencia_id=iad.agencia_id " +
-				"WHERE iad.itinerario_id="+idItinerario+" AND iad.c_estreg IN ('"+Constantes.VALUE_ACTIVO+"','"+estado+"')";
+				"INNER JOIN vrmlocalidad l ON l.localidad_id=iad.localidad_id " +
+				"WHERE iad.itinerario_id="+idItinerario+" AND iad.c_estreg IN ('"+Constantes.VALUE_ACTIVO+"','"+estado+"') AND iad.localidad_id="+idLocalidad;
 		List<?> result = getSession().createSQLQuery(sql).list();
 		ArrayList<ItinerarioAgenciaLlegada> lstResult = new ArrayList<ItinerarioAgenciaLlegada>();
 		for(int i=0; i<result.size(); i++){
@@ -263,6 +271,12 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 			agencia.setNombreCorto(obj[4]==null?null:obj[4].toString());
 			itAgeLlegada.setAgencia(agencia);
 			itAgeLlegada.setHoraLlegada(obj[3].toString());
+			if(obj[5]!=null) {
+				Localidad localidad = new Localidad();
+				localidad.setId(((BigDecimal)obj[5]).intValue());
+				localidad.setDenominacion(obj[6].toString());
+				itAgeLlegada.setLocalidad(localidad);				
+			}
 			lstResult.add(itAgeLlegada);
 		}
 		return lstResult;

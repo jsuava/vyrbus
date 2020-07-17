@@ -13,7 +13,22 @@ public class ItinerarioAgenciaPartida extends GenericBean implements Serializabl
 	private Itinerario itinerario;
 	private Agencia agencia;
 	private String horaPartida;
+	private Localidad localidad;
 	
+	/**
+	 * @return the localidad
+	 */
+	public Localidad getLocalidad() {
+		return localidad;
+	}
+
+	/**
+	 * @param localidad the localidad to set
+	 */
+	public void setLocalidad(Localidad localidad) {
+		this.localidad = localidad;
+	}
+
 	public ItinerarioAgenciaPartida() {
 		
 	}

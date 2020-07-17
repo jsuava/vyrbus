@@ -60,5 +60,12 @@ public class ItinerarioAgenciaPartidaManagerImpl implements ItinerarioAgenciaPar
 		getItinerarioAgenciaPartidaDAO().delete(idItinerario);
 		
 	}
+	/*
+	 * (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.ItinerarioAgenciaPartidaManager#buscarAgenciasPartida(java.lang.Long, java.lang.String, java.lang.String)
+	 */
+	public List<ItinerarioAgenciaPartida> buscarAgenciasPartida(Long idItinerario, String estado, String strLocalidad)throws Exception{
+		return getItinerarioAgenciaPartidaDAO().buscarAgenciasPartida(idItinerario, estado, strLocalidad);
+	}
 
 }

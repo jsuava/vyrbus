@@ -181,4 +181,13 @@ public class AgenciaManagerImpl implements AgenciaManager {
 		// TODO Auto-generated method stub
 		return getAgenciaDAO().buscarAgenciasByDetalleCorporativo();
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.AgenciaManager#buscarAgenciaByLocalidad(java.lang.String)
+	 */
+	public List<Agencia>buscarAgenciaByLocalidad(String localidades)throws Exception{
+		return getAgenciaDAO().buscarAgenciaByLocalidad(localidades);
+	}
+	
 }
