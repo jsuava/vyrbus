@@ -3,24 +3,47 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 04/05/2012 12:43:35 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.cystesoft.vyrbus.model.bean.TarifaRegular" table="VRTTARREG" schema="VYRBUSTRANSMAR">
-        <comment>Entidad que almacena la tarifa regular de los servicios.</comment>
+    <class name="com.cystesoft.vyrbus.model.bean.TarifaRegularAud" table="VRTTARREGAUD" schema="VYRBUSTRANSMAR">
+        <comment>Entidad que almacena la tarifa regular de los servicios para auditoria.</comment>
         <id name="id" type="java.lang.Long">
-            <column name="TARREG_ID" precision="10" scale="0" />
+        	<column name="TARREGAUD_ID" precision="10" scale="0" />
             <generator class="sequence">
-                <param name="sequence">SEQ_VRTTARREG_ID</param>
-            </generator>
+                <param name="sequence">SEQ_VRTTARREGAUD_ID</param>
+            </generator>        	
         </id>
-        <many-to-one name="tarifa" class="com.cystesoft.vyrbus.model.bean.Tarifa">
+        <property name="idTarreg" type="java.lang.Long">
+            <column name="TARREG_ID" precision="10" scale="0" />
+        </property>
+        <property name="idTarifa" type="java.lang.Long">
         	<column name="TARIFA_ID" precision="10" scale="0" not-null="true">
         		<comment>Identificador unico de la entidad, tamanio de la clave primaria 10.</comment>
         	</column>
-        </many-to-one>
-        <many-to-one name="itinerario" class="com.cystesoft.vyrbus.model.bean.Itinerario">
-        	<column name="ITINERARIO_ID" precision="18" scale="0" not-null="false">
-        		<comment>Identificador unico de la entidad, tamanio de la clave primaria 18.</comment>
+        </property>
+        <property name="idCanven" type="java.lang.Integer">
+        	<column name="CANVEN_ID" precision="10" scale="0" not-null="true">
+        		<comment>Identificador unico de la entidad, tamanio de la clave primaria 10.</comment>
         	</column>
-        </many-to-one>
+        </property>
+        <property name="idServicio" type="java.lang.Integer">
+        	<column name="SERVICIO_ID" precision="10" scale="0" not-null="true">
+        		<comment>Identificador unico de la entidad, tamanio de la clave primaria 10.</comment>
+        	</column>
+        </property>
+        <property name="idRuta" type="java.lang.Integer">
+        	<column name="RUTA_ID" precision="10" scale="0" not-null="true">
+        		<comment>Identificador unico de la entidad, tamanio de la clave primaria 10.</comment>
+        	</column>
+        </property>
+        <property name="pisoBus" type="java.lang.Integer">
+        	<column name="N_PISBUS" precision="10" scale="0" not-null="true">
+        		<comment>Identificador unico de la entidad, tamanio de la clave primaria 10.</comment>
+        	</column>
+        </property>
+        <property name="zonaBus" type="java.lang.Integer">
+        	<column name="N_ZONBUS" precision="10" scale="0" not-null="true">
+        		<comment>Identificador unico de la entidad, tamanio de la clave primaria 10.</comment>
+        	</column>
+        </property>
         <property name="fechaTarifa" type="java.util.Date">
             <column name="D_FECTAR" length="7">
                 <comment>Fecha de los servicios a los que se aplica esta tarifa.</comment>

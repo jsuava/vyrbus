@@ -26,6 +26,7 @@ public interface TarifaFechaAbiertaManager {
 	 * @throws Exception
 	 */
 	public Double buscarTarifa(Integer idRuta, Integer idServicio)throws Exception;
+	
 	/**
 	 * Busca las tarifas a fecha abierta, según los parametros enviados.
 	 * @param idOrigen		: Identificador del origen.
@@ -35,6 +36,17 @@ public interface TarifaFechaAbiertaManager {
 	 * @throws Exception
 	 */
 	public List<TarifaFechaAbierta> buscarTarifas(Integer idOrigen,Integer idDestino, Integer idServicio)throws Exception;
+	
+	/**
+	 * Busca las tarifas a fecha abierta, según los parametros enviados.
+	 * @param idOrigen		: Identificador del origen.
+	 * @param idDestino		: Identificador del destino.
+	 * @param idServicio	: Identificador del servicio.
+	 * @return Lista de tarifas a fecha abierta.
+	 * @throws Exception
+	 */
+	public List<TarifaFechaAbierta> listarTarifasFA(Integer idOrigen,Integer idDestino, Integer idServicio)throws Exception;
+	
 	/**
 	 * Guarda una nueva tarifa a fecha abierta.
 	 * @param tarifaFechaAbierta	

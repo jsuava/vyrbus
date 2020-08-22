@@ -63,6 +63,7 @@
 		<mapping resource="com/cystesoft/vyrbus/model/maps/Sexo.hbm.xml" />
 		<mapping resource="com/cystesoft/vyrbus/model/maps/Tarifa.hbm.xml" />
 		<mapping resource="com/cystesoft/vyrbus/model/maps/TarifaRegular.hbm.xml" />
+		<mapping resource="com/cystesoft/vyrbus/model/maps/TarifaRegularAud.hbm.xml" />
 		<mapping resource="com/cystesoft/vyrbus/model/maps/TarjetaCredito.hbm.xml" />
 		<mapping resource="com/cystesoft/vyrbus/model/maps/TipoAgencia.hbm.xml" />
 		<mapping resource="com/cystesoft/vyrbus/model/maps/TipoComprobante.hbm.xml" />

@@ -364,6 +364,9 @@
    	<bean id="tarifaRegularDAO" class="com.cystesoft.vyrbus.model.dao.impl.TarifaRegularDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>   	
+   	<bean id="tarifaRegularAudDAO" class="com.cystesoft.vyrbus.model.dao.impl.TarifaRegularAudDAOImpl">
+   		<property name="sessionFactory" ref="sessionFactory" />
+   	</bean>
    	<bean id="tarifaClienteDAO" class="com.cystesoft.vyrbus.model.dao.impl.TarifaClienteDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
@@ -739,7 +742,10 @@
 	</bean>
 	<bean id="tarifaRegularManager" class="com.cystesoft.vyrbus.service.business.impl.TarifaRegularManagerImpl">
 		<property name="tarifaRegularDAO" ref="tarifaRegularDAO" />
-	</bean>	
+	</bean>
+	<bean id="tarifaRegularAudManager" class="com.cystesoft.vyrbus.service.business.impl.TarifaRegularAudManagerImpl">
+		<property name="tarifaRegularAudDAO" ref="tarifaRegularAudDAO" />
+	</bean>
 	<bean id="tarifaClienteManager" class="com.cystesoft.vyrbus.service.business.impl.TarifaClienteManagerImpl">
 		<property name="tarifaClienteDAO" ref="tarifaClienteDAO" />
 	</bean>

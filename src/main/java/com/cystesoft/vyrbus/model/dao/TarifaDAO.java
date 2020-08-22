@@ -8,7 +8,10 @@
  */
 package com.cystesoft.vyrbus.model.dao;
 
+import java.util.List;
+
 import com.cystesoft.vyrbus.model.bean.Tarifa;
+import com.cystesoft.vyrbus.model.bean.TarifaRegular;
 
 
 /**
@@ -38,5 +41,11 @@ public interface TarifaDAO extends GenericDAO{
 	 */
 	public void inactivate(Long id)throws Exception;
 	
+	public List<Tarifa> buscarTarifa(Integer canalVentaID, 
+							Integer servicioID, 
+							Integer localidadOrigenID, 
+							Integer localidadDestinoID, 
+							Integer piso, 
+							Integer zona) throws Exception;
 
 }

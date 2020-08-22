@@ -1,8 +1,8 @@
 /**
- * Proyecto		: SISVYR
+ * Proyecto		: VYRBUS
  * Sistema		: Sistema de Ventas y Reservas
  * Descripción	: 
- * Autor		: José Abanto
+ * Autor		: Marco Oscco
  * Fecha		: 27/08/2014
  * Hora			: 11:38:05
  */

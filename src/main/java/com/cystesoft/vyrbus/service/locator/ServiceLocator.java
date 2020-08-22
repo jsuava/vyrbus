@@ -924,4 +924,8 @@ public class ServiceLocator {
 		return (TarifaRegularManager) SpringUtil.getBean("tarifaRegularManager", TarifaRegularManager.class);
 	}
 	
+	public static TarifaRegularAudManager getTarifaRegularAudManager(){
+		return (TarifaRegularAudManager) SpringUtil.getBean("tarifaRegularAudManager", TarifaRegularAudManager.class);
+	}
+	
 }

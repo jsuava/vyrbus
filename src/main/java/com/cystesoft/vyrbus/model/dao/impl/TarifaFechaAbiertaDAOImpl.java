@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.cystesoft.vyrbus.model.bean.Localidad;
 import com.cystesoft.vyrbus.model.bean.Ruta;
 import com.cystesoft.vyrbus.model.bean.Servicio;
 import com.cystesoft.vyrbus.model.bean.TarifaFechaAbierta;
@@ -119,6 +120,71 @@ public class TarifaFechaAbiertaDAOImpl extends GenericDAOImpl implements TarifaF
 		}
 		return lstTarifasFA;
 	}
+	
+	@Override
+	public List<TarifaFechaAbierta> listarTarifasFA(Integer idOrigen,Integer idDestino, Integer idServicio)throws Exception{
+		String sql="SELECT   " +
+				   "    fa.tarifafa_id IDT,  " +
+				   "    s.servicio_id IDS, " +
+				   "    s.c_denominacion SERVICIO,  " +
+			       "	r.ruta_id, " +
+			       "	r.c_origen, " +
+			       "	r.c_destino, " +
+				   "    fa.n_monto TARIFA, " +
+				   "    fa.d_fecact ACTIVACION,  " +
+				   "    fa.d_feccad CADUCIDAD, " +
+			       "	r.localidad_idorigen, " +
+			       "	r.localidad_iddestino " +
+					"FROM vrttarifafa fa  " +
+					"INNER JOIN vrmruta r ON (fa.ruta_id = r.ruta_id) " +
+					"INNER JOIN vrmservicio s ON (fa.servicio_id = s.servicio_id) " +
+					"WHERE  " +
+					"	s.servicio_id = NVL(" + idServicio + ", s.servicio_id) " +
+					"	AND r.localidad_idorigen = NVL(" + idOrigen + ", r.localidad_idorigen) " +
+					"	AND r.localidad_iddestino = NVL(" + idDestino + ", r.localidad_iddestino) " + 
+					"	AND fa.c_estreg='A' " +
+					"ORDER BY s.c_denominacion, r.c_origen||'-'||r.c_destino";
+		
+		log.info(sql);
+		List<?>lstResult=getSession().createSQLQuery(sql).list();
+		List<TarifaFechaAbierta>lstTarifasFA=new ArrayList<TarifaFechaAbierta>();
+		for(int i=0; i<lstResult.size();i++){
+			Object[] obj=(Object[])lstResult.get(i);
+			
+			TarifaFechaAbierta tarifaFechaAbierta=new TarifaFechaAbierta();
+			tarifaFechaAbierta.setId(((BigDecimal)obj[0]).longValue());
+
+			Servicio servicio=new Servicio();
+			servicio.setId(((BigDecimal)obj[1]).intValue());
+			servicio.setDenominacion(obj[2]!=null?obj[2].toString():null);
+			
+			Ruta ruta=new Ruta();
+			ruta.setId(((BigDecimal)obj[3]).intValue());
+			ruta.setOrigen(obj[4]!=null?obj[4].toString():null);
+			ruta.setDestino(obj[5]!=null?obj[5].toString():null);
+			
+			Localidad origen = new Localidad();
+			origen.setId(((BigDecimal)obj[9]).intValue());
+			Localidad destino = new Localidad();
+			destino.setId(((BigDecimal)obj[10]).intValue());
+			ruta.setLocalidadOrigen(origen);
+			ruta.setLocalidadDestino(destino);
+			
+			tarifaFechaAbierta.setRuta(ruta);
+			tarifaFechaAbierta.setServicio(servicio);
+			tarifaFechaAbierta.setMonto(((BigDecimal)obj[6]).doubleValue());
+			tarifaFechaAbierta.setFechaActivacion((Date)obj[7]);
+			tarifaFechaAbierta.setFechaCaducidad((Date)obj[8]);
+			
+			/* Valida que la fecha de caducidad de la tarifa a fecha abierta */
+			Date fechaHoraActual=Constantes.FORMAT_DATE_TIME_24H.parse(new MyTime().dateServer());
+			if(tarifaFechaAbierta.getFechaCaducidad().getTime()>=fechaHoraActual.getTime())
+				lstTarifasFA.add(tarifaFechaAbierta);
+		}
+		return lstTarifasFA;		
+	}
+	
+	
 
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.TarifaFechaAbiertaDAO#guardar(com.tepsa.sisvyr.model.bean.TarifaFechaAbierta)

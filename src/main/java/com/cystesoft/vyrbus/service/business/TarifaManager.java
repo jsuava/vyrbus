@@ -8,6 +8,8 @@
  */
 package com.cystesoft.vyrbus.service.business;
 
+import java.util.List;
+
 import com.cystesoft.vyrbus.model.bean.Tarifa;
 
 
@@ -21,7 +23,7 @@ public interface TarifaManager {
 	 * @param tarifaFechaAbierta	
 	 * @throws Exception
 	 */
-	public void guardar(Tarifa tarifa)throws Exception;
+	public int guardar(Tarifa tarifa) throws Exception;
 	/**
 	 * Actualiza una tarifa a fecha abierta
 	 * @param tarifaFechaAbierta
@@ -34,4 +36,11 @@ public interface TarifaManager {
 	 * @throws Exception
 	 */
 	public void inactivate(Long id)throws Exception;
+	
+	public List<Tarifa> buscarTarifa(Integer canalVentaID, 
+			Integer servicioID, 
+			Integer localidadOrigenID, 
+			Integer localidadDestinoID, 
+			Integer piso, 
+			Integer zona) throws Exception;
 }

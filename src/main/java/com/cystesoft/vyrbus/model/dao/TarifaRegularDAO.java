@@ -36,5 +36,29 @@ public interface TarifaRegularDAO extends GenericDAO {
 														String horaPartida,
 														Integer con_o_sin_tarifa) throws Exception;
 	
+	public String buscarCantidadTarifasAReemplazar(Integer canalVentaID,
+			Integer servicioID,
+			Integer origenID,
+			Integer destinoID,
+			Integer piso,
+			Integer zona,
+			String fechaInicio,
+			String fechaFin,
+			String horaPartida,
+			Integer PorServicio)throws Exception;
+
+	
+	public void delete (Long idTarifaRegular) throws Exception;
+	
+	public List<TarifaRegular> buscarTarifasAReemplazar(Integer canalVentaID,
+			Integer servicioID,
+			Integer origenID,
+			Integer destinoID,
+			Integer piso,
+			Integer zona,
+			String fechaInicio,
+			String fechaFin,
+			String horaPartida,
+			Integer PorServicio)throws Exception;
 
 }

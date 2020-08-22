@@ -5,7 +5,7 @@
 <hibernate-mapping>
     <class name="com.cystesoft.vyrbus.model.bean.TarifaRegular" table="VRTTARREG" schema="VYRBUSTRANSMAR">
         <comment>Entidad que almacena la tarifa regular de los servicios.</comment>
-        <id name="id" type="java.lang.Integer">
+        <id name="id" type="java.lang.Long">
             <column name="TARREG_ID" precision="10" scale="0" />
             <generator class="sequence">
                 <param name="sequence">SEQ_VRTTARREG_ID</param>

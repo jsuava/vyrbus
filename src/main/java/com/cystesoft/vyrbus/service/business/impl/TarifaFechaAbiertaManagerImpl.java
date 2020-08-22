@@ -53,6 +53,11 @@ public class TarifaFechaAbiertaManagerImpl implements TarifaFechaAbiertaManager 
 		// TODO Auto-generated method stub
 		return getTarifaFechaAbiertaDAO().buscarTarifas(idOrigen,idDestino, idServicio);
 	}
+	
+	@Override
+	public List<TarifaFechaAbierta> listarTarifasFA(Integer idOrigen,Integer idDestino, Integer idServicio)throws Exception{
+		return getTarifaFechaAbiertaDAO().listarTarifasFA(idOrigen, idDestino, idServicio);
+	}
 
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.TarifaFechaAbiertaManager#guardar(com.tepsa.sisvyr.model.bean.TarifaFechaAbierta)

@@ -1109,27 +1109,27 @@ public class WndProgramacionTarifaOld extends WndBase{
 				tiposAsientos= new ArrayList<>();
 				List<MapaBus> result= ServiceLocator.getMapaBusManager().buscarMapaBus(((Servicio)cmbTipoServicio.getSelectedItem().getValue()).getId(), Constantes.VALUE_ACTIVO);
 				for(MapaBus mapaBus :result){
-					if(mapaBus.getTipoAsiento()!=null){
-						/*Valida si el tipo de asiento ya existe en la lista "tiposAsientos"*/
-						TipoAsiento tipoAsientoDuplicate=null;						
-						for(TipoAsiento tipoAsiento :tiposAsientos){
-							if(tipoAsiento.getId().intValue()==mapaBus.getTipoAsiento().getId().intValue()){
-								tipoAsientoDuplicate=tipoAsiento;
-								break;
-							}
-						}
-						
-						//Agrega si es que no existe
-						if(tipoAsientoDuplicate==null){
-							List<Integer> asientos= new ArrayList<>();
-							asientos.add(mapaBus.getNumeroAsiento());
-							mapaBus.getTipoAsiento().setAsientos(asientos);
-							tiposAsientos.add(mapaBus.getTipoAsiento());
-						}else{
-							//Agrega el numero de asiento al tipo se asiento existente
-							tipoAsientoDuplicate.getAsientos().add(mapaBus.getNumeroAsiento());
-						}
-					}
+//					if(mapaBus.getTipoAsiento()!=null){
+//						/*Valida si el tipo de asiento ya existe en la lista "tiposAsientos"*/
+//						TipoAsiento tipoAsientoDuplicate=null;						
+//						for(TipoAsiento tipoAsiento :tiposAsientos){
+//							if(tipoAsiento.getId().intValue()==mapaBus.getTipoAsiento().getId().intValue()){
+//								tipoAsientoDuplicate=tipoAsiento;
+//								break;
+//							}
+//						}
+//						
+//						//Agrega si es que no existe
+//						if(tipoAsientoDuplicate==null){
+//							List<Integer> asientos= new ArrayList<>();
+//							asientos.add(mapaBus.getNumeroAsiento());
+//							mapaBus.getTipoAsiento().setAsientos(asientos);
+//							tiposAsientos.add(mapaBus.getTipoAsiento());
+//						}else{
+//							//Agrega el numero de asiento al tipo se asiento existente
+//							tipoAsientoDuplicate.getAsientos().add(mapaBus.getNumeroAsiento());
+//						}
+//					}
 				}
 				
 				/*Agrega un nuevo item al listbox*/

@@ -8,11 +8,15 @@
  */
 package com.cystesoft.vyrbus.service.business.impl;
 
+import java.util.List;
+
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cystesoft.vyrbus.model.bean.Itinerario;
 import com.cystesoft.vyrbus.model.bean.Tarifa;
 import com.cystesoft.vyrbus.model.dao.TarifaDAO;
 import com.cystesoft.vyrbus.service.business.TarifaManager;
+import com.cystesoft.vyrbus.service.util.Constantes;
 
 /**
  * @author Marco
@@ -41,11 +45,17 @@ public class TarifaManagerImpl implements TarifaManager {
 
 	@Override
 	@Transactional
-	public void guardar(Tarifa tarifa) throws Exception {
-		// TODO Auto-generated method stub
-		getTarifaDAO().guardar(tarifa);
+	public int guardar(Tarifa tarifa) throws Exception {
+		int result = Constantes.FAILURE;
+		try{
+			getTarifaDAO().save(tarifa);
+			
+			result = Constantes.CORRECT;
+		}catch(Exception ex){
+			throw new Exception(ex);
+		}
+		return result;
 	}
-
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.service.business.TarifaManager#actualizar(com.cystesoft.vyrbus.model.bean.Tarifa)
 	 */
@@ -65,5 +75,16 @@ public class TarifaManagerImpl implements TarifaManager {
 		// TODO Auto-generated method stub
 		getTarifaDAO().inactivate(id);
 	}	
+	
+	@Override
+	@Transactional
+	public List<Tarifa> buscarTarifa(Integer canalVentaID, 
+			Integer servicioID, 
+			Integer localidadOrigenID, 
+			Integer localidadDestinoID, 
+			Integer piso, 
+			Integer zona) throws Exception{
+		return getTarifaDAO().buscarTarifa(canalVentaID, servicioID, localidadOrigenID, localidadDestinoID, piso, zona);
+	}
 
 }

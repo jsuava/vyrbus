@@ -16,7 +16,7 @@ import java.util.Date;
  */
 public class TarifaRegular extends GenericBean implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
-	private Integer id;
+	private Long id;
 	private Tarifa tarifa;
 	private Itinerario itinerario;
 	private Date fechaTarifa;
@@ -27,10 +27,10 @@ public class TarifaRegular extends GenericBean implements java.io.Serializable {
 		
 	}
 	
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public Tarifa getTarifa() {

@@ -124,43 +124,43 @@ public class DetalleButacaManagerImpl implements DetalleButacaManager{
 				//Busca el registro del mapabus
 				for(MapaBus oMapaBus:lstMApabus){
 					System.out.println(Constantes.FORMAT_DATE_TIME_24H.format(new Date())+" - Buscando asiento y tipo de asiento ...");
-					if(oMapaBus.getTipoObjeto().intValue()==0 && oMapaBus.getNumeroAsiento()!=null && oMapaBus.getTipoAsiento()!=null){
-						if(oMapaBus.getNumeroAsiento().intValue()==detalleButaca.getMapaBus().getNumeroAsiento().intValue() &&
-								oMapaBus.getTipoAsiento().getId().intValue()==detalleButaca.getMapaBus().getTipoAsiento().getId().intValue()){
-							
-							DetalleButaca nuevaTarifa=(DetalleButaca) detalleButaca.clone();
-							nuevaTarifa.setMapaBus(oMapaBus);
-							nuevaTarifa.setFecha(fecha);
-							nuevaTarifa.setEstadoRegistro(Constantes.VALUE_ACTIVO);		
-							
-							System.out.println(Constantes.FORMAT_DATE_TIME_24H.format(new Date())+" - Validando existencia de tarifa para el asiento ("+oMapaBus.getNumeroAsiento()+") ...");
-							/*Valida si existe una tarifa con los mismos parametros*/
-							List<DetalleButaca> result= getDetalleButacaDAO().validarExisteTarifa(nuevaTarifa);
-							if(result.size()>0){
-								DetalleButaca _detalleButaca=result.get(0);
-								_detalleButaca.setEstadoRegistro(Constantes.VALUE_INACTIVO);
-								UtilData.auditarRegistro(_detalleButaca, true, usuario, Executions.getCurrent());
-								
-								System.out.println(Constantes.FORMAT_DATE_TIME_24H.format(new Date())+" - Anulando tarifa...");
-								getDetalleButacaDAO().actualizar(_detalleButaca);
-								
-								nuevaTarifa.setDetalleButacaRef(_detalleButaca);
-								nuevaTarifa.setDetalleButacaOriginal(_detalleButaca.getDetalleButacaOriginal());
-							}
-							System.out.println(Constantes.FORMAT_DATE_TIME_24H.format(new Date())+" - insertanto nueva tarifa...");
-							/*Inserta la nueva tarifa*/
-							UtilData.auditarRegistro(nuevaTarifa, usuario, Executions.getCurrent());
-							getDetalleButacaDAO().guardar(nuevaTarifa);
-							
-							/* actualiza el idoriginal si es que un null (va ser null cuando es una tarifa completamente nueva) */
-							if(nuevaTarifa.getDetalleButacaOriginal()==null){
-								System.out.println(Constantes.FORMAT_DATE_TIME_24H.format(new Date())+" - actualizando id original...");
-								nuevaTarifa.setDetalleButacaOriginal(nuevaTarifa.getId());
-								getDetalleButacaDAO().actualizar(nuevaTarifa);
-							}
-							break;
-						}
-					}
+//					if(oMapaBus.getTipoObjeto().intValue()==0 && oMapaBus.getNumeroAsiento()!=null && oMapaBus.getTipoAsiento()!=null){
+//						if(oMapaBus.getNumeroAsiento().intValue()==detalleButaca.getMapaBus().getNumeroAsiento().intValue() &&
+//								oMapaBus.getTipoAsiento().getId().intValue()==detalleButaca.getMapaBus().getTipoAsiento().getId().intValue()){
+//							
+//							DetalleButaca nuevaTarifa=(DetalleButaca) detalleButaca.clone();
+//							nuevaTarifa.setMapaBus(oMapaBus);
+//							nuevaTarifa.setFecha(fecha);
+//							nuevaTarifa.setEstadoRegistro(Constantes.VALUE_ACTIVO);		
+//							
+//							System.out.println(Constantes.FORMAT_DATE_TIME_24H.format(new Date())+" - Validando existencia de tarifa para el asiento ("+oMapaBus.getNumeroAsiento()+") ...");
+//							/*Valida si existe una tarifa con los mismos parametros*/
+//							List<DetalleButaca> result= getDetalleButacaDAO().validarExisteTarifa(nuevaTarifa);
+//							if(result.size()>0){
+//								DetalleButaca _detalleButaca=result.get(0);
+//								_detalleButaca.setEstadoRegistro(Constantes.VALUE_INACTIVO);
+//								UtilData.auditarRegistro(_detalleButaca, true, usuario, Executions.getCurrent());
+//								
+//								System.out.println(Constantes.FORMAT_DATE_TIME_24H.format(new Date())+" - Anulando tarifa...");
+//								getDetalleButacaDAO().actualizar(_detalleButaca);
+//								
+//								nuevaTarifa.setDetalleButacaRef(_detalleButaca);
+//								nuevaTarifa.setDetalleButacaOriginal(_detalleButaca.getDetalleButacaOriginal());
+//							}
+//							System.out.println(Constantes.FORMAT_DATE_TIME_24H.format(new Date())+" - insertanto nueva tarifa...");
+//							/*Inserta la nueva tarifa*/
+//							UtilData.auditarRegistro(nuevaTarifa, usuario, Executions.getCurrent());
+//							getDetalleButacaDAO().guardar(nuevaTarifa);
+//							
+//							/* actualiza el idoriginal si es que un null (va ser null cuando es una tarifa completamente nueva) */
+//							if(nuevaTarifa.getDetalleButacaOriginal()==null){
+//								System.out.println(Constantes.FORMAT_DATE_TIME_24H.format(new Date())+" - actualizando id original...");
+//								nuevaTarifa.setDetalleButacaOriginal(nuevaTarifa.getId());
+//								getDetalleButacaDAO().actualizar(nuevaTarifa);
+//							}
+//							break;
+//						}
+//					}
 				}
 			}
 		}
