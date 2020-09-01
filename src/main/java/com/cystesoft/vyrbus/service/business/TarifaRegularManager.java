@@ -19,8 +19,51 @@ import com.cystesoft.vyrbus.model.bean.TarifaRegular;
 public interface TarifaRegularManager {
 
 //	public List<TarifaRegular> buscarTarifaPorServicio(Integer canalVentaID, Integer servicioID, Integer rutaID, 
-//							   						   String fechaTarifa) throws Exception;
+//			
+	public int guardar(TarifaRegular tarifaRegular) throws Exception;
+	
+	public void delete (Long idTarifaRegular) throws Exception;
 
-	public List<TarifaRegular> buscarTarifaPorServicio(Integer canalVentaID, Integer servicioID, Integer rutaID, 
-			   String fechaTarifa, Integer piso, Integer zona) throws Exception;
+	public List<TarifaRegular> buscarTarifaPorServicio(
+			Integer canalVentaID, 
+			Integer servicioID, 
+			Integer rutaID, 
+			String fechaTarifa,
+			String horaPartida,
+			Integer piso, 
+			Integer zona) throws Exception;
+	
+	public List<TarifaRegular> listarTarifasPorServicios(Integer canalVentaID,
+			Integer servicioID,
+			Integer origenID,
+			Integer destinoID,
+			Integer tipoItinerarioID,
+			String fechaInicio,
+			String fechaFin,
+			String horaPartida,
+			Integer con_o_sin_tarifa) throws Exception;
+	
+	public String buscarCantidadTarifasAReemplazar(Integer canalVentaID,
+			Integer servicioID,
+			Integer origenID,
+			Integer destinoID,
+			Integer piso,
+			Integer zona,
+			String fechaInicio,
+			String fechaFin,
+			String horaPartida,
+			Integer PorServicio)throws Exception;
+	
+	public List<TarifaRegular> buscarTarifasAReemplazar(Integer canalVentaID,
+			Integer servicioID,
+			Integer origenID,
+			Integer destinoID,
+			Integer piso,
+			Integer zona,
+			String fechaInicio,
+			String fechaFin,
+			String horaPartida,
+			Integer PorServicio)throws Exception;	
+	
+	
 }

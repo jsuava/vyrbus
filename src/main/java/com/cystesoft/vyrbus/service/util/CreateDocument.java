@@ -2101,7 +2101,7 @@ public class CreateDocument implements Serializable {
 			/*Crea detalle */
 			bw.write(linea+NEWLINE);
 			Integer piso=0;
-			creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso1(), wndmanifiesto, list, bw,piso);
+			creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso1(), wndmanifiesto, list, bw, piso, 0);
 			/*Cuando el es de dos pisos*/
 			if(itinerario.getServicio().getNumeroPisos()==2){
 				linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
@@ -2115,20 +2115,52 @@ public class CreateDocument implements Serializable {
 				creaEncabezadoManifiesto(bw);
 				linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
 				bw.write(linea+NEWLINE);
-				creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso2(), wndmanifiesto, list, bw,piso+1);
+				/*
+				 *12/07/2020
+				 *MAOE
+				 *PARA IMPRIMIR EL MANIFIESTO CON ASIENTOS SIN REINICIO EN EL SEGUNDO PISO				 * 
+				 */
+				creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso2()+itinerario.getServicio().getNumeroAsientosPiso1(), wndmanifiesto, list, bw,piso+1, itinerario.getServicio().getNumeroAsientosPiso1());
 			}
 							
 			//---> linea final del detalle: line
 			linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
 			bw.write(linea+NEWLINE);
 			//---> total asientos - total pasajeros - archivo
-			Integer numeroAseintos=0;
-			for(int x=0; x<itinerario.getServicio().getNumeroPisos(); x++){
-				if(x==0)
-					numeroAseintos=itinerario.getServicio().getNumeroAsientosPiso1();
-				else if(x==1)
-					numeroAseintos+=itinerario.getServicio().getNumeroAsientosPiso2();
-			}
+			/*
+			 * 12/07/2020
+			 * MAOE
+			 * Este segmento de codigo es el inicial consideramdo que la numeracion
+			 * de asientos en los pisos se reinicia.
+			 *   
+			 */
+			
+//			Integer numeroAseintos=0;
+//			for(int x=0; x<itinerario.getServicio().getNumeroPisos(); x++){
+//				if(x==0)
+//					numeroAseintos=itinerario.getServicio().getNumeroAsientosPiso1();
+//				else if(x==1)
+//					numeroAseintos+=itinerario.getServicio().getNumeroAsientosPiso2();
+//			}
+//			
+			/*
+			 * 12/07/2020
+			 * MAOE
+			 * Este segmento de codigo es el nuevo consideramdo que la numeracion
+			 * de asientos en los pisos no se reinicia., sino es continuado
+			 *   
+			 */
+
+			Integer numeroAseintos= itinerario.getServicio().getNumeroAsientosPiso1() + itinerario.getServicio().getNumeroAsientosPiso2();
+//			for(int x=0; x<itinerario.getServicio().getNumeroPisos(); x++){
+//				if(x==0)
+//					numeroAseintos=itinerario.getServicio().getNumeroAsientosPiso1();
+//				else if(x==1)
+//					numeroAseintos+=itinerario.getServicio().getNumeroAsientosPiso2();
+//			}
+			
+			
+			
 //			longitud_C=itinerario.getServicio().getNumeroAsientosPiso1().toString().length();
 			longitud_C=numeroAseintos.toString().length();
 			linea="Total Asientos : "+numeroAseintos+tabular(40-longitud_C);
@@ -2250,11 +2282,26 @@ public class CreateDocument implements Serializable {
 	 * @param list				: Lista que contine los pasajeros	
 	 * @param bw				:
 	 * @param piso				: Indica el numero de piso del bus.
+	 * 12/07/2020
+	 * MAOE
+	 * SE AGERGO UN PARAMETRO PARA LA IMPRESION DEL MANIFIESTO EN BUSES QUE NO SE REINICIA LA NUMERACION EN EL SEGUNDO PISO.
 	 * @throws Exception
 	 */
-	private static final void creaDetalleManifiesto(Integer numeroAsientos,WndManifiesto wndmanifiesto, List<VentaPasaje> list, BufferedWriter bw, Integer piso) throws Exception{
+	private static final void creaDetalleManifiesto(Integer numeroAsientos,WndManifiesto wndmanifiesto, List<VentaPasaje> list, BufferedWriter bw, Integer piso, Integer numeroAsientosPiso1) throws Exception{
 		Integer longitud_C=0;
-		for(int i=0; i<numeroAsientos; i++){
+		/*
+		 * 
+		 * 
+		 */
+		int nroAsientos=0;
+		if(piso == Constantes.PISO_UNO){
+			nroAsientos = 0;
+		}
+		else{
+			nroAsientos= numeroAsientosPiso1;
+		}
+		
+		for(int i=nroAsientos; i<numeroAsientos; i++){
 			String boleto="";
 			String nombre="";
 			String edad="";

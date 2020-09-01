@@ -845,14 +845,14 @@ public class WndCierreCaja extends WndBase {
 		UtilData.procesaCierreCaja(liquidacion,montoIngresado,getUsuario());
 		
 		/* Procesa cierre de caja de la venta de seguros*/
-		VSLiquidacion vsLiquidacion=ServiceLocator.getVentaSeguroManager().buscarLiquidacion(liquidacion.getUsuario().getId(),liquidacion.getAgencia().getId(), Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()),Constantes.TRUE_VALUE);
-		if(vsLiquidacion!=null){
-			VSLiquidacion vsLiquidacionVentas=ServiceLocator.getVentaSeguroManager().buscarLiquidacionVentas(vsLiquidacion.getId());
-			vsLiquidacion.setMontoIngresado(vsLiquidacionVentas.getMontoVentasPaxNromal());
-			vsLiquidacion.setEstadoLiquidacion(Constantes.FALSE_VALUE);
-			UtilData.auditarRegistro(vsLiquidacion, true, getUsuario(), Executions.getCurrent());
-			ServiceLocator.getVentaSeguroManager().cerrarLiquidacion(vsLiquidacion);
-		}
+//		VSLiquidacion vsLiquidacion=ServiceLocator.getVentaSeguroManager().buscarLiquidacion(liquidacion.getUsuario().getId(),liquidacion.getAgencia().getId(), Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()),Constantes.TRUE_VALUE);
+//		if(vsLiquidacion!=null){
+//			VSLiquidacion vsLiquidacionVentas=ServiceLocator.getVentaSeguroManager().buscarLiquidacionVentas(vsLiquidacion.getId());
+//			vsLiquidacion.setMontoIngresado(vsLiquidacionVentas.getMontoVentasPaxNromal());
+//			vsLiquidacion.setEstadoLiquidacion(Constantes.FALSE_VALUE);
+//			UtilData.auditarRegistro(vsLiquidacion, true, getUsuario(), Executions.getCurrent());
+//			ServiceLocator.getVentaSeguroManager().cerrarLiquidacion(vsLiquidacion);
+//		}
 		
 		/*Solicita confirmación del usuario para la impresion de la liquidacion*/
 		Messagebox.show(Messages.getString("WndCierreCaja.Question.Impresion"),DlgMessage.NOMBREAPLICACION,DlgMessage.BTN_YESNO,Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO,new EventListener<Event>() {

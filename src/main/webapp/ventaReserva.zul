@@ -143,8 +143,8 @@
 											<listheader label="SERVICIO" width="110px"/>
 											<listheader label="RUTA" width="120px"/>
 											<listheader label="HR.PD." width="40px" align="center"/>
-											<listheader label="S/.ESTANDAR" width="67px" align="right" tooltiptext="Tarifa Estandar"/>
-											<listheader label="S/.SUITE" width="60px" align="right" tooltiptext="Tarifa Suite"/>
+											<listheader label="S/.ESTANDAR" width="100px" align="right" tooltiptext="Tarifa Estandar"/>
+<!--  											<listheader label="S/.SUITE" width="60px" align="right" tooltiptext="Tarifa Suite"/>   -->
 											<listheader id="listheaderOtraTarifa" label="$ TARIFA " width="60px" align="right"/>
 										</listhead>
 									</listbox>

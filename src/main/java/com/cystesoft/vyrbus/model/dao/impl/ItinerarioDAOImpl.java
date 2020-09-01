@@ -1,8 +1,8 @@
 /**
- * Proyecto		: SISVYR
+ * Proyecto		: VYRBUS
  * Sistema		: Sistema de Ventas y Reservas
  * Descripción	: 
- * Autor		: José Sullo Avalos
+ * Autor		: José Avalos Sullo
  * Fecha		: 05/07/2012
  */
 package com.cystesoft.vyrbus.model.dao.impl;
@@ -750,16 +750,9 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 			"WHERE di.d_fecpar BETWEEN to_date('"+fechaInicio+"','dd/MM/yyyy') AND to_date('"+fechaFin+"','dd/MM/yyyy') AND i.c_estreg='"+Constantes.VALUE_ACTIVO+"' AND i.n_esanulado="+Constantes.FALSE_VALUE+" " +
 				"AND di.c_estreg='"+Constantes.VALUE_ACTIVO+"' ";
 		
+
 		
-//		String sql="SELECT r.ruta_id, di.c_horpar, "+ //0-1
-//					       "r.c_origen as Origen, r.c_destino as Destino, s.servicio_id, s.c_denominacion as Servicio, " +//2-5
-//					       "di.n_tarifa "+ //6-6
-//					"FROM vrtitinerario i "+
-//						"INNER JOIN vrtdetiti di ON (di.itinerario_id=i.itinerario_id) "+
-//						"INNER JOIN vrmruta r ON (r.ruta_id=di.ruta_id) " +
-//						"INNER JOIN vrmservicio s ON (s.servicio_id=i.servicio_id) "+
-//					"WHERE di.d_fecpar BETWEEN '"+fechaInicio+"' AND '"+fechaFin+"' AND i.c_estreg='"+Constantes.VALUE_ACTIVO+"' AND i.n_esanulado="+Constantes.FALSE_VALUE+" " +
-//						"AND di.c_estreg='"+Constantes.VALUE_ACTIVO+"' ";
+		
 		
 		if(idItinerario!=null && idItinerario!=0)
 			sql+=" AND i.itinerario_id="+idItinerario;

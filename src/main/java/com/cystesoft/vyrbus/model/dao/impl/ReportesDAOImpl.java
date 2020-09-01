@@ -476,20 +476,20 @@ public class ReportesDAOImpl extends GenericDAOImpl implements ReportesDAO {
 					                        
 					                        switch(limaProvincias){ //*****EL IDENTIFICADOR DEL LA LOCALIDAD LIMA ES 13 ******************
 												case 0://Lima - Provincias
-													sql+="AND r.localidad_idOrigen=13 "; // LIKE '%lima%'" ;
+													sql+="AND r.localidad_idOrigen="+Constantes.ID_LOC_LIMA; // LIKE '%lima%'" ;
 													break;
 									
 												case 1://Provincias - Lima
-													sql+="AND r.localidad_idDestino=13 ";//LOWER(r.c_destino) LIKE '%lima%' ";
+													sql+=" AND r.localidad_idDestino="+Constantes.ID_LOC_LIMA;//LOWER(r.c_destino) LIKE '%lima%' ";
 													break;
 												
 												case 2://Provincias
-													sql+="AND localidad_idOrigen!=13 AND localidad_idDestino!=13 ";
+													sql+=" AND localidad_idOrigen!="+Constantes.ID_LOC_LIMA+" AND localidad_idDestino!="+Constantes.ID_LOC_LIMA;
 													break;
 					                        }
 					                   sql+= ")v "+
-					                "WHERE v.cantPaxItiRuta>0 "+
-					                "GROUP BY v.servicioID_Itinerario,v.rutaMayorID_Itinerario,v.horaPartida_Itinerario,v.agenPartidaRuta,v.agenLlegadaRuta "+
+					                " WHERE v.cantPaxItiRuta>0 "+
+					                " GROUP BY v.servicioID_Itinerario,v.rutaMayorID_Itinerario,v.horaPartida_Itinerario,v.agenPartidaRuta,v.agenLlegadaRuta "+
 					               ")v2  "+
 					          "ON (sr.servicio_id=v2.servicioID_Itinerario) "+
 					    "INNER JOIN VRMRUTA r ON (r.ruta_id=v2.rutaMayorID_Itinerario) "+
@@ -947,21 +947,21 @@ public class ReportesDAOImpl extends GenericDAOImpl implements ReportesDAO {
 					    
 						switch(limaProvincias){ //*****EL IDENTIFICADOR DEL LA LOCALIDAD LIMA ES 13 ******************
 							case 0://Lima - Provincias
-								sql+="AND r.localidad_idOrigen=13"; // LIKE '%lima%'" ;
+								sql+="AND r.localidad_idOrigen="+Constantes.ID_LOC_LIMA; // LIKE '%lima%'" ;
 								break;
 				
 							case 1://Provincias - Lima
-								sql+="AND r.localidad_idDestino=13";//LOWER(r.c_destino) LIKE '%lima%' ";
+								sql+=" AND r.localidad_idDestino="+Constantes.ID_LOC_LIMA;//LOWER(r.c_destino) LIKE '%lima%' ";
 								break;
 							
 							case 2://Provincias
-								sql+="AND localidad_idOrigen!=13 AND localidad_idDestino!=13";
+								sql+=" AND localidad_idOrigen!="+Constantes.ID_LOC_LIMA+" AND localidad_idDestino!="+Constantes.ID_LOC_LIMA;
 								break;
 						}
 						
-					sql+="ORDER BY sr.c_Denominacion,i.d_fecpar||''||i.c_horpar||''||i.itinerario_id "+
+					sql+=" ORDER BY sr.c_Denominacion,i.d_fecpar||''||i.c_horpar||''||i.itinerario_id "+
 						   ")v  "+
-						"WHERE v.cantPaxItiRuta>0";
+						" WHERE v.cantPaxItiRuta>0";
 		log.info(sql);			
 		List<?>resultado=getSession().createSQLQuery(sql).list();	
 	

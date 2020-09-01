@@ -113,6 +113,7 @@ public class Constantes {
 	/*	Constantes para identificar si es una servicio de Ida o Retorno.	*/
 	public static final int SERVICIO_IDA = 1;
 	public static final int SERVICIO_RETORNO = 2;
+	
 	/*	Para expresar el tiempo en milisegundos	*/
 	public static final long MILISEGUNDOS_X_DIA = 86400000;
 	public static final long MILISEGUNDOS_X_HORA = 3600000;
@@ -143,6 +144,8 @@ public class Constantes {
 	public static final String RUBRO_PASAJES_DESC="PASAJES";
 	public static final String RUBRO_CARGA_DESC="CARGA";
 	public static final String RUBRO_AMBOS_DESC="AMBOS";
+	
+	public static final String SIN_TARIFA="SIN TARIFA";
 		
 	public static final String CLAVE_PAHT="TPSPSJS-";
 	/*	Path para la creacion de los documentos Boleto, Manifiesto	*/

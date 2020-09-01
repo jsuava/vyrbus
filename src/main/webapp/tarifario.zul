@@ -1,101 +1,404 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndTarifario" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndTarifario" width="820px">
+<window id="wndTarifario" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndTarifario" width="920px">
 <panel id="panel" title="::: ACTUALIZACIÓN DE TARIFAS :::" framable="true" border="normal" closable="true" onClose="wndTarifario.closeTabWindow()">
 	<panelchildren>
 		<separator/>
-		<hbox align="center"><separator/>
-			<label value="FECHA INICIO :"  />
-			<datebox id="dtbxFechaInicio" width="100px" format="dd/MM/yyyy"   onChange="com.cystesoft.vyrbus.service.util.Util.limpiarListbox(lsbxRutas)"/>
-			<div width="65px" align="right">
-				<label value="ORIGEN :" />
-			</div>
-			<combobox id="cmbOrigen" width="100px" readonly="true" onSelect="com.cystesoft.vyrbus.service.util.Util.limpiarListbox(lsbxRutas)" />
-			<div width="65px" align="right">
-				<label value="SERVICIO :" />
-			</div>
-			<combobox id="cmbServicio" width="167px" readonly="true" onSelect="com.cystesoft.vyrbus.service.util.Util.limpiarListbox(lsbxRutas)" />
-			<label value="TIPO ITINERARIO :"/>
-			<combobox id="cmbTipoItinerario" width="85px" readonly="true" onSelect="com.cystesoft.vyrbus.service.util.Util.limpiarListbox(lsbxRutas)" />
-		</hbox>
-		<hbox align="center"><separator/>
-			<div width="65px" align="right">
-				<label value="FECHA FINAL :" />
-			</div> 
-			<datebox id="dtbxFechaFinal" width="100px" format="dd/MM/yyyy"  onChange="com.cystesoft.vyrbus.service.util.Util.limpiarListbox(lsbxRutas)" />
-			<div width="65px" align="right">
-				<label value="DESTINO :" />
-			</div>
-			<combobox id="cmbDestino" width="100px" readonly="true" onSelect="com.cystesoft.vyrbus.service.util.Util.limpiarListbox(lsbxRutas)"/>
-			<div width="65px" align="right">
-				<label value="ITINERARIO :" />
-			</div>
-			<hbox align="center">
-				<intbox id="ibItinerario" width="48px" onChange="com.cystesoft.vyrbus.service.util.Util.limpiarListbox(lsbxRutas)"/>
-				<separator width="2px"/> 
-				<label value="HORA :" />
-			</hbox>
-			<hbox>
-				<timebox id="tmbxHoraPartida" format="HH:mm" width="60px" onChange="com.cystesoft.vyrbus.service.util.Util.limpiarListbox(lsbxRutas)" />
-			</hbox>
-
-			<button id="btnBuscar"  sclass="btn-vyrbus" autodisable="self" label="Buscar" height="28px" width="85px" image="/resources/mp_buscarEnabled.png" onClick="wndTarifario.buscar()" />
-		</hbox>
-		<separator height="1px" />
-		<listbox id="lsbxRutas" height="320px"  checkmark="true" multiple="true" class="z-listbox-header-bg" >
-			<listhead class="z-listbox-header-bg">
-				<listheader label="ITINERARIO " id="lstheaItinerario" width="85px" />
- 				<listheader label="RUTA" width="150px"/>
- 				<listheader label="SERVICIO" width="120px"/>
- 				<listheader label="FECHA PARTIDA" id="lstheaFecha"  width="200px" />
- 				<listheader label="H. PARTIDA" id="lstheaHora" align="center" width="60px" />
- 				<listheader label="TARIFA" align="center" width="50px" />
- 				<listheader label="TARIFA F.A." align="center" width="60px"/>
- 				<listheader label="TARIFA LISTA" align="center" />
-			</listhead>
-		</listbox>
-		<separator height="1px" />
-		<grid>
- 			<columns>
- 				<column width="130px"/>
- 				<column width="450px" align="right"/>
- 				<column />
- 			</columns>
+		
+		<grid width="900px">
+			<columns>
+				<column/>
+			</columns>
 			<rows>
-				<row style="padding: 0px">
-					<checkbox id="ckbxDetalle"  label="MOSTRAR DETALLE" checked="true" style="font-size:10px !important" onCheck="com.cystesoft.vyrbus.service.util.Util.limpiarListbox(lsbxRutas)" />
- 					<hbox align="center">
-						<radiogroup >
-							<radio id="rbActualizaTarifa" label="ACTUALIZAR TARIFA" style="font-size:10px !important" checked="true" onCheck="wndTarifario.onCkeckRbActualizaTarifa()" /><space width="15px"/>
-							<radio id="rbIncrementoTarifa" label="INCREMENTO DE TARIFA" style="font-size:10px !important"  onCheck="wndTarifario.onCheckRbIncrementaTarifa()" />
-						</radiogroup>
-					</hbox>
-					<hbox align="center">
-						<space width="41px"/>
-						<vbox align="center">
-							<label value="TARIFA" style="font-size:10px !important;font-weight: bold;color:green"/>
-							<doublebox id="dlbxTarifa" onChange="dlbxTarifaLista.setValue(dlbxTarifa.getValue())" tooltiptext="Tarifa para la Venta." format="###,###,##0.00" width="40px" style="font-weight: bold;color:green"/>
-						</vbox>
+				<row>
+					<groupbox closable="false" mold="3d"  style="overflow:auto" >									
+					<caption label="CONSULTA DE SERVICIOS Y TARIFAS" />
+						<grid sclass="grid-no-border" width="890px">
+							<columns>
+ 								<column width="70px" align="right" />
+								<column width="120px" align="left"/>
+								<column width="70px" align="right" />
+								<column width="130px" align="left"/>
+								<column width="70px" align="right" />
+								<column width="120px" align="left" />
+								<column width="100px" align="right" />								
+								<column width="120px" align="left" />
+							</columns>
+							<rows>
+								<row>
+  									<label value="CANAL :" />
+									<combobox id="cmbCanalBus" 
+											onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbServicioBus)" 
+											readonly="true"  
+											width="100px" /> 
+									<label value="SERVICIO :" />
+									<combobox id="cmbServicioBus" 
+											onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbOrigenBus)"
+											readonly="true"  
+											width="120px" />
+									<label value="ORIGEN :" />
+									<combobox id="cmbOrigenBus"
+											onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbDestinoBus)" 
+											readonly="true" 
+											width="110px"   />
+									<label value="DESTINO :" />
+									<combobox id="cmbDestinoBus"
+											onSelect="com.cystesoft.vyrbus.service.util.Util.limpiarListbox(lsbxRutas)"
+											readonly="true" 
+											width="110px" />
+									<label />
+								</row>
+								<row>
+  									<label value="FEC. INICIO :" />
+									<datebox id="dtbxFecInicioBus" 
+											onChange="com.cystesoft.vyrbus.service.util.Util.limpiarListbox(lsbxRutas)" 
+											readonly="true"   
+											style="font-size:11px" 
+											format="dd/MM/yyyy" 
+											visible="true"
+											width="100px" />
+									<label value="FEC FIN :" />
+									<datebox id="dtbxFecFinBus" 
+											format="dd/MM/yyyy"
+											readonly="true"
+											style="font-size:11px" 
+											visible="true"  
+											width="100px"  />
+									<label value="HORA :" />
+									<timebox id="tmbxHoraPartidaBus" 
+											format="HH:mm" 
+											onChange="com.cystesoft.vyrbus.service.util.Util.limpiarListbox(lsbxRutas)" 
+											width="60px" />
+									<label value="TIPO ITINERARIO :"/>
+									<combobox id="cmbTipoItinerario" 
+											onSelect="com.cystesoft.vyrbus.service.util.Util.limpiarListbox(lsbxRutas)"
+											readonly="true" 
+											width="100px" />
+									<label/>
+								</row>
+								<row spans="4, 2, 2">
+								<hbox>
+ 									<separator/>											
+									<radiogroup>
+										<radio id="rdAmbos"
+											selected="true"
+											style="font-size:12px !important" 
+											label="Ambos" /> 
+										<radio id="rdSinTarifa" 
+											label="Sin Tarifa" /> 
+										<radio id="rdConTarifa"  
+											label="Con Tarifa" 
+											style="font-size:12px !important" />
+									</radiogroup>
+								</hbox>
+								<hbox>
+									<checkbox id="chkTarifaFA" 
+										label="Buscar Tarifa Abierta"  
+										onClick="wndTarifario.onSelectBuscarTarifaFechaAbierta()"/>
+								</hbox>
+								
+									<button id="btnBuscar"  
+										autodisable="self"
+										height="28px"
+										image="/resources/mp_buscarEnabled.png" 
+										label="Buscar" 
+										onClick="wndTarifario.buscar()" 
+										sclass="btn-vyrbus" 
+										width="85px" />
+									<label/>
+
+								</row>
+							</rows>
+						</grid>
+					</groupbox>
+					<separator height="2px" />
+				</row>
+				<row>
+ 					<tabbox>
+ 						<tabs>
+ 							<tab id="tabTarifa" label="Lista Tarifas" />
+ 							<tab id="tabTarifaFA" label="Lista Tarifas Fecha Abierta" />
+						</tabs>
+						<tabpanels>
+							<tabpanel>
+								<listbox id="lsbxRutas" height="320px"  class="z-listbox-header-bg"  mold="paging" pageSize="15">
+									<listhead class="z-listbox-header-bg" sizable="true">
+										<listheader label="ITINERARIO " id="lstheaItinerario" width="60px" />
+										<listheader label="CANAL" width="80px" sort="auto"/>
+										<listheader label="SERVICIO" width="120px" sort="auto"/>
+							 			<listheader label="RUTA" width="200px" sort="auto"/>
+							 			<listheader label="FECHA PARTIDA" id="lstheaFecha"  width="180px" sort="auto" />
+							 			<listheader label="H. PARTIDA" id="lstheaHora" align="center" width="60px" />
+							 			<listheader label="PISO" align="center" width="50px" />
+							 			<listheader label="ZONA" align="center" width="60px"/>
+							 			<listheader label="TARIFA" align="right" width="70px" />
+									</listhead>
+								</listbox>
+							</tabpanel>
+							<tabpanel>
+								<listbox id="lsbxTarifaFA" height="320px"  class="z-listbox-header-bg"  mold="paging" pageSize="15">
+									<listhead class="z-listbox-header-bg" sizable="true">
+										<listheader label="TARIFA" id="lstheaTarifa" width="60px" />
+										<listheader label="CANAL" width="80px" sort="auto"/>
+										<listheader label="SERVICIO" width="120px" sort="auto"/>
+							 			<listheader label="RUTA" width="200px" sort="auto"/>
+							 			<listheader label="TARIFA" align="right" width="70px" />				 			
+							 			<listheader label="FECHA ACTIVACION" id="lstheaActivacion"  sort="auto" width="180px" />
+							 			<listheader label="FECHA CADUCIDAD" id="lstheaCaducidad" align="center" width="180px" />
+									</listhead>
+								</listbox>
+							</tabpanel>
+						</tabpanels>
+					</tabbox>				
+				</row>
+				<row>
+					<groupbox closable="false" mold="3d" style="overflow:auto">									
+					<caption label="PROGRAMACION DE TARIFA" />
+					<hbox>
+						<!-- Rango de Fecha para la generacion de los itinerarios -->
+						<groupbox mold="3d" closable="false" height="141px" width="115px">
+						<caption label="INICIO Y FIN DE LA PROGRAMACIÓN"/>
+							<grid  height="100%" style="border:none">
+								<columns>
+			<!-- 						<column  width="35%" align="right" /> -->
+			<!-- 						<column  width="65%" align="right"/> -->
+								</columns>
+								<rows>
+									<row>
+										<vbox>
+											<label value="FECHA INICIO"  />
+											<datebox id="dtbxFecInicio"
+															format="dd/MM/yyyy" 
+															onChange="com.cystesoft.vyrbus.service.util.Util.setFocus(dtbxFecFinal)" 
+															readonly="true"   
+															style="font-size:11px" 
+															visible="true"
+															width="100px" />
+										</vbox>
+									</row>
+									<row>
+										<vbox>
+											<label value="FECHA FIN" />
+											<datebox id="dtbxFecFinal" 
+															format="dd/MM/yyyy"
+															onChange="com.cystesoft.vyrbus.service.util.Util.setFocus(tmbxHoraPartida)" 
+															readonly="true"   
+															style="font-size:11px"
+															visible="true"
+															width="100px"  />
+
+										</vbox>
+									</row>
+								</rows>
+							</grid>
+						</groupbox>
+			
+						<grid sclass="grid-no-border">
+							<columns>
+								<column width="80px" align="right" />
+								<column width="120px" align="left" />
+								<column width="85px" align="right"  />
+								<column width="120px" align="left"/>
+								<column width="80px" align="right"  />
+								<column width="130px" align="left"  />
+							</columns>
+							<rows>
+								<row spans="6,2">
+									<grid>
+										<columns>
+											<column width="100px"/>
+											<column width="100px"/>
+											<column width="100px"/>
+											<column width="110px"/>
+											<column/>
+										</columns>
+										<rows>						
+											<row >
+												<toolbarbutton id="btnNuevaTarifa" 
+													autodisable="self,btnCopiarTarifa" 
+													image="resources/toolbar/mp_toolbarNuevo.png"
+													label="Nuevo" style="color:black"  
+													onClick="wndTarifario.onClick_btnNuevaTarifa()" 
+													width="95%"  />
+												<toolbarbutton id="btnCopiarTarifa"
+													autodisable="self,btnNuevaTarifa"
+													image="resources/toolbar/mp_toolbarCopiarEnabled.png" 
+													label="Copiar"
+													onClick="wndTarifario.onClick_btnCopiarTarifa()"  
+													style="color:black"  
+													width="95%"/>			
+												<toolbarbutton id="btnCancelar" 
+													autodisable="self"
+													disabled="true" 
+													image="resources/toolbar/mp_toolbarCancelar.png"
+													label="Cancelar"  
+													onClick="wndTarifario.onClick_btnCancelar()"
+													style="color:black"   
+													width="95%" />
+												<toolbarbutton id="btnEliminar" 
+													autodisable="self"
+													disabled="true" 
+													image="resources/toolbar/mp_toolbarEliminar.png"
+													label="Eliminar"  
+													onClick="wndTarifario.onClick_btnEliminar()"
+													style="color:black"   
+													width="95%" />													
+												<toolbarbutton id="btnGuardarTarifa" 
+													autodisable="self,btnCancelar"
+													disabled="true" 
+													image="resources/toolbar/mp_toolbarGuardar.png"
+													label="Guardar"  
+													onClick="wndTarifario.onClick_btnGuardarTarifa()" 
+													style="color:black"   
+													width="95%" />
+												<separator/>							
+											</row>
+										</rows>	
+									</grid>	
+									<label/>
+									<label/>
+								</row>							
+								<row>
+									<label value="CANAL :" />
+									<combobox id="cmbCanal" 
+											onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbServicio)" 
+											readonly="true"  
+											width="100px" /> 
+									<label/>
+									<checkbox id="chkPorServicio" 
+										label="Por Servicio"/>
+									<label/>
+									<checkbox id="chkTarifaAbierta" 
+										label="Tarifa Abierta"  
+										onClick="wndTarifario.onSelectTarifaFechaAbierta()"/>
+									<label id="lblTarifafa" value="TARIFA F.A." 
+										style="font-size:10px !important; color:blue;font-weight: bold;"/>
+									<doublebox id="dlbxTarifaFa" 
+											format="###,###,##0.00"
+											style="font-weight: bold;color:blue"
+											tooltiptext="Tarifa para Fecha Abierta."  
+											width="40px" />
+									<label/>
+								</row>
+								<row>
+									<label value="SERVICIO :" />
+									<combobox id="cmbServicio" 
+											onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbOrigen)"
+											onChange="wndTarifario.onChangeServicio()"
+											readonly="true"  
+											width="115px" />
+									<label value="ORIGEN :" />
+									<combobox id="cmbOrigen"
+											onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbDestino)" 
+											readonly="true" 
+											width="100px"   />
+									<label value="DESTINO :" />
+									<combobox id="cmbDestino"
+											onSelect="com.cystesoft.vyrbus.service.util.Util.setFocus(tmbxHoraPartida)"
+											readonly="true" 
+											width="100px" />
+									<label value="HORA :" />
+									<timebox id="tmbxHoraPartida" 
+											format="HH:mm" 
+											onChange="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbPiso)" 
+											width="60px" />
+									<label/>
+								</row>
+								<row>
+									<label value="PISO :" />
+									<combobox id="cmbPiso"
+											onChange="wndTarifario.onChangePiso()"
+											onSelect="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbZona)"
+											readonly="true" 
+											width="100px" />
+									<label value="ZONA BUS :" />
+									<combobox id="cmbZona"
+											onSelect="com.cystesoft.vyrbus.service.util.Util.setFocus(dlbxTarifaP1)"
+											readonly="true" 
+											width="100px" />
+									<label value="TARIFA P1: "/>
+									<doublebox id="dlbxTarifaP1" 
+											format="###,###,##0.00" 
+											style="font-weight: bold;color:green" 
+											tooltiptext="Tarifa para la Venta Piso 1." 
+											width="40px"/>
+									<label value="TARIFA P2: "/>
+									<doublebox id="dlbxTarifaP2" 
+											format="###,###,##0.00" 
+											style="font-weight: bold;color:green" 
+											tooltiptext="Tarifa para la Venta Piso2." 
+											width="40px"/>											
+
+									<label/>
+								</row>
+								
+ 								
+							</rows>
+						</grid>
 						
-						<vbox align="center">
-							<label value="TARIFA F.A." style="font-size:10px !important; color:blue;font-weight: bold;"/>
-							<doublebox id="dlbxTarifaFa" tooltiptext="Tarifa para Fecha Abierta." format="###,###,##0.00" width="40px" style="font-weight: bold;color:blue"/>	
-						</vbox>
-						<vbox align="center">
-							<label value="TARIFA LISTA" style="font-size:10px !important; font-weight: bold;"/>
-							<doublebox id="dlbxTarifaLista" tooltiptext="Tarifa Lista y/o referencial para la venta  online." format="###,###,##0.00" width="40px" style="font-weight: bold;"/>	
-						</vbox>
-					</hbox>
+				</hbox>
+<!--  						<grid>
+							<columns>
+								<column width="100px"/>
+								<column width="100px"/>
+								<column width="100px"/>
+								<column width="110px"/>
+								<column/>
+							</columns>
+							<rows>						
+								<row >
+									<toolbarbutton id="btnNuevaTarifa" 
+										autodisable="self,btnCopiarTarifa" 
+										image="resources/toolbar/mp_toolbarNuevo.png"
+										label="Nueva tarifa" style="color:black"  
+										onClick="wndTarifario.onClick_btnNuevaTarifa()" 
+										width="95%"  />
+									<toolbarbutton id="btnCopiarTarifa"
+										autodisable="self,btnNuevaTarifa"
+										image="resources/toolbar/mp_toolbarCopiarEnabled.png" 
+										label="Copiar tarifa"
+										onClick="wndTarifario.onClick_btnCopiarTarifa()"  
+										style="color:black"  
+										width="95%"/>			
+									<toolbarbutton id="btnCancelar" 
+										autodisable="self"
+										disabled="true" 
+										image="resources/toolbar/mp_toolbarCancelar.png"
+										label="Cancelar"  
+										onClick="wndTarifario.onClick_btnCancelar()"
+										style="color:black"   
+										width="95%" />
+									<toolbarbutton id="btnGuardarTarifa" 
+										autodisable="self,btnCancelar"
+										disabled="true" 
+										image="resources/toolbar/mp_toolbarGuardar.png"
+										label="Guardar tarifa"  
+										onClick="wndTarifario.onClick_btnGuardarTarifa()" 
+										style="color:black"   
+										width="95%" />
+									<separator/>							
+								</row>
+							</rows>	
+						</grid>
+				<listbox id="ltbxMantoTarifario" class="z-listbox-header-bg"  rows="12" height="120px" width="900px" >
+						<listhead class="z-listbox-header-bg" sizable="true">
+							<listheader label="CANAL" align="center" width="100px"/>
+							<listheader label="SERVICIO" align="center" width="120px"/>
+							<listheader label="ORIGEN" width="100px"/>
+							<listheader label="DESTINO" align="center" width="100px"/>
+							<listheader label="HORA PART." width="80px"/>
+							<listheader label="PISO" align="center" width="80px"/>
+							<listheader label="ZONA BUS" align="center" width="80px"/>
+							<listheader label="PRECIO" align="center" width="90px"/>
+							<listheader/>
+						</listhead>
+					</listbox>								
+-->
+					</groupbox>				
 				</row>
 			</rows>
-		</grid>
-		<toolbar width="100%">
- 			<hbox align="center">
-				<separator width="669px"/>
-				<button id="btnAplicar" sclass="btn-vyrbus"  label="Aplicar" image="/resources/mp_aceptarEnabled.png" width="120px"  onClick="wndTarifario.guardar()" height="28px" />
- 			</hbox>
-		</toolbar>
+		</grid>		
 	</panelchildren>
-	</panel>
+</panel>
 </window>
 </zk>
