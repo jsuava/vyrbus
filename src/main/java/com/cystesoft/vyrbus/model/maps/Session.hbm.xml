@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.cystesoft.vyrbus.model.bean.Session" table="VRTSESSION" schema="VYR">
+    <class name="com.cystesoft.vyrbus.model.bean.Session" table="VRTSESSION" schema="VYRBUSTRANSMAR">
         <comment>Entidad que almacen los codigos de autorización generados para el ingreso al sistema de ventas y reservas (sisvyr).</comment>
         <id name="id" type="java.lang.Long">
             <column name="SESSION_ID" precision="10" scale="0" />
