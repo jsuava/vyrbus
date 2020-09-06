@@ -386,6 +386,7 @@ public class WndTarifario extends WndBase implements Serializable {
 				dtbxFecFinal.setValue( ((TarifaRegular) itemTarifa.getValue()).getFechaTarifa() );
 				
 				dtbxFecInicio.setDisabled(true);
+				onChangeServicio();
 		
 			}else{
 				DlgMessage.information(Messages.getString("WndItinerario.information.SeleccionarTramo"));
@@ -937,7 +938,7 @@ public class WndTarifario extends WndBase implements Serializable {
 					DlgMessage.information("Debe de ingresar el Piso del bus al cual se le creara la Tarifa.");
 					cmbPiso.focus();
 					return;
-				}else if(cmbPiso.getSelectedIndex()==2 && dlbxTarifaP2.getValue()==0){
+				}else if(cmbPiso.getSelectedIndex()==2 && dlbxTarifaP2.getValue()==0 && oServicio.getNumeroPisos()==2){
 					DlgMessage.information("Debe de ingresar el monto de la Tarifa del piso 2.");
 					cmbPiso.focus();
 					return;
@@ -1210,6 +1211,7 @@ public class WndTarifario extends WndBase implements Serializable {
 												tarifa.setRuta(ruta);
 												tarifa.setPisoBus(1);
 												tarifa.setZonaBus(zona);
+												tarifa.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 												UtilData.auditarRegistro(tarifa,  getUsuario(), Executions.getCurrent());
 												ServiceLocator.getTarifaManager().guardar(tarifa);
 													
