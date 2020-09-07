@@ -219,10 +219,12 @@
 			<grid style="border:none background:#616161">
 				<columns>
 					<column width="170px" align="center"/>
-					<column width="41%"/>
-					<column width="40%"/>
-					<column width="11%" align="right"/>
-					<column width="15%" align="left"/>
+					<column width="40%" align="right"/>
+					<column width="40%" align="right"/>
+					<column width="8%" align="right"/>
+					<column width="10%" align="left"/>
+					<column width="8%" align="right"/>
+					<column width="10%" align="left"/>
 				</columns>
 				<rows>
 					<row style="border:none; background:#4285F4" height="50px">
@@ -232,16 +234,20 @@
 									onClick="wndPrincipal.cerrarSesion()"
 									style="font-size:12px;font-weight:bold;color:white" 
 									tooltiptext="Cerrar sesión" />
-						<label/>
-						<label/>
-						<hbox>
-							<label value="Agencia: " style="font-weight:bold;color:white"/>
+						<label value=" "/>  
+						<label value=" "/>  
+						
+<!--						<hbox>  -->
+<!--  							<label value="Agencia: " style="font-weight:bold;color:white"/>  -->
+							<image src="/resources/mp_agencia.png" style="border-radius: 50%;" height="32px" width="32px"/>
 							<label id="lblAgencia"  style="color:white"/>
-						</hbox>
-						<hbox>
-							<label value="Equipo: " style="font-weight:bold;color:white"/>
+<!--						</hbox>  -->
+						
+<!--						<hbox>  -->
+<!-- 							<label value="Equipo: " style="font-weight:bold;color:white"/>  -->
+							<image src="/resources/mp_equipo.png" style="border-radius: 50%;" height="32px" width="32px"/>
 							<label id="lblPC"  style="color:white"/>
-						</hbox>
+<!--						</hbox>  -->
 										
 					</row>					
 				</rows>
