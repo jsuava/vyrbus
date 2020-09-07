@@ -192,7 +192,7 @@ public class UsuarioManagerImpl implements UsuarioManager {
 			//window.setEmails("TO:"+usuario.getEmailInfo()+";BCC:sistemas@tepsa.com.pe");
 			window.setEmails("TO:"+usuario.getEmailInfo());//+";BCC:jabanto@tepsa.com.pe");
 //			if(usuario.getEmailInfo()!=null)
-			Sendmail.enviaEmail(mensaje, "Credenciales de Acceso - Sisvyr", window);
+			Sendmail.enviaEmail(mensaje, "Credenciales de Acceso - VYRBUS", window);
 		}
 				
 	}

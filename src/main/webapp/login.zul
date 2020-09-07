@@ -36,66 +36,80 @@
      .body-center{
 	     	background-image: url(${c:encodeURL('/resources/fondo_1.jpg')}); 
 	     	background-repeat:repeat-x;
-<!-- 	      border-radius:20px; -->
+ 	      	border-radius:20px; 
 <!-- 	     	width:499px; -->
 
 	 }
+	 
+	.container
+	{
+	    width: 70%;
+	    padding: 1em;
+	    text-align: left;
+	    border: 1px solid #DDD;
+	    margin: 0 auto;
+	}
+	.cabecera_login{
+	    background: #33A;
+	    box-shadow: 0px 2px 20px 0px rgba(0,0,0,0.5);
+	    color: white;
+	    font-size:25px;
+	    font-weight: bold;
+	    margin: 0;
+	    padding: 0.5em;
+	}	
+	.btnlogin{
+		cursor: pointer;
+		font-size: 14px;
+		background-color: #33A;
+		color: #FFFFFF;
+		border-width: 0px; 
+		border-radius: 4px;
+	}
+	.btnlogin:hover{
+		box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+	} 
 </style> 
 	<div align="center">
 		<separator height="100px"/>
-			<window id="wndLogin"  border="none"  width="600px" height="350px" use="com.cystesoft.vyrbus.view.ctrl.WndLogin">
-			<borderlayout>
-				<west border="normal" size="250px" >
-					<borderlayout>
-<!-- 						<north border="none" size="100px" style="background:#4285F4">
-						</north>  -->
-						<center border="none" sclass="body-center">
-							<div height="350px" width="250px" align="center" >
-								<separator height="90px" />
-								<label value="Bienvenido a VYRBUS" style="color:white;font-size:25px"></label>
-								<separator height="15px"></separator>
-								<separator orient="horizontal" width="15px"></separator>
-								<label value="Ingrese su usuario y contraseña" style="color:white;font-size:12px" />
-								<separator  height="2px"></separator>
-								<separator orient="horizontal" width="15px"></separator>
-								<label value="y la imagen de la figura" style="color:white;font-size:12px" />
-								<separator  height="2px"></separator>
-								<separator orient="horizontal" width="15px"></separator>
-								<label value="para acceder al sistema." 
-									style="color:white;font-size:12px" />
-							</div>
-						</center>
-						<!-- <south border="none" size="100px" style="background:#4285F4">
-						</south> -->
-					</borderlayout>
-				</west>
-				<center border="none" style="background:#e0e0e0">
-					<div align="left">
-						<separator orient="vertical" height="50px"/>
-
-						<hlayout>
-							<separator orient="horizontal" width="50px"/>
-							<div height="24px" width="80px" align="right">
-								<separator height="5px"/>
-<!--  								<label value="USUARIO :" style="font-size:10px; font-weight:bold; color:#000066"/> -->
-								<image src="resources/user.png" height="22px" />
-							</div>
-							<textbox id="txtLogin" height="22px" width="140px" placeholder="Nombre de usuario" onChange="wndLogin.txtLogin_onchange()" focus="true" onOK="txtPassword.setFocus(true);" style="font-size:12px" />
-							
+			<window id="wndLogin"  border="none"  width="600px" height="550px" use="com.cystesoft.vyrbus.view.ctrl.WndLogin">
+				<div id="container" sclass="container" style="background:#e0e0e0">
+		            <div id="cabecera" sclass="cabecera_login" align="center">
+		                <label value="Bienvenido a VYRBUS" style="color:white;font-size:25px" ></label>
+		            </div>
+		            <separator orient="vertical" height="50px"/>
+		            <div id="post" >
+		            	<hlayout >
+		            		<separator orient="horizontal" width="80px"/>
+							<textbox id="txtLogin"
+									focus="true"
+									height="24px"  
+									onChange="wndLogin.txtLogin_onchange()"  
+									onOK="txtPassword.setFocus(true);"
+									placeholder="Nombre de usuario"  
+									style="font-size:14px; border-radius: 4px; border-width: 1px;" 
+									width="240px" />
 						</hlayout>
-						<separator height="5px"></separator>
+						<separator orient="vertical" height="10px"/>
 						<hlayout>
-							<separator orient="horizontal" width="50px"/>
+							<separator orient="horizontal" width="80px"/>
+<!--  							
 							<div height="24px" width="80px" align="right">
 								<separator height="4px"/>
-<!-- 								<label value="CONTRASEÑA :" style="font-size:10px; font-weight:bold; color:#000066"/>  -->
 								<image src="resources/lock.png" height="22px"/>
 							</div>
-							<textbox id="txtPassword" height="22px" type="password" placeholder="Ingrese su contraseña" width="140px" onOK="txtImagen.setFocus(true)" style="font-size:12px"/>
+-->							
+							<textbox id="txtPassword" 
+									height="24px"  
+									placeholder="Ingrese su contraseña"  
+									onOK="txtImagen.setFocus(true)" 
+									style="font-size:14px; border-radius: 4px; border-width: 1px;" 
+									type="password" 
+									width="240px" />
 						</hlayout>
-						<separator height="5px"></separator>
+						<separator height="10px"></separator>
 						<hlayout>
-							<separator orient="horizontal" width="10px"/>
+							<separator orient="horizontal" width="75px"/>
 							<div width="120px" align="right">
 								<separator height="10px" />
 								<label value="Ingrese el código que se muestra en la imagen" style="font-size:11px"/>
@@ -104,7 +118,7 @@
 								<zscript><![CDATA[
 		    						import org.zkforge.bwcaptcha.Captcha;
 					    		]]></zscript>
-								<bw.captcha id="cpaImagen"  width="145px" >
+								<bw.captcha id="cpaImagen"  width="125px" >
 									<attribute name="onCreate">
 										<![CDATA[
 									         /*cpaImagen.setBgColor(0xCACACA);*/
@@ -120,52 +134,75 @@
 									</attribute>
 								</bw.captcha>
 							</vlayout>
-						</hlayout>
+						</hlayout>	
 						
 						<separator  height="5px" />	
 						<hbox>
-							<div width="135px" />
-							<textbox id="txtImagen" maxlength="5" cols="5" style="text-transform: uppercase;"  onOK="if(!(hlyoutCodigoAcceso.isVisible()))wndLogin.onAccess(); else txtCodigoAcceso.setFocus(true);"  />
+							<div width="100px" />
 							<toolbarbutton id="tbbRecargar" label="Refrescar código" style="color:#054283;font-size:11px;font-weight:bold">
 								<attribute name="onClick">
 									cpaImagen.randomValue();
 									txtImagen.setText("");
 									txtImagen.setFocus(true);
 								</attribute>
-							</toolbarbutton>
+							</toolbarbutton>							
+							<textbox id="txtImagen"
+									cols="5" 
+									height="20px"
+									maxlength="5"  
+									onOK="if(!(hlyoutCodigoAcceso.isVisible()))wndLogin.onAccess(); else txtCodigoAcceso.setFocus(true);" 
+									style="text-transform: uppercase; font-size:12px; border-radius: 4px; border-width: 1px;"  />
+							
 						</hbox>	
-						
+												
 						<separator  height="5px" />
 						<hlayout id="hlyoutCodigoAcceso" visible="false">
-							<separator orient="horizontal" width="50px"/>
+							<separator orient="horizontal" width="12px"/>
 							<div height="24px" width="80px" align="right">
 								<separator height="4px"/>
-								<label value="COD. ACCESO :" style="font-size:10px; font-weight:bold; color:#000066"/>
+<!--  								<label value="COD. ACCESO :" style="font-size:10px; font-weight:bold; color:#000066"/>		-->
 							</div>
 							<hbox align="center">
-								<textbox id="txtCodigoAcceso" disabled="false" placeholder="Ingrese su código de acceso" width="140px" onOK="wndLogin.onAccess()" style="font-size:11px"/>
-								<checkbox id="chkOmitirCodigoAcceso" checked="false" label="Omitir" onCheck="if(self.isChecked()){txtCodigoAcceso.setText(null); txtCodigoAcceso.setDisabled(true);}else{txtCodigoAcceso.setDisabled(false);}" />
+								<textbox id="txtCodigoAcceso" 
+										disabled="false" 
+										onOK="wndLogin.onAccess()" 
+										placeholder="Ingrese código de acceso" 
+										style="font-size:14px; border-radius: 4px; border-width: 1px;" 
+										width="160px" />
+								<checkbox id="chkOmitirCodigoAcceso" 
+										checked="false" 
+										label="Omitir" 
+										onCheck="if(self.isChecked()){txtCodigoAcceso.setText(null); 
+												txtCodigoAcceso.setDisabled(true);}else{txtCodigoAcceso.setDisabled(false);}" />
 							</hbox>
-						</hlayout>
-														
+						</hlayout>						
+						
 						<hbox align="center">
-<!--  							<div width="105px" /> -->
  							<separator orient="horizontal" width="108px"/>
 							<div id="divRol" visible="false">
 								<separator height="5px"/>
-<!-- 							    <label value="ROL : " style="font-size:10px; font-weight:bold; color:#000066"/>  --> 
-							    <image src="resources/roles.png" height="22px"/>
-								<combobox id="cmbRol" height="24px" onOK="wndLogin.onAccess()" readonly="true" width="180" style="font-size:10px; color:#000066; cursor:pointer" />
+<!--  							    <image src="resources/roles.png" height="22px"/>		-->
+								<combobox id="cmbRol" 
+									height="28px" 
+									onOK="wndLogin.onAccess()" 
+									readonly="true"
+									style="font-size:14px; color:#000099; cursor:pointer; border-width: 1px;" 
+									width="200"  />
 							</div>
-						</hbox>
-						
+						</hbox>						
 						
 						<separator id="spBtnIngresar"  orient="vertical" height="14px"/>
-
 						<hlayout>
-							<separator orient="horizontal" width="133px" ></separator>
-							<div align="center">
-								<button id="btnIngresar" mold="default" label="Ingresar"  width="148px" autodisable="self,txtLogin, txtPassword, txtImagen,txtCodigoAcceso" height="30px"  onClick="wndLogin.onAccess()" style="cursor:pointer;font-size:14px;background-color:#4285F4;color:#FFFFFF;border-width: 2px" />
+							<separator orient="horizontal" width="85px" ></separator>
+							<div align="center" height="50px">
+								<button id="btnIngresar"
+										autodisable="self,txtLogin, txtPassword, txtImagen,txtCodigoAcceso"
+										height="40px"   
+										label="Ingresar"   
+										mold="default" 
+										onClick="wndLogin.onAccess()" 
+										sclass="btnlogin" 
+										width="240px"  />
 							</div>
 						</hlayout>
 						<separator height="15px" />
@@ -177,10 +214,13 @@
 						<hlayout>
 							<separator  orient="horizontal" width="135px"/>
 							<label id="lblCopyRigth" style="color:#014282;font-weight:bold;font-size:10px"/>
-						</hlayout>						
-					</div>					
-				</center>
-			</borderlayout>			
+						</hlayout>							
+						
+											
+
+		            </div>
+        		</div>
+			
 		</window>		
 	</div>
 
