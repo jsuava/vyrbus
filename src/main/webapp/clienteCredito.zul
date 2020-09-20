@@ -12,14 +12,28 @@
 				<row>
 					<label value="RUC :"  sclass="label-size11-bold"/>
 					<hbox align="center">
-						<textbox id="txtNumeroRuc" focus="true" onOK="wndClientesCredito.listarclientesCredito()" width="120px" style="font-size:12px !important" /><separator width="10px" />
+						<textbox id="txtNumeroRuc" 
+								focus="true" 
+								onOK="wndClientesCredito.listarclientesCredito()" 
+								width="120px" 
+								style="font-size:12px !important" />
+						<separator width="10px" />
 						<label value="TIPO CLIENTE :" sclass="label-size11-bold" />
-						<combobox id="cmbTipoCliente" readonly="true"  onChange="wndClientesCredito.onSelectTipoCliente()" />
+						<combobox id="cmbTipoCliente" 
+								readonly="true"  
+								onChange="wndClientesCredito.onSelectTipoCliente()" />
 						<separator width="10px" />
 						<label value="CLIENTE :" sclass="label-size11-bold" />
-						<combobox id="cmbCliente" width="240px" /><separator width="10px" />
+						<combobox id="cmbCliente" width="240px" />
+						<separator width="10px" />
 						<separator width="15px" />
-						<button id="btnBuscarClientes" sclass="btn-vyrbus" label="Buscar" autodisable="self" onClick="wndClientesCredito.listarclientesCredito()" image="/resources/mp_buscarEnabled.png" style="cursor:pointer" />
+						<button id="btnBuscarClientes" 
+								sclass="btnCommandM" 
+								label="Buscar" 
+								autodisable="self" 
+								onClick="wndClientesCredito.listarclientesCredito()" 
+								image="/resources/mp_buscarEnabled.png" 
+								style="cursor:pointer" />
 					</hbox>
 				</row>
 			</rows>
@@ -27,13 +41,13 @@
 		<listbox id="listClientesCredito" mold="paging" pageSize="16" height="350px">
 			<listhead>
 <!-- 				<listheader label="#" width="30px" /> -->
-				<listheader label="CLIENTE" width="180px" />
-				<listheader label="TIPO DE CLIENTE" width="118PX" />
-				<listheader label="CREDITO" width="80px" align="center" />
-				<listheader label="SOBREGIRO" width="60px" align="center"  />
-				<listheader label="SALDO" width="70px" align="center"/>
-				<listheader label="ESTADO" width="55px" />
-				<listheader label="FUNCIONARIO" width="150px" />
+				<listheader label="CLIENTE" width="180px" style="color: #ffffff;"/>
+				<listheader label="TIPO DE CLIENTE" width="118PX" style="color: #ffffff;"/>
+				<listheader label="CREDITO" width="80px" align="center" style="color: #ffffff;"/>
+				<listheader label="SOBREGIRO" width="60px" align="center"  style="color: #ffffff;"/>
+				<listheader label="SALDO" width="70px" align="center" style="color: #ffffff;"/>
+				<listheader label="ESTADO" width="55px" style="color: #ffffff;"/>
+				<listheader label="FUNCIONARIO" width="150px" style="color: #ffffff;"/>
 				<listheader  />
 				
 			</listhead>

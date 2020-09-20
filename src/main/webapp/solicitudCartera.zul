@@ -25,24 +25,39 @@
 								<label  value="Cliente" sclass="label-size11-bold" />
 	 							<hbox align="center">
 	 								<combobox id="cmbCliente" readonly="true" width="315px" />
-	 								<button id="btnBuscaClienteCartera" label="" tooltiptext="Buscar" onClick="wndsolicitud.listClientesCartera()"  image="/resources/mp_buscarEnabled.png" style="cursor:pointer" />
-	 								<button id="btnEditarClienteCartera" label="" tooltiptext="Editar cliente" onClick="wndsolicitud.onClickEditarClienteCartera()" disabled="true" image="/resources/mp_editarDisabled.png"  />
-	 								<button id="btnExportar" tooltiptext="Exportar a Excel" image="/resources/mp_excel.png" onClick="wndsolicitud.exportarCartera()" style="cursor:pointer" />
+	 								<button id="btnBuscaClienteCartera" label="" 
+	 										image="/resources/mp_buscarEnabled.png"
+	 										onClick="wndsolicitud.listClientesCartera()" 
+	 										sclass="btnImage"
+	 										style="cursor:pointer" 
+	 										tooltiptext="Buscar"/>
+	 								<button id="btnEditarClienteCartera" label=""
+	 										disabled="true" 
+	 										image="/resources/mp_editarDisabled.png" 
+	 										onClick="wndsolicitud.onClickEditarClienteCartera()" 
+	 										sclass="btnImage"
+	 										tooltiptext="Editar cliente"/>
+	 								<button id="btnExportar" 
+	 										image="/resources/mp_excel.png" 
+	 										onClick="wndsolicitud.exportarCartera()" 
+	 										sclass="btnImage"
+	 										style="cursor:pointer" 
+	 										tooltiptext="Exportar a Excel"/>
 	 							</hbox>
 							</row>
 						</rows>
 					</grid>
 					<listbox id="listClientesCartera" mold="paging" pageSize="9" height="350px">
 						<listhead>
-							<listheader label="RUC" width="80px" sort="auto" />
-							<listheader label="RAZÓN SOCIAL" width="205px" sort="auto" />
-							<listheader label="F.ASIGNACIÓN" width="75px" sort="auto" />
-							<listheader label="TIPO" width="55px" sort="auto" />
-							<listheader label="LC" width="70px" sort="auto" align="center" tooltiptext="Linea de Crédito aprobada"/>
-							<listheader label="SOBREGIRO" width="60px" align="center" sort="auto" tooltiptext="Porcentaje del Sobregiro" />
-							<listheader label="SALDO" width="70px" align="center" sort="auto" />
-							<listheader label="FUNCIONARIO" width="180px" sort="auto"/>
-							<listheader label="SOLICITUD" align="center" />
+							<listheader label="RUC" width="80px" sort="auto" style="color: #ffffff;"/>
+							<listheader label="RAZÓN SOCIAL" width="205px" sort="auto" style="color: #ffffff;"/>
+							<listheader label="F.ASIGNACIÓN" width="75px" sort="auto" style="color: #ffffff;"/>
+							<listheader label="TIPO" width="55px" sort="auto" style="color: #ffffff;"/>
+							<listheader label="LC" width="70px" sort="auto" align="center" tooltiptext="Linea de Crédito aprobada" style="color: #ffffff;"/>
+							<listheader label="SOBREGIRO" width="60px" align="center" sort="auto" tooltiptext="Porcentaje del Sobregiro" style="color: #ffffff;"/>
+							<listheader label="SALDO" width="70px" align="center" sort="auto" style="color: #ffffff;" />
+							<listheader label="FUNCIONARIO" width="180px" sort="auto" style="color: #ffffff;"/>
+							<listheader label="SOLICITUD" align="center" style="color: #ffffff;"/>
 						</listhead>
 					</listbox>	
 				</tabpanel>
@@ -50,7 +65,7 @@
 	<!-- 			SOLICITUD	 -->
 				<tabpanel>
 					<groupbox mold="3d" closable="false">
-					<caption label="CLIENTE" style="font-size: 9px !important; color:blue" />
+					<caption label="CLIENTE" style="font-size: 9px !important; color: #FFFFFF" />
 					<!--BUSQUEDA,REGISTRO O EDICION DEL CLINETE	 -->
 						<grid style="border:none">
 							<rows>
@@ -65,13 +80,21 @@
 								<row>
 									<hbox align="center">
 											<label value="BUSCAR :"/>
-				 							<textbox id="txtBuscarCliente" style="font-size:12px !important" onOK="wndsolicitud.searchCliente()" focus="true" maxlength="11"/> 
-											<image id="imgBuscar" tooltiptext="Buscar Cliente." src="/resources/mp_buscarEnabled.png" style="cursor:pointer" onClick="wndsolicitud.searchCliente()"/>
+				 							<textbox id="txtBuscarCliente" 
+				 									style="font-size:12px !important" 
+				 									onOK="wndsolicitud.searchCliente()" 
+				 									focus="true" 
+				 									maxlength="11"/> 
+											<image id="imgBuscar" 
+													onClick="wndsolicitud.searchCliente()"
+													src="/resources/mp_buscar_cliente.png" 
+													style="cursor:pointer" 
+													tooltiptext="Buscar Cliente."/>
 									</hbox>	
 									<div align="right">
-										<button id="btnNuevo" label="Nuevo" sclass="btn-vyrbus" onClick="wndsolicitud.onNewCliente()" 
+										<button id="btnNuevo" label="Nuevo" sclass="btnCommandM" onClick="wndsolicitud.onNewCliente()" 
 											image="/resources/mp_nuevoEnabled.png"  style="cursor:pointer" tooltiptext="Nuevo Pasajero."/>
-										<button id="btnEditar" label="Editar" sclass="btn-vyrbus" onClick="wndsolicitud.onEditCliente()" 
+										<button id="btnEditar" label="Editar" sclass="btnCommandM" onClick="wndsolicitud.onEditCliente()" 
 											image="/resources/mp_editarDisabled.png" disabled="true"  tooltiptext="Editar Cliente."/>
 									</div>		
 								</row>
@@ -98,7 +121,7 @@
 									<label value="UBIGEO (*) :"  />
 									<hbox align="center">
 										<textbox id="txtUbigeo" readonly="true" style="font-size:11px !important" width="243px"  />
-										<button id="btnBuscarUbigeo" label="..." sclass="btn-vyrbus"  />
+										<button id="btnBuscarUbigeo" label="..." sclass="btnImage"  />
 										<textbox id="txtIdUbigeo" visible="false" />
 									</hbox>	
 								</row>
@@ -170,11 +193,11 @@
 								<row>
 									<separator />
 									<div align="right">
-										<button id="btnCancelar" label="Cancelar" sclass="btn-vyrbus" tooltiptext="Cancelar Operación." 
+										<button id="btnCancelar" label="Cancelar" sclass="btnCommandL" tooltiptext="Cancelar Operación." 
 											onClick="wndsolicitud.onCancelCliente()" image="/resources/mp_cancelarEnabled.png" style="cursor:pointer" />
 									</div> 
 									<separator />
-									<button id="btnGuardar" label="Guardar" sclass="btn-vyrbus" onClick="wndsolicitud.onSaveCliente()" 
+									<button id="btnGuardar" label="Guardar" sclass="btnCommandL" onClick="wndsolicitud.onSaveCliente()" 
 										tooltiptext="Guardar Cliente" image="/resources/mp_guardarEnabled.png" style="cursor:pointer" />
 								</row>
 							</rows>
@@ -184,7 +207,7 @@
 					
 					<!--SOLICITUD-->
 					<groupbox id="gbxSolicitud" mold="3d" closable="false">
-					<caption label="DATOS PARA LA SOLICITUD" style="font-size: 9px !important; color:blue; font-weight:bold" />
+					<caption label="DATOS PARA LA SOLICITUD" style="font-size: 9px !important; color: #FFFFFF; font-weight:bold" />
 						<grid style="border:none">
 							<columns>
 								<column width="115px" align="right" />
@@ -244,13 +267,19 @@
 					</groupbox>
 					<separator height="5px"/>
 					<hbox align="center">
-						<button  label="Nueva Solicitud" sclass="btn-vyrbus" id="btnNuevaSolicitud" image="/resources/mp_nuevoEnabled.png" 
-							onClick="wndsolicitud.onClikNuevaSolicitud()" style="cursor:pointer"/>
+						<button  label="Nueva Solicitud" sclass="btnCommandL" id="btnNuevaSolicitud" image="/resources/mp_nuevoEnabled.png" 
+							onClick="wndsolicitud.onClikNuevaSolicitud()" width="150px"/>
 						<separator width="350px" />
-						<button id="btnCancelarSolicitud" label="Cancelar" sclass="btn-vyrbus" image="/resources/mp_cancelarEnabled.png" 
+						<button id="btnCancelarSolicitud" label="Cancelar" sclass="btnCommandL" image="/resources/mp_cancelarEnabled.png" 
 							disabled="false" onClick="wndsolicitud.onClickCancelarSolicitud()"  />
-						<button id="btnEnviarSolicitud" label="Enviar Solicitud" sclass="btn-vyrbus" image="/resources/mp_aceptarDisabled.png" 
-							disabled="true" onClick="wndsolicitud.onSaveSolicitud()"  tooltiptext="Enviar Solicitud."/>	
+						<button id="btnEnviarSolicitud" 
+							label="Enviar Solicitud" 
+							image="/resources/mp_aceptarDisabled.png" 
+							disabled="true" 
+							onClick="wndsolicitud.onSaveSolicitud()"
+							sclass="btnCommandL"  
+							tooltiptext="Enviar Solicitud." 
+							width="150px" />	
 					</hbox>	
 				</tabpanel>
 				
@@ -269,7 +298,7 @@
 									<label value="Fecha Final" sclass="label-size11"/>
 									<datebox id="dtFechaFinalHistSoli"  format="dd/MM/yyyy" readonly="true"/>
 									<separator width="15px" />
-									<button id="btnBuscarHistSoli" label="Buscar" sclass="btn-vyrbus" onClick="wndsolicitud.listHistorial()" 
+									<button id="btnBuscarHistSoli" label="Buscar" sclass="btnCommandM" onClick="wndsolicitud.listHistorial()" 
 										image="/resources/mp_buscarEnabled.png" style="cursor:pointer" />
 								</hbox>							
 							</row>
@@ -281,7 +310,7 @@
 									<label value="Cliente" sclass="label-size11"/>
 									<combobox id="cmbClienteHistSoli" readonly="true" width="200px"/>
 									<separator width="180px" />
-									<button id="btnAnulaSoli" label="Anular" sclass="btn-vyrbus" tooltiptext="Anular Solicitud" 
+									<button id="btnAnulaSoli" label="Anular" sclass="btnCommandM" tooltiptext="Anular Solicitud" 
 										onClick="wndsolicitud.onClickAnulaSolicitud()" disabled="true" image="/resources/mp_anularDisabled.png" />
 									<button id="btnEditarSoli" visible="false" label="Editar" sclass="btn-vyrbus" tooltiptext="Editar Solicitud" 
 										onClick=" " disabled="true" image="/resources/mp_editarDisabled.png" />
@@ -291,14 +320,14 @@
 					</grid>
 					<listbox id="listHistirialSolicitudes" onSelect="wndsolicitud.listHistirialSolicitudes_onSelect()" mold="paging" pageSize="13" height="350px">
 						<listhead>
-							<listheader label="#" width="25px"/>
-	 						<listheader label="FUNCIONARIO" width="180px"/>
-							<listheader label="RUC CLIENTE" width="80px"/>
-							<listheader label="RAZON SOCIAL" width="200px"/>
-							<listheader label="F.SOLICITUD" width="70px"/>
-							<listheader label="ESTADO" width="75px"/>
-							<listheader label="TIPO" width="80px"/>
-							<listheader label="ACCIÓN" align="center"/>
+							<listheader label="#" width="25px" style="color: #ffffff;"/>
+	 						<listheader label="FUNCIONARIO" width="180px" style="color: #ffffff;"/>
+							<listheader label="RUC CLIENTE" width="80px" style="color: #ffffff;"/>
+							<listheader label="RAZON SOCIAL" width="200px" style="color: #ffffff;"/>
+							<listheader label="F.SOLICITUD" width="70px" style="color: #ffffff;"/>
+							<listheader label="ESTADO" width="75px" style="color: #ffffff;"/>
+							<listheader label="TIPO" width="80px" style="color: #ffffff;"/>
+							<listheader label="ACCIÓN" align="center" style="color: #ffffff;"/>
 							
 						</listhead>
 					</listbox>
@@ -306,13 +335,13 @@
 			</tabpanels>
 		</tabbox>	
 		<hbox align="center" id="hbxEstadoLc">
-			<label value="Linea de Crédito en proceso de activación" style="font-size:11px !important; color:blue"/>
+			<label value="Linea de Crédito en proceso de activación" style="font-size:11px !important; color:#59B808"/>
 			<textbox style="background:#59B808" width="15px" height="10px" readonly="true"/>
 			<space width="14px"/>
-			<label value="Linea de Crédito Activa" style="font-size:11px !important; color:blue"/>
+			<label value="Linea de Crédito Activa" style="font-size:11px !important; color:black"/>
 			<textbox style="background:black" width="15px" height="10px" readonly="true"/>
 			<space width="14px"/>
-			<label value="Linea de Crédito Inactiva" style="font-size:11px !important; color:blue"/>
+			<label value="Linea de Crédito Inactiva" style="font-size:11px !important; color:red"/>
 			<textbox style="background:red" width="15px" height="10px" readonly="true" />
 		</hbox>
     </panelchildren>

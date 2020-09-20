@@ -4,17 +4,17 @@
 	<div id="divLista">
 			<listbox id="listboxLista">
 				<listhead sizable="true">
-					<listheader width="35px" label="#" />
-					<listheader label="DENOMINACION" sort="auto" />
-					<listheader label="NOMBRE CORTO" sort="auto" />
-					<listheader label="MASCARA DE FORMATO" sort="auto" />
+					<listheader width="35px" label="#" style="color: #ffffff;"/>
+					<listheader label="DENOMINACION" sort="auto" style="color: #ffffff;"/>
+					<listheader label="NOMBRE CORTO" sort="auto" style="color: #ffffff;"/>
+					<listheader label="MASCARA DE FORMATO" sort="auto" style="color: #ffffff;"/>
 				</listhead>
 			</listbox>
 		</div>
 
 		<div id="divMantenimiento">
 			<groupbox closable="false" mold="3d" >
-			<caption label="DATOS TIPO DE GASTOS" />
+			<caption label="DATOS TIPO DE GASTOS" style="color: #ffffff;"/>
 			<grid>
 				<columns>
 					<column width="120px" align="right" />

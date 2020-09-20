@@ -21,10 +21,18 @@
 					<label value="Tipo" sclass="label-size11-bold" />
 					<combobox id="cmbTipo" readonly="true" />
 					<hlayout>
-						<button  onClick="wndAvanceSemanalVentas.btnExportar_OnClick()"  image="resources/mp_excel.png" tooltiptext="Exportar a Excel."/>
-						<button  image="resources/mp_preliminar.png" tooltiptext="Visualizar preliminar de impresión."/>
+						<button  onClick="wndAvanceSemanalVentas.btnExportar_OnClick()"  
+								image="resources/mp_excel.png"
+								sclass="btnImage" 
+								tooltiptext="Exportar a Excel."/>
+						<button  image="resources/mp_preliminar.png"
+								sclass="btnImage" 
+								tooltiptext="Visualizar preliminar de impresión."/>
 <!-- 						<button image="resources/mp_imprimir.png" xmlns:w="http://www.zkoss.org/2005/zk/client" w:onClick="window.print();" tooltiptext="Imprimir Avance semanal de ventas"/> -->
-						<button image="resources/mp_imprimir.png" onClick="wndAvanceSemanalVentas.initSetup()"  tooltiptext="Imprimir Avance semanal de ventas"/>
+						<button image="resources/mp_imprimir.png" 
+								onClick="wndAvanceSemanalVentas.initSetup()"
+								sclass="btnImage"  
+								tooltiptext="Imprimir Avance semanal de ventas"/>
 					</hlayout>
 				</row>
 				<row>
@@ -35,8 +43,16 @@
 					<label value="Servicio" sclass="label-size11-bold" />
 					<combobox id="cmbServicio" readonly="true" />
 					<hlayout>
-						<button label="Buscar" sclass="btn-vyrbus" image="resources/mp_buscarEnabled.png" tooltiptext="Haga click aqui para realizar la busqueda." onClick="wndAvanceSemanalVentas.onBuscarAvance()"/>
-						<button label="Cerrar" sclass="btn-vyrbus" image="resources/mp_cerrarEnabled.png" tooltiptext="Haga click aqui para cerrar la ventana." onClick="wndAvanceSemanalVentas.closeTabWindow()"/>
+						<button label="Buscar" 
+								sclass="btnCommandM" 
+								image="resources/mp_buscarEnabled.png" 
+								tooltiptext="Haga click aqui para realizar la busqueda." 
+								onClick="wndAvanceSemanalVentas.onBuscarAvance()"/>
+						<button label="Cerrar" 
+								sclass="btnCommandM" 
+								image="resources/mp_cerrarEnabled.png" 
+								tooltiptext="Haga click aqui para cerrar la ventana." 
+								onClick="wndAvanceSemanalVentas.closeTabWindow()"/>
 					</hlayout>
 				</row>
 			</rows>	

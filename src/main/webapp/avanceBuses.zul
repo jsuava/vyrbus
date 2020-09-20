@@ -29,8 +29,15 @@
 				<label value="BUS :"/>
 				<combobox id="cmbBus" readonly="true" width="108px" />
 				<hbox  align="center">
-					<button label="Buscar" sclass="btn-vyrbus" image="/resources/mp_buscarEnabled.png" autodisable="self" onClick="wndAvance.buscar()" />
-					<button label="Cerrar" sclass="btn-vyrbus" image="/resources/mp_cerrar.png" onClick="wndAvance.closeTabWindow()"/>
+					<button label="Buscar" 
+							sclass="btnCommandM" 
+							image="/resources/mp_buscarEnabled.png" 
+							autodisable="self" 
+							onClick="wndAvance.buscar()" />
+					<button label="Cerrar" 
+							sclass="btnCommandM" 
+							image="/resources/mp_cerrar.png" 
+							onClick="wndAvance.closeTabWindow()"/>
 				</hbox>
 			</row>
 		</rows>

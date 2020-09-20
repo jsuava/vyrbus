@@ -29,8 +29,8 @@
 					<label value="NRO. CONTROL :"  />
 					<hbox align="center">
 						<textbox id="txtNumeroControl" width="150px" style="font-size:11px !important" onOK="wndAnulaVouches.buscar()" /><space width="5px"/>
-						<button label="Buscar" sclass="btn-vyrbus" image="/resources/mp_buscarEnabled.png" onClick="wndAnulaVouches.buscar()" />
-						<button label="Cerrar" sclass="btn-vyrbus" image="/resources/mp_cerrar.png" onClick="wndAnulaVouches.closeTabWindow()" />
+						<button label="Buscar" sclass="btnCommandM" image="/resources/mp_buscarEnabled.png" onClick="wndAnulaVouches.buscar()" />
+						<button label="Cerrar" sclass="btnCommandM" image="/resources/mp_cerrar.png" onClick="wndAnulaVouches.closeTabWindow()" />
 					</hbox>
 				</row>
 				<row>
@@ -41,26 +41,26 @@
 		<separator height="1px" />
 		<listbox id="lsbxVouchers" height="430px" mold="paging" pageSize="10">
 			<listhead>
-				<listheader label="CLIENTE / AGENCIA" width="150px" />
-				<listheader label="PASAJERO" width="150px" />
-				<listheader label="VOUCHER" width="80px" align="center" />
-				<listheader label="BOLETO" width="80px" align="center"/>
-				<listheader label="NRO.CONTROL" width="110px" />
-				<listheader label="RUTA" width="120px"/>
-				<listheader label="F.PARTIDA" width="70px" />
-				<listheader label="H.PARTIDA" align="center" width="65px"/>
-				<listheader label="ASIENTO" align="center" width="60px"/>
-				<listheader label="F.EMISIÓN" align="center" width="110px"/>
-				<listheader label="REP.VENTA" />
-				<listheader width="45px"/>
+				<listheader label="CLIENTE / AGENCIA" width="150px" style="color: #ffffff;"/>
+				<listheader label="PASAJERO" width="150px" style="color: #ffffff;"/>
+				<listheader label="VOUCHER" width="80px" align="center" style="color: #ffffff;"/>
+				<listheader label="BOLETO" width="80px" align="center" style="color: #ffffff;"/>
+				<listheader label="NRO.CONTROL" width="110px" style="color: #ffffff;"/>
+				<listheader label="RUTA" width="120px" style="color: #ffffff;"/>
+				<listheader label="F.PARTIDA" width="70px" style="color: #ffffff;"/>
+				<listheader label="H.PARTIDA" align="center" width="65px" style="color: #ffffff;"/>
+				<listheader label="ASIENTO" align="center" width="60px" style="color: #ffffff;"/>
+				<listheader label="F.EMISIÓN" align="center" width="110px" style="color: #ffffff;"/>
+				<listheader label="REP.VENTA" style="color: #ffffff;"/>
+				<listheader width="45px" style="color: #ffffff;"/>
 			</listhead>
 		</listbox>
 		
 		<hbox align="center">
-			<label value="Registro anulado:" style="font-size:11px !important; color:blue"/>
+			<label value="Registro anulado:" style="font-size:11px !important; color:red"/>
 			<textbox style="background:red" width="15px" height="10px" readonly="true" />
 			<space width="14px"/>
-			<label value="Registro activo:" style="font-size:11px !important; color:blue"/>
+			<label value="Registro activo:" style="font-size:11px !important; color:black"/>
 			<textbox style="background:black" width="15px" height="10px" readonly="true"/>
 		</hbox>
 	</groupbox>

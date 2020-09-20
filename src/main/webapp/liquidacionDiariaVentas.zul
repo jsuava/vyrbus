@@ -1,5 +1,18 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
+<style> 
+	.btnCommand{
+		cursor: pointer;
+		font-size: 14px;
+		background-color: #4285F4;
+		color: #FFFFFF;
+		border-width: 0px; 
+		border-radius: 4px;
+	}
+	.btnCommand:hover{
+		box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+	} 
+</style>
 <window id="wndLiquidacionDiariaVentas" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndLiquidacionDiariaVentas">
 	<grid>
 		<columns>
@@ -22,11 +35,24 @@
 				<label/>
 				<label/>
 				<hlayout>
-					<button id="btnExportar" image="resources/mp_excel.png"  tooltiptext="Exportar a Excel."/>
-					<button image="resources/mp_preliminar.png" tooltiptext="Visualizar preliminar de impresión." 
-						onClick="wndLiquidacionDiariaVentas.previoDetalle(true)"/>
-					<button image="resources/mp_imprimir.png" tooltiptext="Imprimir detallado de ventas." 
-						onClick="wndLiquidacionDiariaVentas.previoDetalle(false)"/>
+					<button id="btnExportar" 
+							height="30px"
+							image="resources/mp_excel.png"  
+							sclass="btnCommand"
+							tooltiptext="Exportar a Excel." 
+							width="60px" />
+					<button image="resources/mp_preliminar.png" 
+							height="30px"
+							onClick="wndLiquidacionDiariaVentas.previoDetalle(true)" 
+							sclass="btnCommand" 
+							tooltiptext="Visualizar preliminar de impresión." 
+							width="60px"  />
+					<button height="30px"
+							image="resources/mp_imprimir.png"
+							onClick="wndLiquidacionDiariaVentas.previoDetalle(false)" 
+							sclass="btnCommand"   
+							tooltiptext="Imprimir detallado de ventas." 
+							width="60px"  />
 				</hlayout>
 			</row>
 			<row>
@@ -37,10 +63,21 @@
 				<label value="TIPO :"/>
 				<combobox id="cmbTipoMovimiento"/>				
 				<hlayout>
-					<button label="Buscar" sclass="btn-vyrbus" autodisable="self" image="resources/mp_buscarEnabled.png" height="28px" 
-						tooltiptext="Haga click aqui para realizar la busqueda." onClick="wndLiquidacionDiariaVentas.onBuscarVentas()"/>
-					<button label="Cerrar" sclass="btn-vyrbus" image="resources/mp_cerrarEnabled.png" height="28px" 
-						tooltiptext="Haga click aqui para cerrar la ventana." onClick="wndLiquidacionDiariaVentas.closeTabWindow()"/>
+					<button	autodisable="self" 
+							height="30px" 
+							image="resources/mp_buscarEnabled.png"  
+							label="Buscar" 
+							onClick="wndLiquidacionDiariaVentas.onBuscarVentas()" 
+							sclass="btnCommand" 
+							tooltiptext="Haga click aqui para realizar la busqueda." 
+							width="90px" />
+					<button height="30px" 
+							image="resources/mp_cerrarEnabled.png"
+							label="Cerrar" 
+							onClick="wndLiquidacionDiariaVentas.closeTabWindow()" 
+							sclass="btnCommand" 
+							tooltiptext="Haga click aqui para cerrar la ventana." 
+							width="90px" />
 				</hlayout>
 			</row>
 		</rows>

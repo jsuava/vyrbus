@@ -4,23 +4,23 @@
 <div id="divLista">
 	<listbox id="listboxLista">
 		<listhead sizable="true">
-			<listheader width="50px" label="#" />
-			<listheader label="TIPO PEROSNAL" sort="auto" />
-			<listheader label="CODIGO" sort="auto" />
-			<listheader label="TIPO DOCUMETO" sort="auto" />
-			<listheader label="NRO. DOCUMENTO" sort="auto" />
-			<listheader label="APELLIDO PATERNO" sort="auto" />
-			<listheader label="APELLIDO MATERNO" sort="auto" />
-			<listheader label="NOMBRE" sort="auto" />
-			<listheader label="FECHA NACIMIENTO" />
-			<listheader label="SEXO" sort="auto" />
+			<listheader width="50px" label="#" style="color: #ffffff;" />
+			<listheader label="TIPO PEROSNAL" sort="auto" style="color: #ffffff;"/>
+			<listheader label="CODIGO" sort="auto" style="color: #ffffff;"/>
+			<listheader label="TIPO DOCUMETO" sort="auto" style="color: #ffffff;"/>
+			<listheader label="NRO. DOCUMENTO" sort="auto" style="color: #ffffff;"/>
+			<listheader label="APELLIDO PATERNO" sort="auto" style="color: #ffffff;"/>
+			<listheader label="APELLIDO MATERNO" sort="auto" style="color: #ffffff;"/>
+			<listheader label="NOMBRE" sort="auto" style="color: #ffffff;"/>
+			<listheader label="FECHA NACIMIENTO" style="color: #ffffff;"/>
+			<listheader label="SEXO" sort="auto" style="color: #ffffff;"/>
 		</listhead>
 	</listbox>
 </div>
 
 <div id="divMantenimiento" >
 	<groupbox mold="3d" closable="false">
-		<caption label="DATOS LABORALES" />
+		<caption label="DATOS LABORALES" style="color: #ffffff;"/>
 		<grid>
 			<columns>
 				<column width="120px" align="right"/>
@@ -45,7 +45,7 @@
 	</groupbox>
 	<separator />
 	<groupbox mold="3d" closable="false">
-		<caption label="DATOS PERSONALES" />
+		<caption label="DATOS PERSONALES" style="color: #ffffff;"/>
 		<grid>
 			<columns>
 				<column width="120px" align="right"/>
@@ -94,7 +94,10 @@
 					<hbox align="end">
 						<textbox id="txtIdUbigeo" readonly="true" visible="false" />
 						<textbox id="txtUbicacionGeografica" rows="2" readonly="true" width="190px"  />
-						<button id="btnUbicacionGeografica" tooltiptext="Seleccionar ubicación geográfica" image="resources/mp_buscarEnabled.png"/>
+						<button id="btnUbicacionGeografica" 
+								image="resources/mp_buscarEnabled.png"
+								sclass="btnImage" 
+								tooltiptext="Seleccionar ubicación geográfica" />
 					</hbox>
 				</row>
 				<row>

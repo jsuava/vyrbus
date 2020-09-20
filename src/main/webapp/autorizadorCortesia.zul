@@ -4,9 +4,9 @@
 	<div id="divLista">
 		<listbox id="listboxLista" >
 			<listhead sizable="true">
-				<listheader width="35px" label="#" />
-				<listheader label="AUTORIZADOR" sort="auto" />
-				<listheader label="MOTIVO CORTESIA" sort="auto" />				
+				<listheader width="35px" label="#" style="color: #ffffff;"/>
+				<listheader label="AUTORIZADOR" sort="auto" style="color: #ffffff;"/>
+				<listheader label="MOTIVO CORTESIA" sort="auto" style="color: #ffffff;"/>				
 			</listhead>
 		</listbox>
 	</div>
@@ -42,7 +42,7 @@
 				<row spans="4">
 					<listbox id="lbxMotivosCortesia" checkmark="true" multiple="true">
 						<listhead>
-							<listheader label="MOTIVOS CORTESIA"/>
+							<listheader label="MOTIVOS CORTESIA" style="color: #ffffff;"/>
 						</listhead>
 					</listbox>
 				</row>

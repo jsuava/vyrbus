@@ -20,8 +20,12 @@
 							<label value="Cliente" sclass="label-size11-bold" />
 							<hbox align="center">
 								<combobox id="cmbCliente" readonly="true" width="240px" />
-								
-								<button id="btnBuscar" sclass="btn-vyrbus" label="Buscar" onClick="wndApruebaCartera.CargarListaPendientes()" tooltiptext="Actualizar solicitudes pendientes por aprobar" image="/resources/mp_buscarEnabled.png" style="cursor:pointer" />
+								<button id="btnBuscar" 
+										sclass="btnCommandM" 
+										label="Buscar" 
+										onClick="wndApruebaCartera.CargarListaPendientes()" 
+										tooltiptext="Actualizar solicitudes pendientes por aprobar" 
+										image="/resources/mp_buscarEnabled.png" />
 							</hbox>
 						</row>
 					</rows>
@@ -30,13 +34,13 @@
 				<separator height="4px" />
 				<listbox id="listPendientes" mold="paging" rows="10" >
 					<listhead >
-						<listheader label="#" width="30px" />
-						<listheader label="FUNCIONARIO" width="180px" sort="auto" />
-						<listheader label="RUC" width="80px" sort="auto"/>
-						<listheader label="RAZÓN SOCIAL" width="220px" sort="auto"/>
-						<listheader label="F.SOLICITUD" width="70px" sort="auto" tooltiptext="Fecha de la Solicitud"/>
-						<listheader label="TIPO" width="90px" />
-						<listheader label="VER SOLICITUD" />
+						<listheader label="#" width="30px" style="color: #ffffff;"/>
+						<listheader label="FUNCIONARIO" width="180px" sort="auto" style="color: #ffffff;"/>
+						<listheader label="RUC" width="80px" sort="auto" style="color: #ffffff;"/>
+						<listheader label="RAZÓN SOCIAL" width="220px" sort="auto" style="color: #ffffff;"/>
+						<listheader label="F.SOLICITUD" width="70px" sort="auto" tooltiptext="Fecha de la Solicitud" style="color: #ffffff;"/>
+						<listheader label="TIPO" width="90px" style="color: #ffffff;"/>
+						<listheader label="VER SOLICITUD" style="color: #ffffff;"/>
 					</listhead>
 				</listbox>
 				
@@ -74,8 +78,6 @@
 								</hbox>
 								<separator/>
 							</row>
-							
-							
 						</rows>
 					</grid>
 					<groupbox id="grbAproDesaContado" mold="3d" closable="false">
@@ -98,7 +100,7 @@
 					</groupbox>	
 					
 				<groupbox id="grbCliente" mold="3d" closable="false">
-					<caption label="DATOS DE LA SOLICITUD" />
+					<caption label="DATOS DE LA SOLICITUD" style="color: #ffffff;"/>
 					<grid id="grCliente" style="border:none">
 						<columns>
 							<column width="120px"  align="right"/>
@@ -109,18 +111,14 @@
 							<row>
 								<label value="N° RUC :"  />
 								<label id="lblRuc" style="color:blue;font-size:11px !important" />
-<!-- 								<textbox id="txtRuc"  readonly="true" width="90px" style="font-size:11px !important"/> -->
 								<label value="RAZÓN SOCIAL :" />
 								<label id="lblRazonSocial" style="color:blue;" />
-<!-- 								<textbox id="txtRazonSocial"  readonly="true"/> -->
 							</row>
 							<row>
 								<label value="ORIGEN :" />
 								<label id="lblOrigen" style="color:blue;" />
 								<label value="BASE HISTORICA :" visible="false" />
 								<label id="lblBaseHistorica" style="color:blue;font-size:11px !important" visible="false"/>
-								
-<!-- 								<textbox id="txtOrigen"  readonly="true"/> -->
 							</row>
 						</rows>
 					</grid>
@@ -135,21 +133,16 @@
 							<row>
 								<label value="FECHA SOLICITUD :" />
 								<label id="lblFechaSolicitud" style="color:blue;font-size:11px !important" />
-<!-- 								<textbox id="txtFechaSolcitud_Credito" readonly="true" style="font-size:11px !important" width="90px"/> -->
 								<label value="FUNCIONARIO :" />
 								<label id="lblFuncionario" style="color:blue;" />
-<!-- 								<textbox id="txtFuncionario_Credito"  readonly="true"/> -->
 							</row>
 							<row>	
 								<label value="CRÉDITO SOLICITADO :"/>
 								<label id="lblCreditoSolicitado" style="color:blue;font-size:11px !important" />
-<!-- 								<doublebox id="dbxCreditoSolcitado" format="#,##0.00"  width="90px" readonly="true" /> -->
 								<label value="SOBREGIRO :" />
 								<hbox align="center">
 									<label id="lblSobregiro" style="color:blue;font-size:11px !important" />
 									<label id="lblMontoSobregiro" style="color:blue;font-size:11px !important" />
-<!-- 									<doublebox id="dbxSobregiro"  onChange="wndApruebaCartera.onChangeSobregiro()" readonly="true" format="#,##0.00" width="33px" maxlength="5"/> -->
-<!-- 									<doublebox id="dbxMontoSobregiro"C format="#,##0.00" width="60px" readonly="true"/> -->
 								</hbox>
 							</row>
 							<row spans="1,3">
@@ -167,23 +160,6 @@
 										<label value="COMISIONABLE" sclass="label-size11-bold" style="cursor:pointer"/>
 									</hbox>	
 								</div>
-<!-- 								<separator/> -->
-<!-- 								<hbox align="center"> -->
-<!-- 									<checkbox id="chbEsComisionable_Credito" checked="false" disabled="true"  /> -->
-<!-- 									<label value="COMISIONABLE" sclass="label-size11-bold" style="cursor:pointer"/> -->
-<!-- 								</hbox> -->
-								
-									
-<!-- 								<hbox align="center"> -->
-<!-- 									<label value="Desct. Baja :" sclass="label-size11-bold" /> -->
-<!-- 									<doublebox id="dbxDescuentoBaja_Credito" format="##0.00" maxlength="5" readonly="true" /> -->
-<!-- 									<label value="%" sclass="label-size11-bold" /> -->
-									
-<!-- 									<separator width="10px"/> -->
-<!-- 									<label value="Desct.Alta" sclass="label-size11-bold" /> -->
-<!-- 									<doublebox id="dbxDescuentoAlta_Credito" format="##0.00" maxlength="5" readonly="true" /> -->
-<!-- 									<label value="%" sclass="label-size11-bold" /> -->
-<!-- 								</hbox> -->
 							</row>	
 							<row spans="1,3">
 								<label value="OBSERVACIONES :"/>
@@ -196,7 +172,7 @@
 				</groupbox>	
 				<separator height="2px" />
 				<groupbox id="grbAproDesaCredito" mold="3d" closable="false">
- 					<caption label="APROBACIÓN SOLICITUD CRÉDITO" />
+ 					<caption label="APROBACIÓN SOLICITUD CRÉDITO" style="color: #ffffff;"/>
 					<grid style="border:none">
 						<columns>
 							<column width="100px" />
@@ -227,9 +203,21 @@
 				<separator width="5px" />
 				<div align="center">
 					<hbox>
-						<button id="btnCancelar" sclass="btn-vyrbus" label="Cancelar" onClick="wndApruebaCartera.onClickCancelAprobacion()" tooltiptext="Cancelar Aprobanción" visible="false" image="/resources/mp_cancelarEnabled.png" style="cursor:pointer" />
+						<button id="btnCancelar" 
+								sclass="btnCommandL" 
+								label="Cancelar" 
+								onClick="wndApruebaCartera.onClickCancelAprobacion()" 
+								tooltiptext="Cancelar Aprobanción" 
+								visible="false" 
+								image="/resources/mp_cancelarEnabled.png" />
 						<separator width="10px" />
-						<button id="btnAceptar" sclass="btn-vyrbus" label="Aceptar" onClick="wndApruebaCartera.onClikAceptar()" tooltiptext="Aprobar Solicutud" visible="false" image="/resources/mp_aceptarEnabled.png" style="cursor:pointer" />
+						<button id="btnAceptar" 
+								sclass="btnCommandL" 
+								label="Aceptar" 
+								onClick="wndApruebaCartera.onClikAceptar()" 
+								tooltiptext="Aprobar Solicutud" 
+								visible="false" 
+								image="/resources/mp_aceptarEnabled.png" />
 					</hbox>
 				</div>
 			</tabpanel>
@@ -248,7 +236,11 @@
 							<label value="Fecha Final" sclass="label-size11-bold" />
 							<hbox>
 								<datebox id="dtxFechaFinal" format="dd/MM/yyyy" />
-								<button id="btnBuscarSolApro" sclass="btn-vyrbus" label="Buscar" onClick="wndApruebaCartera.cargarSolicitudesAproDesapro()"  image="/resources/mp_buscarEnabled.png" style="cursor:pointer" />
+								<button id="btnBuscarSolApro" 
+										sclass="btnCommandM" 
+										label="Buscar" 
+										onClick="wndApruebaCartera.cargarSolicitudesAproDesapro()"  
+										image="/resources/mp_buscarEnabled.png" />
 							</hbox>
 						</row>
 						<row>
@@ -265,14 +257,14 @@
 				<separator height="4px" />
 				<listbox id="listHistSolicitudes" mold="paging" rows="10" >
 					<listhead >
-						<listheader label="#" width="30px" />
-						<listheader label="FUNCIONARIO" width="180px" sort="auto" />
-						<listheader label="CLIENTE" width="200px" sort="auto"/>
-						<listheader label="F.SOLICITUD" width="70px" sort="auto" tooltiptext="Fecha de la Solicitud"/>
-						<listheader label="F.APROBACIÓN" width="100px" sort="auto" tooltiptext="Fecha de Aprobación"/>
-						<listheader label="ESTADO " width="90px" sort="auto" tooltiptext="Estado Cartera"/>
-						<listheader label="TIPO" width="60px" align="center" />
- 						<listheader label="ACCIÓN" /> 
+						<listheader label="#" width="30px" style="color: #ffffff;"/>
+						<listheader label="FUNCIONARIO" width="180px" sort="auto" style="color: #ffffff;"/>
+						<listheader label="CLIENTE" width="200px" sort="auto" style="color: #ffffff;"/>
+						<listheader label="F.SOLICITUD" width="70px" sort="auto" tooltiptext="Fecha de la Solicitud" style="color: #ffffff;"/>
+						<listheader label="F.APROBACIÓN" width="100px" sort="auto" tooltiptext="Fecha de Aprobación" style="color: #ffffff;"/>
+						<listheader label="ESTADO " width="90px" sort="auto" tooltiptext="Estado Cartera" style="color: #ffffff;"/>
+						<listheader label="TIPO" width="60px" align="center" style="color: #ffffff;"/>
+ 						<listheader label="ACCIÓN" style="color: #ffffff;"/> 
 					</listhead>
 				</listbox>	
 			</tabpanel>

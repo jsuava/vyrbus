@@ -4,13 +4,13 @@
 	<div id="divLista">
 		<listbox id="listboxLista" rows="16"  onSelect="">
 			<listhead sizable="true">
-				<listheader width="35px" label="#" />
-				<listheader label="MENU PADRE" sort="auto" />
-				<listheader label="MENU" sort="auto" />
-				<listheader label="NOMBRE DEL OBJETO" sort="auto" />
-				<listheader label="URL" sort="auto" />
-				<listheader label="ORDEN" sort="auto" width="50px" />
-				<listheader label="ESTADO" sort="auto" />
+				<listheader width="35px" label="#" style="color: #ffffff;" />
+				<listheader label="MENU PADRE" sort="auto" style="color: #ffffff;"/>
+				<listheader label="MENU" sort="auto" style="color: #ffffff;"/>
+				<listheader label="NOMBRE DEL OBJETO" sort="auto" style="color: #ffffff;"/>
+				<listheader label="URL" sort="auto" style="color: #ffffff;"/>
+				<listheader label="ORDEN" sort="auto" width="50px" style="color: #ffffff;" />
+				<listheader label="ESTADO" sort="auto" style="color: #ffffff;"/>
 			</listhead>
 		</listbox>
 	</div>
@@ -20,7 +20,7 @@
 	
 	<div id="divMantenimiento">
 		<groupbox closable="false" mold="3d" >
-		<caption label="OPCION MENÚ" />
+		<caption label="OPCION MENÚ" style="color: #ffffff;"/>
 			<grid id="grmante" style="border:none">
 				<columns>
  					<column width="100px" align="right" /> 

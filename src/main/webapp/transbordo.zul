@@ -13,8 +13,8 @@
 					<rows>
 						<row>				
 							<groupbox closable="false" mold="3d" width="365px" >
-							<caption>
-							 	<div align="center"><label value="DESDE" style="font-weight: bold; color:blue" /></div>
+							<caption >
+							 	<div align="center"><label value="DESDE" style="font-weight: bold; color:white" /></div>
 							</caption>
 								<grid style="border:none">
 						 			<columns>
@@ -27,7 +27,7 @@
 												<grid id="grdMapaDesde" style="border:none">
 												</grid>
 											</groupbox>					
-											<grid id="gritnerarioDesde"  width="183px" style="border:none" >
+											<grid id="gritnerarioDesde"  width="183px" style="border: none" >
 												<columns>
 													<column width="63px" align="right" />
 						  							<column width="120px" />
@@ -37,8 +37,10 @@
 														<label value="ITINERARIO" />
 														<hbox align="center" >
 															<longbox id="lbxItinerario" width="48px" readonly="true"/>
-															<button id="btnBuscar" style="cursor:pointer" image="/resources/mp_buscarEnabled.png"  
-																tooltiptext="Busqueda del Itinerario." />
+															<button id="btnBuscar" 
+																	image="/resources/mp_buscarEnabled.png"
+																	sclass="btnImage"  
+																	tooltiptext="Busqueda del Itinerario." />
 														</hbox>
 													</row>
 													<row>
@@ -83,8 +85,14 @@
 													<row>
 														<label value="SELECCIÓN" />
 														<hbox align="center">
-															<intbox id="ibxSeleccion" style="font-size:15px !important; font-weight: bold; color:red" readonly="true" width="50px" />
-															<button id="btnVerPasajero" disabled="true" image="/resources/mp_preliminarDisabled.png" />
+															<intbox id="ibxSeleccion" 
+																	style="font-size:15px !important; font-weight: bold; color:red" 
+																	readonly="true" 
+																	width="50px" />
+															<button id="btnVerPasajero" 
+																	disabled="true" 
+																	image="/resources/mp_preliminarDisabled.png" 
+																	sclass="btnImage" />
 														</hbox>
 													</row>
 													<row>
@@ -92,13 +100,12 @@
 						 								<separator id="separator_c2"/>
 						  								<separator id="separator_c3"/>
 													</row>
-													<row>
-														<separator id="separator"/>
-						 								<vbox width="150px">
-															<button id="btnRefrescar" label="Refresh" sclass="btn-vyrbus" 
-																image="/resources/mp_refrescarEnabled.png" 
+													<row spans="2">
+  						 								<vbox width="150px">  
+															<button id="btnRefrescar" label="Actualizar" sclass="btnCommandL" 
+																image="/resources/mp_recargar16.png" 
 																onClick="wndTransbordoPasajeros.onRefrescarMapa(btnRefrescar)"/>
-														</vbox>
+														 </vbox> 
 													</row>
 													<row id="rwLeft" >
 														<separator/><separator/>
@@ -116,20 +123,26 @@
 											<image id="imgDerercha" 
 													onClick="if(imgDerercha.getSrc().equals(wndTransbordoPasajeros.enabledImgDerecha))
 																wndTransbordoPasajeros.transbordarDeizquierdaADerecha()" 
-													src="/resources/mp_rightArrowDisabled.png" width="30px" tooltiptext="Transbordar el pasajero seleccionado"/>
+													src="/resources/mp_rightArrowDisabled.png" 
+													width="30px" 
+													tooltiptext="Transbordar el pasajero seleccionado"/>
 										</row>
 										<row>
 											<image id="imgAllDerecha" 
 													onClick="if(imgAllDerecha.getSrc().equals(wndTransbordoPasajeros.enabledImgAllDerecha))
 																wndTransbordoPasajeros.transbordarAllDeIzquieraADerecha()" 
-													src="/resources/mp_allRightArrowDisabled.png" width="30px" tooltiptext="Transbordar todos los pasajeros"/>
+													src="/resources/mp_allRightArrowDisabled.png" 
+													width="30px" 
+													tooltiptext="Transbordar todos los pasajeros"/>
 										</row>
 										<row><separator height="70px" /></row>
 										<row>
 											<image id="imgIzquierda" 
 													onClick="if(imgIzquierda.getSrc().equals(wndTransbordoPasajeros.enabledImgIzquierda))
 																wndTransbordoPasajeros.transbordarDeDerechaAIzquierda()" 
-													src="/resources/mp_leftArrowDisabled.png" width="30px" tooltiptext="Transbordar el pasajero seleccionado"/>									
+													src="/resources/mp_leftArrowDisabled.png" 
+													width="30px" 
+													tooltiptext="Transbordar el pasajero seleccionado"/>									
 										</row>
 										<row>
 											<image id="imgAllIzquierda" 
@@ -144,7 +157,7 @@
 		<!-- 						ITINERARIO HACIA EL CUAL SE ARA EL TRANSBORDO -->
 								<groupbox closable="false" mold="3d" width="370px">
 								<caption>
-								 	<div align="center"><label value="HACIA" style="font-weight: bold; color:blue" /></div>
+								 	<div align="center"><label value="HACIA" style="font-weight: bold; color:white" /></div>
 								</caption>
 									<grid style="border:none">
 							 			<columns>
@@ -168,8 +181,10 @@
 															<label value="ITINERARIO" />
 															<hbox align="center" >
 																<longbox id="lbxItinerarioH" width="48px" readonly="true"/>
-																<button id="btnBuscarH" style="cursor:pointer" image="/resources/mp_buscarEnabled.png" 
-																	tooltiptext="Busqueda del Itinerario." />
+																<button id="btnBuscarH" 
+																		image="/resources/mp_buscarEnabled.png" 
+																		sclass="btnImage"  
+																		tooltiptext="Busqueda del Itinerario." />
 															</hbox>
 														</row>
 														<row>
@@ -215,9 +230,14 @@
 														<row>
 															<label value="SELECCIÓN" sclass="label-size11" />
 															<hbox align="center">
-																<intbox id="ibxSeleccionH" style="font-size:15px !important; font-weight: bold; color:red" readonly="true" width="50px" />
-																<button  id="btnVerPasajeroH" disabled="true" 
-																	image="/resources/mp_preliminarDisabled.png" />
+																<intbox id="ibxSeleccionH" 
+																		style="font-size:15px !important; font-weight: bold; color:red" 
+																		readonly="true" 
+																		width="50px" />
+																<button  id="btnVerPasajeroH" 
+																		disabled="true" 
+																		image="/resources/mp_preliminarDisabled.png" 
+																		sclass="btnImage" />
 															</hbox>
 														</row>
 														<row>
@@ -225,11 +245,12 @@
 							 								<separator id="separator_c2H"/>
 							  								<separator id="separator_c3H"/>
 														</row>
-														<row >
-							 								<separator id="separator1H"/>
+														<row spans="2">
 							 								<vbox width="150px">
-																<button id="btnRefrescarH" label="Refresh" sclass="btn-vyrbus" 
-																	image="/resources/mp_refrescarEnabled.png" 
+																<button id="btnRefrescarH" 
+																	label="Actualizar" 
+																	sclass="btnCommandL" 
+																	image="/resources/mp_recargar16.png" 
 																	onClick="wndTransbordoPasajeros.onRefrescarMapa(btnRefrescarH)"/>
 															</vbox>
 														</row>

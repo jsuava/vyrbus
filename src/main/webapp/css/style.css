@@ -11,16 +11,15 @@
 	border-top-left-radius: 5px;
 	border-bottom-left-radius: 5px;
 	text-transform:uppercase;
-		
 }
 
 
 .z-combobox-btn, .z-datebox-btn, .z-spinner-btn {
 	/*height: 26px !important;*/
-	-webkit-border-top-right-radius: 5px !important;
-	-webkit-border-bottom-right-radius: 5px !important;
-	-moz-border-radius-topright: 5px !important;
-	-moz-border-radius-bottomright: 5px !important;
+	-webkit-border-top-right-radius: 15px !important;
+	-webkit-border-bottom-right-radius: 15px !important;
+	-moz-border-radius-topright: 15px !important;
+	-moz-border-radius-bottomright: 15px !important;
 	border-top-right-radius: 5px !important;
 	border-bottom-right-radius: 5px !important;
 }
@@ -50,6 +49,7 @@
 	background-color: #FAFDE3;
 }
 
+/* * * * * *   MENU    * * * * * * * * * * * */
 /* modificado el aspecto de la barra de menu*/
 .z-menubar-hor{
 	border-top: none;
@@ -63,6 +63,8 @@
 .z-menu-cnt, .z-menuitem-cnt {
 	font-size: 12px !important;
 }
+
+/* * * * * *  FIN MENU  * * * * * * * * * * */
 
 /**/
 .z-toolbarbutton-cnt{
@@ -87,6 +89,7 @@
 .z-label, .z-combobox-pp .z-comboitem-text, .z-combobox-inp, div.z-listheader-cnt, div.z-listcell-cnt, .z-textbox, .z-bandbox {
 	font-size: 10px !important;
 }
+
 
 /*	Para los auxheader y columns*/
 .z-auxheader-cnt, div.z-column-cnt  {
@@ -197,12 +200,13 @@ tr.z-row td.z-row-inner{
 /*	Cambiar color de los header de los listbox*/
 div.z-listbox-header tr.z-listhead, div.z-listbox-header tr.z-auxhead {
 	/*background: transparent repeat-x 0 0;*/
-	background: #90caf9;
+	background: #4285F4;
 	background-image: none;
+	color: #FFFFFF;
 }
 
 .z-listbox-header-bg {
-	background: #90caf9;
+	background: #4285F4;
 	background-image: none;
 }
 
@@ -212,9 +216,11 @@ div.z-listbox {
 }
 
 .z-groupbox-3d-hm {
-	background: #90caf9;
+	background: #4285F4;
 	/*background: #A9D0F5;*/
 	background-image: none;	
+	color: #FFFFFF !important;
+	font-size:13px;
 }
 
 
@@ -255,3 +261,71 @@ a:active {
 	color: white;
 }
 
+
+.z-datebox-popup {
+	border-radius: 10px;
+}
+
+.z-combobox-input {
+	font-family: 'Ubuntu', sans-serif !important;
+	font-size: 14px;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+	background: #FFFFFF !important;
+	height: 36px !important;
+	width: 185px !important;
+}
+
+.z-combobox-button {
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+	border-left-style: none;
+	height: 36px !important;
+}
+
+/* Nuevo boton para las ventanas   */
+.btnCommandM{
+	background-color: #4285F4;
+	border-radius: 4px;
+	border-width: 0px; 
+	color: #FFFFFF;
+	cursor: pointer;
+	font-size: 14px;
+	height: 30px;
+	width: 90px;
+}
+
+.btnCommandM:hover{
+	box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.btnCommandL{
+	background-color: #4285F4;
+	border-radius: 4px;
+	border-width: 0px; 
+	color: #FFFFFF;
+	cursor: pointer;
+	font-size: 14px;
+	height: 30px;
+	width: 120px;
+}
+
+.btnCommandL:hover{
+	box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+
+.btnImage{
+	background-color: #4285F4;	
+	border-width: 0px; 
+	border-radius: 4px;
+	color: #FFFFFF;
+	cursor: pointer;
+	font-size: 14px;
+	height:	28px;
+	width: 40px;
+}
+
+.btnImage:hover{
+	box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}

@@ -4,19 +4,19 @@
 	<div id="divLista">
 		<listbox id="listboxLista">
 			<listhead sizable="true">
-				<listheader width="50px" label="#" />
-				<listheader label="DIRECCION MAC" width="100px" sort="auto"/>
-				<listheader label="CODIGO" width="" sort="auto" />
-				<listheader label="DESCRIPCION" sort="auto" />
-				<listheader label="AGENCIA" sort="auto" />
-				<listheader label="CANAL VENTA" sort="auto" />
+				<listheader width="50px" label="#" style="color: #ffffff;"/>
+				<listheader label="DIRECCION MAC" width="100px" sort="auto" style="color: #ffffff;"/>
+				<listheader label="CODIGO" width="" sort="auto" style="color: #ffffff;"/>
+				<listheader label="DESCRIPCION" sort="auto" style="color: #ffffff;"/>
+				<listheader label="AGENCIA" sort="auto" style="color: #ffffff;"/>
+				<listheader label="CANAL VENTA" sort="auto" style="color: #ffffff;"/>
 			</listhead>
 		</listbox>
 	</div>
 
 	<div id="divMantenimiento">
 	<groupbox closable="false" mold="3d">
-		<caption label="DATOS USUARIO HARDWARE" />
+		<caption label="DATOS USUARIO HARDWARE" style="color: #ffffff;"/>
 		<grid>
 			<columns>
 				<column width="90px" align="right"/>
@@ -40,7 +40,9 @@
 					<label value="CODIGO :"/>
 					<hlayout>
 						<textbox id="txtCodigo" maxlength="100" readonly="true" width="345px" style="text-transform:none !important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtDescripcion)"/>
-						<image src="resources/mp_ayuda.png" onClick="wndUsuarioHardware.generarCodigo(txtDireccionMAC.getText())"/>
+						<image src="resources/mp_generar.png" 
+								onClick="wndUsuarioHardware.generarCodigo(txtDireccionMAC.getText())" 
+								tooltiptext="Haga click aqui para generar el codigo."/>
 					</hlayout>					
 				</row>
 				<row spans="1,3">

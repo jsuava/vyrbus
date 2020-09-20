@@ -19,27 +19,34 @@
 <!-- 						<space width="5px"/> -->
 <!-- 						<toolbar width="945px"> -->
 							<space width="5px"/>
-							<button label="Actualizar" sclass="btn-vyrbus" autodisable="self" image="resources/mp_refrescarEnabled.png" onClick="wndComprobantesSinBoleto.buscarComprobantes()" height="27px"/>
-							<button label="Cerrar" sclass="btn-vyrbus" image="resources/mp_cerrarEnabled.png" onClick="wndComprobantesSinBoleto.closeTabWindow()" height="27px" width="85px"/>
+							<button label="Actualizar" 
+									sclass="btnCommandL" 
+									autodisable="self" 
+									image="resources/mp_recargar16.png" 
+									onClick="wndComprobantesSinBoleto.buscarComprobantes()" />
+							<button label="Cerrar" 
+									sclass="btnCommandL" 
+									image="resources/mp_cerrarEnabled.png" 
+									onClick="wndComprobantesSinBoleto.closeTabWindow()" />
 						</toolbar>
 					</hbox>					
 					<listbox id="lbxComprobantes" width="100%"  mold="paging" pageSize="15">
 						<listhead>
-							<listheader label="PTO EMBARQUE" width="120px"/>
-							<listheader label="COMPROBANTE" width="140px"/>
-							<listheader label="N°COMPROBANTE" width="100px"/>
-							<listheader label="NRO CONTROL" width="95px"/>
-							<listheader label="ASIENTO" width="60px"/>
-							<listheader label="FPARTIDA" width="60px"/>
-							<listheader label="HPARTIDA" width="55px"/>
-							<listheader label="RUC" width="60px"/>
-							<listheader label="RAZON SOCIAL" width="140px"/>
-							<listheader label="DNI" width="65px"/>
-							<listheader label="PASAJERO" width="150px"/>
-							<listheader label="RUTA" width="120px"/>
-							<listheader label="REPVENTA" width="120px"/>
-							<listheader label="AGENCIA" width="120px"/>
-							<listheader label="FECHA VENTA" width="100px"/>						
+							<listheader label="PTO EMBARQUE" width="120px" style="color: #ffffff;"/>
+							<listheader label="COMPROBANTE" width="140px" style="color: #ffffff;"/>
+							<listheader label="N°COMPROBANTE" width="100px" style="color: #ffffff;"/>
+							<listheader label="NRO CONTROL" width="95px" style="color: #ffffff;"/>
+							<listheader label="ASIENTO" width="60px" style="color: #ffffff;"/>
+							<listheader label="FPARTIDA" width="60px" style="color: #ffffff;"/>
+							<listheader label="HPARTIDA" width="55px" style="color: #ffffff;"/>
+							<listheader label="RUC" width="60px" style="color: #ffffff;"/>
+							<listheader label="RAZON SOCIAL" width="140px" style="color: #ffffff;"/>
+							<listheader label="DNI" width="65px" style="color: #ffffff;"/>
+							<listheader label="PASAJERO" width="150px" style="color: #ffffff;"/>
+							<listheader label="RUTA" width="120px" style="color: #ffffff;"/>
+							<listheader label="REPVENTA" width="120px" style="color: #ffffff;"/>
+							<listheader label="AGENCIA" width="120px" style="color: #ffffff;"/>
+							<listheader label="FECHA VENTA" width="100px" style="color: #ffffff;"/>						
 						</listhead>
 					</listbox>
 				</vbox>

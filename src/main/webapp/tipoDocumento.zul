@@ -4,17 +4,17 @@
 <div id="divLista">
 	<listbox id="listboxLista">
 		<listhead sizable="true">
-			<listheader label="#" width="50px" sort="auto" />
-			<listheader label="DENOMINACIÓN" sort="auto" />
-			<listheader label="NOMBRE CORTO (o sufijo)" sort="auto" />
-			<listheader label="MASCARA O FORMATO DE INGRESO DE DATOS" />
-			<listheader label="¿ES DOCUMENTACIÓN DEL BUS?" sort="auto" />
+			<listheader label="#" width="50px" sort="auto" style="color: #ffffff;"/>
+			<listheader label="DENOMINACIÓN" sort="auto" style="color: #ffffff;"/>
+			<listheader label="NOMBRE CORTO (o sufijo)" sort="auto" style="color: #ffffff;"/>
+			<listheader label="MASCARA O FORMATO DE INGRESO DE DATOS" style="color: #ffffff;"/>
+			<listheader label="¿ES DOCUMENTACIÓN DEL BUS?" sort="auto" style="color: #ffffff;"/>
 		</listhead>
 	</listbox>
 </div>
 <div id="divMantenimiento" >
 	<groupbox closable="false" mold="3d">
-		<caption label="Datos del tipo de documento" />
+		<caption label="INFORMACION DEL TIPO DE DOCUMENTO" style="color: #ffffff;"/>
 		<grid>
 			<columns>
 				<column width="130px" align="right"/>
@@ -42,7 +42,7 @@
 	</groupbox>
 	<separator />
 	<groupbox closable="false" mold="3d">
-		<caption label="Configuración" />
+		<caption label="CONFIGURACION" style="color: #ffffff;"/>
 		<grid>
 			<columns>
 				<column width="130px" align="right"/>

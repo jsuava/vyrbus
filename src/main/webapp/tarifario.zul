@@ -99,12 +99,12 @@
 								
 									<button id="btnBuscar"  
 										autodisable="self"
-										height="28px"
+										
 										image="/resources/mp_buscarEnabled.png" 
 										label="Buscar" 
 										onClick="wndTarifario.buscar()" 
-										sclass="btn-vyrbus" 
-										width="85px" />
+										sclass="btnCommand" 
+										 />
 									<label/>
 
 								</row>

@@ -581,7 +581,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 		oTabMantenimiento.addEventListener(Events.ON_CLICK, changeTabEventListener);
 
 		listboxLista.setMold("paging");
-		listboxLista.setPageSize(15);
+		listboxLista.setPageSize(20);
 //		listboxLista.addEventListener(Events.ON_DOUBLE_CLICK, changeTabEventListener); new EventListener<Event>()
 		
 		

@@ -5,7 +5,7 @@
 
 	<div id="divMantenimiento">
 		<groupbox closable="false" mold="3d" width="370px" >
-		<caption label="ROL OPCIONES MENUS" />
+		<caption label="ROL OPCIONES MENUS" style="color: #ffffff;"/>
  			<grid > 
  				<columns> 
   					<column width="100px" /> 

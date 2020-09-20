@@ -15,7 +15,10 @@
 				<label value="Tipo Consulta" sclass="label-size11-bold" />
 				<combobox id="cmbTipoConsulta" readonly="true" />
 				<hlayout>
-					<button label="Exportar" sclass="btn-vyrbus" image="/resources/mp_excel.png" onClick="wndAvanceSemanalVentasXRuta.exportar()" />
+					<button label="" 
+							sclass="btnImage" 
+							image="/resources/mp_excel.png" 
+							onClick="wndAvanceSemanalVentasXRuta.exportar()" />
 				</hlayout>
 			</row>
 			<row>
@@ -24,8 +27,14 @@
 				<label value="Transacción" sclass="label-size11-bold" />
 				<combobox id="cmbTransaccion" readonly="true" />
 				<hlayout>
-					<button label="Buscar" sclass="btn-vyrbus" image="/resources/mp_buscarEnabled.png" onClick="wndAvanceSemanalVentasXRuta.cargarAvanceXrutas()" />
-					<button label="Cerrar" sclass="btn-vyrbus" image="/resources/mp_cerrar.png" onClick="wndAvanceSemanalVentasXRuta.closeTabWindow()" />
+					<button label="Buscar" 
+							sclass="btnCommandM" 
+							image="/resources/mp_buscarEnabled.png" 
+							onClick="wndAvanceSemanalVentasXRuta.cargarAvanceXrutas()" />
+					<button label="Cerrar" 
+							sclass="btnCommandM" 
+							image="/resources/mp_cerrar.png" 
+							onClick="wndAvanceSemanalVentasXRuta.closeTabWindow()" />
 				</hlayout>
 			</row>
 		</rows>

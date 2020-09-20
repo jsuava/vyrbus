@@ -4,14 +4,14 @@
 	<div id="divLista">
 		<listbox id="listboxLista">
 			<listhead sizable="true">
-				<listheader label="#" width="50px" />
-				<listheader label="DENOMINACION" sort="auto"/>
-				<listheader label="NOMBRE CORTO (o sufijo)" sort="auto"/>
-				<listheader label="PISOS DEL BUS" sort="auto"/>
-				<listheader label="TOTAL ASIENTOS" sort="auto"/>
-				<listheader label="TOTAL FILAS" sort="auto"/>
-				<listheader label="TOTAL COLUMNAS" sort="auto"/>
-				<listheader label="ESTRUCTURA" width="170px" />
+				<listheader label="#" width="50px" style="color: #ffffff;"/>
+				<listheader label="DENOMINACION" sort="auto" style="color: #ffffff;"/>
+				<listheader label="NOMBRE CORTO (o sufijo)" sort="auto" style="color: #ffffff;"/>
+				<listheader label="PISOS DEL BUS" sort="auto" style="color: #ffffff;"/>
+				<listheader label="TOTAL ASIENTOS" sort="auto" style="color: #ffffff;"/>
+				<listheader label="TOTAL FILAS" sort="auto" style="color: #ffffff;"/>
+				<listheader label="TOTAL COLUMNAS" sort="auto" style="color: #ffffff;"/>
+				<listheader label="ESTRUCTURA" width="170px" style="color: #ffffff;"/>
 			</listhead>
 		</listbox>
 	</div>
@@ -24,7 +24,7 @@
 			<tabpanels>
 				<tabpanel>
 					<groupbox mold="3d" closable="false">
-						<caption label="DATOS DEL SERVICIO" />
+						<caption label="DATOS DEL SERVICIO" style="color: #ffffff;"/>
 						<grid width="600px">
 							<columns>
 								<column align="right" width="120px"/>
@@ -53,7 +53,7 @@
 					</groupbox>
 					<separator/>
 					<groupbox mold="3d" closable="false">
-						<caption label="DATOS DEL PRIMER PISO" />
+						<caption label="DATOS DEL PRIMER PISO" style="color: #ffffff;"/>
 						<grid width="600px">
 							<columns>
 								<column align="right" width="120px"/>
@@ -79,7 +79,7 @@
 					</groupbox>
 					<separator />
 					<groupbox id="grpSegundoPiso" mold="3d" closable="false" visible="false">
-						<caption label="DATOS DEL SEGUNDO PISO" />
+						<caption label="DATOS DEL SEGUNDO PISO" style="color: #ffffff;"/>
 						<grid width="600px">
 							<columns>
 								<column align="right" width="120px"/>
@@ -107,8 +107,8 @@
 				<tabpanel height="100%" style="overflow:auto">
 					<hbox>
 						<groupbox closable="false" mold="3d">
-							<caption label="PALETA DE OBJETOS"/>
-							<grid width="180px">
+							<caption label="PALETA DE OBJETOS" style="color: #ffffff;"/>
+							<grid width="250px">
 								<columns>
 									<column align="right" width="40%"/>
 									<column width="60%"/>
@@ -134,11 +134,21 @@
 										<label value="PAPELERA :"/>
 										<div id="divPapelera"/>
 									</row>
-									<row spans="2">
-										<button id="btnGuardarEstructura" sclass="btn-vyrbus" label="Grabar Estructura Bus" height="28px" style="cursor:pointer" image="resources/mp_guardarEnabled.png" onClick="wndMapaBus.grabarEstructura()"/>
+									<row spans="2" >
+										<button id="btnGuardarEstructura"
+												sclass="btnCommandL" 
+												label="Grabar Estructura Bus" 
+												image="resources/mp_guardarEnabled.png" 
+												onClick="wndMapaBus.grabarEstructura()"
+												width="200px"/>
 									</row>
 									<row spans="2">
-										<button id="btnCancelar" sclass="btn-vyrbus" label="Cancelar Edición" height="28px" style="cursor:pointer" image="resources/mp_cancelarEnabled.png" onClick="wndMapaBus.cancelarCreacion()"/>
+										<button id="btnCancelar" 
+											sclass="btnCommandL" 
+											label="Cancelar Edición" 
+											image="resources/mp_cancelarEnabled.png" 
+											onClick="wndMapaBus.cancelarCreacion()"
+											width="200px"/>
 									</row>
 								</rows>
 							</grid>

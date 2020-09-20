@@ -4,22 +4,22 @@
 	<div id="divLista">
 		<listbox id="listboxLista" rows="16">
 			<listhead sizable="true">
-				<listheader width="35px" label="#" />
-				<listheader label="DENOMINACIÓN" width="250px" />
-				<listheader label="NUEVO" sort="auto" />
-				<listheader label="MODIFICAR" sort="auto" />
-				<listheader label="GRABAR" sort="auto" />
-				<listheader label="ELIMINAR" sort="auto" />
-				<listheader label="CONSULTAR" sort="auto" />
-				<listheader label="IMPRIMIR" sort="auto" />
-				<listheader label="EXPORTAR" sort="auto" />
+				<listheader width="35px" label="#" style="color: #ffffff;"/>
+				<listheader label="DENOMINACIÓN" width="250px" style="color: #ffffff;"/>
+				<listheader label="NUEVO" sort="auto" style="color: #ffffff;"/>
+				<listheader label="MODIFICAR" sort="auto" style="color: #ffffff;"/>
+				<listheader label="GRABAR" sort="auto" style="color: #ffffff;"/>
+				<listheader label="ELIMINAR" sort="auto" style="color: #ffffff;"/>
+				<listheader label="CONSULTAR" sort="auto" style="color: #ffffff;"/>
+				<listheader label="IMPRIMIR" sort="auto" style="color: #ffffff;"/>
+				<listheader label="EXPORTAR" sort="auto" style="color: #ffffff;"/>
 			</listhead>
 		</listbox>
 	</div>
 	
 	<div id="divMantenimiento">
 		<groupbox closable="false" mold="3d" >
-		<caption label="ROLES DE ACCESO" />
+		<caption label="ROLES DE ACCESO" style="color: #ffffff;"/>
 			<vbox>
 <!-- 				<vbox> -->
 				<grid  width="357px">

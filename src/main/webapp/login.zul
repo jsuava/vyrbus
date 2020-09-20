@@ -3,7 +3,7 @@
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
 <?link rel="shortcut icon" href="resources/favicon_1.ico" ?>
 <zk xmlns:c="client">
-
+<style src="css/filtros.css"></style>
 <script type="text/javascript"><![CDATA[
 	function getMacAddress(){
 		var pwdWidget = zk.Widget.$("$txtMAC");
@@ -186,7 +186,8 @@
 									height="28px" 
 									onOK="wndLogin.onAccess()" 
 									readonly="true"
-									style="font-size:14px; color:#000099; cursor:pointer; border-width: 1px;" 
+									 
+									style = "border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-left-style: none; height: 28px !important;"
 									width="200"  />
 							</div>
 						</hbox>						

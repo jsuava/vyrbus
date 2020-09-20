@@ -4,14 +4,19 @@
 	
 <!-- 	<separator height="1px"/> -->
 	<groupbox  closable="false" mold="3d" style="background:#FCF8F8;">
-		<caption label="TRANSBORDO DE ASIENTOS EN UN MISMO SERVICIO" />
+		<caption label="TRANSBORDO DE ASIENTOS EN UN MISMO SERVICIO" style="color: #ffffff;"/>
 		<grid>
 			<rows><row>
 				<hbox align="center" >
 					<label value="ITINERARIO :" /><space width="15px"/>
 					<textbox id="txtItinerario" readonly="true" width="70px" style="font-size:11px !important" />
-					<image id="imgItinerario" src="/resources/mp_buscarEnabled.png" style="cursor:pointer" /><space id="spaceBtnCerar" width="40px" />
-					<button id="btnCerrar" sclass="btn-vyrbus" label="Cerrar" image="/resources/mp_cerrar.png" onClick="wndCambioAsiento.closeTabWindow()"/>	
+					<image id="imgItinerario" src="/resources/mp_buscarEnabled.png" style="cursor:pointer" />
+					<space id="spaceBtnCerar" width="40px" />
+					<button id="btnCerrar" 
+							sclass="btnCommandM" 
+							label="Cerrar" 
+							image="/resources/mp_cerrar.png" 
+							onClick="wndCambioAsiento.closeTabWindow()"/>	
 				</hbox>
 			</row></rows>
 		</grid>
@@ -22,7 +27,7 @@
 			</groupbox>
 			<vbox>
 				<groupbox  width="300px" closable="false" mold="3d">
-					<caption label="DATOS DEL SERVICIO " />
+					<caption label="DATOS DEL SERVICIO " style="color: #ffffff;"/>
 					<grid style="border:none">
 						<columns>
 							<column width="90px" align="right" />
@@ -64,7 +69,7 @@
 					</grid>	
 				</groupbox>
 				<groupbox  width="300px" closable="false" mold="3d">
-					<caption label="DATOS DEL ASIENTO SELECCIONADO" />
+					<caption label="DATOS DEL ASIENTO SELECCIONADO" style="color: #ffffff;"/>
 					<grid style="border:none">
 						<columns>
 							<column width="90px" align="right" />
@@ -97,8 +102,19 @@
 							<row>
 								<label value="NUEVO ASIENTO :" />
 								<hbox align="center">
-									<intbox id="ibxNuevoAsiento" onFocus="ibxNuevoAsiento.select()" onOK="wndCambioAsiento.aplicarCambio()" width="50px" maxlength="2" disabled="true"/>
-									<button id="btnAplicarCambios" sclass="btn-vyrbus" label="Aplicar cambio" onClick="wndCambioAsiento.aplicarCambio()" style="cursor:default" disabled="true" image="/resources/mp_aceptarDisabled.png"/>
+									<intbox id="ibxNuevoAsiento" 
+											onFocus="ibxNuevoAsiento.select()" 
+											onOK="wndCambioAsiento.aplicarCambio()" 
+											width="50px" 
+											maxlength="2" 
+											disabled="true"/>
+									<button id="btnAplicarCambios" 
+											sclass="btnCommandL" 
+											label="Aplicar cambio" 
+											onClick="wndCambioAsiento.aplicarCambio()" 
+											style="cursor:default" 
+											disabled="true" 
+											image="/resources/mp_aceptarDisabled.png"/>
 								</hbox>
 							</row>
 							<row>
@@ -108,7 +124,12 @@
 						</rows>
 					</grid>
 			</groupbox>
-			<button id="btnRefrescar" label="Refrescar Mapa" sclass="btn-vyrbus" visible="false" image="/resources/mp_refrescarEnabled.png" onClick="wndCambioAsiento.refrescarMapa()" />
+			<button id="btnRefrescar" 
+					label="Refrescar Mapa" 
+					sclass="btnCommandL" 
+					visible="false" 
+					image="/resources/mp_refrescarEnabled.png" 
+					onClick="wndCambioAsiento.refrescarMapa()" />
 			</vbox>
 			
 		</hbox>

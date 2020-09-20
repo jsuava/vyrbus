@@ -24,17 +24,17 @@
 		<div id="divLista">
 			<listbox id="listboxLista" onSelect="wndUsuariosistema.onchangeListBox()">
 				<listhead sizable="true">
-					<listheader width="35px" label="#" />
-					<listheader label="APELLIDOS Y NOMBRES" sort="auto" />
-					<listheader label="LOGIN" sort="auto" />
-					<listheader label="ESTADO" sort="auto" />
+					<listheader width="35px" label="#" style="color: #ffffff;"/>
+					<listheader label="APELLIDOS Y NOMBRES" sort="auto" style="color: #ffffff;" />
+					<listheader label="LOGIN" sort="auto" style="color: #ffffff;"/>
+					<listheader label="ESTADO" sort="auto" style="color: #ffffff;"/>
 				</listhead>
 			</listbox>
 		</div>
 		
 		<div id="divMantenimiento">
 			<groupbox closable="false" mold="3d" >
-			<caption label="DATOS DEL USUARIO" />
+			<caption label="DATOS DEL USUARIO" style="color: #ffffff;"/>
 			<grid>
 				<columns>
 					<column width="125px" align="right"/>
@@ -72,7 +72,7 @@
 			</groupbox>
 			
 			<groupbox closable="false" mold="3d" >
-				<caption label="DATOS PARA EL INICIO DE SESIÓN EN EL SISTEMA" />
+				<caption label="DATOS PARA EL INICIO DE SESIÓN EN EL SISTEMA" style="color: #ffffff;"/>
 				<hbox>
 					<grid>
 						<columns>
@@ -83,23 +83,33 @@
 						<rows>
 							<row>
 								<label value="USUARIO (*) :"/>
-								<textbox id="txtLogin" maxlength="20" style="text-transform:lowercase; font-size:12px !important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtPassword)"/>
+								<textbox id="txtLogin" 
+										maxlength="20" 
+										style="text-transform:lowercase; font-size:12px !important" 
+										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtPassword)"/>
 															
 							</row>
 							<row >
 								<label value="PASSWORD (*) :"/>
 								<hlayout>
-									<textbox  id="txtPassword"  maxlength="128" type="password"   c:onChanging="meterUpdate(event)" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtConfirmaPassword)" />
-									<image id="imgGeneratePassword" src="resources/mp_security.png" onClick="wndUsuariosistema.generarPassword()" style="cursor:pointer" visible="false" tooltiptext="Haga click aqui para generar la contraseña aleatoriamente"/>
-									
+									<textbox  id="txtPassword"  
+											maxlength="128" 
+											type="password"   
+											c:onChanging="meterUpdate(event)" 
+											onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtConfirmaPassword)" />
+ 									<image id="imgGeneratePassword" 
+ 											onClick="wndUsuariosistema.generarPassword()"
+ 											src="resources/mp_pwdautom.png"
+ 											style="cursor:pointer" 
+ 											tooltiptext="Haga click aqui para generar la contraseña aleatoriamente" 
+ 											visible="false"/>  
 									<vbox>
-									<div id="meter" width="240px">
-										<div sclass="meter-inner"/>
-									</div>
-									<label id="msg"/>
-								</vbox>	
+										<div id="meter" width="240px">
+											<div sclass="meter-inner"/>
+										</div>
+										<label id="msg"/>
+									</vbox>	
 								</hlayout>
-													
 							</row>
 							<row>
 								<label value="CONFIRMAR PASSWORD (*) :"/>
@@ -107,7 +117,10 @@
 							</row>
 							<row>
 								<label value="E-MAIL (*) :"/>
-								<textbox id="txtEmailInfo" maxlength="70" style="text-transform:lowercase; font-size:12px !important" constraint="/.+@.+\.[a-z]+/: Por favor ingrese una dirección de e-mail valida, para enviar la informacion de acceso."/>
+								<textbox id="txtEmailInfo" 
+										maxlength="70" 
+										style="text-transform:lowercase; font-size:12px !important" 
+										constraint="/.+@.+\.[a-z]+/: Por favor ingrese una dirección de e-mail valida, para enviar la informacion de acceso."/>
 							</row>
 							<row>
 								<label value="USUARIO ACTIVO ? :"/>
@@ -120,7 +133,7 @@
 								</hlayout>
 							</row>
 							<row>
-								<button label="Reiniciar Password" sclass="btn-vyrbus" onClick="wndUsuariosistema.reiniciarPWD()" visible="false"/>
+								<button label="Reiniciar Password" sclass="btnCommandM" onClick="wndUsuariosistema.reiniciarPWD()" visible="false"/>
 								<separator/><separator/>
 							</row>
 							<row>
@@ -129,7 +142,12 @@
 						</rows>
 					</grid>
 					<vbox align="center">
-						<div align="left"><checkbox id="chbxSoloRolesSeleccionados" onCheck="wndUsuariosistema.soloRolesSeleccionados()" label="Solo roles seleccionados" style="color:#61380B;font-weight: bold;" /></div>
+						<div align="left">
+							<checkbox 
+								id="chbxSoloRolesSeleccionados" 
+								onCheck="wndUsuariosistema.soloRolesSeleccionados()" 
+								label="Solo roles seleccionados" style="color:#61380B;font-weight: bold;" />
+						</div>
 						
 						<groupbox closable="false" open="false">
 							<caption label="Roles del Usuario" style="font-weight: bold;"/>

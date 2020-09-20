@@ -22,7 +22,7 @@
 						<textbox id="txtNumeroComprobante" focus="true" width="190px" style="font-size:11px !important"/><space width="15px"/>
 					</hbox>
 				</div>
-				<button id="btnBuscar" label="Buscar" sclass="btn-vyrbus" image="/resources/mp_buscarEnabled.png" autodisable="self"  />
+				<button id="btnBuscar" label="Buscar" sclass="btnCommandM" image="/resources/mp_buscarEnabled.png" autodisable="self"  />
 			</row>
 			<row id="rowRangoFechas" visible="false">
 				<label value="FECHA INICIO : " />
@@ -42,9 +42,18 @@
 						<label value="OPCIONES PARA LA APLICACION DE N.C."  style="color:red"/>
 						<hbox align="center">
 							<space width="35px"/>
-							<radio id="rdRegular" label="Anulación regular" onCheck="ckbxGeneraMovimientoSistema.setChecked(true);ckbxGeneraMovimientoSistema.setDisabled(true)" checked="true"/> <space width="10px"/>
-							<radio id="rdSoloNC" label="Aplicar N.C" onCheck="ckbxGeneraMovimientoSistema.setDisabled(false)" /> <space width="10px"/>
-							<radio id="rdNCNuevoComprobante" onCheck="ckbxGeneraMovimientoSistema.setChecked(true);ckbxGeneraMovimientoSistema.setDisabled(true)" label="Aplicar N.C y emitir un nuevo Comprobante"/>
+							<radio id="rdRegular" 
+									label="Anulación regular" 
+									onCheck="ckbxGeneraMovimientoSistema.setChecked(true);ckbxGeneraMovimientoSistema.setDisabled(true)" 
+									checked="true"/> 
+							<space width="10px"/>
+							<radio id="rdSoloNC" 
+									label="Aplicar N.C" 
+									onCheck="ckbxGeneraMovimientoSistema.setDisabled(false)" /> 
+							<space width="10px"/>
+							<radio id="rdNCNuevoComprobante" 
+									onCheck="ckbxGeneraMovimientoSistema.setChecked(true);ckbxGeneraMovimientoSistema.setDisabled(true)" 
+									label="Aplicar N.C y emitir un nuevo Comprobante"/>
 						</hbox>
 					</radiogroup>
 				</div>
@@ -54,7 +63,7 @@
 					<space width="35px" /> 
 					<checkbox id="ckbxGeneraMovimientoSistema" label="¿Quitar Comprobantes de la Ocupabilidad?" checked="true"/>
 					<space width="300px" />  
-					<button id="btnAplicar" sclass="btn-vyrbus" label="Aplicar" image="/resources/mp_aceptarEnabled.png" autodisable="self" />
+					<button id="btnAplicar" sclass="btnCommandM" label="Aplicar" image="/resources/mp_aceptarEnabled.png" autodisable="self" />
 				</div>
 			</row>
 		</rows>
@@ -62,17 +71,20 @@
 
 	<listbox id="ltbxAnulacionComprobantes">
 		<listhead>
-			<listheader label="F.EMISION" width="90px" align="center"/>
+			<listheader label="F.EMISION" width="90px" align="center" style="color: #ffffff;"/>
 <!-- 			<listheader label="T.COMPROBANTE" width="100px"/> -->
-			<listheader label="N° COMPROBANTE" width="95px" align="center" tooltiptext="Número de comprobante"/>
-			<listheader label="F.PAGO" width="60px"/>
-			<listheader label="RUTA" width="160px"/>
-			<listheader label="F/H HORATIDA" width="100px"/>
-			<listheader label="ASIENTO" width="50px"/>
-			<listheader label="PASAJERO" width="200px"/>
-			<listheader label="CLIENTE" width="200px"/>
+			<listheader label="N° COMPROBANTE" width="95px" align="center" tooltiptext="Número de comprobante" style="color: #ffffff;"/>
+			<listheader label="F.PAGO" width="60px" style="color: #ffffff;"/>
+			<listheader label="RUTA" width="160px" style="color: #ffffff;"/>
+			<listheader label="F/H HORATIDA" width="100px" style="color: #ffffff;"/>
+			<listheader label="ASIENTO" width="50px" style="color: #ffffff;"/>
+			<listheader label="PASAJERO" width="200px" style="color: #ffffff;"/>
+			<listheader label="CLIENTE" width="200px" style="color: #ffffff;"/>
 		</listhead>
 	</listbox>
-	<label id="lblInfoAnulMasivo" value="*El modo Anulación Masiva solamente se puede aplicar a un máximo de 20 Comprobantes.*" style="color:red;font-weight: bold;font:size:11px !important" visible="false" />
+	<label id="lblInfoAnulMasivo" 
+			value="*El modo Anulación Masiva solamente se puede aplicar a un máximo de 20 Comprobantes.*" 
+			style="color:red;font-weight: bold;font:size:11px !important" 
+			visible="false" />
 </window>
 </zk>

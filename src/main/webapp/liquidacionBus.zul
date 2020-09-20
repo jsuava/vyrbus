@@ -1,5 +1,18 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
+<style> 
+	.btnCommand{
+		cursor: pointer;
+		font-size: 14px;
+		background-color: #4285F4;
+		color: #FFFFFF;
+		border-width: 0px; 
+		border-radius: 4px;
+	}
+	.btnCommand:hover{
+		box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+	} 
+</style>
 <window id="wndLiquidacionBus" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndLiquidacionBus" >
 	<div 	id="divLista">
 		<listbox id="listboxLista" rows="15">
@@ -30,25 +43,35 @@
 					</div>
 					<hbox>
 						<longbox id="lbitinerario" readonly="true" />
-						<button id="btnBuscar" label="..." sclass="btn-vyrbus"  image="/resources/mp_buscarEnabled.png"  style="cursor:pointer" 
-							tooltiptext="Buscar Itinerario" />
+						<button id="btnBuscar" 
+								height="30px"
+								image="/resources/mp_buscarEnabled.png"  
+								label="..." sclass="btnCommand"  
+								tooltiptext="Buscar Itinerario" 
+								width="60px" />
 					</hbox>
 					
 					<label value="BUS (*) :" />
 					<combobox id="cmbBus" readonly="true" />
-					<separator></separator><separator></separator>
-				</row>
-				<row>
-					<separator></separator><separator></separator>
-					<separator></separator><separator></separator>
+<!-- 					<separator></separator>
+ 					<separator></separator>  -->
 					<hbox>
-						<button id="btnAdd" image="/resources/mp_nuevoEnabled.png" width="50px" height="25px"
-									onClick="wndLiquidacionBus.AddFilaGastoXBuss(false)" tooltiptext="Insertar nuevo Item" />
-						<button id="btnDelete" image="/resources/mp_cerrar.png" width="50px" height="25px"
-									tooltiptext="Eliminar  Item" />
-					</hbox>	
-					<separator></separator>		
+						<button id="btnAdd" 
+								height="30px"
+								image="/resources/mp_nuevoEnabled.png"   
+								onClick="wndLiquidacionBus.AddFilaGastoXBuss(false)" 
+								sclass="btnCommand" 
+								tooltiptext="Insertar nuevo Item" 
+								width="60px" />
+						<button id="btnDelete"
+								height="30px" 
+								image="/resources/mp_cerrar.png" 
+								sclass="btnCommand" 
+								tooltiptext="Eliminar  Item" 
+								width="60px" />
+					</hbox>					
 				</row>
+
 			</rows>
 		</grid>
 		

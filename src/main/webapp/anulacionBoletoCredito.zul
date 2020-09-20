@@ -1,5 +1,12 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
+<style>
+.cabecera-listbox{
+	color: #FFFFFF !important;
+	font-size: 12px;
+	font-family: Arial;
+}
+</style>
 <window id="wndAnulBolCre" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndAnulacionBoletoCredito">
 	<groupbox>
 		<grid style="border:none">
@@ -16,8 +23,8 @@
 					<label value="NRO. BOLETO :" />
 					<hbox align="center">
 						<textbox id="txtNumeroBoleto" focus="true" width="160px" style="font-size:11px !important" onOK="wndAnulBolCre.buscar()" /><separator height="10px" />
-						<button label="Buscar" sclass="btn-vyrbus" autodisable="self" image="/resources/mp_buscarEnabled.png" onClick="wndAnulBolCre.buscar()" />
-						<button label="Cerrar" sclass="btn-vyrbus" image="/resources/mp_cerrar.png" onClick="wndAnulBolCre.closeTabWindow()" />
+						<button label="Buscar" sclass="btnCommandM" autodisable="self" image="/resources/mp_buscarEnabled.png" onClick="wndAnulBolCre.buscar()" />
+						<button label="Cerrar" sclass="btnCommandM" image="/resources/mp_cerrar.png" onClick="wndAnulBolCre.closeTabWindow()" />
 					</hbox>
 				</row>
 			</rows>
@@ -25,20 +32,20 @@
 		<separator height="1px" />
 		<listbox id="lsbxBoleto" height="470px" mold="paging" pageSize="10">
 			<listhead>
-				<listheader label="CLIENTE / AGENCIA" width="250px" />
-				<listheader label="VOUCHER" width="80px" align="center" />
-				<listheader label="BOLETO" width="80px" align="center"/>
-				<listheader label="RUTA" width="120px"/>
-				<listheader label="F.PARTIDA" width="70px" />
-				<listheader label="H.PARTIDA" align="center" width="65px"/>
-				<listheader label="F.EMISIÓN" align="center" width="90px"/>
-				<listheader label="REP.VENTA" />
-				<listheader label="AGENCIA REIMPRESIÓN BOLETO" />
+				<listheader label="CLIENTE / AGENCIA" width="250px" style="color: #FFFFFF"/>
+				<listheader label="VOUCHER" width="80px" align="center" style="color: #FFFFFF" />
+				<listheader label="BOLETO" width="80px" align="center" style="color: #FFFFFF" />
+				<listheader label="RUTA" width="120px" style="color: #FFFFFF" />
+				<listheader label="F.PARTIDA" width="70px" style="color: #FFFFFF" />
+				<listheader label="H.PARTIDA" align="center" width="65px" style="color: #FFFFFF" />
+				<listheader label="F.EMISIÓN" align="center" width="90px" style="color: #FFFFFF" />
+				<listheader label="REP.VENTA" style="color: #FFFFFF" />
+				<listheader label="AGENCIA REIMPRESIÓN BOLETO" style="color: #FFFFFF" />
 				<listheader width="50px"/>
 			</listhead>
 		</listbox>
 		<hbox align="center">
-			<label value="Registro anulado:" style="font-size:11px !important; color:blue"/>
+			<label value="Registro anulado:" style="font-size:11px !important; color:red"/>
 			<textbox style="background:red" width="15px" height="10px" readonly="true" />
 			<space width="14px"/>
 			<label value="Registro activo:" style="font-size:11px !important; color:blue"/>

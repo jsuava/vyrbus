@@ -12,7 +12,7 @@
 		<tabpanels>
 			<tabpanel>
 				<groupbox closable="false" mold="3d" width="734px">
-					<caption label="BUSCAR CLIENTE"/>
+					<caption label="BUSCAR CLIENTE" style="color: #ffffff;"/>
 					<grid>
 						<columns>
 							<column width="100px" align="right"/>
@@ -23,13 +23,13 @@
 							<row>
 								<label value="INGRESE EL RUC:"/>
 								<textbox id="txtBuscar" width="96px" style="font-size:11px !important"/>
-								<button id="btnBuscar" label="Buscar" sclass="btn-vyrbus" image="resources/mp_buscarEnabled.png"/>
+								<button id="btnBuscar" label="Buscar" sclass="btnCommandM" image="resources/mp_buscarEnabled.png"/>
 							</row>
 						</rows>
 					</grid>
 				</groupbox>
 				<groupbox mold="3d" closable="false" width="734px">
-					<caption label="DATOS DEL CLIENTE"/>
+					<caption label="DATOS DEL CLIENTE" style="color: #ffffff;"/>
 					<grid width="720px">
 						<columns>
 							<column width="110px" align="right"/>
@@ -71,13 +71,20 @@
 				</groupbox>
 				<space height="5px"/>
 				<div align="right" width="734px">
-					<button label="Cerrar" sclass="btn-vyrbus" height="27px" onClick="wndAsistenteAgencias.closeTabWindow()" image="resources/mp_cerrarEnabled.png"/>
-					<button id="btnMostrarTabConcesionario" sclass="btn-vyrbus" label="Siguiente" image="resources/mp_next.png" height="27px" disabled="true"/>
+					<button label="Cerrar" 
+							sclass="btnCommandM" 
+							onClick="wndAsistenteAgencias.closeTabWindow()" 
+							image="resources/mp_cerrarEnabled.png"/>
+					<button id="btnMostrarTabConcesionario" 
+							sclass="btnCommandL" 
+							label="Siguiente" 
+							image="resources/mp_next.png" 
+							disabled="true"/>
 				</div>
 			</tabpanel>
 			<tabpanel>
 				<groupbox mold="3d" closable="false" width="734px">
-					<caption label="DATOS DE CONCESIONARIO"/>
+					<caption label="DATOS DE CONCESIONARIO" style="color: #ffffff;"/>
 					<grid width="720px">
 						<columns>
 							<column width="110px" align="right"/>
@@ -102,19 +109,22 @@
 					</grid>
 				</groupbox>
 				<groupbox mold="3d" closable="false" width="734px">
-					<caption label="DATOS DE LA COMISIÓN" />
+					<caption label="DATOS DE LA COMISIÓN" style="color: #ffffff;"/>
 					<grid>	
 						<columns>
 							<column width="110px" align="right" />
 							<column width="60px" />
 							<column width="95px" align="right" />
 							<column width="190px" />
-							
 						</columns>
 						<rows>
 							<row>
 								<label value="COMISIÓN (*) :" />
-								<intbox id="ibxComision" maxlength="3" width="30px" style="text-align: right;" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbTipoComision)"/>
+								<intbox id="ibxComision" 
+										maxlength="3" 
+										width="30px" 
+										style="text-align: right;" 
+										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbTipoComision)"/>
 								<label value="TIPO (*) :" />
 								<combobox id="cmbTipoComision" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(ckbIncluyeIgv)" />
 								<checkbox id="ckbIncluyeIgv" label="INCLUYE IGV " style="cursor:pointer; font-size:9px"/>
@@ -124,12 +134,12 @@
 				</groupbox>
 				<space height="5px"/>
 				<div align="right" width="734px">
-					<button id="btnMostrarTabAgencia" sclass="btn-vyrbus" label="Siguiente" image="resources/mp_next.png" height="27px"/>
+					<button id="btnMostrarTabAgencia" sclass="btnCommandL" label="Siguiente" image="resources/mp_next.png" />
 				</div>				
 			</tabpanel>
 			<tabpanel>
 				<groupbox mold="3d" closable="false" width="734px">
-					<caption label="DATOS DE LA AGENCIA"/>
+					<caption label="DATOS DE LA AGENCIA" style="color: #ffffff;"/>
 					<grid width="720px">
 						<columns>
 							<column width="110px" align="right"/>
@@ -177,7 +187,7 @@
 					</grid>
 				</groupbox>
 				<groupbox id="grpbxCentroCosto" mold="3d" width="734px" visible="false">
-					<caption label="INFORMACION DEL CENTRO DE COSTO"/>
+					<caption label="INFORMACION DEL CENTRO DE COSTO" style="color: #ffffff;"/>
 					<div>
 						<toolbar id="tlbrBarraHerramientas">
 							<toolbarbutton id="tlbrbtnNuevo" label="Nuevo" image="resources/mp_nuevoEnabled.png" tooltiptext="Nuevo"/>
@@ -244,11 +254,11 @@
 										</auxheader>
 									</auxhead>
 									<listhead style="padding: 1px;">
-										<listheader label="CODIGO" width="90px" sort="auto"/>
-										<listheader label="CENTRO DE COSTO" width="220px" sort="auto"/>
-										<listheader label="RESPONSABLE" width="220px" sort="auto"/>
-										<listheader label="GRUPO" width="100px" sort="auto"/>
-										<listheader label="ESTADO" width="60px" />
+										<listheader label="CODIGO" width="90px" sort="auto" style="color: #ffffff;"/>
+										<listheader label="CENTRO DE COSTO" width="220px" sort="auto" style="color: #ffffff;"/>
+										<listheader label="RESPONSABLE" width="220px" sort="auto" style="color: #ffffff;"/>
+										<listheader label="GRUPO" width="100px" sort="auto" style="color: #ffffff;"/>
+										<listheader label="ESTADO" width="60px" style="color: #ffffff;"/>
 									</listhead>
 								</listbox>
 							</tabpanel>
@@ -265,7 +275,11 @@
 											<label value="CONCESIONARIO :"/>
 											<combobox id="cmbConcesionarioTipoCentroCosto" disabled="true"/>
 											<label value="DENOMINACION :"/>
-											<textbox id="txtDenominacionTipoCentroCosto" disabled="true" width="200px" onOK="txtCodigoCentroCosto.setFocus(true)" maxlength="50"/>																					
+											<textbox id="txtDenominacionTipoCentroCosto" 
+													disabled="true" 
+													width="200px" 
+													onOK="txtCodigoCentroCosto.setFocus(true)" 
+													maxlength="50"/>																					
 										</row>
 										<row spans="1,3">
 											<label value="ESTADO :"/>
@@ -275,8 +289,8 @@
 								</grid>
 								<listbox id="lbxTiposCentroCosto" mold="paging" pageSize="10">
 									<listhead style="padding: 1px;">
-										<listheader label="GRUPO CENTRO COSTO" width="550px" />
-										<listheader label="ESTADO" width="50px"/>
+										<listheader label="GRUPO CENTRO COSTO" width="550px" style="color: #ffffff;"/>
+										<listheader label="ESTADO" width="50px" style="color: #ffffff;"/>
 									</listhead>
 								</listbox>
 							</tabpanel>
@@ -287,12 +301,12 @@
 				</groupbox>
 				<space height="5px"/>
 				<div align="right" width="734px">
-					<button id="btnMostrarTabUsuarioHW" sclass="btn-vyrbus" label="Siguiente" image="resources/mp_next.png" height="27px"/>
+					<button id="btnMostrarTabUsuarioHW" sclass="btnCommandL" label="Siguiente" image="resources/mp_next.png" height="27px"/>
 				</div>
 			</tabpanel>
 			<tabpanel>
 				<groupbox closable="false" mold="3d" width="734px">
-					<caption label="DATOS DEL USUARIO HARDWARE"/>
+					<caption label="DATOS DEL USUARIO HARDWARE" style="color: #ffffff;"/>
 					<grid width="720px">
 						<columns>
 							<column width="110px" align="right"/>
@@ -318,12 +332,12 @@
 				</groupbox>
 				<space height="5px"/>
 				<div align="right" width="734px">
-					<button id="btnMostrarTabUsuario" sclass="btn-vyrbus" label="Siguiente" image="resources/mp_next.png" height="27px"/>
+					<button id="btnMostrarTabUsuario" sclass="btnCommandL" label="Siguiente" image="resources/mp_next.png" height="27px"/>
 				</div>
 			</tabpanel>
 			<tabpanel>
 				<groupbox closable="false" mold="3d" width="734px">
-					<caption label="DATOS DEL USUARIO" />
+					<caption label="DATOS DEL USUARIO" style="color: #ffffff;"/>
 					<grid>
 						<columns>
 							<column width="125px" align="right"/>
@@ -334,27 +348,50 @@
 							<row id="rowUsuario" spans="4"/>
 							<row>
 								<label value="AGENCIA :"/>
-								<combobox id="cmbAgencia" readonly="true" width="200px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbUsuarioHardware)" disabled="true"/>
+								<combobox id="cmbAgencia" 
+										readonly="true" 
+										width="200px" 
+										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbUsuarioHardware)" 
+										disabled="true"/>
 								<label value="USUARIO HARDWARE :"/>
-								<combobox id="cmbUsuarioHardware" readonly="true" width="200px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtApellidoPaterno)" disabled="true"/>						
+								<combobox id="cmbUsuarioHardware" 
+										readonly="true" 
+										width="200px" 
+										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtApellidoPaterno)" 
+										disabled="true"/>						
 							</row>
 							<row>
 								<label value="APELLIDO PATERNO (*) :"/>
-								<textbox id="txtApellidoPaterno" width="190px" maxlength="20" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtApellidoMaterno)" disabled="true"/>
+								<textbox id="txtApellidoPaterno" 
+										width="190px" 
+										maxlength="20" 
+										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtApellidoMaterno)" 
+										disabled="true"/>
 								<label value="APELLIDO MATERNO :"/>
-								<textbox id="txtApellidoMaterno" width="190px" maxlength="20" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNombres)" disabled="true"/>
+								<textbox id="txtApellidoMaterno" 
+										width="190px" 
+										maxlength="20" 
+										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNombres)" 
+										disabled="true"/>
 							</row>
 							<row>
 								<label value="NOMBRES (*) :"/>
-								<textbox id="txtNombres"  width="190px" maxlength="30" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbEstadoUsuario)" disabled="true"/>
+								<textbox id="txtNombres"  
+										width="190px" 
+										maxlength="30" 
+										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbEstadoUsuario)" 
+										disabled="true"/>
 								<label value="ESTADO :"/>
-								<combobox id="cmbEstadoUsuario"  readonly="true" onChange="wndAsistenteAgencias.cmbUsuario_onChange()" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtLogin)"/>
+								<combobox id="cmbEstadoUsuario"  
+										readonly="true" 
+										onChange="wndAsistenteAgencias.cmbUsuario_onChange()" 
+										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtLogin)"/>
 							</row>					
 						</rows>
 					</grid>
 				</groupbox>
 				<groupbox closable="false" mold="3d" width="734px">
-					<caption label="DATOS PARA EL INICIO DE SESIÓN EN EL SISTEMA" />
+					<caption label="DATOS PARA EL INICIO DE SESIÓN EN EL SISTEMA" style="color: #ffffff;" />
 					<grid>
 						<columns>
 							<column width="125px" align="right"/>
@@ -364,18 +401,36 @@
 						<rows>
 							<row>
 								<label value="USUARIO (*) :"/>
-								<textbox id="txtLogin" width="190px" maxlength="16" style="text-transform:lowercase; font-size:12px !important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbRol)" disabled="true"/>
+								<textbox id="txtLogin" 
+										width="190px" 
+										maxlength="16" 
+										style="text-transform:lowercase; font-size:12px !important" 
+										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbRol)" 
+										disabled="true"/>
 								<label value="ROL (*) :" />
-								<combobox id="cmbRol" width="210px" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtPassword)" disabled="true"/>
+								<combobox id="cmbRol" 
+										width="210px" 
+										readonly="true" 
+										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtPassword)" 
+										disabled="true"/>
 							</row>
 							<row>
 								<label value="PASSWORD (*) :"/>
 								<hlayout>
 									<textbox  id="txtPassword" width="190px" maxlength="40" type="password" disabled="true"/>
-									<image id="imgGeneratePassword" src="resources/mp_security.png" onClick="wndAsistenteAgencias.generarPassword()" style="cursor:pointer" visible="true" tooltiptext="Haga click aqui para generar la contraseña aleatoriamente"/>
+									<image id="imgGeneratePassword" 
+											src="resources/mp_security.png" 
+											onClick="wndAsistenteAgencias.generarPassword()" 
+											style="cursor:pointer" 
+											visible="true" 
+											tooltiptext="Haga click aqui para generar la contraseña aleatoriamente"/>
 								</hlayout>
 								<label value="E-MAIL (*) :"/>
-								<textbox id="txtEmailInfo" maxlength="30" width="200px" style="text-transform:lowercase; font-size:12px !important"  disabled="true"/>			
+								<textbox id="txtEmailInfo" 
+										maxlength="30" 
+										width="200px" 
+										style="text-transform:lowercase; font-size:12px !important"  
+										disabled="true"/>			
 <!-- 								constraint="/.+@.+\.[a-z]+/: Por favor ingrese una dirección de e-mail valida, para enviar la informacion de acceso al sistema."																	 -->
 							</row>
 						</rows>
@@ -384,15 +439,21 @@
 				<space height="5px"/>
 				<listbox id="lbxUsuarios" width="734px">
 					<listhead>
-						<listheader label="APELLIDOS Y NOMBRES" width="500px" />
-						<listheader label="LOGIN" width="110px" />
-						<listheader label="ESTADO" width="110px" />
+						<listheader label="APELLIDOS Y NOMBRES" width="500px" style="color: #ffffff;"/>
+						<listheader label="LOGIN" width="110px" style="color: #ffffff;"/>
+						<listheader label="ESTADO" width="110px" style="color: #ffffff;"/>
 					</listhead>
 				</listbox>
 				<space height="5px"/>
 				<div align="right" width="734px">
-					<button label="Nuevo" sclass="btn-vyrbus"  height="27px" onClick="wndAsistenteAgencias.btnNuevo_OnClick()" image="resources/mp_nuevoEnabled.png"/>
-					<button label="Cerrar" sclass="btn-vyrbus" height="27px" onClick="wndAsistenteAgencias.closeTabWindow()" image="resources/mp_cerrarEnabled.png"/>
+					<button label="Nuevo" 
+							sclass="btnCommandL"  
+							onClick="wndAsistenteAgencias.btnNuevo_OnClick()" 
+							image="resources/mp_nuevoEnabled.png"/>
+					<button label="Cerrar" 
+							sclass="btnCommandL" 
+							onClick="wndAsistenteAgencias.closeTabWindow()" 
+							image="resources/mp_cerrarEnabled.png"/>
 				</div>
 			</tabpanel>
 		</tabpanels>

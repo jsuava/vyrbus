@@ -4,15 +4,15 @@
 <div id="divLista">
 	<listbox id="listboxLista">
 		<listhead sizable="true">
-			<listheader label="#" width="50px"/>
-			<listheader label="DENOMINACIÓN" sort="auto" />
+			<listheader label="#" width="50px" style="color: #ffffff;"/>
+			<listheader label="DENOMINACIÓN" sort="auto" style="color: #ffffff;"/>
 		</listhead>
 	</listbox>
 </div>
 
 <div id="divMantenimiento" >
 	<groupbox mold="3d" closable="false">
-		<caption label="Datos" />
+		<caption label="DATOS" style="color: #ffffff;"/>
 		<grid>
 			<columns>
 				<column width="100px" />

@@ -4,11 +4,11 @@
 <div id="divLista">
 	<listbox id="listboxLista">
 		<listhead sizable="true">
-			<listheader label="#" width="50px"/>
-			<listheader label="RUC" width="100px" sort="auto" />
-			<listheader label="RAZÓN SOCIAL" sort="auto" />
-			<listheader label="DIRECCIÓN" sort="auto" />
-			<listheader label="F.ACTIVACIÓN" tooltiptext="Fecha de Activación" width="90px" sort="auto" />
+			<listheader label="#" width="50px" style="color: #FFFFFF" />
+			<listheader label="RUC" width="100px" sort="auto" style="color: #FFFFFF"/>
+			<listheader label="RAZÓN SOCIAL" sort="auto" style="color: #FFFFFF"/>
+			<listheader label="DIRECCIÓN" sort="auto" style="color: #FFFFFF"/>
+			<listheader label="F.ACTIVACIÓN" tooltiptext="Fecha de Activación" width="90px" sort="auto" style="color: #FFFFFF"/>
 <!-- 			<listheader label="F.CADUCIDAD" tooltiptext="Fecha de Caducidad" width="90px" sort="auto" /> -->
 <!-- 			<listheader label="F.SUSPENSIÓN" tooltiptext="Fecha de Suspención" width="90px" sort="auto" /> -->
 		</listhead>
@@ -17,7 +17,7 @@
 
 <div id="divMantenimiento" >
 	<groupbox mold="3d" closable="false" >
-		<caption label="Datos del concesionarios"  />
+		<caption label="DATOS DEL CONCESIONARIO" style="color: #ffffff;" />
 		<grid>
 			<columns>
 				<column width="120px" align="right"/>
@@ -51,7 +51,7 @@
 	</groupbox>
 	<separator height="1px"/>
 	<groupbox mold="3d" closable="false">
-		<caption label="DATOS DE LA COMISÓN" />
+		<caption label="DATOS DE LA COMISIÓN" style="color: #ffffff;" />
 		<grid style="border:none">
 			<columns>
 				<column width="120px" align="right"/>

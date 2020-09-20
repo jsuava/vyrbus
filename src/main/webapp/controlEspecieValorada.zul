@@ -4,21 +4,21 @@
 	<div id="divLista">
 		<listbox id="listboxLista">
 			<listhead sizable="true">
-				<listheader width="35px" label="#" />
-				<listheader label="TIPO COMPROBANTE" width="140px" sort="auto" />
-				<listheader label="USUARIO HARDWARE" sort="auto" />
-				<listheader label="Nº DE SERIE" width="80px" sort="auto" />
-				<listheader label="Nº CORRELATIVO INICIAL" sort="auto" />
-				<listheader label="Nº CORRELATIVO FINAL" sort="auto" />
-				<listheader label="Nº CORRELATIVO ACTUAL" sort="auto" />
-				<listheader label="AGENCIA" width="180px" sort="auto" />
+				<listheader width="35px" label="#" style="color: #ffffff;"/>
+				<listheader label="TIPO COMPROBANTE" width="140px" sort="auto" style="color: #ffffff;"/>
+				<listheader label="USUARIO HARDWARE" sort="auto" style="color: #ffffff;"/>
+				<listheader label="Nº DE SERIE" width="80px" sort="auto" style="color: #ffffff;"/>
+				<listheader label="Nº CORRELATIVO INICIAL" sort="auto" style="color: #ffffff;"/>
+				<listheader label="Nº CORRELATIVO FINAL" sort="auto" style="color: #ffffff;"/>
+				<listheader label="Nº CORRELATIVO ACTUAL" sort="auto" style="color: #ffffff;"/>
+				<listheader label="AGENCIA" width="180px" sort="auto" style="color: #ffffff;"/>
 			</listhead>
 		</listbox>
 	</div>
 
 	<div id="divMantenimiento">
 	<groupbox closable="false" mold="3d">
-		<caption label="Datos" />
+		<caption label="INFORMACION ESPECIE VALORADA" style="color: #ffffff;"/>
 		<grid>
 			<columns>
 				<column width="140px" align="right" />
@@ -31,9 +31,12 @@
 						<label value="AGENCIA (*) :" />
 						<textbox id="textboxId"/>
 					</div>
-					<combobox id="cmbAgencia" onSelect="wndControlEspecieValorada.cargarEspecieValorada();wndControlEspecieValorada.cargaCoprobantesAutorizados(cmbAgencia,cmbTipoComprobante,true); 
-					com.cystesoft.vyrbus.service.util.UtilData.cargarUsuarioHasrdware(cmbUsuarioHardware, false, ((com.cystesoft.vyrbus.model.bean.Agencia)cmbAgencia.getSelectedItem().getValue()))" readonly="true"
-					onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbTipoComprobante)" width="170px" />
+					<combobox id="cmbAgencia" 
+							onSelect="wndControlEspecieValorada.cargarEspecieValorada();wndControlEspecieValorada.cargaCoprobantesAutorizados(cmbAgencia,cmbTipoComprobante,true); 
+									com.cystesoft.vyrbus.service.util.UtilData.cargarUsuarioHasrdware(cmbUsuarioHardware, false, ((com.cystesoft.vyrbus.model.bean.Agencia)cmbAgencia.getSelectedItem().getValue()))" 
+							readonly="true"
+							onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbTipoComprobante)" 
+							width="170px" />
 					<separator/>
 					<separator/>
 				</row>
@@ -47,7 +50,11 @@
 					<label value="SERIE (*) :" />
 					<textbox id="txtSerie" maxlength="4" width="160px" style="font-size:11px !important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(itCorrelativoInicio)"/>
 					<label value="CORRELATIVO INICIAL (*) :" />
-					<longbox id="itCorrelativoInicio" maxlength="10" width="162px" onChange="itCorrelativoActual.setValue(itCorrelativoInicio.getValue())"  onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(itCorrelativoFin)" />
+					<longbox id="itCorrelativoInicio" 
+							maxlength="10" 
+							width="162px" 
+							onChange="itCorrelativoActual.setValue(itCorrelativoInicio.getValue())"  
+							onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(itCorrelativoFin)" />
 				</row>
 				<row>
 					<label value="CORRELATIVO FINAL (*) :" />
@@ -63,11 +70,11 @@
 		<caption label="Comprobantes y especies valoradas permitidas en la Agencia" style="color:red"/>
 			<listbox id="listboxCompAuts" mold="paging" pageSize="5">
 			<listhead sizable="false">
-				<listheader width="30px" label="#" />
-				<listheader label="TIPO COMPROBANTE" width="200px"/>
-				<listheader label="Nº DE SERIE" />
-				<listheader label="Nº CORRELATIVO INICIAL" />
-				<listheader label="Nº CORRELATIVO FINAL" />
+				<listheader width="30px" label="#" style="color: #ffffff;"/>
+				<listheader label="TIPO COMPROBANTE" width="200px" style="color: #ffffff;"/>
+				<listheader label="Nº DE SERIE" style="color: #ffffff;"/>
+				<listheader label="Nº CORRELATIVO INICIAL" style="color: #ffffff;"/>
+				<listheader label="Nº CORRELATIVO FINAL" style="color: #ffffff;"/>
 			</listhead>
 		</listbox>
 		</groupbox>

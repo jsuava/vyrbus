@@ -22,8 +22,8 @@
 		        			<row>
 		        				<listbox id="lsbxRutas" height="300px" hflex="1" vflex="true" rows="8" checkmark="true" multiple="true">
 				        			<listhead>
-				        				<listheader label="" width="50px" align="center" />
-				        				<listheader label="RUTAS "  />
+				        				<listheader label="" width="50px" align="center" style="color: #ffffff;"/>
+				        				<listheader label="RUTAS "  style="color: #ffffff;"/>
 				        			</listhead>
 				        		</listbox>
 		        			</row>
@@ -43,8 +43,8 @@
 		        			<row>
 		        				<listbox id="lsbxRutasAsociadasMtc" height="300px" hflex="1" vflex="true" rows="8" checkmark="true" multiple="true">
 				        			<listhead>
-				        				<listheader label="" width="50px" align="center" />
-				        				<listheader label="RUTAS ASOCIADAS A LAS DEL MTC"  />
+				        				<listheader label="" width="50px" align="center" style="color: #ffffff;"/>
+				        				<listheader label="RUTAS ASOCIADAS A LAS DEL MTC"  style="color: #ffffff;"/>
 				        			</listhead>
 				        		</listbox>
 		        			</row>
@@ -57,7 +57,11 @@
         			<separator width="320px"/>
 					
 					<div width="250px" align="center">
-						<button id="btnGuardar" sclass="btn-vyrbus" label="Guardar" style="cursor:pointer" image="/resources/mp_guardarEnabled.png" onClick="wndAsociarRutasMtcSisvyr.guardar()" />
+						<button id="btnGuardar" 
+								sclass="btnCommandL" 
+								label="Guardar"  
+								image="/resources/mp_guardarEnabled.png" 
+								onClick="wndAsociarRutasMtcSisvyr.guardar()" />
  					</div>
 <!--  					<separator width="20px"/> -->
  					<label id="lblRutasAsociadas"  value="Rutas Asociadas : 0" style="font-size:11px !important;font-weight: bold;color:red"/>
