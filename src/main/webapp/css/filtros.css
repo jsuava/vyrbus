@@ -1,0 +1,173 @@
+.lbl-opcional {
+	font-style: italic;
+	font-weight: bold;
+	color: white;
+}
+
+.btn-buscar {
+	width: 132px !important;
+	height: 37px !important;
+	background-color: #4285F4 !important;
+	border-style: none !important;
+	font-family: 'Ubuntu', sans-serif !important;
+	font-size: 12px !important;
+}
+
+.z-calendar-header {
+	background-color: #4285F4;
+}
+
+.z-calendar-header:hover {
+	background-color: #4285F4;
+}
+
+.z-datebox-button:hover {
+	background-color: #4285F4;
+	border-color: #4285F4;
+}
+
+.z-calendar-cell:hover {
+	background-color: #4285F4;
+}
+
+/*------*/
+.z-comboitem:hover {
+	background-color: #4285F4;
+}
+
+.z-combobox-button:hover {
+	background-color: #4285F4 !important;
+	border-color: #4285F4;
+	color: #000000 !important;
+}
+
+.z-datebox-popup {
+	border-radius: 10px;
+}
+
+.z-combobox-input {
+	font-family: 'Ubuntu', sans-serif !important;
+	font-size: 14px;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+	background: #FFFFFF !important;
+	height: 36px !important;
+	width: 185px !important;
+}
+
+.z-combobox-button {
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+	border-left-style: none;
+	height: 36px !important;
+}
+
+.z-datebox-input {
+	font-family: 'Ubuntu', sans-serif !important;
+	font-size: 14px;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+	background: #FFFFFF !important;
+	height: 36px !important;
+	width: 185px !important;
+}
+
+.z-datebox-button {
+	font-family: 'Ubuntu', sans-serif !important;
+	font-size: 14px;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+	border-left-style: none;
+	height: 36px !important;
+}
+
+.z-combobox-content {
+	font-size: 14px;
+}
+
+.z-calendar {
+	font-size: 14px;
+	font-weight: inherit !important;
+}
+
+.z-errorbox {
+	padding: 8px 0px 0px;
+	position: absolute;
+	left: 798px;
+	top: 154px;
+	z-index: 1800;
+	visibility: visible;
+}
+
+.filtros{
+	min-width: min-content;
+	background-color: #DADADA; 
+	height: 70px !important;
+}
+
+.filtrosVerMovil{
+	min-width: min-content;
+	background-color: #4285F4; 
+	height: 50px !important;
+	color: #FFFFFF;
+}
+
+.controlesFiltros{
+	margin-top:1.5%; margin-bottom:1%;
+}
+
+.espacioControlFiltro{	
+	width : 23px !important;
+}
+	
+
+a:focus, a:hover{
+	text-decoration: none !important;
+}
+
+.animationload {
+    background-color: #fff;
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10000;
+}
+.osahanloading {
+    animation: 1.5s linear 0s normal none infinite running osahanloading;
+    background: #fed37f none repeat scroll 0 0;
+    border-radius: 50px;
+    height: 50px;
+    left: 50%;
+    margin-left: -25px;
+    margin-top: -25px;
+    position: absolute;
+    top: 50%;
+    width: 50px;
+}
+.osahanloading::after {
+    animation: 1.5s linear 0s normal none infinite running osahanloading_after;
+    border-color: #85d6de transparent;
+    border-radius: 80px;
+    border-style: solid;
+    border-width: 10px;
+    content: "";
+    height: 80px;
+    left: -15px;
+    position: absolute;
+    top: -15px;
+    width: 80px;
+}
+@keyframes osahanloading {
+0% {
+    transform: rotate(0deg);
+}
+50% {
+    background: #85d6de none repeat scroll 0 0;
+    transform: rotate(180deg);
+}
+100% {
+    transform: rotate(360deg);
+}
+}
