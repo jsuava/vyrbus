@@ -4,9 +4,9 @@
 	<grid>
 		<columns>
 			<column width="60px" align="right"/>
-			<column width="145px"/>
-			<column width="250px" />
-			<column width="100px" align="right"/>
+			<column width="155px"/>
+			<column width="190px" />
+			<column width="130px" align="right"/>
  			<column width="45px" />
 <!-- 			<column width="160px" align="right"/> -->
 
@@ -20,10 +20,10 @@
 			<row>
 				<label value="FECHA :" />
 			 	<datebox id="dbFecha" format="dd/MM/yyyy" readonly="true" width="135px" onChange="wndLiquidacionOficina.onSelecFechaLiq()" />
-			 	<button id="btnBuscar" label="Buscar" sclass="btn-vyrbus" height="30px" width="82px" image="resources/mp_buscarEnabled.png" />
-			 	<button id="btnLiquidar" label="Liquidar" sclass="btn-vyrbus" height="30px"  image="resources/mp_aceptarEnabled.png" />
-			 	<button id="btnPrevio" label="" height="30px"  image="resources/mp_preliminar.png" />
-		     	<button id="btnImprimir" label="" height="30px"  image="resources/mp_imprimir.png" />
+			 	<button id="btnBuscar" label="Buscar" sclass="btnCommandM" height="30px" width="82px" image="resources/mp_buscarEnabled.png" />
+			 	<button id="btnLiquidar" label="Liquidar" sclass="btnCommandL" height="30px"  image="resources/mp_aceptarEnabled.png" />
+			 	<button id="btnPrevio" label="" height="30px"  image="resources/mp_preliminar.png" sclass="btnImage"/>
+		     	<button id="btnImprimir" label="" height="30px"  image="resources/mp_imprimir.png" sclass="btnImage" />
 			</row>
 		</rows>	
 	</grid>
@@ -37,7 +37,7 @@
 	 		<tabpanel>
 				 <hlayout  style="padding:10px" >
 					<groupbox width="250px"  closable="false" mold="3d" height="200px">
-					<caption label="CAJAS DEL COUNTER CERRADAS" />
+					<caption label="CAJAS DEL COUNTER CERRADAS" style="color: #ffffff;"/>
 					    <listbox id="listCajasPendientes" hflex="1" vflex="true"  rows="8" checkmark="true" multiple="true"  style="border:none">
 					        <listhead>
 					        </listhead>
@@ -47,7 +47,7 @@
 					<separator  width="2px"/>		
 							
 				    <groupbox width="320px"  closable="false" mold="3d" height="200px">
-					<caption label="CAJAS LIQUIDADAS" />
+					<caption label="CAJAS LIQUIDADAS" style="color: #ffffff;"/>
 					    <listbox id="listCajasLiquidadas" hflex="1" vflex="true" rows="8"  style="border:none">
 					        <listhead>
 					        </listhead>
@@ -75,10 +75,10 @@
 			 							<row>
 			 								<listbox id="listGastos" hflex="1" vflex="true" rows="4" style="border:none" onSelect="wndLiquidacionOficina.onSelectListGastos()" >
 										        <listhead>
-										        	<listheader label="#" width="30px" />
-										        	<listheader label="TIPO GASTO" width="150px" />
-										        	<listheader label="MONTO" width="80px" />
-										        	<listheader label="OBSERVACIONES"  />
+										        	<listheader label="#" width="30px" style="color: #ffffff;"/>
+										        	<listheader label="TIPO GASTO" width="150px" style="color: #ffffff;"/>
+										        	<listheader label="MONTO" width="80px" style="color: #ffffff;"/>
+										        	<listheader label="OBSERVACIONES" style="color: #ffffff;" />
 										        </listhead>
 										    </listbox>
 			 							</row>
@@ -132,7 +132,7 @@
 	 	</tabpanels>
 	 </tabbox>
 	 <div align="right">
-	 	<button id="btnCerrarVentana" label="Cerrar" sclass="btn-vyrbus" height="30px"  image="resources/mp_cerrar.png" />
+	 	<button id="btnCerrarVentana" label="Cerrar" sclass="btnCommandL" height="30px"  image="resources/mp_cerrar.png" />
 	 </div>
      
 </window>

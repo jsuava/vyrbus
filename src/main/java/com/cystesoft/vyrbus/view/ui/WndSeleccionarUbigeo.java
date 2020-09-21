@@ -246,8 +246,8 @@ public class WndSeleccionarUbigeo extends WndBase {
 				}
 			}
 		});
-		btnBuscar.setHeight("27px");
-		btnBuscar.setClass("btn-vyrbus");
+//		btnBuscar.setHeight("27px");
+		btnBuscar.setClass("btnCommandM");
 //		btnBuscar.setStyle("cursor:pointer");
 
 		txtNombreUbigeo.addEventListener(Events.ON_OK,new EventListener<Event>() {
@@ -292,11 +292,11 @@ public class WndSeleccionarUbigeo extends WndBase {
 
 		//fila 2
 		oListheader.setLabel("#");
-		oListheader.setWidth("50px");
-		oListheader2.setLabel("CODIGO");oListheader2.setWidth("70px");
-		oListheader3.setLabel("DEPARTAMENTO");
-		oListheader4.setLabel("PROVINCIA");
-		oListheader5.setLabel("DISTRITO");
+		oListheader.setWidth("50px");oListheader.setStyle("color: #ffffff;"); 
+		oListheader2.setLabel("CODIGO");oListheader2.setWidth("70px");oListheader2.setStyle("color: #ffffff;"); 
+		oListheader3.setLabel("DEPARTAMENTO");oListheader3.setStyle("color: #ffffff;"); 
+		oListheader4.setLabel("PROVINCIA");oListheader4.setStyle("color: #ffffff;"); 
+		oListheader5.setLabel("DISTRITO");oListheader5.setStyle("color: #ffffff;"); 
 		oListheader2.setSort("auto");
 		oListheader3.setSort("auto");
 		oListheader4.setSort("auto");
@@ -327,21 +327,21 @@ public class WndSeleccionarUbigeo extends WndBase {
 		
 		Button btnCancelar=new Button("Cancelar");
 		btnCancelar.setImage("resources/mp_cancelarEnabled.png");
-		btnCancelar.setClass("btn-vyrbus");
+		btnCancelar.setClass("btnCommandM");
 		btnCancelar.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				oThisWindow.onClose();
 			}
 		});
-		btnCancelar.setHeight("27px");
-		btnCancelar.setStyle("cursor:pointer");
+//		btnCancelar.setHeight("27px");
+//		btnCancelar.setStyle("cursor:pointer");
 		hbox.appendChild(btnCancelar);
 		
 		btnAceptar.setLabel("Aceptar");
-		btnAceptar.setHeight("27px");
+//		btnAceptar.setHeight("27px");
 		btnAceptar.setImage("resources/mp_aceptarEnabled.png");
-		btnAceptar.setClass("btn-vyrbus");
+		btnAceptar.setClass("btnCommandM");
 //		btnAceptar.setStyle("cursor:pointer");
 		btnAceptar.addEventListener(Events.ON_CLICK, selectedEventListener);
 		hbox.appendChild(btnAceptar);

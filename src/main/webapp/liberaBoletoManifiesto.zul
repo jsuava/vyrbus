@@ -15,11 +15,17 @@
 						style="font-size:11px !important" />
 									 	
 					<separator width="20px" />
-					<button id="btnBuscar" label="Buscar" sclass="btn-vyrbus" image="/resources/mp_buscarEnabled.png" 
-						onClick="wndLiberaBoletoManifiesto.buscarBoleto()" />
+					<button id="btnBuscar" 
+							label="Buscar" 
+							sclass="btnCommandM" 
+							image="/resources/mp_buscarEnabled.png" 
+							onClick="wndLiberaBoletoManifiesto.buscarBoleto()" />
 					<separator width="20px" />
-					<button id="btnCerrar" label="Cerrar" sclass="btn-vyrbus" image="/resources/mp_cerrar.png" 
-						onClick="wndLiberaBoletoManifiesto.closeTabWindow()" />
+					<button id="btnCerrar" 
+							label="Cerrar" 
+							sclass="btnCommandM" 
+							image="/resources/mp_cerrar.png" 
+							onClick="wndLiberaBoletoManifiesto.closeTabWindow()" />
 				</hbox>
 			</row>
 		</rows>
@@ -27,14 +33,15 @@
 	<separator height="1px" />
 	<listbox id="lsbxPasajeros">
 		<listhead>
-			<listheader label="NRO.BOLETO" width="80px" />
-			<listheader label="PASAJERO" width="200px"/>
-			<listheader label="TIP.DOC" width="60px"/>
-			<listheader label="NRO.DOC" width="90px"/>
-			<listheader label="RUTA" width="150px"/>
-			<listheader label="ASIENTO" width="55px" align="center"/>
-			<listheader label="PTO.EMBARQUE" width="120px"/>
-			<listheader label="ACCION" width="110PX"/>
+			<listheader label="NRO.COMPROBANTE" width="100px" style="color: #ffffff;"/>
+			<listheader label="PASAJERO" width="250px" style="color: #ffffff;"/>
+			<listheader label="TIP.DOC" width="90px" style="color: #ffffff;"/>
+			<listheader label="NRO.DOC" width="100px" style="color: #ffffff;"/>
+			<listheader label="RUTA" width="150px" style="color: #ffffff;"/>
+			<listheader label="ASIENTO" width="55px" align="center" style="color: #ffffff;"/>
+			<listheader label="PTO.EMBARQUE" width="120px" style="color: #ffffff;"/>
+			<listheader label="ACCION" width="110px" style="color: #ffffff;"/>
+			<listheader label=""  style="color: #ffffff;"/>
 		</listhead>
 	</listbox>
 	

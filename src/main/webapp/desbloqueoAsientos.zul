@@ -7,8 +7,8 @@
 		<!-- 	<caption label="ASIENTOS BLOQUEADOS" /> -->
 			<div align="right">
 				<hbox>
-					<button id="btnBuscar" sclass="btn-vyrbus" visible="false" label="Refrescar" image="resources/mp_refrescarEnabled.png" onClick="wndDesbloqueoAsientos.listarRegistros()" />
-					<button label="Cerrar" sclass="btn-vyrbus" visible="false" image="resources/mp_cerrar.png" onClick="wndDesbloqueoAsientos.closeTabWindow()" />
+					<button id="btnBuscar" sclass="btnCommandM" visible="false" label="Refrescar" image="resources/mp_refrescarEnabled.png" onClick="wndDesbloqueoAsientos.listarRegistros()" />
+					<button label="Cerrar" sclass="btnCommandM" visible="false" image="resources/mp_cerrar.png" onClick="wndDesbloqueoAsientos.closeTabWindow()" />
 				</hbox>
 			</div>	
 				<separator height="1px" />
@@ -16,14 +16,16 @@
 					<listhead >
 		<!-- 				<listheader label="N° BUS" width="50px" align="center" /> -->
 		<!-- 				<listheader label="ITINERARIO" width="65px" /> -->
-						<listheader label="RUTA" width="160px" />
-						<listheader label="F.PARTIDA" width="70px" />
-						<listheader label="H.PARTIDA" width="60px" align="center" />
-						<listheader label="ASIENTO" width="50px" align="center" />
-						<listheader label="FECHA BLOQUEO" width="100px" />
-						<listheader label="AGENCIA BLOQUEO" width="215px" />
-						<listheader label="USUARIO BLOQUEO" width="215px"  />
-						<listheader label="" width="43px"><toolbarbutton image="resources/mp_refrescarEnabled.png" tooltiptext="Refrescar Asientos Bloqueados" onClick="wndDesbloqueoAsientos.listarRegistros()" /> </listheader>
+						<listheader label="RUTA" width="170px" style="color: #ffffff;"/>
+						<listheader label="F.PARTIDA" width="70px" style="color: #ffffff;"/>
+						<listheader label="H.PARTIDA" width="60px" align="center" style="color: #ffffff;"/>
+						<listheader label="ASIENTO" width="50px" align="center" style="color: #ffffff;"/>
+						<listheader label="FECHA BLOQUEO" width="100px" style="color: #ffffff;"/>
+						<listheader label="AGENCIA BLOQUEO" width="215px" style="color: #ffffff;"/>
+						<listheader label="USUARIO BLOQUEO" width="215px"  style="color: #ffffff;"/>
+						<listheader label="" width="43px" >
+							<toolbarbutton image="resources/mp_recargar24.png" tooltiptext="Refrescar Asientos Bloqueados" onClick="wndDesbloqueoAsientos.listarRegistros()" /> 
+						</listheader>
 					</listhead>
 				</listbox>
 		<!-- 	</groupbox> -->

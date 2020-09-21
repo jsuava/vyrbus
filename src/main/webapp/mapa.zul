@@ -6,7 +6,7 @@
 			<vbox id="vbxEstructuraBus"/>
 			<vlayout>
 				<groupbox mold="3d" closable="false">
-					<caption label="Leyenda de imagenes"/>
+					<caption label="LEYENDA DE IMAGENES" style="color: #ffffff;"/>
 					<grid width="280px">
 						<rows>
 							<row>
@@ -64,13 +64,15 @@
 				<grid style="border:none" width="290px">
 					<rows>
 						<row style="background:white">
-							<button label="Refrescar Mapa" sclass="btn-vyrbus" image="/resources/mp_refrescarEnabled.png" height="28px" 
-								onClick="wndMapa.onRefreshMap()"/>
+							<button label="Refrescar Mapa" 
+									sclass="btnCommandXL" 
+									image="/resources/mp_recargar16.png"  
+									onClick="wndMapa.onRefreshMap()"/>
 						</row>
 						<row style="background:white">
 							<hlayout>
-								<button label="Aceptar" sclass="btn-vyrbus" onClick="wndMapa.onAceptar()" image="/resources/mp_aceptarEnabled.png"/>
-								<button label="Cancelar" sclass="btn-vyrbus" onClick="wndMapa.onClose()" image="/resources/mp_cancelarEnabled.png"/>
+								<button label="Aceptar" sclass="btnCommandM" onClick="wndMapa.onAceptar()" image="/resources/mp_aceptarEnabled.png"/>
+								<button label="Cancelar" sclass="btnCommandM" onClick="wndMapa.onClose()" image="/resources/mp_cancelarEnabled.png"/>
 							</hlayout>
 						</row>
 					</rows>

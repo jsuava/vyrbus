@@ -149,6 +149,7 @@ public class WndVerMapaBus extends WndBase {
 		grpMapa.setMold("3d");
 		caption = new Caption();
 		caption.setLabel("MAPA DEL BUS");
+		caption.setStyle("color: #ffffff;");
 		grpMapa.appendChild(caption);
 		
 		Grid gridPiso = new Grid();
@@ -168,6 +169,7 @@ public class WndVerMapaBus extends WndBase {
 		grpInformacion.setVisible(esVisibleInfoBus);
 		caption = new Caption();
 		caption.setLabel("INFORMACION DEL BUS");
+		caption.setStyle("color: #ffffff;");
 		grpInformacion.appendChild(caption);
 		
 		Grid grdInformacion = new Grid();
@@ -236,6 +238,7 @@ public class WndVerMapaBus extends WndBase {
 		grpOcupabilidad.setClosable(false);
 		caption = new Caption();
 		caption.setLabel("OCUPABILIDAD DEL SERVICIO");
+		caption.setStyle("color: #ffffff;");
 		grpOcupabilidad.appendChild(caption);		
 		
 		Grid grdOcupabilidad = new Grid();
@@ -271,6 +274,7 @@ public class WndVerMapaBus extends WndBase {
 		grpLeyenda.setClosable(false);
 		grpLeyenda.setVisible(esVisibleLeyenda);
 		caption = new Caption("LEYENDA DE IMAGENES");
+		caption.setStyle("color: #ffffff;");
 		grpLeyenda.appendChild(caption);
 		
 		Grid grdLeyenda = new Grid();
@@ -421,16 +425,18 @@ public class WndVerMapaBus extends WndBase {
 		
 		Button buttonRefresh = new Button();
 		buttonRefresh.setLabel("Refrescar");
-		buttonRefresh.setHeight("30px");
-		buttonRefresh.setWidth("98px");
+		buttonRefresh.setClass("btnCommandL");
+//		buttonRefresh.setHeight("30px");
+//		buttonRefresh.setWidth("98px");
 		buttonRefresh.setTooltiptext("Refrescar Mapa");
-		buttonRefresh.setImage("/resources/mp_refrescarEnabled.png");
+		buttonRefresh.setImage("/resources/mp_recargar16.png");
 		row.appendChild(buttonRefresh);
 		
 		Button buttonAceptar = new Button();
 		buttonAceptar.setLabel("Aceptar");
 		buttonAceptar.setVisible(esVisibleInfoBus);
-		buttonAceptar.setHeight("30px");
+		buttonAceptar.setClass("btnCommandL");
+//		buttonAceptar.setHeight("30px");
 		buttonAceptar.setImage("/resources/mp_aceptarEnabled.png");
 		row.appendChild(buttonAceptar);
 		rows.appendChild(row);

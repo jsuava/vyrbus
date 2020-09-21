@@ -5,7 +5,7 @@
  	<panelchildren>
 <!-- 		<div > -->
 			<groupbox closable="false" mold="3d">
-				<caption label="PARÁMETOS DE BUSQUEDA" />
+				<caption label="PARÁMETOS DE BUSQUEDA" style="color: #ffffff;"/>
 				<grid style="border:none">
 					<columns>
 						<column width="95px" align="right"/>
@@ -35,8 +35,11 @@
 								<label value="BUS :"  />
 								<combobox id="cmbBus"  readonly="true" width="110px" />
 								<separator width="25px" />
-								<button id="btnBuscar" label="Buscar" sclass="btn-vyrbus" image="/resources/mp_buscarEnabled.png"  
-									onClick="wndManifiestoMantenimiento.onSearchManifiesto()"  style="cursor:pointer" height="30px"/>
+								<button id="btnBuscar" 
+										label="Buscar" 
+										sclass="btnCommandM" 
+										image="/resources/mp_buscarEnabled.png"  
+										onClick="wndManifiestoMantenimiento.onSearchManifiesto()" />
 							</hbox>
 						</row>
 					</rows>
@@ -45,21 +48,21 @@
 			<separator height="2px" />
 			<listbox  rows="6" id="listManifiestos" mold="paging" pageSize="6" onSelect="wndManifiestoMantenimiento.onSelectManifiesto()" >
 				<listhead>
-					<listheader label="ITEM" width="30px"  />
-					<listheader label="MANIFIESTO" width="80px" />
-					<listheader label="BUS" width="40px" align="center" />	
-					<listheader label="ITINERARIO" width="70px" />
-					<listheader label="FECHA PARTIDA" width="80px" align="center" />
-					<listheader label="HORA PARTIDA" width="90px" align="center" />
-					<listheader label="ORIGEN" width="100px" />
-					<listheader label="DESTINO" width="100px" />
-					<listheader label="ESTADO" width="70px" />
+					<listheader label="ITEM" width="30px"  style="color: #ffffff;"/>
+					<listheader label="MANIFIESTO" width="80px" style="color: #ffffff;"/>
+					<listheader label="BUS" width="40px" align="center" style="color: #ffffff;"/>	
+					<listheader label="ITINERARIO" width="70px" style="color: #ffffff;"/>
+					<listheader label="FECHA PARTIDA" width="80px" align="center" style="color: #ffffff;"/>
+					<listheader label="HORA PARTIDA" width="90px" align="center" style="color: #ffffff;"/>
+					<listheader label="ORIGEN" width="100px" style="color: #ffffff;"/>
+					<listheader label="DESTINO" width="100px" style="color: #ffffff;"/>
+					<listheader label="ESTADO" width="70px" style="color: #ffffff;"/>
 					<listheader />
 				</listhead>
 			</listbox>
 			<separator height="2px" />
 			<groupbox closable="false" mold="3d">
-				<caption label="DETALLES DEL MANIFIESTO"/>
+				<caption label="DETALLES DEL MANIFIESTO" style="color: #ffffff;"/>
 				<grid style="border:none">
 					<columns>
 						<column width="90px" align="right" />

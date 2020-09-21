@@ -11,11 +11,11 @@
 			<tabpanel>
 				<grid>
 					<columns>
-						<column width="122px" align="right"/>
+						<column width="132px" align="right"/>
 						<column/>
 						<column width="122px" align="right"/>
 						<column/>
-						<column width="90px"/>
+						<column width="150px"/>
 					</columns>
 					<rows>
 						<row>
@@ -24,8 +24,11 @@
 							<label value="NRO BOLETO :"/>
 							<textbox id="txtNumeroBoleto" width="115px" onOK="wndConfirmarFechaAbierta.buscarVentasFechaAbierta()"/>
 							<cell rowspan="2" style="background:#f5f5f5">
-								<button label="Buscar" autodisable="self" image="resources/mp_buscarEnabled.png"  sclass="btn-vyrbus"
-								height="29px" width="85px" onClick="wndConfirmarFechaAbierta.buscarVentasFechaAbierta()"/>
+								<button label="Buscar" 
+										autodisable="self" 
+										image="resources/mp_buscarEnabled.png"  
+										sclass="btnCommandM"
+										onClick="wndConfirmarFechaAbierta.buscarVentasFechaAbierta()"/>
 							</cell>						
 						</row>
 						<row>
@@ -40,8 +43,10 @@
 							<label value="NOMBRE PASAJERO :"/>
 							<textbox id="txtPasajero"  onOK="wndConfirmarFechaAbierta.buscarVentasFechaAbierta()" width="220px"/>
 							<cell style="background:#f5f5f5">
-								<button label="Cerrar" image="resources/mp_cerrarEnabled.png" sclass="btn-vyrbus" 
-									height="29px" width="80px" onClick="wndConfirmarFechaAbierta.closeTabWindow()"/>
+								<button label="Cerrar" 
+										image="resources/mp_cerrarEnabled.png" 
+										sclass="btnCommandM" 
+										onClick="wndConfirmarFechaAbierta.closeTabWindow()"/>
 							</cell>
 						</row>
 					</rows>
@@ -50,16 +55,16 @@
 			<tabpanel>
 				<listbox id="lbxVentasFechaAbierta" width="100%" mold="paging" pageSize="8" >
 					<listhead>
-						<listheader label="VENTA_ID" width="5%"/>
+						<listheader label="VENTA_ID" width="5%" style="color: #ffffff;"/>
 						<!-- <listheader label="ITINERARIO" width="7%"/> -->
-						<listheader label="FORMA PAGO" width="7%"/>
-						<listheader label="TIPO PAGO" width="7%"/>
-						<listheader label="RUTA" width="13%"/>
-						<listheader label="PASAJERO" width="21%"/>
-						<listheader label="CLIENTE" width="21%"/>
-						<listheader label="NRO CONTROL" width="8%"/>
-						<listheader label="IMPORTE" width="5%" align="right"/>
-						<listheader label="ACCCION" width="12%" align="center"/>
+						<listheader label="FORMA PAGO" width="7%" style="color: #ffffff;"/>
+						<listheader label="TIPO PAGO" width="7%" style="color: #ffffff;"/>
+						<listheader label="RUTA" width="13%" style="color: #ffffff;"/>
+						<listheader label="PASAJERO" width="21%" style="color: #ffffff;"/>
+						<listheader label="CLIENTE" width="21%" style="color: #ffffff;"/>
+						<listheader label="NRO CONTROL" width="8%" style="color: #ffffff;"/>
+						<listheader label="IMPORTE" width="5%" align="right" style="color: #ffffff;"/>
+						<listheader label="ACCCION" width="12%" align="center" style="color: #ffffff;"/>
 					</listhead>
 				</listbox>					
 			</tabpanel>
@@ -76,8 +81,11 @@
 								<label value="ORIGEN :" sclass="label-size11"/>
 								<combobox id="cmbOrigenItinerario" autodrop="true" readonly="true" width="160px" onOK="cmbDestino.setFocus(true)"/>
 								<cell rowspan="2">
-									<button id="btnBuscarItinerario" label="Buscar" image="/resources/mp_buscarEnabled.png" 
-										onClick="wndConfirmarFechaAbierta.onBuscarItinerarios()" height="27px" sclass="btn-vyrbus"/>
+									<button id="btnBuscarItinerario" 
+											label="Buscar" 
+											image="/resources/mp_buscarEnabled.png" 
+											onClick="wndConfirmarFechaAbierta.onBuscarItinerarios()" 
+											sclass="btnCommandM"/>
 								</cell>											
 							</row>
 							<row style="background:#B4B4B4; border:none;">
@@ -102,19 +110,27 @@
 									<label value="SERVICIO DE PARTIDA" sclass="label-size11"/>
 									<listbox id="lbxItinerarios" mold="paging" pageSize="4" onSelect="wndConfirmarFechaAbierta.onSelectItinerario()">
 										<listhead>
-											<listheader label="SERVICIO" width="120px"/>
-											<listheader label="RUTA" width="130px"/>
-											<listheader label="HORPAR" width="60px" align="center"/>
-											<listheader label="TARIFA" width="50px" align="right"/>
+											<listheader label="SERVICIO" width="120px" style="color: #ffffff;"/>
+											<listheader label="RUTA" width="130px" style="color: #ffffff;"/>
+											<listheader label="HORPAR" width="60px" align="center" style="color: #ffffff;"/>
+											<listheader label="TARIFA" width="50px" align="right" style="color: #ffffff;"/>
 										</listhead>
 									</listbox>
 								</vlayout>
 								<cell rowspan="2" align="right" valign="bottom">
 									<vbox>
-										<button id="btnSiguiente" label="Siguiente" image="resources/mp_next.png" width="76px" disabled="true" 
-											orient="vertical" sclass="btn-vyrbus" onClick="wndConfirmarFechaAbierta.completarVenta()"/>
-										<button id="btnCancelar" label="Cancelar" image="resources/mp_cancelarEnabled.png" width="76px" 
-											sclass="btn-vyrbus" orient="vertical"/>
+										<button id="btnSiguiente" 
+												label="Siguiente" 
+												image="resources/mp_next.png" 
+												disabled="true" 
+												orient="horizontal" 
+												sclass="btnCommandL" 
+												onClick="wndConfirmarFechaAbierta.completarVenta()"/>
+										<button id="btnCancelar" 
+												label="Cancelar" 
+												image="resources/mp_cancelarEnabled.png" 
+												sclass="btnCommandL" 
+												orient="horizontal"/>
 									</vbox>
 								</cell>
 							</row>								

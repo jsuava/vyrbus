@@ -17,17 +17,17 @@
 	<div 	id="divLista">
 		<listbox id="listboxLista" rows="15">
 			<listhead sizable="true">
-				<listheader label="#" width="50px" />
-				<listheader label="BUS" sort="auto" />
-				<listheader label="ITINERARIO" sort="auto" />
-				<listheader label="TOTAL" sort="auto" />
+				<listheader label="#" width="50px" style="color: #ffffff;"/>
+				<listheader label="BUS" sort="auto" style="color: #ffffff;"/>
+				<listheader label="ITINERARIO" sort="auto" style="color: #ffffff;"/>
+				<listheader label="TOTAL" sort="auto" style="color: #ffffff;"/>
 			</listhead>
 		</listbox>	
 	</div>
 	
 <div id="divMantenimiento" >
 	<groupbox mold="3d" closable="false" width="766px" >
-		<caption label="LIQUIDACION DEL BUS"/>
+		<caption label="LIQUIDACION DEL BUS" style="color: #ffffff;"/>
 		<grid>
 			<columns>
 				<column width="90px" align="right" />
@@ -44,11 +44,9 @@
 					<hbox>
 						<longbox id="lbitinerario" readonly="true" />
 						<button id="btnBuscar" 
-								height="30px"
 								image="/resources/mp_buscarEnabled.png"  
-								label="..." sclass="btnCommand"  
-								tooltiptext="Buscar Itinerario" 
-								width="60px" />
+								label="" sclass="btnImage"  
+								tooltiptext="Buscar Itinerario" />
 					</hbox>
 					
 					<label value="BUS (*) :" />
@@ -57,18 +55,14 @@
  					<separator></separator>  -->
 					<hbox>
 						<button id="btnAdd" 
-								height="30px"
 								image="/resources/mp_nuevoEnabled.png"   
 								onClick="wndLiquidacionBus.AddFilaGastoXBuss(false)" 
-								sclass="btnCommand" 
-								tooltiptext="Insertar nuevo Item" 
-								width="60px" />
+								sclass="btnImage" 
+								tooltiptext="Insertar nuevo Item" />
 						<button id="btnDelete"
-								height="30px" 
 								image="/resources/mp_cerrar.png" 
-								sclass="btnCommand" 
-								tooltiptext="Eliminar  Item" 
-								width="60px" />
+								sclass="btnImage" 
+								tooltiptext="Eliminar  Item" />
 					</hbox>					
 				</row>
 
@@ -84,13 +78,13 @@
 			<row>
 				<listbox id="listGastosXBus" rows="6">
 					<listhead sizable="false">
-						<listheader label="#" width="25px" />
-						<listheader label="TIPO DE GASTO" width="140px" align="center"/>
-						<listheader label="MONTO" width="80px"  align="center"/>
-						<listheader label="OPERACION" width="105px"  align="center" />
-						<listheader label="FECHA OPERACION" width="110px"  align="center" />
-						<listheader label="OBSERVACIONES" align="center" width="250px"/>
-						<listheader label=" " align="center" />
+						<listheader label="#" width="25px" style="color: #ffffff;"/>
+						<listheader label="TIPO DE GASTO" width="140px" align="center" style="color: #ffffff;"/>
+						<listheader label="MONTO" width="80px"  align="center" style="color: #ffffff;"/>
+						<listheader label="OPERACION" width="105px"  align="center" style="color: #ffffff;"/>
+						<listheader label="FECHA OPERACION" width="110px"  align="center" style="color: #ffffff;"/>
+						<listheader label="OBSERVACIONES" align="center" width="250px" style="color: #ffffff;"/>
+						<listheader label=" " align="center" style="color: #ffffff;"/>
 					</listhead>
 				</listbox>				
 			</row>

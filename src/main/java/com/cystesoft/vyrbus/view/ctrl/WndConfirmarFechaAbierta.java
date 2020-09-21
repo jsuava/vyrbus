@@ -180,6 +180,7 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 					cell = new Listcell();
 					Button btn = new Button("Confirmar", "resources/menu/menu_confirmarFechaAbierta.png");
 					btn.setAutodisable("self");
+					btn.setClass("btnCommandL");
 					btn.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 						public void onEvent(Event e){
 							lbxVentasFechaAbierta.setSelectedIndex(Integer.valueOf(e.getTarget().getId()));

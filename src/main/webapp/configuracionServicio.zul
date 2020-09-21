@@ -1,6 +1,6 @@
 <?page title=":: Configura Servicio ::" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="ConfiguraServicio" title="" border="none" use="com.tepsa.sisvyr.view.ctrl.WndMapa" height="100%" width="70%">
+<window id="ConfiguraServicio" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndMapa" height="100%" width="70%">
 	<borderlayout>
 		<west border="none" title="Configuración de servicio" collapsible="true" width="300px">
 			<grid>
@@ -59,7 +59,7 @@
 					</row>
 					<row>
 						<separator />
-						<button label="Generar estructura" sclass="btn-vyrbus" onClick="ConfiguraServicio.generarEstructura()" />
+						<button label="Generar estructura" sclass="btnCommandXL" onClick="ConfiguraServicio.generarEstructura()" />
 					</row>
 				</rows>
 			</grid>
@@ -134,7 +134,7 @@
 				<grid>
 					<rows>
 						<row style="text-align:right">
-							<button label="Grabar" sclass="btn-vyrbus" onClick="ConfiguraServicio.grabar()" />
+							<button label="Grabar" sclass="btnCommandM" onClick="ConfiguraServicio.grabar()" />
 						</row>
 					</rows>
 				</grid>

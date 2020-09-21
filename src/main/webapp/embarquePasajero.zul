@@ -11,9 +11,17 @@
 				<label value="ITINERARIO :" />
 				<hbox align="center">
 					<longbox id="lbxItinerario" readonly="true" width="50px" />
-					<button id="btnBuscarItinerario" autodisable="self,btnRefress" image="resources/mp_buscarEnabled.png"  style="cursor:pointer" />
-					<button id="btnRefress" visible="false" autodisable="self,btnBuscarItinerario" image="resources/mp_refrescarDisabled.png" 
-						onClick="wndEmbarquePasajero.onRefress()" disabled="true" />
+					<button id="btnBuscarItinerario" 
+							autodisable="self,btnRefress" 
+							image="resources/mp_buscarEnabled.png"  
+							sclass="btnImage" />
+					<button id="btnRefress" 
+							visible="false" 
+							autodisable="self,btnBuscarItinerario" 
+							image="resources/mp_refrescarDisabled.png" 
+							onClick="wndEmbarquePasajero.onRefress()" 
+							disabled="true" 
+							sclass="btnImage" />
 				</hbox>
 			</row>
 			<row>
@@ -38,14 +46,31 @@
 					<combobox id="cmbTipoDocumento" readonly="true" width="100px"/>
 					<separator width="20px"/>
 					<label value="N° DOCUMENTO : " />
-					<textbox id="txtNumeroDocumento" width="150px" onChanging="wndEmbarquePasajero.Onchanging_txtNumeroDocumento(event.value,event);" style="font-size:13px !important" />
+					<textbox id="txtNumeroDocumento" 
+							width="150px" 
+							onChanging="wndEmbarquePasajero.Onchanging_txtNumeroDocumento(event.value,event);" 
+							style="font-size:13px !important" />
 					<separator width="20px"/>
-					<button label="Abrir Embarque" sclass="btn-vyrbus" id="btnAbrirEmbarque" autodisable="self" visible="false" 
-						image="/resources/mp_openEmbarque.png" onClick="wndEmbarquePasajero.abrirEmbarque()" />
-					<button label="Cerrar Embarque" sclass="btn-vyrbus"  id="btnCerrarEmbarque" autodisable="self" visible="false" 
-						image="/resources/mp_aceptarEnabled.png" onClick="wndEmbarquePasajero.cerraDespacho()"/>
-					<button label="Cerrar" sclass="btn-vyrbus" id="btnCerrar" image="/resources/mp_cerrar.png" 
-						onClick="wndEmbarquePasajero.closeTabWindow()"  style="cursor:pointer"/>
+					<button label="Abrir Embarque" 
+							sclass="btnCommandXL" 
+							id="btnAbrirEmbarque" 
+							autodisable="self" 
+							visible="false" 
+							image="/resources/mp_openEmbarque.png" 
+							onClick="wndEmbarquePasajero.abrirEmbarque()" />
+					<button label="Cerrar Embarque" 
+							sclass="btnCommandXL"  
+							id="btnCerrarEmbarque" 
+							autodisable="self" 
+							visible="false" 
+							image="/resources/mp_aceptarEnabled.png" 
+							onClick="wndEmbarquePasajero.cerraDespacho()"/>
+					<button label="Cerrar" 
+							sclass="btnCommandM" 
+							id="btnCerrar" 
+							image="/resources/mp_cerrar.png" 
+							onClick="wndEmbarquePasajero.closeTabWindow()"  
+							style="cursor:pointer"/>
 				</hbox>
 			</row>
 		</rows>
@@ -53,25 +78,25 @@
 	<separator height="1px"/>
 	<listbox id="lbxPasajerosPiso1" height="400px">
 		<listhead>
-			<listheader label="ASIENTO" width="60px" align="center"/>
-			<listheader label="N°.COMPROBANTE" width="100px" align="center" />
-			<listheader label="PASAJERO" width="220px" />
-			<listheader label="TIPO DOCT." width="80px" />
-			<listheader label="N°.DOCUMENTO" width="85px" />
-			<listheader label="RUTA" width="130px" />
-			<listheader  align="left"/>
+			<listheader label="ASIENTO" width="60px" align="center" style="color: #ffffff;"/>
+			<listheader label="N°.COMPROBANTE" width="100px" align="center" style="color: #ffffff;"/>
+			<listheader label="PASAJERO" width="260px" style="color: #ffffff;"/>
+			<listheader label="TIPO DOCT." width="100px" style="color: #ffffff;"/>
+			<listheader label="N°.DOCUMENTO" width="100px" style="color: #ffffff;"/>
+			<listheader label="RUTA" width="150px" style="color: #ffffff;"/>
+			<listheader  align="left" style="color: #ffffff;"/>
 		</listhead>
 	</listbox>
 
 	<listbox id="lbxPasajerosPiso2" visible="false" height="350px">
 		<listhead>
-			<listheader label="ASIENTO" width="60px" align="center"/>
-			<listheader label="N°.COMPROBANTE" width="100px" align="center" />
-			<listheader label="PASAJERO" width="220px" />
-			<listheader label="TIPO DOCT." width="80px" />
-			<listheader label="N°.DOCUMENTO" width="85px" />
-			<listheader label="RUTA" width="130px" />
-			<listheader  align="left"/>
+			<listheader label="ASIENTO" width="60px" align="center" style="color: #ffffff;"/>
+			<listheader label="N°.COMPROBANTE" width="100px" align="center" style="color: #ffffff;"/>
+			<listheader label="PASAJERO" width="260px" style="color: #ffffff;"/>
+			<listheader label="TIPO DOCT." width="100px" style="color: #ffffff;"/>
+			<listheader label="N°.DOCUMENTO" width="100px" style="color: #ffffff;"/>
+			<listheader label="RUTA" width="150px" style="color: #ffffff;"/>
+			<listheader  align="left" style="color: #ffffff;"/>
 		</listhead>
 	</listbox>	
 </window>

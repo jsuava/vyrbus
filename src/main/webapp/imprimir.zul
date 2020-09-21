@@ -15,7 +15,7 @@
 					<label id="lblNumeroControl" style="font-size:11px !important; font-weight:bold; color:#0054a4"/>
 				</row>
 				<row align="center" style="background:#FFFFFF">
-					<button id="btnCerrar" label="Cerrar" sclass="btn-vyrbus" image="resources/mp_cerrarEnabled.png" height="26px">
+					<button id="btnCerrar" label="Cerrar" sclass="btnCommandM" image="resources/mp_cerrarEnabled.png" >
 						<attribute name="onClick">
 							((Window)btnCerrar.getParent().getParent().getParent().getParent().getParent()).setVisible(false);
 						</attribute>

@@ -221,6 +221,7 @@ public class WndConfirmarReserva extends WndBase {
 					item.appendChild(cell);
 					cell = new Listcell();
 					Button button = new Button("", "resources/mp_anular.png");
+					button.setClass("btnImage");
 					button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 						public void onEvent(Event e){
 							lbxReservas.setSelectedIndex(Integer.valueOf(e.getTarget().getId()));

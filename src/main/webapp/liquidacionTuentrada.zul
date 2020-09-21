@@ -14,7 +14,7 @@
 	<h:table border="1px" width="412px">
 		<h:tr>
 			<h:td>
-				<h:center><label value="TEPSA" style="font-size:12px;font-weight:bold"/></h:center>
+				<h:center><label value="EMPRESA" style="font-size:12px;font-weight:bold"/></h:center>
 				<h:center><label value="LIQUIDACION DE VENTAS" style="font-size:10px;font-weight:bold"/></h:center>
 				<h:table>
 					<h:tr>
@@ -61,10 +61,19 @@
 						<h:td colspan="2"><label value="Fecha Operación : " style="font-weight:bold"/><label id="lblFecha"/></h:td>
 					</h:tr>
 					<h:tr>
-						<h:td colspan="3"><h:a href="http://www.tepsa.com.pe" target="_black"><label value="www.tepsa.com.pe" style="font-size:9px"/> </h:a></h:td>
+						<h:td colspan="3">
+							<h:a href="http://www.empresa.com.pe" target="_black"><label value="www.empresa.com.pe" style="font-size:9px"/> </h:a>
+						</h:td>
 					</h:tr>
 					<h:tr>
-						<h:td colspan="3" align="center"><button label="Crear Liquidacion" height="26px" autodisable="self" onClick="wndLiquidacionTuentrada.crearLiquidacion()" focus="true"/></h:td>
+						<h:td colspan="3" align="center">
+							<button label="Crear Liquidacion" 
+									height="26px" 
+									autodisable="self" 
+									onClick="wndLiquidacionTuentrada.crearLiquidacion()" 
+									focus="true" 
+									sclass="btnCommandXL"/>
+						</h:td>
 					</h:tr>
 				</h:table>
 			</h:td>

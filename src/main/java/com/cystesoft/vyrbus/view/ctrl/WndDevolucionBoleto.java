@@ -203,6 +203,7 @@ public class WndDevolucionBoleto extends WndBase {
 					cell = new Listcell();
 					Button btnDevolucion = new Button("Devolver","resources/menu/menu_devolucion.png");
 					btnDevolucion.setAutodisable("self");
+					btnDevolucion.setClass("btnCommandM");
 					btnDevolucion.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 						public void onEvent(Event e){
 							validateDevolucion(e.getTarget().getId());
@@ -671,7 +672,9 @@ public class WndDevolucionBoleto extends WndBase {
 		
 		groupbox = new Groupbox();
 		groupbox.setClosable(false);
-		caption = new Caption("Información del Comprobante a devolver");
+		groupbox.setMold("3d");
+		caption = new Caption("INFORMACION DEL COMPROBANTE A DEVOLVER");
+		caption.setStyle("color: #ffffff; font-size:12px !important");
 		groupbox.appendChild(caption);
 		
 		/*	Columna 1	*/
@@ -792,7 +795,9 @@ public class WndDevolucionBoleto extends WndBase {
 		/* ***************************************** */
 		groupbox = new Groupbox();
 		groupbox.setClosable(false);
-		caption = new Caption("Información de la Devolución");
+		groupbox.setMold("3d");
+		caption = new Caption("INFORMACION DE LA DEVOLUCION");
+		caption.setStyle("color: #ffffff");
 		groupbox.appendChild(caption);
 		
 		grid = new Grid();
@@ -1070,6 +1075,7 @@ public class WndDevolucionBoleto extends WndBase {
 		
 		Button button = new Button("Continuar", "resources/mp_aceptarEnabled.png");
 		button.setAutodisable("self");
+		button.setClass("btnCommandL");
 		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			public void onEvent(Event e){
 //				if(cmbPorcentajeDevolucion.getSelectedIndex()==0){
@@ -1093,7 +1099,7 @@ public class WndDevolucionBoleto extends WndBase {
 				}
 			}
 		});
-		button.setHeight("28px");
+//		button.setHeight("28px");
 		row.appendChild(button);
 		button = new Button("Cancelar", "resources/mp_cancelarEnabled.png");
 		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
@@ -1101,7 +1107,8 @@ public class WndDevolucionBoleto extends WndBase {
 				win.onClose();
 			}
 		});
-		button.setHeight("28px");
+//		button.setHeight("28px");
+		button.setClass("btnCommandL");
 		button.setFocus(true);
 		row.appendChild(button);
 		

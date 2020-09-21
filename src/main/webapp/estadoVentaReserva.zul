@@ -2,7 +2,7 @@
 <zk>
 <window id="wndEstadoVyR" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndEstadoVentaReserva">
 	<groupbox mold="3d" closable="false">
-		<caption label="PARÁMETROS DE BÚSQUEDA" />
+		<caption label="PARÁMETROS DE BÚSQUEDA" style="color: #ffffff;"/>
 		<grid>
 			<columns>
 				<column width="320px" />
@@ -30,7 +30,7 @@
 								</radiogroup>
 								<vbox><separator height="1px"/><hbox align="center">
 									<space width="2px" /> <textbox id="txtBusquedaPasajero" width="240px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(rdByRuc)" />
-									<button label="..." sclass="btn-vyrbus" onClick="wndEstadoVyR.buscarPasajero()"/>
+									<button label="..." sclass="btnImage" onClick="wndEstadoVyR.buscarPasajero()"/>
 								</hbox></vbox>
 							</groupbox>	
 							
@@ -43,7 +43,7 @@
 								</radiogroup>
 								<vbox><separator height="1px"/> <hbox align="center">
 										<space width="2px" /> <textbox id="txtBusquedaCliente" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(dtbxFechaPartida)" width="240px" />
-										<button label="..." sclass="btn-vyrbus" onClick="wndEstadoVyR.buscarCliente()"/>
+										<button label="..." sclass="btnImage" onClick="wndEstadoVyR.buscarCliente()"/>
 								</hbox></vbox>
 							</groupbox>	
 						</vbox>
@@ -83,9 +83,9 @@
 									<hbox align="center">
 										<textbox id="txtNumeroBoleto" maxlength="15" onOK="wndEstadoVyR.buscar()"  style="font-size:11px !important" width="150px" />
 										<hbox align="center">
-											<button label="Buscar" sclass="btn-vyrbus" autodisable="self" height="29px" width="85px" 
+											<button label="Buscar" sclass="btnCommandM" autodisable="self"  
 												onClick="wndEstadoVyR.buscar()" image="/resources/mp_buscarEnabled.png"/>
-											<button label="Cerrar" sclass="btn-vyrbus" height="29px" width="81px" 
+											<button label="Cerrar" sclass="btnCommandM"  
 												onClick="wndEstadoVyR.closeTabWindow()" image="/resources/mp_cerrar.png"/>
 										</hbox>
 									</hbox>
@@ -100,19 +100,19 @@
 	<separator height="1px"/>
 	<listbox id="lstbxListaMovimientos" mold="paging" pageSize="8">
 		<listhead>
-			<listheader label="F.EMISION" tooltiptext="Fecha de Emisión" width="70px" sort="auto" />
-			<listheader label="TIPO MOVIMIENTO" width="110px" sort="auto" />
-			<listheader label="TIPO COMPROBANTE" width="110px" sort="auto" />
-			<listheader label="NRO. COMP." width="90px" sort="auto" tooltiptext="Número de Comprobante"/>
+			<listheader label="F.EMISION" tooltiptext="Fecha de Emisión" width="70px" sort="auto" style="color: #ffffff;"/>
+			<listheader label="TIPO MOVIMIENTO" width="110px" sort="auto" style="color: #ffffff;"/>
+			<listheader label="TIPO COMPROBANTE" width="120px" sort="auto" style="color: #ffffff;"/>
+			<listheader label="NRO. COMP." width="120px" sort="auto" tooltiptext="Número de Comprobante" style="color: #ffffff;"/>
 <!-- 			<listheader label="NRO.CONTROL" width="90px" sort="auto" /> -->
-			<listheader label="RUTA" width="140px" sort="auto"/>
-			<listheader label="F.PARTIDA" tooltiptext="Fecha de Partida" width="70px" sort="auto" />
-			<listheader label="H.PART." tooltiptext="Hora de Partida" width="50px" sort="auto" />
-			<listheader label="PASAJERO" width="180px" sort="auto" />
-			<listheader label="CLIENTE" width="180px" sort="auto" />
-			<listheader label="ASIENTO" width="50px" align="center" sort="auto" />
+			<listheader label="RUTA" width="160px" sort="auto" style="color: #ffffff;"/>
+			<listheader label="F.PARTIDA" tooltiptext="Fecha de Partida" width="70px" sort="auto" style="color: #ffffff;"/>
+			<listheader label="H.PART." tooltiptext="Hora de Partida" width="50px" sort="auto" style="color: #ffffff;"/>
+			<listheader label="PASAJERO" width="180px" sort="auto" style="color: #ffffff;"/>
+			<listheader label="CLIENTE" width="180px" sort="auto" style="color: #ffffff;"/>
+			<listheader label="ASIENTO" width="50px" align="center" sort="auto" style="color: #ffffff;"/>
 <!-- 			<listheader label="ESTADO" width="90px" sort="auto" /> -->
-			<listheader label=" " width="75px" />
+			<listheader label=" " style="color: #ffffff;"/>
 		</listhead>
 	</listbox>
 

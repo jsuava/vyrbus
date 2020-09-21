@@ -23,24 +23,27 @@
 	    <div align="right" width="50px" > <label value="BUS :"/></div>
 			<div width="97px"><hbox align="center">
 				<combobox id="cmbBus" style="font-size:11px !important" readonly="true" width="70px" />
-				<image src="/resources/mp_refrescarEnabled.png" style="cursor:pointer" onClick="wndEmisionHRE.cargarBuses()" tooltiptext="Actualizar Buses"/>	
+				<image src="/resources/mp_recargar16.png" style="cursor:pointer" onClick="wndEmisionHRE.cargarBuses()" tooltiptext="Actualizar Buses"/>	
 			</hbox></div>
-			<button label="Buscar" sclass="btn-vyrbus" width="90px" autodisable="self" height="28px"  onClick="wndEmisionHRE.buscar()" 
-				image="/resources/mp_buscarEnabled.png" />
+			<button label="Buscar" 
+					sclass="btnCommandM" 
+					autodisable="self" 
+					onClick="wndEmisionHRE.buscar()" 
+					image="/resources/mp_buscarEnabled.png" />
 		</hbox>
 		<separator height="1px"/>
 		<listbox id="lstbxSalidas"  height="330px">
 			<listhead>
-				<listheader label="F.SALIDA" width="70px" tooltiptext="Fecha de Salida" align="center" />
-				<listheader label="H.SALIDA" width="60px" tooltiptext="Hora de Salida" align="center" sort="auto" />
-				<listheader label="RUTA" width="130px" align="center" sort="auto"/>
-				<listheader label="SERVICIO" width="130px" align="center" sort="auto"/>
-				<listheader label="F.LLEGADA" width="70px" tooltiptext="Fecha de Llegada" align="center" sort="auto"/>
-				<listheader label="H.LLEGADA" width="60px" tooltiptext="Hora de Llegada" align="center" sort="auto"/>
-				<listheader label="BUS" width="50px" align="center" sort="auto"/>
-				<listheader label="HOJA RUTA" width="100px" align="center" sort="auto"/>
-				<listheader id="lshdHRE" width="90px" tooltiptext="Hoja de Ruta Electrónica." align="center" label="HRE"  />
-				<listheader id="lshdME" width="40px" tooltiptext="Manifiesto Electrónico." align="center" label="ME" />
+				<listheader label="F.SALIDA" width="70px" tooltiptext="Fecha de Salida" align="center" style="color: #ffffff;"/>
+				<listheader label="H.SALIDA" width="60px" tooltiptext="Hora de Salida" align="center" sort="auto" style="color: #ffffff;"/>
+				<listheader label="RUTA" width="150px" align="center" sort="auto" style="color: #ffffff;"/>
+				<listheader label="SERVICIO" width="120px" align="center" sort="auto" style="color: #ffffff;"/>
+				<listheader label="F.LLEGADA" width="70px" tooltiptext="Fecha de Llegada" align="center" sort="auto" style="color: #ffffff;"/>
+				<listheader label="H.LLEGADA" width="70px" tooltiptext="Hora de Llegada" align="center" sort="auto" style="color: #ffffff;"/>
+				<listheader label="BUS" width="50px" align="center" sort="auto" style="color: #ffffff;"/>
+				<listheader label="HOJA RUTA" width="100px" align="center" sort="auto" style="color: #ffffff;"/>
+				<listheader id="lshdHRE" width="90px" tooltiptext="Hoja de Ruta Electrónica." align="center" label="HRE" style="color: #ffffff;" />
+				<listheader id="lshdME" width="40px" tooltiptext="Manifiesto Electrónico." align="center" label="ME" style="color: #ffffff;"/>
 			</listhead>
 		</listbox>
 		<separator height="2px"/>

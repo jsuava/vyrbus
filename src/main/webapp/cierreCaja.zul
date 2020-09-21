@@ -27,7 +27,12 @@
 					<label value="USUARIO :" />
 					<combobox id="cmbUsuario" width="240px" style="font-size:10px !important" autocomplete="true" onFocus="cmbUsuario.select();" />
 					<separator width="10px" />
-					<button id="btnBuscar" sclass="btn-vyrbus" autodisable="self" label="Buscar" height="30px" width="90px" image="resources/mp_buscarEnabled.png" onClick="wndCierreCaja.buscarLiquidacion()"/>
+					<button id="btnBuscar" 
+							autodisable="self"
+							image="resources/mp_buscarEnabled.png" 
+							label="Buscar" 
+							onClick="wndCierreCaja.buscarLiquidacion()" 
+							sclass="btnCommandM"/>
 				</hbox>
 			</row>
 		</rows>
@@ -38,14 +43,14 @@
 			<row><hbox>
 				<listbox id="listLiquidacion" height="300px" width="100%">
 					<listhead sizable="true">
-						<listheader label="#" width="25px"  />
-						<listheader label="DATOS DEL USUARIO" sort="auto"  width="200px"/>
-						<listheader label="USUARIO" sort="auto" width="95px" />
-						<listheader label="FECHA" sort="auto" width="70px" />
-						<listheader label="AGENCIA" sort="auto" width="105px" />
-						<listheader label="ESTADO" sort="auto" width="60px" />
-						<listheader label="FECHA HORA CIERRE" sort="auto" width="105px" />
-						<listheader label="LIQUIDACIÓN" width="90px" align="left"/>
+						<listheader label="#" width="25px" style="color: #ffffff;" />
+						<listheader label="DATOS DEL USUARIO" sort="auto"  width="210px" style="color: #ffffff;"/>
+						<listheader label="USUARIO" sort="auto" width="95px" style="color: #ffffff;"/>
+						<listheader label="FECHA" sort="auto" width="70px" style="color: #ffffff;"/>
+						<listheader label="AGENCIA" sort="auto" width="105px" style="color: #ffffff;"/>
+						<listheader label="ESTADO" sort="auto" width="60px" style="color: #ffffff;"/>
+						<listheader label="FECHA HORA CIERRE" sort="auto" width="110px" style="color: #ffffff;"/>
+						<listheader label="LIQUIDACIÓN" width="100px" align="left" style="color: #ffffff;"/>
 					</listhead>
 				</listbox>
 				<separator width="2px" />
@@ -56,8 +61,16 @@
 							<groupbox  closable="false">
 							 <caption label="Liq. Cerrada" />
 							 <vbox>
-								<button id="btnLqAtPreliminar" label="Preliminar" image="resources/mp_preliminar.png" tooltiptext="Preliminar - Liquidación Anterior" width="97px"  height="28px"/>
-								<button id="btnLqAtImprimir" label="Imprimir" image="resources/mp_imprimir.png" tooltiptext="Imprimir - Liquidación Anterior" width="97px" height="28px"/>
+								<button id="btnLqAtPreliminar" 
+										image="resources/mp_preliminar.png"
+										label="Preliminar" 
+										sclass="btnCommandL"
+										tooltiptext="Preliminar - Liquidación Anterior"/>
+								<button id="btnLqAtImprimir"
+										image="resources/mp_imprimir.png"  
+										label="Imprimir" 
+										sclass="btnCommandL"
+										tooltiptext="Imprimir - Liquidación Anterior"/>
 							 </vbox>
 							</groupbox>			
 <!-- 						</row> -->
@@ -68,14 +81,26 @@
 							<groupbox closable="false">
 							<caption label="Liq. Abierta" />
 							 	<vbox align="center" >
-							 	<button id="btnLqAcPreliminar" label="Preliminar" image="resources/mp_preliminar.png" width="97px" tooltiptext="Preliminar - Liquidación Actual" height="28px" />
-								<button id="btnCierreCaja" label="Cierre Caja" image="resources/mp_cierreCaja.png" tooltiptext="Cerrar Caja"  height="28px" />
+							 	<button id="btnLqAcPreliminar" 
+							 			image="resources/mp_preliminar.png" 
+							 			label="Preliminar" 
+							 			sclass="btnCommandL"
+							 			tooltiptext="Preliminar - Liquidación Actual" />
+								<button id="btnCierreCaja" 
+										image="resources/mp_cierreCaja.png" 
+										label="Cierre Caja" 
+										sclass="btnCommandL"
+										tooltiptext="Cerrar Caja" />
 								</vbox>
 							</groupbox>
 <!-- 						</row> -->
 <!-- 						<row> -->
 <!-- 							<div align="center"> -->
-								<button id="btnCerrar" visible="false" label="Cerrar" height="30px" width="97px" image="resources/mp_cerrar.png"/>
+								<button id="btnCerrar" 
+										image="resources/mp_cerrar.png" 
+										label="Cerrar"
+										sclass="btnCommandL" 
+										visible="false" />
 <!-- 							</div> -->
 <!-- 						</row>		 -->
 <!-- 					</rows> -->

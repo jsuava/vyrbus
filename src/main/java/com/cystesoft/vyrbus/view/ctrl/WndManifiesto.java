@@ -1304,6 +1304,7 @@ public class WndManifiesto extends WndBase {
 		Button button= new Button();
 		button.setLabel("Cerrar");
 		button.setImage("/resources/mp_cerrar.png");
+		button.setClass("btnCommandM");
 		row.appendChild(button);
 		
 		rows.appendChild(row);
@@ -1316,7 +1317,8 @@ public class WndManifiesto extends WndBase {
 		Listhead listhead= new Listhead();
 		//Pasajero
 		Listheader listheader= new Listheader("PASAJERO");
-		listheader.setWidth("220px"); 
+		listheader.setWidth("220px");
+		listheader.setStyle("color: #ffffff;");
 		listhead.appendChild(listheader);
 //		//Sexo
 //		listheader= new Listheader("SEXO");
@@ -1325,42 +1327,52 @@ public class WndManifiesto extends WndBase {
 		//Ruta
 		listheader= new Listheader("RUTA");
 		listheader.setWidth("120px"); 
+		listheader.setStyle("color: #ffffff;");
 		listhead.appendChild(listheader);
 		//Punto de embarque
 		listheader= new Listheader("PUNTO EMBARQUE");
+		listheader.setStyle("color: #ffffff;");
 		listheader.setWidth("120px"); 
 		listhead.appendChild(listheader);
 		//Boleto
 		listheader= new Listheader("TIPO COMPROBANTE");
 		listheader.setWidth("120px"); 
+		listheader.setStyle("color: #ffffff;");
 		listhead.appendChild(listheader);
 		//Boleto
 		listheader= new Listheader("COMPROBANTE");
 		listheader.setWidth("90px"); 
+		listheader.setStyle("color: #ffffff;");
 		listhead.appendChild(listheader);
 		//Boleto referencial (anterior)
 		listheader= new Listheader("BOLETO REF.");
 		listheader.setWidth("90px"); 
+		listheader.setStyle("color: #ffffff;");
 		listhead.appendChild(listheader);
 		//Tipo Movimiento
 		listheader= new Listheader("TIPO MOVIMIENTO");
 		listheader.setWidth("100px"); 
+		listheader.setStyle("color: #ffffff;");
 		listhead.appendChild(listheader);
 		//Tipo transaccion
 		listheader= new Listheader("TIP.TRANS.");
 		listheader.setWidth("90px"); 
+		listheader.setStyle("color: #ffffff;");
 		listhead.appendChild(listheader);
 		//Nro. Control
 		listheader= new Listheader("NRO. CONTRORL");
 		listheader.setWidth("100px"); 
+		listheader.setStyle("color: #ffffff;");
 		listhead.appendChild(listheader);
 		//Fecha emision
 		listheader= new Listheader("FECHA EMISION");
 		listheader.setWidth("110px"); 
+		listheader.setStyle("color: #ffffff;");
 		listhead.appendChild(listheader);
 		//Hora Emision
 		listheader= new Listheader("HORA EMISION");
 		listheader.setWidth("100px"); 
+		listheader.setStyle("color: #ffffff;");
 		listhead.appendChild(listheader);
 		
 		lstPasajeros.appendChild(listhead);

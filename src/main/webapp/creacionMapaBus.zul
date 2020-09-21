@@ -136,19 +136,17 @@
 									</row>
 									<row spans="2" >
 										<button id="btnGuardarEstructura"
-												sclass="btnCommandL" 
-												label="Grabar Estructura Bus" 
+												sclass="btnCommandXL" 
+												label="Grabar Estructura" 
 												image="resources/mp_guardarEnabled.png" 
-												onClick="wndMapaBus.grabarEstructura()"
-												width="200px"/>
+												onClick="wndMapaBus.grabarEstructura()" />
 									</row>
 									<row spans="2">
 										<button id="btnCancelar" 
-											sclass="btnCommandL" 
+											sclass="btnCommandXL" 
 											label="Cancelar Edición" 
 											image="resources/mp_cancelarEnabled.png" 
-											onClick="wndMapaBus.cancelarCreacion()"
-											width="200px"/>
+											onClick="wndMapaBus.cancelarCreacion()" />
 									</row>
 								</rows>
 							</grid>

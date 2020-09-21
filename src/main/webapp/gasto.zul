@@ -4,18 +4,18 @@
 	<div 	id="divLista">
 		<listbox id="listboxLista" rows="15">
 			<listhead sizable="true">
-				<listheader label="#" width="50px" />
-				<listheader label="AGENCIA" width="150px" sort="auto" />
-				<listheader label="USUARIO" width="100px" sort="auto" />
-				<listheader label="TIPO GASTO" width="150px" sort="auto" />
-				<listheader label="MONTO" width="90px" sort="auto" />
-				<listheader label="OBSERVACIONES" sort="auto" />
+				<listheader label="#" width="50px" style="color: #ffffff;"/>
+				<listheader label="AGENCIA" width="150px" sort="auto" style="color: #ffffff;"/>
+				<listheader label="USUARIO" width="100px" sort="auto" style="color: #ffffff;"/>
+				<listheader label="TIPO GASTO" width="150px" sort="auto" style="color: #ffffff;"/>
+				<listheader label="MONTO" width="90px" sort="auto" style="color: #ffffff;" />
+				<listheader label="OBSERVACIONES" sort="auto" style="color: #ffffff;"/>
 			</listhead>
 		</listbox>	
 	</div>
 	<div id="divMantenimiento" >
 	<groupbox mold="3d" closable="false" width="675px" >
-		<caption label="DATOS DEL GASTO"/>
+		<caption label="DATOS DEL GASTO" style="color: #ffffff;"/>
 		<grid>
 			<columns>
 				<column width="120px" align="right" />

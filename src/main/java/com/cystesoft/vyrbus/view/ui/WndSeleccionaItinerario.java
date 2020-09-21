@@ -205,9 +205,9 @@ public class WndSeleccionaItinerario extends WndBase implements Serializable{
 				
 		//cmdBuscar.setWidth("100px");
 		cmdBuscar.setAutodisable("self");
-		cmdBuscar.setHeight("30px");
+//		cmdBuscar.setHeight("30px");
 		cmdBuscar.setImage("/resources/mp_buscarEnabled.png");
-		cmdBuscar.setClass("btn-vyrbus");
+		cmdBuscar.setClass("btnCommandM");
 //		cmdBuscar.setStyle("cursor:pointer");
 		cmdBuscar.setLabel("Buscar");
 		row.appendChild(cmdBuscar);	
@@ -218,18 +218,30 @@ public class WndSeleccionaItinerario extends WndBase implements Serializable{
 		Listhead listhead = new Listhead();
 		Listheader listheader=new Listheader();
 		listhead.setSizable(true);
-		listheader.setLabel("Itinerario");listheader.setWidth("60px"); listheader.setSort("auto"); listhead.appendChild(listheader); listheader=new Listheader();
-		listheader.setLabel("Bus"); listheader.setWidth("40px"); listheader.setSort("auto");listhead.appendChild(listheader); listheader=new Listheader();
-		listheader.setLabel("Servicio"); listheader.setWidth("120px"); listheader.setSort("auto");listhead.appendChild(listheader); listheader=new Listheader();
-		listheader.setLabel("Tarifa"); listheader.setWidth("60px"); listheader.setSort("auto"); listhead.appendChild(listheader); listheader=new Listheader();
-		listheader.setLabel("Fecha Salida"); listheader.setWidth("70px"); listheader.setSort("auto");listhead.appendChild(listheader); listheader=new Listheader();
-		listheader.setLabel("Hora Salida"); listheader.setWidth("70px"); listheader.setSort("auto");listhead.appendChild(listheader); listheader=new Listheader();
-		listheader.setLabel("Term.Salida"); listheader.setWidth("120px"); listheader.setSort("auto");listhead.appendChild(listheader); listheader=new Listheader();
-		listheader.setLabel("Origen"); listheader.setWidth("85px"); listheader.setSort("auto");listhead.appendChild(listheader); listheader=new Listheader();
-		listheader.setLabel("Destino"); listheader.setWidth("85px"); listheader.setSort("auto");listhead.appendChild(listheader); listheader=new Listheader();
-		listheader.setLabel("Term.Llegada"); listheader.setWidth("120px"); listheader.setSort("auto");listhead.appendChild(listheader); listheader=new Listheader();
-		listheader.setLabel("Fecha Llegada");listheader.setWidth("75px"); listheader.setSort("auto");listhead.appendChild(listheader); listheader=new Listheader();
-		listheader.setLabel("Hora Llegada"); listheader.setWidth("70px"); listheader.setSort("auto");listhead.appendChild(listheader); listheader=new Listheader();
+		listheader.setLabel("ITINERARIO");listheader.setWidth("60px"); listheader.setSort("auto"); listheader.setStyle("color: #ffffff;"); listhead.appendChild(listheader); 
+		listheader=new Listheader();
+		listheader.setLabel("BUS"); listheader.setWidth("40px"); listheader.setSort("auto");listheader.setStyle("color: #ffffff;");listhead.appendChild(listheader); 
+		listheader=new Listheader();
+		listheader.setLabel("SERVICIO"); listheader.setWidth("120px"); listheader.setSort("auto");listheader.setStyle("color: #ffffff;"); listhead.appendChild(listheader); 
+		listheader=new Listheader();
+		listheader.setLabel("TARIFA"); listheader.setWidth("60px"); listheader.setSort("auto");listheader.setStyle("color: #ffffff;");  listhead.appendChild(listheader); 
+		listheader=new Listheader();
+		listheader.setLabel("FEC. SALIDA"); listheader.setWidth("70px"); listheader.setSort("auto");listheader.setStyle("color: #ffffff;"); listhead.appendChild(listheader); 
+		listheader=new Listheader();
+		listheader.setLabel("HOR. SALIDA"); listheader.setWidth("70px"); listheader.setSort("auto");listheader.setStyle("color: #ffffff;"); listhead.appendChild(listheader); 
+		listheader=new Listheader();
+		listheader.setLabel("TERM.SALIDA"); listheader.setWidth("120px"); listheader.setSort("auto");listheader.setStyle("color: #ffffff;"); listhead.appendChild(listheader); 
+		listheader=new Listheader();
+		listheader.setLabel("ORIGEN"); listheader.setWidth("85px"); listheader.setSort("auto");listheader.setStyle("color: #ffffff;"); listhead.appendChild(listheader); 
+		listheader=new Listheader();
+		listheader.setLabel("DESTINO"); listheader.setWidth("85px"); listheader.setSort("auto");listheader.setStyle("color: #ffffff;"); listhead.appendChild(listheader); 
+		listheader=new Listheader();
+		listheader.setLabel("TERM.LLEGADA"); listheader.setWidth("120px"); listheader.setSort("auto");listheader.setStyle("color: #ffffff;"); listhead.appendChild(listheader); 
+		listheader=new Listheader();
+		listheader.setLabel("FEC.LLEGADA");listheader.setWidth("75px"); listheader.setSort("auto");listheader.setStyle("color: #ffffff;"); listhead.appendChild(listheader); 
+		listheader=new Listheader();
+		listheader.setLabel("HOR.LLEGADA"); listheader.setWidth("70px"); listheader.setSort("auto");listheader.setStyle("color: #ffffff;"); listhead.appendChild(listheader); 
+		listheader=new Listheader();
 		
 		lisItinerarios.setHeight("250px");
 		lisItinerarios.setMold("paging");
@@ -243,19 +255,20 @@ public class WndSeleccionaItinerario extends WndBase implements Serializable{
 			
 		cmdAceptar.setLabel("Aceptar");
 		cmdAceptar.setAutodisable("self");
-		cmdAceptar.setWidth("100px");
-		cmdAceptar.setHeight("30px");
+//		cmdAceptar.setWidth("100px");
+//		cmdAceptar.setHeight("30px");
 		cmdAceptar.setImage("/resources/mp_aceptarEnabled.png");
-		cmdAceptar.setClass("btn-vyrbus");
+		cmdAceptar.setClass("btnCommandL");
 //		cmdAceptar.setStyle("cursor:pointer");
 		cmdAceptar.addEventListener(Events.ON_CLICK, selectedEventListener);
-				
+		
+		Label lblSpace= new Label(" ");
 		Button cmdCancelar = new Button();
 		cmdCancelar.setLabel("Cancelar");
-		cmdCancelar.setWidth("100px");
-		cmdCancelar.setHeight("30px");
+//		cmdCancelar.setWidth("100px");
+//		cmdCancelar.setHeight("30px");
 		cmdCancelar.setImage("/resources/mp_cerrar.png");
-		cmdCancelar.setClass("btn-vyrbus");
+		cmdCancelar.setClass("btnCommandL");
 //		cmdCancelar.setStyle("cursor:pointer");
 		
 		Columns columns = new Columns();
@@ -281,6 +294,7 @@ public class WndSeleccionaItinerario extends WndBase implements Serializable{
 		Div div=new Div();
 		div.setAlign("right");
 		div.appendChild(cmdAceptar);
+		div.appendChild(lblSpace);
 		div.appendChild(cmdCancelar);
 	
 		appendChild(div);

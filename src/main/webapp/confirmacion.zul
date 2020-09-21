@@ -6,7 +6,7 @@
 			<vlayout>
 				<hlayout>
 					<groupbox mold="3d" closable="false">
-						<caption label="INFORMACIÓN DE LA VENTA"/>
+						<caption label="INFORMACIÓN DE LA VENTA" style="color: #ffffff;"/>
 						<grid style="border:none" width="450px">
 							<columns>
 								<column align="right" width="100px"/>
@@ -83,12 +83,17 @@
 							</columns>
 							<rows>
 								<row style="background:gris">
-									<button label="Grabar" sclass="btn-vyrbus" image="resources/mp_guardarEnabled.png" autodisable = "self" 
-										height="30px" width="93px"  onClick="wndConfirmacion.onGuardarVenta()"/>									
+									<button label="Grabar" 
+											sclass="btnCommandL" 
+											image="resources/mp_guardarEnabled.png" 
+											autodisable = "self" 
+											onClick="wndConfirmacion.onGuardarVenta()"/>									
 								</row>
 								<row style="background:gris">
-									<button label="Cancelar" sclass="btn-vyrbus" image="resources/mp_cancelarEnabled.png" height="30px" 
-										width="93px"  onClick="wndConfirmacion.liberarAsientos(); wndConfirmacion.onClose()"/>
+									<button label="Cancelar" 
+											sclass="btnCommandL" 
+											image="resources/mp_cancelarEnabled.png"  
+											onClick="wndConfirmacion.liberarAsientos(); wndConfirmacion.onClose()"/>
 								</row>
 							</rows>
 						</grid>
@@ -104,19 +109,19 @@
 						<tabpanel><!-- DATOS DEL PASAJERO -->
 							<vlayout>
 								<groupbox id="grpbxListaPasajeros" mold="3d" closable="false" visible="false">
-									<caption label="LISTADO DE RESULTADOS"/>
+									<caption label="LISTADO DE RESULTADOS" style="color: #ffffff;"/>
 									<listbox id="lbxPasajeros" mold="paging" pageSize="5" width="500px">
 										<listhead>
-											<listheader label="#" width="30px"/>
-											<listheader label="DOCUMENTO" width="68px"/>
-											<listheader label="NUMERO" width="75px"/>
-											<listheader label="NOMBRES"/>
-											<listheader label="KMS" width="70px" align="right"/>
+											<listheader label="#" width="30px" style="color: #ffffff;"/>
+											<listheader label="DOCUMENTO" width="68px" style="color: #ffffff;"/>
+											<listheader label="NUMERO" width="75px" style="color: #ffffff;"/>
+											<listheader label="NOMBRES" style="color: #ffffff;"/>
+											<listheader label="KMS" width="70px" align="right" style="color: #ffffff;"/>
 										</listhead>
 									</listbox>
 								</groupbox>
 								<groupbox mold="3d" closable="false">
-									<caption label="INFORMACIÓN DEL PASAJERO"/>
+									<caption label="INFORMACIÓN DEL PASAJERO" style="color: #ffffff;"/>
 									<toolbar>
 										<toolbarbutton id="tlbbtnNuevoPax"  label="Nuevo" image="resources/toolbar/mp_toolbarNuevo.png" onClick="wndConfirmacion.onNewPax()"/>
 										<toolbarbutton id="tlbbtnModificarPax" label="Modificar" image="resources/toolbar/mp_toolbarModificar.png" onClick="wndConfirmacion.onModifyPax()" disabled="true"/>
@@ -167,7 +172,7 @@
 												<hbox align="center">
 													<textbox id="txtUbigeoPax" width="170px" readonly="true" onOK="txtEmailPax.setFocus(true)"/>
 													<textbox id="txtUbigeoIdPax" visible="false"/>
-													<button id="btnUbigeoPax" sclass="btn-vyrbus" label="..." />
+													<button id="btnUbigeoPax" sclass="btnImage" label="..." />
 												</hbox>
 											</row>
 											<row style="background:#F7F7F7">
@@ -215,7 +220,7 @@
 																txtInformation.setHeight("80px");
 																txtInformation.setReadonly(true);
 																Button btnClose = new Button("Cerrar", "/resources/mp_cerrarEnabled.png");
-																btnClose.setClass("btn-vyrbus");
+																btnClose.setClass("btnCommandM");
 																btnClose.addEventListener("onClick", new org.zkoss.zk.ui.event.EventListener(){
 																	public void onEvent(Event e){
 																		wnd.onClose();
@@ -240,19 +245,19 @@
 							<vlayout>
 								<hlayout>
 									<groupbox id="grpbxListaClientes" mold="3d" closable="false" visible="false">
-										<caption label="LISTADO DE CLIENTES"/>										
+										<caption label="LISTADO DE CLIENTES" style="color: #ffffff;"/>										
 										<listbox id="lbxClientes" mold="paging" pageSize="5">
 											<listhead>
-												<listheader label="#" width="30px"/>
-												<listheader label="DOCUMENTO" width="75px"/>
-												<listheader label="RAZON SOCIAL"/>
-												<listheader label="CONTACTO" width="130px"/>
+												<listheader label="#" width="30px" style="color: #ffffff;"/>
+												<listheader label="DOCUMENTO" width="75px" style="color: #ffffff;"/>
+												<listheader label="RAZON SOCIAL" style="color: #ffffff;"/>
+												<listheader label="CONTACTO" width="130px" style="color: #ffffff;"/>
 											</listhead>
 										</listbox>
 									</groupbox>
 								</hlayout>
 								<groupbox mold="3d">
-									<caption label="INFORMACIÓN DEL CLIENTE"/>
+									<caption label="INFORMACIÓN DEL CLIENTE" style="color: #ffffff;"/>
 									<toolbar>
 										<toolbarbutton id="tlbbtnNuevoClient" label="Nuevo" image="resources/toolbar/mp_toolbarNuevo.png" onClick="wndConfirmacion.onNewClient()"/>
 										<toolbarbutton id="tlbbtnModificarClient" label="Modificar" image="resources/toolbar/mp_toolbarModificar.png" onClick="wndConfirmacion.onModifyClient()" disabled="true"/>
@@ -302,7 +307,7 @@
 												<hbox align="center" width="100%">
 													<textbox id="txtUbigeoCliente" width="170px" readonly="true"/>
 													<textbox id="txtUbigeoIdCliente" visible="false"/>
-													<button id="btnUbigeoCliente" sclass="btn-vyrbus" label="..."/>
+													<button id="btnUbigeoCliente" sclass="btnImage" label="..."/>
 												</hbox>
 											</row>
 										</rows>
@@ -331,8 +336,15 @@
 											<hlayout>
 												<doublebox id="dblDescuento" format="##0.00" readonly="true"/>
 												<textbox id="txtIdPromocion" visible="false"/>
-												<image id="imgPromocion" src="resources/mp_promocion.png" style="cursor:pointer" tooltiptext="Seleccionar promoción"/>
-												<image id="imgQuitarPromocion" src="resources/mp_quitarPromocion.png" visible="false" style="cursor:pointer" tooltiptext="Quitar promoción"/>
+												<image id="imgPromocion" 
+														src="resources/mp_promocion.png" 
+														style="cursor:pointer" 
+														tooltiptext="Seleccionar promoción"/>
+												<image id="imgQuitarPromocion" 
+														src="resources/mp_quitarPromocion.png" 
+														visible="false" 
+														style="cursor:pointer" 
+														tooltiptext="Quitar promoción"/>
 											</hlayout>
 											<label value="TIPO FORMA PAGO :"/>
 											<combobox id="cmbTipoFormaPago" readonly="true" disabled="true" onChange="wndConfirmacion.onValidateTipoFormaPago()"/>
@@ -346,7 +358,10 @@
 										<row>
 											<label id="lblImporte" value="IMPORTE TOTAL PAGAR :" style="font-size:12px !important;font-weight: bold;color:red"/>
 											<hlayout>
-												<doublebox id="dblImporte" format="##0.00" readonly="true" style="font-size:15px !important;font-weight: bold;color:red"/>
+												<doublebox id="dblImporte" 
+															format="##0.00" 
+															readonly="true" 
+															style="font-size:15px !important;font-weight: bold;color:red"/>
 												<checkbox id="chkPagoMixto" label="Pago Mixto" onClick="wndConfirmacion.habilitarPagoMixto()" visible="false"/>
 											</hlayout>
 											<label value="TARJETA CREDITO :"/>
@@ -362,7 +377,10 @@
 											<label id="lblImporteTarjeta" value="IMPORTE TARJETA :" visible="false"/>
 											<doublebox id="dblImporteTarjeta" format="#,##0.00" visible="false"/>
 											<label/>
-											<checkbox id="chkPrepagado" label="BOLETO PREPAGADO" visible="false" style="font-size:10px; font-weight:bold; color:blue"/>																						
+											<checkbox id="chkPrepagado" 
+														label="BOLETO PREPAGADO" 
+														visible="false" 
+														style="font-size:10px; font-weight:bold; color:blue"/>																						
 										</row>
 										<row spans="4">
 											<div align="left">

@@ -1,6 +1,12 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndEstadoVyRVerVenta" use="com.cystesoft.vyrbus.view.ctrl.WndEstadoVentaReservaVerVenta" title="INFORMACION DE LA VENTA" border="none" width="750px" closable="true"  ventaPasaje="${arg.ventaPasaje}" >
+<window id="wndEstadoVyRVerVenta" 
+		border="none"  
+		closable="true" 
+		title="INFORMACION DE LA VENTA" 
+		use="com.cystesoft.vyrbus.view.ctrl.WndEstadoVentaReservaVerVenta"
+		ventaPasaje="${arg.ventaPasaje}"
+		width="750px" >
 <!-- 	<groupbox mold="3d" closable="false"> -->
 <!-- 		<caption label="INFORMACIÓN DE LA VENTA" /> -->
 		<grid>

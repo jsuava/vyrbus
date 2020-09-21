@@ -21,8 +21,8 @@
 			<label value="Nro. Documento del Cliente"  sclass="label-size11" />
 			<textbox id="txtDocumentoPaxfree" width="90px" maxlength="15" onOK="wndestadoCuenta.consultaEstadoCuenta()"  
 				style="font-size:11px !important"/>
-			<button label="Consultar" sclass="btn-vyrbus" image="/resources/mp_buscarEnabled.png" onClick="wndestadoCuenta.consultaEstadoCuenta()" />
-			<button label="Cerrar" sclass="btn-vyrbus"  image="/resources/mp_cerrar.png" onClick="wndestadoCuenta.closeTabWindow()"/>
+			<button label="Consultar" sclass="btnCommandM" image="/resources/mp_buscarEnabled.png" onClick="wndestadoCuenta.consultaEstadoCuenta()" />
+			<button label="Cerrar" sclass="btnCommandM"  image="/resources/mp_cerrar.png" onClick="wndestadoCuenta.closeTabWindow()"/>
 		</row>
 	</rows>
 </grid>

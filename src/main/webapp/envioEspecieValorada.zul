@@ -37,44 +37,43 @@
 				<separator height="1px" />
 				<listbox id="lbxListaSolicitudes" rows="9">
 					<listhead sizable="true">
-						<listheader label="#" width="30px"/>
-						<listheader label="FECHA" width="80px" sort="auto" />
-						<listheader label="AGENCIA" width="120px" sort="auto" />
-						<listheader label="COMPROBANTE" width="110px"  sort="auto" />
-						<listheader label="SERIE" width="40px" sort="auto" />
-						<listheader label="CANTIDAD" width="60px" sort="auto" />
-						<listheader label="USUARIO SOLICITANTE" sort="auto" />
+						<listheader label="#" width="30px" style="color: #ffffff;"/>
+						<listheader label="FECHA" width="80px" sort="auto" style="color: #ffffff;"/>
+						<listheader label="AGENCIA" width="120px" sort="auto" style="color: #ffffff;"/>
+						<listheader label="COMPROBANTE" width="110px"  sort="auto" style="color: #ffffff;"/>
+						<listheader label="SERIE" width="40px" sort="auto" style="color: #ffffff;"/>
+						<listheader label="CANTIDAD" width="60px" sort="auto" style="color: #ffffff;"/>
+						<listheader label="USUARIO SOLICITANTE" sort="auto" style="color: #ffffff;"/>
 					</listhead>
 				</listbox>
 				<listbox id="lbxListaEnvios" visible="false" rows="9">
 					<listhead sizable="true">
-						<listheader label="#" width="30px"/>
-						<listheader label="FECHA" sort="auto" />
-						<listheader label="AGENCIA" sort="auto" />
-						<listheader label="COMPROBANTE" sort="auto" />
-						<listheader label="SERIE" sort="auto" />
-						<listheader label="ULTIMO CORR. ENVIADO" sort="auto" tooltiptext="Ultimo Correlativo Enviado"/>
+						<listheader label="#" width="30px" style="color: #ffffff;"/>
+						<listheader label="FECHA" sort="auto" style="color: #ffffff;"/>
+						<listheader label="AGENCIA" sort="auto" style="color: #ffffff;"/>
+						<listheader label="COMPROBANTE" sort="auto" style="color: #ffffff;"/>
+						<listheader label="SERIE" sort="auto" style="color: #ffffff;"/>
+						<listheader label="ULTIMO CORR. ENVIADO" sort="auto" tooltiptext="Ultimo Correlativo Enviado" style="color: #ffffff;"/>
 					</listhead>
 				</listbox>
 				<listbox id="lbxListaEstadoCorrAgencia" visible="false" rows="9">
 					<listhead sizable="true">
 						<listheader label="#" width="30px"/>
-						<listheader label="AGENCIA" width="120px" sort="auto" />
-						<listheader label="COMPROBANTE" width="110px" sort="auto" tooltiptext="Tipo Comprobante"/>
-						<listheader label="SERIE" width="40px" align="center" sort="auto" tooltiptext="Número de Serie"/>
-						<listheader label="ULTIMO ENVIADO" width="85px" align="right" sort="auto" tooltiptext="Ultimo correlativo enviado"/>
-						<listheader label="ULTIMO EMITIDO" width="85px" align="right" sort="auto" tooltiptext="Ultimo correlativo emitido"/>
-						<listheader label="PROMD.X DIA" width="70px" align="right"  sort="auto" tooltiptext="Promedio de correlativos emitidos por día"/>
-						<listheader label= "% UTILIZADO" width="70px" align="right" sort="auto" tooltiptext="Porcentaje de especies valoradas utilizadas por la agencia"/>
-						   
-						<listheader label="FECHA ULTIMO ENVIO" width="110px" align="center" sort="auto" tooltiptext="Fecha en que se realizó el ultimo envío" />
-						<listheader label="DIAS TRANSC" width="70px" align="center" sort="auto" tooltiptext="Días transcurridos desde el Ultimo envío" />
+						<listheader label="AGENCIA" width="120px" sort="auto" style="color: #ffffff;"/>
+						<listheader label="COMPROBANTE" width="110px" sort="auto" tooltiptext="Tipo Comprobante" style="color: #ffffff;"/>
+						<listheader label="SERIE" width="40px" align="center" sort="auto" tooltiptext="Número de Serie" style="color: #ffffff;"/>
+						<listheader label="ULTIMO ENVIADO" width="85px" align="right" sort="auto" tooltiptext="Ultimo correlativo enviado" style="color: #ffffff;"/>
+						<listheader label="ULTIMO EMITIDO" width="85px" align="right" sort="auto" tooltiptext="Ultimo correlativo emitido" style="color: #ffffff;"/>
+						<listheader label="PROMD.X DIA" width="70px" align="right"  sort="auto" tooltiptext="Promedio de correlativos emitidos por día" style="color: #ffffff;"/>
+						<listheader label= "% UTILIZADO" width="70px" align="right" sort="auto" tooltiptext="Porcentaje de especies valoradas utilizadas por la agencia" style="color: #ffffff;"/>
+						<listheader label="FECHA ULTIMO ENVIO" width="110px" align="center" sort="auto" tooltiptext="Fecha en que se realizó el ultimo envío" style="color: #ffffff;"/>
+						<listheader label="DIAS TRANSC" width="70px" align="center" sort="auto" tooltiptext="Días transcurridos desde el Ultimo envío" style="color: #ffffff;"/>
 					</listhead>
 				</listbox>
 			</tabpanel> 
 			<tabpanel>
 				<groupbox id="gbxDatosSolicitud" mold="3d" closable="false" visible="false">
-				<caption label="DATOS DE LA SOLICITUD" />
+				<caption label="DATOS DE LA SOLICITUD" style="color: #ffffff;"/>
 					<grid style="border:none">	
 						<columns>
 							<column width="80px" />
@@ -108,7 +107,7 @@
 				<hbox>
 					<vbox>
 						<groupbox closable="false" mold="3d" width="480px">
-						<caption label="DATOS DEL ENVIO" />
+						<caption label="DATOS DEL ENVIO" style="color: #ffffff;"/>
 							<grid style="border:none" >
 								<columns>
 									<column width="130px" />
@@ -143,15 +142,28 @@
 						</groupbox>
 						
 						<hbox>
-							<button id="btnNuevoEnvio" label="Nuevo Envío" onClick="wndEnvio.onNuevoEnvio()" image="/resources/mp_nuevoEnabled.png" />
+							<button id="btnNuevoEnvio" label="Nuevo Envío" 
+									onClick="wndEnvio.onNuevoEnvio()" 
+									image="/resources/mp_nuevoEnabled.png" 
+									sclass="btnCommandL"/>
 							<separator width="175px" />
-							<button id="btnCancelar" disabled="true" label="Cancelar" onClick="wndEnvio.onCancelar()" style="cursor:default" image="/resources/mp_cancelarDisabled.png" />
-							<button id="btnGuardar" disabled="true" label="Gurdar" onClick="wndEnvio.onGuardar()" style="cursor:default" image="/resources/mp_guardarDisabled.png" />
+							<button id="btnCancelar" 
+									disabled="true" 
+									label="Cancelar" 
+									onClick="wndEnvio.onCancelar()" 
+									image="/resources/mp_cancelarDisabled.png" 
+									sclass="btnCommandM"/>
+							<button id="btnGuardar" 
+									disabled="true" 
+									label="Guardar" 
+									onClick="wndEnvio.onGuardar()" 
+									image="/resources/mp_guardarDisabled.png" 
+									sclass="btnCommandM"/>
 						</hbox>
 					</vbox>
 					<separator width="1px" />
 					<groupbox closable="false" mold="3d" width="240px">
-					<caption label="INFO AGENCIA - ULTIMOS CORRELATIVOS" />
+					<caption label="INFO AGENCIA - ULTIMOS CORRELATIVOS" style="color: #ffffff;"/>
 						<grid style="border:none">
 							<columns>
 								<column width="140px" />
@@ -201,7 +213,7 @@
 		</tabpanels>
 	</tabbox>
 	<div align="right" style="border:1px !important">
-		<button label="Cerrar" image="/resources/mp_cerrar.png" onClick="wndEnvio.closeTabWindow()" />
+		<button label="Cerrar" image="/resources/mp_cerrar.png" onClick="wndEnvio.closeTabWindow()" sclass="btnCommandL"/>
 	</div>
 	
 </window>

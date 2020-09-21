@@ -2,7 +2,7 @@
 <zk>
 <window id="wndOperacionesRemotas" use="com.cystesoft.vyrbus.view.ctrl.WndOperacionesRemotas" title="" border="none">
 	<groupbox mold="3d" closable="false">
-		<caption label="PARAMETROS DE BÚSQUEDA" />
+		<caption label="PARAMETROS DE BÚSQUEDA" style="color: #ffffff;"/>
 		<grid>
 			<columns>
 				<column width="110px" align="right" />
@@ -19,7 +19,7 @@
 				<row spans="" >
 					<label value="FECHA PARTIDA :" />
 					<datebox id="dtbxFechaPartida" format="dd/MM/yyyy" readonly="true" width="120px" />
-					<label value="NRO. BOLETO :" />
+					<label value="NRO. COMPROBANTE:" />
 					<textbox id="txtNumeroBoleto" width="110px" />
 				</row>
 				<row>
@@ -28,10 +28,14 @@
 					<label value="NRO. DOCUMENTO :" />
 					<hbox align="center">
 						<textbox id="txtNumeroDocumetoPasajero" width="110px" />
-						<button label="Buscar" sclass="btn-vyrbus" image="/resources/mp_buscarEnabled.png" height="29px" width="80px" 
-							onClick="wndOperacionesRemotas.buscarVentas()" />						
-						<button label="Cerrar" sclass="btn-vyrbus" image="/resources/mp_cerrar.png" height="29px" width="80px" 
-							onClick="wndOperacionesRemotas.closeTabWindow()" />
+						<button label="Buscar" 
+								sclass="btnCommandM" 
+								image="/resources/mp_buscarEnabled.png"  
+								onClick="wndOperacionesRemotas.buscarVentas()" />						
+						<button label="Cerrar" 
+								sclass="btnCommandM" 
+								image="/resources/mp_cerrar.png"  
+								onClick="wndOperacionesRemotas.closeTabWindow()" />
 					</hbox>
 					
 				</row>
@@ -40,15 +44,16 @@
 	</groupbox>
 	<listbox id="lsbxVentas" mold="paging" pageSize="8" >
 		<listhead >
-			<listheader label="NRO.BOLETO" width="100px"/>
-			<listheader label="NRO.CONTROL" width="120px"/>
-			<listheader label="PASAJERO" width="200px"/>
-			<listheader label="SERVICIO" width="140px"/>
-			<listheader label="RUTA" width="120px"/>
-			<listheader label="F.PARTIDA" tooltiptext="Fecha de Partida" width="70px"/>
-			<listheader label="H.PARTIDA" align="center" tooltiptext="Hora de Partida" width="70px"/>
-			<listheader label="ASIENTO" align="center" width="50px" />
-			<listheader label="ACCIONES" width="100px"/>
+			<listheader label="NRO.COMPROBANTE" width="110px" style="color: #ffffff;"/>
+			<listheader label="NRO.CONTROL" width="120px" style="color: #ffffff;"/>
+			<listheader label="PASAJERO" width="250px" style="color: #ffffff;"/>
+			<listheader label="SERVICIO" width="140px" style="color: #ffffff;"/>
+			<listheader label="RUTA" width="180px" style="color: #ffffff;"/>
+			<listheader label="F.PARTIDA" tooltiptext="Fecha de Partida" width="70px" style="color: #ffffff;"/>
+			<listheader label="H.PARTIDA" align="center" tooltiptext="Hora de Partida" width="70px" style="color: #ffffff;"/>
+			<listheader label="ASIENTO" align="center" width="50px" style="color: #ffffff;"/>
+			<listheader label="ACCIONES" width="100px" style="color: #ffffff;"/>
+			<listheader label=""  style="color: #ffffff;"/>
 		</listhead>
 	</listbox>
 	

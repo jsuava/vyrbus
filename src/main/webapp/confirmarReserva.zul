@@ -12,11 +12,11 @@
 				<tabpanel>
 					<grid>
 						<columns>
-							<column width="96px" align="right"/>
+							<column width="100px" align="right"/>
 							<column/>
 							<column width="94px" align="right"/>
 							<column/>
-							<column width="90px"/>
+							<column width="150px"/>
 						</columns>
 						<rows>
 							<row>
@@ -25,8 +25,11 @@
 								<label value="FECHA PARTIDA :"/>
 								<datebox id="dtbxFechaPartida" format="dd/MM/yyyy" onOK="wndConfirmarReserva.buscarReservas()"/>
 								<cell rowspan="2" style="background:#f5f5f5">
-									<button label="Buscar" sclass="btn-vyrbus" autodisable="self" image="resources/mp_buscarEnabled.png" 
-									style="cursor:pointer" height="29px" width="85px" onClick="wndConfirmarReserva.buscarReservas()"/>
+									<button label="Buscar" 
+											sclass="btnCommandM" 
+											autodisable="self" 
+											image="resources/mp_buscarEnabled.png" 
+											onClick="wndConfirmarReserva.buscarReservas()"/>
 								</cell>
 							</row>
 							<row>
@@ -41,8 +44,10 @@
 								<label value="PASAJERO :"/>
 								<textbox id="txtPasajero" onOK="wndConfirmarReserva.buscarReservas()" width="220px"/>
 								<cell style="background:#f5f5f5">
-									<button label="Cerrar" sclass="btn-vyrbus" image="resources/mp_cerrarEnabled.png" style="cursor:pointer" 
-									height="29px" width="80px" onClick="wndConfirmarReserva.closeTabWindow()"/>
+									<button label="Cerrar" 
+											sclass="btnCommandM" 
+											image="resources/mp_cerrarEnabled.png"  
+											onClick="wndConfirmarReserva.closeTabWindow()"/>
 								</cell>
 							</row>
 						</rows>
@@ -51,30 +56,35 @@
 				<tabpanel>
 					<listbox id="lbxReservas" width="100%" mold="paging" pageSize="8" >
 						<listhead>
-							<listheader id="listHeaderCheck" width="3%" visible="false" />
-							<listheader label="VENTA_ID" width="5%"/>
-							<listheader label="ITINERARIO" width="7%"/>
-							<listheader label="RUTA" width="13%"/>
-							<listheader label="PASAJERO" width="20%"/>
-							<listheader label="CLIENTE" width="19%"/>
-							<listheader label="ASIENTO" width="5%"/>
-							<listheader label="NRO CONTROL" width="8%"/>
-							<listheader label="F.PARTIDA" width="7%"/>
-							<listheader label="IMPORTE" width="5%"/>
-							<listheader label="ALIMENTACION" width="7%"/>
-							<listheader label="ANULAR" width="4%" align="center"/>
+							<listheader id="listHeaderCheck" width="3%" visible="false" style="color: #ffffff;"/>
+							<listheader label="VENTA_ID" width="5%" style="color: #ffffff;"/>
+							<listheader label="ITINERARIO" width="7%" style="color: #ffffff;"/>
+							<listheader label="RUTA" width="13%" style="color: #ffffff;"/>
+							<listheader label="PASAJERO" width="20%" style="color: #ffffff;"/>
+							<listheader label="CLIENTE" width="19%" style="color: #ffffff;"/>
+							<listheader label="ASIENTO" width="5%" style="color: #ffffff;"/>
+							<listheader label="NRO CONTROL" width="8%" style="color: #ffffff;"/>
+							<listheader label="F.PARTIDA" width="7%" style="color: #ffffff;"/>
+							<listheader label="IMPORTE" width="5%" style="color: #ffffff;"/>
+							<listheader label="ALIMENTACION" width="7%" style="color: #ffffff;"/>
+							<listheader label="ANULAR" width="4%" align="center" style="color: #ffffff;"/>
 						</listhead>
 						
 						<listfoot id="listFootAnulacionMasiva" visible="false">
 							<listfooter />
 							<listfooter span="5" align="left" >
-								<checkbox id="chbxActivaAnulacionMasiva" visible="true" 
-								    label="Activar anulación masiva (Cuando esta opción este habilitada, no se podrán confirmar reservas)" 
-									onCheck="wndConfirmarReserva.activarAnulacionMasiva()"/>
+								<checkbox id="chbxActivaAnulacionMasiva" 
+										visible="true" 
+								    	label="Activar anulación masiva (Cuando esta opción este habilitada, no se podrán confirmar reservas)" 
+										onCheck="wndConfirmarReserva.activarAnulacionMasiva()"/>
 							</listfooter>
 							<listfooter span="7" align="right">
-								<button autodisable="self" sclass="btn-vyrbus" label="Anular Selección" image="resources/mp_anular.png" 
-									onClick="wndConfirmarReserva.anulacionMasiva()" tooltiptext="Anula todas las reservas seleccionadas." />
+								<button autodisable="self" 
+										sclass="btnCommandXL" 
+										label="Anular Selección" 
+										image="resources/mp_anular.png" 
+										onClick="wndConfirmarReserva.anulacionMasiva()" 
+										tooltiptext="Anula todas las reservas seleccionadas." />
 							</listfooter>
 						</listfoot>
 					</listbox>

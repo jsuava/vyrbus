@@ -554,7 +554,8 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 						}
 					});
 					btnAnular.setImage("resources/mp_anular.png");
-					btnAnular.setStyle("cursor:pointer");
+					btnAnular.setClass("btnImage");
+//					btnAnular.setStyle("cursor:pointer");
 					btnAnular.setTooltiptext("Haga click aqui si desea anular el Boleto");
 					hlayout.appendChild(btnAnular);
 					cell.appendChild(hlayout);
@@ -1433,9 +1434,11 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 		
 		
 		Groupbox groupbox=new Groupbox();
-		Caption caption=new Caption("Datos del Pasajero");
+		Caption caption=new Caption("DATOS DEL PASAJERO");
+		caption.setStyle("color: #ffffff;");
 		groupbox.appendChild(caption);
 		groupbox.setClosable(false);
+		groupbox.setMold("3d");
 		
 		Grid grid = new Grid();
 		Columns columns=new Columns();
@@ -1583,10 +1586,10 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 		Toolbar toolbar=new Toolbar();
 		Button tbbCancelar=new Button("Cancelar", "/resources/mp_cerrar.png");
 		tbbCancelar.setStyle("font-size:12px !important");
-		tbbCancelar.setWidth("120px");
+//		tbbCancelar.setWidth("120px");
 		tbbCancelar.setAutodisable("self");
 		//tbbCancelar.setMold("trendy");
-		tbbCancelar.setClass("btn-vyrbus");
+		tbbCancelar.setClass("btnCommandL");
 		hbox.appendChild(tbbCancelar);
 		
 		separator=new Separator();
@@ -1595,10 +1598,10 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 		
 		Button tbbAceptar=new Button("Aceptar", "/resources/mp_aceptarEnabled.png");
 		tbbAceptar.setStyle("font-size:12px !important");
-		tbbAceptar.setWidth("120px");
+//		tbbAceptar.setWidth("120px");
 		tbbAceptar.setAutodisable("self");
 		//tbbAceptar.setMold("trendy");
-		tbbAceptar.setClass("btn-vyrbus");
+		tbbAceptar.setClass("btnCommandL");
 		hbox.appendChild(tbbAceptar);
 		
 		div.appendChild(hbox);

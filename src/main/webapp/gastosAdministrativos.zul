@@ -1,11 +1,11 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
 <window id="wndGastosAdministrativos" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndGastosAdministrativos">
-	<groupbox closable="false" mold="3d">
-		<caption label="INGRESO / REGULARIZACION DE COBROS ADMINISTRATIVOS" />
-		<groupbox closable="false">
-			<caption>
-				<label value="INFORMACION DEL COMPROBANTE AL QUE SE APLICA" style="font-size:10px !important;color:blue" />
+	<groupbox closable="false" mold="3d" width="600px">
+		<caption label="INGRESO / REGULARIZACION DE COBROS ADMINISTRATIVOS" style="color: #ffffff;"/>
+		<groupbox closable="false" mold="3d">
+			<caption label="INFORMACION DEL COMPROBANTE AL QUE SE APLICA" style="color: #ffffff;">
+<!--  				<label value="INFORMACION DEL COMPROBANTE AL QUE SE APLICA" style="font-size:10px !important;color:blue" />  -->
 			</caption>
 			<grid style="border:none">
 				<columns>
@@ -52,9 +52,9 @@
 			</grid>
 		</groupbox>
 		<separator height="5px"/>
-		<groupbox id="gbxGastosAdmin" closable="true" open="false" >
-			<caption>
-				<label value="DATOS DEL GASTO ADMINISTRATIVO" style="font-size:10px !important;color:blue" />
+		<groupbox id="gbxGastosAdmin" closable="true" open="false" mold="3d">
+			<caption label="DATOS DEL GASTO ADMINISTRATIVO" style="color: #ffffff;">
+<!-- 				<label value="DATOS DEL GASTO ADMINISTRATIVO" style="font-size:10px !important;color:blue" /> -->
 			</caption>
 			<grid style="boRder:none">
 				<columns>
@@ -115,16 +115,28 @@
 						<label value="MOTIVO (*) : " />
 						<textbox id="txtMotivo" multiline="true" width="420px" rows="3" readonly="true" maxlength="230"/>
 					</row>
-					<row spans="3">
+					<row spans="4">
 						<div >
-							<hbox align="left">
-								<button id="btnNuevo" image="/resources/mp_nuevoEnabled.png" sclass="btn-vyrbus" label="Nuevo" 
-									autodisable="self" onClick="wndGastosAdministrativos.onNuevo()" />
-								<separator width="100px"/>
-								<button id="btnCancelar" label="Cancelar" sclass="btn-vyrbus" onClick="wndGastosAdministrativos.closeTabWindow()" />
+							<hbox align="center">
+								<button id="btnNuevo" 
+										image="/resources/mp_nuevoEnabled.png" 
+										sclass="btnCommandL" 
+										label="Nuevo" 
+										autodisable="self" 
+										onClick="wndGastosAdministrativos.onNuevo()" />
 								<separator width="15px"/>
-								<button id="btnGuardar" label="Guardar" sclass="btn-vyrbus" autodisable="self,btnNuevo,btnCancelar" 
-									onClick="wndGastosAdministrativos.onGrabar()" image="/resources/mp_guardarEnabled.png"/>
+								<button id="btnCancelar" 
+										image="/resources/mp_cerrar.png"
+										label="Cancelar" 
+										sclass="btnCommandL" 
+										onClick="wndGastosAdministrativos.closeTabWindow()" />
+								<separator width="15px"/>
+								<button id="btnGuardar"
+										image="/resources/mp_guardarEnabled.png" 
+										label="Guardar" 
+										sclass="btnCommandL" 
+										autodisable="self,btnNuevo,btnCancelar" 
+										onClick="wndGastosAdministrativos.onGrabar()" />
 							</hbox>
 						</div>
 						<separator/>

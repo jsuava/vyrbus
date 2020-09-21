@@ -4,7 +4,7 @@
 	<vlayout>
 		<hlayout>
 			<groupbox mold="3d" closable="false" width="400px">
-				<caption label="CRITERIOS DE BUSQUEDA"/>
+				<caption label="CRITERIOS DE BUSQUEDA" style="color: #ffffff;"/>
 				<grid>
 					<rows>
 						<row>
@@ -18,26 +18,29 @@
 							<hbox align="center">
 								<label value="BUSCAR :"/>
 								<textbox id="txtBuscarCliente" onOK="wndVentaReserva.buscarCliente()"/>
-								<button label="Buscar" sclass="btn-vyrbus" image="/resources/mp_buscarEnabled.png" onClick="wndVentaReserva.buscarCliente()"/>
+								<button label="Buscar" 
+										sclass="btnCommandM" 
+										image="/resources/mp_buscarEnabled.png" 
+										onClick="wndVentaReserva.buscarCliente()"/>
 							</hbox>											
 						</row>
 					</rows>
 				</grid>
 				<listbox id="lbxClientes" height="150px" width="386px" visible="false">
 					<listhead>
-						<listheader label="Documento" width="75px"/>
-						<listheader label="Razon Social"/>
-						<listheader label="Contacto" width="130px"/>
+						<listheader label="Documento" width="75px" style="color: #ffffff;"/>
+						<listheader label="Razon Social" style="color: #ffffff;"/>
+						<listheader label="Contacto" width="130px" style="color: #ffffff;"/>
 					</listhead>
 				</listbox>
 			</groupbox>
 			<groupbox id="grpbxAdicionalesCliente" width="370px" mold="3d" closable="false" visible="true">
-				<caption label="Tipo Cliente/Descuentos"/>
+				<caption label="Tipo Cliente/Descuentos" style="color: #ffffff;"/>
 				<label id="lblDescuento" value="CLIENTE CREDITO / DESCUENTO CORPORATIVO" sclass="label-size12-bold-alert"/>
 			</groupbox>
 		</hlayout>
 		<groupbox mold="3d">
-			<caption label="INFORMACIÓN DEL CLIENTE"/>
+			<caption label="INFORMACIÓN DEL CLIENTE" style="color: #ffffff;"/>
 			<grid sclass="grid-no-border">
 				<columns>
 					<column width="15%" align="right"/>
@@ -53,9 +56,23 @@
 						<cell rowspan="7" align="center" style="background:#F7F7F7">
 							<vbox align="center">
 								<separator height="100px"/>
-								<button id="btnNuevoCliente" label="Nuevo" image="/resources/mp_nuevoEnabled.png" width="90px" onClick="wndVentaReserva.nuevoCliente(); wndVentaReserva.changeImagen()"/>
-								<button id="btnModificarCliente" label="Modificar" image="/resources/mp_editarDisabled.png" disabled="true" onClick="wndVentaReserva.editarCancelarCliente(); wndVentaReserva.changeImagen()"/>
-								<button id="btnGuardarCliente" label="Guardar" image="/resources/mp_guardarDisabled.png" disabled="true" width="90px" onClick="wndVentaReserva.guardarCliente(); wndVentaReserva.changeImagen()"/>
+								<button id="btnNuevoCliente" 
+										label="Nuevo" 
+										image="/resources/mp_nuevoEnabled.png" 
+										sclass="btnCommandM" 
+										onClick="wndVentaReserva.nuevoCliente(); wndVentaReserva.changeImagen()"/>
+								<button id="btnModificarCliente" 
+										label="Modificar" 
+										image="/resources/mp_editarDisabled.png" 
+										disabled="true" 
+										onClick="wndVentaReserva.editarCancelarCliente(); wndVentaReserva.changeImagen()" 
+										sclass="btnCommandM"/>
+								<button id="btnGuardarCliente" 
+										label="Guardar" 
+										image="/resources/mp_guardarDisabled.png" 
+										disabled="true" 
+										onClick="wndVentaReserva.guardarCliente(); wndVentaReserva.changeImagen()" 
+										sclass="btnCommandM"/>
 							</vbox>																
 						</cell>
 					</row>
@@ -82,7 +99,7 @@
 						<hbox align="center" width="100%">
 							<textbox id="txtUbigeoCliente" width="170px" readonly="true"/>
 							<textbox id="txtUbigeoIdCliente" visible="false"/>
-							<button id="btnUbigeoCliente" label="..."/>
+							<button id="btnUbigeoCliente" label="..." sclass="btnImage"/>
 						</hbox>
 					</row>
 				</rows>

@@ -42,8 +42,18 @@
 					<div align="left">
 						<hbox align="center">						
 							<separator width="200px"/>
-							<button id="btnNuevo" label="Nuevo" sclass="btn-vyrbus" image="/resources/mp_nuevoEnabled.png" onClick="wndConfigPrinter.nuevo()" autodisable="self,btnGuardar"/>						
-							<button id="btnGuardar" label="Guardar" sclass="btn-vyrbus" image="/resources/mp_guardarEnabled.png" onClick="wndConfigPrinter.guardar()" autodisable="self,btnNuevo"/>
+							<button id="btnNuevo" 
+									label="Nuevo" 
+									sclass="btnCommandM" 
+									image="/resources/mp_nuevoEnabled.png" 
+									onClick="wndConfigPrinter.nuevo()" 
+									autodisable="self,btnGuardar"/>						
+							<button id="btnGuardar" 
+									label="Guardar" 
+									sclass="btnCommandM" 
+									image="/resources/mp_guardarEnabled.png" 
+									onClick="wndConfigPrinter.guardar()" 
+									autodisable="self,btnNuevo"/>
 						</hbox>
 					</div>
 				</row>

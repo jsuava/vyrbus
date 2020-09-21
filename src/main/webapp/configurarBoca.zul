@@ -56,7 +56,10 @@
 								<row style="background:#dfe1e3; padding:0px; border:none" align="center">
 									<vlayout>
 										<separator height="10px" orient="horizontal"/>
-										<button label="Descargar ..." sclass="btn-vyrbus" image="resources/mp_download.png" style="color:red; font-weight:bold">
+										<button label="Descargar ..." 
+												sclass="btnCommandL" 
+												image="resources/mp_download.png" 
+												style="color:red; font-weight:bold">
 											<attribute name="onClick">
 												Filedownload.save(WebApps.getCurrent().getResource("installer.exe"), "application/exe");
 											</attribute>
@@ -66,7 +69,10 @@
 								<row align="center" style="background:#dfe1e3;">
 									<vlayout>
 										<separator height="20px" orient="horizontal"/>
-										<button id="btnCerrar" label="Cerrar" sclass="btn-vyrbus" image="resources/mp_cerrarEnabled.png" height="28px">
+										<button id="btnCerrar" 
+												label="Cerrar" 
+												sclass="btnCommandM" 
+												image="resources/mp_cerrarEnabled.png" >
 											<attribute name="onClick">
 												wndConfigurarBoca.closeTabWindow();
 											</attribute>
