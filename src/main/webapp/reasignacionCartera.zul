@@ -4,16 +4,18 @@
 				
 	<hlayout  style="paddingtop:5px" >
 		<groupbox width="360px"  closable="false" mold="3d" >
-		<caption label="CLIENTES A REASIGNAR" />
+		<caption label="CLIENTES A REASIGNAR" style="color: #ffffff;"/>
 			<hbox align="center">
 				<label value="Funcionario"  sclass="label-size11"/>
 				<combobox id="cmbFuncionarioAnterior"  width="230px" readonly="true"/><separator width="8px" />
-				<button  onClick="wndReasignar.cargarClientes()" image="/resources/mp_buscarEnabled.png" style="cursor:pointer"/>
+				<button  onClick="wndReasignar.cargarClientes()" 
+						image="/resources/mp_buscarEnabled.png" 
+						sclass="btnImage"/>
 			</hbox><separator height="1px"/>
 			<hbox>
 				<listbox id="listClientesAReasignar"  hflex="1" vflex="true"  rows="8" checkmark="true" multiple="true" >
 		       <listhead>
-		        	<listheader label="CLIENTE"/>
+		        	<listheader label="CLIENTE" style="color: #ffffff;"/>
 		        </listhead>
 		    </listbox>
 			</hbox>				
@@ -28,7 +30,7 @@
 		</vbox>	
 							
 		<groupbox width="360px"  closable="false" mold="3d" >
-		<caption label="CLIENTES REASIGNADOS" />
+		<caption label="CLIENTES REASIGNADOS" style="color: #ffffff;"/>
 			<hbox align="center">
 				<label value="Funcionario"  sclass="label-size11"/>
 				<combobox id="cmbNuevoFuncionario"  width="230px" readonly="true"/><separator width="15px" />
@@ -36,7 +38,7 @@
 			<hbox>
 				<listbox id="listClientesReasignados" hflex="1" vflex="true" rows="8" checkmark="true" multiple="true" >
 		        <listhead>
-		        	<listheader label="CLIENTE" />
+		        	<listheader label="CLIENTE" style="color: #ffffff;"/>
 			    </listhead>
 			  </listbox>
 			</hbox>
@@ -46,11 +48,18 @@
 	
 		<hbox>
 			<div width="362px" align="right">
-				<button label="Cerrar"  sclass="btn-vyrbus" image="/resources/mp_cerrar.png" onClick="wndReasignar.closeTabWindow()" />
+				<button label="Cerrar"  
+						sclass="btnCommandL" 
+						image="/resources/mp_cerrar.png" 
+						onClick="wndReasignar.closeTabWindow()" />
 			</div>
  				<separator orient="vertical" width="27px"/>
 			<div width="360px">
-				<button id="btnGuardar" label="Guardar" sclass="btn-vyrbus" image="/resources/mp_guardarEnabled.png" onClick="wndReasignar.onSave()" />
+				<button id="btnGuardar" 
+						label="Guardar" 
+						sclass="btnCommandL" 
+						image="/resources/mp_guardarEnabled.png" 
+						onClick="wndReasignar.onSave()" />
 			</div>
 		</hbox>
 

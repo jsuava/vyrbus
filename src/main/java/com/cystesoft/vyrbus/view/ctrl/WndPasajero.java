@@ -721,7 +721,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 			item.appendChild(cell);
 			cell=new Listcell();
 			final Button button = new Button("Viajes", "resources/mp_preliminar.png");
-			button.setClass("btn-vyrbus");
+			button.setClass("btnCommandM");
 			button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 				public void onEvent(Event e){
 					wndHistory = onCreateWindowsHistory(e.getTarget().getId());
@@ -730,7 +730,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 				}
 			});
 			button.setId(pasajero.getId().toString());
-			button.setWidth("100px");
+//			button.setWidth("100px");
 			button.setTooltiptext("Haga click aqui para visualizar el historial de viajes del pasajero.");
 			cell.appendChild(button);
 			item.appendChild(cell);
@@ -1198,8 +1198,8 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 	
 	@SuppressWarnings("deprecation")
 	private Window onCreateWindowsHistory(String idPasajero){
-		String[][]col = new String[][]{{"BOLETO","80px"},{"BOL.ANT","80px"},{"RAZON SOCIAL","160px"},{"SERVICIO","80px"},
-				{"ORIGEN","80px"},{"DESTINO","80px"},{"F.PARTIDA","80px"},{"F.PAGO","80px"},{"ASIENTO","50px"},{"IMPORTE","70px"},
+		String[][]col = new String[][]{{"COMPROBANTE","100px"},{"COMP.ANT","100px"},{"RAZON SOCIAL","160px"},{"SERVICIO","80px"},
+				{"ORIGEN","80px"},{"DESTINO","80px"},{"F.PARTIDA","80px"},{"F.PAGO","80px"},{"ASI.","50px"},{"IMPORTE","70px"},
 				{"F.VENTA","80px"},{"MOVIMIENTO","80px"},{"USUARIO","160px"}};
 		
 		Window window = null;
@@ -1224,6 +1224,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 				listheader = new Listheader();
 				listheader.setLabel(col[i][0]);
 				listheader.setWidth(col[i][1]);
+				listheader.setStyle("color: #ffffff;");
 				if(i==6 || i==8 || i==10)
 					listheader.setAlign("center");
 				else if(i==9)
@@ -1266,13 +1267,13 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 			Div div = new Div();
 			div.setAlign("center");
 			Button button = new Button("Cerrar", "resources/mp_cerrarEnabled.png");
-			button.setClass("btn-vyrbus");
+			button.setClass("btnCommandL");
 			button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 				public void onEvent(Event e){
 					wndHistory.onClose();
 				}
 			});
-			button.setHeight("27px");
+//			button.setHeight("27px");
 			div.appendChild(button);
 			window.appendChild(div);
 //			window.appendChild(button);

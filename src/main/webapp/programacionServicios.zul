@@ -10,7 +10,7 @@
 			<row>
 				<!-- BUSQUEDA DE ITINERARIOS -->
 				<groupbox id="grpItinerario" closable="false" mold="3d" style="overflow:auto" width="460px" >
-					<caption label ="BUSQUEDA DE ITINERARIOS" /> 
+					<caption label ="BUSQUEDA DE ITINERARIOS" style="color: #ffffff;"/> 
 					<grid sclass="grid-no-border">
 						<columns>
 							<column  width="75px" align="right"/>
@@ -53,7 +53,7 @@
 					<rows>
 						<row>
 							<groupbox closable="false" mold="3d" style="overflow:auto" >
-								<caption label ="ESTADOS DE LOS SERVICIOS" />
+								<caption label ="ESTADOS DE LOS SERVICIOS" style="color: #ffffff;"/>
 								<grid sclass="grid-no-border">
 									<columns>
 										<column   />
@@ -76,7 +76,11 @@
 							<separator></separator>
 						</row>
 						<row>
-							<button id="cmdBuscar"  image="resources/mp_buscarEnabled.png"  label="Buscar" sclass="btn-vyrbus"   onClick="wndProgramacionServicios.onSearch()"/>
+							<button id="cmdBuscar"  
+									image="resources/mp_buscarEnabled.png"  
+									label="Buscar" 
+									sclass="btnCommandM"   
+									onClick="wndProgramacionServicios.onSearch()"/>
 						</row>
 					</rows>
 				</grid>	
@@ -88,19 +92,19 @@
 		
 	<!-- LISTA DE ITINERARIOS -->
 <groupbox  id="grbListaItinerarios" mold="3d" closable="false" height="175px" style="overflow:auto" width="802px" >
-	<caption label ="LISTA DE ITINERARIOS"/> 
+	<caption label ="LISTA DE ITINERARIOS" style="color: #ffffff;"/> 
 	<div 	id="divListaItinerarios"> 
 	<listbox id="listboxItinerarios" rows="4" height="140px" onSelect="wndProgramacionServicios.onClickLisBox()" >
 		<listhead sizable="true">
-			<listheader label="#" width="20px" />
-			<listheader label="Itinerario" sort="none" align="left" width="50px"/>
-			<listheader label="Tipo de Servicio" sort="none" align="left"/>
-			<listheader label="Oriegen" sort="none" align="left" width="80px"/>
-			<listheader label="Agencia Partida" sort="none" align="left" width="auto" />
-			<listheader label="Fecha Partida" sort="none" align="center" width="80px"/>
-			<listheader label="Hora Partida" sort="none" align="center" width="65px" />
-			<listheader label="Destino" sort="none" align="left" width="80px"/>
-			<listheader label="Agenica Llegada" sort="none" align="left" />
+			<listheader label="#" width="20px" style="color: #ffffff;" />
+			<listheader label="Itinerario" sort="none" align="left" width="50px" style="color: #ffffff;"/>
+			<listheader label="Tipo de Servicio" sort="none" align="left" style="color: #ffffff;"/>
+			<listheader label="Oriegen" sort="none" align="left" width="80px" style="color: #ffffff;"/>
+			<listheader label="Agencia Partida" sort="none" align="left" width="auto" style="color: #ffffff;"/>
+			<listheader label="Fecha Partida" sort="none" align="center" width="80px" style="color: #ffffff;"/>
+			<listheader label="Hora Partida" sort="none" align="center" width="65px" style="color: #ffffff;"/>
+			<listheader label="Destino" sort="none" align="left" width="80px" style="color: #ffffff;"/>
+			<listheader label="Agenica Llegada" sort="none" align="left" style="color: #ffffff;" />
 		</listhead>
 	</listbox>	
 	</div>
@@ -117,7 +121,7 @@
 				<row>
 					<!-- INGRESO DE DATOS -->
 					<groupbox id="grpIngresoDatos"  closable="false" mold="3d" style="overflow:auto" height="190px" width="307px" >
-					<caption label ="INGRESO DE DATOS"/>
+					<caption label ="INGRESO DE DATOS" style="color: #ffffff;"/>
 					<grid style="border:none">
 						<columns>
 							<column  width="75px" />
@@ -150,7 +154,7 @@
 					
 					<!-- PREVIO DE LA PROGRAMACION -->
 					<groupbox id="grpPrevioProgramacion"  closable="false" mold="3d" height="190px" style="overflow:auto" >
-					<caption label ="PREVIO PROGRAMACION"/>
+					<caption label ="PREVIO PROGRAMACION" style="color: #ffffff;"/>
 					<grid style="border:none">
 						<columns>
 							<column width="100%" /> 

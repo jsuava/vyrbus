@@ -630,7 +630,8 @@ public class WndPromociones extends WndBase {
 		lbxContenedorLeft.setWidth("200px");
 		lbxContenedorLeft.setHeight("320px");
 		Listhead listhead = new Listhead();
-		Listheader listheader = new Listheader(header, "", "180px");
+		Listheader listheader = new Listheader(header, "", "200px");
+		listheader.setStyle("color: #ffffff;");
 		listhead.appendChild(listheader);
 		lbxContenedorLeft.appendChild(listhead);
 		hlayout.appendChild(lbxContenedorLeft);
@@ -695,7 +696,8 @@ public class WndPromociones extends WndBase {
 		lbxContenedorRight.setWidth("200px");
 		lbxContenedorRight.setHeight("320px");
 		listhead = new Listhead();
-		listheader = new Listheader(header, "", "180px");
+		listheader = new Listheader(header, "", "200px");
+		listheader.setStyle("color: #ffffff;");
 		listhead.appendChild(listheader);
 		lbxContenedorRight.appendChild(listhead);
 		hlayout.appendChild(lbxContenedorRight);
@@ -715,7 +717,8 @@ public class WndPromociones extends WndBase {
 				asignarCriterios(oClase);
 			}
 		});
-		btnAceptar.setHeight("28px");		
+//		btnAceptar.setHeight("28px");
+		btnAceptar.setClass("btnCommandM");
 		div.appendChild(btnAceptar);
 		wndCriterios.appendChild(div);
 		
@@ -1131,7 +1134,8 @@ public class WndPromociones extends WndBase {
 		
 		lbxHoraPartida.setHeight("140px");
 		Listhead listhead = new Listhead();
-		Listheader listheader = new Listheader("HORA PARTIDA", null, "80px");
+		Listheader listheader = new Listheader("HORA PARTIDA", null, "90px");
+		listheader.setStyle("color: #ffffff;");
 		listhead.appendChild(listheader);
 		listheader = new Listheader("", null,"");
 		listhead.appendChild(listheader);
@@ -1160,8 +1164,11 @@ public class WndPromociones extends WndBase {
 				wndCriterios.onClose();
 			}
 		});
-		btnAceptar.setHeight("28px");		
+//		btnAceptar.setHeight("28px");
+		btnAceptar.setClass("btnCommandM");
 		div.appendChild(btnAceptar);
+		Label lblSpace = new Label(" ");
+		div.appendChild(lblSpace);
 		
 		Button btnCancelar = new Button("Cancelar", "resources/mp_cancelarEnabled.png");
 		btnCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
@@ -1169,7 +1176,8 @@ public class WndPromociones extends WndBase {
 				wndCriterios.onClose();
 			}
 		});
-		btnCancelar.setHeight("28px");		
+//		btnCancelar.setHeight("28px");
+		btnCancelar.setClass("btnCommandM");
 		div.appendChild(btnCancelar);
 		wndCriterios.appendChild(div);
 
@@ -1240,8 +1248,10 @@ public class WndPromociones extends WndBase {
 		lbxClientes.setHeight("140px");
 		Listhead listhead = new Listhead();
 		Listheader listheader = new Listheader("RUC", null, "80px");
+		listheader.setStyle("color: #ffffff;");
 		listhead.appendChild(listheader);
-		listheader = new Listheader("RAZON SOCIAL", null, "200px");
+		listheader = new Listheader("RAZON SOCIAL", null, "280px");
+		listheader.setStyle("color: #ffffff;");
 		listhead.appendChild(listheader);
 		lbxClientes.appendChild(listhead);		
 		wndCriterios.appendChild(lbxClientes);
@@ -1259,8 +1269,12 @@ public class WndPromociones extends WndBase {
 				asignarCliente();
 			}
 		});
-		btnAceptar.setHeight("28px");		
+//		btnAceptar.setHeight("28px");
+		btnAceptar.setClass("btnCommandM");
 		div.appendChild(btnAceptar);
+		
+		Label lblSpace = new Label(" ");
+		div.appendChild(lblSpace);
 		
 		Button btnCancelar = new Button("Cancelar", "resources/mp_cancelarEnabled.png");
 		btnCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
@@ -1270,7 +1284,8 @@ public class WndPromociones extends WndBase {
 				wndCriterios.onClose();
 			}
 		});
-		btnCancelar.setHeight("28px");		
+//		btnCancelar.setHeight("28px");
+		btnCancelar.setClass("btnCommandM");
 		div.appendChild(btnCancelar);
 		wndCriterios.appendChild(div);
 		

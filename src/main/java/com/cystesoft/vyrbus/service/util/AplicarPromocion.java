@@ -460,9 +460,10 @@ public class AplicarPromocion{
 							}
 						});
 						button.setId(promocion.getId().toString());
-						button.setWidth("120px");
-						button.setHeight("35px");
-						button.setStyle("font-size:9px");
+//						button.setWidth("120px");
+//						button.setHeight("35px");
+//						button.setStyle("font-size:9px; color: white;");
+						button.setClass("btnPromocion");
 						if(row==null)
 							row = new Row();
 						row.appendChild(button);
@@ -483,7 +484,8 @@ public class AplicarPromocion{
 							win.onClose();
 						}
 					});
-					button.setHeight("28px");
+//					button.setHeight("28px");
+					button.setClass("btnCommandL");
 					div.appendChild(button);
 					win.appendChild(div);
 					return win;

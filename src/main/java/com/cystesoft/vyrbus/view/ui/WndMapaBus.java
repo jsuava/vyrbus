@@ -265,7 +265,8 @@ public class WndMapaBus extends WndBase implements Serializable {
 		Groupbox groupbox = new Groupbox();
 		groupbox.setMold("3d");
 		groupbox.setClosable(false);
-		Caption caption = new Caption("Leyenda de imagenes");
+		Caption caption = new Caption("LEYENDA DE IMAGENES");
+		caption.setStyle("color: #ffffff;");
 		groupbox.appendChild(caption);
 		Grid grid = new Grid();
 		Rows rows = new Rows();
@@ -477,14 +478,16 @@ public class WndMapaBus extends WndBase implements Serializable {
 		rows = new Rows();
 		row = new Row();
 		row.setStyle("background:white");
-		Button button = new Button("Refrescar Mapa", "/resources/mp_refrescarEnabled.png");
-		button.setHeight("28px");
+		Button button = new Button("Refrescar Mapa", "/resources/mp_recargar16.png");
+//		button.setHeight("28px");
+		button.setClass("btnCommandXL");
 		row.appendChild(button);
 		rows.appendChild(row);
 		row = new Row();
 		row.setStyle("background:white");
 		hlayout1 = new Hlayout();
 		button = new Button("Aceptar", "/resources/mp_aceptarEnabled.png");
+		button.setClass("btnCommandM");
 //		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 //			public void onEvent(Event e){
 //				onRefreshMapaAsientos(mapaAsientos, getDetalleItinerario());
@@ -493,6 +496,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 		button.addEventListener(Events.ON_CLICK, selectedEventListener);
 		hlayout1.appendChild(button);
 		button = new Button("Cancelar", "/resources/mp_cancelarEnabled.png");
+		button.setClass("btnCommandM");
 		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			public void onEvent(Event e){
 				oThisWindow.onClose();

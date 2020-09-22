@@ -322,13 +322,27 @@ a:active {
 	cursor: pointer;
 	font-size: 14px;
 	height: 30px;
-	width: 150px;
+	width: 160px;
 }
 
 .btnCommandXL:hover{
 	box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 }
 
+.btnPromocion{
+	background-color: #283593;
+	border-radius: 4px;
+	border-width: 0px; 
+	color: #FFFFFF;
+	cursor: pointer;
+	font-size: 9px;
+	height: 35px;
+	width: 125px;
+}
+
+.btnPromocion:hover{
+	box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
 
 .btnImage{
 	background-color: #4285F4;	

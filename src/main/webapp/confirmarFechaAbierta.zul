@@ -113,7 +113,7 @@
 											<listheader label="SERVICIO" width="120px" style="color: #ffffff;"/>
 											<listheader label="RUTA" width="130px" style="color: #ffffff;"/>
 											<listheader label="HORPAR" width="60px" align="center" style="color: #ffffff;"/>
-											<listheader label="TARIFA" width="50px" align="right" style="color: #ffffff;"/>
+											<listheader label="TARIFA" width="60px" align="center" style="color: #ffffff;"/>
 										</listhead>
 									</listbox>
 								</vlayout>

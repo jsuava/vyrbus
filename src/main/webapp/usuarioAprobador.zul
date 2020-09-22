@@ -4,9 +4,9 @@
 	<div id="divLista">
 		<listbox id="listboxLista">
 			<listhead sizable="true">
-				<listheader label="#" width="50px" sort="auto" />
-				<listheader label="USUARIO" sort="auto" />
-				<listheader label="NIVEL APROBACION" sort="auto" />
+				<listheader label="#" width="50px" sort="auto" style="color: #ffffff;"/>
+				<listheader label="USUARIO" sort="auto" style="color: #ffffff;"/>
+				<listheader label="NIVEL APROBACION" sort="auto" style="color: #ffffff;"/>
 			</listhead>
 		</listbox>
 	</div>

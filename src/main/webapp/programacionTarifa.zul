@@ -5,16 +5,16 @@
 		<listbox id="listboxLista" rows="15" >
 			<listhead sizable="true">
 				<listheader label="#" width="30px" />
-					<listheader label="CANAL" sort="auto" align="left" width="60px" />
-					<listheader label="ORIGEN" sort="auto" align="left"   width="110px" />
-					<listheader label="DESTINO" sort="auto" align="left"  width="110px" />
-					<listheader label="SERVICIO" sort="auto" align="left" width="140px" />
-					<listheader label="FECHA" sort="auto" align="center" width="93px" />
-					<listheader label="HORA" sort="auto" align="center" width="85px"/>
-					<listheader label="PISO" sort="auto" align="center" width="93px"/>
-					<listheader label="ZONA" sort="auto" align="center" width="85px"/>
-					<listheader label="TARIFA" sort="auto" align="right" />
-					<listheader label="TARIFA" sort="auto" align="right" />
+					<listheader label="CANAL" sort="auto" align="left" width="60px" style="color: #ffffff;"/>
+					<listheader label="ORIGEN" sort="auto" align="left"   width="110px" style="color: #ffffff;"/>
+					<listheader label="DESTINO" sort="auto" align="left"  width="110px" style="color: #ffffff;"/>
+					<listheader label="SERVICIO" sort="auto" align="left" width="140px" style="color: #ffffff;"/>
+					<listheader label="FECHA" sort="auto" align="center" width="93px" style="color: #ffffff;"/>
+					<listheader label="HORA" sort="auto" align="center" width="85px" style="color: #ffffff;"/>
+					<listheader label="PISO" sort="auto" align="center" width="93px" style="color: #ffffff;"/>
+					<listheader label="ZONA" sort="auto" align="center" width="85px" style="color: #ffffff;"/>
+					<listheader label="TARIFA" sort="auto" align="right" style="color: #ffffff;"/>
+					<listheader label="TARIFA" sort="auto" align="right" style="color: #ffffff;"/>
 			</listhead>
 		</listbox>	
 	</div>
@@ -23,7 +23,7 @@
 		<hbox >
 			<!-- DATOS DE LA TARIFA -->
 			<groupbox id="grpTarifa" closable="false" mold="3d" width="548px">
-			<caption label="DATOS DE LA TARIFA" />
+			<caption label="DATOS DE LA TARIFA" style="color: #ffffff;"/>
 				<grid style="border:none">
 					<columns>
 						<column width="99px;" align="right" /> 
@@ -82,7 +82,7 @@
 		<hbox>
 			<!-- Rango de Fecha para la generacion de los itinerarios -->
 			<groupbox mold="3d" closable="false" height="141px" width="115px">
-			<caption label="INICIO Y FIN DE LA PROGRAMACIÓN"/>
+			<caption label="INICIO Y FIN DE LA PROGRAMACIÓN" style="color: #ffffff;"/>
 				<grid  height="100%" style="border:none">
 					<columns>
 <!-- 						<column  width="35%" align="right" /> -->

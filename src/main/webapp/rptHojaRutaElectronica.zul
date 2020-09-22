@@ -27,29 +27,29 @@
 					<hbox align="center">
 						<combobox id="cmbDestino" readonly="true" width="150px"/>
 						
-						<button label="Buscar" sclass="btn-vyrbus" image="/resources/mp_buscarEnabled.png" onClick="wndRptHREEmitidas.buscar()" />
-						<button label="Exportar" sclass="btn-vyrbus" image="/resources/mp_excel.png" onClick="wndRptHREEmitidas.Exportar()"/>
-						<button label="Cerrar" sclass="btn-vyrbus" image="/resources/mp_cerrar.png" onClick="wndRptHREEmitidas.closeTabWindow()"/>
+						<button label="Buscar" sclass="btnCommandM" image="/resources/mp_buscarEnabled.png" onClick="wndRptHREEmitidas.buscar()" />
+						<button label="Exportar" sclass="btnCommandM" image="/resources/mp_excel.png" onClick="wndRptHREEmitidas.Exportar()"/>
+						<button label="Cerrar" sclass="btnCommandM" image="/resources/mp_cerrar.png" onClick="wndRptHREEmitidas.closeTabWindow()"/>
 					</hbox>
 				</row>
 			</rows>
 		</grid>	
 		<listbox id="lsbxHREEmitidas" mold="paging" pageSize="12">
 			<listhead>
-				<listheader label="F.SALIDA" width="70px" tooltiptext="Fecha de Salida"/>
-				<listheader label="H.SALIDA" width="60px" tooltiptext="Hora de Salida"/>
-				<listheader label="RUTA" width="150px"/>
-				<listheader label="SERVICIO" width="120px"/>
-				<listheader label="BUS" width="50px"/>
-				<listheader label="F.E.LLEGADA" width="80px" tooltiptext="Fecha estimación llegada"/>
-				<listheader label="H.E.LLEGADA" width="80px" tooltiptext="Hora estimación llegada"/>
-				<listheader label="HOJA RUTA" width="80px"/>
-				<listheader label="F.R.LLEGADA" width="80px" tooltiptext="Fecha real llegada"/>
-				<listheader label="H.R.LLEGADA" width="80px" tooltiptext="Hora real llegada"/>
-				<listheader label="TRIPULANTE" width="190px"/>
-				<listheader label="PILOTO" width="190px"/>
-				<listheader label="COPILOTO" width="190px"/>
-				<listheader label="COPILOTO AUXILIAR" width="170px" />
+				<listheader label="F.SALIDA" width="70px" tooltiptext="Fecha de Salida" style="color: #ffffff;"/>
+				<listheader label="H.SALIDA" width="60px" tooltiptext="Hora de Salida" style="color: #ffffff;"/>
+				<listheader label="RUTA" width="150px" style="color: #ffffff;"/>
+				<listheader label="SERVICIO" width="120px" style="color: #ffffff;"/>
+				<listheader label="BUS" width="80px" style="color: #ffffff;"/>
+				<listheader label="F.E.LLEGADA" width="80px" tooltiptext="Fecha estimación llegada" style="color: #ffffff;"/>
+				<listheader label="H.E.LLEGADA" width="80px" tooltiptext="Hora estimación llegada" style="color: #ffffff;"/>
+				<listheader label="HOJA RUTA" width="100px" style="color: #ffffff;"/>
+				<listheader label="F.R.LLEGADA" width="80px" tooltiptext="Fecha real llegada" style="color: #ffffff;"/>
+				<listheader label="H.R.LLEGADA" width="80px" tooltiptext="Hora real llegada" style="color: #ffffff;"/>
+				<listheader label="TRIPULANTE" width="190px" style="color: #ffffff;"/>
+				<listheader label="PILOTO" width="190px" style="color: #ffffff;"/>
+				<listheader label="COPILOTO" width="190px" style="color: #ffffff;"/>
+				<listheader label="COPILOTO AUXILIAR"  style="color: #ffffff;"/>
 			</listhead>
 		</listbox>	
 	</groupbox>

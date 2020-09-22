@@ -40,20 +40,31 @@
 				</columns>
 				<rows>
 					<row>
-						<button label="Detallar selección" sclass="btn-vyrbus" width="160px" image="/resources/mp_preliminar.png" 
-							onClick="wndRptVtaPromo.buscarVentasPromocionDetalle()"  />
-						<button label="Buscar Resumen" sclass="btn-vyrbus" width="160px" image="/resources/mp_buscarEnabled.png" 
-							onClick="wndRptVtaPromo.buscarVentasPromocion()" />
+						<button label="Detallar selección" 
+								sclass="btnCommandXL" 
+								image="/resources/mp_preliminar.png" 
+								onClick="wndRptVtaPromo.buscarVentasPromocionDetalle()"  />
+						<button label="Buscar Resumen" 
+								sclass="btnCommandXL" 
+								image="/resources/mp_buscarEnabled.png" 
+								onClick="wndRptVtaPromo.buscarVentasPromocion()" />
 					</row>
 					<row>
-						<button label="Exportar Detallado" sclass="btn-vyrbus" width="160px" image="/resources/mp_excel.png" 
-							onClick="wndRptVtaPromo.exportarDetalle()" />
-						<button label="Exportar Resumen" sclass="btn-vyrbus" width="160px" image="/resources/mp_excel.png" 
-							onClick="wndRptVtaPromo.exportar()" />
+						<button label="Exportar Detallado" 
+								sclass="btnCommandXL" 
+								image="/resources/mp_excel.png" 
+								onClick="wndRptVtaPromo.exportarDetalle()" />
+						<button label="Exportar Resumen" 
+								sclass="btnCommandXL" 
+								image="/resources/mp_excel.png" 
+								onClick="wndRptVtaPromo.exportar()" />
 					</row>
 					<row>
 						<separator/>
-						<button label="Cerrar" sclass="btn-vyrbus" image="/resources/mp_cerrar.png" onClick="wndRptVtaPromo.closeTabWindow()" />
+						<button label="Cerrar" 
+								sclass="btnCommandL" 
+								image="/resources/mp_cerrar.png" 
+								onClick="wndRptVtaPromo.closeTabWindow()" />
 					</row>
 				</rows>
 			</grid>
@@ -62,11 +73,11 @@
 		<vbox>
 			<listbox id="lstVentasPromocion" rows="8" width="535px">
 				<listhead>
-					<listheader label="PROMOCIÓN"  sort="auto"/>
-					<listheader label="VAL.DESC" width="50px" align="center" sort="auto" tooltiptext="Valor del descuento" />
-					<listheader label="CANT." width="50px" align="right" sort="auto" tooltiptext="Cantidad ventas"/>
-					<listheader label="T.DESC." width="80px" align="right" sort="auto" tooltiptext="Total descuento"/>
-					<listheader label="T.VENTA" width="80px" align="right" sort="auto" tooltiptext="Total venta"/>
+					<listheader label="PROMOCIÓN"  sort="auto" style="color: #ffffff;"/>
+					<listheader label="VAL.DESC" width="50px" align="center" sort="auto" tooltiptext="Valor del descuento" style="color: #ffffff;"/>
+					<listheader label="CANT." width="50px" align="right" sort="auto" tooltiptext="Cantidad ventas" style="color: #ffffff;"/>
+					<listheader label="T.DESC." width="80px" align="right" sort="auto" tooltiptext="Total descuento" style="color: #ffffff;"/>
+					<listheader label="T.VENTA" width="80px" align="right" sort="auto" tooltiptext="Total venta" style="color: #ffffff;"/>
 				</listhead>
 			</listbox>
 			
@@ -77,22 +88,22 @@
 		</vbox>
 	</hbox>
 	<groupbox width="965px" mold="3d" closable="false">
-		<caption label="DETALLE DE LA PROMOCIÓN SELECCIONADA" />
+		<caption label="DETALLE DE LA PROMOCIÓN SELECCIONADA" style="color: #ffffff;"/>
 		<listbox id="lstVentasPromocionDeta" rows="10">
 			<listhead>
-				<listheader label="NRO." width="40px"/>
-				<listheader label="F.VENTA" width="80px" sort="auto" />
-				<listheader label="NRO.BOLETO" width="100px" align="center" sort="auto" />
-				<listheader label="NOMBRES DEL PASAJERO" width="280px" sort="auto"/>
-				<listheader label="RUTA" width="180px" sort="auto" />
-				<listheader label="SERVICIO" width="130px" sort="auto" />
-				<listheader label="F.PARTIDA" width="80px" align="center" sort="auto" />
-				<listheader label="H.PARTIDA" width="70px" align="center" sort="auto" />
-				<listheader label="TARIFA" width="60px" align="center" sort="auto" />
-				<listheader label="DESC." width="60px" align="center" sort="auto" />
-				<listheader label="TOTAL" width="60px" align="center" sort="auto" />
-				<listheader label="USUARIO VENTA" width="280px" sort="auto" />
-				<listheader label="AGENCIA VENTA" width="190px" sort="auto" />
+				<listheader label="NRO." width="40px" style="color: #ffffff;"/>
+				<listheader label="F.VENTA" width="80px" sort="auto" style="color: #ffffff;"/>
+				<listheader label="NRO.BOLETO" width="100px" align="center" sort="auto" style="color: #ffffff;"/>
+				<listheader label="NOMBRES DEL PASAJERO" width="280px" sort="auto" style="color: #ffffff;"/>
+				<listheader label="RUTA" width="180px" sort="auto" style="color: #ffffff;"/>
+				<listheader label="SERVICIO" width="130px" sort="auto" style="color: #ffffff;"/>
+				<listheader label="F.PARTIDA" width="80px" align="center" sort="auto" style="color: #ffffff;"/>
+				<listheader label="H.PARTIDA" width="70px" align="center" sort="auto" style="color: #ffffff;"/>
+				<listheader label="TARIFA" width="60px" align="center" sort="auto" style="color: #ffffff;"/>
+				<listheader label="DESC." width="60px" align="center" sort="auto" style="color: #ffffff;"/>
+				<listheader label="TOTAL" width="60px" align="center" sort="auto" style="color: #ffffff;"/>
+				<listheader label="USUARIO VENTA" width="280px" sort="auto" style="color: #ffffff;"/>
+				<listheader label="AGENCIA VENTA" width="190px" sort="auto" style="color: #ffffff;"/>
 			</listhead>
 		</listbox>
 	</groupbox>

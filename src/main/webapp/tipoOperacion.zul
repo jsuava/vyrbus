@@ -9,10 +9,17 @@
 		</vlayout>
 		<separator height="1px" />
 		<div align="center">
-			<button id="btnMostrarCalendario" label="Seleccionar Fecha" sclass="btnCommandL" image="resources/mp_calendarEnabled.png" 
-				width="200px" />
-			<button id="btnCerrar" label="Cerrar" sclass="btnCommandL" image="resources/mp_cerrarEnabled.png" 
-				onClick="wndTipoOperacion.closeTabWindow()" visible="false"/>
+			<button id="btnMostrarCalendario" 
+					label="Seleccionar Fecha" 
+					sclass="btnCommandL" 
+					image="resources/mp_calendarEnabled.png" 
+					width="200px" />
+			<button id="btnCerrar" 
+					label="Cerrar" 
+					sclass="btnCommandL" 
+					image="resources/mp_cerrarEnabled.png" 
+					onClick="wndTipoOperacion.closeTabWindow()" 
+					visible="false"/>
 		</div>
 	</groupbox>
 	<separator height="1px" />
@@ -20,9 +27,14 @@
 		<caption label="SELECCIONAR FECHA" style="color: #ffffff;"/>
 		<hbox align="center">			
 			<datebox id="dtbxFechaLiquidacion" format="dd/MM/yyyy"/>
-			<button label="Cerrar" sclass="btnCommandL"  image="resources/mp_cerrarEnabled.png" 
-				onClick="wndTipoOperacion.closeTabWindow()"/>	
-			<button id="btnCaja" label="Caja" sclass="btnCommandL" image="/resources/windows/window_aperturaCaja.png"/>
+			<button label="Cerrar" 
+					sclass="btnCommandL"  
+					image="resources/mp_cerrarEnabled.png" 
+					onClick="wndTipoOperacion.closeTabWindow()"/>	
+			<button id="btnCaja" 
+					label="Caja" 
+					sclass="btnCommandL" 
+					image="/resources/windows/window_aperturaCaja.png"/>
 		</hbox>
 	</groupbox>
 </window>

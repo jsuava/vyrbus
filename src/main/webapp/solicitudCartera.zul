@@ -21,7 +21,10 @@
 						<rows>
 							<row>
 								<label  value="Funcionario" sclass="label-size11-bold"/>
-								<combobox id="cmbFuncionario" readonly="true" width="215px" onSelect="wndsolicitud.onSelectfuncionario(cmbFuncionario, cmbCliente)" />
+								<combobox id="cmbFuncionario" 
+											readonly="true" 
+											width="215px" 
+											onSelect="wndsolicitud.onSelectfuncionario(cmbFuncionario, cmbCliente)" />
 								<label  value="Cliente" sclass="label-size11-bold" />
 	 							<hbox align="center">
 	 								<combobox id="cmbCliente" readonly="true" width="315px" />

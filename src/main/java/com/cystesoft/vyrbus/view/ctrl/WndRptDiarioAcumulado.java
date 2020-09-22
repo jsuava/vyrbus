@@ -90,7 +90,7 @@ public class WndRptDiarioAcumulado extends WndBase implements Serializable {
 			
 			Frozen frozen=new Frozen();
 			frozen.setColumns(4);
-			frozen.setStyle("background: #99D9EA");
+			frozen.setStyle("background: #4285F4");
 			lstbxDiarioAcumulado.appendChild(frozen);
 			
 //			<frozen columns="1" style="background: #99D9EA" >
@@ -123,31 +123,31 @@ public class WndRptDiarioAcumulado extends WndBase implements Serializable {
 				for(int a = 0; a < lstPrimeraFila.size(); a ++){
 						switch(a){
 							case 0:
-								atributoColumnas[a] = "width:135px";
+								atributoColumnas[a] = "width:135px;";
 								break;
 							case 1:
-								atributoColumnas[a] = "width:40px; align:center";
+								atributoColumnas[a] = "width:40px; align:center;";
 								break;
 							case 2:
 								if(detallado){
-									atributoColumnas[a] = "width:160px";																		
+									atributoColumnas[a] = "width:160px;";																		
 								}else{
-									atributoColumnas[a] = "width:75px";
+									atributoColumnas[a] = "width:75px;";
 								}
 								break;
 							case 3:
 								if(cmbrutaItinerario.getSelectedItem().getValue().toString().equals(2)){
-									atributoColumnas[a] = "width:200px";
+									atributoColumnas[a] = "width:200px;";
 								}else{
-									atributoColumnas[a] = "width:135px";
+									atributoColumnas[a] = "width:135px;";
 								}
 								break;
 									
 							default:
 								if(!detallado && a == 4){
-									atributoColumnas[a] = "width:40px; align:center";
+									atributoColumnas[a] = "width:40px; align:center;";
 								}else{
-									atributoColumnas[a] = "width:110px; align:right";
+									atributoColumnas[a] = "width:110px; align:right;";
 								}
 								break;
 							}
@@ -187,6 +187,7 @@ public class WndRptDiarioAcumulado extends WndBase implements Serializable {
 								
 				if(f == 0){
 					oListheader.setAlign("left");
+					oListheader.setStyle("color: #ffffff;");
 				
 					if(atributoColumnas != null && c < atributoColumnas.length && atributoColumnas[c] != null){
 						String[] atributos = atributoColumnas[c].split(";");

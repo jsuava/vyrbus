@@ -31,7 +31,7 @@
 								<hbox align="center">
 									<combobox id="cmbDestinoList" readonly="true" width="115px" />
 									<separator width="15px"/>
-									<button label="Buscar" sclass="btn-vyrbus" image="/resources/mp_buscarEnabled.png" 
+									<button label="Buscar" sclass="btnCommandM" image="/resources/mp_buscarEnabled.png" 
 										onClick="wndActivacionTramoVenta.buscarTramosProgramados()" />
 								</hbox>
 								
@@ -40,13 +40,15 @@
 					</grid>
 					<listbox id="lsbxListaTramosProgramados" rows="10" mold="paging" >
 						<listhead>
-							<listheader label="ITEM" width="35px" />
-							<listheader label="ITINERARIO" width="80px" />
-							<listheader label="ORIGEN" width="110px"/>
-							<listheader label="DESTINO" width="110px"/>
-							<listheader label="SERVICIO" width="120px" />
-							<listheader label="F.PARTIDA" width="70px" />
- 							<listheader label="H.PARTIDA" width="60px"/>
+							<listheader label="ITEM" width="35px" style="color: #ffffff;"/>
+							<listheader label="ITINERARIO" width="80px" style="color: #ffffff;"/>
+							<listheader label="ORIGEN" width="110px" style="color: #ffffff;"/>
+							<listheader label="DESTINO" width="110px" style="color: #ffffff;"/>
+							<listheader label="SERVICIO" width="140px" style="color: #ffffff;"/>
+							<listheader label="F.PARTIDA" width="70px" style="color: #ffffff;"/>
+ 							<listheader label="H.PARTIDA" width="60px" style="color: #ffffff;"/>
+ 							<listheader label=" " style="color: #ffffff;"/>
+ 							
 <!-- 							<listheader label="TIPO" width="110px"/> -->
 <!-- 							<listheader width="80px" /> -->
 						</listhead>
@@ -64,8 +66,8 @@
 							<rows>
 								<row spans="4">
 									<div align="left">
-										<groupbox closable="false" open="false">
-										<caption label="Parámetros de búsqueda" style="font-weight: bold;font-size:11px !important" />
+										<groupbox closable="false" open="false" mold="3d">
+										<caption label="PARAMETROS DE BUSQUEDA" style="font-weight: bold;font-size:11px !important; color: #ffffff;" />
 										</groupbox>
 									</div>
 								</row>
@@ -82,8 +84,10 @@
 									<hbox align="center">
 										<timebox id="tmbxHoraPartida" format="HH:mm" />
 										<separator width="25px"/>
-										<button label="Buscar" sclass="btn-vyrbus" image="/resources/mp_buscarEnabled.png" 
-											onClick="wndActivacionTramoVenta.buscarItinerarios()" />
+										<button label="Buscar" 
+												sclass="btnCommandM" 
+												image="/resources/mp_buscarEnabled.png" 
+												onClick="wndActivacionTramoVenta.buscarItinerarios()" />
 									</hbox>
 								</row>
 							</rows>
@@ -94,17 +98,17 @@
 						<rows>
 							<row>
 								<vbox>
-									<groupbox closable="false"  width="555px" open="false">
-									<caption label="Lista de Itinerarios" style="font-weight: bold;font-size:11px !important" />
+									<groupbox closable="false"  width="557px" open="false" mold="3d">
+										<caption label="LISTA DE ITINERARIOS" style="font-weight: bold;font-size:11px !important; color: #ffffff;" />
 									</groupbox>
 									<listbox id="lsbxitinerarios" height="110px" width="555px" onSelect="wndActivacionTramoVenta.buscarDetalleItinerario()" >
 										<listhead>
-											<listheader label="ITEM" width="35px" />
-											<listheader label="ORIGEN" width="120px" />
-											<listheader label="DESTINO" width="120px" />
-											<listheader label="SERVICIO" width="130px" />
-											<listheader label="F.PARTIDA" width="70px" />
-											<listheader label="H.PARTIDA" width="60px" />
+											<listheader label="ITEM" width="35px" style="color: #ffffff;"/>
+											<listheader label="ORIGEN" width="120px" style="color: #ffffff;"/>
+											<listheader label="DESTINO" width="120px" style="color: #ffffff;"/>
+											<listheader label="SERVICIO" width="130px" style="color: #ffffff;"/>
+											<listheader label="F.PARTIDA" width="90px" style="color: #ffffff;"/>
+											<listheader label="H.PARTIDA" width="60px" style="color: #ffffff;"/>
 										</listhead>
 									</listbox>
 								</vbox>
@@ -117,12 +121,12 @@
 										</groupbox>
 										<listbox id="lsbxDetalleItinerario" height="165px" width="555px" checkmark="true" multiple="true" onSelect="wndActivacionTramoVenta.onSelectDetalleItinerario()" >
 											<listhead>
-												<listheader width="30px" />
-												<listheader label="ITEM" width="35px" />
-												<listheader label="TRAMO" width="210px" />
-												<listheader label="F.PARTIDA" width="70px" />
-												<listheader label="H.PARTIDA" width="60px" />
-												<listheader label="TARIFA" width="60px" align="right" />
+												<listheader width="30px" style="color: #ffffff;"/>
+												<listheader label="ITEM" width="35px" style="color: #ffffff;"/>
+												<listheader label="TRAMO" width="250px" style="color: #ffffff;"/>
+												<listheader label="F.PARTIDA" width="100px" style="color: #ffffff;"/>
+												<listheader label="H.PARTIDA" width="70px" style="color: #ffffff;"/>
+												<listheader label="TARIFA" width="70px" align="center" style="color: #ffffff;"/>
 											</listhead>
 										</listbox>
 									</vbox>
@@ -150,8 +154,11 @@
 											<separator height="20px"/>
 											<hbox>
 												<separator width="30px"/>
-												<button id="btnGuardar" label="Guardar" sclass="btn-vyrbus" image="/resources/mp_guardarEnabled.png" 
-													onClick="wndActivacionTramoVenta.Guardar()" />
+												<button id="btnGuardar" 
+														label="Guardar" 
+														sclass="btnCommandM" 
+														image="/resources/mp_guardarEnabled.png" 
+														onClick="wndActivacionTramoVenta.Guardar()" />
 											</hbox>
 										</div>
 									</hbox>

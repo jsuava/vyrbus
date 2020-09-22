@@ -24,7 +24,7 @@
 								<combobox id="cmbAgencia" width="200px" disabled="true"/>
 								<label value="FECHA PARTIDA :"/>
 								<datebox id="dtbxFechaPartida" format="dd/MM/yyyy" onOK="wndConfirmarReserva.buscarReservas()"/>
-								<cell rowspan="2" style="background:#f5f5f5">
+								<cell rowspan="2" style="background:#f5f5f5; border :none;">
 									<button label="Buscar" 
 											sclass="btnCommandM" 
 											autodisable="self" 
@@ -43,7 +43,7 @@
 								<textbox id="txtNumeroDocumento" width="100px" onOK="wndConfirmarReserva.buscarReservas()"/>
 								<label value="PASAJERO :"/>
 								<textbox id="txtPasajero" onOK="wndConfirmarReserva.buscarReservas()" width="220px"/>
-								<cell style="background:#f5f5f5">
+								<cell style="background:#f5f5f5; border: none;">
 									<button label="Cerrar" 
 											sclass="btnCommandM" 
 											image="resources/mp_cerrarEnabled.png"  

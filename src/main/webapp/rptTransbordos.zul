@@ -2,7 +2,7 @@
 <zk>
 <window id="wndRptTransbordo" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndRptTransbordos">
 	<groupbox mold="3d" closable="false">
-		<caption label="REPORTE DE PASAJEROS TRANSBORDADOS" />
+		<caption label="REPORTE DE PASAJEROS TRANSBORDADOS" style="color: #ffffff;"/>
 		<grid>
 			<columns>
 				<column width="100px" align="right" />
@@ -23,7 +23,9 @@
 					<hbox align="center">
 						<combobox id="cmbDestino" readonly="true" width="150px"/>
 						<separator width="72px" />
-						<button image="/resources/mp_excel.png" onClick="wndRptTransbordo.exportarExcel()" />
+						<button image="/resources/mp_excel.png" 
+								onClick="wndRptTransbordo.exportarExcel()" 
+								sclass="btnImage"/>
 					</hbox>
 					
 				</row>
@@ -33,8 +35,14 @@
 					<label value="PASAJERO :" />
 					<hbox align="center">
 						<textbox id="txtPasajero" readonly="true" />
-						<button label="Buscar" sclass="btn-vyrbus" image="/resources/mp_buscarEnabled.png" onClick="wndRptTransbordo.buscar()"/>
-						<button label="Cerrar" sclass="btn-vyrbus" image="/resources/mp_cerrar.png" onClick="wndRptTransbordo.closeTabWindow()" />
+						<button label="Buscar" 
+								sclass="btnCommandM" 
+								image="/resources/mp_buscarEnabled.png" 
+								onClick="wndRptTransbordo.buscar()"/>
+						<button label="Cerrar" 
+								sclass="btnCommandM" 
+								image="/resources/mp_cerrar.png" 
+								onClick="wndRptTransbordo.closeTabWindow()" />
 					</hbox>
 				</row>
 			</rows>
@@ -42,20 +50,20 @@
 	</groupbox>
 	<listbox id="lstTransbordos" mold="paging" pageSize="14">
 		<listhead>
-			<listheader label="F.TRANSBORDO" width="130px" align="center" />
-			<listheader label="TIPO" width="50px" />
-			<listheader label="NRO.BOLETO" width="80px" />
-			<listheader label="PASAJERO" width="220px" />
-			<listheader label="RUTA" width="120px"/>
-			<listheader label="SERVICIO ORIGEN" width="125px" />
-			<listheader label="F.PARTIDA ORIGEN" width="100px" />
-			<listheader label="H.PARTIDA ORIGEN" width="100px" />
-			<listheader label="ASIENTO ORIGEN" width="97px" align="center" />
-			<listheader label="SERVICIO DESTINO" width="125px" />
-			<listheader label="F.PARTIDA DESTINO" width="100px" />
-			<listheader label="H.PARTIDA DESTINO" width="100px" />
-			<listheader label="ASIENTO DESTINO" width="97px" align="center" />
-			<listheader label="U.TRANSBORDO" width="220px" />
+			<listheader label="F.TRANSBORDO" width="130px" align="center" style="color: #ffffff;"/>
+			<listheader label="TIPO" width="50px" style="color: #ffffff;"/>
+			<listheader label="NRO.COMPROBANTE" width="100px" style="color: #ffffff;"/>
+			<listheader label="PASAJERO" width="250px" style="color: #ffffff;"/>
+			<listheader label="RUTA" width="120px" style="color: #ffffff;"/>
+			<listheader label="SERVICIO ORIGEN" width="125px" style="color: #ffffff;"/>
+			<listheader label="F.PARTIDA ORIGEN" width="110px" style="color: #ffffff;"/>
+			<listheader label="H.PARTIDA ORIGEN" width="100px" style="color: #ffffff;"/>
+			<listheader label="ASIENTO ORIGEN" width="97px" align="center" style="color: #ffffff;"/>
+			<listheader label="SERVICIO DESTINO" width="125px" style="color: #ffffff;"/>
+			<listheader label="F.PARTIDA DESTINO" width="110px" style="color: #ffffff;"/>
+			<listheader label="H.PARTIDA DESTINO" width="100px" style="color: #ffffff;"/>
+			<listheader label="ASIENTO DESTINO" width="97px" align="center" style="color: #ffffff;"/>
+			<listheader label="U.TRANSBORDO"  style="color: #ffffff;"/>
 		</listhead>
 	</listbox>
 	

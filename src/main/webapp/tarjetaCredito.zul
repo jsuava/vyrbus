@@ -4,9 +4,9 @@
 <div id="divLista">
 	<listbox id="listboxLista">
 		<listhead sizable="true">
-			<listheader label="#" width="50px"/>
-			<listheader label="OPERADOR DE TARJETA DE CRÉDITO" sort="auto" />
-			<listheader label="DENOMINACIÓN" sort="auto" />
+			<listheader label="#" width="50px" style="color: #ffffff;"/>
+			<listheader label="OPERADOR DE TARJETA DE CRÉDITO" sort="auto" style="color: #ffffff;"/>
+			<listheader label="DENOMINACIÓN" sort="auto" style="color: #ffffff;"/>
 		</listhead>
 	</listbox>
 </div>

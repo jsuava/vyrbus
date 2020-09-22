@@ -12,13 +12,13 @@
 			<rows>
 				<row>
 					<groupbox closable="false" mold="3d"  style="overflow:auto" >									
-					<caption label="CONSULTA DE SERVICIOS Y TARIFAS" />
+					<caption label="CONSULTA DE SERVICIOS Y TARIFAS" style="color: #ffffff;"/>
 						<grid sclass="grid-no-border" width="890px">
 							<columns>
  								<column width="70px" align="right" />
-								<column width="120px" align="left"/>
+								<column width="120px" align="left" />
 								<column width="70px" align="right" />
-								<column width="130px" align="left"/>
+								<column width="130px" align="left" />
 								<column width="70px" align="right" />
 								<column width="120px" align="left" />
 								<column width="100px" align="right" />								
@@ -99,11 +99,10 @@
 								
 									<button id="btnBuscar"  
 										autodisable="self"
-										
 										image="/resources/mp_buscarEnabled.png" 
 										label="Buscar" 
 										onClick="wndTarifario.buscar()" 
-										sclass="btnCommand" 
+										sclass="btnCommandM" 
 										 />
 									<label/>
 
@@ -123,28 +122,28 @@
 							<tabpanel>
 								<listbox id="lsbxRutas" height="320px"  class="z-listbox-header-bg"  mold="paging" pageSize="15">
 									<listhead class="z-listbox-header-bg" sizable="true">
-										<listheader label="ITINERARIO " id="lstheaItinerario" width="60px" />
-										<listheader label="CANAL" width="80px" sort="auto"/>
-										<listheader label="SERVICIO" width="120px" sort="auto"/>
-							 			<listheader label="RUTA" width="200px" sort="auto"/>
-							 			<listheader label="FECHA PARTIDA" id="lstheaFecha"  width="180px" sort="auto" />
-							 			<listheader label="H. PARTIDA" id="lstheaHora" align="center" width="60px" />
-							 			<listheader label="PISO" align="center" width="50px" />
-							 			<listheader label="ZONA" align="center" width="60px"/>
-							 			<listheader label="TARIFA" align="right" width="70px" />
+										<listheader label="ITINERARIO " id="lstheaItinerario" width="60px" style="color: #ffffff;"/>
+										<listheader label="CANAL" width="80px" sort="auto" style="color: #ffffff;"/>
+										<listheader label="SERVICIO" width="110px" sort="auto" style="color: #ffffff;"/>
+							 			<listheader label="RUTA" width="180px" sort="auto" style="color: #ffffff;"/>
+							 			<listheader label="FECHA PARTIDA" id="lstheaFecha"  width="200px" sort="auto" style="color: #ffffff;"/>
+							 			<listheader label="H. PARTIDA" id="lstheaHora" align="center" width="60px" style="color: #ffffff;"/>
+							 			<listheader label="PISO" align="center" width="50px" style="color: #ffffff;"/>
+							 			<listheader label="ZONA" align="center" width="60px" style="color: #ffffff;"/>
+							 			<listheader label="TARIFA" align="right"  style="color: #ffffff;"/>
 									</listhead>
 								</listbox>
 							</tabpanel>
 							<tabpanel>
 								<listbox id="lsbxTarifaFA" height="320px"  class="z-listbox-header-bg"  mold="paging" pageSize="15">
 									<listhead class="z-listbox-header-bg" sizable="true">
-										<listheader label="TARIFA" id="lstheaTarifa" width="60px" />
-										<listheader label="CANAL" width="80px" sort="auto"/>
-										<listheader label="SERVICIO" width="120px" sort="auto"/>
-							 			<listheader label="RUTA" width="200px" sort="auto"/>
-							 			<listheader label="TARIFA" align="right" width="70px" />				 			
-							 			<listheader label="FECHA ACTIVACION" id="lstheaActivacion"  sort="auto" width="180px" />
-							 			<listheader label="FECHA CADUCIDAD" id="lstheaCaducidad" align="center" width="180px" />
+										<listheader label="TARIFA" id="lstheaTarifa" width="60px" style="color: #ffffff;"/>
+										<listheader label="CANAL" width="80px" sort="auto" style="color: #ffffff;"/>
+										<listheader label="SERVICIO" width="120px" sort="auto" style="color: #ffffff;"/>
+							 			<listheader label="RUTA" width="190px" sort="auto" style="color: #ffffff;"/>
+							 			<listheader label="TARIFA" align="right" width="60px" style="color: #ffffff;"/>				 			
+							 			<listheader label="FECHA ACTIVACION" id="lstheaActivacion"  sort="auto" width="180px" style="color: #ffffff;"/>
+							 			<listheader label="FECHA CADUCIDAD" id="lstheaCaducidad" align="left"  style="color: #ffffff;"/>
 									</listhead>
 								</listbox>
 							</tabpanel>
@@ -153,11 +152,11 @@
 				</row>
 				<row>
 					<groupbox closable="false" mold="3d" style="overflow:auto">									
-					<caption label="PROGRAMACION DE TARIFA" />
+					<caption label="PROGRAMACION DE TARIFA" style="color: #ffffff;"/>
 					<hbox>
 						<!-- Rango de Fecha para la generacion de los itinerarios -->
 						<groupbox mold="3d" closable="false" height="141px" width="115px">
-						<caption label="INICIO Y FIN DE LA PROGRAMACIÓN"/>
+						<caption label="INICIO Y FIN DE LA PROGRAMACIÓN" style="color: #ffffff;"/>
 							<grid  height="100%" style="border:none">
 								<columns>
 			<!-- 						<column  width="35%" align="right" /> -->

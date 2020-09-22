@@ -2,7 +2,7 @@
 <zk>
 <window id="wndTarifarioCliente" title="" use="com.cystesoft.vyrbus.view.ctrl.WndTarifarioCliente" width="800px">
 	<groupbox mold="3d" closable="false">
-		<caption label="BUSCAR CLIENTE" />
+		<caption label="BUSCAR CLIENTE" style="color: #ffffff;"/>
 		<vbox align="center">
 			<hbox align="center">
 				<label value="INGRESE RUC :" />
@@ -15,7 +15,7 @@
 		</vbox>
 	</groupbox>
 	<groupbox id="gpbxDatosTarifa" mold="3d" closable="true" open="false" >
-		<caption label="DATOS DE LA TARIFA" />
+		<caption label="DATOS DE LA TARIFA" style="color: #ffffff;"/>
 		<tabbox>
 			<tabs>
 				<tab id="tabLista" label="Lista de Tarifas"  />
@@ -25,14 +25,14 @@
 				<tabpanel>
 					<listbox id="listbxDatosTarifa" mold="paging" pageSize="10">
 						<listhead>
-							<listheader label="#" width="30px" />
-							<listheader label="RUTA" width="170px" sort="auto" />
-							<listheader label="SERVICIO" width="110px" sort="auto"/>
-							<listheader label="F.ACTIVACION" tooltiptext="Fecha de Activación" width="70px" sort="auto"/>
-							<listheader label="F.CADUCIDAD" tooltiptext="Fecha de Caducidad" width="70px" sort="auto"/>
-							<listheader label="ASIENTOS" width="80px" sort="auto"/>
-							<listheader label="T.ASIENTO" width="80px" sort="auto"/>
-							<listheader label="TARIFA" width="65px" align="right" sort="auto"/>
+							<listheader label="#" width="30px" style="color: #ffffff;"/>
+							<listheader label="RUTA" width="170px" sort="auto" style="color: #ffffff;"/>
+							<listheader label="SERVICIO" width="110px" sort="auto" style="color: #ffffff;"/>
+							<listheader label="F.ACTIVACION" tooltiptext="Fecha de Activación" width="70px" sort="auto" style="color: #ffffff;"/>
+							<listheader label="F.CADUCIDAD" tooltiptext="Fecha de Caducidad" width="70px" sort="auto" style="color: #ffffff;"/>
+							<listheader label="ASIENTOS" width="80px" sort="auto" style="color: #ffffff;"/>
+							<listheader label="T.ASIENTO" width="80px" sort="auto" style="color: #ffffff;"/>
+							<listheader label="TARIFA" width="65px" align="right" sort="auto" style="color: #ffffff;"/>
 						</listhead>
 					</listbox>			
 				</tabpanel>
@@ -45,13 +45,23 @@
 							<div align="right" width="100px"><label value="DESTINO : " /></div>
 							<combobox id="cmbDestino" readonly="true" width="150px" onOK="cmbServicio.setFocus(true);cmbServicio.open()" />
 							<space width="15px"/>
-							<button id="btnNuevo" sclass="btn-vyrbus"  label="Nuevo" width="100px" image="/resources/mp_nuevoEnabled.png" autodisable="self" onClick="wndTarifarioCliente.nuevo()"/>
+							<button id="btnNuevo" 
+									sclass="btnCommandM"  
+									label="Nuevo" 
+									image="/resources/mp_nuevoEnabled.png" 
+									autodisable="self" 
+									onClick="wndTarifarioCliente.nuevo()"/>
 						</hbox>
 						<hbox align="center">
 							<div align="right" width="100px"><label value="SERVICIO : " /></div>
 							<combobox id="cmbServicio" readonly="true" width="150px" onOK="dtbxFechaActivacion.setFocus(true)"/>
 							<space width="334px"/>
-							<button id="btnGuardar" sclass="btn-vyrbus"  label="Guardar" width="100px" image="/resources/mp_guardarEnabled.png" autodisable="self" onClick="wndTarifarioCliente.grabar()"/>
+							<button id="btnGuardar" 
+									sclass="btnCommandM"  
+									label="Guardar" 
+									image="/resources/mp_guardarEnabled.png" 
+									autodisable="self" 
+									onClick="wndTarifarioCliente.grabar()"/>
 						</hbox>
 						<hbox align="center">
 							<div align="right" width="100px"><label value="FECHA ACTIVACION : " /></div>
@@ -60,12 +70,17 @@
 							<div align="right" width="100px"><label value="FECHA CADUCIDAD : " /></div>
 							<datebox id="dtbxFechaCaducidad" readonly="true" format="dd/MM/yyyy" width="150px" onOK="itbxAsientoInicio.setFocus(true)" constraint="no past"/>
 							<space width="15px"/>
-							<button id="btnCancelar" sclass="btn-vyrbus"  label="Cancelar" width="100px" image="/resources/mp_cancelarEnabled.png" autodisable="self" onClick="wndTarifarioCliente.cancelar()"/>
+							<button id="btnCancelar" 
+									sclass="btnCommandM"  
+									label="Cancelar" 
+									image="/resources/mp_cancelarEnabled.png" 
+									autodisable="self" 
+									onClick="wndTarifarioCliente.cancelar()"/>
 						</hbox>
 					</vbox>
 					<separator height="15px"/>
 					<groupbox mold="3d" closable="false">
-						<caption label="DETALLE DE LA TARIFA" />
+						<caption label="DETALLE DE LA TARIFA" style="color: #ffffff;"/>
 						<toolbar width="100%">
 							<vbox>
 								<hbox align="center">
@@ -81,16 +96,22 @@
 									<label value="TARIFA :" />
 									<doublebox id="dbbxTarifa" width="60px" onOK="btnAgregar.setFocus(true)"/>
 									<space width="10px"/>
-									<button id="btnAgregar" sclass="btn-vyrbus"  label="Agregar" image="/resources/mp_addEnabled.png" autodisable="self" onClick="wndTarifarioCliente.agregarDetalleTarifa()" disabled="true"/>
+									<button id="btnAgregar" 
+											sclass="btnCommandM"  
+											label="Agregar" 
+											image="/resources/mp_addEnabled.png" 
+											autodisable="self" 
+											onClick="wndTarifarioCliente.agregarDetalleTarifa()" 
+											disabled="true"/>
 								</hbox>
 							</vbox>
 						</toolbar>
 						<listbox id="listbxDetalleTarifa">
 							<listhead>
-								<listheader label="ASIENTO INICIO" width="80px" />
-								<listheader label="ASIENTO FIN" width="80px"/>
-								<listheader label="TIPO ASIENTO" width="150px"/>
-								<listheader label="TARIFA" align="right" width="100px"/>
+								<listheader label="ASIENTO INICIO" width="80px" style="color: #ffffff;"/>
+								<listheader label="ASIENTO FIN" width="80px" style="color: #ffffff;"/>
+								<listheader label="TIPO ASIENTO" width="150px" style="color: #ffffff;"/>
+								<listheader label="TARIFA" align="right" width="100px" style="color: #ffffff;"/>
 								<listheader />
 							</listhead>
 						</listbox>

@@ -26,11 +26,11 @@
 				<hbox align="center">
 					<label value="Ruta :"  sclass="label-size11-bold" />
 					<combobox id="cmbRuta" readonly="true"  />
-					<button id="btnBuscar" onClick="wndRptTarifario.cargaPasajeros()" label="Buscar" sclass="btn-vyrbus" 
+					<button id="btnBuscar" onClick="wndRptTarifario.cargaPasajeros()" label="Buscar" sclass="btnCommandM" 
 						image="/resources/mp_buscarEnabled.png" />
-					<button id="btnExportar"  label="Exportar" sclass="btn-vyrbus" image="/resources/mp_excel.png" 
+					<button id="btnExportar"  label="Exportar" sclass="btnCommandM" image="/resources/mp_excel.png" 
 						onClick="wndRptTarifario.exportar()" />
-					<button  label="Cerrar" sclass="btn-vyrbus" image="/resources/mp_cerrar.png" onClick="wndRptTarifario.closeTabWindow()"/>	
+					<button  label="Cerrar" sclass="btnCommandM" image="/resources/mp_cerrar.png" onClick="wndRptTarifario.closeTabWindow()"/>	
 				</hbox>				
 			</row>
 		</rows>
@@ -38,13 +38,13 @@
 	
 	<listbox id="lstbxTarifario" mold="paging" pageSize="15">
 		<listhead>
-			<listheader label="#" width="30px" sort="auto"/>
-			<listheader label="RUTA ITINERARIO" width="auto" sort="auto"/>
-			<listheader label="PARTIDA ITINERARIO" width="auto" sort="auto"/>
-			<listheader label="SERVICIO" width="auto" sort="auto"/>
-			<listheader label="RUTA" width="auto"   sort="auto"/>
-			<listheader label="FEHCA HORA PARTIDA" width="auto" sort="auto"/>
-			<listheader label="TARIFA" width="100px"  sort="auto"/>
+			<listheader label="#" width="30px" sort="auto" style="color: #ffffff;"/>
+			<listheader label="RUTA ITINERARIO" width="auto" sort="auto" style="color: #ffffff;"/>
+			<listheader label="PARTIDA ITINERARIO" width="auto" sort="auto" style="color: #ffffff;"/>
+			<listheader label="SERVICIO" width="auto" sort="auto" style="color: #ffffff;"/>
+			<listheader label="RUTA" width="auto"   sort="auto" style="color: #ffffff;"/>
+			<listheader label="FECHA HORA PARTIDA" width="auto" sort="auto" style="color: #ffffff;"/>
+			<listheader label="TARIFA" sort="auto" style="color: #ffffff;"/>
 		</listhead>
 	</listbox>
 	

@@ -11,11 +11,11 @@
 			<tabpanel>
 				<grid>
 					<columns>
-						<column width="90px" align="right"/>
+						<column width="120px" align="right"/>
 						<column/>
 						<column width="110px" align="right"/>
 						<column/>
-						<column width="95px"/>
+						<column width="200px"/>
 					</columns>
 					<rows>
 						<row>
@@ -23,9 +23,12 @@
 							<textbox id="txtNumeroControl" width="128px" onOK="wndPostergacion.buscarVentas()"/>
 							<label value="N° COMPROBANTE :"/>
 							<textbox id="txtNumeroBoleto" width="128px" style="font-size:11px !important" onOK="wndPostergacion.buscarVentas()"/>
-							<cell rowspan="2" style="background:#f5f5f5">
-								<button label="Buscar" sclass="btn-vyrbus" image="resources/mp_buscarEnabled.png" autodisable="self" height="29px" 
-									width="85px" style="cursor:pointer" onClick="wndPostergacion.buscarVentas()"/>
+							<cell rowspan="2" style="background:#f5f5f5; border: none;" >
+								<button label="Buscar" 
+										sclass="btnCommandM" 
+										image="resources/mp_buscarEnabled.png" 
+										autodisable="self" 
+										onClick="wndPostergacion.buscarVentas()"/>
 							</cell>
 						</row>
 						<row>
@@ -39,9 +42,11 @@
 							<combobox id="cmbOrigen" autodrop="true" readonly="true" onOK="wndPostergacion.buscarVentas()"/>
 							<label value="DESTINO :"/>
 							<combobox id="cmbDestino" autodrop="true" readonly="true" onOK="wndPostergacion.buscarVentas()"/>
-							<cell style="background:#f5f5f5">
-								<button label="Cerrar" sclass="btn-vyrbus" image="resources/mp_cerrarEnabled.png" height="29px" width="80px" 
-									style="cursor:pointer" onClick="wndPostergacion.cerrar()"/>
+							<cell style="background:#f5f5f5; border : none;">
+								<button label="Cerrar" 
+										sclass="btnCommandM" 
+										image="resources/mp_cerrarEnabled.png"  
+										onClick="wndPostergacion.cerrar()"/>
 							</cell>
 						</row>
 					</rows>
@@ -50,16 +55,16 @@
 			<tabpanel>
 				<listbox id="lbxVentas" width="100%" mold="paging" pageSize="8" >
 					<listhead>
-						<listheader label="VENTA_ID" width="5%"/>
-						<listheader label="TIPO" width="10%"/>
-						<listheader label="N° CONTROL" width="9%"/>
-						<listheader label="N° BOLETO" width="10%"/>
-						<listheader label="PASAJERO" width="22%"/>
-						<listheader label="TIP DOC" width="10%"/>
-						<listheader label="DOCUMENTO" width="8%"/>
-						<listheader label="ORIGEN" width="8%"/>
-						<listheader label="DESTINO" width="7%"/>
-						<listheader label="FECHA EMISION" width="10%"/>
+						<listheader label="VENTA_ID" width="5%" style="color: #ffffff;"/>
+						<listheader label="TIPO" width="10%" style="color: #ffffff;"/>
+						<listheader label="N° CONTROL" width="9%" style="color: #ffffff;"/>
+						<listheader label="N° COMPROBANTE" width="11%" style="color: #ffffff;"/>
+						<listheader label="PASAJERO" width="22%" style="color: #ffffff;"/>
+						<listheader label="TIP DOC" width="10%" style="color: #ffffff;"/>
+						<listheader label="DOCUMENTO" width="8%" style="color: #ffffff;"/>
+						<listheader label="ORIGEN" width="8%" style="color: #ffffff;"/>
+						<listheader label="DESTINO" width="8%" style="color: #ffffff;"/>
+						<listheader label="FECHA EMISION" width="10%" style="color: #ffffff;"/>
 					</listhead>
 				</listbox>
 			</tabpanel>
@@ -72,7 +77,7 @@
 					<rows>
 						<row>
 							<groupbox closable="false" mold="3d">
-								<caption label="SITUACIÓN ACTUAL"/>
+								<caption label="SITUACIÓN ACTUAL" style="color: #ffffff;"/>
 								<grid style="border:none">
 									<columns>
 										<column align="right" width="70px"/>
@@ -138,7 +143,7 @@
 							
 							<hbox align="center">
 								<groupbox closable="false" mold="3d" style="background: #eeeeee" width="100%">
-									<caption label="NUEVOS DATOS DE LA VENTA" />
+									<caption label="NUEVOS DATOS DE LA VENTA" style="color: #ffffff;"/>
  									<grid style="border:none;background: #eeeeee">
  										<columns>
  											<column width="370px" />
@@ -239,8 +244,8 @@
 												
 												<vlayout>
 													<groupbox closable="false" mold="3d">
-														<caption label="Operaciones Antes del Viaje" 
-															style="font-weight: bold; font-size:13px !important;color:blue;"/>
+														<caption label="OPERACIONES ANTES DEL VIAJE" 
+															style="font-weight: bold; font-size:13px !important;color:#FFFFFF;" />
 														<grid style="border:none">
 															<rows>
 																<row style="background: #eeeeee">
@@ -257,8 +262,8 @@
 														</grid>								
 													</groupbox>
 													<groupbox closable="false" mold="3d">
-														<caption label="Op.antes/despues del viaje" 
-															style="font-weight: bold; font-size:13px !important;color:blue"/>
+														<caption label="OP. ANTES/DESPUES DEL VIAJE" 
+															style="font-weight: bold; font-size:13px !important;color:#FFFFFF"/>
 														<grid style="border:none">
 															<rows>
 																<row style="background: #eeeeee">
@@ -294,7 +299,7 @@
 										<column/>
 										<column width="120px" align="right"/>
 										<column/>
-										<column width="85px"/>
+										<column width="150px"/>
 									</columns>
 									<rows>
 										<row style="background: #e0e0e0">
@@ -302,12 +307,16 @@
 											<doublebox id="dblbxMontoAnterior" format="##0.00" width="50px" readonly="true"/>
 											<label value="TIPO COMPROBANTE :" visible="false"/>
 											<combobox id="cmbTipoComprobante" readonly="true" visible="false"/>
-											<cell rowspan="9" style="background:#e0e0e0" valign="bottom">
+											<cell rowspan="9" style="background:#e0e0e0; border: none;" valign="center">
 												<vlayout style="background:#e0e0e0">
-													<button label="Cancelar" sclass="btn-vyrbus" image="/resources/mp_cancelarEnabled.png" 
-														onClick="wndPostergacion.cancelar()"/>
-													<button label="Guardar" sclass="btn-vyrbus" image="/resources/mp_guardarEnabled.png" 
-														onClick="wndPostergacion.guardar()"/>
+													<button label="Cancelar" 
+															sclass="btnCommandL" 
+															image="/resources/mp_cancelarEnabled.png" 
+															onClick="wndPostergacion.cancelar()"/>
+													<button label="Guardar" 
+															sclass="btnCommandL" 
+															image="/resources/mp_guardarEnabled.png" 
+															onClick="wndPostergacion.guardar()"/>
 												</vlayout>													
 											</cell>
 										</row>

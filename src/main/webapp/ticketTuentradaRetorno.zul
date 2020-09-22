@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window title="SISVYR :: Impresión" border="normal" width="440px" use="com.cystesoft.vyrbus.view.tuentrada.WndTicketTuentradaRetorno" mode="modal">
+<window title="VYRBUS :: Impresión" border="normal" width="440px" use="com.cystesoft.vyrbus.view.tuentrada.WndTicketTuentradaRetorno" mode="modal">
 	<vbox>
 		<grid id="grdApplet">
 			<rows>
@@ -15,7 +15,7 @@
 					<label id="lblNumeroControl" style="font-size:11px !important; font-weight:bold; color:#0054a4"/>
 				</row>
 				<row align="center" style="background:#FFFFFF">
-					<button id="btnCerrar" label="Cerrar" sclass="btn-vyrbus" image="resources/mp_cerrarEnabled.png" height="26px">
+					<button id="btnCerrar" label="Cerrar" sclass="btnCommandL" image="resources/mp_cerrarEnabled.png" >
 						<attribute name="onClick">
 							((Window)btnCerrar.getParent().getParent().getParent().getParent().getParent()).setVisible(false);
 						</attribute>

@@ -28,7 +28,7 @@
 		<tabpanels>
 			<tabpanel>
 				<groupbox closable="false" mold="3d" >
-					<caption label=":::PARAMETROS DE BÚSQUEDA:::" />
+					<caption label=":::PARAMETROS DE BÚSQUEDA:::" style="color: #ffffff;"/>
 					<grid>
 						<columns>
 							<column width="90px" align="right" />
@@ -54,9 +54,9 @@
 								<combobox id="cmbServicio" readonly="true" width="160px"/>
 								<separator/>
 								<hbox align="center">
-									<button id="btnBuscar" label="Buscar" sclass="btn-vyrbus" image="/resources/mp_buscarEnabled.png" 
+									<button id="btnBuscar" label="Buscar" sclass="btnComandM" image="/resources/mp_buscarEnabled.png" 
 										autodisable="self,btnNuevo" />
-									<button id="btnNuevo" label="Nuevo" sclass="btn-vyrbus" image="/resources/mp_addEnabled.png" 
+									<button id="btnNuevo" label="Nuevo" sclass="btnCommandM" image="/resources/mp_addEnabled.png" 
 										onClick="wndPRogramacionTarifa.ventanaNuevo()" autodisable="self,btnBuscar" />
 								</hbox>
 							</row>
@@ -132,14 +132,14 @@
 					</grid>
 					<listbox id="ltbxMantoTarifario" rows="12" visible="false">
 						<listhead>
-							<listheader label="ORIGEN" align="center" width="120px"/>
-							<listheader label="DESTINO" align="center" width="120px"/>
-							<listheader label="TIPO ASIENTO" width="80px"/>
-							<listheader label="ASIENTOS" align="center" width="120px"/>
-							<listheader label="TIPO PRECIO" width="90px"/>
-							<listheader label="PRECIO" align="center" width="80px"/>
-							<listheader label="CANAL VENTA" align="center" width="120px"/>
-							<listheader label="ITINERARIO (F1)" align="center" width="80px"/>
+							<listheader label="ORIGEN" align="center" width="120px" style="color: #ffffff;"/>
+							<listheader label="DESTINO" align="center" width="120px" style="color: #ffffff;"/>
+							<listheader label="TIPO ASIENTO" width="80px" style="color: #ffffff;"/>
+							<listheader label="ASIENTOS" align="center" width="120px" style="color: #ffffff;"/>
+							<listheader label="TIPO PRECIO" width="90px" style="color: #ffffff;"/>
+							<listheader label="PRECIO" align="center" width="80px" style="color: #ffffff;"/>
+							<listheader label="CANAL VENTA" align="center" width="120px" style="color: #ffffff;"/>
+							<listheader label="ITINERARIO (F1)" align="center" width="80px" style="color: #ffffff;"/>
 							<listheader/>
 						</listhead>
 					</listbox>

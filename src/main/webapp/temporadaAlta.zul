@@ -41,7 +41,7 @@
 					<row>
 						<vbox>
 							<groupbox mold="3d" closable="false">
-								<caption label="INICIO TEMPORADA ALTA" style="color:red;"/>
+								<caption label="INICIO TEMPORADA ALTA" style="color:white;"/>
 								<calendar id="calInicioTempAlta" width="270px" />
 							</groupbox>
 							<separator height="1px" />

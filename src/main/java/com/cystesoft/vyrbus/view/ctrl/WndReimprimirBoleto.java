@@ -143,7 +143,8 @@ public class WndReimprimirBoleto extends WndBase {
 						}
 					});
 					btnReimprimir.setId(venta.getId().toString());
-					btnReimprimir.setStyle("font-size:11px; cursor:pointer");
+					btnReimprimir.setStyle("font-size:11px;");
+					btnReimprimir.setClass("btnCommandL");
 					cell.appendChild(btnReimprimir);
 					listitem.appendChild(cell);
 					listitem.setValue(venta);

@@ -2,7 +2,7 @@
 <zk>
 <window id="wndPromociones" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndPromociones">
 	<groupbox mold="3d" closable="false">
-		<caption label="CRITERIOS PARA LA PROMOCION"/>
+		<caption label="CRITERIOS PARA LA PROMOCION" style="color: #ffffff;"/>
 		<toolbarbutton id="tlbrbtnNuevo" label="Nuevo" image="resources/toolbar/mp_toolbarNuevo.png"/>
 		<toolbarbutton id="tlbrbtnBuscar" label="Buscar" image="resources/toolbar/mp_toolbarBuscar.png"/>
 		<toolbarbutton id="tlbrbtnCancelar" label="Cancelar" image="resources/toolbar/mp_toolbarCancelar.png" disabled="true"/>
@@ -33,7 +33,7 @@
 					<textbox id="txtClienteB"/>
 					<label value="TIPO DESCUENTO :"/>
 					<combobox id="cmbTipoDescuentoB"/>
-					<button id="btnBuscar" label="Buscar" sclass="btn-vyrbus" image="resources/mp_buscarEnabled.png" height="27px"/>
+					<button id="btnBuscar" label="Buscar" sclass="btnCommandM" image="resources/mp_buscarEnabled.png" height="27px"/>
 				</row>
 			</rows>
 		</grid>
@@ -127,8 +127,12 @@
 							<image id="imgAddhoraPartida" src="/resources/mp_addEnabled.png" visible="false" onClick="wndPromociones.onCreateVentanaHoraPartida()"/>
 						</hbox>
 						<space orient="horizontal" width="60px"/>
-						<button id="btnAgregarPromocion" label="Agregar Promocion" sclass="btn-vyrbus" image="resources/mp_agregarEnabled.png" 
-							disabled="true" height="28px"/>
+						<button id="btnAgregarPromocion" 
+								label="Agregar Promocion" 
+								sclass="btnCommandXL" 
+								image="resources/mp_agregarEnabled.png" 
+								disabled="true" 
+								width="180px"/>
 					</hbox>										
 				</row>
 				<row>
@@ -145,31 +149,32 @@
 			</rows>
 		</grid>
 		<listbox id="lbxPromociones" width="100%" height="340px" mold="paging" pageSize="11">
-			<frozen columns="1" style="background: #99D9EA" >
+			<frozen columns="1" style="background: #4285F4" >
 			<div style="padding: 0 10px;" /></frozen>
 			<listhead>
-				<listheader label="DENOMINACION" width="280px"/>
-				<listheader label="RUTA" width="240px"/>
-				<listheader label="SERVICIO" width="180px"/>
-				<listheader label="P.VENTA" width="180px"/>
-				<listheader label="C.VENTA" width="180px"/>
-				<listheader label="CLIENTE" width="210px"/>
-				<listheader label="ASIENTOS" width="90px"/>
-				<listheader label="VIAJES" width="40px" align="center"/>
-				<listheader label="IMPORTE" width="50px" align="right"/>
-				<listheader label="VAL.DESC" width="50px" align="right"/>
-				<listheader label="TIP.DESC" width="90px" align="center"/>
-				<listheader label="TEMPORADA" width="100px"/>
-				<listheader label="F.PAGO" width="80px"/>
-				<listheader label="TIPO F.PAGO" width="80px"/>
-				<listheader label="TARJETA" width="140px"/>
-				<listheader label="F.INICIO" width="60px" align="center"/>
-				<listheader label="F.FIN" width="60px" align="center"/>
-				<listheader label="PAX NEW" width="50px" align="center"/>
-				<listheader label="IDA.VUELTA" width="60px" align="center"/>
-				<listheader label="PAXFRE" width="45px" align="center"/>
-				<listheader label="HORAS PARTIDA" width="100px" align="center"/>
-				<listheader label="ACCION" width="180px"/>
+				<listheader label="DENOMINACION" width="280px" style="color: #ffffff;"/>
+				<listheader label="RUTA" width="240px" style="color: #ffffff;"/>
+				<listheader label="SERVICIO" width="180px" style="color: #ffffff;"/>
+				<listheader label="P.VENTA" width="180px" style="color: #ffffff;"/>
+				<listheader label="C.VENTA" width="180px" style="color: #ffffff;"/>
+				<listheader label="CLIENTE" width="210px" style="color: #ffffff;"/>
+				<listheader label="ASIENTOS" width="90px" style="color: #ffffff;"/>
+				<listheader label="VIAJES" width="40px" align="center" style="color: #ffffff;"/>
+				<listheader label="IMPORTE" width="50px" align="right" style="color: #ffffff;"/>
+				<listheader label="VAL.DESC" width="50px" align="right" style="color: #ffffff;"/>
+				<listheader label="TIP.DESC" width="90px" align="center" style="color: #ffffff;"/>
+				<listheader label="TEMPORADA" width="100px" style="color: #ffffff;"/>
+				<listheader label="F.PAGO" width="80px" style="color: #ffffff;"/>
+				<listheader label="TIPO F.PAGO" width="80px" style="color: #ffffff;"/>
+				<listheader label="TARJETA" width="140px" style="color: #ffffff;"/>
+				<listheader label="F.INICIO" width="60px" align="center" style="color: #ffffff;"/>
+				<listheader label="F.FIN" width="60px" align="center" style="color: #ffffff;"/>
+				<listheader label="PAX NEW" width="50px" align="center" style="color: #ffffff;"/>
+				<listheader label="IDA.VUELTA" width="60px" align="center" style="color: #ffffff;"/>
+				<listheader label="PAXFRE" width="45px" align="center" style="color: #ffffff;"/>
+				<listheader label="HORAS PARTIDA" width="100px" align="center" style="color: #ffffff;"/>
+				<listheader label="ACCION" width="180px" style="color: #ffffff;"/>
+				<listheader label=" " style="color: #ffffff;"/>
 			</listhead>
 		</listbox>
 	</groupbox>

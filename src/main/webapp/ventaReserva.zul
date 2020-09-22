@@ -21,7 +21,7 @@
 		<tabpanels>
 			<tabpanel><!-- SELECCION DE ITINERARIO -->
 				<groupbox mold="3d" style="overflow:auto">
-					<caption label="INFORMACION DE LA VENTA"/>
+					<caption label="INFORMACION DE LA VENTA" style="color: #ffffff;"/>
 					<grid>
 						<columns>
 							<column width="130px"/>
@@ -35,11 +35,15 @@
 								<combobox id="cmbTipoOperacion" width="100px" readonly="true" onChange="wndVentaReserva.onSelectTipoOperacion()"/>
 								<hlayout>
 									<checkbox id="chkVentaRemota" label="Remota" onClick="wndVentaReserva.onSelectTipoVenta()"/>
-									<checkbox id="chkBoletoPrepagado" label="Prepagado" onClick="wndVentaReserva.onSelectTipoVenta()" visible="false" disabled="true"/>
+									<checkbox id="chkBoletoPrepagado" 
+											label="Prepagado" 
+											onClick="wndVentaReserva.onSelectTipoVenta()" 
+											visible="false" 
+											disabled="true"/>
 								</hlayout>
 								<cell rowspan="3" style="background:white; padding:0px">
 									<groupbox id="grpVentaRemota" closable="false" mold="3d" width="400px" visible="false">
-										<caption label="DATOS DE VENTA REMOTA"/>
+										<caption label="DATOS DE VENTA REMOTA" style="color: #ffffff;"/>
 										<grid>
 											<columns>
 												<column align="right" width="100px"/>
@@ -57,23 +61,35 @@
 													<label value="COMPROBANTE :" sclass="label-size9-bold"/>
 													<radiogroup>
 														<hlayout>
-															<radio id="rdPrepagadoRemoto" label="PREPAGADO" style="font-size:9px !important;font-weight: bold;color:blue;"/>
+															<radio id="rdPrepagadoRemoto" 
+																	label="PREPAGADO" 
+																	style="font-size:9px !important;font-weight: bold;color:blue;"/>
 															<separator/>
-															<radio id="rdBoletoRemoto" label="BOLETO VIAJE" style="font-size:9px !important;font-weight: bold;color:blue"/>
+															<radio id="rdBoletoRemoto" 
+																	label="BOLETO VIAJE" 
+																	style="font-size:9px !important;font-weight: bold;color:blue"/>
 															<separator/>
-															<radio id="rdElectronicoRemoto" label="ELECTRONICO" style="font-size:9px !important;font-weight: bold;color:blue" disabled="true"/>
+															<radio id="rdElectronicoRemoto" 
+																	label="ELECTRONICO" 
+																	style="font-size:9px !important;font-weight: bold;color:blue" 
+																	disabled="true"/>
 														</hlayout>
 													</radiogroup>
 												</row>
  												<row visible="false">
  													<label value="COMPROBANTE :" sclass="label-size9-bold"/>
- 													<bandbox id="bndbxUsuarioHardware" mold="rounded" autodrop="true" width="270px" disabled="true" style="font-size:9px">
+ 													<bandbox id="bndbxUsuarioHardware" 
+ 															mold="rounded" 
+ 															autodrop="true" 
+ 															width="270px" 
+ 															disabled="true" 
+ 															style="font-size:9px">
  														<bandpopup>
  															<listbox id="lbxUsuarioHardware" width="261px">
  																<listhead>
-  																	<listheader label="COMPROBANTE" width="110px"/>
- 																	<listheader label="SERIE" width="50px" align="center"/>
- 																	<listheader label="CORRELATIVO" width="100px" align="center"/>
+  																	<listheader label="COMPROBANTE" width="110px" style="color: #ffffff;"/>
+ 																	<listheader label="SERIE" width="50px" align="center" style="color: #ffffff;"/>
+ 																	<listheader label="CORRELATIVO" width="100px" align="center" style="color: #ffffff;"/>
  																</listhead>
  															</listbox>
  														</bandpopup>
@@ -102,16 +118,19 @@
 										<column/>
 									</columns>
 									<rows>
-										<row style="background:#B4B4B4; border:none;">
+										<row style="background:#e0e0e0; border:none;">
 											<label value="ORIGEN :" sclass="label-size11"/>
 											<combobox id="cmbOrigen" autodrop="true" width="160px" onOK="cmbDestino.setFocus(true)"/>
 											<cell rowspan="2">
-												<button id="btnBuscarItinerario" sclass="btn-vyrbus" autodisable="self" label="Buscar" 
-												image="/resources/mp_buscarEnabled.png" height="29px" width="85px" 
-												onClick="wndVentaReserva.onBuscarItinerarios()"/>
+												<button id="btnBuscarItinerario" 
+														sclass="btnCommandM" 
+														autodisable="self" 
+														label="Buscar" 
+														image="/resources/mp_buscarEnabled.png"  
+														onClick="wndVentaReserva.onBuscarItinerarios()"/>
 											</cell>											
 										</row>
-										<row style="background:#B4B4B4; border:none;">
+										<row style="background:#e0e0e0; border:none;">
 											<label value="DESTINO :" sclass="label-size11"/>
 											<combobox id="cmbDestino" autodrop="true" width="160px" onOK="btnBuscarItinerario.setFocus(true)"/>
 										</row>
@@ -138,24 +157,31 @@
 									<label value="SERVICIO DE PARTIDA" sclass="label-size11"/>
 									<listbox id="lbxItinerariosIda" mold="paging" pageSize="4" onSelect="wndVentaReserva.onSelectItinerario(com.cystesoft.vyrbus.service.util.Constantes.SERVICIO_IDA)">
 										<listhead>
-											<listheader id="listheaderOperadoPor" label="OPERADO POR" width="80px" align="left" visible="false"/>
-											<listheader label="PTO. EMBARQUE" width="100px"/>
-											<listheader label="SERVICIO" width="110px"/>
-											<listheader label="RUTA" width="120px"/>
-											<listheader label="HR.PD." width="40px" align="center"/>
-											<listheader label="S/.ESTANDAR" width="100px" align="right" tooltiptext="Tarifa Estandar"/>
+											<listheader id="listheaderOperadoPor" label="OPERADO POR" width="80px" align="left" visible="false" style="color: #ffffff;"/>
+											<listheader label="PTO. EMBARQUE" width="100px" style="color: #ffffff;"/>
+											<listheader label="SERVICIO" width="110px" style="color: #ffffff;"/>
+											<listheader label="RUTA" width="120px" style="color: #ffffff;"/>
+											<listheader label="HR.PD." width="40px" align="center" style="color: #ffffff;"/>
+											<listheader label="S/.ESTANDAR" width="100px" align="right" tooltiptext="Tarifa Estandar" style="color: #ffffff;"/>
 <!--  											<listheader label="S/.SUITE" width="60px" align="right" tooltiptext="Tarifa Suite"/>   -->
-											<listheader id="listheaderOtraTarifa" label="$ TARIFA " width="60px" align="right"/>
+											<listheader id="listheaderOtraTarifa" label="$ TARIFA " align="right" style="color: #ffffff;"/>
 										</listhead>
 									</listbox>
 								</vlayout>
 								<cell rowspan="2" align="right" valign="bottom">
 									<vlayout>
-										<button id="btnNextTabAsientos" sclass="btn-vyrbus"  autodisable="self" label="Siguiente" 
-											image="resources/mp_next.png" disabled="true" orient="vertical" width="76px" 
-											onClick="wndVentaReserva.next()"/>
-										<button label="Cerrar" sclass="btn-vyrbus" autodisable="self" orient="vertical" 
-											image="resources/mp_cerrarEnabled.png" onClick="wndVentaReserva.closeTabWindow()" width="76px"/>
+										<button id="btnNextTabAsientos" 
+												sclass="btnCommandL"  
+												autodisable="self" 
+												label="Siguiente" 
+												image="resources/mp_next.png" 
+												disabled="true"  
+												onClick="wndVentaReserva.next()"/>
+										<button label="Cerrar" 
+												sclass="btnCommandL" 
+												autodisable="self"  
+												image="resources/mp_cerrarEnabled.png" 
+												onClick="wndVentaReserva.closeTabWindow()" />
 									</vlayout>
 								</cell>
 							</row>
@@ -168,13 +194,13 @@
 									<label value="SERVICIO DE RETORNO" sclass="label-size11"/>
 									<listbox id="lbxItinerariosRetorno" mold="paging" pageSize="4" onSelect="wndVentaReserva.onSelectItinerario(com.cystesoft.vyrbus.service.util.Constantes.SERVICIO_RETORNO)">
 										<listhead>
-											<listheader label="PTO. EMBARQUE" width="100px"/>
-											<listheader label="SERVICIO" width="110px"/>
-											<listheader label="RUTA" width="120px"/>
-											<listheader label="HR.PD." width="40px" align="center"/>
-											<listheader label="S/.ESTANDAR" width="67px" align="right" tooltiptext="Tarifa Estandar en Soles"/>
-											<listheader label="S/.SUITE" width="60px" align="right" tooltiptext="Tarifa Suite en Soles"/>
-											<listheader id="listheaderOtraTarifaRetorno" label="$ TARIFA " width="60px" align="right"/>
+											<listheader label="PTO. EMBARQUE" width="100px" style="color: #ffffff;"/>
+											<listheader label="SERVICIO" width="110px" style="color: #ffffff;"/>
+											<listheader label="RUTA" width="120px" style="color: #ffffff;"/>
+											<listheader label="HR.PD." width="40px" align="center" style="color: #ffffff;"/>
+											<listheader label="S/.ESTANDAR"  align="right" tooltiptext="Tarifa Estandar en Soles" style="color: #ffffff;"/>
+<!-- 											<listheader label="S/.SUITE" width="60px" align="right" tooltiptext="Tarifa Suite en Soles" style="color: #ffffff;"/>  -->
+											<listheader id="listheaderOtraTarifaRetorno" label="$ TARIFA " width="60px" align="right" style="color: #ffffff;"/>
 <!-- 											<listheader label="UNIMON" width="45px" align="center" tooltiptext="Unidad monetaria"/> -->
 										</listhead>
 									</listbox>
@@ -183,17 +209,24 @@
 							<row id="rowFechaAbierta" spans="2,1" visible="false" style="background:white">
 								<listbox id="lbxItinerariosFechaAbierta" mold="paging" pageSize="4" width="298px" onSelect="wndVentaReserva.onSelectItinerarioFechaAbierta()">
 									<listhead>
-										<listheader label="SERVICIO" width="120px"/>
-										<listheader label="RUTA" width="120px"/>
-										<listheader label="TARIFA" width="50px" align="right"/>
+										<listheader label="SERVICIO" width="120px" style="color: #ffffff;"/>
+										<listheader label="RUTA" width="120px" style="color: #ffffff;"/>
+										<listheader label="TARIFA" width="50px" align="right" style="color: #ffffff;"/>
 									</listhead>
 								</listbox>
 								<cell align="right" valign="bottom" style="background:white">
-									<button id="btnNextFechaAbierta" sclass="btn-vyrbus" autodisable="self" label="Siguiente" 
-										image="resources/mp_next.png" disabled="true" orient="vertical" 
-										onClick="wndVentaReserva.onNextFechaAbierta()"/>
-									<button label="Cerrar" orient="vertical" sclass="btn-vyrbus" autodisable="self" 
-										image="resources/mp_cerrarEnabled.png" onClick="wndVentaReserva.closeTabWindow()" width="76px"/>
+									<button id="btnNextFechaAbierta" 
+											sclass="btnCommandL" 
+											autodisable="self" 
+											label="Siguiente" 
+											image="resources/mp_next.png" 
+											disabled="true"  
+											onClick="wndVentaReserva.onNextFechaAbierta()"/>
+									<button label="Cerrar" 
+											sclass="btnCommandL" 
+											autodisable="self" 
+											image="resources/mp_cerrarEnabled.png" 
+											onClick="wndVentaReserva.closeTabWindow()" />
 								</cell>								
 							</row>
 						</rows>
@@ -209,8 +242,8 @@
 				<rows>
 					<row style="background: white">
 						<hlayout>		
-							<groupbox id="grpbxMapaIda" closable="false">
-								<caption label="Seleccione asientos de Ida"/>
+							<groupbox id="grpbxMapaIda" closable="false" mold="3d">
+								<caption label="SELECCION  ASIENTOS  DE  IDA" style="color: #ffffff;"/>
 								<!--<grid width="193px" height="474px" style="padding:0px;border:none">
 									<rows>
 										<row style="padding:0px;border:none; background:#EEEEEE" >
@@ -229,8 +262,8 @@
 								</grid>-->				
 							</groupbox>
 							<separator orient="horizontal" width="30px"/>
-							<groupbox id="grpbxMapaRetorno" closable="false" visible="false">
-								<caption label="Seleccione asientos de Retorno"/>
+							<groupbox id="grpbxMapaRetorno" closable="false" visible="false" mold="3d">
+								<caption label="SELECCION ASIENTOS DE RETORNO" style="color: #ffffff;"/>
 								<!--<grid width="193px" height="474px" style="padding:0px;border:none">
 									<rows>
 										<row style="padding:0px;border:none; background:#EEEEEE" >
@@ -250,7 +283,7 @@
 							<separator orient="horizontal" width="30px"/>
 							<vlayout>
 								<groupbox mold="3d" closable="false">
-									<caption label="Leyenda de imagenes"/>
+									<caption label="LEYENDA DE IMAGENES" style="color: #ffffff;"/>
 									<grid width="280px">
 										<rows>
 											<row>
@@ -313,16 +346,27 @@
 								<grid style="border:none" width="290px">
 									<rows>
 										<row style="background:white">
-											<button label="Refrescar Mapa" sclass="btn-vyrbus" autodisable="self" image="/resources/mp_refrescarEnabled.png" 
-												height="28px" width="130px" onClick="wndVentaReserva.onRefreshMap()"/>
+											<button label="Refrescar Mapa" 
+													sclass="btnCommandXL" 
+													autodisable="self" 
+													image="/resources/mp_recargar16.png" 
+													onClick="wndVentaReserva.onRefreshMap()"/>
 										</row>
 										<row style="background:white">
-											<button id="btnNextTabVenta" sclass="btn-vyrbus" autodisable="self" label="Siguiente" 
-												image="/resources/mp_next.png" disabled="true" height="28px" onClick="wndVentaReserva.next()"/>
+											<button id="btnNextTabVenta" 
+													sclass="btnCommandL" 
+													autodisable="self" 
+													label="Siguiente" 
+													image="/resources/mp_next.png" 
+													disabled="true" 
+													onClick="wndVentaReserva.next()"/>
 										</row>
 										<row style="background:white">
-											<button label="Cerrar" sclass="btn-vyrbus" autodisable="self" image="resources/mp_cerrarEnabled.png" 
-												onClick="wndVentaReserva.liberarAsientos(); wndVentaReserva.closeTabWindow()" height="28px"/>
+											<button label="Cerrar" 
+													sclass="btnCommandL" 
+													autodisable="self" 
+													image="resources/mp_cerrarEnabled.png" 
+													onClick="wndVentaReserva.liberarAsientos(); wndVentaReserva.closeTabWindow()" />
 										</row>
 									</rows>
 								</grid>
@@ -356,14 +400,14 @@
 											<tabpanel style="padding:2px !important">
 												<listbox id="lbxAsientos" width="185px" height="185px" onSelect="wndVentaReserva.lbxAsientos_onSelect()">
 													<listhead>
-														<listheader label="RUTA" width="130px"/>
-														<listheader label="ASIENTO" width="55px" align="center"/>
+														<listheader label="RUTA" width="130px" style="color: #ffffff;"/>
+														<listheader label="ASIENTO" width="55px" align="center" style="color: #ffffff;"/>
 													</listhead>
 												</listbox>
 												<listbox id="lbxAsientosIdaRetorno" width="185px" height="197px" onSelect="wndVentaReserva.lbxAsientosIdaRetorno_onSelect()" visible="false">
 													<listhead >
-														<listheader label="RUTA" width="130px"/>
-														<listheader label="ASIENTOS" width="55px" align="center"/>
+														<listheader label="RUTA" width="130px" style="color: #ffffff;"/>
+														<listheader label="ASIENTOS" width="55px" align="center" style="color: #ffffff;"/>
 													</listhead>
 												</listbox>
 											</tabpanel>
@@ -524,22 +568,28 @@
 													<label id="lblTotalPagarPreliminar" value="TOTAL A PAGAR S/." style="color:blue; font-size:14px; font-weight:bold" visible="false"/>
 												</row>
 												<row style="background:white">
-													<button label="Grabar" sclass="btn-vyrbus" autodisable="self" 
-														image="resources/mp_guardarEnabled.png" height="30px" width="93px" 
-														onClick="wndVentaReserva.onGuardarVentaReserva()"  
-														tooltiptext="Realiza el guardado de la Venta."/>									
+													<button label="Grabar" 
+															sclass="btnCommandL" 
+															autodisable="self" 
+															image="resources/mp_guardarEnabled.png"  
+															onClick="wndVentaReserva.onGuardarVentaReserva()"  
+															tooltiptext="Realiza el guardado de la Venta."/>									
 												</row>
 												<row style="background:white">
-													<button label="Cancelar" sclass="btn-vyrbus" autodisable="self" 
-														image="resources/mp_cancelarEnabled.png" height="30px" width="93px" 
-														onClick="wndVentaReserva.selectedTabItinerario(); tabItinerario.setSelected(true)" 
-														tooltiptext="Borra todo el proceso y regresa a la pestaña de Selección de itinerario."/>
+													<button label="Cancelar" 
+															sclass="btnCommandL" 
+															autodisable="self" 
+															image="resources/mp_cancelarEnabled.png"  
+															onClick="wndVentaReserva.selectedTabItinerario(); tabItinerario.setSelected(true)" 
+															tooltiptext="Borra todo el proceso y regresa a la pestaña de Selección de itinerario."/>
 												</row>
 												<row style="background:white">
-													<button label="Cerrar" sclass="btn-vyrbus" autodisable="self" 
-														image="resources/mp_cerrarEnabled.png" height="30px" width="93px" 
-														onClick="wndVentaReserva.liberarAsientos(); wndVentaReserva.closeTabWindow()" 
-														tooltiptext="cierra la ventana de la Venta"/>
+													<button label="Cerrar" 
+															sclass="btnCommandL" 
+															autodisable="self" 
+															image="resources/mp_cerrarEnabled.png"  
+															onClick="wndVentaReserva.liberarAsientos(); wndVentaReserva.closeTabWindow()" 
+															tooltiptext="cierra la ventana de la Venta"/>
 												</row>
 											</rows>
 										</grid>
@@ -555,19 +605,19 @@
 										<tabpanel><!-- DATOS DEL PASAJERO -->
 											<vlayout>
 												<groupbox id="grpbxListaPasajeros" mold="3d" closable="false" visible="false">
-													<caption label="LISTADO DE RESULTADOS"/>
+													<caption label="LISTADO DE RESULTADOS" style="color: #ffffff;"/>
 													<listbox id="lbxPasajeros" mold="paging" pageSize="5" width="500px">
 														<listhead>
-															<listheader label="#" width="30px"/>
-															<listheader label="DOCUMENTO" width="68px"/>
-															<listheader label="NUMERO" width="75px"/>
-															<listheader label="NOMBRES"/>
-															<listheader label="KMS" width="70px" align="right"/>
+															<listheader label="#" width="30px" style="color: #ffffff;"/>
+															<listheader label="DOCUMENTO" width="68px" style="color: #ffffff;"/>
+															<listheader label="NUMERO" width="75px" style="color: #ffffff;"/>
+															<listheader label="NOMBRES" style="color: #ffffff;"/>
+															<listheader label="KMS" width="70px" align="right" style="color: #ffffff;"/>
 														</listhead>
 													</listbox>
 												</groupbox>
 												<groupbox mold="3d" closable="false">
-												<caption label="INFORMACIÓN DEL PASAJERO"/>
+												<caption label="INFORMACIÓN DEL PASAJERO" style="color: #ffffff;"/>
 													<toolbar>
 														<toolbarbutton id="tlbbtnNuevoPax" label="Nuevo" image="resources/toolbar/mp_toolbarNuevo.png" onClick="wndVentaReserva.onNewPax()"/>
 														<toolbarbutton id="tlbbtnModificarPax" label="Modificar" image="resources/toolbar/mp_toolbarModificar.png" onClick="wndVentaReserva.onModifyPax()" disabled="true"/>
@@ -618,7 +668,7 @@
 																<hbox align="center">
 																	<textbox id="txtUbigeoPax" width="170px" onOK="txtEmailPax.setFocus(true)"/>
 																	<textbox id="txtUbigeoIdPax" visible="false"/>
-																	<button id="btnUbigeoPax" sclass="btn-vyrbus" label="..."/>
+																	<button id="btnUbigeoPax" sclass="btnImage" label="..."/>
 																</hbox>
 															</row>
 															<row style="background:#F7F7F7">
@@ -662,7 +712,7 @@
 																		</hlayout>
 																		<image id="imgDetalleMotivo" src="/resources/mp_information.png" sclass="cursor-button" visible="false">
 																			<attribute name="onClick">
-																				Window wnd = new Window("SISVYR", "normal", false);
+																				Window wnd = new Window("VYRBUS", "normal", false);
 																				Caption caption = new Caption("Information","/resources/mp_information.png");
 																				wnd.setPosition("center:center");
 																				wnd.appendChild(caption);
@@ -674,7 +724,7 @@
 																				txtInformation.setHeight("80px");
 																				txtInformation.setReadonly(true);
 																				Button btnClose = new Button("Cerrar", "/resources/mp_cerrarEnabled.png");
-																				btnClose.setClass("btn-vyrbus");
+																				btnClose.setClass("btnCommandL");
 																				btnClose.addEventListener("onClick", new org.zkoss.zk.ui.event.EventListener(){
 																					public void onEvent(Event e){
 																						wnd.onClose();
@@ -700,19 +750,19 @@
 											<vlayout>
 												<hlayout>
 													<groupbox id="grpbxListaClientes" mold="3d" closable="false" visible="false">
-														<caption label="LISTADO DE CLIENTES"/>										
+														<caption label="LISTADO DE CLIENTES" style="color: #ffffff;"/>										
 														<listbox id="lbxClientes" mold="paging" pageSize="5" width="500px">
 															<listhead>
-																<listheader label="#" width="30px"/>
-																<listheader label="DOCUMENTO" width="75px"/>
-																<listheader label="RAZON SOCIAL"/>
-																<listheader label="CONTACTO" width="130px"/>
+																<listheader label="#" width="30px" style="color: #ffffff;"/>
+																<listheader label="DOCUMENTO" width="75px" style="color: #ffffff;"/>
+																<listheader label="RAZON SOCIAL" style="color: #ffffff;"/>
+																<listheader label="CONTACTO" width="130px" style="color: #ffffff;"/>
 															</listhead>
 														</listbox>
 													</groupbox>
 												</hlayout>
 												<groupbox mold="3d">
-													<caption label="INFORMACIÓN DEL CLIENTE"/>
+													<caption label="INFORMACIÓN DEL CLIENTE" style="color: #ffffff;"/>
 													<toolbar>
 														<toolbarbutton id="tlbbtnNuevoClient" label="Nuevo" image="resources/toolbar/mp_toolbarNuevo.png" onClick="wndVentaReserva.onNewClient()"/>
 														<toolbarbutton id="tlbbtnModificarClient" label="Modificar" image="resources/toolbar/mp_toolbarModificar.png" onClick="wndVentaReserva.onModifyClient()" disabled="true"/>
@@ -762,7 +812,7 @@
 																<hbox align="center" width="100%">
 																	<textbox id="txtUbigeoCliente" width="170px" readonly="true"/>
 																	<textbox id="txtUbigeoIdCliente" visible="false"/>
-																	<button id="btnUbigeoCliente" sclass="btn-vyrbus" label="..."/>
+																	<button id="btnUbigeoCliente" sclass="btnImage" label="..."/>
 																</hbox>
 															</row>
 															<row>

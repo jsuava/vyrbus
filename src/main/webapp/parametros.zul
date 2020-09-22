@@ -2,7 +2,7 @@
 <zk>
 <window id="wndParametros" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndParametros"  width="845px" >
 	<groupbox mold="3d" closable="false">
-	<caption label="PARÁMETROS DEL SISTEMA" />
+	<caption label="PARÁMETROS DEL SISTEMA" style="color: #ffffff;"/>
 		<grid>
 			<columns>
 				<column width="500px"/>
@@ -116,32 +116,32 @@
 		<groupbox closable="false" mold="3d"  >
 			<caption>
 				<div align="center">
-					<label value="USUARIOS APROBADORES" sclass="label-size11-bold"/>
+					<label value="USUARIOS APROBADORES" sclass="label-size11-bold" style="color: #ffffff;"/>
 				</div>
 			</caption>
 			<hbox>
 				<listbox id="lbxUsuarioGerenciaComercialAprobador" width="200px"  rows="3" checkmark="true" multiple="true">
 					<listhead>
-						<listheader label="Usuario Gerencia Comercial" />
+						<listheader label="USUARIO GER. COMERCIAL" style="color: #ffffff;"/>
 					</listhead>
 				</listbox>
 						
 				<listbox id="lbxUsuarioComercialAprobador" width="200px" hflex="1" vflex="true"  rows="3" checkmark="true" multiple="true">
 					<listhead>
-						<listheader label="Usuario Comercial" />
+						<listheader label="USUARIO COMERCIAL"  style="color: #ffffff;"/>
 					</listhead>
 				</listbox>
 							
 				<listbox id="lbxUsuarioFinazasAprobador" width="200px" hflex="1" vflex="true"  rows="3" checkmark="true" multiple="true">
 					<listhead>
-						<listheader label="Usuario Finanzas" />
+						<listheader label="USUARIO FINANZAS" style="color: #ffffff;"/>
 					</listhead>
 				</listbox>
 			</hbox>
 		</groupbox>
 		<listbox id="lbxUsuarioGerenciaComercial" width="200px" hflex="1" vflex="true"  rows="4" checkmark="true" multiple="true">
 			<listhead>
-				<listheader label="Usuario Gerencia Comercial" />
+				<listheader label="USUARIO GER. COMERCIAL" style="color: #ffffff;"/>
 			</listhead>
 		</listbox>
 		</hbox>
@@ -152,8 +152,14 @@
 					<hbox>
 						<separator width="250px" />
 						<div>
-							<button label="Cerrar" sclass="btn-vyrbus" image="/resources/mp_cerrar.png" onClick="wndParametros.closeTabWindow()"/>
-							<button label="Guardar" sclass="btn-vyrbus" image="/resources/mp_guardarEnabled.png" onClick="wndParametros.GuardarParametros()"/>
+							<button label="Cerrar" 
+									sclass="btnCommandL" 
+									image="/resources/mp_cerrar.png" 
+									onClick="wndParametros.closeTabWindow()"/>
+							<button label="Guardar" 
+									sclass="btnCommandL" 
+									image="/resources/mp_guardarEnabled.png" 
+									onClick="wndParametros.GuardarParametros()"/>
 						</div>	
 					</hbox>
 				</row>

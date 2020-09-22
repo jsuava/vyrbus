@@ -5,13 +5,13 @@
 <div id="divLista">
 	<listbox id="listboxLista" mold="paging" pageSize="15" >
 		<listhead sizable="true">
-			<listheader label="#" width="50px"/>
-			<listheader label="TIPO DOCUMENTO" width="100px" />
-			<listheader label="Nº DOCUMENTO" width="100px" />
-			<listheader label="NOMBRES Y APELLIDOS DEL PASAJERO" sort="auto" />
-			<listheader label="F. NACIMIENTO" width="100px" sort="auto" />
-			<listheader label="SEXO" sort="auto" width="100px" />
-			<listheader label="HISTORICO" width="120px"/>
+			<listheader label="#" width="50px" style="color: #ffffff;"/>
+			<listheader label="TIPO DOCUMENTO" width="100px" style="color: #ffffff;"/>
+			<listheader label="Nº DOCUMENTO" width="100px" style="color: #ffffff;"/>
+			<listheader label="NOMBRES Y APELLIDOS DEL PASAJERO" sort="auto" style="color: #ffffff;"/>
+			<listheader label="F. NACIMIENTO" width="100px" sort="auto" style="color: #ffffff;"/>
+			<listheader label="SEXO" sort="auto" width="100px" style="color: #ffffff;"/>
+			<listheader label="HISTORICO" width="200px" align="center" style="color: #ffffff;"/>
 <!-- 			<listheader label="¿PAXFREE?" align="center" width="70px" sort="auto" /> -->
 <!-- 			<listheader label="AGENCIA REGISTRO" width="150px" sort="auto" /> -->
 		</listhead>
@@ -27,7 +27,7 @@
 		<tabpanels>
 			<tabpanel>
 				<groupbox mold="3d" closable="false">
-					<caption label="Datos personales" />
+					<caption label="DATOS PERSONALES" style="color: #ffffff;"/>
 					<grid>
 						<columns>
 							<column width="115px" align="right"/>
@@ -39,12 +39,19 @@
 								<label value="TIPO DOCUMENTO (*) :" />
 								<div>
 									<textbox id="textboxId"/>
-									<combobox id="cboDocumentoIdentificacion" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNumeroIdentificacion)"/>
+									<combobox id="cboDocumentoIdentificacion" 
+											readonly="true" 
+											onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNumeroIdentificacion)"/>
 								</div>
 								<label value="Nº DOCUMENTO :"/>
 								<div>
 									<hbox align="center">
-										<textbox id="txtNumeroIdentificacion" onChange="wndPasajero.verificarPaxReniec()" width="185px" maxlength="15"  style="font-size:11px !important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtApellidoPaterno)" />
+										<textbox id="txtNumeroIdentificacion" 
+												onChange="wndPasajero.verificarPaxReniec()" 
+												width="185px" 
+												maxlength="15"  
+												style="font-size:11px !important" 
+												onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtApellidoPaterno)" />
 										<image id="imgValidacionDNI" height="12px"/>
 									</hbox>
 								</div>
@@ -59,7 +66,11 @@
 								<label value="NOMBRES (*) :" />
 								<textbox id="txtNombre" maxlength="30" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(dbfechaNacimiento)" />
 								<label value="FECHA NACIMIENTO (*) :" />
-								<datebox id="dbfechaNacimiento" format="dd/MM/yyyy" constraint="no empty"  maxlength="10" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cboSexo)"/>
+								<datebox id="dbfechaNacimiento" 
+										format="dd/MM/yyyy" 
+										constraint="no empty"  
+										maxlength="10" 
+										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cboSexo)"/>
 							</row>
 							<row>
 								<label value="SEXO (*) :" />
@@ -69,19 +80,29 @@
 							</row>
 							<row>
 								<label value="DIRECCIÓN :" />
-								<textbox id="txtDireccion" rows="2" height="27px" maxlength="100" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(btnUbicacionGeografica)"/>
+								<textbox id="txtDireccion" 
+										rows="2" 
+										height="27px" 
+										maxlength="100" 
+										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(btnUbicacionGeografica)"/>
 								<label value="UBICACIÓN GEOGRÁFICA (Dep. / Prov. / Dist.) (*)" />
 								<hlayout>
 									<textbox id="txtIdUbigeo" visible="false" readonly="true" />
 									<textbox id="txtUbicacionGeografica" rows="2" readonly="true" height="27px" width="180px"/>
-									<button id="btnUbicacionGeografica" label="..." sclass="btn-vyrbus" />
+									<button id="btnUbicacionGeografica" label="..." sclass="btnImage" />
 								</hlayout>								
 							</row>
 							<row>
 								<label value="TELÉFONO :" />
-								<textbox id="txtTelefono"  style="font-size:11px !important" maxlength="30" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtCorreoElectronico)"/>
+								<textbox id="txtTelefono"  
+										style="font-size:11px !important" 
+										maxlength="30" 
+										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtCorreoElectronico)"/>
 								<label value="CORREO ELECTRÓNICO :" />
-								<textbox id="txtCorreoElectronico" maxlength="70"  style="text-transform:lowercase; font-size:12px !important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbAgencia)"/>
+								<textbox id="txtCorreoElectronico" 
+										maxlength="70"  
+										style="text-transform:lowercase; font-size:12px !important" 
+										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtMotivoNoGrata)"/>
 							</row>
 <!-- 							<row> -->
 <!-- 								<label value="AGENCIA REGISTRO(*):" /> -->
@@ -94,7 +115,7 @@
 				</groupbox>
 				<separator />
 				<groupbox mold="3d" closable="false">
-					<caption label="OBSERVACIONES" />
+					<caption label="OBSERVACIONES" style="color: #ffffff;"/>
 					<grid>
 						<columns>
 							<column width="180px" />
@@ -116,9 +137,9 @@
 				
 				<grid>
 					<columns>	
-						<column width="140px" align="right"/>
-						<column width="180px" />
-						<column width="150px" align="right"/>
+						<column width="160px" align="right"/>
+						<column width="150px" />
+						<column width="180px" align="right"/>
 					</columns>
 					<rows>
 						<row>
@@ -174,18 +195,18 @@
 				<separator height="1px" />
 				<listbox id="listPasajesAcumulados" mold="paging" pageSize="5">
 					<listhead>
-						<listheader label="BOLETO" width="80px" />
-						<listheader label="SERVICIO" width="120px" />
-						<listheader label="RUTA" width="145px" />
-						<listheader label="F.VIAJE" width="70px" />
-						<listheader label="FORMA PAGO" width="80px" />
-						<listheader label="ASIENTO" width="50px" />
-						<listheader label="IMPORTE" width="50px" />
-						<listheader label="F.EMISION" width="70px" />
-						<listheader label="TIPO MOVIMIENTO" width="110px" />
-						<listheader label="REP.VENTA" width="180px" />
-						<listheader label="RUC" width="90px" />
-						<listheader label="RAZON SOCIAL" width="250px" />
+						<listheader label="COMPROBANTE" width="100px" style="color: #ffffff;"/>
+						<listheader label="SERVICIO" width="100px" style="color: #ffffff;"/>
+						<listheader label="RUTA" width="145px" style="color: #ffffff;"/>
+						<listheader label="F.VIAJE" width="70px" style="color: #ffffff;"/>
+						<listheader label="FORMA PAGO" width="80px" style="color: #ffffff;"/>
+						<listheader label="ASIENTO" width="50px" style="color: #ffffff;"/>
+						<listheader label="IMPORTE" width="50px" style="color: #ffffff;"/>
+						<listheader label="F.EMISION" width="70px" style="color: #ffffff;"/>
+						<listheader label="TIPO MOVIMIENTO" width="110px" style="color: #ffffff;"/>
+						<listheader label="REP.VENTA" width="200px" style="color: #ffffff;"/>
+						<listheader label="RUC" width="90px" style="color: #ffffff;"/>
+						<listheader label="RAZON SOCIAL" width="250px" style="color: #ffffff;"/>
 					</listhead>
 				</listbox>
 				<separator height="1px" />		
