@@ -63,15 +63,15 @@ public class WndComprobantesPendientesXAsociarBoleto extends WndBase implements 
 		Listhead listhead=new Listhead();
 		Listheader listheader=new Listheader();
 		
-		listheader.setLabel("TIPO COMPROBANTE"); listheader.setWidth("180px");
+		listheader.setLabel("TIPO COMPROBANTE"); listheader.setWidth("180px");listheader.setStyle("color: #ffffff");
 		listhead.appendChild(listheader);
-		listheader=new Listheader();listheader.setLabel("NUMERO"); listheader.setWidth("80px");
+		listheader=new Listheader();listheader.setLabel("NUMERO"); listheader.setWidth("80px");listheader.setStyle("color: #ffffff");
 		listhead.appendChild(listheader);
-		listheader=new Listheader();listheader.setLabel("ASIENTO"); listheader.setWidth("50px");
+		listheader=new Listheader();listheader.setLabel("ASIENTO"); listheader.setWidth("50px");listheader.setStyle("color: #ffffff");
 		listhead.appendChild(listheader);
-		listheader=new Listheader();listheader.setLabel("NOMBRES DEL PASAJERO"); listheader.setWidth("180px");
+		listheader=new Listheader();listheader.setLabel("NOMBRES DEL PASAJERO"); listheader.setWidth("180px");listheader.setStyle("color: #ffffff");
 		listhead.appendChild(listheader);
-		listheader=new Listheader();listheader.setLabel("RUTA"); listheader.setWidth("180px");
+		listheader=new Listheader();listheader.setLabel("RUTA"); listheader.setWidth("180px");listheader.setStyle("color: #ffffff");
 		listhead.appendChild(listheader);
 		listbox.appendChild(listhead);
 		
@@ -100,6 +100,7 @@ public class WndComprobantesPendientesXAsociarBoleto extends WndBase implements 
 		
 		Button button=new Button();
 		button.setLabel("Cerrar"); button.setImage("/resources/mp_cerrar.png");
+		button.setClass("btnCommandM");
 		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {

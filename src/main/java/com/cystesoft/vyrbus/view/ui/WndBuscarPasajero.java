@@ -219,7 +219,7 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 		space.setWidth("30px");
 		radiogroup.appendChild(space);
 		Button button = new Button("Buscar");
-		button.setClass("btn-vyrbus");
+		button.setClass("btnCommandM");
 		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			public void onEvent(Event e) throws Exception{
 				if(buscaPax)
@@ -228,7 +228,7 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 					buscarCliente();
 			}
 		});
-		button.setHeight("27px");
+//		button.setHeight("27px");
 		button.setImage("resources/mp_buscarEnabled.png");
 		radiogroup.appendChild(button);
 		groupbox.appendChild(radiogroup);
@@ -319,11 +319,14 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 		Listhead listhead = new Listhead();
 		Listheader listheader = new Listheader("#");
 		listheader.setWidth("25px");
+		listheader.setStyle("color: #ffffff;");
 		listhead.appendChild(listheader);
 		listheader = new Listheader("DOCUMENTO");
 		listheader.setWidth("100px");
+		listheader.setStyle("color: #ffffff;");
 		listhead.appendChild(listheader);
 		listheader = new Listheader("NOMBRES");
+		listheader.setStyle("color: #ffffff;");
 		listhead.appendChild(listheader);
 		lbxPasajeros.appendChild(listhead);
 		row.appendChild(lbxPasajeros);
@@ -334,22 +337,22 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 		div.setAlign("center");
 		btnAceptar = new Button("Aceptar");
 		btnAceptar.setImage("resources/mp_aceptarEnabled.png");
-		btnAceptar.setHeight("27px");
-		btnAceptar.setClass("btn-vyrbus");
+//		btnAceptar.setHeight("27px");
+		btnAceptar.setClass("btnCommandL");
 		div.appendChild(btnAceptar);
 		row.appendChild(div);
 		
 		div = new Div();
 		div.setAlign("center");
 		button = new Button("Cancelar");
-		button.setClass("btn-vyrbus");
+		button.setClass("btnCommandL");
 		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			public void onEvent(Event e){
 				oThisWindow.onClose();
 			}
 		});
 		button.setImage("resources/mp_cancelarEnabled.png");
-		button.setHeight("27px");
+//		button.setHeight("27px");
 		div.appendChild(button);
 		row.appendChild(div);
 		rows.appendChild(row);

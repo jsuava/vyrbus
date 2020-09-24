@@ -217,7 +217,8 @@ public class WndVerPasajero extends WndBase implements Serializable{
 		
 		Button btnCerrar = new Button();
 		btnCerrar.setLabel("Cerrar");
-		btnCerrar.setHeight("30px");
+//		btnCerrar.setHeight("30px");
+		btnCerrar.setClass("btnCommandM");
 		btnCerrar.setSrc("resources/mp_cerrar.png");
 		
 		btnCerrar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
