@@ -888,14 +888,29 @@ public class WndTarifario extends WndBase implements Serializable {
 	public void onClick_btnGuardarTarifa(){
 		try {
 			if(!chkTarifaFA.isChecked()){
-				Long seleccionado = Long.valueOf(((Servicio)cmbServicio.getSelectedItem().getValue()).getId());
-				Servicio oServicio = ServiceLocator.getServicioManager().buscarPorId(seleccionado);
+				
+				final Integer idCanal, idServicio, idOrigen, idDestino, zona;
+				Long seleccionado;
+				Servicio oServicio;
+				
+				if(cmbServicio.getSelectedIndex()==0){
+					DlgMessage.information("Debe de ingresar el Servicio para la Tarifa. ");
+					cmbServicio.focus();
+					return;				
+				}else{
+					seleccionado = Long.valueOf(((Servicio)cmbServicio.getSelectedItem().getValue()).getId());
+					oServicio = ServiceLocator.getServicioManager().buscarPorId(seleccionado);
+				}
+				
 				flag=0;
 				ambosPisos=0;
 				
-				final Integer idCanal, idServicio, idOrigen, idDestino, zona;
-				
-				
+				//Si las fechas inicial y final son vacias
+				if(dtbxFecInicio.getValue()==null || dtbxFecFinal.getValue()==null ||
+					(dtbxFecInicio.getValue()==null && dtbxFecFinal.getValue()==null)){
+					DlgMessage.information("Debe ingresar las fechas de inicio y fin para la creacion de las tarifas.");
+					return;
+				}
 				//Si la fecha Final es menor que la fecha mayor
 				if (dtbxFecInicio.getValue().getTime()>dtbxFecFinal.getValue().getTime()){
 					DlgMessage.information(Messages.getString("wndProgramacionTarifa.information.fechaDesdeMayor"), dtbxFecFinal);
@@ -905,10 +920,6 @@ public class WndTarifario extends WndBase implements Serializable {
 				else if(cmbCanal.getSelectedIndex()==0){
 					DlgMessage.information("Debe seleccionar un Canal de Venta para la tarifa.");
 					cmbCanal.focus();;
-					return;				
-				}else if(cmbServicio.getSelectedIndex()==0){
-					DlgMessage.information("Debe de ingresar el Servicio para la Tarifa. ");
-					cmbServicio.focus();
 					return;				
 				}else if(cmbOrigen.getSelectedIndex()==0){
 					DlgMessage.information("Debe de ingresar el Origen para la Tarifa. ");
@@ -963,10 +974,6 @@ public class WndTarifario extends WndBase implements Serializable {
 					dlbxTarifaP2.focus();
 					return;				
 				}else{
-					
-					
-				
-					
 					
 					idCanal = ((CanalVenta)cmbCanal.getSelectedItem().getValue()).getId();
 					idServicio = ((Servicio)cmbServicio.getSelectedItem().getValue()).getId();
@@ -1209,7 +1216,7 @@ public class WndTarifario extends WndBase implements Serializable {
 												tarifa.setCanalVenta(canalVenta);
 												tarifa.setServicio(servicio);
 												tarifa.setRuta(ruta);
-												tarifa.setPisoBus(1);
+												tarifa.setPisoBus(pisoElegido);
 												tarifa.setZonaBus(zona);
 												tarifa.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 												UtilData.auditarRegistro(tarifa,  getUsuario(), Executions.getCurrent());
@@ -1373,10 +1380,11 @@ public class WndTarifario extends WndBase implements Serializable {
 												tarifa.setCanalVenta(canalVenta);
 												tarifa.setServicio(servicio);
 												tarifa.setRuta(ruta);
-												tarifa.setPisoBus(1);
+												tarifa.setPisoBus(pisoElegido);
 												tarifa.setZonaBus(zona);
+												tarifa.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 												UtilData.auditarRegistro(tarifa,  getUsuario(), Executions.getCurrent());
-	//											ServiceLocator.getTarifaManager().guardar(tarifa);
+												ServiceLocator.getTarifaManager().guardar(tarifa);
 													
 												//Insertar el detalle
 												TarifaRegular tarifaRegular = new TarifaRegular();
