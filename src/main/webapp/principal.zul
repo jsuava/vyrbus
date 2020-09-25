@@ -233,7 +233,7 @@
 
 						<label value=" "/>
 -->						
-						<image src="/resources/exit_png_32.png" 
+						<image src="/resources/mp_salir.png" 
 								style="border-radius: 10px; cursor:pointer" 
 								height="32px" 
 								width="32px" 

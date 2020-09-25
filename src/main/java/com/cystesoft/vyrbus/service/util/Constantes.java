@@ -25,7 +25,7 @@ public class Constantes {
 	/**
 	 * Vension actual del Sistema
 	 */
-	public static final String SYSTEM_VERSION = "Versión 7.3.3";
+	public static final String SYSTEM_VERSION = "Versión 3.0.0";
 		
 	/**
 	 * Constante para la Acción Nuevo
@@ -413,9 +413,9 @@ public class Constantes {
 	public static final int ID_SEXO_MASCULINO = 2;
 	
 	/*	Constantes que referencian a los Canales de Venta	*/
-	public static final int ID_CANVEN_DELIVERY = 1;
-	public static final int ID_CANVEN_AGENTE = 2;
-	public static final int ID_CANVEN_WEB = 4;
+	public static final int ID_CANVEN_DELIVERY = 4;
+	public static final int ID_CANVEN_AGENTE = 3;
+	public static final int ID_CANVEN_WEB = 2;
 	public static final int ID_CANVEN_AGENCIA_VIAJES = 5;
 	public static final int ID_CANVEN_CORPORATIVO = 6;
 	
