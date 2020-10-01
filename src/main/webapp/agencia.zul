@@ -8,7 +8,7 @@
 			<listheader label="TIPO DE AGENCIA" width="130px" sort="auto" style="color: #ffffff;"/>
 			<listheader label="LOCALIDAD" width="85px" sort="auto" style="color: #ffffff;"/>
 			<listheader label="CONCESIONARIO" width="170px" sort="auto" style="color: #ffffff;"/>
-			<listheader label="UBICACIÓN GEOGRÁFICA" sort="auto"style="color: #ffffff;"/>
+			<listheader label="UBICACIÓN GEOGRÁFICA" sort="auto" style="color: #ffffff;"/>
 			<listheader label="DENOMINACIÓN"  sort="auto" style="color: #ffffff;"/>
 			<listheader label="NOMBRE CORTO" sort="auto" style="color: #ffffff;"/>
 			<listheader label="¿ES TERMINAL?" width="80px" sort="auto" style="color: #ffffff;"/>
