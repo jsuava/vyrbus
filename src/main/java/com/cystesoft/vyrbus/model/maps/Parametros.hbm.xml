@@ -178,6 +178,11 @@
             <column name="N_TIEEXPBLOCOM" precision="2" >
             </column>
         </property> 
+        <property name="viajesAcumuladosPasajero" type="java.lang.Integer">
+            <column name="N_NUMPASCOR" precision="2" scale="0">
+                <comment>Numero de viajes Necesarios a acumular para obtener un pasaje de cortesia 0: no configurado; mayor a 0 el nro de viajes.</comment>
+            </column>
+        </property>
          
         <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
         <property name="estadoRegistro" type="java.lang.String">

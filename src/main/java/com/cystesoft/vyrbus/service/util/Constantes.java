@@ -567,6 +567,11 @@ public class Constantes {
 	 *Cantidad de meses a considerar para el calculo de la base historica. Expresado en dias 180 (6 meses)
 	 */
 	public static final int CALCULO_BASE_HISTORICA=180;
+	
+	/*
+	 * Cantidad de viajes acumulados para canjear un pasaje de cortesia, para Transmar son 7
+	 */
+	public static final int NUMERO_VIAJES_ACUMULADOS = (((Parametros)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_PARAMETROS)).getViajesAcumuladosPasajero());	
 	/**
 	 * IP del proxy que utilizara el sistema para establecer la conexión con el WS del MTC.
 	 */

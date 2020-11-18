@@ -3962,19 +3962,29 @@ public class WndVentaReserva extends WndBase {
 					}else
 						lblPromocion.setValue("");
 				}else {
+					//Pasajeros regulares
 					oPasajero.setPaxFree(false);
 					oPasajero.setPasajeroFrecuente(null);
-					Long tiempo = new Date().getTime() - (Constantes.MILISEGUNDOS_X_DIA * Constantes.TIEMPO_PASAR_PAXFREE);
-					finicio = Util.DatetoString(new Date(tiempo), Constantes.DATE_FORMAT);
-					ffin = Util.DatetoString(new Date(), Constantes.DATE_TIME_FORMAT);
-					totalViajes = ServiceLocator.getVentaPasajesManager().contarViajesValidos(oPasajero.getId(), finicio, ffin);
-					lblInformativo1.setValue("NUMERO DE VIAJES ULTIMOS SEIS MESES : " + totalViajes.toString());
-					if (totalViajes.intValue() >= Constantes.NUMERO_VIAJES_PAXFREE && cmbTipoOperacion.getSelectedIndex()==0){
-						lblInformativo3.setValue("EL CLIENTE CALIFICA PARA SER PASAJERO FRECUENTE");
-						convertirPaxFre = true;
-//						imgFidelizarPasajero.setSrc("resources/mp_fidelizarPasajero.png");
-//						imgFidelizarPasajero.setVisible(true);
-					}else
+					//Verificar el parametro de numero de viajes acumulados necesarios para canjear un pasaje gratis
+					if(Constantes.NUMERO_VIAJES_ACUMULADOS > 0){
+						//Buscar la fecha de inicio en la tabla de pasajes canjeados
+						//La busqueda se realizara desde el mismo metodo que cuenta los viajes validos
+					
+						//En esta version no se utilizara el programa de pasajero frecuente
+						//Secomentan estas lineas por MAOE el 18/11/2020
+//						Long tiempo = new Date().getTime() - (Constantes.MILISEGUNDOS_X_DIA * Constantes.TIEMPO_PASAR_PAXFREE);
+//						finicio = Util.DatetoString(new Date(tiempo), Constantes.DATE_FORMAT);
+						
+						ffin = Util.DatetoString(new Date(), Constantes.DATE_TIME_FORMAT);
+						totalViajes = ServiceLocator.getVentaPasajesManager().contarViajesValidos(oPasajero.getId(), finicio, ffin);
+						lblInformativo1.setValue("CANTIDAD DE VIAJES VALIDOS ACUMULADOS: " + totalViajes.toString());
+					}
+					//En esta version no se utilizara el programa de pasajero frecuente
+					//Se comentaron esta lisneas por MAOE el 18/11/2020
+//					if (totalViajes.intValue() >= Constantes.NUMERO_VIAJES_PAXFREE && cmbTipoOperacion.getSelectedIndex()==0){
+//						lblInformativo3.setValue("EL CLIENTE CALIFICA PARA SER PASAJERO FRECUENTE");
+//						convertirPaxFre = true;
+//					}else
 						lblInformativo3.setValue("");
 					dblDescuento.setValue(0.00);
 					dblDescuento.setTooltiptext("");
@@ -3983,7 +3993,7 @@ public class WndVentaReserva extends WndBase {
 						lblPromocion.setValue("Promoción : "+promocionTarifa.getDenominacion());
 					else{
 						lblPromocion.setValue("");
-						/*Recupera el descuento automatico del Cliente, si es que este lo tubiera*/
+						//Recupera el descuento automatico del Cliente, si es que este tiene
 						if(oCliente!=null && oCliente.isDescuentoAutoByCliente())
 							mantenimientoRegistroClient(oCliente.getId());
 					}

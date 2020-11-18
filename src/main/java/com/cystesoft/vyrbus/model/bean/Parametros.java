@@ -41,6 +41,7 @@ public class Parametros extends GenericBean implements java.io.Serializable {
     private Integer tiempoEmisionHRE; //indica el tiempo desde que se puede emitir la hre, tomando en cuenta la hora de partida del servicio
     private Integer validarProgramacionMtc;
     private Integer tiempoExpiracionBloqueComprobante;
+    private Integer viajesAcumuladosPasajero; //Patra contar el numero de viajes para canjear un pasaje gratis
     
     // Constructors
     /** default constructor */
@@ -498,5 +499,19 @@ public class Parametros extends GenericBean implements java.io.Serializable {
 		this.tiempoExpiracionBloqueComprobante = tiempoExpiracionBloqueComprobante;
 	}
 
+	/**
+	 * @return the viajesRequeridosPasajeroFrecuente
+	 */
+	public Integer getViajesAcumuladosPasajero() {
+		return viajesAcumuladosPasajero;
+	}
+	/**
+	 * @param viajesRequeridosPasajeroFrecuente the viajesRequeridosPasajeroFrecuente to set
+	 */
+	public void setViajesAcumuladosPasajero(Integer viajesAcumuladosPasajero) {
+		this.viajesAcumuladosPasajero = viajesAcumuladosPasajero;
+	}
+	
+	
 	
 }
