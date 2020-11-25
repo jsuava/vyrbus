@@ -1655,40 +1655,50 @@ public class WndManifiesto extends WndBase {
 		//Asiento
 		Listheader listheader= new Listheader("ASIENTO");
 		listheader.setWidth("50px"); 
+		listheader.setStyle("color: #ffffff;");
 		listhead.appendChild(listheader);
 		//Boleto
 		listheader= new Listheader("N° BOLETO");
-		listheader.setWidth("80px"); 
+		listheader.setWidth("100px"); 
+		listheader.setStyle("color: #ffffff;");
 		listhead.appendChild(listheader);
 		//Pasajero
 		listheader= new Listheader("PASAJERO");
 		listheader.setWidth("200px"); 
+		listheader.setStyle("color: #ffffff;");
 		listhead.appendChild(listheader);
 		//Ruta
 		listheader= new Listheader("RUTA");
 		listheader.setWidth("120px"); 
+		listheader.setStyle("color: #ffffff;");
 		listhead.appendChild(listheader);
 		//Punto de embarque
 		listheader= new Listheader("PTO. EMBARQUE");
 		listheader.setWidth("100px"); 
+		listheader.setStyle("color: #ffffff;");
 		listhead.appendChild(listheader);
 		//Canal
 		listheader = new Listheader("CANAL");
 		listheader.setWidth("75px");
+		listheader.setStyle("color: #ffffff;");
 		listhead.appendChild(listheader);
 		lstPasajeros.appendChild(listhead);
 		
 		//
 		if(idFormaPago!=null && idFormaPago.intValue()==Constantes.ID_FORPAG_CREDITO){
 			listheader = new Listheader("CLIENTE CREDITO");
+			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
 		}else{
 			
 			if(idFormaPago!=null){
 				listheader = new Listheader("AGENCIA");
+				listheader.setStyle("color: #ffffff;");
 				window.setWidth("800px");
-			}else
+			}else{
 				listheader = new Listheader("EMITIDO POR:");
+				listheader.setStyle("color: #ffffff;");
+			}
 			
 			listhead.appendChild(listheader);
 		}

@@ -168,7 +168,7 @@
 										</listhead>
 									</listbox>
 								</vlayout>
-								<cell rowspan="2" align="right" valign="bottom">
+								<cell rowspan="2" align="left" valign="bottom">
 									<vlayout>
 										<button id="btnNextTabAsientos" 
 												sclass="btnCommandL"  
@@ -177,11 +177,15 @@
 												image="resources/mp_next.png" 
 												disabled="true"  
 												onClick="wndVentaReserva.next()"/>
+										<label value=""/>
+										<label value=""/>
 										<button label="Cerrar" 
 												sclass="btnCommandL" 
 												autodisable="self"  
 												image="resources/mp_cerrarEnabled.png" 
 												onClick="wndVentaReserva.closeTabWindow()" />
+										<label value=""/>
+										<label value=""/>												
 									</vlayout>
 								</cell>
 							</row>
@@ -595,14 +599,15 @@
 										</grid>
 									</vlayout>									
 								</hlayout>
-								<tabbox>
+
+								<tabbox width="940px" >
 									<tabs>
 										<tab id="tabPasajero" label="Pasajero"/>
 										<tab id="tabCliente" label="Cliente" />
 										<tab id="tabPagos" label="Pagos" />
 									</tabs>
 									<tabpanels>
-										<tabpanel><!-- DATOS DEL PASAJERO -->
+										<tabpanel width="930px"><!-- DATOS DEL PASAJERO -->
 											<vlayout>
 												<groupbox id="grpbxListaPasajeros" mold="3d" closable="false" visible="false">
 													<caption label="LISTADO DE RESULTADOS" style="color: #ffffff;"/>
@@ -627,7 +632,7 @@
 													</toolbar>
 													<grid >
 														<columns>
-															<column width="14%" align="right"/>
+															<column width="15%" align="right"/>
 															<column width="25%"/>
 															<column width="15%" align="right"/>
 															<column width="30%"/>
@@ -746,7 +751,7 @@
 												</groupbox>
 											</vlayout>
 										</tabpanel>
-										<tabpanel><!-- DATOS DEL CLIENTE -->
+										<tabpanel width="930px"><!-- DATOS DEL CLIENTE -->
 											<vlayout>
 												<hlayout>
 													<groupbox id="grpbxListaClientes" mold="3d" closable="false" visible="false">
@@ -796,10 +801,10 @@
 																<intbox visible="false" id="ibxCantidadTrabajadores" width="100px" onOK="txtTelefonoClienteOne.setFocus(true)"/>
 															</row>
 															<row>
-																<label value="TELÉFONO 1 :"/>
+																<label value="TELÉF.1 :"/>
 																<hbox align="center">
 																	<textbox id="txtTelefonoClienteOne" width="135px" onOK="txtTelefonoClienteTwo.setFocus(true)" maxlength="10"/><separator width="5px" />
-																	<label value="TELÉFONO 2 :"/>
+																	<label value="TELÉF.2 :"/>
 																	<textbox id="txtTelefonoClienteTwo" width="134px" onOK="txtRubro.setFocus(true)" maxlength="10"/>
 																</hbox>
 																<label value="RUBRO :"/>
@@ -826,14 +831,16 @@
 												</groupbox>
 											</vlayout>
 										</tabpanel>
-										<tabpanel><!-- PAGOS -->
+										<tabpanel width="930px"><!-- PAGOS -->
 											<vlayout>
-												<grid width="610px" style="border:none;">
+												<grid width="930px" style="border:none;">
 													<columns>
-														<column align="right" width="130px"/>
-														<column/>
-														<column align="right"/>
-														<column/>
+														<column align="right" width="15%"/>
+														<column align="left" width="19%"/>
+														<column align="right" width="15%"/>
+														<column align="left" width="18%"/>
+														<column align="right" width="15%"/>
+														<column align="left" width="18%"/>
 													</columns>
 													<rows>
 														<row>
@@ -841,6 +848,8 @@
 			 												<combobox id="cmbTipoMoneda" disabled="true" readonly="true" onChange="wndVentaReserva.validarOtraMoneda()"/>
 															<label value="TIPO COMPROBANTE :"/>
 															<combobox id="cmbTipoComprobante" readonly="true"/>
+															<label value="FORMA PAGO :"/>
+															<combobox id="cmbFormaPago" readonly="true" onChange="wndVentaReserva.onLoadTipoFormaPago()"/>															
 														</row>
 														<row>
 															<label value="TARIFA :"/>
@@ -850,14 +859,18 @@
 																<doublebox id="dblTarifaRetorno" format="##0.00" visible="false"/>
 																<doublebox id="dblTarifaRetornoOtraMoneda" width="66px" format="###,##0.00" readonly="true" visible="false"/>
 															</hlayout>
-															<label value="FORMA PAGO :"/>
-															<combobox id="cmbFormaPago" readonly="true" onChange="wndVentaReserva.onLoadTipoFormaPago()"/>										
+															<label value="TIPO FORMA PAGO :"/>
+															<combobox id="cmbTipoFormaPago" readonly="true" disabled="true" onChange="wndVentaReserva.onValidateTipoFormaPago()"/>
+															<label value="OPERADOR TARJETA :"/>
+															<combobox id="cmbOperadorTarjetaCredito" readonly="true" disabled="true" onChange="wndVentaReserva.onLoadTarjetas()"/>
 														</row>
 														<row>
 															<label value="RECARGO :"/>
 															<doublebox id="dblRecargo" width="66px" format="###,##0.00" readonly="true"/>
-															<label value="TIPO FORMA PAGO :"/>
-															<combobox id="cmbTipoFormaPago" readonly="true" disabled="true" onChange="wndVentaReserva.onValidateTipoFormaPago()"/>
+															<label value="TARJETA CREDITO :"/>
+															<combobox id="cmbTarjetaCredito" readonly="true" disabled="true"/>
+															<label value="NUMERO OPERACION :"/>
+															<textbox id="txtOperacionBancaria" mold="default" disabled="true" width="90px"/>															
 														</row>
 														<row>
 															<label value="DESCUENTO :"/>
@@ -870,8 +883,22 @@
 																<image id="imgPromocion" src="resources/mp_promocion.png" style="cursor:pointer" tooltiptext="Seleccionar promoción"/>
 																<image id="imgQuitarPromocion" src="resources/mp_quitarPromocion.png" visible="false" style="cursor:pointer" tooltiptext="Quitar promoción"/>
 															</hlayout>
-															<label value="OPERADOR TARJETA :"/>
-															<combobox id="cmbOperadorTarjetaCredito" readonly="true" disabled="true" onChange="wndVentaReserva.onLoadTarjetas()"/>
+															
+															<button id="btnAdd" 
+																	image="/resources/mp_nuevoEnabled.png"   
+																	onClick="wndVentaReserva.AddFilaGastoXBuss(false)" 
+																	sclass="btnImage" 
+																	tooltiptext="Insertar nuevo Item" 
+																	visible="false" />
+															<button id="btnDelete"
+																	image="/resources/mp_cerrar.png" 
+																	sclass="btnImage" 
+																	tooltiptext="Eliminar  Item"
+																	visible="false" />
+															<label value="MONTO PARCIAL:" visible="false"/>
+															<doublebox id="dblMontoDetalleMixto" format="##0.00" visible="false" readonly="true"/>		
+															
+	
 														</row>
 														<row>
 															<label value="IMPORTE :"/>
@@ -880,25 +907,34 @@
 																<doublebox id="dblImporteOtraMoneda" width="66px" format="###,##0.00" readonly="true" visible="false"/>
 																<checkbox id="chkPagoMixto" label="Pago Mixto" onClick="wndVentaReserva.habilitarPagoMixto()"/>
 															</hlayout>
-															<label value="TARJETA CREDITO :"/>
-															<combobox id="cmbTarjetaCredito" readonly="true" disabled="true"/>
+															<cell rowspan="3" colspan="4" align="center" style="background:#F7F7F7" >
+																<listbox id="listTipoPago" rows="2" visible="false">
+																	<listhead sizable="false">
+																		<listheader label="#" width="25px" style="color: #ffffff;"/>
+																		<listheader label="TIPO FORMA PAGO" width="160px" align="left" style="color: #ffffff;"/>
+																		<listheader label="OPERADOR TARJETA" width="140px"  align="left" style="color: #ffffff;"/>
+																		<listheader label="TARJETA" width="170px"  align="left" style="color: #ffffff;"/>
+																		<listheader label="IMPORTE" width="100px"  align="right" style="color: #ffffff;"/>
+																	</listhead>
+																</listbox>
+															</cell>															
 														</row>
 														<row>
 															<label id="lblImporteEfectivo" value="IMPORTE EFECTIVO :" visible="false"/>
 															<doublebox id="dblImporteEfectivo" width="66px" format="###,##0.00" visible="false"/>
-															<label value="NUMERO OPERACION :"/>
-															<textbox id="txtOperacionBancaria" mold="default" disabled="true" width="90px"/>
+
 														</row>
 														<row>
 															<label id="lblImporteTarjeta" value="IMPORTE TARJETA :" visible="false"/>
 															<doublebox id="dblImporteTarjeta" width="66px" format="###,##0.00" visible="false"/>
-															<separator/><separator/>
+															
 														</row>
-														<row spans="4">
+														<row spans="6">
 															<div align="left">
 																<label id="lblPromocion" style="font-size:12px !important;font-weight:bold;color:RED"/>
 															</div>												
 														</row>
+
 													</rows>
 												</grid>									
 											</vlayout>
@@ -906,16 +942,15 @@
 									</tabpanels>
 								</tabbox>
 							</vlayout>
-							<div id="divLogOperadorPor2" visible="false">
-							<vbox align="center" style="position: absolute;right:16px;top:60px;">
-								<label value="OPERADO POR " style="padding: 0px;font-weight: bold;font-size:27px !important;color:red"  />
-								<image id="imgLogoOperadorPor2"/>
-							</vbox>
-						</div>
+  							<div id="divLogOperadorPor2" visible="false">
+								<vbox align="center" style="position: absolute;right:16px;top:60px;">
+									<label value="OPERADO POR " style="padding: 0px;font-weight: bold;font-size:27px !important;color:red"  />
+									<image id="imgLogoOperadorPor2"/>
+								</vbox>
+							</div> 
 						</row>
 					</rows>
 				</grid>
-				
 			</tabpanel>
 		</tabpanels>
 	</tabbox>	
