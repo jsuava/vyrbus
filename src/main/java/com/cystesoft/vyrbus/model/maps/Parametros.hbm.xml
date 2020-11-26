@@ -172,10 +172,12 @@
          </property>
          <property name="validarProgramacionMtc" type="java.lang.Integer">
             <column name="N_VALPROMTC" precision="1" >
+            <comment>Determina si debe o no validad el servicio en la programacion con el Web Service del MTC, 1=Valida; 0=No valida..</comment>
             </column>
         </property>
         <property name="tiempoExpiracionBloqueComprobante" type="java.lang.Integer">
             <column name="N_TIEEXPBLOCOM" precision="2" >
+            <comment>Tiempo maximo que dura el bloqueo del comprobante en minutos.</comment>
             </column>
         </property> 
         <property name="viajesAcumuladosPasajero" type="java.lang.Integer">

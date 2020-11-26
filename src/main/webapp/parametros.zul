@@ -106,9 +106,42 @@
 						<label value="Asientos" sclass="label-size11" />
 					</hbox>
 				</row>
+<!-- ADICIONADO POR MAOE FALTABAN ALGUNOS PARAMETROS -->
 				<row>
-					
+					<label value="Tiempo maximo para la duplicidad de un comprobante" sclass="label-size11" />
+					<hbox align="center">
+						<intbox id="itMaximoDuplicidadComprobante" maxlength="2" width="30px" style="text-align: right;" />
+						<label value="Minutos" sclass="label-size11" />
+					</hbox>
 				</row>
+				<row>
+					<label value="Monto de penalidad para realizar el cambio de nombre" sclass="label-size11" />
+					<hbox align="center">
+						<intbox id="itMontoPenalidadCambioNombre" maxlength="2" width="30px" style="text-align: right;" />
+						<label value="Soles" sclass="label-size11" />
+					</hbox>
+				</row>
+				<row>
+					<label value="Tiempo maximo de expiracion de un bloqueo de asiento" sclass="label-size11" />
+					<hbox align="center">
+						<intbox id="itMaximoBloqueoasiento" maxlength="2" width="30px" style="text-align: right;" />
+						<label value="Minutos" sclass="label-size11" />
+					</hbox>
+				</row>
+				<row>
+					<label value="Tiempo maximo permitido para hacer Reservas antes de que salga el servicio" sclass="label-size11" />
+					<hbox align="center">
+						<intbox id="itMaximoReservaAntesServicio" maxlength="2" width="30px" style="text-align: right;" />
+						<label value="Minutos" sclass="label-size11" />
+					</hbox>
+				</row>
+				<row>
+					<label value="Cantidad de viajes que un pasajero debe acumular para obtener un pasaje de cortesia" sclass="label-size11" />
+					<hbox align="center">
+						<intbox id="iCantidadViajesParaCortesia" maxlength="2" width="30px" style="text-align: right;" />
+						<label value="Viajes" sclass="label-size11" />
+					</hbox>
+				</row>				
 			</rows>
 		</grid>
 		<separator height="1px"/>

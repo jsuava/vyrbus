@@ -17,7 +17,7 @@
 				<!-- <image width="120px" src="resources/about.png"/> -->
 				<vbox height="100%">
 					<groupbox  closable="false" mold="3d" >
-						<caption label="CYSTECH SOFTWARE" style="font-weight:bold;font-size:13px !important; color:#FFFFFF"/>
+						<caption label="ITSB SOFTWARE" style="font-weight:bold;font-size:13px !important; color:#FFFFFF"/>
 						<grid >
 							<columns width="250px">
 								<column align="center"/>
@@ -49,7 +49,7 @@
 								</row>
 								<row style="border:none">
 									<label value="Email :" style="font-size:11px !important"/>
-									<label value="osccoem@gmail.com" style="font-size:11px !important;color:#0E3A99; font-weight:bold"/>
+									<label value="marco.oscco@itsb.pe" style="font-size:11px !important;color:#0E3A99; font-weight:bold"/>
 								</row>
 								<row style="border:none">
 									<label value="Analista Programador :" style="font-size:11px !important"/>
@@ -57,8 +57,13 @@
 								</row>
 								<row style="border:none">
 									<label value="Email :" style="font-size:11px !important"/>
-									<label value="cystech.soluciones@gmail.com" style="font-size:11px !important;color:#0E3A99; font-weight:bold"/>
+									<label value="jose.avalos@itsb.pe" style="font-size:11px !important;color:#0E3A99; font-weight:bold"/>
 								</row>
+								<row style="border:none">
+									<label value="Visite nuestra Web :" style="font-size:11px !important"/>
+									<a href="http://www.itsb.pe" target="_blank">
+									<label value="www.itsb.pe" style="font-size:11px !important;color:#0E3A99; font-weight:bold"/></a>
+								</row>								
 							</rows>
 						</grid>
 					</groupbox>

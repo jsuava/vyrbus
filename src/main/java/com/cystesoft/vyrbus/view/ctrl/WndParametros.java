@@ -49,6 +49,12 @@ public class WndParametros extends WndBase {
 	private Intbox itAlertaEnvioEspecieValorada;
 	private Intbox itAlertaSolicitaManifiestoPax;
 	private Intbox itMaximoAsientosSeleccionados;
+	private Intbox itMaximoDuplicidadComprobante;
+	private Intbox itMontoPenalidadCambioNombre;
+	private Intbox itMaximoBloqueoasiento;
+	private Intbox itMaximoReservaAntesServicio;
+	private Intbox iCantidadViajesParaCortesia;
+	
 	private Listbox lbxUsuarioGerenciaComercialAprobador;
 	private Listbox lbxUsuarioComercialAprobador;
 	private Listbox lbxUsuarioFinazasAprobador;
@@ -75,6 +81,13 @@ public class WndParametros extends WndBase {
 		itAlertaEnvioEspecieValorada=(Intbox)this.getFellow("itAlertaEnvioEspecieValorada");
 		itAlertaSolicitaManifiestoPax=(Intbox)this.getFellow("itAlertaSolicitaManifiestoPax");
 		itMaximoAsientosSeleccionados=(Intbox)this.getFellow("itMaximoAsientosSeleccionados");
+		
+		itMaximoDuplicidadComprobante=(Intbox)this.getFellow("itMaximoDuplicidadComprobante");
+		itMontoPenalidadCambioNombre=(Intbox)this.getFellow("itMontoPenalidadCambioNombre");
+		itMaximoBloqueoasiento=(Intbox)this.getFellow("itMaximoBloqueoasiento");
+		itMaximoReservaAntesServicio=(Intbox)this.getFellow("itMaximoReservaAntesServicio");
+		iCantidadViajesParaCortesia=(Intbox)this.getFellow("iCantidadViajesParaCortesia");
+		
 		lbxUsuarioGerenciaComercialAprobador=(Listbox)this.getFellow("lbxUsuarioGerenciaComercialAprobador");
 		lbxUsuarioComercialAprobador=(Listbox)this.getFellow("lbxUsuarioComercialAprobador");
 		lbxUsuarioFinazasAprobador=(Listbox)this.getFellow("lbxUsuarioFinazasAprobador");
@@ -102,6 +115,12 @@ public class WndParametros extends WndBase {
 		itAlertaEnvioEspecieValorada.setValue(parametros.getAlertarEnvioEspecieValorda());
 		itAlertaSolicitaManifiestoPax.setValue(parametros.getAlertarEnvioManifiestoPasajeros());
 		itMaximoAsientosSeleccionados.setValue(parametros.getMaximoAsientosSeleccionados());
+		
+		itMaximoDuplicidadComprobante.setValue(parametros.getTiempoMaximoDuplicarBoleto());
+		itMontoPenalidadCambioNombre.setValue(parametros.getPenalidadCambioNombre());
+		itMaximoBloqueoasiento.setValue(parametros.getTiempoExpiraBloqueo());
+		itMaximoReservaAntesServicio.setValue(parametros.getTiempoMaximoPermiteReserva());
+		iCantidadViajesParaCortesia.setValue(parametros.getViajesAcumuladosPasajero());
 		
 //		/*carga usuarios aprobadores*/
 //		cargarListaUsuarios(lbxUsuarioGerenciaComercialAprobador);//Generancia Comercial Aprobador (Genencia comercial)
@@ -154,14 +173,14 @@ public class WndParametros extends WndBase {
 			final String iDsUsuarioFinanzasAprobador=getIDsUsuario(lbxUsuarioFinazasAprobador);
 			final String iDsUsuarioGerenciaComercial=getIDsUsuario(lbxUsuarioGerenciaComercial);
 			
-			if(iDsUsuarioGerenciaComercialAprobador.length()==0)
-				throw new ParametrosException(ParametrosException.USUARIO_GENECIA_APROBADOR_NULL);
-			else if (iDsUsuarioComercialAprobador.length()==0)
-				throw new ParametrosException(ParametrosException.USUARIO_COMERCIAL_APROBADOR_NULL);
-			else if (iDsUsuarioFinanzasAprobador.length()==0)
-				throw new ParametrosException(ParametrosException.USUARIO_FINANZAS_APROBADOR_NULL);
-			else if (iDsUsuarioGerenciaComercial.length()==0)
-				throw new ParametrosException(ParametrosException.USUARIO_GENRENCIA_COMERCIAL_NULL);
+//			if(iDsUsuarioGerenciaComercialAprobador.length()==0)
+//				throw new ParametrosException(ParametrosException.USUARIO_GENECIA_APROBADOR_NULL);
+//			else if (iDsUsuarioComercialAprobador.length()==0)
+//				throw new ParametrosException(ParametrosException.USUARIO_COMERCIAL_APROBADOR_NULL);
+//			else if (iDsUsuarioFinanzasAprobador.length()==0)
+//				throw new ParametrosException(ParametrosException.USUARIO_FINANZAS_APROBADOR_NULL);
+//			else if (iDsUsuarioGerenciaComercial.length()==0)
+//				throw new ParametrosException(ParametrosException.USUARIO_GENRENCIA_COMERCIAL_NULL);
 				
 			Messagebox.show(Messages.getString("wndParametros.question.confirmaUpdate"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 				@Override
@@ -187,10 +206,10 @@ public class WndParametros extends WndBase {
 						parametros.setTiempoCaducidadPuntos(itTiempoCaducanPuntosOptenidosPaxfree.getValue());
 						parametros.setAlertarEnvioEspecieValorda(itAlertaEnvioEspecieValorada.getValue());
 						parametros.setAlertarEnvioManifiestoPasajeros(itAlertaSolicitaManifiestoPax.getValue());
-						parametros.setUsuarioGerenciaComercialAprobador(iDsUsuarioGerenciaComercialAprobador);
-						parametros.setUsuarioComercialAprobador(iDsUsuarioComercialAprobador);
-						parametros.setUsuarioFinanzasAprobador(iDsUsuarioFinanzasAprobador);
-						parametros.setUsuarioGerenciaComercial(iDsUsuarioGerenciaComercial);
+//						parametros.setUsuarioGerenciaComercialAprobador(iDsUsuarioGerenciaComercialAprobador);
+//						parametros.setUsuarioComercialAprobador(iDsUsuarioComercialAprobador);
+//						parametros.setUsuarioFinanzasAprobador(iDsUsuarioFinanzasAprobador);
+//						parametros.setUsuarioGerenciaComercial(iDsUsuarioGerenciaComercial);
 						parametros.setMaximoAsientosSeleccionados(itMaximoAsientosSeleccionados.getValue());
 						parametros.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 						UtilData.auditarRegistro(parametros, getUsuario(), Executions.getCurrent());
