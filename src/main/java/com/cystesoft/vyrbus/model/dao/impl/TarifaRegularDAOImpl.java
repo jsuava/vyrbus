@@ -14,7 +14,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.cystesoft.vyrbus.model.bean.CanalVenta;
-import com.cystesoft.vyrbus.model.bean.DetalleItinerario;
 import com.cystesoft.vyrbus.model.bean.Itinerario;
 import com.cystesoft.vyrbus.model.bean.Localidad;
 import com.cystesoft.vyrbus.model.bean.Ruta;
@@ -41,7 +40,7 @@ public class TarifaRegularDAOImpl extends GenericDAOImpl implements TarifaRegula
 	@Override
 	public List<TarifaRegular> buscarTarifaPorServicio(Integer canalVentaID, Integer servicioID, Integer rutaID, 
 													   String fechaTarifa, String horaPartida, Integer piso, Integer zona) throws Exception {
-		// TODO Auto-generated method stub
+		
 		return buscarTarifa(canalVentaID, servicioID, rutaID, fechaTarifa, horaPartida, piso, zona);
 	}
 	

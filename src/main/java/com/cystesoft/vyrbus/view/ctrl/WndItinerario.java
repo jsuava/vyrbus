@@ -2,7 +2,7 @@
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
  * Descripción	: 
- * Autor		: José Abanto
+ * Autor		: José Avalos
  * Fecha		: 11/09/2012
  */
 package com.cystesoft.vyrbus.view.ctrl;
@@ -13,10 +13,12 @@ import java.util.List;
 import java.util.TreeMap;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Execution;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Bandbox;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Caption;
 import org.zkoss.zul.Combobox;
@@ -24,7 +26,6 @@ import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Filedownload;
-import org.zkoss.zul.Grid;
 import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Intbox;
@@ -35,14 +36,14 @@ import org.zkoss.zul.Listhead;
 import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
-import org.zkoss.zul.Row;
-import org.zkoss.zul.Rows;
 import org.zkoss.zul.Separator;
+import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Timebox;
 import org.zkoss.zul.Window;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.DetalleItinerario;
+import com.cystesoft.vyrbus.model.bean.GenericBean;
 import com.cystesoft.vyrbus.model.bean.HRE;
 import com.cystesoft.vyrbus.model.bean.Itinerario;
 import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaLlegada;
@@ -60,6 +61,7 @@ import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.service.exceptions.CancelaGrabacionException;
 import com.cystesoft.vyrbus.service.exceptions.CapacidadServicioMayorExeption;
 import com.cystesoft.vyrbus.service.exceptions.FechaItinerarioNullException;
+import com.cystesoft.vyrbus.service.exceptions.HoraLlegadaNullException;
 import com.cystesoft.vyrbus.service.exceptions.HoraPartidaNullException;
 import com.cystesoft.vyrbus.service.exceptions.ItinerarioException;
 import com.cystesoft.vyrbus.service.exceptions.LocalidadNullException;
@@ -82,7 +84,7 @@ import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
 
 /**
  *
- * @author José Abanto
+ * @author José Avalos
  * @since JDK1.6
  */
 
@@ -94,22 +96,26 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 	private Combobox cmbRuta;
 	private Datebox	dbFechaItinerario;
 	private Timebox	tbHoraPartida;
-	private Combobox cmbTermOrigen;
-	private Combobox cmbTermDestino;
-	private Listbox	listboxDetalleItinerario;
-	private Grid grdRutasTrifas;
+//	private Combobox cmbTermOrigen;
+//	private Combobox cmbTermDestino;
+	private Listbox	lbxDetalleItinerario;
+//	private Grid grdRutasTrifas;
 	private Combobox cmbTerminalPartida;
 	private Timebox	tbterHoraPartida;	
-	private Listbox listboxTerminalPartida;
+	private Listbox lbxTerminalPartida;
 	private Combobox cmbTerminalLlegada;
 	private Timebox tbterHoraLlegada;
-	private Listbox listboxTerminalLlegada;
+	private Listbox lbxTerminalLlegada;
 	private Datebox dbFechaInicio;
 	private Datebox dbFechafin;
 	private Button cmdAddTerPartida;
 	private Button cmdAddTerLlegada;
 	private Div divMantenimiento;
 	private Button cmdAgregarTramo;
+	private Bandbox bbxTerminalOrigen;
+	private Bandbox bbxTerminalDestino;
+	private Listbox lbxTerminalOrigen;
+	private Listbox lbxTerminalDestino;
 
 	private Itinerario oitinerario=null; 
 
@@ -124,6 +130,9 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 	
 	private List<VentaPasaje>listVentasNoUpdate=new ArrayList<VentaPasaje>();//Utilizado para la validacion de la ventas
 	private Window wndItinerarios = null;
+	private List<Agencia> lstAgenciaPartida;
+	private List<Agencia> lstAgenciaLlegada;
+	
 	
 	final String disabledDelete="/resources/mp_eliminarDisabled.png";
 	final String enabledDelete="/resources/mp_eliminarEnabled.png";
@@ -161,7 +170,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		
 		divMantenimiento.setWidth("840px");	
 		
-		listboxDetalleItinerario.addEventListener(Events.ON_DOUBLE_CLICK,new EventListener<Event>() {
+		lbxDetalleItinerario.addEventListener(Events.ON_DOUBLE_CLICK,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				if(!(btnGuardar.isDisabled()))
@@ -182,22 +191,27 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		cmbRuta=(Combobox)this.getFellow("cmbRuta");
 		dbFechaItinerario=(Datebox)this.getFellow("dbFechaItinerario");
 		tbHoraPartida=(Timebox)this.getFellow("tbHoraPartida");
-		cmbTermOrigen=(Combobox)this.getFellow("cmbTermOrigen");
-		cmbTermDestino=(Combobox)this.getFellow("cmbTermDestino");
-		listboxDetalleItinerario=(Listbox)this.getFellow("listboxDetalleItinerario");
-		grdRutasTrifas=(Grid)this.getFellow("grdRutasTrifas");
+//		cmbTermOrigen=(Combobox)this.getFellow("cmbTermOrigen");
+//		cmbTermDestino=(Combobox)this.getFellow("cmbTermDestino");
+		lbxDetalleItinerario=(Listbox)this.getFellow("lbxDetalleItinerario");
+//		grdRutasTrifas=(Grid)this.getFellow("grdRutasTrifas");
 		cmbTerminalPartida=(Combobox)this.getFellow("cmbTerminalPartida");
 		tbterHoraPartida=(Timebox)this.getFellow("tbterHoraPartida");
-		listboxTerminalPartida=(Listbox)this.getFellow("listboxTerminalPartida");
+		lbxTerminalPartida=(Listbox)this.getFellow("lbxTerminalPartida");
 		cmbTerminalLlegada=(Combobox)this.getFellow("cmbTerminalLlegada");
 		tbterHoraLlegada=(Timebox)this.getFellow("tbterHoraLlegada");
-		listboxTerminalLlegada=(Listbox)this.getFellow("listboxTerminalLlegada");
+		lbxTerminalLlegada=(Listbox)this.getFellow("lbxTerminalLlegada");
 		dbFechaInicio=(Datebox)this.getFellow("dbFechaInicio");
 		dbFechafin=(Datebox)this.getFellow("dbFechafin");
 		cmdAddTerPartida=(Button)this.getFellow("cmdAddTerPartida");
 		cmdAddTerLlegada=(Button)this.getFellow("cmdAddTerLlegada");
 		divMantenimiento=(Div)this.getFellow("divMantenimiento");
 		cmdAgregarTramo=(Button)this.getFellow("cmdAgregarTramo");
+		bbxTerminalOrigen = (Bandbox)this.getFellow("bbxTerminalOrigen");
+		bbxTerminalDestino = (Bandbox)this.getFellow("bbxTerminalDestino");
+		lbxTerminalOrigen = (Listbox)this.getFellow("lbxTerminalOrigen");
+		lbxTerminalDestino = (Listbox)this.getFellow("lbxTerminalDestino");
+		
 //		cmdEditarTramo=(Button)this.getFellow("cmdEditarTramo");
 //		cmdQuitarTramo=(Button)this.getFellow("cmdQuitarTramo");
 	}
@@ -223,6 +237,48 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		esEdicionTramo=false;
 	}
 	
+	public void limpiaItinerario(){
+		cmbRuta.getItems().clear();
+		lbxTerminalOrigen.getItems().clear();
+		bbxTerminalOrigen.setValue("");
+		lbxTerminalDestino.getItems().clear();
+		bbxTerminalDestino.setValue("");
+		cmbTerminalPartida.getItems().clear();
+		cmbTerminalLlegada.getItems().clear();
+		tbHoraPartida.setValue(null);
+		tbterHoraPartida.setValue(null);
+		tbterHoraLlegada.setValue(null);
+	}
+		
+	public void limpiarTodasLasListas(){
+		Util.limpiarListbox(lbxDetalleItinerario);
+		Util.limpiarListbox(lbxTerminalPartida);
+		Util.limpiarListbox(lbxTerminalLlegada);
+		Util.limpiarListbox(lbxTerminalOrigen, false);
+		Util.limpiarListbox(lbxTerminalDestino, false);
+//		Util.limpiarGrid(grdRutasTrifas);
+	}
+	
+	public void cargaComboDefaul(){
+		limpiaItinerario();
+		UtilData.cargarGenericData(cmbRuta, false);
+//		UtilData.cargarGenericData(cmbTermOrigen, false);
+//		UtilData.cargarGenericData(cmbTermDestino, false);
+		UtilData.cargarGenericData(cmbTerminalPartida, false);
+		UtilData.cargarGenericData(cmbTerminalLlegada, false);
+	}
+	
+	public void LimpiaCombos(){
+		cmbTipoItinerario.setSelectedIndex(0);
+		cmbServicio.setSelectedIndex(0);
+		cmbOrigen.setSelectedIndex(0);
+		cmbRuta.setSelectedIndex(0);
+//		cmbTermOrigen.setSelectedIndex(0);
+//		cmbTermDestino.setSelectedIndex(0);
+	}
+	
+
+	
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onSearch()
@@ -242,7 +298,6 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		this.appendChild(oWndFiltrar);
 		oWndFiltrar.setMode("modal");
 		oWndFiltrar.addEventListener(com.cystesoft.vyrbus.view.ui.Events.ON_FILTER, new EventListener<Event>() {
-
 			@Override
 			public void onEvent(Event event) throws Exception {
 				try{
@@ -349,9 +404,9 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		Util.disabledBtnAgregar(btnGuardar.isDisabled(), cmdAgregarTramo, accesoGrabar());
 		Util.disabledBtnAgregar(true, cmdAddTerPartida, accesoGrabar());
 		Util.disabledBtnAgregar(true, cmdAddTerLlegada, accesoGrabar());
-		imageEliminarTramo();
-		imagenEliminarTerminale(listboxTerminalPartida);
-		imagenEliminarTerminale(listboxTerminalLlegada);
+		asignarImagenEliminarTramo();
+		asignarImagenEliminarTerminal(lbxTerminalPartida);
+		asignarImagenEliminarTerminal(lbxTerminalLlegada);
 	}
 
 	/*
@@ -377,23 +432,23 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		String fechaFin=Constantes.FORMAT_DATE.format(dbFechafin.getValue());		
 		List<VentaPasaje>list=ServiceLocator.getItinerarioManager().buscarItinerariosAActualizar(fechaInicio, fechaFin, idRuta, secuenciaTramo, horaPartida, idServicio, idTipoItinerario, idAgenciaPartida, idagenciaLlegada);
 		
-		for(VentaPasaje ventas: list){
-			Ruta ruta=ventas.getRuta();
-			if(ventas.getId()!=null){//Valida si el Itinerario tiene ventas.
-				//Compara si hay rutas suprimidas en la actualizacion del Itinerario.
-				Boolean rutaSuprimida=false;
-				for(int y=0; y<grdRutasTrifas.getRows().getChildren().size();y++){
-					Row it = (Row)grdRutasTrifas.getRows().getChildren().get(y);
-					Integer idRutaActual=(new Integer(((Label)it.getChildren().get(0)).getValue()));
-					if(idRutaActual.equals(ruta.getId())){
-						rutaSuprimida=true;
-						break;
-					}	
-				}
-				if(rutaSuprimida==false)
-					listVentasNoUpdate.add(ventas);
-			}
-		}
+//		for(VentaPasaje ventas: list){
+//			Ruta ruta=ventas.getRuta();
+//			if(ventas.getId()!=null){//Valida si el Itinerario tiene ventas.
+//				//Compara si hay rutas suprimidas en la actualizacion del Itinerario.
+//				Boolean rutaSuprimida=false;
+//				for(int y=0; y<grdRutasTrifas.getRows().getChildren().size();y++){
+//					Row it = (Row)grdRutasTrifas.getRows().getChildren().get(y);
+//					Integer idRutaActual=(new Integer(((Label)it.getChildren().get(0)).getValue()));
+//					if(idRutaActual.equals(ruta.getId())){
+//						rutaSuprimida=true;
+//						break;
+//					}	
+//				}
+//				if(rutaSuprimida==false)
+//					listVentasNoUpdate.add(ventas);
+//			}
+//		}
 		return list;
 	}
 	
@@ -404,11 +459,11 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 	@Override
 	public void onSave(int action) throws Exception {
 		try {
-			if (listboxDetalleItinerario.getItems().size() <= 0 )
+			if (lbxDetalleItinerario.getItems().size() <= 0 )
 				throw new ItinerarioException(ItinerarioException.ITINERARIO_NULL); 
-			else if (listboxTerminalPartida.getItems().size() <= 0)
+			else if (lbxTerminalPartida.getItems().size() <= 0)
 				throw new ItinerarioException(ItinerarioException.AGENCIA_PARTIDA_NULL); 
-			else if (listboxTerminalLlegada.getItems().size() <= 0)
+			else if (lbxTerminalLlegada.getItems().size() <= 0)
 				throw new ItinerarioException(ItinerarioException.AGENCIA_LLEGADA_NULL); 
 			
 			/*Realiza la validacion de los tiempos entre el origen y destino - 04/01/2017 - jabanto*/
@@ -416,64 +471,10 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 				throw new CancelaGrabacionException();
 			
 			Boolean flag=true;
-			
-			/*Valida las horas de los tramos contra la de la ruta mayor*/
-//			DetalleItinerario detItiPartida=(DetalleItinerario)listboxDetalleItinerario.getItemAtIndex(0).getValue();
-//			DetalleItinerario detItiLlegada=(DetalleItinerario)listboxDetalleItinerario.getItemAtIndex(listboxDetalleItinerario.getItemCount()-1).getValue();
-//			/*Busca la ruta mayor*/
-//			TreeMap<String, Object>criterioBusqueda=new TreeMap<>();
-//			criterioBusqueda.put("origen",detItiPartida.getRuta().getOrigen());
-//			criterioBusqueda.put("destino",detItiLlegada.getRuta().getDestino());
-//			criterioBusqueda.put("estadoRegistro",Constantes.VALUE_ACTIVO);
-//			List<Ruta>result=ServiceLocator.getRutaManager().buscarPorX(criterioBusqueda, null);
-//			Ruta rutaMayor=result.get(0);
-//			/*Agrega la fecha y hora de partida del tramo inicial a un objeto Calendar*/
-//			Calendar calPartida=Calendar.getInstance();
-//			calPartida.setTime(detItiPartida.getFechaPartida());
-//			calPartida.set(calPartida.HOUR_OF_DAY, Integer.valueOf(detItiPartida.getHoraPartida().split(":")[0]));
-//			calPartida.set(calPartida.MINUTE, Integer.valueOf(detItiPartida.getHoraPartida().split(":")[1]));
-//			/*Agrega la fecha y hora de Llegada del tramo final a un objeto Calendar*/
-//			Calendar calLlegada=Calendar.getInstance();
-//			calLlegada.setTime(detItiLlegada.getFechaLlegada());
-//			calLlegada.set(calLlegada.HOUR_OF_DAY, Integer.valueOf(detItiLlegada.getHoraLlegada().split(":")[0]));
-//			calLlegada.set(calLlegada.MINUTE, Integer.valueOf(detItiLlegada.getHoraLlegada().split(":")[1]));
-//
-//			/*Calcula la fecha y hora llegada ideal */
-//			Calendar calendarLlegadaIdeal=Calendar.getInstance();
-//			calendarLlegadaIdeal.setTimeInMillis((long) (calPartida.getTimeInMillis()+(rutaMayor.getHorasViaje()*Constantes.MILISEGUNDOS_X_HORA)));
-
-			//Valida si existe diferencia
-//			if(calendarLlegadaIdeal.getTimeInMillis()!=calLlegada.getTimeInMillis()){
-//				final int actionf=action;
-//				/*Calcula la duración que se esta programacion */
-//				long valueDP=calLlegada.getTimeInMillis()-calPartida.getTimeInMillis();
-//				long horasDP=valueDP/Constantes.MILISEGUNDOS_X_HORA;
-//				long minutDP=(valueDP%3600)/60;
-//				/*Lo convierte de long a String*/
-//				String horasRuta=Util.toNumberFormat(rutaMayor.getHorasViaje(), 2).replace(".", ":");
-//				String duracionPro=Util.toNumberFormat(Double.valueOf(String.valueOf(horasDP)+"."+String.valueOf(minutDP)),2).replace(".", ":");
-//				
-//				Messagebox.show("La Ruta "+rutaMayor.toString()+" ha sido configurada con una duración de "+horasRuta+
-//						" horas de viaje, pero se esta programando con una duración de "+duracionPro+" horas. "+
-//						"¿Realmente desea continuar?"
-//						,DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
-//					@Override
-//					public void onEvent(Event e) throws Exception {
-//						if(e.getName().equals("onYes")){
-//							save(actionf);
-//						}
-//					}
-//				});
-//			}else{
-				//Si no hay diferencia.
-				save(action);
-//			}
+			save(action);
 			
 			if(flag)
-				throw new CancelaGrabacionException();	
-			
-			
-			
+				throw new CancelaGrabacionException();			
 		}catch(ItinerarioException ine){
 			if(ine.getTipo().intValue()==ItinerarioException.ITINERARIO_NULL){
 				DlgMessage.information(Messages.getString("WndItinerario.information.ItinerarioNull"));
@@ -541,12 +542,12 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 							btnCerrar.setDisabled(false);
 							oTabbox.setSelectedIndex(0);
 									
-							Util.limpiarListbox(listboxDetalleItinerario);
-							Util.limpiarListbox(listboxTerminalPartida);
-							Util.limpiarListbox(listboxTerminalLlegada);
-							Rows Rows = new Rows();
-							grdRutasTrifas.getRows().detach();
-							grdRutasTrifas.appendChild(Rows);
+							Util.limpiarListbox(lbxDetalleItinerario);
+							Util.limpiarListbox(lbxTerminalPartida);
+							Util.limpiarListbox(lbxTerminalLlegada);
+//							Rows Rows = new Rows();
+//							grdRutasTrifas.getRows().detach();
+//							grdRutasTrifas.appendChild(Rows);
 												
 							lstItinerariosDetalle = null;
 							oitinerario=null;
@@ -677,54 +678,85 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		}
 	}
 
-	/**
-	 * 
-	 * @param comboBox	: Objeto donde se cargan los terminales destino, según la ruta seleccionada. 
-	 * @throws Exception
-	 */
-	public void onchangeTerminalDestino(Combobox comboBox) throws Exception{
-		comboBox.getItems().clear();
+//	/**
+//	 * 
+//	 * @param comboBox	: Objeto donde se cargan los terminales destino, según la ruta seleccionada. 
+//	 * @throws Exception
+//	 */
+//	public void onchangeTerminalDestino(Combobox comboBox) throws Exception{
+//		comboBox.getItems().clear();
+//		if (cmbRuta.getSelectedItem().getValue() instanceof Ruta){
+//			Ruta oruta = new  Ruta();
+//			 oruta.setId((Integer) ((Ruta) cmbRuta.getSelectedItem().getValue()).getLocalidadDestino().getId());
+//			Integer destino = oruta.getId();
+//			 
+//			cargarTerm(comboBox, false, destino);
+//		}else{
+//			UtilData.cargarGenericData(comboBox, false);
+//		}
+//		
+//		if(comboBox.getItems().size()==2)
+//			comboBox.setSelectedIndex(1);
+//		else
+//			comboBox.setSelectedIndex(0);	
+//	}
+	
+	public void onChangeTerminalDestino(Listbox listBox) throws Exception{
+		listBox.getItems().clear();
 		if (cmbRuta.getSelectedItem().getValue() instanceof Ruta){
 			Ruta oruta = new  Ruta();
-			 oruta.setId((Integer) ((Ruta) cmbRuta.getSelectedItem().getValue()).getLocalidadDestino().getId());
-			Integer destino = oruta.getId();
-			 
-			cargarTerm(comboBox, false, destino);
-		}else{
-			UtilData.cargarGenericData(comboBox, false);
+			oruta.setId((Integer) ((Ruta) cmbRuta.getSelectedItem().getValue()).getLocalidadDestino().getId());
+			Integer destino = oruta.getId();			 
+			cargarAgenciaOrigenDestino(listBox, false, destino);
 		}
-		
-		if(comboBox.getItems().size()==2)
-			comboBox.setSelectedIndex(1);
-		else
-			comboBox.setSelectedIndex(0);	
+//		else{
+//			UtilData.cargarGenericData(comboBox, false);
+//		}
+//		
+//		if(comboBox.getItems().size()==2)
+//			comboBox.setSelectedIndex(1);
+//		else
+//			comboBox.setSelectedIndex(0);	
 	}
 	
 	/**
-	 * 	Carga Rutas, según el Origen seleccionado.
+	 * 	Carga las rutas, según el Origen seleccionado.
 	 * @throws Exception
 	 */
 	public  void onChangeRutas() throws Exception{
 		cmbRuta.getItems().clear();	
-		cmbTermOrigen.getItems().clear();
-		cmbTermDestino.getItems().clear();
+//		cmbTermOrigen.getItems().clear();
+//		cmbTermDestino.getItems().clear();
+		
+		lbxTerminalOrigen.getItems().clear();
+		lbxTerminalDestino.getItems().clear();
 		
 		if (cmbOrigen.getSelectedItem().getValue() instanceof Localidad){
 			Integer Origen = ((Localidad) cmbOrigen.getSelectedItem().getValue()).getId();
 			UtilData.cargarRutas(cmbRuta, false, Origen,null);
-			cargarTerm(cmbTermOrigen,false,Origen);
-			UtilData.cargarGenericData(cmbTermDestino, false);
+//			cargarTerm(cmbTermOrigen,false,Origen);
+			cargarAgenciaOrigenDestino(lbxTerminalOrigen, false, Origen);
+//			UtilData.cargarGenericData(cmbTermDestino, false);
 		}else{
 			UtilData.cargarGenericData(cmbRuta, false);
-			UtilData.cargarGenericData(cmbTermOrigen, false);
-			UtilData.cargarGenericData(cmbTermDestino, false);
+			Util.limpiarListbox(lbxTerminalOrigen);
+			Util.limpiarListbox(lbxTerminalDestino);
+			bbxTerminalOrigen.setValue("");
+			bbxTerminalDestino.setValue("");
+			lstAgenciaPartida.clear();
+			lstAgenciaLlegada.clear();
+//			UtilData.cargarGenericData(cmbTermOrigen, false);
+//			UtilData.cargarGenericData(cmbTermDestino, false);
 		}		
-		cmbRuta.setSelectedIndex(0);
-		if(cmbTermOrigen.getItems().size()== 2)
-			cmbTermOrigen.setSelectedIndex(1);
-		else
-			cmbTermOrigen.setSelectedIndex(0);
-		cmbTermDestino.setSelectedIndex(0);
+		cmbRuta.setSelectedIndex(0);		
+//		if(cmbTermOrigen.getItems().size()== 2)
+//			cmbTermOrigen.setSelectedIndex(1);
+//		else
+//			cmbTermOrigen.setSelectedIndex(0);
+		if(lbxTerminalOrigen.getItems().size()==1)
+			lbxTerminalOrigen.getItemAtIndex(0).setSelected(true);
+		
+//		cmbTermDestino.setSelectedIndex(0);
 	}
 
 	/**
@@ -739,13 +771,13 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			 */
 			Listitem itemvDetalleItinerario=null;
 			if (esEdicionTramo==false){
-				if (listboxDetalleItinerario.getItems().size() > 0){
+				if (lbxDetalleItinerario.getItems().size() > 0){
 					/*Cuando NO es una edición de un Tramo*/
-					itemvDetalleItinerario = listboxDetalleItinerario.getItemAtIndex(listboxDetalleItinerario.getItems().size() -1);
+					itemvDetalleItinerario = lbxDetalleItinerario.getItemAtIndex(lbxDetalleItinerario.getItems().size() -1);
 				}
 			}else{
 				/*Cuando es una edición de un Tramo*/
-				itemvDetalleItinerario = listboxDetalleItinerario.getItemAtIndex(indexEdicionTramo -1);
+				itemvDetalleItinerario = lbxDetalleItinerario.getItemAtIndex(indexEdicionTramo -1);
 			}
 			
 			if (!(cmbTipoItinerario.getSelectedItem().getValue() instanceof TipoItinerario))
@@ -760,9 +792,13 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 				throw new FechaItinerarioNullException();
 			else if (tbHoraPartida.getText().equals(""))
 				throw new HoraPartidaNullException();
-			else if (!(cmbTermOrigen.getSelectedItem().getValue() instanceof Agencia))
+			else if(lbxTerminalOrigen.getSelectedItems().size()==0)
 				throw new TerminalOrigenNullException();
-			else if (!(cmbTermDestino.getSelectedItem().getValue() instanceof Agencia))
+//			else if (!(cmbTermOrigen.getSelectedItem().getValue() instanceof Agencia))
+//				throw new TerminalOrigenNullException();
+//			else if (!(cmbTermDestino.getSelectedItem().getValue() instanceof Agencia))
+//				throw new TerminalDestinoNullException();
+			else if(lbxTerminalDestino.getSelectedItems().size()==0)
 				throw new TerminalDestinoNullException();
 			//***Comentado temporalmente 04/11/2013 a solicitud de marco****/
 //			else if (!(Constantes.FORMAT_DATE.parse(dbFechaItinerario.getText()).getTime() >=
@@ -835,30 +871,42 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 				}
 			}
 			
-			DetalleItinerario odetalleItinerario= new DetalleItinerario();
-			Agencia	oagenciaPartida = new Agencia();
-			Agencia	oagenciaLlegada= new Agencia();
-			
+			DetalleItinerario odetalleItinerario= new DetalleItinerario();			
 			
 			Localidad oLocalidadOrigen = new Localidad();
 			oLocalidadOrigen.setId(((Ruta) cmbRuta.getSelectedItem().getValue()).getLocalidadOrigen().getId());
 			oLocalidadOrigen.setDenominacion(((Ruta) cmbRuta.getSelectedItem().getValue()).getOrigen());
 			oruta.setLocalidadOrigen(oLocalidadOrigen);
 			
+			Agencia	oagenciaPartida = new Agencia();
 			oagenciaPartida.setLocalidad(oLocalidadOrigen);
-			oagenciaPartida.setId(((Agencia) cmbTermOrigen.getSelectedItem().getValue()).getId());
-			oagenciaPartida.setNombreCorto(((Agencia) cmbTermOrigen.getSelectedItem().getValue()).getNombreCorto());
-			oagenciaPartida.setDenominacion(((Agencia) cmbTermOrigen.getSelectedItem().getValue()).getDenominacion());
+			for(Listitem item : lbxTerminalOrigen.getSelectedItems()) {
+				if(tbHoraPartida.getText().equals(((Timebox)item.getChildren().get(1).getChildren().get(0)).getText())) {
+					oagenciaPartida.setId(((Agencia)item.getValue()).getId());
+					oagenciaPartida.setNombreCorto(((Agencia)item.getValue()).getNombreCorto());
+					oagenciaPartida.setDenominacion(((Agencia)item.getValue()).getDenominacion());
+				}
+			}
+//			oagenciaPartida.setId(((Agencia) cmbTermOrigen.getSelectedItem().getValue()).getId());
+//			oagenciaPartida.setNombreCorto(((Agencia) cmbTermOrigen.getSelectedItem().getValue()).getNombreCorto());
+//			oagenciaPartida.setDenominacion(((Agencia) cmbTermOrigen.getSelectedItem().getValue()).getDenominacion());
 			
 			Localidad oLocalidadDestino = new Localidad();
 			oLocalidadDestino.setId(((Ruta) cmbRuta.getSelectedItem().getValue()).getLocalidadDestino().getId());
 			oLocalidadDestino.setDenominacion(((Ruta) cmbRuta.getSelectedItem().getValue()).getDestino());
 			oruta.setLocalidadDestino(oLocalidadDestino);
 			
+			Agencia	oagenciaLlegada= new Agencia();
 			oagenciaLlegada.setLocalidad(oLocalidadDestino);
-			oagenciaLlegada.setId(((Agencia) cmbTermDestino.getSelectedItem().getValue()).getId());
-			oagenciaLlegada.setNombreCorto(((Agencia) cmbTermDestino.getSelectedItem().getValue()).getNombreCorto());
-			oagenciaLlegada.setDenominacion(((Agencia) cmbTermDestino.getSelectedItem().getValue()).getDenominacion());
+			for(Listitem item : lbxTerminalDestino.getSelectedItems()) {
+				oagenciaLlegada.setId(((Agencia)item.getValue()).getId());
+				oagenciaLlegada.setNombreCorto(((Agencia)item.getValue()).getNombreCorto());
+				oagenciaLlegada.setDenominacion(((Agencia)item.getValue()).getDenominacion());
+				break;
+			}
+//			oagenciaLlegada.setId(((Agencia) cmbTermDestino.getSelectedItem().getValue()).getId());
+//			oagenciaLlegada.setNombreCorto(((Agencia) cmbTermDestino.getSelectedItem().getValue()).getNombreCorto());
+//			oagenciaLlegada.setDenominacion(((Agencia) cmbTermDestino.getSelectedItem().getValue()).getDenominacion());
 			
 			Servicio oservicio = new Servicio();
 			oservicio.setId(((Servicio) cmbServicio.getSelectedItem().getValue()).getId());
@@ -880,12 +928,34 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			odetalleItinerario.setHoraLlegada(Constantes.FORMAT_TIME.format(FechaHoraLLegada.getTime()));
 			odetalleItinerario.setTarifa((Double) 0.01);
 			odetalleItinerario.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+			List<ItinerarioAgenciaPartida> lstItinerarioAgenciaPartida = new ArrayList<ItinerarioAgenciaPartida>();
+			for(Agencia agencia : lstAgenciaPartida){
+				ItinerarioAgenciaPartida itinerarioAgenciaPartida = new ItinerarioAgenciaPartida();
+				itinerarioAgenciaPartida.setItinerario(oitinerario);
+				itinerarioAgenciaPartida.setAgencia(agencia);
+				itinerarioAgenciaPartida.setHoraPartida(agencia.getHoraPartida());
+				itinerarioAgenciaPartida.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+				UtilData.auditarRegistro(itinerarioAgenciaPartida, getUsuario(), Executions.getCurrent());
+				lstItinerarioAgenciaPartida.add(itinerarioAgenciaPartida);
+			}
+			odetalleItinerario.setLstItinerarioAgenciaPartida(lstItinerarioAgenciaPartida);
 			
+			List<ItinerarioAgenciaLlegada> lstItinerarioAgenciaLlegada = new ArrayList<ItinerarioAgenciaLlegada>();
+			for(Agencia agencia : lstAgenciaLlegada){
+				ItinerarioAgenciaLlegada itinerarioAgenciaLlegada = new ItinerarioAgenciaLlegada();
+				itinerarioAgenciaLlegada.setItinerario(oitinerario);
+				itinerarioAgenciaLlegada.setAgencia(agencia);
+				itinerarioAgenciaLlegada.setHoraLlegada(agencia.getHoraPartida());
+				itinerarioAgenciaLlegada.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+				UtilData.auditarRegistro(itinerarioAgenciaLlegada, getUsuario(), Executions.getCurrent());
+				lstItinerarioAgenciaLlegada.add(itinerarioAgenciaLlegada);
+			}
+			odetalleItinerario.setLstItinerarioAgenciaLlegada(lstItinerarioAgenciaLlegada);
 			
-			final DetalleItinerario fodeDetalleItinerario=odetalleItinerario;
-			final Agencia fAgenciaPartida=oagenciaPartida;
-			final Agencia fAgenciaLlegada=oagenciaLlegada;
-			final Calendar fFechaHoraLLegada=FechaHoraLLegada;
+//			final DetalleItinerario fodeDetalleItinerario=odetalleItinerario;
+//			final Agencia fAgenciaPartida=oagenciaPartida;
+//			final Agencia fAgenciaLlegada=oagenciaLlegada;
+//			final Calendar fFechaHoraLLegada=FechaHoraLLegada;
 			
 			/*Realiza la validacion de los tiempos entre el origen y destino - 04/01/2017 - jabanto*/
 			if(validarDiferenciaHorasTramo(odetalleItinerario)==false)
@@ -902,18 +972,18 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 					public void onEvent(Event e) throws Exception {
 						if(e.getName().equals("onYes")){
 							/*Llena Tramos****/
-							agregarItinerario(fodeDetalleItinerario,listboxDetalleItinerario);	
+							agregarItinerario(fodeDetalleItinerario,lbxDetalleItinerario);	
 							/*Valida si se trata de una edición de un Tramo*/
 							if (esEdicionTramo==true){
-								listboxDetalleItinerario.removeItemAt(indexEdicionTramo);
-								if (listboxDetalleItinerario.getItems().size()==1)
-									Util.limpiarListbox(listboxTerminalPartida);		
+								lbxDetalleItinerario.removeItemAt(indexEdicionTramo);
+								if (lbxDetalleItinerario.getItems().size()==1)
+									Util.limpiarListbox(lbxTerminalPartida);		
 									esEdicionTramo=false;					
 								}
 							/*Carga Rutas y Tarifas*/
 //							CargarRutasTarifas();	
 							/*Carga Termianl Partida*/
-							if (listboxDetalleItinerario.getItems().size()==1 && listboxTerminalPartida.getItems().size()==0){
+							if (lbxDetalleItinerario.getItems().size()==1 && lbxTerminalPartida.getItems().size()==0){
 								/*Carga Combo Terminal Partida*/
 								cargarTerm(cmbTerminalPartida, false, ((Localidad) cmbOrigen.getSelectedItem().getValue()).getId());
 								/*Carga ListBox Terminal Partida**/
@@ -933,10 +1003,10 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 							/*Carga la nueva fecha de salida del itinerario*/
 							tbHoraPartida.setText(Constantes.FORMAT_TIME.format(fFechaHoraLLegada.getTime()));
 							/*Selecciona el Nuevo Origen*/
-							Listitem itemDetalleItinerario = listboxDetalleItinerario.getItemAtIndex(listboxDetalleItinerario.getItems().size() -1);
+							Listitem itemDetalleItinerario = lbxDetalleItinerario.getItemAtIndex(lbxDetalleItinerario.getItems().size() -1);
 							Util.seleccionarValorItemCombo(Localidad.class, cmbOrigen, (((DetalleItinerario) itemDetalleItinerario.getValue()).getRuta().getLocalidadDestino().getId()));
-							/*Carga Terminal Origen*/
-							cargarTerm(cmbTermOrigen, false, ((Localidad) cmbOrigen.getSelectedItem().getValue()).getId()); 							
+//							/*Carga Terminal Origen*/
+//							cargarTerm(cmbTermOrigen, false, ((Localidad) cmbOrigen.getSelectedItem().getValue()).getId()); 							
 							/*Carga el Combo Terminal LLegada*/
 							if(cmbRuta.getSelectedItem().getValue() instanceof Ruta)
 								cargarTerm(cmbTerminalLlegada, false, ((Ruta) cmbRuta.getSelectedItem().getValue()).getLocalidadDestino().getId());
@@ -944,7 +1014,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 							ItinerarioAgenciaLlegada oItinerarioAgenciaLlegada = new ItinerarioAgenciaLlegada();
 							oItinerarioAgenciaLlegada.setAgencia(fAgenciaLlegada);
 							oItinerarioAgenciaLlegada.setHoraLlegada(Constantes.FORMAT_TIME.format(fFechaHoraLLegada.getTime()).toString());
-							Util.limpiarListbox(listboxTerminalLlegada);
+							Util.limpiarListbox(lbxTerminalLlegada);
 							cargaListboxTerminalLlegada(oItinerarioAgenciaLlegada);	
 //							HabilitaBotones_TerLlegada(false);
 							/*Carga Rutas*/
@@ -952,6 +1022,8 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 							
 							cmbTerminalPartida.setSelectedIndex(0);
 							tbterHoraPartida.setText("");
+							bbxTerminalOrigen.setText("");
+							bbxTerminalDestino.setText("");
 							esEdicionTramo=false;
 						}
 					}
@@ -960,10 +1032,10 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			}else{
 				/*Validar que la ruta exista*/
 				String origen = "";
-				if(listboxDetalleItinerario.getItems().size()==0) 
+				if(lbxDetalleItinerario.getItems().size()==0) 
 					origen = odetalleItinerario.getRuta().getOrigen();					
 				else 
-					origen = ((DetalleItinerario)listboxDetalleItinerario.getItems().get(0).getValue()).getRuta().getOrigen();
+					origen = ((DetalleItinerario)lbxDetalleItinerario.getItems().get(0).getValue()).getRuta().getOrigen();
 				
 				String destino = odetalleItinerario.getRuta().getDestino();
 				String ruta =origen +" - "+ destino;
@@ -987,19 +1059,19 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 				}else {
 					/*Llena Tramos****/
 					odetalleItinerario.getRuta().setId(listarRegistros.get(0).getId());
-					agregarItinerario(odetalleItinerario,listboxDetalleItinerario);	
+					agregarItinerario(odetalleItinerario,lbxDetalleItinerario);	
 					/*Valida si se trata de una edición de un Tramo*/
 					if (esEdicionTramo==true){
-						listboxDetalleItinerario.removeItemAt(indexEdicionTramo);
-						if (listboxDetalleItinerario.getItems().size()==1)
-							Util.limpiarListbox(listboxTerminalPartida);		
+						lbxDetalleItinerario.removeItemAt(indexEdicionTramo);
+						if (lbxDetalleItinerario.getItems().size()==1)
+							Util.limpiarListbox(lbxTerminalPartida);		
 							esEdicionTramo=false;					
 						}
 					/*Carga Rutas y Tarifas*/
-	//				CargarRutasTarifas();
+//					CargarRutasTarifas();
 					
 					/*Carga Termianl Partida*/
-					if (listboxDetalleItinerario.getItems().size()==1 && listboxTerminalPartida.getItems().size()==0){
+					if (lbxDetalleItinerario.getItems().size()==1 && lbxTerminalPartida.getItems().size()==0){
 						/*Carga Combo Terminal Partida*/
 	//					cargarTerm(cmbTerminalPartida, false, ((Localidad) cmbOrigen.getSelectedItem().getValue()).getId());
 	//					/*Carga ListBox Terminal Partida**/
@@ -1014,20 +1086,22 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 					}
 					
 					/*	Para el combobox y listbox del terminal de partida	*/
-					cargarTerminalPartidaLlegada(cmbTerminalPartida, false, listboxDetalleItinerario, 1);					
-					cargarTerminalPartidaLlegada(cmbTerminalLlegada, false, listboxDetalleItinerario, 2);
+					cargarTerminalPartidaLlegada(cmbTerminalPartida, false, lbxDetalleItinerario, 1);					
+					cargarTerminalPartidaLlegada(cmbTerminalLlegada, false, lbxDetalleItinerario, 2);
 					
-					recargarListboxTerminales(listboxDetalleItinerario);
+//					recargarListboxTerminales(lbxDetalleItinerario);
+					cargarTerminalPartida(lstItinerarioAgenciaPartida);
+					cargarTerminalLlegada(lstItinerarioAgenciaLlegada);
 						
 					/*Carga la nueva fecha de salida del itinerario*/
 					dbFechaItinerario.setText(Constantes.FORMAT_DATE.format(FechaHoraLLegada.getTime()));
 					/*Carga la nueva fecha de salida del itinerario*/
 					tbHoraPartida.setText(Constantes.FORMAT_TIME.format(FechaHoraLLegada.getTime()));
 					/*Selecciona el Nuevo Origen*/
-					Listitem itemDetalleItinerario = listboxDetalleItinerario.getItemAtIndex(listboxDetalleItinerario.getItems().size() -1);
+					Listitem itemDetalleItinerario = lbxDetalleItinerario.getItemAtIndex(lbxDetalleItinerario.getItems().size() -1);
 					Util.seleccionarValorItemCombo(Localidad.class, cmbOrigen, (((DetalleItinerario) itemDetalleItinerario.getValue()).getRuta().getLocalidadDestino().getId()));
 					/*Carga Terminal Origen*/
-					cargarTerm(cmbTermOrigen, false, ((Localidad) cmbOrigen.getSelectedItem().getValue()).getId()); 							
+//					cargarTerm(cmbTermOrigen, false, ((Localidad) cmbOrigen.getSelectedItem().getValue()).getId()); 							
 					/*Carga el Combo Terminal LLegada*/
 //					if(cmbRuta.getSelectedItem().getValue() instanceof Ruta)
 //						cargarTerm(cmbTerminalLlegada, false, ((Ruta) cmbRuta.getSelectedItem().getValue()).getLocalidadDestino().getId());
@@ -1039,7 +1113,10 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 //					CargalistboxTerminalLlegada(oItinerarioAgenciaLlegada);	
 					/*Carga Rutas*/
 					onChangeRutas();	
+					autoSeleccionarAgenciaOrigen(((DetalleItinerario)itemDetalleItinerario.getValue()).getLstItinerarioAgenciaLlegada());
 					
+					bbxTerminalOrigen.setValue("");
+					bbxTerminalDestino.setValue("");
 					cmbTerminalPartida.setSelectedIndex(0);
 					tbterHoraPartida.setText("");
 					esEdicionTramo=false;
@@ -1063,9 +1140,9 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		}catch (HoraPartidaNullException hpnex){
 			DlgMessage.information(Messages.getString("WndItinerario.information.HoraPartida"),tbHoraPartida);
 		}catch (TerminalOrigenNullException tonex){
-			DlgMessage.information(Messages.getString("WndItinerario.information.TerminalOrigen"),cmbTermOrigen);
+			DlgMessage.information(Messages.getString("WndItinerario.information.TerminalOrigen"),bbxTerminalOrigen);
 		}catch (TerminalDestinoNullException tdnex){
-			DlgMessage.information(Messages.getString("WndItinerario.information.TerminalDestino"),cmbTermDestino);
+			DlgMessage.information(Messages.getString("WndItinerario.information.TerminalDestino"),bbxTerminalDestino);
 		}catch (ItinerarioException i){
 			if(i.getTipo().intValue()==ItinerarioException.FECHA_MENOR){
 				DlgMessage.information(Messages.getString("WndItinerario.information.FechaItinerarioMenorALaActual"),dbFechaItinerario);
@@ -1096,9 +1173,252 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 	}
 	
 	/**
-	 * 	Carga Rutas y Tarifas. 
+	 * Agrega  al Detalle del Itinerario el itinerario creado. 
+	 * @param odetalleItinerario		:	Clase DetalleItinerario
+	 * @param lisBoxDetalleItinerario	: ListBox al que se Agregará el Itinerario
+	 * @throws Exception 
+	 */
+	public void agregarItinerario(DetalleItinerario odetalleItinerario, Listbox lisBoxDetalleItinerario) throws Exception{
+				
+		Listitem item = null;
+		Listcell cell = null;
+		Integer x = lisBoxDetalleItinerario.getChildren().size();
+		
+		Servicio servicio=ServiceLocator.getServicioManager().buscarPorId(odetalleItinerario.getItinerario().getServicio().getId().longValue());
+		
+		item = new Listitem();
+		cell = new Listcell((x.toString()));
+		cell.setStyle("font-size:11px !important");
+		item.appendChild(cell); //Correlativo
+		
+		cell = new Listcell(odetalleItinerario.getRuta().toString());
+		item.appendChild(cell);
+		
+		cell = new Listcell(servicio.getDenominacion());
+		item.appendChild(cell);
+		
+		cell = new Listcell(Util.toFechaNombreDiaMes(odetalleItinerario.getFechaPartida()));
+		cell.setTooltiptext(Util.toFechaNombreDiaMesLong(odetalleItinerario.getFechaPartida()));
+		cell.setStyle("font-size:9px !important");
+		item.appendChild(cell);
+		
+		cell = new Listcell(odetalleItinerario.getHoraPartida());
+		cell.setStyle("font-size:11px !important");
+		item.appendChild(cell);
+		
+		cell = new Listcell(Util.toFechaNombreDiaMes(odetalleItinerario.getFechaLlegada()));
+		cell.setTooltiptext(Util.toFechaNombreDiaMesLong(odetalleItinerario.getFechaLlegada()));
+		cell.setStyle("font-size:9px !important");
+		item.appendChild(cell);	
+		
+		cell = new Listcell(odetalleItinerario.getHoraLlegada());
+		cell.setStyle("font-size:11px !important");
+		item.appendChild(cell);
+		
+		cell = new Listcell(odetalleItinerario.getAgenciaPartida().getNombreCorto());
+		item.appendChild(cell);
+		
+		cell = new Listcell(odetalleItinerario.getAgenciaLlegada().getNombreCorto());
+		item.appendChild(cell);
+		
+		Hbox hbox=new Hbox();
+		
+		final Image imageDelete= new Image();
+		imageDelete.setHeight("17px");
+		imageDelete.setZindex(x);
+		imageDelete.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				if(imageDelete.getSrc().equals(enabledDelete)){
+					int index=imageDelete.getZindex();
+					confirmaQuitarTramo(index-1);
+				}
+			}
+		});
+		hbox.appendChild(imageDelete);
+		
+		Separator separator=new Separator();
+		separator.setWidth("5px");
+		hbox.appendChild(separator);
+		
+		final Image imageEditar= new Image();
+		imageEditar.setHeight("15px");
+		imageEditar.setZindex(x);
+		imageEditar.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				if (imageEditar.getSrc().equals(enabledEdit)){
+					int index=imageEditar.getZindex();
+					lbxDetalleItinerario.setSelectedIndex(index-1);
+					editarTramo();
+				}
+			}
+		});
+		hbox.appendChild(imageEditar);
+		
+		cell = new Listcell();
+		cell .appendChild(hbox);				
+		item.appendChild(cell);
+
+		item.setValue(odetalleItinerario);
+		lisBoxDetalleItinerario.appendChild(item);
+		asignarImagenEliminarTramo();
+	}
+	
+	/**
+	 * Confirmación para quitar un tramo
+	 * @param Index 	: El indice del tramo seleccionado.
 	 * @throws Exception
 	 */
+	public void confirmaQuitarTramo(Integer Index) throws Exception{ 
+		final Integer index= Index;
+		if (index >=0){
+			if (index == lbxDetalleItinerario.getItems().size() -1){	
+				Messagebox.show(Messages.getString("WndItinerario.question.BorrarTramo"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+					@Override
+					public void onEvent(Event e) throws Exception {
+						if(e.getName().equals("onYes")){
+							quitarTramo(index);
+						}	
+					}	
+				});				
+			}else{
+				DlgMessage.information(Messages.getString("WndItinerario.information.NoBorrarTramo"));
+			}
+		}else{
+			DlgMessage.information(Messages.getString("WndItinerario.information.SeleccionarTramo"));
+		}		
+	}
+	
+	/**
+	 * Quita el tramo de itinerario seleccionado.
+	 * @param index	: El indice del tramo seleccionado.
+	 * @throws Exception
+	 */
+	public void quitarTramo(Integer index) throws Exception{
+		lbxDetalleItinerario.removeItemAt(index);
+		
+		if (index==0){
+			cmbTerminalPartida.getItems().clear();
+			cmbTerminalLlegada.getItems().clear();
+			tbterHoraPartida.setText("");
+			tbterHoraLlegada.setText("");
+			Util.limpiarListbox(lbxTerminalPartida);
+			Util.limpiarListbox(lbxTerminalLlegada);
+			Util.limpiarListbox(lbxTerminalOrigen);
+			
+			cmbOrigen.setSelectedIndex(0);
+		}else{
+			Listitem itemDetalleItinerario = lbxDetalleItinerario.getItemAtIndex(index - 1);
+			dbFechaItinerario.setValue(((DetalleItinerario) itemDetalleItinerario.getValue()).getFechaLlegada());	
+			tbHoraPartida.setText(((DetalleItinerario) itemDetalleItinerario.getValue()).getHoraLlegada());
+			Util.seleccionarValorItemCombo(Localidad.class, cmbOrigen, ((DetalleItinerario) itemDetalleItinerario.getValue()).getRuta().getLocalidadDestino().getId());
+			onChangeRutas();
+			autoSeleccionarAgenciaOrigen(((DetalleItinerario) itemDetalleItinerario.getValue()).getLstItinerarioAgenciaLlegada());
+			Util.limpiarListbox(lbxTerminalPartida);
+			Util.limpiarListbox(lbxTerminalLlegada);
+			
+			cargarTerminalPartidaLlegada(cmbTerminalPartida, false, lbxDetalleItinerario, 1);
+			cargarTerminalPartidaLlegada(cmbTerminalLlegada, false, lbxDetalleItinerario, 2);
+		}
+		esEdicionTramo=false;	
+		asignarImagenEliminarTramo();
+	}
+	
+	/**
+	 * Auto selecciona las Agencias de partida, segun las agencias de llegada del ultimo tramo agregado.
+	 * @param lstItinerarioAgenciaLlegada
+	 */
+	private void autoSeleccionarAgenciaOrigen(List<ItinerarioAgenciaLlegada> lstItinerarioAgenciaLlegada) {
+		for(ItinerarioAgenciaLlegada itinerarioAgenciaLlegada : lstItinerarioAgenciaLlegada) {
+			for(Listitem item : lbxTerminalOrigen.getItems()) {
+				Agencia agencia = (Agencia)item.getValue();
+				if(agencia.getId().intValue()==itinerarioAgenciaLlegada.getAgencia().getId()) {
+					item.setSelected(true);
+					((Timebox)item.getChildren().get(1).getChildren().get(0)).setText(itinerarioAgenciaLlegada.getHoraLlegada());
+					break;
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Establece el tipo de imagen que debe contener cada tramo de itinerario (imagen activa o inactiva)
+	 */
+	private void asignarImagenEliminarTramo(){		
+		if(lbxDetalleItinerario.getItems().size()>0){
+			for(int y=0; y<lbxDetalleItinerario.getItems().size();y++){
+				Integer c=lbxDetalleItinerario.getItems().size();
+				Component it = (Component) lbxDetalleItinerario.getChildren().get(y+1);
+				Listcell cell=(Listcell) it.getChildren().get(9);
+				Hbox hbox=(Hbox)cell.getChildren().get(0);
+				if(c.equals(y+1) && btnGuardar.isDisabled()==false){
+					((Image)hbox.getChildren().get(0)).setSrc(enabledDelete);			
+					((Image)hbox.getChildren().get(0)).setTooltiptext("Eliminar Tramo");
+					((Image)hbox.getChildren().get(0)).setStyle("cursor:pointer");
+					((Image)hbox.getChildren().get(2)).setSrc(enabledEdit);			
+					((Image)hbox.getChildren().get(2)).setTooltiptext("Editar Tramo");
+					((Image)hbox.getChildren().get(2)).setStyle("cursor:pointer");
+				}else{
+					((Image)hbox.getChildren().get(0)).setSrc(disabledDelete);			
+					((Image)hbox.getChildren().get(0)).setTooltiptext("");
+					((Image)hbox.getChildren().get(0)).setStyle("cursor:default");
+					((Image)hbox.getChildren().get(2)).setSrc(disabledEdit);			
+					((Image)hbox.getChildren().get(2)).setTooltiptext("");
+					((Image)hbox.getChildren().get(2)).setStyle("cursor:default");
+				}
+			}
+		}
+	}	
+	
+	/**
+	 * Para la edición del Tramo seleccionado
+	 * @throws Exception
+	 */
+	public void editarTramo() throws Exception{
+		Integer index = lbxDetalleItinerario.getSelectedIndex();
+		if (index >= 0){
+			if (index == lbxDetalleItinerario.getItems().size() -1){
+				Listitem itemDetalleItinerario = lbxDetalleItinerario.getItemAtIndex(index);
+				Util.seleccionarValorItemCombo(Localidad.class, cmbOrigen, ((DetalleItinerario) itemDetalleItinerario.getValue()).getRuta().getLocalidadOrigen().getId());	/*Selecciona el Origen*/
+				onChangeRutas(); 																																			/*Carga las Rutas*/
+				Util.seleccionarValorItemCombo(Ruta.class, cmbRuta, ((DetalleItinerario) itemDetalleItinerario.getValue()).getRuta().getId());								/*Seleecion el Origen*/
+				dbFechaItinerario.setValue(((DetalleItinerario) itemDetalleItinerario.getValue()).getFechaPartida());														/*Recupera Fecha partida*/
+				tbHoraPartida.setText(((DetalleItinerario) itemDetalleItinerario.getValue()).getHoraPartida());																/*Recupera Hora de Partida*/
+//				cargarTerm(cmbTermDestino, false, ((DetalleItinerario) itemDetalleItinerario.getValue()).getRuta().getLocalidadDestino().getId()); 							/*carga Terminal Destino*/
+//				Util.seleccionarValorItemCombo(Agencia.class, cmbTermOrigen, ((DetalleItinerario) itemDetalleItinerario.getValue()).getAgenciaPartida().getId());			/*Selecciona el Terminal Origen*/
+//				Util.seleccionarValorItemCombo(Agencia.class, cmbTermDestino, ((DetalleItinerario) itemDetalleItinerario.getValue()).getAgenciaLlegada().getId());			/*Selecciona le Terminal Destino*/
+				
+				if (cmbTipoItinerario.getSelectedIndex()==0){
+					/*Solo para la edición del Itinerario, despues de que esta haya sido guardado*/
+					Util.seleccionarValorItemCombo(Servicio.class,cmbServicio, ((DetalleItinerario) itemDetalleItinerario.getValue()).getItinerario().getServicio().getId());/**Selecciona el Servico*/ 
+					Util.seleccionarValorItemCombo(TipoItinerario.class,cmbTipoItinerario, ((DetalleItinerario) itemDetalleItinerario.getValue()).getItinerario().getTipoItinerario().getId());/**Selecciona el Tipo de Itinerario*/
+				}
+				
+				/*Se utilizan para la edicion de los tramos.*/
+				indexEdicionTramo=index;
+				esEdicionTramo=true;
+				
+				if(action==ACTION_MODIFY){
+					if(lbxDetalleItinerario.getItems().size()==1)
+						dbFechaItinerario.setDisabled(true);
+					else
+						dbFechaItinerario.setDisabled(false);
+				}else 
+					dbFechaItinerario.setDisabled(false);				
+			}else{
+				DlgMessage.information(Messages.getString("WndItinerario.information.NoEditarTramo"));
+			}			
+		}else{
+			DlgMessage.information(Messages.getString("WndItinerario.information.SeleccionarTramo"));
+		}
+	}
+	
+	
+//	/**
+//	 * 	Carga Rutas y Tarifas. 
+//	 * @throws Exception
+//	 */
 //	private  void CargarRutasTarifas () throws Exception{
 //		Rows Rows = new Rows();
 //		Integer Cont = 0;
@@ -1164,83 +1484,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 //		grdRutasTrifas.appendChild(Rows);
 //	}
 	
-	/** 
-	 * Agrega el terminal de Partida
-	 * Clase ItinerarioAgenciaPartida
-	 * @param oItinerarioAgenciaPartida
-	 */
- 	private void cargaListboxTerminalPartida(ItinerarioAgenciaPartida oItinerarioAgenciaPartida){
- 		Listitem item = null;
-		Listcell cell = null;
-		Integer x = listboxTerminalPartida.getChildren().size();
-		item = new Listitem();
-		cell = new Listcell((x.toString()));
-		item.appendChild(cell); //Correlativo
-		cell = new Listcell(oItinerarioAgenciaPartida.getAgencia().getNombreCorto());
-		item.appendChild(cell);
-		cell = new Listcell(oItinerarioAgenciaPartida.getHoraPartida());
-		cell.setStyle("font-size:11px !important");
-		item.appendChild(cell);
-		
-		final Image image= new Image();		
-		image.setHeight("17px");
-		cell = new Listcell();
-		cell .appendChild(image);
-		item.appendChild(cell);
-		
-		image.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
-			@Override
-			public void onEvent(Event event) throws Exception {
-				if(image.getSrc().equals(enabledDelete))
-					quitaTerminal(true, listboxTerminalPartida);
-			}
-		});
-		
-		item.setValue(oItinerarioAgenciaPartida);
-		listboxTerminalPartida.appendChild(item);
-		imagenEliminarTerminale(listboxTerminalPartida);
- 	}
- 	
- 	/**
- 	 * Agrega en el ListBox el Terminal de Llegada.
- 	 * 	Clase ItinerarioAgenciaLlegada
- 	 * @param oItinerarioAgenciaLlegada
- 	 * @throws Exception
- 	 */
- 	private  void cargaListboxTerminalLlegada(ItinerarioAgenciaLlegada oItinerarioAgenciaLlegada) throws Exception{
-		Listitem item = null;
-		Listcell cell = null;
-		
-		Integer x = listboxTerminalLlegada.getChildren().size();
-		item = new Listitem();
-		cell = new Listcell((x.toString()));
-		item.appendChild(cell); //Correlativo
-		cell = new Listcell(oItinerarioAgenciaLlegada.getAgencia().getNombreCorto());
-		item.appendChild(cell);
-		cell = new Listcell(oItinerarioAgenciaLlegada.getHoraLlegada());
-		cell.setStyle("font-size:11px !important");
-		item.appendChild(cell);
-		
-		final Image image= new Image();
-		image.setHeight("17px");
-		cell = new Listcell();
-		cell .appendChild(image);
-		item.appendChild(cell);
-		
-		image.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
-			@Override
-			public void onEvent(Event event) throws Exception {
-				if(image.getSrc().equals(enabledDelete))
-					quitaTerminal(false, listboxTerminalLlegada);
-			}
-		});
-		
-		item.setValue(oItinerarioAgenciaLlegada);
-		listboxTerminalLlegada.appendChild(item);
-		imagenEliminarTerminale(listboxTerminalLlegada);
-	}
- 	
- 	/**
+	/**
  	 * Agrea terminal de Partida o de Llegada. atravez del Boton "Add"
  	 * @param oClass			: Clase según el terminal a agregar. (ItinerarioAgenciaPartida o ItinerarioAgenciaLlegada)
  	 * @param listBoxTerminal	: ListBox en la que se cargará el terminal
@@ -1295,34 +1539,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
  		}
  	}
  	
- 	/**
- 	 * 
- 	 * @param terminalPartida	: Variable Booleana; true= Terminal Partida, false=TerminAl Llegada.
- 	 * @param listBoxTerminal	: Nombre del ListBox del terminal a Borrar.
- 	 * @throws Exception		: ELIMINA EL TERMINAL SELECCIONADO.
- 	 */
-	public void quitaTerminal (Boolean terminalPartida, Listbox listBoxTerminal) throws Exception{
-		 final Listbox ListBoxTerminal = listBoxTerminal;
-		Integer index =listBoxTerminal.getSelectedIndex();
-		if (index > 0){
-			Messagebox.show(Messages.getString("WndItinerario.question.EliminaTerminal"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
-				@Override
-				public void onEvent(Event e) throws Exception {
-					if(e.getName().equals("onYes")){
-						Integer index = ListBoxTerminal.getSelectedIndex();
-						ListBoxTerminal.removeItemAt(index);
-					}
-				}
-			});			
-		}else{
-			if (terminalPartida == true)
-				DlgMessage.information(Messages.getString("WndItinerario.information.EliminaTerminalPartida"));
-			else 
-				DlgMessage.information(Messages.getString("WndItinerario.information.EliminaTerminalLlegada"));
-		}
-	}
-	
-	private void HabilitaBotones_AgredarTramo(Boolean estado){
+ 	private void HabilitaBotones_AgredarTramo(Boolean estado){
 		if(estado)
 			cmdAgregarTramo.setImage("/resources/mp_agregarDisabled.png");
 		else
@@ -1330,158 +1547,86 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		cmdAgregarTramo.setDisabled(estado);
 	}
 
-	/**
-	 * Confirmación para quitar un tramo
-	 * @param Index 	: El indice del tramo seleccionado.
-	 * @throws Exception
-	 */
-	public void confirmaQuitarTramo(Integer Index) throws Exception{ 
-		final Integer index= Index;
-		if (index >=0){
-			if (index == listboxDetalleItinerario.getItems().size() -1){	
-				Messagebox.show(Messages.getString("WndItinerario.question.BorrarTramo"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
-					@Override
-					public void onEvent(Event e) throws Exception {
-						if(e.getName().equals("onYes")){
-							quitaTramo(index);
-						}	
-					}	
-				});
-				
-			}else{
-				DlgMessage.information(Messages.getString("WndItinerario.information.NoBorrarTramo"));
-			}
-		}else{
-			DlgMessage.information(Messages.getString("WndItinerario.information.SeleccionarTramo"));
-		}		
-	}
+	
+	
+//	/**
+//	 * Vuelve a cargar los terminales de partida y llegada segun el detalle de itinerario
+//	 * @param lstbxDetalleItinerario
+//	 * @throws Exception
+//	 */
+//	public void recargarListboxTerminales(Listbox lstbxDetalleItinerario) throws Exception {
+//		Util.limpiarListbox(lbxTerminalPartida);
+//		Util.limpiarListbox(lbxTerminalLlegada);
+//		for(Listitem item : lstbxDetalleItinerario.getItems()) {
+//			DetalleItinerario detalle = (DetalleItinerario)item.getValue();
+//			
+//			ItinerarioAgenciaPartida oItinerarioAgenciaPartida = new ItinerarioAgenciaPartida();
+//			Agencia oAgencia = new Agencia();
+//			oAgencia.setId(detalle.getAgenciaPartida().getId());
+//			oAgencia.setNombreCorto(detalle.getAgenciaPartida().getNombreCorto());
+//			oAgencia.setDenominacion(detalle.getAgenciaPartida().getDenominacion());
+//			oItinerarioAgenciaPartida.setAgencia(oAgencia);
+//			oItinerarioAgenciaPartida.setHoraPartida(detalle.getHoraPartida());
+//			oItinerarioAgenciaPartida.setLocalidad(detalle.getRuta().getLocalidadOrigen());
+//			cargaListboxTerminalPartida(oItinerarioAgenciaPartida);
+//			
+//			ItinerarioAgenciaLlegada oItinerarioAgenciaLlegada = new ItinerarioAgenciaLlegada();
+//			Agencia oAgenciaLlegada = new Agencia();
+//			oAgenciaLlegada.setId(detalle.getAgenciaLlegada().getId());
+//			oAgenciaLlegada.setNombreCorto(detalle.getAgenciaLlegada().getNombreCorto());
+//			oAgenciaLlegada.setDenominacion(detalle.getAgenciaLlegada().getDenominacion());
+//			oItinerarioAgenciaLlegada.setAgencia(oAgenciaLlegada);
+//			oItinerarioAgenciaLlegada.setHoraLlegada(detalle.getHoraLlegada());
+//			oItinerarioAgenciaLlegada.setLocalidad(detalle.getRuta().getLocalidadDestino());
+//			cargaListboxTerminalLlegada(oItinerarioAgenciaLlegada);
+//		}
+//	}
+	
+	
+//	/**
+//	 * Carga los terminales de origen y destino, segun la ruta seleccionada
+//	 * 
+//	 * @param combobox		: ComboBox en donde se cargara el terminal 
+//	 * @param todos			: True muestra "TODOS"; false muesta "SELECCIONE"
+//	 * @param localidad		: identificador unico de la localidad
+//	 * @throws Exception  	
+//	 */
+//	public static void cargarTerm(Combobox combobox, Boolean todos, Integer localidad) throws Exception{
+//		TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+//		List<String> criteriosOrdenar = null;
+//		Boolean esTermina=true;
+//		
+//		criteriosOrdenar = new ArrayList<String>();
+//		criteriosOrdenar.add("denominacion");
+//	
+//		Localidad olocalidad = new Localidad();
+//		olocalidad.setId(localidad);
+//		criteriosBusqueda.put("localidad", olocalidad);
+//		criteriosBusqueda.put("esTerminal", esTermina);
+//		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+//		ArrayList<Agencia> lstAgePar = ServiceLocator.getAgenciaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
+//		
+//		combobox.getItems().clear();
+//		UtilData.cargarGenericData(combobox, todos);	
+//		for (int l = 0; l < lstAgePar.size(); l ++) {
+//			Agencia oAgencia = lstAgePar.get(l);
+//			Comboitem oComboitem = new Comboitem();
+//
+//			oComboitem.setValue(oAgencia);
+//			oComboitem.setLabel(oAgencia.getNombreCorto());
+//
+//			combobox.appendChild(oComboitem);
+//		}
+//	}
 	
 	/**
-	 * Quita el tramo seleccionado.
-	 * @param index	: El indice del tramo seleccionado.
-	 * @throws Exception
-	 */
-	public void quitaTramo(Integer index) throws Exception{
-		listboxDetalleItinerario.removeItemAt(index);
-		
-		if (index==0){
-			cmbTerminalPartida.getItems().clear();
-			cmbTerminalLlegada.getItems().clear();
-			tbterHoraPartida.setText("");
-			tbterHoraLlegada.setText("");
-			Util.limpiarListbox(listboxTerminalPartida);
-			Util.limpiarListbox(listboxTerminalLlegada);
-			cmbOrigen.setSelectedIndex(0);
-		}else{
-			Listitem itemDetalleItinerario = listboxDetalleItinerario.getItemAtIndex(index -1);
-			dbFechaItinerario.setValue(((DetalleItinerario) itemDetalleItinerario.getValue()).getFechaLlegada());	
-			tbHoraPartida.setText(((DetalleItinerario) itemDetalleItinerario.getValue()).getHoraLlegada());
-			Util.seleccionarValorItemCombo(Agencia.class, cmbTermOrigen, ((DetalleItinerario) itemDetalleItinerario.getValue()).getAgenciaPartida().getId());
-			Util.seleccionarValorItemCombo(Localidad.class, cmbOrigen, ((DetalleItinerario) itemDetalleItinerario.getValue()).getRuta().getLocalidadDestino().getId());
-			onChangeRutas();
-			
-			recargarListboxTerminales(listboxDetalleItinerario);
-			
-//				ItinerarioAgenciaLlegada oItinerarioAgenciaLlegada = new ItinerarioAgenciaLlegada();
-//				Agencia oAgencia = new Agencia();
-//				oAgencia.setId(((DetalleItinerario) itemDetalleItinerario.getValue()).getAgenciaLlegada().getId());
-//				oAgencia.setNombreCorto(((DetalleItinerario) itemDetalleItinerario.getValue()).getAgenciaLlegada().getNombreCorto());
-//				oAgencia.setDenominacion(((DetalleItinerario) itemDetalleItinerario.getValue()).getAgenciaLlegada().getDenominacion());
-//				oItinerarioAgenciaLlegada.setAgencia(oAgencia);
-//				oItinerarioAgenciaLlegada.setHoraLlegada(((DetalleItinerario) itemDetalleItinerario.getValue()).getHoraLlegada());
-//				Util.limpiarListbox(listboxTerminalLlegada);
-//				cargaListboxTerminalPartida(oiti );
-			
-			cargarTerminalPartidaLlegada(cmbTerminalPartida, false, listboxDetalleItinerario, 1);
-			cargarTerminalPartidaLlegada(cmbTerminalLlegada, false, listboxDetalleItinerario, 2);
-//			cargarTerm(cmbTerminalLlegada, false, (((DetalleItinerario) itemDetalleItinerario.getValue()).getRuta().getLocalidadDestino().getId()));
-		}
-		esEdicionTramo=false;	
-//		CargarRutasTarifas();
-		imageEliminarTramo();
-	}
-	
-	/**
-	 * Vuelve a cargar los terminales de partida y llegada segun el detalle de itinerario
-	 * @param lstbxDetalleItinerario
-	 * @throws Exception
-	 */
-	public void recargarListboxTerminales(Listbox lstbxDetalleItinerario) throws Exception {
-		Util.limpiarListbox(listboxTerminalPartida);
-		Util.limpiarListbox(listboxTerminalLlegada);
-		for(Listitem item : lstbxDetalleItinerario.getItems()) {
-			DetalleItinerario detalle = (DetalleItinerario)item.getValue();
-			
-			ItinerarioAgenciaPartida oItinerarioAgenciaPartida = new ItinerarioAgenciaPartida();
-			Agencia oAgencia = new Agencia();
-			oAgencia.setId(detalle.getAgenciaPartida().getId());
-			oAgencia.setNombreCorto(detalle.getAgenciaPartida().getNombreCorto());
-			oAgencia.setDenominacion(detalle.getAgenciaPartida().getDenominacion());
-			oItinerarioAgenciaPartida.setAgencia(oAgencia);
-			oItinerarioAgenciaPartida.setHoraPartida(detalle.getHoraPartida());
-			oItinerarioAgenciaPartida.setLocalidad(detalle.getRuta().getLocalidadOrigen());
-			cargaListboxTerminalPartida(oItinerarioAgenciaPartida);
-			
-			ItinerarioAgenciaLlegada oItinerarioAgenciaLlegada = new ItinerarioAgenciaLlegada();
-			Agencia oAgenciaLlegada = new Agencia();
-			oAgenciaLlegada.setId(detalle.getAgenciaLlegada().getId());
-			oAgenciaLlegada.setNombreCorto(detalle.getAgenciaLlegada().getNombreCorto());
-			oAgenciaLlegada.setDenominacion(detalle.getAgenciaLlegada().getDenominacion());
-			oItinerarioAgenciaLlegada.setAgencia(oAgenciaLlegada);
-			oItinerarioAgenciaLlegada.setHoraLlegada(detalle.getHoraLlegada());
-			oItinerarioAgenciaLlegada.setLocalidad(detalle.getRuta().getLocalidadDestino());
-			cargaListboxTerminalLlegada(oItinerarioAgenciaLlegada);
-		}
-	}
-	
-	/**
-	 * Para la edición del Tramo seleccionado
-	 * @throws Exception
-	 */
-	public void editarTramo() throws Exception{
-		Integer index = listboxDetalleItinerario.getSelectedIndex();
-		if (index >= 0){
-			if (index == listboxDetalleItinerario.getItems().size() -1){
-				Listitem itemDetalleItinerario = listboxDetalleItinerario.getItemAtIndex(index);
-				Util.seleccionarValorItemCombo(Localidad.class, cmbOrigen, ((DetalleItinerario) itemDetalleItinerario.getValue()).getRuta().getLocalidadOrigen().getId());	/*Selecciona el Origen*/
-				onChangeRutas(); 																																			/*Carga las Rutas*/
-				Util.seleccionarValorItemCombo(Ruta.class, cmbRuta, ((DetalleItinerario) itemDetalleItinerario.getValue()).getRuta().getId());								/*Seleecion el Origen*/
-				dbFechaItinerario.setValue(((DetalleItinerario) itemDetalleItinerario.getValue()).getFechaPartida());														/*Recupera Fecha partida*/
-				tbHoraPartida.setText(((DetalleItinerario) itemDetalleItinerario.getValue()).getHoraPartida());																/*Recupera Hora de Partida*/
-				cargarTerm(cmbTermDestino, false, ((DetalleItinerario) itemDetalleItinerario.getValue()).getRuta().getLocalidadDestino().getId()); 							/*carga Terminal Destino*/
-				Util.seleccionarValorItemCombo(Agencia.class, cmbTermOrigen, ((DetalleItinerario) itemDetalleItinerario.getValue()).getAgenciaPartida().getId());			/*Selecciona el Terminal Origen*/
-				Util.seleccionarValorItemCombo(Agencia.class, cmbTermDestino, ((DetalleItinerario) itemDetalleItinerario.getValue()).getAgenciaLlegada().getId());			/*Selecciona le Terminal Destino*/
-				
-				if (cmbTipoItinerario.getSelectedIndex()==0){
-					/*Solo para la edición del Itinerario, despues de que esta aya sido guardado*/
-					Util.seleccionarValorItemCombo(Servicio.class,cmbServicio, ((DetalleItinerario) itemDetalleItinerario.getValue()).getItinerario().getServicio().getId());/**Selecciona el Servico*/ 
-					Util.seleccionarValorItemCombo(TipoItinerario.class,cmbTipoItinerario, ((DetalleItinerario) itemDetalleItinerario.getValue()).getItinerario().getTipoItinerario().getId());/**Selecciona el Tipo de Itinerario*/
-				}
-				
-				/*Se utilizan para la edicion de los tramos.*/
-				indexEdicionTramo=index;
-				esEdicionTramo=true;
-				
-				if(action==ACTION_MODIFY){
-					if(listboxDetalleItinerario.getItems().size()==1)
-						dbFechaItinerario.setDisabled(true);
-					else
-						dbFechaItinerario.setDisabled(false);
-				}else dbFechaItinerario.setDisabled(false);
-				
-			}else{DlgMessage.information(Messages.getString("WndItinerario.information.NoEditarTramo"));}			
-		}else{DlgMessage.information(Messages.getString("WndItinerario.information.SeleccionarTramo"));}
-	}
-	
-	/**
-	 * Carga los terminales de origen y destino, segun la ruta seleccionada
-	 * 
-	 * @param combobox		: ComboBox en donde se cargara el terminal 
+	 * Carga los terminales de origen y destino, segun la ruta seleccionada	 * 
+	 * @param combobox		: Listbox en donde se cargara el terminal 
 	 * @param todos			: True muestra "TODOS"; false muesta "SELECCIONE"
 	 * @param localidad		: identificador unico de la localidad
 	 * @throws Exception  	
 	 */
-	public static void cargarTerm(Combobox combobox, Boolean todos, Integer localidad) throws Exception{
+	public static void cargarAgenciaOrigenDestino(Listbox listbox, Boolean todos, Integer localidad) throws Exception {
 		TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
 		List<String> criteriosOrdenar = null;
 		Boolean esTermina=true;
@@ -1494,19 +1639,70 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		criteriosBusqueda.put("localidad", olocalidad);
 		criteriosBusqueda.put("esTerminal", esTermina);
 		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-		ArrayList<Agencia> lstAgePar = ServiceLocator.getAgenciaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
-		
-		combobox.getItems().clear();
-		UtilData.cargarGenericData(combobox, todos);	
-		for (int l = 0; l < lstAgePar.size(); l ++) {
-			Agencia oAgencia = lstAgePar.get(l);
-			Comboitem oComboitem = new Comboitem();
-
-			oComboitem.setValue(oAgencia);
-			oComboitem.setLabel(oAgencia.getNombreCorto());
-
-			combobox.appendChild(oComboitem);
+		ArrayList<Agencia> lstAgenciaPartida = ServiceLocator.getAgenciaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
+		listbox.getItems().clear();
+		for (int l = 0; l < lstAgenciaPartida.size(); l ++) {
+			Agencia oAgencia = lstAgenciaPartida.get(l);
+			Listitem oListItem = new Listitem();
+			Listcell oListCell = new Listcell();
+			oListCell.setLabel(oAgencia.getNombreCorto());
+			oListItem.appendChild(oListCell);
+			oListCell = new Listcell();
+			Timebox oTimebox = new Timebox();
+			oTimebox.setWidth("55px");
+			oTimebox.setFormat("HH:mm");
+			oListCell.appendChild(oTimebox);
+			oListItem.setValue(oAgencia);
+			oListItem.appendChild(oListCell);
+			
+			listbox.appendChild(oListItem);
 		}
+	}
+	
+	public void onSelectAgenciaOrigen() throws Exception {
+		String terminales = "";
+		lstAgenciaPartida = new ArrayList<Agencia>();
+		try {
+				
+			for(Listitem item : lbxTerminalOrigen.getSelectedItems()) {
+				terminales = terminales + ((Agencia)item.getValue()).getDenominacion() + ", ";
+				if(((Timebox)item.getChildren().get(1).getChildren().get(0)).getText().equals(""))
+					throw new HoraPartidaNullException();
+				Agencia agenciaPartida = (Agencia)item.getValue();
+				agenciaPartida.setHoraPartida(((Timebox)item.getChildren().get(1).getChildren().get(0)).getText());
+				lstAgenciaPartida.add(agenciaPartida);
+			}
+			bbxTerminalOrigen.setValue(terminales);
+			bbxTerminalOrigen.close();
+		}catch (HoraPartidaNullException hpnex) {
+			DlgMessage.information(Messages.getString("WndItinerario.information.HoraPartida"));
+		}catch (Exception ex) { 
+			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
+			ex.printStackTrace();
+		}
+	}
+	
+	public void onSelectAgenciaDestino() throws Exception{
+		String terminales = "";
+		lstAgenciaLlegada = new ArrayList<Agencia>();
+		try {
+			for(Listitem item : lbxTerminalDestino.getSelectedItems()) {
+				terminales = terminales + ((Agencia)item.getValue()).getDenominacion() + ", ";
+				if(((Timebox)item.getChildren().get(1).getChildren().get(0)).getText().equals(""))
+					throw new HoraLlegadaNullException();
+				Agencia agenciaLlegada = (Agencia)item.getValue();
+				agenciaLlegada.setHoraPartida(((Timebox)item.getChildren().get(1).getChildren().get(0)).getText());
+				lstAgenciaLlegada.add(agenciaLlegada);
+			}
+			bbxTerminalDestino.setValue(terminales);
+			bbxTerminalDestino.close();
+		}catch (HoraLlegadaNullException hlnex) {
+			DlgMessage.information(Messages.getString("WndItinerario.information.HoraLlegada"));
+		}catch (Exception ex) {
+			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
+			ex.printStackTrace();
+		}
+		
 	}
 	
 	/**
@@ -1559,8 +1755,8 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			ServiceLocator.getItinerarioAgenciaLlegadaManager().delete(oitinerario.getId());	
 		}
 		
-	    for (int x =0; x < listboxTerminalLlegada.getItems().size(); x ++){
-	    	Listitem itemTerminalLlegada = listboxTerminalLlegada.getItemAtIndex(x);
+	    for (int x =0; x < lbxTerminalLlegada.getItems().size(); x ++){
+	    	Listitem itemTerminalLlegada = lbxTerminalLlegada.getItemAtIndex(x);
 	    	
 	    	ItinerarioAgenciaLlegada oItinerarioAgenciaLlegada = new ItinerarioAgenciaLlegada();
 	    	ItinerarioAgenciaLlegadaID oItinerarioAgenciaLlegadaID = new ItinerarioAgenciaLlegadaID();
@@ -1594,8 +1790,8 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			ServiceLocator.getItinerarioAgenciaPartidaManager().delete(oitinerario.getId());	
 		}
 		
-	    for (int x =0; x < listboxTerminalPartida.getItems().size(); x ++){
-	    	Listitem itemTerminalPartida = listboxTerminalPartida.getItemAtIndex(x);
+	    for (int x =0; x < lbxTerminalPartida.getItems().size(); x ++){
+	    	Listitem itemTerminalPartida = lbxTerminalPartida.getItemAtIndex(x);
 	    	
 	    	ItinerarioAgenciaPartida oItinerarioAgenciaPartida = new ItinerarioAgenciaPartida();
 	    	ItinerarioAgenciaPartidaID oItinerarioAgenciaPartidaID = new ItinerarioAgenciaPartidaID();
@@ -1800,8 +1996,8 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 	public String secuenciaTramo(){
 		SecuenciaTramo osecuenciaTramo = new SecuenciaTramo();
 		String SecuenciTramo="";
-		for (int i=0; i< listboxDetalleItinerario.getItems().size(); i ++){
-			Listitem itemDetalleItinerario = listboxDetalleItinerario.getItemAtIndex(i);
+		for (int i=0; i< lbxDetalleItinerario.getItems().size(); i ++){
+			Listitem itemDetalleItinerario = lbxDetalleItinerario.getItemAtIndex(i);
 			
 			osecuenciaTramo.setOrigen(((DetalleItinerario) itemDetalleItinerario.getValue()).getRuta().getLocalidadOrigen().getId());
 			osecuenciaTramo.setDestino(((DetalleItinerario) itemDetalleItinerario.getValue()).getRuta().getLocalidadDestino().getId());
@@ -1809,13 +2005,13 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			
 			if (osecuenciaTramo.getOrden() == 1){
 				if (SecuenciTramo.equals("")){
-					if (listboxDetalleItinerario.getItems().size()==1)
+					if (lbxDetalleItinerario.getItems().size()==1)
 						SecuenciTramo = osecuenciaTramo.getOrigen() +"-"+ osecuenciaTramo.getDestino() +"-"+ osecuenciaTramo.getOrden();
 					else
 						SecuenciTramo = osecuenciaTramo.getOrigen() +"-"+ osecuenciaTramo.getDestino() +"-"+ osecuenciaTramo.getOrden() +";";
 				}
 			}else{
-				if (i == listboxDetalleItinerario.getItems().size() -1){
+				if (i == lbxDetalleItinerario.getItems().size() -1){
 					SecuenciTramo = SecuenciTramo + osecuenciaTramo.getOrigen() +"-"+ osecuenciaTramo.getDestino() +"-"+ osecuenciaTramo.getOrden();
 				}else{
 					SecuenciTramo = SecuenciTramo + osecuenciaTramo.getOrigen() +"-"+ osecuenciaTramo.getDestino() +"-"+ osecuenciaTramo.getOrden() +";";
@@ -1915,7 +2111,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 				String origen = detalleItinerario.getRuta().getOrigen();
 				if (destino.equals(origen) || primerIndex==1){
 					x += +1;
-					agregarItinerario(detalleItinerario, listboxDetalleItinerario);
+					agregarItinerario(detalleItinerario, lbxDetalleItinerario);
 										
 					destino=detalleItinerario.getRuta().getDestino();
 				}
@@ -1924,7 +2120,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			
 		String localidadPartida = "";
 		String localidadLlegada = "";
-		for(Listitem itDetalle:listboxDetalleItinerario.getItems()) {
+		for(Listitem itDetalle:lbxDetalleItinerario.getItems()) {
 			DetalleItinerario detalle = ((DetalleItinerario)itDetalle.getValue());
 			if(!localidadPartida.isEmpty())
 				localidadPartida = localidadPartida+",";
@@ -1936,10 +2132,10 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		}
 
 		/*Carga Combobox Terminal Partida*/
-		cargarTerminalPartidaLlegada(cmbTerminalPartida, false, listboxDetalleItinerario, 1);
+		cargarTerminalPartidaLlegada(cmbTerminalPartida, false, lbxDetalleItinerario, 1);
 			
 		/*Carga Combobox Terminal Llegada*/
-		cargarTerminalPartidaLlegada(cmbTerminalLlegada, false, listboxDetalleItinerario, 2);
+		cargarTerminalPartidaLlegada(cmbTerminalLlegada, false, lbxDetalleItinerario, 2);
 		
 
 		/*Recupera Itinerario Agencia partida**/
@@ -1971,13 +2167,13 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 					@Override
 					public void onEvent(Event event) throws Exception {
 						if(image.getSrc().equals(enabledDelete))
-							quitaTerminal(true, listboxTerminalPartida);
+							quitaTerminal(true, lbxTerminalPartida);
 					}
 				});
 				
 				item.setValue(itinerarioAgenciaPartida);
-				listboxTerminalPartida.appendChild(item);	
-				imagenEliminarTerminale(listboxTerminalPartida);
+				lbxTerminalPartida.appendChild(item);	
+				asignarImagenEliminarTerminal(lbxTerminalPartida);
 				
 			}
 		}
@@ -2011,207 +2207,16 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 					@Override
 					public void onEvent(Event event) throws Exception {
 						if(image.getSrc().equals(enabledDelete))
-							quitaTerminal(false, listboxTerminalLlegada);
+							quitaTerminal(false, lbxTerminalLlegada);
 					}
 				});
 				
 				item.setValue(itinerarioAgenciaLlegada);
-				listboxTerminalLlegada.appendChild(item);	
-				imagenEliminarTerminale(listboxTerminalLlegada);
+				lbxTerminalLlegada.appendChild(item);	
+				asignarImagenEliminarTerminal(lbxTerminalLlegada);
 				}
 			}
 		}
-	}
-	
-	/**
-	 * Agrega  al Detalle del Itinerario el itinerario creado. 
-	 * @param odetalleItinerario		:	Clase DetalleItinerario
-	 * @param lisBoxDetalleItinerario	: ListBox al que se Agregará el Itinerario
-	 * @throws Exception 
-	 */
-	public void agregarItinerario(DetalleItinerario odetalleItinerario, Listbox lisBoxDetalleItinerario) throws Exception{
-				
-		Listitem item = null;
-		Listcell cell = null;
-		Integer x = lisBoxDetalleItinerario.getChildren().size();
-		
-		Servicio servicio=ServiceLocator.getServicioManager().buscarPorId(odetalleItinerario.getItinerario().getServicio().getId().longValue());
-		
-		item = new Listitem();
-		cell = new Listcell((x.toString()));
-		cell.setStyle("font-size:11px !important");
-		item.appendChild(cell); //Correlativo
-//		cell = new Listcell(odetalleItinerario.getRuta().getOrigen());
-//		item.appendChild(cell);
-		cell = new Listcell(odetalleItinerario.getRuta().toString());
-		item.appendChild(cell);
-		cell = new Listcell(servicio.getDenominacion());
-		item.appendChild(cell);
-//		cell = new Listcell(Constantes.FORMAT_DATE.format(odetalleItinerario.getFechaPartida()));
-//		cell.setStyle("font-size:11px !important");
-		cell = new Listcell(Util.toFechaNombreDiaMes(odetalleItinerario.getFechaPartida()));
-		cell.setTooltiptext(Util.toFechaNombreDiaMesLong(odetalleItinerario.getFechaPartida()));
-		cell.setStyle("font-size:9px !important");
-		item.appendChild(cell);
-		cell = new Listcell(odetalleItinerario.getHoraPartida());
-		cell.setStyle("font-size:11px !important");
-		item.appendChild(cell);
-		cell = new Listcell(Util.toFechaNombreDiaMes(odetalleItinerario.getFechaLlegada()));
-		cell.setTooltiptext(Util.toFechaNombreDiaMesLong(odetalleItinerario.getFechaLlegada()));
-		cell.setStyle("font-size:9px !important");
-//		cell = new Listcell(Constantes.FORMAT_DATE.format(odetalleItinerario.getFechaLlegada()));
-//		cell.setStyle("font-size:11px !important");
-		item.appendChild(cell);	
-		cell = new Listcell(odetalleItinerario.getHoraLlegada());
-		cell.setStyle("font-size:11px !important");
-		item.appendChild(cell);
-		cell = new Listcell(odetalleItinerario.getAgenciaPartida().getNombreCorto());
-		item.appendChild(cell);
-		cell = new Listcell(odetalleItinerario.getAgenciaLlegada().getNombreCorto());
-		item.appendChild(cell);
-		
-		Hbox hbox=new Hbox();
-		
-		final Image imageDelete= new Image();
-		imageDelete.setHeight("17px");
-		cell = new Listcell();
-		hbox.appendChild(imageDelete);
-		cell .appendChild(hbox);	
-		imageDelete.setZindex(x);
-		imageDelete.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
-			@Override
-			public void onEvent(Event event) throws Exception {
-				if(imageDelete.getSrc().equals(enabledDelete)){
-					int index=imageDelete.getZindex();
-					confirmaQuitarTramo(index-1);
-				}
-			}
-		});
-		
-		Separator separator=new Separator();
-		separator.setWidth("5px");
-		hbox.appendChild(separator);
-		
-		final Image imageEditar= new Image();
-		imageEditar.setHeight("15px");
-		cell = new Listcell();
-		hbox.appendChild(imageEditar);
-		cell .appendChild(hbox);
-				
-		item.appendChild(cell);
-		
-		imageEditar.setZindex(x);
-		imageEditar.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
-			@Override
-			public void onEvent(Event event) throws Exception {
-				if (imageEditar.getSrc().equals(enabledEdit)){
-					int index=imageEditar.getZindex();
-					listboxDetalleItinerario.setSelectedIndex(index-1);
-					editarTramo();
-				}
-			}
-		});
-
-		item.setValue(odetalleItinerario);
-		lisBoxDetalleItinerario.appendChild(item);
-		imageEliminarTramo();
-	}
-	
-	/**
-	 * Estable el tipo de imagen que representa a eliminar tramos(imagen activa o inactiva)
-	 */
-	private void imageEliminarTramo(){		
-		if(listboxDetalleItinerario.getItems().size()>0){
-			for(int y=0; y<listboxDetalleItinerario.getItems().size();y++){
-				Integer c=listboxDetalleItinerario.getItems().size();
-				Component it = (Component) listboxDetalleItinerario.getChildren().get(y+1);
-				Listcell cll=(Listcell) it.getChildren().get(9);
-//				Listcell cll=(Listcell) it.getChildren().get(10);
-				Hbox hbox=(Hbox)cll.getChildren().get(0);
-				if(c.equals(y+1) && btnGuardar.isDisabled()==false){
-//					((Image)cll.getChildren().get(0)).setSrc(enabled);			
-//					((Image)cll.getChildren().get(0)).setTooltiptext("Eliminar Tramo");
-					((Image)hbox.getChildren().get(0)).setSrc(enabledDelete);			
-					((Image)hbox.getChildren().get(0)).setTooltiptext("Eliminar Tramo");
-					((Image)hbox.getChildren().get(0)).setStyle("cursor:pointer");
-					((Image)hbox.getChildren().get(2)).setSrc(enabledEdit);			
-					((Image)hbox.getChildren().get(2)).setTooltiptext("Editar Tramo");
-					((Image)hbox.getChildren().get(2)).setStyle("cursor:pointer");
-				}else{
-//					((Image)cll.getChildren().get(0)).setSrc(disabled);			
-//					((Image)cll.getChildren().get(0)).setTooltiptext("");
-					((Image)hbox.getChildren().get(0)).setSrc(disabledDelete);			
-					((Image)hbox.getChildren().get(0)).setTooltiptext("");
-					((Image)hbox.getChildren().get(0)).setStyle("cursor:default");
-					((Image)hbox.getChildren().get(2)).setSrc(disabledEdit);			
-					((Image)hbox.getChildren().get(2)).setTooltiptext("");
-					((Image)hbox.getChildren().get(2)).setStyle("cursor:default");
-				}
-			}
-		}
-	}
-	
-	
-	private void imagenEliminarTerminale(Listbox listbox){
-		if(listbox.getItems().size()>0){
-			for(int y=0; y<listbox.getItems().size();y++){
-				Component it = (Component) listbox.getChildren().get(y+1);
-				Listcell cll=(Listcell) it.getChildren().get(3);
-			
-				if(y==0){
-					((Image)cll.getChildren().get(0)).setSrc(disabledDelete);			
-					((Image)cll.getChildren().get(0)).setTooltiptext("");
-					((Image)cll.getChildren().get(0)).setStyle("cursor:default");
-				}else{
-					if(btnGuardar.isDisabled()){
-						((Image)cll.getChildren().get(0)).setSrc(disabledDelete);			
-						((Image)cll.getChildren().get(0)).setTooltiptext("");
-						((Image)cll.getChildren().get(0)).setStyle("cursor:default");
-					}else{
-						((Image)cll.getChildren().get(0)).setSrc(enabledDelete);			
-						((Image)cll.getChildren().get(0)).setTooltiptext("Eliminar Tramo");
-						((Image)cll.getChildren().get(0)).setStyle("cursor:pointer");
-					}
-				}
-			}
-		}
-	}
-	
-	public void limpiaItinerario(){
-		cmbRuta.getItems().clear();
-		cmbTermOrigen.getItems().clear();
-		cmbTermDestino.getItems().clear();
-		cmbTerminalPartida.getItems().clear();
-		cmbTerminalLlegada.getItems().clear();
-		tbHoraPartida.setValue(null);
-		tbterHoraPartida.setValue(null);
-		tbterHoraLlegada.setValue(null);
-	}
-
-		
-	public void limpiarTodasLasListas(){
-		Util.limpiarListbox(listboxDetalleItinerario);
-		Util.limpiarListbox(listboxTerminalPartida);
-		Util.limpiarListbox(listboxTerminalLlegada);
-		Util.limpiarGrid(grdRutasTrifas);
-	}
-	
-	public void cargaComboDefaul(){
-		limpiaItinerario();
-		UtilData.cargarGenericData(cmbRuta, false);
-		UtilData.cargarGenericData(cmbTermOrigen, false);
-		UtilData.cargarGenericData(cmbTermDestino, false);
-		UtilData.cargarGenericData(cmbTerminalPartida, false);
-		UtilData.cargarGenericData(cmbTerminalLlegada, false);
-	}
-	
-	public void LimpiaCombos(){
-		cmbTipoItinerario.setSelectedIndex(0);
-		cmbServicio.setSelectedIndex(0);
-		cmbOrigen.setSelectedIndex(0);
-		cmbRuta.setSelectedIndex(0);
-		cmbTermOrigen.setSelectedIndex(0);
-		cmbTermDestino.setSelectedIndex(0);
 	}
 	
 	
@@ -2350,8 +2355,8 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 	 */
 	@SuppressWarnings({ "deprecation", "static-access" })
 	private void guardarItinerarios(int action, Date fechaPartida, Calendar FechaLLegada, Listbox lbDetalleItinerario, Itinerario itinerario) throws Exception{
-		for (int y=0; y < listboxDetalleItinerario.getItems().size(); y ++){
-			Listitem itemDetalleItinerario = listboxDetalleItinerario.getItemAtIndex(y);
+		for (int y=0; y < lbxDetalleItinerario.getItems().size(); y ++){
+			Listitem itemDetalleItinerario = lbxDetalleItinerario.getItemAtIndex(y);
 			DetalleItinerario odetalleItinerario = new DetalleItinerario();
 			Timebox tbhoraPartida = new Timebox();
 			Date sfechaPartida = new Date();
@@ -2570,11 +2575,11 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		
 		/*Valida si es al guadar el itinerario o al agregar el tramo*/
 		if(detalleItinerario==null){
-			for(int x=0; x<listboxDetalleItinerario.getItems().size();x++){
-				DetalleItinerario detallIT=listboxDetalleItinerario.getItemAtIndex(x).getValue();
+			for(int x=0; x<lbxDetalleItinerario.getItems().size();x++){
+				DetalleItinerario detallIT=lbxDetalleItinerario.getItemAtIndex(x).getValue();
 				DetalleItinerario detallFT=null;
-				if(listboxDetalleItinerario.getItems().size()> x+1)
-					detallFT=listboxDetalleItinerario.getItemAtIndex(x+1).getValue();
+				if(lbxDetalleItinerario.getItems().size()> x+1)
+					detallFT=lbxDetalleItinerario.getItemAtIndex(x+1).getValue();
 				if(detallFT!=null){
 					Date dateITLlega=Constantes.FORMAT_LONG.parse(Constantes.FORMAT_DATE.format(detallIT.getFechaLlegada())+" "+detallIT.getHoraLlegada());
 					Date dateFTSale=Constantes.FORMAT_LONG.parse(Constantes.FORMAT_DATE.format(detallFT.getFechaPartida())+" "+detallFT.getHoraPartida());
@@ -2592,10 +2597,10 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		}else{
 			/*Buscamos el ultimo tramo agregado*/
 			DetalleItinerario detallUT=null;
-			if(esEdicionTramo==false && listboxDetalleItinerario.getItems().size()>0)
-				detallUT=listboxDetalleItinerario.getItemAtIndex(listboxDetalleItinerario.getItems().size()-1).getValue();
-			else if (esEdicionTramo && listboxDetalleItinerario.getItems().size()>1){
-				detallUT=listboxDetalleItinerario.getItemAtIndex(listboxDetalleItinerario.getItems().size()-2).getValue();
+			if(esEdicionTramo==false && lbxDetalleItinerario.getItems().size()>0)
+				detallUT=lbxDetalleItinerario.getItemAtIndex(lbxDetalleItinerario.getItems().size()-1).getValue();
+			else if (esEdicionTramo && lbxDetalleItinerario.getItems().size()>1){
+				detallUT=lbxDetalleItinerario.getItemAtIndex(lbxDetalleItinerario.getItems().size()-2).getValue();
 			}
 			if(detallUT!=null){
 				Date dateITLlega=Constantes.FORMAT_LONG.parse(Constantes.FORMAT_DATE.format(detallUT.getFechaLlegada())+" "+detallUT.getHoraLlegada());
@@ -2612,4 +2617,252 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		
 		return isCorrect;
 	}
+	
+	/**
+	 * Muestra los terminales de Partida y Llegada cuando se selecciona el tramo
+	 */
+	public void showTerminales() {
+		if(lbxDetalleItinerario.getSelectedItem().getValue() instanceof DetalleItinerario) {
+			DetalleItinerario detalleItinerario = (DetalleItinerario)lbxDetalleItinerario.getSelectedItem().getValue();
+			cargarTerminalPartida(detalleItinerario.getLstItinerarioAgenciaPartida());
+			cargarTerminalLlegada(detalleItinerario.getLstItinerarioAgenciaLlegada());
+		}
+	}
+	
+	/**
+	 * Realiza el llenado del Listbox de terminales de Partida
+	 * @param lstItinerarioAgenciaPartida	: Datos a mostrar
+	 */
+	private void cargarTerminalPartida(List<ItinerarioAgenciaPartida> lstItinerarioAgenciaPartida) {
+		lbxTerminalPartida.getItems().clear();
+		Listitem item = null;
+		Listcell cell = null;
+		Integer x = 0;
+		for(ItinerarioAgenciaPartida itinerarioAgenciaPartida : lstItinerarioAgenciaPartida) {
+			x++;
+			item = new Listitem();
+			cell = new Listcell(x.toString());
+			item.appendChild(cell);
+			
+			cell = new Listcell(itinerarioAgenciaPartida.getAgencia().getNombreCorto());
+			item.appendChild(cell);
+			
+			cell = new Listcell(itinerarioAgenciaPartida.getHoraPartida());
+			cell.setStyle("font-size:11px !important");
+			item.appendChild(cell);
+			
+			final Image image= new Image();		
+			image.setHeight("17px");
+			image.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					if(image.getSrc().equals(enabledDelete))
+						quitaTerminal(true, lbxTerminalPartida);
+				}
+			});			
+			cell = new Listcell();
+			cell .appendChild(image);
+			item.appendChild(cell);			
+			
+			item.setValue(itinerarioAgenciaPartida);
+			lbxTerminalPartida.appendChild(item);
+			asignarImagenEliminarTerminal(lbxTerminalPartida);			
+		}
+	}
+	
+	/**
+	 * Realiza el llenado del Listbox de terminales de Llegada
+	 * @param lstItinerarioAgenciaLlegada	: Datos a mostrar
+	 */
+	private void cargarTerminalLlegada(List<ItinerarioAgenciaLlegada> lstItinerarioAgenciaLlegada) {
+		lbxTerminalLlegada.getItems().clear();
+		Listitem item = null;
+		Listcell cell = null;
+		Integer x = 0;
+		for(ItinerarioAgenciaLlegada itinerarioAgenciaLlegada : lstItinerarioAgenciaLlegada) {
+			x++;
+			item = new Listitem();
+			cell = new Listcell(x.toString());
+			item.appendChild(cell);
+			
+			cell = new Listcell(itinerarioAgenciaLlegada.getAgencia().getNombreCorto());
+			item.appendChild(cell);
+			
+			cell = new Listcell(itinerarioAgenciaLlegada.getHoraLlegada());
+			cell.setStyle("font-size:11px !important");
+			item.appendChild(cell);
+			
+			final Image image= new Image();		
+			image.setHeight("17px");
+			image.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					if(image.getSrc().equals(enabledDelete))
+						quitaTerminal(true, lbxTerminalLlegada);
+				}
+			});			
+			cell = new Listcell();
+			cell .appendChild(image);
+			item.appendChild(cell);			
+			
+			item.setValue(itinerarioAgenciaLlegada);
+			lbxTerminalLlegada.appendChild(item);
+			asignarImagenEliminarTerminal(lbxTerminalLlegada);			
+		}
+	}
+	
+	private void asignarImagenEliminarTerminal(Listbox listbox){
+		if(listbox.getItems().size()>0){
+			for(int y=0; y<listbox.getItems().size();y++){
+				Component it = (Component) listbox.getChildren().get(y+1);
+				Listcell cll=(Listcell) it.getChildren().get(3);
+			
+				if(y==0){
+					((Image)cll.getChildren().get(0)).setSrc(disabledDelete);			
+					((Image)cll.getChildren().get(0)).setTooltiptext("");
+					((Image)cll.getChildren().get(0)).setStyle("cursor:default");
+				}else{
+					if(btnGuardar.isDisabled()){
+						((Image)cll.getChildren().get(0)).setSrc(disabledDelete);			
+						((Image)cll.getChildren().get(0)).setTooltiptext("");
+						((Image)cll.getChildren().get(0)).setStyle("cursor:default");
+					}else{
+						((Image)cll.getChildren().get(0)).setSrc(enabledDelete);			
+						((Image)cll.getChildren().get(0)).setTooltiptext("Eliminar Tramo");
+						((Image)cll.getChildren().get(0)).setStyle("cursor:pointer");
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+ 	 * Elimina el terminal seleccionado
+ 	 * @param isTerminalPartida	: Variable booleana; true= Terminal Partida, false=Terminal Llegada.
+ 	 * @param lbxTerminal	: Nombre del ListBox del terminal a Borrar.
+ 	 * @throws Exception		: ELIMINA EL TERMINAL SELECCIONADO.
+ 	 */
+	public void quitaTerminal (final Boolean isTerminalPartida, final Listbox lbxTerminal) throws Exception{
+//		final Listbox ListBoxTerminal = listBoxTerminal;
+		Integer index =lbxTerminal.getSelectedIndex();
+		if (index > 0){
+			Messagebox.show(Messages.getString("WndItinerario.question.EliminaTerminal"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event e) throws Exception {
+					if(e.getName().equals("onYes")){
+						Integer index = lbxTerminal.getSelectedIndex();
+						lbxTerminal.removeItemAt(index);
+						updateTerminales(isTerminalPartida, lbxTerminal);
+					}
+				}
+			});			
+		}else{
+			if (isTerminalPartida == true)
+				DlgMessage.information(Messages.getString("WndItinerario.information.EliminaTerminalPartida"));
+			else 
+				DlgMessage.information(Messages.getString("WndItinerario.information.EliminaTerminalLlegada"));
+		}
+	}
+	
+	/**
+	 * Actualiza la grilla lbxDetalleItinerario con los terminales
+	 * @param isTerminalPartida	: Indica si el la grilla de terminale sde partida o llegada
+	 * @param lbxTerminal	: Grilla a iterar;
+	 */
+	private void updateTerminales(Boolean isTerminalPartida, Listbox lbxTerminal) {
+		if(isTerminalPartida) {
+			List<ItinerarioAgenciaPartida> lstItinerarioAgenciaPartida = new ArrayList<ItinerarioAgenciaPartida>();
+			for(int i=0; i<lbxTerminal.getItems().size(); i++) {
+				ItinerarioAgenciaPartida itinerarioAgenciaPartida = (ItinerarioAgenciaPartida)lbxTerminal.getItems().get(i).getValue();
+				lstItinerarioAgenciaPartida.add(itinerarioAgenciaPartida);
+			}
+			((DetalleItinerario)lbxDetalleItinerario.getSelectedItem().getValue()).setLstItinerarioAgenciaPartida(lstItinerarioAgenciaPartida);
+		}else {
+			List<ItinerarioAgenciaLlegada> lstItinerarioAgenciaLlegada = new ArrayList<ItinerarioAgenciaLlegada>();
+			for(int i=0; i<lbxTerminal.getItems().size(); i++) {
+				ItinerarioAgenciaLlegada itinerarioAgenciaLlegada = (ItinerarioAgenciaLlegada)lbxTerminal.getItems().get(i).getValue();
+				lstItinerarioAgenciaLlegada.add(itinerarioAgenciaLlegada);
+			}
+			((DetalleItinerario)lbxDetalleItinerario.getSelectedItem().getValue()).setLstItinerarioAgenciaLlegada(lstItinerarioAgenciaLlegada);
+		}
+		
+	}
+	
+//	/** 
+//	 * Agrega el terminal de Partida
+//	 * Clase ItinerarioAgenciaPartida
+//	 * @param oItinerarioAgenciaPartida
+//	 */
+// 	private void cargaListboxTerminalPartida(ItinerarioAgenciaPartida oItinerarioAgenciaPartida){
+// 		Listitem item = null;
+//		Listcell cell = null;
+//		Integer x = lbxTerminalPartida.getChildren().size();
+//		item = new Listitem();
+//		cell = new Listcell((x.toString()));
+//		item.appendChild(cell); //Correlativo
+//		cell = new Listcell(oItinerarioAgenciaPartida.getAgencia().getNombreCorto());
+//		item.appendChild(cell);
+//		cell = new Listcell(oItinerarioAgenciaPartida.getHoraPartida());
+//		cell.setStyle("font-size:11px !important");
+//		item.appendChild(cell);
+//		
+//		final Image image= new Image();		
+//		image.setHeight("17px");
+//		cell = new Listcell();
+//		cell .appendChild(image);
+//		item.appendChild(cell);
+//		
+//		image.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+//			@Override
+//			public void onEvent(Event event) throws Exception {
+//				if(image.getSrc().equals(enabledDelete))
+//					quitaTerminal(true, lbxTerminalPartida);
+//			}
+//		});
+//		
+//		item.setValue(oItinerarioAgenciaPartida);
+//		lbxTerminalPartida.appendChild(item);
+//		imagenEliminarTerminale(lbxTerminalPartida);
+// 	}
+// 	
+// 	/**
+// 	 * Agrega en el ListBox el Terminal de Llegada.
+// 	 * 	Clase ItinerarioAgenciaLlegada
+// 	 * @param oItinerarioAgenciaLlegada
+// 	 * @throws Exception
+// 	 */
+// 	private  void cargaListboxTerminalLlegada(ItinerarioAgenciaLlegada oItinerarioAgenciaLlegada) throws Exception{
+//		Listitem item = null;
+//		Listcell cell = null;
+//		
+//		Integer x = lbxTerminalLlegada.getChildren().size();
+//		item = new Listitem();
+//		cell = new Listcell((x.toString()));
+//		item.appendChild(cell); //Correlativo
+//		cell = new Listcell(oItinerarioAgenciaLlegada.getAgencia().getNombreCorto());
+//		item.appendChild(cell);
+//		cell = new Listcell(oItinerarioAgenciaLlegada.getHoraLlegada());
+//		cell.setStyle("font-size:11px !important");
+//		item.appendChild(cell);
+//		
+//		final Image image= new Image();
+//		image.setHeight("17px");
+//		cell = new Listcell();
+//		cell .appendChild(image);
+//		item.appendChild(cell);
+//		
+//		image.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+//			@Override
+//			public void onEvent(Event event) throws Exception {
+//				if(image.getSrc().equals(enabledDelete))
+//					quitaTerminal(false, lbxTerminalLlegada);
+//			}
+//		});
+//		
+//		item.setValue(oItinerarioAgenciaLlegada);
+//		lbxTerminalLlegada.appendChild(item);
+//		imagenEliminarTerminale(lbxTerminalLlegada);
+//	}
+ 	
+ 	
 }
