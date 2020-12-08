@@ -25,8 +25,8 @@ public class ItinerarioAgenciaLlegadaDAOImpl extends GenericDAOImpl implements I
 	}
 
 	@Override
-	public void delete(Long idItinerario) throws Exception {
-		String sql="DELETE FROM VRTITIAGELLE WHERE VRTITIAGELLE.ITINERARIO_ID=" + idItinerario;
+	public void delete(Long idItinerario, Integer idLocalidad) throws Exception {
+		String sql="DELETE FROM vrtitiagelle WHERE vrtitiagelle.itinerario_id=" + idItinerario+ " AND vrtitiagelle.localidad_id=" + idLocalidad;
 		
 		 getSession().createSQLQuery(sql).executeUpdate();
 		

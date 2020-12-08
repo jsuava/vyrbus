@@ -169,36 +169,39 @@
 				<columns>
 					<column width="99%" align="right"/>
 				</columns>
-				<rows><row>
-			  		<hbox align="center">
-			  			<label value="TER.PARTIDA:"/>
-			  			<combobox id="cmbTerminalPartida"   
-			  					onSelect="if(cmbTerminalPartida.getSelectedItem().getValue() instanceof com.cystesoft.vyrbus.model.bean.Agencia)
-			  								com.cystesoft.vyrbus.service.util.Util.disabledBtnAgregar(false,cmdAddTerPartida,true);
-			  							  else
-			  						  		com.cystesoft.vyrbus.service.util.Util.disabledBtnAgregar(true,cmdAddTerPartida,true); " 
-			  					onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(tbterHoraPartida)" 
-			  					readonly="true" 
-			  					width="100px"  />
-			  			
-			  			<label value="HORA PARTIDA:" />
-			  			<timebox id="tbterHoraPartida" format="HH:mm" width="56px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmdAddTerPartida)" />
-				  		<button id="cmdAddTerPartida" image="/resources/mp_addEnabled.png" onClick="wndItinerario.addTerminal(com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartida.class, lbxTerminalPartida, cmbTerminalPartida, tbterHoraPartida)" 
-								sclass="btnImage" tooltiptext="Agregar Terminal Partida" />
-			  		</hbox>
-			  	</row><row>
-					<!-- Lista de Terminal(es) Llegada -->
-			  		<listbox id="lbxTerminalPartida" height="100px" >
-						<listhead sizable="false">
-							<listheader label="#" sort="none" align="center"  width="25px" style="color: #ffffff;"/>
-							<listheader label="Terminal(es) Partida" sort="none" align="left"  width="180px" style="color: #ffffff;"/>
-							<listheader label="Hora Partida" sort="none" align="center"  width="65px" style="color: #ffffff;"/>
-							<listheader   />
-						</listhead>
-					</listbox>			
-					<button id="cmdDeleteTerPartida" image="/resources/mp_removeEnabled.png" onClick="wndItinerario.quitaTerminal(true, lbxTerminalPartida)" 
-							tooltiptext="Quitar Terminal Partida" sclass="btnImage" visible="false" width="100%"  />
-				</row></rows>	  		
+				<rows>
+					<row visible="false">
+				  		<hbox align="center">
+				  			<label value="TER.PARTIDA:"/>
+				  			<combobox id="cmbTerminalPartida"   
+				  					onSelect="if(cmbTerminalPartida.getSelectedItem().getValue() instanceof com.cystesoft.vyrbus.model.bean.Agencia)
+				  								com.cystesoft.vyrbus.service.util.Util.disabledBtnAgregar(false,cmdAddTerPartida,true);
+				  							  else
+				  						  		com.cystesoft.vyrbus.service.util.Util.disabledBtnAgregar(true,cmdAddTerPartida,true); " 
+				  					onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(tbterHoraPartida)" 
+				  					readonly="true" 
+				  					width="100px"  />
+				  			
+				  			<label value="HORA PARTIDA:" />
+				  			<timebox id="tbterHoraPartida" format="HH:mm" width="56px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmdAddTerPartida)" />
+					  		<button id="cmdAddTerPartida" image="/resources/mp_addEnabled.png" onClick="wndItinerario.addTerminal(com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartida.class, lbxTerminalPartida, cmbTerminalPartida, tbterHoraPartida)" 
+									sclass="btnImage" tooltiptext="Agregar Terminal Partida" />
+				  		</hbox>
+				  	</row>
+				  	<row>
+						<!-- Lista de Terminal(es) Llegada -->
+				  		<listbox id="lbxTerminalPartida" height="130px" >
+							<listhead sizable="false">
+								<listheader label="#" sort="none" align="center"  width="25px" style="color: #ffffff;"/>
+								<listheader label="Terminal(es) Partida" sort="none" align="left"  width="230px" style="color: #ffffff;"/>
+								<listheader label="Hora Partida" sort="none" align="center"  width="85px" style="color: #ffffff;"/>
+								<!--<listheader /> -->
+							</listhead>
+						</listbox>			
+						<button id="cmdDeleteTerPartida" image="/resources/mp_removeEnabled.png" onClick="wndItinerario.quitaTerminal(true, lbxTerminalPartida)" 
+								tooltiptext="Quitar Terminal Partida" sclass="btnImage" visible="false" width="100%"  />
+					</row>
+				</rows>	  		
 			</grid>
 			
 			<grid>
@@ -206,7 +209,7 @@
 					<column width="99%" align="right" />
 				</columns>
 				<rows>
-					<row>
+					<row visible="false">
 				  		<hbox align="center">
 				  			<label value="TER.LLEGADA:" />
 				  			<combobox id="cmbTerminalLlegada" width="95px" readonly="true" 
@@ -224,12 +227,12 @@
 				  	</row>
 					<row>
 						<!-- Lista de Terminal(es) Llegada -->	
-				  		<listbox id="lbxTerminalLlegada" height="100px" >
+				  		<listbox id="lbxTerminalLlegada" height="130px" >
 							<listhead sizable="false">
 								<listheader label="#" sort="none" align="left"  width="25px" style="color: #ffffff;"/>
-								<listheader label="Terminal(es) Llegada" sort="none" align="left"  width="180px" style="color: #ffffff;"/>
-								<listheader label="Hora Llegada" sort="none" align="center"  width="65px" style="color: #ffffff;"/>
-								<listheader />
+								<listheader label="Terminal(es) Llegada" sort="none" align="left"  width="230px" style="color: #ffffff;"/>
+								<listheader label="Hora Llegada" sort="none" align="center"  width="85px" style="color: #ffffff;"/>
+								<!-- <listheader /> -->
 							</listhead>
 						</listbox>			
 						<button id="cmdDeleteTerLlegada" image="/resources/mp_removeEnabled.png" 

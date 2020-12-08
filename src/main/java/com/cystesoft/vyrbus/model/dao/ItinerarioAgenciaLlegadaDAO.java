@@ -22,11 +22,12 @@ public interface ItinerarioAgenciaLlegadaDAO extends GenericDAO {
 	public ItinerarioAgenciaLlegada buscarPorId(Long id);
 	
 	/**
-	 * 
+	 * Elimina los terminales de llegada del Itinerario segun la localidad.
 	 * @param idItinerario
+	 * @param idLocalidad
 	 * @throws Exception
 	 */
-	public void delete (Long idItinerario) throws Exception;
+	public void delete (Long idItinerario, Integer idLocalidad) throws Exception;
 	/**
 	 * Busca las agencias de partida por las localidades enviadas
 	 * @param idItinerario	: Identificador del itinerario
