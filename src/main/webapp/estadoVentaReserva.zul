@@ -13,36 +13,61 @@
 					<hbox align="center">
 						<vbox>
 <!-- 						RANGO DE FECHAS DE VENTA -->
-							<groupbox closable="false" width="300px" height="55px">
-								<caption label="Rango fecha de Venta"/><separator height="2px"/>
+							<groupbox closable="false" width="300px" height="55px" mold="3d">
+								<caption label="RANGO FECHA DE VENTA" style="color: #ffffff;"/><separator height="2px"/>
 								<label value="INICIO :" />
-								<datebox id="dtbxFechaInicioVenta" width="105px" onChange="wndEstadoVyR.onLoadUsuarios(cmbUsuario)"  focus="true" format="dd/MM/yyyy" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(dtbxFechaFinVenta)" /><space width="15px" />
+								<datebox id="dtbxFechaInicioVenta" 
+										width="105px" 
+										onChange="wndEstadoVyR.onLoadUsuarios(cmbUsuario)"  
+										focus="true" 
+										format="dd/MM/yyyy" 
+										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(dtbxFechaFinVenta)" /><space width="15px" />
 								<label value="FIN :" />
-								<datebox id="dtbxFechaFinVenta" width="105px" onChange="wndEstadoVyR.onLoadUsuarios(cmbUsuario)"  format="dd/MM/yyyy" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(rdByDocumento)"/>
+								<datebox id="dtbxFechaFinVenta" 
+										width="105px" 
+										onChange="wndEstadoVyR.onLoadUsuarios(cmbUsuario)"  
+										format="dd/MM/yyyy" 
+										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(rdByDocumento)"/>
 							</groupbox>
 							
 <!-- 						BUSQUEDA POR PASAJERO -->
-							<groupbox closable="false" width="300px">
-								<caption label="Búsqueda por Pasajero"/>
+							<groupbox closable="false" width="300px" mold="3d">
+								<caption label="BUSQUEDA POR PASAJERO" style="color: #ffffff;"/>
 								<radiogroup>
-									<radio id="rdByDocumento" checked="true" label="Nro. Documento" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(rdByNombres)"/>
-									<radio id="rdByNombres" label="Nombres y/o Apellidos" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtBusquedaPasajero)" />
+									<radio id="rdByDocumento" 
+											checked="true" 
+											label="Nro. Documento" 
+											onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(rdByNombres)"/>
+									<radio id="rdByNombres" 
+											label="Nombres y/o Apellidos" 
+											onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtBusquedaPasajero)" />
 								</radiogroup>
 								<vbox><separator height="1px"/><hbox align="center">
-									<space width="2px" /> <textbox id="txtBusquedaPasajero" width="240px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(rdByRuc)" />
+									<space width="2px" /> 
+									<textbox id="txtBusquedaPasajero" 
+												width="240px" 
+												onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(rdByRuc)" />
 									<button label="..." sclass="btnImage" onClick="wndEstadoVyR.buscarPasajero()"/>
 								</hbox></vbox>
 							</groupbox>	
 							
 <!-- 						BUSQUEDA POR CLIENTE -->
-							<groupbox closable="false" width="300px" >
-								<caption label="Búsqueda por Cliente"/>
+							<groupbox closable="false" width="300px" mold="3d">
+								<caption label="BUSQUEDA POR CLIENTE" style="color: #ffffff;"/>
 								<radiogroup>
-									<radio id="rdByRuc" checked="true" label="Nro. Ruc" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(rdByRazonSocial)" /><space width="35px"/>
-									<radio id="rdByRazonSocial" label="Razón Social" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtBusquedaCliente)" />
+									<radio id="rdByRuc" 
+											checked="true" 
+											label="Nro. Ruc" 
+											onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(rdByRazonSocial)" /><space width="35px"/>
+									<radio id="rdByRazonSocial" 
+											label="Razón Social" 
+											onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtBusquedaCliente)" />
 								</radiogroup>
 								<vbox><separator height="1px"/> <hbox align="center">
-										<space width="2px" /> <textbox id="txtBusquedaCliente" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(dtbxFechaPartida)" width="240px" />
+										<space width="2px" /> 
+										<textbox id="txtBusquedaCliente" 
+												onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(dtbxFechaPartida)" 
+												width="240px" />
 										<button label="..." sclass="btnImage" onClick="wndEstadoVyR.buscarCliente()"/>
 								</hbox></vbox>
 							</groupbox>	

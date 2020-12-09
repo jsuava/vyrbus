@@ -509,7 +509,7 @@ public class WndFiltrarParametros extends WndBase {
 		oButton.setLabel("Filtrar");
 		oButton.setHeight("35px");
 		oButton.setImage("resources/mp_filtrar.png");
-		oButton.setClass("btn-vyrbus");
+		oButton.setClass("btnCommandM");
 
 //		oRowSeparador.appendChild(new Separator());
 //		oRowSeparador.appendChild(new Separator());

@@ -224,18 +224,27 @@
 				</columns>
 				<rows>
 					<row style="border:none; background:#4285F4" height="40px">
-						<toolbarbutton image="/resources/mp_logout.png" 
+<!-- 						<toolbarbutton image="/resources/mp_logout.png" 
 									height="24px"
 									label="Salir del sistema" 
 									onClick="wndPrincipal.cerrarSesion()"
 									style="font-size:12px;font-weight:bold;color:white" 
 									tooltiptext="Cerrar sesión" />
-						<label value=" "/>  
-						<label value=" "/>  
-							<image src="/resources/mp_agencia.png" style="border-radius: 10px;" height="32px" width="32px"/>
-							<label id="lblAgencia"  style="color:white"/>
-							<image src="/resources/mp_equipo.png" style="border-radius: 10px;" height="32px" width="32px"/>
-							<label id="lblPC"  style="color:white"/>
+
+						<label value=" "/>
+-->						
+						<image src="/resources/mp_salir.png" 
+								style="border-radius: 10px; cursor:pointer" 
+								height="32px" 
+								width="32px" 
+								onClick="wndPrincipal.cerrarSesion()"
+								tooltiptext="Salir del Sistema"/>
+						<label value=" "/>
+						<label value=""/>					  
+						<image src="/resources/mp_agencia.png" style="border-radius: 10px;" height="32px" width="32px"/>
+						<label id="lblAgencia"  style="color:white"/>
+						<image src="/resources/mp_equipo.png" style="border-radius: 10px;" height="32px" width="32px"/>
+						<label id="lblPC"  style="color:white"/>
 					</row>					
 				</rows>
 			</grid>		

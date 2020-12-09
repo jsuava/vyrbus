@@ -23,7 +23,7 @@
 							<textbox id="txtNumeroControl" width="115px" onOK="wndConfirmarFechaAbierta.buscarVentasFechaAbierta()"/>
 							<label value="NRO BOLETO :"/>
 							<textbox id="txtNumeroBoleto" width="115px" onOK="wndConfirmarFechaAbierta.buscarVentasFechaAbierta()"/>
-							<cell rowspan="2" style="background:#f5f5f5">
+							<cell rowspan="2" style="background:#f5f5f5; border: none;">
 								<button label="Buscar" 
 										autodisable="self" 
 										image="resources/mp_buscarEnabled.png"  
@@ -42,7 +42,7 @@
 							<textbox id="txtNumeroDocumento" width="115px"  onOK="wndConfirmarFechaAbierta.buscarVentasFechaAbierta()"/>
 							<label value="NOMBRE PASAJERO :"/>
 							<textbox id="txtPasajero"  onOK="wndConfirmarFechaAbierta.buscarVentasFechaAbierta()" width="220px"/>
-							<cell style="background:#f5f5f5">
+							<cell style="background:#f5f5f5; border: none;">
 								<button label="Cerrar" 
 										image="resources/mp_cerrarEnabled.png" 
 										sclass="btnCommandM" 

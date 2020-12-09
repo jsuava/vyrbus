@@ -23,7 +23,7 @@
 							<textbox id="txtNumeroBoleto" width="100px" style="font-size:11px !important" onOK="wndDevolucionBoleto.buscarVentas()"/>
 							<label value="NRO CONTROL :"/>
 							<textbox id="txtNumeroControl" width="100px" style="font-size:11px !important" onOK="wndDevolucionBoleto.buscarVentas()"/>
-							<cell style="background:#f5f5f5">
+							<cell style="background:#f5f5f5; border: none;">
 								<button label="Buscar" 
 										sclass="btnCommandM" 
 										image="resources/mp_buscarEnabled.png" 
@@ -39,7 +39,7 @@
 									onOK="wndDevolucionBoleto.buscarVentas()"/>
 							<label/>
 							<label/>
-							<cell style="background:#f5f5f5">
+							<cell style="background:#f5f5f5; border: none;">
 								<button label="Cerrar" 
 										sclass="btnCommandM" 
 										image="resources/mp_cerrarEnabled.png"  

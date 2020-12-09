@@ -21,9 +21,6 @@
         
         <property name="java-output-path" value="/sisvyr/src/main/webapp/src/main/java"/>
         <property name="context-root" value="vyrbus"/>
-                            
-    
-    
     </wb-module>
             
 
