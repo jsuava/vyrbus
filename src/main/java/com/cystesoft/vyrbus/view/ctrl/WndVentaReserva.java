@@ -2668,9 +2668,7 @@ public class WndVentaReserva extends WndBase {
 								asientoSeleccionado.getPiso(),
 								asientoSeleccionado.getNumeroZona());
 						if(lstTarifaRegular.size()>0)
-							asientoSeleccionado.getDetalleItinerario().setTarifa(lstTarifaRegular.get(0).getMonto()!=null
-																				 ?lstTarifaRegular.get(0).getMonto()
-																				 :0.00);
+							asientoSeleccionado.getDetalleItinerario().setTarifa(lstTarifaRegular.get(0).getMonto()!=null?lstTarifaRegular.get(0).getMonto():0.00);
 						else
 							asientoSeleccionado.getDetalleItinerario().setTarifa(0.00);
 						

@@ -56,8 +56,8 @@ public class ItinerarioAgenciaPartidaManagerImpl implements ItinerarioAgenciaPar
 	}
 	@Override
 	@Transactional
-	public void delete(Long idItinerario) throws Exception {
-		getItinerarioAgenciaPartidaDAO().delete(idItinerario);
+	public void delete(Long idItinerario, Integer idLocalidad) throws Exception {
+		getItinerarioAgenciaPartidaDAO().delete(idItinerario, idLocalidad);
 		
 	}
 	/*

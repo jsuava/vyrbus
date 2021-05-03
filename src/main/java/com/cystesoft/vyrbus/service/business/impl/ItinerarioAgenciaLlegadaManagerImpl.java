@@ -60,8 +60,8 @@ public class ItinerarioAgenciaLlegadaManagerImpl implements ItinerarioAgenciaLle
 		return null;
 	}
 	@Override
-	public void delete(Long idItinerario) throws Exception {
-		getItinerarioAgenciaLlegadaDAO().delete(idItinerario);
+	public void delete(Long idItinerario, Integer idLocalidad) throws Exception {
+		getItinerarioAgenciaLlegadaDAO().delete(idItinerario, idLocalidad);
 		
 	}
 	/*

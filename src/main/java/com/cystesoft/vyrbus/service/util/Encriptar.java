@@ -4,6 +4,13 @@ import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.util.text.BasicTextEncryptor;
 
 public class Encriptar {
+	
+	public static void main(String[] args) {
+		String clave = decodifica("NLlcLPcHXTXiEXWNWO27Mg==","javalos");
+//		String codifica = codifica("mto2008","tepsa");
+		System.out.println(clave);
+//		System.out.println(codifica);
+	}
 	/**
 	 * Codifica una cadena de caracteres de entrada
 	 * @param password
@@ -57,13 +64,15 @@ public class Encriptar {
 	}
 	
 	static public void ejemplo(){
-		String login = "moscco";
-		String pwd = "tepsac";
+		String login = "javalos";
+		String pwd = "NLlcLPcHXTXiEXWNWO27Mg==";
 		try{
-			String cod = codifica(pwd, login);
+			String cod = decodifica(pwd, login);
 			System.out.println(cod);
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
+	
+	
 }
