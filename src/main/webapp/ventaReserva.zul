@@ -677,7 +677,7 @@
 																</hbox>
 															</row>
 															<row style="background:#F7F7F7">
-																<label id="lblEmail" value="EMAIL :"/>
+																<label id="lblEmail" value="EMAIL (*) :"/>
 																<hlayout>
 																	<textbox id="txtEmailPax" style="text-transform:none !important" onOK="dtbxFechaNacimiento.setFocus(true);" maxlength="50" width="140px"/>
 																	<checkbox id="chbxNoTieneMail" label="No Tiene" checked="false" />

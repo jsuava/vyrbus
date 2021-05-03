@@ -120,7 +120,7 @@ public class WndAvanceSemanalVentasXRuta extends WndBase implements Serializable
 		String fechaInicial=Constantes.FORMAT_DATE.format(dbxFechaInicial.getValue());
 		String fechaFinal=Constantes.FORMAT_DATE.format(dbxFechaFinal.getValue());
 		Integer tipoConsulta=cmbTipoConsulta.getSelectedItem().getValue();
-		String transaccion=String.valueOf(cmbTransaccion.getSelectedItem().getValue());
+		String transaccion=String.valueOf(cmbTransaccion.getSelectedItem().getValue().toString());
 		
 		Treechildren treechildren = new Treechildren();
 		Treeitem itemDate = new Treeitem();

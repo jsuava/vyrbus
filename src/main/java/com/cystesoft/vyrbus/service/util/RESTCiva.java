@@ -76,6 +76,8 @@ public class RESTCiva implements Serializable{
 	//-->Produccion
 	private static String URI_API="http://www.excluciva.pe/apiciva/"; 
 	private static String API_KEY="/apikey/a526cc6013c9db58092a77bcf2a96cc462936e16";
+	private static String URI_DNI="https://dni.optimizeperu.com/api/persons/";
+	private static String URI_RUC="https://dni.optimizeperu.com/api/company/";
 	
 	private static Integer ID_SERVICIO_EXCLUCIVA=4;
 	private static Integer ID_SERVICIO_SUPERCIVA=6;
@@ -99,6 +101,87 @@ public class RESTCiva implements Serializable{
 		
 		return response;
 	}
+	
+	private static HttpResponse<JsonNode> getPOST_REST_DNI(String dni, String parametros)throws Exception{
+//		Unirest.setProxy(new HttpHost("192.168.50.1", 8080));
+		HttpResponse<JsonNode> response = Unirest.get(URI_DNI+parametros)
+//				  .header("cache-control", "no-cache")
+//				  .header("postman-token", "dca64e95-c3bb-93a4-e90f-a1530e577510")
+				  .header("content-type", "application/x-www-form-urlencoded")
+//				  .body(parametros)
+				  .asJson();
+		
+		return response;
+	}
+	
+	private static HttpResponse<JsonNode> getPOST_REST_RUC(String ruc, String parametros)throws Exception{
+//		Unirest.setProxy(new HttpHost("192.168.50.1", 8080));
+		HttpResponse<JsonNode> response = Unirest.get(URI_RUC+parametros)
+//				  .header("cache-control", "no-cache")
+//				  .header("postman-token", "dca64e95-c3bb-93a4-e90f-a1530e577510")
+				  .header("content-type", "application/x-www-form-urlencoded")
+//				  .body(parametros)
+				  .asJson();
+		
+		return response;
+	}	
+	
+	public static List<String> getDatosDni(String dni)throws Exception{
+		try{
+		List<String>result = new ArrayList<>();
+		HttpResponse<JsonNode> response=getPOST_REST_DNI(null,  dni);
+		if(response.getStatus()==200 /*&& response.getBody().isArray()*/){//OK
+			JSONArray jsonArray=response.getBody().getArray();
+			for (int i = 0; i < jsonArray.length(); i++) {
+			    JSONObject jsonobject = jsonArray.getJSONObject(i);
+			    
+			    
+			    result.add(jsonobject.getString("dni"));
+			    result.add(jsonobject.getString("name"));
+			    result.add(jsonobject.getString("first_name"));
+			    result.add(jsonobject.getString("last_name"));
+//			    result.add(String.valueOf(jsonobject.getInt("cui")));
+
+			}
+		}		
+		
+		return result;
+		}catch(Exception e){
+			e.printStackTrace();
+//			DlgMessage.error("Error al consultar dni \n"+e.getMessage());
+			DlgMessage.error("Error al consultar DNI: o pertenece a un menor de edad o no existe.");
+//			return new ArrayList<>();
+			return null;
+		}
+	}
+	
+	public static List<String> getDatosRuc(String ruc)throws Exception{
+		try{
+		List<String>result = new ArrayList<>();
+		HttpResponse<JsonNode> response=getPOST_REST_RUC(null,  ruc);
+		if(response.getStatus()==200 /*&& response.getBody().isArray()*/){//OK
+			JSONArray jsonArray=response.getBody().getArray();
+			for (int i = 0; i < jsonArray.length(); i++) {
+			    JSONObject jsonobject = jsonArray.getJSONObject(i);
+			    
+			    result.add(jsonobject.getString("ruc"));
+			    result.add(jsonobject.getString("razon_social"));
+			    result.add(jsonobject.getString("domicilio_fiscal"));
+			}
+		}		
+		
+		return result;
+		}catch(Exception e){
+			e.printStackTrace();
+//			DlgMessage.error("Error al consultar dni \n"+e.getMessage());
+			DlgMessage.error("Error al consultar RUC: o no esta activo o se encuentra de baja.");
+//			return new ArrayList<>();
+			return null;
+		}
+	}
+	
+	
+	
 	/**
 	 * Realiza el llamado a la APPI, a traves del metodo POST
 	 * @param metod: Nombre del metodo a ejecutar

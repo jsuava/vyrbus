@@ -109,26 +109,31 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 		    
 			listheader.setLabel("#");
 			listheader.setWidth("30px");
+			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
 					
 			listheader =  new Listheader();
 			listheader.setLabel("HORA");
 			listheader.setWidth("70px");
 			listheader.setSort("auto");
+			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
 						
 			listheader =  new Listheader();
 			listheader.setLabel("SERVICIO");
 			listheader.setWidth("160px");
+			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
 			
 			listheader =  new Listheader();
 			listheader.setLabel("RUTA");
 			listheader.setWidth("200px");
+			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
 						
 			listheader =  new Listheader();
 			listheader.setLabel("CAP.ASIENTOS");
+			listheader.setStyle("color: #ffffff;");
 			listheader.setVisible(false);
 			listhead.appendChild(listheader);
 			
@@ -153,15 +158,16 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 				listheader.setLabel(Constantes.FORMAT_DATE.format(column.getFechaPartida()));
 				listheader.setWidth("70px");
 				listheader.setAlign("right");
+				listheader.setStyle("color: #ffffff;");
 				listhead.appendChild(listheader);
 				lbxAvance.appendChild(listhead);
 				columnFechas.add(Constantes.FORMAT_DATE.format(column.getFechaPartida()));
 			}
 
 			addAvance(columnFechas, lstAvance);
-			String pasBackground="#3F51B5";
-			String ocuBackground="#5c6bc0";
-			String totalesBackground = "#3949ab";
+			String pasBackground="#448aff";
+			String ocuBackground="#2962ff";
+			String totalesBackground = "#2962ff";
 			
 			//*Agrega avace de retorno, solamente si origen y destono están seleccionados en todos.
 			if(idOrigen.isEmpty() && idDestino.isEmpty()){
@@ -225,9 +231,9 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 			}
 			
 			//Agraga total pasajeros
-			addResumen(columnFechas,"Total Pasajeros","#3949ab",null);
+			addResumen(columnFechas,"Total Pasajeros","#2962ff",null);
 			//Calcula el total Ocupalidad
-			addOcupabilidad(columnFechas,"%OCUPABILIDAD TOTAL","#3949ab",null);
+			addOcupabilidad(columnFechas,"%OCUPABILIDAD TOTAL","#2962ff",null);
 			this.appendChild(lbxAvance);
 			
 
@@ -303,7 +309,7 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 		}
 		cell.setStyle(style);
 		item.appendChild(cell);
-		item.setStyle("background:#3949ab");
+		item.setStyle("background:#2962ff");
 		lbxAvance.appendChild(item);	
 	}
 	
@@ -557,7 +563,7 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 		
 		cell.setStyle(style);
 		item.appendChild(cell);
-		item.setStyle("background:#3949ab");
+		item.setStyle("background:#2962ff");
 		lbxAvance.appendChild(item);
 	}
 	

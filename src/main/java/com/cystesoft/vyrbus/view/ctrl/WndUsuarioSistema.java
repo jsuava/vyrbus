@@ -120,7 +120,7 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 	@Override
 	public void onCreate() throws Exception {
 		UtilData.cargarDataCombo(cmbAgencia, Agencia.class, false);
-		Comboitem cboItem = new Comboitem("NO ES PERSONAL DE TEPSA");
+		Comboitem cboItem = new Comboitem("NO ES PERSONAL DE EMPRESA");
 		cmbPersonal.appendChild(cboItem);
 		UtilData.cargarDataCombo(cmbPersonal, Personal.class, false);
 //		UtilData.cargarDataCombo(cmbRol, Rol.class, false);

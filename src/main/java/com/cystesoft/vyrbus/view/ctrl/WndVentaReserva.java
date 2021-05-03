@@ -3688,16 +3688,28 @@ public class WndVentaReserva extends WndBase {
 				}
 			}else{
 				/*Consulta BD reniec local*/
-				Reniec reniec= ServiceLocator.getReniecManager().buscarPax(numerodocumento);
-				if(reniec!=null){
+				List<String> dni = RESTCiva.getDatosDni(numerodocumento);
+				
+//				Reniec reniec= ServiceLocator.getReniecManager().buscarPax(numerodocumento);
+				if(dni!=null){
+				Reniec reniec = new Reniec();
+				reniec.setNumeroDocumento(dni.get(0));
+				reniec.setNombres(dni.get(1));
+				reniec.setApellidoPaterno(dni.get(2));
+				reniec.setApellidoMaterno(dni.get(3));
+				ntbxEdad.setValue(30);
+				dtbxFechaNacimiento.setValue(Constantes.FORMAT_DATE.parse(calcularFechaNacimiento()));
+				
+				
+//				if(reniec!=null){
 					Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, Constantes.ID_TIPDOC_DNI);
 					txtApePat.setText(reniec.getApellidoPaterno());
 					txtApeMat.setText(reniec.getApellidoMaterno());
 					txtNombres.setText(reniec.getNombres());
-					mostrarFechaNacimiento(reniec.getFechaNacimiento());
-					if(dtbxFechaNacimiento.getValue()!=null)
-						calcularEdad(Constantes.FORMAT_DATE.format(dtbxFechaNacimiento.getValue()));
-					Util.seleccionarValorItemCombo(Sexo.class, cmbSexo, Integer.valueOf(reniec.getSexo()));
+//					mostrarFechaNacimiento(reniec.getFechaNacimiento());
+//					if(dtbxFechaNacimiento.getValue()!=null)
+//						calcularEdad(Constantes.FORMAT_DATE.format(dtbxFechaNacimiento.getValue()));
+//					Util.seleccionarValorItemCombo(Sexo.class, cmbSexo, Integer.valueOf(reniec.getSexo()));
 				}else{
 					String numeroDocumento=txtDocumentoPax.getText().trim();
 					Integer idTipoDocumento= null;
@@ -4281,6 +4293,7 @@ public class WndVentaReserva extends WndBase {
 	 * Para ingresar un nuevo cliente
 	 */
 	public void onNewClient()throws Exception {
+		String nroRuc = txtDocumentoCliente.getValue().trim(); 
 		onCleanControlsClient();
 		disabledControlsClient(false);
 		action = Constantes.ACTION_NEW;
@@ -4295,6 +4308,53 @@ public class WndVentaReserva extends WndBase {
 		lblPromocion.setValue("");
 		promocionAplicada=null;
 		dblImporte.setValue(dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue());
+		txtDocumentoCliente.setValue(nroRuc);
+		verificarClienteSunat();
+	}
+	
+	public void verificarClienteSunat()throws WrongValueException, Exception{
+		if(action==Constantes.ACTION_NEW  
+			&& !(txtDocumentoCliente.getText().trim().isEmpty())){
+			
+			String nroDocumento=txtDocumentoCliente.getText().trim();
+			
+				//Consulta RUC EN sunat
+				List<String> ruc = RESTCiva.getDatosRuc(nroDocumento);
+				
+
+				if(ruc!=null){
+//				Reniec reniec = new Reniec();
+				txtDocumentoCliente.setValue(ruc.get(0));
+				txtRazonSocial.setValue(ruc.get(1));
+				txtDireccionCliente.setValue(ruc.get(2));
+
+				}else{
+					String numeroDocumento=txtDocumentoCliente.getText().trim();
+					
+					onCleanControlsClient();		
+					//recupera valores ingresado por el usuario
+					txtDocumentoPax.setText(numeroDocumento);
+					
+//					if(getAgencia().getTipoAgencia().getId().intValue()!=Constantes.ID_TIPAGE_TEPSA){
+//						Ubigeo oUbigeo = new Ubigeo();
+//						oUbigeo.setId(Constantes.ID_UBIGEO_LIMA);
+//						oUbigeo.setCodigoDepartamento("15");
+//						oUbigeo.setCodigoProvincia("01");
+//						oUbigeo.setCodigoDistrito("01");
+//						oUbigeo.setNombreUbigeo("LIMA");
+//						try{
+//							if(oUbigeo!=null) {
+//								String idUbigeo = oUbigeo.getId();
+//								String ubicacionCompleta = ServiceLocator.getUbigeoManager().ubicacionGeografica(oUbigeo);
+//								txtUbigeoPax.setText(ubicacionCompleta);
+//								txtUbigeoIdPax.setText(idUbigeo);
+//							}
+//						}catch(Exception ex){
+//							ex.printStackTrace();
+//						}
+					
+				}
+			}		
 	}
 	
 	/**
@@ -4444,7 +4504,10 @@ public class WndVentaReserva extends WndBase {
 			grpbxListaClientes.setVisible(true);			
 		}else{
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noClientesEncontrados"));
+			String nroRuc = txtDocumentoCliente.getValue();
 			onCleanControlsClient();
+			txtDocumentoCliente.setValue(nroRuc);
+			txtDocumentoCliente.select();
 		}
 		disabledControlsPax(true);
 	}
@@ -4940,6 +5003,7 @@ public class WndVentaReserva extends WndBase {
 				}else if (!(tlbbtnGuardarPax.isDisabled())){// 06/09/2013 - jabanto
 					DlgMessage.information(Messages.getString("WndVentaReserva.information.noSavedPax"));
 					tabPasajero.setSelected(true);
+//					onSavePax();
 					return;
 				}else if(oPasajero==null){
 					tabPasajero.setSelected(true);
@@ -6645,11 +6709,11 @@ public class WndVentaReserva extends WndBase {
 		TipoDocumento tipoDocumento = cmbTipoDocumento.getSelectedItem().getValue();
 		if(tipoDocumento instanceof TipoDocumento && tipoDocumento.getId().intValue()!=Constantes.ID_TIPDOC_DNI){
 			rowNacionalidad.setVisible(true);
-			lblEmail.setValue("EMAIL :");
+			lblEmail.setValue("EMAIL (*):");
 			txtDocumentoPax.setMaxlength(20);
 		}else{
 			rowNacionalidad.setVisible(false);
-			lblEmail.setValue("EMAIL :");
+			lblEmail.setValue("EMAIL (*):");
 			txtDocumentoPax.setMaxlength(8);
 		}
 		
