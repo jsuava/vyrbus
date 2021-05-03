@@ -100,6 +100,10 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	private List<VentaPasaje> lstVentaXRuta;
 	private List<VentaPasaje> lstPasajeros;	
 	private Result result;
+
+	private Double importeDescuentos;
+	private Double importeReal;
+	private Double importeEsperado;
 	
 	private String operadoPor;
 	
@@ -1300,5 +1304,47 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	 */
 	public void setImportePagadoByDiferencia(Double importePagadoByDiferencia) {
 		this.importePagadoByDiferencia = importePagadoByDiferencia;
+	}
+
+	/**
+	 * @return the importeDescuentos
+	 */
+	public Double getImporteDescuentos() {
+		return importeDescuentos;
+	}
+
+	/**
+	 * @param importeDescuentos the importeDescuentos to set
+	 */
+	public void setImporteDescuentos(Double importeDescuentos) {
+		this.importeDescuentos = importeDescuentos;
+	}
+
+	/**
+	 * @return the importeReal
+	 */
+	public Double getImporteReal() {
+		return importeReal;
+	}
+
+	/**
+	 * @param importeReal the importeReal to set
+	 */
+	public void setImporteReal(Double importeReal) {
+		this.importeReal = importeReal;
+	}
+
+	/**
+	 * @return the importeEsperado
+	 */
+	public Double getImporteEsperado() {
+		return importeEsperado;
+	}
+
+	/**
+	 * @param importeEsperado the importeEsperado to set
+	 */
+	public void setImporteEsperado(Double importeEsperado) {
+		this.importeEsperado = importeEsperado;
 	}
 }

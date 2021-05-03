@@ -376,3 +376,16 @@ a:active {
 .btnImage:hover{
 	box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 }
+
+.btn-itsb{
+	cursor:pointer;
+	font-size:12px;
+	background-color:#4285F4;
+	color:#FFFFFF;
+	border-width: 2px;
+	 		
+}
+
+.td.z-listcell {
+	border-bottom-color: white;
+}

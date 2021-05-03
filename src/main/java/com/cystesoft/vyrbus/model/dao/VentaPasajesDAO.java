@@ -419,4 +419,15 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public List<Agencia> buscarVentasPorPuntoVenta(String fechaInicial, String fechaFinal,Integer idAgencia, Integer idUsuario, String idsTiposMovimiento, Integer idFormaPago)throws Exception;
+	/**
+	 * Realiza la busqueda del avance de ventas
+	 * @param idOrigen		: Origen de los Itinerarios
+	 * @param idDestino		: Destino de los itinerarios
+	 * @param idServicio	: Servicio de la consulta
+	 * @param fechaDesde	: Fecha de inicio de busqueda
+	 * @param fechaHasta	: Fecha fin de la busqueda
+	 * @return Listados de itinerarios.
+	 * @throws Exception
+	 */
+	public List<VentaPasaje> buscarAvanceVentas(String idOrigen, String idDestino, String idServicio, String fechaDesde, String fechaHasta) throws Exception;
 }

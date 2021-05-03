@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.kohsuke.rngom.util.Localizer;
+//import org.kohsuke.rngom.util.ocalizer;
 
 import com.cystesoft.vyrbus.model.bean.CanalVenta;
 import com.cystesoft.vyrbus.model.bean.Itinerario;

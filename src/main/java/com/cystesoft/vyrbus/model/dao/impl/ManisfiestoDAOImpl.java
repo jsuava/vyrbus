@@ -337,7 +337,8 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 
 	@Override
 	public List<VentaPasaje> consultaDetaPaxXRuta(Long idItinerario)throws Exception {
-		String sql="SELECT  lo.c_denominacion Origen, ld.c_denominacion Destino, count(v.venpas_id) CantPax,r.ruta_id "+ //0-3
+		String sql="SELECT  lo.c_denominacion Origen, ld.c_denominacion Destino, count(v.venpas_id) CantPax,r.ruta_id, "+ //0-3
+						" lo.localidad_id idlocalorigen, ld.localidad_id idlocaldestino "+// 4-5
 					"FROM vrtvenpas v " +
 						"INNER JOIN (SELECT MAX(venpas_id)venpas_id, c_numcontrol " +
 										"FROM vrtvenpas WHERE itinerario_id="+idItinerario+" GROUP BY c_numcontrol) max_venta " +
@@ -346,7 +347,7 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 						"INNER JOIN vrmlocalidad lo ON (lo.localidad_id=r.localidad_idorigen) "+
 						"INNER JOIN vrmlocalidad ld ON (ld.localidad_id=r.localidad_iddestino) "+
 					"WHERE  v.itinerario_id="+idItinerario+ " And v.c_tiptra=1 And v.c_estreg='A' AND v.tipmov_id not in ("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+ Constantes.ID_TIPMOV_DEVOLUCION+","+ Constantes.ID_TIPMOV_ANULACION+") "+
-					"GROUP BY lo.c_denominacion, ld.c_denominacion, v.d_fecpar, v.c_horpar,r.ruta_id "+
+					"GROUP BY lo.c_denominacion, ld.c_denominacion, v.d_fecpar, v.c_horpar,r.ruta_id, lo.localidad_id,ld.localidad_id  "+
 					"ORDER BY v.d_fecpar, v.c_horpar";
 		
 		List<?> result = getSession().createSQLQuery(sql).list();
@@ -355,15 +356,19 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			Object[] obj = (Object[]) result.get(i);
 			
 			Localidad localidadOrigen = new Localidad();
+			localidadOrigen.setId(((BigDecimal)obj[4]).intValue());
 			localidadOrigen.setDenominacion(obj[0].toString());
 			
 			Localidad localidadDestino = new Localidad();
+			localidadDestino.setId(((BigDecimal)obj[5]).intValue());
 			localidadDestino.setDenominacion(obj[1].toString());
 			
 			Ruta ruta = new Ruta();
 			ruta.setId(((BigDecimal)obj[3]).intValue());
 			ruta.setLocalidadOrigen(localidadOrigen);
 			ruta.setLocalidadDestino(localidadDestino);
+			ruta.setOrigen(obj[0].toString());
+			ruta.setDestino(obj[1].toString());
 			
 			VentaPasaje ventaPasaje = new VentaPasaje();
 			ventaPasaje.setCantidadPax( ((BigDecimal) obj[2]).intValue());

@@ -138,6 +138,7 @@ public abstract class WndBase extends Window implements IBase, BeforeCompose, Af
 
 	
 	public void onCreate() throws Exception {
+		System.out.println("Entro a la clase BASE **********************");
 	}
 	
 //	/**

@@ -26,6 +26,14 @@ public interface MapaBusDAO extends GenericDAO {
 	 */
 	public List<MapaBus> buscarMapaBus(Integer idServicio, String estado)throws Exception;
 	/**
+	 * Busca los objetos que conforman el mapa del bus de acuerdo al servicio enviado como parametro.
+	 * @param idServicio	: Identificador del servicio.
+	 * @param estado		: Estado de los registros a buscar Activos o Inactivos
+	 * @return Lista del tipo MapaBus.
+	 * @throws Exception
+	 */
+	public List<MapaBus> buscarMapaBusHorizontal(Integer idServicio, String estado)throws Exception;
+	/**
 	 * Busca los servicios que ya tiene asignado un mapa de bus.
 	 * @return Lista con los servicios.
 	 * @throws Exception

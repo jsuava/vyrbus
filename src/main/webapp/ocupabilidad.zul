@@ -1,0 +1,49 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndAvanceVentas" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndAvanceVentas">
+	<div>
+		<grid>
+			<columns>
+				<column width="70px"/>
+				<column width="150px"/>
+				<column width="70px"/>
+				<column width="165px"/>
+				<column width="70px"/>
+				<column width="150px"/>
+				<column/>
+			</columns>
+			<rows>
+				<row>
+					<label value="Desde" sclass="label-size11-bold"/>
+					<datebox id="dbDesde" format="dd/MM/yyyy" readonly="true"/>
+					<label value="Origen" sclass="label-size11-bold"/>
+					<combobox id="cmbOrigen" readonly="true"/>
+					<label value="Servicio" sclass="label-size11-bold"/>
+					<combobox id="cmbServicio" readonly="true"/>
+					<label/>
+				</row>
+				<row>
+					<label value="Hasta" sclass="label-size11-bold"/>
+					<datebox id="dbHasta" format="dd/MM/yyyy" readonly="true" disabled="true"/>
+					<label value="Destino" sclass="label-size11-bold"/>
+					<combobox id="cmbDestino" readonly="true"/>
+					<checkbox id="chkMostrarTodo" label="TODOS" />
+					<label/>
+					<hlayout>
+						<button label="Buscar" image="resources/mp_buscarEnabled.png" tooltiptext="Haga click aqui para realizar la busqueda." onClick="wndAvanceVentas.onBuscar()" sclass="btn-movil"/>
+						<button label="Cerrar" image="resources/mp_cerrar.png" tooltiptext="Haga click aqui para cerrar la ventana." onClick="wndAvanceVentas.closeTabWindow()" sclass="btn-movil"/>
+					</hlayout>
+				</row>
+				<row spans="7">
+					<hbox>
+						<textbox style="background:red; color:white; font-weight: bold !important" value="menor a 65%" width="90px"/>
+						<textbox style="background:yellow; color:black; font-weight: bold !important" value="entre 66% y 80%" width="95px"/>
+						<textbox style="background:#92D050; color:black; font-weight: bold !important" value="entre 81% y 99%" width="95px"/>
+						<textbox style="background:#0066FF; color:white; font-weight: bold !important" value="100% en adelante" width="100px"/>
+					</hbox>
+				</row>
+			</rows>
+		</grid>
+	</div>
+</window>
+</zk>
