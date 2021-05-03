@@ -85,5 +85,12 @@ public class MapaBusManagerImpl implements MapaBusManager {
 		result = Constantes.CORRECT;
 		return result;
 	}
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.MapaBusManager#buscarMapaBusHorizontal(java.lang.Integer, java.lang.String)
+	 */
+	@Override
+	public List<MapaBus> buscarMapaBusHorizontal(Integer idServicio, String estado) throws Exception {
+		return getMapaBusDAO().buscarMapaBusHorizontal(idServicio, estado);
+	}
 	
 }

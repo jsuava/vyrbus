@@ -69,7 +69,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				"p.pasajero_id, p.c_apepat, p.c_apemat, p.c_nombre, s.sexo_id, s.c_denominacion, vp.c_numboleto, vp.n_numasiento, vp.c_tiptra, " +
 				"i.ruta_idmayor, rm.localidad_idorigen, rm.localidad_iddestino, vp.n_numpiso, i.c_sectra, i.itinerario_id, " +
 				"p.c_numdoc, p.c_fecnac, vp.c_numcontrol, vp.canven_id, vp.d_fecpar, vp.c_horpar " +
-				",ap.c_nomcor as nombreCorto, p.tipdoc_id tipoDocPax " +//29
+				",ap.c_nomcor as nombreCorto, p.tipdoc_id tipoDocPax, vp.forpag_id, vp.tipforpag_id, vp.c_rucclicre, vp.n_imppag  " +//33
 				"FROM vrtvenpas vp " +
 				"INNER JOIN (SELECT MAX(venpas_id)venpas_id, c_numcontrol " +
 					"FROM vrtvenpas WHERE itinerario_id="+idItinerario+" GROUP BY c_numcontrol) max_venta " +
@@ -131,9 +131,19 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			ventaPasaje.setHoraPartida(obj[27].toString());
 			
 			Agencia agenciaPartida=new Agencia();
-			agenciaPartida.setNombreCorto(obj[28]!=null?obj[28].toString():"");
-			
+			agenciaPartida.setNombreCorto(obj[28]!=null?obj[28].toString():"");			
 			ventaPasaje.setAgenciaPartida(agenciaPartida);
+			
+			FormaPago formaPago = new FormaPago();
+			formaPago.setId(obj[30]==null?null:((BigDecimal)obj[30]).intValue());
+			ventaPasaje.setFormaPago(formaPago);
+			
+			TipoFormaPago tipoFormaPago = new  TipoFormaPago();
+			tipoFormaPago.setId(obj[31]==null?null:((BigDecimal)obj[31]).intValue());
+			ventaPasaje.setTipoFormaPago(tipoFormaPago);
+			
+			ventaPasaje.setRucClienteCredito(obj[32]==null?null:obj[32].toString());
+			ventaPasaje.setImportePagado(obj[33]==null?null:((BigDecimal)obj[33]).doubleValue());
 			
 			lstResult.add(ventaPasaje);
 		}
@@ -3004,6 +3014,114 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		
 		}
 		return agencias;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.VentaPasajesDAO#buscarAvanceVentas(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public List<VentaPasaje> buscarAvanceVentas(String idOrigen, String idDestino, String idServicio, String fechaDesde, String fechaHasta) throws Exception {
+		if(idDestino.isEmpty())
+			idDestino=null;
+		if (idOrigen.isEmpty())
+			idOrigen=null;
+		if(idServicio.isEmpty())
+			idServicio=null;
+				
+		String sql = " SELECT P1.d_fecpar, P1.c_origen, P1.c_destino, P1.c_horpar, P1.c_denominacion as Servicio, " +
+					       "P1.Capbus, decode(P2.Flag, '1', COUNT(*), 0) Vendidos, SUM(P2.n_imppag) IREAL, " +
+					       "SUM(P2.n_descuento) DESCUENTO, P1.n_kilometros, P1.itinerario_id, P1.ruta_idmayor " +
+					" FROM " +
+					       "(SELECT i.itinerario_id, i.ruta_idmayor, s.c_denominacion,NVL(s.n_numasipis1,0)+NVL(s.n_numasipis2,0) Capbus, " +
+					       "i.d_fecpar, i.c_horpar, r.c_origen, r.c_destino, i.servicio_id, r.n_kilometros " +
+					       "FROM vrtitinerario i inner join vrmruta r on (i.ruta_idmayor = r.ruta_id) " +
+					       "INNER JOIN vrmservicio s ON (s.servicio_id = i.servicio_id ) " +
+					       "WHERE  i.d_fecpar between to_date('"+fechaDesde+"','"+Constantes.DATE_FORMAT+"') AND " +
+					       "to_date('"+fechaHasta+"','"+Constantes.DATE_FORMAT+"')  AND i.n_esanulado=0 ";
+					        //Cuendo es entre provincias
+					        if(idOrigen!=null && idDestino!=null &&  idOrigen.equals(idDestino)){
+					        	sql+=" AND r.localidad_idorigen  != "+idOrigen+" "+
+									 " AND r.localidad_iddestino != "+idDestino+" ";
+					        }else{
+					        	sql+=" AND r.localidad_idorigen=NVL("+idOrigen+",localidad_idorigen) "+
+								" AND r.localidad_iddestino=NVL("+idDestino+",localidad_iddestino) ";	
+					        }
+					        
+					        if(idServicio != null)
+					        	sql+=" AND s.servicio_id="+idServicio+" ";
+					        
+					        sql+= ") P1 "+
+					        "LEFT JOIN "+
+					             "(SELECT '1' Flag, vt.itinerario_id, vt.d_fecpar, vt.c_horpar, vt.d_feclle, vt.c_horlle, vt.servicio_id, vt.ruta_id, vt.n_imppag, vt.n_descuento "+
+					             "FROM vrtvenpas vt "+
+					             "INNER JOIN "+
+					                   "(SELECT max(v.venpas_id) venpas_id FROM vrtvenpas v " +
+					                   		"INNER JOIN VRTITINERARIO i ON (i.itinerario_id=v.itinerario_id) " +
+											"WHERE i.d_fecpar BETWEEN to_date('"+fechaDesde+"','"+Constantes.DATE_FORMAT+"') AND to_date('"+fechaHasta+"','"+Constantes.DATE_FORMAT+"') GROUP BY c_numcontrol) B "+
+					                 "ON (vt.venpas_id = B.venpas_id) " +
+					             " WHERE ";						    
+						    
+					         sql = sql	+" tipmov_id NOT IN ("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+
+					             
+					        		 ","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_ANULACION+") ) P2 "+
+					         "ON  (P2.itinerario_id = P1.itinerario_id ) "+
+					"GROUP BY P1.ruta_idmayor,P1.servicio_id,P1.c_origen,P1.c_destino,P1.c_denominacion,P1.d_fecpar, P1.c_horpar, Flag,"
+					+ "P1.Capbus, P1.n_kilometros, P1.itinerario_id, P1.servicio_id "+
+					"ORDER BY P1.c_horpar,P1.c_origen,P1.c_destino,P1.c_denominacion";
+		
+			log.info(sql);
+			
+			List<?> result = getSession().createSQLQuery(sql).list();
+			
+			List<VentaPasaje> lstResult = new ArrayList<VentaPasaje>();
+			for(int i=0; i<result.size(); i++){
+				Object[] obj = (Object[]) result.get(i);
+				VentaPasaje ventaPasaje = new VentaPasaje();
+				Ruta ruta = new Ruta();
+				Servicio servicio = new Servicio();
+				Itinerario itinerario= new Itinerario();
+								
+				ventaPasaje.setFechaPartida(((Date)obj[0]));
+				
+				ruta.setOrigen(obj[1].toString());
+				ruta.setDestino(obj[2].toString());
+				ruta.setKilometros(((BigDecimal)obj[9]).doubleValue());
+				ruta.setId(((BigDecimal)obj[11]).intValue());
+				
+				ventaPasaje.setHoraPartida(obj[3].toString());
+				
+				servicio.setDenominacion(obj[4].toString());
+				servicio.setTotalAsientos(((BigDecimal)obj[5]).intValue());
+//				servicio.setGruposervicio(((BigDecimal)obj[11]).intValue());
+				
+				itinerario.setId(((BigDecimal)obj[10]).longValue());
+				
+				ventaPasaje.setRuta(ruta);
+				ventaPasaje.setServicio(servicio);
+				ventaPasaje.setCantidadPax(((BigDecimal)obj[6]).intValue());
+				ventaPasaje.setImporteReal(obj[7]==null?0:((BigDecimal)obj[7]).doubleValue());
+				ventaPasaje.setImporteDescuentos(obj[8]==null?0:((BigDecimal)obj[8]).doubleValue());
+				ventaPasaje.setItinerario(itinerario);
+				
+				sql = "SELECT SUM(P1.TOTAL) FROM (SELECT t.n_pisbus PISO, t.n_zonbus ZONA, tr.tarreg_id TARREG, tr.tarifa_id IDTARIFA, tr.itinerario_id ITINERARIO, "
+						+ "tr.d_fectar FECHA, tr.c_horpar HORA, tr.n_monto TARIFA, DECODE(t.n_pisbus,0,s.n_numasipis1,s.n_numasipis2) ASIENTOS, "
+						+ "(DECODE(t.n_pisbus,0,s.n_numasipis1,s.n_numasipis2) * tr.n_monto) TOTAL "
+						+ "FROM vrttarreg tr "
+						+ "INNER JOIN vrttarifa t ON t.tarifa_id=tr.tarifa_id "
+						+ "INNER JOIN vrmservicio s ON s.servicio_id=t.servicio_id "
+						+ "WHERE t.ruta_id="+ruta.getId()+" AND s.c_denominacion='"+servicio.getDenominacion()+"' AND t.canven_id=1 AND "
+						+ "tr.d_fectar=to_date('"+ventaPasaje.getFechaPartida().toString().substring(0, 10)+"','yyyy-MM-dd') AND tr.c_horpar='"
+						+ ventaPasaje.getHoraPartida()+"' AND tr.c_estreg='A') P1";
+				
+				Object objTotal = getSession().createSQLQuery(sql).uniqueResult();
+				if(objTotal!=null)
+					ventaPasaje.setImporteEsperado(((BigDecimal)objTotal).doubleValue());
+				else
+					ventaPasaje.setImporteEsperado(null);
+				
+				lstResult.add(ventaPasaje);
+			}		
+		return lstResult;
 	}
 	
 }

@@ -2196,6 +2196,16 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 		ventasNotas.setListVentas(nuevosComprobantes);
 		return ventasNotas;
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#buscarAvanceVentas(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public List<VentaPasaje> buscarAvanceVentas(String idOrigen, String idDestino, String idServicio, String fechaDesde, String fechaHasta) throws Exception {
+		// TODO Auto-generated method stub
+		return getVentaPasajesDAO().buscarAvanceVentas(idOrigen, idDestino, idServicio, fechaDesde, fechaHasta);
+	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaPasajesManager#generarNotaCredito(com.tepsa.sisvyr.model.bean.VentaPasaje, com.tepsa.sisvyr.model.bean.TipoNota, boolean, boolean, com.tepsa.sisvyr.model.bean.Liquidacion)
 	 */

@@ -418,6 +418,7 @@ public class Constantes {
 	public static final int ID_CANVEN_WEB = 2;
 	public static final int ID_CANVEN_AGENCIA_VIAJES = 5;
 	public static final int ID_CANVEN_CORPORATIVO = 6;
+	public static final int ID_CANVEN_COUNTER = 1;
 	
 	/* Constantes que refieren al tipo de Alimentacion*/
 	public static final int ID_PREALIM_MENU_DEL_DIA = 1;
@@ -584,5 +585,18 @@ public class Constantes {
 	public static final String usuario="059979";
 	public static final String clave="xKIx5z";
 	public static final String partida="000530PNR";
+	
+	/*	Variables para cargar los iconos de asiento para el avance	*/
+	public static final String PATH_IMG_AVANCE = "/resources/avance";
+	public static final String ASIENTO_AVANCE_DISPONIBLE = PATH_IMG_AVANCE+"/disponible/disponible-";
+	public static final String ASIENTO_AVANCE_BLOQUEADO = PATH_IMG_AVANCE+"/bloqueado/bloqueado-";
+	public static final String ASIENTO_AVANCE_ESSALUD = PATH_IMG_AVANCE+"/essalud/Essalud-";
+	public static final String ASIENTO_AVANCE_WEB = PATH_IMG_AVANCE+"/ventaweb/web-";
+	public static final String ASIENTO_AVANCE_CORPORATIVO = PATH_IMG_AVANCE+"/corporativo/corporativo-";
+	public static final String ASIENTO_AVANCE_AGENCIA = PATH_IMG_AVANCE+"/agencia/agencia-";
+	public static final String ASIENTO_AVANCE_DELIVERY = PATH_IMG_AVANCE+"/delivery/delivery-";
+	public static final String ASIENTO_AVANCE_RESERVA = PATH_IMG_AVANCE+"/reserva/reserva-";
+	public static final String ASIENTO_AVANCE_CORTESIA = PATH_IMG_AVANCE+"/cortesia/cortesia-";
+	public static final String ASIENTO_AVANCE_COUNTER = PATH_IMG_AVANCE+"/ventacounter/counter-";
 	
 }
