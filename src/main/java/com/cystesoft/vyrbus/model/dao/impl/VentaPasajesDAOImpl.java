@@ -1081,6 +1081,20 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 */
 	@Override
 	public int contarViajesValidos(Long idPasajero, String fechaInicial, String fechaFinal)throws Exception{
+		
+		if(fechaInicial.equals("")){
+
+			//Si hay ultima fecha de canje se recupera para que sea la fecha de inicio			
+			String sql1="SELECT TO_CHAR(MAX(vgp.d_fecemi), 'dd/mm/yyyy') FECEMI FROM vrtvengrapax vgp WHERE vgp.pasajero_id=" + idPasajero;
+			log.info(sql1);
+			
+			fechaInicial = ( (getSession().createSQLQuery(sql1).uniqueResult())!=null ? ((String)getSession().createSQLQuery(sql1).uniqueResult()).toString() : "");
+			//
+			//Si no hay se busca desde el inicio de los tiempos
+			if(fechaInicial.equals(""))
+				fechaInicial="01/01/2020";
+		}
+		
 		String sql = "SELECT COUNT(vp.venpas_id) " +
 					"FROM vrtvenpas vp " +
 						"INNER JOIN (SELECT MAX(venpas_id)venpas_id, c_numcontrol FROM vrtvenpas  "+

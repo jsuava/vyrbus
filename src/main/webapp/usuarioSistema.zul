@@ -43,7 +43,7 @@
 				</columns>
 				<rows>
 					<row>
-						<label value="PERSONAL TEPSA :"/>
+						<label value="PERSONAL EMPRESA :"/>
 						<div>
 							<textbox id="textboxId" />
 							<combobox id="cmbPersonal" readonly="false"  width="225px"  onChanging="wndUsuariosistema.onChangePersonal()" onChange="wndUsuariosistema.onChangePersonal()" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbAgencia)"/>

@@ -152,7 +152,8 @@ public class Constantes {
 	public static final String SERVER_PROTOCOL = Executions.getCurrent().getScheme();
 //	public static final String SERVER_HOST = Executions.getCurrent().getHeader("host");
 //	public static final String SERVER_HOST = "ventas.tepsa.com.pe/";
-	public static final String SERVER_HOST = "192.168.0.30:8080";
+
+	public static final String SERVER_HOST = "192.168.0.8:8080";
 	public static final String SERVER_CONTEXT = Executions.getCurrent().getContextPath();
 	public static final String URL_FORMATOS = SERVER_PROTOCOL+"://"+SERVER_HOST+SERVER_CONTEXT+"/formatos/";
 	public static final String URL_FORMATOS_BOLETOS = URL_FORMATOS+"boletos/";
@@ -175,7 +176,7 @@ public class Constantes {
 	public static final String DIRECTORY_MANIFIESTOS = Util.getPath()+Util.separator+"formatos"+Util.separator+"manifiestos"+Util.separator;
 	public static final String DIRECTORY_DESPACHOS = Util.getPath()+Util.separator+"formatos"+Util.separator+"despachos"+Util.separator;
 	public static final String DIRECTORY_LISTADOS = Util.getPath()+Util.separator+"formatos"+Util.separator+"listados"+Util.separator;
-	public static final String DIRECTORY_LIQUIDACION = Util.getPath()+"formatos"+Util.separator+"liquidaciones"+Util.separator;
+	public static final String DIRECTORY_LIQUIDACION = Util.getPath()+Util.separator+"formatos"+Util.separator+"liquidaciones"+Util.separator;
 	public static final String DIRECTORY_UPLOADS = "uploads";
 	public static final String DIRECTORY_PDF = Util.getPath()+Util.separator+"formatos"+Util.separator+"pdf"+Util.separator;
 	public static final String DIRECTORY_DETALLE_LIQUIDACION=Util.getPath()+Util.separator+"formatos"+Util.separator+"detalleLiquidacion"+Util.separator;
@@ -568,6 +569,11 @@ public class Constantes {
 	 *Cantidad de meses a considerar para el calculo de la base historica. Expresado en dias 180 (6 meses)
 	 */
 	public static final int CALCULO_BASE_HISTORICA=180;
+	
+	/*
+	 * Cantidad de viajes acumulados para canjear un pasaje de cortesia, para Transmar son 7
+	 */
+	public static final int NUMERO_VIAJES_ACUMULADOS = (((Parametros)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_PARAMETROS)).getViajesAcumuladosPasajero());	
 	/**
 	 * IP del proxy que utilizara el sistema para establecer la conexión con el WS del MTC.
 	 */

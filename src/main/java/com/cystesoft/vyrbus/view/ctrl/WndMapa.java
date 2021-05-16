@@ -318,7 +318,7 @@ public class WndMapa extends WndBase {
 							}
 						}
 						row.appendChild(oDiv);
-						row.setStyle("padding-top:2px; padding-left:3px; padding-right:0px; border:normal !important; background:#99D9EA");// background:#eeeeee");
+						row.setStyle("padding-top:2px; padding-left:3px; padding-right:0px; border:normal !important; background:#eeeeee");// background:#99D9EAeeeeee");
 					}
 					rows.appendChild(row);
 				}
