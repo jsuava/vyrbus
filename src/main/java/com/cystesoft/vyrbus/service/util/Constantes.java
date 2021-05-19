@@ -536,7 +536,7 @@ public class Constantes {
 	 * Indica el porcentaje para la alerta del envio o solicitud de manifiestos.
 	 */
 	public static final double ALERTAR_ENVIO_MANIFIESTOS=(((Parametros)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_PARAMETROS)).getAlertarEnvioManifiestoPasajeros());
-//	public static final double ALERTAR_ENVIO_MANIFIESTOS=85.0
+//	public static final double ALERTAR_ENVIO_MANIFIESTOS=85.0;
 	/**
 	 * Tiempo limite antes de que expire la cortesia.
 	 * */

@@ -187,8 +187,16 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			public void onEvent(Event events) {
 				if(updateHorarios) {
 					for(Listitem it : lstAgenciaOrigen) {
-						Timebox horaOriginal = (Timebox)it.getChildren().get(1).getChildren().get(0);
 						for(Listitem item : lbxTerminalOrigen.getItems()) {
+							if(((Agencia)item.getValue()).getDenominacion().equals(((Agencia)it.getValue()).getDenominacion())) {
+								((Timebox)item.getChildren().get(1).getChildren().get(0)).setText(((Timebox)it.getChildren().get(1).getChildren().get(0)).getText());
+								break;
+							}
+						}
+					}
+					
+					for(Listitem it : lstAgenciaDestino) {
+						for(Listitem item : lbxTerminalDestino.getItems()) {
 							if(((Agencia)item.getValue()).getDenominacion().equals(((Agencia)it.getValue()).getDenominacion())) {
 								((Timebox)item.getChildren().get(1).getChildren().get(0)).setText(((Timebox)it.getChildren().get(1).getChildren().get(0)).getText());
 								break;
@@ -205,7 +213,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 							Date newHora = Util.StringtoDate(dbFechaItinerario.getText() + " " + hora, "dd/MM/yyyy HH:mm");
 							Long newDiff = newHora.getTime() + diff;
 							String strNewHora = Util.DatetoString(new Date(newDiff), "HH:mm");
-							System.out.println(strNewHora);
+//							System.out.println(strNewHora);
 							((Timebox)item.getChildren().get(1).getChildren().get(0)).setText(strNewHora);
 						}
 						
@@ -214,7 +222,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 							Date newHora = Util.StringtoDate(dbFechaItinerario.getText() + " " + hora, "dd/MM/yyyy HH:mm");
 							Long newDiff = newHora.getTime() + diff;
 							String strNewHora = Util.DatetoString(new Date(newDiff), "HH:mm");
-							System.out.println(strNewHora);
+//							System.out.println(strNewHora);
 							((Timebox)item.getChildren().get(1).getChildren().get(0)).setText(strNewHora);
 						}
 					}
@@ -1097,8 +1105,6 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			Agencia	oagenciaPartida = new Agencia();
 			oagenciaPartida.setLocalidad(oLocalidadOrigen);
 			for(Listitem item : lbxTerminalOrigen.getSelectedItems()) {
-				System.out.println(tbHoraPartida.getText());
-				System.out.println(((Timebox)item.getChildren().get(1).getChildren().get(0)).getText());
 				if(tbHoraPartida.getText().equals(((Timebox)item.getChildren().get(1).getChildren().get(0)).getText())) {
 					oagenciaPartida.setId(((Agencia)item.getValue()).getId());
 					oagenciaPartida.setNombreCorto(((Agencia)item.getValue()).getNombreCorto());
