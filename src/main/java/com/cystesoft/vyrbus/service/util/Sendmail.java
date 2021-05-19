@@ -45,10 +45,10 @@ public class Sendmail {
 	{
 		int result = Constantes.FAILURE;
 		try{			
-			String from = "cystech.soluciones@gmail.com";
+			String from = "jose.avalos@itsb.pe";
 			Properties props = new Properties();
 			// Nombre del host de correo, es smtp.gmail.com
-			props.setProperty("mail.smtp.host", "smtp.gmail.com");
+			props.setProperty("mail.smtp.host", "itsb.pe");
 			// TLS si está disponible
 			props.setProperty("mail.smtp.starttls.enable", "true");
 			// Puerto de gmail para envio de correos

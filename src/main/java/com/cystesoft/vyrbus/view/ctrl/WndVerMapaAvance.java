@@ -451,8 +451,9 @@ public class WndVerMapaAvance extends WndBase {
 		buttonAceptar.setLabel("Cerrar");
 		buttonAceptar.setVisible(esVisibleInfoBus);
 		buttonAceptar.setHeight("30px");
+		buttonAceptar.setWidth("80px");
 		buttonAceptar.setImage("/resources/b_mp_cerrar.png");
-		buttonAceptar.setClass("btn-itsb");
+		buttonAceptar.setClass("btnCommandS");
 		row.appendChild(buttonAceptar);
 		rows.appendChild(row);
 		

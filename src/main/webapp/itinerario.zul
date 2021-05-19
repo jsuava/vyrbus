@@ -27,7 +27,7 @@
 				<grid style="border:none">
 					<columns>
 						<column width="110px;" align="right" /> 
-						<column width="160px;" />
+						<column width="170px;" />
 						<column width="85px;" align="right"/> 
 					</columns>
 					<rows>
@@ -93,7 +93,7 @@
 										</div>
 									</bandpopup>
 								</bandbox>
-								<button id="cmdAgregarTramo" image="/resources/mp_addEnabled.png" label="Agregar" onClick="wndItinerario.agregarTramo()" sclass="btnCommandM" tooltiptext="Agregar Tramo" />
+								<button id="cmdAgregarTramo" image="/resources/mp_addTramo.png" label="Agregar" onClick="wndItinerario.agregarTramo()" sclass="btnCommandS" width="90px" tooltiptext="Agregar Tramo" />
 							</hbox>
 						</row>
 					</rows>

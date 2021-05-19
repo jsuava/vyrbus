@@ -133,6 +133,11 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 	private List<Agencia> lstAgenciaPartida;
 	private List<Agencia> lstAgenciaLlegada;
 	
+	private String strHoraPartida = "";
+	private boolean updateHorarios=false;
+	private List<Listitem> lstAgenciaOrigen;
+	private List<Listitem> lstAgenciaDestino;
+	
 	
 	final String disabledDelete="/resources/mp_eliminarDisabled.png";
 	final String enabledDelete="/resources/mp_eliminarEnabled.png";
@@ -175,6 +180,60 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			public void onEvent(Event event) throws Exception {
 				if(!(btnGuardar.isDisabled()))
 					editarTramo();
+			}
+		});
+		
+		tbHoraPartida.addEventListener(Events.ON_BLUR, new EventListener<Event>() {
+			public void onEvent(Event events) {
+				if(updateHorarios) {
+					for(Listitem it : lstAgenciaOrigen) {
+						for(Listitem item : lbxTerminalOrigen.getItems()) {
+							if(((Agencia)item.getValue()).getDenominacion().equals(((Agencia)it.getValue()).getDenominacion())) {
+								((Timebox)item.getChildren().get(1).getChildren().get(0)).setText(((Timebox)it.getChildren().get(1).getChildren().get(0)).getText());
+								break;
+							}
+						}
+					}
+					
+					for(Listitem it : lstAgenciaDestino) {
+						for(Listitem item : lbxTerminalDestino.getItems()) {
+							if(((Agencia)item.getValue()).getDenominacion().equals(((Agencia)it.getValue()).getDenominacion())) {
+								((Timebox)item.getChildren().get(1).getChildren().get(0)).setText(((Timebox)it.getChildren().get(1).getChildren().get(0)).getText());
+								break;
+							}
+						}
+					}
+					
+					if(!strHoraPartida.equals(tbHoraPartida.getText())) {
+						Date horaInicial = Util.StringtoDate(dbFechaItinerario.getText()+" "+strHoraPartida, "dd/MM/yyyy HH:mm");
+						Date nuevaHora = Util.StringtoDate(dbFechaItinerario.getText()+" "+tbHoraPartida.getText(), "dd/MM/yyyy HH:mm");
+						Long diff = nuevaHora.getTime() - horaInicial.getTime();
+						for(Listitem item : lbxTerminalOrigen.getSelectedItems()) {
+							String hora = ((Timebox)item.getChildren().get(1).getChildren().get(0)).getText();
+							Date newHora = Util.StringtoDate(dbFechaItinerario.getText() + " " + hora, "dd/MM/yyyy HH:mm");
+							Long newDiff = newHora.getTime() + diff;
+							String strNewHora = Util.DatetoString(new Date(newDiff), "HH:mm");
+//							System.out.println(strNewHora);
+							((Timebox)item.getChildren().get(1).getChildren().get(0)).setText(strNewHora);
+						}
+						
+						for(Listitem item : lbxTerminalDestino.getSelectedItems()) {
+							String hora = ((Timebox)item.getChildren().get(1).getChildren().get(0)).getText();
+							Date newHora = Util.StringtoDate(dbFechaItinerario.getText() + " " + hora, "dd/MM/yyyy HH:mm");
+							Long newDiff = newHora.getTime() + diff;
+							String strNewHora = Util.DatetoString(new Date(newDiff), "HH:mm");
+//							System.out.println(strNewHora);
+							((Timebox)item.getChildren().get(1).getChildren().get(0)).setText(strNewHora);
+						}
+					}
+				}
+				updateHorarios = false;
+			}
+		});
+		
+		tbHoraPartida.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			public void onEvent(Event events) {
+				updateHorarios = true;
 			}
 		});
 	}
@@ -940,6 +999,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 				itemvDetalleItinerario = lbxDetalleItinerario.getItemAtIndex(indexEdicionTramo -1);
 			}
 			
+						
 			if (!(cmbTipoItinerario.getSelectedItem().getValue() instanceof TipoItinerario))
 				throw new TipoItinerarioNullException();
 			else if (!(cmbServicio.getSelectedItem().getValue() instanceof Servicio))
@@ -1582,6 +1642,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 				Util.seleccionarValorItemCombo(Ruta.class, cmbRuta, ((DetalleItinerario) itemDetalleItinerario.getValue()).getRuta().getId());								/*Seleecion el Origen*/
 				dbFechaItinerario.setValue(((DetalleItinerario) itemDetalleItinerario.getValue()).getFechaPartida());														/*Recupera Fecha partida*/
 				tbHoraPartida.setText(((DetalleItinerario) itemDetalleItinerario.getValue()).getHoraPartida());																/*Recupera Hora de Partida*/
+				strHoraPartida = tbHoraPartida.getText();				
 //				cargarTerm(cmbTermDestino, false, ((DetalleItinerario) itemDetalleItinerario.getValue()).getRuta().getLocalidadDestino().getId()); 							/*carga Terminal Destino*/
 //				Util.seleccionarValorItemCombo(Agencia.class, cmbTermOrigen, ((DetalleItinerario) itemDetalleItinerario.getValue()).getAgenciaPartida().getId());			/*Selecciona el Terminal Origen*/
 //				Util.seleccionarValorItemCombo(Agencia.class, cmbTermDestino, ((DetalleItinerario) itemDetalleItinerario.getValue()).getAgenciaLlegada().getId());			/*Selecciona le Terminal Destino*/
@@ -1592,9 +1653,11 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 					Util.seleccionarValorItemCombo(TipoItinerario.class,cmbTipoItinerario, ((DetalleItinerario) itemDetalleItinerario.getValue()).getItinerario().getTipoItinerario().getId());/**Selecciona el Tipo de Itinerario*/
 				}
 				
+				
 				autoSeleccionarAgenciaOrigen(((DetalleItinerario)itemDetalleItinerario.getValue()).getLstItinerarioAgenciaPartida(),null, true);
 				onChangeTerminalDestino(lbxTerminalDestino);
 				autoSeleccionarAgenciaOrigen(null, ((DetalleItinerario)itemDetalleItinerario.getValue()).getLstItinerarioAgenciaLlegada(), false);
+				getAgenciasPartida();
 				
 				/*Se utilizan para la edicion de los tramos.*/
 				indexEdicionTramo=index;
@@ -1742,9 +1805,9 @@ public class WndItinerario extends WndOpcionesMantenimiento {
  	
  	private void HabilitaBotones_AgredarTramo(Boolean estado){
 		if(estado)
-			cmdAgregarTramo.setImage("/resources/mp_agregarDisabled.png");
+			cmdAgregarTramo.setImage("/resources/mp_agregar.png");
 		else
-			cmdAgregarTramo.setImage("/resources/cmdAgregarTramo.png");
+			cmdAgregarTramo.setImage("/resources/mp_agregar.png");
 		cmdAgregarTramo.setDisabled(estado);
 	}
 
@@ -1863,8 +1926,21 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 	public void onSelectAgenciaOrigen() throws Exception {
 		String terminales = "";
 		lstAgenciaPartida = new ArrayList<Agencia>();
-		try {
-				
+		try {				
+//			if(!strHoraPartida.equals(tbHoraPartida.getText())) {
+//				Date horaInicial = Util.StringtoDate(dbFechaItinerario.getText()+" "+strHoraPartida, "dd/MM/yyyy HH:mm");
+//				Date nuevaHora = Util.StringtoDate(dbFechaItinerario.getText()+" "+tbHoraPartida.getText(), "dd/MM/yyyy HH:mm");
+//				Long diff = nuevaHora.getTime() - horaInicial.getTime();
+//				for(Listitem item : lbxTerminalOrigen.getSelectedItems()) {
+//					String hora = ((Timebox)item.getChildren().get(1).getChildren().get(0)).getText();
+//					Date newHora = Util.StringtoDate(dbFechaItinerario.getText() + " " + hora, "dd/MM/yyyy HH:mm");
+//					Long newDiff = newHora.getTime() + diff;
+//					String strNewHora = Util.DatetoString(new Date(newDiff), "HH:mm");
+//					System.out.println(strNewHora);
+//					((Timebox)item.getChildren().get(1).getChildren().get(0)).setText(strNewHora);
+//				}
+//			}
+			
 			for(Listitem item : lbxTerminalOrigen.getSelectedItems()) {
 				terminales = terminales + ((Agencia)item.getValue()).getDenominacion() + ", ";
 				if(((Timebox)item.getChildren().get(1).getChildren().get(0)).getText().equals(""))
@@ -2910,6 +2986,18 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			((DetalleItinerario)lbxDetalleItinerario.getSelectedItem().getValue()).setLstItinerarioAgenciaLlegada(lstItinerarioAgenciaLlegada);
 		}
 		
+	}
+	
+	private void getAgenciasPartida() {
+		lstAgenciaOrigen = new ArrayList<>();
+		for(Listitem item : lbxTerminalOrigen.getSelectedItems()) {
+			lstAgenciaOrigen.add((Listitem)item.clone());
+		}
+		
+		lstAgenciaDestino = new ArrayList<>();
+		for(Listitem item : lbxTerminalDestino.getSelectedItems()) {
+			lstAgenciaDestino.add((Listitem)item.clone());
+		}
 	}
 	
 //	/** 
