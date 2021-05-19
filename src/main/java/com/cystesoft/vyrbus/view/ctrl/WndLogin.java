@@ -108,7 +108,7 @@ public class WndLogin extends WndBase {
 				Executions.sendRedirect("invalidAccess.zul");
 			}
 			lblVersion.setValue(Constantes.SYSTEM_VERSION);
-			lblCopyRigth.setValue("Copyright, ARTISOFT (C) - " + Constantes.FORMAT_YEAR.format(new Date()));
+			lblCopyRigth.setValue("Copyright, ITSB CONSULTING SAC (C) - " + Constantes.FORMAT_YEAR.format(new Date()));
 		}catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.information(Messages.getString("Generales.information.errorCargarParametros"));
