@@ -153,7 +153,9 @@ public class Constantes {
 //	public static final String SERVER_HOST = Executions.getCurrent().getHeader("host");
 //	public static final String SERVER_HOST = "ventas.tepsa.com.pe/";
 
-	public static final String SERVER_HOST = "192.168.0.8:8080";
+	//http://168.121.236.46:8080/
+	//public static final String SERVER_HOST = "192.168.0.8:8080";
+	public static final String SERVER_HOST = "168.121.236.46:8080";
 	public static final String SERVER_CONTEXT = Executions.getCurrent().getContextPath();
 	public static final String URL_FORMATOS = SERVER_PROTOCOL+"://"+SERVER_HOST+SERVER_CONTEXT+"/formatos/";
 	public static final String URL_FORMATOS_BOLETOS = URL_FORMATOS+"boletos/";
