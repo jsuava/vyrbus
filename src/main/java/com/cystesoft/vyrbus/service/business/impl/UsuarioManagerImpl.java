@@ -145,7 +145,7 @@ public class UsuarioManagerImpl implements UsuarioManager {
 			
 			//Realiza el envio del E-Mail con las credenciales de acceso.
 			if(usuario.getEmailInfo()!=null){
-				String mensaje = "Datos para el inicio de sesion en el Sistema de Ventas TEPSA.\n\n";
+				String mensaje = "Datos para el inicio de sesion en el Sistema de Ventas VYRBUS.\n\n";
 				mensaje = mensaje + "Nombre :\t\t"+usuario.toString()+"\n";
 				mensaje = mensaje + "Usuario :\t\t"+usuario.getLogin()+"\n";
 				mensaje = mensaje + "Password :\t\t"+passwd+"\n\n";

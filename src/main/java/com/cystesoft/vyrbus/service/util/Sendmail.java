@@ -52,7 +52,7 @@ public class Sendmail {
 			// TLS si está disponible
 			props.setProperty("mail.smtp.starttls.enable", "true");
 			// Puerto de gmail para envio de correos
-			props.setProperty("mail.smtp.port","587");
+//			props.setProperty("mail.smtp.port","587");
 			// Nombre del usuario
 			props.setProperty("mail.smtp.user", from);
 			// Si requiere o no usuario y password para conectarse.
@@ -107,7 +107,7 @@ public class Sendmail {
 	        Transport t = session.getTransport("smtp");
 	        // Establecemos la conexion
 //	        t.connect(from,"mantybus303");
-	        t.connect();
+	        t.connect("soporte@itsb.pe", "3tr0p0s2021");
 	        
 	        // Enviamos el mensaje
 	        t.sendMessage(message,message.getAllRecipients());
