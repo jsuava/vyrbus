@@ -113,75 +113,89 @@ public class WndAvanceVentas extends WndBase implements Serializable{
 			Listheader listheader = new Listheader();
 			listheader.setLabel("#");
 			listheader.setWidth("30px");
+			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
 			
 			listheader = new Listheader();
 			listheader.setLabel("FECHA");
 			listheader.setWidth("65px");
+			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
 			
 			listheader = new Listheader();
 			listheader.setLabel("HORA");
 			listheader.setWidth("50px");
+			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
 			
 			listheader = new Listheader();
 			listheader.setLabel("RUTA");
 			listheader.setWidth("160px");
+			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
 			
 			listheader = new Listheader();
 			listheader.setLabel("SERVICIO");
 			listheader.setWidth("100px");
+			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
 			
 			listheader = new Listheader();
 			listheader.setLabel("CAPACIDAD");
 			listheader.setWidth("70px");
+			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
 			
 			listheader = new Listheader();
 			listheader.setLabel("OCUPACION");
 			listheader.setWidth("70px");
+			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
 			
 			listheader = new Listheader();
 			listheader.setLabel("% OCUP..");			
 			listheader.setWidth("70px");
+			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
 			
 			listheader = new Listheader();
 			listheader.setLabel("ING. 100%");
 			listheader.setStyle("text-align:center");
 			listheader.setWidth("80px");
+			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
 			
 			listheader = new Listheader();
 			listheader.setLabel("ING. REAL");
 			listheader.setStyle("text-align:center");
 			listheader.setWidth("80px");
+			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
 			
 			listheader = new Listheader();
 			listheader.setStyle("text-align:center");
 			listheader.setLabel("DSCTO");
 			listheader.setWidth("60px");
+			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
 			listheader.setTooltiptext("Por cortesias");
 			
 			listheader = new Listheader();
 			listheader.setLabel("DSCTO %");
 			listheader.setWidth("60px");
+			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
 			
 			listheader = new Listheader();
 			listheader.setLabel("SOL/KM REAL");
 			listheader.setWidth("70px");
+			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
 			
 			listheader = new Listheader();
 			listheader.setLabel("MAPA");
 			listheader.setWidth("60px");
+			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
 			
 			lbxAvance.appendChild(listhead);
