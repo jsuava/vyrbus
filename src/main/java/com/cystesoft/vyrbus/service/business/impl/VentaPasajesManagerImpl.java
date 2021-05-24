@@ -55,6 +55,7 @@ import com.cystesoft.vyrbus.service.exceptions.NumeroBoletoDuplicadoException;
 import com.cystesoft.vyrbus.service.exceptions.TiempoExpiracionBloqueoException;
 import com.cystesoft.vyrbus.service.fe.Result;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
+import com.cystesoft.vyrbus.service.mappers.ResumenAnulacionPostergacion;
 import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.Messages;
 import com.cystesoft.vyrbus.service.util.MyTime;
@@ -2209,6 +2210,34 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaPasajesManager#generarNotaCredito(com.tepsa.sisvyr.model.bean.VentaPasaje, com.tepsa.sisvyr.model.bean.TipoNota, boolean, boolean, com.tepsa.sisvyr.model.bean.Liquidacion)
 	 */
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#buscarBoletosAnuladosPorUsuario(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public List<ResumenAnulacionPostergacion> buscarBoletosAnuladosPorUsuario(String fechaDesde, String fechaHasta) {
+		return getVentaPasajesDAO().buscarBoletosAnuladosPorUsuario(fechaDesde, fechaHasta);
+	}
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#buscarBoletosAnuladosPorAgencia(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public List<ResumenAnulacionPostergacion> buscarBoletosAnuladosPorAgencia(String fechaDesde, String fechaHasta) {
+		return getVentaPasajesDAO().buscarBoletosAnuladosPorAgencia(fechaDesde, fechaHasta);
+	}
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#buscarBoletosAnuladosDetalladoPorUsuario(java.lang.String, java.lang.String, java.lang.Integer)
+	 */
+	@Override
+	public List<VentaPasaje> buscarBoletosAnuladosDetalladoPorUsuario(String fechaDesde, String fechaHasta, Integer idUsuario) {
+		return getVentaPasajesDAO().buscarBoletosAnuladosDetalladoPorUsuario(fechaDesde, fechaHasta, idUsuario);
+	}
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#buscarBoletosAnuladosDetalladoPorAgencia(java.lang.String, java.lang.String, java.lang.Integer)
+	 */
+	@Override
+	public List<VentaPasaje> buscarBoletosAnuladosDetalladoPorAgencia(String fechaDesde, String fechaHasta, Integer idAgencia) {
+		return getVentaPasajesDAO().buscarBoletosAnuladosDetalladoPorAgencia(fechaDesde, fechaHasta, idAgencia);
+	}
 	
 	
 
