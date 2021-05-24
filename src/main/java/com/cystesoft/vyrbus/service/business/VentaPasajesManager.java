@@ -10,6 +10,7 @@ import com.cystesoft.vyrbus.model.bean.Liquidacion;
 import com.cystesoft.vyrbus.model.bean.TipoNota;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
+import com.cystesoft.vyrbus.service.mappers.ResumenAnulacionPostergacion;
 import com.cystesoft.vyrbus.service.util.VentasNotas;
 
 public interface VentaPasajesManager {
@@ -522,5 +523,34 @@ public interface VentaPasajesManager {
 	 * @throws Exception
 	 */
 	public List<VentaPasaje> buscarAvanceVentas(String idOrigen, String idDestino, String idServicio, String fechaDesde, String fechaHasta) throws Exception;
-	
+	/**
+	 * Realiza la busqueda de boletos anulados agrupado por usuario
+	 * @param fechaDesde	: Fecha de inicio de busqueda
+	 * @param fechaHasta	: Fecha fin de la busqueda
+	 * @return
+	 */
+	public List<ResumenAnulacionPostergacion> buscarBoletosAnuladosPorUsuario(String fechaDesde, String fechaHasta);
+	/**
+	 * Realiza la busqueda de boletos anulados agrupado por agencia
+	 * @param fechaDesde	: Fecha de inicio de busqueda
+	 * @param fechaHasta	: Fecha fin de la busqueda
+	 * @return
+	 */
+	public List<ResumenAnulacionPostergacion> buscarBoletosAnuladosPorAgencia(String fechaDesde, String fechaHasta);
+	/**
+	 * Realiza la busqueda de boletos anulados por usuario
+	 * @param fechaDesde	: Fecha de inicio de busqueda
+	 * @param fechaHasta	: Fecha fin de la busqueda
+	 * @param idUsuario		: Identificador del usuario
+	 * @return
+	 */
+	public List<VentaPasaje> buscarBoletosAnuladosDetalladoPorUsuario(String fechaDesde, String fechaHasta, Integer idUsuario);
+	/**
+	 * Realiza la busqueda de boletos anulados por agencia
+	 * @param fechaDesde	: Fecha de inicio de busqueda
+	 * @param fechaHasta	: Fecha fin de la busqueda
+	 * @param idAgencia		: Identificador de Agencia
+	 * @return
+	 */
+	public List<VentaPasaje> buscarBoletosAnuladosDetalladoPorAgencia(String fechaDesde, String fechaHasta, Integer idAgencia);
 }

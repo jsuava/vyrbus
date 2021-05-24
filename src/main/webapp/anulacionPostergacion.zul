@@ -1,0 +1,36 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndAnulacionPostergacion" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndAnulacionPostergacion">
+	<div>
+		<grid>
+			<columns>
+				<column width="70px" />
+				<column width="150px"/>
+				<column width="70px"/>
+				<column width="150px"/>
+				<column width="200px"/>
+				<column width="120px"/>
+			</columns>
+			<rows>
+				<row>
+					<label value="Desde: " sclass="label-size11-bold"/>
+					<datebox id="dbDesde" format="dd/MM/yyyy" />
+					<label value="Hasta: " sclass="label-size11-bold"/>
+					<datebox id="dbHasta" format="dd/MM/yyyy" />
+					<hlayout>
+						<radiogroup id="rdgCriterios">
+							<vlayout>
+							<radio label="Anulaciones" radiogroup="rdgCriterios" />
+							<radio label="Postergaciones" radiogroup="rdgCriterios"/>
+							<radio label="Numero Postergacion" radiogroup="rdgCriterios"/>
+							</vlayout>
+						</radiogroup>
+					</hlayout>
+					<button label="Buscar" image="resources/mp_buscarEnabled.png" tooltiptext="Haga click aqui para realizar la busqueda." onClick="wndAnulacionPostergacion.onSearch()" sclass="btnCommandS" style="width:100px; height:30px"/>
+				</row>
+			</rows>
+		</grid>
+	</div>
+	<hlayout id="hlytResumen"/>
+</window>
+</zk>
