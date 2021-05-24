@@ -116,15 +116,15 @@ public class WndLogin extends WndBase {
 		}
 		
 		/*Descomentar solo para desarrollo - 09/01/2017 - jabanto*/
-		try {
+//		try {
 //			txtLogin.setText("moscco");
 //			txtPassword.setText("Ant@res1091");
 //			txtImagen.setText(cpaImagen.getValue());
 			
 //			onAccess();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 	}
 
 
