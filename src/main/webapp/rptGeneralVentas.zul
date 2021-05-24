@@ -1,0 +1,136 @@
+<?page title="Reporte General de Ventas" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndRptGeneralVentas" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndRptGeneralVentas" width="920px">
+<panel id="panel" title="::: Reporte General de Ventas :::" framable="true" border="normal" closable="true" onClose="wndRptGeneralVentas.closeTabWindow()">
+	<panelchildren>
+		<separator/>
+		
+		<grid width="900px">
+			<columns>
+				<column/>
+			</columns>
+			<rows>
+				<row>
+					<groupbox closable="false" mold="3d"  style="overflow:auto" >									
+					<caption label="CONSULTA GENERAL DE VENTAS POR OFICINA" style="color: #ffffff;"/>
+						<grid sclass="grid-no-border" width="890px">
+							<columns>
+ 								<column width="70px" align="right" />
+								<column width="120px" align="left" />
+								<column width="70px" align="right" />
+								<column width="130px" align="left" />
+								<column width="70px" align="right" />
+								<column width="120px" align="left" />
+								<column width="100px" align="right" />								
+								<column width="100px" align="left" />
+								<column width="110px" align="left" />
+							</columns>
+							<rows>
+								<row>
+									<label value="FEC. INICIO :" />
+									<datebox id="dtbxFecInicioBus" 
+											onChange="com.cystesoft.vyrbus.service.util.Util.limpiarListbox(lsbxVentas)" 
+											readonly="true"   
+											style="font-size:11px" 
+											format="dd/MM/yyyy" 
+											visible="true"
+											width="100px" />
+									<label value="FEC FIN :" />
+									<datebox id="dtbxFecFinBus" 
+											format="dd/MM/yyyy"
+											readonly="true"
+											style="font-size:11px" 
+											visible="true"  
+											width="100px"  />
+									<label value="OFICINA :" />
+									<combobox id="cmbAgencias"
+											onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(rdFecha)" 
+											readonly="true" 
+											width="110px"   />
+									<label value="FECHA :" />
+									<label id="lblFechaConsulta" value="23/05/2021" style="font-size:12px !important" />
+									<label id="lblHoraConsulta" value="10:25 a.m." style="font-size:12px !important"/>
+								</row>
+								<row spans="4, 2, 2">
+<!--								<hbox>
+  									<separator/> -->											
+									<radiogroup>
+										<radio id="rdFecha"
+											selected="true"
+											style="font-size:12px !important" 
+											label="Fecha" /> 
+										<radio id="rdMes" 
+											label="Mes" /> 
+										<radio id="rdAnual"  
+											label="Anual" 
+											style="font-size:12px !important" />
+									</radiogroup>
+<!--  								</hbox>  -->
+									
+									<button id="btnBuscar"  
+										autodisable="self"
+										image="/resources/mp_buscarEnabled.png" 
+										label="Buscar" 
+										onClick="wndRptGeneralVentas.buscar()" 
+										sclass="btnCommandM" 
+										 />									
+									<label value="USUARIO :" />
+									<label id="lblUsuarioConsulta" value="moscco" style="font-size:12px !important"/>								
+
+									<label/>
+								</row>
+							</rows>
+						</grid>
+					</groupbox>
+					<separator height="2px" />
+				</row>
+				<row>
+ 					<tabbox>
+ 						<tabs>
+ 							<tab id="tabVentas" label="Reporte de Ventas por Oficina" />
+<!--   							<tab id="tabVentasAnual" label="Reporte de Ventas por Oficina" />  -->
+						</tabs>
+						<tabpanels>
+							<tabpanel>
+								<listbox id="lsbxVentas" height="320px"  class="z-listbox-header-bg"  mold="paging" pageSize="12">
+									<listhead class="z-listbox-header-bg" sizable="true">
+										<listheader label="OFICINA " id="lstheaOficina" sort="auto" align="left" width="200px" style="color: #ffffff;"/>
+										<listheader label="FECHA" id="lstheaFecha" width="80px" sort="auto" style="color: #ffffff;"/>
+										<listheader label="BOLETAS" align="right" width="80px" style="color: #ffffff;"/>
+							 			<listheader label="CANT." align="right" width="60px" style="color: #ffffff;"/>
+							 			<listheader label="FACTURAS" align="right" width="80px" style="color: #ffffff;"/>
+							 			<listheader label="CANT." align="right" width="60px" style="color: #ffffff;"/>
+							 			<listheader label="DEP. BANCO" align="right" width="100px" style="color: #ffffff;"/>
+							 			<listheader label="WEB" align="right" width="80px" style="color: #ffffff;"/>
+							 			<listheader label="CANT." align="right" width="60px" style="color: #ffffff;"/>
+							 			<listheader label="TOTAL VENTAS" align="right" width="100px" style="color: #ffffff;"/>
+									</listhead>
+								</listbox>
+							</tabpanel>
+							<tabpanel>
+<!-- 							
+								<listbox id="lsbxTarifaFA" height="320px"  class="z-listbox-header-bg"  mold="paging" pageSize="15">
+									<listhead class="z-listbox-header-bg" sizable="true">
+										<listheader label="TARIFA" id="lstheaTarifa" width="60px" style="color: #ffffff;"/>
+										<listheader label="CANAL" width="80px" sort="auto" style="color: #ffffff;"/>
+										<listheader label="SERVICIO" width="120px" sort="auto" style="color: #ffffff;"/>
+							 			<listheader label="RUTA" width="190px" sort="auto" style="color: #ffffff;"/>
+							 			<listheader label="TARIFA" align="right" width="60px" style="color: #ffffff;"/>				 			
+							 			<listheader label="FECHA ACTIVACION" id="lstheaActivacion"  sort="auto" width="180px" style="color: #ffffff;"/>
+							 			<listheader label="FECHA CADUCIDAD" id="lstheaCaducidad" align="left"  style="color: #ffffff;"/>
+									</listhead>
+								</listbox>
+ -->								
+							</tabpanel>
+						</tabpanels>
+					</tabbox>				
+				</row>
+				<row>
+		
+				</row>
+			</rows>
+		</grid>		
+	</panelchildren>
+</panel>
+</window>
+</zk>
