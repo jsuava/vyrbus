@@ -2207,40 +2207,27 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 		// TODO Auto-generated method stub
 		return getVentaPasajesDAO().buscarAvanceVentas(idOrigen, idDestino, idServicio, fechaDesde, fechaHasta);
 	}
-	/* (non-Javadoc)
-	 * @see com.tepsa.sisvyr.service.business.VentaPasajesManager#generarNotaCredito(com.tepsa.sisvyr.model.bean.VentaPasaje, com.tepsa.sisvyr.model.bean.TipoNota, boolean, boolean, com.tepsa.sisvyr.model.bean.Liquidacion)
+	/*
+	 * (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#buscarBoletosAnuladosByX(java.lang.String, java.lang.String, java.lang.Integer)
 	 */
-	/* (non-Javadoc)
-	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#buscarBoletosAnuladosPorUsuario(java.lang.String, java.lang.String)
-	 */
-	@Override
-	public List<ResumenAnulacionPostergacion> buscarBoletosAnuladosPorUsuario(String fechaDesde, String fechaHasta) {
-		return getVentaPasajesDAO().buscarBoletosAnuladosPorUsuario(fechaDesde, fechaHasta);
+	public List<ResumenAnulacionPostergacion> buscarBoletosAnuladosByX(String fechaDesde, String fechaHasta, Integer criterio){
+		return getVentaPasajesDAO().buscarBoletosAnuladosByX(fechaDesde, fechaHasta, criterio);
 	}
-	/* (non-Javadoc)
-	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#buscarBoletosAnuladosPorAgencia(java.lang.String, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#buscarBoletosAnuladosDetalladoByX(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer)
 	 */
-	@Override
-	public List<ResumenAnulacionPostergacion> buscarBoletosAnuladosPorAgencia(String fechaDesde, String fechaHasta) {
-		return getVentaPasajesDAO().buscarBoletosAnuladosPorAgencia(fechaDesde, fechaHasta);
+	public List<VentaPasaje> buscarBoletosAnuladosDetalladoByX(String fechaDesde, String fechaHasta, Integer id, Integer criterio){
+		return getVentaPasajesDAO().buscarBoletosAnuladosDetalladoByX(fechaDesde, fechaHasta, id, criterio);
 	}
-	/* (non-Javadoc)
-	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#buscarBoletosAnuladosDetalladoPorUsuario(java.lang.String, java.lang.String, java.lang.Integer)
+	/*
+	 * (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#buscarBoletosPostergadosByX(java.lang.String, java.lang.String, java.lang.Integer)
 	 */
-	@Override
-	public List<VentaPasaje> buscarBoletosAnuladosDetalladoPorUsuario(String fechaDesde, String fechaHasta, Integer idUsuario) {
-		return getVentaPasajesDAO().buscarBoletosAnuladosDetalladoPorUsuario(fechaDesde, fechaHasta, idUsuario);
+	public List<ResumenAnulacionPostergacion> buscarBoletosPostergadosByX(String fechaDesde, String fechaHasta, Integer criterio){
+		return getVentaPasajesDAO().buscarBoletosPostergadosByX(fechaDesde, fechaHasta, criterio);
 	}
-	/* (non-Javadoc)
-	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#buscarBoletosAnuladosDetalladoPorAgencia(java.lang.String, java.lang.String, java.lang.Integer)
-	 */
-	@Override
-	public List<VentaPasaje> buscarBoletosAnuladosDetalladoPorAgencia(String fechaDesde, String fechaHasta, Integer idAgencia) {
-		return getVentaPasajesDAO().buscarBoletosAnuladosDetalladoPorAgencia(fechaDesde, fechaHasta, idAgencia);
-	}
-	
-	
-
 	
 	
 //	private String generarBoleto(String numBoleto, Integer idTipoComprobante, Integer idUsuarioHW) throws Exception{

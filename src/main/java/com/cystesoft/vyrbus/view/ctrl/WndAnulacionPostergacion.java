@@ -20,10 +20,13 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Radiogroup;
 import org.zkoss.zul.Separator;
 
+import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.mappers.ResumenAnulacionPostergacion;
 import com.cystesoft.vyrbus.service.util.Constantes;
+import com.cystesoft.vyrbus.service.util.Messages;
 import com.cystesoft.vyrbus.service.util.MyTime;
+import com.cystesoft.vyrbus.view.ui.DlgMessage;
 import com.cystesoft.vyrbus.view.ui.WndBase;
 
 /**
@@ -39,6 +42,9 @@ public class WndAnulacionPostergacion extends WndBase {
 	private Listbox lbxAgencia = new Listbox();
 	private Listbox lbxUsuario = new Listbox();
 	private Hlayout hlytResumen;
+	
+	private static final int SEARCH_BY_AGENCIA = 1;
+	private static final int SEARCH_BY_USER = 2;
 	
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.view.ui.WndBase#initComponents()
@@ -64,15 +70,22 @@ public class WndAnulacionPostergacion extends WndBase {
 	public void onSearch() {
 		String fechaDesde = Constantes.FORMAT_DATE.format(dbDesde.getValue());
 		String fechaHasta = Constantes.FORMAT_DATE.format(dbHasta.getValue());
+		if(rdgCriterios.getSelectedItem() == null) {
+			DlgMessage.information(Messages.getString("wndAnulacionPostergacion.information.noCriterios"));
+			return;
+		}
 		
 		try {
 			if(rdgCriterios.getSelectedIndex()==0) {
-				List<ResumenAnulacionPostergacion> lstAnuladosByAgencia = ServiceLocator.getVentaPasajesManager().buscarBoletosAnuladosPorAgencia(fechaDesde, fechaHasta);
-				listarAnuladosByAgencia(lstAnuladosByAgencia);
-				List<ResumenAnulacionPostergacion> lstAnuladosByUsuario = ServiceLocator.getVentaPasajesManager().buscarBoletosAnuladosPorUsuario(fechaDesde, fechaHasta);
-				listarAnuladosByUsuario(lstAnuladosByUsuario);
+				List<ResumenAnulacionPostergacion> lstAnuladosByAgencia = ServiceLocator.getVentaPasajesManager().buscarBoletosAnuladosByX(fechaDesde, fechaHasta, SEARCH_BY_AGENCIA);
+				listarAnuladosPostergadosByAgencia(lstAnuladosByAgencia);
+				List<ResumenAnulacionPostergacion> lstAnuladosByUsuario = ServiceLocator.getVentaPasajesManager().buscarBoletosAnuladosByX(fechaDesde, fechaHasta, SEARCH_BY_USER);
+				listarAnuladosPostergadosByUsuario(lstAnuladosByUsuario);
 			}else if(rdgCriterios.getSelectedIndex()==1) {
-				System.out.println("Postergacion");
+				List<ResumenAnulacionPostergacion> lstPostergadosByAgencia = ServiceLocator.getVentaPasajesManager().buscarBoletosPostergadosByX(fechaDesde, fechaHasta, SEARCH_BY_AGENCIA);
+				listarAnuladosPostergadosByAgencia(lstPostergadosByAgencia);
+				List<ResumenAnulacionPostergacion> lstPostergadosByUsuario = ServiceLocator.getVentaPasajesManager().buscarBoletosPostergadosByX(fechaDesde, fechaHasta, SEARCH_BY_USER);
+				listarAnuladosPostergadosByUsuario(lstPostergadosByUsuario);				
 			}else {
 				System.out.println("Posterga x numero");
 			}
@@ -81,7 +94,7 @@ public class WndAnulacionPostergacion extends WndBase {
 		}
 	}
 	
-	public void listarAnuladosByAgencia(List<ResumenAnulacionPostergacion> lstResumen) {
+	public void listarAnuladosPostergadosByAgencia(List<ResumenAnulacionPostergacion> lstResumen) {
 		Listitem item = null;
 		Listcell cell = null;
 		
@@ -136,12 +149,10 @@ public class WndAnulacionPostergacion extends WndBase {
 			lbxAgencia.appendChild(item);
 			
 		}
-		
-		
-		
 	}
 	
-	public void listarAnuladosByUsuario(List<ResumenAnulacionPostergacion> lstResumen) {
+
+	public void listarAnuladosPostergadosByUsuario(List<ResumenAnulacionPostergacion> lstResumen) {
 
 		Listitem item = null;
 		Listcell cell = null;
@@ -152,33 +163,32 @@ public class WndAnulacionPostergacion extends WndBase {
 		lbxUsuario.setHeight("250px");
 		lbxUsuario.setWidth("375px");
 		
-		Listhead listheadUsuario = new Listhead();
+		Listhead listhead = new Listhead();
 		
 		Listheader listheaderUsuario = new Listheader();
 		listheaderUsuario.setLabel("#");
 		listheaderUsuario.setWidth("30px");
 		listheaderUsuario.setStyle("color: #ffffff;");
-		listheadUsuario.appendChild(listheaderUsuario);
+		listheaderUsuario.appendChild(listheaderUsuario);
 		
 		listheaderUsuario = new Listheader();
 		listheaderUsuario.setLabel("USUARIO");
 		listheaderUsuario.setWidth("265px");
 		listheaderUsuario.setStyle("color: #ffffff;");
-		listheadUsuario.appendChild(listheaderUsuario);
+		listheaderUsuario.appendChild(listheaderUsuario);
 		
 		listheaderUsuario = new Listheader();
 		listheaderUsuario.setLabel("CANTIDAD");
 		listheaderUsuario.setWidth("80px");
 		listheaderUsuario.setStyle("color: #ffffff;");
-		listheadUsuario.appendChild(listheaderUsuario);
+		listheaderUsuario.appendChild(listheaderUsuario);
 		
-		lbxUsuario.appendChild(listheadUsuario);
+		lbxUsuario.appendChild(listheaderUsuario);
 		hlytResumen.appendChild(lbxUsuario);
 		
 		Separator separator = new Separator();
 		hlytResumen.appendChild(separator);
 
-		
 		int i=0;
 		for(ResumenAnulacionPostergacion resumen : lstResumen) {
 			i++;
@@ -197,6 +207,5 @@ public class WndAnulacionPostergacion extends WndBase {
 			
 		}
 
-		
 	}
 }

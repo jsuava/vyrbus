@@ -524,33 +524,28 @@ public interface VentaPasajesManager {
 	 */
 	public List<VentaPasaje> buscarAvanceVentas(String idOrigen, String idDestino, String idServicio, String fechaDesde, String fechaHasta) throws Exception;
 	/**
-	 * Realiza la busqueda de boletos anulados agrupado por usuario
+	 * Realiza la busqueda de boletos anulados agrupado por Usuario o Agencia
 	 * @param fechaDesde	: Fecha de inicio de busqueda
 	 * @param fechaHasta	: Fecha fin de la busqueda
+	 * @param criterio		: Criterio a tomar en cuenta para obtener la informacion.
 	 * @return
 	 */
-	public List<ResumenAnulacionPostergacion> buscarBoletosAnuladosPorUsuario(String fechaDesde, String fechaHasta);
-	/**
-	 * Realiza la busqueda de boletos anulados agrupado por agencia
-	 * @param fechaDesde	: Fecha de inicio de busqueda
-	 * @param fechaHasta	: Fecha fin de la busqueda
-	 * @return
-	 */
-	public List<ResumenAnulacionPostergacion> buscarBoletosAnuladosPorAgencia(String fechaDesde, String fechaHasta);
+	public List<ResumenAnulacionPostergacion> buscarBoletosAnuladosByX(String fechaDesde, String fechaHasta, Integer criterio);
 	/**
 	 * Realiza la busqueda de boletos anulados por usuario
 	 * @param fechaDesde	: Fecha de inicio de busqueda
 	 * @param fechaHasta	: Fecha fin de la busqueda
-	 * @param idUsuario		: Identificador del usuario
+	 * @param id			: Identificador del usuario o Agencia
+	 * @param criterio		: Criterio a tomar en cuenta para obtener la informacion.
 	 * @return
 	 */
-	public List<VentaPasaje> buscarBoletosAnuladosDetalladoPorUsuario(String fechaDesde, String fechaHasta, Integer idUsuario);
+	public List<VentaPasaje> buscarBoletosAnuladosDetalladoByX(String fechaDesde, String fechaHasta, Integer id, Integer criterio);
 	/**
-	 * Realiza la busqueda de boletos anulados por agencia
+	 * Busca los boletos postergados por Usuario o Agencia
 	 * @param fechaDesde	: Fecha de inicio de busqueda
 	 * @param fechaHasta	: Fecha fin de la busqueda
-	 * @param idAgencia		: Identificador de Agencia
+	 * @param criterio		: Criterio a tomar en cuenta para obtener la informacion.
 	 * @return
 	 */
-	public List<VentaPasaje> buscarBoletosAnuladosDetalladoPorAgencia(String fechaDesde, String fechaHasta, Integer idAgencia);
+	public List<ResumenAnulacionPostergacion> buscarBoletosPostergadosByX(String fechaDesde, String fechaHasta, Integer criterio);
 }

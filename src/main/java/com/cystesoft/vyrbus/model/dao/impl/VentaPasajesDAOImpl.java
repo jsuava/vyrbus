@@ -3143,42 +3143,24 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 * @see com.cystesoft.vyrbus.model.dao.VentaPasajesDAO#buscarBoletosAnuladosPorUsuario(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public List<ResumenAnulacionPostergacion> buscarBoletosAnuladosPorUsuario(String fechaDesde, String fechaHasta) {
-		String sql = "SELECT vp.usuario_id, u.c_apepat||' '||u.c_apemat||' '||u.c_nombre usuario, COUNT(vp.usuario_id) cantidad "
-				+ "FROM vrtvenpas vp "
-				+ "INNER JOIN vrmusuario u ON u.usuario_id=vp.usuario_id "
-				+ "WHERE vp.tipmov_id=13 AND vp.d_fecliq BETWEEN to_date('"+fechaDesde+"', 'dd/mm/yyyy') AND "
-						+ "to_date('"+fechaHasta+"', 'dd/mm/yyyy') AND vp.c_tiptra=1 AND vp.tipcom_id IN (2,7) "
-				+ "GROUP BY vp.usuario_id, (u.c_apepat||' '||u.c_apemat||' '||u.c_nombre)"
-				+ "ORDER BY (u.c_apepat||' '||u.c_apemat||' '||u.c_nombre) ASC";
-		
-		log.info(sql);
-		
-		List<?> result = getSession().createSQLQuery(sql).list();
-		List<ResumenAnulacionPostergacion> lstResult = new ArrayList<>();
-		for(int i=0; i<result.size(); i++){
-			Object[] obj = (Object[])result.get(i);
-			ResumenAnulacionPostergacion resumenAnulacionPostergacion = new ResumenAnulacionPostergacion();
-			resumenAnulacionPostergacion.setId(((BigDecimal)obj[0]).intValue());
-			resumenAnulacionPostergacion.setDenominacion(obj[1].toString());
-			resumenAnulacionPostergacion.setTotal(((BigDecimal)obj[2]).intValue());
-			lstResult.add(resumenAnulacionPostergacion);
-		}
-		return lstResult;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.cystesoft.vyrbus.model.dao.VentaPasajesDAO#buscarBoletosAnuladosPorAgencia(java.lang.String, java.lang.String)
-	 */
-	@Override
-	public List<ResumenAnulacionPostergacion> buscarBoletosAnuladosPorAgencia(String fechaDesde, String fechaHasta) {
-		String sql = "SELECT vp.agencia_id, a.c_denominacion, COUNT(vp.agencia_id) cantidad "
-				+ "FROM vrtvenpas vp "
-				+ "INNER JOIN vrmagencia a ON a.agencia_id=vp.agencia_id "
-				+ "WHERE vp.tipmov_id=13 AND vp.d_fecliq BETWEEN to_date('"+fechaDesde+"', 'dd/mm/yyyy') AND "
-						+ "to_date('"+fechaHasta+"', 'dd/mm/yyyy') AND vp.c_tiptra=1 AND vp.tipcom_id IN (2,7) "
-				+ "GROUP BY vp.agencia_id, a.c_denominacion "
-				+ "ORDER BY a.c_denominacion ASC";
+	public List<ResumenAnulacionPostergacion> buscarBoletosAnuladosByX(String fechaDesde, String fechaHasta, Integer criterio) {
+		String sql = "";
+		if(criterio == 1)	//By Agencia
+			sql = "SELECT vp.agencia_id, a.c_denominacion, COUNT(vp.agencia_id) cantidad "
+					+ "FROM vrtvenpas vp "
+					+ "INNER JOIN vrmagencia a ON a.agencia_id=vp.agencia_id "
+					+ "WHERE vp.tipmov_id=13 AND vp.d_fecliq BETWEEN to_date('"+fechaDesde+"', 'dd/mm/yyyy') AND "
+							+ "to_date('"+fechaHasta+"', 'dd/mm/yyyy') AND vp.c_tiptra=1 AND vp.tipcom_id IN (2,7) "
+					+ "GROUP BY vp.agencia_id, a.c_denominacion "
+					+ "ORDER BY a.c_denominacion ASC";
+		else
+			sql = "SELECT vp.usuario_id, u.c_apepat||' '||u.c_apemat||' '||u.c_nombre usuario, COUNT(vp.usuario_id) cantidad "
+					+ "FROM vrtvenpas vp "
+					+ "INNER JOIN vrmusuario u ON u.usuario_id=vp.usuario_id "
+					+ "WHERE vp.tipmov_id=13 AND vp.d_fecliq BETWEEN to_date('"+fechaDesde+"', 'dd/mm/yyyy') AND "
+							+ "to_date('"+fechaHasta+"', 'dd/mm/yyyy') AND vp.c_tiptra=1 AND vp.tipcom_id IN (2,7) "
+					+ "GROUP BY vp.usuario_id, (u.c_apepat||' '||u.c_apemat||' '||u.c_nombre)"
+					+ "ORDER BY (u.c_apepat||' '||u.c_apemat||' '||u.c_nombre) ASC";
 		
 		log.info(sql);
 		
@@ -3199,7 +3181,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 * @see com.cystesoft.vyrbus.model.dao.VentaPasajesDAO#buscarBoletosAnuladosDetalladoPorUsuario(java.lang.String, java.lang.String, java.lang.Integer)
 	 */
 	@Override
-	public List<VentaPasaje> buscarBoletosAnuladosDetalladoPorUsuario(String fechaDesde, String fechaHasta, Integer idUsuario) {
+	public List<VentaPasaje> buscarBoletosAnuladosDetalladoByX(String fechaDesde, String fechaHasta, Integer id, Integer criterio) {
 		String sql = "SELECT vp.venpas_id, vp.venpas_idoriginal, vp.c_numboleto, vp.c_numbolant, vp.c_numcontrol, vp.n_secuencial, "
 				+ "p.c_apepat||' '||p.c_apemat||' '||p.c_nombre pasajero, tc.c_abreviatura TIPCOM, tm.c_abreviatura TIPMOV, cv.c_nomcor CANAL, "
 				+ "nvl(vp.n_numpiso, 0) PISO, nvl(vp.n_numasiento, 0) ASTO, vp.d_fecpar, vp.c_horpar, vp.n_tarifa, vp.n_imppagdif DIFAGRE, "
@@ -3213,8 +3195,13 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				+ "INNER JOIN vrmusuario u on (vp.usuario_id = u.usuario_id) "
 				+ "INNER JOIN vrmcanven cv on (vp.canven_id = cv.canven_id) "
 				+ "WHERE vp.d_fecliq between to_date('"+fechaDesde+"', 'dd/mm/yyyy') AND to_date('"+fechaHasta+"', 'dd/mm/yyyy') AND "
-				+ "vp.c_tiptra=1 AND vp.tipmov_id in (13) AND vp.tipcom_id in (2,7) AND vp.usuario_id="+idUsuario +" "
-				+ "ORDER BY a.c_nomcor;";
+				+ "vp.c_tiptra=1 AND vp.tipmov_id in (13) AND vp.tipcom_id in (2,7) ";
+		if(criterio == 1)	//By Agencia
+			sql = sql + "AND vp.agencia_id="+id+" ";
+		else
+			sql = sql + "AND vp.usuario_id="+id+" ";
+		
+		sql = sql + "ORDER BY a.c_nomcor";
 		
 		log.info(sql);
 		
@@ -3263,68 +3250,40 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	}
 
 	/* (non-Javadoc)
-	 * @see com.cystesoft.vyrbus.model.dao.VentaPasajesDAO#buscarBoletosAnuladosDetalladoPorAgencia(java.lang.String, java.lang.String, java.lang.Integer)
+	 * @see com.cystesoft.vyrbus.model.dao.VentaPasajesDAO#buscarBoletosPostergadosByX(java.lang.String, java.lang.String, java.lang.Integer)
 	 */
 	@Override
-	public List<VentaPasaje> buscarBoletosAnuladosDetalladoPorAgencia(String fechaDesde, String fechaHasta, Integer idAgencia) {
-		String sql = "SELECT vp.venpas_id, vp.venpas_idoriginal vp.c_numboleto, vp.c_numbolant, vp.c_numcontrol, vp.n_secuencial, "
-				+ "p.c_apepat||' '||p.c_apemat||' '||p.c_nombre pasajero, tc.c_abreviatura TIPCOM,tm.c_abreviatura TIPMOV, cv.c_nomcor CANAL, "
-				+ "nvl(vp.n_numpiso, 0) PISO, nvl(vp.n_numasiento, 0) ASTO, vp.d_fecpar, vp.c_horpar, vp.n_tarifa, vp.n_imppagdif DIFAGRE, "
-				+ "vp.d_fecliq FECOPE, a.c_nomcor AGENCIA, u.c_apepat||' '||u.c_apemat||' '||u.c_nombre USUARIO, vp.c_observaciones "
+	public List<ResumenAnulacionPostergacion> buscarBoletosPostergadosByX(String fechaDesde, String fechaHasta, Integer criterio) {
+		String sql = "";
+		if(criterio == 1)	//By Agencia
+			sql ="SELECT  vp.agencia_id, a.c_denominacion, COUNT(vp.agencia_id) cant "
 				+ "FROM vrtvenpas vp "
-				+ "INNER JOIN vrmruta r on (vp.ruta_id = r.ruta_id) "
-				+ "INNER JOIN vrmpasajero p on (vp.pasajero_id = p.pasajero_id) "
-				+ "INNER JOIN vrmtipcom tc on (vp.tipcom_id = tc.tipcom_id) "
-				+ "INNER JOIN vrmtipmov tm on (vp.tipmov_id = tm.tipmov_id) "
-				+ "INNER JOIN vrmagencia a on (vp.agencia_id = a.agencia_id) "
-				+ "INNER JOIN vrmusuario u on (vp.usuario_id = u.usuario_id) "
-				+ "INNER JOIN vrmcanven cv on (vp.canven_id = cv.canven_id) "
-				+ "WHERE vp.d_fecliq between to_date('"+fechaDesde+"', 'dd/mm/yyyy') AND to_date('"+fechaHasta+"', 'dd/mm/yyyy') AND "
-				+ "vp.c_tiptra=1 AND vp.tipmov_id in (13) AND vp.tipcom_id in (2,7) AND vp.agencia_id="+idAgencia +" "
-				+ "ORDER BY a.c_nomcor;";
-
-		log.info(sql);
+				+ "INNER JOIN vrmagencia a ON a.agencia_id=vp.agencia_id "
+				+ "WHERE vp.tipmov_id IN (2, 9) AND vp.d_fecliq BETWEEN to_date('"+fechaDesde+"', 'dd/mm/yyyy') "
+				+ "AND to_date('"+fechaHasta+"', 'dd/mm/yyyy') AND vp.c_tiptra=1 AND vp.tipcom_id in (2,7) "
+				+ "GROUP BY(vp.agencia_id, a.c_denominacion) "
+				+ "ORDER BY a.c_denominacion DESC";
+		else
+			sql = "SELECT  vp.usuario_id, (u.c_apepat||' '||u.c_apemat||' '||u.c_nombre) usuario, COUNT(vp.usuario_id) cant "
+					+ "FROM vrtvenpas vp "
+					+ "INNER JOIN vrmusuario u ON u.usuario_id=vp.usuario_id "
+					+ "WHERE vp.tipmov_id in (2, 9) AND vp.d_fecliq BETWEEN to_date('"+fechaDesde+"', 'dd/mm/yyyy') "
+					+ "AND to_date('"+fechaHasta+"', 'dd/mm/yyyy') AND vp.c_tiptra=1 AND vp.tipcom_id in (2,7) "
+					+ "GROUP BY vp.usuario_id, (u.c_apepat||' '||u.c_apemat||' '||u.c_nombre) "
+					+ "ORDER BY (u.c_apepat||' '||u.c_apemat||' '||u.c_nombre) DESC";
 		
+		log.info(sql);
+				
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<VentaPasaje> lstResult = new ArrayList<VentaPasaje>();
-		for(int i=0; i<result.size(); i++) {
-			Object[] obj = (Object[]) result.get(i);
-			VentaPasaje ventaPasaje = new VentaPasaje();
-			ventaPasaje.setId(((BigDecimal)obj[0]).longValue());
-			ventaPasaje.setVentaOriginal(((BigDecimal)obj[1]).longValue());
-			ventaPasaje.setNumeroBoleto(obj[2].toString());
-			ventaPasaje.setNumeroBoletoAnterior(obj[3]==null?null:obj[3].toString());
-			ventaPasaje.setNumeroControl(obj[4]==null?null:obj[4].toString());
-			ventaPasaje.setSecuencial(((BigDecimal)obj[5]).intValue());
-			Pasajero pasajero = new Pasajero();
-			pasajero.setNombresApellidos(obj[6].toString());
-			ventaPasaje.setPasajero(pasajero);
-			TipoComprobante tipoComprobante = new TipoComprobante();
-			tipoComprobante.setAbreviatura(obj[7].toString());
-			ventaPasaje.setTipoComprobante(tipoComprobante);
-			TipoMovimiento tipoMovimiento = new TipoMovimiento();
-			tipoMovimiento.setAbreviatura(obj[8].toString());
-			ventaPasaje.setTipoMovimiento(tipoMovimiento);
-			CanalVenta canalVenta = new CanalVenta();
-			canalVenta.setNombreCorto(obj[9].toString());
-			ventaPasaje.setCanalVenta(canalVenta);
-			ventaPasaje.setNumeroPiso(((BigDecimal)obj[10]).intValue());
-			ventaPasaje.setNumeroAsiento(((BigDecimal)obj[11]).intValue());
-			ventaPasaje.setFechaPartida((Date)obj[12]);
-			ventaPasaje.setHoraPartida(obj[13]==null?null:obj[13].toString());
-			ventaPasaje.setTarifa(((BigDecimal)obj[14]).doubleValue());
-			ventaPasaje.setImportePagadoByDiferencia(((BigDecimal)obj[15]).doubleValue());
-			ventaPasaje.setFechaLiquidacion((Date)obj[16]);
-			Agencia agencia = new Agencia();
-			agencia.setNombreCorto(obj[17].toString());
-			ventaPasaje.setAgencia(agencia);
-			Usuario usuario = new Usuario();
-			usuario.setApellidoPaterno(obj[18]==null?null:obj[18].toString());
-			usuario.setApellidoMaterno(obj[19]==null?null:obj[19].toString());
-			usuario.setNombre(obj[20]==null?null:obj[20].toString());
-			ventaPasaje.setUsuario(usuario);
-			ventaPasaje.setObservaciones(obj[21]==null?null:obj[21].toString());
-			lstResult.add(ventaPasaje);
+		List<ResumenAnulacionPostergacion> lstResult = new ArrayList<>();
+		
+		for(int i=0; i<result.size(); i++){
+			Object[] obj = (Object[])result.get(i);
+			ResumenAnulacionPostergacion resumenAnulacionPostergacion = new ResumenAnulacionPostergacion();
+			resumenAnulacionPostergacion.setId(((BigDecimal)obj[0]).intValue());
+			resumenAnulacionPostergacion.setDenominacion(obj[1].toString());
+			resumenAnulacionPostergacion.setTotal(((BigDecimal)obj[2]).intValue());
+			lstResult.add(resumenAnulacionPostergacion);
 		}
 		return lstResult;
 	}	
