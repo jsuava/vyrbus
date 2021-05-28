@@ -76,9 +76,9 @@ public class RESTCiva implements Serializable{
 	//-->Produccion
 	private static String URI_API="http://www.excluciva.pe/apiciva/"; 
 	private static String API_KEY="/apikey/a526cc6013c9db58092a77bcf2a96cc462936e16";
-	private static String URI_DNI="https://dni.optimizeperu.com/api/persons/";
+	private static String URI_DNI="https://dniruc.apisperu.com/api/v1/dni/";
 	private static String URI_RUC="https://dniruc.apisperu.com/api/v1/ruc/";
-	private static String TOKEN_RUC="?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im9zY2NvZW1AZ21haWwuY29tIn0.W8wDh8URSCh8lbT-z_cQSQ_yQwMIA_QV00TejXvBIHg";
+	private static String TOKEN_DOCIDE="?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im9zY2NvZW1AZ21haWwuY29tIn0.W8wDh8URSCh8lbT-z_cQSQ_yQwMIA_QV00TejXvBIHg";
 	
 	private static Integer ID_SERVICIO_EXCLUCIVA=4;
 	private static Integer ID_SERVICIO_SUPERCIVA=6;
@@ -105,7 +105,7 @@ public class RESTCiva implements Serializable{
 	
 	private static HttpResponse<JsonNode> getPOST_REST_DNI(String dni, String parametros)throws Exception{
 //		Unirest.setProxy(new HttpHost("192.168.50.1", 8080));
-		HttpResponse<JsonNode> response = Unirest.get(URI_DNI+parametros)
+		HttpResponse<JsonNode> response = Unirest.get(URI_DNI+parametros+TOKEN_DOCIDE)
 //				  .header("cache-control", "no-cache")
 //				  .header("postman-token", "dca64e95-c3bb-93a4-e90f-a1530e577510")
 				  .header("content-type", "application/x-www-form-urlencoded")
@@ -117,7 +117,7 @@ public class RESTCiva implements Serializable{
 	
 	private static HttpResponse<JsonNode> getPOST_REST_RUC(String ruc, String parametros)throws Exception{
 //		Unirest.setProxy(new HttpHost("192.168.50.1", 8080));
-		HttpResponse<JsonNode> response = Unirest.get(URI_RUC+parametros+TOKEN_RUC)
+		HttpResponse<JsonNode> response = Unirest.get(URI_RUC+parametros+TOKEN_DOCIDE)
 //				  .header("cache-control", "no-cache")
 //				  .header("postman-token", "dca64e95-c3bb-93a4-e90f-a1530e577510")
 				  .header("content-type", "application/x-www-form-urlencoded")
@@ -138,10 +138,10 @@ public class RESTCiva implements Serializable{
 			    
 			    
 			    result.add(jsonobject.getString("dni"));
-			    result.add(jsonobject.getString("name"));
-			    result.add(jsonobject.getString("first_name"));
-			    result.add(jsonobject.getString("last_name"));
-//			    result.add(String.valueOf(jsonobject.getInt("cui")));
+			    result.add(jsonobject.getString("nombres"));
+			    result.add(jsonobject.getString("apellidoPaterno"));
+			    result.add(jsonobject.getString("apellidoMaterno"));
+//			    result.add(String.valueOf(jsonobject.getInt("codVerifica")));
 
 			}
 		}		

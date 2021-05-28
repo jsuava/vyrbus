@@ -27,7 +27,7 @@
 							</columns>
 							<rows>
 								<row>
-									<label value="FEC. INICIO :" />
+									<label value="Desde :" sclass="label-size11-bold"/>
 									<datebox id="dtbxFecInicioBus" 
 											onChange="com.cystesoft.vyrbus.service.util.Util.limpiarListbox(lsbxVentas)" 
 											readonly="true"   
@@ -35,19 +35,19 @@
 											format="dd/MM/yyyy" 
 											visible="true"
 											width="100px" />
-									<label value="FEC FIN :" />
+									<label value="Hasta :" sclass="label-size11-bold" />
 									<datebox id="dtbxFecFinBus" 
 											format="dd/MM/yyyy"
 											readonly="true"
 											style="font-size:11px" 
 											visible="true"  
 											width="100px"  />
-									<label value="OFICINA :" />
+									<label value="Oficina :" sclass="label-size11-bold"/>
 									<combobox id="cmbAgencias"
 											onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(rdFecha)" 
 											readonly="true" 
 											width="110px"   />
-									<label value="FECHA :" />
+									<label value="Fecha :" sclass="label-size11-bold"/>
 									<label id="lblFechaConsulta" value="23/05/2021" style="font-size:12px !important" />
 									<label id="lblHoraConsulta" value="10:25 a.m." style="font-size:12px !important"/>
 								</row>
@@ -74,7 +74,7 @@
 										onClick="wndRptGeneralVentas.buscar()" 
 										sclass="btnCommandM" 
 										 />									
-									<label value="USUARIO :" />
+									<label value="Usuario :" sclass="label-size11-bold" />
 									<label id="lblUsuarioConsulta" value="moscco" style="font-size:12px !important"/>								
 
 									<label/>

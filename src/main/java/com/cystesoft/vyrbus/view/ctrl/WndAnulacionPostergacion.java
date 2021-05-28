@@ -97,16 +97,19 @@ public class WndAnulacionPostergacion extends WndBase {
 		Listheader listheader = new Listheader();
 		listheader.setLabel("#");
 		listheader.setWidth("30px");
+		listheader.setStyle("color: #ffffff;");
 		listhead.appendChild(listheader);
 		
 		listheader = new Listheader();
-		listheader.setLabel("Agencia");
-		listheader.setWidth("160px");
+		listheader.setLabel("AGENCIA");
+		listheader.setWidth("175px");
+		listheader.setStyle("color: #ffffff;");
 		listhead.appendChild(listheader);
 		
 		listheader = new Listheader();
-		listheader.setLabel("Cantidad");
+		listheader.setLabel("CANTIDAD");
 		listheader.setWidth("80px");
+		listheader.setStyle("color: #ffffff;");
 		listhead.appendChild(listheader);
 		
 		lbxAgencia.appendChild(listhead);
@@ -139,6 +142,10 @@ public class WndAnulacionPostergacion extends WndBase {
 	}
 	
 	public void listarAnuladosByUsuario(List<ResumenAnulacionPostergacion> lstResumen) {
+
+		Listitem item = null;
+		Listcell cell = null;
+		
 		lbxUsuario.getItems().clear();
 		lbxUsuario.detach();
 		lbxUsuario = new Listbox();
@@ -150,20 +157,46 @@ public class WndAnulacionPostergacion extends WndBase {
 		Listheader listheaderUsuario = new Listheader();
 		listheaderUsuario.setLabel("#");
 		listheaderUsuario.setWidth("30px");
+		listheaderUsuario.setStyle("color: #ffffff;");
 		listheadUsuario.appendChild(listheaderUsuario);
 		
 		listheaderUsuario = new Listheader();
-		listheaderUsuario.setLabel("Usuario");
-		listheaderUsuario.setWidth("250px");
+		listheaderUsuario.setLabel("USUARIO");
+		listheaderUsuario.setWidth("265px");
+		listheaderUsuario.setStyle("color: #ffffff;");
 		listheadUsuario.appendChild(listheaderUsuario);
 		
 		listheaderUsuario = new Listheader();
-		listheaderUsuario.setLabel("Cantidad");
+		listheaderUsuario.setLabel("CANTIDAD");
 		listheaderUsuario.setWidth("80px");
+		listheaderUsuario.setStyle("color: #ffffff;");
 		listheadUsuario.appendChild(listheaderUsuario);
 		
 		lbxUsuario.appendChild(listheadUsuario);
-		
 		hlytResumen.appendChild(lbxUsuario);
+		
+		Separator separator = new Separator();
+		hlytResumen.appendChild(separator);
+
+		
+		int i=0;
+		for(ResumenAnulacionPostergacion resumen : lstResumen) {
+			i++;
+			item = new Listitem();
+			
+			cell = new Listcell(String.valueOf(i));
+			item.appendChild(cell);
+			
+			cell = new Listcell(resumen.getDenominacion());
+			item.appendChild(cell);
+			
+			cell = new Listcell(resumen.getTotal().toString());
+			item.appendChild(cell);
+			
+			lbxUsuario.appendChild(item);
+			
+		}
+
+		
 	}
 }

@@ -1172,7 +1172,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 		row.appendChild(label);		
 		text = new Textbox(ventaOriginal.getRuta().getOrigen()+" - " + ventaOriginal.getRuta().getDestino());
 		text.setReadonly(true);
-		text.setWidth("80px");
+		text.setWidth("100px");
 		row.appendChild(text);		
 		label = new Label("IMPORTE :");
 		row.appendChild(label);		
@@ -1214,7 +1214,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 		row = new Row();
 		
 		Button button = new Button("Continuar", "resources/mp_anular.png");
-		button.setClass("btn-vyrbus");
+		button.setClass("btnCommandM");
 		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			public void onEvent(Event e){
 				if(txtMotivoAnulacion.getText().trim().isEmpty()){
@@ -1236,14 +1236,17 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 			}
 		});
 		button.setHeight("28px");
+		button.setWidth("100px");
 		row.appendChild(button);
 		button = new Button("Cancelar", "resources/mp_cancelarEnabled.png");
+		button.setClass("btnCommandM");
 		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			public void onEvent(Event e){
 				win.onClose();
 			}
 		});
 		button.setHeight("28px");
+		button.setWidth("100px");
 		button.setFocus(true);
 		row.appendChild(button);
 		

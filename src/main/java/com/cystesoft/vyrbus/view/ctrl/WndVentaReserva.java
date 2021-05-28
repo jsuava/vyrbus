@@ -6079,6 +6079,8 @@ public class WndVentaReserva extends WndBase {
 										
 										List<VentaPasaje> listVentaPasajes= new ArrayList<>();
 										listVentaPasajes.add(ventaPasaje);
+										
+										//Aqui se envia el comprobante al servidor de Facturación Electrónica
 										WSFE.sendVenta(listVentaPasajes,wndVentaReserva,printComprobante,null);
 									}
 									
