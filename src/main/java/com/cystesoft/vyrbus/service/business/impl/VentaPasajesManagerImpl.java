@@ -2225,8 +2225,12 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	 * (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#buscarBoletosPostergadosByX(java.lang.String, java.lang.String, java.lang.Integer)
 	 */
-	public List<ResumenAnulacionPostergacion> buscarBoletosPostergadosByX(String fechaDesde, String fechaHasta, Integer criterio){
-		return getVentaPasajesDAO().buscarBoletosPostergadosByX(fechaDesde, fechaHasta, criterio);
+	public List<ResumenAnulacionPostergacion> buscarBoletosPostergadosByX(String fechaDesde, String fechaHasta, Integer criterio, Integer nroPostergaciones){
+		return getVentaPasajesDAO().buscarBoletosPostergadosByX(fechaDesde, fechaHasta, criterio, nroPostergaciones);
+	}
+	
+	public List<VentaPasaje> buscarBoletosPostergadosDetalladoByX(String fechaDesde, String fechaHasta, Integer id, Integer criterio, Integer nroPostergaciones){
+		return getVentaPasajesDAO().buscarBoletosPostergadosDetalladoByX(fechaDesde, fechaHasta, id, criterio, nroPostergaciones);
 	}
 	
 	

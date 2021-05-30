@@ -8,17 +8,20 @@
  */
 package com.cystesoft.vyrbus.view.ctrl;
 
+import java.text.DateFormat;
 import java.util.List;
 
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Hlayout;
+import org.zkoss.zul.Intbox;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
-import org.zkoss.zul.Listhead;
-import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Radiogroup;
-import org.zkoss.zul.Separator;
 
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
@@ -26,6 +29,7 @@ import com.cystesoft.vyrbus.service.mappers.ResumenAnulacionPostergacion;
 import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.Messages;
 import com.cystesoft.vyrbus.service.util.MyTime;
+import com.cystesoft.vyrbus.service.util.Util;
 import com.cystesoft.vyrbus.view.ui.DlgMessage;
 import com.cystesoft.vyrbus.view.ui.WndBase;
 
@@ -38,10 +42,14 @@ public class WndAnulacionPostergacion extends WndBase {
 	private static final long serialVersionUID = 1L;
 	private Datebox dbDesde;
 	private Datebox dbHasta;
+	private Listbox lbxAgencias;
+	private Listbox lbxUsuarios;
+	private Listbox lbxDetallado;
 	private Radiogroup rdgCriterios;
-	private Listbox lbxAgencia = new Listbox();
-	private Listbox lbxUsuario = new Listbox();
 	private Hlayout hlytResumen;
+	private Intbox ibxCantidadPostergaciones;
+	private Label lblAgencia;
+	private Label lblUsuario;
 	
 	private static final int SEARCH_BY_AGENCIA = 1;
 	private static final int SEARCH_BY_USER = 2;
@@ -53,6 +61,13 @@ public class WndAnulacionPostergacion extends WndBase {
 	public void initComponents() {
 		dbDesde = (Datebox)this.getFellow("dbDesde");
 		dbHasta = (Datebox)this.getFellow("dbHasta");
+		lbxAgencias = (Listbox)this.getFellow("lbxAgencias");
+		lbxUsuarios = (Listbox)this.getFellow("lbxUsuarios");
+		lbxDetallado = (Listbox)this.getFellow("lbxDetallado");
+		lblAgencia = (Label)this.getFellow("lblAgencia");
+		lblUsuario = (Label)this.getFellow("lblUsuario");
+		dbHasta = (Datebox)this.getFellow("dbHasta");
+		ibxCantidadPostergaciones = (Intbox)this.getFellow("ibxCantidadPostergaciones");
 		rdgCriterios = (Radiogroup)this.getFellow("rdgCriterios");
 		hlytResumen = (Hlayout)this.getFellow("hlytResumen");
 	}
@@ -65,11 +80,72 @@ public class WndAnulacionPostergacion extends WndBase {
 		MyTime time = new MyTime();
 		dbDesde.setValue(Constantes.FORMAT_DATE.parse(time.dateServer()));
 		dbHasta.setValue(Constantes.FORMAT_DATE.parse(time.dateServer()));
+		rdgCriterios.setSelectedIndex(0);
+		inicializarControles(true);
+		
+		lbxAgencias.addEventListener(Events.ON_DOUBLE_CLICK,new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				//Si la busqueda es para Anulados 
+				if(rdgCriterios.getSelectedIndex()==0){
+					if(lbxAgencias.getSelectedIndex() >= 0)
+						buscarDetallado(SEARCH_BY_AGENCIA);
+				}else{//Sino es para postergaciones
+					if(lbxAgencias.getSelectedIndex() >= 0)
+						buscarDetallado(SEARCH_BY_AGENCIA);
+				}
+			}
+		});		
+		
+		lbxUsuarios.addEventListener(Events.ON_DOUBLE_CLICK,new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				//Si la busqueda es para Anulados
+				if(rdgCriterios.getSelectedIndex()==0){
+					if(lbxUsuarios.getSelectedIndex() >= 0)
+						buscarDetallado(SEARCH_BY_USER);
+				}else{//Sino es para postergaciones
+					if(lbxUsuarios.getSelectedIndex() >= 0)
+						buscarDetallado(SEARCH_BY_USER);
+				}
+			}
+		});		
+		
+	}
+	
+	private void inicializarControles(boolean estado){
+		ibxCantidadPostergaciones.setDisabled(estado);
+	}
+	
+	public void limpiarListbox(){
+		Util.limpiarListbox(lbxAgencias);
+		Util.limpiarListbox(lbxUsuarios);
+		Util.limpiarListbox(lbxDetallado);
+		lbxDetallado.setVisible(false);
+	}
+	
+	public void rdgOnClick(){
+		
+		if(rdgCriterios.getSelectedIndex() == 0){
+			inicializarControles(true);
+			lblAgencia.setValue("ANULACIONES POR AGENCIA");
+			lblUsuario.setValue("ANULACIONES POR USUARIO");
+			limpiarListbox();
+			ibxCantidadPostergaciones.setText("");
+		}else{
+			inicializarControles(false);
+			ibxCantidadPostergaciones.setFocus(true);
+			lblAgencia.setValue("POSTERGACIONES POR AGENCIA");
+			lblUsuario.setValue("POSTERGACIONES POR USUARIO");
+			limpiarListbox();
+		}
+		
 	}
 	
 	public void onSearch() {
 		String fechaDesde = Constantes.FORMAT_DATE.format(dbDesde.getValue());
 		String fechaHasta = Constantes.FORMAT_DATE.format(dbHasta.getValue());
+		Integer nroPostergaciones;
 		if(rdgCriterios.getSelectedItem() == null) {
 			DlgMessage.information(Messages.getString("wndAnulacionPostergacion.information.noCriterios"));
 			return;
@@ -77,14 +153,21 @@ public class WndAnulacionPostergacion extends WndBase {
 		
 		try {
 			if(rdgCriterios.getSelectedIndex()==0) {
+
 				List<ResumenAnulacionPostergacion> lstAnuladosByAgencia = ServiceLocator.getVentaPasajesManager().buscarBoletosAnuladosByX(fechaDesde, fechaHasta, SEARCH_BY_AGENCIA);
 				listarAnuladosPostergadosByAgencia(lstAnuladosByAgencia);
 				List<ResumenAnulacionPostergacion> lstAnuladosByUsuario = ServiceLocator.getVentaPasajesManager().buscarBoletosAnuladosByX(fechaDesde, fechaHasta, SEARCH_BY_USER);
 				listarAnuladosPostergadosByUsuario(lstAnuladosByUsuario);
 			}else if(rdgCriterios.getSelectedIndex()==1) {
-				List<ResumenAnulacionPostergacion> lstPostergadosByAgencia = ServiceLocator.getVentaPasajesManager().buscarBoletosPostergadosByX(fechaDesde, fechaHasta, SEARCH_BY_AGENCIA);
+
+				if(ibxCantidadPostergaciones.intValue()>0 && ibxCantidadPostergaciones.getValue() != null){
+					nroPostergaciones = ibxCantidadPostergaciones.intValue();
+				}else{
+					nroPostergaciones = 0;
+				}
+				List<ResumenAnulacionPostergacion> lstPostergadosByAgencia = ServiceLocator.getVentaPasajesManager().buscarBoletosPostergadosByX(fechaDesde, fechaHasta, SEARCH_BY_AGENCIA, nroPostergaciones);
 				listarAnuladosPostergadosByAgencia(lstPostergadosByAgencia);
-				List<ResumenAnulacionPostergacion> lstPostergadosByUsuario = ServiceLocator.getVentaPasajesManager().buscarBoletosPostergadosByX(fechaDesde, fechaHasta, SEARCH_BY_USER);
+				List<ResumenAnulacionPostergacion> lstPostergadosByUsuario = ServiceLocator.getVentaPasajesManager().buscarBoletosPostergadosByX(fechaDesde, fechaHasta, SEARCH_BY_USER, nroPostergaciones);
 				listarAnuladosPostergadosByUsuario(lstPostergadosByUsuario);				
 			}else {
 				System.out.println("Posterga x numero");
@@ -98,39 +181,8 @@ public class WndAnulacionPostergacion extends WndBase {
 		Listitem item = null;
 		Listcell cell = null;
 		
-		lbxAgencia.getItems().clear();
-		
-		lbxAgencia.detach();
-		lbxAgencia = new Listbox();
-		lbxAgencia.setHeight("250px");
-		lbxAgencia.setWidth("285px");
-		
-		Listhead listhead = new Listhead();
-		
-		Listheader listheader = new Listheader();
-		listheader.setLabel("#");
-		listheader.setWidth("30px");
-		listheader.setStyle("color: #ffffff;");
-		listhead.appendChild(listheader);
-		
-		listheader = new Listheader();
-		listheader.setLabel("AGENCIA");
-		listheader.setWidth("175px");
-		listheader.setStyle("color: #ffffff;");
-		listhead.appendChild(listheader);
-		
-		listheader = new Listheader();
-		listheader.setLabel("CANTIDAD");
-		listheader.setWidth("80px");
-		listheader.setStyle("color: #ffffff;");
-		listhead.appendChild(listheader);
-		
-		lbxAgencia.appendChild(listhead);
-		
-		hlytResumen.appendChild(lbxAgencia);
-		
-		Separator separator = new Separator();
-		hlytResumen.appendChild(separator);
+		Util.limpiarListbox(lbxAgencias);
+		lbxDetallado.setVisible(false);
 		
 		int i=0;
 		for(ResumenAnulacionPostergacion resumen : lstResumen) {
@@ -140,13 +192,18 @@ public class WndAnulacionPostergacion extends WndBase {
 			cell = new Listcell(String.valueOf(i));
 			item.appendChild(cell);
 			
+			cell = new Listcell(resumen.getId().toString());
+			item.appendChild(cell);
+			
 			cell = new Listcell(resumen.getDenominacion());
 			item.appendChild(cell);
 			
 			cell = new Listcell(resumen.getTotal().toString());
 			item.appendChild(cell);
 			
-			lbxAgencia.appendChild(item);
+			item.setValue(resumen);
+			
+			lbxAgencias.appendChild(item);
 			
 		}
 	}
@@ -157,44 +214,18 @@ public class WndAnulacionPostergacion extends WndBase {
 		Listitem item = null;
 		Listcell cell = null;
 		
-		lbxUsuario.getItems().clear();
-		lbxUsuario.detach();
-		lbxUsuario = new Listbox();
-		lbxUsuario.setHeight("250px");
-		lbxUsuario.setWidth("375px");
+		Util.limpiarListbox(lbxUsuarios);
+		lbxDetallado.setVisible(false);
 		
-		Listhead listhead = new Listhead();
-		
-		Listheader listheaderUsuario = new Listheader();
-		listheaderUsuario.setLabel("#");
-		listheaderUsuario.setWidth("30px");
-		listheaderUsuario.setStyle("color: #ffffff;");
-		listheaderUsuario.appendChild(listheaderUsuario);
-		
-		listheaderUsuario = new Listheader();
-		listheaderUsuario.setLabel("USUARIO");
-		listheaderUsuario.setWidth("265px");
-		listheaderUsuario.setStyle("color: #ffffff;");
-		listheaderUsuario.appendChild(listheaderUsuario);
-		
-		listheaderUsuario = new Listheader();
-		listheaderUsuario.setLabel("CANTIDAD");
-		listheaderUsuario.setWidth("80px");
-		listheaderUsuario.setStyle("color: #ffffff;");
-		listheaderUsuario.appendChild(listheaderUsuario);
-		
-		lbxUsuario.appendChild(listheaderUsuario);
-		hlytResumen.appendChild(lbxUsuario);
-		
-		Separator separator = new Separator();
-		hlytResumen.appendChild(separator);
-
 		int i=0;
 		for(ResumenAnulacionPostergacion resumen : lstResumen) {
 			i++;
 			item = new Listitem();
 			
 			cell = new Listcell(String.valueOf(i));
+			item.appendChild(cell);
+
+			cell = new Listcell(resumen.getId().toString());
 			item.appendChild(cell);
 			
 			cell = new Listcell(resumen.getDenominacion());
@@ -203,9 +234,154 @@ public class WndAnulacionPostergacion extends WndBase {
 			cell = new Listcell(resumen.getTotal().toString());
 			item.appendChild(cell);
 			
-			lbxUsuario.appendChild(item);
+			item.setValue(resumen);
+			
+			lbxUsuarios.appendChild(item);
 			
 		}
 
 	}
+	
+	public void buscarDetallado(int tipoBusqueda){
+
+		String fechaDesde = Constantes.FORMAT_DATE.format(dbDesde.getValue());
+		String fechaHasta = Constantes.FORMAT_DATE.format(dbHasta.getValue());
+		Integer nroPostergaciones;
+
+		Listitem item = null;
+		Listcell cell = null;
+		
+		List<VentaPasaje> lstDetVentas = null;
+		
+		Util.limpiarListbox(lbxDetallado);
+		if(rdgCriterios.getSelectedIndex() == 0){
+		
+			if(tipoBusqueda == SEARCH_BY_AGENCIA){
+				Integer index = lbxAgencias.getSelectedIndex();
+				Listitem itemAnulado = lbxAgencias.getItemAtIndex(index);
+				lstDetVentas = ServiceLocator.getVentaPasajesManager()
+															.buscarBoletosAnuladosDetalladoByX(
+																	fechaDesde, 
+																	fechaHasta, 
+																	((ResumenAnulacionPostergacion)itemAnulado.getValue()).getId(), 
+																	SEARCH_BY_AGENCIA);			
+			}else{
+				Integer index = lbxUsuarios.getSelectedIndex();
+				Listitem itemAnulado = lbxUsuarios.getItemAtIndex(index);
+				lstDetVentas = ServiceLocator.getVentaPasajesManager()
+															.buscarBoletosAnuladosDetalladoByX(
+																	fechaDesde, 
+																	fechaHasta, 
+																	((ResumenAnulacionPostergacion)itemAnulado.getValue()).getId(), 
+																	SEARCH_BY_USER);
+			}
+		}else if(rdgCriterios.getSelectedIndex() == 1){
+			
+			if(ibxCantidadPostergaciones.intValue()>0 && ibxCantidadPostergaciones.getValue() != null){
+				nroPostergaciones = ibxCantidadPostergaciones.intValue();
+			}else{
+				nroPostergaciones = 0;
+			}
+			
+			if(tipoBusqueda == SEARCH_BY_AGENCIA){
+				Integer index = lbxAgencias.getSelectedIndex();
+				Listitem itemPostergado = lbxAgencias.getItemAtIndex(index);
+				lstDetVentas = ServiceLocator.getVentaPasajesManager()
+															.buscarBoletosPostergadosDetalladoByX(
+																	fechaDesde, 
+																	fechaHasta, 
+																	((ResumenAnulacionPostergacion)itemPostergado.getValue()).getId(), 
+																	SEARCH_BY_AGENCIA,
+																	nroPostergaciones);			
+			}else{
+				Integer index = lbxUsuarios.getSelectedIndex();
+				Listitem itemPostergado = lbxUsuarios.getItemAtIndex(index);
+				lstDetVentas = ServiceLocator.getVentaPasajesManager()
+															.buscarBoletosPostergadosDetalladoByX(
+																	fechaDesde, 
+																	fechaHasta, 
+																	((ResumenAnulacionPostergacion)itemPostergado.getValue()).getId(), 
+																	SEARCH_BY_USER,
+																	nroPostergaciones);
+			}
+		}
+		
+
+		for(VentaPasaje ventaPasaje : lstDetVentas) {
+			item = new Listitem();
+				
+			cell = new Listcell(ventaPasaje.getId().toString());
+			item.appendChild(cell);
+				
+			cell = new Listcell(ventaPasaje.getVentaOriginal().toString());
+			item.appendChild(cell);
+				
+			cell = new Listcell(ventaPasaje.getNumeroBoleto());
+			item.appendChild(cell);
+				
+			cell = new Listcell(ventaPasaje.getNumeroBoletoAnterior());
+			item.appendChild(cell);
+
+			cell = new Listcell(ventaPasaje.getNumeroControl());
+			item.appendChild(cell);
+
+			cell = new Listcell(ventaPasaje.getSecuencial().toString());
+			item.appendChild(cell);
+
+			cell = new Listcell(ventaPasaje.getPasajero().getNombresApellidos());
+			item.appendChild(cell);
+
+			cell = new Listcell(ventaPasaje.getTipoComprobante().getAbreviatura());
+			item.appendChild(cell);
+
+			cell = new Listcell(ventaPasaje.getTipoMovimiento().getAbreviatura());
+			item.appendChild(cell);
+
+			cell = new Listcell(ventaPasaje.getCanalVenta().getNombreCorto());
+			item.appendChild(cell);
+
+			cell = new Listcell(ventaPasaje.getNumeroPiso().toString());
+			item.appendChild(cell);
+
+			cell = new Listcell(ventaPasaje.getNumeroAsiento().toString());
+			item.appendChild(cell);
+
+			cell = new Listcell(Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida()));
+			item.appendChild(cell);
+
+			cell = new Listcell(ventaPasaje.getHoraPartida());
+			item.appendChild(cell);
+
+			cell = new Listcell(ventaPasaje.getTarifa().toString());
+			item.appendChild(cell);
+
+			cell = new Listcell(ventaPasaje.getImportePagadoByDiferencia().toString());
+			item.appendChild(cell);
+
+			cell = new Listcell(Constantes.FORMAT_DATE.format(ventaPasaje.getFechaLiquidacion()));
+			item.appendChild(cell);
+
+			cell = new Listcell(ventaPasaje.getAgencia().getNombreCorto());
+			item.appendChild(cell);
+
+			cell = new Listcell(ventaPasaje.getUsuario().getApellidoPaterno()
+								+" " + ventaPasaje.getUsuario().getApellidoMaterno()
+								+" " + ventaPasaje.getUsuario().getNombre());
+			item.appendChild(cell);
+
+			cell = new Listcell(ventaPasaje.getObservaciones());
+			item.appendChild(cell);
+				
+			lbxDetallado.appendChild(item);
+				
+		}
+		
+		lbxDetallado.setVisible(true);
+			
+	}
+	
+	public void buscarDetalladoPostergaciones(int tipoBusqueda){
+		Integer index = lbxUsuarios.getSelectedIndex();
+	}
+	
 }

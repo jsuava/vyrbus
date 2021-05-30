@@ -453,7 +453,18 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @param fechaDesde	: Fecha de inicio de busqueda
 	 * @param fechaHasta	: Fecha fin de la busqueda
 	 * @param criterio		: Criterio a tomar en cuenta para obtener la informacion.
+	 * @param nroPostergaciones		: 0 sin cantidad, mayor a 0 segun se indique.
 	 * @return
 	 */
-	public List<ResumenAnulacionPostergacion> buscarBoletosPostergadosByX(String fechaDesde, String fechaHasta, Integer criterio);
+	public List<ResumenAnulacionPostergacion> buscarBoletosPostergadosByX(String fechaDesde, String fechaHasta, Integer criterio, Integer nroPostergaciones);
+
+	/**
+	 * Busca los boletos postergados por Usuario o Agencia
+	 * @param fechaDesde	: Fecha de inicio de busqueda
+	 * @param fechaHasta	: Fecha fin de la busqueda
+	 * @param criterio		: Criterio a tomar en cuenta para obtener la informacion.
+	 * @param nroPostergaciones		: 0 sin cantidad, mayor a 0 segun se indique.
+	 * @return
+	 */
+	public List<VentaPasaje> buscarBoletosPostergadosDetalladoByX(String fechaDesde, String fechaHasta, Integer id, Integer criterio, Integer nroPostergaciones);
 }

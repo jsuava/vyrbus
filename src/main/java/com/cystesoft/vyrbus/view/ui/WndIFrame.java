@@ -66,6 +66,7 @@ public class WndIFrame extends WndBase{
 		
 		btnCerrar.setLabel("Cerrar");
 		btnCerrar.setHeight("30px");
+		btnCerrar.setSclass("btnCommandM");
 		btnCerrar.setSrc("resources/mp_cerrar.png");
 		
 		btnCerrar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
