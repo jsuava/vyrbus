@@ -11,6 +11,7 @@ import com.cystesoft.vyrbus.model.bean.TipoNota;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.service.mappers.ResumenAnulacionPostergacion;
+import com.cystesoft.vyrbus.service.mappers.ResumenVentas;
 import com.cystesoft.vyrbus.service.util.VentasNotas;
 
 public interface VentaPasajesManager {
@@ -559,4 +560,21 @@ public interface VentaPasajesManager {
 	 * @return
 	 */
 	public List<VentaPasaje> buscarBoletosPostergadosDetalladoByX(String fechaDesde, String fechaHasta, Integer id, Integer criterio, Integer nroPostergaciones);
+	
+	/**
+	 * Busca los boletos postergados por Usuario o Agencia
+	 * @param fechaDesde	: Fecha de inicio de busqueda
+	 * @param fechaHasta	: Fecha fin de la busqueda
+	 * @param idAgencia		: Agencia para el reporte, 0 todos.
+	 * @param nroConsulta	: 1, 2, 3 segun sea el caso.
+	 * @return
+	 */
+	public List<ResumenVentas> buscarResumenVentas(String fechaDesde, String fechaHasta, Integer idAgencia, Integer nroConsulta);
+	
+	/**
+	 * Busca los boletos postergados por Usuario o Agencia
+	 * @param numeroComprobante		: Numero del comprobante a obtener el historial.
+	 * @return
+	 */
+	public List<VentaPasaje> buscarHistorialComprobante(String numeroComprobante);
 }

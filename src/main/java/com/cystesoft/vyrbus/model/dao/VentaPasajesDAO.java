@@ -17,6 +17,7 @@ import com.cystesoft.vyrbus.model.bean.Ruta;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.service.mappers.ResumenAnulacionPostergacion;
+import com.cystesoft.vyrbus.service.mappers.ResumenVentas;
 
 /**
  *
@@ -467,4 +468,23 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @return
 	 */
 	public List<VentaPasaje> buscarBoletosPostergadosDetalladoByX(String fechaDesde, String fechaHasta, Integer id, Integer criterio, Integer nroPostergaciones);
+	
+	/**
+	 * Busca el resumen de ventas 
+	 * @param fechaDesde	: Fecha de inicio de busqueda
+	 * @param fechaHasta	: Fecha fin de la busqueda
+	 * @param idagencia		: Especifica alguna agencia en especial, 0 equivale a todos.
+	 * @param nroConsulta	: 1, 2 o 3 diferentes tipos de consulta.
+	 * @return
+	 */	
+	public List<ResumenVentas> buscarResumenVentas(String fechaDesde, String fechaHasta, Integer idAgencia, Integer nroConsulta);
+	
+	/**
+	 * Busca el historial de un comprobante a partir de su numero
+	 * @param numeroComprobante	: Numero del comprobante a buscar
+	 * @return
+	 */	
+	public List<VentaPasaje> buscarHistorialComprobante(String numeroComprobante);
+	
+	
 }

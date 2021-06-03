@@ -24,6 +24,7 @@
 								<column width="100px" align="right" />								
 								<column width="100px" align="left" />
 								<column width="110px" align="left" />
+								<column/>
 							</columns>
 							<rows>
 								<row>
@@ -51,7 +52,7 @@
 									<label id="lblFechaConsulta" value="23/05/2021" style="font-size:12px !important" />
 									<label id="lblHoraConsulta" value="10:25 a.m." style="font-size:12px !important"/>
 								</row>
-								<row spans="4, 2, 2">
+								<row spans="4, 2, 1,1">
 <!--								<hbox>
   									<separator/> -->											
 									<radiogroup>
@@ -100,10 +101,15 @@
 							 			<listheader label="CANT." align="right" width="60px" style="color: #ffffff;"/>
 							 			<listheader label="FACTURAS" align="right" width="80px" style="color: #ffffff;"/>
 							 			<listheader label="CANT." align="right" width="60px" style="color: #ffffff;"/>
-							 			<listheader label="DEP. BANCO" align="right" width="100px" style="color: #ffffff;"/>
-							 			<listheader label="WEB" align="right" width="80px" style="color: #ffffff;"/>
+							 			<listheader label="N. CRED." align="right" width="80px" style="color: #ffffff;"/>
 							 			<listheader label="CANT." align="right" width="60px" style="color: #ffffff;"/>
-							 			<listheader label="TOTAL VENTAS" align="right" width="100px" style="color: #ffffff;"/>
+							 			<listheader label="DEP. BANCO" align="right" width="100px" style="color: #ffffff;"/>
+							 			<listheader label="GRT(PCE)" align="right" width="80px" style="color: #ffffff;"/>
+							 			<listheader label="CANT." align="right" width="60px" style="color: #ffffff;"/>
+							 			<listheader label="VENTAS TRANSMAR" align="right" width="100px" style="color: #ffffff;"/>
+							 			<listheader label="CANAL WEB" align="right" width="80px" style="color: #ffffff;"/>
+							 			<listheader label="CANT." align="right" width="60px" style="color: #ffffff;"/>
+							 			<listheader label="VENTAS GRAL" align="right" width="100px" style="color: #ffffff;"/>
 									</listhead>
 								</listbox>
 							</tabpanel>
