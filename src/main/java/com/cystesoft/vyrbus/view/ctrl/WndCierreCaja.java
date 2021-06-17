@@ -618,7 +618,8 @@ public class WndCierreCaja extends WndBase {
 		btncancelar.setStyle("font-size:12px !important");
 		btncancelar.setWidth("120px");
 		btncancelar.setAutodisable("self");
-		btncancelar.setMold("trendy");
+//		btncancelar.setMold("trendy");
+		btncancelar.setSclass("btnCommandM");
 		hbox.appendChild(btncancelar);
 		
 		Separator separator=new Separator();
@@ -629,7 +630,8 @@ public class WndCierreCaja extends WndBase {
 		btnAceptar.setStyle("font-size:12px !important");
 		btnAceptar.setWidth("120px");
 		btnAceptar.setAutodisable("self");
-		btnAceptar.setMold("trendy");
+//		btnAceptar.setMold("trendy");
+		btnAceptar.setSclass("btnCommandM");
 		hbox.appendChild(btnAceptar);
 		
 		div.appendChild(hbox);
@@ -790,7 +792,8 @@ public class WndCierreCaja extends WndBase {
 		btnCancelar.setStyle("font-size:12px !important");
 		btnCancelar.setWidth("120px");
 		btnCancelar.setAutodisable("self");
-		btnCancelar.setMold("trendy");
+//		btnCancelar.setMold("trendy");
+		btnCancelar.setSclass("btnCommandM");
 		hbox.appendChild(btnCancelar);
 		
 		Separator separator=new Separator();
@@ -801,7 +804,8 @@ public class WndCierreCaja extends WndBase {
 		btnAceptar.setStyle("font-size:12px !important");
 		btnAceptar.setWidth("120px");
 		btnAceptar.setAutodisable("self");
-		btnAceptar.setMold("trendy");
+//		btnAceptar.setMold("trendy");
+		btnAceptar.setSclass("btnCommandM");
 		hbox.appendChild(btnAceptar);
 		
 		div.appendChild(hbox);

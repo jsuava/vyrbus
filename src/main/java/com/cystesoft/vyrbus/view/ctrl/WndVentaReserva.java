@@ -5226,7 +5226,9 @@ public class WndVentaReserva extends WndBase {
 										
 										List<VentaPasaje>listVentaPasaje= new ArrayList<>();
 										listVentaPasaje.add(ventaPasaje);
-										WSFE.sendVenta(listVentaPasaje, wndVentaReserva, true,null);
+										
+										//Comentado temporalmente por MAOE para pruebasc con Transmar
+										//WSFE.sendVenta(listVentaPasaje, wndVentaReserva, true,null);
 										
 										//Limpia los controles
 										onCleanControlsPax();
@@ -6115,7 +6117,10 @@ public class WndVentaReserva extends WndBase {
 										
 										List<VentaPasaje> listVentaPasajes= new ArrayList<>();
 										listVentaPasajes.add(ventaPasaje);
-										WSFE.sendVenta(listVentaPasajes,wndVentaReserva,printComprobante,null);
+										
+										//Aqui se envia el comprobante al servidor de Facturación Electrónica
+										//Comentado temporalmente por MAOE
+										//WSFE.sendVenta(listVentaPasajes,wndVentaReserva,printComprobante,null);
 									}
 									
 									
@@ -6290,7 +6295,9 @@ public class WndVentaReserva extends WndBase {
 									List<VentaPasaje> ventasIdaRetorno= new ArrayList<>();
 									ventasIdaRetorno.add(ventaPasajeIDA);
 									ventasIdaRetorno.add(ventaPasajeRETORNO);
-									WSFE.sendVenta(ventasIdaRetorno, wndVentaReserva, true,null);
+									
+									//Comentado temporalmente por MAOE
+									//WSFE.sendVenta(ventasIdaRetorno, wndVentaReserva, true,null);
 									
 									/*End Begin 24/10/2016 - jabanto*/
 //									/*Implementacion para el nueno formato 01/02/2016 - jabanto */

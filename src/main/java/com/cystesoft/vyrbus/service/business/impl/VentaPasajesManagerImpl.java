@@ -56,6 +56,7 @@ import com.cystesoft.vyrbus.service.exceptions.TiempoExpiracionBloqueoException;
 import com.cystesoft.vyrbus.service.fe.Result;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.mappers.ResumenAnulacionPostergacion;
+import com.cystesoft.vyrbus.service.mappers.ResumenVentas;
 import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.Messages;
 import com.cystesoft.vyrbus.service.util.MyTime;
@@ -798,15 +799,18 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				/*Realiza solamente la anulacion de la nota de credito o debito*/
 				
 				//Primero anula en el WSFE
-				Result result=WSFE.anularComprobante(movimiento);
-				if(result.isIsCorrect()){
+				//Comentado temporalmente por MAOE para pruebas sin Fact Electronica
+				//Result result=WSFE.anularComprobante(movimiento);
+				//if(result.isIsCorrect()){
 					getVentaPasajesDAO().update(movimiento);
+					
 					/*Activa el comprobante asociado a la nota de credito o debito*/
 //					if(movimiento.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO ||
 //							movimiento.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_DEBITO){
 //					}
-				}else
-					throw new Exception("No se pudo realizar la anulación, por favor vuelva a intentarlo.");
+					
+				//}else
+					//throw new Exception("No se pudo realizar la anulación, por favor vuelva a intentarlo.");
 			}else{
 				/*Este debe ser anulado, pero con una nota de credito*/
 				TipoNota tipoNota=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_ANULACION);
@@ -2326,9 +2330,20 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	 * (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#buscarBoletosPostergadosByX(java.lang.String, java.lang.String, java.lang.Integer)
 	 */
-	@Override
-	public List<ResumenAnulacionPostergacion> buscarBoletosPostergadosByX(String fechaDesde, String fechaHasta, Integer criterio){
-		return getVentaPasajesDAO().buscarBoletosPostergadosByX(fechaDesde, fechaHasta, criterio);
+	public List<ResumenAnulacionPostergacion> buscarBoletosPostergadosByX(String fechaDesde, String fechaHasta, Integer criterio, Integer nroPostergaciones){
+		return getVentaPasajesDAO().buscarBoletosPostergadosByX(fechaDesde, fechaHasta, criterio, nroPostergaciones);
+	}
+	
+	public List<VentaPasaje> buscarBoletosPostergadosDetalladoByX(String fechaDesde, String fechaHasta, Integer id, Integer criterio, Integer nroPostergaciones){
+		return getVentaPasajesDAO().buscarBoletosPostergadosDetalladoByX(fechaDesde, fechaHasta, id, criterio, nroPostergaciones);
+	}
+	
+	public List<ResumenVentas> buscarResumenVentas(String fechaDesde, String fechaHasta, Integer idAgencia, Integer nroConsulta){
+		return getVentaPasajesDAO().buscarResumenVentas(fechaDesde, fechaHasta, idAgencia, nroConsulta);
+	}
+	
+	public List<VentaPasaje> buscarHistorialComprobante(String numeroComprobante){
+		return getVentaPasajesDAO().buscarHistorialComprobante(numeroComprobante);
 	}
 	
 	

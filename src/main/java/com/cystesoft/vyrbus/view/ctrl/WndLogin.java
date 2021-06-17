@@ -117,7 +117,6 @@ public class WndLogin extends WndBase {
 		
 		/*Descomentar solo para desarrollo - 09/01/2017 - jabanto*/
 		try {
-
 			txtLogin.setText("javalos");
 			txtPassword.setText("tepsac");
 			txtImagen.setText(cpaImagen.getValue());

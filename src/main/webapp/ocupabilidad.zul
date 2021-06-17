@@ -30,8 +30,16 @@
 					<checkbox id="chkMostrarTodo" label="TODOS" />
 					<label/>
 					<hlayout>
-						<button label="Buscar" image="resources/mp_buscarEnabled.png" tooltiptext="Haga click aqui para realizar la busqueda." onClick="wndAvanceVentas.onBuscar()" sclass="btn-movil"/>
-						<button label="Cerrar" image="resources/mp_cerrar.png" tooltiptext="Haga click aqui para cerrar la ventana." onClick="wndAvanceVentas.closeTabWindow()" sclass="btn-movil"/>
+						<button image="resources/mp_buscarEnabled.png" 
+								label="Buscar"
+								onClick="wndAvanceVentas.onBuscar()" 
+								sclass="btnCommandM"
+								tooltiptext="Haga click aqui para realizar la busqueda." />
+						<button image="resources/mp_cerrar.png" 
+								label="Cerrar" 
+								onClick="wndAvanceVentas.closeTabWindow()" 
+								sclass="btnCommandM"
+								tooltiptext="Haga click aqui para cerrar la ventana." />
 					</hlayout>
 				</row>
 				<row spans="7">

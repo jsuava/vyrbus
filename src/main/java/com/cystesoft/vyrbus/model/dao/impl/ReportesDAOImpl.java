@@ -1772,7 +1772,7 @@ public class ReportesDAOImpl extends GenericDAOImpl implements ReportesDAO {
        sql+="AND i.n_esanulado=0 AND i.c_estreg='A' "
 	     + "GROUP BY i.d_Fecpar "
 	     + "ORDER BY i.d_Fecpar";
-		log.info("busando las fechas para armar el encabezado dinamico "+sql);
+		log.info("Buscando las fechas para armar el encabezado dinamico "+sql);
 		List<?>resultEncabezado=getSession().createSQLQuery(sql).list();
 		List<String>lstEncavezado=new ArrayList<>();
 		for(int i=0;i<resultEncabezado.size();i++){
