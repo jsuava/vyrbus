@@ -11,6 +11,7 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
@@ -21,6 +22,7 @@ import org.zkoss.zul.Menuitem;
 import org.zkoss.zul.Menupopup;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Radio;
+import org.zkoss.zul.Tab;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Window;
@@ -65,6 +67,11 @@ public class WndEstadoVentaReserva extends WndBase {
 	private Combobox cmbDestino;
 	private Listbox lstbxListaMovimientos;	
 	
+	private Listbox lstbxHistorial;
+	private Tab tabEstado;
+	private Tab tabHistorial;
+	private Checkbox chkHistorial;
+	
 //	private Radio rdAnular;
 //	private Radio rdNotaCredito;
 	
@@ -75,6 +82,8 @@ public class WndEstadoVentaReserva extends WndBase {
 	
 	private Window wndEstadoVyR;
 	private Menupopup menupopup= new Menupopup();
+	
+	
 	
 //	private Window wndAnular;
 	
@@ -101,6 +110,11 @@ public class WndEstadoVentaReserva extends WndBase {
 		cmbOrigen=(Combobox)this.getFellow("cmbOrigen");
 		cmbDestino=(Combobox)this.getFellow("cmbDestino");
 		lstbxListaMovimientos=(Listbox)this.getFellow("lstbxListaMovimientos");
+		
+		lstbxHistorial=(Listbox)this.getFellow("lstbxHistorial");
+		tabEstado = (Tab)this.getFellow("tabEstado");
+		tabHistorial = (Tab)this.getFellow("tabHistorial");
+		chkHistorial = (Checkbox)this.getFellow("chkHistorial");
 		
 		//Auto completa el numero de control
 		txtNumeroControl.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
@@ -199,86 +213,116 @@ public class WndEstadoVentaReserva extends WndBase {
 			if(!(txtBusquedaCliente.getText().trim().isEmpty()))
 				busqCliente=txtBusquedaCliente.getText().trim().toUpperCase();
 			
-			List<VentaPasaje>lstVenta=ServiceLocator.getVentaPasajesManager().buscarEstadoVentasReservas(fechaInicialVenta, fechaFinVenta, tipoBusqCliente, busqCliente, tipoBusqPax, busqPax, fechaPartida, idUsuario, numeroControl, numeroBoleto, idOrigen, idDestino, tipoMovimiento);
-			Util.limpiarListbox(lstbxListaMovimientos);
-			int x=-1;
-			
-			for(VentaPasaje ventaPasaje: lstVenta){
-				TipoMovimiento otipoMovimiento=ventaPasaje.getTipoMovimiento();
-				boolean isAnulado=otipoMovimiento.getId().intValue()==Constantes.ID_TIPMOV_ANULACION || otipoMovimiento.getId().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA  ?true:false;
+			if(!chkHistorial.isChecked()){
+				tabEstado.setVisible(true);
+				tabHistorial.setVisible(false);
+				tabEstado.setSelected(true);
+				tabHistorial.setSelected(false);				
+				List<VentaPasaje>lstVenta=ServiceLocator.getVentaPasajesManager().
+										  buscarEstadoVentasReservas(fechaInicialVenta, 
+												  					 fechaFinVenta, 
+												  					 tipoBusqCliente, 
+												  					 busqCliente, 
+												  					 tipoBusqPax, 
+												  					 busqPax, 
+												  					 fechaPartida, 
+												  					 idUsuario, 
+												  					 numeroControl, 
+												  					 numeroBoleto, 
+												  					 idOrigen, 
+												  					 idDestino, 
+												  					 tipoMovimiento);
+				Util.limpiarListbox(lstbxListaMovimientos);
+				int x=-1;
 				
-				Listitem item= new Listitem();
-				Listcell cell=new Listcell(ventaPasaje.getFechaLiquidacion()!=null?Constantes.FORMAT_DATE.format(ventaPasaje.getFechaLiquidacion()):Constantes.FORMAT_DATE.format(ventaPasaje.getFechaInsercion()));
-				cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
-				item.appendChild(cell);
-				cell=new Listcell(ventaPasaje.getTipoTransaccion());
-				cell.setStyle(isAnulado?styleAnulado_9px:styleActivo_9px);
-				item.appendChild(cell);
-				cell=new Listcell(ventaPasaje.getTipoComprobante().getDenominacion());
-				cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
-				item.appendChild(cell);
-				cell=new Listcell(ventaPasaje.getNumeroBoleto());
-				cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
-				item.appendChild(cell);
+				for(VentaPasaje ventaPasaje: lstVenta){
+					TipoMovimiento otipoMovimiento=ventaPasaje.getTipoMovimiento();
+					boolean isAnulado=otipoMovimiento.getId().intValue()==Constantes.ID_TIPMOV_ANULACION || otipoMovimiento.getId().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA  ?true:false;
+					
+					Listitem item= new Listitem();
+					Listcell cell=new Listcell(ventaPasaje.getFechaLiquidacion()!=null?Constantes.FORMAT_DATE.format(ventaPasaje.getFechaLiquidacion()):Constantes.FORMAT_DATE.format(ventaPasaje.getFechaInsercion()));
+					cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
+					item.appendChild(cell);
+					cell=new Listcell(ventaPasaje.getTipoTransaccion());
+					cell.setStyle(isAnulado?styleAnulado_9px:styleActivo_9px);
+					item.appendChild(cell);
+					cell=new Listcell(ventaPasaje.getTipoComprobante().getDenominacion());
+					cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
+					item.appendChild(cell);
+					cell=new Listcell(ventaPasaje.getNumeroBoleto());
+					cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
+					item.appendChild(cell);
+					
+	//				cell=new Listcell("T"+ventaPasaje.getNumeroControl().substring(5,ventaPasaje.getNumeroControl().length()));
+	//				cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
+	//				item.appendChild(cell);
+					cell=new Listcell(ventaPasaje.getRuta().toString());
+					cell.setStyle(isAnulado?styleAnulado_9px:styleActivo_9px);
+					item.appendChild(cell);
+					cell=new Listcell(ventaPasaje.getFechaPartida()!=null?Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida()):"");
+					cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
+					item.appendChild(cell);
+					cell=new Listcell(ventaPasaje.getHoraPartida());
+					cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
+					item.appendChild(cell);
+					cell=new Listcell(ventaPasaje.getPasajero().getNombresApellidos());
+					cell.setStyle(isAnulado?styleAnulado_9px:styleActivo_9px);
+					item.appendChild(cell);
+					cell=new Listcell(ventaPasaje.getCliente().toString());
+					cell.setStyle(isAnulado?styleAnulado_9px:styleActivo_9px);
+					item.appendChild(cell);
+					cell=new Listcell(ventaPasaje.getNumeroAsiento()!=null?ventaPasaje.getNumeroAsiento().toString():"");
+					cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
+					item.appendChild(cell);
+					
+					item.addEventListener(Events.ON_DOUBLE_CLICK,new EventListener<Event>() {
+						@Override
+						public void onEvent(Event event) throws Exception {
+							// TODO Auto-generated method stub
+							VentaPasaje ventaPasaje=((VentaPasaje)lstbxListaMovimientos.getSelectedItem().getValue());
+							Map<String, Object> params = new HashMap<String, Object>();
+							params.put("ventaPasaje", ventaPasaje);
+							Window win = (Window) Executions.createComponents("estadoVentaReservaVerVenta.zul", null, params);
+							win.setMode(MODAL);
+						}
+					});
+					
+					Toolbarbutton tbverVenta= new Toolbarbutton("Ver venta");
+					tbverVenta.setStyle("text-transform:lowercase; color:blue;");
+					x++;
+					tbverVenta.setId(String.valueOf(x));
+					cell= new Listcell();
+					cell.appendChild(tbverVenta);
+					item.appendChild(cell);
+					tbverVenta.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
+						@Override
+						public void onEvent(Event event) throws Exception {
+							// TODO Auto-generated method stub
+							Listitem item= lstbxListaMovimientos.getItemAtIndex(Integer.valueOf(event.getTarget().getId()));
+							VentaPasaje ventaPasaje=item.getValue();
+							Map<String, Object> params = new HashMap<String, Object>();
+							params.put("ventaPasaje", ventaPasaje);
+							Window win = (Window) Executions.createComponents("estadoVentaReservaVerVenta.zul", null, params);
+							win.setMode(MODAL);
+						}
+					});
+					
+					item.setValue(ventaPasaje);
+					item.setTooltiptext("Haga doble click para ver la información de la Venta ");
+					item.setContext(getMenucontex(ventaPasaje));
+					lstbxListaMovimientos.appendChild(item);
+				}
+			}
+			else{
+				tabEstado.setVisible(false);
+				tabHistorial.setVisible(true);
+				tabEstado.setSelected(false);
+				tabHistorial.setSelected(true);
 				
-//				cell=new Listcell("T"+ventaPasaje.getNumeroControl().substring(5,ventaPasaje.getNumeroControl().length()));
-//				cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
-//				item.appendChild(cell);
-				cell=new Listcell(ventaPasaje.getRuta().toString());
-				cell.setStyle(isAnulado?styleAnulado_9px:styleActivo_9px);
-				item.appendChild(cell);
-				cell=new Listcell(ventaPasaje.getFechaPartida()!=null?Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida()):"");
-				cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
-				item.appendChild(cell);
-				cell=new Listcell(ventaPasaje.getHoraPartida());
-				cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
-				item.appendChild(cell);
-				cell=new Listcell(ventaPasaje.getPasajero().getNombresApellidos());
-				cell.setStyle(isAnulado?styleAnulado_9px:styleActivo_9px);
-				item.appendChild(cell);
-				cell=new Listcell(ventaPasaje.getCliente().toString());
-				cell.setStyle(isAnulado?styleAnulado_9px:styleActivo_9px);
-				item.appendChild(cell);
-				cell=new Listcell(ventaPasaje.getNumeroAsiento()!=null?ventaPasaje.getNumeroAsiento().toString():"");
-				cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
-				item.appendChild(cell);
+				List<VentaPasaje>lstVenta=ServiceLocator.getVentaPasajesManager().buscarHistorialComprobante(numeroBoleto);
+
+				listarHistorial(lstVenta);
 				
-				item.addEventListener(Events.ON_DOUBLE_CLICK,new EventListener<Event>() {
-					@Override
-					public void onEvent(Event event) throws Exception {
-						// TODO Auto-generated method stub
-						VentaPasaje ventaPasaje=((VentaPasaje)lstbxListaMovimientos.getSelectedItem().getValue());
-						Map<String, Object> params = new HashMap<String, Object>();
-						params.put("ventaPasaje", ventaPasaje);
-						Window win = (Window) Executions.createComponents("estadoVentaReservaVerVenta.zul", null, params);
-						win.setMode(MODAL);
-					}
-				});
-				
-				Toolbarbutton tbverVenta= new Toolbarbutton("ver venta");
-				tbverVenta.setStyle("text-transform:lowercase; color:blue;");
-				x++;
-				tbverVenta.setId(String.valueOf(x));
-				cell= new Listcell();
-				cell.appendChild(tbverVenta);
-				item.appendChild(cell);
-				tbverVenta.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
-					@Override
-					public void onEvent(Event event) throws Exception {
-						// TODO Auto-generated method stub
-						Listitem item= lstbxListaMovimientos.getItemAtIndex(Integer.valueOf(event.getTarget().getId()));
-						VentaPasaje ventaPasaje=item.getValue();
-						Map<String, Object> params = new HashMap<String, Object>();
-						params.put("ventaPasaje", ventaPasaje);
-						Window win = (Window) Executions.createComponents("estadoVentaReservaVerVenta.zul", null, params);
-						win.setMode(MODAL);
-					}
-				});
-				
-				item.setValue(ventaPasaje);
-				item.setTooltiptext("Haga doble click para ver la información de la Venta ");
-				item.setContext(getMenucontex(ventaPasaje));
-				lstbxListaMovimientos.appendChild(item);
 			}
 			
 		}catch (EstadoVentasReservasException esx){
@@ -292,6 +336,139 @@ public class WndEstadoVentaReserva extends WndBase {
 		}
 		
 		
+	}
+	
+	
+	public void listarHistorial(List<VentaPasaje> lstHistorial){
+		String styleActivo_11px="font-size:11px !important";
+		String styleActivo_9px="font-size:9px !important";
+		String styleAnulado_11px="font-size:11px !important; color:red";
+		String styleAnulado_9px="font-size:9px !important; color:red";
+
+		Util.limpiarListbox(lstbxHistorial);
+		int x=-1;
+		
+		for(VentaPasaje ventaPasaje: lstHistorial){
+			TipoMovimiento otipoMovimiento=ventaPasaje.getTipoMovimiento();
+			boolean isAnulado=otipoMovimiento.getId().intValue()==Constantes.ID_TIPMOV_ANULACION || 
+							  otipoMovimiento.getId().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA  ? true : false;
+			
+			Listitem item= new Listitem();
+			Listcell cell=new Listcell(ventaPasaje.getId().toString());
+			cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
+			item.appendChild(cell);
+			
+			//cell=new Listcell(ventaPasaje.getVentaOriginal().toString());
+			cell=new Listcell("");
+			cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
+			item.appendChild(cell);
+			
+			cell=new Listcell(ventaPasaje.getFechaLiquidacion()!=null ? 
+							  Constantes.FORMAT_DATE.format(ventaPasaje.getFechaLiquidacion()) : 
+							  Constantes.FORMAT_DATE.format(ventaPasaje.getFechaInsercion()));
+			cell.setStyle(isAnulado?styleAnulado_9px:styleActivo_9px);
+			item.appendChild(cell);
+
+			cell=new Listcell(ventaPasaje.getRuta().toString());
+			cell.setStyle(isAnulado?styleAnulado_9px:styleActivo_9px);
+			item.appendChild(cell);
+
+			cell=new Listcell(ventaPasaje.getServicio().toString());
+			cell.setStyle(isAnulado?styleAnulado_9px:styleActivo_9px);
+			item.appendChild(cell);
+
+			
+			cell=new Listcell(ventaPasaje.getTipoComprobante().getAbreviatura());
+			cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
+			item.appendChild(cell);
+			
+			cell=new Listcell(ventaPasaje.getNumeroBoleto());
+			cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
+			item.appendChild(cell);
+			cell=new Listcell(ventaPasaje.getNumeroBoletoAnterior());
+			cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
+			item.appendChild(cell);	
+			cell=new Listcell(ventaPasaje.getNumeroControl());
+			cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
+			item.appendChild(cell);
+			
+			cell=new Listcell(ventaPasaje.getFechaPartida()!=null?Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida()):"");
+			cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
+			item.appendChild(cell);
+			cell=new Listcell(ventaPasaje.getHoraPartida());
+			cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
+			item.appendChild(cell);
+			cell=new Listcell(ventaPasaje.getPasajero().getNombresApellidos());
+			cell.setStyle(isAnulado?styleAnulado_9px:styleActivo_9px);
+			item.appendChild(cell);
+			cell=new Listcell(ventaPasaje.getCliente().toString());
+			cell.setStyle(isAnulado?styleAnulado_9px:styleActivo_9px);
+			item.appendChild(cell);
+			
+			cell=new Listcell(ventaPasaje.getNumeroAsiento()!=null?ventaPasaje.getNumeroAsiento().toString():"");
+			cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
+			item.appendChild(cell);
+			cell=new Listcell(otipoMovimiento.getDenominacion());
+			cell.setStyle(isAnulado?styleAnulado_9px:styleActivo_9px);
+			item.appendChild(cell);
+			
+			cell=new Listcell(ventaPasaje.getImportePagado().toString());
+			cell.setStyle(isAnulado?styleAnulado_9px:styleActivo_9px);
+			item.appendChild(cell);
+
+			cell=new Listcell(ventaPasaje.getImportePagadoByDiferencia().toString());
+			cell.setStyle(isAnulado?styleAnulado_9px:styleActivo_9px);
+			item.appendChild(cell);
+
+			cell=new Listcell(ventaPasaje.getCanalVenta().getNombreCorto());
+			cell.setStyle(isAnulado?styleAnulado_9px:styleActivo_9px);
+			item.appendChild(cell);
+
+			cell=new Listcell(ventaPasaje.getAgencia().getNombreCorto());
+			cell.setStyle(isAnulado?styleAnulado_9px:styleActivo_9px);
+			item.appendChild(cell);
+
+			cell=new Listcell(ventaPasaje.getManifiesto().getNumeroManifiesto());
+			cell.setStyle(isAnulado?styleAnulado_9px:styleActivo_9px);
+			item.appendChild(cell);
+
+			item.addEventListener(Events.ON_DOUBLE_CLICK,new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					VentaPasaje ventaPasaje=((VentaPasaje)lstbxHistorial.getSelectedItem().getValue());
+					Map<String, Object> params = new HashMap<String, Object>();
+					params.put("ventaPasaje", ventaPasaje);
+					Window win = (Window) Executions.createComponents("estadoVentaReservaVerVenta.zul", null, params);
+					win.setMode(MODAL);
+				}
+			});
+			
+			Toolbarbutton tbverVenta= new Toolbarbutton("Ver venta");
+			tbverVenta.setStyle("text-transform:lowercase; color:blue;");
+			x++;
+			tbverVenta.setId(String.valueOf(x));
+			cell= new Listcell();
+			cell.appendChild(tbverVenta);
+			item.appendChild(cell);
+			tbverVenta.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					Listitem item= lstbxHistorial.getItemAtIndex(Integer.valueOf(event.getTarget().getId()));
+					VentaPasaje ventaPasaje=item.getValue();
+					Map<String, Object> params = new HashMap<String, Object>();
+					params.put("ventaPasaje", ventaPasaje);
+					Window win = (Window) Executions.createComponents("estadoVentaReservaVerVenta.zul", null, params);
+					win.setMode(MODAL);
+				}
+			});
+			
+			item.setValue(ventaPasaje);
+			item.setTooltiptext("Haga doble click para ver la información de la Venta ");
+			//item.setContext(getMenucontex(ventaPasaje));
+			lstbxHistorial.appendChild(item);
+		}
 	}
 	
 	/**

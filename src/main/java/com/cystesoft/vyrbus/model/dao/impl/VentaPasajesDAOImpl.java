@@ -3534,6 +3534,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			pasajero.setApellidoPaterno(obj[10]==null?"":obj[10].toString());
 			pasajero.setApellidoMaterno(obj[11]==null?"":obj[11].toString());
 			pasajero.setNombre(obj[12]==null?"":obj[12].toString());
+			pasajero.setNombresApellidos(pasajero.getNombre()+" "+pasajero.getApellidoPaterno()+" "+pasajero.getApellidoMaterno());
 			ventaPasaje.setPasajero(pasajero);
 			FormaPago formaPago = new FormaPago();
 			formaPago.setId(((BigDecimal)obj[13]).intValue());
@@ -3593,7 +3594,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			canalVenta.setNombreCorto(obj[47].toString());
 			ventaPasaje.setCanalVenta(canalVenta);
 			ventaPasaje.setFechaEnvioSFE((Date)obj[48]);
-			ventaPasaje.setObservaciones(obj[21]==null?"":obj[49].toString());
+			ventaPasaje.setObservaciones(obj[49]==null?"":obj[49].toString());
 			Manifiesto manifiesto = new Manifiesto();
 			manifiesto.setId( obj[50]==null?0:((BigDecimal)obj[50]).longValue() );
 			manifiesto.setNumeroManifiesto(obj[51]==null?"":obj[51].toString());

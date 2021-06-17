@@ -887,7 +887,7 @@ public class WndTarifario extends WndBase implements Serializable {
 	 */
 	public void onClick_btnGuardarTarifa(){
 		try {
-			if(!chkTarifaFA.isChecked()){
+			if(!chkTarifaAbierta.isChecked()){
 				
 				final Integer idCanal, idServicio, idOrigen, idDestino, zona;
 				Long seleccionado;

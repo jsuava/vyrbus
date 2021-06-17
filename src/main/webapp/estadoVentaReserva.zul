@@ -101,7 +101,12 @@
 								</row>
 								<row>
 									<label value="NRO. CONTROL :" />
-									<textbox id="txtNumeroControl" maxlength="20" style="font-size:11px !important" width="150px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNumeroBoleto)" />
+									<textbox id="txtNumeroControl" 
+											 maxlength="20"
+											 onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNumeroBoleto)" 
+											 style="font-size:11px !important" 
+											 width="150px"  />
+									
 								</row>
 								<row>
 									<label value="NRO. COMPROBANTE :" />
@@ -115,6 +120,10 @@
 										</hbox>
 									</hbox>
 								</row>
+								<row>
+									<label />
+									<checkbox id="chkHistorial" label="Historial de un Boleto" />
+								</row>
 							</rows>
 						</grid>
 					</vbox>
@@ -123,25 +132,62 @@
 		</grid>
 	</groupbox>
 	<separator height="1px"/>
-	<listbox id="lstbxListaMovimientos" mold="paging" pageSize="8">
-		<listhead>
-			<listheader label="F.EMISION" tooltiptext="Fecha de Emisión" width="70px" sort="auto" style="color: #ffffff;"/>
-			<listheader label="TIPO MOVIMIENTO" width="110px" sort="auto" style="color: #ffffff;"/>
-			<listheader label="TIPO COMPROBANTE" width="120px" sort="auto" style="color: #ffffff;"/>
-			<listheader label="NRO. COMP." width="120px" sort="auto" tooltiptext="Número de Comprobante" style="color: #ffffff;"/>
-<!-- 			<listheader label="NRO.CONTROL" width="90px" sort="auto" /> -->
-			<listheader label="RUTA" width="160px" sort="auto" style="color: #ffffff;"/>
-			<listheader label="F.PARTIDA" tooltiptext="Fecha de Partida" width="70px" sort="auto" style="color: #ffffff;"/>
-			<listheader label="H.PART." tooltiptext="Hora de Partida" width="50px" sort="auto" style="color: #ffffff;"/>
-			<listheader label="PASAJERO" width="180px" sort="auto" style="color: #ffffff;"/>
-			<listheader label="CLIENTE" width="180px" sort="auto" style="color: #ffffff;"/>
-			<listheader label="ASIENTO" width="50px" align="center" sort="auto" style="color: #ffffff;"/>
-<!-- 			<listheader label="ESTADO" width="90px" sort="auto" /> -->
-			<listheader label=" " style="color: #ffffff;"/>
-		</listhead>
-	</listbox>
-
-
+	<tabbox>
+	<tabs>
+ 		<tab id="tabEstado" label="" />
+ 		<tab id="tabHistorial" label="" />
+	</tabs>
+		<tabpanels>
+			<tabpanel>
+				<listbox id="lstbxListaMovimientos" mold="paging" pageSize="8">
+					<listhead>
+						<listheader label="F.EMISION" tooltiptext="Fecha de Emisión" width="70px" sort="auto" style="color: #ffffff;"/>
+						<listheader label="TIPO MOVIMIENTO" width="110px" sort="auto" style="color: #ffffff;"/>
+						<listheader label="TIPO COMPROBANTE" width="120px" sort="auto" style="color: #ffffff;"/>
+						<listheader label="NRO. COMP." width="120px" sort="auto" tooltiptext="Número de Comprobante" style="color: #ffffff;"/>
+			<!-- 			<listheader label="NRO.CONTROL" width="90px" sort="auto" /> -->
+						<listheader label="RUTA" width="160px" sort="auto" style="color: #ffffff;"/>
+						<listheader label="F.PARTIDA" tooltiptext="Fecha de Partida" width="70px" sort="auto" style="color: #ffffff;"/>
+						<listheader label="H.PART." tooltiptext="Hora de Partida" width="50px" sort="auto" style="color: #ffffff;"/>
+						<listheader label="PASAJERO" width="180px" sort="auto" style="color: #ffffff;"/>
+						<listheader label="CLIENTE" width="180px" sort="auto" style="color: #ffffff;"/>
+						<listheader label="ASIENTO" width="50px" align="center" sort="auto" style="color: #ffffff;"/>
+			<!-- 			<listheader label="ESTADO" width="90px" sort="auto" /> -->
+						<listheader label=" " style="color: #ffffff;"/>
+					</listhead>
+				</listbox>
+	
+			</tabpanel>
+			<tabpanel>
+				<listbox id="lstbxHistorial" mold="paging" pageSize="8">
+					<listhead class="z-listbox-header-bg" sizable="true">
+						<listheader label="ID" width="50px" style="color: #ffffff;" visible="false" />
+						<listheader label="IDORI" width="50px" style="color: #ffffff;" visible="false" />
+						<listheader label="FEC. VENTA" width="100px" sort="auto" style="color: #ffffff;"/>
+						<listheader label="RUTA" width="160px" sort="auto" style="color: #ffffff;"/>
+						<listheader label="SERVICIO" width="100px" sort="auto" style="color: #ffffff;"/>
+						<listheader label="TIP. COMP." width="60px" sort="auto" style="color: #ffffff;"/>
+						<listheader label="NRO. COMP." width="100px" sort="auto" tooltiptext="Número de Comprobante" style="color: #ffffff;"/>
+						<listheader label="NRO. COMP. ANT." width="100px" sort="auto" tooltiptext="Número de Comprobante" style="color: #ffffff;"/>
+			 			<listheader label="NRO.CONTROL" width="90px" style="color: #ffffff;" /> 
+						<listheader label="F.PARTIDA" tooltiptext="Fecha de Partida" width="70px" sort="auto" style="color: #ffffff;"/>
+						<listheader label="H.PART." tooltiptext="Hora de Partida" width="50px" sort="auto" style="color: #ffffff;"/>
+						<listheader label="PASAJERO" width="180px" sort="auto" style="color: #ffffff;"/>
+						<listheader label="CLIENTE" width="180px" sort="auto" style="color: #ffffff;"/>
+						<listheader label="ASIENTO" width="50px" align="center" sort="auto" style="color: #ffffff;"/>
+						<listheader label="TIPO MOVI." width="80px" style="color: #ffffff;"/>
+						<listheader label="IMP.PAG." width="60px" style="color: #ffffff;"/>
+						<listheader label="DIF.IMP.PAG." width="60px" style="color: #ffffff;"/>
+						<listheader label="CANAL" width="90px" style="color: #ffffff;" />
+						<listheader label="AGE. VENTA" width="110px" style="color: #ffffff;" />
+			 			<listheader label="NUM. MANIFIESTO" width="90px" style="color: #ffffff;" />
+			 			<listheader label=" " style="color: #ffffff;"/> 
+					</listhead>
+				</listbox>
+	
+			</tabpanel>
+		</tabpanels>
+	</tabbox>
 	
 </window>
 </zk>
