@@ -456,4 +456,5 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @return
 	 */
 	public List<ResumenAnulacionPostergacion> buscarBoletosPostergadosByX(String fechaDesde, String fechaHasta, Integer criterio);
+	public List<List<VentaPasaje>> obtenerVentasResumenLiquidacion(Integer idAgencia, Integer idUsuario, String fechaLiquidacion);
 }

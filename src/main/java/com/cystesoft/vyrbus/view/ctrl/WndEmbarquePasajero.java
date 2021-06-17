@@ -195,6 +195,7 @@ public class WndEmbarquePasajero extends WndBase implements Serializable {
 					ventaPasaje.getPasajero().getNumeroDocumento().equals(value.trim().toUpperCase())){
 				duplicidadEmbarquePax=true;
 				Messagebox.show("El tipo y número de documento ingresado, corresponden a un Pasajero ya embarcado.", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_OK, Messagebox.ERROR,new EventListener<Event>() {
+					@Override
 					public void onEvent(Event e) throws Exception{
 						txtNumeroDocumento.setText("");
 						txtNumeroDocumento.setFocus(true);

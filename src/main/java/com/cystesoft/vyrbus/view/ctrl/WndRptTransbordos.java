@@ -157,6 +157,7 @@ public class WndRptTransbordos extends WndBase {
 		oWndBuscarPasajero.setMode(MODAL);
 		oWndBuscarPasajero.onCreate();
 		oWndBuscarPasajero.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				pasajero=oWndBuscarPasajero.getPasajero();
 				if(pasajero!=null)

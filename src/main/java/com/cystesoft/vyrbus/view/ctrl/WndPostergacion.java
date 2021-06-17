@@ -42,6 +42,7 @@ import org.zkoss.zul.Window;
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.CanalVenta;
 import com.cystesoft.vyrbus.model.bean.Cliente;
+import com.cystesoft.vyrbus.model.bean.ControlEspecieValorada;
 import com.cystesoft.vyrbus.model.bean.DetalleItinerario;
 import com.cystesoft.vyrbus.model.bean.EspecieValorada;
 import com.cystesoft.vyrbus.model.bean.FormaPago;
@@ -342,6 +343,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 		dblbxImporteTarjeta.setValue(0.0);
 				
 		lbxVentas.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e)throws Exception{
 				try{
 					VentaPasaje venta = (VentaPasaje)lbxVentas.getSelectedItem().getValue();
@@ -438,12 +440,14 @@ public class WndPostergacion extends WndBase implements Serializable {
 		});
 		
 		imgSeleccionarAsiento.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) throws Exception{
 				enlazarMapaBus();
 			}
 		});
 		
 		chkFechaAbierta.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) throws Exception{
 				chkFechaAbierta_onCheck();				
 			}			
@@ -500,6 +504,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 		
 		
 		imgQuitarPromocion.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				quitarPromocion();
 			}
@@ -509,12 +514,14 @@ public class WndPostergacion extends WndBase implements Serializable {
 		
 		
 		txtNumeroAsientoPostergado.addEventListener(Events.ON_FOCUS, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				
 			}
 		});
 		
 		imgBuscarPasajero.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) throws Exception{
 				final WndBuscarPasajero oWndBuscarPasajero = new WndBuscarPasajero();
 				wndPostergacion.appendChild(oWndBuscarPasajero);
@@ -522,6 +529,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 				oWndBuscarPasajero.setMode(MODAL);
 				oWndBuscarPasajero.onCreate();
 				oWndBuscarPasajero.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+					@Override
 					public void onEvent(Event e){
 						txtPasajeroPostergado.setText(oWndBuscarPasajero.getPasajero().toString());
 						postergacion.setPasajero(oWndBuscarPasajero.getPasajero());
@@ -547,6 +555,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 				oWndBuscarPasajero.rowApePat.setVisible(false);
 				oWndBuscarPasajero.rowApeMat.setVisible(false);
 				oWndBuscarPasajero.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+					@Override
 					public void onEvent(Event e){
 						txtClienteRuc.setText(oWndBuscarPasajero.getCliente().getNumeroDocumento());
 						txtClientePostergado.setText(oWndBuscarPasajero.getCliente().toString());
@@ -726,6 +735,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 			}
 			
 			txtNumeroControl.addEventListener(Events.ON_FOCUS, new EventListener<Event>() {
+				@Override
 				public void onEvent(Event e){
 					txtNumeroControl.setSelectionRange(0, txtNumeroControl.getText().length());
 				}
@@ -919,10 +929,17 @@ public class WndPostergacion extends WndBase implements Serializable {
 	 * @throws Exception 
 	 */
 	private void onLoadEspecieValorada(Textbox txtBoleto, Combobox comboTipoComprobante) throws Exception{
+		/*BEGIN 15/06/2021 - javalos - Correlativo by caja*/
 		EspecieValorada especieValorada=null;
+		ControlEspecieValorada controlEspecieValorada = null;
+		/*END 15/06/2021 - javalos - Correlativo by caja*/
 		if(agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_TEPSA){
-			especieValorada=UtilData.buscarEspecieValorada(((TipoComprobante)comboTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(),false);
-			txtBoleto.setValue(especieValorada.toString());
+			/*BEGIN 15/06/2021 - javalos - Correlativo by caja*/
+//			especieValorada=UtilData.buscarEspecieValorada(((TipoComprobante)comboTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(),false);
+//			txtBoleto.setValue(especieValorada.toString());
+			controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(((TipoComprobante)comboTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(), false, getUsuarioHardware(), null);
+			txtBoleto.setValue(controlEspecieValorada.toString());
+			/*END 15/06/2021 - javalos - Correlativo by caja*/
 		}else if(agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_VIAJES){
 			especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES, agencia,false);
 			txtBoleto.setValue(especieValorada.toString());
@@ -939,6 +956,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 	 */
 	public void enlazarItinerario(final Image image) {
 		image.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e)throws Exception{
 				final WndSeleccionaItinerario oWndSeleccionarItinerario = new WndSeleccionaItinerario();
 				wndPostergacion.appendChild(oWndSeleccionarItinerario);
@@ -948,6 +966,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 				oWndSeleccionarItinerario.setDestino(txtDestinoActual.getText().trim());
 				oWndSeleccionarItinerario.asignarValores();
 				oWndSeleccionarItinerario.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+					@Override
 					public void onEvent(Event e) throws Exception{
 						if(!txtItinerarioPostergado.getText().isEmpty()){
 							liberarAsientos();
@@ -2175,6 +2194,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 			this.appendChild(oWndMapaBus);
 			oWndMapaBus.setMode(MODAL);
 			oWndMapaBus.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+				@Override
 				public void onEvent(Event e) throws Exception{
 					postergacion.setNumeroAsiento(Integer.valueOf(txtNumeroAsientoPostergado.getText()));
 					postergacion.setNumeroPiso(Integer.valueOf(txtNumeroPisoPostergado.getText()));

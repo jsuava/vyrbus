@@ -114,6 +114,7 @@ public class PromocionManagerImpl implements PromocionManager {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.PromocionManager#buscarPorX(java.util.TreeMap, java.util.List, java.util.Date)
 	 */
+	@Override
 	public ArrayList<Promocion> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar, String fechaPartida)throws Exception{
 		return getPromocionDAO().buscarPorX(criteriosBusqueda, criteriosOrdenar, fechaPartida);
 	}
@@ -139,6 +140,7 @@ public class PromocionManagerImpl implements PromocionManager {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.PromocionManager#buscarPorCriterios(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public ArrayList<Promocion> buscarPorCriterios(String denominacion, String ruta, String servicio, String cliente, String tipoDescuento, String criterioOrden)throws Exception{
 		return getPromocionDAO().buscarPorCriterios(denominacion, ruta, servicio, cliente, tipoDescuento, criterioOrden);
 	}

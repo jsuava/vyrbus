@@ -69,6 +69,7 @@ public abstract class WndBase extends Window implements IBase, BeforeCompose, Af
 	/**
 	 * Metodo ZK Framework que se ejecuta antes de componer la página.
 	 */
+	@Override
 	public void beforeCompose() {
 		/*Validacion de inicio de Sesión de Usuario*/
 		Usuario usuario = null;
@@ -108,6 +109,7 @@ public abstract class WndBase extends Window implements IBase, BeforeCompose, Af
 	/**
 	 * Metodo ZK Framework que se ejecuta despues de componer la página.
 	 */
+	@Override
 	public void afterCompose() {
 		initComponents();
 	}
@@ -137,6 +139,7 @@ public abstract class WndBase extends Window implements IBase, BeforeCompose, Af
 	}
 
 	
+	@Override
 	public void onCreate() throws Exception {
 		System.out.println("Entro a la clase BASE **********************");
 	}

@@ -2,7 +2,7 @@
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
  * Descripción	: Clase que se utilizara para la confirmación de Reservas y para las Fechas Abiertas.
- * Autor		: José Sullo Avalos
+ * Autor		: José Avalos Sullo
  * Fecha		: 08/11/2012
  */
 package com.cystesoft.vyrbus.view.ctrl;
@@ -36,34 +36,14 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Window;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import pe.gob.mtc.wshr.ResultIdentidad;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.CanalVenta;
 import com.cystesoft.vyrbus.model.bean.Cliente;
+import com.cystesoft.vyrbus.model.bean.ControlEspecieValorada;
 import com.cystesoft.vyrbus.model.bean.Cortesia;
 import com.cystesoft.vyrbus.model.bean.DetalleItinerario;
-import com.cystesoft.vyrbus.model.bean.EspecieValorada;
 import com.cystesoft.vyrbus.model.bean.EstadoCivil;
 import com.cystesoft.vyrbus.model.bean.FormaPago;
 import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaLlegada;
@@ -460,6 +440,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		lblPromocion = (Label) this.getFellow("lblPromocion");
 
 		imgMostrarMapa.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) {
 //				Map<String, Object> params = new HashMap<String, Object>();
 //				params.put("ventaPasaje", getObjetoConfirmar());
@@ -479,6 +460,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		});
 
 		chkPrepagado.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) throws Exception {
 				if (chkPrepagado.isChecked()) {
 					for (Comboitem comboitem : cmbTipoComprobante.getItems()) {
@@ -500,6 +482,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		});
 		
 		lbxPasajeros.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) {
 				mantenimientoRegistroPax(new Long((String) lbxPasajeros.getSelectedItem().getValue()));
 				grpbxListaPasajeros.setVisible(false);
@@ -507,6 +490,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		});
 		
 		lbxClientes.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) {
 				mantenimientoRegistroClient(new Long((String) lbxClientes.getSelectedItem().getValue()));
 				grpbxListaClientes.setVisible(false);
@@ -514,6 +498,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		});
 
 		txtDocumentoPax.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(action!=Constantes.ACTION_NEW && action!=Constantes.ACTION_MODIFY){
 					if(txtDocumentoPax.getText().trim().equals(""))
@@ -536,6 +521,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		
 		
 		txtApePat.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(action!=Constantes.ACTION_NEW && action!=Constantes.ACTION_MODIFY){
 					if(txtApePat.getText().trim().equals(""))
@@ -550,6 +536,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		});
 		
 		txtApeMat.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(action!=Constantes.ACTION_NEW && action!=Constantes.ACTION_MODIFY){
 					if(txtApePat.getText().trim().equals(""))
@@ -564,6 +551,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		});
 		
 		txtNombres.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(action!=Constantes.ACTION_NEW && action!=Constantes.ACTION_MODIFY){
 					if(txtApePat.getText().trim().equals(""))
@@ -578,6 +566,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		});
 		
 		txtDocumentoCliente.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(action!=Constantes.ACTION_NEW && action!=Constantes.ACTION_MODIFY){
 					if(txtDocumentoCliente.getText().trim().equals(""))
@@ -590,6 +579,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		});
 		
 		txtRazonSocial.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(action!=Constantes.ACTION_NEW && action!=Constantes.ACTION_MODIFY){
 					if(txtRazonSocial.getText().trim().equals(""))
@@ -602,36 +592,42 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		});
 		
 		tabPasajero.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				cmbTipoDocumento.setFocus(true);
 			}
 		});
 		
 		tabCliente.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				txtDocumentoCliente.setFocus(true);
 			}
 		});
 		
 		tabPagos.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				cmbTipoFormaPago.setFocus(true);
 			}
 		});
 		
 		imgPromocion.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				imgPromocion_loadPromociones();
 			}
 		});
 		
 		imgQuitarPromocion.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				quitarPromocion();
 			}
 		});
 		
 		cmbMes.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(cmbMes.getSelectedItem().getValue() instanceof Integer)
 					Util.loadDias(cmbDia, (Integer)cmbMes.getSelectedItem().getValue(), (Integer)cmbAnio.getSelectedItem().getValue());
@@ -639,6 +635,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		});
 		
 		cmbAnio.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				Util.loadMeses(cmbMes);
 				cmbDia.setSelectedIndex(-1);
@@ -647,6 +644,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		});
 		
 		txtNumeroAsiento.addEventListener(Events.ON_CHANGING, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				aplicarPromocionPorTarifa();
 			}
@@ -932,18 +930,30 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		if (lblImporte.getValue().equals(LABEL_IMPPAG_TO_TEPSA) || getObjetoConfirmar().getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA //Cortesias
 				|| getObjetoConfirmar().getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO) { //Canje publicitario
 			
-			EspecieValorada especieValorada=null;
+			/*BEGIN 16/06/2021 - javalos - Correlativo by caja*/
+//			EspecieValorada especieValorada=null;
+			ControlEspecieValorada controlEspecieValorada = null;
+			/*END 16/06/2021 - javalos - Correlativo by caja*/
 			//Carga el nuevo boleto cuando es un CFA 
 			if(getObjetoConfirmar().getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA)){
 				rowNuevoBoleto.setVisible(true);
 				txtNumeroBoleto.setValue(getObjetoConfirmar().getNumeroBoleto());
 				/*Begin 25/10/2016*/
 				if(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE)
-					especieValorada=UtilData.buscarEspecieValorada(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(), false);
+					/*BEGIN 16/06/2021 - javalos - Correlativo by caja*/
+//					especieValorada=UtilData.buscarEspecieValorada(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(), false);
+					controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(), false, getUsuarioHardware(), null);
+					/*END 16/06/2021 - javalos - Correlativo by caja*/
 				else
-					especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_BOLETA_VENTA, getAgencia(), false);
+					/*BEGIN 16/06/2021 - javalos - Correlativo by caja*/
+//					especieValorada = UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_BOLETA_VENTA, getAgencia(), false);
+					controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(Constantes.ID_TIPCOM_BOLETA_VENTA, getAgencia(), false, getUsuarioHardware(), null);
+					/*END 16/06/2021 - javalos - Correlativo by caja*/
 				
-				txtNuevoBoleto.setValue(especieValorada.toString());
+				/*BEGIN 16/06/2021 - javalos - Correlativo by caja*/
+//				txtNuevoBoleto.setValue(especieValorada.toString());
+				txtNuevoBoleto.setValue(controlEspecieValorada.toString());
+				/*END 16/06/2021 - javalos - Correlativo by caja*/
 				if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA)
 					lblNuevoBoleto.setValue("NUEVA BOLETA :");
 				else if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPCOM_FACTURA)
@@ -951,11 +961,19 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //				txtNuevoBoleto.setValue(UtilData.buscarEspecieValorada(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId(), usuhar));
 			}else{
 				/*Begin 25/10/2016*/
+				
+				/*BEGIN 16/06/2021 - javalos - Correlativo by caja*/
+//				if(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE)
+//					especieValorada=UtilData.buscarEspecieValorada(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(), false);
+//				else
+//					especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_BOLETA_VENTA, getAgencia(), false);
+//				txtNumeroBoleto.setValue(especieValorada.toString());
 				if(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE)
-					especieValorada=UtilData.buscarEspecieValorada(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(), false);
+					controlEspecieValorada=UtilData.buscarEspecieValoradaByCaja(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(), false, getUsuarioHardware(), null);
 				else
-					especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_BOLETA_VENTA, getAgencia(), false);
-				txtNumeroBoleto.setValue(especieValorada.toString());
+					controlEspecieValorada=UtilData.buscarEspecieValoradaByCaja(Constantes.ID_TIPCOM_BOLETA_VENTA, getAgencia(), false, getUsuarioHardware(), null);
+				txtNumeroBoleto.setValue(controlEspecieValorada.toString());
+				/*END 16/06/2021 - javalos - Correlativo by caja*/
 				
 				/*End Begin 25/10/2016 - jabanto*/
 //				if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPCOM_RECIBO_CAJA){
@@ -1104,6 +1122,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IConfirmacion#onNewPax()
 	 */
+	@Override
 	public void onNewPax() {
 		onCleanControlsPax();
 		disabledControlsPax(false);
@@ -1123,6 +1142,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IConfirmacion#onModifyPax()
 	 */
+	@Override
 	public void onModifyPax() {
 		action = Constantes.ACTION_MODIFY;
 		// rowPaxFree.setVisible(false);
@@ -1246,6 +1266,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	 * 
 	 * @see com.tepsa.sisvyr.view.ui.IConfirmacion#onSearchPax()
 	 */
+	@Override
 	public void onSearchPax(Integer criterio){
 		try{
 			oPasajero=null;
@@ -1848,6 +1869,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	 */
 	private EventListener<Event> EventSavePax(final Pasajero oPasajero) {
 		EventListener<Event> ev = new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) {
 				try {
 					if (e.getName().equals("onYes")) {
@@ -2289,6 +2311,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	 */
 	private EventListener<Event> EventSaveClient(final Cliente oCliente){
 		EventListener<Event> ev = new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) {
 				try {
 					if (e.getName().equals("onYes")) {
@@ -2676,6 +2699,10 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			/* ********************************************************************************************************* */
 			ventaPasaje.setNumeroControl(getObjetoConfirmar().getNumeroControl());
 			/* ********************************************************************************************************* */
+			/*BEGIN 16/06/2021 - javalos - Correlativo by caja*/
+			ventaPasaje.setUsuarioHardware(getUsuarioHardware());
+			/*END 16/06/2021 - javalos - Correlativo by caja*/
+			
 			UtilData.auditarRegistro(ventaPasaje, false, usuario, Executions.getCurrent());
 			ventaPasaje.setUsuarioHardware(new UsuarioHardware(usuhar));
 
@@ -3120,6 +3147,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			this.appendChild(oWndMapaBus);
 			oWndMapaBus.setMode(MODAL);
 			oWndMapaBus.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+				@Override
 				public void onEvent(Event e){
 					getObjetoConfirmar().setNumeroAsiento(Integer.valueOf(txtNumeroAsiento.getText()));
 					getObjetoConfirmar().setNumeroPiso(Integer.valueOf(txtNumeroPiso.getText()));									

@@ -67,7 +67,7 @@ public class DocumentCDR {
 	 * 
 	 */
 	public void setId(JAXBElement<String> value) {
-		this.id = ((JAXBElement<String>) value);
+		this.id = (value);
 	}
 
 	/**
@@ -132,7 +132,7 @@ public class DocumentCDR {
 	 * 
 	 */
 	public void setRucEmpresa(JAXBElement<String> value) {
-		this.rucEmpresa = ((JAXBElement<String>) value);
+		this.rucEmpresa = (value);
 	}
 
 	/**
@@ -155,7 +155,7 @@ public class DocumentCDR {
 	 * 
 	 */
 	public void setTicket(JAXBElement<String> value) {
-		this.ticket = ((JAXBElement<String>) value);
+		this.ticket = (value);
 	}
 
 }

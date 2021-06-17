@@ -1,7 +1,7 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
 <window id="wndCierreCaja" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndCierreCaja">
-<panel id="panel" title="::: CIERRE DE CAJA :::" framable="true" width="790px" border="normal" closable="true" onClose="wndCierreCaja.closeTabWindow()">
+<panel id="panel" title="::: CIERRE DE CAJA :::" framable="true" width="830px" border="normal" closable="true" onClose="wndCierreCaja.closeTabWindow()">
      <panelchildren>
 <!--      	<caption label="CIERRE DE CAJA" /> -->
 	<grid >
@@ -50,7 +50,7 @@
 						<listheader label="AGENCIA" sort="auto" width="105px" style="color: #ffffff;"/>
 						<listheader label="ESTADO" sort="auto" width="60px" style="color: #ffffff;"/>
 						<listheader label="FECHA HORA CIERRE" sort="auto" width="110px" style="color: #ffffff;"/>
-						<listheader label="LIQUIDACIÓN" width="100px" align="left" style="color: #ffffff;"/>
+						<listheader label="LIQUIDACIÓN" width="140px" align="left" style="color: #ffffff;"/>
 					</listhead>
 				</listbox>
 				<separator width="2px" />

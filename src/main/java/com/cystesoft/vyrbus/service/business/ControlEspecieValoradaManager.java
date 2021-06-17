@@ -65,4 +65,11 @@ public interface ControlEspecieValoradaManager {
 	public List<ControlEspecieValorada> buscarEspecieValoradaPorAgencia(Integer idAgencia)throws Exception;
 	
 	public int actualizarCorrelativoEspecieValorada(Integer idTipCom, Integer idUsuHar, String serie, long correlativo) throws Exception;
+	/**
+	 * Realiza la ejecucion del secuenciador, que hace la funcion del correlativo
+	 * @param controlEspecieValorada	: Instancia de la clase ControlEspeciaValorada.
+	 * @return ControlEspecieValorada
+	 * @throws Exception
+	 */
+	public ControlEspecieValorada ejecutarSecuenciador(ControlEspecieValorada controlEspecieValorada)throws Exception;
 }

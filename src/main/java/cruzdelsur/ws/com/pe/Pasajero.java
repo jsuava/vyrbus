@@ -99,7 +99,7 @@ public class Pasajero {
 	 * 
 	 */
 	public void setRazonSocial(JAXBElement<String> value) {
-		this.razonSocial = ((JAXBElement<String>) value);
+		this.razonSocial = (value);
 	}
 
 	/**
@@ -122,7 +122,7 @@ public class Pasajero {
 	 * 
 	 */
 	public void setRucEmpresa(JAXBElement<String> value) {
-		this.rucEmpresa = ((JAXBElement<String>) value);
+		this.rucEmpresa = (value);
 	}
 
 	/**
@@ -145,7 +145,7 @@ public class Pasajero {
 	 * 
 	 */
 	public void setApellidoMaterno(JAXBElement<String> value) {
-		this.apellidoMaterno = ((JAXBElement<String>) value);
+		this.apellidoMaterno = (value);
 	}
 
 	/**
@@ -168,7 +168,7 @@ public class Pasajero {
 	 * 
 	 */
 	public void setApellidoPaterno(JAXBElement<String> value) {
-		this.apellidoPaterno = ((JAXBElement<String>) value);
+		this.apellidoPaterno = (value);
 	}
 
 	/**
@@ -191,7 +191,7 @@ public class Pasajero {
 	 * 
 	 */
 	public void setCodigoNacionalidad(JAXBElement<String> value) {
-		this.codigoNacionalidad = ((JAXBElement<String>) value);
+		this.codigoNacionalidad = (value);
 	}
 
 	/**
@@ -214,7 +214,7 @@ public class Pasajero {
 	 * 
 	 */
 	public void setCodigoTipoDocumento(JAXBElement<String> value) {
-		this.codigoTipoDocumento = ((JAXBElement<String>) value);
+		this.codigoTipoDocumento = (value);
 	}
 
 	/**
@@ -258,7 +258,7 @@ public class Pasajero {
 	 * 
 	 */
 	public void setEmail(JAXBElement<String> value) {
-		this.email = ((JAXBElement<String>) value);
+		this.email = (value);
 	}
 
 	/**
@@ -281,7 +281,7 @@ public class Pasajero {
 	 * 
 	 */
 	public void setFechaNacimiento(JAXBElement<String> value) {
-		this.fechaNacimiento = ((JAXBElement<String>) value);
+		this.fechaNacimiento = (value);
 	}
 
 	/**
@@ -304,7 +304,7 @@ public class Pasajero {
 	 * 
 	 */
 	public void setMenus(JAXBElement<ArrayOfGeneric> value) {
-		this.menus = ((JAXBElement<ArrayOfGeneric>) value);
+		this.menus = (value);
 	}
 
 	/**
@@ -327,7 +327,7 @@ public class Pasajero {
 	 * 
 	 */
 	public void setNombres(JAXBElement<String> value) {
-		this.nombres = ((JAXBElement<String>) value);
+		this.nombres = (value);
 	}
 
 	/**
@@ -350,7 +350,7 @@ public class Pasajero {
 	 * 
 	 */
 	public void setNumeroBoleto(JAXBElement<String> value) {
-		this.numeroBoleto = ((JAXBElement<String>) value);
+		this.numeroBoleto = (value);
 	}
 
 	/**
@@ -373,7 +373,7 @@ public class Pasajero {
 	 * 
 	 */
 	public void setNumeroDocumento(JAXBElement<String> value) {
-		this.numeroDocumento = ((JAXBElement<String>) value);
+		this.numeroDocumento = (value);
 	}
 
 	/**
@@ -396,7 +396,7 @@ public class Pasajero {
 	 * 
 	 */
 	public void setTelefono(JAXBElement<String> value) {
-		this.telefono = ((JAXBElement<String>) value);
+		this.telefono = (value);
 	}
 
 	/**
@@ -419,7 +419,7 @@ public class Pasajero {
 	 * 
 	 */
 	public void setTipoTarifa(JAXBElement<String> value) {
-		this.tipoTarifa = ((JAXBElement<String>) value);
+		this.tipoTarifa = (value);
 	}
 
 }

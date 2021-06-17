@@ -31,7 +31,7 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
 import com.cystesoft.vyrbus.model.bean.Cliente;
-import com.cystesoft.vyrbus.model.bean.EspecieValorada;
+import com.cystesoft.vyrbus.model.bean.ControlEspecieValorada;
 import com.cystesoft.vyrbus.model.bean.FormaPago;
 import com.cystesoft.vyrbus.model.bean.Itinerario;
 import com.cystesoft.vyrbus.model.bean.OperadorTarjetaCredito;
@@ -450,7 +450,7 @@ public class WndGastosAdministrativos extends WndBase{
 		
 		TreeMap<String, Object>criteriosBusqueda= new TreeMap<>();
 		criteriosBusqueda.put("numeroBoleto", txtComprobanteAplica.getText().trim().toUpperCase());
-		criteriosBusqueda.put("tipoComprobante", (TipoComprobante)cmbTipoComprobanteAplica.getSelectedItem().getValue());
+		criteriosBusqueda.put("tipoComprobante", cmbTipoComprobanteAplica.getSelectedItem().getValue());
 		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 		
 		List<VentaPasaje> result=ServiceLocator.getVentaPasajesManager().buscarPorX(criteriosBusqueda, null);
@@ -532,7 +532,7 @@ public class WndGastosAdministrativos extends WndBase{
 		cmbTarjetaCredito.appendChild(comboitem);
 		
 		TreeMap<String, Object>criteriosBusqueda= new TreeMap<>();
-		criteriosBusqueda.put("operadorTarjetaCredito", (OperadorTarjetaCredito)cmbOperador.getSelectedItem().getValue());
+		criteriosBusqueda.put("operadorTarjetaCredito", cmbOperador.getSelectedItem().getValue());
 		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 		List<String>criteriosOrdenar= new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
@@ -583,9 +583,14 @@ public class WndGastosAdministrativos extends WndBase{
 		txtComprobante.setText("");
 		if(rdModoElectronico.isChecked()){
 			if(cmbTipoComprobante.getSelectedItem().getValue() instanceof TipoComprobante){
-				EspecieValorada especieValorada= UtilData.buscarEspecieValorada(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(), false);
-				if(especieValorada!=null)
-					txtComprobante.setText(especieValorada.toString());
+				/*BEGIN 16/06/2021 - javalos - Correlativo by caja*/
+//				EspecieValorada especieValorada= UtilData.buscarEspecieValorada(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(), false);
+//				if(especieValorada!=null)
+//					txtComprobante.setText(especieValorada.toString());
+				ControlEspecieValorada controlEspecieValorada= UtilData.buscarEspecieValoradaByCaja(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(), false, getUsuarioHardware(), null);
+				if(controlEspecieValorada!=null)
+					txtComprobante.setText(controlEspecieValorada.toString());
+				/*BEGIN 16/06/2021 - javalos - Correlativo by caja*/
 			}
 		}
 	}
@@ -715,12 +720,16 @@ public class WndGastosAdministrativos extends WndBase{
 			gastoAdmin.setEsFechaAbierta(Constantes.FALSE_VALUE);
 			gastoAdmin.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 			gastoAdmin.setObservaciones("::::REGULARIZACION::::"+txtMotivo.getText().trim().toUpperCase());
+			/*BEGIN 16/06/2021 - javalos - Correlativo by caja*/
+			gastoAdmin.setUsuarioHardware(getUsuarioHardware());
+			/*END 16/06/2021 - javalos - Correlativo by caja*/
 			UtilData.auditarRegistro(gastoAdmin, getUsuario(), Executions.getCurrent());
 			
 			Double igv=gastoAdmin.getImportePagado()- Double.valueOf(Util.toNumberFormat(gastoAdmin.getImportePagado()/((Constantes.IGV/100)+1),2));
 			gastoAdmin.setIgv(igv);
 			
 			Messagebox.show(Messages.getString("wndGastosAdministrativos.question.noconfirmar"), DlgMessage.NOMBREAPLICACION+" PREGUNTA", DlgMessage.BTN_YESNO, Messagebox.QUESTION, Messagebox.NO, new EventListener<Event>() {
+				@Override
 				public void onEvent(Event e) throws Exception{
 					if(e.getName().equals(Messagebox.ON_YES)){
 						

@@ -167,6 +167,7 @@ public class OpcionMenuDAOImpl extends GenericDAOImpl implements OpcionMenuDAO {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.OpcionMenuDAO#buscarOpcionesMenu()
 	 */
+	@Override
 	public List<OpcionMenu> buscarOpcionesMenu() throws Exception{
 		String sql = "SELECT menus.abuelo, omN1.c_denominacion NIVEL1, menus.idpadre padre, omN2.c_denominacion NIVEL2, menus.opcmen_id, " +
 				"menus.c_denominacion, menus.c_nomobj, menus.c_url, menus.n_ordopcmen, menus.c_estreg, " +

@@ -116,6 +116,7 @@ public class WndLiberaBoletoManifiesto extends WndBase {
 	
 	private void liberarBoletoManifiesto(final Long idVenta) throws Exception{
 		Messagebox.show(Messages.getString("WndLiberarBoletoMAnifiesto.question.confirmLiberarcion"), DlgMessage.NOMBREAPLICACION+" CONSIMACIÓN", DlgMessage.BTN_YESNO, Messagebox.QUESTION, Messagebox.NO, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) throws Exception{
 				if(e.getName().equals(Messagebox.ON_YES)){
 					//Realiza la busqueda para la liberacion del manifiesto.

@@ -171,6 +171,7 @@ public class Printer extends JApplet implements ActionListener {
 	 * Evento click del boton.
 	 * @param e	: Evento.
 	 */
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==btnImprimir)
 			print(this.getUrlFile());

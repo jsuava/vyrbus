@@ -452,7 +452,7 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 				return;
 			}	
 				
-			Messagebox.show(Messages.getString(rbAprueba.isChecked()?"wndAprobarLineaCredito.question.Aprobar": rbDesaprueba.isChecked()? "wndAprobarLineaCredito.question.Desaprobar": "wndAprobarCredito.question.devuelveSolicitudAFinanzas") , DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+			org.zkoss.zul.Messagebox.show(Messages.getString(rbAprueba.isChecked()?"wndAprobarLineaCredito.question.Aprobar": rbDesaprueba.isChecked()? "wndAprobarLineaCredito.question.Desaprobar": "wndAprobarCredito.question.devuelveSolicitudAFinanzas") , DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, org.zkoss.zul.Messagebox.QUESTION, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e) throws Exception {
 					if(e.getName().equals("onYes")){

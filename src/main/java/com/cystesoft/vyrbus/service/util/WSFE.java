@@ -71,7 +71,6 @@ import com.cystesoft.vyrbus.service.xml.XmlVenta;
 import com.cystesoft.vyrbus.service.xml.XmlVentaPasaje;
 import com.cystesoft.vyrbus.view.tuentrada.LiquidacionTuentrada;
 import com.cystesoft.vyrbus.view.ui.DlgMessage;
-import com.cystesoft.vyrbus.service.util.Constantes;
 
 /**
  * @author jabanto

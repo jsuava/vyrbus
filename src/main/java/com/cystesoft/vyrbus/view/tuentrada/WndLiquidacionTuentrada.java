@@ -53,6 +53,7 @@ public class WndLiquidacionTuentrada extends WndBase {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
 	 */
+	@Override
 	public void initComponents(){
 		lblPtoVenta = (Label)this.getFellow("lblPtoVenta");
 		lblUsuario = (Label)this.getFellow("lblUsuario");

@@ -160,7 +160,7 @@ public class WndTarjetaCredito extends WndOpcionesMantenimiento {
 			
 			OperadorTarjetaCredito oOperadorTarjetaCredito = new OperadorTarjetaCredito();
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
-			oOperadorTarjetaCredito.setId((Integer) ((OperadorTarjetaCredito) cboOperadorTarjetaCredito.getSelectedItem().getValue()).getId());
+			oOperadorTarjetaCredito.setId(((OperadorTarjetaCredito) cboOperadorTarjetaCredito.getSelectedItem().getValue()).getId());
 			
 			oTarjetaCredito.setId(id);
 			oTarjetaCredito.setOperadorTarjetaCredito(oOperadorTarjetaCredito);

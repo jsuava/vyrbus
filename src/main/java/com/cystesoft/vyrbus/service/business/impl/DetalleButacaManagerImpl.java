@@ -14,8 +14,6 @@ import java.util.List;
 import java.util.TreeMap;
 
 import org.springframework.transaction.annotation.Transactional;
-import org.zkoss.zk.ui.Executions;
-
 import com.cystesoft.vyrbus.model.bean.DetalleButaca;
 import com.cystesoft.vyrbus.model.bean.MapaBus;
 import com.cystesoft.vyrbus.model.bean.Usuario;
@@ -23,7 +21,6 @@ import com.cystesoft.vyrbus.model.dao.DetalleButacaDAO;
 import com.cystesoft.vyrbus.service.business.DetalleButacaManager;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.util.Constantes;
-import com.cystesoft.vyrbus.service.util.UtilData;
 
 /**
  * @author Jose Abanto
@@ -115,7 +112,7 @@ public class DetalleButacaManagerImpl implements DetalleButacaManager{
 		
 		Date _fechaInicial=Constantes.FORMAT_DATE.parse(fechaInicial);
 		Date _fechaFinal=Constantes.FORMAT_DATE.parse(fechaFinal);
-		long cantDias=(long)1;
+		long cantDias=1;
 		cantDias+= (_fechaFinal.getTime()-_fechaInicial.getTime())/Constantes.MILISEGUNDOS_X_DIA;
 		for(int x=0; x<(int)cantDias;x++){						
 			Date fecha= new Date(_fechaInicial.getTime()+(x*Constantes.MILISEGUNDOS_X_DIA));

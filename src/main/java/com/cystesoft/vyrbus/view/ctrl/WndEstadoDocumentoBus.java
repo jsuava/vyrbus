@@ -83,8 +83,8 @@ public class WndEstadoDocumentoBus extends WndOpcionesMantenimiento {
 		oWndFiltrar.addEventListener(com.cystesoft.vyrbus.view.ui.Events.ON_FILTER, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
-				String codigo = (String) oWndFiltrar.getParameterValue("CODIGO").toString().trim();
-				String denominacion = (String) oWndFiltrar.getParameterValue("DENOMINACION").toString().trim();
+				String codigo = oWndFiltrar.getParameterValue("CODIGO").toString().trim();
+				String denominacion = oWndFiltrar.getParameterValue("DENOMINACION").toString().trim();
 				String estadoRegistro = Constantes.VALUE_ACTIVO;
 				
 				if (denominacion.trim().equals("")){

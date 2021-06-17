@@ -35,6 +35,7 @@ public class ItinerarioAgenciaPartidaDAOImpl extends GenericDAOImpl implements I
 	 * (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.model.dao.ItinerarioAgenciaPartidaDAO#buscarAgenciasPartida(java.lang.Long, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public List<ItinerarioAgenciaPartida> buscarAgenciasPartida(Long idItinerario, String estado, String strLocalidad)throws Exception{
 		String sql = "SELECT iap.itinerario_id, iap.agencia_id, a.c_denominacion, iap.c_horpar, a.c_nomcor, l.localidad_id, l.c_denominacion " +
 				"FROM vrtitiagepar iap " +

@@ -85,7 +85,7 @@ public class UsuarioRolDAOImpl extends GenericDAOImpl implements UsuarioRolDAO {
 		Class<?> oClass=UsuarioRol.class;
 		String hql="FROM "+oClass.getSimpleName()+" WHERE usuario=? AND estadoRegistro='A' AND rol.sistema=0 ORDER BY rol.denominacion "; //Sistema=0: solo los roles para acceso al sisvyr
 		
-		return (List<UsuarioRol>) getSession().createQuery(hql).setInteger(0, idUsuario).list();
+		return getSession().createQuery(hql).setInteger(0, idUsuario).list();
 		
 	}
 	

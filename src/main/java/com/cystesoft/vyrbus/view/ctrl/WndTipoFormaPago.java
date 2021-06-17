@@ -185,7 +185,7 @@ public class WndTipoFormaPago extends WndOpcionesMantenimiento {
 			oTipoFormaPago.setId(id);
 			if (cboFormaPago.getSelectedIndex() > -1) {
 				FormaPago oFormaPago = new FormaPago();
-				oFormaPago.setId((Integer) ((FormaPago) cboFormaPago.getSelectedItem().getValue()).getId());
+				oFormaPago.setId(((FormaPago) cboFormaPago.getSelectedItem().getValue()).getId());
 				oTipoFormaPago.setFormaPago(oFormaPago);
 			}
 			oTipoFormaPago.setDenominacion(txtDenominacion.getText().trim().toUpperCase());

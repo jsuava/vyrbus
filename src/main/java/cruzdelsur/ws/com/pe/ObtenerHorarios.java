@@ -64,7 +64,7 @@ public class ObtenerHorarios {
 	 * 
 	 */
 	public void setFechaProgramacion(JAXBElement<String> value) {
-		this.fechaProgramacion = ((JAXBElement<String>) value);
+		this.fechaProgramacion = (value);
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class ObtenerHorarios {
 	 * 
 	 */
 	public void setLocalidadEmbarque(JAXBElement<String> value) {
-		this.localidadEmbarque = ((JAXBElement<String>) value);
+		this.localidadEmbarque = (value);
 	}
 
 	/**
@@ -110,7 +110,7 @@ public class ObtenerHorarios {
 	 * 
 	 */
 	public void setLocalidadDesembarque(JAXBElement<String> value) {
-		this.localidadDesembarque = ((JAXBElement<String>) value);
+		this.localidadDesembarque = (value);
 	}
 
 }

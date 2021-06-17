@@ -41,6 +41,7 @@ public class WndTicketTuentrada extends WndBase {
 	private String msg;
 //	private String urlDocumento;	
 	
+	@Override
 	@SuppressWarnings("unchecked")
 	public void onCreate() throws Exception{
 		lstVentaPasaje = (List<VentaPasaje>)this.getAttribute("lstVentas");

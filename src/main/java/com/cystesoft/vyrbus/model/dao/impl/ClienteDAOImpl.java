@@ -177,6 +177,7 @@ public class ClienteDAOImpl extends GenericDAOImpl implements ClienteDAO {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.ClienteDAO#buscarClienteAgencia(java.lang.String)
 	 */
+	@Override
 	public List<Cliente> buscarClienteAgencia(String ruc)throws Exception{
 		String sql = "SELECT c.cliente_id, c.c_razsoc, c.c_numdoc, c.c_direccion, c.ubigeo_id, u.c_nombreubigeo, lcc.n_lincreapro, lcc.n_sobregiro, " +
 				"lcc.d_fecacti, lcc.d_fecsus, lcc.c_estlincre, lcc.lincrecli_id " +

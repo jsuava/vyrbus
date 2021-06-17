@@ -255,6 +255,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 				
 				final ButtonGenerarMapa tblButon = new ButtonGenerarMapa("Generar Estructura");
 				tblButon.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+					@Override
 					public void onEvent(Event e){
 						if(tblButon.getLabel().equals("Generar Estructura"))
 							generaEstructura(tblButon.getIdServicio());
@@ -591,6 +592,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 						}
 						
 						oDiv.addEventListener(Events.ON_DROP, new EventListener<Event>() {
+							@Override
 							public void onEvent(Event e){
 								DropEvent drpEvent = (DropEvent)e;
 								Component divContenedor = drpEvent.getTarget();
@@ -660,12 +662,12 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 	 */
 	private void inicializarEstructura(){
 		for(int i=vbxEstructuraBus.getChildren().size()-1; i>-1; i--){
-			Component component = (Component)vbxEstructuraBus.getChildren().get(i);
+			Component component = vbxEstructuraBus.getChildren().get(i);
 			vbxEstructuraBus.removeChild(component);
 		}
 		
 		for(int i=divAsientos.getChildren().size()-1; i>-1; i--){
-			Component component = (Component)divAsientos.getChildren().get(i);
+			Component component = divAsientos.getChildren().get(i);
 			divAsientos.removeChild(component);
 		}
 		
@@ -714,6 +716,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 		contadorIdImagen++;
 		Papelera papelera = new Papelera(IMAGE_PAPELERA);
 		papelera.addEventListener(Events.ON_DROP, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				DropEvent dropEvent = (DropEvent)e;
 				Component elementoMovido = dropEvent.getDragged();
@@ -864,6 +867,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 						}
 						
 						oDiv.addEventListener(Events.ON_DROP, new EventListener<Event>() {
+							@Override
 							public void onEvent(Event e){
 								DropEvent drpEvent = (DropEvent)e;
 								Component divContenedor = drpEvent.getTarget();

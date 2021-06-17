@@ -57,7 +57,7 @@ public class ObtenerHorariosResponse {
 	 * 
 	 */
 	public void setObtenerHorariosResult(JAXBElement<ArrayOfHorario> value) {
-		this.obtenerHorariosResult = ((JAXBElement<ArrayOfHorario>) value);
+		this.obtenerHorariosResult = (value);
 	}
 
 }

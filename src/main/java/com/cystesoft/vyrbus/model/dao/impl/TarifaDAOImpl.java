@@ -10,18 +10,15 @@ package com.cystesoft.vyrbus.model.dao.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 //import org.kohsuke.rngom.util.ocalizer;
 
 import com.cystesoft.vyrbus.model.bean.CanalVenta;
-import com.cystesoft.vyrbus.model.bean.Itinerario;
 import com.cystesoft.vyrbus.model.bean.Localidad;
 import com.cystesoft.vyrbus.model.bean.Ruta;
 import com.cystesoft.vyrbus.model.bean.Servicio;
 import com.cystesoft.vyrbus.model.bean.Tarifa;
-import com.cystesoft.vyrbus.model.bean.TarifaRegular;
 import com.cystesoft.vyrbus.model.dao.TarifaDAO;
 
 /**

@@ -152,6 +152,7 @@ public class PasajeroManagerImpl implements PasajeroManager {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.PasajeroManager#buscarPorFullTextIndex(java.lang.String[])
 	 */
+	@Override
 	public ArrayList<Pasajero> buscarPorFullTextIndex(String[] nombres) throws Exception{
 		return getPasajeroDAO().buscarPorFullTextIndex(nombres);
 	}

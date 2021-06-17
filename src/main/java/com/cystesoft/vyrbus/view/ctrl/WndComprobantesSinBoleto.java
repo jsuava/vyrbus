@@ -41,7 +41,7 @@ import org.zkoss.zul.Window;
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.ComprobantesBloqueados;
 import com.cystesoft.vyrbus.model.bean.ComprobantesBloqueadosID;
-import com.cystesoft.vyrbus.model.bean.EspecieValorada;
+import com.cystesoft.vyrbus.model.bean.ControlEspecieValorada;
 import com.cystesoft.vyrbus.model.bean.Parametros;
 import com.cystesoft.vyrbus.model.bean.TipoComprobante;
 import com.cystesoft.vyrbus.model.bean.TipoMovimiento;
@@ -120,6 +120,7 @@ public class WndComprobantesSinBoleto extends WndBase {
 		wndComprobantesSinBoleto=(Window)this.getFellow("wndComprobantesSinBoleto");
 		
 		cmbTipoComprobanteBusq.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				cargarAgencias();
 			}
@@ -233,6 +234,7 @@ public class WndComprobantesSinBoleto extends WndBase {
 					listcell = new Listcell(Util.DatetoString(ventaPasaje.getFechaInsercion(), Constantes.DATE_TIME_FORMAT));
 					listitem.appendChild(listcell);
 					listitem.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
+						@Override
 						public void onEvent(Event e){
 							reimprimir(e.getTarget().getId());
 						}
@@ -310,8 +312,12 @@ public class WndComprobantesSinBoleto extends WndBase {
 //			final String boleto = UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_BOLETO_VIAJE, usuarioHardware.getId());
 			
 			/*##Begin 28/10/2016 - jabanto*/
-			EspecieValorada especieValorada=UtilData.buscarEspecieValorada((ventaOriginal.getCliente()!=null?Constantes.ID_TIPCOM_FACTURA:Constantes.ID_TIPCOM_BOLETA_VENTA), agencia, false);
-			wndReimpresion = createVentanaReimpresion(ventaOriginal, especieValorada.toString());
+			/*BEGIN 16/06/2021 - javalos - Correlativo by caja*/
+//			EspecieValorada especieValorada=UtilData.buscarEspecieValorada((ventaOriginal.getCliente()!=null?Constantes.ID_TIPCOM_FACTURA:Constantes.ID_TIPCOM_BOLETA_VENTA), agencia, false);
+//			wndReimpresion = createVentanaReimpresion(ventaOriginal, especieValorada.toString());
+			ControlEspecieValorada controlEspecieValorada=UtilData.buscarEspecieValoradaByCaja((ventaOriginal.getCliente()!=null?Constantes.ID_TIPCOM_FACTURA:Constantes.ID_TIPCOM_BOLETA_VENTA), agencia, false, getUsuarioHardware(), null);
+			wndReimpresion = createVentanaReimpresion(ventaOriginal, controlEspecieValorada.toString());
+			/*END 16/06/2021 - javalos - Correlativo by caja*/
 			this.appendChild(wndReimpresion);
 			wndReimpresion.setMode(MODAL);			
 		}catch(ReimpresionByTipoMovimientoNoPermitidoException rtmnpex){
@@ -568,6 +574,7 @@ public class WndComprobantesSinBoleto extends WndBase {
 		button.setMold("trendy");
 		button.setAutodisable("self");
 		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) throws Exception {
 				//Implementado 05/08/2014 - jabanto
 				/* Valida que el RC o Voucher aún no haya sido Reimpreso.*/
@@ -595,6 +602,7 @@ public class WndComprobantesSinBoleto extends WndBase {
 				}
 				
 				Messagebox.show(Messages.getString("WndComprobantesSinBoleto.question.confirmarReimpresion"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+					@Override
 					public void onEvent(Event e){
 						try{
 							if(e.getName().equals("onYes")){
@@ -661,6 +669,9 @@ public class WndComprobantesSinBoleto extends WndBase {
 								boletoReimprimir.setUsuarioHardware((UsuarioHardware)getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO_HARDWARE));
 								boletoReimprimir.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 								boletoReimprimir.setFechaLiquidacion(fechaLiquidacion);
+								/*BEGIN 16/06/2021 - javalos - Correlativo by caja*/
+								boletoReimprimir.setUsuarioHardware(getUsuarioHardware());
+								/*END 16/06/2021 - javalos - Correlativo by caja*/
 								
 //								//Coloca en el campo estado documento PAG a todos los boletos o RC que no sen credito. - jabanto 16/10/2014
 								if(boletoReimprimir.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO)
@@ -730,6 +741,7 @@ public class WndComprobantesSinBoleto extends WndBase {
 		
 		button = new Button("Cancelar", "resources/mp_cancelarEnabled.png");
 		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				win.onClose();
 				try {

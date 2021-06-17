@@ -33,8 +33,8 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Window;
 
-import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.CanalVenta;
+import com.cystesoft.vyrbus.model.bean.ControlEspecieValorada;
 import com.cystesoft.vyrbus.model.bean.Cortesia;
 import com.cystesoft.vyrbus.model.bean.DetalleItinerario;
 import com.cystesoft.vyrbus.model.bean.EspecieValorada;
@@ -224,7 +224,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 					
 					Map<String, Object> params = new HashMap<String, Object>();
 					params.put("ventaPasaje", ventaPasaje);
-					params.put("detalleItinerario", ((DetalleItinerario)lstServicios.getSelectedItem().getValue()));
+					params.put("detalleItinerario", (lstServicios.getSelectedItem().getValue()));
 					params.put("txtAsientoSeleccionado", txtAsiento);
 					params.put("txtPisoSeleccionado",txtNumeroPiso); //txtNumeroPiso
 					params.put("selectAsiento", true);
@@ -235,6 +235,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 		});
 		
 		imgRefreshBoleto.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) throws Exception{
 				if(imgRefreshBoleto.getSrc().equals(imgEnabledRefresh))
 					onLoadEspecieValorada();
@@ -372,7 +373,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 							List<?> listPax = ServiceLocator.getPasajeroManager().buscarPorX(criterioBusquedaPax, null);
 							Pasajero pasajero = new Pasajero();
 							if (listPax.size() > 0) 
-								pasajero.setId((Long) ((Pasajero) listPax.get(0)).getId());
+								pasajero.setId(((Pasajero) listPax.get(0)).getId());
 							 else 
 								pasajero.setId((long) -1);
 							criterioBusqueda.put("pasajero", pasajero);
@@ -519,7 +520,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 				/*Busca puntaje del Paxfree*/
 				lstPuntaje=new ArrayList<PuntosPasajeroFrecuente>(ServiceLocator.getPuntosPasajeroFrecuenteManager().buscarPuntosDisponibles(pasajero.getPasajeroFrecuente().getId()));
 				if(lstPuntaje.size()>0)
-					puntosPax=((PuntosPasajeroFrecuente)lstPuntaje.get(0)).getTotalPuntaje();
+					puntosPax=lstPuntaje.get(0).getTotalPuntaje();
 				
 				//Valida que el Pasajero cuente con los puntos necesarios para el canje.
 				if (puntosPax < puntosRuta){
@@ -1167,6 +1168,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 
 			lisboxPasajeros.addEventListener(Events.ON_DOUBLE_CLICK,
 					new EventListener<Event>() {
+						@Override
 						public void onEvent(Event event) {
 							try {
 								pasajero = ServiceLocator.getPasajeroManager().buscarPorId(((Pasajero) lisboxPasajeros.getSelectedItem().getValue()).getId());
@@ -1229,7 +1231,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 					/*Busca puntaje del Paxfree*/
 					ArrayList<PuntosPasajeroFrecuente> lstPuntaje=new ArrayList<PuntosPasajeroFrecuente>(ServiceLocator.getPuntosPasajeroFrecuenteManager().buscarPuntosDisponibles(pasajero.getPasajeroFrecuente().getId()));
 					if(lstPuntaje.size()>0)
-						puntosPax=((PuntosPasajeroFrecuente)lstPuntaje.get(0)).getTotalPuntaje();
+						puntosPax=lstPuntaje.get(0).getTotalPuntaje();
 	
 					lbPaxfri.setValue("PAX FREE: ACTIVO");
 					lbPuntosPax.setValue("PUNTOS: "+puntosPax);
@@ -1768,8 +1770,12 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 	 */
 	private void onLoadEspecieValorada() throws Exception{
 //		txtNumeroBoleto.setValue(UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_BOLETO_VIAJE, usuarioHardware.getId()));
-		EspecieValorada especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_BOLETA_VENTA, getAgencia(), false);
-		txtNumeroBoleto.setText(especieValorada.toString());
+		/*BEGIN 15/06/2021 - javalos - Correlativo by caja*/
+//		EspecieValorada especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_BOLETA_VENTA, getAgencia(), false);
+//		txtNumeroBoleto.setText(especieValorada.toString());
+		ControlEspecieValorada controlEspecieValorada=UtilData.buscarEspecieValoradaByCaja(Constantes.ID_TIPCOM_BOLETA_VENTA, getAgencia(), false, getUsuarioHardware(), null);
+		txtNumeroBoleto.setText(controlEspecieValorada.toString());
+		/*END 15/06/2021 - javalos - Correlativo by caja*/
 	}
 	
 	private void disabledImgBusqAsiento(boolean estado){

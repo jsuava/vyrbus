@@ -58,7 +58,7 @@ public class Menu {
 	 * 
 	 */
 	public void setKey(JAXBElement<String> value) {
-		this.key = ((JAXBElement<String>) value);
+		this.key = (value);
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class Menu {
 	 * 
 	 */
 	public void setValue(JAXBElement<String> value) {
-		this.value = ((JAXBElement<String>) value);
+		this.value = (value);
 	}
 
 }

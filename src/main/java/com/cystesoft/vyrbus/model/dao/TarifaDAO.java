@@ -11,7 +11,6 @@ package com.cystesoft.vyrbus.model.dao;
 import java.util.List;
 
 import com.cystesoft.vyrbus.model.bean.Tarifa;
-import com.cystesoft.vyrbus.model.bean.TarifaRegular;
 
 
 /**

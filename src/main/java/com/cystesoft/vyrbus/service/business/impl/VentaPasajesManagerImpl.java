@@ -19,8 +19,8 @@ import org.zkoss.zk.ui.Executions;
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.CanalVenta;
 import com.cystesoft.vyrbus.model.bean.Cliente;
+import com.cystesoft.vyrbus.model.bean.ControlEspecieValorada;
 import com.cystesoft.vyrbus.model.bean.DestinatariosEmails;
-import com.cystesoft.vyrbus.model.bean.EspecieValorada;
 import com.cystesoft.vyrbus.model.bean.FormaPago;
 import com.cystesoft.vyrbus.model.bean.Itinerario;
 import com.cystesoft.vyrbus.model.bean.LineaCreditoCliente;
@@ -269,10 +269,13 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 						ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA_POOL)){
 					/**Begin 21/10/2016 - jabanto**/
 					/*Vuelve a realizar la busqueda del correlativo y lo actualiza, a exception de los boletos, ya que no son necesarios pues son manuales*/
-					EspecieValorada especieValorada=null;
+//					EspecieValorada especieValorada=null;
+					ControlEspecieValorada controlEspecieValorada = null;
 					if(ventaPasaje.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE){
-						especieValorada=UtilData.buscarEspecieValorada(ventaPasaje.getTipoComprobante().getId(), ventaPasaje.getAgencia(), true);
-						ventaPasaje.setNumeroBoleto(especieValorada.toString());
+//						especieValorada=UtilData.buscarEspecieValorada(ventaPasaje.getTipoComprobante().getId(), ventaPasaje.getAgencia(), true);
+//						ventaPasaje.setNumeroBoleto(especieValorada.toString());
+						controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(ventaPasaje.getTipoComprobante().getId(), ventaPasaje.getAgencia(), true, ventaPasaje.getUsuarioHardware(), null);
+						ventaPasaje.setNumeroBoleto(controlEspecieValorada.toString());
 					}	
 					/*	Validando que el numero del comprobante no exista en la DB 	*/
 					if(!(ventaPasaje.getServicioEspecialFactura())){ //Solo se omite esta validación en el caso de los servicios especiales con Factura.
@@ -283,8 +286,10 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 					if(ventaPasaje.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE){
 						int position = ventaPasaje.getNumeroBoleto().indexOf("-");
 						Long correlativo = Long.valueOf(ventaPasaje.getNumeroBoleto().substring(position+1))+1;
-						especieValorada.setCorrelativoActual(correlativo);
-						getEspecieValoradaDAO().update(especieValorada);
+//						especieValorada.setCorrelativoActual(correlativo);
+//						getEspecieValoradaDAO().update(especieValorada);
+						controlEspecieValorada.setCorrelativoActual(correlativo);
+						getControlEspecieValoradaDAO().update(controlEspecieValorada);
 					}
 				}else
 					ventaPasaje.setNumeroBoleto(null);
@@ -452,10 +457,17 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA)){
 					/**Begin 21/10/2016 - jabanto**/
 					/*Vuelve a realizar la busqueda del correlativo y lo actualiza, a exception de los boletos, ya que no son necesarios pues son manuales*/
-					EspecieValorada especieValorada=null;
+					/*BEGIN 14/06/2021 - javalos - Correlativo by caja*/
+//					EspecieValorada especieValorada=null;
+					ControlEspecieValorada controlEspecieValorada = null;
+  					/*END 14/06/2021 - javalos - Correlativo by caja*/					
 					if(ventaPasaje.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE){
-						especieValorada=UtilData.buscarEspecieValorada(ventaPasaje.getTipoComprobante().getId(), ventaPasaje.getAgencia(), true);
-						ventaPasaje.setNumeroBoleto(especieValorada.toString());
+						/*BEGIN 14/06/2021 - javalos - Correlativo by caja*/
+//						especieValorada=UtilData.buscarEspecieValorada(ventaPasaje.getTipoComprobante().getId(), ventaPasaje.getAgencia(), true);
+//						ventaPasaje.setNumeroBoleto(especieValorada.toString());
+						controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(ventaPasaje.getTipoComprobante().getId(), ventaPasaje.getAgencia(), true, ventaPasaje.getUsuarioHardware(), null);
+						ventaPasaje.setNumeroBoleto(controlEspecieValorada.toString());
+						/*END 14/06/2021 - javalos - Correlativo by caja*/
 					}			
 					/*	Validando que el boleto no exista en la DB 	*/
 					if(!(ventaPasaje.getServicioEspecialFactura())){ //Solo se omite esta validación en el caso de los servicios especiales con Factura.
@@ -466,8 +478,12 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 					if(ventaPasaje.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE){
 						int position = ventaPasaje.getNumeroBoleto().indexOf("-");
 						Long correlativo = Long.valueOf(ventaPasaje.getNumeroBoleto().substring(position+1))+1;
-						especieValorada.setCorrelativoActual(correlativo);
-						getEspecieValoradaDAO().update(especieValorada);
+						/*BEGIN 14/06/2021 - javalos - Correlativo by caja*/
+//						especieValorada.setCorrelativoActual(correlativo);
+//						getEspecieValoradaDAO().update(especieValorada);
+						controlEspecieValorada.setCorrelativoActual(correlativo);
+						getControlEspecieValoradaDAO().update(controlEspecieValorada);
+						/*END 14/06/2021 - javalos - Correlativo by caja*/
 					}
 					
 					/*Eng Begin 24/10/2016 - jabanto*/
@@ -631,6 +647,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaPasajesManager#buscarVentasForMapaBus(java.lang.Long)
 	 */
+	@Override
 	public List<VentaPasaje> buscarVentasForMapaBus(Long idItinerario)throws Exception{
 		return getVentaPasajesDAO().buscarVentasForMapaBus(idItinerario);
 	}
@@ -639,6 +656,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaPasajesManager#buscarVentaById(java.lang.Long)
 	 */
+	@Override
 	public VentaPasaje buscarVentaById(Long idVenta)throws Exception{
 		return getVentaPasajesDAO().buscarVentaById(idVenta);
 	}
@@ -647,7 +665,8 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaPasajesManager#getDateSystem()
 	 */
-    public String getDateSystem()throws Exception{
+    @Override
+	public String getDateSystem()throws Exception{
     	return getVentaPasajesDAO().getDateSystem();
     }
 	
@@ -655,6 +674,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaPasajesManager#buscarVentasByIdVenta(java.lang.Long)
 	 */
+	@Override
 	public VentaPasaje buscarVentasByIdVenta(Long idVenta)throws Exception{
 		return getVentaPasajesDAO().buscarVentasByIdVenta(idVenta);
 	}
@@ -663,6 +683,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaPasajesManager#buscarReservasPorConfirmar(java.lang.Integer, java.lang.Integer, java.lang.String[], java.lang.String, java.lang.String, java.lang.String, java.lang.Integer)
 	 */
+	@Override
 	public List<VentaPasaje> buscarReservasPorConfirmar(Integer idOrigen, Integer idDestino, String[] pasajero, String numeroDocumento, String numeroBoleto, String fechaPartida, Integer idAgencia)throws Exception{
 		return getVentaPasajesDAO().buscarReservasPorConfirmar(idOrigen, idDestino, pasajero, numeroDocumento, numeroBoleto, fechaPartida, idAgencia);
 	}
@@ -671,6 +692,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaPasajesManager#buscarFechaAbiertaPorConfirmar(java.lang.Integer, java.lang.Integer, java.lang.String[], java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public List<VentaPasaje> buscarFechaAbiertaPorConfirmar(Integer idOrigen, Integer idDestino, String[] pasajero, String numeroControl, String numeroBoleto, String numeroDocumento)throws Exception{
 		return getVentaPasajesDAO().buscarFechaAbiertaPorConfirmar(idOrigen, idDestino, pasajero, numeroControl, numeroBoleto, numeroDocumento);
 	}
@@ -679,6 +701,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaPasajesManager#buscarUsuarioPorAgencia(java.lang.Integer, java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public List<Usuario> buscarUsuarioPorAgencia(Integer idAgencia, String estado, String fechaInicio, String fechaFin, String rucCredito)throws Exception{
 		return getVentaPasajesDAO().buscarUsuarioPorAgencia(idAgencia, estado, fechaInicio, fechaFin, rucCredito);
 	}
@@ -687,6 +710,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaPasajesManager#buscarDetalladoVentas(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public List<VentaPasaje> buscarDetalladoVentas(String idAgencia, String idUsuario, String idTipoMovimiento, String fechaInicio, String fechaFin, String estado)throws Exception{
 		return getVentaPasajesDAO().buscarDetalladoVentas(idAgencia, idUsuario, idTipoMovimiento, fechaInicio, fechaFin, estado);
 	}
@@ -695,6 +719,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaPasajesManager#duplicarBoleto(com.tepsa.sisvyr.model.bean.VentaPasaje)
 	 */
+	@Override
 	@Transactional
 	public int duplicarBoleto(VentaPasaje ventaOriginal, VentaPasaje ventaDuplicado)throws Exception{
 		int result = Constantes.FAILURE;
@@ -750,6 +775,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaPasajesManager#anularMovimiento(com.tepsa.sisvyr.model.bean.VentaPasaje, boolean)
 	 */
+	@Override
 	@Transactional
 	public VentaPasaje anularMovimiento(VentaPasaje movimiento,boolean forzarNotaCredito)throws Exception{
 //		int result = Constantes.FAILURE;
@@ -974,6 +1000,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaPasajesManager#confirmarFechaAbierta(com.tepsa.sisvyr.model.bean.VentaPasaje)
 	 */
+	@Override
 	@Transactional
 	public VentaPasaje confirmarFechaAbierta(VentaPasaje ventaPasaje, TipoNota tipoNotaCredito)throws Exception{
 //		int result = Constantes.FAILURE;
@@ -1019,12 +1046,18 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				
 				/**Begin 25/10/2016 - jabanto**/
 				/*Vuelve a realizar la busqueda del correlativo y lo actualiza, a exception de los boletos, ya que no son necesarios pues son manuales*/
-			 	EspecieValorada especieValorada=null;
-				if(ventaPasaje.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE){
-					especieValorada=UtilData.buscarEspecieValorada(ventaPasaje.getTipoComprobante().getId(), ventaPasaje.getAgencia(), true);
-					ventaPasaje.setNumeroBoleto(especieValorada.toString());
+			 	
+			 	/*BEGIN 16/06/2021 - javalos - Correlativo by caja*/
+//			 	EspecieValorada especieValorada=null;
+			 	ControlEspecieValorada controlEspecieValorada = null;
+			 	if(ventaPasaje.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE){
+//			 		especieValorada=UtilData.buscarEspecieValorada(ventaPasaje.getTipoComprobante().getId(), ventaPasaje.getAgencia(), true);
+//					ventaPasaje.setNumeroBoleto(especieValorada.toString());
+			 		controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(ventaPasaje.getTipoComprobante().getId(), ventaPasaje.getAgencia(), true, ventaPasaje.getUsuarioHardware(), null);
+					ventaPasaje.setNumeroBoleto(controlEspecieValorada.toString());
 				}
-				
+			 	/*END 16/06/2021 - javalos - Correlativo by caja*/
+			 	
 				/*	Validando que el boleto no exista en la DB	*/
 				if(isBoletoDuplicado(ventaPasaje.getNumeroBoleto(), ventaPasaje.getTipoComprobante().getId()))
 					throw new NumeroBoletoDuplicadoException();
@@ -1033,8 +1066,12 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				if(ventaPasaje.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE){
 					int position = ventaPasaje.getNumeroBoleto().indexOf("-");
 					Long correlativo = Long.valueOf(ventaPasaje.getNumeroBoleto().substring(position+1))+1;
-					especieValorada.setCorrelativoActual(correlativo);
-					getEspecieValoradaDAO().update(especieValorada);
+					/*BEGIN 16/06/2021 - javalos - Correlativo by caja*/
+//					especieValorada.setCorrelativoActual(correlativo);
+//					getEspecieValoradaDAO().update(especieValorada);
+					controlEspecieValorada.setCorrelativoActual(correlativo);
+					getControlEspecieValoradaDAO().update(controlEspecieValorada);
+					/*END 16/06/2021 - javalos - Correlativo by caja*/
 				}
 			}
 			
@@ -1080,6 +1117,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaPasajesManager#buscarVentasPostergar(java.lang.Integer, java.lang.Integer, java.lang.String[], java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public List<VentaPasaje> buscarVentasPostergar(Integer idOrigen, Integer idDestino, String[] pasajero, String numeroControl, String numeroBoleto, String fechaPartida)throws Exception{
 		return getVentaPasajesDAO().buscarVentasPostergar(idOrigen, idDestino, pasajero, numeroControl, numeroBoleto, fechaPartida);
 	}
@@ -1088,6 +1126,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaPasajesManager#postergarBoleto(com.tepsa.sisvyr.model.bean.VentaPasaje)
 	 */
+	@Override
 	@Transactional
 	public VentaPasaje postergarBoleto(VentaPasaje boletoPostergar,Boolean validaBloqueo, VentaPasaje gastoAdministrativo)throws Exception{
 		try{
@@ -1181,14 +1220,21 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 			/*Generando la Nota de credito si el boleto original no es boleto de viaje - 04/11/2016 - jabanto*/
 			VentaPasaje notaCredito=null;
 			if(emitirNotaCredito)
-				notaCredito = generarNotaCredito((VentaPasaje)boletoPostergar.getVentaPasaje(), boletoPostergar.getTipoNota(), false, false);
+				notaCredito = generarNotaCredito(boletoPostergar.getVentaPasaje(), boletoPostergar.getTipoNota(), false, false);
 			
 			/**Begin 04/11/2016 - jabanto**/
 			/*Vuelve a realizar la busqueda del correlativo y lo actualiza, a exception de los boletos, ya que no son necesarios pues son manuales*/
-			EspecieValorada especieValorada=null;
+			/*BEGIN 15/06/2021 - javalos - Correlativo by caja*/
+//			EspecieValorada especieValorada=null;
+			ControlEspecieValorada controlEspecieValorada = null;
+			/*END 15/06/2021 - javalos - Correlativo by caja*/
 			if(boletoPostergar.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE){
-				especieValorada=UtilData.buscarEspecieValorada(boletoPostergar.getTipoComprobante().getId(), boletoPostergar.getAgencia(), true);
-				boletoPostergar.setNumeroBoleto(especieValorada.toString());
+				/*BEGIN 15/06/2021 - javalos - Correlativo by caja*/
+//				especieValorada=UtilData.buscarEspecieValorada(boletoPostergar.getTipoComprobante().getId(), boletoPostergar.getAgencia(), true);
+//				boletoPostergar.setNumeroBoleto(especieValorada.toString());
+				controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(boletoPostergar.getTipoComprobante().getId(), boletoPostergar.getAgencia(), true, boletoPostergar.getUsuarioHardware(), null);
+				boletoPostergar.setNumeroBoleto(controlEspecieValorada.toString());
+				/*END 15/06/2021 - javalos - Correlativo by caja*/
 			}
 			
 			/*	Validando que el boleto no exista en la DB	*/
@@ -1198,8 +1244,12 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 			if(boletoPostergar.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE){
 				int position = boletoPostergar.getNumeroBoleto().indexOf("-");
 				Long correlativo = Long.valueOf(boletoPostergar.getNumeroBoleto().substring(position+1))+1;
-				especieValorada.setCorrelativoActual(correlativo);
-				getEspecieValoradaDAO().update(especieValorada);
+				/*BEGIN 15/06/2021 - javalos - Correlativo by caja*/
+//				especieValorada.setCorrelativoActual(correlativo);
+//				getEspecieValoradaDAO().update(especieValorada);
+				controlEspecieValorada.setCorrelativoActual(correlativo);
+				getControlEspecieValoradaDAO().update(controlEspecieValorada);
+				/*END 15/06/2021 - javalos - Correlativo by caja*/
 			}
 			
 			/*	Generando el nuevo boleto	*/
@@ -1277,6 +1327,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaPasajesManager#reimprimirBoleto(com.tepsa.sisvyr.model.bean.VentaPasaje, com.tepsa.sisvyr.model.bean.VentaPasaje)
 	 */
+	@Override
 	@Transactional
 	public int reimprimirBoleto(VentaPasaje ventaOriginal, VentaPasaje ventaReimprimir)throws Exception{
 		int result = Constantes.FAILURE;
@@ -1289,11 +1340,19 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 		
 		/**Begin 25/10/2016 - jabanto**/
 		/*Vuelve a realizar la busqueda del correlativo y lo actualiza, a exception de los boletos, ya que no son necesarios pues son manuales*/
-		EspecieValorada especieValorada=null;
+		
+		/*BEGIN 16/06/2021 - javalos - Correlativo by caja*/
+//		EspecieValorada especieValorada=null;
+//		if(ventaReimprimir.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE){
+//			especieValorada=UtilData.buscarEspecieValorada(ventaReimprimir.getTipoComprobante().getId(), ventaReimprimir.getAgencia(), true);
+//			ventaReimprimir.setNumeroBoleto(especieValorada.toString());
+//		}
+		ControlEspecieValorada controlEspecieValorada = null;
 		if(ventaReimprimir.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE){
-			especieValorada=UtilData.buscarEspecieValorada(ventaReimprimir.getTipoComprobante().getId(), ventaReimprimir.getAgencia(), true);
-			ventaReimprimir.setNumeroBoleto(especieValorada.toString());
+			controlEspecieValorada=UtilData.buscarEspecieValoradaByCaja(ventaReimprimir.getTipoComprobante().getId(), ventaReimprimir.getAgencia(), true, ventaReimprimir.getUsuarioHardware(), null);
+			ventaReimprimir.setNumeroBoleto(controlEspecieValorada.toString());
 		}
+		/*END 16/06/2021 - javalos - Correlativo by caja*/
 		
 		/*	Validando que el boleto no exista en la DB	*/
 		if(isBoletoDuplicado(ventaReimprimir.getNumeroBoleto(), ventaReimprimir.getTipoComprobante().getId()))
@@ -1303,8 +1362,12 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 		if(ventaReimprimir.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE){
 			int position = ventaReimprimir.getNumeroBoleto().indexOf("-");
 			Long correlativo = Long.valueOf(ventaReimprimir.getNumeroBoleto().substring(position+1))+1;
-			especieValorada.setCorrelativoActual(correlativo);
-			getEspecieValoradaDAO().update(especieValorada);
+			/*BEGIN 16/06/2021 - javalos - Correlativo by caja*/
+//			especieValorada.setCorrelativoActual(correlativo);
+//			getEspecieValoradaDAO().update(especieValorada);
+			controlEspecieValorada.setCorrelativoActual(correlativo);
+			getControlEspecieValoradaDAO().update(controlEspecieValorada);
+			/*END 16/06/2021 - javalos - Correlativo by caja*/
 		}
 		
 		
@@ -1367,6 +1430,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaPasajesManager#buscarBoletosDevolucion(java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public List<VentaPasaje> buscarBoletosDevolucion(String numeroDocumento, String numeroControl, String numeroBoleto)throws Exception{
 		return getVentaPasajesDAO().buscarBoletosDevolucion(numeroDocumento, numeroControl, numeroBoleto);
 	}
@@ -1374,6 +1438,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaPasajesManager#devolucionBoleto(com.tepsa.sisvyr.model.bean.VentaPasaje)
 	 */
+	@Override
 	@Transactional
 	public VentaPasaje devolucionBoleto(VentaPasaje venta, VentaPasaje gastoAdministrativo)throws Exception{
 		/*	Guardando la instancia de la devolucion	*/
@@ -1420,7 +1485,8 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 			}
 		}
 		
-		/*Valida si debe emitir el gasto administrativo*/ 
+		/*Valida si debe emitir el gasto administrativo*/
+		gastoAdministrativo.setUsuarioHardware(venta.getUsuarioHardware());
 		if(gastoAdministrativo!=null)
 			generarGastoAdministrativo(gastoAdministrativo,true);
 		
@@ -1446,6 +1512,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaPasajesManager#contarViajesValidos(java.lang.Long, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public int contarViajesValidos(Long idPasajero, String fechaInicial, String fechaFinal)throws Exception{
 		return getVentaPasajesDAO().contarViajesValidos(idPasajero, fechaInicial, fechaFinal);
 	}
@@ -1453,6 +1520,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaPasajesManager#buscarBoletosReimprimir(java.lang.String, java.lang.String[], java.lang.String)
 	 */
+	@Override
 	public List<VentaPasaje> buscarBoletosReimprimir(String numeroDocumento, String[] pasajero, String fechaPartida)throws Exception{
 		return getVentaPasajesDAO().buscarBoletosReimprimir(numeroDocumento, pasajero, fechaPartida);
 	}
@@ -1460,6 +1528,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaPasajesManager#buscarComprobantesSinBoleto(java.lang.String, java.lang.Integer, java.lang.Integer, java.lang.Integer, java.lang.Integer)
 	 */
+	@Override
 	public List<VentaPasaje> buscarComprobantesSinBoleto(String fechaPartida, Integer idAgencia,Integer idTipoComprobante, Integer idRol, Integer idAgenciaEmision)throws Exception{
 		return getVentaPasajesDAO().buscarComprobantesSinBoleto(fechaPartida, idAgencia,idTipoComprobante, idRol, idAgenciaEmision);
 	}
@@ -1906,21 +1975,38 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 		UtilData.auditarRegistro(notaCredito, usuario, Executions.getCurrent());
 		
 		//Recuperando el correlativo
-		EspecieValorada especieValorada=UtilData.buscarEspecieValorada(notaCredito.getTipoComprobante().getId(), notaCredito.getAgencia(), true);		
-		String numeroNota=especieValorada.toString();
+		/*BEGIN 15/06/2021 - javalos - Correlativo by caja*/
+		Integer aplicarA = 0;
 		if(ventaAplica.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA)
-			numeroNota="B"+numeroNota;
-		else
-			numeroNota="F"+numeroNota;
-		notaCredito.setNumeroBoleto(numeroNota);
+			aplicarA = Constantes.APLICAR_NC_A_BOLETA;
+		else if(ventaAplica.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_FACTURA)
+			aplicarA = Constantes.APLICAR_NC_A_FACTURA;
+		
+//		EspecieValorada especieValorada=UtilData.buscarEspecieValorada(notaCredito.getTipoComprobante().getId(), notaCredito.getAgencia(), true);		
+//		String numeroNota=especieValorada.toString();
+//		if(ventaAplica.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA)
+//			numeroNota="B"+numeroNota;
+//		else
+//			numeroNota="F"+numeroNota;
+//		notaCredito.setNumeroBoleto(numeroNota);
+		
+		ControlEspecieValorada controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(notaCredito.getTipoComprobante().getId(), notaCredito.getAgencia(), true, usuarioHardware, aplicarA);
+		notaCredito.setNumeroBoleto(controlEspecieValorada.toString());
+		/*END 15/06/2021 - javalos - Correlativo by caja*/
+		
 		/*	Validando que el boleto no exista en la DB	*/
 		if(isBoletoDuplicado(notaCredito.getNumeroBoleto(), notaCredito.getTipoComprobante().getId()))
 			throw new NumeroBoletoDuplicadoException();
+		
 		/*Actualiza el correlativo 25/10/2016 - jabanto*/
 		int position = notaCredito.getNumeroBoleto().indexOf("-");
 		Long correlativo = Long.valueOf(notaCredito.getNumeroBoleto().substring(position+1))+1;
-		especieValorada.setCorrelativoActual(correlativo);
-		getEspecieValoradaDAO().update(especieValorada);
+		/*BEGIN 15/06/2021 - javalos - Correlativo by caja*/
+//		especieValorada.setCorrelativoActual(correlativo);
+//		getEspecieValoradaDAO().update(especieValorada);
+		controlEspecieValorada.setCorrelativoActual(correlativo);
+		getControlEspecieValoradaDAO().update(controlEspecieValorada);
+		/*END 15/06/2021 - javalos - Correlativo by caja*/
 	
 		/*Guardando la instancia de la nota de credito*/
 		getVentaPasajesDAO().save(notaCredito);		
@@ -1958,25 +2044,38 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 		/*=================================================================================*/
 		/**Begin 25/10/2016 - jabanto**/
 		/*Vuelve a realizar la busqueda del correlativo y lo actualiza, a exception de los boletos, ya que no son necesarios pues son manuales*/
-		EspecieValorada especieValorada=null;
+		/*BEGIN 15/06/2021 - javalos - Correlativo by caja*/
+//		EspecieValorada especieValorada=null;
+		ControlEspecieValorada controlEspecieValorada = null;
 		if(generarCorrelativo){//Valida si debe volver a generar el correlativo del comprobante
 			if(gastoAdministrativo.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE){
-				especieValorada=UtilData.buscarEspecieValorada(gastoAdministrativo.getTipoComprobante().getId(), gastoAdministrativo.getAgencia(), true);
-				gastoAdministrativo.setNumeroBoleto(especieValorada.toString());
+//				especieValorada=UtilData.buscarEspecieValorada(gastoAdministrativo.getTipoComprobante().getId(), gastoAdministrativo.getAgencia(), true);
+//				gastoAdministrativo.setNumeroBoleto(especieValorada.toString());
+				controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(gastoAdministrativo.getTipoComprobante().getId(), gastoAdministrativo.getAgencia(), true, gastoAdministrativo.getUsuarioHardware(), null);
+				gastoAdministrativo.setNumeroBoleto(controlEspecieValorada.toString());
 			}
 		}
+		/*END 15/06/2021 - javalos - Correlativo by caja*/
 		
 		/*	Validando que el boleto no exista en la DB	*/
 		if(isBoletoDuplicado(gastoAdministrativo.getNumeroBoleto(), gastoAdministrativo.getTipoComprobante().getId()))
 			throw new NumeroBoletoDuplicadoException();
 		
 		/*Actualiza el correlativo 25/10/2016 - jabanto*/
-		if(especieValorada!=null && gastoAdministrativo.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE){
+		/*BEGIN 15/06/2021 - javalos - Correlativo by caja*/
+//		if(especieValorada!=null && gastoAdministrativo.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE){
+//			int position = gastoAdministrativo.getNumeroBoleto().indexOf("-");
+//			Long correlativo = Long.valueOf(gastoAdministrativo.getNumeroBoleto().substring(position+1))+1;
+//			especieValorada.setCorrelativoActual(correlativo);
+//			getEspecieValoradaDAO().update(especieValorada);
+//		}
+		if(controlEspecieValorada!=null && gastoAdministrativo.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE){
 			int position = gastoAdministrativo.getNumeroBoleto().indexOf("-");
 			Long correlativo = Long.valueOf(gastoAdministrativo.getNumeroBoleto().substring(position+1))+1;
-			especieValorada.setCorrelativoActual(correlativo);
-			getEspecieValoradaDAO().update(especieValorada);
+			controlEspecieValorada.setCorrelativoActual(correlativo);
+			getControlEspecieValoradaDAO().update(controlEspecieValorada);
 		}
+		/*END 15/06/2021 - javalos - Correlativo by caja*/
 		
 		/*Guardando el gasto administrativo*/
 		getVentaPasajesDAO().save(gastoAdministrativo);
@@ -2211,6 +2310,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	 * (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#buscarBoletosAnuladosByX(java.lang.String, java.lang.String, java.lang.Integer)
 	 */
+	@Override
 	public List<ResumenAnulacionPostergacion> buscarBoletosAnuladosByX(String fechaDesde, String fechaHasta, Integer criterio){
 		return getVentaPasajesDAO().buscarBoletosAnuladosByX(fechaDesde, fechaHasta, criterio);
 	}
@@ -2218,6 +2318,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	 * (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#buscarBoletosAnuladosDetalladoByX(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer)
 	 */
+	@Override
 	public List<VentaPasaje> buscarBoletosAnuladosDetalladoByX(String fechaDesde, String fechaHasta, Integer id, Integer criterio){
 		return getVentaPasajesDAO().buscarBoletosAnuladosDetalladoByX(fechaDesde, fechaHasta, id, criterio);
 	}
@@ -2225,6 +2326,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	 * (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#buscarBoletosPostergadosByX(java.lang.String, java.lang.String, java.lang.Integer)
 	 */
+	@Override
 	public List<ResumenAnulacionPostergacion> buscarBoletosPostergadosByX(String fechaDesde, String fechaHasta, Integer criterio){
 		return getVentaPasajesDAO().buscarBoletosPostergadosByX(fechaDesde, fechaHasta, criterio);
 	}

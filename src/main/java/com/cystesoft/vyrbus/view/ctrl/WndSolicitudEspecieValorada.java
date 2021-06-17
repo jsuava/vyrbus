@@ -19,7 +19,6 @@ import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.MyTime;
 import com.cystesoft.vyrbus.service.util.Util;
 import com.cystesoft.vyrbus.service.util.UtilData;
-import com.cystesoft.vyrbus.view.ui.WndBase;
 import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
 
 /**

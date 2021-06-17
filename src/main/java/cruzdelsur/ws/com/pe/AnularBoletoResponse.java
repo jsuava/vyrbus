@@ -57,7 +57,7 @@ public class AnularBoletoResponse {
 	 * 
 	 */
 	public void setAnularBoletoResult(JAXBElement<ResultAnularBoleto> value) {
-		this.anularBoletoResult = ((JAXBElement<ResultAnularBoleto>) value);
+		this.anularBoletoResult = (value);
 	}
 
 }

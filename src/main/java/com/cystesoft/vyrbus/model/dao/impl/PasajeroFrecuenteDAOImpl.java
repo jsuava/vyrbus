@@ -130,7 +130,7 @@ public class PasajeroFrecuenteDAOImpl extends GenericDAOImpl implements Pasajero
 						    "GROUP BY pp.d_feccan, pp.d_fecanu "+
 						    ")Pts";
 			log.info(sql);
-			List<?>result= (List<?>) getSession().createSQLQuery(sql).list();
+			List<?>result= getSession().createSQLQuery(sql).list();
 			if(result.size()>0){
 				Object[] obj = (Object[])result.get(0);
 				if(obj[0]!=null && obj[1]!=null){
@@ -161,7 +161,7 @@ public class PasajeroFrecuenteDAOImpl extends GenericDAOImpl implements Pasajero
 		
 		log.info(sql);
 		
-		List<?>result= (List<?>) getSession().createSQLQuery(sql).list();
+		List<?>result= getSession().createSQLQuery(sql).list();
 		PasajeroFrecuente pasajeroFrecuente= null;
 		if(result.size()>0){
 			Object[] obj = (Object[])result.get(0);

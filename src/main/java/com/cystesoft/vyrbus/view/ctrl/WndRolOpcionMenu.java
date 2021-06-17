@@ -121,6 +121,7 @@ public class WndRolOpcionMenu extends WndBase {
 		}	
 	}
 	
+	@Override
 	public void onClose() {
 		closeTabWindow();
 	}

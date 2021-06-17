@@ -154,6 +154,7 @@ public class WndConfirmarReserva extends WndBase {
 		chbxActivaAnulacionMasiva=(Checkbox)this.getFellow("chbxActivaAnulacionMasiva");
 		
 		lbxReservas.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(!(lbxReservas.isCheckmark())){
 					VentaPasaje reserva = (VentaPasaje)lbxReservas.getSelectedItem().getValue();
@@ -223,6 +224,7 @@ public class WndConfirmarReserva extends WndBase {
 					Button button = new Button("", "resources/mp_anular.png");
 					button.setClass("btnImage");
 					button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+						@Override
 						public void onEvent(Event e){
 							lbxReservas.setSelectedIndex(Integer.valueOf(e.getTarget().getId()));
 							VentaPasaje reserva = (VentaPasaje)lbxReservas.getSelectedItem().getValue();
@@ -250,6 +252,7 @@ public class WndConfirmarReserva extends WndBase {
 	private void anularReserva(VentaPasaje reserva1){
 		reserva = reserva1;
 		Messagebox.show(Messages.getString("WndConfirmarReserva.information.confirmaAnularReserva"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(e.getName().equals("onYes")){
 					try{
@@ -278,6 +281,7 @@ public class WndConfirmarReserva extends WndBase {
 	public void anulacionMasiva()throws Exception{
 		if(lbxReservas.getSelectedItems().size()>0){
 			Messagebox.show(Messages.getString("WndConfirmarReserva.information.confirmaAnularReservaMasiva"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+				@Override
 				public void onEvent(Event e){
 					if(e.getName().equals("onYes")){
 						try{

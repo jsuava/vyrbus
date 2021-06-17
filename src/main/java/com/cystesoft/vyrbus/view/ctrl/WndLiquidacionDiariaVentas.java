@@ -549,6 +549,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 					Button btnAnular = new Button();
 					btnAnular.setId(venta.getId().toString());
 					btnAnular.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+						@Override
 						public void onEvent(Event e) throws Exception{
 							anularBoleto(e.getTarget().getId());
 						}
@@ -1216,12 +1217,14 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 		Button button = new Button("Continuar", "resources/mp_anular.png");
 		button.setClass("btn-vyrbus");
 		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(txtMotivoAnulacion.getText().trim().isEmpty()){
 					DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.noMotivoAnulacion"),txtMotivoAnulacion);
 					return;
 				}
 				Messagebox.show(Messages.getString("WndLiquidacionDiariaVentas.information.confirmarAnulacion"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+					@Override
 					public void onEvent(Event e){
 						try{
 							if(e.getName().equals("onYes")){
@@ -1239,6 +1242,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 		row.appendChild(button);
 		button = new Button("Cancelar", "resources/mp_cancelarEnabled.png");
 		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				win.onClose();
 			}

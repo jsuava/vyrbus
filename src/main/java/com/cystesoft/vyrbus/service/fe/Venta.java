@@ -176,7 +176,7 @@ public class Venta {
 	 * 
 	 */
 	public void setCentroCosto(JAXBElement<String> value) {
-		this.centroCosto = ((JAXBElement<String>) value);
+		this.centroCosto = (value);
 	}
 
 	/**
@@ -199,7 +199,7 @@ public class Venta {
 	 * 
 	 */
 	public void setCliente(JAXBElement<Cliente> value) {
-		this.cliente = ((JAXBElement<Cliente>) value);
+		this.cliente = (value);
 	}
 
 	/**
@@ -222,7 +222,7 @@ public class Venta {
 	 * 
 	 */
 	public void setDireccionEmbarque(JAXBElement<String> value) {
-		this.direccionEmbarque = ((JAXBElement<String>) value);
+		this.direccionEmbarque = (value);
 	}
 
 	/**
@@ -245,7 +245,7 @@ public class Venta {
 	 * 
 	 */
 	public void setDocumentoReferencia(JAXBElement<DocumentoReferencia> value) {
-		this.documentoReferencia = ((JAXBElement<DocumentoReferencia>) value);
+		this.documentoReferencia = (value);
 	}
 
 	/**
@@ -268,7 +268,7 @@ public class Venta {
 	 * 
 	 */
 	public void setFechaEmision(JAXBElement<String> value) {
-		this.fechaEmision = ((JAXBElement<String>) value);
+		this.fechaEmision = (value);
 	}
 
 	/**
@@ -291,7 +291,7 @@ public class Venta {
 	 * 
 	 */
 	public void setGlosaRetencion(JAXBElement<String> value) {
-		this.glosaRetencion = ((JAXBElement<String>) value);
+		this.glosaRetencion = (value);
 	}
 
 	/**
@@ -314,7 +314,7 @@ public class Venta {
 	 * 
 	 */
 	public void setHoraEmision(JAXBElement<String> value) {
-		this.horaEmision = ((JAXBElement<String>) value);
+		this.horaEmision = (value);
 	}
 
 	/**
@@ -358,7 +358,7 @@ public class Venta {
 	 * 
 	 */
 	public void setInformacionAdicional(JAXBElement<InformacionAdicional> value) {
-		this.informacionAdicional = ((JAXBElement<InformacionAdicional>) value);
+		this.informacionAdicional = (value);
 	}
 
 	/**
@@ -402,7 +402,7 @@ public class Venta {
 	 * 
 	 */
 	public void setListDetalleVenta(JAXBElement<ArrayOfDetalleVenta> value) {
-		this.listDetalleVenta = ((JAXBElement<ArrayOfDetalleVenta>) value);
+		this.listDetalleVenta = (value);
 	}
 
 	/**
@@ -488,7 +488,7 @@ public class Venta {
 	 * 
 	 */
 	public void setNumeroCorrelativo(JAXBElement<String> value) {
-		this.numeroCorrelativo = ((JAXBElement<String>) value);
+		this.numeroCorrelativo = (value);
 	}
 
 	/**
@@ -511,7 +511,7 @@ public class Venta {
 	 * 
 	 */
 	public void setNumeroPrefactura(JAXBElement<String> value) {
-		this.numeroPrefactura = ((JAXBElement<String>) value);
+		this.numeroPrefactura = (value);
 	}
 
 	/**
@@ -534,7 +534,7 @@ public class Venta {
 	 * 
 	 */
 	public void setNumeroSerie(JAXBElement<String> value) {
-		this.numeroSerie = ((JAXBElement<String>) value);
+		this.numeroSerie = (value);
 	}
 
 	/**
@@ -557,7 +557,7 @@ public class Venta {
 	 * 
 	 */
 	public void setObservaciones(JAXBElement<String> value) {
-		this.observaciones = ((JAXBElement<String>) value);
+		this.observaciones = (value);
 	}
 
 	/**
@@ -580,7 +580,7 @@ public class Venta {
 	 * 
 	 */
 	public void setProducto(JAXBElement<String> value) {
-		this.producto = ((JAXBElement<String>) value);
+		this.producto = (value);
 	}
 
 	/**
@@ -603,7 +603,7 @@ public class Venta {
 	 * 
 	 */
 	public void setRucEmpresa(JAXBElement<String> value) {
-		this.rucEmpresa = ((JAXBElement<String>) value);
+		this.rucEmpresa = (value);
 	}
 
 	/**
@@ -626,7 +626,7 @@ public class Venta {
 	 * 
 	 */
 	public void setTipoComprobanteID(JAXBElement<String> value) {
-		this.tipoComprobanteID = ((JAXBElement<String>) value);
+		this.tipoComprobanteID = (value);
 	}
 
 	/**
@@ -712,7 +712,7 @@ public class Venta {
 	 * 
 	 */
 	public void setUsuarioInsercion(JAXBElement<String> value) {
-		this.usuarioInsercion = ((JAXBElement<String>) value);
+		this.usuarioInsercion = (value);
 	}
 
 	/**
@@ -735,7 +735,7 @@ public class Venta {
 	 * 
 	 */
 	public void setUsuarioModificacion(JAXBElement<String> value) {
-		this.usuarioModificacion = ((JAXBElement<String>) value);
+		this.usuarioModificacion = (value);
 	}
 
 }

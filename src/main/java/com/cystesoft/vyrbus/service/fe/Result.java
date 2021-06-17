@@ -97,7 +97,7 @@ public class Result {
 	 * 
 	 */
 	public void setMessage(JAXBElement<String> value) {
-		this.message = ((JAXBElement<String>) value);
+		this.message = (value);
 	}
 
 	/**
@@ -120,7 +120,7 @@ public class Result {
 	 * 
 	 */
 	public void setBarcode(JAXBElement<byte[]> value) {
-		this.barcode = ((JAXBElement<byte[]>) value);
+		this.barcode = (value);
 	}
 
 	/**
@@ -143,7 +143,7 @@ public class Result {
 	 * 
 	 */
 	public void setBarcodeQR(JAXBElement<byte[]> value) {
-		this.barcodeQR = ((JAXBElement<byte[]>) value);
+		this.barcodeQR = (value);
 	}
 
 	/**
@@ -166,7 +166,7 @@ public class Result {
 	 * 
 	 */
 	public void setListDetalleVenta(JAXBElement<ArrayOfDetalleVenta> value) {
-		this.listDetalleVenta = ((JAXBElement<ArrayOfDetalleVenta>) value);
+		this.listDetalleVenta = (value);
 	}
 
 	/**
@@ -189,7 +189,7 @@ public class Result {
 	 * 
 	 */
 	public void setPdf(JAXBElement<byte[]> value) {
-		this.pdf = ((JAXBElement<byte[]>) value);
+		this.pdf = (value);
 	}
 
 	/**
@@ -212,7 +212,7 @@ public class Result {
 	 * 
 	 */
 	public void setRetencionesInp(JAXBElement<ArrayOfRetencionInp> value) {
-		this.retencionesInp = ((JAXBElement<ArrayOfRetencionInp>) value);
+		this.retencionesInp = (value);
 	}
 
 }

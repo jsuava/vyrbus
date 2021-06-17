@@ -201,6 +201,7 @@ public class Personal extends GenericBean implements Serializable {
 		this.direccion = direccion;
 	}
 
+	@Override
 	public String toString(){
 		return apellidoPaterno + (apellidoMaterno==null?"":" " + apellidoMaterno) + ", " + nombre;
 	}

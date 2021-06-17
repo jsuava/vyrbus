@@ -58,7 +58,7 @@ public class GetRepresentacionImpresaResponse {
 	 * 
 	 */
 	public void setGetRepresentacionImpresaResult(JAXBElement<Result> value) {
-		this.getRepresentacionImpresaResult = ((JAXBElement<Result>) value);
+		this.getRepresentacionImpresaResult = (value);
 	}
 
 }

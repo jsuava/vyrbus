@@ -37,7 +37,7 @@ public class VentaTramoDAOImpl extends GenericDAOImpl implements VentaTramoDAO {
 		String hql=" FROM VentaTramo vt WHERE to_date('"+fechaPartida+"','dd/MM/yyyy') BETWEEN vt.fechaInicio AND vt.fechaFin AND  vt.ruta.id="+idRuta+" AND vt.estadoRegistro='"+Constantes.VALUE_ACTIVO+"' ";
 		log.info(hql);
 				
-		List<VentaTramo> listVentaTramos=(List<VentaTramo>) getSession().createQuery(hql).list();
+		List<VentaTramo> listVentaTramos=getSession().createQuery(hql).list();
 		
 		return listVentaTramos;
 	}

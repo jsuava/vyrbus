@@ -138,6 +138,7 @@ public class WndReimprimirBoleto extends WndBase {
 					Button btnReimprimir = new Button("Reimprimir", "resources/menu/menu_reimprimir.png");
 					btnReimprimir.setAutodisable("self");
 					btnReimprimir.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+						@Override
 						public void onEvent(Event e){
 							reimprimir(e.getTarget().getId());
 						}

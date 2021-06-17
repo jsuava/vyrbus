@@ -108,6 +108,7 @@ public class WndRuta extends WndOpcionesMantenimiento {
 		oWndFiltrar.setMode("modal");
 		
 		oWndFiltrar.addEventListener(com.cystesoft.vyrbus.view.ui.Events.ON_FILTER, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event event) throws Exception {
 				Localidad localidadOrigen = (Localidad) oWndFiltrar.getParameterValue("1. Origen");
 				if(localidadOrigen==null)
@@ -198,9 +199,9 @@ public class WndRuta extends WndOpcionesMantenimiento {
 			Localidad oLocalidadDestino = new Localidad();
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
 			
-			oLocalidadOrigen.setId((Integer) ((Localidad) cboLocalidadOrigen.getSelectedItem().getValue()).getId());
+			oLocalidadOrigen.setId(((Localidad) cboLocalidadOrigen.getSelectedItem().getValue()).getId());
 			oLocalidadOrigen.setDenominacion(cboLocalidadOrigen.getText());
-			oLocalidadDestino.setId((Integer) ((Localidad) cboLocalidadDestino.getSelectedItem().getValue()).getId());
+			oLocalidadDestino.setId(((Localidad) cboLocalidadDestino.getSelectedItem().getValue()).getId());
 			oLocalidadDestino.setDenominacion(cboLocalidadDestino.getText());
 			
 			oRuta.setId(id);

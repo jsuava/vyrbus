@@ -272,24 +272,28 @@ public class WndControlEspecieValorada_LoadInicio extends Window {
 //		oThisWindow.setVisible(true);
 		
 		cmbSerie.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				lngbxCorrelativoInicio.setFocus(true);
 			}
 		});
 		
 		lngbxCorrelativoInicio.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				lngbxCorrelativoFin.setFocus(true);
 			}
 		});
 		
 		lngbxCorrelativoFin.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				lngbxCorrelativoActual.setFocus(true);
 			}
 		});
 		
 		lngbxCorrelativoActual.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				btnActualizar.setFocus(true);
 			}

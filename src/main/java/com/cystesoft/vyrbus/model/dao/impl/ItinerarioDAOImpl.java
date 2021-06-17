@@ -157,6 +157,7 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.dao.ItinerarioDAO#buscarItinerariosFechaAbierta(java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public List<DetalleItinerario> buscarItinerariosFechaAbierta(String fechaPartida, String origen, String destino) throws Exception {
 		String sql = "SELECT DISTINCT(s.c_denominacion), s.servicio_id, r.ruta_id, r.c_origen origen, lo.localidad_id idOrigen, ao.agencia_id idAgePartida, " +
 				"ao.c_nomcor agPartida, di.d_fecpar, r.c_destino destino, ld.localidad_id idDestino, ad.agencia_id idAgeDestino, ad.c_nomcor agDestino, " +
@@ -221,6 +222,7 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 	 * (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.model.dao.ItinerarioDAO#buscarAgenciasPartida(java.lang.Long, java.lang.String, java.lang.Integer)
 	 */
+	@Override
 	public ArrayList<ItinerarioAgenciaPartida> buscarAgenciasPartida(Long idItinerario, String estado, Integer idLocalidad)throws Exception{
 		String sql = "SELECT iap.itinerario_id, iap.agencia_id, a.c_denominacion, iap.c_horpar, a.c_nomcor, l.localidad_id, l.c_denominacion " +
 				"FROM vrtitiagepar iap " +
@@ -253,6 +255,7 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 	 * (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.model.dao.ItinerarioDAO#buscarAgenciasLlegada(java.lang.Long, java.lang.String, java.lang.Integer)
 	 */
+	@Override
 	public ArrayList<ItinerarioAgenciaLlegada> buscarAgenciasLlegada(Long idItinerario, String estado, Integer idLocalidad)throws Exception{
 		String sql = "SELECT iad.itinerario_id, iad.agencia_id, a.c_denominacion, iad.c_horlle, a.c_nomcor, l.localidad_id, l.c_denominacion " +
 				"FROM vrtitiagelle iad " +

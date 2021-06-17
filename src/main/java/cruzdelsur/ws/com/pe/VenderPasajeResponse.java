@@ -57,7 +57,7 @@ public class VenderPasajeResponse {
 	 * 
 	 */
 	public void setVenderPasajeResult(JAXBElement<ResultVenta> value) {
-		this.venderPasajeResult = ((JAXBElement<ResultVenta>) value);
+		this.venderPasajeResult = (value);
 	}
 
 }

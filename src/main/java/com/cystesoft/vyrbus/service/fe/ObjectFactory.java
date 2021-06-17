@@ -910,7 +910,7 @@ public class ObjectFactory {
 	 */
 	@XmlElementDecl(namespace = "http://schemas.microsoft.com/2003/10/Serialization/", name = "base64Binary")
 	public JAXBElement<byte[]> createBase64Binary(byte[] value) {
-		return new JAXBElement<byte[]>(_Base64Binary_QNAME, byte[].class, null, ((byte[]) value));
+		return new JAXBElement<byte[]>(_Base64Binary_QNAME, byte[].class, null, (value));
 	}
 
 	/**
@@ -1864,7 +1864,7 @@ public class ObjectFactory {
 	 */
 	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Util", name = "barcode_QR", scope = Result.class)
 	public JAXBElement<byte[]> createResultBarcodeQR(byte[] value) {
-		return new JAXBElement<byte[]>(_ResultBarcodeQR_QNAME, byte[].class, Result.class, ((byte[]) value));
+		return new JAXBElement<byte[]>(_ResultBarcodeQR_QNAME, byte[].class, Result.class, (value));
 	}
 
 	/**
@@ -1874,7 +1874,7 @@ public class ObjectFactory {
 	 */
 	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Util", name = "pdf", scope = Result.class)
 	public JAXBElement<byte[]> createResultPdf(byte[] value) {
-		return new JAXBElement<byte[]>(_ResultPdf_QNAME, byte[].class, Result.class, ((byte[]) value));
+		return new JAXBElement<byte[]>(_ResultPdf_QNAME, byte[].class, Result.class, (value));
 	}
 
 	/**
@@ -1906,7 +1906,7 @@ public class ObjectFactory {
 	 */
 	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Util", name = "barcode", scope = Result.class)
 	public JAXBElement<byte[]> createResultBarcode(byte[] value) {
-		return new JAXBElement<byte[]>(_ResultBarcode_QNAME, byte[].class, Result.class, ((byte[]) value));
+		return new JAXBElement<byte[]>(_ResultBarcode_QNAME, byte[].class, Result.class, (value));
 	}
 
 	/**

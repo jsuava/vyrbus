@@ -1152,6 +1152,7 @@ public class WndOperacionesRemotas extends WndBase {
 		
 		Button button = new Button("Continuar", "resources/mp_aceptarEnabled.png");
 		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) throws Exception{
 				if(Util.comparaFechas(ventaOriginal.getFechaCaducidad(), ServiceLocator.getVentaPasajesManager().getDateSystem(), Util.OPER_MENOR)){
 					DlgMessage.information(Messages.getString("WndDevolucionBoleto.information.noDevolucionBoletoCaducado"));
@@ -1196,6 +1197,7 @@ public class WndOperacionesRemotas extends WndBase {
 				}
 				
 				Messagebox.show(Messages.getString("WndDevolucionBoleto.question.confirmarDevolucion"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+					@Override
 					public void onEvent(Event e){
 						try{
 							if(e.getName().equals("onYes")){
@@ -1245,6 +1247,7 @@ public class WndOperacionesRemotas extends WndBase {
 		row.appendChild(button);
 		button = new Button("Cancelar", "resources/mp_cancelarEnabled.png");
 		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				win.onClose();
 			}
@@ -2694,6 +2697,7 @@ public class WndOperacionesRemotas extends WndBase {
 					wndPostergacion.appendChild(oWndMapaBus);
 					oWndMapaBus.setMode(MODAL);
 					oWndMapaBus.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+						@Override
 						public void onEvent(Event e){
 							postergacion.setNumeroAsiento(Integer.valueOf(txtNumeroAsientoPostergado.getText()));
 							postergacion.setNumeroPiso(Integer.valueOf(txtNumeroPisoPostergado.getText()));
@@ -2716,6 +2720,7 @@ public class WndOperacionesRemotas extends WndBase {
 	 */
 	private void enlazarItinerario(final Image image) {
 		image.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e)throws Exception{
 				int p=txtPosSituActuRuta.getText().indexOf("-");
 				String origen=txtPosSituActuRuta.getText().substring(0,p).trim();
@@ -2728,6 +2733,7 @@ public class WndOperacionesRemotas extends WndBase {
 				oWndSeleccionarItinerario.setDestino(destino);
 				oWndSeleccionarItinerario.asignarValores();
 				oWndSeleccionarItinerario.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+					@Override
 					public void onEvent(Event e) throws Exception{
 						if(!txtPosSituActuItinerario.getText().isEmpty()){
 							liberarAsientos();

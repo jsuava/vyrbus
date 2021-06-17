@@ -65,6 +65,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarVentasForMapaBus(java.lang.Long)
 	 */
+	@Override
 	public List<VentaPasaje> buscarVentasForMapaBus(Long idItinerario)throws Exception{
 		String sql = "SELECT vp.venpas_id, vp.venpas_idref, vp.ruta_id, r.localidad_idorigen, r.c_origen, r.localidad_iddestino, r.c_destino, " +
 				"p.pasajero_id, p.c_apepat, p.c_apemat, p.c_nombre, s.sexo_id, s.c_denominacion, vp.c_numboleto, vp.n_numasiento, vp.c_tiptra, " +
@@ -155,6 +156,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarVentasByIdVenta(java.lang.Long)
 	 */
+	@Override
 	public VentaPasaje buscarVentasByIdVenta(Long idVenta)throws Exception{
 		String sql = "SELECT vp.venpas_id, vp.venpas_idref, vp.ruta_id, r.localidad_idorigen, r.c_origen, r.localidad_iddestino, r.c_destino, " +
 				"p.pasajero_id, p.c_apepat, p.c_apemat, p.c_nombre, s.sexo_id, s.c_denominacion, vp.c_numboleto, vp.n_numasiento, vp.c_tiptra, " +
@@ -294,6 +296,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#validarServicio(java.lang.Integer)
 	 */
+	@Override
 	public Long validarServicio(Integer idServicio)throws Exception{
 		String hql = "SELECT COUNT(id) FROM VentaPasaje WHERE servicio.id="+idServicio;
 		Long total = (Long)getSession().createQuery(hql).uniqueResult();
@@ -304,6 +307,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarReservasPorConfirmar(java.lang.Integer, java.lang.Integer, java.lang.String[], java.lang.String, java.lang.String, java.lang.String, java.lang.Integer)
 	 */
+	@Override
 	public List<VentaPasaje> buscarReservasPorConfirmar(Integer idOrigen, Integer idDestino, String[] pasajero, String numeroDocumento, String numeroBoleto, String fechaPartida, Integer idAgencia)throws Exception{
 		String pax = "";
 		if(pasajero!=null)
@@ -347,6 +351,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarVentaById(java.lang.Long) 
 	 */	 
+	@Override
 	public VentaPasaje buscarVentaById(Long idVenta)throws Exception{
 		String sql = "SELECT vp.venpas_id, vp.venpas_idref, i.itinerario_id, r.ruta_id, r.c_origen, r.c_destino, c.cliente_id, c.c_numdoc doccli, " +
 							"c.c_razsoc, p.pasajero_id, p.c_apepat, p.c_apemat, p.c_nombre, td.tipdoc_id, td.c_denominacion tipdoc, p.c_numdoc docpax, p.c_fecnac, " +
@@ -572,7 +577,8 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#getDateSystem()
 	 */
-    public String getDateSystem()throws Exception{
+    @Override
+	public String getDateSystem()throws Exception{
     	String sql = "SELECT to_char(sysdate,'dd/mm/yyyy hh24:mi:ss') DateSystem FROM dual";
 		
 		log.info(sql);
@@ -625,6 +631,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarUsuarioPorAgencia(java.lang.Integer, java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public List<Usuario> buscarUsuarioPorAgencia(Integer idAgencia, String estado, String fechaInicio, String fechaFin, String rucCredito)throws Exception{
 		String hql="";
 		if(rucCredito!=null){
@@ -664,6 +671,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarDetalladoVentas(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public List<VentaPasaje> buscarDetalladoVentas(String idAgencia, String idUsuario, String idTipoMovimiento, String fechaInicio, String fechaFin, String estado)throws Exception{
 		idAgencia = idAgencia.equals("")?"%":idAgencia;
 		idUsuario = idUsuario.equals("")?"%":idUsuario;
@@ -738,6 +746,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#validarNumeroBoleto(java.lang.String, java.lang.Integer)
 	 */
+	@Override
 	public Integer validarNumeroBoleto(String numeroBoleto, Integer idTipoComprobante)throws Exception{
 		String hql = "FROM VentaPasaje vp WHERE vp.numeroBoleto='"+numeroBoleto+"' AND vp.tipoComprobante.id="+idTipoComprobante+" AND " +
 				"vp.estadoRegistro = '"+Constantes.VALUE_ACTIVO+"'";
@@ -751,6 +760,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarVentasPostergar(java.lang.Integer, java.lang.Integer, java.lang.String[], java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public List<VentaPasaje> buscarVentasPostergar(Integer idOrigen, Integer idDestino, String[] pasajero, String numeroControl, String numeroBoleto, String fechaPartida)throws Exception{
 		String pax = "";
 		if(pasajero!=null)
@@ -787,6 +797,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarBoletosReimprimir(java.lang.String, java.lang.String[], java.lang.String)
 	 */
+	@Override
 	public List<VentaPasaje> buscarBoletosReimprimir(String numeroDocumento, String[] pasajero, String fechaPartida)throws Exception{
 		String passenger = "";
 		if(pasajero!=null)
@@ -846,6 +857,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarBoletosDevolucion(java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public List<VentaPasaje> buscarBoletosDevolucion(String numeroDocumento, String numeroControl, String numeroBoleto)throws Exception{
 		String criterio = numeroDocumento==null?"":" AND p.c_numdoc = '" + numeroDocumento + "' ";
 		criterio = criterio + (numeroControl==null?"":" AND {VP}.c_numcontrol='"+ numeroControl +"' ");
@@ -879,6 +891,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarComprobantesSinBoleto(java.lang.String, java.lang.Integer, java.lang.Integer, java.lang.Integer, java.lang.Integer)
 	 */
+	@Override
 	public List<VentaPasaje> buscarComprobantesSinBoleto(String fechaPartida, Integer idAgencia, Integer idTipoComprobante, Integer idRol, Integer idAgenciaEmision)throws Exception{
 		String sql = "SELECT vp.venpas_id, ap.c_denominacion embarque, tc.c_denominacion comprobante, vp.c_numboleto, vp.c_numcontrol, " +
 				"vp.n_numasiento, vp.d_fecpar, vp.c_horpar, c.c_numdoc ruc, c.c_razsoc cliente, p.c_numdoc dni, p.c_nomape, " +
@@ -1174,6 +1187,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarVentasPax(java.lang.String, java.lang.String, java.lang.Long)
 	 */
+	@Override
 	public ArrayList<VentaPasaje> buscarVentasPax(String fechaInicial, String fechaFinal,Long pasajeroID){
 		String sql="SELECT v.c_numboleto as Boleto, s.c_denominacion as Servicio,  "+ //0-1
 					       "r.c_origen as Origen, r.c_destino as Destino, v.d_fecpar as FechaViaje,  "+ //2-4
@@ -1469,6 +1483,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarDetalladoVentas(java.lang.Integer, java.lang.Integer, java.lang.String, java.lang.String, java.lang.Integer)
 	 */
+	@Override
 	public List<VentaPasaje> buscarDetalladoVentas(Integer idAgencia, Integer idUsuario, String fechaInicial, String fechaFinal, Integer criterio)throws Exception{
 		String where ="";
 		String tipoVenta = "";
@@ -2093,6 +2108,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#validadRCReimpreso(java.lang.Long)
 	 */
+	@Override
 	public VentaPasaje buscarUltimoRegistro(Long idVentaOriginal){
 		String sql="SELECT vp.venpas_id" + // 0
 						 ",vp.tipcom_id" + // 1
@@ -2136,6 +2152,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#activarRecibocaja(java.lang.Long)
 	 */
+	@Override
 	public void activarReciboCaja(Long idVentaOriginal){
 		//busca el segundo registro del recibo de caja el cual se genera al reimprimirmo
 		TreeMap<String, Object>criteriosBusqueda= new TreeMap<String, Object>();
@@ -3277,7 +3294,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		List<?> result = getSession().createSQLQuery(sql).list();
 		List<ResumenAnulacionPostergacion> lstResult = new ArrayList<>();
 		
-		for(int i=0; i<result.size(); i++){
+		for(int i=0; i<result.size(); i++) {
 			Object[] obj = (Object[])result.get(i);
 			ResumenAnulacionPostergacion resumenAnulacionPostergacion = new ResumenAnulacionPostergacion();
 			resumenAnulacionPostergacion.setId(((BigDecimal)obj[0]).intValue());
@@ -3287,5 +3304,46 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		}
 		return lstResult;
 	}	
+	
+	@Override
+	public List<List<VentaPasaje>> obtenerVentasResumenLiquidacion(Integer idAgencia, Integer idUsuario, String fechaLiquidacion) {
+		String sql = "SELECT vp.venpas_id, vp.c_numboleto NroBoleto, vp.c_numbolant NroBoletoRef, vp.n_tarifa MontoBase, vp.n_recargo Recargo, "
+				+ "vp.n_descuento Descuento, vp.n_acuenta ACuenta, vp.n_penalidad Penalidad, vp.n_imppag NetoPagado, "
+				+ "vp.d_fecliq, vp.tipmov_id, vp.tipforpag_id,vp.tipcom_id, NVL(vp.n_imppagdif,0) imppagdif "
+				+ "FROM vrtvenpas vp "
+				+ "WHERE vp.agencia_id="+idAgencia + " AND vp.usuario_id="+idUsuario+" AND vp.d_fecliq = to_date('"+fechaLiquidacion+"','dd/mm/yyyy') AND "
+				+ "vp.forpag_id=1 AND vp.tipcom_id = 7 AND vp.n_tarifa>0 AND vp.tipmov_id NOT IN (4,5,6,10,11,12,13)";
+		
+		log.info(sql);
+		
+		List<?> result = getSession().createSQLQuery(sql).list();
+		List<VentaPasaje> lstResult = new ArrayList<VentaPasaje>();
+		
+		for(int i=0; i<result.size(); i++) {
+			Object[] obj = (Object[])result.get(i);
+			VentaPasaje ventaPasaje = new VentaPasaje();
+			ventaPasaje.setId(((BigDecimal)obj[0]).longValue());
+			ventaPasaje.setNumeroBoleto(obj[1].toString());
+			ventaPasaje.setNumeroBoletoAnterior(obj[2].toString());
+			ventaPasaje.setTarifa(((BigDecimal)obj[3]).doubleValue());
+			ventaPasaje.setRecargo(((BigDecimal)obj[4]).doubleValue());
+			ventaPasaje.setDescuento(((BigDecimal)obj[5]).doubleValue());
+			ventaPasaje.setAcuenta(((BigDecimal)obj[6]).doubleValue());
+			ventaPasaje.setPenalidad(((BigDecimal)obj[7]).doubleValue());
+			ventaPasaje.setImportePagado(((BigDecimal)obj[7]).doubleValue());
+			ventaPasaje.setFechaLiquidacion((Date)obj[9]);
+			TipoMovimiento tipoMovimiento = new TipoMovimiento();
+			tipoMovimiento.setId(((BigDecimal)obj[10]).intValue());
+			ventaPasaje.setTipoMovimiento(tipoMovimiento);
+			TipoFormaPago tipoFormaPago = new TipoFormaPago();
+			tipoFormaPago.setId(((BigDecimal)obj[11]).intValue());
+			ventaPasaje.setTipoFormaPago(tipoFormaPago);
+			TipoComprobante tipoComprobante = new TipoComprobante();
+			tipoComprobante.setId(((BigDecimal)obj[12]).intValue());
+			ventaPasaje.setTipoComprobante(tipoComprobante);
+			ventaPasaje.setImportePagadoByDiferencia(((BigDecimal)obj[13]).doubleValue());
+		}
+		return null;
+	}
 }
 

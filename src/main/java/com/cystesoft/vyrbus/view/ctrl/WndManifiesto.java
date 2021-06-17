@@ -403,6 +403,7 @@ public class WndManifiesto extends WndBase {
 	/**
 	 * 
 	 */
+	@Override
 	public void onClose(){
 		closeTabWindow();
 	}

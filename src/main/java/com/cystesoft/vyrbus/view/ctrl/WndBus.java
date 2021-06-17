@@ -142,7 +142,7 @@ public class WndBus  extends WndOpcionesMantenimiento {
 				Integer tipoFlota = (Integer) oWndFiltrar.getParameterValue("1. Tipo de Flota");
 				Servicio oservicio = (Servicio) oWndFiltrar.getParameterValue("2. Servicio");
 				Integer numeroFlota = (Integer) oWndFiltrar.getParameterValue("3. Número de Flota");
-				String codigo = (String) oWndFiltrar.getParameterValue("4. Número de Bus").toString();
+				String codigo = oWndFiltrar.getParameterValue("4. Número de Bus").toString();
 				String estadoRegistro = Constantes.VALUE_ACTIVO;
 				
 				if (tipoFlota == null || tipoFlota == 0){
@@ -234,26 +234,26 @@ public class WndBus  extends WndOpcionesMantenimiento {
 			oBus.setId(id);
 			if (cboTipoFlota.getSelectedItem().getValue() instanceof TipoFlota) {
 				TipoFlota oTipoFlota = new TipoFlota();			
-				oTipoFlota.setId((Integer) ((TipoFlota) cboTipoFlota.getSelectedItem().getValue()).getId());
+				oTipoFlota.setId(((TipoFlota) cboTipoFlota.getSelectedItem().getValue()).getId());
 				oTipoFlota.setDenominacion( ((TipoFlota) cboTipoFlota.getSelectedItem().getValue()).getDenominacion());
 				oBus.setTipoFlota(oTipoFlota);
 			}
 			if  (cbonumeroFlota.getSelectedItem().getValue() instanceof NumeroFlota) {
 				NumeroFlota oNumeroFlota = new NumeroFlota();
-				oNumeroFlota.setId((Integer) ((NumeroFlota) cbonumeroFlota.getSelectedItem().getValue()).getId());
+				oNumeroFlota.setId(((NumeroFlota) cbonumeroFlota.getSelectedItem().getValue()).getId());
 				oNumeroFlota.setDenominacion( ((NumeroFlota) cbonumeroFlota.getSelectedItem().getValue()).getDenominacion());
 				oBus.setNumeroFlota(oNumeroFlota);
 			}
 			if  (cboServicio.getSelectedItem().getValue() instanceof Servicio) {
 				Servicio oServicio = new Servicio();
-				oServicio.setId((Integer) ((Servicio) cboServicio.getSelectedItem().getValue()).getId());
+				oServicio.setId(((Servicio) cboServicio.getSelectedItem().getValue()).getId());
 				oServicio.setDenominacion(((Servicio) cboServicio.getSelectedItem().getValue()).getDenominacion());
 				oBus.setServicio(oServicio);
 			}
 
 			if  (cboGrupoMantenimiento.getSelectedItem().getValue()  instanceof GrupoMantenimiento) {
 				GrupoMantenimiento oGrupoMantenimiento = new GrupoMantenimiento();
-				oGrupoMantenimiento.setId((Integer) ((GrupoMantenimiento) cboGrupoMantenimiento.getSelectedItem().getValue()).getId());
+				oGrupoMantenimiento.setId(((GrupoMantenimiento) cboGrupoMantenimiento.getSelectedItem().getValue()).getId());
 				oGrupoMantenimiento.setDenominacion(((GrupoMantenimiento) cboGrupoMantenimiento.getSelectedItem().getValue()).getDenominacion());
 				oBus.setGrupoMantenimiento(oGrupoMantenimiento);
 			}

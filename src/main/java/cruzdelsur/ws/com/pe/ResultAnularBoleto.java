@@ -78,7 +78,7 @@ public class ResultAnularBoleto {
 	 * 
 	 */
 	public void setError(JAXBElement<Error> value) {
-		this.error = ((JAXBElement<Error>) value);
+		this.error = (value);
 	}
 
 }

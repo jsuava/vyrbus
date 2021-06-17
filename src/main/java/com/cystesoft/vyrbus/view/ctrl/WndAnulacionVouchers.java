@@ -239,6 +239,7 @@ public class WndAnulacionVouchers extends WndBase{
 				DlgMessage.information(Messages.getString("WndVouchers.information.voucherConBoleto"));
 			}else{
 				Messagebox.show(Messages.getString("WndVouchers.information.confirmarAnulacion"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
+					@Override
 					public void onEvent(Event e){
 						try{
 							if(e.getName().equals("onYes")){

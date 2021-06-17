@@ -30,10 +30,6 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 
-import javax.comm.CommPortIdentifier;
-import javax.comm.PortInUseException;
-import javax.comm.SerialPort;
-import javax.comm.UnsupportedCommOperationException;
 import javax.swing.JApplet;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -182,7 +178,8 @@ public class PortPrinter extends JApplet implements ActionListener, Serializable
      * @param none
      * @return none
      * */
-    public void init()
+    @Override
+	public void init()
     {
         System.setSecurityManager(null);
         addContents();
@@ -482,7 +479,8 @@ public class PortPrinter extends JApplet implements ActionListener, Serializable
     }
 
 
-    public void actionPerformed(ActionEvent ae) {
+    @Override
+	public void actionPerformed(ActionEvent ae) {
         if(ae.getSource()==retryButton){
             print(true);
         }

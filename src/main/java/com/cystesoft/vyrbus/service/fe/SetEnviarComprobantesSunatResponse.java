@@ -58,7 +58,7 @@ public class SetEnviarComprobantesSunatResponse {
 	 * 
 	 */
 	public void setSetEnviarComprobantesSunatResult(JAXBElement<Result> value) {
-		this.setEnviarComprobantesSunatResult = ((JAXBElement<Result>) value);
+		this.setEnviarComprobantesSunatResult = (value);
 	}
 
 }

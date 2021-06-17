@@ -64,7 +64,7 @@ public class ResultBloquearAsiento {
 	 * 
 	 */
 	public void setCodigoTransaccion(JAXBElement<String> value) {
-		this.codigoTransaccion = ((JAXBElement<String>) value);
+		this.codigoTransaccion = (value);
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class ResultBloquearAsiento {
 	 * 
 	 */
 	public void setError(JAXBElement<Error> value) {
-		this.error = ((JAXBElement<Error>) value);
+		this.error = (value);
 	}
 
 	/**
@@ -131,7 +131,7 @@ public class ResultBloquearAsiento {
 	 * 
 	 */
 	public void setResultadoTransaccion(JAXBElement<String> value) {
-		this.resultadoTransaccion = ((JAXBElement<String>) value);
+		this.resultadoTransaccion = (value);
 	}
 
 }

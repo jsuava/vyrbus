@@ -15,6 +15,7 @@ import com.cystesoft.vyrbus.view.ui.WndBase;
  */
 public class WndGenerateAddress extends WndBase {
 	private static final long serialVersionUID = 1L;
+	@Override
 	public void onCreate(){
 		this.getDesktop().getSession().setAttribute("validatePath", true);
 	}

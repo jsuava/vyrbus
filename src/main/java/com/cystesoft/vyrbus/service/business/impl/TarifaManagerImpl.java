@@ -12,7 +12,6 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cystesoft.vyrbus.model.bean.Itinerario;
 import com.cystesoft.vyrbus.model.bean.Tarifa;
 import com.cystesoft.vyrbus.model.dao.TarifaDAO;
 import com.cystesoft.vyrbus.service.business.TarifaManager;

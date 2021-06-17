@@ -78,7 +78,7 @@ public class ObtenerAsientosDisponibles {
 	 * 
 	 */
 	public void setCodigoRuta(JAXBElement<String> value) {
-		this.codigoRuta = ((JAXBElement<String>) value);
+		this.codigoRuta = (value);
 	}
 
 	/**
@@ -101,7 +101,7 @@ public class ObtenerAsientosDisponibles {
 	 * 
 	 */
 	public void setServicioLlave(JAXBElement<String> value) {
-		this.servicioLlave = ((JAXBElement<String>) value);
+		this.servicioLlave = (value);
 	}
 
 	/**
@@ -124,7 +124,7 @@ public class ObtenerAsientosDisponibles {
 	 * 
 	 */
 	public void setProgramacionLlave(JAXBElement<String> value) {
-		this.programacionLlave = ((JAXBElement<String>) value);
+		this.programacionLlave = (value);
 	}
 
 	/**
@@ -168,7 +168,7 @@ public class ObtenerAsientosDisponibles {
 	 * 
 	 */
 	public void setAgenciaEmbarqueLlave(JAXBElement<String> value) {
-		this.agenciaEmbarqueLlave = ((JAXBElement<String>) value);
+		this.agenciaEmbarqueLlave = (value);
 	}
 
 	/**
@@ -191,7 +191,7 @@ public class ObtenerAsientosDisponibles {
 	 * 
 	 */
 	public void setAgenciaDesembarqueLlave(JAXBElement<String> value) {
-		this.agenciaDesembarqueLlave = ((JAXBElement<String>) value);
+		this.agenciaDesembarqueLlave = (value);
 	}
 
 	/**
@@ -214,7 +214,7 @@ public class ObtenerAsientosDisponibles {
 	 * 
 	 */
 	public void setUnidadLlave(JAXBElement<String> value) {
-		this.unidadLlave = ((JAXBElement<String>) value);
+		this.unidadLlave = (value);
 	}
 
 }

@@ -58,7 +58,7 @@ public class DesbloquearAsientoResponse {
 	 */
 	public void setDesbloquearAsientoResult(
 			JAXBElement<ResultDesbloquearAsiento> value) {
-		this.desbloquearAsientoResult = ((JAXBElement<ResultDesbloquearAsiento>) value);
+		this.desbloquearAsientoResult = (value);
 	}
 
 }

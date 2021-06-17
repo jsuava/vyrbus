@@ -452,8 +452,8 @@ public class WndEnvioEspecieValorada extends WndBase implements Serializable {
 							if(Integer.valueOf(x)>parametro)
 								break;
 							
-							c_serieNext=((VentaPasaje)lstResul.get(z)).getNumeroSerie();
-							n_bolNext=Long.valueOf(((VentaPasaje)lstResul.get(z)).getNumeroBoleto());
+							c_serieNext=lstResul.get(z).getNumeroSerie();
+							n_bolNext=Long.valueOf(lstResul.get(z).getNumeroBoleto());
 							
 							//Valida los correlativos faltantes
 							if(n_bolBack>0)
@@ -472,13 +472,13 @@ public class WndEnvioEspecieValorada extends WndBase implements Serializable {
 							
 							//Obtiene el ultimo numero segun el rango configurador en la variable "parametro"
 							if(c_serieNext.equals(c_serie))
-								c_fin=((VentaPasaje)lstResul.get(z)).getNumeroBoleto();
+								c_fin=lstResul.get(z).getNumeroBoleto();
 							
 							if(c_serieBack.length()>0 && (!c_serieNext.equals(c_serieBack)))
 								break;
 							
-							c_serieBack=((VentaPasaje)lstResul.get(z)).getNumeroSerie();
-							n_bolBack=Long.valueOf(((VentaPasaje)lstResul.get(z)).getNumeroBoleto());
+							c_serieBack=lstResul.get(z).getNumeroSerie();
+							n_bolBack=Long.valueOf(lstResul.get(z).getNumeroBoleto());
 						}
 																	
 						item=new Listitem();

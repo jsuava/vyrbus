@@ -151,7 +151,7 @@ public class Distribucion {
 	 * 
 	 */
 	public void setAsiento(JAXBElement<String> value) {
-		this.asiento = ((JAXBElement<String>) value);
+		this.asiento = (value);
 	}
 
 	/**
@@ -174,7 +174,7 @@ public class Distribucion {
 	 * 
 	 */
 	public void setDescripcion(JAXBElement<String> value) {
-		this.descripcion = ((JAXBElement<String>) value);
+		this.descripcion = (value);
 	}
 
 	/**
@@ -281,7 +281,7 @@ public class Distribucion {
 	 * 
 	 */
 	public void setElemento(JAXBElement<String> value) {
-		this.elemento = ((JAXBElement<String>) value);
+		this.elemento = (value);
 	}
 
 	/**
@@ -367,7 +367,7 @@ public class Distribucion {
 	 * 
 	 */
 	public void setNivelPiso(JAXBElement<String> value) {
-		this.nivelPiso = ((JAXBElement<String>) value);
+		this.nivelPiso = (value);
 	}
 
 	/**
@@ -411,7 +411,7 @@ public class Distribucion {
 	 * 
 	 */
 	public void setTarifaDescripcion(JAXBElement<String> value) {
-		this.tarifaDescripcion = ((JAXBElement<String>) value);
+		this.tarifaDescripcion = (value);
 	}
 
 	/**
@@ -539,7 +539,7 @@ public class Distribucion {
 	 * 
 	 */
 	public void setTotalNivel(JAXBElement<String> value) {
-		this.totalNivel = ((JAXBElement<String>) value);
+		this.totalNivel = (value);
 	}
 
 	/**

@@ -58,7 +58,7 @@ public class BloquearAsientoResponse {
 	 */
 	public void setBloquearAsientoResult(
 			JAXBElement<ResultBloquearAsiento> value) {
-		this.bloquearAsientoResult = ((JAXBElement<ResultBloquearAsiento>) value);
+		this.bloquearAsientoResult = (value);
 	}
 
 }

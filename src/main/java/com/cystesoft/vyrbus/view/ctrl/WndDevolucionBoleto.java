@@ -43,7 +43,7 @@ import org.zkoss.zul.Window;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.Cliente;
-import com.cystesoft.vyrbus.model.bean.EspecieValorada;
+import com.cystesoft.vyrbus.model.bean.ControlEspecieValorada;
 import com.cystesoft.vyrbus.model.bean.FormaPago;
 import com.cystesoft.vyrbus.model.bean.Itinerario;
 import com.cystesoft.vyrbus.model.bean.TipoComprobante;
@@ -205,6 +205,7 @@ public class WndDevolucionBoleto extends WndBase {
 					btnDevolucion.setAutodisable("self");
 					btnDevolucion.setClass("btnCommandM");
 					btnDevolucion.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+						@Override
 						public void onEvent(Event e){
 							validateDevolucion(e.getTarget().getId());
 						}
@@ -261,10 +262,12 @@ public class WndDevolucionBoleto extends WndBase {
 				throw new FechaCaducidadNullException();		
 			else if(ventaDevolver.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA && createVentanaDevolucion){
 				Messagebox.show(Messages.getString("WndDevolucionBoleto.question.noDevolucionCortesia"), DlgMessage.NOMBREAPLICACION+" PREGUNTA", DlgMessage.BTN_YESNO, Messagebox.QUESTION, Messagebox.NO, new EventListener<Event>() {
+					@Override
 					public void onEvent(Event e) throws Exception{
 						if(e.getName().equals(Messagebox.ON_YES)){
 							if(ventaDevolver.getIdentificadorIdaRetorno()!=null){
 								Messagebox.show("Esta a punto de devolver un boleto que fue comprado en la modalidad de Ida y Vuelta, desea continuar?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+									@Override
 									public void onEvent(Event e) throws Exception{
 										if(e.getName().equals(Messagebox.ON_YES)){
 											createVentanaDevolucion(ventaDevolver);
@@ -279,6 +282,7 @@ public class WndDevolucionBoleto extends WndBase {
 			}else{
 				if(ventaDevolver.getIdentificadorIdaRetorno()!=null && createVentanaDevolucion){
 					Messagebox.show("Esta a punto de devolver un boleto que fue comprado en la modalidad de Ida y Vuelta, desea continuar?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+						@Override
 						public void onEvent(Event e) throws Exception{
 							if(e.getName().equals(Messagebox.ON_YES)){
 								createVentanaDevolucion(ventaDevolver);
@@ -1077,6 +1081,7 @@ public class WndDevolucionBoleto extends WndBase {
 		button.setAutodisable("self");
 		button.setClass("btnCommandL");
 		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 //				if(cmbPorcentajeDevolucion.getSelectedIndex()==0){
 //					DlgMessage.information(Messages.getString("WndDevolucionBoleto.information.noPorcentajeDevolucion"));
@@ -1103,6 +1108,7 @@ public class WndDevolucionBoleto extends WndBase {
 		row.appendChild(button);
 		button = new Button("Cancelar", "resources/mp_cancelarEnabled.png");
 		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				win.onClose();
 			}
@@ -1175,6 +1181,7 @@ public class WndDevolucionBoleto extends WndBase {
 		final Cliente oCliente=cliente;
 		
 		Messagebox.show(Messages.getString("WndDevolucionBoleto.question.confirmarDevolucion"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) throws Exception{
 				try {
 					if(e.getName().equals("onYes")){
@@ -1359,8 +1366,12 @@ public class WndDevolucionBoleto extends WndBase {
 //	}
 	
 	private String getEspecieValorada(Integer tipoComprobanteID)throws Exception{
-		EspecieValorada especieValorada=UtilData.buscarEspecieValorada(tipoComprobanteID, getAgencia(), false);
-		return especieValorada.toString();
+		/*BEGIN 15/06/2021 - javalos - Correlativo by caja*/
+//		EspecieValorada especieValorada=UtilData.buscarEspecieValorada(tipoComprobanteID, getAgencia(), false);
+//		return especieValorada.toString();
+		ControlEspecieValorada controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(tipoComprobanteID, getAgencia(), false, getUsuarioHardware(), null);
+		return controlEspecieValorada.toString();
+		/*END 15/06/2021 - javalos - Correlativo by caja*/
 	}
 	
 	

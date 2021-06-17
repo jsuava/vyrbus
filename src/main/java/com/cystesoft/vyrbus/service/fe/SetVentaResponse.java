@@ -58,7 +58,7 @@ public class SetVentaResponse {
 	 * 
 	 */
 	public void setSetVentaResult(JAXBElement<Result> value) {
-		this.setVentaResult = ((JAXBElement<Result>) value);
+		this.setVentaResult = (value);
 	}
 
 }

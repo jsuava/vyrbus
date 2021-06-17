@@ -383,7 +383,7 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 					throw new FechaPasadaException();
 							
 				Long cDias=(Constantes.FORMAT_DATE.parse(lblAl.getValue()).getTime()-Constantes.FORMAT_DATE.parse(lblDel.getValue()).getTime());
-				cDias=(Long) (cDias/Constantes.MILISEGUNDOS_X_DIA)+1;	
+				cDias=cDias/Constantes.MILISEGUNDOS_X_DIA+1;	
 				Long lnexDia=Constantes.FORMAT_DATE.parse(lblDel.getValue()).getTime()-Constantes.MILISEGUNDOS_X_DIA;
 //				trTempAlta.setVisible(true);
 				

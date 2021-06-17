@@ -58,6 +58,7 @@ public class TipoPrecio extends GenericBean{
 		this.nombreCorto = nombreCorto;
 	}
 
+	@Override
 	public String toString(){
 		return this.denominacion;
 	}

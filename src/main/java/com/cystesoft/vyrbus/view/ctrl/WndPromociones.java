@@ -217,18 +217,21 @@ public class WndPromociones extends WndBase {
 		imgAddhoraPartida=(Image)this.getFellow("imgAddhoraPartida");
 		
 		cmbFormaPago.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				loadTipoFormaPago();
 			}
 		});
 		
 		cmbTipoFormaPago.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				loadTarjetaCredito();
 			}
 		});
 		
 		tlbrbtnNuevo.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				disabledControls(false);
 				cleanControls();
@@ -241,6 +244,7 @@ public class WndPromociones extends WndBase {
 		});
 		
 		tlbrbtnBuscar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				grdCriterios.setVisible(true);
 //				buscar();
@@ -248,6 +252,7 @@ public class WndPromociones extends WndBase {
 		});
 		
 		tlbrbtnCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				tlbrbtnNuevo.setDisabled(false);
 				tlbrbtnBuscar.setDisabled(false);
@@ -258,12 +263,14 @@ public class WndPromociones extends WndBase {
 		});
 		
 		txtDenominacion.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				txtRuta.setFocus(true);
 			}
 		});
 		
 		txtRuta.addEventListener(Events.ON_CTRL_KEY, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				int key = ((KeyEvent)e).getKeyCode();
 				if(key==116)
@@ -271,12 +278,14 @@ public class WndPromociones extends WndBase {
 			}
 		});
 		imgRuta.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				onCrearVentana("Asignación de Rutas a la Promoción", "DENOMINACION", Ruta.class);
 			}
 		});
 		
 		txtServicio.addEventListener(Events.ON_CTRL_KEY, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				int key = ((KeyEvent)e).getKeyCode();
 				if(key==116)
@@ -284,12 +293,14 @@ public class WndPromociones extends WndBase {
 			}
 		});
 		imgServicio.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				onCrearVentana("Asignación de Servicios a la Promoción", "DENOMINACION", Servicio.class);
 			}
 		});
 		
 		txtPuntoVenta.addEventListener(Events.ON_CTRL_KEY, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				int key = ((KeyEvent)e).getKeyCode();
 				if(key==116)
@@ -297,12 +308,14 @@ public class WndPromociones extends WndBase {
 			}
 		});
 		imgPuntoVenta.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				onCrearVentana("Asignación de Puntos de Venta a la Promoción", "DENOMINACION", Agencia.class);
 			}
 		});
 		
 		txtCanalVenta.addEventListener(Events.ON_CTRL_KEY, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				int key = ((KeyEvent)e).getKeyCode();
 				if(key==116)
@@ -310,12 +323,14 @@ public class WndPromociones extends WndBase {
 			}
 		});
 		imgCanalVenta.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				onCrearVentana("Asignación de Canales de Venta a la Promoción", "DENOMINACION", CanalVenta.class);
 			}
 		});
 		
 		txtTarjeta.addEventListener(Events.ON_CTRL_KEY, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				int key = ((KeyEvent)e).getKeyCode();
 				if(key==116)
@@ -323,12 +338,14 @@ public class WndPromociones extends WndBase {
 			}
 		});
 		imgTarjeta.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				onCrearVentana("Asignación de Tarjetas de Crédito a la Promoción", "DENOMINACION", TarjetaCredito.class);
 			}
 		});
 		
 		txtCliente.addEventListener(Events.ON_CTRL_KEY, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				int key = ((KeyEvent)e).getKeyCode();
 				if(key==116)
@@ -336,12 +353,14 @@ public class WndPromociones extends WndBase {
 			}
 		});
 		imgCliente.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				loadCliente("Busqueda de Clientes");
 			}
 		});
 		
 		dtbxFechaInicio.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				String fecha = Util.DatetoString(dtbxFechaInicio.getValue(), "yyyyMMdd");
 				dtbxFechaFin.setConstraint("after "+fecha);
@@ -350,12 +369,14 @@ public class WndPromociones extends WndBase {
 		});
 		
 		btnAgregarPromocion.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				agregarPromocion();
 			}
 		});
 		
 		cmbTipoDescuento.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				chbxPermitirDescuento.setVisible(false);
 				chbxPermitirDescuento.setChecked(false);
@@ -378,6 +399,7 @@ public class WndPromociones extends WndBase {
 		});
 		
 		chkbxPorRango.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(chkbxPorRango.isChecked())
 					habilitarControlAsientos(true);
@@ -387,6 +409,7 @@ public class WndPromociones extends WndBase {
 		});
 		
 		btnBuscar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				buscar();
 			}
@@ -607,6 +630,7 @@ public class WndPromociones extends WndBase {
 			hlayoutTipo.appendChild(lblFiltro);
 			cmbFiltro = new Combobox();
 			cmbFiltro.addEventListener(Events.ON_SELECTION, new EventListener<Event>() {
+				@Override
 				public void onEvent(Event e){
 					if(cmbFiltro.getSelectedItem().getValue()!=null)
 						buscarAgencias();
@@ -623,6 +647,7 @@ public class WndPromociones extends WndBase {
 		Hlayout hlayout = new Hlayout();
 		lbxContenedorLeft = new Listbox();
 		lbxContenedorLeft.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				moveToRight();
 			}
@@ -647,6 +672,7 @@ public class WndPromociones extends WndBase {
 		
 		Image imagen = new Image("resources/mp_rightArrowEnabled.png");
 		imagen.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				moveToRight();
 			}
@@ -656,6 +682,7 @@ public class WndPromociones extends WndBase {
 		
 		imagen = new Image("resources/mp_allRightArrowEnabled.png");
 		imagen.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				moveAllToRight();
 			}
@@ -670,6 +697,7 @@ public class WndPromociones extends WndBase {
 		
 		imagen = new Image("resources/mp_leftArrowEnabled.png");
 		imagen.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				moveToLeft();
 			}
@@ -679,6 +707,7 @@ public class WndPromociones extends WndBase {
 		
 		imagen = new Image("resources/mp_allLeftArrowEnabled.png");
 		imagen.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				moveAllToLeft();
 			}
@@ -689,6 +718,7 @@ public class WndPromociones extends WndBase {
 		
 		lbxContenedorRight = new Listbox();
 		lbxContenedorRight.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				moveToLeft();
 			}
@@ -713,6 +743,7 @@ public class WndPromociones extends WndBase {
 		div.setAlign("center");
 		Button btnAceptar = new Button("Aceptar", "resources/mp_aceptarEnabled.png");
 		btnAceptar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				asignarCriterios(oClase);
 			}
@@ -1059,6 +1090,7 @@ public class WndPromociones extends WndBase {
 					for(Cliente cliente : lstClientes){
 						Listitem listitem = new Listitem();
 						listitem.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
+							@Override
 							public void onEvent(Event e){
 								asignarCliente();
 							}
@@ -1101,6 +1133,7 @@ public class WndPromociones extends WndBase {
 	 	dtbxHoraPartida.setFormat("HH:mm");
 	 	dtbxHoraPartida.setInstant(false);
 		dtbxHoraPartida.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(!(dtbxHoraPartida.getText().trim().isEmpty())){
 					Listitem item=new Listitem();
@@ -1120,6 +1153,7 @@ public class WndPromociones extends WndBase {
 					
 					/*Evento que elimina el item agredado*/
 					tbtnEliminar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+						@Override
 						public void onEvent(Event et){
 							Listitem itemRemove=(Listitem)et.getTarget().getAttribute("item");
 							lbxHoraPartida.getItems().remove(itemRemove.getIndex());
@@ -1152,6 +1186,7 @@ public class WndPromociones extends WndBase {
 		div.setAlign("center");
 		Button btnAceptar = new Button("Aceptar", "resources/mp_aceptarEnabled.png");
 		btnAceptar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				String horaPartida="";
 				for(Listitem itemf:lbxHoraPartida.getItems()){
@@ -1172,6 +1207,7 @@ public class WndPromociones extends WndBase {
 		
 		Button btnCancelar = new Button("Cancelar", "resources/mp_cancelarEnabled.png");
 		btnCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				wndCriterios.onClose();
 			}
@@ -1203,6 +1239,7 @@ public class WndPromociones extends WndBase {
 				
 				/*Evento que elimina el item agredado*/
 				tbtnEliminar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+					@Override
 					public void onEvent(Event et){
 						Listitem itemRemove=(Listitem)et.getTarget().getAttribute("item");
 						lbxHoraPartida.getItems().remove(itemRemove.getIndex());
@@ -1235,6 +1272,7 @@ public class WndPromociones extends WndBase {
 		hlayout.appendChild(label);
 		txtPatron = new Textbox();
 		txtPatron.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				buscarClientes(txtPatron.getText().trim(), lbxClientes);
 			}
@@ -1265,6 +1303,7 @@ public class WndPromociones extends WndBase {
 		div.setAlign("center");
 		Button btnAceptar = new Button("Aceptar", "resources/mp_aceptarEnabled.png");
 		btnAceptar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				asignarCliente();
 			}
@@ -1278,6 +1317,7 @@ public class WndPromociones extends WndBase {
 		
 		Button btnCancelar = new Button("Cancelar", "resources/mp_cancelarEnabled.png");
 		btnCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				txtCliente.setText("");
 				lblCliente.setValue("");
@@ -1505,6 +1545,7 @@ public class WndPromociones extends WndBase {
 			promocion.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 			UtilData.auditarRegistro(promocion, getUsuario(), Executions.getCurrent());
 			Messagebox.show(question, DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+				@Override
 				public void onEvent(Event e){
 					try{
 						if(e.getName().equals("onYes")){
@@ -1703,6 +1744,7 @@ public class WndPromociones extends WndBase {
 						cell = new Listcell();
 						Button btnEditar = new Button("Editar");
 						btnEditar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+							@Override
 							public void onEvent(Event e){
 								editarPromocion(Long.valueOf(e.getTarget().getId()));
 							}
@@ -1716,6 +1758,7 @@ public class WndPromociones extends WndBase {
 					
 					Button btnEliminar=new Button("Eliminar");
 					btnEliminar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+						@Override
 						public void onEvent(final Event e1){
 							Messagebox.show(Messages.getString("Generales.question.delete"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
 								@Override
@@ -1873,6 +1916,7 @@ public class WndPromociones extends WndBase {
 			
 			final Button btnAgregar = new Button("Generar", "resources/mp_agregarEnabled.png");
 			btnAgregar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+				@Override
 				public void onEvent(Event e){
 					if(validar(dtbxFechaInicio, dtbxFechaFin, dblbxTarifa)){
 						generarPromocion(dtbxFechaInicio.getValue(), dtbxFechaFin.getValue(), dblbxTarifa.getValue());
@@ -1912,6 +1956,7 @@ public class WndPromociones extends WndBase {
 			div.setAlign("center");
 			btnGuardar = new Button("Guardar", "resources/mp_guardarEnabled.png");
 			btnGuardar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+				@Override
 				public void onEvent(Event e){
 					try{
 						int result = Constantes.FAILURE;
@@ -1939,6 +1984,7 @@ public class WndPromociones extends WndBase {
 			div.appendChild(btnGuardar);
 			Button btnCerrar = new Button("Cerrar", "resources/mp_cerrar.png");
 			btnCerrar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+				@Override
 				public void onEvent(Event e){
 					wndCriterios.onClose();
 				}

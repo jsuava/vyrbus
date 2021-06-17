@@ -41,12 +41,12 @@ protected final Logger log;
 	 */
 	@Override
 	public void save(Object object) {
-		log.debug("Guardando instancia "+object.getClass().getName());
+		log.info("Guardando instancia "+object.getClass().getName());
 		try {
 			getHibernateTemplate().save(object);
-			log.debug("Se guardo exitosamente");
+			log.info("Se guardo exitosamente");
 		} catch (RuntimeException rex) {
-			log.error("Fallo el registro", rex);
+			log.info("Fallo el registro", rex);
 			//System.out.println("aca ---->"+rex.getCause().getCause().getLocalizedMessage().substring(59, 60));
 			throw rex;
 		}

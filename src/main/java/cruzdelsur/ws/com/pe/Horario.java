@@ -174,7 +174,7 @@ public class Horario {
 	 * 
 	 */
 	public void setAgenciaDesembarque1(JAXBElement<String> value) {
-		this.agenciaDesembarque1 = ((JAXBElement<String>) value);
+		this.agenciaDesembarque1 = (value);
 	}
 
 	/**
@@ -197,7 +197,7 @@ public class Horario {
 	 * 
 	 */
 	public void setAgenciaDesembarque2(JAXBElement<String> value) {
-		this.agenciaDesembarque2 = ((JAXBElement<String>) value);
+		this.agenciaDesembarque2 = (value);
 	}
 
 	/**
@@ -220,7 +220,7 @@ public class Horario {
 	 * 
 	 */
 	public void setAgenciaDesembarqueLlave1(JAXBElement<String> value) {
-		this.agenciaDesembarqueLlave1 = ((JAXBElement<String>) value);
+		this.agenciaDesembarqueLlave1 = (value);
 	}
 
 	/**
@@ -243,7 +243,7 @@ public class Horario {
 	 * 
 	 */
 	public void setAgenciaDesembarqueLlave2(JAXBElement<String> value) {
-		this.agenciaDesembarqueLlave2 = ((JAXBElement<String>) value);
+		this.agenciaDesembarqueLlave2 = (value);
 	}
 
 	/**
@@ -266,7 +266,7 @@ public class Horario {
 	 * 
 	 */
 	public void setAgenciaEmbarque1(JAXBElement<String> value) {
-		this.agenciaEmbarque1 = ((JAXBElement<String>) value);
+		this.agenciaEmbarque1 = (value);
 	}
 
 	/**
@@ -289,7 +289,7 @@ public class Horario {
 	 * 
 	 */
 	public void setAgenciaEmbarque2(JAXBElement<String> value) {
-		this.agenciaEmbarque2 = ((JAXBElement<String>) value);
+		this.agenciaEmbarque2 = (value);
 	}
 
 	/**
@@ -312,7 +312,7 @@ public class Horario {
 	 * 
 	 */
 	public void setAgenciaEmbarqueLlave1(JAXBElement<String> value) {
-		this.agenciaEmbarqueLlave1 = ((JAXBElement<String>) value);
+		this.agenciaEmbarqueLlave1 = (value);
 	}
 
 	/**
@@ -335,7 +335,7 @@ public class Horario {
 	 * 
 	 */
 	public void setAgenciaEmbarqueLlave2(JAXBElement<String> value) {
-		this.agenciaEmbarqueLlave2 = ((JAXBElement<String>) value);
+		this.agenciaEmbarqueLlave2 = (value);
 	}
 
 	/**
@@ -358,7 +358,7 @@ public class Horario {
 	 * 
 	 */
 	public void setAplicarPromocion(JAXBElement<String> value) {
-		this.aplicarPromocion = ((JAXBElement<String>) value);
+		this.aplicarPromocion = (value);
 	}
 
 	/**
@@ -465,7 +465,7 @@ public class Horario {
 	 * 
 	 */
 	public void setCodigoRuta(JAXBElement<String> value) {
-		this.codigoRuta = ((JAXBElement<String>) value);
+		this.codigoRuta = (value);
 	}
 
 	/**
@@ -488,7 +488,7 @@ public class Horario {
 	 * 
 	 */
 	public void setDireccionDesembarque1(JAXBElement<String> value) {
-		this.direccionDesembarque1 = ((JAXBElement<String>) value);
+		this.direccionDesembarque1 = (value);
 	}
 
 	/**
@@ -511,7 +511,7 @@ public class Horario {
 	 * 
 	 */
 	public void setDireccionDesembarque2(JAXBElement<String> value) {
-		this.direccionDesembarque2 = ((JAXBElement<String>) value);
+		this.direccionDesembarque2 = (value);
 	}
 
 	/**
@@ -534,7 +534,7 @@ public class Horario {
 	 * 
 	 */
 	public void setDireccionEmbarque1(JAXBElement<String> value) {
-		this.direccionEmbarque1 = ((JAXBElement<String>) value);
+		this.direccionEmbarque1 = (value);
 	}
 
 	/**
@@ -557,7 +557,7 @@ public class Horario {
 	 * 
 	 */
 	public void setDireccionEmbarque2(JAXBElement<String> value) {
-		this.direccionEmbarque2 = ((JAXBElement<String>) value);
+		this.direccionEmbarque2 = (value);
 	}
 
 	/**
@@ -580,7 +580,7 @@ public class Horario {
 	 * 
 	 */
 	public void setFechaHoraDesembarque1(JAXBElement<String> value) {
-		this.fechaHoraDesembarque1 = ((JAXBElement<String>) value);
+		this.fechaHoraDesembarque1 = (value);
 	}
 
 	/**
@@ -603,7 +603,7 @@ public class Horario {
 	 * 
 	 */
 	public void setFechaHoraDesembarque2(JAXBElement<String> value) {
-		this.fechaHoraDesembarque2 = ((JAXBElement<String>) value);
+		this.fechaHoraDesembarque2 = (value);
 	}
 
 	/**
@@ -626,7 +626,7 @@ public class Horario {
 	 * 
 	 */
 	public void setFechaHoraEmbarque1(JAXBElement<String> value) {
-		this.fechaHoraEmbarque1 = ((JAXBElement<String>) value);
+		this.fechaHoraEmbarque1 = (value);
 	}
 
 	/**
@@ -649,7 +649,7 @@ public class Horario {
 	 * 
 	 */
 	public void setFechaHoraEmbarque2(JAXBElement<String> value) {
-		this.fechaHoraEmbarque2 = ((JAXBElement<String>) value);
+		this.fechaHoraEmbarque2 = (value);
 	}
 
 	/**
@@ -672,7 +672,7 @@ public class Horario {
 	 * 
 	 */
 	public void setMenus(JAXBElement<ArrayOfGeneric> value) {
-		this.menus = ((JAXBElement<ArrayOfGeneric>) value);
+		this.menus = (value);
 	}
 
 	/**
@@ -716,7 +716,7 @@ public class Horario {
 	 * 
 	 */
 	public void setNumeroServicio(JAXBElement<String> value) {
-		this.numeroServicio = ((JAXBElement<String>) value);
+		this.numeroServicio = (value);
 	}
 
 	/**
@@ -739,7 +739,7 @@ public class Horario {
 	 * 
 	 */
 	public void setProgramacionLlave(JAXBElement<String> value) {
-		this.programacionLlave = ((JAXBElement<String>) value);
+		this.programacionLlave = (value);
 	}
 
 	/**
@@ -762,7 +762,7 @@ public class Horario {
 	 * 
 	 */
 	public void setRuta(JAXBElement<String> value) {
-		this.ruta = ((JAXBElement<String>) value);
+		this.ruta = (value);
 	}
 
 	/**
@@ -785,7 +785,7 @@ public class Horario {
 	 * 
 	 */
 	public void setRutaInternacional(JAXBElement<String> value) {
-		this.rutaInternacional = ((JAXBElement<String>) value);
+		this.rutaInternacional = (value);
 	}
 
 	/**
@@ -808,7 +808,7 @@ public class Horario {
 	 * 
 	 */
 	public void setServicio(JAXBElement<String> value) {
-		this.servicio = ((JAXBElement<String>) value);
+		this.servicio = (value);
 	}
 
 	/**
@@ -831,7 +831,7 @@ public class Horario {
 	 * 
 	 */
 	public void setServicioLlave(JAXBElement<String> value) {
-		this.servicioLlave = ((JAXBElement<String>) value);
+		this.servicioLlave = (value);
 	}
 
 	/**
@@ -917,7 +917,7 @@ public class Horario {
 	 * 
 	 */
 	public void setTelefonoDesembarque1(JAXBElement<String> value) {
-		this.telefonoDesembarque1 = ((JAXBElement<String>) value);
+		this.telefonoDesembarque1 = (value);
 	}
 
 	/**
@@ -940,7 +940,7 @@ public class Horario {
 	 * 
 	 */
 	public void setTelefonoDesembarque2(JAXBElement<String> value) {
-		this.telefonoDesembarque2 = ((JAXBElement<String>) value);
+		this.telefonoDesembarque2 = (value);
 	}
 
 	/**
@@ -963,7 +963,7 @@ public class Horario {
 	 * 
 	 */
 	public void setTelefonoEmbarque1(JAXBElement<String> value) {
-		this.telefonoEmbarque1 = ((JAXBElement<String>) value);
+		this.telefonoEmbarque1 = (value);
 	}
 
 	/**
@@ -986,7 +986,7 @@ public class Horario {
 	 * 
 	 */
 	public void setTelefonoEmbarque2(JAXBElement<String> value) {
-		this.telefonoEmbarque2 = ((JAXBElement<String>) value);
+		this.telefonoEmbarque2 = (value);
 	}
 
 	/**
@@ -1009,7 +1009,7 @@ public class Horario {
 	 * 
 	 */
 	public void setTiempoViaje(JAXBElement<String> value) {
-		this.tiempoViaje = ((JAXBElement<String>) value);
+		this.tiempoViaje = (value);
 	}
 
 	/**
@@ -1032,7 +1032,7 @@ public class Horario {
 	 * 
 	 */
 	public void setUnidadLlave(JAXBElement<String> value) {
-		this.unidadLlave = ((JAXBElement<String>) value);
+		this.unidadLlave = (value);
 	}
 
 }

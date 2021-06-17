@@ -64,6 +64,7 @@ public class ItinerarioAgenciaPartidaManagerImpl implements ItinerarioAgenciaPar
 	 * (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.service.business.ItinerarioAgenciaPartidaManager#buscarAgenciasPartida(java.lang.Long, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public List<ItinerarioAgenciaPartida> buscarAgenciasPartida(Long idItinerario, String estado, String strLocalidad)throws Exception{
 		return getItinerarioAgenciaPartidaDAO().buscarAgenciasPartida(idItinerario, estado, strLocalidad);
 	}

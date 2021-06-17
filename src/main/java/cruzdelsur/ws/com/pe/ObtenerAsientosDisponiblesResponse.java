@@ -58,7 +58,7 @@ public class ObtenerAsientosDisponiblesResponse {
 	 */
 	public void setObtenerAsientosDisponiblesResult(
 			JAXBElement<ArrayOfDistribucion> value) {
-		this.obtenerAsientosDisponiblesResult = ((JAXBElement<ArrayOfDistribucion>) value);
+		this.obtenerAsientosDisponiblesResult = (value);
 	}
 
 }

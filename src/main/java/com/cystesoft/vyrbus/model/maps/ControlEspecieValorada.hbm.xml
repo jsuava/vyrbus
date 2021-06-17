@@ -12,6 +12,7 @@
             <key-property name="idUsuarioHardware" type="java.lang.Integer">
                 <column name="USUHARD_ID" precision="5" scale="0" />
             </key-property>
+            <key-property name="strSerie" type="java.lang.String" column="C_SERIE" length="4"/>
         </composite-id>
         <many-to-one name="usuarioHardware" class="com.cystesoft.vyrbus.model.bean.UsuarioHardware" update="false" insert="false" fetch="select">
             <column name="USUHARD_ID" precision="5" scale="0" not-null="true">
@@ -23,7 +24,12 @@
                 <comment>Identificador unico de la entidad, tamanio de la clave primaria 2.</comment>
             </column>
         </many-to-one>
-        <property name="serie" type="java.lang.String">
+        <many-to-one name="agencia" class="com.cystesoft.vyrbus.model.bean.Agencia" fetch="select">
+            <column name="AGENCIA_ID" precision="5" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+            </column>
+        </many-to-one>
+        <property name="serie" type="java.lang.String" update="false" insert="false">
             <column name="C_SERIE" length="4" not-null="true">
                 <comment>Numero de serie de las especies valoradas.</comment>
             </column>
@@ -46,6 +52,16 @@
         <property name="formato" type="java.lang.Integer">
             <column name="N_FORMATO" precision="1" scale="0" >
                 <comment>Numero de correlativo actual de la especie valorada</comment>
+            </column>
+        </property>
+        <property name="secuenciador" type="java.lang.String">
+            <column name="C_CORSEQ" length="50" >
+                <comment>Nombre del Sequenciador el cual reemplaza al correlativo del campo "N_CORACT".</comment>
+            </column>
+        </property>
+        <property name="aplica" type="java.lang.Integer">
+            <column name="N_APLICA" precision="1" scale="0" >
+                <comment>Indica si la NC o ND se aplica a la boleta (1) o factura (2).</comment>
             </column>
         </property>
         

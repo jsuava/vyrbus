@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.TreeMap;
 
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Execution;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -37,13 +36,11 @@ import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Separator;
-import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Timebox;
 import org.zkoss.zul.Window;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.DetalleItinerario;
-import com.cystesoft.vyrbus.model.bean.GenericBean;
 import com.cystesoft.vyrbus.model.bean.HRE;
 import com.cystesoft.vyrbus.model.bean.Itinerario;
 import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaLlegada;
@@ -101,7 +98,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 	private Listbox	lbxDetalleItinerario;
 //	private Grid grdRutasTrifas;
 	private Combobox cmbTerminalPartida;
-	private Timebox	tbterHoraPartida;	
+	private Timebox	tbterHoraPartida;
 	private Listbox lbxTerminalPartida;
 	private Combobox cmbTerminalLlegada;
 	private Timebox tbterHoraLlegada;
@@ -184,46 +181,53 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		});
 		
 		tbHoraPartida.addEventListener(Events.ON_BLUR, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event events) {
 				if(updateHorarios) {
-					for(Listitem it : lstAgenciaOrigen) {
-						for(Listitem item : lbxTerminalOrigen.getItems()) {
-							if(((Agencia)item.getValue()).getDenominacion().equals(((Agencia)it.getValue()).getDenominacion())) {
-								((Timebox)item.getChildren().get(1).getChildren().get(0)).setText(((Timebox)it.getChildren().get(1).getChildren().get(0)).getText());
-								break;
+					if(lstAgenciaOrigen != null) {
+						for(Listitem it : lstAgenciaOrigen) {
+							for(Listitem item : lbxTerminalOrigen.getItems()) {
+								if(((Agencia)item.getValue()).getDenominacion().equals(((Agencia)it.getValue()).getDenominacion())) {
+									((Timebox)item.getChildren().get(1).getChildren().get(0)).setText(((Timebox)it.getChildren().get(1).getChildren().get(0)).getText());
+									break;
+								}
 							}
 						}
 					}
 					
-					for(Listitem it : lstAgenciaDestino) {
-						for(Listitem item : lbxTerminalDestino.getItems()) {
-							if(((Agencia)item.getValue()).getDenominacion().equals(((Agencia)it.getValue()).getDenominacion())) {
-								((Timebox)item.getChildren().get(1).getChildren().get(0)).setText(((Timebox)it.getChildren().get(1).getChildren().get(0)).getText());
-								break;
+					if(lstAgenciaDestino != null) {
+						for(Listitem it : lstAgenciaDestino) {
+							for(Listitem item : lbxTerminalDestino.getItems()) {
+								if(((Agencia)item.getValue()).getDenominacion().equals(((Agencia)it.getValue()).getDenominacion())) {
+									((Timebox)item.getChildren().get(1).getChildren().get(0)).setText(((Timebox)it.getChildren().get(1).getChildren().get(0)).getText());
+									break;
+								}
 							}
 						}
 					}
 					
-					if(!strHoraPartida.equals(tbHoraPartida.getText())) {
-						Date horaInicial = Util.StringtoDate(dbFechaItinerario.getText()+" "+strHoraPartida, "dd/MM/yyyy HH:mm");
-						Date nuevaHora = Util.StringtoDate(dbFechaItinerario.getText()+" "+tbHoraPartida.getText(), "dd/MM/yyyy HH:mm");
-						Long diff = nuevaHora.getTime() - horaInicial.getTime();
-						for(Listitem item : lbxTerminalOrigen.getSelectedItems()) {
-							String hora = ((Timebox)item.getChildren().get(1).getChildren().get(0)).getText();
-							Date newHora = Util.StringtoDate(dbFechaItinerario.getText() + " " + hora, "dd/MM/yyyy HH:mm");
-							Long newDiff = newHora.getTime() + diff;
-							String strNewHora = Util.DatetoString(new Date(newDiff), "HH:mm");
-//							System.out.println(strNewHora);
-							((Timebox)item.getChildren().get(1).getChildren().get(0)).setText(strNewHora);
-						}
-						
-						for(Listitem item : lbxTerminalDestino.getSelectedItems()) {
-							String hora = ((Timebox)item.getChildren().get(1).getChildren().get(0)).getText();
-							Date newHora = Util.StringtoDate(dbFechaItinerario.getText() + " " + hora, "dd/MM/yyyy HH:mm");
-							Long newDiff = newHora.getTime() + diff;
-							String strNewHora = Util.DatetoString(new Date(newDiff), "HH:mm");
-//							System.out.println(strNewHora);
-							((Timebox)item.getChildren().get(1).getChildren().get(0)).setText(strNewHora);
+					if(!strHoraPartida.equals("")) {
+						if(!strHoraPartida.equals(tbHoraPartida.getText())) {
+							Date horaInicial = Util.StringtoDate(dbFechaItinerario.getText()+" "+strHoraPartida, "dd/MM/yyyy HH:mm");
+							Date nuevaHora = Util.StringtoDate(dbFechaItinerario.getText()+" "+tbHoraPartida.getText(), "dd/MM/yyyy HH:mm");
+							Long diff = nuevaHora.getTime() - horaInicial.getTime();
+							for(Listitem item : lbxTerminalOrigen.getSelectedItems()) {
+								String hora = ((Timebox)item.getChildren().get(1).getChildren().get(0)).getText();
+								Date newHora = Util.StringtoDate(dbFechaItinerario.getText() + " " + hora, "dd/MM/yyyy HH:mm");
+								Long newDiff = newHora.getTime() + diff;
+								String strNewHora = Util.DatetoString(new Date(newDiff), "HH:mm");
+	//							System.out.println(strNewHora);
+								((Timebox)item.getChildren().get(1).getChildren().get(0)).setText(strNewHora);
+							}
+							
+							for(Listitem item : lbxTerminalDestino.getSelectedItems()) {
+								String hora = ((Timebox)item.getChildren().get(1).getChildren().get(0)).getText();
+								Date newHora = Util.StringtoDate(dbFechaItinerario.getText() + " " + hora, "dd/MM/yyyy HH:mm");
+								Long newDiff = newHora.getTime() + diff;
+								String strNewHora = Util.DatetoString(new Date(newDiff), "HH:mm");
+	//							System.out.println(strNewHora);
+								((Timebox)item.getChildren().get(1).getChildren().get(0)).setText(strNewHora);
+							}
 						}
 					}
 				}
@@ -232,6 +236,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		});
 		
 		tbHoraPartida.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event events) {
 				updateHorarios = true;
 			}
@@ -751,17 +756,17 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			/*Obtiene la Fecha y hora de llegada*/
 			Calendar fechaHoraLLegada = Calendar.getInstance();
 			fechaHoraLLegada.setTimeInMillis(sfechaPartida.getTime());
-			fechaHoraLLegada.set(fechaHoraLLegada.MONTH, sfechaPartida.getMonth());
-			fechaHoraLLegada.set(fechaHoraLLegada.HOUR_OF_DAY, tbhoraPartida.getValue().getHours());
-			fechaHoraLLegada.set(fechaHoraLLegada.MINUTE, tbhoraPartida.getValue().getMinutes());
-			fechaHoraLLegada.set(fechaHoraLLegada.SECOND, tbhoraPartida.getValue().getSeconds());
-			fechaHoraLLegada.add(fechaHoraLLegada.MILLISECOND, (int) (Util.horasMinutos(horasViaje).intValue()));
+			fechaHoraLLegada.set(Calendar.MONTH, sfechaPartida.getMonth());
+			fechaHoraLLegada.set(Calendar.HOUR_OF_DAY, tbhoraPartida.getValue().getHours());
+			fechaHoraLLegada.set(Calendar.MINUTE, tbhoraPartida.getValue().getMinutes());
+			fechaHoraLLegada.set(Calendar.SECOND, tbhoraPartida.getValue().getSeconds());
+			fechaHoraLLegada.add(Calendar.MILLISECOND, (Util.horasMinutos(horasViaje).intValue()));
 									
 			/*Asigna solamente la fecha llegada en formato "dd/MM/yyyy"**/
 			fechaLLegada.setTime(fechaHoraLLegada.getTime());
-			fechaLLegada.set(fechaLLegada.HOUR_OF_DAY, 0);
-			fechaLLegada.set(fechaLLegada.MINUTE, 0);
-			fechaLLegada.set(fechaLLegada.SECOND, 0);
+			fechaLLegada.set(Calendar.HOUR_OF_DAY, 0);
+			fechaLLegada.set(Calendar.MINUTE, 0);
+			fechaLLegada.set(Calendar.SECOND, 0);
 
 			odetalleItinerario.setId((long) 0);
 			odetalleItinerario.setItinerario(itinerario);
@@ -924,7 +929,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		listBox.getItems().clear();
 		if (cmbRuta.getSelectedItem().getValue() instanceof Ruta){
 			Ruta oruta = new  Ruta();
-			oruta.setId((Integer) ((Ruta) cmbRuta.getSelectedItem().getValue()).getLocalidadDestino().getId());
+			oruta.setId(((Ruta) cmbRuta.getSelectedItem().getValue()).getLocalidadDestino().getId());
 			Integer destino = oruta.getId();			 
 			cargarAgenciaOrigenDestino(listBox, false, destino);
 		}
@@ -1061,28 +1066,28 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 				
 			Ruta oruta= new Ruta();
 			
-			oruta.setId((Integer) ((Ruta) cmbRuta.getSelectedItem().getValue()).getId());	
-			oruta.setHorasViaje((Double) ((Ruta) cmbRuta.getSelectedItem().getValue()).getHorasViaje());
+			oruta.setId(((Ruta) cmbRuta.getSelectedItem().getValue()).getId());	
+			oruta.setHorasViaje(((Ruta) cmbRuta.getSelectedItem().getValue()).getHorasViaje());
 			oruta.setOrigen( ((Ruta) cmbRuta.getSelectedItem().getValue()).getOrigen());
 			oruta.setDestino( ((Ruta) cmbRuta.getSelectedItem().getValue()).getDestino());
 			
 			/*Obtiene la Fecha y hora de llegada*/
 			Calendar FechaHoraLLegada = Calendar.getInstance();
 			FechaHoraLLegada.setTimeInMillis(dbFechaItinerario.getValue().getTime());
-			FechaHoraLLegada.set(FechaHoraLLegada.MONTH, dbFechaItinerario.getValue().getMonth());
-			FechaHoraLLegada.set(FechaHoraLLegada.HOUR_OF_DAY, tbHoraPartida.getValue().getHours());
-			FechaHoraLLegada.set(FechaHoraLLegada.MINUTE, tbHoraPartida.getValue().getMinutes());
-			FechaHoraLLegada.set(FechaHoraLLegada.SECOND, 0);
-			FechaHoraLLegada.add(FechaHoraLLegada.MILLISECOND, (int) (Util.horasMinutos(oruta.getHorasViaje()).intValue()));
+			FechaHoraLLegada.set(Calendar.MONTH, dbFechaItinerario.getValue().getMonth());
+			FechaHoraLLegada.set(Calendar.HOUR_OF_DAY, tbHoraPartida.getValue().getHours());
+			FechaHoraLLegada.set(Calendar.MINUTE, tbHoraPartida.getValue().getMinutes());
+			FechaHoraLLegada.set(Calendar.SECOND, 0);
+			FechaHoraLLegada.add(Calendar.MILLISECOND, (Util.horasMinutos(oruta.getHorasViaje()).intValue()));
 			//FechaHoraLLegada.add(FechaHoraLLegada.MILLISECOND, (int) (lHorasMinutosViaje.intValue()));
 			/**********************************************************************************************************/
 			
 			/*Asigna solamente la fecha llegada en fomrato dd/MM/yyyy */
 			Calendar FechaLLegada = Calendar.getInstance();
 			FechaLLegada.setTime(FechaHoraLLegada.getTime());
-			FechaLLegada.set(FechaLLegada.HOUR_OF_DAY, 0);
-			FechaLLegada.set(FechaLLegada.MINUTE, 0);
-			FechaLLegada.set(FechaLLegada.SECOND, 0);
+			FechaLLegada.set(Calendar.HOUR_OF_DAY, 0);
+			FechaLLegada.set(Calendar.MINUTE, 0);
+			FechaLLegada.set(Calendar.SECOND, 0);
 			
 			/*Cuando es un nuevo Itinerario*/
 			if(action==ACTION_NEW)
@@ -1150,7 +1155,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			odetalleItinerario.setAgenciaLlegada(oagenciaLlegada);
 			odetalleItinerario.setFechaLlegada(FechaLLegada.getTime());
 			odetalleItinerario.setHoraLlegada(Constantes.FORMAT_TIME.format(FechaHoraLLegada.getTime()));
-			odetalleItinerario.setTarifa((Double) 0.01);
+			odetalleItinerario.setTarifa(0.01);
 			odetalleItinerario.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 			List<ItinerarioAgenciaPartida> lstItinerarioAgenciaPartida = new ArrayList<ItinerarioAgenciaPartida>();
 			for(Agencia agencia : lstAgenciaPartida){
@@ -1189,7 +1194,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			
 			/*Verifica que el tramo no exista en la BD*/
 			if(isTramoDuplicado(odetalleItinerario)){
-				DetalleItinerario detalleItinerario = (DetalleItinerario) listTramoDuplicado.get(0);
+				DetalleItinerario detalleItinerario = listTramoDuplicado.get(0);
 				Messagebox.show(Messages.getString("WndItinerario.information.TramosDuplicados")+
 						" Nro.Itinerario:" + detalleItinerario.getItinerario().getId()  +
 						", Fecha:" + Constantes.FORMAT_DATE.format(detalleItinerario.getFechaPartida()) +
@@ -1378,7 +1383,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			}else if (i.getTipo().intValue()==ItinerarioException.TRAMOS_DIFERENTES){
 				DlgMessage.information(Messages.getString("WndItinerario.information.TramosDiferentes"),cmbOrigen);
 			}else if(i.getTipo().intValue()==ItinerarioException.TRAMOS_DUPLICADOS){
-				DetalleItinerario detalleItinerario = (DetalleItinerario) listTramoDuplicado.get(0);
+				DetalleItinerario detalleItinerario = listTramoDuplicado.get(0);
 				DlgMessage.information(Messages.getString("WndItinerario.information.TramosDuplicados")+
 						" Nro.Itinerario:" + detalleItinerario.getItinerario().getId()  +
 						", Fecha:" + Constantes.FORMAT_DATE.format(detalleItinerario.getFechaPartida()) +
@@ -1605,7 +1610,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		if(lbxDetalleItinerario.getItems().size()>0){
 			for(int y=0; y<lbxDetalleItinerario.getItems().size();y++){
 				Integer c=lbxDetalleItinerario.getItems().size();
-				Component it = (Component) lbxDetalleItinerario.getChildren().get(y+1);
+				Component it = lbxDetalleItinerario.getChildren().get(y+1);
 				Listcell cell=(Listcell) it.getChildren().get(9);
 				Hbox hbox=(Hbox)cell.getChildren().get(0);
 				if(c.equals(y+1) && btnGuardar.isDisabled()==false){
@@ -2475,7 +2480,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			/*Recupera Itinerario Agencia partida**/
 			DetalleItinerario ultimoTramo = lstItinerariosDetalle.get(lstItinerariosDetalle.size()-1);
 			List<ItinerarioAgenciaPartida> lstItinerarioAgenciaPartida = null;	
-			lstItinerarioAgenciaPartida = (List<ItinerarioAgenciaPartida>) ServiceLocator.getItinerarioAgenciaPartidaManager().buscarAgenciasPartida(id, Constantes.VALUE_ACTIVO, ultimoTramo.getRuta().getLocalidadOrigen().getId().toString());
+			lstItinerarioAgenciaPartida = ServiceLocator.getItinerarioAgenciaPartidaManager().buscarAgenciasPartida(id, Constantes.VALUE_ACTIVO, ultimoTramo.getRuta().getLocalidadOrigen().getId().toString());
 			if(lstItinerariosDetalle.size()>0){
 				item = null;
 				 cell = null;
@@ -2515,7 +2520,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			
 			/*Recupera Itinerario Agencia Llegada**/
 			List<ItinerarioAgenciaLlegada> lstItinerarioAgenciaLlegada;
-			lstItinerarioAgenciaLlegada= (List<ItinerarioAgenciaLlegada>) ServiceLocator.getItinerarioAgenciaLlegadaManager().buscarAgenciasLlegada(id, Constantes.VALUE_ACTIVO, ultimoTramo.getRuta().getLocalidadDestino().getId().toString());
+			lstItinerarioAgenciaLlegada= ServiceLocator.getItinerarioAgenciaLlegadaManager().buscarAgenciasLlegada(id, Constantes.VALUE_ACTIVO, ultimoTramo.getRuta().getLocalidadDestino().getId().toString());
 			if(lstItinerariosDetalle.size()>0){
 				item = null;
 				cell = null;
@@ -2558,11 +2563,11 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		try {
 			if(esPartida) {
 				List<ItinerarioAgenciaPartida> lstItinerarioAgenciaPartida;	
-				lstItinerarioAgenciaPartida= (List<ItinerarioAgenciaPartida>) ServiceLocator.getItinerarioAgenciaPartidaManager().buscarAgenciasPartida(detalleItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO, localidad);
+				lstItinerarioAgenciaPartida= ServiceLocator.getItinerarioAgenciaPartidaManager().buscarAgenciasPartida(detalleItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO, localidad);
 				detalleItinerario.setLstItinerarioAgenciaPartida(lstItinerarioAgenciaPartida);;
 			}else {
 				List<ItinerarioAgenciaLlegada> lstItinerarioAgenciaLlegada;	
-				lstItinerarioAgenciaLlegada= (List<ItinerarioAgenciaLlegada>) ServiceLocator.getItinerarioAgenciaLlegadaManager().buscarAgenciasLlegada(detalleItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO, localidad);
+				lstItinerarioAgenciaLlegada= ServiceLocator.getItinerarioAgenciaLlegadaManager().buscarAgenciasLlegada(detalleItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO, localidad);
 				detalleItinerario.setLstItinerarioAgenciaLlegada(lstItinerarioAgenciaLlegada);;
 			}
 		}catch (Exception ex) {
@@ -2586,7 +2591,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			 
 			if (action==ACTION_MODIFY){
 				for (int i =0; i < listTramoDuplicado.size(); i ++){
-					if (! (oitinerario.getId().equals(((DetalleItinerario) listTramoDuplicado.get(i)).getItinerario().getId())) )
+					if (! (oitinerario.getId().equals(listTramoDuplicado.get(i).getItinerario().getId())) )
 						return true;//throw new ItinerarioException(ItinerarioException.TRAMOS_DUPLICADOS); // ItinerarioTramosDuplicados();
 				}
 			}else{
@@ -2914,7 +2919,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 	private void asignarImagenEliminarTerminal(Listbox listbox){
 		if(listbox.getItems().size()>0){
 			for(int y=0; y<listbox.getItems().size();y++){
-				Component it = (Component) listbox.getChildren().get(y+1);
+				Component it = listbox.getChildren().get(y+1);
 				Listcell cll=(Listcell) it.getChildren().get(3);
 			
 				if(y==0){

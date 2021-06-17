@@ -83,6 +83,7 @@ public class WndSeleccionaItinerario extends WndBase implements Serializable{
 	 * (non-Javadoc)
 	 * @see org.zkoss.zk.ui.AbstractComponent#addEventListener(java.lang.String, org.zkoss.zk.ui.event.EventListener)
 	 */
+	@Override
 	public boolean addEventListener(String evtnm, EventListener<? extends Event> listener) {
 		boolean resultadoEvento = true;
 		if (evtnm.equals(com.cystesoft.vyrbus.view.ui.Events.ON_SELECT)) {
@@ -137,7 +138,7 @@ public class WndSeleccionaItinerario extends WndBase implements Serializable{
 				if (!(event.getTarget() instanceof Listbox && ((Listbox) event.getTarget()).getSelectedIndex() < 0 )) {
 
 					if (lisItinerarios.getSelectedIndex() > -1 && oEventListenerFilter != null) {
-						setIdItinerario((Long) ((DetalleItinerario) lisItinerarios.getSelectedItem().getValue()).getItinerario().getId());
+						setIdItinerario(((DetalleItinerario) lisItinerarios.getSelectedItem().getValue()).getItinerario().getId());
 						setOrigen(((DetalleItinerario) lisItinerarios.getSelectedItem().getValue()).getRuta().getOrigen());
 						setDestino(((DetalleItinerario) lisItinerarios.getSelectedItem().getValue()).getRuta().getDestino());
 						setIdDetalleItinerario(((DetalleItinerario)lisItinerarios.getSelectedItem().getValue()).getId());

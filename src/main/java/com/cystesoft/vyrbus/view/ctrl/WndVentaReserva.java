@@ -69,6 +69,7 @@ import com.cystesoft.vyrbus.model.bean.CentroCosto;
 import com.cystesoft.vyrbus.model.bean.Cliente;
 import com.cystesoft.vyrbus.model.bean.Concesionario;
 import com.cystesoft.vyrbus.model.bean.ConfiguracionImpresora;
+import com.cystesoft.vyrbus.model.bean.ControlEspecieValorada;
 import com.cystesoft.vyrbus.model.bean.DetalleItinerario;
 import com.cystesoft.vyrbus.model.bean.EspecieValorada;
 import com.cystesoft.vyrbus.model.bean.FormaPago;
@@ -83,7 +84,6 @@ import com.cystesoft.vyrbus.model.bean.MapaBus;
 import com.cystesoft.vyrbus.model.bean.Menu;
 import com.cystesoft.vyrbus.model.bean.Nacionalidad;
 import com.cystesoft.vyrbus.model.bean.ObjectCiva;
-import com.cystesoft.vyrbus.model.bean.ObjetoBus;
 import com.cystesoft.vyrbus.model.bean.OperadorTarjetaCredito;
 import com.cystesoft.vyrbus.model.bean.Pasajero;
 import com.cystesoft.vyrbus.model.bean.PasajeroFrecuente;
@@ -820,6 +820,7 @@ public class WndVentaReserva extends WndBase {
 		});
 		
 		imgRefreshBoleto.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) throws Exception{
 				onLoadEspecieValorada(txtNumeroBoleto);
 			}
@@ -827,6 +828,7 @@ public class WndVentaReserva extends WndBase {
 		
 		/*	En caso seleccione la opcion boleto prepagado	*/
 		chkBoletoPrepagado.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				seleccionarPrepagado();
 			}
@@ -834,6 +836,7 @@ public class WndVentaReserva extends WndBase {
 		
 		/*	En caso seleccione la opcion Venta Remota	*/
 		chkVentaRemota.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				onSelectVentaRemota();
 			}
@@ -841,6 +844,7 @@ public class WndVentaReserva extends WndBase {
 		
 		/*	En caso haga docble click en la lista de pasajeros, muestra la informacion del mismo.	*/
 		lbxPasajeros.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) {
 				mantenimientoRegistroPax(new Long((String) lbxPasajeros.getSelectedItem().getValue()));
 				grpbxListaPasajeros.setVisible(false);
@@ -849,6 +853,7 @@ public class WndVentaReserva extends WndBase {
 		
 		/*	En caso haga doble click en la lista de clientes, muestra la informacion del mismo.	*/
 		lbxClientes.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) {
 				mantenimientoRegistroClient(new Long((String) lbxClientes.getSelectedItem().getValue()));
 				grpbxListaClientes.setVisible(false);
@@ -857,6 +862,7 @@ public class WndVentaReserva extends WndBase {
 		
 		/*	En caso haya apretado la tecla enter en el control txtDocumentoPax realiza la busqueda del pasajero	*/
 		txtDocumentoPax.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(action!=Constantes.ACTION_NEW && action!=Constantes.ACTION_MODIFY){
 					if(txtDocumentoPax.getText().trim().equals(""))
@@ -882,6 +888,7 @@ public class WndVentaReserva extends WndBase {
 		
 		/*	En caso haya apretado la tecla enter en el control txtApePat realiza la busqueda del pasajero	*/
 		txtApePat.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(action!=Constantes.ACTION_NEW && action!=Constantes.ACTION_MODIFY){
 					if(txtApePat.getText().trim().equals(""))
@@ -897,6 +904,7 @@ public class WndVentaReserva extends WndBase {
 		
 		/*	En caso haya apretado la tecla enter en el control txtApeMat realiza la busqueda del pasajero	*/
 		txtApeMat.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(action!=Constantes.ACTION_NEW && action!=Constantes.ACTION_MODIFY){
 					if(txtApePat.getText().trim().equals(""))
@@ -912,6 +920,7 @@ public class WndVentaReserva extends WndBase {
 		
 		/*	En caso haya apretado la tecla enter en el control txtNombres realiza la busqueda del pasajero	*/
 		txtNombres.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(action!=Constantes.ACTION_NEW && action!=Constantes.ACTION_MODIFY){
 					if(txtApePat.getText().trim().equals(""))
@@ -927,6 +936,7 @@ public class WndVentaReserva extends WndBase {
 		
 		/*	En caso haya apretado la tecla enter en el control txtDocumentoCliente realiza la busqueda del cliente	*/
 		txtDocumentoCliente.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(action!=Constantes.ACTION_NEW && action!=Constantes.ACTION_MODIFY){
 					if(txtDocumentoCliente.getText().trim().equals(""))
@@ -940,6 +950,7 @@ public class WndVentaReserva extends WndBase {
 		
 		/*	En caso haya apretado la tecla enter en el control txtRazonSocial realiza la busqueda del cliente	*/
 		txtRazonSocial.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(action!=Constantes.ACTION_NEW && action!=Constantes.ACTION_MODIFY){
 					if(txtRazonSocial.getText().trim().equals(""))
@@ -952,42 +963,49 @@ public class WndVentaReserva extends WndBase {
 		});
 		
 		tabPasajero.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				cmbTipoDocumento.setFocus(true);
 			}
 		});
 		
 		tabCliente.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				txtDocumentoCliente.setFocus(true);
 			}
 		});
 		
 		tabPagos.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				cmbTipoFormaPago.setFocus(true);
 			}
 		});
 		
 		imgPromocion.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				imgPromocion_loadPromociones();
 			}
 		});
 		
 		imgQuitarPromocion.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				quitarPromocion();
 			}
 		});
 		
 		imgFidelizarPasajero.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				convertirPaxfree();
 			}
 		});
 		
 		cmbDestino.addEventListener(Events.ON_CHANGING, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				lbxItinerariosIda.getItems().clear();
 				lbxItinerariosRetorno.getItems().clear();
@@ -995,6 +1013,7 @@ public class WndVentaReserva extends WndBase {
 			}
 		});
 		cmbDestino.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				lbxItinerariosIda.getItems().clear();
 				lbxItinerariosRetorno.getItems().clear();
@@ -1003,6 +1022,7 @@ public class WndVentaReserva extends WndBase {
 		});
 		
 		cmbAlimentacion.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
  				if(rdVentaIdaVuelta.isChecked()){
 					if(cmbAlimentacion.getSelectedItem().getValue() instanceof PreferenciaAlimentaria)
@@ -1014,6 +1034,7 @@ public class WndVentaReserva extends WndBase {
 		});
 		
 		cmbAlimentacionRetorno.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(rdVentaIdaVuelta.isChecked()){
 					if(cmbAlimentacionRetorno.getSelectedItem().getValue() instanceof PreferenciaAlimentaria)
@@ -1025,6 +1046,7 @@ public class WndVentaReserva extends WndBase {
 		});
 		
 		cmbAgenciaRemota.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
  				loadUsuarioRemoto();
  				loadUsuarioHardware();
@@ -1032,6 +1054,7 @@ public class WndVentaReserva extends WndBase {
 		});
 		
 		lbxUsuarioHardware.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				onSelectUsuarioHardware();
 			}
@@ -1181,28 +1204,37 @@ public class WndVentaReserva extends WndBase {
 	 */
 	private void onLoadEspecieValorada(Textbox txtBoleto)throws Exception{
 		EspecieValorada especieValorada=null;
+		ControlEspecieValorada controlEspecieValorada = null;
 		if(agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_TEPSA){
 //			if(chkBoletoPrepagado.isChecked()){
 			if(rdPrepagadoRemoto.isChecked()){
 				if(chkVentaRemota.isChecked()){
-					especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_RECIBO_CAJA,(Agencia)cmbAgenciaRemota.getSelectedItem().getValue(),false);
+					especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_RECIBO_CAJA,(Agencia)cmbAgenciaRemota.getSelectedItem().getValue(), false);
 					txtBoleto.setValue(especieValorada.toString());
 				}else{
 //					txtBoleto.setValue(UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_RECIBO_CAJA, agencia,false));
-					especieValorada=UtilData.buscarEspecieValorada(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId(), agencia,false);
-					txtBoleto.setValue(especieValorada.toString());
+					/*BEGIN 16/06/2021 - javalos - Correlativo by caja*/
+//					especieValorada=UtilData.buscarEspecieValorada(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId(), agencia, false);
+//					txtBoleto.setValue(especieValorada.toString());
+					controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId(), agencia, false, getUsuarioHardware(), null);
+					txtBoleto.setValue(controlEspecieValorada.toString());
+					/*END 16/06/2021 - javalos - Correlativo by caja*/
 				}
 			}else if(chkVentaRemota.isChecked()){
 //				txtBoleto.setValue(UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_BOLETO_VIAJE, usuarioHardwareRemoto.getId()));
 				if(rdElectronicoRemoto.isChecked()){
-					especieValorada=UtilData.buscarEspecieValorada(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId(), (Agencia)cmbAgenciaRemota.getSelectedItem().getValue(),false);
-					txtBoleto.setValue(especieValorada.toString());
+					/*BEGIN 16/06/2021 - javalos - Correlativo by caja*/
+//					especieValorada=UtilData.buscarEspecieValorada(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId(), (Agencia)cmbAgenciaRemota.getSelectedItem().getValue(), false);
+//					txtBoleto.setValue(especieValorada.toString());
+					controlEspecieValorada=UtilData.buscarEspecieValoradaByCaja(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId(), (Agencia)cmbAgenciaRemota.getSelectedItem().getValue(), false, getUsuarioHardware(), null);
+					txtBoleto.setValue(controlEspecieValorada.toString());
+					/*END 16/06/2021 - javalos - Correlativo by caja*/
 				}else if(rdBoletoRemoto.isChecked())
 					txtBoleto.setValue("");
 			}else{
 //				txtBoleto.setValue(UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_BOLETO_VIAJE, usuhar));
-				especieValorada=UtilData.buscarEspecieValorada(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(),false);
-				txtBoleto.setValue(especieValorada.toString());
+				controlEspecieValorada=UtilData.buscarEspecieValoradaByCaja(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(), false, getUsuarioHardware(), null);
+				txtBoleto.setValue(controlEspecieValorada.toString());
 			}
 		}else if(agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_VIAJES){
 			especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES, agencia,false);
@@ -1843,7 +1875,7 @@ public class WndVentaReserva extends WndBase {
 //						throw new UsuarioHardwareNullException();
 //					usuarioHardwareRemoto = ((ControlEspecieValorada)lbxUsuarioHardware.getSelectedItem().getValue()).getUsuarioHardware();
 					TreeMap<String, Object> criteriosBusqueda= new TreeMap<>();
-					criteriosBusqueda.put("agencia", (Agencia)cmbAgenciaRemota.getSelectedItem().getValue());
+					criteriosBusqueda.put("agencia", cmbAgenciaRemota.getSelectedItem().getValue());
 					criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 					List<UsuarioHardware> result= ServiceLocator.getUsuarioHardwareManager().buscarPorX(criteriosBusqueda, null);
 					if(result.size()>0){
@@ -2131,7 +2163,7 @@ public class WndVentaReserva extends WndBase {
 				
 				/*Saca el usuario hardware de un equipo de la agencia remota*/
 				TreeMap<String, Object> criteriosBusqueda= new TreeMap<>();
-				criteriosBusqueda.put("agencia", (Agencia)cmbAgenciaRemota.getSelectedItem().getValue());
+				criteriosBusqueda.put("agencia", cmbAgenciaRemota.getSelectedItem().getValue());
 				criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 				List<UsuarioHardware> result= ServiceLocator.getUsuarioHardwareManager().buscarPorX(criteriosBusqueda, null);
 				if(result.size()>0){
@@ -2257,6 +2289,7 @@ public class WndVentaReserva extends WndBase {
 								if(objetoBus.getTipoObjeto().intValue()==TIPO_ASIENTO){
 									Asiento asiento = new Asiento();
 									asiento.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+										@Override
 										public void onEvent(Event e){
 											Component component = e.getTarget().getParent().getParent().getParent().getParent();
 											if(component.getId().equals("grdIdaPiso1") || component.getId().equals("grdIdaPiso2"))
@@ -2340,7 +2373,7 @@ public class WndVentaReserva extends WndBase {
 	 */
 	private void inicializarEstructura(Groupbox groupbox){
 		for(int i=groupbox.getChildren().size()-1; i>-1; i--){
-			Component component = (Component)groupbox.getChildren().get(i);
+			Component component = groupbox.getChildren().get(i);
 			if(!(component instanceof Caption))
 				groupbox.removeChild(component);
 		}
@@ -4256,6 +4289,7 @@ public class WndVentaReserva extends WndBase {
 	 */
 	private EventListener<Event> EventSavePax(final Pasajero oPasajero) {
 		EventListener<Event> ev = new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) {
 				try {
 					if (e.getName().equals("onYes")) {
@@ -4748,6 +4782,7 @@ public class WndVentaReserva extends WndBase {
 	 */
 	private EventListener<Event> EventSaveClient(final Cliente oCliente){
 		EventListener<Event> ev = new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) {
 				try {
 					if (e.getName().equals("onYes")) {
@@ -5065,8 +5100,8 @@ public class WndVentaReserva extends WndBase {
 							if(e.getName().equals("onYes")){
 								AsientoPool asientoPool= lbxAsientos.getSelectedItem().getValue();
 								TreeMap<String, Object>criteriosBusqueda= new TreeMap<>();
-								criteriosBusqueda.put("localidadOrigen", (Localidad)cmbOrigen.getSelectedItem().getValue());
-								criteriosBusqueda.put("localidadDestino",(Localidad)cmbDestino.getSelectedItem().getValue());
+								criteriosBusqueda.put("localidadOrigen", cmbOrigen.getSelectedItem().getValue());
+								criteriosBusqueda.put("localidadDestino",cmbDestino.getSelectedItem().getValue());
 								criteriosBusqueda.put("estadoRegistro",Constantes.VALUE_ACTIVO);
 								List<Ruta> result= ServiceLocator.getRutaManager().buscarPorX(criteriosBusqueda, null);
 								
@@ -5892,6 +5927,7 @@ public class WndVentaReserva extends WndBase {
 					if(promocionAplicada==null){
 						dblDescuentoRetorno.setValue(0.0);
 						Messagebox.show(Messages.getString("WndVentaReserva.question.promocionNoAplicableAlRetorno"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+							@Override
 							public void onEvent(Event e){
 								if(e.getName().equals("onYes")){
 									return;
@@ -6994,6 +7030,7 @@ public class WndVentaReserva extends WndBase {
 	
 	private void convertirPaxfree(){
 		Messagebox.show(Messages.getString("WndVentaReserva.question.fidelizarPasajeroFrecuente"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(e.getName().equals("onYes")){
 					try{
@@ -7353,7 +7390,7 @@ public class WndVentaReserva extends WndBase {
 			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
 			criteriosBusqueda.put("concesionario.id", getAgencia().getConcesionario().getId());
 			if(cmbGrupoCentroCosto.getSelectedItem().getValue() instanceof TipoCentroCosto)
-				criteriosBusqueda.put("tipoCentroCosto", ((TipoCentroCosto)cmbGrupoCentroCosto.getSelectedItem().getValue()));
+				criteriosBusqueda.put("tipoCentroCosto", (cmbGrupoCentroCosto.getSelectedItem().getValue()));
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<String> criteriosOrdenar = new ArrayList<String>();
 			criteriosOrdenar.add("denominacion");

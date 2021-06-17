@@ -156,6 +156,7 @@ public class AgenciaManagerImpl implements AgenciaManager {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.AgenciaManager#buscarAgenciaByRucClienteCredito(java.lang.String)
 	 */
+	@Override
 	public Agencia buscarAgenciaByRucClienteCredito(String ruc)throws Exception{
 		return getAgenciaDAO().buscarAgenciaByRucClienteCredito(ruc);
 	}
@@ -170,6 +171,7 @@ public class AgenciaManagerImpl implements AgenciaManager {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.AgenciaManager#buscarAgenciaComprobantesSinBoleto(java.lang.Integer, java.lang.String)
 	 */
+	@Override
 	public List<Agencia> buscarAgenciaComprobantesSinBoleto(Integer idTipoComprobante, String fechaPartida)throws Exception{
 		return getAgenciaDAO().buscarAgenciaComprobantesSinBoleto(idTipoComprobante, fechaPartida);
 	}
@@ -186,6 +188,7 @@ public class AgenciaManagerImpl implements AgenciaManager {
 	 * (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.service.business.AgenciaManager#buscarAgenciaByLocalidad(java.lang.String)
 	 */
+	@Override
 	public List<Agencia>buscarAgenciaByLocalidad(String localidades)throws Exception{
 		return getAgenciaDAO().buscarAgenciaByLocalidad(localidades);
 	}

@@ -61,7 +61,7 @@ public class SetVenta {
 	 * 
 	 */
 	public void setToken(JAXBElement<String> value) {
-		this.token = ((JAXBElement<String>) value);
+		this.token = (value);
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class SetVenta {
 	 * 
 	 */
 	public void setVenta(JAXBElement<Venta> value) {
-		this.venta = ((JAXBElement<Venta>) value);
+		this.venta = (value);
 	}
 
 }

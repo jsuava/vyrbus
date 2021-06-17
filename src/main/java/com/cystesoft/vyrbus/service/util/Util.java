@@ -204,7 +204,7 @@ public class Util {
 	public static void limpiarTree(Tree tree){
 		if(tree.getTreechildren()!=null){
 			for (int f = tree.getTreechildren().getChildren().size() -1; f > -1; f --) {
-				Component oComponent = (Component) tree.getTreechildren().getChildren().get(f);
+				Component oComponent = tree.getTreechildren().getChildren().get(f);
 				tree.getTreechildren().removeChild(oComponent);
 			}
 		}
@@ -227,7 +227,7 @@ public class Util {
 		oListbox.setMold("default");
 
 		for (int f = oListbox.getChildren().size() -1; f > -1; f --) {
-			Component oComponent = (Component) oListbox.getChildren().get(f);
+			Component oComponent = oListbox.getChildren().get(f);
 
 			if (oComponent instanceof Listhead) {
 				if (quitarEncabezado) {
@@ -894,14 +894,14 @@ public class Util {
 	public static Date primerDiaDelMes() throws ParseException {
 		MyTime time = new MyTime();
 		Calendar ctime=Util.StringtoCalendar(time.dateServer(), "dd/mm/yyyy");
-		Calendar cal = ctime.getInstance();
+		Calendar cal = Calendar.getInstance();
 		
-		cal.set(cal.get(ctime.YEAR),
-		cal.get(ctime.MONTH),
-		cal.getActualMinimum(ctime.DAY_OF_MONTH),
-		cal.getMinimum(ctime.HOUR_OF_DAY),
-		cal.getMinimum(ctime.MINUTE),
-		cal.getMinimum(ctime.SECOND));
+		cal.set(cal.get(Calendar.YEAR),
+		cal.get(Calendar.MONTH),
+		cal.getActualMinimum(Calendar.DAY_OF_MONTH),
+		cal.getMinimum(Calendar.HOUR_OF_DAY),
+		cal.getMinimum(Calendar.MINUTE),
+		cal.getMinimum(Calendar.SECOND));
 		
 		return cal.getTime();
 	}

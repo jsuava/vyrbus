@@ -44,7 +44,6 @@ import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.Liquidacion;
 import com.cystesoft.vyrbus.model.bean.Rol;
 import com.cystesoft.vyrbus.model.bean.Usuario;
-import com.cystesoft.vyrbus.model.bean.VSLiquidacion;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.service.exceptions.PasswordException;
 import com.cystesoft.vyrbus.service.exceptions.UsuarioNullException;
@@ -345,6 +344,21 @@ public class WndCierreCaja extends WndBase {
 				}
 			});
 			
+			toolbarbutton =new Toolbarbutton();
+			toolbarbutton.setAttribute(ATRIBUTTE_LIQUIDACION, liquidacion);
+			toolbarbutton.setImage("/resources/mp_previo.png");
+			toolbarbutton.setTooltiptext("Resumen Liquidacion");
+			toolbarbutton.setAutodisable("self");
+			//toolbarbutton.setDisabled(true);
+			
+			hbox.appendChild(toolbarbutton);
+			toolbarbutton.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event arg0) throws Exception {
+					System.out.println("Listo para mostrar");
+				}
+			});
+			
 			cell.appendChild(hbox);
 			item.appendChild(cell);
 			
@@ -400,8 +414,8 @@ public class WndCierreCaja extends WndBase {
 					for(int z=i; z<lstResul.size(); z++){
 //						x++;
 						
-						c_serieNext=((VentaPasaje)lstResul.get(z)).getNumeroSerie();
-						n_bolNext=Long.valueOf(((VentaPasaje)lstResul.get(z)).getNumeroBoleto());
+						c_serieNext=lstResul.get(z).getNumeroSerie();
+						n_bolNext=Long.valueOf(lstResul.get(z).getNumeroBoleto());
 						
 						//Valida los correlativos faltantes
 						if(n_bolBack>0)
@@ -431,8 +445,8 @@ public class WndCierreCaja extends WndBase {
 						if(c_serieBack.length()>0 && (!c_serieNext.equals(c_serieBack)))
 							break;
 						
-						c_serieBack=((VentaPasaje)lstResul.get(z)).getNumeroSerie();
-						n_bolBack=Long.valueOf(((VentaPasaje)lstResul.get(z)).getNumeroBoleto());
+						c_serieBack=lstResul.get(z).getNumeroSerie();
+						n_bolBack=Long.valueOf(lstResul.get(z).getNumeroBoleto());
 						i=z;
 					}
 																

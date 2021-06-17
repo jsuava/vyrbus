@@ -58,7 +58,7 @@ public class SetConsultarCDRResponse {
 	 * 
 	 */
 	public void setSetConsultarCDRResult(JAXBElement<Result> value) {
-		this.setConsultarCDRResult = ((JAXBElement<Result>) value);
+		this.setConsultarCDRResult = (value);
 	}
 
 }

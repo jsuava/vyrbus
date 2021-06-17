@@ -28,6 +28,7 @@ import com.cystesoft.vyrbus.model.dao.TarifaRegularDAO;
  */
 public class TarifaRegularDAOImpl extends GenericDAOImpl implements TarifaRegularDAO {
 
+	@Override
 	public void delete (Long idTarifaRegular) throws Exception{
 		String sql="DELETE FROM VRTTARREG WHERE VRTTARREG.TARREG_ID = " + idTarifaRegular;
 		
@@ -95,6 +96,7 @@ public class TarifaRegularDAOImpl extends GenericDAOImpl implements TarifaRegula
 		
 	}
 	
+	@Override
 	public String buscarCantidadTarifasAReemplazar(Integer canalVentaID,
 													Integer servicioID,
 													Integer origenID,
@@ -152,6 +154,7 @@ public class TarifaRegularDAOImpl extends GenericDAOImpl implements TarifaRegula
 	}
 
 
+	@Override
 	public List<TarifaRegular> buscarTarifasAReemplazar(Integer canalVentaID,
 											Integer servicioID,
 											Integer origenID,

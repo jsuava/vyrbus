@@ -87,6 +87,7 @@ public class WndSeleccionarUbigeo extends WndBase {
 		this.initComponents();
 	}
 
+	@Override
 	public boolean addEventListener(String evtnm, EventListener<? extends Event> listener) {
 		boolean resultadoEvento = true;
 

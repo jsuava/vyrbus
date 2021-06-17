@@ -181,21 +181,21 @@ public class WndDocumentoBus  extends WndOpcionesMantenimiento{
 			
 			if (cboTipoDocumento.getSelectedIndex() > -1) {
 				TipoDocumento otipoDocumento = new TipoDocumento();			
-				otipoDocumento.setId((Integer) ((TipoDocumento) cboTipoDocumento.getSelectedItem().getValue()).getId());
+				otipoDocumento.setId(((TipoDocumento) cboTipoDocumento.getSelectedItem().getValue()).getId());
 				otipoDocumento.setDenominacion(((TipoDocumento) cboTipoDocumento.getSelectedItem().getValue()).getDenominacion());
 				odocumentoBus.setTipoDocumento(otipoDocumento);
 			}
 			
 			if (cboBus.getSelectedIndex()> -1){
 				Bus obus = new Bus();
-				obus.setId((Integer) ((Bus) cboBus.getSelectedItem().getValue()).getId());
+				obus.setId(((Bus) cboBus.getSelectedItem().getValue()).getId());
 				obus.setCodigo( ((Bus) cboBus.getSelectedItem().getValue()).getCodigo());
 				odocumentoBus.setBus(obus);
 			}
 			
 			if (cboEstadoDocumento.getSelectedIndex()>-1){
 				EstadoDocumentoBus oestaDocumentoBus = new EstadoDocumentoBus();
-				oestaDocumentoBus.setId((Integer) ((EstadoDocumentoBus) cboEstadoDocumento.getSelectedItem().getValue()).getId());
+				oestaDocumentoBus.setId(((EstadoDocumentoBus) cboEstadoDocumento.getSelectedItem().getValue()).getId());
 				oestaDocumentoBus.setDenominacion(((EstadoDocumentoBus) cboEstadoDocumento.getSelectedItem().getValue()).getDenominacion());
 				odocumentoBus.setEstadoDocumentoBus(oestaDocumentoBus);
 			}

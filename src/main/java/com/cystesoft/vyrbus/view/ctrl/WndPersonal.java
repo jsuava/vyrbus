@@ -362,16 +362,16 @@ public class WndPersonal extends WndOpcionesMantenimiento {
 			TipoZona oTipoZona = new TipoZona();
 
 			oUbigeo.setId(txtIdUbigeo.getText());
-			oTipoPersonal.setId((Integer) ((TipoPersonal) cboTipoPersonal.getSelectedItem().getValue()).getId());
+			oTipoPersonal.setId(((TipoPersonal) cboTipoPersonal.getSelectedItem().getValue()).getId());
 			oTipoPersonal.setDenominacion(((TipoPersonal) cboTipoPersonal.getSelectedItem().getValue()).getDenominacion());
-			oSexo.setId((Integer) ((Sexo) cboSexo.getSelectedItem().getValue()).getId());
+			oSexo.setId(((Sexo) cboSexo.getSelectedItem().getValue()).getId());
 			oSexo.setDenominacion(((Sexo) cboSexo.getSelectedItem().getValue()).getDenominacion());
-			oNacionalidad.setId((Integer) ((Nacionalidad) cboNacionalidad.getSelectedItem().getValue()).getId());
-			oEstadoCivil.setId((Integer) ((EstadoCivil) cboEstadoCivil.getSelectedItem().getValue()).getId());
-			oTipoDocumento.setId((Integer) ((TipoDocumento) cboTipoDocumento.getSelectedItem().getValue()).getId());
+			oNacionalidad.setId(((Nacionalidad) cboNacionalidad.getSelectedItem().getValue()).getId());
+			oEstadoCivil.setId(((EstadoCivil) cboEstadoCivil.getSelectedItem().getValue()).getId());
+			oTipoDocumento.setId(((TipoDocumento) cboTipoDocumento.getSelectedItem().getValue()).getId());
 			oTipoDocumento.setDenominacion( ((TipoDocumento) cboTipoDocumento.getSelectedItem().getValue()).getDenominacion());
-			oTipoVia.setId((Integer) ((TipoVia) cboTipoVia.getSelectedItem().getValue()).getId());
-			oTipoZona.setId((Integer) ((TipoZona) cboTipoZona.getSelectedItem().getValue()).getId());
+			oTipoVia.setId(((TipoVia) cboTipoVia.getSelectedItem().getValue()).getId());
+			oTipoZona.setId(((TipoZona) cboTipoZona.getSelectedItem().getValue()).getId());
 
 			oPersonal.setId(id);
 			oPersonal.setTipoPersonal(oTipoPersonal);

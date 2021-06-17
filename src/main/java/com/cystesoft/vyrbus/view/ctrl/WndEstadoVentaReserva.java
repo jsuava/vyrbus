@@ -398,6 +398,7 @@ public class WndEstadoVentaReserva extends WndBase {
 	 */
 	public void enviarServerFE(final Long ventaPasajeId){
 		Messagebox.show("¿Realmente esta seguro de Enviar el Comprobante al Servidor de Facturación Electrónica?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				try {
 					if(e.getName().equals("onYes")){
@@ -749,6 +750,7 @@ public class WndEstadoVentaReserva extends WndBase {
 		oWndBuscarPasajero.setMode(MODAL);
 		oWndBuscarPasajero.onCreate();
 		oWndBuscarPasajero.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(oWndBuscarPasajero.rdPorDocumento.isChecked()){
 					rdByDocumento.setChecked(true);
@@ -774,6 +776,7 @@ public class WndEstadoVentaReserva extends WndBase {
 		oWndBuscarPasajero.rowApePat.setVisible(false);
 		oWndBuscarPasajero.rowApeMat.setVisible(false);
 		oWndBuscarPasajero.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(oWndBuscarPasajero.rdPorDocumento.isChecked()){
 					rdByRuc.setChecked(true);

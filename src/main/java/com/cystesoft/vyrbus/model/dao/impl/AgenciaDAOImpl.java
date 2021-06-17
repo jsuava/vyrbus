@@ -77,6 +77,7 @@ public class AgenciaDAOImpl extends GenericDAOImpl implements AgenciaDAO {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.AgenciaDAO#buscarAgenciaByRucClienteCredito(java.lang.String)
 	 */
+	@Override
 	public Agencia buscarAgenciaByRucClienteCredito(String ruc)throws Exception{
 		String hql = "SELECT A FROM Agencia as A JOIN A.concesionario as C WHERE C.ruc='"+ruc+"' AND A.estadoRegistro='"+Constantes.VALUE_ACTIVO+"'";
 		
@@ -97,6 +98,7 @@ public class AgenciaDAOImpl extends GenericDAOImpl implements AgenciaDAO {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.AgenciaDAO#buscarAgenciaComprobantesSinBoleto(java.lang.Integer, java.lang.String)
 	 */
+	@Override
 	public List<Agencia> buscarAgenciaComprobantesSinBoleto(Integer idTipoComprobante, String fechaPartida){
 		String sql = "SELECT DISTINCT(a.c_denominacion), a.agencia_id "
 				+ "FROM vrtvenpas vp "
@@ -144,6 +146,7 @@ public class AgenciaDAOImpl extends GenericDAOImpl implements AgenciaDAO {
 	 * (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.model.dao.AgenciaDAO#buscarAgenciaByLocalidad(java.lang.String)
 	 */
+	@Override
 	public List<Agencia>buscarAgenciaByLocalidad(String localidades)throws Exception{
 		String sql = "SELECT agencia_id, c_denominacion, c_direccion, localidad_id, c_nomcor "
 				+ "FROM vrmagencia WHERE localidad_id in ("+localidades+") and n_esterminal=1 and c_estreg='A' "

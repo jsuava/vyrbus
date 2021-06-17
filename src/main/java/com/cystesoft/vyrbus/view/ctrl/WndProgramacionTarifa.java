@@ -15,14 +15,10 @@ import java.util.TreeMap;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zul.Button;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Div;
-import org.zkoss.zul.Grid;
 import org.zkoss.zul.Intbox;
-import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Timebox;
 import org.zkoss.zul.Window;
 
@@ -31,9 +27,7 @@ import com.cystesoft.vyrbus.model.bean.DetalleItinerario;
 import com.cystesoft.vyrbus.model.bean.Itinerario;
 import com.cystesoft.vyrbus.model.bean.Localidad;
 import com.cystesoft.vyrbus.model.bean.Servicio;
-import com.cystesoft.vyrbus.model.bean.TipoItinerario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
-import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.Util;
 import com.cystesoft.vyrbus.service.util.UtilData;

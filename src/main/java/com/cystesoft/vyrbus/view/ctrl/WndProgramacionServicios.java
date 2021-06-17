@@ -752,13 +752,13 @@ public class WndProgramacionServicios extends WndBase {
 				Long id = null;				
 				if (action== Constantes.ACTION_MODIFY){
 					id = (new Long(textboxId.getText()));
-					if (list.size() > 0 && (((ProgramacionServicio) list.get(0)).getId().equals(id))){
+					if (list.size() > 0 && (list.get(0).getId().equals(id))){
 						busProgramado=false;
 					}
 				}else{
 					if (list.size() > 0){
-						id =(((ProgramacionServicio) list.get(0)).getId());
-						if (((ProgramacionServicio) list.get(0)).getId().equals(id))
+						id =(list.get(0).getId());
+						if (list.get(0).getId().equals(id))
 							busProgramado=true;
 						else
 							busProgramado=false;

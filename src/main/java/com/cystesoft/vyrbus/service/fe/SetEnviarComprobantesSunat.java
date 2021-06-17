@@ -61,7 +61,7 @@ public class SetEnviarComprobantesSunat {
 	 * 
 	 */
 	public void setToken(JAXBElement<String> value) {
-		this.token = ((JAXBElement<String>) value);
+		this.token = (value);
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class SetEnviarComprobantesSunat {
 	 * 
 	 */
 	public void setRucEmpresa(JAXBElement<String> value) {
-		this.rucEmpresa = ((JAXBElement<String>) value);
+		this.rucEmpresa = (value);
 	}
 
 }

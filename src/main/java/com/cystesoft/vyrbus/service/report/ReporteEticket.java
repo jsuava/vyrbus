@@ -17,6 +17,7 @@ public class ReporteEticket implements JRDataSource {
 		this.lstSales=lstSales;
 	}
 	
+	@Override
 	public Object getFieldValue(JRField field) throws JRException {
 		Object value = null;
 		String fieldName = field.getName();
@@ -57,6 +58,7 @@ public class ReporteEticket implements JRDataSource {
 		return value;
 	}
 
+	@Override
 	public boolean next() throws JRException {
 		index++;
 		return (index<lstSales.size());

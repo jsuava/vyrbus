@@ -33,6 +33,7 @@ public class TipoDocumentoDAOImpl extends GenericDAOImpl implements TipoDocument
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.dao.TipoDocumentoDAO#buscarPorX(java.util.TreeMap)
 	 */
+	@Override
 	public ArrayList<TipoDocumento> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar) {
 		return (ArrayList<TipoDocumento>) super.findByX(TipoDocumento.class, criteriosBusqueda, criteriosOrdenar);
 	}

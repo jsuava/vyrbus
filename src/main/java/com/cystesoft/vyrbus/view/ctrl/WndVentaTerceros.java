@@ -550,6 +550,7 @@ public class WndVentaTerceros extends WndBase {
 		cmbTarjetaCredito = (Combobox)this.getFellow("cmbTarjetaCredito");
 		
 		imgRefreshBoleto.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				onLoadEspecieValorada(txtNumeroBoleto);
 			}
@@ -557,6 +558,7 @@ public class WndVentaTerceros extends WndBase {
 		
 		/*	En caso haga docble click en la lista de pasajeros, muestra la informacion del mismo.	*/
 		lbxPasajeros.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) {
 				mantenimientoRegistroPax(new Long((String) lbxPasajeros.getSelectedItem().getValue()));
 				grpbxListaPasajeros.setVisible(false);
@@ -565,6 +567,7 @@ public class WndVentaTerceros extends WndBase {
 		
 		/*	En caso haga doble click en la lista de clientes, muestra la informacion del mismo.	*/
 		lbxClientes.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) {
 				mantenimientoRegistroClient(new Long((String) lbxClientes.getSelectedItem().getValue()));
 				grpbxListaClientes.setVisible(false);
@@ -573,6 +576,7 @@ public class WndVentaTerceros extends WndBase {
 		
 		/*	En caso haya apretado la tecla enter en el control txtDocumentoPax realiza la busqueda del pasajero	*/
 		txtDocumentoPax.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(action!=Constantes.ACTION_NEW && action!=Constantes.ACTION_MODIFY){
 					if(txtDocumentoPax.getText().trim().equals(""))
@@ -586,6 +590,7 @@ public class WndVentaTerceros extends WndBase {
 		
 		/*	En caso haya apretado la tecla enter en el control txtApePat realiza la busqueda del pasajero	*/
 		txtApePat.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(action!=Constantes.ACTION_NEW && action!=Constantes.ACTION_MODIFY){
 					if(txtApePat.getText().trim().equals(""))
@@ -601,6 +606,7 @@ public class WndVentaTerceros extends WndBase {
 		
 		/*	En caso haya apretado la tecla enter en el control txtApeMat realiza la busqueda del pasajero	*/
 		txtApeMat.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(action!=Constantes.ACTION_NEW && action!=Constantes.ACTION_MODIFY){
 					if(txtApePat.getText().trim().equals(""))
@@ -616,6 +622,7 @@ public class WndVentaTerceros extends WndBase {
 		
 		/*	En caso haya apretado la tecla enter en el control txtNombres realiza la busqueda del pasajero	*/
 		txtNombres.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(action!=Constantes.ACTION_NEW && action!=Constantes.ACTION_MODIFY){
 					if(txtApePat.getText().trim().equals(""))
@@ -631,6 +638,7 @@ public class WndVentaTerceros extends WndBase {
 		
 		/*	En caso haya apretado la tecla enter en el control txtDocumentoCliente realiza la busqueda del cliente	*/
 		txtDocumentoCliente.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(action!=Constantes.ACTION_NEW && action!=Constantes.ACTION_MODIFY){
 					if(txtDocumentoCliente.getText().trim().equals(""))
@@ -644,6 +652,7 @@ public class WndVentaTerceros extends WndBase {
 		
 		/*	En caso haya apretado la tecla enter en el control txtRazonSocial realiza la busqueda del cliente	*/
 		txtRazonSocial.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(action!=Constantes.ACTION_NEW && action!=Constantes.ACTION_MODIFY){
 					if(txtRazonSocial.getText().trim().equals(""))
@@ -656,77 +665,90 @@ public class WndVentaTerceros extends WndBase {
 		});
 		
 		tabPasajero.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				cmbTipoDocumento.setFocus(true);
 			}
 		});
 		
 		tabCliente.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				txtDocumentoCliente.setFocus(true);
 			}
 		});
 		
 		tabPagos.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				cmbTipoFormaPago.setFocus(true);
 			}
 		});
 		
 		imgPromocion.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				imgPromocion_loadPromociones();
 			}
 		});
 		
 		imgQuitarPromocion.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				quitarPromocion();
 			}
 		});
 		
 		imgFidelizarPasajero.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				convertirPaxfree();
 			}
 		});
 		
 		cmbDestino.addEventListener(Events.ON_CHANGING, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				lbxItinerariosIda.getItems().clear();
 			}
 		});
 		cmbDestino.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				lbxItinerariosIda.getItems().clear();
 			}
 		});
 		
 		cmbTipoAgenciaRemota.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
  				onChangeTipoAgenciaRemota();
 			}
 		});
 		
 		cmbAgenciaRemota.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
  				onChangeAgenciaRemota();
 			}
 		});
 		
 		cmbUsuarioRemoto.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
  				onChangeUsuarioRemoto();
 			}
 		});
 		
 		lbxUsuarioHardware.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				onSelectUsuarioHardware();
 			}
 		});
 		
 		cmbMes.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(cmbMes.getSelectedItem().getValue() instanceof Integer)
 					Util.loadDias(cmbDia, (Integer)cmbMes.getSelectedItem().getValue(), (Integer)cmbAnio.getSelectedItem().getValue());
@@ -734,6 +756,7 @@ public class WndVentaTerceros extends WndBase {
 		});
 		
 		cmbAnio.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				Util.loadMeses(cmbMes);
 				cmbDia.setSelectedIndex(-1);
@@ -1071,6 +1094,7 @@ public class WndVentaTerceros extends WndBase {
 								if(objetoBus.getTipoObjeto().intValue()==TIPO_ASIENTO){
 									Asiento asiento = new Asiento();
 									asiento.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+										@Override
 										public void onEvent(Event e){
 											Component component = e.getTarget().getParent().getParent().getParent().getParent();
 											if(component.getId().equals("grdIdaPiso1") || component.getId().equals("grdIdaPiso2"))
@@ -1145,7 +1169,7 @@ public class WndVentaTerceros extends WndBase {
 	 */
 	private void inicializarEstructura(Groupbox groupbox){
 		for(int i=groupbox.getChildren().size()-1; i>-1; i--){
-			Component component = (Component)groupbox.getChildren().get(i);
+			Component component = groupbox.getChildren().get(i);
 			if(!(component instanceof Caption))
 				groupbox.removeChild(component);
 		}
@@ -2127,6 +2151,7 @@ public class WndVentaTerceros extends WndBase {
 	 */
 	private EventListener<Event> EventSavePax(final Pasajero oPasajero) {
 		EventListener<Event> ev = new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) {
 				try {
 					if (e.getName().equals("onYes")) {
@@ -2473,6 +2498,7 @@ public class WndVentaTerceros extends WndBase {
 	 */
 	private EventListener<Event> EventSaveClient(final Cliente oCliente){
 		EventListener<Event> ev = new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) {
 				try {
 					if (e.getName().equals("onYes")) {
@@ -3184,6 +3210,7 @@ public class WndVentaTerceros extends WndBase {
 	
 	private void convertirPaxfree(){
 		Messagebox.show(Messages.getString("WndVentaReserva.question.fidelizarPasajeroFrecuente"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(e.getName().equals("onYes")){
 					try{

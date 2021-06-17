@@ -1,9 +1,6 @@
 package com.cystesoft.vyrbus.view.ctrl;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
-
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -16,19 +13,16 @@ import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
-import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
-import org.zkoss.zul.Longbox;
 import org.zkoss.zul.Row;
-import org.zkoss.zul.Rows;
+import org.zkoss.zul.Rows;	
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.ControlEspecieValorada;
 import com.cystesoft.vyrbus.model.bean.ControlEspecieValoradaID;
-import com.cystesoft.vyrbus.model.bean.EspecieValorada;
 import com.cystesoft.vyrbus.model.bean.TipoComprobante;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.UsuarioHardware;
@@ -50,27 +44,20 @@ import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
 
 /**
  * 
- * @author JABANTO
+ * @author Jose Avalos
  * 
  */
-public class WndControlEspecieValorada extends WndOpcionesMantenimiento {
+public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 	private static final long serialVersionUID = 2208129491803334928L;
 	
 	private Combobox cmbTipoComprobante;
 	private Combobox cmbUsuarioHardware;
 	private Textbox	txtSerie;
-	private Longbox	itCorrelativoInicio;
-	private Longbox	itCorrelativoFin;
-	private Longbox	itCorrelativoActual;
-	private Listbox listboxCompAuts;
 	private Combobox cmbAgencia;
 	
 	private ControlEspecieValorada controlEspecieValorada = null;
 	private Window wndSearch = null;
 	
-	
-//	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
-//	private List<String> criteriosOrdenar = null;
 	
 	/*Variables para la busqueda*/
 	private Integer idAgencia=null;
@@ -79,21 +66,10 @@ public class WndControlEspecieValorada extends WndOpcionesMantenimiento {
 	
 	@Override
 	public void onCreate() throws Exception {
-//		UtilData.cargarDataCombo(cmbAgencia, Agencia.class, false);
 		
 		/*carga solamente las tepsa*/
-//		criteriosBusqueda = new TreeMap<String, Object>();
-//		criteriosBusqueda.put("tipoAgencia", new TipoAgencia(Constantes.ID_TIPAGE_TEPSA));
-//		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-//		/*--*/
-//		criteriosOrdenar = new ArrayList<String>(); criteriosOrdenar.add("denominacion");
-//		UtilData.cargarAgencia(cmbAgencia, false, criteriosBusqueda, criteriosOrdenar);
 		UtilData.cargarAgenciaXtipoAgencia(cmbAgencia, Constantes.ID_TIPAGE_TEPSA, false);
 
-		cargarEspecieValorada();
-//		criteriosOrdenar = new ArrayList<String>();
-//		criteriosOrdenar.add("tipoComprobante");
-		
 		/**Solo se habilita este control para el rol Superusuario*/
 		cmbAgencia.setDisabled(Constantes.ID_ROL_SUPER_USUARIO!=getRol().getId().intValue());
 		/********************************/
@@ -109,10 +85,6 @@ public class WndControlEspecieValorada extends WndOpcionesMantenimiento {
 		cmbTipoComprobante = (Combobox) this.getFellow("cmbTipoComprobante");
 		cmbUsuarioHardware = (Combobox) this.getFellow("cmbUsuarioHardware");
 		txtSerie = (Textbox) this.getFellow("txtSerie");
-		itCorrelativoInicio = (Longbox) this.getFellow("itCorrelativoInicio");
-		itCorrelativoFin = (Longbox) this.getFellow("itCorrelativoFin");
-		itCorrelativoActual = (Longbox) this.getFellow("itCorrelativoActual");
-		listboxCompAuts=(Listbox)getFellow("listboxCompAuts");
 		cmbAgencia=(Combobox)getFellow("cmbAgencia");
 	}
 
@@ -130,17 +102,16 @@ public class WndControlEspecieValorada extends WndOpcionesMantenimiento {
 		UtilData.cargarGenericData(cmbTipoComprobante, false);
 		
 		if(cmbAgencia.getSelectedItem()!=null){
-			cargaCoprobantesAutorizados(cmbAgencia,cmbTipoComprobante,true);
 			/*carga los usuarios hardware segun la agencia seleccionada*/
 			UtilData.cargarUsuarioHasrdware(cmbUsuarioHardware, false, ((Agencia)cmbAgencia.getSelectedItem().getValue()));
 		}else
 			cmbAgencia.setSelectedIndex(0);
-		cargarEspecieValorada();
-				
+		
+		onLoadTipoComprobante(cmbTipoComprobante);
 		
 		cmbTipoComprobante.setSelectedIndex(0);
 		
-		//Por defecto selecciona el usuario harware dende se ingresa al sistema. 
+		//Por defecto selecciona el usuario harware donde se ingresa al sistema. 
 		Util.seleccionarValorItemCombo(UsuarioHardware.class, cmbUsuarioHardware, getUsuarioHardware().getId());
 		if(!(cmbUsuarioHardware.getSelectedItem().getValue() instanceof UsuarioHardware))
 			cmbUsuarioHardware.setSelectedIndex(0);
@@ -152,7 +123,9 @@ public class WndControlEspecieValorada extends WndOpcionesMantenimiento {
 
 	@Override
 	public void onSearch() throws Exception {
-		ventarBusqueda();
+		wndSearch = createWindowSearch();
+		this.appendChild(wndSearch);
+		wndSearch.setMode("modal");
 	}
 
 	/*
@@ -161,14 +134,13 @@ public class WndControlEspecieValorada extends WndOpcionesMantenimiento {
 	 */
 	@Override
 	public void onRefresh(int tab) throws Exception {
-			Util.limpiarListbox(listboxLista);
-		    listarRegistros(ServiceLocator.getControlEspecieValoradaManager().buscarEspecieValoradas(idAgencia, idTipoComprobante,idUsuarioHardware));					
+		Util.limpiarListbox(listboxLista);
+		listarRegistros(ServiceLocator.getControlEspecieValoradaManager().buscarEspecieValoradas(idAgencia, idTipoComprobante,idUsuarioHardware));					
 	}
 
 	@Override
 	public void onModify(int tab) throws Exception {
 		mantenimiento();
-		cargarEspecieValorada();
 	}
 
 	@Override
@@ -183,60 +155,23 @@ public class WndControlEspecieValorada extends WndOpcionesMantenimiento {
 		try{
 			if (!(cmbAgencia.getSelectedItem().getValue() instanceof Agencia))
 				throw new AgenciaNullException();
-			else if (!(cmbTipoComprobante.getSelectedItem().getValue() instanceof TipoComprobante))
-				throw new TipoComprobanteNullException();
 			else if (!(cmbUsuarioHardware.getSelectedItem().getValue() instanceof UsuarioHardware))
 				throw new UsuarioHardwareNullException();
+			else if (!(cmbTipoComprobante.getSelectedItem().getValue() instanceof TipoComprobante))
+				throw new TipoComprobanteNullException();
 			else if (txtSerie.getText().trim()==null || txtSerie.getText().trim().equals(0))
 				throw new NumeroSerieNullException();
-			else if (itCorrelativoInicio.getValue()==null || itCorrelativoInicio.getValue().equals(0))
-				throw new CorrelativoException(CorrelativoException.INICIAL_NULL);
-			else if (itCorrelativoFin.getValue()==null || itCorrelativoFin.getValue().equals(0))
-				throw new CorrelativoException(CorrelativoException.FINAL_NULL);
-			else if (itCorrelativoActual.getValue()==null || itCorrelativoActual.getValue().equals(0))
-				throw new CorrelativoException(CorrelativoException.ACTUAL_NULL);
-			else if (itCorrelativoInicio.intValue()>itCorrelativoFin.intValue())
-				throw new CorrelativoException(CorrelativoException.FINAL_MENOR_INICIAL); 
-			else if (itCorrelativoActual.intValue()>itCorrelativoFin.intValue())
-				throw new CorrelativoException(CorrelativoException.ACTUAL_MAYOR_FINAL);
-			else if (itCorrelativoActual.intValue()<itCorrelativoInicio.intValue())
-				throw new CorrelativoException(CorrelativoException.ACTUAL_MENOR_INICIAL);		
 			
+			String correlativo = "";
+			if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId()==Constantes.ID_TIPCOM_BOLETA_VENTA)
+				correlativo = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+"BOL"+txtSerie.getText().trim().toUpperCase();
+			else if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId()==Constantes.ID_TIPCOM_FACTURA)
+				correlativo = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+"FAC"+txtSerie.getText().trim().toUpperCase();
+			else if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId()==Constantes.ID_TIPCOM_NOTA_CREDITO)
+				correlativo = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+"NC";
+			else if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId()==Constantes.ID_TIPCOM_NOTA_DEBITO)
+				correlativo = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+"ND";
 			
-			/*Valida que la especie valorada ingresada exista en la tabla "EspecieValora"*/
-			boolean numeroSerieRegistrada=false;
-			Listitem listitem=null;
-			for(int i=0; i<listboxCompAuts.getItems().size(); i++){
-				listitem= listboxCompAuts.getItemAtIndex(i);
-				Integer serie=((EspecieValorada)listitem.getValue()).getSerie();
-				Integer tipoComprobante=((EspecieValorada)listitem.getValue()).getTipoComprobante().getId();
-				if(serie.equals(new Integer(txtSerie.getValue().toString().trim())) && tipoComprobante.equals( ((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId()) ){
-					numeroSerieRegistrada=true;
-					break;
-				}			
-			}
-			if (!(numeroSerieRegistrada))
-				throw new NumeroSerieNoRegistradaException();
-			
-			if( itCorrelativoInicio.intValue() < ((EspecieValorada) listitem.getValue()).getCorrelativoInicial())
-				throw new CorrelativoException(CorrelativoException.FUERA_RANGO);
-			if( itCorrelativoFin.intValue() > ((EspecieValorada) listitem.getValue()).getCorrelativoFinal())
-				throw new CorrelativoException(CorrelativoException.FUERA_RANGO);
-			
-			/*Valida Que el rango de correlativo ingresado no haga intersección con algún otro rango ingresado por otro usuario*/
-			List<ControlEspecieValorada> lstResul=ServiceLocator.getControlEspecieValoradaManager().validaEVOtrasCajas(((UsuarioHardware)cmbUsuarioHardware.getSelectedItem().getValue()).getId(),txtSerie.getText().trim(), 
-												   itCorrelativoInicio.getValue().toString(), itCorrelativoFin.getValue().toString());
-			for(ControlEspecieValorada especieValorada: lstResul){
-				if(!(especieValorada.getUsuarioHardware().getId().intValue()==((UsuarioHardware)cmbUsuarioHardware.getSelectedItem().getValue()).getId().intValue())){
-					if(msn.length()==0)
-						msn=especieValorada.getUsuarioHardware().getDescripcion();
-					else 
-						msn+="; "+especieValorada.getUsuarioHardware().getDescripcion();
-				}
-			}
-			if(msn.length()>0)
-				throw new RangoEspecieValoradaRegistradaException();
-
 			if (action==ACTION_NEW)
 				controlEspecieValorada= new ControlEspecieValorada();
 			
@@ -252,14 +187,17 @@ public class WndControlEspecieValorada extends WndOpcionesMantenimiento {
 			controlEspecieValoradaID.setIdTipoComprobante(tipoComprobante.getId());
 			controlEspecieValoradaID.setIdUsuarioHardware(usuarioHardware.getId());
 			
+			controlEspecieValorada.setAgencia(usuarioHardware.getAgencia());
+			
 			controlEspecieValorada.setControlEspecieValoradaID(controlEspecieValoradaID);
 			controlEspecieValorada.setTipoComprobante(tipoComprobante);
 			controlEspecieValorada.setUsuarioHardware(usuarioHardware);
 			controlEspecieValorada.setSerie(txtSerie.getText().trim().toString());
-			controlEspecieValorada.setCorrelativoInicio(itCorrelativoInicio.getValue().longValue());
-			controlEspecieValorada.setCorrelativoFin(itCorrelativoFin.getValue().longValue());
-			controlEspecieValorada.setCorrelativoActual(itCorrelativoActual.getValue().longValue());
-			controlEspecieValorada.setFormato(((EspecieValorada) listitem.getValue()).getFormato());
+			controlEspecieValorada.setSecuenciador(correlativo);
+			controlEspecieValorada.setCorrelativoInicio(new Long(0));
+			controlEspecieValorada.setCorrelativoFin(new Long(0));
+			controlEspecieValorada.setCorrelativoActual(new Long(0));
+			controlEspecieValorada.setFormato(0);
 			controlEspecieValorada.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 			
 			switch (action) {
@@ -296,26 +234,8 @@ public class WndControlEspecieValorada extends WndOpcionesMantenimiento {
 			DlgMessage.information(Messages.getString("WndEspecieValorada.information.NumeroSerie"),txtSerie);
 			throw new CancelaGrabacionException();	
 		}catch(CorrelativoException c){
-			if(c.getTipo().intValue()==CorrelativoException.INICIAL_NULL){
-				DlgMessage.information(Messages.getString("WndEspecieValorada.information.CorrelativoInicial"),itCorrelativoInicio);
-				throw new CancelaGrabacionException();
-			}else if (c.getTipo().intValue()==CorrelativoException.FINAL_NULL){
-				DlgMessage.information(Messages.getString("WndEspecieValorada.information.CorrelativoFinal"),itCorrelativoFin);
-				throw new CancelaGrabacionException();
-			}else if (c.getTipo().intValue()==CorrelativoException.ACTUAL_NULL){
-				DlgMessage.information(Messages.getString("WndEspecieValorada.information.CorrelativoActual"),itCorrelativoActual);
-				throw new CancelaGrabacionException();
-			}else if(c.getTipo().intValue()==CorrelativoException.FUERA_RANGO){
-				DlgMessage.information(Messages.getString("WndControlEspecieValorada.Information.correlativosFueraDeRango"));
-				throw new CancelaGrabacionException();
-			}else if (c.getTipo().intValue()==CorrelativoException.FINAL_MENOR_INICIAL){
-				DlgMessage.information(Messages.getString("WndEspecieValorada.information.CorrelativoFinalMenorInicial"),itCorrelativoFin);
-				throw new CancelaGrabacionException();
-			}else if (c.getTipo().intValue()==CorrelativoException.ACTUAL_MENOR_INICIAL){
-				DlgMessage.information(Messages.getString("WndEspecieValorada.information.CorrelativoActualMenorInicial"),itCorrelativoInicio);
-				throw new CancelaGrabacionException();
-			}else if (c.getTipo().intValue()==CorrelativoException.ACTUAL_MAYOR_FINAL){
-				DlgMessage.information(Messages.getString("WndEspecieValorada.information.CorrelativoActualMayorFinal"),itCorrelativoActual);
+			if(c.getTipo().intValue()==CorrelativoException.SERIE_DUPLICADA){
+				DlgMessage.information(Messages.getString("WndControlEspecieValorada.information.NumeroSerieDuplicada"), txtSerie);
 				throw new CancelaGrabacionException();
 			}else if(c.getTipo().intValue()==CorrelativoException.DUPLICADO){
 				DlgMessage.information(Messages.getString("WndControlEspecieValorada.Information.DuplicidadTipoComprobanteUsuarioHarware"),cmbTipoComprobante);
@@ -392,16 +312,9 @@ public class WndControlEspecieValorada extends WndOpcionesMantenimiento {
 				cell = new Listcell(controlEspecieValorada.getSerie());
 				cell.setStyle("font-size:12px !important");
 				item.appendChild(cell);
-				cell = new Listcell(controlEspecieValorada.getCorrelativoInicio().toString());
-				cell.setStyle("font-size:12px !important");
-				item.appendChild(cell);
-				cell = new Listcell(controlEspecieValorada.getCorrelativoFin().toString());
-				cell.setStyle("font-size:12px !important");
-				item.appendChild(cell);
-				cell = new Listcell(controlEspecieValorada.getCorrelativoActual().toString());
-				cell.setStyle("font-size:12px !important");
-				item.appendChild(cell);
 				cell = new Listcell(controlEspecieValorada.getUsuarioHardware().getAgencia().getNombreCorto());
+				item.appendChild(cell);
+				cell = new Listcell(controlEspecieValorada.getSecuenciador());
 				item.appendChild(cell);
 								
 				item.setValue(controlEspecieValorada);
@@ -423,127 +336,17 @@ public class WndControlEspecieValorada extends WndOpcionesMantenimiento {
 			Util.seleccionarValorItemCombo(Agencia.class, cmbAgencia, (controlEspecieValorada.getUsuarioHardware().getAgencia().getId()));
 			/*carga os usuarios hardware segun la agencia seleccionada*/
 			UtilData.cargarUsuarioHasrdware(cmbUsuarioHardware, false, ((Agencia)cmbAgencia.getSelectedItem().getValue()));
-			cargaCoprobantesAutorizados(cmbAgencia,cmbTipoComprobante,true);
+			
+			UtilData.cargarGenericData(cmbTipoComprobante, true);
+			onLoadTipoComprobante(cmbTipoComprobante);
 			Util.seleccionarValorItemCombo(TipoComprobante.class, cmbTipoComprobante, (controlEspecieValorada.getTipoComprobante().getId()));
 			Util.seleccionarValorItemCombo(UsuarioHardware.class, cmbUsuarioHardware, (controlEspecieValorada.getUsuarioHardware().getId()));
 			txtSerie.setText(controlEspecieValorada.getSerie());
-			itCorrelativoInicio.setValue(controlEspecieValorada.getCorrelativoInicio().longValue());
-			itCorrelativoFin.setValue(controlEspecieValorada.getCorrelativoFin().longValue());
-			itCorrelativoActual.setValue(controlEspecieValorada.getCorrelativoActual().longValue());
 			
 			cmbTipoComprobante.setDisabled(true);
 			cmbUsuarioHardware.setDisabled(true);
 			cmbAgencia.setDisabled(true);
 		}
-	}
-	
-
-	public void cargarEspecieValorada() throws Exception {
-		TreeMap<String, Object> criterioBusqueda = new TreeMap<String, Object>();
-		/*Recupera tipos de documentos autorizados para el ingreso*/
-		criterioBusqueda.put("agencia", (cmbAgencia.getSelectedItem().getValue()));
-		criterioBusqueda.put("tipoComprobante",new TipoComprobante(Constantes.ID_TIPCOM_BOLETO_VIAJE));
-		criterioBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-		ArrayList<EspecieValorada> listEspecieValoradas = ServiceLocator.getEspecieValoradaManager().buscarPorX(criterioBusqueda, null);
-		
-		Util.limpiarListbox(listboxCompAuts);
-	
-		Integer i=0;
-		Listitem item = null;
-		Listcell cell = null;
-			
-		for (EspecieValorada especieValorada: listEspecieValoradas) {
-			i++;
-			if(!(especieValorada.getTipoComprobante().getId().equals(Constantes.ID_TIPCOM_MANIFIESTO_PAX))){
-				
-				/*Llena el lisbox comprobantes autorizados*/
-				item = new Listitem();	
-					
-				cell= new Listcell(i.toString()); 
-				item.appendChild(cell);
-				cell= new Listcell(especieValorada.getTipoComprobante().getDenominacion()); 
-				item.appendChild(cell);
-				cell= new Listcell(especieValorada.getSerie().toString()); 
-				cell.setStyle("font-size:11px !important");
-				item.appendChild(cell);
-				cell= new Listcell(especieValorada.getCorrelativoInicial().toString());
-				cell.setStyle("font-size:11px !important");
-				item.appendChild(cell);
-				cell= new Listcell(especieValorada.getCorrelativoFinal().toString()); 
-				cell.setStyle("font-size:11px !important");
-				item.appendChild(cell);
-					
-				item.setValue(especieValorada);
-				listboxCompAuts.appendChild(item);				
-			}
-		}
-	}
-	
-	/**
-	 * Carga los comprobantes autorizados y los usuarios hardware asiciados a la agencia seleccionada.
-	 * @param cmbTipCom		: Combobox donde se cargan los tipos de comprobantes asociados a la Agecia seleccionada.	
-	 * @param cmbUsuHar		: Combobox donde se cargan los usuarios Hardware asociados a la Agencia seleccionada.			
-	 * @param loadValDefault: True, indica que se cargaran algunos valores por defecto, false lo contrario
-	 * @throws Exception
-	 */
-	public void cargaCoprobantesAutorizados(Combobox cmbAgencia,Combobox cmbTipCom, Boolean loadValDefault) throws Exception{
-		if(cmbAgencia.getSelectedItem().getValue() instanceof Agencia){
-			TreeMap<String, Object> criterioBusqueda = new TreeMap<String, Object>();
-			/*Recupera tipos de documentos autorizados para el ingreso*/
-			criterioBusqueda.put("agencia", (cmbAgencia.getSelectedItem().getValue()));
-			criterioBusqueda.put("tipoComprobante",new TipoComprobante(Constantes.ID_TIPCOM_BOLETO_VIAJE));
-			criterioBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-			ArrayList<EspecieValorada> listEspecieValoradas = ServiceLocator.getEspecieValoradaManager().buscarPorX(criterioBusqueda, null);
-			
-			Util.limpiarCombobox(cmbTipCom);
-			UtilData.cargarGenericData(cmbTipCom, false);
-				
-			for (EspecieValorada especieValorada: listEspecieValoradas) {
-				Comboitem oComboitem = new Comboitem();
-				if(!(especieValorada.getTipoComprobante().getId().equals(Constantes.ID_TIPCOM_MANIFIESTO_PAX))){
-									
-					boolean flag=false;
-					for(int y=0; y<cmbTipCom.getItems().size(); y++){
-						cmbTipCom.setSelectedIndex(y);
-						if(cmbTipCom.getSelectedItem().getValue() instanceof TipoComprobante)
-							if (((TipoComprobante)cmbTipCom.getSelectedItem().getValue()).getId()==especieValorada.getTipoComprobante().getId()){
-								flag=true;
-								break;
-							}
-					}
-					if(!(flag)){
-						/*carga el combo tipo Comprobante*/
-						oComboitem.setValue(especieValorada.getTipoComprobante());
-						oComboitem.setLabel(especieValorada.getTipoComprobante().getDenominacion());
-						cmbTipCom.appendChild(oComboitem);
-					}
-											
-					cmbTipCom.setSelectedIndex(0);
-					
-					/*Carga los usuarios Hardware asociados a la agencia asociada*/
-					//UtilData.cargarUsuarioHasrdware(cmbUsuHar, false, ((Agencia)cmbAgencia.getSelectedItem().getValue()));
-					//cmbUsuarioHardware.setSelectedIndex(0);
-					
-					/*Carga algunos valores por defecto.*/
-					if(listboxCompAuts.getItems().size()==1){
-						listboxCompAuts.setSelectedIndex(0);
-						Util.seleccionarValorItemCombo(TipoComprobante.class, cmbTipoComprobante, ((EspecieValorada)listboxCompAuts.getSelectedItem().getValue()).getTipoComprobante().getId());				
-						txtSerie.setText( ((EspecieValorada)listboxCompAuts.getSelectedItem().getValue()).getSerie().toString());
-						txtSerie.setReadonly(true);
-						itCorrelativoInicio.setFocus(true);
-					}else {
-						txtSerie.setText("");
-						txtSerie.setReadonly(false);
-					}
-				}
-			}
-		}
-	}
-	
-	private void ventarBusqueda() throws Exception{
-		wndSearch = createWindowSearch();
-		this.appendChild(wndSearch);
-		wndSearch.setMode("modal");
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -552,16 +355,16 @@ public class WndControlEspecieValorada extends WndOpcionesMantenimiento {
 		final Window window = new Window(Messages.getString("System.title"), "normal", true);
 		window.setWidth("450px");
 		
-		Grid grid= new Grid();
-		Rows rows= new Rows();
-		Row row= new Row();
-		Columns columns= new Columns();
-		Column column= new Column();
+		Grid grid = new Grid();
+		Rows rows = new Rows();
+		Row row = new Row();
+		Columns columns = new Columns();
+		Column column = new Column();
 		column.setWidth("150px");
 		columns.appendChild(column);
 		grid.appendChild(columns);
 		
-		Label label= new Label("Agencia");
+		Label label = new Label("Agencia");
 		label.setSclass("label-size11");
 		final Combobox cmbAgencia= new Combobox();
 		cmbAgencia.setWidth("200px");	
@@ -570,30 +373,30 @@ public class WndControlEspecieValorada extends WndOpcionesMantenimiento {
 		row.appendChild(cmbAgencia);
 		rows.appendChild(row);
 	
-		label=new Label("Usuario Hardware");
+		label = new Label("Usuario Hardware");
 		label.setSclass("label-size11");
 		final Combobox cmbUsuarioHardarware= new Combobox();
 		cmbUsuarioHardarware.setWidth("200px");
 		cmbUsuarioHardarware.setReadonly(true);
-		row= new Row();
+		row = new Row();
 		row.appendChild(label);
 		row.appendChild(cmbUsuarioHardarware);
 		rows.appendChild(row);
 		
-		label= new Label();
+		label = new Label();
 		label.setValue("Tipo Comprobante");
 		label.setSclass("label-size11");
 		final Combobox cmbTipoComprobante= new Combobox();
 		cmbTipoComprobante.setWidth("200px");
 		cmbTipoComprobante.setReadonly(true);
 		
-		row= new Row();
+		row = new Row();
 		row.appendChild(label);
 		row.appendChild(cmbTipoComprobante);
 		rows.appendChild(row);
 		
-		Div div= new Div();
-		Button button= new Button();
+		Div div = new Div();
+		Button button = new Button();
 		button.setLabel("Filtrar");
 		button.setImage("/resources/mp_filtrar.png");
 		div.setAlign("center");
@@ -618,21 +421,20 @@ public class WndControlEspecieValorada extends WndOpcionesMantenimiento {
 		}else
 			UtilData.cargarGenericData(cmbUsuarioHardarware, false);
 		
-		//Carga Tipo de comprobante
-		if(cmbAgencia.getSelectedItem().getValue() instanceof Agencia)
-			cargaCoprobantesAutorizados(cmbAgencia,cmbTipoComprobante, true);
-		else
-			UtilData.cargarGenericData(cmbTipoComprobante, false);
+		UtilData.cargarGenericData(cmbUsuarioHardarware, true);
+		UtilData.cargarGenericData(cmbTipoComprobante, true	);
+		onLoadTipoComprobante(cmbTipoComprobante);
+//		TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+//		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+//		UtilData.cargarTipoComprobante(cmbTipoComprobante, criteriosBusqueda, isChildable());
 		
 		cmbAgencia.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				Util.limpiarCombobox(cmbTipoComprobante);
 				UtilData.cargarUsuarioHasrdware(cmbUsuarioHardarware, false, ((Agencia)cmbAgencia.getSelectedItem().getValue()));	
-				cargaCoprobantesAutorizados(cmbAgencia,cmbTipoComprobante, false);
 			}
-		});
-		
+		});		
 		
 		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
@@ -660,8 +462,23 @@ public class WndControlEspecieValorada extends WndOpcionesMantenimiento {
 		return window;	
 	}
 	
-
-
-	
-	
+	public void onLoadTipoComprobante(Combobox cmbTipCom) {
+		try {
+			List<TipoComprobante>result = ServiceLocator.getTipoComprobanteManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
+			Comboitem comboitem= null;
+			for(TipoComprobante tipoComprobante:result){
+				if(tipoComprobante.getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE && 
+						tipoComprobante.getId().intValue()!=Constantes.ID_TIPCOM_MANIFIESTO_PAX &&
+						tipoComprobante.getId().intValue()!=Constantes.ID_TIPCOM_RECIBO_CAJA &&
+						tipoComprobante.getId().intValue()!=Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES &&
+						tipoComprobante.getId().intValue()!=Constantes.ID_TIPCOM_VOUCHER_CORPORATIVO){
+					comboitem= new Comboitem(tipoComprobante.getDenominacion());
+					comboitem.setValue(tipoComprobante);
+					cmbTipCom.appendChild(comboitem);
+				}
+			}
+		}catch (Exception ex) {
+			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
+		}
+	}
 }

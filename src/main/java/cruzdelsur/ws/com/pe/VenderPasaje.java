@@ -67,7 +67,7 @@ public class VenderPasaje {
 	 * 
 	 */
 	public void setCodigoTransaccion(JAXBElement<String> value) {
-		this.codigoTransaccion = ((JAXBElement<String>) value);
+		this.codigoTransaccion = (value);
 	}
 
 	/**
@@ -90,7 +90,7 @@ public class VenderPasaje {
 	 * 
 	 */
 	public void setAgenciaEmbarqueLlave(JAXBElement<String> value) {
-		this.agenciaEmbarqueLlave = ((JAXBElement<String>) value);
+		this.agenciaEmbarqueLlave = (value);
 	}
 
 	/**
@@ -113,7 +113,7 @@ public class VenderPasaje {
 	 * 
 	 */
 	public void setAgenciaDesembarqueLlave(JAXBElement<String> value) {
-		this.agenciaDesembarqueLlave = ((JAXBElement<String>) value);
+		this.agenciaDesembarqueLlave = (value);
 	}
 
 	/**
@@ -136,7 +136,7 @@ public class VenderPasaje {
 	 * 
 	 */
 	public void setPasajero(JAXBElement<Pasajero> value) {
-		this.pasajero = ((JAXBElement<Pasajero>) value);
+		this.pasajero = (value);
 	}
 
 }

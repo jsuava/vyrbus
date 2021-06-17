@@ -57,7 +57,7 @@ public class DesbloquearAsiento {
 	 * 
 	 */
 	public void setCodigoTransaccion(JAXBElement<String> value) {
-		this.codigoTransaccion = ((JAXBElement<String>) value);
+		this.codigoTransaccion = (value);
 	}
 
 }

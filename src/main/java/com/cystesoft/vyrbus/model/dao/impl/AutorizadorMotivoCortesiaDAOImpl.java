@@ -84,6 +84,7 @@ public class AutorizadorMotivoCortesiaDAOImpl extends GenericDAOImpl implements
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.AutorizadorMotivoCortesiaDAO#inactivar(com.tepsa.sisvyr.model.bean.AutorizadorCortesia)
 	 */
+	@Override
 	public void inactivar(AutorizadorCortesia autorizadorCortesia){
 		String sql = "UPDATE vrtautcor_motcor SET c_estreg='"+Constantes.VALUE_INACTIVO+"' WHERE autcor_id="+autorizadorCortesia.getId();
 		getSession().createSQLQuery(sql).executeUpdate();
@@ -92,6 +93,7 @@ public class AutorizadorMotivoCortesiaDAOImpl extends GenericDAOImpl implements
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.AutorizadorMotivoCortesiaDAO#buscarMotivosCortesia(java.lang.Long)
 	 */
+	@Override
 	public List<MotivoCortesia> buscarMotivosCortesia(Long idPersonal){
 		String sql = "SELECT mc.motcor_id, mc.c_denominacion "
 				+ "FROM vrtautcor_motcor amc "

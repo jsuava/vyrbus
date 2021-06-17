@@ -64,7 +64,7 @@ public class ResultVenta {
 	 * 
 	 */
 	public void setError(JAXBElement<Error> value) {
-		this.error = ((JAXBElement<Error>) value);
+		this.error = (value);
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class ResultVenta {
 	 * 
 	 */
 	public void setNumeroBoleto(JAXBElement<String> value) {
-		this.numeroBoleto = ((JAXBElement<String>) value);
+		this.numeroBoleto = (value);
 	}
 
 	/**
@@ -131,7 +131,7 @@ public class ResultVenta {
 	 * 
 	 */
 	public void setResultadoTransaccion(JAXBElement<String> value) {
-		this.resultadoTransaccion = ((JAXBElement<String>) value);
+		this.resultadoTransaccion = (value);
 	}
 
 }

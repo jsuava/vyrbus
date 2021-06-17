@@ -67,6 +67,7 @@ public class WndAvanceVentas extends WndBase implements Serializable{
 		
 		
 		dbDesde.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event event) throws Exception {
 				String fecha = Util.DatetoString(dbDesde.getValue(), "yyyyMMdd");
 				dbHasta.setConstraint("after "+fecha);
@@ -346,6 +347,7 @@ public class WndAvanceVentas extends WndBase implements Serializable{
 			cell = new Listcell();
 			final Image plano = new Image("resources/bus.png");
 			plano.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+				@Override
 				public void onEvent(Event arg0) throws Exception {
 					Listitem it = (Listitem)plano.getParent().getParent();
 //					DlgMessage.error("Es una prueba"+((VentaPasaje)it.getValue()).getItinerario().getId());

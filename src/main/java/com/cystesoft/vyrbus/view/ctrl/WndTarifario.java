@@ -16,26 +16,18 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TreeMap;
 
-import org.exolab.castor.xml.handlers.ValueOfFieldHandler;
-import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.event.KeyEvent;
-import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Doublebox;
-import org.zkoss.zul.Hbox;
-import org.zkoss.zul.Image;
-import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
-import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Radio;
@@ -43,10 +35,7 @@ import org.zkoss.zul.Tab;
 import org.zkoss.zul.Timebox;
 import org.zkoss.zul.Toolbarbutton;
 
-import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.CanalVenta;
-import com.cystesoft.vyrbus.model.bean.DetalleItinerario;
-import com.cystesoft.vyrbus.model.bean.Itinerario;
 import com.cystesoft.vyrbus.model.bean.Localidad;
 import com.cystesoft.vyrbus.model.bean.Ruta;
 import com.cystesoft.vyrbus.model.bean.Servicio;
@@ -55,8 +44,6 @@ import com.cystesoft.vyrbus.model.bean.TarifaFechaAbierta;
 import com.cystesoft.vyrbus.model.bean.TarifaRegular;
 import com.cystesoft.vyrbus.model.bean.TarifaRegularAud;
 import com.cystesoft.vyrbus.model.bean.TipoItinerario;
-import com.cystesoft.vyrbus.model.bean.VentaPasaje;
-import com.cystesoft.vyrbus.service.exceptions.TarifarioException;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.Messages;
@@ -887,7 +874,7 @@ public class WndTarifario extends WndBase implements Serializable {
 	 */
 	public void onClick_btnGuardarTarifa(){
 		try {
-			if(!chkTarifaFA.isChecked()){
+			if(!chkTarifaAbierta.isChecked()){
 				
 				final Integer idCanal, idServicio, idOrigen, idDestino, zona;
 				Long seleccionado;

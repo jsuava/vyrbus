@@ -31,6 +31,7 @@ public class ItinerarioAgenciaLlegadaDAOImpl extends GenericDAOImpl implements I
 		 getSession().createSQLQuery(sql).executeUpdate();
 		
 	}
+	@Override
 	public List<ItinerarioAgenciaLlegada> buscarAgenciasLlegada(Long idItinerario, String estado, String strLocalidad)throws Exception{
 		String sql = "SELECT ial.itinerario_id, ial.agencia_id, a.c_denominacion, ial.c_horlle, a.c_nomcor, l.localidad_id, l.c_denominacion " +
 				"FROM vrtitiagelle ial " +

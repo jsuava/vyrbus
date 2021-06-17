@@ -444,7 +444,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 			}
 			
 			
-			oSexo.setId((Integer) ((Sexo) cboSexo.getSelectedItem().getValue()).getId());
+			oSexo.setId(((Sexo) cboSexo.getSelectedItem().getValue()).getId());
 			oUbigeo.setId(txtIdUbigeo.getText());
 			oAgencia.setId(getAgencia().getId());
 //			oAgencia.setId(((Agencia) cmbAgencia.getSelectedItem().getValue()).getId());
@@ -464,7 +464,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 				oPasajero.setEstadoCivil(null);
 			}else{
 				EstadoCivil oEstadoCivil = new EstadoCivil();
-				oEstadoCivil.setId((Integer) ((EstadoCivil) cboEstadoCivil.getSelectedItem().getValue()).getId());
+				oEstadoCivil.setId(((EstadoCivil) cboEstadoCivil.getSelectedItem().getValue()).getId());
 				oPasajero.setEstadoCivil(oEstadoCivil);
 			}
 			oPasajero.setDireccion(txtDireccion.getText().trim().toUpperCase());
@@ -723,6 +723,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 			final Button button = new Button("Viajes", "resources/mp_preliminar.png");
 			button.setClass("btnCommandM");
 			button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+				@Override
 				public void onEvent(Event e){
 					wndHistory = onCreateWindowsHistory(e.getTarget().getId());
 					wndPasajero.appendChild(wndHistory);
@@ -1269,6 +1270,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 			Button button = new Button("Cerrar", "resources/mp_cerrarEnabled.png");
 			button.setClass("btnCommandL");
 			button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+				@Override
 				public void onEvent(Event e){
 					wndHistory.onClose();
 				}

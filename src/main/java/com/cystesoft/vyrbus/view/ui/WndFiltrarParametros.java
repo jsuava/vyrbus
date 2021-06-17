@@ -156,7 +156,7 @@ public class WndFiltrarParametros extends WndBase {
 				
 				/*RECUPERA LOS VALORES DE LOS COMBOBOX*/
 				for(int c = 0; c < lstControless.size(); c ++) {
-					Component oComponent = (Component) lstControless.get(c);
+					Component oComponent = lstControless.get(c);
 					
 					/*Solo se cumple cuando la clase es utilizada mas de una vez. como es el caso de la Localidad*/
 					if (c==0)
@@ -185,12 +185,12 @@ public class WndFiltrarParametros extends WndBase {
 								/*BUSQUEDA POR LOCALIDAD*/
 								if (e.getKey().toString().equals("1. Origen") && bOrigen==true){
 									if (((Combobox) oComponent).getSelectedItem().getValue() instanceof Localidad){
-										lstParametrosValor.put(e.getKey().toString(), ((Localidad) ((Combobox) oComponent).getSelectedItem().getValue()));
+										lstParametrosValor.put(e.getKey().toString(), (((Combobox) oComponent).getSelectedItem().getValue()));
 										break;
 									}
 								}else if (e.getKey().toString().equals("2. Destino") && bDestino==true){
 									if (((Combobox) oComponent).getSelectedItem().getValue() instanceof Localidad){
-										lstParametrosValor.put(e.getKey().toString(), ((Localidad) ((Combobox) oComponent).getSelectedItem().getValue()));
+										lstParametrosValor.put(e.getKey().toString(), (((Combobox) oComponent).getSelectedItem().getValue()));
 										break;
 									}
 								}else{
@@ -223,12 +223,12 @@ public class WndFiltrarParametros extends WndBase {
 							}else if (oClass.equals(TipoComprobante.class) &&  ((Combobox) oComponent).getSelectedItem().getValue() instanceof TipoComprobante){
 								/*BUSQUEDA POR TIPO DE COMPROBANTE*/
 								if (getParameterValue(e.getKey().toString()) == null)
-									lstParametrosValor.put(e.getKey().toString(), ((TipoComprobante) ((Combobox) oComponent).getSelectedItem().getValue()));
+									lstParametrosValor.put(e.getKey().toString(), (((Combobox) oComponent).getSelectedItem().getValue()));
 									break;
 							}else if (oClass.equals(Agencia.class) &&  ((Combobox) oComponent).getSelectedItem().getValue() instanceof Agencia){
 								/*BUSQUEDA POR AGENCIA*/
 								if (getParameterValue(e.getKey().toString()) == null)
-									lstParametrosValor.put(e.getKey().toString(), ((Agencia) ((Combobox) oComponent).getSelectedItem().getValue()));
+									lstParametrosValor.put(e.getKey().toString(), (((Combobox) oComponent).getSelectedItem().getValue()));
 									break;
 							}else if (oClass.equals(TipoFlota.class) &&  ((Combobox) oComponent).getSelectedItem().getValue() instanceof TipoFlota){
 								/*BUSQUEDA POR TIPO DE FLOTA*/
@@ -238,7 +238,7 @@ public class WndFiltrarParametros extends WndBase {
 							}else if (oClass.equals(Servicio.class) &&  ((Combobox) oComponent).getSelectedItem().getValue() instanceof Servicio){
 								/*BUSQUEDA POR SERVICIO*/
 								if (getParameterValue(e.getKey().toString()) == null)
-									lstParametrosValor.put(e.getKey().toString(), ((Servicio) ((Combobox) oComponent).getSelectedItem().getValue()));
+									lstParametrosValor.put(e.getKey().toString(), (((Combobox) oComponent).getSelectedItem().getValue()));
 									break;
 							}else if (oClass.equals(NumeroFlota.class) &&  ((Combobox) oComponent).getSelectedItem().getValue() instanceof NumeroFlota){
 								/*BUSQUEDA NUMERO DE FLOTA*/
@@ -258,64 +258,64 @@ public class WndFiltrarParametros extends WndBase {
 							}else if (oClass.equals(UsuarioHardware.class) &&  ((Combobox) oComponent).getSelectedItem().getValue() instanceof UsuarioHardware){
 								/*BUSQUEDA POR HARDWARE*/
 								if (getParameterValue(e.getKey().toString()) == null)
-									lstParametrosValor.put(e.getKey().toString(), ((UsuarioHardware) ((Combobox) oComponent).getSelectedItem().getValue()));
+									lstParametrosValor.put(e.getKey().toString(), (((Combobox) oComponent).getSelectedItem().getValue()));
 									break;
 							}else if (oClass.equals(CanalVenta.class) &&  ((Combobox) oComponent).getSelectedItem().getValue() instanceof CanalVenta){
 								/*BUSQUEDA POR CANAL DE VENTA*/
 								if (getParameterValue(e.getKey().toString()) == null)	
-									lstParametrosValor.put(e.getKey().toString(), ((CanalVenta) ((Combobox) oComponent).getSelectedItem().getValue()));
+									lstParametrosValor.put(e.getKey().toString(), (((Combobox) oComponent).getSelectedItem().getValue()));
 									break;
 							}else if (oClass.equals(TipoFormaPago.class) &&  ((Combobox) oComponent).getSelectedItem().getValue() instanceof TipoFormaPago){
 								/*BUSQUEDA TIPO FORMA DE PAGO*/
 								if (getParameterValue(e.getKey().toString()) == null)	
-									lstParametrosValor.put(e.getKey().toString(), ((TipoFormaPago) ((Combobox) oComponent).getSelectedItem().getValue()));
+									lstParametrosValor.put(e.getKey().toString(), (((Combobox) oComponent).getSelectedItem().getValue()));
 									break;
 							}else if (oClass.equals(MotivoCortesia.class) &&  ((Combobox) oComponent).getSelectedItem().getValue() instanceof MotivoCortesia){
 								/*BUSQUEDA MOTIVO DE CORTECIA*/
 								if (getParameterValue(e.getKey().toString()) == null)	
-									lstParametrosValor.put(e.getKey().toString(), ((MotivoCortesia) ((Combobox) oComponent).getSelectedItem().getValue()));
+									lstParametrosValor.put(e.getKey().toString(), (((Combobox) oComponent).getSelectedItem().getValue()));
 									break;
 							}else if (oClass.equals(Rol.class) &&  ((Combobox) oComponent).getSelectedItem().getValue() instanceof Rol){
 								/*BUSQUEDA ROLES*/
 								if (getParameterValue(e.getKey().toString()) == null)	
-									lstParametrosValor.put(e.getKey().toString(), ((Rol) ((Combobox) oComponent).getSelectedItem().getValue()));
+									lstParametrosValor.put(e.getKey().toString(), (((Combobox) oComponent).getSelectedItem().getValue()));
 									break;
 							}else if (oClass.equals(Usuario.class) &&  ((Combobox) oComponent).getSelectedItem().getValue() instanceof Usuario){
 								/*BUSQUEDA USUARIOS*/
 								if (getParameterValue(e.getKey().toString()) == null)	
-									lstParametrosValor.put(e.getKey().toString(), ((Usuario) ((Combobox) oComponent).getSelectedItem().getValue()));
+									lstParametrosValor.put(e.getKey().toString(), (((Combobox) oComponent).getSelectedItem().getValue()));
 									break;
 							}else if (oClass.equals(OpcionMenu.class) &&  ((Combobox) oComponent).getSelectedItem().getValue() instanceof OpcionMenu){
 								/*BUSQUEDA OPCION MENU */
 								if (getParameterValue(e.getKey().toString()) == null)	
-									lstParametrosValor.put(e.getKey().toString(), ((OpcionMenu) ((Combobox) oComponent).getSelectedItem().getValue()));
+									lstParametrosValor.put(e.getKey().toString(), (((Combobox) oComponent).getSelectedItem().getValue()));
 									break;
 							}else if (oClass.equals(TipoGasto.class) &&  ((Combobox) oComponent).getSelectedItem().getValue() instanceof TipoGasto){
 								/*BUSQUEDA X TIPO DE GASTO*/
 								if (getParameterValue(e.getKey().toString()) == null){	
-									lstParametrosValor.put(e.getKey().toString(), ((TipoGasto) ((Combobox) oComponent).getSelectedItem().getValue()));
+									lstParametrosValor.put(e.getKey().toString(), (((Combobox) oComponent).getSelectedItem().getValue()));
 									break;}
 							}else if (oClass.equals(Personal.class) &&  ((Combobox) oComponent).getSelectedItem().getValue() instanceof Personal){
 								/*BUSQUEDA X PERSONAL*/
 								if (getParameterValue(e.getKey().toString()) == null){	
-									lstParametrosValor.put(e.getKey().toString(), ((Personal) ((Combobox) oComponent).getSelectedItem().getValue()));
+									lstParametrosValor.put(e.getKey().toString(), (((Combobox) oComponent).getSelectedItem().getValue()));
 									break;}
 							}
 							else if (oClass.equals(UsuarioAprobador.class)&&((Combobox) oComponent).getSelectedItem().getValue() instanceof UsuarioAprobador){
 								/*BUSQUEDA DE USUARIO APROBADORES*/
 								if (getParameterValue(e.getKey().toString()) == null){	
-									lstParametrosValor.put(e.getKey().toString(), ((UsuarioAprobador) ((Combobox) oComponent).getSelectedItem().getValue()));
+									lstParametrosValor.put(e.getKey().toString(), (((Combobox) oComponent).getSelectedItem().getValue()));
 									break;}
 							}else if(oClass.equals(AutorizadorCortesia.class) && ((Combobox) oComponent).getSelectedItem().getValue() instanceof AutorizadorCortesia){
 								/*BUSQUEDA DE AUTORIZADOR DE CORTESIA*/
 								if (getParameterValue(e.getKey().toString()) == null){
-									lstParametrosValor.put(e.getKey().toString(), ((AutorizadorCortesia) ((Combobox) oComponent).getSelectedItem().getValue()));
+									lstParametrosValor.put(e.getKey().toString(), (((Combobox) oComponent).getSelectedItem().getValue()));
 									break;
 								}
 							}else if (oClass.equals(TipoMoneda.class) && ((Combobox) oComponent).getSelectedItem().getValue() instanceof TipoMoneda){
 								/*BUSQUEDA POR TIPO DE MONEDA*/
 								if (getParameterValue(e.getKey().toString()) == null){
-									lstParametrosValor.put(e.getKey().toString(), ((TipoMoneda) ((Combobox) oComponent).getSelectedItem().getValue()));
+									lstParametrosValor.put(e.getKey().toString(), (((Combobox) oComponent).getSelectedItem().getValue()));
 									break;
 								}
 							}
@@ -580,6 +580,7 @@ public class WndFiltrarParametros extends WndBase {
 			indice++;
 			final Component component1 = lstComponents.get(indice);
 			component.addEventListener(Events.ON_OK, new EventListener<Event>() {
+				@Override
 				public void onEvent(Event e){
 					if(component1 instanceof Textbox)
 						((Textbox)component1).setFocus(true);
@@ -624,6 +625,7 @@ public class WndFiltrarParametros extends WndBase {
 //	};
 	
 	
+	@Override
 	public boolean addEventListener(String evtnm, EventListener<? extends Event> listener) {
 		boolean resultadoEvento = true;
 
@@ -637,6 +639,7 @@ public class WndFiltrarParametros extends WndBase {
 		return resultadoEvento;
 	}
 
+	@Override
 	public void	setMode(String name) {
 		if (name.equals("modal")) {
 			try {

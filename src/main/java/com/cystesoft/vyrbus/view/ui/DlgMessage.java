@@ -36,6 +36,7 @@ public class DlgMessage {
 	 */
 	public static void warning(String msg, final Object receiveFocus){
 		Messagebox.show(msg, NOMBREAPLICACION+" ADVIERTE", BTN_OK, Messagebox.EXCLAMATION, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(receiveFocus instanceof Textbox)
 					((Textbox)receiveFocus).setFocus(true);
@@ -75,6 +76,7 @@ public class DlgMessage {
 	 */
 	public static void information(String msg, final Object receiveFocus){
 		Messagebox.show(msg, NOMBREAPLICACION+" INFORMA", BTN_OK, Messagebox.INFORMATION, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(receiveFocus!=null){
 					if(receiveFocus instanceof Textbox){
@@ -119,6 +121,7 @@ public class DlgMessage {
 	 */
 	public static void error(String msg, final Object receiveFocus){
 		Messagebox.show(msg, NOMBREAPLICACION+" INFORMA", BTN_OK, Messagebox.INFORMATION, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(receiveFocus instanceof Textbox)
 					((Textbox)receiveFocus).setFocus(true);

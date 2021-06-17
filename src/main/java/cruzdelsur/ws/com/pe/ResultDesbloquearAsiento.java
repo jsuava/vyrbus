@@ -71,7 +71,7 @@ public class ResultDesbloquearAsiento {
 	 * 
 	 */
 	public void setCodigoAsiento(JAXBElement<String> value) {
-		this.codigoAsiento = ((JAXBElement<String>) value);
+		this.codigoAsiento = (value);
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class ResultDesbloquearAsiento {
 	 * 
 	 */
 	public void setCodigoTransaccion(JAXBElement<String> value) {
-		this.codigoTransaccion = ((JAXBElement<String>) value);
+		this.codigoTransaccion = (value);
 	}
 
 	/**
@@ -117,7 +117,7 @@ public class ResultDesbloquearAsiento {
 	 * 
 	 */
 	public void setError(JAXBElement<Error> value) {
-		this.error = ((JAXBElement<Error>) value);
+		this.error = (value);
 	}
 
 	/**
@@ -161,7 +161,7 @@ public class ResultDesbloquearAsiento {
 	 * 
 	 */
 	public void setNivelUnidad(JAXBElement<String> value) {
-		this.nivelUnidad = ((JAXBElement<String>) value);
+		this.nivelUnidad = (value);
 	}
 
 	/**
@@ -184,7 +184,7 @@ public class ResultDesbloquearAsiento {
 	 * 
 	 */
 	public void setResultadoTransaccion(JAXBElement<String> value) {
-		this.resultadoTransaccion = ((JAXBElement<String>) value);
+		this.resultadoTransaccion = (value);
 	}
 
 }

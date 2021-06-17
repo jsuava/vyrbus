@@ -148,6 +148,7 @@ public class OpcionMenuManagerImpl implements OpcionMenuManager{
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.OpcionMenuManager#buscarOpcionesMenu()
 	 */
+	@Override
 	public List<OpcionMenu> buscarOpcionesMenu() throws Exception{
 		return getOpcionMenuDAO().buscarOpcionesMenu();
 	}

@@ -58,7 +58,7 @@ public class BuscarDetalleComprobanteResponse {
 	 * 
 	 */
 	public void setBuscarDetalleComprobanteResult(JAXBElement<Result> value) {
-		this.buscarDetalleComprobanteResult = ((JAXBElement<Result>) value);
+		this.buscarDetalleComprobanteResult = (value);
 	}
 
 }

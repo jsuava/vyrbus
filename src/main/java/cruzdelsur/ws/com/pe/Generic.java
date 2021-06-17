@@ -61,7 +61,7 @@ public class Generic {
 	 * 
 	 */
 	public void setKey(JAXBElement<String> value) {
-		this.key = ((JAXBElement<String>) value);
+		this.key = (value);
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class Generic {
 	 * 
 	 */
 	public void setListGeneric(JAXBElement<ArrayOfGeneric> value) {
-		this.listGeneric = ((JAXBElement<ArrayOfGeneric>) value);
+		this.listGeneric = (value);
 	}
 
 	/**
@@ -107,7 +107,7 @@ public class Generic {
 	 * 
 	 */
 	public void setValue(JAXBElement<String> value) {
-		this.value = ((JAXBElement<String>) value);
+		this.value = (value);
 	}
 
 }

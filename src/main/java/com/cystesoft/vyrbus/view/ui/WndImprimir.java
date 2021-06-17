@@ -147,6 +147,7 @@ public class WndImprimir extends WndBase {
 				final Doublebox dblbxEfectivo = new Doublebox();
 				dblbxEfectivo.setStyle("font-size:10px");
 				dblbxEfectivo.addEventListener(Events.ON_OK, new EventListener<Event>() {
+					@Override
 					public void onEvent(Event e){
 						if(dblbxEfectivo.getValue()!=null && dblbxEfectivo.getValue()>0 && dblbxEfectivo.getValue() >= totalPagar){
 							txtVuelto.setValue(Util.toNumberFormat((dblbxEfectivo.getValue() - totalPagar), 2));

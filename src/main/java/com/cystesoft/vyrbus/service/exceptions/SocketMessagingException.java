@@ -31,6 +31,7 @@ public class SocketMessagingException extends Exception implements Serializable 
 	/**
 	 * @return the message
 	 */
+	@Override
 	public String getMessage() {
 		return message;
 	}

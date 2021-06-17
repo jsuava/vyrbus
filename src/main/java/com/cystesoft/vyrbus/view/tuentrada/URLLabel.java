@@ -43,6 +43,7 @@ public class URLLabel extends Label implements Serializable {
 		}
 	}
 
+	@Override
 	public void paint(Graphics g) {
 		Rectangle r;
 		super.paint(g);
@@ -62,6 +63,7 @@ public class URLLabel extends Label implements Serializable {
 	}
 
 	class Clicked extends MouseAdapter{
+		@Override
 		public void mouseClicked(MouseEvent me){
 			 setForeground(visitedURL);
 			 applet.getAppletContext().showDocument(url, target);

@@ -372,7 +372,7 @@ public class WndTarifarioCliente extends WndBase{
 			//Valida que el rango de asientos no es registrado en la dase de batos - Fecha activacion
 			TreeMap<String, Object>criteriosBusqueda=new TreeMap<>();
 			criteriosBusqueda.put("ruta", ruta);
-			criteriosBusqueda.put("servicio", (Servicio)cmbServicio.getSelectedItem().getValue());
+			criteriosBusqueda.put("servicio", cmbServicio.getSelectedItem().getValue());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<String> criteriosOrden=new ArrayList<>();
 			criteriosOrden.add("fechaActivacion");

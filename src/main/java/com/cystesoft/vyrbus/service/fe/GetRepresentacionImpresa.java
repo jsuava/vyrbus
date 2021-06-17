@@ -72,7 +72,7 @@ public class GetRepresentacionImpresa {
 	 * 
 	 */
 	public void setToken(JAXBElement<String> value) {
-		this.token = ((JAXBElement<String>) value);
+		this.token = (value);
 	}
 
 	/**
@@ -116,7 +116,7 @@ public class GetRepresentacionImpresa {
 	 * 
 	 */
 	public void setTipoComprobante(JAXBElement<String> value) {
-		this.tipoComprobante = ((JAXBElement<String>) value);
+		this.tipoComprobante = (value);
 	}
 
 	/**
@@ -139,7 +139,7 @@ public class GetRepresentacionImpresa {
 	 * 
 	 */
 	public void setSerie(JAXBElement<String> value) {
-		this.serie = ((JAXBElement<String>) value);
+		this.serie = (value);
 	}
 
 	/**
@@ -162,7 +162,7 @@ public class GetRepresentacionImpresa {
 	 * 
 	 */
 	public void setCorrelativo(JAXBElement<String> value) {
-		this.correlativo = ((JAXBElement<String>) value);
+		this.correlativo = (value);
 	}
 
 	/**
@@ -185,7 +185,7 @@ public class GetRepresentacionImpresa {
 	 * 
 	 */
 	public void setStrRucEmpresa(JAXBElement<String> value) {
-		this.strRucEmpresa = ((JAXBElement<String>) value);
+		this.strRucEmpresa = (value);
 	}
 
 }

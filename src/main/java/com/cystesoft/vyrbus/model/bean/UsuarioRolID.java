@@ -50,6 +50,7 @@ public class UsuarioRolID extends GenericBean implements java.io.Serializable {
 		this.idRol = idRol;
 	}
 
+	@Override
 	public boolean equals(Object other) {
 		if ((this == other))
 			return true;

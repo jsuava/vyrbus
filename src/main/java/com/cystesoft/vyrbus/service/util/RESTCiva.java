@@ -667,7 +667,7 @@ public class RESTCiva implements Serializable{
 	 */
 	private static void inicializarEstructura(Groupbox groupbox){
 		for(int i=groupbox.getChildren().size()-1; i>-1; i--){
-			Component component = (Component)groupbox.getChildren().get(i);
+			Component component = groupbox.getChildren().get(i);
 			if(!(component instanceof Caption))
 				groupbox.removeChild(component);
 		}

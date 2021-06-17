@@ -151,8 +151,8 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 					tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_MANIFIESTO_PAX) ){
 				//Valida si la agencia seleccionada no tiene correlativo asignado
 				TreeMap<String, Object> criterioBusqueda= new TreeMap<String, Object>();
-				criterioBusqueda.put("agencia", (Agencia)cboAgencia.getSelectedItem().getValue());
-				criterioBusqueda.put("tipoComprobante", (TipoComprobante)cboTipoComprobante.getSelectedItem().getValue());
+				criterioBusqueda.put("agencia", cboAgencia.getSelectedItem().getValue());
+				criterioBusqueda.put("tipoComprobante", cboTipoComprobante.getSelectedItem().getValue());
 				criterioBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 				List<EspecieValorada>listEv=ServiceLocator.getEspecieValoradaManager().buscarPorX(criterioBusqueda, null);
 				if(listEv.size()>0)
@@ -565,7 +565,7 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 			oespecieValorada.setId(id);
 		
 			TipoComprobante otipoComprobante = new TipoComprobante();
-			otipoComprobante.setId((Integer) ((TipoComprobante) cboTipoComprobante.getSelectedItem().getValue()).getId());
+			otipoComprobante.setId(((TipoComprobante) cboTipoComprobante.getSelectedItem().getValue()).getId());
 			oespecieValorada.setTipoComprobante(otipoComprobante);
 			
 			Agencia oagencia = new Agencia();

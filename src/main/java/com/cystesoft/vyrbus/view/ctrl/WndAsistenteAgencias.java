@@ -319,24 +319,28 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 		});
 		
 		txtBuscar.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				btnBuscar_buscarCliente();
 			}
 		});
 		
 		btnBuscar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				btnBuscar_buscarCliente();
 			}
 		});
 		
 		btnMostrarTabConcesionario.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				btnMostrarTabConcesionario_mostrarConcesionario();				
 			}
 		});
 		
 		btnMostrarTabAgencia.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				try{
 					if(ibxComision.getValue()!=null && ibxComision.getValue()>0 && (Integer) cmbTipoComision.getSelectedItem().getValue()==-1){
@@ -364,12 +368,14 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 		});
 		
 		btnMostrarTabUsuarioHW.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				btnMostrarTabUsuarioHW_guardarAgencia();
 			}
 		});
 		
 		btnMostrarTabUsuario.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				btnMostrarTabUsuario_guardarUsuarioHW();
 			}
@@ -394,26 +400,31 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 //		});
 		
 		tlbrbtnNuevo.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				tlbrbtnNuevo_nuevo();
 			}
 		});
 		tlbrbtnBuscar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				tlbrbtnBuscar_buscar();
 			}
 		});
 		tlbrbtnEditar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				tlbrbtnEditar_editar();
 			}
 		});
 		tlbrbtnCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				tlbrbtnCancelar_cancelar();
 			}
 		});
 		tlbrbtnGuardar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) throws Exception{
 				tlbrbtnGuardar_guardar();
 			}
@@ -439,6 +450,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 //		});
 		
 		chkCentroCosto.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				chkCentroCosto_mostrarCentrosCosto();
 			}
@@ -451,12 +463,14 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 //		});
 		
 		lbxUsuarios.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				lbxUsuario_seleccionar();
 			}
 		});
 		
 		imgGeneratePassword.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				generarPassword();
 			}
@@ -1332,6 +1346,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 			else
 				msg = Messages.getString("WndAsistenteAgencias.question.actualizarCentroCosto");
 			Messagebox.show(msg, DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+				@Override
 				public void onEvent(Event e){
 					try{
 						if(e.getName().equals("onYes")){
@@ -1408,6 +1423,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 //			else
 //				msg = Messages.getString("WndAsistenteAgencias.question.actualizarTipoCentroCosto");
 			Messagebox.show(Messages.getString("Generales.query.guardar"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+				@Override
 				public void onEvent(Event e){
 					try{
 						if(e.getName().equals("onYes")){
@@ -1593,6 +1609,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				msg = Messages.getString("WndAsistenteAgencias.question.actualizarUsuario");
 			
 			Messagebox.show(msg, DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+				@Override
 				public void onEvent(Event e){
 					try{
 						if(e.getName().equals("onYes")){

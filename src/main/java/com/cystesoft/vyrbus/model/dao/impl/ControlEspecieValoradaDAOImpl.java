@@ -22,7 +22,6 @@ import com.cystesoft.vyrbus.model.bean.HistoricoControlEspecieValoradaID;
 import com.cystesoft.vyrbus.model.bean.TipoComprobante;
 import com.cystesoft.vyrbus.model.bean.UsuarioHardware;
 import com.cystesoft.vyrbus.model.dao.ControlEspecieValoradaDAO;
-import com.cystesoft.vyrbus.service.exceptions.EspecieValoradaNotAvailableException;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.util.Constantes;
 
@@ -41,19 +40,19 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 	public ArrayList<ControlEspecieValorada> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar) throws Exception {
 		try{
 			ArrayList<ControlEspecieValorada> controlEspecies = (ArrayList<ControlEspecieValorada>) super.findByX(ControlEspecieValorada.class, criteriosBusqueda, criteriosOrdenar);
-			if(controlEspecies.size()==1){
-				for(ControlEspecieValorada especie : controlEspecies){
-					if(especie.getCorrelativoActual().longValue() <= especie.getCorrelativoFin().longValue()){
-						controlEspecies = new ArrayList<ControlEspecieValorada>();
-						controlEspecies.add(especie);
-					}else{
-						throw new EspecieValoradaNotAvailableException();
-					}
-				}
-			}		
-			return controlEspecies;
-		}catch(EspecieValoradaNotAvailableException evnaex){
-			throw new EspecieValoradaNotAvailableException();
+//			if(controlEspecies.size()==1){
+//				for(ControlEspecieValorada especie : controlEspecies){
+//					if(especie.getCorrelativoActual().longValue() <= especie.getCorrelativoFin().longValue()){
+//						controlEspecies = new ArrayList<ControlEspecieValorada>();
+//						controlEspecies.add(especie);
+//					}else{
+//						throw new EspecieValoradaNotAvailableException();
+//					}
+//				}
+//			}		
+ 			return controlEspecies;
+//		}catch(EspecieValoradaNotAvailableException evnaex){
+//			throw new EspecieValoradaNotAvailableException();
 		}catch(Exception ex){
 			throw new Exception(ex);
 		}
@@ -143,14 +142,14 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 	public List<ControlEspecieValorada> buscarEspecieValoradas(Integer idAgencia, Integer idTipoComprobante, Integer idUsuarioHarware){
 		String sql="SELECT TC.TIPCOM_ID,TC.C_DENOMINACION, UH.USUHARD_ID,UH.C_DESCRIPCION, CEV.C_SERIE, CEV.N_CORINI, "+ //0-5
 					       "CEV.N_CORFIN, CEV.N_CORACTUAL, A.AGENCIA_ID, A.C_NOMCOR" +//6-9
-					       ", CEV.AUDFECINS, CEV.AUDUSUINS, CEV.AUDIPINSE, UH.CANVEN_ID, CEV.N_FORMATO "+ //10-14
+					       ", CEV.AUDFECINS, CEV.AUDUSUINS, CEV.AUDIPINSE, UH.CANVEN_ID, CEV.N_FORMATO, CEV.C_CORSEQ "+ //10-14
 					"FROM VRTCTRLESPVAL CEV "+
 					"INNER JOIN VRTUSUHARD UH ON (UH.USUHARD_ID=CEV.USUHARD_ID) "+
 					"INNER JOIN VRMAGENCIA A ON (A.AGENCIA_ID=UH.AGENCIA_ID) "+
 					"INNER JOIN VRMTIPCOM TC ON (TC.TIPCOM_ID=CEV.TIPCOM_ID) " +
 					"WHERE CEV.C_ESTREG='A' " +
-						"AND A.TIPAGE_ID="+Constantes.ID_TIPAGE_TEPSA+" " + //Solo recupera los de TIPO AGENCIA TEPSA, mas no agencias de viaje, corporativos, ect.
-						 "AND TC.TIPCOM_ID IN("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_MANIFIESTO_PAX+") "; 
+						"AND A.TIPAGE_ID="+Constantes.ID_TIPAGE_TEPSA+" "; //Solo recupera los de TIPO AGENCIA TEPSA, mas no agencias de viaje, corporativos, ect.
+						  
 		if(idAgencia!=null)
 			sql+=" AND A.AGENCIA_ID="+idAgencia;
 		if(idTipoComprobante!=null)
@@ -197,6 +196,7 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 			controlEspecieValorada.setUsuarioInsercion(obj[11]!=null? obj[11].toString():" ");
 			controlEspecieValorada.setIpInsercion(obj[12]!=null? obj[12].toString():" ");
 			controlEspecieValorada.setFormato(((BigDecimal)obj[14]).intValue());
+			controlEspecieValorada.setSecuenciador(obj[15].toString());
 						
 			lstResul.add(controlEspecieValorada);	
 		}
@@ -212,8 +212,8 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 		String hql="FROM ControlEspecieValorada WHERE serie = ? AND correlativoInicio >= ? AND correlativoInicio <= ? AND estadoRegistro='A' " +
 					"OR serie = ? AND correlativoFin >= ? AND correlativoFin <= ? AND estadoRegistro='A' ";
 		List<ControlEspecieValorada>lstResul=
-				(List<ControlEspecieValorada>) getSession().createQuery(hql).setString(0, serie).setLong(1, Long.valueOf(inicial)).setLong(2, Long.valueOf(Final))
-				.setString(3, serie).setLong(4, Long.valueOf(inicial)).setLong(5, Long.valueOf(Final)).list();
+				getSession().createQuery(hql).setString(0, serie).setLong(1, Long.valueOf(inicial)).setLong(2, Long.valueOf(Final))
+		.setString(3, serie).setLong(4, Long.valueOf(inicial)).setLong(5, Long.valueOf(Final)).list();
 		
 		return lstResul;
 		
@@ -252,5 +252,28 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 			lstResult.add(controlEspecieValorada);
 		}
 		return lstResult;
+	}
+	
+	@Override
+	public void generarSecuenciador(String nameSequence) {
+		String sql = "CREATE SEQUENCE "+nameSequence+ " START WITH 1 INCREMENT BY 1 NOMINVALUE NOMAXVALUE NOCACHE ORDER";
+		
+		log.info(sql);
+		
+		getSession().createSQLQuery(sql).executeUpdate();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.ControlEspecieValoradaDAO#ejecutarSecuenciador(com.cystesoft.vyrbus.model.bean.ControlEspecieValorada)
+	 */
+	@Override
+	public ControlEspecieValorada ejecutarSecuenciador(ControlEspecieValorada controlEspecieValorada) throws Exception {
+		String sql="SELECT "+controlEspecieValorada.getSecuenciador()+".NEXTVAL correlativo FROM DUAL";
+		log.info("SQL: "+sql);
+		Object object= getSession().createSQLQuery(sql).uniqueResult();
+		Long correlativo=((BigDecimal)object).longValue();
+		controlEspecieValorada.setCorrelativoActual(correlativo);
+		
+		return controlEspecieValorada;
 	}
 }

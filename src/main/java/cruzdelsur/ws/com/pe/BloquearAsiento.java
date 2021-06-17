@@ -80,7 +80,7 @@ public class BloquearAsiento {
 	 * 
 	 */
 	public void setCodigoRuta(JAXBElement<String> value) {
-		this.codigoRuta = ((JAXBElement<String>) value);
+		this.codigoRuta = (value);
 	}
 
 	/**
@@ -103,7 +103,7 @@ public class BloquearAsiento {
 	 * 
 	 */
 	public void setLocalidadEmbarque(JAXBElement<String> value) {
-		this.localidadEmbarque = ((JAXBElement<String>) value);
+		this.localidadEmbarque = (value);
 	}
 
 	/**
@@ -126,7 +126,7 @@ public class BloquearAsiento {
 	 * 
 	 */
 	public void setLocalidadDesembarque(JAXBElement<String> value) {
-		this.localidadDesembarque = ((JAXBElement<String>) value);
+		this.localidadDesembarque = (value);
 	}
 
 	/**
@@ -149,7 +149,7 @@ public class BloquearAsiento {
 	 * 
 	 */
 	public void setNumeroServicio(JAXBElement<String> value) {
-		this.numeroServicio = ((JAXBElement<String>) value);
+		this.numeroServicio = (value);
 	}
 
 	/**
@@ -172,7 +172,7 @@ public class BloquearAsiento {
 	 * 
 	 */
 	public void setProgramacionLlave(JAXBElement<String> value) {
-		this.programacionLlave = ((JAXBElement<String>) value);
+		this.programacionLlave = (value);
 	}
 
 	/**
@@ -195,7 +195,7 @@ public class BloquearAsiento {
 	 * 
 	 */
 	public void setServicioLlave(JAXBElement<String> value) {
-		this.servicioLlave = ((JAXBElement<String>) value);
+		this.servicioLlave = (value);
 	}
 
 	/**
@@ -218,7 +218,7 @@ public class BloquearAsiento {
 	 * 
 	 */
 	public void setCodigoAsiento(JAXBElement<String> value) {
-		this.codigoAsiento = ((JAXBElement<String>) value);
+		this.codigoAsiento = (value);
 	}
 
 	/**
@@ -241,7 +241,7 @@ public class BloquearAsiento {
 	 * 
 	 */
 	public void setNivelUnidad(JAXBElement<String> value) {
-		this.nivelUnidad = ((JAXBElement<String>) value);
+		this.nivelUnidad = (value);
 	}
 
 }

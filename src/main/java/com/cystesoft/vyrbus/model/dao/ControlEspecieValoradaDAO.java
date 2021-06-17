@@ -94,4 +94,16 @@ public interface ControlEspecieValoradaDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public List<ControlEspecieValorada> buscarEspecieValoradaPorAgencia(Integer idAgencia)throws Exception;
+	/**
+	 * Genera el secuenciador para la caja.
+	 * @param nameSequence
+	 */
+	public void generarSecuenciador(String nameSequence);
+	/**
+	 * Realiza la ejecucion del secuenciador, que hace la funcion del correlativo
+	 * @param controlEspecieValorada	: Instancia de la clase ControlEspeciaValorada.
+	 * @return ControlEspecieValorada
+	 * @throws Exception
+	 */
+	public ControlEspecieValorada ejecutarSecuenciador(ControlEspecieValorada controlEspecieValorada)throws Exception;
 }

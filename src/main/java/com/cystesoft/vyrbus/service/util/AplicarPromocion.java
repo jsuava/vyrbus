@@ -455,6 +455,7 @@ public class AplicarPromocion{
 						}							
 						final Button button = new Button(promocion.getDenominacion());
 						button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+							@Override
 							public void onEvent(Event e){
 								executePromocion(button.getId(), true);
 							}
@@ -480,6 +481,7 @@ public class AplicarPromocion{
 					div.setAlign("center");
 					Button button = new Button("Cerrar", "resources/mp_cerrarEnabled.png");
 					button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+						@Override
 						public void onEvent(Event e){
 							win.onClose();
 						}

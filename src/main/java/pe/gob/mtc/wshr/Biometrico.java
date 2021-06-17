@@ -123,7 +123,7 @@ public class Biometrico {
 	 *            allowed object is byte[]
 	 */
 	public void setHueDer(byte[] value) {
-		this.hueDer = ((byte[]) value);
+		this.hueDer = (value);
 	}
 
 }

@@ -167,6 +167,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 	/**
 	 * @return the usuarioHardware
 	 */
+	@Override
 	public UsuarioHardware getUsuarioHardware() {
 		return usuarioHardware;
 	}
@@ -242,6 +243,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	public void load() throws Exception {
 		EventListener selectedEventListener = new EventListener<Event>() {
+			@Override
 			public void onEvent(Event event) throws Exception {
 				if(oEventListenerSelect !=null){
 					if(!txtAsiento.getText().trim().equals("")){
@@ -498,6 +500,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 		button = new Button("Cancelar", "/resources/mp_cancelarEnabled.png");
 		button.setClass("btnCommandM");
 		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				oThisWindow.onClose();
 			}
@@ -581,6 +584,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 								if(objetoBus.getTipoObjeto().intValue()==TIPO_ASIENTO){
 									Asiento asiento = new Asiento();
 									asiento.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+										@Override
 										public void onEvent(Event e){
 											onClickAsiento(e, getVentaPasaje());
 										}
@@ -653,7 +657,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 	 */
 	private void inicializarEstructura(){
 		for(int i=vbxEstructuraBus.getChildren().size()-1; i>-1; i--){
-			Component component = (Component)vbxEstructuraBus.getChildren().get(i);
+			Component component = vbxEstructuraBus.getChildren().get(i);
 			vbxEstructuraBus.removeChild(component);
 		}
 	}
@@ -1031,6 +1035,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 		return lstSubconjunto;
 	}
 	
+	@Override
 	public boolean addEventListener(String evtnm, EventListener<? extends Event> listener) {
 		boolean resultadoEvento = true;
 		if(evtnm.equals(com.cystesoft.vyrbus.view.ui.Events.ON_SELECT)) {

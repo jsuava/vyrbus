@@ -540,7 +540,8 @@ public class WSMTC {
 			/*Para poder determinar el tiempo maximo de espera del servicio web. Modificado 02/06/2015 - jabanto*/
 			ExecutorService executorService=Executors.newFixedThreadPool(1);
 			Future<ResultIdentidad> future = executorService.submit(new Callable<ResultIdentidad>() {
-			    public ResultIdentidad call() {
+			    @Override
+				public ResultIdentidad call() {
 					return serviciosHR.getWSServiciosHRSoap().getIdentidad(oIdentidad);
 			    }
 			});

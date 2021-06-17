@@ -58,7 +58,7 @@ public class Error {
 	 * 
 	 */
 	public void setCode(JAXBElement<String> value) {
-		this.code = ((JAXBElement<String>) value);
+		this.code = (value);
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class Error {
 	 * 
 	 */
 	public void setMessage(JAXBElement<String> value) {
-		this.message = ((JAXBElement<String>) value);
+		this.message = (value);
 	}
 
 }

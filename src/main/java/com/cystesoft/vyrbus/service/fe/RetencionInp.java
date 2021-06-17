@@ -99,7 +99,7 @@ public class RetencionInp {
 	 * 
 	 */
 	public void setFechaEmision(JAXBElement<String> value) {
-		this.fechaEmision = ((JAXBElement<String>) value);
+		this.fechaEmision = (value);
 	}
 
 	/**
@@ -143,7 +143,7 @@ public class RetencionInp {
 	 * 
 	 */
 	public void setImporteTotalRetenidoEnLetras(JAXBElement<String> value) {
-		this.importeTotalRetenidoEnLetras = ((JAXBElement<String>) value);
+		this.importeTotalRetenidoEnLetras = (value);
 	}
 
 	/**
@@ -187,7 +187,7 @@ public class RetencionInp {
 	 * 
 	 */
 	public void setNumeroCorrelativo(JAXBElement<String> value) {
-		this.numeroCorrelativo = ((JAXBElement<String>) value);
+		this.numeroCorrelativo = (value);
 	}
 
 	/**
@@ -210,7 +210,7 @@ public class RetencionInp {
 	 * 
 	 */
 	public void setRazonSocial(JAXBElement<String> value) {
-		this.razonSocial = ((JAXBElement<String>) value);
+		this.razonSocial = (value);
 	}
 
 	/**
@@ -233,7 +233,7 @@ public class RetencionInp {
 	 * 
 	 */
 	public void setRuc(JAXBElement<String> value) {
-		this.ruc = ((JAXBElement<String>) value);
+		this.ruc = (value);
 	}
 
 	/**
@@ -256,7 +256,7 @@ public class RetencionInp {
 	 * 
 	 */
 	public void setSerie(JAXBElement<String> value) {
-		this.serie = ((JAXBElement<String>) value);
+		this.serie = (value);
 	}
 
 	/**
@@ -300,7 +300,7 @@ public class RetencionInp {
 	 * 
 	 */
 	public void setCorreo(JAXBElement<String> value) {
-		this.correo = ((JAXBElement<String>) value);
+		this.correo = (value);
 	}
 
 	/**
@@ -323,7 +323,7 @@ public class RetencionInp {
 	 * 
 	 */
 	public void setDetalleRetencion(JAXBElement<ArrayOfRetencionDetalleInp> value) {
-		this.detalleRetencion = ((JAXBElement<ArrayOfRetencionDetalleInp>) value);
+		this.detalleRetencion = (value);
 	}
 
 	/**
@@ -346,7 +346,7 @@ public class RetencionInp {
 	 * 
 	 */
 	public void setId(JAXBElement<String> value) {
-		this.id = ((JAXBElement<String>) value);
+		this.id = (value);
 	}
 
 	/**
@@ -369,7 +369,7 @@ public class RetencionInp {
 	 * 
 	 */
 	public void setRegistroRetencion(JAXBElement<String> value) {
-		this.registroRetencion = ((JAXBElement<String>) value);
+		this.registroRetencion = (value);
 	}
 
 	/**
@@ -392,7 +392,7 @@ public class RetencionInp {
 	 * 
 	 */
 	public void setTasaRetencion(JAXBElement<String> value) {
-		this.tasaRetencion = ((JAXBElement<String>) value);
+		this.tasaRetencion = (value);
 	}
 
 }

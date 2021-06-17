@@ -112,6 +112,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 	/**
 	 * Metodo lanzado antes que se contruya la pagina
 	 */
+	@Override
 	public void beforeCompose(){
 		super.beforeCompose();
 		this.generaToolbarMantenimiento();
@@ -131,6 +132,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 	/**
 	 * Metodo lanzado despues de contruir la pagina.
 	 */
+	@Override
 	public void afterCompose(){
 		super.afterCompose();
 		
@@ -148,6 +150,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 		btnNuevo.setTooltiptext("Crear un nuevo registro");
 		btnNuevo.setImage("resources/toolbar/mp_toolbarNuevo.png");
 		btnNuevo.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event event) throws Exception {
 				limpiarControles();
 				habilitaControles(true);
@@ -179,6 +182,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 		btnBuscar.setTooltiptext("Buscar registro");
 		btnBuscar.setImage("resources/toolbar/mp_toolbarBuscar.png");
 		btnBuscar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event event) throws Exception {
 				onSearch();
 				if (tabUsuario != TAB_LIST) {
@@ -226,6 +230,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 		btnModificar.setImage("resources/toolbar/mp_toolbarModificar.png");
 		btnModificar.setDisabled(true);
 		btnModificar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event event) throws Exception {
 				modify();
 				onModify(tabUsuario);
@@ -238,6 +243,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 		btnCancelar.setImage("resources/toolbar/mp_toolbarCancelar.png");
 		btnCancelar.setDisabled(true);
 		btnCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event event) throws Exception {
 				onCancel(accionUsuario);
 				if(accionUsuario == ACTION_NEW)
@@ -303,6 +309,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 		btnGuardar.setImage("resources/toolbar/mp_toolbarGuardar.png");
 		btnGuardar.setDisabled(true);
 		btnGuardar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event event) throws Exception {
 				try{
 					onSave(accionUsuario);
@@ -349,6 +356,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 		btnEliminar.setImage("resources/toolbar/mp_toolbarEliminar.png");
 		btnEliminar.setDisabled(true);
 		btnEliminar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event event) throws Exception {	
 
 				Messagebox.show(questionDelete +  "?", Messages.getString("System.title"), Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
@@ -399,6 +407,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 		btnImprimir.setImage("resources/toolbar/mp_toolbarImprimir.png");
 		btnImprimir.setDisabled(true);
 		btnImprimir.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event event) throws Exception {
 				onPrint(tabUsuario);
 			}
@@ -410,6 +419,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 		btnExportar.setImage("resources/toolbar/mp_toolbarExportar.png");
 		btnExportar.setDisabled(true);
 		btnExportar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event event) throws Exception {
 				onExport(tabUsuario);
 //				Util.exportarExcel(listboxLista,oTabLista.getLabel());
@@ -420,6 +430,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 		btnAyuda.setTooltiptext("Mostrar ayuda");
 		btnAyuda.setImage("resources/toolbar/mp_toolbarAyuda.png");
 		btnAyuda.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event event) throws Exception {
 				onHelp();
 			}
@@ -429,6 +440,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 		btnCerrar.setTooltiptext("Cerrar la ventana");
 		btnCerrar.setImage("resources/toolbar/mp_toolbarCerrar.png");
 		btnCerrar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event event) throws Exception {
 				onClose();
 				onCloseSuper();
@@ -762,6 +774,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 	/**
 	 * Método para cerrar la ventana, incluyendo el Tab que lo contenga
 	 */
+	@Override
 	public void closeTabWindow () {
 		Component oComponentParent = this;
 		Tabpanel oTabpanel;

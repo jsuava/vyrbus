@@ -88,7 +88,7 @@ public class XlsVentasByCounters extends HttpServlet {
             int j = 4;
             j++;
             for (Iterator<Listitem> it = listItems.iterator(); it.hasNext();) {
-                Listitem item = (Listitem) it.next();
+                Listitem item = it.next();
                 j++;
                 i = 0;
                 for (Iterator<Component> it2 = item.getChildren().iterator(); it2.hasNext();) {

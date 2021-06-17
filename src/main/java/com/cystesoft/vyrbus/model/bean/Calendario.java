@@ -88,50 +88,62 @@ public class Calendario extends GenericBean implements java.io.Serializable {
 //		this.estadoRegistro = estadoRegistro;
 //	}
 
+	@Override
 	public Date getFechaInsercion() {
 		return this.fechaInsercion;
 	}
 
+	@Override
 	public void setFechaInsercion(Date fechaInsercion) {
 		this.fechaInsercion = fechaInsercion;
 	}
 
+	@Override
 	public String getUsuarioInsercion() {
 		return this.usuarioInsercion;
 	}
 
+	@Override
 	public void setUsuarioInsercion(String usuarioInsercion) {
 		this.usuarioInsercion = usuarioInsercion;
 	}
 
+	@Override
 	public String getIpInsercion() {
 		return this.ipInsercion;
 	}
 
+	@Override
 	public void setIpInsercion(String ipInsercion) {
 		this.ipInsercion = ipInsercion;
 	}
 
+	@Override
 	public Date getFechaModificacion() {
 		return this.fechaModificacion;
 	}
 
+	@Override
 	public void setFechaModificacion(Date fechaModificacion) {
 		this.fechaModificacion = fechaModificacion;
 	}
 
+	@Override
 	public String getUsuarioModificacion() {
 		return this.usuarioModificacion;
 	}
 
+	@Override
 	public void setUsuarioModificacion(String usuarioModificacion) {
 		this.usuarioModificacion = usuarioModificacion;
 	}
 
+	@Override
 	public String getIpModificacion() {
 		return this.ipModificacion;
 	}
 
+	@Override
 	public void setIpModificacion(String ipModificacion) {
 		this.ipModificacion = ipModificacion;
 	}

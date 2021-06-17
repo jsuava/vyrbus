@@ -60,7 +60,7 @@ public class AnularBoleto {
 	 * 
 	 */
 	public void setSerie(JAXBElement<String> value) {
-		this.serie = ((JAXBElement<String>) value);
+		this.serie = (value);
 	}
 
 	/**
@@ -83,7 +83,7 @@ public class AnularBoleto {
 	 * 
 	 */
 	public void setNumero(JAXBElement<String> value) {
-		this.numero = ((JAXBElement<String>) value);
+		this.numero = (value);
 	}
 
 }

@@ -32,6 +32,7 @@ public class ReporteEticketTuEntrada implements JRDataSource {
 	}
 	
 
+	@Override
 	public Object getFieldValue(JRField field) throws JRException {
 		Object value = null;
 		String fieldName = field.getName();
@@ -70,6 +71,7 @@ public class ReporteEticketTuEntrada implements JRDataSource {
 	}
 
 
+	@Override
 	public boolean next() throws JRException {
 		index++;
 		return (index<lstSales.size());

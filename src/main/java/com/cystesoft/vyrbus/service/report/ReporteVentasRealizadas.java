@@ -19,6 +19,7 @@ public class ReporteVentasRealizadas implements JRDataSource {
 		lstTickets = lstVentas;
 	}
 	
+	@Override
 	public Object getFieldValue(JRField field) throws JRException {
 		Object value = null;	
 		if("transaccion".equals(field.getName()))
@@ -73,6 +74,7 @@ public class ReporteVentasRealizadas implements JRDataSource {
 		return value;
 	}
 
+	@Override
 	public boolean next() throws JRException {
 		index++;
 		return (index<lstTickets.size());

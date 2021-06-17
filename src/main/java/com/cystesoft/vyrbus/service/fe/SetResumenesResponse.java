@@ -58,7 +58,7 @@ public class SetResumenesResponse {
 	 * 
 	 */
 	public void setSetResumenesResult(JAXBElement<Result> value) {
-		this.setResumenesResult = ((JAXBElement<Result>) value);
+		this.setResumenesResult = (value);
 	}
 
 }

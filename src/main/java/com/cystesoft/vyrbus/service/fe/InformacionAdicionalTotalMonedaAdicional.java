@@ -63,7 +63,7 @@ public class InformacionAdicionalTotalMonedaAdicional {
 	 * 
 	 */
 	public void setCodigo(JAXBElement<String> value) {
-		this.codigo = ((JAXBElement<String>) value);
+		this.codigo = (value);
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class InformacionAdicionalTotalMonedaAdicional {
 	 * 
 	 */
 	public void setNombre(JAXBElement<String> value) {
-		this.nombre = ((JAXBElement<String>) value);
+		this.nombre = (value);
 	}
 
 	/**
@@ -109,7 +109,7 @@ public class InformacionAdicionalTotalMonedaAdicional {
 	 * 
 	 */
 	public void setValor(JAXBElement<String> value) {
-		this.valor = ((JAXBElement<String>) value);
+		this.valor = (value);
 	}
 
 }

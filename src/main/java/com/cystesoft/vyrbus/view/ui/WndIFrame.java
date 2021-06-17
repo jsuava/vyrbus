@@ -98,9 +98,11 @@ public class WndIFrame extends WndBase{
 		return src;
 	}
 	
+	@Override
 	public void setWidth(String width){
 		this.width=width;
 	}
+	@Override
 	public String getWidth(){
 		return width;
 	}

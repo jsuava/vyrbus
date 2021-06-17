@@ -155,7 +155,7 @@ public class Constantes {
 
 	//http://168.121.236.46:8080/
 	//public static final String SERVER_HOST = "192.168.0.8:8080";
-	public static final String SERVER_HOST = "168.121.236.46:8080";
+	public static final String SERVER_HOST = "localhost:8080";
 	public static final String SERVER_CONTEXT = Executions.getCurrent().getContextPath();
 	public static final String URL_FORMATOS = SERVER_PROTOCOL+"://"+SERVER_HOST+SERVER_CONTEXT+"/formatos/";
 	public static final String URL_FORMATOS_BOLETOS = URL_FORMATOS+"boletos/";
@@ -606,5 +606,11 @@ public class Constantes {
 	public static final String ASIENTO_AVANCE_RESERVA = PATH_IMG_AVANCE+"/reserva/reserva-";
 	public static final String ASIENTO_AVANCE_CORTESIA = PATH_IMG_AVANCE+"/cortesia/cortesia-";
 	public static final String ASIENTO_AVANCE_COUNTER = PATH_IMG_AVANCE+"/ventacounter/counter-";
+	
+	/*	Para obtener el secuenciador de las NC y ND	*/
+	public static final Integer APLICAR_NC_A_BOLETA = 1;
+	public static final Integer APLICAR_NC_A_FACTURA = 2;
+	public static final Integer APLICAR_ND_A_BOLETA = 1;
+	public static final Integer APLICAR_ND_A_FACTURA = 2;
 	
 }

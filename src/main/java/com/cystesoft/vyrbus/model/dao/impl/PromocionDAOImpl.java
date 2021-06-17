@@ -51,6 +51,7 @@ public class PromocionDAOImpl extends GenericDAOImpl implements PromocionDAO {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.PromocionDAO#buscarPorX(java.util.TreeMap, java.util.List, java.util.Date)
 	 */
+	@Override
 	public ArrayList<Promocion> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar, String fechaPartida)throws Exception{
 		Criteria oCriteria = getSession().createCriteria(Promocion.class);
 		for(Entry<?,?> e : criteriosBusqueda.entrySet()) {
@@ -147,6 +148,7 @@ public class PromocionDAOImpl extends GenericDAOImpl implements PromocionDAO {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.PromocionDAO#buscarPorTarifa(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public List<Promocion> buscarPorTarifa(String fechaPartida, String ruta, String servicio, String horaPartida){
 		/*Primero busca incluyendo la hora de partida - 15/12/2015 - jabanto*/
 		String hql=" FROM Promocion WHERE esTarifa=1 AND to_date('"+fechaPartida+"','dd/mm/yyyy') BETWEEN fechaInicio AND fechaFin " +
@@ -181,6 +183,7 @@ public class PromocionDAOImpl extends GenericDAOImpl implements PromocionDAO {
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.PromocionDAO#buscarPorCriterios(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public ArrayList<Promocion> buscarPorCriterios(String denominacion, String ruta, String servicio, String cliente, String tipoDescuento, String criterioOrden)throws Exception{
 		String sql = "SELECT promocion_id, c_denominacion, c_rutas, c_servicios, c_punven, c_canven, c_pasnue, c_canviapas, c_asientos, " +
 				"c_edapas, c_cliente, c_idavue, n_valdes, c_tipdes, n_porimp, c_forpag, c_tippag, c_tarcre, c_entemp, c_paxfre, d_fecini, " +

@@ -129,6 +129,7 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 	 * (non-Javadoc)
 	 * @see org.zkoss.zk.ui.AbstractComponent#addEventListener(java.lang.String, org.zkoss.zk.ui.event.EventListener)
 	 */
+	@Override
 	public boolean addEventListener(String evtnm, EventListener<? extends Event> listener) {
 		boolean resultadoEvento = true;
 		if (evtnm.equals(com.cystesoft.vyrbus.view.ui.Events.ON_SELECT)) {
@@ -154,6 +155,7 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 		this.setVisible(true);
 		
 		EventListener<Event> selectEventListener = new EventListener<Event>(){
+			@Override
 			@SuppressWarnings("unchecked")
 			public void onEvent(Event e) throws Exception{
 				if(!(e.getTarget() instanceof Listbox && ((Listbox)e.getTarget()).getSelectedIndex() < 0)){
@@ -198,6 +200,7 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 		rdPorDocumento= new Radio("Número Documento");
 		rdPorDocumento.setSelected(true);
 		rdPorDocumento.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				habilitarDocumento();
 				limpiar();				
@@ -209,6 +212,7 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 		radiogroup.appendChild(space);
 		rdPorNombres = new Radio("Nombres");
 		rdPorNombres.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				habilitarNombres();
 				limpiar();
@@ -221,6 +225,7 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 		Button button = new Button("Buscar");
 		button.setClass("btnCommandM");
 		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) throws Exception{
 				if(buscaPax)
 					buscar();
@@ -242,6 +247,7 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 		rowDocumento.appendChild(label);
 		txtDocumento = new Textbox();
 		txtDocumento.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) throws Exception{
 				if(buscaPax)
 					buscar();
@@ -259,6 +265,7 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 		rowNombre.appendChild(lblNombre);
 		txtNombre = new Textbox();
 		txtNombre.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) throws Exception{
 				if(buscaPax)
 					txtApePat.setFocus(true);
@@ -275,6 +282,7 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 		rowApePat.appendChild(label);
 		txtApePat = new Textbox();
 		txtApePat.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				txtApeMat.setFocus(true);
 			}
@@ -288,6 +296,7 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 		rowApeMat.appendChild(label);
 		txtApeMat = new Textbox();
 		txtApeMat.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) throws Exception{
 					buscar();
 			}
@@ -347,6 +356,7 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 		button = new Button("Cancelar");
 		button.setClass("btnCommandL");
 		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				oThisWindow.onClose();
 			}

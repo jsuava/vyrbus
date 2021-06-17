@@ -16,7 +16,6 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Groupbox;
-import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Spinner;
 import org.zkoss.zul.Textbox;
 
@@ -29,7 +28,6 @@ import com.cystesoft.vyrbus.service.exceptions.NombreCortoNullException;
 import com.cystesoft.vyrbus.service.exceptions.NumeroAsientoNullException;
 import com.cystesoft.vyrbus.service.exceptions.NumeroColumnasNullException;
 import com.cystesoft.vyrbus.service.exceptions.NumeroFilasNullException;
-import com.cystesoft.vyrbus.service.exceptions.NumeroPisosNullException;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.Messages;

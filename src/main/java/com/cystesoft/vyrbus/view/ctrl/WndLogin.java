@@ -118,14 +118,14 @@ public class WndLogin extends WndBase {
 		/*Descomentar solo para desarrollo - 09/01/2017 - jabanto*/
 		try {
 
-//			txtLogin.setText("javalos");
-//			txtPassword.setText("tepsac");
-//			txtImagen.setText(cpaImagen.getValue());
+			txtLogin.setText("javalos");
+			txtPassword.setText("tepsac");
+			txtImagen.setText(cpaImagen.getValue());
 //			txtLogin.setText("moscco");
 //			txtPassword.setText("Ant@res1091");
 //			txtImagen.setText(cpaImagen.getValue());
 			
-//			onAccess();
+			onAccess();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -220,7 +220,7 @@ public class WndLogin extends WndBase {
 			if(divRol.isVisible()==false){
 				listUsuarioRol = ServiceLocator.getUsuarioRolManager().buscarXIdUsuario(usuario.getId());
 				if (listUsuarioRol.size()==1){
-					rol = ServiceLocator.getRolManager().buscarPorId(new Long(((UsuarioRol) listUsuarioRol.get(0)).getUsuarioRolID().getIdRol()));
+					rol = ServiceLocator.getRolManager().buscarPorId(new Long(listUsuarioRol.get(0).getUsuarioRolID().getIdRol()));
 				}else if (listUsuarioRol.size()>1){
 					UtilData.cargarGenericData(cmbRol, false);
 					for(UsuarioRol usuarioRol:listUsuarioRol){

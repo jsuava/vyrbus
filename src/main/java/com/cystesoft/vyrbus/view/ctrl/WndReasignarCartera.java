@@ -202,7 +202,7 @@ public class WndReasignarCartera extends WndBase {
 							
 			/*Carga Clientes*/					
 			TreeMap<String, Object>criteriosBusqueda = new TreeMap<String, Object>();
-			criteriosBusqueda.put("usuario", ((Usuario)cmbFuncionarioAnterior.getSelectedItem().getValue()));
+			criteriosBusqueda.put("usuario", (cmbFuncionarioAnterior.getSelectedItem().getValue()));
 			criteriosBusqueda.put("estadoCartera", Constantes.ESTADOSOL_ACTIVA);
 			List<CarteraCliente>list=ServiceLocator.getCarteraClienteManager().buscarPorX(criteriosBusqueda, null);
 			

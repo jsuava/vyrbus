@@ -172,7 +172,7 @@ public class PuntosPasajeroFrecuenteDAOImpl extends GenericDAOImpl implements Pu
 		
 		log.info(hql);
 		
-		return (List<PuntosPasajeroFrecuente>) getSession().createQuery(hql).list();
+		return getSession().createQuery(hql).list();
 	}
 	
 	
@@ -269,6 +269,7 @@ public class PuntosPasajeroFrecuenteDAOImpl extends GenericDAOImpl implements Pu
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.PuntosPasajeroFrecuenteDAO#restaurarPuntos(java.lang.Long)
 	 */
+	@Override
 	public void restaurarPuntos(Long idVentaCaje) throws Exception{
 		PuntosPasajeroFrecuente puntoPasajeroFrecuente= new PuntosPasajeroFrecuente();
 		Usuario usuario= new Usuario();

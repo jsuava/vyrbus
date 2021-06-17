@@ -64,7 +64,7 @@ public class SetResumenes {
 	 * 
 	 */
 	public void setToken(JAXBElement<String> value) {
-		this.token = ((JAXBElement<String>) value);
+		this.token = (value);
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class SetResumenes {
 	 * 
 	 */
 	public void setFechaEmisionComprobantes(JAXBElement<String> value) {
-		this.fechaEmisionComprobantes = ((JAXBElement<String>) value);
+		this.fechaEmisionComprobantes = (value);
 	}
 
 	/**
@@ -110,7 +110,7 @@ public class SetResumenes {
 	 * 
 	 */
 	public void setRucEmpresa(JAXBElement<String> value) {
-		this.rucEmpresa = ((JAXBElement<String>) value);
+		this.rucEmpresa = (value);
 	}
 
 }

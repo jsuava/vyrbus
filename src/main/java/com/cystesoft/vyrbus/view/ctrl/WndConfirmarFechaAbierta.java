@@ -118,6 +118,7 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 		lbxVentasFechaAbierta.addEventListener(Events.ON_DOUBLE_CLICK, this);
 		
 		btnCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				limpiarDatosItinerario();
 				tabBusqueda.setSelected(true);
@@ -126,6 +127,7 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 		});
 		
 		tabListado.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				limpiarDatosItinerario();
 				divItinerario.setVisible(false);
@@ -182,6 +184,7 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 					btn.setAutodisable("self");
 					btn.setClass("btnCommandL");
 					btn.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+						@Override
 						public void onEvent(Event e){
 							lbxVentasFechaAbierta.setSelectedIndex(Integer.valueOf(e.getTarget().getId()));
 							ventaFechaAbierta = (VentaPasaje)lbxVentasFechaAbierta.getSelectedItem().getValue();
@@ -237,6 +240,7 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 		txtPasajero.setText("");
 	}
 	
+	@Override
 	public void onEvent(Event e){
 		if(lbxVentasFechaAbierta.getSelectedIndex()>=0){
 			ventaFechaAbierta = (VentaPasaje)lbxVentasFechaAbierta.getSelectedItem().getValue();

@@ -264,6 +264,7 @@ public class WndMapa extends WndBase {
 								if(objetoBus.getTipoObjeto().intValue()==TIPO_ASIENTO){
 									Asiento asiento = new Asiento();
 									asiento.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+										@Override
 										public void onEvent(Event e){
 											onClickAsiento(e, getVentaPasaje());
 										}
@@ -336,7 +337,7 @@ public class WndMapa extends WndBase {
 	 */
 	private void inicializarEstructura(){
 		for(int i=vbxEstructuraBus.getChildren().size()-1; i>-1; i--){
-			Component component = (Component)vbxEstructuraBus.getChildren().get(i);
+			Component component = vbxEstructuraBus.getChildren().get(i);
 			vbxEstructuraBus.removeChild(component);
 		}
 	}

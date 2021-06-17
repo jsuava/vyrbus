@@ -66,7 +66,7 @@ public class Cliente {
 	 * 
 	 */
 	public void setDireccion(JAXBElement<String> value) {
-		this.direccion = ((JAXBElement<String>) value);
+		this.direccion = (value);
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class Cliente {
 	 * 
 	 */
 	public void setNombres(JAXBElement<String> value) {
-		this.nombres = ((JAXBElement<String>) value);
+		this.nombres = (value);
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class Cliente {
 	 * 
 	 */
 	public void setNumeroDocumento(JAXBElement<String> value) {
-		this.numeroDocumento = ((JAXBElement<String>) value);
+		this.numeroDocumento = (value);
 	}
 
 	/**
@@ -135,7 +135,7 @@ public class Cliente {
 	 * 
 	 */
 	public void setTipoDocumentoID(JAXBElement<String> value) {
-		this.tipoDocumentoID = ((JAXBElement<String>) value);
+		this.tipoDocumentoID = (value);
 	}
 
 }

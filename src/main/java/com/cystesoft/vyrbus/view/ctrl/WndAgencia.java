@@ -126,8 +126,8 @@ public class WndAgencia extends WndOpcionesMantenimiento {
 				Integer tipoAgencia = (Integer) oWndFiltrar.getParameterValue("1. Tipo de Agencia");
 				Integer localidad = (Integer) oWndFiltrar.getParameterValue("2. Localidad");
 				Integer concesionario = (Integer) oWndFiltrar.getParameterValue("3. Concesionario");
-				String denominacion = (String) oWndFiltrar.getParameterValue("4. Denominación").toString().trim();
-				String nombreCorto = (String) oWndFiltrar.getParameterValue("5. Nombre Corto (o sufijo)").toString().trim();
+				String denominacion = oWndFiltrar.getParameterValue("4. Denominación").toString().trim();
+				String nombreCorto = oWndFiltrar.getParameterValue("5. Nombre Corto (o sufijo)").toString().trim();
 				String estadoRegistro = Constantes.VALUE_ACTIVO;
 
 				if (denominacion.trim().equals("")) {
@@ -219,17 +219,17 @@ public class WndAgencia extends WndOpcionesMantenimiento {
 			oAgencia.setId(id);
 			if (cboTipoAgencia.getSelectedIndex() > -1) {
 				TipoAgencia oTipoAgencia = new TipoAgencia();			
-				oTipoAgencia.setId((Integer) ((TipoAgencia) cboTipoAgencia.getSelectedItem().getValue()).getId());
+				oTipoAgencia.setId(((TipoAgencia) cboTipoAgencia.getSelectedItem().getValue()).getId());
 				oAgencia.setTipoAgencia(oTipoAgencia);
 			}
 			if (cboLocalidad.getSelectedIndex() > -1) {
 				Localidad oLocalidad = new Localidad();
-				oLocalidad.setId((Integer) ((Localidad) cboLocalidad.getSelectedItem().getValue()).getId());
+				oLocalidad.setId(((Localidad) cboLocalidad.getSelectedItem().getValue()).getId());
 				oAgencia.setLocalidad(oLocalidad);
 			}
 			if (cboConcesionario.getSelectedIndex() > -1) {
 				Concesionario oConcesionario = new Concesionario();
-				oConcesionario.setId((Integer) ((Concesionario) cboConcesionario.getSelectedItem().getValue()).getId());
+				oConcesionario.setId(((Concesionario) cboConcesionario.getSelectedItem().getValue()).getId());
 				oAgencia.setConcesionario(oConcesionario);
 			}
 			if (txtIdUbigeo.getText().trim().length() > 0) {

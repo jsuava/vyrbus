@@ -128,7 +128,7 @@ public class DetalleVenta {
 	 * 
 	 */
 	public void setCodigoAfectacionIgv(JAXBElement<String> value) {
-		this.codigoAfectacionIgv = ((JAXBElement<String>) value);
+		this.codigoAfectacionIgv = (value);
 	}
 
 	/**
@@ -151,7 +151,7 @@ public class DetalleVenta {
 	 * 
 	 */
 	public void setCodigoProducto(JAXBElement<String> value) {
-		this.codigoProducto = ((JAXBElement<String>) value);
+		this.codigoProducto = (value);
 	}
 
 	/**
@@ -174,7 +174,7 @@ public class DetalleVenta {
 	 * 
 	 */
 	public void setCodigoTipoPrecio(JAXBElement<String> value) {
-		this.codigoTipoPrecio = ((JAXBElement<String>) value);
+		this.codigoTipoPrecio = (value);
 	}
 
 	/**
@@ -197,7 +197,7 @@ public class DetalleVenta {
 	 * 
 	 */
 	public void setDescripcion(JAXBElement<String> value) {
-		this.descripcion = ((JAXBElement<String>) value);
+		this.descripcion = (value);
 	}
 
 	/**
@@ -325,7 +325,7 @@ public class DetalleVenta {
 	 * 
 	 */
 	public void setUnidadMedida(JAXBElement<String> value) {
-		this.unidadMedida = ((JAXBElement<String>) value);
+		this.unidadMedida = (value);
 	}
 
 	/**

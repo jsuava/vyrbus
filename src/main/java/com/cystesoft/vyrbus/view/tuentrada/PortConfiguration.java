@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-import javax.comm.CommPortIdentifier;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -455,7 +454,8 @@ public class PortConfiguration extends JPanel implements ActionListener, Seriali
     }
 
     
-    public void actionPerformed(ActionEvent e)
+    @Override
+	public void actionPerformed(ActionEvent e)
     {
         if(e.getSource()==acceptButton){
             if( writeConfiguration()){
@@ -478,7 +478,8 @@ public class PortConfiguration extends JPanel implements ActionListener, Seriali
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
+            @Override
+			public void run() {
                 createAndShowGUI();
             }
         });

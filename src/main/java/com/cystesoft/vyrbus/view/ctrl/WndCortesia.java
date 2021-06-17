@@ -279,6 +279,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 		});
 		
 		cmbMotivoCortesia.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(cmbMotivoCortesia.getSelectedItem().getValue() instanceof MotivoCortesia 
 						&& ((MotivoCortesia)cmbMotivoCortesia.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_MOTCOR_OTROS){
@@ -371,7 +372,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 							List<?> listPax = ServiceLocator.getPasajeroManager().buscarPorX(criterioBusqueda, null);
 							
 							if (listPax.size() > 0) {
-								Long idPasajero = (Long) ((Pasajero) listPax.get(0)).getId();
+								Long idPasajero = ((Pasajero) listPax.get(0)).getId();
 								pasajero.setId(idPasajero);
 								ocortesia.setPasajero(pasajero);
 							} else {
@@ -844,6 +845,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 
 			lisboxPasajeros.addEventListener(Events.ON_DOUBLE_CLICK,
 					new EventListener<Event>() {
+						@Override
 						public void onEvent(Event event) {
 							try {
 								pasajero = ServiceLocator.getPasajeroManager().buscarPorId(((Pasajero) lisboxPasajeros.getSelectedItem().getValue()).getId());

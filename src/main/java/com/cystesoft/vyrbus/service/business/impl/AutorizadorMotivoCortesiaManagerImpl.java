@@ -110,6 +110,7 @@ public class AutorizadorMotivoCortesiaManagerImpl implements AutorizadorMotivoCo
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.AutorizadorMotivoCortesiaManager#buscarMotivosCortesia(java.lang.Long)
 	 */
+	@Override
 	public List<MotivoCortesia> buscarMotivosCortesia(Long idPersonal)throws Exception{
 		return getAutorizadorMotivoCortesiaDAO().buscarMotivosCortesia(idPersonal);
 	}

@@ -885,6 +885,7 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 				Hlayout hlayout = new Hlayout();
 				Button button = new Button("Aceptar", "resources/mp_aceptarEnabled.png");
 				button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+					@Override
 					public void onEvent(Event e){
 						if(lstbxVentas.getItems().size()>0){
 							Cliente cliente=((VentaPasaje)lstbxVentas.getItemAtIndex(0).getValue()).getCliente();
@@ -919,6 +920,7 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 				hlayout.appendChild(button);
 				button = new Button("Cancelar", "resources/mp_cancelarEnabled.png");
 				button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+					@Override
 					public void onEvent(Event e){
 						win.onClose();
 					}

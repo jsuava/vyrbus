@@ -597,6 +597,7 @@ public class WndClienteCredito extends WndBase {
 		button = new Button("Cancelar", "resources/mp_cancelarEnabled.png");
 		button.setClass("btn-vyrbus");
 		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				window.onClose();
 			}
@@ -615,6 +616,7 @@ public class WndClienteCredito extends WndBase {
 			button.setDisabled(true);
 		
 		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				try {
 					if(dbxNuevoCredito.getValue()==null || dbxNuevoCredito.getValue()<=0)

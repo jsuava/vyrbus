@@ -669,7 +669,7 @@ public class ObjectFactory {
 	@XmlElementDecl(namespace = "http://schemas.microsoft.com/2003/10/Serialization/", name = "base64Binary")
 	public JAXBElement<byte[]> createBase64Binary(byte[] value) {
 		return new JAXBElement<byte[]>(_Base64Binary_QNAME, byte[].class, null,
-				((byte[]) value));
+				(value));
 	}
 
 	/**

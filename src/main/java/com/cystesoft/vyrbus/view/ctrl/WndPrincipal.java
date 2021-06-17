@@ -267,6 +267,7 @@ public class WndPrincipal extends WndBase {
 				row.setSpans("2");
 				Button button = new Button("Cambiar", "resources/mp_aceptarEnabled.png");
 				button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+					@Override
 					public void onEvent(Event e){
 						try{
 							if(txtPasswordActual.getText().trim().isEmpty())
@@ -487,6 +488,7 @@ public class WndPrincipal extends WndBase {
 	
 	private EventListener<Event> addEventListener(final OpcionMenu opcionMenu){
 		EventListener<Event> ev = new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e){
 				if(e.getName().equals(Events.ON_CLICK)){
 					mostrarVentana(opcionMenu.getDenominacion(), opcionMenu.getUrl());

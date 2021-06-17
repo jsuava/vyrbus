@@ -1,0 +1,64 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:n="client">
+<window  id="wndControlEspecieValorada" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndEspecieValoradaByCaja">
+	<div id="divLista">
+		<listbox id="listboxLista">
+			<listhead sizable="true">
+				<listheader width="35px" label="#" style="color: #ffffff;"/>
+				<listheader label="TIPO COMPROBANTE" width="200px" sort="auto" style="color: #ffffff;"/>
+				<listheader label="USUARIO HARDWARE" width="280px" sort="auto" style="color: #ffffff;"/>
+				<listheader label="Nº DE SERIE" width="100px" sort="auto" style="color: #ffffff;"/>
+				<listheader label="AGENCIA" width="260px" sort="auto" style="color: #ffffff;"/>
+				<listheader label="SECUENCIADOR" sort="auto" style="color: #ffffff;"/>
+			</listhead>
+		</listbox>
+	</div>
+
+	<div id="divMantenimiento">
+	<groupbox closable="false" mold="3d">
+		<caption label="INFORMACION ESPECIE VALORADA" style="color: #ffffff;"/>
+		<grid>
+			<columns>
+				<column width="160px" align="right" />
+				<column width="220px" />
+				<column width="150px" align="right"/>
+			</columns>
+			<rows>
+				<row>
+					<div>
+						<label value="AGENCIA (*) :" />
+						<textbox id="textboxId"/>
+					</div>
+					<combobox id="cmbAgencia" onSelect="com.cystesoft.vyrbus.service.util.UtilData.cargarUsuarioHasrdware(cmbUsuarioHardware, false, ((com.cystesoft.vyrbus.model.bean.Agencia)cmbAgencia.getSelectedItem().getValue()))" 
+							readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbUsuarioHardware)" width="170px" />
+					<label value="USUARIO HARDWARE (*) :"/>
+					<combobox id="cmbUsuarioHardware" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbTipoComprobante)" width="170px"/>
+				</row>
+				<row>
+					<label value="TIPO DE COMPROBANTE (*) :"  />
+					<combobox id="cmbTipoComprobante" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtSerie)" width="170px"/>
+					<label value="SERIE (*) :" />
+					<textbox id="txtSerie" maxlength="4" width="160px" style="font-size:11px !important"/>
+				</row>				
+			</rows>
+		</grid>
+		<!--<separator height="3px" />
+		<groupbox id="gbxCompAuts">
+		<caption label="Comprobantes y especies valoradas permitidas en la Agencia" style="color:red"/>
+			<listbox id="listboxCompAuts" mold="paging" pageSize="5">
+			<listhead sizable="false">
+				<listheader width="30px" label="#" style="color: #ffffff;"/>
+				<listheader label="TIPO COMPROBANTE" width="200px" style="color: #ffffff;"/>
+				<listheader label="Nº DE SERIE" style="color: #ffffff;"/>
+				<listheader label="Nº CORRELATIVO INICIAL" style="color: #ffffff;"/>
+				<listheader label="Nº CORRELATIVO FINAL" style="color: #ffffff;"/>
+			</listhead>
+		</listbox>
+		</groupbox>-->
+		
+	</groupbox>
+</div>
+
+
+</window>
+</zk>

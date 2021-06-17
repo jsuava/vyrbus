@@ -466,12 +466,14 @@ public class WndVerMapaBus extends WndBase {
 		appendChild(grdContenedor);
 
 		buttonAceptar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event event) throws Exception {
 				oThisWindow.onClose();
 			}
 		});
 
 		buttonRefresh.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event event) throws Exception {
 				DetalleItinerario detalleItinerario = new DetalleItinerario();
 				/* Busca itinerario para la carga del Mapa */
@@ -598,6 +600,7 @@ public class WndVerMapaBus extends WndBase {
 									asiento.addEventListener(Events.ON_CLICK, selectedEventListener);										
 								
 									asiento.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+										@Override
 										public void onEvent(Event e){
 											if(isTransbordo)
 													onClickAsiento(e,detalleItinerario,gridOcupabilidad );
@@ -965,7 +968,7 @@ public class WndVerMapaBus extends WndBase {
 	 */
 	private void inicializarEstructura(Groupbox groupbox){
 		for(int i=groupbox.getChildren().size()-1; i>-1; i--){
-			Component component = (Component)groupbox.getChildren().get(i);
+			Component component = groupbox.getChildren().get(i);
 			if(!(component instanceof Caption))
 				groupbox.removeChild(component);
 		}
@@ -987,6 +990,7 @@ public class WndVerMapaBus extends WndBase {
 		return imagen;
 	}
 	
+	@Override
 	public boolean addEventListener(String evtnm, EventListener<? extends Event> listener) {
 		boolean resultadoEvento = true;
 		if (evtnm.equals(com.cystesoft.vyrbus.view.ui.Events.ON_SELECT)) {

@@ -13,7 +13,6 @@ import java.util.List;
 
 import com.cystesoft.vyrbus.model.bean.MapaBus;
 import com.cystesoft.vyrbus.model.bean.Servicio;
-import com.cystesoft.vyrbus.model.bean.TipoAsiento;
 import com.cystesoft.vyrbus.model.dao.MapaBusDAO;
 import com.cystesoft.vyrbus.service.util.Constantes;
 

@@ -628,7 +628,8 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 		return (Liquidacion) super.findById(Liquidacion.class, id);
 	}
 	
-    public List<LiquidacionTuentrada> liquidacionTuentrada(Integer idAgencia, Integer idUsuario, String fechaliquidacion){
+    @Override
+	public List<LiquidacionTuentrada> liquidacionTuentrada(Integer idAgencia, Integer idUsuario, String fechaliquidacion){
     	String sql = "SELECT parcial.tipo, SUM(parcial.cantidad),SUM(parcial.IMPORTE) "
     			+ "FROM  (SELECT DECODE(vp.tarcre_id, null,'CONTADO', 'TARJETA') TIPO, COUNT(vp.n_imppag)CANTIDAD, SUM(vp.n_imppag)IMPORTE "
     			+ "FROM vrtvenpas vp "
