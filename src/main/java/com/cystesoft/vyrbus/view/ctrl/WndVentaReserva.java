@@ -150,6 +150,7 @@ import com.cystesoft.vyrbus.service.exceptions.RucInvalidoException;
 import com.cystesoft.vyrbus.service.exceptions.SaldoInsuficienteException;
 import com.cystesoft.vyrbus.service.exceptions.SexoNullException;
 import com.cystesoft.vyrbus.service.exceptions.TarjetaCreditoNullException;
+import com.cystesoft.vyrbus.service.exceptions.TelefonoNullException;
 import com.cystesoft.vyrbus.service.exceptions.TiempoExpiracionBloqueoException;
 import com.cystesoft.vyrbus.service.exceptions.TipoComprobanteNullException;
 import com.cystesoft.vyrbus.service.exceptions.TipoDocumentoNullException;
@@ -4114,6 +4115,8 @@ public class WndVentaReserva extends WndBase {
 				throw new NombresNullException();
 			else if (txtUbigeoPax.getText().trim().equals(""))
 				throw new UbigeoNullException();
+			else if (txtTelefono.getText().trim().equals(""))
+				throw new TelefonoNullException();
 			else if (!(cmbSexo.getSelectedItem().getValue() instanceof Sexo))
 				throw new SexoNullException();
 			else if(cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento && 
@@ -4123,9 +4126,11 @@ public class WndVentaReserva extends WndBase {
 //				else if(txtEmailPax.getText().equals(""))
 //					throw new EmailNullException();
 			}
+			
 			/*Obliga el ingreso del email, mientras el usuario no marque el check "No tiene" - 03/05/2017*/
-			if(!(txtEmailPax.isDisabled()) && txtEmailPax.getText().trim().isEmpty())
-				throw new EmailNullException();
+			//Comentado por MAOE TRANSMAR no necesita el email
+//			if(!(txtEmailPax.isDisabled()) && txtEmailPax.getText().trim().isEmpty())
+//				throw new EmailNullException();
 			
 			if(cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento && 
 					((TipoDocumento)cmbTipoDocumento.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPDOC_DNI){
@@ -4255,8 +4260,10 @@ public class WndVentaReserva extends WndBase {
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noSelectionSexo"), cmbSexo);
 		} catch (NacionalidadException nex){
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noSeleccionoNacionalidad"), cmbNacionalidad);
-		} catch(EmailNullException enex){
-			DlgMessage.information(Messages.getString("WndVentaReserva.information.noIngresoEmail"), txtEmailPax);
+		} catch (TelefonoNullException nex){
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noTelefono"), txtTelefono);
+//		} catch(EmailNullException enex){
+//			DlgMessage.information(Messages.getString("WndVentaReserva.information.noIngresoEmail"), txtEmailPax);
 		} catch(MailIncorectoException miex) {
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.ingreseCorreoValido"), txtEmailPax);
 		} catch(VentaReservaException vrex){
@@ -5337,8 +5344,9 @@ public class WndVentaReserva extends WndBase {
 				throw new ItinerarioException(ItinerarioException.AGENCIA_PARTIDA_NULL); // ItinerarioAgenciaPartidaNullException();
 			else if(!(cmbPtoDesembarque.getSelectedItem().getValue() instanceof ItinerarioAgenciaLlegada))
 				throw new  ItinerarioException(ItinerarioException.AGENCIA_LLEGADA_NULL); //ItinerarioAgenciaLlegadaNullException();
-			else if(!(cmbAlimentacion.getSelectedItem().getValue() instanceof PreferenciaAlimentaria))
-				throw new PreferenciaAlimentariaException();
+			//Preferencias Alimentarias son opcionales, comentado por MAOE 26/06/2021
+//			else if(!(cmbAlimentacion.getSelectedItem().getValue() instanceof PreferenciaAlimentaria))
+//				throw new PreferenciaAlimentariaException();
 			else if (!(tlbbtnGuardarPax.isDisabled()))// 06/09/2013 - jabanto
 					throw new PasajeroNoSavedExeption();
 			else if(oPasajero==null)
@@ -5517,8 +5525,8 @@ public class WndVentaReserva extends WndBase {
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noAgenciallegadaSeleccionada"), cmbPtoDesembarque);
 			else if (i.getTipo().intValue()==ItinerarioException.AGENCIA_PARTIDA_NULL)
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noAgenciaPartidaSeleccionada"), cmbPtoEmbarque);
-		}catch(PreferenciaAlimentariaException panex){
-			DlgMessage.information(Messages.getString("WndVentaReserva.information.noPreferenciaAlimentaria"), cmbAlimentacion);
+//		}catch(PreferenciaAlimentariaException panex){
+//			DlgMessage.information(Messages.getString("WndVentaReserva.information.noPreferenciaAlimentaria"), cmbAlimentacion);
 		}catch(PasajeroException pnex){
 			tabPasajero.setSelected(true);
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noPasajero"), txtDocumentoPax);
@@ -5569,8 +5577,9 @@ public class WndVentaReserva extends WndBase {
 					throw new ItinerarioException(ItinerarioException.AGENCIA_PARTIDA_NULL); // ItinerarioAgenciaPartidaNullException();
 				else if(!(cmbPtoDesembarque.getSelectedItem().getValue() instanceof ItinerarioAgenciaLlegada))
 					throw new ItinerarioException(ItinerarioException.AGENCIA_LLEGADA_NULL); //ItinerarioAgenciaLlegadaNullException();
-				else if(!(cmbAlimentacion.getSelectedItem().getValue() instanceof PreferenciaAlimentaria))
-					throw new PreferenciaAlimentariaException(PreferenciaAlimentariaException.ALIMENTACION_IDA_NULL);			
+				//Comentado por MAOE 26/06/2021
+//				else if(!(cmbAlimentacion.getSelectedItem().getValue() instanceof PreferenciaAlimentaria))
+//					throw new PreferenciaAlimentariaException(PreferenciaAlimentariaException.ALIMENTACION_IDA_NULL);			
 				/*	EN CASO SE TRATE DE UNA VENTA IDA Y VUELTA	*/
 				else if(rdVentaIdaVuelta.isChecked() && !(cmbPtoEmbarqueRetorno.getSelectedItem().getValue() instanceof ItinerarioAgenciaPartida))
 					throw new ItinerarioException(ItinerarioException.AGENCIA_PARTIDA_RETORNO_NULL); // ItinerarioAgenciaPartidaNullException();
@@ -5578,8 +5587,9 @@ public class WndVentaReserva extends WndBase {
 					throw new ItinerarioException(ItinerarioException.AGENCIA_LLEGADA_RETORNO_NULL); //ItinerarioAgenciaLlegadaNullException();
 	//			else if(txtNumeroBoleto.getText().trim().equals("") && ((String)cmbTipoOperacion.getSelectedItem().getValue()).equals(Constantes.TIPO_OPERACION_VENTA))
 	//				throw new NumeroBoletoNullException();
-				else if(rdVentaIdaVuelta.isChecked() && !(cmbAlimentacionRetorno.getSelectedItem().getValue() instanceof PreferenciaAlimentaria))
-					throw new PreferenciaAlimentariaException(PreferenciaAlimentariaException.ALIMENTACION_RETORNO_NULL);
+				//COmentado por MAOE 26/06/2021
+//				else if(rdVentaIdaVuelta.isChecked() && !(cmbAlimentacionRetorno.getSelectedItem().getValue() instanceof PreferenciaAlimentaria))
+//					throw new PreferenciaAlimentariaException(PreferenciaAlimentariaException.ALIMENTACION_RETORNO_NULL);
 			}
 			
 			if(txtNumeroBoleto.getText().trim().equals("") && ((String)cmbTipoOperacion.getSelectedItem().getValue()).equals(Constantes.TIPO_OPERACION_VENTA))
@@ -6005,11 +6015,12 @@ public class WndVentaReserva extends WndBase {
 				tabInformacionVentaRetorno.setSelected(true);
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noSeleccionoAgenciaLlegadaRetorno"), cmbPtoDesembarqueRetorno);
 			}
-		}catch(PreferenciaAlimentariaException panex){
-			if(panex.getTipo().intValue()==PreferenciaAlimentariaException.ALIMENTACION_IDA_NULL)
-				DlgMessage.information(Messages.getString("WndVentaReserva.information.noPreferenciaAlimentaria"), cmbAlimentacion);
-			else
-				DlgMessage.information(Messages.getString("WndVentaReserva.information.noSeleccionoPreferenciaAlimentariaRetorno"), cmbAlimentacionRetorno);
+		//Comentado por MAOE 26/06/2021
+//		}catch(PreferenciaAlimentariaException panex){
+//			if(panex.getTipo().intValue()==PreferenciaAlimentariaException.ALIMENTACION_IDA_NULL)
+//				DlgMessage.information(Messages.getString("WndVentaReserva.information.noPreferenciaAlimentaria"), cmbAlimentacion);
+//			else
+//				DlgMessage.information(Messages.getString("WndVentaReserva.information.noSeleccionoPreferenciaAlimentariaRetorno"), cmbAlimentacionRetorno);
 		}catch(NumeroBoletoNullException nbnex){
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noNumeroBoleto"));			
 		}catch(PasajeroException pnex){

@@ -1,0 +1,66 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndRptDevolucionIsc" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndRptDevolucionIsc">
+	<groupbox mold="3d" closable="false">
+		<caption label="REPORTE PARA DEVOLUCION DEL ISC" style="color: #ffffff;"/>
+		<grid>
+			<columns>
+				<column width="100px" align="right" />
+				<column width="180px" />
+				<column width="100px" align="right" />
+			</columns>
+			<rows>
+				<row>
+					<label value="FECHA INCIO :" />
+					<datebox id="dtbxFechaInicio"  format="dd/MM/yyyy" readonly="true"/>
+					<label value="FECHA FIN :" />
+					<datebox id="dtbxFechaFin"  format="dd/MM/yyyy" readonly="true"/>
+				</row>
+				<row>
+					<label value="PER4949 :" />
+					<textbox id="txtPer4949" width="150px" />
+					<label value="PERIODO :" />
+					<hbox align="center">
+						<textbox id="txtPeriodo" width="150px"/>
+						<separator width="72px" />
+						<button label="Buscar" 
+								sclass="btnCommandM" 
+								image="/resources/mp_buscarEnabled.png" 
+								onClick="wndRptDevolucionIsc.buscar()"/>
+						<button label="Cerrar" 
+								sclass="btnCommandM" 
+								image="/resources/mp_cerrar.png" 
+								onClick="wndRptDevolucionIsc.closeTabWindow()" />
+						<button image="/resources/mp_excel.png" 
+								onClick="wndRptDevolucionIsc.exportarExcel()" 
+								sclass="btnImage"/>
+					</hbox>
+					
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+	<listbox id="lbxManifiestos" mold="paging" pageSize="14">
+		<listhead>
+			<listheader label="ID" width="50px" align="center" style="color: #ffffff;"/>
+			<listheader label="NRO BUS" align="center" width="70px" style="color: #ffffff;"/>
+			<listheader label="RUC" align="center" width="100px" style="color: #ffffff;"/>
+			<listheader label="PER4949" align="center" width="60px" style="color: #ffffff;"/>
+			<listheader label="PERIODO" align="center" width="60px" style="color: #ffffff;"/>
+			<listheader label="CSSERIEF" align="center" width="50px" style="color: #ffffff;"/>
+			<listheader label="NUMERO" align="center" width="80px" style="color: #ffffff;"/>
+			<listheader label="MARCA" width="120px" style="color: #ffffff;"/>
+			<listheader label="NRO PLACA" width="90px" align="center" style="color: #ffffff;"/>
+			<listheader label="NO_CHAB" width="110px" style="color: #ffffff;"/>
+			<listheader label="FEC_SAL" align="center" width="80px" style="color: #ffffff;"/>
+			<listheader label="PP_DP" width="150px" style="color: #ffffff;"/>
+			<listheader label="PP_DS" width="150px" align="center" style="color: #ffffff;"/>
+			<listheader label="LL_DP" width="150px" style="color: #ffffff;"/>
+			<listheader label="LL_DS" width="150px" style="color: #ffffff;"/>
+			<listheader label="IMPORTE" align="right" style="color: #ffffff;"/>
+			<listheader style="color: #ffffff;"/>
+		</listhead>
+	</listbox>
+	
+</window>
+</zk>

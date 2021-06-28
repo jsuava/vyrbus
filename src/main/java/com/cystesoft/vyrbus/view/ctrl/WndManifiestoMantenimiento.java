@@ -478,7 +478,14 @@ public class WndManifiestoMantenimiento extends WndBase{
 		httpSession.setAttribute("licencia1", piloto.getLicencia());
 		httpSession.setAttribute("licencia2", copiloto.getLicencia());
 		httpSession.setAttribute("licencia3", (copilotoAux!=null?copilotoAux.getLicencia():""));
-		httpSession.setAttribute("tripulante", tripulante.toString());
+		if(tripulante!=null){
+			httpSession.setAttribute("tripulante", tripulante.toString());
+			httpSession.setAttribute("dniTripulante",tripulante.getNroDocumento()!=null?tripulante.getNroDocumento():"");
+		}
+		else{
+			httpSession.setAttribute("tripulante", "");
+			httpSession.setAttribute("dniTripulante","");
+		}
 		httpSession.setAttribute("bus", bus.getCodigo());
 		httpSession.setAttribute("placaBus", bus.getNumeroPlaca());
 		httpSession.setAttribute("tarjetaHabilitacion", documentoBus.getNumeroDocumento());
@@ -487,7 +494,6 @@ public class WndManifiestoMantenimiento extends WndBase{
 		httpSession.setAttribute("totalAsientos", itinerario.getServicio().getNumeroAsientosPiso1().toString());
 		httpSession.setAttribute("numeroAutoSunat", manifiesto.getAutorizacionSunat());
 		httpSession.setAttribute("totalPasajeros", String.valueOf(listPasajero.size()));
-		httpSession.setAttribute("dniTripulante",tripulante.getNroDocumento()!=null?tripulante.getNroDocumento():"");
 		
 		
 //		httpSession.setAttribute("tipoAgencia", tipoAgencia);

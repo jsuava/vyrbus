@@ -432,11 +432,13 @@ public class WndRol extends WndOpcionesMantenimiento {
 			for (RolOpcionMenu rolOpcionMenu: list){
 				Integer idOmRo=rolOpcionMenu.getOpcionMenu().getId();
 				for (Treeitem treeitem : trmenus.getItems()){
-					Integer idOmt=((OpcionMenu) treeitem.getValue()).getId();
-					if(idOmt.intValue()==idOmRo.intValue()){
-						treeitem.setSelected(true);
-						//treeitem.setOpen(false);
-						break;
+					if( ((OpcionMenu) treeitem.getValue()).getHabilitado().equals(1) ){
+						Integer idOmt=((OpcionMenu) treeitem.getValue()).getId();
+						if(idOmt.intValue()==idOmRo.intValue()){
+							treeitem.setSelected(true);
+							//treeitem.setOpen(false);
+							break;
+						}
 					}
 				}	
 			}

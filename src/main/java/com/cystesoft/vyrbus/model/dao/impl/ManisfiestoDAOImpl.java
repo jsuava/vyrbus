@@ -142,17 +142,20 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 					programacionServicio.setCopilotoAuxiliar(copilotoAuxiliar);
 				}
 				/*TRIPULANTE*/
-				Personal tripulante = new Personal();
-				tripulante.setApellidoPaterno(obj[16]!=null?obj[16].toString():"");
-				tripulante.setApellidoMaterno(obj[17]!=null?obj[17].toString():"");
-				tripulante.setNombre(obj[13]!=null?obj[18].toString():"");
-				tripulante.setNroDocumento(obj[36]!=null?obj[36].toString():null);
-				TipoDocumento tipoDocTripulante=new TipoDocumento(((BigDecimal)obj[37]).intValue());
-				tripulante.setTipoDocumento(tipoDocTripulante);
+				// If agregado por MAOE 27/06/2021, por pandemia para TRANSMAR
+				if(obj[18]!=null){
+					Personal tripulante = new Personal();
+					tripulante.setApellidoPaterno(obj[16]!=null?obj[16].toString():"");
+					tripulante.setApellidoMaterno(obj[17]!=null?obj[17].toString():"");
+					tripulante.setNombre(obj[18]!=null?obj[18].toString():"");
+					tripulante.setNroDocumento(obj[36]!=null?obj[36].toString():null);
+					TipoDocumento tipoDocTripulante=new TipoDocumento(((BigDecimal)obj[37]).intValue());
+					tripulante.setTipoDocumento(tipoDocTripulante);
+					programacionServicio.setTripulante(tripulante);
+				}
 				/*PROGRAMACION*/
 				programacionServicio.setPiloto(piloco);
 				programacionServicio.setCopiloto(copiloto);
-				programacionServicio.setTripulante(tripulante);
 								
 				bus.setProgramacionServicio(programacionServicio);				
 				itinerario.setBus(bus);
@@ -202,13 +205,13 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 						"INNER JOIN vrmpasajero p ON (p.pasajero_id=v.pasajero_id) "+
 						"INNER JOIN vrmruta r ON (r.ruta_id=v.ruta_id)" +
 						"INNER JOIN vrmtipcom tc ON (tc.tipcom_id=v.tipcom_id) "+
-						"INNER JOIN vrmpreali pa ON (pa.preali_id=v.preali_id) "+
 						"INNER JOIN vrmagencia ap ON (ap.agencia_id=v.agencia_idpartida) "+
 						"INNER JOIN vrmtipdoc td ON (td.tipdoc_id=p.tipdoc_id) "+
 						"INNER JOIN vrmforpag fp ON (fp.forpag_id=v.forpag_id) "+
 						"INNER JOIN vrmcanven cv ON (cv.canven_id=v.canven_id) "+
 						"LEFT OUTER JOIN vrmcliente c ON (c.c_numdoc=v.c_rucclicre) "+
 						"INNER JOIN vrmagencia av ON (av.agencia_id=v.agencia_id) "+
+						"LEFT JOIN vrmpreali pa ON (pa.preali_id=v.preali_id) " +
 					"WHERE  v.itinerario_id="+idItinerario+" And v.c_tiptra=1 And v.c_estreg='A' AND v.tipmov_id not in ("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+ Constantes.ID_TIPMOV_DEVOLUCION+","+ Constantes.ID_TIPMOV_ANULACION+" ) " +
 						"AND v.Agencia_Idpartida=NVL("+idPruntoEmbarque+",v.Agencia_Idpartida) " +
 						"AND v.c_estreg='"+Constantes.VALUE_ACTIVO+"' "+ 
@@ -241,7 +244,7 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			ruta.setDestino(obj[8].toString());
 			
 			PreferenciaAlimentaria preferenciaAlimentaria = new PreferenciaAlimentaria();
-			preferenciaAlimentaria.setDenominacion(obj[10].toString());
+			preferenciaAlimentaria.setDenominacion(obj[10]!=null?obj[10].toString():"");
 			
 			Agencia agenciaPartida = new Agencia();
 			agenciaPartida.setDenominacion(obj[11].toString());
@@ -660,6 +663,111 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 	public void actualizar(Manifiesto manifiesto) throws Exception {
 		// TODO Auto-generated method stub
 		super.save(manifiesto);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.ManifiestoDAO#buscarDevolucionIsc(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public List<Manifiesto> buscarDevolucionIsc(String fechaInicial, String fechaFinal, String per4949, String periodo) {
+
+		String sql ="SELECT VTP.IDITINERARIO "+
+			       ",MAN.NROBUS "+
+			       ",'" + Constantes.ruc + "' AS RUC "+
+			       ",'" + per4949 + "' AS PER4949 "+
+			       ",'" + periodo + "' AS PERIODO "+
+			       ",SUBSTR(MAN.NroManifiesto,0, 3) CSERIEF "+
+			       ",SUBSTR(MAN.NroManifiesto,5,9) CNUMERO "+
+			       ",MAN.MARCA "+
+			       ",MAN.NROPLACA "+
+			       ",MAN.TARJETACIRCULACION NO_CHAB "+
+			       ",VTP.FECHAPARTIDA FEC_SAL "+
+			       ",MAN.PP_DP "+
+			       ",MAN.PP_DS "+
+			       ",MAN.LL_DP "+
+			       ",MAN.LL_DS "+
+			       ",VTP.IMPORTE "+
+			       //-->Datos del manifiesto e itinerario.
+			"FROM(  "+
+			"    SELECT i.itinerario_id,m.c_numman NroManifiesto,b.c_codigo AS NroBus,gm.c_denominacion MARCA "+
+			"           ,b.c_numplaca AS NroPlaca,db.c_numdocbus AS TarjetaCirculacion "+
+			"           ,DptO.c_Nombreubigeo AS PP_DP,DstO.c_nombreubigeo AS PP_DS "+
+			"           ,Dptd.c_Nombreubigeo AS LL_DP,DstD.c_nombreubigeo AS LL_DS "+
+			"    FROM VRTMANIFIESTO m "+
+			"         INNER JOIN VRMBUS b ON (b.bus_id=m.bus_id) "+
+			"		  INNER JOIN VRMGRUMAN gm on (b.gruman_id = gm.gruman_id) "+
+			"         INNER JOIN VRTDOCBUS db ON (db.bus_id=b.bus_id AND db.tipdoc_id=3 AND db.c_Estreg='A')  "+ //-->3=TARJETA DE CIRCULACION 
+			"         INNER JOIN VRTITINERARIO i ON (i.itinerario_id=m.itinerario_id) "+
+			"         INNER JOIN VRMAGENCIA ao ON (ao.agencia_id=i.agencia_idpartida) "+
+			"         INNER JOIN VRMUBIGEO DstO ON (DstO.ubigeo_id=ao.ubigeo_id) "+
+			"         INNER JOIN VRMAGENCIA ad ON (ad.agencia_id=i.agencia_idllegada) "+
+			"         INNER JOIN VRMUBIGEO DstD ON (DstD.ubigeo_id=ad.ubigeo_id) "+
+			"         INNER JOIN VRMUBIGEO DptO ON (DptO.c_Coddpto=DstO.c_Coddpto AND DptO.c_Codprov='00' AND DptO.c_Coddist='00') "+
+			"         INNER JOIN VRMUBIGEO Dptd ON (Dptd.c_Coddpto=DstD.c_Coddpto AND Dptd.c_Codprov='00' AND Dptd.c_Coddist='00') "+
+			"    WHERE i.d_Fecpar BETWEEN '" + fechaInicial + "' AND '" + fechaFinal + "' "+
+			"         AND i.n_esanulado=0 AND m.c_estreg='A') man, "+
+			     //---->Ventas
+			"    (SELECT venpas_max.idItinerario,venpas_max.FechaPartida "+
+			"            ,SUM(vp.n_tarifa+vp.n_recargo-vp.n_descuento)Importe "+
+			"            ,venpas_max.origen,venpas_max.destino "+
+			"      FROM VRTVENPAS vp "+
+			"           INNER JOIN (SELECT MAX(v.venpas_id) venpas_id,i.itinerario_id As idItinerario, i.d_fecpar AS fechaPArtida "+
+			"                              ,r.c_origen AS origen, r.c_destino AS destino "+
+			"                       FROM VRTVENPAS v "+
+			"                            INNER JOIN VRTITINERARIO i ON (i.itinerario_id=v.itinerario_id) "+
+			"                            INNER JOIN VRMRUTA r ON (r.ruta_id=i.ruta_idmayor) "+
+			"                       WHERE i.d_fecpar BETWEEN '" + fechaInicial + "' AND '" + fechaFinal + "' "+
+			"                            AND i.n_esanulado=0 "+
+			"                       GROUP BY v.c_numcontrol,i.itinerario_id,i.d_fecpar,r.c_origen,r.c_destino "+       
+			"                       )venpas_max "+
+			"                   ON (venpas_max.venpas_id=vp.venpas_id) "+
+			"      WHERE vp.c_Tiptra='1' "+
+			"           AND vp.c_estreg='A' "+
+			"           AND vp.tipmov_id NOT IN (5,6,13) "+
+			"      GROUP BY venpas_max.idItinerario,venpas_max.FechaPartida "+
+			"              ,venpas_max.origen,venpas_max.destino)vtp "+
+			"WHERE man.itinerario_id=vtp.idItinerario "+
+			"ORDER BY VTP.FECHAPARTIDA, SUBSTR(MAN.NroManifiesto,0, 3) ,SUBSTR(MAN.NroManifiesto,5,9) ";
+			
+		//		whereOrigen+" "+whereDestino+" AND m.c_estreg in ('A','I') ORDER BY i.d_fecpar,i.c_horpar ";
+		
+		List<?> result = getSession().createSQLQuery(sql).list();
+		List<Manifiesto> lstResult = new ArrayList<Manifiesto>();
+		
+		for(int i=0; i<result.size(); i++){
+			Object[] obj = (Object[]) result.get(i);
+			Manifiesto manifiesto = new Manifiesto();
+			
+			Itinerario itinerario = new Itinerario();
+			itinerario.setId(((BigDecimal) obj[0]).longValue());
+			itinerario.setFechaPartida((Date)obj[10]);
+	
+			manifiesto.setItinerario(itinerario);
+			manifiesto.setCodigoBus(obj[1].toString());
+			manifiesto.setRuc(obj[2].toString());
+			manifiesto.setPer4949(obj[3].toString());
+			manifiesto.setPeriodo(obj[4].toString());
+			
+			manifiesto.setNumeroManifiesto(obj[5].toString()+"-"+obj[6].toString());
+			
+			GrupoMantenimiento marca = new GrupoMantenimiento();
+			marca.setDenominacion(obj[7].toString());
+			Bus bus = new Bus();
+			bus.setGrupoMantenimiento(marca);
+			manifiesto.setBus(bus);
+			manifiesto.setPlaca(obj[8].toString());
+			manifiesto.setCertificadoHabilitacion(obj[9].toString());
+			manifiesto.setPuntoPartidaDepartamento(obj[11].toString());
+			manifiesto.setPuntoPartidaDistrito(obj[12].toString());
+			manifiesto.setPuntoLlegadaDepartamento(obj[13].toString());
+			manifiesto.setPuntoLlegadaDistrito(obj[14].toString());
+			manifiesto.setImporte(((BigDecimal) obj[15]).doubleValue());
+			
+			lstResult.add(manifiesto);
+		}
+		
+		
+		return lstResult;
 	}
 	
 

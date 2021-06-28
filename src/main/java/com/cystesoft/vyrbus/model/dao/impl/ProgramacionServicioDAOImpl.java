@@ -221,15 +221,19 @@ public class ProgramacionServicioDAOImpl extends GenericDAOImpl implements Progr
 					if(obj[31]!=null)
 						copilotoAux=new Personal(((BigDecimal)obj[31]).longValue());
 					
-					Personal tripulante = new Personal();
-					tripulante.setId(((BigDecimal)obj[25]).longValue());
+					//Se hizo esta modificacion porque no se estaba obligando la tripulante
+					//Por MAOE 27/06/2021
+					if(obj[25] != null){
+						Personal tripulante = new Personal();
+						tripulante.setId(((BigDecimal)obj[25]).longValue());
+						programacionServicio.setTripulante(tripulante);
+					}
 					
 					programacionServicio.setId(((BigDecimal)obj[27]).longValue());
 					programacionServicio.setBus(bus);
 					programacionServicio.setPiloto(piloto);
 					programacionServicio.setCopiloto(copiloto);
 					programacionServicio.setCopilotoAuxiliar(copilotoAux);
-					programacionServicio.setTripulante(tripulante);
 					programacionServicio.setFechaInsercion((Date)obj[28]);
 					programacionServicio.setUsuarioInsercion(obj[29].toString());
 					programacionServicio.setIpInsercion(obj[30].toString());

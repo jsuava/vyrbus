@@ -231,7 +231,7 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 				}
 				
 				//Canal counter
-				if(resumen.getCanalVenta().getId() == 3)
+				if(resumen.getCanalVenta().getId() == 1)
 				{
 					//Comprobante Boletas
 					if(resumen.getTipoComprobante().getId() == 7){
@@ -252,7 +252,7 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 					}
 				}
 				//Canal Web
-				else if(resumen.getCanalVenta().getId() == 4)
+				else if(resumen.getCanalVenta().getId() == 2)
 				{
 					listRecord.set(10, resumen.getTotal());
 					listRecord.set(11, resumen.getCantidad().doubleValue());
@@ -322,7 +322,7 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 				}
 				
 				//Canal counter
-				if(resumen.getCanalVenta().getId() == 3)
+				if(resumen.getCanalVenta().getId() == 1)
 				{
 					//Comprobante Boletas
 					if(resumen.getTipoComprobante().getId() == 7){
@@ -343,7 +343,7 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 					}
 				}
 				//Canal Web
-				else if(resumen.getCanalVenta().getId() == 4)
+				else if(resumen.getCanalVenta().getId() == 2)
 				{
 					listRecord.set(10, resumen.getTotal());
 					listRecord.set(11, resumen.getCantidad().doubleValue());

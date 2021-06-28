@@ -58,6 +58,8 @@ public class CreateDocument implements Serializable {
 	private static final long serialVersionUID = 4410452174308928031L;
 	private static final String NEWLINE = "\n";
 	
+	private static Double totalManifiesto;
+	
 	public static final File crearRecibCaja(VentaPasaje ventaPasaje){
 //		String fichero = Constantes.DIRECTORY_RECIBO_CAJA +ventaPasaje.getNumeroControl()+".txt";
 		String fichero = Constantes.DIRECTORY_RECIBO_CAJA +Constantes.CLAVE_PAHT + ventaPasaje.getNumeroControl()+".txt";
@@ -953,23 +955,24 @@ public class CreateDocument implements Serializable {
 			bw.write(NEWLINE);
 			
 			//---> line 5: Titulo: 
-//			linea=tabular(3)+"ESPECIES VALORADAS UTILIZADAS"; 
-//			bw.write(linea+NEWLINE);
+			linea=tabular(3)+"ESPECIES VALORADAS UTILIZADAS"; 
+			bw.write(linea+NEWLINE);
 			
 			//---> line 6: linea
-//			linea=tabular(3)+"-----------------------------";
-//			bw.write(linea+NEWLINE);
+			linea=tabular(3)+"-----------------------------";
+			bw.write(linea+NEWLINE);
 			
 			//---> line 7: Valores: Especies Valorada, serie, del, al, cont, corte
-//			List<Liquidacion>list = ServiceLocator.getLiquidacionManager().BuscarEspeciesValoradas(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId());
-//			for (Liquidacion especiesValorada: list ){
-//				longitud_C=especiesValorada.getTipoComprobante().getDenominacion().toString().length();
-//				linea = tabular(3)+especiesValorada.getTipoComprobante().getDenominacion()+tabular(22-longitud_C)+"Del: "+especiesValorada.getBoletoInicial();
-//				linea += tabular(3)+"Al: "+especiesValorada.getboletoFinal()+tabular(3)+"Serie: "+especiesValorada.getSerie();
-//				longitud_C=especiesValorada.getCantidadBoletos().toString().length();
-//				linea += tabular(3)+"Cant:"+tabular(1-longitud_C+1)+especiesValorada.getCantidadBoletos()+tabular(3)+"Corte: "+tabular(1-longitud_C)+especiesValorada.getCorte();
-//				bw.write(linea+NEWLINE);
-//			}
+			List<Liquidacion>list = ServiceLocator.getLiquidacionManager().BuscarEspeciesValoradas(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId());
+			for (Liquidacion especiesValorada: list ){
+				longitud_C=especiesValorada.getTipoComprobante().getDenominacion().toString().length();
+				linea = tabular(3)+especiesValorada.getTipoComprobante().getDenominacion()+tabular(22-longitud_C)+"Serie: "+especiesValorada.getSerie()+" ";
+				linea +="Del: "+especiesValorada.getBoletoInicial();
+				linea += " Al: "+especiesValorada.getboletoFinal()+tabular(3);
+				longitud_C=especiesValorada.getCantidadBoletos().toString().length();
+				linea += tabular(3)+"Cant:"+tabular(1-longitud_C+1)+especiesValorada.getCantidadBoletos()+tabular(3)+"Corte: "+tabular(1-longitud_C)+especiesValorada.getCorte();
+				bw.write(linea+NEWLINE);
+			}
 					
 			Liquidacion liquidacion2 = ServiceLocator.getLiquidacionManager().buscarRptLiquidacionTurno(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId());
 			
@@ -1079,15 +1082,17 @@ public class CreateDocument implements Serializable {
 			bw.write(linea+NEWLINE);
 			
 			//---> line 15: --> Prepagado
-			longitud_C=liquidacion2.getCantidadPrepagado().toString().length();
-			longitud_M=(int) liquidacion2.getMontoPrepagado();
-			longitud_M = longitud_M.toString().length();
-			if (longitud_M==4)
-				longitud_M += +1;
-			else if (longitud_M==5)
-				longitud_M += +2;
-			linea=tabular(3)+"PREPAGADOS"+tabular(38-longitud_C)+liquidacion2.getCantidadPrepagado()+tabular(19-longitud_M)+Util.toNumberFormat(liquidacion2.getMontoPrepagado(),2);
-			bw.write(linea+NEWLINE);
+			if(liquidacion2.getCantidadPrepagado() > 0){
+				longitud_C=liquidacion2.getCantidadPrepagado().toString().length();
+				longitud_M=(int) liquidacion2.getMontoPrepagado();
+				longitud_M = longitud_M.toString().length();
+				if (longitud_M==4)
+					longitud_M += +1;
+				else if (longitud_M==5)
+					longitud_M += +2;
+				linea=tabular(3)+"PREPAGADOS"+tabular(38-longitud_C)+liquidacion2.getCantidadPrepagado()+tabular(19-longitud_M)+Util.toNumberFormat(liquidacion2.getMontoPrepagado(),2);
+				bw.write(linea+NEWLINE);
+			}
 			
 			//---> line 16: --> Creditos
 			longitud_C=liquidacion2.getCantidadCreditos().toString().length();
@@ -1100,6 +1105,7 @@ public class CreateDocument implements Serializable {
 			linea=tabular(3)+"CREDITOS"+tabular(40-longitud_C)+liquidacion2.getCantidadCreditos()+tabular(19-longitud_M)+Util.toNumberFormat(liquidacion2.getMontoCreditos(),2);
 			bw.write(linea+NEWLINE);
 			
+			//Co0mentado por MAOE 27/06/2021, TRANSMAR NO MANEJA POOL
 			//---> line 16: --> Venta Seguros
 //			longitud_C=String.valueOf(cantidadVentasSeguro).length();
 //			longitud_M=(int) montoTotalVentasSeguro;			
@@ -1112,35 +1118,35 @@ public class CreateDocument implements Serializable {
 //			bw.write(linea+NEWLINE);
 			
 			//---> line 16: --> Venta Pool
-			longitud_C=String.valueOf(cantidadVentasPoolEfectivo).length();
-			longitud_M=(int) montoTotalVentasPoolEfectivo.doubleValue();			
-			longitud_M = longitud_M.toString().length();
-			if (longitud_M==4)
-				longitud_M += +1;
-			else if (longitud_M==5)
-				longitud_M += +2;
-			linea=tabular(3)+"VENTA POOL - EFECTIVO"+tabular(27-longitud_C)+cantidadVentasPoolEfectivo+tabular(19-longitud_M)+Util.toNumberFormat(montoTotalVentasPoolEfectivo,2);
-			bw.write(linea+NEWLINE);
+//			longitud_C=String.valueOf(cantidadVentasPoolEfectivo).length();
+//			longitud_M=(int) montoTotalVentasPoolEfectivo.doubleValue();			
+//			longitud_M = longitud_M.toString().length();
+//			if (longitud_M==4)
+//				longitud_M += +1;
+//			else if (longitud_M==5)
+//				longitud_M += +2;
+//			linea=tabular(3)+"VENTA POOL - EFECTIVO"+tabular(27-longitud_C)+cantidadVentasPoolEfectivo+tabular(19-longitud_M)+Util.toNumberFormat(montoTotalVentasPoolEfectivo,2);
+//			bw.write(linea+NEWLINE);
 			
-			longitud_C=String.valueOf(cantidadVentasPoolVisa).length();
-			longitud_M=(int) montoTotalVentasPoolVisa.doubleValue();			
-			longitud_M = longitud_M.toString().length();
-			if (longitud_M==4)
-				longitud_M += +1;
-			else if (longitud_M==5)
-				longitud_M += +2;
-			linea=tabular(3)+"VENTA POOL - VISA"+tabular(31-longitud_C)+cantidadVentasPoolVisa+tabular(19-longitud_M)+Util.toNumberFormat(montoTotalVentasPoolVisa,2);
-			bw.write(linea+NEWLINE);
-			
-			longitud_C=String.valueOf(cantidadVentasPoolMastercard).length();
-			longitud_M=(int) montoTotalVentasPoolMastercard.doubleValue();			
-			longitud_M = longitud_M.toString().length();
-			if (longitud_M==4)
-				longitud_M += +1;
-			else if (longitud_M==5)
-				longitud_M += +2;
-			linea=tabular(3)+"VENTA POOL - MASTER CARD"+tabular(24-longitud_C)+cantidadVentasPoolMastercard+tabular(19-longitud_M)+Util.toNumberFormat(montoTotalVentasPoolMastercard,2);
-			bw.write(linea+NEWLINE);
+//			longitud_C=String.valueOf(cantidadVentasPoolVisa).length();
+//			longitud_M=(int) montoTotalVentasPoolVisa.doubleValue();			
+//			longitud_M = longitud_M.toString().length();
+//			if (longitud_M==4)
+//				longitud_M += +1;
+//			else if (longitud_M==5)
+//				longitud_M += +2;
+//			linea=tabular(3)+"VENTA POOL - VISA"+tabular(31-longitud_C)+cantidadVentasPoolVisa+tabular(19-longitud_M)+Util.toNumberFormat(montoTotalVentasPoolVisa,2);
+//			bw.write(linea+NEWLINE);
+//			
+//			longitud_C=String.valueOf(cantidadVentasPoolMastercard).length();
+//			longitud_M=(int) montoTotalVentasPoolMastercard.doubleValue();			
+//			longitud_M = longitud_M.toString().length();
+//			if (longitud_M==4)
+//				longitud_M += +1;
+//			else if (longitud_M==5)
+//				longitud_M += +2;
+//			linea=tabular(3)+"VENTA POOL - MASTER CARD"+tabular(24-longitud_C)+cantidadVentasPoolMastercard+tabular(19-longitud_M)+Util.toNumberFormat(montoTotalVentasPoolMastercard,2);
+//			bw.write(linea+NEWLINE);
 			
 			
 			//---> line 17:
@@ -1172,39 +1178,40 @@ public class CreateDocument implements Serializable {
 			linea=tabular(3)+interline;
 			bw.write(linea+NEWLINE);
 			
+			//Comentado por MAOE 27/06/2021, TRANSMAR NO MANEJA RECIBOS DE CAJA
 			//---> Recibo de caja - efectivo
 //			linea=tabular(3)+"RECIBOS DE CAJA EFECTIVO"+tabular(17)+"CANTIDAD"+tabular(13)+"IMPORTE";
-			longitud_C=liquidacion2.getCantidadRCCaja().toString().length();
-			longitud_M=(int) liquidacion2.getMontoRC();
-			longitud_M = longitud_M.toString().length(); 
-			if (longitud_M==4)
-				longitud_M += +1;
-			else if (longitud_M==5)
-				longitud_M += +2;
-			linea=tabular(3)+"RECIBOS DE CAJA EFECTIVO"+tabular(24-longitud_C)+liquidacion2.getCantidadRCCaja()+tabular(19-longitud_M)+Util.toNumberFormat(liquidacion2.getMontoRC(),2);;
-			bw.write(linea+NEWLINE);
-			
-			//---> Recibo de caja - tarjate visa
-			longitud_C=liquidacion2.getCantidadTarjetaVisaRC().toString().length();
-			longitud_M=(int) liquidacion2.getMontoTarjetaVisaRC();
-			longitud_M = longitud_M.toString().length(); 
-			if (longitud_M==4)
-				longitud_M += +1;
-			else if (longitud_M==5)
-				longitud_M += +2;
-			linea=tabular(3)+"RECIBOS DE CAJA TARJETA VISA"+tabular(20-longitud_C)+liquidacion2.getCantidadTarjetaVisaRC()+tabular(19-longitud_M)+Util.toNumberFormat(liquidacion2.getMontoTarjetaVisaRC(),2);;
-			bw.write(linea+NEWLINE);
-			
-			//---> Recibo de caja - tarjate Master card
-			longitud_C=liquidacion2.getCantidadTarjetaMasterCardRC().toString().length();
-			longitud_M=(int) liquidacion2.getMontoTarjetaMasterCardRC();
-			longitud_M = longitud_M.toString().length(); 
-			if (longitud_M==4)
-				longitud_M += +1;
-			else if (longitud_M==5)
-				longitud_M += +2;
-			linea=tabular(3)+"RECIBOS DE CAJA TARJETA MASTER CARD"+tabular(13-longitud_C)+liquidacion2.getCantidadTarjetaMasterCardRC()+tabular(19-longitud_M)+Util.toNumberFormat(liquidacion2.getMontoTarjetaMasterCardRC(),2);;
-			bw.write(linea+NEWLINE);
+//			longitud_C=liquidacion2.getCantidadRCCaja().toString().length();
+//			longitud_M=(int) liquidacion2.getMontoRC();
+//			longitud_M = longitud_M.toString().length(); 
+//			if (longitud_M==4)
+//				longitud_M += +1;
+//			else if (longitud_M==5)
+//				longitud_M += +2;
+//			linea=tabular(3)+"RECIBOS DE CAJA EFECTIVO"+tabular(24-longitud_C)+liquidacion2.getCantidadRCCaja()+tabular(19-longitud_M)+Util.toNumberFormat(liquidacion2.getMontoRC(),2);;
+//			bw.write(linea+NEWLINE);
+//			
+//			//---> Recibo de caja - tarjate visa
+//			longitud_C=liquidacion2.getCantidadTarjetaVisaRC().toString().length();
+//			longitud_M=(int) liquidacion2.getMontoTarjetaVisaRC();
+//			longitud_M = longitud_M.toString().length(); 
+//			if (longitud_M==4)
+//				longitud_M += +1;
+//			else if (longitud_M==5)
+//				longitud_M += +2;
+//			linea=tabular(3)+"RECIBOS DE CAJA TARJETA VISA"+tabular(20-longitud_C)+liquidacion2.getCantidadTarjetaVisaRC()+tabular(19-longitud_M)+Util.toNumberFormat(liquidacion2.getMontoTarjetaVisaRC(),2);;
+//			bw.write(linea+NEWLINE);
+//			
+//			//---> Recibo de caja - tarjate Master card
+//			longitud_C=liquidacion2.getCantidadTarjetaMasterCardRC().toString().length();
+//			longitud_M=(int) liquidacion2.getMontoTarjetaMasterCardRC();
+//			longitud_M = longitud_M.toString().length(); 
+//			if (longitud_M==4)
+//				longitud_M += +1;
+//			else if (longitud_M==5)
+//				longitud_M += +2;
+//			linea=tabular(3)+"RECIBOS DE CAJA TARJETA MASTER CARD"+tabular(13-longitud_C)+liquidacion2.getCantidadTarjetaMasterCardRC()+tabular(19-longitud_M)+Util.toNumberFormat(liquidacion2.getMontoTarjetaMasterCardRC(),2);;
+//			bw.write(linea+NEWLINE);
 			
 			//-->Gastos administrativos - Efectivo
 			longitud_C=liquidacion2.getCantidadGastosAdminEfectivo().toString().length();
@@ -1859,11 +1866,11 @@ public class CreateDocument implements Serializable {
 			
 			//---> line 3: Razon social, servicio y ruc
 			String servicio=itinerario.getServicio().getDenominacion();
-			linea = "Transportes EMPRESA S.A.C."+tabular(24)+"Servicio: ";
+			linea = Constantes.empresa+tabular(24)+"Servicio: ";
 			String servicio_o=servicio.toUpperCase().toString().substring(0,1)+ servicio.toLowerCase().substring(1, servicio.toString().length());
 			linea +=servicio_o;
 			longitud_C= servicio_o.toString().length();
-			String ruc="10296332220";
+			String ruc = Constantes.ruc;
 			linea +=tabular(45-longitud_C)+"Ruc: "+ruc;
 			bw.write(linea+NEWLINE);
 			
@@ -1956,6 +1963,7 @@ public class CreateDocument implements Serializable {
 		WndManifiesto wndmanifiesto = new WndManifiesto();
 		Integer longitud_C=0;
 		String fichero="";
+		totalManifiesto=0.00;
 		if(esManiesto==true){
 //			fichero = Constantes.DIRECTORY_MANIFIESTOS + "MANPAX-"+itinerario.getId()+"-"+rotulo+".txt";
 			fichero = Constantes.DIRECTORY_MANIFIESTOS+Constantes.CLAVE_PAHT + "MANPAX"+itinerario.getId()+"-"+rotulo+".txt";
@@ -1978,22 +1986,22 @@ public class CreateDocument implements Serializable {
 			linea = tabular(54)+title;
 			bw.write(linea + NEWLINE);
 			//---> line 2:
-			linea = "Transportes EMPRESA S.A.C.";
-			String ruc="10296332220";
+			linea = Constantes.empresa;
+			String ruc= Constantes.ruc;
 			linea +=tabular(89)+"RUC: "+ruc;
 			bw.write(linea+NEWLINE);
 			//---> line 3:
-			String ofPrincipal="Av. Tomas Marsano 2525";
-			String centraTelf="454-4641";
-			linea="Of.Principal: "+ofPrincipal+tabular(11)+"Central Telf.: "+centraTelf+tabular(25);
+			String ofPrincipal = Constantes.direccion_empresa;
+			String centraTelf = Constantes.nro_telefono;
+			linea="Of.Principal: "+ofPrincipal+tabular(10)+"Central Telf.: "+centraTelf+tabular(23);
 			if(esManiesto==true)
 				linea+="Nro.Manif.: "+manifiesto.getNumeroManifiesto();
 			bw.write(linea+NEWLINE);
-			//---> line 4:
-			String user=usuario.getApellidoPaterno()+" "+usuario.getApellidoMaterno()+", "+usuario.getNombre();
-			longitud_C=user.length();
-			linea="Usuario   : "+user+tabular(88-longitud_C)+"Cod.Serv : ";
-			bw.write(linea+NEWLINE);
+			//---> line 4:  Comentado por MAOE 27/06/2021, se movio el usuario al pie de pagina
+//			String user=usuario.getApellidoPaterno()+" "+usuario.getApellidoMaterno()+", "+usuario.getNombre();
+//			longitud_C=user.length();
+//			linea="Usuario   : "+user+tabular(88-longitud_C)+"Cod.Serv : ";
+//			bw.write(linea+NEWLINE);
 			//---> line 5:(Agencia - Nro.Itinerario - Bus)
 			String agenciA=agencia.getDenominacion();
 			longitud_C=agenciA.length();
@@ -2068,7 +2076,8 @@ public class CreateDocument implements Serializable {
 				bw.write(linea+NEWLINE);
 				//---> linea 9:(Terramoza -  Salida - Servicio)
 				String tripulante=""; String salida=""; String dniTerramoza=""; 
-				if(!(itinerario.getBus()==null)){
+				//Se agrego la condicion en el if porque la tripulante ya no es obligatorio, por MAOE 27/06/2021
+				if(!(itinerario.getBus()==null) && itinerario.getBus().getProgramacionServicio().getTripulante()!=null ){
 					Personal terramoza = new Personal(); 
 					terramoza=itinerario.getBus().getProgramacionServicio().getTripulante();
 					tripulante=terramoza.toString();//.getApellidoPaterno()+" "+terramoza.getApellidoMaterno()+", "+terramoza.getNombre();
@@ -2168,27 +2177,35 @@ public class CreateDocument implements Serializable {
 			
 			longitud_C=list.size();longitud_C=longitud_C.toString().length();
 			linea+="Total Pasajeros : "+list.size()+tabular(23-longitud_C);
-			linea+=rotulo;
+			//Se movio mas abajo MAOE 27/06/2021
+//			linea+=rotulo+tabular(8);
+			linea+="Total Manifiesto: S/ "+Util.toNumberFormat(totalManifiesto, 2);
+			
 			bw.write(linea+NEWLINE);		
 			//---> autorizacion SUNAT
 			if(esManiesto==true){
 				linea="Aut. SUNAT Nro : "+manifiesto.getAutorizacionSunat();
 				bw.write(linea+NEWLINE);
-				//---> centro computo - lineas punteadas 
-				linea="Centro de Computo"+tabular(16);
+				//---> centro computo - lineas punteadas Indicador si es copia SUNAT, TRANSPORTISTA o ARCHIVO 
+				linea=rotulo+tabular(33-rotulo.length());
 				linea+=".................."+tabular(10);
 				linea+=".................."+tabular(10);
 				linea+=".................."+tabular(9);
 				linea+="..................";
 				bw.write(linea+NEWLINE);
 				//---> 
-				linea="EMPRESA"+tabular(30);
-				linea+="Por la Empresa"+tabular(15);
+				linea="EMPRESA"+tabular(25);
+				linea+=Constantes.empresa+tabular(13);
 				linea+="Conductor (1)"+tabular(15);
 				linea+="Conductor (2)"+tabular(14);
 				linea+="Conductor (3)";
 				bw.write(linea+NEWLINE);
-				// linea : salto de linea
+				//---> line User:
+				String user=usuario.getApellidoPaterno()+" "+usuario.getApellidoMaterno()+", "+usuario.getNombre();
+				longitud_C=user.length();
+				linea="Usuario   : "+user; //+tabular(88-longitud_C)+"Cod.Serv : ";
+				bw.write(linea+NEWLINE);
+				// linea : salto de linea				
 				bw.write(NEWLINE);
 				// linea : observaciones
 				linea="OBSERVACIONES : ";
@@ -2386,6 +2403,7 @@ public class CreateDocument implements Serializable {
 							linea+=formaPago.toUpperCase()+tabular(longFormaPago-longitud_C)+"| ";
 							/*IMPORTE*/
 							String simbolo="";
+							totalManifiesto += ventaPasaje.getImportePagado();
 							importe=Util.toNumberFormat(ventaPasaje.getImportePagado(),2);
 							longitud_C=importe.length();
 							if(longitud_C > 0){
@@ -2424,8 +2442,8 @@ public class CreateDocument implements Serializable {
 					
 //		String fichero = Constantes.DIRECTORY_DETALLE_LIQUIDACION +nameFile;
 		String fichero = Constantes.DIRECTORY_DETALLE_LIQUIDACION +Constantes.CLAVE_PAHT +nameFile;
-		String empresa="TRANSPORTES EMPRESA S.A.C."+tabular(85)+"RUC :"+"10296332220";
-		String ofiCentral="AV. TOMAS MARSANO 2525 ";
+		String empresa = Constantes.empresa+tabular(85)+"RUC :"+Constantes.ruc;
+		String ofiCentral=Constantes.direccion_empresa;
 		String title="LIQUIDACION VENTA DE PASAJES";
 		String encabezado="|TRANSACCION|";
 //		encabezado+=" N.CONTROL|";
@@ -2752,7 +2770,7 @@ public class CreateDocument implements Serializable {
 			String columnas="|   FECHA    |   BOLETO    |            PASAJERO                           | TIPPAX | IMPORTE |            USUARIO             |";
 			
 			
-			linea = tabular(base)+"TRANSPORTES EL PINO S.A.C."+tabular(85)+"RUC : 20502324927";
+			linea = tabular(base)+Constantes.empresa+tabular(85)+"RUC : "+Constantes.ruc;
 			bw.write(linea + NEWLINE);
 			linea = tabular(base+50)+"REPORTE VENTA DE SEGUROS";
 			bw.write(linea + NEWLINE);
@@ -2861,7 +2879,7 @@ public class CreateDocument implements Serializable {
 			bw.write(tabular(115) + Constantes.FORMAT_DATE_TIME_24H.format(new Date())+ NEWLINE);
 			// 
 			bw.write(tabular(base)+interliniado+NEWLINE);
-			String label="RAZON SOCIAL       : TRANSPORTES EL PINO S.A.C.";
+			String label="RAZON SOCIAL       : "+Constantes.empresa;
 			linea = tabular(base)+label;
 			linea+=tabular(60)+"Nro. HRE :"+hre.getNumeroHojaRutaID().getIdNumeroHojaRuta(); //programacion.getHojaRuta().toString();
 			bw.write(linea+NEWLINE);

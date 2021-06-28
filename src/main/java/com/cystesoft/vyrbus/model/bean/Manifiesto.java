@@ -25,6 +25,128 @@ public class Manifiesto extends GenericBean implements java.io.Serializable {
 	private Integer mee;
 	private Agencia agencia;
 	
+	//Variables para la devolucion del ISC
+	private String ruc;
+	private String per4949;
+	private String periodo;	
+	private String puntoPartidaDepartamento;
+	private String puntoPartidaDistrito;
+	private String puntoLlegadaDepartamento;
+	private String puntoLlegadaDistrito;
+	private Double importe;
+	
+	/**
+	 * @return the ruc
+	 */
+	public String getRuc() {
+		return ruc;
+	}
+
+	/**
+	 * @param ruc the ruc to set
+	 */
+	public void setRuc(String ruc) {
+		this.ruc = ruc;
+	}
+
+	/**
+	 * @return the per4949
+	 */
+	public String getPer4949() {
+		return per4949;
+	}
+
+	/**
+	 * @param per4949 the per4949 to set
+	 */
+	public void setPer4949(String per4949) {
+		this.per4949 = per4949;
+	}
+
+	/**
+	 * @return the periodo
+	 */
+	public String getPeriodo() {
+		return periodo;
+	}
+
+	/**
+	 * @param periodo the periodo to set
+	 */
+	public void setPeriodo(String periodo) {
+		this.periodo = periodo;
+	}
+
+	/**
+	 * @return the importe
+	 */
+	public Double getImporte() {
+		return importe;
+	}
+
+	/**
+	 * @param importe the importe to set
+	 */
+	public void setImporte(Double importe) {
+		this.importe = importe;
+	}
+
+	/**
+	 * @return the puntoPartidaDepartamento
+	 */
+	public String getPuntoPartidaDepartamento() {
+		return puntoPartidaDepartamento;
+	}
+
+	/**
+	 * @param puntoPartidaDepartamento the puntoPartidaDepartamento to set
+	 */
+	public void setPuntoPartidaDepartamento(String puntoPartidaDepartamento) {
+		this.puntoPartidaDepartamento = puntoPartidaDepartamento;
+	}
+
+	/**
+	 * @return the puntoPartidaDistrito
+	 */
+	public String getPuntoPartidaDistrito() {
+		return puntoPartidaDistrito;
+	}
+
+	/**
+	 * @param puntoPartidaDistrito the puntoPartidaDistrito to set
+	 */
+	public void setPuntoPartidaDistrito(String puntoPartidaDistrito) {
+		this.puntoPartidaDistrito = puntoPartidaDistrito;
+	}
+
+	/**
+	 * @return the puntoLlegadaDepartamento
+	 */
+	public String getPuntoLlegadaDepartamento() {
+		return puntoLlegadaDepartamento;
+	}
+
+	/**
+	 * @param puntoLlegadaDepartamento the puntoLlegadaDepartamento to set
+	 */
+	public void setPuntoLlegadaDepartamento(String puntoLlegadaDepartamento) {
+		this.puntoLlegadaDepartamento = puntoLlegadaDepartamento;
+	}
+
+	/**
+	 * @return the puntoLlegadaDistrito
+	 */
+	public String getPuntoLlegadaDistrito() {
+		return puntoLlegadaDistrito;
+	}
+
+	/**
+	 * @param puntoLlegadaDistrito the puntoLlegadaDistrito to set
+	 */
+	public void setPuntoLlegadaDistrito(String puntoLlegadaDistrito) {
+		this.puntoLlegadaDistrito = puntoLlegadaDistrito;
+	}
+
 	private Set<VentaPasaje> ventaPasajes = new HashSet<VentaPasaje>(0);
 
 	public Manifiesto() {

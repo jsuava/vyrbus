@@ -277,7 +277,9 @@ public class WndManifiesto extends WndBase {
 								manifiesto.setCopiloto(programacion.getCopiloto().toString());
 								if(programacion.getCopilotoAuxiliar()!=null)
 									manifiesto.setCopilotoAuxiliar(programacion.getCopilotoAuxiliar().toString());
-								manifiesto.setTripulante(programacion.getTripulante().toString());
+								//
+								if(programacion.getTripulante() != null)
+									manifiesto.setTripulante(programacion.getTripulante().toString());
 //								manifiesto.setPiloto(lbPiloto.getValue().toString().substring(1).trim());
 //								manifiesto.setCopiloto(lbcopiloto.getValue().toString().substring(1).trim());
 								manifiesto.setCertificadoHabilitacion(bus.getDocumentoBus().getNumeroDocumento());
@@ -392,8 +394,10 @@ public class WndManifiesto extends WndBase {
 			lbPiloto.setValue(itinerario.getBus().getProgramacionServicio().getPiloto().toString());
 			lbcopiloto.setValue(itinerario.getBus().getProgramacionServicio().getCopiloto().toString());
 			if(itinerario.getBus().getProgramacionServicio().getCopilotoAuxiliar()!=null)
-				lbCopilotoAux.setValue(itinerario.getBus().getProgramacionServicio().getCopilotoAuxiliar().toString());				
-			lbTripulante.setValue(itinerario.getBus().getProgramacionServicio().getTripulante().toString());
+				lbCopilotoAux.setValue(itinerario.getBus().getProgramacionServicio().getCopilotoAuxiliar().toString());
+			//Agregado por MAOE 27/06/2021, por PANDEMIA para TRANSMAR
+			if(itinerario.getBus().getProgramacionServicio().getTripulante() != null)
+				lbTripulante.setValue(itinerario.getBus().getProgramacionServicio().getTripulante().toString());
 		}
 		lbFechaSalida.setValue(Constantes.FORMAT_DATE.format(itinerario.getFechaPartida())+" "+itinerario.getHoraPartida());
 		lbFechaLlegada.setValue(Constantes.FORMAT_DATE.format( itinerario.getFechaLlegada())+" "+itinerario.getHoraLlegada());
