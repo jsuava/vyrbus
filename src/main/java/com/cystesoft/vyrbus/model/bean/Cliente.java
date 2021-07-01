@@ -36,6 +36,15 @@ public class Cliente extends GenericBean implements java.io.Serializable {
 	}
 
 	
+	/**
+	 * @param id
+	 */
+	public Cliente(Long id) {
+		super();
+		this.id = id;
+	}
+
+
 	public Long getId() {
 		return this.id;
 	}

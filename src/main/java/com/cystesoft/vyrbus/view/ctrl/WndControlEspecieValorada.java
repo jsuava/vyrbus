@@ -251,11 +251,12 @@ public class WndControlEspecieValorada extends WndOpcionesMantenimiento {
 			ControlEspecieValoradaID controlEspecieValoradaID = new ControlEspecieValoradaID();
 			controlEspecieValoradaID.setIdTipoComprobante(tipoComprobante.getId());
 			controlEspecieValoradaID.setIdUsuarioHardware(usuarioHardware.getId());
+			controlEspecieValoradaID.setStrSerie(txtSerie.getText().trim().toString().toUpperCase());
 			
 			controlEspecieValorada.setControlEspecieValoradaID(controlEspecieValoradaID);
 			controlEspecieValorada.setTipoComprobante(tipoComprobante);
 			controlEspecieValorada.setUsuarioHardware(usuarioHardware);
-			controlEspecieValorada.setSerie(txtSerie.getText().trim().toString());
+			controlEspecieValorada.setSerie(txtSerie.getText().trim().toString().toUpperCase());
 			controlEspecieValorada.setCorrelativoInicio(itCorrelativoInicio.getValue().longValue());
 			controlEspecieValorada.setCorrelativoFin(itCorrelativoFin.getValue().longValue());
 			controlEspecieValorada.setCorrelativoActual(itCorrelativoActual.getValue().longValue());

@@ -47,6 +47,14 @@ public class Pasajero extends GenericBean implements java.io.Serializable {
 	public Pasajero() {
 	}
 
+	/**
+	 * @param id
+	 */
+	public Pasajero(Long id) {
+		super();
+		this.id = id;
+	}
+
 	public Long getId() {
 		return this.id;
 	}

@@ -117,6 +117,7 @@ public class RESTCiva implements Serializable{
 	
 	private static HttpResponse<JsonNode> getPOST_REST_RUC(String ruc, String parametros)throws Exception{
 //		Unirest.setProxy(new HttpHost("192.168.50.1", 8080));
+		System.out.println(URI_RUC+parametros+TOKEN_DOCIDE);
 		HttpResponse<JsonNode> response = Unirest.get(URI_RUC+parametros+TOKEN_DOCIDE)
 //				  .header("cache-control", "no-cache")
 //				  .header("postman-token", "dca64e95-c3bb-93a4-e90f-a1530e577510")

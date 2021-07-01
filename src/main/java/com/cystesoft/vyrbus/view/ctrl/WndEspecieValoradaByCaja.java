@@ -431,8 +431,9 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 		cmbAgencia.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
-				Util.limpiarCombobox(cmbTipoComprobante);
-				UtilData.cargarUsuarioHasrdware(cmbUsuarioHardarware, false, ((Agencia)cmbAgencia.getSelectedItem().getValue()));	
+//				Util.limpiarCombobox(cmbTipoComprobante);
+				UtilData.cargarUsuarioHasrdware(cmbUsuarioHardarware, false, ((Agencia)cmbAgencia.getSelectedItem().getValue()));
+//				onLoadTipoComprobante(cmbTipoComprobante);
 			}
 		});		
 		

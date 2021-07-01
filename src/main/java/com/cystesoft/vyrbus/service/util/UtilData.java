@@ -751,6 +751,31 @@ public class UtilData extends Window {
 		}
 	}
 	
+	public static void cargarTipoComprobanteSunat(Combobox combobox, boolean todos) {
+		try{
+			TreeMap<String, Object>parametros = new TreeMap<String, Object>();
+			parametros.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+			
+			ArrayList<String> criteriosOrdenar = new ArrayList<String>();
+			criteriosOrdenar.add("denominacion");
+			ArrayList<TipoComprobante> lstComprobantes = ServiceLocator.getTipoComprobanteManager().buscarPorX(parametros, criteriosOrdenar);
+			cargarGenericData(combobox, todos);	
+			for (int l = 0; l < lstComprobantes.size(); l ++) {
+				TipoComprobante oTipoComprobante = lstComprobantes.get(l);
+				if(oTipoComprobante.getId()==Constantes.ID_TIPCOM_BOLETA_VENTA || oTipoComprobante.getId()==Constantes.ID_TIPCOM_FACTURA ||
+						oTipoComprobante.getId()==Constantes.ID_TIPCOM_NOTA_CREDITO || oTipoComprobante.getId()==Constantes.ID_TIPCOM_NOTA_DEBITO) {
+					Comboitem oComboitem = new Comboitem();
+		
+					oComboitem.setValue(oTipoComprobante);
+					oComboitem.setLabel(oTipoComprobante.getDenominacion());
+		
+					combobox.appendChild(oComboitem);
+				}
+			}
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
 	
 	private static void cargarTipoFlota(Combobox combobox, Boolean todos) {
 		try{

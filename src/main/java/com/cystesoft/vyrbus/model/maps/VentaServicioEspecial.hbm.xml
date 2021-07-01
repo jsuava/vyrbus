@@ -1,0 +1,152 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.cystesoft.vyrbus.model.bean.VentaServicioEspecial" table="VRTVENSERESP" schema="VYRBUSTRANSMAR">
+        <comment>Entidad que almacena los comprobantes emitidos por Servicios Especiales.</comment>
+        <id name="id" type="java.lang.Long">
+            <column name="VENSERESP_ID" precision="18" scale="0" />
+            <generator class="sequence">
+                <param name="sequence">SEQ_VRTVENSERESP_ID</param>
+            </generator>
+        </id>
+        <many-to-one name="tipoComprobante" class="com.cystesoft.vyrbus.model.bean.TipoComprobante" fetch="select">
+            <column name="TIPCOM_ID" precision="2" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 2.</comment>
+            </column>
+        </many-to-one>
+        <property name="numeroComprobante" type="java.lang.String">
+            <column name="C_NUMCOM" length="13">
+            	<comment>Numero de comprobante.</comment>
+            </column>
+        </property>
+        <property name="fechaEmision" type="java.util.Date">
+            <column name="D_FECEMI" length="7">
+            	<comment>Fecha de emision del comprobante.</comment>
+            </column>
+        </property>
+        <many-to-one name="cliente" class="com.cystesoft.vyrbus.model.bean.Cliente" fetch="select">
+            <column name="CLIENTE_ID" precision="10" scale="0">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 10.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="pasajero" class="com.cystesoft.vyrbus.model.bean.Pasajero" fetch="select">
+            <column name="PASAJERO_ID" precision="10" scale="0">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 10.</comment>
+            </column>
+        </many-to-one>        
+        <many-to-one name="tipoDocumento" class="com.cystesoft.vyrbus.model.bean.TipoDocumento" fetch="select">
+            <column name="TIPDOC_ID" precision="2" scale="0">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 2.</comment>
+            </column>
+        </many-to-one>
+        <property name="numeroDocumento" type="java.lang.String">
+            <column name="C_NUMDOC" length="11">
+            	<comment>Numero de documento del cliente.</comment>
+            </column>
+        </property>
+        <property name="nombreCliente" type="java.lang.String">
+            <column name="C_NOMCLI" length="100">
+            	<comment>Nombre del cliente al se se emite el comprobante.</comment>
+            </column>
+        </property>
+        <property name="direccion" type="java.lang.String">
+            <column name="C_DIRECCION" length="100">
+            	<comment>Direccion del cliente.</comment>
+            </column>
+        </property>
+        <many-to-one name="formaPago" class="com.cystesoft.vyrbus.model.bean.FormaPago" fetch="select">
+            <column name="FORPAG_ID" precision="2" scale="0">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 2.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="tipoCobranza" class="com.cystesoft.vyrbus.model.bean.TipoCobranza" fetch="select">
+            <column name="TIPCOB_ID" precision="2" scale="0">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 2.</comment>
+            </column>
+        </many-to-one>
+        <property name="importe" type="java.lang.Double">
+            <column name="N_IMPORTE" precision="10" scale="2" not-null="true">
+                <comment>Importe del documento sin IGV.</comment>
+            </column>
+        </property>
+        <property name="igv" type="java.lang.Double">
+            <column name="N_IGV" precision="10" scale="2" not-null="true">
+                <comment>Importe del IGV.</comment>
+            </column>
+        </property>
+        <property name="total" type="java.lang.Double">
+            <column name="N_TOTAL" precision="10" scale="2" not-null="true">
+                <comment>Importe total del documwnto incluido el IGV.</comment>
+            </column>
+        </property>
+        <property name="glosa" type="java.lang.String">
+            <column name="C_GLOSA" length="255">
+            	<comment>Detalle del documento.</comment>
+            </column>
+        </property>
+        <many-to-one name="tipoNota" class="com.cystesoft.vyrbus.model.bean.TipoNota" fetch="select">
+        	<column name="TIPNOTA_ID" precision="5" scale="0">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+            </column>
+        </many-to-one>
+        <property name="enviadoSFE" type="java.lang.Integer">
+            <column name="N_ENVSFE" precision="1" scale="0">
+            	<comment>Determinar si fue enviado al servidor de facturacion electronica,0=No enviado; 1=Enviado</comment>
+            </column>
+        </property>
+        <property name="fechaEnvioSFE" type="java.util.Date">
+            <column name="D_FECENVSFE" length="7">
+                <comment>Fecha hora enque fue enviado al servidor de facturacion electronica.</comment>
+            </column>
+        </property>        
+        <many-to-one name="agencia" class="com.cystesoft.vyrbus.model.bean.Agencia" fetch="select">
+            <column name="AGENCIA_ID" precision="5" scale="0">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="usuarioHardware" class="com.cystesoft.vyrbus.model.bean.UsuarioHardware" fetch="select">
+            <column name="USUHARD_ID" precision="5" scale="0">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+            </column>
+        </many-to-one>
+        <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+        <property name="estadoRegistro" type="java.lang.String">
+            <column name="C_ESTREG" length="1" not-null="true">
+                <comment>Estado de registro A(Activo), I(Inactivo).</comment>
+            </column>
+        </property>
+        <property name="fechaInsercion" type="java.util.Date">
+            <column name="AUDFECINS" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioInsercion" type="java.lang.String">
+            <column name="AUDUSUINS" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipInsercion" type="java.lang.String">
+            <column name="AUDIPINSE" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="fechaModificacion" type="java.util.Date">
+            <column name="AUDFECMOD" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioModificacion" type="java.lang.String">
+            <column name="AUDUSUMOD" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipModificacion" type="java.lang.String">
+            <column name="AUDIPMODI" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <!-- 		END CAMPOS DE AUDITORIA	 	-->
+    </class>
+</hibernate-mapping>

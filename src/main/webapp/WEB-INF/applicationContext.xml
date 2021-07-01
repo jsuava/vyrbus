@@ -432,7 +432,10 @@
    	</bean>
    	<bean id="detalleFlotaHREDAO" class="com.cystesoft.vyrbus.model.dao.impl.DetalleFlotaHREDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
-   	</bean>		
+   	</bean>
+   	<bean id="ventaServicioEspecialDAO" class="com.cystesoft.vyrbus.model.dao.impl.VentaServicioEspecialDAOImpl">
+   		<property name="sessionFactory" ref="sessionFactory" />
+   	</bean>
    	
 	
 	<!-- 	PARA LOS CONTROLADORES DE LAS DIFERENTES VENTANAS	 -->
@@ -781,6 +784,10 @@
 	</bean>
 	<bean id="comprobantesBloqueadosManager" class="com.cystesoft.vyrbus.service.business.impl.ComprobantesBloqueadosManagerImpl">
 	   <property name="comprobantesBloqueadosDAO" ref="comprobantesBloqueadosDAO"/>
+	</bean>
+	<bean id="ventaServicioEspecialManager" class="com.cystesoft.vyrbus.service.business.impl.VentaServicioEspecialManagerImpl">
+	   <property name="ventaServicioEspecialDAO" ref="ventaServicioEspecialDAO"/>
+	   <property name="controlEspecieValoradaDAO" ref="controlEspecieValoradaDAO"></property>
 	</bean>
 	
 <!-- 	VENTA DE SEGUROS -->

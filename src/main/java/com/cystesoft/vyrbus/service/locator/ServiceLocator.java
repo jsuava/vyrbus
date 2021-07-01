@@ -928,4 +928,8 @@ public class ServiceLocator {
 		return (TarifaRegularAudManager) SpringUtil.getBean("tarifaRegularAudManager", TarifaRegularAudManager.class);
 	}
 	
+	public static VentaServicioEspecialManager getVentaServicioEspecialManager() {
+		return (VentaServicioEspecialManager) SpringUtil.getBean("ventaServicioEspecialManager", VentaServicioEspecialManager.class);
+	}
+	
 }
