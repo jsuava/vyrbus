@@ -160,6 +160,11 @@ public class ManifiestoManagerImpl implements ManifiestoManager{
 		// TODO Auto-generated method stub
 		getManifiestoDAO().guarda(manifiesto);
 	}
+	
+	@Override
+	public List<Manifiesto> buscarDevolucionIsc(String fechaInicial, String fechaFinal, String per4949, String periodo)  {
+		return getManifiestoDAO().buscarDevolucionIsc(fechaInicial, fechaFinal, per4949, periodo);
+	}
 
 
 }

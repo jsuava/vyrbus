@@ -113,4 +113,14 @@ public interface ManifiestoManager {
 	 * @throws Exception
 	 */
 	public void actualizar(Manifiesto manifiesto)throws Exception;
+	
+	/**
+	 * Busqueda manifiestos emitidas, para el mantenimiento
+	 * @param fechaInicial	: fecha inicial de la busqueda
+	 * @param fechaFinal	: fecha final de la busqueda
+	 * @param per4949		: parametro otorgado por SUNAT, el usuario debe ingresarlo
+	 * @param periodo		: perodo al cual pertenece el ISC
+	 * 
+	 */
+	public List<Manifiesto> buscarDevolucionIsc(String fechaInicial, String fechaFinal, String per4949, String periodo);
 }	

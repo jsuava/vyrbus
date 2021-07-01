@@ -59,6 +59,7 @@
 	 			<toolbar orient="horizontal">
 			  	 	<toolbarbutton  label="Nuevo" id="tbtNuevo" sclass="font-weight:bold" style="color:black"  image="resources/toolbar/mp_toolbarNuevo.png" width="80px"/>
 			  	 	<toolbarbutton  label="Modificar"  id="tbtModificar" style="color:black"  image="resources/toolbar/mp_toolbarModificar.png" width="80px" />
+			  	 	<toolbarbutton  label="Buscar"  id="tbtBuscar" style="color:black"  image="resources/toolbar/mp_toolbarBuscar.png" width="80px" />
 			  	 	<toolbarbutton  label="Cancelar"  id="tbtCancelar" style="color:black"  image="resources/toolbar/mp_toolbarCancelar.png" width="80px" />
 			  	 	<toolbarbutton  label="Guargar"  id="tbtGuardar" style="color:black"  image="resources/toolbar/mp_toolbarGuardar.png" width="80px" /> 
 			  	 	<toolbarbutton  label="Eliminar"  id="tbtEliminar" style="color:black"  image="resources/toolbar/mp_toolbarEliminar.png" width="80px" />

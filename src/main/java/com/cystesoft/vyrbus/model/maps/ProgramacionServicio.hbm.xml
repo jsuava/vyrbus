@@ -36,8 +36,9 @@
                 <comment>Identificador unico de la entidad, tamanio de la clave primaria 10.</comment>
             </column>
         </many-to-one>
+        <!-- Se retiro la obligatoriedad de la Tripulante  por tema de PANDEMIA -->
         <many-to-one name="tripulante" class="com.cystesoft.vyrbus.model.bean.Personal">
-            <column name="PERSONAL_IDTERRAMOZA" precision="10" scale="0" not-null="true">
+            <column name="PERSONAL_IDTERRAMOZA" precision="10" scale="0" >
                 <comment>Identificador unico de la entidad, tamanio de la clave primaria 10.</comment>
             </column>
         </many-to-one>

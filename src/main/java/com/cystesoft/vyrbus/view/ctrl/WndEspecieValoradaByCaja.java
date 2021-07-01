@@ -186,13 +186,14 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 			ControlEspecieValoradaID controlEspecieValoradaID = new ControlEspecieValoradaID();
 			controlEspecieValoradaID.setIdTipoComprobante(tipoComprobante.getId());
 			controlEspecieValoradaID.setIdUsuarioHardware(usuarioHardware.getId());
+			controlEspecieValoradaID.setStrSerie(txtSerie.getText().toUpperCase().trim().toString());
 			
 			controlEspecieValorada.setAgencia(usuarioHardware.getAgencia());
 			
 			controlEspecieValorada.setControlEspecieValoradaID(controlEspecieValoradaID);
 			controlEspecieValorada.setTipoComprobante(tipoComprobante);
 			controlEspecieValorada.setUsuarioHardware(usuarioHardware);
-			controlEspecieValorada.setSerie(txtSerie.getText().trim().toString());
+			controlEspecieValorada.setSerie(txtSerie.getText().toUpperCase().trim().toString());
 			controlEspecieValorada.setSecuenciador(correlativo);
 			controlEspecieValorada.setCorrelativoInicio(new Long(0));
 			controlEspecieValorada.setCorrelativoFin(new Long(0));

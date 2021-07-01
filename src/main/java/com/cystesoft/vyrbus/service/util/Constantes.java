@@ -99,7 +99,7 @@ public class Constantes {
 	public static final int TRUE_VALUE = 1;
 	public static final int FALSE_VALUE = 0;
 	/*	Para las fecha en null	*/
-	public static final Date FECHA_NULL= Util.StringtoDate("01/01/1930", DATE_FORMAT);
+	public static final Date FECHA_NULL= Util.StringtoDate("01/01/1950", DATE_FORMAT);
 	/*	Para el Applet	*/
 	public static final int VALIDAR_APPLET = 1;
 	/* Guarda el valor del IGV actual */
@@ -156,7 +156,7 @@ public class Constantes {
 	//http://168.121.236.46:8080/
 	//public static final String SERVER_HOST = "192.168.0.8:8080";
 	public static final String SERVER_HOST = "localhost:8080";
-	//public static final String SERVER_HOST = "168.121.236.46:8080";
+//	public static final String SERVER_HOST = "168.121.236.46:8080";
 	public static final String SERVER_CONTEXT = Executions.getCurrent().getContextPath();
 	public static final String URL_FORMATOS = SERVER_PROTOCOL+"://"+SERVER_HOST+SERVER_CONTEXT+"/formatos/";
 	public static final String URL_FORMATOS_BOLETOS = URL_FORMATOS+"boletos/";
@@ -590,7 +590,10 @@ public class Constantes {
 	/**
 	 * Número de Ruc de la Empresa
 	 */
-	public static final String ruc="20502324927"; 
+	public static final String empresa="TRANSMAR EXPRESS SAC";
+	public static final String direccion_empresa="AV. NICOLAS ARRIOLA NRO. 197";
+	public static final String nro_telefono="(01)265 0190";
+	public static final String ruc="20501622819"; 
 	public static final String usuario="059979";
 	public static final String clave="xKIx5z";
 	public static final String partida="000530PNR";

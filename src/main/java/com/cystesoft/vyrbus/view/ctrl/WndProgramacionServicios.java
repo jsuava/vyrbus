@@ -307,12 +307,13 @@ public class WndProgramacionServicios extends WndBase {
 			}else{
 				throw new CopilotoNullException();
 			}
-			if (cmbTripulante.getSelectedIndex() >=0 ){
-				if (!(cmbTripulante.getSelectedItem().getValue() instanceof Personal))
-					throw new TripulanteNullException();
-			}else{
-				throw new TripulanteNullException();
-			}
+			//Comentado por MAOE 27/06/2021: TTRANSMAR no necesita Tirpulanet por PANDEMIA
+//			if (cmbTripulante.getSelectedIndex() >=0 ){
+//				if (!(cmbTripulante.getSelectedItem().getValue() instanceof Personal))
+//					throw new TripulanteNullException();
+//			}else{
+//				throw new TripulanteNullException();
+//			}
 			if (cmbbus.getSelectedIndex() >=0 ){
 				if (!(cmbbus.getSelectedItem().getValue() instanceof Bus))
 					throw new BusNullException();
@@ -349,7 +350,8 @@ public class WndProgramacionServicios extends WndBase {
 			if(cmbCopilotoAuxiliar.getSelectedIndex()>0)
 				copilotoAuxiliar = (Personal) cmbCopilotoAuxiliar.getSelectedItem().getValue();
 			
-			Personal tripulante = (Personal) cmbTripulante.getSelectedItem().getValue();
+			//Comentado por MAOE 27/06/2021
+//			Personal tripulante = (Personal) cmbTripulante.getSelectedItem().getValue();
 			Long id = (textboxId.getText().equals("") ? 0 : new Long(textboxId.getText()));
 			programacionServicio.setId(id);
 			programacionServicio.setItinerario(itinerario);
@@ -357,7 +359,8 @@ public class WndProgramacionServicios extends WndBase {
 			programacionServicio.setPiloto(piloto);
 			programacionServicio.setCopiloto(copiloto);
 			programacionServicio.setCopilotoAuxiliar(copilotoAuxiliar);
-			programacionServicio.setTripulante(tripulante);
+			//Comentado por MAOE 27/06/2021
+//			programacionServicio.setTripulante(tripulante);
 			programacionServicio.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 			
 			
@@ -432,8 +435,9 @@ public class WndProgramacionServicios extends WndBase {
 			DlgMessage.information(Messages.getString("WndProgramacionServicios.Information.SeleccionePilo"),cmbPiloto);
 		}catch (CopilotoNullException cpnex){
 			DlgMessage.information(Messages.getString("WndProgramacionServicios.Information.SeleccionCopiloto"),cmbCopiloto);
-		}catch (TripulanteNullException tnex){
-			DlgMessage.information(Messages.getString("WndProgramacionServicios.Information.SeleccioneTripulante"),cmbTripulante);
+		//Comentado por MAOE 27/06/2021
+//		}catch (TripulanteNullException tnex){
+//			DlgMessage.information(Messages.getString("WndProgramacionServicios.Information.SeleccioneTripulante"),cmbTripulante);
 		}catch (BusNullException bnex){
 			DlgMessage.information(Messages.getString("WndProgramacionServicios.Information.SeleccioneBus"),cmbbus);
 		}catch (ItinerarioException inex){
@@ -920,7 +924,9 @@ public class WndProgramacionServicios extends WndBase {
 			/*Carga Pilo, Copiloto, Tripulante y Bus en Ingreso de Datos.*/
 			Util.seleccionarValorItemCombo(Personal.class, cmbPiloto, programacionServicio.getPiloto().getId());
 			Util.seleccionarValorItemCombo(Personal.class, cmbCopiloto, programacionServicio.getCopiloto().getId());
-			Util.seleccionarValorItemCombo(Personal.class, cmbTripulante, programacionServicio.getTripulante().getId());
+			if(programacionServicio.getTripulante() != null){
+				Util.seleccionarValorItemCombo(Personal.class, cmbTripulante, programacionServicio.getTripulante().getId());
+			}
 			if(programacionServicio.getCopilotoAuxiliar()!=null)
 				Util.seleccionarValorItemCombo(Personal.class, cmbCopilotoAuxiliar, programacionServicio.getCopilotoAuxiliar().getId());
 			else

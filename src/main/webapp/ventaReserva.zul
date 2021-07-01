@@ -667,7 +667,7 @@
 																<textbox id="txtDireccionPax" width="75%" onOK="txtTelefono.setFocus(true)" maxlength="100"/>
 															</row>
 															<row style="background:#F7F7F7">
-																<label value="TELÉFONO :"/>
+																<label value="TELÉFONO (*):"/>
 																<textbox id="txtTelefono" onOK="btnUbigeoPax.setFocus(true)" maxlength="30" width="140px"/>
 																<label value="UBIGEO (*) :"/>
 																<hbox align="center">
@@ -677,7 +677,7 @@
 																</hbox>
 															</row>
 															<row style="background:#F7F7F7">
-																<label id="lblEmail" value="EMAIL (*) :"/>
+																<label id="lblEmail" value="EMAIL :"/>
 																<hlayout>
 																	<textbox id="txtEmailPax" style="text-transform:none !important" onOK="dtbxFechaNacimiento.setFocus(true);" maxlength="50" width="140px"/>
 																	<checkbox id="chbxNoTieneMail" label="No Tiene" checked="false" />
