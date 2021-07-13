@@ -38,6 +38,7 @@ import com.cystesoft.vyrbus.model.bean.TmpOcupacionAsientos;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.UsuarioHardware;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
+import com.cystesoft.vyrbus.model.bean.VentaServicioEspecial;
 import com.cystesoft.vyrbus.model.dao.ControlEspecieValoradaDAO;
 import com.cystesoft.vyrbus.model.dao.EspecieValoradaDAO;
 import com.cystesoft.vyrbus.model.dao.ItinerarioDAO;
@@ -2344,6 +2345,121 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	
 	public List<VentaPasaje> buscarHistorialComprobante(String numeroComprobante){
 		return getVentaPasajesDAO().buscarHistorialComprobante(numeroComprobante);
+	}
+	
+	@Transactional
+	public int guardarServicioEspecial(VentaPasaje ventaPasaje) throws Exception {
+		ControlEspecieValorada controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(ventaPasaje.getTipoComprobante().getId(), ventaPasaje.getAgencia(), true, ventaPasaje.getUsuarioHardware(), null);
+		ventaPasaje.setNumeroBoleto(controlEspecieValorada.toString());
+		
+		int result = Constantes.FAILURE;
+		
+		try {
+		/*Actualiza el correlativo*/
+//		if(ventaPasaje.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE){
+			int position = ventaPasaje.getNumeroBoleto().indexOf("-");
+			Long correlativo = Long.valueOf(ventaPasaje.getNumeroBoleto().substring(position+1))+1;
+			controlEspecieValorada.setCorrelativoActual(correlativo);
+			getControlEspecieValoradaDAO().update(controlEspecieValorada);
+//		}
+			getVentaPasajesDAO().guardarServicioEspecial(ventaPasaje);
+			
+			String nControl = Util.generateControlNumber(Util.decimalToHexadecimal(ventaPasaje.getId()));
+			ventaPasaje.setNumeroControl(nControl);
+			ventaPasaje.setFechaInsercion(Util.StringtoDate(getVentaPasajesDAO().getDateSystem(), Constantes.DATE_TIME_FORMAT));
+			getVentaPasajesDAO().update(ventaPasaje);
+			
+			result  = Constantes.CORRECT;
+		}catch (Exception e) {
+			throw new Exception(e);
+		}
+		return result;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#procesarAnulacionServicioEspecial(java.util.List, int, boolean, com.cystesoft.vyrbus.model.bean.Liquidacion)
+	 */
+	@Override
+	@Transactional
+	public VentasNotas procesarAnulacionServicioEspecial(List<VentaPasaje> lstVentas, int tipoAnulacion, boolean anularMovimiento, Liquidacion liquidacion) throws Exception {
+		VentasNotas ventasNotas= new VentasNotas();
+		List<VentaPasaje>notasCredito= new ArrayList<>();
+		List<VentaPasaje>nuevosComprobantes= new ArrayList<>();
+		
+		Integer horas_maximo=Constantes.HORAS_MAXIMO_ANULACION;
+		for(VentaPasaje ventaPasaje : lstVentas){
+			boolean aplicarNotaCredito=false;
+			boolean emitirNuevoComprobante=false;
+			Double importePagado=ventaPasaje.getImportePagado();
+			switch (tipoAnulacion) {
+				case Constantes.TIPO_ANULACION_REGULAR:
+					/*Valida que la anulacion este dentro de las 72 horas, desde el dia siguiente a la emision*/			
+					Date dateStartLimit= new Date(ventaPasaje.getFechaLiquidacion().getTime()+Constantes.MILISEGUNDOS_X_DIA);
+					Long horasTrans= (new Date().getTime()-dateStartLimit.getTime())/Constantes.MILISEGUNDOS_X_HORA;
+					if(horasTrans<=horas_maximo){				
+						Result result=WSFE.anularComprobante(ventaPasaje); //Primero anula en el WSFE
+						if(result.isIsCorrect()){
+							VentaPasaje anulacion=buscarPorId(ventaPasaje.getId());
+							anulacion.setObservaciones(ventaPasaje.getObservaciones());
+							/*Anula el comprobante electronico*/
+							anulacion.setTarifa(0.0);
+							anulacion.setRecargo(0.0);
+							anulacion.setDescuento(0.0);
+							anulacion.setImportePagado(0.0);
+							anulacion.setAcuenta(0.0);
+							anulacion.setImportePagado(0.0);		
+							anulacion.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_ANULACION));
+							UtilData.auditarRegistro(anulacion, true,(Usuario)Executions.getCurrent().getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO), Executions.getCurrent());
+							getVentaPasajesDAO().update(anulacion);
+						}else
+							throw new Exception("No se puedo continuar con la anulación, el comprobante N° "+ventaPasaje.getNumeroBoleto()+" No existe en el S.F.E.");
+					}else
+						aplicarNotaCredito=true;
+					break;
+				case Constantes.TIPO_ANULACION_NC:
+					aplicarNotaCredito=true;
+					break;
+				default:
+					break;
+			}
+			
+			/*Valida si debe o no aplicar una nota de credito al comprobante*/
+			if(aplicarNotaCredito){
+				TipoNota tipoNota=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_ANULACION);
+				VentaPasaje notaCredito = generarNotaCredito(ventaPasaje, tipoNota, anularMovimiento, true,liquidacion);
+				notasCredito.add(notaCredito);
+				
+				/*Coloca al comprobante en estado pagado*/
+				if(ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO){
+					VentaPasaje ventaCredito=buscarPorId(ventaPasaje.getId());
+					ventaCredito.setEstadoDocumento(Constantes.ESTADO_DOCUMENTO_PAGADO);
+					getVentaPasajesDAO().update(ventaCredito);
+				}
+			}
+			
+//			/*Restaura su linea de credito del Cliente*/
+//			if(ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO && ventaPasaje.getRucClienteCredito()!=null){
+//				List<Cliente> lstCliente= ServiceLocator.getClienteManager().buscarClienteAgencia(ventaPasaje.getRucClienteCredito());
+//				if(lstCliente.size()>0){
+//					LineaCreditoCliente lineaCreditoCliente= getLineaCreditoClienteDAO().buscarPorId(lstCliente.get(0).getLineaCreditoCliente().getId());
+//					Double saldo=lineaCreditoCliente.getSaldo();
+//					saldo+=+importePagado;
+//					lineaCreditoCliente.setSaldo(saldo);
+//					getLineaCreditoClienteDAO().update(lineaCreditoCliente);
+//				}
+//			}
+		}
+	
+		ventasNotas.setListNotasCredito(notasCredito);
+		ventasNotas.setListVentas(nuevosComprobantes);
+		return ventasNotas;
+	}
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#buscarFacturasServicioEspecial(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public List<VentaPasaje> buscarFacturasServicioEspecial(String numComprobante, String fDesde, String fHasta) throws Exception {
+		return getVentaPasajesDAO().buscarFacturasServicioEspecial(numComprobante, fDesde, fHasta);
 	}
 	
 	

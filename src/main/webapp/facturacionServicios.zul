@@ -1,106 +1,55 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
 <window id="wndFacturacionServicios" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndFacturacionServicios">
-	<groupbox title="FACTURACION DE SERVICIOS ESPECIALES" mold="3d" closable="false" width="690px">
-		<label value="MODO DE EMISION :"/>
-		<radiogroup>
-			<radio id="rdManual" label="Manual" style="font-weight: bold;"/>
-			<separator orient="vertical" width="50px"/>
-			<radio id="rdElectronico" label="Electronico" checked="true" style="font-weight: bold;"/>
-		</radiogroup>
-		<separator height="8px"/>
-		<separator bar="true" />
-		<grid style="border:none" >
+	<groupbox mold="3d" width="1110px">
+		<caption label="CRITERIOS DE BUSQUEDA"/>
+		<grid style="border:none">
 			<columns>
-				<column align="right" width="120px"/>
-				<column width="130px"/>
-				<column align="right" width="40px"/>
-				<column width="100px"/>
-				<column align="right" width="110px"/>
-				<column />
+				<column width="130px" align="right"/>
+				<column width="160px"/>
+				<column width="120px" align="right"/>
+				<column width="120px"/>
+				<column/>
 			</columns>
 			<rows>
 				<row>
-					<label value="TIPO COMPROBANTE :"/>
-					<combobox id="cmbTipoComprobante" width="110px" onOK="txtDocumento.setFocus(true)"/>
+					<label value="NUM. COMPROBANTE :"/>
+					<textbox id="txtComprobante" width="100px"/>
 					<label/>
 					<label/>
-					<label value="N° COMPROBANTE :" style="color:blue; font-weight: bold;"/>
-					<textbox id="txtNumeroComprobante" disabled="true" width="130px" style="font-weight:bold; font-size:14px !important; text-align: center"/>
-				</row>
-				<row >
-					<label id="lblDocumento" value="RUC :"/>
 					<hlayout>
-						<textbox id="txtDocumento" onOK="wndFacturacionServicios.buscarCliente(); txtCliente.setFocus(true)" width="90px"/>
-						<image id="imgBuscar" src="/resources/mp_buscarEnabled.png" style="cursor: pointer"/>
-						<textbox id="txtIdCliente" visible="false"/>					
-					</hlayout>
-					<label/>
-					<label/>
-					<label/>
-					<label/>
-				</row>
-				<row spans="1,5">
-					<label id="lblCliente" value="RAZON SOCIAL :"/>
-					<textbox id="txtCliente" width="520px" onOK="txtDireccion.setFocus(true)" disabled="true"/>
-				</row>
-				<row spans="1,5">
-					<label value="DIRECCION :"/>
-					<textbox id="txtDireccion" width="520px" onOK="cmbFormaPago.setFocus(true)" disabled="true"/>
+						<button label="Buscar" image="resources/mp_buscarEnabled.png" sclass="btnCommandM" onClick="wndFacturacionServicios.onSearch()"/>
+						<button label="Nuevo" image="resources/mp_nuevoEnabled.png" sclass="btnCommandM" onClick="wndFacturacionServicios.onNew()"/>
+						<button label="Cerrar" image="resources/mp_cerrarEnabled.png" sclass="btnCommandM" onClick="wndFacturacionServicios.onClose()"/>
+					</hlayout>					
 				</row>
 				<row>
-					<label value="FORMA PAGO :"/>
-					<combobox id="cmbFormaPago" width="110px"/>
-					<label value="TIPO :" />
-					<combobox id="cmbTipoCredito" width="90px" disabled="true" onOK="dbxImporte.setFocus(true)"/>
-					<label value="IMPORTE :" style="color:red; font-weight: bold;"/>
-					<hlayout>
-						<doublebox id="dbxImporte" format="###,##0.00" onOK="txtGlosa.setFocus(true)" width="60px" style="color: red; font-weight: bold; font-size:14px;" />
-						<checkbox id="chkIGV" label="Incluido IGV"/>
-					</hlayout>
-				</row>
-				<row spans="1,5">
-					<label value="GLOSA :"/>
-					<textbox id="txtGlosa" multiline="true" height="90px" width="520px"/>
-				</row>
-				<row spans="6" style="text-align:center">
-					<groupbox title="DETALLE DEL PAGO" mold="3d" closable="true" sclass="detalle">
-						<grid style="border:none">
-							<columns>
-								<column width="95px" align="right"/>
-								<column width="95px" align="left"/>
-								<column width="95px" align="right"/>
-								<column width="95px" align="left"/>
-								<column width="95px" align="right"/>
-								<column align="left"/>
-							</columns>
-							<rows>
-								<row>
-									<label value="SUB TOTAL :" style="color:red; font-weight: bold;"/>
-									<doublebox id="dbxImporteResumen" format="###,##0.00" width="70px" style="color: red; font-weight: bold; font-size:14px;"/>
-									<label value="IGV :" style="color:red; font-weight: bold;"/>
-									<doublebox id="dbxIGVResumen" format="###,##0.00" width="70px" style="color: red; font-weight: bold; font-size:14px;"/>
-									<label value="IMPORTE TOTAL :" style="color:red; font-weight: bold;"/>
-									<doublebox id="dbxTotalResumen" format="###,##0.00" width="70px" style="color: red; font-weight: bold; font-size:14px;"/>
-								</row>
-							</rows>							
-						</grid>
-					</groupbox>
-				</row>
-				<row spans="6">
-					<div >
-						<hbox align="center">
-							<button id="btnNuevo" image="/resources/mp_nuevoEnabled.png" sclass="btnCommandL" label="Nuevo" autodisable="self"  onClick="wndFacturacionServicios.onNew()" style="width: 100px"/>
-							<separator width="15px"/>
-							<button id="btnCancelar" image="/resources/mp_cerrar.png" label="Cancelar" sclass="btnCommandL" onClick="wndFacturacionServicios.onCancel()" style="width: 90px" />
-							<separator width="15px"/>
-							<button id="btnGuardar" image="/resources/mp_guardarEnabled.png" label="Guardar" sclass="btnCommandL" autodisable="self,btnNuevo,btnCancelar" onClick="wndFacturacionServicios.onSave()" style="width: 90px"/>
-						</hbox>
-					</div>
-					<separator/>
+					<label value="DESDE :"/>
+					<datebox id="dtbxDesde" format="dd/MM/yyyy"/>
+					<label value="HASTA :"/>
+					<datebox id="dtbxHasta" format="dd/MM/yyyy"/>
+					<label/>
 				</row>
 			</rows>
 		</grid>
+		<separator/>
+		<div id="divLista">
+		<listbox id="listboxLista" rows="15" width="1110px" mold="paging" pageSize="15">
+			<listhead sizable="true">
+				<listheader label="#" width="30px" style="color: #ffffff;" align="center"/>
+				<listheader label="TIPO COMPROBANTE" width="130px" style="color: #ffffff;"/>
+				<listheader label="COMPROBANTE" width="110px" style="color: #ffffff;" align="center"/>
+				<listheader label="FECHA EMISION" width="95px" style="color: #ffffff;" align="center"/>
+				<listheader label="RUC / DNI" width="110px" style="color: #ffffff;" align="center"/>
+				<listheader label="CLIENTE" width="180px" style="color: #ffffff;"/>
+				<listheader label="FORMA PAGO" width="90px" style="color: #ffffff;"/>
+				<listheader label="SUBTOTAL" width="90px" style="color: #ffffff;" align="right"/>
+				<listheader label="IGV" width="90px" style="color: #ffffff;" align="right"/>
+				<listheader label="TOTAL" width="90px" style="color: #ffffff;" align="right"/>
+				<listheader label="ANULAR" width="75px" style="color: #ffffff;" align="center"/>
+			</listhead>
+		</listbox>
+	</div>
 	</groupbox>
 </window>
 </zk>

@@ -556,7 +556,7 @@ public class WndAnulacionDocumentos extends WndBase{
 						DlgMessage.information("El Motivo que ha ingresado no es válido.",txtMotivoAnulacion);
 						return;
 					}
-					Messagebox.show("Este proceso puede tardar varos minutos. \n ¿Realmente desea continual con la Anulación de los Comprobantes Seleccionados?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
+					Messagebox.show("Este proceso puede tardar varios minutos. \n ¿Realmente desea continual con la Anulación de los Comprobantes Seleccionados?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
 						@Override
 						public void onEvent(Event e){
 							try {

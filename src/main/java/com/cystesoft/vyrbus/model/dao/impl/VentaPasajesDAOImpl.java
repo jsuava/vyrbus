@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import org.hibernate.SQLQuery;
@@ -1467,7 +1468,6 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 */
 	@Override
 	public ArrayList<VentaPasaje> buscarPorX(TreeMap<String, Object> criteriosBusqueda,List<String> criteriosOrdenar) {
-		// TODO Auto-generated method stub
 		return (ArrayList<VentaPasaje>) super.findByX(VentaPasaje.class, criteriosBusqueda, criteriosOrdenar);
 	}
 //	
@@ -3660,6 +3660,40 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			ventaPasaje.setImportePagadoByDiferencia(((BigDecimal)obj[13]).doubleValue());
 		}
 		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.VentaPasajesDAO#guardarServicioEspecial(com.cystesoft.vyrbus.model.bean.VentaPasaje)
+	 */
+	@Override
+	public void guardarServicioEspecial(VentaPasaje ventaPasaje) throws Exception {
+		super.save(ventaPasaje);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.VentaPasajesDAO#buscarFacturasServicioEspecial(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	public List<VentaPasaje> buscarFacturasServicioEspecial (String numComprobante, String fDesde, String fHasta) throws Exception{
+		String sql = "SELECT * FROM vrtvenpas vp "
+				+ "INNER JOIN (SELECT MAX(venpas_id) venpas_id, c_numcontrol FROM vrtvenpas WHERE c_tiptra IN (3,5) GROUP BY c_numcontrol) max_id "
+				+ "ON max_id.venpas_id=vp.venpas_id WHERE c_estreg='A' AND tipmov_id= "+Constantes.ID_TIPMOV_SERVICIO_ESPECIAL;
+		
+		if(numComprobante != null)
+				sql = sql + " AND c_numboleto = '" + numComprobante + "' ";
+			
+		sql = sql + " AND d_fecliq BETWEEN to_date('"+fDesde+"', 'dd/mm/yyyy') AND to_date('"+fHasta+"', 'dd/mm/yyyy') ORDER BY c_numboleto"; 
+		
+		List<?> lstResult = getSession().createSQLQuery(sql).list();
+		ArrayList<VentaPasaje> lstVentaPasaje = new ArrayList<VentaPasaje>();
+		
+		for(int i=0; i<lstResult.size(); i++) {
+			Object[] obj = (Object[])lstResult.get(i);
+			VentaPasaje ventaPasaje = new VentaPasaje();
+			ventaPasaje = buscarPorId(Long.valueOf(((BigDecimal)obj[0]).longValue()));
+			lstVentaPasaje.add(ventaPasaje);
+		}
+		return lstVentaPasaje;
 	}
 }
 

@@ -2795,9 +2795,9 @@ public class UtilData extends Window {
 				}else
 					throw new Exception(Messages.getString("UtilData.information.noUniqueEspecieValorada"));
 			}else
-				throw new Exception(Messages.getString("UtilData.information.noAsignacionEspecieValorada"));
+				throw new EspecieValoradaNotAvailableException();
 		}catch(EspecieValoradaNotAvailableException evnaex){
-			throw new Exception(Messages.getString("UtilData.information.notAvailableEspecieValorada"));
+			throw new EspecieValoradaNotAvailableException();
 //			DlgMessage.information(Messages.getString("UtilData.information.notAvailableEspecieValorada"));			
 		}catch(Exception ex){
 			throw new Exception(ex);

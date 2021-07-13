@@ -266,7 +266,7 @@ public class Constantes {
 	public static final String RUC_CRUZ_DEL_SUR="20100227461";
 	public static final String RUC_CIVA="20102427891";
 	public static final String RUC_TEPSA="20502324927";
-	public static final String RUC_TRANSMAR="20501622819";
+	public static final String RUC_TRANSMAR="20450760839";//"20501622819";
 	public static final String OPERADO_POR_CRUZ_DEL_SUR="CRUZ DEL SUR";
 	public static final String OPERADO_CIVA="EXCLUCIVA";
 	
@@ -325,6 +325,7 @@ public class Constantes {
 	public static final String TIPO_OPERACION_RESERVA = "2";
 	public static final String TIPO_OPERACION_VARIOS = "3";
 	public static final String TIPO_OPERACION_VENTA_POOL = "4";
+	public static final String TIPO_OPERACION_VENTA_ESPECIAL = "5";
 	
 	/* Constantes que referencian al rol */
 	public static final int ID_ROL_ASISTENTE_ADMIN_COMERCIAL=17;
@@ -363,6 +364,7 @@ public class Constantes {
 	public static final int ID_TIPMOV_PREPAGADO = 12;
 	public static final int ID_TIPMOV_ANULACION = 13;
 	public static final int ID_TIPMOV_GASTOS_ADMINISTRATIVOS = 14;
+	public static final int ID_TIPMOV_SERVICIO_ESPECIAL = 16;
 	/**
 	 *Movimiento que no debe ser tomado como venta, este se emite cuando a un conprobante se le aplica un NC y ese comprobante no se le genera un movimiento de anulacion(5) - 10/01/2017 - jabanto 
 	 */

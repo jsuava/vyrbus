@@ -487,5 +487,20 @@ public interface VentaPasajesDAO extends GenericDAO {
 	public List<VentaPasaje> buscarHistorialComprobante(String numeroComprobante);
 	
 	public List<List<VentaPasaje>> obtenerVentasResumenLiquidacion(Integer idAgencia, Integer idUsuario, String fechaLiquidacion);
-	
+	/**
+	 * Guarda las ventas de Servicios Especiales
+	 * @param ventaPasaje	: Objeto venta que se guardara
+	 * @return
+	 * @throws Exception
+	 */
+	public void guardarServicioEspecial(VentaPasaje ventaPasaje) throws Exception;
+	/**
+	 * Busca los comprobantes emitidos por Servicos Especiales
+	 * @param numComprobante	: Numero del comprobante
+	 * @param fDesde			: Fecha de inicio de busqueda
+	 * @param fHasta			: Fecha de fin de busqueda
+	 * @return Lista de Ventas
+	 * @throws Exception
+	 */
+	public List<VentaPasaje> buscarFacturasServicioEspecial (String numComprobante, String fDesde, String fHasta) throws Exception;
 }

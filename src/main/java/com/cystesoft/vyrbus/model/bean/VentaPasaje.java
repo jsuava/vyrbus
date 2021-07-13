@@ -76,8 +76,8 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	private Integer enviadoSFE;
 	private Date fechaEnvioSFE;
 	private Double importePagadoByDiferencia;
+	private TipoCobranza tipoCobranza;
 	
-	//No mapeados
 	private UsuarioHardware usuarioHardware;
 	private List<Integer> subConjunto;
 	private Integer cantidadPax;
@@ -1347,4 +1347,20 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setImporteEsperado(Double importeEsperado) {
 		this.importeEsperado = importeEsperado;
 	}
+	/**
+	 * @return the tipoCobranza
+	 */
+	public TipoCobranza getTipoCobranza() {
+		return tipoCobranza;
+	}
+
+	/**
+	 * @param tipoCobranza the tipoCobranza to set
+	 */
+	public void setTipoCobranza(TipoCobranza tipoCobranza) {
+		this.tipoCobranza = tipoCobranza;
+	}
+
+	//No mapeados
+	
 }
