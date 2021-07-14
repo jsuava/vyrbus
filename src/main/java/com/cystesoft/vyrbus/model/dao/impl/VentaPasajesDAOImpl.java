@@ -1635,8 +1635,9 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					"DECODE(tm.c_denominacion, 'POSTERGACION FA', DECODE(tfp.c_denominacion, 'EFECTIVO', 'POST.FA.(EF)', 'POST.FA.(TC)'), "+
 					"DECODE(tm.tipmov_id,"+Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS+", DECODE(tfp.c_denominacion, 'EFECTIVO', 'GAS.ADM(EFE)','GAS.ADM(TC)'),  " +
 					"DECODE(vp.tipcom_id,"+Constantes.ID_TIPCOM_NOTA_CREDITO+", 'NOTA CREDITO',  " +
+					"DECODE(vp.tipmov_id,"+Constantes.ID_TIPMOV_SERVICIO_ESPECIAL+", 'SERV.ESP.',  " +
 					"DECODE(tm.c_denominacion, 'EFECTIVO', DECODE(tfp.c_denominacion, 'EFECTIVO', 'V.(EF)', DECODE(tfp.c_denominacion, 'TRANSFERENCIA', 'V.(TRA)', 'V.(TC)')"
-					+ "))))))))) TIPOVENTA ";
+					+ ")))))))))) TIPOVENTA ";
 			
 			sql = sql + "SELECT vp.venpas_id, vp.c_numcontrol NroControl, vp.c_numboleto NroBoleto, vp.c_numbolant NroBoletoRef, " +
 					"p.c_apepat ApePat, p.c_apemat ApeMat, p.c_nombre Nombre, vp.audfecins FechaActualizacion, vp.n_tarifa MontoBase, " +
@@ -1703,7 +1704,8 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					"DECODE(tm.c_denominacion, 'POSTERGACION', DECODE(tfp.c_denominacion, 'EFECTIVO', 'POST.(EF)', 'POST.(TC)'), " +
 					"DECODE(tm.c_denominacion, 'POSTERGACION FA', DECODE(tfp.c_denominacion, 'EFECTIVO', 'POST.FA. (EF)', 'POST.FA. (TC)'), " +
 					"DECODE(tm.tipmov_id,"+Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS+", DECODE(tfp.c_denominacion, 'EFECTIVO', 'GAS.ADM(EFE)','GAS.ADM(TC)'),  " +
-					"DECODE(tm.c_denominacion, 'EFECTIVO', DECODE(tfp.c_denominacion, 'EFECTIVO', 'V.(EF)', DECODE(tfp.c_denominacion, 'TRANSFERENCIA', 'V.(TRA)', 'V.(TC)'))))))))) TIPOVENTA ";
+					"DECODE(vp.tipmov_id,"+Constantes.ID_TIPMOV_SERVICIO_ESPECIAL+", 'SERV.ESP.',  " +
+					"DECODE(tm.c_denominacion, 'EFECTIVO', DECODE(tfp.c_denominacion, 'EFECTIVO', 'V.(EF)', DECODE(tfp.c_denominacion, 'TRANSFERENCIA', 'V.(TRA)', 'V.(TC)')))))))))) TIPOVENTA ";
 			where = " AND vp.forpag_id=1 AND vp.tipcom_id in ("+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_FACTURA+","+Constantes.ID_TIPCOM_NOTA_CREDITO+","+Constantes.ID_TIPCOM_NOTA_DEBITO+") "
 					+ " AND vp.n_tarifa>0 AND vp.tipmov_id NOT IN (4,5,6,10,11, 12,13) ";
 			break;
