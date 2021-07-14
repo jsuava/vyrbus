@@ -533,6 +533,7 @@ public class WndFacturacionServicios extends WndBase {
 			}
 		});
 		cmbTipoComprobante.setWidth("110px");
+		cmbTipoComprobante.setDisabled(true);
 		row.appendChild(cmbTipoComprobante);
 		
 		label = new Label();
@@ -994,6 +995,7 @@ public class WndFacturacionServicios extends WndBase {
 		groupbox.appendChild(caption);
 		rdAnulacionRegular = new Radio("Anulacion Regular");
 		rdAnulacionRegular.setStyle("color: blue");
+		rdAnulacionRegular.setSelected(true);
 		radiogroup.appendChild(rdAnulacionRegular);
 		radiogroup.appendChild(new Separator("vertical"));
 		rdAnulacionNC = new Radio("Anulacion con NC");
