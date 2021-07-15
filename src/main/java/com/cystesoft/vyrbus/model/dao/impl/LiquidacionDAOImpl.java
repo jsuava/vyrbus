@@ -546,6 +546,12 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 					}
 				}
 			}
+			
+//			if(tipoComprobanteID == Constantes.ID_TIPCOM_FACTURA && (tipoMovimientoID == Constantes.ID_TIPMOV_EFECTIVO 
+//					|| tipoMovimientoID == Constantes.ID_TIPMOV_CREDITO || tipoMovimientoID == Constantes.ID_TIPMOV_SERVICIO_ESPECIAL 
+//					|| tipoMovimientoID == Constantes.ID_TIPMOV_FECHA_ABIERTA)){ 
+//					//Constantes.ID_TIPMOV_CONFIRMACION_FA Constantes.ID_TIPMOV_CORTESIA Constantes.ID_TIPMOV_POSTERGACION Constantes.ID_TIPMOV_POSTERGACION_FA Constantes.ID_TIPMOV_REIMPRESION
+//			}
 		}
 		
 		liquidacion.setCantidadContado(cantidadContado);

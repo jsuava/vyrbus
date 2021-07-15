@@ -1845,7 +1845,7 @@ public class CreateDocument implements Serializable {
 	 * @param itinerario
 	 * @return
 	 */
-	public static final File creaCarpetaDespacho(Itinerario itinerario){
+	public static final File creaCarpetaDespacho(Itinerario itinerario, Agencia agencia){
 		WndManifiesto manifiesto = new WndManifiesto();
 //		Integer lBase=24; 
 		Integer longitud_C=0;
@@ -1861,38 +1861,141 @@ public class CreateDocument implements Serializable {
 			linea = tabular(52)+title;
 			bw.write(linea + NEWLINE);
 			
+			/* QUITADO POR LA IMPLEMENTACION DE TRANSMAR	*/
+//			//---> line 2: salto de linea
+//			bw.write(linea+NEWLINE);
+			
+			/*	AGREGADO A SOLICITUD DE TRANSMAR*/
 			//---> line 2: salto de linea
-			bw.write(NEWLINE);
-			
-			//---> line 3: Razon social, servicio y ruc
-			String servicio=itinerario.getServicio().getDenominacion();
-			linea = Constantes.empresa+tabular(24)+"Servicio: ";
-			String servicio_o=servicio.toUpperCase().toString().substring(0,1)+ servicio.toLowerCase().substring(1, servicio.toString().length());
-			linea +=servicio_o;
-			longitud_C= servicio_o.toString().length();
+			linea = Constantes.empresa;
 			String ruc = Constantes.ruc;
-			linea +=tabular(45-longitud_C)+"Ruc: "+ruc;
+			linea += tabular(81)+"RUC : "+ruc;
 			bw.write(linea+NEWLINE);
 			
-			//---> line 4: Salto de linea
-			bw.write(NEWLINE);
+			/*	AGREGADO A SOLICITUD DE TRANSMAR*/
+			//---> line 3:(Agencia - Nro.Itinerario - Bus)
+			String agenciA=agencia.getDenominacion();
+			longitud_C=agenciA.length();
+			String bus="";
+			if(!(itinerario.getBus()==null))
+				bus=itinerario.getBus().getCodigo();
+			linea="Agencia   : "+agenciA+tabular(44-longitud_C);
+			longitud_C=itinerario.getId().toString().length();
+			linea+="Nro.Itin.: "+itinerario.getId()+tabular(34-longitud_C);
+			linea+="Bus : "+bus;
+			bw.write(linea+NEWLINE);			
 			
-			//---> line 5: 	Origen, Destino, salida, hora:
-			String origen=itinerario.getRuta().getOrigen();
-			origen=origen.toUpperCase().toString().substring(0,1)+origen.toLowerCase().substring(1,origen.toString().length());
-			String destino=itinerario.getRuta().getDestino();
-			destino=destino.toUpperCase().toString().substring(0,1)+destino.toLowerCase().substring(1,destino.toString().length());
-			linea = "Origen: "+origen;
-			longitud_C= destino.toString().length();
-			linea+=tabular(29-longitud_C)+"Destino: "+destino;
-			String fechaSalida=Constantes.FORMAT_DATE.format(itinerario.getFechaPartida());
-			longitud_C=destino.toString().length();
-			linea +=tabular(28-longitud_C)+"Salida :"+fechaSalida;
-			linea +=tabular(8)+"Hora :"+itinerario.getHoraPartida(); 
+			/* QUITADO POR LA IMPLEMENTACION DE TRANSMAR	*/
+//			//---> line 3: Razon social, servicio y ruc
+//			String servicio=itinerario.getServicio().getDenominacion();
+//			linea = Constantes.empresa+tabular(24)+"Servicio: ";
+//			String servicio_o=servicio.toUpperCase().toString().substring(0,1)+ servicio.toLowerCase().substring(1, servicio.toString().length());
+//			linea +=servicio_o;
+//			longitud_C= servicio_o.toString().length();
+//			String ruc = Constantes.ruc;
+//			linea +=tabular(45-longitud_C)+"Ruc: "+ruc;
+//			bw.write(linea+NEWLINE);
+//			
+//			//---> line 4: Salto de linea
+//			bw.write(NEWLINE);
+			
+			/*	AGREGADO A SOLICITUD DE TRANSMAR*/
+			//---> line 4:(Origen - Destino - Placa)
+			String origen=itinerario.getRuta().getLocalidadOrigen().getDenominacion();
+			String destino=itinerario.getRuta().getLocalidadDestino().getDenominacion();
+			String placa="";
+			if(!(itinerario.getBus()==null))
+				placa=itinerario.getBus().getNumeroPlaca();
+			longitud_C=origen.length();
+			linea="Origen    : "+origen+tabular(44-longitud_C); longitud_C=destino.length();
+			linea+="Destino  : "+destino+tabular(32-longitud_C);
+			linea+="Placa : "+placa;
 			bw.write(linea+NEWLINE);
 			
-			//---> line 6: Salto de linea:
-			bw.write(NEWLINE);
+			/* QUITADO POR LA IMPLEMENTACION DE TRANSMAR	*/
+//			//---> line 5: 	Origen, Destino, salida, hora:
+//			String origen=itinerario.getRuta().getOrigen();
+//			origen=origen.toUpperCase().toString().substring(0,1)+origen.toLowerCase().substring(1,origen.toString().length());
+//			String destino=itinerario.getRuta().getDestino();
+//			destino=destino.toUpperCase().toString().substring(0,1)+destino.toLowerCase().substring(1,destino.toString().length());
+//			linea = "Origen: "+origen;
+//			longitud_C= destino.toString().length();
+//			linea+=tabular(29-longitud_C)+"Destino: "+destino;
+//			String fechaSalida=Constantes.FORMAT_DATE.format(itinerario.getFechaPartida());
+//			longitud_C=destino.toString().length();
+//			linea +=tabular(28-longitud_C)+"Salida :"+fechaSalida;
+//			linea +=tabular(8)+"Hora :"+itinerario.getHoraPartida(); 
+//			bw.write(linea+NEWLINE);
+			
+			/*	AGREGADO A SOLICITUD DE TRANSMAR*/
+			//---> linea 5:(Chofer1 -  Licencia - Nro. Tarj. Habilit.)
+			String Chofer=""; String licencia=""; String TarjHabilit="";
+			if(!(itinerario.getBus()==null)){
+				Personal piloto = new Personal(); 
+				piloto=itinerario.getBus().getProgramacionServicio().getPiloto();
+				Chofer=piloto.toString(); //.getApellidoPaterno()+" "+piloto.getApellidoMaterno()+", "+piloto.getNombre();
+				if(piloto.getLicencia() != null)
+					licencia=piloto.getLicencia();
+				if(!(itinerario.getBus().getDocumentoBus()==null))
+					TarjHabilit=itinerario.getBus().getDocumentoBus().getNumeroDocumento();
+			}
+			longitud_C=Chofer.length();		
+			linea="Chofer 1  : "+Chofer+tabular(44-longitud_C); longitud_C=licencia.length();
+			linea+="Licencia : "+licencia+tabular(19-longitud_C);
+			linea+="Nro. Tarj. Habilit.: "+TarjHabilit;
+			bw.write(linea+NEWLINE);
+			
+//			//---> line 6: Salto de linea:
+//			bw.write(NEWLINE);
+			
+			//---> linea 8:(Chofer2 -  Licencia - Marca)
+			String marca="";
+			if(!(itinerario.getBus()==null)){
+				Personal copiloto = new Personal(); 
+				copiloto=itinerario.getBus().getProgramacionServicio().getCopiloto();
+				Chofer=copiloto.toString(); //.getApellidoPaterno()+" "+copiloto.getApellidoMaterno()+", "+copiloto.getNombre();
+				if(copiloto.getLicencia() != null)
+					licencia=copiloto.getLicencia();
+				if(!(itinerario.getBus().getGrupoMantenimiento().getDenominacion()==null))
+					marca=itinerario.getBus().getGrupoMantenimiento().getDenominacion();
+			}
+			longitud_C=Chofer.length();
+			linea="Chofer 2  : "+Chofer+tabular(44-longitud_C); longitud_C=licencia.length();
+			linea+="Licencia : "+licencia+tabular(32-longitud_C);
+			linea+="Marca : "+marca;
+			bw.write(linea+NEWLINE);
+			//---> linea 8:(Chofer3 -  Licencia )
+			Chofer="";licencia="";String servicio="";
+			if(!(itinerario.getBus()==null) && itinerario.getBus().getProgramacionServicio().getCopilotoAuxiliar()!=null){
+				Personal copilotoAux = new Personal(); 
+				copilotoAux=itinerario.getBus().getProgramacionServicio().getCopilotoAuxiliar();
+				Chofer=copilotoAux.toString();
+				if(copilotoAux.getLicencia() != null)
+					licencia=copilotoAux.getLicencia();
+			}
+			servicio=itinerario.getServicio().getDenominacion();
+			longitud_C=Chofer.length();
+			linea="Chofer 3  : "+Chofer+tabular(44-longitud_C); longitud_C=licencia.length();
+			linea+="Licencia : "+licencia+tabular(29-longitud_C);
+			linea+="Servicio : "+servicio;			
+			bw.write(linea+NEWLINE);
+			
+			//---> linea 9:(Terramoza -  Salida - Servicio)
+			String tripulante=""; String salida=""; String dniTerramoza=""; 
+			//Se agrego la condicion en el if porque la tripulante ya no es obligatorio, por MAOE 27/06/2021
+			if(!(itinerario.getBus()==null) && itinerario.getBus().getProgramacionServicio().getTripulante()!=null ){
+				Personal terramoza = new Personal(); 
+				terramoza=itinerario.getBus().getProgramacionServicio().getTripulante();
+				tripulante=terramoza.toString();//.getApellidoPaterno()+" "+terramoza.getApellidoMaterno()+", "+terramoza.getNombre();
+				dniTerramoza=terramoza.getNroDocumento()!=null?terramoza.getNroDocumento():"";
+			}
+			salida=Constantes.FORMAT_DATE.format(itinerario.getFechaPartida())+" "+itinerario.getHoraPartida();
+			
+			longitud_C=tripulante.length();
+			linea="Terramoza : "+tripulante+tabular(49-longitud_C); longitud_C=dniTerramoza.length();
+			linea+="DNI : "+dniTerramoza+tabular(31-longitud_C);
+			linea+="Salida : "+salida;			
+			bw.write(linea+NEWLINE);
 			
 			if(itinerario.getServicio().getNumeroPisos()==2){
 				linea="PISO 1.";

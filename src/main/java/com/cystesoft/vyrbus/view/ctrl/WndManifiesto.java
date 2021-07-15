@@ -863,7 +863,7 @@ public class WndManifiesto extends WndBase {
 			Agencia agencia= new Agencia(); 
 			agencia=(Agencia)cmbPuntocontrol.getSelectedItem().getValue();
 			itinerario.setAgenciaPartida(agencia);
-			File file=CreateDocument.creaCarpetaDespacho(itinerario);
+			File file=CreateDocument.creaCarpetaDespacho(itinerario, getAgencia());
 //			src = Constantes.URL_FORMATOS_DESPACHOS+"CARDES-"+ itinerario.getId()+"-"+agencia.getId()+".txt";
 			src = Constantes.URL_FORMATOS_DESPACHOS+Constantes.CLAVE_PAHT+"CARDES"+ itinerario.getId()+"-"+agencia.getId()+".txt";
 			iFrame.setWidth("1035");

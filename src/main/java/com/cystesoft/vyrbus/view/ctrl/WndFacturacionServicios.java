@@ -327,9 +327,11 @@ public class WndFacturacionServicios extends WndBase {
 							if(((FormaPago)cmbFormaPago.getSelectedItem().getValue()).getId() == Constantes.ID_FORPAG_CREDITO) {
 								servicioEspecial.setTipoCobranza((TipoCobranza)cmbTipoCobranza.getSelectedItem().getValue());
 								servicioEspecial.setTipoFormaPago(new TipoFormaPago(Constantes.ID_TIPFORPAG_CREDITO));
+								servicioEspecial.setEstadoDocumento(Constantes.ESTADO_DOCUMENTO_ACTIVO);
 							}else {
 								servicioEspecial.setTipoFormaPago(new TipoFormaPago(Constantes.ID_TIPFORPAG_EFECTIVO));
 								servicioEspecial.setTipoCobranza(null);
+								servicioEspecial.setEstadoDocumento(Constantes.ESTADO_DOCUMENTO_PAGADO);
 							}
 							
 							servicioEspecial.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_SERVICIO_ESPECIAL));
@@ -339,7 +341,7 @@ public class WndFacturacionServicios extends WndBase {
 							servicioEspecial.setNumeroBoleto(txtNumeroComprobante.getText().trim().toUpperCase());
 							servicioEspecial.setTarifa(dbxTotalResumen.getValue());
 							servicioEspecial.setImportePagado(dbxTotalResumen.getValue());
-							servicioEspecial.setTipoTransaccion(Constantes.TIPO_OPERACION_VENTA);
+							servicioEspecial.setTipoTransaccion(Constantes.TIPO_OPERACION_VENTA_ESPECIAL);
 							servicioEspecial.setFechaCaducidad(new Date());
 							
 							servicioEspecial.setFechaLiquidacion(fechaLiquidacion);

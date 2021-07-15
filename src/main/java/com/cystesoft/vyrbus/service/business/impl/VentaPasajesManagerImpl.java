@@ -2367,6 +2367,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 			String nControl = Util.generateControlNumber(Util.decimalToHexadecimal(ventaPasaje.getId()));
 			ventaPasaje.setNumeroControl(nControl);
 			ventaPasaje.setFechaInsercion(Util.StringtoDate(getVentaPasajesDAO().getDateSystem(), Constantes.DATE_TIME_FORMAT));
+			ventaPasaje.setVentaOriginal(ventaPasaje.getId());
 			getVentaPasajesDAO().update(ventaPasaje);
 			
 			result  = Constantes.CORRECT;
