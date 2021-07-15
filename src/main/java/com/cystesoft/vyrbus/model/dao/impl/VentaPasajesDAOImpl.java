@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import org.hibernate.SQLQuery;
@@ -1467,7 +1468,6 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 */
 	@Override
 	public ArrayList<VentaPasaje> buscarPorX(TreeMap<String, Object> criteriosBusqueda,List<String> criteriosOrdenar) {
-		// TODO Auto-generated method stub
 		return (ArrayList<VentaPasaje>) super.findByX(VentaPasaje.class, criteriosBusqueda, criteriosOrdenar);
 	}
 //	
@@ -1635,8 +1635,9 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					"DECODE(tm.c_denominacion, 'POSTERGACION FA', DECODE(tfp.c_denominacion, 'EFECTIVO', 'POST.FA.(EF)', 'POST.FA.(TC)'), "+
 					"DECODE(tm.tipmov_id,"+Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS+", DECODE(tfp.c_denominacion, 'EFECTIVO', 'GAS.ADM(EFE)','GAS.ADM(TC)'),  " +
 					"DECODE(vp.tipcom_id,"+Constantes.ID_TIPCOM_NOTA_CREDITO+", 'NOTA CREDITO',  " +
+					"DECODE(vp.tipmov_id,"+Constantes.ID_TIPMOV_SERVICIO_ESPECIAL+", 'SERV.ESP.',  " +
 					"DECODE(tm.c_denominacion, 'EFECTIVO', DECODE(tfp.c_denominacion, 'EFECTIVO', 'V.(EF)', DECODE(tfp.c_denominacion, 'TRANSFERENCIA', 'V.(TRA)', 'V.(TC)')"
-					+ "))))))))) TIPOVENTA ";
+					+ ")))))))))) TIPOVENTA ";
 			
 			sql = sql + "SELECT vp.venpas_id, vp.c_numcontrol NroControl, vp.c_numboleto NroBoleto, vp.c_numbolant NroBoletoRef, " +
 					"p.c_apepat ApePat, p.c_apemat ApeMat, p.c_nombre Nombre, vp.audfecins FechaActualizacion, vp.n_tarifa MontoBase, " +
@@ -1703,7 +1704,8 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					"DECODE(tm.c_denominacion, 'POSTERGACION', DECODE(tfp.c_denominacion, 'EFECTIVO', 'POST.(EF)', 'POST.(TC)'), " +
 					"DECODE(tm.c_denominacion, 'POSTERGACION FA', DECODE(tfp.c_denominacion, 'EFECTIVO', 'POST.FA. (EF)', 'POST.FA. (TC)'), " +
 					"DECODE(tm.tipmov_id,"+Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS+", DECODE(tfp.c_denominacion, 'EFECTIVO', 'GAS.ADM(EFE)','GAS.ADM(TC)'),  " +
-					"DECODE(tm.c_denominacion, 'EFECTIVO', DECODE(tfp.c_denominacion, 'EFECTIVO', 'V.(EF)', DECODE(tfp.c_denominacion, 'TRANSFERENCIA', 'V.(TRA)', 'V.(TC)'))))))))) TIPOVENTA ";
+					"DECODE(vp.tipmov_id,"+Constantes.ID_TIPMOV_SERVICIO_ESPECIAL+", 'SERV.ESP.',  " +
+					"DECODE(tm.c_denominacion, 'EFECTIVO', DECODE(tfp.c_denominacion, 'EFECTIVO', 'V.(EF)', DECODE(tfp.c_denominacion, 'TRANSFERENCIA', 'V.(TRA)', 'V.(TC)')))))))))) TIPOVENTA ";
 			where = " AND vp.forpag_id=1 AND vp.tipcom_id in ("+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_FACTURA+","+Constantes.ID_TIPCOM_NOTA_CREDITO+","+Constantes.ID_TIPCOM_NOTA_DEBITO+") "
 					+ " AND vp.n_tarifa>0 AND vp.tipmov_id NOT IN (4,5,6,10,11, 12,13) ";
 			break;
@@ -3660,6 +3662,40 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			ventaPasaje.setImportePagadoByDiferencia(((BigDecimal)obj[13]).doubleValue());
 		}
 		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.VentaPasajesDAO#guardarServicioEspecial(com.cystesoft.vyrbus.model.bean.VentaPasaje)
+	 */
+	@Override
+	public void guardarServicioEspecial(VentaPasaje ventaPasaje) throws Exception {
+		super.save(ventaPasaje);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.VentaPasajesDAO#buscarFacturasServicioEspecial(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	public List<VentaPasaje> buscarFacturasServicioEspecial (String numComprobante, String fDesde, String fHasta) throws Exception{
+		String sql = "SELECT * FROM vrtvenpas vp "
+				+ "INNER JOIN (SELECT MAX(venpas_id) venpas_id, c_numcontrol FROM vrtvenpas WHERE c_tiptra IN (3,5) GROUP BY c_numcontrol) max_id "
+				+ "ON max_id.venpas_id=vp.venpas_id WHERE c_estreg='A' AND tipmov_id= "+Constantes.ID_TIPMOV_SERVICIO_ESPECIAL;
+		
+		if(numComprobante != null)
+				sql = sql + " AND c_numboleto = '" + numComprobante + "' ";
+			
+		sql = sql + " AND d_fecliq BETWEEN to_date('"+fDesde+"', 'dd/mm/yyyy') AND to_date('"+fHasta+"', 'dd/mm/yyyy') ORDER BY c_numboleto"; 
+		
+		List<?> lstResult = getSession().createSQLQuery(sql).list();
+		ArrayList<VentaPasaje> lstVentaPasaje = new ArrayList<VentaPasaje>();
+		
+		for(int i=0; i<lstResult.size(); i++) {
+			Object[] obj = (Object[])lstResult.get(i);
+			VentaPasaje ventaPasaje = new VentaPasaje();
+			ventaPasaje = buscarPorId(Long.valueOf(((BigDecimal)obj[0]).longValue()));
+			lstVentaPasaje.add(ventaPasaje);
+		}
+		return lstVentaPasaje;
 	}
 }
 

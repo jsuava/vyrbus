@@ -599,6 +599,34 @@ public class Util {
 	}
 	
 	/**
+	 * convierte un double a String con la cantidad de decimales especificados 
+	 * @param currency		: Valor double a convertir
+	 * @param numDecimales	: Número de decimales 
+	 * @return String
+	 */
+	public static String toNumberFormatNotMiles(double currency, int numDecimales){
+		String number="0.00";
+		String decimal = "";
+		String pattern = "########0";
+		if(numDecimales>0){
+			for(int i=0;i<numDecimales;i++){
+				decimal = decimal+"0";
+			}
+			pattern = pattern+"."+decimal;
+		}
+			
+		try{
+			NumberFormat nf = NumberFormat.getNumberInstance(Locale.ENGLISH);
+			DecimalFormat df = (DecimalFormat)nf;
+			df.applyPattern(pattern);
+			number = df.format(currency);
+		}catch(Exception e ){
+			e.printStackTrace();
+		}
+		return number;
+	}
+	
+	/**
 	 * Convierte del sistema decimal a hexadecimal
 	 * @param valor	: Número a convertir
 	 * @return Hexadecimal 

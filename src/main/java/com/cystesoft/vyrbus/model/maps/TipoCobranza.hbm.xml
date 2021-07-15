@@ -3,22 +3,18 @@
                                    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
- <class name="com.cystesoft.vyrbus.model.bean.TipoCobranza" schema="VYRBUSTRANSMAR" table="VRMTIPCOB">
-  <comment>Entidad que sirve para almacenar los usuarios aprobadores</comment>
-  <id name="id" type="java.lang.Integer">
-   <column name="TIPCOB_ID" precision="2" scale="0"/>
-   <generator class="sequence">
-    <param name="sequence">SEQ_VRMTIPCOB_ID</param>
-   </generator>
-  </id>
-  
-  <property name="denominacion" type="java.lang.String">
-     <column name="C_DENOMINACION" length="30"  />
-  </property>
-	
- 
-  <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
-
+ 	<class name="com.cystesoft.vyrbus.model.bean.TipoCobranza" schema="VYRBUSTRANSMAR" table="VRMTIPCOB">
+ 		<comment>Entidad que sirve para almacenar los usuarios aprobadores</comment>
+  		<id name="id" type="java.lang.Integer">
+   			<column name="TIPCOB_ID" precision="2" scale="0"/>
+   			<generator class="sequence">
+    			<param name="sequence">SEQ_VRMTIPCOB_ID</param>
+   			</generator>
+  		</id>  
+		<property name="denominacion" type="java.lang.String">
+	    	<column name="C_DENOMINACION" length="30"/>
+		</property> 
+  		<!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
         <property name="estadoRegistro" type="java.lang.String">
             <column name="C_ESTREG" length="1" not-null="true">
                 <comment>Estado de registro A(Activo), I(Inactivo).</comment>
@@ -55,7 +51,5 @@
             </column>
         </property>
         <!-- 		END CAMPOS DE AUDITORIA	 	-->
-
- </class>
- 
+ 	</class> 
 </hibernate-mapping>

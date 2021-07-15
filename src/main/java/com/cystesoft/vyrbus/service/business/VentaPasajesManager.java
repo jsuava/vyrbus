@@ -577,4 +577,30 @@ public interface VentaPasajesManager {
 	 * @return
 	 */
 	public List<VentaPasaje> buscarHistorialComprobante(String numeroComprobante);
+	/**
+	 * Guarda las ventas de Servicios Especiales
+	 * @param ventaPasaje	: Objeto venta que se guardara
+	 * @return
+	 * @throws Exception
+	 */
+	public int guardarServicioEspecial(VentaPasaje ventaPasaje) throws Exception;
+	/**
+	 * Procesa las anulaciones de los Servicios de traslado de personal
+	 * @param lstVentas			: Lista de ventas que se desea anular
+	 * @param tipoAnulacion		: 
+	 * @param anularMovimiento	:
+	 * @param liquidacion		:
+	 * @return
+	 * @throws Exception
+	 */
+	public VentasNotas procesarAnulacionServicioEspecial(List<VentaPasaje> lstVentas,int tipoAnulacion, boolean anularMovimiento, Liquidacion liquidacion) throws Exception;
+	/**
+	 * Busca los comprobantes emitidos por Servicos Especiales
+	 * @param numComprobante	: Numero del comprobante
+	 * @param fDesde			: Fecha de inicio de busqueda
+	 * @param fHasta			: Fecha de fin de busqueda
+	 * @return Lista de Ventas
+	 * @throws Exception
+	 */
+	public List<VentaPasaje> buscarFacturasServicioEspecial (String numComprobante, String fDesde, String fHasta) throws Exception;
 }

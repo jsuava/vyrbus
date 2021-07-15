@@ -312,41 +312,54 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 			@Override
 			public void onEvent(Event event) throws Exception {
 				try{
-					onSave(accionUsuario);
+					Messagebox.show(questionInsert, DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+						@Override
+						public void onEvent(Event e) throws Exception{
+							try {
+								if(e.getName().equals("onYes")){
+									onSave(accionUsuario);
+									
+									String accionMensaje = "";
+									switch(accionUsuario){
+										case ACTION_NEW:
+											accionMensaje = "grabado";
+											break;
+										case ACTION_MODIFY:
+											accionMensaje = "actualizado";
+											break;
+									}
+									DlgMessage.information("Registro " + accionMensaje);
+									oTabLista.setDisabled(false);
+									habilitaControles(false);
+														
+									/*Habili/Desabilita según la configuracion del rol del usuario*/
+									/*NUEVO*/
+									btnNuevo.setDisabled(accesoNuevo()?false:true);
+									/*BUSCAR*/
+									btnBuscar.setDisabled(accesoConsultar()?false:true);
+									/*IMPRIMIR*/
+									btnImprimir.setDisabled(accesoImprimir()?false:true);
+									/*EXPORTAR*/
+									btnExportar.setDisabled(accesoExportar()?false:true);
+		
+									btnRefrescar.setDisabled(false);
+									btnModificar.setDisabled(true);
+									btnCancelar.setDisabled(true);
+									btnGuardar.setDisabled(true);
+									btnEliminar.setDisabled(true);
+									btnCerrar.setDisabled(false);
+									
+									oTabbox.setSelectedIndex(0);
+								}else
+									return;
+							}catch (CancelaGrabacionException ex){}	
+						}
+					});
 					
-					String accionMensaje = "";
-					switch(accionUsuario){
-						case ACTION_NEW:
-							accionMensaje = "grabado";
-							break;
-						case ACTION_MODIFY:
-							accionMensaje = "actualizado";
-							break;
-					}
-					DlgMessage.information("Registro " + accionMensaje);
-					oTabLista.setDisabled(false);
-					habilitaControles(false);
-										
-					/*Habili/Desabilita según la configuracion del rol del usuario*/
-					/*NUEVO*/
-					btnNuevo.setDisabled(accesoNuevo()?false:true);
-					/*BUSCAR*/
-					btnBuscar.setDisabled(accesoConsultar()?false:true);
-					/*IMPRIMIR*/
-					btnImprimir.setDisabled(accesoImprimir()?false:true);
-					/*EXPORTAR*/
-					btnExportar.setDisabled(accesoExportar()?false:true);
-
-					btnRefrescar.setDisabled(false);
-					btnModificar.setDisabled(true);
-					btnCancelar.setDisabled(true);
-					btnGuardar.setDisabled(true);
-					btnEliminar.setDisabled(true);
-					btnCerrar.setDisabled(false);
 					
-					oTabbox.setSelectedIndex(0);
-					
-				}catch (CancelaGrabacionException ex){}
+				}catch (Exception ex){
+					throw new Exception();
+				}
 			}
 		});		
 			
@@ -391,6 +404,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 										btnImprimir.setDisabled(true);
 										btnExportar.setDisabled(true);
 										btnCerrar.setDisabled(false);
+										onRefresh(tabUsuario);
 									}
 								}catch (NoRemoverRegistroDelListBox e) {
 								}

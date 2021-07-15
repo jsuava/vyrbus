@@ -8,12 +8,9 @@ import java.io.Serializable;
  *
  */
 public class TipoCobranza extends GenericBean implements Serializable {
-
-	private static final long serialVersionUID = 1L;
-	
+	private static final long serialVersionUID = 1L;	
 	private Integer id;
-	private String denominacion;
-	
+	private String denominacion;	
 	
 	public Integer getId() {
 		return id;
@@ -27,6 +24,4 @@ public class TipoCobranza extends GenericBean implements Serializable {
 	public void setDenominacion(String denominacion) {
 		this.denominacion = denominacion;
 	}
-	
-
 }

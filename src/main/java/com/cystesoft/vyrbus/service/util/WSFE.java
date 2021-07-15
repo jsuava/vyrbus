@@ -914,7 +914,9 @@ public class WSFE implements Serializable{
 		
 		/*la Descripcion del Detalle*/
 		String descripcionPrincipal="";
-		if(ventaPasaje.getTipoMovimiento().getId().intValue()!=Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS){
+		if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA_ESPECIAL)) {
+			descripcionPrincipal= descripMovi+(ventaPasaje.getObservaciones()!=null?" - "+ventaPasaje.getObservaciones():"");
+		}else if(ventaPasaje.getTipoMovimiento().getId().intValue()!=Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS){
 			String servicio="";
 			if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA_POOL)){
 				String[] observaciones=ventaPasaje.getObservaciones().split(";");
@@ -953,9 +955,9 @@ public class WSFE implements Serializable{
 				Double igv_x=Constantes.IGV/100; //(0.18)
 				Double igv_y=igv_x+1; //(1.18)
 				
-				detalleVenta.setValorUnitario(Double.valueOf(Util.toNumberFormat(detalleVenta.getTarifa() / igv_y,2))); //Precio o tarifa, pero sin igv
-				detalleVenta.setIgv(Double.valueOf(Util.toNumberFormat((detalleVenta.getTarifa() / igv_y) * igv_x,2))); //Igv del presio unitario
-				detalleVenta.setTotal(Double.valueOf(Util.toNumberFormat((detalleVenta.getTarifa() / igv_y)*detalleVenta.getCantidad(), 2)));//total de la linea del detalle (Pero sin impuestos)
+				detalleVenta.setValorUnitario(Double.valueOf(Util.toNumberFormatNotMiles(detalleVenta.getTarifa() / igv_y,2))); //Precio o tarifa, pero sin igv
+				detalleVenta.setIgv(Double.valueOf(Util.toNumberFormatNotMiles((detalleVenta.getTarifa() / igv_y) * igv_x,2))); //Igv del presio unitario
+				detalleVenta.setTotal(Double.valueOf(Util.toNumberFormatNotMiles((detalleVenta.getTarifa() / igv_y)*detalleVenta.getCantidad(), 2)));//total de la linea del detalle (Pero sin impuestos)
 				detalleVenta.setCodigoAfectacionIgv(new JAXBElement<String>(new QName(NAMESPACE,"codigoAfectacionIgv"), String.class, "10")); //-->Gravado - Operacion onerosa - Afectacion al igv (Cat. 7)
 				detalleVenta.setCodigoTipoPrecio(new JAXBElement<String>(new QName(NAMESPACE,"codigoTipoPrecio"), String.class, "01")); // Precio Unitario (incluye Igv) -Tipo de precio de venta unitario (Cat. 16)
 			}else{
