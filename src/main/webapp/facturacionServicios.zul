@@ -64,7 +64,7 @@
 					<textbox id="txtGlosa" multiline="true" height="90px" width="520px"/>
 				</row>
 				<row spans="6" style="text-align:center">
-					<groupbox title="DETALLE DEL PAGO" mold="3d" closable="true" sclass="detalle">
+					<groupbox title="DETALLE DEL PAGO" mold="3d" closable="true" sclass="detalle" style="color: #ffffff;" >
 						<grid style="border:none">
 							<columns>
 								<column width="95px" align="right"/>
