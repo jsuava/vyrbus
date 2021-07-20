@@ -2,6 +2,7 @@ package com.cystesoft.vyrbus.service.business.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cystesoft.vyrbus.model.bean.Liquidacion;
 import com.cystesoft.vyrbus.model.dao.LiquidacionDAO;
 import com.cystesoft.vyrbus.service.business.LiquidacionManager;
+import com.cystesoft.vyrbus.service.mappers.ResumenComprobante;
 import com.cystesoft.vyrbus.view.tuentrada.LiquidacionTuentrada;
 
 /**
@@ -114,6 +116,16 @@ public class LiquidacionManagerImpl implements LiquidacionManager {
 		// TODO Auto-generated method stub
 		return getLiquidacionDAO().buscarPorId(id);
 	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.LiquidacionManager#buscarResumenComprobantes(java.lang.String, java.lang.Integer, java.lang.Integer)
+	 */
+	@Override
+	public Map<String, ResumenComprobante> buscarResumenComprobantes(String fechaLiquidacion, Integer idAgencia, Integer idUsuario) {
+		return getLiquidacionDAO().buscarResumenComprobantes(fechaLiquidacion, idAgencia, idUsuario);
+	}
+	
+	
 
 
 //	/* (non-Javadoc)

@@ -78,4 +78,12 @@ public interface GastoManager {
 	 * @throws Exception
 	 */
 	public Double BuscarTotalGastos(String fecha,Integer idUsuario, Integer idAgencia)throws Exception;
+	/**
+	 * Obtiene los gastos de la liquidacion
+	 * @param fechaLiquidacion	: Fecha de la liquidacion
+	 * @param idAgencia			: Identificador de la agencia
+	 * @param idUsuario			: Identificador del usuario dueño de liquidacion
+	 * @return
+	 */
+	public List<Gasto> obtenerGastosByLiquidacion(String fechaLiquidacion, Integer idAgencia, Integer idUsuario);
 }
