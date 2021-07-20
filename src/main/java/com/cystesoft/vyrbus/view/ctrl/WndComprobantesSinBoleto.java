@@ -516,6 +516,7 @@ public class WndComprobantesSinBoleto extends WndBase {
 		cmbTipoComprobante.setWidth("120px");
 		TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
 		criteriosBusqueda.put("rubro", TipoComprobante.RUBRO_PASAJES);
+		criteriosBusqueda.put("rubro", TipoComprobante.RUBRO_AMBOS);
 		UtilData.cargarDataCombo(cmbTipoComprobante, TipoComprobante.class, criteriosBusqueda, false);
 		row.appendChild(cmbTipoComprobante);
 		label = new Label("COMPROBANTE ANTERIOR :");

@@ -409,7 +409,7 @@ public class UtilData extends Window {
 	 * @param bTodos	: Indica si el primer elemento del combo es la opcion TODOS (TRUE) o SELECCIONE (FALSE).
 	 * @throws Exception 
 	 */
-	public static void cargarDataCombo(Combobox combobox, Class<?> oClass, boolean bTodos) throws Exception {
+	public static void cargarDataCombo(Combobox combobox, Class<?> oClass, Boolean bTodos) throws Exception {
 		if (oClass.equals(TipoFlota.class)){
 			cargarTipoFlota(combobox, bTodos);
 		}else if (oClass.equals(Servicio.class)){
@@ -505,7 +505,7 @@ public class UtilData extends Window {
 	 * @param parametros	: Indica los parametros con los cuales deseamos realizar la busqueda.
 	 * @throws Exception 
 	 */
-	public static void cargarDataCombo(Combobox combobox, Class<?> oClass, TreeMap<String, Object> parametros, boolean bTodos) throws Exception {
+	public static void cargarDataCombo(Combobox combobox, Class<?> oClass, TreeMap<String, Object> parametros, Boolean bTodos) throws Exception {
 		if(oClass.equals(TipoComprobante.class))
 			cargarTipoComprobante(combobox, parametros, bTodos);
 		else if(oClass.equals(TipoDocumento.class))
@@ -697,12 +697,13 @@ public class UtilData extends Window {
 		}
 	}
 	
-	public static void cargarTipoComprobante(Combobox combobox, TreeMap<String, Object> parametros, boolean todos) {
+	public static void cargarTipoComprobante(Combobox combobox, TreeMap<String, Object> parametros, Boolean todos) {
 		try{
 			ArrayList<String> criteriosOrdenar = new ArrayList<String>();
 			criteriosOrdenar.add("denominacion");
 			ArrayList<TipoComprobante> lstComprobantes = ServiceLocator.getTipoComprobanteManager().buscarPorX(parametros, criteriosOrdenar);
-			cargarGenericData(combobox, todos);	
+			if(todos!=null)
+				cargarGenericData(combobox, todos);	
 			for (int l = 0; l < lstComprobantes.size(); l ++) {
 				TipoComprobante oTipoComprobante = lstComprobantes.get(l);
 				Comboitem oComboitem = new Comboitem();
@@ -982,8 +983,8 @@ public class UtilData extends Window {
 	private static void cargarOperadorTarjetaCredito(Combobox combobox, Boolean todos) {
 		try{
 			ArrayList<OperadorTarjetaCredito> lstOperadoresTarjetaCredito = ServiceLocator.getOperadorTarjetaCreditoManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
-			
-			cargarGenericData(combobox, todos);
+			if(todos!=null)
+				cargarGenericData(combobox, todos);
 			for (int l = 0; l < lstOperadoresTarjetaCredito.size(); l ++) {
 				OperadorTarjetaCredito oOperadorTarjetaCredito = lstOperadoresTarjetaCredito.get(l);
 				Comboitem oComboitem = new Comboitem();

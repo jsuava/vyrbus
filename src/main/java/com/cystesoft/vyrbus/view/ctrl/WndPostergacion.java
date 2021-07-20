@@ -228,6 +228,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 			
 			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
 			criteriosBusqueda.put("rubro", TipoComprobante.RUBRO_PASAJES);
+			criteriosBusqueda.put("rubro", TipoComprobante.RUBRO_AMBOS);
 			UtilData.cargarDataCombo(cmbTipoComprobante, TipoComprobante.class, criteriosBusqueda, false);
 			UtilData.cargarDataCombo(cmbtipoComprobantePostergado, TipoComprobante.class, criteriosBusqueda, false);
 			UtilData.cargarDataCombo(cmbFormaPago, FormaPago.class, false);

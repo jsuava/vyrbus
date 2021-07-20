@@ -1,0 +1,116 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndEquipaje" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndEquipaje">
+	<groupbox closable="false" mold="3d">
+		<caption label="INFORMACIÓN BOLETOS"/>
+		<grid style="border:none">
+			<columns>
+				<column width="80px"/>
+				<column width="150px"/>
+				<column width="100px" align="right"/>
+				<column width="120px"/>
+				<column/>
+			</columns>
+			<rows>
+				<row>
+					<label value="N° BOLETO :" />
+					<textbox id="txtNumeroBoleto" width="97%" focus="true" style="font-size:12px !important" placeholder="N° BOLETO" />
+					<label value="FECHA PARTIDA :" />
+					<datebox id="dtbxFechaPartida" width="115px" format="dd/MM/yyyy" readonly="true"/>
+					<button id="btnBuscar" label="Buscar" sclass="btnCommandM" autodisable="self" style="margin-left:10px" image="/resources/mp_buscarEnabled.png" />
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+	<groupbox closable="false" mold="3d">
+		<caption label="CÁLCULO DE EXCESO"/>
+		<grid style="border:none">
+			<columns>
+				<column width="540px"/>
+				<column/>
+			</columns>
+			<rows>
+				<row>
+					<listbox id="ltbxBoletos" rows="4">
+						<listhead>
+							<listheader label="N° COMPROBANTE" width="120px" />
+							<listheader label="PASAJERO" width="200px"/>
+							<listheader label="EMBARQUE" width="150px"/>
+							<listheader label="ASIENTO" width="60px" align="center"/>
+						</listhead>					
+					</listbox>
+					<vbox align="left">
+						<hbox align="center">
+							<label value="KLG LIBRES : " style="margin-left:20px;font-size:13px !important"/>
+							<label id="lblKilosLibres" style="font-weight:bold;font-size:14px !important"/>							
+						</hbox>
+						<hbox align="center">
+							<label value="FECHA PARTIDA :" style="font-size:13px !important"/>
+							<label id="lblFechaPartida" style="font-weight:bold;font-size:14px !important"/>
+						</hbox>
+					</vbox>					
+				</row>				
+			</rows>
+		</grid>
+		<grid style="border:none">
+			<columns>
+				<column width="80px" align="right"/>
+				<column width="150px" />
+				<column width="80px" align="right"/>
+				<column width="150px" />
+				<column width="90px" align="right"/>
+				<column/>
+			</columns>
+			<rows>
+				<row>
+					<label value="SERVCIO : " />
+					<label id="lblServicio" style="font-weight:bold" />
+					<label value="RUTA : " />
+					<label id="lblRuta" style="font-weight:bold" />
+					<label value="H.SALIDA : " />
+					<label id="lblHoraSalida" style="font-weight:bold" />
+				</row>
+				<row>
+					<label value="N° MALETAS :" />
+					<intbox id="itbxNumeroMaletas" width="50px" onOK="itbxTotalKilos.setFocus(true)" style="font-size:13px !important;text-align:right"/>
+					<label value="TOTAL KG :" />
+					<intbox id="itbxTotalKilos" width="50px" onOK="dbxTotalPago.setFocus(true)" style="font-size:13px !important;text-align:right"/>
+					<label value="TOTAL PAGO :" />
+					<doublebox id="dbxTotalPago" format="###,##0.00" onOK="if(rowExceso.isVisible())cmbTipoComprobante.setFocus(true); else btnGuardar.setFocus(true); " readonly="true" width="80px" style="font-size:13px !important"/>
+				</row>
+				<row id="rowExceso" spans="2,2,2" visible="false">
+					<hbox align="center">
+						<combobox id="cmbTipoComprobante" readonly="true" width="140px" placeholder="TIPO COMPROBANTE"/>
+						<textbox id="txtNumeroComprobante" readonly="true" width="80px"/>
+					</hbox>
+					<div style="text-align:left">
+						<combobox id="cmbTipoPago" readonly="true" width="120px" placeholder="FORMA PAGO" style="margin-left:20px"/>
+					</div>
+					<div style="text-align:left">
+						<combobox id="cmbOperadorTarjeta" readonly="true" width="158px" placeholder="OPERADOR TARJETA" style="margin-left:20px"/>
+					</div>
+				</row>
+				<row id="rowRuc" spans="6" visible="false">
+					<div style="text-align:left">
+						<textbox id="txtNumeroRUC" width="100px" placeholder="N° RUC"  />
+						<button id="btnBuscarCliente" image="/resources/mp_buscarEnabled.png"/>
+						<textbox id="txtRazonSocial" width="235px" placeholder="RAZÓN SOCIAL" readonly="true"/>
+						<textbox id="txtDireccionFiscal" width="235px" placeholder="DIRECCIÓN FISCAL" readonly="true"/>
+					</div>
+				</row>
+				<row spans="6">
+					<div style="text-align:left">
+						<textbox id="txtGlosa" rows="4" placeholder="GLOSA" width="630px" maxlength="255"/>
+					</div>
+				</row>
+			</rows>
+		</grid>
+		<div style="text-align:center;margin-top:10px">
+			<hbox align="center" style="margin-left:140px">
+				<button id="btnGuardar" label="Guardar" sclass="btnCommandL" autodisable="self" image="resources/mp_guardarEnabled.png"/>
+				<button id="btnCancelar" label="Cancelar" sclass="btnCommandL" autodisable="self" image="resources/mp_cancelarEnabled.png"/>
+			</hbox>		
+		</div>
+	</groupbox>
+</window>
+</zk>

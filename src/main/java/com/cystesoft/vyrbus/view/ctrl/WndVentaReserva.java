@@ -142,7 +142,6 @@ import com.cystesoft.vyrbus.service.exceptions.OperadorTarjetaCreditoNullExcepti
 import com.cystesoft.vyrbus.service.exceptions.PasajeroException;
 import com.cystesoft.vyrbus.service.exceptions.PasajeroIndeseableException;
 import com.cystesoft.vyrbus.service.exceptions.PasajeroNoSavedExeption;
-import com.cystesoft.vyrbus.service.exceptions.PreferenciaAlimentariaException;
 import com.cystesoft.vyrbus.service.exceptions.RazonSocialDuplicadoException;
 import com.cystesoft.vyrbus.service.exceptions.RazonSocialNullException;
 import com.cystesoft.vyrbus.service.exceptions.RucDuplicadoException;
@@ -475,6 +474,7 @@ public class WndVentaReserva extends WndBase {
 			
 			criteriosBusqueda = new TreeMap<String, Object>();
 			criteriosBusqueda.put("rubro", TipoComprobante.RUBRO_PASAJES);
+			criteriosBusqueda.put("rubro", TipoComprobante.RUBRO_AMBOS);
 			UtilData.cargarDataCombo(cmbTipoComprobante, TipoComprobante.class, criteriosBusqueda, false);
 			cargarFormaPago(cmbFormaPago, false);
 			UtilData.cargarDataCombo(cmbAlimentacion, PreferenciaAlimentaria.class, false);
@@ -6124,7 +6124,7 @@ public class WndVentaReserva extends WndBase {
 									if(ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA || 
 											ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_FACTURA){
 										/*Realiza el envio del boleto y realiza la impresion*/
-										boolean printComprobante=(chkVentaRemota.isChecked()?false:true);
+//										boolean printComprobante=(chkVentaRemota.isChecked()?false:true);
 										
 										List<VentaPasaje> listVentaPasajes= new ArrayList<>();
 										listVentaPasajes.add(ventaPasaje);

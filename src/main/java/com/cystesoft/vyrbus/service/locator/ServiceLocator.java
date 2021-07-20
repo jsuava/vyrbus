@@ -931,5 +931,11 @@ public class ServiceLocator {
 	public static VentaServicioEspecialManager getVentaServicioEspecialManager() {
 		return (VentaServicioEspecialManager) SpringUtil.getBean("ventaServicioEspecialManager", VentaServicioEspecialManager.class);
 	}
+	public static EquipajeManager getEquipajeManager(){
+		return (EquipajeManager) SpringUtil.getBean("equipajeManager", EquipajeManager.class);
+	}
 	
+	public static DetalleEquipajeManager getDetalleEquipajeManager(){
+		return (DetalleEquipajeManager) SpringUtil.getBean("detalleEquipajeManager", DetalleEquipajeManager.class);
+	}
 }

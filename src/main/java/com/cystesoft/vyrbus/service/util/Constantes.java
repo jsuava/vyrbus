@@ -326,6 +326,7 @@ public class Constantes {
 	public static final String TIPO_OPERACION_VARIOS = "3";
 	public static final String TIPO_OPERACION_VENTA_POOL = "4";
 	public static final String TIPO_OPERACION_VENTA_ESPECIAL = "5";
+	public static final String TIPO_OPERACION_EXCESO = "6";
 	
 	/* Constantes que referencian al rol */
 	public static final int ID_ROL_ASISTENTE_ADMIN_COMERCIAL=17;
@@ -380,6 +381,7 @@ public class Constantes {
 	public static final int ID_TIPFORPAG_TARJETA=7;
 	public static final int ID_TIPFORPAG_CORTESIA=8;
 	public static final int ID_TIPFORPAG_ORDEN_TRABAJO=9;
+	public static final int ID_TIPFORPAG_PCE=13;
 //	public static final int ID_TIPFORPAG_PASE_VACACIONAL=10;
 	
 	/*	Constantes que referencian a las formas de pago	*/
@@ -410,6 +412,7 @@ public class Constantes {
 	public static final int ID_TIPCOM_BOLETA_VENTA=7;
 	public static final int ID_TIPCOM_NOTA_CREDITO=8;
 	public static final int ID_TIPCOM_NOTA_DEBITO=9;
+	public static final int ID_TIPCOM_TICKET_EQUIPAJE=11;
 	
 	/* Constantes que referencian a los Motivos de Cortesia*/
 	public static final int ID_MOTCOR_OTROS=14;

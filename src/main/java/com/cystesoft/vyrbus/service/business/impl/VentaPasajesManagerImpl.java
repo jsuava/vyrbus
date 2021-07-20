@@ -220,7 +220,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	public int guardarVenta(VentaPasaje ventaPasaje, boolean isFechaAbierta, boolean generaControl, boolean validaBloqueo,boolean validarDuplicidadAsiento) throws Exception {
 		int result = Constantes.FAILURE;
 		try{
-			if(!isFechaAbierta && !(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA_POOL))){
+			if(!isFechaAbierta && !(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA_POOL)) && ventaPasaje.getNumeroAsiento()!=null && ventaPasaje.getNumeroPiso()!=null){
 				/*	Validando que no se haya cambiado el tipo de Bus durante la venta	*/
 				boolean excedeCapacidad = false;
 				List<Object> lstCapacidad = getItinerarioDAO().validateCapacity(ventaPasaje.getItinerario().getId(), ventaPasaje.getNumeroAsiento(), ventaPasaje.getNumeroPiso());
@@ -268,7 +268,8 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 			if(!(ventaPasaje.getServicioEspecialFactura())){
 				
 				if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA) || 
-						ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA_POOL)){
+						ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA_POOL) ||
+						ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_EXCESO)){
 					/**Begin 21/10/2016 - jabanto**/
 					/*Vuelve a realizar la busqueda del correlativo y lo actualiza, a exception de los boletos, ya que no son necesarios pues son manuales*/
 //					EspecieValorada especieValorada=null;
@@ -323,7 +324,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 			}
 			
 			/*	Si no es fecha Abierta	*/
-			if(!isFechaAbierta){
+			if(!isFechaAbierta && ventaPasaje.getNumeroAsiento()!=null && ventaPasaje.getNumeroPiso()!=null){
 				/*	Eliminando el asiento de la tabla temporal	*/
 				TmpOcupacionAsientos tmp = new TmpOcupacionAsientos();
 				tmp.setRuta(ventaPasaje.getRuta());

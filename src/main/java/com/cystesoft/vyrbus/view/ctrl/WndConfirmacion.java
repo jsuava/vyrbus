@@ -301,6 +301,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 
 		criteriosBusqueda = new TreeMap<String, Object>();
 		criteriosBusqueda.put("rubro", TipoComprobante.RUBRO_PASAJES);
+		criteriosBusqueda.put("rubro", TipoComprobante.RUBRO_AMBOS);
 		UtilData.cargarDataCombo(cmbTipoComprobante, TipoComprobante.class,criteriosBusqueda, false);
 		UtilData.cargarDataCombo(cmbFormaPago, FormaPago.class, false);
 		UtilData.cargarDataCombo(cmbAlimentacion, PreferenciaAlimentaria.class,false);

@@ -335,6 +335,7 @@ public class WndVentaTerceros extends WndBase {
 			
 			criteriosBusqueda = new TreeMap<String, Object>();
 			criteriosBusqueda.put("rubro", TipoComprobante.RUBRO_PASAJES);
+			criteriosBusqueda.put("rubro", TipoComprobante.RUBRO_AMBOS);
 			UtilData.cargarDataCombo(cmbTipoComprobante, TipoComprobante.class, criteriosBusqueda, false);
 			cargarFormaPago(cmbFormaPago, false);
 			UtilData.cargarDataCombo(cmbAlimentacion, PreferenciaAlimentaria.class, false);

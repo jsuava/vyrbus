@@ -403,6 +403,12 @@
    	<bean id="comprobantesBloqueadosDAO" class="com.cystesoft.vyrbus.model.dao.impl.ComprobantesBloqueadosDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
+   	<bean id="equipajeDAO" class="com.cystesoft.vyrbus.model.dao.impl.EquipajeDAOImpl">
+   		<property name="sessionFactory" ref="sessionFactory" />
+   	</bean>
+   	<bean id="detalleEquipajeDAO" class="com.cystesoft.vyrbus.model.dao.impl.DetalleEquipajeDAOImpl">
+   		<property name="sessionFactory" ref="sessionFactory" />
+   	</bean>
    	
    	
 <!--    	VENTA DE SEGUROS -->
@@ -788,6 +794,14 @@
 	<bean id="ventaServicioEspecialManager" class="com.cystesoft.vyrbus.service.business.impl.VentaServicioEspecialManagerImpl">
 	   <property name="ventaServicioEspecialDAO" ref="ventaServicioEspecialDAO"/>
 	   <property name="controlEspecieValoradaDAO" ref="controlEspecieValoradaDAO"></property>
+	</bean>
+	<bean id="equipajeManager" class="com.cystesoft.vyrbus.service.business.impl.EquipajeManagerImpl">
+	   <property name="equipajeDAO" ref="equipajeDAO"/>
+	</bean>
+	<bean id="detalleEquipajeManager" class="com.cystesoft.vyrbus.service.business.impl.DetalleEquipajeManagerImpl">
+	   <property name="detalleEquipajeDAO" ref="detalleEquipajeDAO"/>
+	   <property name="equipajeDAO" ref="equipajeDAO" />
+	   <property name="controlEspecieValoradaDAO" ref="controlEspecieValoradaDAO"/>
 	</bean>
 	
 <!-- 	VENTA DE SEGUROS -->
