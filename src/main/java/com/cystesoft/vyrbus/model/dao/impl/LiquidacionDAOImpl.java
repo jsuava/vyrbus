@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
@@ -11,6 +12,7 @@ import com.cystesoft.vyrbus.model.bean.Liquidacion;
 import com.cystesoft.vyrbus.model.bean.TipoComprobante;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.dao.LiquidacionDAO;
+import com.cystesoft.vyrbus.service.mappers.ResumenComprobante;
 import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.view.tuentrada.LiquidacionTuentrada;
 
@@ -546,12 +548,6 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 					}
 				}
 			}
-			
-//			if(tipoComprobanteID == Constantes.ID_TIPCOM_FACTURA && (tipoMovimientoID == Constantes.ID_TIPMOV_EFECTIVO 
-//					|| tipoMovimientoID == Constantes.ID_TIPMOV_CREDITO || tipoMovimientoID == Constantes.ID_TIPMOV_SERVICIO_ESPECIAL 
-//					|| tipoMovimientoID == Constantes.ID_TIPMOV_FECHA_ABIERTA)){ 
-//					//Constantes.ID_TIPMOV_CONFIRMACION_FA Constantes.ID_TIPMOV_CORTESIA Constantes.ID_TIPMOV_POSTERGACION Constantes.ID_TIPMOV_POSTERGACION_FA Constantes.ID_TIPMOV_REIMPRESION
-//			}
 		}
 		
 		liquidacion.setCantidadContado(cantidadContado);
@@ -677,4 +673,52 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 //		getSession().createSQLQuery(sql).executeUpdate();
 //	}
 //	
+    public Map<String, ResumenComprobante> buscarResumenComprobantes(String fechaLiquidacion, Integer idAgencia, Integer idUsuario){
+    	String sql = "SELECT  tc.tipcom_id, tc.c_denominacion, substr(v.c_numboleto,1,4) serie, fp.forpag_id, tm.tipmov_id, COUNT(v.n_imppag) AS CANTIDAD, "
+    			+ "SUM(v.n_imppag) AS MONTO, SUM(v.n_imppagefe) AS MIX_EFECTIVO, SUM(v.n_imppagtar) AS MIX_TARJETA, SUM(NVL(v.n_imppagdif,0)) n_imppagdif "
+    			+ "FROM vrtvenpas v "
+    			+ "INNER JOIN vrmtipcom tc ON (v.tipcom_id = tc.tipcom_id) "
+    			+ "INNER JOIN vrmforpag fp ON (v.forpag_id = fp.forpag_id) "
+    			+ "INNER JOIN vrmtipmov tm ON (v.tipmov_id = tm.tipmov_id) "
+    			+ "WHERE v.d_fecliq=to_date('"+fechaLiquidacion+"','dd/MM/yyyy') AND v.c_tiptra IN ('1','3','4','5') AND v.agencia_id="+idAgencia+" AND "
+    			+ "v.usuario_id="+idUsuario+" AND v.tipmov_id not in(5,13,6) AND v.c_Estreg='A' AND v.n_imppag>0 AND NVL(v.n_imppagdif,0)=0 "
+    			+ "GROUP BY tc.tipcom_id, tc.c_denominacion, substr(v.c_numboleto,1,4), fp.forpag_id, tm.tipmov_id "
+    			+ "UNION ALL "
+    			+ "SELECT  tc.tipcom_id, tc.c_denominacion, substr(v.c_numboleto,1,4) serie, fp.forpag_id, tm.tipmov_id, COUNT(v.n_imppag) AS CANTIDAD, "
+    			+ "SUM(v.n_imppag) AS MONTO, SUM(v.n_imppagefe) AS MIX_EFECTIVO, SUM(v.n_imppagtar) AS MIX_TARJETA, SUM(NVL(v.n_imppagdif,0)) n_imppagdif "
+    			+ "FROM vrtvenpas v "
+    			+ "INNER JOIN vrmtipcom tc ON (v.tipcom_id = tc.tipcom_id) "
+    			+ "INNER JOIN vrmforpag fp ON (v.forpag_id = fp.forpag_id) "
+    			+ "INNER JOIN vrmtipmov tm ON (v.tipmov_id = tm.tipmov_id) "
+    			+ "WHERE v.d_fecliq=to_date('"+fechaLiquidacion+"','dd/MM/yyyy') AND v.c_tiptra IN ('1','3','4','5') AND v.agencia_id="+idAgencia+" AND "
+    			+ "v.usuario_id="+idUsuario+" AND v.tipmov_id not in(5,13,6) AND v.c_Estreg='A' AND v.n_imppag>0 AND NVL(v.n_imppagdif,0)>0 "
+    			+ "GROUP BY tc.tipcom_id, tc.c_denominacion, substr(v.c_numboleto,1,4), fp.forpag_id, tm.tipmov_id ";
+    	
+    	log.info(sql);
+		
+		List<?> result = getSession().createSQLQuery(sql).list();
+		
+		Map<String, ResumenComprobante> map = new TreeMap<String, ResumenComprobante>();
+		ResumenComprobante resumenComprobante = null;
+		
+		for(int i=0; i<result.size(); i++) {
+			Object[] obj = (Object[])result.get(i);
+			String key = obj[0].toString()+obj[2].toString();
+			if(map.containsKey(key)) {
+				resumenComprobante = map.get(key);
+				resumenComprobante.setCantidad(resumenComprobante.getCantidad() + ((BigDecimal)obj[5]).intValue());
+				resumenComprobante.setMonto(resumenComprobante.getMonto() + ((BigDecimal)obj[6]).doubleValue());
+				map.put(key, resumenComprobante);
+			}else {
+				resumenComprobante = new ResumenComprobante();
+				resumenComprobante.setIdTipoComprobante(((BigDecimal)obj[0]).intValue());
+				resumenComprobante.setComprobante(obj[1].toString());
+				resumenComprobante.setSerie(obj[2].toString());
+				resumenComprobante.setCantidad(((BigDecimal)obj[5]).intValue());
+				resumenComprobante.setMonto(((BigDecimal)obj[6]).doubleValue());
+				map.put(key, resumenComprobante);
+			}			
+		}
+		return map;
+    }
 }

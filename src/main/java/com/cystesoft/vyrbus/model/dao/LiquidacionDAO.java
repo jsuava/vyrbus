@@ -3,9 +3,11 @@ package com.cystesoft.vyrbus.model.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 import com.cystesoft.vyrbus.model.bean.Liquidacion;
+import com.cystesoft.vyrbus.service.mappers.ResumenComprobante;
 import com.cystesoft.vyrbus.view.tuentrada.LiquidacionTuentrada;
 
 /**
@@ -90,6 +92,14 @@ public interface LiquidacionDAO extends GenericDAO {
 	 * @return
 	 */
 	public List<LiquidacionTuentrada> liquidacionTuentrada(Integer idAgencia, Integer idUsuario, String fechaliquidacion);
+	/**
+	 * Realiza la busqueda del resumen por documento para el cierre de caja
+	 * @param fechaLiquidacion	: Fecha de la liquidacion
+	 * @param idAgencia			: Identificador de la Agencia
+	 * @param idUsuario			: Identificador del usuario propietario de la liquidacion
+	 * @return
+	 */
+	public Map<String, ResumenComprobante> buscarResumenComprobantes(String fechaLiquidacion, Integer idAgencia, Integer idUsuario);	
 //	/**
 //	 * Reapertura una liquidación
 //	 * @param idliquidacion	: Identificador de la liquidacion.

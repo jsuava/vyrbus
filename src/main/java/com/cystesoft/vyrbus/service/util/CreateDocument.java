@@ -28,6 +28,7 @@ import org.zkoss.zul.Listitem;
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.CentroCosto;
 import com.cystesoft.vyrbus.model.bean.DetalleFlotaHRE;
+import com.cystesoft.vyrbus.model.bean.Gasto;
 import com.cystesoft.vyrbus.model.bean.HRE;
 import com.cystesoft.vyrbus.model.bean.Itinerario;
 import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartida;
@@ -48,6 +49,7 @@ import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.mappers.Asiento;
 import com.cystesoft.vyrbus.service.mappers.Coordenada;
+import com.cystesoft.vyrbus.service.mappers.ResumenComprobante;
 import com.cystesoft.vyrbus.view.ctrl.WndManifiesto;
 
 public class CreateDocument implements Serializable {
@@ -955,27 +957,46 @@ public class CreateDocument implements Serializable {
 			bw.write(NEWLINE);
 			
 			//---> line 5: Titulo: 
-			linea=tabular(3)+"ESPECIES VALORADAS UTILIZADAS"; 
+			linea=tabular(3)+"COMPROBANTE"+tabular(14)+"SERIE"+tabular(12)+"CANTIDAD"+tabular(13)+"IMPORTE"; 
 			bw.write(linea+NEWLINE);
 			
 			//---> line 6: linea
-			linea=tabular(3)+"-----------------------------";
+			linea=tabular(3)+"-----------------------------------------------------------------------";
 			bw.write(linea+NEWLINE);
 			
 			//---> line 7: Valores: Especies Valorada, serie, del, al, cont, corte
-			List<Liquidacion>list = ServiceLocator.getLiquidacionManager().BuscarEspeciesValoradas(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId());
-			for (Liquidacion especiesValorada: list ){
-				longitud_C=especiesValorada.getTipoComprobante().getDenominacion().toString().length();
-				linea = tabular(3)+especiesValorada.getTipoComprobante().getDenominacion()+tabular(22-longitud_C)+"Serie: "+especiesValorada.getSerie()+" ";
-				linea +="Del: "+especiesValorada.getBoletoInicial();
-				linea += " Al: "+especiesValorada.getboletoFinal()+tabular(3);
-				longitud_C=especiesValorada.getCantidadBoletos().toString().length();
-				linea += tabular(3)+"Cant:"+tabular(1-longitud_C+1)+especiesValorada.getCantidadBoletos()+tabular(3)+"Corte: "+tabular(1-longitud_C)+especiesValorada.getCorte();
+//			List<Liquidacion>list = ServiceLocator.getLiquidacionManager().BuscarEspeciesValoradas(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId());
+			Map<String, ResumenComprobante> mapResumen = ServiceLocator.getLiquidacionManager().buscarResumenComprobantes(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId());
+			for(String key : mapResumen.keySet()) {
+				ResumenComprobante resumen = mapResumen.get(key);
+				longitud_C=resumen.getComprobante().toString().length();
+				linea = tabular(3)+resumen.getComprobante()+tabular(26-longitud_C)+resumen.getSerie();
+				longitud_C=resumen.getCantidad().toString().length();
+				linea += tabular(16)+tabular(1-longitud_C+1)+resumen.getCantidad();
+				longitud_M=(int) resumen.getMonto().intValue();
+				longitud_M = longitud_M.toString().length(); 
+				if (longitud_M==4)
+					longitud_M += +1;
+				else if (longitud_M==5)
+					longitud_M += +2;
+				linea += tabular(19-longitud_M)+Util.toNumberFormat(resumen.getMonto(),2);
 				bw.write(linea+NEWLINE);
 			}
+			
+			
+			
+			
+//			for (Liquidacion especiesValorada: list ){
+//				longitud_C=especiesValorada.getTipoComprobante().getDenominacion().toString().length();
+//				linea = tabular(3)+especiesValorada.getTipoComprobante().getDenominacion()+tabular(22-longitud_C)+"Serie: "+especiesValorada.getSerie()+" ";
+//				linea +="Del: "+especiesValorada.getBoletoInicial();
+//				linea += " Al: "+especiesValorada.getboletoFinal()+tabular(3);
+//				longitud_C=especiesValorada.getCantidadBoletos().toString().length();
+//				linea += tabular(3)+"Cant:"+tabular(1-longitud_C+1)+especiesValorada.getCantidadBoletos()+tabular(3)+"Corte: "+tabular(1-longitud_C)+especiesValorada.getCorte();
+//				bw.write(linea+NEWLINE);
+//			}
 					
 			Liquidacion liquidacion2 = ServiceLocator.getLiquidacionManager().buscarRptLiquidacionTurno(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId());
-			
 			
 			/********** BUSCAR LIQUIDACION DE VENTA DE SEGUROS********************************/
 			/* Busca liquidacion de venta de seguros*/
@@ -1281,49 +1302,68 @@ public class CreateDocument implements Serializable {
 			linea=tabular(3)+interline;
 			bw.write(linea+NEWLINE);
 			
-			//---> linea 27: Gastos varios 
-			longitud_C=liquidacion2.getCantidadGastoVarios().toString().length();
-			longitud_M=(int) liquidacion2.getMontoGastoVarios();
-			longitud_M = longitud_M.toString().length();
-			if (longitud_M==4)
-				longitud_M += +1;
-			else if (longitud_M==5)
-				longitud_M += +2;
-			linea=tabular(3)+"GASTOS VARIOS"+tabular(35-longitud_C)+liquidacion2.getCantidadGastoVarios()+tabular(19-longitud_M)+Util.toNumberFormat(liquidacion2.getMontoGastoVarios(),2);
-			bw.write(linea+NEWLINE);
+			List<Gasto> lstGastos =  ServiceLocator.getGastoManager().obtenerGastosByLiquidacion(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId());
+			int cantidadGasto = 0;
+			double importeGasto = 0;
+			for(int i=0; i<lstGastos.size(); i++) {
+				Gasto gasto = lstGastos.get(i);
+				cantidadGasto = cantidadGasto + gasto.getCantidad();
+				importeGasto = importeGasto + gasto.getMonto();
+				longitud_C=gasto.getCantidad().toString().length();
+				longitud_M=(int) gasto.getMonto().intValue();
+				longitud_M = longitud_M.toString().length();
+				if (longitud_M==4)
+					longitud_M += +1;
+				else if (longitud_M==5)
+					longitud_M += +2;
+				linea=tabular(3)+gasto.getTipoGasto().getDenominacion()+tabular((48-gasto.getTipoGasto().getDenominacion().length())-longitud_C)+gasto.getCantidad()+tabular(19-longitud_M)+Util.toNumberFormat(gasto.getMonto(),2);
+				bw.write(linea+NEWLINE);
+			}
 			
-			//---> linea 28: Gastos con documento 
-			longitud_C=liquidacion2.getCantidadGastoConDocumento().toString().length();
-			longitud_M=(int) liquidacion2.getMontoGastoConDocumento();
-			longitud_M = longitud_M.toString().length();
-			if (longitud_M==4)
-				longitud_M += +1;
-			else if (longitud_M==5)
-				longitud_M += +2;
-			linea=tabular(3)+"GASTOS CON DOCUMENTO"+tabular(28-longitud_C)+liquidacion2.getCantidadGastoConDocumento()+tabular(19-longitud_M)+Util.toNumberFormat(liquidacion2.getMontoGastoConDocumento(),2);
-			bw.write(linea+NEWLINE);
-						
-			//---> linea 29: Peajes
-			longitud_C=liquidacion2.getCantidadPeajes().toString().length();
-			longitud_M=(int) liquidacion2.getMontoPeajes();
-			longitud_M = longitud_M.toString().length();
-			if (longitud_M==4)
-				longitud_M += +1;
-			else if (longitud_M==5)
-				longitud_M += +2;
-			linea=tabular(3)+"PEAJES"+tabular(42-longitud_C)+liquidacion2.getCantidadPeajes()+tabular(19-longitud_M)+Util.toNumberFormat(liquidacion2.getMontoPeajes(),2);
-			bw.write(linea+NEWLINE);
 			
-			//---> linea 30: Pago de Giros
-			longitud_C=liquidacion2.getCantidadPagoGiros().toString().length();
-			longitud_M=(int) liquidacion2.getMontoPagoGiros();
-			longitud_M = longitud_M.toString().length();
-			if (longitud_M==4)
-				longitud_M += +1;
-			else if (longitud_M==5)
-				longitud_M += +2;
-			linea=tabular(3)+"PAGO DE GIROS"+tabular(35-longitud_C)+liquidacion2.getCantidadPagoGiros()+tabular(19-longitud_M)+Util.toNumberFormat(liquidacion2.getMontoPagoGiros(),2);
-			bw.write(linea+NEWLINE);
+//			//---> linea 27: Gastos varios 
+//			longitud_C=liquidacion2.getCantidadGastoVarios().toString().length();
+//			longitud_M=(int) liquidacion2.getMontoGastoVarios();
+//			longitud_M = longitud_M.toString().length();
+//			if (longitud_M==4)
+//				longitud_M += +1;
+//			else if (longitud_M==5)
+//				longitud_M += +2;
+//			linea=tabular(3)+"GASTOS VARIOS"+tabular(35-longitud_C)+liquidacion2.getCantidadGastoVarios()+tabular(19-longitud_M)+Util.toNumberFormat(liquidacion2.getMontoGastoVarios(),2);
+//			bw.write(linea+NEWLINE);
+//			
+//			//---> linea 28: Gastos con documento 
+//			longitud_C=liquidacion2.getCantidadGastoConDocumento().toString().length();
+//			longitud_M=(int) liquidacion2.getMontoGastoConDocumento();
+//			longitud_M = longitud_M.toString().length();
+//			if (longitud_M==4)
+//				longitud_M += +1;
+//			else if (longitud_M==5)
+//				longitud_M += +2;
+//			linea=tabular(3)+"GASTOS CON DOCUMENTO"+tabular(28-longitud_C)+liquidacion2.getCantidadGastoConDocumento()+tabular(19-longitud_M)+Util.toNumberFormat(liquidacion2.getMontoGastoConDocumento(),2);
+//			bw.write(linea+NEWLINE);
+//						
+//			//---> linea 29: Peajes
+//			longitud_C=liquidacion2.getCantidadPeajes().toString().length();
+//			longitud_M=(int) liquidacion2.getMontoPeajes();
+//			longitud_M = longitud_M.toString().length();
+//			if (longitud_M==4)
+//				longitud_M += +1;
+//			else if (longitud_M==5)
+//				longitud_M += +2;
+//			linea=tabular(3)+"PEAJES"+tabular(42-longitud_C)+liquidacion2.getCantidadPeajes()+tabular(19-longitud_M)+Util.toNumberFormat(liquidacion2.getMontoPeajes(),2);
+//			bw.write(linea+NEWLINE);
+//			
+//			//---> linea 30: Pago de Giros
+//			longitud_C=liquidacion2.getCantidadPagoGiros().toString().length();
+//			longitud_M=(int) liquidacion2.getMontoPagoGiros();
+//			longitud_M = longitud_M.toString().length();
+//			if (longitud_M==4)
+//				longitud_M += +1;
+//			else if (longitud_M==5)
+//				longitud_M += +2;
+//			linea=tabular(3)+"PAGO DE GIROS"+tabular(35-longitud_C)+liquidacion2.getCantidadPagoGiros()+tabular(19-longitud_M)+Util.toNumberFormat(liquidacion2.getMontoPagoGiros(),2);
+//			bw.write(linea+NEWLINE);
 			
 			//---> linea 31: Devolici�n al 80%
 			longitud_C=liquidacion2.getCantidadDevolucion().toString().length();
@@ -1435,15 +1475,15 @@ public class CreateDocument implements Serializable {
 			bw.write(linea+NEWLINE);
 			
 			//---> linea 37: Total Egresos
-			Integer CantidadEgresos=liquidacion2.getCantidadGastoVarios()+liquidacion2.getCantidadPeajes()+liquidacion2.getCantidadPagoGiros()+
-								    liquidacion2.getCantidadGastoConDocumento()+
+			Integer CantidadEgresos=/*liquidacion2.getCantidadGastoVarios()+liquidacion2.getCantidadPeajes()+liquidacion2.getCantidadPagoGiros()+
+								    liquidacion2.getCantidadGastoConDocumento()+*/
 									liquidacion2.getCantidadDevolucion()+liquidacion2.getCantidadcortesia()+
-									liquidacion2.getCantidadCreditos()+liquidacion2.getCantidadPrepagado()+cantidadVentaTarjeta+cantidadNotasCredito;
+									liquidacion2.getCantidadCreditos()+liquidacion2.getCantidadPrepagado()+cantidadVentaTarjeta+cantidadNotasCredito+cantidadGasto;
 //									+ cantidadVentasPaxfre;
-			double Totalegresos=liquidacion2.getMontoGastoVarios()+liquidacion2.getMontoPeajes()+liquidacion2.getMontoPagoGiros()+
-								liquidacion2.getMontoGastoConDocumento()+
+			double Totalegresos=/*liquidacion2.getMontoGastoVarios()+liquidacion2.getMontoPeajes()+liquidacion2.getMontoPagoGiros()+
+								liquidacion2.getMontoGastoConDocumento()+*/
 								liquidacion2.getMontoDevolucion()+liquidacion2.getMontoCortesia()+
-								liquidacion2.getMontoCreditos()+liquidacion2.getMontoPrepagado()+montoVentaTarjeta+montoNotasCredito;
+								liquidacion2.getMontoCreditos()+liquidacion2.getMontoPrepagado()+montoVentaTarjeta+montoNotasCredito+importeGasto;
 //								+ montoTotalVentasSeguroPaxfre;
 			
 			longitud_C=CantidadEgresos.toString().length();

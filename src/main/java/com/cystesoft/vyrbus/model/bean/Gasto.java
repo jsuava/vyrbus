@@ -22,6 +22,7 @@ public class Gasto extends GenericBean implements java.io.Serializable {
 	private Liquidacion liquidacion;
 	private DetalleLiquidacion detalleLiquidacion;
 	private LiquidacionOficina liquidacionOficina;
+	private Integer cantidad;
 	
 	
 	private Set<DetalleLiquidacion> detalleLiquidacions = new HashSet<DetalleLiquidacion>(0);
@@ -118,6 +119,20 @@ public class Gasto extends GenericBean implements java.io.Serializable {
 		this.liquidacionOficina=liquidacionOficina;
 	}
 	
+	/**
+	 * @return the cantidad
+	 */
+	public Integer getCantidad() {
+		return cantidad;
+	}
+
+	/**
+	 * @param cantidad the cantidad to set
+	 */
+	public void setCantidad(Integer cantidad) {
+		this.cantidad = cantidad;
+	}
+
 	public Set<DetalleLiquidacion> getDetalleLiquidacions() {
 		return this.detalleLiquidacions;
 	}

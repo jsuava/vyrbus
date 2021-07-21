@@ -246,6 +246,35 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 		else
 			return 0.00;
 	}
-	
 
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.GastoDAO#obtenerGastosByLiquidacion(java.lang.String, java.lang.Integer, java.lang.Integer)
+	 */
+	@Override
+	public List<Gasto> obtenerGastosByLiquidacion(String fechaLiquidacion, Integer idAgencia, Integer idUsuario) {
+		String sql = "SELECT tg.tipgas_id, tg.c_denominacion, COUNT(g.n_monto) AS CANTIDAD,  SUM(g.n_monto) AS MONTO "
+				+ "FROM vrtgasto g "
+				+ "INNER JOIN vrmtipgas tg ON (tg.tipgas_id=g.tipgas_id) "
+				+ "INNER JOIN (SELECT dl.gasto_id FROM vrtdetliq dl "
+				+ "INNER JOIN vrtliquidacion l On (l.liquidacion_id=dl.liquidacion_id) "
+				+ "WHERE l.d_fecliq=to_date('13/07/2021','dd/MM/yyyy')  AND l.agencia_id=1 AND l.usuario_id=4 AND l.c_estreg='A') dl ON (dl.gasto_id=g.gasto_id) "
+				+ "WHERE g.c_estreg='A' GROUP BY tg.tipgas_id, tg.c_denominacion "
+				+ "ORDER BY tg.c_denominacion ";
+		
+		log.info(sql);
+		List<?> result = getSession().createSQLQuery(sql).list();
+		List<Gasto> lstResult = new ArrayList<Gasto>(); 
+		for(int i=0; i<result.size(); i++) {
+			Object[] obj = (Object[]) result.get(i);
+			Gasto gasto = new Gasto();
+			TipoGasto tipoGasto = new TipoGasto();
+			tipoGasto.setId(((BigDecimal)obj[0]).intValue());
+			tipoGasto.setDenominacion(obj[1].toString());
+			gasto.setTipoGasto(tipoGasto);
+			gasto.setCantidad(((BigDecimal)obj[2]).intValue());
+			gasto.setMonto(((BigDecimal)obj[3]).doubleValue());
+			lstResult.add(gasto);			
+		}
+		return lstResult;
+	}
 }
