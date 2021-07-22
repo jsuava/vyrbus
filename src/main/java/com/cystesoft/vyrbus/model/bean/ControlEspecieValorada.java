@@ -2,6 +2,8 @@ package com.cystesoft.vyrbus.model.bean;
 
 import java.io.Serializable;
 
+import com.cystesoft.vyrbus.service.util.Util;
+
 // default package
 // Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1
 
@@ -94,9 +96,11 @@ public class ControlEspecieValorada extends GenericBean implements Serializable,
 //		return this.serie + "-"+ correlativo.substring(correlativo.length()-7);
 		Long actual = correlativoActual;
 		/*para el caso de la fe*/
-		String correlativo = "00000000"+actual;
+//		String correlativo = "00000000"+actual;
+		String correlativo = actual.toString();
 		String cserie=this.serie;
-		return cserie + "-"+ correlativo.substring(correlativo.length()-8);
+//		return cserie + "-"+ correlativo.substring(correlativo.length()-8);
+		return Util.autocompleNumberBoleto(cserie+"-"+correlativo);
 	}
 
 	/**

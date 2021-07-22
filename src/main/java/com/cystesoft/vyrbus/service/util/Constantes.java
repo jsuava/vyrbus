@@ -366,6 +366,8 @@ public class Constantes {
 	public static final int ID_TIPMOV_ANULACION = 13;
 	public static final int ID_TIPMOV_GASTOS_ADMINISTRATIVOS = 14;
 	public static final int ID_TIPMOV_SERVICIO_ESPECIAL = 16;
+	public static final int ID_TIPMOV_GRT = 17;
+	public static final int ID_TIPMOV_CANJE_GRT = 18;
 	/**
 	 *Movimiento que no debe ser tomado como venta, este se emite cuando a un conprobante se le aplica un NC y ese comprobante no se le genera un movimiento de anulacion(5) - 10/01/2017 - jabanto 
 	 */
@@ -412,6 +414,7 @@ public class Constantes {
 	public static final int ID_TIPCOM_BOLETA_VENTA=7;
 	public static final int ID_TIPCOM_NOTA_CREDITO=8;
 	public static final int ID_TIPCOM_NOTA_DEBITO=9;
+	public static final int ID_TIPCOM_GUIA_TRANSPORTISTA=10;
 	public static final int ID_TIPCOM_TICKET_EQUIPAJE=11;
 	
 	/* Constantes que referencian a los Motivos de Cortesia*/

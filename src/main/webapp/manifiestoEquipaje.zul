@@ -1,0 +1,102 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndManifiestoEquipaje" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndManifiestoEquipaje">
+	<panel id="panel" title="::: MANIFIESTO DE EQUIPAJES :::" framable="true" width="860px" border="normal" closable="true">
+        <panelchildren>
+				<grid style="background: ">
+					<columns>
+		 				<column width="70px"/>
+						<column width="90px"/>
+						<column width="80px" /> 
+						<column width="100px"/>
+						<column width="85px"/>
+						<column width="65px"/>
+						<column width="53px"/>
+						<column width="165px"/>
+						<column width="47px"/>
+					</columns>
+					<rows>
+						<row>
+							<label value="ITINERARIO" />
+							<div>
+								<textbox id="txtItinerario"  maxlength="18" width="75px" readonly="true" />
+							</div>
+							<button id="btnBuscarItinerario" sclass="btnImage" image="/resources/mp_buscarEnabled.png" />
+							<label value="PUNTO CONTROL"/>
+		 					<combobox id="cmbPuntocontrol"  readonly="true" width="80px" />
+		 					<button id="btnRefrescar" image="/resources/mp_recargar16.png" sclass="btnImage" tooltiptext="Refrescar Manifiesto"/>
+							<label value="IMPRIMIR" />
+							<combobox id="cmbImprimir" readonly="true" width="160px" />
+							<button id="btnPrevio" image="/resources/mp_preliminar.png" sclass="btnImage" tooltiptext="Vista Preliminar" />
+							<button id="btnImprimir" image="/resources/mp_imprimir.png" sclass="btnImage" tooltiptext="Imprimir" />
+						</row>
+					</rows>
+				</grid>
+			
+				<grid style="border:none" > 
+					<rows>
+						<row>
+							<grid >
+								<columns>
+									<column width="110px" align="right" /> 
+									<column width="110px" />
+									<column width="120px" align="right"/>
+									<column />
+								</columns>
+								<rows>
+									<row>
+										<label value="RUTA :" />
+										<label id="lbRuta"  style="color:#0000CF" />
+										<label value="BUS :" />
+										
+										<hbox align="center">
+											<div width="102px" ><label id="lbBus"  style="color:#0000CF; font-size: 11px !important" /></div>
+											<label value="SERVICIO :" />
+											<div width="155px"><label  id="lbServicio"   style="color:#0000CF" /></div>
+											<separator/>
+											<separator width="10px" />
+											<separator/>
+										</hbox>			
+									</row>
+									<row>
+										<label value="FEC/HOR SALIDA:"  />
+										<label  id="lbFechaSalida"  style="font-size: 11px !important; color:#0000CF " />					
+										<label value="FEC/HOR LLEGADA:" />
+										<hbox align="center">
+											<div width="90px"><label  id="lbFechaLlegada"   style="font-size: 11px !important; color:#0000CF" /></div>
+											<label value="TRIPULANTE:" />
+											<label  id="lbTripulante"  style="color:#0000CF" />	
+										</hbox>
+									</row>
+									<row spans="1,4">
+										<label value="PILOTO:" />
+										<hbox align="center">
+											<div width="190px"><label  id="lbPiloto"   style="color:#0000CF" /></div>
+											<label value="COPILOTO:" />
+											<div width="190px"><label  id="lbcopiloto"   style="color:#0000CF" /></div>
+											<label value="COPILOTO AUX:" tooltiptext="Copiloto Auxiliar" />
+											<label  id="lbCopilotoAux"   style="color:#0000CF" />	
+												
+										</hbox>
+									</row>
+								</rows>
+							</grid>
+						</row>
+						<row>
+							<groupbox closable="false" >
+							<caption label="Lista de Equipajes"/>
+								<listbox  rows="10" id="ltbxManifiestoEquipajes"  width="835px" droppable="true">
+									<listhead>											
+										<listheader label="N°COMPROBANTE" width="150px" style="color: #ffffff;"/>
+										<listheader label="PASAJERO" width="500px" style="color: #ffffff;"/>
+										<listheader label="TICKET" style="color: #ffffff;"/>																			
+									 </listhead>
+								</listbox>
+						</groupbox>
+					</row>									
+				</rows>
+			</grid>
+		</panelchildren>
+	</panel>
+</window>
+</zk>

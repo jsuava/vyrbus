@@ -83,7 +83,10 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				"INNER JOIN vrtitinerario i ON i.itinerario_id=vp.itinerario_id " +
 				"INNER JOIN vrmruta rm ON rm.ruta_id=i.ruta_idmayor " +
 				"LEFT JOIN vrmagencia ap ON ap.agencia_id=vp.Agencia_Idpartida " +
-				"WHERE vp.itinerario_id="+idItinerario+" AND vp.tipmov_id not in("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_ANULACION+") AND vp.c_estreg='"+Constantes.VALUE_ACTIVO+"' " +
+				"WHERE vp.itinerario_id="+idItinerario+" "+
+			    "AND vp.tipmov_id not in("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_ANULACION+") "+
+				"AND vp.c_estreg='"+Constantes.VALUE_ACTIVO+"' " +
+			    "AND vp.n_numasiento IS NOT NULL "+
 				"ORDER BY vp.n_numasiento ";
 		
 		log.info(sql);

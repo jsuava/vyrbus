@@ -166,6 +166,15 @@ public class DetalleEquipajeManagerImpl implements DetalleEquipajeManager{
 		getControlEspecieValoradaDAO().update(controlEspecieValorada);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.DetalleEquipajeManager#buscarManifiestoEquipaje(java.lang.Long, java.lang.Integer)
+	 */
+	@Override
+	public List<DetalleEquipaje> buscarManifiestoEquipaje(Long itinerarioId, Integer agenciaId) throws Exception {
+		// TODO Auto-generated method stub
+		return getDetalleEquipajeDAO().buscarManifiestoEquipaje(itinerarioId, agenciaId);
+	}
+
 	
 
 	

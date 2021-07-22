@@ -28,7 +28,6 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Radio;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
-import org.zkoss.zul.Window;
 
 import com.cystesoft.vyrbus.model.bean.Cliente;
 import com.cystesoft.vyrbus.model.bean.ControlEspecieValorada;
@@ -47,7 +46,6 @@ import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.Messages;
 import com.cystesoft.vyrbus.service.util.Util;
 import com.cystesoft.vyrbus.service.util.UtilData;
-import com.cystesoft.vyrbus.service.util.WSFE;
 import com.cystesoft.vyrbus.view.ui.DlgMessage;
 import com.cystesoft.vyrbus.view.ui.WndBase;
 
@@ -61,6 +59,8 @@ public class WndGastosAdministrativos extends WndBase{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private Radio rdCanjePce;
+	private Radio rdCobroAdmin;
 	private Combobox cmbTipoComprobanteAplica;
 	private Textbox txtComprobanteAplica;
 	private Image imgBuscarComprobanteAplica;
@@ -87,7 +87,7 @@ public class WndGastosAdministrativos extends WndBase{
 	private Textbox txtMotivo;
 	private Image imgBuscarCliente;
 	private Groupbox gbxGastosAdmin;
-	private Window wndGastosAdministrativos;
+//	private Window wndGastosAdministrativos;
 	private Button btnGuardar;
 	private Radio rdModoManual;
 	private Radio rdModoElectronico;
@@ -103,6 +103,8 @@ public class WndGastosAdministrativos extends WndBase{
 	@Override
 	public void initComponents() {
 		// TODO Auto-generated method stub
+		rdCanjePce = (Radio)this.getFellow("rdCanjePce");
+		rdCobroAdmin = (Radio)this.getFellow("rdCobroAdmin");
 		cmbTipoComprobanteAplica=(Combobox)this.getFellow("cmbTipoComprobanteAplica");
 		txtComprobanteAplica=(Textbox)this.getFellow("txtComprobanteAplica");
 		txtFechaViaje=(Textbox)this.getFellow("txtFechaViaje");
@@ -128,11 +130,23 @@ public class WndGastosAdministrativos extends WndBase{
 		imgBuscarComprobanteAplica=(Image)this.getFellow("imgBuscarComprobanteAplica");
 		txtTipoMovimiento=(Textbox)this.getFellow("txtTipoMovimiento");
 		gbxGastosAdmin=(Groupbox)this.getFellow("gbxGastosAdmin");
-		wndGastosAdministrativos=(Window)this.getFellow("wndGastosAdministrativos");
+//		wndGastosAdministrativos=(Window)this.getFellow("wndGastosAdministrativos");
 		btnGuardar=(Button)this.getFellow("btnGuardar");
 		rdModoManual=(Radio)this.getFellow("rdModoManual");
 		rdModoElectronico=(Radio)this.getFellow("rdModoElectronico");
 		
+		rdCanjePce.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				select_tipoOperacion();
+			}
+		});
+		rdCobroAdmin.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				select_tipoOperacion();
+			}
+		});
 		txtComprobanteAplica.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -374,9 +388,10 @@ public class WndGastosAdministrativos extends WndBase{
 			
 			super.onCreate();
 			fechaLiquidacion = (Date) this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION);
-			
+						
+			select_tipoOperacion();
 			onLoadTipoComprobantes(cmbTipoComprobante);
-			onLoadTipoComprobantes(cmbTipoComprobanteAplica);
+//			onLoadTipoComprobantes(cmbTipoComprobanteAplica);
 			UtilData.cargarDataCombo(cmbOperador, OperadorTarjetaCredito.class, false);
 			dblImportePagado.setLocale(Locale.US);
 			
@@ -400,6 +415,33 @@ public class WndGastosAdministrativos extends WndBase{
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
 		}
+	}
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	private void select_tipoOperacion()throws Exception{
+		Util.limpiarCombobox(cmbTipoComprobanteAplica);
+		if(rdCanjePce.isChecked()) {
+			onLoadTipoComprobanteCanjePCE();
+			txtComprobanteAplica.setFocus(true);
+		}else {
+			onLoadTipoComprobantes(cmbTipoComprobanteAplica);
+		}
+	}
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	private void onLoadTipoComprobanteCanjePCE()throws Exception{
+		UtilData.cargarGenericData(cmbTipoComprobanteAplica, false);
+		TipoComprobante tipoComprobante = ServiceLocator.getTipoComprobanteManager().buscarPorId(Long.valueOf(Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA));
+		Comboitem comboitem= new Comboitem(tipoComprobante.getDenominacion());
+		comboitem.setValue(tipoComprobante);
+		cmbTipoComprobanteAplica.appendChild(comboitem);
+		cmbTipoComprobanteAplica.setSelectedIndex(1);
 	}
 	
 	/**
@@ -471,6 +513,7 @@ public class WndGastosAdministrativos extends WndBase{
 			return;
 		}
 		
+		rdModoElectronico.setChecked(true);
 		if(rdModoManual.isChecked())
 			txtComprobante.setReadonly(false);
 		
@@ -483,12 +526,17 @@ public class WndGastosAdministrativos extends WndBase{
 		txtFormaPago.setText(ventaOriginal.getTipoFormaPago().getDenominacion());
 		
 		/*Valida la forma de pago para determinar el pago*/
-		TipoNota tipoNota=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CREDITO_DEVOLUCION);
-		if(ventaOriginal.getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA)
-			dblImportePagado.setValue(tipoNota.getGastoAdminTarjeta());
-		else
-			dblImportePagado.setValue(tipoNota.getGastoAdminEfectivo());
-		
+		if(ventaOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA) {
+			dblImportePagado.setValue(ventaOriginal.getImportePagado());
+			txtMotivo.setText(ventaOriginal.getObservaciones()!=null?ventaOriginal.getObservaciones():"");
+		}else {
+			TipoNota tipoNota=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CREDITO_DEVOLUCION);
+			if(ventaOriginal.getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA)
+				dblImportePagado.setValue(tipoNota.getGastoAdminTarjeta());
+			else
+				dblImportePagado.setValue(tipoNota.getGastoAdminEfectivo());
+		}
+	
 		txtMotivo.setReadonly(false);
 		gbxGastosAdmin.setOpen(true);
 	}
@@ -694,7 +742,7 @@ public class WndGastosAdministrativos extends WndBase{
 			gastoAdmin.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CONTADO));
 			gastoAdmin.setServicio(ventaOriginal.getServicio());
 			gastoAdmin.setTipoComprobante((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue());
-			gastoAdmin.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS));
+			
 			gastoAdmin.setTipoFormaPago((TipoFormaPago)cmbFormaPago.getSelectedItem().getValue());
 			if(gastoAdmin.getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA)
 				gastoAdmin.setTarjetaCredito((TarjetaCredito)cmbTarjetaCredito.getSelectedItem().getValue());
@@ -719,7 +767,14 @@ public class WndGastosAdministrativos extends WndBase{
 			gastoAdmin.setIdaRetorno(Constantes.FALSE_VALUE);
 			gastoAdmin.setEsFechaAbierta(Constantes.FALSE_VALUE);
 			gastoAdmin.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-			gastoAdmin.setObservaciones("::::REGULARIZACION::::"+txtMotivo.getText().trim().toUpperCase());
+			if(ventaOriginal.getTipoComprobante().getId()==Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA) {
+				gastoAdmin.setObservaciones("CANJE PCE ==> "+txtMotivo.getText().trim());
+				gastoAdmin.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_CANJE_GRT));
+			}else {
+				gastoAdmin.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS));
+				gastoAdmin.setObservaciones("::::REGULARIZACION::::"+txtMotivo.getText().trim().toUpperCase());
+			}
+				
 			/*BEGIN 16/06/2021 - javalos - Correlativo by caja*/
 			gastoAdmin.setUsuarioHardware(getUsuarioHardware());
 			/*END 16/06/2021 - javalos - Correlativo by caja*/
@@ -740,11 +795,11 @@ public class WndGastosAdministrativos extends WndBase{
 							/*Solo si es electronico*/
 							if(rdModoElectronico.isChecked()){
 								gastoAdmin=ServiceLocator.getVentaPasajesManager().buscarVentaById(gastoAdmin.getId());
-								txtComprobante.setText(gastoAdmin.getNumeroBoleto());//Lo actualiza por si haya cambiado
+								txtComprobante.setText(gastoAdmin.getNumeroBoleto());//actualiza por si haya cambiado
 								
 								List<VentaPasaje>listVentaPasaje= new ArrayList<>();
 								listVentaPasaje.add(gastoAdmin);
-								WSFE.sendVenta(listVentaPasaje, wndGastosAdministrativos, true, null);
+//								WSFE.sendVenta(listVentaPasaje, wndGastosAdministrativos, true, null);
 							}
 						
 							disableControls(true);

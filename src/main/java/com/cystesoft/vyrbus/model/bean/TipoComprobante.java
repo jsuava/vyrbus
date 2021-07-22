@@ -14,7 +14,7 @@ public class TipoComprobante extends GenericBean implements java.io.Serializable
 	
 	public static final int RUBRO_PASAJES = 1;
 	public static final int RUBRO_CARGA = 2;
-	public static final int RUBRO_AMBOS = 3;
+//	public static final int RUBRO_AMBOS = 3;
 
 	public TipoComprobante() {
 	}

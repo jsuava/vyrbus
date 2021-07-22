@@ -24,6 +24,15 @@ public class Equipaje extends GenericBean implements java.io.Serializable{
 	private Double peso;
 	
 	private UsuarioHardware usuarioHardware;
+	
+	public Equipaje() {
+		super();
+	}
+	
+	public Equipaje(Long id) {
+		this.id=id;
+	}
+	
 	/**
 	 * @return the id
 	 */

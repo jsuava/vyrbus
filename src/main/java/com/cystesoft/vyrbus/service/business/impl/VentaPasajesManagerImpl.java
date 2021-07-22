@@ -2083,6 +2083,21 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 		}
 		/*END 15/06/2021 - javalos - Correlativo by caja*/
 		
+		//Valida si es un canje de PCE - 22/07/2021
+		if(gastoAdministrativo.getVentaPasaje().getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA) {
+			VentaPasaje guiaRemisionTrans= gastoAdministrativo.getVentaPasaje();
+			guiaRemisionTrans.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_ANULACION_SISTEMA));
+			guiaRemisionTrans.setUsuario(gastoAdministrativo.getUsuario());
+			guiaRemisionTrans.setUsuarioInsercion(gastoAdministrativo.getUsuarioInsercion());
+			guiaRemisionTrans.setIpInsercion(gastoAdministrativo.getIpInsercion());
+			guiaRemisionTrans.setUsuarioModificacion(gastoAdministrativo.getUsuarioModificacion());
+			guiaRemisionTrans.setIpModificacion(gastoAdministrativo.getIpModificacion());
+		
+			/* Anula el movimiento anterior*/
+			getVentaPasajesDAO().save(guiaRemisionTrans);
+		}		
+		
+		
 		/*Guardando el gasto administrativo*/
 		getVentaPasajesDAO().save(gastoAdministrativo);
 		

@@ -8,11 +8,15 @@
  */
 package com.cystesoft.vyrbus.model.dao.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
 import com.cystesoft.vyrbus.model.bean.DetalleEquipaje;
+import com.cystesoft.vyrbus.model.bean.Equipaje;
+import com.cystesoft.vyrbus.model.bean.Pasajero;
+import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.model.dao.DetalleEquipajeDAO;
 
 /**
@@ -66,6 +70,46 @@ public class DetalleEquipajeDAOImpl  extends GenericDAOImpl implements DetalleEq
 	public void actualizar(DetalleEquipaje detalleEquipaje) {
 		// TODO Auto-generated method stub
 		super.update(detalleEquipaje);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.DetalleEquipajeDAO#buscarManifiestoEquipaje(java.lang.Long, java.lang.Integer)
+	 */
+	@Override
+	public List<DetalleEquipaje> buscarManifiestoEquipaje(Long itinerarioId, Integer agenciaId) throws Exception {
+		// TODO Auto-generated method stub
+		String sql="Select deq.detequ_id,eq.equ_id, vp.c_numboleto boleto, p.c_apepat, p.c_apemat, p.c_nombre, deq.c_ticket ticket "
+				+ "From vrtequ eq "
+				+ "  Inner Join vrtdetequ deq On (deq.equ_id=eq.equ_id) "
+				+ "  Left Join vrtvenpas vp On (vp.venpas_id=deq.venpas_id And deq.n_principal=1) "
+				+ "  Left Join vrmpasajero p On (p.pasajero_id=vp.pasajero_id) "
+				+ "Where eq.itinerario_id="+itinerarioId+" And eq.c_estreg='A' And deq.c_estreg='A' "
+				+ "  And eq.agencia_id = "+agenciaId+" And deq.n_peso>0 "
+				+ "Order by deq.c_ticket ";
+		log.info("ManifiestoEquipaje:"+sql);
+		List<?> result = getSession().createSQLQuery(sql).list();
+		List<DetalleEquipaje> lstResult = new ArrayList<DetalleEquipaje>();
+		for(int i=0; i<result.size(); i++){
+			Object[] obj = (Object[])result.get(i);
+			DetalleEquipaje detalleEquipaje = new DetalleEquipaje();
+			detalleEquipaje.setId(((BigDecimal)obj[0]).longValue());
+			detalleEquipaje.setEquipaje(new Equipaje(((BigDecimal)obj[1]).longValue()));			
+			if(obj[2]!=null) {
+				VentaPasaje ventaPasaje= new VentaPasaje();
+				ventaPasaje.setNumeroBoleto(obj[2]!=null?obj[2].toString():null);
+				Pasajero pasajero= new Pasajero();
+				pasajero.setApellidoPaterno(obj[3]!=null?obj[3].toString():null);
+				pasajero.setApellidoMaterno(obj[4]!=null?obj[4].toString():null);
+				pasajero.setNombre(obj[5]!=null?obj[5].toString():null);
+				ventaPasaje.setPasajero(pasajero);
+				detalleEquipaje.setVentaPasaje(ventaPasaje);
+			}						
+			detalleEquipaje.setTicket(obj[6].toString());
+			
+			lstResult.add(detalleEquipaje);
+		}
+		
+		return lstResult;
 	}
 
 }

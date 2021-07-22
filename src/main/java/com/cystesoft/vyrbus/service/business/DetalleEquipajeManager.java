@@ -57,4 +57,12 @@ public interface DetalleEquipajeManager {
 	 * @throws Exception
 	 */
 	public void guardar(List<DetalleEquipaje> listDetalleEquipaje, Equipaje equipaje)throws Exception;
+	/**
+	 * Realiza la busqueda del manifiesto de pasajeros
+	 * @param itinerarioId : Identificador del Itinerario.
+	 * @param agenciaId		: Identificador de la Agencia.
+	 * @return
+	 * @throws Exception
+	 */
+	public List<DetalleEquipaje> buscarManifiestoEquipaje(Long itinerarioId, Integer agenciaId)throws Exception;
 }

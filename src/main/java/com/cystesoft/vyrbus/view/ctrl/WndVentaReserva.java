@@ -474,7 +474,6 @@ public class WndVentaReserva extends WndBase {
 			
 			criteriosBusqueda = new TreeMap<String, Object>();
 			criteriosBusqueda.put("rubro", TipoComprobante.RUBRO_PASAJES);
-			criteriosBusqueda.put("rubro", TipoComprobante.RUBRO_AMBOS);
 			UtilData.cargarDataCombo(cmbTipoComprobante, TipoComprobante.class, criteriosBusqueda, false);
 			cargarFormaPago(cmbFormaPago, false);
 			UtilData.cargarDataCombo(cmbAlimentacion, PreferenciaAlimentaria.class, false);
@@ -1838,9 +1837,9 @@ public class WndVentaReserva extends WndBase {
 				}
 				
 				
-				/*Valida si el usuario tiene una liquidación aperturada*/
-				if(cmbTipoOperacion.getSelectedIndex()==0 && getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION)==null)
-					throw new LiquidacionNullException();
+//				/*Valida si el usuario tiene una liquidación aperturada*/
+//				if(cmbTipoOperacion.getSelectedIndex()==0 && getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION)==null)
+//					throw new LiquidacionNullException();
 				
 				if(rdVentaNormal.isSelected() && detalleItinerarioIda==null)
 					throw new ItinerarioException(ItinerarioException.ES_NULL_IDA);// ItinerarioNullException(ItinerarioNullException.ES_IDA);
@@ -4843,6 +4842,7 @@ public class WndVentaReserva extends WndBase {
 				FormaPago formaPago = cmbFormaPago.getSelectedItem().getValue();
 				TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
 				criteriosBusqueda.put("formaPago.id", formaPago.getId());
+				criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 				List<String> criteriosOrdenar = new ArrayList<String>();
 				criteriosOrdenar.add("denominacion");
 				List<TipoFormaPago> lstTipoFormasPago = ServiceLocator.getTipoFormaPagoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
@@ -4970,6 +4970,19 @@ public class WndVentaReserva extends WndBase {
 	 */
 	public void onGuardarVentaReserva()throws Exception{
 		try{
+			/*Valida si el usuario tiene una liquidación aperturada - 22/07/2021 - jabanto*/
+			if(cmbTipoOperacion.getSelectedIndex()==0 && getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION)==null)
+				throw new LiquidacionNullException();
+			
+			//Valida que, la fecha de la liquidación sea igual a la actual - 22/07/2021 - jabanto
+			String fechaActual=Constantes.FORMAT_DATE.format(new Date());
+			String s_fechaLiquidacion=(fechaLiquidacion!=null?Constantes.FORMAT_DATE.format(fechaLiquidacion):"");
+			if(!(fechaActual.equals(s_fechaLiquidacion))) {
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.fechaLiquidacionDiferente"));
+				return;
+			}
+				
+			
 			/*	Valida el credito del cliente, si la venta es al Credito	*/
 			if(!(cmbTipoMoneda.getSelectedItem().getValue() instanceof TipoMoneda)){
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noSelectTipoMoneda"));
@@ -5302,8 +5315,9 @@ public class WndVentaReserva extends WndBase {
 				else
 					onCrearObjetoVenta();
 			}
-			
-			
+		
+		}catch(LiquidacionNullException lnex){
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noLiquidacion"));
 		}catch (LineaCreditoClienteException lccex) {
 			if(lccex.getTipo().intValue()==LineaCreditoClienteException.LINEA_CREDITO_SIN_SALDO)
 				DlgMessage.information(Messages.getString("tblLineaCreditoCliente.information.noSaldoDisponible"));
@@ -6524,12 +6538,12 @@ public class WndVentaReserva extends WndBase {
 		cmbTarjetaCredito.getItems().clear();
 		cmbTarjetaCredito.setText("");
 		cmbTarjetaCredito.setDisabled(true);
-		dblTarifa.setValue(null);
-		dblTarifaRetorno.setValue(null);
-		dblRecargo.setValue(null);
-		dblDescuento.setValue(null);
-		dblDescuentoRetorno.setValue(null);
-		dblImporte.setValue(null);
+		dblTarifa.setValue(.00);
+		dblTarifaRetorno.setValue(.00);
+		dblRecargo.setValue(.00);
+		dblDescuento.setValue(.00);
+		dblDescuentoRetorno.setValue(.00);
+		dblImporte.setValue(.00);
 		txtOperacionBancaria.setText("");
 		promocionAplicada=null;
 		onSelectDefaultTipoComprobante();
