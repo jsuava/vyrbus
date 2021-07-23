@@ -288,7 +288,7 @@ public class WndFacturacionServicios extends WndBase {
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.view.ui.IOpcionesMantenimiento#onSave(int)
 	 */
-	public void onSave(Window win) throws Exception {
+	public void onSave(final Window win) throws Exception {
 		try {
 			if(txtIdCliente.getText().trim().equals(""))
 				throw new ClienteException();

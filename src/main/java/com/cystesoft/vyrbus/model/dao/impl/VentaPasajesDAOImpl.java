@@ -3680,7 +3680,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 */
 	public List<VentaPasaje> buscarFacturasServicioEspecial (String numComprobante, String fDesde, String fHasta) throws Exception{
 		String sql = "SELECT * FROM vrtvenpas vp "
-				+ "INNER JOIN (SELECT MAX(venpas_id) venpas_id, c_numcontrol FROM vrtvenpas WHERE c_tiptra IN (1) GROUP BY c_numcontrol) max_id "
+				+ "INNER JOIN (SELECT MAX(venpas_id) venpas_id, c_numcontrol FROM vrtvenpas WHERE c_tiptra IN (5) GROUP BY c_numcontrol) max_id "
 				+ "ON max_id.venpas_id=vp.venpas_id WHERE c_estreg='A' AND tipmov_id= "+Constantes.ID_TIPMOV_SERVICIO_ESPECIAL;
 		
 		if(numComprobante != null)
