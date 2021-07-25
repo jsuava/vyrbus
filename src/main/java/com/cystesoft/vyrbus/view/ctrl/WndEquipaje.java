@@ -40,9 +40,11 @@ import com.cystesoft.vyrbus.model.bean.CanalVenta;
 import com.cystesoft.vyrbus.model.bean.Cliente;
 import com.cystesoft.vyrbus.model.bean.ControlEspecieValorada;
 import com.cystesoft.vyrbus.model.bean.DetalleEquipaje;
+import com.cystesoft.vyrbus.model.bean.DetalleItinerario;
 import com.cystesoft.vyrbus.model.bean.Equipaje;
 import com.cystesoft.vyrbus.model.bean.EspecieValorada;
 import com.cystesoft.vyrbus.model.bean.FormaPago;
+import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartida;
 import com.cystesoft.vyrbus.model.bean.OperadorTarjetaCredito;
 import com.cystesoft.vyrbus.model.bean.TipoComprobante;
 import com.cystesoft.vyrbus.model.bean.TipoFormaPago;
@@ -265,6 +267,25 @@ public class WndEquipaje extends WndBase implements Serializable{
 			List<VentaPasaje> resultVenta= ServiceLocator.getVentaPasajesManager().buscarVentasPostergar(null, null, null, null, numeroBoleto, fechaPartida);
 			if(resultVenta.size()>0) {
 				VentaPasaje ventaPasaje = resultVenta.get(0);
+				
+				/*Valida que la agencia en donde se esta ingresando el equipaje sea un punto de embarque/partida del itinerario */
+				criteriosBusqueda = new TreeMap<>();
+				criteriosBusqueda.put("itinerario", ventaPasaje.getItinerario());
+				criteriosBusqueda.put("agencia", getAgencia());
+				criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+				List<ItinerarioAgenciaPartida> resultItinerarioAgePart= ServiceLocator.getItinerarioAgenciaPartidaManager().buscarPorX(criteriosBusqueda, null);
+				if(resultItinerarioAgePart.size()==0) {
+					//si no, valida con el detalle del itinerario
+					criteriosBusqueda= new TreeMap<>();
+					criteriosBusqueda.put("itinerario", ventaPasaje.getItinerario());
+					criteriosBusqueda.put("agenciaPartida", getAgencia());
+					criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+					List<DetalleItinerario> resultDetItinerario = ServiceLocator.getDetalleItinerarioManager().buscarPorX(criteriosBusqueda, null);
+					if(resultDetItinerario.size()==0) {
+						DlgMessage.information(Messages.getString("WndRecepcionEquipajes.itinerario.agenciaNoPuntoPartida"),txtNumeroBoleto);
+						return;
+					}
+				}
 				
 				//Valida que el segundo Boleto (de ser el caso) corresponda al mismo itinerario
 				for(Listitem item: ltbxBoletos.getItems()) {
