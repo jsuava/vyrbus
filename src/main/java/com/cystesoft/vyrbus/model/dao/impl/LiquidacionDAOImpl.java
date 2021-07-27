@@ -247,7 +247,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 							"LEFT OUTER JOIN vrmtarcre tcr ON (v.tarcre_id=tcr.tarcre_id) "+
 							"LEFT OUTER JOIN vrmopetarcre otc ON (tcr.opetarcre_id = otc.opetarcre_id) "+
 						"WHERE v.d_fecliq=to_date('"+fechaLiquidacion+"','dd/MM/yyyy') "+
-							"AND v.c_tiptra IN ('1','3','4') " + //Ventas y Varios(Notas de credito y gastos administrativos)
+							"AND v.c_tiptra IN ('1','3','4','5','6') " + //Ventas y Varios(Notas de credito y gastos administrativos)
 							"AND v.agencia_id="+idAgencia+" "+
 							"AND v.usuario_id="+idUsuario+" "+
 							"AND v.tipmov_id not in(5,13) "+
@@ -271,7 +271,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 							"LEFT OUTER JOIN vrmtarcre tcr ON (v.tarcre_id=tcr.tarcre_id) "+
 							"LEFT OUTER JOIN vrmopetarcre otc ON (tcr.opetarcre_id = otc.opetarcre_id) "+
 						"WHERE v.d_fecliq=to_date('"+fechaLiquidacion+"','dd/MM/yyyy') "+
-							"AND v.c_tiptra IN ('1','3','4') " + //Ventas y Varios(Notas de credito y gastos administrativos)
+							"AND v.c_tiptra IN ('1','3','4','5','6') " + //Ventas y Varios(Notas de credito y gastos administrativos)
 							"AND v.agencia_id="+idAgencia+" "+
 							"AND v.usuario_id="+idUsuario+" "+
 							"AND v.tipmov_id not in(5,13) "+
@@ -323,6 +323,8 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 		Integer cantidadGastoAdminTarjetaVisa=0;double montoGastoAdminTarjetaVisa=.00;
 		Integer cantidadGastoAdminTarjetaMastercard=0;double montoGastoAdminTarjetaMastercard=.00;
 		
+		Integer cantidadPCE=0; double montoPCE=0.0;
+		
 		
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
@@ -355,95 +357,98 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 			if(tipoComprobanteID !=null && formaPagoID.intValue()==Constantes.ID_FORPAG_CONTADO && tipoMovimientoID.intValue()!=Constantes.ID_TIPMOV_DEVOLUCION){
 				int tipoFormaPagoID=((BigDecimal)obj[2]).intValue();
 				
-				if(tipoComprobanteID.intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE || tipoComprobanteID.intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA || tipoComprobanteID.intValue()==Constantes.ID_TIPCOM_FACTURA){
-						if(tipoMovimientoID.intValue()==Constantes.ID_TIPMOV_PREPAGADO ) { //PREPAGADOS	
-							cantidadPrepagado+=+cantidadOperacion;
-							montoPrepagado+=+importeOperacion;
-							
-						}else if(tipoFormaPagoID==Constantes.ID_TIPFORPAG_EFECTIVO || tipoFormaPagoID==Constantes.ID_TIPFORPAG_TRANSFERENCIA){ //EFECTIVO
+				if(tipoComprobanteID.intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE || tipoComprobanteID.intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA || tipoComprobanteID.intValue()==Constantes.ID_TIPCOM_FACTURA || tipoComprobanteID==Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA){
+					if(tipoMovimientoID.intValue()==Constantes.ID_TIPMOV_PREPAGADO ) { //PREPAGADOS	
+						cantidadPrepagado+=+cantidadOperacion;
+						montoPrepagado+=+importeOperacion;
+						
+					}else if(tipoFormaPagoID==Constantes.ID_TIPFORPAG_EFECTIVO || tipoFormaPagoID==Constantes.ID_TIPFORPAG_TRANSFERENCIA){ //EFECTIVO
+						if(tipoTransaccion!=null && tipoTransaccion.equals(Constantes.TIPO_OPERACION_VENTA_POOL)){ //Valida si es venta pool
+							cantidadEfecPool+= +cantidadOperacion;
+							montoEfecPool+= +importeOperacion;
+						}else{
+							if(tipoMovimientoID.intValue()==Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS){
+								cantidadGastoAdminEfectivo+=+cantidadOperacion;
+								montoGastoAdminEfectivo+=+importeOperacion;
+							}else{
+								cantidadContado+=+cantidadOperacion;
+								montoContado+=+importeOperacion;	
+							}
+						}
+					}else if(tipoFormaPagoID==Constantes.ID_TIPFORPAG_TARJETA ){ //TARJETA
+						if(((BigDecimal)obj[3]).intValue()==Constantes.ID_OPETARCRE_VISA){ //VISA
 							if(tipoTransaccion!=null && tipoTransaccion.equals(Constantes.TIPO_OPERACION_VENTA_POOL)){ //Valida si es venta pool
-								cantidadEfecPool+= +cantidadOperacion;
-								montoEfecPool+= +importeOperacion;
+								cantidadTCVisaPool+= +cantidadOperacion;
+								montoTCVisaPool+=+importeOperacion;
+								//Valida si es mixto
+								if(importeMixtoEfectivo>0){
+									montoTCVisaPool+=+importeMixtoTarjeta;;//Suma el monto del pago mixo con tarjeta
+									
+									montoEfecPool+=+importeMixtoEfectivo; //Suma el monto del pago mixo al Efectivo
+									cantidadEfecPool+=+cantidadOperacion; //Suma la cantidad en efectivo
+								}
 							}else{
 								if(tipoMovimientoID.intValue()==Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS){
-									cantidadGastoAdminEfectivo+=+cantidadOperacion;
-									montoGastoAdminEfectivo+=+importeOperacion;
+									cantidadGastoAdminTarjetaVisa+=+cantidadOperacion; 
+									montoGastoAdminTarjetaVisa+=+importeOperacion;
+									//Valida si es mixto
+									if(importeMixtoEfectivo>0){
+										montoGastoAdminTarjetaVisa+=+importeMixtoTarjeta;//Suma el monto del pago mixo con tarjeta
+										
+										montoGastoAdminEfectivo+=+importeMixtoEfectivo;//Suma el monto del pago mixo al Efectivo
+										cantidadGastoAdminEfectivo+=+cantidadOperacion;//Suma la cantidad en efectivo
+									}
 								}else{
-									cantidadContado+=+cantidadOperacion;
-									montoContado+=+importeOperacion;	
+									cantidadTarjetaVisa+=+cantidadOperacion;
+									montoTarjetaVisa+=+importeOperacion;
+									//Valida si es mixto
+									if(importeMixtoEfectivo>0){
+										montoTarjetaVisa+=+importeMixtoTarjeta;//Suma el monto del pago mixo con tarjeta
+										
+										montoContado+=+importeMixtoEfectivo;//Suma el monto del pago mixo al Efectivo
+										cantidadContado+=+cantidadOperacion; //Suma la cantidad en efectivo
+									}
 								}
 							}
-						}else if(tipoFormaPagoID==Constantes.ID_TIPFORPAG_TARJETA ){ //TARJETA
-							if(((BigDecimal)obj[3]).intValue()==Constantes.ID_OPETARCRE_VISA){ //VISA
-								if(tipoTransaccion!=null && tipoTransaccion.equals(Constantes.TIPO_OPERACION_VENTA_POOL)){ //Valida si es venta pool
-									cantidadTCVisaPool+= +cantidadOperacion;
-									montoTCVisaPool+=+importeOperacion;
+						}else if(((BigDecimal)obj[3]).intValue()==Constantes.ID_OPETARCRE_MSTERCARD){ //MASTER CARD
+							if(tipoTransaccion!=null && tipoTransaccion.equals(Constantes.TIPO_OPERACION_VENTA_POOL)){ //Valida si es venta pool
+								cantidadTCMastercardPool+= +cantidadOperacion;
+								montoTCMastercardPool+= +importeOperacion;
+								//Valida si es mixto
+								if(importeMixtoEfectivo>0){
+									montoTCMastercardPool+=+importeMixtoTarjeta;//Suma el monto del pago mixo con tarjeta
+									
+									montoEfecPool+=+importeMixtoEfectivo;//Suma el monto del pago mixo al Efectivo
+									cantidadEfecPool+=+cantidadOperacion; //Suma la cantidad en efectivo
+								}
+							}else{
+								if(tipoMovimientoID.intValue()==Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS){
+									cantidadGastoAdminTarjetaMastercard+=+cantidadOperacion;
+									montoGastoAdminTarjetaMastercard+=+importeOperacion;
 									//Valida si es mixto
 									if(importeMixtoEfectivo>0){
-										montoTCVisaPool+=+importeMixtoTarjeta;;//Suma el monto del pago mixo con tarjeta
+										montoGastoAdminTarjetaMastercard+=+importeMixtoTarjeta;//Suma el monto del pago mixo con tarjeta
 										
-										montoEfecPool+=+importeMixtoEfectivo; //Suma el monto del pago mixo al Efectivo
-										cantidadEfecPool+=+cantidadOperacion; //Suma la cantidad en efectivo
+										montoGastoAdminEfectivo+=+importeMixtoEfectivo;//Suma el monto del pago mixo al Efectivo
+										cantidadGastoAdminEfectivo+=+cantidadOperacion; //Suma la cantidad en efectivo
 									}
 								}else{
-									if(tipoMovimientoID.intValue()==Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS){
-										cantidadGastoAdminTarjetaVisa+=+cantidadOperacion; 
-										montoGastoAdminTarjetaVisa+=+importeOperacion;
-										//Valida si es mixto
-										if(importeMixtoEfectivo>0){
-											montoGastoAdminTarjetaVisa+=+importeMixtoTarjeta;//Suma el monto del pago mixo con tarjeta
-											
-											montoGastoAdminEfectivo+=+importeMixtoEfectivo;//Suma el monto del pago mixo al Efectivo
-											cantidadGastoAdminEfectivo+=+cantidadOperacion;//Suma la cantidad en efectivo
-										}
-									}else{
-										cantidadTarjetaVisa+=+cantidadOperacion;
-										montoTarjetaVisa+=+importeOperacion;
-										//Valida si es mixto
-										if(importeMixtoEfectivo>0){
-											montoTarjetaVisa+=+importeMixtoTarjeta;//Suma el monto del pago mixo con tarjeta
-											
-											montoContado+=+importeMixtoEfectivo;//Suma el monto del pago mixo al Efectivo
-											cantidadContado+=+cantidadOperacion; //Suma la cantidad en efectivo
-										}
-									}
-								}
-							}else if(((BigDecimal)obj[3]).intValue()==Constantes.ID_OPETARCRE_MSTERCARD){ //MASTER CARD
-								if(tipoTransaccion!=null && tipoTransaccion.equals(Constantes.TIPO_OPERACION_VENTA_POOL)){ //Valida si es venta pool
-									cantidadTCMastercardPool+= +cantidadOperacion;
-									montoTCMastercardPool+= +importeOperacion;
+									cantidadTarjetaMasterCard+=+cantidadOperacion;
+									montoTarjetaMasterCard+=+importeOperacion;
 									//Valida si es mixto
 									if(importeMixtoEfectivo>0){
-										montoTCMastercardPool+=+importeMixtoTarjeta;//Suma el monto del pago mixo con tarjeta
+										montoTarjetaMasterCard+=+importeMixtoTarjeta;//Suma el monto del pago mixo con tarjeta
 										
-										montoEfecPool+=+importeMixtoEfectivo;//Suma el monto del pago mixo al Efectivo
-										cantidadEfecPool+=+cantidadOperacion; //Suma la cantidad en efectivo
-									}
-								}else{
-									if(tipoMovimientoID.intValue()==Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS){
-										cantidadGastoAdminTarjetaMastercard+=+cantidadOperacion;
-										montoGastoAdminTarjetaMastercard+=+importeOperacion;
-										//Valida si es mixto
-										if(importeMixtoEfectivo>0){
-											montoGastoAdminTarjetaMastercard+=+importeMixtoTarjeta;//Suma el monto del pago mixo con tarjeta
-											
-											montoGastoAdminEfectivo+=+importeMixtoEfectivo;//Suma el monto del pago mixo al Efectivo
-											cantidadGastoAdminEfectivo+=+cantidadOperacion; //Suma la cantidad en efectivo
-										}
-									}else{
-										cantidadTarjetaMasterCard+=+cantidadOperacion;
-										montoTarjetaMasterCard+=+importeOperacion;
-										//Valida si es mixto
-										if(importeMixtoEfectivo>0){
-											montoTarjetaMasterCard+=+importeMixtoTarjeta;//Suma el monto del pago mixo con tarjeta
-											
-											montoContado+=+importeMixtoEfectivo;//Suma el monto del pago mixo al Efectivo
-											cantidadContado+=+cantidadOperacion; //Suma la cantidad en efectivo
-										}	
-									}
+										montoContado+=+importeMixtoEfectivo;//Suma el monto del pago mixo al Efectivo
+										cantidadContado+=+cantidadOperacion; //Suma la cantidad en efectivo
+									}	
 								}
-							}	
+							}
 						}
+					}else if(tipoFormaPagoID==Constantes.ID_TIPFORPAG_PCE) {
+						cantidadPCE+= +cantidadOperacion;
+						montoPCE+= +importeOperacion;
+					}
 				}else if (tipoComprobanteID.intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO){
 					cantidadNotasCredito+= +cantidadOperacion;
 					montoNotasCredito+= +importeOperacion;
@@ -586,6 +591,8 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 		liquidacion.setMontoGastosAdminTarjetaVisa(montoGastoAdminTarjetaVisa);
 		liquidacion.setCantidadGastosAdminTarjetaMastercard(cantidadGastoAdminTarjetaMastercard);
 		liquidacion.setMontoGastosAdminTarjetaMastercard(montoGastoAdminTarjetaMastercard);
+		liquidacion.setCantidadPCE(cantidadPCE);
+		liquidacion.setMontoPCE(montoPCE);
 		
 		return liquidacion;
 	}
@@ -680,7 +687,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
     			+ "INNER JOIN vrmtipcom tc ON (v.tipcom_id = tc.tipcom_id) "
     			+ "INNER JOIN vrmforpag fp ON (v.forpag_id = fp.forpag_id) "
     			+ "INNER JOIN vrmtipmov tm ON (v.tipmov_id = tm.tipmov_id) "
-    			+ "WHERE v.d_fecliq=to_date('"+fechaLiquidacion+"','dd/MM/yyyy') AND v.c_tiptra IN ('1','3','4','5') AND v.agencia_id="+idAgencia+" AND "
+    			+ "WHERE v.d_fecliq=to_date('"+fechaLiquidacion+"','dd/MM/yyyy') AND v.c_tiptra IN ('1','3','4','5','6') AND v.agencia_id="+idAgencia+" AND "
     			+ "v.usuario_id="+idUsuario+" AND v.tipmov_id not in(5,13,6) AND v.c_Estreg='A' AND v.n_imppag>0 AND NVL(v.n_imppagdif,0)=0 "
     			+ "GROUP BY tc.tipcom_id, tc.c_denominacion, substr(v.c_numboleto,1,4), fp.forpag_id, tm.tipmov_id "
     			+ "UNION ALL "
@@ -690,7 +697,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
     			+ "INNER JOIN vrmtipcom tc ON (v.tipcom_id = tc.tipcom_id) "
     			+ "INNER JOIN vrmforpag fp ON (v.forpag_id = fp.forpag_id) "
     			+ "INNER JOIN vrmtipmov tm ON (v.tipmov_id = tm.tipmov_id) "
-    			+ "WHERE v.d_fecliq=to_date('"+fechaLiquidacion+"','dd/MM/yyyy') AND v.c_tiptra IN ('1','3','4','5') AND v.agencia_id="+idAgencia+" AND "
+    			+ "WHERE v.d_fecliq=to_date('"+fechaLiquidacion+"','dd/MM/yyyy') AND v.c_tiptra IN ('1','3','4','5','6') AND v.agencia_id="+idAgencia+" AND "
     			+ "v.usuario_id="+idUsuario+" AND v.tipmov_id not in(5,13,6) AND v.c_Estreg='A' AND v.n_imppag>0 AND NVL(v.n_imppagdif,0)>0 "
     			+ "GROUP BY tc.tipcom_id, tc.c_denominacion, substr(v.c_numboleto,1,4), fp.forpag_id, tm.tipmov_id ";
     	

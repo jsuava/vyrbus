@@ -970,7 +970,9 @@ public class CreateDocument implements Serializable {
 			for(String key : mapResumen.keySet()) {
 				ResumenComprobante resumen = mapResumen.get(key);
 				longitud_C=resumen.getComprobante().toString().length();
-				linea = tabular(3)+resumen.getComprobante()+tabular(26-longitud_C)+resumen.getSerie();
+				String strSerie = null;
+				strSerie = resumen.getIdTipoComprobante()!=Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA?resumen.getSerie():" "+resumen.getSerie().substring(0, 3);
+				linea = tabular(3)+resumen.getComprobante()+tabular(26-longitud_C)+strSerie;
 				longitud_C=resumen.getCantidad().toString().length();
 				linea += tabular(16)+tabular(1-longitud_C+1)+resumen.getCantidad();
 				longitud_M=(int) resumen.getMonto().intValue();
@@ -1126,6 +1128,17 @@ public class CreateDocument implements Serializable {
 			linea=tabular(3)+"CREDITOS"+tabular(40-longitud_C)+liquidacion2.getCantidadCreditos()+tabular(19-longitud_M)+Util.toNumberFormat(liquidacion2.getMontoCreditos(),2);
 			bw.write(linea+NEWLINE);
 			
+			//---> line 17: --> PCE
+			longitud_C=liquidacion2.getCantidadPCE().toString().length();
+			longitud_M=(int) liquidacion2.getMontoPCE();
+			longitud_M = longitud_M.toString().length();
+			if (longitud_M==4)
+				longitud_M += +1;
+			else if (longitud_M==5)
+				longitud_M += +2;
+			linea=tabular(3)+"PCE"+tabular(45-longitud_C)+liquidacion2.getCantidadPCE()+tabular(19-longitud_M)+Util.toNumberFormat(liquidacion2.getMontoPCE(),2);
+			bw.write(linea+NEWLINE);
+			
 			//Co0mentado por MAOE 27/06/2021, TRANSMAR NO MANEJA POOL
 			//---> line 16: --> Venta Seguros
 //			longitud_C=String.valueOf(cantidadVentasSeguro).length();
@@ -1175,8 +1188,8 @@ public class CreateDocument implements Serializable {
 			bw.write(linea+NEWLINE);
 			
 			//---> liena 18: totales
-			double totalVentaPasajes=liquidacion2.getMontoContado()+liquidacion2.getMontoTarjetaVisa()+liquidacion2.getMontoTarjetaMasterCard()+liquidacion2.getMontoCortesia()+liquidacion2.getMontoPrepagado()+liquidacion2.getMontoCreditos()+montoTotalVentasPoolEfectivo+montoTotalVentasPoolVisa+montoTotalVentasPoolMastercard; //+montoTotalVentasSeguro;
-			Integer cantidadVentaPasajes=liquidacion2.getCantidadContado()+liquidacion2.getCantidadTarjetaVisa()+liquidacion2.getCantidadTarjetaMasterCard()+liquidacion2.getCantidadcortesia()+liquidacion2.getCantidadPrepagado()+liquidacion2.getCantidadCreditos()+cantidadVentasPoolEfectivo+cantidadVentasPoolVisa+cantidadVentasPoolMastercard; //cantidadVentasSeguro;
+			double totalVentaPasajes=liquidacion2.getMontoContado()+liquidacion2.getMontoTarjetaVisa()+liquidacion2.getMontoTarjetaMasterCard()+liquidacion2.getMontoCortesia()+liquidacion2.getMontoPrepagado()+liquidacion2.getMontoCreditos()+montoTotalVentasPoolEfectivo+montoTotalVentasPoolVisa+montoTotalVentasPoolMastercard+liquidacion2.getMontoPCE(); //+montoTotalVentasSeguro;
+			Integer cantidadVentaPasajes=liquidacion2.getCantidadContado()+liquidacion2.getCantidadTarjetaVisa()+liquidacion2.getCantidadTarjetaMasterCard()+liquidacion2.getCantidadcortesia()+liquidacion2.getCantidadPrepagado()+liquidacion2.getCantidadCreditos()+cantidadVentasPoolEfectivo+cantidadVentasPoolVisa+cantidadVentasPoolMastercard+liquidacion2.getCantidadPCE(); //cantidadVentasSeguro;
 			longitud_C=cantidadVentaPasajes.toString().length();
 			longitud_M=(int) totalVentaPasajes;
 			longitud_M = longitud_M.toString().length();
@@ -1441,6 +1454,17 @@ public class CreateDocument implements Serializable {
 			linea=tabular(3)+"VENTAS Y GASTOS ADMIN. CON TARJETA"+tabular(14-longitud_C)+cantidadVentaTarjeta+tabular(19-longitud_M)+Util.toNumberFormat(montoVentaTarjeta, 2);
 			bw.write(linea+NEWLINE);
 			
+			//---> linea 36: Venta PCE
+			longitud_C=liquidacion2.getCantidadPCE().toString().length();
+			longitud_M=(int) liquidacion2.getMontoPCE();
+			longitud_M = longitud_M.toString().length();
+			if (longitud_M==4)
+				longitud_M += +1;
+			else if (longitud_M==5)
+				longitud_M += +2;
+			linea=tabular(3)+"VENTA PCE"+tabular(39-longitud_C)+liquidacion2.getCantidadPCE()+tabular(19-longitud_M)+Util.toNumberFormat(liquidacion2.getMontoPCE(),2);
+			bw.write(linea+NEWLINE);
+			
 			
 			
 			//-->Notas de credito
@@ -1478,12 +1502,12 @@ public class CreateDocument implements Serializable {
 			Integer CantidadEgresos=/*liquidacion2.getCantidadGastoVarios()+liquidacion2.getCantidadPeajes()+liquidacion2.getCantidadPagoGiros()+
 								    liquidacion2.getCantidadGastoConDocumento()+*/
 									liquidacion2.getCantidadDevolucion()+liquidacion2.getCantidadcortesia()+
-									liquidacion2.getCantidadCreditos()+liquidacion2.getCantidadPrepagado()+cantidadVentaTarjeta+cantidadNotasCredito+cantidadGasto;
+									liquidacion2.getCantidadCreditos()+liquidacion2.getCantidadPrepagado()+cantidadVentaTarjeta+cantidadNotasCredito+cantidadGasto+liquidacion2.getCantidadPCE();
 //									+ cantidadVentasPaxfre;
 			double Totalegresos=/*liquidacion2.getMontoGastoVarios()+liquidacion2.getMontoPeajes()+liquidacion2.getMontoPagoGiros()+
 								liquidacion2.getMontoGastoConDocumento()+*/
 								liquidacion2.getMontoDevolucion()+liquidacion2.getMontoCortesia()+
-								liquidacion2.getMontoCreditos()+liquidacion2.getMontoPrepagado()+montoVentaTarjeta+montoNotasCredito+importeGasto;
+								liquidacion2.getMontoCreditos()+liquidacion2.getMontoPrepagado()+montoVentaTarjeta+montoNotasCredito+importeGasto+liquidacion2.getMontoPCE();
 //								+ montoTotalVentasSeguroPaxfre;
 			
 			longitud_C=CantidadEgresos.toString().length();
@@ -1549,7 +1573,8 @@ public class CreateDocument implements Serializable {
 				
 				//---> linea 41: Diferencia
 				double diferencia = (liquidacion.getMontoIngresado()-totalADepositar);
-				longitud_M = Util.toNumberFormat(diferencia,2).length();
+				longitud_M = new Double(diferencia).intValue();
+				longitud_M = longitud_M.toString().length();// Util.toNumberFormat(diferencia,2).length();
 //				longitud_M = longitud_M.toString().length();
 				if (longitud_M==4)
 					longitud_M += +1;
@@ -1557,7 +1582,7 @@ public class CreateDocument implements Serializable {
 					longitud_M += +2;
 				else if (longitud_M==6)
 					longitud_M += +3;
-				linea=tabular(3)+"DIFERENCIA"+tabular(63-longitud_M)+Util.toNumberFormat(diferencia,2);
+				linea=tabular(3)+"DIFERENCIA"+tabular(57-longitud_M)+Util.toNumberFormat(diferencia,2);
 				bw.write(linea+NEWLINE);
 			}
 						

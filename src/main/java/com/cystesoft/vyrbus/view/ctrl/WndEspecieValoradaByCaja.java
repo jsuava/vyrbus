@@ -171,6 +171,10 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 				correlativo = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+"NC";
 			else if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId()==Constantes.ID_TIPCOM_NOTA_DEBITO)
 				correlativo = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+"ND";
+			else if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId()==Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA)
+				correlativo = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+"GRT"+txtSerie.getText().trim().toUpperCase();
+			else if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId()==Constantes.ID_TIPCOM_TICKET_EQUIPAJE)
+				correlativo = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+"TKQ"+txtSerie.getText().trim().toUpperCase();
 			
 			if (action==ACTION_NEW)
 				controlEspecieValorada= new ControlEspecieValorada();
@@ -195,9 +199,9 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 			controlEspecieValorada.setUsuarioHardware(usuarioHardware);
 			controlEspecieValorada.setSerie(txtSerie.getText().toUpperCase().trim().toString());
 			controlEspecieValorada.setSecuenciador(correlativo);
-			controlEspecieValorada.setCorrelativoInicio(new Long(0));
-			controlEspecieValorada.setCorrelativoFin(new Long(0));
-			controlEspecieValorada.setCorrelativoActual(new Long(0));
+			controlEspecieValorada.setCorrelativoInicio(new Long(1));
+			controlEspecieValorada.setCorrelativoFin(new Long(99999999));
+			controlEspecieValorada.setCorrelativoActual(new Long(1));
 			controlEspecieValorada.setFormato(0);
 			controlEspecieValorada.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 			

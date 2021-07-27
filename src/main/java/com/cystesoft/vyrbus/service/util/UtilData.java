@@ -2777,7 +2777,9 @@ public class UtilData extends Window {
 			List<ControlEspecieValorada> lstControlEspecieValorada = ServiceLocator.getControlEspecieValoradaManager().buscarPorX(criteriosBusqueda, null);
 			if(lstControlEspecieValorada.size()==1){
 				ControlEspecieValorada controlEspecieValorada = lstControlEspecieValorada.get(0);
-				if((tipoComprobante.equals(Constantes.ID_TIPCOM_FACTURA) || tipoComprobante.equals(Constantes.ID_TIPCOM_BOLETA_VENTA) || tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_CREDITO) || tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_DEBITO))){
+				if((tipoComprobante.equals(Constantes.ID_TIPCOM_FACTURA) || tipoComprobante.equals(Constantes.ID_TIPCOM_BOLETA_VENTA) 
+						|| tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_CREDITO) || tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_DEBITO) 
+						|| tipoComprobante.equals(Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA) || tipoComprobante.equals(Constantes.ID_TIPCOM_TICKET_EQUIPAJE))){
 //					if(controlEspecieValorada.getSeriefe()==null || controlEspecieValorada.getSeriefe().trim().isEmpty())
 //						throw new EspecieValoradaNotAvailableException();
 					
