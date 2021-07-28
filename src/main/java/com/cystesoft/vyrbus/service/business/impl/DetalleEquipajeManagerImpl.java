@@ -147,23 +147,41 @@ public class DetalleEquipajeManagerImpl implements DetalleEquipajeManager{
 				ServiceLocator.getClienteManager().guardar(ventaExceso.getCliente());
 			}
 			
-			//Graba el exceso			
+			//Graba el exceso
+			//Obtenemos el correlativo actualizado 
+//			ControlEspecieValorada controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(ventaExceso.getTipoComprobante().getId(), ventaExceso.getAgencia(), true, ventaExceso.getUsuarioHardware(), null);
+//			ventaExceso.setNumeroBoleto(controlEspecieValorada.toString());
+//			//Actualizamos el correlativo
+//			int position = ventaExceso.getNumeroBoleto().indexOf("-");
+//			Long correlativo = Long.valueOf(ventaExceso.getNumeroBoleto().substring(position+1))+1;
+//			controlEspecieValorada.setCorrelativoActual(correlativo);
+//			getControlEspecieValoradaDAO().update(controlEspecieValorada);
+			
 			ServiceLocator.getVentaPasajesManager().guardarVenta(ventaExceso, false, true, false, false);
 		}
 		
 		//Guarda el detalle del equipaje
-		DetalleEquipaje detalleEquipaje = null;
+//		DetalleEquipaje detalleEquipaje = null;
 		for(DetalleEquipaje _detalleEquipaje: listDetalleEquipaje) {			
 			_detalleEquipaje.setEquipaje(equipaje);
+			//Obtenemos el correlativo actualizado para los tickets
+			ControlEspecieValorada controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(Constantes.ID_TIPCOM_TICKET_EQUIPAJE, ventaExceso.getAgencia(), true, ventaExceso.getUsuarioHardware(), null);
+			_detalleEquipaje.setTicket(controlEspecieValorada.toString());
+			//Actualizamos el correlativo
+			int position = _detalleEquipaje.getTicket().indexOf("-");
+			Long correlativo = Long.valueOf(_detalleEquipaje.getTicket().substring(position+1))+1;
+			controlEspecieValorada.setCorrelativoActual(correlativo);
+			getControlEspecieValoradaDAO().update(controlEspecieValorada);
+			
 			getDetalleEquipajeDAO().guardar(_detalleEquipaje);
-			detalleEquipaje = _detalleEquipaje;
+//			detalleEquipaje = _detalleEquipaje;
 		}
 		
-		//Actualiza correlativos de los tikects
-		Long numeroCorrelativo = Long.valueOf(detalleEquipaje.getTicket().split("-")[1]);
-		ControlEspecieValorada controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(Constantes.ID_TIPCOM_TICKET_EQUIPAJE, equipaje.getAgencia(), false, equipaje.getUsuarioHardware(), null);
-		controlEspecieValorada.setCorrelativoActual(numeroCorrelativo+1);
-		getControlEspecieValoradaDAO().update(controlEspecieValorada);
+//		//Actualiza correlativos de los tikects
+//		Long numeroCorrelativo = Long.valueOf(detalleEquipaje.getTicket().split("-")[1]);
+//		ControlEspecieValorada controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(Constantes.ID_TIPCOM_TICKET_EQUIPAJE, equipaje.getAgencia(), false, equipaje.getUsuarioHardware(), null);
+//		controlEspecieValorada.setCorrelativoActual(numeroCorrelativo+1);
+//		getControlEspecieValoradaDAO().update(controlEspecieValorada);
 	}
 
 	/* (non-Javadoc)

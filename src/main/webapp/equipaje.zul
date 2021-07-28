@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndEquipaje" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndEquipaje">
+<window id="wndEquipaje" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndEquipaje" width="680px">
 	<groupbox closable="false" mold="3d">
 		<caption label="INFORMACIÓN BOLETOS"/>
 		<grid style="border:none">
@@ -24,7 +24,7 @@
 <!-- 				</row> -->
 				<row>
 					<label value="N° BOLETO :" />
-					<textbox id="txtNumeroBoleto" width="97%" focus="true" style="font-size:12px !important" placeholder="N° BOLETO" />
+					<textbox id="txtNumeroBoleto" width="90%" focus="true" style="font-size:12px !important" placeholder="N° BOLETO" />
 					<label value="FECHA PARTIDA :" />
 					<datebox id="dtbxFechaPartida" width="115px" format="dd/MM/yyyy" readonly="true"/>
 					<button id="btnBuscar" label="Buscar" sclass="btnCommandM" visible="false" autodisable="self" style="margin-left:10px" image="/resources/mp_buscarEnabled.png" />
@@ -36,7 +36,7 @@
 		<caption label="CÁLCULO DE EXCESO"/>
 		<grid style="border:none">
 			<columns>
-				<column width="540px"/>
+				<column width="665px"/>
 				<column/>
 			</columns>
 			<rows>
@@ -44,12 +44,13 @@
 					<listbox id="ltbxBoletos" rows="4">
 						<listhead>
 							<listheader label="N° COMPROBANTE" width="120px" />
-							<listheader label="PASAJERO" width="200px"/>
-							<listheader label="EMBARQUE" width="150px"/>
+							<listheader label="PASAJERO" width="300px"/>
+							<listheader label="EMBARQUE" width="170px"/>
 							<listheader label="ASIENTO" width="60px" align="center"/>
 						</listhead>					
 					</listbox>
-					<vbox align="left">
+					<label/>
+					<!--<vbox align="left">
 						<hbox align="center">
 							<label value="KLG LIBRES : " style="margin-left:20px;font-size:13px !important"/>
 							<label id="lblKilosLibres" style="font-weight:bold;font-size:14px !important"/>							
@@ -58,22 +59,34 @@
 							<label value="FECHA PARTIDA :" style="font-size:13px !important"/>
 							<label id="lblFechaPartida" style="font-weight:bold;font-size:14px !important"/>
 						</hbox>
-					</vbox>					
+					</vbox>-->					
 				</row>				
 			</rows>
 		</grid>
+		<div style="background: #FFBA0D" height="16px" >
+			<hbox>
+				<label value="KLG LIBRES : " style="margin-left:70px; font-weight:bold; font-size:12px !important; color: white"/>
+				<label id="lblKilosLibres" style="font-weight:bold; font-size:12px !important; color: white"/>
+				<label value="FECHA PARTIDA :" style="margin-left:150px; font-weight:bold; font-size:12px !important; color: white"/>
+				<label id="lblFechaPartida" style="font-weight:bold; font-size:12px !important; color: white"/>
+			</hbox>
+		</div>
+		<separator height="2px"/>
 		<grid style="border:none">
 			<columns>
-				<column width="80px" align="right"/>
-				<column width="150px" />
-				<column width="80px" align="right"/>
-				<column width="150px" />
+				<column width="120px" align="right"/>
+				<column width="135px" />
+				<column width="100px" align="right"/>
+				<column width="135px" />
 				<column width="90px" align="right"/>
 				<column/>
 			</columns>
 			<rows>
+				<row spans="6">
+					<textbox id="txtNumeroComprobante" readonly="true" width="80px" style="color:#4285F4; font-weight:bold; background-color: transparent; border:none; font-size:12px !important"/>
+				</row>
 				<row>
-					<label value="SERVCIO : " />
+					<label value="SERVICIO : " />
 					<label id="lblServicio" style="font-weight:bold !important;font-size:13px !important;color:red" />
 					<label value="RUTA : " />
 					<label id="lblRuta" style="font-weight:bold !important;font-size:13px !important;color:red" />
@@ -82,23 +95,26 @@
 				</row>
 				<row>
 					<label value="N° MALETAS :" />
-					<intbox id="itbxNumeroMaletas" width="50px" onOK="itbxTotalKilos.setFocus(true)" style="font-size:13px !important;text-align:right"/>
+					<intbox id="itbxNumeroMaletas" width="40px" onOK="itbxTotalKilos.setFocus(true)" style="font-size:13px !important;text-align:right"/>
 					<label value="TOTAL KG :" />
-					<intbox id="itbxTotalKilos" width="50px" onOK="if(!dbxTotalPago.isDisabled()) dbxTotalPago.setFocus(true); else btnGuardar.setFocus(true);" style="font-size:13px !important;text-align:right"/>
+					<intbox id="itbxTotalKilos" width="40px" onOK="if(!dbxTotalPago.isDisabled()) dbxTotalPago.setFocus(true); else btnGuardar.setFocus(true);" style="font-size:13px !important;text-align:right"/>
 					<label value="TOTAL PAGO :" />
-					<doublebox id="dbxTotalPago" format="###,##0.00" onOK="if(rowExceso.isVisible())cmbTipoComprobante.setFocus(true); else btnGuardar.setFocus(true); " disabled="true" width="80px" style="font-size:13px !important"/>
+					<doublebox id="dbxTotalPago" format="###,##0.00" onOK="if(rowExceso.isVisible())cmbTipoComprobante.setFocus(true); else btnGuardar.setFocus(true); " disabled="true" width="70px" style="font-size:13px !important"/>
 				</row>
-				<row id="rowExceso" spans="2,2,2" visible="false">
-					<hbox align="center">
-						<combobox id="cmbTipoComprobante" readonly="true" onOK="cmbTipoPago.setFocus(true)" width="140px" placeholder="TIPO COMPROBANTE"/>
-						<textbox id="txtNumeroComprobante" readonly="true" width="80px"/>
-					</hbox>
-					<div style="text-align:left">
-						<combobox id="cmbTipoPago" readonly="true" width="120px" onOK="if(!cmbOperadorTarjeta.isDisabled()) cmbOperadorTarjeta.setFocus(true); else btnGuardar.setFocus(true);" placeholder="FORMA PAGO" style="margin-left:20px"/>
-					</div>
-					<div style="text-align:left">
-						<combobox id="cmbOperadorTarjeta" readonly="true" width="158px" placeholder="OPERADOR TARJETA" style="margin-left:20px"/>
-					</div>
+				<row id="rowExceso" visible="false">
+					<label value="TIPO COMPROBANTE :"/>
+					<combobox id="cmbTipoComprobante" readonly="true" onOK="cmbTipoPago.setFocus(true)" width="130px" placeholder="TIPO COMPROBANTE"/>
+					<label value="FORMA PAGO :"/>
+					<combobox id="cmbTipoPago" readonly="true" width="120px" onOK="if(!cmbOperadorTarjeta.isDisabled()) cmbOperadorTarjeta.setFocus(true); else btnGuardar.setFocus(true);" placeholder="FORMA PAGO"/>
+					<label/>
+					<label/>					
+				</row>
+				<row id="rowExcesoTarjeta"  visible="false" spans="1,1,1,2,1">
+					<label value="OPERADOR :"/>
+					<combobox id="cmbOperadorTarjeta" readonly="true" width="120px" placeholder="OPERADOR TARJETA" />
+					<label value="TARJETA :"/>
+					<combobox id="cmbTarjetaCredito" readonly="true" width="158px" placeholder="TARJETA CREDITO" />
+					<label/>
 				</row>
 				<row id="rowRuc" spans="6" visible="false">
 					<div style="text-align:left">

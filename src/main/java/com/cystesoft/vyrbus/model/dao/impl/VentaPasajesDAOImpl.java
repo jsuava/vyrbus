@@ -1491,7 +1491,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	public List<VentaPasaje> buscarDetalladoVentas(Integer idAgencia, Integer idUsuario, String fechaInicial, String fechaFinal, Integer criterio)throws Exception{
 		String where ="";
 		String tipoVenta = "";
-		String sql = "";
+		String sql = "";StringBuilder str = new StringBuilder();
 		switch (criterio) {
 		case 0:	//Todos
 			//ANULADOS
@@ -1581,7 +1581,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 							"to_date('"+fechaFinal+"','dd/mm/yyyy') AND vp.forpag_id=2 AND vp.tipcom_id in ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_FACTURA+") AND " +
 							" vp.tipmov_id NOT IN("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_ANULACION+") " +
 							"AND vp.c_numboleto IS NOT NULL ";
-			
+			//str = str.append(sql);
 			sql = sql + " UNION ALL ";
 			//PREPAGADO
 			sql = sql + "SELECT vp.venpas_id, vp.c_numcontrol NroControl, vp.c_numboleto NroBoleto, vp.c_numbolant NroBoletoRef, " +
@@ -1636,10 +1636,11 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					"DECODE(tm.c_denominacion, 'POSTERGACION', DECODE(tfp.c_denominacion, 'EFECTIVO', 'POST.(EF)', 'POST.(TC)'), " +
 					"DECODE(tm.c_denominacion, 'POSTERGACION FA', DECODE(tfp.c_denominacion, 'EFECTIVO', 'POST.FA.(EF)', 'POST.FA.(TC)'), "+
 					"DECODE(tm.tipmov_id,"+Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS+", DECODE(tfp.c_denominacion, 'EFECTIVO', 'GAS.ADM(EFE)','GAS.ADM(TC)'),  " +
+					"DECODE(vp.tipmov_id,"+Constantes.ID_TIPMOV_GRT+", DECODE(tfp.c_denominacion, 'PCE', 'EQUIPAJE(PCE)', DECODE(tfp.c_denominacion, 'EFECTIVO', 'EQUIPAJE(EF)','EQUIPAJE(TC)')),  " +
+					"DECODE(vp.tipmov_id,"+Constantes.ID_TIPMOV_SERVICIO_ESPECIAL+", DECODE(tfp.c_denominacion, 'EFECTIVO', 'SERV.ESP(EF)', 'SER.ESP(CRE)'),  " +
 					"DECODE(vp.tipcom_id,"+Constantes.ID_TIPCOM_NOTA_CREDITO+", 'NOTA CREDITO',  " +
-					"DECODE(vp.tipmov_id,"+Constantes.ID_TIPMOV_SERVICIO_ESPECIAL+", 'SERV.ESP.',  " +
 					"DECODE(tm.c_denominacion, 'EFECTIVO', DECODE(tfp.c_denominacion, 'EFECTIVO', 'V.(EF)', DECODE(tfp.c_denominacion, 'TRANSFERENCIA', 'V.(TRA)', 'V.(TC)')"
-					+ ")))))))))) TIPOVENTA ";
+					+ "))))))))))) TIPOVENTA ";
 			
 			sql = sql + "SELECT vp.venpas_id, vp.c_numcontrol NroControl, vp.c_numboleto NroBoleto, vp.c_numbolant NroBoletoRef, " +
 					"p.c_apepat ApePat, p.c_apemat ApeMat, p.c_nombre Nombre, vp.audfecins FechaActualizacion, vp.n_tarifa MontoBase, " +
@@ -1659,11 +1660,11 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					"INNER JOIN vrmagencia ag ON (ag.agencia_id=vp.agencia_id) "+
 					"WHERE vp.agencia_id="+idAgencia+" AND vp.usuario_id=NVL("+idUsuario+",vp.usuario_id) AND vp.d_fecliq BETWEEN to_date('"+fechaInicial+"','dd/mm/yyyy') AND " +
    						  "to_date('"+fechaFinal+"','dd/mm/yyyy') AND vp.forpag_id=1 "
-   						+ "AND vp.tipcom_id in ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_FACTURA+","+Constantes.ID_TIPCOM_NOTA_CREDITO+","+Constantes.ID_TIPCOM_NOTA_DEBITO+") "
+   						+ "AND vp.tipcom_id in ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_FACTURA+","+Constantes.ID_TIPCOM_NOTA_CREDITO+","+Constantes.ID_TIPCOM_NOTA_DEBITO+","+Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA+") "
 						+ "AND vp.n_tarifa>0 AND vp.tipmov_id NOT IN (4,5,6,10,11,12,13)) " +
    					"ORDER BY venpas_id ";
 //					"ORDER BY NroBoleto ";
-			
+			str = str.append(sql);
 			break;
 		case 1:	//Anulados
 			tipoVenta = "'ANULADO' TIPOVENTA ";
@@ -1706,9 +1707,10 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					"DECODE(tm.c_denominacion, 'POSTERGACION', DECODE(tfp.c_denominacion, 'EFECTIVO', 'POST.(EF)', 'POST.(TC)'), " +
 					"DECODE(tm.c_denominacion, 'POSTERGACION FA', DECODE(tfp.c_denominacion, 'EFECTIVO', 'POST.FA. (EF)', 'POST.FA. (TC)'), " +
 					"DECODE(tm.tipmov_id,"+Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS+", DECODE(tfp.c_denominacion, 'EFECTIVO', 'GAS.ADM(EFE)','GAS.ADM(TC)'),  " +
-					"DECODE(vp.tipmov_id,"+Constantes.ID_TIPMOV_SERVICIO_ESPECIAL+", 'SERV.ESP.',  " +
-					"DECODE(tm.c_denominacion, 'EFECTIVO', DECODE(tfp.c_denominacion, 'EFECTIVO', 'V.(EF)', DECODE(tfp.c_denominacion, 'TRANSFERENCIA', 'V.(TRA)', 'V.(TC)')))))))))) TIPOVENTA ";
-			where = " AND vp.forpag_id=1 AND vp.tipcom_id in ("+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_FACTURA+","+Constantes.ID_TIPCOM_NOTA_CREDITO+","+Constantes.ID_TIPCOM_NOTA_DEBITO+") "
+					"DECODE(vp.tipmov_id,"+Constantes.ID_TIPMOV_GRT+", DECODE(tfp.c_denominacion, 'PCE', 'EQUIPAJE(PCE)', DECODE(tfp.c_denominacion, 'EFECTIVO', 'EQUIPAJE(EF)','EQUIPAJE(TC)')),  " +
+					"DECODE(vp.tipmov_id,"+Constantes.ID_TIPMOV_SERVICIO_ESPECIAL+", DECODE(tfp.c_denominacion, 'EFECTIVO', 'SERV.ESP(EF)', 'SERV.ESP(TC)'),  " +
+					"DECODE(tm.c_denominacion, 'EFECTIVO', DECODE(tfp.c_denominacion, 'EFECTIVO', 'V.(EF)', DECODE(tfp.c_denominacion, 'TRANSFERENCIA', 'V.(TRA)', 'V.(TC)'))))))))))) TIPOVENTA ";
+			where = " AND vp.forpag_id = 1 AND vp.tipcom_id in ("+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_FACTURA+","+Constantes.ID_TIPCOM_NOTA_CREDITO+","+Constantes.ID_TIPCOM_NOTA_DEBITO+") "
 					+ " AND vp.n_tarifa>0 AND vp.tipmov_id NOT IN (4,5,6,10,11, 12,13) ";
 			break;
 		case 10: //Notas de credito
@@ -1769,8 +1771,9 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					"LEFT JOIN vrmopetarcre otc ON otc.opetarcre_id=tc.opetarcre_id " +
 					"INNER JOIN vrmagencia ag ON (ag.agencia_id=vp.agencia_id) "+
 					"WHERE vp.agencia_id="+idAgencia+" AND vp.usuario_id=NVL("+idUsuario+",vp.usuario_id) AND vp.d_fecliq BETWEEN to_date('"+fechaInicial+"','dd/mm/yyyy') AND " +
-							"to_date('"+fechaFinal+"','dd/mm/yyyy') AND vp.tipcom_id IN ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_RECIBO_CAJA+","+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_FACTURA+","+Constantes.ID_TIPCOM_NOTA_CREDITO+","+Constantes.ID_TIPCOM_NOTA_DEBITO+") AND " +
-							"vp.c_tiptra= "+Constantes.TIPO_OPERACION_VENTA;
+							"to_date('"+fechaFinal+"','dd/mm/yyyy') AND vp.tipcom_id IN ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_RECIBO_CAJA+","+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_FACTURA+","+Constantes.ID_TIPCOM_NOTA_CREDITO+","+Constantes.ID_TIPCOM_NOTA_DEBITO+","+Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA+") AND " +
+							//"vp.c_tiptra= "+Constantes.TIPO_OPERACION_VENTA
+							"vp.c_tiptra IN ("+Constantes.TIPO_OPERACION_VENTA+", "+Constantes.TIPO_OPERACION_VENTA_ESPECIAL+", "+Constantes.TIPO_OPERACION_EXCESO+") ";
 
 			sql = sql + where;
 			sql = sql + "ORDER BY vp.audfecins";

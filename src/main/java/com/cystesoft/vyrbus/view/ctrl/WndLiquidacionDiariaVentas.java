@@ -298,6 +298,8 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 								|| venta.getTipoTransaccion().equals("GAS.ADM(EFE)")
 //								|| venta.getTipoTransaccion().equals("NOTA CREDITO")
 								|| venta.getTipoTransaccion().equals("NOTA DEBITO")
+								|| venta.getTipoTransaccion().equals("EQUIPAJE(EF)")
+								|| venta.getTipoTransaccion().equals("SERV.ESP(EF)")
 						){
 							total = total + venta.getImportePagado();
 //							style = "color:blue !important; font-weight:bold";
@@ -318,15 +320,17 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 								|| venta.getTipoTransaccion().equals("GAS.ADM(EFE)")
 								|| venta.getTipoTransaccion().equals("CONF.FA.(TRA)")
 								|| venta.getTipoTransaccion().equals("FA.(TRA)")
+								|| venta.getTipoTransaccion().equals("EQUIPAJE(EF)")
+								|| venta.getTipoTransaccion().equals("SERV.ESP(EF)")
 						  )
 							totalEfectivo = totalEfectivo + venta.getImportePagado();
 						else if(venta.getTipoTransaccion().equals("CREDITO"))
 							totalCredito = totalCredito + venta.getImportePagado();							
 						else if(venta.getTipoTransaccion().equals("PREP.(EF)") || venta.getTipoTransaccion().equals("PREP.(TC"))
 							totalPrepagado = totalPrepagado + venta.getImportePagado();							
-						else if(venta.getTipoTransaccion().equals("RC.(EF)") 
-								|| venta.getTipoTransaccion().equals("RC.(TC)")
-								|| venta.getTipoTransaccion().equals("RC.(TRA)")
+						else if(venta.getTipoTransaccion().equals("EQUIPAJE(PCE)") 
+//								|| venta.getTipoTransaccion().equals("RC.(TC)")
+//								|| venta.getTipoTransaccion().equals("RC.(TRA)")
 							   )
 							totalRecibos = totalRecibos + venta.getImportePagado();
 						else if(venta.getTipoTransaccion().equals("V.(TC)") 
@@ -336,6 +340,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 								|| venta.getTipoTransaccion().equals("POST.(TC)")
 								|| venta.getTipoTransaccion().equals("POST.FA.(TC)")
 								|| venta.getTipoTransaccion().equals("GAS.ADM(TC)")
+								|| venta.getTipoTransaccion().equals("EQUIPAJE(TC)")
 								
 							   ){
 							/*Valida si existe diferencia en la tarifa en el movimiento de la venta*/

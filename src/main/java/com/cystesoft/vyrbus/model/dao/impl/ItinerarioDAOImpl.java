@@ -322,7 +322,7 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 					lstResult.add(false);
 				lstResult.add(obj[0].toString());
 			}else{
-				if(Integer.valueOf(obj[2].toString())<asiento)
+				if((Integer.valueOf(obj[1].toString()) + Integer.valueOf(obj[2].toString()))<asiento)
 					lstResult.add(true);
 				else
 					lstResult.add(false);

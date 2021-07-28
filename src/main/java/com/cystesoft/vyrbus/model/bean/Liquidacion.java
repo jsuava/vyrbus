@@ -48,6 +48,8 @@ public class Liquidacion extends GenericBean implements java.io.Serializable {
 	private double montoPrepagado;
 	private Integer cantidadCreditos;
 	private double montoCreditos;
+	private Integer cantidadPCE;
+	private double montoPCE;
 	
 	//recibos de caja con tarjeta 
 	private Integer cantidadTarjetaVisaRC;
@@ -747,6 +749,34 @@ public class Liquidacion extends GenericBean implements java.io.Serializable {
 	public void setMontoGastosAdminTarjetaMastercard(
 			double montoGastosAdminTarjetaMastercard) {
 		this.montoGastosAdminTarjetaMastercard = montoGastosAdminTarjetaMastercard;
+	}
+
+	/**
+	 * @return the cantidadPCE
+	 */
+	public Integer getCantidadPCE() {
+		return cantidadPCE;
+	}
+
+	/**
+	 * @param cantidadPCE the cantidadPCE to set
+	 */
+	public void setCantidadPCE(Integer cantidadPCE) {
+		this.cantidadPCE = cantidadPCE;
+	}
+
+	/**
+	 * @return the montoPCE
+	 */
+	public double getMontoPCE() {
+		return montoPCE;
+	}
+
+	/**
+	 * @param montoPCE the montoPCE to set
+	 */
+	public void setMontoPCE(double montoPCE) {
+		this.montoPCE = montoPCE;
 	}
 
 }

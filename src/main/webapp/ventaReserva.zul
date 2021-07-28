@@ -132,7 +132,7 @@
 										</row>
 										<row style="background:#e0e0e0; border:none;">
 											<label value="DESTINO :" sclass="label-size11"/>
-											<combobox id="cmbDestino" autodrop="true" width="160px" onOK="btnBuscarItinerario.setFocus(true)"/>
+											<combobox id="cmbDestino" focus="true" onFocus="cmbDestino.select()" autodrop="true" width="160px" onOK="btnBuscarItinerario.setFocus(true)"/>
 										</row>
 									</rows>
 								</grid>

@@ -117,7 +117,7 @@
 				<label id="lblCredito" value="" style="font-size:12px !important;color:#00695c;font-weight:bold;"/>
 			</row>
 			<row style="background:#e0e0e0">
-				<label value="RECIBO DE CAJA :" style="font-size:12px !important;color:#4285F4;font-weight:bold;"/>
+				<label value="VENTAS PCE :" style="font-size:12px !important;color:#4285F4;font-weight:bold;"/>
 				<label id="lblRecibos" value="" style="font-size:12px !important;color:#00695c;font-weight:bold;"/>
 				<label value="NOTAS CREDITO :" style="font-size:12px !important;color:#4285F4;font-weight:bold;"/>
 				<label id="lblNotascredito" value="" style="font-size:12px !important;color:#00695c;font-weight:bold;"/>

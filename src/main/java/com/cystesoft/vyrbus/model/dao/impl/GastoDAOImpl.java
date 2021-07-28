@@ -257,7 +257,7 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 				+ "INNER JOIN vrmtipgas tg ON (tg.tipgas_id=g.tipgas_id) "
 				+ "INNER JOIN (SELECT dl.gasto_id FROM vrtdetliq dl "
 				+ "INNER JOIN vrtliquidacion l On (l.liquidacion_id=dl.liquidacion_id) "
-				+ "WHERE l.d_fecliq=to_date('13/07/2021','dd/MM/yyyy')  AND l.agencia_id=1 AND l.usuario_id=4 AND l.c_estreg='A') dl ON (dl.gasto_id=g.gasto_id) "
+				+ "WHERE l.d_fecliq=to_date('"+fechaLiquidacion+"','dd/MM/yyyy') AND dl.gasto_id is not null AND l.agencia_id="+idAgencia+" AND l.usuario_id="+idUsuario+" AND l.c_estreg='A') dl ON (dl.gasto_id=g.gasto_id) "
 				+ "WHERE g.c_estreg='A' GROUP BY tg.tipgas_id, tg.c_denominacion "
 				+ "ORDER BY tg.c_denominacion ";
 		
