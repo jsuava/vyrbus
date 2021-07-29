@@ -687,6 +687,7 @@ public class WndFacturacionServicios extends WndBase {
 		Groupbox groupbox = new Groupbox();
 		groupbox.setTitle("DETALLE DEL PAGO");
 		groupbox.setMold("3d");
+		groupbox.setStyle("color: #ffffff; ");
 		groupbox.setClosable(true);
 		groupbox.setSclass("detalle");
 		

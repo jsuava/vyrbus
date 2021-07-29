@@ -2,7 +2,7 @@
 <zk>
 <window id="wndEquipaje" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndEquipaje" width="680px">
 	<groupbox closable="false" mold="3d">
-		<caption label="INFORMACIÓN BOLETOS"/>
+		<caption label="INFORMACIÓN BOLETOS" style="color: #ffffff;" />
 		<grid style="border:none">
 			<columns>
 				<column width="80px"/>
@@ -33,7 +33,7 @@
 		</grid>
 	</groupbox>
 	<groupbox closable="false" mold="3d">
-		<caption label="CÁLCULO DE EXCESO"/>
+		<caption label="CÁLCULO DE EXCESO" style="color: #ffffff;"/>
 		<grid style="border:none">
 			<columns>
 				<column width="665px"/>
@@ -43,10 +43,10 @@
 				<row>
 					<listbox id="ltbxBoletos" rows="4">
 						<listhead>
-							<listheader label="N° COMPROBANTE" width="120px" />
-							<listheader label="PASAJERO" width="300px"/>
-							<listheader label="EMBARQUE" width="170px"/>
-							<listheader label="ASIENTO" width="60px" align="center"/>
+							<listheader label="N° COMPROBANTE" width="120px" style="color: #ffffff;" />
+							<listheader label="PASAJERO" width="300px" style="color: #ffffff;" />
+							<listheader label="EMBARQUE" width="170px" style="color: #ffffff;" />
+							<listheader label="ASIENTO" width="60px" align="center" style="color: #ffffff;" />
 						</listhead>					
 					</listbox>
 					<label/>

@@ -196,7 +196,7 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 			controlEspecieValorada.setUsuarioInsercion(obj[11]!=null? obj[11].toString():" ");
 			controlEspecieValorada.setIpInsercion(obj[12]!=null? obj[12].toString():" ");
 			controlEspecieValorada.setFormato(((BigDecimal)obj[14]).intValue());
-			controlEspecieValorada.setSecuenciador(obj[15].toString());
+			controlEspecieValorada.setSecuenciador(obj[15]!=null?obj[15].toString():"");
 						
 			lstResul.add(controlEspecieValorada);	
 		}
