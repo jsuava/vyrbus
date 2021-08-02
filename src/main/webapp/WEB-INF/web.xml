@@ -2,7 +2,7 @@
 
 <web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"> 
+ xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" id="WebApp_1627864417219"> 
 
 	<description><![CDATA[My ZK Application]]></description>
 	<display-name>vyrbus</display-name>
@@ -190,6 +190,12 @@
 		<servlet-name>XlsVentasByCounters</servlet-name>
 		<servlet-class>com.cystesoft.vyrbus.service.excel.XlsVentasByCounters</servlet-class>
 	</servlet>
+	<servlet>
+	   <description>Servlet para las Ventas del Pago a Pilotos</description>
+	   <display-name>VentasPagoPilotos</display-name>
+	   <servlet-name>XlsVentasPagoPilotosServlet</servlet-name>
+	   <servlet-class>com.cystesoft.vyrbus.service.excel.XlsVentasPagoPilotos</servlet-class>
+	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>dspLoader</servlet-name>
@@ -238,6 +244,10 @@
 	<servlet-mapping>
 		<servlet-name>XlsVentasByCounters</servlet-name>
 		<url-pattern>/exportXlsVentasByCounters.htm</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>XlsVentasPagoPilotosServlet</servlet-name>
+		<url-pattern>/exportXlsVentasPagoPilotos.htm</url-pattern>
 	</servlet-mapping>
   <!--
   <security-constraint>

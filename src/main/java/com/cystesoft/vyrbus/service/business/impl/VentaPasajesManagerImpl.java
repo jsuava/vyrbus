@@ -38,7 +38,6 @@ import com.cystesoft.vyrbus.model.bean.TmpOcupacionAsientos;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.UsuarioHardware;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
-import com.cystesoft.vyrbus.model.bean.VentaServicioEspecial;
 import com.cystesoft.vyrbus.model.dao.ControlEspecieValoradaDAO;
 import com.cystesoft.vyrbus.model.dao.EspecieValoradaDAO;
 import com.cystesoft.vyrbus.model.dao.ItinerarioDAO;
@@ -58,6 +57,7 @@ import com.cystesoft.vyrbus.service.fe.Result;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.mappers.ResumenAnulacionPostergacion;
 import com.cystesoft.vyrbus.service.mappers.ResumenVentas;
+import com.cystesoft.vyrbus.service.mappers.VentasPiloto;
 import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.Messages;
 import com.cystesoft.vyrbus.service.util.MyTime;
@@ -2477,6 +2477,14 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	@Override
 	public List<VentaPasaje> buscarFacturasServicioEspecial(String numComprobante, String fDesde, String fHasta) throws Exception {
 		return getVentaPasajesDAO().buscarFacturasServicioEspecial(numComprobante, fDesde, fHasta);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#buscarVentasPagoPilotos(java.lang.String, java.lang.String)
+	 */
+	public List<VentasPiloto> buscarVentasPagoPilotos(String fInicio, String fFin) throws Exception{
+		return getVentaPasajesDAO().buscarVentasPagoPilotos(fInicio, fFin);
 	}
 	
 	

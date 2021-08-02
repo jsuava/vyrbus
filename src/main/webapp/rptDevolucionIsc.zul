@@ -2,7 +2,7 @@
 <zk>
 <window id="wndRptDevolucionIsc" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndRptDevolucionIsc">
 	<groupbox mold="3d" closable="false">
-		<caption label="REPORTE PARA DEVOLUCION DEL ISC" style="color: #ffffff;"/>
+		<caption label="REPORTE DE VENTAS Y PARA DEVOLUCION DEL ISC" style="color: #ffffff;"/>
 		<grid>
 			<columns>
 				<column width="100px" align="right" />
@@ -14,7 +14,15 @@
 					<label value="FECHA INCIO :" />
 					<datebox id="dtbxFechaInicio"  format="dd/MM/yyyy" readonly="true"/>
 					<label value="FECHA FIN :" />
-					<datebox id="dtbxFechaFin"  format="dd/MM/yyyy" readonly="true"/>
+					<hbox>
+						<datebox id="dtbxFechaFin"  format="dd/MM/yyyy" readonly="true"/>
+						<separator width="125px" />
+						<radiogroup>
+							<radio id="rdISC" label="Reporte ISC" selected="true"/>
+							<separator width="20px" orient="vertical"/>
+							<radio id="rdVentas" label="Reporte de Ventas"/>
+						</radiogroup>
+					</hbox>
 				</row>
 				<row>
 					<label value="PER4949 :" />
@@ -23,17 +31,9 @@
 					<hbox align="center">
 						<textbox id="txtPeriodo" width="150px"/>
 						<separator width="72px" />
-						<button label="Buscar" 
-								sclass="btnCommandM" 
-								image="/resources/mp_buscarEnabled.png" 
-								onClick="wndRptDevolucionIsc.buscar()"/>
-						<button label="Cerrar" 
-								sclass="btnCommandM" 
-								image="/resources/mp_cerrar.png" 
-								onClick="wndRptDevolucionIsc.closeTabWindow()" />
-						<button image="/resources/mp_excel.png" 
-								onClick="wndRptDevolucionIsc.exportarExcel()" 
-								sclass="btnImage"/>
+						<button label="Buscar" sclass="btnCommandM" image="/resources/mp_buscarEnabled.png" onClick="wndRptDevolucionIsc.buscar()"/>
+						<button label="Cerrar" sclass="btnCommandM" image="/resources/mp_cerrar.png" onClick="wndRptDevolucionIsc.closeTabWindow()" />
+						<button label="Exportar" sclass="btnCommandM" image="/resources/mp_excel.png"  onClick="wndRptDevolucionIsc.exportarExcel()"/>
 					</hbox>
 					
 				</row>

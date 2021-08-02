@@ -12,6 +12,7 @@ import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.service.mappers.ResumenAnulacionPostergacion;
 import com.cystesoft.vyrbus.service.mappers.ResumenVentas;
+import com.cystesoft.vyrbus.service.mappers.VentasPiloto;
 import com.cystesoft.vyrbus.service.util.VentasNotas;
 
 public interface VentaPasajesManager {
@@ -603,4 +604,12 @@ public interface VentaPasajesManager {
 	 * @throws Exception
 	 */
 	public List<VentaPasaje> buscarFacturasServicioEspecial (String numComprobante, String fDesde, String fHasta) throws Exception;
+	/**
+	 * Busca las ventas para el pago de Pilotos
+	 * @param fInicio	: Fecha de inicio de busqueda
+	 * @param fFin		: Fecha fin de busqueda
+	 * @return
+	 * @throws Exception
+	 */
+	public List<VentasPiloto> buscarVentasPagoPilotos(String fInicio, String fFin) throws Exception;
 }

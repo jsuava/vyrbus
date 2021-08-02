@@ -50,6 +50,7 @@ import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.mappers.ResumenAnulacionPostergacion;
 import com.cystesoft.vyrbus.service.mappers.ResumenVentas;
 import com.cystesoft.vyrbus.service.mappers.SecuenciaTramo;
+import com.cystesoft.vyrbus.service.mappers.VentasPiloto;
 import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.MyTime;
 import com.cystesoft.vyrbus.service.util.Util;
@@ -3701,6 +3702,57 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			lstVentaPasaje.add(ventaPasaje);
 		}
 		return lstVentaPasaje;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.VentaPasajesDAO#buscarVentasPagoPilotos(java.lang.String, java.lang.String)
+	 */
+	public List<VentasPiloto> buscarVentasPagoPilotos(String fInicio, String fFin) throws Exception{
+		String sql = "SELECT vp.d_fecliq FCOMPRA, vp.c_numboleto DOCUMENTO, DECODE(c.cliente_id, null, null, c.c_numdoc) RUC, p.c_numdoc DNI, "
+				+ "DECODE(vp.cliente_id, null, p.c_nomape, c.c_razsoc) RAZON, vp.n_imppag EXONERADO, 0 VENTA, 0 IGV, vp.n_imppag TOTAL, "
+				+ "i.d_fecpar FSALIDABUS, to_char(vp.audfecins, 'HH24:mm') HORAVENTA, ao.c_denominacion OF_ORIGEN, ad.c_denominacion OF_DESTINO, "
+				+ "(vp.n_numpiso+1)||'-'||vp.n_numasiento ASIENTO, tc.c_denominacion TIPO, vp.c_horpar HORASALIDABUS, m.c_codbus PLACA, "
+				+ "m.c_piloto CHOFER, m.c_copiloto CHOFER2, m.c_tripulante TRIPULANTE "
+				+ "FROM vrtmanifiesto m "
+				+ "INNER JOIN vrtdetman dm ON dm.manifiesto_id=m.manifiesto_id "
+				+ "INNER JOIN vrtitinerario i ON i.itinerario_id=m.itinerario_id "
+				+ "INNER JOIN vrtvenpas vp ON vp.venpas_id=dm.venpas_id "
+				+ "LEFT JOIN vrmcliente c ON c.cliente_id=vp.cliente_id "
+				+ "INNER JOIN vrmpasajero p ON p.pasajero_id=vp.pasajero_id "
+				+ "INNER JOIN vrmagencia ao ON ao.agencia_id=vp.agencia_idpartida "
+				+ "INNER JOIN vrmagencia ad ON ad.agencia_id=vp.agencia_idllegada "
+				+ "INNER JOIN vrmtipcom tc ON tc.tipcom_id=vp.tipcom_id "
+				+ "WHERE i.d_fecpar BETWEEN to_date('"+fInicio+"','dd/MM/yyyy') AND to_date('"+fFin+"','dd/MM/yyyy')";
+		
+		List<?> result = getSession().createSQLQuery(sql).list();
+		List<VentasPiloto> lstVentas = new ArrayList<VentasPiloto>();
+		for(int i=0; i<result.size(); i++) {
+			Object[] obj = (Object[])result.get(i);
+			VentasPiloto ventasPiloto = new VentasPiloto();
+			ventasPiloto.setFechaCompra((Date)obj[0]);
+			ventasPiloto.setNumeroBoleto(obj[1].toString());
+			ventasPiloto.setRuc(obj[2]==null?null:obj[2].toString());
+			ventasPiloto.setDni(obj[3].toString());
+			ventasPiloto.setNombres(obj[4].toString());
+			ventasPiloto.setExonerado(((BigDecimal)obj[5]).doubleValue());
+			ventasPiloto.setVenta(((BigDecimal)obj[6]).doubleValue());
+			ventasPiloto.setIgv(((BigDecimal)obj[7]).doubleValue());
+			ventasPiloto.setTotal(((BigDecimal)obj[8]).doubleValue());
+			ventasPiloto.setFechaSalidaBus((Date)obj[9]);
+			ventasPiloto.setHoraVenta(obj[10].toString());
+			ventasPiloto.setOrigen(obj[11].toString());
+			ventasPiloto.setDestino(obj[12].toString());
+			ventasPiloto.setAsiento(obj[13].toString());
+			ventasPiloto.setTipo(obj[14].toString());
+			ventasPiloto.setHoraSalidaBus(obj[15].toString());
+			ventasPiloto.setCodigo(obj[16].toString());
+			ventasPiloto.setPiloto(obj[17].toString());
+			ventasPiloto.setCopiloto(obj[18]==null?null:obj[18].toString());
+			ventasPiloto.setTripulante(obj[19]==null?null:obj[19].toString());
+			lstVentas.add(ventasPiloto);
+		}
+		return lstVentas;
 	}
 }
 
