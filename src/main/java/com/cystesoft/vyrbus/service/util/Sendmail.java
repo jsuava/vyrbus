@@ -45,7 +45,8 @@ public class Sendmail {
 	{
 		int result = Constantes.FAILURE;
 		try{			
-			String from = "soporte@itsb.pe";
+			final String from = "soporte@itsb.pe";
+			final String password = "3tr0p0s2021";
 			Properties props = new Properties();
 			// Nombre del host de correo, es smtp.gmail.com
 			props.setProperty("mail.smtp.host", "itsb.pe");
@@ -53,6 +54,7 @@ public class Sendmail {
 			props.setProperty("mail.smtp.starttls.enable", "true");
 			// Puerto de gmail para envio de correos
 //			props.setProperty("mail.smtp.port","587");
+			props.setProperty("mail.smtp.ssl.trust","*");
 			// Nombre del usuario
 			props.setProperty("mail.smtp.user", from);
 			// Si requiere o no usuario y password para conectarse.
@@ -60,6 +62,7 @@ public class Sendmail {
 			
 			// Preparamos la sesion
 	        Session session = Session.getDefaultInstance(props);
+	        
 	        //session.setDebug(true);
 	        
 	        // Construir correo de texto con adjunto
@@ -105,12 +108,13 @@ public class Sendmail {
 	        
 	        //Para enviar el mensaje usamos la clase Transport
 	        Transport t = session.getTransport("smtp");
-	        // Establecemos la conexion
+//	        // Establecemos la conexion
 //	        t.connect(from,"mantybus303");
-	        t.connect("soporte@itsb.pe", "3tr0p0s2021");
-	        
-	        // Enviamos el mensaje
+	        t.connect(from, password);
+//	        
+//	        // Enviamos el mensaje
 	        t.sendMessage(message,message.getAllRecipients());
+//	        Transport.send(message);
 	        // Cerramos la conexxión
 	        t.close();
 	        result = Constantes.CORRECT;
