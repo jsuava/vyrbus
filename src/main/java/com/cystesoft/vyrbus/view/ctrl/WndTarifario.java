@@ -284,8 +284,6 @@ public class WndTarifario extends WndBase implements Serializable {
 			cmbPiso.appendChild(cmbItem);
 			cmbPiso.setSelectedIndex(0);
 		}
-		
-				
 	}
 	
 	private void onSelectPiso(Servicio oServicio){

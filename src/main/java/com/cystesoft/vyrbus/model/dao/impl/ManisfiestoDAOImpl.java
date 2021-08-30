@@ -350,8 +350,8 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 						"INNER JOIN vrmlocalidad lo ON (lo.localidad_id=r.localidad_idorigen) "+
 						"INNER JOIN vrmlocalidad ld ON (ld.localidad_id=r.localidad_iddestino) "+
 					"WHERE  v.itinerario_id="+idItinerario+ " And v.c_tiptra=1 And v.c_estreg='A' AND v.tipmov_id not in ("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+ Constantes.ID_TIPMOV_DEVOLUCION+","+ Constantes.ID_TIPMOV_ANULACION+") "+
-					"GROUP BY lo.c_denominacion, ld.c_denominacion, v.d_fecpar, v.c_horpar,r.ruta_id, lo.localidad_id,ld.localidad_id  "+
-					"ORDER BY v.d_fecpar, v.c_horpar";
+					"GROUP BY lo.c_denominacion, ld.c_denominacion, v.d_fecpar /*, v.c_horpar*/,r.ruta_id, lo.localidad_id,ld.localidad_id  "+
+					"ORDER BY v.d_fecpar /*, v.c_horpar*/";
 		
 		List<?> result = getSession().createSQLQuery(sql).list();
 		List<VentaPasaje> lstResult = new ArrayList<VentaPasaje>();

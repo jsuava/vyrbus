@@ -225,4 +225,14 @@ public interface ItinerarioManager {
 	 * @throws Exception
 	 */
 	public List<Itinerario>buscarItinerariosByVentaTramo(String fechaInicial, String fechaFinal,Integer rutaIdMayor, Integer rutaIdTramo,String horaPartidaTramo,String horaPartidaItinerario)throws Exception;
+	/**
+	 * Realiza la modificacion del horario del Itinerario y sus tramos.
+	 * @param idItinerario	: Identificador del Itinerario
+	 * @param diferencia	: Diferencia horaria.
+	 * @param login			: Usuario
+	 * @param ipLocal		: Ip de acceso
+	 * @return
+	 * @throws Exception
+	 */
+	public int modificarHorario(Long idItinerario, Long diferencia, String login, String ipLocal) throws Exception;
 }

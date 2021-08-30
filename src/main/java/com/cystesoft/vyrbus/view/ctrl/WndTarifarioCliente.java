@@ -79,7 +79,7 @@ public class WndTarifarioCliente extends WndBase{
 	private Button btnNuevo;
 	private Button btnGuardar;
 	private Button btnCancelar;
-	private Label lblRaziónSocial;
+	private Label lblRazonSocial;
 	private Tab tabLista;
 	private Tab tabMantenimiento;
 	
@@ -125,7 +125,7 @@ public class WndTarifarioCliente extends WndBase{
 		btnNuevo=(Button)this.getFellow("btnNuevo");
 		btnGuardar=(Button)this.getFellow("btnGuardar");
 		btnCancelar=(Button)this.getFellow("btnCancelar");
-		lblRaziónSocial=(Label)this.getFellow("lblRaziónSocial");
+		lblRazonSocial=(Label)this.getFellow("lblRaz0nSocial");
 		tabLista=(Tab)this.getFellow("tabLista");
 		tabMantenimiento=(Tab)this.getFellow("tabMantenimiento");
 	}
@@ -148,7 +148,7 @@ public class WndTarifarioCliente extends WndBase{
 					return;
 				}
 				cliente=clientes.get(0);
-				lblRaziónSocial.setValue(cliente.getRazonSocial());
+				lblRazonSocial.setValue(cliente.getRazonSocial());
 				List<TarifaClienteDetalle> result=ServiceLocator.getTarifaClienteDetalleManager().buscarByRuc(cliente.getNumeroDocumento());
 				int x=0;
 				Date fechaActual=Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date()));

@@ -137,6 +137,7 @@ import com.cystesoft.vyrbus.service.exceptions.NumeroBoletoDuplicadoException;
 import com.cystesoft.vyrbus.service.exceptions.NumeroBoletoNullException;
 import com.cystesoft.vyrbus.service.exceptions.NumeroDocumentoNullException;
 import com.cystesoft.vyrbus.service.exceptions.NumeroOperacionBancariaNullException;
+import com.cystesoft.vyrbus.service.exceptions.NumeroOperacionTarjetaNullException;
 import com.cystesoft.vyrbus.service.exceptions.OpenDateOnCreditNotAllowedException;
 import com.cystesoft.vyrbus.service.exceptions.OperadorTarjetaCreditoNullException;
 import com.cystesoft.vyrbus.service.exceptions.PasajeroException;
@@ -4922,6 +4923,7 @@ public class WndVentaReserva extends WndBase {
 				cmbOperadorTarjetaCredito.getItems().clear();
 				UtilData.cargarDataCombo(cmbOperadorTarjetaCredito, OperadorTarjetaCredito.class, false);
 				cmbOperadorTarjetaCredito.setDisabled(false);
+				txtOperacionBancaria.setDisabled(false);
 			}else if(cmbTipoFormaPago.getText().equals("TRANSFERENCIA"))	//Si es una transferecnia bancaria
 				txtOperacionBancaria.setDisabled(false);
 			else{
@@ -5625,9 +5627,11 @@ public class WndVentaReserva extends WndBase {
 					throw new OperadorTarjetaCreditoNullException();
 				else if(!(cmbTarjetaCredito.getSelectedItem().getValue() instanceof TarjetaCredito))
 					throw new TarjetaCreditoNullException();
+				else if(txtOperacionBancaria.getText().trim().equals(""))
+					throw new NumeroOperacionTarjetaNullException();
 			}else if(cmbTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago && cmbTipoFormaPago.getText().equals(TipoFormaPago.TIPO_TRANSFERENCIA)){
 				if(txtOperacionBancaria.getText().trim().equals(""))
-					throw new NumeroOperacionBancariaNullException();
+					throw new NumeroOperacionTarjetaNullException();
 			}else if(oPasajero.getIndeseable().intValue()==Constantes.TRUE_VALUE)
 				throw new PasajeroIndeseableException();
 			else if(cmbTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago 
@@ -6091,7 +6095,9 @@ public class WndVentaReserva extends WndBase {
 		} catch(EmailNullException enex){
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noIngresoEmail"), txtEmailPax);
 			tabPasajero.setSelected(true);
-		}catch(Exception ex){
+		}catch(NumeroOperacionTarjetaNullException notnex){
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noNumeroOperacionTarjeta"), txtOperacionBancaria);
+		} catch(Exception ex){
 			DlgMessage.information(ex.getMessage());
 			ex.printStackTrace();
 			log.error(ex);

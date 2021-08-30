@@ -2,6 +2,7 @@ package com.cystesoft.vyrbus.model.dao.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -37,11 +38,16 @@ public class ItinerarioAgenciaPartidaDAOImpl extends GenericDAOImpl implements I
 	 */
 	@Override
 	public List<ItinerarioAgenciaPartida> buscarAgenciasPartida(Long idItinerario, String estado, String strLocalidad)throws Exception{
-		String sql = "SELECT iap.itinerario_id, iap.agencia_id, a.c_denominacion, iap.c_horpar, a.c_nomcor, l.localidad_id, l.c_denominacion " +
+		String sql = "SELECT iap.itinerario_id, iap.agencia_id, a.c_denominacion, iap.c_horpar, a.c_nomcor, l.localidad_id, l.c_denominacion, "
+				+ "iap.c_estreg, iap.audfecins, iap.audusuins, iap.audipinse " +
 				"FROM vrtitiagepar iap " +
 				"INNER JOIN vrmagencia a ON a.agencia_id=iap.agencia_id " +
 				"INNER JOIN vrmlocalidad l ON l.localidad_id=iap.localidad_id " +
-				"WHERE iap.itinerario_id="+idItinerario+" AND iap.c_estreg IN ('"+Constantes.VALUE_ACTIVO+"','"+estado+"') AND iap.localidad_id IN("+strLocalidad+")";
+				"WHERE iap.itinerario_id="+idItinerario+" AND iap.c_estreg IN ('"+Constantes.VALUE_ACTIVO+"','"+estado+"') ";
+				
+		if(strLocalidad != null)
+			sql = sql + " AND iap.localidad_id IN("+strLocalidad+")";
+		
 		List<?> result = getSession().createSQLQuery(sql).list();
 		List<ItinerarioAgenciaPartida> lstResult = new ArrayList<ItinerarioAgenciaPartida>();
 		for(int i=0; i<result.size(); i++){
@@ -58,6 +64,10 @@ public class ItinerarioAgenciaPartidaDAOImpl extends GenericDAOImpl implements I
 			localidad.setId(((BigDecimal)obj[5]).intValue());
 			localidad.setDenominacion(obj[6].toString());
 			itAgePartida.setLocalidad(localidad);
+			itAgePartida.setEstadoRegistro(obj[7].toString());
+			itAgePartida.setFechaInsercion((Date)obj[8]);
+			itAgePartida.setUsuarioInsercion(obj[9].toString());
+			itAgePartida.setIpInsercion(obj[10].toString());
 			lstResult.add(itAgePartida);
 		}
 		return lstResult;

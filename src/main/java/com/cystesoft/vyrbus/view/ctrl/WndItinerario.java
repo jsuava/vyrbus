@@ -6,6 +6,7 @@
  * Fecha		: 11/09/2012
  */
 package com.cystesoft.vyrbus.view.ctrl;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,11 +21,15 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Bandbox;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Caption;
+import org.zkoss.zul.Column;
+import org.zkoss.zul.Columns;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Filedownload;
+import org.zkoss.zul.Grid;
+import org.zkoss.zul.Groupbox;
 import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Intbox;
@@ -35,7 +40,10 @@ import org.zkoss.zul.Listhead;
 import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Row;
+import org.zkoss.zul.Rows;
 import org.zkoss.zul.Separator;
+import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Timebox;
 import org.zkoss.zul.Window;
 
@@ -2397,6 +2405,30 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 				item.appendChild(cell);
 				cell = new Listcell(detalleItinerario.getAgenciaLlegada().getNombreCorto());
 				item.appendChild(cell);
+				cell = new Listcell();
+				Hbox hbox = new Hbox();
+				Button btnHora = new Button();
+				btnHora.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+					public void onEvent(Event e) {
+						DetalleItinerario detalle = ((Listitem)e.getTarget().getParent().getParent().getParent()).getValue();
+						cambiarHorario(detalle);
+					}
+				});
+				btnHora.setImage("/resources/mp_reloj.png");
+				btnHora.setTooltiptext("Cambiar la hora del Itinerario");
+				hbox.appendChild(btnHora);
+				Button btnDuplicar = new Button();
+				btnDuplicar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+					public void onEvent(Event e) {
+						
+					}
+				});
+				btnDuplicar.setImage("/resources/mp_clone.png");
+				btnDuplicar.setTooltiptext("Duplicar el Itinerario");
+				hbox.appendChild(btnDuplicar);
+				cell.appendChild(hbox);
+				item.appendChild(cell);
+				
 				item.setValue(detalleItinerario);
 				listboxLista.appendChild(item);
 			}
@@ -3003,6 +3035,383 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		for(Listitem item : lbxTerminalDestino.getSelectedItems()) {
 			lstAgenciaDestino.add((Listitem)item.clone());
 		}
+	}
+	
+	public void cambiarHorario(final DetalleItinerario detalleItinerario) {
+		final Window wndCambioHorario = new Window("Cambio de Horario", "normal", true);
+		wndCambioHorario.setWidth("620px");
+		Groupbox groupbox = new Groupbox();
+		groupbox.setClosable(false);
+		groupbox.setMold("3d");
+		Caption caption = new Caption();
+		caption.setLabel("DATOS DEL ITINERARIO");
+		caption.setStyle("color: #ffffff;");
+		groupbox.appendChild(caption);
+		
+		Grid grid = new Grid();
+		grid.setStyle("border:none");
+		Columns columns = new Columns();
+		Column column = new Column();
+		column.setWidth("110px");
+		column.setAlign("right");
+		columns.appendChild(column);
+		
+		column = new Column();
+		column.setWidth("170px");
+		columns.appendChild(column);
+		
+		column = new Column();
+		column.setWidth("100px");
+		column.setAlign("right");
+		columns.appendChild(column);
+		
+		column = new Column();
+		//column.setWidth("170px");
+		columns.appendChild(column);
+		
+		grid.appendChild(columns);
+		
+		Rows rows = new Rows();
+		Row row = new Row();
+		Div div = new Div();
+		String style = "font-weight: bold; font-size:12px !important; color: #4285F4";
+		Label label = new Label("TIPO ITINERARIO :");
+		div.appendChild(label);
+		Textbox txtIdItinerario = new Textbox();
+		txtIdItinerario.setVisible(false);
+		div.appendChild(txtIdItinerario);
+		row.appendChild(div);
+		Label lblTipoItinerario = new Label();
+		lblTipoItinerario.setValue(detalleItinerario.getItinerario().getTipoItinerario().getDenominacion());
+		lblTipoItinerario.setStyle(style);
+		row.appendChild(lblTipoItinerario);
+		label = new Label("TIPO SERVICIO :");
+		row.appendChild(label);
+		Label lblTipoServicio = new Label();
+		lblTipoServicio.setValue(detalleItinerario.getItinerario().getServicio().getDenominacion());
+		lblTipoServicio.setStyle(style);
+		row.appendChild(lblTipoServicio);
+		rows.appendChild(row);
+		
+		row = new Row();
+		label = new Label("ORIGEN :");
+		row.appendChild(label);
+		Label lblOrigen = new Label(detalleItinerario.getRuta().getOrigen());
+		lblOrigen.setStyle(style);
+		row.appendChild(lblOrigen);
+		label = new Label("RUTA :");
+		row.appendChild(label);
+		Label lblRuta = new Label(detalleItinerario.getRuta().toString());
+		lblRuta.setStyle(style);
+		row.appendChild(lblRuta);
+		rows.appendChild(row);		
+		
+		row = new Row();
+		label = new Label("F.SALIDA :");
+		row.appendChild(label);
+		Label lblFechaSalida = new Label(Util.DatetoString(detalleItinerario.getFechaPartida(), Constantes.DATE_FORMAT));
+		lblFechaSalida.setStyle(style);
+		row.appendChild(lblFechaSalida);
+		label = new Label("H.SALIDA :");
+		row.appendChild(label);
+		Label lblHoraSalida = new Label(detalleItinerario.getHoraPartida());
+		lblHoraSalida.setStyle(style);
+		row.appendChild(lblHoraSalida);
+		rows.appendChild(row);
+		
+		grid.appendChild(rows);
+		groupbox.appendChild(grid);
+		wndCambioHorario.appendChild(groupbox);
+		
+		wndCambioHorario.appendChild(groupbox);
+		
+		groupbox = new Groupbox();
+		groupbox.setClosable(false);
+		groupbox.setMold("3d");
+		caption = new Caption();
+		caption.setLabel("DETALLE DEL ITINERARIO");
+		caption.setStyle("color: #ffffff;");
+		groupbox.appendChild(caption);
+		
+		Listbox listbox = new Listbox();
+		listbox.setRows(5);
+		Listhead listhead = new Listhead();
+		
+		Listheader listheader = new Listheader("#");
+		listheader.setWidth("20px");
+		listheader.setStyle("color: #ffffff;");
+		listhead.appendChild(listheader);
+		
+		listheader = new Listheader("Ruta");
+		listheader.setWidth("145px");
+		listheader.setStyle("color: #ffffff;");
+		listhead.appendChild(listheader);
+		
+		listheader = new Listheader("Tipo Servicio");
+		listheader.setWidth("120px");
+		listheader.setStyle("color: #ffffff;");
+		listhead.appendChild(listheader);
+		
+		listheader = new Listheader("Fecha Salida");
+		listheader.setWidth("93px");
+		listheader.setStyle("color: #ffffff;");
+		listhead.appendChild(listheader);
+		
+		listheader = new Listheader("Hr.Salida");
+		listheader.setWidth("55px");
+		listheader.setStyle("color: #ffffff;");
+		listhead.appendChild(listheader);
+		
+		listheader = new Listheader("Fecha Llegada");
+		listheader.setWidth("93px");
+		listheader.setStyle("color: #ffffff;");
+		listhead.appendChild(listheader);
+		
+		listheader = new Listheader("Hr.Llegada");
+		listheader.setWidth("60px");
+		listheader.setStyle("color: #ffffff;");
+		listhead.appendChild(listheader);
+		
+		listbox.appendChild(listhead);
+		
+		try {
+			/*Recupera detalle del Itinerario***/
+			List<DetalleItinerario> lstItinerariosDetalle= ServiceLocator.getItinerarioManager().buscarItinerariosMantenimiento(detalleItinerario.getItinerario().getId(), "", "", "", "", "","","");
+			
+			if(lstItinerariosDetalle.size()>0){
+				Integer x =0; /*Contador utilizado para el item.*/
+				Integer primerIndex =0;
+				String destino = null; /*Almacena el ultimo destino cargado en el listBoxdetalleItinerario, para la validacion con el origen.*/
+				String idDestino = null;
+				
+				DetalleItinerario oDetalleItinerario =lstItinerariosDetalle.get(0);
+				destino =oDetalleItinerario.getRuta().getDestino();
+				idDestino = oDetalleItinerario.getRuta().getLocalidadDestino().getId().toString();
+			
+				for(DetalleItinerario detalle : lstItinerariosDetalle){
+					primerIndex += +1;
+					String origen = detalle.getRuta().getOrigen();
+					String idOrigen = detalle.getRuta().getLocalidadOrigen().getId().toString();
+					if (destino.equals(origen) || primerIndex==1){
+						x += +1;
+						
+						destino=detalle.getRuta().getDestino();
+						idDestino = detalle.getRuta().getLocalidadDestino().getId().toString();
+						obtenerAgenciaPartidaLlegada(detalle, idOrigen, true);
+						obtenerAgenciaPartidaLlegada(detalle, idDestino, false);
+						agregarItinerario(detalle, listbox);
+					}
+				}
+			}
+			
+			groupbox.appendChild(listbox);
+			wndCambioHorario.appendChild(groupbox);
+			
+			groupbox = new Groupbox();
+			groupbox.setClosable(false);
+			groupbox.setMold("3d");
+			caption = new Caption();
+			caption.setLabel("NUEVO HORARIO");
+			caption.setStyle("color: #ffffff; ");
+			groupbox.appendChild(caption);
+			
+			grid = new Grid();
+			columns = new Columns();
+			column = new Column();
+			column.setWidth("110px");
+			column.setAlign("right");
+			columns.appendChild(column);
+			
+			column = new Column();
+			column.setWidth("110px");
+			columns.appendChild(column);
+			
+			column = new Column();
+			column.setWidth("110px");
+			column.setAlign("right");
+			columns.appendChild(column);
+			
+			column = new Column();
+			column.setWidth("110px");
+			columns.appendChild(column);
+			
+			grid.appendChild(columns);
+			
+			rows = new Rows();
+			row = new Row();
+			label = new Label("HORA ACTUAL :");
+			row.appendChild(label);
+			final Timebox tmHoraActual = new Timebox();
+			tmHoraActual.setFormat("HH:mm");
+			tmHoraActual.setWidth("60px");
+			tmHoraActual.setText(detalleItinerario.getHoraPartida());
+			row.appendChild(tmHoraActual);
+			label = new Label("NUEVO HORARIO :");
+			row.appendChild(label);
+			final Timebox tmNuevoHorario = new Timebox();
+			tmNuevoHorario.setFormat("HH:mm");
+			tmNuevoHorario.setWidth("60px");
+			row.appendChild(tmNuevoHorario);
+			Hbox hbox = new Hbox();
+			Button btnGrabar = new  Button("Guardar", "/resources/mp_guardarEnabled.png");
+			btnGrabar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+				public void onEvent(Event e) {
+					try {
+						if(tmNuevoHorario.getText().equals(""))
+							throw new HoraPartidaNullException();
+						
+						Messagebox.show("Esta seguro de continuar, el cambio afectara a todos los tramos del Itinerario", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+							public void onEvent(Event e) {
+								try {
+									if(e.getName().equals("onYes")) {
+										if(tmNuevoHorario.getText().equals(""))
+											throw new HoraPartidaNullException();
+										String fechaPartida = Util.DatetoString(detalleItinerario.getFechaPartida(), Constantes.DATE_FORMAT)+" "+tmHoraActual.getText();
+										String nuevaFechaPartida = Util.DatetoString(detalleItinerario.getFechaPartida(), Constantes.DATE_FORMAT)+" "+tmNuevoHorario.getText();
+										Long horaPartida = Util.StringtoDate(fechaPartida, Constantes.DATE_TIME_SHORT_FORMAT).getTime();
+										Long muevoHorario = Util.StringtoDate(nuevaFechaPartida, Constantes.DATE_TIME_SHORT_FORMAT).getTime();
+										Long diferencia = muevoHorario - horaPartida;
+										modificarHorarios(detalleItinerario.getItinerario().getId(), diferencia);
+										wndCambioHorario.onClose();
+										Util.limpiarListbox(listboxLista);
+										String criterio="di.d_fecpar, to_date(di.c_horpar,'HH24:MI'), di.d_feclle, to_date(di.c_horlle,'HH24:MI')";
+										listarItinerarios(ServiceLocator.getItinerarioManager().buscarItinerariosMantenimiento(null, lblOrigen.getValue(), 
+												"", lblFechaSalida.getValue(), lblFechaSalida.getValue(), "", "", criterio));
+									}
+								}catch(HoraPartidaNullException hpnex) {
+									DlgMessage.information("Debe de ingresar la nueva Hora de Partida del Itinerario", tmNuevoHorario);
+								}catch(Exception ex) {
+									ex.printStackTrace();
+									DlgMessage.error(ex.getMessage());
+								}
+							}
+						});
+					}catch(HoraPartidaNullException hpnex) {
+						DlgMessage.information("Debe de ingresar la nueva Hora de Partida del Itinerario", tmNuevoHorario);
+					}catch (Exception ex) {
+						ex.printStackTrace();
+						DlgMessage.error(ex.getMessage());
+					}
+				}
+			});
+			hbox.appendChild(btnGrabar);
+			Button btnCancelar = new  Button("Cancelar","/resources/mp_cancelarEnabled.png");
+			btnCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+				public void onEvent(Event e) {
+					wndCambioHorario.onClose();
+				}
+			});
+			hbox.appendChild(btnCancelar);
+			row.appendChild(hbox);
+			
+			rows.appendChild(row);
+			grid.appendChild(rows);
+			groupbox.appendChild(grid);
+			
+			wndCambioHorario.appendChild(groupbox);
+			
+			this.appendChild(wndCambioHorario);
+			wndCambioHorario.setMode("modal");
+			
+			
+		}catch(Exception ex) {
+			DlgMessage.information("Se encontro problemas al momento de recuperar el detalle del Itinerario");
+		}		
+	}
+	
+	public void modificarHorarios(Long idItinerario, Long diferencia) {
+		try {
+			String ipLocal = UtilData.ipLocal(Executions.getCurrent());
+			String login = getUsuario().getLogin();
+			int result = ServiceLocator.getItinerarioManager().modificarHorario(idItinerario, diferencia, login, ipLocal);
+			if(result == Constantes.CORRECT)
+				DlgMessage.information("La modificacion se completo satisfactoriamente");
+			
+		}catch (Exception ex) {
+			ex.printStackTrace();
+			DlgMessage.error(ex.getMessage());
+		}
+		
+//		try {
+//		oitinerario = ServiceLocator.getItinerarioManager().buscarPorId(idItinerario);
+//		//Modificando los datos de la cabecera del Itinerario
+//		//Concatenamos la fecha con la hora de salida
+//		String strFechaSalida = Util.DatetoString(oitinerario.getFechaPartida(), Constantes.DATE_FORMAT) + " " + oitinerario.getHoraPartida();
+//		//Convertimos a Date la fecha y hora de salida
+//		Date dtFechaSalida = Util.StringtoDate(strFechaSalida, Constantes.DATE_TIME_SHORT_FORMAT);		
+//		//Sumamos o restamos la diferencia de horas
+//		Long nFechaSalida = dtFechaSalida.getTime()+diferencia;
+//		dtFechaSalida = new Date(nFechaSalida);
+//		//Obtenemos la nueva fecha de salida
+//		Date dtNewFechaSalida = Util.StringtoDate(Util.DatetoString(dtFechaSalida, Constantes.DATE_FORMAT), Constantes.DATE_FORMAT);
+//		//Convertimos a String la nueva Hora de Salida
+//		String strNewHoraSalida = Util.DatetoString(dtFechaSalida, Constantes.TIME_SHORT_FORMAT);
+//		oitinerario.setFechaPartida(dtNewFechaSalida);
+//		oitinerario.setHoraPartida(strNewHoraSalida);
+//		
+//		System.out.println("Fecha y Hora de Salida " + dtNewFechaSalida + " " + strNewHoraSalida);
+//		
+//		//Concatenamos la fecha con la hora de llegada
+//		String strFechaLlegada = Util.DatetoString(oitinerario.getFechaLlegada(), Constantes.DATE_FORMAT) + " " + oitinerario.getHoraLlegada();
+//		//Convertimos a Date la fecha y hora de llegada
+//		Date dtFechaLlegada = Util.StringtoDate(strFechaLlegada, Constantes.DATE_TIME_SHORT_FORMAT);
+//		//Sumamos o restamos la diferencia de horas
+//		Long nFechaLlegada = dtFechaLlegada.getTime()+diferencia;
+//		dtFechaLlegada = new Date(nFechaLlegada);
+//		//Obtenemos la nueva fecha de llegada
+//		Date dtNewFechaLlegada = Util.StringtoDate(Util.DatetoString(dtFechaLlegada, Constantes.DATE_FORMAT), Constantes.DATE_FORMAT);
+//		//Convertimos a String la nueva Hora de Llegada
+//		String strNewHoraLlegada = Util.DatetoString(dtFechaLlegada, Constantes.TIME_SHORT_FORMAT);
+//		oitinerario.setFechaLlegada(dtNewFechaLlegada);
+//		oitinerario.setHoraLlegada(strNewHoraLlegada);
+//		
+//		System.out.println("Fecha y Hora de Llegada " + dtNewFechaLlegada + " " + strNewHoraLlegada);
+//		
+//		/*Recupera detalle del Itinerario***/
+//		List<DetalleItinerario> lstDetalleItinerario = ServiceLocator.getItinerarioManager().buscarItinerariosMantenimiento(idItinerario, "", "", "", "", "","","");
+//		List<DetalleItinerario>
+//		for(int i = 0; i<lstDetalleItinerario.size(); i++) {
+//			DetalleItinerario detalleItinerario = lstDetalleItinerario.get(i);
+//			String strFechaSalidaDetalle = new String();
+//			Date dtFechaSalidaDetalle = new Date();
+//			Long nFechaSalidaDetalle = null;
+//			//Concatenamos la fecha con la hora de salida
+//			strFechaSalidaDetalle = Util.DatetoString(detalleItinerario.getFechaPartida(), Constantes.DATE_FORMAT) + " " + detalleItinerario.getHoraPartida();
+//			//Convertimos a Date la fecha y hora de salida
+//			dtFechaSalidaDetalle = Util.StringtoDate(strFechaSalidaDetalle, Constantes.DATE_TIME_SHORT_FORMAT);		
+//			//Sumamos o restamos la diferencia de horas
+//			nFechaSalidaDetalle = dtFechaSalidaDetalle.getTime()+diferencia;
+//			dtFechaSalidaDetalle = new Date(nFechaSalidaDetalle);
+//			//Obtenemos la nueva fecha de salida
+//			Date dtNewFechaSalidaDetalle = Util.StringtoDate(Util.DatetoString(dtFechaSalidaDetalle, Constantes.DATE_FORMAT), Constantes.DATE_FORMAT);
+//			//Convertimos a String la nueva Hora de Salida
+//			String strNewHoraSalidaDetalle = Util.DatetoString(dtFechaSalidaDetalle, Constantes.TIME_SHORT_FORMAT);
+//			detalleItinerario.setFechaPartida(dtNewFechaSalidaDetalle);
+//			detalleItinerario.setHoraPartida(strNewHoraSalidaDetalle);
+//			
+//			String strFechaLlegadaDetalle = new String();
+//			Date dtFechaLlegadaDetalle = new Date();
+//			Long nFechaLlegadaDetalle = null;
+//			//Concatenamos la fecha con la hora de salida
+//			strFechaLlegadaDetalle = Util.DatetoString(detalleItinerario.getFechaPartida(), Constantes.DATE_FORMAT) + " " + detalleItinerario.getHoraPartida();
+//			//Convertimos a Date la fecha y hora de salida
+//			dtFechaLlegadaDetalle = Util.StringtoDate(strFechaLlegadaDetalle, Constantes.DATE_TIME_SHORT_FORMAT);		
+//			//Sumamos o restamos la diferencia de horas
+//			nFechaLlegadaDetalle = dtFechaLlegadaDetalle.getTime()+diferencia;
+//			dtFechaLlegadaDetalle = new Date(nFechaLlegadaDetalle);
+//			//Obtenemos la nueva fecha de salida
+//			Date dtNewFechaLlegadaDetalle = Util.StringtoDate(Util.DatetoString(dtFechaLlegadaDetalle, Constantes.DATE_FORMAT), Constantes.DATE_FORMAT);
+//			//Convertimos a String la nueva Hora de Salida
+//			String strNewHoraLlegadaDetalle = Util.DatetoString(dtFechaLlegadaDetalle, Constantes.TIME_SHORT_FORMAT);
+//			detalleItinerario.setFechaLlegada(dtNewFechaLlegadaDetalle);
+//			detalleItinerario.setHoraLlegada(strNewHoraLlegadaDetalle);
+//			
+//		}
+//		
+//		}catch (Exception ex) {
+//			ex.printStackTrace();
+//			DlgMessage.error(ex.getMessage());
+//		}
 	}
 	
 //	/** 
