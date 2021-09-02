@@ -87,8 +87,17 @@ public interface GastoDAO extends GenericDAO {
 	 * @param fechaLiquidacion	: Fecha de la liquidacion
 	 * @param idAgencia			: Identificador de la agencia
 	 * @param idUsuario			: Identificador del usuario dueño de liquidacion
+	 * @param isIngreso			: 0=Gasto; 1=Ingreso
 	 * @return
 	 */
-	public List<Gasto> obtenerGastosByLiquidacion(String fechaLiquidacion, Integer idAgencia, Integer idUsuario);
-	
+	public List<Gasto> obtenerGastosByLiquidacion(String fechaLiquidacion, Integer idAgencia, Integer idUsuario, Integer isIngreso);
+	/**
+	 * Realiza la busqueda de los gastos y/o ingresos
+	 * @param fechaInicio	: Fecha inicio de la busqueda
+	 * @param fechaFin		: Fecha fin de la busqueda
+	 * @param tipoOperacion	: Tipo de Operacion. Gasto(0); Otros Ingreso(1)
+	 * @return Lista de resultados
+	 * @throws Exception
+	 */
+	public List<Gasto> buscarGastosIngresos(String fechaInicio, String fechaFin, Integer tipoOperacion)throws Exception;
 }

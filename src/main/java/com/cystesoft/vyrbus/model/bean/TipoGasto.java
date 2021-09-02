@@ -14,6 +14,7 @@ public class TipoGasto extends GenericBean implements java.io.Serializable {
 	private String denominacion;
 	private String nombreCorto;
 	private String mascara;
+	private Integer tipoOperacion;
 	
 	private Set<GastoBus> gastoBuses = new HashSet<GastoBus>(0);
 	private Set<Gasto> gastos = new HashSet<Gasto>(0);
@@ -91,6 +92,20 @@ public class TipoGasto extends GenericBean implements java.io.Serializable {
 
 	public void setGastos(Set<Gasto> gastos) {
 		this.gastos = gastos;
+	}
+
+	/**
+	 * @return the tipoOperacion
+	 */
+	public Integer getTipoOperacion() {
+		return tipoOperacion;
+	}
+
+	/**
+	 * @param tipoOperacion the tipoOperacion to set
+	 */
+	public void setTipoOperacion(Integer tipoOperacion) {
+		this.tipoOperacion = tipoOperacion;
 	}
 
 }

@@ -7,6 +7,7 @@ import java.util.TreeMap;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zul.Radio;
 import org.zkoss.zul.Textbox;
 
 import com.cystesoft.vyrbus.model.bean.TipoGasto;
@@ -35,6 +36,8 @@ public class WndTipoGasto extends WndOpcionesMantenimiento {
 	private Textbox txtDenominacion;
 	private Textbox txtNombreCorto;
 	private Textbox txtMaskFormato;
+	private Radio rbGasto;
+	private Radio rbIngreso;
 	
 	private TipoGasto tipoGasto=null;
 	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
@@ -49,6 +52,7 @@ public class WndTipoGasto extends WndOpcionesMantenimiento {
 	public void onCreate() throws Exception {
 		criteriosOrdenar = new ArrayList<String>();
 		criteriosOrdenar.add("denominacion");	
+		rbGasto.setChecked(true);
 	}
 
 	/*
@@ -60,6 +64,8 @@ public class WndTipoGasto extends WndOpcionesMantenimiento {
 		txtDenominacion = (Textbox) this.getFellow("txtDenominacion");
 		txtNombreCorto = (Textbox) this.getFellow("txtNombreCorto");
 		txtMaskFormato = (Textbox) this.getFellow("txtMaskFormato");
+		rbGasto = (Radio)this.getFellow("rbGasto");
+		rbIngreso = (Radio)this.getFellow("rbIngreso");
 	}
 	
 	
@@ -70,7 +76,7 @@ public class WndTipoGasto extends WndOpcionesMantenimiento {
 	@Override
 	public void onNew() throws Exception {
 		
-		
+		rbGasto.setChecked(true);
 	}
 
 	/*
@@ -165,6 +171,7 @@ public class WndTipoGasto extends WndOpcionesMantenimiento {
 			tipoGasto.setNombreCorto(txtNombreCorto.getText().trim().toUpperCase());
 			tipoGasto.setMascara(txtMaskFormato.getText().trim().toUpperCase());
 			tipoGasto.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+			tipoGasto.setTipoOperacion(rbGasto.isChecked()?Constantes.FALSE_VALUE:Constantes.TRUE_VALUE);
 			
 			switch (action) {
 				case ACTION_NEW:
@@ -288,6 +295,7 @@ public class WndTipoGasto extends WndOpcionesMantenimiento {
 
 			lstFila.add(oTipoGasto.getId());
 			lstFila.add(r + 1);
+			lstFila.add(oTipoGasto.getTipoOperacion().intValue()==Constantes.FALSE_VALUE?"GASTO":"INGRESO");
 			lstFila.add(oTipoGasto.getDenominacion());
 			lstFila.add(oTipoGasto.getNombreCorto());
 			lstFila.add(oTipoGasto.getMascara());
@@ -303,6 +311,10 @@ public class WndTipoGasto extends WndOpcionesMantenimiento {
 		tipoGasto = ServiceLocator.getTipoGastoManager().buscarPorId(id);
 
 		textboxId.setText(tipoGasto.getId().toString());
+		if(tipoGasto.getTipoOperacion().intValue()==Constantes.FALSE_VALUE)
+			rbGasto.setChecked(true);
+		else
+			rbIngreso.setChecked(true);
 		txtDenominacion.setText(tipoGasto.getDenominacion());
 		txtNombreCorto.setText(tipoGasto.getNombreCorto());
 		txtMaskFormato.setText(tipoGasto.getMascara());

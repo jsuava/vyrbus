@@ -9,21 +9,29 @@
 				<listheader label="USUARIO" width="100px" sort="auto" style="color: #ffffff;"/>
 				<listheader label="TIPO GASTO" width="150px" sort="auto" style="color: #ffffff;"/>
 				<listheader label="MONTO" width="90px" sort="auto" style="color: #ffffff;" />
+				<listheader label="TIPO" width="90px" sort="auto" style="color: #ffffff;" />
 				<listheader label="OBSERVACIONES" sort="auto" style="color: #ffffff;"/>
 			</listhead>
 		</listbox>	
 	</div>
 	<div id="divMantenimiento" >
-	<groupbox mold="3d" closable="false" width="675px" >
+	<groupbox mold="3d" closable="false" width="700px" >
 		<caption label="DATOS DEL GASTO" style="color: #ffffff;"/>
 		<grid>
 			<columns>
-				<column width="120px" align="right" />
+				<column width="130px" align="right" />
 				<column width="250px"/>
-				<column width="100px" align="right"/>
+				<column width="120px" align="right"/>
 <!-- 				<column width="250px"/> -->
 			</columns>
 			<rows>
+				<row spans="1,3">
+					<label value="TIPO OPERACIÓN (*) :" />
+					<radiogroup>
+						<radio id="rbGasto" label="GASTO"/>
+						<radio id="rbIngreso" label="OTROS INGRESOS"/>
+					</radiogroup>
+				</row>
 				<row>
 					<div>
 						<label value="FECHA LIQUIDACION (*) :" />	

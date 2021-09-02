@@ -1751,7 +1751,23 @@ public class UtilData extends Window {
 	}
 	
 	
-	public static void cargarTipoGasto (Combobox combobox, Boolean todos) throws Exception{
+	public static void cargarTipoGasto (Combobox combobox, Boolean todos, Integer isIngreso) throws Exception{
+		ArrayList<TipoGasto> lstTipoGastos= ServiceLocator.getTipoGastoManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
+		
+		cargarGenericData(combobox, todos);
+		
+		for (int l = 0; l < lstTipoGastos.size(); l ++) {
+			TipoGasto  tipoGasto= lstTipoGastos.get(l);
+			if(tipoGasto.getTipoOperacion().intValue()==isIngreso) {
+				Comboitem oComboitem = new Comboitem();
+				oComboitem.setLabel(tipoGasto.getDenominacion());
+				oComboitem.setValue(tipoGasto);
+				combobox.appendChild(oComboitem);	
+			}			
+		}
+	}
+	
+	private static void cargarTipoGasto (Combobox combobox, Boolean todos) throws Exception{
 		ArrayList<TipoGasto> lstTipoGastos= ServiceLocator.getTipoGastoManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
 		
 		cargarGenericData(combobox, todos);

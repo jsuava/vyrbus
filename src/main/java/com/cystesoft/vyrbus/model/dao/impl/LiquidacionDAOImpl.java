@@ -178,26 +178,27 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 		                "WHERE vp.d_fecliq = to_date('"+fechaLiquidacion+"','dd/MM/yyyy') "+  
 		                  "AND vp.agencia_id="+idAgencia+" AND vp.usuario_id="+idUsuario+" "+
 		                  "AND vp.c_numboleto IS NOT NULL "+   
-		                  "AND vp.tipmov_id NOT IN (6,7,5) "+
+		                  "AND vp.tipmov_id NOT IN (5,6,13) "+
+		                  "AND vp.c_tiptra IN ('1','3','4','5','6') "+
 		                "GROUP BY tc.c_denominacion,tc.tipcom_id, DECODE(tc.tipcom_id,1,(substrc(vp.c_numboleto,0,3)),(substrc(vp.c_numboleto,0,4))) "+ 
-					"UNION ALL " +
-							//Solo confirmaciones de fecha habierta que tienen importe mayor a cero
-							"SELECT tc.c_denominacion as TipoComprobante, "+
-					             "MIN(SUBSTR(vp.c_numboleto,0,4)) AS Serie, "+ 
-					             "MIN(SUBSTR(vp.c_numboleto,5, LENGTH(vp.c_numboleto))) AS boletoInicial, "+ 
-					             "MAX(SUBSTR(vp.c_numboleto,5, LENGTH(vp.c_numboleto))) AS BoletoFinal, "+
-					             "COUNT(DISTINCT(nb.c_numboleto)) AS cantRegistros "+
-					        "FROM vrtvenpas vp  "+
-						      	"INNER JOIN vrmtipcom tc ON (tc.tipcom_id=vp.tipcom_id) "+ 
-						      	"INNER JOIN (SELECT c_numboleto FROM vrtvenpas  "+
-					                  "WHERE c_numboleto IS NOT NULL "+
-					                  "GROUP BY c_numboleto)nb ON (nb.c_numboleto=vp.c_numboleto) "+
-					        "WHERE vp.d_fecliq = to_date('"+fechaLiquidacion+"','dd/MM/yyyy')  "+
-							      "AND vp.agencia_id="+idAgencia+" AND vp.usuario_id="+idUsuario+" "+
-							      "AND vp.c_numboleto IS NOT NULL   "+
-							      "AND vp.tipmov_id =7 " +
-							      "AND vp.n_imppag>0 "+
-					        "GROUP BY tc.c_denominacion, (substrc(vp.c_numboleto,0,3)) "+
+//					"UNION ALL " +
+//							//Solo confirmaciones de fecha habierta que tienen importe mayor a cero
+//							"SELECT tc.c_denominacion as TipoComprobante, "+
+//					             "MIN(SUBSTR(vp.c_numboleto,0,4)) AS Serie, "+ 
+//					             "MIN(SUBSTR(vp.c_numboleto,5, LENGTH(vp.c_numboleto))) AS boletoInicial, "+ 
+//					             "MAX(SUBSTR(vp.c_numboleto,5, LENGTH(vp.c_numboleto))) AS BoletoFinal, "+
+//					             "COUNT(DISTINCT(nb.c_numboleto)) AS cantRegistros "+
+//					        "FROM vrtvenpas vp  "+
+//						      	"INNER JOIN vrmtipcom tc ON (tc.tipcom_id=vp.tipcom_id) "+ 
+//						      	"INNER JOIN (SELECT c_numboleto FROM vrtvenpas  "+
+//					                  "WHERE c_numboleto IS NOT NULL "+
+//					                  "GROUP BY c_numboleto)nb ON (nb.c_numboleto=vp.c_numboleto) "+
+//					        "WHERE vp.d_fecliq = to_date('"+fechaLiquidacion+"','dd/MM/yyyy')  "+
+//							      "AND vp.agencia_id="+idAgencia+" AND vp.usuario_id="+idUsuario+" "+
+//							      "AND vp.c_numboleto IS NOT NULL   "+
+//							      "AND vp.tipmov_id =7 " +
+//							      "AND vp.n_imppag>0 "+
+//					        "GROUP BY tc.c_denominacion, (substrc(vp.c_numboleto,0,3)) "+
 					     ")esv ";
 		
 		log.info(sql);
@@ -688,7 +689,8 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
     			+ "INNER JOIN vrmforpag fp ON (v.forpag_id = fp.forpag_id) "
     			+ "INNER JOIN vrmtipmov tm ON (v.tipmov_id = tm.tipmov_id) "
     			+ "WHERE v.d_fecliq=to_date('"+fechaLiquidacion+"','dd/MM/yyyy') AND v.c_tiptra IN ('1','3','4','5','6') AND v.agencia_id="+idAgencia+" AND "
-    			+ "v.usuario_id="+idUsuario+" AND v.tipmov_id not in(5,13,6) AND v.c_Estreg='A' AND v.n_imppag>0 AND NVL(v.n_imppagdif,0)=0 "
+//    			+ "v.usuario_id="+idUsuario+" AND v.tipmov_id not in(5,6,13) AND v.c_Estreg='A' AND v.n_imppag>0 AND NVL(v.n_imppagdif,0)=0 "
+    			+ "v.usuario_id="+idUsuario+" AND v.tipmov_id not in(5,6) AND v.c_Estreg='A' AND NVL(v.n_imppagdif,0)=0 "
     			+ "GROUP BY tc.tipcom_id, tc.c_denominacion, substr(v.c_numboleto,1,4), fp.forpag_id, tm.tipmov_id "
     			+ "UNION ALL "
     			+ "SELECT  tc.tipcom_id, tc.c_denominacion, substr(v.c_numboleto,1,4) serie, fp.forpag_id, tm.tipmov_id, COUNT(v.n_imppag) AS CANTIDAD, "
@@ -698,7 +700,8 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
     			+ "INNER JOIN vrmforpag fp ON (v.forpag_id = fp.forpag_id) "
     			+ "INNER JOIN vrmtipmov tm ON (v.tipmov_id = tm.tipmov_id) "
     			+ "WHERE v.d_fecliq=to_date('"+fechaLiquidacion+"','dd/MM/yyyy') AND v.c_tiptra IN ('1','3','4','5','6') AND v.agencia_id="+idAgencia+" AND "
-    			+ "v.usuario_id="+idUsuario+" AND v.tipmov_id not in(5,13,6) AND v.c_Estreg='A' AND v.n_imppag>0 AND NVL(v.n_imppagdif,0)>0 "
+//    			+ "v.usuario_id="+idUsuario+" AND v.tipmov_id not in(5,6,13) AND v.c_Estreg='A' AND v.n_imppag>0 AND NVL(v.n_imppagdif,0)>0 "
+    			+ "v.usuario_id="+idUsuario+" AND v.tipmov_id not in(5,6) AND v.c_Estreg='A' AND NVL(v.n_imppagdif,0)>0 "
     			+ "GROUP BY tc.tipcom_id, tc.c_denominacion, substr(v.c_numboleto,1,4), fp.forpag_id, tm.tipmov_id ";
     	
     	log.info(sql);
