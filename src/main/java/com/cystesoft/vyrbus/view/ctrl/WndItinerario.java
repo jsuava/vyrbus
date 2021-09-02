@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.TreeMap;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Execution;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -31,6 +32,7 @@ import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Groupbox;
 import org.zkoss.zul.Hbox;
+import org.zkoss.zul.Hlayout;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
@@ -65,7 +67,10 @@ import com.cystesoft.vyrbus.model.bean.TipoItinerario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.service.exceptions.CancelaGrabacionException;
 import com.cystesoft.vyrbus.service.exceptions.CapacidadServicioMayorExeption;
+import com.cystesoft.vyrbus.service.exceptions.FechaInicioNullException;
 import com.cystesoft.vyrbus.service.exceptions.FechaItinerarioNullException;
+import com.cystesoft.vyrbus.service.exceptions.FechaLlegadaNullException;
+import com.cystesoft.vyrbus.service.exceptions.FechaPasadaException;
 import com.cystesoft.vyrbus.service.exceptions.HoraLlegadaNullException;
 import com.cystesoft.vyrbus.service.exceptions.HoraPartidaNullException;
 import com.cystesoft.vyrbus.service.exceptions.ItinerarioException;
@@ -2420,7 +2425,8 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 				Button btnDuplicar = new Button();
 				btnDuplicar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 					public void onEvent(Event e) {
-						
+						DetalleItinerario detalle = ((Listitem)e.getTarget().getParent().getParent().getParent()).getValue();
+						crearVentanaClonacion(detalle);
 					}
 				});
 				btnDuplicar.setImage("/resources/mp_clone.png");
@@ -3331,87 +3337,423 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			ex.printStackTrace();
 			DlgMessage.error(ex.getMessage());
 		}
+	}
+	
+	public void crearVentanaClonacion(final DetalleItinerario detalleItinerario) {
+		final Window wndClonarItinerario = new Window("Duplicar Itinerario", "normal", true);
+		wndClonarItinerario.setWidth("840px");
+		Groupbox groupbox = new Groupbox();
+		groupbox.setClosable(false);
+		groupbox.setMold("3d");
+		Caption caption = new Caption();
+		caption.setLabel("DATOS DEL ITINERARIO");
+		caption.setStyle("color: #ffffff;");
+		groupbox.appendChild(caption);
 		
-//		try {
-//		oitinerario = ServiceLocator.getItinerarioManager().buscarPorId(idItinerario);
-//		//Modificando los datos de la cabecera del Itinerario
-//		//Concatenamos la fecha con la hora de salida
-//		String strFechaSalida = Util.DatetoString(oitinerario.getFechaPartida(), Constantes.DATE_FORMAT) + " " + oitinerario.getHoraPartida();
-//		//Convertimos a Date la fecha y hora de salida
-//		Date dtFechaSalida = Util.StringtoDate(strFechaSalida, Constantes.DATE_TIME_SHORT_FORMAT);		
-//		//Sumamos o restamos la diferencia de horas
-//		Long nFechaSalida = dtFechaSalida.getTime()+diferencia;
-//		dtFechaSalida = new Date(nFechaSalida);
-//		//Obtenemos la nueva fecha de salida
-//		Date dtNewFechaSalida = Util.StringtoDate(Util.DatetoString(dtFechaSalida, Constantes.DATE_FORMAT), Constantes.DATE_FORMAT);
-//		//Convertimos a String la nueva Hora de Salida
-//		String strNewHoraSalida = Util.DatetoString(dtFechaSalida, Constantes.TIME_SHORT_FORMAT);
-//		oitinerario.setFechaPartida(dtNewFechaSalida);
-//		oitinerario.setHoraPartida(strNewHoraSalida);
-//		
-//		System.out.println("Fecha y Hora de Salida " + dtNewFechaSalida + " " + strNewHoraSalida);
-//		
-//		//Concatenamos la fecha con la hora de llegada
-//		String strFechaLlegada = Util.DatetoString(oitinerario.getFechaLlegada(), Constantes.DATE_FORMAT) + " " + oitinerario.getHoraLlegada();
-//		//Convertimos a Date la fecha y hora de llegada
-//		Date dtFechaLlegada = Util.StringtoDate(strFechaLlegada, Constantes.DATE_TIME_SHORT_FORMAT);
-//		//Sumamos o restamos la diferencia de horas
-//		Long nFechaLlegada = dtFechaLlegada.getTime()+diferencia;
-//		dtFechaLlegada = new Date(nFechaLlegada);
-//		//Obtenemos la nueva fecha de llegada
-//		Date dtNewFechaLlegada = Util.StringtoDate(Util.DatetoString(dtFechaLlegada, Constantes.DATE_FORMAT), Constantes.DATE_FORMAT);
-//		//Convertimos a String la nueva Hora de Llegada
-//		String strNewHoraLlegada = Util.DatetoString(dtFechaLlegada, Constantes.TIME_SHORT_FORMAT);
-//		oitinerario.setFechaLlegada(dtNewFechaLlegada);
-//		oitinerario.setHoraLlegada(strNewHoraLlegada);
-//		
-//		System.out.println("Fecha y Hora de Llegada " + dtNewFechaLlegada + " " + strNewHoraLlegada);
-//		
-//		/*Recupera detalle del Itinerario***/
-//		List<DetalleItinerario> lstDetalleItinerario = ServiceLocator.getItinerarioManager().buscarItinerariosMantenimiento(idItinerario, "", "", "", "", "","","");
-//		List<DetalleItinerario>
-//		for(int i = 0; i<lstDetalleItinerario.size(); i++) {
-//			DetalleItinerario detalleItinerario = lstDetalleItinerario.get(i);
-//			String strFechaSalidaDetalle = new String();
-//			Date dtFechaSalidaDetalle = new Date();
-//			Long nFechaSalidaDetalle = null;
-//			//Concatenamos la fecha con la hora de salida
-//			strFechaSalidaDetalle = Util.DatetoString(detalleItinerario.getFechaPartida(), Constantes.DATE_FORMAT) + " " + detalleItinerario.getHoraPartida();
-//			//Convertimos a Date la fecha y hora de salida
-//			dtFechaSalidaDetalle = Util.StringtoDate(strFechaSalidaDetalle, Constantes.DATE_TIME_SHORT_FORMAT);		
-//			//Sumamos o restamos la diferencia de horas
-//			nFechaSalidaDetalle = dtFechaSalidaDetalle.getTime()+diferencia;
-//			dtFechaSalidaDetalle = new Date(nFechaSalidaDetalle);
-//			//Obtenemos la nueva fecha de salida
-//			Date dtNewFechaSalidaDetalle = Util.StringtoDate(Util.DatetoString(dtFechaSalidaDetalle, Constantes.DATE_FORMAT), Constantes.DATE_FORMAT);
-//			//Convertimos a String la nueva Hora de Salida
-//			String strNewHoraSalidaDetalle = Util.DatetoString(dtFechaSalidaDetalle, Constantes.TIME_SHORT_FORMAT);
-//			detalleItinerario.setFechaPartida(dtNewFechaSalidaDetalle);
-//			detalleItinerario.setHoraPartida(strNewHoraSalidaDetalle);
-//			
-//			String strFechaLlegadaDetalle = new String();
-//			Date dtFechaLlegadaDetalle = new Date();
-//			Long nFechaLlegadaDetalle = null;
-//			//Concatenamos la fecha con la hora de salida
-//			strFechaLlegadaDetalle = Util.DatetoString(detalleItinerario.getFechaPartida(), Constantes.DATE_FORMAT) + " " + detalleItinerario.getHoraPartida();
-//			//Convertimos a Date la fecha y hora de salida
-//			dtFechaLlegadaDetalle = Util.StringtoDate(strFechaLlegadaDetalle, Constantes.DATE_TIME_SHORT_FORMAT);		
-//			//Sumamos o restamos la diferencia de horas
-//			nFechaLlegadaDetalle = dtFechaLlegadaDetalle.getTime()+diferencia;
-//			dtFechaLlegadaDetalle = new Date(nFechaLlegadaDetalle);
-//			//Obtenemos la nueva fecha de salida
-//			Date dtNewFechaLlegadaDetalle = Util.StringtoDate(Util.DatetoString(dtFechaLlegadaDetalle, Constantes.DATE_FORMAT), Constantes.DATE_FORMAT);
-//			//Convertimos a String la nueva Hora de Salida
-//			String strNewHoraLlegadaDetalle = Util.DatetoString(dtFechaLlegadaDetalle, Constantes.TIME_SHORT_FORMAT);
-//			detalleItinerario.setFechaLlegada(dtNewFechaLlegadaDetalle);
-//			detalleItinerario.setHoraLlegada(strNewHoraLlegadaDetalle);
-//			
-//		}
-//		
-//		}catch (Exception ex) {
-//			ex.printStackTrace();
-//			DlgMessage.error(ex.getMessage());
-//		}
+		Grid grid = new Grid();
+		grid.setStyle("border:none");
+		Columns columns = new Columns();
+		Column column = new Column();
+		column.setWidth("110px");
+		column.setAlign("right");
+		columns.appendChild(column);
+		
+		column = new Column();
+		column.setWidth("170px");
+		columns.appendChild(column);
+		
+		column = new Column();
+		column.setWidth("100px");
+		column.setAlign("right");
+		columns.appendChild(column);
+		
+		column = new Column();
+		//column.setWidth("170px");
+		columns.appendChild(column);
+		
+		grid.appendChild(columns);
+		
+		Rows rows = new Rows();
+		Row row = new Row();
+		Div div = new Div();
+		String style = "font-weight: bold; font-size:12px !important; color: #4285F4";
+		Label label = new Label("TIPO ITINERARIO :");
+		div.appendChild(label);
+		Textbox txtIdItinerario = new Textbox();
+		txtIdItinerario.setVisible(false);
+		div.appendChild(txtIdItinerario);
+		row.appendChild(div);
+		Label lblTipoItinerario = new Label();
+		lblTipoItinerario.setValue(detalleItinerario.getItinerario().getTipoItinerario().getDenominacion());
+		lblTipoItinerario.setStyle(style);
+		row.appendChild(lblTipoItinerario);
+		label = new Label("TIPO SERVICIO :");
+		row.appendChild(label);
+		Label lblTipoServicio = new Label();
+		lblTipoServicio.setValue(detalleItinerario.getItinerario().getServicio().getDenominacion());
+		lblTipoServicio.setStyle(style);
+		row.appendChild(lblTipoServicio);
+		rows.appendChild(row);
+		
+		row = new Row();
+		label = new Label("ORIGEN :");
+		row.appendChild(label);
+		Label lblOrigen = new Label(detalleItinerario.getRuta().getOrigen());
+		lblOrigen.setStyle(style);
+		row.appendChild(lblOrigen);
+		label = new Label("RUTA :");
+		row.appendChild(label);
+		Label lblRuta = new Label(detalleItinerario.getRuta().toString());
+		lblRuta.setStyle(style);
+		row.appendChild(lblRuta);
+		rows.appendChild(row);		
+		
+		row = new Row();
+		label = new Label("F.SALIDA :");
+		row.appendChild(label);
+		Label lblFechaSalida = new Label(Util.DatetoString(detalleItinerario.getFechaPartida(), Constantes.DATE_FORMAT));
+		lblFechaSalida.setStyle(style);
+		row.appendChild(lblFechaSalida);
+		label = new Label("H.SALIDA :");
+		row.appendChild(label);
+		Label lblHoraSalida = new Label(detalleItinerario.getHoraPartida());
+		lblHoraSalida.setStyle(style);
+		row.appendChild(lblHoraSalida);
+		rows.appendChild(row);
+		
+		grid.appendChild(rows);
+		groupbox.appendChild(grid);
+		wndClonarItinerario.appendChild(groupbox);
+		
+		wndClonarItinerario.appendChild(groupbox);
+		
+		groupbox = new Groupbox();
+		groupbox.setClosable(false);
+		groupbox.setMold("3d");
+		caption = new Caption();
+		caption.setLabel("DETALLE DEL ITINERARIO");
+		caption.setStyle("color: #ffffff;");
+		groupbox.appendChild(caption);
+		
+		Listbox listbox = new Listbox();
+		listbox.setRows(5);
+		Listhead listhead = new Listhead();
+		
+		Listheader listheader = new Listheader("#");
+		listheader.setWidth("20px");
+		listheader.setStyle("color: #ffffff;");
+		listhead.appendChild(listheader);
+		
+		listheader = new Listheader("Ruta");
+		listheader.setWidth("145px");
+		listheader.setStyle("color: #ffffff;");
+		listhead.appendChild(listheader);
+		
+		listheader = new Listheader("Tipo Servicio");
+		listheader.setWidth("120px");
+		listheader.setStyle("color: #ffffff;");
+		listhead.appendChild(listheader);
+		
+		listheader = new Listheader("Fecha Salida");
+		listheader.setWidth("93px");
+		listheader.setStyle("color: #ffffff;");
+		listhead.appendChild(listheader);
+		
+		listheader = new Listheader("Hr.Salida");
+		listheader.setWidth("55px");
+		listheader.setStyle("color: #ffffff;");
+		listhead.appendChild(listheader);
+		
+		listheader = new Listheader("Fecha Llegada");
+		listheader.setWidth("93px");
+		listheader.setStyle("color: #ffffff;");
+		listhead.appendChild(listheader);
+		
+		listheader = new Listheader("Hr.Llegada");
+		listheader.setWidth("60px");
+		listheader.setStyle("color: #ffffff;");
+		listhead.appendChild(listheader);
+		
+		listheader = new Listheader("Terminal Origen");
+		listheader.setWidth("110px");
+		listheader.setStyle("color: #ffffff;");
+		listhead.appendChild(listheader);
+		
+		listheader = new Listheader("Terminal Destino");
+		listheader.setWidth("110px");
+		listheader.setStyle("color: #ffffff;");
+		listhead.appendChild(listheader);
+		
+		listbox.appendChild(listhead);
+		
+		try {
+			/*Recupera detalle del Itinerario***/
+			List<DetalleItinerario> lstItinerariosDetalle= ServiceLocator.getItinerarioManager().buscarItinerariosMantenimiento(detalleItinerario.getItinerario().getId(), "", "", "", "", "","","");
+			
+			if(lstItinerariosDetalle.size()>0){
+				Integer x =0; /*Contador utilizado para el item.*/
+				Integer primerIndex =0;
+				String destino = null; /*Almacena el ultimo destino cargado en el listBoxdetalleItinerario, para la validacion con el origen.*/
+				String idDestino = null;
+				
+				DetalleItinerario oDetalleItinerario =lstItinerariosDetalle.get(0);
+				destino =oDetalleItinerario.getRuta().getDestino();
+				idDestino = oDetalleItinerario.getRuta().getLocalidadDestino().getId().toString();
+			
+				for(DetalleItinerario detalle : lstItinerariosDetalle){
+					primerIndex += +1;
+					String origen = detalle.getRuta().getOrigen();
+					String idOrigen = detalle.getRuta().getLocalidadOrigen().getId().toString();
+					if (destino.equals(origen) || primerIndex==1){
+						x += +1;
+						
+						destino=detalle.getRuta().getDestino();
+						idDestino = detalle.getRuta().getLocalidadDestino().getId().toString();
+						obtenerAgenciaPartidaLlegada(detalle, idOrigen, true);
+						obtenerAgenciaPartidaLlegada(detalle, idDestino, false);
+						agregarItinerario(detalle, listbox);
+					}
+				}
+			}
+			
+			groupbox.appendChild(listbox);
+			wndClonarItinerario.appendChild(groupbox);
+			
+			groupbox = new Groupbox();
+			groupbox.setClosable(false);
+			groupbox.setMold("3d");
+			caption = new Caption();
+			caption.setLabel(":: NUEVO ITINERARIO");
+			caption.setStyle("color: #ffffff; ");
+			groupbox.appendChild(caption);
+			
+			grid = new Grid();
+			columns = new Columns();
+			column = new Column();
+			column.setWidth("150px");
+			column.setAlign("right");
+			columns.appendChild(column);
+			
+			column = new Column();
+			column.setWidth("160px");
+			columns.appendChild(column);
+			
+			column = new Column();
+			column.setWidth("130px");
+			column.setAlign("right");
+			columns.appendChild(column);
+			
+			column = new Column();
+			column.setWidth("140px");
+			columns.appendChild(column);			
+			
+			grid.appendChild(columns);
+			
+			rows = new Rows();
+			row = new Row();
+			label = new Label("TIPO ITINERARIO :");
+			row.appendChild(label);
+			final Combobox cmbTipoItinerario = new Combobox();
+			UtilData.cargarDataCombo(cmbTipoItinerario, TipoItinerario.class, false);
+			cmbTipoItinerario.setWidth("120px");
+			row.appendChild(cmbTipoItinerario);
+			label = new Label("TIPO SERVICIO :");
+			row.appendChild(label);
+			final Combobox cmbServicio = new Combobox();
+			cmbServicio.setWidth("120px");
+			UtilData.cargarDataCombo(cmbServicio, Servicio.class, false);
+			row.appendChild(cmbServicio);
+			label = new Label();
+			row.appendChild(label);
+			rows.appendChild(row);
+			
+			row = new Row();
+			label = new Label("HORA SALIDA :");
+			row.appendChild(label);
+			final Timebox tmbxNuevaHoraSalida = new Timebox();
+			tmbxNuevaHoraSalida.setFormat(Constantes.TIME_SHORT_FORMAT);
+			tmbxNuevaHoraSalida.setWidth("60px");
+			row.appendChild(tmbxNuevaHoraSalida);
+			row.appendChild(new Label());
+			row.appendChild(new Label());
+			row.appendChild(new Label());
+			rows.appendChild(row);
+			
+			grid.appendChild(rows);
+			groupbox.appendChild(grid);
+			
+			Div div2 = new Div();
+			div2.setAlign("center");
+			Separator separator = new Separator();
+			div2.appendChild(separator);
+			Hlayout hLayout = new Hlayout();
+			Button btnGrabar = new  Button("Guardar", "/resources/mp_guardarEnabled.png");
+			btnGrabar.setHeight("35px");
+			btnGrabar.setWidth("75px");
+			btnGrabar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+				public void onEvent(Event e) {
+					try {
+						if(!(cmbTipoItinerario.getSelectedItem().getValue() instanceof TipoItinerario))
+							throw new TipoItinerarioNullException();
+						else if (!(cmbServicio.getSelectedItem().getValue() instanceof Servicio))
+							throw new ServicioNullException();
+						else if(tmbxNuevaHoraSalida.getText().equals(""))
+							throw new HoraPartidaNullException();
+							
+						
+						Messagebox.show("¿Esta seguro de continuar con la duplicacion del Itinerario?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+							public void onEvent(Event e) {
+								try {
+									if(e.getName().equals("onYes")) {
+//										String fechaInicio = Util.DatetoString(dtFechaInicio.getValue(), Constantes.DATE_FORMAT);
+//										String fechaFin = Util.DatetoString(dtFechaFin.getValue(), Constantes.DATE_FORMAT);
+										Servicio servicio = cmbServicio.getSelectedItem().getValue();
+										TipoItinerario tipoItinerario = cmbTipoItinerario.getSelectedItem().getValue();
+										String strFechaPartida = lblFechaSalida.getValue() + " " + lblHoraSalida.getValue();
+										String strNuevaFechaPartida = lblFechaSalida.getValue() + " " + tmbxNuevaHoraSalida.getText();
+										Long horaPartida = Util.StringtoDate(strFechaPartida, Constantes.DATE_TIME_SHORT_FORMAT).getTime();
+										Long nuevoHorario = Util.StringtoDate(strNuevaFechaPartida, Constantes.DATE_TIME_SHORT_FORMAT).getTime();
+										Long diferencia = nuevoHorario - horaPartida;
+										
+										clonarItinerario(detalleItinerario.getItinerario().getId(), servicio, tipoItinerario, diferencia);
+										wndClonarItinerario.onClose();
+//										Util.limpiarListbox(listboxLista);
+//										String criterio="di.d_fecpar, to_date(di.c_horpar,'HH24:MI'), di.d_feclle, to_date(di.c_horlle,'HH24:MI')";
+//										listarItinerarios(ServiceLocator.getItinerarioManager().buscarItinerariosMantenimiento(null, lblOrigen.getValue(), 
+//												"", lblFechaSalida.getValue(), lblFechaSalida.getValue(), "", "", criterio));
+									}
+								}catch(Exception ex) {
+									ex.printStackTrace();
+									DlgMessage.error(ex.getMessage());
+								}
+							}
+						});
+					}catch(TipoItinerarioNullException tinex) {
+						DlgMessage.information("Debe de seleccionar el Tipo de Itinerario", tmbxNuevaHoraSalida);
+					}catch(ServicioNullException snex) {
+						DlgMessage.information("Debe de Seleccionar el Tipo de Servicio del Itinerario", cmbServicio);
+					}catch(HoraPartidaNullException hpnex) {
+						DlgMessage.information("Debe de ingresar la Hora de Salida del Itinerario", tmbxNuevaHoraSalida);
+					}catch (Exception ex) {
+						ex.printStackTrace();
+						DlgMessage.error(ex.getMessage());
+					}
+				}
+			});
+			hLayout.appendChild(btnGrabar);
+			
+			Button btnCancelar = new  Button("Cancelar","/resources/mp_cancelarEnabled.png");
+			btnCancelar.setHeight("35px");
+			btnCancelar.setWidth("75px");
+			btnCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+				public void onEvent(Event e) {
+					wndClonarItinerario.onClose();
+				}
+			});
+			hLayout.appendChild(btnCancelar);
+			div2.appendChild(hLayout);
+			
+			groupbox.appendChild(div2);
+			
+			
+			wndClonarItinerario.appendChild(groupbox);
+			
+			this.appendChild(wndClonarItinerario);
+			wndClonarItinerario.setMode("modal");
+			
+			
+		}catch(Exception ex) {
+			DlgMessage.information("Se encontro problemas al momento de recuperar el detalle del Itinerario");
+		}		
+	}
+	
+	/**
+	 * 
+	 * @param idItinerario		: Identificador del itinerario
+	 * @param fechaInicio		: Fecha de inicio de la programacion (Fecha Partida del Itinerario)
+	 * @param fechaFin			: Fecha fin de la programacion.
+	 * @param servicio			: Servicio del Itinerario a programar
+	 * @param tipoItinerario	: Tipo de Itinerario a programar
+	 * @param diferencia		: Diferencia de horario
+	 */
+	public void clonarItinerario(Long idItinerario, Servicio servicio, TipoItinerario tipoItinerario, Long diferencia) {
+		try {
+			
+			Itinerario oItinerario = ServiceLocator.getItinerarioManager().buscarPorId(idItinerario);
+			List<DetalleItinerario> lstItinerariosDetalle= ServiceLocator.getItinerarioManager().buscarItinerariosMantenimiento(idItinerario, "", "", "", "", "","","");
+			
+			Itinerario newItinerario = (Itinerario)oItinerario.clone();
+			newItinerario.setId(null);
+			newItinerario.setServicio(servicio);
+			newItinerario.setTipoItinerario(tipoItinerario);
+			String fechaHoraPartida = Util.DatetoString(oItinerario.getFechaPartida(), Constantes.DATE_FORMAT)+" "+oItinerario.getHoraPartida();
+			Date newFechaHoraPartida = new Date(Util.StringtoDate(fechaHoraPartida, Constantes.DATE_TIME_SHORT_FORMAT).getTime() + diferencia);
+			newItinerario.setFechaPartida(Util.StringtoDate(Util.DatetoString(newFechaHoraPartida, Constantes.DATE_FORMAT), Constantes.DATE_FORMAT));
+			newItinerario.setHoraPartida(Util.DatetoString(newFechaHoraPartida,Constantes.TIME_SHORT_FORMAT));
+			String fechaHoraLlegada = Util.DatetoString(oItinerario.getFechaLlegada(), Constantes.DATE_FORMAT) + " " + oItinerario.getHoraLlegada();
+			Date newFechaHoraLlegada = new Date(Util.StringtoDate(fechaHoraLlegada, Constantes.DATE_TIME_SHORT_FORMAT).getTime() + diferencia);
+			newItinerario.setFechaLlegada(Util.StringtoDate(Util.DatetoString(newFechaHoraLlegada, Constantes.DATE_FORMAT), Constantes.DATE_FORMAT));
+			newItinerario.setHoraLlegada(Util.DatetoString(newFechaHoraLlegada, Constantes.TIME_SHORT_FORMAT));
+			UtilData.auditarRegistro(newItinerario, false, getUsuario(), Executions.getCurrent());
+			
+			ServiceLocator.getItinerarioManager().guardar(newItinerario);
+			
+			for(int i=0; i<lstItinerariosDetalle.size(); i++) {
+				DetalleItinerario detalleItinerario = lstItinerariosDetalle.get(i);
+				DetalleItinerario newDetalleItinerario = (DetalleItinerario)detalleItinerario.clone();
+				newDetalleItinerario.setId(null);
+				newDetalleItinerario.setItinerario(newItinerario);
+				fechaHoraPartida = Util.DatetoString(detalleItinerario.getFechaPartida(), Constantes.DATE_FORMAT)+" "+detalleItinerario.getHoraPartida();
+				newFechaHoraPartida = new Date(Util.StringtoDate(fechaHoraPartida, Constantes.DATE_TIME_SHORT_FORMAT).getTime() + diferencia);
+				newDetalleItinerario.setFechaPartida(Util.StringtoDate(Util.DatetoString(newFechaHoraPartida, Constantes.DATE_FORMAT), Constantes.DATE_FORMAT));
+				newDetalleItinerario.setHoraPartida(Util.DatetoString(newFechaHoraPartida,Constantes.TIME_SHORT_FORMAT));
+				fechaHoraLlegada = Util.DatetoString(detalleItinerario.getFechaLlegada(), Constantes.DATE_FORMAT) + " " + detalleItinerario.getHoraLlegada();
+				newFechaHoraLlegada = new Date(Util.StringtoDate(fechaHoraLlegada, Constantes.DATE_TIME_SHORT_FORMAT).getTime() + diferencia);
+				newDetalleItinerario.setFechaLlegada(Util.StringtoDate(Util.DatetoString(newFechaHoraLlegada, Constantes.DATE_FORMAT), Constantes.DATE_FORMAT));
+				newDetalleItinerario.setHoraLlegada(Util.DatetoString(newFechaHoraLlegada, Constantes.TIME_SHORT_FORMAT));
+				UtilData.auditarRegistro(newDetalleItinerario, false, getUsuario(), Executions.getCurrent());
+				
+				ServiceLocator.getDetalleItinerarioManager().guardar(newDetalleItinerario);
+			}
+			
+			List<ItinerarioAgenciaPartida> lstItinerarioAgenciaPartida = ServiceLocator.getItinerarioAgenciaPartidaManager().buscarAgenciasPartida(idItinerario, Constantes.VALUE_ACTIVO, null);
+			for(int i=0; i<lstItinerarioAgenciaPartida.size(); i++) {
+				ItinerarioAgenciaPartida itinerarioAgenciaPartida = lstItinerarioAgenciaPartida.get(i);
+				ItinerarioAgenciaPartida newItinerarioAgenciaPartida = (ItinerarioAgenciaPartida)itinerarioAgenciaPartida.clone();
+				newItinerarioAgenciaPartida.setItinerario(newItinerario);
+				ItinerarioAgenciaPartidaID itinerarioAgenciaPartidaID = new ItinerarioAgenciaPartidaID(newItinerario.getId(), itinerarioAgenciaPartida.getAgencia().getId());
+				newItinerarioAgenciaPartida.setItinerarioAgenciaPartidaID(itinerarioAgenciaPartidaID);
+				fechaHoraPartida = Util.DatetoString(oItinerario.getFechaPartida(), Constantes.DATE_FORMAT)+" "+itinerarioAgenciaPartida.getHoraPartida();
+				newFechaHoraPartida = new Date(Util.StringtoDate(fechaHoraPartida, Constantes.DATE_TIME_SHORT_FORMAT).getTime() + diferencia);
+				newItinerarioAgenciaPartida.setHoraPartida(Util.DatetoString(newFechaHoraPartida,Constantes.TIME_SHORT_FORMAT));
+				UtilData.auditarRegistro(newItinerarioAgenciaPartida, false, getUsuario(), Executions.getCurrent());
+				
+				ServiceLocator.getItinerarioAgenciaPartidaManager().guardar(newItinerarioAgenciaPartida);
+			}
+			
+			List<ItinerarioAgenciaLlegada> lstItinerarioAgenciaLlegada = ServiceLocator.getItinerarioAgenciaLlegadaManager().buscarAgenciasLlegada(idItinerario, Constantes.VALUE_ACTIVO, null);
+			for(int i=0; i<lstItinerarioAgenciaLlegada.size(); i++) {
+				ItinerarioAgenciaLlegada itinerarioAgenciaLlegada = lstItinerarioAgenciaLlegada.get(i);
+				ItinerarioAgenciaLlegada newItinerarioAgenciaLlegada = (ItinerarioAgenciaLlegada)itinerarioAgenciaLlegada.clone();
+				newItinerarioAgenciaLlegada.setItinerario(newItinerario);
+				ItinerarioAgenciaLlegadaID itinerarioAgenciaLlegadaID = new ItinerarioAgenciaLlegadaID(newItinerario.getId(), itinerarioAgenciaLlegada.getAgencia().getId());
+				newItinerarioAgenciaLlegada.setItinerarioAgenciaLlegadaID(itinerarioAgenciaLlegadaID);
+				fechaHoraLlegada = Util.DatetoString(oItinerario.getFechaLlegada(), Constantes.DATE_FORMAT)+" "+itinerarioAgenciaLlegada.getHoraLlegada();
+				newFechaHoraLlegada = new Date(Util.StringtoDate(fechaHoraLlegada, Constantes.DATE_TIME_SHORT_FORMAT).getTime() + diferencia);
+				newItinerarioAgenciaLlegada.setHoraLlegada(Util.DatetoString(newFechaHoraLlegada,Constantes.TIME_SHORT_FORMAT));
+				UtilData.auditarRegistro(newItinerarioAgenciaLlegada, false, getUsuario(), Executions.getCurrent());
+				
+				ServiceLocator.getItinerarioAgenciaLlegadaManager().guardar(newItinerarioAgenciaLlegada);
+			}
+			
+			int result = 1; 
+			if(result == Constantes.CORRECT)
+				DlgMessage.information("La duplicacion del Itinerario se completo satisfactoriamente");
+			
+		}catch (Exception ex) {
+			ex.printStackTrace();
+			DlgMessage.error(ex.getMessage());
+		}
 	}
 	
 //	/** 
