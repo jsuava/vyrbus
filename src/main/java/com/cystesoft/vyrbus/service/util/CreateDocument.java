@@ -951,13 +951,14 @@ public class CreateDocument implements Serializable {
 			linea = tabular(3) + "REP. VENTA: "+ liquidacion.getUsuario().getNombre()+" "+liquidacion.getUsuario().getApellidoPaterno();
 			if (reimpresion==true)
 				linea += tabular(45-longitud_C)+"FECHA REIMPRESION: "+(Constantes.FORMAT_LONG.format(new Date()));
-			bw.write(linea+ NEWLINE);
+			bw.write(linea+ NEWLINE);			
 			
 			//---> line 4: Salto de linea
 			bw.write(NEWLINE);
 			
 			//---> line 5: Titulo: 
-			linea=tabular(3)+"COMPROBANTE"+tabular(14)+"SERIE"+tabular(12)+"CANTIDAD"+tabular(13)+"IMPORTE"; 
+//			linea=tabular(3)+"COMPROBANTE"+tabular(14)+"SERIE"+tabular(12)+"CANTIDAD"+tabular(13)+"IMPORTE"; 
+			linea=tabular(3)+"COMPROBANTE"+tabular(8)+"SERIE"+tabular(4)+"DESDE"+tabular(7)+"HASTA"+tabular(6)+"CANTIDAD"+tabular(4)+"IMPORTE";
 			bw.write(linea+NEWLINE);
 			
 			//---> line 6: linea
@@ -966,27 +967,61 @@ public class CreateDocument implements Serializable {
 			
 			//---> line 7: Valores: Especies Valorada, serie, del, al, cont, corte
 //			List<Liquidacion>list = ServiceLocator.getLiquidacionManager().BuscarEspeciesValoradas(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId());
+//			Map<String, ResumenComprobante> mapResumen = ServiceLocator.getLiquidacionManager().buscarResumenComprobantes(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId());
+//			for(String key : mapResumen.keySet()) {
+//				ResumenComprobante resumen = mapResumen.get(key);
+//				longitud_C=resumen.getComprobante().toString().length();
+//				String strSerie = null;
+//				strSerie = resumen.getIdTipoComprobante()!=Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA?resumen.getSerie():" "+resumen.getSerie().substring(0, 3);
+//				linea = tabular(3)+resumen.getComprobante()+tabular(26-longitud_C)+strSerie;
+//				longitud_C=resumen.getCantidad().toString().length();
+//				linea += tabular(16)+tabular(1-longitud_C+1)+resumen.getCantidad();
+//				longitud_M=(int) resumen.getMonto().intValue();
+//				longitud_M = longitud_M.toString().length(); 
+//				if (longitud_M==4)
+//					longitud_M += +1;
+//				else if (longitud_M==5)
+//					longitud_M += +2;
+//				linea += tabular(19-longitud_M)+Util.toNumberFormat(resumen.getMonto(),2);
+//				bw.write(linea+NEWLINE);
+//			}						
+			
+			
+			List<Liquidacion>list = ServiceLocator.getLiquidacionManager().BuscarEspeciesValoradas(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId());
 			Map<String, ResumenComprobante> mapResumen = ServiceLocator.getLiquidacionManager().buscarResumenComprobantes(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId());
 			for(String key : mapResumen.keySet()) {
 				ResumenComprobante resumen = mapResumen.get(key);
 				longitud_C=resumen.getComprobante().toString().length();
 				String strSerie = null;
+				String desde = "";
+				String hasta = "";
 				strSerie = resumen.getIdTipoComprobante()!=Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA?resumen.getSerie():" "+resumen.getSerie().substring(0, 3);
-				linea = tabular(3)+resumen.getComprobante()+tabular(26-longitud_C)+strSerie;
+				linea = tabular(3)+resumen.getComprobante()+tabular(19-longitud_C)+strSerie;
+				
+				for(Liquidacion especieValorada: list) {
+					if(especieValorada.getSerie().equals(strSerie)) {
+						desde = especieValorada.getBoletoInicial();
+						hasta = especieValorada.getboletoFinal();
+						break;
+					}
+				}				
+				longitud_C = desde.length();
+				linea += tabular(5)+tabular(1-longitud_C+1)+desde;
+				longitud_C = hasta.length();
+				linea += tabular(5)+tabular(1-longitud_C+1)+hasta;
+				
+				
 				longitud_C=resumen.getCantidad().toString().length();
-				linea += tabular(16)+tabular(1-longitud_C+1)+resumen.getCantidad();
+				linea += tabular(5)+tabular(1-longitud_C+1)+resumen.getCantidad();
 				longitud_M=(int) resumen.getMonto().intValue();
 				longitud_M = longitud_M.toString().length(); 
 				if (longitud_M==4)
 					longitud_M += +1;
 				else if (longitud_M==5)
 					longitud_M += +2;
-				linea += tabular(19-longitud_M)+Util.toNumberFormat(resumen.getMonto(),2);
+				linea += tabular(11-longitud_M)+Util.toNumberFormat(resumen.getMonto(),2);
 				bw.write(linea+NEWLINE);
 			}
-			
-			
-			
 			
 //			for (Liquidacion especiesValorada: list ){
 //				longitud_C=especiesValorada.getTipoComprobante().getDenominacion().toString().length();
@@ -1280,14 +1315,33 @@ public class CreateDocument implements Serializable {
 			linea=tabular(3)+"GASTO ADMIN. TARJETA MASTER CARD"+tabular(16-longitud_C)+liquidacion2.getCantidadGastosAdminTarjetaMastercard()+tabular(19-longitud_M)+Util.toNumberFormat(liquidacion2.getMontoGastosAdminTarjetaMastercard(),2);;
 			bw.write(linea+NEWLINE);
 						
+			List<Gasto> lstIngresos =  ServiceLocator.getGastoManager().obtenerGastosByLiquidacion(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId(), Constantes.TRUE_VALUE);
+			int cantidadIngreso = 0;
+			double importeIngreso = 0;
+			for(Gasto otroIngreso: lstIngresos) {
+				cantidadIngreso += otroIngreso.getCantidad();
+				importeIngreso += otroIngreso.getMonto();
+				longitud_C=otroIngreso.getCantidad().toString().length();
+				longitud_M=(int) otroIngreso.getMonto().intValue();
+				longitud_M = longitud_M.toString().length();
+				if (longitud_M==4)
+					longitud_M += +1;
+				else if (longitud_M==5)
+					longitud_M += +2;
+				linea=tabular(3)+otroIngreso.getTipoGasto().getDenominacion()+tabular((48-otroIngreso.getTipoGasto().getDenominacion().length())-longitud_C)+otroIngreso.getCantidad()+tabular(19-longitud_M)+Util.toNumberFormat(otroIngreso.getMonto(),2);
+				bw.write(linea+NEWLINE);
+			}
+			
 			linea=tabular(45)+"-------"+tabular(10)+"------------";
 			bw.write(linea+NEWLINE);
 			
 			//---> linea 22: valores otros ingresos
 			Integer cantidadRCTotal=liquidacion2.getCantidadRCCaja()+liquidacion2.getCantidadTarjetaVisaRC()+liquidacion2.getCantidadTarjetaMasterCardRC()+
-								    liquidacion2.getCantidadGastosAdminEfectivo()+liquidacion2.getCantidadGastosAdminTarjetaVisa()+liquidacion2.getCantidadGastosAdminTarjetaMastercard();
+								    liquidacion2.getCantidadGastosAdminEfectivo()+liquidacion2.getCantidadGastosAdminTarjetaVisa()+liquidacion2.getCantidadGastosAdminTarjetaMastercard()+
+								    cantidadIngreso;
 			double montoRcTotal=liquidacion2.getMontoRC()+liquidacion2.getMontoTarjetaVisaRC()+liquidacion2.getMontoTarjetaMasterCardRC()+
-								liquidacion2.getMontoGastosAdminEfectivo()+liquidacion2.getMontoGastosAdminTarjetaVisa()+liquidacion2.getMontoGastosAdminTarjetaMastercard();
+								liquidacion2.getMontoGastosAdminEfectivo()+liquidacion2.getMontoGastosAdminTarjetaVisa()+liquidacion2.getMontoGastosAdminTarjetaMastercard()+
+								importeIngreso;
 			longitud_C=cantidadRCTotal.toString().length();
 			longitud_M=(int) montoRcTotal;
 			longitud_M = longitud_M.toString().length();
@@ -1315,7 +1369,7 @@ public class CreateDocument implements Serializable {
 			linea=tabular(3)+interline;
 			bw.write(linea+NEWLINE);
 			
-			List<Gasto> lstGastos =  ServiceLocator.getGastoManager().obtenerGastosByLiquidacion(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId());
+			List<Gasto> lstGastos =  ServiceLocator.getGastoManager().obtenerGastosByLiquidacion(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId(), Constantes.FALSE_VALUE);
 			int cantidadGasto = 0;
 			double importeGasto = 0;
 			for(int i=0; i<lstGastos.size(); i++) {

@@ -22,6 +22,7 @@ import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Radio;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
@@ -62,6 +63,9 @@ public class WndGasto extends WndOpcionesMantenimiento {
 //	private Textbox txtBus;
 	private Combobox cmbBus;
 	private Datebox dbFecha;
+	private Radio rbGasto;
+	private Radio rbIngreso;
+	
 	
 //	private Agencia agencia = null;
 	private Gasto gasto=null;
@@ -90,7 +94,8 @@ public class WndGasto extends WndOpcionesMantenimiento {
 		criteriosOrdenar.add("tipoGasto");
 		
 		dbMonto.setLocale(Locale.US);
-		UtilData.cargarDataCombo(cmbTipoGasto, TipoGasto.class, false);
+		UtilData.cargarTipoGasto(cmbTipoGasto, false, Constantes.FALSE_VALUE);
+		rbGasto.setChecked(true);
 	}
 
 	/* (non-Javadoc)
@@ -106,6 +111,43 @@ public class WndGasto extends WndOpcionesMantenimiento {
 		txtObservacion = (Textbox) this.getFellow("txtObservacion");
 		dbFecha = (Datebox) this.getFellow("dbFecha");
 		cmbBus=(Combobox)this.getFellow("cmbBus");
+		rbGasto = (Radio)this.getFellow("rbGasto");
+		rbIngreso = (Radio)this.getFellow("rbIngreso");
+		
+		rbGasto.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				onCheck_tipoOperacion();
+			}
+		});
+		rbIngreso.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				onCheck_tipoOperacion();
+			}
+		});
+	}
+	
+	
+	private void onCheck_tipoOperacion() {
+		try {
+			Util.limpiarCombobox(cmbTipoGasto);
+			if(rbGasto.isChecked())
+				UtilData.cargarTipoGasto(cmbTipoGasto, false, Constantes.FALSE_VALUE);
+			else
+				UtilData.cargarTipoGasto(cmbTipoGasto, false, Constantes.TRUE_VALUE);
+			
+			if(cmbTipoGasto.getItemCount()==2)
+				cmbTipoGasto.setSelectedIndex(1);
+			
+			onSelectTipoGasto();
+			
+		} catch (Exception ex) {
+			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
+			ex.printStackTrace();
+		}
 	}
 	
 	/*
@@ -131,6 +173,7 @@ public class WndGasto extends WndOpcionesMantenimiento {
 		dbFecha.setValue(Constantes.FORMAT_DATE.parse(time.dateServer()));
 		cmbTipoGasto.setSelectedIndex(0);
 		cmbBus.setSelectedIndex(0);
+		rbGasto.setChecked(true);
 		
 		isClikSaved=false;
 	}
@@ -265,7 +308,7 @@ public class WndGasto extends WndOpcionesMantenimiento {
 			if(isClikSaved)
 				return;
 			
-			if(totalVentasEfectivo<totalGastos)
+			if(totalVentasEfectivo<totalGastos && rbGasto.isChecked())
 				throw new GastosException(GastosException.MONTO_GASTO_MAYOR_VENTAS);
 						
 			if (action==ACTION_NEW)
@@ -287,6 +330,7 @@ public class WndGasto extends WndOpcionesMantenimiento {
 			gasto.setConsignado(txtConsignado.getText().trim().toUpperCase());
 			gasto.setObservacion(txtObservacion.getText().trim().toUpperCase());
 			gasto.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+			
 				
 			/*Graba o actualiza el Gasto*/
 			switch (action) {
@@ -451,6 +495,8 @@ public class WndGasto extends WndOpcionesMantenimiento {
 			cell = new Listcell(gasto.getMonto().toString());
 			cell.setStyle("font-size:11px !Important");
 			item.appendChild(cell);
+			cell = new Listcell(gasto.getTipoGasto().getTipoOperacion().intValue()==Constantes.FALSE_VALUE?"GASTO":"INGRESO");
+			item.appendChild(cell);
 			cell = new Listcell(gasto.getObservacion());
 			item.appendChild(cell);
 			
@@ -474,6 +520,10 @@ public class WndGasto extends WndOpcionesMantenimiento {
 			textboxId.setText(gasto.getId().toString());
 			Util.seleccionarValorItemCombo(TipoGasto.class, cmbTipoGasto, (gasto.getTipoGasto().getId()));
 			
+			if(gasto.getTipoGasto().getTipoOperacion().intValue()==Constantes.FALSE_VALUE)
+				rbGasto.setChecked(true);
+			else
+				rbIngreso.setChecked(true);
 			detalleLiquidacion = new DetalleLiquidacion();
 			detalleLiquidacion=(gasto.getDetalleLiquidacion());
 					
@@ -520,14 +570,21 @@ public class WndGasto extends WndOpcionesMantenimiento {
 		cmbBus.setDisabled(false);
 		
 		if(cmbTipoGasto.getSelectedItem().getValue() instanceof TipoGasto){
-			if(((TipoGasto)cmbTipoGasto.getSelectedItem().getValue()).getId().equals(Constantes.ID_TIPGAS_PEAJES)){
+			TipoGasto tipoGasto = cmbTipoGasto.getSelectedItem().getValue();
+			if(tipoGasto.getTipoOperacion().intValue()==Constantes.FALSE_VALUE) {							
+				if(tipoGasto.getId().intValue()==Constantes.ID_TIPGAS_PEAJES){
+					txtConsignado.setReadonly(true);
+					txtConsignado.setText("");
+				}else if (((TipoGasto)cmbTipoGasto.getSelectedItem().getValue()).getId().equals(Constantes.ID_TIPGAS_PAGO_GIROS)){
+					cmbBus.setDisabled(true);
+					cmbBus.setSelectedIndex(0);
+					txtNombrePiloto.setText("");
+					txtNombrePiloto.setReadonly(true);
+				}	
+			}else {
 				txtConsignado.setReadonly(true);
-				txtConsignado.setText("");
-			}else if (((TipoGasto)cmbTipoGasto.getSelectedItem().getValue()).getId().equals(Constantes.ID_TIPGAS_PAGO_GIROS)){
-				cmbBus.setDisabled(true);
-				cmbBus.setSelectedIndex(0);
-				txtNombrePiloto.setText("");
 				txtNombrePiloto.setReadonly(true);
+				cmbBus.setDisabled(true);
 			}
 		}
 	}

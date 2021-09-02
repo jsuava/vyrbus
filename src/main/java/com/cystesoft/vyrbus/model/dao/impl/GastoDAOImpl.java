@@ -12,6 +12,7 @@ import com.cystesoft.vyrbus.model.bean.Gasto;
 import com.cystesoft.vyrbus.model.bean.Liquidacion;
 import com.cystesoft.vyrbus.model.bean.LiquidacionOficina;
 import com.cystesoft.vyrbus.model.bean.TipoGasto;
+import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.dao.GastoDAO;
 import com.cystesoft.vyrbus.service.util.Constantes;
 
@@ -102,7 +103,7 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 					"tg.c_denominacion NombreGasto,g.n_monto, g.c_numdoc, g.c_codbus, g.c_nompil, g.c_consignado, g.c_observacion, dlq.detliq_id, "+ //6-13
 					"dlq.audfecins as fechaInsercion, dlq.audusuins as UsuarioInsercion, dlq.audipinse as IpInsercion, "+//14-16
 					"g.audfecins as GfechaInsercion, g.audusuins as GUsuarioInsercion, g.audipinse as GIpInsercion, "+//17-19
-					"lq.n_estliq, a.c_nomcor as nombreCorto "+//20-21
+					"lq.n_estliq, a.c_nomcor as nombreCorto, nvl(tg.n_tipope,0) tipope "+//20-22
 			"FROM vrtgasto g "+
 				"INNER JOIN vrtdetliq dlq ON (dlq.gasto_id=g.gasto_id) "+
 				"INNER JOIN vrtliquidacion lq ON (lq.liquidacion_id=dlq.liquidacion_id) "+
@@ -148,6 +149,7 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 			TipoGasto tipoGasto=new TipoGasto();
 			tipoGasto.setId(((BigDecimal)obj[5]).intValue());
 			tipoGasto.setDenominacion(obj[6].toString());
+			tipoGasto.setTipoOperacion(((BigDecimal)obj[22]).intValue());
 			
 			Gasto gasto = new Gasto();
 			gasto.setId(((BigDecimal) obj[0]).intValue());
@@ -251,14 +253,15 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 	 * @see com.cystesoft.vyrbus.model.dao.GastoDAO#obtenerGastosByLiquidacion(java.lang.String, java.lang.Integer, java.lang.Integer)
 	 */
 	@Override
-	public List<Gasto> obtenerGastosByLiquidacion(String fechaLiquidacion, Integer idAgencia, Integer idUsuario) {
+	public List<Gasto> obtenerGastosByLiquidacion(String fechaLiquidacion, Integer idAgencia, Integer idUsuario, Integer isIngreso) {
 		String sql = "SELECT tg.tipgas_id, tg.c_denominacion, COUNT(g.n_monto) AS CANTIDAD,  SUM(g.n_monto) AS MONTO "
 				+ "FROM vrtgasto g "
 				+ "INNER JOIN vrmtipgas tg ON (tg.tipgas_id=g.tipgas_id) "
 				+ "INNER JOIN (SELECT dl.gasto_id FROM vrtdetliq dl "
 				+ "INNER JOIN vrtliquidacion l On (l.liquidacion_id=dl.liquidacion_id) "
 				+ "WHERE l.d_fecliq=to_date('"+fechaLiquidacion+"','dd/MM/yyyy') AND dl.gasto_id is not null AND l.agencia_id="+idAgencia+" AND l.usuario_id="+idUsuario+" AND l.c_estreg='A') dl ON (dl.gasto_id=g.gasto_id) "
-				+ "WHERE g.c_estreg='A' GROUP BY tg.tipgas_id, tg.c_denominacion "
+				+ "WHERE g.c_estreg='A' AND tg.n_tipope="+ isIngreso + " "
+				+ "GROUP BY tg.tipgas_id, tg.c_denominacion "
 				+ "ORDER BY tg.c_denominacion ";
 		
 		log.info(sql);
@@ -275,6 +278,63 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 			gasto.setMonto(((BigDecimal)obj[3]).doubleValue());
 			lstResult.add(gasto);			
 		}
+		return lstResult;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.GastoDAO#buscarGastosIngresos(java.lang.String, java.lang.String, java.lang.Integer)
+	 */
+	@Override
+	public List<Gasto> buscarGastosIngresos(String fechaInicio, String fechaFin, Integer tipoOperacion)
+			throws Exception {
+		String sql="SELECT tg.n_tipope, tg.c_Denominacion tipoGasto, lq.d_Fecliq fecha, ag.agencia_id, ag.c_Denominacion oficina, u.usuario_id, u.c_apepat, u.c_apemat, u.c_nombre, gt.n_monto "
+				+ "       ,gt.c_numdoc gasto_doct, gt.c_nompil gasto_piloto, gt.c_codbus gasto_bus, gt.c_consignado gasto_consignado, gt.c_observacion gasto_obsv, gt.gasto_id "
+				+ "FROM vrtgasto gt "
+				+ "  INNER JOIN vrmtipgas tg ON (tg.tipgas_id=gt.tipgas_id)   "
+				+ "  INNER JOIN vrtdetliq dlq ON (dlq.gasto_id=gt.gasto_id) "
+				+ "  INNER JOIN vrtliquidacion lq ON (lq.liquidacion_id=dlq.liquidacion_id) "
+				+ "  INNER JOIN vrmagencia ag ON (ag.agencia_id=lq.agencia_id) "
+				+ "  INNER JOIN vrmusuario u ON (u.usuario_id=lq.usuario_id) "
+				+ "WHERE lq.d_fecliq BETWEEN '"+fechaInicio+"' AND '"+fechaFin+"' "
+				+ "  AND tg.n_tipope =  NVL("+tipoOperacion+", tg.n_tipope) "
+				+ "  AND lq.c_Estreg='A' AND dlq.c_estreg='A' AND gt.c_estreg='A' "
+				+ "ORDER BY ag.c_Denominacion, u.c_apepat, u.c_apemat, u.c_nombre ";
+		log.info(sql);
+		List<?> result = getSession().createSQLQuery(sql).list();
+		List<Gasto> lstResult = new ArrayList<Gasto>(); 
+		for(int i=0; i<result.size(); i++) {
+			Object[] obj = (Object[]) result.get(i);
+			
+			TipoGasto tipoGasto= new TipoGasto();
+			tipoGasto.setTipoOperacion(((BigDecimal)obj[0]).intValue());
+			tipoGasto.setDenominacion(obj[1].toString());
+			
+			Agencia agencia= new Agencia();
+			agencia.setId(((BigDecimal)obj[3]).intValue());
+			agencia.setDenominacion(obj[4].toString());
+			
+			Usuario usuario= new Usuario();
+			usuario.setId(((BigDecimal)obj[5]).intValue());
+			usuario.setApellidoPaterno(obj[6].toString());
+			usuario.setApellidoMaterno(obj[7]!=null?obj[7].toString():"");
+			usuario.setNombre(obj[8].toString());
+			
+			Gasto gasto= new Gasto();
+			gasto.setId(((BigDecimal)obj[15]).intValue());
+			gasto.setFecha((Date)obj[2]);
+			gasto.setMonto(((BigDecimal)obj[9]).doubleValue());
+			gasto.setNumeroDocumento(obj[10]!=null?obj[10].toString():"");
+			gasto.setNombrePiloto(obj[11]!=null?obj[11].toString():"");
+			gasto.setCodigoBus(obj[12]!=null?obj[12].toString():"");
+			gasto.setConsignado(obj[13]!=null?obj[13].toString():"");
+			gasto.setObservacion(obj[14]!=null?obj[14].toString():"");
+			gasto.setTipoGasto(tipoGasto);
+			gasto.setAgencia(agencia);
+			gasto.setUsuario(usuario);
+			
+			lstResult.add(gasto);			
+		}
+		
 		return lstResult;
 	}
 }

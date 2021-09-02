@@ -26,6 +26,11 @@
                 <comment>Mascara de formato para los numeros de documento.</comment>
             </column>
         </property>
+        <property name="tipoOperacion" type="java.lang.Integer">
+        	<column name="N_TIPOPE" precision="1" scale="0">
+        		<comment>Define el tipo de operacion. Gasto(0); Ingreso(1)</comment>
+        	</column>
+        </property>
         <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
         <property name="estadoRegistro" type="java.lang.String">
             <column name="C_ESTREG" length="1" not-null="true">

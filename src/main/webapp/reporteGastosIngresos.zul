@@ -1,0 +1,76 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndRptGastosIngresos" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndRptGastosIngresos" width="1224px">
+<panel border="normal" closable="true"  
+		id="panel" title="::: CONSULTA GASTOS Y OTROS INGRESOS :::" 
+		framable="true" onClose="wndRptGastosIngresos.closeTabWindow()">
+	<panelchildren>
+		<grid>
+			<columns>
+				<column align="right" width="100px"/>
+				<column width="120px"/>
+				<column align="right" width="100px"/>
+				<column/>
+			</columns>
+			<rows>
+				<row>
+					<label value="Desde" sclass="label-size11-bold" />
+					<datebox id="dtbxFechaDesde"  format="dd/MM/yyyy" readonly="true"/>
+					<label value="Hasta" sclass="label-size11-bold" />
+					<datebox id="dtbxFechaHasta"  format="dd/MM/yyyy" readonly="true"/>
+				</row>
+				<row spans="1,3">
+					<separator/>
+					<hbox align="center">
+						<radiogroup>
+							<radio id="rdGastos" label="Gastos" checked="true" />
+							<radio id="rdIngresos" label="Otros Ingresos" style="margin-left:10px !important" />
+<!-- 							<radio id="rdAmbos" label="Ambos" style="margin-left:10px !important"/> -->
+						</radiogroup>
+						<button image="resources/mp_buscarEnabled.png" label="Buscar" onClick="wndRptGastosIngresos.onSearch()" sclass="btnCommandM" style="width:110px; height:30px; margin-left:15px" />
+					</hbox>
+				</row>
+			</rows>
+		</grid>
+		<grid>
+			<columns>
+				<column width="300px"/>
+				<column/>
+			</columns>
+			<rows>
+				<row style="vertical-align: text-top;">
+					<listbox id="ltbxAgencias" multiple="true" checkmark="true" width="100%" rows="5">
+						<listhead>
+							<listheader label="OFICINA" width="180px" />
+							<listheader label="IMPORTE" align="center" />
+						</listhead>
+					</listbox>
+					<listbox id="ltbxUsuarios" width="415px" rows="6">
+						<listhead>
+							<listheader label="USUARIO" width="300px" />
+							<listheader label="IMPORTE" align="center"/>
+						</listhead>
+					</listbox>
+				</row>
+				<row spans="2">
+					<listbox id="ltbxDetalleGasto" rows="7">
+						<listhead>
+							<listheader label="FECHA" width="80px" align="center" sort="auto"/>
+							<listheader label="TIPO GASTO" width="130px" sort="auto"/>
+							<listheader label="AGENCIA" width="150px" sort="auto"/>
+							<listheader label="N° DOCUMENTO" width="120px" sort="auto"/>
+							<listheader label="PILOTO" width="160px" sort="auto"/>
+							<listheader label="BUS" width="50px" sort="auto"/>
+							<listheader label="CONSIGNADO" width="120px" sort="auto"/>
+							<listheader label="OBSERVACIONES" width="260px" sort="auto"/>
+							<listheader label="MONTO" align="center" sort="auto"/>
+						</listhead>
+					</listbox>				
+				</row>
+			</rows>
+		</grid>
+	</panelchildren>
+</panel>
+	
+</window>
+</zk>

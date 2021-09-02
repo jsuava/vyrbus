@@ -2,6 +2,7 @@ package com.cystesoft.vyrbus.model.bean;
 // default package
 // Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,13 +19,15 @@ public class Gasto extends GenericBean implements java.io.Serializable {
 	private String codigoBus;
 	private String consignado;
 	private String observacion;
+	
+	//No mapeados
+	private Usuario usuario;
+	private Date fecha;
 	private Agencia agencia;
 	private Liquidacion liquidacion;
 	private DetalleLiquidacion detalleLiquidacion;
 	private LiquidacionOficina liquidacionOficina;
-	private Integer cantidad;
-	
-	
+	private Integer cantidad;		
 	private Set<DetalleLiquidacion> detalleLiquidacions = new HashSet<DetalleLiquidacion>(0);
 	private Set<LiquidacionOficina> liquidacionOficinas = new HashSet<LiquidacionOficina>(0);
 
@@ -148,4 +151,34 @@ public class Gasto extends GenericBean implements java.io.Serializable {
 			Set<LiquidacionOficina> liquidacionOficinas) {
 		this.liquidacionOficinas = liquidacionOficinas;
 	}
+
+	/**
+	 * @return the usuario
+	 */
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	/**
+	 * @param usuario the usuario to set
+	 */
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	/**
+	 * @return the fecha
+	 */
+	public Date getFecha() {
+		return fecha;
+	}
+
+	/**
+	 * @param fecha the fecha to set
+	 */
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+
+
 }
