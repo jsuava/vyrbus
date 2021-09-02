@@ -2,6 +2,7 @@ package com.cystesoft.vyrbus.model.dao.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -33,11 +34,16 @@ public class ItinerarioAgenciaLlegadaDAOImpl extends GenericDAOImpl implements I
 	}
 	@Override
 	public List<ItinerarioAgenciaLlegada> buscarAgenciasLlegada(Long idItinerario, String estado, String strLocalidad)throws Exception{
-		String sql = "SELECT ial.itinerario_id, ial.agencia_id, a.c_denominacion, ial.c_horlle, a.c_nomcor, l.localidad_id, l.c_denominacion " +
+		String sql = "SELECT ial.itinerario_id, ial.agencia_id, a.c_denominacion, ial.c_horlle, a.c_nomcor, l.localidad_id, l.c_denominacion, " +
+				"ial.c_estreg, ial.audfecins, ial.audusuins, ial.audipinse " +
 				"FROM vrtitiagelle ial " +
 				"INNER JOIN vrmagencia a ON a.agencia_id=ial.agencia_id " +
 				"INNER JOIN vrmlocalidad l ON l.localidad_id=ial.localidad_id " +
-				"WHERE ial.itinerario_id="+idItinerario+" AND ial.c_estreg IN ('"+Constantes.VALUE_ACTIVO+"','"+estado+"') AND ial.localidad_id IN("+strLocalidad+")";
+				"WHERE ial.itinerario_id="+idItinerario+" AND ial.c_estreg IN ('"+Constantes.VALUE_ACTIVO+"','"+estado+"') ";
+		
+		if(strLocalidad != null)
+			sql = sql + " AND ial.localidad_id IN("+strLocalidad+")";
+		
 		List<?> result = getSession().createSQLQuery(sql).list();
 		List<ItinerarioAgenciaLlegada> lstResult = new ArrayList<ItinerarioAgenciaLlegada>();
 		for(int i=0; i<result.size(); i++){
@@ -54,6 +60,10 @@ public class ItinerarioAgenciaLlegadaDAOImpl extends GenericDAOImpl implements I
 			localidad.setId(((BigDecimal)obj[5]).intValue());
 			localidad.setDenominacion(obj[6].toString());
 			itAgeLlegada.setLocalidad(localidad);
+			itAgeLlegada.setEstadoRegistro(obj[7].toString());
+			itAgeLlegada.setFechaInsercion((Date)obj[8]);
+			itAgeLlegada.setUsuarioInsercion(obj[9].toString());
+			itAgeLlegada.setIpInsercion(obj[10].toString());
 			lstResult.add(itAgeLlegada);
 		}
 		return lstResult;

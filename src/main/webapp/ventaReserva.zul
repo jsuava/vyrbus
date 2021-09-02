@@ -122,11 +122,7 @@
 											<label value="ORIGEN :" sclass="label-size11"/>
 											<combobox id="cmbOrigen" autodrop="true" width="160px" onOK="cmbDestino.setFocus(true)"/>
 											<cell rowspan="2">
-												<button id="btnBuscarItinerario" 
-														sclass="btnCommandM" 
-														autodisable="self" 
-														label="Buscar" 
-														image="/resources/mp_buscarEnabled.png"  
+												<button id="btnBuscarItinerario" sclass="btnCommandM" autodisable="self" label="Buscar" image="/resources/mp_buscarEnabled.png"  
 														onClick="wndVentaReserva.onBuscarItinerarios()"/>
 											</cell>											
 										</row>

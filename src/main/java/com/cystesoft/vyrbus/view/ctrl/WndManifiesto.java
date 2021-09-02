@@ -916,25 +916,25 @@ public class WndManifiesto extends WndBase {
 				OutputStream Salida = new FileOutputStream(fileDestino);
 				
 				byte[] buffer = new byte[1024];  
-                int tamaño;  
+                int tamanio;  
                 //lee el fichero sunat a copiar cada 1MB  
-                while ((tamaño = inputSunat.read(buffer)) > 0) {  
+                while ((tamanio = inputSunat.read(buffer)) > 0) {  
                     //Escribe el MB en el fichero destino  
-                	Salida.write(buffer, 0, tamaño); 
+                	Salida.write(buffer, 0, tamanio); 
                 }
                 inputSunat.close();
                  
                 //lee el fichero transportista a copiar cada 1MB  
-                while ((tamaño = inputTransp.read(buffer)) > 0) {  
+                while ((tamanio = inputTransp.read(buffer)) > 0) {  
                     //Escribe el MB en el fichero destino  
-                	Salida.write(buffer, 0, tamaño); 
+                	Salida.write(buffer, 0, tamanio); 
                 }
                  inputTransp.close();
                  
                //lee el fichero Archivo a copiar cada 1MB  
-                 while ((tamaño = inputArchivo.read(buffer)) > 0) {  
+                 while ((tamanio = inputArchivo.read(buffer)) > 0) {  
                      //Escribe el MB en el fichero destino  
-                	 Salida.write(buffer, 0, tamaño); 
+                	 Salida.write(buffer, 0, tamanio); 
                  }
                  inputArchivo.close();
                  

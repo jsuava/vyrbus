@@ -390,3 +390,10 @@ a:active {
 .td.z-listcell {
 	border-bottom-color: white;
 }
+
+.headerAlterno .z-groupbox-3d-hm {
+	background: #FFBA0D;
+	background-image: none;	
+	color: #FFFFFF !important;
+	font-size:13px;
+}

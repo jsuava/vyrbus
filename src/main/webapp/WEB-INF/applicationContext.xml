@@ -498,6 +498,8 @@
 	</bean>
 	<bean id="itinerarioManager" class="com.cystesoft.vyrbus.service.business.impl.ItinerarioManagerImpl">
 		<property name="itinerarioDAO" ref="itinerarioDAO"/>
+		<property name="itinerarioAgenciaPartidaDAO" ref="itinerarioAgenciaPartidaDAO"/>
+		<property name="itinerarioAgenciaLlegadaDAO" ref="itinerarioAgenciaLlegadaDAO"/>
 	</bean>
 	<bean id="detalleItinerarioManager" class="com.cystesoft.vyrbus.service.business.impl.DetalleItinerarioManagerImpl">
 		<property name="detalleItinerarioDAO" ref="detalleItinerarioDAO" />
