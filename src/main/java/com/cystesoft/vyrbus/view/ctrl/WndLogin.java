@@ -323,7 +323,7 @@ public class WndLogin extends WndBase {
 					if(liquidacion!=null && liquidacion.getFechaLiquidacion().getTime()<fechaServer.getTime()){
 						//Realiza el cierre
 						Double totalVentas=ServiceLocator.getVentaPasajesManager().buscarTotalVentas(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), agencia.getId(), usuario.getId());
-						UtilData.procesaCierreCaja(liquidacion, totalVentas,usuario);
+						UtilData.procesaCierreCaja(liquidacion, totalVentas,usuario, 0.0);
 												
 						//Apertura una nueva liquidacion
 						liquidacion=UtilData.aperturarLiquidacion(fechaServer,usuario,agencia);

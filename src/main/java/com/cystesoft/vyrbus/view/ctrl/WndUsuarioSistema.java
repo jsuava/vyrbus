@@ -74,6 +74,7 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 	private Label lblAgencia;
 	private Textbox txtEmailInfo;
 	private Image imgGeneratePassword;
+	private Image imgShowPassword;
 	private Listbox lbxRoles;
 	private Label lblRolesSeleccionados;
 	private Checkbox chbxSoloRolesSeleccionados;
@@ -111,6 +112,7 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 		lbxRoles=(Listbox)this.getFellow("lbxRoles");
 		lblRolesSeleccionados=(Label)this.getFellow("lblRolesSeleccionados");
 		chbxSoloRolesSeleccionados=(Checkbox)this.getFellow("chbxSoloRolesSeleccionados");
+		imgShowPassword = (Image)this.getFellow("imgShowPassword");
 	}
 	
 	/*
@@ -133,6 +135,8 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 		btnEliminar.setTooltiptext("Desactivar el registro seleccionado");
 		
 		lblRolesSeleccionados.setValue("0");
+		if(getRol().getId()==Constantes.ID_ROL_SUPER_USUARIO)
+			imgShowPassword.setVisible(true);
 	}
 	
 	/*
@@ -916,6 +920,14 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 			for(Listitem item:lbxRoles.getItems()){
 				item.setVisible(true);
 			}
+		}
+	}
+	
+	public void mostrarPassword(){		
+		if ( !(txtPassword.getText().equals("") || txtLogin.getText().equals("")) ){
+			String clave = "";																	  				
+			clave = txtPassword.getText();						
+			DlgMessage.information("El Password es : "+clave);			
 		}
 	}
 }

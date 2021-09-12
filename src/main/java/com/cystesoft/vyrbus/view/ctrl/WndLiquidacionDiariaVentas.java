@@ -93,6 +93,8 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 	private Label lblEfectivo;
 	private Label lblTarjeta;
 	private Label lblNotascredito;
+	private Label lblEfectivoDolares;
+	private Label lblCreditoDolares;
 	
 //	private Window wndLiquidacionDiariaVentas;
 //	private Window wndDuplicar = null;
@@ -105,11 +107,12 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 	private Agencia agencia = null;
 	
 	private Doublebox dblbxTotal;
+	private Doublebox dbxTotalDolares;
 	
 	private Integer XI=0;//Correlativo 
 	
 	private static String[] tipoMovimiento = {Constantes.COMBO_LABEL_TODOS, "ANULADOS", 
-											"DEVOLUCIONES", "CORTESIAS", "CREDITO", 
+											"DEVOLUCIONES", "CORTESIAS", "CREDITO", //"EQUIPAJES (PCE)",  
 											"PREPAGADOS", "RECIBOS DE CAJA", "TARJETA MASTERCARD", "TARJETA VISA", "VENTAS"};
 	
 	
@@ -186,6 +189,8 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 		lblEfectivo = (Label)this.getFellow("lblEfectivo");
 		lblTarjeta = (Label)this.getFellow("lblTarjeta");
 		lblNotascredito = (Label)this.getFellow("lblNotascredito");		
+		lblEfectivoDolares = (Label)this.getFellow("lblEfectivoDolares");
+		lblCreditoDolares = (Label)this.getFellow("lblCreditoDolares");
 //		wndLiquidacionDiariaVentas = (Window)this.getFellow("wndLiquidacionDiariaVentas");
 		btnExportar=(Button)this.getFellow("btnExportar");
 	}
@@ -270,10 +275,14 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 				Double totalCortesia = 0.0;
 				Double totalCredito = 0.0;
 				Double totalPrepagado = 0.0;
-				Double totalRecibos = 0.0;
+//				Double totalRecibos = 0.0;
 				Double totalEfectivo = 0.0;
 				Double totalTarjeta = 0.0;
 				Double totalNotasCredito=0.0;
+				Double totalEquipajePCE = 0.0;
+				Double totalDolares =0.0;
+				Double totalEfectivoDolares = 0.0;
+				Double totalCreditoDolares = 0.0;
 				
 				for(VentaPasaje venta : lstVentas){
 					i++;
@@ -301,12 +310,16 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 								|| venta.getTipoTransaccion().equals("EQUIPAJE(EF)")
 								|| venta.getTipoTransaccion().equals("SERV.ESP(EF)")
 						){
-							total = total + venta.getImportePagado();
+							if(venta.getTipoMoneda()==null) {
+								total = total + venta.getImportePagado();
+							}else {
+								totalDolares = totalDolares + venta.getImportePagado();
+							}
 //							style = "color:blue !important; font-weight:bold";
 						}
 						
 						if(venta.getTipoTransaccion().equals("NOTA CREDITO")){
-							totalNotasCredito+= + venta.getImportePagado();
+							totalNotasCredito+= + venta.getImportePagado();							
 //							total+= - venta.getImportePagado();
 						}
 						
@@ -323,16 +336,22 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 								|| venta.getTipoTransaccion().equals("EQUIPAJE(EF)")
 								|| venta.getTipoTransaccion().equals("SERV.ESP(EF)")
 						  )
-							totalEfectivo = totalEfectivo + venta.getImportePagado();
+							if(venta.getTipoMoneda()==null)
+								totalEfectivo = totalEfectivo + venta.getImportePagado();
+							else
+								totalEfectivoDolares = totalEfectivoDolares + venta.getImportePagado();
 						else if(venta.getTipoTransaccion().equals("CREDITO"))
-							totalCredito = totalCredito + venta.getImportePagado();							
+							if(venta.getTipoMoneda()==null)
+								totalCredito = totalCredito + venta.getImportePagado();
+							else
+								totalCreditoDolares = totalCreditoDolares + venta.getImportePagado();														
 						else if(venta.getTipoTransaccion().equals("PREP.(EF)") || venta.getTipoTransaccion().equals("PREP.(TC"))
 							totalPrepagado = totalPrepagado + venta.getImportePagado();							
 						else if(venta.getTipoTransaccion().equals("EQUIPAJE(PCE)") 
 //								|| venta.getTipoTransaccion().equals("RC.(TC)")
 //								|| venta.getTipoTransaccion().equals("RC.(TRA)")
 							   )
-							totalRecibos = totalRecibos + venta.getImportePagado();
+							totalEquipajePCE = totalEquipajePCE + venta.getImportePagado();
 						else if(venta.getTipoTransaccion().equals("V.(TC)") 
 								|| venta.getTipoTransaccion().equals("FA.(TC)") 
 								|| venta.getTipoTransaccion().equals("CONF.FA.(TC)") 
@@ -426,7 +445,10 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 								}
 							}
 						}else{
-							total = total + venta.getImportePagado();
+							if(venta.getTipoMoneda()==null)
+								total = total + venta.getImportePagado();
+							else
+								totalDolares = totalDolares + venta.getImportePagado();
 						}
 						
 						/*End Begin 15/12/2016 - jabanto [Valida si es una devolucion de Boleto de viaje o recibo de caja - 06/12/2016 - jabanto]*/
@@ -505,12 +527,17 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 					}else{
 						cell.setLabel(venta.getNumeroBoleto());
 					}
-					
 					item.appendChild(cell);
 					
 					cell = new Listcell(venta.getNumeroBoletoAnterior()==null?"":venta.getNumeroBoletoAnterior());
+					cell.setStyle("font-weight:bold");
+					item.appendChild(cell);
+					
+					cell = new Listcell(venta.getTipoMoneda()==null?"PEN":"USD");
 					cell.setStyle(style);
 					item.appendChild(cell);
+					
+//					cell = new Listcell(venta.getImportePagadoEquibalente()==null?Util.toNumberFormat(venta.getTarifa(), 2):Util.toNumberFormat(venta.getImportePagadoEquibalente(),2));
 					cell = new Listcell(Util.toNumberFormat(venta.getTarifa(), 2));
 					cell.setStyle(style);
 					item.appendChild(cell);
@@ -584,17 +611,25 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 				}
 				Listfoot listfoot = new Listfoot();
 				Listfooter listfooter = new Listfooter();
-				listfooter.setSpan(10);
+				listfooter.setSpan(11);
 				
 				Div div1 = new Div();
 				div1.setHeight("28px");
 				Div div = new Div();
 				div.setHeight("22px");
 				div.setAlign("right");
+				Vlayout vlayout1 = new Vlayout();
 				Label label = new Label();
-				label.setValue("TOTAL :");
+				label.setValue("TOTAL S/. :");
 				label.setStyle("font-weight:bold");
-				div.appendChild(label);
+				vlayout1.appendChild(label);
+				div.appendChild(vlayout1);
+				label = new Label();
+				label.setValue("TOTAL $ :");
+				label.setStyle("font-weight:bold");
+				vlayout1.appendChild(label);
+				div.appendChild(vlayout1);
+				
 				div1.appendChild(div);
 				
 //				if(cmbTipoMovimiento.getSelectedIndex()==0){
@@ -677,9 +712,10 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 				
 				/*Calcula el total a liquidar*/
 				if(cmbTipoMovimiento.getSelectedIndex()==0){
-					Double totalVentas=totalEfectivo+totalTarjeta+totalCortesia+totalPrepagado+totalCredito; 
+					Double totalVentas=totalEfectivo+totalTarjeta+totalCortesia+totalPrepagado+totalCredito+totalEquipajePCE; 
 					total=totalVentas-(totalDevolucion+totalCortesia+totalCredito+totalPrepagado+totalTarjeta+totalNotasCredito);
-					
+					total = totalVentas;
+					totalDolares = totalEfectivoDolares + totalCreditoDolares;
 				}
 				
 				listfooter = new Listfooter();
@@ -690,9 +726,16 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 				dblbxTotal.setWidth("57px");
 				dblbxTotal.setLocale(Locale.US);
 				vlayout.appendChild(dblbxTotal);
+				dbxTotalDolares = new Doublebox(totalDolares);
+				dbxTotalDolares.setStyle("font-size:10px;font-align:right");
+				dbxTotalDolares.setFormat("#,###,##0.00");
+				dbxTotalDolares.setWidth("57px");
+				dbxTotalDolares.setLocale(Locale.US);
+				vlayout.appendChild(dbxTotalDolares);
+				
 				
 				if(cmbTipoMovimiento.getSelectedIndex()==0){
-					lblEfectivo.setValue(totalEfectivo.toString());
+					lblEfectivo.setValue(Util.toNumberFormat(totalEfectivo,2));
 //					Doublebox dblbxDevolucion = new Doublebox(totalDevolucion);
 //					dblbxDevolucion.setStyle("font-size:10px;font-align:right");
 //					dblbxDevolucion.setFormat("#,###,##0.00");
@@ -700,7 +743,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 //					dblbxDevolucion.setLocale(Locale.US);
 //					vlayout.appendChild(dblbxDevolucion);
 //					
-					lblTarjeta.setValue(totalTarjeta.toString());
+					lblTarjeta.setValue(Util.toNumberFormat(totalTarjeta,2));
 //					Doublebox dblbxCortesia = new Doublebox(totalCortesia);
 //					dblbxCortesia.setStyle("font-size:10px;font-align:right");
 //					dblbxCortesia.setFormat("#,###,##0.00");
@@ -708,7 +751,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 //					dblbxCortesia.setLocale(Locale.US);
 //					vlayout.appendChild(dblbxCortesia);
 //					
-					lblCortesias.setValue(totalCortesia.toString());
+					lblCortesias.setValue(Util.toNumberFormat(totalCortesia,2));
 //					Doublebox dblbxCredito = new Doublebox(totalCredito);
 //					dblbxCredito.setStyle("font-size:10px;font-align:right");
 //					dblbxCredito.setFormat("#,###,##0.00");
@@ -716,7 +759,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 //					dblbxCredito.setLocale(Locale.US);
 //					vlayout.appendChild(dblbxCredito);
 //					
-					lblCredito.setValue(totalCredito.toString());
+					lblCredito.setValue(Util.toNumberFormat(totalCredito,2));
 //					Doublebox dblbxPrepagado = new Doublebox(totalPrepagado);
 //					dblbxPrepagado.setStyle("font-size:10px;font-align:right");
 //					dblbxPrepagado.setFormat("#,###,##0.00");
@@ -724,7 +767,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 //					dblbxPrepagado.setLocale(Locale.US);
 //					vlayout.appendChild(dblbxPrepagado);
 //					
-					lblRecibos.setValue(totalRecibos.toString());
+					lblRecibos.setValue(Util.toNumberFormat(totalEquipajePCE,2));
 //					Doublebox dblbxRecibos = new Doublebox(totalRecibos);
 //					dblbxRecibos.setStyle("font-size:10px;font-align:right");
 //					dblbxRecibos.setFormat("#,###,##0.00");
@@ -732,7 +775,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 //					dblbxRecibos.setLocale(Locale.US);
 //					vlayout.appendChild(dblbxRecibos);
 //					
-					lblNotascredito.setValue(totalNotasCredito.toString());
+					lblNotascredito.setValue(Util.toNumberFormat(totalNotasCredito,2));
 //					Doublebox dblbxVentaEF = new Doublebox(totalEfectivo);
 //					dblbxVentaEF.setStyle("font-size:10px;font-align:right");
 //					dblbxVentaEF.setFormat("#,###,##0.00");
@@ -740,7 +783,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 //					dblbxVentaEF.setLocale(Locale.US);
 //					vlayout.appendChild(dblbxVentaEF);
 //					
-					lblDevoluciones.setValue(totalDevolucion.toString());
+					lblDevoluciones.setValue(Util.toNumberFormat(totalDevolucion,2));
 //					Doublebox dblbxVentaTC = new Doublebox(totalTarjeta);
 //					dblbxVentaTC.setStyle("font-size:10px;font-align:right");
 //					dblbxVentaTC.setFormat("#,###,##0.00");
@@ -748,13 +791,16 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 //					dblbxVentaTC.setLocale(Locale.US);
 //					vlayout.appendChild(dblbxVentaTC);
 //					
-					lblPrepagado.setValue(totalPrepagado.toString());
+					lblPrepagado.setValue(Util.toNumberFormat(totalPrepagado,2));
 //					Doublebox dblbxNotaCredito = new Doublebox(totalNotasCredito);
 //					dblbxNotaCredito.setStyle("font-size:10px;font-align:right");
 //					dblbxNotaCredito.setFormat("#,###,##0.00");
 //					dblbxNotaCredito.setWidth("57px");
 //					dblbxNotaCredito.setLocale(Locale.US);
 //					vlayout.appendChild(dblbxNotaCredito);
+					
+					lblEfectivoDolares.setValue(Util.toNumberFormat(totalEfectivoDolares, 2));
+					lblCreditoDolares.setValue(Util.toNumberFormat(totalCreditoDolares, 2));
 					
 					grdTotales.setVisible(true);
 				}
@@ -1304,7 +1350,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 			DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.exitoAnulacion"));
 			wndAnular.onClose();
 			onBuscarVentas();
-		}			
+		}
 	}
 	
 	public void previoDetalle(Boolean isPrevio) throws Exception{
@@ -1328,8 +1374,9 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 			}
 			
 			Double totalEfectivo=dblbxTotal.getValue()!=null?dblbxTotal.getValue():0.00;
+			Double totalEfectivoDolares = dbxTotalDolares.getValue()!=null?dbxTotalDolares.getValue():0.00;
 			
-			File file =CreateDocument.creaDetalleLiquidacion(lstVentas, nameFile, cmbAgencia.getText().trim(), cmbCounter.getText().trim(), rangoFechas,totalEfectivo);
+			File file =CreateDocument.creaDetalleLiquidacion(lstVentas, nameFile, cmbAgencia.getText().trim(), cmbCounter.getText().trim(), rangoFechas,totalEfectivo, totalEfectivoDolares);
 //			String src = Constantes.URL_DIRECTORY_DETALLE_LIQUIDACION+nameFile;
 			String src = Constantes.URL_DIRECTORY_DETALLE_LIQUIDACION+Constantes.CLAVE_PAHT+nameFile;
 						

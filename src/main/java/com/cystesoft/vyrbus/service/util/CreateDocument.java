@@ -1106,6 +1106,19 @@ public class CreateDocument implements Serializable {
 			linea=tabular(3)+"EFECTIVO"+tabular(40-longitud_C)+liquidacion2.getCantidadContado()+tabular(19-longitud_M)+Util.toNumberFormat(liquidacion2.getMontoContado(),2);
 			bw.write(linea+NEWLINE);
 			
+			//---> line 11: --> Contado Dolares
+			if(liquidacion2.getCantidadContadoDolares()>0) {
+				longitud_C=liquidacion2.getCantidadContadoDolares().toString().length();
+				longitud_M=(int) liquidacion2.getMontoContadoDolares();
+				longitud_M = longitud_M.toString().length(); 
+				if (longitud_M==4)
+					longitud_M += +1;
+				else if (longitud_M==5)
+					longitud_M += +2;
+				linea=tabular(3)+"EFECTIVO DOLARES"+tabular(32-longitud_C)+liquidacion2.getCantidadContadoDolares()+tabular(19-longitud_M)+Util.toNumberFormat(liquidacion2.getMontoContadoDolares(),2);
+				bw.write(linea+NEWLINE);
+			}
+			
 			//---> line 12: --> Tarjeta visa
 			longitud_C=liquidacion2.getCantidadTarjetaVisa().toString().length();
 			longitud_M=(int) liquidacion2.getMontoTarjetaVisa();
@@ -1162,6 +1175,19 @@ public class CreateDocument implements Serializable {
 				longitud_M += +2;
 			linea=tabular(3)+"CREDITOS"+tabular(40-longitud_C)+liquidacion2.getCantidadCreditos()+tabular(19-longitud_M)+Util.toNumberFormat(liquidacion2.getMontoCreditos(),2);
 			bw.write(linea+NEWLINE);
+			
+			//---> line 16: --> Creditos
+			if(liquidacion2.getCantidadCreditosDolares()>0) {
+				longitud_C=liquidacion2.getCantidadCreditosDolares().toString().length();
+				longitud_M=(int) liquidacion2.getMontoCreditosDolares();
+				longitud_M = longitud_M.toString().length();
+				if (longitud_M==4)
+					longitud_M += +1;
+				else if (longitud_M==5)
+					longitud_M += +2;
+				linea=tabular(3)+"CREDITOS DOLARES"+tabular(32-longitud_C)+liquidacion2.getCantidadCreditosDolares()+tabular(19-longitud_M)+Util.toNumberFormat(liquidacion2.getMontoCreditosDolares(),2);
+				bw.write(linea+NEWLINE);
+			}
 			
 			//---> line 17: --> PCE
 			longitud_C=liquidacion2.getCantidadPCE().toString().length();
@@ -1236,6 +1262,25 @@ public class CreateDocument implements Serializable {
 				longitud_M += +3;
 			linea=tabular(3)+"TOTAL VENTAS"+tabular(36-longitud_C)+cantidadVentaPasajes+tabular(19-longitud_M)+Util.toNumberFormat(totalVentaPasajes,2);
 			bw.write(linea+NEWLINE);
+			
+			double totalVentaPasajesDolares = 0.0;
+			Integer cantidadVentaPasajesDolares = 0;
+			if(liquidacion2.getCantidadContadoDolares()>0 || liquidacion2.getCantidadCreditosDolares()>0) {
+				//---> liena 18: totales
+				totalVentaPasajesDolares=liquidacion2.getMontoContadoDolares()+liquidacion2.getMontoCreditosDolares();
+				cantidadVentaPasajesDolares=liquidacion2.getCantidadContadoDolares()+liquidacion2.getCantidadCreditosDolares();
+				longitud_C=cantidadVentaPasajesDolares.toString().length();
+				longitud_M=(int) totalVentaPasajesDolares;
+				longitud_M = longitud_M.toString().length();
+				if (longitud_M==4)
+					longitud_M += +1;
+				else if (longitud_M==5)
+					longitud_M += +2;
+				else if (longitud_M==6)
+					longitud_M += +3;
+				linea=tabular(3)+"TOTAL VENTAS DOLARES"+tabular(28-longitud_C)+cantidadVentaPasajesDolares+tabular(19-longitud_M)+Util.toNumberFormat(totalVentaPasajesDolares,2);
+				bw.write(linea+NEWLINE);
+			}
 						
 			//---> linea 19: Otros ingresos
 			bw.write(NEWLINE);
@@ -1476,6 +1521,19 @@ public class CreateDocument implements Serializable {
 			linea=tabular(3)+"VENTA A CREDITO"+tabular(33-longitud_C)+liquidacion2.getCantidadCreditos()+tabular(19-longitud_M)+Util.toNumberFormat(liquidacion2.getMontoCreditos(),2);
 			bw.write(linea+NEWLINE);
 			
+			if(liquidacion2.getCantidadCreditosDolares()>0) {
+				//---> linea 33: Venta a credito
+				longitud_C=liquidacion2.getCantidadCreditosDolares().toString().length();
+				longitud_M=(int) liquidacion2.getMontoCreditosDolares();
+				longitud_M = longitud_M.toString().length();
+				if (longitud_M==4)
+					longitud_M += +1;
+				else if (longitud_M==5)
+					longitud_M += +2;
+				linea=tabular(3)+"VENTA A CREDITO US$"+tabular(29-longitud_C)+liquidacion2.getCantidadCreditosDolares()+tabular(19-longitud_M)+Util.toNumberFormat(liquidacion2.getMontoCreditosDolares(),2);
+				bw.write(linea+NEWLINE);
+			}
+			
 			//---> linea 34: Venta Prepagada
 			longitud_C=liquidacion2.getCantidadPrepagado().toString().length();
 			longitud_M=(int) liquidacion2.getMontoPrepagado();
@@ -1577,6 +1635,27 @@ public class CreateDocument implements Serializable {
 			linea=tabular(3)+"TOTAL EGRESOS"+tabular(35-longitud_C)+CantidadEgresos+tabular(19-longitud_M)+Util.toNumberFormat(Totalegresos,2);
 			bw.write(linea+NEWLINE);
 			
+			Integer cantidadEgresosDolares = 0;
+			double totalEgresosDolares = 0.0;
+			if(liquidacion2.getCantidadCreditosDolares()>0) {
+				//---> linea 37: Total Egresos
+				cantidadEgresosDolares = liquidacion2.getCantidadCreditosDolares();
+				totalEgresosDolares = liquidacion2.getMontoCreditosDolares();
+				
+				longitud_C=cantidadEgresosDolares.toString().length();
+				longitud_M=(int) totalEgresosDolares;
+				longitud_M = longitud_M.toString().length();
+				if (longitud_M==4)
+					longitud_M += +1;
+				else if (longitud_M==5)
+					longitud_M += +2;
+				else if (longitud_M==6)
+					longitud_M += +3;
+				
+				linea=tabular(3)+"TOTAL EGRESOS US$"+tabular(31-longitud_C)+cantidadEgresosDolares+tabular(19-longitud_M)+Util.toNumberFormat(totalEgresosDolares,2);
+				bw.write(linea+NEWLINE);
+			}
+			
 			bw.write(NEWLINE);
 			
 			//---> Operaciones coplementarias
@@ -1612,6 +1691,22 @@ public class CreateDocument implements Serializable {
 			linea=tabular(3)+"TOTAL A DEPOSITAR"+tabular(50-longitud_M)+Util.toNumberFormat(totalADepositar,2);
 			bw.write(linea+NEWLINE);
 			
+			double totalADepositarDolares = 0.0;
+			if(liquidacion2.getCantidadContadoDolares()>0 || liquidacion2.getCantidadCreditosDolares()>0) {
+				//---> linea 39: Total a depositar
+				totalADepositarDolares=totalVentaPasajesDolares-totalEgresosDolares;
+				longitud_M = (int) totalADepositarDolares;
+				longitud_M = longitud_M.toString().length();
+				if (longitud_M==4)
+					longitud_M += +1;
+				else if (longitud_M==5)
+					longitud_M += +2;
+				else if (longitud_M==6)
+					longitud_M += +3;
+				linea=tabular(3)+"TOTAL A DEPOSITAR US$"+tabular(46-longitud_M)+Util.toNumberFormat(totalADepositarDolares,2);
+				bw.write(linea+NEWLINE);
+			}
+			
 			if (liquidacion.getestadoLiquidacion().equals(Constantes.LIQUI_ESTA_CERRADO)){
 				//---> linea 40: Total Efectivo ingresado
 				longitud_M = liquidacion.getMontoIngresado().intValue();
@@ -1624,6 +1719,20 @@ public class CreateDocument implements Serializable {
 					longitud_M += +3;
 				linea=tabular(3)+"TOTAL EFECTIVO INGRESADO"+tabular(43-longitud_M)+Util.toNumberFormat(liquidacion.getMontoIngresado(),2);
 				bw.write(linea+NEWLINE);
+				
+				if(liquidacion.getMontoIngresadoDolares()>0.0) {
+					//---> linea 40: Total Efectivo ingresado
+					longitud_M = liquidacion.getMontoIngresadoDolares().intValue();
+					longitud_M = longitud_M.toString().length();
+					if (longitud_M==4)
+						longitud_M += +1;
+					else if (longitud_M==5)
+						longitud_M += +2;
+					else if (longitud_M==6)
+						longitud_M += +3;
+					linea=tabular(3)+"TOTAL EFECTIVO INGRESADO US$"+tabular(39-longitud_M)+Util.toNumberFormat(liquidacion.getMontoIngresadoDolares(),2);
+					bw.write(linea+NEWLINE);
+				}
 				
 				//---> linea 41: Diferencia
 				double diferencia = (liquidacion.getMontoIngresado()-totalADepositar);
@@ -1638,6 +1747,22 @@ public class CreateDocument implements Serializable {
 					longitud_M += +3;
 				linea=tabular(3)+"DIFERENCIA"+tabular(57-longitud_M)+Util.toNumberFormat(diferencia,2);
 				bw.write(linea+NEWLINE);
+				
+				if(liquidacion.getMontoIngresadoDolares()>0.0) {
+					//---> linea 41: Diferencia
+					double diferenciaDolares = (liquidacion.getMontoIngresadoDolares()-totalADepositarDolares);
+					longitud_M = new Double(diferenciaDolares).intValue();
+					longitud_M = longitud_M.toString().length();// Util.toNumberFormat(diferencia,2).length();
+//					longitud_M = longitud_M.toString().length();
+					if (longitud_M==4)
+						longitud_M += +1;
+					else if (longitud_M==5)
+						longitud_M += +2;
+					else if (longitud_M==6)
+						longitud_M += +3;
+					linea=tabular(3)+"DIFERENCIA US$"+tabular(53-longitud_M)+Util.toNumberFormat(diferenciaDolares,2);
+					bw.write(linea+NEWLINE);
+				}
 			}
 						
 			//---> linea 42: salto de linea
@@ -2660,7 +2785,7 @@ public class CreateDocument implements Serializable {
 	}
 	
 	
-	public static final File creaDetalleLiquidacion(List<VentaPasaje> lstVentas,String nameFile, String local, String usuario, String rangoFechas, Double totalEfectivo){
+	public static final File creaDetalleLiquidacion(List<VentaPasaje> lstVentas,String nameFile, String local, String usuario, String rangoFechas, Double totalEfectivo, Double totalDolares){
 					
 //		String fichero = Constantes.DIRECTORY_DETALLE_LIQUIDACION +nameFile;
 		String fichero = Constantes.DIRECTORY_DETALLE_LIQUIDACION +Constantes.CLAVE_PAHT +nameFile;
@@ -2756,6 +2881,9 @@ public class CreateDocument implements Serializable {
 			bw.write(linea+NEWLINE);
 			
 			linea=tabular(83-totalEfectivo.toString().length())+"TOTAL EFECTIVO : "+Util.toNumberFormat(totalEfectivo, 2); 
+			bw.write(linea+NEWLINE);
+			
+			linea=tabular(84-totalDolares.toString().length())+"TOTAL DOLARES : "+Util.toNumberFormat(totalDolares, 2); 
 			bw.write(linea+NEWLINE);
 
 			bw.close();
