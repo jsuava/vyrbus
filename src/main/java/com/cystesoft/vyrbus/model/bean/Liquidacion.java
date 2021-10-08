@@ -21,6 +21,7 @@ public class Liquidacion extends GenericBean implements java.io.Serializable {
 	private Date fechaLiquidacion;
 	private Double montoIngresado;
 	private Integer estadoLiquidacion;
+	private Double montoIngresadoDolares;
 	
 	private Set<DetalleLiquidacion> detalleLiquidaciones = new HashSet<DetalleLiquidacion>(0);
 	private Set<LiquidacionOficina> liquidacionOficinas = new HashSet<LiquidacionOficina>(0);
@@ -50,6 +51,11 @@ public class Liquidacion extends GenericBean implements java.io.Serializable {
 	private double montoCreditos;
 	private Integer cantidadPCE;
 	private double montoPCE;
+	private Integer cantidadCreditosDolares;
+	private double montoCreditosDolares;
+	private Integer cantidadContadoDolares;
+	private double montoContadoDolares;
+	
 	
 	//recibos de caja con tarjeta 
 	private Integer cantidadTarjetaVisaRC;
@@ -777,6 +783,76 @@ public class Liquidacion extends GenericBean implements java.io.Serializable {
 	 */
 	public void setMontoPCE(double montoPCE) {
 		this.montoPCE = montoPCE;
+	}
+
+	/**
+	 * @return the cantidadCreditosDolares
+	 */
+	public Integer getCantidadCreditosDolares() {
+		return cantidadCreditosDolares;
+	}
+
+	/**
+	 * @param cantidadCreditosDolares the cantidadCreditosDolares to set
+	 */
+	public void setCantidadCreditosDolares(Integer cantidadCreditosDolares) {
+		this.cantidadCreditosDolares = cantidadCreditosDolares;
+	}
+
+	/**
+	 * @return the montoCreditosDolares
+	 */
+	public double getMontoCreditosDolares() {
+		return montoCreditosDolares;
+	}
+
+	/**
+	 * @param montoCreditosDolares the montoCreditosDolares to set
+	 */
+	public void setMontoCreditosDolares(double montoCreditosDolares) {
+		this.montoCreditosDolares = montoCreditosDolares;
+	}
+
+	/**
+	 * @return the cantidadContadoDolares
+	 */
+	public Integer getCantidadContadoDolares() {
+		return cantidadContadoDolares;
+	}
+
+	/**
+	 * @param cantidadContadoDolares the cantidadContadoDolares to set
+	 */
+	public void setCantidadContadoDolares(Integer cantidadContadoDolares) {
+		this.cantidadContadoDolares = cantidadContadoDolares;
+	}
+
+	/**
+	 * @return the montoContadoDolares
+	 */
+	public double getMontoContadoDolares() {
+		return montoContadoDolares;
+	}
+
+	/**
+	 * @param montoContadoDolares the montoContadoDolares to set
+	 */
+	public void setMontoContadoDolares(double montoContadoDolares) {
+		this.montoContadoDolares = montoContadoDolares;
+	}
+
+	/**
+	 * @return the montoIngresadoDolares
+	 */
+	public Double getMontoIngresadoDolares() {
+		return montoIngresadoDolares;
+	}
+
+	/**
+	 * @param montoIngresadoDolares the montoIngresadoDolares to set
+	 */
+	public void setMontoIngresadoDolares(Double montoIngresadoDolares) {
+		this.montoIngresadoDolares = montoIngresadoDolares;
 	}
 
 }

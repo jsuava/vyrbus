@@ -53,7 +53,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 						"u.c_apepat as ApPaterno, u.c_apemat as ApMarterno, u.c_nombre as Nombres, "+//7-9
 						"l.d_fecliq as FechaLiquidacion, l.audfecmod as FechaMod, "+//10-11
 						"l.audfecins as FechaInsercion, l.audipinse as ipinsercion, l.audusuins as susuarioInsercion, "+ //12-14
-						"l.n_moning "+ //15
+						"l.n_moning, l.n_moningdol "+ //15-16
 				"FROM vrtliquidacion l " +
 					"INNER JOIN vrmagencia a ON (a.agencia_id=l.agencia_id) "+
 					"INNER JOIN vrmusuario u ON (u.usuario_id=l.usuario_id) "+
@@ -95,6 +95,8 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 				liquidacion.setUsuarioInsercion(obj[14].toString());
 			if (obj[15] !=null)
 				liquidacion.setMontoIngresado(((BigDecimal) obj[15]).doubleValue());
+			if (obj[16] !=null)
+				liquidacion.setMontoIngresadoDolares(((BigDecimal) obj[16]).doubleValue());
 			
 			liquidacion.setUsuario(usuario);
 			liquidacion.setAgencia(agencia);
@@ -143,7 +145,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 	public void actualizar(Liquidacion liquidacion) throws Exception {
 		String sql="UPDATE VRTLIQUIDACION SET AUDIPMODI='"+liquidacion.getIpModificacion()+"', AUDUSUMOD='"+liquidacion.getUsuarioModificacion()+
 					"', N_MONING="+liquidacion.getMontoIngresado()+",N_ESTLIQ="+liquidacion.getestadoLiquidacion()+
-					" WHERE LIQUIDACION_ID="+liquidacion.getId();
+					", N_MONINGDOL="+liquidacion.getMontoIngresadoDolares()+" WHERE LIQUIDACION_ID="+liquidacion.getId();
 		log.info(sql);
 		getSession().createSQLQuery(sql).executeUpdate();
 		//super.update(liquidacion);
@@ -239,7 +241,8 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 						         "SUM(v.n_imppagtar) AS MIX_TARJETA, "+ //9-9
 						         "v.c_tiptra tipoTransaccion, "+//10-10
 						         "v.c_rucclicre rucCliCre, v.canven_id, "+//11-12
-						         "SUM(NVL(v.n_imppagdif,0)) n_imppagdif "+ //13
+						         "SUM(NVL(v.n_imppagdif,0)) n_imppagdif, "+ //13
+						         "v.tipmon_id " + //14
 						"FROM vrtvenpas v  " +
 							"INNER JOIN vrmtipcom tc ON (v.tipcom_id = tc.tipcom_id) "+
 							"INNER JOIN vrmforpag fp ON (v.forpag_id = fp.forpag_id) "+
@@ -254,7 +257,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 							"AND v.tipmov_id not in(5,13) "+
 							"AND v.c_Estreg='A' "+
 							"AND v.n_imppag>0 AND NVL(v.n_imppagdif,0)=0 "+
-						"GROUP BY tc.tipcom_id, fp.forpag_id, tfp.tipforpag_id, otc.opetarcre_id, tm.tipmov_id, v.c_tiptra,v.c_rucclicre,v.canven_id "+
+						"GROUP BY tc.tipcom_id, fp.forpag_id, tfp.tipforpag_id, otc.opetarcre_id, tm.tipmov_id, v.c_tiptra,v.c_rucclicre,v.canven_id,v.tipmon_id "+
 					"UNION ALL "+
 						"SELECT  tc.tipcom_id, fp.forpag_id, tfp.tipforpag_id, otc.opetarcre_id, tm.tipmov_id, NULL as tipgas_id, "+ //0-5
 						         "COUNT(v.n_imppag) AS CANTIDAD, "+ //6-6
@@ -263,7 +266,8 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 						         "SUM(v.n_imppagtar) AS MIX_TARJETA, "+ //9-9
 						         "v.c_tiptra tipoTransaccion, "+//10-10
 						         "v.c_rucclicre rucCliCre, v.canven_id, "+//11-12
-						         "SUM(NVL(v.n_imppagdif,0)) n_imppagdif "+ //13
+						         "SUM(NVL(v.n_imppagdif,0)) n_imppagdif, "+ //13
+						         "v.tipmon_id " + //14
 						"FROM vrtvenpas v  " +
 							"INNER JOIN vrmtipcom tc ON (v.tipcom_id = tc.tipcom_id) "+
 							"INNER JOIN vrmforpag fp ON (v.forpag_id = fp.forpag_id) "+
@@ -278,7 +282,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 							"AND v.tipmov_id not in(5,13) "+
 							"AND v.c_Estreg='A' "+
 							"AND v.n_imppag>0 AND NVL(v.n_imppagdif,0)>0 "+
-						"GROUP BY tc.tipcom_id, fp.forpag_id, tfp.tipforpag_id, otc.opetarcre_id, tm.tipmov_id, v.c_tiptra,v.c_rucclicre,v.canven_id "+
+						"GROUP BY tc.tipcom_id, fp.forpag_id, tfp.tipforpag_id, otc.opetarcre_id, tm.tipmov_id, v.c_tiptra,v.c_rucclicre,v.canven_id,v.tipmon_id "+
 					"UNION ALL "+
 						"SELECT NULL,NULL,NULL,NULL,NULL,tg.tipgas_id, "+ 					         
 						        "COUNT(g.n_monto) AS CANTIDAD,  "+ 
@@ -286,7 +290,8 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 						        "0.00 AS MIX_EFECTIVO, " +
 						        "0.00 AS MIX_TARJETA, "+
 						        "null tipoTransaccion, "+//10-10
-						        "null rucCliCre, null canven_id, 0.00 n_imppagdif "+//11-13
+						        "null rucCliCre, null canven_id, 0.00 n_imppagdif, "+//11-13
+						        "null " + //14
 						"FROM vrtgasto g "+
 							"INNER JOIN vrmtipgas tg ON (tg.tipgas_id=g.tipgas_id) "+
 							"INNER JOIN (SELECT dl.gasto_id FROM vrtdetliq dl "+
@@ -323,6 +328,8 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 		Integer cantidadGastoAdminEfectivo=0;double montoGastoAdminEfectivo=.00;
 		Integer cantidadGastoAdminTarjetaVisa=0;double montoGastoAdminTarjetaVisa=.00;
 		Integer cantidadGastoAdminTarjetaMastercard=0;double montoGastoAdminTarjetaMastercard=.00;
+		Integer cantidadContadoDolares=0; double montoContadoDolares = 0.0;
+		Integer cantidadCreditoDolares=0; double montoCreditoDolares = 0.0;
 		
 		Integer cantidadPCE=0; double montoPCE=0.0;
 		
@@ -336,6 +343,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 			String rucClienteCredito=(obj[11]!=null?obj[11].toString():null);
 			
 			Double importePagadoDiferecnia=((BigDecimal)obj[13]).doubleValue();
+			Integer idTipoMoneda = obj[14]==null?null:((BigDecimal)obj[14]).intValue();
 			
 			Double importeOperacion=.00;
 			Integer cantidadOperacion=0;
@@ -372,8 +380,13 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 								cantidadGastoAdminEfectivo+=+cantidadOperacion;
 								montoGastoAdminEfectivo+=+importeOperacion;
 							}else{
-								cantidadContado+=+cantidadOperacion;
-								montoContado+=+importeOperacion;	
+								if(idTipoMoneda==null) {
+									cantidadContado+=+cantidadOperacion;
+									montoContado+=+importeOperacion;
+								}else {
+									cantidadContadoDolares+=+cantidadOperacion;
+									montoContadoDolares+=+importeOperacion;
+								}
 							}
 						}
 					}else if(tipoFormaPagoID==Constantes.ID_TIPFORPAG_TARJETA ){ //TARJETA
@@ -495,8 +508,13 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 									
 										
 				}else if(((BigDecimal)obj[1]).intValue()==Constantes.ID_FORPAG_CREDITO){ //CREDITO
-					cantidadCredito+=+cantidadOperacion;
-					montoCredito+=+importeOperacion;	
+					if(idTipoMoneda==null) {
+						cantidadCredito+=+cantidadOperacion;
+						montoCredito+=+importeOperacion;
+					}else {
+						cantidadCreditoDolares+=+cantidadOperacion;
+						montoCreditoDolares+=+importeOperacion;
+					}
 				}
 				
 			/*OTROS INGRESOS*/	
@@ -594,6 +612,10 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 		liquidacion.setMontoGastosAdminTarjetaMastercard(montoGastoAdminTarjetaMastercard);
 		liquidacion.setCantidadPCE(cantidadPCE);
 		liquidacion.setMontoPCE(montoPCE);
+		liquidacion.setCantidadCreditosDolares(cantidadCreditoDolares);
+		liquidacion.setMontoCreditosDolares(montoCreditoDolares);
+		liquidacion.setCantidadContadoDolares(cantidadContadoDolares);
+		liquidacion.setMontoContadoDolares(montoContadoDolares);
 		
 		return liquidacion;
 	}

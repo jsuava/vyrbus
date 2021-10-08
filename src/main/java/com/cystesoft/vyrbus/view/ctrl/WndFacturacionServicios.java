@@ -11,6 +11,7 @@ package com.cystesoft.vyrbus.view.ctrl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.TreeMap;
 
 import org.zkoss.zk.ui.Executions;
@@ -56,6 +57,7 @@ import com.cystesoft.vyrbus.model.bean.Servicio;
 import com.cystesoft.vyrbus.model.bean.TipoCobranza;
 import com.cystesoft.vyrbus.model.bean.TipoComprobante;
 import com.cystesoft.vyrbus.model.bean.TipoFormaPago;
+import com.cystesoft.vyrbus.model.bean.TipoMoneda;
 import com.cystesoft.vyrbus.model.bean.TipoMovimiento;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.service.exceptions.ClienteException;
@@ -65,7 +67,9 @@ import com.cystesoft.vyrbus.service.exceptions.EspecieValoradaNotAvailableExcept
 import com.cystesoft.vyrbus.service.exceptions.FormaPagoNullException;
 import com.cystesoft.vyrbus.service.exceptions.ImporteMixtoNullException;
 import com.cystesoft.vyrbus.service.exceptions.RazonSocialNullException;
+import com.cystesoft.vyrbus.service.exceptions.TipoCambioNullException;
 import com.cystesoft.vyrbus.service.exceptions.TipoCobranzaNullException;
+import com.cystesoft.vyrbus.service.exceptions.TipoMonedaNullException;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.Messages;
@@ -87,6 +91,7 @@ public class WndFacturacionServicios extends WndBase {
 	private Combobox cmbTipoComprobante;
 	private Combobox cmbFormaPago;
 	private Combobox cmbTipoCobranza;
+	private Combobox cmbTipoMoneda;
 	private Textbox txtNumeroComprobante;
 	private Textbox txtDocumento;
 	private Textbox txtCliente;
@@ -97,6 +102,7 @@ public class WndFacturacionServicios extends WndBase {
 	private Doublebox dbxImporteResumen;
 	private Doublebox dbxIGVResumen;
 	private Doublebox dbxTotalResumen;
+	private Doublebox dbxTipoCambio;
 	private Checkbox chkIGV;
 	private Textbox txtIdCliente;
 	private Window wndAnular = null;
@@ -302,8 +308,12 @@ public class WndFacturacionServicios extends WndBase {
 					&& ((FormaPago)cmbFormaPago.getSelectedItem().getValue()).getId() == Constantes.ID_FORPAG_CREDITO 
 					&& !(cmbTipoCobranza.getSelectedItem().getValue() instanceof TipoCobranza))
 				throw new TipoCobranzaNullException();
-			else if(dbxImporte.getValue() == null && dbxImporte.getValue()!=0.0)
+			else if(dbxImporte.getValue() == null || dbxImporte.getValue()==0.0)
 				throw new ImporteMixtoNullException();
+			else if(!(cmbTipoMoneda.getSelectedItem().getValue() instanceof TipoMoneda))
+				throw new TipoMonedaNullException();
+			else if(((TipoMoneda)cmbTipoMoneda.getSelectedItem().getValue()).getId()!=Constantes.ID_TIPMON_SOLES && dbxTipoCambio.getValue()==null)
+				throw new TipoCambioNullException();
 			else if(txtGlosa.getText().trim().equals(""))
 				throw new DenominacionNullException();
 			
@@ -361,6 +371,12 @@ public class WndFacturacionServicios extends WndBase {
 							servicioEspecial.setEsFechaAbierta(0);
 							servicioEspecial.setNumeroControl("T00000");
 							
+							if(((TipoMoneda)cmbTipoMoneda.getSelectedItem().getValue()).getId()!=Constantes.ID_TIPMON_SOLES) {
+								servicioEspecial.setTipoMoneda(cmbTipoMoneda.getSelectedItem().getValue());
+								servicioEspecial.setTipoCambio(dbxTipoCambio.getValue());
+								servicioEspecial.setImportePagadoEquibalente(dbxTipoCambio.getValue() * servicioEspecial.getTarifa());
+							}
+							
 							UtilData.auditarRegistro(servicioEspecial, getUsuario(), Executions.getCurrent());
 							servicioEspecial.setUsuarioHardware(getUsuarioHardware());
 							servicioEspecial.setEstadoRegistro(Constantes.VALUE_ACTIVO);
@@ -388,6 +404,7 @@ public class WndFacturacionServicios extends WndBase {
 						}
 					}catch (Exception ex) {
 						DlgMessage.error(ex.getMessage());
+						ex.printStackTrace();
 					}
 				}
 			});
@@ -404,6 +421,10 @@ public class WndFacturacionServicios extends WndBase {
 			DlgMessage.information("Debe seleccionar el tipo de cobranza", cmbTipoCobranza);
 		}catch(ImporteMixtoNullException iex) {
 			DlgMessage.information("Debe de ingresar el importe del documento", dbxImporte);
+		}catch(TipoMonedaNullException tmnex) {
+			DlgMessage.information("Debe de seleccionar el Tipo de Moneda", cmbTipoMoneda);
+		}catch(TipoCambioNullException tcnex) {
+			DlgMessage.information("Debe de ingresar el Tipo de Cambio", dbxTipoCambio);
 		}catch(DenominacionNullException dex) {
 			DlgMessage.information("Debe de ingresar la Glosa del documento a emitir", txtGlosa);
 		}catch (Exception ex) {
@@ -655,16 +676,50 @@ public class WndFacturacionServicios extends WndBase {
 		dbxImporte = new Doublebox();
 		dbxImporte.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			public void onEvent(Event e) {
-				txtGlosa.setFocus(true);
+				cmbTipoMoneda.setFocus(true);
 			}
 		});
 		dbxImporte.setFormat("###,##0.00");
 		dbxImporte.setWidth("60px");
 		dbxImporte.setStyle("color: red; font-weight: bold; font-size:14px;");
+		dbxImporte.setLocale(Locale.US);
 		hlayout.appendChild(dbxImporte);
 		chkIGV = new Checkbox("Incluido IGV");
 		hlayout.appendChild(chkIGV);
 		row.appendChild(hlayout);
+		
+		rows.appendChild(row);
+		
+		row = new Row();
+		label = new Label("MONEDA :");
+		row.appendChild(label);
+		cmbTipoMoneda = new Combobox();
+		cmbTipoMoneda.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			public void onEvent(Event e) {
+				if(cmbTipoMoneda.getSelectedItem().getValue() instanceof TipoMoneda) {
+					if(((TipoMoneda)cmbTipoMoneda.getSelectedItem().getValue()).getId()==Constantes.ID_TIPMON_SOLES)
+						txtGlosa.setFocus(true);
+					else
+						dbxTipoCambio.setFocus(true);
+				}
+			}
+		});
+		cmbTipoMoneda.setWidth("110px");
+		row.appendChild(cmbTipoMoneda);
+		row.appendChild(new Label());
+		row.appendChild(new Label());
+		label = new Label("TIPO CAMBIO :");
+		row.appendChild(label);
+		dbxTipoCambio = new Doublebox();
+		dbxTipoCambio.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			public void onEvent(Event e) {
+				txtGlosa.setFocus(true);
+			}
+		});
+		dbxTipoCambio.setFormat("#0.00");
+		dbxTipoCambio.setDisabled(true);
+		dbxTipoCambio.setLocale(Locale.US);
+		row.appendChild(dbxTipoCambio);
 		
 		rows.appendChild(row);
 		
@@ -737,6 +792,7 @@ public class WndFacturacionServicios extends WndBase {
 		dbxImporteResumen.setFormat("###,##0.00");
 		dbxImporteResumen.setWidth("70px");
 		dbxImporteResumen.setStyle("color: red; font-weight: bold; font-size:14px;");
+		dbxImporteResumen.setLocale(Locale.US);
 		dbxImporteResumen.setReadonly(true);
 		rowPagos.appendChild(dbxImporteResumen);
 		
@@ -748,6 +804,7 @@ public class WndFacturacionServicios extends WndBase {
 		dbxIGVResumen.setFormat("###,##0.00");
 		dbxIGVResumen.setWidth("70px");
 		dbxIGVResumen.setStyle("color: red; font-weight: bold; font-size:14px;");
+		dbxIGVResumen.setLocale(Locale.US);
 		dbxIGVResumen.setReadonly(true);
 		rowPagos.appendChild(dbxIGVResumen);
 		
@@ -759,6 +816,7 @@ public class WndFacturacionServicios extends WndBase {
 		dbxTotalResumen.setFormat("###,##0.00");
 		dbxTotalResumen.setWidth("70px");
 		dbxTotalResumen.setStyle("color: red; font-weight: bold; font-size:14px;");
+		dbxTotalResumen.setLocale(Locale.US);
 		dbxTotalResumen.setReadonly(true);
 		rowPagos.appendChild(dbxTotalResumen);
 		
@@ -810,6 +868,7 @@ public class WndFacturacionServicios extends WndBase {
 		onLoadFormaPago();
 		UtilData.cargarTipoComprobanteSunat(cmbTipoComprobante, false);
 		UtilData.cargarDataCombo(cmbTipoCobranza, TipoCobranza.class, false);
+		UtilData.cargarTipoMoneda(cmbTipoMoneda, false);
 		cmbTipoComprobante.setSelectedIndex(2);
 		onLoadEspecieValorada();
 		
@@ -850,6 +909,18 @@ public class WndFacturacionServicios extends WndBase {
 				buscarCliente();
 			}
 		});
+		
+		cmbTipoMoneda.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			public void onEvent(Event e) {
+				if(cmbTipoMoneda.getSelectedItem().getValue() instanceof TipoMoneda && ((TipoMoneda)cmbTipoMoneda.getSelectedItem().getValue()).getId()!=Constantes.ID_TIPMON_SOLES) 
+					dbxTipoCambio.setDisabled(false);
+				else 
+					dbxTipoCambio.setDisabled(true);
+				
+				dbxTipoCambio.setValue(null);
+			}
+		});		
+		
 		
 		return win;
 	}

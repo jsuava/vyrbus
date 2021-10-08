@@ -80,7 +80,7 @@ public  class DetalleLiquidacionDAOImpl extends GenericDAOImpl implements Detall
 					  "AND (vp.c_rucclicre IS NULL OR vp.c_rucclicre NOT IN ('20100227461', '20102427891')) "+ //-->No pool (Ventas que realiza otro operador en tepsa) - 03/12/2016 - jabanto
 					  "AND vp.agencia_id=" +idAgencia+" "+
 					  "AND vp.usuario_id="+idUsuario+" "+
-					  "AND vp.tipmov_id not in ("+Constantes.ID_TIPMOV_ANULACION+","+Constantes.ID_TIPMOV_ANULACION_SISTEMA+") AND vp.c_tiptra IN ('1','3') "+					  
+					  "AND vp.tipmov_id not in ("+Constantes.ID_TIPMOV_ANULACION+","+Constantes.ID_TIPMOV_ANULACION_SISTEMA+") AND vp.c_tiptra IN ('1','3','5','6') "+					  
 					"GROUP BY  "+
 					        "CASE WHEN vp.forpag_id="+Constantes.ID_FORPAG_CREDITO+" AND vp.tipforpag_id!="+Constantes.ID_TIPFORPAG_CANJE_PUBLICITARIO+" THEN 4 "+
 					        	 "ELSE vp.tipforpag_id END "+
@@ -134,7 +134,7 @@ public  class DetalleLiquidacionDAOImpl extends GenericDAOImpl implements Detall
 					                               "FROM vrtvenpas vp "+
 					                               "WHERE vp.d_fecliq = to_date('"+fechaLiquidacion+"','dd/MM/yyyy') "+
 					                               "AND vp.agencia_id="+idAgencia+" AND vp.usuario_id="+idUsuario+"  "+
-					                               "AND vp.c_tiptra IN ('1','3','4')) ";
+					                               "AND vp.c_tiptra IN ('1','3','4','5','6')) ";
 		 getSession().createSQLQuery(sql).executeUpdate();
 		
 	}

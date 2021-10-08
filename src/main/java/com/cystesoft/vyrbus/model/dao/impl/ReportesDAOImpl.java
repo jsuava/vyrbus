@@ -1495,13 +1495,14 @@ public class ReportesDAOImpl extends GenericDAOImpl implements ReportesDAO {
 				itinerario.setRuta(rutaMayor);
 				itinerario.setServicio(servicio);
 				
-				PreferenciaAlimentaria preferenciaAlimentaria=new PreferenciaAlimentaria();
-				preferenciaAlimentaria.setId(((BigDecimal)obj[6]).intValue());
-								
+				PreferenciaAlimentaria preferenciaAlimentaria = new PreferenciaAlimentaria();
+				if(obj[6]!=null) 
+					preferenciaAlimentaria.setId(((BigDecimal)obj[6]).intValue());
+				
 				VentaPasaje ventaXItinerario=new VentaPasaje();
 				ventaXItinerario.setCantidadPax(((BigDecimal)obj[7]).intValue());
 				ventaXItinerario.setItinerario(itinerario);
-				ventaXItinerario.setPreferenciaAlimentaria(preferenciaAlimentaria);
+				ventaXItinerario.setPreferenciaAlimentaria(obj[6]==null?null:preferenciaAlimentaria);
 				
 				//Asocia las ventas por ruta a las ventas por itinerario.
 				List<VentaPasaje>lstVentaXRutaAdd=new ArrayList<VentaPasaje>();
@@ -1530,17 +1531,18 @@ public class ReportesDAOImpl extends GenericDAOImpl implements ReportesDAO {
 				itinerario.setRuta(rutaPax);
 				itinerario.setServicio(servicio);
 
-				PreferenciaAlimentaria preferenciaAlimentaria=new PreferenciaAlimentaria();
-				preferenciaAlimentaria.setId(((BigDecimal)obj[6]).intValue());
-
+				PreferenciaAlimentaria preferenciaAlimentaria = new PreferenciaAlimentaria();
+				if(obj[6]!=null) 
+					preferenciaAlimentaria.setId(((BigDecimal)obj[6]).intValue());
+					
 				VentaPasaje ventaXRuta=new VentaPasaje();
 				ventaXRuta.setCantidadPax(((BigDecimal)obj[7]).intValue());
 				ventaXRuta.setItinerario(itinerario);
-				ventaXRuta.setPreferenciaAlimentaria(preferenciaAlimentaria);
+				ventaXRuta.setPreferenciaAlimentaria(obj[6]==null?null:preferenciaAlimentaria);
 				
 				/* Agrega pasajeros */
 				List<VentaPasaje>lstPasajeros=new ArrayList<VentaPasaje>();
-				if(preferenciaAlimentaria.getId().intValue()!=Constantes.ID_PREALIM_MENU_DEL_DIA){
+				if(preferenciaAlimentaria.getId()!=null && preferenciaAlimentaria.getId().intValue()!=Constantes.ID_PREALIM_MENU_DEL_DIA){
 					for(VentaPasaje ventaPasajeros: lstPax){
 						if(ventaPasajeros.getItinerario().getId().longValue()==itinerario.getId().longValue() 
 								&& preferenciaAlimentaria.getId().intValue()==ventaPasajeros.getPreferenciaAlimentaria().getId().intValue()
@@ -1567,7 +1569,7 @@ public class ReportesDAOImpl extends GenericDAOImpl implements ReportesDAO {
 			
 			List<VentaPasaje>lstVentaXItinerarioAdd=new ArrayList<VentaPasaje>();
 			for(VentaPasaje ventaPasaje: lstVentaXItinerario){
-				if(ventaPasaje.getPreferenciaAlimentaria().getId().intValue()==alimentacion.getId().intValue() && 
+				if(ventaPasaje.getPreferenciaAlimentaria()!=null && ventaPasaje.getPreferenciaAlimentaria().getId().intValue()==alimentacion.getId().intValue() && 
 						ventaPasaje.getItinerario().getFechaPartida().getTime()==alimentacion.getFecha().getTime()){
 					lstVentaXItinerarioAdd.add(ventaPasaje);
 				}
