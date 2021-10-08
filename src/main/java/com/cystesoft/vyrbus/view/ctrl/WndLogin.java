@@ -120,11 +120,11 @@ public class WndLogin extends WndBase {
 //			txtLogin.setText("javalos");
 //			txtPassword.setText("tepsac");
 //			txtImagen.setText(cpaImagen.getValue());
-//			txtLogin.setText("moscco");
-//			txtPassword.setText("Ant@res1091");
-//			txtImagen.setText(cpaImagen.getValue());
-//			
-//			onAccess();
+			txtLogin.setText("moscco");
+			txtPassword.setText("Ant@res1091");
+			txtImagen.setText(cpaImagen.getValue());
+			
+			onAccess();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
