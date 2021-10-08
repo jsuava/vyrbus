@@ -2526,11 +2526,12 @@ public class UtilData extends Window {
 	 * @param usuario		: Objeto usuario
 	 * @throws Exception
 	 */
-	public static void procesaCierreCaja(Liquidacion liquidacion, Double monto,Usuario usuario) throws Exception{
+	public static void procesaCierreCaja(Liquidacion liquidacion, Double monto,Usuario usuario, Double montoDolares) throws Exception{
 		/*Actualiza liquidación*/
 		liquidacion.setMontoIngresado(monto!=null? monto: .00);
 		liquidacion.setEstadoLiquidacion(Constantes.LIQUI_ESTA_CERRADO);
 		liquidacion.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+		liquidacion.setMontoIngresadoDolares(montoDolares);
 //		auditarRegistro(liquidacion, usuario, Executions.getCurrent());
 		auditarRegistro(liquidacion, true, usuario, Executions.getCurrent());
 		ServiceLocator.getLiquidacionManager().actualizar(liquidacion);

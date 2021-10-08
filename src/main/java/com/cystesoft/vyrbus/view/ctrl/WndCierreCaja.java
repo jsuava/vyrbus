@@ -858,53 +858,63 @@ public class WndCierreCaja extends WndBase {
 	private  Window createWindowIngresMonto(final Liquidacion liquidacion) throws Exception {
 		final Window window = new Window();
 		window.setWidth("350px");
-		window.setTitle("::: Cierre Liquidación de Turno:::");
-		window.setWidth("350px");
+		window.setTitle("::: Cierre Liquidación de Turno :::");
+//		window.setWidth("350px");
 		window.setBorder(true);
 		
-		final Doublebox dbMonto;
-		dbMonto =  new Doublebox();
-		dbMonto.setValue(.00);
-		dbMonto.setWidth("100px");
-		dbMonto.setFormat("#,##0.00");
-		dbMonto.setLocale(Locale.US);
-		
 		Grid grid = new Grid();
-		Rows rows = new Rows();
-		
-		Hbox hbox = new Hbox();
-		hbox.setAlign("right");
 		
 		Columns columns=new Columns();
 		Column column=new Column();
 		column.setAlign("right");
+		column.setWidth("200px");
 		columns.appendChild(column);
 		columns.appendChild(new Column());
-		
 		grid.appendChild(columns);
 		
-		Space space = new Space();
+		Rows rows = new Rows();
 		Row row = new Row();
-		
 		row=new Row();
-		Label label = new Label("Ingrese total efectivo a Liquidar :");
+		Label label = new Label("Ingrese el efectivo en S/. a Liquidar :");
 		label.setStyle("font-size:11px !important;color:break");
 		row.appendChild(label);
+		final Doublebox dbMonto;
+		dbMonto =  new Doublebox();
+		dbMonto.setValue(.00);
+		dbMonto.setWidth("80px");
+		dbMonto.setFormat("#,##0.00");
+		dbMonto.setLocale(Locale.US);
 		row.appendChild(dbMonto);
 		rows.appendChild(row);
 		
+		row = new Row();
+		label = new Label("Ingrese el efectivo en US$ a Liquidar :");
+		label.setStyle("font-size:11px !important;color:break");
+		row.appendChild(label);
+		final Doublebox dbxMontoDolares;
+		dbxMontoDolares =  new Doublebox();
+		dbxMontoDolares.setValue(.00);
+		dbxMontoDolares.setWidth("80px");
+		dbxMontoDolares.setFormat("#,##0.00");
+		dbxMontoDolares.setLocale(Locale.US);
+		row.appendChild(dbxMontoDolares);
+		rows.appendChild(row);
+		
 		row=new Row();
 		row.appendChild(new Space());
 		row.appendChild(new Space());
 		rows.appendChild(row);
 		
-		space = new Space();
+		Space space = new Space();
 		space.setWidth("70px");
 		space.setHeight("35px");
+		Hbox hbox = new Hbox();
+		hbox.setAlign("right");
 		hbox.appendChild(space);
 		
 		grid.appendChild(rows);
 		window.appendChild(grid);
+		
 		hbox=new Hbox();
 		hbox.setAlign("center");
 		Div div=new Div();
@@ -947,11 +957,18 @@ public class WndCierreCaja extends WndBase {
 		dbMonto.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
+				dbxMontoDolares.setFocus(true);
+			}
+		});
+		/*Evento enter*/
+		dbxMontoDolares.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
 				Messagebox.show(Messages.getString("WndCierreCaja.Information.questionCerrarCaja"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
 					@Override
 					public void onEvent(Event e) throws Exception {
 						if(e.getName().equals("onYes")){
-							cerrarLiquidacion(liquidacion, dbMonto.getValue(), window);
+							cerrarLiquidacion(liquidacion, dbMonto.getValue(), window, dbxMontoDolares.getValue());
 						}
 					}
 				});
@@ -965,7 +982,7 @@ public class WndCierreCaja extends WndBase {
 					@Override
 					public void onEvent(Event e) throws Exception {
 						if(e.getName().equals("onYes")){
-							cerrarLiquidacion(liquidacion, dbMonto.getValue(), window);
+							cerrarLiquidacion(liquidacion, dbMonto.getValue(), window, dbxMontoDolares.getValue());
 						}
 					}
 				});
@@ -981,9 +998,9 @@ public class WndCierreCaja extends WndBase {
 	 * @param window 			: objeto window del cual esta llamando a este método.
 	 * @throws Exception
 	 */
-	private final void cerrarLiquidacion(final Liquidacion liquidacion, double montoIngresado, Window window) throws Exception{
+	private final void cerrarLiquidacion(final Liquidacion liquidacion, double montoIngresado, Window window, double montoIngresadoDolares) throws Exception{
 		/* Procesa cierre de caja*/
-		UtilData.procesaCierreCaja(liquidacion,montoIngresado,getUsuario());
+		UtilData.procesaCierreCaja(liquidacion, montoIngresado, getUsuario(), montoIngresadoDolares);
 		
 		/* Procesa cierre de caja de la venta de seguros*/
 //		VSLiquidacion vsLiquidacion=ServiceLocator.getVentaSeguroManager().buscarLiquidacion(liquidacion.getUsuario().getId(),liquidacion.getAgencia().getId(), Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()),Constantes.TRUE_VALUE);

@@ -210,7 +210,7 @@ public class WndRptCenasRuta extends WndBase implements Serializable {
 					Integer cantCenas=0;
 					Treechildren treechildrenXRuta = new Treechildren();
 					for(VentaPasaje ventaXRuta: ventaXItinerario.getLstVentaXRuta()){
-						if(ventaXRuta.getPreferenciaAlimentaria().getId().intValue()==alimentacion.getId().intValue() ){
+						if(ventaXRuta.getPreferenciaAlimentaria()!=null && ventaXRuta.getPreferenciaAlimentaria().getId().intValue()==alimentacion.getId().intValue() ){
 							Treeitem itemXRuta = new Treeitem();
 							Treerow rowXRuta = new Treerow();
 							

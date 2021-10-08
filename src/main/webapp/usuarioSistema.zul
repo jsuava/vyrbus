@@ -74,35 +74,24 @@
 			<groupbox closable="false" mold="3d" >
 				<caption label="DATOS PARA EL INICIO DE SESIÓN EN EL SISTEMA" style="color: #ffffff;"/>
 				<hbox>
-					<grid>
+					<grid width="500px">
 						<columns>
-							<column width="140px" align="right"/>
-							<column width="250px" />
+							<column width="150px" align="right"/>
+							<column />
 	<!-- 						<column width="120px" align="right"/> -->
 						</columns>
 						<rows>
 							<row>
 								<label value="USUARIO (*) :"/>
-								<textbox id="txtLogin" 
-										maxlength="20" 
-										style="text-transform:lowercase; font-size:12px !important" 
-										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtPassword)"/>
+								<textbox id="txtLogin" maxlength="20" style="text-transform:lowercase; font-size:12px !important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtPassword)"/>
 															
 							</row>
 							<row >
 								<label value="PASSWORD (*) :"/>
 								<hlayout>
-									<textbox  id="txtPassword"  
-											maxlength="128" 
-											type="password"   
-											c:onChanging="meterUpdate(event)" 
-											onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtConfirmaPassword)" />
- 									<image id="imgGeneratePassword" 
- 											onClick="wndUsuariosistema.generarPassword()"
- 											src="resources/mp_pwdautom.png"
- 											style="cursor:pointer" 
- 											tooltiptext="Haga click aqui para generar la contraseña aleatoriamente" 
- 											visible="false"/>  
+									<textbox  id="txtPassword" maxlength="128" type="password" c:onChanging="meterUpdate(event)" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtConfirmaPassword)" />
+ 									<image id="imgGeneratePassword" onClick="wndUsuariosistema.generarPassword()" src="resources/mp_pwdautom.png" style="cursor:pointer" tooltiptext="Haga click aqui para generar la contraseña aleatoriamente" visible="false"/>
+ 									<image id="imgShowPassword" onClick="wndUsuariosistema.mostrarPassword()" src="resources/mp_showPassword.png" style="cursor:pointer" tooltiptext="Haga click aqui para mostrar el Password" visible="false" />  
 									<vbox>
 										<div id="meter" width="240px">
 											<div sclass="meter-inner"/>

@@ -27,26 +27,15 @@
 		<rows>
 			<row>
 				<label value="FECHA INICIO :"/>
-				<datebox id="dtbxFechaInicio" format="dd/MM/yyyy" onChange="wndLiquidacionDiariaVentas.onValidateFecha()" 
-					onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(dtbxFechaFin)"/>
+				<datebox id="dtbxFechaInicio" format="dd/MM/yyyy" onChange="wndLiquidacionDiariaVentas.onValidateFecha()" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(dtbxFechaFin)"/>
 				<label value="FECHA FIN :"/>
-				<datebox id="dtbxFechaFin" format="dd/MM/yyyy" onChange="wndLiquidacionDiariaVentas.onValidateFecha()" 
-					onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbAgencia)"/>
+				<datebox id="dtbxFechaFin" format="dd/MM/yyyy" onChange="wndLiquidacionDiariaVentas.onValidateFecha()" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbAgencia)"/>
 				<label/>
 				<label/>
 				<hlayout>
-					<button id="btnExportar" 
-							image="resources/mp_excel.png"  
-							sclass="btnImage"
-							tooltiptext="Exportar a Excel." />
-					<button image="resources/mp_preliminar.png" 
-							onClick="wndLiquidacionDiariaVentas.previoDetalle(true)" 
-							sclass="btnImage" 
-							tooltiptext="Visualizar preliminar de impresión." />
-					<button image="resources/mp_imprimir.png"
-							onClick="wndLiquidacionDiariaVentas.previoDetalle(false)" 
-							sclass="btnImage"   
-							tooltiptext="Imprimir detallado de ventas."  />
+					<button id="btnExportar" image="resources/mp_excel.png" sclass="btnImage" tooltiptext="Exportar a Excel." />
+					<button image="resources/mp_preliminar.png" onClick="wndLiquidacionDiariaVentas.previoDetalle(true)" sclass="btnImage" tooltiptext="Visualizar preliminar de impresión." />
+					<button image="resources/mp_imprimir.png" onClick="wndLiquidacionDiariaVentas.previoDetalle(false)" sclass="btnImage" tooltiptext="Imprimir detallado de ventas."  />
 				</hlayout>
 			</row>
 			<row>
@@ -57,17 +46,8 @@
 				<label value="TIPO :"/>
 				<combobox id="cmbTipoMovimiento"/>				
 				<hlayout>
-					<button	autodisable="self" 
-							image="resources/mp_buscarEnabled.png"  
-							label="Buscar" 
-							onClick="wndLiquidacionDiariaVentas.onBuscarVentas()" 
-							sclass="btnCommandM" 
-							tooltiptext="Haga click aqui para realizar la busqueda."  />
-					<button image="resources/mp_cerrarEnabled.png"
-							label="Cerrar" 
-							onClick="wndLiquidacionDiariaVentas.closeTabWindow()" 
-							sclass="btnCommandM" 
-							tooltiptext="Haga click aqui para cerrar la ventana." />
+					<button	autodisable="self" image="resources/mp_buscarEnabled.png" label="Buscar" onClick="wndLiquidacionDiariaVentas.onBuscarVentas()" sclass="btnCommandM" tooltiptext="Haga click aqui para realizar la busqueda."  />
+					<button image="resources/mp_cerrarEnabled.png" label="Cerrar" onClick="wndLiquidacionDiariaVentas.closeTabWindow()" sclass="btnCommandM" tooltiptext="Haga click aqui para cerrar la ventana." />
 				</hlayout>
 			</row>
 		</rows>
@@ -79,7 +59,8 @@
 			<listheader label="N° CONTROL" width="80px" sort="auto" style="color: #ffffff;"/>
 			<listheader label="N° COMPROBANTE" width="110px" sort="auto" tooltiptext="Número de Comprobante" style="color: #ffffff;"/>
 			<listheader label="N° COMP. REF." width="110px" style="color: #ffffff;"/>
-			<listheader label="TARIFA" align="right" width="50px" style="color: #ffffff;"/>
+			<listheader label="MONEDA" align="center" width="55px" style="color: #ffffff;"/>
+			<listheader label="TARIFA" align="right" width="60px" style="color: #ffffff;"/>
 			<listheader label="RECARGO" align="right" width="60px" style="color: #ffffff;"/>
 			<listheader label="DESCUENTO" align="right" width="60px" style="color: #ffffff;"/>
 			<listheader label="A CUENTA" align="right" width="60px" style="color: #ffffff;"/>
@@ -107,24 +88,34 @@
 		</columns>
 		<rows>
 			<row style="background:#e0e0e0">
-				<label value="VENTAS EF :" style="font-size:12px !important;color:#4285F4;font-weight:bold;"/>
+				<label value="VENTAS EF (S/.) :" style="font-size:12px !important;color:#4285F4;font-weight:bold;"/>
 				<label id="lblEfectivo" value="" style="font-size:12px !important;color:#00695c;font-weight:bold;"/>
 				<label value="VENTAS TC :" style="font-size:12px !important;color:#4285F4;font-weight:bold;"/>
 				<label id="lblTarjeta" value="" style="font-size:12px !important;color:#00695c;font-weight:bold;"/>
 				<label value="CORTESIAS :" style="font-size:12px !important;color:#4285F4;font-weight:bold;"/>
 				<label id="lblCortesias" value="" style="font-size:12px !important;color:#00695c;font-weight:bold;"/>
-				<label value="CREDITO :" style="font-size:12px !important;color:#4285F4;font-weight:bold;"/>
+				<label value="CREDITO (S/.) :" style="font-size:12px !important;color:#4285F4;font-weight:bold;"/>
 				<label id="lblCredito" value="" style="font-size:12px !important;color:#00695c;font-weight:bold;"/>
 			</row>
 			<row style="background:#e0e0e0">
-				<label value="VENTAS PCE :" style="font-size:12px !important;color:#4285F4;font-weight:bold;"/>
-				<label id="lblRecibos" value="" style="font-size:12px !important;color:#00695c;font-weight:bold;"/>
+				<label value="VENTAS EF (US$) :" style="font-size:12px !important;color:#4285F4;font-weight:bold;"/>
+				<label id="lblEfectivoDolares" value="" style="font-size:12px !important;color:#00695c;font-weight:bold;"/>
 				<label value="NOTAS CREDITO :" style="font-size:12px !important;color:#4285F4;font-weight:bold;"/>
 				<label id="lblNotascredito" value="" style="font-size:12px !important;color:#00695c;font-weight:bold;"/>
 				<label value="DEVOLUCIONES :" style="font-size:12px !important;color:#4285F4;font-weight:bold;"/>
 				<label id="lblDevoluciones" value="" style="font-size:12px !important;color:#0d47a1;font-weight:bold;" />
+				<label value="CREDITO (US$) :" style="font-size:12px !important;color:#4285F4;font-weight:bold;"/>
+				<label id="lblCreditoDolares" value="" style="font-size:12px !important;color:#00695c;font-weight:bold;"/>
+			</row>
+			<row style="background:#e0e0e0">
+				<label value="VENTAS PCE :" style="font-size:12px !important;color:#4285F4;font-weight:bold;"/>
+				<label id="lblRecibos" value="" style="font-size:12px !important;color:#00695c;font-weight:bold;"/>
+				<label/>
+				<label/>
+				<label/>
+				<label/>
 				<label value="PREPAGADO :" style="font-size:12px !important;color:#4285F4;font-weight:bold;"/>
-				<label id="lblPrepagado" value="" style="font-size:12px !important;color:#00695c;font-weight:bold;"/>
+				<label id="lblPrepagado" value="" style="font-size:12px !important;color:#00695c;font-weight:bold;"/>				
 			</row>
 		</rows>
 	</grid>		
