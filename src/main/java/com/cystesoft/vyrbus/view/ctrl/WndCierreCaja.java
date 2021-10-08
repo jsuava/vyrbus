@@ -31,6 +31,8 @@ import org.zkoss.zul.Listhead;
 import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Radio;
+import org.zkoss.zul.Radiogroup;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Separator;
@@ -54,6 +56,7 @@ import com.cystesoft.vyrbus.service.util.Messages;
 import com.cystesoft.vyrbus.service.util.MyTime;
 import com.cystesoft.vyrbus.service.util.Util;
 import com.cystesoft.vyrbus.service.util.UtilData;
+import com.cystesoft.vyrbus.service.util.WSFE;
 import com.cystesoft.vyrbus.view.tuentrada.LiquidacionTuentrada;
 import com.cystesoft.vyrbus.view.ui.DlgMessage;
 import com.cystesoft.vyrbus.view.ui.WndBase;
@@ -267,7 +270,8 @@ public class WndCierreCaja extends WndBase {
 				@Override
 				public void onEvent(Event arg0) throws Exception {
 					Liquidacion liquidacion = (Liquidacion) arg0.getTarget().getAttribute(ATRIBUTTE_LIQUIDACION);
-					imprimirLiquidacion(liquidacion);
+//					imprimirLiquidacion(liquidacion);
+					openWindowPrintLiquidacion(liquidacion);
 				}
 			});
 			
@@ -714,6 +718,125 @@ public class WndCierreCaja extends WndBase {
 			
 		return window;
 	}
+	
+	/**
+	 * Abre la ventana para que el usuario ingrese el monto con el cual esta cerrando la liquidacion
+	 * @param liquidacion	: Instancia del Objeto liquidacion.
+	 * @throws Exception
+	 */
+	private void openWindowPrintLiquidacion(Liquidacion liquidacion) throws Exception{
+		wndIngresoMonto = createWindowPrintLiquidacion(liquidacion);
+		this.appendChild(wndIngresoMonto);
+		wndIngresoMonto.setMode("modal");
+	}
+	
+	/**
+	 * Crea la venta que solicita el password para identificar al usuario que reliza el cierre de la liquidacion 
+	 * @return objet window
+	 */
+	@SuppressWarnings("deprecation")
+	private Window createWindowPrintLiquidacion(final Liquidacion liquidacion){
+		final Window window = new Window();
+		window.setTitle("::: Impresión :::");
+		window.setBorder(true);
+		window.setWidth("350px");
+		
+		Grid grid= new Grid();
+		Columns columns= new Columns();
+		
+		Rows rows= new Rows();
+		Row row= new Row();
+		Column column= new Column();
+		
+		column.setWidth("120px");
+		column.setAlign("right");
+		columns.appendChild(column);
+		
+				
+		column= new Column();
+		columns.appendChild(column);
+		
+		grid.appendChild(columns);
+		
+		final Radiogroup radiogroup= new Radiogroup();
+		Radio radioTermico = new Radio("Térmico");
+		radioTermico.setChecked(true);
+		Radio radioMatrical = new Radio("Matricial");
+		radiogroup.appendChild(radioTermico);
+		radiogroup.appendChild(radioMatrical);
+				
+		Label label= new Label("Tipo de impresión (*) :");
+		label.setSclass("label-size11");
+		row=new Row();
+		row.appendChild(label);
+		row.appendChild(radiogroup);
+		rows.appendChild(row);
+				
+		row=new Row();
+		row.appendChild(new Separator());
+		row.appendChild(new Separator());
+		rows.appendChild(row);
+ 		
+		rows.appendChild(row);				
+		grid.appendChild(rows);
+		window.appendChild(grid);
+		
+		Hbox hbox=new Hbox();
+		hbox.setAlign("center");
+		Div div=new Div();
+		div.setAlign("center");
+		div.setWidth(window.getWidth());
+		Toolbar toolbar=new Toolbar();
+		Button btncancelar=new Button("Cancelar", "/resources/mp_cerrar.png");
+		btncancelar.setStyle("font-size:12px !important");
+		btncancelar.setWidth("120px");
+		btncancelar.setAutodisable("self");
+//		btncancelar.setMold("trendy");
+		btncancelar.setSclass("btnCommandM");
+		hbox.appendChild(btncancelar);
+		
+		Separator separator=new Separator();
+		separator.setWidth("10px");
+		hbox.appendChild(separator);
+		
+		Button btnAceptar=new Button("Aceptar", "/resources/mp_aceptarEnabled.png");
+		btnAceptar.setStyle("font-size:12px !important");
+		btnAceptar.setWidth("120px");
+		btnAceptar.setAutodisable("self");
+//		btnAceptar.setMold("trendy");
+		btnAceptar.setSclass("btnCommandM");
+		hbox.appendChild(btnAceptar);
+		
+		div.appendChild(hbox);
+		toolbar.appendChild(div);
+		window.appendChild(toolbar);
+		
+		btnAceptar.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try{
+					
+					WSFE.printLiquidacion(liquidacion, wndIngresoMonto);
+					
+					window.onClose();
+				} catch (Exception ex) {
+					DlgMessage.error(this.getClass().getName() + " " + ex.getMessage());
+					ex.printStackTrace();
+				}
+				
+			}
+		});
+		
+		btncancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				window.onClose();
+			}
+		});
+			
+		return window;
+	}
+	
 	
 	/**
 	 * Abre la ventana para que el usuario ingrese el monto con el cual esta cerrando la liquidacion

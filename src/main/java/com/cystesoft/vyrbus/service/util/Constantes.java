@@ -272,7 +272,9 @@ public class Constantes {
 	public static final String OPERADO_POR_CRUZ_DEL_SUR="CRUZ DEL SUR";
 	public static final String OPERADO_CIVA="EXCLUCIVA";
 	
-
+	/**/
+	public static final Double MONTO_MINIMO_EXCESO = 5.0;
+	
 	/**
 	 * Pasara manejar las insidencias que se podrian dar al regsitrar la venta y la validacion con el reniec.
 	 */

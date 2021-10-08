@@ -53,7 +53,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 						"u.c_apepat as ApPaterno, u.c_apemat as ApMarterno, u.c_nombre as Nombres, "+//7-9
 						"l.d_fecliq as FechaLiquidacion, l.audfecmod as FechaMod, "+//10-11
 						"l.audfecins as FechaInsercion, l.audipinse as ipinsercion, l.audusuins as susuarioInsercion, "+ //12-14
-						"l.n_moning "+ //15
+						"l.n_moning, l.audusumod "+ //15 -16
 				"FROM vrtliquidacion l " +
 					"INNER JOIN vrmagencia a ON (a.agencia_id=l.agencia_id) "+
 					"INNER JOIN vrmusuario u ON (u.usuario_id=l.usuario_id) "+
@@ -95,7 +95,8 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 				liquidacion.setUsuarioInsercion(obj[14].toString());
 			if (obj[15] !=null)
 				liquidacion.setMontoIngresado(((BigDecimal) obj[15]).doubleValue());
-			
+			if(obj[16]!=null)
+				liquidacion.setUsuarioModificacion(obj[16].toString());
 			liquidacion.setUsuario(usuario);
 			liquidacion.setAgencia(agencia);
 			
@@ -163,9 +164,10 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 					       ",BoletoFinal "+
 					       ",BoletoFinal-boletoInicial+1 AS Cantidad "+
 					       ",(BoletoFinal-boletoInicial+1)-cantRegistros AS Cortes "+
+					       ",tipoComprobanteId "+
 					"FROM( "+
 					       //Recupera todos menos las confirmaciones de fecha habierta de fecha habierta
-					      "SELECT tc.c_denominacion as TipoComprobante, "+
+					      "SELECT tc.tipcom_id tipoComprobanteId, tc.c_denominacion as TipoComprobante, "+
 					      		 "DECODE(tc.tipcom_id,1, MIN(SUBSTR(vp.c_numboleto,0,3)), MIN(SUBSTR(vp.c_numboleto,0,4))) AS Serie, "+  
 		                         "DECODE(tc.tipcom_id,1, MIN(SUBSTR(vp.c_numboleto,5, LENGTH(vp.c_numboleto))), MIN(SUBSTR(vp.c_numboleto,6, LENGTH(vp.c_numboleto)))) AS boletoInicial, "+  
 		                         "DECODE(tc.tipcom_id,1, MAX(SUBSTR(vp.c_numboleto,5, LENGTH(vp.c_numboleto))), MAX(SUBSTR(vp.c_numboleto,6, LENGTH(vp.c_numboleto))))  AS BoletoFinal, "+ 
@@ -180,7 +182,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 		                  "AND vp.c_numboleto IS NOT NULL "+   
 		                  "AND vp.tipmov_id NOT IN (5,6,13) "+
 		                  "AND vp.c_tiptra IN ('1','3','4','5','6') "+
-		                "GROUP BY tc.c_denominacion,tc.tipcom_id, DECODE(tc.tipcom_id,1,(substrc(vp.c_numboleto,0,3)),(substrc(vp.c_numboleto,0,4))) "+ 
+		                "GROUP BY tc.tipcom_id, tc.c_denominacion,tc.tipcom_id, DECODE(tc.tipcom_id,1,(substrc(vp.c_numboleto,0,3)),(substrc(vp.c_numboleto,0,4))) "+ 
 //					"UNION ALL " +
 //							//Solo confirmaciones de fecha habierta que tienen importe mayor a cero
 //							"SELECT tc.c_denominacion as TipoComprobante, "+
@@ -210,6 +212,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 			
 			TipoComprobante tipoComprobante= new TipoComprobante();
 			tipoComprobante.setDenominacion(obj[0].toString());
+			tipoComprobante.setId(((BigDecimal)obj[6]).intValue());
 			
 			Liquidacion liquidacion= new Liquidacion();
 			liquidacion.setTipoComprobante(tipoComprobante);

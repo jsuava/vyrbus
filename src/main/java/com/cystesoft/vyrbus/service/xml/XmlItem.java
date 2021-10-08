@@ -25,6 +25,8 @@ public class XmlItem implements Serializable{
 	private String v1_DetalleServicio;
 	private String v2_Cantidad;
 	private String v3_Tarifa;
+	
+	private String v4_total; //se agrego para el detalle del exceso.
 	/**
 	 * @return the v1_DetalleServicio
 	 */
@@ -60,5 +62,17 @@ public class XmlItem implements Serializable{
 	 */
 	public void setV3_Tarifa(String v3_Tarifa) {
 		this.v3_Tarifa = v3_Tarifa;
+	}
+	/**
+	 * @return the v4_total
+	 */
+	public String getV4_total() {
+		return v4_total;
+	}
+	/**
+	 * @param v4_total the v4_total to set
+	 */
+	public void setV4_total(String v4_total) {
+		this.v4_total = v4_total;
 	}
 }

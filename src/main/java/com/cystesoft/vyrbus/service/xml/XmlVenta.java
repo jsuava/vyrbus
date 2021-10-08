@@ -22,6 +22,7 @@ public class XmlVenta implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private Boolean v0_ExcesoEquipaje;
 	private String v0_ObserImport;
 	private String v1_NumeroComprobante;
 	private String v2_Origen;
@@ -375,6 +376,18 @@ public class XmlVenta implements Serializable{
 	 */
 	public void setV992_PartPage4(String v992_PartPage4) {
 		this.v992_PartPage4 = v992_PartPage4;
+	}
+	/**
+	 * @return the v0_ExcesoEquipaje
+	 */
+	public Boolean getV0_ExcesoEquipaje() {
+		return v0_ExcesoEquipaje;
+	}
+	/**
+	 * @param v0_ExcesoEquipaje the v0_ExcesoEquipaje to set
+	 */
+	public void setV0_ExcesoEquipaje(Boolean v0_ExcesoEquipaje) {
+		this.v0_ExcesoEquipaje = v0_ExcesoEquipaje;
 	}
 	
 }

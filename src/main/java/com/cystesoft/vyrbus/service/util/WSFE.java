@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 import javax.xml.bind.JAXBContext;
@@ -39,8 +40,10 @@ import sun.misc.BASE64Encoder;
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.ConfiguracionImpresora;
 import com.cystesoft.vyrbus.model.bean.DestinatariosEmails;
+import com.cystesoft.vyrbus.model.bean.Gasto;
 import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartida;
 import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartidaID;
+import com.cystesoft.vyrbus.model.bean.Liquidacion;
 import com.cystesoft.vyrbus.model.bean.OperadorTarjetaCredito;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.UsuarioHardware;
@@ -61,10 +64,18 @@ import com.cystesoft.vyrbus.service.fe.Result;
 import com.cystesoft.vyrbus.service.fe.MEFEService;
 import com.cystesoft.vyrbus.service.fe.Venta;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
+import com.cystesoft.vyrbus.service.mappers.ResumenComprobante;
 import com.cystesoft.vyrbus.service.xml.XmlCliente;
 import com.cystesoft.vyrbus.service.xml.XmlConfigPrint;
+import com.cystesoft.vyrbus.service.xml.XmlDetalleLiquidacionEgresos;
+import com.cystesoft.vyrbus.service.xml.XmlDetalleLiquidacionIngresoVenta;
+import com.cystesoft.vyrbus.service.xml.XmlDetalleLiquidacionOtrosIngresos;
 import com.cystesoft.vyrbus.service.xml.XmlDetalleVentaPasajes;
 import com.cystesoft.vyrbus.service.xml.XmlItem;
+import com.cystesoft.vyrbus.service.xml.XmlItemEgresoLiquidacion;
+import com.cystesoft.vyrbus.service.xml.XmlItemIngresoVentaLiquidacion;
+import com.cystesoft.vyrbus.service.xml.XmlItemOtroIngresoLiquidacion;
+import com.cystesoft.vyrbus.service.xml.XmlLiquidacion;
 import com.cystesoft.vyrbus.service.xml.XmlLiquidacionTuentrada;
 import com.cystesoft.vyrbus.service.xml.XmlPasajero;
 import com.cystesoft.vyrbus.service.xml.XmlVenta;
@@ -255,14 +266,14 @@ public class WSFE implements Serializable{
 					notaCredito=null;
 				}else{
 					/*Envia la venta a nuestro ws*/
-					result= getSoap().setVenta(TOKEN, oventa);
+					//result= getSoap().setVenta(TOKEN, oventa); //comentado temporalmento - 09/09/2021 - jabanto
 				}
 				
 				/*Agrega a la lista para la impresion - 06/12/2016 - jabanto*/
-				if(result!=null && result.getBarcode().getValue()!=null){
+//				if(result!=null && result.getBarcode().getValue()!=null){ //comentado temporalmento - 09/09/2021 - jabanto
 					ventaPasaje.setResult(result);
 					ventasEnviadas.add(ventaPasaje);	
-				}
+//				}
 			}
 			
 			/**Actualiza la venta como enviado al servidor de facturacion electronica - 09/12/2016 - jabanto*/
@@ -361,6 +372,152 @@ public class WSFE implements Serializable{
 			sendMail("metod printVouchers : "+numerosComp+" \n "+e.getMessage());
 		}
 	}
+	
+	
+	/**
+	 * Realiza la impresion de la liquidacion, en formato térmico
+	 * @param liquidacion
+	 */
+	@SuppressWarnings("restriction")
+	public static void printLiquidacion(Liquidacion liquidacion, Window window){
+		try {			
+			
+			List<Liquidacion>list = ServiceLocator.getLiquidacionManager().BuscarEspeciesValoradas(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId());
+			Map<String, ResumenComprobante> mapResumen = ServiceLocator.getLiquidacionManager().buscarResumenComprobantes(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId());
+			List<XmlItemIngresoVentaLiquidacion> lstItemIngresosVenta= new ArrayList<>();
+			Double totalEfectivo= 0.00, totalCredito = 0.00, totalIngresos = 0.00, totalEgresos = 0.00;
+			Integer cantidadEfectivo= 0, cantidadCredito = 0;
+			for(String key : mapResumen.keySet()) {				
+				ResumenComprobante resumen = mapResumen.get(key);
+				String strSerie = null;
+				String desde = "";
+				String hasta = "";
+				strSerie = resumen.getIdTipoComprobante()!=Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA?resumen.getSerie():" "+resumen.getSerie().substring(0, 3);
+				
+				for(Liquidacion especieValorada: list) {
+					if(especieValorada.getSerie().equals(strSerie)) {
+						desde = especieValorada.getBoletoInicial();
+						hasta = especieValorada.getboletoFinal();
+						break;
+					}
+				}				
+				
+				XmlItemIngresoVentaLiquidacion itemIngresoVentaLiquidacion = new XmlItemIngresoVentaLiquidacion();
+				itemIngresoVentaLiquidacion.setV1_comprobante(resumen.getComprobante().toString());
+				itemIngresoVentaLiquidacion.setV2_serie(strSerie);
+				itemIngresoVentaLiquidacion.setV3_detalle(desde+" - "+hasta);
+				itemIngresoVentaLiquidacion.setV4_cantidad(resumen.getCantidad().toString());
+				itemIngresoVentaLiquidacion.setV5_monto(resumen.getMonto().toString());
+				lstItemIngresosVenta.add(itemIngresoVentaLiquidacion);		
+				
+				if(resumen.getIdTipoComprobante().intValue()==Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA) {
+					totalCredito += resumen.getMonto();
+					cantidadCredito ++;
+				}else {
+					totalEfectivo += resumen.getMonto();
+					cantidadEfectivo ++;
+				}
+			}
+			totalIngresos += totalEfectivo;
+			totalIngresos += totalCredito;
+			XmlDetalleLiquidacionIngresoVenta xmlDetalleLiquidacionIngresoVenta= new XmlDetalleLiquidacionIngresoVenta();
+			xmlDetalleLiquidacionIngresoVenta.setV1_itemIngresoVentaLiquidacion(lstItemIngresosVenta);
+			
+			XmlLiquidacion xmlLiquidacion= new XmlLiquidacion();
+			xmlLiquidacion.setV1_fecha(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()));
+			xmlLiquidacion.setV2_oficina(liquidacion.getAgencia().toString());
+			xmlLiquidacion.setV3_representanteVenta(liquidacion.getUsuario().toString());
+			if(liquidacion.getUsuarioModificacion()!=null) {
+				Usuario usuarioCierre= ServiceLocator.getUsuarioManager().buscarUsuarioPorLogin(liquidacion.getUsuarioModificacion(), Constantes.VALUE_ACTIVO);
+				if(usuarioCierre!=null)
+					xmlLiquidacion.setV6_usuarioCierre(usuarioCierre.toString());	
+			}
+			if(liquidacion.getFechaModificacion()!=null)
+				xmlLiquidacion.setV7_fechaHoraCierre(Constantes.FORMAT_LONG.format(liquidacion.getFechaModificacion()));
+			xmlLiquidacion.setV4_ingresoTotalEfectivo(totalEfectivo.toString());
+			xmlLiquidacion.setV5_ingresoTotalCredito(totalCredito.toString());
+			xmlLiquidacion.setV8_detalleLiquidacionIngresoVenta(xmlDetalleLiquidacionIngresoVenta);			
+			
+			//***************************************************
+			//Otros ingresos
+			List<Gasto> lstOtrosIngresos =  ServiceLocator.getGastoManager().obtenerGastosByLiquidacion(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId(), Constantes.TRUE_VALUE, true);
+			if(lstOtrosIngresos.size()>0) {
+				List<XmlItemOtroIngresoLiquidacion> lstItemOtrosIngresos= new ArrayList<XmlItemOtroIngresoLiquidacion>();
+				for(Gasto otrosIngresos: lstOtrosIngresos) {
+					XmlItemOtroIngresoLiquidacion itemOtrosIngresos = new XmlItemOtroIngresoLiquidacion();
+					itemOtrosIngresos.setV1_concepto(otrosIngresos.getTipoGasto().getDenominacion());
+					itemOtrosIngresos.setV2_detalle(otrosIngresos.getObservacion());
+					itemOtrosIngresos.setV3_cantidad(otrosIngresos.getCantidad().toString());
+					itemOtrosIngresos.setV4_monto(otrosIngresos.getMonto().toString());
+					lstItemOtrosIngresos.add(itemOtrosIngresos);
+					
+					totalIngresos += +otrosIngresos.getMonto();
+				}
+				xmlLiquidacion.setV90_detalleLiquidacionOtrosIngresos(new XmlDetalleLiquidacionOtrosIngresos(lstItemOtrosIngresos));	
+			}
+									
+			//**************************************************
+			//Egresos
+			List<Gasto> lstGastos =  ServiceLocator.getGastoManager().obtenerGastosByLiquidacion(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId(), Constantes.FALSE_VALUE, true);
+			List<XmlItemEgresoLiquidacion> lstEgresos = new ArrayList<XmlItemEgresoLiquidacion>();
+			for(Gasto gasto: lstGastos) {
+				XmlItemEgresoLiquidacion itemEgresoLiquidacion= new XmlItemEgresoLiquidacion();
+				itemEgresoLiquidacion.setV1_numero(gasto.getNumeroDocumento()!=null?gasto.getNumeroDocumento():"");
+				itemEgresoLiquidacion.setV2_tipo(gasto.getTipoGasto()!=null?gasto.getTipoGasto().getDenominacion():"");
+				itemEgresoLiquidacion.setV3_detalle(gasto.getObservacion()!=null?gasto.getObservacion():"");
+				itemEgresoLiquidacion.setV4_cantidad(gasto.getCantidad().toString());
+				itemEgresoLiquidacion.setV5_monto(gasto.getMonto().toString());
+				lstEgresos.add(itemEgresoLiquidacion);
+				
+				totalEgresos += +gasto.getMonto();
+			}					
+			/*Otros Egresos*/ 
+			Liquidacion liquidacion2 = ServiceLocator.getLiquidacionManager().buscarRptLiquidacionTurno(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId());
+			//---> linea 35: Venta contarjeta de credito
+			Integer cantidadVentaTarjeta=liquidacion2.getCantidadTarjetaVisa()+liquidacion2.getCantidadTarjetaMasterCard()+
+										+liquidacion2.getCantidadGastosAdminTarjetaMastercard()+liquidacion2.getCantidadGastosAdminTarjetaVisa();
+			Double montoVentaTarjeta=liquidacion2.getMontoTarjetaVisa()+liquidacion2.getMontoTarjetaMasterCard()
+									 +liquidacion2.getMontoGastosAdminTarjetaMastercard()+liquidacion2.getMontoGastosAdminTarjetaVisa();
+			
+			lstEgresos.add(new XmlItemEgresoLiquidacion("DEVOLUCIONES", "", "", liquidacion2.getCantidadDevolucion().toString(), String.valueOf(liquidacion2.getMontoDevolucion())));
+			lstEgresos.add(new XmlItemEgresoLiquidacion("VTA. CORTISIA", "", "", liquidacion2.getCantidadcortesia().toString(), String.valueOf(liquidacion2.getMontoCortesia())));
+			lstEgresos.add(new XmlItemEgresoLiquidacion("CREDITO", "", "", cantidadCredito.toString(), totalCredito.toString()));
+			lstEgresos.add(new XmlItemEgresoLiquidacion("VTA. TARJETA", "", "", cantidadVentaTarjeta.toString(), montoVentaTarjeta.toString()));
+			lstEgresos.add(new XmlItemEgresoLiquidacion("NOTA CREDITO", "", "", liquidacion2.getCantidadNotasCredito().toString(), String.valueOf(liquidacion2.getMontoNotasCredito())));
+			lstEgresos.add(new XmlItemEgresoLiquidacion("DEV. TARJETA", "", "", liquidacion2.getCantidadDevolucionTarjeta().toString(), String.valueOf(liquidacion2.getMontoDevolucionTarjeta())));
+			xmlLiquidacion.setV91_detalleLiquidacionEgresos(new XmlDetalleLiquidacionEgresos(lstEgresos));
+			
+			/*Totaliza los Egresos*/
+			totalEgresos += + liquidacion2.getMontoDevolucion();
+			totalEgresos += + liquidacion2.getMontoCortesia();
+			totalEgresos += + totalCredito;
+			totalEgresos += + montoVentaTarjeta;
+			totalEgresos += +liquidacion2.getMontoNotasCredito();
+			totalEgresos += +liquidacion2.getMontoDevolucionTarjeta();
+			
+			/**Totales*/
+			xmlLiquidacion.setV5_totalIngresos(totalIngresos.toString());
+			xmlLiquidacion.setV5_totalEgresos(totalEgresos.toString());
+			//*******************************************
+			XmlVentaPasaje xmlVentaPasaje= new XmlVentaPasaje();
+			xmlVentaPasaje.setLiquidacion(xmlLiquidacion);
+			
+			String cryptoRptFormat=null;
+			//Encripta en bytes del .rpt;
+			String pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"Liquidacion.rpt";
+			Path path = Paths.get(pathRpt);
+			byte[] contenido = java.nio.file.Files.readAllBytes(path);
+			cryptoRptFormat=new BASE64Encoder().encode(contenido);
+			xmlLiquidacion.setZ_rptLiquidacion(cryptoRptFormat);
+			
+			descargarFileXml(xmlVentaPasaje, window);
+		} catch (Exception e) {
+			e.printStackTrace();
+			DlgMessage.error(e.getMessage());
+			sendMail("metod printLiquidacion : \n"+e.getMessage());
+		}
+	}
+	
 	/**
 	 * Realiza la impresion de la liquidacion de tu entrada
 	 * @param listLiquidacion
@@ -426,6 +583,10 @@ public class WSFE implements Serializable{
 				DateFormat FORMAT_DATE_TIME_24H = new SimpleDateFormat ("yyyyMMdd HHmmss");
 				nameFile+="LIQ-TUENTRADA "+FORMAT_DATE_TIME_24H.format(new Date());
 				directorio=Constantes.DIRECTORY_LIQUIDACION; //+nameFile+".zip";
+			}else if(xmlVentaPasaje.getLiquidacion()!=null) {
+				DateFormat FORMAT_DATE_TIME_24H = new SimpleDateFormat ("yyyyMMdd HHmmss");
+				nameFile+="LIQ-TURNO "+FORMAT_DATE_TIME_24H.format(new Date());
+				directorio=Constantes.DIRECTORY_LIQUIDACION;
 			}
 			
 			String pZipFile=directorio+nameFile+".zip";
@@ -498,20 +659,30 @@ public class WSFE implements Serializable{
 					String cryptoRptFormat=null;
 					if(tipoComprobanteId!=Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES){
 						//Encripta el los bytes del codigo de barras - Sunat;
-						Result resultVenta=ventaPasaje.getResult();
-						cryptoBarcodeSunat=new BASE64Encoder().encode(resultVenta.getBarcode().getValue());
+						if(ventaPasaje.getResult()!=null) {
+							Result resultVenta=ventaPasaje.getResult();
+							cryptoBarcodeSunat=new BASE64Encoder().encode(resultVenta.getBarcode().getValue());	
+						}						
 						//Encripta en bytes del .rpt;
 						String pathRpt=null;
 						if(tipoComprobanteId==Constantes.ID_TIPCOM_BOLETA_VENTA){
-							if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS)
-								pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"GABoleta.rpt";
-							else
-								pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"Boleta.rpt";
+							if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_EXCESO)) {
+								pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"Boleta_exceso.rpt";
+							}else {
+								if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS)
+									pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"GABoleta.rpt";
+								else
+									pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"Boleta.rpt";	
+							}							
 						}else{
-							if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS)
-								pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"GAFactura.rpt";
-							else
-								pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"Factura.rpt";
+							if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_EXCESO)) {
+								pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"Factura_exceso.rpt";
+							}else {
+								if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS)
+									pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"GAFactura.rpt";
+								else
+									pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"Factura.rpt";	
+							}							
 						}
 						
 						Path path = Paths.get(pathRpt);
@@ -535,6 +706,7 @@ public class WSFE implements Serializable{
 					}
 					/*VentaPasaje*/
 					XmlVenta xmlVenta= new XmlVenta();
+					xmlVenta.setV0_ExcesoEquipaje(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_EXCESO));
 					xmlVenta.setV1_NumeroComprobante(ventaPasaje.getNumeroBoleto());
 					xmlVenta.setV2_Origen(ventaPasaje.getRuta().getOrigen());
 					xmlVenta.setV3_Destino(ventaPasaje.getRuta().getDestino());
@@ -556,6 +728,7 @@ public class WSFE implements Serializable{
 								agenciaLlegada=ServiceLocator.getAgenciaManager().buscarPorId(agenciaLlegada.getId().longValue());
 							xmlVenta.setV5_Desembarque(agenciaLlegada.getDireccion());
 						}
+						
 					}
 					xmlVenta.setV6_FechaPartida(ventaPasaje.getFechaPartida()!=null?Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida()):null);
 					xmlVenta.setV7_HoraPartida(getHoraRealEmbarque(ventaPasaje));
@@ -621,7 +794,7 @@ public class WSFE implements Serializable{
 					xmlVenta.setV995_UsuarioEmision(ventaPasaje.getUsuario().toString());
 					xmlVenta.setZ_CodigoBarraSunat(cryptoBarcodeSunat);
 					xmlVenta.setZ_ticket(cryptoRptFormat);
-					
+										
 					/*Armando el detalle*/
 					Boolean isCortesia=ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA;
 					List<XmlItem> xmlItems= new ArrayList<>();
@@ -916,6 +1089,8 @@ public class WSFE implements Serializable{
 		String descripcionPrincipal="";
 		if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA_ESPECIAL)) {
 			descripcionPrincipal= descripMovi+(ventaPasaje.getObservaciones()!=null?" - "+ventaPasaje.getObservaciones():"");
+		}else if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_EXCESO)) {
+			descripcionPrincipal = ventaPasaje.getObservaciones();
 		}else if(ventaPasaje.getTipoMovimiento().getId().intValue()!=Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS){
 			String servicio="";
 			if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA_POOL)){

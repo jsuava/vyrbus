@@ -1315,7 +1315,7 @@ public class CreateDocument implements Serializable {
 			linea=tabular(3)+"GASTO ADMIN. TARJETA MASTER CARD"+tabular(16-longitud_C)+liquidacion2.getCantidadGastosAdminTarjetaMastercard()+tabular(19-longitud_M)+Util.toNumberFormat(liquidacion2.getMontoGastosAdminTarjetaMastercard(),2);;
 			bw.write(linea+NEWLINE);
 						
-			List<Gasto> lstIngresos =  ServiceLocator.getGastoManager().obtenerGastosByLiquidacion(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId(), Constantes.TRUE_VALUE);
+			List<Gasto> lstIngresos =  ServiceLocator.getGastoManager().obtenerGastosByLiquidacion(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId(), Constantes.TRUE_VALUE, false);
 			int cantidadIngreso = 0;
 			double importeIngreso = 0;
 			for(Gasto otroIngreso: lstIngresos) {
@@ -1369,7 +1369,7 @@ public class CreateDocument implements Serializable {
 			linea=tabular(3)+interline;
 			bw.write(linea+NEWLINE);
 			
-			List<Gasto> lstGastos =  ServiceLocator.getGastoManager().obtenerGastosByLiquidacion(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId(), Constantes.FALSE_VALUE);
+			List<Gasto> lstGastos =  ServiceLocator.getGastoManager().obtenerGastosByLiquidacion(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId(), Constantes.FALSE_VALUE, false);
 			int cantidadGasto = 0;
 			double importeGasto = 0;
 			for(int i=0; i<lstGastos.size(); i++) {
