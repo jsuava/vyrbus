@@ -86,8 +86,8 @@ public class GastoManagerImpl implements GastoManager {
 	 * @see com.cystesoft.vyrbus.service.business.GastoManager#obtenerGastosByLiquidacion(java.lang.String, java.lang.Integer, java.lang.Integer)
 	 */
 	@Override
-	public List<Gasto> obtenerGastosByLiquidacion(String fechaLiquidacion, Integer idAgencia, Integer idUsuario, Integer isIngreso) {
-		return getGastoDAO().obtenerGastosByLiquidacion(fechaLiquidacion, idAgencia, idUsuario, isIngreso);
+	public List<Gasto> obtenerGastosByLiquidacion(String fechaLiquidacion, Integer idAgencia, Integer idUsuario, Integer isIngreso, boolean groupByObs) {
+		return getGastoDAO().obtenerGastosByLiquidacion(fechaLiquidacion, idAgencia, idUsuario, isIngreso, groupByObs);
 	}
 
 	/* (non-Javadoc)

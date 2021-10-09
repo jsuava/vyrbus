@@ -35,6 +35,7 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Window;
 
 import com.cystesoft.vyrbus.model.bean.CanalVenta;
 import com.cystesoft.vyrbus.model.bean.Cliente;
@@ -57,6 +58,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.Messages;
 import com.cystesoft.vyrbus.service.util.Util;
 import com.cystesoft.vyrbus.service.util.UtilData;
+import com.cystesoft.vyrbus.service.util.WSFE;
 import com.cystesoft.vyrbus.view.ui.DlgMessage;
 import com.cystesoft.vyrbus.view.ui.WndBase;
 
@@ -72,6 +74,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 	private static final long serialVersionUID = 1L;
 //	private Textbox txtitinerario;
 //	private Button btnBuscarItinerario;
+	private Window wndEquipaje;
 	private Textbox txtNumeroBoleto;
 	private Listbox ltbxBoletos;
 	private Datebox dtbxFechaPartida;
@@ -120,6 +123,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 		
 //		txtitinerario = (Textbox)this.getFellow("txtitinerario");
 //		btnBuscarItinerario = (Button)this.getFellow("btnBuscarItinerario");
+		wndEquipaje = (Window)this.getFellow("wndEquipaje");
 		txtNumeroBoleto= (Textbox)this.getFellow("txtNumeroBoleto");
 		ltbxBoletos= (Listbox)this.getFellow("ltbxBoletos");
 		dtbxFechaPartida = (Datebox)this.getFellow("dtbxFechaPartida");
@@ -432,10 +436,10 @@ public class WndEquipaje extends WndBase implements Serializable{
 		//Valida que, la fecha de la liquidación sea igual a la actual - 22/07/2021 - jabanto
 		String fechaActual=Constantes.FORMAT_DATE.format(new Date());
 		String s_fechaLiquidacion=(fechaLiquidacion!=null?Constantes.FORMAT_DATE.format(fechaLiquidacion):"");
-//		if(!(fechaActual.equals(s_fechaLiquidacion))) {
-//			DlgMessage.information(Messages.getString("WndVentaReserva.information.fechaLiquidacionDiferente"));
-//			return;
-//		}		
+		if(!(fechaActual.equals(s_fechaLiquidacion))) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.fechaLiquidacionDiferente"));
+			return;
+		}		
 		if(ltbxBoletos.getItems().size()==0) {
 			DlgMessage.information(Messages.getString("WndRecepcionEquipajes.listboletos.null"), txtNumeroBoleto);			
 			return;
@@ -445,7 +449,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 		}else if(itbxTotalKilos.getValue()==null || itbxTotalKilos.getValue()<=0 || itbxTotalKilos.getText().trim().isEmpty()) {
 			DlgMessage.information(Messages.getString("WndRecepcionEquipajes.kilos.null"), itbxTotalKilos);
 			return;
-		}else if(!dbxTotalPago.isDisabled() && (dbxTotalPago.getValue()==null || dbxTotalPago.getValue()<=0 || dbxTotalPago.getText().trim().isEmpty())) {
+		}else if(!dbxTotalPago.isDisabled() && (dbxTotalPago.getValue()==null || dbxTotalPago.getValue()<=Constantes.MONTO_MINIMO_EXCESO || dbxTotalPago.getText().trim().isEmpty())) {
 			DlgMessage.information(Messages.getString("WndRecepcionEquipajes.totalPago.null"), dbxTotalPago);
 			return;
 		}else if(rowExceso.isVisible()) {
@@ -628,6 +632,27 @@ public class WndEquipaje extends WndBase implements Serializable{
 					if(e.getName().equals("onYes")){
 						
 						ServiceLocator.getDetalleEquipajeManager().guardar(listDetalleEquipaje, equipaje);
+						
+						if(listDetalleEquipaje.get(0).getVentaPasajeExceso()!=null) {
+							VentaPasaje ventaExceso= ServiceLocator.getVentaPasajesManager().buscarVentaById(listDetalleEquipaje.get(0).getVentaPasajeExceso().getId());
+							ventaExceso.setObservaciones(ventaExceso.getObservaciones()+" [MALETAS:"+itbxNumeroMaletas.getText()+" PESO:"+itbxTotalKilos.getText()+"Kg]");
+							/**Solo Boletas y facturas*/
+							if(ventaExceso.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA || 
+									ventaExceso.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_FACTURA){
+								/*Realiza el envio del boleto y realiza la impresion*/
+//								boolean printComprobante=(chkVentaRemota.isChecked()?false:true);
+								
+								List<VentaPasaje> listVentaPasajes= new ArrayList<>();
+								listVentaPasajes.add(ventaExceso);
+								
+								//Aqui se envia el comprobante al servidor de Facturación Electrónica
+								//Comentado temporalmente por jabanto
+								WSFE.sendVenta(listVentaPasajes, wndEquipaje, true, null);
+							}
+						}
+						
+						
+						
 						Messagebox.show(Messages.getString("Generales.information.exitoGuardar"),DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_OK, Messagebox.INFORMATION ,DlgMessage.BTN_OK, new EventListener<Event>() {
 							@Override
 							public void onEvent(Event event) throws Exception {
@@ -815,7 +840,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 			VentaPasaje ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarPorId(((VentaPasaje)item.getValue()).getId());
 			_subGlosa = (_subGlosa.isEmpty()?ventaPasaje.getNumeroBoleto()+"-->"+ventaPasaje.getRuta().toString():", "+ventaPasaje.getNumeroBoleto()+"-->"+ventaPasaje.getRuta().toString());
 		}
-		txtGlosa.setText("EXCESO DE EQUIPAJES, COMPROBANTES N° " + _subGlosa);
+		txtGlosa.setText("EXCESO DE EQUIPAJES, COMP.N° " + _subGlosa);
 	}
 	
 	/**

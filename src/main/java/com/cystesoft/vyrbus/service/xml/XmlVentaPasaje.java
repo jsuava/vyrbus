@@ -26,6 +26,7 @@ public class XmlVentaPasaje implements Serializable{
 	private XmlConfigPrint configPrint;
 	private List<XmlVenta> venta;
 	private XmlLiquidacionTuentrada liqTuentrada;
+	private XmlLiquidacion liquidacion;
 
 	/**
 	 * @return the venta
@@ -67,6 +68,20 @@ public class XmlVentaPasaje implements Serializable{
 	 */
 	public void setLiqTuentrada(XmlLiquidacionTuentrada liqTuentrada) {
 		this.liqTuentrada = liqTuentrada;
+	}
+
+	/**
+	 * @return the liquidacion
+	 */
+	public XmlLiquidacion getLiquidacion() {
+		return liquidacion;
+	}
+
+	/**
+	 * @param liquidacion the liquidacion to set
+	 */
+	public void setLiquidacion(XmlLiquidacion liquidacion) {
+		this.liquidacion = liquidacion;
 	}
 	
 }
