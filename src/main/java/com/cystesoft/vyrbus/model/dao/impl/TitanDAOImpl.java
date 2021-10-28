@@ -19,6 +19,7 @@ import com.cystesoft.vyrbus.model.bean.TitanComisionPersonaBase;
 import com.cystesoft.vyrbus.model.bean.TitanFuncionarioPersonaPasaje;
 import com.cystesoft.vyrbus.model.bean.TitanLiquidacionTurnoPasaje;
 import com.cystesoft.vyrbus.model.bean.TitanPersona;
+import com.cystesoft.vyrbus.model.bean.TitanUsuarioHardware;
 import com.cystesoft.vyrbus.model.bean.TitanUsuarioPersonal;
 import com.cystesoft.vyrbus.model.bean.TitanVentaPasaje;
 import com.cystesoft.vyrbus.model.dao.TitanDAO;
@@ -672,6 +673,29 @@ public class TitanDAOImpl implements TitanDAO {
 		}
 		
 		return fechaFactura;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.TitanDAO#guardarUsuarioHardware(com.cystesoft.vyrbus.model.bean.TitanUsuarioHardware)
+	 */
+	@Override
+	public void guardarUsuarioHardware(TitanUsuarioHardware titanUsuarioHardware) throws Exception {
+		String sql = "INSERT INTO t_cpu(ip, iddepartamento_oficina, idtipo_maquina, frecuencia_reloj, nombre_equipo, nombre_red, es_servidor, nro_particiones, "
+				+ "memoria_disco_duro_gb, idusuario_personal, idrol_usuario, idusuario_personalmod, idrol_usuariomod, ipregistro, ipmod, idagencias, "
+				+ "idtipo_computador, idtipo_ip) VALUES ('"+titanUsuarioHardware.getIp()+"', ";
+		
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.TitanDAO#buscarAgencia(java.lang.Integer)
+	 */
+	@Override
+	public Integer buscarAgencia(Integer idAgenciaPasajes) throws Exception {
+		String sql = "SELECT idagencias FROM T_AGENCIAS WHERE IDAGENCIAS_UNIX="+idAgenciaPasajes;
+		log.info(sql);
+		Integer result = jdbcTemplate.queryForInt(sql);
+		return result;
 	}
 		
 	

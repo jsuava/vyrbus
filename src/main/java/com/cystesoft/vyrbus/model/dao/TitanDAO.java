@@ -10,6 +10,7 @@ import com.cystesoft.vyrbus.model.bean.TitanComisionPersonaBase;
 import com.cystesoft.vyrbus.model.bean.TitanFuncionarioPersonaPasaje;
 import com.cystesoft.vyrbus.model.bean.TitanLiquidacionTurnoPasaje;
 import com.cystesoft.vyrbus.model.bean.TitanPersona;
+import com.cystesoft.vyrbus.model.bean.TitanUsuarioHardware;
 import com.cystesoft.vyrbus.model.bean.TitanUsuarioPersonal;
 import com.cystesoft.vyrbus.model.bean.TitanVentaPasaje;
 
@@ -149,4 +150,19 @@ public interface TitanDAO {
 	 * @throws Exception
 	 */
 	public String buscarFechaFacturaEspecial(String serie, String numero, String numeroRuc)throws Exception;
+	
+	/* ******** TRANSACIONES REFERIDAS AL USUARIO HARDWARE (T_CPU) **********************/
+	/**
+	 * Guarda el usuario hardware
+	 * @param titanUsuarioHardware	: Objeto a guardar
+	 * @throws Exception
+	 */
+	public void guardarUsuarioHardware(TitanUsuarioHardware titanUsuarioHardware) throws Exception;
+	/**
+	 * Realiza la busqueda del id de Agencia
+	 * @param idAgenciaPasajes	: Identificador de la agencia de Pasajes a buscar
+	 * @return
+	 * @throws Exception
+	 */
+	public Integer buscarAgencia(Integer idAgenciaPasajes) throws Exception;
 }

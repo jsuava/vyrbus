@@ -2506,6 +2506,7 @@ public class UtilData extends Window {
 		liquidacion.setNombreUsuario(usuario.getLogin());
 		liquidacion.setFechaLiquidacion(fechaLiquidacion);
 		liquidacion.setMontoIngresado((double) 0);
+		liquidacion.setMontoIngresadoDolares((double)0);
 		liquidacion.setEstadoLiquidacion(Constantes.LIQUI_ESTA_ABIERTO);
 		liquidacion.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 		
