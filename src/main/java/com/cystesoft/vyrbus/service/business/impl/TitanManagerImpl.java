@@ -12,6 +12,7 @@ import com.cystesoft.vyrbus.model.bean.TitanComisionPersonaBase;
 import com.cystesoft.vyrbus.model.bean.TitanFuncionarioPersonaPasaje;
 import com.cystesoft.vyrbus.model.bean.TitanLiquidacionTurnoPasaje;
 import com.cystesoft.vyrbus.model.bean.TitanPersona;
+import com.cystesoft.vyrbus.model.bean.TitanUsuarioHardware;
 import com.cystesoft.vyrbus.model.bean.TitanUsuarioPersonal;
 import com.cystesoft.vyrbus.model.bean.TitanVentaPasaje;
 import com.cystesoft.vyrbus.model.dao.TitanDAO;
@@ -173,8 +174,11 @@ public class TitanManagerImpl implements TitanManager {
 		// TODO Auto-generated method stub
 		return getTitanDAO().buscarFechaFacturaEspecial(serie, numero, numeroRuc);
 	}
-	
-	
-	
-
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.TitanManager#guardarUsuarioHardware(com.cystesoft.vyrbus.model.bean.TitanUsuarioHardware)
+	 */
+	@Override
+	public void guardarUsuarioHardware(TitanUsuarioHardware titanUsuarioHardware) throws Exception {
+		getTitanDAO().guardarUsuarioHardware(titanUsuarioHardware);
+	}
 }

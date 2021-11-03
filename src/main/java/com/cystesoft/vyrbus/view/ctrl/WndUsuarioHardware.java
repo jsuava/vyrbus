@@ -15,11 +15,15 @@ import org.zkoss.zul.Textbox;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.CanalVenta;
+import com.cystesoft.vyrbus.model.bean.TitanUsuarioHardware;
 import com.cystesoft.vyrbus.model.bean.UsuarioHardware;
 import com.cystesoft.vyrbus.service.exceptions.AgenciaNullException;
+import com.cystesoft.vyrbus.service.exceptions.AgenciaTranscarNullException;
 import com.cystesoft.vyrbus.service.exceptions.CancelaGrabacionException;
 import com.cystesoft.vyrbus.service.exceptions.CodigoDuplicadoException;
 import com.cystesoft.vyrbus.service.exceptions.CodigoNullException;
+import com.cystesoft.vyrbus.service.exceptions.DireccionIPNullException;
+import com.cystesoft.vyrbus.service.exceptions.TipoIPNullException;
 import com.cystesoft.vyrbus.service.exceptions.UsuarioHardwareCanalVentaNullException;
 import com.cystesoft.vyrbus.service.exceptions.UsuarioHardwareDescripcionNullException;
 import com.cystesoft.vyrbus.service.exceptions.UsuarioHardwareDuplicidadDescripcionException;
@@ -203,6 +207,10 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 				throw new  UsuarioHardwareCanalVentaNullException();
 			else if (cmbAgencia.getSelectedIndex()<=0)
 				throw new AgenciaNullException();
+			else if (txtDireccionIP.getValue().trim() == "")
+				throw new DireccionIPNullException();
+			else if (cmbTipoIP.getSelectedIndex() <=0)
+				throw new TipoIPNullException();
 			else if (txtDireccionMAC.getValue().trim() == "")
 				throw new CodigoNullException();
 			else if (txtDescripcion.getValue().trim() =="")
@@ -226,6 +234,27 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 			usuarioHardware.setCodigo(txtCodigo.getValue().trim());
 			usuarioHardware.setDescripcion(txtDescripcion.getValue().trim().toUpperCase());
 			usuarioHardware.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+			
+			TitanUsuarioHardware titanUsuarioHardware = new TitanUsuarioHardware();
+			titanUsuarioHardware.setIp(txtDireccionIP.getText().trim());
+			titanUsuarioHardware.setIdDepartamento(1);
+			titanUsuarioHardware.setIdTipoMaquina(1);
+			titanUsuarioHardware.setFrecuenciaReloj(0);
+			titanUsuarioHardware.setNombreEquipo(txtDescripcion.getText());
+			titanUsuarioHardware.setEsServidor(0);
+			titanUsuarioHardware.setParticiones(0);
+			titanUsuarioHardware.setMemoria(0);
+			titanUsuarioHardware.setIdUsuario(1);
+			titanUsuarioHardware.setIdRol(1);
+			titanUsuarioHardware.setIdUsuarioModificacion(1);
+			titanUsuarioHardware.setRolModificacion(1);
+			titanUsuarioHardware.setIpRegistro("10.10.10.1");
+			titanUsuarioHardware.setIpModificacion("10.10.10.1");
+			titanUsuarioHardware.setIdAgencia(id);
+			titanUsuarioHardware.setIdTipoComputador(1);
+			titanUsuarioHardware.setIdTipoIP(cmbTipoIP.getSelectedItem().getValue());
+			
+			usuarioHardware.setTitanUsuarioHardware(titanUsuarioHardware);
 			
 			switch (action) {
 				case ACTION_NEW:
@@ -253,6 +282,12 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 		}catch (CodigoNullException cnex){
 			DlgMessage.information(Messages.getString("Generales.information.noIngresoCodigo"),txtCodigo);
 			throw new CancelaGrabacionException();
+		}catch (DireccionIPNullException dipnex){
+			DlgMessage.information(Messages.getString("Generales.information.noIngresoIP"),txtCodigo);
+			throw new CancelaGrabacionException();
+		}catch (TipoIPNullException tipnex){
+			DlgMessage.information(Messages.getString("Generales.information.noSeleccionoTipoIP"),txtCodigo);
+			throw new CancelaGrabacionException();
 		}catch (UsuarioHardwareDescripcionNullException uhdnex){
 			DlgMessage.information(Messages.getString("Generales.information.noIngresoDescripcion"),txtDescripcion);
 			throw new CancelaGrabacionException();
@@ -261,6 +296,9 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 			throw new CancelaGrabacionException();
 		}catch (UsuarioHardwareDuplicidadDescripcionException uhddex){
 			DlgMessage.information(Messages.getString("Generales.information.descripcionDuplicada"),txtDescripcion);
+			throw new CancelaGrabacionException();
+		}catch(AgenciaTranscarNullException atnex) {
+			DlgMessage.information("La agencia no esta registrada en el Sistema de Carga");
 			throw new CancelaGrabacionException();
 		}catch (Exception ex) {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());

@@ -682,8 +682,15 @@ public class TitanDAOImpl implements TitanDAO {
 	public void guardarUsuarioHardware(TitanUsuarioHardware titanUsuarioHardware) throws Exception {
 		String sql = "INSERT INTO t_cpu(ip, iddepartamento_oficina, idtipo_maquina, frecuencia_reloj, nombre_equipo, nombre_red, es_servidor, nro_particiones, "
 				+ "memoria_disco_duro_gb, idusuario_personal, idrol_usuario, idusuario_personalmod, idrol_usuariomod, ipregistro, ipmod, idagencias, "
-				+ "idtipo_computador, idtipo_ip) VALUES ('"+titanUsuarioHardware.getIp()+"', ";
-		
+				+ "idtipo_computador, idtipo_ip) VALUES ('"+titanUsuarioHardware.getIp()+"', "+titanUsuarioHardware.getIdDepartamento()+", "
+				+ titanUsuarioHardware.getIdTipoMaquina()+", "+titanUsuarioHardware.getFrecuenciaReloj()+", '"+titanUsuarioHardware.getNombreEquipo()+"', '"
+				+ titanUsuarioHardware.getNombreRed()+"', "+titanUsuarioHardware.getEsServidor()+", "+titanUsuarioHardware.getParticiones()+ ", "
+				+ titanUsuarioHardware.getMemoria()+", "+titanUsuarioHardware.getIdUsuario()+", "+titanUsuarioHardware.getIdRol()+", "
+				+ titanUsuarioHardware.getIdUsuarioModificacion()+", "+titanUsuarioHardware.getRolModificacion()+", '"+titanUsuarioHardware.getIp()+"', '" 
+				+ titanUsuarioHardware.getIpModificacion()+"', "+titanUsuarioHardware.getIdAgencia()+", "+titanUsuarioHardware.getIdTipoComputador()+", "
+				+ titanUsuarioHardware.getIdTipoIP()+")";
+		log.info(sql);
+		jdbcTemplate.execute(sql);		
 		
 	}
 

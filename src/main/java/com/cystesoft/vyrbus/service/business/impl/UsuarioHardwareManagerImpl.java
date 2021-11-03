@@ -9,8 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.UsuarioHardware;
 import com.cystesoft.vyrbus.model.dao.AgenciaDAO;
+import com.cystesoft.vyrbus.model.dao.TitanDAO;
 import com.cystesoft.vyrbus.model.dao.UsuarioHardwareDAO;
 import com.cystesoft.vyrbus.service.business.UsuarioHardwareManager;
+import com.cystesoft.vyrbus.service.exceptions.AgenciaTranscarNullException;
 import com.cystesoft.vyrbus.service.exceptions.CodigoDuplicadoException;
 import com.cystesoft.vyrbus.service.exceptions.UsuarioHardwareDuplicidadDescripcionException;
 import com.cystesoft.vyrbus.service.util.Constantes;
@@ -18,6 +20,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
 public class UsuarioHardwareManagerImpl implements UsuarioHardwareManager{
 	private UsuarioHardwareDAO usuarioHardwareDAO;
 	private AgenciaDAO agenciaDAO;
+	private TitanDAO titanDAO;
 	
 	/**
 	 * 
@@ -47,6 +50,18 @@ public class UsuarioHardwareManagerImpl implements UsuarioHardwareManager{
 		this.agenciaDAO = agenciaDAO;
 	}
 	
+	/**
+	 * @return the titanDAO
+	 */
+	public TitanDAO getTitanDAO() {
+		return titanDAO;
+	}
+	/**
+	 * @param titanDAO the titanDAO to set
+	 */
+	public void setTitanDAO(TitanDAO titanDAO) {
+		this.titanDAO = titanDAO;
+	}
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.UsuarioHardwareManager#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
@@ -106,11 +121,20 @@ public class UsuarioHardwareManagerImpl implements UsuarioHardwareManager{
 				throw new UsuarioHardwareDuplicidadDescripcionException();
 			
 			getUsuarioHardwareDAO().guardar(usuarioHardware);
+			
+			Integer idAgenciaTranscar = getTitanDAO().buscarAgencia(agencia.getId());
+			if(idAgenciaTranscar != null)
+				usuarioHardware.getTitanUsuarioHardware().setIdAgencia(idAgenciaTranscar);
+			else
+				throw new AgenciaTranscarNullException();
+			getTitanDAO().guardarUsuarioHardware(usuarioHardware.getTitanUsuarioHardware());
 			result = Constantes.CORRECT;		
 		}catch (CodigoDuplicadoException rsdex){
 			throw new CodigoDuplicadoException();
 		}catch (UsuarioHardwareDuplicidadDescripcionException uhddex){
 			throw new UsuarioHardwareDuplicidadDescripcionException();
+		}catch(AgenciaTranscarNullException atnex) {
+			throw new AgenciaTranscarNullException();
 		}catch(Exception ex){
 			throw new Exception(ex);
 		}

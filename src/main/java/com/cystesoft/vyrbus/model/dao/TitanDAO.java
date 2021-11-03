@@ -165,4 +165,11 @@ public interface TitanDAO {
 	 * @throws Exception
 	 */
 	public Integer buscarAgencia(Integer idAgenciaPasajes) throws Exception;
+	/**
+	 * Realiza la busqueda del usuario Hardware
+	 * @param ip	: Identificador unico del usuario Hardware
+	 * @return Usuario Hardware
+	 * @throws Exception
+	 */
+	public TitanUsuarioHardware buscarUsuarioHardware(String ip) throws Exception;
 }
