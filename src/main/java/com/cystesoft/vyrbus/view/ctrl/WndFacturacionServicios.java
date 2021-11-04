@@ -372,7 +372,7 @@ public class WndFacturacionServicios extends WndBase {
 							servicioEspecial.setNumeroControl("T00000");
 							
 							if(((TipoMoneda)cmbTipoMoneda.getSelectedItem().getValue()).getId()!=Constantes.ID_TIPMON_SOLES) {
-								servicioEspecial.setTipoMoneda(cmbTipoMoneda.getSelectedItem().getValue());
+								servicioEspecial.setTipoMoneda((TipoMoneda)cmbTipoMoneda.getSelectedItem().getValue());
 								servicioEspecial.setTipoCambio(dbxTipoCambio.getValue());
 								servicioEspecial.setImportePagadoEquibalente(dbxTipoCambio.getValue() * servicioEspecial.getTarifa());
 							}

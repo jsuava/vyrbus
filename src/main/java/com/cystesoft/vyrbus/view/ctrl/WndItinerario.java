@@ -3398,7 +3398,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		row = new Row();
 		label = new Label("ORIGEN :");
 		row.appendChild(label);
-		Label lblOrigen = new Label(detalleItinerario.getRuta().getOrigen());
+		final Label lblOrigen = new Label(detalleItinerario.getRuta().getOrigen());
 		lblOrigen.setStyle(style);
 		row.appendChild(lblOrigen);
 		label = new Label("RUTA :");

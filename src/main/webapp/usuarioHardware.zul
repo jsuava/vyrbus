@@ -19,7 +19,7 @@
 		<caption label="DATOS USUARIO HARDWARE" style="color: #ffffff;"/>
 		<grid>
 			<columns>
-				<column width="90px" align="right"/>
+				<column width="100px" align="right"/>
 				<column width="150px" />
 				<column width="90px" align="right"/>
 <!-- 				<column width="385px"></column> -->
@@ -32,14 +32,20 @@
 						<combobox id="cmbCanalVenta" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbAgencia)"/>
 					</div>
 					<label value="AGENCIA :"/>
-					<combobox id="cmbAgencia" readonly="false" width="200px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtDireccionMAC)"/>
+					<combobox id="cmbAgencia" readonly="false" width="200px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtDireccionIP)"/>
+				</row>
+				<row>
+					<label value="DIRECCION IP :" />
+					<textbox id="txtDireccionIP" maxlength="15" width="130px" style="font-size:11px !important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbTipoIP)"/>
+					<label value="TIPO IP :"/>
+					<combobox id="cmbTipoIP" readonly="true" width="100px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtDireccionMAC)"/>
 				</row>
 				<row>
 					<label value="DIRECCION MAC :"/>
 					<textbox id="txtDireccionMAC" maxlength="17" width="130px" style="font-size:11px !important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtCodigo)"/>
 					<label value="CODIGO :"/>
 					<hlayout>
-						<textbox id="txtCodigo" maxlength="100" readonly="true" width="345px" style="text-transform:none !important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtDescripcion)"/>
+						<textbox id="txtCodigo" maxlength="100" readonly="true" width="335px" style="text-transform:none !important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtDescripcion)"/>
 						<image src="resources/mp_generar.png" 
 								onClick="wndUsuarioHardware.generarCodigo(txtDireccionMAC.getText())" 
 								tooltiptext="Haga click aqui para generar el codigo."/>
