@@ -28,6 +28,7 @@
 <!-- 							<radio id="rdAmbos" label="Ambos" style="margin-left:10px !important"/> -->
 						</radiogroup>
 						<button image="resources/mp_buscarEnabled.png" label="Buscar" onClick="wndRptGastosIngresos.onSearch()" sclass="btnCommandM" style="width:110px; height:30px; margin-left:15px" />
+						<button  onClick="wndRptGastosIngresos.btnExportar_OnClick()" autodisable="selft" image="resources/mp_excel.png" sclass="btnImage" tooltiptext="Exportar a Excel."/>
 					</hbox>
 				</row>
 			</rows>
@@ -50,7 +51,7 @@
 							<listheader label="USUARIO" width="300px" />
 							<listheader label="IMPORTE" align="center"/>
 						</listhead>
-					</listbox>
+					</listbox>					
 				</row>
 				<row spans="2">
 					<listbox id="ltbxDetalleGasto" rows="7">

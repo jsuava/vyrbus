@@ -3102,7 +3102,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		row = new Row();
 		label = new Label("ORIGEN :");
 		row.appendChild(label);
-		Label lblOrigen = new Label(detalleItinerario.getRuta().getOrigen());
+		final Label lblOrigen = new Label(detalleItinerario.getRuta().getOrigen());
 		lblOrigen.setStyle(style);
 		row.appendChild(lblOrigen);
 		label = new Label("RUTA :");
@@ -3115,7 +3115,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		row = new Row();
 		label = new Label("F.SALIDA :");
 		row.appendChild(label);
-		Label lblFechaSalida = new Label(Util.DatetoString(detalleItinerario.getFechaPartida(), Constantes.DATE_FORMAT));
+		final Label lblFechaSalida = new Label(Util.DatetoString(detalleItinerario.getFechaPartida(), Constantes.DATE_FORMAT));
 		lblFechaSalida.setStyle(style);
 		row.appendChild(lblFechaSalida);
 		label = new Label("H.SALIDA :");
@@ -3411,12 +3411,12 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		row = new Row();
 		label = new Label("F.SALIDA :");
 		row.appendChild(label);
-		Label lblFechaSalida = new Label(Util.DatetoString(detalleItinerario.getFechaPartida(), Constantes.DATE_FORMAT));
+		final Label lblFechaSalida = new Label(Util.DatetoString(detalleItinerario.getFechaPartida(), Constantes.DATE_FORMAT));
 		lblFechaSalida.setStyle(style);
 		row.appendChild(lblFechaSalida);
 		label = new Label("H.SALIDA :");
 		row.appendChild(label);
-		Label lblHoraSalida = new Label(detalleItinerario.getHoraPartida());
+		final Label lblHoraSalida = new Label(detalleItinerario.getHoraPartida());
 		lblHoraSalida.setStyle(style);
 		row.appendChild(lblHoraSalida);
 		rows.appendChild(row);

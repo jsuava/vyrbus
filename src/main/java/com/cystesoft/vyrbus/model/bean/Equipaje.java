@@ -22,6 +22,7 @@ public class Equipaje extends GenericBean implements java.io.Serializable{
 	private Itinerario itinerario;
 	private Agencia agencia;
 	private Double peso;
+	private String observaciones;
 	
 	private UsuarioHardware usuarioHardware;
 	
@@ -92,6 +93,20 @@ public class Equipaje extends GenericBean implements java.io.Serializable{
 	 */
 	public void setUsuarioHardware(UsuarioHardware usuarioHardware) {
 		this.usuarioHardware = usuarioHardware;
+	}
+
+	/**
+	 * @return the observaciones
+	 */
+	public String getObservaciones() {
+		return observaciones;
+	}
+
+	/**
+	 * @param observaciones the observaciones to set
+	 */
+	public void setObservaciones(String observaciones) {
+		this.observaciones = observaciones;
 	}
 	
 

@@ -109,12 +109,10 @@ public class Sendmail {
 	        //Para enviar el mensaje usamos la clase Transport
 	        Transport t = session.getTransport("smtp");
 //	        // Establecemos la conexion
-//	        t.connect(from,"mantybus303");
 	        t.connect(from, password);
-//	        
+
 //	        // Enviamos el mensaje
 	        t.sendMessage(message,message.getAllRecipients());
-//	        Transport.send(message);
 	        // Cerramos la conexxión
 	        t.close();
 	        result = Constantes.CORRECT;

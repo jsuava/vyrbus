@@ -74,7 +74,7 @@
 			<groupbox closable="false" mold="3d" >
 				<caption label="DATOS PARA EL INICIO DE SESIÓN EN EL SISTEMA" style="color: #ffffff;"/>
 				<hbox>
-					<grid width="500px">
+					<grid width="400px">
 						<columns>
 							<column width="150px" align="right"/>
 							<column />
@@ -131,24 +131,54 @@
 						</rows>
 					</grid>
 					<vbox align="center">
-						<div align="left">
-							<checkbox 
-								id="chbxSoloRolesSeleccionados" 
-								onCheck="wndUsuariosistema.soloRolesSeleccionados()" 
-								label="Solo roles seleccionados" style="color:#61380B;font-weight: bold;" />
-						</div>
+					    <tabbox id="tabRoles">
+					    	<tabs>
+					    		<tab>Roles - Pasajes</tab>
+					    		<tab>Roles - Carga</tab>
+					    	</tabs>
+					    	<tabpanels>
+					    		<tabpanel>
+					    			<div align="left">
+										<checkbox id="chbxSoloRolesSeleccionados" onCheck="wndUsuariosistema.soloRolesSeleccionados()" label="Solo roles seleccionados" style="color:#61380B;font-weight: bold;" />
+									</div>
+									
+									<groupbox closable="false" open="false">
+										<caption label="Roles del Usuario" style="font-weight: bold;"/>
+									</groupbox>
+									<listbox id="lbxRoles" rows="4" checkmark="true" multiple="true">
+										<listhead/>
+									</listbox>
+									<hbox align="center">
+										<label value="ROLES SELECCIONADOS: " style="color:blue;font-weight: bold; font-size:9px !important" />
+										<label id="lblRolesSeleccionados" style="color:blue;font-weight: bold; font-size:10px !important" />
+									</hbox>		
+					    		</tabpanel>
+					    		<tabpanel>
+					    			<div align="left">
+										<checkbox id="chbxSoloRolesSeleccionadosCarga" onCheck="wndUsuariosistema.soloRolesSeleccionadosCarga()" label="Solo roles seleccionados" style="color:#61380B;font-weight: bold;" />
+									</div>
+									
+									<groupbox closable="false" open="false">
+										<caption label="Roles del Usuario" style="font-weight: bold;"/>
+									</groupbox>
+									<listbox id="lbxRolesCarga" rows="4" checkmark="true" multiple="true">
+										<listhead/>
+									</listbox>
+									<hbox align="center">
+										<label value="ROLES SELECCIONADOS: " style="color:blue;font-weight: bold; font-size:9px !important" />
+										<label id="lblRolesSeleccionadosCarga" style="color:blue;font-weight: bold; font-size:10px !important" />
+									</hbox>
+									<hbox align="center">
+										<groupbox closable="false">
+											<caption>Configuración</caption>
+											<vbox><checkbox id="chbxIngresaComprobanteOtraAgencia" label="Ingresa comprobante de venta de otras agencias"/></vbox>
+											<vbox><checkbox id="chbxAutorizaEntregaSinVerificarUsuario" label="Autoriza entrega sin verificar usuario"/> </vbox>
+										</groupbox>									
+									</hbox>
+					    		</tabpanel>
+					    	</tabpanels>
+					    </tabbox>
 						
-						<groupbox closable="false" open="false">
-							<caption label="Roles del Usuario" style="font-weight: bold;"/>
-						</groupbox>
-						<listbox id="lbxRoles" rows="4" checkmark="true" multiple="true">
-							<listhead>
-							</listhead>
-						</listbox>
-						<hbox align="center">
-							<label value="ROLES SELECCIONADOS: " style="color:blue;font-weight: bold; font-size:9px !important" />
-							<label id="lblRolesSeleccionados" style="color:blue;font-weight: bold; font-size:10px !important" />
-						</hbox>
 					</vbox>
 				</hbox>
 				

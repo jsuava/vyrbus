@@ -126,7 +126,12 @@
 				</row>
 				<row spans="6">
 					<div style="text-align:left">
-						<textbox id="txtGlosa" rows="4" placeholder="GLOSA" width="630px" maxlength="255"/>
+						<textbox id="txtGlosa" rows="3" readonly="true" placeholder="GLOSA" width="630px" maxlength="255"/>
+					</div>
+				</row>
+				<row spans="6">
+					<div style="text-align:left">
+						<textbox id="txtobservaciones" rows="3" placeholder="OBSERVACIONES" width="630px" maxlength="255"/>
 					</div>
 				</row>
 			</rows>

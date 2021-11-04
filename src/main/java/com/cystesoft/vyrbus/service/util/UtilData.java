@@ -2508,6 +2508,7 @@ public class UtilData extends Window {
 		liquidacion.setMontoIngresado((double) 0);
 		liquidacion.setEstadoLiquidacion(Constantes.LIQUI_ESTA_ABIERTO);
 		liquidacion.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+		liquidacion.setMontoIngresadoDolares((double)0);
 		
 		UtilData.auditarRegistro(liquidacion, usuario, Executions.getCurrent());
 		ServiceLocator.getLiquidacionManager().aperturarLiquidacion(liquidacion);
