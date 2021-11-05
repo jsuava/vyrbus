@@ -104,7 +104,7 @@ public class DocumentoBaja {
 	 * 
 	 */
 	public void setDescripcionMotivo(JAXBElement<String> value) {
-		this.descripcionMotivo = (value);
+		this.descripcionMotivo = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -127,7 +127,7 @@ public class DocumentoBaja {
 	 * 
 	 */
 	public void setFechaEmision(JAXBElement<String> value) {
-		this.fechaEmision = (value);
+		this.fechaEmision = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -150,7 +150,7 @@ public class DocumentoBaja {
 	 * 
 	 */
 	public void setNumeroCorrelativo(JAXBElement<String> value) {
-		this.numeroCorrelativo = (value);
+		this.numeroCorrelativo = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -173,7 +173,7 @@ public class DocumentoBaja {
 	 * 
 	 */
 	public void setNumeroSerie(JAXBElement<String> value) {
-		this.numeroSerie = (value);
+		this.numeroSerie = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -196,7 +196,7 @@ public class DocumentoBaja {
 	 * 
 	 */
 	public void setRucEmpresa(JAXBElement<String> value) {
-		this.rucEmpresa = (value);
+		this.rucEmpresa = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -219,7 +219,7 @@ public class DocumentoBaja {
 	 * 
 	 */
 	public void setTipoDocumentoID(JAXBElement<String> value) {
-		this.tipoDocumentoID = (value);
+		this.tipoDocumentoID = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -263,7 +263,7 @@ public class DocumentoBaja {
 	 * 
 	 */
 	public void setUsuarioInsercion(JAXBElement<String> value) {
-		this.usuarioInsercion = (value);
+		this.usuarioInsercion = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -286,7 +286,7 @@ public class DocumentoBaja {
 	 * 
 	 */
 	public void setUsuarioModificacion(JAXBElement<String> value) {
-		this.usuarioModificacion = (value);
+		this.usuarioModificacion = ((JAXBElement<String>) value);
 	}
 
 }

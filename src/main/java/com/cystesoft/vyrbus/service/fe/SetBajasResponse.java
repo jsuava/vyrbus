@@ -58,7 +58,7 @@ public class SetBajasResponse {
 	 * 
 	 */
 	public void setSetBajasResult(JAXBElement<Result> value) {
-		this.setBajasResult = (value);
+		this.setBajasResult = ((JAXBElement<Result>) value);
 	}
 
 }

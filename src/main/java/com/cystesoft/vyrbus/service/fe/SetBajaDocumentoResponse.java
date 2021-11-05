@@ -58,7 +58,7 @@ public class SetBajaDocumentoResponse {
 	 * 
 	 */
 	public void setSetBajaDocumentoResult(JAXBElement<Result> value) {
-		this.setBajaDocumentoResult = (value);
+		this.setBajaDocumentoResult = ((JAXBElement<Result>) value);
 	}
 
 }

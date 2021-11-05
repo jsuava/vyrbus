@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
+ *         &lt;element name="Code" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="IsCorrect" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
  *         &lt;element name="Message" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="barcode" type="{http://www.w3.org/2001/XMLSchema}base64Binary" minOccurs="0"/>
@@ -37,10 +38,12 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Result", namespace = "http://schemas.datacontract.org/2004/07/FEService.Util", propOrder = {
+@XmlType(name = "Result", namespace = "http://schemas.datacontract.org/2004/07/FEService.Util", propOrder = { "code",
 		"isCorrect", "message", "barcode", "barcodeQR", "listDetalleVenta", "pdf", "retencionesInp" })
 public class Result {
 
+	@XmlElementRef(name = "Code", namespace = "http://schemas.datacontract.org/2004/07/FEService.Util", type = JAXBElement.class)
+	protected JAXBElement<String> code;
 	@XmlElement(name = "IsCorrect")
 	protected Boolean isCorrect;
 	@XmlElementRef(name = "Message", namespace = "http://schemas.datacontract.org/2004/07/FEService.Util", type = JAXBElement.class)
@@ -55,6 +58,29 @@ public class Result {
 	protected JAXBElement<byte[]> pdf;
 	@XmlElementRef(name = "retencionesInp", namespace = "http://schemas.datacontract.org/2004/07/FEService.Util", type = JAXBElement.class)
 	protected JAXBElement<ArrayOfRetencionInp> retencionesInp;
+
+	/**
+	 * Gets the value of the code property.
+	 * 
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String
+	 *         }{@code >}
+	 * 
+	 */
+	public JAXBElement<String> getCode() {
+		return code;
+	}
+
+	/**
+	 * Sets the value of the code property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String
+	 *            }{@code >}
+	 * 
+	 */
+	public void setCode(JAXBElement<String> value) {
+		this.code = ((JAXBElement<String>) value);
+	}
 
 	/**
 	 * Gets the value of the isCorrect property.
@@ -97,7 +123,7 @@ public class Result {
 	 * 
 	 */
 	public void setMessage(JAXBElement<String> value) {
-		this.message = (value);
+		this.message = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -120,7 +146,7 @@ public class Result {
 	 * 
 	 */
 	public void setBarcode(JAXBElement<byte[]> value) {
-		this.barcode = (value);
+		this.barcode = ((JAXBElement<byte[]>) value);
 	}
 
 	/**
@@ -143,7 +169,7 @@ public class Result {
 	 * 
 	 */
 	public void setBarcodeQR(JAXBElement<byte[]> value) {
-		this.barcodeQR = (value);
+		this.barcodeQR = ((JAXBElement<byte[]>) value);
 	}
 
 	/**
@@ -166,7 +192,7 @@ public class Result {
 	 * 
 	 */
 	public void setListDetalleVenta(JAXBElement<ArrayOfDetalleVenta> value) {
-		this.listDetalleVenta = (value);
+		this.listDetalleVenta = ((JAXBElement<ArrayOfDetalleVenta>) value);
 	}
 
 	/**
@@ -189,7 +215,7 @@ public class Result {
 	 * 
 	 */
 	public void setPdf(JAXBElement<byte[]> value) {
-		this.pdf = (value);
+		this.pdf = ((JAXBElement<byte[]>) value);
 	}
 
 	/**
@@ -212,7 +238,7 @@ public class Result {
 	 * 
 	 */
 	public void setRetencionesInp(JAXBElement<ArrayOfRetencionInp> value) {
-		this.retencionesInp = (value);
+		this.retencionesInp = ((JAXBElement<ArrayOfRetencionInp>) value);
 	}
 
 }

@@ -58,7 +58,7 @@ public class SetNotaResponse {
 	 * 
 	 */
 	public void setSetNotaResult(JAXBElement<Result> value) {
-		this.setNotaResult = (value);
+		this.setNotaResult = ((JAXBElement<Result>) value);
 	}
 
 }

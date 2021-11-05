@@ -61,7 +61,7 @@ public class SetBajaDocumento {
 	 * 
 	 */
 	public void setToken(JAXBElement<String> value) {
-		this.token = (value);
+		this.token = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class SetBajaDocumento {
 	 * 
 	 */
 	public void setDocumentoBaja(JAXBElement<DocumentoBaja> value) {
-		this.documentoBaja = (value);
+		this.documentoBaja = ((JAXBElement<DocumentoBaja>) value);
 	}
 
 }

@@ -88,7 +88,7 @@ public class RetencionDetalleInp {
 	 * 
 	 */
 	public void setFechaEmisonDoctRelacionado(JAXBElement<String> value) {
-		this.fechaEmisonDoctRelacionado = (value);
+		this.fechaEmisonDoctRelacionado = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class RetencionDetalleInp {
 	 * 
 	 */
 	public void setFechaPago(JAXBElement<String> value) {
-		this.fechaPago = (value);
+		this.fechaPago = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -218,7 +218,7 @@ public class RetencionDetalleInp {
 	 * 
 	 */
 	public void setMonedaDoctRelacionado(JAXBElement<String> value) {
-		this.monedaDoctRelacionado = (value);
+		this.monedaDoctRelacionado = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -241,7 +241,7 @@ public class RetencionDetalleInp {
 	 * 
 	 */
 	public void setMonedaOriginal(JAXBElement<String> value) {
-		this.monedaOriginal = (value);
+		this.monedaOriginal = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -264,7 +264,7 @@ public class RetencionDetalleInp {
 	 * 
 	 */
 	public void setMonedaPagado(JAXBElement<String> value) {
-		this.monedaPagado = (value);
+		this.monedaPagado = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -287,7 +287,7 @@ public class RetencionDetalleInp {
 	 * 
 	 */
 	public void setNumDoctRelacionado(JAXBElement<String> value) {
-		this.numDoctRelacionado = (value);
+		this.numDoctRelacionado = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -310,7 +310,7 @@ public class RetencionDetalleInp {
 	 * 
 	 */
 	public void setNumeroPago(JAXBElement<String> value) {
-		this.numeroPago = (value);
+		this.numeroPago = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -333,7 +333,7 @@ public class RetencionDetalleInp {
 	 * 
 	 */
 	public void setTipoDoctRelacionado(JAXBElement<String> value) {
-		this.tipoDoctRelacionado = (value);
+		this.tipoDoctRelacionado = ((JAXBElement<String>) value);
 	}
 
 }

@@ -61,7 +61,7 @@ public class SetConsultarCDR {
 	 * 
 	 */
 	public void setToken(JAXBElement<String> value) {
-		this.token = (value);
+		this.token = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class SetConsultarCDR {
 	 * 
 	 */
 	public void setDocumentCDR(JAXBElement<DocumentCDR> value) {
-		this.documentCDR = (value);
+		this.documentCDR = ((JAXBElement<DocumentCDR>) value);
 	}
 
 }

@@ -70,7 +70,7 @@ public class BuscarDetalleComprobante {
 	 * 
 	 */
 	public void setToken(JAXBElement<String> value) {
-		this.token = (value);
+		this.token = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class BuscarDetalleComprobante {
 	 * 
 	 */
 	public void setTipoComprobante(JAXBElement<String> value) {
-		this.tipoComprobante = (value);
+		this.tipoComprobante = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -116,7 +116,7 @@ public class BuscarDetalleComprobante {
 	 * 
 	 */
 	public void setSerie(JAXBElement<String> value) {
-		this.serie = (value);
+		this.serie = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -139,7 +139,7 @@ public class BuscarDetalleComprobante {
 	 * 
 	 */
 	public void setCorrelativo(JAXBElement<String> value) {
-		this.correlativo = (value);
+		this.correlativo = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -162,7 +162,7 @@ public class BuscarDetalleComprobante {
 	 * 
 	 */
 	public void setRucEmpresa(JAXBElement<String> value) {
-		this.rucEmpresa = (value);
+		this.rucEmpresa = ((JAXBElement<String>) value);
 	}
 
 }

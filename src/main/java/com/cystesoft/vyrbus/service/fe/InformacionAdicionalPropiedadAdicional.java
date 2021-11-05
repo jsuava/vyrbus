@@ -63,7 +63,7 @@ public class InformacionAdicionalPropiedadAdicional {
 	 * 
 	 */
 	public void setCodigo(JAXBElement<String> value) {
-		this.codigo = (value);
+		this.codigo = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class InformacionAdicionalPropiedadAdicional {
 	 * 
 	 */
 	public void setNombre(JAXBElement<String> value) {
-		this.nombre = (value);
+		this.nombre = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -109,7 +109,7 @@ public class InformacionAdicionalPropiedadAdicional {
 	 * 
 	 */
 	public void setValue(JAXBElement<String> value) {
-		this.value = (value);
+		this.value = ((JAXBElement<String>) value);
 	}
 
 }

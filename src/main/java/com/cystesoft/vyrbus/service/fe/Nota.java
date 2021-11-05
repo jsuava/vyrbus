@@ -134,7 +134,7 @@ public class Nota {
 	 * 
 	 */
 	public void setCliente(JAXBElement<Cliente> value) {
-		this.cliente = (value);
+		this.cliente = ((JAXBElement<Cliente>) value);
 	}
 
 	/**
@@ -157,7 +157,7 @@ public class Nota {
 	 * 
 	 */
 	public void setCodigoTipoNota(JAXBElement<String> value) {
-		this.codigoTipoNota = (value);
+		this.codigoTipoNota = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -180,7 +180,7 @@ public class Nota {
 	 * 
 	 */
 	public void setDescripcionSustento(JAXBElement<String> value) {
-		this.descripcionSustento = (value);
+		this.descripcionSustento = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -203,7 +203,7 @@ public class Nota {
 	 * 
 	 */
 	public void setDescripcionTipoNota(JAXBElement<String> value) {
-		this.descripcionTipoNota = (value);
+		this.descripcionTipoNota = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -226,7 +226,7 @@ public class Nota {
 	 * 
 	 */
 	public void setDocumentoReferencia(JAXBElement<DocumentoReferencia> value) {
-		this.documentoReferencia = (value);
+		this.documentoReferencia = ((JAXBElement<DocumentoReferencia>) value);
 	}
 
 	/**
@@ -249,7 +249,7 @@ public class Nota {
 	 * 
 	 */
 	public void setFechaEmision(JAXBElement<String> value) {
-		this.fechaEmision = (value);
+		this.fechaEmision = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -272,7 +272,7 @@ public class Nota {
 	 * 
 	 */
 	public void setHoraEmision(JAXBElement<String> value) {
-		this.horaEmision = (value);
+		this.horaEmision = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -316,7 +316,7 @@ public class Nota {
 	 * 
 	 */
 	public void setInformacionAdicional(JAXBElement<InformacionAdicional> value) {
-		this.informacionAdicional = (value);
+		this.informacionAdicional = ((JAXBElement<InformacionAdicional>) value);
 	}
 
 	/**
@@ -339,7 +339,7 @@ public class Nota {
 	 * 
 	 */
 	public void setNumeroCorrelativo(JAXBElement<String> value) {
-		this.numeroCorrelativo = (value);
+		this.numeroCorrelativo = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -362,7 +362,7 @@ public class Nota {
 	 * 
 	 */
 	public void setNumeroSerie(JAXBElement<String> value) {
-		this.numeroSerie = (value);
+		this.numeroSerie = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -385,7 +385,7 @@ public class Nota {
 	 * 
 	 */
 	public void setRucEmpresa(JAXBElement<String> value) {
-		this.rucEmpresa = (value);
+		this.rucEmpresa = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -429,7 +429,7 @@ public class Nota {
 	 * 
 	 */
 	public void setTipoComprobanteID(JAXBElement<String> value) {
-		this.tipoComprobanteID = (value);
+		this.tipoComprobanteID = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -536,7 +536,7 @@ public class Nota {
 	 * 
 	 */
 	public void setUsuarioInsercion(JAXBElement<String> value) {
-		this.usuarioInsercion = (value);
+		this.usuarioInsercion = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -559,7 +559,7 @@ public class Nota {
 	 * 
 	 */
 	public void setUsuarioModificacion(JAXBElement<String> value) {
-		this.usuarioModificacion = (value);
+		this.usuarioModificacion = ((JAXBElement<String>) value);
 	}
 
 }

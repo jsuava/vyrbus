@@ -5250,7 +5250,7 @@ public class WndVentaReserva extends WndBase {
 										listVentaPasaje.add(ventaPasaje);
 										
 										//Comentado temporalmente por MAOE para pruebasc con Transmar
-										//WSFE.sendVenta(listVentaPasaje, wndVentaReserva, true,null);
+										WSFE.sendVenta(listVentaPasaje, wndVentaReserva, true,null);
 										
 										//Limpia los controles
 										onCleanControlsPax();
@@ -6144,14 +6144,14 @@ public class WndVentaReserva extends WndBase {
 									if(ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA || 
 											ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_FACTURA){
 										/*Realiza el envio del boleto y realiza la impresion*/
-//										boolean printComprobante=(chkVentaRemota.isChecked()?false:true);
+										boolean printComprobante=(chkVentaRemota.isChecked()?false:true);
 										
 										List<VentaPasaje> listVentaPasajes= new ArrayList<>();
 										listVentaPasajes.add(ventaPasaje);
 										
 										//Aqui se envia el comprobante al servidor de Facturación Electrónica
 										//Comentado temporalmente por MAOE
-										//WSFE.sendVenta(listVentaPasajes,wndVentaReserva,printComprobante,null);
+										WSFE.sendVenta(listVentaPasajes,wndVentaReserva,printComprobante,null);
 									}
 									
 									
@@ -6328,7 +6328,7 @@ public class WndVentaReserva extends WndBase {
 									ventasIdaRetorno.add(ventaPasajeRETORNO);
 									
 									//Comentado temporalmente por MAOE
-									//WSFE.sendVenta(ventasIdaRetorno, wndVentaReserva, true,null);
+									WSFE.sendVenta(ventasIdaRetorno, wndVentaReserva, true,null);
 									
 									/*End Begin 24/10/2016 - jabanto*/
 //									/*Implementacion para el nueno formato 01/02/2016 - jabanto */

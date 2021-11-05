@@ -62,7 +62,7 @@ public class InformacionAdicional {
 	 * 
 	 */
 	public void setPropiedadesAdicionales(JAXBElement<ArrayOfInformacionAdicionalPropiedadAdicional> value) {
-		this.propiedadesAdicionales = (value);
+		this.propiedadesAdicionales = ((JAXBElement<ArrayOfInformacionAdicionalPropiedadAdicional>) value);
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class InformacionAdicional {
 	 * 
 	 */
 	public void setTotalesMonedaAdicional(JAXBElement<ArrayOfInformacionAdicionalTotalMonedaAdicional> value) {
-		this.totalesMonedaAdicional = (value);
+		this.totalesMonedaAdicional = ((JAXBElement<ArrayOfInformacionAdicionalTotalMonedaAdicional>) value);
 	}
 
 }

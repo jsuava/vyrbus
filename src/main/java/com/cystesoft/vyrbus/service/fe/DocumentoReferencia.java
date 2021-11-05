@@ -63,7 +63,7 @@ public class DocumentoReferencia {
 	 * 
 	 */
 	public void setFechaDocumento(JAXBElement<String> value) {
-		this.fechaDocumento = (value);
+		this.fechaDocumento = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class DocumentoReferencia {
 	 * 
 	 */
 	public void setNumeroDocumento(JAXBElement<String> value) {
-		this.numeroDocumento = (value);
+		this.numeroDocumento = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -109,7 +109,7 @@ public class DocumentoReferencia {
 	 * 
 	 */
 	public void setTipoComprobante(JAXBElement<String> value) {
-		this.tipoComprobante = (value);
+		this.tipoComprobante = ((JAXBElement<String>) value);
 	}
 
 }

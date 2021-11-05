@@ -58,7 +58,7 @@ public class SetUpdateStatusCDRResponse {
 	 * 
 	 */
 	public void setSetUpdateStatusCDRResult(JAXBElement<Result> value) {
-		this.setUpdateStatusCDRResult = (value);
+		this.setUpdateStatusCDRResult = ((JAXBElement<Result>) value);
 	}
 
 }
