@@ -836,7 +836,7 @@
 	</bean>
 	
 	<bean id="transcarManager" class="com.cystesoft.vyrbus.service.business.impl.TranscarManagerImpl">
-		<property name="TranscarDAO" ref="transcarDAO" />
+		<property name="transcarDAO" ref="transcarDAO" />
 	</bean>
 	
 <!-- 	HOJA DE RUTA ELECTRONICA -->
