@@ -102,7 +102,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 	private Button btnBuscarCliente;
 	private Textbox txtRazonSocial;
 	private Textbox txtDireccionFiscal;
-	
+	private Textbox txtobservaciones;
 	
 	private TreeMap<String, Object> criteriosBusqueda;
 	private int KG_X_BOLETO_LIBRES = 20;	
@@ -151,7 +151,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 		btnBuscarCliente = (Button)this.getFellow("btnBuscarCliente");
 		txtRazonSocial = (Textbox)this.getFellow("txtRazonSocial");
 		txtDireccionFiscal = (Textbox)this.getFellow("txtDireccionFiscal");
-		
+		txtobservaciones = (Textbox)this.getFellow("txtobservaciones");
 		
 		txtNumeroBoleto.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
@@ -506,6 +506,8 @@ public class WndEquipaje extends WndBase implements Serializable{
 		equipaje.setPeso(itbxTotalKilos.getValue().doubleValue());
 		equipaje.setUsuarioHardware(getUsuarioHardware());
 		equipaje.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+		if(!(txtobservaciones.getText().trim().isEmpty()))
+			equipaje.setObservaciones(txtobservaciones.getText().trim().toUpperCase());
 		UtilData.auditarRegistro(equipaje, getUsuario(), Executions.getCurrent());
 				
 		//Obtiene el numero de Ticket inicial
@@ -712,7 +714,8 @@ public class WndEquipaje extends WndBase implements Serializable{
 	private void disabledControls(boolean isDisabled)throws Exception{
 		itbxNumeroMaletas.setDisabled(isDisabled);
 		itbxTotalKilos.setDisabled(isDisabled);
-		txtGlosa.setDisabled(isDisabled);				
+		txtGlosa.setDisabled(isDisabled);
+		txtobservaciones.setDisabled(isDisabled);
 	}
 	
 	/**
@@ -828,6 +831,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 		txtRazonSocial.setText("");
 		txtDireccionFiscal.setText("");
 		txtGlosa.setText("");
+		txtobservaciones.setText("");
 	}
 	
 	/**
@@ -839,6 +843,8 @@ public class WndEquipaje extends WndBase implements Serializable{
 		for(Listitem item: ltbxBoletos.getItems()) {
 			VentaPasaje ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarPorId(((VentaPasaje)item.getValue()).getId());
 			_subGlosa = (_subGlosa.isEmpty()?ventaPasaje.getNumeroBoleto()+"-->"+ventaPasaje.getRuta().toString():", "+ventaPasaje.getNumeroBoleto()+"-->"+ventaPasaje.getRuta().toString());
+			_subGlosa += "-->ASIENTO:"+ventaPasaje.getNumeroAsiento().toString();
+			_subGlosa += "-->H.SALIDA:"+ventaPasaje.getHoraPartida();
 		}
 		txtGlosa.setText("EXCESO DE EQUIPAJES, COMP.N° " + _subGlosa);
 	}

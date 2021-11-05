@@ -10,6 +10,7 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Textbox;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
@@ -44,6 +45,8 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 	private Textbox	txtCodigo;
 	private Textbox txtDireccionMAC;
 	private Textbox txtDescripcion;
+	private Textbox txtDireccionIP;
+	private Combobox cmbTipoIP;
 	
 	private UsuarioHardware usuarioHardware=null;
 	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
@@ -67,6 +70,8 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 		txtCodigo = (Textbox) this.getFellow("txtCodigo");
 		txtDescripcion = (Textbox) this.getFellow("txtDescripcion");
 		txtDireccionMAC = (Textbox)this.getFellow("txtDireccionMAC");
+		txtDireccionIP = (Textbox)this.getFellow("txtDireccionIP");
+		cmbTipoIP = (Combobox) this.getFellow("cmbTipoIP");
 	}
 	
 	/*
@@ -77,6 +82,8 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 	public void onCreate() throws Exception {
 		UtilData.cargarDataCombo(cmbCanalVenta, CanalVenta.class, false);
 		UtilData.cargarDataCombo(cmbAgencia, Agencia.class, false);
+		onLoadTipoIP();
+		
 		criteriosOrdenar = new ArrayList<String>();
 	}
 	
@@ -400,5 +407,17 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
             hash += Integer.toHexString(b);
         }
         return hash;
+    }
+    
+    private void onLoadTipoIP() {
+    	UtilData.cargarGenericData(cmbTipoIP, false);
+		Comboitem item = new Comboitem();
+		item.setLabel("FIJO");
+		item.setValue(1);
+		cmbTipoIP.appendChild(item);
+		item = new Comboitem();
+		item.setLabel("MOVIL");
+		item.setValue(2);
+		cmbTipoIP.appendChild(item);		
     }
 }

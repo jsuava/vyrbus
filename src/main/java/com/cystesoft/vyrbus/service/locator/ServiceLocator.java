@@ -938,4 +938,12 @@ public class ServiceLocator {
 	public static DetalleEquipajeManager getDetalleEquipajeManager(){
 		return (DetalleEquipajeManager) SpringUtil.getBean("detalleEquipajeManager", DetalleEquipajeManager.class);
 	}
+	
+	/**
+	 * Obtiene el bean de TranscarManager, para realizar la comunicación con la capa modelo
+	 * @return <b>TranscarManager</b>
+	 */
+	public static TranscarManager getTranscarManager(){
+		return (TranscarManager) SpringUtil.getBean("transcarManager",TranscarManager.class);
+	}
 }

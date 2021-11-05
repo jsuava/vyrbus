@@ -13,6 +13,8 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Messagebox;
 
 import com.cystesoft.vyrbus.model.bean.Liquidacion;
+import com.cystesoft.vyrbus.model.bean.TranscarLiquidacionTurno;
+import com.cystesoft.vyrbus.model.bean.TranscarUsuarioPersonal;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.Messages;
@@ -120,6 +122,33 @@ public class WndTipoOperacion extends WndBase{
 							return;
 						}
 						
+						
+						/*********************************************************************************************/
+						//Primero apertura la liquidacion de carga
+						TranscarLiquidacionTurno liquidacionTurnoCarga= new TranscarLiquidacionTurno();
+						liquidacionTurnoCarga.setOperacion(1);
+						liquidacionTurnoCarga.setFechaApertura(fechaLiquidacion);
+						TranscarUsuarioPersonal usuarioPersonal = ServiceLocator.getTranscarManager().buscarUsuarioPersonal(getUsuario().getLogin());
+						if(usuarioPersonal==null) {
+							DlgMessage.information("No se puede aperturar la liqudiación de Carga, debido a que el usuario "+getUsuario().getLogin()+" no existe en el sistema de carga.");
+							return;
+						}
+						Integer agenciaId = ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(getAgencia().getCodigo());
+						if(agenciaId ==null) {
+							DlgMessage.information("No se puede aperturar la liqudiación de Carga, debido a que la agencia "+getAgencia().getDenominacion()+" no existe en el sistema de carga.");
+							return;
+						}
+						liquidacionTurnoCarga.setTranscarUsuarioPersonal(usuarioPersonal);
+						liquidacionTurnoCarga.setAgenciaId(agenciaId);
+						UtilData.auditarRegistro(liquidacionTurnoCarga, getUsuario(), Executions.getCurrent());
+						String messageError = ServiceLocator.getTranscarManager().aperturarLiquidacion(liquidacionTurnoCarga);
+						if (messageError!=null) {
+							DlgMessage.information(messageError+" - TRANSCAR");
+							return;
+						}
+						
+						/*********************************************************************************************/
+						//Segundo apertura la de pasajes
 						Liquidacion liquidacion=UtilData.aperturarLiquidacion(dtbxFechaLiquidacion.getValue(),getUsuario(),getAgencia());
 						
 						btnCaja.getParent().getParent().getParent().getDesktop().getSession().setAttribute("FECLIQ",liquidacion.getFechaLiquidacion());

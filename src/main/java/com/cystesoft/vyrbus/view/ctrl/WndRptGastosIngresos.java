@@ -11,6 +11,10 @@ package com.cystesoft.vyrbus.view.ctrl;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
+import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -243,5 +247,15 @@ public class WndRptGastosIngresos extends WndBase {
 			}
 		}
 		
+	}
+	
+	public void btnExportar_OnClick(){
+		if(ltbxDetalleGasto.getItemCount()>0) {
+			Session session = getDesktop().getSession();
+			HttpSession httpSession = (HttpSession)session.getNativeSession();
+			httpSession.setAttribute("parcialPath",Constantes.DIRECTORY_EXCEL+"GastosOtrosIngresos.xls");
+			httpSession.setAttribute("lbxGastosOtrosIngresos", ltbxDetalleGasto);
+			Executions.sendRedirect("/exportXlsGastosOtrosIngresos.htm");	
+		}		
 	}
 }
