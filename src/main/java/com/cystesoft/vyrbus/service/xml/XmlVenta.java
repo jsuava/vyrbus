@@ -342,18 +342,7 @@ public class XmlVenta implements Serializable{
 	public void setZ_CodigoBarraSunat(String z_CodigoBarraSunat) {
 		this.z_CodigoBarraSunat = z_CodigoBarraSunat;
 	}
-	/**
-	 * @return the z_QR
-	 */
-	public String getZ_QR() {
-		return z_QR;
-	}
-	/**
-	 * @param z_QR the z_QR to set
-	 */
-	public void setZ_QR(String z_QR) {
-		this.z_QR = z_QR;
-	}
+	
 	/**
 	 * @return the z_ticket
 	 */
@@ -401,6 +390,18 @@ public class XmlVenta implements Serializable{
 	 */
 	public void setV0_ExcesoEquipaje(Boolean v0_ExcesoEquipaje) {
 		this.v0_ExcesoEquipaje = v0_ExcesoEquipaje;
+	}
+	/**
+	 * @return the z_QR
+	 */
+	public String getZ_QR() {
+		return z_QR;
+	}
+	/**
+	 * @param z_QR the z_QR to set
+	 */
+	public void setZ_QR(String z_QR) {
+		this.z_QR = z_QR;
 	}
 	
 }
