@@ -1,0 +1,93 @@
+
+package com.cystesoft.vyrbus.service.fe;
+
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlType;
+
+/**
+ * <p>
+ * Java class for InformacionAdicional complex type.
+ * 
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
+ * 
+ * <pre>
+ * &lt;complexType name="InformacionAdicional">
+ *   &lt;complexContent>
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       &lt;sequence>
+ *         &lt;element name="PropiedadesAdicionales" type="{http://schemas.datacontract.org/2004/07/FEService.Input}ArrayOfInformacionAdicional.PropiedadAdicional" minOccurs="0"/>
+ *         &lt;element name="TotalesMonedaAdicional" type="{http://schemas.datacontract.org/2004/07/FEService.Input}ArrayOfInformacionAdicional.TotalMonedaAdicional" minOccurs="0"/>
+ *       &lt;/sequence>
+ *     &lt;/restriction>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
+ * </pre>
+ * 
+ * 
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "InformacionAdicional", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", propOrder = {
+		"propiedadesAdicionales", "totalesMonedaAdicional" })
+public class InformacionAdicional {
+
+	@XmlElementRef(name = "PropiedadesAdicionales", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", type = JAXBElement.class)
+	protected JAXBElement<ArrayOfInformacionAdicionalPropiedadAdicional> propiedadesAdicionales;
+	@XmlElementRef(name = "TotalesMonedaAdicional", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", type = JAXBElement.class)
+	protected JAXBElement<ArrayOfInformacionAdicionalTotalMonedaAdicional> totalesMonedaAdicional;
+
+	/**
+	 * Gets the value of the propiedadesAdicionales property.
+	 * 
+	 * @return possible object is {@link JAXBElement
+	 *         }{@code <}{@link ArrayOfInformacionAdicionalPropiedadAdicional
+	 *         }{@code >}
+	 * 
+	 */
+	public JAXBElement<ArrayOfInformacionAdicionalPropiedadAdicional> getPropiedadesAdicionales() {
+		return propiedadesAdicionales;
+	}
+
+	/**
+	 * Sets the value of the propiedadesAdicionales property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link JAXBElement
+	 *            }{@code <}{@link ArrayOfInformacionAdicionalPropiedadAdicional
+	 *            }{@code >}
+	 * 
+	 */
+	public void setPropiedadesAdicionales(JAXBElement<ArrayOfInformacionAdicionalPropiedadAdicional> value) {
+		this.propiedadesAdicionales = ((JAXBElement<ArrayOfInformacionAdicionalPropiedadAdicional>) value);
+	}
+
+	/**
+	 * Gets the value of the totalesMonedaAdicional property.
+	 * 
+	 * @return possible object is {@link JAXBElement
+	 *         }{@code <}{@link ArrayOfInformacionAdicionalTotalMonedaAdicional
+	 *         }{@code >}
+	 * 
+	 */
+	public JAXBElement<ArrayOfInformacionAdicionalTotalMonedaAdicional> getTotalesMonedaAdicional() {
+		return totalesMonedaAdicional;
+	}
+
+	/**
+	 * Sets the value of the totalesMonedaAdicional property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link JAXBElement
+	 *            }{@code <}{@link ArrayOfInformacionAdicionalTotalMonedaAdicional
+	 *            }{@code >}
+	 * 
+	 */
+	public void setTotalesMonedaAdicional(JAXBElement<ArrayOfInformacionAdicionalTotalMonedaAdicional> value) {
+		this.totalesMonedaAdicional = ((JAXBElement<ArrayOfInformacionAdicionalTotalMonedaAdicional>) value);
+	}
+
+}
