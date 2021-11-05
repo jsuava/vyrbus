@@ -300,7 +300,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 				if(usuario.getLogin()!=null && usuario.getLogin().equals(getUsuario().getLogin()))
 					cmbCounter.setSelectedItem(comboitem);
 			}
-			if(cmbCounter.getSelectedIndex()<0)
+			if(cmbCounter.getItems().size()>0 && cmbCounter.getSelectedIndex()<0)
 				cmbCounter.setSelectedIndex(0);
 			 
 		} catch (Exception e) {

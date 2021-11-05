@@ -342,6 +342,7 @@ public class XmlVenta implements Serializable{
 	public void setZ_CodigoBarraSunat(String z_CodigoBarraSunat) {
 		this.z_CodigoBarraSunat = z_CodigoBarraSunat;
 	}
+	
 	/**
 	 * @return the z_ticket
 	 */

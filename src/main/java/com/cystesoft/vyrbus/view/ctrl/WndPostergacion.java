@@ -1643,7 +1643,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 								listVentaPasaje.add(gastoAdmin);
 							
 							//Comentado temporalmente por MAOE
-							//WSFE.sendVenta(listVentaPasaje, wndPostergacion, true, notaCredito);
+							WSFE.sendVenta(listVentaPasaje, wndPostergacion, true, notaCredito);
 							/*Realiza el envio del gasto administrativo*/
 							
 							//End begin 04/11/2016 - jabanto

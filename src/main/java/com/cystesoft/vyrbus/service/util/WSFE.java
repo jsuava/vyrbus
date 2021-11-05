@@ -1,5 +1,4 @@
 /**
- * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
  * Descripción	: 
  * Autor		: José Abanto
@@ -92,7 +91,8 @@ public class WSFE implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static String TOKEN="#EOAM13579ZCBMKHFAQETUIP12W4R6Y8U9O#...";
+	//private static String TOKEN="#EOAM13579ZCBMKHFAQETUIP12W4R6Y8U9O#...";
+	private static String TOKEN="#KENDOHAE73O10A30MS69T07CDR14T06O11SA12TATA#...";
 	private static String NAMESPACE="http://schemas.datacontract.org/2004/07/FEService.Input";
 	private static final DateFormat FORMAT_DATE = new SimpleDateFormat ("yyyy-MM-dd");
 	private static String FE_TIPCOM_FACTURA="01";
@@ -266,7 +266,7 @@ public class WSFE implements Serializable{
 					notaCredito=null;
 				}else{
 					/*Envia la venta a nuestro ws*/
-					//result= getSoap().setVenta(TOKEN, oventa); //comentado temporalmento - 09/09/2021 - jabanto
+					result= getSoap().setVenta(TOKEN, oventa); //comentado temporalmento - 09/09/2021 - jabanto
 				}
 				
 				/*Agrega a la lista para la impresion - 06/12/2016 - jabanto*/
@@ -662,10 +662,12 @@ public class WSFE implements Serializable{
 						if(resultVenta.getBarcodeEmbarque().getValue()!=null)
 							cryptoBarcodeEmbarque=new BASE64Encoder().encode(resultVenta.getBarcodeEmbarque().getValue());
 						//Encripta el los bytes del codigo de barras - Sunat;
-//						if(ventaPasaje.getResult()!=null) {
+
+						if(resultVenta.getBarcodeQR().getValue()!=null) {
 //							Result resultVenta=ventaPasaje.getResult();
-							cryptoBarcodeSunat=new BASE64Encoder().encode(resultVenta.getBarcode().getValue());	
-//						}						
+							cryptoBarcodeSunat=new BASE64Encoder().encode(resultVenta.getBarcodeQR().getValue());	
+						}						
+
 						//Encripta en bytes del .rpt;
 						String pathRpt=null;
 						if(tipoComprobanteId==Constantes.ID_TIPCOM_BOLETA_VENTA){
@@ -673,18 +675,18 @@ public class WSFE implements Serializable{
 								pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"Boleta_exceso.rpt";
 							}else {
 								if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS)
-									pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"GABoleta.rpt";
+									pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"GABoleta_TM.rpt";
 								else
-									pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"Boleta.rpt";	
+									pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"Boleta_TM.rpt";	
 							}							
 						}else{
 							if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_EXCESO)) {
 								pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"Factura_exceso.rpt";
 							}else {
 								if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS)
-									pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"GAFactura.rpt";
+									pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"GAFactura_TM.rpt";
 								else
-									pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"Factura.rpt";	
+									pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"Factura_TM.rpt";	
 							}							
 						}
 						
@@ -736,7 +738,7 @@ public class WSFE implements Serializable{
 					xmlVenta.setV6_FechaPartida(ventaPasaje.getFechaPartida()!=null?Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida()):null);
 					xmlVenta.setV7_HoraPartida(getHoraRealEmbarque(ventaPasaje));
 					xmlVenta.setV8_Asiento(ventaPasaje.getNumeroAsiento()!=null?ventaPasaje.getNumeroAsiento().toString():null);
-					xmlVenta.setV90_Piso(ventaPasaje.getNumeroPiso()!=null?ventaPasaje.getNumeroPiso().intValue()<=0?"1":ventaPasaje.getNumeroPiso().toString():null);		
+					xmlVenta.setV90_Piso(ventaPasaje.getNumeroPiso()!=null?ventaPasaje.getNumeroPiso().intValue()<=0?"1":String.valueOf(ventaPasaje.getNumeroPiso()+1):null);		
 					xmlVenta.setV91_Pasajero(xmlPasajero);
 					xmlVenta.setV92_Cliente(xmlCliente);
 					xmlVenta.setV96_OpInafecta("0.00");
@@ -795,8 +797,9 @@ public class WSFE implements Serializable{
 					xmlVenta.setV993_FechaEmision(Constantes.FORMAT_DATE_TIME_24H.format(ventaPasaje.getFechaInsercion()));
 					xmlVenta.setV994_AgenciaEmison(ventaPasaje.getAgencia().getDenominacion());
 					xmlVenta.setV995_UsuarioEmision(ventaPasaje.getUsuario().toString());
-					xmlVenta.setZ_CodigoBarraSunat(cryptoBarcodeSunat);
+					xmlVenta.setZ_CodigoBarraSunat(cryptoBarcodeEmbarque);
 					xmlVenta.setZ_QR(cryptoBarcodeSunat);
+					//xmlVenta.setZ_CodigoBarraSunat(cryptoBarcodeSunat);
 					xmlVenta.setZ_ticket(cryptoRptFormat);
 										
 					/*Armando el detalle*/
@@ -1321,7 +1324,7 @@ public class WSFE implements Serializable{
 	
 	public static void sendMail(String message, String title){
 		DestinatariosEmails window= new DestinatariosEmails();
-		window.setEmails("TO:jabanto@tepsa.com.pe");
+		window.setEmails("TO:marco.oscco@itsb.pe");
 		try {
 			Sendmail.enviaEmail(message, (title==null?"Error FE.":title), window);
 		} catch (Exception e) {

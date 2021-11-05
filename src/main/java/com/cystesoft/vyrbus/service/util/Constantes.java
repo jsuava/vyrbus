@@ -156,9 +156,12 @@ public class Constantes {
 //	public static final String SERVER_HOST = "ventas.tepsa.com.pe/";
 
 	//http://168.121.236.46:8080/
+
 //	public static final String SERVER_HOST = "192.168.0.8:8080";
-	public static final String SERVER_HOST = "localhost:8080";
-//	public static final String SERVER_HOST = "190.119.140.203:8080";
+
+//	public static final String SERVER_HOST = "localhost:8080";
+	public static final String SERVER_HOST = "190.119.140.203:8080";
+
 	public static final String SERVER_CONTEXT = Executions.getCurrent().getContextPath();
 	public static final String URL_FORMATOS = SERVER_PROTOCOL+"://"+SERVER_HOST+SERVER_CONTEXT+"/formatos/";
 	public static final String URL_FORMATOS_BOLETOS = URL_FORMATOS+"boletos/";
@@ -268,7 +271,7 @@ public class Constantes {
 	public static final String RUC_CRUZ_DEL_SUR="20100227461";
 	public static final String RUC_CIVA="20102427891";
 	public static final String RUC_TEPSA="20502324927";
-	public static final String RUC_TRANSMAR="20450760839";//"20501622819";
+	public static final String RUC_TRANSMAR="20606078189";//"20450760839";
 	public static final String OPERADO_POR_CRUZ_DEL_SUR="CRUZ DEL SUR";
 	public static final String OPERADO_CIVA="EXCLUCIVA";
 	
