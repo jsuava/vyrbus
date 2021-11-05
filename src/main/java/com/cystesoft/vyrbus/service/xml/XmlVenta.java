@@ -49,6 +49,7 @@ public class XmlVenta implements Serializable{
 	private String v994_AgenciaEmison;
 	private String v995_UsuarioEmision;	
 	private String z_CodigoBarraSunat;
+	private String z_QR;
 //	private String v997_CodigoBarraEmbarque;
 	private String z_ticket;
 	/**
@@ -388,6 +389,18 @@ public class XmlVenta implements Serializable{
 	 */
 	public void setV0_ExcesoEquipaje(Boolean v0_ExcesoEquipaje) {
 		this.v0_ExcesoEquipaje = v0_ExcesoEquipaje;
+	}
+	/**
+	 * @return the z_QR
+	 */
+	public String getZ_QR() {
+		return z_QR;
+	}
+	/**
+	 * @param z_QR the z_QR to set
+	 */
+	public void setZ_QR(String z_QR) {
+		this.z_QR = z_QR;
 	}
 	
 }

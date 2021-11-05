@@ -1,4 +1,3 @@
-
 package com.cystesoft.vyrbus.service.fe;
 
 import javax.xml.bind.JAXBElement;
@@ -46,8 +45,8 @@ public class InformacionAdicionalTotalMonedaAdicional {
 	/**
 	 * Gets the value of the codigo property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<String> getCodigo() {
@@ -58,19 +57,19 @@ public class InformacionAdicionalTotalMonedaAdicional {
 	 * Sets the value of the codigo property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
+	 *            {@code >}
 	 * 
 	 */
 	public void setCodigo(JAXBElement<String> value) {
-		this.codigo = (value);
+		this.codigo = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the nombre property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<String> getNombre() {
@@ -81,19 +80,19 @@ public class InformacionAdicionalTotalMonedaAdicional {
 	 * Sets the value of the nombre property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
+	 *            {@code >}
 	 * 
 	 */
 	public void setNombre(JAXBElement<String> value) {
-		this.nombre = (value);
+		this.nombre = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the valor property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<String> getValor() {
@@ -104,12 +103,12 @@ public class InformacionAdicionalTotalMonedaAdicional {
 	 * Sets the value of the valor property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
+	 *            {@code >}
 	 * 
 	 */
 	public void setValor(JAXBElement<String> value) {
-		this.valor = (value);
+		this.valor = ((JAXBElement<String>) value);
 	}
 
 }

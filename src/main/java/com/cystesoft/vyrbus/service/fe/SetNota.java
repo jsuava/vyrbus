@@ -1,4 +1,3 @@
-
 package com.cystesoft.vyrbus.service.fe;
 
 import javax.xml.bind.JAXBElement;
@@ -44,8 +43,8 @@ public class SetNota {
 	/**
 	 * Gets the value of the token property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<String> getToken() {
@@ -56,19 +55,19 @@ public class SetNota {
 	 * Sets the value of the token property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
+	 *            {@code >}
 	 * 
 	 */
 	public void setToken(JAXBElement<String> value) {
-		this.token = (value);
+		this.token = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the notaCreditoDebito property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link Nota
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link Nota }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<Nota> getNotaCreditoDebito() {
@@ -79,12 +78,12 @@ public class SetNota {
 	 * Sets the value of the notaCreditoDebito property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link Nota
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link Nota }
+	 *            {@code >}
 	 * 
 	 */
 	public void setNotaCreditoDebito(JAXBElement<Nota> value) {
-		this.notaCreditoDebito = (value);
+		this.notaCreditoDebito = ((JAXBElement<Nota>) value);
 	}
 
 }

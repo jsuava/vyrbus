@@ -321,10 +321,9 @@ public class WSFE implements Serializable{
 				String serie=ventaPasaje.getNumeroBoleto().split("-")[0];
 				String correlativo=ventaPasaje.getNumeroBoleto().split("-")[1];
 				String tipoComprobante=(ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA?FE_TIPCOM_BOLETA:FE_TIPCOM_FACTURA);
-				Result result=getSoap().buscarDetalleComprobante(TOKEN, tipoComprobante, serie, correlativo, Constantes.RUC_TRANSMAR);
+				Result result=getSoap().buscarDetalleComprobante(TOKEN, tipoComprobante, serie, correlativo, Constantes.RUC_TRANSMAR);						
 				
-				
-				if(result.getBarcode().getValue()!=null){
+				if(result.getBarcodeQR().getValue()!=null && result.getBarcodeEmbarque().getValue()!=null){
 					ventaPasaje.setResult(result);
 					ventasEnviadasSFE.add(ventaPasaje);
 				}else{
@@ -655,14 +654,18 @@ public class WSFE implements Serializable{
 				int tipoComprobanteId=ventaPasaje.getTipoComprobante().getId();
 				if(tipoComprobanteId==Constantes.ID_TIPCOM_BOLETA_VENTA || tipoComprobanteId==Constantes.ID_TIPCOM_FACTURA || tipoComprobanteId==Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES){
 					/*Valida el tipo de comprobante*/
+					String cryptoBarcodeEmbarque=null;
 					String cryptoBarcodeSunat=null;
 					String cryptoRptFormat=null;
 					if(tipoComprobanteId!=Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES){
+						Result resultVenta=ventaPasaje.getResult();
+						if(resultVenta.getBarcodeEmbarque().getValue()!=null)
+							cryptoBarcodeEmbarque=new BASE64Encoder().encode(resultVenta.getBarcodeEmbarque().getValue());
 						//Encripta el los bytes del codigo de barras - Sunat;
-						if(ventaPasaje.getResult()!=null) {
-							Result resultVenta=ventaPasaje.getResult();
+//						if(ventaPasaje.getResult()!=null) {
+//							Result resultVenta=ventaPasaje.getResult();
 							cryptoBarcodeSunat=new BASE64Encoder().encode(resultVenta.getBarcode().getValue());	
-						}						
+//						}						
 						//Encripta en bytes del .rpt;
 						String pathRpt=null;
 						if(tipoComprobanteId==Constantes.ID_TIPCOM_BOLETA_VENTA){
@@ -793,6 +796,7 @@ public class WSFE implements Serializable{
 					xmlVenta.setV994_AgenciaEmison(ventaPasaje.getAgencia().getDenominacion());
 					xmlVenta.setV995_UsuarioEmision(ventaPasaje.getUsuario().toString());
 					xmlVenta.setZ_CodigoBarraSunat(cryptoBarcodeSunat);
+					xmlVenta.setZ_QR(cryptoBarcodeSunat);
 					xmlVenta.setZ_ticket(cryptoRptFormat);
 										
 					/*Armando el detalle*/

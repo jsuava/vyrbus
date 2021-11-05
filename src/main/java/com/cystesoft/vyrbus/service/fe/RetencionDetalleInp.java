@@ -1,4 +1,3 @@
-
 package com.cystesoft.vyrbus.service.fe;
 
 import javax.xml.bind.JAXBElement;
@@ -42,9 +41,10 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "RetencionDetalleInp", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", propOrder = {
-		"fechaEmisonDoctRelacionado", "fechaPago", "importeNeto", "importePagado", "importeRetenido",
-		"importeTotalDoctRelacionado", "monedaDoctRelacionado", "monedaOriginal", "monedaPagado", "numDoctRelacionado",
-		"numeroPago", "tipoDoctRelacionado" })
+		"fechaEmisonDoctRelacionado", "fechaPago", "importeNeto",
+		"importePagado", "importeRetenido", "importeTotalDoctRelacionado",
+		"monedaDoctRelacionado", "monedaOriginal", "monedaPagado",
+		"numDoctRelacionado", "numeroPago", "tipoDoctRelacionado" })
 public class RetencionDetalleInp {
 
 	@XmlElementRef(name = "fechaEmisonDoctRelacionado", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", type = JAXBElement.class)
@@ -71,8 +71,8 @@ public class RetencionDetalleInp {
 	/**
 	 * Gets the value of the fechaEmisonDoctRelacionado property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<String> getFechaEmisonDoctRelacionado() {
@@ -83,19 +83,19 @@ public class RetencionDetalleInp {
 	 * Sets the value of the fechaEmisonDoctRelacionado property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
+	 *            {@code >}
 	 * 
 	 */
 	public void setFechaEmisonDoctRelacionado(JAXBElement<String> value) {
-		this.fechaEmisonDoctRelacionado = (value);
+		this.fechaEmisonDoctRelacionado = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the fechaPago property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<String> getFechaPago() {
@@ -106,12 +106,12 @@ public class RetencionDetalleInp {
 	 * Sets the value of the fechaPago property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
+	 *            {@code >}
 	 * 
 	 */
 	public void setFechaPago(JAXBElement<String> value) {
-		this.fechaPago = (value);
+		this.fechaPago = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -201,8 +201,8 @@ public class RetencionDetalleInp {
 	/**
 	 * Gets the value of the monedaDoctRelacionado property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<String> getMonedaDoctRelacionado() {
@@ -213,19 +213,19 @@ public class RetencionDetalleInp {
 	 * Sets the value of the monedaDoctRelacionado property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
+	 *            {@code >}
 	 * 
 	 */
 	public void setMonedaDoctRelacionado(JAXBElement<String> value) {
-		this.monedaDoctRelacionado = (value);
+		this.monedaDoctRelacionado = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the monedaOriginal property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<String> getMonedaOriginal() {
@@ -236,19 +236,19 @@ public class RetencionDetalleInp {
 	 * Sets the value of the monedaOriginal property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
+	 *            {@code >}
 	 * 
 	 */
 	public void setMonedaOriginal(JAXBElement<String> value) {
-		this.monedaOriginal = (value);
+		this.monedaOriginal = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the monedaPagado property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<String> getMonedaPagado() {
@@ -259,19 +259,19 @@ public class RetencionDetalleInp {
 	 * Sets the value of the monedaPagado property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
+	 *            {@code >}
 	 * 
 	 */
 	public void setMonedaPagado(JAXBElement<String> value) {
-		this.monedaPagado = (value);
+		this.monedaPagado = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the numDoctRelacionado property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<String> getNumDoctRelacionado() {
@@ -282,19 +282,19 @@ public class RetencionDetalleInp {
 	 * Sets the value of the numDoctRelacionado property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
+	 *            {@code >}
 	 * 
 	 */
 	public void setNumDoctRelacionado(JAXBElement<String> value) {
-		this.numDoctRelacionado = (value);
+		this.numDoctRelacionado = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the numeroPago property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<String> getNumeroPago() {
@@ -305,19 +305,19 @@ public class RetencionDetalleInp {
 	 * Sets the value of the numeroPago property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
+	 *            {@code >}
 	 * 
 	 */
 	public void setNumeroPago(JAXBElement<String> value) {
-		this.numeroPago = (value);
+		this.numeroPago = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the tipoDoctRelacionado property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<String> getTipoDoctRelacionado() {
@@ -328,12 +328,12 @@ public class RetencionDetalleInp {
 	 * Sets the value of the tipoDoctRelacionado property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
+	 *            {@code >}
 	 * 
 	 */
 	public void setTipoDoctRelacionado(JAXBElement<String> value) {
-		this.tipoDoctRelacionado = (value);
+		this.tipoDoctRelacionado = ((JAXBElement<String>) value);
 	}
 
 }

@@ -1,4 +1,3 @@
-
 package com.cystesoft.vyrbus.service.fe;
 
 import javax.xml.bind.JAXBElement;
@@ -41,8 +40,8 @@ public class SetUpdateStatusCDRResponse {
 	/**
 	 * Gets the value of the setUpdateStatusCDRResult property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link Result
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link Result }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<Result> getSetUpdateStatusCDRResult() {
@@ -53,12 +52,12 @@ public class SetUpdateStatusCDRResponse {
 	 * Sets the value of the setUpdateStatusCDRResult property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link Result
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link Result }
+	 *            {@code >}
 	 * 
 	 */
 	public void setSetUpdateStatusCDRResult(JAXBElement<Result> value) {
-		this.setUpdateStatusCDRResult = (value);
+		this.setUpdateStatusCDRResult = ((JAXBElement<Result>) value);
 	}
 
 }

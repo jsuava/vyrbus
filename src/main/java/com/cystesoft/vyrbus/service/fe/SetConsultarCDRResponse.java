@@ -1,4 +1,3 @@
-
 package com.cystesoft.vyrbus.service.fe;
 
 import javax.xml.bind.JAXBElement;
@@ -41,8 +40,8 @@ public class SetConsultarCDRResponse {
 	/**
 	 * Gets the value of the setConsultarCDRResult property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link Result
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link Result }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<Result> getSetConsultarCDRResult() {
@@ -53,12 +52,12 @@ public class SetConsultarCDRResponse {
 	 * Sets the value of the setConsultarCDRResult property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link Result
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link Result }
+	 *            {@code >}
 	 * 
 	 */
 	public void setSetConsultarCDRResult(JAXBElement<Result> value) {
-		this.setConsultarCDRResult = (value);
+		this.setConsultarCDRResult = ((JAXBElement<Result>) value);
 	}
 
 }

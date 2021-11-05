@@ -1,4 +1,3 @@
-
 package com.cystesoft.vyrbus.service.fe;
 
 import javax.xml.bind.JAXBElement;
@@ -21,9 +20,11 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
+ *         &lt;element name="Code" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="IsCorrect" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
  *         &lt;element name="Message" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="barcode" type="{http://www.w3.org/2001/XMLSchema}base64Binary" minOccurs="0"/>
+ *         &lt;element name="barcodeEmbarque" type="{http://www.w3.org/2001/XMLSchema}base64Binary" minOccurs="0"/>
  *         &lt;element name="barcode_QR" type="{http://www.w3.org/2001/XMLSchema}base64Binary" minOccurs="0"/>
  *         &lt;element name="listDetalleVenta" type="{http://schemas.datacontract.org/2004/07/FEService.Input}ArrayOfDetalleVenta" minOccurs="0"/>
  *         &lt;element name="pdf" type="{http://www.w3.org/2001/XMLSchema}base64Binary" minOccurs="0"/>
@@ -38,15 +39,20 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Result", namespace = "http://schemas.datacontract.org/2004/07/FEService.Util", propOrder = {
-		"isCorrect", "message", "barcode", "barcodeQR", "listDetalleVenta", "pdf", "retencionesInp" })
+		"code", "isCorrect", "message", "barcode", "barcodeEmbarque",
+		"barcodeQR", "listDetalleVenta", "pdf", "retencionesInp" })
 public class Result {
 
+	@XmlElementRef(name = "Code", namespace = "http://schemas.datacontract.org/2004/07/FEService.Util", type = JAXBElement.class)
+	protected JAXBElement<String> code;
 	@XmlElement(name = "IsCorrect")
 	protected Boolean isCorrect;
 	@XmlElementRef(name = "Message", namespace = "http://schemas.datacontract.org/2004/07/FEService.Util", type = JAXBElement.class)
 	protected JAXBElement<String> message;
 	@XmlElementRef(name = "barcode", namespace = "http://schemas.datacontract.org/2004/07/FEService.Util", type = JAXBElement.class)
 	protected JAXBElement<byte[]> barcode;
+	@XmlElementRef(name = "barcodeEmbarque", namespace = "http://schemas.datacontract.org/2004/07/FEService.Util", type = JAXBElement.class)
+	protected JAXBElement<byte[]> barcodeEmbarque;
 	@XmlElementRef(name = "barcode_QR", namespace = "http://schemas.datacontract.org/2004/07/FEService.Util", type = JAXBElement.class)
 	protected JAXBElement<byte[]> barcodeQR;
 	@XmlElementRef(name = "listDetalleVenta", namespace = "http://schemas.datacontract.org/2004/07/FEService.Util", type = JAXBElement.class)
@@ -55,6 +61,29 @@ public class Result {
 	protected JAXBElement<byte[]> pdf;
 	@XmlElementRef(name = "retencionesInp", namespace = "http://schemas.datacontract.org/2004/07/FEService.Util", type = JAXBElement.class)
 	protected JAXBElement<ArrayOfRetencionInp> retencionesInp;
+
+	/**
+	 * Gets the value of the code property.
+	 * 
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
+	 *         {@code >}
+	 * 
+	 */
+	public JAXBElement<String> getCode() {
+		return code;
+	}
+
+	/**
+	 * Sets the value of the code property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
+	 *            {@code >}
+	 * 
+	 */
+	public void setCode(JAXBElement<String> value) {
+		this.code = ((JAXBElement<String>) value);
+	}
 
 	/**
 	 * Gets the value of the isCorrect property.
@@ -80,8 +109,8 @@ public class Result {
 	/**
 	 * Gets the value of the message property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<String> getMessage() {
@@ -92,19 +121,19 @@ public class Result {
 	 * Sets the value of the message property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
+	 *            {@code >}
 	 * 
 	 */
 	public void setMessage(JAXBElement<String> value) {
-		this.message = (value);
+		this.message = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the barcode property.
 	 * 
-	 * @return possible object is {@link JAXBElement
-	 *         }{@code <}{@link byte[]}{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link byte[]}
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<byte[]> getBarcode() {
@@ -115,19 +144,42 @@ public class Result {
 	 * Sets the value of the barcode property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement
-	 *            }{@code <}{@link byte[]}{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link byte[]}
+	 *            {@code >}
 	 * 
 	 */
 	public void setBarcode(JAXBElement<byte[]> value) {
-		this.barcode = (value);
+		this.barcode = ((JAXBElement<byte[]>) value);
+	}
+
+	/**
+	 * Gets the value of the barcodeEmbarque property.
+	 * 
+	 * @return possible object is {@link JAXBElement }{@code <}{@link byte[]}
+	 *         {@code >}
+	 * 
+	 */
+	public JAXBElement<byte[]> getBarcodeEmbarque() {
+		return barcodeEmbarque;
+	}
+
+	/**
+	 * Sets the value of the barcodeEmbarque property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link JAXBElement }{@code <}{@link byte[]}
+	 *            {@code >}
+	 * 
+	 */
+	public void setBarcodeEmbarque(JAXBElement<byte[]> value) {
+		this.barcodeEmbarque = ((JAXBElement<byte[]>) value);
 	}
 
 	/**
 	 * Gets the value of the barcodeQR property.
 	 * 
-	 * @return possible object is {@link JAXBElement
-	 *         }{@code <}{@link byte[]}{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link byte[]}
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<byte[]> getBarcodeQR() {
@@ -138,19 +190,19 @@ public class Result {
 	 * Sets the value of the barcodeQR property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement
-	 *            }{@code <}{@link byte[]}{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link byte[]}
+	 *            {@code >}
 	 * 
 	 */
 	public void setBarcodeQR(JAXBElement<byte[]> value) {
-		this.barcodeQR = (value);
+		this.barcodeQR = ((JAXBElement<byte[]>) value);
 	}
 
 	/**
 	 * Gets the value of the listDetalleVenta property.
 	 * 
-	 * @return possible object is {@link JAXBElement
-	 *         }{@code <}{@link ArrayOfDetalleVenta }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}
+	 *         {@link ArrayOfDetalleVenta }{@code >}
 	 * 
 	 */
 	public JAXBElement<ArrayOfDetalleVenta> getListDetalleVenta() {
@@ -161,19 +213,19 @@ public class Result {
 	 * Sets the value of the listDetalleVenta property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement
-	 *            }{@code <}{@link ArrayOfDetalleVenta }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}
+	 *            {@link ArrayOfDetalleVenta }{@code >}
 	 * 
 	 */
 	public void setListDetalleVenta(JAXBElement<ArrayOfDetalleVenta> value) {
-		this.listDetalleVenta = (value);
+		this.listDetalleVenta = ((JAXBElement<ArrayOfDetalleVenta>) value);
 	}
 
 	/**
 	 * Gets the value of the pdf property.
 	 * 
-	 * @return possible object is {@link JAXBElement
-	 *         }{@code <}{@link byte[]}{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link byte[]}
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<byte[]> getPdf() {
@@ -184,19 +236,19 @@ public class Result {
 	 * Sets the value of the pdf property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement
-	 *            }{@code <}{@link byte[]}{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link byte[]}
+	 *            {@code >}
 	 * 
 	 */
 	public void setPdf(JAXBElement<byte[]> value) {
-		this.pdf = (value);
+		this.pdf = ((JAXBElement<byte[]>) value);
 	}
 
 	/**
 	 * Gets the value of the retencionesInp property.
 	 * 
-	 * @return possible object is {@link JAXBElement
-	 *         }{@code <}{@link ArrayOfRetencionInp }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}
+	 *         {@link ArrayOfRetencionInp }{@code >}
 	 * 
 	 */
 	public JAXBElement<ArrayOfRetencionInp> getRetencionesInp() {
@@ -207,12 +259,12 @@ public class Result {
 	 * Sets the value of the retencionesInp property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement
-	 *            }{@code <}{@link ArrayOfRetencionInp }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}
+	 *            {@link ArrayOfRetencionInp }{@code >}
 	 * 
 	 */
 	public void setRetencionesInp(JAXBElement<ArrayOfRetencionInp> value) {
-		this.retencionesInp = (value);
+		this.retencionesInp = ((JAXBElement<ArrayOfRetencionInp>) value);
 	}
 
 }

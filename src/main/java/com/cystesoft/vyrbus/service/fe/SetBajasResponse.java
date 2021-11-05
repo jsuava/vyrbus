@@ -1,4 +1,3 @@
-
 package com.cystesoft.vyrbus.service.fe;
 
 import javax.xml.bind.JAXBElement;
@@ -41,8 +40,8 @@ public class SetBajasResponse {
 	/**
 	 * Gets the value of the setBajasResult property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link Result
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link Result }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<Result> getSetBajasResult() {
@@ -53,12 +52,12 @@ public class SetBajasResponse {
 	 * Sets the value of the setBajasResult property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link Result
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link Result }
+	 *            {@code >}
 	 * 
 	 */
 	public void setSetBajasResult(JAXBElement<Result> value) {
-		this.setBajasResult = (value);
+		this.setBajasResult = ((JAXBElement<Result>) value);
 	}
 
 }

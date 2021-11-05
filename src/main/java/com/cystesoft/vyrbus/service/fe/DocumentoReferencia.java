@@ -1,4 +1,3 @@
-
 package com.cystesoft.vyrbus.service.fe;
 
 import javax.xml.bind.JAXBElement;
@@ -46,8 +45,8 @@ public class DocumentoReferencia {
 	/**
 	 * Gets the value of the fechaDocumento property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<String> getFechaDocumento() {
@@ -58,19 +57,19 @@ public class DocumentoReferencia {
 	 * Sets the value of the fechaDocumento property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
+	 *            {@code >}
 	 * 
 	 */
 	public void setFechaDocumento(JAXBElement<String> value) {
-		this.fechaDocumento = (value);
+		this.fechaDocumento = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the numeroDocumento property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<String> getNumeroDocumento() {
@@ -81,19 +80,19 @@ public class DocumentoReferencia {
 	 * Sets the value of the numeroDocumento property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
+	 *            {@code >}
 	 * 
 	 */
 	public void setNumeroDocumento(JAXBElement<String> value) {
-		this.numeroDocumento = (value);
+		this.numeroDocumento = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the tipoComprobante property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<String> getTipoComprobante() {
@@ -104,12 +103,12 @@ public class DocumentoReferencia {
 	 * Sets the value of the tipoComprobante property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
+	 *            {@code >}
 	 * 
 	 */
 	public void setTipoComprobante(JAXBElement<String> value) {
-		this.tipoComprobante = (value);
+		this.tipoComprobante = ((JAXBElement<String>) value);
 	}
 
 }

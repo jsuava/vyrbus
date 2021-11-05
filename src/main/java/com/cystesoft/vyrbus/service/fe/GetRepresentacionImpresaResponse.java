@@ -1,4 +1,3 @@
-
 package com.cystesoft.vyrbus.service.fe;
 
 import javax.xml.bind.JAXBElement;
@@ -41,8 +40,8 @@ public class GetRepresentacionImpresaResponse {
 	/**
 	 * Gets the value of the getRepresentacionImpresaResult property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link Result
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link Result }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<Result> getGetRepresentacionImpresaResult() {
@@ -53,12 +52,12 @@ public class GetRepresentacionImpresaResponse {
 	 * Sets the value of the getRepresentacionImpresaResult property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link Result
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link Result }
+	 *            {@code >}
 	 * 
 	 */
 	public void setGetRepresentacionImpresaResult(JAXBElement<Result> value) {
-		this.getRepresentacionImpresaResult = (value);
+		this.getRepresentacionImpresaResult = ((JAXBElement<Result>) value);
 	}
 
 }

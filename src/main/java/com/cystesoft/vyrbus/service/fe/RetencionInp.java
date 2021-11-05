@@ -1,4 +1,3 @@
-
 package com.cystesoft.vyrbus.service.fe;
 
 import javax.xml.bind.JAXBElement;
@@ -45,8 +44,9 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "RetencionInp", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", propOrder = {
-		"fechaEmision", "importeTotalRetenido", "importeTotalRetenidoEnLetras", "montoTotalPagado", "numeroCorrelativo",
-		"razonSocial", "ruc", "serie", "tipoCambio", "correo", "detalleRetencion", "id", "registroRetencion",
+		"fechaEmision", "importeTotalRetenido", "importeTotalRetenidoEnLetras",
+		"montoTotalPagado", "numeroCorrelativo", "razonSocial", "ruc", "serie",
+		"tipoCambio", "correo", "detalleRetencion", "id", "registroRetencion",
 		"tasaRetencion" })
 public class RetencionInp {
 
@@ -82,8 +82,8 @@ public class RetencionInp {
 	/**
 	 * Gets the value of the fechaEmision property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<String> getFechaEmision() {
@@ -94,12 +94,12 @@ public class RetencionInp {
 	 * Sets the value of the fechaEmision property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
+	 *            {@code >}
 	 * 
 	 */
 	public void setFechaEmision(JAXBElement<String> value) {
-		this.fechaEmision = (value);
+		this.fechaEmision = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -126,8 +126,8 @@ public class RetencionInp {
 	/**
 	 * Gets the value of the importeTotalRetenidoEnLetras property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<String> getImporteTotalRetenidoEnLetras() {
@@ -138,12 +138,12 @@ public class RetencionInp {
 	 * Sets the value of the importeTotalRetenidoEnLetras property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
+	 *            {@code >}
 	 * 
 	 */
 	public void setImporteTotalRetenidoEnLetras(JAXBElement<String> value) {
-		this.importeTotalRetenidoEnLetras = (value);
+		this.importeTotalRetenidoEnLetras = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -170,8 +170,8 @@ public class RetencionInp {
 	/**
 	 * Gets the value of the numeroCorrelativo property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<String> getNumeroCorrelativo() {
@@ -182,19 +182,19 @@ public class RetencionInp {
 	 * Sets the value of the numeroCorrelativo property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
+	 *            {@code >}
 	 * 
 	 */
 	public void setNumeroCorrelativo(JAXBElement<String> value) {
-		this.numeroCorrelativo = (value);
+		this.numeroCorrelativo = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the razonSocial property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<String> getRazonSocial() {
@@ -205,19 +205,19 @@ public class RetencionInp {
 	 * Sets the value of the razonSocial property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
+	 *            {@code >}
 	 * 
 	 */
 	public void setRazonSocial(JAXBElement<String> value) {
-		this.razonSocial = (value);
+		this.razonSocial = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the ruc property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<String> getRuc() {
@@ -228,19 +228,19 @@ public class RetencionInp {
 	 * Sets the value of the ruc property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
+	 *            {@code >}
 	 * 
 	 */
 	public void setRuc(JAXBElement<String> value) {
-		this.ruc = (value);
+		this.ruc = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the serie property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<String> getSerie() {
@@ -251,12 +251,12 @@ public class RetencionInp {
 	 * Sets the value of the serie property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
+	 *            {@code >}
 	 * 
 	 */
 	public void setSerie(JAXBElement<String> value) {
-		this.serie = (value);
+		this.serie = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -283,8 +283,8 @@ public class RetencionInp {
 	/**
 	 * Gets the value of the correo property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<String> getCorreo() {
@@ -295,19 +295,19 @@ public class RetencionInp {
 	 * Sets the value of the correo property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
+	 *            {@code >}
 	 * 
 	 */
 	public void setCorreo(JAXBElement<String> value) {
-		this.correo = (value);
+		this.correo = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the detalleRetencion property.
 	 * 
-	 * @return possible object is {@link JAXBElement
-	 *         }{@code <}{@link ArrayOfRetencionDetalleInp }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}
+	 *         {@link ArrayOfRetencionDetalleInp }{@code >}
 	 * 
 	 */
 	public JAXBElement<ArrayOfRetencionDetalleInp> getDetalleRetencion() {
@@ -318,19 +318,20 @@ public class RetencionInp {
 	 * Sets the value of the detalleRetencion property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement
-	 *            }{@code <}{@link ArrayOfRetencionDetalleInp }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}
+	 *            {@link ArrayOfRetencionDetalleInp }{@code >}
 	 * 
 	 */
-	public void setDetalleRetencion(JAXBElement<ArrayOfRetencionDetalleInp> value) {
-		this.detalleRetencion = (value);
+	public void setDetalleRetencion(
+			JAXBElement<ArrayOfRetencionDetalleInp> value) {
+		this.detalleRetencion = ((JAXBElement<ArrayOfRetencionDetalleInp>) value);
 	}
 
 	/**
 	 * Gets the value of the id property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<String> getId() {
@@ -341,19 +342,19 @@ public class RetencionInp {
 	 * Sets the value of the id property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
+	 *            {@code >}
 	 * 
 	 */
 	public void setId(JAXBElement<String> value) {
-		this.id = (value);
+		this.id = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the registroRetencion property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<String> getRegistroRetencion() {
@@ -364,19 +365,19 @@ public class RetencionInp {
 	 * Sets the value of the registroRetencion property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
+	 *            {@code >}
 	 * 
 	 */
 	public void setRegistroRetencion(JAXBElement<String> value) {
-		this.registroRetencion = (value);
+		this.registroRetencion = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the tasaRetencion property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<String> getTasaRetencion() {
@@ -387,12 +388,12 @@ public class RetencionInp {
 	 * Sets the value of the tasaRetencion property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
+	 *            {@code >}
 	 * 
 	 */
 	public void setTasaRetencion(JAXBElement<String> value) {
-		this.tasaRetencion = (value);
+		this.tasaRetencion = ((JAXBElement<String>) value);
 	}
 
 }

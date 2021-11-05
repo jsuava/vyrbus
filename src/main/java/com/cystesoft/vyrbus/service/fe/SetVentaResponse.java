@@ -1,4 +1,3 @@
-
 package com.cystesoft.vyrbus.service.fe;
 
 import javax.xml.bind.JAXBElement;
@@ -41,8 +40,8 @@ public class SetVentaResponse {
 	/**
 	 * Gets the value of the setVentaResult property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link Result
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link Result }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<Result> getSetVentaResult() {
@@ -53,12 +52,12 @@ public class SetVentaResponse {
 	 * Sets the value of the setVentaResult property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link Result
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link Result }
+	 *            {@code >}
 	 * 
 	 */
 	public void setSetVentaResult(JAXBElement<Result> value) {
-		this.setVentaResult = (value);
+		this.setVentaResult = ((JAXBElement<Result>) value);
 	}
 
 }
