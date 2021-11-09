@@ -339,6 +339,7 @@ public class WndManifiestoMantenimiento extends WndBase{
 				btnPrevio.setTooltiptext("Visualizar en formato pdf");
 //				btnPrevio.setTooltiptext(manifiesto.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO)?"Pre-visualizar Manifiesto":"");
 				btnPrevio.setId(manifiesto.getId().toString());
+				btnPrevio.setAutodisable("self");
 				cell.appendChild(btnPrevio);
 				item.appendChild(cell);
 				btnPrevio.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
@@ -354,6 +355,7 @@ public class WndManifiestoMantenimiento extends WndBase{
 				btnImprimir.setImage("resources/mp_imprimir.png");
 				btnImprimir.setId(manifiesto.getId().toString());
 				btnImprimir.setTooltiptext(manifiesto.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO)?"Imprimir Manifiesto":"");
+				btnImprimir.setAutodisable("self");
 				cell.appendChild(btnImprimir);
 				item.appendChild(cell);
 				btnImprimir.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
@@ -428,22 +430,23 @@ public class WndManifiestoMantenimiento extends WndBase{
 		
 		/* Realiza tratamiento de los asientos*/
 		List<VentaPasaje>listPasajeros=new ArrayList<VentaPasaje>();
-		for(int x=0; x<itinerario.getServicio().getNumeroAsientosPiso1(); x++){
+//		for(int x=0; x<itinerario.getServicio().getNumeroAsientosPiso1(); x++){
+		for(int x=0; x<(itinerario.getServicio().getNumeroAsientosPiso1()+(itinerario.getServicio().getNumeroAsientosPiso2()!=null?itinerario.getServicio().getNumeroAsientosPiso2():0)); x++){
 			Boolean asientoVendido=false;
 			VentaPasaje ventaPasaje=new VentaPasaje();
-			ventaPasaje.setNumeroAsiento(x+1);
-						
+			ventaPasaje.setNumeroAsiento(x+1);					
 			for(VentaPasaje venta:listPasajero){
 				if(ventaPasaje.getNumeroAsiento().intValue()==venta.getNumeroAsiento().intValue()){
 					listPasajeros.add(venta);
 					asientoVendido=true;
 //					break;
 				}	
-			}
-			
+			}		
 			if(asientoVendido==false)
 				listPasajeros.add(ventaPasaje);
 		}
+		
+		
 		/*Busca la serie del manifiesto para obtener la agencia a quien le corresponde*/
 //		String numeroManifiesto=manifiesto.getNumeroManifiesto();
 //		criteriosBusqueda=new TreeMap<>();
@@ -462,6 +465,10 @@ public class WndManifiestoMantenimiento extends WndBase{
 //		criteriosBusqueda.put("tipoComprobante", new TipoComprobante(Constantes.ID_TIPCOM_MANIFIESTO_PAX));
 //		List<EspecieValorada> resultEspVal=ServiceLocator.getEspecieValoradaManager().buscarPorX(criteriosBusqueda, null);
 //		EspecieValorada especieValorada=resultEspVal.get(0);
+		
+		int totalAsientos= itinerario.getServicio().getNumeroAsientosPiso1();
+		if(itinerario.getServicio().getNumeroAsientosPiso2()!=null)
+			totalAsientos += itinerario.getServicio().getNumeroAsientosPiso2();
 		
 		Session session=getDesktop().getSession();
 		HttpSession httpSession=(HttpSession)session.getNativeSession();
@@ -491,7 +498,8 @@ public class WndManifiestoMantenimiento extends WndBase{
 		httpSession.setAttribute("tarjetaHabilitacion", documentoBus.getNumeroDocumento());
 		httpSession.setAttribute("salida",Constantes.FORMAT_DATE.format(itinerario.getFechaPartida())+" "+itinerario.getHoraPartida());
 		httpSession.setAttribute("servicio", itinerario.getServicio().getDenominacion());
-		httpSession.setAttribute("totalAsientos", itinerario.getServicio().getNumeroAsientosPiso1().toString());
+//		httpSession.setAttribute("totalAsientos", itinerario.getServicio().getNumeroAsientosPiso1().toString());
+		httpSession.setAttribute("totalAsientos", String.valueOf(totalAsientos));
 		httpSession.setAttribute("numeroAutoSunat", manifiesto.getAutorizacionSunat());
 		httpSession.setAttribute("totalPasajeros", String.valueOf(listPasajero.size()));
 		

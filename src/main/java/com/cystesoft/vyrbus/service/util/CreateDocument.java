@@ -2457,27 +2457,36 @@ public class CreateDocument implements Serializable {
 			/*Crea detalle */
 			bw.write(linea+NEWLINE);
 			Integer piso=0;
+			//Bengin 09/11/2021 - Jabanto - Muestra los pasajeros de ambos pisos en una sola lista (Solicitud de transmar)
 			creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso1(), wndmanifiesto, list, bw, piso, 0);
-			/*Cuando el es de dos pisos*/
+			/*Cuando el es de dos pisos*/			
 			if(itinerario.getServicio().getNumeroPisos()==2){
-				linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
-				bw.write(linea+NEWLINE);
-				/*Crea Encabezado piso 2*/
-				bw.write(NEWLINE);
-				linea="PISO 2.";
-				bw.write(linea+NEWLINE);
-				linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
-				bw.write(linea+NEWLINE);
-				creaEncabezadoManifiesto(bw);
-				linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
-				bw.write(linea+NEWLINE);
-				/*
-				 *12/07/2020
-				 *MAOE
-				 *PARA IMPRIMIR EL MANIFIESTO CON ASIENTOS SIN REINICIO EN EL SEGUNDO PISO				 * 
-				 */
-				creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso2()+itinerario.getServicio().getNumeroAsientosPiso1(), wndmanifiesto, list, bw,piso+1, itinerario.getServicio().getNumeroAsientosPiso1());
-			}
+				piso++;
+				creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso2()+itinerario.getServicio().getNumeroAsientosPiso1(), wndmanifiesto, list, bw,piso, itinerario.getServicio().getNumeroAsientosPiso1());
+			}							
+			
+			//END BEGIN 09/11/2021 - Solicitud de Transmar (Margarita)
+//			creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso1(), wndmanifiesto, list, bw, piso, 0);
+//			/*Cuando el es de dos pisos*/			
+//			if(itinerario.getServicio().getNumeroPisos()==2){
+//				linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
+//				bw.write(linea+NEWLINE);
+//				/*Crea Encabezado piso 2*/
+//				bw.write(NEWLINE);
+//				linea="PISO 2.";
+//				bw.write(linea+NEWLINE);
+//				linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
+//				bw.write(linea+NEWLINE);
+//				creaEncabezadoManifiesto(bw);
+//				linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
+//				bw.write(linea+NEWLINE);
+//				/*
+//				 *12/07/2020
+//				 *MAOE
+//				 *PARA IMPRIMIR EL MANIFIESTO CON ASIENTOS SIN REINICIO EN EL SEGUNDO PISO				 * 
+//				 */
+//				creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso2()+itinerario.getServicio().getNumeroAsientosPiso1(), wndmanifiesto, list, bw,piso+1, itinerario.getServicio().getNumeroAsientosPiso1());
+//			}
 							
 			//---> linea final del detalle: line
 			linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
