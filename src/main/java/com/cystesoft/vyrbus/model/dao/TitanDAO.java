@@ -167,9 +167,28 @@ public interface TitanDAO {
 	public Integer buscarAgencia(Integer idAgenciaPasajes) throws Exception;
 	/**
 	 * Realiza la busqueda del usuario Hardware
-	 * @param ip	: Identificador unico del usuario Hardware
+	 * @param id	: Identificador unico del usuario Hardware
 	 * @return Usuario Hardware
 	 * @throws Exception
 	 */
-	public TitanUsuarioHardware buscarUsuarioHardware(String ip) throws Exception;
+	public TitanUsuarioHardware buscarUsuarioHardwareByIdVyR(Integer id) throws Exception;
+	/**
+	 * Realiza la actualizacion del Usuario Hardware
+	 * @param titanUsuarioHardware	: Referencia del usuario Hardware que se actualizara
+	 * @throws Exception
+	 */
+	public void actualizarUsuarioHardware(TitanUsuarioHardware titanUsuarioHardware) throws Exception;
+	/**
+	 * Realiza la busqueda del IP del usuario Hardware
+	 * @param ip	: Ip que se desea buscar.
+	 * @return IP del usaurio Hardware
+	 * @throws Exception
+	 */
+	public String buscarIdUsuarioHardware(String ip) throws Exception;
+	/**
+	 * Deshabilita el usuario hardware
+	 * @param idUsuarioHardwareVyR	: Identificador del Usuario Hardware de Pasajes
+	 */
+	public void inactivarUsuarioHardware(Integer idUsuarioHardwareVyR);
+	
 }

@@ -14,6 +14,7 @@ import com.cystesoft.vyrbus.model.dao.UsuarioHardwareDAO;
 import com.cystesoft.vyrbus.service.business.UsuarioHardwareManager;
 import com.cystesoft.vyrbus.service.exceptions.AgenciaTranscarNullException;
 import com.cystesoft.vyrbus.service.exceptions.CodigoDuplicadoException;
+import com.cystesoft.vyrbus.service.exceptions.UsuarioHardwareCargaDuplicateException;
 import com.cystesoft.vyrbus.service.exceptions.UsuarioHardwareDuplicidadDescripcionException;
 import com.cystesoft.vyrbus.service.util.Constantes;
 
@@ -116,25 +117,34 @@ public class UsuarioHardwareManagerImpl implements UsuarioHardwareManager{
 			criteriosBusqueda.put("codigo", usuarioHardware.getCodigo());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDescripcion = getUsuarioHardwareDAO().buscarPorX(criteriosBusqueda, null);
-			/*Valida Duoplicidad de la Descripcion*/
+			/*Valida Duplicidad de la Descripcion*/
 			if(resultDescripcion.size()>0)
 				throw new UsuarioHardwareDuplicidadDescripcionException();
 			
-			getUsuarioHardwareDAO().guardar(usuarioHardware);
-			
+			/*	Validamos que la agencia exista en Carga	*/
 			Integer idAgenciaTranscar = getTitanDAO().buscarAgencia(agencia.getId());
 			if(idAgenciaTranscar != null)
 				usuarioHardware.getTitanUsuarioHardware().setIdAgencia(idAgenciaTranscar);
 			else
 				throw new AgenciaTranscarNullException();
+			
+			/*	Validamos que no exista el usuario Hardware en Carga	*/
+			String idUsuarioHardware = getTitanDAO().buscarIdUsuarioHardware(usuarioHardware.getTitanUsuarioHardware().getIp());
+			if(idUsuarioHardware != null)
+				throw new UsuarioHardwareCargaDuplicateException();
+			
+			getUsuarioHardwareDAO().guardar(usuarioHardware);			
+			usuarioHardware.getTitanUsuarioHardware().setIdUsuarioHardwareVyR(usuarioHardware.getId());
 			getTitanDAO().guardarUsuarioHardware(usuarioHardware.getTitanUsuarioHardware());
-			result = Constantes.CORRECT;		
+			result = Constantes.CORRECT;
 		}catch (CodigoDuplicadoException rsdex){
 			throw new CodigoDuplicadoException();
 		}catch (UsuarioHardwareDuplicidadDescripcionException uhddex){
 			throw new UsuarioHardwareDuplicidadDescripcionException();
 		}catch(AgenciaTranscarNullException atnex) {
 			throw new AgenciaTranscarNullException();
+		}catch(UsuarioHardwareCargaDuplicateException uhcdex) {
+			throw new UsuarioHardwareCargaDuplicateException();
 		}catch(Exception ex){
 			throw new Exception(ex);
 		}
@@ -177,11 +187,22 @@ public class UsuarioHardwareManagerImpl implements UsuarioHardwareManager{
 				}
 			
 			getUsuarioHardwareDAO().actualizar(usuarioHardware);
+			
+			Integer idAgenciaTranscar = getTitanDAO().buscarAgencia(agencia.getId());
+			if(idAgenciaTranscar != null)
+				usuarioHardware.getTitanUsuarioHardware().setIdAgencia(idAgenciaTranscar);
+			else
+				throw new AgenciaTranscarNullException();
+//			usuarioHardware.getTitanUsuarioHardware().setIdUsuarioHardwareVyR(usuarioHardware.getId());
+			getTitanDAO().actualizarUsuarioHardware(usuarioHardware.getTitanUsuarioHardware());
+			
 		
 		}catch (CodigoDuplicadoException rsdex){
 			throw new CodigoDuplicadoException();
 		}catch (UsuarioHardwareDuplicidadDescripcionException uhddex){
 			throw new UsuarioHardwareDuplicidadDescripcionException();
+		}catch(AgenciaTranscarNullException atnex) {
+			throw new AgenciaTranscarNullException();
 		}catch(Exception ex){
 			throw new Exception(ex);
 		}
@@ -197,7 +218,8 @@ public class UsuarioHardwareManagerImpl implements UsuarioHardwareManager{
 	@Transactional
 	public void inactivar(Long id) {
 		getUsuarioHardwareDAO().inactivar(id);
-		
+		//Inactivamos el Usuario Hardware
+		getTitanDAO().inactivarUsuarioHardware(id.intValue());		
 	}
 
 	/*

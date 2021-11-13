@@ -682,13 +682,13 @@ public class TitanDAOImpl implements TitanDAO {
 	public void guardarUsuarioHardware(TitanUsuarioHardware titanUsuarioHardware) throws Exception {
 		String sql = "INSERT INTO t_cpu(ip, iddepartamento_oficina, idtipo_maquina, frecuencia_reloj, nombre_equipo, nombre_red, es_servidor, nro_particiones, "
 				+ "memoria_disco_duro_gb, idusuario_personal, idrol_usuario, idusuario_personalmod, idrol_usuariomod, ipregistro, ipmod, idagencias, "
-				+ "idtipo_computador, idtipo_ip) VALUES ('"+titanUsuarioHardware.getIp()+"', "+titanUsuarioHardware.getIdDepartamento()+", "
+				+ "idtipo_computador, idtipo_ip, vyrusuhard_id) VALUES ('"+titanUsuarioHardware.getIp()+"', "+titanUsuarioHardware.getIdDepartamento()+", "
 				+ titanUsuarioHardware.getIdTipoMaquina()+", "+titanUsuarioHardware.getFrecuenciaReloj()+", '"+titanUsuarioHardware.getNombreEquipo()+"', '"
 				+ titanUsuarioHardware.getNombreRed()+"', "+titanUsuarioHardware.getEsServidor()+", "+titanUsuarioHardware.getParticiones()+ ", "
 				+ titanUsuarioHardware.getMemoria()+", "+titanUsuarioHardware.getIdUsuario()+", "+titanUsuarioHardware.getIdRol()+", "
-				+ titanUsuarioHardware.getIdUsuarioModificacion()+", "+titanUsuarioHardware.getRolModificacion()+", '"+titanUsuarioHardware.getIp()+"', '" 
+				+ titanUsuarioHardware.getIdUsuarioModificacion()+", "+titanUsuarioHardware.getRolModificacion()+", '"+titanUsuarioHardware.getIpRegistro()+"', '" 
 				+ titanUsuarioHardware.getIpModificacion()+"', "+titanUsuarioHardware.getIdAgencia()+", "+titanUsuarioHardware.getIdTipoComputador()+", "
-				+ titanUsuarioHardware.getIdTipoIP()+")";
+				+ titanUsuarioHardware.getIdTipoIP()+", "+titanUsuarioHardware.getIdUsuarioHardwareVyR()+")";
 		log.info(sql);
 		jdbcTemplate.execute(sql);		
 		
@@ -701,9 +701,84 @@ public class TitanDAOImpl implements TitanDAO {
 	public Integer buscarAgencia(Integer idAgenciaPasajes) throws Exception {
 		String sql = "SELECT idagencias FROM T_AGENCIAS WHERE IDAGENCIAS_UNIX="+idAgenciaPasajes;
 		log.info(sql);
-		Integer result = jdbcTemplate.queryForInt(sql);
-		return result;
+		List<?> result = jdbcTemplate.queryForList(sql);
+		HashMap<String, Object> map = new HashMap<String,Object>();
+		Integer idAgencia=null;
+		if(result.size()>0) {
+			map = (HashMap<String, Object>) result.get(0);
+			idAgencia = ((BigDecimal)map.get("idagencias")).intValue();
+		}	
+		return idAgencia;
 	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.TitanDAO#buscarUsuarioHardware(java.lang.Integer)
+	 */
+	@Override
+	public TitanUsuarioHardware buscarUsuarioHardwareByIdVyR(Integer id) throws Exception {
+		String sql = "SELECT ip, nombre_equipo, idusuario_personalmod, idrol_usuariomod, ipmod, idagencias, "
+				+ "idtipo_ip, vyrusuhard_id FROM t_cpu WHERE vyrusuhard_id="+id;
+		log.info(sql);
 		
-	
+		List<?> result = jdbcTemplate.queryForList(sql);
+		HashMap<String, Object> map = new HashMap<String,Object>();
+		TitanUsuarioHardware titanUsuarioHardware = null;
+		
+		if(result.size()>0){
+			map = (HashMap<String, Object>) result.get(0);
+			titanUsuarioHardware = new TitanUsuarioHardware();
+			
+			titanUsuarioHardware.setIp(map.get("IP").toString());
+			titanUsuarioHardware.setNombreEquipo(map.get("NOMBRE_EQUIPO").toString());
+			titanUsuarioHardware.setIdUsuarioModificacion(((BigDecimal)map.get("IDUSUARIO_PERSONALMOD")).intValue());
+			titanUsuarioHardware.setRolModificacion(((BigDecimal)map.get("IDROL_USUARIOMOD")).intValue());
+			titanUsuarioHardware.setIpModificacion(map.get("IPMOD").toString());
+			titanUsuarioHardware.setIdUsuarioModificacion(((BigDecimal)map.get("IDAGENCIAS")).intValue());
+			titanUsuarioHardware.setIdTipoIP(((BigDecimal)map.get("IDTIPO_IP")).intValue());
+			titanUsuarioHardware.setIdUsuarioHardwareVyR(((BigDecimal)map.get("VYRUSUHARD_ID")).intValue());
+		}
+		
+		return titanUsuarioHardware;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.TitanDAO#actualizarUsuarioHardware(com.cystesoft.vyrbus.model.bean.TitanUsuarioHardware)
+	 */
+	@Override
+	public void actualizarUsuarioHardware(TitanUsuarioHardware titanUsuarioHardware) throws Exception {
+		String sql = "UPDATE t_cpu SET idAgencias="+titanUsuarioHardware.getIdAgencia()+", nombre_equipo='"+titanUsuarioHardware.getNombreEquipo() +
+				"', idtipo_ip="+titanUsuarioHardware.getIdTipoIP() + " WHERE ip = '"+titanUsuarioHardware.getIp()+"'";
+		
+		log.info(sql);
+		jdbcTemplate.execute(sql);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.TitanDAO#buscarIpUsuarioHardware(java.lang.String)
+	 */
+	@Override
+	public String buscarIdUsuarioHardware(String ip) throws Exception {
+		String sql = "SELECT ip FROM t_cpu WHERE ip='"+ip+"'";
+		
+		log.info(sql);
+		List<?> result = jdbcTemplate.queryForList(sql);
+		HashMap<String, Object> map = new HashMap<String,Object>();
+		String idUsuarioHardware=null;
+		if(result.size()>0) {
+			map = (HashMap<String, Object>) result.get(0);
+			idUsuarioHardware = map.get("ip").toString();
+		}	
+		return idUsuarioHardware;		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.TitanDAO#inactivarUsuarioHardware(java.lang.Integer)
+	 */
+	@Override
+	public void inactivarUsuarioHardware(Integer idUsuarioHardwareVyR) {
+		String sql = "UPDATE t_cpu SET idestado_registro=2 WHERE vyrusuhard_id="+idUsuarioHardwareVyR;
+		
+		log.info(sql);
+		jdbcTemplate.execute(sql);
+	}
 }

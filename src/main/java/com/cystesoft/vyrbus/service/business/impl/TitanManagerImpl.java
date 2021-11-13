@@ -181,4 +181,11 @@ public class TitanManagerImpl implements TitanManager {
 	public void guardarUsuarioHardware(TitanUsuarioHardware titanUsuarioHardware) throws Exception {
 		getTitanDAO().guardarUsuarioHardware(titanUsuarioHardware);
 	}
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.TitanManager#buscarUsuarioHardwareByIdVyR(java.lang.String)
+	 */
+	@Override
+	public TitanUsuarioHardware buscarUsuarioHardwareByIdVyR(Integer id) throws Exception {
+		return getTitanDAO().buscarUsuarioHardwareByIdVyR(id);
+	}
 }

@@ -151,4 +151,11 @@ public interface TitanManager {
 	 * @throws Exception
 	 */
 	public void guardarUsuarioHardware(TitanUsuarioHardware titanUsuarioHardware) throws Exception; 
+	/**
+	 * Realiza la busqueda del usuario Hardware
+	 * @param id	: Identificador unico del usuario Hardware
+	 * @return Usuario Hardware
+	 * @throws Exception
+	 */
+	public TitanUsuarioHardware buscarUsuarioHardwareByIdVyR(Integer id) throws Exception;
 }

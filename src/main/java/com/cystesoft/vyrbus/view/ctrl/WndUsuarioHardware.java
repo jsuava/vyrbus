@@ -25,6 +25,7 @@ import com.cystesoft.vyrbus.service.exceptions.CodigoNullException;
 import com.cystesoft.vyrbus.service.exceptions.DireccionIPNullException;
 import com.cystesoft.vyrbus.service.exceptions.TipoIPNullException;
 import com.cystesoft.vyrbus.service.exceptions.UsuarioHardwareCanalVentaNullException;
+import com.cystesoft.vyrbus.service.exceptions.UsuarioHardwareCargaDuplicateException;
 import com.cystesoft.vyrbus.service.exceptions.UsuarioHardwareDescripcionNullException;
 import com.cystesoft.vyrbus.service.exceptions.UsuarioHardwareDuplicidadDescripcionException;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
@@ -53,6 +54,7 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 	private Combobox cmbTipoIP;
 	
 	private UsuarioHardware usuarioHardware=null;
+	private TitanUsuarioHardware titanUsuarioHardware = null;
 	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
 	private List<String> criteriosOrdenar = null;
 	
@@ -99,6 +101,7 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 	public void onNew() throws Exception {
 		cmbCanalVenta.setSelectedIndex(0);
 		cmbAgencia.setSelectedIndex(0);
+		cmbTipoIP.setSelectedIndex(0);
 	}
 
 	/*
@@ -235,26 +238,34 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 			usuarioHardware.setDescripcion(txtDescripcion.getValue().trim().toUpperCase());
 			usuarioHardware.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 			
-			TitanUsuarioHardware titanUsuarioHardware = new TitanUsuarioHardware();
-			titanUsuarioHardware.setIp(txtDireccionIP.getText().trim());
-			titanUsuarioHardware.setIdDepartamento(1);
-			titanUsuarioHardware.setIdTipoMaquina(1);
-			titanUsuarioHardware.setFrecuenciaReloj(0);
-			titanUsuarioHardware.setNombreEquipo(txtDescripcion.getText());
-			titanUsuarioHardware.setEsServidor(0);
-			titanUsuarioHardware.setParticiones(0);
-			titanUsuarioHardware.setMemoria(0);
-			titanUsuarioHardware.setIdUsuario(1);
-			titanUsuarioHardware.setIdRol(1);
-			titanUsuarioHardware.setIdUsuarioModificacion(1);
-			titanUsuarioHardware.setRolModificacion(1);
-			titanUsuarioHardware.setIpRegistro("10.10.10.1");
-			titanUsuarioHardware.setIpModificacion("10.10.10.1");
-			titanUsuarioHardware.setIdAgencia(id);
-			titanUsuarioHardware.setIdTipoComputador(1);
-			titanUsuarioHardware.setIdTipoIP(cmbTipoIP.getSelectedItem().getValue());
+			if (action==ACTION_NEW) {
+				TitanUsuarioHardware titanUsuarioHardware = new TitanUsuarioHardware();
+				titanUsuarioHardware.setIp(txtDireccionIP.getText().trim());
+				titanUsuarioHardware.setIdDepartamento(1);
+				titanUsuarioHardware.setIdTipoMaquina(1);
+				titanUsuarioHardware.setFrecuenciaReloj(0);
+				titanUsuarioHardware.setNombreEquipo(txtDescripcion.getText().toUpperCase());
+				titanUsuarioHardware.setNombreRed("SISTEMAS");
+				titanUsuarioHardware.setEsServidor(0);
+				titanUsuarioHardware.setParticiones(0);
+				titanUsuarioHardware.setMemoria(0);
+				titanUsuarioHardware.setIdUsuario(1);
+				titanUsuarioHardware.setIdRol(1);
+				titanUsuarioHardware.setIdUsuarioModificacion(1);
+				titanUsuarioHardware.setRolModificacion(1);
+				titanUsuarioHardware.setIpRegistro("10.10.10.1");
+				titanUsuarioHardware.setIpModificacion("10.10.10.1");
+	//			titanUsuarioHardware.setIdAgencia(id);
+				titanUsuarioHardware.setIdTipoComputador(1);
+				titanUsuarioHardware.setIdTipoIP(cmbTipoIP.getSelectedItem().getValue());
 			
-			usuarioHardware.setTitanUsuarioHardware(titanUsuarioHardware);
+				usuarioHardware.setTitanUsuarioHardware(titanUsuarioHardware);
+			}else {
+				titanUsuarioHardware.setNombreEquipo(txtDescripcion.getText());
+				titanUsuarioHardware.setIdTipoIP(cmbTipoIP.getSelectedItem().getValue());
+				titanUsuarioHardware.setIpModificacion(UtilData.ipLocal(Executions.getCurrent()));
+				usuarioHardware.setTitanUsuarioHardware(titanUsuarioHardware);
+			}
 			
 			switch (action) {
 				case ACTION_NEW:
@@ -300,6 +311,9 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 		}catch(AgenciaTranscarNullException atnex) {
 			DlgMessage.information("La agencia no esta registrada en el Sistema de Carga");
 			throw new CancelaGrabacionException();
+		}catch(UsuarioHardwareCargaDuplicateException uhcdex) {
+			DlgMessage.information("El IP ya se encuentra registrado en carga", txtDireccionIP);
+			throw new CancelaGrabacionException();
 		}catch (Exception ex) {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace();throw new CancelaGrabacionException();
@@ -314,7 +328,7 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 	@Override
 	public void onDelete(int tab) throws Exception {
 		Long id = (long) 0;
-
+		
 		switch (tab) {
 			case TAB_LIST:
 				id = new Long((String) listboxLista.getSelectedItem().getValue());
@@ -326,7 +340,6 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 		}
 
 		ServiceLocator.getUsuarioHardwareManager().inactivar(id);
-		
 	}
 
 	/*
@@ -408,6 +421,20 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 			txtCodigo.setValue(usuarioHardware.getCodigo());
 			txtDireccionMAC.setText(usuarioHardware.getDireccionMAC());
 			txtDescripcion.setValue(usuarioHardware.getDescripcion());
+			
+			try {
+				titanUsuarioHardware = ServiceLocator.getTitanManager().buscarUsuarioHardwareByIdVyR(usuarioHardware.getId());
+				if(titanUsuarioHardware != null) {
+					txtDireccionIP.setText(titanUsuarioHardware.getIp());
+					if(titanUsuarioHardware.getIdTipoIP().intValue()==1)
+						cmbTipoIP.setSelectedIndex(1);
+					else
+						cmbTipoIP.setSelectedIndex(2);
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 	}
