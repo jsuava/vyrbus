@@ -1,4 +1,3 @@
-
 package com.cystesoft.vyrbus.service.fe;
 
 import javax.xml.bind.JAXBElement;
@@ -41,8 +40,8 @@ public class SetNotaResponse {
 	/**
 	 * Gets the value of the setNotaResult property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link Result
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link Result }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<Result> getSetNotaResult() {
@@ -53,12 +52,12 @@ public class SetNotaResponse {
 	 * Sets the value of the setNotaResult property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link Result
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link Result }
+	 *            {@code >}
 	 * 
 	 */
 	public void setSetNotaResult(JAXBElement<Result> value) {
-		this.setNotaResult = (value);
+		this.setNotaResult = ((JAXBElement<Result>) value);
 	}
 
 }

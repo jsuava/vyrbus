@@ -2457,27 +2457,36 @@ public class CreateDocument implements Serializable {
 			/*Crea detalle */
 			bw.write(linea+NEWLINE);
 			Integer piso=0;
+			//Bengin 09/11/2021 - Jabanto - Muestra los pasajeros de ambos pisos en una sola lista (Solicitud de transmar)
 			creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso1(), wndmanifiesto, list, bw, piso, 0);
-			/*Cuando el es de dos pisos*/
+			/*Cuando el es de dos pisos*/			
 			if(itinerario.getServicio().getNumeroPisos()==2){
-				linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
-				bw.write(linea+NEWLINE);
-				/*Crea Encabezado piso 2*/
-				bw.write(NEWLINE);
-				linea="PISO 2.";
-				bw.write(linea+NEWLINE);
-				linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
-				bw.write(linea+NEWLINE);
-				creaEncabezadoManifiesto(bw);
-				linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
-				bw.write(linea+NEWLINE);
-				/*
-				 *12/07/2020
-				 *MAOE
-				 *PARA IMPRIMIR EL MANIFIESTO CON ASIENTOS SIN REINICIO EN EL SEGUNDO PISO				 * 
-				 */
-				creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso2()+itinerario.getServicio().getNumeroAsientosPiso1(), wndmanifiesto, list, bw,piso+1, itinerario.getServicio().getNumeroAsientosPiso1());
-			}
+				piso++;
+				creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso2()+itinerario.getServicio().getNumeroAsientosPiso1(), wndmanifiesto, list, bw,piso, itinerario.getServicio().getNumeroAsientosPiso1());
+			}							
+			
+			//END BEGIN 09/11/2021 - Solicitud de Transmar (Margarita)
+//			creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso1(), wndmanifiesto, list, bw, piso, 0);
+//			/*Cuando el es de dos pisos*/			
+//			if(itinerario.getServicio().getNumeroPisos()==2){
+//				linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
+//				bw.write(linea+NEWLINE);
+//				/*Crea Encabezado piso 2*/
+//				bw.write(NEWLINE);
+//				linea="PISO 2.";
+//				bw.write(linea+NEWLINE);
+//				linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
+//				bw.write(linea+NEWLINE);
+//				creaEncabezadoManifiesto(bw);
+//				linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
+//				bw.write(linea+NEWLINE);
+//				/*
+//				 *12/07/2020
+//				 *MAOE
+//				 *PARA IMPRIMIR EL MANIFIESTO CON ASIENTOS SIN REINICIO EN EL SEGUNDO PISO				 * 
+//				 */
+//				creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso2()+itinerario.getServicio().getNumeroAsientosPiso1(), wndmanifiesto, list, bw,piso+1, itinerario.getServicio().getNumeroAsientosPiso1());
+//			}
 							
 			//---> linea final del detalle: line
 			linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
@@ -2792,7 +2801,8 @@ public class CreateDocument implements Serializable {
 		String empresa = Constantes.empresa+tabular(85)+"RUC :"+Constantes.ruc;
 		String ofiCentral=Constantes.direccion_empresa;
 		String title="LIQUIDACION VENTA DE PASAJES";
-		String encabezado="|TRANSACCION|";
+		String encabezado="|NRO |";
+		encabezado+="TRANSACCION|";
 //		encabezado+=" N.CONTROL|";
 		encabezado+="  NRO.BOLETO      |";
 		encabezado+="  NRO.BOLREF      |";
@@ -2804,7 +2814,7 @@ public class CreateDocument implements Serializable {
 		encabezado+="  NETO  |";
 		encabezado+="  USUARIO   |";
 		encabezado+=" FEC.VENTA  |";
-		String interlineado="+-----------------------------------------------------------------------------------------------------------------------------+";
+		String interlineado="+----------------------------------------------------------------------------------------------------------------------------------+";
 		
 		String fechasDesdeHasta="DETALLE DE VENTAS REALIZADAS "+rangoFechas;
 		String fechaHoraImpresion="FECHA HORA IMPRESION :"+Constantes.FORMAT_LONG.format(new Date());
@@ -2838,6 +2848,7 @@ public class CreateDocument implements Serializable {
 			linea=tabular(lineBase)+interlineado;
 			bw.write(linea+NEWLINE);
 			
+			Integer longNroItem=2;
 			Integer longTransaccion=9;
 //			Integer longNControl=8;
 			Integer longBoleto=16;
@@ -2845,12 +2856,15 @@ public class CreateDocument implements Serializable {
 			Integer longRecargo=5;
 			Integer longUsuario=10;
 			Integer longFechaVenta=10;
-			
+			 
 //			Double total=.00;
-			
+			int x=0;
 			for(VentaPasaje venta: lstVentas){
+				x++;
+				/*NRO ITEM*/				
+				linea=tabular(lineBase)+"|"+addColumnDetalleLiquidacion(String.valueOf(x), longNroItem,false);				
 				/**TRANSACCION*/
-				linea=tabular(lineBase)+"|"+addColumnDetalleLiquidacion(venta.getTipoTransaccion(), longTransaccion,false);
+				linea+=addColumnDetalleLiquidacion(venta.getTipoTransaccion(), longTransaccion,false);
 //				/**NRO. CONTROL*/
 //				linea+=addColumnDetalleLiquidacion("T"+venta.getNumeroControl().substring(longNControl+1,venta.getNumeroControl().length()), longNControl,false);
 				/**NRO. BOLETO*/
@@ -2880,10 +2894,10 @@ public class CreateDocument implements Serializable {
 			linea=tabular(lineBase)+interlineado;
 			bw.write(linea+NEWLINE);
 			
-			linea=tabular(83-totalEfectivo.toString().length())+"TOTAL EFECTIVO : "+Util.toNumberFormat(totalEfectivo, 2); 
+			linea=tabular(88-totalEfectivo.toString().length())+"TOTAL EFECTIVO : "+Util.toNumberFormat(totalEfectivo, 2); 
 			bw.write(linea+NEWLINE);
 			
-			linea=tabular(84-totalDolares.toString().length())+"TOTAL DOLARES : "+Util.toNumberFormat(totalDolares, 2); 
+			linea=tabular(89-totalDolares.toString().length())+"TOTAL DOLARES : "+Util.toNumberFormat(totalDolares, 2); 
 			bw.write(linea+NEWLINE);
 
 			bw.close();

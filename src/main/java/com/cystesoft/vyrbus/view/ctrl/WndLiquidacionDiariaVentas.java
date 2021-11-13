@@ -17,6 +17,7 @@ import java.util.TreeMap;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.geronimo.specs.activation.CommandMapBundleTrackerCustomizer;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.event.Event;
@@ -43,6 +44,7 @@ import org.zkoss.zul.Listfoot;
 import org.zkoss.zul.Listfooter;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Radio;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Separator;
@@ -56,6 +58,7 @@ import com.cystesoft.vyrbus.model.bean.OperadorTarjetaCredito;
 import com.cystesoft.vyrbus.model.bean.TarjetaCredito;
 import com.cystesoft.vyrbus.model.bean.TipoFormaPago;
 import com.cystesoft.vyrbus.model.bean.TipoMovimiento;
+import com.cystesoft.vyrbus.model.bean.TranscarUsuarioPersonal;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
@@ -95,6 +98,9 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 	private Label lblNotascredito;
 	private Label lblEfectivoDolares;
 	private Label lblCreditoDolares;
+	private Radio rubroPasajes;
+	private Radio rubroCarga;
+	private Radio rubroAmbos;
 	
 //	private Window wndLiquidacionDiariaVentas;
 //	private Window wndDuplicar = null;
@@ -110,6 +116,22 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 	private Doublebox dbxTotalDolares;
 	
 	private Integer XI=0;//Correlativo 
+	
+	private Double total = 0.0;
+	private Double totalDevolucion = 0.0;
+	private Double totalCortesia = 0.0;
+	private Double totalCredito = 0.0;
+	private Double totalPrepagado = 0.0;
+//	Double totalRecibos = 0.0;
+	private Double totalEfectivo = 0.0;
+	private Double totalTarjeta = 0.0;
+	private Double totalNotasCredito=0.0;
+	private Double totalEquipajePCE = 0.0;
+	private Double totalDolares =0.0;
+	private Double totalEfectivoDolares = 0.0;
+	private Double totalCreditoDolares = 0.0;
+	private Listfoot listfoot;
+	private Listfooter listfooter;
 	
 	private static String[] tipoMovimiento = {Constantes.COMBO_LABEL_TODOS, "ANULADOS", 
 											"DEVOLUCIONES", "CORTESIAS", "CREDITO", //"EQUIPAJES (PCE)",  
@@ -159,6 +181,27 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 				}
 			}
 		});
+		rubroPasajes.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				onCheck_rubroPasajes();
+			}
+		});
+		rubroCarga.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				onCheck_rubroCarga();
+			}
+		});		
+		rubroAmbos.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				onCheck_rubroAmbos();
+			}
+		});
 	}
 	
 	/**
@@ -193,6 +236,92 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 		lblCreditoDolares = (Label)this.getFellow("lblCreditoDolares");
 //		wndLiquidacionDiariaVentas = (Window)this.getFellow("wndLiquidacionDiariaVentas");
 		btnExportar=(Button)this.getFellow("btnExportar");
+		rubroPasajes = (Radio)this.getFellow("rubroPasajes");
+		rubroCarga = (Radio)this.getFellow("rubroCarga");
+		rubroAmbos = (Radio)this.getFellow("rubroAmbos");
+		
+		
+	}
+	
+	private void clearTotals()throws Exception{
+		lblEfectivo.setValue("0.00");
+		lblEfectivoDolares.setValue("0.00");
+		lblRecibos.setValue("0.00");
+		lblTarjeta.setValue("0.00");
+		lblNotascredito.setValue("0.00");
+		lblCortesias.setValue("0.00");
+		lblDevoluciones.setValue("0.00");
+		lblCredito.setValue("0.00");
+		lblCreditoDolares.setValue("0.00");
+		lblPrepagado.setValue("0.00");
+	}
+	
+	private void onCheck_rubroAmbos() {
+		try {			
+			onCheck_rubroPasajes();
+						
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void onCheck_rubroCarga() {
+		try {
+			Util.limpiarListbox(lbxVentas);
+			Util.limpiarCombobox(cmbAgencia);
+			Util.limpiarCombobox(cmbCounter);		
+			clearTotals();
+			
+			
+			List<Agencia> result = ServiceLocator.getTranscarManager().buscarAgencias();
+			UtilData.cargarGenericData(cmbAgencia, true);
+			for(Agencia agencia: result) {
+				Comboitem comboitem= new Comboitem();
+				comboitem.setLabel(agencia.getDenominacion());
+				comboitem.setValue(agencia);
+				cmbAgencia.appendChild(comboitem);
+				
+				if(agencia.getCodigo()!=null && agencia.getCodigo().equals(getAgencia().getCodigo()))
+					cmbAgencia.setSelectedItem(comboitem);
+			}
+			if(cmbAgencia.getSelectedIndex()<0)
+				cmbAgencia.setSelectedIndex(0);
+			
+			
+			String fechaInicio = Constantes.FORMAT_DATE.format(dtbxFechaInicio.getValue());
+			String fechaFin = Constantes.FORMAT_DATE.format(dtbxFechaFin.getValue());
+			List<Usuario> resultUsuarios = ServiceLocator.getTranscarManager().buscarUsuariosByVenta(null, fechaInicio, fechaFin);
+			UtilData.cargarGenericData(cmbCounter, true);
+			for(Usuario usuario : resultUsuarios) {
+				Comboitem comboitem= new Comboitem(usuario.toString());
+				comboitem.setValue(usuario);
+				cmbCounter.appendChild(comboitem);
+				
+				if(usuario.getLogin()!=null && usuario.getLogin().equals(getUsuario().getLogin()))
+					cmbCounter.setSelectedItem(comboitem);
+			}
+			if(cmbCounter.getItems().size()>0 && cmbCounter.getSelectedIndex()<0)
+				cmbCounter.setSelectedIndex(0);
+			 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void onCheck_rubroPasajes() {
+		try {
+			Util.limpiarListbox(lbxVentas);
+			Util.limpiarCombobox(cmbAgencia);
+			Util.limpiarCombobox(cmbCounter);
+			clearTotals();
+			
+			UtilData.cargarAgenciaXtipoAgencia(cmbAgencia, Constantes.ID_TIPAGE_TEPSA, true);
+			onSelectDefaultAgencia();
+			onLoadCounters();
+				
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void onSelectDefaultAgencia(){
@@ -225,7 +354,11 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 					cmbCounter.setDisabled(false);
 				}else
 					cmbCounter.setDisabled(true);
-			}			
+			}
+			
+			Util.seleccionarValorItemCombo(Usuario.class, cmbCounter, getUsuario().getId());
+			if(cmbCounter.getSelectedIndex()<0)
+				cmbCounter.setSelectedIndex(0);
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
@@ -242,15 +375,28 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void onBuscarVentas(){
-		try{
+		try {
 			lbxVentas.getItems().clear();
 			grdTotales.setVisible(false);
 			for(int j=0; j<lbxVentas.getChildren().size();j++){
 				if(lbxVentas.getChildren().get(j) instanceof Listfoot)
 					lbxVentas.getChildren().get(j).detach();
 			}
+			
+			total = 0.0;
+			totalDevolucion = 0.0;
+			totalCortesia = 0.0;
+			totalCredito = 0.0;
+			totalPrepagado = 0.0;
+			totalEfectivo = 0.0;
+			totalTarjeta = 0.0;
+			totalNotasCredito=0.0;
+			totalEquipajePCE = 0.0;
+			totalDolares =0.0;
+			totalEfectivoDolares = 0.0;
+			totalCreditoDolares = 0.0;						
+			
 			Integer idAgencia = null;
 			Integer idUsuario = null;
 			Integer criterio = 0;
@@ -264,25 +410,134 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 			if(cmbTipoMovimiento.getSelectedIndex()>=0)
 				criterio = cmbTipoMovimiento.getSelectedIndex();
 			
-			List<VentaPasaje> lstVentas = ServiceLocator.getVentaPasajesManager().buscarDetalladoVentas(idAgencia, idUsuario, fechaInicio, fechaFin, criterio);
+			if(rubroAmbos.isChecked()) {
+				//Pasajes
+				List<VentaPasaje> lstVentas = ServiceLocator.getVentaPasajesManager().buscarDetalladoVentas(idAgencia, idUsuario, fechaInicio, fechaFin, criterio);
+				loadVentas(lstVentas, false);
+				
+				//Carga
+				Integer _idAgencia = null;
+				Integer _idUsuario = null;
+				if(cmbAgencia.getSelectedItem().getValue() instanceof Agencia) {
+					Agencia _agencia = cmbAgencia.getSelectedItem().getValue();
+					_idAgencia = ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(_agencia.getCodigo());
+				}
+				if(cmbCounter.getSelectedIndex()>=0 && cmbCounter.getSelectedItem().getValue() instanceof Usuario) {
+					Usuario _usuario = cmbCounter.getSelectedItem().getValue();
+					TranscarUsuarioPersonal usuarioPersonal= ServiceLocator.getTranscarManager().buscarUsuarioPersonal(_usuario.getLogin());
+					if(usuarioPersonal!=null)
+						_idUsuario = usuarioPersonal.getId();
+				}				
+				lstVentas  =ServiceLocator.getTranscarManager().buscarDetalleVentas(_idUsuario, _idAgencia, fechaInicio, fechaFin);
+				loadVentas(lstVentas, true);
+			}else if(rubroPasajes.isChecked()) {				
+				List<VentaPasaje> lstVentas = ServiceLocator.getVentaPasajesManager().buscarDetalladoVentas(idAgencia, idUsuario, fechaInicio, fechaFin, criterio);
+				loadVentas(lstVentas, false);
+			}else if(rubroCarga.isChecked()) {				
+				List<VentaPasaje> lstVentas  =ServiceLocator.getTranscarManager().buscarDetalleVentas(idUsuario, idAgencia, fechaInicio, fechaFin);
+				loadVentas(lstVentas, true);
+			}
+			
+			
+			listfoot = new Listfoot();
+			listfooter = new Listfooter();
+			listfooter.setSpan(11);			
+			Div div1 = new Div();
+			div1.setHeight("28px");
+			Div div = new Div();
+			div.setHeight("22px");
+			div.setAlign("right");
+			Vlayout vlayout1 = new Vlayout();
+			Label label = new Label();
+			label.setValue("TOTAL S/. :");
+			label.setStyle("font-weight:bold");
+			vlayout1.appendChild(label);
+			div.appendChild(vlayout1);
+			label = new Label();
+			label.setValue("TOTAL $ :");
+			label.setStyle("font-weight:bold");
+			vlayout1.appendChild(label);
+			div.appendChild(vlayout1);
+			
+			div1.appendChild(div);
+
+			
+			listfooter.appendChild(div1);
+			listfoot.appendChild(listfooter);
+			
+			/*Calcula el total a liquidar*/
+			if(cmbTipoMovimiento.getSelectedIndex()==0){
+				Double totalVentas=totalEfectivo+totalTarjeta+totalCortesia+totalPrepagado+totalCredito+totalEquipajePCE; 
+				total=totalVentas-(totalDevolucion+totalCortesia+totalCredito+totalPrepagado+totalTarjeta+totalNotasCredito);
+				total = totalVentas;
+				totalDolares = totalEfectivoDolares + totalCreditoDolares;
+			}
+			
+			listfooter = new Listfooter();
+			Vlayout vlayout = new Vlayout();
+			dblbxTotal = new Doublebox(total);
+			dblbxTotal.setStyle("font-size:10px;font-align:right");
+			dblbxTotal.setFormat("#,###,##0.00");
+			dblbxTotal.setWidth("57px");
+			dblbxTotal.setLocale(Locale.US);
+			vlayout.appendChild(dblbxTotal);
+			dbxTotalDolares = new Doublebox(totalDolares);
+			dbxTotalDolares.setStyle("font-size:10px;font-align:right");
+			dbxTotalDolares.setFormat("#,###,##0.00");
+			dbxTotalDolares.setWidth("57px");
+			dbxTotalDolares.setLocale(Locale.US);
+			vlayout.appendChild(dbxTotalDolares);
+			
+			listfooter.appendChild(vlayout);						
+			listfooter.setStyle("font-size:10px !important; padding:1px");
+			listfoot.appendChild(listfooter);
+			lbxVentas.appendChild(listfoot);
+		} catch (Exception e) {
+			e.printStackTrace();
+			DlgMessage.error(e.getMessage());
+		}		
+	}
+	
+	@SuppressWarnings("deprecation")
+	private void loadVentas(List<VentaPasaje> lstVentas, Boolean isCarga){
+		try{
+//			lbxVentas.getItems().clear();
+//			grdTotales.setVisible(false);
+//			for(int j=0; j<lbxVentas.getChildren().size();j++){
+//				if(lbxVentas.getChildren().get(j) instanceof Listfoot)
+//					lbxVentas.getChildren().get(j).detach();
+//			}
+//			Integer idAgencia = null;
+//			Integer idUsuario = null;
+//			Integer criterio = 0;
+//			String fechaInicio = Util.DatetoString(dtbxFechaInicio.getValue(), Constantes.DATE_FORMAT);
+//			String fechaFin = Util.DatetoString(dtbxFechaFin.getValue(), Constantes.DATE_FORMAT);
+//			
+//			if(cmbAgencia.getSelectedItem().getValue() instanceof Agencia)
+//				idAgencia = ((Agencia)cmbAgencia.getSelectedItem().getValue()).getId();
+//			if(cmbCounter.getItemCount()>0 && cmbCounter.getSelectedItem().getValue() instanceof Usuario)
+//				idUsuario = ((Usuario)cmbCounter.getSelectedItem().getValue()).getId();
+//			if(cmbTipoMovimiento.getSelectedIndex()>=0)
+//				criterio = cmbTipoMovimiento.getSelectedIndex();
+//			
+//			List<VentaPasaje> lstVentas = ServiceLocator.getVentaPasajesManager().buscarDetalladoVentas(idAgencia, idUsuario, fechaInicio, fechaFin, criterio);
 			
 			Listitem item = null;
 			Listcell cell = null;
 			int i=0;
 			if(lstVentas.size()>0){
-				Double total = 0.0;
-				Double totalDevolucion = 0.0;
-				Double totalCortesia = 0.0;
-				Double totalCredito = 0.0;
-				Double totalPrepagado = 0.0;
-//				Double totalRecibos = 0.0;
-				Double totalEfectivo = 0.0;
-				Double totalTarjeta = 0.0;
-				Double totalNotasCredito=0.0;
-				Double totalEquipajePCE = 0.0;
-				Double totalDolares =0.0;
-				Double totalEfectivoDolares = 0.0;
-				Double totalCreditoDolares = 0.0;
+//				total = 0.0;
+//				totalDevolucion = 0.0;
+//				totalCortesia = 0.0;
+//				totalCredito = 0.0;
+//				totalPrepagado = 0.0;
+//				totalEfectivo = 0.0;
+//				totalTarjeta = 0.0;
+//				totalNotasCredito=0.0;
+//				totalEquipajePCE = 0.0;
+//				totalDolares =0.0;
+//				totalEfectivoDolares = 0.0;
+//				totalCreditoDolares = 0.0;
 				
 				for(VentaPasaje venta : lstVentas){
 					i++;
@@ -348,7 +603,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 						else if(venta.getTipoTransaccion().equals("PREP.(EF)") || venta.getTipoTransaccion().equals("PREP.(TC"))
 							totalPrepagado = totalPrepagado + venta.getImportePagado();							
 						else if(venta.getTipoTransaccion().equals("EQUIPAJE(PCE)") 
-//								|| venta.getTipoTransaccion().equals("RC.(TC)")
+								|| venta.getTipoTransaccion().equals("PCE")
 //								|| venta.getTipoTransaccion().equals("RC.(TRA)")
 							   )
 							totalEquipajePCE = totalEquipajePCE + venta.getImportePagado();
@@ -474,18 +729,21 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 					else
 						cell = new Listcell(venta.getTipoTransaccion());
 					cell.setStyle(style);
-					item.appendChild(cell);					
-					String numeroControl=venta.getNumeroControl();
-					String prefijo=numeroControl.substring(0,1);
-					numeroControl=prefijo+numeroControl.substring(6);
-					cell = new Listcell(numeroControl);
+					item.appendChild(cell);
+					if(venta.getNumeroControl()!=null) {
+						String numeroControl=venta.getNumeroControl();
+						String prefijo=numeroControl.substring(0,1);
+						numeroControl=prefijo+numeroControl.substring(6);
+						cell = new Listcell(numeroControl);	
+					}else
+						cell = new Listcell("");					
 					cell.setStyle(style);
 					item.appendChild(cell);
 					
 					/*Evento para realizar el cambio de la forma de pago*/
 					cell = new Listcell();
 					cell.setStyle(style);
-					if(venta.getTipoMovimiento().getId().intValue()!=Constantes.ID_TIPMOV_ANULACION && 
+					if(isCarga==false && venta.getTipoMovimiento().getId().intValue()!=Constantes.ID_TIPMOV_ANULACION && 
 							venta.getTipoMovimiento().getId().intValue()!=Constantes.ID_TIPMOV_ANULACION_SISTEMA && 
 							venta.getTipoMovimiento().getId().intValue()!=Constantes.ID_TIPMOV_DEVOLUCION &&
 							venta.getTipoMovimiento().getId().intValue()!=Constantes.ID_TIPMOV_PREPAGADO &&
@@ -579,7 +837,10 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 //					hlayout.appendChild(btnDuplicado);
 					
 					Button btnAnular = new Button();
-					btnAnular.setId(venta.getId().toString());
+					if(isCarga || venta.getId()==null || rubroCarga.isChecked())
+						btnAnular.setVisible(false);
+					else
+						btnAnular.setId(venta.getId().toString());
 					btnAnular.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 						@Override
 						public void onEvent(Event e) throws Exception{
@@ -609,129 +870,56 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 						lbxVentas.appendChild(item);
 					}
 				}
-				Listfoot listfoot = new Listfoot();
-				Listfooter listfooter = new Listfooter();
-				listfooter.setSpan(11);
+//				Listfoot listfoot = new Listfoot();
+//				Listfooter listfooter = new Listfooter();
 				
-				Div div1 = new Div();
-				div1.setHeight("28px");
-				Div div = new Div();
-				div.setHeight("22px");
-				div.setAlign("right");
-				Vlayout vlayout1 = new Vlayout();
-				Label label = new Label();
-				label.setValue("TOTAL S/. :");
-				label.setStyle("font-weight:bold");
-				vlayout1.appendChild(label);
-				div.appendChild(vlayout1);
-				label = new Label();
-				label.setValue("TOTAL $ :");
-				label.setStyle("font-weight:bold");
-				vlayout1.appendChild(label);
-				div.appendChild(vlayout1);
-				
-				div1.appendChild(div);
-				
+//				listfooter.setSpan(11);
+//				
+//				Div div1 = new Div();
+//				div1.setHeight("28px");
+//				Div div = new Div();
+//				div.setHeight("22px");
+//				div.setAlign("right");
+//				Vlayout vlayout1 = new Vlayout();
+//				Label label = new Label();
+//				label.setValue("TOTAL S/. :");
+//				label.setStyle("font-weight:bold");
+//				vlayout1.appendChild(label);
+//				div.appendChild(vlayout1);
+//				label = new Label();
+//				label.setValue("TOTAL $ :");
+//				label.setStyle("font-weight:bold");
+//				vlayout1.appendChild(label);
+//				div.appendChild(vlayout1);
+//				
+//				div1.appendChild(div);
+//
+//				
+//				listfooter.appendChild(div1);
+//				listfoot.appendChild(listfooter);
+//				
+//				/*Calcula el total a liquidar*/
 //				if(cmbTipoMovimiento.getSelectedIndex()==0){
-//					div1.setHeight("195px");
-//					div = new Div();
-//					div.setHeight("25px");
-//					div.setAlign("right");
-//					label = new Label();
-//					label.setValue("DEVOLUCIONES :");
-//					label.setStyle("font-weight:bold; color:red");
-//					div.appendChild(label);
-//					div1.appendChild(div);
-//					
-//					div = new Div();
-//					div.setHeight("23px");
-//					div.setAlign("right");
-//					label = new Label();
-//					label.setValue("CORTESIAS :");
-//					label.setStyle("font-weight:bold; color:green");
-//					div.appendChild(label);
-//					div1.appendChild(div);
-//					
-//					div = new Div();
-//					div.setHeight("24px");
-//					div.setAlign("right");
-//					label = new Label();
-//					label.setValue("CREDITO :");
-//					label.setStyle("font-weight:bold; color:green");
-//					div.appendChild(label);
-//					div1.appendChild(div);
-//					
-//					div = new Div();
-//					div.setHeight("23px");
-//					div.setAlign("right");
-//					label = new Label();
-//					label.setValue("PREPAGADO :");
-//					label.setStyle("font-weight:bold; color:green");
-//					div.appendChild(label);
-//					div1.appendChild(div);
-//					
-//					div = new Div();
-//					div.setHeight("25px");
-//					div.setAlign("right");
-//					label = new Label();
-//					label.setValue("RECIBO DE CAJA :");
-//					label.setStyle("font-weight:bold; color:blue");
-//					div.appendChild(label);
-//					div1.appendChild(div);
-//					
-//					div = new Div();
-//					div.setHeight("24px");
-//					div.setAlign("right");
-//					label = new Label();
-//					label.setValue("VENTAS EF :");
-//					label.setStyle("font-weight:bold; color:blue");
-//					div.appendChild(label);
-//					div1.appendChild(div);
-//					
-//					div = new Div();
-//					div.setHeight("20px");
-//					div.setAlign("right");
-//					label = new Label();
-//					label.setValue("VENTAS TC :");
-//					label.setStyle("font-weight:bold; color:blue");
-//					div.appendChild(label);
-//					div1.appendChild(div);
-//					
-//					div = new Div();
-//					div.setHeight("15px");
-//					div.setAlign("right");
-//					label = new Label();
-//					label.setValue("NOTAS CREDITO :");
-//					label.setStyle("font-weight:bold; color:blue");
-//					div.appendChild(label);
-//					div1.appendChild(div);
+//					Double totalVentas=totalEfectivo+totalTarjeta+totalCortesia+totalPrepagado+totalCredito+totalEquipajePCE; 
+//					total=totalVentas-(totalDevolucion+totalCortesia+totalCredito+totalPrepagado+totalTarjeta+totalNotasCredito);
+//					total = totalVentas;
+//					totalDolares = totalEfectivoDolares + totalCreditoDolares;
 //				}
-				
-				listfooter.appendChild(div1);
-				listfoot.appendChild(listfooter);
-				
-				/*Calcula el total a liquidar*/
-				if(cmbTipoMovimiento.getSelectedIndex()==0){
-					Double totalVentas=totalEfectivo+totalTarjeta+totalCortesia+totalPrepagado+totalCredito+totalEquipajePCE; 
-					total=totalVentas-(totalDevolucion+totalCortesia+totalCredito+totalPrepagado+totalTarjeta+totalNotasCredito);
-					total = totalVentas;
-					totalDolares = totalEfectivoDolares + totalCreditoDolares;
-				}
-				
-				listfooter = new Listfooter();
-				Vlayout vlayout = new Vlayout();
-				dblbxTotal = new Doublebox(total);
-				dblbxTotal.setStyle("font-size:10px;font-align:right");
-				dblbxTotal.setFormat("#,###,##0.00");
-				dblbxTotal.setWidth("57px");
-				dblbxTotal.setLocale(Locale.US);
-				vlayout.appendChild(dblbxTotal);
-				dbxTotalDolares = new Doublebox(totalDolares);
-				dbxTotalDolares.setStyle("font-size:10px;font-align:right");
-				dbxTotalDolares.setFormat("#,###,##0.00");
-				dbxTotalDolares.setWidth("57px");
-				dbxTotalDolares.setLocale(Locale.US);
-				vlayout.appendChild(dbxTotalDolares);
+//				
+//				listfooter = new Listfooter();
+//				Vlayout vlayout = new Vlayout();
+//				dblbxTotal = new Doublebox(total);
+//				dblbxTotal.setStyle("font-size:10px;font-align:right");
+//				dblbxTotal.setFormat("#,###,##0.00");
+//				dblbxTotal.setWidth("57px");
+//				dblbxTotal.setLocale(Locale.US);
+//				vlayout.appendChild(dblbxTotal);
+//				dbxTotalDolares = new Doublebox(totalDolares);
+//				dbxTotalDolares.setStyle("font-size:10px;font-align:right");
+//				dbxTotalDolares.setFormat("#,###,##0.00");
+//				dbxTotalDolares.setWidth("57px");
+//				dbxTotalDolares.setLocale(Locale.US);
+//				vlayout.appendChild(dbxTotalDolares);
 				
 				
 				if(cmbTipoMovimiento.getSelectedIndex()==0){
@@ -805,16 +993,11 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 					grdTotales.setVisible(true);
 				}
 				
-				listfooter.appendChild(vlayout);
-				
-//				listfooter.appendChild(lblTotal);
-				
-//				listfooter.appendChild(div1);
-				
-				
-				listfooter.setStyle("font-size:10px !important; padding:1px");
-				listfoot.appendChild(listfooter);
-				lbxVentas.appendChild(listfoot);
+//				listfooter.appendChild(vlayout);
+//
+//				listfooter.setStyle("font-size:10px !important; padding:1px");
+//				listfoot.appendChild(listfooter);
+//				lbxVentas.appendChild(listfoot);
 			}else
 				DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.noVentas"));
 		}catch(Exception ex){

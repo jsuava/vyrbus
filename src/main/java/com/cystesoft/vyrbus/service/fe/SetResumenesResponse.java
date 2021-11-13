@@ -1,4 +1,3 @@
-
 package com.cystesoft.vyrbus.service.fe;
 
 import javax.xml.bind.JAXBElement;
@@ -41,8 +40,8 @@ public class SetResumenesResponse {
 	/**
 	 * Gets the value of the setResumenesResult property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link Result
-	 *         }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link Result }
+	 *         {@code >}
 	 * 
 	 */
 	public JAXBElement<Result> getSetResumenesResult() {
@@ -53,12 +52,12 @@ public class SetResumenesResponse {
 	 * Sets the value of the setResumenesResult property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link Result
-	 *            }{@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link Result }
+	 *            {@code >}
 	 * 
 	 */
 	public void setSetResumenesResult(JAXBElement<Result> value) {
-		this.setResumenesResult = (value);
+		this.setResumenesResult = ((JAXBElement<Result>) value);
 	}
 
 }

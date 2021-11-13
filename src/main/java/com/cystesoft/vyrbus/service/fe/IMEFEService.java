@@ -1,4 +1,3 @@
-
 package com.cystesoft.vyrbus.service.fe;
 
 import javax.jws.WebMethod;
@@ -18,15 +17,16 @@ public interface IMEFEService {
 
 	/**
 	 * 
-	 * @param venta
 	 * @param token
+	 * @param venta
 	 * @return returns com.cystesoft.vyrbus.service.fe.Result
 	 */
 	@WebMethod(action = "http://tempuri.org/IMEFEService/setVenta")
 	@WebResult(name = "setVentaResult", targetNamespace = "http://tempuri.org/")
 	@RequestWrapper(localName = "setVenta", targetNamespace = "http://tempuri.org/", className = "com.cystesoft.vyrbus.service.fe.SetVenta")
 	@ResponseWrapper(localName = "setVentaResponse", targetNamespace = "http://tempuri.org/", className = "com.cystesoft.vyrbus.service.fe.SetVentaResponse")
-	public Result setVenta(@WebParam(name = "token", targetNamespace = "http://tempuri.org/") String token,
+	public Result setVenta(
+			@WebParam(name = "token", targetNamespace = "http://tempuri.org/") String token,
 			@WebParam(name = "venta", targetNamespace = "http://tempuri.org/") Venta venta);
 
 	/**
@@ -39,13 +39,14 @@ public interface IMEFEService {
 	@WebResult(name = "setNotaResult", targetNamespace = "http://tempuri.org/")
 	@RequestWrapper(localName = "setNota", targetNamespace = "http://tempuri.org/", className = "com.cystesoft.vyrbus.service.fe.SetNota")
 	@ResponseWrapper(localName = "setNotaResponse", targetNamespace = "http://tempuri.org/", className = "com.cystesoft.vyrbus.service.fe.SetNotaResponse")
-	public Result setNota(@WebParam(name = "token", targetNamespace = "http://tempuri.org/") String token,
+	public Result setNota(
+			@WebParam(name = "token", targetNamespace = "http://tempuri.org/") String token,
 			@WebParam(name = "notaCreditoDebito", targetNamespace = "http://tempuri.org/") Nota notaCreditoDebito);
 
 	/**
 	 * 
-	 * @param fechaEmisionComprobantes
 	 * @param rucEmpresa
+	 * @param fechaEmisionComprobantes
 	 * @param token
 	 * @return returns com.cystesoft.vyrbus.service.fe.Result
 	 */
@@ -53,14 +54,15 @@ public interface IMEFEService {
 	@WebResult(name = "setBajasResult", targetNamespace = "http://tempuri.org/")
 	@RequestWrapper(localName = "setBajas", targetNamespace = "http://tempuri.org/", className = "com.cystesoft.vyrbus.service.fe.SetBajas")
 	@ResponseWrapper(localName = "setBajasResponse", targetNamespace = "http://tempuri.org/", className = "com.cystesoft.vyrbus.service.fe.SetBajasResponse")
-	public Result setBajas(@WebParam(name = "token", targetNamespace = "http://tempuri.org/") String token,
+	public Result setBajas(
+			@WebParam(name = "token", targetNamespace = "http://tempuri.org/") String token,
 			@WebParam(name = "fechaEmisionComprobantes", targetNamespace = "http://tempuri.org/") String fechaEmisionComprobantes,
 			@WebParam(name = "rucEmpresa", targetNamespace = "http://tempuri.org/") String rucEmpresa);
 
 	/**
 	 * 
-	 * @param fechaEmisionComprobantes
 	 * @param rucEmpresa
+	 * @param fechaEmisionComprobantes
 	 * @param token
 	 * @return returns com.cystesoft.vyrbus.service.fe.Result
 	 */
@@ -68,7 +70,8 @@ public interface IMEFEService {
 	@WebResult(name = "setResumenesResult", targetNamespace = "http://tempuri.org/")
 	@RequestWrapper(localName = "setResumenes", targetNamespace = "http://tempuri.org/", className = "com.cystesoft.vyrbus.service.fe.SetResumenes")
 	@ResponseWrapper(localName = "setResumenesResponse", targetNamespace = "http://tempuri.org/", className = "com.cystesoft.vyrbus.service.fe.SetResumenesResponse")
-	public Result setResumenes(@WebParam(name = "token", targetNamespace = "http://tempuri.org/") String token,
+	public Result setResumenes(
+			@WebParam(name = "token", targetNamespace = "http://tempuri.org/") String token,
 			@WebParam(name = "fechaEmisionComprobantes", targetNamespace = "http://tempuri.org/") String fechaEmisionComprobantes,
 			@WebParam(name = "rucEmpresa", targetNamespace = "http://tempuri.org/") String rucEmpresa);
 
@@ -82,34 +85,37 @@ public interface IMEFEService {
 	@WebResult(name = "setUpdateStatusCDRResult", targetNamespace = "http://tempuri.org/")
 	@RequestWrapper(localName = "setUpdateStatusCDR", targetNamespace = "http://tempuri.org/", className = "com.cystesoft.vyrbus.service.fe.SetUpdateStatusCDR")
 	@ResponseWrapper(localName = "setUpdateStatusCDRResponse", targetNamespace = "http://tempuri.org/", className = "com.cystesoft.vyrbus.service.fe.SetUpdateStatusCDRResponse")
-	public Result setUpdateStatusCDR(@WebParam(name = "token", targetNamespace = "http://tempuri.org/") String token,
+	public Result setUpdateStatusCDR(
+			@WebParam(name = "token", targetNamespace = "http://tempuri.org/") String token,
 			@WebParam(name = "rucEmpresa", targetNamespace = "http://tempuri.org/") String rucEmpresa);
 
 	/**
 	 * 
-	 * @param documentoBaja
 	 * @param token
+	 * @param documentoBaja
 	 * @return returns com.cystesoft.vyrbus.service.fe.Result
 	 */
 	@WebMethod(action = "http://tempuri.org/IMEFEService/setBajaDocumento")
 	@WebResult(name = "setBajaDocumentoResult", targetNamespace = "http://tempuri.org/")
 	@RequestWrapper(localName = "setBajaDocumento", targetNamespace = "http://tempuri.org/", className = "com.cystesoft.vyrbus.service.fe.SetBajaDocumento")
 	@ResponseWrapper(localName = "setBajaDocumentoResponse", targetNamespace = "http://tempuri.org/", className = "com.cystesoft.vyrbus.service.fe.SetBajaDocumentoResponse")
-	public Result setBajaDocumento(@WebParam(name = "token", targetNamespace = "http://tempuri.org/") String token,
+	public Result setBajaDocumento(
+			@WebParam(name = "token", targetNamespace = "http://tempuri.org/") String token,
 			@WebParam(name = "documentoBaja", targetNamespace = "http://tempuri.org/") DocumentoBaja documentoBaja);
 
 	/**
 	 * 
-	 * @param venta
 	 * @param nota
 	 * @param token
+	 * @param venta
 	 * @return returns com.cystesoft.vyrbus.service.fe.Result
 	 */
 	@WebMethod(action = "http://tempuri.org/IMEFEService/setNotaVenta")
 	@WebResult(name = "setNotaVentaResult", targetNamespace = "http://tempuri.org/")
 	@RequestWrapper(localName = "setNotaVenta", targetNamespace = "http://tempuri.org/", className = "com.cystesoft.vyrbus.service.fe.SetNotaVenta")
 	@ResponseWrapper(localName = "setNotaVentaResponse", targetNamespace = "http://tempuri.org/", className = "com.cystesoft.vyrbus.service.fe.SetNotaVentaResponse")
-	public Result setNotaVenta(@WebParam(name = "token", targetNamespace = "http://tempuri.org/") String token,
+	public Result setNotaVenta(
+			@WebParam(name = "token", targetNamespace = "http://tempuri.org/") String token,
 			@WebParam(name = "nota", targetNamespace = "http://tempuri.org/") Nota nota,
 			@WebParam(name = "venta", targetNamespace = "http://tempuri.org/") Venta venta);
 
@@ -130,11 +136,11 @@ public interface IMEFEService {
 	/**
 	 * 
 	 * @param serie
-	 * @param tipoComprobante
-	 * @param correlativo
-	 * @param strRucEmpresa
 	 * @param isPasajes
+	 * @param tipoComprobante
 	 * @param token
+	 * @param strRucEmpresa
+	 * @param correlativo
 	 * @return returns com.cystesoft.vyrbus.service.fe.Result
 	 */
 	@WebMethod(action = "http://tempuri.org/IMEFEService/getRepresentacionImpresa")
@@ -150,8 +156,8 @@ public interface IMEFEService {
 			@WebParam(name = "strRucEmpresa", targetNamespace = "http://tempuri.org/") String strRucEmpresa);
 
 	/**
-	 * 
-	 */
+     * 
+     */
 	@WebMethod(action = "http://tempuri.org/IMEFEService/setUpdatePdf")
 	@RequestWrapper(localName = "setUpdatePdf", targetNamespace = "http://tempuri.org/", className = "com.cystesoft.vyrbus.service.fe.SetUpdatePdf")
 	@ResponseWrapper(localName = "setUpdatePdfResponse", targetNamespace = "http://tempuri.org/", className = "com.cystesoft.vyrbus.service.fe.SetUpdatePdfResponse")
@@ -162,8 +168,8 @@ public interface IMEFEService {
 	 * @param rucEmpresa
 	 * @param serie
 	 * @param tipoComprobante
-	 * @param correlativo
 	 * @param token
+	 * @param correlativo
 	 * @return returns com.cystesoft.vyrbus.service.fe.Result
 	 */
 	@WebMethod(action = "http://tempuri.org/IMEFEService/buscarDetalleComprobante")
@@ -187,7 +193,8 @@ public interface IMEFEService {
 	@WebResult(name = "setConsultarCDRResult", targetNamespace = "http://tempuri.org/")
 	@RequestWrapper(localName = "setConsultarCDR", targetNamespace = "http://tempuri.org/", className = "com.cystesoft.vyrbus.service.fe.SetConsultarCDR")
 	@ResponseWrapper(localName = "setConsultarCDRResponse", targetNamespace = "http://tempuri.org/", className = "com.cystesoft.vyrbus.service.fe.SetConsultarCDRResponse")
-	public Result setConsultarCDR(@WebParam(name = "token", targetNamespace = "http://tempuri.org/") String token,
+	public Result setConsultarCDR(
+			@WebParam(name = "token", targetNamespace = "http://tempuri.org/") String token,
 			@WebParam(name = "documentCDR", targetNamespace = "http://tempuri.org/") DocumentCDR documentCDR);
 
 }

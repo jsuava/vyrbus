@@ -1,4 +1,3 @@
-
 package com.cystesoft.vyrbus.service.fe;
 
 import java.net.MalformedURLException;
@@ -16,29 +15,32 @@ import javax.xml.ws.WebServiceClient;
  * An example of how this class may be used:
  * 
  * <pre>
-* MEFEService service = new MEFEService();
-* IMEFEService portType = service.getBasicHttpBindingIMEFEService();
-* portType.setVenta(...);
+ * MEFEService service = new MEFEService();
+ * IMEFEService portType = service.getBasicHttpBindingIMEFEService();
+ * portType.setVenta(...);
  * </pre>
+ * 
  * </p>
  * 
  */
-@WebServiceClient(name = "MEFEService", targetNamespace = "http://tempuri.org/", wsdlLocation = "http://192.168.0.31:8085/MEFEService.svc?wsdl")
-//@WebServiceClient(name = "MEFEService", targetNamespace = "http://tempuri.org/", wsdlLocation = "http://localhost:59155/MEFEService.svc?wsdl")
+@WebServiceClient(name = "MEFEService", targetNamespace = "http://tempuri.org/", wsdlLocation = "http://192.168.50.5:8085//MEFEService.svc?wsdl")
 public class MEFEService extends Service {
 
 	private final static URL MEFESERVICE_WSDL_LOCATION;
-	private final static Logger logger = Logger.getLogger(com.cystesoft.vyrbus.service.fe.MEFEService.class.getName());
+	private final static Logger logger = Logger
+			.getLogger(com.cystesoft.vyrbus.service.fe.MEFEService.class
+					.getName());
 
 	static {
 		URL url = null;
 		try {
 			URL baseUrl;
-			baseUrl = com.cystesoft.vyrbus.service.fe.MEFEService.class.getResource(".");
-			url = new URL(baseUrl, "http://192.168.0.31:8085/MEFEService.svc?wsdl");
+			baseUrl = com.cystesoft.vyrbus.service.fe.MEFEService.class
+					.getResource(".");
+			url = new URL(baseUrl,
+					"http://192.168.50.5:8085//MEFEService.svc?wsdl");
 		} catch (MalformedURLException e) {
-			logger.warning(
-					"Failed to create URL for the wsdl Location: 'http://192.168.0.31:8085/MEFEService.svc?wsdl', retrying as a local file");
+			logger.warning("Failed to create URL for the wsdl Location: 'http://192.168.50.5:8085//MEFEService.svc?wsdl', retrying as a local file");
 			logger.warning(e.getMessage());
 		}
 		MEFESERVICE_WSDL_LOCATION = url;
@@ -49,7 +51,8 @@ public class MEFEService extends Service {
 	}
 
 	public MEFEService() {
-		super(MEFESERVICE_WSDL_LOCATION, new QName("http://tempuri.org/", "MEFEService"));
+		super(MEFESERVICE_WSDL_LOCATION, new QName("http://tempuri.org/",
+				"MEFEService"));
 	}
 
 	/**
@@ -58,7 +61,8 @@ public class MEFEService extends Service {
 	 */
 	@WebEndpoint(name = "BasicHttpBinding_IMEFEService")
 	public IMEFEService getBasicHttpBindingIMEFEService() {
-		return super.getPort(new QName("http://tempuri.org/", "BasicHttpBinding_IMEFEService"), IMEFEService.class);
+		return super.getPort(new QName("http://tempuri.org/",
+				"BasicHttpBinding_IMEFEService"), IMEFEService.class);
 	}
 
 }

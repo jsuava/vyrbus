@@ -22,14 +22,16 @@
 						<datebox id="dbDesde" format="dd/MM/yyyy" />
 						<label value="Hasta: " sclass="label-size11-bold"/>
 						<datebox id="dbHasta" format="dd/MM/yyyy" />
-	
-						<button image="resources/mp_buscarEnabled.png"  
-								label="Buscar"
-								onClick="wndAnulacionPostergacion.onSearch()"
-								sclass="btnCommandM" 
-								style="width:100px; height:30px" 
-								tooltiptext="Haga click aqui para realizar la busqueda." />
-						<label />
+						<hbox align="center">
+							<button image="resources/mp_buscarEnabled.png"  
+									label="Buscar"
+									onClick="wndAnulacionPostergacion.onSearch()"
+									sclass="btnCommandM" 
+									style="width:100px; height:30px" 
+									tooltiptext="Haga click aqui para realizar la busqueda." />
+							<button  onClick="wndAnulacionPostergacion.btnExportar_OnClick()" autodisable="selft" image="resources/mp_excel.png" sclass="btnImage" tooltiptext="Exportar a Excel."/>
+						</hbox>
+						<label/>
 						<label />
 					</row>
 					<row spans="3,3">

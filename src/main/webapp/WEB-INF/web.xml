@@ -161,6 +161,16 @@
 	</servlet>
 	
 	<servlet>
+		<description>Servleft para los gastos y otros ingresos en XLS</description>
+		<servlet-name>XlsGastosOtrosIngresos</servlet-name>
+		<servlet-class>com.cystesoft.vyrbus.service.excel.XlsGastosOtrosIngresos</servlet-class>
+	</servlet>
+	<servlet>
+		<description>Servleft para las anulaciones y postergaciones en XLS</description>
+		<servlet-name>XlsAnulacionesPostergaciones</servlet-name>
+		<servlet-class>com.cystesoft.vyrbus.service.excel.XlsAnulacionesPostergaciones</servlet-class>
+	</servlet>
+	<servlet>
 		<description>Servleft para el avance semanal en XLS</description>
 		<servlet-name>XlsAvanceSemanal</servlet-name>
 		<servlet-class>com.cystesoft.vyrbus.service.excel.XlsAvanceSemanal</servlet-class>
@@ -221,6 +231,14 @@
     <servlet-name>ReporteManifiestoServlet</servlet-name>
     <url-pattern>/servlet/ReporteManifiestoServlet</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+		<servlet-name>XlsGastosOtrosIngresos</servlet-name>
+		<url-pattern>/exportXlsGastosOtrosIngresos.htm</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>XlsAnulacionesPostergaciones</servlet-name>
+		<url-pattern>/exportXlsAnulacionesPostergaciones.htm</url-pattern>
+	</servlet-mapping>
   <servlet-mapping>
 		<servlet-name>XlsAvanceSemanal</servlet-name>
 		<url-pattern>/exportXlsAvanceSemanal.htm</url-pattern>
