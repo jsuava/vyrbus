@@ -358,7 +358,7 @@ public class WndVerMapaBus extends WndBase {
 		image = new Image("/resources/asientos/asientoVendidoFemale_1.png");
 		hboxObjeto.appendChild(image);
 		hboxRow.appendChild(hboxObjeto);
-		label = new Label("Vendido");
+		label = new Label("Venta Counter");
 		hboxObjeto = new Hbox();
 		hboxObjeto.setAlign("center");
 		hboxObjeto.setWidth("100px");
@@ -370,7 +370,38 @@ public class WndVerMapaBus extends WndBase {
 		image = new Image("/resources/asientos/asientoVendidoMale_1.png");
 		hboxObjeto.appendChild(image);
 		hboxRow.appendChild(hboxObjeto);
-		label = new Label("Vendido");
+		label = new Label("Venta Counter");
+		hboxObjeto = new Hbox();
+		hboxObjeto.setAlign("center");
+		hboxObjeto.setWidth("100px");
+		hboxObjeto.appendChild(label);
+		hboxRow.appendChild(hboxObjeto);
+		row.appendChild(hboxRow);
+		rows.appendChild(row);
+		
+		row = new Row();
+		hboxRow = new Hbox();
+		hboxRow.setAlign("center");
+		hboxRow.setWidth("260px");
+		hboxObjeto = new Hbox();
+		hboxObjeto.setAlign("center");
+		hboxObjeto.setWidth("26px");
+		image = new Image("/resources/asientos/asientoVendidoWebFemale_1.png");
+		hboxObjeto.appendChild(image);
+		hboxRow.appendChild(hboxObjeto);
+		label = new Label("Venta Web");
+		hboxObjeto = new Hbox();
+		hboxObjeto.setAlign("center");
+		hboxObjeto.setWidth("100px");
+		hboxObjeto.appendChild(label);
+		hboxRow.appendChild(hboxObjeto);
+		hboxObjeto = new Hbox();
+		hboxObjeto.setAlign("center");
+		hboxObjeto.setWidth("26px");
+		image = new Image("/resources/asientos/asientoVendidoWebMale_1.png");
+		hboxObjeto.appendChild(image);
+		hboxRow.appendChild(hboxObjeto);
+		label = new Label("Venta Web");
 		hboxObjeto = new Hbox();
 		hboxObjeto.setAlign("center");
 		hboxObjeto.setWidth("100px");
@@ -845,10 +876,17 @@ public class WndVerMapaBus extends WndBase {
 							Asiento asiento = mapaAsientos.get(key);
 							/*	Para identificar si la venta es completa o es un tramo	*/
 							if(venta.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA)){
-								if(venta.getPasajero().getSexo().getId().intValue()==Constantes.ID_SEXO_FEMENINO)
-									asiento.setSrc(Constantes.ICON_VENDIDO_FEMALE+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
-								else
-									asiento.setSrc(Constantes.ICON_VENDIDO_MALE+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
+								if(venta.getPasajero().getSexo().getId().intValue()==Constantes.ID_SEXO_FEMENINO) {
+									if(venta.getCanalVenta().getId().intValue()==Constantes.ID_CANVEN_WEB)
+										asiento.setSrc(Constantes.ICON_VENDIDO_WEB_FEMALE+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
+									else
+										asiento.setSrc(Constantes.ICON_VENDIDO_FEMALE+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
+								}else {
+									if(venta.getCanalVenta().getId().intValue()==Constantes.ID_CANVEN_WEB)
+										asiento.setSrc(Constantes.ICON_VENDIDO_WEB_MALE+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
+									else
+										asiento.setSrc(Constantes.ICON_VENDIDO_MALE+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
+								}
 								asiento.setEstadoAsiento(Constantes.ASIENTO_VENDIDO);
 							}else if(venta.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA)){
 								if(venta.getCanalVenta().getId().intValue()==Constantes.ID_CANVEN_DELIVERY)

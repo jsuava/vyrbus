@@ -1,5 +1,6 @@
 package com.cystesoft.vyrbus.view.ctrl;
 
+import java.math.BigDecimal;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -257,12 +258,12 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 				titanUsuarioHardware.setIpModificacion("10.10.10.1");
 	//			titanUsuarioHardware.setIdAgencia(id);
 				titanUsuarioHardware.setIdTipoComputador(1);
-				titanUsuarioHardware.setIdTipoIP(cmbTipoIP.getSelectedItem().getValue());
+				titanUsuarioHardware.setIdTipoIP(((BigDecimal) cmbTipoIP.getSelectedItem().getValue()).intValue());
 			
 				usuarioHardware.setTitanUsuarioHardware(titanUsuarioHardware);
 			}else {
 				titanUsuarioHardware.setNombreEquipo(txtDescripcion.getText());
-				titanUsuarioHardware.setIdTipoIP(cmbTipoIP.getSelectedItem().getValue());
+				titanUsuarioHardware.setIdTipoIP(((BigDecimal)cmbTipoIP.getSelectedItem().getValue()).intValue());
 				titanUsuarioHardware.setIpModificacion(UtilData.ipLocal(Executions.getCurrent()));
 				usuarioHardware.setTitanUsuarioHardware(titanUsuarioHardware);
 			}

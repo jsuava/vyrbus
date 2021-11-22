@@ -368,7 +368,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 		hbox2 = new Hbox();
 		hbox2.setAlign("center");
 		hbox2.setWidth("100px");
-		label = new Label("Vendido");
+		label = new Label("Venta Counter");
 		label.setStyle("font-size:9px");
 		hbox2.appendChild(label);
 		hbox.appendChild(hbox2);
@@ -384,7 +384,47 @@ public class WndMapaBus extends WndBase implements Serializable {
 		hbox2 = new Hbox();
 		hbox2.setAlign("center");
 		hbox2.setWidth("100px");
-		label = new Label("Vendido");
+		label = new Label("Venta Counter");
+		label.setStyle("font-size:9px");
+		hbox2.appendChild(label);
+		hbox.appendChild(hbox2);
+		
+		row.appendChild(hbox);
+		rows.appendChild(row);
+		
+		row = new Row();
+		hbox = new Hbox();
+		hbox.setWidth("260px");
+		hbox.setAlign("center");
+
+		hbox2 = new Hbox();
+		hbox2.setAlign("center");
+		hbox2.setWidth("26px");
+		image = new Image("/resources/asientos/asientoVendidoWebFemale_1.png");
+		image.setStyle("font-size:9px");
+		hbox2.appendChild(image);
+		hbox.appendChild(hbox2);
+		
+		hbox2 = new Hbox();
+		hbox2.setAlign("center");
+		hbox2.setWidth("100px");
+		label = new Label("Venta Web");
+		label.setStyle("font-size:9px");
+		hbox2.appendChild(label);
+		hbox.appendChild(hbox2);
+		
+		hbox2 = new Hbox();
+		hbox2.setAlign("center");
+		hbox2.setWidth("26px");
+		image = new Image("/resources/asientos/asientoVendidoWebMale_1.png");
+		image.setStyle("font-size:9px");
+		hbox2.appendChild(image);
+		hbox.appendChild(hbox2);
+		
+		hbox2 = new Hbox();
+		hbox2.setAlign("center");
+		hbox2.setWidth("100px");
+		label = new Label("Venta Web");
 		label.setStyle("font-size:9px");
 		hbox2.appendChild(label);
 		hbox.appendChild(hbox2);
@@ -679,10 +719,10 @@ public class WndMapaBus extends WndBase implements Serializable {
 	
 	/**
 	 * Evento utilizado cuando el usuario hace click en un asiento.
-	 * @param e					: Evento
-	 * @param mapaAsientos				: Mapa de asientos.
+	 * @param e				: Evento
+	 * @param mapaAsientos	: Mapa de asientos.
 	 * @param ventaPasaje	: Itinerario seleccionado.
-	 * @param esIda				: Indica si es Ida o retorno.
+	 * @param esIda			: Indica si es Ida o retorno.
 	 */
 	private void onClickAsiento(Event e, VentaPasaje ventaPasaje){
 		Asiento asientoSeleccionado = (Asiento)e.getTarget();
@@ -734,8 +774,8 @@ public class WndMapaBus extends WndBase implements Serializable {
 					mapaAsientos.get(key).setSrc(Constantes.PATH_PARTIAL+"asientoBloqueado_"+asientoSeleccionado.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
 					mapaAsientos.get(key).setEstadoAsiento(Constantes.ASIENTO_BLOQUEADO);
 					
-					//MAOE: La idea es que cada asiento seleccionado tenga su tarifa de acuerdo al nuevo modelo 
-					//Obtener la tarifa regular del asiento y almacenarlo en DetalleItinerario del asientoSeleccionado
+//					//MAOE: La idea es que cada asiento seleccionado tenga su tarifa de acuerdo al nuevo modelo 
+//					//Obtener la tarifa regular del asiento y almacenarlo en DetalleItinerario del asientoSeleccionado
 					asientoSeleccionado.setDetalleItinerario(ventaPasaje.getDetalleItinerario());
 					
 					List<TarifaRegular> lstTarifaRegular = ServiceLocator.getTarifaRegularManager().buscarTarifaPorServicio(
@@ -745,15 +785,18 @@ public class WndMapaBus extends WndBase implements Serializable {
 							ventaPasaje.getHoraPartida(), 
 							asientoSeleccionado.getPiso(),
 							asientoSeleccionado.getNumeroZona());
-					if(lstTarifaRegular.size()>0)
-						asientoSeleccionado.getDetalleItinerario().setTarifa(lstTarifaRegular.get(0).getMonto()!=null
-																			 ?lstTarifaRegular.get(0).getMonto()
-																			 :0.00);
-					else
+//					if(lstTarifaRegular.size()>0)
+//						asientoSeleccionado.getDetalleItinerario().setTarifa(lstTarifaRegular.get(0).getMonto()!=null
+//																			 ?lstTarifaRegular.get(0).getMonto()
+//																			 :0.00);
+//					else
+//						asientoSeleccionado.getDetalleItinerario().setTarifa(0.00);
+					if(lstTarifaRegular.size()>0) 
+						asientoSeleccionado.getDetalleItinerario().setTarifa(lstTarifaRegular.get(0).getMonto()!=null?lstTarifaRegular.get(0).getMonto() :0.00);
+					else 
 						asientoSeleccionado.getDetalleItinerario().setTarifa(0.00);
 					
-					
-					
+					setAsientoSeleccionado(asientoSeleccionado);
 					/*	Esto es para desbloquear el asiento en caso seleccione otro asiento sin haber cerrado la ventana del mapa	*/
 					if(!previousKey.equals("-1") && !previousKey.equals(key)){
 						String[] buffer = previousKey.split("-");	//Almacenamos en un array el asiento y el piso
@@ -781,7 +824,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 //						this.getDesktop().getSession().removeAttribute("asientoSeleccionado");
 					}
 				}
-			}
+			}System.out.print(asientoSeleccionado.getDetalleItinerario().getTarifa().toString());
 		}catch(DuplicateSeatException dsex){
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.asientoVendido"));
 			onRefreshMapaAsientos(mapaAsientos, detalleItinerario);
@@ -868,10 +911,17 @@ public class WndMapaBus extends WndBase implements Serializable {
 //							/*	Para identificar si la venta es completa o es un tramo	*/
 //							if(venta.getRuta().getId()==venta.getItinerario().getRuta().getId()){
 								if(venta.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA)){
-									if(venta.getPasajero().getSexo().getId().intValue()==Constantes.ID_SEXO_FEMENINO)
-										asiento.setSrc(Constantes.ICON_VENDIDO_FEMALE+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
-									else
-										asiento.setSrc(Constantes.ICON_VENDIDO_MALE+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
+									if(venta.getPasajero().getSexo().getId().intValue()==Constantes.ID_SEXO_FEMENINO) {
+										if(venta.getCanalVenta().getId().intValue()==Constantes.ID_CANVEN_WEB)
+											asiento.setSrc(Constantes.ICON_VENDIDO_WEB_FEMALE+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
+										else
+											asiento.setSrc(Constantes.ICON_VENDIDO_FEMALE+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
+									}else {
+										if(venta.getCanalVenta().getId().intValue()==Constantes.ID_CANVEN_WEB)
+											asiento.setSrc(Constantes.ICON_VENDIDO_WEB_MALE+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
+										else
+											asiento.setSrc(Constantes.ICON_VENDIDO_MALE+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
+									}
 									asiento.setEstadoAsiento(Constantes.ASIENTO_VENDIDO);
 								}else if(venta.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA)){
 									if(venta.getCanalVenta().getId().intValue()==Constantes.ID_CANVEN_DELIVERY)

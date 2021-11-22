@@ -28,9 +28,17 @@
 							<row>
 								<hbox width="260px" align="center">
 									<hbox align="center" width="26px"><image src="/resources/asientos/asientoVendidoFemale_1.png"/></hbox>
-									<hbox align="center" width="100px"><label value="Vendido" style="font-size:9px"/></hbox>
+									<hbox align="center" width="100px"><label value="Venta Counter" style="font-size:9px"/></hbox>
 									<hbox align="center" width="26px"><image src="/resources/asientos/asientoVendidoMale_1.png"/></hbox>
-									<hbox align="center" width="100px"><label value="Vendido" style="font-size:9px"/></hbox>																				
+									<hbox align="center" width="100px"><label value="Venta Counter" style="font-size:9px"/></hbox>																				
+								</hbox>
+							</row>
+							<row>
+								<hbox width="260px" align="center">
+									<hbox align="center" width="26px"><image src="/resources/asientos/asientoVendidoWebFemale_1.png"/></hbox>
+									<hbox align="center" width="100px"><label value="Venta Web" style="font-size:9px"/></hbox>
+									<hbox align="center" width="26px"><image src="/resources/asientos/asientoVendidoWebMale_1.png"/></hbox>
+									<hbox align="center" width="100px"><label value="Venta Web" style="font-size:9px"/></hbox>																				
 								</hbox>
 							</row>
 							<row>

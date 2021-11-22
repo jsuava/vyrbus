@@ -392,10 +392,17 @@ public class WndMapa extends WndBase {
 //							/*	Para identificar si la venta es completa o es un tramo	*/
 //							if(venta.getRuta().getId()==venta.getItinerario().getRuta().getId()){
 								if(venta.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA)){
-									if(venta.getPasajero().getSexo().getId().intValue()==Constantes.ID_SEXO_FEMENINO)
-										asiento.setSrc(Constantes.ICON_VENDIDO_FEMALE+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
-									else
-										asiento.setSrc(Constantes.ICON_VENDIDO_MALE+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
+									if(venta.getPasajero().getSexo().getId().intValue()==Constantes.ID_SEXO_FEMENINO) {
+										if(venta.getCanalVenta().getId().intValue()==Constantes.ID_CANVEN_WEB)
+											asiento.setSrc(Constantes.ICON_VENDIDO_WEB_FEMALE+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
+										else
+											asiento.setSrc(Constantes.ICON_VENDIDO_FEMALE+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
+									}else {
+										if(venta.getCanalVenta().getId().intValue()==Constantes.ID_CANVEN_WEB)
+											asiento.setSrc(Constantes.ICON_VENDIDO_WEB_MALE+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
+										else
+											asiento.setSrc(Constantes.ICON_VENDIDO_MALE+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
+									}
 									asiento.setEstadoAsiento(Constantes.ASIENTO_VENDIDO);
 								}else if(venta.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA)){
 									if(venta.getCanalVenta().getId().intValue()==Constantes.ID_CANVEN_DELIVERY)
