@@ -8,16 +8,18 @@
  */
 package com.cystesoft.vyrbus.model.dao.impl;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.math.BigDecimal;
 import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+
+
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -82,7 +84,8 @@ public class TranscarDAOImpl implements TranscarDAO{
 		
 		String storeProcedure="{call PKG_IVOCONTROLUSUARIO.SP_LISTA_ROL_USUARIO(?,?)}";				
 		//Llamanado el SP
-		CallableStatement callableStatement = getJdbcTranscar().getDataSource().getConnection().prepareCall(storeProcedure);		
+//		CallableStatement callableStatement = getJdbcTranscar().getDataSource().getConnection().prepareCall(storeProcedure);		
+		CallableStatement callableStatement = getJdbcTranscar().getDataSource().getConnection().prepareCall(storeProcedure);
 		//Parametros de entrada (index, parametros)
 		callableStatement.setInt(1, 1);
 		callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
@@ -111,7 +114,8 @@ public class TranscarDAOImpl implements TranscarDAO{
 		
 		String storeProcedure="{call PKG_IVOCONTROLUSUARIO.SP_DATOS_USUARIO_ROL(?,?,?)}";				
 		//Llamanado el SP
-		CallableStatement callableStatement = getJdbcTranscar().getDataSource().getConnection().prepareCall(storeProcedure);		
+//		CallableStatement callableStatement = getJdbcTranscar().getDataSource().getConnection().prepareCall(storeProcedure);		
+		CallableStatement callableStatement = getJdbcTranscar().getDataSource().getConnection().prepareCall(storeProcedure);
 		//Parametros de entrada
 		callableStatement.setInt("idUser", usuarioId);
 		callableStatement.registerOutParameter("cur_Usuario", OracleTypes.CURSOR);
@@ -503,8 +507,6 @@ public class TranscarDAOImpl implements TranscarDAO{
 		
 		String storeProcedure="{call PKG_IVOCIERRE_LIQUIDACIONES.SP_LIST_VENTAS_PRELI_TURNO_2(?,?,?,?,?,?,?)}";
 		//Llamanado el SP
-//		CallableStatement callableStatement = jdbcTemplate.getDataSource().getConnection().prepareCall(storeProcedure);		
-//		CallableStatement callableStatement = getConnectionTranscar().prepareCall(storeProcedure);
 		CallableStatement callableStatement = getJdbcTranscar().getDataSource().getConnection().prepareCall(storeProcedure);
 		//Parametros de entrada
 		callableStatement.setInt("P_IDUSUARIO_PERSONAL", usuarioId);
@@ -611,8 +613,6 @@ public class TranscarDAOImpl implements TranscarDAO{
 		
 		String storeProcedure="{call PKG_IVOCIERRE_LIQUIDACIONES.SP_LIST_VENTAS_PRELI_TURNO_2(?,?,?,?,?,?,?)}";
 		//Llamanado el SP
-//		CallableStatement callableStatement = jdbcTemplate.getDataSource().getConnection().prepareCall(storeProcedure);
-//		CallableStatement callableStatement = getConnectionTranscar().prepareCall(storeProcedure);
 		CallableStatement callableStatement = getJdbcTranscar().getDataSource().getConnection().prepareCall(storeProcedure);
 		//Parametros de entrada
 		callableStatement.setInt("P_IDUSUARIO_PERSONAL", usuarioId);
@@ -696,22 +696,112 @@ public class TranscarDAOImpl implements TranscarDAO{
         
 		return liquidacion;
 	}
-	
-	private Connection getConnectionTranscar() throws SQLException{
-		DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-		Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.50.10:1521:CDB1", "antezanadev", "ntzndev");
+			
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.TranscarDAO#cerrarLiquidacion(java.lang.Integer, java.lang.Integer, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public void cerrarLiquidacion(Integer usuarioId, Integer agenciaId,String fechaInicio, String fechaFin) throws Exception {
+		// TODO Auto-generated method stub
 		
-		return conn;
+		Liquidacion liquidacionTurno = buscarLiquidacionTurno(usuarioId, agenciaId, fechaInicio, fechaFin);
+		
+		Double entreSoles = .00, entreDolares = .00, totalFactura = .00;
+		Double totalBoleta = .00, totalVisa = .00, totalMastercard = .00, totalDevolucion = .00,totalNotaCredito = .00;
+		//****************Consulta los montos totales
+		String storeProcedure="{call PKG_LIQUIDACION_OFICINAS.SP_Monto(?,?,?,?,?,?)}";		
+		CallableStatement callableStatement = getJdbcTranscar().getDataSource().getConnection().prepareCall(storeProcedure);
+		callableStatement.setInt("ni_Opcion", 1);
+		callableStatement.setInt("ni_Usuario	", usuarioId);
+		callableStatement.setString("vi_Fecha", fechaInicio);
+		callableStatement.setInt("ni_Agencia", agenciaId);
+		callableStatement.registerOutParameter("co_datos",OracleTypes.CURSOR);
+		callableStatement.registerOutParameter("co_error",OracleTypes.CURSOR);
+		callableStatement.execute();
+		
+		ResultSet resultSet = (ResultSet) callableStatement.getObject("co_datos");
+		while (resultSet.next()) {
+			Double montoFactura = resultSet.getDouble("FACTURA");
+			Double montoBoleta = resultSet.getDouble("BOLETA");
+			totalFactura += montoFactura;
+			totalBoleta += montoBoleta;
+			totalNotaCredito += resultSet.getDouble("NOTA_CREDITO");
+			
+			String tarjeta = resultSet.getString("TARJETA");
+			if(tarjeta.equals("VISA")){
+				totalVisa += montoFactura + montoBoleta;
+			}else if(tarjeta.equals("MASTER CARD")){
+				totalMastercard += montoFactura + montoBoleta;
+			}			
+		}		
+		entreSoles = liquidacionTurno.getMontoContado() - totalNotaCredito;
+		
+		//Obtiene el identificado de la liquidacion 
+		String sql = "select lq.idliqui_turnos "
+				   + "from t_liqui_turnos lq  "
+				   + "where lq.idusuario_personal= "+usuarioId+" and lq.idagencias="+agenciaId+" and to_char(lq.fecha_aper,'dd/MM/yyyy') = '"+fechaInicio+"'";
+		List<?> result=getJdbcTranscar().queryForList(sql);
+		Long liquidacionId = (long)0;
+		Map<String, Object> map = new HashMap<String, Object>();
+		for(int i=0;i<result.size();i++){
+			map = (Map<String, Object>)result.get(i);
+			liquidacionId = ((BigDecimal)map.get("idliqui_turnos")).longValue();			
+		}		
+		
+		/**Realiza el cierre de la liquidacion ***/
+		storeProcedure="{call PKG_IVOCIERRE_LIQUIDACIONES.SP_LIQUI_TURNO_I(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}"; //21
+		//Llamanado el SP
+		callableStatement = getJdbcTranscar().getDataSource().getConnection().prepareCall(storeProcedure);
+		//Parametros de entrada
+		callableStatement.setLong("P_IDLIQUI_TURNOS", liquidacionId);
+		callableStatement.setInt("P_IDUSUARIO_PERSONAL", usuarioId);
+        callableStatement.setInt("P_IDAGENCIAS", agenciaId);
+        callableStatement.setString("P_FECHA_INICIAL", fechaInicio);
+        callableStatement.setString("P_FECHA_FINAL", fechaFin);
+        callableStatement.setString("P_IPMOD", "");
+        callableStatement.setInt("P_IDUSUARIO_PERSONALMOD", usuarioId);
+        callableStatement.setString("P_OBsER", "null");
+        callableStatement.setInt("P_CERRADO", 1);
+        callableStatement.setInt("P_IDROL_USUARIOMOD", 1);
+        callableStatement.setDouble("p_ENTRE_SOLES", entreSoles);
+        callableStatement.setDouble("p_ENTRE_DOLA", entreDolares);
+        callableStatement.setDouble("p_ENTRE_TIPO_CAMBI", 00);
+        
+        callableStatement.setDouble("p_total_Monto_Factura", totalFactura);
+        callableStatement.setDouble("p_total_Monto_Boleta", totalBoleta);
+        callableStatement.setDouble("p_Total_Monto_PCE", liquidacionTurno.getMontoPCE());
+        callableStatement.setDouble("p_total_Visa_Carga", totalVisa);
+        callableStatement.setDouble("p_total_masterCard_Carga", totalMastercard);
+        callableStatement.setDouble("p_total_Devolucion_Carga", totalDevolucion);
+        callableStatement.setDouble("p_total_Monto_NotaCredito", totalNotaCredito);
+
+        callableStatement.registerOutParameter("CUR_LIQUI_TURNO",OracleTypes.CURSOR);
+        callableStatement.execute();
+		
+		
 	}
 	
-	private static JdbcTemplate getJdbcTranscar() throws Exception {
-		try {				
-			DriverManagerDataSource driverManagerDataSource=new DriverManagerDataSource();
-			driverManagerDataSource.setDriverClassName("oracle.jdbc.driver.OracleDriver");
-			driverManagerDataSource.setUrl("jdbc:oracle:thin:@192.168.50.10:1521:CDB1");
-			driverManagerDataSource.setUsername("antezanadev");
-			driverManagerDataSource.setPassword("ntzndev");
+	
+	/**
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	private JdbcTemplate getJdbcTranscar() throws Exception {
+		try {										 
+		 	String pathJdbcproperties = Util.getPath()+"WEB-INF"+Util.separator+"jdbc.properties";
+		 	File file = new File(pathJdbcproperties);
+		 	FileInputStream input = new FileInputStream(file);
+			Properties properties = new Properties();
+			properties.load(input);
 			
+			DriverManagerDataSource driverManagerDataSource=new DriverManagerDataSource();
+			driverManagerDataSource.setDriverClassName(properties.getProperty("jdbc.driverClassName"));
+			driverManagerDataSource.setUrl(properties.getProperty("jdbc.transcar.url"));
+			driverManagerDataSource.setUsername(properties.getProperty("jdbc.transcar.userName"));
+			driverManagerDataSource.setPassword(properties.getProperty("jdbc.transcar.password"));
+
 			JdbcTemplate jdbcTemplate=new JdbcTemplate(driverManagerDataSource);
 		
 			return jdbcTemplate;
@@ -722,5 +812,4 @@ public class TranscarDAOImpl implements TranscarDAO{
 			}		
 		}
 	}
-	
 }

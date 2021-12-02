@@ -110,5 +110,14 @@ public interface TranscarManager {
 	 * @throws Exception
 	 */
 	public Liquidacion buscarLiquidacionTurno(Integer usuarioId, Integer agenciaId, String fechaInicio, String fechaFin)throws Exception;
+	/**
+	 * Realiza el cierre de la liquidacion de turno
+	 * @param usuarioId		: Identificador unico del usuario
+	 * @param agenciaId		: Identificador unico de la agencia
+	 * @param fechaInicio	: Fecha inicio de la busqueda
+	 * @param fechaFin		: Fecha fin de la bsuqueda
+	 * @throws Exception
+	 */
+	public void cerrarLiquidacion(Integer usuarioId, Integer agenciaId, String fechaInicio, String fechaFin)throws Exception;
 	
 }

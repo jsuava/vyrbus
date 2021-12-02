@@ -698,6 +698,7 @@ public class WSFE implements Serializable{
 	 * @return
 	 * @throws Exception
 	 */
+	@SuppressWarnings("restriction")
 	private static XmlVentaPasaje createXmlVenta(List<VentaPasaje> listVentaPasaje)throws Exception{
 		try {
 			XmlVentaPasaje xmlVentaPasaje= null;
