@@ -97,7 +97,7 @@
 					<grid style="background:white">					
 						<columns>
 							<column width="236px"/>
-							<column width="370px"/>
+							<column width="400px"/>
 							<column/>
 						</columns>
 						<rows>
@@ -113,24 +113,14 @@
 											<listheader label="SERVICIO" width="120px" style="color: #ffffff;"/>
 											<listheader label="RUTA" width="130px" style="color: #ffffff;"/>
 											<listheader label="HORPAR" width="60px" align="center" style="color: #ffffff;"/>
-											<listheader label="TARIFA" width="60px" align="center" style="color: #ffffff;"/>
+											<listheader label="TARIFA" width="80px" align="center" style="color: #ffffff;"/>
 										</listhead>
 									</listbox>
 								</vlayout>
 								<cell rowspan="2" align="right" valign="bottom">
 									<vbox>
-										<button id="btnSiguiente" 
-												label="Siguiente" 
-												image="resources/mp_next.png" 
-												disabled="true" 
-												orient="horizontal" 
-												sclass="btnCommandL" 
-												onClick="wndConfirmarFechaAbierta.completarVenta()"/>
-										<button id="btnCancelar" 
-												label="Cancelar" 
-												image="resources/mp_cancelarEnabled.png" 
-												sclass="btnCommandL" 
-												orient="horizontal"/>
+										<button id="btnSiguiente"  label="Siguiente" image="resources/mp_next.png" disabled="true" orient="horizontal" sclass="btnCommandL" onClick="wndConfirmarFechaAbierta.completarVenta()"/>
+										<button id="btnCancelar" label="Cancelar" image="resources/mp_cancelarEnabled.png" sclass="btnCommandL" orient="horizontal"/>
 									</vbox>
 								</cell>
 							</row>								

@@ -35,6 +35,7 @@ public class TitanUsuarioHardware implements Serializable {
 	private Integer idAgencia;
 	private Integer idTipoComputador;
 	private Integer idTipoIP;
+	private Integer idUsuarioHardwareVyR;
 	/**
 	 * @return the ip
 	 */
@@ -250,6 +251,18 @@ public class TitanUsuarioHardware implements Serializable {
 	 */
 	public void setIdTipoIP(Integer idTipoIP) {
 		this.idTipoIP = idTipoIP;
+	}
+	/**
+	 * @return the idUsuarioHardwareVyR
+	 */
+	public Integer getIdUsuarioHardwareVyR() {
+		return idUsuarioHardwareVyR;
+	}
+	/**
+	 * @param idUsuarioHardwareVyR the idUsuarioHardwareVyR to set
+	 */
+	public void setIdUsuarioHardwareVyR(Integer idUsuarioHardwareVyR) {
+		this.idUsuarioHardwareVyR = idUsuarioHardwareVyR;
 	}
 	
 }
