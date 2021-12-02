@@ -44,6 +44,7 @@ import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartida;
 import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartidaID;
 import com.cystesoft.vyrbus.model.bean.Liquidacion;
 import com.cystesoft.vyrbus.model.bean.OperadorTarjetaCredito;
+import com.cystesoft.vyrbus.model.bean.TranscarUsuarioPersonal;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.UsuarioHardware;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
@@ -409,14 +410,43 @@ public class WSFE implements Serializable{
 				itemIngresoVentaLiquidacion.setV5_monto(resumen.getMonto().toString());
 				lstItemIngresosVenta.add(itemIngresoVentaLiquidacion);		
 				
+				totalEfectivo += resumen.getMonto();
+				cantidadEfectivo ++;
+				
 				if(resumen.getIdTipoComprobante().intValue()==Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA) {
 					totalCredito += resumen.getMonto();
 					cantidadCredito ++;
-				}else {
-					totalEfectivo += resumen.getMonto();
-					cantidadEfectivo ++;
 				}
 			}
+			
+			/****Carga - resumen especies valoradas*/
+			/************************************************/
+			TranscarUsuarioPersonal transcarUsuarioPersonal = ServiceLocator.getTranscarManager().buscarUsuarioPersonal(liquidacion.getUsuario().getLogin());
+			int agenciaIdCargo = 0;
+			String fechaLiquidacion =Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
+			if(transcarUsuarioPersonal!=null && liquidacion.getAgencia().getCodigo()!=null){
+				agenciaIdCargo = ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(liquidacion.getAgencia().getCodigo());
+				List<Liquidacion>listResumenEspeciesValoradas = ServiceLocator.getTranscarManager().buscarLiquidacionTurnoResumenEspVal(transcarUsuarioPersonal.getId(), agenciaIdCargo, fechaLiquidacion, fechaLiquidacion);
+				for(Liquidacion _liquidacion: listResumenEspeciesValoradas){
+					XmlItemIngresoVentaLiquidacion itemIngresoVentaLiquidacion = new XmlItemIngresoVentaLiquidacion();
+					itemIngresoVentaLiquidacion.setV1_comprobante(_liquidacion.getComprobante());
+					itemIngresoVentaLiquidacion.setV2_serie(_liquidacion.getSerie()!=null?_liquidacion.getSerie():"");
+					itemIngresoVentaLiquidacion.setV3_detalle(_liquidacion.getBoletoInicial()+" - "+_liquidacion.getboletoFinal());
+					itemIngresoVentaLiquidacion.setV4_cantidad(_liquidacion.getCantidadBoletos().toString());
+					itemIngresoVentaLiquidacion.setV5_monto(_liquidacion.getImporte().toString());
+					lstItemIngresosVenta.add(itemIngresoVentaLiquidacion);		
+					
+					totalEfectivo += _liquidacion.getImporte();
+					cantidadEfectivo ++;
+					
+					if(_liquidacion.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA) {
+						totalCredito += _liquidacion.getImporte();
+						cantidadCredito ++;
+					}
+				}				
+			}	
+			/************************************************/
+				
 			totalIngresos += totalEfectivo;
 			totalIngresos += totalCredito;
 			XmlDetalleLiquidacionIngresoVenta xmlDetalleLiquidacionIngresoVenta= new XmlDetalleLiquidacionIngresoVenta();
@@ -433,7 +463,7 @@ public class WSFE implements Serializable{
 			}
 			if(liquidacion.getFechaModificacion()!=null)
 				xmlLiquidacion.setV7_fechaHoraCierre(Constantes.FORMAT_LONG.format(liquidacion.getFechaModificacion()));
-			xmlLiquidacion.setV4_ingresoTotalEfectivo(totalEfectivo.toString());
+//			xmlLiquidacion.setV4_ingresoTotalEfectivo(totalEfectivo.toString());
 			xmlLiquidacion.setV5_ingresoTotalCredito(totalCredito.toString());
 			xmlLiquidacion.setV8_detalleLiquidacionIngresoVenta(xmlDetalleLiquidacionIngresoVenta);			
 			
@@ -470,9 +500,26 @@ public class WSFE implements Serializable{
 				
 				totalEgresos += +gasto.getMonto();
 			}					
-			/*Otros Egresos*/ 
+			
+			/*Otros Egresos - Pasajes*/ 
 			Liquidacion liquidacion2 = ServiceLocator.getLiquidacionManager().buscarRptLiquidacionTurno(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId());
-			//---> linea 35: Venta contarjeta de credito
+			
+			/*Otros Egresos - Carga*/
+			if(transcarUsuarioPersonal!=null && liquidacion.getAgencia().getCodigo()!=null){				
+				Liquidacion liquidacion2Cargo = ServiceLocator.getTranscarManager().buscarLiquidacionTurno(transcarUsuarioPersonal.getId(), agenciaIdCargo, fechaLiquidacion, fechaLiquidacion);
+				
+//				liquidacion2.setMontoContado(liquidacion2.getMontoContado() + liquidacion2Cargo.getMontoContado());
+//				liquidacion2.setCantidadContado(liquidacion2.getCantidadContado() + liquidacion2Cargo.getCantidadContado());
+				liquidacion2.setMontoTarjetaVisa(liquidacion2.getMontoTarjetaVisa() + liquidacion2Cargo.getMontoTarjetaVisa());
+				liquidacion2.setCantidadTarjetaVisa(liquidacion2.getCantidadTarjetaVisa() + liquidacion2Cargo.getCantidadTarjetaVisa());				
+				liquidacion2.setMontoTarjetaMasterCard(liquidacion2.getMontoTarjetaMasterCard() + liquidacion2Cargo.getMontoTarjetaMasterCard());
+				liquidacion2.setCantidadTarjetaMasterCard(liquidacion2.getCantidadTarjetaMasterCard() + liquidacion2Cargo.getCantidadTarjetaMasterCard());
+				liquidacion2.setMontoNotasCredito(liquidacion2.getMontoNotasCredito() + liquidacion2Cargo.getMontoNotasCredito());
+				liquidacion2.setCantidadNotasCredito(liquidacion2.getCantidadNotasCredito() + liquidacion2Cargo.getCantidadNotasCredito());
+				liquidacion2.setMontoPCE(liquidacion2.getMontoPCE() + liquidacion2Cargo.getMontoPCE());
+				liquidacion2.setCantidadPCE(liquidacion2.getCantidadPCE() + liquidacion2Cargo.getCantidadPCE());				
+			}
+			
 			Integer cantidadVentaTarjeta=liquidacion2.getCantidadTarjetaVisa()+liquidacion2.getCantidadTarjetaMasterCard()+
 										+liquidacion2.getCantidadGastosAdminTarjetaMastercard()+liquidacion2.getCantidadGastosAdminTarjetaVisa();
 			Double montoVentaTarjeta=liquidacion2.getMontoTarjetaVisa()+liquidacion2.getMontoTarjetaMasterCard()
@@ -480,10 +527,12 @@ public class WSFE implements Serializable{
 			
 			lstEgresos.add(new XmlItemEgresoLiquidacion("DEVOLUCIONES", "", "", liquidacion2.getCantidadDevolucion().toString(), String.valueOf(liquidacion2.getMontoDevolucion())));
 			lstEgresos.add(new XmlItemEgresoLiquidacion("VTA. CORTISIA", "", "", liquidacion2.getCantidadcortesia().toString(), String.valueOf(liquidacion2.getMontoCortesia())));
-			lstEgresos.add(new XmlItemEgresoLiquidacion("CREDITO", "", "", cantidadCredito.toString(), totalCredito.toString()));
+//			lstEgresos.add(new XmlItemEgresoLiquidacion("CREDITO", "", "", cantidadCredito.toString(), totalCredito.toString()));
+			lstEgresos.add(new XmlItemEgresoLiquidacion("CREDITO", "", "", "0", "0"));
 			lstEgresos.add(new XmlItemEgresoLiquidacion("VTA. TARJETA", "", "", cantidadVentaTarjeta.toString(), montoVentaTarjeta.toString()));
 			lstEgresos.add(new XmlItemEgresoLiquidacion("NOTA CREDITO", "", "", liquidacion2.getCantidadNotasCredito().toString(), String.valueOf(liquidacion2.getMontoNotasCredito())));
 			lstEgresos.add(new XmlItemEgresoLiquidacion("DEV. TARJETA", "", "", liquidacion2.getCantidadDevolucionTarjeta().toString(), String.valueOf(liquidacion2.getMontoDevolucionTarjeta())));
+			lstEgresos.add(new XmlItemEgresoLiquidacion("VENTA PCE", "", "", cantidadCredito.toString(), totalCredito.toString()));
 			xmlLiquidacion.setV91_detalleLiquidacionEgresos(new XmlDetalleLiquidacionEgresos(lstEgresos));
 			
 			/*Totaliza los Egresos*/
@@ -493,7 +542,11 @@ public class WSFE implements Serializable{
 			totalEgresos += + montoVentaTarjeta;
 			totalEgresos += +liquidacion2.getMontoNotasCredito();
 			totalEgresos += +liquidacion2.getMontoDevolucionTarjeta();
+//			totalEgresos += +liquidacion2.getMontoPCE();
 			
+			totalEfectivo += - totalEgresos;
+			xmlLiquidacion.setV4_ingresoTotalEfectivo(totalEfectivo.toString());
+			totalIngresos += - totalCredito;
 			/**Totales*/
 			xmlLiquidacion.setV5_totalIngresos(totalIngresos.toString());
 			xmlLiquidacion.setV5_totalEgresos(totalEgresos.toString());

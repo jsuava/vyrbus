@@ -618,7 +618,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 								
 							   ){
 							/*Valida si existe diferencia en la tarifa en el movimiento de la venta*/
-							if(venta.getImportePagadoByDiferencia()>0){
+							if(venta.getImportePagadoByDiferencia()!=null && venta.getImportePagadoByDiferencia()>0){
 								totalTarjeta +=+ venta.getImportePagadoByDiferencia();
 								totalEfectivo+=+  venta.getImportePagado()-venta.getImportePagadoByDiferencia();
 							}else

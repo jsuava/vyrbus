@@ -1017,7 +1017,8 @@ public class WndCierreCaja extends WndBase {
 			@Override
 			public void onEvent(Event event)throws Exception {
 				if(event.getName().equals("onYes"))
-					imprimirLiquidacion(liquidacion); 
+					openWindowPrintLiquidacion(liquidacion);
+//					imprimirLiquidacion(liquidacion); 
 			}
 		});
 		buscarLiquidacion();

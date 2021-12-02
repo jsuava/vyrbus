@@ -53,11 +53,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 						"u.c_apepat as ApPaterno, u.c_apemat as ApMarterno, u.c_nombre as Nombres, "+//7-9
 						"l.d_fecliq as FechaLiquidacion, l.audfecmod as FechaMod, "+//10-11
 						"l.audfecins as FechaInsercion, l.audipinse as ipinsercion, l.audusuins as susuarioInsercion, "+ //12-14
-//<<<<<<< HEAD
-//						"l.n_moning, l.audusumod "+ //15 -16
-//=======
-						"l.n_moning, l.n_moningdol "+ //15-16
-//>>>>>>> ced84039982e9139bf3cb6857a8e1ae3016943a5
+						"l.n_moning, l.n_moningdol, a.c_codigo "+ //15-17
 				"FROM vrtliquidacion l " +
 					"INNER JOIN vrmagencia a ON (a.agencia_id=l.agencia_id) "+
 					"INNER JOIN vrmusuario u ON (u.usuario_id=l.usuario_id) "+
@@ -74,6 +70,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 			Agencia agencia = new Agencia();
 			agencia.setId(((BigDecimal) obj[2]).intValue());
 			agencia.setDenominacion(obj[6].toString());
+			agencia.setCodigo(obj[17]!=null?obj[17].toString():null);
 			
 			Usuario usuario = new Usuario();
 			usuario.setId(((BigDecimal) obj[3]).intValue());
