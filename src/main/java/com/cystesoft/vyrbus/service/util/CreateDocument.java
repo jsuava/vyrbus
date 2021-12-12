@@ -40,6 +40,7 @@ import com.cystesoft.vyrbus.model.bean.Nacionalidad;
 import com.cystesoft.vyrbus.model.bean.Personal;
 import com.cystesoft.vyrbus.model.bean.Servicio;
 import com.cystesoft.vyrbus.model.bean.TipoPersonal;
+import com.cystesoft.vyrbus.model.bean.TranscarUsuarioPersonal;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VSAfiliacion;
 import com.cystesoft.vyrbus.model.bean.VSAsegurado;
@@ -1023,6 +1024,39 @@ public class CreateDocument implements Serializable {
 				bw.write(linea+NEWLINE);
 			}
 			
+			/**CARGA - RESUMEN ESPECIES VALORADAS*/
+			TranscarUsuarioPersonal transcarUsuarioPersonal = ServiceLocator.getTranscarManager().buscarUsuarioPersonal(liquidacion.getUsuario().getLogin());
+			int agenciaIdCargo = 0;
+			String fechaLiquidacion =Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
+			if(transcarUsuarioPersonal!=null && liquidacion.getAgencia().getCodigo()!=null){
+				agenciaIdCargo = ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(liquidacion.getAgencia().getCodigo());				
+				List<Liquidacion> listLiquidacionCarga = ServiceLocator.getTranscarManager().buscarLiquidacionTurnoResumenEspVal(transcarUsuarioPersonal.getId(), agenciaIdCargo, fechaLiquidacion, fechaLiquidacion);
+				for(Liquidacion _liquidacion : listLiquidacionCarga) {
+					longitud_C=_liquidacion.getComprobante().toString().length();
+					String strSerie = (_liquidacion.getSerie()!=null?_liquidacion.getSerie():"");
+					String desde = _liquidacion.getBoletoInicial();
+					String hasta = _liquidacion.getboletoFinal();
+					linea = tabular(3)+_liquidacion.getComprobante()+tabular(19-longitud_C)+strSerie;
+										
+					longitud_C = desde.length();
+					linea += tabular(5)+tabular(1-longitud_C+1)+desde;
+					longitud_C = hasta.length();
+					linea += tabular(5)+tabular(1-longitud_C+1)+hasta;
+										
+					longitud_C=_liquidacion.getCantidadBoletos().toString().length();
+					linea += tabular(5)+tabular(1-longitud_C+1)+_liquidacion.getCantidadBoletos();
+					longitud_M=(int) _liquidacion.getImporte().intValue();
+					longitud_M = longitud_M.toString().length(); 
+					if (longitud_M==4)
+						longitud_M += +1;
+					else if (longitud_M==5)
+						longitud_M += +2;
+					linea += tabular(11-longitud_M)+Util.toNumberFormat(_liquidacion.getImporte(),2);
+					bw.write(linea+NEWLINE);
+				}
+			}
+			
+			
 //			for (Liquidacion especiesValorada: list ){
 //				longitud_C=especiesValorada.getTipoComprobante().getDenominacion().toString().length();
 //				linea = tabular(3)+especiesValorada.getTipoComprobante().getDenominacion()+tabular(22-longitud_C)+"Serie: "+especiesValorada.getSerie()+" ";
@@ -1033,7 +1067,25 @@ public class CreateDocument implements Serializable {
 //				bw.write(linea+NEWLINE);
 //			}
 					
+			/**PASAJES*/
 			Liquidacion liquidacion2 = ServiceLocator.getLiquidacionManager().buscarRptLiquidacionTurno(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId());
+			
+			/**CARGA*/
+			if(transcarUsuarioPersonal!=null && liquidacion.getAgencia().getCodigo()!=null){				
+				Liquidacion liquidacion2Cargo = ServiceLocator.getTranscarManager().buscarLiquidacionTurno(transcarUsuarioPersonal.getId(), agenciaIdCargo, fechaLiquidacion, fechaLiquidacion);
+				
+				liquidacion2.setMontoContado(liquidacion2.getMontoContado() + liquidacion2Cargo.getMontoContado());
+				liquidacion2.setCantidadContado(liquidacion2.getCantidadContado() + liquidacion2Cargo.getCantidadContado());
+				liquidacion2.setMontoTarjetaVisa(liquidacion2.getMontoTarjetaVisa() + liquidacion2Cargo.getMontoTarjetaVisa());
+				liquidacion2.setCantidadTarjetaVisa(liquidacion2.getCantidadTarjetaVisa() + liquidacion2Cargo.getCantidadTarjetaVisa());				
+				liquidacion2.setMontoTarjetaMasterCard(liquidacion2.getMontoTarjetaMasterCard() + liquidacion2Cargo.getMontoTarjetaMasterCard());
+				liquidacion2.setCantidadTarjetaMasterCard(liquidacion2.getCantidadTarjetaMasterCard() + liquidacion2Cargo.getCantidadTarjetaMasterCard());
+				liquidacion2.setMontoNotasCredito(liquidacion2.getMontoNotasCredito() + liquidacion2Cargo.getMontoNotasCredito());
+				liquidacion2.setCantidadNotasCredito(liquidacion2.getCantidadNotasCredito() + liquidacion2Cargo.getCantidadNotasCredito());
+				liquidacion2.setMontoPCE(liquidacion2.getMontoPCE() + liquidacion2Cargo.getMontoPCE());
+				liquidacion2.setCantidadPCE(liquidacion2.getCantidadPCE() + liquidacion2Cargo.getCantidadPCE());
+			}			
+			
 			
 			/********** BUSCAR LIQUIDACION DE VENTA DE SEGUROS********************************/
 			/* Busca liquidacion de venta de seguros*/
@@ -2457,27 +2509,36 @@ public class CreateDocument implements Serializable {
 			/*Crea detalle */
 			bw.write(linea+NEWLINE);
 			Integer piso=0;
+			//Bengin 09/11/2021 - Jabanto - Muestra los pasajeros de ambos pisos en una sola lista (Solicitud de transmar)
 			creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso1(), wndmanifiesto, list, bw, piso, 0);
-			/*Cuando el es de dos pisos*/
+			/*Cuando el es de dos pisos*/			
 			if(itinerario.getServicio().getNumeroPisos()==2){
-				linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
-				bw.write(linea+NEWLINE);
-				/*Crea Encabezado piso 2*/
-				bw.write(NEWLINE);
-				linea="PISO 2.";
-				bw.write(linea+NEWLINE);
-				linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
-				bw.write(linea+NEWLINE);
-				creaEncabezadoManifiesto(bw);
-				linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
-				bw.write(linea+NEWLINE);
-				/*
-				 *12/07/2020
-				 *MAOE
-				 *PARA IMPRIMIR EL MANIFIESTO CON ASIENTOS SIN REINICIO EN EL SEGUNDO PISO				 * 
-				 */
-				creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso2()+itinerario.getServicio().getNumeroAsientosPiso1(), wndmanifiesto, list, bw,piso+1, itinerario.getServicio().getNumeroAsientosPiso1());
-			}
+				piso++;
+				creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso2()+itinerario.getServicio().getNumeroAsientosPiso1(), wndmanifiesto, list, bw,piso, itinerario.getServicio().getNumeroAsientosPiso1());
+			}							
+			
+			//END BEGIN 09/11/2021 - Solicitud de Transmar (Margarita)
+//			creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso1(), wndmanifiesto, list, bw, piso, 0);
+//			/*Cuando el es de dos pisos*/			
+//			if(itinerario.getServicio().getNumeroPisos()==2){
+//				linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
+//				bw.write(linea+NEWLINE);
+//				/*Crea Encabezado piso 2*/
+//				bw.write(NEWLINE);
+//				linea="PISO 2.";
+//				bw.write(linea+NEWLINE);
+//				linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
+//				bw.write(linea+NEWLINE);
+//				creaEncabezadoManifiesto(bw);
+//				linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
+//				bw.write(linea+NEWLINE);
+//				/*
+//				 *12/07/2020
+//				 *MAOE
+//				 *PARA IMPRIMIR EL MANIFIESTO CON ASIENTOS SIN REINICIO EN EL SEGUNDO PISO				 * 
+//				 */
+//				creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso2()+itinerario.getServicio().getNumeroAsientosPiso1(), wndmanifiesto, list, bw,piso+1, itinerario.getServicio().getNumeroAsientosPiso1());
+//			}
 							
 			//---> linea final del detalle: line
 			linea="+-------------------------------------------------------------------------------------------------------------------------------------+";

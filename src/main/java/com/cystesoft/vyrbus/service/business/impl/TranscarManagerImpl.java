@@ -11,6 +11,7 @@ package com.cystesoft.vyrbus.service.business.impl;
 import java.util.List;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
+import com.cystesoft.vyrbus.model.bean.Liquidacion;
 import com.cystesoft.vyrbus.model.bean.TranscarLiquidacionTurno;
 import com.cystesoft.vyrbus.model.bean.TranscarRolUsuario;
 import com.cystesoft.vyrbus.model.bean.TranscarUsuarioPersonal;
@@ -123,6 +124,38 @@ public class TranscarManagerImpl implements TranscarManager{
 			throws Exception {
 		// TODO Auto-generated method stub
 		return getTranscarDAO().buscarUsuariosByVenta(agenciaId, fechaInicio, fechaFin);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.TranscarManager#buscarLiquidacionTurno(java.lang.Integer, java.lang.Integer, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public List<Liquidacion> buscarLiquidacionTurnoResumenEspVal(Integer usuarioId,
+			Integer agenciaId, String fechaInicio, String fechaFin)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return getTranscarDAO().buscarLiquidacionTurnoResumenEspVal(usuarioId, agenciaId, fechaInicio, fechaFin);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.TranscarManager#buscarLiquidacionTurno(java.lang.Integer, java.lang.Integer, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public Liquidacion buscarLiquidacionTurno(Integer usuarioId,
+			Integer agenciaId, String fechaInicio, String fechaFin)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return getTranscarDAO().buscarLiquidacionTurno(usuarioId, agenciaId, fechaInicio, fechaFin);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.TranscarManager#cerrarLiquidacion(java.lang.Integer, java.lang.Integer, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public void cerrarLiquidacion(Integer usuarioId, Integer agenciaId,
+			String fechaInicio, String fechaFin) throws Exception {
+		// TODO Auto-generated method stub
+		getTranscarDAO().cerrarLiquidacion(usuarioId, agenciaId, fechaInicio, fechaFin);
 	}
 
 	

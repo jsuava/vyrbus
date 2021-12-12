@@ -1492,10 +1492,10 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 		}
 		
 		/*Valida si debe emitir el gasto administrativo*/
-		gastoAdministrativo.setUsuarioHardware(venta.getUsuarioHardware());
-		if(gastoAdministrativo!=null)
+		if(gastoAdministrativo!=null) {
+			gastoAdministrativo.setUsuarioHardware(venta.getUsuarioHardware());
 			generarGastoAdministrativo(gastoAdministrativo,true);
-		
+		}		
 		return notaCredito;
 	}
 	/*
@@ -2406,8 +2406,8 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 		Integer horas_maximo=Constantes.HORAS_MAXIMO_ANULACION;
 		for(VentaPasaje ventaPasaje : lstVentas){
 			boolean aplicarNotaCredito=false;
-			boolean emitirNuevoComprobante=false;
-			Double importePagado=ventaPasaje.getImportePagado();
+//			boolean emitirNuevoComprobante=false;
+//			Double importePagado=ventaPasaje.getImportePagado();
 			switch (tipoAnulacion) {
 				case Constantes.TIPO_ANULACION_REGULAR:
 					/*Valida que la anulacion este dentro de las 72 horas, desde el dia siguiente a la emision*/			

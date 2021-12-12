@@ -38,7 +38,7 @@
 		<property name="password" value="${jdbc.transcar.password}" />
 	</bean>
 	
-	<bean id="dataSourceTranscar" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+	<bean id="dataSourceTranscar" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close" >
  		<property name="driverClass" value="${jdbc.driverClassName}"/>
         <property name="jdbcUrl" value="${jdbc.transcar.url}"/>
        	<property name="user" value="${jdbc.transcar.userName}"/>
@@ -616,6 +616,7 @@
 	<bean id="usuarioHardwareManager" class="com.cystesoft.vyrbus.service.business.impl.UsuarioHardwareManagerImpl">
 		<property name="usuarioHardwareDAO" ref="usuarioHardwareDAO"/>
 		<property name="agenciaDAO" ref="agenciaDAO"/>
+		<property name="titanDAO" ref="titanDAO"/>
 	</bean>
 	<bean id="tipoGastoManager" class="com.cystesoft.vyrbus.service.business.impl.TipoGastoManagerImpl">
 		<property name="tipoGastoDAO" ref="tipoGastoDAO"/>

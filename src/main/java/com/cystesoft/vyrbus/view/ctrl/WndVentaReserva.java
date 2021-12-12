@@ -2429,14 +2429,11 @@ public class WndVentaReserva extends WndBase {
 	public void onRefreshMapaAsientos(Map<String, Asiento> mapaAsientos, DetalleItinerario detalleItinerario, Grid gridOcupabilidad){
 		try{
 			/*Busca configuracion para la validacion de la venta adelantada - 09/02/2015 (jabanto)*/
-			VentaTramo ventaTramo=ServiceLocator.getVentaTramoManager().buscarPorItinerarioRuta(detalleItinerario.getItinerario(), 
-																								detalleItinerario.getRuta());
+			VentaTramo ventaTramo=ServiceLocator.getVentaTramoManager().buscarPorItinerarioRuta(detalleItinerario.getItinerario(), detalleItinerario.getRuta());
 			
 			onCleanMap(mapaAsientos);
 			/*	Obtenemos el subconjunto que queremos buscar segun la ruta seleccioanda		*/
-			List<Integer> subConjuntoBuscar = obtenerSubconjunto(detalleItinerario.getItinerario().getListSecuenciaTramo(), 
-																 detalleItinerario.getRuta().getLocalidadOrigen().getId(), 
-																 detalleItinerario.getRuta().getLocalidadDestino().getId());
+			List<Integer> subConjuntoBuscar = obtenerSubconjunto(detalleItinerario.getItinerario().getListSecuenciaTramo(), detalleItinerario.getRuta().getLocalidadOrigen().getId(),detalleItinerario.getRuta().getLocalidadDestino().getId());
 			
 			int nOcupados = 0;
 			List<VentaPasaje> lstVentas = ServiceLocator.getVentaPasajesManager().buscarVentasForMapaBus(detalleItinerario.getItinerario().getId());
@@ -2450,10 +2447,17 @@ public class WndVentaReserva extends WndBase {
 						if(mapaAsientos.containsKey(key) && venta.getSubConjunto().contains(orden)){
 							Asiento asiento = mapaAsientos.get(key);
 							if(venta.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA)){
-								if(venta.getPasajero().getSexo().getId().intValue()==Constantes.ID_SEXO_FEMENINO)
-									asiento.setSrc(Constantes.ICON_VENDIDO_FEMALE+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
-								else
-									asiento.setSrc(Constantes.ICON_VENDIDO_MALE+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
+								if(venta.getPasajero().getSexo().getId().intValue()==Constantes.ID_SEXO_FEMENINO) {
+									if(venta.getCanalVenta().getId().intValue()==Constantes.ID_CANVEN_WEB)
+										asiento.setSrc(Constantes.ICON_VENDIDO_WEB_FEMALE+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
+									else
+										asiento.setSrc(Constantes.ICON_VENDIDO_FEMALE+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
+								}else {
+									if(venta.getCanalVenta().getId().intValue()==Constantes.ID_CANVEN_WEB)
+										asiento.setSrc(Constantes.ICON_VENDIDO_WEB_MALE+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
+									else
+										asiento.setSrc(Constantes.ICON_VENDIDO_MALE+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
+								}
 								asiento.setEstadoAsiento(Constantes.ASIENTO_VENDIDO);
 							}else if(venta.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA)){
 								if(venta.getCanalVenta().getId().intValue()==Constantes.ID_CANVEN_DELIVERY)
@@ -2554,16 +2558,12 @@ public class WndVentaReserva extends WndBase {
 			Object obj = lista.get(i);
 			if(obj instanceof TmpOcupacionAsientos){
 				TmpOcupacionAsientos tmp = (TmpOcupacionAsientos)obj;
-				List<Integer> subConjunto = obtenerSubconjunto(lstSecuencias, 
-																tmp.getRuta().getLocalidadOrigen().getId(), 
-																tmp.getRuta().getLocalidadDestino().getId());
+				List<Integer> subConjunto = obtenerSubconjunto(lstSecuencias, tmp.getRuta().getLocalidadOrigen().getId(), tmp.getRuta().getLocalidadDestino().getId());
 				tmp.setSubConjunto(subConjunto);
 				result.add(tmp);
 			}else if(obj instanceof VentaPasaje){
 				VentaPasaje ventaPasaje = (VentaPasaje)obj;
-				List<Integer> subConjunto = obtenerSubconjunto(lstSecuencias, 
-																ventaPasaje.getRuta().getLocalidadOrigen().getId(), 
-																ventaPasaje.getRuta().getLocalidadDestino().getId());
+				List<Integer> subConjunto = obtenerSubconjunto(lstSecuencias, ventaPasaje.getRuta().getLocalidadOrigen().getId(), ventaPasaje.getRuta().getLocalidadDestino().getId());
 				ventaPasaje.setSubConjunto(subConjunto);
 				result.add(ventaPasaje);
 			}

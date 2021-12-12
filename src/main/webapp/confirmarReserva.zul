@@ -25,11 +25,7 @@
 								<label value="FECHA PARTIDA :"/>
 								<datebox id="dtbxFechaPartida" format="dd/MM/yyyy" onOK="wndConfirmarReserva.buscarReservas()"/>
 								<cell rowspan="2" style="background:#f5f5f5; border :none;">
-									<button label="Buscar" 
-											sclass="btnCommandM" 
-											autodisable="self" 
-											image="resources/mp_buscarEnabled.png" 
-											onClick="wndConfirmarReserva.buscarReservas()"/>
+									<button label="Buscar" sclass="btnCommandM" autodisable="self" image="resources/mp_buscarEnabled.png" onClick="wndConfirmarReserva.buscarReservas()"/>
 								</cell>
 							</row>
 							<row>
@@ -44,10 +40,7 @@
 								<label value="PASAJERO :"/>
 								<textbox id="txtPasajero" onOK="wndConfirmarReserva.buscarReservas()" width="220px"/>
 								<cell style="background:#f5f5f5; border: none;">
-									<button label="Cerrar" 
-											sclass="btnCommandM" 
-											image="resources/mp_cerrarEnabled.png"  
-											onClick="wndConfirmarReserva.closeTabWindow()"/>
+									<button label="Cerrar" sclass="btnCommandM" image="resources/mp_cerrarEnabled.png" onClick="wndConfirmarReserva.closeTabWindow()"/>
 								</cell>
 							</row>
 						</rows>
@@ -73,18 +66,10 @@
 						<listfoot id="listFootAnulacionMasiva" visible="false">
 							<listfooter />
 							<listfooter span="5" align="left" >
-								<checkbox id="chbxActivaAnulacionMasiva" 
-										visible="true" 
-								    	label="Activar anulación masiva (Cuando esta opción este habilitada, no se podrán confirmar reservas)" 
-										onCheck="wndConfirmarReserva.activarAnulacionMasiva()"/>
+								<checkbox id="chbxActivaAnulacionMasiva" visible="true" label="Activar anulación masiva (Cuando esta opción este habilitada, no se podrán confirmar reservas)" onCheck="wndConfirmarReserva.activarAnulacionMasiva()"/>
 							</listfooter>
 							<listfooter span="7" align="right">
-								<button autodisable="self" 
-										sclass="btnCommandXL" 
-										label="Anular Selección" 
-										image="resources/mp_anular.png" 
-										onClick="wndConfirmarReserva.anulacionMasiva()" 
-										tooltiptext="Anula todas las reservas seleccionadas." />
+								<button autodisable="self" sclass="btnCommandXL" label="Anular Selección" image="resources/mp_anular.png" onClick="wndConfirmarReserva.anulacionMasiva()" tooltiptext="Anula todas las reservas seleccionadas." />
 							</listfooter>
 						</listfoot>
 					</listbox>

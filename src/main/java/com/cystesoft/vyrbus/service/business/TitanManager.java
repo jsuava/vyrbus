@@ -12,6 +12,7 @@ import com.cystesoft.vyrbus.model.bean.TitanComisionPersonaBase;
 import com.cystesoft.vyrbus.model.bean.TitanFuncionarioPersonaPasaje;
 import com.cystesoft.vyrbus.model.bean.TitanLiquidacionTurnoPasaje;
 import com.cystesoft.vyrbus.model.bean.TitanPersona;
+import com.cystesoft.vyrbus.model.bean.TitanUsuarioHardware;
 import com.cystesoft.vyrbus.model.bean.TitanUsuarioPersonal;
 import com.cystesoft.vyrbus.model.bean.TitanVentaPasaje;
 
@@ -142,4 +143,19 @@ public interface TitanManager {
 	 * @throws Exception
 	 */
 	public String buscarFechaFacturaEspecial(String serie, String numero, String numeroRuc)throws Exception;
+	
+	/* ******** TRANSACIONES REFERIDAS AL USUARIO HARDWARE (T_CPU) **********************/
+	/**
+	 * Guarda el usuario hardware
+	 * @param titanUsuarioHardware	: Objeto a guardar
+	 * @throws Exception
+	 */
+	public void guardarUsuarioHardware(TitanUsuarioHardware titanUsuarioHardware) throws Exception; 
+	/**
+	 * Realiza la busqueda del usuario Hardware
+	 * @param id	: Identificador unico del usuario Hardware
+	 * @return Usuario Hardware
+	 * @throws Exception
+	 */
+	public TitanUsuarioHardware buscarUsuarioHardwareByIdVyR(Integer id) throws Exception;
 }

@@ -326,6 +326,11 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		if(promocionTarifa!=null && (promocionTarifa.getEsAcumulable().intValue()==Constantes.FALSE_VALUE))
 			imgPromocion.setVisible(false);
 		
+		if(getObjetoConfirmar().getTipoTransaccion().equals("2"))
+			imgMostrarMapa.setVisible(false);
+		else
+			imgMostrarMapa.setVisible(true);
+		
 	}
 
 	/*
@@ -924,7 +929,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	private void onLoadEspecieValorada() throws Exception {
 		rowNuevoBoleto.setVisible(false);
 		txtNuevoBoleto.setText("");
-		System.out.println(dblImporte.getValue());
+//		System.out.println(dblImporte.getValue());
 //		if (dblImporte.getValue() > 0.0 || getObjetoConfirmar().getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA //Cortesias
 //										|| getObjetoConfirmar().getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO) { //Canje publicitario
 		if (lblImporte.getValue().equals(LABEL_IMPPAG_TO_TEPSA) || getObjetoConfirmar().getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA //Cortesias
@@ -3132,6 +3137,8 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		try{
 			final WndMapaBus oWndMapaBus = new WndMapaBus();
 			oWndMapaBus.load();
+//			Itinerario itinerario = ServiceLocator.getItinerarioManager().buscarPorId(getObjetoConfirmar().getItinerario().getId());
+//			getObjetoConfirmar().setItinerario(itinerario);
 			oWndMapaBus.setVentaPasaje(getObjetoConfirmar());
 			oWndMapaBus.setDetalleItinerario(detailItinerary);
 			oWndMapaBus.setUsuarioHardware(getUsuarioHardware());
@@ -3150,7 +3157,9 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				@Override
 				public void onEvent(Event e){
 					getObjetoConfirmar().setNumeroAsiento(Integer.valueOf(txtNumeroAsiento.getText()));
-					getObjetoConfirmar().setNumeroPiso(Integer.valueOf(txtNumeroPiso.getText()));									
+					getObjetoConfirmar().setNumeroPiso(Integer.valueOf(txtNumeroPiso.getText()));
+					
+					detailItinerary.setTarifa(oWndMapaBus.getAsientoSeleccionado().getDetalleItinerario().getTarifa());
 					
 					/**	
 					 * Esta seccion es para obtener las promociones que son por tarifa	

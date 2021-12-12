@@ -147,6 +147,11 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 				txtNumeroControl.setText(numeroControl);
 			}
 			String numeroBoleto = txtNumeroBoleto.getText().trim().equals("")?null:txtNumeroBoleto.getText().trim();
+			if(numeroBoleto!=null) {
+				numeroBoleto = Util.autocompleNumberBoleto(numeroBoleto);
+				txtNumeroBoleto.setText(numeroBoleto);
+			}			
+			
 			String numeroDocumento = txtNumeroDocumento.getText().trim().equals("")?null:txtNumeroDocumento.getText().trim().toUpperCase();
 			
 			if(idOrigen==null && idDestino==null && pasajero==null && numeroControl==null && numeroBoleto==null && numeroDocumento==null){
@@ -338,13 +343,14 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 						else
 							strTarifas="0.00";
 
-						detalleItinerario.setTarifa(Double.valueOf(strTarifas.substring(0, 2)));						
+						detalleItinerario.setTarifa(Double.valueOf(strTarifas.substring(0, 2)));
 						
 						/*
 						 * 	FINAL RECUPERACION DE TARIFAS
 						 */
 						
-						cell = new Listcell(Util.toNumberFormat(detalleItinerario.getTarifa(), 2));
+//						cell = new Listcell(Util.toNumberFormat(detalleItinerario.getTarifa(), 2));
+						cell = new Listcell(strTarifas);
 						item.appendChild(cell);
 						
 						item.setValue(detalleItinerario);
@@ -404,7 +410,7 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 			if(detalleItinerario.getTarifa()==0.0)
 				throw new ItinerarioException(ItinerarioException.TARIFA_IDA_CERO);
 			
-			/*Valida si la ruta esta configurada para permitir la venta antes o despuesta de la hora de salida ## impl 28/01/2015 - jabanto*/
+			/*Valida si la ruta esta configurada para permitir la venta antes o despues de la hora de salida ## impl 28/01/2015 - jabanto*/
 			if (!(UtilData.permiteVentaByTramo(detalleItinerario.getRuta().getId(), detalleItinerario.getItinerario().getId(),Constantes.FORMAT_DATE.format(detalleItinerario.getFechaPartida())))){
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.ventaNoPermitida"));
 				return;

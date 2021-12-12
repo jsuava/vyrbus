@@ -167,6 +167,10 @@ public class WndDevolucionBoleto extends WndBase {
 				txtNumeroControl.setText(numeroControl);
 			}
 			String numeroBoleto = txtNumeroBoleto.getText().trim().equals("")?null:txtNumeroBoleto.getText().trim().toUpperCase();
+			if(numeroBoleto!=null) {
+				numeroBoleto = Util.autocompleNumberBoleto(numeroBoleto);
+				txtNumeroBoleto.setText(numeroBoleto);
+			}
 			
 			if(numeroDocumento==null && numeroControl==null && numeroBoleto==null){
 				DlgMessage.warning(Messages.getString("WndDevolucionBoleto.warning.noExisteCriteriosBusqueda"));

@@ -92,6 +92,8 @@ public class Constantes {
 	public static final String ICON_DISPONIBLE = PATH_PARTIAL+"asientoDisponible_";
 	public static final String ICON_VENDIDO_FEMALE = PATH_PARTIAL+"asientoVendidoFemale_";
 	public static final String ICON_VENDIDO_MALE = PATH_PARTIAL+"asientoVendidoMale_";
+	public static final String ICON_VENDIDO_WEB_FEMALE = PATH_PARTIAL+"asientoVendidoWebFemale_";
+	public static final String ICON_VENDIDO_WEB_MALE = PATH_PARTIAL+"asientoVendidoWebMale_";
 	public static final String ICON_RESERVADO = PATH_PARTIAL+"asientoReservado_";
 	public static final String ICON_RESERVADO_DELIVERY = PATH_PARTIAL+"asientoReservadoDelivery_";
 	public static final String ICON_RESERVADO_AGENTE = PATH_PARTIAL+"asientoReservadoAgente_";
