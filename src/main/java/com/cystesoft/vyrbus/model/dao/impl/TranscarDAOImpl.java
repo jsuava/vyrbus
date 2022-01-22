@@ -790,7 +790,7 @@ public class TranscarDAOImpl implements TranscarDAO{
 	 */
 	private JdbcTemplate getJdbcTranscar() throws Exception {
 		try {										 
-		 	String pathJdbcproperties = Util.getPath()+"WEB-INF"+Util.separator+"jdbc.properties";
+		 	String pathJdbcproperties = Util.getPath()+Util.separator+"WEB-INF"+Util.separator+"jdbc.properties";
 		 	File file = new File(pathJdbcproperties);
 		 	FileInputStream input = new FileInputStream(file);
 			Properties properties = new Properties();
