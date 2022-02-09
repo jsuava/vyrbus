@@ -14,9 +14,11 @@ import java.util.TreeMap;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.ControlEspecieValorada;
 import com.cystesoft.vyrbus.model.bean.DetalleEquipaje;
 import com.cystesoft.vyrbus.model.bean.Equipaje;
+import com.cystesoft.vyrbus.model.bean.UsuarioHardware;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.model.dao.ControlEspecieValoradaDAO;
 import com.cystesoft.vyrbus.model.dao.DetalleEquipajeDAO;
@@ -165,7 +167,8 @@ public class DetalleEquipajeManagerImpl implements DetalleEquipajeManager{
 		for(DetalleEquipaje _detalleEquipaje: listDetalleEquipaje) {			
 			_detalleEquipaje.setEquipaje(equipaje);
 			//Obtenemos el correlativo actualizado para los tickets
-			ControlEspecieValorada controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(Constantes.ID_TIPCOM_TICKET_EQUIPAJE, ventaExceso.getAgencia(), true, ventaExceso.getUsuarioHardware(), null);
+//			ControlEspecieValorada controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(Constantes.ID_TIPCOM_TICKET_EQUIPAJE, ventaExceso.getAgencia(), true, ventaExceso.getUsuarioHardware(), null);
+			ControlEspecieValorada controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(Constantes.ID_TIPCOM_TICKET_EQUIPAJE, equipaje.getAgencia(), true, equipaje.getUsuarioHardware(), null);
 			_detalleEquipaje.setTicket(controlEspecieValorada.toString());
 			//Actualizamos el correlativo
 			int position = _detalleEquipaje.getTicket().indexOf("-");

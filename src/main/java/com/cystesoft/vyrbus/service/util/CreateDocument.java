@@ -1028,8 +1028,9 @@ public class CreateDocument implements Serializable {
 			TranscarUsuarioPersonal transcarUsuarioPersonal = ServiceLocator.getTranscarManager().buscarUsuarioPersonal(liquidacion.getUsuario().getLogin());
 			int agenciaIdCargo = 0;
 			String fechaLiquidacion =Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
-			if(transcarUsuarioPersonal!=null && liquidacion.getAgencia().getCodigo()!=null){
-				agenciaIdCargo = ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(liquidacion.getAgencia().getCodigo());				
+			if(transcarUsuarioPersonal!=null){ // && liquidacion.getAgencia().getCodigo()!=null){
+//				agenciaIdCargo = ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(liquidacion.getAgencia().getCodigo());				
+				agenciaIdCargo = ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(liquidacion.getAgencia().getId().toString());
 				List<Liquidacion> listLiquidacionCarga = ServiceLocator.getTranscarManager().buscarLiquidacionTurnoResumenEspVal(transcarUsuarioPersonal.getId(), agenciaIdCargo, fechaLiquidacion, fechaLiquidacion);
 				for(Liquidacion _liquidacion : listLiquidacionCarga) {
 					longitud_C=_liquidacion.getComprobante().toString().length();
@@ -1071,7 +1072,7 @@ public class CreateDocument implements Serializable {
 			Liquidacion liquidacion2 = ServiceLocator.getLiquidacionManager().buscarRptLiquidacionTurno(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId());
 			
 			/**CARGA*/
-			if(transcarUsuarioPersonal!=null && liquidacion.getAgencia().getCodigo()!=null){				
+			if(transcarUsuarioPersonal!=null) { //&& liquidacion.getAgencia().getCodigo()!=null){				
 				Liquidacion liquidacion2Cargo = ServiceLocator.getTranscarManager().buscarLiquidacionTurno(transcarUsuarioPersonal.getId(), agenciaIdCargo, fechaLiquidacion, fechaLiquidacion);
 				
 				liquidacion2.setMontoContado(liquidacion2.getMontoContado() + liquidacion2Cargo.getMontoContado());
