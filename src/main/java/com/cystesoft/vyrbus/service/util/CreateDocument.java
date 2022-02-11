@@ -1029,7 +1029,7 @@ public class CreateDocument implements Serializable {
 			int agenciaIdCargo = 0;
 			String fechaLiquidacion =Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
 			if(transcarUsuarioPersonal!=null && liquidacion.getAgencia().getCodigo()!=null){
-				agenciaIdCargo = ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(liquidacion.getAgencia().getCodigo());				
+				agenciaIdCargo = ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(liquidacion.getAgencia().getId().toString());				
 				List<Liquidacion> listLiquidacionCarga = ServiceLocator.getTranscarManager().buscarLiquidacionTurnoResumenEspVal(transcarUsuarioPersonal.getId(), agenciaIdCargo, fechaLiquidacion, fechaLiquidacion);
 				for(Liquidacion _liquidacion : listLiquidacionCarga) {
 					longitud_C=_liquidacion.getComprobante().toString().length();

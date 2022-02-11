@@ -28,6 +28,8 @@ import org.zkoss.zul.Listhead;
 import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
 
+//ITSB001 06/02/2022
+//MAOE: Se agrego la funcion que reemplaza la coma por na pues daba un error al convertir de cadena a float.
 
 @SuppressWarnings({"rawtypes"})
 public class XlsGastosOtrosIngresos extends HttpServlet {
@@ -89,7 +91,7 @@ public class XlsGastosOtrosIngresos extends HttpServlet {
                     if(i==8) {
                     	cellh = rowh.createCell((short)i);
 						cellh.setCellStyle(style);
-						cellh.setCellValue(Double.valueOf(currentCell.getLabel()));                    	
+						cellh.setCellValue(Double.parseDouble(currentCell.getLabel().replace(",", ""))); //ITSB001                    	
                     } else {
                         rowh.createCell((short) i).setCellValue(new HSSFRichTextString(currentCell.getLabel()));
                     }

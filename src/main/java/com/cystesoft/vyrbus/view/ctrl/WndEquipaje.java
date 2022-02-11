@@ -286,23 +286,23 @@ public class WndEquipaje extends WndBase implements Serializable{
 				VentaPasaje ventaPasaje = resultVenta.get(0);
 				
 				/*Valida que la agencia en donde se esta ingresando el equipaje sea un punto de embarque/partida del itinerario */
-				criteriosBusqueda = new TreeMap<>();
-				criteriosBusqueda.put("itinerario", ventaPasaje.getItinerario());
-				criteriosBusqueda.put("agencia", getAgencia());
-				criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-				List<ItinerarioAgenciaPartida> resultItinerarioAgePart= ServiceLocator.getItinerarioAgenciaPartidaManager().buscarPorX(criteriosBusqueda, null);
-				if(resultItinerarioAgePart.size()==0) {
-					//si no, valida con el detalle del itinerario
-					criteriosBusqueda= new TreeMap<>();
-					criteriosBusqueda.put("itinerario", ventaPasaje.getItinerario());
-					criteriosBusqueda.put("agenciaPartida", getAgencia());
-					criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-					List<DetalleItinerario> resultDetItinerario = ServiceLocator.getDetalleItinerarioManager().buscarPorX(criteriosBusqueda, null);
-					if(resultDetItinerario.size()==0) {
-						DlgMessage.information(Messages.getString("WndRecepcionEquipajes.itinerario.agenciaNoPuntoPartida"),txtNumeroBoleto);
-						return;
-					}
-				}
+//				criteriosBusqueda = new TreeMap<>();
+//				criteriosBusqueda.put("itinerario", ventaPasaje.getItinerario());
+//				criteriosBusqueda.put("agencia", getAgencia());
+//				criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+//				List<ItinerarioAgenciaPartida> resultItinerarioAgePart= ServiceLocator.getItinerarioAgenciaPartidaManager().buscarPorX(criteriosBusqueda, null);
+//				if(resultItinerarioAgePart.size()==0) {
+//					//si no, valida con el detalle del itinerario
+//					criteriosBusqueda= new TreeMap<>();
+//					criteriosBusqueda.put("itinerario", ventaPasaje.getItinerario());
+//					criteriosBusqueda.put("agenciaPartida", getAgencia());
+//					criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+//					List<DetalleItinerario> resultDetItinerario = ServiceLocator.getDetalleItinerarioManager().buscarPorX(criteriosBusqueda, null);
+//					if(resultDetItinerario.size()==0) {
+//						DlgMessage.information(Messages.getString("WndRecepcionEquipajes.itinerario.agenciaNoPuntoPartida"),txtNumeroBoleto);
+//						return;
+//					}
+//				}
 				
 				//Valida que el segundo Boleto (de ser el caso) corresponda al mismo itinerario
 				for(Listitem item: ltbxBoletos.getItems()) {

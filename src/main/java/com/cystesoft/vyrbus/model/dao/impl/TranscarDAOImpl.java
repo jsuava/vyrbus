@@ -13,6 +13,7 @@ import java.io.FileInputStream;
 import java.math.BigDecimal;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -301,11 +302,21 @@ public class TranscarDAOImpl implements TranscarDAO{
         callableStatement.registerOutParameter("CUR_INSUPD_LIQUI_TURNOS",OracleTypes.CURSOR);
         callableStatement.execute();
 		
-        ResultSet resultSet = (ResultSet) callableStatement.getObject("CUR_INSUPD_LIQUI_TURNOS");		
+        ResultSet resultSet = (ResultSet) callableStatement.getObject("CUR_INSUPD_LIQUI_TURNOS");
+        ResultSetMetaData rsmd=resultSet.getMetaData();
+        int nroColumns = rsmd.getColumnCount();
+        
+        //System.out.println("Total columns: " + rsmd.getColumnCount());  
+        //System.out.println("Column Name of 1st column: " + rsmd.getColumnName(1));  
+        //System.out.println("Column Type Name of 1st column: " + rsmd.getColumnTypeName(1));  
+        
 		String messageError=null;
         while (resultSet.next()) {
 			try {
-				messageError = resultSet.getString("errmsg").toString();
+				if(nroColumns > 1)
+					messageError = resultSet.getString("errmsg").toString();
+				else
+					messageError = null;
 				
 			} catch (Exception e) {
 				callableStatement.close();
@@ -519,8 +530,15 @@ public class TranscarDAOImpl implements TranscarDAO{
         callableStatement.execute();
         
         ResultSet resultSetResumen = (ResultSet) callableStatement.getObject("cur_resumen");
-        ResultSet resultSet = (ResultSet) callableStatement.getObject("CUR_LIST_VENTAS_PRELI_TURNO");        
+        ResultSetMetaData rsmdResumen=resultSetResumen.getMetaData();
+        int nroColumnsResumen = rsmdResumen.getColumnCount();
+        
+        ResultSet resultSet = (ResultSet) callableStatement.getObject("CUR_LIST_VENTAS_PRELI_TURNO");
+        ResultSetMetaData rsmd=resultSet.getMetaData();
+        int nroColumns = rsmd.getColumnCount();
+        
         List<Liquidacion> listResult= new ArrayList<Liquidacion>();
+        
         while (resultSet.next()) {		
         	Double montoFacturas=.00;
         	Double montoBoletas=.00;
@@ -624,7 +642,10 @@ public class TranscarDAOImpl implements TranscarDAO{
         callableStatement.registerOutParameter("CUR_ERROR",OracleTypes.CURSOR);
         callableStatement.execute();
         
-        ResultSet resultSetResumen = (ResultSet) callableStatement.getObject("cur_resumen");                 
+        ResultSet resultSetResumen = (ResultSet) callableStatement.getObject("cur_resumen");  
+        ResultSetMetaData rsmdResumen=resultSetResumen.getMetaData();
+        int nroColumnsResumen = rsmdResumen.getColumnCount();
+        
         Double efectivo=.00, tarjetaVisa=.00, tarjetaMastercard=.00, notaCredito=.00, pce=.00;
         while (resultSetResumen.next()) {	
 			int tipoPagoId = resultSetResumen.getInt("IDTIPO_PAGO");
