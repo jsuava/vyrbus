@@ -78,7 +78,7 @@ public class DetalleEquipajeDAOImpl  extends GenericDAOImpl implements DetalleEq
 	@Override
 	public List<DetalleEquipaje> buscarManifiestoEquipaje(Long itinerarioId, Integer agenciaId) throws Exception {
 		// TODO Auto-generated method stub
-		String sql="Select deq.detequ_id,eq.equ_id, vp.c_numboleto boleto, p.c_apepat, p.c_apemat, p.c_nombre, deq.c_ticket ticket "
+		String sql="Select deq.detequ_id,eq.equ_id, vp.c_numboleto boleto, p.c_apepat, p.c_apemat, p.c_nombre, deq.c_ticket ticket, vp.n_numasiento "
 				+ "From vrtequ eq "
 				+ "  Inner Join vrtdetequ deq On (deq.equ_id=eq.equ_id) "
 				+ "  Left Join vrtvenpas vp On (vp.venpas_id=deq.venpas_id And deq.n_principal=1) "
@@ -102,6 +102,7 @@ public class DetalleEquipajeDAOImpl  extends GenericDAOImpl implements DetalleEq
 				pasajero.setApellidoMaterno(obj[4]!=null?obj[4].toString():null);
 				pasajero.setNombre(obj[5]!=null?obj[5].toString():null);
 				ventaPasaje.setPasajero(pasajero);
+				ventaPasaje.setNumeroAsiento(((BigDecimal)obj[7]).intValue());
 				detalleEquipaje.setVentaPasaje(ventaPasaje);
 			}						
 			detalleEquipaje.setTicket(obj[6].toString());

@@ -8,6 +8,7 @@
  */
 package com.cystesoft.vyrbus.view.ctrl;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +33,10 @@ import com.cystesoft.vyrbus.model.bean.DetalleEquipaje;
 import com.cystesoft.vyrbus.model.bean.Itinerario;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.util.Constantes;
+import com.cystesoft.vyrbus.service.util.CreateDocument;
 import com.cystesoft.vyrbus.service.util.Util;
 import com.cystesoft.vyrbus.view.ui.WndBase;
+import com.cystesoft.vyrbus.view.ui.WndIFrame;
 import com.cystesoft.vyrbus.view.ui.WndSeleccionaItinerario;
 
 /**
@@ -47,7 +50,7 @@ public class WndManifiestoEquipaje extends WndBase implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private Window wndManifiestoEquipaje;
+//	private Window wndManifiestoEquipaje;
 	private Textbox txtItinerario;
 	private Button btnBuscarItinerario;
 	private Combobox cmbPuntocontrol;
@@ -68,6 +71,7 @@ public class WndManifiestoEquipaje extends WndBase implements Serializable{
 	
 	
 	private Itinerario itinerario;
+	private List<DetalleEquipaje>resultDetalleEquipaje;
 	
 	
 	/* (non-Javadoc)
@@ -89,7 +93,7 @@ public class WndManifiestoEquipaje extends WndBase implements Serializable{
 		// TODO Auto-generated method stub
 		super.initComponents();
 		
-		wndManifiestoEquipaje = (Window)this.getFellow("wndManifiestoEquipaje");
+//		wndManifiestoEquipaje = (Window)this.getFellow("wndManifiestoEquipaje");
 		txtItinerario = (Textbox)this.getFellow("txtItinerario");
 		btnBuscarItinerario = (Button)this.getFellow("btnBuscarItinerario");
 		cmbPuntocontrol = (Combobox)this.getFellow("cmbPuntocontrol");
@@ -122,6 +126,20 @@ public class WndManifiestoEquipaje extends WndBase implements Serializable{
 				change_cmbPuntoControl();
 			}
 		});
+		btnPrevio.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				printManifiestoEquipaje(true);
+			}
+		});
+		btnImprimir.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				printManifiestoEquipaje(false);
+			}
+		});
 	}
 	
 	/**
@@ -133,7 +151,7 @@ public class WndManifiestoEquipaje extends WndBase implements Serializable{
 			Long idItinerario = Long.valueOf(txtItinerario.getText());
 			Integer agencia_idpuntoControl = ((Agencia)cmbPuntocontrol.getSelectedItem().getValue()).getId();
 			
-			List<DetalleEquipaje>resultDetalleEquipaje=ServiceLocator.getDetalleEquipajeManager().buscarManifiestoEquipaje(idItinerario, agencia_idpuntoControl);	
+			resultDetalleEquipaje=ServiceLocator.getDetalleEquipajeManager().buscarManifiestoEquipaje(idItinerario, agencia_idpuntoControl);	
 			cargarDetalleManifiesto(resultDetalleEquipaje);	
 		}		
 	}
@@ -198,6 +216,16 @@ public class WndManifiestoEquipaje extends WndBase implements Serializable{
 	 */
 	public  void cargarItinerario(Long idItinerario, String tramoOrigen, String tramoDestino) throws Exception{
 		lbCopilotoAux.setValue("");
+		lbRuta.setValue("");
+		lbBus.setValue("");
+		lbServicio.setValue("");
+		lbFechaSalida.setValue("");
+		lbFechaLlegada.setValue("");
+		lbTripulante.setValue("");
+		lbPiloto.setValue("");
+		lbcopiloto.setValue("");
+		lbCopilotoAux.setValue("");
+		
 		itinerario =  new Itinerario();
 		itinerario = ServiceLocator.getManifiestoManager().consultaItinerario(idItinerario, tramoOrigen, tramoDestino);
 		
@@ -219,7 +247,7 @@ public class WndManifiestoEquipaje extends WndBase implements Serializable{
 		
 		if(cmbPuntocontrol.getSelectedIndex()>=0) {
 			Integer agencia_idpuntoControl = ((Agencia)cmbPuntocontrol.getSelectedItem().getValue()).getId();
-			List<DetalleEquipaje>resultDetalleEquipaje=ServiceLocator.getDetalleEquipajeManager().buscarManifiestoEquipaje(idItinerario, agencia_idpuntoControl);	
+			resultDetalleEquipaje=ServiceLocator.getDetalleEquipajeManager().buscarManifiestoEquipaje(idItinerario, agencia_idpuntoControl);	
 			cargarDetalleManifiesto(resultDetalleEquipaje);
 		}		
 	}
@@ -232,8 +260,12 @@ public class WndManifiestoEquipaje extends WndBase implements Serializable{
 	private void cargarDetalleManifiesto(List<DetalleEquipaje> listDetalleEquipaje)throws Exception{
 		Util.limpiarListbox(ltbxManifiestoEquipajes);
 		for(DetalleEquipaje detalleEquipaje: listDetalleEquipaje) {
+			String asiento = (detalleEquipaje.getVentaPasaje()!=null?detalleEquipaje.getVentaPasaje().getNumeroAsiento().toString():"");
 			Listitem item = new Listitem();
-			Listcell cell = new Listcell(detalleEquipaje.getVentaPasaje()!=null?detalleEquipaje.getVentaPasaje().getNumeroBoleto():"");
+			Listcell cell = new Listcell(asiento.length()==1?"0"+asiento:asiento);
+			cell.setStyle("font-size:11px");
+			item.appendChild(cell);
+			cell = new Listcell(detalleEquipaje.getVentaPasaje()!=null?detalleEquipaje.getVentaPasaje().getNumeroBoleto():"");
 			cell.setStyle("font-size:11px");
 			item.appendChild(cell);
 			cell = new Listcell(detalleEquipaje.getVentaPasaje()!=null?detalleEquipaje.getVentaPasaje().getPasajero().toString():"");
@@ -264,4 +296,34 @@ public class WndManifiestoEquipaje extends WndBase implements Serializable{
 			cmbPuntocontrol.appendChild(oComboitem);
 		}
 	}
+	
+	/**
+	 * 
+	 * @param isPrevio
+	 * @throws Exception
+	 */
+	private void printManifiestoEquipaje(boolean isPrevio)throws Exception {		
+		if(resultDetalleEquipaje!=null && resultDetalleEquipaje.size()>0) {
+			String numeroManifiesto = (Util.autocompleNumberBoleto("000-"+resultDetalleEquipaje.get(0).getEquipaje().getId().toString())).split("-")[1];
+			File file = CreateDocument.creaManifiesto_Equipajes(resultDetalleEquipaje, itinerario);			
+			String src = Constantes.URL_FORMATOS_MANIFIESTOS+Constantes.CLAVE_PAHT+"MANIFIESTO_EQUIPAJE_"+ numeroManifiesto	+".txt";
+			
+			if(isPrevio) {
+				final WndIFrame iFrame = new WndIFrame();
+				iFrame.oThisWindow.setTitle("MANIFIESTO DE EQUIPAJES");
+				iFrame.setSrc(src);
+				iFrame.setWidth("1000");
+				iFrame.setheight("600");
+				iFrame.loadiframe();
+				iFrame.btnCerrar.setVisible(false);
+				iFrame.oThisWindow.setClosable(true);
+				this.appendChild(iFrame);
+				iFrame.setMode("modal");
+			}else
+				Util.descargarArchivo(file);
+		}
+	}
+	
+	
+	
 }

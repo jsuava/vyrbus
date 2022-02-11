@@ -133,6 +133,10 @@ public class WndTipoOperacion extends WndBase{
 							DlgMessage.information("No se puede aperturar la liqudiación de Carga, debido a que el usuario "+getUsuario().getLogin()+" no existe en el sistema de carga.");
 							return;
 						}
+<<<<<<< HEAD
+=======
+//						Integer agenciaId = ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(getAgencia().getCodigo());
+>>>>>>> 353b2cf753ed606cddf91ead5099a6521b60be4c
 						Integer agenciaId = ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(getAgencia().getId().toString());
 						if(agenciaId ==null) {
 							DlgMessage.information("No se puede aperturar la liqudiación de Carga, debido a que la agencia "+getAgencia().getDenominacion()+" no existe en el sistema de carga.");

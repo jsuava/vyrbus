@@ -87,8 +87,9 @@
 							<caption label="Lista de Equipajes"/>
 								<listbox  rows="10" id="ltbxManifiestoEquipajes"  width="835px" droppable="true">
 									<listhead>											
+										<listheader label="ASIENTO" width="70px" style="color: #ffffff;" align="center"/>
 										<listheader label="N°COMPROBANTE" width="150px" style="color: #ffffff;"/>
-										<listheader label="PASAJERO" width="500px" style="color: #ffffff;"/>
+										<listheader label="PASAJERO" width="430px" style="color: #ffffff;"/>
 										<listheader label="TICKET" style="color: #ffffff;"/>																			
 									 </listhead>
 								</listbox>

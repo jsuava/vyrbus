@@ -174,7 +174,9 @@ public class WndCierreCaja extends WndBase {
 		
 		Util.limpiarListbox(listLiquidacion);
 	}
-		
+	
+	
+	
 	/**
 	 * Busca Liquidación, según los parametros seleccionados.
 	 * @throws Exception

@@ -319,7 +319,7 @@ public class TranscarDAOImpl implements TranscarDAO{
 					messageError = null;
 				
 			} catch (Exception e) {
-				callableStatement.close();
+//				callableStatement.close();
 			}
 		}
         
@@ -641,59 +641,62 @@ public class TranscarDAOImpl implements TranscarDAO{
         callableStatement.registerOutParameter("CUR_LIST_VENTAS_PRELI_TURNO",OracleTypes.CURSOR);
         callableStatement.registerOutParameter("CUR_ERROR",OracleTypes.CURSOR);
         callableStatement.execute();
-        
-        ResultSet resultSetResumen = (ResultSet) callableStatement.getObject("cur_resumen");  
-        ResultSetMetaData rsmdResumen=resultSetResumen.getMetaData();
-        int nroColumnsResumen = rsmdResumen.getColumnCount();
-        
-        Double efectivo=.00, tarjetaVisa=.00, tarjetaMastercard=.00, notaCredito=.00, pce=.00;
-        while (resultSetResumen.next()) {	
-			int tipoPagoId = resultSetResumen.getInt("IDTIPO_PAGO");
-			int tarjetasId = resultSetResumen.getInt("IDTARJETAS");        	
-			if(tipoPagoId==1){ //Efectivo
-				efectivo += resultSetResumen.getDouble("BOLETA");
-				efectivo += resultSetResumen.getDouble("FACTURA");
-				notaCredito += resultSetResumen.getDouble("NOTA_CREDITO");
-			}			
-			if(tipoPagoId==2 && tarjetasId==19){ //Tarjeta Visa
-				tarjetaVisa += resultSetResumen.getDouble("BOLETA");
-				tarjetaVisa += resultSetResumen.getDouble("FACTURA");
-				notaCredito += resultSetResumen.getDouble("NOTA_CREDITO");
-			}
-			if(tipoPagoId==2 && tarjetasId==21){ //Tarjeta Mastercard
-				tarjetaMastercard += resultSetResumen.getDouble("BOLETA");
-				tarjetaMastercard += resultSetResumen.getDouble("FACTURA");
-				notaCredito += resultSetResumen.getDouble("NOTA_CREDITO");
-			}
-			if(tipoPagoId==85){ //PCE
-				pce += resultSetResumen.getDouble("PCE");
-			}        	
-		}
-        
-        
-        ResultSet resultSet = (ResultSet) callableStatement.getObject("CUR_LIST_VENTAS_PRELI_TURNO");
+ 
+//        ResultSet resultSetResumen = (ResultSet) callableStatement.getObject("cur_resumen");                 
+//        Double efectivo=.00, tarjetaVisa=.00, tarjetaMastercard=.00, notaCredito=.00, pce=.00;
+//        while (resultSetResumen.next()) {	
+//			int tipoPagoId = resultSetResumen.getInt("IDTIPO_PAGO");
+//			int tarjetasId = resultSetResumen.getInt("IDTARJETAS");        	
+//			if(tipoPagoId==1){ //Efectivo
+//				efectivo += resultSetResumen.getDouble("BOLETA");
+//				efectivo += resultSetResumen.getDouble("FACTURA");
+//				notaCredito += resultSetResumen.getDouble("NOTA_CREDITO");
+//			}			
+//			if(tipoPagoId==2 && tarjetasId==19){ //Tarjeta Visa
+//				tarjetaVisa += resultSetResumen.getDouble("BOLETA");
+//				tarjetaVisa += resultSetResumen.getDouble("FACTURA");
+//				notaCredito += resultSetResumen.getDouble("NOTA_CREDITO");
+//			}
+//			if(tipoPagoId==2 && tarjetasId==21){ //Tarjeta Mastercard
+//				tarjetaMastercard += resultSetResumen.getDouble("BOLETA");
+//				tarjetaMastercard += resultSetResumen.getDouble("FACTURA");
+//				notaCredito += resultSetResumen.getDouble("NOTA_CREDITO");
+//			}
+//			if(tipoPagoId==85){ //PCE
+//				pce += resultSetResumen.getDouble("PCE");
+//			}        	
+//		}
+                
+        ResultSet resultSet = (ResultSet) callableStatement.getObject("CUR_LIST_VENTAS_PRELI_TURNO");                         
         Integer cantidadEfectivo=0, cantidadTarjetaVisa=0, cantidadTarjetaMastercard=0, cantidadNotaCredito=0, cantidadPce=0;
+        Double efectivo=.00, tarjetaVisa=.00, tarjetaMastercard=.00, notaCredito=.00, pce=.00;
         while (resultSet.next()) {
 //        	int idEstadoRegistro = resultSet.getInt("IDESTADO_FACTURA");
 			int tipoPagoId = resultSet.getInt("IDTIPO_PAGO");
 			int formaPagoId = resultSet.getInt("IDFORMA_PAGO");
 			int tipoComprobanteId = resultSet.getInt("IDTIPO_COMPROBANTE");
 			int tarjetasId = resultSet.getInt("IDTARJETAS");
+			Double totalCosto = resultSet.getDouble("TOTAL_COSTO");
 			
 			if(formaPagoId==ID_FORPAG_CONTADO){
 				if(tipoComprobanteId==ID_TIPCOM_BOLETA || tipoComprobanteId==ID_TIPCOM_FACTURA){
 					if(tipoPagoId==ID_TIPPAG_EFECTIVO){
 						cantidadEfectivo ++;
+						efectivo += totalCosto;
 					}else if(tipoPagoId==ID_TIPPAG_TARJETA && tarjetasId==ID_TARJETA_VISA){
 						cantidadTarjetaVisa ++;
+						tarjetaVisa += totalCosto;
 					}else if(tipoPagoId==ID_TIPPAG_TARJETA && tarjetasId==ID_TARJETA_MASTERCARD){
 						cantidadTarjetaMastercard ++;
+						tarjetaMastercard += totalCosto;
 					}
 				}else if(tipoComprobanteId==ID_TIPCOM_NOTACREDITO){
 					cantidadNotaCredito ++;
+					notaCredito += totalCosto;
 				}
 			}else if(formaPagoId==ID_FORPAG_PCE){
 				cantidadPce ++;
+				pce += totalCosto;
 			}
         }        
         
