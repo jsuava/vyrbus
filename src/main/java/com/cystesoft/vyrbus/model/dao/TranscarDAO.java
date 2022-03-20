@@ -68,14 +68,14 @@ public interface TranscarDAO {
 	public String aperturarLiquidacion(TranscarLiquidacionTurno liquidacionTurno)throws Exception;
 	/**
 	 * Realiza la busqueda del detalle de ventas 
-	 * @param usuarioId	: Identificador del usuario - Transcar
+	 * @param usuarioPersonal	: Identificador del usuario - Transcar
 	 * @param agenciaId	: Identificador de la agencia - Transcar
 	 * @param fechaInicial	: Fecha inicial de la busqueda
 	 * @param fechaFinal	: Fecha Final de la busqueda
 	 * @return lista de resultados
 	 * @throws Exception
 	 */
-	public List<VentaPasaje> buscarDetalleVentas(Integer usuarioId, Integer agenciaId, String fechaInicial, String fechaFinal)throws Exception;
+	public List<VentaPasaje> buscarDetalleVentas(TranscarUsuarioPersonal usuarioPersonal, Integer agenciaId, String fechaInicial, String fechaFinal)throws Exception;
 	/**
 	 * Realiza la busqueda de todas las agencias
 	 * @return

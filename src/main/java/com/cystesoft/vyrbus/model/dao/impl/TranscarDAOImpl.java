@@ -29,6 +29,7 @@ import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.CanalVenta;
 import com.cystesoft.vyrbus.model.bean.FormaPago;
 import com.cystesoft.vyrbus.model.bean.Liquidacion;
+import com.cystesoft.vyrbus.model.bean.Pasajero;
 import com.cystesoft.vyrbus.model.bean.TipoComprobante;
 import com.cystesoft.vyrbus.model.bean.TipoMoneda;
 import com.cystesoft.vyrbus.model.bean.TipoMovimiento;
@@ -332,7 +333,7 @@ public class TranscarDAOImpl implements TranscarDAO{
 	 * @see com.cystesoft.vyrbus.model.dao.TranscarDAO#buscarDetalleVentas(java.lang.Integer, java.lang.Integer, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public List<VentaPasaje> buscarDetalleVentas(Integer usuarioId, Integer agenciaId, String fechaInicial,String fechaFinal) throws Exception {
+	public List<VentaPasaje> buscarDetalleVentas(TranscarUsuarioPersonal usuarioPersonal, Integer agenciaId, String fechaInicial,String fechaFinal) throws Exception {
 		// TODO Auto-generated method stub
 //		int TIPO_PAGO_EFECTIVO = 1;
 //		int TIPO_PAGO_TARJETA = 2;
@@ -341,8 +342,11 @@ public class TranscarDAOImpl implements TranscarDAO{
 //		int FORMA_PAGO_CREDITO = 2;
 ////		int FORMA_PAGO_PCE = 3;
 		
-		if(usuarioId==null)
-			usuarioId=0;
+		if(usuarioPersonal==null){
+			usuarioPersonal = new TranscarUsuarioPersonal();
+			usuarioPersonal.setId(0);
+		}
+			
 		if(agenciaId ==null)
 			agenciaId = 0;
 		
@@ -351,7 +355,7 @@ public class TranscarDAOImpl implements TranscarDAO{
 //		CallableStatement callableStatement = jdbcTemplate.getDataSource().getConnection().prepareCall(storeProcedure);	
 		CallableStatement callableStatement = getJdbcTranscar().getDataSource().getConnection().prepareCall(storeProcedure);
 		//Parametros de entrada
-		callableStatement.setInt("P_IDUSUARIO_PERSONAL", usuarioId);
+		callableStatement.setInt("P_IDUSUARIO_PERSONAL", usuarioPersonal.getId());
         callableStatement.setInt("p_IDAgencias", agenciaId);
         callableStatement.setString("P_FECHA_INICIAL", fechaInicial);
         callableStatement.setString("P_FECHA_FINAL", fechaFinal);
@@ -424,10 +428,16 @@ public class TranscarDAOImpl implements TranscarDAO{
 			usuario.setApellidoPaterno("");
 			usuario.setApellidoMaterno("");
 			usuario.setNombre(resultSet.getString("NOMBRES"));
+			usuario.setLogin(usuarioPersonal.getLogin());
 			ventaCarga.setUsuario(usuario);
 			ventaCarga.setFechaInsercion(resultSet.getDate("FECHA_ACTUALIZACION"));
 			ventaCarga.setFechaLiquidacion(resultSet.getDate("FECHA_FACTURA"));
-			
+			Agencia agenciaVenta=new Agencia();
+			agenciaVenta.setDenominacion(resultSet.getString("NOMBRE_AGENCIA"));
+			ventaCarga.setAgencia(agenciaVenta);
+			Pasajero pasajero = new Pasajero();
+			pasajero.setNombresApellidos(resultSet.getString("RAZON_SOCIAL"));
+			ventaCarga.setPasajero(pasajero);
 			
 			listResult.add(ventaCarga);
 		}

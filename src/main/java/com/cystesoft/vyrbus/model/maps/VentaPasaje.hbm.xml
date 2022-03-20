@@ -287,7 +287,7 @@
             </column>
         </many-to-one>
         <property name="tipoCambio" type="java.lang.Double">
-            <column name="N_TIPCAM" precision="5" scale="6">
+            <column name="N_TIPCAM" precision="6" scale="3">
             	<comment>Valor del tipo de cambio, segun la moneda.</comment>
             </column>
         </property>

@@ -101,10 +101,10 @@ public class TranscarManagerImpl implements TranscarManager{
 	 * @see com.cystesoft.vyrbus.service.business.TranscarManager#buscarDetalleVentas(java.lang.Integer, java.lang.Integer, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public List<VentaPasaje> buscarDetalleVentas(Integer usuarioId, Integer agenciaId, String fechaInicial,
+	public List<VentaPasaje> buscarDetalleVentas(TranscarUsuarioPersonal usuarioPersonal, Integer agenciaId, String fechaInicial,
 			String fechaFinal) throws Exception {
 		// TODO Auto-generated method stub
-		return getTranscarDAO().buscarDetalleVentas(usuarioId, agenciaId, fechaInicial, fechaFinal);
+		return getTranscarDAO().buscarDetalleVentas(usuarioPersonal, agenciaId, fechaInicial, fechaFinal);
 	}
 
 	/* (non-Javadoc)

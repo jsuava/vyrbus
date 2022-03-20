@@ -22,7 +22,7 @@
 		<grid>
 			<columns>
 				<column width="120px" align="right"/>
-				<column width="250pxpx" />
+				<column width="245px" />
 				<column width="120px" align="right"/>
 			</columns>
 			<rows>
@@ -31,10 +31,16 @@
 						<label value="Nº RUC (*) :" />
 						<textbox id="textboxId" />
 					</div>
-					<textbox id="txtNumeroDocumento" 
+					<hbox>
+						<textbox id="txtNumeroDocumento" 
 							maxlength="11" 
 							style="font-size:11px !important" 
 							onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtRazonSocial)" />
+				    	<image id="imgBuscarClienteSunat" 
+								src="resources/mp_buscarEnabled.png" 
+								style="cursor:pointer" 
+								tooltiptext="Haga click aqui para buscar el RUC desde SUNAT"/>
+					</hbox>				
 					<label value="RAZÓN SOCIAL (*) :" />
 					<textbox id="txtRazonSocial" maxlength="100" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtDireccion)" />
 				</row>

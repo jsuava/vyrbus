@@ -2614,7 +2614,10 @@ public class WndVentaReserva extends WndBase {
 		row.appendChild(label);
 		label = new Label(nOcupados.toString());
 		row.appendChild(label);
-		label = new Label(String.valueOf(detalleItinerario.getItinerario().getServicio().getNumeroAsientosPiso1() - nOcupados));
+		label = new Label(String.valueOf(detalleItinerario.getItinerario().getServicio().getNumeroPisos()==2
+										 ? (detalleItinerario.getItinerario().getServicio().getNumeroAsientosPiso1() +
+												 detalleItinerario.getItinerario().getServicio().getNumeroAsientosPiso2()) - nOcupados 
+										 : detalleItinerario.getItinerario().getServicio().getNumeroAsientosPiso1() - nOcupados));
 		row.appendChild(label);
 		rows.appendChild(row);
 		grid.appendChild(rows);
@@ -4358,22 +4361,22 @@ public class WndVentaReserva extends WndBase {
 			
 			String nroDocumento=txtDocumentoCliente.getText().trim();
 			
-				//Consulta RUC EN sunat
-				List<String> ruc = RESTCiva.getDatosRuc(nroDocumento);
+			//Consulta RUC EN sunat
+			List<String> ruc = RESTCiva.getDatosRuc(nroDocumento);
 				
 
-				if(ruc!=null){
-//				Reniec reniec = new Reniec();
+			if(ruc!=null){
+//			Reniec reniec = new Reniec();
 				txtDocumentoCliente.setValue(ruc.get(0));
 				txtRazonSocial.setValue(ruc.get(1));
 				txtDireccionCliente.setValue(ruc.get(2));
 
-				}else{
-					String numeroDocumento=txtDocumentoCliente.getText().trim();
+			}else{
+				String numeroDocumento=txtDocumentoCliente.getText().trim();
 					
-					onCleanControlsClient();		
-					//recupera valores ingresado por el usuario
-					txtDocumentoPax.setText(numeroDocumento);
+				onCleanControlsClient();		
+				//recupera valores ingresado por el usuario
+				txtDocumentoPax.setText(numeroDocumento);
 					
 //					if(getAgencia().getTipoAgencia().getId().intValue()!=Constantes.ID_TIPAGE_TEPSA){
 //						Ubigeo oUbigeo = new Ubigeo();

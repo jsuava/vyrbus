@@ -108,6 +108,7 @@ public class WSFE implements Serializable{
 	public static Integer FE_TIPO_VENTA_CONTADO=20;
 	public static Integer FE_TIPO_VENTA_CREDITO=21;
 	public static Integer FE_TIPO_VENTA_CORTESIA=22;
+	public static Integer DOLARES=2;
 	
 	public static IMEFEService iMEFEService;
 	
@@ -969,7 +970,10 @@ public class WSFE implements Serializable{
 			venta.setTipoComprobanteID(new JAXBElement<String>(new QName(NAMESPACE,"tipoComprobanteID"), String.class, tipoComprobanteID));
 			venta.setNumeroSerie(new JAXBElement<String>(new QName(NAMESPACE,"numeroSerie"), String.class, serie));
 			venta.setNumeroCorrelativo(new JAXBElement<String>(new QName(NAMESPACE,"numeroCorrelativo"), String.class, autoCompletCorrelativo(correlativo)));
-			venta.setTipoMonedaSoles(true);
+			if(ventaPasaje.getTipoMoneda()!=null && ventaPasaje.getTipoMoneda().getId()==DOLARES)
+				venta.setTipoMonedaSoles(false);
+			else
+				venta.setTipoMonedaSoles(true);
 			venta.setFechaEmision(new JAXBElement<String>(new QName(NAMESPACE,"fechaEmision"), String.class, fechaEmision));		
 			/*Validando si es una cortesia*/
 			if(!(isCortesia)){

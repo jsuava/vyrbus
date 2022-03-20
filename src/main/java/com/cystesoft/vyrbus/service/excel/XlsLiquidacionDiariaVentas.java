@@ -62,15 +62,19 @@ public class XlsLiquidacionDiariaVentas extends HttpServlet {
                 rowh.createCell((short) 2).setCellValue(new HSSFRichTextString(venta.getNumeroControl()));
                 rowh.createCell((short) 3).setCellValue(new HSSFRichTextString(venta.getNumeroBoleto()));
                 rowh.createCell((short) 4).setCellValue(new HSSFRichTextString(venta.getNumeroBoletoAnterior()));
-                rowh.createCell((short) 5).setCellValue(new HSSFRichTextString(venta.getPasajero().toString()));
+                if(venta.getNumeroBoleto().length()==13)
+                	rowh.createCell((short) 5).setCellValue(new HSSFRichTextString(venta.getPasajero()!=null ? venta.getPasajero().toString() : ""));
+                else
+                	rowh.createCell((short) 5).setCellValue(new HSSFRichTextString(venta.getPasajero()!=null ? venta.getPasajero().getNombresApellidos() : ""));
                 rowh.createCell((short) 6).setCellValue(venta.getTarifa());
                 rowh.createCell((short) 7).setCellValue(venta.getDescuento());
+                //rowh.createCell((short) 8).setCellValue(new HSSFRichTextString(venta.getTipoMoneda()!=null ? "DOLARES" : "SOLES"));
                 rowh.createCell((short) 8).setCellValue(venta.getAcuenta());
                 rowh.createCell((short) 9).setCellValue(venta.getPenalidad());
                	rowh.createCell((short) 10).setCellValue(venta.getImportePagado());
                 rowh.createCell((short) 11).setCellValue(new HSSFRichTextString(venta.getUsuario().toString()));
                 rowh.createCell((short) 12).setCellValue(venta.getFechaInsercion());
-                rowh.createCell((short) 13).setCellValue(new HSSFRichTextString(venta.getAgencia().getDenominacion())); 
+                rowh.createCell((short) 13).setCellValue(new HSSFRichTextString(venta.getAgencia()!=null ? venta.getAgencia().getDenominacion() : "")); 
             }
             
             ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();

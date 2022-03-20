@@ -79,6 +79,7 @@ public class WndEstadoVentaReservaVerVenta extends WndBase {
 	private Label lblPagoDescuento;
 	private Label lblPagoTipoFormaPago;
 	private Label lblPagoImporte;
+	private Label lblMoneda;
 	private Checkbox chbxPagoMixto;
 	private Label lblPagoOperadorTarjeta;
 	private Label lblPagoLabelImporteEfectivo;
@@ -181,6 +182,7 @@ public class WndEstadoVentaReservaVerVenta extends WndBase {
 		lblPagoDescuento=(Label)this.getFellow("lblPagoDescuento");
 		lblPagoTipoFormaPago=(Label)this.getFellow("lblPagoTipoFormaPago");
 		lblPagoImporte=(Label)this.getFellow("lblPagoImporte");
+		lblMoneda=(Label)this.getFellow("lblMoneda");
 		chbxPagoMixto=(Checkbox)this.getFellow("chbxPagoMixto");
 		lblPagoOperadorTarjeta=(Label)this.getFellow("lblPagoOperadorTarjeta");
 		lblPagoLabelImporteEfectivo=(Label)this.getFellow("lblPagoLabelImporteEfectivo");
@@ -298,6 +300,7 @@ public class WndEstadoVentaReservaVerVenta extends WndBase {
 		lblPagoOperadorTarjeta.setValue(ventaPasaje.getTarjetaCredito()!=null? ventaPasaje.getTarjetaCredito().getOperadorTarjetaCredito().getDenominacion(): "");
 		lblPagoTarjetaCredito.setValue(ventaPasaje.getTarjetaCredito()!=null? ventaPasaje.getTarjetaCredito().getDenominacion():"");
 		lblPagoNumeroOperacion.setValue(ventaPasaje.getNumeroOperacionBancaria()!=null? ventaPasaje.getNumeroOperacionBancaria():"");
+		lblMoneda.setValue(ventaPasaje.getTipoMoneda()!=null ? ventaPasaje.getTipoMoneda().getDenominacion() : "SOLES");
 		
 		/*Si es que fue aplicada alguna promocion */
 		if(ventaPasaje.getPromocion()!=null){
