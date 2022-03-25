@@ -33,6 +33,7 @@ import org.zkoss.zul.Textbox;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.CanalVenta;
+import com.cystesoft.vyrbus.model.bean.ControlAcceso;
 import com.cystesoft.vyrbus.model.bean.Liquidacion;
 import com.cystesoft.vyrbus.model.bean.Parametros;
 import com.cystesoft.vyrbus.model.bean.Rol;
@@ -44,6 +45,7 @@ import com.cystesoft.vyrbus.model.bean.UsuarioAprobador;
 import com.cystesoft.vyrbus.model.bean.UsuarioHardware;
 import com.cystesoft.vyrbus.model.bean.UsuarioRol;
 import com.cystesoft.vyrbus.service.exceptions.CaptchaNullException;
+import com.cystesoft.vyrbus.service.exceptions.ControlAccesoException;
 import com.cystesoft.vyrbus.service.exceptions.LoginNullException;
 import com.cystesoft.vyrbus.service.exceptions.PasswordException;
 import com.cystesoft.vyrbus.service.exceptions.UsuarioHardwareNullException;
@@ -51,6 +53,7 @@ import com.cystesoft.vyrbus.service.exceptions.UsuarioNullException;
 import com.cystesoft.vyrbus.service.exceptions.UsuarioRolNullException;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.util.Constantes;
+import com.cystesoft.vyrbus.service.util.Encriptar;
 import com.cystesoft.vyrbus.service.util.Messages;
 import com.cystesoft.vyrbus.service.util.MyTime;
 import com.cystesoft.vyrbus.service.util.Util;
@@ -76,8 +79,10 @@ public class WndLogin extends WndBase {
 	private Div divRol;
 	private Separator spBtnIngresar;
 	private Hlayout hlyoutCodigoAcceso;
+	private Hlayout hlAccessCode;
 	private Checkbox chkOmitirCodigoAcceso;
 	private Textbox txtCodigoAcceso;
+	private Textbox txtAccessCode;
 	private Label lblCopyRigth;
 	
 //	private String address = null;
@@ -97,6 +102,17 @@ public class WndLogin extends WndBase {
 //		ServletRequest response = (ServletRequest)this.getDesktop().getExecution().getNativeRequest();
 //		address = response.getParameter("address");
 		//End custom 09-DIC-2013 TEPSA javalos CR#SISVYR002
+		
+		//Obtenemos el codigo generado
+		String cryptoMAC = (String)getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_DIR_MAC);
+		if(cryptoMAC != null) {
+			txtAccessCode.setText((String)(getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_DIR_MAC)));
+			String deco = Encriptar.decodifica(cryptoMAC, Constantes.KEY_CRYPTO );
+			String[] decoArray = deco.split(" ");
+			txtLogin.setText(decoArray[1]);
+			txtPassword.setText(decoArray[2]);
+		}else
+			txtAccessCode.setText("");
 		
 		/*Busca Parametros*/
 		try{
@@ -145,6 +161,8 @@ public class WndLogin extends WndBase {
 		chkOmitirCodigoAcceso=(Checkbox)this.getFellow("chkOmitirCodigoAcceso");
 		txtCodigoAcceso=(Textbox)this.getFellow("txtCodigoAcceso");
 		lblCopyRigth=(Label)this.getFellow("lblCopyRigth");
+		hlAccessCode=(Hlayout)this.getFellow("hlAccessCode");
+		txtAccessCode=(Textbox)this.getFellow("txtAccessCode");
 	}
 
 	
@@ -178,39 +196,52 @@ public class WndLogin extends WndBase {
 			if (usuario == null)
 				throw new UsuarioNullException();
 			
-			Session session =null;
-			Boolean ejecutarApplet=false;
-			/*Para el solicitar el codigo de acceso*/
-			if(hlyoutCodigoAcceso.isVisible()==false){
-				if(usuario.getTipoSeguridad().intValue()==Constantes.VALIDAR_APPLET){
-					hlyoutCodigoAcceso.setVisible(true);
-					txtCodigoAcceso.setFocus(true);
-					return;
-				}
-			}else if (!(chkOmitirCodigoAcceso.isChecked()) && txtCodigoAcceso.getText().trim().isEmpty()){
-				DlgMessage.information(Messages.getString("WndLogin.information.noCodigoAcceso"),txtCodigoAcceso);
-				return;
-			}else if (!(chkOmitirCodigoAcceso.isChecked()) && !(txtCodigoAcceso.getText().trim().isEmpty())){ 
-				TreeMap<String, Object>criteriosBusqueda = new TreeMap<>();
-				criteriosBusqueda.put("codigoAutorizacion", txtCodigoAcceso.getText().trim().toUpperCase());
-				criteriosBusqueda.put("estado", Constantes.TRUE_VALUE);
-				criteriosBusqueda.put("sessionIniciada", Constantes.FALSE_VALUE);
-				criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-				List<Session> resultSession=ServiceLocator.getSessionManager().buscarPorX(criteriosBusqueda, null);
-				if(resultSession.size()>0){
-					session=resultSession.get(0);
-					Date fechaActual=new Date();
-					if(session.getFechaInicial().getTime()<=fechaActual.getTime() && session.getFechaFin().getTime()<=fechaActual.getTime()){
-						DlgMessage.information(Messages.getString("WndLogin.information.codigoAccesoExpiro"),txtCodigoAcceso);
-						return;
-					}
-				}else{
-					DlgMessage.information(Messages.getString("WndLogin.information.noExisteCodigoAcceso"),txtCodigoAcceso);
-					return;
-				}
-			}else if (chkOmitirCodigoAcceso.isChecked())
-				ejecutarApplet=true;
+			ControlAcceso controlAcceso = null;
+			if(usuario.getTipoSeguridad().intValue()==Constantes.VALIDAR_APPLET) {
+				if(txtAccessCode.getText().trim().equals(""))
+					throw new ControlAccesoException(ControlAccesoException.EMPTY_CODIGO);
+				
+				controlAcceso = ServiceLocator.getUsuarioManager().buscarCodigoAcceso(usuario.getId(), txtAccessCode.getText().trim(), Constantes.VALUE_ACTIVO);
+				if (controlAcceso == null) 
+					throw new ControlAccesoException(ControlAccesoException.EXPIRED_CODIGO);
+			}
 			
+			txtLogin.setText("");
+			txtPassword.setText("");
+			txtAccessCode.setText("");
+			
+//			Session session =null;
+//			Boolean ejecutarApplet=false;
+//			/*Para el solicitar el codigo de acceso*/
+//			if(hlyoutCodigoAcceso.isVisible()==false){
+//				if(usuario.getTipoSeguridad().intValue()==Constantes.VALIDAR_APPLET){
+//					hlyoutCodigoAcceso.setVisible(true);
+//					txtCodigoAcceso.setFocus(true);
+//					return;
+//				}
+//			}else if (!(chkOmitirCodigoAcceso.isChecked()) && txtCodigoAcceso.getText().trim().isEmpty()){
+//				DlgMessage.information(Messages.getString("WndLogin.information.noCodigoAcceso"),txtCodigoAcceso);
+//				return;
+//			}else if (!(chkOmitirCodigoAcceso.isChecked()) && !(txtCodigoAcceso.getText().trim().isEmpty())){ 
+//				TreeMap<String, Object>criteriosBusqueda = new TreeMap<>();
+//				criteriosBusqueda.put("codigoAutorizacion", txtCodigoAcceso.getText().trim().toUpperCase());
+//				criteriosBusqueda.put("estado", Constantes.TRUE_VALUE);
+//				criteriosBusqueda.put("sessionIniciada", Constantes.FALSE_VALUE);
+//				criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+//				List<Session> resultSession=ServiceLocator.getSessionManager().buscarPorX(criteriosBusqueda, null);
+//				if(resultSession.size()>0){
+//					session=resultSession.get(0);
+//					Date fechaActual=new Date();
+//					if(session.getFechaInicial().getTime()<=fechaActual.getTime() && session.getFechaFin().getTime()<=fechaActual.getTime()){
+//						DlgMessage.information(Messages.getString("WndLogin.information.codigoAccesoExpiro"),txtCodigoAcceso);
+//						return;
+//					}
+//				}else{
+//					DlgMessage.information(Messages.getString("WndLogin.information.noExisteCodigoAcceso"),txtCodigoAcceso);
+//					return;
+//				}
+//			}else if (chkOmitirCodigoAcceso.isChecked())
+//				ejecutarApplet=true;			
 			
 			
 			/*	Valida si el usuario tiene o no un rol asignado.	*/
@@ -261,18 +292,18 @@ public class WndLogin extends WndBase {
 			this.getDesktop().getSession().setAttribute(Constantes.ATRIBUTO_ROL, rol);
 			
 //			###EDIT GEBIN 04/05/2016 - jabanto
-			if(ejecutarApplet){
-					Executions.sendRedirect("generateAddress.zul");
-			}else{
+//			if(ejecutarApplet){
+//					Executions.sendRedirect("generateAddress.zul");
+//			}else{
 				UsuarioHardware usuarioHardware=null;
-				//Actualiza la session del usuario como iniciada.
-				if(session!=null){
-					session.setSessionIniciada(Constantes.TRUE_VALUE);
-					session.setFechaAccesoSistema(new Date());
-					ServiceLocator.getSessionManager().actualizar(session);
-					//
+//				//Actualiza la session del usuario como iniciada.
+				if(controlAcceso!=null){
+//					session.setSessionIniciada(Constantes.TRUE_VALUE);
+//					session.setFechaAccesoSistema(new Date());
+//					ServiceLocator.getSessionManager().actualizar(session);
+//					//
 //					usuarioHardware = session.getUsuarioHardware();
-					usuarioHardware = ServiceLocator.getUsuarioHardwareManager().buscarPorId(session.getUsuarioHardware().getId().longValue());
+					usuarioHardware = ServiceLocator.getUsuarioHardwareManager().buscarPorId(controlAcceso.getUsuarioHardware().getId().longValue());
 				}else{
 					if(usuario.getUsuarioHardware()==null)
 						throw new UsuarioHardwareNullException();
@@ -381,7 +412,7 @@ public class WndLogin extends WndBase {
 						//El Usuario NO Tiene liquidacion abierta o es una agencia de viajes o corporativo 
 						Executions.sendRedirect("principal.zul");
 				}
-			}
+//			}
 			
 //			##END BEGIN 04/05/2016 - jabanto
 //			if(usuario.getTipoSeguridad().intValue()==Constantes.VALIDAR_APPLET){
@@ -517,8 +548,13 @@ public class WndLogin extends WndBase {
 			else if(cnex.getLevel().intValue()==1)
 				DlgMessage.information(Messages.getString("WndLogin.information.captchaNoEquals"),txtImagen);
 			txtImagen.setText("");
-			cpaImagen.randomValue();
-//			txtImagen.setFocus(true);	
+			cpaImagen.randomValue();	
+		}catch (ControlAccesoException lex){
+			if(lex.getTipo()==ControlAccesoException.EMPTY_CODIGO){
+				Executions.sendRedirect("invalidAccess.zul");
+			}else{
+				DlgMessage.information("El codigo de acceso no existe o no es valido.", txtAccessCode);
+			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());

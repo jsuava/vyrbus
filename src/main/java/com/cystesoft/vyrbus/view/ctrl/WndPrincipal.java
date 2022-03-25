@@ -517,6 +517,7 @@ public class WndPrincipal extends WndBase {
 							getDesktop().getSession().removeAttribute(Constantes.ATRIBUTO_ROL);
 							getDesktop().getSession().removeAttribute(Constantes.ATRIBUTO_IMPRESORAS_EQUIPO);
 							getDesktop().getSession().removeAttribute(Constantes.ATRIBUTO_IMPRESORA);
+							getDesktop().getSession().removeAttribute(Constantes.ATRIBUTO_DIR_MAC);
 						}
 					}
 				}

@@ -7,7 +7,7 @@
 		<vlayout>
 			<separator orient="vertical" height="200px"/>
 			Este equipo no tiene permitido acceder al Sistema de Ventas y Reservas...
-			<label value="Propiedad de CYSTech Software."/>
+			<label value="Propiedad de ITSB Consulting SAC."/>
 			<label value="En breve sera redireccionado..."/>
 		</vlayout>
 	</div>

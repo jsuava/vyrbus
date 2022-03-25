@@ -81,14 +81,7 @@
 		            <div id="post" >
 		            	<hlayout >
 		            		<separator orient="horizontal" width="80px"/>
-							<textbox id="txtLogin"
-									focus="true"
-									height="24px"  
-									onChange="wndLogin.txtLogin_onchange()"  
-									onOK="txtPassword.setFocus(true);"
-									placeholder="Nombre de usuario"  
-									style="font-size:14px; border-radius: 4px; border-width: 1px;" 
-									width="240px" />
+							<textbox id="txtLogin" focus="true" height="24px" onChange="wndLogin.txtLogin_onchange()" onOK="txtPassword.setFocus(true);" placeholder="Nombre de usuario" style="font-size:14px; border-radius: 4px; border-width: 1px;" width="240px" />
 						</hlayout>
 						<separator orient="vertical" height="10px"/>
 						<hlayout>
@@ -99,13 +92,11 @@
 								<image src="resources/lock.png" height="22px"/>
 							</div>
 -->							
-							<textbox id="txtPassword" 
-									height="24px"  
-									placeholder="Ingrese su contraseña"  
-									onOK="txtImagen.setFocus(true)" 
-									style="font-size:14px; border-radius: 4px; border-width: 1px;" 
-									type="password" 
-									width="240px" />
+							<textbox id="txtPassword" height="24px" placeholder="Ingrese su contraseña" onOK="txtImagen.setFocus(true)" style="font-size:14px; border-radius: 4px; border-width: 1px;" type="password" width="240px" />
+						</hlayout>
+						<hlayout id="hlAccessCode" visible="false">
+							<separator orient="horizontal" width="80px"/>
+							<textbox id="txtAccessCode" height="24px" placeholder="Codigo de Acceso" onOK="txtImagen.setFocus(true)" style="font-size:14px; border-radius: 4px; border-width: 1px;" width="240px" />
 						</hlayout>
 						<separator height="10px"></separator>
 						<hlayout>
@@ -146,12 +137,7 @@
 									txtImagen.setFocus(true);
 								</attribute>
 							</toolbarbutton>							
-							<textbox id="txtImagen"
-									cols="5" 
-									height="20px"
-									maxlength="5"  
-									onOK="if(!(hlyoutCodigoAcceso.isVisible()))wndLogin.onAccess(); else txtCodigoAcceso.setFocus(true);" 
-									style="text-transform: uppercase; font-size:12px; border-radius: 4px; border-width: 1px;"  />
+							<textbox id="txtImagen" cols="5" height="20px" maxlength="5" onOK="if(!(hlyoutCodigoAcceso.isVisible()))wndLogin.onAccess(); else txtCodigoAcceso.setFocus(true);" style="text-transform: uppercase; font-size:12px; border-radius: 4px; border-width: 1px;"  />
 							
 						</hbox>	
 												
@@ -160,20 +146,11 @@
 							<separator orient="horizontal" width="12px"/>
 							<div height="24px" width="80px" align="right">
 								<separator height="4px"/>
-<!--  								<label value="COD. ACCESO :" style="font-size:10px; font-weight:bold; color:#000066"/>		-->
+<!--  							<label value="COD. ACCESO :" style="font-size:10px; font-weight:bold; color:#000066"/>		-->
 							</div>
 							<hbox align="center">
-								<textbox id="txtCodigoAcceso" 
-										disabled="false" 
-										onOK="wndLogin.onAccess()" 
-										placeholder="Ingrese código de acceso" 
-										style="font-size:14px; border-radius: 4px; border-width: 1px;" 
-										width="160px" />
-								<checkbox id="chkOmitirCodigoAcceso" 
-										checked="false" 
-										label="Omitir" 
-										onCheck="if(self.isChecked()){txtCodigoAcceso.setText(null); 
-												txtCodigoAcceso.setDisabled(true);}else{txtCodigoAcceso.setDisabled(false);}" />
+								<textbox id="txtCodigoAcceso" disabled="false" onOK="wndLogin.onAccess()" placeholder="Ingrese código de acceso" style="font-size:14px; border-radius: 4px; border-width: 1px;" width="160px" />
+								<checkbox id="chkOmitirCodigoAcceso" checked="false" label="Omitir" onCheck="if(self.isChecked()){txtCodigoAcceso.setText(null); txtCodigoAcceso.setDisabled(true);}else{txtCodigoAcceso.setDisabled(false);}" />
 							</hbox>
 						</hlayout>						
 						
@@ -181,14 +158,8 @@
  							<separator orient="horizontal" width="108px"/>
 							<div id="divRol" visible="false">
 								<separator height="5px"/>
-<!--  							    <image src="resources/roles.png" height="22px"/>		-->
-								<combobox id="cmbRol" 
-									height="28px" 
-									onOK="wndLogin.onAccess()" 
-									readonly="true"
-									 
-									style = "border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-left-style: none; height: 28px !important;"
-									width="200"  />
+<!--  							<image src="resources/roles.png" height="22px"/>		-->
+								<combobox id="cmbRol" height="28px" onOK="wndLogin.onAccess()" readonly="true" style = "border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-left-style: none; height: 28px !important;" width="200"  />
 							</div>
 						</hbox>						
 						

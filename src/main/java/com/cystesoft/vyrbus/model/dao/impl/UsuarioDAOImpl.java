@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;	
 import java.util.TreeMap;
 
+import com.cystesoft.vyrbus.model.bean.ControlAcceso;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.dao.UsuarioDAO;
 import com.cystesoft.vyrbus.service.util.Constantes;
@@ -187,5 +188,27 @@ public class UsuarioDAOImpl extends GenericDAOImpl implements UsuarioDAO {
 	public List<Usuario> buscarPorX(String campo, Object[] criterios,List<String> criteriosOrdenar, String estadoRegistro)throws Exception {
 		// TODO Auto-generated method stub
 		return (List<Usuario>) super.findByX(Usuario.class, campo, criterios, criteriosOrdenar, estadoRegistro);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.UsuarioDAO#buscarCodigoAcceso(int, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public ControlAcceso buscarCodigoAcceso(int idUsuario, String codigo, String estado) throws Exception {
+		String hql ="";
+		List<?> result = null;
+		if(estado!=null){
+			hql="FROM ControlAcceso WHERE usuario=? AND codigo=? AND  SYSDATE() BETWEEN  fechaActivacion AND fechaCaducidad  and estadoRegistro=?";
+			log.info(hql);
+			result = getSession().createQuery(hql).setInteger(0,idUsuario).setString(1, codigo).setString(2, estado).list();
+		}
+		
+		ControlAcceso controlAcceso =  new ControlAcceso();		
+		if(result == null || result.size() == 0){
+			controlAcceso=null;
+		}else{
+			controlAcceso=(ControlAcceso) result.get(0);
+		}	
+		return controlAcceso;
 	}
 }

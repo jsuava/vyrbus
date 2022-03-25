@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
+import com.cystesoft.vyrbus.model.bean.ControlAcceso;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 
 public interface UsuarioManager {
@@ -98,5 +99,14 @@ public interface UsuarioManager {
 	 * @return Lista de Agencias.
 	 */
 	public List<Usuario> buscarPorX(String campo, Object[] criterios, List<String> criteriosOrdenar, String estadoRegistro) throws Exception;
+	/**
+	 * Realiza la busqueda del codigo de acceso para permitir ingresar al sistema
+	 * @param idUsuario	: Identificador del usuario
+	 * @param codigo	: Codigo de acceso a buscar
+	 * @param estado	: Estado del registro.
+	 * @return
+	 * @throws Exception
+	 */
+	public ControlAcceso buscarCodigoAcceso(int idUsuario, String codigo, String estado) throws Exception;
 	
 }
