@@ -16,11 +16,14 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Doublebox;
+import org.zkoss.zul.Image;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Window;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.Cliente;
@@ -38,6 +41,7 @@ import com.cystesoft.vyrbus.service.exceptions.UbigeoNullException;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.Messages;
+import com.cystesoft.vyrbus.service.util.RESTCiva;
 import com.cystesoft.vyrbus.service.util.Util;
 import com.cystesoft.vyrbus.service.util.UtilData;
 import com.cystesoft.vyrbus.view.ui.DlgMessage;
@@ -67,9 +71,10 @@ public class WndCliente extends WndOpcionesMantenimiento {
 	private Combobox cmbAgencia;
 	private Textbox txtRubro;
 	private Intbox ibxCantidadTrabajadores;
-	
+	private Image imgBuscarClienteSunat;
 	
 	private Cliente oCliente = null;
+	private String imgEnabledBusq="resources/mp_buscarEnabled.png";
 	
 	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
 	private List<String> criteriosOrdenar = null;
@@ -106,6 +111,16 @@ public class WndCliente extends WndOpcionesMantenimiento {
 		cmbAgencia = (Combobox) this.getFellow("cmbAgencia");
 		txtRubro=(Textbox)this.getFellow("txtRubro");
 		ibxCantidadTrabajadores=(Intbox)this.getFellow("ibxCantidadTrabajadores");
+		imgBuscarClienteSunat=(Image)this.getFellow("imgBuscarClienteSunat");
+		
+		imgBuscarClienteSunat.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event e) throws Exception{
+				if(imgBuscarClienteSunat.getSrc().equals(imgEnabledBusq))
+					onBuscarCienteSunat();
+				}
+		});
+		
 	}
 	
 	/* (non-Javadoc)
@@ -445,5 +460,34 @@ public class WndCliente extends WndOpcionesMantenimiento {
 		txtRubro.setText(oCliente.getRubro());
 		ibxCantidadTrabajadores.setText(oCliente.getCantidadTrabajadores().toString());
 	}
+	
+	public void onBuscarCienteSunat() throws Exception{
+		if(!txtNumeroDocumento.getText().trim().isEmpty()){
+				
+				String nroDocumento=txtNumeroDocumento.getText().trim();
+				
+				//Consulta RUC EN sunat
+				List<String> ruc = RESTCiva.getDatosRuc(nroDocumento);
+					
+
+				if(ruc!=null){
+//				Reniec reniec = new Reniec();
+					txtNumeroDocumento.setValue(ruc.get(0));
+					txtRazonSocial.setValue(ruc.get(1));
+					txtDireccion.setValue(ruc.get(2));
+					
+					Util.setFocus(btnUbicacionGeografica);
+
+				}else{
+					String numeroDocumento=txtNumeroDocumento.getText().trim();
+						
+					//onCleanControlsClient();
+					
+					//recupera valores ingresado por el usuario
+					txtNumeroDocumento.setText(numeroDocumento);
+				}
+		}
+	}
+	
 
 }

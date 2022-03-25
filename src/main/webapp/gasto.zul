@@ -39,20 +39,34 @@
 					</div>
 					<datebox id="dbFecha" format="dd/MM/yyyy" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbTipoGasto)" />
 					<label value="TIPO DE GASTO (*) :" />
-					<combobox id="cmbTipoGasto" readonly="true" onSelect="wndGasto.onSelectTipoGasto()" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNroDocumento)" />
+					<combobox id="cmbTipoGasto" 
+							readonly="true" 
+							onSelect="wndGasto.onSelectTipoGasto()" 
+							onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNroDocumento)" />
 				</row>
 				<row>
 					<label value="NRO. DOCUMENTO :"/>
-					<textbox id="txtNroDocumento" maxlength="20" style="font-size: 11px !important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(dbMonto)"/>				
+					<textbox id="txtNroDocumento" 
+							maxlength="20" 
+							style="font-size: 11px !important" 
+							onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(dbMonto)"/>				
 					<label value="MONTO (*) :" />
-					<doublebox id="dbMonto" format="##0.00" style="text-align: left;" width="130px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNombrePiloto)" />
+					<doublebox id="dbMonto" 
+							format="##0.00" 
+							style="text-align: left;" 
+							width="130px" 
+							onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNombrePiloto)" />
 				</row>
 				<row>
 					<label value="NOMBRE DEL PILOTO :" />
 					<textbox id="txtNombrePiloto" maxlength="30" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbBus)" />
 					<label value="BUS :" />
 <!-- 					<textbox id="txtBus" visible="false" maxlength="5" width="130px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtConsignado)"/> -->
-					<combobox id="cmbBus" width="135px" readonly="true" style="font-size: 12px !important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtConsignado)" />
+					<combobox id="cmbBus" 
+							width="135px" 
+							readonly="true" 
+							style="font-size: 12px !important" 
+							onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtConsignado)" />
 				</row>
 				<row>
 					<label value="CONSIGNADO :" />

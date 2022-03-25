@@ -409,7 +409,7 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 				throw new CancelaGrabacionException();
 			}
 			Agencia _agencia = ServiceLocator.getAgenciaManager().buscarPorId(usuarioSistema.getAgencia().getId().longValue());
-			Integer agenciaIdCarga = ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(_agencia.getCodigo());
+			Integer agenciaIdCarga = ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(_agencia.getId().toString());
 			if(agenciaIdCarga==null) {
 				DlgMessage.information(Messages.getString("WndUsuarioRol.information.noAgenciaCarga"));
 				throw new CancelaGrabacionException();

@@ -1,3 +1,4 @@
+
 package com.cystesoft.vyrbus.service.fe;
 
 import javax.xml.bind.JAXBElement;
@@ -43,8 +44,8 @@ public class SetConsultarCDR {
 	/**
 	 * Gets the value of the token property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
-	 *         {@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String
+	 *         }{@code >}
 	 * 
 	 */
 	public JAXBElement<String> getToken() {
@@ -55,8 +56,8 @@ public class SetConsultarCDR {
 	 * Sets the value of the token property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
-	 *            {@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String
+	 *            }{@code >}
 	 * 
 	 */
 	public void setToken(JAXBElement<String> value) {
@@ -66,8 +67,8 @@ public class SetConsultarCDR {
 	/**
 	 * Gets the value of the documentCDR property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}
-	 *         {@link DocumentCDR }{@code >}
+	 * @return possible object is {@link JAXBElement
+	 *         }{@code <}{@link DocumentCDR }{@code >}
 	 * 
 	 */
 	public JAXBElement<DocumentCDR> getDocumentCDR() {
@@ -78,8 +79,8 @@ public class SetConsultarCDR {
 	 * Sets the value of the documentCDR property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}
-	 *            {@link DocumentCDR }{@code >}
+	 *            allowed object is {@link JAXBElement
+	 *            }{@code <}{@link DocumentCDR }{@code >}
 	 * 
 	 */
 	public void setDocumentCDR(JAXBElement<DocumentCDR> value) {

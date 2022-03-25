@@ -27,8 +27,15 @@
 							<radio id="rdIngresos" label="Otros Ingresos" style="margin-left:10px !important" />
 <!-- 							<radio id="rdAmbos" label="Ambos" style="margin-left:10px !important"/> -->
 						</radiogroup>
-						<button image="resources/mp_buscarEnabled.png" label="Buscar" onClick="wndRptGastosIngresos.onSearch()" sclass="btnCommandM" style="width:110px; height:30px; margin-left:15px" />
-						<button  onClick="wndRptGastosIngresos.btnExportar_OnClick()" autodisable="selft" image="resources/mp_excel.png" sclass="btnImage" tooltiptext="Exportar a Excel."/>
+						<button image="resources/mp_buscarEnabled.png" label="Buscar" 
+								onClick="wndRptGastosIngresos.onSearch()" 
+								sclass="btnCommandM" 
+								style="width:110px; height:30px; margin-left:15px" />
+						<button onClick="wndRptGastosIngresos.btnExportar_OnClick()" 
+								autodisable="selft" 
+								image="resources/mp_excel.png" 
+								sclass="btnImage" 
+								tooltiptext="Exportar a Excel."/>
 					</hbox>
 				</row>
 			</rows>
@@ -42,29 +49,29 @@
 				<row style="vertical-align: text-top;">
 					<listbox id="ltbxAgencias" multiple="true" checkmark="true" width="100%" rows="5">
 						<listhead>
-							<listheader label="OFICINA" width="180px" />
-							<listheader label="IMPORTE" align="center" />
+							<listheader label="OFICINA" width="180px" style="color: #ffffff;"/>
+							<listheader label="IMPORTE" align="center" style="color: #ffffff;"/>
 						</listhead>
 					</listbox>
 					<listbox id="ltbxUsuarios" width="415px" rows="6">
 						<listhead>
-							<listheader label="USUARIO" width="300px" />
-							<listheader label="IMPORTE" align="center"/>
+							<listheader label="USUARIO" width="300px" style="color: #ffffff;"/>
+							<listheader label="IMPORTE" align="center" style="color: #ffffff;"/>
 						</listhead>
 					</listbox>					
 				</row>
 				<row spans="2">
 					<listbox id="ltbxDetalleGasto" rows="7">
 						<listhead>
-							<listheader label="FECHA" width="80px" align="center" sort="auto"/>
-							<listheader label="TIPO GASTO" width="130px" sort="auto"/>
-							<listheader label="AGENCIA" width="150px" sort="auto"/>
-							<listheader label="N° DOCUMENTO" width="120px" sort="auto"/>
-							<listheader label="PILOTO" width="160px" sort="auto"/>
-							<listheader label="BUS" width="50px" sort="auto"/>
-							<listheader label="CONSIGNADO" width="120px" sort="auto"/>
-							<listheader label="OBSERVACIONES" width="260px" sort="auto"/>
-							<listheader label="MONTO" align="center" sort="auto"/>
+							<listheader label="FECHA" width="80px" align="center" sort="auto" style="color: #ffffff;"/>
+							<listheader label="TIPO GASTO" width="130px" sort="auto" style="color: #ffffff;"/>
+							<listheader label="AGENCIA" width="150px" sort="auto" style="color: #ffffff;"/>
+							<listheader label="N° DOCUMENTO" width="120px" sort="auto" style="color: #ffffff;"/>
+							<listheader label="PILOTO" width="160px" sort="auto" style="color: #ffffff;"/>
+							<listheader label="BUS" width="50px" sort="auto" style="color: #ffffff;"/>
+							<listheader label="CONSIGNADO" width="120px" sort="auto" style="color: #ffffff;"/>
+							<listheader label="OBSERVACIONES" width="260px" sort="auto" style="color: #ffffff;"/>
+							<listheader label="MONTO" align="center" sort="auto" style="color: #ffffff;"/>
 						</listhead>
 					</listbox>				
 				</row>

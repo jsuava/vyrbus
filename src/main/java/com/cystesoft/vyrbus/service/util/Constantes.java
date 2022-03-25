@@ -162,8 +162,8 @@ public class Constantes {
 
 //	public static final String SERVER_HOST = "192.168.0.8:8080";
 
-//	public static final String SERVER_HOST = "localhost:8080";
-	public static final String SERVER_HOST = "190.119.140.203:8080";
+	public static final String SERVER_HOST = "localhost:8080";
+//	public static final String SERVER_HOST = "190.119.140.203:8080";
 
 	public static final String SERVER_CONTEXT = Executions.getCurrent().getContextPath();
 	public static final String URL_FORMATOS = SERVER_PROTOCOL+"://"+SERVER_HOST+SERVER_CONTEXT+"/formatos/";

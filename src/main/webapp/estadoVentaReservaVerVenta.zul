@@ -33,9 +33,9 @@
 					<label id="lblDestino" style="font-size:11px !important; color:blue"/>
 				</row>
 				<row>
-					<label value="PTO. EMBARQUE :" />
+					<label value="TER. EMBARQUE :" />
 					<label id="lblPtoEmbarque" style="font-size:11px !important; color:blue"/>
-					<label value="PTO. LLEGADA :" />
+					<label value="TER. LLEGADA :" />
 					<label id="lblPtoLlegada" style="font-size:11px !important; color:blue"/>
 				</row>
 				<row>
@@ -57,13 +57,13 @@
 					<label id="lblTarifa" style="font-size:11px !important; color:blue"/>
 				</row>
 				<row>
-					<label value="NRO. BOLETO :" />
+					<label value="COMPROBANTE :" />
 					<label id="lblNroBoleto" style="font-size:11px !important; color:blue"/>
 					<label value="ALIMENTACIÓN :" />
 					<label id="lblAlimentacion" style="font-size:11px !important; color:blue"/>
 				</row>
 				<row >
-					<label value="NRO. BOLETO REF :" />
+					<label value="COMPROBANTE REF.:" />
 					<label id="lblNroBoletoRef" style="font-size:11px !important; color:blue"/>
 					<label value="OBSERVACIONES :" />
 					<label id="lblObservaciones" style="font-size:11px !important; color:blue"/>
@@ -180,7 +180,7 @@
 							<div align="right" width="35px">
 								<label id="lblPagoTarifa" style="font-size:11px !important; color:blue"/>
 							</div>										
-							<label value="TIPO COMPROBANTE :"/>
+							<label value="COMPROBANTE :"/>
 							<label id="lblPagoTipoComprobante" style="font-size:11px !important; color:blue"/>
 						</row>
 						<row>
@@ -208,7 +208,13 @@
 								<checkbox id="chbxPagoMixto" label="Pago Mixto" disabled="true"/>
 							</hbox>	
 							
-							<label value="OPERADOR TARJETA :"/>
+							<label value="MONEDA :"/>
+							<label id="lblMoneda" style="font-size:11px !important; color:blue"/>
+						</row>
+						<row>
+							<label value="" />
+							<label value="" />
+							<label value="OPER. TARJETA :"/>
 							<label id="lblPagoOperadorTarjeta" style="font-size:11px !important; color:blue"/>
 						</row>
 						<row>
@@ -220,7 +226,7 @@
 						<row>
 							<label id="lblPagoLabelImporteTarjeta" visible="false" value="IMPORTE TARJETA :"/>
 							<label id="lblPagoImporteTarjeta" visible="false" style="font-size:11px !important; color:blue"/>
-							<label value="NUMERO OPERACIÓN :"/>
+							<label value="NRO OPERACIÓN :"/>
 							<label id="lblPagoNumeroOperacion" style="font-size:11px !important; color:blue"/>
 						</row>
 						<row spans="4">

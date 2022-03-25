@@ -1,3 +1,4 @@
+
 package com.cystesoft.vyrbus.service.fe;
 
 import javax.xml.bind.JAXBElement;
@@ -49,8 +50,8 @@ public class DocumentCDR {
 	/**
 	 * Gets the value of the id property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
-	 *         {@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String
+	 *         }{@code >}
 	 * 
 	 */
 	public JAXBElement<String> getId() {
@@ -61,8 +62,8 @@ public class DocumentCDR {
 	 * Sets the value of the id property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
-	 *            {@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String
+	 *            }{@code >}
 	 * 
 	 */
 	public void setId(JAXBElement<String> value) {
@@ -114,8 +115,8 @@ public class DocumentCDR {
 	/**
 	 * Gets the value of the rucEmpresa property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
-	 *         {@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String
+	 *         }{@code >}
 	 * 
 	 */
 	public JAXBElement<String> getRucEmpresa() {
@@ -126,8 +127,8 @@ public class DocumentCDR {
 	 * Sets the value of the rucEmpresa property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
-	 *            {@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String
+	 *            }{@code >}
 	 * 
 	 */
 	public void setRucEmpresa(JAXBElement<String> value) {
@@ -137,8 +138,8 @@ public class DocumentCDR {
 	/**
 	 * Gets the value of the ticket property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
-	 *         {@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String
+	 *         }{@code >}
 	 * 
 	 */
 	public JAXBElement<String> getTicket() {
@@ -149,8 +150,8 @@ public class DocumentCDR {
 	 * Sets the value of the ticket property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
-	 *            {@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String
+	 *            }{@code >}
 	 * 
 	 */
 	public void setTicket(JAXBElement<String> value) {

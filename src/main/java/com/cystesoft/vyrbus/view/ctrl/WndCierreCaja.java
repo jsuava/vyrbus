@@ -45,6 +45,7 @@ import org.zkoss.zul.Window;
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.Liquidacion;
 import com.cystesoft.vyrbus.model.bean.Rol;
+import com.cystesoft.vyrbus.model.bean.TranscarUsuarioPersonal;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.service.exceptions.PasswordException;
@@ -173,7 +174,9 @@ public class WndCierreCaja extends WndBase {
 		
 		Util.limpiarListbox(listLiquidacion);
 	}
-		
+	
+	
+	
 	/**
 	 * Busca Liquidación, según los parametros seleccionados.
 	 * @throws Exception
@@ -1002,6 +1005,21 @@ public class WndCierreCaja extends WndBase {
 		/* Procesa cierre de caja*/
 		UtilData.procesaCierreCaja(liquidacion, montoIngresado, getUsuario(), montoIngresadoDolares);
 		
+		/* Procesa el cierre de caja en Carga*/
+		try {
+			TranscarUsuarioPersonal transcarUsuarioPersonal = ServiceLocator.getTranscarManager().buscarUsuarioPersonal(liquidacion.getUsuario().getLogin());
+			int agenciaIdCargo = 0;
+			String fechaLiquidacion =Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
+			if(transcarUsuarioPersonal!=null && liquidacion.getAgencia().getCodigo()!=null){
+				agenciaIdCargo = ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(liquidacion.getAgencia().getId().toString());
+				ServiceLocator.getTranscarManager().cerrarLiquidacion(transcarUsuarioPersonal.getId(), agenciaIdCargo, fechaLiquidacion, fechaLiquidacion);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		
 		/* Procesa cierre de caja de la venta de seguros*/
 //		VSLiquidacion vsLiquidacion=ServiceLocator.getVentaSeguroManager().buscarLiquidacion(liquidacion.getUsuario().getId(),liquidacion.getAgencia().getId(), Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()),Constantes.TRUE_VALUE);
 //		if(vsLiquidacion!=null){
@@ -1017,7 +1035,8 @@ public class WndCierreCaja extends WndBase {
 			@Override
 			public void onEvent(Event event)throws Exception {
 				if(event.getName().equals("onYes"))
-					imprimirLiquidacion(liquidacion); 
+					openWindowPrintLiquidacion(liquidacion);
+//					imprimirLiquidacion(liquidacion); 
 			}
 		});
 		buscarLiquidacion();

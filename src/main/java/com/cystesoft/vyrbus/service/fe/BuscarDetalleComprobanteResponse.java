@@ -1,3 +1,4 @@
+
 package com.cystesoft.vyrbus.service.fe;
 
 import javax.xml.bind.JAXBElement;
@@ -40,8 +41,8 @@ public class BuscarDetalleComprobanteResponse {
 	/**
 	 * Gets the value of the buscarDetalleComprobanteResult property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link Result }
-	 *         {@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link Result
+	 *         }{@code >}
 	 * 
 	 */
 	public JAXBElement<Result> getBuscarDetalleComprobanteResult() {
@@ -52,8 +53,8 @@ public class BuscarDetalleComprobanteResponse {
 	 * Sets the value of the buscarDetalleComprobanteResult property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link Result }
-	 *            {@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link Result
+	 *            }{@code >}
 	 * 
 	 */
 	public void setBuscarDetalleComprobanteResult(JAXBElement<Result> value) {

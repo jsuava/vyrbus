@@ -27,7 +27,9 @@ import org.zkoss.zul.Listitem;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.CentroCosto;
+import com.cystesoft.vyrbus.model.bean.DetalleEquipaje;
 import com.cystesoft.vyrbus.model.bean.DetalleFlotaHRE;
+import com.cystesoft.vyrbus.model.bean.Equipaje;
 import com.cystesoft.vyrbus.model.bean.Gasto;
 import com.cystesoft.vyrbus.model.bean.HRE;
 import com.cystesoft.vyrbus.model.bean.Itinerario;
@@ -40,6 +42,7 @@ import com.cystesoft.vyrbus.model.bean.Nacionalidad;
 import com.cystesoft.vyrbus.model.bean.Personal;
 import com.cystesoft.vyrbus.model.bean.Servicio;
 import com.cystesoft.vyrbus.model.bean.TipoPersonal;
+import com.cystesoft.vyrbus.model.bean.TranscarUsuarioPersonal;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VSAfiliacion;
 import com.cystesoft.vyrbus.model.bean.VSAsegurado;
@@ -1023,6 +1026,41 @@ public class CreateDocument implements Serializable {
 				bw.write(linea+NEWLINE);
 			}
 			
+			/**CARGA - RESUMEN ESPECIES VALORADAS*/
+			TranscarUsuarioPersonal transcarUsuarioPersonal = ServiceLocator.getTranscarManager().buscarUsuarioPersonal(liquidacion.getUsuario().getLogin());
+			int agenciaIdCargo = 0;
+			String fechaLiquidacion =Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
+
+			if(transcarUsuarioPersonal!=null){ // && liquidacion.getAgencia().getCodigo()!=null){
+//				agenciaIdCargo = ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(liquidacion.getAgencia().getCodigo());				
+				agenciaIdCargo = ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(liquidacion.getAgencia().getId().toString());
+				List<Liquidacion> listLiquidacionCarga = ServiceLocator.getTranscarManager().buscarLiquidacionTurnoResumenEspVal(transcarUsuarioPersonal.getId(), agenciaIdCargo, fechaLiquidacion, fechaLiquidacion);
+				for(Liquidacion _liquidacion : listLiquidacionCarga) {
+					longitud_C=_liquidacion.getComprobante().toString().length();
+					String strSerie = (_liquidacion.getSerie()!=null?_liquidacion.getSerie():"");
+					String desde = _liquidacion.getBoletoInicial();
+					String hasta = _liquidacion.getboletoFinal();
+					linea = tabular(3)+_liquidacion.getComprobante()+tabular(19-longitud_C)+strSerie;
+										
+					longitud_C = desde.length();
+					linea += tabular(5)+tabular(1-longitud_C+1)+desde;
+					longitud_C = hasta.length();
+					linea += tabular(5)+tabular(1-longitud_C+1)+hasta;
+										
+					longitud_C=_liquidacion.getCantidadBoletos().toString().length();
+					linea += tabular(5)+tabular(1-longitud_C+1)+_liquidacion.getCantidadBoletos();
+					longitud_M=(int) _liquidacion.getImporte().intValue();
+					longitud_M = longitud_M.toString().length(); 
+					if (longitud_M==4)
+						longitud_M += +1;
+					else if (longitud_M==5)
+						longitud_M += +2;
+					linea += tabular(11-longitud_M)+Util.toNumberFormat(_liquidacion.getImporte(),2);
+					bw.write(linea+NEWLINE);
+				}
+			}
+			
+			
 //			for (Liquidacion especiesValorada: list ){
 //				longitud_C=especiesValorada.getTipoComprobante().getDenominacion().toString().length();
 //				linea = tabular(3)+especiesValorada.getTipoComprobante().getDenominacion()+tabular(22-longitud_C)+"Serie: "+especiesValorada.getSerie()+" ";
@@ -1033,7 +1071,25 @@ public class CreateDocument implements Serializable {
 //				bw.write(linea+NEWLINE);
 //			}
 					
+			/**PASAJES*/
 			Liquidacion liquidacion2 = ServiceLocator.getLiquidacionManager().buscarRptLiquidacionTurno(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId());
+			
+			/**CARGA*/
+			if(transcarUsuarioPersonal!=null) { //&& liquidacion.getAgencia().getCodigo()!=null){				
+				Liquidacion liquidacion2Cargo = ServiceLocator.getTranscarManager().buscarLiquidacionTurno(transcarUsuarioPersonal.getId(), agenciaIdCargo, fechaLiquidacion, fechaLiquidacion);
+				
+				liquidacion2.setMontoContado(liquidacion2.getMontoContado() + liquidacion2Cargo.getMontoContado());
+				liquidacion2.setCantidadContado(liquidacion2.getCantidadContado() + liquidacion2Cargo.getCantidadContado());
+				liquidacion2.setMontoTarjetaVisa(liquidacion2.getMontoTarjetaVisa() + liquidacion2Cargo.getMontoTarjetaVisa());
+				liquidacion2.setCantidadTarjetaVisa(liquidacion2.getCantidadTarjetaVisa() + liquidacion2Cargo.getCantidadTarjetaVisa());				
+				liquidacion2.setMontoTarjetaMasterCard(liquidacion2.getMontoTarjetaMasterCard() + liquidacion2Cargo.getMontoTarjetaMasterCard());
+				liquidacion2.setCantidadTarjetaMasterCard(liquidacion2.getCantidadTarjetaMasterCard() + liquidacion2Cargo.getCantidadTarjetaMasterCard());
+				liquidacion2.setMontoNotasCredito(liquidacion2.getMontoNotasCredito() + liquidacion2Cargo.getMontoNotasCredito());
+				liquidacion2.setCantidadNotasCredito(liquidacion2.getCantidadNotasCredito() + liquidacion2Cargo.getCantidadNotasCredito());
+				liquidacion2.setMontoPCE(liquidacion2.getMontoPCE() + liquidacion2Cargo.getMontoPCE());
+				liquidacion2.setCantidadPCE(liquidacion2.getCantidadPCE() + liquidacion2Cargo.getCantidadPCE());
+			}			
+			
 			
 			/********** BUSCAR LIQUIDACION DE VENTA DE SEGUROS********************************/
 			/* Busca liquidacion de venta de seguros*/
@@ -2296,6 +2352,176 @@ public class CreateDocument implements Serializable {
 		return file;
 	}
 		
+	
+	public static final File creaManifiesto_Equipajes(List<DetalleEquipaje> listDetalleEquipajes, Itinerario itinerario)throws Exception{
+		Equipaje equipaje = ServiceLocator.getEquipajeManager().buscarPorId(listDetalleEquipajes.get(0).getEquipaje().getId());
+		String numeroManifiesto = (Util.autocompleNumberBoleto("000-"+equipaje.getId().toString())).split("-")[1];			
+		Integer longitud_C=0;
+		String fichero = Constantes.DIRECTORY_MANIFIESTOS +Constantes.CLAVE_PAHT + "MANIFIESTO_EQUIPAJE_"+numeroManifiesto+".txt";
+					
+		File file = new File(fichero);
+		
+		try {
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),"UTF-8"));
+			String linea = "";
+			
+			
+			
+			//---> line 1:	TITULO DEL REPORTE
+			String title="";
+			title=("MANIFIESTO DE EQUIPAJES");
+			linea = tabular(54)+title;
+			bw.write(linea + NEWLINE);
+			//---> line 2:
+			linea = Constantes.empresa;
+			String ruc= Constantes.ruc;
+			linea +=tabular(89)+"RUC: "+ruc;
+			bw.write(linea+NEWLINE);
+			//---> line 3:
+			String ofPrincipal = Constantes.direccion_empresa;
+			String centraTelf = Constantes.nro_telefono;
+			linea="Of.Principal: "+ofPrincipal+tabular(10)+"Central Telf.: "+centraTelf+tabular(23);
+			linea+="Nro.Manif.: "+numeroManifiesto;
+			bw.write(linea+NEWLINE);
+			//---> line 5:(Agencia - Nro.Itinerario - Bus)
+			String agenciA=equipaje.getAgencia().getDenominacion();
+			longitud_C=agenciA.length();
+			String bus="";
+			if(!(itinerario.getBus()==null))
+				bus=itinerario.getBus().getCodigo();
+			linea="Agencia   : "+agenciA+tabular(44-longitud_C);
+			longitud_C=itinerario.getId().toString().length();
+			linea+="Nro.Itin.: "+itinerario.getId()+tabular(38-longitud_C);
+			linea+="Bus : "+bus;
+			bw.write(linea+NEWLINE);
+			//---> line 6:(Origen - Destino - Placa)
+			String origen=itinerario.getRuta().getOrigen();
+			String destino=itinerario.getRuta().getDestino();
+			String placa="";
+			if(!(itinerario.getBus()==null))
+				placa=itinerario.getBus().getNumeroPlaca();
+			longitud_C=origen.length();
+			linea="Origen    : "+origen+tabular(44-longitud_C); longitud_C=destino.length();
+			linea+="Destino  : "+destino+tabular(36-longitud_C);
+			linea+="Placa : "+placa;
+			bw.write(linea+NEWLINE);
+			
+			//---> linea 7:(Chofer1 -  Licencia - Nro. Tarj. Habilit.)
+			String Chofer=""; String licencia=""; String TarjHabilit="";
+			if(!(itinerario.getBus()==null)){
+				Personal piloto = new Personal(); 
+				piloto=itinerario.getBus().getProgramacionServicio().getPiloto();
+				Chofer=piloto.toString(); //.getApellidoPaterno()+" "+piloto.getApellidoMaterno()+", "+piloto.getNombre();
+				if(piloto.getLicencia() != null)
+					licencia=piloto.getLicencia();
+				if(!(itinerario.getBus().getDocumentoBus()==null))
+					TarjHabilit=itinerario.getBus().getDocumentoBus().getNumeroDocumento();
+				
+				longitud_C=Chofer.length();		
+				linea="Chofer 1  : "+Chofer+tabular(44-longitud_C); longitud_C=licencia.length();
+				linea+="Licencia : "+licencia+tabular(23-longitud_C);
+				linea+="Nro. Tarj. Habilit.: "+TarjHabilit;
+				bw.write(linea+NEWLINE);
+				//---> linea 8:(Chofer2 -  Licencia - Marca)
+				String marca="";
+				if(!(itinerario.getBus()==null)){
+					Personal copiloto = new Personal(); 
+					copiloto=itinerario.getBus().getProgramacionServicio().getCopiloto();
+					Chofer=copiloto.toString(); //.getApellidoPaterno()+" "+copiloto.getApellidoMaterno()+", "+copiloto.getNombre();
+					if(copiloto.getLicencia() != null)
+						licencia=copiloto.getLicencia();
+					if(!(itinerario.getBus().getGrupoMantenimiento().getDenominacion()==null))
+						marca=itinerario.getBus().getGrupoMantenimiento().getDenominacion();
+				}
+				longitud_C=Chofer.length();
+				linea="Chofer 2  : "+Chofer+tabular(44-longitud_C); longitud_C=licencia.length();
+				linea+="Licencia : "+licencia+tabular(36-longitud_C);
+				linea+="Marca : "+marca;
+				bw.write(linea+NEWLINE);
+				//---> linea 8:(Chofer3 -  Licencia )
+				Chofer="";licencia="";String servicio="";
+				if(!(itinerario.getBus()==null) && itinerario.getBus().getProgramacionServicio().getCopilotoAuxiliar()!=null){
+					Personal copilotoAux = new Personal(); 
+					copilotoAux=itinerario.getBus().getProgramacionServicio().getCopilotoAuxiliar();
+					Chofer=copilotoAux.toString();
+					if(copilotoAux.getLicencia() != null)
+						licencia=copilotoAux.getLicencia();
+				}
+				servicio=itinerario.getServicio().getDenominacion();
+				longitud_C=Chofer.length();
+				linea="Chofer 3  : "+Chofer+tabular(44-longitud_C); longitud_C=licencia.length();
+				linea+="Licencia : "+licencia+tabular(33-longitud_C);
+				linea+="Servicio : "+servicio;
+				
+				bw.write(linea+NEWLINE);
+				//---> linea 9:(Terramoza -  Salida - Servicio)
+				String tripulante=""; String salida=""; String dniTerramoza=""; 
+				//Se agrego la condicion en el if porque la tripulante ya no es obligatorio, por MAOE 27/06/2021
+				if(!(itinerario.getBus()==null) && itinerario.getBus().getProgramacionServicio().getTripulante()!=null ){
+					Personal terramoza = new Personal(); 
+					terramoza=itinerario.getBus().getProgramacionServicio().getTripulante();
+					tripulante=terramoza.toString();//.getApellidoPaterno()+" "+terramoza.getApellidoMaterno()+", "+terramoza.getNombre();
+					dniTerramoza=terramoza.getNroDocumento()!=null?terramoza.getNroDocumento():"";
+				}
+				salida=Constantes.FORMAT_DATE.format(itinerario.getFechaPartida())+" "+itinerario.getHoraPartida();
+				
+				longitud_C=tripulante.length();
+				linea="Terramoza : "+tripulante+tabular(49-longitud_C); longitud_C=dniTerramoza.length();
+				linea+="DNI : "+dniTerramoza+tabular(35-longitud_C);
+				linea+="Salida : "+salida;
+				
+				bw.write(linea+NEWLINE);
+			}
+			
+			int longAsiento = 6;
+			int longNroComprobante = 15;
+			int longPasajero = 82;
+			int longTikect = 16;
+			
+			/*Crea Encabezado*/
+			bw.write(NEWLINE);
+			bw.write(NEWLINE);
+			linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
+			bw.write(linea+NEWLINE);
+			linea = "| ASIENTO ";
+			linea += "|  COMPROBANTE   ";
+			linea += "| PASAJERO" + tabular(74);
+			linea += "|        TICKET        |";
+			bw.write(linea+NEWLINE);
+			linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
+			bw.write(linea+NEWLINE);
+			for(DetalleEquipaje detalleEquipaje: listDetalleEquipajes){
+				/*ASIENTO*/
+				String asiento=(detalleEquipaje.getVentaPasaje()!=null?detalleEquipaje.getVentaPasaje().getNumeroAsiento().toString():"");
+				asiento = (asiento.length()==1?"0"+asiento:asiento);
+				longitud_C=asiento.length();
+				linea="|   "+asiento+tabular(longAsiento-longitud_C);
+				/*BOLETO*/
+				String numeroComprobante=(detalleEquipaje.getVentaPasaje()!=null?detalleEquipaje.getVentaPasaje().getNumeroBoleto():"");
+				longitud_C=numeroComprobante.length();
+				linea+="| "+numeroComprobante+tabular(longNroComprobante-longitud_C)+"| ";
+				/*PASAJERO*/
+				String pasajero=(detalleEquipaje.getVentaPasaje()!=null?detalleEquipaje.getVentaPasaje().getPasajero().toString():"");
+				longitud_C=pasajero.length();
+				linea+=pasajero+tabular(longPasajero-longitud_C)+"| ";
+				/*TICKET*/
+				String ticket=detalleEquipaje.getTicket();
+				longitud_C=ticket.length();
+				linea+= tabular(5)+ ticket+tabular(longTikect-longitud_C)+"| ";
+								
+				bw.write(linea+NEWLINE);
+			}
+			linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
+			bw.write(linea+NEWLINE);
+		
+			bw.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+				
+		return file;
+	}
+	
 	/**
 	 * Crea manifiesto de pasajeros / Listado de Pasajeros
 	 * @param itinerario : class itinerario
@@ -2804,14 +3030,14 @@ public class CreateDocument implements Serializable {
 		String encabezado="|NRO |";
 		encabezado+="TRANSACCION|";
 //		encabezado+=" N.CONTROL|";
-		encabezado+="  NRO.BOLETO      |";
-		encabezado+="  NRO.BOLREF      |";
-		encabezado+=" BRUTO  |";
+		encabezado+="  COMPROBANTE   |";
+		encabezado+="  COMP. REF.    |";
+		encabezado+="  BRUTO   |";
 		encabezado+=" RCGO  |";
 		encabezado+=" DESCTO|";
 		encabezado+=" A CTA.|";
 		encabezado+=" PENAL.|";
-		encabezado+="  NETO  |";
+		encabezado+="   NETO   |";
 		encabezado+="  USUARIO   |";
 		encabezado+=" FEC.VENTA  |";
 		String interlineado="+----------------------------------------------------------------------------------------------------------------------------------+";
@@ -2851,8 +3077,8 @@ public class CreateDocument implements Serializable {
 			Integer longNroItem=2;
 			Integer longTransaccion=9;
 //			Integer longNControl=8;
-			Integer longBoleto=16;
-			Integer longBruto=6;
+			Integer longBoleto=14;
+			Integer longBruto=8;
 			Integer longRecargo=5;
 			Integer longUsuario=10;
 			Integer longFechaVenta=10;
@@ -3198,6 +3424,7 @@ public class CreateDocument implements Serializable {
 		
 		return file;
 	}
+
 	
 	/**
 	 * Crea archivo para la impresión y/o pre-visualizacion de la hoja de ruta.

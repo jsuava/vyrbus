@@ -288,7 +288,7 @@ public class WndEstadoVentaReserva extends WndBase {
 					});
 					
 					Toolbarbutton tbverVenta= new Toolbarbutton("Ver venta");
-					tbverVenta.setStyle("text-transform:lowercase; color:blue;");
+					tbverVenta.setStyle("text-transform:uppercase; color:blue;");
 					x++;
 					tbverVenta.setId(String.valueOf(x));
 					cell= new Listcell();

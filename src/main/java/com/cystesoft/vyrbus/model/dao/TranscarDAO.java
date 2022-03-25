@@ -11,6 +11,7 @@ package com.cystesoft.vyrbus.model.dao;
 import java.util.List;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
+import com.cystesoft.vyrbus.model.bean.Liquidacion;
 import com.cystesoft.vyrbus.model.bean.TranscarLiquidacionTurno;
 import com.cystesoft.vyrbus.model.bean.TranscarRolUsuario;
 import com.cystesoft.vyrbus.model.bean.TranscarUsuarioPersonal;
@@ -67,14 +68,14 @@ public interface TranscarDAO {
 	public String aperturarLiquidacion(TranscarLiquidacionTurno liquidacionTurno)throws Exception;
 	/**
 	 * Realiza la busqueda del detalle de ventas 
-	 * @param usuarioId	: Identificador del usuario - Transcar
+	 * @param usuarioPersonal	: Identificador del usuario - Transcar
 	 * @param agenciaId	: Identificador de la agencia - Transcar
 	 * @param fechaInicial	: Fecha inicial de la busqueda
 	 * @param fechaFinal	: Fecha Final de la busqueda
 	 * @return lista de resultados
 	 * @throws Exception
 	 */
-	public List<VentaPasaje> buscarDetalleVentas(Integer usuarioId, Integer agenciaId, String fechaInicial, String fechaFinal)throws Exception;
+	public List<VentaPasaje> buscarDetalleVentas(TranscarUsuarioPersonal usuarioPersonal, Integer agenciaId, String fechaInicial, String fechaFinal)throws Exception;
 	/**
 	 * Realiza la busqueda de todas las agencias
 	 * @return
@@ -90,4 +91,33 @@ public interface TranscarDAO {
 	 * @throws Exception
 	 */
 	public List<Usuario> buscarUsuariosByVenta(Integer agenciaId, String fechaInicio, String fechaFin)throws Exception;
+	/**
+	 * Realiza la busqueda del resumen de especies valoradas emitidas
+	 * @param usuarioId		: Identificador unico del usuario
+	 * @param agenciaId		: Identificador unico de la agencia
+	 * @param fechaInicio	: Fecha inicio de la busqueda
+	 * @param fechaFin		: Fecha fin de la bsuqueda
+	 * @return
+	 * @throws Exception
+	 */
+	public List<Liquidacion> buscarLiquidacionTurnoResumenEspVal(Integer usuarioId, Integer agenciaId, String fechaInicio, String fechaFin)throws Exception;
+	/**
+	 * Realiza la busqueda de los montos separados por forma de pago para la liquidacion de turno
+	 * @param usuarioId		: Identificador unico del usuario
+	 * @param agenciaId		: Identificador unico de la agencia
+	 * @param fechaInicio	: Fecha inicio de la busqueda
+	 * @param fechaFin		: Fecha fin de la bsuqueda
+	 * @return
+	 * @throws Exception
+	 */
+	public Liquidacion buscarLiquidacionTurno(Integer usuarioId, Integer agenciaId, String fechaInicio, String fechaFin)throws Exception;
+	/**
+	 * Realiza el cierre de la liquidacion de turno
+	 * @param usuarioId		: Identificador unico del usuario
+	 * @param agenciaId		: Identificador unico de la agencia
+	 * @param fechaInicio	: Fecha inicio de la busqueda
+	 * @param fechaFin		: Fecha fin de la bsuqueda
+	 * @throws Exception
+	 */
+	public void cerrarLiquidacion(Integer usuarioId, Integer agenciaId, String fechaInicio, String fechaFin)throws Exception;
 }

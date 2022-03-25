@@ -27,13 +27,16 @@ public class Liquidacion extends GenericBean implements java.io.Serializable {
 	private Set<LiquidacionOficina> liquidacionOficinas = new HashSet<LiquidacionOficina>(0);
 
 	//NO MAPEADO
-	//Especie Valorada
+	//Resumen Especie Valorada
+	private String comprobante;
 	private String serie;
 	private String boletoInicial;
 	private String boletoFinal;
 	private Integer cantidadBoletos;
+	private Double importe;
 	private Integer cortes;
 	private TipoComprobante tipoComprobante;
+	
 		
 	//Resumen de ventas
 	private double totalVoublers;
@@ -853,6 +856,34 @@ public class Liquidacion extends GenericBean implements java.io.Serializable {
 	 */
 	public void setMontoIngresadoDolares(Double montoIngresadoDolares) {
 		this.montoIngresadoDolares = montoIngresadoDolares;
+	}
+
+	/**
+	 * @return the importe
+	 */
+	public Double getImporte() {
+		return importe;
+	}
+
+	/**
+	 * @param importe the importe to set
+	 */
+	public void setImporte(Double importe) {
+		this.importe = importe;
+	}
+
+	/**
+	 * @return the comprobante
+	 */
+	public String getComprobante() {
+		return comprobante;
+	}
+
+	/**
+	 * @param comprobante the comprobante to set
+	 */
+	public void setComprobante(String comprobante) {
+		this.comprobante = comprobante;
 	}
 
 }

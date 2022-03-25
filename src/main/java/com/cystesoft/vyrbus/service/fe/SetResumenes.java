@@ -1,3 +1,4 @@
+
 package com.cystesoft.vyrbus.service.fe;
 
 import javax.xml.bind.JAXBElement;
@@ -32,8 +33,7 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "token", "fechaEmisionComprobantes",
-		"rucEmpresa" })
+@XmlType(name = "", propOrder = { "token", "fechaEmisionComprobantes", "rucEmpresa" })
 @XmlRootElement(name = "setResumenes")
 public class SetResumenes {
 
@@ -47,8 +47,8 @@ public class SetResumenes {
 	/**
 	 * Gets the value of the token property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
-	 *         {@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String
+	 *         }{@code >}
 	 * 
 	 */
 	public JAXBElement<String> getToken() {
@@ -59,8 +59,8 @@ public class SetResumenes {
 	 * Sets the value of the token property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
-	 *            {@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String
+	 *            }{@code >}
 	 * 
 	 */
 	public void setToken(JAXBElement<String> value) {
@@ -70,8 +70,8 @@ public class SetResumenes {
 	/**
 	 * Gets the value of the fechaEmisionComprobantes property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
-	 *         {@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String
+	 *         }{@code >}
 	 * 
 	 */
 	public JAXBElement<String> getFechaEmisionComprobantes() {
@@ -82,8 +82,8 @@ public class SetResumenes {
 	 * Sets the value of the fechaEmisionComprobantes property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
-	 *            {@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String
+	 *            }{@code >}
 	 * 
 	 */
 	public void setFechaEmisionComprobantes(JAXBElement<String> value) {
@@ -93,8 +93,8 @@ public class SetResumenes {
 	/**
 	 * Gets the value of the rucEmpresa property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
-	 *         {@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String
+	 *         }{@code >}
 	 * 
 	 */
 	public JAXBElement<String> getRucEmpresa() {
@@ -105,8 +105,8 @@ public class SetResumenes {
 	 * Sets the value of the rucEmpresa property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
-	 *            {@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String
+	 *            }{@code >}
 	 * 
 	 */
 	public void setRucEmpresa(JAXBElement<String> value) {

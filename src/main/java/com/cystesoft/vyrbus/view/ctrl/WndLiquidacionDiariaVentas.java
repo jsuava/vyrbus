@@ -410,6 +410,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 			if(cmbTipoMovimiento.getSelectedIndex()>=0)
 				criterio = cmbTipoMovimiento.getSelectedIndex();
 			
+			TranscarUsuarioPersonal usuarioPersonal = new TranscarUsuarioPersonal();
 			if(rubroAmbos.isChecked()) {
 				//Pasajes
 				List<VentaPasaje> lstVentas = ServiceLocator.getVentaPasajesManager().buscarDetalladoVentas(idAgencia, idUsuario, fechaInicio, fechaFin, criterio);
@@ -418,23 +419,24 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 				//Carga
 				Integer _idAgencia = null;
 				Integer _idUsuario = null;
+				
 				if(cmbAgencia.getSelectedItem().getValue() instanceof Agencia) {
 					Agencia _agencia = cmbAgencia.getSelectedItem().getValue();
-					_idAgencia = ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(_agencia.getCodigo());
+					_idAgencia = ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(_agencia.getId().toString());
 				}
 				if(cmbCounter.getSelectedIndex()>=0 && cmbCounter.getSelectedItem().getValue() instanceof Usuario) {
 					Usuario _usuario = cmbCounter.getSelectedItem().getValue();
-					TranscarUsuarioPersonal usuarioPersonal= ServiceLocator.getTranscarManager().buscarUsuarioPersonal(_usuario.getLogin());
+					usuarioPersonal= ServiceLocator.getTranscarManager().buscarUsuarioPersonal(_usuario.getLogin());
 					if(usuarioPersonal!=null)
 						_idUsuario = usuarioPersonal.getId();
 				}				
-				lstVentas  =ServiceLocator.getTranscarManager().buscarDetalleVentas(_idUsuario, _idAgencia, fechaInicio, fechaFin);
+				lstVentas  =ServiceLocator.getTranscarManager().buscarDetalleVentas(usuarioPersonal, _idAgencia, fechaInicio, fechaFin);
 				loadVentas(lstVentas, true);
 			}else if(rubroPasajes.isChecked()) {				
 				List<VentaPasaje> lstVentas = ServiceLocator.getVentaPasajesManager().buscarDetalladoVentas(idAgencia, idUsuario, fechaInicio, fechaFin, criterio);
 				loadVentas(lstVentas, false);
 			}else if(rubroCarga.isChecked()) {				
-				List<VentaPasaje> lstVentas  =ServiceLocator.getTranscarManager().buscarDetalleVentas(idUsuario, idAgencia, fechaInicio, fechaFin);
+				List<VentaPasaje> lstVentas  =ServiceLocator.getTranscarManager().buscarDetalleVentas(usuarioPersonal, idAgencia, fechaInicio, fechaFin);
 				loadVentas(lstVentas, true);
 			}
 			
@@ -618,7 +620,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 								
 							   ){
 							/*Valida si existe diferencia en la tarifa en el movimiento de la venta*/
-							if(venta.getImportePagadoByDiferencia()>0){
+							if(venta.getImportePagadoByDiferencia()!=null && venta.getImportePagadoByDiferencia()>0){
 								totalTarjeta +=+ venta.getImportePagadoByDiferencia();
 								totalEfectivo+=+  venta.getImportePagado()-venta.getImportePagadoByDiferencia();
 							}else
