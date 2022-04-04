@@ -57,6 +57,7 @@ import com.cystesoft.vyrbus.service.exceptions.DevolucionByTipoMovimientoNoPermi
 import com.cystesoft.vyrbus.service.exceptions.FechaCaducidadNullException;
 import com.cystesoft.vyrbus.service.exceptions.LiquidacionNullException;
 import com.cystesoft.vyrbus.service.exceptions.ManifiestoImpresoException;
+import com.cystesoft.vyrbus.service.exceptions.PerdidaServicioException;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.Messages;
@@ -259,7 +260,9 @@ public class WndDevolucionBoleto extends WndBase {
 				Agencia agencia = ServiceLocator.getAgenciaManager().buscarAgenciaByRucClienteCredito(ventaDevolver.getRucClienteCredito());
 				if(agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_CORPORATIVO)
 					throw new DevolucionByTipoAgenciaNoPermitidoException(Constantes.ID_TIPAGE_CORPORATIVO);
-			}
+			}else if(ventaDevolver.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_PERDIDA_SERVICIO))
+				throw new PerdidaServicioException();
+			
 			if (ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(Long.valueOf(idVenta)))
 				throw new ManifiestoImpresoException();
 			if(Util.comparaFechas(ventaDevolver.getFechaCaducidad(), ServiceLocator.getVentaPasajesManager().getDateSystem(), Util.OPER_MENOR))
@@ -312,6 +315,9 @@ public class WndDevolucionBoleto extends WndBase {
 			return false;
 		}catch(ManifiestoImpresoException miex){
 			DlgMessage.information(Messages.getString("Generales.information.manifiestoImpreso"));
+			return false;
+		}catch(PerdidaServicioException psex) {
+			DlgMessage.information(Messages.getString("WndPerdidaServicio.information.noDevolucionBoletoPerdidaServicio"));
 			return false;
 		}catch(Exception ex){
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());

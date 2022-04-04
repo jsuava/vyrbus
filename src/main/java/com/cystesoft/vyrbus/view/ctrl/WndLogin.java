@@ -206,9 +206,9 @@ public class WndLogin extends WndBase {
 					throw new ControlAccesoException(ControlAccesoException.EXPIRED_CODIGO);
 			}
 			
-			txtLogin.setText("");
-			txtPassword.setText("");
-			txtAccessCode.setText("");
+//			txtLogin.setText("");
+//			txtPassword.setText("");
+//			txtAccessCode.setText("");
 			
 //			Session session =null;
 //			Boolean ejecutarApplet=false;

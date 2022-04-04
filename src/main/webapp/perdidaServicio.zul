@@ -1,0 +1,62 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndPerdidaServicio" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndPerdidaServicio">
+	
+	<tabbox mold="accordion-lite">
+		<tabs>
+			<tab id="tabBusqueda" label="CRITERIOS DE BUSQUEDA"/>
+			<tab id="tabListado" label="LISTADO DE OCURRENCIAS ENCONTRADAS"/>
+		</tabs>
+		<tabpanels>
+			<tabpanel>
+				<grid>
+					<columns>
+						<column width="130px" align="right"/>
+						<column/>
+						<column width="100px" align="right"/>
+						<column/>
+						<column width="250px"/>
+					</columns>
+					<rows>
+						<row>
+							<label value="NRO COMPROBANTE :"/>
+							<textbox id="txtNumeroBoleto" width="100px" style="font-size:11px !important" onOK="wndPerdidaServicio.buscarVentas()"/>
+							<label value="NRO CONTROL :"/>
+							<textbox id="txtNumeroControl" width="100px" style="font-size:11px !important" onOK="wndPerdidaServicio.buscarVentas()"/>
+							<cell style="background:#f5f5f5; border: none;">
+								<button label="Buscar" sclass="btnCommandM" image="resources/mp_buscarEnabled.png" autodisable="self" onClick="wndPerdidaServicio.buscarVentas()"/>
+							</cell>
+						</row>
+						<row>
+							<label value="NRO DOCUMENTO :"/>
+							<textbox id="txtNumeroDocumento" width="100px" style="font-size:11px !important" onOK="wndPerdidaServicio.buscarVentas()"/>
+							<label/>
+							<label/>
+							<cell style="background:#f5f5f5; border: none;">
+								<button label="Cerrar" sclass="btnCommandM" image="resources/mp_cerrarEnabled.png" onClick="wndPerdidaServicio.closeTabWindow()"/>
+							</cell>
+						</row>
+					</rows>
+				</grid>
+			</tabpanel>
+			<tabpanel>
+				<listbox id="lbxVentas" width="100%" mold="paging" pageSize="8" >
+					<listhead>
+						<listheader label="TIPO" width="10%" style="color: #ffffff;"/>
+						<listheader label="N° CONTROL" width="9%" style="color: #ffffff;"/>
+						<listheader label="N° BOLETO" width="10%" style="color: #ffffff;"/>
+						<listheader label="PASAJERO" width="22%" style="color: #ffffff;"/>
+						<listheader label="DOCUMENTO" width="8%" style="color: #ffffff;"/>
+						<listheader label="RUTA" width="8%" style="color: #ffffff;"/>
+						<listheader label="FECHA VIAJE" width="7%" style="color: #ffffff;"/>
+						<listheader label="HORA VIAJE" width="7%" style="color: #ffffff;"/>
+						<listheader label="ASIENTO" width="7%" style="color: #ffffff;"/>
+						<listheader label="FECHA EMISION" width="10%" style="color: #ffffff;"/>
+						<listheader label="ACCION" width="10%" style="color: #ffffff;"/>							
+					</listhead>
+				</listbox>
+			</tabpanel>
+		</tabpanels>
+	</tabbox>
+</window>
+</zk>

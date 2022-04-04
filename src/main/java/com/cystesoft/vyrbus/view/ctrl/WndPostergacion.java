@@ -75,6 +75,7 @@ import com.cystesoft.vyrbus.service.exceptions.NumeroAsientoNullException;
 import com.cystesoft.vyrbus.service.exceptions.NumeroBoletoDuplicadoException;
 import com.cystesoft.vyrbus.service.exceptions.NumeroBoletoNullException;
 import com.cystesoft.vyrbus.service.exceptions.OperadorTarjetaCreditoNullException;
+import com.cystesoft.vyrbus.service.exceptions.PerdidaServicioException;
 import com.cystesoft.vyrbus.service.exceptions.PostergacionByFechaLimitePostergarException;
 import com.cystesoft.vyrbus.service.exceptions.PostergacionByFormaPagoNoPermitidoException;
 import com.cystesoft.vyrbus.service.exceptions.PostergacionByTipoAgenciaNoPermitidoException;
@@ -363,6 +364,8 @@ public class WndPostergacion extends WndBase implements Serializable {
 							throw new PostergacionByTipoAgenciaNoPermitidoException(Constantes.ID_TIPAGE_CORPORATIVO);
 					}else if(venta.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA)
 						throw new PostergacionByFormaPagoNoPermitidoException(Constantes.ID_FORPAG_CORTESIA);
+					else if(venta.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_PERDIDA_SERVICIO))
+						throw new PerdidaServicioException();
 					
 					/*###End begin 08/11/2016 - jabanto*/
 //					if(postergacion.getSecuencial().intValue() >= Constantes.MAXIMO_POSTERGACIONES)
@@ -433,6 +436,8 @@ public class WndPostergacion extends WndBase implements Serializable {
 					DlgMessage.information(Messages.getString("WndPostergacion.information.fechaCaducidad"));
 				}catch(ManifiestoImpresoException miex){
 					DlgMessage.information(Messages.getString("Generales.information.manifiestoImpreso"));
+				}catch(PerdidaServicioException psex) {
+					DlgMessage.information(Messages.getString("WndPerdidaServicio.information.noEditarBoletoPerdidaServicio"));
 				}catch(Exception ex){
 					DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 				}

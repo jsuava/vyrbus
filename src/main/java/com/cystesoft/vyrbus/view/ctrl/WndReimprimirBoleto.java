@@ -29,6 +29,7 @@ import com.cystesoft.vyrbus.service.exceptions.CriteriosBusquedaIncompletosExcep
 import com.cystesoft.vyrbus.service.exceptions.FechaInicioNullException;
 import com.cystesoft.vyrbus.service.exceptions.LiquidacionNullException;
 import com.cystesoft.vyrbus.service.exceptions.ManifiestoImpresoException;
+import com.cystesoft.vyrbus.service.exceptions.PerdidaServicioException;
 import com.cystesoft.vyrbus.service.exceptions.ReimpresionByTipoMovimientoNoPermitidoException;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.util.Constantes;
@@ -179,7 +180,8 @@ public class WndReimprimirBoleto extends WndBase {
 				Date fechaPartida=Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(ventaOriginal.getFechaPartida()));
 				if(fechaPartida.getTime() < dateSys.getTime())
 					throw new ManifiestoImpresoException();
-			}
+			}else if(ventaOriginal.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_PERDIDA_SERVICIO))
+				throw new PerdidaServicioException();
 //			else if(ventaOriginal.getManifiesto()!=null)
 //				throw new ManifiestoImpresoException();
 			
@@ -213,6 +215,8 @@ public class WndReimprimirBoleto extends WndBase {
 				DlgMessage.information(Messages.getString("WndReimprimirBoleto.information.reimpresionByDevolucionNoPermitido"));
 		}catch(ManifiestoImpresoException miex){
 			DlgMessage.information(Messages.getString("Generales.information.manifiestoImpreso"));
+		}catch(PerdidaServicioException psex) {
+			DlgMessage.information(Messages.getString("WndPerdidaServicio.information.noReimpresionBoletoPerdidaServicio"));
 		}catch(Exception ex){
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}

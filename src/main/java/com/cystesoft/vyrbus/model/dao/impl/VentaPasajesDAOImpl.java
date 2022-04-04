@@ -73,7 +73,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				"p.pasajero_id, p.c_apepat, p.c_apemat, p.c_nombre, s.sexo_id, s.c_denominacion, vp.c_numboleto, vp.n_numasiento, vp.c_tiptra, " +
 				"i.ruta_idmayor, rm.localidad_idorigen, rm.localidad_iddestino, vp.n_numpiso, i.c_sectra, i.itinerario_id, " +
 				"p.c_numdoc, p.c_fecnac, vp.c_numcontrol, vp.canven_id, vp.d_fecpar, vp.c_horpar " +
-				",ap.c_nomcor as nombreCorto, p.tipdoc_id tipoDocPax, vp.forpag_id, vp.tipforpag_id, vp.c_rucclicre, vp.n_imppag  " +//33
+				",ap.c_nomcor as nombreCorto, p.tipdoc_id tipoDocPax, vp.forpag_id, vp.tipforpag_id, vp.c_rucclicre, vp.n_imppag, vp.tipmov_id  " +//34
 				"FROM vrtvenpas vp " +
 				"INNER JOIN (SELECT MAX(venpas_id)venpas_id, c_numcontrol " +
 					"FROM vrtvenpas WHERE itinerario_id="+idItinerario+" GROUP BY c_numcontrol) max_venta " +
@@ -84,8 +84,10 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				"INNER JOIN vrtitinerario i ON i.itinerario_id=vp.itinerario_id " +
 				"INNER JOIN vrmruta rm ON rm.ruta_id=i.ruta_idmayor " +
 				"LEFT JOIN vrmagencia ap ON ap.agencia_id=vp.Agencia_Idpartida " +
+//				"INNER JOIN vrmtipmov tm ON tm.tipmov_id=vp.tipmov_id " +
 				"WHERE vp.itinerario_id="+idItinerario+" "+
 			    "AND vp.tipmov_id not in("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_ANULACION+") "+
+				"AND vp.c_tiptra NOT IN('"+Constantes.TIPO_OPERACION_PERDIDA_SERVICIO+"') " +
 				"AND vp.c_estreg='"+Constantes.VALUE_ACTIVO+"' " +
 			    "AND vp.n_numasiento IS NOT NULL "+
 				"ORDER BY vp.n_numasiento ";
@@ -151,6 +153,9 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			
 			ventaPasaje.setRucClienteCredito(obj[32]==null?null:obj[32].toString());
 			ventaPasaje.setImportePagado(obj[33]==null?null:((BigDecimal)obj[33]).doubleValue());
+			
+//			TipoMovimiento tipoMovimiento = new TipoMovimiento();
+//			tipoMovimiento.setId(((BigDecimal)obj[34]).intValue());
 			
 			lstResult.add(ventaPasaje);
 		}
@@ -262,7 +267,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 						"ON max_venta.venpas_id=vp.venpas_id " +
 				"INNER JOIN vrmruta r ON r.ruta_id=vp.ruta_id " + 
 				"WHERE vp.tipmov_id not in("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_ANULACION+") AND " +
-				"vp.n_numasiento="+asiento+" AND vp.n_numpiso="+piso+" AND vp.c_estreg='"+Constantes.VALUE_ACTIVO+"' ";
+				"vp.c_tiptra not in('"+Constantes.TIPO_OPERACION_PERDIDA_SERVICIO+"') AND vp.n_numasiento="+asiento+" AND vp.n_numpiso="+piso+" AND vp.c_estreg='"+Constantes.VALUE_ACTIVO+"' ";
 		
 		log.info(sql);
 		
@@ -783,7 +788,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				"INNER JOIN vrmruta r ON r.ruta_id={VP}.ruta_id " +
 				"INNER JOIN vrmagencia a ON a.agencia_id={VP}.agencia_id " +
 				"INNER JOIN vrmpasajero p ON p.pasajero_id={VP}.pasajero_id " +
-				"WHERE {VP}.c_tiptra='"+Constantes.TIPO_OPERACION_VENTA+"' AND {VP}.c_estreg='"+Constantes.VALUE_ACTIVO+"' " +
+				"WHERE {VP}.c_tiptra IN ('"+Constantes.TIPO_OPERACION_VENTA+"','"+Constantes.TIPO_OPERACION_PERDIDA_SERVICIO+"') AND {VP}.c_estreg='"+Constantes.VALUE_ACTIVO+"' " +
 						"AND {VP}.tipcom_id in ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_FACTURA+" ) " +
 						"AND {VP}.tipmov_id NOT IN ("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_ANULACION+")" ; //" --AND {VP}.tipmov_id!="+Constantes.TIPMOV_ANULACION + " " +
 						//"AND {VP}.d_fecpar is not null AND ({VP}.tipforpag_id="+Constantes.TIPFORPAG_EFECTIVO+ " OR " +
@@ -820,7 +825,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					"INNER JOIN vrmruta r ON r.ruta_id=vp.ruta_id " +
 					"INNER JOIN vrmtipmov tm ON tm.tipmov_id=vp.tipmov_id " +
 				"WHERE vp.d_fecpar=to_date('"+fechaPartida+"', '"+Constantes.DATE_FORMAT+"') "
-				 + "AND vp.c_tiptra in ('"+Constantes.TIPO_OPERACION_VENTA+"','"+Constantes.TIPO_OPERACION_VENTA_POOL+"') " +
+				 + "AND vp.c_tiptra in ('"+Constantes.TIPO_OPERACION_VENTA+"','"+Constantes.TIPO_OPERACION_VENTA_POOL+"','"+Constantes.TIPO_OPERACION_PERDIDA_SERVICIO+"') " +
 //				   "AND vp.tipcom_id="+Constantes.ID_TIPCOM_BOLETO_VIAJE+" "
 				   "AND vp.tipcom_id IN ("+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_FACTURA+") "
 				 + "AND vp.tipmov_id NOT IN("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_ANULACION+") ";
@@ -880,7 +885,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				"INNER JOIN vrmruta r ON r.ruta_id={VP}.ruta_id " +
 				"INNER JOIN vrmagencia a ON a.agencia_id={VP}.agencia_id " +
 				"INNER JOIN vrmpasajero p ON p.pasajero_id={VP}.pasajero_id " +
-				"WHERE {VP}.c_tiptra in('"+Constantes.TIPO_OPERACION_VENTA+"','"+Constantes.TIPO_OPERACION_VENTA_POOL+"') AND {VP}.c_estreg='"+Constantes.VALUE_ACTIVO+"' "
+				"WHERE {VP}.c_tiptra in('"+Constantes.TIPO_OPERACION_VENTA+"','"+Constantes.TIPO_OPERACION_VENTA_POOL+"','"+Constantes.TIPO_OPERACION_PERDIDA_SERVICIO+"') AND {VP}.c_estreg='"+Constantes.VALUE_ACTIVO+"' "
 			  + "AND {VP}.tipcom_id IN ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_BOLETA_VENTA+", "+Constantes.ID_TIPCOM_FACTURA+")" ;
 		
 		sql = sql + criterio;
@@ -3760,6 +3765,52 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			lstVentas.add(ventasPiloto);
 		}
 		return lstVentas;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.VentaPasajesDAO#buscarBoletosPerdidaServicio(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public List<VentaPasaje> buscarBoletosPerdidaServicio(String numeroDocumento, String numeroControl, String numeroBoleto) throws Exception {
+		String criterio = numeroDocumento==null?"":" AND p.c_numdoc = '" + numeroDocumento + "' ";
+		criterio = criterio + (numeroControl==null?"":" AND {VP}.c_numcontrol='"+ numeroControl +"' ");
+		criterio = criterio + (numeroBoleto==null?"":(" AND {VP}.c_numboleto='" + numeroBoleto.toUpperCase() +"' "));
+		
+		String criterioByMax=" WHERE c_estreg='"+Constantes.VALUE_ACTIVO+"' ";
+		if(numeroControl!=null)
+			criterioByMax+="AND c_numcontrol='"+numeroControl+"' ";
+		else if (numeroBoleto!=null)
+			criterioByMax+="AND c_numboleto='"+numeroBoleto.toUpperCase()+"' ";
+		
+		String sql = "SELECT {VP.*} FROM vrtvenpas {VP} " +
+				"INNER JOIN (SELECT MAX(venpas_id)venpas_id, c_numcontrol FROM vrtvenpas "+criterioByMax+" GROUP BY c_numcontrol) max_vta " +
+				"ON max_vta.venpas_id={VP}.venpas_id " +
+				"INNER JOIN vrmruta r ON r.ruta_id={VP}.ruta_id " +
+				"INNER JOIN vrmagencia a ON a.agencia_id={VP}.agencia_id " +
+				"INNER JOIN vrmpasajero p ON p.pasajero_id={VP}.pasajero_id " +
+				"WHERE {VP}.c_tiptra in('"+Constantes.TIPO_OPERACION_VENTA+"','"+Constantes.TIPO_OPERACION_VENTA_POOL+"','"+Constantes.TIPO_OPERACION_PERDIDA_SERVICIO+"') AND {VP}.c_estreg='"+Constantes.VALUE_ACTIVO+"' "
+			  + "AND {VP}.tipcom_id IN ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_BOLETA_VENTA+", "+Constantes.ID_TIPCOM_FACTURA+")" ;
+		
+		sql = sql + criterio;
+		sql = sql + "ORDER BY {VP}.c_numboleto, {VP}.d_fecpar, {VP}.c_horpar ";
+		
+		log.info(sql);
+		List<?> result = getSession().createSQLQuery(sql).addEntity("VP",VentaPasaje.class).list();
+		
+		return (List<VentaPasaje>)result;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.VentaPasajesDAO#guardarPerdidaServicio(java.lang.Long, java.lang.String)
+	 */
+	@Override
+	public void guardarPerdidaServicio(VentaPasaje perdidaServicio) throws Exception {
+		String sql = "UPDATE vrtvenpas SET c_tiptra="+perdidaServicio.getTipoTransaccion()+", c_observaciones='"+perdidaServicio.getObservaciones()+
+				"', audusumod='"+perdidaServicio.getUsuarioModificacion()+"', audipmodi='"+perdidaServicio.getIpModificacion()+
+				"' WHERE venpas_id="+perdidaServicio.getId();
+		
+		getSession().createSQLQuery(sql).executeUpdate();
+		
 	}
 }
 

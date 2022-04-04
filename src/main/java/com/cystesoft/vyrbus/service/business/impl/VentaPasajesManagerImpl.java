@@ -2486,6 +2486,23 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	public List<VentasPiloto> buscarVentasPagoPilotos(String fInicio, String fFin) throws Exception{
 		return getVentaPasajesDAO().buscarVentasPagoPilotos(fInicio, fFin);
 	}
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#buscarBoletosPerdidaServicio(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public List<VentaPasaje> buscarBoletosPerdidaServicio(String numeroDocumento, String numeroControl, String numeroBoleto) throws Exception {
+		return getVentaPasajesDAO().buscarBoletosPerdidaServicio(numeroDocumento, numeroControl, numeroBoleto);
+	}
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#guardarPerdidaServicio(java.lang.Long, java.lang.String)
+	 */
+	@Transactional
+	@Override
+	public void guardarPerdidaServicio(VentaPasaje perdidaServicio) throws Exception{
+		getVentaPasajesDAO().guardarPerdidaServicio(perdidaServicio);
+	}
+	
+	
 	
 	
 //	private String generarBoleto(String numBoleto, Integer idTipoComprobante, Integer idUsuarioHW) throws Exception{

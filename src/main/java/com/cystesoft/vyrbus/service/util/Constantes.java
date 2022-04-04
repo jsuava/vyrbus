@@ -338,6 +338,7 @@ public class Constantes {
 	public static final String TIPO_OPERACION_VENTA_POOL = "4";
 	public static final String TIPO_OPERACION_VENTA_ESPECIAL = "5";
 	public static final String TIPO_OPERACION_EXCESO = "6";
+	public static final String TIPO_OPERACION_PERDIDA_SERVICIO = "7";
 	
 	/* Constantes que referencian al rol */
 	public static final int ID_ROL_ASISTENTE_ADMIN_COMERCIAL=17;
