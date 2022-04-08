@@ -15,6 +15,7 @@ import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,13 +23,18 @@ import java.util.Properties;
 
 
 
+import java.util.TreeMap;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
+import com.cystesoft.vyrbus.model.bean.Bus;
 import com.cystesoft.vyrbus.model.bean.CanalVenta;
 import com.cystesoft.vyrbus.model.bean.FormaPago;
+import com.cystesoft.vyrbus.model.bean.Itinerario;
 import com.cystesoft.vyrbus.model.bean.Liquidacion;
+import com.cystesoft.vyrbus.model.bean.Manifiesto;
 import com.cystesoft.vyrbus.model.bean.Pasajero;
 import com.cystesoft.vyrbus.model.bean.TipoComprobante;
 import com.cystesoft.vyrbus.model.bean.TipoMoneda;
@@ -540,12 +546,12 @@ public class TranscarDAOImpl implements TranscarDAO{
         callableStatement.execute();
         
         ResultSet resultSetResumen = (ResultSet) callableStatement.getObject("cur_resumen");
-        ResultSetMetaData rsmdResumen=resultSetResumen.getMetaData();
-        int nroColumnsResumen = rsmdResumen.getColumnCount();
+//        ResultSetMetaData rsmdResumen=resultSetResumen.getMetaData();
+//        int nroColumnsResumen = rsmdResumen.getColumnCount();
         
         ResultSet resultSet = (ResultSet) callableStatement.getObject("CUR_LIST_VENTAS_PRELI_TURNO");
-        ResultSetMetaData rsmd=resultSet.getMetaData();
-        int nroColumns = rsmd.getColumnCount();
+//        ResultSetMetaData rsmd=resultSet.getMetaData();
+//        int nroColumns = rsmd.getColumnCount();
         
         List<Liquidacion> listResult= new ArrayList<Liquidacion>();
         
@@ -845,5 +851,56 @@ public class TranscarDAOImpl implements TranscarDAO{
 				throw new Exception(ex.getMessage());
 			}		
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.TranscarDAO#buscarLiquidacionBus(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public TreeMap<String, Manifiesto> buscarLiquidacionBus(String fechaInicio, String fechaFin, String codigoBus) throws Exception {
+		// TODO Auto-generated method stub
+		String sql = "SELECT gt.fecha_salida fecha_salida, ut.nro_unidad_transporte bus_codigo, ut.placa bus_placa "
+				         + ",pt.apepat piloto_apePat, pt.apemat piloto_apeMat, pt.nomper piloto_nombres "
+				         + ",SUM(dgt.total_costo) total_soles "
+				   + "FROM t_guia_transportista gt "
+				     + "INNER JOIN t_guia_transportista_detall dgt ON (dgt.idguia_transportista=gt.idguia_transportista) "
+				     + "INNER JOIN t_unidad_transporte ut ON (ut.idunidad_transporte=gt.idunidad_transporte) "
+				     + "INNER JOIN t_usuario_personal pt ON (pt.idusuario_personal=gt.idusuario_personal_piloto) "
+				   + "WHERE gt.fecha_salida BETWEEN '"+fechaInicio+"' AND '"+fechaFin+"' "
+				     + "AND gt.idestado_registro NOT IN (2,3) "
+				     + "AND dgt.idestado_registro NOT IN (2,3) "
+				     + "AND ut.nro_unidad_transporte = NVL ("+codigoBus+", ut.nro_unidad_transporte) "
+				   + "GROUP BY gt.fecha_salida, ut.nro_unidad_transporte, ut.placa, pt.apepat, pt.apemat, pt.nomper "
+				   + "ORDER BY gt.fecha_salida, ut.nro_unidad_transporte, pt.apepat, pt.apemat, pt.nomper";
+		
+		List<?> result=getJdbcTranscar().queryForList(sql);		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		TreeMap<String, Manifiesto> liquidacionBus = new TreeMap<>();
+		for(int i=0;i<result.size();i++){
+			map = (Map<String, Object>)result.get(i);
+			
+			Itinerario itinerario = new Itinerario();
+			itinerario.setFechaPartida((Date)map.get("fecha_salida"));
+			Bus bus = new Bus();
+			bus.setCodigo(map.get("bus_codigo").toString());
+			bus.setNumeroPlaca(map.get("bus_plala").toString());
+			String piloto = (map.get("piloto_apePat")!=null?map.get("piloto_apePat").toString():"");
+			piloto += (map.get("piloto_apeMat")!=null?map.get("piloto_apeMat").toString():"");
+			piloto += (map.get("piloto_nombres")!=null?map.get("piloto_nombres").toString():"");
+			
+			Manifiesto manifiesto = new Manifiesto();
+			manifiesto.setItinerario(itinerario);
+			manifiesto.setBus(bus);
+			manifiesto.setPiloto(piloto);
+			manifiesto.setImporte(((BigDecimal)map.get("total_soles")).doubleValue());
+			
+			String keymap = Constantes.FORMAT_DATE.format(itinerario.getFechaPartida());
+			keymap += "-" + bus.getCodigo();
+			
+			liquidacionBus.put(keymap, manifiesto);			
+		}
+		
+		return liquidacionBus;
 	}
 }

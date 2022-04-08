@@ -1625,10 +1625,8 @@ public class Util {
 	 */
 	public static void exportarExcel(Listbox listbox, String title){
 		String nombreArchivo=Util.adjuntarFechaHoraExportacion(title);
-//		response.setContentType("application/vnd.ms-excel");
-//		response.setHeader("Content-Disposition", "attachment; filename=avance_x_rutas.xls");
-
-        Filedownload.save(Util.generaTablaHtml(listbox), "application/vnd.ms-excel", nombreArchivo+".xls");       
+		
+		Filedownload.save(Util.generaTablaHtml(listbox), "application/vnd.ms-excel", nombreArchivo+".xls");
 	}
 	
 	/**

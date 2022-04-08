@@ -9,9 +9,11 @@
 package com.cystesoft.vyrbus.service.business.impl;
 
 import java.util.List;
+import java.util.TreeMap;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.Liquidacion;
+import com.cystesoft.vyrbus.model.bean.Manifiesto;
 import com.cystesoft.vyrbus.model.bean.TranscarLiquidacionTurno;
 import com.cystesoft.vyrbus.model.bean.TranscarRolUsuario;
 import com.cystesoft.vyrbus.model.bean.TranscarUsuarioPersonal;
@@ -156,6 +158,16 @@ public class TranscarManagerImpl implements TranscarManager{
 			String fechaInicio, String fechaFin) throws Exception {
 		// TODO Auto-generated method stub
 		getTranscarDAO().cerrarLiquidacion(usuarioId, agenciaId, fechaInicio, fechaFin);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.TranscarManager#buscarLiquidacionBus(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public TreeMap<String, Manifiesto> buscarLiquidacionBus(String fechaInicio,
+			String fechaFin, String codigoBus) throws Exception {
+		// TODO Auto-generated method stub
+		return getTranscarDAO().buscarLiquidacionBus(fechaInicio, fechaFin, codigoBus);
 	}
 
 	

@@ -16,6 +16,7 @@ import java.util.TreeMap;
 import org.hibernate.SQLQuery;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
+import com.cystesoft.vyrbus.model.bean.Bus;
 import com.cystesoft.vyrbus.model.bean.CanalVenta;
 import com.cystesoft.vyrbus.model.bean.CentroCosto;
 import com.cystesoft.vyrbus.model.bean.Cliente;
@@ -3653,7 +3654,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				+ "vp.forpag_id=1 AND vp.tipcom_id = 7 AND vp.n_tarifa>0 AND vp.tipmov_id NOT IN (4,5,6,10,11,12,13)";
 		
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<VentaPasaje> lstResult = new ArrayList<>();
+//		List<VentaPasaje> lstResult = new ArrayList<>();
 		
 		for(int i=0; i<result.size(); i++) {
 			Object[] obj = (Object[])result.get(i);
@@ -3811,6 +3812,61 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		
 		getSession().createSQLQuery(sql).executeUpdate();
 		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.VentaPasajesDAO#buscarLiquidacionBus(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public List<Manifiesto> buscarLiquidacionBus(String fechaInicio,String fechaFin, String codigoBus) throws Exception {
+		String sql = "SELECT it.d_Fecpar fecha_salida, bs.c_codigo bus_codigo, bs.c_numplaca bus_placa "
+						 + ",ma.c_piloto piloto, ma.c_copiloto copiloto, SUM(vp.n_imppag) total_soles, rt.c_origen, rt.c_destino "
+				   + "FROM vrtvenpas vp "
+				     + "INNER JOIN (Select max(vp.venpas_id) venpas_id From vrtvenpas vp Group By vp.c_numcontrol ) "
+				                  + "vpx ON (vpx.venpas_id = vp.venpas_id)  "
+				     + "INNER JOIN vrtmanifiesto ma ON (ma.itinerario_id=vp.itinerario_id) "
+				     + "INNER JOIN vrtitinerario it ON (it.itinerario_id=vp.itinerario_id) "
+				     + "INNER JOIN vrmbus bs ON (bs.bus_id=ma.bus_id) "
+				     + "INNER JOIN vrmruta rt ON (rt.ruta_id=vp.ruta_id) "
+				   + "WHERE it.d_fecpar BETWEEN '"+fechaInicio+"' AND '"+fechaFin+"' "
+				     + "AND vp.tipmov_id NOT IN (5,6,13) "
+				     + "AND vp.c_tiptra = '1' "
+				     + "AND vp.tipcom_id IN (1,2,7) AND vp.c_estreg='A' "
+				     + "AND ma.c_estreg = 'A' "
+				     + "AND it.n_esanulado = 0 AND it.c_estreg = 'A' "
+				     + "AND bs.c_codigo = NVL("+(codigoBus!=null?"'"+ codigoBus + "'": "Null")+", bs.c_codigo) "
+				   + "GROUP BY it.d_Fecpar, bs.c_codigo, bs.c_numplaca, ma.c_piloto, ma.c_copiloto, rt.c_origen, rt.c_destino "
+				   + "ORDER BY it.d_Fecpar, bs.c_codigo, ma.c_piloto, ma.c_copiloto";
+		log.info("buscarLiquidacionBus: "+sql);
+		
+		List<?> result = getSession().createSQLQuery(sql).list();
+		
+		List<Manifiesto> listMAnifiestos = new ArrayList<>();
+		for(int i = 0; i<result.size(); i++){
+			Object[] obj = (Object[]) result.get(i);
+			
+			Itinerario itinerario= new Itinerario();
+			itinerario.setFechaPartida((Date)obj[0]);
+			Bus bus = new Bus();
+			bus.setCodigo(obj[1].toString());
+			bus.setNumeroPlaca(obj[2].toString());
+			Ruta ruta = new Ruta();
+			ruta.setOrigen(obj[6].toString());
+			ruta.setDestino(obj[7].toString());
+			itinerario.setRuta(ruta);
+			
+			Manifiesto manifiesto = new Manifiesto();
+			manifiesto.setItinerario(itinerario);
+			manifiesto.setBus(bus);
+			manifiesto.setPiloto(obj[3]!=null?obj[3].toString():"");
+			manifiesto.setCopiloto(obj[4]!=null?obj[4].toString():"");
+			manifiesto.setImporte(((BigDecimal)obj[5]).doubleValue());
+			
+			
+			listMAnifiestos.add(manifiesto);
+		}
+		
+		return listMAnifiestos;
 	}
 }
 

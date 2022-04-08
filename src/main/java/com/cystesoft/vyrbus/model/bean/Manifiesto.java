@@ -34,6 +34,7 @@ public class Manifiesto extends GenericBean implements java.io.Serializable {
 	private String puntoLlegadaDepartamento;
 	private String puntoLlegadaDistrito;
 	private Double importe;
+	private Double importe2;
 	
 	/**
 	 * @return the ruc
@@ -349,6 +350,20 @@ public class Manifiesto extends GenericBean implements java.io.Serializable {
 	 */
 	public void setAgencia(Agencia agencia) {
 		this.agencia = agencia;
+	}
+
+	/**
+	 * @return the importe2
+	 */
+	public Double getImporte2() {
+		return importe2;
+	}
+
+	/**
+	 * @param importe2 the importe2 to set
+	 */
+	public void setImporte2(Double importe2) {
+		this.importe2 = importe2;
 	}
 
 	

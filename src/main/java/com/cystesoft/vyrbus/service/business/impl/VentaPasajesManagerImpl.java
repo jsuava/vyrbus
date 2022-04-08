@@ -25,6 +25,7 @@ import com.cystesoft.vyrbus.model.bean.FormaPago;
 import com.cystesoft.vyrbus.model.bean.Itinerario;
 import com.cystesoft.vyrbus.model.bean.LineaCreditoCliente;
 import com.cystesoft.vyrbus.model.bean.Liquidacion;
+import com.cystesoft.vyrbus.model.bean.Manifiesto;
 import com.cystesoft.vyrbus.model.bean.PasajeroFrecuente;
 import com.cystesoft.vyrbus.model.bean.PuntosPasajeroFrecuente;
 import com.cystesoft.vyrbus.model.bean.Ruta;
@@ -2500,6 +2501,15 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	@Override
 	public void guardarPerdidaServicio(VentaPasaje perdidaServicio) throws Exception{
 		getVentaPasajesDAO().guardarPerdidaServicio(perdidaServicio);
+	}
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#buscarLiquidacionBus(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public List<Manifiesto> buscarLiquidacionBus(String fechaInicio,
+			String fechaFin, String codigoBus) throws Exception {
+		// TODO Auto-generated method stub
+		return getVentaPasajesDAO().buscarLiquidacionBus(fechaInicio, fechaFin, codigoBus);
 	}
 	
 	

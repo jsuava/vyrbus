@@ -9,9 +9,11 @@
 package com.cystesoft.vyrbus.service.business;
 
 import java.util.List;
+import java.util.TreeMap;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.Liquidacion;
+import com.cystesoft.vyrbus.model.bean.Manifiesto;
 import com.cystesoft.vyrbus.model.bean.TranscarLiquidacionTurno;
 import com.cystesoft.vyrbus.model.bean.TranscarRolUsuario;
 import com.cystesoft.vyrbus.model.bean.TranscarUsuarioPersonal;
@@ -119,5 +121,13 @@ public interface TranscarManager {
 	 * @throws Exception
 	 */
 	public void cerrarLiquidacion(Integer usuarioId, Integer agenciaId, String fechaInicio, String fechaFin)throws Exception;
-	
+	/**
+	 * Realiza la busqueda de la liquidacino del bus.
+	 * @param fechaInicio	: Fecha inicio de la busqueda
+	 * @param fechaFin		: Fecha fin de la busqueda
+	 * @param codigoBus		: codigo del bus
+	 * @return	
+	 * @throws Exception
+	 */
+	public TreeMap<String, Manifiesto> buscarLiquidacionBus(String fechaInicio, String fechaFin, String codigoBus)throws Exception;
 }

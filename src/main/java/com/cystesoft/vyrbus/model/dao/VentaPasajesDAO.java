@@ -13,6 +13,7 @@ import java.util.TreeMap;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.Itinerario;
+import com.cystesoft.vyrbus.model.bean.Manifiesto;
 import com.cystesoft.vyrbus.model.bean.Ruta;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
@@ -527,4 +528,13 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public void guardarPerdidaServicio(VentaPasaje perdidaServicio) throws Exception;
+	/**
+	 * Realiza la busqueda de la liquidacino del bus.
+	 * @param fechaInicio	: Fecha inicio de la busqueda
+	 * @param fechaFin		: Fecha fin de la busqueda
+	 * @param codigoBus		: codigo del bus
+	 * @return	
+	 * @throws Exception
+	 */
+	public List<Manifiesto> buscarLiquidacionBus(String fechaInicio, String fechaFin, String codigoBus)throws Exception;
 }
