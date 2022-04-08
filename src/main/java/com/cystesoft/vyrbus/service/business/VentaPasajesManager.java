@@ -612,4 +612,19 @@ public interface VentaPasajesManager {
 	 * @throws Exception
 	 */
 	public List<VentasPiloto> buscarVentasPagoPilotos(String fInicio, String fFin) throws Exception;
+	/**
+	 * Busca las ventas para realizar la perdida de servicio
+	 * @param numeroDocumento	: Numero de Documento.
+	 * @param numeroControl		: Numero de Control.
+	 * @param numeroBoleto		: Numero del Boleto.
+	 * @return Lista de ocurrencias.
+	 * @throws Exception
+	 */
+	public List<VentaPasaje> buscarBoletosPerdidaServicio(String numeroDocumento, String numeroControl, String numeroBoleto)throws Exception;
+	/**
+	 * Guarda el boleto como perdida de servicio
+	 * @param perdidaServicio	: Registro a marcar como perdida de servicio
+	 * @throws Exception
+	 */
+	public void guardarPerdidaServicio(VentaPasaje perdidaServicio) throws Exception;
 }

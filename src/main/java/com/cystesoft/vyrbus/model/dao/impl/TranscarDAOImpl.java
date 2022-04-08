@@ -13,6 +13,7 @@ import java.io.FileInputStream;
 import java.math.BigDecimal;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +29,7 @@ import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.CanalVenta;
 import com.cystesoft.vyrbus.model.bean.FormaPago;
 import com.cystesoft.vyrbus.model.bean.Liquidacion;
+import com.cystesoft.vyrbus.model.bean.Pasajero;
 import com.cystesoft.vyrbus.model.bean.TipoComprobante;
 import com.cystesoft.vyrbus.model.bean.TipoMoneda;
 import com.cystesoft.vyrbus.model.bean.TipoMovimiento;
@@ -301,11 +303,21 @@ public class TranscarDAOImpl implements TranscarDAO{
         callableStatement.registerOutParameter("CUR_INSUPD_LIQUI_TURNOS",OracleTypes.CURSOR);
         callableStatement.execute();
 		
-        ResultSet resultSet = (ResultSet) callableStatement.getObject("CUR_INSUPD_LIQUI_TURNOS");		
+        ResultSet resultSet = (ResultSet) callableStatement.getObject("CUR_INSUPD_LIQUI_TURNOS");
+        ResultSetMetaData rsmd=resultSet.getMetaData();
+        int nroColumns = rsmd.getColumnCount();
+        
+        //System.out.println("Total columns: " + rsmd.getColumnCount());  
+        //System.out.println("Column Name of 1st column: " + rsmd.getColumnName(1));  
+        //System.out.println("Column Type Name of 1st column: " + rsmd.getColumnTypeName(1));  
+        
 		String messageError=null;
         while (resultSet.next()) {
 			try {
-				messageError = resultSet.getString("errmsg").toString();
+				if(nroColumns > 1)
+					messageError = resultSet.getString("errmsg").toString();
+				else
+					messageError = null;
 				
 			} catch (Exception e) {
 //				callableStatement.close();
@@ -321,7 +333,7 @@ public class TranscarDAOImpl implements TranscarDAO{
 	 * @see com.cystesoft.vyrbus.model.dao.TranscarDAO#buscarDetalleVentas(java.lang.Integer, java.lang.Integer, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public List<VentaPasaje> buscarDetalleVentas(Integer usuarioId, Integer agenciaId, String fechaInicial,String fechaFinal) throws Exception {
+	public List<VentaPasaje> buscarDetalleVentas(TranscarUsuarioPersonal usuarioPersonal, Integer agenciaId, String fechaInicial,String fechaFinal) throws Exception {
 		// TODO Auto-generated method stub
 //		int TIPO_PAGO_EFECTIVO = 1;
 //		int TIPO_PAGO_TARJETA = 2;
@@ -330,8 +342,11 @@ public class TranscarDAOImpl implements TranscarDAO{
 //		int FORMA_PAGO_CREDITO = 2;
 ////		int FORMA_PAGO_PCE = 3;
 		
-		if(usuarioId==null)
-			usuarioId=0;
+		if(usuarioPersonal==null){
+			usuarioPersonal = new TranscarUsuarioPersonal();
+			usuarioPersonal.setId(0);
+		}
+			
 		if(agenciaId ==null)
 			agenciaId = 0;
 		
@@ -340,7 +355,7 @@ public class TranscarDAOImpl implements TranscarDAO{
 //		CallableStatement callableStatement = jdbcTemplate.getDataSource().getConnection().prepareCall(storeProcedure);	
 		CallableStatement callableStatement = getJdbcTranscar().getDataSource().getConnection().prepareCall(storeProcedure);
 		//Parametros de entrada
-		callableStatement.setInt("P_IDUSUARIO_PERSONAL", usuarioId);
+		callableStatement.setInt("P_IDUSUARIO_PERSONAL", usuarioPersonal.getId());
         callableStatement.setInt("p_IDAgencias", agenciaId);
         callableStatement.setString("P_FECHA_INICIAL", fechaInicial);
         callableStatement.setString("P_FECHA_FINAL", fechaFinal);
@@ -413,10 +428,16 @@ public class TranscarDAOImpl implements TranscarDAO{
 			usuario.setApellidoPaterno("");
 			usuario.setApellidoMaterno("");
 			usuario.setNombre(resultSet.getString("NOMBRES"));
+			usuario.setLogin(usuarioPersonal.getLogin());
 			ventaCarga.setUsuario(usuario);
 			ventaCarga.setFechaInsercion(resultSet.getDate("FECHA_ACTUALIZACION"));
 			ventaCarga.setFechaLiquidacion(resultSet.getDate("FECHA_FACTURA"));
-			
+			Agencia agenciaVenta=new Agencia();
+			agenciaVenta.setDenominacion(resultSet.getString("NOMBRE_AGENCIA"));
+			ventaCarga.setAgencia(agenciaVenta);
+			Pasajero pasajero = new Pasajero();
+			pasajero.setNombresApellidos(resultSet.getString("RAZON_SOCIAL"));
+			ventaCarga.setPasajero(pasajero);
 			
 			listResult.add(ventaCarga);
 		}
@@ -519,8 +540,15 @@ public class TranscarDAOImpl implements TranscarDAO{
         callableStatement.execute();
         
         ResultSet resultSetResumen = (ResultSet) callableStatement.getObject("cur_resumen");
-        ResultSet resultSet = (ResultSet) callableStatement.getObject("CUR_LIST_VENTAS_PRELI_TURNO");        
+        ResultSetMetaData rsmdResumen=resultSetResumen.getMetaData();
+        int nroColumnsResumen = rsmdResumen.getColumnCount();
+        
+        ResultSet resultSet = (ResultSet) callableStatement.getObject("CUR_LIST_VENTAS_PRELI_TURNO");
+        ResultSetMetaData rsmd=resultSet.getMetaData();
+        int nroColumns = rsmd.getColumnCount();
+        
         List<Liquidacion> listResult= new ArrayList<Liquidacion>();
+        
         while (resultSet.next()) {		
         	Double montoFacturas=.00;
         	Double montoBoletas=.00;
@@ -623,7 +651,7 @@ public class TranscarDAOImpl implements TranscarDAO{
         callableStatement.registerOutParameter("CUR_LIST_VENTAS_PRELI_TURNO",OracleTypes.CURSOR);
         callableStatement.registerOutParameter("CUR_ERROR",OracleTypes.CURSOR);
         callableStatement.execute();
-        
+ 
 //        ResultSet resultSetResumen = (ResultSet) callableStatement.getObject("cur_resumen");                 
 //        Double efectivo=.00, tarjetaVisa=.00, tarjetaMastercard=.00, notaCredito=.00, pce=.00;
 //        while (resultSetResumen.next()) {	
@@ -796,7 +824,7 @@ public class TranscarDAOImpl implements TranscarDAO{
 	 */
 	private JdbcTemplate getJdbcTranscar() throws Exception {
 		try {										 
-		 	String pathJdbcproperties = Util.getPath()+"WEB-INF"+Util.separator+"jdbc.properties";
+		 	String pathJdbcproperties = Util.getPath()+Util.separator+"WEB-INF"+Util.separator+"jdbc.properties";
 		 	File file = new File(pathJdbcproperties);
 		 	FileInputStream input = new FileInputStream(file);
 			Properties properties = new Properties();

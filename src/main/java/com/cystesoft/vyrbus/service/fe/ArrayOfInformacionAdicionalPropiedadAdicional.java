@@ -1,3 +1,4 @@
+
 package com.cystesoft.vyrbus.service.fe;
 
 import java.util.ArrayList;
@@ -30,7 +31,8 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ArrayOfInformacionAdicional.PropiedadAdicional", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", propOrder = { "informacionAdicionalPropiedadAdicional" })
+@XmlType(name = "ArrayOfInformacionAdicional.PropiedadAdicional", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", propOrder = {
+		"informacionAdicionalPropiedadAdicional" })
 public class ArrayOfInformacionAdicionalPropiedadAdicional {
 
 	@XmlElement(name = "InformacionAdicional.PropiedadAdicional", nillable = true)

@@ -393,7 +393,7 @@ public class WndFacturacionServicios extends WndBase {
 								listVentaPasajes.add(servicioEspecial);				
 								//Aqui se envia el comprobante al servidor de Facturación Electrónica
 								/*Comentado para lanzar a pruebas Transmar*/
-//								WSFE.sendVenta(listVentaPasajes, wndFacturacionServicios, printComprobante, null);
+								WSFE.sendVenta(listVentaPasajes, wndFacturacionServicios, printComprobante, null);
 							}
 							
 							if(result == Constantes.CORRECT) {
@@ -740,11 +740,15 @@ public class WndFacturacionServicios extends WndBase {
 		row.setSpans("6");
 		row.setStyle("text-align:center");
 		Groupbox groupbox = new Groupbox();
-		groupbox.setTitle("DETALLE DEL PAGO");
 		groupbox.setMold("3d");
-		groupbox.setStyle("color: #ffffff; ");
+		caption = new Caption();
+		caption.setLabel("DETALLE DEL PAGO");
+		caption.setStyle("color: #ffffff;");
+		//groupbox.setTitle("DETALLE DEL PAGO");
+		//groupbox.setStyle("color:#ffffff");
+		groupbox.appendChild(caption);
 		groupbox.setClosable(true);
-		groupbox.setSclass("detalle");
+		//groupbox.setSclass("detalle");
 		
 		Grid grdPagos = new Grid();
 		grdPagos.setStyle("border:none");

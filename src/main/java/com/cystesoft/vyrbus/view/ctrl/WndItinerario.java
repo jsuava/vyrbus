@@ -2184,92 +2184,100 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 	 * @throws Exception
 	 */
 	public void guardaItinerarioDetalle(int action, Listbox listboxDetalleItinerario) throws Exception {
-		
-		List<DetalleItinerario>lstDetalleItinerarioOrg=new ArrayList<DetalleItinerario>();
-		if (action==ACTION_MODIFY){
-			/*###Custom 19/05/2015 - jabanto para poder recuperar la tarifa lista*/
-			TreeMap<String, Object>criterioBusqueda=new TreeMap<String, Object>();
-			criterioBusqueda.put("itinerario", oitinerario);
-			criterioBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-			lstDetalleItinerarioOrg=ServiceLocator.getDetalleItinerarioManager().buscarPorX(criterioBusqueda, null);
+		try {
+			List<DetalleItinerario>lstDetalleItinerarioOrg=new ArrayList<DetalleItinerario>();
+			if (action==ACTION_MODIFY){
+				/*###Custom 19/05/2015 - jabanto para poder recuperar la tarifa lista*/
+				TreeMap<String, Object>criterioBusqueda=new TreeMap<String, Object>();
+				criterioBusqueda.put("itinerario", oitinerario);
+				criterioBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+				lstDetalleItinerarioOrg=ServiceLocator.getDetalleItinerarioManager().buscarPorX(criterioBusqueda, null);
+				
+				/*Elimina el detalle del itinerario*/
+				ServiceLocator.getDetalleItinerarioManager().delete(oitinerario.getId());	
+			}
 			
-			/*Elimina el detalle del itinerario*/
-			ServiceLocator.getDetalleItinerarioManager().delete(oitinerario.getId());	
-		}
-		
-		for (int x=0; x < listboxDetalleItinerario.getItems().size(); x ++){
-			Listitem itemDetalleItinerario = listboxDetalleItinerario.getItemAtIndex(x);
-			String origen = ((DetalleItinerario) itemDetalleItinerario.getValue()).getRuta().getOrigen();
-//			DetalleItinerario detalle = (DetalleItinerario) itemDetalleItinerario.getValue();
-			for (int y = x; y < listboxDetalleItinerario.getItems().size(); y ++) {
-				Listitem itemDetalleItinerarios = listboxDetalleItinerario.getItemAtIndex(y);
-				
-				Long id = (long) 0;
-				DetalleItinerario odetalleItinerario = new DetalleItinerario();
-				Ruta oruta = new Ruta();
-				Agencia oagenciaPartida = new Agencia();
-				Agencia oagenciaLlegada = new Agencia();
-				
-				/*Para recuperar el id de la Ruta y la Tarifa por Ruta*/
-				String destino = ((DetalleItinerario) itemDetalleItinerarios.getValue()).getRuta().getDestino();
-//				String ruta = origen + " - " + destino;
-				Double tarifaRuta=(double) 0;
-				
-				/*Recupera el idRuta*/
-				if (origen.equals("")) {
-					criteriosBusqueda.remove("origen");
-				}else {criteriosBusqueda.put("origen", "%" + origen + "%");}
-				if (destino.equals("")) {
-					criteriosBusqueda.remove("destino");
-				}else {criteriosBusqueda.put("destino", "%" + destino + "%");}
-				criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-				ArrayList<Ruta> listarRegistros = ServiceLocator.getRutaManager().buscarPorX(criteriosBusqueda, null);
-				oruta.setId(listarRegistros.get(0).getId());
-//				tarifaRuta = new Double(0);
-				
-//				for(int i=0; i<grdRutasTrifas.getRows().getChildren().size();i++){
-//					Row it = (Row)grdRutasTrifas.getRows().getChildren().get(i);
-//					String stRuta = ((Label)it.getChildren().get(2)).getValue();
-//					if (stRuta.equals(ruta)) {
-//						oruta.setId(new Integer(((Label)it.getChildren().get(0)).getValue()));
-//						//tarifaRuta =(new  Double (((Textbox)it.getChildren().get(3)).getText()));
-//						tarifaRuta =(new  Double (((Decimalbox)it.getChildren().get(3)).doubleValue()));
-//						if (tarifaRuta== null || tarifaRuta.toString().trim().isEmpty())
-//							tarifaRuta=0.00;
-//						break;
-//					}
-//				}
-				
-				oagenciaPartida=(((DetalleItinerario) itemDetalleItinerario.getValue()).getAgenciaPartida()); //setea el idAgencia al Objeto oagenciaPartida
-				oagenciaLlegada=(((DetalleItinerario) itemDetalleItinerarios.getValue()).getAgenciaLlegada());
-
-				odetalleItinerario.setId(id);
-				odetalleItinerario.setItinerario(oitinerario);
-				odetalleItinerario.setRuta(oruta);
-				odetalleItinerario.setAgenciaPartida(oagenciaPartida);
-				odetalleItinerario.setFechaPartida(((DetalleItinerario) itemDetalleItinerario.getValue()).getFechaPartida());
-				odetalleItinerario.setHoraPartida(((DetalleItinerario) itemDetalleItinerario.getValue()).getHoraPartida());
-				odetalleItinerario.setAgenciaLlegada(oagenciaLlegada);
-				odetalleItinerario.setFechaLlegada(((DetalleItinerario) itemDetalleItinerarios.getValue()).getFechaLlegada());
-				odetalleItinerario.setHoraLlegada(((DetalleItinerario) itemDetalleItinerarios.getValue()).getHoraLlegada());
-				odetalleItinerario.setTarifa(tarifaRuta);
-				odetalleItinerario.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+			for (int x=0; x < listboxDetalleItinerario.getItems().size(); x ++){
+				Listitem itemDetalleItinerario = listboxDetalleItinerario.getItemAtIndex(x);
+				String origen = ((DetalleItinerario) itemDetalleItinerario.getValue()).getRuta().getOrigen();
+	//			DetalleItinerario detalle = (DetalleItinerario) itemDetalleItinerario.getValue();
+				for (int y = x; y < listboxDetalleItinerario.getItems().size(); y ++) {
+					Listitem itemDetalleItinerarios = listboxDetalleItinerario.getItemAtIndex(y);
 					
-				//###Custom 19/05/2015 - jabanto
-				/*Para recuperar la tarifa lista, si es que se trate de una actualizacion*/
-				Double tarifaLista=.00;
-//				for(final DetalleItinerario detalleItinerario: lstDetalleItinerarioOrg){
-//					if(detalleItinerario.getRuta().getId().intValue()==oruta.getId().intValue()){
-//						tarifaLista=detalleItinerario.getTarifaLista()!=null?detalleItinerario.getTarifaLista():.00;
-//						break;
-//					}
-//				}
-				odetalleItinerario.setTarifaLista(tarifaLista);
-				
-				
-				UtilData.auditarRegistro(odetalleItinerario, getUsuario(), Executions.getCurrent());
-				ServiceLocator.getDetalleItinerarioManager().guardar(odetalleItinerario);
-			}		
+					Long id = (long) 0;
+					DetalleItinerario odetalleItinerario = new DetalleItinerario();
+					Ruta oruta = new Ruta();
+					Agencia oagenciaPartida = new Agencia();
+					Agencia oagenciaLlegada = new Agencia();
+					
+					/*Para recuperar el id de la Ruta y la Tarifa por Ruta*/
+					String destino = ((DetalleItinerario) itemDetalleItinerarios.getValue()).getRuta().getDestino();
+	//				String ruta = origen + " - " + destino;
+					Double tarifaRuta=(double) 0;
+					
+					/*Recupera el idRuta*/
+					if (origen.equals("")) {
+						criteriosBusqueda.remove("origen");
+					}else {criteriosBusqueda.put("origen", "%" + origen + "%");}
+					if (destino.equals("")) {
+						criteriosBusqueda.remove("destino");
+					}else {criteriosBusqueda.put("destino", "%" + destino + "%");}
+					criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+					ArrayList<Ruta> listarRegistros = ServiceLocator.getRutaManager().buscarPorX(criteriosBusqueda, null);
+					if(listarRegistros==null || listarRegistros.size()==0) 
+						throw new RutaNullException(origen+" - "+destino);
+					
+					oruta.setId(listarRegistros.get(0).getId());
+	//				tarifaRuta = new Double(0);
+					
+	//				for(int i=0; i<grdRutasTrifas.getRows().getChildren().size();i++){
+	//					Row it = (Row)grdRutasTrifas.getRows().getChildren().get(i);
+	//					String stRuta = ((Label)it.getChildren().get(2)).getValue();
+	//					if (stRuta.equals(ruta)) {
+	//						oruta.setId(new Integer(((Label)it.getChildren().get(0)).getValue()));
+	//						//tarifaRuta =(new  Double (((Textbox)it.getChildren().get(3)).getText()));
+	//						tarifaRuta =(new  Double (((Decimalbox)it.getChildren().get(3)).doubleValue()));
+	//						if (tarifaRuta== null || tarifaRuta.toString().trim().isEmpty())
+	//							tarifaRuta=0.00;
+	//						break;
+	//					}
+	//				}
+					
+					oagenciaPartida=(((DetalleItinerario) itemDetalleItinerario.getValue()).getAgenciaPartida()); //setea el idAgencia al Objeto oagenciaPartida
+					oagenciaLlegada=(((DetalleItinerario) itemDetalleItinerarios.getValue()).getAgenciaLlegada());
+	
+					odetalleItinerario.setId(id);
+					odetalleItinerario.setItinerario(oitinerario);
+					odetalleItinerario.setRuta(oruta);
+					odetalleItinerario.setAgenciaPartida(oagenciaPartida);
+					odetalleItinerario.setFechaPartida(((DetalleItinerario) itemDetalleItinerario.getValue()).getFechaPartida());
+					odetalleItinerario.setHoraPartida(((DetalleItinerario) itemDetalleItinerario.getValue()).getHoraPartida());
+					odetalleItinerario.setAgenciaLlegada(oagenciaLlegada);
+					odetalleItinerario.setFechaLlegada(((DetalleItinerario) itemDetalleItinerarios.getValue()).getFechaLlegada());
+					odetalleItinerario.setHoraLlegada(((DetalleItinerario) itemDetalleItinerarios.getValue()).getHoraLlegada());
+					odetalleItinerario.setTarifa(tarifaRuta);
+					odetalleItinerario.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+						
+					//###Custom 19/05/2015 - jabanto
+					/*Para recuperar la tarifa lista, si es que se trate de una actualizacion*/
+					Double tarifaLista=.00;
+	//				for(final DetalleItinerario detalleItinerario: lstDetalleItinerarioOrg){
+	//					if(detalleItinerario.getRuta().getId().intValue()==oruta.getId().intValue()){
+	//						tarifaLista=detalleItinerario.getTarifaLista()!=null?detalleItinerario.getTarifaLista():.00;
+	//						break;
+	//					}
+	//				}
+					odetalleItinerario.setTarifaLista(tarifaLista);
+					
+					
+					UtilData.auditarRegistro(odetalleItinerario, getUsuario(), Executions.getCurrent());
+					ServiceLocator.getDetalleItinerarioManager().guardar(odetalleItinerario);
+				}		
+			}
+		}catch(RutaNullException rnex) {
+			DlgMessage.information("No existe la Ruta "+rnex.getMessage()+" no se puede continuar con el guardado");
+		}catch(Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 	

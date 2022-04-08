@@ -1,3 +1,4 @@
+
 package com.cystesoft.vyrbus.service.fe;
 
 import javax.xml.bind.JAXBElement;
@@ -42,8 +43,9 @@ public class InformacionAdicional {
 	/**
 	 * Gets the value of the propiedadesAdicionales property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}
-	 *         {@link ArrayOfInformacionAdicionalPropiedadAdicional }{@code >}
+	 * @return possible object is {@link JAXBElement
+	 *         }{@code <}{@link ArrayOfInformacionAdicionalPropiedadAdicional
+	 *         }{@code >}
 	 * 
 	 */
 	public JAXBElement<ArrayOfInformacionAdicionalPropiedadAdicional> getPropiedadesAdicionales() {
@@ -54,20 +56,21 @@ public class InformacionAdicional {
 	 * Sets the value of the propiedadesAdicionales property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}
-	 *            {@link ArrayOfInformacionAdicionalPropiedadAdicional }{@code >}
+	 *            allowed object is {@link JAXBElement
+	 *            }{@code <}{@link ArrayOfInformacionAdicionalPropiedadAdicional
+	 *            }{@code >}
 	 * 
 	 */
-	public void setPropiedadesAdicionales(
-			JAXBElement<ArrayOfInformacionAdicionalPropiedadAdicional> value) {
+	public void setPropiedadesAdicionales(JAXBElement<ArrayOfInformacionAdicionalPropiedadAdicional> value) {
 		this.propiedadesAdicionales = ((JAXBElement<ArrayOfInformacionAdicionalPropiedadAdicional>) value);
 	}
 
 	/**
 	 * Gets the value of the totalesMonedaAdicional property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}
-	 *         {@link ArrayOfInformacionAdicionalTotalMonedaAdicional }{@code >}
+	 * @return possible object is {@link JAXBElement
+	 *         }{@code <}{@link ArrayOfInformacionAdicionalTotalMonedaAdicional
+	 *         }{@code >}
 	 * 
 	 */
 	public JAXBElement<ArrayOfInformacionAdicionalTotalMonedaAdicional> getTotalesMonedaAdicional() {
@@ -78,13 +81,12 @@ public class InformacionAdicional {
 	 * Sets the value of the totalesMonedaAdicional property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}
-	 *            {@link ArrayOfInformacionAdicionalTotalMonedaAdicional }
-	 *            {@code >}
+	 *            allowed object is {@link JAXBElement
+	 *            }{@code <}{@link ArrayOfInformacionAdicionalTotalMonedaAdicional
+	 *            }{@code >}
 	 * 
 	 */
-	public void setTotalesMonedaAdicional(
-			JAXBElement<ArrayOfInformacionAdicionalTotalMonedaAdicional> value) {
+	public void setTotalesMonedaAdicional(JAXBElement<ArrayOfInformacionAdicionalTotalMonedaAdicional> value) {
 		this.totalesMonedaAdicional = ((JAXBElement<ArrayOfInformacionAdicionalTotalMonedaAdicional>) value);
 	}
 

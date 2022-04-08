@@ -1011,7 +1011,7 @@ public class WndCierreCaja extends WndBase {
 			int agenciaIdCargo = 0;
 			String fechaLiquidacion =Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
 			if(transcarUsuarioPersonal!=null && liquidacion.getAgencia().getCodigo()!=null){
-				agenciaIdCargo = ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(liquidacion.getAgencia().getCodigo());
+				agenciaIdCargo = ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(liquidacion.getAgencia().getId().toString());
 				ServiceLocator.getTranscarManager().cerrarLiquidacion(transcarUsuarioPersonal.getId(), agenciaIdCargo, fechaLiquidacion, fechaLiquidacion);
 			}
 		} catch (Exception e) {

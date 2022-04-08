@@ -1,3 +1,4 @@
+
 package com.cystesoft.vyrbus.service.fe;
 
 import javax.xml.bind.JAXBElement;
@@ -48,8 +49,8 @@ public class Cliente {
 	/**
 	 * Gets the value of the direccion property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
-	 *         {@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String
+	 *         }{@code >}
 	 * 
 	 */
 	public JAXBElement<String> getDireccion() {
@@ -60,8 +61,8 @@ public class Cliente {
 	 * Sets the value of the direccion property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
-	 *            {@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String
+	 *            }{@code >}
 	 * 
 	 */
 	public void setDireccion(JAXBElement<String> value) {
@@ -71,8 +72,8 @@ public class Cliente {
 	/**
 	 * Gets the value of the nombres property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
-	 *         {@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String
+	 *         }{@code >}
 	 * 
 	 */
 	public JAXBElement<String> getNombres() {
@@ -83,8 +84,8 @@ public class Cliente {
 	 * Sets the value of the nombres property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
-	 *            {@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String
+	 *            }{@code >}
 	 * 
 	 */
 	public void setNombres(JAXBElement<String> value) {
@@ -94,8 +95,8 @@ public class Cliente {
 	/**
 	 * Gets the value of the numeroDocumento property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
-	 *         {@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String
+	 *         }{@code >}
 	 * 
 	 */
 	public JAXBElement<String> getNumeroDocumento() {
@@ -106,8 +107,8 @@ public class Cliente {
 	 * Sets the value of the numeroDocumento property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
-	 *            {@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String
+	 *            }{@code >}
 	 * 
 	 */
 	public void setNumeroDocumento(JAXBElement<String> value) {
@@ -117,8 +118,8 @@ public class Cliente {
 	/**
 	 * Gets the value of the tipoDocumentoID property.
 	 * 
-	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
-	 *         {@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String
+	 *         }{@code >}
 	 * 
 	 */
 	public JAXBElement<String> getTipoDocumentoID() {
@@ -129,8 +130,8 @@ public class Cliente {
 	 * Sets the value of the tipoDocumentoID property.
 	 * 
 	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
-	 *            {@code >}
+	 *            allowed object is {@link JAXBElement }{@code <}{@link String
+	 *            }{@code >}
 	 * 
 	 */
 	public void setTipoDocumentoID(JAXBElement<String> value) {

@@ -43,6 +43,7 @@ import com.cystesoft.vyrbus.model.bean.Liquidacion;
 import com.cystesoft.vyrbus.model.bean.TipoAgencia;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
+import com.cystesoft.vyrbus.service.exceptions.PerdidaServicioException;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.Messages;
@@ -376,9 +377,12 @@ public class WndAnulacionDocumentos extends WndBase{
 						@Override
 						public void onEvent(Event event) throws Exception {
 							try {
-								
+								if(((VentaPasaje)event.getTarget().getAttribute(VentaPasaje.class.getName())).getTipoTransaccion().equals(Constantes.TIPO_OPERACION_PERDIDA_SERVICIO))
+									throw new PerdidaServicioException();
 								createWindowAnulacion((VentaPasaje)event.getTarget().getAttribute(VentaPasaje.class.getName()));
 								
+							}catch(PerdidaServicioException psex) {
+								DlgMessage.information("No se puede anular un comprobante que esta marcado como Perdida de Servicio");
 							} catch (Exception e) {
 								e.printStackTrace();
 								DlgMessage.error(e.getMessage());
@@ -402,6 +406,9 @@ public class WndAnulacionDocumentos extends WndBase{
 				return;
 			}else if (ltbxAnulacionComprobantes.getSelectedItems().size()>20){
 				DlgMessage.information("El modo Anulación Masiva solamente se puede aplicar a un máximo de 20 Comprobantes");
+				return;
+			}else if(((VentaPasaje)ltbxAnulacionComprobantes.getSelectedItem().getValue()).getTipoTransaccion().equals(Constantes.TIPO_OPERACION_PERDIDA_SERVICIO)) {
+				DlgMessage.information("No se puede anular un comprobante marcado como Perdida de Servicio.");
 				return;
 			}
 				

@@ -218,7 +218,7 @@ public class WndConfirmarReserva extends WndBase {
 					item.appendChild(cell);
 					cell = new Listcell(ventaPasaje.getImportePagado().toString());
 					item.appendChild(cell);
-					cell = new Listcell(ventaPasaje.getPreferenciaAlimentaria().getDenominacion());
+					cell = new Listcell(ventaPasaje.getPreferenciaAlimentaria()==null?"":ventaPasaje.getPreferenciaAlimentaria().getDenominacion());
 					item.appendChild(cell);
 					cell = new Listcell();
 					Button button = new Button("", "resources/mp_anular.png");

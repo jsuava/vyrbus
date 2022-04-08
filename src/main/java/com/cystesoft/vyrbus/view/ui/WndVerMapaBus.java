@@ -213,7 +213,9 @@ public class WndVerMapaBus extends WndBase {
 		label = createLabel("CAPACIDAD", null, null);
 		row = new Row();
 		row.appendChild(label);
-		Integer capacidad = detalleItinerario.getItinerario().getServicio().getNumeroAsientosPiso1() + (detalleItinerario.getItinerario().getServicio().getNumeroPisos().intValue()==2?0:detalleItinerario.getItinerario().getServicio().getNumeroAsientosPiso2());
+		Integer capacidad = detalleItinerario.getItinerario().getServicio().getNumeroAsientosPiso1() + 
+							(detalleItinerario.getItinerario().getServicio().getNumeroPisos().intValue()==2
+							? detalleItinerario.getItinerario().getServicio().getNumeroAsientosPiso2() : 0);
 		label = createLabel(": "  + capacidad.toString(), styleBlue11f, null);
 		row.appendChild(label);
 		rows.appendChild(row);

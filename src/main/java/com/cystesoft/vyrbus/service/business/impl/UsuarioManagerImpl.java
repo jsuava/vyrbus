@@ -15,6 +15,7 @@ import javax.security.auth.login.LoginException;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cystesoft.vyrbus.model.bean.ControlAcceso;
 import com.cystesoft.vyrbus.model.bean.DestinatariosEmails;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.dao.UsuarioDAO;
@@ -236,5 +237,12 @@ public class UsuarioManagerImpl implements UsuarioManager {
 	public List<Usuario> buscarPorX(String campo, Object[] criterios,List<String> criteriosOrdenar, String estadoRegistro)throws Exception {
 		// TODO Auto-generated method stub
 		return getUsuarioDAO().buscarPorX(campo, criterios, criteriosOrdenar, estadoRegistro);
+	}
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.UsuarioManager#buscarCodigoAcceso(int, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public ControlAcceso buscarCodigoAcceso(int idUsuario, String codigo, String estado) throws Exception {
+		return getUsuarioDAO().buscarCodigoAcceso(idUsuario, codigo, estado);
 	}
 }

@@ -1030,6 +1030,7 @@ public class CreateDocument implements Serializable {
 			TranscarUsuarioPersonal transcarUsuarioPersonal = ServiceLocator.getTranscarManager().buscarUsuarioPersonal(liquidacion.getUsuario().getLogin());
 			int agenciaIdCargo = 0;
 			String fechaLiquidacion =Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
+
 			if(transcarUsuarioPersonal!=null){ // && liquidacion.getAgencia().getCodigo()!=null){
 //				agenciaIdCargo = ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(liquidacion.getAgencia().getCodigo());				
 				agenciaIdCargo = ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(liquidacion.getAgencia().getId().toString());
@@ -3029,14 +3030,14 @@ public class CreateDocument implements Serializable {
 		String encabezado="|NRO |";
 		encabezado+="TRANSACCION|";
 //		encabezado+=" N.CONTROL|";
-		encabezado+="  NRO.BOLETO      |";
-		encabezado+="  NRO.BOLREF      |";
-		encabezado+=" BRUTO  |";
+		encabezado+="  COMPROBANTE   |";
+		encabezado+="  COMP. REF.    |";
+		encabezado+="  BRUTO   |";
 		encabezado+=" RCGO  |";
 		encabezado+=" DESCTO|";
 		encabezado+=" A CTA.|";
 		encabezado+=" PENAL.|";
-		encabezado+="  NETO  |";
+		encabezado+="   NETO   |";
 		encabezado+="  USUARIO   |";
 		encabezado+=" FEC.VENTA  |";
 		String interlineado="+----------------------------------------------------------------------------------------------------------------------------------+";
@@ -3076,8 +3077,8 @@ public class CreateDocument implements Serializable {
 			Integer longNroItem=2;
 			Integer longTransaccion=9;
 //			Integer longNControl=8;
-			Integer longBoleto=16;
-			Integer longBruto=6;
+			Integer longBoleto=14;
+			Integer longBruto=8;
 			Integer longRecargo=5;
 			Integer longUsuario=10;
 			Integer longFechaVenta=10;

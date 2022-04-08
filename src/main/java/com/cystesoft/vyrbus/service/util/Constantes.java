@@ -46,6 +46,7 @@ public class Constantes {
 	 */
 	public static final int ACTION_CONSULTA = 2;
 	
+	public static final String KEY_CRYPTO = "wsS3c#r1tyTB@ITSB";
 	/*	Para las fechas*/
 	public static final String DATE_FORMAT="dd/MM/yyyy";
 	public static final String DATE_TIME_FORMAT="dd/MM/yyyy HH:mm:ss";
@@ -307,6 +308,7 @@ public class Constantes {
 	public static final String ATRIBUTO_ROL = "ROL";
 	public static final String ATRIBUTO_IMPRESORAS_EQUIPO = "IMPRESORAS_EQUIPO";
 	public static final String ATRIBUTO_IMPRESORA="IMPRESORA";
+	public static final String ATRIBUTO_DIR_MAC="DIRECCION_MAC";
 	/*	******************************************************************************************************************************************
 	 * CONSTANTES QUE GUARDAR RELACION CON LA BASE DE DATOS Y QUE DEBERAN CAMBIAR SI CAMBIA SUS IDs EN LA DB
 	 *********************************************************************************************************************************************/
@@ -336,6 +338,7 @@ public class Constantes {
 	public static final String TIPO_OPERACION_VENTA_POOL = "4";
 	public static final String TIPO_OPERACION_VENTA_ESPECIAL = "5";
 	public static final String TIPO_OPERACION_EXCESO = "6";
+	public static final String TIPO_OPERACION_PERDIDA_SERVICIO = "7";
 	
 	/* Constantes que referencian al rol */
 	public static final int ID_ROL_ASISTENTE_ADMIN_COMERCIAL=17;

@@ -74,7 +74,7 @@ public interface TranscarManager {
 	 * @return lista de resultados
 	 * @throws Exception
 	 */
-	public List<VentaPasaje> buscarDetalleVentas(Integer usuarioId, Integer agenciaId, String fechaInicial, String fechaFinal)throws Exception;
+	public List<VentaPasaje> buscarDetalleVentas(TranscarUsuarioPersonal usuarioPersonal, Integer agenciaId, String fechaInicial, String fechaFinal)throws Exception;
 	/**
 	 * Realiza la busqueda de todas las agencias
 	 * @return
