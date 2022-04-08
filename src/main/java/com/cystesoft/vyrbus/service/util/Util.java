@@ -1895,7 +1895,6 @@ public class Util {
 		return resultIdentidad;
 	}
 	
-	
 	/**
 	 * Valida si el DNI del pasajero es o no valido según validacion previa con el reniec mediante el metodo getIdentidad, para determinar el envio de la alerta
 	 * @param ventaPasaje : Instancia del objeto VentaPasajes

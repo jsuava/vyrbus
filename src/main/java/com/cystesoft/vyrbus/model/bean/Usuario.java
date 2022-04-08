@@ -285,7 +285,4 @@ public class Usuario extends GenericBean implements Serializable, Cloneable {
 		this.ventasUsuarios = ventasUsuarios;
 	}
 
-
-
-
 }

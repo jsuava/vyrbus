@@ -1586,12 +1586,12 @@ public class ReportesDAOImpl extends GenericDAOImpl implements ReportesDAO {
 	 * @see com.tepsa.sisvyr.model.dao.ReportesDAO#ventasPromocion(java.lang.String, java.lang.String, java.lang.Long)
 	 */
 	@Override
-	public ArrayList<Promocion> ventasPromocion(String fechaInicio,String fechaFin, Long idPromocion,String tipoDescuento) throws Exception {
+	public ArrayList<Promocion> ventasPromocion(String fechaInicio,String fechaFin, Long idPromocion,String tipoDescuento, Integer agencia_id, Integer usuario_id) throws Exception {
 		String sql="SELECT pro.promocion_id, pro.c_denominacion as Promocion "+
 					      ",DECODE(pro.c_tipdes,'S',pro.n_valdes||'   S/',pro.n_valdes||'    %') as ValDesct "+
 					      ",COUNT(*)as Cantidad "+
 					      ",SUM(vp.n_descuento) as TotalDest "+
-					      ",SUM(vp.n_imppag)as TotalVenta "+
+					      ",SUM(vp.n_imppag)as TotalVenta "+	
 					"FROM VRTVENPAS vp "+
 					     "INNER JOIN (SELECT MIN(v.venpas_id)venpas_id FROM VRTVENPAS v GROUP BY v.venpas_idoriginal "+
 					                ")mvenpas_id ON (mvenpas_id.venpas_id=vp.venpas_id) "+
@@ -1602,7 +1602,8 @@ public class ReportesDAOImpl extends GenericDAOImpl implements ReportesDAO {
 					     "AND vp.c_tiptra='1' "+
 					     "AND vp.tipcom_id in (1,2,7) "+
 					     "AND vp.c_estreg='A' "+
-					     "AND pro.n_estarifa=0 " +
+					     "AND vp.agencia_id=nvl("+agencia_id+", vp.agencia_id) "+
+					     "AND vp.usuario_id=nvl("+usuario_id+", vp.usuario_id) "+
 					     "AND pro.promocion_id=NVL("+idPromocion+",pro.promocion_id) ";
 					     if(tipoDescuento!=null)
 					    	 sql+="AND pro.c_tipdes='"+tipoDescuento+"' ";
@@ -1632,8 +1633,12 @@ public class ReportesDAOImpl extends GenericDAOImpl implements ReportesDAO {
 	 * @see com.tepsa.sisvyr.model.dao.ReportesDAO#ventasPromocionLstPromociones(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public ArrayList<Promocion> ventasPromocionLstPromociones(String fechaInicio, String fechaFin) throws Exception {
+	public ArrayList<Object> ventasPromocionLstPromociones(String fechaInicio, String fechaFin) throws Exception {
 		// TODO Auto-generated method stub
+		
+		ArrayList<Object> listResult = new ArrayList<>();
+		
+		//Lista de promociones
 		String sql="SELECT pro.promocion_id, pro.c_denominacion as Promocion "+
 					"FROM VRTVENPAS vp "+
 					     "INNER JOIN (SELECT MIN(v.venpas_id)venpas_id FROM VRTVENPAS v GROUP BY v.venpas_idoriginal "+
@@ -1642,29 +1647,85 @@ public class ReportesDAOImpl extends GenericDAOImpl implements ReportesDAO {
 					"WHERE vp.d_fecliq BETWEEN to_date('"+fechaInicio+"','dd/MM/yyyy') AND to_date('"+fechaFin+"','dd/MM/yyyy') "+
 					     "AND vp.tipmov_id IN (1,8) "+
 					     "AND vp.c_tiptra='1' "+
-					     "AND vp.tipcom_id=1 "+
+					     "AND vp.tipcom_id IN (1,2,7) "+
 					     "AND vp.c_estreg='A' "+
-					     "AND pro.n_estarifa=0 "+
 					"GROUP BY pro.promocion_id,pro.c_Denominacion "+
-					"ORDER BY pro.c_Denominacion";
-		
-		
+					"ORDER BY pro.c_Denominacion";			
 		log.info(sql);
-		
-		List<?>lstResult=getSession().createSQLQuery(sql).list();
+		List<?> result=getSession().createSQLQuery(sql).list();
 		ArrayList<Promocion>lstPromociones=new ArrayList<Promocion>();
-		for(int i=0; i<lstResult.size();i++){
-			Object[] obj=(Object[]) lstResult.get(i);
+		for(int i=0; i< result.size();i++){
+			Object[] obj=(Object[])  result.get(i);
 			
 			Promocion promocion=new Promocion();
 			promocion.setId(((BigDecimal)obj[0]).longValue());
-			promocion.setDenominacion(obj[1].toString());
-			
+			promocion.setDenominacion(obj[1].toString());			
 			
 			lstPromociones.add(promocion);
 		}
+		listResult.add(lstPromociones);
 		
-		return lstPromociones;
+		//Lista de Agencias
+		sql="SELECT ag.agencia_id, ag.c_denominacion as agencia "+
+				"FROM VRTVENPAS vp "+
+				     "INNER JOIN (SELECT MIN(v.venpas_id)venpas_id FROM VRTVENPAS v GROUP BY v.venpas_idoriginal "+
+				                ")mvenpas_id ON (mvenpas_id.venpas_id=vp.venpas_id) "+
+				     "INNER JOIN VRMPROMOCION pro ON (vp.promocion_id=pro.promocion_id) "+
+				     "INNER JOIN VRMAGENCIA ag ON (ag.agencia_id=vp.agencia_id) "+
+				"WHERE vp.d_fecliq BETWEEN to_date('"+fechaInicio+"','dd/MM/yyyy') AND to_date('"+fechaFin+"','dd/MM/yyyy') "+
+				     "AND vp.tipmov_id IN (1,8) "+
+				     "AND vp.c_tiptra='1' "+
+				     "AND vp.tipcom_id IN (1,2,7) "+
+				     "AND vp.c_estreg='A' "+
+				"GROUP BY ag.agencia_id, ag.c_Denominacion "+
+				"ORDER BY ag.c_Denominacion";			
+		log.info(sql);
+		result = getSession().createSQLQuery(sql).list();
+		List<Agencia> listAgencias = new ArrayList<>();
+		for(int i=0; i<result.size(); i++){
+			Object [] obj = (Object[]) result.get(i);
+			
+			Agencia agencia= new Agencia();
+			agencia.setId(((BigDecimal)obj[0]).intValue());
+			agencia.setDenominacion(obj[1].toString());
+			
+			listAgencias.add(agencia);
+		}
+		listResult.add(listAgencias);
+		
+		//Lista de usuarios
+		sql="SELECT us.usuario_id, us.c_apepat, us.c_apemat, us.c_nombre, vp.agencia_id "+
+				"FROM VRTVENPAS vp "+
+				     "INNER JOIN (SELECT MIN(v.venpas_id)venpas_id FROM VRTVENPAS v GROUP BY v.venpas_idoriginal "+
+				                ")mvenpas_id ON (mvenpas_id.venpas_id=vp.venpas_id) "+
+				     "INNER JOIN VRMPROMOCION pro ON (vp.promocion_id=pro.promocion_id) "+
+				     "INNER JOIN VRMUSUARIO us ON (us.usuario_id=vp.usuario_id) "+
+				"WHERE vp.d_fecliq BETWEEN to_date('"+fechaInicio+"','dd/MM/yyyy') AND to_date('"+fechaFin+"','dd/MM/yyyy') "+
+				     "AND vp.tipmov_id IN (1,8) "+
+				     "AND vp.c_tiptra='1' "+
+				     "AND vp.tipcom_id IN (1,2,7) "+
+				     "AND vp.c_estreg='A' "+
+				"GROUP BY us.usuario_id, us.c_apepat, us.c_apemat, us.c_nombre, vp.agencia_id "+
+				"ORDER BY us.c_apepat, us.c_apemat, us.c_nombre";			
+		log.info(sql);
+		result = getSession().createSQLQuery(sql).list();
+		List<Usuario> listUsuarios = new ArrayList<>();
+		for(int i=0; i<result.size(); i++){
+			Object[] obj = (Object[]) result.get(i);
+			
+			Usuario usuario= new Usuario();
+			usuario.setId(((BigDecimal)obj[0]).intValue());
+			usuario.setApellidoPaterno(obj[1].toString());
+			usuario.setApellidoMaterno(obj[2]!=null?obj[2].toString():"");
+			usuario.setNombre(obj[3].toString());
+			usuario.setAgencia(new Agencia(((BigDecimal)obj[4]).intValue()));
+			
+			listUsuarios.add(usuario);
+		}
+		listResult.add(listUsuarios);
+		
+		
+		return listResult;
 	}
 
 	/* (non-Javadoc)

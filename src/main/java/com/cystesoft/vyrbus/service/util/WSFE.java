@@ -44,6 +44,7 @@ import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartida;
 import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartidaID;
 import com.cystesoft.vyrbus.model.bean.Liquidacion;
 import com.cystesoft.vyrbus.model.bean.OperadorTarjetaCredito;
+import com.cystesoft.vyrbus.model.bean.TipoMovimiento;
 import com.cystesoft.vyrbus.model.bean.TranscarUsuarioPersonal;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.UsuarioHardware;
@@ -425,7 +426,7 @@ public class WSFE implements Serializable{
 			int agenciaIdCargo = 0;
 			String fechaLiquidacion =Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
 			if(transcarUsuarioPersonal!=null && liquidacion.getAgencia().getCodigo()!=null){
-				agenciaIdCargo = ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(liquidacion.getAgencia().getCodigo());
+				agenciaIdCargo = ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(liquidacion.getAgencia().getId().toString());
 				List<Liquidacion>listResumenEspeciesValoradas = ServiceLocator.getTranscarManager().buscarLiquidacionTurnoResumenEspVal(transcarUsuarioPersonal.getId(), agenciaIdCargo, fechaLiquidacion, fechaLiquidacion);
 				for(Liquidacion _liquidacion: listResumenEspeciesValoradas){
 					XmlItemIngresoVentaLiquidacion itemIngresoVentaLiquidacion = new XmlItemIngresoVentaLiquidacion();
@@ -834,8 +835,25 @@ public class WSFE implements Serializable{
 							xmlVenta.setV992_PartPage4("FORMA PAGO : CREDITO");
 					}else{
 						xmlVenta.setV992_PartPage4("***CORTESIA POR "+ventaPasaje.getTipoFormaPago().getDenominacion()+"***");
-						xmlVenta.setV0_ObserImport("***CORTESIA POR "+ventaPasaje.getTipoFormaPago().getDenominacion()+"***");
+//						xmlVenta.setV0_ObserImport("***CORTESIA POR "+ventaPasaje.getTipoFormaPago().getDenominacion()+"***");
 					}
+					
+					//Muestra el boleto anterior - jabanto - 05/04/2022
+					if(ventaPasaje.getVentaPasaje()!=null){
+						VentaPasaje ventaAnt = ServiceLocator.getVentaPasajesManager().buscarPorId(ventaPasaje.getVentaPasaje().getId());
+						if(ventaAnt.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA)){
+							if(ventaPasaje.getTipoMovimiento().getAbreviatura()==null){
+								TipoMovimiento tipoMovimiento = ServiceLocator.getTipoMovimientoManager().buscarPorId(ventaPasaje.getTipoMovimiento().getId().longValue());
+								ventaPasaje.setTipoMovimiento(tipoMovimiento);
+							}
+							String v0_obserImport = "REF. " + ventaPasaje.getTipoMovimiento().getAbreviatura();
+							v0_obserImport += " - " + ventaAnt.getNumeroBoleto();
+							v0_obserImport += " - S/ " + Util.toNumberFormat(ventaAnt.getImportePagado(), 2);
+							xmlVenta.setV0_ObserImport(v0_obserImport);
+						}
+					}
+					
+					
 					/*Centro de costo del cliente*/
 					if(ventaPasaje.getCentroCosto()!=null)
 						xmlVenta.setV992_CentroCosto(ventaPasaje.getCentroCosto().getCodigo()+" - "+ventaPasaje.getCentroCosto().getDenominacion());

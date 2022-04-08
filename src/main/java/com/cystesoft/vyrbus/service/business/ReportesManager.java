@@ -96,7 +96,7 @@ public interface ReportesManager {
 	 * @return	Lista de ventas asociadas a una promocion.
 	 * @throws Exception
 	 */
-	public ArrayList<Promocion>ventasPromocion(String fechaInicio,String fechaFin, Long idPromocion,String tipoDescuento)throws Exception;
+	public ArrayList<Promocion>ventasPromocion(String fechaInicio,String fechaFin, Long idPromocion,String tipoDescuento, Integer agencia_id, Integer usuario_id)throws Exception;
 	/**
 	 * CONSULTA: Todas las promociones emitidas en la venta, segun los parametros que se envíe
 	 * @param fechaInicio	: Fecha incio.
@@ -104,7 +104,7 @@ public interface ReportesManager {
 	 * @return	Listado de promociones.
 	 * @throws Exception
 	 */
-	public ArrayList<Promocion>ventasPromocionLstPromociones(String fechaInicio,String fechaFin)throws Exception;
+	public ArrayList<Object>ventasPromocionLstPromociones(String fechaInicio,String fechaFin)throws Exception;
 	/**
 	 * CONSULTA: EL DETALLE DE LAS VENTAS DE LA PROMOCION
 	 * @param fechaInicio	: Fecha inicio de la busqueda.

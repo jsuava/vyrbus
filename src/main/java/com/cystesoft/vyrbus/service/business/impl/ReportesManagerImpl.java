@@ -94,16 +94,16 @@ public class ReportesManagerImpl implements ReportesManager {
 	 * @see com.tepsa.sisvyr.service.business.ReportesManager#ventasPromocion(java.lang.String, java.lang.String, java.lang.Long)
 	 */
 	@Override
-	public ArrayList<Promocion> ventasPromocion(String fechaInicio,String fechaFin, Long idPromocion,String tipoDescuento) throws Exception {
+	public ArrayList<Promocion> ventasPromocion(String fechaInicio,String fechaFin, Long idPromocion,String tipoDescuento, Integer agencia_id, Integer usuario_id) throws Exception {
 		// TODO Auto-generated method stub
-		return getReportesDAO().ventasPromocion(fechaInicio, fechaFin, idPromocion,tipoDescuento);
+		return getReportesDAO().ventasPromocion(fechaInicio, fechaFin, idPromocion,tipoDescuento, agencia_id, usuario_id);
 	}
 
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.ReportesManager#ventasPromocionLstPromociones(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public ArrayList<Promocion> ventasPromocionLstPromociones(String fechaInicio, String fechaFin) throws Exception {
+	public ArrayList<Object> ventasPromocionLstPromociones(String fechaInicio, String fechaFin) throws Exception {
 		// TODO Auto-generated method stub
 		return getReportesDAO().ventasPromocionLstPromociones(fechaInicio, fechaFin); 
 	}

@@ -74,6 +74,8 @@ public class WndAgencia extends WndOpcionesMantenimiento {
 		//	usuario= (Usuario) getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO);
 		/*********************************************************************/
 		
+		
+		
 //		ServiceLocator.getAgenciaManager().guardar(getAgencia());
 		
 		UtilData.cargarDataCombo(cboTipoAgencia, TipoAgencia.class, false);
@@ -84,6 +86,7 @@ public class WndAgencia extends WndOpcionesMantenimiento {
 		criteriosOrdenar.add("denominacion");
 	}
 
+	
 	@Override
 	public void initComponents() {
 		cboTipoAgencia = (Combobox) getFellow("cboTipoAgencia");

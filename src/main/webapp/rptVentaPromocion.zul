@@ -3,9 +3,27 @@
 <window id="wndRptVtaPromo" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndRptVentaPromocion" width="980px">
 	<hbox>
 		<vbox>
-			<grid width="420px" >
+			<listbox id="lstVentasPromocion" rows="6" width="555px" multiple="true" checkmark="true">
+				<listhead>
+					<listheader width="30px" />
+					<listheader label="NOMBRE DESCUENTO"  sort="auto" style="color: #ffffff;"/>
+					<listheader label="VAL.DESC" width="50px" align="center" sort="auto" tooltiptext="Valor del descuento" style="color: #ffffff;"/>
+					<listheader label="CANT." width="50px" align="right" sort="auto" tooltiptext="Cantidad ventas" style="color: #ffffff;"/>
+					<listheader label="T.DESC." width="80px" align="right" sort="auto" tooltiptext="Total descuento" style="color: #ffffff;"/>
+					<listheader label="T.VENTA" width="80px" align="right" sort="auto" tooltiptext="Total venta" style="color: #ffffff;"/>
+				</listhead>				
+			</listbox>
+			
+			<div width="520px" align="right" visible="false">
+				<textbox id="txtTotalDesceunto" readonly="true" width="68px" style="font-weight: bold; font-size:11px !important;color:red;text-align: right;" />
+				<textbox id="txtTotalVenta" readonly="true" width="68px" style="font-weight: bold; font-size:11px !important;color:red;text-align: right;"/>
+			</div>
+		</vbox>
+		
+		<vbox>
+			<grid width="400px" >
 				<columns>
-					<column width="70px" align="right" />
+					<column width="80px" align="right" />
 					<column width="100px"/>
 	 				<column width="50px" align="right"/>
 				</columns>
@@ -17,78 +35,63 @@
 						<datebox id="dtbxFechaFinal" format="dd/MM/yyyy" width="90PX" readonly="true" onChange="wndRptVtaPromo.cargarPromociones()" />
 					</row>
 					<row spans="1,3">
-						<label value="PROMOCIÓN :" />
-						<combobox id="cmbPromocion" width="240px" onOK="wndRptVtaPromo.buscarVentasPromocion()" />
+						<label value="AGENCIA :" />
+						<combobox id="cmbAgencia" width="240px"  readonly="true" onChange="wndRptVtaPromo.onChange_cmbAgencia()" />
+					</row>	
+					<row spans="1,3">
+						<label value="USUARIO :" />
+						<combobox id="cmbUsuario" width="240px"  readonly="true" />
 					</row>
 					<row spans="1,3">
-						<label value="T.DESCTO :" />
+						<label value="DESCUENTO :" />
+						<combobox id="cmbPromocion" width="240px" readonly="true" onOK="wndRptVtaPromo.buscarVentasPromocion()" />
+					</row>
+					<row spans="1,3">
+						<label value="TIPO DSCTO :" />
 						<hbox align="center">
-							<combobox id="cmbTipoDescuento" width="120px"  readonly="true" />
+							<combobox id="cmbTipoDescuento" width="120px"  readonly="true" />							
+							<button label="Buscar resumen"  sclass="btnCommandXL" style="margin-left:35px" image="/resources/mp_buscarEnabled.png" onClick="wndRptVtaPromo.buscarVentasPromocion()" />
 						</hbox>
 					</row>
-					<row spans="1,3">
-						<separator height="40px" />
-						<separator />
-					</row>
+					
 				</rows>
 			</grid>
 			
-			<grid width="420px">
+			<grid width="400px">
 				<columns>
 					<column align="left" />
 					<column align="right"/>
 				</columns>
 				<rows>
-					<row>
+					<row>													
 						<button label="Detallar selección" 
 								sclass="btnCommandXL" 
 								image="/resources/mp_preliminar.png" 
-								onClick="wndRptVtaPromo.buscarVentasPromocionDetalle()"  />
-						<button label="Buscar Resumen" 
+								onClick="wndRptVtaPromo.buscarVentasPromocionDetalle()"  />	
+								
+						<button label="Exportar Resumen" 
 								sclass="btnCommandXL" 
-								image="/resources/mp_buscarEnabled.png" 
-								onClick="wndRptVtaPromo.buscarVentasPromocion()" />
+								image="/resources/mp_excel.png" 
+								onClick="wndRptVtaPromo.exportar()" />					
 					</row>
 					<row>
 						<button label="Exportar Detallado" 
 								sclass="btnCommandXL" 
 								image="/resources/mp_excel.png" 
 								onClick="wndRptVtaPromo.exportarDetalle()" />
-						<button label="Exportar Resumen" 
-								sclass="btnCommandXL" 
-								image="/resources/mp_excel.png" 
-								onClick="wndRptVtaPromo.exportar()" />
-					</row>
-					<row>
-						<separator/>
 						<button label="Cerrar" 
 								sclass="btnCommandL" 
 								image="/resources/mp_cerrar.png" 
-								onClick="wndRptVtaPromo.closeTabWindow()" />
-					</row>
+								onClick="wndRptVtaPromo.closeTabWindow()" />		
+					</row>					
 				</rows>
 			</grid>
 		</vbox>
 		
-		<vbox>
-			<listbox id="lstVentasPromocion" rows="8" width="535px">
-				<listhead>
-					<listheader label="PROMOCIÓN"  sort="auto" style="color: #ffffff;"/>
-					<listheader label="VAL.DESC" width="50px" align="center" sort="auto" tooltiptext="Valor del descuento" style="color: #ffffff;"/>
-					<listheader label="CANT." width="50px" align="right" sort="auto" tooltiptext="Cantidad ventas" style="color: #ffffff;"/>
-					<listheader label="T.DESC." width="80px" align="right" sort="auto" tooltiptext="Total descuento" style="color: #ffffff;"/>
-					<listheader label="T.VENTA" width="80px" align="right" sort="auto" tooltiptext="Total venta" style="color: #ffffff;"/>
-				</listhead>
-			</listbox>
-			
-			<div width="520px" align="right" visible="false">
-				<textbox id="txtTotalDesceunto" readonly="true" width="68px" style="font-weight: bold; font-size:11px !important;color:red;text-align: right;" />
-				<textbox id="txtTotalVenta" readonly="true" width="68px" style="font-weight: bold; font-size:11px !important;color:red;text-align: right;"/>
-			</div>
-		</vbox>
+		
 	</hbox>
 	<groupbox width="965px" mold="3d" closable="false">
-		<caption label="DETALLE DE LA PROMOCIÓN SELECCIONADA" style="color: #ffffff;"/>
+		<caption label="DETALLE DEL DESCUENTO SELECCIONADO" style="color: #ffffff;"/>
 		<listbox id="lstVentasPromocionDeta" rows="10">
 			<listhead>
 				<listheader label="NRO." width="40px" style="color: #ffffff;"/>

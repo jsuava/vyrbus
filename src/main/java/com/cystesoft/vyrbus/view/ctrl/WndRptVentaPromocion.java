@@ -8,11 +8,16 @@ import java.util.List;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listfoot;
+import org.zkoss.zul.Listfooter;
 import org.zkoss.zul.Listitem;
 
+import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.Promocion;
+import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.util.Constantes;
@@ -37,8 +42,13 @@ public class WndRptVentaPromocion extends WndBase {
 	private Combobox cmbPromocion;
 	private Listbox lstVentasPromocion;
 	private Combobox cmbTipoDescuento;
+	private Combobox cmbAgencia;
+	private Combobox cmbUsuario;
 	private Listbox lstVentasPromocionDeta;
 	
+	
+	List<Agencia> lstAgencias;
+	List<Usuario> lstUsuarios;
 	
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
@@ -51,6 +61,8 @@ public class WndRptVentaPromocion extends WndBase {
 		cmbPromocion=(Combobox)this.getFellow("cmbPromocion");
 		lstVentasPromocion=(Listbox)this.getFellow("lstVentasPromocion");
 		cmbTipoDescuento=(Combobox)this.getFellow("cmbTipoDescuento");
+		cmbAgencia = (Combobox)this.getFellow("cmbAgencia");
+		cmbUsuario = (Combobox)this.getFellow("cmbUsuario");
 		lstVentasPromocionDeta=(Listbox)this.getFellow("lstVentasPromocionDeta");
 	}
 		
@@ -81,13 +93,20 @@ public class WndRptVentaPromocion extends WndBase {
 	 * Carga el combo con las promociones, segun el rango de fecha que se haya seleccionado.
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unchecked")
 	public void cargarPromociones() throws Exception{
 		try{
 			Util.limpiarCombobox(cmbPromocion);
 			String fechaInicio=Constantes.FORMAT_DATE.format(dtbxFechaInicio.getValue());
 			String fechaFin=Constantes.FORMAT_DATE.format(dtbxFechaFinal.getValue());
 			
-			List<Promocion>lstPromociones=ServiceLocator.getReportesManager().ventasPromocionLstPromociones(fechaInicio, fechaFin);
+			List<Object>lstVarios=ServiceLocator.getReportesManager().ventasPromocionLstPromociones(fechaInicio, fechaFin);
+			
+			List<Promocion> lstPromociones = (List<Promocion>) lstVarios.get(0);
+			
+			lstAgencias = (List<Agencia>) lstVarios.get(1);
+			lstUsuarios = (List<Usuario>) lstVarios.get(2);
+			
 			UtilData.cargarGenericData(cmbPromocion, true);
 			for(Promocion promocion:lstPromociones){
 				Comboitem comboitem=new Comboitem();
@@ -95,11 +114,70 @@ public class WndRptVentaPromocion extends WndBase {
 				comboitem.setValue(promocion);
 				cmbPromocion.appendChild(comboitem);
 			}
+			
+			//
+			cargarAgencias();
+			
+			//
+			cargarUsuarios(null);
+						
+			
 		}catch (Exception ex){
 			ex.getStackTrace();
 			DlgMessage.error(Messages.getString(ex.getMessage()));
 		}
 	}
+	
+	
+	
+	public void onChange_cmbAgencia(){
+		try {
+			
+			Integer agencia_id = null;
+			if(cmbAgencia.getSelectedItem().getValue() instanceof Agencia)
+				agencia_id = ((Agencia)cmbAgencia.getSelectedItem().getValue()).getId();
+			
+			cargarUsuarios(agencia_id);
+			
+		} catch (Exception ex) {
+			ex.getStackTrace();
+			DlgMessage.error(Messages.getString(ex.getMessage()));
+		}
+	}
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	private void cargarAgencias()throws Exception{
+		Util.limpiarCombobox(cmbAgencia);
+		UtilData.cargarGenericData(cmbAgencia, true);
+		for(Agencia agencia:lstAgencias){
+			Comboitem comboitem=new Comboitem();
+			comboitem.setLabel(agencia.getDenominacion());
+			comboitem.setValue(agencia);
+			cmbAgencia.appendChild(comboitem);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param agencia_id
+	 * @throws Exception
+	 */
+	private void cargarUsuarios(Integer agencia_id)throws Exception{
+		Util.limpiarCombobox(cmbUsuario);
+		UtilData.cargarGenericData(cmbUsuario, true);
+		for(Usuario usuario :lstUsuarios){
+			Comboitem comboitem=new Comboitem();
+			comboitem.setLabel(usuario.toString());
+			comboitem.setValue(usuario);
+			
+			if(agencia_id==null || (agencia_id!=null && usuario.getAgencia().getId().intValue()==agencia_id))
+				cmbUsuario.appendChild(comboitem);
+		}
+	}
+	
 	
 	/**
 	 * Busca las ventas asociadas a alguna promcion.
@@ -113,19 +191,24 @@ public class WndRptVentaPromocion extends WndBase {
 			String fechaFin=Constantes.FORMAT_DATE.format(dtbxFechaFinal.getValue());
 			Long idPromocion=null;
 			String tipoDescuento=null;
+			Integer agencia_id=null, usuario_id=null;
 			
 			if(cmbPromocion.getSelectedIndex()>0)
 				idPromocion=((Promocion)cmbPromocion.getSelectedItem().getValue()).getId();
 			if(cmbTipoDescuento.getSelectedIndex()>0)
 				tipoDescuento=cmbTipoDescuento.getSelectedItem().getValue();
-			ArrayList<Promocion>lstVtaPromo=ServiceLocator.getReportesManager().ventasPromocion(fechaInicio, fechaFin, idPromocion,tipoDescuento);
+			if(cmbAgencia.getSelectedItem().getValue() instanceof Agencia)
+				agencia_id = ((Agencia)cmbAgencia.getSelectedItem().getValue()).getId();
+			if(cmbUsuario.getSelectedItem().getValue() instanceof Usuario)
+				usuario_id = ((Usuario)cmbUsuario.getSelectedItem().getValue()).getId();
+			ArrayList<Promocion>lstVtaPromo=ServiceLocator.getReportesManager().ventasPromocion(fechaInicio, fechaFin, idPromocion,tipoDescuento, agencia_id, usuario_id);
 			
 			Double totalDescuento=.00, totalVenta=.00;
 			Integer cantidad=0;
 			for(Promocion promocion:lstVtaPromo){
 				Listitem item=new Listitem();
-				Listcell cell=null;
-				
+				Listcell cell=new Listcell();
+				item.appendChild(cell);
 				cell=new Listcell(promocion.getDenominacion());
 				item.appendChild(cell);
 				cell=new Listcell(promocion.getTipoDescuento());
@@ -150,33 +233,35 @@ public class WndRptVentaPromocion extends WndBase {
 			}
 			
 			/* AGREGA TOTALES AL FINAL DE LA LISTA*/
-			String styleTotales="font-size:11px !important; color:red;font-weight: bold;";
-			Listitem item=new Listitem();
-			Listcell cell=null;
-			
-			cell=new Listcell("TOTALES :");
-			cell.setStyle(styleTotales+"text-align: right;");
-			item.appendChild(cell);
-			cell=new Listcell();
-			cell.setStyle(styleTotales);
-			item.appendChild(cell);
-			cell=new Listcell();
-			cell.setStyle(styleTotales);
-			cell=new Listcell(cantidad.toString());
-			cell.setStyle(styleTotales);
-			item.appendChild(cell);
-			cell=new Listcell(Util.toNumberFormat(totalDescuento, 2));
-			cell.setStyle(styleTotales);
-			item.appendChild(cell);
-			cell=new Listcell(Util.toNumberFormat(totalVenta, 2));
-			cell.setStyle(styleTotales);
-			item.appendChild(cell);
+			String styleTotales="font-size:12px !important; color:red;font-weight: bold;";
+			Label label = null;
+			Listfoot listfoot= new  Listfoot();
+			label = new Label("TOTALES");
+			label.setStyle(styleTotales);
+			Listfooter listfooter = new Listfooter();
+			listfooter.setSpan(3);
+			listfooter.appendChild(label);
+			listfoot.appendChild(listfooter);
+			label = new Label(cantidad.toString());
+			label.setStyle(styleTotales);
+			listfooter = new Listfooter();
+			listfooter.setStyle("text-align:right");
+			listfooter.appendChild(label);
+			listfoot.appendChild(listfooter);
+			label = new Label(Util.toNumberFormat(totalDescuento, 2));
+			label.setStyle(styleTotales);
+			listfooter = new Listfooter();
+			listfooter.setStyle("text-align:right;");
+			listfooter.appendChild(label);
+			listfoot.appendChild(listfooter);
+			label = new Label(Util.toNumberFormat(totalVenta, 2));
+			label.setStyle(styleTotales);
+			listfooter = new Listfooter();
+			listfooter.setStyle("text-align:right;");
+			listfooter.appendChild(label);
+			listfoot.appendChild(listfooter);
+			lstVentasPromocion.appendChild(listfoot);
 
-			lstVentasPromocion.appendChild(item);
-			
-			if(lstVentasPromocion.getItems().size()>0)
-				lstVentasPromocion.setSelectedIndex(0);
-			
 		} catch (Exception e) {
 			e.getStackTrace();
 			DlgMessage.error(Messages.getString(e.getMessage()));
@@ -189,16 +274,17 @@ public class WndRptVentaPromocion extends WndBase {
 	 */
 	public void buscarVentasPromocionDetalle() throws Exception{
 		try{
-			if(lstVentasPromocion.getItems().size()>0 && lstVentasPromocion.getSelectedItem().getValue() instanceof Promocion){
-				Util.limpiarListbox(lstVentasPromocionDeta);
-				String fechaInicio=Constantes.FORMAT_DATE.format(dtbxFechaInicio.getValue());
-				String fechaFin=Constantes.FORMAT_DATE.format(dtbxFechaFinal.getValue());
-				
-				Promocion promocion=lstVentasPromocion.getSelectedItem().getValue();
+			Util.limpiarListbox(lstVentasPromocionDeta);
+			String fechaInicio=Constantes.FORMAT_DATE.format(dtbxFechaInicio.getValue());
+			String fechaFin=Constantes.FORMAT_DATE.format(dtbxFechaFinal.getValue());
+			
+			Integer cant=0;
+			String style="font-size:11px !important;";
+			
+			for(Listitem itemSummary: lstVentasPromocion.getSelectedItems()){					
+				Promocion promocion=itemSummary.getValue();
 				ArrayList<VentaPasaje>lstVentasPromo=ServiceLocator.getReportesManager().ventasPromocionDeta(fechaInicio, fechaFin, promocion.getId());
-				
-				Integer cant=0;
-				String style="font-size:11px !important;";
+												
 				for(VentaPasaje ventaPasaje:lstVentasPromo){
 					cant++;
 					Listitem item=new Listitem();
@@ -241,10 +327,10 @@ public class WndRptVentaPromocion extends WndBase {
 					
 					lstVentasPromocionDeta.appendChild(item);
 				}
-				
-				if(lstVentasPromocionDeta.getItems().size()>0)
-					lstVentasPromocionDeta.setSelectedIndex(0);
 			}
+			
+			if(lstVentasPromocionDeta.getItems().size()>0)
+				lstVentasPromocionDeta.setSelectedIndex(0);
 			
 		}catch(Exception ex){
 			ex.getStackTrace();
