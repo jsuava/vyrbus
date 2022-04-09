@@ -69,6 +69,7 @@
         
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/target/generated-sources/annotations"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/target/generated-sources/test-annotations"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
                                                                                                         
         
         
