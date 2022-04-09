@@ -1,0 +1,42 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndRptLiquidaconBus" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndRptLiquidacionBus">
+	<grid>
+		<columns>
+			<column width="110px" align="right" />
+			<column width="120px" />
+			<column width="110px" align="right" />
+			<column />
+		</columns>
+		<rows>
+			<row>
+				<label value="FECHA INICIO :" />
+				<datebox id="dtbxFechaInicio" format="dd/MM/yyyy" readonly="true" width="110px" />
+				<label value="FECHA FIN :" />
+				<datebox id="dtbxFechaFin" format="dd/MM/yyyy" readonly="true" width="110px" />
+			</row>
+			<row spans="1,1,2">
+				<label value="BUS :" />
+				<combobox id="cmbBus" width="110px" readonly="true"/>
+				<div style="text-align:left !important">
+					<button id="btnBuscar" label="Buscar" sclass="btnCommandM" autodisable="self" image="/resources/mp_buscarEnabled.png" onClick="wndRptLiquidaconBus.onClick_btnBuscar()" />
+					<button id="btnExportar" label="Exportar" sclass="btnCommandM" autodisable="self" style="margin-left:10px" image="/resources/mp_excel.png" onClick="wndRptLiquidaconBus.onClick_btnExportar()" />
+					<button label="Cerrar" sclass="btnCommandM" image="/resources/mp_cerrar.png" style="margin-left:10px" onClick="wndRptLiquidaconBus.closeTabWindow()" />
+				</div>
+			</row>
+		</rows>
+	</grid>
+    <listbox id="ltbxLiquidacionBus" rows="20">
+    	<listhead>
+    		<listheader label="FECHA" width="100px" />
+    		<listheader label="BUS" width="120px" />
+    		<listheader label="RUTA" width="120px" />
+    		<listheader label="PILOTO" width="250px" />
+    		<listheader label="COPILOTO" width="250px" />
+    		<listheader label="TOTAL PASAJES" width="120px" align="right"/>
+    		<listheader label="TOTAL CARGA" width="120px" align="right"/>
+    		<listheader/>
+    	</listhead>    
+    </listbox>
+</window>
+</zk>
