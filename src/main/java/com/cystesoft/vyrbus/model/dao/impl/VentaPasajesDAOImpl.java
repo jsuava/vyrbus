@@ -3814,7 +3814,8 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.model.dao.VentaPasajesDAO#buscarLiquidacionBus(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
