@@ -2506,8 +2506,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#buscarLiquidacionBus(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public List<Manifiesto> buscarLiquidacionBus(String fechaInicio,
-			String fechaFin, String codigoBus) throws Exception {
+	public List<Manifiesto> buscarLiquidacionBus(String fechaInicio, String fechaFin, String codigoBus) throws Exception {
 		// TODO Auto-generated method stub
 		return getVentaPasajesDAO().buscarLiquidacionBus(fechaInicio, fechaFin, codigoBus);
 	}
