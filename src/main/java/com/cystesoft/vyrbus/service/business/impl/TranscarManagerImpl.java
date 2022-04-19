@@ -170,6 +170,16 @@ public class TranscarManagerImpl implements TranscarManager{
 		return getTranscarDAO().buscarLiquidacionBus(fechaInicio, fechaFin, codigoBus);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.TranscarManager#buscarLiquidacionCounter(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer)
+	 */
+	@Override
+	public TreeMap<String, Liquidacion> buscarLiquidacionCounter(String fechaInicio, String fechaFin,
+			Integer agenciaId, Integer usuarioId) throws Exception {
+		// TODO Auto-generated method stub
+		return getTranscarDAO().buscarLiquidacionCounter(fechaInicio, fechaFin, agenciaId, usuarioId);
+	}
+
 	
 
 }

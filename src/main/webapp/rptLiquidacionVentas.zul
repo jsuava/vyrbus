@@ -1,0 +1,62 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndRptLiquidacionVenta" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndRptLiquidacionVentas">
+	<grid>
+		<columns>
+			<column width="90px" align="right" />
+			<column width="120px" />
+			<column width="90px" align="right" />
+			<column />
+		</columns>
+		<rows>
+			<row style="margin-top:10px !important">
+				<label value="FECHA INICIO : " />
+				<datebox id="dtxFechaInicio" format="dd/MM/yyyy" readonly="true" />
+<!-- 				<label value="FECHA FIN : " /> -->
+<!-- 				<datebox id="dbtxFechaFin" format="dd/MM/yyyy" readonly="true" /> -->
+				<label value="AGENCIA : " />
+				<hbox align="center">
+					<combobox id="cmbAgencia" width="250px" readonly="true"/>
+<!-- 			</row> -->
+<!-- 			<row> -->
+<!-- 				<label value="AGENCIA : " /> -->
+<!-- 				<combobox id="cmbAgencia" width="95%" autocomplete="true"/> -->
+<!-- 				<label value="COUNTER : " /> -->
+<!-- 				<hbox align="center"> -->
+<!-- 					<combobox id="cmbCounter" width="240px" autocomplete="true"/> -->
+					<button id="btnBuscar" label="Buscar" sclass="btnCommandM" autodisable="self" style="margin-left:20px" image="/resources/mp_buscarEnabled.png" onClick="wndRptLiquidacionVenta.onClick_btnBuscar()" />										
+					<button id="btnResumenSaldos" label="Resumen Saldos" sclass="btnCommandM" style="margin-left:10px" width="145px" autodisable="self" image="resources/mp_preliminar.png" onClick="wndRptLiquidacionVenta.onClick_btnResumenSaldos()" />
+					<button label="Cerrar" sclass="btnCommandM" image="/resources/mp_cerrar.png" style="margin-left:10px" onClick="wndRptLiquidacionVenta.closeTabWindow()" />
+				</hbox>
+			</row>
+		</rows>
+	</grid>
+	<hbox align="center">
+		<listbox id="ltbxLiquidacionVentas" multiple="false" rows="13" width="990px">
+			<listhead>
+				<listheader label="FECHA" width="90px" sort="auto"/>				
+				<listheader label="AGENCIA" width="180px" sort="auto"/>				
+				<listheader label="NOMBRES USUARIO" width="230px" sort="auto"/>
+				<listheader label="USUARIO" width="100px" sort="auto"/>
+				<listheader label="ESTADO LIQ. PASAJES" width="165px" align="center" sort="auto"/>
+				<listheader label="ESTADO LIQ. CARGAR" width="165px" align="center" sort="auto"/>				
+				<listheader/>
+			</listhead>
+		</listbox>
+<!-- 		<grid width="160px"> -->
+<!-- 			<rows> -->
+<!-- 				<row> -->
+<!-- 					<vbox align="center" style="margin-left:5px;" height="400px"> -->
+<!-- 						<separator style="margin-top:37px"/> -->
+<!-- 						<button id="btnDetalleVentas" label="Detalle ventas" sclass="btnCommandM" width="145px" autodisable="self" image="resources/mp_preliminar.png" onClick="wndRptLiquidacionVenta.onClick_btnDetalleVentas()" />						 -->
+<!-- 						<button id="btnDetalleGastos" label="Detalle Gastos" sclass="btnCommandM" style="margin-top:10px" width="145px" autodisable="self" image="resources/mp_preliminar.png" onClick="wndRptLiquidacionVenta.onClick_btnDetalleGastos()" /> -->
+<!-- 						<button id="btnResumenSaldos" label="Resumén Saldos" sclass="btnCommandM" style="margin-top:80px" width="145px" autodisable="self" image="resources/mp_preliminar.png" onClick="wndRptLiquidacionVenta.onClick_btnResumenSaldos()" />															 -->
+<!-- 					</vbox>		 -->
+<!-- 				</row>			 -->
+<!-- 			</rows> -->
+<!-- 		</grid> -->
+				
+	</hbox>
+
+</window>
+</zk>

@@ -460,6 +460,7 @@ public class Constantes {
 	public static final int ID_TIPGAS_PEAJES=2;
 	public static final int ID_TIPGAS_PAGO_GIROS=3;
 	public static final int ID_TIPGAS_CONDOCUMENTO=4;
+	public static final int ID_TIPGAS_CTACTE=7;
 	
 	/* Constantes que se refieren a las agencias	*/
 	public static final int ID_AGENCIA_TUENTRADA = 390;
