@@ -14,7 +14,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +34,7 @@ import com.cystesoft.vyrbus.model.bean.CentroCosto;
 import com.cystesoft.vyrbus.model.bean.DetalleEquipaje;
 import com.cystesoft.vyrbus.model.bean.DetalleFlotaHRE;
 import com.cystesoft.vyrbus.model.bean.Equipaje;
+import com.cystesoft.vyrbus.model.bean.FormaPago;
 import com.cystesoft.vyrbus.model.bean.Gasto;
 import com.cystesoft.vyrbus.model.bean.HRE;
 import com.cystesoft.vyrbus.model.bean.Itinerario;
@@ -41,6 +46,8 @@ import com.cystesoft.vyrbus.model.bean.MapaBus;
 import com.cystesoft.vyrbus.model.bean.Nacionalidad;
 import com.cystesoft.vyrbus.model.bean.Personal;
 import com.cystesoft.vyrbus.model.bean.Servicio;
+import com.cystesoft.vyrbus.model.bean.TipoComprobante;
+import com.cystesoft.vyrbus.model.bean.TipoFormaPago;
 import com.cystesoft.vyrbus.model.bean.TipoPersonal;
 import com.cystesoft.vyrbus.model.bean.TranscarUsuarioPersonal;
 import com.cystesoft.vyrbus.model.bean.Usuario;
@@ -1002,7 +1009,7 @@ public class CreateDocument implements Serializable {
 				linea = tabular(3)+resumen.getComprobante()+tabular(19-longitud_C)+strSerie;
 				
 				for(Liquidacion especieValorada: list) {
-					if(especieValorada.getSerie().equals(strSerie)) {
+					if(especieValorada.getTipoComprobante().getId().intValue()==resumen.getIdTipoComprobante().intValue()) {
 						desde = especieValorada.getBoletoInicial();
 						hasta = especieValorada.getboletoFinal();
 						break;
@@ -3619,6 +3626,1076 @@ public class CreateDocument implements Serializable {
 		
 		return file;
 	}
+
 	
+	/**
+	 * Crear el total por tipo de comprobante
+	 * @param bw	: Outputstream
+	 * @param longImporte	: Longitud de la columan importe
+	 * @param total : Importe total
+	 * @throws Exception
+	 */
+	private static void creaRptLiquidacionByTotalByGroup(BufferedWriter bw, Integer longImporte, Double total)throws Exception {
+		String linea=tabular(86)+"-----------";
+		bw.write(linea+NEWLINE);
+		String sTotalPasajes = Util.toNumberFormat(total,2);
+		Integer longitud_C = sTotalPasajes.length();
+		linea = tabular(86) + tabular(longImporte - longitud_C) + sTotalPasajes;
+		bw.write(linea+NEWLINE);
+	}
+	
+	/**
+	 * Crea el detalle de egresos y los totales de la liquidacion
+	 * @param bw Outputstream
+	 * @param listDetalleVentas : Lista de ventas, incluidas las de carga
+	 * @param resultGasto		: Lista de gastos
+	 * @param isDetall			: Indica si es para el reporte Detalle de Ventas (True) o no (False)
+	 * @throws Exception
+	 */
+	private static void creaRptLiquidacionByEgresos(BufferedWriter bw, List<VentaPasaje> listDetalleVentas, List<Gasto> resultGasto, boolean isDetall)throws Exception {
+		int longRuc = 13;
+		int longitud_cliente = 33;
+		if (!isDetall)
+			longitud_cliente = 53;
+		int longitud_ruta = 20;
+		int rubroPasajes = Constantes.FALSE_VALUE;
+		int rubroCarga = Constantes.TRUE_VALUE;
+		Integer longImporte = 10;
+		/*Egresos de caja*/
+		Integer longitud_descripcionGasto = 68;
+		Double totalGasto = .00, totalOtrosIngresos = .00, totalGastosCaja = .00, totalCtaCte = .00;
+		bw.write(NEWLINE);
+		String linea=tabular(3)+"EGRESOS DE CAJA";
+		bw.write(linea+NEWLINE);
+		linea=tabular(3)+"====================";
+		bw.write(linea+NEWLINE);
+		
+		
+		int tipoOperacion_egreso = Constantes.FALSE_VALUE;
+//		int tipoOperacion_ingreso = Constantes.TRUE_VALUE;
+		int ctrolTipoGasto = -1;
+		int index = -1;
+		int longitud_C;
+		for(Gasto gasto: resultGasto) {
+			if(gasto.getTipoGasto().getTipoOperacion().intValue()==tipoOperacion_egreso) {
+				index++;
+				//Egresos
+				if(ctrolTipoGasto < 0 || gasto.getTipoGasto().getId().intValue()!=ctrolTipoGasto) {
+					
+					//Total del gastos
+					if(ctrolTipoGasto>0) {
+						creaRptLiquidacionByTotalByGroup(bw, longImporte, totalGasto);							
+						bw.write(NEWLINE);
+						
+						totalGasto = .00;
+					}							
+					
+					linea=tabular(3)+gasto.getTipoGasto().getDenominacion();
+					bw.write(linea+NEWLINE);
+					
+					ctrolTipoGasto = gasto.getTipoGasto().getId();						
+				}
+				
+				//N° documento
+				String _nroDcumento=(gasto.getNumeroDocumento()!=null?gasto.getNumeroDocumento():"");
+				longitud_C= _nroDcumento.length();
+				linea= tabular(3) + _nroDcumento + tabular(15-longitud_C);
+				
+				//Descripcion
+				String _descripcion = (gasto.getCodigoBus()!=null?"BUS: "+ gasto.getCodigoBus()+" - ":"");
+				_descripcion += (gasto.getConsignado()!=null?gasto.getConsignado() + " - ":"");
+				_descripcion += (gasto.getObservacion()!=null?gasto.getObservacion():"");
+				longitud_C= _descripcion.length();
+				linea += _descripcion + tabular(longitud_descripcionGasto - longitud_C);
+				
+				/*IMPORTE*/
+				String importe= Util.toNumberFormat(gasto.getMonto(), 2);
+				longitud_C=importe.length();
+				linea += tabular(longImporte - longitud_C) + importe;
+				totalGasto += gasto.getMonto();
+				
+				if(gasto.getTipoGasto().getId().intValue()==Constantes.ID_TIPGAS_CTACTE)
+					totalCtaCte += gasto.getMonto();
+				else
+					totalGastosCaja += gasto.getMonto();
+				
+				bw.write(linea+NEWLINE);
+				
+				//Valida si es el ultimo registro de egresos, para insertar la suma total de gasto.
+				if(resultGasto.size() == (index+1) ||  
+						(resultGasto.size() > (index+1) && resultGasto.get(index+1).getTipoGasto().getTipoOperacion().intValue()!=tipoOperacion_egreso)) {
+					creaRptLiquidacionByTotalByGroup(bw, longImporte, totalGasto);
+					bw.write(NEWLINE);
+				}
+			}
+		}
+
+		//Otros Egresos 			
+		//Primero ordena la lista por TipoFormaPago
+		Collections.sort(listDetalleVentas, new Comparator<VentaPasaje>() {
+			@Override
+			public int compare(VentaPasaje v1, VentaPasaje v2) {
+				// TODO Auto-generated method stub
+				return v1.getTipoFormaPago().getDenominacion().compareTo(v2.getTipoFormaPago().getDenominacion());
+			}				
+		});			
+		
+		Double total = .00, totalVentaPasajes = .00, totalVentaCarga = .00, totalVentaTarjeta = .00;
+		index = 0;
+		Double totalNotaCredito = .00, totalCredito = .00, totalCortesia = .00, totalDevoluciones = .00, totalVentasPce = .00;
+		List<String> lstControlTipoFormaPago = new ArrayList<String>();
+		for(VentaPasaje ventaPasaje: listDetalleVentas) {
+			index++;
+			FormaPago formaPago = ventaPasaje.getFormaPago();
+			TipoFormaPago tipoFormaPago = ventaPasaje.getTipoFormaPago();
+			TipoComprobante tipoComprobante = ventaPasaje.getTipoComprobante();
+			
+			/*Para obtener los totales de la venta de pasajes y carga, ademas de la venta con tarjeta*/
+			if(ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_FACTURA || 
+					ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_BOLETA_VENTA ||
+					ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA) {
+				
+				if(ventaPasaje.getTipoConsulta().intValue()==rubroPasajes)
+					totalVentaPasajes += ventaPasaje.getImportePagado();
+				else
+					totalVentaCarga += ventaPasaje.getImportePagado();
+				
+				if(ventaPasaje.getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA)
+					totalVentaTarjeta += ventaPasaje.getImportePagado(); 
+			}
+			
+			
+			/**EGRESOS*/
+			if((tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO) || (formaPago.getId().intValue() != Constantes.ID_FORPAG_CONTADO) || (tipoFormaPago.getId().intValue()!=Constantes.ID_TIPFORPAG_EFECTIVO)) {
+				if(lstControlTipoFormaPago.size()==0 || lstControlTipoFormaPago.contains(ventaPasaje.getTipoFormaPago().getDenominacion())==false) {
+					if(lstControlTipoFormaPago.size()>0) {
+						creaRptLiquidacionByTotalByGroup(bw, longImporte, total);
+						bw.write(NEWLINE);
+						
+						total = .00;
+					}
+							
+					linea=tabular(3)+ventaPasaje.getTipoFormaPago().getDenominacion();
+					bw.write(linea+NEWLINE);
+					
+					lstControlTipoFormaPago.add(ventaPasaje.getTipoFormaPago().getDenominacion());
+				}
+				
+				//N° comprobante
+				String _comprobante=ventaPasaje.getNumeroBoleto();
+				longitud_C= _comprobante.length();
+				linea= tabular(3) + _comprobante + tabular(15-longitud_C);
+				
+				/*RUC*/
+				String ruc = "";
+				if(ventaPasaje.getTipoConsulta().intValue()==rubroPasajes) //Pasajes
+					ruc = (ventaPasaje.getCliente()!=null?ventaPasaje.getCliente().getNumeroDocumento():"");
+				else
+					ruc = (ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_FACTURA?ventaPasaje.getPasajero().getNumeroDocumento():"");						
+				longitud_C=ruc.length();
+				linea +=ruc+tabular(longRuc-longitud_C);
+				
+				/*CLIENTE*/		
+				String _cliente = "";
+				if(ventaPasaje.getTipoConsulta().intValue()==rubroPasajes) //Pasajes
+					_cliente = (ventaPasaje.getCliente()!=null?ventaPasaje.getCliente().toString():ventaPasaje.getPasajero().toString());
+				else
+					_cliente = ventaPasaje.getPasajero().getNombresApellidos();
+				if(_cliente.length() > longitud_cliente)
+					_cliente =_cliente.substring(0, longitud_cliente);
+				longitud_C = _cliente.length();
+				linea += _cliente + tabular((longitud_cliente - getLenCaracteresInvalidos(_cliente))-longitud_C);
+				linea += tabular(2);
+				
+				/*RUTA*/
+				if(isDetall) {
+					String _ruta = ventaPasaje.getRuta().toString();
+					if(_ruta.length() > longitud_cliente)
+						_ruta =_ruta.substring(0, longitud_ruta);
+					longitud_C = _ruta.length();
+					linea += _ruta + tabular((longitud_ruta - getLenCaracteresInvalidos(_ruta))-longitud_C);
+				}
+				
+				
+				/*IMPORTE*/
+				String importe=(ventaPasaje.getImportePagado()!=null?Util.toNumberFormat(ventaPasaje.getImportePagado(),2):"0.00");
+				longitud_C=importe.length();
+				linea += tabular(longImporte - longitud_C) + importe;
+				
+				total += ventaPasaje.getImportePagado();
+				
+				if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_DEVOLUCION)
+					totalDevoluciones += ventaPasaje.getImportePagado();
+				else if(ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA)
+					totalVentasPce += ventaPasaje.getImportePagado();
+				else if(ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_NOTA_CREDITO)
+					totalNotaCredito += ventaPasaje.getImportePagado();
+				else if(ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO)
+					totalCredito += ventaPasaje.getImportePagado();
+				else if(ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA)
+					totalCortesia += ventaPasaje.getImportePagado();
+				
+				bw.write(linea+NEWLINE);					
+			}			
+			
+			//Insert el total, cuando es el ultimo registro
+			if(index==listDetalleVentas.size()) {
+				creaRptLiquidacionByTotalByGroup(bw, longImporte, total);
+			}
+		}
+		
+		bw.write(NEWLINE);
+		bw.write(NEWLINE);
+		bw.write(NEWLINE);
+		
+		Integer longConceptop = 30;
+		Integer longImporteTotales = 15;
+		Double totalLiquidacion = (totalVentaPasajes 
+								 + totalVentaCarga 
+								 - totalVentaTarjeta 
+								 - totalGastosCaja
+								 - totalCtaCte
+								 - totalNotaCredito
+								 - totalCredito
+								 - totalCortesia
+								 - totalDevoluciones
+								 - totalVentasPce);
+		
+		//N° Concepto
+		String concepto="(+) TOTAL PASAJES";
+		longitud_C= concepto.length();
+		linea= tabular(30) + concepto + tabular(longConceptop-longitud_C);			
+		/*IMPORTE*/
+		String importe= Util.toNumberFormat(totalVentaPasajes, 2);
+		longitud_C=importe.length();
+		linea += tabular(longImporteTotales - longitud_C) + importe;
+		bw.write(linea+NEWLINE);
+		
+		//N° Concepto
+		concepto="(+) TOTAL ENCOMIENDAS";
+		longitud_C= concepto.length();
+		linea= tabular(30) + concepto + tabular(longConceptop-longitud_C);			
+		/*IMPORTE*/
+		importe= Util.toNumberFormat(totalVentaCarga, 2);
+		longitud_C=importe.length();
+		linea += tabular(longImporteTotales - longitud_C) + importe;
+		bw.write(linea+NEWLINE);
+		
+		//N° Concepto
+		concepto="(-) TOTAL CTA. CTE.";
+		longitud_C= concepto.length();
+		linea= tabular(30) + concepto + tabular(longConceptop-longitud_C);			
+		/*IMPORTE*/
+		importe= Util.toNumberFormat(totalCtaCte, 2);
+		longitud_C=importe.length();
+		linea += tabular(longImporteTotales - longitud_C) + importe;
+		bw.write(linea+NEWLINE);
+		
+		//N° Concepto
+		concepto="(-) TOTAL CREDITO PASAJES";
+		longitud_C= concepto.length();
+		linea= tabular(30) + concepto + tabular(longConceptop-longitud_C);			
+		/*IMPORTE*/
+		importe= Util.toNumberFormat(totalCredito, 2);
+		longitud_C=importe.length();
+		linea += tabular(longImporteTotales - longitud_C) + importe;
+		bw.write(linea+NEWLINE);
+		
+		//N° Concepto
+		concepto="(+) TOTAL INGRESO CAJA";
+		longitud_C= concepto.length();
+		linea= tabular(30) + concepto + tabular(longConceptop-longitud_C);			
+		/*IMPORTE*/
+		importe= Util.toNumberFormat(0, 2);
+		longitud_C=importe.length();
+		linea += tabular(longImporteTotales - longitud_C) + importe;
+		bw.write(linea+NEWLINE);
+		
+		//N° Concepto
+		concepto="(-) TOTAL EGRESO CAJA";
+		longitud_C= concepto.length();
+		linea= tabular(30) + concepto + tabular(longConceptop-longitud_C);			
+		/*IMPORTE*/
+		importe= Util.toNumberFormat(totalGastosCaja, 2);
+		longitud_C=importe.length();
+		linea += tabular(longImporteTotales - longitud_C) + importe;
+		bw.write(linea+NEWLINE);
+		
+		//N° Concepto
+		concepto="(-) BOLETOS ANULADOS";
+		longitud_C= concepto.length();
+		linea= tabular(30) + concepto + tabular(longConceptop-longitud_C);			
+		/*IMPORTE*/
+		importe= Util.toNumberFormat(0, 2);
+		longitud_C=importe.length();
+		linea += tabular(longImporteTotales - longitud_C) + importe;
+		bw.write(linea+NEWLINE);
+		
+		//N° Concepto
+		concepto="(-) TOTAL TARJETA";
+		longitud_C= concepto.length();
+		linea= tabular(30) + concepto + tabular(longConceptop-longitud_C);			
+		/*IMPORTE*/
+		importe= Util.toNumberFormat(totalVentaTarjeta, 2);
+		longitud_C=importe.length();
+		linea += tabular(longImporteTotales - longitud_C) + importe;
+		bw.write(linea+NEWLINE);
+		
+		//N° Concepto
+		concepto="(-) TOTAL DEVOLUCIONES";
+		longitud_C= concepto.length();
+		linea= tabular(30) + concepto + tabular(longConceptop-longitud_C);			
+		/*IMPORTE*/
+		importe= Util.toNumberFormat(totalDevoluciones, 2);
+		longitud_C=importe.length();
+		linea += tabular(longImporteTotales - longitud_C) + importe;
+		bw.write(linea+NEWLINE);
+		
+		//N° Concepto
+		concepto="(-) TOTAL NOTA DE CREDITO";
+		longitud_C= concepto.length();
+		linea= tabular(30) + concepto + tabular(longConceptop-longitud_C);			
+		/*IMPORTE*/
+		importe= Util.toNumberFormat(totalNotaCredito, 2);
+		longitud_C=importe.length();
+		linea += tabular(longImporteTotales - longitud_C) + importe;
+		bw.write(linea+NEWLINE);
+		
+		//N° Concepto
+		concepto="(-) TOTAL CORTESIA";
+		longitud_C= concepto.length();
+		linea= tabular(30) + concepto + tabular(longConceptop-longitud_C);			
+		/*IMPORTE*/
+		importe= Util.toNumberFormat(totalCortesia, 2);
+		longitud_C=importe.length();
+		linea += tabular(longImporteTotales - longitud_C) + importe;
+		bw.write(linea+NEWLINE);
+		
+		//N° Concepto
+		concepto="(-) TOTAL PCE";
+		longitud_C= concepto.length();
+		linea= tabular(30) + concepto + tabular(longConceptop-longitud_C);			
+		/*IMPORTE*/
+		importe= Util.toNumberFormat(totalVentasPce, 2);
+		longitud_C=importe.length();
+		linea += tabular(longImporteTotales - longitud_C) + importe;
+		bw.write(linea+NEWLINE);
+		
+		linea = tabular(longConceptop)+"==============================================";
+		bw.write(linea+NEWLINE);
+		linea = tabular(longConceptop)+"TOTAL LIQUIDACION";
+		
+		importe= Util.toNumberFormat(totalLiquidacion, 2);
+		longitud_C=importe.length();
+		linea += tabular((longImporteTotales+13) - longitud_C) + importe;
+		
+		bw.write(linea+NEWLINE);
+		linea = tabular(longConceptop)+"==============================================";
+		bw.write(linea+NEWLINE);
+	}
+	
+	
+	/**
+	 * Crea el reporte de liquidación, detalle de ventas
+	 * @param liquidacion : Instalacia de la liquidacion de Pasajes
+	 * @return
+	 * @throws Exception
+	 */
+	public static final String creaRptLiquidacionByDetalleVentas(Liquidacion liquidacion) throws Exception{
+		Liquidacion liquidacionCarga = (liquidacion.getLiquidacionCarga()!=null? liquidacion.getLiquidacionCarga(): null);
+		
+		DateFormat FORMAT_DATE = new SimpleDateFormat ("ddMMyyyy");
+		String nameFile = "DetalleVentas_"+FORMAT_DATE.format(liquidacion.getFechaLiquidacion())+"_"+liquidacion.getUsuario().getLogin()+".txt";;
+		String pathFichero = Constantes.DIRECTORY_LIQUIDACION + Constantes.CLAVE_PAHT + nameFile;
+		File file = new File(pathFichero);
+		file = new File(pathFichero);
+		Integer longitud_C=0;
+		Integer longRuc = 13;
+		Integer longitud_cliente = 33;
+		Integer longitud_ruta = 20;
+		Integer longImporte = 10;
+				
+		try{
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),"UTF-8"));
+			String linea = "";
+						
+			//---> line 1:	TITULO DEL REPORTE
+			linea = tabular(3) +"EMPRESA " + tabular(9)+ ": " + Constantes.empresa;
+			bw.write(linea + NEWLINE);
+			
+			//---> line 2: 	OFICINA Y FECHA LIQUIDACION
+			longitud_C=liquidacion.getAgencia().getDenominacion().toString().length();		
+			linea = tabular(3) +"ORIGEN - OFICINA : "+liquidacion.getAgencia().getDenominacion()+tabular(48-longitud_C)+"FECHA LIQUIDACION: "+ Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
+			bw.write(linea + NEWLINE);
+			
+			//---> line 3: representante de ventas
+			String _usuario =liquidacion.getUsuario().toString(); 
+			longitud_C = _usuario.toString().length();
+			linea = tabular(3) + "USUARIO "+ tabular(9) + ": " + _usuario;			
+			bw.write(linea+ NEWLINE);			
+						
+			bw.write(NEWLINE);
+			bw.write(NEWLINE);
+			 
+			//Cabecera del detalle de ventas
+			linea=tabular(3)+"COMPROBANTE"+tabular(4)+"RUC"+tabular(10)+"CLIENTE"+tabular(28)+"RUTA"+tabular(19)+"IMPORTE";
+			bw.write(linea+NEWLINE);
+			
+			linea=tabular(3)+"==================================================================================================";
+			bw.write(linea+NEWLINE);					
+			
+			Integer agenciaId = liquidacion.getAgencia().getId();
+			Integer usuarioId = liquidacion.getUsuario().getId();
+			String fecha = Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
+			
+			List<VentaPasaje> listDetalleVentas = new ArrayList<VentaPasaje>();			
+			
+			//Ventas Pasajes
+			List<VentaPasaje> resultDetalleVentasPasaje = ServiceLocator.getVentaPasajesManager().buscarDetalladoVentas(agenciaId, usuarioId, fecha, fecha, -1);			
+			for(VentaPasaje ventaPasaje: resultDetalleVentasPasaje) {
+				ventaPasaje.setTipoConsulta(0); //Pasajes
+				if(ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO)
+					ventaPasaje.getTipoFormaPago().setDenominacion("NOTA DE CREDITO");
+				else if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_DEVOLUCION)
+					ventaPasaje.getTipoFormaPago().setDenominacion("DEVOLUCION");
+				else if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION)
+					ventaPasaje.getTipoFormaPago().setDenominacion("ANULACION");
+				else if(ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO)
+					ventaPasaje.getTipoFormaPago().setDenominacion("CREDITO");		
+				else if(ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA)
+					ventaPasaje.getTipoFormaPago().setDenominacion("CORTESIA");
+				listDetalleVentas.add(ventaPasaje);
+			}			
+			
+			//Ventas Carga
+			if(liquidacionCarga !=null) {
+				TranscarUsuarioPersonal transcarUsuarioPersonal = new TranscarUsuarioPersonal();
+				transcarUsuarioPersonal.setId(liquidacionCarga.getUsuario().getId());
+				transcarUsuarioPersonal.setLogin(liquidacionCarga.getUsuario().getLogin());
+				List<VentaPasaje> resultDetalleVentasCarga = ServiceLocator.getTranscarManager().buscarDetalleVentas(transcarUsuarioPersonal, liquidacionCarga.getAgencia().getId(), fecha, fecha);
+				
+				for(VentaPasaje ventaCarga: resultDetalleVentasCarga) {
+					ventaCarga.setTipoConsulta(1); //Carga
+					if(ventaCarga.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO)
+						ventaCarga.getTipoFormaPago().setDenominacion("NOTA DE CREDITO");						
+					
+					listDetalleVentas.add(ventaCarga);
+				}
+			}
+			
+			Double total = .00; //, totalVentaPasajes = .00, totalVentaCarga = .00, totalVentaTarjeta = .00;
+			int controlTipoConsulta = -1, index = 0;;
+			List<Integer> listTipoComprobante = new ArrayList<Integer>();
+			for(VentaPasaje ventaPasaje: listDetalleVentas) {
+				index++;
+				if(ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_FACTURA || 
+						ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_BOLETA_VENTA ||
+						ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA) {
+					//Crea el encabezado del con el grupo del Rubro (Pasajes, Encomiendas)
+					if(controlTipoConsulta < 0 && ventaPasaje.getTipoConsulta().intValue()==0) { //Ventas Pasajes
+						linea=tabular(3)+"VENTA DE PASAJE";
+						bw.write(linea+NEWLINE);
+						linea=tabular(3)+"------------------";
+						bw.write(linea+NEWLINE);
+						
+						controlTipoConsulta = ventaPasaje.getTipoConsulta();
+						listTipoComprobante = new ArrayList<Integer>();
+					}else if((controlTipoConsulta < 0 && ventaPasaje.getTipoConsulta().intValue() == 1) || (controlTipoConsulta == 0 && ventaPasaje.getTipoConsulta().intValue()==1)) {
+						/*Total*/
+						creaRptLiquidacionByTotalByGroup(bw, longImporte, total);
+						/*******************************************************************************/
+						
+						//Carga
+						if(controlTipoConsulta == 0 ) {
+							bw.write(NEWLINE);
+							bw.write(NEWLINE);
+						}
+						linea=tabular(3)+"VENTA DE ENCOMIENDAS";
+						bw.write(linea+NEWLINE);
+						linea=tabular(3)+"----------------------";
+						bw.write(linea+NEWLINE);
+						
+						controlTipoConsulta = ventaPasaje.getTipoConsulta();
+						listTipoComprobante = new ArrayList<Integer>();
+					}
+					
+					
+					//Agrupa por tipo de comprobante - pasaje
+					if(listTipoComprobante.size()==0 || listTipoComprobante.contains(ventaPasaje.getTipoComprobante().getId())==false) {
+						
+						//Total por tipo de comprobante
+						if(listTipoComprobante.size()>0) {
+							creaRptLiquidacionByTotalByGroup(bw, longImporte, total);
+							bw.write(NEWLINE);
+						}
+							
+						
+						linea=tabular(3) + ventaPasaje.getTipoComprobante().getDenominacion();
+						bw.write(linea+NEWLINE);
+						
+						listTipoComprobante.add(ventaPasaje.getTipoComprobante().getId());
+						total = .00;
+					}
+					
+					//N° comprobante
+					String _comprobante=ventaPasaje.getNumeroBoleto();
+					longitud_C= _comprobante.length();
+					linea= tabular(3) + _comprobante + tabular(15-longitud_C);
+					
+					/*RUC*/
+					String ruc = null;
+					if(controlTipoConsulta == 0) //Pasajes
+						ruc = (ventaPasaje.getCliente()!=null?ventaPasaje.getCliente().getNumeroDocumento():"");
+					else
+						ruc = (ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_FACTURA?ventaPasaje.getPasajero().getNumeroDocumento():"");						
+					longitud_C=ruc.length();
+					linea +=ruc+tabular(longRuc-longitud_C);
+					
+					/*CLIENTE*/		
+					String _cliente = "";
+					if(controlTipoConsulta == 0) //Pasajes
+						_cliente = (ventaPasaje.getCliente()!=null?ventaPasaje.getCliente().toString():ventaPasaje.getPasajero().toString());
+					else
+						_cliente = ventaPasaje.getPasajero().getNombresApellidos();
+					if(_cliente.length() > longitud_cliente)
+						_cliente =_cliente.substring(0, longitud_cliente);
+					longitud_C = _cliente.length();
+					linea += _cliente + tabular((longitud_cliente - getLenCaracteresInvalidos(_cliente))-longitud_C);
+					linea += tabular(2);
+					
+					/*RUTA*/
+					String _ruta = ventaPasaje.getRuta().toString();
+					if(_ruta.length() > longitud_cliente)
+						_ruta =_ruta.substring(0, longitud_ruta);
+					longitud_C = _ruta.length();
+					linea += _ruta + tabular((longitud_ruta - getLenCaracteresInvalidos(_ruta))-longitud_C);
+					
+					/*IMPORTE*/
+					String importe=(ventaPasaje.getImportePagado()!=null?Util.toNumberFormat(ventaPasaje.getImportePagado(),2):"0.00");
+					longitud_C=importe.length();
+					linea += tabular(longImporte - longitud_C) + importe;
+					
+					bw.write(linea+NEWLINE);					
+					total += (ventaPasaje.getImportePagado()!=null?ventaPasaje.getImportePagado():.00);
+				}
+				
+				//Inserta el total de las ventas, cuando es el ultimo registro
+				if(index == listDetalleVentas.size()) {
+					/*Total ventas*/
+					creaRptLiquidacionByTotalByGroup(bw, longImporte, total);
+					/*******************************************************************************/
+				}		
+			}
+			
+			//Consulta los gastos
+			List<Gasto> resultGasto = ServiceLocator.getGastoManager().buscarGasto(fecha, null, agenciaId, usuarioId);
+			
+			/*Inserta el detalle de egresos y los totales de la liquidacion*/
+			creaRptLiquidacionByEgresos(bw, listDetalleVentas, resultGasto, true);			
+			
+			bw.write(NEWLINE);
+			bw.write(NEWLINE);
+	
+			bw.close();
+			
+		}catch(IOException ioex){
+			ioex.printStackTrace();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		return nameFile;
+	}
+	
+	/**
+	 * Crea el reporte de liquidacion, de las especies valoradas
+	 * @param liquidacion : Instalacia de la liquidacion de Pasajes
+	 * @return
+	 * @throws Exception
+	 */
+	public static final String creaRptLiquidacionByEspecieValorada(Liquidacion liquidacion) throws Exception{			
+		Liquidacion liquidacionCarga = (liquidacion.getLiquidacionCarga()!=null? liquidacion.getLiquidacionCarga(): null);
+		
+		DateFormat FORMAT_DATE = new SimpleDateFormat ("ddMMyyyy");
+		String nameFile = "RptLiquidacionEspVal_"+FORMAT_DATE.format(liquidacion.getFechaLiquidacion())+"_"+liquidacion.getUsuario().getLogin()+".txt";;
+		String pathFichero = Constantes.DIRECTORY_LIQUIDACION + Constantes.CLAVE_PAHT + nameFile;
+		File file = new File(pathFichero);
+
+		int longitud_C=0;
+		
+		try{
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),"UTF-8"));
+			String linea = "";
+						
+			//---> line 1:	TITULO DEL REPORTE
+			linea = tabular(3) +"EMPRESA " + tabular(9)+ ": " + Constantes.empresa;
+			bw.write(linea + NEWLINE);
+			
+			//---> line 2: 	OFICINA Y FECHA LIQUIDACION
+			longitud_C=liquidacion.getAgencia().getDenominacion().toString().length();		
+			linea = tabular(3) +"ORIGEN - OFICINA : "+liquidacion.getAgencia().getDenominacion()+tabular(48-longitud_C)+"FECHA LIQUIDACION: "+ Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
+			bw.write(linea + NEWLINE);
+			
+			//---> line 3: representante de ventas
+			String _usuario =liquidacion.getUsuario().toString(); 
+			longitud_C = _usuario.toString().length();
+			linea = tabular(3) + "USUARIO "+ tabular(9) + ": " + _usuario;			
+			bw.write(linea+ NEWLINE);			
+						
+			bw.write(NEWLINE);
+			bw.write(NEWLINE);			 							
+			
+			Integer agenciaId = liquidacion.getAgencia().getId();
+			Integer usuarioId = liquidacion.getUsuario().getId();
+			String fechaLiquidacion = Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
+			
+			List<VentaPasaje> listDetalleVentas = new ArrayList<VentaPasaje>();			
+			
+			//Ventas Pasajes
+			List<VentaPasaje> resultDetalleVentasPasaje = ServiceLocator.getVentaPasajesManager().buscarDetalladoVentas(agenciaId, usuarioId, fechaLiquidacion, fechaLiquidacion, -1);			
+			for(VentaPasaje ventaPasaje: resultDetalleVentasPasaje) {
+				ventaPasaje.setTipoConsulta(0); //Pasajes
+				if(ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO)
+					ventaPasaje.getTipoFormaPago().setDenominacion("NOTA DE CREDITO");
+				else if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_DEVOLUCION)
+					ventaPasaje.getTipoFormaPago().setDenominacion("DEVOLUCION");
+				else if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION)
+					ventaPasaje.getTipoFormaPago().setDenominacion("ANULACION");
+				else if(ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO)
+					ventaPasaje.getTipoFormaPago().setDenominacion("CREDITO");		
+				else if(ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA)
+					ventaPasaje.getTipoFormaPago().setDenominacion("CORTESIA");
+				listDetalleVentas.add(ventaPasaje);
+			}			
+			
+			//Ventas Carga
+			if(liquidacionCarga !=null) {
+				TranscarUsuarioPersonal transcarUsuarioPersonal = new TranscarUsuarioPersonal();
+				transcarUsuarioPersonal.setId(liquidacionCarga.getUsuario().getId());
+				transcarUsuarioPersonal.setLogin(liquidacionCarga.getUsuario().getLogin());
+				List<VentaPasaje> resultDetalleVentasCarga = ServiceLocator.getTranscarManager().buscarDetalleVentas(transcarUsuarioPersonal, liquidacionCarga.getAgencia().getId(), fechaLiquidacion, fechaLiquidacion);
+				
+				for(VentaPasaje ventaCarga: resultDetalleVentasCarga) {
+					ventaCarga.setTipoConsulta(1); //Carga
+					if(ventaCarga.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO)
+						ventaCarga.getTipoFormaPago().setDenominacion("NOTA DE CREDITO");						
+					
+					listDetalleVentas.add(ventaCarga);
+				}
+			}
+			
+			//Cabecera del detalle de ventas
+			linea=tabular(3)+"SERIE"+tabular(12)+"DESDE"+tabular(16)+"HASTA"+tabular(16)+"CANTIDAD"+tabular(19)+"IMPORTE";
+			bw.write(linea+NEWLINE);
+			
+			linea=tabular(3)+"==================================================================================================";
+			bw.write(linea+NEWLINE);
+			
+			linea=tabular(3)+"VENTA DE PASAJE";
+			bw.write(linea+NEWLINE);
+			linea=tabular(3)+"------------------";
+			bw.write(linea+NEWLINE);
+			
+			List<Liquidacion>list = ServiceLocator.getLiquidacionManager().BuscarEspeciesValoradas(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId());
+			Map<String, ResumenComprobante> mapResumen = ServiceLocator.getLiquidacionManager().buscarResumenComprobantes(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId());
+			for(String key : mapResumen.keySet()) {
+				ResumenComprobante resumen = mapResumen.get(key);
+				String strSerie = null, desde = "", hasta = "";
+				
+				/*Tipo comprobante*/
+				linea=tabular(3)+resumen.getComprobante().toString();
+				bw.write(linea+NEWLINE);				
+				
+				/*Serie*/
+				strSerie = resumen.getIdTipoComprobante()!=Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA?resumen.getSerie():" "+resumen.getSerie().substring(0, 3);
+				linea = tabular(5)+strSerie;
+				
+				for(Liquidacion especieValorada: list) {
+					if(especieValorada.getTipoComprobante().getId().intValue()==resumen.getIdTipoComprobante().intValue()) {
+						desde = especieValorada.getBoletoInicial();
+						hasta = especieValorada.getboletoFinal();
+						break;
+					}
+				}		
+				/*Desde*/
+				longitud_C = desde.length();
+				linea += tabular(12)+tabular(1-longitud_C+1)+desde;
+				
+				/*Hasta*/
+				longitud_C = hasta.length();
+				linea += tabular(12)+tabular(1-longitud_C+1)+hasta;
+				
+				/*Cantidad*/
+				String cantidad= resumen.getCantidad().toString();
+				longitud_C=cantidad.length();
+				linea += tabular(20 - longitud_C) + cantidad;
+				
+				/*Importe*/
+				String importe= Util.toNumberFormat(resumen.getMonto(), 2);
+				longitud_C=importe.length();
+				linea += tabular(27 - longitud_C) + importe;
+				bw.write(linea+NEWLINE);
+
+				bw.write(NEWLINE);
+			}
+			
+			/**CARGA - RESUMEN ESPECIES VALORADAS*/
+			if(liquidacionCarga!=null) {
+				bw.write(NEWLINE);
+				linea=tabular(3)+"VENTA DE ENCOMIENDAS";
+				bw.write(linea+NEWLINE);
+				linea=tabular(3)+"------------------";
+				bw.write(linea+NEWLINE);
+				
+				List<Liquidacion> listLiquidacionCarga = ServiceLocator.getTranscarManager().buscarLiquidacionTurnoResumenEspVal(liquidacionCarga.getUsuario().getId(), liquidacionCarga.getAgencia().getId(), fechaLiquidacion, fechaLiquidacion);
+				for(Liquidacion _liquidacion : listLiquidacionCarga) {
+					
+					/*Tipo comprobante*/
+					linea=tabular(3)+_liquidacion.getComprobante().toString();
+					bw.write(linea+NEWLINE);
+					
+					/*Serie*/
+					String strSerie = (_liquidacion.getSerie()!=null?_liquidacion.getSerie():"");					
+					linea = tabular(5)+strSerie;
+					
+					String desde = _liquidacion.getBoletoInicial();
+					String hasta = _liquidacion.getboletoFinal();
+					
+					/*Desde*/
+					longitud_C = desde.length();
+					linea += tabular(12)+tabular(1-longitud_C+1)+desde;
+					
+					/*Hasta*/
+					longitud_C = hasta.length();
+					linea += tabular(12)+tabular(1-longitud_C+1)+hasta;
+							
+					/*Cantidad*/
+					String cantidad= _liquidacion.getCantidadBoletos().toString();
+					longitud_C=cantidad.length();
+					linea += tabular(20 - longitud_C) + cantidad;
+					
+					/*Importe*/
+					String importe= Util.toNumberFormat(_liquidacion.getImporte(), 2);
+					longitud_C=importe.length();
+					linea += tabular(27 - longitud_C) + importe;
+					bw.write(linea+NEWLINE);
+
+					bw.write(NEWLINE);
+				}
+			}			
+			
+			//Consulta los gastos
+			List<Gasto> resultGasto = ServiceLocator.getGastoManager().buscarGasto(fechaLiquidacion, null, agenciaId, usuarioId);
+			
+			/*Inserta el detalle de egresos y los totales de la liquidacion*/
+			bw.write(NEWLINE);
+			creaRptLiquidacionByEgresos(bw, listDetalleVentas, resultGasto, false);			
+			
+			bw.write(NEWLINE);
+			bw.write(NEWLINE);
+	
+			bw.close();
+			
+		}catch(IOException ioex){
+			ioex.printStackTrace();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		return nameFile;
+	}
+	
+	/** 
+	 * Crea el reporte de liquidacion, resumen de saldos pendientes por depositar
+	 * @param ltbxLiquidaciones : ListBox con las liquidaciones de los usuarios
+	 * @throws Exception
+	 */
+	public static String creaRptLiquidacionByResumenSaldos(Listbox ltbxLiquidaciones, Agencia agencia, String fechaLiquidacion)throws Exception{
+		DateFormat FORMAT_DATE = new SimpleDateFormat ("ddMMyyyy");
+		String nameFile = "RptResumenSaldos_"+FORMAT_DATE.format(Constantes.FORMAT_DATE.parse(fechaLiquidacion))+"_"+agencia.getDenominacion()+".txt";;
+		String pathFichero = Constantes.DIRECTORY_LIQUIDACION + Constantes.CLAVE_PAHT + nameFile;
+		File file = new File(pathFichero);
+		
+		int longitud_C=0;
+		int rubroPasajes = Constantes.FALSE_VALUE;
+//		int rubroCarga = Constantes.TRUE_VALUE;
+		
+		try {			
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),"UTF-8"));
+			String linea = "";
+						
+			//---> line 1:	TITULO DEL REPORTE
+			linea = tabular(3) +"EMPRESA " + tabular(9)+ ": " + Constantes.empresa;
+			bw.write(linea + NEWLINE);
+			
+			//---> line 2: 	OFICINA Y FECHA LIQUIDACION
+			longitud_C=agencia.getDenominacion().toString().length();		
+			linea = tabular(3) +"ORIGEN - OFICINA : "+agencia.getDenominacion()+tabular(48-longitud_C)+"FECHA LIQUIDACION: "+ fechaLiquidacion;
+			bw.write(linea + NEWLINE);
+						
+			bw.write(NEWLINE);
+			bw.write(NEWLINE);			 							
+			
+			longitud_C=agencia.getDenominacion().toString().length();		
+			linea = tabular(3) +"COUNTER PASAJES"+tabular(40) + fechaLiquidacion;
+			bw.write(linea + NEWLINE);
+					
+			linea = tabular(3) +"==================================================================";
+			bw.write(linea + NEWLINE);
+						
+			Integer longConceptop = 50;
+			Integer longImporteTotales = 15;
+			Double totalSaldoPasajes = .00;
+			Integer agenciaId = agencia.getId();			
+			for(Listitem item : ltbxLiquidaciones.getItems()) {
+				Liquidacion liquidacionPasaje = (Liquidacion) item.getValue();							
+				Integer usuarioId = liquidacionPasaje.getUsuario().getId();
+				
+				//Ventas Pasajes
+				List<VentaPasaje> resultDetalleVentasPasaje = ServiceLocator.getVentaPasajesManager().buscarDetalladoVentas(agenciaId, usuarioId, fechaLiquidacion, fechaLiquidacion, -1);				
+				
+				//Consulta los gastos
+				List<Gasto> resultGasto = ServiceLocator.getGastoManager().buscarGasto(fechaLiquidacion, null, agenciaId, usuarioId);
+				
+				/*Egresos de caja*/
+				Double totalGastosCaja = .00; 
+				Double totalCtaCte = .00;
+							
+				int tipoOperacion_egreso = Constantes.FALSE_VALUE;
+				for(Gasto gasto: resultGasto) {
+					if(gasto.getTipoGasto().getTipoOperacion().intValue()==tipoOperacion_egreso) {					
+						if(gasto.getTipoGasto().getId().intValue()==Constantes.ID_TIPGAS_CTACTE)
+							totalCtaCte += gasto.getMonto();
+						else
+							totalGastosCaja += gasto.getMonto();
+					}
+				}
+
+				//Otros Egresos 								
+				Double totalVentaPasajes = .00, totalVentaTarjeta = .00, totalDevoluciones = .00, totalVentasPce = .00, totalNotaCredito = .00, totalCredito = .00, totalCortesia = .00;				
+				for(VentaPasaje ventaPasaje: resultDetalleVentasPasaje) {			
+					FormaPago formaPago = ventaPasaje.getFormaPago();
+					TipoFormaPago tipoFormaPago = ventaPasaje.getTipoFormaPago();
+					TipoComprobante tipoComprobante = ventaPasaje.getTipoComprobante();
+					
+					/*Para obtener los totales de la venta de pasajes y carga, ademas de la venta con tarjeta*/
+					if(ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_FACTURA || 
+							ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_BOLETA_VENTA ||
+							ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA) {
+												
+						totalVentaPasajes += ventaPasaje.getImportePagado();												
+						if(ventaPasaje.getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA)
+							totalVentaTarjeta += ventaPasaje.getImportePagado(); 
+					}
+									
+					/**EGRESOS*/
+					if((tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO) || (formaPago.getId().intValue() != Constantes.ID_FORPAG_CONTADO) || (tipoFormaPago.getId().intValue()!=Constantes.ID_TIPFORPAG_EFECTIVO)) {					
+						if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_DEVOLUCION)
+							totalDevoluciones += ventaPasaje.getImportePagado();
+						else if(ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA)
+							totalVentasPce += ventaPasaje.getImportePagado();
+						else if(ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_NOTA_CREDITO)
+							totalNotaCredito += ventaPasaje.getImportePagado();
+						else if(ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO)
+							totalCredito += ventaPasaje.getImportePagado();
+						else if(ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA)
+							totalCortesia += ventaPasaje.getImportePagado();									
+					}											
+				}
+							
+				Double totalLiquidacion = (totalVentaPasajes
+										 - totalVentaTarjeta 
+										 - totalGastosCaja
+										 - totalNotaCredito
+										 - totalCredito
+										 - totalCortesia
+										 - totalDevoluciones
+										 - totalVentasPce);
+
+				//Total Efectivo, saldo por depositar
+				Double saldoXdepositar = (totalLiquidacion - totalCtaCte);
+
+				//N° Concepto
+				String concepto= liquidacionPasaje.getUsuario().toString();
+				longitud_C= concepto.length();
+				linea= tabular(3) + concepto + tabular(longConceptop-longitud_C);
+			
+				/*IMPORTE*/
+				String importe= Util.toNumberFormat(saldoXdepositar, 2);
+				longitud_C=importe.length();
+				linea += tabular(longImporteTotales - longitud_C) + importe;
+				bw.write(linea+NEWLINE);	
+				
+				totalSaldoPasajes += saldoXdepositar;
+			}
+			
+			bw.write(NEWLINE);
+			linea = tabular(3) +"==================================================================";
+			bw.write(linea + NEWLINE);
+			/*CONCEPTO*/
+			String concepto= "TOTAL PASAJES";
+			longitud_C= concepto.length();
+			linea= tabular(3) + concepto + tabular(longConceptop-longitud_C);			
+			/*TOTAL*/
+			String importe= Util.toNumberFormat(totalSaldoPasajes, 2);
+			longitud_C=importe.length();
+			linea += tabular(longImporteTotales - longitud_C) + importe;
+			bw.write(linea+NEWLINE);
+					
+			
+			bw.write(NEWLINE);
+			bw.write(NEWLINE);
+			bw.write(NEWLINE);
+			bw.write(NEWLINE);
+			longitud_C=agencia.getDenominacion().toString().length();		
+			linea = tabular(3) +"COUNTER CARGA"+tabular(42) + fechaLiquidacion;
+			bw.write(linea + NEWLINE);
+					
+			linea = tabular(3) +"==================================================================";
+			bw.write(linea + NEWLINE);
+			Double totalSaldoCarga = .00;
+			/*********************************************/
+			/*CARGA*/
+			/*********************************************/
+			for(Listitem item : ltbxLiquidaciones.getItems()) {
+				Liquidacion liquidacionPasaje = (Liquidacion) item.getValue();
+				Liquidacion liquidacionCarga = (liquidacionPasaje.getLiquidacionCarga()!=null? liquidacionPasaje.getLiquidacionCarga(): null);
+								
+				Integer usuarioId = liquidacionPasaje.getUsuario().getId();																		
+				//Ventas Carga
+				if(liquidacionCarga !=null) {
+					TranscarUsuarioPersonal transcarUsuarioPersonal = new TranscarUsuarioPersonal();
+					transcarUsuarioPersonal.setId(liquidacionCarga.getUsuario().getId());
+					transcarUsuarioPersonal.setLogin(liquidacionCarga.getUsuario().getLogin());
+					List<VentaPasaje> resultDetalleVentasCarga = ServiceLocator.getTranscarManager().buscarDetalleVentas(transcarUsuarioPersonal, liquidacionCarga.getAgencia().getId(), fechaLiquidacion, fechaLiquidacion);
+					
+					//Consulta los gastos
+//					List<Gasto> resultGasto = ServiceLocator.getGastoManager().buscarGasto(fechaLiquidacion, null, agenciaId, usuarioId);
+					
+					/*Egresos de caja*/
+					Double totalGastosCaja = .00; 
+					Double totalCtaCte = .00;
+								
+//					int tipoOperacion_egreso = Constantes.FALSE_VALUE;
+//					for(Gasto gasto: resultGasto) {
+//						if(gasto.getTipoGasto().getTipoOperacion().intValue()==tipoOperacion_egreso) {					
+//							if(gasto.getTipoGasto().getId().intValue()==Constantes.ID_TIPGAS_CTACTE)
+//								totalCtaCte += gasto.getMonto();
+//							else
+//								totalGastosCaja += gasto.getMonto();
+//						}
+//					}
+
+					//Otros Egresos 								
+					Double totalVentaCarga = .00, totalVentaTarjeta = .00, totalDevoluciones = .00, totalVentasPce = .00, totalNotaCredito = .00, totalCredito = .00, totalCortesia = .00;
+					
+					for(VentaPasaje ventaPasaje: resultDetalleVentasCarga) {			
+						FormaPago formaPago = ventaPasaje.getFormaPago();
+						TipoFormaPago tipoFormaPago = ventaPasaje.getTipoFormaPago();
+						TipoComprobante tipoComprobante = ventaPasaje.getTipoComprobante();
+						
+						/*Para obtener los totales de la venta de pasajes y carga, ademas de la venta con tarjeta*/
+						if(ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_FACTURA || 
+								ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_BOLETA_VENTA ||
+								ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA) {
+							
+							totalVentaCarga += ventaPasaje.getImportePagado();							
+							if(ventaPasaje.getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA)
+								totalVentaTarjeta += ventaPasaje.getImportePagado(); 
+						}
+										
+						/**EGRESOS*/
+						if((tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO) || (formaPago.getId().intValue() != Constantes.ID_FORPAG_CONTADO) || (tipoFormaPago.getId().intValue()!=Constantes.ID_TIPFORPAG_EFECTIVO)) {					
+							if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_DEVOLUCION)
+								totalDevoluciones += ventaPasaje.getImportePagado();
+							else if(ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA)
+								totalVentasPce += ventaPasaje.getImportePagado();
+							else if(ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_NOTA_CREDITO)
+								totalNotaCredito += ventaPasaje.getImportePagado();
+							else if(ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO)
+								totalCredito += ventaPasaje.getImportePagado();
+							else if(ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA)
+								totalCortesia += ventaPasaje.getImportePagado();	
+						}											
+					}
+					
+					Double totalLiquidacion = (totalVentaCarga 
+					 		 				 - totalVentaTarjeta 
+					 		 				 - totalGastosCaja
+					 		 				 - totalNotaCredito
+					 		 				 - totalCredito
+					 		 				 - totalCortesia
+					 		 				 - totalDevoluciones
+					 		 				 - totalVentasPce);
+					
+					//Total Efectivo, saldo por depositar
+					Double saldoXdepositar = (totalLiquidacion - totalCtaCte);
+
+					//N° Concepto
+					concepto= liquidacionPasaje.getUsuario().toString();
+					longitud_C= concepto.length();
+					linea= tabular(3) + concepto + tabular(longConceptop-longitud_C);
+				
+					/*IMPORTE*/
+					importe= Util.toNumberFormat(saldoXdepositar, 2);
+					longitud_C=importe.length();
+					linea += tabular(longImporteTotales - longitud_C) + importe;
+					bw.write(linea+NEWLINE);	
+					
+					totalSaldoCarga += saldoXdepositar;
+				}
+			}
+			//Total Carga
+			if(totalSaldoCarga>.00) {		
+				bw.write(NEWLINE);
+				linea = tabular(3) +"==================================================================";
+				bw.write(linea + NEWLINE);
+				/*CONCEPTO*/
+				concepto= "TOTAL CARGA";
+				longitud_C= concepto.length();
+				linea= tabular(3) + concepto + tabular(longConceptop-longitud_C);
+				
+				/*TOTAL*/
+				importe= Util.toNumberFormat(totalSaldoCarga, 2);
+				longitud_C=importe.length();
+				linea += tabular(longImporteTotales - longitud_C) + importe;
+				bw.write(linea+NEWLINE);
+			}
+
+			bw.write(NEWLINE);
+			bw.write(NEWLINE);
+			bw.write(NEWLINE);
+			bw.write(NEWLINE);
+			
+			Double totalSaldo = totalSaldoPasajes + totalSaldoCarga;
+			linea = tabular(3) +"==================================================================";
+			bw.write(linea + NEWLINE);
+			/*CONCEPTO*/
+			concepto= "TOTAL SALDO";
+			longitud_C= concepto.length();
+			linea= tabular(3) + concepto + tabular(longConceptop-longitud_C);
+			
+			/*TOTAL*/
+			importe= Util.toNumberFormat(totalSaldo, 2);
+			longitud_C=importe.length();
+			linea += tabular(longImporteTotales - longitud_C) + importe;
+			bw.write(linea+NEWLINE);
+					
+			linea = tabular(3) +"==================================================================";
+			bw.write(linea + NEWLINE);
+			
+			bw.write(NEWLINE);
+			bw.write(NEWLINE);
+	
+			bw.close();
+		}catch(IOException ioex){
+			ioex.printStackTrace();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		return nameFile;
+		
+		
+		
+		
+	}
 }
 

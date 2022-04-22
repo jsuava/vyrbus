@@ -130,4 +130,14 @@ public interface TranscarManager {
 	 * @throws Exception
 	 */
 	public TreeMap<String, Manifiesto> buscarLiquidacionBus(String fechaInicio, String fechaFin, String codigoBus)throws Exception;
+	/**
+	 * Realiza la busqueda de las liquidaciones del counter
+	 * @param fechaInicio	: Fecha inicio de busqueda
+	 * @param fechaFin		: Fecha fin de busqueda
+	 * @param agenciaId		: Identificador de la Agencia
+	 * @param usuarioId		: Identificador del usuario
+	 * @return	Lista de resultados.
+	 * @throws Exception
+	 */
+	public TreeMap<String, Liquidacion> buscarLiquidacionCounter(String fechaInicio, String fechaFin, Integer agenciaId, Integer usuarioId) throws Exception;
 }

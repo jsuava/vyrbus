@@ -25,6 +25,7 @@ import java.util.Properties;
 
 import java.util.TreeMap;
 
+import org.jfree.util.Log;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
@@ -36,7 +37,9 @@ import com.cystesoft.vyrbus.model.bean.Itinerario;
 import com.cystesoft.vyrbus.model.bean.Liquidacion;
 import com.cystesoft.vyrbus.model.bean.Manifiesto;
 import com.cystesoft.vyrbus.model.bean.Pasajero;
+import com.cystesoft.vyrbus.model.bean.Ruta;
 import com.cystesoft.vyrbus.model.bean.TipoComprobante;
+import com.cystesoft.vyrbus.model.bean.TipoFormaPago;
 import com.cystesoft.vyrbus.model.bean.TipoMoneda;
 import com.cystesoft.vyrbus.model.bean.TipoMovimiento;
 import com.cystesoft.vyrbus.model.bean.TranscarLiquidacionTurno;
@@ -391,31 +394,36 @@ public class TranscarDAOImpl implements TranscarDAO{
 			if(formaPagoId==ID_FORPAG_CONTADO) {
 				if(tipoPagoId==ID_TIPPAG_EFECTIVO) {
 					ventaCarga.setTipoTransaccion("V.(EF)");
-					ventaCarga.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CONTADO));
+					ventaCarga.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CONTADO, "CONTADO"));
+					ventaCarga.setTipoFormaPago(new TipoFormaPago(Constantes.ID_TIPFORPAG_EFECTIVO, "EFECTIVO"));
 				}else if(tipoPagoId==ID_TIPPAG_TARJETA) {
 					ventaCarga.setTipoTransaccion("V.(TC)");
-					ventaCarga.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CONTADO));
+					ventaCarga.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CONTADO, "CONTADO"));
+					ventaCarga.setTipoFormaPago(new TipoFormaPago(Constantes.ID_TIPFORPAG_TARJETA, "TARJETA"));
 				}else {
 					ventaCarga.setTipoTransaccion("CORT"); 
-					ventaCarga.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CORTESIA));
+					ventaCarga.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CORTESIA, "CORTESIA"));
+					ventaCarga.setTipoFormaPago(new TipoFormaPago(Constantes.ID_TIPFORPAG_CORTESIA, "CORTESIA"));
 				}
 			}else if(tipoPagoId==ID_FORPAG_CREDITO) {
 				ventaCarga.setTipoTransaccion("CREDITO");
-				ventaCarga.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CREDITO));
+				ventaCarga.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CREDITO, "CREDITO"));
+				ventaCarga.setTipoFormaPago(new TipoFormaPago(Constantes.ID_TIPFORPAG_CREDITO, "CREDITO"));
 			}else {
 				ventaCarga.setTipoTransaccion("PCE");
-				ventaCarga.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CREDITO));
+				ventaCarga.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CREDITO, "PCE"));
+				ventaCarga.setTipoFormaPago(new TipoFormaPago(Constantes.ID_TIPFORPAG_PCE, "PCE"));
 			}
 			
 			if(tipoComprobanteId==1)
-				ventaCarga.setTipoComprobante(new TipoComprobante(Constantes.ID_TIPCOM_FACTURA));
+				ventaCarga.setTipoComprobante(new TipoComprobante(Constantes.ID_TIPCOM_FACTURA, "FACTURA"));
 			else if(tipoComprobanteId==2)
-				ventaCarga.setTipoComprobante(new TipoComprobante(Constantes.ID_TIPCOM_BOLETA_VENTA));
+				ventaCarga.setTipoComprobante(new TipoComprobante(Constantes.ID_TIPCOM_BOLETA_VENTA, "BOLETA DE VENTA"));
 			else if(tipoComprobanteId==30) {
-				ventaCarga.setTipoComprobante(new TipoComprobante(Constantes.ID_TIPCOM_NOTA_CREDITO));
+				ventaCarga.setTipoComprobante(new TipoComprobante(Constantes.ID_TIPCOM_NOTA_CREDITO, "NOTA DE CREDITO"));
 				ventaCarga.setTipoTransaccion("NOTA CREDITO");
 			}else if(tipoComprobanteId==85)
-				ventaCarga.setTipoComprobante(new TipoComprobante(Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA));
+				ventaCarga.setTipoComprobante(new TipoComprobante(Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA, "GUIA TRANSPORTISTA"));
 	
 			if(resultSet.getString("SERIE_FACTURA")!=null)
 				ventaCarga.setNumeroBoleto(resultSet.getString("SERIE_FACTURA")+"-"+resultSet.getString("NRO_FACTURA"));
@@ -442,8 +450,14 @@ public class TranscarDAOImpl implements TranscarDAO{
 			agenciaVenta.setDenominacion(resultSet.getString("NOMBRE_AGENCIA"));
 			ventaCarga.setAgencia(agenciaVenta);
 			Pasajero pasajero = new Pasajero();
+			pasajero.setNumeroDocumento(resultSet.getString("CODIGO_CLIENTE")!=null? resultSet.getString("CODIGO_CLIENTE"): "");
 			pasajero.setNombresApellidos(resultSet.getString("RAZON_SOCIAL"));
 			ventaCarga.setPasajero(pasajero);
+			Ruta ruta = new Ruta();
+			ruta.setOrigen(resultSet.getString("NOMBRE_UNIDAD_ORI"));
+			ruta.setDestino(resultSet.getString("NOMBRE_UNIDAD_DES"));
+			ventaCarga.setRuta(ruta);
+			
 			
 			listResult.add(ventaCarga);
 		}
@@ -902,5 +916,53 @@ public class TranscarDAOImpl implements TranscarDAO{
 		}
 		
 		return liquidacionBus;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.TranscarDAO#buscarLiquidacionCounter(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer)
+	 */
+	@Override
+	public TreeMap<String, Liquidacion> buscarLiquidacionCounter(String fechaInicio, String fechaFin,  Integer agenciaId, Integer usuarioId) throws Exception {
+		// TODO Auto-generated method stub
+		String sql = "SELECT to_char(lq.fecha_aper,'dd/MM/yyyy') fecha, lq.idusuario_personal,up.login, ag.cod_age_sisvyr, NVL(lq.entre_soles,0) entre_soles "
+				+ "  ,lq.entre_dola, lq.cerrado, lq.fecha_cierre "
+				+ "FROM t_liqui_turnos lq "
+				+ "  INNER JOIN t_usuario_personal up ON (up.idusuario_personal=lq.idusuario_personal) "
+				+ "  INNER JOIN t_agencias ag ON (ag.idagencias=lq.idagencias) "
+				+ "WHERE to_char(lq.fecha_aper,'dd/MM/yyyy') BETWEEN '" + fechaInicio + "' AND '" + fechaFin + "' "
+				+ "  AND ag.cod_age_sisvyr = NVL(" + agenciaId + ", lq.idagencias) "
+//				+ "  AND lq.idusuario_personal = NVL("++", lq.idusuario_personal)  "
+				+ "  AND lq.idestado_registro = 1";
+		Log.info(sql);
+		
+		List<?> result=getJdbcTranscar().queryForList(sql);	
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		TreeMap<String, Liquidacion> resultLiquidacion = new TreeMap<String, Liquidacion>();
+		for(int i=0;i<result.size();i++){
+			map = (Map<String, Object>)result.get(i);
+			
+			Usuario usuario= new Usuario();
+			usuario.setId(((BigDecimal)map.get("idusuario_personal")).intValue());
+			usuario.setLogin(map.get("login").toString());
+			
+			Liquidacion liquidacion= new Liquidacion();
+			liquidacion.setFechaLiquidacion(Constantes.FORMAT_DATE.parse(map.get("fecha").toString()));
+			liquidacion.setUsuario(usuario);
+			liquidacion.setAgencia(new Agencia(Integer.valueOf(map.get("cod_age_sisvyr").toString()))); //Identificador de la agencia tal cual esta registradoe en VYR
+			liquidacion.setImporte(((BigDecimal)map.get("entre_soles")).doubleValue());
+			liquidacion.setEstadoLiquidacion(((BigDecimal)map.get("cerrado")).intValue());
+			liquidacion.setFechaModificacion(map.get("fecha_cierre")!=null?(Date)map.get("fecha_cierre"):null);
+			
+			//Key
+			String key = Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
+			key += liquidacion.getAgencia().getId().toString();
+			key += liquidacion.getUsuario().getLogin();
+			
+			resultLiquidacion.put(key, liquidacion);
+		}
+		
+		
+		return resultLiquidacion;
 	}
 }

@@ -410,7 +410,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 			if(cmbTipoMovimiento.getSelectedIndex()>=0)
 				criterio = cmbTipoMovimiento.getSelectedIndex();
 			
-			TranscarUsuarioPersonal usuarioPersonal = new TranscarUsuarioPersonal();
+			TranscarUsuarioPersonal usuarioPersonal = null;
 			if(rubroAmbos.isChecked()) {
 				//Pasajes
 				List<VentaPasaje> lstVentas = ServiceLocator.getVentaPasajesManager().buscarDetalladoVentas(idAgencia, idUsuario, fechaInicio, fechaFin, criterio);

@@ -23,6 +23,12 @@ public class TipoComprobante extends GenericBean implements java.io.Serializable
 		super();
 		this.id = id;
 	}
+	
+	public TipoComprobante(Integer id, String denominacion) {
+		super();
+		this.id = id;
+		this.denominacion = denominacion;
+	}
 
 	public Integer getId() {
 		return this.id;

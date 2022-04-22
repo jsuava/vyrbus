@@ -80,6 +80,8 @@ import com.cystesoft.vyrbus.service.util.WSFE;
 import com.cystesoft.vyrbus.view.ui.DlgMessage;
 import com.cystesoft.vyrbus.view.ui.WndBase;
 
+import oracle.net.aso.l;
+
 /**
  * @author Jose
  *
@@ -108,6 +110,7 @@ public class WndFacturacionServicios extends WndBase {
 	private Window wndAnular = null;
 	private Window wndFacturacionServicios;
 	private Window wndRegistrar = null;
+	private Window wndVerFacturacion = null;
 	private Radio rdAnulacionRegular;
 	private Radio rdAnulacionNC;
 	private Textbox txtComprobante;
@@ -284,7 +287,14 @@ public class WndFacturacionServicios extends WndBase {
 				}
 			});
 			cell.appendChild(imgAnular);
-			item.appendChild(cell);			
+			item.appendChild(cell);
+			
+			item.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
+				public void onEvent(Event e) {
+					VentaPasaje ventaPasaje=((VentaPasaje)listboxLista.getSelectedItem().getValue());
+					verFacturacion(ventaPasaje);
+				}
+			});
 			
 			item.setValue(ventaPasaje);
 			listboxLista.appendChild(item);
@@ -1267,5 +1277,263 @@ public class WndFacturacionServicios extends WndBase {
 		DlgMessage.information("El Proceso de anulación termino correctamente");
 		
 		window.onClose();
+	}
+	
+	public void verFacturacion(VentaPasaje ventaServicioEspecial) {
+		try {
+			ventaServicioEspecial = ServiceLocator.getVentaPasajesManager().buscarPorId(ventaServicioEspecial.getId());
+			wndVerFacturacion = onCreateWindowVerFactura(ventaServicioEspecial);
+			this.appendChild(wndVerFacturacion);
+			wndVerFacturacion.setMode("modal");
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private Window onCreateWindowVerFactura(VentaPasaje venta) throws Exception {
+		Caption caption = null;
+		Column column = null;
+		Row row = null;
+		Label label = null;
+		String style = "font-size:11px !important; color:blue";
+		
+		final Window win = new Window("", "normal", true);
+		win.setWidth("690px");
+		caption = new Caption("INFORMACION DE LA VENTA");
+		win.appendChild(caption);
+		
+		Groupbox groupbox = new Groupbox();
+		groupbox.setMold("3d");
+		caption = new Caption();
+		caption.setLabel("DETALLE DE LA FACTURACION");
+		caption.setStyle("color: #ffffff;");
+		groupbox.appendChild(caption);
+		groupbox.setClosable(true);
+		
+		Grid grid = new Grid();
+		grid.setStyle("border:none");
+		
+		Columns columns = new Columns();
+		
+		column = new Column();
+		column.setAlign("right");
+		column.setWidth("120px");
+		columns.appendChild(column);
+		
+		column = new Column();
+		column.setWidth("130px");
+		columns.appendChild(column);
+		
+		column = new Column();
+		column.setAlign("right");
+		column.setWidth("40px");
+		columns.appendChild(column);
+		
+		column = new Column();
+		column.setWidth("100px");
+		columns.appendChild(column);
+		
+		column = new Column();
+		column.setAlign("right");
+		column.setWidth("110px");
+		columns.appendChild(column);
+		
+		column = new Column();
+		columns.appendChild(column);
+		
+		grid.appendChild(columns);
+		
+		Rows rows = new Rows();
+		
+		row = new Row();
+		label = new Label("TIPO COMPROBANTE :");
+		row.appendChild(label);
+		
+		label = new Label();
+		label.setValue(venta.getTipoComprobante().getDenominacion());
+		label.setStyle(style);
+		row.appendChild(label);
+		
+		label = new Label();
+		row.appendChild(label);
+		
+		label = new Label();
+		row.appendChild(label);
+		
+		label = new Label("N° COMPROBANTE :");
+		row.appendChild(label);
+		
+		label = new Label();
+		label.setValue(venta.getNumeroBoleto());
+		label.setStyle("font-size:13px !important; color:red; font-weight: bold;");
+		row.appendChild(label);
+		
+		rows.appendChild(row);
+		
+		row = new Row();
+		label = new Label("RUC :");
+		row.appendChild(label);
+		
+		label = new Label();
+		label.setValue(venta.getCliente().getNumeroDocumento());
+		label.setStyle(style);
+		row.appendChild(label);
+		
+		label = new Label();
+		row.appendChild(label);
+		
+		label = new Label();
+		row.appendChild(label);
+		
+		label = new Label();
+		row.appendChild(label);
+		
+		label = new Label();
+		row.appendChild(label);
+		
+		rows.appendChild(row);
+		
+		row = new Row();
+		row.setSpans("1,5");
+		
+		label = new Label("RAZON SOCIAL :");
+		row.appendChild(label);
+		
+		label = new Label();
+		label.setValue(venta.getCliente().getRazonSocial());
+		label.setStyle(style);
+		row.appendChild(label);
+		
+		rows.appendChild(row);
+		
+		row = new Row();
+		row.setSpans("1,5");
+		
+		label = new Label("DIRECCION :");
+		row.appendChild(label);
+		
+		label = new Label();
+		label.setValue(venta.getCliente().getDireccion());
+		label.setStyle(style);
+		row.appendChild(label);
+		
+		rows.appendChild(row);
+		
+		row = new Row();
+		
+		label = new Label("FORMA PAGO :");
+		row.appendChild(label);
+		
+		label = new Label();
+		label.setValue(venta.getFormaPago().getDenominacion());
+		label.setStyle(style);
+		row.appendChild(label);
+		
+		row.appendChild(new Label());
+		
+		row.appendChild(new Label());
+		
+		label = new Label("TIPO :");
+		row.appendChild(label);
+		
+		label = new Label();
+		label.setValue(venta.getTipoCobranza()!=null?venta.getTipoCobranza().getDenominacion():"");
+		label.setStyle(style);
+		row.appendChild(label);
+		
+		rows.appendChild(row);
+		
+		row = new Row();
+		label = new Label("MONEDA :");
+		row.appendChild(label);
+		
+		label = new Label();
+		label.setValue(venta.getTipoMoneda()==null?"SOLES (S/.)":venta.getTipoMoneda().getDenominacion());
+		label.setStyle(style);
+		row.appendChild(label);
+		
+		row.appendChild(new Label());
+		
+		row.appendChild(new Label());
+		
+		label = new Label("TIPO CAMBIO :");
+		row.appendChild(label);
+		
+		label = new Label();
+		label.setValue(venta.getTipoCambio()==null?"":Util.toNumberFormat(venta.getTipoCambio(),2));
+		label.setStyle(style);
+		row.appendChild(label);
+		
+		rows.appendChild(row);
+		
+		row = new Row();
+		label = new Label("SUB TOTAL :");
+		row.appendChild(label);
+		
+		label = new Label();
+		Double importe = venta.getImportePagado()-venta.getIgv();
+		label.setValue(Util.toNumberFormat(importe, 2));
+		label.setStyle("font-size:13px !important; color:red; font-weight: bold;");
+		row.appendChild(label);
+		
+		label = new Label("IGV :");
+		row.appendChild(label);
+		
+		label = new Label();
+		label.setValue(Util.toNumberFormat(venta.getIgv(), 2));
+		label.setStyle("font-size:13px !important; color:red; font-weight: bold;");
+		row.appendChild(label);
+		
+		label = new Label("IMPORTE :");
+		row.appendChild(label);
+		
+		label = new Label();
+		label.setValue(Util.toNumberFormat(venta.getImportePagado(), 2));
+		label.setStyle("font-size:13px !important; color:red; font-weight: bold;");
+		row.appendChild(label);
+		
+		rows.appendChild(row);
+		
+		row = new Row();
+		row.setSpans("1,5");
+		
+		label = new Label("GLOSA :");
+		row.appendChild(label);
+		
+		txtGlosa = new Textbox();
+		txtGlosa.setText(venta.getObservaciones());
+		txtGlosa.setDisabled(true);
+		txtGlosa.setMultiline(true);
+		txtGlosa.setHeight("90px");
+		txtGlosa.setWidth("520px");
+		row.appendChild(txtGlosa);
+		
+		rows.appendChild(row);
+		
+		row = new Row();
+		row.setSpans("6");
+		
+		Hbox hbox = new Hbox();
+		hbox.setAlign("center");
+		
+		Button btnCancelar = new Button("Cerrar");
+		btnCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			public void onEvent(Event e) {
+				win.onClose();
+			}
+		});
+		btnCancelar.setImage("/resources/mp_cerrar.png");
+		btnCancelar.setSclass("btnCommandL");
+		btnCancelar.setStyle("width: 90px");
+		hbox.appendChild(btnCancelar);
+		
+		row.appendChild(hbox);
+		rows.appendChild(row);
+		
+		grid.appendChild(rows);
+		groupbox.appendChild(grid);		
+		win.appendChild(groupbox);
+		
+		return win;
 	}
 }

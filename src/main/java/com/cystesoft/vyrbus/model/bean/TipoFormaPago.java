@@ -26,6 +26,12 @@ public class TipoFormaPago extends GenericBean implements java.io.Serializable {
 	public TipoFormaPago(Integer id){
 		this.id=id;
 	}
+	
+	public TipoFormaPago(Integer id, String denuminacion){
+		this.id=id;
+		this.denominacion = denuminacion;
+	}
+	
 	/**
 	 * @return the id
 	 */
