@@ -244,20 +244,20 @@ public class TranscarDAOImpl implements TranscarDAO{
 		callableStatement.close();
 	}
 
-	/* (non-Javadoc)
-	 * @see com.cystesoft.vyrbus.model.dao.TranscarDAO#buscarIdAgenciaByCodigoAgenciaPasajes(java.lang.String)
-	 */
-	@Override
-	public Integer buscarIdAgenciaByCodigoAgenciaPasajes(String codigoAgenciaPasajes) throws Exception {
-		// TODO Auto-generated method stub
-		Integer agenciaId = null;
-		try {
-			String sql="select ag.idagencias from t_agencias ag where ag.cod_age_sisvyr = '"+codigoAgenciaPasajes+"'";
-			agenciaId=getJdbcTranscar().queryForInt(sql);	
-		} catch (Exception e) {}
-				
-		return agenciaId;
-	}
+//	/* (non-Javadoc)
+//	 * @see com.cystesoft.vyrbus.model.dao.TranscarDAO#buscarIdAgenciaByCodigoAgenciaPasajes(java.lang.String)
+//	 */
+//	@Override
+//	public Integer buscarIdAgenciaByCodigoAgenciaPasajes(String codigoAgenciaPasajes) throws Exception {
+//		// TODO Auto-generated method stub
+//		Integer agenciaId = null;
+//		try {
+//			String sql="select ag.idagencias from t_agencias ag where ag.cod_age_sisvyr = '"+codigoAgenciaPasajes+"'";
+//			agenciaId=getJdbcTranscar().queryForInt(sql);	
+//		} catch (Exception e) {}
+//				
+//		return agenciaId;
+//	}
 
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.model.dao.TranscarDAO#aperturarLiquidacion(com.cystesoft.vyrbus.model.bean.TranscarLiquidacionTurno)

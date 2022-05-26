@@ -87,7 +87,8 @@ public class TranscarManagerImpl implements TranscarManager{
 	@Override
 	public Integer buscarIdAgenciaByCodigoAgenciaPasajes(String codigoAgenciaPasajes) throws Exception {
 		// TODO Auto-generated method stub
-		return getTranscarDAO().buscarIdAgenciaByCodigoAgenciaPasajes(codigoAgenciaPasajes);
+//		return getTranscarDAO().buscarIdAgenciaByCodigoAgenciaPasajes(codigoAgenciaPasajes);
+		return null;
 	}
 
 	/* (non-Javadoc)
@@ -150,15 +151,14 @@ public class TranscarManagerImpl implements TranscarManager{
 		return getTranscarDAO().buscarLiquidacionTurno(usuarioId, agenciaId, fechaInicio, fechaFin);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.cystesoft.vyrbus.service.business.TranscarManager#cerrarLiquidacion(java.lang.Integer, java.lang.Integer, java.lang.String, java.lang.String)
-	 */
-	@Override
-	public void cerrarLiquidacion(Integer usuarioId, Integer agenciaId,
-			String fechaInicio, String fechaFin) throws Exception {
-		// TODO Auto-generated method stub
-		getTranscarDAO().cerrarLiquidacion(usuarioId, agenciaId, fechaInicio, fechaFin);
-	}
+//	/* (non-Javadoc)
+//	 * @see com.cystesoft.vyrbus.service.business.TranscarManager#cerrarLiquidacion(java.lang.Integer, java.lang.Integer, java.lang.String, java.lang.String)
+//	 */
+//	@Override
+//	public void cerrarLiquidacion(Integer usuarioId, Integer agenciaId,String fechaInicio, String fechaFin) throws Exception {
+//		// TODO Auto-generated method stub
+//		getTranscarDAO().cerrarLiquidacion(usuarioId, agenciaId, fechaInicio, fechaFin);
+//	}
 
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.service.business.TranscarManager#buscarLiquidacionBus(java.lang.String, java.lang.String, java.lang.String)

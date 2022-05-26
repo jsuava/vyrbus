@@ -115,7 +115,7 @@ public class WndRptLiquidacionVentas extends WndBase{
 			List<Liquidacion> resultPasajes = ServiceLocator.getLiquidacionManager().buscarLiquidacion(fechaInicial, fechaInicial, agenciaId, null, null);
 			
 			//Busca las liquidaciones de CARGA
-			TreeMap<String, Liquidacion> resultCarga = ServiceLocator.getTranscarManager().buscarLiquidacionCounter(fechaInicial, fechaInicial, agenciaId, null); 
+			TreeMap<String, Liquidacion> resultCarga = ServiceLocator.getTranscarWebManager().buscarLiquidacionCounter(fechaInicial, fechaInicial, agenciaId, null); 
 			
 			//Carga el listado de liquidaciones
 			cargarListaLiquidaciones(resultPasajes, resultCarga);
@@ -247,7 +247,7 @@ try {
 			//Estado liquidacion - Carga
 			cell = new Listcell();
 			if(liquidacionCarga!=null) {
-				if (!(liquidacionCarga.getestadoLiquidacion().equals(Constantes.LIQUI_ESTA_CERRADO))) {
+				if (liquidacionCarga.getestadoLiquidacion().equals(Constantes.LIQUI_ESTA_CERRADO)) {
 					cell = new Listcell(Constantes.LIQUI_ESTA_CERRADO_LABEL +" - "+ Constantes.FORMAT_LONG.format(liquidacion.getFechaModificacion()));
 					cell.setStyle("font-size:11px !important");
 				}else

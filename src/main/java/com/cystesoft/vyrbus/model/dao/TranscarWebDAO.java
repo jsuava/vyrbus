@@ -3,10 +3,10 @@
  * Sistema		: Sistema de Ventas y Reservas
  * Descripción	: 
  * Autor		: José Abanto
- * Fecha		: 26 oct. 2021
- * Hora			: 10:58:04
+ * Fecha		: 2 may. 2022
+ * Hora			: 22:43:53
  */
-package com.cystesoft.vyrbus.service.business;
+package com.cystesoft.vyrbus.model.dao;
 
 import java.util.List;
 import java.util.TreeMap;
@@ -24,7 +24,7 @@ import com.cystesoft.vyrbus.model.bean.VentaPasaje;
  * @author abant
  *
  */
-public interface TranscarManager {
+public interface TranscarWebDAO {
 	/**
 	 * Realiza la busqueda de todos los roles
 	 * @return
@@ -45,21 +45,21 @@ public interface TranscarManager {
 	 * @return
 	 * @throws Exception
 	 */
-	public TranscarUsuarioPersonal buscarUsuarioPersonal(String login)throws Exception;
+	public TranscarUsuarioPersonal buscarUsuario(String login)throws Exception;
 	/**
 	 * Guardar o actualiza un usuario
-	 * @param transcarUsusrioPeronal	: Instancia de las class
+	 * @param transcarUsuario	: Instancia de las class
 	 * @param isNuevo	: indica si el usuario es nuevo(true) o ya existe (false)
 	 * @throws Exception
 	 */
-	public void guardarUsuarioPersonal(TranscarUsuarioPersonal transcarUsusrioPeronal, String idsRoles, boolean isNuevo)throws Exception;
-	/**
-	 * Realizala busqueda del identificado de la agencia de carga, a travez del codigo de agencia de pasajes
-	 * @param codigoAgenciaPasajes : codigo de la agencia en pasajes.
-	 * @return identificador de la agencia en carga
-	 * @throws Exception
-	 */
-	public Integer buscarIdAgenciaByCodigoAgenciaPasajes(String codigoAgenciaPasajes)throws Exception;
+	public void guardarUsuario(TranscarUsuarioPersonal transcarUsuario, String idsRoles, boolean isNuevo)throws Exception;
+//	/**
+//	 * Realizala busqueda del identificado de la agencia de carga, a travez del codigo de agencia de pasajes
+//	 * @param codigoAgenciaPasajes : codigo de la agencia en pasajes.
+//	 * @return identificador de la agencia en carga
+//	 * @throws Exception
+//	 */
+//	public Integer buscarIdAgenciaByCodigoAgenciaPasajes(String codigoAgenciaPasajes)throws Exception;
 	/**
 	 * Realiza la apertura de la liquidacion de turno
 	 * @param liquidacionTurno	: instancia de la class
@@ -69,20 +69,20 @@ public interface TranscarManager {
 	public String aperturarLiquidacion(TranscarLiquidacionTurno liquidacionTurno)throws Exception;
 	/**
 	 * Realiza la busqueda del detalle de ventas 
-	 * @param usuarioId	: Identificador del usuario - Transcar
+	 * @param usuario	: Identificador del usuario - Transcar
 	 * @param agenciaId	: Identificador de la agencia - Transcar
 	 * @param fechaInicial	: Fecha inicial de la busqueda
 	 * @param fechaFinal	: Fecha Final de la busqueda
 	 * @return lista de resultados
 	 * @throws Exception
 	 */
-	public List<VentaPasaje> buscarDetalleVentas(TranscarUsuarioPersonal usuarioPersonal, Integer agenciaId, String fechaInicial, String fechaFinal)throws Exception;
-	/**
-	 * Realiza la busqueda de todas las agencias
-	 * @return
-	 * @throws Exception
-	 */
-	public List<Agencia> buscarAgencias()throws Exception;
+	public List<VentaPasaje> buscarDetalleVentas(TranscarUsuarioPersonal usuario, Integer agenciaId, String fechaInicial, String fechaFinal)throws Exception;
+//	/**
+//	 * Realiza la busqueda de todas las agencias
+//	 * @return
+//	 * @throws Exception
+//	 */
+//	public List<Agencia> buscarAgencias()throws Exception;
 	/**
 	 * Realiza la busqueda de todos los usuarios asociados a una determinada agencia, en funcion a la venta
 	 * @param agenciaId		: Identificador de la agencia
@@ -112,16 +112,16 @@ public interface TranscarManager {
 	 * @throws Exception
 	 */
 	public Liquidacion buscarLiquidacionTurno(Integer usuarioId, Integer agenciaId, String fechaInicio, String fechaFin)throws Exception;
-//	/**
-//	 * Realiza el cierre de la liquidacion de turno
-//	 * @param usuarioId			: Identificador del usuario.
-//	 * @param agenciaId			: Identificador de la agencia
-//	 * @param fechaLiquidacion	: Fecha de la liquidacion
-//	 * @param efectivoIngresado	: Total efectivo ingresado
-//	 * @param efectivoLiquidado	: Total efectivo liquidado
-//	 * @throws Exception
-//	 */
-//	public void cerrarLiquidacion(Integer usuarioId, Integer agenciaId, String fechaLiquidacion, Double efectivoIngresado, Double efectivoLiquidado)throws Exception;
+	/**
+	 * Realiza el cierre de la liquidacion de turno
+	 * @param usuarioId			: Identificador del usuario.
+	 * @param agenciaId			: Identificador de la agencia
+	 * @param fechaLiquidacion	: Fecha de la liquidacion
+	 * @param efectivoIngresado	: Total efectivo ingresado
+	 * @param efectivoLiquidado	: Total efectivo liquidado
+	 * @throws Exception
+	 */
+	public void cerrarLiquidacion(Integer usuarioId, Integer agenciaId, String fechaLiquidacion, Double efectivoIngresado, Double efectivoLiquidado)throws Exception;
 	/**
 	 * Realiza la busqueda de la liquidacino del bus.
 	 * @param fechaInicio	: Fecha inicio de la busqueda
@@ -141,4 +141,12 @@ public interface TranscarManager {
 	 * @throws Exception
 	 */
 	public TreeMap<String, Liquidacion> buscarLiquidacionCounter(String fechaInicio, String fechaFin, Integer agenciaId, Integer usuarioId) throws Exception;
+	/**
+	 * Realiza la actualización del Password del usario por Login
+	 * @param login : Login del usuario a cambiar el Password
+	 * @param passwordNew : Nuevo password
+	 * @throws Exception
+	 */
+	public void actualizarPasswordUsuarioByLogin(String login, String passwordNew)throws Exception;
+
 }

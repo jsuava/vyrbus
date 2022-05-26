@@ -90,7 +90,7 @@ public class WndRptLiquidacionBus extends WndBase {
 			List<Manifiesto> resultPasajes = ServiceLocator.getVentaPasajesManager().buscarLiquidacionBus(fechaInicio, fechaFin, codigoBus);
 			
 			//Buscar en Carga (Transcar)
-			TreeMap<String, Manifiesto> resultCarga = ServiceLocator.getTranscarManager().buscarLiquidacionBus(fechaInicio, fechaFin, codigoBus);
+			TreeMap<String, Manifiesto> resultCarga = ServiceLocator.getTranscarWebManager().buscarLiquidacionBus(fechaInicio, fechaFin, codigoBus);
 			
 			for(Manifiesto manifiesto : resultPasajes){
 				Listitem item = new Listitem();
