@@ -27,38 +27,46 @@ public class ReniecDAOImpl extends GenericDAOImpl implements ReniecDAO{
 	 */
 	@Override
 	public Reniec buscarPax(String numeroDocumento) throws Exception {
-		// TODO Auto-generated method stub
-		String sql="select r.num_doc, r.ape_pat, r.ape_mat, r.nom_per, r.fec_nac, r.cod_sex, r.tip_doc "+
-				  "from RENIEC.bdreniec r where r.num_doc='"+numeroDocumento+"' ";
-		
-		log.info(sql);
-		
-		List<?> result = getSession().createSQLQuery(sql).list();
-		Reniec reniec=null;
-		for(int i=0; i<result.size(); i++){
-			Object[] obj = (Object[])result.get(i);
+		try {
 			
-			reniec= new Reniec();
-			reniec.setNumeroDocumento(obj[0].toString());
-			reniec.setApellidoPaterno(obj[1].toString());
-			reniec.setApellidoMaterno(obj[2].toString());
-			reniec.setNombres(obj[3].toString());
+			// TODO Auto-generated method stub
+			String sql="select r.num_doc, r.ape_pat, r.ape_mat, r.nom_per, r.fec_nac, r.cod_sex, r.tip_doc "+
+					  "from RENIEC.bdreniec r where r.num_doc='"+numeroDocumento+"' ";
 			
-			/*Da formato a la fechaNacimiento*/
-			String anio =obj[4].toString().substring(0,4);
-			String mes=obj[4].toString().substring(4,6);
-			String dia=obj[4].toString().substring(6,8);
-			String fechaNacimiento=dia+"/"+mes+"/"+anio;
-			reniec.setFechaNacimiento(fechaNacimiento);
-			/*========================================*/
-			if(obj[5].toString().equals("1"))
-				reniec.setSexo(String.valueOf(Constantes.ID_SEXO_MASCULINO));
-			else reniec.setSexo(String.valueOf(Constantes.ID_SEXO_FEMENINO));
+			log.info(sql);
 			
-			reniec.setTipoDocumento(obj[6].toString());
+			List<?> result = getSession().createSQLQuery(sql).list();
+			Reniec reniec=null;
+			for(int i=0; i<result.size(); i++){
+				Object[] obj = (Object[])result.get(i);
+				
+				reniec= new Reniec();
+				reniec.setNumeroDocumento(obj[0].toString());
+				reniec.setApellidoPaterno(obj[1].toString());
+				reniec.setApellidoMaterno(obj[2].toString());
+				reniec.setNombres(obj[3].toString());
+				
+				/*Da formato a la fechaNacimiento*/
+				String anio =obj[4].toString().substring(0,4);
+				String mes=obj[4].toString().substring(4,6);
+				String dia=obj[4].toString().substring(6,8);
+				String fechaNacimiento=dia+"/"+mes+"/"+anio;
+				reniec.setFechaNacimiento(fechaNacimiento);
+				/*========================================*/
+				if(obj[5].toString().equals("1"))
+					reniec.setSexo(String.valueOf(Constantes.ID_SEXO_MASCULINO));
+				else reniec.setSexo(String.valueOf(Constantes.ID_SEXO_FEMENINO));
+				
+				reniec.setTipoDocumento(obj[6].toString());
+			}
+			
+			return reniec;
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			return null;
 		}
 		
-		return reniec;
 	}
 	
 	/*

@@ -166,4 +166,21 @@ public class AgenciaDAOImpl extends GenericDAOImpl implements AgenciaDAO {
 		}
 		return lstResult;
 	}
+
+	@Override
+	public Integer buscarAgencia_Idtranscarweb(Integer agencia_idvrybus)throws Exception{
+		String sql ="SELECT  et.ent_idtranscar agencia_idtranscarweb, et.ent_idvyr " + 
+				"FROM VRTENTVYR_TRANSCAR et " + 
+				"WHERE et.ent_idvyr="+agencia_idvrybus+" AND et.tipent_idvyrtranscar = 1 AND et.c_estreg='A' ";
+		
+		List<?> result = getSession().createSQLQuery(sql).list();
+		
+		Integer agencia_idtranscarweb = null;
+		for(int i=0;i<result.size();i++){
+			Object[] obj = (Object[])result.get(i);
+			agencia_idtranscarweb = ((BigDecimal)obj[0]).intValue();
+		}
+		
+		return agencia_idtranscarweb;
+	}
 }

@@ -70,6 +70,9 @@ public class WndCambiarPassword extends WndBase implements Serializable{
 			usuario.setPwdNormal(txtNuevoPassword.getText().trim());
 			ServiceLocator.getUsuarioManager().actualizar(usuario);
 			
+			/*Actualiza el Password del usario en Transcar - jabanto - 07/05/2022*/
+			ServiceLocator.getTranscarWebManager().actualizarPasswordUsuarioByLogin(usuario.getLogin(), usuario.getPassword());
+			
 			Messagebox.show(Messages.getString("wndCambioPassword.information.PasswordCambiado"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_OK, Messagebox.INFORMATION, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e) throws Exception {

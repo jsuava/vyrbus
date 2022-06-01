@@ -47,6 +47,11 @@ public class TranscarUsuarioPersonal extends GenericBean implements Serializable
 		this.id = id;
 	}
 	
+	public TranscarUsuarioPersonal(Integer id, String login) {
+		this.id = id;
+		this.login = login;
+	}
+	
 //	private Integer rolDefectoId;
 	/**
 	 * @return the id

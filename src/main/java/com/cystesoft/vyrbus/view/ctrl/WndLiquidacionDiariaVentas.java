@@ -268,29 +268,30 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 	private void onCheck_rubroCarga() {
 		try {
 			Util.limpiarListbox(lbxVentas);
-			Util.limpiarCombobox(cmbAgencia);
+//			Util.limpiarCombobox(cmbAgencia);
 			Util.limpiarCombobox(cmbCounter);		
 			clearTotals();
 			
 			
-			List<Agencia> result = ServiceLocator.getTranscarManager().buscarAgencias();
-			UtilData.cargarGenericData(cmbAgencia, true);
-			for(Agencia agencia: result) {
-				Comboitem comboitem= new Comboitem();
-				comboitem.setLabel(agencia.getDenominacion());
-				comboitem.setValue(agencia);
-				cmbAgencia.appendChild(comboitem);
-				
-				if(agencia.getCodigo()!=null && agencia.getCodigo().equals(getAgencia().getCodigo()))
-					cmbAgencia.setSelectedItem(comboitem);
-			}
-			if(cmbAgencia.getSelectedIndex()<0)
-				cmbAgencia.setSelectedIndex(0);
+			//Ya no es necesario - se fucionó las agencias del vyrbus con transcarweb
+//			List<Agencia> result = ServiceLocator.getTranscarManager().buscarAgencias();
+//			UtilData.cargarGenericData(cmbAgencia, true);
+//			for(Agencia agencia: result) {
+//				Comboitem comboitem= new Comboitem();
+//				comboitem.setLabel(agencia.getDenominacion());
+//				comboitem.setValue(agencia);
+//				cmbAgencia.appendChild(comboitem);
+//				
+//				if(agencia.getCodigo()!=null && agencia.getCodigo().equals(getAgencia().getCodigo()))
+//					cmbAgencia.setSelectedItem(comboitem);
+//			}
+//			if(cmbAgencia.getSelectedIndex()<0)
+//				cmbAgencia.setSelectedIndex(0);
 			
 			
 			String fechaInicio = Constantes.FORMAT_DATE.format(dtbxFechaInicio.getValue());
 			String fechaFin = Constantes.FORMAT_DATE.format(dtbxFechaFin.getValue());
-			List<Usuario> resultUsuarios = ServiceLocator.getTranscarManager().buscarUsuariosByVenta(null, fechaInicio, fechaFin);
+			List<Usuario> resultUsuarios = ServiceLocator.getTranscarWebManager().buscarUsuariosByVenta(null, fechaInicio, fechaFin);
 			UtilData.cargarGenericData(cmbCounter, true);
 			for(Usuario usuario : resultUsuarios) {
 				Comboitem comboitem= new Comboitem(usuario.toString());
@@ -357,7 +358,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 			}
 			
 			Util.seleccionarValorItemCombo(Usuario.class, cmbCounter, getUsuario().getId());
-			if(cmbCounter.getSelectedIndex()<0)
+			if(cmbCounter.getSelectedIndex()>0)
 				cmbCounter.setSelectedIndex(0);
 		}catch(Exception ex){
 			ex.printStackTrace();
@@ -417,26 +418,20 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 				loadVentas(lstVentas, false);
 				
 				//Carga
-				Integer _idAgencia = null;
-				Integer _idUsuario = null;
-				
-				if(cmbAgencia.getSelectedItem().getValue() instanceof Agencia) {
-					Agencia _agencia = cmbAgencia.getSelectedItem().getValue();
-					_idAgencia = ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(_agencia.getId().toString());
-				}
+				Integer idAgencia_transcar = null;
+				if(cmbAgencia.getSelectedItem().getValue() instanceof Agencia) 
+					idAgencia_transcar = ((Agencia)cmbAgencia.getSelectedItem().getValue()).getId();
 				if(cmbCounter.getSelectedIndex()>=0 && cmbCounter.getSelectedItem().getValue() instanceof Usuario) {
-					Usuario _usuario = cmbCounter.getSelectedItem().getValue();
-					usuarioPersonal= ServiceLocator.getTranscarManager().buscarUsuarioPersonal(_usuario.getLogin());
-					if(usuarioPersonal!=null)
-						_idUsuario = usuarioPersonal.getId();
+					Usuario usuario = cmbCounter.getSelectedItem().getValue();
+					usuarioPersonal= ServiceLocator.getTranscarWebManager().buscarUsuario(usuario.getLogin());
 				}				
-				lstVentas  =ServiceLocator.getTranscarManager().buscarDetalleVentas(usuarioPersonal, _idAgencia, fechaInicio, fechaFin);
+				lstVentas  =ServiceLocator.getTranscarWebManager().buscarDetalleVentas(usuarioPersonal, idAgencia_transcar, fechaInicio, fechaFin);
 				loadVentas(lstVentas, true);
 			}else if(rubroPasajes.isChecked()) {				
 				List<VentaPasaje> lstVentas = ServiceLocator.getVentaPasajesManager().buscarDetalladoVentas(idAgencia, idUsuario, fechaInicio, fechaFin, criterio);
 				loadVentas(lstVentas, false);
 			}else if(rubroCarga.isChecked()) {				
-				List<VentaPasaje> lstVentas  =ServiceLocator.getTranscarManager().buscarDetalleVentas(usuarioPersonal, idAgencia, fechaInicio, fechaFin);
+				List<VentaPasaje> lstVentas  =ServiceLocator.getTranscarWebManager().buscarDetalleVentas(usuarioPersonal, idAgencia, fechaInicio, fechaFin);
 				loadVentas(lstVentas, true);
 			}
 			

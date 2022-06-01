@@ -387,10 +387,14 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 				usuarioSistema.setAgencia(null);
 			
 			String estadoRegistro=null;
-			if (rdSi.isSelected())
+			if (rdSi.isSelected()) {
 				estadoRegistro=Constantes.VALUE_ACTIVO;
-			else
-				estadoRegistro=Constantes.VALUE_INACTIVO;	
+				transcarUsuarioPersonal.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+			}else {
+				estadoRegistro=Constantes.VALUE_INACTIVO;
+				transcarUsuarioPersonal.setEstadoRegistro(Constantes.VALUE_INACTIVO);
+			}
+					
 			
 			//instancia para la creacion/actualizacion del usuario en Pasajes
 			usuarioSistema.setApellidoPaterno(txtApellidoPaterno.getText().trim().toUpperCase());
@@ -402,6 +406,7 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 			usuarioSistema.setEstadoRegistro(estadoRegistro);
 			usuarioSistema.setEmailInfo(txtEmailInfo.getText().trim());
 			usuarioSistema.setTipoSeguridad(usuarioSistema.getTipoSeguridad()==null?Constantes.TRUE_VALUE:usuarioSistema.getTipoSeguridad());
+			usuarioSistema.setEmailInfo(txtEmailInfo.getText().trim());
 						
 			//instancia para la creacion/actualizacion del usuario en Carga
 			if(usuarioSistema.getAgencia()==null) {
@@ -409,7 +414,8 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 				throw new CancelaGrabacionException();
 			}
 			Agencia _agencia = ServiceLocator.getAgenciaManager().buscarPorId(usuarioSistema.getAgencia().getId().longValue());
-			Integer agenciaIdCarga = ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(_agencia.getId().toString());
+			Integer agenciaIdCarga = _agencia.getId();
+					
 			if(agenciaIdCarga==null) {
 				DlgMessage.information(Messages.getString("WndUsuarioRol.information.noAgenciaCarga"));
 				throw new CancelaGrabacionException();
@@ -421,10 +427,11 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 			transcarUsuarioPersonal.setApellidoMaterno(usuarioSistema.getApellidoMaterno()!=null?usuarioSistema.getApellidoMaterno():null);
 			transcarUsuarioPersonal.setLogin(usuarioSistema.getLogin());
 			transcarUsuarioPersonal.setPassword(txtPassword.getText());
-			transcarUsuarioPersonal.setEmail(usuarioSistema.getEmailFuncionario()!=null?usuarioSistema.getEmailFuncionario():null);
-			transcarUsuarioPersonal.setSexoId(1);
-			transcarUsuarioPersonal.setPermiteVentaOtrasAgencias(chbxIngresaComprobanteOtraAgencia.isChecked()?Constantes.TRUE_VALUE:Constantes.FALSE_VALUE);
-			transcarUsuarioPersonal.setAutorizaEntregaSinVerificarUsuario(chbxAutorizaEntregaSinVerificarUsuario.isChecked()?Constantes.TRUE_VALUE:Constantes.FALSE_VALUE);
+			transcarUsuarioPersonal.setEmail(usuarioSistema.getEmailInfo());
+			
+//			transcarUsuarioPersonal.setSexoId(1);
+//			transcarUsuarioPersonal.setPermiteVentaOtrasAgencias(chbxIngresaComprobanteOtraAgencia.isChecked()?Constantes.TRUE_VALUE:Constantes.FALSE_VALUE);
+//			transcarUsuarioPersonal.setAutorizaEntregaSinVerificarUsuario(chbxAutorizaEntregaSinVerificarUsuario.isChecked()?Constantes.TRUE_VALUE:Constantes.FALSE_VALUE);
 			//Roles seleccionados para el usuario de carga
 			String idsRolesUsuarioCarga="";
 			for(Listitem itemRolCarga: lbxRolesCarga.getSelectedItems()) {
@@ -441,10 +448,18 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 					UtilData.auditarRegistro(usuarioSistema,getUsuario(), Executions.getCurrent());
 					ServiceLocator.getUsuarioManager().guardar(usuarioSistema);
 					textboxId.setText(usuarioSistema.getId().toString());
+					
+					transcarUsuarioPersonal.setUsuarioInsercion(usuarioSistema.getUsuarioInsercion());
+					transcarUsuarioPersonal.setUsuarioModificacion(usuarioSistema.getUsuarioModificacion());
+					transcarUsuarioPersonal.setIpInsercion(usuarioSistema.getIpInsercion());
+					transcarUsuarioPersonal.setIpModificacion(usuarioSistema.getIpModificacion());
 					break;
 				case ACTION_MODIFY:
 					UtilData.auditarRegistro(usuarioSistema, true, getUsuario(), Executions.getCurrent());
 					ServiceLocator.getUsuarioManager().actualizar(usuarioSistema);
+					
+					transcarUsuarioPersonal.setUsuarioModificacion(usuarioSistema.getUsuarioModificacion());
+					transcarUsuarioPersonal.setIpModificacion(usuarioSistema.getIpModificacion());
 					break;
 			}
 			
@@ -452,7 +467,7 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 			onSave_usuarioRol(usuarioSistema, action);
 			
 			//Guarda el usuario en carga
-			ServiceLocator.getTranscarManager().guardarUsuarioPersonal(transcarUsuarioPersonal, idsRolesUsuarioCarga, isNewUserCargo);
+			ServiceLocator.getTranscarWebManager().guardarUsuario(transcarUsuarioPersonal, idsRolesUsuarioCarga, isNewUserCargo);
 			
 			
 			
@@ -767,9 +782,9 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 
 		
 		//Buscar el usuario en la db de carga
-		 transcarUsuarioPersonal = ServiceLocator.getTranscarManager().buscarUsuarioPersonal(usuarioSistema.getLogin());
+		 transcarUsuarioPersonal = ServiceLocator.getTranscarWebManager().buscarUsuario(usuarioSistema.getLogin());
 		 if(transcarUsuarioPersonal!=null) {			 
-			 List<TranscarRolUsuario> result = ServiceLocator.getTranscarManager().buscarRolesUsuario(transcarUsuarioPersonal.getId());
+			 List<TranscarRolUsuario> result = ServiceLocator.getTranscarWebManager().buscarRolesUsuario(transcarUsuarioPersonal.getId());
 			 if(result.size()>0) {
 				 TranscarUsuarioPersonal _usuarioPersonal= result.get(0).getTranscarUsuarioPersonal();
 				 if(_usuarioPersonal.getAutorizaEntregaSinVerificarUsuario()!=null)
@@ -1003,7 +1018,7 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 	 */
 	private void cargarRolesCarga() throws Exception {
 		Util.limpiarListbox(lbxRolesCarga);
-		List<TranscarRolUsuario> result = ServiceLocator.getTranscarManager().buscarRolesUsuario();
+		List<TranscarRolUsuario> result = ServiceLocator.getTranscarWebManager().buscarRolesUsuario();
 		
 		for(TranscarRolUsuario rolUsuario:result){
 			Listitem item = new Listitem();

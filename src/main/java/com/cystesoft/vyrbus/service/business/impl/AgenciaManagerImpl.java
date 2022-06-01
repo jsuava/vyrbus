@@ -192,5 +192,13 @@ public class AgenciaManagerImpl implements AgenciaManager {
 	public List<Agencia>buscarAgenciaByLocalidad(String localidades)throws Exception{
 		return getAgenciaDAO().buscarAgenciaByLocalidad(localidades);
 	}
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.AgenciaManager#buscarAgencia_Idtranscarweb(java.lang.Integer)
+	 */
+	@Override
+	public Integer buscarAgencia_Idtranscarweb(Integer agencia_idvrybus) throws Exception {
+		// TODO Auto-generated method stub
+		return getAgenciaDAO().buscarAgencia_Idtranscarweb(agencia_idvrybus);
+	}
 	
 }

@@ -45,6 +45,13 @@
 		<property name="password" value="${jdbc.transcar.password}" />
 	</bean>
 	
+	<bean id="dataSourceTranscarWeb" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close" >
+ 		<property name="driverClass" value="${jdbc.postgresql.driverClassName}"/>
+        <property name="jdbcUrl" value="${jdbc.transcarweb.url}"/>
+       	<property name="user" value="${jdbc.transcarweb.username}"/>
+		<property name="password" value="${jdbc.transcarweb.password}" />
+	</bean>
+	
 	<!-- define Hibernate sessionFactory provided by Spring ORM -->
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"/>
@@ -61,6 +68,12 @@
 	<bean id="jdbcTemplateTranscar" class="org.springframework.jdbc.core.JdbcTemplate">
 		<constructor-arg>
 			<ref bean="dataSourceTranscar"/>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="jdbcTemplateTranscarWeb" class="org.springframework.jdbc.core.JdbcTemplate">
+		<constructor-arg>
+			<ref bean="dataSourceTranscarWeb"/>
 		</constructor-arg>
 	</bean>
 	
@@ -436,9 +449,9 @@
     	</property>
    	</bean>		
 	
-	<bean id="transcarDAO" class="com.cystesoft.vyrbus.model.dao.impl.TranscarDAOImpl">
+	<bean id="transcarWebDAO" class="com.cystesoft.vyrbus.model.dao.impl.TranscarWebDAOImpl">
    		<property name="jdbcTemplate">
-    		<ref bean="jdbcTemplateTranscar"/>
+    		<ref bean="jdbcTemplateTranscarWeb"/>
     	</property>
    	</bean>
 	
@@ -836,8 +849,12 @@
 		<property name="titanDAO" ref="titanDAO" />
 	</bean>
 	
-	<bean id="transcarManager" class="com.cystesoft.vyrbus.service.business.impl.TranscarManagerImpl">
-		<property name="transcarDAO" ref="transcarDAO" />
+<!-- 	<bean id="transcarManager" class="com.cystesoft.vyrbus.service.business.impl.TranscarManagerImpl"> -->
+<!-- 		<property name="transcarDAO" ref="transcarDAO" /> -->
+<!-- 	</bean> -->
+	
+	<bean id="transcarWebManager" class="com.cystesoft.vyrbus.service.business.impl.TranscarWebManagerImpl">
+		<property name="transcarWebDAO" ref="transcarWebDAO" />
 	</bean>
 	
 <!-- 	HOJA DE RUTA ELECTRONICA -->

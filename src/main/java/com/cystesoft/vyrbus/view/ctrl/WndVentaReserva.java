@@ -585,6 +585,10 @@ public class WndVentaReserva extends WndBase {
 			}
 			
 			
+			/*jabanto - 19/04/2022 - Se manejará el guardado del pasajero desde el guardado de la venta*/
+			tlbbtnGuardarPax.setVisible(false);
+			tlbbtnGuardarClient.setVisible(false);
+			
 		}catch (ConcesionarioNullException ccnex){
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noConcecionario"));
 			closeTabWindow();
@@ -4107,7 +4111,7 @@ public class WndVentaReserva extends WndBase {
 	/**
 	 * Realiza el guardado del pasajero
 	 */
-	public void onSavePax() {
+	public boolean onSavePax() {
 		try {
 			if (!(cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento))
 				throw new TipoDocumentoNullException();
@@ -4148,12 +4152,12 @@ public class WndVentaReserva extends WndBase {
 			if(getAgencia().getTipoAgencia().getId().intValue()!=Constantes.ID_TIPAGE_TEPSA && ntbxEdad.getValue()==null){
 				throw new PasajeroException(PasajeroException.EDAD_NULL);
 			}
-			
+
 			//Valida fecha de nacimiento - cuando es tepsa			
 			if(getAgencia().getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_TEPSA && dtbxFechaNacimiento.getText().trim().isEmpty()){
 //			if(getAgencia().getId().intValue()==Constantes.ID_TIPAGE_TEPSA && dtbxFechaNacimiento.getValue()==null){								//				
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noFechaNacimiento"),dtbxFechaNacimiento);
-				return;								
+				return false;								
 			}
 			//Valida que la fecha de nacimiento no sea menor a 100 años atras - 05/05/2017 - (validacion propuesta por moscco)
 			java.util.Calendar calFechaNacimiento=java.util.Calendar.getInstance();
@@ -4163,20 +4167,20 @@ public class WndVentaReserva extends WndBase {
 			int anioMinimo=anioActual-anioFecha; //Minimo 100 anios atras
 			if(anioMinimo>100){
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noFechaNacimientoInvalida"),dtbxFechaNacimiento);
-				return;
+				return false;
 			}
 			
 			
 			/*Validando que los apellidos y nombres no incluyan comillas simples - jabanto */
 			if(txtApePat.getText().trim().indexOf("'")>=0){
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noComillaSimple")+", revice el Apellido Parteno del Pasajero.",txtApePat);
-				return;
+				return false;
 			}else if(txtApeMat.getText().trim().indexOf("'")>=0){
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noComillaSimple")+", revice el Apellido Parteno del Materno.",txtApeMat);
-				return;
+				return false;
 			}else if(txtNombres.getText().trim().indexOf("'")>0){
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noComillaSimple")+", revice los Nombres del Pasajero.",txtNombres);
-				return;
+				return false;
 			}
 			
 			//Valida fecha de nacimiento
@@ -4240,44 +4244,60 @@ public class WndVentaReserva extends WndBase {
 			oPasajero.setUsuarioTieneEmail(getUsuario());
 			oPasajero.setAgenciaTieneEmail(getAgencia());
 			
-			oPasajero.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-
-			String msg = "";
-			if (action == Constantes.ACTION_NEW)
-				msg = Messages.getString("WndVentaReserva.question.guardarPasajero");
-			else
-				msg = Messages.getString("WndVentaReserva.question.actualizarPasajero");
-
-			Messagebox.show(msg, DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, EventSavePax(oPasajero));
+			oPasajero.setEstadoRegistro(Constantes.VALUE_ACTIVO);									
+			
+			//Guarda el Pasaje - jabanto - 19/04/022
+			if (action == Constantes.ACTION_NEW) {
+				ServiceLocator.getPasajeroManager().guardar(oPasajero);
+				action = Constantes.ACTION_MODIFY;
+			}else
+				ServiceLocator.getPasajeroManager().actualizar(oPasajero);
 
 		} catch (TipoDocumentoNullException tdnex) {
-			DlgMessage.information(Messages.getString("WndVentaReserva.information.noSelectionTipoDocumento"), cmbTipoDocumento);			
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noSelectionTipoDocumento"), cmbTipoDocumento);
+			return false;
 		} catch (NumeroDocumentoNullException ndnex) {
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noDocumentoPax"), txtDocumentoPax);
+			return false;
 		} catch (ApellidoPaternoNullException apnex) {
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noApellidoPaterno"), txtApePat);
+			return false;
 		} catch (NombresNullException nnex) {
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noNombres"), txtNombres);
+			return false;
 		} catch (UbigeoNullException unex) {
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noUbigeo"), btnUbigeoPax);
+			return false;
 		} catch (SexoNullException snex) {
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noSelectionSexo"), cmbSexo);
+			return false;
 		} catch (NacionalidadException nex){
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noSeleccionoNacionalidad"), cmbNacionalidad);
+			return false;
 		} catch (TelefonoNullException nex){
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noTelefono"), txtTelefono);
+			return false;
 //		} catch(EmailNullException enex){
 //			DlgMessage.information(Messages.getString("WndVentaReserva.information.noIngresoEmail"), txtEmailPax);
 		} catch(MailIncorectoException miex) {
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.ingreseCorreoValido"), txtEmailPax);
+			return false;
 		} catch(VentaReservaException vrex){
-			if(vrex.getTipo().intValue()==VentaReservaException.LONGITUD_NUMERO_DOCUMENTO)
+			if(vrex.getTipo().intValue()==VentaReservaException.LONGITUD_NUMERO_DOCUMENTO) {
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.longitudDocumento"), txtDocumentoPax);
+				return false;
+			}
 		}catch(PasajeroException pax){
-			if(pax.getTipo().intValue()==PasajeroException.EDAD_NULL)
+			if(pax.getTipo().intValue()==PasajeroException.EDAD_NULL) {
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noIngresoEdad"), ntbxEdad);
-			else if(pax.getTipo().intValue()==PasajeroException.NUMERO_DOCUMENTO_INCORRECTO)
+				return false;
+			}else if(pax.getTipo().intValue()==PasajeroException.NUMERO_DOCUMENTO_INCORRECTO) {
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.docPaxIncorrect"), txtDocumentoPax);
+				return false;
+			}
+		} catch (DocumentoPaxDuplicadoException dpdnex) {
+			DlgMessage.information(Messages.getString("WndPasajero.information.noDocumentoPaxDuplicado"), txtDocumentoPax);
+			return false;
 		}catch(FechaNacimientoException fn){
 //			if(fn.getTipo().intValue()==FechaNacimientoException.ANIO_NO_VALID){
 //				DlgMessage.information(Messages.getString("WndVentaReserva.information.fechaNacimientoAnioInvalidadPax"), cmbAnio);
@@ -4289,46 +4309,49 @@ public class WndVentaReserva extends WndBase {
 		}catch (Exception ex) {
 			DlgMessage.information(ex.getMessage());
 			ex.printStackTrace();
+			return false;
 		}
+		
+		return true;
 	}
 	
-	/**
-	 * Evento para controlar el guardado del registro de Pasajero.
-	 * @param action	: Indica si es una insercion o actualizacion.
-	 * @param oPasajero	: Objeto a guardar.
-	 * @return Event
-	 */
-	private EventListener<Event> EventSavePax(final Pasajero oPasajero) {
-		EventListener<Event> ev = new EventListener<Event>() {
-			@Override
-			public void onEvent(Event e) {
-				try {
-					if (e.getName().equals("onYes")) {
-						if (action == Constantes.ACTION_NEW) {
-							ServiceLocator.getPasajeroManager().guardar(oPasajero);
-							DlgMessage.information(Messages.getString("WndVentaReserva.information.exitoGuardar"));
-						} else {
-							ServiceLocator.getPasajeroManager().actualizar(oPasajero);
-							DlgMessage.information(Messages.getString("WndVentaReserva.information.exitoActualizar"));
-						}
-						tlbbtnNuevoPax.setDisabled(false);
-						tlbbtnModificarPax.setDisabled(false);
-						tlbbtnCancelarPax.setDisabled(true);
-						tlbbtnGuardarPax.setDisabled(true);
-						action = Constantes.FAILURE;
-						disabledControlsPax(true);
-						disabledControlsPaxDatosPer(false);
-					}
-				} catch (DocumentoPaxDuplicadoException dpdnex) {
-					DlgMessage.information(Messages.getString("WndPasajero.information.noDocumentoPaxDuplicado"), txtDocumentoPax);
-				} catch (Exception ex) {
-					DlgMessage.error(this.getClass().getSimpleName() + " " + ex.getMessage());
-					ex.printStackTrace();
-				}
-			}
-		};
-		return ev;
-	}
+//	/**
+//	 * Evento para controlar el guardado del registro de Pasajero.
+//	 * @param action	: Indica si es una insercion o actualizacion.
+//	 * @param oPasajero	: Objeto a guardar.
+//	 * @return Event
+//	 */
+//	private EventListener<Event> EventSavePax(final Pasajero oPasajero) {
+//		EventListener<Event> ev = new EventListener<Event>() {
+//			@Override
+//			public void onEvent(Event e) {
+//				try {
+//					if (e.getName().equals("onYes")) {
+//						if (action == Constantes.ACTION_NEW) {
+//							ServiceLocator.getPasajeroManager().guardar(oPasajero);
+//							DlgMessage.information(Messages.getString("WndVentaReserva.information.exitoGuardar"));
+//						} else {
+//							ServiceLocator.getPasajeroManager().actualizar(oPasajero);
+//							DlgMessage.information(Messages.getString("WndVentaReserva.information.exitoActualizar"));
+//						}
+//						tlbbtnNuevoPax.setDisabled(false);
+//						tlbbtnModificarPax.setDisabled(false);
+//						tlbbtnCancelarPax.setDisabled(true);
+//						tlbbtnGuardarPax.setDisabled(true);
+//						action = Constantes.FAILURE;
+//						disabledControlsPax(true);
+//						disabledControlsPaxDatosPer(false);
+//					}
+//				} catch (DocumentoPaxDuplicadoException dpdnex) {
+//					DlgMessage.information(Messages.getString("WndPasajero.information.noDocumentoPaxDuplicado"), txtDocumentoPax);
+//				} catch (Exception ex) {
+//					DlgMessage.error(this.getClass().getSimpleName() + " " + ex.getMessage());
+//					ex.printStackTrace();
+//				}
+//			}
+//		};
+//		return ev;
+//	}
 	
 
 	/* *******************************	IMPLEMENTACIONES PARA EL CLIENTE	******************************************** */
@@ -4688,7 +4711,7 @@ public class WndVentaReserva extends WndBase {
 	 * Realiza el guardado de los datos del cliente
 	 * @throws Exception
 	 */
-	public void onSaveClient()throws Exception{
+	public boolean onSaveClient()throws Exception{
 		try{
 			if(txtDocumentoCliente.getText().trim().equals(""))
 				throw new NumeroDocumentoNullException();
@@ -4698,13 +4721,13 @@ public class WndVentaReserva extends WndBase {
 				throw new UbigeoNullException();
 			else if (txtRazonSocial.getText().trim().length()<=5){
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.razonSocialIncorrect"), txtRazonSocial);
-				return;
+				return false;
 			}else if (txtDireccionCliente.getText().trim().isEmpty()){
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noDireccionCliente"), txtDireccionCliente);
-				return;
+				return false;
 			}else if (txtDireccionCliente.getText().trim().length()<10){
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.direccionIncorrect"), txtDireccionCliente);
-				return;
+				return false;
 			}
 			
 //			else if (ibxCantidadTrabajadores.getText().trim().isEmpty() || ibxCantidadTrabajadores.getValue().intValue()<=0)
@@ -4713,10 +4736,10 @@ public class WndVentaReserva extends WndBase {
 			/*Validando que los datos del cliente no incluyan comillas simples - jabanto */
 			if(txtRazonSocial.getText().trim().indexOf("'")>=0){
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noComillaSimple")+", revice la Razón Social del Cliente.",txtRazonSocial);
-				return;
+				return false;
 			}else if(txtDireccionCliente.getText().trim().indexOf("'")>=0){
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noComillaSimple")+", revice la Dirección del Cliente.",txtDireccionCliente);
-				return;
+				return false;
 			}
 			
 			
@@ -4753,36 +4776,70 @@ public class WndVentaReserva extends WndBase {
 				UtilData.auditarRegistro(oCliente, true, usuario, Executions.getCurrent());
 			}
 			oCliente.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+						
+			//Guarda el cliente
+			if (action == Constantes.ACTION_NEW) {
+				ServiceLocator.getClienteManager().guardar(oCliente);
+				action = Constantes.ACTION_MODIFY;
+			} else {
+				ServiceLocator.getClienteManager().actualizar(oCliente);
+			}
 			
-			String msg = "";
-			if(action == Constantes.ACTION_NEW)
-				msg = Messages.getString("WndVentaReserva.question.guardarCliente");
-			else
-				msg = Messages.getString("WndVentaReserva.question.actualizarCliente");
+//			tlbbtnNuevoClient.setDisabled(false);
+//			tlbbtnModificarClient.setDisabled(false);
+//			tlbbtnCancelarClient.setDisabled(true);
+//			tlbbtnGuardarClient.setDisabled(true);
+//			action = Constantes.FAILURE;
+//			disabledControlsClient(true);
 			
-			Messagebox.show(msg, DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, EventSaveClient(oCliente));
+			/*21/10/2016 - jabanto*/
+			onSelectDefaultTipoComprobante();
+			onLoadEspecieValorada(txtNumeroBoleto);
+			
+			
+//			String msg = "";
+//			if(action == Constantes.ACTION_NEW)
+//				msg = Messages.getString("WndVentaReserva.question.guardarCliente");
+//			else
+//				msg = Messages.getString("WndVentaReserva.question.actualizarCliente");
+//			
+//			Messagebox.show(msg, DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, EventSaveClient(oCliente));
 			
 			
 			
 			
 //		}catch (CantidadTrabajadoresNullException ctnex){
 //			DlgMessage.information(Messages.getString("WndCliente.information.CantidadTrabajadoresNull"));	
+		} catch (RucDuplicadoException rdex) {
+			DlgMessage.information(Messages.getString("WndCliente.information.RucDuplicado"), txtDocumentoCliente);
+			return false;
+		} catch (RazonSocialDuplicadoException rsdex) {
+			DlgMessage.information(Messages.getString("WndCliente.information.RazonSocialDuplicado"), txtRazonSocial);
+			return false;
 		}catch (MailIncorectoException miec){
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.EmailIncorrecto"), txtEmailCliente);
+			return false;
 		}catch(NumeroDocumentoNullException ndnex){
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noDocumentoCliente"), txtDocumentoCliente);
+			return false;
 		}catch(RazonSocialNullException rsnex){
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noRazonSocial"));
 			txtRazonSocial.setFocus(true);
+			return false;
 		}catch(UbigeoNullException unex){
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noUbigeo"));
 			txtUbigeoCliente.setFocus(true);
+			return false;
 		}catch(RucInvalidoException riex){
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.rucInvalido"), txtDocumentoCliente);
+			return false;
 		}catch(Exception ex){
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			log.error(ex);
+			return false;
 		}
+		
+		return true;
 	}
 	
 	/**
@@ -5059,7 +5116,7 @@ public class WndVentaReserva extends WndBase {
 				if(txtNumeroBoleto.getText().trim().equals("") && ((String)cmbTipoOperacion.getSelectedItem().getValue()).equals(Constantes.TIPO_OPERACION_VENTA)){
 					DlgMessage.information(Messages.getString("WndVentaReserva.information.noNumeroBoleto"));
 					return;
-				}else if (!(tlbbtnGuardarPax.isDisabled())){// 06/09/2013 - jabanto
+				}else if (tlbbtnGuardarPax.isVisible() && !(tlbbtnGuardarPax.isDisabled())){// 06/09/2013 - jabanto
 					DlgMessage.information(Messages.getString("WndVentaReserva.information.noSavedPax"));
 					tabPasajero.setSelected(true);
 //					onSavePax();
@@ -5367,8 +5424,24 @@ public class WndVentaReserva extends WndBase {
 			//Preferencias Alimentarias son opcionales, comentado por MAOE 26/06/2021
 //			else if(!(cmbAlimentacion.getSelectedItem().getValue() instanceof PreferenciaAlimentaria))
 //				throw new PreferenciaAlimentariaException();
-			else if (!(tlbbtnGuardarPax.isDisabled()))// 06/09/2013 - jabanto
-					throw new PasajeroNoSavedExeption();
+//			else if (!(tlbbtnGuardarPax.isDisabled()))// 06/09/2013 - jabanto - comentdo 19/04/2022 - se guardara el pasajero al guardar la venta
+//					throw new PasajeroNoSavedExeption();
+			
+			//Valida los datos del Pasajero - 19/04/2022 - jabanto     
+			else if(!tlbbtnCancelarPax.isDisabled()){
+				// Crea o actualiza el pasajero
+				boolean isCorrect =  onSavePax();
+				if(!isCorrect)
+					return;
+			}
+			
+			//Valida los datos del Cliente - 20/04/2022
+			if(!tlbbtnCancelarClient.isDisabled()) {
+				boolean isCorrect = onSaveClient();
+				if(!isCorrect)
+					return;
+			}
+			
 			else if(oPasajero==null)
 				throw new PasajeroException();
 			else if(!(cmbTipoComprobante.getSelectedItem().getValue() instanceof TipoComprobante))
@@ -5612,10 +5685,25 @@ public class WndVentaReserva extends WndBase {
 //					throw new PreferenciaAlimentariaException(PreferenciaAlimentariaException.ALIMENTACION_RETORNO_NULL);
 			}
 			
+			//Valida los datos del Pasajero - 19/04/2022 - jabanto
+			if(!tlbbtnCancelarPax.isDisabled()){
+				// Crea o actualiza el pasajero
+				boolean isCorrect =  onSavePax();
+				if(!isCorrect)
+					return null;
+			}
+			
+			//Valida los datos del Cliente - 20/04/2022
+			if(!tlbbtnCancelarClient.isDisabled()) {
+				boolean isCorrect = onSaveClient();
+				if(!isCorrect)
+					return null;
+			}
+			
 			if(txtNumeroBoleto.getText().trim().equals("") && ((String)cmbTipoOperacion.getSelectedItem().getValue()).equals(Constantes.TIPO_OPERACION_VENTA))
 				throw new NumeroBoletoNullException();
-			else if (!(tlbbtnGuardarPax.isDisabled()))// 06/09/2013 - jabanto
-				throw new PasajeroNoSavedExeption();
+//			else if (!(tlbbtnGuardarPax.isDisabled()))// 06/09/2013 - jabanto
+//				throw new PasajeroNoSavedExeption();
 			else if(oPasajero==null)
 				throw new PasajeroException();
 			else if(oPasajero!=null && oPasajero.getId()==null)
@@ -5670,7 +5758,7 @@ public class WndVentaReserva extends WndBase {
 //					fechaLiquidacionRemota = liquidacion.getFechaLiquidacion();
 //			}
 			
-			//validacion para cuando es un boleto de biaje - 13/03/2017 - jabanto
+			//validacion para cuando es un boleto de viaje - 13/03/2017 - jabanto
 			if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE){
 				if(txtNumeroBoleto.getText().trim().indexOf("-")!=3){
 					throw new Exception("El formato del Número de Boleto no es válido");

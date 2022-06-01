@@ -54,13 +54,13 @@ public interface TranscarDAO {
 	 * @throws Exception
 	 */
 	public void guardarUsuarioPersonal(TranscarUsuarioPersonal transcarUsusrioPeronal, String idsRoles, boolean isNuevo)throws Exception;
-	/**
-	 * Realizala busqueda del identificado de la agencia de carga, a travez del codigo de agencia de pasajes
-	 * @param codigoAgenciaPasajes : codigo de la agencia en pasajes.
-	 * @return identificador de la agencia en carga
-	 * @throws Exception
-	 */
-	public Integer buscarIdAgenciaByCodigoAgenciaPasajes(String codigoAgenciaPasajes)throws Exception;
+//	/**
+//	 * Realizala busqueda del identificado de la agencia de carga, a travez del codigo de agencia de pasajes
+//	 * @param codigoAgenciaPasajes : codigo de la agencia en pasajes.
+//	 * @return identificador de la agencia en carga
+//	 * @throws Exception
+//	 */
+//	public Integer buscarIdAgenciaByCodigoAgenciaPasajes(String codigoAgenciaPasajes)throws Exception;
 	/**
 	 * Realiza la apertura de la liquidacion de turno
 	 * @param liquidacionTurno	: instancia de la class
