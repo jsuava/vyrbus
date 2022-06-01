@@ -264,7 +264,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.tepsa.sisvyr.view.ui.IBase#onCreate()
+	 * @see com.vyrbus.view.ui.IBase#onCreate()
 	 */
 	@Override
 	public void onCreate() throws Exception {
@@ -326,8 +326,9 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		if(promocionTarifa!=null && (promocionTarifa.getEsAcumulable().intValue()==Constantes.FALSE_VALUE))
 			imgPromocion.setVisible(false);
 		
+		//MAOE- 26/05/2022: Se puso ambos en true porque debe mostrar siempre la eleccion del asiento
 		if(getObjetoConfirmar().getTipoTransaccion().equals("2"))
-			imgMostrarMapa.setVisible(false);
+			imgMostrarMapa.setVisible(true);
 		else
 			imgMostrarMapa.setVisible(true);
 		
@@ -3182,7 +3183,11 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	private void aplicarPromocionPorTarifa(){
 		try {
 			/*	Obtenemos las promociones que reemplazaran a la tarifa	*/
-			List<Promocion>lstPromocion=ServiceLocator.getPromocionManager().buscarPorTarifa(Util.DatetoString(detailItinerary.getFechaPartida(), Constantes.DATE_FORMAT), detailItinerary.getRuta().getId().toString(), detailItinerary.getItinerario().getServicio().getId().toString(),detailItinerary.getHoraPartida().replaceAll(":", "."));
+			List<Promocion>lstPromocion=ServiceLocator.getPromocionManager().buscarPorTarifa(Util.DatetoString(detailItinerary.getFechaPartida(), 
+																											   Constantes.DATE_FORMAT), 
+																							 detailItinerary.getRuta().getId().toString(), 
+																							 detailItinerary.getItinerario().getServicio().getId().toString(),
+																							 detailItinerary.getHoraPartida().replaceAll(":", "."));
 			Promocion promo = null;
 			String nAsiento = null;
 			if(txtNumeroAsiento.getText().equals("") && getObjetoConfirmar().getNumeroAsiento()!=null)
