@@ -138,6 +138,16 @@
 	  		<artifactId>ojdbc6</artifactId>
 	  		<version>11.1.0.7.0</version>
 	  	</dependency>
+		<!-- PostgreSQL -->
+		<dependency>
+		    <groupId>org.postgresql</groupId>
+		    <artifactId>postgresql</artifactId>
+<!-- 		    <version>42.2.18.jre7</version> -->
+			<version>42.2.18</version>
+		</dependency>
+
+
+			  	
 	  	<dependency>
 	  		<groupId>org.zkforge</groupId>
 	  		<artifactId>bwcaptcha</artifactId>

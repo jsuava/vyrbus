@@ -2831,5 +2831,14 @@ public class UtilData extends Window {
 		return oControlEspecieValorada;
 	}
 
+	/**
+	 * Obtiene el identificador de la entidad agencia de la bd transcarweb
+	 * @param agencia_idvrybus : Identificador de la agencia del vrybus
+	 * @return identificar de la agencia_id del transcar
+	 * @throws Exception
+	 */
+	public static Integer getAgencia_Idtranscarweb(Integer agencia_idvrybus)throws Exception{
+		return ServiceLocator.getAgenciaManager().buscarAgencia_Idtranscarweb(agencia_idvrybus);
+	}
 }
 

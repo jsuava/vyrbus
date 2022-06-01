@@ -358,7 +358,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 			}
 			
 			Util.seleccionarValorItemCombo(Usuario.class, cmbCounter, getUsuario().getId());
-			if(cmbCounter.getSelectedIndex()<0)
+			if(cmbCounter.getSelectedIndex()>0)
 				cmbCounter.setSelectedIndex(0);
 		}catch(Exception ex){
 			ex.printStackTrace();
