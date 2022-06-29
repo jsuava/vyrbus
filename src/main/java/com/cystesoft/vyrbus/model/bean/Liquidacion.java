@@ -100,13 +100,12 @@ public class Liquidacion extends GenericBean implements java.io.Serializable {
 	/*Operaciones complementarias*/
 	private Integer cantidadDevolucionTarjeta;
 	private double montoDevolucionTarjeta;
-	
 //	private Integer cantidadDevolucion80;
 //	private double montoDevolucion80;
 //	private Integer cantidadDevolucion100;
 //	private double montoDevolucion100;
 	
-	
+	private Liquidacion liquidacionCarga;
 	
 	public Liquidacion() {
 	}
@@ -884,6 +883,20 @@ public class Liquidacion extends GenericBean implements java.io.Serializable {
 	 */
 	public void setComprobante(String comprobante) {
 		this.comprobante = comprobante;
+	}
+
+	/**
+	 * @return the liquidacionCarga
+	 */
+	public Liquidacion getLiquidacionCarga() {
+		return liquidacionCarga;
+	}
+
+	/**
+	 * @param liquidacionCarga the liquidacionCarga to set
+	 */
+	public void setLiquidacionCarga(Liquidacion liquidacionCarga) {
+		this.liquidacionCarga = liquidacionCarga;
 	}
 
 }

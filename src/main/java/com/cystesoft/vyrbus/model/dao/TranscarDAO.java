@@ -54,13 +54,13 @@ public interface TranscarDAO {
 	 * @throws Exception
 	 */
 	public void guardarUsuarioPersonal(TranscarUsuarioPersonal transcarUsusrioPeronal, String idsRoles, boolean isNuevo)throws Exception;
-	/**
-	 * Realizala busqueda del identificado de la agencia de carga, a travez del codigo de agencia de pasajes
-	 * @param codigoAgenciaPasajes : codigo de la agencia en pasajes.
-	 * @return identificador de la agencia en carga
-	 * @throws Exception
-	 */
-	public Integer buscarIdAgenciaByCodigoAgenciaPasajes(String codigoAgenciaPasajes)throws Exception;
+//	/**
+//	 * Realizala busqueda del identificado de la agencia de carga, a travez del codigo de agencia de pasajes
+//	 * @param codigoAgenciaPasajes : codigo de la agencia en pasajes.
+//	 * @return identificador de la agencia en carga
+//	 * @throws Exception
+//	 */
+//	public Integer buscarIdAgenciaByCodigoAgenciaPasajes(String codigoAgenciaPasajes)throws Exception;
 	/**
 	 * Realiza la apertura de la liquidacion de turno
 	 * @param liquidacionTurno	: instancia de la class
@@ -131,4 +131,14 @@ public interface TranscarDAO {
 	 * @throws Exception
 	 */
 	public TreeMap<String, Manifiesto> buscarLiquidacionBus(String fechaInicio, String fechaFin, String codigoBus)throws Exception;
+	/**
+	 * Realiza la busqueda de las liquidaciones del counter
+	 * @param fechaInicio	: Fecha inicio de busqueda
+	 * @param fechaFin		: Fecha fin de busqueda
+	 * @param agenciaId		: Identificador de la Agencia
+	 * @param usuarioId		: Identificador del usuario
+	 * @return	Lista de resultados.
+	 * @throws Exception
+	 */
+	public TreeMap<String, Liquidacion> buscarLiquidacionCounter(String fechaInicio, String fechaFin, Integer agenciaId, Integer usuarioId) throws Exception;
 }

@@ -28,7 +28,7 @@ public interface IConfirmacion {
 	/**
 	 * Guardar o actualizar los datos del pasajero.
 	 */
-	public void onSavePax();
+	public boolean onSavePax();
 	/**
 	 * Cancelar la edicion del pasajero.
 	 */
@@ -49,7 +49,7 @@ public interface IConfirmacion {
 	/**
 	 * Guardar o actualizar los datos del cliente
 	 */
-	public void onSaveClient();
+	public boolean onSaveClient();
 	/**
 	 * Cancela la edicion o el nuevo registro del cliente.
 	 */

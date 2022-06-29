@@ -128,21 +128,21 @@ public class WndTipoOperacion extends WndBase{
 						TranscarLiquidacionTurno liquidacionTurnoCarga= new TranscarLiquidacionTurno();
 						liquidacionTurnoCarga.setOperacion(1);
 						liquidacionTurnoCarga.setFechaApertura(fechaLiquidacion);
-						TranscarUsuarioPersonal usuarioPersonal = ServiceLocator.getTranscarManager().buscarUsuarioPersonal(getUsuario().getLogin());
+						TranscarUsuarioPersonal usuarioPersonal = ServiceLocator.getTranscarWebManager().buscarUsuario(getUsuario().getLogin());
 						if(usuarioPersonal==null) {
 							DlgMessage.information("No se puede aperturar la liqudiación de Carga, debido a que el usuario "+getUsuario().getLogin()+" no existe en el sistema de carga.");
 							return;
 						}
 
-						Integer agenciaId = ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(getAgencia().getId().toString());
-						if(agenciaId ==null) {
-							DlgMessage.information("No se puede aperturar la liqudiación de Carga, debido a que la agencia "+getAgencia().getDenominacion()+" no existe en el sistema de carga.");
-							return;
-						}
+//						Integer agenciaId = ServiceLocator.getTranscarWebManager().buscarIdAgenciaByCodigoAgenciaPasajes(getAgencia().getId().toString());
+//						if(agenciaId ==null) {
+//							DlgMessage.information("No se puede aperturar la liqudiación de Carga, debido a que la agencia "+getAgencia().getDenominacion()+" no existe en el sistema de carga.");
+//							return;
+//						}
 						liquidacionTurnoCarga.setTranscarUsuarioPersonal(usuarioPersonal);
-						liquidacionTurnoCarga.setAgenciaId(agenciaId);
+						liquidacionTurnoCarga.setAgenciaId(getAgencia().getId());
 						UtilData.auditarRegistro(liquidacionTurnoCarga, getUsuario(), Executions.getCurrent());
-						String messageError = ServiceLocator.getTranscarManager().aperturarLiquidacion(liquidacionTurnoCarga);
+						String messageError = ServiceLocator.getTranscarWebManager().aperturarLiquidacion(liquidacionTurnoCarga);
 						if (messageError!=null) {
 							DlgMessage.information(messageError+" - TRANSCAR");
 							return;

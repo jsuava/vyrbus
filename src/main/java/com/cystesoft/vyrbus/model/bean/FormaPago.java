@@ -22,6 +22,11 @@ public class FormaPago extends GenericBean implements java.io.Serializable {
 	public FormaPago(Integer id){
 		this.id=id;
 	}
+	
+	public FormaPago(Integer id, String denominacion){
+		this.id=id;
+		this.denominacion = denominacion;
+	}
 
 	/**
 	 * @return the id

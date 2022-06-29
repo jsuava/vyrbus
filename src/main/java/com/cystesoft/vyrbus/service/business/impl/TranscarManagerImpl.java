@@ -87,7 +87,8 @@ public class TranscarManagerImpl implements TranscarManager{
 	@Override
 	public Integer buscarIdAgenciaByCodigoAgenciaPasajes(String codigoAgenciaPasajes) throws Exception {
 		// TODO Auto-generated method stub
-		return getTranscarDAO().buscarIdAgenciaByCodigoAgenciaPasajes(codigoAgenciaPasajes);
+//		return getTranscarDAO().buscarIdAgenciaByCodigoAgenciaPasajes(codigoAgenciaPasajes);
+		return null;
 	}
 
 	/* (non-Javadoc)
@@ -150,15 +151,14 @@ public class TranscarManagerImpl implements TranscarManager{
 		return getTranscarDAO().buscarLiquidacionTurno(usuarioId, agenciaId, fechaInicio, fechaFin);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.cystesoft.vyrbus.service.business.TranscarManager#cerrarLiquidacion(java.lang.Integer, java.lang.Integer, java.lang.String, java.lang.String)
-	 */
-	@Override
-	public void cerrarLiquidacion(Integer usuarioId, Integer agenciaId,
-			String fechaInicio, String fechaFin) throws Exception {
-		// TODO Auto-generated method stub
-		getTranscarDAO().cerrarLiquidacion(usuarioId, agenciaId, fechaInicio, fechaFin);
-	}
+//	/* (non-Javadoc)
+//	 * @see com.cystesoft.vyrbus.service.business.TranscarManager#cerrarLiquidacion(java.lang.Integer, java.lang.Integer, java.lang.String, java.lang.String)
+//	 */
+//	@Override
+//	public void cerrarLiquidacion(Integer usuarioId, Integer agenciaId,String fechaInicio, String fechaFin) throws Exception {
+//		// TODO Auto-generated method stub
+//		getTranscarDAO().cerrarLiquidacion(usuarioId, agenciaId, fechaInicio, fechaFin);
+//	}
 
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.service.business.TranscarManager#buscarLiquidacionBus(java.lang.String, java.lang.String, java.lang.String)
@@ -168,6 +168,16 @@ public class TranscarManagerImpl implements TranscarManager{
 			String fechaFin, String codigoBus) throws Exception {
 		// TODO Auto-generated method stub
 		return getTranscarDAO().buscarLiquidacionBus(fechaInicio, fechaFin, codigoBus);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.TranscarManager#buscarLiquidacionCounter(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer)
+	 */
+	@Override
+	public TreeMap<String, Liquidacion> buscarLiquidacionCounter(String fechaInicio, String fechaFin,
+			Integer agenciaId, Integer usuarioId) throws Exception {
+		// TODO Auto-generated method stub
+		return getTranscarDAO().buscarLiquidacionCounter(fechaInicio, fechaFin, agenciaId, usuarioId);
 	}
 
 	

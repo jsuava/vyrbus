@@ -33,6 +33,7 @@
 					onClick="wndTipoOperacion.closeTabWindow()"/>	
 			<button id="btnCaja" 
 					label="Caja" 
+					autodisable="self"
 					sclass="btnCommandL" 
 					image="/resources/windows/window_aperturaCaja.png"/>
 		</hbox>

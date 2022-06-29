@@ -182,6 +182,7 @@ public class WndCierreCaja extends WndBase {
 	 * @throws Exception
 	 */
 	public void buscarLiquidacion() throws Exception{
+		
 		Util.limpiarListbox(listLiquidacion);
 		String fechaInicial=Constantes.FORMAT_DATE.format(dbFechaInicio.getValue());
 		String FechaFinal = Constantes.FORMAT_DATE.format(dbFechaFin.getValue());
@@ -1007,12 +1008,13 @@ public class WndCierreCaja extends WndBase {
 		
 		/* Procesa el cierre de caja en Carga*/
 		try {
-			TranscarUsuarioPersonal transcarUsuarioPersonal = ServiceLocator.getTranscarManager().buscarUsuarioPersonal(liquidacion.getUsuario().getLogin());
+			TranscarUsuarioPersonal transcarUsuarioPersonal = ServiceLocator.getTranscarWebManager().buscarUsuario(liquidacion.getUsuario().getLogin());
 			int agenciaIdCargo = 0;
 			String fechaLiquidacion =Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
-			if(transcarUsuarioPersonal!=null && liquidacion.getAgencia().getCodigo()!=null){
-				agenciaIdCargo = ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(liquidacion.getAgencia().getId().toString());
-				ServiceLocator.getTranscarManager().cerrarLiquidacion(transcarUsuarioPersonal.getId(), agenciaIdCargo, fechaLiquidacion, fechaLiquidacion);
+			if(transcarUsuarioPersonal!=null ) {//&& liquidacion.getAgencia().getCodigo()!=null){
+				agenciaIdCargo = liquidacion.getAgencia().getId();  //ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(liquidacion.getAgencia().getId().toString());
+//				ServiceLocator.getTranscarWebManager().cerrarLiquidacion(transcarUsuarioPersonal.getId(), agenciaIdCargo, fechaLiquidacion, fechaLiquidacion);
+				ServiceLocator.getTranscarWebManager().cerrarLiquidacion(transcarUsuarioPersonal.getId(), agenciaIdCargo, fechaLiquidacion, .00, .00);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

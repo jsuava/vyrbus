@@ -38,6 +38,20 @@ public class TranscarUsuarioPersonal extends GenericBean implements Serializable
 	private Integer estadoCivil = 1; // Solo para completar
 	private Integer permiteVentaOtrasAgencias;
 	private Integer autorizaEntregaSinVerificarUsuario;
+	
+	public TranscarUsuarioPersonal() {
+		super();
+	}
+	
+	public TranscarUsuarioPersonal(Integer id) {
+		this.id = id;
+	}
+	
+	public TranscarUsuarioPersonal(Integer id, String login) {
+		this.id = id;
+		this.login = login;
+	}
+	
 //	private Integer rolDefectoId;
 	/**
 	 * @return the id

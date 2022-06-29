@@ -61,4 +61,11 @@ public interface AgenciaDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public List<Agencia>buscarAgenciaByLocalidad(String localidades)throws Exception;
+	/**
+	 * Obtiene el identificador de la entidad agencia de la bd transcarweb
+	 * @param agencia_idvrybus : Identificador de la agencia del vrybus
+	 * @return identificar de la agencia_id del transcar
+	 * @throws Exception
+	 */
+	public Integer buscarAgencia_Idtranscarweb(Integer agencia_idvrybus)throws Exception;
 }

@@ -7,6 +7,7 @@
  */
 package com.cystesoft.vyrbus.model.dao.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.Map.Entry;
@@ -214,5 +215,4 @@ protected final Logger log;
 
 		getSession().createQuery(hql.toString()).setLong(0, id).executeUpdate();
 	}
-
 }
