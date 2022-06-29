@@ -97,8 +97,9 @@ public interface ControlEspecieValoradaDAO extends GenericDAO {
 	/**
 	 * Genera el secuenciador para la caja.
 	 * @param nameSequence
+	 * @param inicio
 	 */
-	public void generarSecuenciador(String nameSequence);
+	public void generarSecuenciador(String nameSequence, Long inicio);
 	/**
 	 * Realiza la ejecucion del secuenciador, que hace la funcion del correlativo
 	 * @param controlEspecieValorada	: Instancia de la clase ControlEspeciaValorada.

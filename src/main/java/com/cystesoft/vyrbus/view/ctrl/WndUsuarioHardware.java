@@ -258,7 +258,7 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 				titanUsuarioHardware.setIpModificacion("10.10.10.1");
 	//			titanUsuarioHardware.setIdAgencia(id);
 				titanUsuarioHardware.setIdTipoComputador(1);
-				titanUsuarioHardware.setIdTipoIP(((BigDecimal) cmbTipoIP.getSelectedItem().getValue()).intValue());
+				titanUsuarioHardware.setIdTipoIP(cmbTipoIP.getSelectedItem().getValue());
 			
 				usuarioHardware.setTitanUsuarioHardware(titanUsuarioHardware);
 			}else {

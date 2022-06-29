@@ -39,7 +39,13 @@
 					<combobox id="cmbTipoComprobante" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtSerie)" width="170px"/>
 					<label value="SERIE (*) :" />
 					<textbox id="txtSerie" maxlength="4" width="160px" style="font-size:11px !important"/>
-				</row>				
+				</row>
+				<row>
+					<label value="CORRELATIVO ACTAL (*):"/>
+					<longbox id="lgbxCorrelativoInicio"/>
+					<label/>
+					<label/>
+				</row>
 			</rows>
 		</grid>
 		<!--<separator height="3px" />

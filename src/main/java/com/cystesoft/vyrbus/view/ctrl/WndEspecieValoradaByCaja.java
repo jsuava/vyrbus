@@ -15,6 +15,7 @@ import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Longbox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;	
 import org.zkoss.zul.Textbox;
@@ -54,6 +55,7 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 	private Combobox cmbUsuarioHardware;
 	private Textbox	txtSerie;
 	private Combobox cmbAgencia;
+	private Longbox lgbxCorrelativoInicio;
 	
 	private ControlEspecieValorada controlEspecieValorada = null;
 	private Window wndSearch = null;
@@ -86,6 +88,7 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 		cmbUsuarioHardware = (Combobox) this.getFellow("cmbUsuarioHardware");
 		txtSerie = (Textbox) this.getFellow("txtSerie");
 		cmbAgencia=(Combobox)getFellow("cmbAgencia");
+		lgbxCorrelativoInicio = (Longbox)getFellow("lgbxCorrelativoInicio");
 	}
 
 	@Override
@@ -110,6 +113,7 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 		onLoadTipoComprobante(cmbTipoComprobante);
 		
 		cmbTipoComprobante.setSelectedIndex(0);
+		lgbxCorrelativoInicio.setValue(0L);
 		
 		//Por defecto selecciona el usuario harware donde se ingresa al sistema. 
 		Util.seleccionarValorItemCombo(UsuarioHardware.class, cmbUsuarioHardware, getUsuarioHardware().getId());
@@ -161,6 +165,8 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 				throw new TipoComprobanteNullException();
 			else if (txtSerie.getText().trim()==null || txtSerie.getText().trim().equals(0))
 				throw new NumeroSerieNullException();
+			else if (lgbxCorrelativoInicio.getValue()<=0)
+                throw new CorrelativoException(CorrelativoException.ACTUAL_NULL);
 			
 			String correlativo = "";
 			if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId()==Constantes.ID_TIPCOM_BOLETA_VENTA)
@@ -201,7 +207,7 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 			controlEspecieValorada.setSecuenciador(correlativo);
 			controlEspecieValorada.setCorrelativoInicio(new Long(1));
 			controlEspecieValorada.setCorrelativoFin(new Long(99999999));
-			controlEspecieValorada.setCorrelativoActual(new Long(1));
+			controlEspecieValorada.setCorrelativoActual(lgbxCorrelativoInicio.getValue());
 			controlEspecieValorada.setFormato(0);
 			controlEspecieValorada.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 			
@@ -244,6 +250,9 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 				throw new CancelaGrabacionException();
 			}else if(c.getTipo().intValue()==CorrelativoException.DUPLICADO){
 				DlgMessage.information(Messages.getString("WndControlEspecieValorada.Information.DuplicidadTipoComprobanteUsuarioHarware"),cmbTipoComprobante);
+				throw new CancelaGrabacionException();
+			}else if(c.getTipo().intValue()==CorrelativoException.ACTUAL_NULL){
+				DlgMessage.information(Messages.getString("WndControlEspecieValorada.Information.CorrelativoActualNull"),cmbTipoComprobante);
 				throw new CancelaGrabacionException();
 			}
 		}catch (NumeroSerieNoRegistradaException evnaex){
@@ -347,6 +356,7 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 			Util.seleccionarValorItemCombo(TipoComprobante.class, cmbTipoComprobante, (controlEspecieValorada.getTipoComprobante().getId()));
 			Util.seleccionarValorItemCombo(UsuarioHardware.class, cmbUsuarioHardware, (controlEspecieValorada.getUsuarioHardware().getId()));
 			txtSerie.setText(controlEspecieValorada.getSerie());
+			lgbxCorrelativoInicio.setValue(controlEspecieValorada.getCorrelativoActual());
 			
 			cmbTipoComprobante.setDisabled(true);
 			cmbUsuarioHardware.setDisabled(true);
