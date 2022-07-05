@@ -31,13 +31,13 @@
 		<property name="password" value="${jdbc.password}" />
 	</bean>
 	
-	<bean id="dataSourceTitan" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+ 	<bean id="dataSourceTitan" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
  		<property name="driverClass" value="${jdbc.driverClassName}"/>
         <property name="jdbcUrl" value="${jdbc.transcar.url}"/>
        	<property name="user" value="${jdbc.transcar.userName}"/>
 		<property name="password" value="${jdbc.transcar.password}" />
 	</bean>
-	
+ 	
 	<bean id="dataSourceTranscar" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close" >
  		<property name="driverClass" value="${jdbc.driverClassName}"/>
         <property name="jdbcUrl" value="${jdbc.transcar.url}"/>
@@ -59,12 +59,12 @@
   		<property name="configLocation" value="WEB-INF/hibernate.cfg.xml" />
 	</bean>
 	
-	<bean id="jdbcTemplateTitan" class="org.springframework.jdbc.core.JdbcTemplate">
+ 	<bean id="jdbcTemplateTitan" class="org.springframework.jdbc.core.JdbcTemplate">
 		<constructor-arg>
 			<ref bean="dataSourceTitan"/>
 		</constructor-arg>
 	</bean>
-	
+ 	
 	<bean id="jdbcTemplateTranscar" class="org.springframework.jdbc.core.JdbcTemplate">
 		<constructor-arg>
 			<ref bean="dataSourceTranscar"/>

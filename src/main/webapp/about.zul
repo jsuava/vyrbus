@@ -23,16 +23,16 @@
 								<column align="center"/>
 							</columns>
 							<rows>
-								<row style="background:#448aff; border:none">
+								<row style="background:#0F3782; border:none">
 									<label value="Sistema de Ventas y Reservas para Buses" style="color:white;font-size:11px !important;font-weight:bold"/>
 								</row>
-								<row style="background:#448aff;border:none">
+								<row style="background:#0F3782;border:none">
 									<label id="lblVersion" style="color:white;font-size:11px !important"/>
 								</row>
-								<row style="background:#448aff;border:none">
+								<row style="background:#0F3782;border:none">
 									<label value="Derechos Reservados" style="color:white;font-size:11px !important"/>
 								</row>
-								<row style="background:#448aff;border:none">
+								<row style="background:#0F3782;border:none">
 									<label value="Lima - Perú" style="color:white;font-size:10px !important"/>
 								</row>
 							</rows>

@@ -122,20 +122,20 @@ public class UsuarioHardwareManagerImpl implements UsuarioHardwareManager{
 				throw new UsuarioHardwareDuplicidadDescripcionException();
 			
 			/*	Validamos que la agencia exista en Carga	*/
-			Integer idAgenciaTranscar = getTitanDAO().buscarAgencia(agencia.getId());
-			if(idAgenciaTranscar != null)
-				usuarioHardware.getTitanUsuarioHardware().setIdAgencia(idAgenciaTranscar);
-			else
-				throw new AgenciaTranscarNullException();
+//			Integer idAgenciaTranscar = getTitanDAO().buscarAgencia(agencia.getId());
+//			if(idAgenciaTranscar != null)
+//				usuarioHardware.getTitanUsuarioHardware().setIdAgencia(idAgenciaTranscar);
+//			else
+//				throw new AgenciaTranscarNullException();
 			
 			/*	Validamos que no exista el usuario Hardware en Carga	*/
-			String idUsuarioHardware = getTitanDAO().buscarIdUsuarioHardware(usuarioHardware.getTitanUsuarioHardware().getIp());
-			if(idUsuarioHardware != null)
-				throw new UsuarioHardwareCargaDuplicateException();
+//			String idUsuarioHardware = getTitanDAO().buscarIdUsuarioHardware(usuarioHardware.getTitanUsuarioHardware().getIp());
+//			if(idUsuarioHardware != null)
+//				throw new UsuarioHardwareCargaDuplicateException();
 			
 			getUsuarioHardwareDAO().guardar(usuarioHardware);			
-			usuarioHardware.getTitanUsuarioHardware().setIdUsuarioHardwareVyR(usuarioHardware.getId());
-			getTitanDAO().guardarUsuarioHardware(usuarioHardware.getTitanUsuarioHardware());
+//			usuarioHardware.getTitanUsuarioHardware().setIdUsuarioHardwareVyR(usuarioHardware.getId());
+//			getTitanDAO().guardarUsuarioHardware(usuarioHardware.getTitanUsuarioHardware());
 			result = Constantes.CORRECT;
 		}catch (CodigoDuplicadoException rsdex){
 			throw new CodigoDuplicadoException();

@@ -98,13 +98,18 @@
 		<listhead sizable="true">
 			<listheader label="#" width="20px" style="color: #ffffff;" />
 			<listheader label="Itinerario" sort="none" align="left" width="50px" style="color: #ffffff;"/>
-			<listheader label="Tipo de Servicio" sort="none" align="left" style="color: #ffffff;"/>
-			<listheader label="Oriegen" sort="none" align="left" width="80px" style="color: #ffffff;"/>
-			<listheader label="Agencia Partida" sort="none" align="left" width="auto" style="color: #ffffff;"/>
+			<listheader label="Tipo de Servicio" sort="none" align="left" width="80px" style="color: #ffffff;"/>
+			<listheader label="Origen" sort="none" align="left" width="80px" style="color: #ffffff;"/>
+			<listheader label="Agencia Partida" sort="none" align="left" width="50px" style="color: #ffffff;"/>
 			<listheader label="Fecha Partida" sort="none" align="center" width="80px" style="color: #ffffff;"/>
 			<listheader label="Hora Partida" sort="none" align="center" width="65px" style="color: #ffffff;"/>
 			<listheader label="Destino" sort="none" align="left" width="80px" style="color: #ffffff;"/>
-			<listheader label="Agenica Llegada" sort="none" align="left" style="color: #ffffff;" />
+			<listheader label="Agenica Llegada" sort="none" align="left" width="50px" style="color: #ffffff;" />
+			<listheader label="Nro Bus" sort="none" align="left" width="50px" style="color: #ffffff;" />
+			<listheader label="Placa" sort="none" align="left" width="80px" style="color: #ffffff;" />
+			<listheader label="Piloto" sort="none" align="left" width="150px" style="color: #ffffff;" />
+			<listheader label="Copiloto" sort="none" align="left" width="150px" style="color: #ffffff;" />
+			<listheader label="Tripulante" sort="none" align="left" width="100px" style="color: #ffffff;" />
 		</listhead>
 	</listbox>	
 	</div>

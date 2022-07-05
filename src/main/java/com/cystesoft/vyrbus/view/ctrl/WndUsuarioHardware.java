@@ -239,34 +239,34 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 			usuarioHardware.setDescripcion(txtDescripcion.getValue().trim().toUpperCase());
 			usuarioHardware.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 			
-			if (action==ACTION_NEW) {
-				TitanUsuarioHardware titanUsuarioHardware = new TitanUsuarioHardware();
-				titanUsuarioHardware.setIp(txtDireccionIP.getText().trim());
-				titanUsuarioHardware.setIdDepartamento(1);
-				titanUsuarioHardware.setIdTipoMaquina(1);
-				titanUsuarioHardware.setFrecuenciaReloj(0);
-				titanUsuarioHardware.setNombreEquipo(txtDescripcion.getText().toUpperCase());
-				titanUsuarioHardware.setNombreRed("SISTEMAS");
-				titanUsuarioHardware.setEsServidor(0);
-				titanUsuarioHardware.setParticiones(0);
-				titanUsuarioHardware.setMemoria(0);
-				titanUsuarioHardware.setIdUsuario(1);
-				titanUsuarioHardware.setIdRol(1);
-				titanUsuarioHardware.setIdUsuarioModificacion(1);
-				titanUsuarioHardware.setRolModificacion(1);
-				titanUsuarioHardware.setIpRegistro("10.10.10.1");
-				titanUsuarioHardware.setIpModificacion("10.10.10.1");
-	//			titanUsuarioHardware.setIdAgencia(id);
-				titanUsuarioHardware.setIdTipoComputador(1);
-				titanUsuarioHardware.setIdTipoIP(((BigDecimal) cmbTipoIP.getSelectedItem().getValue()).intValue());
-			
-				usuarioHardware.setTitanUsuarioHardware(titanUsuarioHardware);
-			}else {
-				titanUsuarioHardware.setNombreEquipo(txtDescripcion.getText());
-				titanUsuarioHardware.setIdTipoIP(((BigDecimal)cmbTipoIP.getSelectedItem().getValue()).intValue());
-				titanUsuarioHardware.setIpModificacion(UtilData.ipLocal(Executions.getCurrent()));
-				usuarioHardware.setTitanUsuarioHardware(titanUsuarioHardware);
-			}
+//			if (action==ACTION_NEW) {
+//				TitanUsuarioHardware titanUsuarioHardware = new TitanUsuarioHardware();
+//				titanUsuarioHardware.setIp(txtDireccionIP.getText().trim());
+//				titanUsuarioHardware.setIdDepartamento(1);
+//				titanUsuarioHardware.setIdTipoMaquina(1);
+//				titanUsuarioHardware.setFrecuenciaReloj(0);
+//				titanUsuarioHardware.setNombreEquipo(txtDescripcion.getText().toUpperCase());
+//				titanUsuarioHardware.setNombreRed("SISTEMAS");
+//				titanUsuarioHardware.setEsServidor(0);
+//				titanUsuarioHardware.setParticiones(0);
+//				titanUsuarioHardware.setMemoria(0);
+//				titanUsuarioHardware.setIdUsuario(1);
+//				titanUsuarioHardware.setIdRol(1);
+//				titanUsuarioHardware.setIdUsuarioModificacion(1);
+//				titanUsuarioHardware.setRolModificacion(1);
+//				titanUsuarioHardware.setIpRegistro("10.10.10.1");
+//				titanUsuarioHardware.setIpModificacion("10.10.10.1");
+//	//			titanUsuarioHardware.setIdAgencia(id);
+//				titanUsuarioHardware.setIdTipoComputador(1);
+//				titanUsuarioHardware.setIdTipoIP(((BigDecimal) cmbTipoIP.getSelectedItem().getValue()).intValue());
+//			
+//				usuarioHardware.setTitanUsuarioHardware(titanUsuarioHardware);
+//			}else {
+//				titanUsuarioHardware.setNombreEquipo(txtDescripcion.getText());
+//				titanUsuarioHardware.setIdTipoIP(((BigDecimal)cmbTipoIP.getSelectedItem().getValue()).intValue());
+//				titanUsuarioHardware.setIpModificacion(UtilData.ipLocal(Executions.getCurrent()));
+//				usuarioHardware.setTitanUsuarioHardware(titanUsuarioHardware);
+//			}
 			
 			switch (action) {
 				case ACTION_NEW:

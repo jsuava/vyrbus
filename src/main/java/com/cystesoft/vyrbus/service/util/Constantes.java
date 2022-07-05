@@ -25,7 +25,7 @@ public class Constantes {
 	/**
 	 * Vension actual del Sistema
 	 */
-	public static final String SYSTEM_VERSION = "Versión 3.0.0";
+	public static final String SYSTEM_VERSION = "Versión 3.1.0";
 		
 	/**
 	 * Constante para la Acción Nuevo
@@ -162,7 +162,7 @@ public class Constantes {
 
 //	public static final String SERVER_HOST = "192.168.0.8:8080";
 
-	public static final String SERVER_HOST = "localhost:8080";
+	public static final String SERVER_HOST = "119.8.145.122:8080";
 //	public static final String SERVER_HOST = "190.119.140.203:8080";
 
 

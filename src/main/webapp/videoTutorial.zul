@@ -1,16 +1,40 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndvidoTutorial" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndVideoTutorial" >
+<window id="wndvideoTutorial" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndVideoTutorial" >
 	<grid>
 		
 		<rows>
 			<row>
 				<toolbar>
-					<toolbarbutton id="tbnAgencias" image="resources/windows/win_videoAgencia.png" style="font-weight: bold;" label="Agencias de Viaje" onClick="wndvidoTutorial.agencias()"/>
+					<toolbarbutton id="tbnBoleta" 
+								   image="resources/windows/win_videoAgencia.png" 
+								   style="font-weight: bold;" 
+								   label="Emitir Boletas" 
+								   onClick="wndvideoTutorial.boletas()"/>
 					<separator width="20px" orient="vertical"/>
-					<toolbarbutton id="tbnCorporativos" image="resources/windows/win_videoCorporativo.png" style="font-weight: bold;" label="Clientes Corporativos" onClick="wndvidoTutorial.corporativos()" />
+					<toolbarbutton id="tbnFactura" 
+								   image="resources/windows/win_videoCorporativo.png" 
+								   style="font-weight: bold;" 
+								   label="Emitir Facturas" 
+								   onClick="wndvideoTutorial.facturas()" />
 					<separator width="20px" orient="vertical"/>
-					<toolbarbutton id="tbnCerrar" image="resources/mp_cerrar.png" style="font-weight: bold;" label="Cerrar" onClick="wndvidoTutorial.closeTabWindow()" />	
+					<toolbarbutton id="tbnReserva" 
+								   image="resources/windows/win_videoCorporativo.png" 
+								   style="font-weight: bold;" 
+								   label="Hacer Reservas" 
+								   onClick="wndvideoTutorial.reservas()" />
+					<separator width="20px" orient="vertical"/>
+					<toolbarbutton id="tbnConfReserva" 
+								   image="resources/windows/win_videoCorporativo.png" 
+								   style="font-weight: bold;" 
+								   label="Confirmar Reservas" 
+								   onClick="wndvideoTutorial.confirmacionReserva()" />
+					<separator width="20px" orient="vertical"/>
+					<toolbarbutton id="tbnCerrar" 
+								   image="resources/mp_cerrar.png" 
+								   style="font-weight: bold;" 
+								   label="Cerrar" 
+								   onClick="wndvideoTutorial.closeTabWindow()" />	
 				</toolbar>
 				
 			</row>

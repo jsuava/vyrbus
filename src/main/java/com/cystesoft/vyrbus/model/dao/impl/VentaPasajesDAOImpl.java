@@ -780,23 +780,23 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		String criterio = idOrigen==null?"":" AND r.localidad_idOrigen=" + idOrigen +" ";
 		criterio = criterio + (idDestino==null?"":" AND r.localidad_idDestino=" + idDestino + " ");
 		criterio = criterio + (pasajero==null?"":" AND CATSEARCH(p.c_nomape, '" + pax + "', null) > 0 ");
-		criterio = criterio + (numeroControl==null?"":" AND {VP}.c_numcontrol='"+ numeroControl +"' ");
-		criterio = criterio + (numeroBoleto==null?"":(" AND {VP}.c_numboleto='" + numeroBoleto.toUpperCase() +"' "));
-		criterio = criterio + (fechaPartida==null?"":" AND {VP}.d_fecpar=to_date('"+fechaPartida+"','"+Constantes.DATE_FORMAT+"') ");
-		String sql = "SELECT {VP.*} FROM vrtvenpas {VP} " +
-				"INNER JOIN (SELECT MAX(venpas_id)venpas_id, c_numcontrol FROM vrtvenpas where d_fecpar>sysdate-1 GROUP BY c_numcontrol) max_vta " +
-				"ON max_vta.venpas_id={VP}.venpas_id " +
-				"INNER JOIN vrmruta r ON r.ruta_id={VP}.ruta_id " +
-				"INNER JOIN vrmagencia a ON a.agencia_id={VP}.agencia_id " +
-				"INNER JOIN vrmpasajero p ON p.pasajero_id={VP}.pasajero_id " +
-				"WHERE {VP}.c_tiptra IN ('"+Constantes.TIPO_OPERACION_VENTA+"','"+Constantes.TIPO_OPERACION_PERDIDA_SERVICIO+"') AND {VP}.c_estreg='"+Constantes.VALUE_ACTIVO+"' " +
-						"AND {VP}.tipcom_id in ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_FACTURA+" ) " +
-						"AND {VP}.tipmov_id NOT IN ("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_ANULACION+")" ; //" --AND {VP}.tipmov_id!="+Constantes.TIPMOV_ANULACION + " " +
-						//"AND {VP}.d_fecpar is not null AND ({VP}.tipforpag_id="+Constantes.TIPFORPAG_EFECTIVO+ " OR " +
-						//"{VP}.tipforpag_id="+Constantes.TIPFORPAG_CREDITO+ " OR {VP}.tipforpag_id="+Constantes.TIPFORPAG_CANJE_PUBLICITARIO+") " ;
+		criterio = criterio + (numeroControl==null?"":" AND VP.c_numcontrol='"+ numeroControl +"' ");
+		criterio = criterio + (numeroBoleto==null?"":(" AND VP.c_numboleto='" + numeroBoleto.toUpperCase() +"' "));
+		criterio = criterio + (fechaPartida==null?"":" AND VP.d_fecpar=to_date('"+fechaPartida+"','"+Constantes.DATE_FORMAT+"') ");
+		String sql = "SELECT VP.* FROM vrtvenpas VP " +
+				"INNER JOIN (SELECT MAX(venpas_id)venpas_id, c_numcontrol FROM vrtvenpas where d_fecpar>sysdate-60 GROUP BY c_numcontrol) max_vta " +
+				"ON max_vta.venpas_id=VP.venpas_id " +
+				"INNER JOIN vrmruta r ON r.ruta_id=VP.ruta_id " +
+				"INNER JOIN vrmagencia a ON a.agencia_id=VP.agencia_id " +
+				"INNER JOIN vrmpasajero p ON p.pasajero_id=VP.pasajero_id " +
+				"WHERE VP.c_tiptra IN ('"+Constantes.TIPO_OPERACION_VENTA+"','"+Constantes.TIPO_OPERACION_PERDIDA_SERVICIO+"') AND VP.c_estreg='"+Constantes.VALUE_ACTIVO+"' " +
+						"AND VP.tipcom_id in ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_FACTURA+" ) " +
+						"AND VP.tipmov_id NOT IN ("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_ANULACION+")" ; //" --AND {VP}.tipmov_id!="+Constantes.TIPMOV_ANULACION + " " +
+						//"AND VP.d_fecpar is not null AND (VP.tipforpag_id="+Constantes.TIPFORPAG_EFECTIVO+ " OR " +
+						//"VP.tipforpag_id="+Constantes.TIPFORPAG_CREDITO+ " OR VP.tipforpag_id="+Constantes.TIPFORPAG_CANJE_PUBLICITARIO+") " ;
 		
 		sql = sql + criterio;
-		sql = sql + "ORDER BY {VP}.c_numboleto, {VP}.d_fecpar, {VP}.c_horpar ";
+		sql = sql + "ORDER BY VP.c_numboleto, VP.d_fecpar, VP.c_horpar ";
 		
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).addEntity("VP",VentaPasaje.class).list();

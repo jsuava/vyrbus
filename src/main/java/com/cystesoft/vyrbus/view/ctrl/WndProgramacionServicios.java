@@ -326,20 +326,20 @@ public class WndProgramacionServicios extends WndBase {
 			Itinerario itinerario = ((ProgramacionServicio)listboxItinerarios.getSelectedItem().getValue()).getItinerario();
 			
 			if (action==Constantes.ACTION_NEW){
-				//Valida que la programacion pertenesca a la fecha actual.
-				String fechaActual=Constantes.FORMAT_DATE.format(Constantes.FORMAT_DATE.parse(new MyTime().dateServer()));
-				if(!(Constantes.FORMAT_DATE.format(itinerario.getFechaPartida()).equals(fechaActual))){
-					Boolean permitir=false;
-					/* Valida si es servicio especial, para permitir solo si la diferencia es de + un dia a la fecha actual*/
-					if(itinerario.getTipoItinerario().getId().intValue()==Constantes.ID_TIPITI_ESPECIAL){
-						if(Constantes.FORMAT_DATE.format(itinerario.getFechaPartida()).equals(Constantes.FORMAT_DATE.format(new Date().getTime()+Constantes.MILISEGUNDOS_X_DIA)))
-							permitir=true;
-					}
-					if (!(permitir)){
-						DlgMessage.information(Messages.getString("WndProgramacionServicios.Information.programacionFueraFecha"));
-						return;
-					}
-				}
+//				//Valida que la programacion pertenesca a la fecha actual.
+//				String fechaActual=Constantes.FORMAT_DATE.format(Constantes.FORMAT_DATE.parse(new MyTime().dateServer()));
+//				if(!(Constantes.FORMAT_DATE.format(itinerario.getFechaPartida()).equals(fechaActual))){
+//					Boolean permitir=false;
+//					/* Valida si es servicio especial, para permitir solo si la diferencia es de + un dia a la fecha actual*/
+//					if(itinerario.getTipoItinerario().getId().intValue()==Constantes.ID_TIPITI_ESPECIAL){
+//						if(Constantes.FORMAT_DATE.format(itinerario.getFechaPartida()).equals(Constantes.FORMAT_DATE.format(new Date().getTime()+Constantes.MILISEGUNDOS_X_DIA)))
+//							permitir=true;
+//					}
+//					if (!(permitir)){
+//						DlgMessage.information(Messages.getString("WndProgramacionServicios.Information.programacionFueraFecha"));
+//						return;
+//					}
+//				}
 				programacionServicio=new ProgramacionServicio();
 			}
 			
@@ -352,6 +352,11 @@ public class WndProgramacionServicios extends WndBase {
 			
 			//Comentado por MAOE 27/06/2021
 //			Personal tripulante = (Personal) cmbTripulante.getSelectedItem().getValue();
+			//MAOE 13/06/2022: Permitir grabar o no tripulante si existe
+			Personal tripulante = null;
+			if(cmbTripulante.getSelectedItem().getValue() != null)
+				tripulante = (Personal) cmbTripulante.getSelectedItem().getValue();
+			
 			Long id = (textboxId.getText().equals("") ? 0 : new Long(textboxId.getText()));
 			programacionServicio.setId(id);
 			programacionServicio.setItinerario(itinerario);
@@ -361,6 +366,9 @@ public class WndProgramacionServicios extends WndBase {
 			programacionServicio.setCopilotoAuxiliar(copilotoAuxiliar);
 			//Comentado por MAOE 27/06/2021
 //			programacionServicio.setTripulante(tripulante);
+			//MAOE 13/06/2022: Permitir grabar o no tripulante si existe
+			if(tripulante != null)
+				programacionServicio.setTripulante(tripulante);
 			programacionServicio.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 			
 			
@@ -435,7 +443,7 @@ public class WndProgramacionServicios extends WndBase {
 			DlgMessage.information(Messages.getString("WndProgramacionServicios.Information.SeleccionePilo"),cmbPiloto);
 		}catch (CopilotoNullException cpnex){
 			DlgMessage.information(Messages.getString("WndProgramacionServicios.Information.SeleccionCopiloto"),cmbCopiloto);
-		//Comentado por MAOE 27/06/2021
+		//Comentado por MAOE 27/06/2021, la Tripulante no es obligatorio
 //		}catch (TripulanteNullException tnex){
 //			DlgMessage.information(Messages.getString("WndProgramacionServicios.Information.SeleccioneTripulante"),cmbTripulante);
 		}catch (BusNullException bnex){
@@ -669,6 +677,41 @@ public class WndProgramacionServicios extends WndBase {
 				item.appendChild(cell);	
 				cell = new Listcell(programacionServicio.getItinerario().getAgenciaLlegada().getNombreCorto());
 				item.appendChild(cell);
+				
+				//Se agrego lo siguiente para obtener el reporte de las programaciones en un rango de fecha
+				if(programacionServicio.getBus() != null) {
+					cell = new Listcell(programacionServicio.getBus().getCodigo().toString());
+					item.appendChild(cell);
+					cell = new Listcell(programacionServicio.getBus().getNumeroPlaca().toString());
+					item.appendChild(cell);
+				}else {
+					cell = new Listcell("");
+					item.appendChild(cell);
+					cell = new Listcell("");
+					item.appendChild(cell);
+				}
+				if(programacionServicio.getPiloto() != null) {
+					cell = new Listcell(programacionServicio.getPiloto().toString());
+					item.appendChild(cell);
+				}else {
+					cell = new Listcell("");
+					item.appendChild(cell);
+				}
+				if(programacionServicio.getCopiloto() != null) {
+					cell = new Listcell(programacionServicio.getCopiloto().toString());
+					item.appendChild(cell);
+				}else {
+					cell = new Listcell("");
+					item.appendChild(cell);
+				}
+				if(programacionServicio.getTripulante() != null) {
+					cell = new Listcell(programacionServicio.getTripulante().toString());
+					item.appendChild(cell);
+				}else {
+					cell = new Listcell("");
+					item.appendChild(cell);
+				}
+				
 				item.setValue(programacionServicio);
 				listboxItinerarios.appendChild(item);
 			}
