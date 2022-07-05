@@ -239,6 +239,7 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 			usuarioHardware.setDescripcion(txtDescripcion.getValue().trim().toUpperCase());
 			usuarioHardware.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 			
+
 //			if (action==ACTION_NEW) {
 //				TitanUsuarioHardware titanUsuarioHardware = new TitanUsuarioHardware();
 //				titanUsuarioHardware.setIp(txtDireccionIP.getText().trim());

@@ -75,15 +75,15 @@
 </style> 
 	<div align="center">
 		<separator height="100px"/>
-			<window id="wndLogin"  border="none"  width="600px" height="550px" use="com.cystesoft.vyrbus.view.ctrl.WndLogin">
+			<window id="wndLogin"  border="none"  width="400px" height="550px" use="com.cystesoft.vyrbus.view.ctrl.WndLogin">
 				<div id="container" sclass="container" style="background:#e0e0e0">
 		            <div id="cabecera" sclass="cabecera_login" align="center">
 		                <label value="Bienvenido a VYRBUS" style="color:white;font-size:25px" ></label>
 		            </div>
-		            <separator orient="vertical" height="50px"/>
+		            <separator orient="vertical" height="30px"/>
 		            <div id="post" >
 		            	<hlayout >
-		            		<separator orient="horizontal" width="80px"/>
+		            		<separator orient="horizontal" width="40px"/>
 							<textbox id="txtLogin" 
 									 focus="true" 
 									 height="24px" 
@@ -91,11 +91,11 @@
 									 onOK="txtPassword.setFocus(true);" 
 									 placeholder="Nombre de usuario" 
 									 style="font-size:14px; border-radius: 4px; border-width: 1px;" 
-									 width="240px" />
+									 width="200px" />
 						</hlayout>
 						<separator orient="vertical" height="10px"/>
 						<hlayout>
-							<separator orient="horizontal" width="80px"/>
+							<separator orient="horizontal" width="41px"/>
 <!--  							
 							<div height="24px" width="80px" align="right">
 								<separator height="4px"/>
@@ -108,29 +108,30 @@
 									 onOK="txtImagen.setFocus(true)" 
 									 style="font-size:14px; border-radius: 4px; border-width: 1px;" 
 									 type="password" 
-									 width="240px" />
+									 width="200px" />
 						</hlayout>
+						<separator orient="vertical" height="10px"/>
 						<hlayout id="hlAccessCode" visible="false">
-							<separator orient="horizontal" width="80px"/>
+							<separator orient="horizontal" width="40px"/>
 							<textbox id="txtAccessCode" 
 									 height="24px" 
 									 placeholder="Codigo de Acceso" 
 									 onOK="txtImagen.setFocus(true)" 
 									 style="font-size:14px; border-radius: 4px; border-width: 1px;" 
-									 width="240px" />
+									 width="200px" />
 						</hlayout>
 						<separator height="10px"></separator>
 						<hlayout>
-							<separator orient="horizontal" width="75px"/>
-							<div width="120px" align="right">
+							<separator orient="horizontal" width="70px"/>
+<!--  							<div width="120px" align="right">
 								<separator height="10px" />
 								<label value="Ingrese el código que se muestra en la imagen" style="font-size:11px"/>
-							</div>
-							<vlayout>
+							</div>  -->
+							<vlayout >
 								<zscript><![CDATA[
 		    						import org.zkforge.bwcaptcha.Captcha;
 					    		]]></zscript>
-								<bw.captcha id="cpaImagen"  width="125px" >
+								<bw.captcha id="cpaImagen"  width="150px" >
 									<attribute name="onCreate">
 										<![CDATA[
 									         /*cpaImagen.setBgColor(0xCACACA);*/
@@ -138,7 +139,7 @@
 									         /*cpaImagen.setFontColor(0x86A87);*/
 									         /*cpaImagen.setFontBgColor(0xF0F000);*/
 									         //cpaImagen.setFontBgColor(0x55AA55);
-									         cpaImagen.setHeight("35px");
+									         cpaImagen.setHeight("60px");
 									         cpaImagen.setBgColor(0xCACACA);
 									         cpaImagen.setFontColor(0x014282);
 									         cpaImagen.setFontBgColor(0xCACACA);
@@ -150,7 +151,8 @@
 						
 						<separator  height="5px" />	
 						<hbox>
-							<div width="100px" />
+							<div width="50px" />
+							<separator orient="horizontal" width="1px"/>
 							<toolbarbutton id="tbbRecargar" label="Refrescar código" style="color:#054283;font-size:11px;font-weight:bold">
 								<attribute name="onClick">
 									cpaImagen.randomValue();
@@ -170,7 +172,7 @@
 						<separator  height="5px" />
 						<hlayout id="hlyoutCodigoAcceso" visible="false">
 							<separator orient="horizontal" width="12px"/>
-							<div height="24px" width="80px" align="right">
+							<div height="24px" width="20px" align="right">
 								<separator height="4px"/>
 <!--  							<label value="COD. ACCESO :" style="font-size:10px; font-weight:bold; color:#000066"/>		-->
 							</div>
@@ -187,7 +189,7 @@
 						</hlayout>						
 						
 						<hbox align="center">
- 							<separator orient="horizontal" width="108px"/>
+ 							<separator orient="horizontal" width="45px"/>
 							<div id="divRol" visible="false">
 								<separator height="5px"/>
 <!--  							<image src="resources/roles.png" height="22px"/>		-->
@@ -196,13 +198,13 @@
 										  onOK="wndLogin.onAccess()" 
 										  readonly="true" 
 										  style = "border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-left-style: none; height: 28px !important;" 
-										  width="200"  />
+										  width="190px"  />
 							</div>
 						</hbox>						
 						
-						<separator id="spBtnIngresar"  orient="vertical" height="14px"/>
+						<separator id="spBtnIngresar"  orient="vertical" height="10px"/>
 						<hlayout>
-							<separator orient="horizontal" width="85px" ></separator>
+							<separator orient="horizontal" width="45px" ></separator>
 							<div align="center" height="50px">
 								<button id="btnIngresar"
 										autodisable="self,txtLogin, txtPassword, txtImagen,txtCodigoAcceso"
@@ -211,17 +213,17 @@
 										mold="default" 
 										onClick="wndLogin.onAccess()" 
 										sclass="btnlogin" 
-										width="240px"  />
+										width="200px"  />
 							</div>
 						</hlayout>
 						<separator height="15px" />
 						<hbox>
-							<separator orient="horizontal" width="170px"/>
+							<separator orient="horizontal" width="115px"/>
 							<label id="lblVersion" style="font-weight:bold;font-size:10px;color:#014282"/>								
 						</hbox>
 						<separator orient="vertical" height="10px"/>						
 						<hlayout>
-							<separator  orient="horizontal" width="100px"/>
+							<separator  orient="horizontal" width="40px"/>
 							<label id="lblCopyRigth" style="color:#014282;font-weight:bold;font-size:10px"/>
 						</hlayout>							
 						

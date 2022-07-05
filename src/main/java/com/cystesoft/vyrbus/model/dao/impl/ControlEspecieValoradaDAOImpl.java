@@ -255,8 +255,8 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 	}
 	
 	@Override
-	public void generarSecuenciador(String nameSequence) {
-		String sql = "CREATE SEQUENCE "+nameSequence+ " START WITH 1 INCREMENT BY 1 NOMINVALUE NOMAXVALUE NOCACHE ORDER";
+	public void generarSecuenciador(String nameSequence, Long inicio) {
+		String sql = "CREATE SEQUENCE "+nameSequence+ " START WITH "+inicio+" INCREMENT BY 1 NOMINVALUE NOMAXVALUE NOCACHE ORDER";
 		
 		log.info(sql);
 		

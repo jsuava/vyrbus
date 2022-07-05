@@ -5,9 +5,9 @@
 	<listbox id="listboxLista">
 		<listhead sizable="true">
 			<listheader width="50px" label="#" style="color: #ffffff;" />
-			<listheader label="TIPO PEROSNAL" sort="auto" style="color: #ffffff;"/>
+			<listheader label="TIPO PERSONAL" sort="auto" style="color: #ffffff;"/>
 			<listheader label="CODIGO" sort="auto" style="color: #ffffff;"/>
-			<listheader label="TIPO DOCUMETO" sort="auto" style="color: #ffffff;"/>
+			<listheader label="TIPO DOCUMENTO" sort="auto" style="color: #ffffff;"/>
 			<listheader label="NRO. DOCUMENTO" sort="auto" style="color: #ffffff;"/>
 			<listheader label="APELLIDO PATERNO" sort="auto" style="color: #ffffff;"/>
 			<listheader label="APELLIDO MATERNO" sort="auto" style="color: #ffffff;"/>

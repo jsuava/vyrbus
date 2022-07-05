@@ -81,7 +81,7 @@ public class ControlEspecieValoradaManagerImpl implements ControlEspecieValorada
 				/*Inserta el control especie valorada*/
 				getControlEspecieValoradaDAO().guardar(controlEspecieValorada);
 				/*Generar secuenciador de la caja*/
-				getControlEspecieValoradaDAO().generarSecuenciador(controlEspecieValorada.getSecuenciador());
+				getControlEspecieValoradaDAO().generarSecuenciador(controlEspecieValorada.getSecuenciador(), controlEspecieValorada.getCorrelativoActual());
 				
 				controlEspecieValorada2.setSerie("F"+controlEspecieValorada2.getSerie());
 				controlEspecieValoradaID.setStrSerie(controlEspecieValorada2.getSerie());
@@ -92,7 +92,7 @@ public class ControlEspecieValoradaManagerImpl implements ControlEspecieValorada
 				/*Inserta el control especie valorada*/
 				getControlEspecieValoradaDAO().guardar(controlEspecieValorada2);
 				/*Generar secuenciador de la caja*/
-				getControlEspecieValoradaDAO().generarSecuenciador(controlEspecieValorada2.getSecuenciador());
+				getControlEspecieValoradaDAO().generarSecuenciador(controlEspecieValorada2.getSecuenciador(), controlEspecieValorada2.getCorrelativoActual());
 				
 				return Constantes.CORRECT;
 			}else {
@@ -119,7 +119,7 @@ public class ControlEspecieValoradaManagerImpl implements ControlEspecieValorada
 				getControlEspecieValoradaDAO().guardar(controlEspecieValorada);
 				
 				/*Generar secuenciador de la caja*/
-				getControlEspecieValoradaDAO().generarSecuenciador(controlEspecieValorada.getSecuenciador());
+				getControlEspecieValoradaDAO().generarSecuenciador(controlEspecieValorada.getSecuenciador(), controlEspecieValorada.getCorrelativoActual());
 				
 				/*Inserta los correlativos para para la validacion*/
 	//			guardarValidacionEspecieValorada(controlEspecieValorada);
