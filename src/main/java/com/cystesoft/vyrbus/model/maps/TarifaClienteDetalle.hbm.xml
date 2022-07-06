@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 04/05/2012 12:43:35 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.cystesoft.vyrbus.model.bean.TarifaClienteDetalle" table="VRTTARCLIDET" schema="VYRBUSTRANSMAR">
+    <class name="com.cystesoft.vyrbus.model.bean.TarifaClienteDetalle" table="VRTTARCLIDET" schema="VYRBUSTMR">
         <comment>Entidad que almacena el detalle de la tarifa a considerar a determinados clientes.</comment>
         <id name="id" type="java.lang.Integer">
             <column name="TARCLIDET_ID" precision="10" scale="0" />

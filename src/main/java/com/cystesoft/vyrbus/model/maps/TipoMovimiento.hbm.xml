@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.cystesoft.vyrbus.model.bean.TipoMovimiento" table="VRMTIPMOV" schema="VYRBUSTRANSMAR">
+    <class name="com.cystesoft.vyrbus.model.bean.TipoMovimiento" table="VRMTIPMOV" schema="VYRBUSTMR">
         <comment>Entidad que almacena las Condiciones bajo las que se emiten un boleto, NORMAL, POSTERGACION, REIMPRESION, REINTEGRO TARIFA, ANULACION. DEVOLUCION.</comment>
         <id name="id" type="java.lang.Integer">
             <column name="TIPMOV_ID" precision="2" scale="0" />
