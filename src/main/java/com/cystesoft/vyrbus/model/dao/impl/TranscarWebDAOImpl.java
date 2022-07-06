@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Random;
 import java.util.TreeMap;
 
 import org.jfree.util.Log;
@@ -37,6 +38,7 @@ import com.cystesoft.vyrbus.model.bean.TipoComprobante;
 import com.cystesoft.vyrbus.model.bean.TipoFormaPago;
 import com.cystesoft.vyrbus.model.bean.TipoMoneda;
 import com.cystesoft.vyrbus.model.bean.TipoMovimiento;
+import com.cystesoft.vyrbus.model.bean.TitanUsuarioHardware;
 import com.cystesoft.vyrbus.model.bean.TranscarLiquidacionTurno;
 import com.cystesoft.vyrbus.model.bean.TranscarRolUsuario;
 import com.cystesoft.vyrbus.model.bean.TranscarUsuarioPersonal;
@@ -178,12 +180,37 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 		Integer usuario_id = null;
 		//Cuando es un usuario nuevo
 		if(transcarUsuario.getId()==null) {
+			//Genera el identificador para el UsuarioHardware
+			sql = "select nextval('seq_tcmusuhard_id') usuhard_id ";
+			Integer usuarioHardware_id = getJdbcTemplate().queryForInt(sql);
+			String direccionMac = getDireccionMacDinamica();
+			String codigo = Util.generarCodigo(direccionMac);
+			
+			//Realiza el insert del usuario hardware
+			sql = "INSERT INTO tcmusuhard "
+					+ "VALUES ( "
+					+ " " + usuarioHardware_id + " "
+					+ "," + agencia_idtranscar + " "
+					+ ",'"+ codigo +"' "
+					+ ",'"+ direccionMac + "' "
+					+ ",'PC-"+ transcarUsuario.getLogin().toUpperCase() + "' "
+					+ ",'A' "
+					+ ",current_timestamp "
+					+ ",'"+ transcarUsuario.getUsuarioInsercion() + "' "
+					+ ",'"+ transcarUsuario.getIpInsercion() + "' "
+					+ ",current_timestamp "
+					+ ",'"+ transcarUsuario.getUsuarioInsercion() + "' "
+					+ ",'"+ transcarUsuario.getIpInsercion() + "' "
+					+ ") ";			
+			getJdbcTemplate().update(sql);
+			
+			
 			//Genera el identificador para el usuario
 			sql = "select nextval('seq_tcmusuario_id') usuario_id ";
 			usuario_id= getJdbcTemplate().queryForInt(sql);
 			
 			//Inserta el usuario
-			sql = "INSERT INTO tcmusuario (usuario_id, agencia_id, c_apepat, c_apemat, c_nombre, c_email, c_login, c_password, audipinse, audipmodi, audusuins, audusumod) " + 
+			sql = "INSERT INTO tcmusuario (usuario_id, agencia_id, c_apepat, c_apemat, c_nombre, c_email, c_login, c_password, audipinse, audipmodi, audusuins, audusumod, usuhard_id, n_tipseg ) " + 
 					"VALUES ( "
 					+ usuario_id +", "
 					+ agencia_idtranscar + ","
@@ -192,11 +219,13 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 					+ "'"+transcarUsuario.getNombres()+ "', "
 					+ (transcarUsuario.getEmail()!=null? "'"+transcarUsuario.getEmail()+ "'": "Null") + ", "
 					+ "'"+transcarUsuario.getLogin()+ "', "
-					+ "'"+transcarUsuario.getPassword()+ "', "
+					+ "'XENCRIPTAR "+transcarUsuario.getPassword()+ "', "
 					+ "'"+transcarUsuario.getIpInsercion()+ "', "
 					+ "'"+transcarUsuario.getIpModificacion()+ "', "
 					+ "'"+transcarUsuario.getUsuarioInsercion()+ "', "
-					+ "'"+transcarUsuario.getUsuarioModificacion()+ "' "
+					+ "'"+transcarUsuario.getUsuarioModificacion()+ "', "
+					+ ""+usuarioHardware_id+ ", "
+					+ ""+Constantes.FALSE_VALUE+ " "
 					+ ")";
 			getJdbcTemplate().update(sql);
 		}else {
@@ -750,5 +779,52 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 		Log.info("Actualiza Password Usuario - Carga: "+sql);
 		getJdbcTemplate().update(sql);
 	}
+
+	private String getDireccionMacDinamica() {		
+		String direccionMac = "";
+		String[] patron_A = {"A0","00", "0A" ,"00", "A0", "00"};
+		String patron_B = "ABCDEFGHIJKLMNIOPQRSTUVWXYZ";
 	
+		try {
+			Random random= new Random();
+			
+			int x = 0;
+			for(String comp: patron_A) {
+				x++;
+				String pmac = "";
+				String p1 = comp.substring(0,1);
+				String p2 = comp.substring(1);
+				int randomChar =  random.nextInt(patron_B.length());				
+				
+				if(Util.isNumeric(p1)) {
+					int randomInt =  random.nextInt(13);
+					pmac += String.valueOf(randomInt);
+				}else {
+					char ochar = patron_B.charAt(randomChar);
+					pmac += ochar;
+				}
+				
+				if(Util.isNumeric(p2)) {
+					int randomInt =  random.nextInt(13);
+					pmac += String.valueOf(randomInt);				
+				}else {
+					char ochar = patron_B.charAt(randomChar);
+					pmac += ochar;
+				}
+				
+				if(pmac.length()>2)
+					pmac = pmac.substring(0,2);
+				
+				direccionMac += pmac;
+				if (patron_A.length > x)
+					direccionMac += "-";								
+			}	
+			
+		} catch (Exception e) {
+			direccionMac = "AB-00-BA-11-AC-99";
+			e.printStackTrace();
+		}
+		
+		return direccionMac;
+	}
 }

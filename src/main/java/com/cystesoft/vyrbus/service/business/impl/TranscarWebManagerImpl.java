@@ -79,7 +79,7 @@ public class TranscarWebManagerImpl implements TranscarWebManager{
 	public void guardarUsuario(TranscarUsuarioPersonal transcarUsuario, String idsRoles, boolean isNuevo)
 			throws Exception {
 		// TODO Auto-generated method stub
-		transcarUsuario.setPassword(Encriptar.codifica(transcarUsuario.getPassword(), transcarUsuario.getLogin()));
+//		transcarUsuario.setPassword(Encriptar.codifica(transcarUsuario.getPassword(), transcarUsuario.getLogin()));
 		getTranscarWebDAO().guardarUsuario(transcarUsuario, idsRoles, isNuevo);
 	}
 
