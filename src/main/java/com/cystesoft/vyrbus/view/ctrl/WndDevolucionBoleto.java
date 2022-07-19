@@ -1145,7 +1145,7 @@ public class WndDevolucionBoleto extends WndBase {
 			DlgMessage.information(Messages.getString("WndDevolucionBoleto.information.niResponsable"),cmbResponsable);
 			return;
 		}else if((int)cmbResponsable.getSelectedItem().getValue()==Constantes.TRUE_VALUE){
-			/*Si es TEPSA*/
+			/*Si es LA EMPRESA*/
 			
 			
 		}else{
@@ -1407,7 +1407,7 @@ public class WndDevolucionBoleto extends WndBase {
 		comboitem= new Comboitem("PASAJERO");
 		comboitem.setValue(Constantes.FALSE_VALUE);
 		combobox.appendChild(comboitem);
-		comboitem= new Comboitem("TEPSA");
+		comboitem= new Comboitem("LA EMPRESA");
 		comboitem.setValue(Constantes.TRUE_VALUE);
 		combobox.appendChild(comboitem);
 		combobox.setSelectedIndex(0);

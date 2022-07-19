@@ -275,7 +275,7 @@ public class Constantes {
 	public static final String RUC_CRUZ_DEL_SUR="20100227461";
 	public static final String RUC_CIVA="20102427891";
 	public static final String RUC_TEPSA="20502324927";
-	public static final String RUC_TRANSMAR="20606078189";//"20450760839";
+	public static final String RUC_TRANSMAR="20501622819";
 	public static final String OPERADO_POR_CRUZ_DEL_SUR="CRUZ DEL SUR";
 	public static final String OPERADO_CIVA="EXCLUCIVA";
 	
