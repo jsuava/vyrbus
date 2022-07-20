@@ -9,6 +9,7 @@
 package com.cystesoft.vyrbus.service.servlet;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -102,7 +103,10 @@ public class LiquidacionTuEntradaServlet  extends HttpServlet {
 		List<Liquidacion> lstLiquidacion = (List<Liquidacion>)request.getSession().getAttribute("lstLiquidacion");
 		try{
 //			JRTextExporter
-			JasperReport reporte = (JasperReport)JRLoader.loadObject(getServletContext().getRealPath("WEB-INF/jasper/LiquidacionTuEntrada.jasper"));
+//			JasperReport reporte = (JasperReport)JRLoader.loadObject(getServletContext().getRealPath("WEB-INF/jasper/LiquidacionTuEntrada.jasper"));
+			JasperReport reporte;
+	    	InputStream inputStream = getServletContext().getResourceAsStream("WEB-INF/jasper/LiquidacionTuEntrada.jasper");
+	    	reporte = (JasperReport)JRLoader.loadObject(inputStream);
 			
 			Map<String, Object> parameters = new HashMap<String, Object>();
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, new ReporteLiquidacionTuEntrada(lstLiquidacion));

@@ -8,6 +8,7 @@
 package com.cystesoft.vyrbus.service.servlet;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -121,10 +122,15 @@ public class DetalladoVentasServlet extends HttpServlet {
 
 	    try {
 	    	JasperReport reporte;
+	    	InputStream inputStream;
 	    	if(tipoAgencia.getId().intValue()==Constantes.ID_TIPAGE_CORPORATIVO)
-	    		reporte = (JasperReport)JRLoader.loadObject(getServletContext().getRealPath("WEB-INF/jasper/VentasCorporativas.jasper"));
+//	    		reporte = (JasperReport)JRLoader.loadObject(getServletContext().getRealPath("WEB-INF/jasper/VentasCorporativas.jasper"));
+	    		inputStream = getServletContext().getResourceAsStream("WEB-INF/jasper/VentasCorporativas.jasper");
 	    	else
-	    		reporte = (JasperReport)JRLoader.loadObject(getServletContext().getRealPath("WEB-INF/jasper/VentasRealizadas.jasper"));
+//	    		reporte = (JasperReport)JRLoader.loadObject(getServletContext().getRealPath("WEB-INF/jasper/VentasRealizadas.jasper"));
+	    		inputStream = getServletContext().getResourceAsStream("WEB-INF/jasper/VentasRealizadas.jasper");
+	    	
+	    	reporte = (JasperReport)JRLoader.loadObject(inputStream);
 	    	
 	    	Map<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("usuario",usuario);
