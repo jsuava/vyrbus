@@ -8,6 +8,7 @@
 package com.cystesoft.vyrbus.service.servlet;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -119,7 +120,10 @@ public class EticketServlet extends HttpServlet {
 		}
 
 		try{
-			JasperReport reporte = (JasperReport)JRLoader.loadObject(getServletContext().getRealPath("WEB-INF/jasper/Eticket.jasper"));
+//			JasperReport reporte = (JasperReport)JRLoader.loadObject(getServletContext().getRealPath("WEB-INF/jasper/Eticket.jasper"));
+			JasperReport reporte;
+	    	InputStream inputStream = getServletContext().getResourceAsStream("WEB-INF/jasper/Eticket.jasper");
+	    	reporte = (JasperReport)JRLoader.loadObject(inputStream);
 			
 			String terminos = "";
 			for(int i=0;i<lstTerminos.size();i++){

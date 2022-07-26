@@ -40,7 +40,7 @@
 				<row>
 					<label value="NRO. FLOTA (*) :" />
 					<combobox id="cbonumeroFlota"  readonly="true" onOK="cboGrupoMantenimiento.setFocus(true); cboGrupoMantenimiento.select()" />
-					<label value="GRUPO MANTENIMINETO (*) :" />
+					<label value="GRUPO MANTENIMIENTO (*) :" />
 					<combobox id="cboGrupoMantenimiento" readonly="true" onOK="txtnumeroBus.setFocus(true)" />
 				</row>
 				<row>

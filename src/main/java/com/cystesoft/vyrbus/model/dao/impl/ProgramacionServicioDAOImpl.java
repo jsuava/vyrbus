@@ -119,7 +119,11 @@ public class ProgramacionServicioDAOImpl extends GenericDAOImpl implements Progr
 							"ld.localidad_id idDestino, " + //19
 							"ti.tipiti_id, ti.c_denominacion tipoItinerario, " + //21
 							"ps.bus_ID, ps.personal_idpiloto, personal_idcopiloto, personal_idterramoza, b.bus_id, ps.proser_Id, " +  //27
-							"ps.audfecins, ps.audusuins, ps.audipinse, personal_idcopilotoaux " + //31
+							"ps.audfecins, ps.audusuins, ps.audipinse, personal_idcopilotoaux, " + //31
+							"b.c_codigo NROBUS, b.c_numplaca PLACA, " + //33
+						    "pil.c_apepat pilapepat, pil.c_apemat pilapemat, pil.c_nombre pilnom, " +  //36 
+						    "copil.c_apepat copapepat, copil.c_apemat copapemat, copil.c_nombre copnom, " +  //39
+						    "trip.c_apepat triapemat, trip.c_apemat triapemat, trip.c_nombre trinom " +  //42
 						"FROM vrtitinerario i " +
 							"INNER JOIN vrmservicio s ON s.servicio_id=i.servicio_id " +
 							"INNER JOIN vrmruta r ON r.ruta_id=i.ruta_idmayor " +
@@ -130,6 +134,9 @@ public class ProgramacionServicioDAOImpl extends GenericDAOImpl implements Progr
 							"INNER JOIN vrmtipiti ti ON ti.tipiti_id=i.tipiti_id " +
 							"INNER JOIN vrtproser ps ON (ps.itinerario_ID=i.itinerario_ID) " +
 							"INNER JOIN vrmbus b ON b.bus_id=ps.bus_id " +
+							"INNER JOIN vrmpersonal pil ON ps.personal_idpiloto = pil.personal_id " + 
+							"INNER JOIN vrmpersonal copil ON ps.personal_idcopiloto = copil.personal_id " + 
+							"LEFT JOIN vrmpersonal trip ON ps.personal_idterramoza = trip.personal_id " +
 						"WHERE " + where + " And i.N_EsAnulado=0 And i.C_EstReg='A' And ps.c_estreg='A' " +
 						" ORDER BY i.d_fecpar, i.c_horpar ";
 				
@@ -213,10 +220,18 @@ public class ProgramacionServicioDAOImpl extends GenericDAOImpl implements Progr
 				if (itinerariosProgramados==true){
 					Bus bus = new Bus();
 					bus.setId(((BigDecimal)obj[26]).intValue());
+					bus.setCodigo((String)obj[32].toString());
+					bus.setNumeroPlaca((String)obj[33].toString());
 					Personal piloto = new Personal();
 					piloto.setId(((BigDecimal)obj[23]).longValue());
+					piloto.setApellidoPaterno((String)obj[34].toString());
+					piloto.setApellidoMaterno(obj[35]==null ? "" : (String)obj[35].toString());
+					piloto.setNombre((String)obj[36].toString());
 					Personal copiloto = new Personal();
 					copiloto.setId(((BigDecimal)obj[24]).longValue());
+					copiloto.setApellidoPaterno((String)obj[37].toString());
+					copiloto.setApellidoMaterno(obj[38]==null ? "" : (String)obj[38].toString());
+					copiloto.setNombre((String)obj[39].toString());
 					Personal copilotoAux=null;
 					if(obj[31]!=null)
 						copilotoAux=new Personal(((BigDecimal)obj[31]).longValue());
@@ -226,6 +241,9 @@ public class ProgramacionServicioDAOImpl extends GenericDAOImpl implements Progr
 					if(obj[25] != null){
 						Personal tripulante = new Personal();
 						tripulante.setId(((BigDecimal)obj[25]).longValue());
+						tripulante.setApellidoPaterno((String)obj[40].toString());
+						tripulante.setApellidoMaterno(obj[41]==null ? "" : (String)obj[41].toString());
+						tripulante.setNombre((String)obj[42].toString());						
 						programacionServicio.setTripulante(tripulante);
 					}
 					

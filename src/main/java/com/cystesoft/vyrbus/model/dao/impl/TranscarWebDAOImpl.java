@@ -318,7 +318,7 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 		
 		String sql="SELECT ec.envcon_id, ec.d_fecven, av.agencia_id, av.c_denominacion agencia, cl.c_numdoc cliente_numdoc, cl.c_razsoc cliente_razonSocial " + 
 				"         ,rt.c_origen, rt.c_destino " + 
-				"         ,ec.forpag_id, ec.tippag_id, ec.opetar_id, ec.tipcom_id, ec.c_numcom, ec.n_subtotal, ec.n_impuesto, ec.n_total " + 
+				"         ,ec.forpag_id, ec.tippag_id, dp.opetar_id, ec.tipcom_id, ec.c_numcom, ec.n_subtotal, ec.n_impuesto, ec.n_total " + 
 				"	      ,us.c_apepat usuario_apepat, us.c_apemat usuario_apemat, us.c_nombre usuario_nombre, us.c_login usuario_login " + 
 				"		  ,CASE WHEN ec.d_fecanu IS NOT NULL AND ec.usuario_idanula IS NOT NULL THEN 2 ELSE 1 END estadoComprobante " + //-->1= Activo, 2=Anulado\r\n" + 
 				"		  ,ec.audfecins " + 
@@ -326,7 +326,8 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 				"  INNER JOIN tcmusuario us ON (us.usuario_id=ec.usuario_id) " + 
 				"	INNER JOIN tcmagencia av ON (av.agencia_id=ec.agencia_idventa) " + 
 				"	INNER JOIN tcmcliente cl ON (cl.cliente_id=ec.cliente_id) " + 
-				"	INNER JOIN tcmruta rt ON (rt.ruta_id=ec.ruta_id) " + 
+				"	INNER JOIN tcmruta rt ON (rt.ruta_id=ec.ruta_id) " +
+				"   LEFT JOIN tctdetpag dp ON (ec.envcon_id = dp.envcon_id)" +
 				"WHERE ec.d_fecven BETWEEN '"+fechaInicial+"' AND '"+fechaFinal+"' " + 
 				"  AND ec.agencia_idventa = COALESCE("+agencia_idtranscar+", ec.agencia_idventa) " + 
 				"  AND ec.usuario_id = COALESCE("+usuario_id+", ec.usuario_id) " + 
@@ -338,12 +339,15 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 		
 		List<VentaPasaje> listVentasCarga = new ArrayList<VentaPasaje>();
 		Map<String, Object> map = null;
+		int tipoPagoId=0;
 		for(int i=0;i<result.size();i++){
 			map = (Map<String, Object>)result.get(i);
 			
 			int idEstadoRegistro = (int)map.get("ESTADOCOMPROBANTE");
-			int tipoPagoId = ((BigDecimal)map.get("TIPPAG_ID")).intValue();
 			int formaPagoId = ((BigDecimal)map.get("FORPAG_ID")).intValue();
+			//Consistencia el tipo de pago para PCE que vienen de TRANSCAR
+			if(map.get("TIPPAG_ID") != null) 
+				tipoPagoId = ((BigDecimal)map.get("TIPPAG_ID")).intValue();
 			int tipoComprobanteId = ((BigDecimal)map.get("TIPCOM_ID")).intValue();
 			String simboloMoneda= "S/";
 			
@@ -504,10 +508,13 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 					"		,(BoletoFinal::INTEGER - boletoInicial::INTEGER +1) - cantRegistros AS Cortes, tipoComprobanteId  " + 
 					"FROM(   " + 
 //					"	   Recupera todos menos las confirmaciones de fecha habierta de fecha habierta  " + 
-					"		SELECT tc.tipcom_id tipoComprobanteId, tc.c_denominacion as TipoComprobante  " + 
-					"			  ,MIN(SUBSTR(vp.c_numcom ,0,4)) AS Serie    " + 
-					"		      ,MIN(SUBSTR(vp.c_numcom,6, LENGTH(vp.c_numcom))) AS boletoInicial     " + 
-					"		      ,MAX(SUBSTR(vp.c_numcom,6, LENGTH(vp.c_numcom)))  AS BoletoFinal  " + 
+					"		SELECT tc.tipcom_id tipoComprobanteId, tc.c_nomcor as TipoComprobante  " + 
+//					"			  ,MIN(SUBSTR(vp.c_numcom ,0,4)) AS Serie    " +
+					"			  ,MIN(lpad( substr(vp.c_numcom, 1, (position('-' in vp.c_numcom )-1)), 4, '0' )) AS Serie" +
+//					"		      ,MIN(SUBSTR(vp.c_numcom,6, LENGTH(vp.c_numcom))) AS boletoInicial     " + 
+					"			  ,MIN(lpad( substr(vp.c_numcom, (position('-' in vp.c_numcom )+1), (length(vp.c_numcom) - position('-' in vp.c_numcom ))), 8, '0' )) AS BoletoInicial" +
+//					"		      ,MAX(SUBSTR(vp.c_numcom,6, LENGTH(vp.c_numcom)))  AS BoletoFinal  " +
+					"			  ,MAX(lpad( substr(vp.c_numcom, (position('-' in vp.c_numcom )+1), (length(vp.c_numcom) - position('-' in vp.c_numcom ))), 8, '0' )) AS BoletoFinal" +
 					"		      ,COUNT(DISTINCT(nb.c_numcom)) AS cantRegistros  " + 
 					"			  ,SUM(vp.n_total) importe  " + 
 					"		FROM tctenvcon vp     " + 
