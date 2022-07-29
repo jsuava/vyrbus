@@ -13,7 +13,7 @@ public class AutorizadorCortesia extends GenericBean implements Serializable {
 	
 	private Integer id;
 	private Personal personal;
-	private MotivoCortesia motivoCortesia;
+	private MotivoCortesia motivoCortesia; 
 	private String password;
 	private List<MotivoCortesia> listaMotivoCortesia;
 	

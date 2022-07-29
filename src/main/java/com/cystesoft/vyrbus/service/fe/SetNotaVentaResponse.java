@@ -52,9 +52,8 @@ public class SetNotaVentaResponse {
 	/**
 	 * Sets the value of the setNotaVentaResult property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link Result
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link Result
+	 *              }{@code >}
 	 * 
 	 */
 	public void setSetNotaVentaResult(JAXBElement<Result> value) {

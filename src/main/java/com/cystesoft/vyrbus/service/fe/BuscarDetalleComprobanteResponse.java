@@ -52,9 +52,8 @@ public class BuscarDetalleComprobanteResponse {
 	/**
 	 * Sets the value of the buscarDetalleComprobanteResult property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link Result
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link Result
+	 *              }{@code >}
 	 * 
 	 */
 	public void setBuscarDetalleComprobanteResult(JAXBElement<Result> value) {

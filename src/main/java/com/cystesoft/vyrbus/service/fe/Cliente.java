@@ -60,9 +60,8 @@ public class Cliente {
 	/**
 	 * Sets the value of the direccion property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setDireccion(JAXBElement<String> value) {
@@ -83,9 +82,8 @@ public class Cliente {
 	/**
 	 * Sets the value of the nombres property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setNombres(JAXBElement<String> value) {
@@ -106,9 +104,8 @@ public class Cliente {
 	/**
 	 * Sets the value of the numeroDocumento property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setNumeroDocumento(JAXBElement<String> value) {
@@ -129,9 +126,8 @@ public class Cliente {
 	/**
 	 * Sets the value of the tipoDocumentoID property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setTipoDocumentoID(JAXBElement<String> value) {

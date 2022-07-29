@@ -37,6 +37,7 @@ import com.cystesoft.vyrbus.model.bean.Servicio;
 import com.cystesoft.vyrbus.model.bean.Sexo;
 import com.cystesoft.vyrbus.model.bean.TarjetaCredito;
 import com.cystesoft.vyrbus.model.bean.TipoAgencia;
+import com.cystesoft.vyrbus.model.bean.TipoCobranza;
 import com.cystesoft.vyrbus.model.bean.TipoComprobante;
 import com.cystesoft.vyrbus.model.bean.TipoDocumento;
 import com.cystesoft.vyrbus.model.bean.TipoFormaPago;
@@ -380,7 +381,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 							"cc.cencos_id, cc.c_codigo, cc.c_denominacion, " +
 							"vp.c_estdoc, tm.tipmon_id, tm.c_unimon, tm.c_simmon, vp.n_imppagequ,ao.c_nomcor nombreCortoAgenciaPartida, vp.N_TARIFAEQU,vp.N_DESEQU,vp.N_TIPCAM, "+//92
 							"td.c_nomcor, u.c_apepat usuApPaterno, u.c_apemat usuApMaterno, u.c_nombre usuaNombre, vp.n_igv, c.c_direccion direccionCliente, " //98
-						  + "ad.c_nomcor nombreCortoAgenciaLlegada, vp.n_esfe, vp.d_esfe  "+ //99-101
+						  + "ad.c_nomcor nombreCortoAgenciaLlegada, vp.n_esfe, vp.d_esfe, vp.tipcob_id  "+ //99-102
 					"FROM vrtvenpas vp " +
 						"INNER JOIN vrtitinerario i ON i.itinerario_id=vp.itinerario_id " +
 						"INNER JOIN vrmruta r ON r.ruta_id=vp.ruta_id " +
@@ -580,6 +581,12 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		ventaPasaje.setIgv((obj[97]!=null?((BigDecimal)obj[97]).doubleValue():null));
 		ventaPasaje.setEnviadoSFE(obj[100]!=null?((BigDecimal)obj[100]).intValue():null);
 		ventaPasaje.setFechaEnvioSFE(obj[101]!=null?(Date)obj[101]:null);
+		if(obj[102]!=null) {
+			TipoCobranza tipoCobranza= new TipoCobranza();
+			tipoCobranza.setId(((BigDecimal)obj[102]).intValue());
+			ventaPasaje.setTipoCobranza(tipoCobranza);
+		}
+		
 		
 		return ventaPasaje;
 	}

@@ -55,9 +55,8 @@ public class SetNota {
 	/**
 	 * Sets the value of the token property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setToken(JAXBElement<String> value) {
@@ -78,9 +77,8 @@ public class SetNota {
 	/**
 	 * Sets the value of the notaCreditoDebito property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link Nota
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link Nota
+	 *              }{@code >}
 	 * 
 	 */
 	public void setNotaCreditoDebito(JAXBElement<Nota> value) {

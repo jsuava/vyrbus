@@ -77,9 +77,8 @@ public class Result {
 	/**
 	 * Sets the value of the code property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setCode(JAXBElement<String> value) {
@@ -99,8 +98,7 @@ public class Result {
 	/**
 	 * Sets the value of the isCorrect property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Boolean }
+	 * @param value allowed object is {@link Boolean }
 	 * 
 	 */
 	public void setIsCorrect(Boolean value) {
@@ -121,9 +119,8 @@ public class Result {
 	/**
 	 * Sets the value of the message property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setMessage(JAXBElement<String> value) {
@@ -144,9 +141,8 @@ public class Result {
 	/**
 	 * Sets the value of the barcode property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement
-	 *            }{@code <}{@link byte[]}{@code >}
+	 * @param value allowed object is {@link JAXBElement
+	 *              }{@code <}{@link byte[]}{@code >}
 	 * 
 	 */
 	public void setBarcode(JAXBElement<byte[]> value) {
@@ -167,9 +163,8 @@ public class Result {
 	/**
 	 * Sets the value of the barcodeEmbarque property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement
-	 *            }{@code <}{@link byte[]}{@code >}
+	 * @param value allowed object is {@link JAXBElement
+	 *              }{@code <}{@link byte[]}{@code >}
 	 * 
 	 */
 	public void setBarcodeEmbarque(JAXBElement<byte[]> value) {
@@ -190,9 +185,8 @@ public class Result {
 	/**
 	 * Sets the value of the barcodeQR property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement
-	 *            }{@code <}{@link byte[]}{@code >}
+	 * @param value allowed object is {@link JAXBElement
+	 *              }{@code <}{@link byte[]}{@code >}
 	 * 
 	 */
 	public void setBarcodeQR(JAXBElement<byte[]> value) {
@@ -213,9 +207,8 @@ public class Result {
 	/**
 	 * Sets the value of the listDetalleVenta property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement
-	 *            }{@code <}{@link ArrayOfDetalleVenta }{@code >}
+	 * @param value allowed object is {@link JAXBElement
+	 *              }{@code <}{@link ArrayOfDetalleVenta }{@code >}
 	 * 
 	 */
 	public void setListDetalleVenta(JAXBElement<ArrayOfDetalleVenta> value) {
@@ -236,9 +229,8 @@ public class Result {
 	/**
 	 * Sets the value of the pdf property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement
-	 *            }{@code <}{@link byte[]}{@code >}
+	 * @param value allowed object is {@link JAXBElement
+	 *              }{@code <}{@link byte[]}{@code >}
 	 * 
 	 */
 	public void setPdf(JAXBElement<byte[]> value) {
@@ -259,9 +251,8 @@ public class Result {
 	/**
 	 * Sets the value of the retencionesInp property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement
-	 *            }{@code <}{@link ArrayOfRetencionInp }{@code >}
+	 * @param value allowed object is {@link JAXBElement
+	 *              }{@code <}{@link ArrayOfRetencionInp }{@code >}
 	 * 
 	 */
 	public void setRetencionesInp(JAXBElement<ArrayOfRetencionInp> value) {

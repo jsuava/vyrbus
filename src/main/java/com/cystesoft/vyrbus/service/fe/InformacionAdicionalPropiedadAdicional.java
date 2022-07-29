@@ -57,9 +57,8 @@ public class InformacionAdicionalPropiedadAdicional {
 	/**
 	 * Sets the value of the codigo property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setCodigo(JAXBElement<String> value) {
@@ -80,9 +79,8 @@ public class InformacionAdicionalPropiedadAdicional {
 	/**
 	 * Sets the value of the nombre property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setNombre(JAXBElement<String> value) {
@@ -103,9 +101,8 @@ public class InformacionAdicionalPropiedadAdicional {
 	/**
 	 * Sets the value of the value property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setValue(JAXBElement<String> value) {
