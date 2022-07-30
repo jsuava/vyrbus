@@ -52,9 +52,8 @@ public class SetEnviarComprobantesSunatResponse {
 	/**
 	 * Sets the value of the setEnviarComprobantesSunatResult property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link Result
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link Result
+	 *              }{@code >}
 	 * 
 	 */
 	public void setSetEnviarComprobantesSunatResult(JAXBElement<Result> value) {

@@ -61,9 +61,8 @@ public class DocumentCDR {
 	/**
 	 * Sets the value of the id property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setId(JAXBElement<String> value) {
@@ -83,8 +82,7 @@ public class DocumentCDR {
 	/**
 	 * Sets the value of the idEnvioDato property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Long }
+	 * @param value allowed object is {@link Long }
 	 * 
 	 */
 	public void setIdEnvioDato(Long value) {
@@ -104,8 +102,7 @@ public class DocumentCDR {
 	/**
 	 * Sets the value of the isResumen property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Boolean }
+	 * @param value allowed object is {@link Boolean }
 	 * 
 	 */
 	public void setIsResumen(Boolean value) {
@@ -126,9 +123,8 @@ public class DocumentCDR {
 	/**
 	 * Sets the value of the rucEmpresa property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setRucEmpresa(JAXBElement<String> value) {
@@ -149,9 +145,8 @@ public class DocumentCDR {
 	/**
 	 * Sets the value of the ticket property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setTicket(JAXBElement<String> value) {

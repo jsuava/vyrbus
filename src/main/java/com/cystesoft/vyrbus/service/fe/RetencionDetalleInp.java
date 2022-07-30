@@ -82,9 +82,8 @@ public class RetencionDetalleInp {
 	/**
 	 * Sets the value of the fechaEmisonDoctRelacionado property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setFechaEmisonDoctRelacionado(JAXBElement<String> value) {
@@ -105,9 +104,8 @@ public class RetencionDetalleInp {
 	/**
 	 * Sets the value of the fechaPago property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setFechaPago(JAXBElement<String> value) {
@@ -127,8 +125,7 @@ public class RetencionDetalleInp {
 	/**
 	 * Sets the value of the importeNeto property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Double }
+	 * @param value allowed object is {@link Double }
 	 * 
 	 */
 	public void setImporteNeto(Double value) {
@@ -148,8 +145,7 @@ public class RetencionDetalleInp {
 	/**
 	 * Sets the value of the importePagado property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Double }
+	 * @param value allowed object is {@link Double }
 	 * 
 	 */
 	public void setImportePagado(Double value) {
@@ -169,8 +165,7 @@ public class RetencionDetalleInp {
 	/**
 	 * Sets the value of the importeRetenido property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Double }
+	 * @param value allowed object is {@link Double }
 	 * 
 	 */
 	public void setImporteRetenido(Double value) {
@@ -190,8 +185,7 @@ public class RetencionDetalleInp {
 	/**
 	 * Sets the value of the importeTotalDoctRelacionado property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Double }
+	 * @param value allowed object is {@link Double }
 	 * 
 	 */
 	public void setImporteTotalDoctRelacionado(Double value) {
@@ -212,9 +206,8 @@ public class RetencionDetalleInp {
 	/**
 	 * Sets the value of the monedaDoctRelacionado property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setMonedaDoctRelacionado(JAXBElement<String> value) {
@@ -235,9 +228,8 @@ public class RetencionDetalleInp {
 	/**
 	 * Sets the value of the monedaOriginal property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setMonedaOriginal(JAXBElement<String> value) {
@@ -258,9 +250,8 @@ public class RetencionDetalleInp {
 	/**
 	 * Sets the value of the monedaPagado property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setMonedaPagado(JAXBElement<String> value) {
@@ -281,9 +272,8 @@ public class RetencionDetalleInp {
 	/**
 	 * Sets the value of the numDoctRelacionado property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setNumDoctRelacionado(JAXBElement<String> value) {
@@ -304,9 +294,8 @@ public class RetencionDetalleInp {
 	/**
 	 * Sets the value of the numeroPago property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setNumeroPago(JAXBElement<String> value) {
@@ -327,9 +316,8 @@ public class RetencionDetalleInp {
 	/**
 	 * Sets the value of the tipoDoctRelacionado property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setTipoDoctRelacionado(JAXBElement<String> value) {

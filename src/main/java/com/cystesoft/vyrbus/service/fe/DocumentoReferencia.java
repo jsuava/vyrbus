@@ -57,9 +57,8 @@ public class DocumentoReferencia {
 	/**
 	 * Sets the value of the fechaDocumento property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setFechaDocumento(JAXBElement<String> value) {
@@ -80,9 +79,8 @@ public class DocumentoReferencia {
 	/**
 	 * Sets the value of the numeroDocumento property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setNumeroDocumento(JAXBElement<String> value) {
@@ -103,9 +101,8 @@ public class DocumentoReferencia {
 	/**
 	 * Sets the value of the tipoComprobante property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setTipoComprobante(JAXBElement<String> value) {

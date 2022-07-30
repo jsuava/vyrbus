@@ -52,9 +52,8 @@ public class SetResumenesResponse {
 	/**
 	 * Sets the value of the setResumenesResult property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link Result
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link Result
+	 *              }{@code >}
 	 * 
 	 */
 	public void setSetResumenesResult(JAXBElement<Result> value) {

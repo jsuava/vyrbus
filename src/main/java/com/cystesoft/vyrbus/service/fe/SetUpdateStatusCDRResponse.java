@@ -52,9 +52,8 @@ public class SetUpdateStatusCDRResponse {
 	/**
 	 * Sets the value of the setUpdateStatusCDRResult property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link Result
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link Result
+	 *              }{@code >}
 	 * 
 	 */
 	public void setSetUpdateStatusCDRResult(JAXBElement<Result> value) {

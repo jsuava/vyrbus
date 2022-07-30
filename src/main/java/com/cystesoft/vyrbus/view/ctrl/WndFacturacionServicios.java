@@ -399,7 +399,7 @@ public class WndFacturacionServicios extends WndBase {
 							
 							if(servicioEspecial.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA || 
 									servicioEspecial.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_FACTURA){
-								boolean printComprobante=(true);
+								boolean printComprobante=(false);
 								
 								List<VentaPasaje> listVentaPasajes= new ArrayList<>();
 								listVentaPasajes.add(servicioEspecial);				

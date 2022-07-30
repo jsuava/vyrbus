@@ -64,9 +64,8 @@ public class BuscarDetalleComprobante {
 	/**
 	 * Sets the value of the token property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setToken(JAXBElement<String> value) {
@@ -87,9 +86,8 @@ public class BuscarDetalleComprobante {
 	/**
 	 * Sets the value of the tipoComprobante property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setTipoComprobante(JAXBElement<String> value) {
@@ -110,9 +108,8 @@ public class BuscarDetalleComprobante {
 	/**
 	 * Sets the value of the serie property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setSerie(JAXBElement<String> value) {
@@ -133,9 +130,8 @@ public class BuscarDetalleComprobante {
 	/**
 	 * Sets the value of the correlativo property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setCorrelativo(JAXBElement<String> value) {
@@ -156,9 +152,8 @@ public class BuscarDetalleComprobante {
 	/**
 	 * Sets the value of the rucEmpresa property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setRucEmpresa(JAXBElement<String> value) {
