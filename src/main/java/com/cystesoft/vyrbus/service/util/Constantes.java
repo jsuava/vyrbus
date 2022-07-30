@@ -160,9 +160,9 @@ public class Constantes {
 
 	//http://168.121.236.46:8080/
 
-//	public static final String SERVER_HOST = "192.168.0.8:8080";
+	public static final String SERVER_HOST = "localhost:8080";
 
-	public static final String SERVER_HOST = "119.8.145.122:8080";
+//	public static final String SERVER_HOST = "119.8.145.122:8080";
 //	public static final String SERVER_HOST = "190.119.140.203:8080";
 
 

@@ -34,12 +34,12 @@
 	<hbox align="center">
 		<listbox id="ltbxLiquidacionVentas" multiple="false" rows="13" width="990px">
 			<listhead>
-				<listheader label="FECHA" width="90px" sort="auto"/>				
-				<listheader label="AGENCIA" width="180px" sort="auto"/>				
-				<listheader label="NOMBRES USUARIO" width="230px" sort="auto"/>
-				<listheader label="USUARIO" width="100px" sort="auto"/>
-				<listheader label="ESTADO LIQ. PASAJES" width="165px" align="center" sort="auto"/>
-				<listheader label="ESTADO LIQ. CARGAR" width="165px" align="center" sort="auto"/>				
+				<listheader label="FECHA" width="90px" sort="auto" style="color: #ffffff;" />				
+				<listheader label="AGENCIA" width="180px" sort="auto" style="color: #ffffff;" />				
+				<listheader label="NOMBRES USUARIO" width="230px" sort="auto" style="color: #ffffff;" />
+				<listheader label="USUARIO" width="100px" sort="auto" style="color: #ffffff;" />
+				<listheader label="ESTADO LIQ. PASAJES" width="165px" align="center" sort="auto" style="color: #ffffff;" />
+				<listheader label="ESTADO LIQ. CARGAR" width="165px" align="center" sort="auto" style="color: #ffffff;" />				
 				<listheader/>
 			</listhead>
 		</listbox>

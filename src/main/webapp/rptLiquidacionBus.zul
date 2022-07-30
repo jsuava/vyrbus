@@ -28,13 +28,13 @@
 	</grid>
     <listbox id="ltbxLiquidacionBus" rows="20">
     	<listhead>
-    		<listheader label="FECHA" width="100px" />
-    		<listheader label="BUS" width="120px" />
-    		<listheader label="RUTA" width="120px" />
-    		<listheader label="PILOTO" width="250px" />
-    		<listheader label="COPILOTO" width="250px" />
-    		<listheader label="TOTAL PASAJES" width="120px" align="right"/>
-    		<listheader label="TOTAL CARGA" width="120px" align="right"/>
+    		<listheader label="FECHA" width="100px"  style="color: #ffffff;" />
+    		<listheader label="BUS" width="120px" style="color: #ffffff;" />
+    		<listheader label="RUTA" width="120px" style="color: #ffffff;" />
+    		<listheader label="PILOTO" width="250px" style="color: #ffffff;" />
+    		<listheader label="COPILOTO" width="250px" style="color: #ffffff;" />
+    		<listheader label="TOTAL PASAJES" width="120px" align="right" style="color: #ffffff;" />
+    		<listheader label="TOTAL CARGA" width="120px" align="right" style="color: #ffffff;" />
     		<listheader/>
     	</listhead>    
     </listbox>

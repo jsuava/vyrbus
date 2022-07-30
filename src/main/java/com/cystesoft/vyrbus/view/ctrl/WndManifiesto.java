@@ -444,13 +444,13 @@ public class WndManifiesto extends WndBase {
 			for (VentaPasaje ventaPasaje : lsVentaPasajest){
 				item = new Listitem();
 				
-				cell= new Listcell(ventaPasaje.getNumeroAsiento().toString()); //Nï¿½mero de Asiento
+				cell= new Listcell(ventaPasaje.getNumeroAsiento().toString()); //Número de Asiento
 				cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
-				cell= new Listcell("T"+ventaPasaje.getNumeroControl().toString().substring(4)); //Nï¿½mero de control
+				cell= new Listcell("T"+ventaPasaje.getNumeroControl().toString().substring(4)); //Número de control
 				cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
-				cell = new Listcell(ventaPasaje.getNumeroBoleto()); // Nï¿½mero de Boleto
+				cell = new Listcell(ventaPasaje.getNumeroBoleto()); // Número de Boleto
 				cell.setTooltiptext(ventaPasaje.getTipoComprobante().getDenominacion());
 				cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
@@ -466,7 +466,7 @@ public class WndManifiesto extends WndBase {
 				item.appendChild(cell);
 				cell = new Listcell(ventaPasaje.getPasajero().getTipoDocumento().getDenominacion()); //Tipo Docuemnto 
 				item.appendChild(cell);
-				cell = new Listcell(ventaPasaje.getPasajero().getNumeroDocumento()); //Nï¿½mero Documento
+				cell = new Listcell(ventaPasaje.getPasajero().getNumeroDocumento()); //Número Documento
 				cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
 				cell = new Listcell(ventaPasaje.getRuta().getOrigen()); //Origen

@@ -73,6 +73,7 @@ import com.cystesoft.vyrbus.service.exceptions.TipoMonedaNullException;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.Messages;
+import com.cystesoft.vyrbus.service.util.RESTCiva;
 import com.cystesoft.vyrbus.service.util.Util;
 import com.cystesoft.vyrbus.service.util.UtilData;
 import com.cystesoft.vyrbus.service.util.VentasNotas;
@@ -175,21 +176,22 @@ public class WndFacturacionServicios extends WndBase {
 	}
 	
 //	public void verificarClienteSunat()throws WrongValueException, Exception{
-//		if(!(txtDocumento.getText().trim().isEmpty())){			
-//			String nroDocumento=txtDocumento.getText().trim();
-//			//Consulta RUC EN sunat
-//			List<String> ruc = RESTCiva.getDatosRuc(nroDocumento);
-//
-//			if(ruc!=null){
-//				txtDocumento.setValue(ruc.get(0));
-//				txtCliente.setValue(ruc.get(1));
-//				txtDireccion.setValue(ruc.get(2));
-//			}else{
-//				onCleanControls();
-//			}
-//		}		
-//	}
-//	
+	public void verificarClienteSunat()throws Exception{		
+		if(!(txtDocumento.getText().trim().isEmpty())){			
+			String nroDocumento=txtDocumento.getText().trim();
+			//Consulta RUC EN sunat
+			List<String> ruc = RESTCiva.getDatosRuc(nroDocumento);
+
+			if(ruc!=null){
+				txtDocumento.setValue(ruc.get(0));
+				txtCliente.setValue(ruc.get(1));
+				txtDireccion.setValue(ruc.get(2));
+			}else{
+				onCleanControls();
+			}
+		}		
+	}
+	
 	
 	
 	/**
@@ -1027,7 +1029,7 @@ public class WndFacturacionServicios extends WndBase {
 			onCleanControls();
 			txtDocumento.setValue(nroRuc);
 			txtDocumento.select();
-//			verificarClienteSunat();
+			verificarClienteSunat();
 		}
 	}
 	
