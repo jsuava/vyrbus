@@ -1294,9 +1294,11 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 				DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.boletoAnulado"));
 			else if (ventaOriginal.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_DEVOLUCION)
 				DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.boletoDevuelto"));
-			else if(ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(Long.valueOf(idVenta)))
+//			else if(ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(Long.valueOf(idVenta)) == true)
+			else if(ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(ventaOriginal.getId()) == true) {
 				DlgMessage.information(Messages.getString("Generales.information.manifiestoImpreso"));
-			
+				return;
+			}
 			
 			if (!(ventaOriginal.getUsuario().getId().equals(getUsuario().getId())))
 				DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.otroUsuario"));

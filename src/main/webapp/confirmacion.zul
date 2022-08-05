@@ -99,14 +99,14 @@
 						</grid>
 					</vlayout>									
 				</hlayout>
-				<tabbox>
+				<tabbox width="940px">
 					<tabs>
 						<tab id="tabPasajero" label="Pasajero"/>
 						<tab id="tabCliente" label="Cliente" />
 						<tab id="tabPagos" label="Pagos" />
 					</tabs>
 					<tabpanels>
-						<tabpanel><!-- DATOS DEL PASAJERO -->
+						<tabpanel width="930px"><!-- DATOS DEL PASAJERO -->
 							<vlayout>
 								<groupbox id="grpbxListaPasajeros" mold="3d" closable="false" visible="false">
 									<caption label="LISTADO DE RESULTADOS" style="color: #ffffff;"/>
@@ -168,8 +168,8 @@
 											<row style="background:#F7F7F7">
 												<label value="TELÉFONO :"/>
 												<textbox id="txtTelefono" onOK="btnUbigeoPax.setFocus(true)"/>
-												<label value="UBIGEO (*) :"/>
-												<hbox align="center">
+												<label value="UBIGEO (*) :" visible="false" />
+												<hbox align="center" visible="false" >
 													<textbox id="txtUbigeoPax" width="170px" readonly="true" onOK="txtEmailPax.setFocus(true)"/>
 													<textbox id="txtUbigeoIdPax" visible="false"/>
 													<button id="btnUbigeoPax" sclass="btnImage" label="..." />
@@ -177,21 +177,28 @@
 											</row>
 											<row style="background:#F7F7F7">
 												<label id="lblEmail" value="EMAIL :"/>
-												<textbox id="txtEmailPax" style="text-transform:none !important" onOK="cmbAnio.setFocus(true)"/>
-												<label value="FEC. NACIMIENTO AÑO :"/>
-												<hlayout valign="middle">
-													<combobox id="cmbAnio" width="50px" autodrop="true" placeholder="1920" onOK="cmbMes.setFocus(true)" buttonVisible="false"/>
+												<textbox id="txtEmailPax" style="text-transform:none !important" onOK="dtbxFechaNacimiento.setFocus(true)"/>
+												<label value="FEC. NACIMIENTO :"/>
+												<datebox id="dtbxFechaNacimiento" format="dd/MM/yyyy" buttonVisible="false" width="120px" constraint="no future: No puede ingresar una fecha mayor a la de hoy." ></datebox>
+<!--												
+  												<hlayout valign="middle">
+													<combobox id="cmbAnio" width="50px" autodrop="true" placeholder="1960" onOK="cmbMes.setFocus(true)" buttonVisible="false"/>
 													<label value="MES :"/>
 													<combobox id="cmbMes" width="80px" autodrop="true" placeholder="Enero" onOK="cmbDia.setFocus(true)"/>
 													<label value="DIA :"/>
 													<combobox id="cmbDia" width="50px" autodrop="true" placeholder="01" onOK="cmbSexo.setFocus(true)"/>
 												</hlayout>
+-->												
 											</row>
 											<row style="background:#F7F7F7">
 												<label value="SEXO (*) :"/>
-												<combobox id="cmbSexo" readonly="true" onOK="cmbEstadoCivil.setFocus(true)"/>
+												<combobox id="cmbSexo" readonly="true" onOK="ntbxEdad.setFocus(true)"/>
+												<label value="EDAD (*) :"/>
+												<intbox id="ntbxEdad" width="20px" style="font-size:9px"/>
+<!-- 
 												<label value="ESTADO CIVIL :"/>
 												<combobox id="cmbEstadoCivil" readonly="true"/>
+-->												
 											</row>
 											<row id="rowNacionalidad" visible="false">
 												<label value="NACIONALIDAD (*) :"/>
@@ -241,7 +248,7 @@
 								</groupbox>
 							</vlayout>
 						</tabpanel>
-						<tabpanel><!-- DATOS DEL CLIENTE -->
+						<tabpanel width="930px"><!-- DATOS DEL CLIENTE -->
 							<vlayout>
 								<hlayout>
 									<groupbox id="grpbxListaClientes" mold="3d" closable="false" visible="false">
@@ -303,8 +310,8 @@
 											<row>
 												<label value="EMAIL :"/>
 												<textbox id="txtEmailCliente" style="text-transform:none !important" onOK="btnUbigeoCliente.setFocus(true)"/>
-												<label value="UBIGEO :"/>
-												<hbox align="center" width="100%">
+												<label value="UBIGEO :" visible="false" />
+												<hbox align="center" width="100%" visible="false" >
 													<textbox id="txtUbigeoCliente" width="170px" readonly="true"/>
 													<textbox id="txtUbigeoIdCliente" visible="false"/>
 													<button id="btnUbigeoCliente" sclass="btnImage" label="..."/>
@@ -315,7 +322,7 @@
 								</groupbox>
 							</vlayout>
 						</tabpanel>
-						<tabpanel><!-- PAGOS -->
+						<tabpanel width="930px"><!-- PAGOS -->
 							<hlayout>
 								<grid width="600px" style="border:none;">
 									<rows>

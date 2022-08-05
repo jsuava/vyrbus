@@ -1,5 +1,5 @@
 /**
- * Proyecto		: SISVYR
+ * Proyecto		: VYRBUS
  * Sistema		: Sistema de Ventas y Reservas
  * Descripción	: 
  * Autor		: José Avalos
@@ -191,9 +191,7 @@ public class WndFacturacionServicios extends WndBase {
 			}
 		}		
 	}
-	
-	
-	
+		
 	/**
 	 * Limpia los controles para un nuevo documento
 	 */
@@ -267,7 +265,7 @@ public class WndFacturacionServicios extends WndBase {
 			cell.setStyle("font-size:11px !important");
 			item.appendChild(cell);
 			
-			cell=new Listcell(Util.toNumberFormat(ventaPasaje.getTarifa(), 2));
+			cell=new Listcell(Util.toNumberFormat(ventaPasaje.getTarifa()/1.18, 2));
 			cell.setStyle("font-size:11px !important");
 			item.appendChild(cell);
 			

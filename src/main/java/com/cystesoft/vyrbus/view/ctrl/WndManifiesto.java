@@ -43,6 +43,7 @@ import com.cystesoft.vyrbus.model.bean.Itinerario;
 import com.cystesoft.vyrbus.model.bean.Manifiesto;
 import com.cystesoft.vyrbus.model.bean.ProgramacionServicio;
 import com.cystesoft.vyrbus.model.bean.Usuario;
+import com.cystesoft.vyrbus.model.bean.UsuarioHardware;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.service.exceptions.BusNullException;
 import com.cystesoft.vyrbus.service.exceptions.CertificadoHabilitacionBusNullException;
@@ -248,7 +249,7 @@ public class WndManifiesto extends WndBase {
 				if(listCompPendientesXImprimir.size()>0)
 					throw new CompPendientesXImprimirException();
 				else{
-					/*Solicita confirmaciï¿½n de usuario.*/
+					/*Solicita confirmación de usuario.*/
 					Messagebox.show(Messages.getString("WndManifiesto.question.confirmarImpresion"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
 					@Override
 					public void onEvent(Event e) throws Exception {
@@ -905,8 +906,10 @@ public class WndManifiesto extends WndBase {
 			src1 = Constantes.URL_FORMATOS_MANIFIESTOS+Constantes.CLAVE_PAHT +"MANPAX"+ itinerario.getId()+"-"+ROTULO_TRANSPORTISTA+".txt";
 			src2 = Constantes.URL_FORMATOS_MANIFIESTOS+Constantes.CLAVE_PAHT +"MANPAX"+ itinerario.getId()+"-"+ROTULO_ARCHIVO+".txt";
 			iFrame.setWidth("1115");
+			UsuarioHardware usuarioHardware = getUsuarioHardware();
 
-			if(esPrevio==false && getUsuarioHardware().getPrintApplet().intValue()==Constantes.FALSE_VALUE){
+			if(esPrevio==false && usuarioHardware.getPrintApplet().intValue()==Constantes.FALSE_VALUE){
+//				if(esPrevio==false && getUsuarioHardware().getPrintApplet().intValue()==Constantes.FALSE_VALUE){
 				File fileDestino=new File(fileSunat.getPath().replaceAll(".txt", "")+"COMP.txt");
 				
 				FileInputStream inputSunat= new FileInputStream(fileSunat);
