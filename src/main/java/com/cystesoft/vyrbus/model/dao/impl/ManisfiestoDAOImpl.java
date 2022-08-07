@@ -706,7 +706,7 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			"         INNER JOIN VRMUBIGEO DstD ON (DstD.ubigeo_id=ad.ubigeo_id) "+
 			"         INNER JOIN VRMUBIGEO DptO ON (DptO.c_Coddpto=DstO.c_Coddpto AND DptO.c_Codprov='00' AND DptO.c_Coddist='00') "+
 			"         INNER JOIN VRMUBIGEO Dptd ON (Dptd.c_Coddpto=DstD.c_Coddpto AND Dptd.c_Codprov='00' AND Dptd.c_Coddist='00') "+
-			"    WHERE i.d_Fecpar BETWEEN '" + fechaInicial + "' AND '" + fechaFinal + "' "+
+			"    WHERE i.d_Fecpar BETWEEN to_date('" + fechaInicial + "', 'dd/MM/yyyy') AND to_date('" + fechaFinal + "', 'dd/MM/yyyy') "+
 			"         AND i.n_esanulado=0 AND m.c_estreg='A') man, "+
 			     //---->Ventas
 			"    (SELECT venpas_max.idItinerario,venpas_max.FechaPartida "+
@@ -718,7 +718,7 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			"                       FROM VRTVENPAS v "+
 			"                            INNER JOIN VRTITINERARIO i ON (i.itinerario_id=v.itinerario_id) "+
 			"                            INNER JOIN VRMRUTA r ON (r.ruta_id=i.ruta_idmayor) "+
-			"                       WHERE i.d_fecpar BETWEEN '" + fechaInicial + "' AND '" + fechaFinal + "' "+
+			"                       WHERE i.d_fecpar BETWEEN to_date('" + fechaInicial + "', 'dd/MM/yyyy') AND to_date('" + fechaFinal + "', 'dd/MM/yyyy') "+
 			"                            AND i.n_esanulado=0 "+
 			"                       GROUP BY v.c_numcontrol,i.itinerario_id,i.d_fecpar,r.c_origen,r.c_destino "+       
 			"                       )venpas_max "+
