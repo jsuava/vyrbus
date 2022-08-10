@@ -106,8 +106,7 @@ public class Nota {
 	/**
 	 * Sets the value of the agenciaID property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Long }
+	 * @param value allowed object is {@link Long }
 	 * 
 	 */
 	public void setAgenciaID(Long value) {
@@ -128,9 +127,8 @@ public class Nota {
 	/**
 	 * Sets the value of the cliente property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link Cliente
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link Cliente
+	 *              }{@code >}
 	 * 
 	 */
 	public void setCliente(JAXBElement<Cliente> value) {
@@ -151,9 +149,8 @@ public class Nota {
 	/**
 	 * Sets the value of the codigoTipoNota property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setCodigoTipoNota(JAXBElement<String> value) {
@@ -174,9 +171,8 @@ public class Nota {
 	/**
 	 * Sets the value of the descripcionSustento property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setDescripcionSustento(JAXBElement<String> value) {
@@ -197,9 +193,8 @@ public class Nota {
 	/**
 	 * Sets the value of the descripcionTipoNota property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setDescripcionTipoNota(JAXBElement<String> value) {
@@ -220,9 +215,8 @@ public class Nota {
 	/**
 	 * Sets the value of the documentoReferencia property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement
-	 *            }{@code <}{@link DocumentoReferencia }{@code >}
+	 * @param value allowed object is {@link JAXBElement
+	 *              }{@code <}{@link DocumentoReferencia }{@code >}
 	 * 
 	 */
 	public void setDocumentoReferencia(JAXBElement<DocumentoReferencia> value) {
@@ -243,9 +237,8 @@ public class Nota {
 	/**
 	 * Sets the value of the fechaEmision property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setFechaEmision(JAXBElement<String> value) {
@@ -266,9 +259,8 @@ public class Nota {
 	/**
 	 * Sets the value of the horaEmision property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setHoraEmision(JAXBElement<String> value) {
@@ -288,8 +280,7 @@ public class Nota {
 	/**
 	 * Sets the value of the igv property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Double }
+	 * @param value allowed object is {@link Double }
 	 * 
 	 */
 	public void setIgv(Double value) {
@@ -310,9 +301,8 @@ public class Nota {
 	/**
 	 * Sets the value of the informacionAdicional property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement
-	 *            }{@code <}{@link InformacionAdicional }{@code >}
+	 * @param value allowed object is {@link JAXBElement
+	 *              }{@code <}{@link InformacionAdicional }{@code >}
 	 * 
 	 */
 	public void setInformacionAdicional(JAXBElement<InformacionAdicional> value) {
@@ -333,9 +323,8 @@ public class Nota {
 	/**
 	 * Sets the value of the numeroCorrelativo property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setNumeroCorrelativo(JAXBElement<String> value) {
@@ -356,9 +345,8 @@ public class Nota {
 	/**
 	 * Sets the value of the numeroSerie property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setNumeroSerie(JAXBElement<String> value) {
@@ -379,9 +367,8 @@ public class Nota {
 	/**
 	 * Sets the value of the rucEmpresa property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setRucEmpresa(JAXBElement<String> value) {
@@ -401,8 +388,7 @@ public class Nota {
 	/**
 	 * Sets the value of the subtotal property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Double }
+	 * @param value allowed object is {@link Double }
 	 * 
 	 */
 	public void setSubtotal(Double value) {
@@ -423,9 +409,8 @@ public class Nota {
 	/**
 	 * Sets the value of the tipoComprobanteID property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setTipoComprobanteID(JAXBElement<String> value) {
@@ -445,8 +430,7 @@ public class Nota {
 	/**
 	 * Sets the value of the tipoMonedaSoles property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Boolean }
+	 * @param value allowed object is {@link Boolean }
 	 * 
 	 */
 	public void setTipoMonedaSoles(Boolean value) {
@@ -466,8 +450,7 @@ public class Nota {
 	/**
 	 * Sets the value of the tipoVenta property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Integer }
+	 * @param value allowed object is {@link Integer }
 	 * 
 	 */
 	public void setTipoVenta(Integer value) {
@@ -487,8 +470,7 @@ public class Nota {
 	/**
 	 * Sets the value of the total property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Double }
+	 * @param value allowed object is {@link Double }
 	 * 
 	 */
 	public void setTotal(Double value) {
@@ -508,8 +490,7 @@ public class Nota {
 	/**
 	 * Sets the value of the usuarioID property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Long }
+	 * @param value allowed object is {@link Long }
 	 * 
 	 */
 	public void setUsuarioID(Long value) {
@@ -530,9 +511,8 @@ public class Nota {
 	/**
 	 * Sets the value of the usuarioInsercion property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setUsuarioInsercion(JAXBElement<String> value) {
@@ -553,9 +533,8 @@ public class Nota {
 	/**
 	 * Sets the value of the usuarioModificacion property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setUsuarioModificacion(JAXBElement<String> value) {

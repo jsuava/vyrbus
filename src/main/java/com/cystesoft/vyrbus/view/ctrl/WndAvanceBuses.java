@@ -123,15 +123,47 @@ public class WndAvanceBuses extends WndBase{
 	 */
 	private Listhead crearEncabezado(List<String> lstEncabezado)throws Exception{
 		Listhead listhead=new Listhead();
-		listhead.appendChild(new Listheader("ITEM","","30px"));
-		listhead.appendChild(new Listheader("HORA","","45px"));
-		listhead.appendChild(new Listheader("SERVICIO","","130px"));
-		listhead.appendChild(new Listheader("RUTA","","180px"));
+		Listheader listHeader = new Listheader();
+		
+		listHeader.setLabel("ITEM");
+		listHeader.setWidth("30px");
+		listHeader.setStyle("color: #ffffff;");
+		listhead.appendChild(listHeader);
+
+		listHeader =  new Listheader();
+		listHeader.setLabel("HORA");
+		listHeader.setWidth("45px");
+		listHeader.setStyle("color: #ffffff;");
+		listhead.appendChild(listHeader);
+		
+		listHeader =  new Listheader();
+		listHeader.setLabel("SERVICIO");
+		listHeader.setWidth("130px");
+		listHeader.setStyle("color: #ffffff;");
+		listhead.appendChild(listHeader);
+		
+		listHeader =  new Listheader();
+		listHeader.setLabel("RUTA");
+		listHeader.setWidth("180px");
+		listHeader.setStyle("color: #ffffff;");
+		listhead.appendChild(listHeader);
+		
+//		listhead.appendChild(new Listheader("ITEM","","30px"));
+//		listhead.appendChild(new Listheader("HORA","","45px"));
+//		listhead.appendChild(new Listheader("SERVICIO","","130px"));
+//		listhead.appendChild(new Listheader("RUTA","","180px"));
 		
 		for(String fecha:lstEncabezado){
-			Listheader listheader=new Listheader(fecha,"","55px");
+//			Listheader listheader=new Listheader(fecha,"","55px");
+//			listheader.setAlign("center");
+//			listhead.appendChild(listheader);
+			Listheader listheader=new Listheader();
+			
+			listheader.setLabel(fecha);
+			listheader.setWidth("55px");
+			listheader.setStyle("color: #ffffff;");
 			listheader.setAlign("center");
-			listhead.appendChild(listheader);
+			listhead.appendChild(listHeader);
 		}
 		lbxAvance.appendChild(listhead);
 		

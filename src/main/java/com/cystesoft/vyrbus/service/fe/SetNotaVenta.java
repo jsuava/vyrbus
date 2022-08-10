@@ -58,9 +58,8 @@ public class SetNotaVenta {
 	/**
 	 * Sets the value of the token property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setToken(JAXBElement<String> value) {
@@ -81,9 +80,8 @@ public class SetNotaVenta {
 	/**
 	 * Sets the value of the nota property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link Nota
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link Nota
+	 *              }{@code >}
 	 * 
 	 */
 	public void setNota(JAXBElement<Nota> value) {
@@ -104,9 +102,8 @@ public class SetNotaVenta {
 	/**
 	 * Sets the value of the venta property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link Venta
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link Venta
+	 *              }{@code >}
 	 * 
 	 */
 	public void setVenta(JAXBElement<Venta> value) {

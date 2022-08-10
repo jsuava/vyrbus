@@ -55,9 +55,8 @@ public class SetBajaDocumento {
 	/**
 	 * Sets the value of the token property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setToken(JAXBElement<String> value) {
@@ -67,8 +66,8 @@ public class SetBajaDocumento {
 	/**
 	 * Gets the value of the documentoBaja property.
 	 * 
-	 * @return possible object is {@link JAXBElement
-	 *         }{@code <}{@link DocumentoBaja }{@code >}
+	 * @return possible object is {@link JAXBElement }{@code <}{@link DocumentoBaja
+	 *         }{@code >}
 	 * 
 	 */
 	public JAXBElement<DocumentoBaja> getDocumentoBaja() {
@@ -78,9 +77,8 @@ public class SetBajaDocumento {
 	/**
 	 * Sets the value of the documentoBaja property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement
-	 *            }{@code <}{@link DocumentoBaja }{@code >}
+	 * @param value allowed object is {@link JAXBElement
+	 *              }{@code <}{@link DocumentoBaja }{@code >}
 	 * 
 	 */
 	public void setDocumentoBaja(JAXBElement<DocumentoBaja> value) {

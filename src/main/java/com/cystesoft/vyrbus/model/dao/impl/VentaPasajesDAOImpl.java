@@ -37,6 +37,7 @@ import com.cystesoft.vyrbus.model.bean.Servicio;
 import com.cystesoft.vyrbus.model.bean.Sexo;
 import com.cystesoft.vyrbus.model.bean.TarjetaCredito;
 import com.cystesoft.vyrbus.model.bean.TipoAgencia;
+import com.cystesoft.vyrbus.model.bean.TipoCobranza;
 import com.cystesoft.vyrbus.model.bean.TipoComprobante;
 import com.cystesoft.vyrbus.model.bean.TipoDocumento;
 import com.cystesoft.vyrbus.model.bean.TipoFormaPago;
@@ -380,7 +381,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 							"cc.cencos_id, cc.c_codigo, cc.c_denominacion, " +
 							"vp.c_estdoc, tm.tipmon_id, tm.c_unimon, tm.c_simmon, vp.n_imppagequ,ao.c_nomcor nombreCortoAgenciaPartida, vp.N_TARIFAEQU,vp.N_DESEQU,vp.N_TIPCAM, "+//92
 							"td.c_nomcor, u.c_apepat usuApPaterno, u.c_apemat usuApMaterno, u.c_nombre usuaNombre, vp.n_igv, c.c_direccion direccionCliente, " //98
-						  + "ad.c_nomcor nombreCortoAgenciaLlegada, vp.n_esfe, vp.d_esfe  "+ //99-101
+						  + "ad.c_nomcor nombreCortoAgenciaLlegada, vp.n_esfe, vp.d_esfe, vp.tipcob_id  "+ //99-102
 					"FROM vrtvenpas vp " +
 						"INNER JOIN vrtitinerario i ON i.itinerario_id=vp.itinerario_id " +
 						"INNER JOIN vrmruta r ON r.ruta_id=vp.ruta_id " +
@@ -580,6 +581,12 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		ventaPasaje.setIgv((obj[97]!=null?((BigDecimal)obj[97]).doubleValue():null));
 		ventaPasaje.setEnviadoSFE(obj[100]!=null?((BigDecimal)obj[100]).intValue():null);
 		ventaPasaje.setFechaEnvioSFE(obj[101]!=null?(Date)obj[101]:null);
+		if(obj[102]!=null) {
+			TipoCobranza tipoCobranza= new TipoCobranza();
+			tipoCobranza.setId(((BigDecimal)obj[102]).intValue());
+			ventaPasaje.setTipoCobranza(tipoCobranza);
+		}
+		
 		
 		return ventaPasaje;
 	}
@@ -626,7 +633,9 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				"INNER JOIN vrmruta r ON r.ruta_id={VP}.ruta_id " +
 				"INNER JOIN vrmagencia a ON a.agencia_id={VP}.agencia_id " +
 				"INNER JOIN vrmpasajero p ON p.pasajero_id={VP}.pasajero_id " +
-				"WHERE {VP}.d_fecpar is null AND {VP}.c_estreg='"+Constantes.VALUE_ACTIVO+"' AND {VP}.tipmov_id NOT IN ("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_ANULACION+","+Constantes.ID_TIPMOV_DEVOLUCION+")  "
+				"WHERE {VP}.d_fecpar is null AND {VP}.c_estreg='"+Constantes.VALUE_ACTIVO+
+				"' AND {VP}.tipmov_id NOT IN ("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+
+				Constantes.ID_TIPMOV_ANULACION+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_SERVICIO_ESPECIAL+")  "
 						+ " AND {VP}.tipcom_id 	IN ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_FACTURA+")  ";
 		
 		sql = sql + criterio;
@@ -780,23 +789,23 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		String criterio = idOrigen==null?"":" AND r.localidad_idOrigen=" + idOrigen +" ";
 		criterio = criterio + (idDestino==null?"":" AND r.localidad_idDestino=" + idDestino + " ");
 		criterio = criterio + (pasajero==null?"":" AND CATSEARCH(p.c_nomape, '" + pax + "', null) > 0 ");
-		criterio = criterio + (numeroControl==null?"":" AND {VP}.c_numcontrol='"+ numeroControl +"' ");
-		criterio = criterio + (numeroBoleto==null?"":(" AND {VP}.c_numboleto='" + numeroBoleto.toUpperCase() +"' "));
-		criterio = criterio + (fechaPartida==null?"":" AND {VP}.d_fecpar=to_date('"+fechaPartida+"','"+Constantes.DATE_FORMAT+"') ");
-		String sql = "SELECT {VP.*} FROM vrtvenpas {VP} " +
-				"INNER JOIN (SELECT MAX(venpas_id)venpas_id, c_numcontrol FROM vrtvenpas where d_fecpar>sysdate-1 GROUP BY c_numcontrol) max_vta " +
-				"ON max_vta.venpas_id={VP}.venpas_id " +
-				"INNER JOIN vrmruta r ON r.ruta_id={VP}.ruta_id " +
-				"INNER JOIN vrmagencia a ON a.agencia_id={VP}.agencia_id " +
-				"INNER JOIN vrmpasajero p ON p.pasajero_id={VP}.pasajero_id " +
-				"WHERE {VP}.c_tiptra IN ('"+Constantes.TIPO_OPERACION_VENTA+"','"+Constantes.TIPO_OPERACION_PERDIDA_SERVICIO+"') AND {VP}.c_estreg='"+Constantes.VALUE_ACTIVO+"' " +
-						"AND {VP}.tipcom_id in ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_FACTURA+" ) " +
-						"AND {VP}.tipmov_id NOT IN ("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_ANULACION+")" ; //" --AND {VP}.tipmov_id!="+Constantes.TIPMOV_ANULACION + " " +
-						//"AND {VP}.d_fecpar is not null AND ({VP}.tipforpag_id="+Constantes.TIPFORPAG_EFECTIVO+ " OR " +
-						//"{VP}.tipforpag_id="+Constantes.TIPFORPAG_CREDITO+ " OR {VP}.tipforpag_id="+Constantes.TIPFORPAG_CANJE_PUBLICITARIO+") " ;
+		criterio = criterio + (numeroControl==null?"":" AND VP.c_numcontrol='"+ numeroControl +"' ");
+		criterio = criterio + (numeroBoleto==null?"":(" AND VP.c_numboleto='" + numeroBoleto.toUpperCase() +"' "));
+		criterio = criterio + (fechaPartida==null?"":" AND VP.d_fecpar=to_date('"+fechaPartida+"','"+Constantes.DATE_FORMAT+"') ");
+		String sql = "SELECT VP.* FROM vrtvenpas VP " +
+				"INNER JOIN (SELECT MAX(venpas_id)venpas_id, c_numcontrol FROM vrtvenpas where d_fecpar>sysdate-60 GROUP BY c_numcontrol) max_vta " +
+				"ON max_vta.venpas_id=VP.venpas_id " +
+				"INNER JOIN vrmruta r ON r.ruta_id=VP.ruta_id " +
+				"INNER JOIN vrmagencia a ON a.agencia_id=VP.agencia_id " +
+				"INNER JOIN vrmpasajero p ON p.pasajero_id=VP.pasajero_id " +
+				"WHERE VP.c_tiptra IN ('"+Constantes.TIPO_OPERACION_VENTA+"','"+Constantes.TIPO_OPERACION_PERDIDA_SERVICIO+"') AND VP.c_estreg='"+Constantes.VALUE_ACTIVO+"' " +
+						"AND VP.tipcom_id in ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_FACTURA+" ) " +
+						"AND VP.tipmov_id NOT IN ("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_ANULACION+")" ; //" --AND {VP}.tipmov_id!="+Constantes.TIPMOV_ANULACION + " " +
+						//"AND VP.d_fecpar is not null AND (VP.tipforpag_id="+Constantes.TIPFORPAG_EFECTIVO+ " OR " +
+						//"VP.tipforpag_id="+Constantes.TIPFORPAG_CREDITO+ " OR VP.tipforpag_id="+Constantes.TIPFORPAG_CANJE_PUBLICITARIO+") " ;
 		
 		sql = sql + criterio;
-		sql = sql + "ORDER BY {VP}.c_numboleto, {VP}.d_fecpar, {VP}.c_horpar ";
+		sql = sql + "ORDER BY VP.c_numboleto, VP.d_fecpar, VP.c_horpar ";
 		
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).addEntity("VP",VentaPasaje.class).list();
@@ -3019,7 +3028,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					        + ",COUNT(*) vendidos, SUM(vp.n_imppag)importe "
 					   + "FROM VRTVENPAS vp "
 					     + "INNER JOIN VRMAGENCIA ag ON (ag.agencia_id=vp.agencia_id) "
-					   + "WHERE vp.d_fecliq BETWEEN '"+fechaInicial+"' AND '"+fechaFinal+"' AND ag.tipage_id=1 "
+					   + "WHERE vp.d_fecliq BETWEEN to_date('"+fechaInicial+"', 'dd/MM/yyyy') AND to_date('"+fechaFinal+"', 'dd/MM/yyyy') AND ag.tipage_id=1 "
 					   	 + "AND vp.tipmov_id "+queryTiposMov+" "
 					   	 + "AND vp.tipcom_id IN ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_RECIBO_CAJA+","+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_FACTURA+") "
 					   	 + "AND vp.c_tiptra='"+Constantes.TIPO_OPERACION_VENTA+"' "
@@ -3034,7 +3043,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					        + ",COUNT(*) vendidos, SUM(vp.n_imppag)importe "
 					   + "FROM VRTVENPAS vp "
 					     + "INNER JOIN VRMAGENCIA ag ON (ag.agencia_id=vp.agencia_id) "
-					   + "WHERE vp.d_fecliq BETWEEN '"+fechaInicial+"' AND '"+fechaFinal+"' AND ag.tipage_id=1 "
+					   + "WHERE vp.d_fecliq BETWEEN to_date('"+fechaInicial+"', 'dd/MM/yyyy') AND to_date('"+fechaFinal+"', 'dd/MM/yyyy') AND ag.tipage_id=1 "
 					     + "AND vp.tipmov_id "+queryTiposMov+" "
 					     + "AND vp.tipcom_id IN ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_RECIBO_CAJA+","+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_FACTURA+") "
 					     + "AND vp.c_tiptra='"+Constantes.TIPO_OPERACION_VENTA+"' "
@@ -3049,7 +3058,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					     + ",COUNT(*) vendidos, SUM(vp.n_imppag)importe "
 					   + "FROM VRTVENPAS vp "
 					     + "INNER JOIN VRMAGENCIA ag ON (ag.agencia_id=vp.agencia_id) "
-					   + "WHERE vp.d_fecliq BETWEEN '"+fechaInicial+"' AND '"+fechaFinal+"' AND ag.tipage_id=1 "
+					   + "WHERE vp.d_fecliq BETWEEN to_date('"+fechaInicial+"', 'dd/MM/yyyy') AND to_date('"+fechaFinal+"', 'dd/MM/yyyy') AND ag.tipage_id=1 "
 					   	 + "AND vp.tipmov_id "+queryTiposMov+" "
 					     + "AND vp.tipcom_id IN ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_RECIBO_CAJA+","+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_FACTURA+") "
 					     + "AND vp.c_tiptra='"+Constantes.TIPO_OPERACION_VENTA+"' "
@@ -3898,7 +3907,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				     + "INNER JOIN vrtitinerario it ON (it.itinerario_id=vp.itinerario_id) "
 				     + "INNER JOIN vrmbus bs ON (bs.bus_id=ma.bus_id) "
 				     + "INNER JOIN vrmruta rt ON (rt.ruta_id=vp.ruta_id) "
-				   + "WHERE it.d_fecpar BETWEEN '"+fechaInicio+"' AND '"+fechaFin+"' "
+				   + "WHERE it.d_fecpar BETWEEN to_date('"+fechaInicio+"', 'dd/MM/yyyy') AND to_date('"+fechaFin+"', 'dd/MM/yyyy') "
 				     + "AND vp.tipmov_id NOT IN (5,6,13) "
 				     + "AND vp.c_tiptra = '1' "
 				     + "AND vp.tipcom_id IN (1,2,7) AND vp.c_estreg='A' "

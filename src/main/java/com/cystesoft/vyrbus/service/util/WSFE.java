@@ -10,6 +10,7 @@ package com.cystesoft.vyrbus.service.util;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
@@ -39,11 +40,13 @@ import sun.misc.BASE64Encoder;
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.ConfiguracionImpresora;
 import com.cystesoft.vyrbus.model.bean.DestinatariosEmails;
+import com.cystesoft.vyrbus.model.bean.DetalleEquipaje;
 import com.cystesoft.vyrbus.model.bean.Gasto;
 import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartida;
 import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartidaID;
 import com.cystesoft.vyrbus.model.bean.Liquidacion;
 import com.cystesoft.vyrbus.model.bean.OperadorTarjetaCredito;
+import com.cystesoft.vyrbus.model.bean.TipoCobranza;
 import com.cystesoft.vyrbus.model.bean.TipoMovimiento;
 import com.cystesoft.vyrbus.model.bean.TranscarUsuarioPersonal;
 import com.cystesoft.vyrbus.model.bean.Usuario;
@@ -52,6 +55,7 @@ import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.service.fe.ArrayOfDetalleVenta;
 import com.cystesoft.vyrbus.service.fe.ArrayOfInformacionAdicionalPropiedadAdicional;
 import com.cystesoft.vyrbus.service.fe.ArrayOfInformacionAdicionalTotalMonedaAdicional;
+import com.cystesoft.vyrbus.service.fe.ArrayOfInformacionCredito;
 import com.cystesoft.vyrbus.service.fe.Cliente;
 import com.cystesoft.vyrbus.service.fe.DetalleVenta;
 import com.cystesoft.vyrbus.service.fe.DocumentoBaja;
@@ -60,6 +64,7 @@ import com.cystesoft.vyrbus.service.fe.IMEFEService;
 import com.cystesoft.vyrbus.service.fe.InformacionAdicional;
 import com.cystesoft.vyrbus.service.fe.InformacionAdicionalPropiedadAdicional;
 import com.cystesoft.vyrbus.service.fe.InformacionAdicionalTotalMonedaAdicional;
+import com.cystesoft.vyrbus.service.fe.InformacionCredito;
 import com.cystesoft.vyrbus.service.fe.Nota;
 import com.cystesoft.vyrbus.service.fe.Result;
 import com.cystesoft.vyrbus.service.fe.MEFEService;
@@ -72,6 +77,8 @@ import com.cystesoft.vyrbus.service.xml.XmlDetalleLiquidacionEgresos;
 import com.cystesoft.vyrbus.service.xml.XmlDetalleLiquidacionIngresoVenta;
 import com.cystesoft.vyrbus.service.xml.XmlDetalleLiquidacionOtrosIngresos;
 import com.cystesoft.vyrbus.service.xml.XmlDetalleVentaPasajes;
+import com.cystesoft.vyrbus.service.xml.XmlEquipaje;
+import com.cystesoft.vyrbus.service.xml.XmlEquipajes;
 import com.cystesoft.vyrbus.service.xml.XmlItem;
 import com.cystesoft.vyrbus.service.xml.XmlItemEgresoLiquidacion;
 import com.cystesoft.vyrbus.service.xml.XmlItemIngresoVentaLiquidacion;
@@ -353,6 +360,30 @@ public class WSFE implements Serializable{
 	}
 	
 	/**
+	 * Realiza la impresion del Ticket de Equipaje
+	 * @param listDetalleEquipaje
+	 */
+	public static void printEquipaje(List<DetalleEquipaje> listDetalleEquipaje, Window window, boolean timerdownload) {
+		XmlEquipajes fileXmlEquipajes = null;
+		
+		try {
+			
+			fileXmlEquipajes = createXmlEquipaje(listDetalleEquipaje);
+			if(fileXmlEquipajes !=null)
+				descargarFileXmlEquipaje(fileXmlEquipajes, window, timerdownload);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			DlgMessage.error(e.getMessage());
+			String numerosComp="";
+			for(DetalleEquipaje detalleEquipaje : listDetalleEquipaje){
+				numerosComp+=(numerosComp.trim().length()==0 ?detalleEquipaje.getTicket():";"+detalleEquipaje.getTicket());
+			}
+			sendMail("metod printVouchers : "+numerosComp+" \n "+e.getMessage());
+		}		
+	}
+	
+	/**
 	 * Realiza solamente la impresion del Voucher, OJO este no se envia al Servidor F.E.
 	 * @param listVouchers	: Lista de vouchers a imprimir
 	 * @param window
@@ -618,6 +649,81 @@ public class WSFE implements Serializable{
 		}
 	}
 	
+	
+	/**
+	 * Descarga el archivo xml para la impresion
+	 * @param xmlVentaPasaje	: Instancia de la clase xmlventaPasaje
+	 * @param window : Instacia de la venta de donde es invocado el metodo
+	 * @param result :
+	 */
+	private static void descargarFileXmlEquipaje(XmlEquipajes xmlEquipajes, Window window, boolean timerdownload){
+		String nameFile="";
+		try {
+			//Crea el archivo xml
+			nameFile="9B900E6PJ-";
+			String directorio="";			
+			nameFile+=xmlEquipajes.getEquipaje().get(0).getV1_numero();
+			directorio=Constantes.DIRECTORY_BOLETOS;			
+			
+			String pZipFile=directorio+nameFile+".zip";
+			String pathSavedXml=directorio+nameFile;
+			
+			//Creando un directorio con el nombre del archivo
+			File directory=new File(pathSavedXml);
+			directory.mkdir();
+			pathSavedXml=directory.getAbsolutePath()+Util.separator+nameFile+".xml";
+			
+			JAXBContext context = JAXBContext.newInstance(XmlEquipajes.class);
+			Marshaller marshaller = context.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			/**Mostramos el documento XML generado por la salida estandar*/
+//			marshaller.marshal(xmlVentaPasaje, System.out);
+			FileOutputStream fos = new FileOutputStream(pathSavedXml);
+			/**guardamos el objeto serializado en un documento XML*/
+			try {
+				marshaller.marshal(xmlEquipajes, fos);
+				fos.close();
+			} catch (Exception e) {
+				fos.close();
+			}
+			
+			/*Zipeamos el xml (Basicamente para reducir el tamanio)*/			
+			Util.Zippear(pathSavedXml, pZipFile,nameFile);
+			
+			final String _pZipFile=pZipFile;
+			
+			if(timerdownload) {
+				Timer _timer=new Timer(3000);
+				_timer.addEventListener(Events.ON_TIMER, new EventListener<Event>() {
+					@Override
+					public void onEvent(Event event) throws Exception {
+						/*Descarga el archivo .xml*/
+						Filedownload.save(new File(_pZipFile), "application/zip");
+					}
+				});
+				window.appendChild(_timer);
+			}else {
+				/*Descarga el archivo .xml*/
+				Filedownload.save(new File(_pZipFile), "application/zip");	
+			}			
+			
+			/*Elimina el file.zip despues de 10 segundos*/			
+			Timer timer=new Timer(10000);
+			timer.addEventListener(Events.ON_TIMER, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					Files.deleteAll(new File(_pZipFile));
+				}
+			});
+			window.appendChild(timer);
+		} catch (Exception e) {
+			e.printStackTrace();
+			DlgMessage.error(e.getMessage());
+			/*Envia un e-mail con el error*/
+			sendMail("Metod descargarFileXml : "+nameFile+"\n " +e.getMessage());
+		}
+	}
+	
 	/**
 	 * Descarga el archivo xml para la impresion
 	 * @param xmlVentaPasaje	: Instancia de la clase xmlventaPasaje
@@ -690,6 +796,52 @@ public class WSFE implements Serializable{
 	}
 	
 	
+	/**
+	 * @param numPrintCopies: Indica el numero de copias que se debe imprimir el comprobante
+	 * @param listDetalleEquipaje
+	 * 
+	 * @return
+	 */
+	private static XmlEquipajes createXmlEquipaje(List<DetalleEquipaje> listDetalleEquipaje) {
+		XmlEquipajes xmlEquipajes = null;
+		try {
+			List<XmlEquipaje> listXmlEquipaje= new ArrayList<>();
+			String pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"Equipaje_TM.rpt";
+			Path path = Paths.get(pathRpt);
+			byte[] contenido = java.nio.file.Files.readAllBytes(path);
+			@SuppressWarnings("restriction")
+			String cryptoRptFormat=new BASE64Encoder().encode(contenido);
+			
+			for(int i = 0; i < 2; i++) { //Para duplicar la impresion de Ticket de equipaje - Para el equipaje y el Boleto
+				for(DetalleEquipaje detalleEquipaje: listDetalleEquipaje) {
+					VentaPasaje ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarPorId(detalleEquipaje.getVentaPasaje().getId());
+					
+					XmlEquipaje xmlEquipaje = new XmlEquipaje();
+					xmlEquipaje.setV1_numero(detalleEquipaje.getTicket());	
+					xmlEquipaje.setV2_destino(ventaPasaje.getRuta().getDestino());
+					xmlEquipaje.setV3_servicio(ventaPasaje.getServicio().getDenominacion());
+					xmlEquipaje.setV4_numeroBoleto(ventaPasaje.getNumeroBoleto());
+					xmlEquipaje.setV5_fechaSalida(Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida()));
+					xmlEquipaje.setV6_horaSalida(ventaPasaje.getHoraPartida());
+					xmlEquipaje.setV7_puntoEmbarque(ventaPasaje.getAgenciaPartida().getDenominacion());
+					xmlEquipaje.setV8_puntoDesembarque(ventaPasaje.getAgenciaLlegada().getDenominacion());
+					xmlEquipaje.setZ_ticket(cryptoRptFormat);
+					xmlEquipaje.setZ_CodigoBarra(null);
+					
+					listXmlEquipaje.add(xmlEquipaje);				
+				}
+			}			
+			
+			if(listXmlEquipaje.size()>0) {
+				xmlEquipajes = new XmlEquipajes();
+				xmlEquipajes.setEquipaje(listXmlEquipaje);
+			}			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return xmlEquipajes;
+	}
 	
 	
 	/**
@@ -1029,7 +1181,7 @@ public class WSFE implements Serializable{
 			default:
 				venta.setTipoVenta(99);
 			}
-			
+
 			/*Solo cuando es operado por otra empresa de transportes*/
 			if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA_POOL)){
 				String observaciones="***SERVICIO OPERADO POR "+getNamePool(ventaPasaje.getObservaciones().split(";"), "OPERADO")+"***";
@@ -1060,6 +1212,25 @@ public class WSFE implements Serializable{
 						agenciaPartida=ServiceLocator.getAgenciaManager().buscarPorId(agenciaPartida.getId().longValue());
 					venta.setDireccionEmbarque(new JAXBElement<String>(new QName(NAMESPACE,"direccionEmbarque"), String.class, agenciaPartida.getDireccion()));	
 				}
+			}
+			
+			//***************Forma de Pago**************** jabanto - 29/07/2022
+			venta.setIsCredito(false);
+			if(ventaPasaje.getTipoCobranza()!=null) {				
+				TipoCobranza tipoCobranza = ServiceLocator.getTipoCobranzaManager().buscarPorId(ventaPasaje.getTipoCobranza().getId().longValue());
+				int dias = Integer.valueOf(tipoCobranza.getDenominacion().split(" ")[0]);
+				Date fechaVencimiento = new Date(ventaPasaje.getFechaLiquidacion().getTime() + (Constantes.MILISEGUNDOS_X_DIA * dias));
+				String strFechaVencimiento = Constantes.FORMAT_DATE.format(fechaVencimiento);
+				
+				InformacionCredito informacionCredito= new InformacionCredito();
+				informacionCredito.setNroCuota(new JAXBElement<String>(new QName(NAMESPACE,"NroCuota"), String.class, "Cuota001"));
+				informacionCredito.setMontoCuota(BigDecimal.valueOf(ventaPasaje.getImportePagado()));
+				informacionCredito.setFechaVencimiento(new JAXBElement<String>(new QName(NAMESPACE,"FechaVencimiento"), String.class, strFechaVencimiento));
+//				venta.setFechaEmision(new JAXBElement<String>(new QName(NAMESPACE,"fechaEmision"), String.class, fechaEmision));
+				ArrayOfInformacionCredito arrayOfInformacionCredito = new ArrayOfInformacionCredito();
+				arrayOfInformacionCredito.getInformacionCredito().add(informacionCredito);
+				venta.setInfoCreditList(new JAXBElement<ArrayOfInformacionCredito>(new QName(NAMESPACE,"InfoCreditList"), ArrayOfInformacionCredito.class,arrayOfInformacionCredito));
+				venta.setIsCredito(true);
 			}
 			
 			/*=======================================================*/

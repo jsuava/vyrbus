@@ -93,9 +93,8 @@ public class RetencionInp {
 	/**
 	 * Sets the value of the fechaEmision property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setFechaEmision(JAXBElement<String> value) {
@@ -115,8 +114,7 @@ public class RetencionInp {
 	/**
 	 * Sets the value of the importeTotalRetenido property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Double }
+	 * @param value allowed object is {@link Double }
 	 * 
 	 */
 	public void setImporteTotalRetenido(Double value) {
@@ -137,9 +135,8 @@ public class RetencionInp {
 	/**
 	 * Sets the value of the importeTotalRetenidoEnLetras property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setImporteTotalRetenidoEnLetras(JAXBElement<String> value) {
@@ -159,8 +156,7 @@ public class RetencionInp {
 	/**
 	 * Sets the value of the montoTotalPagado property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Double }
+	 * @param value allowed object is {@link Double }
 	 * 
 	 */
 	public void setMontoTotalPagado(Double value) {
@@ -181,9 +177,8 @@ public class RetencionInp {
 	/**
 	 * Sets the value of the numeroCorrelativo property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setNumeroCorrelativo(JAXBElement<String> value) {
@@ -204,9 +199,8 @@ public class RetencionInp {
 	/**
 	 * Sets the value of the razonSocial property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setRazonSocial(JAXBElement<String> value) {
@@ -227,9 +221,8 @@ public class RetencionInp {
 	/**
 	 * Sets the value of the ruc property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setRuc(JAXBElement<String> value) {
@@ -250,9 +243,8 @@ public class RetencionInp {
 	/**
 	 * Sets the value of the serie property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setSerie(JAXBElement<String> value) {
@@ -272,8 +264,7 @@ public class RetencionInp {
 	/**
 	 * Sets the value of the tipoCambio property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Double }
+	 * @param value allowed object is {@link Double }
 	 * 
 	 */
 	public void setTipoCambio(Double value) {
@@ -294,9 +285,8 @@ public class RetencionInp {
 	/**
 	 * Sets the value of the correo property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setCorreo(JAXBElement<String> value) {
@@ -317,9 +307,8 @@ public class RetencionInp {
 	/**
 	 * Sets the value of the detalleRetencion property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement
-	 *            }{@code <}{@link ArrayOfRetencionDetalleInp }{@code >}
+	 * @param value allowed object is {@link JAXBElement
+	 *              }{@code <}{@link ArrayOfRetencionDetalleInp }{@code >}
 	 * 
 	 */
 	public void setDetalleRetencion(JAXBElement<ArrayOfRetencionDetalleInp> value) {
@@ -340,9 +329,8 @@ public class RetencionInp {
 	/**
 	 * Sets the value of the id property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setId(JAXBElement<String> value) {
@@ -363,9 +351,8 @@ public class RetencionInp {
 	/**
 	 * Sets the value of the registroRetencion property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setRegistroRetencion(JAXBElement<String> value) {
@@ -386,9 +373,8 @@ public class RetencionInp {
 	/**
 	 * Sets the value of the tasaRetencion property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setTasaRetencion(JAXBElement<String> value) {

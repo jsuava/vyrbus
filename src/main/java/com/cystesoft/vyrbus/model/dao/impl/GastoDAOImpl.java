@@ -241,7 +241,8 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 					"FROM vrtgasto g  "+
 					"INNER JOIN vrtdetliq dlq ON (dlq.gasto_id=g.gasto_id) "+
 					"INNER JOIN vrtliquidacion lq ON (lq.liquidacion_id=dlq.liquidacion_id) "+
-					"WHERE lq.agencia_id="+idAgencia+" AND lq.usuario_id="+idUsuario+" AND to_char(lq.d_fecliq,'dd/mm/yyyy')=to_date('"+fecha+"','"+Constantes.DATE_FORMAT+"') ";
+					"WHERE lq.agencia_id="+idAgencia+" AND lq.usuario_id="+idUsuario+" AND to_char(lq.d_fecliq,'dd/mm/yyyy')='"+fecha+"' ";
+//					"WHERE lq.agencia_id="+idAgencia+" AND lq.usuario_id="+idUsuario+" AND to_char(lq.d_fecliq,'dd/mm/yyyy')=to_date('"+fecha+"','"+Constantes.DATE_FORMAT+"') ";
 		
 		log.info(sql);
 		List<?> obj = getSession().createSQLQuery(sql).list();

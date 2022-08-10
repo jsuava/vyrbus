@@ -52,9 +52,8 @@ public class SetNotaResponse {
 	/**
 	 * Sets the value of the setNotaResult property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link Result
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link Result
+	 *              }{@code >}
 	 * 
 	 */
 	public void setSetNotaResult(JAXBElement<Result> value) {

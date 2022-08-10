@@ -2152,6 +2152,9 @@ public class WndPostergacion extends WndBase implements Serializable {
 			if(lstdetiti.size()==1){
 				detalleItinerario=new DetalleItinerario();
 				detalleItinerario=lstdetiti.get(0);
+				//MAOE: 22/06/2022
+				//Insertar la tarifa en el detalleItinerario para el cambio de nombre
+				detalleItinerario.setTarifa(postergacion.getTarifa());
 				
 				postergacion.setItinerario(detalleItinerario.getItinerario());
 				postergacion.setServicio(detalleItinerario.getItinerario().getServicio());

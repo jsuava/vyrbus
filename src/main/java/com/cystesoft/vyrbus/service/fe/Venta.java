@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
+ *         &lt;element name="InfoCreditList" type="{http://schemas.datacontract.org/2004/07/FEService.Input}ArrayOfInformacionCredito" minOccurs="0"/>
  *         &lt;element name="IsCreatePdf" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
  *         &lt;element name="agenciaID" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
  *         &lt;element name="centroCosto" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
@@ -32,6 +33,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="horaEmision" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="igv" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/>
  *         &lt;element name="informacionAdicional" type="{http://schemas.datacontract.org/2004/07/FEService.Input}InformacionAdicional" minOccurs="0"/>
+ *         &lt;element name="isCredito" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
  *         &lt;element name="isSOUE" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
  *         &lt;element name="listDetalleVenta" type="{http://schemas.datacontract.org/2004/07/FEService.Input}ArrayOfDetalleVenta" minOccurs="0"/>
  *         &lt;element name="montoSubTotal" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/>
@@ -59,13 +61,15 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Venta", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", propOrder = {
-		"isCreatePdf", "agenciaID", "centroCosto", "cliente", "direccionEmbarque", "documentoReferencia",
-		"fechaEmision", "glosaRetencion", "horaEmision", "igv", "informacionAdicional", "isSOUE", "listDetalleVenta",
-		"montoSubTotal", "montoTotal", "montoTotalDescuento", "numeroCorrelativo", "numeroPrefactura", "numeroSerie",
-		"observaciones", "producto", "rucEmpresa", "tipoComprobanteID", "tipoMonedaSoles", "tipoVenta", "usuarioID",
-		"usuarioInsercion", "usuarioModificacion" })
+		"infoCreditList", "isCreatePdf", "agenciaID", "centroCosto", "cliente", "direccionEmbarque",
+		"documentoReferencia", "fechaEmision", "glosaRetencion", "horaEmision", "igv", "informacionAdicional",
+		"isCredito", "isSOUE", "listDetalleVenta", "montoSubTotal", "montoTotal", "montoTotalDescuento",
+		"numeroCorrelativo", "numeroPrefactura", "numeroSerie", "observaciones", "producto", "rucEmpresa",
+		"tipoComprobanteID", "tipoMonedaSoles", "tipoVenta", "usuarioID", "usuarioInsercion", "usuarioModificacion" })
 public class Venta {
 
+	@XmlElementRef(name = "InfoCreditList", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", type = JAXBElement.class)
+	protected JAXBElement<ArrayOfInformacionCredito> infoCreditList;
 	@XmlElement(name = "IsCreatePdf")
 	protected Boolean isCreatePdf;
 	protected Long agenciaID;
@@ -86,6 +90,7 @@ public class Venta {
 	protected Double igv;
 	@XmlElementRef(name = "informacionAdicional", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", type = JAXBElement.class)
 	protected JAXBElement<InformacionAdicional> informacionAdicional;
+	protected Boolean isCredito;
 	protected Boolean isSOUE;
 	@XmlElementRef(name = "listDetalleVenta", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", type = JAXBElement.class)
 	protected JAXBElement<ArrayOfDetalleVenta> listDetalleVenta;
@@ -115,6 +120,28 @@ public class Venta {
 	protected JAXBElement<String> usuarioModificacion;
 
 	/**
+	 * Gets the value of the infoCreditList property.
+	 * 
+	 * @return possible object is {@link JAXBElement
+	 *         }{@code <}{@link ArrayOfInformacionCredito }{@code >}
+	 * 
+	 */
+	public JAXBElement<ArrayOfInformacionCredito> getInfoCreditList() {
+		return infoCreditList;
+	}
+
+	/**
+	 * Sets the value of the infoCreditList property.
+	 * 
+	 * @param value allowed object is {@link JAXBElement
+	 *              }{@code <}{@link ArrayOfInformacionCredito }{@code >}
+	 * 
+	 */
+	public void setInfoCreditList(JAXBElement<ArrayOfInformacionCredito> value) {
+		this.infoCreditList = ((JAXBElement<ArrayOfInformacionCredito>) value);
+	}
+
+	/**
 	 * Gets the value of the isCreatePdf property.
 	 * 
 	 * @return possible object is {@link Boolean }
@@ -127,8 +154,7 @@ public class Venta {
 	/**
 	 * Sets the value of the isCreatePdf property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Boolean }
+	 * @param value allowed object is {@link Boolean }
 	 * 
 	 */
 	public void setIsCreatePdf(Boolean value) {
@@ -148,8 +174,7 @@ public class Venta {
 	/**
 	 * Sets the value of the agenciaID property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Long }
+	 * @param value allowed object is {@link Long }
 	 * 
 	 */
 	public void setAgenciaID(Long value) {
@@ -170,9 +195,8 @@ public class Venta {
 	/**
 	 * Sets the value of the centroCosto property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setCentroCosto(JAXBElement<String> value) {
@@ -193,9 +217,8 @@ public class Venta {
 	/**
 	 * Sets the value of the cliente property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link Cliente
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link Cliente
+	 *              }{@code >}
 	 * 
 	 */
 	public void setCliente(JAXBElement<Cliente> value) {
@@ -216,9 +239,8 @@ public class Venta {
 	/**
 	 * Sets the value of the direccionEmbarque property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setDireccionEmbarque(JAXBElement<String> value) {
@@ -239,9 +261,8 @@ public class Venta {
 	/**
 	 * Sets the value of the documentoReferencia property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement
-	 *            }{@code <}{@link DocumentoReferencia }{@code >}
+	 * @param value allowed object is {@link JAXBElement
+	 *              }{@code <}{@link DocumentoReferencia }{@code >}
 	 * 
 	 */
 	public void setDocumentoReferencia(JAXBElement<DocumentoReferencia> value) {
@@ -262,9 +283,8 @@ public class Venta {
 	/**
 	 * Sets the value of the fechaEmision property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setFechaEmision(JAXBElement<String> value) {
@@ -285,9 +305,8 @@ public class Venta {
 	/**
 	 * Sets the value of the glosaRetencion property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setGlosaRetencion(JAXBElement<String> value) {
@@ -308,9 +327,8 @@ public class Venta {
 	/**
 	 * Sets the value of the horaEmision property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setHoraEmision(JAXBElement<String> value) {
@@ -330,8 +348,7 @@ public class Venta {
 	/**
 	 * Sets the value of the igv property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Double }
+	 * @param value allowed object is {@link Double }
 	 * 
 	 */
 	public void setIgv(Double value) {
@@ -352,13 +369,32 @@ public class Venta {
 	/**
 	 * Sets the value of the informacionAdicional property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement
-	 *            }{@code <}{@link InformacionAdicional }{@code >}
+	 * @param value allowed object is {@link JAXBElement
+	 *              }{@code <}{@link InformacionAdicional }{@code >}
 	 * 
 	 */
 	public void setInformacionAdicional(JAXBElement<InformacionAdicional> value) {
 		this.informacionAdicional = ((JAXBElement<InformacionAdicional>) value);
+	}
+
+	/**
+	 * Gets the value of the isCredito property.
+	 * 
+	 * @return possible object is {@link Boolean }
+	 * 
+	 */
+	public Boolean isIsCredito() {
+		return isCredito;
+	}
+
+	/**
+	 * Sets the value of the isCredito property.
+	 * 
+	 * @param value allowed object is {@link Boolean }
+	 * 
+	 */
+	public void setIsCredito(Boolean value) {
+		this.isCredito = value;
 	}
 
 	/**
@@ -374,8 +410,7 @@ public class Venta {
 	/**
 	 * Sets the value of the isSOUE property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Boolean }
+	 * @param value allowed object is {@link Boolean }
 	 * 
 	 */
 	public void setIsSOUE(Boolean value) {
@@ -396,9 +431,8 @@ public class Venta {
 	/**
 	 * Sets the value of the listDetalleVenta property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement
-	 *            }{@code <}{@link ArrayOfDetalleVenta }{@code >}
+	 * @param value allowed object is {@link JAXBElement
+	 *              }{@code <}{@link ArrayOfDetalleVenta }{@code >}
 	 * 
 	 */
 	public void setListDetalleVenta(JAXBElement<ArrayOfDetalleVenta> value) {
@@ -418,8 +452,7 @@ public class Venta {
 	/**
 	 * Sets the value of the montoSubTotal property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Double }
+	 * @param value allowed object is {@link Double }
 	 * 
 	 */
 	public void setMontoSubTotal(Double value) {
@@ -439,8 +472,7 @@ public class Venta {
 	/**
 	 * Sets the value of the montoTotal property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Double }
+	 * @param value allowed object is {@link Double }
 	 * 
 	 */
 	public void setMontoTotal(Double value) {
@@ -460,8 +492,7 @@ public class Venta {
 	/**
 	 * Sets the value of the montoTotalDescuento property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Double }
+	 * @param value allowed object is {@link Double }
 	 * 
 	 */
 	public void setMontoTotalDescuento(Double value) {
@@ -482,9 +513,8 @@ public class Venta {
 	/**
 	 * Sets the value of the numeroCorrelativo property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setNumeroCorrelativo(JAXBElement<String> value) {
@@ -505,9 +535,8 @@ public class Venta {
 	/**
 	 * Sets the value of the numeroPrefactura property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setNumeroPrefactura(JAXBElement<String> value) {
@@ -528,9 +557,8 @@ public class Venta {
 	/**
 	 * Sets the value of the numeroSerie property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setNumeroSerie(JAXBElement<String> value) {
@@ -551,9 +579,8 @@ public class Venta {
 	/**
 	 * Sets the value of the observaciones property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setObservaciones(JAXBElement<String> value) {
@@ -574,9 +601,8 @@ public class Venta {
 	/**
 	 * Sets the value of the producto property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setProducto(JAXBElement<String> value) {
@@ -597,9 +623,8 @@ public class Venta {
 	/**
 	 * Sets the value of the rucEmpresa property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setRucEmpresa(JAXBElement<String> value) {
@@ -620,9 +645,8 @@ public class Venta {
 	/**
 	 * Sets the value of the tipoComprobanteID property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setTipoComprobanteID(JAXBElement<String> value) {
@@ -642,8 +666,7 @@ public class Venta {
 	/**
 	 * Sets the value of the tipoMonedaSoles property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Boolean }
+	 * @param value allowed object is {@link Boolean }
 	 * 
 	 */
 	public void setTipoMonedaSoles(Boolean value) {
@@ -663,8 +686,7 @@ public class Venta {
 	/**
 	 * Sets the value of the tipoVenta property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Integer }
+	 * @param value allowed object is {@link Integer }
 	 * 
 	 */
 	public void setTipoVenta(Integer value) {
@@ -684,8 +706,7 @@ public class Venta {
 	/**
 	 * Sets the value of the usuarioID property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Long }
+	 * @param value allowed object is {@link Long }
 	 * 
 	 */
 	public void setUsuarioID(Long value) {
@@ -706,9 +727,8 @@ public class Venta {
 	/**
 	 * Sets the value of the usuarioInsercion property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setUsuarioInsercion(JAXBElement<String> value) {
@@ -729,9 +749,8 @@ public class Venta {
 	/**
 	 * Sets the value of the usuarioModificacion property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setUsuarioModificacion(JAXBElement<String> value) {

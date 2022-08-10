@@ -52,9 +52,8 @@ public class SetBajasResponse {
 	/**
 	 * Sets the value of the setBajasResult property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link Result
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link Result
+	 *              }{@code >}
 	 * 
 	 */
 	public void setSetBajasResult(JAXBElement<Result> value) {

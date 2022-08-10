@@ -25,7 +25,7 @@ public class Constantes {
 	/**
 	 * Vension actual del Sistema
 	 */
-	public static final String SYSTEM_VERSION = "Versión 3.0.0";
+	public static final String SYSTEM_VERSION = "Versión 3.2.0";
 		
 	/**
 	 * Constante para la Acción Nuevo
@@ -160,10 +160,12 @@ public class Constantes {
 
 	//http://168.121.236.46:8080/
 
-//	public static final String SERVER_HOST = "192.168.0.8:8080";
-
 	public static final String SERVER_HOST = "localhost:8080";
+
+	//SERVER_HOST PRODUCCION TRANSMAR
+//	public static final String SERVER_HOST = "119.8.145.122:8080";
 //	public static final String SERVER_HOST = "190.119.140.203:8080";
+
 
 	public static final String SERVER_CONTEXT = Executions.getCurrent().getContextPath();
 	public static final String URL_FORMATOS = SERVER_PROTOCOL+"://"+SERVER_HOST+SERVER_CONTEXT+"/formatos/";
@@ -274,7 +276,7 @@ public class Constantes {
 	public static final String RUC_CRUZ_DEL_SUR="20100227461";
 	public static final String RUC_CIVA="20102427891";
 	public static final String RUC_TEPSA="20502324927";
-	public static final String RUC_TRANSMAR="20606078189";//"20450760839";
+	public static final String RUC_TRANSMAR="20501622819";
 	public static final String OPERADO_POR_CRUZ_DEL_SUR="CRUZ DEL SUR";
 	public static final String OPERADO_CIVA="EXCLUCIVA";
 	
@@ -613,6 +615,7 @@ public class Constantes {
 	 */
 	public static final String empresa="TRANSMAR EXPRESS SAC";
 	public static final String direccion_empresa="AV. NICOLAS ARRIOLA NRO. 197";
+	public static final String centro_computo = "TRANSMAR";
 	public static final String nro_telefono="(01)265 0190";
 	public static final String ruc="20501622819"; 
 	public static final String usuario="059979";

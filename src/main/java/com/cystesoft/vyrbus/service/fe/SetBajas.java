@@ -58,9 +58,8 @@ public class SetBajas {
 	/**
 	 * Sets the value of the token property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setToken(JAXBElement<String> value) {
@@ -81,9 +80,8 @@ public class SetBajas {
 	/**
 	 * Sets the value of the fechaEmisionComprobantes property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setFechaEmisionComprobantes(JAXBElement<String> value) {
@@ -104,9 +102,8 @@ public class SetBajas {
 	/**
 	 * Sets the value of the rucEmpresa property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setRucEmpresa(JAXBElement<String> value) {

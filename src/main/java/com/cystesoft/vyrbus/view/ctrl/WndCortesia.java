@@ -1,6 +1,8 @@
 package com.cystesoft.vyrbus.view.ctrl;
 
 import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
@@ -84,6 +86,7 @@ import com.cystesoft.vyrbus.service.exceptions.UbigeoNullException;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.Messages;
+import com.cystesoft.vyrbus.service.util.RESTCiva;
 import com.cystesoft.vyrbus.service.util.Util;
 import com.cystesoft.vyrbus.service.util.UtilData;
 import com.cystesoft.vyrbus.view.ui.DlgMessage;
@@ -956,15 +959,30 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 					}
 				}
 			}else{
+				//Consulta el servicio web de Reniec
+				List<String> dni = RESTCiva.getDatosDni(numerodocumento);
+				if(dni!=null){
+					Reniec reniec = new Reniec();
+					reniec.setNumeroDocumento(dni.get(0));
+					reniec.setNombres(dni.get(1));
+					reniec.setApellidoPaterno(dni.get(2));
+					reniec.setApellidoMaterno(dni.get(3));
+					
+//					ntbxEdad.setValue(30);
+					dbfechaNacimiento.setValue(Constantes.FORMAT_DATE.parse(calcularFechaNacimiento()));
+				
 				/*Consulta con NUESTRA BD reniec*/
-				Reniec reniec= ServiceLocator.getReniecManager().buscarPax(numerodocumento);
-				if(reniec!=null){
+//				Reniec reniec= ServiceLocator.getReniecManager().buscarPax(numerodocumento);
+//				if(reniec!=null){
 					Util.seleccionarValorItemCombo(TipoDocumento.class, cmbDocumentoIdentificacion, Constantes.ID_TIPDOC_DNI);
 					txtApellidoMaterno.setText(reniec.getApellidoPaterno());
 					txtApellidoPaterno.setText(reniec.getApellidoMaterno());
 					txtNombre.setText(reniec.getNombres());
-					dbfechaNacimiento.setValue(Constantes.FORMAT_DATE.parse(reniec.getFechaNacimiento()));
-					Util.seleccionarValorItemCombo(Sexo.class, cmbSexo, Integer.valueOf(reniec.getSexo()));
+					dbfechaNacimiento.setValue(Constantes.FORMAT_DATE.parse(calcularFechaNacimiento()));
+					
+					//Comentado porque ahora se consulta a Reniec pro un API y no devuelve estos datos
+//					dbfechaNacimiento.setValue(Constantes.FORMAT_DATE.parse(reniec.getFechaNacimiento()));
+//					Util.seleccionarValorItemCombo(Sexo.class, cmbSexo, Integer.valueOf(reniec.getSexo()));
 				}else{
 					String numeroDocumento=txtNumeroDocumento.getText().trim();
 					Integer idTipoDocumento= null;
@@ -981,6 +999,16 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 			}
 		}
 	}
+	
+	private String calcularFechaNacimiento(){
+		final DateFormat FORMAT = new SimpleDateFormat ("dd/MM");
+		String year = Util.DatetoString(new Date(), "yyyy");
+		Integer anio = Integer.valueOf(year) - 30;
+//		String fechaNacimiento = "01/01/"+anio;
+		String fechaNacimiento = FORMAT.format(new Date())+"/"+anio;
+		return fechaNacimiento;
+	}
+	
 	
 	/**
 	 * Muestra datos del Pasajero

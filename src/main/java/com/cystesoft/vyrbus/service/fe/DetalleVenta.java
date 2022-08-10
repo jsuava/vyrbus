@@ -79,8 +79,7 @@ public class DetalleVenta {
 	/**
 	 * Sets the value of the bultos property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Integer }
+	 * @param value allowed object is {@link Integer }
 	 * 
 	 */
 	public void setBultos(Integer value) {
@@ -100,8 +99,7 @@ public class DetalleVenta {
 	/**
 	 * Sets the value of the cantidad property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Double }
+	 * @param value allowed object is {@link Double }
 	 * 
 	 */
 	public void setCantidad(Double value) {
@@ -122,9 +120,8 @@ public class DetalleVenta {
 	/**
 	 * Sets the value of the codigoAfectacionIgv property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setCodigoAfectacionIgv(JAXBElement<String> value) {
@@ -145,9 +142,8 @@ public class DetalleVenta {
 	/**
 	 * Sets the value of the codigoProducto property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setCodigoProducto(JAXBElement<String> value) {
@@ -168,9 +164,8 @@ public class DetalleVenta {
 	/**
 	 * Sets the value of the codigoTipoPrecio property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setCodigoTipoPrecio(JAXBElement<String> value) {
@@ -191,9 +186,8 @@ public class DetalleVenta {
 	/**
 	 * Sets the value of the descripcion property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setDescripcion(JAXBElement<String> value) {
@@ -213,8 +207,7 @@ public class DetalleVenta {
 	/**
 	 * Sets the value of the igv property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Double }
+	 * @param value allowed object is {@link Double }
 	 * 
 	 */
 	public void setIgv(Double value) {
@@ -234,8 +227,7 @@ public class DetalleVenta {
 	/**
 	 * Sets the value of the item property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Integer }
+	 * @param value allowed object is {@link Integer }
 	 * 
 	 */
 	public void setItem(Integer value) {
@@ -255,8 +247,7 @@ public class DetalleVenta {
 	/**
 	 * Sets the value of the porcentajeIgv property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Double }
+	 * @param value allowed object is {@link Double }
 	 * 
 	 */
 	public void setPorcentajeIgv(Double value) {
@@ -276,8 +267,7 @@ public class DetalleVenta {
 	/**
 	 * Sets the value of the tarifa property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Double }
+	 * @param value allowed object is {@link Double }
 	 * 
 	 */
 	public void setTarifa(Double value) {
@@ -297,8 +287,7 @@ public class DetalleVenta {
 	/**
 	 * Sets the value of the total property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Double }
+	 * @param value allowed object is {@link Double }
 	 * 
 	 */
 	public void setTotal(Double value) {
@@ -319,9 +308,8 @@ public class DetalleVenta {
 	/**
 	 * Sets the value of the unidadMedida property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setUnidadMedida(JAXBElement<String> value) {
@@ -341,8 +329,7 @@ public class DetalleVenta {
 	/**
 	 * Sets the value of the valorUnitario property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Double }
+	 * @param value allowed object is {@link Double }
 	 * 
 	 */
 	public void setValorUnitario(Double value) {

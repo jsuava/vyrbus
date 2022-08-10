@@ -55,10 +55,9 @@ public class InformacionAdicional {
 	/**
 	 * Sets the value of the propiedadesAdicionales property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement
-	 *            }{@code <}{@link ArrayOfInformacionAdicionalPropiedadAdicional
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement
+	 *              }{@code <}{@link ArrayOfInformacionAdicionalPropiedadAdicional
+	 *              }{@code >}
 	 * 
 	 */
 	public void setPropiedadesAdicionales(JAXBElement<ArrayOfInformacionAdicionalPropiedadAdicional> value) {
@@ -80,10 +79,9 @@ public class InformacionAdicional {
 	/**
 	 * Sets the value of the totalesMonedaAdicional property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement
-	 *            }{@code <}{@link ArrayOfInformacionAdicionalTotalMonedaAdicional
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement
+	 *              }{@code <}{@link ArrayOfInformacionAdicionalTotalMonedaAdicional
+	 *              }{@code >}
 	 * 
 	 */
 	public void setTotalesMonedaAdicional(JAXBElement<ArrayOfInformacionAdicionalTotalMonedaAdicional> value) {

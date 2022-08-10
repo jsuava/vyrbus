@@ -52,9 +52,8 @@ public class SetVentaResponse {
 	/**
 	 * Sets the value of the setVentaResult property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link Result
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link Result
+	 *              }{@code >}
 	 * 
 	 */
 	public void setSetVentaResult(JAXBElement<Result> value) {

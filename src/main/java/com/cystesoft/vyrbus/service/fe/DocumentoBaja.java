@@ -76,8 +76,7 @@ public class DocumentoBaja {
 	/**
 	 * Sets the value of the agenciaID property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Long }
+	 * @param value allowed object is {@link Long }
 	 * 
 	 */
 	public void setAgenciaID(Long value) {
@@ -98,9 +97,8 @@ public class DocumentoBaja {
 	/**
 	 * Sets the value of the descripcionMotivo property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setDescripcionMotivo(JAXBElement<String> value) {
@@ -121,9 +119,8 @@ public class DocumentoBaja {
 	/**
 	 * Sets the value of the fechaEmision property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setFechaEmision(JAXBElement<String> value) {
@@ -144,9 +141,8 @@ public class DocumentoBaja {
 	/**
 	 * Sets the value of the numeroCorrelativo property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setNumeroCorrelativo(JAXBElement<String> value) {
@@ -167,9 +163,8 @@ public class DocumentoBaja {
 	/**
 	 * Sets the value of the numeroSerie property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setNumeroSerie(JAXBElement<String> value) {
@@ -190,9 +185,8 @@ public class DocumentoBaja {
 	/**
 	 * Sets the value of the rucEmpresa property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setRucEmpresa(JAXBElement<String> value) {
@@ -213,9 +207,8 @@ public class DocumentoBaja {
 	/**
 	 * Sets the value of the tipoDocumentoID property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setTipoDocumentoID(JAXBElement<String> value) {
@@ -235,8 +228,7 @@ public class DocumentoBaja {
 	/**
 	 * Sets the value of the usuarioID property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link Long }
+	 * @param value allowed object is {@link Long }
 	 * 
 	 */
 	public void setUsuarioID(Long value) {
@@ -257,9 +249,8 @@ public class DocumentoBaja {
 	/**
 	 * Sets the value of the usuarioInsercion property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setUsuarioInsercion(JAXBElement<String> value) {
@@ -280,9 +271,8 @@ public class DocumentoBaja {
 	/**
 	 * Sets the value of the usuarioModificacion property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link JAXBElement }{@code <}{@link String
-	 *            }{@code >}
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
 	 * 
 	 */
 	public void setUsuarioModificacion(JAXBElement<String> value) {

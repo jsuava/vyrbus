@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.cystesoft.vyrbus.model.bean.GrupoMantenimiento" table="VRMGRUMAN" schema="VYRBUSTRANSMAR">
+    <class name="com.cystesoft.vyrbus.model.bean.GrupoMantenimiento" table="VRMGRUMAN" schema="VYRBUSTMR">
         <comment>Entidad que almacena los grupos de mantenimiento a lso que pertenecen los buses, SCANIA, MERCEDES, VOLVO.</comment>
         <id name="id" type="java.lang.Integer">
             <column name="GRUMAN_ID" precision="2" scale="0" />

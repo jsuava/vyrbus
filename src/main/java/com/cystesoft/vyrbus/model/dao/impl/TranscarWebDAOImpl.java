@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Random;
 import java.util.TreeMap;
 
 import org.jfree.util.Log;
@@ -37,6 +38,7 @@ import com.cystesoft.vyrbus.model.bean.TipoComprobante;
 import com.cystesoft.vyrbus.model.bean.TipoFormaPago;
 import com.cystesoft.vyrbus.model.bean.TipoMoneda;
 import com.cystesoft.vyrbus.model.bean.TipoMovimiento;
+import com.cystesoft.vyrbus.model.bean.TitanUsuarioHardware;
 import com.cystesoft.vyrbus.model.bean.TranscarLiquidacionTurno;
 import com.cystesoft.vyrbus.model.bean.TranscarRolUsuario;
 import com.cystesoft.vyrbus.model.bean.TranscarUsuarioPersonal;
@@ -178,12 +180,37 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 		Integer usuario_id = null;
 		//Cuando es un usuario nuevo
 		if(transcarUsuario.getId()==null) {
+			//Genera el identificador para el UsuarioHardware
+			sql = "select nextval('seq_tcmusuhard_id') usuhard_id ";
+			Integer usuarioHardware_id = getJdbcTemplate().queryForInt(sql);
+			String direccionMac = getDireccionMacDinamica();
+			String codigo = Util.generarCodigo(direccionMac);
+			
+			//Realiza el insert del usuario hardware
+			sql = "INSERT INTO tcmusuhard "
+					+ "VALUES ( "
+					+ " " + usuarioHardware_id + " "
+					+ "," + agencia_idtranscar + " "
+					+ ",'"+ codigo +"' "
+					+ ",'"+ direccionMac + "' "
+					+ ",'PC-"+ transcarUsuario.getLogin().toUpperCase() + "' "
+					+ ",'A' "
+					+ ",current_timestamp "
+					+ ",'"+ transcarUsuario.getUsuarioInsercion() + "' "
+					+ ",'"+ transcarUsuario.getIpInsercion() + "' "
+					+ ",current_timestamp "
+					+ ",'"+ transcarUsuario.getUsuarioInsercion() + "' "
+					+ ",'"+ transcarUsuario.getIpInsercion() + "' "
+					+ ") ";			
+			getJdbcTemplate().update(sql);
+			
+			
 			//Genera el identificador para el usuario
 			sql = "select nextval('seq_tcmusuario_id') usuario_id ";
 			usuario_id= getJdbcTemplate().queryForInt(sql);
 			
 			//Inserta el usuario
-			sql = "INSERT INTO tcmusuario (usuario_id, agencia_id, c_apepat, c_apemat, c_nombre, c_email, c_login, c_password, audipinse, audipmodi, audusuins, audusumod) " + 
+			sql = "INSERT INTO tcmusuario (usuario_id, agencia_id, c_apepat, c_apemat, c_nombre, c_email, c_login, c_password, audipinse, audipmodi, audusuins, audusumod, usuhard_id, n_tipseg ) " + 
 					"VALUES ( "
 					+ usuario_id +", "
 					+ agencia_idtranscar + ","
@@ -192,11 +219,13 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 					+ "'"+transcarUsuario.getNombres()+ "', "
 					+ (transcarUsuario.getEmail()!=null? "'"+transcarUsuario.getEmail()+ "'": "Null") + ", "
 					+ "'"+transcarUsuario.getLogin()+ "', "
-					+ "'"+transcarUsuario.getPassword()+ "', "
+					+ "'XENCRIPTAR "+transcarUsuario.getPassword()+ "', "
 					+ "'"+transcarUsuario.getIpInsercion()+ "', "
-					+ "'"+transcarUsuario.getIpModificacion()+ "' "
-					+ "'"+transcarUsuario.getUsuarioInsercion()+ "' "
-					+ "'"+transcarUsuario.getUsuarioModificacion()+ "' "
+					+ "'"+transcarUsuario.getIpModificacion()+ "', "
+					+ "'"+transcarUsuario.getUsuarioInsercion()+ "', "
+					+ "'"+transcarUsuario.getUsuarioModificacion()+ "', "
+					+ ""+usuarioHardware_id+ ", "
+					+ ""+Constantes.FALSE_VALUE+ " "
 					+ ")";
 			getJdbcTemplate().update(sql);
 		}else {
@@ -289,7 +318,7 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 		
 		String sql="SELECT ec.envcon_id, ec.d_fecven, av.agencia_id, av.c_denominacion agencia, cl.c_numdoc cliente_numdoc, cl.c_razsoc cliente_razonSocial " + 
 				"         ,rt.c_origen, rt.c_destino " + 
-				"         ,ec.forpag_id, ec.tippag_id, ec.opetar_id, ec.tipcom_id, ec.c_numcom, ec.n_subtotal, ec.n_impuesto, ec.n_total " + 
+				"         ,ec.forpag_id, ec.tippag_id, dp.opetar_id, ec.tipcom_id, ec.c_numcom, ec.n_subtotal, ec.n_impuesto, ec.n_total " + 
 				"	      ,us.c_apepat usuario_apepat, us.c_apemat usuario_apemat, us.c_nombre usuario_nombre, us.c_login usuario_login " + 
 				"		  ,CASE WHEN ec.d_fecanu IS NOT NULL AND ec.usuario_idanula IS NOT NULL THEN 2 ELSE 1 END estadoComprobante " + //-->1= Activo, 2=Anulado\r\n" + 
 				"		  ,ec.audfecins " + 
@@ -297,7 +326,8 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 				"  INNER JOIN tcmusuario us ON (us.usuario_id=ec.usuario_id) " + 
 				"	INNER JOIN tcmagencia av ON (av.agencia_id=ec.agencia_idventa) " + 
 				"	INNER JOIN tcmcliente cl ON (cl.cliente_id=ec.cliente_id) " + 
-				"	INNER JOIN tcmruta rt ON (rt.ruta_id=ec.ruta_id) " + 
+				"	INNER JOIN tcmruta rt ON (rt.ruta_id=ec.ruta_id) " +
+				"   LEFT JOIN tctdetpag dp ON (ec.envcon_id = dp.envcon_id)" +
 				"WHERE ec.d_fecven BETWEEN '"+fechaInicial+"' AND '"+fechaFinal+"' " + 
 				"  AND ec.agencia_idventa = COALESCE("+agencia_idtranscar+", ec.agencia_idventa) " + 
 				"  AND ec.usuario_id = COALESCE("+usuario_id+", ec.usuario_id) " + 
@@ -309,12 +339,15 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 		
 		List<VentaPasaje> listVentasCarga = new ArrayList<VentaPasaje>();
 		Map<String, Object> map = null;
+		int tipoPagoId=0;
 		for(int i=0;i<result.size();i++){
 			map = (Map<String, Object>)result.get(i);
 			
 			int idEstadoRegistro = (int)map.get("ESTADOCOMPROBANTE");
-			int tipoPagoId = ((BigDecimal)map.get("TIPPAG_ID")).intValue();
 			int formaPagoId = ((BigDecimal)map.get("FORPAG_ID")).intValue();
+			//Consistencia el tipo de pago para PCE que vienen de TRANSCAR
+			if(map.get("TIPPAG_ID") != null) 
+				tipoPagoId = ((BigDecimal)map.get("TIPPAG_ID")).intValue();
 			int tipoComprobanteId = ((BigDecimal)map.get("TIPCOM_ID")).intValue();
 			String simboloMoneda= "S/";
 			
@@ -475,10 +508,13 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 					"		,(BoletoFinal::INTEGER - boletoInicial::INTEGER +1) - cantRegistros AS Cortes, tipoComprobanteId  " + 
 					"FROM(   " + 
 //					"	   Recupera todos menos las confirmaciones de fecha habierta de fecha habierta  " + 
-					"		SELECT tc.tipcom_id tipoComprobanteId, tc.c_denominacion as TipoComprobante  " + 
-					"			  ,MIN(SUBSTR(vp.c_numcom ,0,4)) AS Serie    " + 
-					"		      ,MIN(SUBSTR(vp.c_numcom,6, LENGTH(vp.c_numcom))) AS boletoInicial     " + 
-					"		      ,MAX(SUBSTR(vp.c_numcom,6, LENGTH(vp.c_numcom)))  AS BoletoFinal  " + 
+					"		SELECT tc.tipcom_id tipoComprobanteId, tc.c_nomcor as TipoComprobante  " + 
+//					"			  ,MIN(SUBSTR(vp.c_numcom ,0,4)) AS Serie    " +
+					"			  ,MIN(lpad( substr(vp.c_numcom, 1, (position('-' in vp.c_numcom )-1)), 4, '0' )) AS Serie" +
+//					"		      ,MIN(SUBSTR(vp.c_numcom,6, LENGTH(vp.c_numcom))) AS boletoInicial     " + 
+					"			  ,MIN(lpad( substr(vp.c_numcom, (position('-' in vp.c_numcom )+1), (length(vp.c_numcom) - position('-' in vp.c_numcom ))), 8, '0' )) AS BoletoInicial" +
+//					"		      ,MAX(SUBSTR(vp.c_numcom,6, LENGTH(vp.c_numcom)))  AS BoletoFinal  " +
+					"			  ,MAX(lpad( substr(vp.c_numcom, (position('-' in vp.c_numcom )+1), (length(vp.c_numcom) - position('-' in vp.c_numcom ))), 8, '0' )) AS BoletoFinal" +
 					"		      ,COUNT(DISTINCT(nb.c_numcom)) AS cantRegistros  " + 
 					"			  ,SUM(vp.n_total) importe  " + 
 					"		FROM tctenvcon vp     " + 
@@ -743,5 +779,52 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 		Log.info("Actualiza Password Usuario - Carga: "+sql);
 		getJdbcTemplate().update(sql);
 	}
+
+	private String getDireccionMacDinamica() {		
+		String direccionMac = "";
+		String[] patron_A = {"A0","00", "0A" ,"00", "A0", "00"};
+		String patron_B = "ABCDEFGHIJKLMNIOPQRSTUVWXYZ";
 	
+		try {
+			Random random= new Random();
+			
+			int x = 0;
+			for(String comp: patron_A) {
+				x++;
+				String pmac = "";
+				String p1 = comp.substring(0,1);
+				String p2 = comp.substring(1);
+				int randomChar =  random.nextInt(patron_B.length());				
+				
+				if(Util.isNumeric(p1)) {
+					int randomInt =  random.nextInt(13);
+					pmac += String.valueOf(randomInt);
+				}else {
+					char ochar = patron_B.charAt(randomChar);
+					pmac += ochar;
+				}
+				
+				if(Util.isNumeric(p2)) {
+					int randomInt =  random.nextInt(13);
+					pmac += String.valueOf(randomInt);				
+				}else {
+					char ochar = patron_B.charAt(randomChar);
+					pmac += ochar;
+				}
+				
+				if(pmac.length()>2)
+					pmac = pmac.substring(0,2);
+				
+				direccionMac += pmac;
+				if (patron_A.length > x)
+					direccionMac += "-";								
+			}	
+			
+		} catch (Exception e) {
+			direccionMac = "AB-00-BA-11-AC-99";
+			e.printStackTrace();
+		}
+		
+		return direccionMac;
+	}
 }

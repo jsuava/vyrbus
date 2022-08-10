@@ -9,6 +9,7 @@
 package com.cystesoft.vyrbus.service.servlet;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,7 @@ import net.sf.jasperreports.engine.util.JRLoader;
 
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.service.report.ReporteManifiesto;
+import com.cystesoft.vyrbus.service.util.Constantes;
 
 /**
  * @author JABANTO
@@ -138,8 +140,14 @@ public class ReporteManifiestoServlet extends HttpServlet {
 	    
 	    try {
 	    	JasperReport reporte;
-	    	reporte = (JasperReport)JRLoader.loadObject(getServletContext().getRealPath("WEB-INF/jasper/ReporteManifiesto.jasper"));
-	    		    	
+	    	
+	    	//Version 5.1.0
+//	    	reporte = (JasperReport)JRLoader.loadObject(getServletContext().getRealPath("WEB-INF/jasper/ReporteManifiesto.jasper"));
+	    	
+	    	//Version 6.19.1
+	    	InputStream inputStream = getServletContext().getResourceAsStream("WEB-INF/jasper/ReporteManifiesto.jasper");
+	    	reporte = (JasperReport)JRLoader.loadObject(inputStream);	    	
+	    	
 	    	Map<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("usuario",usuario);
 			parameters.put("agencia",agencia);
@@ -163,7 +171,11 @@ public class ReporteManifiestoServlet extends HttpServlet {
 			parameters.put("numeroAutoSunat",numeroAutoSunat);
 			parameters.put("totalPasajeros",totalPasajeros);
 			parameters.put("dniTripulante",dniTripulante);
-						
+			parameters.put("razonSocial", Constantes.empresa);
+			parameters.put("ruc", Constantes.ruc);
+			parameters.put("telefonoCentral", Constantes.nro_telefono);
+			parameters.put("direccionOfCentral", Constantes.direccion_empresa);
+			parameters.put("centroComputo", Constantes.centro_computo);
 						
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, new ReporteManifiesto(lstPasajeros));
 			JRExporter jrExporter = new JRPdfExporter();

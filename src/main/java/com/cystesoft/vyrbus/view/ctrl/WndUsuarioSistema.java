@@ -2,6 +2,7 @@ package com.cystesoft.vyrbus.view.ctrl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.TreeMap;
 
 import org.zkoss.zk.ui.Executions;
@@ -183,7 +184,8 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 		chbxSoloRolesSeleccionados.setChecked(false);
 		chbxSoloRolesSeleccionadosCarga.setChecked(false);
 		soloRolesSeleccionados();
-		tabRoles.setSelectedIndex(0);
+		tabRoles.setSelectedIndex(0);		
+		
 	}
 
 	/*
