@@ -87,6 +87,16 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 	 */
 	@Override
 	public List<Gasto> buscarGasto(String fechaGasto, Integer idTipoGasto, Integer idAgencia,Integer idUsuario) {
+		return buscarGasto(fechaGasto, fechaGasto, idTipoGasto, idAgencia, idUsuario);
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.GastoDAO#buscarGasto(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer, java.lang.Integer)
+	 */
+	@Override
+	public List<Gasto> buscarGasto(String fechaGasto, String fechaFinGasto, Integer idTipoGasto, Integer idAgencia,Integer idUsuario) {
+		// TODO Auto-generated method stub
 		
 //		/*Criteiros de Busqueda*/
 //		String criterios="";
@@ -109,7 +119,7 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 				"INNER JOIN vrtliquidacion lq ON (lq.liquidacion_id=dlq.liquidacion_id) "+
 				"INNER JOIN vrmtipgas tg ON (tg.tipgas_id=g.tipgas_id) "+
 				"INNER JOIN vrmagencia a ON (a.agencia_id=lq.agencia_id) " +
-			"WHERE lq.d_fecliq=to_date('"+fechaGasto+"','dd/MM/yyyy') " +
+			"WHERE lq.d_fecliq between to_date('"+fechaGasto+"','dd/MM/yyyy') and to_date('"+fechaFinGasto+"','dd/MM/yyyy') " +
 				 "AND lq.agencia_id=NVL("+idAgencia+",lq.agencia_id) " +
 				 "AND g.tipgas_id=NVL("+idTipoGasto+",g.tipgas_id) " +
 				 "AND lq.usuario_id=NVL("+idUsuario+",lq.usuario_id) " +
@@ -182,7 +192,8 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 		}
 		return ListResult;
 	}
-
+	
+	
 	@Override
 	public List<Gasto> buscarGastoLiqOficina(String fechaLiquidacion,String usuario) {
 		String sql="SELECT g.gasto_id, tg.tipgas_id, g.c_numdoc, g.n_monto, g.c_nompil, g.c_codbus, g.c_consignado, g.c_observacion, "+
@@ -358,4 +369,6 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 		
 		return lstResult;
 	}
+
+
 }

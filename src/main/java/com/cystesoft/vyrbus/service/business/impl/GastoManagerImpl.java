@@ -81,6 +81,16 @@ public class GastoManagerImpl implements GastoManager {
 		
 		return getGastoDAO().BuscarTotalGastos(fecha, idUsuario, idAgencia);
 	}
+	
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.GastoManager#buscarGasto(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer, java.lang.Integer)
+	 */
+	@Override
+	public List<Gasto> buscarGasto(String fechaGasto, String fechaFinGasto, Integer idTipoGasto, Integer idAgencia,
+			Integer idUsuario) {
+		// TODO Auto-generated method stub
+		return getGastoDAO().buscarGasto(fechaGasto, fechaFinGasto, idTipoGasto, idAgencia, idUsuario);
+	}
 
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.service.business.GastoManager#obtenerGastosByLiquidacion(java.lang.String, java.lang.Integer, java.lang.Integer)
@@ -99,4 +109,6 @@ public class GastoManagerImpl implements GastoManager {
 		// TODO Auto-generated method stub
 		return getGastoDAO().buscarGastosIngresos(fechaInicio, fechaFin, tipoOperacion);
 	}
+
+	
 }

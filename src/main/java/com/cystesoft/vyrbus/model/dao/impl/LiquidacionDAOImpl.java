@@ -58,7 +58,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 					"INNER JOIN vrmagencia a ON (a.agencia_id=l.agencia_id) "+
 					"INNER JOIN vrmusuario u ON (u.usuario_id=l.usuario_id) "+
 				"WHERE l.d_fecliq >= to_date('"+fechaInicial+"','dd/MM/yyyy') AND l.d_fecliq <= to_date('"+FechaFinal+"', 'dd/MM/yyyy') "+
-					"AND l.agencia_id="+idAgencia+" "+criteriosUsuario+" "+criterios+" AND l.c_estreg='A' " +
+					"AND l.agencia_id=NVL("+idAgencia+",l.agencia_id) "+criteriosUsuario+" "+criterios+" AND l.c_estreg='A' " +
 				"ORDER BY l.d_FecLiq, l.audfecins ";
 		
 		log.info(sql);
