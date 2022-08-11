@@ -899,7 +899,14 @@ public class WndVerMapaBus extends WndBase {
 									asiento.setSrc(Constantes.ICON_RESERVADO+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
 								asiento.setEstadoAsiento(Constantes.ASIENTO_RESERVADO);
 							}
-							asiento.setTooltiptext(venta.getRuta().toString()+"\n"+venta.getPasajero().toString());
+							asiento.setTooltiptext("Pasajero: "+venta.getPasajero().toString()+"\n"+
+												   "Ruta: "+venta.getRuta().toString()+"\n"+
+												   "Ag. Embarque: " +venta.getAgenciaPartida().getNombreCorto().toString()+"\n"+
+												   "Ag. Desembarque: "+venta.getAgenciaLlegada().getDenominacion().toString()+"\n"+
+												   "Ag. Venta: "+venta.getAgencia().getDenominacion().toString()+"\n"+
+												   "Usuario Venta: "+venta.getUsuario().getLogin().toString()//+"\n"+
+												   //"Fecha Venta: "+venta.getFechaInsercion()
+									);
 							break;
 						}	
 					}

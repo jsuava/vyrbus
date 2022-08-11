@@ -72,20 +72,24 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	@Override
 	public List<VentaPasaje> buscarVentasForMapaBus(Long idItinerario)throws Exception{
 		String sql = "SELECT vp.venpas_id, vp.venpas_idref, vp.ruta_id, r.localidad_idorigen, r.c_origen, r.localidad_iddestino, r.c_destino, " +
-				"p.pasajero_id, p.c_apepat, p.c_apemat, p.c_nombre, s.sexo_id, s.c_denominacion, vp.c_numboleto, vp.n_numasiento, vp.c_tiptra, " +
-				"i.ruta_idmayor, rm.localidad_idorigen, rm.localidad_iddestino, vp.n_numpiso, i.c_sectra, i.itinerario_id, " +
-				"p.c_numdoc, p.c_fecnac, vp.c_numcontrol, vp.canven_id, vp.d_fecpar, vp.c_horpar " +
-				",ap.c_nomcor as nombreCorto, p.tipdoc_id tipoDocPax, vp.forpag_id, vp.tipforpag_id, vp.c_rucclicre, vp.n_imppag, vp.tipmov_id  " +//34
+				"			 p.pasajero_id, p.c_apepat, p.c_apemat, p.c_nombre, s.sexo_id, s.c_denominacion, vp.c_numboleto, vp.n_numasiento, " +
+				"			 vp.c_tiptra, i.ruta_idmayor, rm.localidad_idorigen, rm.localidad_iddestino, vp.n_numpiso, i.c_sectra, i.itinerario_id, " +
+				"			 p.c_numdoc, p.c_fecnac, vp.c_numcontrol, vp.canven_id, vp.d_fecpar, vp.c_horpar, " +
+				"			 ap.c_nomcor as nombreCorto, p.tipdoc_id tipoDocPax, vp.forpag_id, vp.tipforpag_id, vp.c_rucclicre, vp.n_imppag, " +//34
+				"			 vp.tipmov_id, av.c_denominacion AGVENTA, u.c_login USUARIO, al.c_denominacion AGLLEGADA "+
 				"FROM vrtvenpas vp " +
-				"INNER JOIN (SELECT MAX(venpas_id)venpas_id, c_numcontrol " +
-					"FROM vrtvenpas WHERE itinerario_id="+idItinerario+" GROUP BY c_numcontrol) max_venta " +
-					"ON max_venta.venpas_id=vp.venpas_id " +
-				"INNER JOIN vrmruta r ON r.ruta_id=vp.ruta_id " +
-				"INNER JOIN vrmpasajero p ON p.pasajero_id=vp.pasajero_id " +
-				"INNER JOIN vrmsexo s ON s.sexo_id=p.sexo_id " +
-				"INNER JOIN vrtitinerario i ON i.itinerario_id=vp.itinerario_id " +
-				"INNER JOIN vrmruta rm ON rm.ruta_id=i.ruta_idmayor " +
-				"LEFT JOIN vrmagencia ap ON ap.agencia_id=vp.Agencia_Idpartida " +
+				"	  INNER JOIN (SELECT MAX(venpas_id)venpas_id, c_numcontrol " +
+				"				  FROM vrtvenpas WHERE itinerario_id="+idItinerario+" GROUP BY c_numcontrol) max_venta " +
+				"				  ON max_venta.venpas_id=vp.venpas_id " +
+				"	  INNER JOIN vrmruta r ON r.ruta_id=vp.ruta_id " +
+				"	  INNER JOIN vrmpasajero p ON p.pasajero_id=vp.pasajero_id " +
+				"	  INNER JOIN vrmsexo s ON s.sexo_id=p.sexo_id " +
+				"	  INNER JOIN vrtitinerario i ON i.itinerario_id=vp.itinerario_id " +
+				"	  INNER JOIN vrmruta rm ON rm.ruta_id=i.ruta_idmayor " +
+				"	  LEFT JOIN vrmagencia ap ON ap.agencia_id=vp.Agencia_Idpartida " +
+				"     INNER JOIN vrmagencia al ON (vp.agencia_idllegada = al.agencia_id) "+
+			    "     INNER JOIN vrmagencia av ON (vp.agencia_id = av.agencia_id) "+
+			    "     INNER JOIN vrmusuario u ON (vp.usuario_id = u.usuario_id) "+
 //				"INNER JOIN vrmtipmov tm ON tm.tipmov_id=vp.tipmov_id " +
 				"WHERE vp.itinerario_id="+idItinerario+" "+
 			    "AND vp.tipmov_id not in("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_ANULACION+") "+
@@ -155,6 +159,18 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			
 			ventaPasaje.setRucClienteCredito(obj[32]==null?null:obj[32].toString());
 			ventaPasaje.setImportePagado(obj[33]==null?null:((BigDecimal)obj[33]).doubleValue());
+
+			Agencia agenciaLlegada = new Agencia();
+			agenciaLlegada.setDenominacion(obj[37]==null?null:obj[37].toString());
+			ventaPasaje.setAgenciaLlegada(agenciaLlegada);
+			
+			Agencia agenciaVenta = new Agencia();
+			agenciaVenta.setDenominacion(obj[35]==null?null:obj[35].toString());
+			ventaPasaje.setAgencia(agenciaVenta);
+			
+			Usuario usuarioVenta = new Usuario();
+			usuarioVenta.setLogin(obj[36]==null?null:obj[36].toString());
+			ventaPasaje.setUsuario(usuarioVenta);
 			
 //			TipoMovimiento tipoMovimiento = new TipoMovimiento();
 //			tipoMovimiento.setId(((BigDecimal)obj[34]).intValue());
@@ -3526,8 +3542,8 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				+ "	       vrmagencia a right join"
 				+ "	       vrhresven v  on (a.agencia_id = v.agencia_id)"
 				+ "	WHERE "
-				+ "	       v.fecven BETWEEN to_date('" + fechaDesde + "') "
-				+ "	       AND to_date('" + fechaHasta + "')"
+				+ "	       v.fecven BETWEEN to_date('" + fechaDesde + "', 'dd/MM/yyyy') "
+				+ "	       AND to_date('" + fechaHasta + "', 'dd/MM/yyyy')"
 				+ strQueryAnd
 				+ strGroupBy 
 				//	       --Comentar agencia para la primera consulta

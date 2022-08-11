@@ -2155,7 +2155,11 @@ public class CreateDocument implements Serializable {
 		WndManifiesto manifiesto = new WndManifiesto();
 //		Integer lBase=24; 
 		Integer longitud_C=0;
-		String fichero = Constantes.DIRECTORY_DESPACHOS +Constantes.CLAVE_PAHT +"CARDES"+itinerario.getId()+"-"+itinerario.getAgenciaPartida().getId()+".txt";
+		String fichero = "";
+		if(itinerario.getAgenciaPartida() != null)
+			fichero = Constantes.DIRECTORY_DESPACHOS +Constantes.CLAVE_PAHT +"CARDES"+itinerario.getId()+"-"+itinerario.getAgenciaPartida().getId()+".txt";
+		else
+			fichero = Constantes.DIRECTORY_DESPACHOS +Constantes.CLAVE_PAHT +"CARDES"+itinerario.getId()+".txt";
 		File file = new File(fichero);
 		try{
 //			BufferedWriter bw = new BufferedWriter(new FileWriter(file));
@@ -2308,7 +2312,7 @@ public class CreateDocument implements Serializable {
 				bw.write(linea+NEWLINE);
 			}
 			
-			List<VentaPasaje> list=ServiceLocator.getManifiestoManager().consultaPasajeros(itinerario.getId(),itinerario.getAgenciaPartida().getId());
+			List<VentaPasaje> list=ServiceLocator.getManifiestoManager().consultaPasajeros(itinerario.getId(),itinerario.getAgenciaPartida()!=null?itinerario.getAgenciaPartida().getId():null /*itinerario.getAgenciaPartida().getId()*/);
 //			Messagebox.show(itinerario.getAgenciaPartida().getId().toString());
 			Integer piso=0; //Piso por defecto.
 			Integer numeroAsientos=0;
@@ -3726,6 +3730,8 @@ public class CreateDocument implements Serializable {
 					creaRptLiquidacionByTotalByGroup(bw, longImporte, totalGasto);
 					bw.write(NEWLINE);
 				}
+			}else {
+				//Es un ingreso de otros ingresos, tambien debe mostrarse en el reporte
 			}
 		}
 

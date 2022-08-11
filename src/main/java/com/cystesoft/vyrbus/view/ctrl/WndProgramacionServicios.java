@@ -354,7 +354,7 @@ public class WndProgramacionServicios extends WndBase {
 //			Personal tripulante = (Personal) cmbTripulante.getSelectedItem().getValue();
 			//MAOE 13/06/2022: Permitir grabar o no tripulante si existe
 			Personal tripulante = null;
-			if(cmbTripulante.getSelectedItem().getValue() != null)
+			if(cmbTripulante.getSelectedIndex() >= 0)
 				tripulante = (Personal) cmbTripulante.getSelectedItem().getValue();
 			
 			Long id = (textboxId.getText().equals("") ? 0 : new Long(textboxId.getText()));
