@@ -252,7 +252,8 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 					"FROM vrtgasto g  "+
 					"INNER JOIN vrtdetliq dlq ON (dlq.gasto_id=g.gasto_id) "+
 					"INNER JOIN vrtliquidacion lq ON (lq.liquidacion_id=dlq.liquidacion_id) "+
-					"WHERE lq.agencia_id="+idAgencia+" AND lq.usuario_id="+idUsuario+" AND to_char(lq.d_fecliq,'dd/mm/yyyy')=to_date('"+fecha+"','"+Constantes.DATE_FORMAT+"') ";
+					"WHERE lq.agencia_id="+idAgencia+" AND lq.usuario_id="+idUsuario+" AND to_char(lq.d_fecliq,'dd/mm/yyyy')='"+fecha+"' ";
+//					"WHERE lq.agencia_id="+idAgencia+" AND lq.usuario_id="+idUsuario+" AND to_char(lq.d_fecliq,'dd/mm/yyyy')=to_date('"+fecha+"','"+Constantes.DATE_FORMAT+"') ";
 		
 		log.info(sql);
 		List<?> obj = getSession().createSQLQuery(sql).list();
@@ -327,7 +328,7 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 				+ "  INNER JOIN vrtliquidacion lq ON (lq.liquidacion_id=dlq.liquidacion_id) "
 				+ "  INNER JOIN vrmagencia ag ON (ag.agencia_id=lq.agencia_id) "
 				+ "  INNER JOIN vrmusuario u ON (u.usuario_id=lq.usuario_id) "
-				+ "WHERE lq.d_fecliq BETWEEN '"+fechaInicio+"' AND '"+fechaFin+"' "
+				+ "WHERE lq.d_fecliq BETWEEN to_date('"+fechaInicio+"', 'dd/MM/yyyy') AND to_date('"+fechaFin+"', 'dd/MM/yyyy') "
 				+ "  AND tg.n_tipope =  NVL("+tipoOperacion+", tg.n_tipope) "
 				+ "  AND lq.c_Estreg='A' AND dlq.c_estreg='A' AND gt.c_estreg='A' "
 				+ "ORDER BY ag.c_Denominacion, u.c_apepat, u.c_apemat, u.c_nombre ";

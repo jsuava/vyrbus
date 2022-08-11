@@ -424,6 +424,7 @@ public class WndVentaReserva extends WndBase {
 	private static final int TIPO_CAFETERIA = 2;
 	
 	private int action = Constantes.FAILURE;
+	private int actionc = Constantes.FAILURE;
 	private String prefijoAsiento="";
 	private String key = "-1";
 	private Map<String, Asiento> mapaAsientosIda = null;
@@ -944,7 +945,7 @@ public class WndVentaReserva extends WndBase {
 		txtDocumentoCliente.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
-				if(action!=Constantes.ACTION_NEW && action!=Constantes.ACTION_MODIFY){
+				if(actionc!=Constantes.ACTION_NEW && actionc!=Constantes.ACTION_MODIFY){
 					if(txtDocumentoCliente.getText().trim().equals(""))
 						DlgMessage.information(Messages.getString("WndVentaReserva.information.noDocumentoCliente"), txtDocumentoCliente);
 					else
@@ -958,7 +959,7 @@ public class WndVentaReserva extends WndBase {
 		txtRazonSocial.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
-				if(action!=Constantes.ACTION_NEW && action!=Constantes.ACTION_MODIFY){
+				if(actionc!=Constantes.ACTION_NEW && actionc!=Constantes.ACTION_MODIFY){
 					if(txtRazonSocial.getText().trim().equals(""))
 						DlgMessage.information(Messages.getString("WndVentaReserva.information.noRazonSocial"), txtRazonSocial);
 					else
@@ -3242,9 +3243,12 @@ public class WndVentaReserva extends WndBase {
 	private void onLoadPuntoEmbarque(DetalleItinerario detItinerario, Combobox cmbParent){
 		try{
 			cmbParent.getItems().clear();
+			int agenciaIgualEmbarque=0;
 			
 			ArrayList<ItinerarioAgenciaPartida> arrayItiAgePartida = new ArrayList<ItinerarioAgenciaPartida>();
-			arrayItiAgePartida = ServiceLocator.getItinerarioManager().buscarAgenciasPartida(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO, detItinerario.getRuta().getLocalidadOrigen().getId());
+			arrayItiAgePartida = ServiceLocator.getItinerarioManager().buscarAgenciasPartida(detItinerario.getItinerario().getId(), 
+																							 Constantes.VALUE_ACTIVO, 
+																							 detItinerario.getRuta().getLocalidadOrigen().getId());
 			/*	Si la agencia de partida del itinerario es la misma a la agencia de la ruta seleccionada	*/
 //			if(detItinerario.getItinerario().getAgenciaPartida().getId().intValue()==detItinerario.getAgenciaPartida().getId().intValue())
 //				arrayItiAgePartida = ServiceLocator.getItinerarioManager().buscarAgenciasPartida(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO);
@@ -3265,14 +3269,21 @@ public class WndVentaReserva extends WndBase {
 				Comboitem item = new Comboitem(itiAgePartida.getAgencia().getDenominacion());
 				item.setValue(itiAgePartida);
 				cmbParent.appendChild(item);
-				if(arrayItiAgePartida.size()==1){
-					cmbParent.setSelectedItem(item);
-					lblHoraPartida.setValue(itiAgePartida.getHoraPartida());
-				}else if(detItinerario.getAgenciaPartida().getId().intValue()==itiAgePartida.getAgencia().getId().intValue()){
+				if(arrayItiAgePartida.size() == 1){
 					cmbParent.setSelectedItem(item);
 					lblHoraPartida.setValue(itiAgePartida.getHoraPartida());
 				}
-			}			
+				//Si la agencia que vende es punto de embarque y esta dentro del itinerario, seleccionamos esa agencia
+				else if(agencia.getId().intValue() == itiAgePartida.getAgencia().getId().intValue()){
+//				else if(detItinerario.getAgenciaPartida().getId().intValue()==itiAgePartida.getAgencia().getId().intValue()){
+					cmbParent.setSelectedItem(item);
+					lblHoraPartida.setValue(itiAgePartida.getHoraPartida());
+					agenciaIgualEmbarque = 1;
+				}
+				else if(agenciaIgualEmbarque == 0)
+					cmbParent.setSelectedIndex(0);
+			}
+			
 		}catch(Exception ex){
 			ex.printStackTrace();
 			log.error(ex);
@@ -3318,10 +3329,13 @@ public class WndVentaReserva extends WndBase {
 				if(arrayItiAgeLlegada.size()==1){
 					cmbParent.setSelectedItem(item);
 					lblHoraLlegada.setValue(itiAgeLlegada.getHoraLlegada());
-				}else if(detItinerario.getAgenciaLlegada().getId().intValue()==itiAgeLlegada.getAgencia().getId().intValue()){
-					cmbParent.setSelectedItem(item);
-					lblHoraLlegada.setValue(itiAgeLlegada.getHoraLlegada());
 				}
+				else
+					cmbParent.setSelectedIndex(0);
+//				else if(detItinerario.getAgenciaLlegada().getId().intValue()==itiAgeLlegada.getAgencia().getId().intValue()){
+//					cmbParent.setSelectedItem(item);
+//					lblHoraLlegada.setValue(itiAgeLlegada.getHoraLlegada());
+//				}
 			}			
 		}catch(Exception ex){
 			ex.printStackTrace();
@@ -4121,8 +4135,8 @@ public class WndVentaReserva extends WndBase {
 				throw new ApellidoPaternoNullException();
 			else if (txtNombres.getText().trim().equals(""))
 				throw new NombresNullException();
-			else if (txtUbigeoPax.getText().trim().equals(""))
-				throw new UbigeoNullException();
+//			else if (txtUbigeoPax.getText().trim().equals(""))
+//				throw new UbigeoNullException();
 			else if (txtTelefono.getText().trim().equals(""))
 				throw new TelefonoNullException();
 			else if (!(cmbSexo.getSelectedItem().getValue() instanceof Sexo))
@@ -4197,7 +4211,12 @@ public class WndVentaReserva extends WndBase {
 				oPasajero = new Pasajero();
 
 			Ubigeo oUbigeo = new Ubigeo();
-			oUbigeo.setId(txtUbigeoIdPax.getText());
+			//Para Transmar no sera obligatorio, se envia el de la Agencia MAOE - 02/08/2022
+//			oUbigeo.setId(txtUbigeoIdPax.getText());
+			if(txtUbigeoIdPax.getText().trim().length()==0)
+				oUbigeo.setId(getAgencia().getUbigeo().getId());
+			else
+				oUbigeo.setId(txtUbigeoIdPax.getText());
 						
 			oPasajero.setApellidoPaterno(txtApePat.getText().trim().toUpperCase());
 			oPasajero.setApellidoMaterno(txtApeMat.getText().trim().equals("")?null:txtApeMat.getText().trim().toUpperCase());
@@ -4249,7 +4268,8 @@ public class WndVentaReserva extends WndBase {
 			//Guarda el Pasaje - jabanto - 19/04/022
 			if (action == Constantes.ACTION_NEW) {
 				ServiceLocator.getPasajeroManager().guardar(oPasajero);
-				action = Constantes.ACTION_MODIFY;
+//				action = Constantes.ACTION_MODIFY;
+				onCancelPax();
 			}else
 				ServiceLocator.getPasajeroManager().actualizar(oPasajero);
 
@@ -4362,7 +4382,7 @@ public class WndVentaReserva extends WndBase {
 		String nroRuc = txtDocumentoCliente.getValue().trim(); 
 		onCleanControlsClient();
 		disabledControlsClient(false);
-		action = Constantes.ACTION_NEW;
+		actionc = Constantes.ACTION_NEW;
 		tlbbtnNuevoClient.setDisabled(true);
 		tlbbtnModificarClient.setDisabled(true);
 		tlbbtnCancelarClient.setDisabled(false);
@@ -4379,7 +4399,7 @@ public class WndVentaReserva extends WndBase {
 	}
 	
 	public void verificarClienteSunat()throws WrongValueException, Exception{
-		if(action==Constantes.ACTION_NEW  
+		if(actionc==Constantes.ACTION_NEW  
 			&& !(txtDocumentoCliente.getText().trim().isEmpty())){
 			
 			String nroDocumento=txtDocumentoCliente.getText().trim();
@@ -4427,7 +4447,7 @@ public class WndVentaReserva extends WndBase {
 	 * Para modificar un Cliente existente
 	 */
 	public void onModifyClient() {
-		action = Constantes.ACTION_MODIFY;
+		actionc = Constantes.ACTION_MODIFY;
 		disabledControlsClient(false);
 		tlbbtnNuevoClient.setDisabled(true);
 		tlbbtnModificarClient.setDisabled(true);
@@ -4447,7 +4467,7 @@ public class WndVentaReserva extends WndBase {
 		tlbbtnCancelarClient.setDisabled(true);
 		tlbbtnGuardarClient.setDisabled(true);
 		tlbbtnLimpiarClient.setDisabled(false);
-		action = Constantes.FAILURE;
+		actionc = Constantes.FAILURE;
 		txtDocumentoCliente.setFocus(true);		
 	}
 
@@ -4717,8 +4737,8 @@ public class WndVentaReserva extends WndBase {
 				throw new NumeroDocumentoNullException();
 			else if(txtRazonSocial.getText().trim().equals(""))
 				throw new RazonSocialNullException();
-			else if(txtUbigeoCliente.getText().trim().equals(""))
-				throw new UbigeoNullException();
+//			else if(txtUbigeoCliente.getText().trim().equals(""))
+//				throw new UbigeoNullException();
 			else if (txtRazonSocial.getText().trim().length()<=5){
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.razonSocialIncorrect"), txtRazonSocial);
 				return false;
@@ -4751,11 +4771,16 @@ public class WndVentaReserva extends WndBase {
 			if(!Util.validarRUC(txtDocumentoCliente.getText().trim()))
 				throw new RucInvalidoException();
 			
-			if (action == Constantes.ACTION_NEW)
+			if (actionc == Constantes.ACTION_NEW)
 				oCliente = new Cliente();
 			
 			Ubigeo oUbigeo = new Ubigeo();
-			oUbigeo.setId(txtUbigeoIdCliente.getText());
+			//No sera obligatorio para Transmar  MAOE - 02/08/2022
+//			oUbigeo.setId(txtUbigeoIdCliente.getText());
+			if(txtUbigeoIdCliente.getText().trim().length()==0)
+				oUbigeo.setId(getAgencia().getUbigeo().getId());
+			else
+				oUbigeo.setId(txtUbigeoIdPax.getText());
 			
 			oCliente.setNumeroDocumento(txtDocumentoCliente.getValue().toString());
 			oCliente.setRazonSocial(txtRazonSocial.getText().toUpperCase());
@@ -4778,9 +4803,10 @@ public class WndVentaReserva extends WndBase {
 			oCliente.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 						
 			//Guarda el cliente
-			if (action == Constantes.ACTION_NEW) {
+			if (actionc == Constantes.ACTION_NEW) {
 				ServiceLocator.getClienteManager().guardar(oCliente);
-				action = Constantes.ACTION_MODIFY;
+				onCancelClient();
+//				action = Constantes.ACTION_MODIFY;
 			} else {
 				ServiceLocator.getClienteManager().actualizar(oCliente);
 			}
@@ -4854,7 +4880,7 @@ public class WndVentaReserva extends WndBase {
 			public void onEvent(Event e) {
 				try {
 					if (e.getName().equals("onYes")) {
-						if (action == Constantes.ACTION_NEW) {
+						if (actionc == Constantes.ACTION_NEW) {
 							ServiceLocator.getClienteManager().guardar(oCliente);
 							DlgMessage.information(Messages.getString("WndVentaReserva.information.exitoGuardar"));
 						} else {
@@ -4865,7 +4891,7 @@ public class WndVentaReserva extends WndBase {
 						tlbbtnModificarClient.setDisabled(false);
 						tlbbtnCancelarClient.setDisabled(true);
 						tlbbtnGuardarClient.setDisabled(true);
-						action = Constantes.FAILURE;
+						actionc = Constantes.FAILURE;
 						disabledControlsClient(true);
 						
 						/*21/10/2016 - jabanto*/

@@ -123,13 +123,45 @@ public class WndAvanceBuses extends WndBase{
 	 */
 	private Listhead crearEncabezado(List<String> lstEncabezado)throws Exception{
 		Listhead listhead=new Listhead();
-		listhead.appendChild(new Listheader("ITEM","","30px"));
-		listhead.appendChild(new Listheader("HORA","","45px"));
-		listhead.appendChild(new Listheader("SERVICIO","","130px"));
-		listhead.appendChild(new Listheader("RUTA","","180px"));
+		Listheader listHeader = new Listheader();
+		
+		listHeader.setLabel("ITEM");
+		listHeader.setWidth("30px");
+		listHeader.setStyle("color: #ffffff;");
+		listhead.appendChild(listHeader);
+
+		listHeader =  new Listheader();
+		listHeader.setLabel("HORA");
+		listHeader.setWidth("45px");
+		listHeader.setStyle("color: #ffffff;");
+		listhead.appendChild(listHeader);
+		
+		listHeader =  new Listheader();
+		listHeader.setLabel("SERVICIO");
+		listHeader.setWidth("130px");
+		listHeader.setStyle("color: #ffffff;");
+		listhead.appendChild(listHeader);
+		
+		listHeader =  new Listheader();
+		listHeader.setLabel("RUTA");
+		listHeader.setWidth("180px");
+		listHeader.setStyle("color: #ffffff;");
+		listhead.appendChild(listHeader);
+		
+//		listhead.appendChild(new Listheader("ITEM","","30px"));
+//		listhead.appendChild(new Listheader("HORA","","45px"));
+//		listhead.appendChild(new Listheader("SERVICIO","","130px"));
+//		listhead.appendChild(new Listheader("RUTA","","180px"));
 		
 		for(String fecha:lstEncabezado){
-			Listheader listheader=new Listheader(fecha,"","55px");
+//			Listheader listheader=new Listheader(fecha,"","55px");
+//			listheader.setAlign("center");
+//			listhead.appendChild(listheader);
+			Listheader listheader=new Listheader();
+			
+			listheader.setLabel(fecha);
+			listheader.setWidth("55px");
+			listheader.setStyle("color: #ffffff;");
 			listheader.setAlign("center");
 			listhead.appendChild(listheader);
 		}
@@ -162,7 +194,10 @@ public class WndAvanceBuses extends WndBase{
 			RptAvanceBus avanceBus=(RptAvanceBus) e.getValue();
 			
 			/*Para separar los grupos "Provincias lima" y "Provincias"*/
-			if(index>0 && avanceBus.getTipoRuta().intValue()!=tipoRutaAnt && avanceBus.getTipoRuta().intValue()>0 && (provinciasLima==false || provincias==false)){
+			if(index>0 
+			   && avanceBus.getTipoRuta().intValue()!=tipoRutaAnt 
+			   && avanceBus.getTipoRuta().intValue()>0 
+			   && (provinciasLima==false || provincias==false)){
 				if(tipoRutaAnt==0 &&  provinciasLima==false){
 					/*Agrega un nuevo item para el total de lima provincias*/
 					addNewItemTotal(LIMA_PROVINCIA, itemsAdd, key);
@@ -201,7 +236,8 @@ public class WndAvanceBuses extends WndBase{
 			if(((Localidad)cmbLocalidadOrigen.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_LOC_LIMA){
 				/*Agrega un nuevo item para el total de lima provincias*/
 				addNewItemTotal(LIMA_PROVINCIA, itemsAdd, key);
-			}else if (cmbLocalidadDestino.getSelectedItem().getValue() instanceof Localidad && ((Localidad)cmbLocalidadDestino.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_LOC_LIMA){
+			}else if (cmbLocalidadDestino.getSelectedItem().getValue() instanceof Localidad 
+					  && ((Localidad)cmbLocalidadDestino.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_LOC_LIMA){
 				/*Agrega un nuevo item para el total de lima provincias*/
 				addNewItemTotal(PROVINCIAS_LIMA, itemsAdd, key);				
 			}else{

@@ -673,8 +673,8 @@
 															<row style="background:#F7F7F7">
 																<label value="TELÉFONO (*):"/>
 																<textbox id="txtTelefono" onOK="btnUbigeoPax.setFocus(true)" maxlength="30" width="140px"/>
-																<label value="UBIGEO (*) :"/>
-																<hbox align="center">
+																<label value="UBIGEO (*) :" visible="false" />
+																<hbox align="center" visible="false" >
 																	<textbox id="txtUbigeoPax" width="170px" onOK="txtEmailPax.setFocus(true)"/>
 																	<textbox id="txtUbigeoIdPax" visible="false"/>
 																	<button id="btnUbigeoPax" sclass="btnImage" label="..."/>
@@ -817,8 +817,8 @@
 															<row>
 																<label value="EMAIL :"/>
 																<textbox id="txtEmailCliente" style="text-transform:none !important" onOK="btnUbigeoCliente.setFocus(true)" maxlength="50"/>
-																<label value="UBIGEO (*) :"/>
-																<hbox align="center" width="100%">
+																<label value="UBIGEO (*) :" visible="false" />
+																<hbox align="center" width="100%" visible="false" >
 																	<textbox id="txtUbigeoCliente" width="170px" readonly="true"/>
 																	<textbox id="txtUbigeoIdCliente" visible="false"/>
 																	<button id="btnUbigeoCliente" sclass="btnImage" label="..."/>

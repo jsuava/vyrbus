@@ -1220,11 +1220,13 @@ public class WSFE implements Serializable{
 				TipoCobranza tipoCobranza = ServiceLocator.getTipoCobranzaManager().buscarPorId(ventaPasaje.getTipoCobranza().getId().longValue());
 				int dias = Integer.valueOf(tipoCobranza.getDenominacion().split(" ")[0]);
 				Date fechaVencimiento = new Date(ventaPasaje.getFechaLiquidacion().getTime() + (Constantes.MILISEGUNDOS_X_DIA * dias));
+				String strFechaVencimiento = Constantes.FORMAT_DATE.format(fechaVencimiento);
 				
 				InformacionCredito informacionCredito= new InformacionCredito();
 				informacionCredito.setNroCuota(new JAXBElement<String>(new QName(NAMESPACE,"NroCuota"), String.class, "Cuota001"));
 				informacionCredito.setMontoCuota(BigDecimal.valueOf(ventaPasaje.getImportePagado()));
-				informacionCredito.setFechaVencimiento(new JAXBElement<String>(new QName(NAMESPACE,"FechaVencimiento"), String.class, Constantes.FORMAT_DATE.format(fechaVencimiento)));
+				informacionCredito.setFechaVencimiento(new JAXBElement<String>(new QName(NAMESPACE,"FechaVencimiento"), String.class, strFechaVencimiento));
+//				venta.setFechaEmision(new JAXBElement<String>(new QName(NAMESPACE,"fechaEmision"), String.class, fechaEmision));
 				ArrayOfInformacionCredito arrayOfInformacionCredito = new ArrayOfInformacionCredito();
 				arrayOfInformacionCredito.getInformacionCredito().add(informacionCredito);
 				venta.setInfoCreditList(new JAXBElement<ArrayOfInformacionCredito>(new QName(NAMESPACE,"InfoCreditList"), ArrayOfInformacionCredito.class,arrayOfInformacionCredito));

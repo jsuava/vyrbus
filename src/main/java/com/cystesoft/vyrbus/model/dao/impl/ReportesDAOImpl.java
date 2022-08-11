@@ -1826,7 +1826,7 @@ public class ReportesDAOImpl extends GenericDAOImpl implements ReportesDAO {
 			       + "INNER JOIN VRMSERVICIO  s ON (s.servicio_id=i.servicio_id) "
 			       + "INNER JOIN VRMRUTA r ON (r.ruta_id=i.ruta_idmayor) "
 			       + "LEFT JOIN VRMBUS b ON (b.bus_id=i.bus_id) "
-			     + "WHERE i.d_fecpar BETWEEN '"+fechaInicio+"' AND '"+fechaFin+"' "
+			     + "WHERE i.d_fecpar BETWEEN to_date('"+fechaInicio+"', 'dd/MM/yyyy') AND to_date('"+fechaFin+"', 'dd/MM/yyyy') "
 			       + "AND r.localidad_idorigen=NVL("+idLocalidadOrigen+",r.localidad_idorigen) "
 			       + "AND r.localidad_iddestino=NVL("+idLocalidadDestino+",r.localidad_iddestino) "
 			       + "AND s.servicio_id=NVL("+idServicio+",s.servicio_id) ";
@@ -1846,13 +1846,14 @@ public class ReportesDAOImpl extends GenericDAOImpl implements ReportesDAO {
 			
 		/*Busca el avance de buses*/	
 		sql="SELECT to_char(i.d_Fecpar,'dd/MM/yyyy') partida,i.c_horpar, s.c_Denominacion servicio, r.c_origen||'  - '||r.c_destino ruta "
-				+ ",CAST (b.c_codigo AS NUMBER )bus "
+//				+ ",CAST (b.c_codigo AS NUMBER )bus "
+				+ ",UPPER(b.c_codigo) bus "
 				+ ",DECODE(r.localidad_idorigen,13,0,DECODE(r.localidad_iddestino,13,1,2)) TipoRuta "
 		  + "FROM VRTITINERARIO i "
 		    + "INNER JOIN VRMSERVICIO  s ON (s.servicio_id=i.servicio_id) "
 		    + "INNER JOIN VRMRUTA r ON (r.ruta_id=i.ruta_idmayor) "
 		    + "LEFT JOIN VRMBUS b ON (b.bus_id=i.bus_id) "
-		  + "WHERE i.d_fecpar BETWEEN '"+fechaInicio+"' AND '"+fechaFin+"' "
+		  + "WHERE i.d_fecpar BETWEEN to_date('"+fechaInicio+"', 'dd/MM/yyyy') AND to_date('"+fechaFin+"', 'dd/MM/yyyy') "
 		    + "AND r.localidad_idorigen=NVL("+idLocalidadOrigen+",r.localidad_idorigen) "
 	        + "AND r.localidad_iddestino=NVL("+idLocalidadDestino+",r.localidad_iddestino) "
 	        + "AND s.servicio_id=NVL("+idServicio+",s.servicio_id) ";
@@ -1871,7 +1872,8 @@ public class ReportesDAOImpl extends GenericDAOImpl implements ReportesDAO {
 			avanceBus.setHoraPartida(obj[1].toString());
 			avanceBus.setServicio(obj[2].toString());
 			avanceBus.setRuta(obj[3].toString());
-			avanceBus.setBus(obj[4]!=null?((BigDecimal)obj[4]).intValue():null);
+//			avanceBus.setBus(obj[4]!=null?((BigDecimal)obj[4]).intValue():null);
+			avanceBus.setBus(obj[4]!=null?obj[4].toString():null);
 			avanceBus.setTipoRuta(((BigDecimal)obj[5]).intValue());
 			
 			String key=avanceBus.toString();//.replace(avanceBus.getFechaPartida(), "");

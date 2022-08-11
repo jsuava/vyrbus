@@ -43,6 +43,7 @@ import com.cystesoft.vyrbus.model.bean.Itinerario;
 import com.cystesoft.vyrbus.model.bean.Manifiesto;
 import com.cystesoft.vyrbus.model.bean.ProgramacionServicio;
 import com.cystesoft.vyrbus.model.bean.Usuario;
+import com.cystesoft.vyrbus.model.bean.UsuarioHardware;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.service.exceptions.BusNullException;
 import com.cystesoft.vyrbus.service.exceptions.CertificadoHabilitacionBusNullException;
@@ -248,7 +249,7 @@ public class WndManifiesto extends WndBase {
 				if(listCompPendientesXImprimir.size()>0)
 					throw new CompPendientesXImprimirException();
 				else{
-					/*Solicita confirmaciï¿½n de usuario.*/
+					/*Solicita confirmación de usuario.*/
 					Messagebox.show(Messages.getString("WndManifiesto.question.confirmarImpresion"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
 					@Override
 					public void onEvent(Event e) throws Exception {
@@ -444,13 +445,13 @@ public class WndManifiesto extends WndBase {
 			for (VentaPasaje ventaPasaje : lsVentaPasajest){
 				item = new Listitem();
 				
-				cell= new Listcell(ventaPasaje.getNumeroAsiento().toString()); //Nï¿½mero de Asiento
+				cell= new Listcell(ventaPasaje.getNumeroAsiento().toString()); //Número de Asiento
 				cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
-				cell= new Listcell("T"+ventaPasaje.getNumeroControl().toString().substring(4)); //Nï¿½mero de control
+				cell= new Listcell("T"+ventaPasaje.getNumeroControl().toString().substring(4)); //Número de control
 				cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
-				cell = new Listcell(ventaPasaje.getNumeroBoleto()); // Nï¿½mero de Boleto
+				cell = new Listcell(ventaPasaje.getNumeroBoleto()); // Número de Boleto
 				cell.setTooltiptext(ventaPasaje.getTipoComprobante().getDenominacion());
 				cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
@@ -466,7 +467,7 @@ public class WndManifiesto extends WndBase {
 				item.appendChild(cell);
 				cell = new Listcell(ventaPasaje.getPasajero().getTipoDocumento().getDenominacion()); //Tipo Docuemnto 
 				item.appendChild(cell);
-				cell = new Listcell(ventaPasaje.getPasajero().getNumeroDocumento()); //Nï¿½mero Documento
+				cell = new Listcell(ventaPasaje.getPasajero().getNumeroDocumento()); //Número Documento
 				cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
 				cell = new Listcell(ventaPasaje.getRuta().getOrigen()); //Origen
@@ -682,13 +683,14 @@ public class WndManifiesto extends WndBase {
 	}
 	
 	/**
-	 * carga puntos de Control, segï¿½n el itinerario
+	 * carga puntos de Control, según el itinerario
 	 * @param idItinerario : identificador del itinerario.
 	 * @throws Exception
 	 */
 	public void cargaPuntoControl(Long idItinerario) throws Exception{
 		ArrayList<Agencia> lsta= (ArrayList<Agencia>) ServiceLocator.getManifiestoManager().consultaPtoControl(idItinerario);
 		cmbPuntocontrol.getItems().clear();
+		UtilData.cargarGenericData(cmbPuntocontrol, true);
 		for (int l = 0; l < lsta.size(); l ++) {
 			Agencia agencia= lsta.get(l);
 			Comboitem oComboitem = new Comboitem();
@@ -700,9 +702,9 @@ public class WndManifiesto extends WndBase {
 	}
 	
 	/**
-	 * Permite enlazar los controles a la ventana de selecciï¿½n de Itinerario
+	 * Permite enlazar los controles a la ventana de selección de Itinerario
 	 * @param textboxItinerario :en este Textbox se devolvera el Id del itinerario seleccionado.
-	 * @param button :ha este Button se le adjuntara un listener con la llamada a la ventana de selecciï¿½n de itinerario
+	 * @param button :ha este Button se le adjuntara un listener con la llamada a la ventana de selección de itinerario
 	 * @see WndItinerario: 
 	 */
 	public  void enlazarItinerario(final Button button) {
@@ -860,12 +862,23 @@ public class WndManifiesto extends WndBase {
 		if(documento.equals(IMPRESION_CARPETA_DESPACHO)){
 			itinerario.setAgenciaPartida(null);
 			
-			Agencia agencia= new Agencia(); 
-			agencia=(Agencia)cmbPuntocontrol.getSelectedItem().getValue();
-			itinerario.setAgenciaPartida(agencia);
+			Agencia agencia = null; 
+			//Modificado por MAOE 10/08/2022 Debe permitirse imprimir todos los pasajeros en la carpeta de despacho
+			if(cmbPuntocontrol.getSelectedIndex()>0) {
+				agencia = new Agencia();
+				agencia=(Agencia)cmbPuntocontrol.getSelectedItem().getValue();
+				itinerario.setAgenciaPartida(agencia);
+			}else {
+				itinerario.setAgenciaPartida(agencia);
+			}
+				
 			File file=CreateDocument.creaCarpetaDespacho(itinerario, getAgencia());
 //			src = Constantes.URL_FORMATOS_DESPACHOS+"CARDES-"+ itinerario.getId()+"-"+agencia.getId()+".txt";
-			src = Constantes.URL_FORMATOS_DESPACHOS+Constantes.CLAVE_PAHT+"CARDES"+ itinerario.getId()+"-"+agencia.getId()+".txt";
+			if (agencia != null)
+				src = Constantes.URL_FORMATOS_DESPACHOS+Constantes.CLAVE_PAHT+"CARDES"+ itinerario.getId()+"-"+agencia.getId()+".txt";
+			else
+				src = Constantes.URL_FORMATOS_DESPACHOS+Constantes.CLAVE_PAHT+"CARDES"+ itinerario.getId()+"-0"+".txt";
+			
 			iFrame.setWidth("1035");
 			
 //			if(esPrevio==false && (getUsuarioHardware().getPrintApplet()==null || getUsuarioHardware().getPrintApplet().intValue()==Constantes.FALSE_VALUE)){
@@ -905,8 +918,10 @@ public class WndManifiesto extends WndBase {
 			src1 = Constantes.URL_FORMATOS_MANIFIESTOS+Constantes.CLAVE_PAHT +"MANPAX"+ itinerario.getId()+"-"+ROTULO_TRANSPORTISTA+".txt";
 			src2 = Constantes.URL_FORMATOS_MANIFIESTOS+Constantes.CLAVE_PAHT +"MANPAX"+ itinerario.getId()+"-"+ROTULO_ARCHIVO+".txt";
 			iFrame.setWidth("1115");
+			UsuarioHardware usuarioHardware = getUsuarioHardware();
 
-			if(esPrevio==false && getUsuarioHardware().getPrintApplet().intValue()==Constantes.FALSE_VALUE){
+			if(esPrevio==false && usuarioHardware.getPrintApplet().intValue()==Constantes.FALSE_VALUE){
+//				if(esPrevio==false && getUsuarioHardware().getPrintApplet().intValue()==Constantes.FALSE_VALUE){
 				File fileDestino=new File(fileSunat.getPath().replaceAll(".txt", "")+"COMP.txt");
 				
 				FileInputStream inputSunat= new FileInputStream(fileSunat);

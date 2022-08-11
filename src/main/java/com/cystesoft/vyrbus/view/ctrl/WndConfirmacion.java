@@ -7,6 +7,8 @@
  */
 package com.cystesoft.vyrbus.view.ctrl;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +24,7 @@ import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
+import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Groupbox;
 import org.zkoss.zul.Image;
@@ -87,6 +90,7 @@ import com.cystesoft.vyrbus.service.exceptions.NumeroBoletoDuplicadoException;
 import com.cystesoft.vyrbus.service.exceptions.NumeroBoletoNullException;
 import com.cystesoft.vyrbus.service.exceptions.NumeroDocumentoNullException;
 import com.cystesoft.vyrbus.service.exceptions.NumeroOperacionBancariaNullException;
+import com.cystesoft.vyrbus.service.exceptions.NumeroOperacionTarjetaNullException;
 import com.cystesoft.vyrbus.service.exceptions.OperadorTarjetaCreditoNullException;
 import com.cystesoft.vyrbus.service.exceptions.PasajeroException;
 import com.cystesoft.vyrbus.service.exceptions.PasajeroIndeseableException;
@@ -108,6 +112,7 @@ import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.util.AplicarPromocion;
 import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.Messages;
+import com.cystesoft.vyrbus.service.util.RESTCiva;
 import com.cystesoft.vyrbus.service.util.Util;
 import com.cystesoft.vyrbus.service.util.UtilData;
 import com.cystesoft.vyrbus.service.util.WSFE;
@@ -132,7 +137,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	private Combobox cmbPtoDesembarque;
 	private Combobox cmbTipoDocumento;
 	private Combobox cmbSexo;
-	private Combobox cmbEstadoCivil;
+//	private Combobox cmbEstadoCivil;
 	private Combobox cmbTipoComprobante;
 	private Combobox cmbFormaPago;
 	private Combobox cmbTipoFormaPago;
@@ -140,9 +145,9 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	private Combobox cmbTarjetaCredito;
 	private Combobox cmbAlimentacion;
 	private Combobox cmbNacionalidad;
-	private Combobox cmbDia;
-	private Combobox cmbMes;
-	private Combobox cmbAnio;
+//	private Combobox cmbDia;
+//	private Combobox cmbMes;
+//	private Combobox cmbAnio;
 	private Textbox txtNumeroAsiento;
 	private Textbox txtNumeroPiso;
 	private Textbox txtNumeroBoleto;
@@ -169,7 +174,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	private Textbox txtIdPromocion;
 	private Textbox txtRubro;
 	private Textbox txtObservaciones;
-//	private Datebox dtbxFechaNacimiento;
+	private Datebox dtbxFechaNacimiento;
 	private Listbox lbxPasajeros;
 	private Listbox lbxClientes;
 	private Button btnUbigeoPax;
@@ -222,6 +227,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	private Checkbox chkPrepagado;
 	private Checkbox chkPagoMixto;
 	private Intbox ibxCantidadTrabajadores;
+	private Intbox ntbxEdad;
 
 	private Row rowNuevoBoleto;
 	private Textbox txtNuevoBoleto;
@@ -243,6 +249,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	private Promocion promocionTarifa=null;
 	
 	private int action = Constantes.FAILURE;
+	private int actionc = Constantes.FAILURE;
 	
 	private final String LABEL_IMPPAG_TO_TEPSA="IMPORTE TOTAL PAGAR";
 	private final String LABEL_IMPPAG_TO_PASAJERO="IMPORTE TOTAL A DEVOLVER";
@@ -294,7 +301,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, Constantes.ID_TIPDOC_DNI);	
 		
 		UtilData.cargarDataCombo(cmbSexo, Sexo.class, false);
-		UtilData.cargarDataCombo(cmbEstadoCivil, EstadoCivil.class, false);
+//		UtilData.cargarDataCombo(cmbEstadoCivil, EstadoCivil.class, false);
 		UtilData.cargarDataCombo(cmbNacionalidad, Nacionalidad.class, false);
 		UtilData.enlazarUbigeo(txtUbigeoIdPax, txtUbigeoPax, btnUbigeoPax,null);
 		UtilData.enlazarUbigeo(txtUbigeoIdCliente, txtUbigeoCliente,btnUbigeoCliente,null);
@@ -307,8 +314,8 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 
 		loadInformacion();
 		disabledControlsPax(true);
-		Util.loadAnios(cmbAnio);
-		Util.loadMeses(cmbMes);	
+//		Util.loadAnios(cmbAnio);
+//		Util.loadMeses(cmbMes);	
 		if (getObjetoConfirmar().getTipoMovimiento().getId() == Constantes.ID_TIPMOV_FECHA_ABIERTA || 
 				getObjetoConfirmar().getTipoMovimiento().getId() == Constantes.ID_TIPMOV_POSTERGACION_FA){
 			chkPrepagado.setDisabled(true);
@@ -384,12 +391,15 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		txtUbigeoIdPax = (Textbox) this.getFellow("txtUbigeoIdPax");
 		btnUbigeoPax = (Button) this.getFellow("btnUbigeoPax");
 		txtEmailPax = (Textbox) this.getFellow("txtEmailPax");
+		dtbxFechaNacimiento=(Datebox)this.getFellow("dtbxFechaNacimiento");
+		ntbxEdad = (Intbox)this.getFellow("ntbxEdad");
+		//Comentado por MAOE 04/08/2022
 //		dtbxFechaNacimiento = (Datebox) this.getFellow("dtbxFechaNacimiento");
-		cmbDia = (Combobox)this.getFellow("cmbDia");
-		cmbMes = (Combobox)this.getFellow("cmbMes");
-		cmbAnio = (Combobox)this.getFellow("cmbAnio");
+//		cmbDia = (Combobox)this.getFellow("cmbDia");
+//		cmbMes = (Combobox)this.getFellow("cmbMes");
+//		cmbAnio = (Combobox)this.getFellow("cmbAnio");
 		cmbSexo = (Combobox) this.getFellow("cmbSexo");
-		cmbEstadoCivil = (Combobox) this.getFellow("cmbEstadoCivil");
+//		cmbEstadoCivil = (Combobox) this.getFellow("cmbEstadoCivil");
 		cmbNacionalidad = (Combobox)this.getFellow("cmbNacionalidad");
 		rowNacionalidad = (Row)this.getFellow("rowNacionalidad");
 		lblEmail = (Label)this.getFellow("lblEmail");
@@ -506,6 +516,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			}
 		});
 
+		//*	En caso haya apretado la tecla enter en el control txtDocumentoPax realiza la busqueda del pasajero	
 		txtDocumentoPax.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
@@ -577,7 +588,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		txtDocumentoCliente.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
-				if(action!=Constantes.ACTION_NEW && action!=Constantes.ACTION_MODIFY){
+				if(actionc!=Constantes.ACTION_NEW && action!=Constantes.ACTION_MODIFY){
 					if(txtDocumentoCliente.getText().trim().equals(""))
 						DlgMessage.information(Messages.getString("WndVentaReserva.information.noDocumentoCliente"), txtDocumentoCliente);
 					else
@@ -590,7 +601,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		txtRazonSocial.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
-				if(action!=Constantes.ACTION_NEW && action!=Constantes.ACTION_MODIFY){
+				if(actionc!=Constantes.ACTION_NEW && actionc!=Constantes.ACTION_MODIFY){
 					if(txtRazonSocial.getText().trim().equals(""))
 						DlgMessage.information(Messages.getString("WndVentaReserva.information.noRazonSocial"), txtRazonSocial);
 					else
@@ -635,22 +646,30 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			}
 		});
 		
-		cmbMes.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+		ntbxEdad.addEventListener(Events.ON_BLUR, new EventListener<Event>() {
 			@Override
-			public void onEvent(Event e){
-				if(cmbMes.getSelectedItem().getValue() instanceof Integer)
-					Util.loadDias(cmbDia, (Integer)cmbMes.getSelectedItem().getValue(), (Integer)cmbAnio.getSelectedItem().getValue());
-			}
+			public void onEvent(Event event) throws Exception {
+				if(!(ntbxEdad.getText().trim().isEmpty()))
+					dtbxFechaNacimiento.setValue(Constantes.FORMAT_DATE.parse(calcularFechaNacimiento()));				
+			}			
 		});
 		
-		cmbAnio.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
-			@Override
-			public void onEvent(Event e){
-				Util.loadMeses(cmbMes);
-				cmbDia.setSelectedIndex(-1);
-				cmbDia.setText("");
-			}
-		});
+//		cmbMes.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+//			@Override
+//			public void onEvent(Event e){
+//				if(cmbMes.getSelectedItem().getValue() instanceof Integer)
+//					Util.loadDias(cmbDia, (Integer)cmbMes.getSelectedItem().getValue(), (Integer)cmbAnio.getSelectedItem().getValue());
+//			}
+//		});
+//		
+//		cmbAnio.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+//			@Override
+//			public void onEvent(Event e){
+//				Util.loadMeses(cmbMes);
+//				cmbDia.setSelectedIndex(-1);
+//				cmbDia.setText("");
+//			}
+//		});
 		
 		txtNumeroAsiento.addEventListener(Events.ON_CHANGING, new EventListener<Event>() {
 			@Override
@@ -826,6 +845,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	private void onLoadPuntoEmbarque(DetalleItinerario detItinerario) {
 		try {
 			cmbPtoEmbarque.getItems().clear();
+			int agenciaIgualEmbarque=0;
 
 			ArrayList<ItinerarioAgenciaPartida> arrayItiAgePartida = new ArrayList<ItinerarioAgenciaPartida>();
 			/*	Si la agencia de partida del itinerario es la misma del tramo seleccionado	*/
@@ -856,15 +876,25 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 					lblFechaPartida.setValue(fechaPartida+" "+(itiAgePartida.getHoraPartida()!=null?itiAgePartida.getHoraPartida():""));	
 						
 //					lblHoraPartida.setValue(itiAgePartida.getHoraPartida());
-				} else if (getObjetoConfirmar().getAgenciaPartida() != null && itiAgePartida.getAgencia().getId().intValue() == getObjetoConfirmar().getAgenciaPartida().getId()) {
+				}else if(agencia.getId().intValue() == itiAgePartida.getAgencia().getId().intValue()){
 					cmbPtoEmbarque.setSelectedItem(item);
-										
 					if(lblFechaPartida.getValue().length()>=10)
 						fechaPartida=lblFechaPartida.getValue().substring(0,10);
 					lblFechaPartida.setValue(fechaPartida+" "+(itiAgePartida.getHoraPartida()!=null?itiAgePartida.getHoraPartida():""));
 					
-//					lblHoraPartida.setValue(itiAgePartida.getHoraPartida());
-				}
+					agenciaIgualEmbarque = 1;
+				} 
+				else if(agenciaIgualEmbarque == 0)
+					cmbPtoEmbarque.setSelectedIndex(0);
+//				else if (getObjetoConfirmar().getAgenciaPartida() != null && itiAgePartida.getAgencia().getId().intValue() == getObjetoConfirmar().getAgenciaPartida().getId()) {
+//					cmbPtoEmbarque.setSelectedItem(item);
+//										
+//					if(lblFechaPartida.getValue().length()>=10)
+//						fechaPartida=lblFechaPartida.getValue().substring(0,10);
+//					lblFechaPartida.setValue(fechaPartida+" "+(itiAgePartida.getHoraPartida()!=null?itiAgePartida.getHoraPartida():""));
+//					
+////					lblHoraPartida.setValue(itiAgePartida.getHoraPartida());
+//				}
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -881,6 +911,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	private void onLoadPuntoDesembarque(DetalleItinerario detItinerario) {
 		try {
 			cmbPtoDesembarque.getItems().clear();
+			int agenciaIgualDesembarque=0;
 			ArrayList<ItinerarioAgenciaLlegada> arrayItiAgeLlegada = new ArrayList<ItinerarioAgenciaLlegada>();
 			/*	Si la agencia de llegada del itinerario es la misma del tramo seleccionado	*/
 			arrayItiAgeLlegada = ServiceLocator.getItinerarioManager().buscarAgenciasLlegada(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO, detItinerario.getRuta().getLocalidadDestino().getId());
@@ -910,14 +941,20 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 					if(lblFechaLlegada.getValue().length()>=10)
 						fechaLlagada=lblFechaLlegada.getValue().substring(0,10);
 					lblFechaLlegada.setValue(fechaLlagada+" "+(itiAgeLlegada.getHoraLlegada()!=null?itiAgeLlegada.getHoraLlegada():""));
-				} else if (getObjetoConfirmar().getAgenciaLlegada() != null
-						&& itiAgeLlegada.getAgencia().getId().intValue() == getObjetoConfirmar().getAgenciaLlegada().getId()) {
+				}
+				//Si es una reserva y la agencia de llegada es la misma que la que se reservo
+				else if (getObjetoConfirmar().getAgenciaLlegada() != null
+						&& itiAgeLlegada.getAgencia().getId().intValue() == getObjetoConfirmar().getAgenciaLlegada().getId() 
+						&& getObjetoConfirmar().getTipoMovimiento().getId()== Constantes.ID_TIPMOV_RESERVA) {
 					cmbPtoDesembarque.setSelectedItem(item);
 //					lblHoraLlegada.setValue(itiAgeLlegada.getHoraLlegada());
 					if(lblFechaLlegada.getValue().length()>=10)
 						fechaLlagada=lblFechaLlegada.getValue().substring(0,10);
 					lblFechaLlegada.setValue(fechaLlagada+" "+(itiAgeLlegada.getHoraLlegada()!=null?itiAgeLlegada.getHoraLlegada():""));
+					agenciaIgualDesembarque = 1;
 				}
+				else if(agenciaIgualDesembarque == 0)
+					cmbPtoDesembarque.setSelectedIndex(0);
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -1132,7 +1169,8 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	 * @see com.tepsa.sisvyr.view.ui.IConfirmacion#onNewPax()
 	 */
 	@Override
-	public void onNewPax() {
+	public void onNewPax(){
+		String numeroDocumento=txtDocumentoPax.getText().trim();
 		onCleanControlsPax();
 		disabledControlsPax(false);
 		action = Constantes.ACTION_NEW;
@@ -1145,6 +1183,9 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		
 		Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, Constantes.ID_TIPDOC_DNI);
 		txtDocumentoPax.setFocus(true);
+		
+		txtDocumentoPax.setText(numeroDocumento);
+		verificarPaxReniec();
 	}
 	
 	/*
@@ -1177,17 +1218,137 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		
 		disabledControlsPax(true);
 		
-		txtApeMat.setDisabled(false);
-		txtApePat.setDisabled(false);
-		txtNombres.setDisabled(false);
+//		txtApeMat.setDisabled(false);
+//		txtApePat.setDisabled(false);
+//		txtNombres.setDisabled(false);
 		
-		if(action == Constantes.ACTION_NEW)
-			onCleanControlsPax();
+//		if(action == Constantes.ACTION_NEW)
+//			onCleanControlsPax();
 		action = Constantes.FAILURE;
 		txtDocumentoPax.setFocus(true);
 		
 	}
 
+	public void verificarPaxReniec() /*throws WrongValueException, Exception*/{
+		txtApePat.setDisabled(false);
+		txtApeMat.setDisabled(false);
+		txtNombres.setDisabled(false);
+		
+		if(action==Constantes.ACTION_NEW  
+				&& !(txtDocumentoPax.getText().trim().isEmpty()) 
+				&& cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento 
+				&& ((TipoDocumento)cmbTipoDocumento.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPDOC_DNI)
+		{
+			try {
+				String numerodocumento=txtDocumentoPax.getText().trim();
+				
+				/*Valida con el metodo getIdentidad */
+				ResultIdentidad resultIdentidad=Util.getResultIdentidad(numerodocumento,imgValidacionDNI);
+				if(resultIdentidad!=null){
+					Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, Constantes.ID_TIPDOC_DNI);
+					/*si el DNI es correcto*/
+					if(resultIdentidad.isReturn()){
+						/*Para no permitir la modificacion de los appellidos y nombres al usuario*/
+						txtApePat.setDisabled(true);
+						txtApeMat.setDisabled(true);
+						txtNombres.setDisabled(true);
+						/*Carga los apellidos y nombres retornados por la reniec*/
+						txtApePat.setText(resultIdentidad.getPaterno()!=null && !(resultIdentidad.getPaterno().trim().isEmpty()) ?resultIdentidad.getPaterno().trim():"");
+						txtApeMat.setText(resultIdentidad.getMaterno()!=null && !(resultIdentidad.getMaterno().trim().isEmpty()) ? resultIdentidad.getMaterno().trim():"");
+						txtNombres.setText(resultIdentidad.getNombre().trim());
+						/*Obtiene datos como la fecha de nacimiento y el sexo de NUESTRA base de datos de la Reniec*/
+						if(resultIdentidad.getReniec()!=null){
+							mostrarFechaNacimiento(resultIdentidad.getReniec().getFechaNacimiento());
+							if(dtbxFechaNacimiento.getValue()!=null)
+								calcularEdad(Constantes.FORMAT_DATE.format(dtbxFechaNacimiento.getValue()));
+							Util.seleccionarValorItemCombo(Sexo.class, cmbSexo, Integer.valueOf(resultIdentidad.getReniec().getSexo()));
+						}
+						txtDireccionPax.setFocus(true);
+					}
+				}else{
+					/*Consulta BD reniec local*/
+					List<String> dni = RESTCiva.getDatosDni(numerodocumento);
+					
+	//				Reniec reniec= ServiceLocator.getReniecManager().buscarPax(numerodocumento);
+					if(dni!=null){
+					Reniec reniec = new Reniec();
+					reniec.setNumeroDocumento(dni.get(0));
+					reniec.setNombres(dni.get(1));
+					reniec.setApellidoPaterno(dni.get(2));
+					reniec.setApellidoMaterno(dni.get(3));
+					ntbxEdad.setValue(30);
+					dtbxFechaNacimiento.setValue(Constantes.FORMAT_DATE.parse(calcularFechaNacimiento()));
+					
+					
+	//				if(reniec!=null){
+						Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, Constantes.ID_TIPDOC_DNI);
+						txtApePat.setText(reniec.getApellidoPaterno());
+						txtApeMat.setText(reniec.getApellidoMaterno());
+						txtNombres.setText(reniec.getNombres());
+	//					mostrarFechaNacimiento(reniec.getFechaNacimiento());
+	//					if(dtbxFechaNacimiento.getValue()!=null)
+	//						calcularEdad(Constantes.FORMAT_DATE.format(dtbxFechaNacimiento.getValue()));
+	//					Util.seleccionarValorItemCombo(Sexo.class, cmbSexo, Integer.valueOf(reniec.getSexo()));
+					}else{
+						String numeroDocumento=txtDocumentoPax.getText().trim();
+						Integer idTipoDocumento= null;
+						if(cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento)
+							idTipoDocumento=((TipoDocumento)cmbTipoDocumento.getSelectedItem().getValue()).getId();
+						
+						onCleanControlsPax();		
+						//recupera valores ingresado por el usuario
+						txtDocumentoPax.setText(numeroDocumento);
+						if(idTipoDocumento!=null) 
+							Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, idTipoDocumento);
+						txtApePat.setFocus(true);
+						
+						if(getAgencia().getTipoAgencia().getId().intValue()!=Constantes.ID_TIPAGE_TEPSA){
+							Ubigeo oUbigeo = new Ubigeo();
+							oUbigeo.setId(Constantes.ID_UBIGEO_LIMA);
+							oUbigeo.setCodigoDepartamento("15");
+							oUbigeo.setCodigoProvincia("01");
+							oUbigeo.setCodigoDistrito("01");
+							oUbigeo.setNombreUbigeo("LIMA");
+							try{
+								if(oUbigeo!=null) {
+									String idUbigeo = oUbigeo.getId();
+									String ubicacionCompleta = ServiceLocator.getUbigeoManager().ubicacionGeografica(oUbigeo);
+									txtUbigeoPax.setText(ubicacionCompleta);
+									txtUbigeoIdPax.setText(idUbigeo);
+								}
+							}catch(Exception ex){
+								ex.printStackTrace();
+							}
+						}
+					}
+				}
+			}catch(Exception ex){
+				DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());ex.printStackTrace();
+				log.error(ex);
+			}
+		}
+	}
+	
+	private void calcularEdad(String fechaNacimiento){
+		if(fechaNacimiento != null){
+			String anio = fechaNacimiento.substring(fechaNacimiento.length()-4);
+			String year = Util.DatetoString(new Date(), "yyyy");
+			int edad = Integer.valueOf(year)-Integer.valueOf(anio);
+			ntbxEdad.setValue(edad);
+		}else
+			ntbxEdad.setValue(null);
+	}
+	
+	private String calcularFechaNacimiento(){
+		final DateFormat FORMAT = new SimpleDateFormat ("dd/MM");
+		String year = Util.DatetoString(new Date(), "yyyy");
+		Integer anio = Integer.valueOf(year) - ntbxEdad.getValue();
+//		String fechaNacimiento = "01/01/"+anio;
+		String fechaNacimiento = FORMAT.format(new Date())+"/"+anio;
+		return fechaNacimiento;
+	}
+
+	
 	/**
 	 * Limpia los controles del pasajero.
 	 */
@@ -1213,14 +1374,14 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		txtUbigeoIdPax.setText("");
 //		dtbxFechaNacimiento.setValue(Constantes.FECHA_NULL);
 		cmbSexo.setSelectedIndex(0);
-		cmbEstadoCivil.setSelectedIndex(0);
+//		cmbEstadoCivil.setSelectedIndex(0);
 		cmbNacionalidad.setSelectedIndex(0);
 		rowAdicional.setVisible(false);
 		oPasajero = null;
 		cmbTipoDocumento.setFocus(true);
-		cmbAnio.setSelectedIndex(-1);
-		cmbMes.setSelectedIndex(-1);
-		cmbDia.setSelectedIndex(-1);
+//		cmbAnio.setSelectedIndex(-1);
+//		cmbMes.setSelectedIndex(-1);
+//		cmbDia.setSelectedIndex(-1);
 		
 		imgValidacionDNI.setSrc("");
 		txtApeMat.setDisabled(false);
@@ -1262,12 +1423,12 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		txtUbigeoPax.setDisabled(arg);
 //		dtbxFechaNacimiento.setDisabled(arg);
 		cmbSexo.setDisabled(arg);
-		cmbEstadoCivil.setDisabled(arg);
+//		cmbEstadoCivil.setDisabled(arg);
 		btnUbigeoPax.setDisabled(arg);
 		cmbNacionalidad.setDisabled(arg);
-		cmbAnio.setDisabled(arg);
-		cmbMes.setDisabled(arg);
-		cmbDia.setDisabled(arg);
+//		cmbAnio.setDisabled(arg);
+//		cmbMes.setDisabled(arg);
+//		cmbDia.setDisabled(arg);
 	}
 
 	/*
@@ -1330,7 +1491,10 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			grpbxListaPasajeros.setVisible(true);
 		}else{
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noPasajerosEncontrados"));
+			String numeroDocumento=txtDocumentoPax.getText().trim().toUpperCase();
 			onCleanControlsPax();
+			txtDocumentoPax.setText(numeroDocumento);
+			txtDocumentoPax.select();
 		}
 		disabledControlsPax(true);
 		
@@ -1387,63 +1551,64 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	 * @throws Exception 
 	 * @throws WrongValueException 
 	 */
-	public void verificarPaxReniec() throws WrongValueException, Exception{
-		txtApePat.setDisabled(false);
-		txtApeMat.setDisabled(false);
-		txtNombres.setDisabled(false);	
-		
-		if(action==Constantes.ACTION_NEW  
-				&& !(txtDocumentoPax.getText().trim().isEmpty()) 
-				&& cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento 
-				&& ((TipoDocumento)cmbTipoDocumento.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPDOC_DNI){
-				
-			String numerodocumento=txtDocumentoPax.getText().trim();
-			
-			/*Consulta DNI con la reniec a travez del Ws del MTC*/
-			ResultIdentidad resultIdentidad=Util.getResultIdentidad(numerodocumento,imgValidacionDNI);
-			if(resultIdentidad!=null){	
-				Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, Constantes.ID_TIPDOC_DNI);
-				/*si el DNI es correcto*/
-				if(resultIdentidad.isReturn()){
-					/*Para no permitir la modificacion de los appellidos y nombres al usuario*/
-					txtApePat.setDisabled(true);
-					txtApeMat.setDisabled(true);
-					txtNombres.setDisabled(true);
-					/*Carga los apellidos y nombres retornados por la reniec*/
-					txtApePat.setText(resultIdentidad.getPaterno()!=null && !(resultIdentidad.getPaterno().trim().isEmpty()) ?resultIdentidad.getPaterno().trim():"");
-					txtApeMat.setText(resultIdentidad.getMaterno()!=null && !(resultIdentidad.getMaterno().trim().isEmpty()) ? resultIdentidad.getMaterno().trim():"");
-					txtNombres.setText(resultIdentidad.getNombre().trim());
-					/*Obtiene datos como la fecha de nacimiento y el sexo de NUESTRA base de datos de la Reniec*/
-					if(resultIdentidad.getReniec()!=null){
-						mostrarFechaNacimiento(resultIdentidad.getReniec().getFechaNacimiento());
-						Util.seleccionarValorItemCombo(Sexo.class, cmbSexo, Integer.valueOf(resultIdentidad.getReniec().getSexo()));
-					}
-					txtDireccionPax.setFocus(true);
-				}	
-			}else{
-				/*Consulta con NUESTRA BD reniec*/
-				Reniec reniec= ServiceLocator.getReniecManager().buscarPax(numerodocumento);
-				if(reniec!=null){
-					Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, Constantes.ID_TIPDOC_DNI);
-					txtApePat.setText(reniec.getApellidoPaterno());
-					txtApeMat.setText(reniec.getApellidoMaterno());
-					txtNombres.setText(reniec.getNombres());
-					mostrarFechaNacimiento(reniec.getFechaNacimiento());
-					Util.seleccionarValorItemCombo(Sexo.class, cmbSexo, Integer.valueOf(reniec.getSexo()));
-				}else{
-					String numeroDocumento=txtDocumentoPax.getText().trim();
-					Integer idTipoDocumento= null;
-					if(cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento)
-						idTipoDocumento=((TipoDocumento)cmbTipoDocumento.getSelectedItem().getValue()).getId();
-					onCleanControlsPax();
-					//recupera valores ingresado por el usuario
-					txtDocumentoPax.setText(numeroDocumento);
-					if(idTipoDocumento!=null) Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, idTipoDocumento);
-					txtApePat.setFocus(true);
-				}
-			}
-		}
-	}
+	//Comentado por MAOE 04/08/2022 se implemento la busqueda como en el modulo de Ventas y Reservas
+//	public void verificarPaxReniec() throws WrongValueException, Exception{
+//		txtApePat.setDisabled(false);
+//		txtApeMat.setDisabled(false);
+//		txtNombres.setDisabled(false);	
+//		
+//		if(actionc==Constantes.ACTION_NEW  
+//				&& !(txtDocumentoPax.getText().trim().isEmpty()) 
+//				&& cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento 
+//				&& ((TipoDocumento)cmbTipoDocumento.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPDOC_DNI){
+//				
+//			String numerodocumento=txtDocumentoPax.getText().trim();
+//			
+//			/*Consulta DNI con la reniec a travez del Ws del MTC*/
+//			ResultIdentidad resultIdentidad=Util.getResultIdentidad(numerodocumento,imgValidacionDNI);
+//			if(resultIdentidad!=null){	
+//				Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, Constantes.ID_TIPDOC_DNI);
+//				/*si el DNI es correcto*/
+//				if(resultIdentidad.isReturn()){
+//					/*Para no permitir la modificacion de los appellidos y nombres al usuario*/
+//					txtApePat.setDisabled(true);
+//					txtApeMat.setDisabled(true);
+//					txtNombres.setDisabled(true);
+//					/*Carga los apellidos y nombres retornados por la reniec*/
+//					txtApePat.setText(resultIdentidad.getPaterno()!=null && !(resultIdentidad.getPaterno().trim().isEmpty()) ?resultIdentidad.getPaterno().trim():"");
+//					txtApeMat.setText(resultIdentidad.getMaterno()!=null && !(resultIdentidad.getMaterno().trim().isEmpty()) ? resultIdentidad.getMaterno().trim():"");
+//					txtNombres.setText(resultIdentidad.getNombre().trim());
+//					/*Obtiene datos como la fecha de nacimiento y el sexo de NUESTRA base de datos de la Reniec*/
+//					if(resultIdentidad.getReniec()!=null){
+//						mostrarFechaNacimiento(resultIdentidad.getReniec().getFechaNacimiento());
+//						Util.seleccionarValorItemCombo(Sexo.class, cmbSexo, Integer.valueOf(resultIdentidad.getReniec().getSexo()));
+//					}
+//					txtDireccionPax.setFocus(true);
+//				}	
+//			}else{
+//				/*Consulta con NUESTRA BD reniec*/
+//				Reniec reniec= ServiceLocator.getReniecManager().buscarPax(numerodocumento);
+//				if(reniec!=null){
+//					Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, Constantes.ID_TIPDOC_DNI);
+//					txtApePat.setText(reniec.getApellidoPaterno());
+//					txtApeMat.setText(reniec.getApellidoMaterno());
+//					txtNombres.setText(reniec.getNombres());
+//					mostrarFechaNacimiento(reniec.getFechaNacimiento());
+//					Util.seleccionarValorItemCombo(Sexo.class, cmbSexo, Integer.valueOf(reniec.getSexo()));
+//				}else{
+//					String numeroDocumento=txtDocumentoPax.getText().trim();
+//					Integer idTipoDocumento= null;
+//					if(cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento)
+//						idTipoDocumento=((TipoDocumento)cmbTipoDocumento.getSelectedItem().getValue()).getId();
+//					onCleanControlsPax();
+//					//recupera valores ingresado por el usuario
+//					txtDocumentoPax.setText(numeroDocumento);
+//					if(idTipoDocumento!=null) Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, idTipoDocumento);
+//					txtApePat.setFocus(true);
+//				}
+//			}
+//		}
+//	}
 	
 	/**
 	 * Muestra los datos del registro que se va a modificar.
@@ -1469,7 +1634,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			
 			
 			Ubigeo oUbigeo = oPasajero.getUbigeo();
-			EstadoCivil oEstadoCivil = oPasajero.getEstadoCivil();
+//			EstadoCivil oEstadoCivil = oPasajero.getEstadoCivil();
 			TipoDocumento oTipoDocumento = oPasajero.getTipoDocumento();
 			Sexo oSexo = oPasajero.getSexo();
 			Nacionalidad oNacionalidad = oPasajero.getNacionalidad();
@@ -1481,10 +1646,10 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				ubicacionCompleta = ServiceLocator.getUbigeoManager().ubicacionGeografica(oUbigeo);
 			}
 			
-			if(oEstadoCivil!=null)
-				Util.seleccionarValorItemCombo(EstadoCivil.class, cmbEstadoCivil, oPasajero.getEstadoCivil().getId());
-			else
-				cmbEstadoCivil.setSelectedIndex(0);
+//			if(oEstadoCivil!=null)
+//				Util.seleccionarValorItemCombo(EstadoCivil.class, cmbEstadoCivil, oPasajero.getEstadoCivil().getId());
+//			else
+//				cmbEstadoCivil.setSelectedIndex(0);
 			
 			if(oTipoDocumento!=null)
 				Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, oPasajero.getTipoDocumento().getId());
@@ -1767,8 +1932,8 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				throw new ApellidoPaternoNullException();
 			else if (txtNombres.getText().equals(""))
 				throw new NombresNullException();
-			else if (txtUbigeoPax.getText().equals(""))
-				throw new UbigeoNullException();
+//			else if (txtUbigeoPax.getText().equals(""))
+//				throw new UbigeoNullException();
 			else if (!(cmbSexo.getSelectedItem().getValue() instanceof Sexo))
 				throw new SexoNullException();
 			else if(cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento && 
@@ -1786,10 +1951,11 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 					
 			}
 			
-			if (!(txtEmailPax.getText().trim().isEmpty())){
-				if (!(UtilData.validateEmail(txtEmailPax.getText().trim())))
-					throw new MailIncorectoException();
-			}
+			//Comentado por MAOE TRANSMAR no necesita el email
+//			if (!(txtEmailPax.getText().trim().isEmpty())){
+//				if (!(UtilData.validateEmail(txtEmailPax.getText().trim())))
+//					throw new MailIncorectoException();
+//			}
 			
 			/*Validando que los apellidos y nombres no incluyan comillas simples - jabanto */
 			if(txtApePat.getText().trim().indexOf("'")>=0){
@@ -1807,7 +1973,13 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				oPasajero = new Pasajero();
 
 			Ubigeo oUbigeo = new Ubigeo();
-			oUbigeo.setId(txtUbigeoIdPax.getText());
+			//Para Transmar no sera obligatorio, se envia el de la Agencia MAOE - 02/08/2022
+//			oUbigeo.setId(txtUbigeoIdPax.getText());
+			if(txtUbigeoIdPax.getText().trim().length()==0)
+				oUbigeo.setId(getAgencia().getUbigeo().getId());
+			else
+				oUbigeo.setId(txtUbigeoIdPax.getText());
+			
 			
 			oPasajero.setApellidoPaterno(txtApePat.getText().trim().toUpperCase());
 			oPasajero.setApellidoMaterno(txtApeMat.getText().trim().equals("")?null:txtApeMat.getText().trim().toUpperCase());
@@ -1815,7 +1987,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			oPasajero.setTipoDocumento((TipoDocumento) cmbTipoDocumento.getSelectedItem().getValue());
 			oPasajero.setNumeroDocumento(txtDocumentoPax.getText().trim().toUpperCase());
 			oPasajero.setSexo((Sexo) cmbSexo.getSelectedItem().getValue());
-			oPasajero.setEstadoCivil(cmbEstadoCivil.getSelectedItem().getValue() instanceof EstadoCivil ? (EstadoCivil) cmbEstadoCivil.getSelectedItem().getValue() : null);
+//			oPasajero.setEstadoCivil(cmbEstadoCivil.getSelectedItem().getValue() instanceof EstadoCivil ? (EstadoCivil) cmbEstadoCivil.getSelectedItem().getValue() : null);
 			oPasajero.setUbigeo(oUbigeo);
 			oPasajero.setDireccion(txtDireccionPax.getText().trim().toUpperCase());
 			oPasajero.setEmail(txtEmailPax.getText().trim());
@@ -1849,7 +2021,8 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			//Guarda el Pasaje - jabanto - 19/04/022
 			if (action == Constantes.ACTION_NEW) {
 				ServiceLocator.getPasajeroManager().guardar(oPasajero);
-				action = Constantes.ACTION_MODIFY;
+//				action = Constantes.ACTION_MODIFY;  //MAOE 04/08/2022
+				onCancelPax();
 			}else
 				ServiceLocator.getPasajeroManager().actualizar(oPasajero);
 			
@@ -1860,10 +2033,10 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //				msg = Messages.getString("WndVentaReserva.question.actualizarPasajero");
 //
 //			Messagebox.show(msg, DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, EventSavePax(oPasajero));
-			
-		}catch (EmailNullException emaex){
-			DlgMessage.information(Messages.getString("WndVentaReserva.information.noIngresoEmail"), txtEmailPax);
-			return false;
+			//Comentado por MAOE 04/08/2022
+//		}catch (EmailNullException emaex){
+//			DlgMessage.information(Messages.getString("WndVentaReserva.information.noIngresoEmail"), txtEmailPax);
+//			return false;
 		} catch (TipoDocumentoNullException tdnex) {
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noSelectionTipoDocumento"), cmbTipoDocumento);
 			return false;
@@ -1936,14 +2109,63 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	 */
 	@Override
 	public void onNewClient() throws Exception {
+		String nroRuc = txtDocumentoCliente.getValue().trim();
 		onCleanControlsClient();
 		disabledControlsClient(false);
-		action = Constantes.ACTION_NEW;
+		actionc = Constantes.ACTION_NEW;
 		tlbbtnNuevoClient.setDisabled(true);
 		tlbbtnModificarClient.setDisabled(true);
 		tlbbtnCancelarClient.setDisabled(false);
 		tlbbtnGuardarClient.setDisabled(false);
 		txtDocumentoCliente.setFocus(true);
+		
+		txtDocumentoCliente.setValue(nroRuc);
+		verificarClienteSunat();
+	}
+	
+	public void verificarClienteSunat()throws WrongValueException, Exception{
+		if(actionc==Constantes.ACTION_NEW  
+			&& !(txtDocumentoCliente.getText().trim().isEmpty())){
+			
+			String nroDocumento=txtDocumentoCliente.getText().trim();
+			
+			//Consulta RUC EN sunat
+			List<String> ruc = RESTCiva.getDatosRuc(nroDocumento);
+				
+
+			if(ruc!=null){
+//			Reniec reniec = new Reniec();
+				txtDocumentoCliente.setValue(ruc.get(0));
+				txtRazonSocial.setValue(ruc.get(1));
+				txtDireccionCliente.setValue(ruc.get(2));
+
+			}else{
+				String numeroDocumento=txtDocumentoCliente.getText().trim();
+					
+				onCleanControlsClient();		
+				//recupera valores ingresado por el usuario
+				txtDocumentoPax.setText(numeroDocumento);
+					
+//					if(getAgencia().getTipoAgencia().getId().intValue()!=Constantes.ID_TIPAGE_TEPSA){
+//						Ubigeo oUbigeo = new Ubigeo();
+//						oUbigeo.setId(Constantes.ID_UBIGEO_LIMA);
+//						oUbigeo.setCodigoDepartamento("15");
+//						oUbigeo.setCodigoProvincia("01");
+//						oUbigeo.setCodigoDistrito("01");
+//						oUbigeo.setNombreUbigeo("LIMA");
+//						try{
+//							if(oUbigeo!=null) {
+//								String idUbigeo = oUbigeo.getId();
+//								String ubicacionCompleta = ServiceLocator.getUbigeoManager().ubicacionGeografica(oUbigeo);
+//								txtUbigeoPax.setText(ubicacionCompleta);
+//								txtUbigeoIdPax.setText(idUbigeo);
+//							}
+//						}catch(Exception ex){
+//							ex.printStackTrace();
+//						}
+					
+				}
+			}		
 	}
 	
 	/*
@@ -1952,7 +2174,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	 */
 	@Override
 	public void onModifyClient() {
-		action = Constantes.ACTION_MODIFY;
+		actionc = Constantes.ACTION_MODIFY;
 		disabledControlsClient(false);
 		tlbbtnNuevoClient.setDisabled(true);
 		tlbbtnModificarClient.setDisabled(true);
@@ -1973,9 +2195,10 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		tlbbtnCancelarClient.setDisabled(true);
 		tlbbtnGuardarClient.setDisabled(true);
 		tlbbtnLimpiarClient.setDisabled(false);
-		if(action==Constantes.ACTION_NEW)
-			onCleanControlsClient();
-		action = Constantes.FAILURE;
+//		Modificado por MAOE 05/08/2022
+//		if(actionc==Constantes.ACTION_NEW)
+//			onCleanControlsClient();
+		actionc = Constantes.FAILURE;
 		txtDocumentoCliente.setFocus(true);		
 	}
 
@@ -2086,7 +2309,10 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			grpbxListaClientes.setVisible(true);			
 		}else{
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noClientesEncontrados"));
+			String nroRuc = txtDocumentoCliente.getValue();
 			onCleanControlsClient();
+			txtDocumentoCliente.setValue(nroRuc);
+			txtDocumentoCliente.select();
 		}
 		disabledControlsPax(true);
 	}
@@ -2254,8 +2480,8 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				throw new NumeroDocumentoNullException();
 			else if(txtRazonSocial.getText().trim().equals(""))
 				throw new RazonSocialNullException();
-			else if(txtUbigeoCliente.getText().trim().equals(""))
-				throw new UbigeoNullException();
+//			else if(txtUbigeoCliente.getText().trim().equals(""))
+//				throw new UbigeoNullException();
 			else if (txtRazonSocial.getText().trim().length()<=5){
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.razonSocialIncorrect"), txtRazonSocial);
 				return false;
@@ -2283,11 +2509,16 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				return false;
 			}
 			
-			if (action == Constantes.ACTION_NEW)
+			if (actionc == Constantes.ACTION_NEW)
 				oCliente = new Cliente();
 			
 			Ubigeo oUbigeo = new Ubigeo();
-			oUbigeo.setId(txtUbigeoIdCliente.getText());
+			//Comentado por MAOE 04/08/2022
+//			oUbigeo.setId(txtUbigeoIdCliente.getText());
+			if(txtUbigeoIdCliente.getText().trim().length()==0)
+				oUbigeo.setId(getAgencia().getUbigeo().getId());
+			else
+				oUbigeo.setId(txtUbigeoIdPax.getText());
 			
 			oCliente.setNumeroDocumento(txtDocumentoCliente.getValue().toString());
 			oCliente.setRazonSocial(txtRazonSocial.getText().toUpperCase());
@@ -2297,7 +2528,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			oCliente.setTelefonoFijo2(txtTelefonoClienteTwo.getText().toUpperCase());
 			oCliente.setEmail(txtEmailCliente.getText());
 			oCliente.setRubro(txtRubro.getText().trim().toUpperCase());
-			oCliente.setCantidadTrabajadores(ibxCantidadTrabajadores.getValue());
+			oCliente.setCantidadTrabajadores(0);
 			oCliente.setUbigeo(oUbigeo);
 			oCliente.setAgencia(agencia);
 			
@@ -2311,12 +2542,18 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			
 			
 			//Guarda el cliente
-			if (action == Constantes.ACTION_NEW) {
+			if (actionc == Constantes.ACTION_NEW) {
 				ServiceLocator.getClienteManager().guardar(oCliente);
-				action = Constantes.ACTION_MODIFY;
+				//Modificado por MAOE 04/08/2022
+//				actionc = Constantes.ACTION_MODIFY;
+				onCancelClient();
 			} else {
 				ServiceLocator.getClienteManager().actualizar(oCliente);
 			}
+			
+			onSelectDefaultTipoComprobante();
+			onLoadEspecieValorada();
+
 			
 //			String msg = "";
 //			if(action == Constantes.ACTION_NEW)
@@ -2350,7 +2587,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			return false;
 		}
 		
-		return false;
+		return true;
 	}
 
 	/**
@@ -2365,7 +2602,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			public void onEvent(Event e) {
 				try {
 					if (e.getName().equals("onYes")) {
-						if (action == Constantes.ACTION_NEW) {
+						if (actionc == Constantes.ACTION_NEW) {
 							ServiceLocator.getClienteManager().guardar(oCliente);
 							DlgMessage.information(Messages.getString("WndVentaReserva.information.exitoGuardar"));
 						} else {
@@ -2376,7 +2613,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 						tlbbtnModificarClient.setDisabled(false);
 						tlbbtnCancelarClient.setDisabled(true);
 						tlbbtnGuardarClient.setDisabled(true);
-						action = Constantes.FAILURE;
+						actionc = Constantes.FAILURE;
 						disabledControlsClient(true);	
 						
 						/*21/10/2016 - jabanto*/
@@ -2489,6 +2726,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				cmbOperadorTarjetaCredito.getItems().clear();
 				UtilData.cargarDataCombo(cmbOperadorTarjetaCredito,OperadorTarjetaCredito.class, false);
 				cmbOperadorTarjetaCredito.setDisabled(false);
+				txtOperacionBancaria.setDisabled(false);
 			} else if (cmbTipoFormaPago.getText().equals("TRANSFERENCIA")) // Si es una transferecnia bancaria
 				txtOperacionBancaria.setDisabled(false);
 			else {
@@ -2548,8 +2786,10 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				throw new NumeroAsientoNullException();
 			else if (txtNumeroBoleto.getText().trim().equals(""))
 				throw new NumeroBoletoNullException();
-			else if (!(cmbAlimentacion.getSelectedItem().getValue() instanceof PreferenciaAlimentaria))
-				throw new PreferenciaAlimentariaException();			
+			//Coentado por MAOE 04/08/2022
+//			else if (!(cmbAlimentacion.getSelectedItem().getValue() instanceof PreferenciaAlimentaria))
+//				throw new PreferenciaAlimentariaException();			
+			
 //			else if (!(tlbbtnGuardarPax.isDisabled()))// 06/09/2013 - jabanto
 //				throw new PasajeroNoSavedExeption();
 			
@@ -2582,6 +2822,8 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 					throw new OperadorTarjetaCreditoNullException();
 				else if (!(cmbTarjetaCredito.getSelectedItem().getValue() instanceof TarjetaCredito))
 					throw new TarjetaCreditoNullException();
+				else if(txtOperacionBancaria.getText().trim().equals(""))
+					throw new NumeroOperacionTarjetaNullException();
 			} else if (cmbTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago
 					&& cmbTipoFormaPago.getText().equals(TipoFormaPago.TIPO_TRANSFERENCIA)) {
 				if (txtOperacionBancaria.getText().trim().equals(""))
@@ -2900,9 +3142,10 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			}else if(iex.getTipo().intValue()==ItinerarioException.TARIFA_IDA_CERO){
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noTarifaItinerario"));
 			}
-		}catch (PreferenciaAlimentariaException panex) {
-			DlgMessage.information(Messages.getString("WndVentaReserva.information.noPreferenciaAlimentaria"));
-			cmbAlimentacion.setFocus(true);
+			//Comentado por MAOE 04/08/2022
+//		}catch (PreferenciaAlimentariaException panex) {
+//			DlgMessage.information(Messages.getString("WndVentaReserva.information.noPreferenciaAlimentaria"));
+//			cmbAlimentacion.setFocus(true);
 		}catch(NumeroAsientoNullException nanex){
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noAsientoSeleccionado"));
 		}catch (NumeroBoletoNullException nbnex) {
@@ -2949,6 +3192,8 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			txtNumeroAsiento.setText("");
 			txtNumeroPiso.setText("");
 			DlgMessage.information(Messages.getString("WndCortesia.information.asientoNoPermitido")+" "+getObjetoConfirmar().getServicio().getDenominacion()+".");
+		}catch(NumeroOperacionTarjetaNullException notnex){
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noNumeroOperacionTarjeta"), txtOperacionBancaria);
 		}catch (ClienteException cex){
 			if(cex.getTipo().intValue()==ClienteException.NO_DIRECCION){
 				tabCliente.setSelected(true);
@@ -3149,46 +3394,47 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		imgQuitarPromocion.setVisible(false);
 	}
 	
-	private void mostrarFechaNacimiento(String fechaNacimiento){
+	private void mostrarFechaNacimiento(String fechaNacimiento)throws Exception{
 		if(fechaNacimiento != null){
-			String dia = fechaNacimiento.substring(0, 2);
-			String mes = fechaNacimiento.substring(3, 5);
-			String anio = fechaNacimiento.substring(6);
-			for(int i=0; i<cmbAnio.getItems().size(); i++){
-				if(cmbAnio.getItems().get(i).getValue().toString().equals(anio))
-					cmbAnio.setSelectedIndex(i);
-			}
-			
-			for(int i=0; i<cmbMes.getItems().size(); i++){
-				if(((Integer)cmbMes.getItems().get(i).getValue()).intValue()==Integer.valueOf(mes)){
-					cmbMes.setSelectedIndex(i);
-					Util.loadDias(cmbDia, (Integer)cmbMes.getSelectedItem().getValue(), (Integer)cmbAnio.getSelectedItem().getValue());
-				}
-			}
-			
-			for(int i=0; i<cmbDia.getItems().size(); i++){
-				if(((Integer)cmbDia.getItems().get(i).getValue()).intValue() == Integer.valueOf(dia))
-					cmbDia.setSelectedIndex(i);
-			}
-//			dtbxFechaNacimiento.setText(oPasajero.getFechaNacimiento().toString());
+//			String dia = fechaNacimiento.substring(0, 2);
+//			String mes = fechaNacimiento.substring(3, 5);
+//			String anio = fechaNacimiento.substring(6);
+//			for(int i=0; i<cmbAnio.getItems().size(); i++){
+//				if(cmbAnio.getItems().get(i).getValue().toString().equals(anio))
+//					cmbAnio.setSelectedIndex(i);
+//			}
+//			
+//			for(int i=0; i<cmbMes.getItems().size(); i++){
+//				if(((Integer)cmbMes.getItems().get(i).getValue()).intValue()==Integer.valueOf(mes)){
+//					cmbMes.setSelectedIndex(i);
+//					Util.loadDias(cmbDia, (Integer)cmbMes.getSelectedItem().getValue(), (Integer)cmbAnio.getSelectedItem().getValue());
+//				}
+//			}
+//			
+//			for(int i=0; i<cmbDia.getItems().size(); i++){
+//				if(((Integer)cmbDia.getItems().get(i).getValue()).intValue() == Integer.valueOf(dia))
+//					cmbDia.setSelectedIndex(i);
+//			}
+			dtbxFechaNacimiento.setValue(Constantes.FORMAT_DATE.parse(fechaNacimiento));
 		}else{
-			cmbAnio.setSelectedIndex(-1);
-			cmbAnio.setText("");
-			cmbMes.setSelectedIndex(-1);
-			cmbMes.setText("");
-			cmbDia.setSelectedIndex(-1);
-			cmbDia.setText("");
-//			dtbxFechaNacimiento.setText(null);
+//			cmbAnio.setSelectedIndex(-1);
+//			cmbAnio.setText("");
+//			cmbMes.setSelectedIndex(-1);
+//			cmbMes.setText("");
+//			cmbDia.setSelectedIndex(-1);
+//			cmbDia.setText("");
+			dtbxFechaNacimiento.setValue(null);
 		}
 	}
 	
 	private String generarFechaNacimiento(){
-		String fechaNacimiento = null;
-		if(cmbAnio.getSelectedIndex()>=0 && cmbMes.getSelectedIndex()>=0 && cmbDia.getSelectedIndex()>=0){
-			String dia = "00"+ cmbDia.getText();
-			String mes = "00" + cmbMes.getSelectedItem().getValue();
-			fechaNacimiento = dia.substring(dia.length()-2) + "/" + mes.substring(mes.length()-2) + "/" + cmbAnio.getText();
-		}
+		String fechaNacimiento = Constantes.FORMAT_DATE.format(dtbxFechaNacimiento.getValue());
+//		String fechaNacimiento = null;
+//		if(cmbAnio.getSelectedIndex()>=0 && cmbMes.getSelectedIndex()>=0 && cmbDia.getSelectedIndex()>=0){
+//			String dia = "00"+ cmbDia.getText();
+//			String mes = "00" + cmbMes.getSelectedItem().getValue();
+//			fechaNacimiento = dia.substring(dia.length()-2) + "/" + mes.substring(mes.length()-2) + "/" + cmbAnio.getText();
+//		}
 		return fechaNacimiento;
 	}
 	
