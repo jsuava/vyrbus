@@ -877,7 +877,7 @@ public class WndManifiesto extends WndBase {
 			if (agencia != null)
 				src = Constantes.URL_FORMATOS_DESPACHOS+Constantes.CLAVE_PAHT+"CARDES"+ itinerario.getId()+"-"+agencia.getId()+".txt";
 			else
-				src = Constantes.URL_FORMATOS_DESPACHOS+Constantes.CLAVE_PAHT+"CARDES"+ itinerario.getId()+"-0"+".txt";
+				src = Constantes.URL_FORMATOS_DESPACHOS+Constantes.CLAVE_PAHT+"CARDES"+ itinerario.getId()+".txt";
 			
 			iFrame.setWidth("1035");
 			

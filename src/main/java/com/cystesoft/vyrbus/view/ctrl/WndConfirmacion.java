@@ -588,7 +588,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		txtDocumentoCliente.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
-				if(actionc!=Constantes.ACTION_NEW && action!=Constantes.ACTION_MODIFY){
+				if(actionc!=Constantes.ACTION_NEW && actionc!=Constantes.ACTION_MODIFY){
 					if(txtDocumentoCliente.getText().trim().equals(""))
 						DlgMessage.information(Messages.getString("WndVentaReserva.information.noDocumentoCliente"), txtDocumentoCliente);
 					else

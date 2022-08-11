@@ -76,7 +76,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				"			 vp.c_tiptra, i.ruta_idmayor, rm.localidad_idorigen, rm.localidad_iddestino, vp.n_numpiso, i.c_sectra, i.itinerario_id, " +
 				"			 p.c_numdoc, p.c_fecnac, vp.c_numcontrol, vp.canven_id, vp.d_fecpar, vp.c_horpar, " +
 				"			 ap.c_nomcor as nombreCorto, p.tipdoc_id tipoDocPax, vp.forpag_id, vp.tipforpag_id, vp.c_rucclicre, vp.n_imppag, " +//34
-				"			 vp.tipmov_id, av.c_denominacion AGVENTA, u.c_login USUARIO, al.c_denominacion AGLLEGADA "+
+				"			 vp.tipmov_id, av.c_denominacion AGVENTA, u.c_login USUARIO, al.c_denominacion AGLLEGADA, vp.audfecins FECVENTA "+
 				"FROM vrtvenpas vp " +
 				"	  INNER JOIN (SELECT MAX(venpas_id)venpas_id, c_numcontrol " +
 				"				  FROM vrtvenpas WHERE itinerario_id="+idItinerario+" GROUP BY c_numcontrol) max_venta " +
@@ -171,6 +171,8 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			Usuario usuarioVenta = new Usuario();
 			usuarioVenta.setLogin(obj[36]==null?null:obj[36].toString());
 			ventaPasaje.setUsuario(usuarioVenta);
+			
+			ventaPasaje.setFechaInsercion(obj[38]==null?null:(Date)obj[38]);
 			
 //			TipoMovimiento tipoMovimiento = new TipoMovimiento();
 //			tipoMovimiento.setId(((BigDecimal)obj[34]).intValue());

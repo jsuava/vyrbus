@@ -904,8 +904,8 @@ public class WndVerMapaBus extends WndBase {
 												   "Ag. Embarque: " +venta.getAgenciaPartida().getNombreCorto().toString()+"\n"+
 												   "Ag. Desembarque: "+venta.getAgenciaLlegada().getDenominacion().toString()+"\n"+
 												   "Ag. Venta: "+venta.getAgencia().getDenominacion().toString()+"\n"+
-												   "Usuario Venta: "+venta.getUsuario().getLogin().toString()//+"\n"+
-												   //"Fecha Venta: "+venta.getFechaInsercion()
+												   "Usuario Venta: "+venta.getUsuario().getLogin().toString()+"\n"+
+												   "Fecha Venta: "+ Util.DatetoString(venta.getFechaInsercion(), Constantes.DATE_TIME_FORMAT)
 									);
 							break;
 						}	

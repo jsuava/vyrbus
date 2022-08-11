@@ -233,6 +233,7 @@ public class WndEstadoVentaReserva extends WndBase {
 												  					 idDestino, 
 												  					 tipoMovimiento);
 				Util.limpiarListbox(lstbxListaMovimientos);
+				Util.limpiarListbox(lstbxHistorial);
 				int x=-1;
 				
 				for(VentaPasaje ventaPasaje: lstVenta){
@@ -346,6 +347,7 @@ public class WndEstadoVentaReserva extends WndBase {
 		String styleAnulado_9px="font-size:9px !important; color:red";
 
 		Util.limpiarListbox(lstbxHistorial);
+		Util.limpiarListbox(lstbxListaMovimientos);
 		int x=-1;
 		
 		for(VentaPasaje ventaPasaje: lstHistorial){
