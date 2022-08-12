@@ -32,7 +32,6 @@
 	<hbox align="center">
 		<listbox id="ltbxLiquidacionVentas" multiple="false" rows="10" width="1000px">
 			<listhead>
-<<<<<<< HEAD
 				<listheader label="FECHA" width="80px" sort="auto"/>				
 				<listheader label="AGENCIA" width="180px" sort="auto"/>				
 				<listheader id="lthdrNombresUsuario" label="NOMBRES USUARIO" width="230px" sort="auto" visible="false"/>
@@ -40,14 +39,6 @@
 				<listheader label="EFECTIVO LIQ" tooltiptext="Efectivo a liquidar (pasajes + carga)" width="100px" align="right" sort="auto"/>				
 				<listheader id="lthdrEstadoLiqPasajes" label="LIQ.PASAJES" tooltiptext="Estado liquidación Pasajes" width="90px" align="center" sort="auto"  visible="false"/>
 				<listheader id="lthdrEstadoLiqCarga" label="LIQ.CARGAR" tooltiptext="Estado liquidación Carga" width="90px" align="center" sort="auto"  visible="false"/>				
-=======
-				<listheader label="FECHA" width="90px" sort="auto" style="color: #ffffff;" />				
-				<listheader label="AGENCIA" width="180px" sort="auto" style="color: #ffffff;" />				
-				<listheader label="NOMBRES USUARIO" width="230px" sort="auto" style="color: #ffffff;" />
-				<listheader label="USUARIO" width="100px" sort="auto" style="color: #ffffff;" />
-				<listheader label="ESTADO LIQ. PASAJES" width="165px" align="center" sort="auto" style="color: #ffffff;" />
-				<listheader label="ESTADO LIQ. CARGAR" width="165px" align="center" sort="auto" style="color: #ffffff;" />				
->>>>>>> 52b5a3e9d51d58dda14d48ff0ee50a7a7ee28d82
 				<listheader/>
 			</listhead>			
 		</listbox>			

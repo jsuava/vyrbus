@@ -328,7 +328,7 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 				"	INNER JOIN tcmcliente cl ON (cl.cliente_id=ec.cliente_id) " + 
 				"	INNER JOIN tcmruta rt ON (rt.ruta_id=ec.ruta_id) " +
 				"   LEFT JOIN tctdetpag dp ON (ec.envcon_id = dp.envcon_id)" +
-				"WHERE ec.d_fecven BETWEEN '"+fechaInicial+"' AND '"+fechaFinal+"' " + 
+				"WHERE ec.d_fecven BETWEEN to_date('"+fechaInicial+"', 'dd/MM/yyyy') AND to_date('"+fechaFinal+"', 'dd/MM/yyyy') " + 
 				"  AND ec.agencia_idventa = COALESCE("+agencia_idtranscar+", ec.agencia_idventa) " + 
 				"  AND ec.usuario_id = COALESCE("+usuario_id+", ec.usuario_id) " + 
 				"  AND ec.c_estreg = 'A'";
@@ -463,7 +463,7 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 		String sql = "SELECT ec.usuario_id, u.c_apepat, u.c_apemat, u.c_nombre, u.c_login " + 
 				"FROM tctenvcon ec " + 
 				"  INNER JOIN tcmusuario u ON (u.usuario_id=ec.usuario_id) " + 
-				"WHERE ec.d_fecven BETWEEN '"+fechaInicio+"' AND '"+fechaFin+"' " + 
+				"WHERE ec.d_fecven BETWEEN to_date('"+fechaInicio+"', 'dd/MM/yyyy') AND to_date('"+fechaFin+"', 'dd/MM/yyyy') " + 
 				"  AND ec.agencia_idventa = COALESCE("+agencia_idtranscar+", ec.agencia_idventa) " + 
 				"	AND ec.c_estreg = 'A' " + 
 				"GROUP BY ec.usuario_id, u.c_apepat, u.c_apemat, u.c_nombre, u.c_login";
@@ -520,7 +520,7 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 					"		FROM tctenvcon vp     " + 
 					"		   INNER JOIN tcmtipcom tc ON (tc.tipcom_id=vp.tipcom_id)  " + 
 					"		   INNER JOIN (SELECT c_numcom FROM tctenvcon GROUP BY c_numcom)nb ON (nb.c_numcom=vp.c_numcom)   " + 
-					"		WHERE vp.d_fecven BETWEEN '"+fechaInicio+"' and '"+fechaFin+"'  " + 
+					"		WHERE vp.d_fecven BETWEEN to_date('"+fechaInicio+"', 'dd/MM/yyyy') and to_date('"+fechaFin+"', 'dd/MM/yyyy')  " + 
 					"		  AND vp.agencia_idventa = COALESCE("+agencia_idtranscar+", vp.agencia_idventa)   " + 
 					"		  AND vp.usuario_id= COALESCE("+usuarioId+", vp.usuario_id)  " + 
 					"		  AND vp.c_estreg = 'A'  " + 
@@ -633,7 +633,7 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 				+ "From tctliquidacion lq "
 				+ "where lq.usuario_id =" + usuarioId + 
 				"    AND lq.agencia_id =" + agencia_idtranscar + 
-				"	 AND lq.d_fecliq ='"+ fechaLiquidacion + "' " +  
+				"	 AND lq.d_fecliq =to_date('"+ fechaLiquidacion + "', 'dd/MM/yyyy') " +  
 				"	 AND lq.n_estliq =" + Constantes.TRUE_VALUE + 
 				"	 AND lq.c_estreg = 'A'";
 		Log.info("Obteniendo el identificador de la liquidacion - transcar:" + sql);
@@ -652,7 +652,7 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 			sql ="UPDATE tctenvcon SET liquidacion_id="+liquidacion_id+" "+
 				 "WHERE envcon_id in ( SELECT ec.envcon_id "+
 		                             " FROM tctenvcon ec "+
-		                             " WHERE ec.d_fecven = '"+fechaLiquidacion+"' "+
+		                             " WHERE ec.d_fecven = to_date('"+fechaLiquidacion+"', 'dd/MM/yyyy') "+
 		                             "   AND ec.agencia_idventa="+agencia_idtranscar+" AND ec.usuario_id="+usuarioId+"  "+
 		                             "   AND ec.c_estreg = 'A') ";
 			getJdbcTemplate().update(sql);
@@ -674,7 +674,7 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 				"	INNER JOIN tcmunitra ut ON (ut.unitra_id=gt.unitra_id) " + 
 				"	INNER JOIN tcmpiloto pt ON (pt.piloto_id=gt.piloto_id) " + 
 				"	INNER JOIN tctenvcon ec ON (ec.envcon_id=dgt.envio_id AND dgt.tipcom_id IN (2,1,3)) " + 
-				"WHERE gt.d_fecsal BETWEEN '01/01/2022' AND '30/04/2022' " + 
+				"WHERE gt.d_fecsal BETWEEN to_date('"+fechaInicio+"', 'dd/MM/yyyy') AND to_date('"+fechaFin+"', 'dd/MM/yyyy') " + 
 				"  AND gt.c_estreg = 'A' " + 
 				"	AND dgt.c_estreg = 'A' " + 
 				"	AND gt.c_numunitra = COALESCE(null, gt.c_numunitra) " + 
@@ -734,7 +734,7 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 					"FROM tctliquidacion lq " + 
 					"	INNER JOIN tcmusuario up ON (up.usuario_id=lq.usuario_id) " + 
 					"	INNER JOIN tcmagencia ag ON (ag.agencia_id=lq.agencia_id) " + 
-					"WHERE lq.d_fecliq  BETWEEN '"+fechaInicio+"' AND '"+fechaFin+"' " + 
+					"WHERE lq.d_fecliq  BETWEEN to_date('"+fechaInicio+"', 'dd/MM/yyyy') AND to_date('"+fechaFin+"', 'dd/MM/yyyy') " + 
 					"	AND ag.agencia_id = COALESCE("+agencia_idtranscar+", lq.agencia_id) " + 
 					"	AND lq.c_estreg = 'A'";
 	 	List<?> result = jdbcTemplate.queryForList(sql);
