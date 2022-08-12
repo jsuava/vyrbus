@@ -160,8 +160,7 @@ public class Constantes {
 
 	//http://168.121.236.46:8080/
 
-//	public static final String SERVER_HOST = "localhost:8080";
-
+    //public static final String SERVER_HOST = "localhost:8080";
 
 	//SERVER_HOST PRODUCCION TRANSMAR
 

@@ -601,6 +601,9 @@ public class WndEquipaje extends WndBase implements Serializable{
 			ventaExceso.setTipoTransaccion(Constantes.TIPO_OPERACION_EXCESO);
 			ventaExceso.setFechaCaducidad(new Date());
 			ventaExceso.setFechaLiquidacion(fechaLiquidacion);
+			ventaExceso.setFechaPartida(ventaPrincipal.getFechaPartida());
+			ventaExceso.setHoraEmbarque(ventaPrincipal.getHoraPartida());
+			ventaExceso.setHoraPartida(ventaPrincipal.getHoraPartida());
 			ventaExceso.setAgencia(getAgencia());
 			ventaExceso.setUsuario(getUsuario());
 			ventaExceso.setCanalVenta(canalVenta);
@@ -635,7 +638,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 						
 						ServiceLocator.getDetalleEquipajeManager().guardar(listDetalleEquipaje, equipaje);
 						
-						boolean timerdownloadFileEquipaje = false;
+//						boolean timerdownloadFileEquipaje = false;
 						
 						if(listDetalleEquipaje.get(0).getVentaPasajeExceso()!=null) {
 							VentaPasaje ventaExceso= ServiceLocator.getVentaPasajesManager().buscarVentaById(listDetalleEquipaje.get(0).getVentaPasajeExceso().getId());
@@ -653,12 +656,12 @@ public class WndEquipaje extends WndBase implements Serializable{
 								//Comentado temporalmente por jabanto
 								WSFE.sendVenta(listVentaPasajes, wndEquipaje, true, null);
 								
-								timerdownloadFileEquipaje = true;
+//								timerdownloadFileEquipaje = true;
 							}
 						}
 						
 						//Envia impresion del Ticket de Equipaje
-						WSFE.printEquipaje(listDetalleEquipaje, wndEquipaje, timerdownloadFileEquipaje);
+//						WSFE.printEquipaje(listDetalleEquipaje, wndEquipaje, timerdownloadFileEquipaje);
 						
 						Messagebox.show(Messages.getString("Generales.information.exitoGuardar"),DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_OK, Messagebox.INFORMATION ,DlgMessage.BTN_OK, new EventListener<Event>() {
 							@Override

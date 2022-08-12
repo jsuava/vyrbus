@@ -302,7 +302,7 @@ public class WSFE implements Serializable{
 			/**Realiza la impresion del Ticket - 09/12/2016 - jabanto*/
 			if(printTicket && ventasEnviadas.size()>0){
 				/*Crea el objet xmlVentaPasaje, para crear el archivo xml para la impresion del Ticket*/
-				XmlVentaPasaje filexmlprint=createXmlVenta(ventasEnviadas);
+				XmlVentaPasaje filexmlprint=createXmlVenta(ventasEnviadas, false);
 				if(filexmlprint!=null)
 					descargarFileXml(filexmlprint, window);
 			}
@@ -343,7 +343,7 @@ public class WSFE implements Serializable{
 			}
 			
 			/*Crea y descarga el Archivo xml para la impresion*/
-			XmlVentaPasaje fileXmlPrint=createXmlVenta(ventasEnviadasSFE);
+			XmlVentaPasaje fileXmlPrint=createXmlVenta(ventasEnviadasSFE, true);
 			if(fileXmlPrint!=null)
 				descargarFileXml(fileXmlPrint, window);
 						
@@ -391,7 +391,7 @@ public class WSFE implements Serializable{
 	public static void printVouchers(List<VentaPasaje> listVouchers, Window window){
 		XmlVentaPasaje fileXmlPrint;
 		try {
-			fileXmlPrint = createXmlVenta(listVouchers);
+			fileXmlPrint = createXmlVenta(listVouchers, false);
 			if(fileXmlPrint!=null)
 				descargarFileXml(fileXmlPrint, window);
 			
@@ -411,7 +411,6 @@ public class WSFE implements Serializable{
 	 * Realiza la impresion de la liquidacion, en formato térmico
 	 * @param liquidacion
 	 */
-	@SuppressWarnings("restriction")
 	public static void printLiquidacion(Liquidacion liquidacion, Window window){
 		try {			
 			
@@ -853,7 +852,7 @@ public class WSFE implements Serializable{
 	 * @throws Exception
 	 */
 	@SuppressWarnings("restriction")
-	private static XmlVentaPasaje createXmlVenta(List<VentaPasaje> listVentaPasaje)throws Exception{
+	private static XmlVentaPasaje createXmlVenta(List<VentaPasaje> listVentaPasaje, boolean isReimpresion)throws Exception{
 		try {
 			XmlVentaPasaje xmlVentaPasaje= null;
 			
@@ -1006,6 +1005,12 @@ public class WSFE implements Serializable{
 						}
 					}
 					
+					//jabanto - 11/08/2022
+					if(isReimpresion) {
+						String reimpresion = (xmlVenta.getV0_ObserImport()!=null? xmlVenta.getV0_ObserImport() + " - REIMPRESIÓN" : "REIMPRESIÓN" );
+						xmlVenta.setV0_ObserImport(reimpresion);
+					}
+						
 					
 					/*Centro de costo del cliente*/
 					if(ventaPasaje.getCentroCosto()!=null)
