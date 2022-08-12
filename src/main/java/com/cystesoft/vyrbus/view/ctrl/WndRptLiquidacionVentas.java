@@ -8,6 +8,7 @@
  */
 package com.cystesoft.vyrbus.view.ctrl;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -182,9 +183,11 @@ public class WndRptLiquidacionVentas extends WndBase{
 			
 			String nameFile = CreateDocument.creaRptLiquidacionByDetalleVentas(liquidacion);
 			/*Carga el iframe*/
-			String src=Constantes.URL_FORMATOS_LIQUIDACION +Constantes.CLAVE_PAHT+ nameFile;
+			String src=Constantes.URL_FORMATOS_LIQUIDACION + Constantes.CLAVE_PAHT+ nameFile;
+			File file = new File(Constantes.DIRECTORY_LIQUIDACION + Constantes.CLAVE_PAHT +nameFile);
 			final WndIFrame iFrame = new WndIFrame();
 			iFrame.setSrc(src);
+			iFrame.setFile(file);
 			iFrame.setWidth("810");
 			iFrame.setheight("600");
 			iFrame.loadiframe();
@@ -209,8 +212,10 @@ public class WndRptLiquidacionVentas extends WndBase{
 			String nameFile = CreateDocument.creaRptLiquidacionByEspecieValorada(liquidacion);
 			/*Carga el iframe*/
 			String src=Constantes.URL_FORMATOS_LIQUIDACION +Constantes.CLAVE_PAHT+ nameFile;
+			File file = new File(Constantes.DIRECTORY_LIQUIDACION + Constantes.CLAVE_PAHT +nameFile);
 			final WndIFrame iFrame = new WndIFrame();
 			iFrame.setSrc(src);
+			iFrame.setFile(file);
 			iFrame.setWidth("810");
 			iFrame.setheight("600");
 			iFrame.loadiframe();
@@ -267,10 +272,12 @@ public class WndRptLiquidacionVentas extends WndBase{
 	
 	private Double buscarEfectivoLiquidacion(Liquidacion liquidacion)throws Exception{
 		Integer usuarioId = (chbxDetallePorUsuario.isChecked()?liquidacion.getUsuario().getId():null);
+		String fecha = Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
+		
 		//Gastos - Pasajes
-		List<Gasto> resultGasto = ServiceLocator.getGastoManager().buscarGasto(fechaInicial, fechaFinal, null, liquidacion.getAgencia().getId(), usuarioId);
+		List<Gasto> resultGasto = ServiceLocator.getGastoManager().buscarGasto(fecha, fecha, null, liquidacion.getAgencia().getId(), usuarioId);
 		//Ventas Pasajes
-		List<VentaPasaje> resultDetalleVentasPasaje = ServiceLocator.getVentaPasajesManager().buscarDetalladoVentas(liquidacion.getAgencia().getId(), usuarioId, fechaInicial, fechaFinal, -1);
+		List<VentaPasaje> resultDetalleVentasPasaje = ServiceLocator.getVentaPasajesManager().buscarDetalladoVentas(liquidacion.getAgencia().getId(), usuarioId, fecha, fecha, -1);
 		
 		List<VentaPasaje> listDetalleVentas = new ArrayList<VentaPasaje>();			
 		for(VentaPasaje ventaPasaje: resultDetalleVentasPasaje) {
@@ -364,7 +371,7 @@ public class WndRptLiquidacionVentas extends WndBase{
 				cell = new Listcell();
 				if(liquidacionCarga!=null) {
 					if (liquidacionCarga.getestadoLiquidacion().equals(Constantes.LIQUI_ESTA_CERRADO)) {
-						cell = new Listcell(Constantes.LIQUI_ESTA_CERRADO_LABEL +" - "+ Constantes.FORMAT_LONG.format(liquidacion.getFechaModificacion()));
+						cell = new Listcell(Constantes.LIQUI_ESTA_CERRADO_LABEL); // +" - "+ Constantes.FORMAT_LONG.format(liquidacion.getFechaModificacion()));
 						cell.setStyle("font-size:11px !important");
 					}else
 						cell = new Listcell(Constantes.LIQUI_ESTA_ABIERTO_LABEL);
