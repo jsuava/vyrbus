@@ -3655,7 +3655,7 @@ public class CreateDocument implements Serializable {
 	 * @param isDetall			: Indica si es para el reporte Detalle de Ventas (True) o no (False)
 	 * @throws Exception
 	 */
-	public static Double creaRptLiquidacionByEgresos(BufferedWriter bw, List<VentaPasaje> listDetalleVentas, List<Gasto> resultGasto, boolean isDetall)throws Exception {
+	public static Double creaRptLiquidacionByEgresos(BufferedWriter bw, List<VentaPasaje> listDetalleVentas, List<Gasto> resultGasto, Double totalOtrosIngreos, boolean isDetall)throws Exception {
 		int longRuc = 13;
 		int longitud_cliente = 33;
 		if (!isDetall)
@@ -3874,7 +3874,8 @@ public class CreateDocument implements Serializable {
 		Integer longConceptop = 30;
 		Integer longImporteTotales = 15;
 		Double totalLiquidacion = (totalVentaPasajes 
-								 + totalVentaCarga 
+								 + totalVentaCarga
+								 + totalOtrosIngreos
 								 - totalVentaTarjeta 
 								 - totalGastosCaja
 								 - totalCtaCte
@@ -3933,7 +3934,7 @@ public class CreateDocument implements Serializable {
 		longitud_C= concepto.length();
 		linea= tabular(30) + concepto + tabular(longConceptop-longitud_C);			
 		/*IMPORTE*/
-		importe= Util.toNumberFormat(0, 2);
+		importe= Util.toNumberFormat(totalOtrosIngreos, 2);
 		longitud_C=importe.length();
 		linea += tabular(longImporteTotales - longitud_C) + importe;
 		if(bw!=null)
@@ -4056,6 +4057,7 @@ public class CreateDocument implements Serializable {
 		Integer longitud_cliente = 33;
 		Integer longitud_ruta = 20;
 		Integer longImporte = 10;
+		Integer longObsOtroIngreso = 83;
 				
 		try{
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),"UTF-8"));
@@ -4229,11 +4231,51 @@ public class CreateDocument implements Serializable {
 				}		
 			}
 			
+			
+			//Otros ingresos
+			Double totalOtrosIngresos = .00;
+			List<Gasto> lstIngresos =  ServiceLocator.getGastoManager().obtenerGastosByLiquidacion(fecha, liquidacion.getAgencia().getId(), usuarioId, Constantes.TRUE_VALUE, true);
+			if(lstIngresos.size()>0) {
+				linea=tabular(3)+"OTROS INGRESOS";
+				bw.write(linea+NEWLINE);
+				linea=tabular(3)+"==================";
+				bw.write(linea+NEWLINE);
+			}
+			for(Gasto otroIngreso : lstIngresos) {				
+				/*OBSERVACION DEL INGRESO*/
+				String _observacion = otroIngreso.getObservacion();
+				if(_observacion.length() > longObsOtroIngreso)
+					_observacion =_observacion.substring(0, longObsOtroIngreso);
+				longitud_C = _observacion.length();
+				linea = tabular(3) +_observacion + tabular((longObsOtroIngreso - getLenCaracteresInvalidos(_observacion))-longitud_C);
+				
+				/*IMPORTE*/
+				String importe = Util.toNumberFormat(otroIngreso.getMonto(),2);
+				longitud_C=importe.length();
+				linea += tabular(longImporte - longitud_C) + importe;
+				
+				totalOtrosIngresos += otroIngreso.getMonto();
+				bw.write(linea+NEWLINE);
+			}
+			if(totalOtrosIngresos > .00) {
+				linea=tabular(86)+"-----------";
+				bw.write(linea+NEWLINE);
+				String importe = Util.toNumberFormat(totalOtrosIngresos,2);
+				longitud_C=importe.length();
+				linea = tabular(86) + tabular(longImporte - longitud_C) + importe;
+				bw.write(linea+NEWLINE);
+				
+				bw.write(NEWLINE);
+				bw.write(NEWLINE);
+			}
+			
+			
 			//Consulta los gastos
 			List<Gasto> resultGasto = ServiceLocator.getGastoManager().buscarGasto(fecha, null, agenciaId, usuarioId);
 			
+			
 			/*Inserta el detalle de egresos y los totales de la liquidacion*/
-			creaRptLiquidacionByEgresos(bw, listDetalleVentas, resultGasto, true);			
+			creaRptLiquidacionByEgresos(bw, listDetalleVentas, resultGasto, totalOtrosIngresos, true);			
 			
 			bw.write(NEWLINE);
 			bw.write(NEWLINE);
@@ -4425,12 +4467,19 @@ public class CreateDocument implements Serializable {
 				}
 			}			
 			
+			//Otros ingresos
+			Double totalOtrosIngresos = .00;
+			List<Gasto> lstIngresos =  ServiceLocator.getGastoManager().obtenerGastosByLiquidacion(fechaLiquidacion, liquidacion.getAgencia().getId(), usuarioId, Constantes.TRUE_VALUE, true);
+			for(Gasto otroIngreso: lstIngresos) {
+				totalOtrosIngresos += otroIngreso.getMonto();
+			}
+			
 			//Consulta los gastos
 			List<Gasto> resultGasto = ServiceLocator.getGastoManager().buscarGasto(fechaLiquidacion, null, agenciaId, usuarioId);
 			
 			/*Inserta el detalle de egresos y los totales de la liquidacion*/
 			bw.write(NEWLINE);
-			creaRptLiquidacionByEgresos(bw, listDetalleVentas, resultGasto, false);			
+			creaRptLiquidacionByEgresos(bw, listDetalleVentas, resultGasto, totalOtrosIngresos, false);			
 			
 			bw.write(NEWLINE);
 			bw.write(NEWLINE);
@@ -4457,7 +4506,7 @@ public class CreateDocument implements Serializable {
 		File file = new File(pathFichero);
 		
 		int longitud_C=0;
-		int rubroPasajes = Constantes.FALSE_VALUE;
+//		int rubroPasajes = Constantes.FALSE_VALUE;
 //		int rubroCarga = Constantes.TRUE_VALUE;
 		
 		try {			
@@ -4601,7 +4650,7 @@ public class CreateDocument implements Serializable {
 				Liquidacion liquidacionPasaje = (Liquidacion) item.getValue();
 				Liquidacion liquidacionCarga = (liquidacionPasaje.getLiquidacionCarga()!=null? liquidacionPasaje.getLiquidacionCarga(): null);
 								
-				Integer usuarioId = liquidacionPasaje.getUsuario().getId();																		
+//				Integer usuarioId = liquidacionPasaje.getUsuario().getId();																		
 				//Ventas Carga
 				if(liquidacionCarga !=null) {
 					TranscarUsuarioPersonal transcarUsuarioPersonal = new TranscarUsuarioPersonal();
