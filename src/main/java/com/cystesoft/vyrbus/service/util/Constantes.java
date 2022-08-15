@@ -617,6 +617,7 @@ public class Constantes {
 	public static final String empresa="TRANSMAR EXPRESS SAC";
 	public static final String direccion_empresa="AV. NICOLAS ARRIOLA NRO. 197";
 	public static final String centro_computo = "TRANSMAR";
+	public static final String correo_empresa="transmar@transmar.com.pe";
 	public static final String nro_telefono="(01)265 0190";
 	public static final String ruc="20501622819"; 
 	public static final String usuario="059979";
