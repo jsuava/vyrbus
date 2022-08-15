@@ -2564,22 +2564,29 @@ public class CreateDocument implements Serializable {
 						
 			//---> line 1:	TITULO DEL REPORTE
 			String title="";
-//			if(esManiesto==true){
-			title=(esManiesto?"MANIFIESTO DE PASAJEROS":"LISTADO DE PASAJEROS");
-			linea = tabular(54)+title;
+//			if(esManiesto==true){			
+			title= (esManiesto?"NÚMERO DE MANIFIESTO":"LISTADO DE PASAJEROS");
+			linea = Constantes.empresa;
+			linea += tabular(90)+title;
 			bw.write(linea + NEWLINE);
 			//---> line 2:
-			linea = Constantes.empresa;
+//			linea = Constantes.empresa;
 			String ruc= Constantes.ruc;
-			linea +=tabular(89)+"RUC: "+ruc;
+			linea = tabular(2) + "RUC " + ruc + (esManiesto? tabular(90) + "+------------------------+":""); 
 			bw.write(linea+NEWLINE);
 			//---> line 3:
-			String ofPrincipal = Constantes.direccion_empresa;
-			String centraTelf = Constantes.nro_telefono;
-			linea="Of.Principal: "+ofPrincipal+tabular(10)+"Central Telf.: "+centraTelf+tabular(23);
-			if(esManiesto==true)
-				linea+="Nro.Manif.: "+manifiesto.getNumeroManifiesto();
+			String ofPrincipal = Constantes.direccion_empresa + (esManiesto? tabular(64) + "|" + tabular(7) + manifiesto.getNumeroManifiesto() + tabular(6) + "|" : "");
+//			String centraTelf = Constantes.nro_telefono;
+			linea = "OF. PRINCIPAL: "+ofPrincipal;
+			bw.write(linea+NEWLINE); 
+			linea = "CORREO       : " + Constantes.correo_empresa  + (esManiesto? tabular(68) + "+------------------------+" : "");
 			bw.write(linea+NEWLINE);
+			bw.write(NEWLINE);
+			
+//			if(esManiesto==true)
+//			   linea+="Nro.Manif.: "+manifiesto.getNumeroManifiesto();
+		
+			
 			//---> line 4:  Comentado por MAOE 27/06/2021, se movio el usuario al pie de pagina
 //			String user=usuario.getApellidoPaterno()+" "+usuario.getApellidoMaterno()+", "+usuario.getNombre();
 //			longitud_C=user.length();
@@ -2591,10 +2598,10 @@ public class CreateDocument implements Serializable {
 			String bus="";
 			if(!(itinerario.getBus()==null))
 				bus=itinerario.getBus().getCodigo();
-			linea="Agencia   : "+agenciA+tabular(44-longitud_C);
+			linea="AGENCIA   : "+agenciA+tabular(44-longitud_C);
 			longitud_C=itinerario.getId().toString().length();
-			linea+="Nro.Itin.: "+itinerario.getId()+tabular(38-longitud_C);
-			linea+="Bus : "+bus;
+			linea+="NRO.ITIN.: "+itinerario.getId()+tabular(38-longitud_C);
+			linea+="BUS : "+bus;
 			bw.write(linea+NEWLINE);
 			//---> line 6:(Origen - Destino - Placa)
 			String origen=itinerario.getRuta().getLocalidadOrigen().getDenominacion();
@@ -2603,9 +2610,9 @@ public class CreateDocument implements Serializable {
 			if(!(itinerario.getBus()==null))
 				placa=itinerario.getBus().getNumeroPlaca();
 			longitud_C=origen.length();
-			linea="Origen    : "+origen+tabular(44-longitud_C); longitud_C=destino.length();
-			linea+="Destino  : "+destino+tabular(36-longitud_C);
-			linea+="Placa : "+placa;
+			linea="ORIGEN    : "+origen+tabular(44-longitud_C); longitud_C=destino.length();
+			linea+="DESTINO  : "+destino+tabular(36-longitud_C);
+			linea+="PLACA : "+placa;
 			bw.write(linea+NEWLINE);
 			
 			if(esManiesto){
@@ -2621,9 +2628,9 @@ public class CreateDocument implements Serializable {
 						TarjHabilit=itinerario.getBus().getDocumentoBus().getNumeroDocumento();
 				}
 				longitud_C=Chofer.length();		
-				linea="Chofer 1  : "+Chofer+tabular(44-longitud_C); longitud_C=licencia.length();
-				linea+="Licencia : "+licencia+tabular(23-longitud_C);
-				linea+="Nro. Tarj. Habilit.: "+TarjHabilit;
+				linea="CHOFER 1  : "+Chofer+tabular(44-longitud_C); longitud_C=licencia.length();
+				linea+="LICENCIA : "+licencia+tabular(24-longitud_C);
+				linea+="CERT.HABILITACION : "+TarjHabilit;
 				bw.write(linea+NEWLINE);
 				//---> linea 8:(Chofer2 -  Licencia - Marca)
 				String marca="";
@@ -2637,9 +2644,9 @@ public class CreateDocument implements Serializable {
 						marca=itinerario.getBus().getGrupoMantenimiento().getDenominacion();
 				}
 				longitud_C=Chofer.length();
-				linea="Chofer 2  : "+Chofer+tabular(44-longitud_C); longitud_C=licencia.length();
-				linea+="Licencia : "+licencia+tabular(36-longitud_C);
-				linea+="Marca : "+marca;
+				linea="CHOFER 2  : "+Chofer+tabular(44-longitud_C); longitud_C=licencia.length();
+				linea+="LICENCIA : "+licencia+tabular(36-longitud_C);
+				linea+="MARCA : "+marca;
 				bw.write(linea+NEWLINE);
 				//---> linea 8:(Chofer3 -  Licencia )
 				Chofer="";licencia="";String servicio="";
@@ -2652,9 +2659,9 @@ public class CreateDocument implements Serializable {
 				}
 				servicio=itinerario.getServicio().getDenominacion();
 				longitud_C=Chofer.length();
-				linea="Chofer 3  : "+Chofer+tabular(44-longitud_C); longitud_C=licencia.length();
-				linea+="Licencia : "+licencia+tabular(33-longitud_C);
-				linea+="Servicio : "+servicio;
+				linea="CHOFER 3  : "+Chofer+tabular(44-longitud_C); longitud_C=licencia.length();
+				linea+="LICENCIA : "+licencia+tabular(33-longitud_C);
+				linea+="SERVICIO : "+servicio;
 				
 				bw.write(linea+NEWLINE);
 				//---> linea 9:(Terramoza -  Salida - Servicio)
@@ -2669,9 +2676,9 @@ public class CreateDocument implements Serializable {
 				salida=Constantes.FORMAT_DATE.format(itinerario.getFechaPartida())+" "+itinerario.getHoraPartida();
 				
 				longitud_C=tripulante.length();
-				linea="Terramoza : "+tripulante+tabular(49-longitud_C); longitud_C=dniTerramoza.length();
-				linea+="DNI : "+dniTerramoza+tabular(35-longitud_C);
-				linea+="Salida : "+salida;
+				linea="TRIPULATE : "+tripulante+tabular(49-longitud_C); longitud_C=dniTerramoza.length();
+//				linea+="DNI : "+dniTerramoza+tabular(35-longitud_C);
+				linea+= tabular(41) + "SALIDA : "+salida;
 				
 				bw.write(linea+NEWLINE);
 			}
