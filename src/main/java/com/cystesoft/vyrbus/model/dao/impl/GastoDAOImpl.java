@@ -267,9 +267,9 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 	 * @see com.cystesoft.vyrbus.model.dao.GastoDAO#obtenerGastosByLiquidacion(java.lang.String, java.lang.Integer, java.lang.Integer)
 	 */
 	@Override
-	public List<Gasto> obtenerGastosByLiquidacion(String fechaLiquidacion, Integer idAgencia, Integer idUsuario, Integer isIngreso, boolean groupByObs) {
+	public List<Gasto> obtenerGastosByLiquidacion(String fechaLiquidacion, Integer idAgencia, Integer idUsuario, Integer isIngreso, Boolean groupByObs) {
 		String sql ="";
-		if(groupByObs) {
+		if(groupByObs!=null && groupByObs) {
 			sql = "SELECT tg.tipgas_id, tg.c_denominacion, COUNT(g.n_monto) AS CANTIDAD,  SUM(g.n_monto) AS MONTO, g.c_observacion, g.c_numdoc "
 					+ "FROM vrtgasto g "
 					+ "INNER JOIN vrmtipgas tg ON (tg.tipgas_id=g.tipgas_id) "
@@ -279,7 +279,7 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 					+ "WHERE g.c_estreg='A' AND tg.n_tipope="+ isIngreso + " "
 					+ "GROUP BY tg.tipgas_id, tg.c_denominacion, g.c_observacion, g.c_numdoc "
 					+ "ORDER BY tg.c_denominacion ";
-		}else {
+		}else if(groupByObs!=null && groupByObs == false) {
 			sql = "SELECT tg.tipgas_id, tg.c_denominacion, COUNT(g.n_monto) AS CANTIDAD,  SUM(g.n_monto) AS MONTO "
 					+ "FROM vrtgasto g "
 					+ "INNER JOIN vrmtipgas tg ON (tg.tipgas_id=g.tipgas_id) "
@@ -289,6 +289,15 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 					+ "WHERE g.c_estreg='A' AND tg.n_tipope="+ isIngreso + " "
 					+ "GROUP BY tg.tipgas_id, tg.c_denominacion "
 					+ "ORDER BY tg.c_denominacion ";	
+		}else {
+			sql = "SELECT tg.tipgas_id, tg.c_denominacion, 1 AS CANTIDAD,  g.n_monto AS MONTO, g.c_observacion, g.c_numdoc "
+					+ "FROM vrtgasto g "
+					+ "INNER JOIN vrmtipgas tg ON (tg.tipgas_id=g.tipgas_id) "
+					+ "INNER JOIN (SELECT dl.gasto_id FROM vrtdetliq dl "
+					+ "INNER JOIN vrtliquidacion l On (l.liquidacion_id=dl.liquidacion_id) "
+					+ "WHERE l.d_fecliq=to_date('"+fechaLiquidacion+"','dd/MM/yyyy') AND dl.gasto_id is not null AND l.agencia_id="+idAgencia+" AND l.usuario_id=NVL("+idUsuario+",l.usuario_id) AND l.c_estreg='A') dl ON (dl.gasto_id=g.gasto_id) "
+					+ "WHERE g.c_estreg='A' AND tg.n_tipope="+ isIngreso + " "
+					+ "ORDER BY tg.c_denominacion ";
 		}
 		
 	
@@ -304,8 +313,8 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 			tipoGasto.setDenominacion(obj[1].toString());
 			gasto.setTipoGasto(tipoGasto);
 			gasto.setCantidad(((BigDecimal)obj[2]).intValue());
-			gasto.setMonto(((BigDecimal)obj[3]).doubleValue());
-			if(groupByObs) {
+			gasto.setMonto(((BigDecimal)obj[3]).doubleValue());			
+			if(groupByObs==null || groupByObs) {
 				gasto.setObservacion(obj[4]!=null?obj[4].toString():"");
 				gasto.setNumeroDocumento(obj[5]!=null?obj[5].toString():"");
 			}

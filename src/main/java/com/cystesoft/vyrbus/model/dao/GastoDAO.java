@@ -101,7 +101,7 @@ public interface GastoDAO extends GenericDAO {
 	 * @param groupByObs		: Indica si la consulta debe o no agrupar por observacion.
 	 * @return
 	 */
-	public List<Gasto> obtenerGastosByLiquidacion(String fechaLiquidacion, Integer idAgencia, Integer idUsuario, Integer isIngreso, boolean groupByObs);
+	public List<Gasto> obtenerGastosByLiquidacion(String fechaLiquidacion, Integer idAgencia, Integer idUsuario, Integer isIngreso, Boolean groupByObs);
 	/**
 	 * Realiza la busqueda de los gastos y/o ingresos
 	 * @param fechaInicio	: Fecha inicio de la busqueda

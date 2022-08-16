@@ -8,6 +8,7 @@ import java.util.Locale;
 
 import javax.security.auth.login.LoginException;
 
+import org.hibernate.cfg.ImprovedNamingStrategy;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
@@ -245,11 +246,13 @@ public class WndCierreCaja extends WndBase {
 						List<LiquidacionTuentrada> lstLiquidacion = ServiceLocator.getLiquidacionManager().liquidacionTuentrada(getAgencia().getId(),liquidacion.getUsuario().getId(), Util.DatetoString(liquidacion.getFechaLiquidacion(), Constantes.DATE_FORMAT));
 						mostrarLiquidacionTuentrada(lstLiquidacion, liquidacion.getUsuario(), Util.DatetoString(liquidacion.getFechaLiquidacion(), Constantes.DATE_FORMAT));
 					}else{
-						boolean isReimprecion=liquidacion.getestadoLiquidacion().intValue()!=Constantes.TRUE_VALUE?true:false;
-						CreateDocument.creaLiquidacion(liquidacion, liquidacion.getUsuario(), isReimprecion);
+//						boolean isReimprecion=liquidacion.getestadoLiquidacion().intValue()!=Constantes.TRUE_VALUE?true:false;
+//						CreateDocument.creaLiquidacion(liquidacion, liquidacion.getUsuario(), isReimprecion);
 //							preliminar(liquidacion);
+							String nameFile = CreateDocument.creaRptLiquidacionByEspecieValorada(liquidacion, true);
+							String src=Constantes.URL_FORMATOS_LIQUIDACION +Constantes.CLAVE_PAHT+ nameFile;
 							/*Carga el iframe*/
-							String src=Constantes.URL_FORMATOS_LIQUIDACION +Constantes.CLAVE_PAHT+ liquidacion.getId()+".txt";
+//							String src=Constantes.URL_FORMATOS_LIQUIDACION +Constantes.CLAVE_PAHT+ liquidacion.getId()+".txt";
 							final WndIFrame iFrame = new WndIFrame();
 							iFrame.setSrc(src);
 							iFrame.setWidth("810");
@@ -765,7 +768,7 @@ public class WndCierreCaja extends WndBase {
 		final Radiogroup radiogroup= new Radiogroup();
 		Radio radioTermico = new Radio("Térmico");
 		radioTermico.setChecked(true);
-		Radio radioMatrical = new Radio("Matricial");
+		final Radio radioMatrical = new Radio("Matricial");
 		radiogroup.appendChild(radioTermico);
 		radiogroup.appendChild(radioMatrical);
 				
@@ -820,7 +823,10 @@ public class WndCierreCaja extends WndBase {
 			public void onEvent(Event event) throws Exception {
 				try{
 					
-					WSFE.printLiquidacion(liquidacion, wndIngresoMonto);
+					if(radioMatrical.isChecked())
+						imprimirLiquidacion(liquidacion);
+					else
+						WSFE.printLiquidacion(liquidacion, wndIngresoMonto);
 					
 					window.onClose();
 				} catch (Exception ex) {
@@ -1051,20 +1057,23 @@ public class WndCierreCaja extends WndBase {
 	 * @param liquidacion
 	 * @throws Exception 
 	 */
-	public void imprimirLiquidacion(Liquidacion liquidacion) throws Exception{
-		File file=CreateDocument.creaLiquidacion(liquidacion, getUsuario(), true);
-		if(getUsuarioHardware().getPrintApplet().intValue()==Constantes.TRUE_VALUE){
-//			String urlFile = Constantes.URL_FORMATOS_LIQUIDACION+liquidacion.getId()+".txt";
-			String urlFile = Constantes.URL_FORMATOS_LIQUIDACION+Constantes.CLAVE_PAHT+liquidacion.getId()+".txt";
-			Window win = (Window)Executions.createComponents("imprimir.zul", null, null);
-			win.setAttribute("formato", WndImprimir.FORMAT_LIQUIDACION_TURNO);
-			win.setAttribute("msg", "Imprimiendo la Liquidación de Turno... ");
-			win.setAttribute("urlDocumento", urlFile);
-			win.doPopup();
-		}else{
+	public void imprimirLiquidacion(Liquidacion liquidacion) throws Exception{		
+		String nameFile = CreateDocument.creaRptLiquidacionByEspecieValorada(liquidacion, true);
+		File file = new File(Constantes.DIRECTORY_LIQUIDACION + Constantes.CLAVE_PAHT +nameFile);
+		Util.descargarArchivo(file);
+		
+//		File file=CreateDocument.creaLiquidacion(liquidacion, getUsuario(), true);
+//		if(getUsuarioHardware().getPrintApplet().intValue()==Constantes.TRUE_VALUE){
+//			String urlFile = Constantes.URL_FORMATOS_LIQUIDACION+Constantes.CLAVE_PAHT+liquidacion.getId()+".txt";
+//			Window win = (Window)Executions.createComponents("imprimir.zul", null, null);
+//			win.setAttribute("formato", WndImprimir.FORMAT_LIQUIDACION_TURNO);
+//			win.setAttribute("msg", "Imprimiendo la Liquidación de Turno... ");
+//			win.setAttribute("urlDocumento", urlFile);
+//			win.doPopup();
+//		}else{
 			//Descarga el archivo para la impresion
-			Util.descargarArchivo(file);
-		}
+//			Util.descargarArchivo(file);
+//		}
 	}
 	
 	private void mostrarLiquidacionTuentrada(List<LiquidacionTuentrada> lstLiquidacion, Usuario usuario, String fechaLiquidacion){
