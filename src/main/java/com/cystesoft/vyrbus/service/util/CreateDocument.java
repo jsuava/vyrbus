@@ -1985,8 +1985,8 @@ public class CreateDocument implements Serializable {
 									longitud_C=boleto.length();
 									linea3+=boleto+tabular(longitud_Bole-longitud_C);
 									/**Edad*/
-									linea3+="#Ed: ";
-									edad=manifiesto.getEdad(list, (new Integer(numeroAsiento)),piso);
+									linea3+="     ";
+//									edad=manifiesto.getEdad(list, (new Integer(numeroAsiento)),piso);
 									longitud_C=edad.length();	
 									linea3+=edad+tabular(longitud_Ed-longitud_C)+"| ";
 									/**Ruta*/
@@ -2017,8 +2017,8 @@ public class CreateDocument implements Serializable {
 									longitud_C=boleto.length();
 									linea3+=boleto+tabular(longitud_Bole-longitud_C);
 									/**Edad*/
-									linea3+="#Ed: ";
-									edad=manifiesto.getEdad(list, (new Integer(numeroAsiento)),piso);
+									linea3+="     ";
+//									edad=manifiesto.getEdad(list, (new Integer(numeroAsiento)),piso);
 									longitud_C=edad.length();	
 									linea3+=edad+tabular(longitud_Ed-longitud_C)+"| ";
 									/**Ruta*/
@@ -2068,8 +2068,8 @@ public class CreateDocument implements Serializable {
 									longitud_C=boleto.length();
 									linea3+=boleto+tabular(longitud_Bole-longitud_C);
 									/**Edad*/
-									linea3+="#Ed: ";
-									edad=manifiesto.getEdad(list, (new Integer(numeroAsiento)),piso);
+									linea3+="     ";
+//									edad=manifiesto.getEdad(list, (new Integer(numeroAsiento)),piso);
 									longitud_C=edad.length();	
 									linea3+=edad+tabular(longitud_Ed-longitud_C)+"| ";
 									/**Ruta*/
@@ -2112,8 +2112,8 @@ public class CreateDocument implements Serializable {
 									longitud_C=boleto.length();
 									linea3+=boleto+tabular(longitud_Bole-longitud_C);
 									/**Edad*/
-									linea3+="#Ed: ";
-									edad=manifiesto.getEdad(list, (new Integer(numeroAsiento)),piso);
+									linea3+="     ";
+//									edad=manifiesto.getEdad(list, (new Integer(numeroAsiento)),piso);
 									longitud_C=edad.length();	
 									linea3+=edad+tabular(longitud_Ed-longitud_C)+"| ";
 									/**Ruta*/

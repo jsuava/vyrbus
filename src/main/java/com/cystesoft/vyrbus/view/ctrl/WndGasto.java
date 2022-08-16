@@ -370,8 +370,8 @@ public class WndGasto extends WndOpcionesMantenimiento {
 			Integer idTipoGasto=gasto.getTipoGasto().getId();
 								
 			listarRegistros((ArrayList<Gasto>) ServiceLocator.getGastoManager().buscarGasto(fechaGasto, idTipoGasto, null,getUsuario().getId()));
-			isClikSaved=true;
-			
+//			isClikSaved=true;
+			isClikSaved=false;
 		
 		}catch (GastosException gex){	
 			if(gex.getTipo()==GastosException.MONTO_NULL){

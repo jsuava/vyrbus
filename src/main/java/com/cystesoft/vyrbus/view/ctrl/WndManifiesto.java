@@ -367,7 +367,9 @@ public class WndManifiesto extends WndBase {
 	 * @throws Exception
 	 */
 	public void onChangePtoControl() throws Exception{
-		String origen= ((Agencia)cmbPuntocontrol.getSelectedItem().getValue()).getLocalidad().getDenominacion();
+		String origen="";
+		if(cmbPuntocontrol.getSelectedIndex() != 0 )
+			origen= ((Agencia)cmbPuntocontrol.getSelectedItem().getValue()).getLocalidad().getDenominacion();
 		if(itinerario!=null)
 			cargarItinerario(itinerario.getId(), origen,itinerario.getRuta().getDestino());
 //		MuetrasItinerario(Long.valueOf(txtItinerario.getText()), origen,lbDestino.getValue().substring(1).trim());
