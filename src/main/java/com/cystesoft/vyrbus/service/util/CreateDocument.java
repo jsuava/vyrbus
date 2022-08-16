@@ -3646,12 +3646,14 @@ public class CreateDocument implements Serializable {
 	 * @throws Exception
 	 */
 	private static void creaRptLiquidacionByTotalByGroup(BufferedWriter bw, Integer longImporte, Double total)throws Exception {
-		String linea=tabular(86)+"-----------";
-		bw.write(linea+NEWLINE);
-		String sTotalPasajes = Util.toNumberFormat(total,2);
-		Integer longitud_C = sTotalPasajes.length();
-		linea = tabular(86) + tabular(longImporte - longitud_C) + sTotalPasajes;
-		bw.write(linea+NEWLINE);
+		if(total > .00) {
+			String linea=tabular(86)+"-----------";
+			bw.write(linea+NEWLINE);
+			String sTotalPasajes = Util.toNumberFormat(total,2);
+			Integer longitud_C = sTotalPasajes.length();
+			linea = tabular(86) + tabular(longImporte - longitud_C) + sTotalPasajes;
+			bw.write(linea+NEWLINE);	
+		}		
 	}
 	
 	/**
@@ -3662,7 +3664,7 @@ public class CreateDocument implements Serializable {
 	 * @param isDetall			: Indica si es para el reporte Detalle de Ventas (True) o no (False)
 	 * @throws Exception
 	 */
-	public static Double creaRptLiquidacionByEgresos(BufferedWriter bw, List<VentaPasaje> listDetalleVentas, List<Gasto> resultGasto, Double totalOtrosIngreos, boolean isDetall)throws Exception {
+	public static Double creaRptLiquidacionByEgresos(BufferedWriter bw, List<VentaPasaje> listDetalleVentas, List<Gasto> resultGasto, List<Gasto> lstIngresos, boolean isDetall, boolean isCierreCaja)throws Exception {
 		int longRuc = 13;
 		int longitud_cliente = 33;
 		if (!isDetall)
@@ -3870,6 +3872,38 @@ public class CreateDocument implements Serializable {
 				if(bw!=null)
 					creaRptLiquidacionByTotalByGroup(bw, longImporte, total);
 			}
+		}
+		
+		//Valida si debe o no mostrar el detalle de otros ingresos
+		if(isCierreCaja) {
+			Double _totalOtrosIngreos = .00;
+			linea = tabular(3) + "OTROS INGRESOS";
+			if(bw !=null)
+				bw.write(linea + NEWLINE);
+			linea = tabular(3) + "====================";
+			if(bw !=null)
+				bw.write(linea + NEWLINE);
+			for(Gasto otrosIngresos: lstIngresos) {
+				String concepto = (otrosIngresos.getObservacion()!=null? otrosIngresos.getObservacion(): "");
+				longitud_C= concepto.length();
+				linea= tabular(3) + concepto + tabular(83-longitud_C);
+				
+				String importe = Util.toNumberFormat(otrosIngresos.getMonto(), 2);
+				longitud_C=importe.length();
+				linea += tabular(longImporte - longitud_C) + importe;
+				
+				_totalOtrosIngreos += otrosIngresos.getMonto();
+				if(bw !=null)
+					bw.write(linea + NEWLINE);
+			}
+			
+			if(bw !=null) 
+				creaRptLiquidacionByTotalByGroup(bw, longImporte, _totalOtrosIngreos);
+		}
+		
+		Double totalOtrosIngreos = .00;
+		for(Gasto otrosIngresos: lstIngresos) {
+			totalOtrosIngreos += otrosIngresos.getMonto();
 		}
 		
 		if(bw!=null) {
@@ -4282,7 +4316,7 @@ public class CreateDocument implements Serializable {
 			
 			
 			/*Inserta el detalle de egresos y los totales de la liquidacion*/
-			creaRptLiquidacionByEgresos(bw, listDetalleVentas, resultGasto, totalOtrosIngresos, true);			
+			creaRptLiquidacionByEgresos(bw, listDetalleVentas, resultGasto, lstIngresos, true, false);			
 			
 			bw.write(NEWLINE);
 			bw.write(NEWLINE);
@@ -4303,7 +4337,7 @@ public class CreateDocument implements Serializable {
 	 * @return
 	 * @throws Exception
 	 */
-	public static final String creaRptLiquidacionByEspecieValorada(Liquidacion liquidacion) throws Exception{			
+	public static final String creaRptLiquidacionByEspecieValorada(Liquidacion liquidacion, boolean isCierreCaja) throws Exception{			
 		Liquidacion liquidacionCarga = (liquidacion.getLiquidacionCarga()!=null? liquidacion.getLiquidacionCarga(): null);
 		
 		DateFormat FORMAT_DATE = new SimpleDateFormat ("ddMMyyyy");
@@ -4475,18 +4509,18 @@ public class CreateDocument implements Serializable {
 			}			
 			
 			//Otros ingresos
-			Double totalOtrosIngresos = .00;
-			List<Gasto> lstIngresos =  ServiceLocator.getGastoManager().obtenerGastosByLiquidacion(fechaLiquidacion, liquidacion.getAgencia().getId(), usuarioId, Constantes.TRUE_VALUE, true);
-			for(Gasto otroIngreso: lstIngresos) {
-				totalOtrosIngresos += otroIngreso.getMonto();
-			}
+//			Double totalOtrosIngresos = .00;
+			List<Gasto> lstIngresos =  ServiceLocator.getGastoManager().obtenerGastosByLiquidacion(fechaLiquidacion, liquidacion.getAgencia().getId(), usuarioId, Constantes.TRUE_VALUE, (isCierreCaja? null: true));
+//			for(Gasto otroIngreso: lstIngresos) {
+//				totalOtrosIngresos += otroIngreso.getMonto();
+//			}
 			
 			//Consulta los gastos
 			List<Gasto> resultGasto = ServiceLocator.getGastoManager().buscarGasto(fechaLiquidacion, null, agenciaId, usuarioId);
 			
 			/*Inserta el detalle de egresos y los totales de la liquidacion*/
 			bw.write(NEWLINE);
-			creaRptLiquidacionByEgresos(bw, listDetalleVentas, resultGasto, totalOtrosIngresos, false);			
+			creaRptLiquidacionByEgresos(bw, listDetalleVentas, resultGasto, lstIngresos, false, isCierreCaja);			
 			
 			bw.write(NEWLINE);
 			bw.write(NEWLINE);

@@ -453,12 +453,12 @@ public class WSFE implements Serializable{
 			
 			/****Carga - resumen especies valoradas*/
 			/************************************************/
-			TranscarUsuarioPersonal transcarUsuarioPersonal = ServiceLocator.getTranscarManager().buscarUsuarioPersonal(liquidacion.getUsuario().getLogin());
-			int agenciaIdCargo = 0;
+			TranscarUsuarioPersonal transcarUsuarioPersonal = ServiceLocator.getTranscarWebManager().buscarUsuario(liquidacion.getUsuario().getLogin());
+			int agenciaIdCargo = liquidacion.getAgencia().getId();
 			String fechaLiquidacion =Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
 			if(transcarUsuarioPersonal!=null && liquidacion.getAgencia().getCodigo()!=null){
-				agenciaIdCargo = ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(liquidacion.getAgencia().getId().toString());
-				List<Liquidacion>listResumenEspeciesValoradas = ServiceLocator.getTranscarManager().buscarLiquidacionTurnoResumenEspVal(transcarUsuarioPersonal.getId(), agenciaIdCargo, fechaLiquidacion, fechaLiquidacion);
+//				agenciaIdCargo = ServiceLocator.getTranscarWebManager().buscarIdAgenciaByCodigoAgenciaPasajes(liquidacion.getAgencia().getId().toString());
+				List<Liquidacion>listResumenEspeciesValoradas = ServiceLocator.getTranscarWebManager().buscarLiquidacionTurnoResumenEspVal(transcarUsuarioPersonal.getId(), agenciaIdCargo, fechaLiquidacion, fechaLiquidacion);
 				for(Liquidacion _liquidacion: listResumenEspeciesValoradas){
 					XmlItemIngresoVentaLiquidacion itemIngresoVentaLiquidacion = new XmlItemIngresoVentaLiquidacion();
 					itemIngresoVentaLiquidacion.setV1_comprobante(_liquidacion.getComprobante());
@@ -538,7 +538,7 @@ public class WSFE implements Serializable{
 			
 			/*Otros Egresos - Carga*/
 			if(transcarUsuarioPersonal!=null && liquidacion.getAgencia().getCodigo()!=null){				
-				Liquidacion liquidacion2Cargo = ServiceLocator.getTranscarManager().buscarLiquidacionTurno(transcarUsuarioPersonal.getId(), agenciaIdCargo, fechaLiquidacion, fechaLiquidacion);
+				Liquidacion liquidacion2Cargo = ServiceLocator.getTranscarWebManager().buscarLiquidacionTurno(transcarUsuarioPersonal.getId(), agenciaIdCargo, fechaLiquidacion, fechaLiquidacion);
 				
 //				liquidacion2.setMontoContado(liquidacion2.getMontoContado() + liquidacion2Cargo.getMontoContado());
 //				liquidacion2.setCantidadContado(liquidacion2.getCantidadContado() + liquidacion2Cargo.getCantidadContado());

@@ -209,7 +209,7 @@ public class WndRptLiquidacionVentas extends WndBase{
 	private void viewCrtolEspeciesValoradas(Liquidacion liquidacion) {
 		try {
 			
-			String nameFile = CreateDocument.creaRptLiquidacionByEspecieValorada(liquidacion);
+			String nameFile = CreateDocument.creaRptLiquidacionByEspecieValorada(liquidacion, false);
 			/*Carga el iframe*/
 			String src=Constantes.URL_FORMATOS_LIQUIDACION +Constantes.CLAVE_PAHT+ nameFile;
 			File file = new File(Constantes.DIRECTORY_LIQUIDACION + Constantes.CLAVE_PAHT +nameFile);
@@ -319,16 +319,16 @@ public class WndRptLiquidacionVentas extends WndBase{
 			}
 		}
 		
-		//Otros ingresos
-		Double totalOtrosIngresos = .00;
-		for(Gasto otroIngreso: lstIngresos) {
-			totalOtrosIngresos += otroIngreso.getMonto();
-		}
+//		//Otros ingresos
+//		Double totalOtrosIngresos = .00;
+//		for(Gasto otroIngreso: lstIngresos) {
+//			totalOtrosIngresos += otroIngreso.getMonto();
+//		}
 		
 		//Calcula el efectivo a liquidar
 		Double saldoEfectivo  = .00;
 		if(listDetalleVentas.size()>0) {
-			saldoEfectivo = CreateDocument.creaRptLiquidacionByEgresos(null, listDetalleVentas, resultGasto, totalOtrosIngresos, false);	
+			saldoEfectivo = CreateDocument.creaRptLiquidacionByEgresos(null, listDetalleVentas, resultGasto, lstIngresos, false, false);	
 		}		
 		
 		return saldoEfectivo;
