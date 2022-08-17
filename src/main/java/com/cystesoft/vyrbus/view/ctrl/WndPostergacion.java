@@ -368,19 +368,19 @@ public class WndPostergacion extends WndBase implements Serializable {
 						throw new PerdidaServicioException();
 
 					/*###End begin 08/11/2016 - jabanto*/
-//					if(postergacion.getSecuencial().intValue() >= Constantes.MAXIMO_POSTERGACIONES)
-//						throw new LimiteSecuencialException();
-//					if(Util.comparaFechas(postergacion.getFechaCaducidad(), new Date(), Util.OPER_MENOR))
-//						throw new FechaCaducidadNullException();
-//					if(ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(postergacion.getId()))
-//						throw new ManifiestoImpresoException();
-
-//					String fechaPartida = Util.DatetoString(venta.getFechaPartida(),Constantes.DATE_FORMAT)+" "+venta.getHoraPartida()+":00";
-//					Long limite = Util.StringtoDate(fechaPartida, Constantes.DATE_TIME_FORMAT).getTime()-(Constantes.MILISEGUNDOS_X_HORA * Constantes.TIEMPO_LIMITE_POSTERGACION);
-//					@SuppressWarnings("unused")
-//					String fechaLimitePostergar = Util.DatetoString(new Date(limite), Constantes.DATE_TIME_FORMAT);
-//					if(Util.comparaFechasWithTime(ServiceLocator.getVentaPasajesManager().getDateSystem(), fechaLimitePostergar, Util.OPER_MAYOR))
-//						throw new PostergacionByFechaLimitePostergarException();
+					if(postergacion.getSecuencial().intValue() >= Constantes.MAXIMO_POSTERGACIONES)
+						throw new LimiteSecuencialException();
+					if(Util.comparaFechas(postergacion.getFechaCaducidad(), new Date(), Util.OPER_MENOR))
+						throw new FechaCaducidadNullException();
+					if(ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(postergacion.getId()))
+						throw new ManifiestoImpresoException();
+					
+					String fechaPartida = Util.DatetoString(venta.getFechaPartida(),Constantes.DATE_FORMAT)+" "+venta.getHoraPartida()+":00";
+					Long limite = Util.StringtoDate(fechaPartida, Constantes.DATE_TIME_FORMAT).getTime()-(Constantes.MILISEGUNDOS_X_HORA * Constantes.TIEMPO_LIMITE_POSTERGACION);
+					@SuppressWarnings("unused")
+					String fechaLimitePostergar = Util.DatetoString(new Date(limite), Constantes.DATE_TIME_FORMAT);
+					if(Util.comparaFechasWithTime(ServiceLocator.getVentaPasajesManager().getDateSystem(), fechaLimitePostergar, Util.OPER_MAYOR))
+						throw new PostergacionByFechaLimitePostergarException();
 
 					isCorporativo=false;
 					/* Valida si es corporativo - 30/12/2016 - jabanto*/

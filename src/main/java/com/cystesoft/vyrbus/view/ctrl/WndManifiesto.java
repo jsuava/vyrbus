@@ -683,14 +683,16 @@ public class WndManifiesto extends WndBase {
 	}
 
 	/**
-	 * carga puntos de Control, segï¿½n el itinerario
+	 * carga puntos de Control, según el itinerario
 	 * @param idItinerario : identificador del itinerario.
 	 * @throws Exception
 	 */
 	public void cargaPuntoControl(Long idItinerario) throws Exception{
 		ArrayList<Agencia> lsta= (ArrayList<Agencia>) ServiceLocator.getManifiestoManager().consultaPtoControl(idItinerario);
 		cmbPuntocontrol.getItems().clear();
-		for (Agencia agencia : lsta) {
+		UtilData.cargarGenericData(cmbPuntocontrol, true);
+		for (int l = 0; l < lsta.size(); l ++) {
+			Agencia agencia= lsta.get(l);
 			Comboitem oComboitem = new Comboitem();
 			oComboitem.setLabel(agencia.getNombreCorto());
 			oComboitem.setValue(agencia);
@@ -700,10 +702,15 @@ public class WndManifiesto extends WndBase {
 	}
 
 	/**
-	 * Permite enlazar los controles a la ventana de selecciï¿½n de Itinerario
+	 * Permite enlazar los controles a la ventana de selección de Itinerario
 	 * @param textboxItinerario :en este Textbox se devolvera el Id del itinerario seleccionado.
+<<<<<<< HEAD
 	 * @param button :ha este Button se le adjuntara un listener con la llamada a la ventana de selecciï¿½n de itinerario
 	 * @see WndItinerario:
+=======
+	 * @param button :ha este Button se le adjuntara un listener con la llamada a la ventana de selección de itinerario
+	 * @see WndItinerario: 
+>>>>>>> 5976afd4681abd7a2639e5a3cb9c9c51cc95f679
 	 */
 	public  void enlazarItinerario(final Button button) {
 		button.setTooltiptext("Seleccionar Itinerario");
@@ -859,13 +866,24 @@ public class WndManifiesto extends WndBase {
 		//Carpeta de Despacho
 		if(documento.equals(IMPRESION_CARPETA_DESPACHO)){
 			itinerario.setAgenciaPartida(null);
-
-			Agencia agencia= new Agencia();
-			agencia=(Agencia)cmbPuntocontrol.getSelectedItem().getValue();
-			itinerario.setAgenciaPartida(agencia);
+			
+			Agencia agencia = null; 
+			//Modificado por MAOE 10/08/2022 Debe permitirse imprimir todos los pasajeros en la carpeta de despacho
+			if(cmbPuntocontrol.getSelectedIndex()>0) {
+				agencia = new Agencia();
+				agencia=(Agencia)cmbPuntocontrol.getSelectedItem().getValue();
+				itinerario.setAgenciaPartida(agencia);
+			}else {
+				itinerario.setAgenciaPartida(agencia);
+			}
+				
 			File file=CreateDocument.creaCarpetaDespacho(itinerario, getAgencia());
 //			src = Constantes.URL_FORMATOS_DESPACHOS+"CARDES-"+ itinerario.getId()+"-"+agencia.getId()+".txt";
-			src = Constantes.URL_FORMATOS_DESPACHOS+Constantes.CLAVE_PAHT+"CARDES"+ itinerario.getId()+"-"+agencia.getId()+".txt";
+			if (agencia != null)
+				src = Constantes.URL_FORMATOS_DESPACHOS+Constantes.CLAVE_PAHT+"CARDES"+ itinerario.getId()+"-"+agencia.getId()+".txt";
+			else
+				src = Constantes.URL_FORMATOS_DESPACHOS+Constantes.CLAVE_PAHT+"CARDES"+ itinerario.getId()+"-0"+".txt";
+			
 			iFrame.setWidth("1035");
 
 //			if(esPrevio==false && (getUsuarioHardware().getPrintApplet()==null || getUsuarioHardware().getPrintApplet().intValue()==Constantes.FALSE_VALUE)){

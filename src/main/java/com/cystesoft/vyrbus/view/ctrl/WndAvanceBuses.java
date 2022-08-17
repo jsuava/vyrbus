@@ -163,7 +163,7 @@ public class WndAvanceBuses extends WndBase{
 			listheader.setWidth("55px");
 			listheader.setStyle("color: #ffffff;");
 			listheader.setAlign("center");
-			listhead.appendChild(listHeader);
+			listhead.appendChild(listheader);
 		}
 		lbxAvance.appendChild(listhead);
 
@@ -194,8 +194,11 @@ public class WndAvanceBuses extends WndBase{
 			RptAvanceBus avanceBus=(RptAvanceBus) e.getValue();
 
 			/*Para separar los grupos "Provincias lima" y "Provincias"*/
-			if(index>0 && avanceBus.getTipoRuta().intValue()!=tipoRutaAnt && avanceBus.getTipoRuta().intValue()>0 && (!provinciasLima || !provincias)){
-				if(tipoRutaAnt==0 &&  !provinciasLima){
+			if(index>0 
+			   && avanceBus.getTipoRuta().intValue()!=tipoRutaAnt 
+			   && avanceBus.getTipoRuta().intValue()>0 
+			   && (provinciasLima==false || provincias==false)){
+				if(tipoRutaAnt==0 &&  provinciasLima==false){
 					/*Agrega un nuevo item para el total de lima provincias*/
 					addNewItemTotal(LIMA_PROVINCIA, itemsAdd, key);
 					provinciasLima=true;
@@ -233,7 +236,8 @@ public class WndAvanceBuses extends WndBase{
 			if(((Localidad)cmbLocalidadOrigen.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_LOC_LIMA){
 				/*Agrega un nuevo item para el total de lima provincias*/
 				addNewItemTotal(LIMA_PROVINCIA, itemsAdd, key);
-			}else if (cmbLocalidadDestino.getSelectedItem().getValue() instanceof Localidad && ((Localidad)cmbLocalidadDestino.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_LOC_LIMA){
+			}else if (cmbLocalidadDestino.getSelectedItem().getValue() instanceof Localidad 
+					  && ((Localidad)cmbLocalidadDestino.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_LOC_LIMA){
 				/*Agrega un nuevo item para el total de lima provincias*/
 				addNewItemTotal(PROVINCIAS_LIMA, itemsAdd, key);
 			}else{

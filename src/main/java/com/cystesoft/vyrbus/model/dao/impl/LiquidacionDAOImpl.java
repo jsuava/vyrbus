@@ -58,7 +58,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 					"INNER JOIN vrmagencia a ON (a.agencia_id=l.agencia_id) "+
 					"INNER JOIN vrmusuario u ON (u.usuario_id=l.usuario_id) "+
 				"WHERE l.d_fecliq >= to_date('"+fechaInicial+"','dd/MM/yyyy') AND l.d_fecliq <= to_date('"+FechaFinal+"', 'dd/MM/yyyy') "+
-					"AND l.agencia_id="+idAgencia+" "+criteriosUsuario+" "+criterios+" AND l.c_estreg='A' " +
+					"AND l.agencia_id=NVL("+idAgencia+",l.agencia_id) "+criteriosUsuario+" "+criterios+" AND l.c_estreg='A' " +
 				"ORDER BY l.d_FecLiq, l.audfecins ";
 
 		log.info(sql);
@@ -188,8 +188,8 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 		                  "AND vp.agencia_id="+idAgencia+" AND vp.usuario_id="+idUsuario+" "+
 		                  "AND vp.c_numboleto IS NOT NULL "+
 		                  "AND vp.tipmov_id NOT IN (5,6,13) "+
-		                  "AND vp.c_tiptra IN ('1','3','4','5','6') "+
-		                "GROUP BY tc.tipcom_id, tc.c_denominacion,tc.tipcom_id, DECODE(tc.tipcom_id,1,(substrc(vp.c_numboleto,0,3)),(substrc(vp.c_numboleto,0,4))) "+
+		                  "AND vp.c_tiptra IN ('1','3','4','5','6','7') "+
+		                "GROUP BY tc.tipcom_id, tc.c_denominacion,tc.tipcom_id, DECODE(tc.tipcom_id,1,(substrc(vp.c_numboleto,0,3)),(substrc(vp.c_numboleto,0,4))) "+ 
 //					"UNION ALL " +
 //							//Solo confirmaciones de fecha habierta que tienen importe mayor a cero
 //							"SELECT tc.c_denominacion as TipoComprobante, "+
@@ -259,7 +259,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 							"LEFT OUTER JOIN vrmtarcre tcr ON (v.tarcre_id=tcr.tarcre_id) "+
 							"LEFT OUTER JOIN vrmopetarcre otc ON (tcr.opetarcre_id = otc.opetarcre_id) "+
 						"WHERE v.d_fecliq=to_date('"+fechaLiquidacion+"','dd/MM/yyyy') "+
-							"AND v.c_tiptra IN ('1','3','4','5','6') " + //Ventas y Varios(Notas de credito y gastos administrativos)
+							"AND v.c_tiptra IN ('1','3','4','5','6','7') " + //Ventas y Varios(Notas de credito y gastos administrativos)
 							"AND v.agencia_id="+idAgencia+" "+
 							"AND v.usuario_id="+idUsuario+" "+
 							"AND v.tipmov_id not in(5,13) "+
@@ -284,7 +284,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 							"LEFT OUTER JOIN vrmtarcre tcr ON (v.tarcre_id=tcr.tarcre_id) "+
 							"LEFT OUTER JOIN vrmopetarcre otc ON (tcr.opetarcre_id = otc.opetarcre_id) "+
 						"WHERE v.d_fecliq=to_date('"+fechaLiquidacion+"','dd/MM/yyyy') "+
-							"AND v.c_tiptra IN ('1','3','4','5','6') " + //Ventas y Varios(Notas de credito y gastos administrativos)
+							"AND v.c_tiptra IN ('1','3','4','5','6','7') " + //Ventas y Varios(Notas de credito y gastos administrativos)
 							"AND v.agencia_id="+idAgencia+" "+
 							"AND v.usuario_id="+idUsuario+" "+
 							"AND v.tipmov_id not in(5,13) "+
@@ -719,7 +719,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
     			+ "INNER JOIN vrmtipcom tc ON (v.tipcom_id = tc.tipcom_id) "
     			+ "INNER JOIN vrmforpag fp ON (v.forpag_id = fp.forpag_id) "
     			+ "INNER JOIN vrmtipmov tm ON (v.tipmov_id = tm.tipmov_id) "
-    			+ "WHERE v.d_fecliq=to_date('"+fechaLiquidacion+"','dd/MM/yyyy') AND v.c_tiptra IN ('1','3','4','5','6') AND v.agencia_id="+idAgencia+" AND "
+    			+ "WHERE v.d_fecliq=to_date('"+fechaLiquidacion+"','dd/MM/yyyy') AND v.c_tiptra IN ('1','3','4','5','6','7') AND v.agencia_id="+idAgencia+" AND "
 //    			+ "v.usuario_id="+idUsuario+" AND v.tipmov_id not in(5,6,13) AND v.c_Estreg='A' AND v.n_imppag>0 AND NVL(v.n_imppagdif,0)=0 "
     			+ "v.usuario_id="+idUsuario+" AND v.tipmov_id not in(5,6) AND v.c_Estreg='A' AND NVL(v.n_imppagdif,0)=0 "
     			+ "GROUP BY tc.tipcom_id, tc.c_denominacion, substr(v.c_numboleto,1,4), fp.forpag_id, tm.tipmov_id "
@@ -730,7 +730,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
     			+ "INNER JOIN vrmtipcom tc ON (v.tipcom_id = tc.tipcom_id) "
     			+ "INNER JOIN vrmforpag fp ON (v.forpag_id = fp.forpag_id) "
     			+ "INNER JOIN vrmtipmov tm ON (v.tipmov_id = tm.tipmov_id) "
-    			+ "WHERE v.d_fecliq=to_date('"+fechaLiquidacion+"','dd/MM/yyyy') AND v.c_tiptra IN ('1','3','4','5','6') AND v.agencia_id="+idAgencia+" AND "
+    			+ "WHERE v.d_fecliq=to_date('"+fechaLiquidacion+"','dd/MM/yyyy') AND v.c_tiptra IN ('1','3','4','5','6','7') AND v.agencia_id="+idAgencia+" AND "
 //    			+ "v.usuario_id="+idUsuario+" AND v.tipmov_id not in(5,6,13) AND v.c_Estreg='A' AND v.n_imppag>0 AND NVL(v.n_imppagdif,0)>0 "
     			+ "v.usuario_id="+idUsuario+" AND v.tipmov_id not in(5,6) AND v.c_Estreg='A' AND NVL(v.n_imppagdif,0)>0 "
     			+ "GROUP BY tc.tipcom_id, tc.c_denominacion, substr(v.c_numboleto,1,4), fp.forpag_id, tm.tipmov_id ";

@@ -155,14 +155,15 @@ public class Constantes {
 	public static final String CLAVE_PAHT="TPSPSJS-";
 	/*	Path para la creacion de los documentos Boleto, Manifiesto	*/
 	public static final String SERVER_PROTOCOL = Executions.getCurrent().getScheme();
-//	public static final String SERVER_HOST = Executions.getCurrent().getHeader("host");
+	public static final String SERVER_HOST = Executions.getCurrent().getHeader("host");
 //	public static final String SERVER_HOST = "ventas.tepsa.com.pe/";
 
 	//http://168.121.236.46:8080/
 
-	public static final String SERVER_HOST = "localhost:8080";
+    //public static final String SERVER_HOST = "localhost:8080";
 
 	//SERVER_HOST PRODUCCION TRANSMAR
+
 //	public static final String SERVER_HOST = "119.8.145.122:8080";
 //	public static final String SERVER_HOST = "190.119.140.203:8080";
 
@@ -616,6 +617,7 @@ public class Constantes {
 	public static final String empresa="TRANSMAR EXPRESS SAC";
 	public static final String direccion_empresa="AV. NICOLAS ARRIOLA NRO. 197";
 	public static final String centro_computo = "TRANSMAR";
+	public static final String correo_empresa="transmar@transmar.com.pe";
 	public static final String nro_telefono="(01)265 0190";
 	public static final String ruc="20501622819";
 	public static final String usuario="059979";

@@ -24,7 +24,7 @@ public class RptAvanceBus implements Serializable{
 	private String horaPartida;
 	private String servicio;
 	private String ruta;
-	private Integer bus;
+	private String bus;
 	private Integer tipoRuta;
 
 	/**
@@ -78,13 +78,13 @@ public class RptAvanceBus implements Serializable{
 	/**
 	 * @return the bus
 	 */
-	public Integer getBus() {
+	public String getBus() {
 		return bus;
 	}
 	/**
 	 * @param bus the bus to set
 	 */
-	public void setBus(Integer bus) {
+	public void setBus(String bus) {
 		this.bus = bus;
 	}
 

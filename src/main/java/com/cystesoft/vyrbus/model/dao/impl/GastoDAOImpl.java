@@ -86,7 +86,17 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 	 */
 	@Override
 	public List<Gasto> buscarGasto(String fechaGasto, Integer idTipoGasto, Integer idAgencia,Integer idUsuario) {
-
+		return buscarGasto(fechaGasto, fechaGasto, idTipoGasto, idAgencia, idUsuario);
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.GastoDAO#buscarGasto(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer, java.lang.Integer)
+	 */
+	@Override
+	public List<Gasto> buscarGasto(String fechaGasto, String fechaFinGasto, Integer idTipoGasto, Integer idAgencia,Integer idUsuario) {
+		// TODO Auto-generated method stub
+		
 //		/*Criteiros de Busqueda*/
 //		String criterios="";
 //		if (idTipoGasto !=null && idAgencia !=null)//X tipo de gasto y agencia.
@@ -108,7 +118,7 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 				"INNER JOIN vrtliquidacion lq ON (lq.liquidacion_id=dlq.liquidacion_id) "+
 				"INNER JOIN vrmtipgas tg ON (tg.tipgas_id=g.tipgas_id) "+
 				"INNER JOIN vrmagencia a ON (a.agencia_id=lq.agencia_id) " +
-			"WHERE lq.d_fecliq=to_date('"+fechaGasto+"','dd/MM/yyyy') " +
+			"WHERE lq.d_fecliq between to_date('"+fechaGasto+"','dd/MM/yyyy') and to_date('"+fechaFinGasto+"','dd/MM/yyyy') " +
 				 "AND lq.agencia_id=NVL("+idAgencia+",lq.agencia_id) " +
 				 "AND g.tipgas_id=NVL("+idTipoGasto+",g.tipgas_id) " +
 				 "AND lq.usuario_id=NVL("+idUsuario+",lq.usuario_id) " +
@@ -181,7 +191,8 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 		}
 		return ListResult;
 	}
-
+	
+	
 	@Override
 	public List<Gasto> buscarGastoLiqOficina(String fechaLiquidacion,String usuario) {
 		String sql="SELECT g.gasto_id, tg.tipgas_id, g.c_numdoc, g.n_monto, g.c_nompil, g.c_codbus, g.c_consignado, g.c_observacion, "+
@@ -255,27 +266,36 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 	 * @see com.cystesoft.vyrbus.model.dao.GastoDAO#obtenerGastosByLiquidacion(java.lang.String, java.lang.Integer, java.lang.Integer)
 	 */
 	@Override
-	public List<Gasto> obtenerGastosByLiquidacion(String fechaLiquidacion, Integer idAgencia, Integer idUsuario, Integer isIngreso, boolean groupByObs) {
+	public List<Gasto> obtenerGastosByLiquidacion(String fechaLiquidacion, Integer idAgencia, Integer idUsuario, Integer isIngreso, Boolean groupByObs) {
 		String sql ="";
-		if(groupByObs) {
+		if(groupByObs!=null && groupByObs) {
 			sql = "SELECT tg.tipgas_id, tg.c_denominacion, COUNT(g.n_monto) AS CANTIDAD,  SUM(g.n_monto) AS MONTO, g.c_observacion, g.c_numdoc "
 					+ "FROM vrtgasto g "
 					+ "INNER JOIN vrmtipgas tg ON (tg.tipgas_id=g.tipgas_id) "
 					+ "INNER JOIN (SELECT dl.gasto_id FROM vrtdetliq dl "
 					+ "INNER JOIN vrtliquidacion l On (l.liquidacion_id=dl.liquidacion_id) "
-					+ "WHERE l.d_fecliq=to_date('"+fechaLiquidacion+"','dd/MM/yyyy') AND dl.gasto_id is not null AND l.agencia_id="+idAgencia+" AND l.usuario_id="+idUsuario+" AND l.c_estreg='A') dl ON (dl.gasto_id=g.gasto_id) "
+					+ "WHERE l.d_fecliq=to_date('"+fechaLiquidacion+"','dd/MM/yyyy') AND dl.gasto_id is not null AND l.agencia_id="+idAgencia+" AND l.usuario_id=NVL("+idUsuario+",l.usuario_id) AND l.c_estreg='A') dl ON (dl.gasto_id=g.gasto_id) "
 					+ "WHERE g.c_estreg='A' AND tg.n_tipope="+ isIngreso + " "
 					+ "GROUP BY tg.tipgas_id, tg.c_denominacion, g.c_observacion, g.c_numdoc "
 					+ "ORDER BY tg.c_denominacion ";
-		}else {
+		}else if(groupByObs!=null && groupByObs == false) {
 			sql = "SELECT tg.tipgas_id, tg.c_denominacion, COUNT(g.n_monto) AS CANTIDAD,  SUM(g.n_monto) AS MONTO "
 					+ "FROM vrtgasto g "
 					+ "INNER JOIN vrmtipgas tg ON (tg.tipgas_id=g.tipgas_id) "
 					+ "INNER JOIN (SELECT dl.gasto_id FROM vrtdetliq dl "
 					+ "INNER JOIN vrtliquidacion l On (l.liquidacion_id=dl.liquidacion_id) "
-					+ "WHERE l.d_fecliq=to_date('"+fechaLiquidacion+"','dd/MM/yyyy') AND dl.gasto_id is not null AND l.agencia_id="+idAgencia+" AND l.usuario_id="+idUsuario+" AND l.c_estreg='A') dl ON (dl.gasto_id=g.gasto_id) "
+					+ "WHERE l.d_fecliq=to_date('"+fechaLiquidacion+"','dd/MM/yyyy') AND dl.gasto_id is not null AND l.agencia_id="+idAgencia+" AND l.usuario_id=NVL("+idUsuario+",l.usuario_id) AND l.c_estreg='A') dl ON (dl.gasto_id=g.gasto_id) "
 					+ "WHERE g.c_estreg='A' AND tg.n_tipope="+ isIngreso + " "
 					+ "GROUP BY tg.tipgas_id, tg.c_denominacion "
+					+ "ORDER BY tg.c_denominacion ";	
+		}else {
+			sql = "SELECT tg.tipgas_id, tg.c_denominacion, 1 AS CANTIDAD,  g.n_monto AS MONTO, g.c_observacion, g.c_numdoc "
+					+ "FROM vrtgasto g "
+					+ "INNER JOIN vrmtipgas tg ON (tg.tipgas_id=g.tipgas_id) "
+					+ "INNER JOIN (SELECT dl.gasto_id FROM vrtdetliq dl "
+					+ "INNER JOIN vrtliquidacion l On (l.liquidacion_id=dl.liquidacion_id) "
+					+ "WHERE l.d_fecliq=to_date('"+fechaLiquidacion+"','dd/MM/yyyy') AND dl.gasto_id is not null AND l.agencia_id="+idAgencia+" AND l.usuario_id=NVL("+idUsuario+",l.usuario_id) AND l.c_estreg='A') dl ON (dl.gasto_id=g.gasto_id) "
+					+ "WHERE g.c_estreg='A' AND tg.n_tipope="+ isIngreso + " "
 					+ "ORDER BY tg.c_denominacion ";
 		}
 
@@ -292,8 +312,8 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 			tipoGasto.setDenominacion(obj[1].toString());
 			gasto.setTipoGasto(tipoGasto);
 			gasto.setCantidad(((BigDecimal)obj[2]).intValue());
-			gasto.setMonto(((BigDecimal)obj[3]).doubleValue());
-			if(groupByObs) {
+			gasto.setMonto(((BigDecimal)obj[3]).doubleValue());			
+			if(groupByObs==null || groupByObs) {
 				gasto.setObservacion(obj[4]!=null?obj[4].toString():"");
 				gasto.setNumeroDocumento(obj[5]!=null?obj[5].toString():"");
 			}
@@ -316,7 +336,7 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 				+ "  INNER JOIN vrtliquidacion lq ON (lq.liquidacion_id=dlq.liquidacion_id) "
 				+ "  INNER JOIN vrmagencia ag ON (ag.agencia_id=lq.agencia_id) "
 				+ "  INNER JOIN vrmusuario u ON (u.usuario_id=lq.usuario_id) "
-				+ "WHERE lq.d_fecliq BETWEEN '"+fechaInicio+"' AND '"+fechaFin+"' "
+				+ "WHERE lq.d_fecliq BETWEEN to_date('"+fechaInicio+"', 'dd/MM/yyyy') AND to_date('"+fechaFin+"', 'dd/MM/yyyy') "
 				+ "  AND tg.n_tipope =  NVL("+tipoOperacion+", tg.n_tipope) "
 				+ "  AND lq.c_Estreg='A' AND dlq.c_estreg='A' AND gt.c_estreg='A' "
 				+ "ORDER BY ag.c_Denominacion, u.c_apepat, u.c_apemat, u.c_nombre ";
@@ -358,4 +378,6 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 
 		return lstResult;
 	}
+
+
 }

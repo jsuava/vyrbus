@@ -1,14 +1,20 @@
 package com.cystesoft.vyrbus.view.ui;
 
+import java.io.File;
+
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Grid;
+import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Iframe;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Window;
+
+import com.cystesoft.vyrbus.service.util.Constantes;
+import com.cystesoft.vyrbus.service.util.Util;
 
 /**
  *
@@ -20,11 +26,13 @@ public class WndIFrame extends WndBase{
 
 	public Window oThisWindow = this;
 	public Button btnCerrar = new Button();
+	public Button btnImprimir = new Button();
 
 	private String src=null;
 	private String width=null;
 	private String height=null;
-
+	private File file = null;
+	
 	/**
 	 * Constructor
 	 * @throws Exception
@@ -62,13 +70,25 @@ public class WndIFrame extends WndBase{
 		iframe.setWidth(width+"px");
 		iframe.setHeight(height+"px");
 		iframe.setSrc(src);
-		iframe.setStyle("border: 1px solid gray");
-
+		iframe.setStyle("border: 1px solid gray");	
+		
+		btnImprimir.setLabel("Imprimir");
+		btnImprimir.setHeight("30px");
+		btnImprimir.setSclass("btnCommandM");
+		btnImprimir.setSrc("resources/mp_imprimir.png");
+		btnImprimir.setVisible(file!=null);
+		btnImprimir.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				Util.descargarArchivo(file);				
+			}
+		});
+		
+		
 		btnCerrar.setLabel("Cerrar");
 		btnCerrar.setHeight("30px");
 		btnCerrar.setSclass("btnCommandM");
-		btnCerrar.setSrc("resources/mp_cerrar.png");
-
+		btnCerrar.setSrc("resources/mp_cerrar.png");		
 		btnCerrar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -83,7 +103,10 @@ public class WndIFrame extends WndBase{
 		rows.appendChild(row);
 
 		row = new Row();
-		row.appendChild(btnCerrar);
+		Hbox hbox = new Hbox();
+		hbox.appendChild(btnImprimir);
+		hbox.appendChild(btnCerrar);
+		row.appendChild(hbox);
 		row.setAlign("right");
 		rows.appendChild(row);
 
@@ -113,6 +136,22 @@ public class WndIFrame extends WndBase{
 	}
 	public String getheight(){
 		return height;
+	}
+
+
+	/**
+	 * @return the file
+	 */
+	public File getFile() {
+		return file;
+	}
+
+
+	/**
+	 * @param file the file to set
+	 */
+	public void setFile(File file) {
+		this.file = file;
 	}
 
 }

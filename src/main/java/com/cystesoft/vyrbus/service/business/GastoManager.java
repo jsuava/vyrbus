@@ -33,8 +33,16 @@ public interface GastoManager {
 	 * @return
 	 */
 	public List<Gasto> buscarGasto(String fechaGasto, Integer idTipoGasto, Integer idAgencia, Integer idUsuario);
-
-
+	/**
+	 * Busca Gastos de liquidación de turno
+	 * @param fechaGasto :Fecha emisión del gasto
+	 * @param fechaFinGasto	: Fecha fin gasto
+	 * @param idTipoGasto:identificador del tipo de gasto
+	 * @param idAgencia	 :identidficador de la agencia 
+	 * @param idUsuario	 : login del usuario 
+	 * @return
+	 */
+	public List<Gasto> buscarGasto(String fechaGasto, String fechaFinGasto, Integer idTipoGasto, Integer idAgencia,Integer idUsuario);
 	/**
 	 * Busca gasto de la liquidacion de Oficina.
 	 * @param fechaLiquidacion : Fecha a buscar
@@ -87,7 +95,7 @@ public interface GastoManager {
 	 * @param groupByObs		: Indica si la consulta debe o no agrupar por observacion.
 	 * @return
 	 */
-	public List<Gasto> obtenerGastosByLiquidacion(String fechaLiquidacion, Integer idAgencia, Integer idUsuario, Integer isIngreso, boolean groupByObs);
+	public List<Gasto> obtenerGastosByLiquidacion(String fechaLiquidacion, Integer idAgencia, Integer idUsuario, Integer isIngreso, Boolean groupByObs);
 	/**
 	 * Realiza la busqueda de los gastos y/o ingresos
 	 * @param fechaInicio	: Fecha inicio de la busqueda
