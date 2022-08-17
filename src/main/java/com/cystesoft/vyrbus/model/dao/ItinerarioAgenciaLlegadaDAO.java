@@ -8,19 +8,19 @@ import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaLlegada;
 
 public interface ItinerarioAgenciaLlegadaDAO extends GenericDAO {
 	/**
-	 * 
+	 *
 	 * @param criteriosBusqueda
 	 * @param criteriosOrdenar
 	 * @return
 	 */
 	public ArrayList<ItinerarioAgenciaLlegada> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
 	/**
-	 * 
+	 *
 	 * @param id
 	 * @return
 	 */
 	public ItinerarioAgenciaLlegada buscarPorId(Long id);
-	
+
 	/**
 	 * Elimina los terminales de llegada del Itinerario segun la localidad.
 	 * @param idItinerario

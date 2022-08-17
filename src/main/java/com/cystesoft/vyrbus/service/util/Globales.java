@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 08/01/2013
  */
@@ -26,7 +26,7 @@ public class Globales {
 	private Agencia agencia;
 	private TipoComprobante tipoComprobante;
 	private Date fechaLiquidacion;
-	
+
 	/**
 	 * @return the usuario
 	 */
@@ -39,7 +39,7 @@ public class Globales {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-	
+
 	/**
 	 * @return the usuarioHardware
 	 */
@@ -52,7 +52,7 @@ public class Globales {
 	public void setUsuarioHardware(UsuarioHardware usuarioHardware) {
 		this.usuarioHardware = usuarioHardware;
 	}
-	
+
 	/**
 	 * @return the canalVenta
 	 */
@@ -65,7 +65,7 @@ public class Globales {
 	public void setCanalVenta(CanalVenta canalVenta) {
 		this.canalVenta = canalVenta;
 	}
-	
+
 	/**
 	 * @return the agencia
 	 */
@@ -78,7 +78,7 @@ public class Globales {
 	public void setAgencia(Agencia agencia) {
 		this.agencia = agencia;
 	}
-	
+
 	/**
 	 * @return the tipoComprobante
 	 */
@@ -91,7 +91,7 @@ public class Globales {
 	public void setTipoComprobante(TipoComprobante tipoComprobante) {
 		this.tipoComprobante = tipoComprobante;
 	}
-	
+
 	/**
 	 * @return the fechaLiquidacion
 	 */

@@ -17,7 +17,7 @@ public class CapacityExceedsException extends Exception implements Serializable 
 	private static final long serialVersionUID = 1L;
 	private String message;
 	/**
-	 * 
+	 *
 	 */
 	public CapacityExceedsException() {
 		super();
@@ -30,7 +30,7 @@ public class CapacityExceedsException extends Exception implements Serializable 
 		super();
 		this.message = message;
 	}
-	
+
 	/**
 	 * @return the message
 	 */

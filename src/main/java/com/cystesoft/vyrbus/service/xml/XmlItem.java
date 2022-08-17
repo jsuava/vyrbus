@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 07/10/2016
  * Hora			: 18:20:27
@@ -19,13 +19,13 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType
 public class XmlItem implements Serializable{
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private String v1_DetalleServicio;
 	private String v2_Cantidad;
 	private String v3_Tarifa;
-	
+
 	private String v4_total; //se agrego para el detalle del exceso.
 	/**
 	 * @return the v1_DetalleServicio

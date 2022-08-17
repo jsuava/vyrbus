@@ -37,13 +37,13 @@ import com.cystesoft.vyrbus.view.ui.DlgMessage;
 import com.cystesoft.vyrbus.view.ui.WndBase;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 public class WndLiquidacionOficina extends WndBase {
 	private static final long serialVersionUID = 1L;
-	
+
 //	private Listbox listLiquidacionOficina;
 //	private Textbox textboxId;
 	private Listbox listCajasPendientes;
@@ -56,7 +56,7 @@ public class WndLiquidacionOficina extends WndBase {
 	private Button btnLiquidar;
 	private Button btnCerrarVentana;
 	private Tabbox tbgastos;
-		
+
 	//Mnt. Gastos
 	private Combobox cmbTipoGasto;
 	private Textbox txtNroDocumento;
@@ -73,11 +73,11 @@ public class WndLiquidacionOficina extends WndBase {
 	private Toolbarbutton tbtEliminar;
 	private Listbox listGastos;
 	private Textbox txtID;
-	
+
 	private Gasto gasto = null;
 	MyTime myTime = new MyTime();
 	Integer action=null;
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
@@ -95,7 +95,7 @@ public class WndLiquidacionOficina extends WndBase {
 		btnLiquidar = (Button) this.getFellow("btnLiquidar");
 		btnCerrarVentana = (Button) this.getFellow("btnCerrarVentana");
 		tbgastos = (Tabbox) this.getFellow("tbgastos");
-	
+
 		//Mnt.Gastos
 		cmbTipoGasto = (Combobox) this.getFellow("cmbTipoGasto");
 		txtNroDocumento = (Textbox) this.getFellow("txtNroDocumento") ;
@@ -112,13 +112,13 @@ public class WndLiquidacionOficina extends WndBase {
 		tbtEliminar = (Toolbarbutton) this.getFellow("tbtEliminar");
 		listGastos=(Listbox)this.getFellow("listGastos");
 		txtID=(Textbox)this.getFellow("txtID");
-		
+
 		/*BUSCAR*/
 		btnBuscar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				buscarLiquidacionPendiente();
-				
+
 				if (listCajasPendientes.getItems().size()==0){
 					btnLiquidar.setDisabled(true);
 					btnLiquidar.setImage("resources/mp_aceptarDisabled.png");
@@ -126,11 +126,11 @@ public class WndLiquidacionOficina extends WndBase {
 					btnLiquidar.setDisabled(false);
 					btnLiquidar.setImage("resources/mp_aceptarEnabled.png");
 				}
-				
+
 				buscarLiquidacionOficina();
 			}
 		});
-		
+
 		/*CERRAR VENTANA*/
 		btnCerrarVentana.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
@@ -138,41 +138,41 @@ public class WndLiquidacionOficina extends WndBase {
 				closeTabWindow();
 			}
 		});
-		
+
 		/*LIQUIDAR*/
 		btnLiquidar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
-				if (listCajasPendientes.getSelectedItems().size() >0 ){		
+				if (listCajasPendientes.getSelectedItems().size() >0 ){
 					Messagebox.show(Messages.getString("WndLiquidacionOficina.Information.Liquidar"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 						@Override
 						public void onEvent(Event e) throws Exception {
 							if(e.getName().equals("onYes")){
 								Object[] objLiquidacion = listCajasPendientes.getSelectedItems().toArray();
-									
-								for (int i=0; i < objLiquidacion.length; i++){
-									Liquidacion liquidacion = ((Listitem) objLiquidacion[i]).getValue();					
+
+								for (Object element : objLiquidacion) {
+									Liquidacion liquidacion = ((Listitem) element).getValue();
 									LiquidacionOficina liquidacionOficina = new LiquidacionOficina();
 									liquidacionOficina.setLiquidacion(liquidacion);
 									liquidacionOficina.setAnio(liquidacion.getAnio());
 									liquidacionOficina.setFechaLiquidacion(dbFecha.getValue());
 									liquidacionOficina.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-							
+
 									UtilData.auditarRegistro(liquidacionOficina, getUsuario(), Executions.getCurrent());
 									ServiceLocator.getLiquidacionOficinaManager().guardar(liquidacionOficina);
 								}
-																	
-								for (int i=0; i < objLiquidacion.length; i++){
-									Liquidacion liquidacion = ((Listitem) objLiquidacion[i]).getValue();
+
+								for (Object element : objLiquidacion) {
+									Liquidacion liquidacion = ((Listitem) element).getValue();
 									Listitem item = null;
 									Listcell cell = null;
-															
+
 									item = new Listitem();
 									cell = new Listcell(liquidacion.getUsuario().getApellidoPaterno()+" "+liquidacion.getUsuario().getApellidoMaterno()+", "+liquidacion.getUsuario().getNombre());
 									item.appendChild(cell);
 									item.setValue(liquidacion);
 									listCajasLiquidadas.appendChild(item);
-											
+
 									//Remove liquidacion listCajasPendientes
 									for (int y=0; y < listCajasPendientes.getRows(); y++){
 										listCajasPendientes.setSelectedIndex(y);
@@ -183,7 +183,7 @@ public class WndLiquidacionOficina extends WndBase {
 										}
 									}
 								}
-										
+
 							}
 						}
 					});
@@ -191,9 +191,9 @@ public class WndLiquidacionOficina extends WndBase {
 					DlgMessage.information(Messages.getString("WndLiquidacionOficina.Information.LiquidacionesPendientesSelecNull"));
 				}
 			}
-		});	
+		});
 
-		
+
 		//GASTOS---------------
 		//NUEVO
 		tbtNuevo.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
@@ -203,13 +203,13 @@ public class WndLiquidacionOficina extends WndBase {
 				habilitaToolBarMntGastos(true, true, false, false, true);
 				limpiaControlsMntGastos();
 				habiliataControlsMntGastos(false);
-				
+
 				dbFechaGasto.setValue(Constantes.FORMAT_DATE.parse(myTime.dateServer()));
-				
+
 				tbgastos.setSelectedIndex(1);
 			}
 		});
-		
+
 		//MODIFICAR
 		tbtModificar.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 			@Override
@@ -228,17 +228,17 @@ public class WndLiquidacionOficina extends WndBase {
 					txtBus.setText(gasto.getCodigoBus());
 					txtConsignado.setText(gasto.getConsignado());
 					txtObservacion.setText(gasto.getObservacion());
-					
-					
+
+
 					habiliataControlsMntGastos(false);
 					habilitaToolBarMntGastos(true, true, false, false, true);
 					tbgastos.setSelectedIndex(1);
-				}				
+				}
 			}
 		});
-		
-		
-		
+
+
+
 		/*GUARDAR*/
 		tbtGuardar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
@@ -250,16 +250,16 @@ public class WndLiquidacionOficina extends WndBase {
 						throw new GastosException(GastosException.MONTO_NULL);
 					else if (dbMonto.getValue() <=0)
 						throw new GastosException(GastosException.MONTO_NULL);
-					
+
 					if (action==Constantes.ACTION_NEW)
 						gasto = new Gasto();
 					else
 						gasto.setId(new Integer(txtID.getText()));
-					
+
 					TipoGasto tipoGasto = new TipoGasto();
 					tipoGasto.setId(((TipoGasto) cmbTipoGasto.getSelectedItem().getValue()).getId());
 					tipoGasto.setDenominacion(((TipoGasto) cmbTipoGasto.getSelectedItem().getValue()).getDenominacion());
-					
+
 					gasto.setTipoGasto(tipoGasto);
 					gasto.setNumeroDocumento(txtNroDocumento.getText().trim());
 					gasto.setMonto(dbMonto.getValue());
@@ -268,35 +268,35 @@ public class WndLiquidacionOficina extends WndBase {
 					gasto.setConsignado(txtConsignado.getText().trim().toUpperCase());
 					gasto.setObservacion(txtObservacion.getText().trim().toUpperCase());
 					gasto.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-					
+
 					/*Graba o actualiza el Gasto*/
 					switch (action) {
 						case Constantes.ACTION_NEW:
 							UtilData.auditarRegistro(gasto,getUsuario(), Executions.getCurrent());
 							ServiceLocator.getGastoManager().guardar(gasto);
-							
+
 							LiquidacionOficina liquidacionOficina = new LiquidacionOficina();
 							liquidacionOficina.setAnio(Integer.valueOf( Constantes.FORMAT_YEAR.format(dbFecha.getValue().getTime())) );
 							liquidacionOficina.setFechaLiquidacion(dbFecha.getValue());
 							liquidacionOficina.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 							liquidacionOficina.setGasto(gasto);
-							
+
 							//UtilData.auditarRegistro(liquidacionOficina, usuario,exe);
 							ServiceLocator.getLiquidacionOficinaManager().guardar(liquidacionOficina);
 							break;
-				
+
 						case Constantes.ACTION_MODIFY:
 							UtilData.auditarRegistro(gasto, true, getUsuario(), Executions.getCurrent());
 							ServiceLocator.getGastoManager().actualizar(gasto);
 							break;
 					}
-										
+
 					listarRegistros((ArrayList<Gasto>) ServiceLocator.getGastoManager().buscarGastoLiqOficina(Constantes.FORMAT_DATE.format(dbFecha.getValue()), getUsuario().getLogin()));
-					
+
 					habiliataControlsMntGastos(true);
 					habilitaToolBarMntGastos(false, true, true, true, true);
 					tbgastos.setSelectedIndex(0);
-					
+
 				}catch (GastosException gex){
 					if(gex.getTipo()==GastosException.MONTO_NULL){
 						DlgMessage.information(Messages.getString("WndGasto.Information.MontoGasotNull"));
@@ -306,16 +306,16 @@ public class WndLiquidacionOficina extends WndBase {
 						dbMonto.setFocus(true);
 					}
 				}catch (LiquidacionNullException lnex){
-					DlgMessage.information(Messages.getString("WndGasto.Information.LiquidacionNull"));					
+					DlgMessage.information(Messages.getString("WndGasto.Information.LiquidacionNull"));
 				}catch (Exception ex) {
 					DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
-					ex.printStackTrace(); 
+					ex.printStackTrace();
 				}
-				
+
 			}
-			
+
 		});
-		
+
 		/*CANCELAR*/
 		tbtCancelar.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 			@Override
@@ -326,12 +326,12 @@ public class WndLiquidacionOficina extends WndBase {
 					habilitaToolBarMntGastos(false, false, true, true, false);
 				else
 					habilitaToolBarMntGastos(false, true, true, true, true);
-					
+
 				tbgastos.setSelectedIndex(0);
-				
+
 			}
 		});
-		
+
 		//ELIMNAR
 		tbtEliminar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
@@ -346,15 +346,15 @@ public class WndLiquidacionOficina extends WndBase {
 							ServiceLocator.getLiquidacionOficinaManager().inactivar(idLiqOf);
 							listarRegistros((ArrayList<Gasto>) ServiceLocator.getGastoManager().buscarGastoLiqOficina(Constantes.FORMAT_DATE.format(dbFecha.getValue()), getUsuario().getLogin()));
 							habilitaToolBarMntGastos(false, true, true, true, true);
-						}	
-					}	
-				});		
+						}
+					}
+				});
 			}
-			
+
 		});
-		
+
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
@@ -363,36 +363,36 @@ public class WndLiquidacionOficina extends WndBase {
 	public void onCreate() throws Exception{
 
 		UtilData.cargarDataCombo(cmbAgencia, Agencia.class, false);
-		
+
 		dbFecha.setValue(Constantes.FORMAT_DATE.parse(myTime.dateServer()));
 		Util.seleccionarValorItemCombo(Agencia.class, cmbAgencia, getAgencia().getId());
 		listarRegistros((ArrayList<Gasto>) ServiceLocator.getGastoManager().buscarGastoLiqOficina(Constantes.FORMAT_DATE.format(dbFecha.getValue()), getUsuario().getLogin()));
-		
+
 		btnPrevio.setDisabled(true);
 		btnImprimir.setDisabled(true);
 		btnLiquidar.setDisabled(true);
 		btnLiquidar.setImage("resources/mp_aceptarDisabled.png");
 		habilitaToolBarMntGastos(false, true, true, true, true);
-		habiliataControlsMntGastos(true);	
-		
+		habiliataControlsMntGastos(true);
+
 		dbMonto.setFormat("#,##0.00");
 		dbMonto.setLocale(Locale.US);
-		
+
 		UtilData.cargarDataCombo(cmbTipoGasto, TipoGasto.class, false);
-		
+
 	}
-	
+
 	private void listarRegistros(ArrayList<Gasto> lstRegistros) {
 		Util.limpiarListbox(listGastos);
-		
+
 		Listitem item = null;
 		Listcell cell = null;
-		Integer x =0; /**Contador utilizado para el item.*/
-			
+		int x =0; /**Contador utilizado para el item.*/
+
 		for(Gasto gasto : lstRegistros){
 			x += +1;
 			item = new Listitem();
-			cell = new Listcell((x.toString()));
+			cell = new Listcell((Integer.toString(x)));
 			item.appendChild(cell); //Correlativo
 			cell = new Listcell(gasto.getTipoGasto().getDenominacion());
 			item.appendChild(cell);
@@ -401,9 +401,9 @@ public class WndLiquidacionOficina extends WndBase {
 			item.appendChild(cell);
 			cell = new Listcell(gasto.getObservacion());
 			item.appendChild(cell);
-			
+
 			item.setValue(gasto);
-			listGastos.appendChild(item);			
+			listGastos.appendChild(item);
 			}
 	}
 
@@ -415,9 +415,9 @@ public class WndLiquidacionOficina extends WndBase {
 		String fecha = Constantes.FORMAT_DATE.format(dbFecha.getValue());
 		Integer idAgencia = (((Agencia)cmbAgencia.getSelectedItem().getValue()).getId());
 		List<Liquidacion> lstLiquidacion=ServiceLocator.getLiquidacionOficinaManager().buscarLiquidacionPendiente(fecha, idAgencia);
-		
+
 		Util.limpiarListbox(listCajasPendientes);
-		
+
 		Listitem item = null;
 		Listcell cell = null;
 		for(Liquidacion liquidacion : lstLiquidacion){
@@ -425,10 +425,10 @@ public class WndLiquidacionOficina extends WndBase {
 			cell = new Listcell(liquidacion.getUsuario().getApellidoPaterno()+" "+liquidacion.getUsuario().getApellidoMaterno()+", "+liquidacion.getUsuario().getNombre());
 			item.appendChild(cell);
 			item.setValue(liquidacion);
-			listCajasPendientes.appendChild(item);					
-		}		
+			listCajasPendientes.appendChild(item);
+		}
 	}
-	
+
 	/**
 	 * Buscar la liquidaciones liquidadas.
 	 */
@@ -436,7 +436,7 @@ public class WndLiquidacionOficina extends WndBase {
 		String fecha=Constantes.FORMAT_DATE.format(dbFecha.getValue());
 		Integer idAgencia=((Agencia)cmbAgencia.getSelectedItem().getValue()).getId();
 		List<Liquidacion> lstLiquidacion=ServiceLocator.getLiquidacionOficinaManager().buscarLiquidacionLiquidadas(fecha, idAgencia);
-		
+
 		Util.limpiarListbox(listCajasLiquidadas);
 		Listitem item = null;
 		Listcell cell = null;
@@ -445,19 +445,19 @@ public class WndLiquidacionOficina extends WndBase {
 			cell = new Listcell(liquidacion.getUsuario().getApellidoPaterno()+" "+liquidacion.getUsuario().getApellidoMaterno()+", "+liquidacion.getUsuario().getNombre());
 			item.appendChild(cell);
 			item.setValue(liquidacion);
-			listCajasLiquidadas.appendChild(item);					
-		}	
+			listCajasLiquidadas.appendChild(item);
+		}
 	}
-	
-	
+
+
 	/**
 	 * FechaMovimiento
 	 * Monto
 	 * FechaReg
 	 * Observacion
 	 */
-	
-	
+
+
 	//Habilita y/o Deshabilita comtroles del mantenimineto de Gastos
 		private void limpiaControlsMntGastos(){
 			cmbTipoGasto.setSelectedIndex(0);
@@ -469,7 +469,7 @@ public class WndLiquidacionOficina extends WndBase {
 			txtBus.setText("");
 			dbFechaGasto.setText("");
 		}
-		
+
 	//Habilita y/o Deshabilita comtroles del mantenimineto de Gastos
 	private void habiliataControlsMntGastos(boolean estado){
 		cmbTipoGasto.setDisabled(estado);
@@ -478,10 +478,10 @@ public class WndLiquidacionOficina extends WndBase {
 		txtNombrePiloto.setDisabled(estado);
 		txtConsignado.setDisabled(estado);
 		txtObservacion.setDisabled(estado);
-		txtBus.setDisabled(estado);		
+		txtBus.setDisabled(estado);
 		dbFechaGasto.setDisabled(estado);
 	}
-	
+
 	/*Habilita/deshabilita toolbar del mantenimiento de gastos*/
 	private void habilitaToolBarMntGastos(Boolean nuevo, boolean modificar, boolean cancelar, boolean guardar, boolean eliminar){
 		tbtNuevo.setDisabled(nuevo);
@@ -490,15 +490,15 @@ public class WndLiquidacionOficina extends WndBase {
 		tbtGuardar.setDisabled(guardar);
 		tbtEliminar.setDisabled(eliminar);
 	}
-	
+
 	public void onSelectListGastos(){
 		habilitaToolBarMntGastos(false, false, true, true, false);
 	}
-	
+
 	public void onSelecFechaLiq(){
 		listarRegistros((ArrayList<Gasto>) ServiceLocator.getGastoManager().buscarGastoLiqOficina(Constantes.FORMAT_DATE.format(dbFecha.getValue()), getUsuario().getLogin()));
 	}
-	
-	
-	
+
+
+
 }

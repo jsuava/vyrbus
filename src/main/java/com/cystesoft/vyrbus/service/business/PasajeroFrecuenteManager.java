@@ -13,7 +13,7 @@ public interface PasajeroFrecuenteManager {
 	public void guardar(PasajeroFrecuente pasajeroFrecuente)throws Exception;
 	public void actualizar(PasajeroFrecuente pasajeroFrecuente)throws Exception;
 	public void inactivar(Long id)throws Exception;
-	
+
 	/**
 	 * Realiza la busqueda del PaxFree por pasajero y el estado del registro.
 	 * @param idPasajero	: Identificador unico del pasajero.
@@ -29,23 +29,23 @@ public interface PasajeroFrecuenteManager {
 	 * @throws Exception
 	 */
 	public PasajeroFrecuente buscarPaxFree(Long idPasajero)throws Exception;
-	
+
 	/**
 	 * Busca el numero mayor de la tarjeta para el PAXFREE.
-	 * @return 
+	 * @return
 	 * @throws Exception
 	 */
 	public PasajeroFrecuente buscarMaxNumTarjeta() throws Exception;
-	
+
 	/**
 	 * Bucar PaxFree y sus puntos.
 	 * @param idPasajero : Identificado del pasajero
-	 * @param estado	 : null todos los estados o x estado del Paxfree 	
+	 * @param estado	 : null todos los estados o x estado del Paxfree
 	 * @return
 	 * @throws Exception
 	 */
 	public PasajeroFrecuente buscarPaxFreeAndPuntos(Long idPasajero, Integer estado) throws Exception;
-	
+
 	/**
 	 * Busca al Paxfree por Número de Documento.
 	 * @param numeroDocumento	: Número de documento del Pasajero.

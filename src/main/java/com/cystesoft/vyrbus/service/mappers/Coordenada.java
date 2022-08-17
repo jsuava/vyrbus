@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 25/10/2012
  */
@@ -16,7 +16,7 @@ public class Coordenada {
 	private Integer columna;
 	private Integer piso;
 	/**
-	 * 
+	 *
 	 */
 	public Coordenada() {
 		super();
@@ -32,7 +32,7 @@ public class Coordenada {
 		this.columna = columna;
 		this.piso = piso;
 	}
-	
+
 	/**
 	 * @return the fila
 	 */
@@ -45,7 +45,7 @@ public class Coordenada {
 	public void setFila(Integer fila) {
 		this.fila = fila;
 	}
-	
+
 	/**
 	 * @return the columna
 	 */
@@ -58,7 +58,7 @@ public class Coordenada {
 	public void setColumna(Integer columna) {
 		this.columna = columna;
 	}
-	
+
 	/**
 	 * @return the piso
 	 */

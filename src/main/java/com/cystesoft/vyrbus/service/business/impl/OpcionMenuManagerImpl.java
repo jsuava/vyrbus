@@ -14,18 +14,18 @@ import com.cystesoft.vyrbus.service.util.Constantes;
 
 
 /**
- * 
+ *
  * @author José abanto
  *
  */
 public class OpcionMenuManagerImpl implements OpcionMenuManager{
 	private OpcionMenuDAO opcionMenuDAO;
-	
+
 	public OpcionMenuDAO getOpcionMenuDAO(){
 		return opcionMenuDAO;
 	}
-	
-	
+
+
 	public void setOpcionMenuDAO (OpcionMenuDAO opcionMenuDAO){
 		this.opcionMenuDAO=opcionMenuDAO;
 	}
@@ -69,7 +69,7 @@ public class OpcionMenuManagerImpl implements OpcionMenuManager{
 	@Transactional
 	public void guardar(OpcionMenu opcionMenu) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", opcionMenu.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getOpcionMenuDAO().buscarPorX(criteriosBusqueda, null);
@@ -78,11 +78,11 @@ public class OpcionMenuManagerImpl implements OpcionMenuManager{
 				throw new DenominacionDuplicadaException();
 
 			getOpcionMenuDAO().guardar(opcionMenu);
-			
+
 		}catch (DenominacionDuplicadaException dnex){
 			throw new DenominacionDuplicadaException();
 		}
-		
+
 	}
 
 
@@ -94,24 +94,24 @@ public class OpcionMenuManagerImpl implements OpcionMenuManager{
 	@Transactional
 	public void actualizar(OpcionMenu opcionMenu) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", opcionMenu.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getOpcionMenuDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la denominacion*/
-			for(int r = 0; r < resultDenominacion.size(); r ++) {
-				OpcionMenu oOpcionMenu = (OpcionMenu) resultDenominacion.get(r);
+			for (Object element : resultDenominacion) {
+				OpcionMenu oOpcionMenu = (OpcionMenu) element;
 					if (!(oOpcionMenu.getId().equals(opcionMenu.getId())))
 						throw new DenominacionDuplicadaException();
 				}
-			
+
 			getOpcionMenuDAO().actualizar(opcionMenu);
-			
+
 		}catch (DenominacionDuplicadaException ddex){
 			throw new DenominacionDuplicadaException();
 		}
-		
-		
+
+
 	}
 
 
@@ -152,6 +152,6 @@ public class OpcionMenuManagerImpl implements OpcionMenuManager{
 	public List<OpcionMenu> buscarOpcionesMenu() throws Exception{
 		return getOpcionMenuDAO().buscarOpcionesMenu();
 	}
-	
-	
+
+
 }

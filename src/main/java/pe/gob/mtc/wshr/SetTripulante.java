@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -24,8 +24,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "oTripulante" })
@@ -36,9 +36,9 @@ public class SetTripulante {
 
 	/**
 	 * Gets the value of the oTripulante property.
-	 * 
+	 *
 	 * @return possible object is {@link Tripulante }
-	 * 
+	 *
 	 */
 	public Tripulante getOTripulante() {
 		return oTripulante;
@@ -46,10 +46,10 @@ public class SetTripulante {
 
 	/**
 	 * Sets the value of the oTripulante property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Tripulante }
-	 * 
+	 *
 	 */
 	public void setOTripulante(Tripulante value) {
 		this.oTripulante = value;

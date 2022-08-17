@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 16/09/2013
  */
@@ -21,7 +21,7 @@ public class CentroCostoException extends Exception implements Serializable {
 	public static final int CONCESIONARIO_NULL = 4;
 	private Integer tipo;
 	/**
-	 * 
+	 *
 	 */
 	public CentroCostoException() {
 		super();
@@ -34,7 +34,7 @@ public class CentroCostoException extends Exception implements Serializable {
 		super();
 		this.tipo = tipo;
 	}
-	
+
 	/**
 	 * @return the tipo
 	 */
@@ -47,5 +47,5 @@ public class CentroCostoException extends Exception implements Serializable {
 	public void setTipo(Integer tipo) {
 		this.tipo = tipo;
 	}
-	
+
 }

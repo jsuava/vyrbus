@@ -10,7 +10,7 @@ import com.cystesoft.vyrbus.service.mappers.ResumenComprobante;
 import com.cystesoft.vyrbus.view.tuentrada.LiquidacionTuentrada;
 
 /**
- * 
+ *
  * @author José Abanto
  *
  */
@@ -22,34 +22,34 @@ public interface LiquidacionManager {
 	 * @throws Exception
 	 */
 	public Liquidacion buscarPorId(Long id)throws Exception;
-	
+
 	/**
 	 * Apertura Liquidacion
 	 * @param liquidacion
 	 */
 	public void aperturarLiquidacion(Liquidacion liquidacion);
-	
+
 	/**
-	 * 
+	 *
 	 * @param criteriosBusqueda
 	 * @param criteriosOrdenar
 	 * @return
 	 */
 	public ArrayList<Liquidacion> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
-	
+
 
 	/**
 	 * Busca Lquidacion
-	 * @param fechaInicial	: Fecha inicial de la busqueda 
+	 * @param fechaInicial	: Fecha inicial de la busqueda
 	 * @param FechaFinal	: Fecha final de la busqueda
 	 * @param idAgencia		: identificador de la agencia
-	 * @param idUsuario		: identificador del usuario	
+	 * @param idUsuario		: identificador del usuario
 	 * @param estadoLiquidacion
 	 * @return
 	 * @throws Exception
 	 */
 	public List<Liquidacion> buscarLiquidacion(String fechaInicial, String FechaFinal, Integer idAgencia, Integer idUsuario, Integer estadoLiquidacion ) throws Exception;
-	
+
 	/**
 	 * Realiza la busqueda de la ultima liquidacion abierta o cerrada segun el parametro.
 	 * @param idAgencia			: Identificador de la agencia.
@@ -65,7 +65,7 @@ public interface LiquidacionManager {
 	 * @throws Exception
 	 */
 	public void actualizar(Liquidacion liquidacion)throws Exception;
-	
+
 	/**
 	 * Busca las especies valoradas utilizadas en las ventas
 	 * @param fechaLiquidacion: fecha de la liquidacion
@@ -73,8 +73,8 @@ public interface LiquidacionManager {
 	 * @param idUsuario	: identidicador del usuarioz
 	 * @return
 	 */
-	public List<Liquidacion> BuscarEspeciesValoradas(String fechaLiquidacion, Integer idAgencia, Integer idUsuario); 
-	
+	public List<Liquidacion> BuscarEspeciesValoradas(String fechaLiquidacion, Integer idAgencia, Integer idUsuario);
+
 	/**
 	 * Utilizado para la recuperacion de datos para generar el reporte/imprecion de la liquidacion de turno
 	 * @param fecha		: fecha de la liquidacion

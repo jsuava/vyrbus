@@ -73,7 +73,7 @@ public class UsuarioManagerImpl implements UsuarioManager {
 		}else
 			throw new LoginException();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.UsuarioManager#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
@@ -81,7 +81,7 @@ public class UsuarioManagerImpl implements UsuarioManager {
 	@Override
 	public ArrayList<Usuario> buscarPorEstadoRegistro(String estado,String criterioOrden) throws Exception{
 		ArrayList<Usuario> lstUsuarios = getUsuarioDAO().buscarPorEstadoRegistro(estado, criterioOrden);
-		ArrayList<Usuario> lstResult = new ArrayList<Usuario>(); 
+		ArrayList<Usuario> lstResult = new ArrayList<>();
 		for(Usuario  usuario : lstUsuarios){
 			String pwd = Encriptar.decodifica(usuario.getPassword(), usuario.getLogin());
 			if(pwd!=null){
@@ -91,10 +91,10 @@ public class UsuarioManagerImpl implements UsuarioManager {
 			}
 		}
 		return lstResult;
-		
+
 //		return lstUsuarios;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.UsuarioManager#buscarPorX(java.util.TreeMap, java.util.List)
@@ -102,7 +102,7 @@ public class UsuarioManagerImpl implements UsuarioManager {
 	@Override
 	public ArrayList<Usuario> buscarPorX(TreeMap<String, Object> criteriosBusqueda,List<String> criteriosOrdenar)throws Exception {
 		ArrayList<Usuario> lstUsuarios = getUsuarioDAO().buscarPorX(criteriosBusqueda, criteriosOrdenar);
-		ArrayList<Usuario> lstResult = new ArrayList<Usuario>();
+		ArrayList<Usuario> lstResult = new ArrayList<>();
 		for(Usuario  usuario : lstUsuarios){
 //			usuario.setPassword(Encriptar.decodifica(usuario.getPassword(), usuario.getLogin()));
 			usuario.setPwdNormal(Encriptar.decodifica(usuario.getPassword(), usuario.getLogin()));
@@ -110,7 +110,7 @@ public class UsuarioManagerImpl implements UsuarioManager {
 		}
 		return lstResult;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.UsuarioManager#buscarPorId(java.lang.Long)
@@ -122,7 +122,7 @@ public class UsuarioManagerImpl implements UsuarioManager {
 		usuario.setPwdNormal(Encriptar.decodifica(usuario.getPassword(), usuario.getLogin()));
 		return usuario;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.UsuarioManager#guardar(com.tepsa.sisvyr.model.bean.Usuario)
@@ -133,7 +133,7 @@ public class UsuarioManagerImpl implements UsuarioManager {
 		try{
 			int result = Constantes.FAILURE;
 			/*Valida duplicidad de Login de usuario*/
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("login", usuario.getLogin());
 //			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultLogin = getUsuarioDAO().buscarPorX(criteriosBusqueda, null);
@@ -143,7 +143,7 @@ public class UsuarioManagerImpl implements UsuarioManager {
 			String passwd = usuario.getPwdNormal();
 			usuario.setPassword(Encriptar.codifica(passwd, usuario.getLogin()));
 			getUsuarioDAO().guardar(usuario);
-			
+
 			//Realiza el envio del E-Mail con las credenciales de acceso.
 			if(usuario.getEmailInfo()!=null){
 				String mensaje = "Datos para el inicio de sesion en el Sistema de Ventas VYRBUS.\n\n";
@@ -152,22 +152,22 @@ public class UsuarioManagerImpl implements UsuarioManager {
 				mensaje = mensaje + "Password :\t\t"+passwd+"\n\n";
 				mensaje = mensaje + "Una vez que ingrese al sistema con estas credenciales debera de cambiarlas para poder continuar con sus operaciones.\n\n";
 				mensaje = mensaje + "NOTA: [Este buzon es de envio automático, por favor no responda.]";
-				
+
 				DestinatariosEmails window = new DestinatariosEmails();
 				//window.setEmails("TO:"+usuario.getEmailInfo()+";BCC:sistemas@tepsa.com.pe");
 				window.setEmails("TO:"+usuario.getEmailInfo());//+";BCC:jabanto@tepsa.com.pe");
-				
+
 				Sendmail.enviaEmail(mensaje, "Credenciales de Acceso - Sisvyr", window);
 			}
-			
-			
+
+
 			result = Constantes.CORRECT;
-			return result;			
+			return result;
 		}catch(UsuarioLoginDuplicadoException uldex){
 			throw new UsuarioLoginDuplicadoException();
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.UsuarioManager#actualizar(com.tepsa.sisvyr.model.bean.Usuario)
@@ -179,7 +179,7 @@ public class UsuarioManagerImpl implements UsuarioManager {
 		String passwd = usuario.getPwdNormal();
 		usuario.setPassword(Encriptar.codifica(passwd, usuario.getLogin()));
 		getUsuarioDAO().actualizar(usuario);
-		
+
 		//Realiza el envio del E-Mail con las credenciales de acceso.
 		if(usuario.getEmailInfo()!=null){
 			String mensaje = "Datos para el inicio de sesion en el Sistema de Ventas VYRBUS.\n\n";
@@ -188,16 +188,16 @@ public class UsuarioManagerImpl implements UsuarioManager {
 			mensaje = mensaje + "Password :\t\t"+passwd+"\n\n";
 			mensaje = mensaje + "Una vez que ingrese al sistema con estas credenciales debera de cambiarlas para poder continuar con sus operaciones.\n\n";
 			mensaje = mensaje + "NOTA: [Este buzon es de envio automático, por favor no responda.]";
-			
+
 			DestinatariosEmails window = new DestinatariosEmails();
 			//window.setEmails("TO:"+usuario.getEmailInfo()+";BCC:sistemas@tepsa.com.pe");
 			window.setEmails("TO:"+usuario.getEmailInfo());//+";BCC:jabanto@tepsa.com.pe");
 //			if(usuario.getEmailInfo()!=null)
 			Sendmail.enviaEmail(mensaje, "Credenciales de Acceso - VYRBUS", window);
 		}
-				
+
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.UsuarioManager#inactivar(java.lang.Long)
@@ -206,14 +206,14 @@ public class UsuarioManagerImpl implements UsuarioManager {
 	@Transactional
 	public void inactivar(Long id) throws Exception {
 		getUsuarioDAO().inactivar(id);
-		
+
 	}
 	@Override
 	public void activar(Long id) throws Exception {
 		getUsuarioDAO().activar(id);
-		
+
 	}
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.UsuarioManager#buscarUsuarioLiquidacion(java.lang.String, java.lang.String, java.lang.Integer)
 	 */

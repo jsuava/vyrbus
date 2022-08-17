@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 08/09/2016
  * Hora			: 14:26:47
@@ -22,42 +22,42 @@ import com.cystesoft.vyrbus.model.bean.VentaPool;
  */
 public interface VentaPoolManager{
 	/**
-	 * 
+	 *
 	 * @param estado
 	 * @param criterioOrden
 	 * @return
 	 */
 	public ArrayList<VentaPool> buscarPorEstadoRegistro(String estado, String criterioOrden);
 	/**
-	 * 
+	 *
 	 * @param criteriosBusqueda
 	 * @param criteriosOrdenar
 	 * @return
 	 */
 	public ArrayList<VentaPool> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
 	/**
-	 * 
+	 *
 	 * @param id
 	 * @return
 	 */
 	public VentaPool buscarPorId(Long id);
 	/**
-	 * 
+	 *
 	 * @param ventaPool
 	 */
 	public VentaPool guardar(VentaPasaje ventaPasaje,String codigoTransaccion,String numeroComprobanteOperador)throws Exception;
 	/**
-	 * 
+	 *
 	 * @param VentaPool
 	 */
 	public void actualizar(VentaPool VentaPool);
 	/**
-	 * 
+	 *
 	 * @param id
 	 */
 	public void inactivar(Long id);
 	/**
-	 *Realiza la busqueda de los usuarios que han realizado ventas  
+	 *Realiza la busqueda de los usuarios que han realizado ventas
 	 * @param idAgencia	: Identificador de la agencia.
 	 * @param fechaInicio : Fecha de inicio de la busqueda.
 	 * @param fechaFin	: Fecha fin de la busqueda.

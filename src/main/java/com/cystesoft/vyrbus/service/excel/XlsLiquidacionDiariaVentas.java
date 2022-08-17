@@ -26,18 +26,18 @@ import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 @SuppressWarnings({"rawtypes"})
 public class XlsLiquidacionDiariaVentas extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
 		doProcess(request, response);
 	}
-	
+
 	protected void doProcess(HttpServletRequest request, HttpServletResponse response){
 		Listbox listbox = (Listbox)request.getSession().getAttribute("lbxVentas");
         String parcialPath = (String)request.getSession().getAttribute("parcialPath");
         response.setContentType("application/vnd.ms-excel");
         response.setHeader("Content-Disposition", "attachment; filename=LiquidacionDiariaVentas.xls");
-        
+
         File template = new File(parcialPath);
         try {
         	POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(template));
@@ -48,8 +48,8 @@ public class XlsLiquidacionDiariaVentas extends HttpServlet {
 //            HSSFDataFormat format = wb.createDataFormat();
 //            HSSFCellStyle style = wb.createCellStyle();
 //            style.setDataFormat(format.getFormat("#,##0.00"));
-        	
-      
+
+
             List listItems = listbox.getItems();
             int j = 2;
             for (Iterator it = listItems.iterator(); it.hasNext();) {
@@ -74,9 +74,9 @@ public class XlsLiquidacionDiariaVentas extends HttpServlet {
                	rowh.createCell((short) 10).setCellValue(venta.getImportePagado());
                 rowh.createCell((short) 11).setCellValue(new HSSFRichTextString(venta.getUsuario().toString()));
                 rowh.createCell((short) 12).setCellValue(venta.getFechaInsercion());
-                rowh.createCell((short) 13).setCellValue(new HSSFRichTextString(venta.getAgencia()!=null ? venta.getAgencia().getDenominacion() : "")); 
+                rowh.createCell((short) 13).setCellValue(new HSSFRichTextString(venta.getAgencia()!=null ? venta.getAgencia().getDenominacion() : ""));
             }
-            
+
             ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
 			wb.write(outByteStream);
 			byte [] outArray = outByteStream.toByteArray();
@@ -84,7 +84,7 @@ public class XlsLiquidacionDiariaVentas extends HttpServlet {
 			OutputStream outStream = response.getOutputStream();
 		    outStream.write(outArray);
 		    outStream.flush();
-		    
+
         } catch (Exception e) {
         	log("EXPORT XLS AVANCE SEMANAL: "+e.toString());
             System.out.println(e.toString());

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 02/05/2012
  */
@@ -49,7 +49,7 @@ import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
  */
 public class WndConcesionario extends WndOpcionesMantenimiento {
 
-	private static final long serialVersionUID =1L; 
+	private static final long serialVersionUID =1L;
 
 	private Textbox txtRazonSocial;
 	private Textbox txtRuc;
@@ -60,10 +60,10 @@ public class WndConcesionario extends WndOpcionesMantenimiento {
 	private Intbox itbxComision;
 	private Combobox cmbTipoComision;
 	private Checkbox chbxIncluyeIgv;
-	
+
 	private Concesionario oConcesionario=null;
-	
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
 
 	/* (non-Javadoc)
@@ -71,7 +71,7 @@ public class WndConcesionario extends WndOpcionesMantenimiento {
 	 */
 	@Override
 	public void onCreate() throws Exception {
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("razonSocial");
 		UtilData.cargarTipoComsion(cmbTipoComision);
 	}
@@ -89,9 +89,9 @@ public class WndConcesionario extends WndOpcionesMantenimiento {
 		dbFechaSuspension = (Datebox) getFellow("dbFechaSuspension");
 		itbxComision=(Intbox)this.getFellow("itbxComision");
 		cmbTipoComision=(Combobox)this.getFellow("cmbTipoComision");
-		chbxIncluyeIgv=(Checkbox)this.getFellow("chbxIncluyeIgv"); 
+		chbxIncluyeIgv=(Checkbox)this.getFellow("chbxIncluyeIgv");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onNew()
 	 */
@@ -101,7 +101,7 @@ public class WndConcesionario extends WndOpcionesMantenimiento {
 		dbFechaActivacion.setValue(new Date());
 		chbxIncluyeIgv.setChecked(true);
 		cmbTipoComision.setSelectedIndex(0);
-		
+
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onSearch()
@@ -116,7 +116,7 @@ public class WndConcesionario extends WndOpcionesMantenimiento {
 
 		this.appendChild(oWndFiltrar);
 		oWndFiltrar.setMode("modal");
-		
+
 		oWndFiltrar.addEventListener(com.cystesoft.vyrbus.view.ui.Events.ON_FILTER, new EventListener<Event>() {
 
 			@Override
@@ -136,10 +136,10 @@ public class WndConcesionario extends WndOpcionesMantenimiento {
 				criteriosBusqueda.put("estadoRegistro", estadoRegistro);
 
 				listarRegistros(ServiceLocator.getConcesionarioManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-				
+
 			}
 		});
-		
+
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onRefresh(int)
@@ -147,7 +147,7 @@ public class WndConcesionario extends WndOpcionesMantenimiento {
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getConcesionarioManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getConcesionarioManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
 	}
 	/* (non-Javadoc)
@@ -167,7 +167,7 @@ public class WndConcesionario extends WndOpcionesMantenimiento {
 		switch (action) {
 			case ACTION_NEW:
 				break;
-	
+
 			case ACTION_MODIFY:
 				//this.mantenimientoRegistro(new Long((String) listboxLista.getSelectedItem().getValue()));
 				break;
@@ -181,7 +181,7 @@ public class WndConcesionario extends WndOpcionesMantenimiento {
 		try{
 			if (txtRazonSocial.getText().trim().equals("") )
 				throw new RazonSocialNullException();
-			else if (txtRuc.getText().trim().length() != 11) 
+			else if (txtRuc.getText().trim().length() != 11)
 				throw new NumeroDocumentoNullException();
 			else if (dbFechaActivacion.getValue()==null)
 				throw new FechaActivacionNullException();
@@ -191,11 +191,11 @@ public class WndConcesionario extends WndOpcionesMantenimiento {
 				throw new  NumberFormatException();
 			else if(cmbTipoComision.getSelectedIndex()<=0)
 				throw new TipoComisionException();
-			
-			
+
+
 			if (action== ACTION_NEW)
 				oConcesionario = new Concesionario();
-						
+
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
 			oConcesionario.setId(id);
 			oConcesionario.setRazonSocial(txtRazonSocial.getText().trim().toUpperCase());
@@ -208,7 +208,7 @@ public class WndConcesionario extends WndOpcionesMantenimiento {
 			oConcesionario.setTipoComision((Integer)cmbTipoComision.getSelectedItem().getValue());
 			oConcesionario.setIncluyeIgv(chbxIncluyeIgv.isChecked()?1:0);
 			oConcesionario.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-			
+
 			switch (action) {
 				case ACTION_NEW:
 					UtilData.auditarRegistro(oConcesionario,getUsuario(), Executions.getCurrent());
@@ -225,8 +225,8 @@ public class WndConcesionario extends WndOpcionesMantenimiento {
 			criteriosBusqueda.put("razonSocial", oConcesionario.getRazonSocial());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			this.listarRegistros(ServiceLocator.getConcesionarioManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-			
-			
+
+
 		}catch (NumberFormatException nex){
 			DlgMessage.information(Messages.getString("WndConcesionario.information.noComision"),itbxComision);
 			throw new CancelaGrabacionException();
@@ -254,7 +254,7 @@ public class WndConcesionario extends WndOpcionesMantenimiento {
 		}catch(Exception ex){
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace();throw new CancelaGrabacionException();
-		}			
+		}
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onDelete(int)
@@ -264,13 +264,13 @@ public class WndConcesionario extends WndOpcionesMantenimiento {
 		try{
 			//EliminacionRegistrosNullExcepcion
 			Long id = (long) 0;
-		
-			id = new Long((String) listboxLista.getSelectedItem().getValue());	
+
+			id = new Long((String) listboxLista.getSelectedItem().getValue());
 			if (id !=null){
 				ServiceLocator.getConcesionarioManager().inactivar(id);
 				//this.listarRegistros(ServiceDelegate.instance().concesionario_buscarPorX(criteriosBusqueda, criteriosOrdenar));
 			}
-			
+
 		}catch(EliminacionRegistrosNullExcepcion ernex){
 			DlgMessage.information(Messages.getString("WndConcesionario.information.noSeleccionoRegistro"));
 		}catch(Exception ex){
@@ -284,7 +284,7 @@ public class WndConcesionario extends WndOpcionesMantenimiento {
 	@Override
 	public void onPrint(int tab) {
 		// TODO Auto-generated method stub
-		
+
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onExport(int)
@@ -292,7 +292,7 @@ public class WndConcesionario extends WndOpcionesMantenimiento {
 	@Override
 	public void onExport(int tab) {
 		// TODO Auto-generated method stub
-		
+
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onHelp()
@@ -300,7 +300,7 @@ public class WndConcesionario extends WndOpcionesMantenimiento {
 	@Override
 	public void onHelp() {
 		// TODO Auto-generated method stub
-		
+
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onChangeTab(int)
@@ -310,7 +310,7 @@ public class WndConcesionario extends WndOpcionesMantenimiento {
 		switch (tab) {
 			case TAB_LIST:
 				break;
-	
+
 			case TAB_MAINTENANCE:
 				if (listboxLista.getSelectedIndex() >=0) {
 					this.mantenimientoRegistro(((Concesionario) listboxLista.getSelectedItem().getValue()).getId().longValue());
@@ -318,7 +318,7 @@ public class WndConcesionario extends WndOpcionesMantenimiento {
 				break;
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.IOpcionesMantenimiento#onClose()
 	 */
@@ -332,38 +332,38 @@ public class WndConcesionario extends WndOpcionesMantenimiento {
 		Listcell cell=null;
 		int x=0;
 		Util.limpiarListbox(listboxLista);
-		
+
 		for(Concesionario concesionario: lstRegistros){
 			x++;
-			
+
 			item= new Listitem();
 			//Item
 			cell= new Listcell(String.valueOf(x));
 			cell.setStyle("font-size:11px !Important");
 			item.appendChild(cell);
-			
+
 			//Ruc
 			cell=new Listcell(concesionario.getRuc());
 			cell.setStyle("font-size:11px !Important");
 			item.appendChild(cell);
-			
+
 			//Razón social
 			cell=new Listcell(concesionario.getRazonSocial());
 			item.appendChild(cell);
-			
+
 			//Direccion
 			cell=new Listcell(concesionario.getDireccion());
 			item.appendChild(cell);
-			
+
 			//Fecha de Activación
 			cell=new Listcell(Constantes.FORMAT_DATE.format(concesionario.getFechaActivacion()));
 			cell.setStyle("font-size:11px !Important");
 			item.appendChild(cell);
-			
+
 			item.setValue(concesionario);
 			listboxLista.appendChild(item);
 		}
-		
+
 	}
 
 	private void mantenimientoRegistro(Long id) throws Exception {
@@ -381,9 +381,9 @@ public class WndConcesionario extends WndOpcionesMantenimiento {
 			Util.seleccionarValorItemCombobox(cmbTipoComision, oConcesionario.getTipoComision());
 		else cmbTipoComision.setSelectedIndex(0);
 		if(oConcesionario.getIncluyeIgv()!=null){
-			chbxIncluyeIgv.setChecked(oConcesionario.getIncluyeIgv().intValue()==1);			
+			chbxIncluyeIgv.setChecked(oConcesionario.getIncluyeIgv().intValue()==1);
 		}else
 			chbxIncluyeIgv.setChecked(false);
-		
+
 	}
 }

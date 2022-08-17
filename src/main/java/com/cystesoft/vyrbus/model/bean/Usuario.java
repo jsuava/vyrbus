@@ -34,22 +34,22 @@ public class Usuario extends GenericBean implements Serializable, Cloneable {
 	private Integer tipoPassword;
 	private Integer tipoSeguridad;
 	private String emailFuncionario;
-	
+
 	//No mapeados
 	private String emailInfo;			// No mapeado.
 	private String pwdNormal;			//No mapeado
-	
+
 	//no mapeados(Para el reporte ventas por punto de venta)
 	private List<RptVentaUsuario> ventasUsuarios;
-	
-	
+
+
 	public Usuario(Integer id) {
 		super();
 		this.id = id;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public Usuario() {
 		super();
@@ -68,7 +68,7 @@ public class Usuario extends GenericBean implements Serializable, Cloneable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	public Usuario(String login){
 		this.login=login;
 	}
@@ -84,7 +84,7 @@ public class Usuario extends GenericBean implements Serializable, Cloneable {
 	public void setPersonal(Personal personal) {
 		this.personal = personal;
 	}
-	
+
 	/**
 	 * @return the agencia
 	 */
@@ -123,7 +123,7 @@ public class Usuario extends GenericBean implements Serializable, Cloneable {
 	public void setApellidoPaterno(String apellidoPaterno) {
 		this.apellidoPaterno = apellidoPaterno;
 	}
-	
+
 	/**
 	 * @return Objeto apellidoMaterno.
 	 */
@@ -136,7 +136,7 @@ public class Usuario extends GenericBean implements Serializable, Cloneable {
 	public void setApellidoMaterno(String apellidoMaterno) {
 		this.apellidoMaterno = apellidoMaterno;
 	}
-	
+
 	/**
 	 * @return Objeto nombre.
 	 */
@@ -149,7 +149,7 @@ public class Usuario extends GenericBean implements Serializable, Cloneable {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	
+
 	/**
 	 * @return Objeto codigo.
 	 */
@@ -162,7 +162,7 @@ public class Usuario extends GenericBean implements Serializable, Cloneable {
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
-	
+
 	/**
 	 * @return Objeto login.
 	 */
@@ -175,7 +175,7 @@ public class Usuario extends GenericBean implements Serializable, Cloneable {
 	public void setLogin(String login) {
 		this.login = login;
 	}
-	
+
 	/**
 	 * @return Objeto password.
 	 */

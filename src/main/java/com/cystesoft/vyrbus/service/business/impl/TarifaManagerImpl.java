@@ -1,7 +1,7 @@
 /**
  * Proyecto		: VYRBUS
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: Marco Oscco
  * Fecha		: 12 jul. 2020
  * Hora			: 23:49:44
@@ -24,7 +24,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
 public class TarifaManagerImpl implements TarifaManager {
 
 	private TarifaDAO tarifaDAO;
-	
+
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.service.business.TarifaManager#guardar(com.cystesoft.vyrbus.model.bean.Tarifa)
 	 */
@@ -48,7 +48,7 @@ public class TarifaManagerImpl implements TarifaManager {
 		int result = Constantes.FAILURE;
 		try{
 			getTarifaDAO().save(tarifa);
-			
+
 			result = Constantes.CORRECT;
 		}catch(Exception ex){
 			throw new Exception(ex);
@@ -73,15 +73,15 @@ public class TarifaManagerImpl implements TarifaManager {
 	public void inactivate(Long id) throws Exception {
 		// TODO Auto-generated method stub
 		getTarifaDAO().inactivate(id);
-	}	
-	
+	}
+
 	@Override
 	@Transactional
-	public List<Tarifa> buscarTarifa(Integer canalVentaID, 
-			Integer servicioID, 
-			Integer localidadOrigenID, 
-			Integer localidadDestinoID, 
-			Integer piso, 
+	public List<Tarifa> buscarTarifa(Integer canalVentaID,
+			Integer servicioID,
+			Integer localidadOrigenID,
+			Integer localidadDestinoID,
+			Integer piso,
 			Integer zona) throws Exception{
 		return getTarifaDAO().buscarTarifa(canalVentaID, servicioID, localidadOrigenID, localidadDestinoID, piso, zona);
 	}

@@ -20,7 +20,7 @@ public class Parametros extends GenericBean implements java.io.Serializable {
     private Integer tiempoPostergacion;
     private Integer rangoCanjeCumpleanios;
     private Integer tiempoCaducidadPuntos;
-    
+
     private Integer alertarEnvioEspecieValorda;
     private Integer alertarEnvioManifiestoPasajeros;
     private String usuarioGerenciaComercialAprobador;
@@ -42,7 +42,7 @@ public class Parametros extends GenericBean implements java.io.Serializable {
     private Integer validarProgramacionMtc;
     private Integer tiempoExpiracionBloqueComprobante;
     private Integer viajesAcumuladosPasajero; //Patra contar el numero de viajes para canjear un pasaje gratis
-    
+
     // Constructors
     /** default constructor */
     public Parametros() {
@@ -511,7 +511,7 @@ public class Parametros extends GenericBean implements java.io.Serializable {
 	public void setViajesAcumuladosPasajero(Integer viajesAcumuladosPasajero) {
 		this.viajesAcumuladosPasajero = viajesAcumuladosPasajero;
 	}
-	
-	
-	
+
+
+
 }

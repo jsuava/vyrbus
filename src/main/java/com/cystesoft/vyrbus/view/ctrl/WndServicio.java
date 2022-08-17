@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 30/04/2012
  */
@@ -55,7 +55,7 @@ public class WndServicio extends WndOpcionesMantenimiento {
 	private Intbox itFilas2;
 	private Intbox itColumnas2;
 	*/
-	
+
 	private Textbox txtDenominacion;
 	private Textbox txtNombreCorto;
 	private Checkbox chkBusDosPisos;
@@ -66,11 +66,11 @@ public class WndServicio extends WndOpcionesMantenimiento {
 	private Spinner spFilas2;
 	private Spinner spColumnas2;
 	private Groupbox grpSegundoPiso;
-	
-	
+
+
 	private Servicio oServicio = null;
-	
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
 
 	/* (non-Javadoc)
@@ -78,7 +78,7 @@ public class WndServicio extends WndOpcionesMantenimiento {
 	 */
 	@Override
 	public void onCreate() throws Exception {
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
 	}
 
@@ -94,9 +94,9 @@ public class WndServicio extends WndOpcionesMantenimiento {
 		itFilas = (Intbox) getFellow("itFilas");
 		itColumnas = (Intbox) getFellow("itColumnas");
 		itFilas2 = (Intbox) getFellow("itFilas2");
-		itColumnas2 = (Intbox) getFellow("itColumnas2");	
+		itColumnas2 = (Intbox) getFellow("itColumnas2");
 		*/
-		
+
 		txtDenominacion = (Textbox) getFellow("txtDenominacion");
 		txtNombreCorto = (Textbox) getFellow("txtNombreCorto");
 		chkBusDosPisos = (Checkbox) getFellow("chkBusDosPisos");
@@ -106,13 +106,13 @@ public class WndServicio extends WndOpcionesMantenimiento {
 		spAsientos2 = (Spinner) getFellow("spAsientos2");
 		spFilas2 = (Spinner) getFellow("spFilas2");
 		spColumnas2 = (Spinner) getFellow("spColumnas2");
-		grpSegundoPiso = (Groupbox)this.getFellow("grpSegundoPiso");		
-		
+		grpSegundoPiso = (Groupbox)this.getFellow("grpSegundoPiso");
+
 	}
 
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onNew()
-	 */	
+	 */
 	@Override
 	public void onNew() {
 		habilitarSegundoPiso(false);
@@ -128,7 +128,7 @@ public class WndServicio extends WndOpcionesMantenimiento {
 		oWndFiltrar.addParameter("Denominación", String.class);
 		oWndFiltrar.addParameter("Código", String.class);
 		oWndFiltrar.addParameter("Nombre corto", String.class);
-		
+
 		this.appendChild(oWndFiltrar);
 		oWndFiltrar.setMode("modal");
 		oWndFiltrar.addEventListener(com.cystesoft.vyrbus.view.ui.Events.ON_FILTER, new EventListener<Event>() {
@@ -139,7 +139,7 @@ public class WndServicio extends WndOpcionesMantenimiento {
 				String codigo = (String) oWndFiltrar.getParameterValue("Código");
 				String nombreCorto = (String) oWndFiltrar.getParameterValue("Nombre corto");
 				String estadoRegistro = Constantes.VALUE_ACTIVO;
-				
+
 				if (denominacion.trim().equals("")) {
 					criteriosBusqueda.remove("denominacion");
 				}else {criteriosBusqueda.put("denominacion", "%" + denominacion + "%");}
@@ -164,7 +164,7 @@ public class WndServicio extends WndOpcionesMantenimiento {
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getServicioManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getServicioManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
 	}
 
@@ -173,11 +173,11 @@ public class WndServicio extends WndOpcionesMantenimiento {
 	 */
 	@Override
 	public void onModify(int tab) throws Exception {
-		
+
 			Long id = new Long(0);
 			id = new Long((String) listboxLista.getSelectedItem().getValue());
 			this.mantenimientoRegistro(id);
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -219,10 +219,10 @@ public class WndServicio extends WndOpcionesMantenimiento {
 				else if (spColumnas2.getValue().intValue()==0)
 					throw new NumeroColumnasNullException(2);
 			}
-			
+
 			if(action==ACTION_NEW)
 				oServicio = new Servicio();
-			
+
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
 			/*
 			Integer Pisos = itPisos.getValue();
@@ -232,7 +232,7 @@ public class WndServicio extends WndOpcionesMantenimiento {
 			Integer Filas2 = 0;
 			Integer Columnas2 = 0;
 
-			
+
 			if(Pisos > 1){
 				Filas2 = itFilas2.getValue();
 				Columnas2 = itColumnas2.getValue();
@@ -256,7 +256,7 @@ public class WndServicio extends WndOpcionesMantenimiento {
 			}
 			*/
 			oServicio.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-			
+
 			switch (action) {
 				case ACTION_NEW:
 					UtilData.auditarRegistro(oServicio, getUsuario(), Executions.getCurrent());
@@ -276,7 +276,7 @@ public class WndServicio extends WndOpcionesMantenimiento {
 			criteriosBusqueda.put("denominacion", oServicio.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			this.listarRegistros(ServiceLocator.getServicioManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-						
+
 		}catch (DenominacionNullException dnex){
 			DlgMessage.information(Messages.getString("Generales.information.noIngresoDenominacion"),txtDenominacion);
 			throw new CancelaGrabacionException();
@@ -311,8 +311,8 @@ public class WndServicio extends WndOpcionesMantenimiento {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace();
 			throw new CancelaGrabacionException();
-		}	
-				
+		}
+
 	}
 
 	/* (non-Javadoc)
@@ -385,18 +385,18 @@ public class WndServicio extends WndOpcionesMantenimiento {
 	}
 
 	private void listarRegistros(ArrayList<Servicio> lstRegistros) {
-		ArrayList<Object> lstServicios = new ArrayList<Object>();
+		ArrayList<Object> lstServicios = new ArrayList<>();
 
 		for(int r = 0; r < lstRegistros.size(); r ++) {
 			Servicio oServicio = lstRegistros.get(r);
-			ArrayList<Object> lstFila = new ArrayList<Object>();
+			ArrayList<Object> lstFila = new ArrayList<>();
 
 			lstFila.add(oServicio.getId());
 			lstFila.add(r + 1);
 			lstFila.add(oServicio.getDenominacion());
 			lstFila.add(oServicio.getNombreCorto());
 			lstFila.add(oServicio.getNumeroPisos());
-			lstFila.add(oServicio.getNumeroAsientosPiso1());	
+			lstFila.add(oServicio.getNumeroAsientosPiso1());
 			lstFila.add(oServicio.getNumeroFilasPiso1());
 			lstFila.add(oServicio.getNumeroColumnasPiso1());
 			lstServicios.add(lstFila);
@@ -409,8 +409,8 @@ public class WndServicio extends WndOpcionesMantenimiento {
 	private void mantenimientoRegistro(Long id) throws Exception {
 		oServicio = ServiceLocator.getServicioManager().buscarPorId(id);
 		//Servicio outilData = ServiceDelegate.instance().servicio_buscarPorId(id);
-		
-		
+
+
 		textboxId.setText(oServicio.getId().toString());
 		txtDenominacion.setText(oServicio.getDenominacion());
 		txtNombreCorto.setText(oServicio.getNombreCorto());
@@ -431,7 +431,7 @@ public class WndServicio extends WndOpcionesMantenimiento {
 		spFilas.setValue(oServicio.getNumeroFilasPiso1());
 		spColumnas.setValue(oServicio.getNumeroColumnasPiso1());
 	}
-	
+
 	public void habilitarSegundoPiso(boolean habilitar) {
 		grpSegundoPiso.setVisible(habilitar);
 		spAsientos2.setDisabled(!habilitar);
@@ -441,7 +441,7 @@ public class WndServicio extends WndOpcionesMantenimiento {
 		spFilas2.setValue(0);
 		spColumnas2.setValue(0);
 	}
-	
-	
+
+
 
 }

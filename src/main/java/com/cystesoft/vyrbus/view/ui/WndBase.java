@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 20/04/2012
  */
@@ -44,10 +44,10 @@ public abstract class WndBase extends Window implements IBase, BeforeCompose, Af
 	private static final long serialVersionUID = -7379604840270938796L;
 	protected final Logger log;
 	public Long txtid=null;
-	
+
 	/**
 	 * Constructor
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public WndBase() {
 		super();
@@ -56,7 +56,7 @@ public abstract class WndBase extends Window implements IBase, BeforeCompose, Af
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param title
 	 * @param border
 	 * @param closable
@@ -84,28 +84,28 @@ public abstract class WndBase extends Window implements IBase, BeforeCompose, Af
 	public UsuarioHardware getUsuarioHardware(){
 		return (UsuarioHardware) this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO_HARDWARE);
 	}
-	
+
 	public Agencia getAgencia(){
 		Agencia agencia=(Agencia)this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
 		return agencia;
 	}
-	
+
 	public Usuario getUsuario(){
 		Usuario usuario=(Usuario)this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO);
 		return usuario;
 	}
-	
+
 	public TipoComprobante getTipocomprobante(){
 		TipoComprobante tipoComprobante=(TipoComprobante) this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_TIPO_COMPROBANTE);
 		return tipoComprobante;
 	}
-	
+
 	public Rol getRol(){
 		Rol rol=(Rol) this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_ROL);
 		return rol;
 	}
-	
-			
+
+
 	/**
 	 * Metodo ZK Framework que se ejecuta despues de componer la página.
 	 */
@@ -113,7 +113,7 @@ public abstract class WndBase extends Window implements IBase, BeforeCompose, Af
 	public void afterCompose() {
 		initComponents();
 	}
-	
+
 	/**
 	 * Método para cerrar la ventana, incluyendo el Tab que lo contenga.
 	 */
@@ -138,12 +138,12 @@ public abstract class WndBase extends Window implements IBase, BeforeCompose, Af
 		}
 	}
 
-	
+
 	@Override
 	public void onCreate() throws Exception {
 		System.out.println("Entro a la clase BASE **********************");
 	}
-	
+
 //	/**
 //	 * Busca el rol del usuario
 //	 * @return returna el rol
@@ -169,9 +169,9 @@ public abstract class WndBase extends Window implements IBase, BeforeCompose, Af
 				return false;
 			else if((getRol().getNuevo().equals(Constantes.TRUE_VALUE)))
 				return true;
-			else 
+			else
 				return false;
-		}else{ 
+		}else{
 			return false;
 		}
 	}
@@ -187,9 +187,9 @@ public abstract class WndBase extends Window implements IBase, BeforeCompose, Af
 				return false;
 			else if((getRol().getModificar().equals(Constantes.TRUE_VALUE)))
 				return true;
-			else 
+			else
 				return false;
-		}else{ 
+		}else{
 			return false;
 		}
 	}
@@ -205,9 +205,9 @@ public abstract class WndBase extends Window implements IBase, BeforeCompose, Af
 				return false;
 			else if((getRol().getGrabar().equals(Constantes.TRUE_VALUE)))
 				return true;
-			else 
+			else
 				return false;
-		}else{ 
+		}else{
 			return false;
 		}
 	}
@@ -223,9 +223,9 @@ public abstract class WndBase extends Window implements IBase, BeforeCompose, Af
 				return false;
 			else if((getRol().getEliminar().equals(Constantes.TRUE_VALUE)))
 				return true;
-			else 
+			else
 				return false;
-		}else{ 
+		}else{
 			return false;
 		}
 	}
@@ -241,9 +241,9 @@ public abstract class WndBase extends Window implements IBase, BeforeCompose, Af
 				return false;
 			else if((getRol().getConsultar().equals(Constantes.TRUE_VALUE)))
 				return true;
-			else 
+			else
 				return false;
-		}else{ 
+		}else{
 			return false;
 		}
 	}
@@ -259,9 +259,9 @@ public abstract class WndBase extends Window implements IBase, BeforeCompose, Af
 				return false;
 			else if((getRol().getImprimir().equals(Constantes.TRUE_VALUE)))
 				return true;
-			else 
+			else
 				return false;
-		}else{ 
+		}else{
 			return false;
 		}
 	}
@@ -277,22 +277,20 @@ public abstract class WndBase extends Window implements IBase, BeforeCompose, Af
 				return false;
 			else if((getRol().getExportar().equals(Constantes.TRUE_VALUE)))
 				return true;
-			else 
+			else
 				return false;
-		}else{ 
+		}else{
 			return false;
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IBase#accesoSuperUsuario(java.lang.Object[])
 	 */
 	@Override
 	public void accesoControlsRolSuperUsuario(List<Component> lstComponents){
-		for(int i=0; i<lstComponents.size(); i++){
-			Component component = lstComponents.get(i);
-
+		for (Component component : lstComponents) {
 			/*Deshabilita los controles si el usuario tiene un rol diferente al SUPER USUARIO*/
 			if(component instanceof Textbox)
 				((Textbox)component).setDisabled(getRol().getId().intValue()!=Constantes.ID_ROL_SUPER_USUARIO);
@@ -300,7 +298,7 @@ public abstract class WndBase extends Window implements IBase, BeforeCompose, Af
 				((Combobox)component).setDisabled(getRol().getId().intValue()!=Constantes.ID_ROL_SUPER_USUARIO);
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IBase#accesoControlsByRol(java.util.List, java.util.List)
@@ -309,16 +307,14 @@ public abstract class WndBase extends Window implements IBase, BeforeCompose, Af
 	public void accesoControlsByRol(List<Component> lstComponents, List<Rol> listRolesAcceeso){
 		accesoControlsByRol(lstComponents, listRolesAcceeso, false);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IBase#accesoControlsByRol(java.util.List, java.util.List)
 	 */
 	@Override
 	public void accesoControlsByRol(List<Component> lstComponents, List<Rol> listRolesAcceeso, Boolean ocultarControls){
-		for(int i=0; i<lstComponents.size(); i++){
-			Component component = lstComponents.get(i);
-								
+		for (Component component : lstComponents) {
 			/*Deshabilita los controles si el usuario tiene un rol diferente al SUPER USUARIO*/
 			if(component instanceof Textbox){
 				if(!(ocultarControls))
@@ -333,7 +329,7 @@ public abstract class WndBase extends Window implements IBase, BeforeCompose, Af
 			}else if (component instanceof Datebox){
 				if(!(ocultarControls))
 					((Datebox)component).setDisabled(!valirarRol(listRolesAcceeso));
-				else 
+				else
 					((Datebox)component).setVisible(valirarRol(listRolesAcceeso));
 			}else if (component instanceof Button){
 				if(!(ocultarControls))
@@ -361,10 +357,10 @@ public abstract class WndBase extends Window implements IBase, BeforeCompose, Af
 			}else if (component instanceof Listfoot)
 				if(ocultarControls)
 					((Listfoot)component).setVisible(valirarRol(listRolesAcceeso));
-				
+
 		}
 	}
-	
+
 	/**
 	 * Valida el si el rol del usuario actual esta en la lista
 	 * @param listRolesAcceeso	: Lista de roles

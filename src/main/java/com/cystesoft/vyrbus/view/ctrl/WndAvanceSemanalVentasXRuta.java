@@ -31,14 +31,14 @@ import com.cystesoft.vyrbus.service.util.UtilData;
 import com.cystesoft.vyrbus.view.ui.WndBase;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 public class WndAvanceSemanalVentasXRuta extends WndBase implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private Datebox dbxFechaInicial;
 	private Combobox cmbTipoConsulta;
 	private Datebox dbxFechaFinal;
@@ -46,26 +46,26 @@ public class WndAvanceSemanalVentasXRuta extends WndBase implements Serializable
 	//private Tree trAvanceRutas;
 	Tree  tree=new Tree();
 	Treecols treecols=new Treecols();
-	
+
 	int TIPCONSUL_TODOS=0;
 	int TIPCONSUL_IDA=1;
 	int TIPCONSUL_RETORNO=2;
 	int TIPCONSUL_PROVINCIAS=3;
-	
+
 //	Integer CountPax=0;
 	Integer totalAsientos=0;
-	
+
 	String RESU_PAX_LIMA_PROV="PASAJEROS LIMA=>PROV";
 	String RESU_PAX_PROV_LIM="PASAJEROS PROV=>LIM";
 	String RESU_PAX_PROV_PROV="PASAJEROS PROVINCIAS";
-	
+
 	String OCUP_LIM_PRO="% OCUP. LIMA=>PROV";
 	String OCUP_PROV_LIM="% OCUP. PROV=>LIMA";
 	String OCUP_PROV_PROV="% OCUP. PROV=>PROV";
-	
-	TreeMap<String, Object>totalesServicios=null;	
+
+	TreeMap<String, Object>totalesServicios=null;
 	Treechildren treechildrenRutas=null;
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
@@ -78,7 +78,7 @@ public class WndAvanceSemanalVentasXRuta extends WndBase implements Serializable
 		cmbTransaccion=(Combobox)this.getFellow("cmbTransaccion");
 		//trAvanceRutas=(Tree)this.getFellow("trAvanceRutas");
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IBase#onCreate()
@@ -88,20 +88,20 @@ public class WndAvanceSemanalVentasXRuta extends WndBase implements Serializable
 		MyTime time=new MyTime();
 		dbxFechaInicial.setValue(Constantes.FORMAT_DATE.parse(time.dateServer()));
 		dbxFechaFinal.setValue(Constantes.FORMAT_DATE.parse(time.dateServer()));
-		
+
 		UtilData.cargarTipoTransaction(cmbTransaccion);
 		cargarTipoConsulta(cmbTipoConsulta);
-		
+
 		cmbTipoConsulta.setSelectedIndex(0);
 		cmbTransaccion.setSelectedIndex(0);
 	}
-	
-	
+
+
 	public void cargarAvanceXrutas() throws Exception{
 		//List<OpcionMenu> list= ServiceLocator.getOpcionMenuMenager().buscarPorEstadoRegistro(Constantes.ACTIVO, "ordenOpcionMenu");
-		totalesServicios=new TreeMap<String,Object>();
+		totalesServicios=new TreeMap<>();
 //		totalAsientos=0;
-		
+
 		tree.setWidth("720px");
 		tree.setHeight("533px");
 		tree.setZclass("z-dottree");
@@ -115,23 +115,23 @@ public class WndAvanceSemanalVentasXRuta extends WndBase implements Serializable
 		((Treecol)treecols.getChildren().get(1)).setAlign("Center");
 		((Treecol)treecols.getChildren().get(3)).setAlign("Center");
 		tree.appendChild(treecols);
-		
+
 		/*Realiza la buscaque de los itinerarios y ventas*/
 		String fechaInicial=Constantes.FORMAT_DATE.format(dbxFechaInicial.getValue());
 		String fechaFinal=Constantes.FORMAT_DATE.format(dbxFechaFinal.getValue());
 		Integer tipoConsulta=cmbTipoConsulta.getSelectedItem().getValue();
 		String transaccion=String.valueOf(cmbTransaccion.getSelectedItem().getValue().toString());
-		
+
 		Treechildren treechildren = new Treechildren();
 		Treeitem itemDate = new Treeitem();
 		Treerow treerow = new Treerow();
 		Treecell treecell = new Treecell();
 
-		List<VentaPasaje> list=ServiceLocator.getReportesManager().avanceSemanalXRutas(fechaInicial, fechaFinal, String.valueOf(tipoConsulta), transaccion);		
-		
+		List<VentaPasaje> list=ServiceLocator.getReportesManager().avanceSemanalXRutas(fechaInicial, fechaFinal, String.valueOf(tipoConsulta), transaccion);
+
 		int ndias=(int) ((dbxFechaFinal.getValue().getTime()- dbxFechaInicial.getValue().getTime())/Constantes.MILISEGUNDOS_X_DIA)+1;
 		Long lfcehaPArtida=dbxFechaInicial.getValue().getTime()-Constantes.MILISEGUNDOS_X_DIA;
-		
+
 		for(int x=0;x<ndias;x++){
 			totalAsientos=0;
 			lfcehaPArtida+=Constantes.MILISEGUNDOS_X_DIA;
@@ -143,69 +143,69 @@ public class WndAvanceSemanalVentasXRuta extends WndBase implements Serializable
 			treerow.appendChild(treecell);
 			treerow.appendChild(new Treecell());
 			treerow.appendChild(new Treecell());
-							
+
 			/*Agrega rutas al item itemGoupFechas*/
 			int cantPaxFecha=insertRutas(list,fechaPartida, itemDate);
-			
-			Treecell cell=new Treecell(String.valueOf(cantPaxFecha)); 
+
+			Treecell cell=new Treecell(String.valueOf(cantPaxFecha));
 			cell.setStyle("font-weight:bold;color:#1e88e5");
 			treerow.appendChild(cell);
-			
+
 			insertTotales(itemDate, cantPaxFecha);
-			
+
 			itemDate.appendChild(treerow);
 			treechildren.appendChild(itemDate);
 		}
-		
-		
-		
+
+
+
 		tree.appendChild(treechildren);
 		this.appendChild(tree);
 	}
-	
+
 	private void insertTotales(Treeitem treeitem,Integer totalPax){
-	
+
 		//Inserta totales de los servicios
-		Integer totalServicios=0;
+		int totalServicios=0;
 		for(Entry<?, ?> e:totalesServicios.entrySet()){
 			int lenSerator=e.getValue().toString().indexOf(";");
 			int len=e.getValue().toString().length();
 			String descripcion=String.valueOf(e.getValue()).substring(0, lenSerator);
-			Integer cantServicio=Integer.valueOf(String.valueOf(e.getValue()).substring(lenSerator+1,len));
-			newItemTotales(treeitem, descripcion, cantServicio.toString());
-			
+			int cantServicio=Integer.parseInt(String.valueOf(e.getValue()).substring(lenSerator+1,len));
+			newItemTotales(treeitem, descripcion, Integer.toString(cantServicio));
+
 			totalServicios+=cantServicio;
 		}
-		newItemTotales(treeitem, "TOTAL SERVICIOS ", totalServicios.toString());
+		newItemTotales(treeitem, "TOTAL SERVICIOS ", Integer.toString(totalServicios));
 		newItemTotales(treeitem, "TOTAL PASAJEROS ", totalPax.toString());
 		newItemTotales(treeitem, "% OCUPABILIDAD TOTAL ", Util.toNumberFormat((double) totalPax*100/totalAsientos,2));
-		
+
 	}
-		
+
 	private void newItemTotales(Treeitem treeitem,String descripcion,String valor){
 		String styleForeColor = "font-size:12px;font-weight:bold;color:white";
-		
+
 		Treeitem item =new Treeitem();
 		Treerow treerow = new Treerow();
 		Treecell treecell = new Treecell();
-		
+
 		treerow.appendChild(new Treecell());
 		treerow.appendChild(new Treecell());
-		
+
 		treecell=new Treecell(descripcion);
 		treecell.setStyle(styleForeColor);
 		treerow.appendChild(treecell);
-		
+
 		treecell=new Treecell(valor.toString());
 		treecell.setStyle(styleForeColor);
 		treerow.appendChild(treecell);
-		
+
 		treerow.setStyle("background:#2962ff");
 		item.appendChild(treerow);
 		treechildrenRutas.appendChild(item);
 		treeitem.appendChild(treechildrenRutas);
 	}
-	
+
 	private int insertRutas(List<VentaPasaje> list,Date fechaPartida, Treeitem itemDate){
 		Itinerario itiBack=null;
 		Integer CountPax=0, cantidadAsientos=0;
@@ -214,7 +214,7 @@ public class WndAvanceSemanalVentasXRuta extends WndBase implements Serializable
 		treechildrenRutas = new Treechildren();
 		Integer tipoConsulta=1; //Variable que guarda el tipo de consulta, todos,ida, retorno o provincias.
 		int ulTipoConsulta=0;
-		
+
 		for(int y=0;y<list.size();y++){
 			VentaPasaje ventaRutas=list.get(y);
 			Itinerario itiRutas=ventaRutas.getItinerario();
@@ -222,27 +222,27 @@ public class WndAvanceSemanalVentasXRuta extends WndBase implements Serializable
 			tipoConsulta=ventaRutas.getTipoConsulta();
 			if(y==0)
 				ulTipoConsulta=ventaRutas.getTipoConsulta();
-			
+
 			//Inserta resumen de Lima provincias y provincias Lima
 			if(list.size()>y+1){
 //				int tipoConsultaNext=list.get(y+1).getTipoConsulta();
 //				if(tipoConsulta.intValue()!=tipoConsultaNext){ //ventaRutas.getTipoConsulta().intValue()){
 				if(tipoConsulta.intValue()!=ulTipoConsulta){ //ventaRutas.getTipoConsulta().intValue()){
 					Double OcupaLimProv=(double) CountPax*100/cantidadAsientos;
-					insertResum(tipoConsulta.intValue()==TIPCONSUL_IDA?RESU_PAX_LIMA_PROV: tipoConsulta.intValue()==TIPCONSUL_RETORNO?RESU_PAX_PROV_LIM:RESU_PAX_PROV_PROV, 
+					insertResum(tipoConsulta.intValue()==TIPCONSUL_IDA?RESU_PAX_LIMA_PROV: tipoConsulta.intValue()==TIPCONSUL_RETORNO?RESU_PAX_PROV_LIM:RESU_PAX_PROV_PROV,
 							CountPax.toString(), treechildrenRutas, itemDate, "background:#bbdefb");
 					insertResum(tipoConsulta.intValue()==TIPCONSUL_IDA?OCUP_LIM_PRO: tipoConsulta.intValue()==TIPCONSUL_RETORNO?OCUP_PROV_LIM:OCUP_PROV_PROV,
 							Util.toNumberFormat(OcupaLimProv,2), treechildrenRutas, itemDate, "background:#64b5f6");
 					newItem(treechildrenRutas, itemDate);
-					
+
 					Treerow treerow= new Treerow();
 					Treecell treecell = new Treecell(CountPax.toString());
 					treecell.setStyle("font-weight:bold;color:#424242");
 					treerow.appendChild(treecell);
-					
+
 					CountPax=0;
 					cantidadAsientos=0;
-					
+
 					if(tipoConsulta.intValue()==TIPCONSUL_IDA){
 						totalesServicios.put(tipoConsulta.toString(), "NRO.SERVICIOS LIMA - PROVINCIAS;"+totalServ);
 						totalServ=0;
@@ -255,15 +255,15 @@ public class WndAvanceSemanalVentasXRuta extends WndBase implements Serializable
 					}
 				}
 			}
-			
+
 			//Valida que se traten de itinerarios diferentes para insertarlos
 			if(itiBack==null || itiBack.getId().longValue()!=itiNext.getId().longValue()){
-				//valida que se trate de la misma fecha 
+				//valida que se trate de la misma fecha
 				if(itiRutas.getFechaPartida().getTime()==fechaPartida.getTime()){
 					if(itiBack==null || itiRutas.getId().longValue()!=itiBack.getId().longValue()){
 						Treeitem itemRutas = new Treeitem();
 						Treerow rowRutas = new Treerow();
-						
+
 						Treechildren treechildrenDetIti = new Treechildren();
 						for(VentaPasaje detalle: list){
 							//Inserta tramos de la ruta
@@ -271,51 +271,51 @@ public class WndAvanceSemanalVentasXRuta extends WndBase implements Serializable
 							if(itinerario.getId().longValue()==itiRutas.getId().longValue() && detalle.getCantidadPaxRuta()>0){
 								Treeitem itemDetIti = new Treeitem();
 								Treerow rowDetIti = new Treerow();
-								
+
 								Treecell cellDetIti = new Treecell(detalle.getDetalleItinerario().getRuta().toString());
 								rowDetIti.appendChild(cellDetIti);
-								
+
 								cellDetIti= new Treecell("");
 								rowDetIti.appendChild(cellDetIti);
-								
+
 								cellDetIti= new Treecell("");
 								rowDetIti.appendChild(cellDetIti);
-								
+
 								cellDetIti= new Treecell(detalle.getCantidadPaxRuta().toString());
 								rowDetIti.appendChild(cellDetIti);
-								
+
 								itemDetIti.appendChild(rowDetIti);
 								treechildrenDetIti.appendChild(itemDetIti);
 							}
 						}
 						itemRutas.appendChild(treechildrenDetIti);
 						itemRutas.setOpen(false);
-						
+
 						Treecell treecellHijo = new Treecell(itiRutas.getRuta().toString());
 						rowRutas.appendChild(treecellHijo);
-						
+
 						treecellHijo = new Treecell(itiRutas.getHoraPartida()!=null? itiRutas.getHoraPartida():"");
 						rowRutas.appendChild(treecellHijo);
-						
+
 						treecellHijo = new Treecell(itiRutas.getServicio().getDenominacion()!=null? itiRutas.getServicio().getDenominacion():"");
 						rowRutas.appendChild(treecellHijo);
-						
+
 						treecellHijo = new Treecell(String.valueOf(ventaRutas.getCantidadPax()));
 						treecellHijo.setStyle("font-weight:bold;color:#5c6bc0");
 						rowRutas.appendChild(treecellHijo);
-						
+
 						rowRutas.setStyle("background:#eeeeee");
 						itemRutas.appendChild(rowRutas);
 						itemRutas.setValue(ventaRutas);
 						treechildrenRutas.appendChild(itemRutas);
-						
+
 						/*Agrega el item rutas al itemGoupFechas*/
 						itemDate.appendChild(treechildrenRutas);
 						itemDate.setOpen(false);
-						
+
 						CountPax+=+ventaRutas.getCantidadPax();
 						cantidadAsientos+=itiRutas.getServicio().getTotalAsientos();
-						
+
 						totalPax+=+ventaRutas.getCantidadPax();
 						totalServ++;
 						totalAsientos+=itiRutas.getServicio().getTotalAsientos();
@@ -325,24 +325,24 @@ public class WndAvanceSemanalVentasXRuta extends WndBase implements Serializable
 					itiBack=new Itinerario();
 				itiBack=itiNext;
 			}
-			
+
 			//Inserta resumen de Lima provincias y provincias Lima
 			if(list.size()==y+1){
 				Double OcupaLimProv=(double) CountPax*100/cantidadAsientos;
-				insertResum(tipoConsulta.intValue()==TIPCONSUL_IDA?RESU_PAX_LIMA_PROV: tipoConsulta.intValue()==TIPCONSUL_RETORNO?RESU_PAX_PROV_LIM:RESU_PAX_PROV_PROV, 
+				insertResum(tipoConsulta.intValue()==TIPCONSUL_IDA?RESU_PAX_LIMA_PROV: tipoConsulta.intValue()==TIPCONSUL_RETORNO?RESU_PAX_PROV_LIM:RESU_PAX_PROV_PROV,
 						CountPax.toString(), treechildrenRutas, itemDate, "background:#bbdefb");
 				insertResum(tipoConsulta.intValue()==TIPCONSUL_IDA?OCUP_LIM_PRO: tipoConsulta.intValue()==TIPCONSUL_RETORNO?OCUP_PROV_LIM:OCUP_PROV_PROV,
 						Util.toNumberFormat(OcupaLimProv,2), treechildrenRutas, itemDate, "background:#64b5f6");
 				newItem(treechildrenRutas, itemDate);
-				
+
 				Treerow treerow= new Treerow();
 				Treecell treecell = new Treecell(CountPax.toString());
 				treecell.setStyle("font-weight:bold;color:#DB3330");
 				treerow.appendChild(treecell);
-				
+
 				CountPax=0;
 				cantidadAsientos=0;
-				
+
 				if(tipoConsulta.intValue()==TIPCONSUL_IDA){
 					totalesServicios.put(tipoConsulta.toString(), "NRO.SERVICIOS LIMA - PROVINCIAS;"+totalServ);
 					totalServ=0;
@@ -358,16 +358,16 @@ public class WndAvanceSemanalVentasXRuta extends WndBase implements Serializable
 		}
 		return totalPax;
 	}
-	
+
 	private void insertResum(String title,String valorTitle, Treechildren children, Treeitem itemDate, String styleBackground){
 		String styleForeColor = "font-size:12px;font-weight:bold;color:#616161";
-		
+
 		Treeitem itemSumPax = new Treeitem();
 		Treerow rowResumen= new Treerow();
 		rowResumen.setStyle(styleBackground);
-		
+
 		rowResumen.appendChild(new Treecell());
-		
+
 		rowResumen.appendChild(new Treecell());
 		//--
 		Treecell cellTitle= new Treecell(title);
@@ -377,45 +377,45 @@ public class WndAvanceSemanalVentasXRuta extends WndBase implements Serializable
 		Treecell cellValue=new Treecell(valorTitle);
 		cellValue.setStyle(styleForeColor);
 		rowResumen.appendChild(cellValue);
-		
+
 		itemSumPax.appendChild(rowResumen);
 		children.appendChild(itemSumPax);
 		itemDate.appendChild(children);
 	}
-	
-	
+
+
 	private void newItem(Treechildren children, Treeitem itemDate){
 		Treeitem itemSumPax = new Treeitem();
 		Treerow rowResumen= new Treerow();
 		rowResumen.appendChild(new Treecell());
 		rowResumen.appendChild(new Treecell());
-				
+
 		itemSumPax.appendChild(rowResumen);
 		children.appendChild(itemSumPax);
 		itemDate.appendChild(children);
 	}
 
 	/**
-	 * Carga el tipo de consulta 
-	 * @param combobox: 
+	 * Carga el tipo de consulta
+	 * @param combobox:
 	 */
 	public void cargarTipoConsulta(Combobox combobox) {
 		Comboitem oComboitem0 = new Comboitem("TODOS");
 		Comboitem oComboitem1 = new Comboitem("IDA");
 		Comboitem oComboitem2 = new Comboitem("RETORNOS");
 		Comboitem oComboitem3 = new Comboitem("PROVINCIAS");
-		
+
 		oComboitem0.setValue(TIPCONSUL_TODOS);
 		oComboitem1.setValue(TIPCONSUL_IDA);
 		oComboitem2.setValue(TIPCONSUL_RETORNO);
 		oComboitem3.setValue(TIPCONSUL_PROVINCIAS);
-		
+
 		combobox.appendChild(oComboitem0);
 		combobox.appendChild(oComboitem1);
 		combobox.appendChild(oComboitem2);
 		combobox.appendChild(oComboitem3);
 	}
-	
+
 	public void exportar(){
 		Session session = getDesktop().getSession();
 		HttpSession httpSession = (HttpSession)session.getNativeSession();

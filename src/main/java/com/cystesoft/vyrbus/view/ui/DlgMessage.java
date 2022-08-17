@@ -20,7 +20,7 @@ public class DlgMessage {
 	public static final int BTN_YESNO = Messagebox.YES | Messagebox.NO;
 	public static final int BTN_DEFAULT_NO=Messagebox.NO;
 	public static final int BTN_DEFAULT_YES=Messagebox.YES;
-	
+
 	/**
 	 * Muestra mensaje de advertencia
 	 * @param msg	: contenido del Mensaje
@@ -51,7 +51,7 @@ public class DlgMessage {
 			}
 		});
 	}
-	
+
 	/**
 	 * Muestra mensaje de interrogante
 	 * @param msg	: Contenido del mensaje
@@ -60,7 +60,7 @@ public class DlgMessage {
 	public static int question(String msg){
 		return Messagebox.show(msg, NOMBREAPLICACION+" PREGUNTA", BTN_YESNO, Messagebox.QUESTION);
 	}
-	
+
 	/**
 	 * Muestra mensaje de información
 	 * @param msg	: Contenido del mensaje
@@ -68,7 +68,7 @@ public class DlgMessage {
 	 */
 	public static void information(String msg){
 		Messagebox.show(msg, NOMBREAPLICACION+" INFORMA", BTN_OK, Messagebox.INFORMATION);
-	}	
+	}
 	/**
 	 * Muestra el mensaje de información.
 	 * @param msg			: Mensaje que se desea mostrar.
@@ -105,7 +105,7 @@ public class DlgMessage {
 			}
 		});
 	}
-	
+
 	/**
 	 * Muestra mensaje de error
 	 * @param msg	: Contenido del mensaje

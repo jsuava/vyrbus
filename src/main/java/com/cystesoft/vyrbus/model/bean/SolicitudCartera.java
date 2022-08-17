@@ -4,13 +4,13 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 public class SolicitudCartera extends GenericBean implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Long id;
 	private Usuario usuario;
 	private Cliente cliente;
@@ -23,11 +23,11 @@ public class SolicitudCartera extends GenericBean implements Serializable {
 	private double descuentoAlta=.00;
 	private double descuentoBaja=.00;
 	private double baseHistorica=.00;
-	
+
 	/*No mapeado*/
 	private String esComisionable;
 	private SolicitudClienteCredito solicitudClienteCredito;
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -112,7 +112,7 @@ public class SolicitudCartera extends GenericBean implements Serializable {
 	public void setEsComisionable(String esComisionable) {
 		this.esComisionable = esComisionable;
 	}
-	
-	
+
+
 
 }

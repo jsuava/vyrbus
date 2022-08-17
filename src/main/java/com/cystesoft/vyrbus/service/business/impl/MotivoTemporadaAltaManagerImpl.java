@@ -13,12 +13,12 @@ import com.cystesoft.vyrbus.service.exceptions.DenominacionDuplicadaException;
 import com.cystesoft.vyrbus.service.util.Constantes;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 public class MotivoTemporadaAltaManagerImpl implements MotivoTemporadaAltaManager  {
-	
+
 	private MotivoTemporadaAltaDAO motivoTemporadaAltaDAO;
 	/**
 	 * @return the motivoTemporadaAltaDAO
@@ -71,19 +71,19 @@ public class MotivoTemporadaAltaManagerImpl implements MotivoTemporadaAltaManage
 	public void guardar(MotivoTemporadaAlta motivoTemporadaAlta) throws Exception {
 		try{
 			/*Valida duplicidad de la denominación*/
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("nombreMotivo", motivoTemporadaAlta.getNombreMotivo());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resul = getMotivoTemporadaAltaDAO().buscarPorX(criteriosBusqueda, null);
 			if(resul.size()>0)
 				throw new DenominacionDuplicadaException();
-			
+
 			getMotivoTemporadaAltaDAO().guardar(motivoTemporadaAlta);
-			
+
 		}catch (DenominacionDuplicadaException ddex){
 			throw new DenominacionDuplicadaException();
 		}
-		
+
 	}
 
 	/*
@@ -95,21 +95,21 @@ public class MotivoTemporadaAltaManagerImpl implements MotivoTemporadaAltaManage
 	public void actualizar(MotivoTemporadaAlta motivoTemporadaAlta) throws Exception {
 		try{
 			/*Valida duplicidad de la denominación*/
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("nombreMotivo", motivoTemporadaAlta.getNombreMotivo());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resul = getMotivoTemporadaAltaDAO().buscarPorX(criteriosBusqueda, null);
-			for(int r = 0; r < resul.size(); r ++) {
-				MotivoTemporadaAlta oAlta = (MotivoTemporadaAlta) resul.get(r);
+			for (Object element : resul) {
+				MotivoTemporadaAlta oAlta = (MotivoTemporadaAlta) element;
 					if (!(oAlta.getId().equals(motivoTemporadaAlta.getId())) )
 						throw new DenominacionDuplicadaException();
 			}
 			getMotivoTemporadaAltaDAO().actualizar(motivoTemporadaAlta);
-			
+
 		}catch(DenominacionDuplicadaException ddex){
 			throw new DenominacionDuplicadaException();
 		}
-		
+
 	}
 
 	/*
@@ -122,7 +122,7 @@ public class MotivoTemporadaAltaManagerImpl implements MotivoTemporadaAltaManage
 		getMotivoTemporadaAltaDAO().inactivar(id);
 	}
 
-	
-	
+
+
 
 }

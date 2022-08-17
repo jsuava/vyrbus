@@ -75,7 +75,7 @@ public class Tarifa extends GenericBean implements java.io.Serializable, Cloneab
 	public void setZonaBus(Integer zonaBus) {
 		this.zonaBus = zonaBus;
 	}
-	
+
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		// TODO Auto-generated method stub

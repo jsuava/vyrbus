@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 30/04/2012
  */
@@ -41,9 +41,9 @@ public class WndTipoFlota extends WndOpcionesMantenimiento {
 	private Textbox txtDenominacion;
 	private Textbox txtCodigo;
 	private Textbox txtNombreCorto;
-	
+
 	private TipoFlota oTipoFlota = null;
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
 
 	/* (non-Javadoc)
@@ -51,7 +51,7 @@ public class WndTipoFlota extends WndOpcionesMantenimiento {
 	 */
 	@Override
 	public void onCreate() {
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
 	}
 
@@ -119,7 +119,7 @@ public class WndTipoFlota extends WndOpcionesMantenimiento {
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getTipoFlotaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getTipoFlotaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
 	}
 
@@ -156,11 +156,11 @@ public class WndTipoFlota extends WndOpcionesMantenimiento {
 		try{
 			if (txtDenominacion.getText().trim().equals(""))
 				throw new DenominacionNullException();
-			
-			
+
+
 			if (action==ACTION_NEW)
 				oTipoFlota = new TipoFlota();
-			
+
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
 
 			oTipoFlota.setId(id);
@@ -188,7 +188,7 @@ public class WndTipoFlota extends WndOpcionesMantenimiento {
 			criteriosBusqueda.put("denominacion",oTipoFlota.getDenominacion() );
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			listarRegistros(ServiceLocator.getTipoFlotaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-			
+
 		}catch (DenominacionNullException dnex){
 			DlgMessage.information(Messages.getString("Generales.information.noIngresoDenominacion"),txtDenominacion);
 			throw new CancelaGrabacionException();
@@ -205,7 +205,7 @@ public class WndTipoFlota extends WndOpcionesMantenimiento {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace(); throw new CancelaGrabacionException();
 		}
-				
+
 	}
 
 	/* (non-Javadoc)
@@ -278,11 +278,11 @@ public class WndTipoFlota extends WndOpcionesMantenimiento {
 	}
 
 	private void listarRegistros(ArrayList<TipoFlota> lstRegistros) {
-		ArrayList<Object> lstTipoFlotas = new ArrayList<Object>();
+		ArrayList<Object> lstTipoFlotas = new ArrayList<>();
 
 		for(int r = 0; r < lstRegistros.size(); r ++) {
 			TipoFlota oTipoFlota = lstRegistros.get(r);
-			ArrayList<Object> lstFila = new ArrayList<Object>();
+			ArrayList<Object> lstFila = new ArrayList<>();
 
 			lstFila.add(oTipoFlota.getId());
 			lstFila.add(r + 1);

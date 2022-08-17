@@ -7,7 +7,7 @@ import java.util.TreeMap;
 import com.cystesoft.vyrbus.model.bean.ProgramacionServicio;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
@@ -20,32 +20,32 @@ public interface ProgramacionServicioManager {
 	 * @throws Exception
 	 */
 	public int guardar(ProgramacionServicio programacionServicio)throws Exception;
-	
+
 	/**
 	 * Actualiza Programacion
 	 * @param ProgramacionServicios
 	 * @throws Exception
 	 */
 	public void actualizar(ProgramacionServicio programacionServicio)throws Exception;
-	
+
 	/**
 	 * Anula Programación
 	 * @param id  : indentificador de la Programación
 	 * @throws Exception
 	 */
 	public void inactivar(Long id)throws Exception;
-	
+
 /**
- * 
+ *
  * @param criteriosBusqueda
  * @param criteriosOrdenar
  * @return
  */
 	public ArrayList<ProgramacionServicio> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
-	
-	
+
+
 	/**
-	 * 
+	 *
 	 * @param idItinerario	: identificador unico del itinerario.
 	 * @param origen		: origen del itinerario.
 	 * @param destino		: destino del itinerario.
@@ -55,9 +55,9 @@ public interface ProgramacionServicioManager {
 	 * @return				: Lista de Itinerarios.
 	 * @throws Exception
 	 */
-	public List<ProgramacionServicio> buscarItinerariosProgramados(Long idItinerario, String origen, String destino, String fechaInicio, String fechaFinal, 
+	public List<ProgramacionServicio> buscarItinerariosProgramados(Long idItinerario, String origen, String destino, String fechaInicio, String fechaFinal,
 			String Servicio, Boolean itinerariosProgramados)throws Exception;
-	
+
 	/**
 	 * Verifica si el Bus ya fue programado en la fecha indicada
 	 * @param fechaPartida	: Fecha del a consular la programacion del bus.
@@ -67,15 +67,15 @@ public interface ProgramacionServicioManager {
 	 * @throws Exception
 	 */
 	public List<ProgramacionServicio> validacionBusesProgramados (String fechaPartida,String horaPartida, Integer idBus,Integer idAgeciaPartida) throws Exception;
-	
+
 	/**
-	 * Actualiza el bus en el itinerario. 
+	 * Actualiza el bus en el itinerario.
 	 * @param idItinerario : identificador del itinerario
 	 * @param idBus		   : identificador del Bus.
 	 * @throws Exception
 	 */
 	public void updateItinerarioBus(Long idItinerario, Long idBus) throws Exception;
-	
+
 
 	/**
 	 * Valida que el piloto, copiloto o tripulante no este asociado a otro servicio en la misma fecha
@@ -100,7 +100,7 @@ public interface ProgramacionServicioManager {
 	/**
 	 * Busca la programacion por su Id
 	 * @param id	: Identificador de la programacion.
-	 * @return	
+	 * @return
 	 * @throws Exception
 	 */
 	public ProgramacionServicio buscarPorId(Long id)throws Exception;

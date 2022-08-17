@@ -14,8 +14,8 @@ public class EstadoBus extends GenericBean implements java.io.Serializable {
 	private String denominacion;
 	private Integer tipoEstado;
 	private String color;
-	
-	private Set<PuntoControlEstadoBus> puntoControlEstadoBuses = new HashSet<PuntoControlEstadoBus>(0);
+
+	private Set<PuntoControlEstadoBus> puntoControlEstadoBuses = new HashSet<>(0);
 
 	public EstadoBus() {
 	}

@@ -30,17 +30,17 @@ public class WndTicketTuentrada extends WndBase {
 	public static final String FORMAT_BOLETO="BOLETO";
 	public static final String FORMAT_BOLETO_IDA_VUELTA="BOLETO_IDA_VUELTA";
 	public static final String FORMAT_LIQUIDACION_TURNO="LIQUIDACION_TURNO";
-	
+
 	private Applet comPrinter;
 	private Label lblStatus;
 	private Label lblNumeroControl;
-	
+
 	private List<VentaPasaje> lstVentaPasaje = null;
-	
+
 	private String formato;
 	private String msg;
-//	private String urlDocumento;	
-	
+//	private String urlDocumento;
+
 	@Override
 	@SuppressWarnings("unchecked")
 	public void onCreate() throws Exception{
@@ -49,26 +49,26 @@ public class WndTicketTuentrada extends WndBase {
 		formato = (String)this.getAttribute("formato");
 		msg = (String)this.getAttribute("msg");
 //		urlDocumento = (String)this.getAttribute("urlDocumento");
-		
+
 		lblStatus.setValue(msg);
-		
+
 		if(formato.equals(FORMAT_BOLETO)){
 			comPrinter.setParam("msg",proccessBytesToSendVoucher(lstVentaPasaje));
 			comPrinter.setParam("URLInstaller", URL_CONFIGURATION_FILES_INSTALLER);
-//			lblStatus.setValue("Se imprimirán "+sales.size()+" ventas(s)");			
+//			lblStatus.setValue("Se imprimirán "+sales.size()+" ventas(s)");
 		}else if (formato.equals(FORMAT_LIQUIDACION_TURNO)){
 			comPrinter.setParam("msg",proccessBytesToSendClearance());
 			comPrinter.setParam("URLInstaller",URL_CONFIGURATION_FILES_INSTALLER);
-//			lbStatus.setValue("Se imprimirán 1 liquidacion");			
+//			lbStatus.setValue("Se imprimirán 1 liquidacion");
 		}
-		
+
 		if(nControl!=null)
 			lblNumeroControl.setValue(nControl);
 		this.doModal();
 	}
-	
-	
-	
+
+
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
 	 */
@@ -83,23 +83,23 @@ public class WndTicketTuentrada extends WndBase {
 	/**
 	 * Metodo que procesa las ventas.
 	 * @param lstSales	: Lista de ventas a imprimir.
-	 * @return 
-	 * @throws Exception 
+	 * @return
+	 * @throws Exception
 	 */
 	private String proccessBytesToSendVoucher(List<VentaPasaje> lstSales) throws Exception{
 		if(lstSales.size()==1){
-			return proccessBytesOneSale(lstSales.get(0));		
+			return proccessBytesOneSale(lstSales.get(0));
 		}
 		else
 			return proccessBytesManySales(lstSales);
 	}
-	
+
 	/**
 	 * Metodo para crear el texto a imprimir en la liquidación de turno
 	 * @return
 	 */
 	private String proccessBytesToSendClearance(){
-		
+
 		String usuario = (String)this.getAttribute("usuario");
 		String login = (String)this.getAttribute("login");
 		Integer cantidadContado = (Integer)this.getAttribute("cantidadContado");
@@ -134,16 +134,16 @@ public class WndTicketTuentrada extends WndBase {
         sb.append("<RC1,990><RR><F9>FECHA DE OPERACION:");
         sb.append("<RC250,990><RR><F9>"+fechaLiquidacion);
         sb.append("<p>");
-		
-		
+
+
 		return sb.toString();
-	}	
-	
+	}
+
 	/**
 	 * Metodo para crear el texto para imprimir el boleto de viaje.
 	 * @param ventaPasaje
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private String proccessBytesOneSale(VentaPasaje ventaPasaje) throws Exception{
 		Agencia puntoEmbarque=ServiceLocator.getAgenciaManager().buscarPorId(ventaPasaje.getAgenciaPartida().getId().longValue());
@@ -164,7 +164,7 @@ public class WndTicketTuentrada extends WndBase {
 		sb.append("<RC170,50><F9>PASAJERO");
 		sb.append("<RC170,730><F9>DOC. IDENTIDAD");
 		sb.append("<RC190,50><F3><BS15,12>"+ventaPasaje.getPasajero().toString());
-		sb.append("<RC190,730><F3><BS15,12>"+ventaPasaje.getPasajero().getNumeroDocumento());			
+		sb.append("<RC190,730><F3><BS15,12>"+ventaPasaje.getPasajero().getNumeroDocumento());
 		sb.append("<RC230,50><F9>EMPRESA");
 		sb.append("<RC230,730><F9>RUC");
 		if(ventaPasaje.getCliente()!=null){
@@ -187,31 +187,31 @@ public class WndTicketTuentrada extends WndBase {
 		sb.append("<RC400,100><F2>3) El Ticket debe ser canjeado 30 minutos antes de la fecha y hora de viaje.");
 		sb.append("<RC420,100><F2>4) Las condiciones generales que rigen este contrato figuran en el boleto de viaje.");
 		sb.append("<RC448,100><F9> USUARIO : "+ventaPasaje.getUsuario().getLogin() + "         F.OPERACION :"+(ventaPasaje.getFechaInsercion()==null?Util.DatetoString(new Date(), DATE_DEFAULT_FORMAT):Util.DatetoString(ventaPasaje.getFechaInsercion(), DATE_DEFAULT_FORMAT)));
-		
+
 //		sb.append("<RC1,300><F10><BS15,12>e-Ticket:");
 //		sb.append("<RC1,450><F10><BS15,15>"+ventaPasaje.getNumeroBoleto());
 		sb.append("<RC1,300><F10><BS18,12>e-Ticket:");
 		sb.append("<RC1,450><F10><BS18,15>"+" "+ventaPasaje.getNumeroBoleto());
-		
+
 		//#comen 26/01/2015 - jabanto
 //		sb.append("<RC100,1050><RR><F9>www.tepsa.com.pe");
 //		sb.append("<RC1,1020><RR><F9>USUARIO:");
 //		sb.append("<RC250,1020><RR><F9>"+ventaPasaje.getUsuario().getLogin());
 //		sb.append("<RC1,990><RR><F9>FECHA DE OPERACION:");
 //		sb.append("<RC250,990><RR><F9>"+(ventaPasaje.getFechaInsercion()==null?Util.DatetoString(new Date(), DATE_DEFAULT_FORMAT):Util.DatetoString(ventaPasaje.getFechaInsercion(), DATE_DEFAULT_FORMAT)));
-		
+
 		sb.append("<RC100,1090><RR><F9>www.tepsa.com.pe");
 		sb.append("<RC1,1050><RR><F9>RUC");
 		sb.append("<RC135,1050><RR><F9>"+" : 20502324927");
 		sb.append("<RC1,1025><RR><F9>RAZON SOCIAL");
 		sb.append("<RC135,1025><RR><F9>"+" :TRANSPORTES EL PINO S.A.C.");
 		sb.append("<RC1,1000><RR><F9> AV. MANUEL ECHEANDIA 303 - SAN LUIS");
-		
+
 		sb.append("<p>");
 		return sb.toString();
 
 	}
-	
+
 	/**
 	 * Metodo para crear el texto que se enviara al puerto serial.
 	 * @param lstSales	: Boletos que se desea imprimir.
@@ -238,7 +238,7 @@ public class WndTicketTuentrada extends WndBase {
 			sb.append("<RC120,200><F5><BS15,15>");
 			sb.append(ventaPasaje.getCliente().getRazonSocial());
 		}else{
-			sb.append("<RC120,200><F5><BS15,15>");			
+			sb.append("<RC120,200><F5><BS15,15>");
 		}
 		sb.append("<RC170,50><F9>RUC:");
 //		if(ventaPasaje.getPasajero().getId().intValue()!=ventaPasaje.getCliente().getId().intValue()){
@@ -246,7 +246,7 @@ public class WndTicketTuentrada extends WndBase {
 			sb.append("<RC160,200><F5>");
 			sb.append(ventaPasaje.getCliente().getNumeroDocumento());
 		}else{
-			sb.append("<RC160,200><F5>");			
+			sb.append("<RC160,200><F5>");
 		}
 		sb.append("<RC170,530><F9>PTO.EMB.:");
 		sb.append("<RC160,700><F5><BS15,15>");
@@ -259,7 +259,7 @@ public class WndTicketTuentrada extends WndBase {
 		int thickness = 30;
 		int initialPosition = 250;
 		for(int i=0;i<lstSales.size();i++){
-			int finalPosition =initialPosition+(i*thickness); 
+			int finalPosition =initialPosition+(i*thickness);
 			sb.append("<RC");
 			sb.append(finalPosition);
 			sb.append(",50><F9>");

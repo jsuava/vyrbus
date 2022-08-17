@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 30/04/2012
  */
@@ -43,22 +43,22 @@ public class WndCanalVenta extends WndOpcionesMantenimiento {
 	private Textbox txtDenominacion;
 	private Textbox txtNombreCorto;
 	private Textbox txtColor;
-		
+
 	CanalVenta oCanalVenta = null;
-	
-	
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+
+
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.IBase#onCreate()
 	 */
 	@Override
 	public void onCreate() {
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
-        
-		
+
+
 	}
 
 	/* (non-Javadoc)
@@ -70,7 +70,7 @@ public class WndCanalVenta extends WndOpcionesMantenimiento {
 		txtNombreCorto = (Textbox) getFellow("txtNombreCorto");
 		txtColor=(Textbox)this.getFellow("txtColor");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.IOpcionesMantenimiento#onNew()
 	 */
@@ -106,7 +106,7 @@ public class WndCanalVenta extends WndOpcionesMantenimiento {
 					criteriosBusqueda.remove("nombreCorto");
 				}else {criteriosBusqueda.put("nombreCorto", "%"+nombreCorto+"%");}
 				criteriosBusqueda.put("estadoRegistro", estadoRegistro);
-			
+
 				listarRegistros(ServiceLocator.getCanalVentaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 			}
 		});
@@ -118,7 +118,7 @@ public class WndCanalVenta extends WndOpcionesMantenimiento {
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getCanalVentaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getCanalVentaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
 	}
 
@@ -159,10 +159,10 @@ public class WndCanalVenta extends WndOpcionesMantenimiento {
 				throw new NombreCortoNullException();
 			else if (txtColor.getText().trim().isEmpty())
 				throw new ColorNullException();
-			
+
 			if (action==ACTION_NEW)
 				 oCanalVenta = new CanalVenta();
-			
+
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
 
 			oCanalVenta.setId(id);
@@ -189,7 +189,7 @@ public class WndCanalVenta extends WndOpcionesMantenimiento {
 			criteriosBusqueda.put("nombreCorto", oCanalVenta.getNombreCorto());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			listarRegistros(ServiceLocator.getCanalVentaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-			
+
 		}catch (ColorNullException cnex){
 			DlgMessage.information(Messages.getString("WndCanalVenta.information.noIngresoColor"),txtColor);
 			throw new CancelaGrabacionException();
@@ -281,11 +281,11 @@ public class WndCanalVenta extends WndOpcionesMantenimiento {
 	}
 
 	private void listarRegistros(ArrayList<CanalVenta> lstRegistros) {
-		ArrayList<Object> lstCanalesVenta = new ArrayList<Object>();
+		ArrayList<Object> lstCanalesVenta = new ArrayList<>();
 
 		for(int r = 0; r < lstRegistros.size(); r ++) {
 			CanalVenta oCanalVenta = lstRegistros.get(r);
-			ArrayList<Object> lstFila = new ArrayList<Object>();
+			ArrayList<Object> lstFila = new ArrayList<>();
 
 			lstFila.add(oCanalVenta.getId());
 			lstFila.add(r + 1);

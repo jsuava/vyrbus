@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 02/05/2012
  */
@@ -39,21 +39,21 @@ public class WndLocalidad extends WndOpcionesMantenimiento {
 	private static final long serialVersionUID = -1721402526478904823L;
 
 	private Textbox txtDenominacion;
-	
+
 	private Localidad oLocalidad=null;
 
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IBase#onCreate()
 	 */
 	@Override
 	public void onCreate() throws Exception {
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IBase#initComponents()
 	 */
@@ -61,7 +61,7 @@ public class WndLocalidad extends WndOpcionesMantenimiento {
 	public void initComponents() {
 		txtDenominacion = (Textbox) getFellow("txtDenominacion");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onNew()
 	 */
@@ -102,7 +102,7 @@ public class WndLocalidad extends WndOpcionesMantenimiento {
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getLocalidadManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getLocalidadManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
 	}
 	/* (non-Javadoc)
@@ -136,10 +136,10 @@ public class WndLocalidad extends WndOpcionesMantenimiento {
 		try{
 			if (txtDenominacion.getText().trim().equals(""))
 				throw new DenominacionNullException();
-			
+
 			if (action==ACTION_NEW)
 				oLocalidad = new Localidad();
-			
+
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
 			oLocalidad.setId(id);
 			oLocalidad.setDenominacion(txtDenominacion.getText().trim().toUpperCase());
@@ -157,12 +157,12 @@ public class WndLocalidad extends WndOpcionesMantenimiento {
 					ServiceLocator.getLocalidadManager().actualizar(oLocalidad);
 					break;
 			}
-			/*RECUEPRA EL REGISTRO ACTUALIZADO O EL NUEVO*/			
+			/*RECUEPRA EL REGISTRO ACTUALIZADO O EL NUEVO*/
 			criteriosBusqueda.remove("denominacion");
 			criteriosBusqueda.put("denominacion", oLocalidad.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-			this.listarRegistros(ServiceLocator.getLocalidadManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));	
-			
+			this.listarRegistros(ServiceLocator.getLocalidadManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
+
 		}catch (DenominacionNullException dnex){
 		  DlgMessage.information(Messages.getString("Denominacion"));
 		  txtDenominacion.setFocus(true); throw new CancelaGrabacionException();
@@ -173,8 +173,8 @@ public class WndLocalidad extends WndOpcionesMantenimiento {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace(); throw new CancelaGrabacionException();
 		}
-		
-		
+
+
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onDelete(int)
@@ -201,7 +201,7 @@ public class WndLocalidad extends WndOpcionesMantenimiento {
 	@Override
 	public void onPrint(int tab) {
 		// TODO Auto-generated method stub
-		
+
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onExport(int)
@@ -209,7 +209,7 @@ public class WndLocalidad extends WndOpcionesMantenimiento {
 	@Override
 	public void onExport(int tab) {
 		// TODO Auto-generated method stub
-		
+
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onHelp()
@@ -217,7 +217,7 @@ public class WndLocalidad extends WndOpcionesMantenimiento {
 	@Override
 	public void onHelp() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -228,7 +228,7 @@ public class WndLocalidad extends WndOpcionesMantenimiento {
 		switch (tab) {
 			case TAB_LIST:
 				break;
-	
+
 			case TAB_MAINTENANCE:
 				if (listboxLista.getSelectedIndex() > -1) {
 					this.mantenimientoRegistro(new Long((String) listboxLista.getSelectedItem().getValue()));
@@ -246,11 +246,11 @@ public class WndLocalidad extends WndOpcionesMantenimiento {
 	}
 
 	private void listarRegistros(ArrayList<Localidad> lstRegistros) {
-		ArrayList<Object> lstLocalidades = new ArrayList<Object>();
+		ArrayList<Object> lstLocalidades = new ArrayList<>();
 
 		for(int r = 0; r < lstRegistros.size(); r ++) {
 			Localidad oLocalidad = lstRegistros.get(r);
-			ArrayList<Object> lstFila = new ArrayList<Object>();
+			ArrayList<Object> lstFila = new ArrayList<>();
 
 			lstFila.add(oLocalidad.getId());
 			lstFila.add(r + 1);

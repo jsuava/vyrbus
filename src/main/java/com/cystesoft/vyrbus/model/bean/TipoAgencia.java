@@ -12,13 +12,13 @@ public class TipoAgencia extends GenericBean implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String denominacion;
-	
-	private Set<Agencia> agencias = new HashSet<Agencia>(0);
+
+	private Set<Agencia> agencias = new HashSet<>(0);
 
 	public TipoAgencia() {
-		
+
 	}
-	
+
 	public TipoAgencia(Integer id) {
 		super();
 		this.id=id;

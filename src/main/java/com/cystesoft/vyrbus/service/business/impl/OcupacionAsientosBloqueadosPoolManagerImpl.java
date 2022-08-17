@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 08/09/2016
  * Hora			: 14:29:32
@@ -25,7 +25,7 @@ import com.cystesoft.vyrbus.service.business.OcupacionAsientosBloqueadosPoolMana
 public class OcupacionAsientosBloqueadosPoolManagerImpl implements OcupacionAsientosBloqueadosPoolManager {
 	private OcupacionAsientosBloqueadosPoolDAO ocupacionAsientosBloqueadosPoolDAO;
 
-	
+
 
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.OcupacionAsientosBloqueadosPoolManager#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
@@ -103,6 +103,6 @@ public class OcupacionAsientosBloqueadosPoolManagerImpl implements OcupacionAsie
 			OcupacionAsientosBloqueadosPoolDAO ocupacionAsientosBloqueadosPoolDAO) {
 		this.ocupacionAsientosBloqueadosPoolDAO = ocupacionAsientosBloqueadosPoolDAO;
 	}
-	
+
 
 }

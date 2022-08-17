@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 05/06/2012
  */
@@ -10,6 +10,7 @@ package com.cystesoft.vyrbus.service.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.TreeMap;
 
 import org.zkoss.zk.ui.Component;
@@ -23,8 +24,6 @@ import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
-
-import java.util.List;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.AutorizadorCortesia;
@@ -84,6 +83,7 @@ import com.cystesoft.vyrbus.model.bean.VentaPool;
 import com.cystesoft.vyrbus.model.bean.VentaTramo;
 import com.cystesoft.vyrbus.service.exceptions.EspecieValoradaNotAvailableException;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
+import com.cystesoft.vyrbus.view.ctrl.WndItinerario;
 import com.cystesoft.vyrbus.view.ui.DlgMessage;
 import com.cystesoft.vyrbus.view.ui.WndSeleccionaItinerario;
 import com.cystesoft.vyrbus.view.ui.WndSeleccionarUbigeo;
@@ -96,33 +96,33 @@ import com.cystesoft.vyrbus.view.ui.WndSeleccionarUbigeo;
 public class UtilData extends Window {
 
 	private static final long serialVersionUID = 1L;
-	
+
 //	private Date	fechaInsercion;
 //    private String  usuarioInsercion;
-//	private String	ipInsercion;	
+//	private String	ipInsercion;
 //
-//	public Date getFechaInsercion() {		
+//	public Date getFechaInsercion() {
 //		return fechaInsercion;
 //	}
 //	public void setFechaInsercion(Date fechaInsercion) {
 //		this.fechaInsercion = fechaInsercion;
 //	}
-//	
+//
 //	public String getUsuarioInsercion(){
 //		return usuarioInsercion;
 //	}
 //	public void setUsuarioInsercion(String usuarioInsercion) {
 //		this.usuarioInsercion = usuarioInsercion;
 //	}
-//	
+//
 //	public String getIpInsercion(){
 //		return ipInsercion;
 //	}
 //	public void setIpInsercion(String ipInsercion) {
 //		this.ipInsercion = ipInsercion;
-//		
-//	}	
-	
+//
+//	}
+
 	/**
 	 * Constante para la data tipoIngresoLiquidacion
 	 * @see UtilData#cargarDataCombo(Combobox, int)
@@ -138,21 +138,21 @@ public class UtilData extends Window {
 	 * Permite registrar las propiedades de auditoria del Pojo
 	 * este método debe ser usado para los registros nuevos.
 	 * @param genericBean
-	 * @param usuario		
-	 * @throws Exception 
+	 * @param usuario
+	 * @throws Exception
 	 * @see GenericBean
 	 */
 	public static void auditarRegistro(GenericBean genericBean, Usuario usuario, Execution execution) throws Exception {
 		auditarRegistro(genericBean, false,usuario, execution);
 	}
-	
-	
+
+
 	/**
 	 * Permite rgistrar las propiedades de auditoria del Pojo
 	 * este método puede ser usado tanto para los registros nuevos o actualizados.
 	 * @param genericBean
 	 * @param actualizacion <b>false</b> = registro nuevo o <b>true</b> = registro actualizado
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public static void auditarRegistro(GenericBean genericBean, boolean actualizacion, Usuario usuario, Execution execution) throws Exception {
 			String loginUsuario = usuario.getLogin();
@@ -171,43 +171,43 @@ public class UtilData extends Window {
 	 * @throws Exception
 	 */
 	public static String ipLocal(Execution execution) throws Exception{
-		String ip = execution.getHeader("X-Forwarded-For");  
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
-            ip = execution.getHeader("Proxy-Client-IP");  
-        }  
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
-            ip = execution.getHeader("WL-Proxy-Client-IP");  
-        }  
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
-            ip = execution.getHeader("HTTP_CLIENT_IP");  
-        }  
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
-            ip = execution.getHeader("HTTP_X_FORWARDED_FOR");  
-        }  
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
-            ip = execution.getRemoteAddr();  
+		String ip = execution.getHeader("X-Forwarded-For");
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = execution.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = execution.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = execution.getHeader("HTTP_CLIENT_IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = execution.getHeader("HTTP_X_FORWARDED_FOR");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = execution.getRemoteAddr();
         }
 		return ip;
 	}
-	
 
-//	
+
+//
 //	/**
 //	 * Permite enlazar los controles a la ventana de selección de ubigeo
 //	 * @param textboxId en este Textbox se devolvera el Id del ubigeo seleccionado
 //	 * @param textboxUbicacionGeografica en este Textbox se devolvera la ubicación geografica (Departamento / Provincia / Distrito) seleccionada
-//	 * @param button ha este Button se le adjuntara un listener con la llamada a la ventana de selección de ubigeo 
+//	 * @param button ha este Button se le adjuntara un listener con la llamada a la ventana de selección de ubigeo
 //	 * @see WndSeleccionarUbigeo
 //	 */
 //	public static void enlazarUbigeo(final Textbox textboxId, final Textbox textboxUbicacionGeografica, final Button button) {
 //		enlazarUbigeo(textboxId, textboxUbicacionGeografica, button, null);
 //		if(button!=null){
-//			button.setTooltiptext("Seleccionar ubicación geográfica");		
+//			button.setTooltiptext("Seleccionar ubicación geográfica");
 //			button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 //				@Override
 //				public void onEvent(Event event) throws Exception {
 //					final WndSeleccionarUbigeo oWndSeleccionarUbigeo = new WndSeleccionarUbigeo();
-//					
+//
 //					boolean buscarVentanaParent = true;
 //					Component oComponent = button.getParent();
 //					while(buscarVentanaParent){
@@ -225,13 +225,13 @@ public class UtilData extends Window {
 //						@Override
 //						public void onEvent(Event event) throws Exception {
 //							textboxId.setText(oWndSeleccionarUbigeo.getIdUbigeo());
-//							textboxUbicacionGeografica.setText(oWndSeleccionarUbigeo.getUbicacionGeografica()); 
+//							textboxUbicacionGeografica.setText(oWndSeleccionarUbigeo.getUbicacionGeografica());
 //						}
 //					});
 //				}
 //			});
 //		}else{
-//			textboxUbicacionGeografica.setTooltiptext("Escriba la ubicación geográfica y luego pulse enter para realizar la búsqueda.");		
+//			textboxUbicacionGeografica.setTooltiptext("Escriba la ubicación geográfica y luego pulse enter para realizar la búsqueda.");
 //			textboxUbicacionGeografica.addEventListener(Events.ON_OK, new EventListener<Event>() {
 //				@Override
 //				public void onEvent(Event event) throws Exception {
@@ -253,29 +253,29 @@ public class UtilData extends Window {
 //						@Override
 //						public void onEvent(Event event) throws Exception {
 //							textboxId.setText(oWndSeleccionarUbigeo.getIdUbigeo());
-//							textboxUbicacionGeografica.setText(oWndSeleccionarUbigeo.getUbicacionGeografica()); 
+//							textboxUbicacionGeografica.setText(oWndSeleccionarUbigeo.getUbicacionGeografica());
 //						}
 //					});
 //				}
-//			});	
+//			});
 //		}
-		
+
 //	}
-	
+
 	/**
 	 * Permite enlazar los controles a la ventana de selección de ubigeo
 	 * @param textboxId en este Textbox se devolvera el Id del ubigeo seleccionado
 	 * @param textboxUbicacionGeografica en este Textbox se devolvera la ubicación geografica (Departamento / Provincia / Distrito) seleccionada
-	 * @param button ha este Button se le adjuntara un listener con la llamada a la ventana de selección de ubigeo 
+	 * @param button ha este Button se le adjuntara un listener con la llamada a la ventana de selección de ubigeo
 	 * @see WndSeleccionarUbigeo
 	 */
 	public static void enlazarUbigeo(final Textbox textboxId, final Textbox textboxUbicacionGeografica, final Button button, final Object receiveFocus) {
 		if(button!=null){
-			button.setTooltiptext("Seleccionar ubicación geográfica");		
+			button.setTooltiptext("Seleccionar ubicación geográfica");
 			button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event event) throws Exception {
-					final WndSeleccionarUbigeo oWndSeleccionarUbigeo = new WndSeleccionarUbigeo();					
+					final WndSeleccionarUbigeo oWndSeleccionarUbigeo = new WndSeleccionarUbigeo();
 					boolean buscarVentanaParent = true;
 					Component oComponent = button.getParent();
 					while(buscarVentanaParent){
@@ -293,13 +293,13 @@ public class UtilData extends Window {
 						@Override
 						public void onEvent(Event event) throws Exception {
 							textboxId.setText(oWndSeleccionarUbigeo.getIdUbigeo());
-							textboxUbicacionGeografica.setText(oWndSeleccionarUbigeo.getUbicacionGeografica()); 
+							textboxUbicacionGeografica.setText(oWndSeleccionarUbigeo.getUbicacionGeografica());
 						}
 					});
 				}
 			});
 		}else{
-			textboxUbicacionGeografica.setTooltiptext("Escriba la ubicación geográfica y luego pulse enter para realizar la búsqueda.");		
+			textboxUbicacionGeografica.setTooltiptext("Escriba la ubicación geográfica y luego pulse enter para realizar la búsqueda.");
 			textboxUbicacionGeografica.addEventListener(Events.ON_OK, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event event) throws Exception {
@@ -339,14 +339,14 @@ public class UtilData extends Window {
 						}
 					});
 				}
-			});	
+			});
 		}
-		
+
 	}
 
 	/**
 	 * Permite enlazar los controles a la ventana de selección de Itinerario
-	 * @param button ha este Button se le adjuntara un listener con la llamada a la ventana de selección de itinerario 
+	 * @param button ha este Button se le adjuntara un listener con la llamada a la ventana de selección de itinerario
 	 * @see WndItinerario
 	 */
 	public static void enlazarItinerario(final Button button) {
@@ -371,9 +371,9 @@ public class UtilData extends Window {
 			}
 		});
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Permite cargar data al control Combobox
 	 * la data a cargar no cuenta con un Pojo asociado
@@ -397,7 +397,7 @@ public class UtilData extends Window {
 
 				oComboitem.setLabel("[Data no definida: " + data + "]");
 				combobox.appendChild(oComboitem);
-				break;	
+				break;
 		}
 	}
 
@@ -407,7 +407,7 @@ public class UtilData extends Window {
 	 * @param combobox	: Objeto que contendra los datos.
 	 * @param oClass	: Clase con la que se llenara los datos.
 	 * @param bTodos	: Indica si el primer elemento del combo es la opcion TODOS (TRUE) o SELECCIONE (FALSE).
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public static void cargarDataCombo(Combobox combobox, Class<?> oClass, Boolean bTodos) throws Exception {
 		if (oClass.equals(TipoFlota.class)){
@@ -496,14 +496,14 @@ public class UtilData extends Window {
 			combobox.appendChild(oComboitem);
 		}
 	}
-	
+
 	/**
 	 * Permite cargar data al control Combobox la data a cargar cuenta con un Pojo asociado
 	 * @param combobox		: Objeto que contendra los datos.
 	 * @param oClass		: Clase con la que se llenara los datos.
 	 * @param bTodos		: Indica si el primer elemento del combo es la opcion TODOS (TRUE) o SELECCIONE (FALSE).
 	 * @param parametros	: Indica los parametros con los cuales deseamos realizar la busqueda.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public static void cargarDataCombo(Combobox combobox, Class<?> oClass, TreeMap<String, Object> parametros, Boolean bTodos) throws Exception {
 		if(oClass.equals(TipoComprobante.class))
@@ -521,42 +521,41 @@ public class UtilData extends Window {
 		else if (oClass.equals(TipoCentroCosto.class))
 			cargarTiposCentroCosto(combobox, parametros, bTodos);
 	}
-	
-	
+
+
 	/**
 	 * Carga los tipos de centro de costo
-	 * @param combobox	
+	 * @param combobox
 	 * @param parametros
 	 * @param todos
 	 * @throws Exception
 	 */
 	private static void cargarTiposCentroCosto(Combobox combobox, TreeMap<String, Object> parametros, boolean todos)throws Exception{
-		List<String> criteriosOrdenar=new ArrayList<String>();
+		List<String> criteriosOrdenar=new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
 		List<TipoCentroCosto>result=ServiceLocator.getTipoCentroCostoManager().buscarPorX(parametros, criteriosOrdenar);
 		cargarGenericData(combobox, todos);
 		for(TipoCentroCosto tipoCentroCosto:result){
 			Comboitem comboitem=new Comboitem(tipoCentroCosto.getDenominacion());
 			comboitem.setValue(tipoCentroCosto);
-			
+
 			combobox.appendChild(comboitem);
 		}
-		
+
 		combobox.setSelectedIndex(0);
 	}
-	
+
 	private static void cargarTipoItinerario(Combobox combobox, Boolean todos) {
 		try{
-			
+
 			ArrayList<TipoItinerario> lsttipoItinerario = ServiceLocator.getTipoItinerarioManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
-			
+
 			cargarGenericData(combobox, todos);
-			for (int l = 0; l < lsttipoItinerario.size(); l ++) {
-				TipoItinerario otipoItinerario = lsttipoItinerario.get(l);
+			for (TipoItinerario otipoItinerario : lsttipoItinerario) {
 				Comboitem oComboitem = new Comboitem();
 				oComboitem.setValue(otipoItinerario);
 				oComboitem.setLabel(otipoItinerario.getDenominacion());
-	
+
 				combobox.appendChild(oComboitem);
 			}
 		}catch(Exception ex){
@@ -565,13 +564,13 @@ public class UtilData extends Window {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param combobox
 	 * @param todos
 	 */
 	private static void cargarTipoIngresoLiquidacion(Combobox combobox, Boolean todos) {
 		cargarGenericData(combobox, todos);
-		
+
 		Comboitem oComboitem = new Comboitem("INGRESO");
 		Comboitem oComboitem2 = new Comboitem("EGRESO");
 		Comboitem oComboitem3 = new Comboitem("AMBOS");
@@ -591,7 +590,7 @@ public class UtilData extends Window {
 	 */
 	public static void cargarTipoEstado(Combobox combobox) {
 		cargarGenericData(combobox, false);
-		
+
 		Comboitem oComboitem = new Comboitem("INICIAL");
 		Comboitem oComboitem2 = new Comboitem("TRANCITO");
 		Comboitem oComboitem3 = new Comboitem("FINAL");
@@ -612,7 +611,7 @@ public class UtilData extends Window {
 	 */
 	public static void cargarRubroTipoComprobante(Combobox combobox, Boolean bTodos){
 		cargarGenericData(combobox, bTodos);
-		
+
 		Comboitem oComboitem = new Comboitem("PASAJES");
 		Comboitem oComboitem2 = new Comboitem("CARGA");
 		Comboitem oComboitem3 = new Comboitem("AMBOS");
@@ -625,14 +624,14 @@ public class UtilData extends Window {
 		combobox.appendChild(oComboitem2);
 		combobox.appendChild(oComboitem3);
 	}
-	
+
 	/**
 	 * Carga los rubros para el tipo de comprobante
 	 * @param combobox
 	 */
 	public static void cargarRutaItinerario(Combobox combobox, Boolean bTodos){
 		//cargarGenericData(combobox, bTodos);
-		
+
 		Comboitem oComboitem = new Comboitem("LIMA - PROVINCIAS");
 		Comboitem oComboitem2 = new Comboitem("PROVINCIAS - LIMA");
 		Comboitem oComboitem3 = new Comboitem("PROVINCIAS");
@@ -645,13 +644,13 @@ public class UtilData extends Window {
 		combobox.appendChild(oComboitem2);
 		combobox.appendChild(oComboitem3);
 	}
-	
-	
+
+
 	public static void cargarTipoObjeto(Combobox combobox) {
 		Comboitem oComboitem0 = new Comboitem("SELECCIONE");
 		Comboitem oComboitem = new Comboitem("GENERICO");
 		Comboitem oComboitem2 = new Comboitem("ASIENTO");
-		
+
 		oComboitem0.setValue(-1);
 		oComboitem.setValue(0);
 		oComboitem2.setValue(1);
@@ -660,76 +659,74 @@ public class UtilData extends Window {
 		combobox.appendChild(oComboitem);
 		combobox.appendChild(oComboitem2);
 	}
-	
+
 	public static void cargarAlternativos(Combobox combobox) {
-		
+
 		Comboitem oComboitemTodos = new Comboitem("TODOS");
 		Comboitem oComboitem = new Comboitem("SI");
 		Comboitem oComboitem2 = new Comboitem("NO");
-		
+
 		oComboitemTodos.setValue(-1);
 		oComboitem.setValue(1);
 		oComboitem2.setValue(0);
-		
+
 		combobox.appendChild(oComboitemTodos);
 		combobox.appendChild(oComboitem);
 		combobox.appendChild(oComboitem2);
-		
+
 		combobox.setSelectedIndex(0);
 	}
-	
+
 
 	private static void cargarTipoComprobante(Combobox combobox, boolean todos) {
 		try{
 			ArrayList<TipoComprobante> lstComprobantes = ServiceLocator.getTipoComprobanteManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
-			cargarGenericData(combobox, todos);	
-			for (int l = 0; l < lstComprobantes.size(); l ++) {
-				TipoComprobante oTipoComprobante = lstComprobantes.get(l);
+			cargarGenericData(combobox, todos);
+			for (TipoComprobante oTipoComprobante : lstComprobantes) {
 				Comboitem oComboitem = new Comboitem();
-	
+
 				oComboitem.setValue(oTipoComprobante);
 				oComboitem.setLabel(oTipoComprobante.getDenominacion());
-	
+
 				combobox.appendChild(oComboitem);
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
-	
+
 	public static void cargarTipoComprobante(Combobox combobox, TreeMap<String, Object> parametros, Boolean todos) {
 		try{
-			ArrayList<String> criteriosOrdenar = new ArrayList<String>();
+			ArrayList<String> criteriosOrdenar = new ArrayList<>();
 			criteriosOrdenar.add("denominacion");
 			ArrayList<TipoComprobante> lstComprobantes = ServiceLocator.getTipoComprobanteManager().buscarPorX(parametros, criteriosOrdenar);
 			if(todos!=null)
-				cargarGenericData(combobox, todos);	
-			for (int l = 0; l < lstComprobantes.size(); l ++) {
-				TipoComprobante oTipoComprobante = lstComprobantes.get(l);
+				cargarGenericData(combobox, todos);
+			for (TipoComprobante oTipoComprobante : lstComprobantes) {
 				Comboitem oComboitem = new Comboitem();
-	
+
 				oComboitem.setValue(oTipoComprobante);
 				oComboitem.setLabel(oTipoComprobante.getDenominacion());
-	
+
 				combobox.appendChild(oComboitem);
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
-	
+
 	public static void cargarTipoComprobanteAgencia(Combobox combobox, Agencia agencia, boolean todos) {
 		try{
-			TreeMap<String, Object>parametros = new TreeMap<String, Object>();
+			TreeMap<String, Object>parametros = new TreeMap<>();
 			parametros.put("agencia", agencia);
 			parametros.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-			
+
 			ArrayList<EspecieValorada> lstEspecieValorada = ServiceLocator.getEspecieValoradaManager().buscarPorX(parametros, null);
-			cargarGenericData(combobox, todos);	
-			
+			cargarGenericData(combobox, todos);
+
 			for(EspecieValorada especieValorada: lstEspecieValorada){
 				Comboitem oComboitem = new Comboitem();
-													
+
 					boolean flag=false; //para evitar la duplicidad de las agencias.
 					for(int y=0; y<combobox.getItems().size(); y++){
 						combobox.setSelectedIndex(y);
@@ -739,37 +736,36 @@ public class UtilData extends Window {
 								break;
 							}
 					}
-					
+
 					if(!(flag)){
 						/*carga el combo tipo Comprobante*/
 						oComboitem.setValue(especieValorada.getTipoComprobante());
 						oComboitem.setLabel(especieValorada.getTipoComprobante().getDenominacion());
 						combobox.appendChild(oComboitem);
 					}
-			}	
+			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
-	
+
 	public static void cargarTipoComprobanteSunat(Combobox combobox, boolean todos) {
 		try{
-			TreeMap<String, Object>parametros = new TreeMap<String, Object>();
+			TreeMap<String, Object>parametros = new TreeMap<>();
 			parametros.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-			
-			ArrayList<String> criteriosOrdenar = new ArrayList<String>();
+
+			ArrayList<String> criteriosOrdenar = new ArrayList<>();
 			criteriosOrdenar.add("denominacion");
 			ArrayList<TipoComprobante> lstComprobantes = ServiceLocator.getTipoComprobanteManager().buscarPorX(parametros, criteriosOrdenar);
-			cargarGenericData(combobox, todos);	
-			for (int l = 0; l < lstComprobantes.size(); l ++) {
-				TipoComprobante oTipoComprobante = lstComprobantes.get(l);
+			cargarGenericData(combobox, todos);
+			for (TipoComprobante oTipoComprobante : lstComprobantes) {
 				if(oTipoComprobante.getId()==Constantes.ID_TIPCOM_BOLETA_VENTA || oTipoComprobante.getId()==Constantes.ID_TIPCOM_FACTURA ||
 						oTipoComprobante.getId()==Constantes.ID_TIPCOM_NOTA_CREDITO || oTipoComprobante.getId()==Constantes.ID_TIPCOM_NOTA_DEBITO) {
 					Comboitem oComboitem = new Comboitem();
-		
+
 					oComboitem.setValue(oTipoComprobante);
 					oComboitem.setLabel(oTipoComprobante.getDenominacion());
-		
+
 					combobox.appendChild(oComboitem);
 				}
 			}
@@ -777,36 +773,34 @@ public class UtilData extends Window {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	private static void cargarTipoFlota(Combobox combobox, Boolean todos) {
 		try{
-			ArrayList<TipoFlota> lstFlota = ServiceLocator.getTipoFlotaManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");	
-				
+			ArrayList<TipoFlota> lstFlota = ServiceLocator.getTipoFlotaManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
+
 			cargarGenericData(combobox, todos);
-			for (int l = 0; l < lstFlota.size(); l ++) {
-				TipoFlota oTipoFlota = lstFlota.get(l);
+			for (TipoFlota oTipoFlota : lstFlota) {
 				Comboitem oComboitem = new Comboitem();
-				String datosTipoFlota = oTipoFlota.getDenominacion();	
+				String datosTipoFlota = oTipoFlota.getDenominacion();
 				oComboitem.setValue(oTipoFlota);
-				oComboitem.setLabel(datosTipoFlota);	
+				oComboitem.setLabel(datosTipoFlota);
 				combobox.appendChild(oComboitem);
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
-	
+
 	private static void cargarServicio(Combobox combobox, Boolean todos) {
 		try{
 			ArrayList<Servicio> lsServicio = ServiceLocator.getServicioManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
-			
+
 			cargarGenericData(combobox, todos);
-			for (int l = 0; l < lsServicio.size(); l++){
-				Servicio oServicio = lsServicio.get(l);
+			for (Servicio oServicio : lsServicio) {
 				Comboitem oComboitem = new Comboitem();
-				String datosServicio = oServicio.getDenominacion();				
+				String datosServicio = oServicio.getDenominacion();
 				oComboitem.setValue(oServicio);
-				oComboitem.setLabel(datosServicio);				
+				oComboitem.setLabel(datosServicio);
 				combobox.appendChild(oComboitem);
 			}
 		}catch(Exception ex){
@@ -817,67 +811,64 @@ public class UtilData extends Window {
 	private static void cargarGrupoMantenimiento (Combobox combobox, Boolean todos){
 		try{
 			ArrayList<GrupoMantenimiento> lsGrupoMantenimiento = ServiceLocator.getGrupoMantenimientoManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
-			
+
 			cargarGenericData(combobox, todos);
-			for (int l = 0; l < lsGrupoMantenimiento.size(); l++){
-				GrupoMantenimiento oGrupoMantenimiento = lsGrupoMantenimiento.get(l);
+			for (GrupoMantenimiento oGrupoMantenimiento : lsGrupoMantenimiento) {
 				Comboitem oComboitem = new Comboitem();
-				String datosGrupoMantenimiento = oGrupoMantenimiento.getDenominacion();				
+				String datosGrupoMantenimiento = oGrupoMantenimiento.getDenominacion();
 				oComboitem.setValue(oGrupoMantenimiento);
-				oComboitem.setLabel(datosGrupoMantenimiento);				
+				oComboitem.setLabel(datosGrupoMantenimiento);
 				combobox.appendChild(oComboitem);
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
-	
+
 	private static void cargarNumeroFlota (Combobox combobox, Boolean todos){
 		try{
 			ArrayList<NumeroFlota> lsNumeroFlota = ServiceLocator.getNumeroFlotaManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "id");
-			
+
 			cargarGenericData(combobox, todos);
-			for (int l = 0; l < lsNumeroFlota.size(); l++ ){
-				NumeroFlota oNumeroFlota = lsNumeroFlota.get(l);
+			for (NumeroFlota oNumeroFlota : lsNumeroFlota) {
 				Comboitem oComboitem = new Comboitem();
 				String datosNumeroFlota = oNumeroFlota.getDenominacion();
-				
+
 				oComboitem.setValue(oNumeroFlota);
 				oComboitem.setLabel(datosNumeroFlota);
-				
+
 				combobox.appendChild(oComboitem);
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
-	
-	
+
+
 	private static void cargarAgencia(Combobox combobox, Boolean todos) {
 		try{
 			combobox.getItems().clear();
 			ArrayList<Agencia> lstAgencias = ServiceLocator.getAgenciaManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
-			
+
 			cargarGenericData(combobox, todos);
-			for (int l = 0; l < lstAgencias.size(); l ++) {
-				Agencia oAgencia = lstAgencias.get(l);
+			for (Agencia oAgencia : lstAgencias) {
 				Comboitem oComboitem = new Comboitem();
 				//String datosAgencia = oAgencia.getTipoAgencia().getDenominacion() + " - " + oAgencia.getLocalidad().getDenominacion() + " - " + oAgencia.getDenominacion();
 				String datosAgencia =oAgencia.getDenominacion();
-	
+
 				oComboitem.setValue(oAgencia);
 				oComboitem.setLabel(datosAgencia);
-	
+
 				combobox.appendChild(oComboitem);
 			}
-			
+
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
-	
+
 	/**
-	 * Carga Agencias y selecciona la agencia por defecto. Si el usuario esta asociado a una agencia, esta sera seleccioada por defecto, si no 
+	 * Carga Agencias y selecciona la agencia por defecto. Si el usuario esta asociado a una agencia, esta sera seleccioada por defecto, si no
 	 * sera la agencia que esta asociada al usuario hardware.
 	 * @param combobox 		: Control Combobox
 	 * @param idTipoAgenica : Identificador del tipo de agencia
@@ -886,31 +877,31 @@ public class UtilData extends Window {
 	public static void cargarAgenciaXtipoAgencia(Combobox combobox,Integer idTipoAgenica,Boolean todos) throws Exception{
 		Agencia agenciaXHardware=(Agencia) Executions.getCurrent().getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
 		Usuario usuarioS=(Usuario) Executions.getCurrent().getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO);
-		
+
 		Usuario usuario=ServiceLocator.getUsuarioManager().buscarXId(usuarioS.getId().longValue());
-				
-		TreeMap<String, Object> criteriosBusqueda= new  TreeMap<String, Object>();
-		ArrayList<String> criteriosOrdenar = new ArrayList<String>();
+
+		TreeMap<String, Object> criteriosBusqueda= new  TreeMap<>();
+		ArrayList<String> criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
 		if(idTipoAgenica!=null){
 			criteriosBusqueda.put("tipoAgencia",new TipoAgencia(idTipoAgenica));
 		}
 		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 		UtilData.cargarAgencia(combobox, todos, criteriosBusqueda, criteriosOrdenar);
-		
+
 		if(usuario.getAgencia()==null)
 			Util.seleccionarValorItemCombo(Agencia.class, combobox, agenciaXHardware.getId());
 		else
 			Util.seleccionarValorItemCombo(Agencia.class, combobox, usuario.getAgencia().getId());
 	}
-	
-	
-	
+
+
+
 	public static void cargarAgencia(Combobox combobox, Boolean todos, TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar) {
 		try{
 			combobox.getItems().clear();
 			ArrayList<Agencia> lstAgencias = ServiceLocator.getAgenciaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
-			
+
 			cargarGenericData(combobox, todos);
 			for (Agencia agencia : lstAgencias) {
 				Comboitem oComboitem = new Comboitem();
@@ -924,11 +915,11 @@ public class UtilData extends Window {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	public static void cargarAgencia(String campo,  Object[] criterios, List<String> criteriosOrdenar,Combobox combobox, Boolean todos) {
 		try{
 			List<Agencia> lstAgencias = ServiceLocator.getAgenciaManager().buscarPorX(campo, criterios, criteriosOrdenar, Constantes.VALUE_ACTIVO);
-			
+
 			cargarGenericData(combobox, todos);
 			for (Agencia agencia : lstAgencias) {
 				Comboitem oComboitem = new Comboitem();
@@ -946,79 +937,75 @@ public class UtilData extends Window {
 	private static void cargarFormaPago(Combobox combobox, Boolean todos) {
 		try{
 			ArrayList<FormaPago> lstConcesionarios = ServiceLocator.getFormaPagoManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
-			
+
 			cargarGenericData(combobox, todos);
-			for (int l = 0; l < lstConcesionarios.size(); l ++) {
-				FormaPago oFormaPago = lstConcesionarios.get(l);
+			for (FormaPago oFormaPago : lstConcesionarios) {
 				Comboitem oComboitem = new Comboitem();
-	
+
 				oComboitem.setValue(oFormaPago);
 				oComboitem.setLabel(oFormaPago.getDenominacion());
-	
+
 				combobox.appendChild(oComboitem);
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
-	
+
 	public static void cargarFormaPago(Combobox combobox, TreeMap<String, Object> parametros, boolean todos) {
 		try{
-			ArrayList<String> criteriosOrdenar = new ArrayList<String>();
+			ArrayList<String> criteriosOrdenar = new ArrayList<>();
 			criteriosOrdenar.add("denominacion");
 			ArrayList<FormaPago> lstFormaPago = ServiceLocator.getFormaPagoManager().buscarPorX(parametros, criteriosOrdenar);
-			cargarGenericData(combobox, todos);	
-			for (int l = 0; l < lstFormaPago.size(); l ++) {
-				FormaPago oFormaPago = lstFormaPago.get(l);
-				Comboitem oComboitem = new Comboitem();	
+			cargarGenericData(combobox, todos);
+			for (FormaPago oFormaPago : lstFormaPago) {
+				Comboitem oComboitem = new Comboitem();
 				oComboitem.setValue(oFormaPago);
-				oComboitem.setLabel(oFormaPago.getDenominacion());	
+				oComboitem.setLabel(oFormaPago.getDenominacion());
 				combobox.appendChild(oComboitem);
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
-	
+
 	private static void cargarOperadorTarjetaCredito(Combobox combobox, Boolean todos) {
 		try{
 			ArrayList<OperadorTarjetaCredito> lstOperadoresTarjetaCredito = ServiceLocator.getOperadorTarjetaCreditoManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
 			if(todos!=null)
 				cargarGenericData(combobox, todos);
-			for (int l = 0; l < lstOperadoresTarjetaCredito.size(); l ++) {
-				OperadorTarjetaCredito oOperadorTarjetaCredito = lstOperadoresTarjetaCredito.get(l);
+			for (OperadorTarjetaCredito oOperadorTarjetaCredito : lstOperadoresTarjetaCredito) {
 				Comboitem oComboitem = new Comboitem();
-	
+
 				oComboitem.setValue(oOperadorTarjetaCredito);
 				oComboitem.setLabel(oOperadorTarjetaCredito.getDenominacion());
-	
+
 				combobox.appendChild(oComboitem);
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
-	
+
 	private static void cargarConcesionario(Combobox combobox, Boolean todos) {
 		try{
 			combobox.getItems().clear();
 			ArrayList<Concesionario> lstConcesionarios = ServiceLocator.getConcesionarioManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "razonSocial");
-			
+
 			cargarGenericData(combobox, todos);
-			for (int l = 0; l < lstConcesionarios.size(); l ++) {
-				Concesionario oConcesionario = lstConcesionarios.get(l);
+			for (Concesionario oConcesionario : lstConcesionarios) {
 				Comboitem oComboitem = new Comboitem();
-	
+
 				oComboitem.setValue(oConcesionario);
 				oComboitem.setLabel(oConcesionario.getRazonSocial());
-	
+
 				combobox.appendChild(oComboitem);
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Realiza el llenado de las localidades
 	 * @param combobox	: Objeto que contendra los datos.
@@ -1029,12 +1016,11 @@ public class UtilData extends Window {
 			ArrayList<Localidad> lstLocalidades = ServiceLocator.getLocalidadManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
 			Comboitem oComboitem = null;
 			cargarGenericData(combobox, todos);
-			
-			for (int l = 0; l < lstLocalidades.size(); l ++) {
-				Localidad oLocalidad = lstLocalidades.get(l);
+
+			for (Localidad oLocalidad : lstLocalidades) {
 				oComboitem = new Comboitem();
 				oComboitem.setLabel(oLocalidad.getDenominacion());
-				
+
 				oComboitem.setValue(oLocalidad);
 				combobox.appendChild(oComboitem);
 			}
@@ -1042,41 +1028,39 @@ public class UtilData extends Window {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	private static void cargarTipoAgencia(Combobox combobox, TreeMap<String, Object> parametros, boolean todos) {
 		try{
-			ArrayList<String> criteriosOrdenar = new ArrayList<String>();
+			ArrayList<String> criteriosOrdenar = new ArrayList<>();
 			criteriosOrdenar.add("denominacion");
 			ArrayList<TipoAgencia> lstTipoAgencias = ServiceLocator.getTipoAgenciaManager().buscarPorX(parametros, criteriosOrdenar);
-			
+
 			cargarGenericData(combobox, todos);
-			for (int l = 0; l < lstTipoAgencias.size(); l ++) {
-				TipoAgencia oTipoAgencia = lstTipoAgencias.get(l);
+			for (TipoAgencia oTipoAgencia : lstTipoAgencias) {
 				Comboitem oComboitem = new Comboitem();
-	
+
 				oComboitem.setValue(oTipoAgencia);
 				oComboitem.setLabel(oTipoAgencia.getDenominacion());
-	
+
 				combobox.appendChild(oComboitem);
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
-	
+
 	private static void cargarTipoAgencia(Combobox combobox, boolean todos) {
 		try{
 			combobox.getItems().clear();
 			ArrayList<TipoAgencia> lstTipoAgencias = ServiceLocator.getTipoAgenciaManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
-			
+
 			cargarGenericData(combobox, todos);
-			for (int l = 0; l < lstTipoAgencias.size(); l ++) {
-				TipoAgencia oTipoAgencia = lstTipoAgencias.get(l);
+			for (TipoAgencia oTipoAgencia : lstTipoAgencias) {
 				Comboitem oComboitem = new Comboitem();
-	
+
 				oComboitem.setValue(oTipoAgencia);
 				oComboitem.setLabel(oTipoAgencia.getDenominacion());
-	
+
 				combobox.appendChild(oComboitem);
 			}
 		}catch(Exception ex){
@@ -1089,12 +1073,10 @@ public class UtilData extends Window {
 			ArrayList<Sexo> lstSexos = ServiceLocator.getSexoManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
 			Comboitem oComboitem = null;
 			cargarGenericData(combobox, todos);
-			for (int l = 0; l < lstSexos.size(); l ++) {
-				Sexo oSexo = lstSexos.get(l);
-				
+			for (Sexo oSexo : lstSexos) {
 				oComboitem = new Comboitem();
 				oComboitem.setValue(oSexo);
-	
+
 				oComboitem.setLabel(oSexo.getDenominacion());
 				combobox.appendChild(oComboitem);
 			}
@@ -1102,36 +1084,34 @@ public class UtilData extends Window {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	private static void cargarNacionalidad(Combobox combobox, Boolean todos) {
 		try{
 			ArrayList<Nacionalidad> lstNacionalidades = ServiceLocator.getNacionalidadManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
-	
+
 			cargarGenericData(combobox, todos);
-			for (int l = 0; l < lstNacionalidades.size(); l ++) {
-				Nacionalidad oNacionalidad = lstNacionalidades.get(l);
+			for (Nacionalidad oNacionalidad : lstNacionalidades) {
 				Comboitem oComboitem = new Comboitem();
-	
+
 				oComboitem.setValue(oNacionalidad);
 				oComboitem.setLabel(oNacionalidad.getDenominacion());
-	
+
 				combobox.appendChild(oComboitem);
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
-	
+
 	private static void cargarEstadoCivil(Combobox combobox, boolean todos) {
 		try{
 			ArrayList<EstadoCivil> lstEstadosCiviles = ServiceLocator.getEstadoCivilManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
 			Comboitem oComboitem = null;
 			cargarGenericData(combobox, todos);
-			for (int l = 0; l < lstEstadosCiviles.size(); l ++) {
-				EstadoCivil oEstadoCivil = lstEstadosCiviles.get(l);
+			for (EstadoCivil oEstadoCivil : lstEstadosCiviles) {
 				oComboitem = new Comboitem();
 				oComboitem.setValue(oEstadoCivil);
-	
+
 				oComboitem.setLabel(oEstadoCivil.getDenominacion());
 				combobox.appendChild(oComboitem);
 			}
@@ -1139,18 +1119,17 @@ public class UtilData extends Window {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	private static void cargarTipoDocumento(Combobox combobox, boolean todos) {
 		try{
 			ArrayList<TipoDocumento> lstTiposDocumento = ServiceLocator.getTipoDocumentoManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
 			cargarGenericData(combobox, todos);
-			for (int l = 0; l < lstTiposDocumento.size(); l ++) {
-				TipoDocumento oTipoDocumento = lstTiposDocumento.get(l);
+			for (TipoDocumento oTipoDocumento : lstTiposDocumento) {
 				Comboitem oComboitem = new Comboitem();
-	
-	
+
+
 				oComboitem.setValue(oTipoDocumento);
-	
+
 				oComboitem.setLabel(oTipoDocumento.getDenominacion());
 				combobox.appendChild(oComboitem);
 			}
@@ -1158,20 +1137,19 @@ public class UtilData extends Window {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	private static void cargarTipoDocumento(Combobox combobox, TreeMap<String, Object> parametros, boolean todos) {
 		try{
-			ArrayList<String> criteriosOrdenar = new ArrayList<String>();
+			ArrayList<String> criteriosOrdenar = new ArrayList<>();
 			criteriosOrdenar.add("denominacion");
 			ArrayList<TipoDocumento> lstTiposDocumento = ServiceLocator.getTipoDocumentoManager().buscarPorX(parametros, criteriosOrdenar);
 			cargarGenericData(combobox, todos);
-			for (int l = 0; l < lstTiposDocumento.size(); l ++) {
-				TipoDocumento oTipoDocumento = lstTiposDocumento.get(l);
+			for (TipoDocumento oTipoDocumento : lstTiposDocumento) {
 				Comboitem oComboitem = new Comboitem();
-	
-	
+
+
 				oComboitem.setValue(oTipoDocumento);
-	
+
 				oComboitem.setLabel(oTipoDocumento.getDenominacion());
 				combobox.appendChild(oComboitem);
 			}
@@ -1179,38 +1157,36 @@ public class UtilData extends Window {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	private static void cargarTipoVia(Combobox combobox, Boolean todos) {
 		try{
 			ArrayList<TipoVia> lstTiposVia = ServiceLocator.getTipoViaManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
-			
+
 			cargarGenericData(combobox, todos);
-			for (int l = 0; l < lstTiposVia.size(); l ++) {
-				TipoVia oTipoVia = lstTiposVia.get(l);
+			for (TipoVia oTipoVia : lstTiposVia) {
 				Comboitem oComboitem = new Comboitem();
-	
+
 				oComboitem.setValue(oTipoVia);
 				oComboitem.setLabel(oTipoVia.getDenominacion());
-	
+
 				combobox.appendChild(oComboitem);
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
-	
+
 	private static void cargarTipoZona(Combobox combobox, Boolean todos) {
 		try{
 			ArrayList<TipoZona> lstTiposZona = ServiceLocator.getTipoZonaManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
-	
+
 			cargarGenericData(combobox, todos);
-			for (int l = 0; l < lstTiposZona.size(); l ++) {
-				TipoZona oTipoZona = lstTiposZona.get(l);
+			for (TipoZona oTipoZona : lstTiposZona) {
 				Comboitem oComboitem = new Comboitem();
-	
+
 				oComboitem.setValue(oTipoZona);
 				oComboitem.setLabel(oTipoZona.getDenominacion());
-	
+
 				combobox.appendChild(oComboitem);
 			}
 		}catch(Exception ex){
@@ -1221,127 +1197,122 @@ public class UtilData extends Window {
 	private static void cargarTipoPersonal(Combobox combobox, Boolean todos) {
 		try{
 			ArrayList<TipoPersonal> lstTiposPersonal = ServiceLocator.getTipoPersonalManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
-			
+
 			cargarGenericData(combobox, todos);
-			for (int l = 0; l < lstTiposPersonal.size(); l ++) {
-				TipoPersonal oTipoPersonal = lstTiposPersonal.get(l);
+			for (TipoPersonal oTipoPersonal : lstTiposPersonal) {
 				Comboitem oComboitem = new Comboitem();
-	
+
 				oComboitem.setValue(oTipoPersonal);
 				oComboitem.setLabel(oTipoPersonal.getDenominacion());
-	
+
 				combobox.appendChild(oComboitem);
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
-	
+
 	public static void cargarTipoPrecio(Combobox combobox, Boolean todos) {
 		try{
 			ArrayList<TipoPrecio> lstTiposPrecio = ServiceLocator.getTipoPrecioManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
-			
+
 			cargarGenericData(combobox, todos);
-			for (int l = 0; l < lstTiposPrecio.size(); l ++) {
-				TipoPrecio oTipoPrecio = lstTiposPrecio.get(l);
+			for (TipoPrecio oTipoPrecio : lstTiposPrecio) {
 				Comboitem oComboitem = new Comboitem();
-	
+
 				oComboitem.setValue(oTipoPrecio);
 				oComboitem.setLabel(oTipoPrecio.getDenominacion());
-	
+
 				combobox.appendChild(oComboitem);
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
-	
+
 	private static void cargarObjetoBus(Combobox combobox) {
 		try{
 			ArrayList<ObjetoBus> lstObjetosBus = ServiceLocator.getObjetoBusManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
-	
-			for (int l = 0; l < lstObjetosBus.size(); l ++) {
-				ObjetoBus oObjetoBus = lstObjetosBus.get(l);
+
+			for (ObjetoBus oObjetoBus : lstObjetosBus) {
 				Comboitem oComboitem = new Comboitem();
-	
+
 				oComboitem.setValue(oObjetoBus);
 				oComboitem.setLabel(oObjetoBus.getDenominacion());
-	
+
 				combobox.appendChild(oComboitem);
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
-	
+
 	private static void cargarEstadoDocumentoBus(Combobox combobox, Boolean todos) {
 		try{
 			ArrayList<EstadoDocumentoBus> lstEstadoDocumentoBus = ServiceLocator.getEstadoDocumentoBusManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
-			
+
 			cargarGenericData(combobox, todos);
-			for (int l = 0; l < lstEstadoDocumentoBus.size(); l ++) {
-				EstadoDocumentoBus oestadoDocumentoBus = lstEstadoDocumentoBus.get(l);
+			for (EstadoDocumentoBus oestadoDocumentoBus : lstEstadoDocumentoBus) {
 				Comboitem oComboitem = new Comboitem();
-	
+
 				oComboitem.setValue(oestadoDocumentoBus);
 				oComboitem.setLabel(oestadoDocumentoBus.getDenominacion());
-	
+
 				combobox.appendChild(oComboitem);
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
-	
+
 	private static void cargarBus(Combobox combobox, Boolean todos) {
 		try{
 			ArrayList<Bus> lstBus = ServiceLocator.getBusManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "codigo");
-	
+
 			cargarGenericData(combobox, todos);
-			for (int l = 0; l < lstBus.size(); l ++) {
-				Bus oBus = lstBus.get(l);
+			for (Bus oBus : lstBus) {
 				Comboitem oComboitem = new Comboitem();
-	
+
 				oComboitem.setValue(oBus);
 				oComboitem.setLabel(oBus.getCodigo());
-	
+
 				combobox.appendChild(oComboitem);
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
-	
+
 //	public static void cargarTipoDocumento(Combobox combobox, Boolean documentacionBus, Boolean todos) {
 //		try{
 //			TreeMap<String, Object> criterioBusqueda = new TreeMap<String, Object>();
 //			List<String> criterioOrdena = null;
 //			criterioOrdena = new ArrayList<String>();
-//			criterioOrdena.add("denominacion");	
-//			
+//			criterioOrdena.add("denominacion");
+//
 //			String estadoRegistro = Constantes.ACTIVO;
 //			Boolean tipo = documentacionBus;
 //			criterioBusqueda.put("tipo", tipo);
 //			criterioBusqueda.put("estadoRegistro", estadoRegistro);
 //			ArrayList<TipoDocumento> lstTipoDocumento = (ServiceLocator.getTipoDocumentoManager().buscarPorX(criterioBusqueda, criterioOrdena));
-//			
+//
 //			cargarGenericData(combobox, todos);
 //			for (int l = 0; l < lstTipoDocumento.size(); l ++) {
 //				TipoDocumento oTipoDocumento = lstTipoDocumento.get(l);
 //				Comboitem oComboitem = new Comboitem();
-//	
+//
 //				oComboitem.setValue(oTipoDocumento);
-//	
+//
 //				oComboitem.setLabel(oTipoDocumento.getDenominacion());
 //				combobox.appendChild(oComboitem);
-//				
+//
 //			}
 //		}catch(Exception ex){
 //			ex.printStackTrace();
 //		}
 //	}
 
-		
+
 	/**
 	 * Realiza la asignación del primer elemento al Combobox enviado como parametro.
 	 * @param combo		: Objeto al cual se le asignara el Comboitem.
@@ -1353,23 +1324,23 @@ public class UtilData extends Window {
 			oComboitem.setLabel(Constantes.COMBO_LABEL_TODOS);
 		else
 			oComboitem.setLabel(Constantes.COMBO_LABEL_SELECCIONE);
-		
+
 		combo.appendChild(oComboitem);
 		combo.setSelectedIndex(0);
 	}
-	
+
 	/**
 	 * Recupera las rutas, según la localidad seleccionada .
 	 * @param combo		: Objeto al cual se le asignara el Comboitem.
-	 * @param id		: Indica el ID de la Localidad. 
+	 * @param id		: Indica el ID de la Localidad.
 	 * @param puntos	: si es null, carga todas la rutas que correcsponden al parametro "id",
-	 * 					  caso contrario solo carga aquellas rutas cuyo puntaje sean menor o igual al parametro "puntos"	
+	 * 					  caso contrario solo carga aquellas rutas cuyo puntaje sean menor o igual al parametro "puntos"
 	 */
-	public static void cargarRutas(Combobox combobox, boolean todos, Integer id, Integer puntos) {	
+	public static void cargarRutas(Combobox combobox, boolean todos, Integer id, Integer puntos) {
 		cargarRutas(combobox, todos, id, puntos,false);
-	}	
-		
-	
+	}
+
+
 	/**
 	 * Realiza la busqueda de las rutas
 	 * @param combobox : Combobox en conde se van a mostrar las rutas
@@ -1379,44 +1350,42 @@ public class UtilData extends Window {
 	 * 				   caso contrario solo carga aquellas rutas cuyo puntaje sean menor o igual al parametro "puntos"
 	 * @param ocultarRutasPool : True valira: False no validar.
 	 */
-	public static void cargarRutas(Combobox combobox, boolean todos, Integer id, Integer puntos, Boolean ocultarRutasPool) {	
+	public static void cargarRutas(Combobox combobox, boolean todos, Integer id, Integer puntos, Boolean ocultarRutasPool) {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			List<String> criteriosOrdenar = null;
 			criteriosBusqueda.put("ruc", Constantes.RUC_TEPSA);
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-			
+
 			/*Valida si debe ocultar las rutas que estan dentro del pool */
 			List<PoolLocalidad> rutasPool=new ArrayList<>();
 			if(ocultarRutasPool)
-				rutasPool=ServiceLocator.getPoolLocalidadManager().buscarPorX(criteriosBusqueda, null);			
-			
-			criteriosBusqueda = new TreeMap<String, Object>();
+				rutasPool=ServiceLocator.getPoolLocalidadManager().buscarPorX(criteriosBusqueda, null);
+
+			criteriosBusqueda = new TreeMap<>();
 			criteriosOrdenar = null;
-			
-			criteriosOrdenar = new ArrayList<String>();
+
+			criteriosOrdenar = new ArrayList<>();
 			criteriosOrdenar.add("destino");
-			
+
 			Localidad olocalida = new Localidad();
 			olocalida.setId(id);
 			criteriosBusqueda.put("localidadOrigen", olocalida);
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			ArrayList<Ruta> lstRuta = ServiceLocator.getRutaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
-					
-			UtilData.cargarGenericData(combobox, todos);	
-			for (int l = 0; l < lstRuta.size(); l ++) {
-				Ruta oRuta = lstRuta.get(l);
-				
+
+			UtilData.cargarGenericData(combobox, todos);
+			for (Ruta oRuta : lstRuta) {
 				boolean addRuta=true;
 				for(PoolLocalidad localidadIntegracion : rutasPool){
-					if(localidadIntegracion.getLocalidadDestino().getId().intValue()==oRuta.getLocalidadDestino().getId().intValue() && 
+					if(localidadIntegracion.getLocalidadDestino().getId().intValue()==oRuta.getLocalidadDestino().getId().intValue() &&
 							oRuta.getId().intValue()==localidadIntegracion.getRutaMayor().getId().intValue()){
 						addRuta=false;
 						break;
 					}
 				}
-				
-				
+
+
 				if(addRuta){
 					if(puntos!=null){
 						if(oRuta.getPuntaje()!=null && oRuta.getPuntaje()>0 &&  puntos >= oRuta.getPuntaje()){
@@ -1437,42 +1406,40 @@ public class UtilData extends Window {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	public static void cargarUsuarioHasrdware(Combobox combobox, Boolean todos, Agencia agencia) {
 		try{
 			combobox.getItems().clear();
-			
-			ArrayList<UsuarioHardware> lstUsuarioHardware= new ArrayList<UsuarioHardware>();
+
+			ArrayList<UsuarioHardware> lstUsuarioHardware= new ArrayList<>();
 			if(agencia ==null){
 				lstUsuarioHardware = ServiceLocator.getUsuarioHardwareManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "descripcion");
 			}
 			else{
-				TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+				TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 				criteriosBusqueda.put("agencia", agencia);
 				criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 				lstUsuarioHardware=ServiceLocator.getUsuarioHardwareManager().buscarPorX(criteriosBusqueda, null);
-			}	
+			}
 			cargarGenericData(combobox, todos);
-			for (int l = 0; l < lstUsuarioHardware.size(); l ++) {
-				UsuarioHardware usuarioHardware  = lstUsuarioHardware.get(l);
+			for (UsuarioHardware usuarioHardware : lstUsuarioHardware) {
 				Comboitem oComboitem = new Comboitem();
 				oComboitem.setLabel(usuarioHardware.getDescripcion());
 				oComboitem.setValue(usuarioHardware);
 				combobox.appendChild(oComboitem);
-			}			
+			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
-	
+
 	public static void cargarTipoMoneda(Combobox combobox, Boolean todos) {
 		try{
 			combobox.getItems().clear();
 			ArrayList<TipoMoneda> lstTiposMoneda=ServiceLocator.getTipoMonedaManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
-			
+
 			cargarGenericData(combobox, todos);
-			for (int l = 0; l < lstTiposMoneda.size(); l ++) {
-				TipoMoneda tipoMoneda  = lstTiposMoneda.get(l);
+			for (TipoMoneda tipoMoneda : lstTiposMoneda) {
 				Comboitem oComboitem = new Comboitem();
 				oComboitem.setLabel(tipoMoneda.getDenominacion());
 				oComboitem.setValue(tipoMoneda);
@@ -1482,15 +1449,14 @@ public class UtilData extends Window {
 			ex.printStackTrace();
 		}
 	}
-	
-	
+
+
 	private static void cargarPreferenciaAlimentaria(Combobox combobox, Boolean todos) {
 		try{
 			ArrayList<PreferenciaAlimentaria> lstPreferenciaAlimentaria = ServiceLocator.getPreferenciaAlimentariaManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
-			
+
 			cargarGenericData(combobox, todos);
-			for (int l = 0; l < lstPreferenciaAlimentaria.size(); l ++) {
-				PreferenciaAlimentaria oPreferenciaAlimentaria = lstPreferenciaAlimentaria.get(l);
+			for (PreferenciaAlimentaria oPreferenciaAlimentaria : lstPreferenciaAlimentaria) {
 				Comboitem oComboitem = new Comboitem();
 				oComboitem.setLabel(oPreferenciaAlimentaria.getDenominacion());
 				oComboitem.setValue(oPreferenciaAlimentaria);
@@ -1500,13 +1466,13 @@ public class UtilData extends Window {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	public static void cargarPersonalXtipo (Combobox combobox, Boolean todos, Integer idTipoPersonal) throws Exception{
-		TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
-		List<String> criteriosOrdenar = new ArrayList<String>();
+		TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
+		List<String> criteriosOrdenar = new ArrayList<>();
 		TipoPersonal tipoPersonal = new TipoPersonal();
 		criteriosOrdenar.add("apellidoPaterno");
-		
+
 		if (idTipoPersonal ==null) {
 			criteriosBusqueda.remove("tipoPersonal");
 		}else {
@@ -1515,26 +1481,24 @@ public class UtilData extends Window {
 		}
 		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 		ArrayList<Personal> lstPersonal = ServiceLocator.getPersonalManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
-		
+
 		//cargarGenericData(combobox, todos);
-		
-		for (int l = 0; l < lstPersonal.size(); l ++) {
-			Personal personal = lstPersonal.get(l);
+
+		for (Personal personal : lstPersonal) {
 			Comboitem oComboitem = new Comboitem();
 			oComboitem.setLabel(personal.getApellidoPaterno() +" "+  personal.getApellidoMaterno() + ", " + personal.getNombre());
 			oComboitem.setValue(personal);
 			combobox.appendChild(oComboitem);
 		}
 	}
-	
-	
+
+
 	private static void cargarCanalVenta(Combobox combobox, Boolean todos) {
 		try{
 			ArrayList<CanalVenta> lstCanalVenta = ServiceLocator.getCanalVentaManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
-			
+
 			cargarGenericData(combobox, todos);
-			for (int l = 0; l < lstCanalVenta.size(); l ++) {
-				CanalVenta canalVenta = lstCanalVenta.get(l);
+			for (CanalVenta canalVenta : lstCanalVenta) {
 				Comboitem oComboitem = new Comboitem();
 				oComboitem.setLabel(canalVenta.getDenominacion());
 				oComboitem.setValue(canalVenta);
@@ -1544,16 +1508,15 @@ public class UtilData extends Window {
 			ex.printStackTrace();
 		}
 	}
-	
-	
+
+
 	public static void cargarPersonal (Combobox combobox, Boolean todos) throws Exception{
 		ArrayList<Personal> lstPersonal = ServiceLocator.getPersonalManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "apellidoPaterno");
-		
+
 		if(todos)
 			cargarGenericData(combobox, todos);
-		
-		for (int l = 0; l < lstPersonal.size(); l ++) {
-			Personal personal = lstPersonal.get(l);
+
+		for (Personal personal : lstPersonal) {
 			Comboitem oComboitem = new Comboitem();
 			if(personal.getApellidoMaterno()!=null)
 				oComboitem.setLabel(personal.getApellidoPaterno() +" "+  personal.getApellidoMaterno() + ", " + personal.getNombre());
@@ -1563,39 +1526,36 @@ public class UtilData extends Window {
 			combobox.appendChild(oComboitem);
 		}
 	}
-	
+
 	public static void cargarTipoformaPago (Combobox combobox, Boolean todos) throws Exception{
 		ArrayList<TipoFormaPago> lstTipoFormaPago = ServiceLocator.getTipoFormaPagoManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
-		
+
 		cargarGenericData(combobox, todos);
-		for (int l = 0; l < lstTipoFormaPago.size(); l ++) {
-			TipoFormaPago tipoFormaPago = lstTipoFormaPago.get(l);
+		for (TipoFormaPago tipoFormaPago : lstTipoFormaPago) {
 			Comboitem oComboitem = new Comboitem();
 			oComboitem.setLabel(tipoFormaPago.getDenominacion());
 			oComboitem.setValue(tipoFormaPago);
 			combobox.appendChild(oComboitem);
 		}
 	}
-	
+
 	public static void cargarMotivoCortesia (Combobox combobox, Boolean todos) throws Exception{
 		ArrayList<MotivoCortesia> lstMotivocortesia = ServiceLocator.getMotivoCortesiaManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
-		
+
 		cargarGenericData(combobox, todos);
-		for (int l = 0; l < lstMotivocortesia.size(); l ++) {
-			MotivoCortesia motivoCortesia = lstMotivocortesia.get(l);
+		for (MotivoCortesia motivoCortesia : lstMotivocortesia) {
 			Comboitem oComboitem = new Comboitem();
 			oComboitem.setLabel(motivoCortesia.getDenominacion());
 			oComboitem.setValue(motivoCortesia);
 			combobox.appendChild(oComboitem);
 		}
 	}
-	
+
 	public static void cargarRutas (Combobox combobox, Boolean todos) throws Exception{
 		ArrayList<Ruta> lstRutas = ServiceLocator.getRutaManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "origen");
-		
+
 		cargarGenericData(combobox, todos);
-		for (int l = 0; l < lstRutas.size(); l ++) {
-			Ruta ruta = lstRutas.get(l);
+		for (Ruta ruta : lstRutas) {
 			Comboitem oComboitem = new Comboitem();
 			oComboitem.setLabel(ruta.getOrigen() +" / "+ ruta.getDestino());
 			oComboitem.setValue(ruta);
@@ -1605,17 +1565,16 @@ public class UtilData extends Window {
 
 	public static void cargarTipoAsiento (Combobox combobox, Boolean todos) throws Exception{
 		ArrayList<TipoAsiento> lstTipoAsiento = ServiceLocator.getTipoAsientoManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
-		
+
 		cargarGenericData(combobox, todos);
-		for (int l = 0; l < lstTipoAsiento.size(); l ++) {
-			TipoAsiento tipoAsiento = lstTipoAsiento.get(l);
+		for (TipoAsiento tipoAsiento : lstTipoAsiento) {
 			Comboitem oComboitem = new Comboitem();
 			oComboitem.setLabel(tipoAsiento.getDenominacion());
 			oComboitem.setValue(tipoAsiento);
 			combobox.appendChild(oComboitem);
 		}
 	}
-	
+
 //	public static void cargarOpcionMenu (Combobox combobox, Boolean todos) throws Exception{
 //		ArrayList<OpcionMenu> lstOpcionMenu = ServiceLocator.getOpcionMenuMenager().buscarPorEstadoRegistro(Constantes.ACTIVO, "denominacion");
 //		combobox.getItems().clear();
@@ -1628,10 +1587,10 @@ public class UtilData extends Window {
 //			combobox.appendChild(oComboitem);
 //		}
 //	}
-//	
+//
 	/**
 	 * Carga Menus Padres
-	 * @param combobox	
+	 * @param combobox
 	 * @param todos
 	 * @throws Exception
 	 */
@@ -1639,40 +1598,37 @@ public class UtilData extends Window {
 		List<OpcionMenu> lstOpcionMenu =  ServiceLocator.getOpcionMenuManager().buscaMenusPadres();
 		combobox.getItems().clear();
 		cargarGenericData(combobox, todos);
-		for (int l = 0; l < lstOpcionMenu.size(); l ++) {
-			OpcionMenu opcionMenu = lstOpcionMenu.get(l);
+		for (OpcionMenu opcionMenu : lstOpcionMenu) {
 			Comboitem oComboitem = new Comboitem();
 			oComboitem.setLabel(opcionMenu.getDenominacion());
 			oComboitem.setValue(opcionMenu);
 			combobox.appendChild(oComboitem);
 		}
-		
-		
+
+
 	}
-		
-	
+
+
 	public static void cargarRoles (Combobox combobox, Boolean todos) throws Exception{
 		ArrayList<Rol> lstRoles = ServiceLocator.getRolManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO,"denominacion");
 		combobox.getItems().clear();
 		cargarGenericData(combobox, todos);
-		for (int l = 0; l < lstRoles.size(); l ++) {
-			Rol rol = lstRoles.get(l);
+		for (Rol rol : lstRoles) {
 			Comboitem oComboitem = new Comboitem();
 			oComboitem.setLabel(rol.getDenominacion());
 			oComboitem.setValue(rol);
 			combobox.appendChild(oComboitem);
 		}
 	}
-	
-	
+
+
 	public static void cargarUsuarios (Combobox combobox, Boolean todos) throws Exception{
 		ArrayList<Usuario> lstUsuarios = ServiceLocator.getUsuarioManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO,"apellidoPaterno");
-		
-		if (todos==true)
+
+		if (todos)
 			cargarGenericData(combobox, todos);
-		
-		for (int l = 0; l < lstUsuarios.size(); l ++) {
-			Usuario  usuario= lstUsuarios.get(l);
+
+		for (Usuario usuario : lstUsuarios) {
 			Comboitem oComboitem = new Comboitem();
 			String ApellidoMaterno=usuario.getApellidoMaterno()!=null?usuario.getApellidoMaterno():"";
 			oComboitem.setLabel(usuario.getApellidoPaterno()+" "+ApellidoMaterno+", "+ usuario.getNombre());
@@ -1680,17 +1636,16 @@ public class UtilData extends Window {
 			combobox.appendChild(oComboitem);
 		}
 	}
-	
+
 	public static void cargarUsuarios (Combobox combobox, TreeMap<String, Object> parametros, Boolean todos){
 		try{
 			combobox.getItems().clear();
-			ArrayList<String> criteriosOrdenar = new ArrayList<String>();
+			ArrayList<String> criteriosOrdenar = new ArrayList<>();
 			criteriosOrdenar.add("apellidoPaterno");
 			ArrayList<Usuario> lstUsuarios = ServiceLocator.getUsuarioManager().buscarPorX(parametros, criteriosOrdenar);
-			
+
 			cargarGenericData(combobox, todos);
-			for (int l = 0; l < lstUsuarios.size(); l ++) {
-				Usuario  usuario= lstUsuarios.get(l);
+			for (Usuario usuario : lstUsuarios) {
 				Comboitem oComboitem = new Comboitem();
 				String ApellidoMaterno=usuario.getApellidoMaterno()!=null?usuario.getApellidoMaterno():"";
 				oComboitem.setLabel(usuario.getApellidoPaterno()+" "+ApellidoMaterno+", "+ usuario.getNombre());
@@ -1701,12 +1656,12 @@ public class UtilData extends Window {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	public static void cargarUsuarioAprobadores (Combobox combobox, Boolean todos) throws Exception{
 		ArrayList<UsuarioAprobador> lstUsuarioAprobador = ServiceLocator.getUsuarioAprobadorManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO,null);
-		
+
 		cargarGenericData(combobox, todos);
-		
+
 		for (UsuarioAprobador usuarioAprobador: lstUsuarioAprobador) {
 			Usuario  usuario= usuarioAprobador.getUsuario();
 			Comboitem oComboitem = new Comboitem();
@@ -1715,13 +1670,13 @@ public class UtilData extends Window {
 			combobox.appendChild(oComboitem);
 		}
 	}
-	
+
 	public static void cargarUsuariosLiquidacion(Combobox combobox, String fechaInicio, String fechaFinal, Boolean todos, Integer idAgencia) throws Exception{
 		combobox.getItems().clear();
 		List<Usuario>listUsuario=ServiceLocator.getUsuarioManager().buscarUsuarioLiquidacion(fechaInicio, fechaFinal, idAgencia,null);
-		
+
 		cargarGenericData(combobox, todos);
-		
+
 		for (Usuario usuario: listUsuario) {
 			Comboitem oComboitem = new Comboitem();
 			oComboitem.setLabel(usuario.getApellidoPaterno()+" "+usuario.getApellidoMaterno()+", "+ usuario.getNombre());
@@ -1729,7 +1684,7 @@ public class UtilData extends Window {
 			combobox.appendChild(oComboitem);
 		}
 	}
-	
+
 	/**
 	 * Carga usuarios, basados en las liquidaciones.
 	 * @param combobox :Combobox
@@ -1741,7 +1696,7 @@ public class UtilData extends Window {
 		combobox.getItems().clear();
 		List<Usuario>listUsuario=ServiceLocator.getUsuarioManager().buscarUsuarioLiquidacion(null, null, idAgencia,estaLoquidacion);
 		cargarGenericData(combobox, todos);
-		
+
 		for (Usuario usuario: listUsuario) {
 			Comboitem oComboitem = new Comboitem();
 			oComboitem.setLabel(usuario.toString());
@@ -1749,56 +1704,53 @@ public class UtilData extends Window {
 			combobox.appendChild(oComboitem);
 		}
 	}
-	
-	
+
+
 	public static void cargarTipoGasto (Combobox combobox, Boolean todos, Integer isIngreso) throws Exception{
 		ArrayList<TipoGasto> lstTipoGastos= ServiceLocator.getTipoGastoManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
-		
+
 		cargarGenericData(combobox, todos);
-		
-		for (int l = 0; l < lstTipoGastos.size(); l ++) {
-			TipoGasto  tipoGasto= lstTipoGastos.get(l);
+
+		for (TipoGasto tipoGasto : lstTipoGastos) {
 			if(tipoGasto.getTipoOperacion().intValue()==isIngreso) {
 				Comboitem oComboitem = new Comboitem();
 				oComboitem.setLabel(tipoGasto.getDenominacion());
 				oComboitem.setValue(tipoGasto);
-				combobox.appendChild(oComboitem);	
-			}			
+				combobox.appendChild(oComboitem);
+			}
 		}
 	}
-	
+
 	private static void cargarTipoGasto (Combobox combobox, Boolean todos) throws Exception{
 		ArrayList<TipoGasto> lstTipoGastos= ServiceLocator.getTipoGastoManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
-		
+
 		cargarGenericData(combobox, todos);
-		
-		for (int l = 0; l < lstTipoGastos.size(); l ++) {
-			TipoGasto  tipoGasto= lstTipoGastos.get(l);
+
+		for (TipoGasto tipoGasto : lstTipoGastos) {
 			Comboitem oComboitem = new Comboitem();
 			oComboitem.setLabel(tipoGasto.getDenominacion());
 			oComboitem.setValue(tipoGasto);
 			combobox.appendChild(oComboitem);
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param combobox
 	 * @param todos
 	 * @throws Exception
 	 */
 	public static void cargarTipoMovimiento (Combobox combobox, Boolean todos) throws Exception{
 		ArrayList<TipoMovimiento> lstTipoMovimiento= ServiceLocator.getTipoMovimientoManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
-		
-		cargarGenericData(combobox, todos);		
-		for (int l = 0; l < lstTipoMovimiento.size(); l ++) {
-			TipoMovimiento  tipoMovimiento= lstTipoMovimiento.get(l);
+
+		cargarGenericData(combobox, todos);
+		for (TipoMovimiento tipoMovimiento : lstTipoMovimiento) {
 			Comboitem oComboitem = new Comboitem();
 			oComboitem.setLabel(tipoMovimiento.getDenominacion());
 			oComboitem.setValue(tipoMovimiento);
 			combobox.appendChild(oComboitem);
 		}
-	}	
+	}
 	public static void cargarTipoMovimiento(String campo,  Object[] criterios, List<String> criteriosOrdenar,Combobox combobox, Boolean todos) {
 		try{
 			List<TipoMovimiento> lstTipoMovimientos = ServiceLocator.getTipoMovimientoManager().buscarPorX(campo, criterios, criteriosOrdenar, Constantes.VALUE_ACTIVO);
@@ -1815,54 +1767,54 @@ public class UtilData extends Window {
 			ex.printStackTrace();
 		}
 	}
-	
-	
+
+
 	/**
 	 * Recupera todos los funcionarios
 	 * @param combobox : Obejto Combobox
-	 * @param todos	   : 
+	 * @param todos	   :
 	 * @param funcinario_idDiferente : Opcional,Identificador del funcionario el cual no se debe cargar en el combo box
 	 * @throws Exception
 	 */
 	public static void cargarFuncionarios (Combobox combobox, Boolean todos,Integer funcinario_idDiferente) throws Exception{
 		String sid=String.valueOf(Constantes.ID_ROL_FUNCIONARIO);
-		String[] ids =sid.split(","); 
+		String[] ids =sid.split(",");
 		Integer[] oCriteriosIN = new Integer[ids.length];
 		for(int i=0; i<ids.length; i++){
 			oCriteriosIN[i]=Integer.valueOf(ids[i]);
 		}
-		
-		List<String> criteriosOrdenar= new ArrayList<String>();
+
+		List<String> criteriosOrdenar= new ArrayList<>();
 		criteriosOrdenar.add("usuario");
 		List<UsuarioRol>listUsuarioRol=ServiceLocator.getUsuarioRolManager().buscarPorX("rol.id", oCriteriosIN, criteriosOrdenar, Constantes.VALUE_ACTIVO);
-		
+
 		/* *****Ordena los funcionarios por apellido paterno. */
 		Object[]obj=new String[listUsuarioRol.size()];
 		int x=-1;
 		for(UsuarioRol usuarioRol:listUsuarioRol){
-			
+
 			Usuario usuario=usuarioRol.getUsuario();
 			if(usuario.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO)){
 				x++;
 				obj[x]=usuario.getApellidoPaterno()+"-"+(usuario.getApellidoMaterno()!=null?usuario.getApellidoMaterno():"")+"-"+usuario.getNombre()+"-"+usuario.getId();
 			}
-					
+
 		}
 		Arrays.sort(obj, 0, x);
 		/* ***************************************** */
-			
+
 		//Carga Funcionarios
-		cargarGenericData(combobox, todos);		
-		for (int y=0;y<obj.length;y++) {
+		cargarGenericData(combobox, todos);
+		for (Object element : obj) {
 			Usuario funcionario=new Usuario();
-						
-			if(obj[y]!=null){
-				String[] cadena=obj[y].toString().split("-");
+
+			if(element!=null){
+				String[] cadena=element.toString().split("-");
 				funcionario.setApellidoPaterno(cadena[0].toString());
 				funcionario.setApellidoMaterno(cadena[1].toString());
 				funcionario.setNombre(cadena[2].toString());
 				funcionario.setId(Integer.valueOf(cadena[3].toLowerCase()));
-				
+
 				if(funcinario_idDiferente!=null){
 					if(funcionario.getId().intValue()!=funcinario_idDiferente.intValue()){
 						Comboitem oComboitem = new Comboitem();
@@ -1885,7 +1837,7 @@ public class UtilData extends Window {
 //			oComboitem.setValue(usuario);
 //			combobox.appendChild(oComboitem);
 //		}
-		
+
 	}
 	/**
 	 * Cargar los clientes asignados a la cartera de un determinado funcionario
@@ -1899,7 +1851,7 @@ public class UtilData extends Window {
 		if(funcionario!=null)
 			idFuncionaerio=funcionario.getId();
 		List<CarteraCliente>listCarteraCliente=ServiceLocator.getCarteraClienteManager().buscarClientesCartera(idFuncionaerio, null);
-				
+
 		/* *****ordenar los funcionarios */
 		Object[]obj=new String[listCarteraCliente.size()];
 		int x=-1;
@@ -1910,24 +1862,24 @@ public class UtilData extends Window {
 		}
 		Arrays.sort(obj, 0, listCarteraCliente.size());
 		/* ***************************************** */
-			
+
 		//Carga Funcionarios
-		cargarGenericData(combobox, todos);		
-		for (int y=0;y<obj.length;y++) {
+		cargarGenericData(combobox, todos);
+		for (Object element : obj) {
 			Cliente cliente=new Cliente();
-			
-			String[] cadena=obj[y].toString().split(";");
+
+			String[] cadena=element.toString().split(";");
 			cliente.setRazonSocial(cadena[0].toString());
 			cliente.setNumeroDocumento(cadena[1].toString());
 			cliente.setId(Long.valueOf(cadena[2].toString()));
-			
+
 			Comboitem oComboitem = new Comboitem();
 			oComboitem.setLabel(cliente.toString());
 			oComboitem.setValue(cliente);
 			combobox.appendChild(oComboitem);
 		}
-		
-		
+
+
 //		cargarGenericData(combobox, todos);
 //		for (CarteraCliente carteraCliente: listCarteraCliente) {
 //			Cliente cliente=carteraCliente.getCliente();
@@ -1936,9 +1888,9 @@ public class UtilData extends Window {
 //			oComboitem.setValue(cliente);
 //			combobox.appendChild(oComboitem);
 //		}
-	}	
-	
-	
+	}
+
+
 	/**
 	 * Carga los clientes que ayan realizado alguna solciitud contado o credito
 	 * @param combobox		:Objeto Combobox
@@ -1956,9 +1908,9 @@ public class UtilData extends Window {
 			combobox.appendChild(oComboitem);
 		}
 		combobox.setSelectedIndex(0);
-	}	
-	
-	
+	}
+
+
 	/**
 	 * Carga todos los clientes credito
 	 * @param combobox
@@ -1966,10 +1918,10 @@ public class UtilData extends Window {
 	 * @throws Exception
 	 */
 	public static void cargarClientesCredito (Combobox combobox, Boolean todos,Integer idFuncionario) throws Exception{
-		
-		List<LineaCreditoCliente> list= new ArrayList<LineaCreditoCliente>();				
+
+		List<LineaCreditoCliente> list= new ArrayList<>();
 		list=ServiceLocator.getLineaCreditoClienteManager().clientesCredito(null, idFuncionario,null);
-			
+
 		cargarGenericData(combobox, todos);
 		for (LineaCreditoCliente lineaCreditoCliente: list) {
 			Cliente cliente=lineaCreditoCliente.getCarteraCliente().getCliente();
@@ -1978,22 +1930,21 @@ public class UtilData extends Window {
 			oComboitem.setValue(cliente);
 			combobox.appendChild(oComboitem);
 		}
-	}	
-	
-	
+	}
+
+
 	public static void cargarTipoCobranza (Combobox combobox, Boolean todos) throws Exception{
 		ArrayList<TipoCobranza> lstTipoCobranza= ServiceLocator.getTipoCobranzaManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
-		
-		cargarGenericData(combobox, todos);		
-		for (int l = 0; l < lstTipoCobranza.size(); l ++) {
-			TipoCobranza  tipoCobranza= lstTipoCobranza.get(l); 
+
+		cargarGenericData(combobox, todos);
+		for (TipoCobranza tipoCobranza : lstTipoCobranza) {
 			Comboitem oComboitem = new Comboitem();
 			oComboitem.setLabel(tipoCobranza.getDenominacion());
 			oComboitem.setValue(tipoCobranza);
 			combobox.appendChild(oComboitem);
 		}
-	}	
-	
+	}
+
 	/**
 	 * Carga autorizadores de las cortesias
 	 * @param combobox	: objeto que contendrá la data
@@ -2002,20 +1953,20 @@ public class UtilData extends Window {
 	 */
 	public static void cargarAutorizadorCortesia (Combobox combobox, Boolean todos) throws Exception{
 		ArrayList<AutorizadorCortesia> lstAutorizadorCortesias= ServiceLocator.getAutorizadorCortesiaManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, null);
-		ArrayList<AutorizadorCortesia>arrayList= new ArrayList<AutorizadorCortesia>();
-				
-//		cargarGenericData(combobox, todos);		
+		ArrayList<AutorizadorCortesia>arrayList= new ArrayList<>();
+
+//		cargarGenericData(combobox, todos);
 		for (int l = 0; l < lstAutorizadorCortesias.size(); l ++) {
 			AutorizadorCortesia  autorizadorCortesia= lstAutorizadorCortesias.get(l);
 			boolean flag=false;
-			
+
 			for(AutorizadorCortesia autoCortesia: arrayList){
 				if(autoCortesia.getPersonal().getId()==autorizadorCortesia.getPersonal().getId()){
 					flag=true;
 					break;
 				}
 			}
-			if (flag==false){
+			if (!flag){
 //				Comboitem oComboitem = new Comboitem();
 //				oComboitem.setLabel(autorizadorCortesia.getPersonal().toString());
 //				oComboitem.setValue(autorizadorCortesia);
@@ -2023,8 +1974,8 @@ public class UtilData extends Window {
 				arrayList.add(autorizadorCortesia);
 			}
 		}
-		
-		
+
+
 		/* *****ordenar */
 		Object[]obj=new String[arrayList.size()];
 		int x=-1;
@@ -2034,41 +1985,40 @@ public class UtilData extends Window {
 		}
 		Arrays.sort(obj, 0, arrayList.size());
 		/* ***************************************** */
-			
+
 		//Carga los autorizadores
-		cargarGenericData(combobox, todos);		
-		for (int y=0;y<obj.length;y++) {
-			String[] cadena=obj[y].toString().split(";");
+		cargarGenericData(combobox, todos);
+		for (Object element : obj) {
+			String[] cadena=element.toString().split(";");
 			Long id=Long.valueOf(cadena[1].toString());
 			AutorizadorCortesia autorizadorCortesia=ServiceLocator.getAutorizadorCortesiaManager().buscarPorId(id);
-					
+
 			Comboitem oComboitem = new Comboitem();
 			oComboitem.setLabel(autorizadorCortesia.getPersonal().toString());
 			oComboitem.setValue(autorizadorCortesia);
 			combobox.appendChild(oComboitem);
 		}
-		
-		
-		
-	}	
-	
+
+
+
+	}
+
 	private static void cargarMotivoTemporadaAlta (Combobox combobox, Boolean todos) throws Exception{
 		ArrayList<MotivoTemporadaAlta> lstMotTempAlt= ServiceLocator.getMotivoTemporadaAltaManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "nombreMotivo");
-		
+
 		cargarGenericData(combobox, todos);
-		for (int l = 0; l < lstMotTempAlt.size(); l ++) {
-			MotivoTemporadaAlta motivoTemporadaAlta = lstMotTempAlt.get(l);
+		for (MotivoTemporadaAlta motivoTemporadaAlta : lstMotTempAlt) {
 			Comboitem oComboitem = new Comboitem();
 			oComboitem.setLabel(motivoTemporadaAlta.getNombreMotivo());
 			oComboitem.setValue(motivoTemporadaAlta);
 			combobox.appendChild(oComboitem);
 		}
 	}
-	
+
 //	/**
 //	 * Consulta agencia, en la cual esta registrado el Pc, de donde se esta ingresado al sistema.
 //	 * @param codigo : Codigo del usuario Hardware.
-//	 * @return : class UsuarioHardware. 
+//	 * @return : class UsuarioHardware.
 //	 */
 //	@SuppressWarnings("rawtypes")
 //	public static  ArrayList agenciaUsuarioHardware(String codigo){
@@ -2076,37 +2026,37 @@ public class UtilData extends Window {
 //		criteriosBusqueda.put("codigo", codigo);
 //		criteriosBusqueda.put("estadoRegistro", Constantes.ACTIVO);
 //		ArrayList<UsuarioHardware> lstUsuarioHardware= ServiceLocator.getUsuarioHardwareManager().buscarPorX(criteriosBusqueda, null);
-//		
+//
 //		return lstUsuarioHardware;
 //	}
-//	
+//
 //	/**
-//	 * 
+//	 *
 //	 * @return : codigo del usuario hardware.
-//	 * @throws Exception 
+//	 * @throws Exception
 //	 */
 //	public static String getCodigoUsuarioHardware() throws Exception{
 //		/*Leer archivo txt*/
 ////		File file= new  File("d:\\secret.txt");
-////		
+////
 ////		FileReader fileReader = new FileReader(file);
 ////		BufferedReader buffer = new BufferedReader(fileReader);
 ////		String codigo = buffer.readLine();
 //		String codigo = "192.168.50.41";
-//		
+//
 //		GenericBean genericBean = new GenericBean();
 //		genericBean.setCodigoUsuarioHardware(codigo);
-//	
-//		
+//
+//
 //		return genericBean.getCodigoUsuarioHardware();
 //	}
-	
+
 	/**
 	 * Calcula porcentace de los correlativos utilizados en los manifiestos
 	 * @param CorrelativoActual : correlativo actual
 	 * @param CorrelativoFinal  : correlativo final
 	 * @return : porcentaje utilizado
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public static Integer porcentajeCorrelativoManifiesto(Agencia agencia) throws Exception{
 		Integer porcentajeUtilizado=0;
@@ -2120,20 +2070,20 @@ public class UtilData extends Window {
 		}
 		return porcentajeUtilizado;
 	}
-	
+
 	/**
 	 * Valida Mail
 	 * @param email: texto a validar
 	 * @return : falso(MAil incorrecto), true(Mail Correcto)
 	 */
 	public static Boolean validateEmail(String email) {
-		Boolean corercto=true;
+		boolean corercto=true;
         if(!email.matches(".+@.+\\.[a-z]+")) {
-        	corercto= false;           
+        	corercto= false;
         }
 		return corercto;
     }
-	
+
 	/**
 	 * consulta el Accesos en para el usuario
 	 * @param usuario
@@ -2146,10 +2096,10 @@ public class UtilData extends Window {
 //		criteriosBusqueda.put("usuario", usuario);
 //		List<UsuarioRol> listUsuarioRol = ServiceLocator.getUsuarioRolManager().buscarPorX(criteriosBusqueda, null);
 //		rol = ServiceLocator.getRolManager().buscarPorId(new Long( ((UsuarioRol) listUsuarioRol.get(0)).getUsuarioRolID().getIdRol()));
-//			
+//
 //		return rol;
 //	}
-	
+
 	/**
 	 * Recupera el tipo de operacion
 	 * @param combo	: Objeto al cual se le asignara el Comboitem.
@@ -2158,7 +2108,7 @@ public class UtilData extends Window {
 		Comboitem oComboitem = new Comboitem("SELECCIONE");
 		Comboitem oComboitem1 = new Comboitem("RESTA");
 		Comboitem oComboitem2 = new Comboitem("SUMA");
-		
+
 		oComboitem.setValue(-1);
 		oComboitem1.setValue(0);
 		oComboitem2.setValue(1);
@@ -2167,7 +2117,7 @@ public class UtilData extends Window {
 		combobox.appendChild(oComboitem1);
 		combobox.appendChild(oComboitem2);
 	}
-	
+
 	/**
 	 * Verifica si el usuario tiene o no una liquidacion abierta
 	 * @param usuario
@@ -2175,22 +2125,22 @@ public class UtilData extends Window {
 	 * @return : true (el usuario tiene una liquidacion abierta); fale(el usuario no tiene ninguna liquidacion abierta)
 	 */
 	public static Liquidacion estadoLiquidacionUsuario(Usuario usuario, Agencia agencia){
-		TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+		TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 		criteriosBusqueda.put("usuario", usuario);
 		criteriosBusqueda.put("agencia", agencia);
 		criteriosBusqueda.put("estadoLiquidacion", Constantes.LIQUI_ESTA_ABIERTO);
 		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 		List<Liquidacion> listLiquidacion= ServiceLocator.getLiquidacionManager().buscarPorX(criteriosBusqueda, null);
-		
+
 		Liquidacion liquidacion=new Liquidacion();
 		if (listLiquidacion.size()>0)
 			liquidacion=listLiquidacion.get(0);
 		else
 			liquidacion=null;
-			
+
 		return liquidacion;
 	}
-	
+
 
 //	/**
 //	 * Realiza la busqueda del correlativo para el boleto a emitir.
@@ -2202,12 +2152,12 @@ public class UtilData extends Window {
 //		String result = "";
 //		try{
 //			UsuarioHardware usuarioHardware=ServiceLocator.getUsuarioHardwareManager().buscarPorId(usuarioHardwareID.longValue());
-//			
+//
 //			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
 //			criteriosBusqueda.put("tipoComprobante",new TipoComprobante(tipoComprobante));
 //			criteriosBusqueda.put("agencia",usuarioHardware.getAgencia());
 //			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-//			
+//
 //			List<EspecieValorada> lstEspecieValorada = ServiceLocator.getEspecieValoradaManager().buscarPorX(criteriosBusqueda, null);
 //			if(lstEspecieValorada.size()==1){
 //				EspecieValorada especieValorada = lstEspecieValorada.get(0);
@@ -2217,31 +2167,31 @@ public class UtilData extends Window {
 //			}else if(lstEspecieValorada.size()>1){
 //				DlgMessage.information(Messages.getString("UtilData.information.noUniqueEspecieValorada"));
 //			}else
-//				DlgMessage.information(Messages.getString("UtilData.information.noAsignacionEspecieValorada"));			
-			
+//				DlgMessage.information(Messages.getString("UtilData.information.noAsignacionEspecieValorada"));
+
 			//End Begin 21/10/2016
 //			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
 //			criteriosBusqueda.put("controlEspecieValoradaID.idTipoComprobante", tipoComprobante);
 //			criteriosBusqueda.put("controlEspecieValoradaID.idUsuarioHardware", usuarioHardwareID);
 //			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-//			
+//
 //			List<ControlEspecieValorada> lstEspecieValoradas = ServiceLocator.getControlEspecieValoradaManager().buscarPorX(criteriosBusqueda, null);
 //			if(lstEspecieValorada.size()==1){
 //				ControlEspecieValorada controlEspecieValorada = lstEspecieValorada.get(0);
-//				result = controlEspecieValorada.toString();				
+//				result = controlEspecieValorada.toString();
 //			}else if(lstEspecieValorada.size()>1){
 //				DlgMessage.information(Messages.getString("UtilData.information.noUniqueEspecieValorada"));
 //			}else
-//				DlgMessage.information(Messages.getString("UtilData.information.noAsignacionEspecieValorada"));		
+//				DlgMessage.information(Messages.getString("UtilData.information.noAsignacionEspecieValorada"));
 //			return null;
 //		}catch(EspecieValoradaNotAvailableException evnaex){
-//			DlgMessage.information(Messages.getString("UtilData.information.notAvailableEspecieValorada"));			
+//			DlgMessage.information(Messages.getString("UtilData.information.notAvailableEspecieValorada"));
 //		}catch(Exception ex){
 //			DlgMessage.information(ex.getMessage());
 //		}
 //		return result;
 //	}
-	
+
 //	/**
 //	 * Realiza la busqueda del correlativo de la especie valorada, de los tipos de comprobante DIFERENTES al Boleto de Viaje
 //	 * @param tipoComprobante	: Tipo de comprobante que se buscara.
@@ -2255,14 +2205,14 @@ public class UtilData extends Window {
 //			criteriosBusqueda.put("tipoComprobante",new TipoComprobante(tipoComprobante));
 //			criteriosBusqueda.put("agencia",agencia );
 //			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-//			
+//
 //			List<EspecieValorada> lstEspecieValorada = ServiceLocator.getEspecieValoradaManager().buscarPorX(criteriosBusqueda, null);
 //			if(lstEspecieValorada.size()==1){
 //				EspecieValorada especieValorada = lstEspecieValorada.get(0);
 //				if((tipoComprobante.equals(Constantes.ID_TIPCOM_FACTURA) || tipoComprobante.equals(Constantes.ID_TIPCOM_BOLETA_VENTA) || tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_CREDITO) || tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_DEBITO))){
 //					if(especieValorada.getSeriefe()==null || especieValorada.getSeriefe().trim().isEmpty())
 //						throw new EspecieValoradaNotAvailableException();
-//					
+//
 //					/*Valida si debe ejecutar el sequenciador y si lo tiene configurado*/
 //					if(ejecutarSeqByCorrelativo && especieValorada.getNameSecuenciador()!=null && !(especieValorada.getNameSecuenciador().trim().isEmpty())){
 //						especieValorada=ServiceLocator.getEspecieValoradaManager().ejecutarSeqCorrelativo(especieValorada);
@@ -2279,7 +2229,7 @@ public class UtilData extends Window {
 //			}else
 //				throw new Exception(Messages.getString("UtilData.information.noAsignacionEspecieValorada"));
 //		}catch(EspecieValoradaNotAvailableException evnaex){
-//			DlgMessage.information(Messages.getString("UtilData.information.notAvailableEspecieValorada"));			
+//			DlgMessage.information(Messages.getString("UtilData.information.notAvailableEspecieValorada"));
 //		}catch(Exception ex){
 //			DlgMessage.information(ex.getMessage());
 //		}
@@ -2290,23 +2240,23 @@ public class UtilData extends Window {
 	 * @param tipoComprobante	: Tipo de comprobante que se buscara.
 	 * @param Agencia			: Identificador de la Agencia
 	 * @return Numero de boleto.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public static EspecieValorada buscarEspecieValorada(Integer tipoComprobante, Agencia agencia, Boolean ejecutarSeqByCorrelativo) throws Exception{
 		EspecieValorada oespecieValorada=null;
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("tipoComprobante",new TipoComprobante(tipoComprobante));
 			criteriosBusqueda.put("agencia",agencia );
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-			
+
 			List<EspecieValorada> lstEspecieValorada = ServiceLocator.getEspecieValoradaManager().buscarPorX(criteriosBusqueda, null);
 			if(lstEspecieValorada.size()==1){
 				EspecieValorada especieValorada = lstEspecieValorada.get(0);
 				if((tipoComprobante.equals(Constantes.ID_TIPCOM_FACTURA) || tipoComprobante.equals(Constantes.ID_TIPCOM_BOLETA_VENTA) || tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_CREDITO) || tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_DEBITO))){
 					if(especieValorada.getSeriefe()==null || especieValorada.getSeriefe().trim().isEmpty())
 						throw new EspecieValoradaNotAvailableException();
-					
+
 					/*Valida si debe ejecutar el sequenciador y si lo tiene configurado*/
 					if(ejecutarSeqByCorrelativo && especieValorada.getNameSecuenciador()!=null && !(especieValorada.getNameSecuenciador().trim().isEmpty())){
 						especieValorada=ServiceLocator.getEspecieValoradaManager().ejecutarSeqCorrelativo(especieValorada);
@@ -2322,33 +2272,33 @@ public class UtilData extends Window {
 				throw new Exception(Messages.getString("UtilData.information.noAsignacionEspecieValorada"));
 		}catch(EspecieValoradaNotAvailableException evnaex){
 			throw new Exception(Messages.getString("UtilData.information.notAvailableEspecieValorada"));
-//			DlgMessage.information(Messages.getString("UtilData.information.notAvailableEspecieValorada"));			
+//			DlgMessage.information(Messages.getString("UtilData.information.notAvailableEspecieValorada"));
 		}catch(Exception ex){
 			throw new Exception(ex);
 //			DlgMessage.information(ex.getMessage());
 		}
-		
+
 		return oespecieValorada;
 	}
-	
+
 	/**
-	 * Carga el tipo de transaccion(Venta y Reserva) 
+	 * Carga el tipo de transaccion(Venta y Reserva)
 	 * @param combobox
 	 * @param todos
 	 */
 	public static void cargarTipoTransaction(Combobox combobox) {
 		//cargarGenericData(combobox, todos);
-			
+
 		Comboitem oComboitem2 = new Comboitem("VENTAS");
 		Comboitem oComboitem3 = new Comboitem("RESERVAS");
-		
+
 		oComboitem2.setValue(1);
 		oComboitem3.setValue(2);
-		
+
 		combobox.appendChild(oComboitem2);
 		combobox.appendChild(oComboitem3);
 	}
-	
+
 	/**
 	 * Carga los tipos de convenio con el cliente
 	 * @param combobox 	: objeto donde se cargarán los resultados
@@ -2356,17 +2306,17 @@ public class UtilData extends Window {
 	 */
 	public static void cargarTipoConvenio(Combobox combobox, Boolean todos){
 		cargarGenericData(combobox, todos);
-		
+
 //		Comboitem oComboitem2 = new Comboitem("CONTADO");
 		Comboitem oComboitem3 = new Comboitem("CREDITO");
-		
+
 //		oComboitem2.setValue(Constantes.TIPCON_CONTADO);
 		oComboitem3.setValue(Constantes.TIPCON_CREDITO);
 
 //		combobox.appendChild(oComboitem2);
 		combobox.appendChild(oComboitem3);
 	}
-	
+
 	/**
 	 * Carga estos de la solicitud
 	 * @param combobox 	: objeto donde se cargarán los resultados
@@ -2374,17 +2324,17 @@ public class UtilData extends Window {
 	 */
 	public static void cargarEstadoSolicitud(Combobox combobox, Boolean todos){
 		cargarGenericData(combobox, todos);
-		
+
 		Comboitem oComboitem2 = new Comboitem(Constantes.APROBADO_DESC+"S");
 		Comboitem oComboitem3 = new Comboitem(Constantes.DESAPROBADO_DESC+"S");
-		
+
 		oComboitem2.setValue(Constantes.ESTADOSOL_INACTIVA);
 		oComboitem3.setValue(Constantes.ESTADOSOL_ANULADA);
 
 		combobox.appendChild(oComboitem2);
 		combobox.appendChild(oComboitem3);
 	}
-	
+
 	/**
 	 * Carga estados de la Linea de Credito de un cliente
 	 * @param combobox
@@ -2392,20 +2342,20 @@ public class UtilData extends Window {
 	 */
 	public static void cargarEstadoSolicitudLC(Combobox combobox, Boolean todos){
 		cargarGenericData(combobox, todos);
-		
+
 		Comboitem oComboitem2 = new Comboitem("APROBADAS");
 		Comboitem oComboitem3 = new Comboitem("DESAPROBADAS");
-		
+
 		oComboitem2.setValue(Constantes.ESTADOSOL_ACTIVA);
 		oComboitem3.setValue(Constantes.ESTADOSOL_ANULADA);
 
 		combobox.appendChild(oComboitem2);
 		combobox.appendChild(oComboitem3);
 	}
-	
-	 
-	
-	
+
+
+
+
 //	/**
 //	 * Carga el tipo de Cliente
 //	 * @param combobox 	: objeto donde se cargarán los resultados
@@ -2413,10 +2363,10 @@ public class UtilData extends Window {
 //	 */
 //	public static void cargarTipoCliente(Combobox combobox, Boolean todos){
 //		cargarGenericData(combobox, todos);
-//		
+//
 //		Comboitem oComboitem2 = new Comboitem("CORPORATIVO");
 //		Comboitem oComboitem3 = new Comboitem("AGENCIA DE VIAJE");
-//		
+//
 //		oComboitem2.setValue(Constantes.TIPCLI_CORPORATIVO);
 //		oComboitem3.setValue(Constantes.TIPCLI_AGENCIA);
 //
@@ -2430,18 +2380,18 @@ public class UtilData extends Window {
 	 */
 	public static void cargarOrigenCliente(Combobox Combobox, Boolean todos){
 		cargarGenericData(Combobox, todos);
-		
+
 		Comboitem oComboitem2 = new Comboitem(Constantes.ORIGEN_LIMA_DESC);
 		Comboitem oComboitem3 = new Comboitem(Constantes.ORIGEN_PROVINCIAS_DESC);
-		
+
 		oComboitem2.setValue(Constantes.ORIGEN_LIMA);
 		oComboitem3.setValue(Constantes.ORIGEN_PROVINCIAS);
 
 		Combobox.appendChild(oComboitem2);
 		Combobox.appendChild(oComboitem3);
 	}
-	
-	
+
+
 	/**
 	 * Realiza la liberación de asientos bloqueados por el usuarioHardware.
 	 * @param usuarioHardware	: Usuario hardware del cual se desea borrar los asientos seleccionados.
@@ -2453,7 +2403,7 @@ public class UtilData extends Window {
 			DlgMessage.error(ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Carga los tipos de comision para el concesionario
 	 * @param combobox : Objeto Combobox
@@ -2462,7 +2412,7 @@ public class UtilData extends Window {
 		Comboitem oComboitem0 = new Comboitem("SELECCIONE");
 		Comboitem oComboitem1 = new Comboitem("PORCENTAJE");
 		Comboitem oComboitem2 = new Comboitem("FIJO");
-		
+
 		oComboitem0.setValue(-1);
 		oComboitem1.setValue(0);
 		oComboitem2.setValue(1);
@@ -2471,7 +2421,7 @@ public class UtilData extends Window {
 		combobox.appendChild(oComboitem1);
 		combobox.appendChild(oComboitem2);
 	}
-		
+
 	/**
 	 * Valida si un determinado usuario tiene o no mail configurado
 	 * @param usuario
@@ -2479,7 +2429,7 @@ public class UtilData extends Window {
 	 * @throws Exception
 	 */
 	public static Boolean validateUserMail(Usuario usuario) throws Exception{
-		Usuario ousuario=ServiceLocator.getUsuarioManager().buscarPorId(usuario.getId().longValue()); 
+		Usuario ousuario=ServiceLocator.getUsuarioManager().buscarPorId(usuario.getId().longValue());
 		if(ousuario.getPersonal()==null){
 			if(usuario.getEmailFuncionario()==null)
 				return false;
@@ -2487,10 +2437,10 @@ public class UtilData extends Window {
 				return true;
 		}else if (ousuario.getPersonal().getEmail()==null)
 			return false;
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Realiza la apertura de la liquidacion.
 	 * @param fechaLiquidacion	: Fecha con la que se va aperturar la liquidacion
@@ -2499,7 +2449,7 @@ public class UtilData extends Window {
 	 */
 	public static Liquidacion aperturarLiquidacion(Date fechaLiquidacion,Usuario usuario,Agencia agencia) throws Exception{
 		Liquidacion liquidacion = new Liquidacion();
-		
+
 		liquidacion.setAnio(new Integer(Constantes.FORMAT_YEAR.format(fechaLiquidacion.getTime())));
 		liquidacion.setAgencia(agencia);
 		liquidacion.setUsuario(usuario);
@@ -2512,17 +2462,17 @@ public class UtilData extends Window {
 		liquidacion.setEstadoLiquidacion(Constantes.LIQUI_ESTA_ABIERTO);
 		liquidacion.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 		liquidacion.setMontoIngresadoDolares((double)0);
-		
+
 		UtilData.auditarRegistro(liquidacion, usuario, Executions.getCurrent());
 		ServiceLocator.getLiquidacionManager().aperturarLiquidacion(liquidacion);
-		
+
 		return liquidacion;
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 	/**
 	 * Procesa el cierre de caja
 	 * @param liquidacion	: Objeto liquidacion
@@ -2539,17 +2489,17 @@ public class UtilData extends Window {
 //		auditarRegistro(liquidacion, usuario, Executions.getCurrent());
 		auditarRegistro(liquidacion, true, usuario, Executions.getCurrent());
 		ServiceLocator.getLiquidacionManager().actualizar(liquidacion);
-		
+
 		/*Busca ventas a liquidar.*/
 		String fechaLiquidacion=Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
 		Integer idAgencia=liquidacion.getAgencia().getId();
 		Integer idUsuario=liquidacion.getUsuario().getId();
 //		List<DetalleLiquidacion> list = ServiceLocator.getDetalleLiquidacionManager().buscarVentasALiquidar(fechaLiquidacion, idAgencia, idUsuario);
-		
+
 //		/*Guarda Detalle Liquidacion*/
 		procesarDetalleLiquidacion(liquidacion, usuario);
-				
-		
+
+
 		/*Actualiza el identificador de la liquidacion en las ventas del pool*/
 		List<VentaPool> ventasPool=ServiceLocator.getVentaPoolManager().buscarVentas(fechaLiquidacion, fechaLiquidacion, liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId());
 		for(VentaPool ventaPool : ventasPool){
@@ -2560,8 +2510,8 @@ public class UtilData extends Window {
 				ServiceLocator.getVentaPoolManager().actualizar(ventaPool);
 //			}
 		}
-		
-		
+
+
 //		for (DetalleLiquidacion detalleLiquidacion: list){
 //			DetalleLiquidacion odetalleLiquidacion = new DetalleLiquidacion();
 //			odetalleLiquidacion.setLiquidacion(liquidacion);
@@ -2575,11 +2525,11 @@ public class UtilData extends Window {
 //			auditarRegistro(odetalleLiquidacion, usuario, Executions.getCurrent());
 //			ServiceLocator.getDetalleLiquidacionManager().guarda(odetalleLiquidacion);
 //		}
-		
+
 		/*Actualiza el campo idLiquidacion de las ventas liquidadas.*/
 		ServiceLocator.getDetalleLiquidacionManager().actualizaIdLiquidacionVentasLiquidadas(liquidacion.getId().longValue(),fechaLiquidacion, idAgencia, idUsuario);
 	}
-	
+
 	/**
 	 * REGISTRA EL DETALLE DE LA LIQUIDACION
 	 * @param liquidacion		: Objet Liquidacion.
@@ -2590,7 +2540,7 @@ public class UtilData extends Window {
 	public static void procesarDetalleLiquidacion(Liquidacion liquidacion,Usuario usuarioAuditoria) throws Exception{
 		/* Primero se asegura, y elimina el detalle de la liquidacion, por si esta exista*/
 		ServiceLocator.getDetalleLiquidacionManager().deleteXidLiquidacion(liquidacion.getId().longValue());
-		
+
 		/*Busca ventas a liquidar.*/
 		String fechaLiquidacion=Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
 		List<DetalleLiquidacion> list = ServiceLocator.getDetalleLiquidacionManager().buscarVentasALiquidar(fechaLiquidacion, liquidacion.getAgencia().getId(), liquidacion.getUsuario().getId());
@@ -2606,10 +2556,10 @@ public class UtilData extends Window {
 			odetalleLiquidacion.setTotal(detalleLiquidacion.getTotal());
 			odetalleLiquidacion.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 			auditarRegistro(odetalleLiquidacion, usuarioAuditoria, Executions.getCurrent());
-			ServiceLocator.getDetalleLiquidacionManager().guarda(odetalleLiquidacion);	
+			ServiceLocator.getDetalleLiquidacionManager().guarda(odetalleLiquidacion);
 		}
 	}
-	
+
 	/**
 	 * Valida si la ruta esta configurada para permitir la venta antes o despuesta de la hora de salida ## impl 10/11/2014 - jabanto
 	 * @param idRuta : Identificador de la ruta
@@ -2619,27 +2569,27 @@ public class UtilData extends Window {
 	 * @throws Exception
 	 */
 	public static Boolean permiteVentaByTramo(Integer idRuta, Long idItinerario, String fechaPartida) throws Exception{
-		
+
 		List<VentaTramo>listVentaTramo=ServiceLocator.getVentaTramoManager().buscarByRuta(idRuta, fechaPartida);
 		if(listVentaTramo.size()>0){
 			Date fechahoraActual=new Date();
 			Itinerario itinerario=idItinerario!=null?ServiceLocator.getItinerarioManager().buscarPorId(idItinerario):null;
 			Date fecHoraPart=itinerario!=null?getFechaHora(itinerario.getFechaPartida(), itinerario.getHoraPartida()):null;
-			
+
 			/*Cuando el itinerario es null, esta condicion solamente se debe cumplir en la fecha abierta*/
 			if(itinerario==null && listVentaTramo.size()>0)
 				return false;
-			
+
 			if(listVentaTramo.size()==1){
 				//Valida si la validacion debe ser antes o despuesta de la hora de salida
 				VentaTramo ventaTramo=listVentaTramo.get(0);
-				Long minutos=ventaTramo.getTiempo()*Constantes.MILISEGUNDOS_X_MINUTO;
-				
+				long minutos=ventaTramo.getTiempo()*Constantes.MILISEGUNDOS_X_MINUTO;
+
 				if(ventaTramo.getItinerario()==null){
 					//Validacion solamente por el identificador de la ruta
 					if(ventaTramo.getDespuesHoraSalida().intValue()==Constantes.TRUE_VALUE){//Despues de la salida
 						if(fechahoraActual.getTime()<(fecHoraPart.getTime()+minutos))
-							return false;							
+							return false;
 					}
 //					else{//Antes de la salida
 //						if(fechahoraActual.getTime()>(fecHoraPart.getTime()+minutos))
@@ -2649,24 +2599,24 @@ public class UtilData extends Window {
 					//Validacion por el identificador del itinerario
 					if(ventaTramo.getDespuesHoraSalida().intValue()==Constantes.TRUE_VALUE){//Despues de la salida
 						if(fechahoraActual.getTime()<(fecHoraPart.getTime()+minutos))
-							return false;							
+							return false;
 					}
 //					else{//Antes de la salida
 //						if(fechahoraActual.getTime()>(fecHoraPart.getTime()+minutos))
 //							return false;
 //					}
 				}
-				
+
 			}else{
-				//Validacion por itinerario 
-				Boolean validAplicadaByItinerario=false;
+				//Validacion por itinerario
+				boolean validAplicadaByItinerario=false;
 				for(VentaTramo ventaTramo:listVentaTramo){
 					if(ventaTramo.getItinerario()!=null && ventaTramo.getItinerario().getId().intValue()==itinerario.getId().longValue()){
 						validAplicadaByItinerario=true;
-						Long minutos=ventaTramo.getTiempo()*Constantes.MILISEGUNDOS_X_MINUTO;
+						long minutos=ventaTramo.getTiempo()*Constantes.MILISEGUNDOS_X_MINUTO;
 						if(ventaTramo.getDespuesHoraSalida().intValue()==Constantes.TRUE_VALUE){//Despues de la salida
 							if(fechahoraActual.getTime()<(fecHoraPart.getTime()+minutos))
-								return false;							
+								return false;
 						}
 //						else{//Antes de la salida
 //							if(fechahoraActual.getTime()>(fecHoraPart.getTime()+minutos))
@@ -2675,14 +2625,14 @@ public class UtilData extends Window {
 						break;
 					}
 				}
-				
+
 				//Validacion simple, si es que no se aplico la validacion por itinerario.
 				if(!(validAplicadaByItinerario)){
 					VentaTramo ventaTramo=listVentaTramo.get(0);
-					Long minutos=ventaTramo.getTiempo()*Constantes.MILISEGUNDOS_X_MINUTO;
+					long minutos=ventaTramo.getTiempo()*Constantes.MILISEGUNDOS_X_MINUTO;
 					if(ventaTramo.getDespuesHoraSalida().intValue()==Constantes.TRUE_VALUE){//Despues de la salida
 						if(fechahoraActual.getTime()<(fecHoraPart.getTime()+minutos))
-							return false;					
+							return false;
 					}
 //					else{//Antes de la salida
 //						if(fechahoraActual.getTime()>(fecHoraPart.getTime()+minutos))
@@ -2691,10 +2641,10 @@ public class UtilData extends Window {
 				}
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	private static Date getFechaHora(Date fecha, String hora) throws Exception{
 		int index=hora.toString().indexOf(":");
@@ -2704,10 +2654,10 @@ public class UtilData extends Window {
 		Date fecHoraPart=Constantes.FORMAT_DATE.parse(fechaPartida);
 		fecHoraPart.setHours(Integer.valueOf(sHora));
 		fecHoraPart.setMinutes(Integer.valueOf(sMinuto));
-		
+
 		return fecHoraPart;
 	}
-	
+
 	/**
 	 * Carga los formatos de los boletos
 	 * @param combobox	: comtrol en donde los va a cargar
@@ -2715,16 +2665,16 @@ public class UtilData extends Window {
 	 * @throws Exception
 	 */
 	public static void cargarFormatoBoletos(Combobox combobox, boolean todos)throws Exception{
-		
+
 //		InvoiceType invoiceType=new InvoiceType();
 //		UBLExtensionsType extensionsType=new UBLExtensionsType();
 //	 	invoiceType.setUBLExtensions(extensionsType);
-		
+
 		/**
 		 * UBO_INVOICELINE
 		 */
-		
-		
+
+
 		cargarGenericData(combobox, todos);
 		Comboitem comboitem=new Comboitem("FORMATO CHICO");
 		comboitem.setValue(Constantes.FALSE_VALUE);
@@ -2735,10 +2685,10 @@ public class UtilData extends Window {
 //		comboitem=new Comboitem("ELECTRONICO");
 //		comboitem.setValue(Constantes.TRUE_VALUE+1);
 		combobox.appendChild(comboitem);
-		
+
 		combobox.setSelectedIndex(0);
 	}
-	
+
 	/**
 	 * Valida el tipo de formato de impresion del boleto
 	 * @param idAgencia	: Identificador de la agencia.
@@ -2748,13 +2698,13 @@ public class UtilData extends Window {
 	 * @throws Exception
 	 */
 	public static boolean getFormatoImprecion(Integer idAgencia,Integer idTipoComprobante,Integer idUsuarioHarware) throws Exception{
-		
+
 		List<ControlEspecieValorada> lstCtrlEspecieValorada=ServiceLocator.getControlEspecieValoradaManager().buscarEspecieValoradas(idAgencia, idTipoComprobante, idUsuarioHarware);
 		boolean formato=lstCtrlEspecieValorada.get(0).getFormato().intValue()==Constantes.TRUE_VALUE;
-		
+
 		return formato;
 	}
-	
+
 	/**
 	 * Realiza la busqueda de la configuracion de la impresora
 	 * @param usuarioHardwareID : UsuarioHardwareID
@@ -2764,16 +2714,16 @@ public class UtilData extends Window {
 	public static ConfiguracionImpresora getConfiguracionImpresora(Integer usuarioHardwareID)throws Exception{
 		TreeMap<String, Object>criteriosBusqueda= new TreeMap<>();
 		criteriosBusqueda.put("usuarioHardware", new UsuarioHardware(usuarioHardwareID));
-		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);		
+		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 		List<ConfiguracionImpresora> result=ServiceLocator.getConfiguracionImpresoraManager().buscarPorX(criteriosBusqueda, null);
-		
+
 		ConfiguracionImpresora configuracionImpresora=null;
 		if(result.size()>0)
 			configuracionImpresora=result.get(0);
-		
+
 		return configuracionImpresora;
 	}
-	
+
 	/**
 	 * Realiza la busqueda del correlativo de la especie valorada, de los tipos de comprobante DIFERENTES al Boleto de Viaje
 	 * @param tipoComprobante			: Tipo de comprobante que se buscara.
@@ -2782,28 +2732,28 @@ public class UtilData extends Window {
 	 * @param usuarioHardware			: Usuario hardware para obtener sus especies
 	 * @param aplicarA					: Indica si la NC o ND se aplica a boletas (1) o Facturas (2)
 	 * @return Numero de boleto.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public static ControlEspecieValorada buscarEspecieValoradaByCaja (Integer tipoComprobante, Agencia agencia, Boolean ejecutarSeqByCorrelativo, UsuarioHardware usuarioHardware, Integer aplicarA) throws Exception{
 		ControlEspecieValorada oControlEspecieValorada=null;
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("tipoComprobante",new TipoComprobante(tipoComprobante));
 			criteriosBusqueda.put("agencia",agencia );
 			criteriosBusqueda.put("usuarioHardware", usuarioHardware);
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			if(tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_CREDITO) || tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_DEBITO))
 				criteriosBusqueda.put("aplica", aplicarA);
-			
+
 			List<ControlEspecieValorada> lstControlEspecieValorada = ServiceLocator.getControlEspecieValoradaManager().buscarPorX(criteriosBusqueda, null);
 			if(lstControlEspecieValorada.size()==1){
 				ControlEspecieValorada controlEspecieValorada = lstControlEspecieValorada.get(0);
-				if((tipoComprobante.equals(Constantes.ID_TIPCOM_FACTURA) || tipoComprobante.equals(Constantes.ID_TIPCOM_BOLETA_VENTA) 
-						|| tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_CREDITO) || tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_DEBITO) 
+				if((tipoComprobante.equals(Constantes.ID_TIPCOM_FACTURA) || tipoComprobante.equals(Constantes.ID_TIPCOM_BOLETA_VENTA)
+						|| tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_CREDITO) || tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_DEBITO)
 						|| tipoComprobante.equals(Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA) || tipoComprobante.equals(Constantes.ID_TIPCOM_TICKET_EQUIPAJE))){
 //					if(controlEspecieValorada.getSeriefe()==null || controlEspecieValorada.getSeriefe().trim().isEmpty())
 //						throw new EspecieValoradaNotAvailableException();
-					
+
 					/*Valida si debe ejecutar el sequenciador y si lo tiene configurado*/
 					if(ejecutarSeqByCorrelativo && controlEspecieValorada.getSecuenciador()!=null && !(controlEspecieValorada.getSecuenciador().trim().isEmpty())){
 						controlEspecieValorada=ServiceLocator.getControlEspecieValoradaManager().ejecutarSecuenciador(controlEspecieValorada);
@@ -2815,19 +2765,19 @@ public class UtilData extends Window {
 					oControlEspecieValorada=controlEspecieValorada;
 			}else if(lstControlEspecieValorada.size()>1) {
 				if(tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_CREDITO) || tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_DEBITO)) {
-					
+
 				}else
 					throw new Exception(Messages.getString("UtilData.information.noUniqueEspecieValorada"));
 			}else
 				throw new EspecieValoradaNotAvailableException();
 		}catch(EspecieValoradaNotAvailableException evnaex){
 			throw new EspecieValoradaNotAvailableException();
-//			DlgMessage.information(Messages.getString("UtilData.information.notAvailableEspecieValorada"));			
+//			DlgMessage.information(Messages.getString("UtilData.information.notAvailableEspecieValorada"));
 		}catch(Exception ex){
 			throw new Exception(ex);
 //			DlgMessage.information(ex.getMessage());
 		}
-		
+
 		return oControlEspecieValorada;
 	}
 

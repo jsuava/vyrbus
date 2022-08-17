@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for Seguridad complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="Seguridad">
  *   &lt;complexContent>
@@ -27,8 +27,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Seguridad", propOrder = { "ruc", "usuario", "clave", "partida" })
@@ -45,9 +45,9 @@ public class Seguridad {
 
 	/**
 	 * Gets the value of the ruc property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getRuc() {
 		return ruc;
@@ -55,10 +55,10 @@ public class Seguridad {
 
 	/**
 	 * Sets the value of the ruc property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setRuc(String value) {
 		this.ruc = value;
@@ -66,9 +66,9 @@ public class Seguridad {
 
 	/**
 	 * Gets the value of the usuario property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getUsuario() {
 		return usuario;
@@ -76,10 +76,10 @@ public class Seguridad {
 
 	/**
 	 * Sets the value of the usuario property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setUsuario(String value) {
 		this.usuario = value;
@@ -87,9 +87,9 @@ public class Seguridad {
 
 	/**
 	 * Gets the value of the clave property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getClave() {
 		return clave;
@@ -97,10 +97,10 @@ public class Seguridad {
 
 	/**
 	 * Sets the value of the clave property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setClave(String value) {
 		this.clave = value;
@@ -108,9 +108,9 @@ public class Seguridad {
 
 	/**
 	 * Gets the value of the partida property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getPartida() {
 		return partida;
@@ -118,10 +118,10 @@ public class Seguridad {
 
 	/**
 	 * Sets the value of the partida property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setPartida(String value) {
 		this.partida = value;

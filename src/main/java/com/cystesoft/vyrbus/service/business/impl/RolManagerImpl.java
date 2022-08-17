@@ -14,7 +14,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
 
 public class RolManagerImpl implements RolManager {
 	private RolDAO rolDAO;
-	
+
 	/**
 	 *  the RolDAO
 	 * @return
@@ -22,16 +22,16 @@ public class RolManagerImpl implements RolManager {
 	public RolDAO getRolDAO() {
 		return rolDAO;
 	}
-	
-	
+
+
 	/**
-	 * 
+	 *
 	 * @param rol
 	 */
 	public void setRolDAO(RolDAO rolDAO){
 		this.rolDAO=rolDAO;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.RolManager#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
@@ -67,15 +67,15 @@ public class RolManagerImpl implements RolManager {
 	@Transactional
 	public void guardar(Rol rol) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", rol.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getRolDAO().buscarPorX(criteriosBusqueda, null);
-					
+
 			/*Valida duplicidad de la denominación*/
 			if(resultDenominacion.size()>0)
 				throw new DenominacionDuplicadaException();
-			
+
 			getRolDAO().guardar(rol);
 
 		}catch (DenominacionDuplicadaException ddex){
@@ -83,7 +83,7 @@ public class RolManagerImpl implements RolManager {
 		}catch(Exception ex){
 			throw new Exception(ex);
 		}
-					
+
 	}
 
 	/*
@@ -94,22 +94,22 @@ public class RolManagerImpl implements RolManager {
 	@Transactional
 	public void actualizar(Rol rol) throws Exception{
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", rol.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getRolDAO().buscarPorX(criteriosBusqueda, null);
-			
+
 			/*Valida duplicidad de la denominación*/
-			for(int r = 0; r < resultDenominacion.size(); r ++) {
-				Rol orol = (Rol) resultDenominacion.get(r);
+			for (Object element : resultDenominacion) {
+				Rol orol = (Rol) element;
 					if (!(orol.getId() == rol.getId()))
 						throw new DenominacionDuplicadaException();
 				}
 			getRolDAO().actualizar(rol);
-			
+
 		}catch (DenominacionDuplicadaException ddex){
 		}
-		
+
 	}
 
 	/*

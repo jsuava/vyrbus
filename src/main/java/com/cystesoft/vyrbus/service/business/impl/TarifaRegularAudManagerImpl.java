@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 20 jul. 2020
  * Hora			: 11:46:43
@@ -22,7 +22,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
 public class TarifaRegularAudManagerImpl implements TarifaRegularAudManager {
 
 	private TarifaRegularAudDAO tarifaRegularAudDAO;
-	
+
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.service.business.TarifaRegularAudManager#guardar(com.cystesoft.vyrbus.model.bean.TarifaRegularAud)
 	 */

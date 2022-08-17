@@ -26,7 +26,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -34,8 +33,6 @@ import javax.swing.JApplet;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
-import com.cystesoft.vyrbus.view.tuentrada.URLLabel;
 
 
 /**
@@ -50,7 +47,7 @@ import com.cystesoft.vyrbus.view.tuentrada.URLLabel;
 public class PortPrinter extends JApplet implements ActionListener, Serializable{
 	public PortPrinter() {
 	}
-	
+
     private static final long serialVersionUID = 1L;
 	/**
      * This variable contains the URL of tepsacargo
@@ -117,9 +114,9 @@ public class PortPrinter extends JApplet implements ActionListener, Serializable
      * */
     private static String CONFIGURATION_FILE_NAME = "tepsacom";
     /**
-     * This variable contains the COM string 
+     * This variable contains the COM string
      * */
-    private static String COM = "COM";    
+    private static String COM = "COM";
     /**
      * This enumeration contains all ports available in S.O.
      * */
@@ -128,7 +125,7 @@ public class PortPrinter extends JApplet implements ActionListener, Serializable
     /**
      * This list of String contains all ports availables
      * */
-    private List<String> portAvailables = new ArrayList<String>();
+    private List<String> portAvailables = new ArrayList<>();
 
     /**
      * This variable contains the portId
@@ -147,7 +144,7 @@ public class PortPrinter extends JApplet implements ActionListener, Serializable
      * This variable contains the serial port where the message is going to be write
      * */
     private static SerialPort serialPort;
-    
+
 
     /**
      * This variable represents the stream for output
@@ -221,7 +218,7 @@ public class PortPrinter extends JApplet implements ActionListener, Serializable
         if(messageString==null)
             messageString = "";
         if(URLConfigurationFileInstaller==null)
-            URLConfigurationFileInstaller = "http://localhost:8080/sisvyr/installer.exe";		
+            URLConfigurationFileInstaller = "http://localhost:8080/sisvyr/installer.exe";
     }
 
     /**
@@ -235,7 +232,7 @@ public class PortPrinter extends JApplet implements ActionListener, Serializable
         this.getContentPane().add(retryButton);
         container.setBackground(new Color(255, 255, 255));
     }
-    
+
     private int convertDataBits(int fileDataBits){
         int dataBits =0;
         switch(fileDataBits){
@@ -256,7 +253,7 @@ public class PortPrinter extends JApplet implements ActionListener, Serializable
         }
         return dataBits;
     }
-    
+
     private int converParityOptions(String parityOptions){
         int parityOption = 0;
         if(parityOptions.equals("Par")){
@@ -275,7 +272,7 @@ public class PortPrinter extends JApplet implements ActionListener, Serializable
             parityOption=SerialPort.PARITY_NONE;
         }
         return parityOption;
-    }    
+    }
 
     private int converStopBits(String parityOptions){
         int parityOption = 0;
@@ -289,12 +286,12 @@ public class PortPrinter extends JApplet implements ActionListener, Serializable
             parityOption=SerialPort.STOPBITS_2;
         }
         return parityOption;
-    }      
+    }
     /**
      * This method open the connect to port sent in the argument
-     * @throws PortInUseException 
-     * @throws UnsupportedCommOperationException 
-     * @throws IOException 
+     * @throws PortInUseException
+     * @throws UnsupportedCommOperationException
+     * @throws IOException
      * */
     private void openConnection() throws PortInUseException, UnsupportedCommOperationException, IOException{
         serialPort = (SerialPort)portId.open("PrintToComPort", 2000);
@@ -311,7 +308,7 @@ public class PortPrinter extends JApplet implements ActionListener, Serializable
 
     /**
      * This method write the message in the outputStream configured with the COM port configured.
-     * @throws IOException 
+     * @throws IOException
      * */
     private void writeOnPrinter() throws IOException{
 
@@ -335,7 +332,7 @@ public class PortPrinter extends JApplet implements ActionListener, Serializable
         try{
             retrieveComPorts();
             String filePath = System.getProperty(
-                    JAVA_HOME) + File.separator + BIN_FOLDER + File.separator +CONFIGURATION_FILE_NAME;    
+                    JAVA_HOME) + File.separator + BIN_FOLDER + File.separator +CONFIGURATION_FILE_NAME;
             portConfiguration.readFromDataFile(filePath);
             if(portConfiguration.hasValidInformation()){
                 while(portList.hasMoreElements()){
@@ -353,12 +350,12 @@ public class PortPrinter extends JApplet implements ActionListener, Serializable
                 //In case something is wrong
                 String messagePart1="No se puede imprimir el ticket. La impresora no está lista.";
                 String messagePart2="Presione el boton Reintentar";
-                showErrorMessage("No se puede conectar con el puerto "+portConfiguration.getCurrentPort(),messagePart1,messagePart2,showErrorMessage);            
+                showErrorMessage("No se puede conectar con el puerto "+portConfiguration.getCurrentPort(),messagePart1,messagePart2,showErrorMessage);
             }
             else{
                 String messagePart1="La configuración de la impresora es incorrecta!";
                 String messagePart2="Ejecute el programa de configuración.";
-                showErrorMessage("No existe configuración",messagePart1,messagePart2,showErrorMessage); 
+                showErrorMessage("No existe configuración",messagePart1,messagePart2,showErrorMessage);
                 this.remove(retryButton);
             }
         }
@@ -368,7 +365,7 @@ public class PortPrinter extends JApplet implements ActionListener, Serializable
             e.printStackTrace();
             JOptionPane.showMessageDialog(this,"[Error] "+e.getMessage());
             String messagePart1="No se pudo imprimir el ticket!";
-            String messagePart2="Ejecute el programa de configuración.";            
+            String messagePart2="Ejecute el programa de configuración.";
             showErrorMessage("Ocurrió un error "+portConfiguration.getCurrentPort(),messagePart1,messagePart2,showErrorMessage);
         }
     }
@@ -440,7 +437,7 @@ public class PortPrinter extends JApplet implements ActionListener, Serializable
         }
 
         path = System.getProperty(
-                JAVA_HOME) + File.separator + LIB_FOLDER + File.separator + EXT_FOLDER+ File.separator;		
+                JAVA_HOME) + File.separator + LIB_FOLDER + File.separator + EXT_FOLDER+ File.separator;
         File comm_jar = new File(path+ COMM_JAR);
         if(!comm_jar.exists()){
             //copyConfigurationFile(COMM_JAR,path);
@@ -453,7 +450,7 @@ public class PortPrinter extends JApplet implements ActionListener, Serializable
     private void copyConfigurationFile(String file, String destination){
 
         try {
-            URL url  = new URL(getRepositoryFileName(file));	       
+            URL url  = new URL(getRepositoryFileName(file));
             InputStream in = url.openStream();
             OutputStream out = new FileOutputStream(destination);
 
@@ -464,7 +461,7 @@ public class PortPrinter extends JApplet implements ActionListener, Serializable
                 out.write(buf, 0, len);
             }
             in.close();
-            out.close(); 		
+            out.close();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -548,7 +545,7 @@ public class PortPrinter extends JApplet implements ActionListener, Serializable
             try
             {
                 File configurationFile=new File(filePath);
-                if(!configurationFile.exists())                
+                if(!configurationFile.exists())
                     setCurrentPort (null);
 
                 FileInputStream fis=null;
@@ -566,14 +563,14 @@ public class PortPrinter extends JApplet implements ActionListener, Serializable
                         setCurrentBitsPerSecond (Integer.valueOf(input.readLine()));
                         setCurrentDataBits (Integer.valueOf(input.readLine()));
                         setCurrentParity ( input.readLine());
-                        setCurrentStopBits ( input.readLine());                        
+                        setCurrentStopBits ( input.readLine());
                     }
 
-                } 
-            }      
+                }
+            }
             catch(Exception e){
                 e.printStackTrace();
-                setCurrentPort (null);                
+                setCurrentPort (null);
             }
         }
 

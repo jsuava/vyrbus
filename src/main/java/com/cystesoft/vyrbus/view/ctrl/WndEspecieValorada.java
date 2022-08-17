@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 25/08/2012
  */
@@ -73,27 +73,27 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 	private Spinner spCorrelativoActual;
 	private Textbox txtAutorizacionSunat;
 	private Combobox cmbFormato;
-	
+
 	private EspecieValorada oespecieValorada = null;
 	private Window wndSearch = null;
 
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
-	
-	
+
+
 	private String ABECEDARIO="ABCDEFGHIJKLMNOPQXYZ";
 	private String AUTORIZACION_SUNAT="0180050002620";
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IBase#onCreate()
 	 */
 	@Override
-	public void onCreate() throws Exception {	
+	public void onCreate() throws Exception {
 //		UtilData.cargarDataCombo(cboAgencia, Agencia.class, false);
 		UtilData.cargarAgenciaXtipoAgencia(cboAgencia, Constantes.ID_TIPAGE_TEPSA, false);
 //		UtilData.cargarDataCombo(cboTipoComprobante, TipoComprobante.class, false);
 		UtilData.cargarFormatoBoletos(cmbFormato, false);
-		
+
 		/*Carga los tipos de comprobantes*/
 		List<TipoComprobante>result=ServiceLocator.getTipoComprobanteManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
 		Comboitem comboitem= new Comboitem(Constantes.COMBO_LABEL_SELECCIONE);
@@ -104,19 +104,19 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 				comboitem.setValue(tipoComprobante);
 				cboTipoComprobante.appendChild(comboitem);
 			}
-		}		
-		
-		criteriosOrdenar = new ArrayList<String>();
+		}
+
+		criteriosOrdenar = new ArrayList<>();
 		//criteriosOrdenar.add("idAgencia");
-		
+
 		cboTipoComprobante.addEventListener(Events.ON_SELECT,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				// TODO Auto-generated method stub
 				try{
-					
+
 					onSelectTipoComprobante();
-					
+
 				}catch(CorrelativoException cex){
 					if(cex.getTipo().intValue()==CorrelativoException.DUPLICADO){
 						DlgMessage.information(Messages.getString("WndEspecieValorada.information.duplcateCorrelativoAgencia"));
@@ -127,9 +127,9 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 					cboTipoComprobante.setSelectedIndex(0);
 					cboAgencia.setSelectedIndex(0);
 				}
-			}	
+			}
 		});
-		
+
 	}
 
 	private void onSelectTipoComprobante()throws Exception{
@@ -140,29 +140,29 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 		habilitaControles(true);
 		/**A manera temporal el combo agencias solo se habilitará para el rol Super Usuario*/
 		cboAgencia.setDisabled( !(getRol().getId().equals(Constantes.ID_ROL_SUPER_USUARIO)));
-							
+
 		if (cboAgencia.getSelectedIndex()<=0)
 			throw new AgenciaNullException();
-		
+
 		if(cboTipoComprobante.getSelectedItem().getValue() instanceof TipoComprobante){
 			TipoComprobante tipoComprobante=cboTipoComprobante.getSelectedItem().getValue();
-														
-			if (!(tipoComprobante.getId().equals(Constantes.ID_TIPCOM_BOLETO_VIAJE) || 
+
+			if (!(tipoComprobante.getId().equals(Constantes.ID_TIPCOM_BOLETO_VIAJE) ||
 					tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_MANIFIESTO_PAX) ){
 				//Valida si la agencia seleccionada no tiene correlativo asignado
-				TreeMap<String, Object> criterioBusqueda= new TreeMap<String, Object>();
+				TreeMap<String, Object> criterioBusqueda= new TreeMap<>();
 				criterioBusqueda.put("agencia", cboAgencia.getSelectedItem().getValue());
 				criterioBusqueda.put("tipoComprobante", cboTipoComprobante.getSelectedItem().getValue());
 				criterioBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 				List<EspecieValorada>listEv=ServiceLocator.getEspecieValoradaManager().buscarPorX(criterioBusqueda, null);
 				if(listEv.size()>0)
 					throw new CorrelativoException(CorrelativoException.DUPLICADO);
-				
+
 				//Genera los correlativos de manera automática 10/11/2016 - jabanto
 				String ultimaSerie=ServiceLocator.getEspecieValoradaManager().buscarUltimaSerieUtilAge(tipoComprobante.getId());
 				if(tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA || tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_FACTURA ||
 						tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO || tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_NOTA_DEBITO){
-					
+
 					/*Calcula el siguiente numero de serie*/
 					String snumero="";
 					for(int i=0;i<ultimaSerie.length();i++){
@@ -170,9 +170,9 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 						if(Util.isNumeric(String.valueOf(schar)))
 							snumero+= String.valueOf(schar);
 					}
-					Integer numero=Integer.valueOf(snumero);
+					int numero=Integer.parseInt(snumero);
 					numero+= +1;
-					
+
 					/*Calcula el sub-prefijo*/
 					String sub_pre="";
 					for(int i=1;i<ultimaSerie.length();i++){
@@ -180,18 +180,18 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 						if(!(Util.isNumeric(String.valueOf(schar))))
 							sub_pre+=String.valueOf(schar);
 					}
-					
+
 					/*determina el sub-prefijo*/
 					switch (sub_pre.length()) {
 						case 1:
-							if(numero.intValue()>99){
+							if(numero>99){
 								sub_pre=getNextLetra(sub_pre);
 								numero=1;
 							}
 							break;
 						case 2:
 							String sub_subpre=sub_pre.substring(0, 1);
-							if(numero.intValue()>9){
+							if(numero>9){
 								sub_subpre=getNextLetra(sub_subpre);
 								numero=1;
 								sub_pre=sub_pre.substring(0, 1)+sub_subpre;
@@ -200,32 +200,32 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 						default:
 							break;
 					}
-					
+
 					String pretc=ultimaSerie.substring(0,1); //Saca el prefijo del tipo de comprobante (B=Boleta; F=Factura)
 					String prefijos=pretc+sub_pre;
 					String serie="";
 					switch (prefijos.length()) {
 						case 2:
-							if(numero.intValue()<=9)
-								serie=pretc+sub_pre+"0"+numero.toString();
+							if(numero<=9)
+								serie=pretc+sub_pre+"0"+Integer.toString(numero);
 							else
-								serie=pretc+sub_pre+numero.toString();
+								serie=pretc+sub_pre+Integer.toString(numero);
 							break;
 						case 3:
-							serie=pretc+sub_pre+numero.toString();
+							serie=pretc+sub_pre+Integer.toString(numero);
 							break;
 						default:
 							break;
 					}
-					
+
 					if((tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO || tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_NOTA_DEBITO) && serie.trim().length()>0)
 						serie=serie.substring(1); //Suprime el prefijo, este lo asigna el sistema cuento ge genera la nota de credito o debito
-					
+
 					if(serie.isEmpty()){
 						DlgMessage.information("No hay números de serie disponibles para generar.");
 						return;
 					}
-					
+
 					txtNumeroSerie.setText(serie);
 					txtAutorizacionSunat.setText(AUTORIZACION_SUNAT);
 				}else
@@ -233,7 +233,7 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 				spCorrelativoInicial.setValue(1);
 				spCorrelativoActual.setValue(1);
 				spCorrelativoFinal.setValue(999999999);
-				
+
 				/*End Begin 10/11/2016 - jabanto*/
 //				//Genera los correlativos de manera automática
 //				Integer ultimaSeria=ServiceLocator.getEspecieValoradaManager().buscarUltimaSerieUtilAge(tipoComprobante.getId());
@@ -241,7 +241,7 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 //				spCorrelativoInicial.setValue(1);
 //				spCorrelativoActual.setValue(1);
 //				spCorrelativoFinal.setValue(999999999);
-										
+
 				habilitaControles(false);
 				cboAgencia.setDisabled(false);
 				cboTipoComprobante.setDisabled(false);
@@ -254,21 +254,21 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 			}
 		}
 	}
-	
+
 	private String getNextLetra(String letraActual)throws Exception{
 		String nextLetra="";
 		int index= ABECEDARIO.indexOf(letraActual);
 		int maxindex=ABECEDARIO.length()-1;
-		
+
 		if(index==maxindex)
 			nextLetra=letraActual+ABECEDARIO.charAt(0);
 		else
 			nextLetra=String.valueOf(ABECEDARIO.charAt(index+1));
-		
+
 		return nextLetra;
 	}
-	
-	
+
+
 	@Override
 	public void initComponents() {
 		cboTipoComprobante = (Combobox) getFellow("cboTipoComprobante");
@@ -280,19 +280,19 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 		txtAutorizacionSunat = (Textbox) getFellow("txtAutorizacionSunat");
 		cmbFormato=(Combobox)this.getFellow("cmbFormato");
 	}
-	
+
 	@Override
 	public void onNew() {
 		cboTipoComprobante.setSelectedIndex(0);
-		try {			
+		try {
 			Usuario usuario=ServiceLocator.getUsuarioManager().buscarXId(getUsuario().getId().longValue());
 			if(usuario.getAgencia()==null)
 				Util.seleccionarValorItemCombo(Agencia.class, cboAgencia, getAgencia().getId());
 			else
 				Util.seleccionarValorItemCombo(Agencia.class, cboAgencia, usuario.getAgencia().getId());
-			
+
 			cmbFormato.setSelectedIndex(0);
-			
+
 			/**A manera temporal el combo agencias solo se habilitará para el rol Super Usuario*/
 			cboAgencia.setDisabled( !(getRol().getId().equals(Constantes.ID_ROL_SUPER_USUARIO)));
 		} catch (Exception e) {
@@ -303,15 +303,15 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 	public void onSearch() throws Exception {
 		ventarBusqueda();
 	}
-	
+
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		// TODO Auto-generated method stub
 		if (!criteriosBusqueda.isEmpty()) {
-			listarRegistros(ServiceLocator.getEspecieValoradaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
-		}	
+			listarRegistros(ServiceLocator.getEspecieValoradaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
+		}
 	}
-	
+
 	@Override
 	public void onModify(int tab) throws Exception {
 		// TODO Auto-generated method stub
@@ -327,7 +327,7 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 		txtAutorizacionSunat.setDisabled(true);
 		btnGuardar.setDisabled(true);
 	}
-	
+
 	@Override
 	public void onCancel(int action) throws Exception {
 		// TODO Auto-generated method stub
@@ -340,7 +340,7 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 				break;
 		}
 	}
-	
+
 	@Override
 	public void onSave(int action) throws Exception {
 		Long ultimoCorrRegistrado=(long) 0;
@@ -357,7 +357,7 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 				throw new CorrelativoException(CorrelativoException.FINAL_NULL);
 			else if (spCorrelativoActual.getText().equals("") || spCorrelativoActual.getValue().equals(0))
 				throw new CorrelativoException(CorrelativoException.ACTUAL_NULL);
-			else if (txtAutorizacionSunat.isDisabled()==false &&  txtAutorizacionSunat.getText().trim().equals("") && 
+			else if (!txtAutorizacionSunat.isDisabled() &&  txtAutorizacionSunat.getText().trim().equals("") &&
 					((TipoComprobante)cboTipoComprobante.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPCOM_MANIFIESTO_PAX)
 				throw new NumeroAutorizacionSunatNullException();
 			else if (spCorrelativoFinal.getValue() < spCorrelativoInicial.getValue())
@@ -370,17 +370,17 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 				DlgMessage.information(Messages.getString("WndEspecieValorada.information.noFormato"),cmbFormato);
 				throw new CancelaGrabacionException();
 			}
-			
+
 			TipoComprobante tipoComprobante=cboTipoComprobante.getSelectedItem().getValue();
 			Agencia agencia=cboAgencia.getSelectedItem().getValue();
 			final int acction=action;
-			
-			if(txtNumeroSerie.isDisabled()==false){
+
+			if(!txtNumeroSerie.isDisabled()){
 				//valida si la serie esta registra en el maestro de series y agencias.
 				final SerieEspecieValorada serieEspecieValorada=ServiceLocator.getSerieEspecieValoradaManager().buscarPorID(txtNumeroSerie.getValue().toString(), tipoComprobante.getId());
 				if(serieEspecieValorada==null)
 					throw new CorrelativoException(CorrelativoException.SERIE_NO_REGISTRADA);
-				
+
 				//Valida el correlativo incicial y final no sea menor al ultimo registrado en la BD
 				EspecieValorada especieValorada=ServiceLocator.getEspecieValoradaManager().buscarUltimaEspecieRegistrada(tipoComprobante.getId(), txtNumeroSerie.getValue().toString(),agencia.getId());
 				if(especieValorada!=null){
@@ -390,8 +390,8 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 					else if (ultimoCorrRegistrado>=spCorrelativoFinal.getValue())
 						throw new CorrelativoException(CorrelativoException.CORRELATIVO_FINAL_MENOR_DB);
 				}
-				
-				Long diferencia=spCorrelativoInicial.getValue()-ultimoCorrRegistrado;
+
+				long diferencia=spCorrelativoInicial.getValue()-ultimoCorrRegistrado;
 				if(diferencia>1){//Si existe diferencia entre el ultimo correlativo registrado y el inicial que se este registrando
 					//Valida si el rol es superusuario
 					if(getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO){
@@ -414,7 +414,7 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 					EventSaveEspeciValorada(action);
 			}else
 				EventSaveEspeciValorada(action);
-			
+
 			throw new CancelaGrabacionException();
 		}catch (TipoComprobanteNullException tcnex){
 			DlgMessage.information(Messages.getString("WndEspecieValorada.information.TipoComprobante"),cboTipoComprobante);
@@ -471,14 +471,14 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 			ex.printStackTrace(); throw new CancelaGrabacionException();
 		}
 	}
-	
-	
+
+
 	private void EventSaveEspeciValorada(final int acction) throws Exception{
 		Agencia agencia=(Agencia)cboAgencia.getSelectedItem().getValue();
 		final TipoComprobante tipoComprobante=cboTipoComprobante.getSelectedItem().getValue();
 		final SerieEspecieValorada serieEspecieValorada=ServiceLocator.getSerieEspecieValoradaManager().buscarPorID(txtNumeroSerie.getValue().toString(), tipoComprobante.getId());
-		
-		if(txtNumeroSerie.isDisabled()==false){
+
+		if(!txtNumeroSerie.isDisabled()){
 			if(serieEspecieValorada.getAgencia().getId().intValue()!=agencia.getId().intValue() && tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_MANIFIESTO_PAX){
 				/*Valida si la serie que se va a registrar pertenece a la agencia que esta haciendo el registro*/
 				DlgMessage.information("Este número de Serie está registrada en la Agencia "+serieEspecieValorada.getAgencia().toString()+", no puede continuar.");
@@ -499,30 +499,30 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 			}
 		}else
 			guardaEspecieValoda(acction);
-		
+
 	}
 	/**
 	 * Envia correo ante un ingreso de una serie duplicada por el usuario.
 	 * @param especieValorada
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private void enviarCorreo(Agencia agenciaCorresponde) throws Exception{
 		String title="Número de Serie utilizada en más de una Agencia";
 		String toAddress="rdelnegro@tepsa.com.pe, dquispe@tepsa.com.pe";
 		String ccAddress="sistemas@tepsa.com.pe";
 		String mensaje = "";
-		
+
 		//Busca mail genencia Comercial.
 //		Parametros parametros=ServiceLocator.getParametrosManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO);
 //		if(parametros.getUsuarioGerenciaComercial()!=null){
 //			String sid=parametros.getUsuarioGerenciaComercial();
-//			String[] ids =sid.split(","); 
+//			String[] ids =sid.split(",");
 //			Integer[] oCriteriosIN = new Integer[ids.length];
 //			for(int i=0; i<ids.length; i++){
 //				oCriteriosIN[i]=Integer.valueOf(ids[i]);
 //			}
 //			List<Usuario> lstUsuarios = ServiceLocator.getUsuarioManager().buscarPorX("id", oCriteriosIN, null, Constantes.VALUE_ACTIVO);
-//			
+//
 //			for(Usuario usuario: lstUsuarios){
 //				if(usuario.getPersonal()!=null && usuario.getPersonal().getEmail()!=null){
 //					Personal personal=usuario.getPersonal();
@@ -530,7 +530,7 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 //				}
 //			}
 //		}
-		//Cuerpo del mensaje		
+		//Cuerpo del mensaje
 		mensaje="Se ha registrado un número de Serie de un comprobante que corresponde a otra Agencia: \n";
 		mensaje+="Tipo de Comprobante            :"+cboTipoComprobante.getText()+"\n";
 		mensaje+="Agencia a quién le corresponde :"+agenciaCorresponde.toString()+"\n";
@@ -539,51 +539,51 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 		mensaje+="Fecha hora registro            :"+new MyTime().dateServer()+"\n";
 		mensaje+="Número de Serie                :"+txtNumeroSerie.getValue().toString()+"\n";
 		mensaje+="Correlativos registrados       :Del "+spCorrelativoInicial.getValue()+" Al "+spCorrelativoFinal.getValue()+"\n";
-		
+
 		//Si no encuentra el email de genencia comercial.
 //		if(toAddress.isEmpty()){
 //			toAddress=ccAddress;
 //			mensaje+="\n\n";
 //			mensaje+="Alerta : NO SE HA ENCONTRADO EL E-MAIL DEL USUARIO GERENCIA COMERCIAL. POR LO QUE NO HA PODIDO NOTIFICAR.\n";
 //		}
-		
+
 		//Envia E-Mail
 		mensaje+="\n\n";
 		mensaje+="NOTA: [Este buzon es de envio automático, por favor no responda.]";
 		DestinatariosEmails window = new DestinatariosEmails();
 		window.setEmails("TO:"+toAddress+";CC:"+ccAddress);
 		Sendmail.enviaEmail(mensaje,title, window);
-		
+
 	}
-	
+
 	private void guardaEspecieValoda(int action) throws Exception{
 		try{
 			if (action==ACTION_NEW)
 				oespecieValorada = new EspecieValorada();
-			
+
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
 			oespecieValorada.setId(id);
-		
+
 			TipoComprobante otipoComprobante = new TipoComprobante();
 			otipoComprobante.setId(((TipoComprobante) cboTipoComprobante.getSelectedItem().getValue()).getId());
 			oespecieValorada.setTipoComprobante(otipoComprobante);
-			
+
 			Agencia oagencia = new Agencia();
 			oagencia.setId(((Agencia) cboAgencia.getSelectedItem().getValue()).getId());
 			oagencia.setDenominacion(((Agencia) cboAgencia.getSelectedItem().getValue()).getDenominacion());
 			oespecieValorada.setAgencia(oagencia);
-			
+
 			if(Util.isNumeric(txtNumeroSerie.getText()))
 				oespecieValorada.setSerie(Integer.valueOf(txtNumeroSerie.getValue()));
 			else
 				oespecieValorada.setSeriefe(txtNumeroSerie.getText());
 //			oespecieValorada.setSerie(txtNumeroSerie.getValue());
-			
+
 			oespecieValorada.setCorrelativoInicial(spCorrelativoInicial.getValue().equals("") ? 0 : new Long (spCorrelativoInicial.getValue()));
 			oespecieValorada.setCorrelativoFinal(spCorrelativoFinal.getValue().equals("") ? 0 : new Long (spCorrelativoFinal.getValue()));
 			oespecieValorada.setCorrelativoActual(spCorrelativoActual.getValue().equals("") ? 0 : new Long (spCorrelativoActual.getValue()));
 			oespecieValorada.setAutorizacionSunat(txtAutorizacionSunat.getText());
-			if(cmbFormato.getSelectedIndex()>0)			
+			if(cmbFormato.getSelectedIndex()>0)
 				oespecieValorada.setFormato((int)cmbFormato.getSelectedItem().getValue());
 			else
 				oespecieValorada.setFormato(Constantes.FALSE_VALUE);
@@ -591,7 +591,7 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 
 			/*Busca alguna especie valorada de la agencia para inactivarla, solo si es diferente al manifiesto de pasajeros.*/
 			if(oespecieValorada.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_MANIFIESTO_PAX){
-				criteriosBusqueda=new TreeMap<String, Object>();
+				criteriosBusqueda=new TreeMap<>();
 				criteriosBusqueda.put("agencia", oespecieValorada.getAgencia());
 				criteriosBusqueda.put("tipoComprobante", oespecieValorada.getTipoComprobante());
 				criteriosBusqueda.put("serie", oespecieValorada.getSerie());
@@ -600,7 +600,7 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 				for(EspecieValorada especieValorada:listEsv){
 					UtilData.auditarRegistro(especieValorada, true, getUsuario(), Executions.getCurrent());
 					ServiceLocator.getEspecieValoradaManager().inactivar(especieValorada.getId().longValue());
-					
+
 					oespecieValorada.setCorrelativoInicial(especieValorada.getCorrelativoInicial());
 					oespecieValorada.setCorrelativoActual(oespecieValorada.getCorrelativoActual());
 				}
@@ -630,16 +630,16 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 					ServiceLocator.getEspecieValoradaManager().guardar(oespecieValorada);
 					break;
 			}
-			
+
 			/*RECUPERA EL REGISTRO ACTUALIZADO O EL NUEVO*/
-			criteriosBusqueda = new TreeMap<String, Object>();
+			criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("serie", oespecieValorada.getSerie());
 			criteriosBusqueda.put("correlativoInicial", oespecieValorada.getCorrelativoInicial());
 			criteriosBusqueda.put("correlativoActual", oespecieValorada.getCorrelativoActual());
 			criteriosBusqueda.put("correlativoFinal", oespecieValorada.getCorrelativoFinal());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			listarRegistros(ServiceLocator.getEspecieValoradaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-			
+
 //			String accionMensaje = "";
 //			switch(action){
 //				case ACTION_NEW:
@@ -649,13 +649,13 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 //					accionMensaje = "actualizado";
 //					break;
 //			}
-			DlgMessage.information(Messages.getString("Generales.information.exitoGuardar"));	
+			DlgMessage.information(Messages.getString("Generales.information.exitoGuardar"));
 			oTabLista.setDisabled(false);
-			
+
 			btnNuevo.setDisabled(accesoNuevo()?false:true);
 			btnBuscar.setDisabled(accesoConsultar()?false:true);
 			btnImprimir.setDisabled(accesoImprimir()?false:true);
-			btnExportar.setDisabled(accesoExportar()?false:true);	
+			btnExportar.setDisabled(accesoExportar()?false:true);
 			btnRefrescar.setDisabled(false);
 			btnModificar.setDisabled(true);
 			btnCancelar.setDisabled(true);
@@ -666,9 +666,9 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 		}catch (NumeroSerieDuplicadoException ne){
 			DlgMessage.information(Messages.getString("WndEspecieValorada.information.NumeroSerieDuplicado"));
 		}
-		
+
 	}
-	
+
 	@Override
 	public void onDelete(int tab) throws Exception {
 		// TODO Auto-generated method stubdfdfdf
@@ -685,25 +685,25 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 //		}
 //		ServiceLocator.getEspecieValoradaManager().inactivar(id);
 	}
-	
+
 	@Override
 	public void onPrint(int tab) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public void onExport(int tab) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public void onHelp() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public void onChangeTab(int tab) throws Exception {
 		// TODO Auto-generated method stub
@@ -718,7 +718,7 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 			break;
 		}
 	}
-	
+
 	@Override
 	public void onClose() {
 		closeTabWindow();
@@ -726,12 +726,12 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 
 	private void listarRegistros(ArrayList<EspecieValorada> lstRegistros) throws Exception {
 //		ArrayList<Object> lstEspeciesValoradas = new ArrayList<Object>();
-		
+
 		Util.limpiarListbox(listboxLista);
-		
+
 		Listitem item = null;
 		Listcell cell = null;
-		
+
 		int x=0;
 		for (EspecieValorada especieValorada: lstRegistros){
 			if(especieValorada.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE ){
@@ -741,7 +741,7 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 					tipoComprobante=ServiceLocator.getTipoComprobanteManager().buscarPorId(especieValorada.getTipoComprobante().getId().longValue());
 					especieValorada.setTipoComprobante(tipoComprobante);
 				}
-				
+
 				item= new Listitem();
 				cell= new Listcell(String.valueOf(x));
 				cell.setStyle("font-size:11px !important");
@@ -765,22 +765,22 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 				cell= new Listcell(especieValorada.getAutorizacionSunat());
 				cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
-				
+
 				item.setValue(especieValorada);
 				listboxLista.appendChild(item);
 			}
 		}
 	}
-	
+
 	public void mantenimientoRegistro(Long id) throws Exception {
 //		oespecieValorada = ServiceLocator.getEspecieValoradaManager().buscarPorId(id);
 		if(listboxLista.getSelectedIndex()>=0){
 			oespecieValorada = listboxLista.getItemAtIndex(listboxLista.getSelectedIndex()).getValue();
 			TipoComprobante otipoComprobante = oespecieValorada.getTipoComprobante();
 			Agencia oagencia = oespecieValorada.getAgencia();
-			
+
 			textboxId.setText(oespecieValorada.getId().toString());
-			
+
 			if (otipoComprobante != null){
 				Util.seleccionarValorItemCombo(TipoComprobante.class, cboTipoComprobante, otipoComprobante.getId());
 			}
@@ -796,12 +796,12 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 			else
 				cmbFormato.setSelectedIndex(0);
 			txtAutorizacionSunat.setText(oespecieValorada.getAutorizacionSunat()!=null? oespecieValorada.getAutorizacionSunat(): "");
-			
+
 			cboAgencia.setDisabled(true);
 			cboTipoComprobante.setDisabled(true);
 			cmbFormato.setDisabled(true);
-			
-			
+
+
 			if (!(oespecieValorada.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE)){
 				habilitaControles(false);
 				btnGuardar.setDisabled(true);
@@ -810,20 +810,20 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 			DlgMessage.information(Messages.getString("Dede se seleccionar un registro"),DlgMessage.BTN_OK);
 
 	}
-	
-	
+
+
 	private void ventarBusqueda() throws Exception{
 		wndSearch = createWindowSearch();
 		this.appendChild(wndSearch);
 		wndSearch.setMode("modal");
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	private Window createWindowSearch() throws Exception{
-		
+
 		final Window window = new Window(Messages.getString("System.title"), "normal", true);
 		window.setWidth("450px");
-		
+
 		Grid grid= new Grid();
 		Rows rows= new Rows();
 		Row row= new Row();
@@ -832,7 +832,7 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 		column.setWidth("100px");
 		columns.appendChild(column);
 		grid.appendChild(columns);
-		
+
 		//Tipo Agencia
 		Label label= new Label("Tipo Agencia");
 		label.setSclass("label-size11");
@@ -848,7 +848,7 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 		row.appendChild(label);
 		row.appendChild(cmbTipoAgencia);
 		rows.appendChild(row);
-		
+
 		//Carga Agencia
 		label= new Label("Agencia");
 		label.setSclass("label-size11");
@@ -860,14 +860,14 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 		row.appendChild(label);
 		row.appendChild(cmbAgencia);
 		rows.appendChild(row);
-		
+
 		label= new Label();
 		label.setValue("Tipo Comprobante");
 		label.setSclass("label-size11");
 		final Combobox cmbTipoComprobante= new Combobox();
 		cmbTipoComprobante.setReadonly(true);
 		cmbTipoComprobante.setWidth("200px");
-		
+
 		//Carga Tipo de comprobante
 		if(cmbAgencia.getSelectedItem().getValue() instanceof Agencia){
 			UtilData.cargarTipoComprobanteAgencia(cmbTipoComprobante, ((Agencia)cmbAgencia.getSelectedItem().getValue()), true);
@@ -879,25 +879,25 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 		row.appendChild(label);
 		row.appendChild(cmbTipoComprobante);
 		rows.appendChild(row);
-		
+
 		Div div= new Div();
 		Button button= new Button();
 		button.setLabel("Filtrar");
 		button.setImage("/resources/mp_filtrar.png");
 		div.setAlign("center");
 		div.appendChild(button);
-		
+
 		grid.appendChild(rows);
 		window.appendChild(grid);
 		window.appendChild(div);
-		
+
 		cmbAgencia.addEventListener(Events.ON_FOCUS, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				cmbAgencia.select();
 			}
 		});
-		
+
 		cmbTipoAgencia.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -909,7 +909,7 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 				UtilData.cargarGenericData(cmbTipoComprobante, true);
 			}
 		});
-		
+
 		cmbAgencia.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -924,40 +924,40 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 				}
 			}
 		});
-		
-		
+
+
 		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				Util.limpiarListbox(listboxLista);
-				criteriosBusqueda = new TreeMap<String, Object>();
-				
-				if(cmbAgencia.getSelectedIndex()>0)	
-					criteriosBusqueda.put("agencia", cmbAgencia.getSelectedItem().getValue()); 
+				criteriosBusqueda = new TreeMap<>();
+
+				if(cmbAgencia.getSelectedIndex()>0)
+					criteriosBusqueda.put("agencia", cmbAgencia.getSelectedItem().getValue());
 				if(cmbTipoComprobante.getSelectedIndex()>0)
-					criteriosBusqueda.put("tipoComprobante", cmbTipoComprobante.getSelectedItem().getValue());								
+					criteriosBusqueda.put("tipoComprobante", cmbTipoComprobante.getSelectedItem().getValue());
 				criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 
-				criteriosOrdenar= new ArrayList<String>();
+				criteriosOrdenar= new ArrayList<>();
 				criteriosOrdenar.add("agencia");
-				
+
 				listarRegistros(ServiceLocator.getEspecieValoradaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-								
+
 				window.onClose();
 			}
-			
+
 		});
-		
-		
+
+
 		/**Solo se habilita este control para el rol Superusuario*/
 		cmbTipoAgencia.setDisabled(Constantes.ID_ROL_SUPER_USUARIO!=getRol().getId().intValue());
 		cmbAgencia.setDisabled(Constantes.ID_ROL_SUPER_USUARIO!=getRol().getId().intValue());
 		/********************************/
-		
-		
-		return window;	
+
+
+		return window;
 	}
-	
-	
-	
+
+
+
 }

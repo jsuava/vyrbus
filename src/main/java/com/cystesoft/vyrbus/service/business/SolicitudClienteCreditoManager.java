@@ -7,7 +7,7 @@ import java.util.TreeMap;
 import com.cystesoft.vyrbus.model.bean.SolicitudClienteCredito;
 import com.cystesoft.vyrbus.model.bean.UsuarioAprobador;
 /**
- * 
+ *
  * @author JABANTO
  *
  */
@@ -19,28 +19,28 @@ public interface SolicitudClienteCreditoManager  {
 	 * @return
 	 */
 	public ArrayList<SolicitudClienteCredito> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
-	
+
 	/**
 	 * Buscar solciitud cliente credito por ID
 	 * @param id : Identificador unico de la solicitudadClienteCredito
 	 * @return
 	 */
 	public SolicitudClienteCredito buscarPorId(Long id);
-	
+
 	/**
 	 * Guarda solicitud cliente credito cartera.
 	 * @param solicitudClienteCredito	: Class
 	 * @throws Exception
 	 */
 	public void guardar(SolicitudClienteCredito solicitudClienteCredito) throws Exception;
-	
+
 	/**
 	 * Actualzia la solicitudad del cliente a creadito
 	 * @param solicitudClienteCredito : Class
 	 * @throws Exception
 	 */
 	public void actualizar(SolicitudClienteCredito solicitudClienteCredito) throws Exception;
-	
+
 	/**
 	 * Aprueba la solicitud:
 	 * @param idSolicitudClienteCredito: Identificador unico de la solicitudClienteCredito
@@ -48,7 +48,7 @@ public interface SolicitudClienteCreditoManager  {
 	 * @throws Exception
 	 */
 	public void aprobarSolicitud(Long idSolicitudClienteCredito, UsuarioAprobador usuarioAprobador) throws Exception;
-	
+
 	/**
 	 * Anula solcitud de cartera
 	 * @param idSolicitudClienteCredito: Identificador del a solicitud cartera.
@@ -62,25 +62,25 @@ public interface SolicitudClienteCreditoManager  {
 	 * @param id : Identificador de la solicitudCredito
 	 */
 	public void inactivar(Long id);
-	
+
 	/**
 	 * Valida solicitudes pendientes por aprobar
 	 * @param idCliente : Identidicador del Cliente
-	 * @return 
+	 * @return
 	 */
 	public SolicitudClienteCredito validadSolicitudPendiente(Long idCliente) throws Exception;
-	
+
 	/**
-	 * Busca el historial de las solicitudes de cartera y/o credito (Invocado de la solicitud de cartera y/ocredito) 
+	 * Busca el historial de las solicitudes de cartera y/o credito (Invocado de la solicitud de cartera y/ocredito)
 	 * @param fechaInicial 	: Fecha inical de la busqueda
 	 * @param fechaFinal 	: Fecha final de la busqueda
 	 * @param idFuncionario	: Obsional, Identificador del Funcionario(usuario)
-	 * @param idCliente		: Obsional, Identidicador del Cliente 
+	 * @param idCliente		: Obsional, Identidicador del Cliente
 	 * @return
 	 * @throws Exception
 	 */
 	public List<SolicitudClienteCredito> buscarHistorialSolicitudesCarteraCredito(String fechaInicial, String fechaFinal, Integer idFuncionario, Long idCliente) throws Exception;
-	
+
 	/**
 	 * Busca las solicitudes pendientes por aprobar
 	 * @return

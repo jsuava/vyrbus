@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: Objeto que implementa los metodos de acceso a datos de la tabla Autorizador Motivo Cortesia VRTAUTCOR_MOTCOR. 
+ * Descripción	: Objeto que implementa los metodos de acceso a datos de la tabla Autorizador Motivo Cortesia VRTAUTCOR_MOTCOR.
  * Autor		: José Sullo Avalos
  * Fecha		: 03/04/2014
  */
@@ -79,7 +79,7 @@ public class AutorizadorMotivoCortesiaDAOImpl extends GenericDAOImpl implements
 		// TODO Auto-generated method stub
 		super.inactivate(AutorizadorMotivoCortesia.class, id);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.AutorizadorMotivoCortesiaDAO#inactivar(com.tepsa.sisvyr.model.bean.AutorizadorCortesia)
@@ -101,9 +101,9 @@ public class AutorizadorMotivoCortesiaDAOImpl extends GenericDAOImpl implements
 				+ "INNER JOIN vrmmotcor mc ON mc.motcor_id=amc.motcor_id "
 				+ "WHERE ac.personal_id="+idPersonal+" AND amc.c_estreg='A' "
 				+ "ORDER BY mc.c_denominacion";
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<MotivoCortesia> lstResult = new ArrayList<MotivoCortesia>();
+		List<MotivoCortesia> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[]obj = (Object[])result.get(i);
 			MotivoCortesia motivoCortesia = new MotivoCortesia();

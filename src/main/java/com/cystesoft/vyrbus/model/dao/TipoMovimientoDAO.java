@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 04/05/2012
  */
@@ -25,8 +25,8 @@ public interface TipoMovimientoDAO extends GenericDAO {
 	public void guardar(TipoMovimiento condicionVenta);
 	public void actualizar(TipoMovimiento condicionVenta);
 	public void inactivar(Long id);
-	
-	
+
+
 	/**
 	 * Realiza la busqueda de lostipo de movimiento de acuerdo a lso criterios enviados
 	 * @param campo				: Campo que debera cumplir con los criterios enviados.

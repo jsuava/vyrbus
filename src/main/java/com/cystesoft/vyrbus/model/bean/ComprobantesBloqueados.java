@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 21/02/2017
  * Hora			: 10:08:50
@@ -18,7 +18,7 @@ import java.util.Date;
 public class ComprobantesBloqueados extends GenericBean implements Serializable{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private ComprobantesBloqueadosID comprobanteBloqueadoID;
@@ -125,6 +125,6 @@ public class ComprobantesBloqueados extends GenericBean implements Serializable{
 	public void setVentaPasaje(VentaPasaje ventaPasaje) {
 		this.ventaPasaje = ventaPasaje;
 	}
-	
+
 
 }

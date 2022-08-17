@@ -27,17 +27,17 @@ import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
 public class WndTipoItinerario extends WndOpcionesMantenimiento {
 
 	private static final long serialVersionUID = -4567920156712129053L;
-	
+
 	private Textbox txtDenominacion;
 	private Textbox	txtNombreCorto;
-	
+
 	private TipoItinerario tipoItinerario = null;
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
-	
+
 	@Override
 	public void onCreate() throws Exception {
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
 	}
 
@@ -45,13 +45,13 @@ public class WndTipoItinerario extends WndOpcionesMantenimiento {
 	public void initComponents() {
 		txtDenominacion = (Textbox) this.getFellow("txtDenominacion");
 		txtNombreCorto = (Textbox) this.getFellow("txtNombreCorto");
-		
+
 	}
-	
+
 	@Override
 	public void onNew() throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -70,30 +70,30 @@ public class WndTipoItinerario extends WndOpcionesMantenimiento {
 				String denominacion = (String) oWndFiltrar.getParameterValue("Denominación");
 				String nombreCorto = (String) oWndFiltrar.getParameterValue("Nombre Corto");
 				String estadoRegistro = Constantes.VALUE_ACTIVO;
-				
-				criteriosBusqueda = new TreeMap<String, Object>();
+
+				criteriosBusqueda = new TreeMap<>();
 				if (denominacion.trim().equals("")) {
 					criteriosBusqueda.remove("denominacion");
 				}else {criteriosBusqueda.put("denominacion", denominacion + "%");}
-				
+
 				if (nombreCorto.trim().equals("")) {
 					criteriosBusqueda.remove("nombreCorto");
 				}else {criteriosBusqueda.put("nombreCorto", nombreCorto + "%");}
-				
+
 				criteriosBusqueda.put("estadoRegistro", estadoRegistro);
 
 				listarRegistros(ServiceLocator.getTipoItinerarioManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 			}
 		});
-		
+
 	}
 
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getTipoItinerarioManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getTipoItinerarioManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
-		
+
 	}
 
 	@Override
@@ -101,7 +101,7 @@ public class WndTipoItinerario extends WndOpcionesMantenimiento {
 		Long id = new Long(0);
 		id = new Long((String) listboxLista.getSelectedItem().getValue());
 		this.mantenimientoRegistro(id);
-		
+
 	}
 
 	@Override
@@ -114,7 +114,7 @@ public class WndTipoItinerario extends WndOpcionesMantenimiento {
 			this.mantenimientoRegistro(new Long(textboxId.getText()));
 			break;
 	}
-		
+
 	}
 
 	@Override
@@ -124,18 +124,18 @@ public class WndTipoItinerario extends WndOpcionesMantenimiento {
 				throw new DenominacionNullException();
 			else if (txtNombreCorto.getValue().trim() =="")
 				throw new NombreCortoNullException();
-			
+
 			if (action==ACTION_NEW){
 				tipoItinerario=new TipoItinerario();
 				tipoItinerario.setId(null);
 			}else{
 				tipoItinerario.setId(new Integer(textboxId.getValue()));
 			}
-			
+
 			tipoItinerario.setDenominacion(txtDenominacion.getValue().trim().toUpperCase());
 			tipoItinerario.setNombreCorto(txtNombreCorto.getValue().trim().toUpperCase());
 			tipoItinerario.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-			
+
 			switch (action) {
 				case ACTION_NEW:
 					UtilData.auditarRegistro(tipoItinerario, getUsuario(), Executions.getCurrent());
@@ -147,14 +147,14 @@ public class WndTipoItinerario extends WndOpcionesMantenimiento {
 					ServiceLocator.getTipoItinerarioManager().actualizar(tipoItinerario);
 					break;
 			}
-			
+
 			/*Recupera el registro actualizado o el nuevo*/
-			criteriosBusqueda = new TreeMap<String, Object>();
+			criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion",tipoItinerario.getDenominacion() + "%");
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			listarRegistros(ServiceLocator.getTipoItinerarioManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-			
-			
+
+
 		}catch (DenominacionNullException dnex){
 			DlgMessage.information(Messages.getString("Generales.information.noIngresoDenominacion"),txtDenominacion);
 			throw new CancelaGrabacionException();
@@ -168,7 +168,7 @@ public class WndTipoItinerario extends WndOpcionesMantenimiento {
 			DlgMessage.information(Messages.getString("Generales.information.nombreCortoDuplicado"),txtNombreCorto);
 			throw new CancelaGrabacionException();
 		}
-		
+
 		catch (Exception ex) {
 			DlgMessage.error(this.getClass().getName() + " " + ex.getMessage());
 			ex.printStackTrace(); throw new CancelaGrabacionException();
@@ -179,8 +179,8 @@ public class WndTipoItinerario extends WndOpcionesMantenimiento {
 	public void onClose() {
 		closeTabWindow();
 	}
-	
-	
+
+
 	@Override
 	public void onDelete(int tab) throws Exception {
 		Long id = (long) 0;
@@ -196,25 +196,25 @@ public class WndTipoItinerario extends WndOpcionesMantenimiento {
 		}
 
 		ServiceLocator.getTipoItinerarioManager().inactivar(id);
-		
+
 	}
 
 	@Override
 	public void onPrint(int tab) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onExport(int tab) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onHelp() throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -229,15 +229,15 @@ public class WndTipoItinerario extends WndOpcionesMantenimiento {
 			}
 			break;
 	}
-		
+
 	}
-	
+
 	private void listarRegistros(ArrayList<TipoItinerario> lstRegistros) {
-		ArrayList<Object> lstFormasPago = new ArrayList<Object>();
+		ArrayList<Object> lstFormasPago = new ArrayList<>();
 
 		for(int r = 0; r < lstRegistros.size(); r ++) {
 			TipoItinerario tipoItinerario = lstRegistros.get(r);
-			ArrayList<Object> lstFila = new ArrayList<Object>();
+			ArrayList<Object> lstFila = new ArrayList<>();
 
 			lstFila.add(tipoItinerario.getId());
 			lstFila.add(r + 1);

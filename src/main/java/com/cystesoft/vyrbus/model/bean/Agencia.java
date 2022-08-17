@@ -22,18 +22,18 @@ public class Agencia extends GenericBean implements java.io.Serializable {
 	private String codigo;
 	private Nacionalidad nacionalidad;
 //	private TipoMoneda tipoMoneda;
-	
-	
+
+
 	//No mapeado
 	private Usuario usuario;
 	private String horaPartida;		// Mapeado para las Agencias por Itinerario Itinerarios_AgPartida, Itinerarios_AgLlegada
-	
-	
-	
+
+
+
 
 	public Agencia() {
 	}
-	
+
 	/**
 	 * @param id
 	 */
@@ -41,15 +41,15 @@ public class Agencia extends GenericBean implements java.io.Serializable {
 		super();
 		this.id = id;
 	}
-	
-	public Agencia(TipoAgencia tipoAgencia, Concesionario concesionario,Localidad localidad, 
+
+	public Agencia(TipoAgencia tipoAgencia, Concesionario concesionario,Localidad localidad,
 			String denominacion, String nombreCorto,Boolean esTerminal) {
 		this.tipoAgencia = tipoAgencia;
 		this.concesionario = concesionario;
 		this.localidad = localidad;
 		this.denominacion = denominacion;
 		this.nombreCorto = nombreCorto;
-		this.esTerminal = esTerminal;		
+		this.esTerminal = esTerminal;
 	}
 
 	/**
@@ -168,7 +168,7 @@ public class Agencia extends GenericBean implements java.io.Serializable {
 	public void setHoraPartida(String horaPartida) {
 		this.horaPartida = horaPartida;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -234,5 +234,5 @@ public class Agencia extends GenericBean implements java.io.Serializable {
 		this.nacionalidad = nacionalidad;
 	}
 
-	
+
 }

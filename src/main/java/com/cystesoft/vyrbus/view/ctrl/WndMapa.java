@@ -67,23 +67,23 @@ public class WndMapa extends WndBase {
 	private Textbox txtAsientoSeleccionado;
     private Textbox txtPisoSeleccionado;
     private Doublebox dblbxTarifa;
-    
+
 	private static final String IMAGE_PRIMER_PISO = "resources/mapa/bus_primerPiso.png";
 	private static final String IMAGE_SEGUNDO_PISO = "resources/mapa/bus_segundoPiso.png";
 	private static final int TIPO_ASIENTO = 0;
 	private static final int TIPO_MONITOR = 1;
 	private static final int TIPO_CAFETERIA = 2;
-	
+
 	private VentaPasaje ventaPasaje;
 	private DetalleItinerario detalleItinerario = null;
 	private Map<String, Asiento> mapaAsientos = null;
 	private UsuarioHardware usuarioHardware;
 	private boolean selectAsiento;
-    
+
 	private String prefijoAsiento="";
 	private String key = "-1";
     private String previousKey = "-1";
-    
+
 
 	/**
 	 * @return the ventaPasaje
@@ -110,26 +110,26 @@ public class WndMapa extends WndBase {
 	public void setDetalleItinerario(DetalleItinerario detalleItinerario) {
 		this.detalleItinerario = detalleItinerario;
 	}
-		
+
 	/**
 	 * @return the txtAsientoSeleccionado
 	 */
 	public Textbox getTxtAsientoSeleccionado() {
 		return txtAsientoSeleccionado;
-	}	
+	}
 	/**
 	 * @param txtAsientoSeleccionado the txtAsientoSeleccionado to set
 	 */
 	public void setTxtAsientoSeleccionado(Textbox txtAsientoSeleccionado) {
 		this.txtAsientoSeleccionado = txtAsientoSeleccionado;
 	}
-	
+
 	/**
 	 * @return the txtPisoSeleccionado
 	 */
 	public Textbox getTxtPisoSeleccionado() {
 		return txtPisoSeleccionado;
-	}	
+	}
 	/**
 	 * @param txtPisoSeleccionado the txtPisoSeleccionado to set
 	 */
@@ -148,7 +148,7 @@ public class WndMapa extends WndBase {
 	public void setSelectAsiento(boolean selectAsiento) {
 		this.selectAsiento = selectAsiento;
 	}
-	
+
 	/**
 	 * @return the dblbxTarifa
 	 */
@@ -168,7 +168,7 @@ public class WndMapa extends WndBase {
 	public void onCreate() throws Exception {
 		usuarioHardware = (UsuarioHardware) this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO_HARDWARE);
 		/*********************************************************************/
-		
+
 		crearEstructura(ventaPasaje);
 		if(getVentaPasaje().getNumeroAsiento()!=null && !selectAsiento){
 			txtAsiento.setText(getVentaPasaje().getNumeroAsiento().toString());
@@ -185,7 +185,7 @@ public class WndMapa extends WndBase {
 		grdOcupabilidad = (Grid)getFellow("grdOcupabilidad");
 		txtAsiento = (Textbox)this.getFellow("txtAsiento");
 		txtPiso = (Textbox)this.getFellow("txtPiso");
-		
+
 		try{
 			ventaPasaje = getVentaPasaje();
 			ventaPasaje.setServicio((Servicio)ServiceLocator.getHibernateSession().merge(ventaPasaje.getServicio()));
@@ -196,34 +196,34 @@ public class WndMapa extends WndBase {
 			DlgMessage.information(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	public void crearEstructura(VentaPasaje ventaPasaje){
 		try{
 			Servicio servicio = null;
 			List<MapaBus> lstMapaBus = ServiceLocator.getMapaBusManager().buscarMapaBus(ventaPasaje.getServicio().getId(), Constantes.VALUE_ACTIVO);
-			
-			Map<Coordenada, MapaBus> mapCoordenadas = new HashMap<Coordenada, MapaBus>();
+
+			Map<Coordenada, MapaBus> mapCoordenadas = new HashMap<>();
 			for(MapaBus mapaBus : lstMapaBus){
 				Coordenada coordenada = new Coordenada(mapaBus.getNumeroFila(), mapaBus.getNumeroColumna(), mapaBus.getNumeroPiso());
 				mapCoordenadas.put(coordenada, mapaBus);
 			}
-			
+
 			if(lstMapaBus.size()>0)
 				servicio = lstMapaBus.get(0).getServicio();
-			
+
 			int nPisos = servicio.getNumeroPisos();
 			int nFilas = servicio.getNumeroFilasPiso1();
 			int nColumnas = servicio.getNumeroColumnasPiso1();
 			prefijoAsiento = "imgAsientoPiso1_";
-			Integer numeroAsiento = 0;
-			
+			int numeroAsiento = 0;
+
 			inicializarEstructura();
-			
+
 			Image imagen = generarImagen(IMAGE_PRIMER_PISO, 154, 43);
-			
-			mapaAsientos = new HashMap<String, Asiento>();
-			
+
+			mapaAsientos = new HashMap<>();
+
 			for(int i=0; i<nPisos; i++){
 				String idGrid = "grdPiso1";
 				if(i==1){
@@ -251,16 +251,16 @@ public class WndMapa extends WndBase {
 						oDiv.setWidth("28px");
 						oDiv.setHeight("28px");
 						oDiv.setStyle("padding:none");
-						
+
 						String coordenadaActual = j+"-"+k+"-"+i;
-						
+
 						for(Coordenada coordenada : mapCoordenadas.keySet()){
 							if(coordenada.toString().equals(coordenadaActual)){
 								MapaBus objetoBus = mapCoordenadas.get(coordenada);
-								
-								HashMap<String, String> propiedades = new HashMap<String, String>();
+
+								HashMap<String, String> propiedades = new HashMap<>();
 								numeroAsiento++;
-								
+
 								if(objetoBus.getTipoObjeto().intValue()==TIPO_ASIENTO){
 									Asiento asiento = new Asiento();
 									asiento.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
@@ -331,7 +331,7 @@ public class WndMapa extends WndBase {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Inicializa(limpia los objetos existentes) el contenedor de los asientos.
 	 */
@@ -341,7 +341,7 @@ public class WndMapa extends WndBase {
 			vbxEstructuraBus.removeChild(component);
 		}
 	}
-	
+
 	/**
 	 * Genera el objeto imagen para los pisos del bus
 	 * @param src		: Path de la imagen a mostrar.
@@ -356,15 +356,15 @@ public class WndMapa extends WndBase {
 		imagen.setHeight(String.valueOf(height)+"px");
 		return imagen;
 	}
-	
+
 	/**
 	 * Realiza el refresco del mapa del bus.
 	 * @throws Exception
 	 */
 	public void onRefreshMap() throws Exception{
-		onRefreshMapaAsientos(mapaAsientos, detalleItinerario);		
+		onRefreshMapaAsientos(mapaAsientos, detalleItinerario);
 	}
-	
+
 	/**
 	 * Realiza el refresco del mapa del bus.
 	 * @param mapa				: Mapa de asientos
@@ -375,11 +375,11 @@ public class WndMapa extends WndBase {
 		try{
 			/*Busca configuracion para la validacion de la venta adelantada - 09/02/2015 (jabanto)*/
 			VentaTramo ventaTramo=ServiceLocator.getVentaTramoManager().buscarPorItinerarioRuta(detalleItinerario.getItinerario(), detalleItinerario.getRuta());
-			
+
 			onCleanMap(mapaAsientos);
 			/*	Obtenemos el subconjunto que queremos buscar segun la ruta seleccioanda		*/
 			List<Integer> subConjuntoBuscar = obtenerSubconjunto(detalleItinerario.getItinerario().getListSecuenciaTramo(), detalleItinerario.getRuta().getLocalidadOrigen().getId(), detalleItinerario.getRuta().getLocalidadDestino().getId());
-			
+
 			int nOcupados = 0;
 			List<VentaPasaje> lstVentas = ServiceLocator.getVentaPasajesManager().buscarVentasForMapaBus(detalleItinerario.getItinerario().getId());
 			lstVentas = obtenerConjuntos(lstVentas, detalleItinerario.getItinerario().getListSecuenciaTramo());
@@ -431,8 +431,8 @@ public class WndMapa extends WndBase {
 					/*	Para identificar las prioridades del tramos para la venta	*/
 					if(venta.getRuta().getLocalidadDestino().getId()==detalleItinerario.getRuta().getLocalidadOrigen().getId()){
 						Asiento asiento = mapaAsientos.get(key);
-						asiento.setSrc(Constantes.ICON_SEMI_OCUPADO+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);								
-					}else 
+						asiento.setSrc(Constantes.ICON_SEMI_OCUPADO+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
+					}else
 						//Valida si la ruta esta configurada para la validacion de la venta adelantada - 09/02/2015 (jabanto)
 						if(ventaTramo!=null && ventaTramo.getDespuesHoraSalida().intValue()==Constantes.FALSE_VALUE){
 							//Valida si el destino de la ruta es igual al origen de la ruta vendida y si el asiento esta disponible  - 04/02/2015 (jabanto)
@@ -446,7 +446,7 @@ public class WndMapa extends WndBase {
 					}
 				}
 			}
-			
+
 			/*	BUSCAMOS LOS ASIENTOS QUE ESTEN BLOQUEADOS PARA EL ITINERARIO SELECCIONADO	*/
 			List<TmpOcupacionAsientos> lstBloqueados = ServiceLocator.getTmpOcupacionAsientosManager().buscarAsientosBloqueados(detalleItinerario.getItinerario().getId());
 			lstBloqueados = obtenerConjuntos(lstBloqueados, detalleItinerario.getItinerario().getListSecuenciaTramo());
@@ -463,7 +463,7 @@ public class WndMapa extends WndBase {
 					}
 				}
 			}
-			
+
 			//Valida si la ruta esta configurada para la validacion de la venta adelantada - 09/02/2015 (jabanto)
 			if(ventaTramo!=null && ventaTramo.getDespuesHoraSalida().intValue()==Constantes.FALSE_VALUE){
 				for(Entry<?,?> e : mapaAsientos.entrySet()) {
@@ -478,14 +478,14 @@ public class WndMapa extends WndBase {
 					}
 				}
 			}
-			
+
 			mostrarOcupabilidad(nOcupados, ventaPasaje.getServicio(), ventaPasaje.getRuta());
 		}catch(Exception ex){
 			ex.printStackTrace();
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Realiza la limpieza del mapa del bus
 	 */
@@ -497,10 +497,10 @@ public class WndMapa extends WndBase {
 			asiento.setTooltiptext("DISPONIBLE");
 		}
 	}
-	
+
 	private void mostrarOcupabilidad(Integer nOcupados, Servicio servicio, Ruta ruta){
 		grdOcupabilidad.getRows().detach();
-		Rows rows = new Rows();		
+		Rows rows = new Rows();
 		Row row = new Row();
 		Label label = new Label(ruta.toString());
 		row.appendChild(label);
@@ -511,7 +511,7 @@ public class WndMapa extends WndBase {
 		rows.appendChild(row);
 		grdOcupabilidad.appendChild(rows);
 	}
-	
+
 	/**
 	 * Obtiene los subconjuntos de una lista de ventas, tmpOcupacion.
 	 * @param lista			: Lista de registros de los cuales queremos obtener los subconjuntos.
@@ -537,16 +537,16 @@ public class WndMapa extends WndBase {
 		}
 		return result;
 	}
-	
+
 	/**
-	 * Obtine los subconjuntos de un registro de venta, tmpocupacion o de la ruta que estamos buscando. 
+	 * Obtine los subconjuntos de un registro de venta, tmpocupacion o de la ruta que estamos buscando.
 	 * @param lstSecuencias	: Lista de secuencia segun el itinerario.
 	 * @param idOrigen		: Identificador del origen.
 	 * @param idDestino		: Identificador del destino.
 	 * @return
 	 */
 	private List<Integer> obtenerSubconjunto(List<SecuenciaTramo> lstSecuencias, Integer idOrigen, Integer idDestino){
-		List<Integer> lstSubconjunto = new ArrayList<Integer>();
+		List<Integer> lstSubconjunto = new ArrayList<>();
 		/*	Recorremos la secuencia de tramos del itinerario	*/
 		for(int j=0; j<lstSecuencias.size(); j++){
 			SecuenciaTramo secuencia = lstSecuencias.get(j);
@@ -565,7 +565,7 @@ public class WndMapa extends WndBase {
 		}
 		return lstSubconjunto;
 	}
-	
+
 	/**
 	 * Evento utilizado cuando el usuario hace click en un asiento.
 	 * @param e					: Evento
@@ -577,7 +577,7 @@ public class WndMapa extends WndBase {
 		Asiento asientoSeleccionado = (Asiento)e.getTarget();
 		previousKey = key;
 		key = asientoSeleccionado.getKey();
-		
+
 		/*	Elimina el asiento de la lista de asientos seleccionados y desbloquea el asiento*/
 		if(removerAsientoSeleccionado(previousKey, key)){
 			txtAsiento.setText("");
@@ -613,7 +613,7 @@ public class WndMapa extends WndBase {
 				tmpOcupacionAsientos.setTmpOcupacionAsientosID(tmpOcupacionAsientosID);
 				txtAsiento.setText(asientoSeleccionado.getNumeroAsiento().toString());
 				txtPiso.setText(String.valueOf(asientoSeleccionado.getPiso()));
-				
+
 				int result = ServiceLocator.getTmpOcupacionAsientosManager().bloquearAsiento(tmpOcupacionAsientos);
 				if(result < 0){
 					DlgMessage.information(Messages.getString("WndVentaReserva.information.asientoBloqueado"));
@@ -661,7 +661,7 @@ public class WndMapa extends WndBase {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Realiza la eliminacion del asiento seleccionado y luego lo desbloquea.
 	 * @param seatSelected	: Asiento seleccionado.
@@ -670,11 +670,11 @@ public class WndMapa extends WndBase {
 	private boolean removerAsientoSeleccionado(String previusKey, String key){
 		try{
 			String[] buffer = key.split("-");	//Almacenamos en un array el asiento y el piso
-			if(previusKey.equals(key)){		
+			if(previusKey.equals(key)){
 				if(mapaAsientos.get(key).getEstadoAsiento().intValue()==Constantes.ASIENTO_BLOQUEADO){
 					mapaAsientos.get(key).setEstadoAsiento(Constantes.ASIENTO_DISPONIBLE);
 					mapaAsientos.get(key).setSrc(Constantes.ICON_DISPONIBLE+buffer[0]+Constantes.IMAGE_EXTENSION);
-					
+
 					TmpOcupacionAsientos tmpOcupacion = new TmpOcupacionAsientos();
 					tmpOcupacion.setRuta(ventaPasaje.getRuta());
 					tmpOcupacion.setItinerario(ventaPasaje.getItinerario());
@@ -683,14 +683,14 @@ public class WndMapa extends WndBase {
 					ServiceLocator.getTmpOcupacionAsientosManager().desbloquearAsiento(tmpOcupacion);
 					return true;
 				}else
-					return false;				
+					return false;
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Consulta si el asiento esta bloqueado.
 	 * @param key	: Clave a buscar en el mapa de asientos.
@@ -708,7 +708,7 @@ public class WndMapa extends WndBase {
 	public void onClose() {
 		super.onClose();
 	}
-	
+
 	public void onAceptar(){
 		if(!txtAsiento.getText().trim().equals("")){
 			txtAsientoSeleccionado.setText(txtAsiento.getText());

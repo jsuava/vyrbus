@@ -8,13 +8,13 @@ import com.cystesoft.vyrbus.model.bean.TipoCobranza;
 
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 public interface TipoCobranzaDAO extends GenericDAO {
 	/**
-	 * 
+	 *
 	 * @param estado
 	 * @param criterioOrden
 	 * @return
@@ -28,23 +28,23 @@ public interface TipoCobranzaDAO extends GenericDAO {
 	 */
 	public ArrayList<TipoCobranza> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
 	/**
-	 * 
+	 *
 	 * @param id
 	 * @return
 	 */
 	public TipoCobranza buscarPorId(Long id);
 	/**
-	 * 
+	 *
 	 * @param tipoCobranza
 	 */
 	public void guardar(TipoCobranza tipoCobranza);
 	/**
-	 * 
+	 *
 	 * @param tipoCobranza
 	 */
 	public void actualizar(TipoCobranza tipoCobranza);
 	/**
-	 * 
+	 *
 	 * @param id
 	 */
 	public void inactivar(Long id);

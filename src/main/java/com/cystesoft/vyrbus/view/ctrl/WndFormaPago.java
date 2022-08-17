@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 02/05/2012
  */
@@ -38,18 +38,18 @@ public class WndFormaPago extends WndOpcionesMantenimiento {
 	private static final long serialVersionUID = -1721402526478904823L;
 
 	private Textbox txtDenominacion;
-	
+
 	private FormaPago oFormaPago;
 
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IBase#onCreate()
 	 */
 	@Override
 	public void onCreate() throws Exception {
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
 	}
 
@@ -60,7 +60,7 @@ public class WndFormaPago extends WndOpcionesMantenimiento {
 	public void initComponents() {
 		txtDenominacion = (Textbox) getFellow("txtDenominacion");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onNew()
 	 */
@@ -102,7 +102,7 @@ public class WndFormaPago extends WndOpcionesMantenimiento {
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getFormaPagoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getFormaPagoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
 	}
 	/* (non-Javadoc)
@@ -135,11 +135,11 @@ public class WndFormaPago extends WndOpcionesMantenimiento {
 	public void onSave(int action) throws Exception {
 		try{
 			if (txtDenominacion.getText().trim().equals(""))
-				throw new DenominacionNullException(); 
-			
+				throw new DenominacionNullException();
+
 			if (action==ACTION_NEW)
 				oFormaPago = new FormaPago();
-			
+
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
 			oFormaPago.setId(id);
 			oFormaPago.setDenominacion(txtDenominacion.getText().trim().toUpperCase());
@@ -157,13 +157,13 @@ public class WndFormaPago extends WndOpcionesMantenimiento {
 					UtilData.auditarRegistro(oFormaPago, true, getUsuario(), Executions.getCurrent());
 					ServiceLocator.getFormaPagoManager().actualizar(oFormaPago);
 					break;
-			} 
+			}
 			/*RECUPERA EL REGISTRO */
 			criteriosBusqueda.remove("denominacion");
 			criteriosBusqueda.put("denominacion", oFormaPago.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			listarRegistros(ServiceLocator.getFormaPagoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-			
+
 		}catch (DenominacionNullException dnex){
 			DlgMessage.information(Messages.getString("Denominacion"),txtDenominacion);
 			throw new CancelaGrabacionException();
@@ -174,7 +174,7 @@ public class WndFormaPago extends WndOpcionesMantenimiento {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace(); throw new CancelaGrabacionException();
 		}
-		
+
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onDelete(int)
@@ -208,7 +208,7 @@ public class WndFormaPago extends WndOpcionesMantenimiento {
 	@Override
 	public void onExport(int tab) {
 		// TODO Auto-generated method stub
-		
+
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onHelp()
@@ -216,7 +216,7 @@ public class WndFormaPago extends WndOpcionesMantenimiento {
 	@Override
 	public void onHelp() {
 		// TODO Auto-generated method stub
-		
+
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onChangeTab(int)
@@ -226,7 +226,7 @@ public class WndFormaPago extends WndOpcionesMantenimiento {
 		switch (tab) {
 			case TAB_LIST:
 				break;
-	
+
 			case TAB_MAINTENANCE:
 				if (listboxLista.getSelectedIndex() > -1) {
 					this.mantenimientoRegistro(new Long((String) listboxLista.getSelectedItem().getValue()));
@@ -234,7 +234,7 @@ public class WndFormaPago extends WndOpcionesMantenimiento {
 				break;
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onClose()
 	 */
@@ -244,11 +244,11 @@ public class WndFormaPago extends WndOpcionesMantenimiento {
 	}
 
 	private void listarRegistros(ArrayList<FormaPago> lstRegistros) {
-		ArrayList<Object> lstFormasPago = new ArrayList<Object>();
+		ArrayList<Object> lstFormasPago = new ArrayList<>();
 
 		for(int r = 0; r < lstRegistros.size(); r ++) {
 			FormaPago oFormaPago = lstRegistros.get(r);
-			ArrayList<Object> lstFila = new ArrayList<Object>();
+			ArrayList<Object> lstFila = new ArrayList<>();
 
 			lstFila.add(oFormaPago.getId());
 			lstFila.add(r + 1);

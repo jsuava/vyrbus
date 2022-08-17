@@ -25,7 +25,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class NacionalidadManagerImpl implements NacionalidadManager {
 	private NacionalidadDAO nacionalidadDAO;
-	
+
 	/**
 	 * @return the nacionalidadDAO
 	 */
@@ -73,17 +73,17 @@ public class NacionalidadManagerImpl implements NacionalidadManager {
 	@Transactional
 	public void guardar(Nacionalidad nacionalidad) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", nacionalidad.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getNacionalidadDAO().buscarPorX(criteriosBusqueda, null);
-			
+
 			/*Valida duplicidad de la denominación*/
 			if(resultDenominacion.size()>0)
 				throw new DenominacionDuplicadaException();
-		
+
 			getNacionalidadDAO().guardar(nacionalidad);
-			
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(Exception ex){
@@ -98,20 +98,20 @@ public class NacionalidadManagerImpl implements NacionalidadManager {
 	@Transactional
 	public void actualizar(Nacionalidad nacionalidad) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", nacionalidad.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getNacionalidadDAO().buscarPorX(criteriosBusqueda, null);
-			
+
 			/*Valida duplicidad de la denominación*/
-			for(int r = 0; r < resultDenominacion.size(); r ++) {
-				Nacionalidad onacionalidad = (Nacionalidad) resultDenominacion.get(r);
+			for (Object element : resultDenominacion) {
+				Nacionalidad onacionalidad = (Nacionalidad) element;
 					if (!(onacionalidad.getId().equals(nacionalidad.getId())))
 						throw new DenominacionDuplicadaException();
 				}
-					
+
 			getNacionalidadDAO().actualizar(nacionalidad);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(Exception ex){

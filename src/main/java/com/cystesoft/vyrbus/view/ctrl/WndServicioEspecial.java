@@ -86,7 +86,7 @@ import com.cystesoft.vyrbus.view.ui.WndSeleccionaItinerario;
 
 public class WndServicioEspecial extends WndBase implements Serializable{
 	private static final long serialVersionUID = 1L;
-	private Listbox listPasajeros; 
+	private Listbox listPasajeros;
 	private Button btnBuscarItinerario;
 	private Textbox txtItinerario;
 	private Label lblServicio;
@@ -115,12 +115,12 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 	private Label lblTarifa;
 	private Textbox txtIdCliente;
 	private Window wndServicioEspecial;
-	
+
 	private DetalleItinerario detalleItinerario=null;
 	private CanalVenta canalVenta=null;
 	private Date fechaLiquidacion=null;
 	String message="";
-	
+
 	/*Variables que refieren a las columnas del archivo excel*/
 	int colNombres=0;
 	int colApParteno=1;
@@ -131,14 +131,14 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 	int colFecNacimineto=6;
 	int colNumAsiento=7;
 	int colPiso=8;
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
 	 */
 	@Override
 	public void initComponents() {
-		listPasajeros=(Listbox)this.getFellow("listPasajeros"); 
+		listPasajeros=(Listbox)this.getFellow("listPasajeros");
 		btnBuscarItinerario=(Button)this.getFellow("btnBuscarItinerario");
 		txtItinerario=(Textbox)this.getFellow("txtItinerario");
 		lblServicio=(Label)this.getFellow("lblServicio");
@@ -168,7 +168,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 		txtIdCliente=(Textbox)this.getFellow("txtIdCliente");
 		wndServicioEspecial=(Window)this.getFellow("wndServicioEspecial");
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
@@ -181,10 +181,10 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 		UtilData.cargarGenericData(cmbPtoEmbarque, false);
 		UtilData.cargarGenericData(cmbAgeLlegada, false);
 	}
-	
+
 	/**
 	 * Abre el Archivo excel que fue previamente suvido al Sevidor.
-	 * @param media: 
+	 * @param media:
 	 */
 	public void openFileExel(Media media){
 		try{
@@ -193,14 +193,14 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 				POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(path));
 				HSSFWorkbook wb = new HSSFWorkbook(fs);
 				HSSFSheet sheet = wb.getSheetAt(0);
-				readFileExcel(sheet);	
-			}	
+				readFileExcel(sheet);
+			}
 		}catch (Exception e) {
 			DlgMessage.error(this.getClass().getName()+" "+e.getMessage());
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Da lectura al archivo excel.
 	 * @param sheet	:
@@ -209,16 +209,16 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 	private void readFileExcel(HSSFSheet sheet) throws Exception{
 		String mensag="";
 		int i=0;
-				
+
 		Util.limpiarListbox(listPasajeros);
-		List<Pasajero>listAsientos=new ArrayList<Pasajero>();//Almacen los asientos que se van agregando, para luego validar si hay duplicados.
-		
+		List<Pasajero>listAsientos=new ArrayList<>();//Almacen los asientos que se van agregando, para luego validar si hay duplicados.
+
 		try{
 			TipoDocumento tipoDocumento=null;
 			Sexo sexo=null;
 			HSSFRow row = null;
 			HSSFCell cellNumDoc = null;
-			
+
 			for(i=1;i<=sheet.getLastRowNum();i++){
 				row = sheet.getRow(i);
 				//Valida datos de las columnas
@@ -237,10 +237,10 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 					throw new FechaNacimientoNullxception();
 				}else if(row.getCell(colNumAsiento)==null || row.getCell(colNumAsiento).toString().trim().isEmpty())
 					throw new NumeroAsientoNullException();
-				
+
 				tipoDocumento=tipoDocumento(row.getCell(colTipDocumento).toString().toUpperCase().trim());
 				sexo=sexo(row.getCell(colSexo).toString().toUpperCase().trim());
-				
+
 				if(tipoDocumento==null){
 					mensag=row.getCell(colNombres).toString()+" "+row.getCell(colApParteno).toString();
 					throw new TipoDocumentoNoEncontradoException();
@@ -256,7 +256,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 				pasajero.setTipoDocumento(tipoDocumento);
 				cellNumDoc = row.getCell(colNumDocumento);
 				String numeroDocumento="";
-				
+
 				/*Valida el formato del numero de documento*/
 				if(cellNumDoc.getCellType()==HSSFCell.CELL_TYPE_STRING ){//String
 					String numdoc=cellNumDoc.toString();
@@ -272,14 +272,14 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 				pasajero.setSexo(sexo);
 				pasajero.setNombresApellidos(pasajero.getNombre()+" "+pasajero.getApellidoPaterno()+" "+pasajero.getApellidoMaterno());
 				pasajero.setFechaNacimiento(row.getCell(colFecNacimineto)!=null?Constantes.FORMAT_DATE.format(row.getCell(colFecNacimineto).getDateCellValue()): "01/01/1990");
-				
+
 				Integer numeroPisos=detalleItinerario.getItinerario().getServicio().getNumeroPisos();
 				Integer numeroAsientosPiso1=detalleItinerario.getItinerario().getServicio().getNumeroAsientosPiso1();
 				Integer numeroAsientosPiso2=0;
 				if(detalleItinerario.getItinerario().getServicio().getNumeroAsientosPiso2()!=null)
 					numeroAsientosPiso2=detalleItinerario.getItinerario().getServicio().getNumeroAsientosPiso2();
 				pasajero.setNumeroPiso(Constantes.PISO_UNO+1);
-				
+
 				/* Valida la columna 8 la cual representa el numero de piso al que corresponde el asiento*/
 				if(row.getCell(colPiso)!=null){
 					if(!(row.getCell(colPiso).toString().trim().isEmpty())){
@@ -292,7 +292,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 							throw new NumeroPisoErronioException();
 					}
 				}
-								
+
 				/*Valida la duplicidad del Númeo de Asiento en el archivo excel*/
 				Double numeroAseinto=Double.valueOf(row.getCell(colNumAsiento).toString().trim());
 				if(listAsientos.size()>0){
@@ -304,28 +304,28 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 				pasajero.setNumeroAsiento(numeroAseinto.intValue());
 				if(detalleItinerario.getItinerario().getId().equals(txtItinerario.getText()))
 					throw new ItinerarioException(ItinerarioException.ITINERARIO_NULL); // ItinerarioNullException();
-											
+
 				/*Valida Asiento y piso*/
 				if(pasajero.getNumeroPiso().equals(Constantes.PISO_UNO+1)){
 					if(pasajero.getNumeroAsiento()>numeroAsientosPiso1)
-						throw new NumeroAsientoFueraRangoException();	
+						throw new NumeroAsientoFueraRangoException();
 				}
 				if (pasajero.getNumeroPiso().equals(Constantes.PISO_DOS+1)){
 					if(pasajero.getNumeroAsiento()>numeroAsientosPiso2)
 						throw new NumeroAsientoFueraRangoException();
 				}
-								
+
 				cargarListPasajeros(pasajero,listPasajeros);
 				listAsientos.add(pasajero);
 			}
-													
+
 			lblNumeroPasajeros.setValue(String.valueOf(listPasajeros.getItems().size()));
 			Util.disabledBtnGuardar(listPasajeros.getItems().size()==0, btnGuardarVentas, accesoGrabar());
-		
+
 		}catch (FechaNacimientoNullxception fnnex){
 			Util.limpiarListbox(listPasajeros);
 			DlgMessage.information(Messages.getString("wndServicioEspecial.information.nullFechaNacimiento ")+mensag);
-		}catch (NumeroAsientoFueraRangoException nafr){	
+		}catch (NumeroAsientoFueraRangoException nafr){
 			Util.limpiarListbox(listPasajeros);
 			DlgMessage.information(Messages.getString("wndServicioEspecial.information.asientoFuerraDeRango"));
 		}catch (ItinerarioException inex){
@@ -375,7 +375,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Carga datos del Pasajero al Listbox.
 	 * @param pasajero : Class Pasajero
@@ -404,11 +404,11 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 		cell=new Listcell(pasajero.getNumeroPiso().toString());
 		cell.setStyle("text-aling:left; font-size:11px !important;");
 		item.appendChild(cell);
-		
+
 		item.setValue(pasajero);
 		listbox.appendChild(item);
 	}
-	
+
 	/**
 	 * Carga datos del Itinerario
 	 * @param itinerario
@@ -424,11 +424,11 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 		lblHoraLlegada.setValue(itinerario.getHoraLlegada());
 		lblTarifa.setValue(Util.toNumberFormat(detalleItinerario.getTarifa(), 2));
 	}
-	
+
 	/**
 	 * Permite enlazar los controles a la ventana de selección de Itinerario
 	 * @param button :ha este Button se le adjuntara un listener con la llamada a la ventana de selección de itinerario
-	 * @see WndItinerario: 
+	 * @see WndItinerario:
 	 */
 	public  void enlazarItinerario(final Button button) {
 		button.setTooltiptext("Seleccionar Itinerario");
@@ -471,8 +471,8 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 			}
 		});
 	}
-	
-		
+
+
 	/**
 	 * Genera Ventas para cada uno de los pasajeros importados.
 	 * @throws Exception
@@ -480,11 +480,11 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 	public void guardarVentas() throws Exception{
 		try{
 			if(detalleItinerario.getItinerario()==null || txtItinerario.getText().trim().isEmpty())
-				throw new ItinerarioException(ItinerarioException.ITINERARIO_NULL); 
+				throw new ItinerarioException(ItinerarioException.ITINERARIO_NULL);
 			else if (!(cmbPtoEmbarque.getSelectedItem().getValue() instanceof ItinerarioAgenciaPartida))
 				throw new ItinerarioException(ItinerarioException.AGENCIA_PARTIDA_NULL);
 			else if (!(cmbAgeLlegada.getSelectedItem().getValue() instanceof ItinerarioAgenciaLlegada))
-				throw new ItinerarioException(ItinerarioException.AGENCIA_LLEGADA_NULL); 
+				throw new ItinerarioException(ItinerarioException.AGENCIA_LLEGADA_NULL);
 //			else if (rdBoleta.isChecked()){
 //				if(ibxSerie.getText().trim().isEmpty() || ibxSerie.getText().trim().length()!=3)
 //					throw new NumeroSerieNullException();
@@ -511,7 +511,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 			}else{
 				validaBoletosUtilizados(txtInicio.getText().trim());
 			}
-			
+
 			if(listPasajeros.getItems().size()==0)
 				throw new PasajeroException();
 			else if (detalleItinerario.getItinerario().getServicio().getNumeroPisos()==1){
@@ -520,12 +520,12 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 				}
 			}else if (detalleItinerario.getItinerario().getServicio().getNumeroPisos()==2){
 				Servicio servicio=detalleItinerario.getItinerario().getServicio();
-				Integer capServicio=servicio.getNumeroAsientosPiso1()+servicio.getNumeroAsientosPiso2();
+				int capServicio=servicio.getNumeroAsientosPiso1()+servicio.getNumeroAsientosPiso2();
 				if(capServicio<listPasajeros.getItems().size()){
 					throw new NumeroPaxMayorCapacidadServicioException();
 				}
 			}
-			
+
 			/*Recupera la fecha de emision del comprobante 28/12/2016 - jabanto*/
 			if(rdFacturaEspecial.isChecked()){
 				String fechaFactura=ServiceLocator.getTitanManager().buscarFechaFacturaEspecial(txtSerieFactura.getText().trim().toUpperCase(), txtNumeroFactura.getText().trim().toUpperCase(),txtRuc.getText().trim());
@@ -541,10 +541,10 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 					throw new LiquidacionNullException();
 				}
 			}
-						
+
 			/*Realiza las validaciones necesarias a los datos del los pasajeros importados*/
 			validadDatosPasajeros();
-				
+
 			Messagebox.show(Messages.getString("wndServicioEspecial.question.confimarProceso"),DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e) throws Exception {
@@ -553,7 +553,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 						for(Listitem item: listPasajeros.getItems()){
 							Pasajero pasajero=buscarPasajero(((Pasajero)item.getValue()));
 							VentaPasaje ventaPasaje= new VentaPasaje();
-							ventaPasaje.setEsFechaAbierta(Constantes.FALSE_VALUE);							
+							ventaPasaje.setEsFechaAbierta(Constantes.FALSE_VALUE);
 							ventaPasaje.setItinerario(detalleItinerario.getItinerario());
 							Ruta ruta=ServiceLocator.getRutaManager().buscarPorId(detalleItinerario.getRuta().getId().longValue());
 							ventaPasaje.setRuta(ruta);
@@ -578,12 +578,12 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 							}else if(rdFactura.isChecked()){
 								ventaPasaje.setNumeroBoleto("000-0000000");
 								tipoComprobante.setId(Constantes.ID_TIPCOM_FACTURA);
-							}else{ 
+							}else{
 								ventaPasaje.setNumeroBoleto(txtSerieFactura.getText().trim().toUpperCase()+"-"+txtNumeroFactura.getText().trim());
 								ventaPasaje.setServicioEspecialFactura(true);
 								tipoComprobante.setId(Constantes.ID_TIPCOM_FACTURA);
 							}
-							
+
 //							tipoComprobante.setId(Constantes.ID_TIPCOM_BOLETO_VIAJE);
 							ventaPasaje.setTipoComprobante(tipoComprobante);
 							ventaPasaje.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_EFECTIVO));
@@ -614,7 +614,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 							ventaPasaje.setFechaCaducidad(new Date(new Date().getTime()+(Constantes.TIEMPO_CADUCA_BOLETO * Constantes.MILISEGUNDOS_X_DIA)));
 							ventaPasaje.setAgencia(getAgencia());
 							ventaPasaje.setUsuario(getUsuario());
-							ventaPasaje.setCanalVenta(canalVenta);	
+							ventaPasaje.setCanalVenta(canalVenta);
 							ventaPasaje.setFechaLiquidacion(fechaLiquidacion);
 							ventaPasaje.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 							ventaPasaje.setLiquidacion(null);
@@ -625,21 +625,21 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 							UtilData.auditarRegistro(ventaPasaje, false, getUsuario(), Executions.getCurrent());
 							ventaPasaje.setUsuarioHardware(getUsuarioHardware());
 							ServiceLocator.getVentaPasajesManager().guardarVenta(ventaPasaje, false, true, false, true);
-							
-							
+
+
 							/** 28/12/2016 - jabanto */
 							/*Valida si son emitidos por el counter, para envialos al Servidor de F.E.*/
 							if(rdBoleta.isChecked() || rdFactura.isChecked())
 								lstVentas.add(ventaPasaje);
-							
+
 							/*===========================End biegin 28/12/2016 - jabanto*/
 //							if(rdBoleta.isChecked()){
 //								ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarVentaById(ventaPasaje.getId());
-								
+
 								/*Implementacion para el nuevo formato 01/02/2016 - jabanto */
 //								boolean formato=UtilData.getFormatoImprecion(getAgencia().getId(), getTipocomprobante().getId(), getUsuarioHardware().getId());
 //								File file= CreateDocument.crearBoleto(ventaPasaje,formato);
-								
+
 //								if(getUsuarioHardware().getPrintApplet().intValue()==Constantes.TRUE_VALUE){
 ////									String fileBoleto = Constantes.URL_FORMATOS_BOLETOS+ventaPasaje.getNumeroControl()+".txt";
 //									String fileBoleto = Constantes.URL_FORMATOS_BOLETOS+Constantes.CLAVE_PAHT+ventaPasaje.getNumeroControl()+".txt";
@@ -652,12 +652,12 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 //									//Descarga el archivo para la impresion.
 //									Util.descargarArchivo(file);
 //								}
-//								
+//
 //								txtInicio.setText(generaCerosIzquierda(nuevoNumeroBoleto(Integer.valueOf(txtInicio.getText())).toString()));
 //							}
 						}
-						
-						
+
+
 						/** 28/12/2016 - jabanto */
 						/*Valida si son emitidos por el counter, para envialos al Servidor de F.E.*/
 						if(rdBoleta.isChecked() || rdFactura.isChecked()){
@@ -669,15 +669,15 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 							/*Realiza el envio*/
 							WSFE.sendVenta(lstVentaSendFE, wndServicioEspecial, true, null);
 						}
-						
-						
+
+
 						DlgMessage.information(Messages.getString("wndServicioEspecial.information.confirmaGuardado"));
 						Util.disabledBtnExportar(true, btnCargarArchivo, false);
 						Util.disabledBtnGuardar(true, btnGuardarVentas, false);
 					}
 				}
 			});
-		
+
 		}catch (FechaNacimientoNullxception fnnex){
 			DlgMessage.information(Messages.getString("wndServicioEspecial.information.nullFechaNacimiento")+message);
 		}catch (NumeroBoletoDuplicadoException nbdex){
@@ -736,7 +736,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 			DlgMessage.error(this.getClass().getName()+" "+e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Valida los datos del los pasajeros cargados del excel antes de guardar.
 	 * @throws Exception
@@ -744,8 +744,8 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 	private void validadDatosPasajeros() throws Exception{
 		try{
 			message="";
-			ArrayList<Pasajero>arrayListPax= new ArrayList<Pasajero>();
-			
+			ArrayList<Pasajero>arrayListPax= new ArrayList<>();
+
 			for(Listitem item: listPasajeros.getItems()){
 				Pasajero pasajero=item.getValue();
 				TipoDocumento tipoDocumento=pasajero.getTipoDocumento();
@@ -755,7 +755,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 					message=pasajero.getNombresApellidos();
 					throw new TipoDocumentoNullException();
 				}else if(tipoDocumento.getId().equals(Constantes.ID_TIPDOC_DNI)){
-					if (Util.isNumeric(pasajero.getNumeroDocumento())==false || pasajero.getNumeroDocumento().toString().length()!=8){
+					if (!Util.isNumeric(pasajero.getNumeroDocumento()) || pasajero.getNumeroDocumento().toString().length()!=8){
 						message=pasajero.getNombresApellidos();
 						throw new NumeroDocumentoIncorrectoException();
 					}
@@ -769,7 +769,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 				}else if(pasajero.getNumeroAsiento()==null){
 					message=pasajero.getNombresApellidos();
 					throw new NumeroAsientoNullException();
-				}else if (arrayListPax.size()>0){//Valida posibles asientos duplicados en la lista. 
+				}else if (arrayListPax.size()>0){//Valida posibles asientos duplicados en la lista.
 					for(Pasajero pasajeros: arrayListPax){
 						if(pasajero.getNumeroAsiento().equals(pasajeros.getNumeroAsiento()) && pasajero.getNumeroPiso().equals(pasajeros.getNumeroPiso())){
 							message=pasajero.getNombresApellidos()+" y "+pasajeros.getNombresApellidos();
@@ -781,7 +781,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 					message=pasajero.getNombresApellidos();
 					throw new FechaNacimientoNullxception();
 				}
-				
+
 				/*Valida Asiento y piso*/
 				Integer numeroAsientosPiso1=detalleItinerario.getItinerario().getServicio().getNumeroAsientosPiso1();
 				Integer numeroAsientosPiso2=0;
@@ -798,13 +798,13 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 						throw new NumeroAsientoFueraRangoException();
 					}
 				}
-				
+
 				arrayListPax.add(pasajero);
 			}
-			
+
 			/*	Valida que los asientos de los pasajeros no esten ocupados*/
 			String numeroAsientos=""; Integer numeroPiso=0;
-			List<VentaPasaje> listOcupabilidad=new ArrayList<VentaPasaje>();
+			List<VentaPasaje> listOcupabilidad=new ArrayList<>();
 			for(int x=0; x <detalleItinerario.getItinerario().getServicio().getNumeroPisos(); x++){
 				numeroPiso=detalleItinerario.getItinerario().getServicio().getNumeroPisos();
 				for(Pasajero pasajero: arrayListPax){
@@ -829,7 +829,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 				throw new NumeroAsientoOcupadoException();
 
 		}catch (FechaNacimientoNullxception fnnex){
-			throw new FechaNacimientoNullxception(); 
+			throw new FechaNacimientoNullxception();
 		}catch (NumeroAsientoOcupadoException nao){
 			throw new NumeroAsientoOcupadoException();
 		}catch (NumeroAsientoFueraRangoException nafrex){
@@ -850,8 +850,8 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 			throw new NumeroAsientoNullException();
 		}
 	}
-	
-	
+
+
 	/**
 	 * Valida Los boletos a generar no estén registrados en el sistema
 	 * @param boletoInicial : Boleto con el se iniciará la inpresión.
@@ -859,15 +859,15 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 	 * @throws Exception
 	 */
 	private Integer validaBoletosUtilizados(String boletoInicial) throws Exception{
-		Integer cantPax=(listPasajeros.getItems().size())-1;
+		int cantPax=(listPasajeros.getItems().size())-1;
 		String serie=ibxSerie.getText().trim();
 		String boletoInicio=serie+"-"+generaCerosIzquierda(boletoInicial);
 		String boletoFinal=serie+"-"+generaCerosIzquierda(String.valueOf(Long.valueOf(boletoInicial)+cantPax));
 		Integer cant=ServiceLocator.getVentaPasajesManager().validaBoletos_ServicioEspecial(boletoInicio, boletoFinal);
-		
+
 		return cant;
 	}
-	
+
 	/**
 	 * Realiza la busqueda del pasajero.
 	 * @param pasajero
@@ -876,7 +876,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 	 */
 	private Pasajero buscarPasajero(Pasajero pasajero) throws Exception{
 		Pasajero pax=null;
-		TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+		TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 		criteriosBusqueda.put("numeroDocumento", pasajero.getNumeroDocumento().trim());
 		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 		List<Pasajero>lisPax=ServiceLocator.getPasajeroManager().buscarPorX(criteriosBusqueda, null);
@@ -884,23 +884,23 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 			pax=lisPax.get(0);
 		else
 			pax=GuardaPasajero(pasajero);
-			
+
 		return pax;
 	}
-	
-	
+
+
 	/**
 	 * Guarda el Pasajero de ser el caso que no exsista
 	 * @param pasajero :Class Pasajero
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private Pasajero GuardaPasajero(Pasajero pasajero) throws Exception{
 		String UBIGEO_LIMA="150101";
 		Pasajero oPasajero = new Pasajero();
 		Ubigeo oUbigeo= new Ubigeo();
 		oUbigeo.setId(UBIGEO_LIMA);
-				
+
 		oPasajero.setTipoDocumento(pasajero.getTipoDocumento());
 		oPasajero.setNumeroDocumento(pasajero.getNumeroDocumento().trim().toUpperCase());
 		oPasajero.setApellidoPaterno(pasajero.getApellidoPaterno().trim().toUpperCase());
@@ -918,8 +918,8 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 		ServiceLocator.getPasajeroManager().guardar(oPasajero);
 		return oPasajero;
 	}
-	
-	
+
+
 	/**
 	 * Busca el tipo de documento del pasajero, el cual esta ingresado en el excel.
 	 * @param tipoDocumento : Nombre del tipo de ducumento.
@@ -928,7 +928,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 	 */
 	private TipoDocumento tipoDocumento(String tipoDocumento) throws Exception{
 		TipoDocumento tdocumento=null;
-		TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+		TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 		criteriosBusqueda.put("denominacion", tipoDocumento.toString().trim().toUpperCase());
 		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 		List<TipoDocumento> list=ServiceLocator.getTipoDocumentoManager().buscarPorX(criteriosBusqueda, null);
@@ -938,7 +938,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 		}
 		return tdocumento;
 	}
-	
+
 	/**
 	 * Busca el sexo del pasajero, el cual esta ingresado el Excel.
 	 * @param sexo : Nombre denominado para la busqueda.
@@ -947,7 +947,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 	 */
 	private Sexo sexo(String sexo) throws Exception{
 		Sexo sex=null;
-		TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+		TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 		criteriosBusqueda.put("denominacion", sexo.toString().trim().toUpperCase());
 		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 		List<Sexo>list=ServiceLocator.getSexoManager().buscarPorX(criteriosBusqueda, null);
@@ -955,7 +955,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 			sex=list.get(0);
 		return sex;
 	}
-	
+
 	/**
 	 * Carga los puntos de embarque.
 	 * @param detItinerario	: Itinerario del cual se desea cargar los puntos de embarque.
@@ -964,8 +964,8 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 	private void onLoadPuntoEmbarque(DetalleItinerario detItinerario){
 		try{
 			cmbPtoEmbarque.getItems().clear();
-			
-			ArrayList<ItinerarioAgenciaPartida> arrayItiAgePartida = new ArrayList<ItinerarioAgenciaPartida>();
+
+			ArrayList<ItinerarioAgenciaPartida> arrayItiAgePartida = new ArrayList<>();
 			arrayItiAgePartida = ServiceLocator.getItinerarioManager().buscarAgenciasPartida(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO, detItinerario.getRuta().getLocalidadOrigen().getId());
 //			if(detItinerario.getItinerario().getAgenciaPartida().getId().intValue()==detItinerario.getAgenciaPartida().getId().intValue())
 //				arrayItiAgePartida = ServiceLocator.getItinerarioManager().buscarAgenciasPartida(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO);
@@ -990,14 +990,14 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 					cmbPtoEmbarque.setSelectedItem(item);
 					lblHoraPartida.setValue(itiAgePartida.getHoraPartida());
 				}
-			}			
+			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 		}
 	}
-	
-	
+
+
 	/**
 	 * Cargamos los puntos de desembarque.
 	 * @param detItinerario	: Itinerario del cual deseamos cargar los puntos de desembarque.
@@ -1006,7 +1006,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 	private void onLoadPuntoDesembarque(DetalleItinerario detItinerario) {
 		try{
 			cmbAgeLlegada.getItems().clear();
-			ArrayList<ItinerarioAgenciaLlegada> arrayItiAgeLlegada = new ArrayList<ItinerarioAgenciaLlegada>();
+			ArrayList<ItinerarioAgenciaLlegada> arrayItiAgeLlegada = new ArrayList<>();
 			arrayItiAgeLlegada = ServiceLocator.getItinerarioManager().buscarAgenciasLlegada(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO, detItinerario.getRuta().getLocalidadDestino().getId());
 //			if(detItinerario.getItinerario().getAgenciaLlegada().getId().intValue()==detItinerario.getAgenciaLlegada().getId().intValue())
 //				arrayItiAgeLlegada = ServiceLocator.getItinerarioManager().buscarAgenciasLlegada(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO);
@@ -1019,7 +1019,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 //				itiAgeLlegada.setHoraLlegada(detItinerario.getAgenciaLlegada().getHoraPartida());
 //				arrayItiAgeLlegada.add(itiAgeLlegada);
 //			}
-			
+
 			UtilData.cargarGenericData(cmbAgeLlegada, false);
 			for(ItinerarioAgenciaLlegada itiAgeLlegada : arrayItiAgeLlegada){
 				Comboitem item = new Comboitem(itiAgeLlegada.getAgencia().getDenominacion());
@@ -1032,13 +1032,13 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 					cmbAgeLlegada.setSelectedItem(item);
 					lblHoraLlegada.setValue(itiAgeLlegada.getHoraLlegada());
 				}
-			}			
+			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 		}
-	}	
-	
+	}
+
 	/**
 	 * Muestra la hora de embarque segun el punto de embarque seleccionado
 	 */
@@ -1048,7 +1048,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 		else
 			lblHoraPartida.setValue("");
 	}
-	
+
 	/**
 	 * Muestrala hora de llegada segun el punto de desembarque seleccionado.
 	 */
@@ -1058,7 +1058,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 		else
 			lblHoraLlegada.setValue("");
 	}
-	
+
 	public String generaCerosIzquierda(String numero){
 		String num="";
 		if(Util.isNumeric(numero)){
@@ -1068,8 +1068,8 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 		}
 		return num;
 	}
-	
-	
+
+
 //	/**
 //	 * Genera el siguiente número de Boleto.
 //	 * @param numeroBoleto
@@ -1078,7 +1078,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 //	private Long nuevoNumeroBoleto(Integer numeroBoleto){
 //		return (long) (numeroBoleto+1);
 //	}
-	
+
 	/**
 	 * Limpia controles
 	 */
@@ -1100,7 +1100,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 		rdFacturaEspecial.setChecked(true);
 		txtSerieFactura.setText("");
 		txtNumeroFactura.setText("");
-		
+
 		ibxSerie.setReadonly(true);
 		txtInicio.setReadonly(true);
 		txtSerieFactura.setReadonly(false);
@@ -1114,7 +1114,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 		lblTarifa.setValue("");
 		Util.disabledBtnExportar(false, btnCargarArchivo, true);
 	}
-	
+
 	/**
 	 * Realiza la busqueda del Cliente
 	 * @param Ruc	: Número de Ruc del Cliente a buscar
@@ -1135,7 +1135,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 			}
 		}
 	}
-	
-	
-	
+
+
+
 }

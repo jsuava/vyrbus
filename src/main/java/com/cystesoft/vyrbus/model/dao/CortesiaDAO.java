@@ -10,7 +10,7 @@ import com.cystesoft.vyrbus.model.bean.Cortesia;
 /**
  * Interfaz que declara todos los metodos que permitiran manipular datos de las Cortecias.
  * @author José Abanto.
- * 
+ *
  */
 public interface CortesiaDAO  extends GenericDAO{
 
@@ -21,53 +21,53 @@ public interface CortesiaDAO  extends GenericDAO{
 	 * @return
 	 */
 	public ArrayList<Cortesia> buscarPorEstadoRegistro(String estado, String criterioOrden);
-	
+
 	/**
 	 * Busqueda por un array de criterios.
 	 * @param criteriosBusqueda: Array de criterios de busqueda
 	 * @param criteriosOrdenar : Lista de criterios para el Orden de los Datos
-	 * @return : 
+	 * @return :
 	 */
 	public ArrayList<Cortesia> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
-	
+
 	/**
 	 * Busqueda por Id del Tipo de Gasto
 	 * @param id : Identificador Usuario
-	 * @return : 
+	 * @return :
 	 */
 	public Cortesia buscarPorId(Long id);
-	
+
 	/**
 	 * Guarda una nueva cortesia.
-	 * @param 
+	 * @param
 	 */
 	public void guardar(Cortesia cortesia);
-	
+
 	/**
 	 * Actualiza la Cortesia.
-	 * @param 
+	 * @param
 	 */
 	public void actualizar(Cortesia cortesia);
-	
+
 	/**
 	 * Inactiva una Cortesia
 	 * @param id : Identificador de la Cortesia.
 	 */
 	public void inactivar(Long id);
-	
+
 	/**
-	 * 
+	 *
 	 * @param id
 	 */
 	public void activar (Long id);
-	
+
 	/**
 	 * Busca cortesias emitidas
 	 * @param cortesia : Class cortesia
 	 * @return
 	 */
 	public List<Cortesia> BuscarCortesia(Cortesia cortesia);
-	
+
 	/**
 	 * Busca los Boletos emitidos por cumpleanios a un PAXFREE.
 	 * @param idPasajero		: Identificador de Pasajero.
@@ -76,7 +76,7 @@ public interface CortesiaDAO  extends GenericDAO{
 	 * @throws Exception
 	 */
 	public ArrayList<Cortesia>BuscarBolXcumpleaniosPaxFree(Long idPasajero,Integer idMotivocortesia) throws Exception;
-	
+
 	/**
 	 * Realiza la validación de la cortesia si fue o no confirmada
 	 * @param numeroControl : Número de control de la costesia.
@@ -84,14 +84,14 @@ public interface CortesiaDAO  extends GenericDAO{
 	 * @throws Exception
 	 */
 	public boolean cortesiaConfirmada(String numeroControl) throws Exception;
-	
+
 	/**
 	 * buscar costesia por el IDventa
 	 * @param id	:Identificador de la Venta de Pasajes
 	 * @return
 	 */
 	public Cortesia buscarXIDventa(Long id);
-	
+
 	/**
 	 * Realiza la busqueda de las  cortesias
 	 * @param fecha				: fecha emision
@@ -100,6 +100,6 @@ public interface CortesiaDAO  extends GenericDAO{
 	 * @return lista de ventas
 	 */
 	public ArrayList<Cortesia>buscarCortesia(String fecha,String numDocPax, Integer idTipoFormaPago);
-	
-	
+
+
 }

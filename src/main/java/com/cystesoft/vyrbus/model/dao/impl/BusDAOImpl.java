@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: JA
  * Fecha		: 13/08/2012
  */
@@ -20,7 +20,7 @@ import com.cystesoft.vyrbus.model.dao.BusDAO;
  */
 @SuppressWarnings("unchecked")
 public class BusDAOImpl extends GenericDAOImpl implements BusDAO {
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.dao.BusDAO#buscarPorX(java.util.TreeMap, java.lang.String)
 	 */
@@ -51,7 +51,7 @@ public class BusDAOImpl extends GenericDAOImpl implements BusDAO {
 	@Override
 	public void guardar(Bus bus) {
 		super.save(bus);
-		
+
 	}
 
 	/* (non-Javadoc)

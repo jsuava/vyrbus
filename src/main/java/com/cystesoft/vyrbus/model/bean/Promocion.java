@@ -37,7 +37,7 @@ public class Promocion extends GenericBean implements Serializable, Cloneable {
     private Integer esAcumulable;
     private Integer esTarifa;
     private String horasPartida;
-    
+
     private List<Ruta> listRutas;							//No mapeado
     private List<Servicio> listServicio;					//No mapeado
     private List<Agencia> listPuntoVenta;					//No mapeado
@@ -48,8 +48,8 @@ public class Promocion extends GenericBean implements Serializable, Cloneable {
     private Integer cantidad;								//No mapeado
     private Double totalDescuento;							//No mapeado
     private Double totalVenta;								//No mapeado
-    
-    
+
+
     /*	Constantes para el tipo de descuento en las promociones */
 	public static final String PROMOCION_TIPO_DESCUENTO_LABEL_FIJO = "FIJO";
 	public static final String PROMOCION_TIPO_DESCUENTO_LABEL_PORCENTAJE = "PORCENTAJE";
@@ -59,7 +59,7 @@ public class Promocion extends GenericBean implements Serializable, Cloneable {
 	public static final String PROMOCION_TIPO_DESCUENTO_VALUE_PORCENTAJE = "P";
 	public static final String PROMOCION_TIPO_DESCUENTO_VALUE_TARIFA = "T";
 	public static final String PROMOCION_TEMPORADA_VALUE_NOALTA = "B";
-	
+
 	public static final String TOKEN_RUTA = "RUTA";
 	public static final String TOKEN_SERVICIO = "SERV";
 	public static final String TOKEN_CANAL_VENTA = "CVEN";

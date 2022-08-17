@@ -41,16 +41,16 @@ import com.cystesoft.vyrbus.view.ui.WndBase;
  */
 public class WndAnulacionBoletoCredito extends WndBase {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Textbox txtNumeroVoucher;
 	private Textbox txtNumeroBoleto;
 	private Listbox lsbxBoleto;
-	
+
 	private Boolean perdidaServicio=false;
 	private Window wndAutorizacion = null;
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
 	 */
@@ -61,7 +61,7 @@ public class WndAnulacionBoletoCredito extends WndBase {
 		txtNumeroBoleto=(Textbox)this.getFellow("txtNumeroBoleto");
 		lsbxBoleto=(Listbox)this.getFellow("lsbxBoleto");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
@@ -69,20 +69,20 @@ public class WndAnulacionBoletoCredito extends WndBase {
 	public void onCreate() throws Exception {
 		// TODO Auto-generated method stub
 	}
-	
-	
+
+
 	/**
-	 *Busca el boleto 
-	 * @throws Exception 
+	 *Busca el boleto
+	 * @throws Exception
 	 */
 	@SuppressWarnings("deprecation")
 	public void buscar() throws Exception {
 		// TODO Auto-generated method stub
 		Util.limpiarListbox(lsbxBoleto);
-				
+
 		String numeroVoucher=null;
 		String numeroBoleto=null;
-		
+
 		if(!(txtNumeroVoucher.getText().trim().isEmpty())){
 			txtNumeroVoucher.setText(Util.autocompleNumberBoleto(txtNumeroVoucher.getText().trim()));
 			numeroVoucher=txtNumeroVoucher.getText().trim();
@@ -91,7 +91,7 @@ public class WndAnulacionBoletoCredito extends WndBase {
 			txtNumeroBoleto.setText(Util.autocompleNumberBoleto(txtNumeroBoleto.getText().trim()));
 			numeroBoleto=txtNumeroBoleto.getText().trim();
 		}
-		
+
 		//Si no ha ingresado ningún parámetro.
 		if(numeroBoleto==null && numeroVoucher==null){
 			DlgMessage.information(Messages.getString("WndVouchers.information.noParameters"));
@@ -103,20 +103,20 @@ public class WndAnulacionBoletoCredito extends WndBase {
 			DlgMessage.information(Messages.getString("WndVouchers.information.noRegistros"));
 			return;
 		}
-		
-				
-		TreeMap<String, Object>criteriosBusqueda=new TreeMap<String, Object>();
+
+
+		TreeMap<String, Object>criteriosBusqueda=new TreeMap<>();
 		for(VentaPasaje ventaPasaje: listVouchers){
 			Listitem item=new Listitem();
 			Listcell cell=null;
 			VentaPasaje ventaBoleto=null;
-					
-			
+
+
 			if(ventaPasaje.getTipoMovimiento().getId().intValue()!=Constantes.ID_TIPMOV_ANULACION){
 				ventaBoleto=ServiceLocator.getVentaPasajesManager().buscarPorId(ventaPasaje.getVentaPasaje().getId());
-				
+
 				/* Valida que la fecha de emision del boleto, este dentro del mes.*/
-				
+
 				/* Valida si el boleto aun esta permitido anular*/
 				int hora=0,minuto=0;
 				String[] horaPartida=ventaBoleto.getHoraPartida().split(":");
@@ -133,17 +133,17 @@ public class WndAnulacionBoletoCredito extends WndBase {
 										    ,ventaBoleto.getFechaPartida().getDate()
 										    ,hora,minuto);
 				Date fechaHoraAnulacion=new Date();
-				Double horasDif=(double) ((fechaHoraViaje.getTime()-fechaHoraAnulacion.getTime())/Constantes.MILISEGUNDOS_X_HORA)+1;
-				
+				double horasDif=(double) ((fechaHoraViaje.getTime()-fechaHoraAnulacion.getTime())/Constantes.MILISEGUNDOS_X_HORA)+1;
+
 				if(horasDif<=3)
 					perdidaServicio=true;
 				else
 					perdidaServicio=false;
-				
+
 			}else{
 				//Cuando el boleto esta anulado
-				criteriosBusqueda=new TreeMap<String, Object>();
-				List<String>criteriosOrden=new ArrayList<String>();
+				criteriosBusqueda=new TreeMap<>();
+				List<String>criteriosOrden=new ArrayList<>();
 				criteriosOrden.add("id");
 				criteriosBusqueda.put("numeroBoleto",numeroBoleto!=null?numeroBoleto:numeroVoucher);
 				criteriosBusqueda.put("tipoMovimiento", ventaPasaje.getTipoMovimiento());
@@ -152,73 +152,73 @@ public class WndAnulacionBoletoCredito extends WndBase {
 					ventaBoleto=lstVentaPasaje.get(0);
 				}
 			}
-			
+
 			/* Busca cliente/Agencia*/
-			criteriosBusqueda=new TreeMap<String, Object>();
+			criteriosBusqueda=new TreeMap<>();
 			criteriosBusqueda.put("numeroDocumento",ventaBoleto.getRucClienteCredito());
 			List<Cliente>lstCliente=ServiceLocator.getClienteManager().buscarPorX(criteriosBusqueda, null);
 			if(lstCliente.size()>0){
 				Cliente cliente=lstCliente.get(0);
 				ventaBoleto.setCliente(cliente);
 			}
-			
-			Boolean isAnulado=false;
+
+			boolean isAnulado=false;
 			item=new Listitem();
-			
+
 			if(ventaBoleto.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION ||
 					ventaBoleto.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_DEVOLUCION ||
 					ventaBoleto.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION){
 				isAnulado=true;
 			}
-			
+
 			cell=new Listcell(ventaBoleto.getCliente().getRazonSocial());
 			if(isAnulado)cell.setStyle("color:red");
 			item.appendChild(cell);
-			
+
 			cell= new Listcell(ventaBoleto.getNumeroBoletoAnterior());
 			if(isAnulado)cell.setStyle("font-size:11px !important;color:red");
 			else cell.setStyle("font-size:11px !important");
 			item.appendChild(cell);
-			
+
 			cell=new Listcell(ventaBoleto.getNumeroBoleto());
 			if(isAnulado)cell.setStyle("font-size:11px !important;color:red");
 			else cell.setStyle("font-size:11px !important");
 			item.appendChild(cell);
-						
+
 			cell= new Listcell(ventaBoleto.getRuta().toString());
 			if(isAnulado)cell.setStyle("color:red");
 			item.appendChild(cell);
-			
+
 			cell= new Listcell(Constantes.FORMAT_DATE.format(ventaBoleto.getFechaPartida()));
 			if(isAnulado)cell.setStyle("font-size:11px !important;color:red");
 			else cell.setStyle("font-size:11px !important");
 			item.appendChild(cell);
-			
+
 			cell= new Listcell(ventaBoleto.getHoraPartida());
 			if(isAnulado)cell.setStyle("font-size:11px !important;color:red");
 			else cell.setStyle("font-size:11px !important");
 			item.appendChild(cell);
-			
+
 			cell=new Listcell(ventaBoleto.getFechaLiquidacion()!=null?Constantes.FORMAT_DATE.format(ventaBoleto.getFechaLiquidacion()):"");
 			if(isAnulado)cell.setStyle("font-size:11px !important;color:red");
 			else cell.setStyle("font-size:11px !important");
 			item.appendChild(cell);
-								
+
 			cell=new Listcell(ventaBoleto.getUsuario()!=null?ventaBoleto.getUsuario().toString():"");
 			if(isAnulado)cell.setStyle("color:red");
 			item.appendChild(cell);
-			
+
 			cell=new Listcell(ventaBoleto.getAgencia()!=null?ventaBoleto.getAgencia().getNombreCorto():"");
 			if(isAnulado)cell.setStyle("font-size:11px !important;color:red");
 			item.appendChild(cell);
-			
+
 			Button btnAnular= new Button("","/resources/mp_anular.png");
 			cell= new Listcell();
 			cell.appendChild(btnAnular);
 			btnAnular.setId(ventaBoleto.getId().toString());
 			btnAnular.setStyle("cursor:pointer");
 			btnAnular.setTooltiptext("Haga click aqui si desea anular el Boleto");
-						
+
 			btnAnular.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 				@Override
 				public void onEvent(final Event ev) throws Exception {
@@ -231,25 +231,25 @@ public class WndAnulacionBoletoCredito extends WndBase {
 					openVentanaAutorizacion(Long.valueOf(ev.getTarget().getId()));
 				}
 			});
-			
+
 			if(isAnulado)//indica si el registro esta anulado
 				btnAnular.setVisible(false);
-			
+
 			item.appendChild(cell);
 			item.setValue(ventaBoleto);
 			lsbxBoleto.appendChild(item);
 		}
-		
+
 	}
-	
+
 	/**
 	 * Realiza la anulacion del boleto
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private void anularBoleto(Long idBoleto, String observaciones) throws Exception {
 		String observacionBoleto="";
 		VentaPasaje boleto=ServiceLocator.getVentaPasajesManager().buscarPorId(idBoleto);
-		
+
 //		/*Valida si el boleto ya esta liquidado*/
 //		if(boleto.getLiquidacion()!=null){
 //			/*Valida que el usuario que esta haciendo la anulacion tenga una liquidacion abierta*/
@@ -258,14 +258,14 @@ public class WndAnulacionBoletoCredito extends WndBase {
 //				throw new Exception("El Comprobante ya fue liquidado, si desea realizar la anulación debe tener una liquidación abierta.");
 //			}
 //		}
-		
+
 		/**Temporal*/
 		if(boleto.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE){
 			DlgMessage.information("Comprobante no habilitado para la anulación.");
 			return;
 		}
-		
-		
+
+
 		//Realizamos la busqueda agrupada por numero de control
 		List<VentaPasaje> lstResult= ServiceLocator.getVentaPasajesManager().buscarBoletosDevolucion(null, boleto.getNumeroControl(), null);
 		if(lstResult.get(0).getTipoMovimiento().getId().intValue()!=Constantes.ID_TIPMOV_CREDITO){
@@ -273,7 +273,7 @@ public class WndAnulacionBoletoCredito extends WndBase {
 			DlgMessage.information(Messages.getString("WndAnulacionBoletoCredito.information.noAnulacionOtrosMovimientos")+ultimoMovimiento.getNumeroBoleto()+"("+ultimoMovimiento.getTipoMovimiento().getDenominacion()+")");
 			return;
 		}
-		
+
 		Double importeBoleto=boleto.getImportePagado();
 		if(boleto.getObservaciones()!=null)
 			observacionBoleto=boleto.getObservaciones()+" |  ";
@@ -293,28 +293,28 @@ public class WndAnulacionBoletoCredito extends WndBase {
 				/* Recalcula el detalle de la liquidacion, en el que fue incluido este boleto*/
 				UtilData.procesarDetalleLiquidacion(liquidacion, getUsuario());
 			}
-		}		
-		
+		}
+
 		/*Actualiza el Saldo de la linea de credito - ##19/12/2014 - jabanto*/
 		ServiceLocator.getLineaCreditoClienteManager().actualizarSaldo(importeBoleto, boleto.getRucClienteCredito(), getUsuario(), UtilData.ipLocal(Executions.getCurrent()), true);
-				
+
 		//Refresca la busqueda.
 		buscar();
 	}
-	
+
 	private void openVentanaAutorizacion(Long idBoleto) throws Exception{
 		wndAutorizacion = createVentanaAutorizacion(idBoleto);
 		this.appendChild(wndAutorizacion);
 		wndAutorizacion.setMode("modal");
 	}
-	
+
 	@SuppressWarnings("deprecation")
-	private  Window createVentanaAutorizacion(Long idBoleto) throws Exception {		
+	private  Window createVentanaAutorizacion(Long idBoleto) throws Exception {
 		final Window window = new Window();
 		window.setWidth("250px");
-		
+
 		Button btnAceptar = new Button();
-		
+
 		window.setMaximizable(false);
 		window.setMinimizable(false);
 		window.setSizable(false);
@@ -323,32 +323,32 @@ public class WndAnulacionBoletoCredito extends WndBase {
 		window.setStyle("padding: 5px");
 		window.setWidth("350px");
 		window.setVisible(true);
-		
+
 		Button btnCancelar = new Button();
-				
+
 		final Textbox txtObservaciones =  new Textbox();
 		txtObservaciones.setMultiline(true);
 		txtObservaciones.setMaxlength(255);
 		txtObservaciones.setWidth("320px");
 		txtObservaciones.setRows(5);
-		
+
 		Grid grid = new Grid();
 		Rows rows = new Rows();
-		
+
 		Row row = new Row();
 		Label label = new Label();
 		label.setValue("Ingrese información de quién realiza la autorización (*)");
 		label.setStyle("font-size:11px !important;font-weight: bold;color:black");
 		row.appendChild(label);
 		rows.appendChild(row);
-		
+
 		row=new Row();
 		row.appendChild(txtObservaciones);
 		rows.appendChild(row);
-		
+
 		row=new Row();
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		btnCancelar.setLabel("Cancelar");
 		btnCancelar.setImage("/resources/mp_cerrar.png");
@@ -358,20 +358,20 @@ public class WndAnulacionBoletoCredito extends WndBase {
 		div.setAlign("center");
 		div.appendChild(new Space());
 		div.appendChild(btnCancelar);
-		
+
 		div.appendChild(new Space());
-		
+
 		btnAceptar.setLabel("Aceptar");
 		btnAceptar.setImage("/resources/mp_aceptarEnabled.png");
 		btnAceptar.setWidth("100px");
 		btnAceptar.setId(idBoleto.toString());
 		div.appendChild(btnAceptar);
-		
+
 		grid.appendChild(rows);
-		
+
 		window.appendChild(grid);
 		window.appendChild(div);
-		
+
 		/*CANCELAR*/
 		btnCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
@@ -379,7 +379,7 @@ public class WndAnulacionBoletoCredito extends WndBase {
 				window.onClose();
 			}
 		});
-		
+
 		btnAceptar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(final Event event) throws Exception {
@@ -417,5 +417,5 @@ public class WndAnulacionBoletoCredito extends WndBase {
 		});
 		return window;
 	}
-	
+
 }

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 21/05/2015
  * Hora			: 15:15:50
@@ -15,7 +15,7 @@ package com.cystesoft.vyrbus.model.bean;
 public class ConfiguracionImpresora extends GenericBean{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Integer id;
@@ -26,7 +26,7 @@ public class ConfiguracionImpresora extends GenericBean{
 	private Long bistDatos;
 	private Integer paridad;
 	private Integer bistParada;
-	
+
 	/**
 	 * @return the id
 	 */
@@ -123,7 +123,7 @@ public class ConfiguracionImpresora extends GenericBean{
 	public void setBistParada(Integer bistParada) {
 		this.bistParada = bistParada;
 	}
-	
-	
+
+
 
 }

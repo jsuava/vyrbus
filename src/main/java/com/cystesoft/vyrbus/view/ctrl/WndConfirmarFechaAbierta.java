@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 02/11/2012
  */
@@ -45,7 +45,7 @@ import com.cystesoft.vyrbus.view.ui.WndBase;
  */
 public class WndConfirmarFechaAbierta extends WndBase implements EventListener<Event> {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Listbox lbxVentasFechaAbierta;
 	private Include incConfirmacion;
 	private Combobox cmbOrigen;
@@ -64,10 +64,10 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 	private Div divItinerario;
 	private Button btnSiguiente;
 	private Button btnCancelar;
-	
+
 	private DetalleItinerario detalleItinerario = null;
 	private VentaPasaje ventaFechaAbierta = null;
-	
+
 
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IBase#onCreate()
@@ -78,7 +78,7 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 			/*Valida si el usuario tiene una liquidación aperturada*/
 			if(getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION)==null)
 				throw new LiquidacionNullException();
-			
+
 			UtilData.cargarDataCombo(cmbOrigen, Localidad.class, false);
 			UtilData.cargarDataCombo(cmbDestino, Localidad.class, false);
 			UtilData.cargarDataCombo(cmbOrigenItinerario, Localidad.class, false);
@@ -88,7 +88,7 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noLiquidacion"));
 			closeTabWindow();
 		}
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -114,9 +114,9 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 		cldrFechaPartida = (Calendar)this.getFellow("cldrFechaPartida");
 		btnSiguiente = (Button)this.getFellow("btnSiguiente");
 		btnCancelar = (Button)this.getFellow("btnCancelar");
-		
+
 		lbxVentasFechaAbierta.addEventListener(Events.ON_DOUBLE_CLICK, this);
-		
+
 		btnCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
@@ -125,7 +125,7 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 				divItinerario.setVisible(false);
 			}
 		});
-		
+
 		tabListado.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
@@ -134,7 +134,7 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 			}
 		});
 	}
-	
+
 	public void buscarVentasFechaAbierta(){
 		try{
 			lbxVentasFechaAbierta.getItems().clear();
@@ -150,15 +150,15 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 			if(numeroBoleto!=null) {
 				numeroBoleto = Util.autocompleNumberBoleto(numeroBoleto);
 				txtNumeroBoleto.setText(numeroBoleto);
-			}			
-			
+			}
+
 			String numeroDocumento = txtNumeroDocumento.getText().trim().equals("")?null:txtNumeroDocumento.getText().trim().toUpperCase();
-			
+
 			if(idOrigen==null && idDestino==null && pasajero==null && numeroControl==null && numeroBoleto==null && numeroDocumento==null){
 				DlgMessage.warning(Messages.getString("WndConfirmarFechaAbierta.warning.noExistePatronBusqueda"));
 				return;
 			}
-			
+
 			List<VentaPasaje> lstReservas = ServiceLocator.getVentaPasajesManager().buscarFechaAbiertaPorConfirmar(idOrigen, idDestino, pasajero, numeroControl, numeroBoleto, numeroDocumento);
 			if(lstReservas.size()>0){
 				lbxVentasFechaAbierta.getItems().clear();
@@ -201,7 +201,7 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 								DlgMessage.information(Messages.getString("WndConfirmarFechaAbierta.information.boletoCaducado"));
 								return;
 							}
-							
+
 							seleccionarOrigenDestino(ventaFechaAbierta);
 							divItinerario.setVisible(true);
 							lbxItinerarios.getItems().clear();
@@ -235,7 +235,7 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	private void limpiarFiltros(){
 		txtNumeroControl.setText("");
 		txtNumeroBoleto.setText("");
@@ -244,12 +244,12 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 		txtNumeroDocumento.setText("");
 		txtPasajero.setText("");
 	}
-	
+
 	@Override
 	public void onEvent(Event e){
 		if(lbxVentasFechaAbierta.getSelectedIndex()>=0){
 			ventaFechaAbierta = (VentaPasaje)lbxVentasFechaAbierta.getSelectedItem().getValue();
-			
+
 			/*Valida fecha de Caducidad del Boleto*/
 			if(ventaFechaAbierta.getFechaCaducidad()!=null && ventaFechaAbierta.getFechaCaducidad().getTime() < new Date().getTime()){
 				DlgMessage.information(Messages.getString("WndConfirmarFechaAbierta.information.boletoCaducado"));
@@ -258,7 +258,7 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 				DlgMessage.information(Messages.getString("WndConfirmarFechaAbierta.information.boletoCaducado"));
 				return;
 			}
-			
+
 			seleccionarOrigenDestino(ventaFechaAbierta);
 			divItinerario.setVisible(true);
 			lbxItinerarios.getItems().clear();
@@ -267,7 +267,7 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 			tabDetalle.setSelected(true);
 		}
 	}
-	
+
 	/**
 	 * Selecciona los combos de Origen y Destino de acuerdo a la informacion que tiene la venta a Fecha Abierta.
 	 * @param fechaAbierta	: Venta a fecha abierta.
@@ -280,7 +280,7 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 				break;
 			}
 		}
-		
+
 		for(int i=1; i<cmbDestinoItinerario.getItemCount(); i++){
 			Localidad destino = cmbDestinoItinerario.getItems().get(i).getValue();
 			if(destino.getId().intValue()==fechaAbierta.getRuta().getLocalidadDestino().getId().intValue()){
@@ -289,7 +289,7 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 			}
 		}
 	}
-	
+
 	/**
 	 * Realiza la busqueda de los itinerarios segun la fecha de partida, origen o destino.
 	 */
@@ -298,19 +298,19 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 			lbxItinerarios.getItems().clear();
 			if(!(cmbOrigenItinerario.getSelectedItem().getValue() instanceof Localidad))
 				throw new LocalidadNullException(LocalidadNullException.ORIGEN);
-			
+
 			String fechaPartida = Util.DatetoString(cldrFechaPartida.getValue(), Constantes.DATE_FORMAT);
 			String origen = cmbOrigenItinerario.getText();
 			String destino = "";
 			if(cmbDestinoItinerario.getSelectedItem().getValue() instanceof Localidad)
 				destino = cmbDestinoItinerario.getText();
-			
+
 			List<DetalleItinerario> lstItinerarios = ServiceLocator.getItinerarioManager().buscarItinerarios(fechaPartida, origen, destino);
 			if(lstItinerarios.size()>0){
 				Listitem item = null;
 				Listcell cell = null;
 				for(DetalleItinerario detalleItinerario : lstItinerarios){
-					//NO MUESTRA LOS ITINERARIOS DE TIPO ESPECIAL. 
+					//NO MUESTRA LOS ITINERARIOS DE TIPO ESPECIAL.
 					if(detalleItinerario.getItinerario().getTipoItinerario().getId().equals(Constantes.ID_TIPITI_REGULAR)){
 						item = new Listitem();
 						cell = new Listcell(detalleItinerario.getItinerario().getServicio().getDenominacion());
@@ -319,16 +319,16 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 						item.appendChild(cell);
 						cell = new Listcell(detalleItinerario.getHoraPartida());
 						item.appendChild(cell);
-						
+
 						/*
-						 * 12/07/2020 
+						 * 12/07/2020
 						 * MAOE
 						 * Codigo para recuperar las tarifas por itinerario
 						 */
-						
-						List<TarifaRegular> lstTarifaRegular = ServiceLocator.getTarifaRegularManager().buscarTarifaPorServicio(1, 
+
+						List<TarifaRegular> lstTarifaRegular = ServiceLocator.getTarifaRegularManager().buscarTarifaPorServicio(1,
 								detalleItinerario.getItinerario().getServicio().getId(),
-								detalleItinerario.getRuta().getId(), fechaPartida, 
+								detalleItinerario.getRuta().getId(), fechaPartida,
 								detalleItinerario.getHoraPartida(), null, null);
 						String strTarifas="";
 						if(lstTarifaRegular.size()>0){
@@ -338,27 +338,27 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 									strTarifas += " / ";
 							}
 							if(lstTarifaRegular.size()>1)
-								strTarifas = strTarifas.substring(0, strTarifas.length()-3);								
+								strTarifas = strTarifas.substring(0, strTarifas.length()-3);
 						}
 						else
 							strTarifas="0.00";
 
 						detalleItinerario.setTarifa(Double.valueOf(strTarifas.substring(0, 2)));
-						
+
 						/*
 						 * 	FINAL RECUPERACION DE TARIFAS
 						 */
-						
+
 //						cell = new Listcell(Util.toNumberFormat(detalleItinerario.getTarifa(), 2));
 						cell = new Listcell(strTarifas);
 						item.appendChild(cell);
-						
+
 						item.setValue(detalleItinerario);
 						lbxItinerarios.appendChild(item);
 					}
 				}
 			}else
-				DlgMessage.information(Messages.getString("WndVentaReserva.information.noItinerariosIda"));			
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noItinerariosIda"));
 		}catch(LocalidadNullException lnex){
 			if(lnex.getOrigenDestino().intValue()==LocalidadNullException.ORIGEN)
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noOrigenSeleccionado"));
@@ -369,15 +369,15 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
-	 * Para limpiar la lista de itinerarios en caso se seleccione otra fecha de partida, y realizamos la busqueda de itinerarios. 
+	 * Para limpiar la lista de itinerarios en caso se seleccione otra fecha de partida, y realizamos la busqueda de itinerarios.
 	 */
 	public void onSelectCalendar(){
 		limpiarDatosItinerario();
 		onBuscarItinerarios();
 	}
-	
+
 	/**
 	 * Realiza la limpieza de las variables globales relacionadas con los itinerarios, mapa de asientos y listbox de itinerarios.
 	 */
@@ -385,7 +385,7 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 		lbxItinerarios.getItems().clear();
 		detalleItinerario = null;
 	}
-	
+
 	/**
 	 * Metodo utilizado cuando el usuario selecciona un itinerario.
 	 */
@@ -400,22 +400,22 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 			ventaFechaAbierta.setFechaLlegada(detalleItinerario.getFechaLlegada());
 			ventaFechaAbierta.setHoraLllegada(detalleItinerario.getHoraLlegada());
 			ventaFechaAbierta.setDetalleItinerario(detalleItinerario);
-//			ventaFechaAbierta.setTarifa(detalleItinerario.getTarifa());			
+//			ventaFechaAbierta.setTarifa(detalleItinerario.getTarifa());
 			btnSiguiente.setDisabled(false);
 		}
 	}
-	
+
 	public void completarVenta(){
 		try{
 			if(detalleItinerario.getTarifa()==0.0)
 				throw new ItinerarioException(ItinerarioException.TARIFA_IDA_CERO);
-			
+
 			/*Valida si la ruta esta configurada para permitir la venta antes o despues de la hora de salida ## impl 28/01/2015 - jabanto*/
 			if (!(UtilData.permiteVentaByTramo(detalleItinerario.getRuta().getId(), detalleItinerario.getItinerario().getId(),Constantes.FORMAT_DATE.format(detalleItinerario.getFechaPartida())))){
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.ventaNoPermitida"));
 				return;
 			}
-			
+
 			divItinerario.setVisible(false);
 			incConfirmacion.setSrc(null);
 			incConfirmacion.setDynamicProperty("objetoConfirmar", ventaFechaAbierta);

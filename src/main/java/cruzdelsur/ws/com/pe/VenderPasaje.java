@@ -10,11 +10,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -29,8 +29,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "codigoTransaccion", "agenciaEmbarqueLlave",
@@ -49,10 +49,10 @@ public class VenderPasaje {
 
 	/**
 	 * Gets the value of the codigoTransaccion property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getCodigoTransaccion() {
 		return codigoTransaccion;
@@ -60,11 +60,11 @@ public class VenderPasaje {
 
 	/**
 	 * Sets the value of the codigoTransaccion property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setCodigoTransaccion(JAXBElement<String> value) {
 		this.codigoTransaccion = (value);
@@ -72,10 +72,10 @@ public class VenderPasaje {
 
 	/**
 	 * Gets the value of the agenciaEmbarqueLlave property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getAgenciaEmbarqueLlave() {
 		return agenciaEmbarqueLlave;
@@ -83,11 +83,11 @@ public class VenderPasaje {
 
 	/**
 	 * Sets the value of the agenciaEmbarqueLlave property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setAgenciaEmbarqueLlave(JAXBElement<String> value) {
 		this.agenciaEmbarqueLlave = (value);
@@ -95,10 +95,10 @@ public class VenderPasaje {
 
 	/**
 	 * Gets the value of the agenciaDesembarqueLlave property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getAgenciaDesembarqueLlave() {
 		return agenciaDesembarqueLlave;
@@ -106,11 +106,11 @@ public class VenderPasaje {
 
 	/**
 	 * Sets the value of the agenciaDesembarqueLlave property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setAgenciaDesembarqueLlave(JAXBElement<String> value) {
 		this.agenciaDesembarqueLlave = (value);
@@ -118,10 +118,10 @@ public class VenderPasaje {
 
 	/**
 	 * Gets the value of the pasajero property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link Pasajero }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<Pasajero> getPasajero() {
 		return pasajero;
@@ -129,11 +129,11 @@ public class VenderPasaje {
 
 	/**
 	 * Sets the value of the pasajero property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link Pasajero }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setPasajero(JAXBElement<Pasajero> value) {
 		this.pasajero = (value);

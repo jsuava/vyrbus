@@ -11,7 +11,7 @@ import com.cystesoft.vyrbus.model.dao.UsuarioArobadorDAO;
 import com.cystesoft.vyrbus.service.business.UsuarioAprobadorManager;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
@@ -92,6 +92,6 @@ public class UsuarioAprobadorManagerImpl implements UsuarioAprobadorManager {
 		// TODO Auto-generated method stub
 		return getUsuarioArobadorDAO().buscarXNivel(nivel);
 	}
-	
+
 
 }

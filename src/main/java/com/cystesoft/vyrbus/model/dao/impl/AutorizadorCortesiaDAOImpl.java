@@ -7,8 +7,8 @@ import java.util.TreeMap;
 import com.cystesoft.vyrbus.model.bean.AutorizadorCortesia;
 import com.cystesoft.vyrbus.model.dao.AutorizadorCortesiaDAO;
 
-/*** 
- 
+/***
+
 * @author JABANTO
  *
  */
@@ -53,7 +53,7 @@ public class AutorizadorCortesiaDAOImpl extends GenericDAOImpl implements Autori
 	public void guardar(AutorizadorCortesia autorizadorCortesia) {
 		// TODO Auto-generated method stub
 		super.save(autorizadorCortesia);
-		
+
 	}
 
 	/*
@@ -64,7 +64,7 @@ public class AutorizadorCortesiaDAOImpl extends GenericDAOImpl implements Autori
 	public void actualizar(AutorizadorCortesia autorizadorCortesia) {
 		// TODO Auto-generated method stub
 		super.update(autorizadorCortesia);
-		
+
 	}
 
 	/*

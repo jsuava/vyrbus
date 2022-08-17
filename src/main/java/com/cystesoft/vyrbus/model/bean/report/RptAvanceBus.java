@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 14/10/2015
  * Hora			: 15:09:34
@@ -17,7 +17,7 @@ import java.io.Serializable;
 public class RptAvanceBus implements Serializable{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private String fechaPartida;
@@ -26,7 +26,7 @@ public class RptAvanceBus implements Serializable{
 	private String ruta;
 	private Integer bus;
 	private Integer tipoRuta;
-	
+
 	/**
 	 * @return the fechaPartida
 	 */
@@ -87,7 +87,7 @@ public class RptAvanceBus implements Serializable{
 	public void setBus(Integer bus) {
 		this.bus = bus;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see java.lang.Object#toString()
@@ -108,5 +108,5 @@ public class RptAvanceBus implements Serializable{
 	public void setTipoRuta(Integer tipoRuta) {
 		this.tipoRuta = tipoRuta;
 	}
-	
+
 }

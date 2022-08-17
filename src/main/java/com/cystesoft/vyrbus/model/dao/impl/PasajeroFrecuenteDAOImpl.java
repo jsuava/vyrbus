@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 31/08/2012
  */
@@ -56,13 +56,13 @@ public class PasajeroFrecuenteDAOImpl extends GenericDAOImpl implements Pasajero
 	@Override
 	public PasajeroFrecuente buscarPaxFree(Long idPasajero, Integer estado)throws Exception{
 		String hql = "FROM PasajeroFrecuente pf WHERE pf.pasajero.id="+idPasajero+" AND pf.estado="+estado;
-		
+
 		log.info(hql);
-		
+
 		PasajeroFrecuente paxfree = (PasajeroFrecuente)getSession().createQuery(hql).uniqueResult();
 		return paxfree;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.PasajeroFrecuenteDAO#buscarPaxFree(java.lang.Long)
@@ -70,13 +70,13 @@ public class PasajeroFrecuenteDAOImpl extends GenericDAOImpl implements Pasajero
 	@Override
 	public PasajeroFrecuente buscarPaxFree(Long idPasajero)throws Exception{
 		String hql = "FROM PasajeroFrecuente pf WHERE pf.pasajero.id="+idPasajero;
-		
+
 		log.info(hql);
-		
+
 		PasajeroFrecuente paxfree = (PasajeroFrecuente)getSession().createQuery(hql).uniqueResult();
 		return paxfree;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.PasajeroFrecuenteDAO#buscarMaxNumTarjeta()
@@ -86,21 +86,21 @@ public class PasajeroFrecuenteDAOImpl extends GenericDAOImpl implements Pasajero
 //		String sql = "SELECT MAX(C_NUMTAR) FROM vrtpaxfree";
 		String sql = "SELECT  PF.C_NUMTAR FROM VRTPAXFREE PF WHERE PF.PAXFRE_ID=(SELECT MAX(PAXFRE_ID)FROM vrtpaxfree) ";
 		log.info(sql);
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
 		PasajeroFrecuente paxfree= new PasajeroFrecuente();
 		String numeroTrajeta=result.get(0).toString();
-		
+
 		Integer pos=numeroTrajeta.indexOf("-");
 		numeroTrajeta=numeroTrajeta.substring(pos+1, numeroTrajeta.length());
 		pos=numeroTrajeta.indexOf("-");
 		numeroTrajeta=numeroTrajeta.substring(pos+1, numeroTrajeta.length());
-		paxfree.setNumeroTarjeta(String.valueOf(Integer.valueOf(numeroTrajeta)+1));	
-		
+		paxfree.setNumeroTarjeta(String.valueOf(Integer.valueOf(numeroTrajeta)+1));
+
 		return paxfree;
-	} 
-	
-		
+	}
+
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.PasajeroFrecuenteDAO#buscarPuntos(java.lang.Long)
@@ -111,10 +111,10 @@ public class PasajeroFrecuenteDAOImpl extends GenericDAOImpl implements Pasajero
 		String hql = "FROM PasajeroFrecuente pf WHERE pf.pasajero.estadoRegistro='A' AND pf.pasajero.id="+idPasajero; //Constantes.TRUE_VALUE;
 		if(estado!=null)
 			hql+=" AND estado="+estado;
-		
+
 		log.info(hql);
 		PasajeroFrecuente paxfree = (PasajeroFrecuente)getSession().createQuery(hql).uniqueResult();
-		
+
 		/* Busca puntos del paxfree */
 		if(paxfree!=null){
 			String sql="SELECT SUM(Acumulados)Acumulados "+
@@ -123,9 +123,9 @@ public class PasajeroFrecuenteDAOImpl extends GenericDAOImpl implements Pasajero
 						"FROM( "+
 						    "SELECT CASE WHEN pp.d_feccan IS NOT NULL THEN SUM(pp.n_punacu)ELSE 0 END  AS Utilizados "+
 						          ",DECODE(pp.d_feccan,NULL,(DECODE(pp.d_fecanu, NULL,SUM(pp.n_punacu))),0 ) AS Saldo "+
-						          ",DECODE(pp.d_fecanu,NULL,SUM(pp.n_punacu),0) AS Acumulados "+                                                                                                                          
+						          ",DECODE(pp.d_fecanu,NULL,SUM(pp.n_punacu),0) AS Acumulados "+
 						    "FROM vrtpunpaxfre pp "+
-						    "WHERE pp.paxfre_id="+paxfree.getId()+" AND pp.c_estReg='A' "+ 
+						    "WHERE pp.paxfre_id="+paxfree.getId()+" AND pp.c_estReg='A' "+
 						      "AND pp.d_feccad >='"+Constantes.FORMAT_DATE.format(new Date())+"' "+
 						    "GROUP BY pp.d_feccan, pp.d_fecanu "+
 						    ")Pts";
@@ -147,7 +147,7 @@ public class PasajeroFrecuenteDAOImpl extends GenericDAOImpl implements Pasajero
 		}
 		return paxfree;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.PasajeroFrecuenteDAO#buscarPaxfreeXNumeroDocumento(java.lang.String)
@@ -158,16 +158,16 @@ public class PasajeroFrecuenteDAOImpl extends GenericDAOImpl implements Pasajero
 					"FROM vrtpaxfree pf "+
 					"INNER JOIN vrmpasajero  p ON (p.pasajero_id=pf.pasajero_id) "+
 					"WHERE p.c_numdoc='"+numeroDocumento+"' AND p.c_estreg='A'";
-		
+
 		log.info(sql);
-		
+
 		List<?>result= getSession().createSQLQuery(sql).list();
 		PasajeroFrecuente pasajeroFrecuente= null;
 		if(result.size()>0){
 			Object[] obj = (Object[])result.get(0);
 			pasajeroFrecuente= new PasajeroFrecuente();
 			Pasajero pasajero= new Pasajero();
-			
+
 			pasajero.setNombresApellidos(obj[1].toString());
 			pasajero.setId(((BigDecimal)obj[3]).longValue());
 			pasajeroFrecuente.setId(((BigDecimal)obj[0]).longValue());
@@ -175,7 +175,7 @@ public class PasajeroFrecuenteDAOImpl extends GenericDAOImpl implements Pasajero
 			pasajeroFrecuente.setEstado(((BigDecimal)obj[4]).intValue());
 			pasajeroFrecuente.setPasajero(pasajero);
 		}
-		
+
 		return pasajeroFrecuente;
 	}
 }

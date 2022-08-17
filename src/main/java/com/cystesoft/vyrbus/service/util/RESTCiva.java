@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 01/09/2016
  * Hora			: 09:38:47
@@ -66,24 +66,24 @@ import com.mashape.unirest.http.Unirest;
 @SuppressWarnings("deprecation")
 public class RESTCiva implements Serializable{
 	//-->Desarrollo
-//	private static String URI_API="http://www.excluciva.pe/apiciva/dev/"; 
+//	private static String URI_API="http://www.excluciva.pe/apiciva/dev/";
 //	private static String API_KEY="/apikey/a526cc6013c9db58092a77bcf2a96cc462936e16";
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	//-->Produccion
-	private static String URI_API="http://www.excluciva.pe/apiciva/"; 
+	private static String URI_API="http://www.excluciva.pe/apiciva/";
 	private static String API_KEY="/apikey/a526cc6013c9db58092a77bcf2a96cc462936e16";
 	private static String URI_DNI="https://dniruc.apisperu.com/api/v1/dni/";
 	private static String URI_RUC="https://dniruc.apisperu.com/api/v1/ruc/";
 	private static String TOKEN_DOCIDE="?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im9zY2NvZW1AZ21haWwuY29tIn0.W8wDh8URSCh8lbT-z_cQSQ_yQwMIA_QV00TejXvBIHg";
-	
+
 	private static Integer ID_SERVICIO_EXCLUCIVA=4;
 	private static Integer ID_SERVICIO_SUPERCIVA=6;
 	private static Integer ID_SERVICIO_ECONOCIVA=2;
-	
+
 	/**
 	 * Realiza el llamado a la APPI, a traves del metodo POST
 	 * @param metod: Nombre del metodo a ejecutar
@@ -99,10 +99,10 @@ public class RESTCiva implements Serializable{
 				  .header("content-type", "application/x-www-form-urlencoded")
 				  .body(parametros)
 				  .asJson();
-		
+
 		return response;
 	}
-	
+
 	private static HttpResponse<JsonNode> getPOST_REST_DNI(String dni, String parametros)throws Exception{
 //		Unirest.setProxy(new HttpHost("192.168.50.1", 8080));
 		HttpResponse<JsonNode> response = Unirest.get(URI_DNI+parametros+TOKEN_DOCIDE)
@@ -111,10 +111,10 @@ public class RESTCiva implements Serializable{
 				  .header("content-type", "application/x-www-form-urlencoded")
 //				  .body(parametros)
 				  .asJson();
-		
+
 		return response;
 	}
-	
+
 	private static HttpResponse<JsonNode> getPOST_REST_RUC(String ruc, String parametros)throws Exception{
 //		Unirest.setProxy(new HttpHost("192.168.50.1", 8080));
 		System.out.println(URI_RUC+parametros+TOKEN_DOCIDE);
@@ -124,10 +124,10 @@ public class RESTCiva implements Serializable{
 				  .header("content-type", "application/x-www-form-urlencoded")
 //				  .body(parametros)
 				  .asJson();
-		
+
 		return response;
-	}	
-	
+	}
+
 	public static List<String> getDatosDni(String dni)throws Exception{
 		try{
 		List<String>result = new ArrayList<>();
@@ -136,8 +136,8 @@ public class RESTCiva implements Serializable{
 			JSONArray jsonArray=response.getBody().getArray();
 			for (int i = 0; i < jsonArray.length(); i++) {
 			    JSONObject jsonobject = jsonArray.getJSONObject(i);
-			    
-			    
+
+
 			    result.add(jsonobject.getString("dni"));
 			    result.add(jsonobject.getString("nombres"));
 			    result.add(jsonobject.getString("apellidoPaterno"));
@@ -145,8 +145,8 @@ public class RESTCiva implements Serializable{
 //			    result.add(String.valueOf(jsonobject.getInt("codVerifica")));
 
 			}
-		}		
-		
+		}
+
 		return result;
 		}catch(Exception e){
 			e.printStackTrace();
@@ -156,7 +156,7 @@ public class RESTCiva implements Serializable{
 			return null;
 		}
 	}
-	
+
 	public static List<String> getDatosRuc(String ruc)throws Exception{
 		try{
 		List<String>result = new ArrayList<>();
@@ -165,13 +165,13 @@ public class RESTCiva implements Serializable{
 			JSONArray jsonArray=response.getBody().getArray();
 			for (int i = 0; i < jsonArray.length(); i++) {
 			    JSONObject jsonobject = jsonArray.getJSONObject(i);
-			    
+
 			    result.add(jsonobject.getString("ruc"));
 			    result.add(jsonobject.getString("razonSocial"));
 			    result.add(jsonobject.getString("direccion"));
 			}
-		}		
-		
+		}
+
 		return result;
 		}catch(Exception e){
 			e.printStackTrace();
@@ -181,9 +181,9 @@ public class RESTCiva implements Serializable{
 			return null;
 		}
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Realiza el llamado a la APPI, a traves del metodo POST
 	 * @param metod: Nombre del metodo a ejecutar
@@ -201,7 +201,7 @@ public class RESTCiva implements Serializable{
 
 		return response;
 	}
-	
+
 	/**
 	 * Realiza la busqueda de los itinerarios programados
 	 * @param fechaProgramacion	: Fecha de programacion o de viaje
@@ -212,11 +212,11 @@ public class RESTCiva implements Serializable{
 	 */
 	public static List<DetalleItinerario> getItienrarios(String fechaProgramacion, Integer localidad_IDOrigen, Integer localidad_IDDestino)throws Exception{
 		try {
-			
+
 			List<DetalleItinerario>result= new ArrayList<>();
 			PoolLocalidad localidadDestinoPool=null;
 			String origenId=null;
-			
+
 			/*Consulta si es una ruta compartida con Cruz del sur*/
 			List<PoolLocalidad>poolLocalidad=ServiceLocator.getPoolLocalidadManager().buscarByLocalidadID(localidad_IDOrigen);
 			if(poolLocalidad.size()>0){
@@ -239,18 +239,18 @@ public class RESTCiva implements Serializable{
 				}
 			}
 			if(origenId!=null && localidadDestinoPool!=null){
-				DateFormat FORMAT_DATE=new SimpleDateFormat ("yyyyMMdd");;
+				DateFormat FORMAT_DATE=new SimpleDateFormat ("yyyyMMdd");
 				Date date=Constantes.FORMAT_DATE.parse(fechaProgramacion);
 				String parametros="Fecha="+(FORMAT_DATE.format(date))+ "&"
 								+ "IdOrigen="+origenId+"&"
 								+ "IdDestino="+localidadDestinoPool.getLocalidadDestinoPoolID();
 				HttpResponse<JsonNode> response=getPOST_REST("itinerarios", parametros);
-				
+
 				if(response.getStatus()==200 && response.getBody().isArray()){//OK
 					JSONArray jsonArray=response.getBody().getArray();
 					for (int i = 0; i < jsonArray.length(); i++) {
 					    JSONObject jsonobject = jsonArray.getJSONObject(i);
-					    
+
 					    ObjectCiva objectCiva=new ObjectCiva();
 					    objectCiva.setIdBus(jsonobject.getInt("IdBus"));
 					    objectCiva.setTipoServicio(jsonobject.getString("TipoServicio"));
@@ -302,7 +302,7 @@ public class RESTCiva implements Serializable{
 					    objectCiva.setIdOrigen(jsonobject.getInt("IdOrigen"));
 					    objectCiva.setIdDestino(jsonobject.getInt("IdDestino"));
 					    objectCiva.setIdServicio(jsonobject.getInt("IdServicio"));
-					    
+
 					    DetalleItinerario detalleItinerario=new DetalleItinerario();
 						Agencia agenciaPartida= new Agencia();
 						agenciaPartida.setNombreCorto(objectCiva.getDireccionEmbarque());
@@ -314,7 +314,7 @@ public class RESTCiva implements Serializable{
 						itinerario.setOperadoPor(Constantes.OPERADO_CIVA);
 						TipoItinerario tipoItinerario= new TipoItinerario();
 						tipoItinerario.setId(Constantes.ID_TIPITI_REGULAR);
-						itinerario.setTipoItinerario(tipoItinerario); 
+						itinerario.setTipoItinerario(tipoItinerario);
 						detalleItinerario.setItinerario(itinerario);
 						Ruta ruta= new Ruta();
 //						String[] sruta=objectCiva.getRutaBus().split("-");
@@ -326,15 +326,15 @@ public class RESTCiva implements Serializable{
 						detalleItinerario.setFechaPartida(Constantes.FORMAT_DATE.parse(fechaProgramacion));
 						detalleItinerario.setTarifa(objectCiva.getPrecioPiso1());
 						detalleItinerario.setTarifaSegundoPiso(objectCiva.getPrecioPiso2());
-						
+
 						detalleItinerario.setPoolLocalidad(localidadDestinoPool);
 						detalleItinerario.setObjectCiva(objectCiva);
 						result.add(detalleItinerario);
 					}
 				}
 			}
-			
-			
+
+
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -342,7 +342,7 @@ public class RESTCiva implements Serializable{
 			return new ArrayList<>();
 		}
 	}
-	
+
 	/**
 	 * Realiza la creacion del mapa del Bus
 	 * @param grpbxParent	: Object groupbox en cual contiene el mapa
@@ -350,25 +350,25 @@ public class RESTCiva implements Serializable{
 	 * @param gridOcupabilidad	: Object Grid para mostrar la ocupabilidad
 	 * @throws Exception
 	 */
-	
+
 	public static void crearEstructura(Groupbox grpbxParent, DetalleItinerario detalleItinerario, Grid gridOcupabilidad, Agencia agencia, Usuario usuario)throws Exception{
 		inicializarEstructura(grpbxParent);
 		try {
 			ObjectCiva objectCiva=detalleItinerario.getObjectCiva();
-			
+
 			Image imagen = generarImagen("/resources/mapa/bus_primerPiso.png", 247, 35);
 			Div divPiso1=new Div();
 			divPiso1.appendChild(imagen);
 
-			String parametros="IdBus="+objectCiva.getIdBus()+ "&" + "IdEscala="+objectCiva.getIdEscala();	
+			String parametros="IdBus="+objectCiva.getIdBus()+ "&" + "IdEscala="+objectCiva.getIdEscala();
 			HttpResponse<JsonNode> response=getPOST_REST("bus", parametros);
-			
+
 			Grid gridPiso1= new Grid();
 			gridPiso1.setStyle("border:none;");
 			gridPiso1.setWidth("245px");
 			//columns
 			Columns columns= new Columns();
-			Column column= new Column("","","10px");			
+			Column column= new Column("","","10px");
 			columns.appendChild(column);
 			column= new Column("","","50px");//Columna 1
 			column.setAlign("center");
@@ -386,7 +386,7 @@ public class RESTCiva implements Serializable{
 			//rows
 			Rows rows= new Rows();
 			Row row=null;
-			
+
 			if(response.getStatus()==200){ //OK
 				JSONArray jsonArray=response.getBody().getArray();
 				for (int i = 0; i < jsonArray.length(); i++) {
@@ -401,19 +401,19 @@ public class RESTCiva implements Serializable{
 				    }else if (objectCiva.getIdServicio().intValue()==ID_SERVICIO_SUPERCIVA){
 				    	/*Carga mapa del piso 1*/
 //					    JSONObject asientosPiso = jsonobject.getJSONObject("AsientosPiso1");
-				    	
-					    
+
+
 					    /*Carga mapa del piso 2*/
 //					    asientosPiso = jsonobject.getJSONObject("AsientosPiso2");
-					    
+
 				    }else if (objectCiva.getIdServicio().intValue()==ID_SERVICIO_ECONOCIVA){
 				    	/*Carga mapa del piso 1*/
 //					    JSONObject asientosPiso = jsonobject.getJSONObject("AsientosPiso1");
-					    
-					    
+
+
 				    }
 				}
-				
+
 				row= new Row();
 				row.setSpans("5");
 				row.setStyle("background:#99D9EA");
@@ -421,25 +421,25 @@ public class RESTCiva implements Serializable{
 				separator.setHeight("30px");
 				row.appendChild(separator);
 				rows.appendChild(row);
-				
+
 				gridPiso1.appendChild(rows);
 				grpbxParent.appendChild(divPiso1);
 				grpbxParent.appendChild(gridPiso1);
 			}
-			
-			
+
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error("Error al consultar la ocupabilidad \n"+e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Carga el mapa de asientos del Servicio Excluciva
 	 * @param asientosPiso	: instancia del object JSONObject
 	 * @param objectCiva	: instancia del Object objectCiva
 	 * @param rows	: Rows del Grid
-	 * @param isPiso2 : true=Piso2; false=Piso1 
+	 * @param isPiso2 : true=Piso2; false=Piso1
 	 * @throws Exception
 	 */
 	private static void loadMapa_Excluciva(JSONObject asientosPiso,ObjectCiva objectCiva,Rows rows, boolean isPiso2,Agencia agencia, Usuario usuario)throws Exception{
@@ -456,7 +456,7 @@ public class RESTCiva implements Serializable{
 		Row row=null;
 		int columnasXpiso=3;
 		int columna = 0, asientosPiso1=12;
-		
+
 		for(int x=0;x<asientosPiso.length();x++){
 			int x_asiento=0;
 			if(isPiso2)
@@ -489,7 +489,7 @@ public class RESTCiva implements Serializable{
 	    			columna=1;
 		    		row= new Row();
 		    		row.setStyle("background:#99D9EA");
-		    		row.appendChild(new Separator());	
+		    		row.appendChild(new Separator());
 	    		}
 	    	}else if(columna>columnasXpiso){
 	    		columna=1;
@@ -503,20 +503,20 @@ public class RESTCiva implements Serializable{
 	    		styleAsiento+="cursor:pointer;";
 	    		Label label= new Label((String.valueOf(numeroAsiento).toString().length()==1?"0"+String.valueOf(numeroAsiento).toString():String.valueOf(numeroAsiento).toString()));
 	    		String styleLabel="cursor:pointer;font-size:12px !important;color:black;";
-				label.setStyle(styleLabel);	
+				label.setStyle(styleLabel);
 				asiento.setNumeroAsiento(label.getValue());
 				asiento.appendChild(label);
 				asiento.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 					@Override
 					public void onEvent(Event event) throws Exception {
 						try {
-							
+
 							onClickAsiento(event);
-							
+
 						} catch (Exception e) {
 							e.printStackTrace();
 							DlgMessage.error(e.getMessage());
-						}															
+						}
 					}
 				});
 	    	}else{
@@ -528,23 +528,23 @@ public class RESTCiva implements Serializable{
 	    	rows.appendChild(row);
 	    }
 	}
-	
-	
+
+
 	/**
 	 * cuando el Usuario Bloquea/Desbloquea un asiento
-	 * @param e : Event 
+	 * @param e : Event
 	 * @throws Exception
 	 */
 	private static void onClickAsiento(Event e)throws Exception{
 		AsientoPool asiento= (AsientoPool) e.getTarget();
 		Listbox listAsientos=asiento.getObjectCiva().getListAsientos();
 		Button btnNextTabVenta=asiento.getObjectCiva().getBtnNextTabVenta();
-		
+
 		if(asiento.getDisponible().intValue()==Constantes.ASIENTO_DISPONIBLE){
 			/*Desbloquea el asiento*/
-			String parametros="IdAsiento="+asiento.getAsientoID().toString();	
+			String parametros="IdAsiento="+asiento.getAsientoID().toString();
 			HttpResponse<JsonNode> response=getPOST_REST("bus-reservar-asiento", parametros);
-			if(response.getStatus()==200){ //Ok				
+			if(response.getStatus()==200){ //Ok
 				JSONArray jsonArray= response.getBody().getArray();
 				JSONObject jsonObject=jsonArray.getJSONObject(0);
 				//Agregando el menu
@@ -569,10 +569,10 @@ public class RESTCiva implements Serializable{
 						break;
 					}
 				}
-				
+
 				Image imagen=generarImagen(AsientoPool.imagenBloqueado, null, 18);
 				asiento.appendChild(imagen);
-				
+
 				/*Agrega el asiento seleccionado a la lista de asientos seleccionados*/
 				Listitem listitemAsientos = new Listitem();
 				Listcell cell = new Listcell(asiento.getObjectCiva().getRutaBus().toUpperCase());
@@ -581,14 +581,14 @@ public class RESTCiva implements Serializable{
 				listitemAsientos.setValue(asiento);
 				listitemAsientos.appendChild(cell);
 				listAsientos.appendChild(listitemAsientos);
-				
+
 				/*Registra el bloqueo del asiento*/
 				registrarBloqueoAsiento(asiento);
 			}else{
 				DlgMessage.information(response.getBody().toString());
 			}
 		}else if (asiento.getDisponible().intValue()==Constantes.ASIENTO_BLOQUEADO){
-			/*Desbloquea el asiento*/	
+			/*Desbloquea el asiento*/
 			HttpResponse<JsonNode> response=desbloquearAsiento(asiento);
 			if(response.getStatus()==200){ //Ok
 				//Elimina el asiento del listbox
@@ -600,19 +600,19 @@ public class RESTCiva implements Serializable{
 						break;
 					}
 				}
-				
+
 			}else{
 				DlgMessage.information(response.getBody().toString());
 			}
 		}
-		
+
 		/*	Habilita o deshablita el boton para pasar a la siguiente pestana	*/
 		if(listAsientos.getItems().size()==0)
 			btnNextTabVenta.setDisabled(true);
 		else
 			btnNextTabVenta.setDisabled(false);
 	}
-		
+
 	/**
 	 * Desbloquea un asiento
 	 * @param asiento : Objeto asientoPool
@@ -620,18 +620,18 @@ public class RESTCiva implements Serializable{
 	 * @throws Exception
 	 */
 	public static HttpResponse<JsonNode> desbloquearAsiento(AsientoPool asiento)throws Exception{
-		String parametros="IdAsiento="+asiento.getAsientoID()+"&"+"IdReserva="+asiento.getObjectCiva().getReservaID().toString();	
+		String parametros="IdAsiento="+asiento.getAsientoID()+"&"+"IdReserva="+asiento.getObjectCiva().getReservaID().toString();
 		HttpResponse<JsonNode> response=getPOST_REST("bus-eliminar-reserva", parametros);
 		if(response.getStatus()==200){ //Ok
 			/*Elimina el asiento registrado como bloqueado*/
 			eliminarBloqueoAsiento(asiento.getObjectCiva().getReservaID().toString());
-			
+
 			asiento.setDisponible(Constantes.FALSE_VALUE); //Coloca el estado nuevamente como Disponible
 			asiento.getObjectCiva().setReservaID(null);
 			asiento.getObjectCiva().setReservaFechaExpirarion(null);
 		    asiento.getObjectCiva().setMenus(null);
 		    asiento.getObjectCiva().setPrecioAsiento(null);
-		    
+
 		    Component componentImage=null;
 			for(Component component : asiento.getChildren()){
 				if(component instanceof Label && ((Label)component).getValue().equals(asiento.getNumeroAsiento())){
@@ -644,10 +644,10 @@ public class RESTCiva implements Serializable{
 			if(componentImage!=null)
 				asiento.removeChild(componentImage);
 		}
-		
+
 		return response;
 	}
-	
+
 	/***
 	 * Desbloquea todos los asientos bloqueados
 	 * @param listAsientos : Listbox con los asientos bloqueados
@@ -658,11 +658,11 @@ public class RESTCiva implements Serializable{
 			AsientoPool asiento=item.getValue();
 			desbloquearAsiento(asiento);
 		}
-		
+
 		Util.limpiarListbox(listAsientos);
 	}
-	
-	
+
+
 	/**
 	 * Inicializa(limpia los objetos existentes) el contenedor de los asientos.
 	 */
@@ -689,7 +689,7 @@ public class RESTCiva implements Serializable{
 			imagen.setHeight(String.valueOf(height)+"px");
 		return imagen;
 	}
-	
+
 	public static void registrarBloqueoAsiento(AsientoPool asiento)throws Exception{
 		OcupacionAsientosBloqueadosPool bloqueadosPool= new OcupacionAsientosBloqueadosPool();
 		bloqueadosPool.setAgencia(asiento.getAgencia());
@@ -705,28 +705,28 @@ public class RESTCiva implements Serializable{
 		UtilData.auditarRegistro(bloqueadosPool, asiento.getUsuario(), Executions.getCurrent());
 		ServiceLocator.getOcupacionAsientosBloqueadosPoolManager().guardar(bloqueadosPool);
 	}
-	
-	
+
+
 	public static void eliminarBloqueoAsiento(String codigoTransaccion)throws Exception{
 		ServiceLocator.getOcupacionAsientosBloqueadosPoolManager().delete(codigoTransaccion);
 	}
-	
-	
+
+
 	public static void actualizarNumeroComprobante(String numeroPedido, String numeroBoletoEnviado, String nuevoNumeroBoleto)throws Exception{
 		try {
-			String parametros="NumeroPedido="+numeroPedido+"&NumeroBoleto="+numeroBoletoEnviado+"&NuevoBoleto"+nuevoNumeroBoleto;	
+			String parametros="NumeroPedido="+numeroPedido+"&NumeroBoleto="+numeroBoletoEnviado+"&NuevoBoleto"+nuevoNumeroBoleto;
 			HttpResponse<JsonNode> response=getPOST_REST("actualizar-boleto", parametros);
 			if(response.getStatus()==200){ //Ok
-				
+
 			}else{
-				
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 	public static String enviarVenta(Pasajero pasajero, Cliente cliente, Long idReserva, String idMenu, String numeroBoleto)throws Exception{
 		String numeroPedido=null;
 		String tipoDocumento=null;
@@ -765,7 +765,7 @@ public class RESTCiva implements Serializable{
 		if(direccion!=null)
 			parametros+=",\"Direccion\":{\"1\":\""+direccion+"\"}";
 		parametros+=",\"NumeroBoleto\":{\"1\":\""+numeroBoleto+"\"}";
-		parametros+="}";		
+		parametros+="}";
 		HttpResponse<JsonNode> response=getPOST_REST("confirmar-venta", parametros);
 //		Log.info("responseStatus : " + response.getStatus());
 		if(response.getStatus()==200){ //Ok
@@ -782,10 +782,10 @@ public class RESTCiva implements Serializable{
 		}else{
 			throw new Exception(response.getBody().toString());
 		}
-		
+
 		return numeroPedido;
 	}
-	
+
 	/**
 	 * Realiza la anulacion del Boleto
 	 * @param numeroBoleto	: numero de Boleto - Tepsa a anular

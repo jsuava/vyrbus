@@ -5,7 +5,7 @@ import com.cystesoft.vyrbus.model.bean.Transbordo;
 
 
 /**
- * 
+ *
  * @author José Abanto
  *
  */

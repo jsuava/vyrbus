@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 04/05/2012
  */
@@ -69,7 +69,7 @@ public class PersonalDAOImpl extends GenericDAOImpl implements PersonalDAO {
 	public void inactivar(Long id) {
 		super.inactivate(Personal.class, id);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.PersonalDAO#buscarMailsXRols(java.lang.String)
@@ -83,17 +83,17 @@ public class PersonalDAOImpl extends GenericDAOImpl implements PersonalDAO {
 					"WHERE ur.rol_id IN ("+iDsRol+") "+
 					      "AND u.c_estreg='A' AND ur.c_estreg='A' AND p.c_estreg='A'";
 		log.info(sql);
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
 		String mails="";
-		for(int i=0; i<result.size(); i++){
-			Object[] obj = (Object[])result.get(i);
+		for (Object element : result) {
+			Object[] obj = (Object[])element;
 			if(mails.length()==0)
 				mails=obj[0].toString();
 			else mails+=","+obj[0].toString();
 		}
 		return mails;
 	}
-	
-	
+
+
 }

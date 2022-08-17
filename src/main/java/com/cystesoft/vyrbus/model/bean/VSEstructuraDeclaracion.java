@@ -4,16 +4,16 @@ package com.cystesoft.vyrbus.model.bean;
 
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 public class VSEstructuraDeclaracion extends GenericBean  implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
-	
-    // Fields    
+
+    // Fields
 	private Long id;
-     private VSMoneda vsMoneda; 
+     private VSMoneda vsMoneda;
      private VSTipoRegistro  vsTipoRegistro;
      private VSTipoProceso vsTipoProceso;
      private VSEncabezadoAfiliacion vsEncabezadoAfiliacion;
@@ -44,7 +44,7 @@ public class VSEstructuraDeclaracion extends GenericBean  implements java.io.Ser
     public Long getId() {
         return this.id;
     }
-    
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -52,7 +52,7 @@ public class VSEstructuraDeclaracion extends GenericBean  implements java.io.Ser
     public String getFechaProceso() {
         return this.fechaProceso;
     }
-    
+
     public void setFechaProceso(String fechaProceso) {
         this.fechaProceso = fechaProceso;
     }
@@ -60,7 +60,7 @@ public class VSEstructuraDeclaracion extends GenericBean  implements java.io.Ser
     public String getCodigoSucursal() {
         return this.codigoSucursal;
     }
-    
+
     public void setCodigoSucursal(String codigoSucursal) {
         this.codigoSucursal = codigoSucursal;
     }
@@ -68,7 +68,7 @@ public class VSEstructuraDeclaracion extends GenericBean  implements java.io.Ser
     public String getCodigoVendedor() {
         return this.codigoVendedor;
     }
-    
+
     public void setCodigoVendedor(String codigoVendedor) {
         this.codigoVendedor = codigoVendedor;
     }
@@ -76,7 +76,7 @@ public class VSEstructuraDeclaracion extends GenericBean  implements java.io.Ser
     public Long getNumeroDeclaracion() {
         return this.numeroDeclaracion;
     }
-    
+
     public void setNumeroDeclaracion(Long numeroDeclaracion) {
         this.numeroDeclaracion = numeroDeclaracion;
     }
@@ -84,7 +84,7 @@ public class VSEstructuraDeclaracion extends GenericBean  implements java.io.Ser
     public String getFechaVigenciaInicial() {
         return this.fechaVigenciaInicial;
     }
-    
+
     public void setFechaVigenciaInicial(String fechaVigenciaInicial) {
         this.fechaVigenciaInicial = fechaVigenciaInicial;
     }
@@ -92,7 +92,7 @@ public class VSEstructuraDeclaracion extends GenericBean  implements java.io.Ser
     public String getFechaVigenciaFinal() {
         return this.fechaVigenciaFinal;
     }
-    
+
     public void setFechaVigenciaFinal(String fechaVigenciaFinal) {
         this.fechaVigenciaFinal = fechaVigenciaFinal;
     }
@@ -100,7 +100,7 @@ public class VSEstructuraDeclaracion extends GenericBean  implements java.io.Ser
     public String getFormaPago() {
         return this.formaPago;
     }
-    
+
     public void setFormaPago(String formaPago) {
         this.formaPago = formaPago;
     }
@@ -108,7 +108,7 @@ public class VSEstructuraDeclaracion extends GenericBean  implements java.io.Ser
     public String getCodigoPlan() {
         return this.codigoPlan;
     }
-    
+
     public void setCodigoPlan(String codigoPlan) {
         this.codigoPlan = codigoPlan;
     }
@@ -116,7 +116,7 @@ public class VSEstructuraDeclaracion extends GenericBean  implements java.io.Ser
     public String getFechaTipoCambio() {
         return this.fechaTipoCambio;
     }
-    
+
     public void setFechaTipoCambio(String fechaTipoCambio) {
         this.fechaTipoCambio = fechaTipoCambio;
     }
@@ -124,7 +124,7 @@ public class VSEstructuraDeclaracion extends GenericBean  implements java.io.Ser
     public String getMontoPrimaAnualNeta() {
         return this.montoPrimaAnualNeta;
     }
-    
+
     public void setMontoPrimaAnualNeta(String montoPrimaAnualNeta) {
         this.montoPrimaAnualNeta = montoPrimaAnualNeta;
     }
@@ -132,7 +132,7 @@ public class VSEstructuraDeclaracion extends GenericBean  implements java.io.Ser
     public String getMontoPrimaAnualBruta() {
         return this.montoPrimaAnualBruta;
     }
-    
+
     public void setMontoPrimaAnualBruta(String montoPrimaAnualBruta) {
         this.montoPrimaAnualBruta = montoPrimaAnualBruta;
     }
@@ -140,7 +140,7 @@ public class VSEstructuraDeclaracion extends GenericBean  implements java.io.Ser
     public String getMontoPrimaMensual() {
         return this.montoPrimaMensual;
     }
-    
+
     public void setMontoPrimaMensual(String montoPrimaMensual) {
         this.montoPrimaMensual = montoPrimaMensual;
     }
@@ -148,7 +148,7 @@ public class VSEstructuraDeclaracion extends GenericBean  implements java.io.Ser
     public String getMotivo() {
         return this.motivo;
     }
-    
+
     public void setMotivo(String motivo) {
         this.motivo = motivo;
     }
@@ -156,7 +156,7 @@ public class VSEstructuraDeclaracion extends GenericBean  implements java.io.Ser
     public String getNumeroCertificado() {
         return this.numeroCertificado;
     }
-    
+
     public void setNumeroCertificado(String numeroCertificado) {
         this.numeroCertificado = numeroCertificado;
     }

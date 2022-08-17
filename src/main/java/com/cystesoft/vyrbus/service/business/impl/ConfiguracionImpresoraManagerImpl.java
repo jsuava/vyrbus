@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 21/05/2015
  * Hora			: 15:40:20
@@ -69,8 +69,8 @@ public class ConfiguracionImpresoraManagerImpl implements ConfiguracionImpresora
 			configuracionImpresora2.setIpModificacion(configuracionImpresora.getIpInsercion());
 			actualizar(configuracionImpresora2);
 		}
-		
-		
+
+
 		getConfiguracionImpresoraDAO().guardar(configuracionImpresora);
 	}
 

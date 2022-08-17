@@ -28,7 +28,6 @@ import com.cystesoft.vyrbus.model.dao.ItinerarioDAO;
 import com.cystesoft.vyrbus.service.business.ItinerarioManager;
 import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.Util;
-import com.cystesoft.vyrbus.service.util.UtilData;
 
 /**
  * @author Jose
@@ -38,7 +37,7 @@ public class ItinerarioManagerImpl implements ItinerarioManager {
 	private ItinerarioDAO itinerarioDAO;
 	private ItinerarioAgenciaPartidaDAO itinerarioAgenciaPartidaDAO;
 	private ItinerarioAgenciaLlegadaDAO itinerarioAgenciaLlegadaDAO;
-	
+
 	/**
 	 * @return the itinerarioDAO
 	 */
@@ -83,9 +82,9 @@ public class ItinerarioManagerImpl implements ItinerarioManager {
 	public List<DetalleItinerario> buscarItinerarios(String fechaPartida, String origen, String destino) throws Exception {
 		return getItinerarioDAO().buscarItinerarios(fechaPartida, origen, destino);
 	}
-	
+
 	@Override
-	public List<DetalleItinerario> buscarItinerariosMantenimiento(Long idItinerario, String origen, String destino,String fechaInicio, String fechaFinal, 
+	public List<DetalleItinerario> buscarItinerariosMantenimiento(Long idItinerario, String origen, String destino,String fechaInicio, String fechaFinal,
 			String Servicio,String tipoDeItinerario, String criterioOrden)throws Exception {
 		return getItinerarioDAO().buscarItinerariosMantenimiento(idItinerario, origen, destino, fechaInicio, fechaFinal, Servicio,tipoDeItinerario, criterioOrden);
 	}
@@ -111,7 +110,7 @@ public class ItinerarioManagerImpl implements ItinerarioManager {
 	public ArrayList<ItinerarioAgenciaLlegada> buscarAgenciasLlegada(Long idItinerario, String estado, Integer idLocalidad) throws Exception {
 		return getItinerarioDAO().buscarAgenciasLlegada(idItinerario, estado, idLocalidad);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.ItinerarioManager#guardar(com.tepsa.sisvyr.model.bean.Itinerario)
@@ -122,14 +121,14 @@ public class ItinerarioManagerImpl implements ItinerarioManager {
 		int result = Constantes.FAILURE;
 		try{
 			getItinerarioDAO().save(itinerario);
-			
+
 			result = Constantes.CORRECT;
 		}catch(Exception ex){
 			throw new Exception(ex);
 		}
 		return result;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.ItinerarioManager#actualizar(com.tepsa.sisvyr.model.bean.Itinerario)
@@ -139,7 +138,7 @@ public class ItinerarioManagerImpl implements ItinerarioManager {
 	public void actualizar(Itinerario itinerario) throws Exception {
 		getItinerarioDAO().update(itinerario);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.ItinerarioManager#inactivar(java.lang.Long, java.lang.Integer)
@@ -149,7 +148,7 @@ public class ItinerarioManagerImpl implements ItinerarioManager {
 	public void inactivar(Long id, Integer idUsuario) throws Exception {
 		getItinerarioDAO().inactivar(id,idUsuario);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.ItinerarioManager#buscarPorX(java.util.TreeMap, java.util.List)
@@ -158,18 +157,18 @@ public class ItinerarioManagerImpl implements ItinerarioManager {
 	public ArrayList<Itinerario> buscarPorX(TreeMap<String, Object> criteriosBusqueda,List<String> criteriosOrdenar) {
 		return getItinerarioDAO().buscarPorX(criteriosBusqueda, criteriosOrdenar);
 	}
-	
+
 	@Override
 	public Itinerario buscarPorId(Long id) {
 		return getItinerarioDAO().buscarPorId(id);
 	}
-	
+
 //	@Override
 //	public Calendar fechaServer() {
-//		return getItinerarioDAO().fechaServer(); 
+//		return getItinerarioDAO().fechaServer();
 //	}
-	
-	
+
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.ItinerarioManager#validadIngresoTramos(java.lang.Integer, java.lang.Integer, java.lang.Integer, java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer)
@@ -177,11 +176,11 @@ public class ItinerarioManagerImpl implements ItinerarioManager {
 	@Override
 	public List<DetalleItinerario> validadIngresoTramos(Integer idTipoItinerario, Integer idServicio, Integer idRuta,String fechaPartida, String horaPartida, Integer idAgenciaPartida,
 			Integer idAgenciaLlegada) throws Exception {
-	
+
 		return getItinerarioDAO().validadIngresoTramos(idTipoItinerario, idServicio, idRuta, fechaPartida, horaPartida, idAgenciaPartida, idAgenciaLlegada);
 	}
-	
-	
+
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.ItinerarioManager#validaCapasidadServicioAsiento(java.lang.Long, java.lang.Integer)
@@ -190,7 +189,7 @@ public class ItinerarioManagerImpl implements ItinerarioManager {
 	public boolean validaCapasidadServicioAsiento(Long idItinerario,Servicio servicio) throws Exception {
 		return getItinerarioDAO().validaCapasidadServicioAsiento(idItinerario, servicio);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.ItinerarioManager#dateServer()
@@ -199,7 +198,7 @@ public class ItinerarioManagerImpl implements ItinerarioManager {
 	public String dateServer() {
 		return getItinerarioDAO().dateServer();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.ItinerarioManager#ObtienerItinerarioAActualizar(java.lang.String, java.lang.String, java.lang.Integer, java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer, java.lang.Integer, java.lang.Integer)
@@ -208,9 +207,9 @@ public class ItinerarioManagerImpl implements ItinerarioManager {
 	public Long ObtienerItinerarioAActualizar(String fechaPartida,Integer idRuta, String secuenciaTramo, String horaPartida,
 			Integer idServicio, Integer idTipoItinerario,Integer idAgenciaPartida, Integer idAgenciaLlegada)throws Exception {
 		return getItinerarioDAO().ObtienerItinerarioAActualizar(fechaPartida, idRuta, secuenciaTramo, horaPartida, idServicio, idTipoItinerario, idAgenciaPartida, idAgenciaLlegada);
-		
+
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.ItinerarioManager#ItinerariosAActualizar(java.lang.String, java.lang.String, java.lang.Integer, java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer, java.lang.Integer, java.lang.Integer)
@@ -237,7 +236,7 @@ public class ItinerarioManagerImpl implements ItinerarioManager {
 			Integer idServicio, Double tarifaActual, Long idItinerarioDetalle,String usuarioMod, String ipMod, Double tarifaLista) throws Exception {
 		// TODO Auto-generated method stub
 		getItinerarioDAO().actualizarTarifa(tarifaNueva, horaPartida, fechaInicio, fechaFin, idRuta, idServicio, tarifaActual, idItinerarioDetalle, usuarioMod, ipMod,tarifaLista);
-		
+
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.ItinerarioManager#buscarItinerarioByRutaMayor(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer)
@@ -255,7 +254,7 @@ public class ItinerarioManagerImpl implements ItinerarioManager {
 		// TODO Auto-generated method stub
 		return getItinerarioDAO().buscarItinerariosByVentaTramo(fechaInicial, fechaFinal, rutaIdMayor, rutaIdTramo, horaPartidaTramo, horaPartidaItinerario);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.service.business.ItinerarioManager#modificarHorario(java.lang.Long, java.lang.Long)
@@ -270,7 +269,7 @@ public class ItinerarioManagerImpl implements ItinerarioManager {
 			//Concatenamos la fecha con la hora de salida
 			String strFechaSalida = Util.DatetoString(oitinerario.getFechaPartida(), Constantes.DATE_FORMAT) + " " + oitinerario.getHoraPartida();
 			//Convertimos a Date la fecha y hora de salida
-			Date dtFechaSalida = Util.StringtoDate(strFechaSalida, Constantes.DATE_TIME_SHORT_FORMAT);		
+			Date dtFechaSalida = Util.StringtoDate(strFechaSalida, Constantes.DATE_TIME_SHORT_FORMAT);
 			//Sumamos o restamos la diferencia de horas
 			Long nFechaSalida = dtFechaSalida.getTime()+diferencia;
 			dtFechaSalida = new Date(nFechaSalida);
@@ -280,9 +279,9 @@ public class ItinerarioManagerImpl implements ItinerarioManager {
 			String strNewHoraSalida = Util.DatetoString(dtFechaSalida, Constantes.TIME_SHORT_FORMAT);
 			oitinerario.setFechaPartida(dtNewFechaSalida);
 			oitinerario.setHoraPartida(strNewHoraSalida);
-			
+
 			System.out.println("Fecha y Hora de Salida " + dtNewFechaSalida + " " + strNewHoraSalida);
-			
+
 			//Concatenamos la fecha con la hora de llegada
 			String strFechaLlegada = Util.DatetoString(oitinerario.getFechaLlegada(), Constantes.DATE_FORMAT) + " " + oitinerario.getHoraLlegada();
 			//Convertimos a Date la fecha y hora de llegada
@@ -298,23 +297,22 @@ public class ItinerarioManagerImpl implements ItinerarioManager {
 			oitinerario.setHoraLlegada(strNewHoraLlegada);
 			oitinerario.setUsuarioModificacion(login);
 			oitinerario.setIpModificacion(ipLocal);
-			
+
 			System.out.println("Fecha y Hora de Llegada " + dtNewFechaLlegada + " " + strNewHoraLlegada);
-			
+
 			getItinerarioDAO().save(oitinerario);
-			
+
 			/*Recupera detalle del Itinerario***/
 			List<DetalleItinerario> lstDetalleItinerario = buscarItinerariosMantenimiento(idItinerario, "", "", "", "", "","","");
-			
-			for(int i = 0; i<lstDetalleItinerario.size(); i++) {
-				DetalleItinerario detalleItinerario = lstDetalleItinerario.get(i);
+
+			for (DetalleItinerario detalleItinerario : lstDetalleItinerario) {
 				String strFechaSalidaDetalle = new String();
 				Date dtFechaSalidaDetalle = new Date();
 				Long nFechaSalidaDetalle = null;
 				//Concatenamos la fecha con la hora de salida
 				strFechaSalidaDetalle = Util.DatetoString(detalleItinerario.getFechaPartida(), Constantes.DATE_FORMAT) + " " + detalleItinerario.getHoraPartida();
 				//Convertimos a Date la fecha y hora de salida
-				dtFechaSalidaDetalle = Util.StringtoDate(strFechaSalidaDetalle, Constantes.DATE_TIME_SHORT_FORMAT);		
+				dtFechaSalidaDetalle = Util.StringtoDate(strFechaSalidaDetalle, Constantes.DATE_TIME_SHORT_FORMAT);
 				//Sumamos o restamos la diferencia de horas
 				nFechaSalidaDetalle = dtFechaSalidaDetalle.getTime()+diferencia;
 				dtFechaSalidaDetalle = new Date(nFechaSalidaDetalle);
@@ -324,14 +322,14 @@ public class ItinerarioManagerImpl implements ItinerarioManager {
 				String strNewHoraSalidaDetalle = Util.DatetoString(dtFechaSalidaDetalle, Constantes.TIME_SHORT_FORMAT);
 				detalleItinerario.setFechaPartida(dtNewFechaSalidaDetalle);
 				detalleItinerario.setHoraPartida(strNewHoraSalidaDetalle);
-				
+
 				String strFechaLlegadaDetalle = new String();
 				Date dtFechaLlegadaDetalle = new Date();
 				Long nFechaLlegadaDetalle = null;
 				//Concatenamos la fecha con la hora de salida
 				strFechaLlegadaDetalle = Util.DatetoString(detalleItinerario.getFechaLlegada(), Constantes.DATE_FORMAT) + " " + detalleItinerario.getHoraLlegada();
 				//Convertimos a Date la fecha y hora de salida
-				dtFechaLlegadaDetalle = Util.StringtoDate(strFechaLlegadaDetalle, Constantes.DATE_TIME_SHORT_FORMAT);		
+				dtFechaLlegadaDetalle = Util.StringtoDate(strFechaLlegadaDetalle, Constantes.DATE_TIME_SHORT_FORMAT);
 				//Sumamos o restamos la diferencia de horas
 				nFechaLlegadaDetalle = dtFechaLlegadaDetalle.getTime()+diferencia;
 				dtFechaLlegadaDetalle = new Date(nFechaLlegadaDetalle);
@@ -343,17 +341,16 @@ public class ItinerarioManagerImpl implements ItinerarioManager {
 				detalleItinerario.setHoraLlegada(strNewHoraLlegadaDetalle);
 				detalleItinerario.setUsuarioModificacion(login);
 				detalleItinerario.setIpModificacion(ipLocal);
-				
+
 				getItinerarioDAO().update(detalleItinerario);
 			}
-			
+
 			List<ItinerarioAgenciaPartida> lstItinerarioAgenciaPartida = getItinerarioAgenciaPartidaDAO().buscarAgenciasPartida(idItinerario, Constantes.VALUE_ACTIVO, null);
-			for(int i=0; i<lstItinerarioAgenciaPartida.size(); i++) {
-				ItinerarioAgenciaPartida itinerarioAgenciaPartida = lstItinerarioAgenciaPartida.get(i);
+			for (ItinerarioAgenciaPartida itinerarioAgenciaPartida : lstItinerarioAgenciaPartida) {
 				//Concatenamos la fecha con la hora de salida
 				String strFechaHoraAgenciaParitda = Util.DatetoString(new Date(), Constantes.DATE_FORMAT) + " " + itinerarioAgenciaPartida.getHoraPartida();
 				//Convertimos a Date la fecha y hora de salida
-				Date dtFechaHoraAgenciaPartida = Util.StringtoDate(strFechaHoraAgenciaParitda, Constantes.DATE_TIME_SHORT_FORMAT);		
+				Date dtFechaHoraAgenciaPartida = Util.StringtoDate(strFechaHoraAgenciaParitda, Constantes.DATE_TIME_SHORT_FORMAT);
 				//Sumamos o restamos la diferencia de horas
 				Long nFechaHoraAgenciaPartida = dtFechaHoraAgenciaPartida.getTime()+diferencia;
 				dtFechaHoraAgenciaPartida = new Date(nFechaHoraAgenciaPartida);
@@ -366,14 +363,13 @@ public class ItinerarioManagerImpl implements ItinerarioManager {
 				itinerarioAgenciaPartida.setItinerarioAgenciaPartidaID(itinerarioAgenciaPartidaID);
 				getItinerarioAgenciaPartidaDAO().update(itinerarioAgenciaPartida);
 			}
-			
+
 			List<ItinerarioAgenciaLlegada> lstItinerarioAgenciaLlegada = getItinerarioAgenciaLlegadaDAO().buscarAgenciasLlegada(idItinerario, Constantes.VALUE_ACTIVO, null);
-			for(int i=0; i<lstItinerarioAgenciaLlegada.size(); i++) {
-				ItinerarioAgenciaLlegada itinerarioAgenciaLlegada = lstItinerarioAgenciaLlegada.get(i);
+			for (ItinerarioAgenciaLlegada itinerarioAgenciaLlegada : lstItinerarioAgenciaLlegada) {
 				//Concatenamos la fecha con la hora de llegada
 				String strFechaHoraAgenciaLlegada = Util.DatetoString(new Date(), Constantes.DATE_FORMAT) + " " + itinerarioAgenciaLlegada.getHoraLlegada();
 				//Convertimos a Date la fecha y hora de llegada
-				Date dtFechaHoraAgenciaLlegada = Util.StringtoDate(strFechaHoraAgenciaLlegada, Constantes.DATE_TIME_SHORT_FORMAT);		
+				Date dtFechaHoraAgenciaLlegada = Util.StringtoDate(strFechaHoraAgenciaLlegada, Constantes.DATE_TIME_SHORT_FORMAT);
 				//Sumamos o restamos la diferencia de horas
 				Long nFechaHoraAgenciaLlegada = dtFechaHoraAgenciaLlegada.getTime()+diferencia;
 				dtFechaHoraAgenciaLlegada = new Date(nFechaHoraAgenciaLlegada);
@@ -386,7 +382,7 @@ public class ItinerarioManagerImpl implements ItinerarioManager {
 				itinerarioAgenciaLlegada.setItinerarioAgenciaLlegadaID(itinerarioAgenciaLlegadaID);
 				getItinerarioAgenciaLlegadaDAO().update(itinerarioAgenciaLlegada);
 			}
-			result = Constantes.CORRECT;			
+			result = Constantes.CORRECT;
 		}catch (Exception ex) {
 			ex.printStackTrace();
 			throw new Exception();

@@ -28,29 +28,29 @@ public class Bus extends GenericBean implements java.io.Serializable {
 	private Integer capacidad;
 	private Integer anioFabricacion;
 	private Integer idnumeroFlota;
-	
+
 	private DocumentoBus documentoBus;
 	private ProgramacionServicio programacionServicio;
-	
-	
-	
-	private Set<Itinerario> itinerarios = new HashSet<Itinerario>(0);
-	private Set<DocumentoBus> documentoBuses = new HashSet<DocumentoBus>(0);
-	private Set<Manifiesto> manifiestos = new HashSet<Manifiesto>(0);
-	private Set<PuntoControlEstadoBus> puntoControlEstadoBuses = new HashSet<PuntoControlEstadoBus>(0);
-	private Set<LiquidacionBus> liquidacionBuses = new HashSet<LiquidacionBus>(0);
-	private Set<ProgramacionServicio> programacionServicios = new HashSet<ProgramacionServicio>(0);
 
-	
-	public Bus() {	
-		
+
+
+	private Set<Itinerario> itinerarios = new HashSet<>(0);
+	private Set<DocumentoBus> documentoBuses = new HashSet<>(0);
+	private Set<Manifiesto> manifiestos = new HashSet<>(0);
+	private Set<PuntoControlEstadoBus> puntoControlEstadoBuses = new HashSet<>(0);
+	private Set<LiquidacionBus> liquidacionBuses = new HashSet<>(0);
+	private Set<ProgramacionServicio> programacionServicios = new HashSet<>(0);
+
+
+	public Bus() {
+
 	}
-	
+
 	public Bus (Integer id) {
 		super();
 		this.id = id;
 	}
-	
+
 	public Bus (TipoFlota tipoFlota, NumeroFlota numeroFlota, Servicio servicio, Integer empresa, GrupoMantenimiento grupoMantenimiento, String codigo, Double kilRecorridoDia,
 			Double kilAcumuladoOdometro, Double kilAcumuladoEstandar, String numeroPlaca, Integer numeroEjes, String numeroChasis, String numeroMotor, String tarjetaPropiedad,
 			Integer capacidad, Integer anioFabricacion,
@@ -82,14 +82,14 @@ public class Bus extends GenericBean implements java.io.Serializable {
 		this.puntoControlEstadoBuses = puntoControlEstadoBuses;
 		this.liquidacionBuses = liquidacionBuses;
 		this.programacionServicios = programacionServicios;
-		
-		
-		
+
+
+
 	}
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * @return Objeto id.
 	 */
@@ -102,20 +102,20 @@ public class Bus extends GenericBean implements java.io.Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	/**
 	 * @return Objeto tipoFlota.
 	 */
 	public TipoFlota getTipoFlota() {
 		return tipoFlota;
-	}	
+	}
 	/**
 	 * @param tipoFlota	: Setea el objeto tipoFlota.
 	 */
 	public void setTipoFlota(TipoFlota tipoFlota) {
 		this.tipoFlota = tipoFlota;
 	}
-	
+
 	/**
 	 * @return Objeto numeroFlota.
 	 */
@@ -128,7 +128,7 @@ public class Bus extends GenericBean implements java.io.Serializable {
 	public void setNumeroFlota(NumeroFlota numeroFlota) {
 		this.numeroFlota = numeroFlota;
 	}
-	
+
 	/**
 	 * @return Objeto servicio.
 	 */
@@ -141,7 +141,7 @@ public class Bus extends GenericBean implements java.io.Serializable {
 	public void setServicio(Servicio servicio) {
 		this.servicio = servicio;
 	}
-	
+
 	/**
 	 * @return Objeto empresa.
 	 */
@@ -154,7 +154,7 @@ public class Bus extends GenericBean implements java.io.Serializable {
 	public void setEmpresa(Integer empresa) {
 		this.empresa = empresa;
 	}
-	
+
 	/**
 	 * @return Objeto grupoMantenimiento.
 	 */
@@ -167,7 +167,7 @@ public class Bus extends GenericBean implements java.io.Serializable {
 	public void setGrupoMantenimiento(GrupoMantenimiento grupoMantenimiento) {
 		this.grupoMantenimiento = grupoMantenimiento;
 	}
-	
+
 	/**
 	 * @return Objeto codigo.
 	 */
@@ -180,7 +180,7 @@ public class Bus extends GenericBean implements java.io.Serializable {
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
-	
+
 	/**
 	 * @return Objeto kilRecorridoDia.
 	 */
@@ -193,7 +193,7 @@ public class Bus extends GenericBean implements java.io.Serializable {
 	public void setKilRecorridoDia(Double kilRecorridoDia) {
 		this.kilRecorridoDia = kilRecorridoDia;
 	}
-	
+
 	/**
 	 * @return Objeto kilAcumuladoOdometro.
 	 */
@@ -206,7 +206,7 @@ public class Bus extends GenericBean implements java.io.Serializable {
 	public void setKilAcumuladoOdometro(Double kilAcumuladoOdometro) {
 		this.kilAcumuladoOdometro = kilAcumuladoOdometro;
 	}
-	
+
 	/**
 	 * @return Objeto kilAcumuladoEstandar.
 	 */
@@ -219,7 +219,7 @@ public class Bus extends GenericBean implements java.io.Serializable {
 	public void setKilAcumuladoEstandar(Double kilAcumuladoEstandar) {
 		this.kilAcumuladoEstandar = kilAcumuladoEstandar;
 	}
-	
+
 	/**
 	 * @return Objeto numeroPlaca.
 	 */
@@ -232,7 +232,7 @@ public class Bus extends GenericBean implements java.io.Serializable {
 	public void setNumeroPlaca(String numeroPlaca) {
 		this.numeroPlaca = numeroPlaca;
 	}
-	
+
 	/**
 	 * @return Objeto numeroEjes.
 	 */
@@ -245,7 +245,7 @@ public class Bus extends GenericBean implements java.io.Serializable {
 	public void setNumeroEjes(Integer numeroEjes) {
 		this.numeroEjes = numeroEjes;
 	}
-	
+
 	/**
 	 * @return Objeto numeroChasis.
 	 */
@@ -258,7 +258,7 @@ public class Bus extends GenericBean implements java.io.Serializable {
 	public void setNumeroChasis(String numeroChasis) {
 		this.numeroChasis = numeroChasis;
 	}
-	
+
 	/**
 	 * @return Objeto numeroMotor.
 	 */
@@ -271,7 +271,7 @@ public class Bus extends GenericBean implements java.io.Serializable {
 	public void setNumeroMotor(String numeroMotor) {
 		this.numeroMotor = numeroMotor;
 	}
-	
+
 	/**
 	 * @return Objeto tarjetaPropiedad.
 	 */
@@ -284,7 +284,7 @@ public class Bus extends GenericBean implements java.io.Serializable {
 	public void setTarjetaPropiedad(String tarjetaPropiedad) {
 		this.tarjetaPropiedad = tarjetaPropiedad;
 	}
-	
+
 	/**
 	 * @return Objeto capacidad.
 	 */
@@ -297,7 +297,7 @@ public class Bus extends GenericBean implements java.io.Serializable {
 	public void setCapacidad(Integer capacidad) {
 		this.capacidad = capacidad;
 	}
-	
+
 	/**
 	 * @return Objeto anioFabricacion.
 	 */
@@ -310,15 +310,15 @@ public class Bus extends GenericBean implements java.io.Serializable {
 	public void setAnioFabricacion(Integer anioFabricacion) {
 		this.anioFabricacion = anioFabricacion;
 	}
-	
+
 	public Integer getIdnumeroFlota (){
 		return idnumeroFlota;
 	}
-	
+
 	public void setIdnumeroFlota (Integer idnumeroFlota){
 		this.idnumeroFlota=idnumeroFlota;
 	}
-	
+
 	public DocumentoBus getDocumentoBus(){
 		return  documentoBus;
 	}
@@ -326,18 +326,18 @@ public class Bus extends GenericBean implements java.io.Serializable {
 	public void setDocumentoBus (DocumentoBus documentoBus){
 		this.documentoBus=documentoBus;
 	}
-	
+
 	public ProgramacionServicio getProgramacionServicio(){
 		return programacionServicio;
 	}
-	
+
 	public void setProgramacionServicio (ProgramacionServicio programacionServicio){
 		this.programacionServicio=programacionServicio;
 	}
-	
-	
+
+
 	/*=======================================================================*/
-	
+
 	public Set<Itinerario> getItinerarios() {
 		return this.itinerarios;
 	}

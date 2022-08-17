@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 20/11/2013
  */
@@ -21,7 +21,7 @@ import com.cystesoft.vyrbus.service.business.SerieEspecieValoradaManager;
  */
 public class SerieEspecieValoradaManagerImpl implements SerieEspecieValoradaManager {
 	private SerieEspecieValoradaDAO serieEspecieValoradaDAO;
-	
+
 	/**
 	 * @return the serieEspecieValoradaDAO
 	 */
@@ -35,8 +35,8 @@ public class SerieEspecieValoradaManagerImpl implements SerieEspecieValoradaMana
 	public void setSerieEspecieValoradaDAO(SerieEspecieValoradaDAO serieEspecieValoradaDAO) {
 		this.serieEspecieValoradaDAO = serieEspecieValoradaDAO;
 	}
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.SerieEspecieValoradaManager#buscarPorID(java.lang.String, java.lang.Integer)
 	 */
@@ -57,6 +57,6 @@ public class SerieEspecieValoradaManagerImpl implements SerieEspecieValoradaMana
 
 
 
-	
-	
+
+
 }

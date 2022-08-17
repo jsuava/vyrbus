@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 19/04/2013
  */
@@ -138,12 +138,12 @@ public class WndPromociones extends WndBase {
 	private Checkbox chbxPermitirDescuento;
 	private Textbox txtHoraPartida;
 	private Image imgAddhoraPartida;
-	
+
 	private Promocion promocion = null;
 	private Promocion promocionEditar = null;
-	
-	
-	
+
+
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
@@ -151,7 +151,7 @@ public class WndPromociones extends WndBase {
 	public void onCreate() throws Exception {
 		// TODO Auto-generated method stub
 		super.onCreate();
-		TreeMap<String, Object> parametros = new TreeMap<String, Object>();
+		TreeMap<String, Object> parametros = new TreeMap<>();
 		parametros.put("esPromocion", FormaPago.N_ESPROMOCION);
 		UtilData.cargarDataCombo(cmbFormaPago, FormaPago.class, parametros, true);
 		UtilData.cargarDataCombo(cmbRutaB, Ruta.class, true);
@@ -215,21 +215,21 @@ public class WndPromociones extends WndBase {
 		chbxPermitirDescuento=(Checkbox)this.getFellow("chbxPermitirDescuento");
 		txtHoraPartida=(Textbox)this.getFellow("txtHoraPartida");
 		imgAddhoraPartida=(Image)this.getFellow("imgAddhoraPartida");
-		
+
 		cmbFormaPago.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
 				loadTipoFormaPago();
 			}
 		});
-		
+
 		cmbTipoFormaPago.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
 				loadTarjetaCredito();
 			}
 		});
-		
+
 		tlbrbtnNuevo.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
@@ -242,7 +242,7 @@ public class WndPromociones extends WndBase {
 				txtDenominacion.setFocus(true);
 			}
 		});
-		
+
 		tlbrbtnBuscar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
@@ -250,7 +250,7 @@ public class WndPromociones extends WndBase {
 //				buscar();
 			}
 		});
-		
+
 		tlbrbtnCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
@@ -261,14 +261,14 @@ public class WndPromociones extends WndBase {
 				disabledControls(true);
 			}
 		});
-		
+
 		txtDenominacion.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
 				txtRuta.setFocus(true);
 			}
 		});
-		
+
 		txtRuta.addEventListener(Events.ON_CTRL_KEY, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
@@ -283,7 +283,7 @@ public class WndPromociones extends WndBase {
 				onCrearVentana("Asignación de Rutas a la Promoción", "DENOMINACION", Ruta.class);
 			}
 		});
-		
+
 		txtServicio.addEventListener(Events.ON_CTRL_KEY, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
@@ -298,7 +298,7 @@ public class WndPromociones extends WndBase {
 				onCrearVentana("Asignación de Servicios a la Promoción", "DENOMINACION", Servicio.class);
 			}
 		});
-		
+
 		txtPuntoVenta.addEventListener(Events.ON_CTRL_KEY, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
@@ -313,7 +313,7 @@ public class WndPromociones extends WndBase {
 				onCrearVentana("Asignación de Puntos de Venta a la Promoción", "DENOMINACION", Agencia.class);
 			}
 		});
-		
+
 		txtCanalVenta.addEventListener(Events.ON_CTRL_KEY, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
@@ -328,7 +328,7 @@ public class WndPromociones extends WndBase {
 				onCrearVentana("Asignación de Canales de Venta a la Promoción", "DENOMINACION", CanalVenta.class);
 			}
 		});
-		
+
 		txtTarjeta.addEventListener(Events.ON_CTRL_KEY, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
@@ -343,7 +343,7 @@ public class WndPromociones extends WndBase {
 				onCrearVentana("Asignación de Tarjetas de Crédito a la Promoción", "DENOMINACION", TarjetaCredito.class);
 			}
 		});
-		
+
 		txtCliente.addEventListener(Events.ON_CTRL_KEY, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
@@ -358,7 +358,7 @@ public class WndPromociones extends WndBase {
 				loadCliente("Busqueda de Clientes");
 			}
 		});
-		
+
 		dtbxFechaInicio.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
@@ -367,14 +367,14 @@ public class WndPromociones extends WndBase {
 				dtbxFechaFin.setDisabled(false);
 			}
 		});
-		
+
 		btnAgregarPromocion.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
 				agregarPromocion();
 			}
 		});
-		
+
 		cmbTipoDescuento.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
@@ -382,7 +382,7 @@ public class WndPromociones extends WndBase {
 				chbxPermitirDescuento.setChecked(false);
 				lblPermitirDescuento.setVisible(false);
 				if(cmbTipoDescuento.getText().equals(Promocion.PROMOCION_TIPO_DESCUENTO_LABEL_FIJO)){
-					lblDescuento.setValue("DESCUENTO* :");					
+					lblDescuento.setValue("DESCUENTO* :");
 //					dblbxDescuento.setDisabled(false);
 //					dblbxImporte.setDisabled(false);
 				}else if(cmbTipoDescuento.getText().equals(Promocion.PROMOCION_TIPO_DESCUENTO_LABEL_PORCENTAJE)){
@@ -397,17 +397,17 @@ public class WndPromociones extends WndBase {
 				dblbxDescuento.setFocus(true);
 			}
 		});
-		
+
 		chkbxPorRango.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
 				if(chkbxPorRango.isChecked())
 					habilitarControlAsientos(true);
-				else				
+				else
 					habilitarControlAsientos(false);
 			}
 		});
-		
+
 		btnBuscar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
@@ -415,7 +415,7 @@ public class WndPromociones extends WndBase {
 			}
 		});
 	}
-	
+
 	private void habilitarControlAsientos(boolean arg){
 		spnnrInicio.setVisible(arg);
 		lblSeparador.setVisible(arg);
@@ -425,7 +425,7 @@ public class WndPromociones extends WndBase {
 		spnnrFin.setValue(null);
 		txtAsientos.setText("");
 	}
-	
+
 	private void disabledControls(boolean arg){
 		txtDenominacion.setDisabled(arg);
 		txtServicio.setDisabled(arg);
@@ -460,7 +460,7 @@ public class WndPromociones extends WndBase {
 		btnAgregarPromocion.setDisabled(arg);
 		imgAddhoraPartida.setVisible(!arg);
 	}
-	
+
 	private void cleanControls(){
 		txtDenominacion.setText("");
 		txtRuta.setText("");
@@ -492,7 +492,7 @@ public class WndPromociones extends WndBase {
 		promocion=null;
 		txtHoraPartida.setText("");
 	}
-	
+
 	/**
 	 * Carga el combo con los tipos de forma de pago.
 	 */
@@ -500,9 +500,9 @@ public class WndPromociones extends WndBase {
 		try{
 			if(cmbFormaPago.getSelectedItem().getValue() instanceof FormaPago && ((FormaPago)cmbFormaPago.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_FORPAG_CONTADO){
 				cmbTipoFormaPago.getItems().clear();
-				TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+				TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 				criteriosBusqueda.put("esPromocion", TipoFormaPago.N_ESPROMOCION);
-				List<String> criteriosOrdenar = new ArrayList<String>();
+				List<String> criteriosOrdenar = new ArrayList<>();
 				criteriosOrdenar.add("denominacion");
 				List<TipoFormaPago> lstTipoFormaPago = ServiceLocator.getTipoFormaPagoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
 				Comboitem comboitem = new Comboitem(Constantes.COMBO_LABEL_TODOS);
@@ -511,7 +511,7 @@ public class WndPromociones extends WndBase {
 				for(TipoFormaPago tipoFormaPago : lstTipoFormaPago){
 					comboitem = new Comboitem(tipoFormaPago.getDenominacion());
 					comboitem.setValue(tipoFormaPago);
-					cmbTipoFormaPago.appendChild(comboitem);					
+					cmbTipoFormaPago.appendChild(comboitem);
 				}
 				cmbTipoFormaPago.setDisabled(false);
 //				imgTipoFormaPago.setVisible(true);
@@ -525,7 +525,7 @@ public class WndPromociones extends WndBase {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Habilita los controles para seleccionar la Tarjeta de Credito.
 	 */
@@ -546,7 +546,7 @@ public class WndPromociones extends WndBase {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Carga el combo con los tipos de descuento.
 	 */
@@ -569,7 +569,7 @@ public class WndPromociones extends WndBase {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Carga el combo con los tipos de descuento.
 	 */
@@ -592,7 +592,7 @@ public class WndPromociones extends WndBase {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Carga las temporadas de las promociones al combobox.
 	 */
@@ -609,9 +609,9 @@ public class WndPromociones extends WndBase {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
-	 * Crea la ventana utilizada para seleccionar mas de una opcion para los criterios. 
+	 * Crea la ventana utilizada para seleccionar mas de una opcion para los criterios.
 	 * @param title		: Titulo de la venta a crear.
 	 * @param header	: Nombre de la cabecera de la columna.
 	 * @param oClase	: Tipo de objeto a utilizar para el llenado de informacion.
@@ -621,7 +621,7 @@ public class WndPromociones extends WndBase {
 		wndCriterios = new Window(title, "normal", true);
 		wndCriterios.setWidth("472px");
 		wndCriterios.setHeight("400px");
-		
+
 		if(oClase.equals(Agencia.class)){
 			Hbox hlayoutTipo = new Hbox();
 			hlayoutTipo.setAlign("center");
@@ -660,16 +660,16 @@ public class WndPromociones extends WndBase {
 		listhead.appendChild(listheader);
 		lbxContenedorLeft.appendChild(listhead);
 		hlayout.appendChild(lbxContenedorLeft);
-		
+
 		Vbox vbox = new Vbox();
 		vbox.setWidth("40px");
 		vbox.setAlign("center");
-		
+
 		Space space = new Space();
 		space.setOrient("vertical");
 		space.setHeight("70px");
 		vbox.appendChild(space);
-		
+
 		Image imagen = new Image("resources/mp_rightArrowEnabled.png");
 		imagen.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
@@ -679,7 +679,7 @@ public class WndPromociones extends WndBase {
 		});
 		imagen.setStyle("cursor:pointer");
 		vbox.appendChild(imagen);
-		
+
 		imagen = new Image("resources/mp_allRightArrowEnabled.png");
 		imagen.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
@@ -689,12 +689,12 @@ public class WndPromociones extends WndBase {
 		});
 		imagen.setStyle("cursor:pointer");
 		vbox.appendChild(imagen);
-		
+
 		space = new Space();
 		space.setOrient("vertical");
 		space.setHeight("50px");
 		vbox.appendChild(space);
-		
+
 		imagen = new Image("resources/mp_leftArrowEnabled.png");
 		imagen.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
@@ -704,7 +704,7 @@ public class WndPromociones extends WndBase {
 		});
 		imagen.setStyle("cursor:pointer");
 		vbox.appendChild(imagen);
-		
+
 		imagen = new Image("resources/mp_allLeftArrowEnabled.png");
 		imagen.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
@@ -715,7 +715,7 @@ public class WndPromociones extends WndBase {
 		imagen.setStyle("cursor:pointer");
 		vbox.appendChild(imagen);
 		hlayout.appendChild(vbox);
-		
+
 		lbxContenedorRight = new Listbox();
 		lbxContenedorRight.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
 			@Override
@@ -731,14 +731,14 @@ public class WndPromociones extends WndBase {
 		listhead.appendChild(listheader);
 		lbxContenedorRight.appendChild(listhead);
 		hlayout.appendChild(lbxContenedorRight);
-		
+
 		wndCriterios.appendChild(hlayout);
-		
+
 		space = new Space();
 		space.setOrient("vertical");
 		space.setHeight("5px");
 		wndCriterios.appendChild(space);
-		
+
 		Div div = new Div();
 		div.setAlign("center");
 		Button btnAceptar = new Button("Aceptar", "resources/mp_aceptarEnabled.png");
@@ -752,12 +752,12 @@ public class WndPromociones extends WndBase {
 		btnAceptar.setClass("btnCommandM");
 		div.appendChild(btnAceptar);
 		wndCriterios.appendChild(div);
-		
+
 		this.appendChild(wndCriterios);
 		loadListbox(oClase, lbxContenedorLeft, lbxContenedorRight);
-		wndCriterios.doModal();		
+		wndCriterios.doModal();
 	}
-	
+
 	/**
 	 * Permite cargar los listbox con información de acuerdo a la clase enviada.
 	 * @param oClase				: Objetos que se mostraran en los listbox.
@@ -766,18 +766,18 @@ public class WndPromociones extends WndBase {
 	private void loadListbox(Class<?> oClase, Listbox lbxCriteriosXAsignar, Listbox lbxCriteriosAsignados){
 		try{
 			if(oClase.equals(Ruta.class)){
-				TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+				TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 				criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-				List<String> criteriosOrdenar = new ArrayList<String>();
+				List<String> criteriosOrdenar = new ArrayList<>();
 				criteriosOrdenar.add("origen");
 				criteriosOrdenar.add("destino");
 				List<Ruta> lstRutas = ServiceLocator.getRutaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
 				String[] criterioRutas = null;
 				if(!txtRuta.getText().equals("*"))
 					criterioRutas = txtRuta.getText().split(",");
-					
+
 				if(lstRutas.size()>0){
-					Listitem listitem = null;					
+					Listitem listitem = null;
 					for(Ruta ruta : lstRutas){
 						listitem = new Listitem(ruta.getOrigen()+" - "+ruta.getDestino());
 						listitem.setValue(ruta);
@@ -798,9 +798,9 @@ public class WndPromociones extends WndBase {
 				String[] criterioServicios = null;
 				if(!txtServicio.getText().equals("*"))
 					criterioServicios = txtServicio.getText().split(",");
-					
+
 				if(lstServicios.size()>0){
-					Listitem listitem = null;					
+					Listitem listitem = null;
 					for(Servicio servicio : lstServicios){
 						listitem = new Listitem(servicio.getDenominacion());
 						listitem.setValue(servicio);
@@ -815,22 +815,22 @@ public class WndPromociones extends WndBase {
 						}else
 							lbxCriteriosAsignados.appendChild(listitem);
 					}
-				}				
+				}
 			}else if(oClase.equals(Agencia.class)){
 				UtilData.cargarDataCombo(cmbFiltro, TipoAgencia.class, false);
 				Util.seleccionarValorItemCombo(TipoAgencia.class, cmbFiltro, Constantes.ID_TIPAGE_TEPSA);
-				TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+				TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 				criteriosBusqueda.put("tipoAgencia.id", ((TipoAgencia)cmbFiltro.getSelectedItem().getValue()).getId());
 				criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-				List<String> criteriosOrdenar = new ArrayList<String>();
+				List<String> criteriosOrdenar = new ArrayList<>();
 				criteriosOrdenar.add("denominacion");
 				List<Agencia> lstAgencias = ServiceLocator.getAgenciaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
 				String[] criterioAgencias = null;
 				if(!txtPuntoVenta.getText().equals("*"))
 					criterioAgencias = txtPuntoVenta.getText().split(",");
-				
+
 				if(lstAgencias.size()>0){
-					Listitem listitem = null;					
+					Listitem listitem = null;
 					for(Agencia agencia : lstAgencias){
 						listitem = new Listitem(agencia.getDenominacion());
 						listitem.setValue(agencia);
@@ -851,9 +851,9 @@ public class WndPromociones extends WndBase {
 				String[] criterioCanalVenta = null;
 				if(!txtCanalVenta.getText().equals("*"))
 					criterioCanalVenta = txtCanalVenta.getText().split(",");
-					
+
 				if(lstCanalVenta.size()>0){
-					Listitem listitem = null;					
+					Listitem listitem = null;
 					for(CanalVenta canalVenta : lstCanalVenta){
 						listitem = new Listitem(canalVenta.getDenominacion());
 						listitem.setValue(canalVenta);
@@ -874,9 +874,9 @@ public class WndPromociones extends WndBase {
 				String[] criterioTarjetaCredito = null;
 				if(!txtTarjeta.getText().equals("*"))
 					criterioTarjetaCredito = txtTarjeta.getText().split(",");
-					
+
 				if(lstTarjetaCredito.size()>0){
-					Listitem listitem = null;					
+					Listitem listitem = null;
 					for(TarjetaCredito tarjetaCredito : lstTarjetaCredito){
 						listitem = new Listitem(tarjetaCredito.getDenominacion());
 						listitem.setValue(tarjetaCredito);
@@ -897,19 +897,19 @@ public class WndPromociones extends WndBase {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	private void buscarAgencias(){
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("tipoAgencia.id", ((TipoAgencia)cmbFiltro.getSelectedItem().getValue()).getId());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-			List<String> criteriosOrdenar = new ArrayList<String>();
+			List<String> criteriosOrdenar = new ArrayList<>();
 			criteriosOrdenar.add("denominacion");
 			List<Agencia> lstAgencias = ServiceLocator.getAgenciaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
-			
+
 			lbxContenedorLeft.getItems().clear();
 			if(lstAgencias.size()>0){
-				Listitem listitem = null;					
+				Listitem listitem = null;
 				for(Agencia agencia : lstAgencias){
 					listitem = new Listitem(agencia.getDenominacion());
 					listitem.setValue(agencia);
@@ -920,7 +920,7 @@ public class WndPromociones extends WndBase {
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Mueve el registro seleccionado a la grilla de la derecha.
 	 */
@@ -931,7 +931,7 @@ public class WndPromociones extends WndBase {
 		}else
 			DlgMessage.information(Messages.getString("WndPromociones.information.noSelectionItemLeft"), lbxContenedorLeft);
 	}
-	
+
 	/**
 	 * Mueve todos los registros de la grila Izquierda a la grilla de la derecha.
 	 */
@@ -947,7 +947,7 @@ public class WndPromociones extends WndBase {
 			DlgMessage.information(Messages.getString("WndPromociones.information.noItemsMoveToRight"));
 		}
 	}
-	
+
 	/**
 	 * Mueve el registro seleccionado a la grilla de la izquierda.
 	 */
@@ -958,7 +958,7 @@ public class WndPromociones extends WndBase {
 		}else
 			DlgMessage.information(Messages.getString("WndPromociones.information.noSelectionItemRight"), lbxContenedorRight);
 	}
-	
+
 	/**
 	 * Mueve todos los registros de la grilla derecha a la grilla de la izquierda.
 	 */
@@ -974,7 +974,7 @@ public class WndPromociones extends WndBase {
 			DlgMessage.information(Messages.getString("WndPromociones.information.noItemsMoveToLeft"));
 		}
 	}
-	
+
 	/**
 	 * Recorremos los listbox para asiganr los criterios a las respectivos textbox
 	 * @param oClass	: Nombre de la clase de la cual se desea obtener los criterios.
@@ -996,7 +996,7 @@ public class WndPromociones extends WndBase {
 			txtTarjeta.setText("");
 			promocion.setListTarjetaCredito(null);
 		}
-		
+
 		if(lbxContenedorLeft.getItems().size()==0){
 			if(oClass.equals(Ruta.class))
 				txtRuta.setText("*");
@@ -1016,7 +1016,7 @@ public class WndPromociones extends WndBase {
 					txtRuta.setText(txtRuta.getText().trim().equals("")?(ruta.getId().toString()):(txtRuta.getText().trim()+","+ruta.getId().toString()));
 					/*	Para asignar la Lista de Rutas al Objeto Promocion	*/
 					if(promocion.getListRutas()==null){
-						List<Ruta> lstRutas = new ArrayList<Ruta>();
+						List<Ruta> lstRutas = new ArrayList<>();
 						lstRutas.add(ruta);
 						promocion.setListRutas(lstRutas);
 					}else
@@ -1026,7 +1026,7 @@ public class WndPromociones extends WndBase {
 					txtServicio.setText(txtServicio.getText().trim().equals("")?(servicio.getId().toString()):(txtServicio.getText().trim()+","+servicio.getId().toString()));
 					/*	Para asignar la Lista de Servicios al objeto Promocion	*/
 					if(promocion.getListServicio()==null){
-						List<Servicio> lstServicios = new ArrayList<Servicio>();
+						List<Servicio> lstServicios = new ArrayList<>();
 						lstServicios.add(servicio);
 						promocion.setListServicio(lstServicios);
 					}else
@@ -1036,7 +1036,7 @@ public class WndPromociones extends WndBase {
 					txtPuntoVenta.setText(txtPuntoVenta.getText().trim().equals("")?(agencia.getId().toString()):(txtPuntoVenta.getText().trim()+","+agencia.getId().toString()));
 					/*	Para asignar la Lista de Puntos de Venta al objeto Promocion	*/
 					if(promocion.getListPuntoVenta()==null){
-						List<Agencia> lstPuntoVentas = new ArrayList<Agencia>();
+						List<Agencia> lstPuntoVentas = new ArrayList<>();
 						lstPuntoVentas.add(agencia);
 						promocion.setListPuntoVenta(lstPuntoVentas);
 					}else
@@ -1046,7 +1046,7 @@ public class WndPromociones extends WndBase {
 					txtCanalVenta.setText(txtCanalVenta.getText().trim().equals("")?(canalVenta.getId().toString()):(txtCanalVenta.getText().trim()+","+canalVenta.getId().toString()));
 					/*	Para asignar la Lista de Canales de Venta al objeto Promocion	*/
 					if(promocion.getListCanalVenta()==null){
-						List<CanalVenta> lstCanalVenta = new ArrayList<CanalVenta>();
+						List<CanalVenta> lstCanalVenta = new ArrayList<>();
 						lstCanalVenta.add(canalVenta);
 						promocion.setListCanalVenta(lstCanalVenta);
 					}else
@@ -1056,7 +1056,7 @@ public class WndPromociones extends WndBase {
 					txtTarjeta.setText(txtTarjeta.getText().trim().equals("")?(tarjeta.getId().toString()):(txtTarjeta.getText().trim()+","+tarjeta.getId().toString()));
 					/*	Para asignar la Lista de Tarjetas de Credito al objeto Promocion	*/
 					if(promocion.getListTarjetaCredito()==null){
-						List<TarjetaCredito> lstTarjetaCredito = new ArrayList<TarjetaCredito>();
+						List<TarjetaCredito> lstTarjetaCredito = new ArrayList<>();
 						lstTarjetaCredito.add(tarjeta);
 						promocion.setListTarjetaCredito(lstTarjetaCredito);
 					}else
@@ -1066,7 +1066,7 @@ public class WndPromociones extends WndBase {
 		}
 		wndCriterios.onClose();
 	}
-	
+
 	/**
 	 * Busca los clientes de acuerdo al criterio de busqueda.
 	 */
@@ -1075,17 +1075,17 @@ public class WndPromociones extends WndBase {
 			lbxClientes.getItems().clear();
 			List<Cliente> lstClientes = null;
 			if(!patron.isEmpty()){
-				List<String> criteriosOrdenar = new ArrayList<String>();
+				List<String> criteriosOrdenar = new ArrayList<>();
 				criteriosOrdenar.add("razonSocial");
 				if(Character.isDigit(patron.charAt(0))){
-					TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+					TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 					criteriosBusqueda.put("numeroDocumento", patron+"%");
 					lstClientes = ServiceLocator.getClienteManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
 				}else{
 					String[] razonSocial = patron.split(" ");
 					lstClientes = ServiceLocator.getClienteManager().buscarPorRazonSocial(razonSocial);
 				}
-				
+
 				if(lstClientes.size()>0){
 					for(Cliente cliente : lstClientes){
 						Listitem listitem = new Listitem();
@@ -1097,7 +1097,7 @@ public class WndPromociones extends WndBase {
 						});
 						Listcell listcell = new Listcell(cliente.getNumeroDocumento());
 						listitem.appendChild(listcell);
-						
+
 						listcell = new Listcell(cliente.getRazonSocial());
 						listitem.appendChild(listcell);
 						lbxParent.appendChild(listitem);
@@ -1105,7 +1105,7 @@ public class WndPromociones extends WndBase {
 					}
 				}
 			}else{
-				DlgMessage.information(Messages.getString("WndPromociones.information.noPatronBusqueda"), txtPatron);				
+				DlgMessage.information(Messages.getString("WndPromociones.information.noPatronBusqueda"), txtPatron);
 			}
 		}catch (Exception ex) {
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ ex.getMessage());
@@ -1121,7 +1121,7 @@ public class WndPromociones extends WndBase {
 		wndCriterios.setWidth("372px");
 		wndCriterios.setHeight("250px");
 		final Listbox lbxHoraPartida  = new Listbox();
-		
+
 		Hlayout hlayout = new Hlayout();
 		hlayout.setHeight("24px");
 		hlayout.setValign("middle");
@@ -1146,11 +1146,11 @@ public class WndPromociones extends WndBase {
 					tbtnEliminar.setStyle("text-transform:none;");
 					cell.appendChild(tbtnEliminar);
 					item.appendChild(cell);
-					
+
 					item.setValue(dtbxHoraPartida.getText());
 					lbxHoraPartida.appendChild(item);
 					dtbxHoraPartida.setText("00:00");
-					
+
 					/*Evento que elimina el item agredado*/
 					tbtnEliminar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 						@Override
@@ -1165,7 +1165,7 @@ public class WndPromociones extends WndBase {
 		dtbxHoraPartida.setTooltiptext("Presione la tecla Enter para agregar a la lista.");
 		hlayout.appendChild(dtbxHoraPartida);
 		wndCriterios.appendChild(hlayout);
-		
+
 		lbxHoraPartida.setHeight("140px");
 		Listhead listhead = new Listhead();
 		Listheader listheader = new Listheader("HORA PARTIDA", null, "90px");
@@ -1173,15 +1173,15 @@ public class WndPromociones extends WndBase {
 		listhead.appendChild(listheader);
 		listheader = new Listheader("", null,"");
 		listhead.appendChild(listheader);
-		lbxHoraPartida.appendChild(listhead);		
+		lbxHoraPartida.appendChild(listhead);
 		wndCriterios.appendChild(lbxHoraPartida);
-		
-		
+
+
 		Space space = new Space();
 		space.setOrient("vertical");
 		space.setHeight("5px");
 		wndCriterios.appendChild(space);
-		
+
 		Div div = new Div();
 		div.setAlign("center");
 		Button btnAceptar = new Button("Aceptar", "resources/mp_aceptarEnabled.png");
@@ -1204,7 +1204,7 @@ public class WndPromociones extends WndBase {
 		div.appendChild(btnAceptar);
 		Label lblSpace = new Label(" ");
 		div.appendChild(lblSpace);
-		
+
 		Button btnCancelar = new Button("Cancelar", "resources/mp_cancelarEnabled.png");
 		btnCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
@@ -1217,8 +1217,8 @@ public class WndPromociones extends WndBase {
 		div.appendChild(btnCancelar);
 		wndCriterios.appendChild(div);
 
-		
-		
+
+
 		/*Carga las horas de partida (si es que se modifica)*/
 		if(!(txtHoraPartida.getText().trim().isEmpty())){
 			String[] horasPartida=txtHoraPartida.getText().split(",");
@@ -1233,10 +1233,10 @@ public class WndPromociones extends WndBase {
 				tbtnEliminar.setStyle("text-transform:none;");
 				cell.appendChild(tbtnEliminar);
 				newItem.appendChild(cell);
-				
+
 				newItem.setValue(horap);
 				lbxHoraPartida.appendChild(newItem);
-				
+
 				/*Evento que elimina el item agredado*/
 				tbtnEliminar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 					@Override
@@ -1246,15 +1246,15 @@ public class WndPromociones extends WndBase {
 					}
 				});
 			}
-			
+
 		}
-		
-		
-		
+
+
+
 		this.appendChild(wndCriterios);
 		wndCriterios.doModal();
 	}
-	
+
 	/**
 	 * Permite crear la ventana para la busqueda de los clientes.
 	 * @param title	: Titulo de la venta a crear.
@@ -1281,7 +1281,7 @@ public class WndPromociones extends WndBase {
 		txtPatron.setTooltiptext("Presione la tecla Enter para realizar la busqueda.");
 		hlayout.appendChild(txtPatron);
 		wndCriterios.appendChild(hlayout);
-		
+
 		lbxClientes = new Listbox();
 		lbxClientes.setHeight("140px");
 		Listhead listhead = new Listhead();
@@ -1291,14 +1291,14 @@ public class WndPromociones extends WndBase {
 		listheader = new Listheader("RAZON SOCIAL", null, "280px");
 		listheader.setStyle("color: #ffffff;");
 		listhead.appendChild(listheader);
-		lbxClientes.appendChild(listhead);		
+		lbxClientes.appendChild(listhead);
 		wndCriterios.appendChild(lbxClientes);
-		
+
 		Space space = new Space();
 		space.setOrient("vertical");
 		space.setHeight("5px");
 		wndCriterios.appendChild(space);
-		
+
 		Div div = new Div();
 		div.setAlign("center");
 		Button btnAceptar = new Button("Aceptar", "resources/mp_aceptarEnabled.png");
@@ -1311,10 +1311,10 @@ public class WndPromociones extends WndBase {
 //		btnAceptar.setHeight("28px");
 		btnAceptar.setClass("btnCommandM");
 		div.appendChild(btnAceptar);
-		
+
 		Label lblSpace = new Label(" ");
 		div.appendChild(lblSpace);
-		
+
 		Button btnCancelar = new Button("Cancelar", "resources/mp_cancelarEnabled.png");
 		btnCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
@@ -1328,11 +1328,11 @@ public class WndPromociones extends WndBase {
 		btnCancelar.setClass("btnCommandM");
 		div.appendChild(btnCancelar);
 		wndCriterios.appendChild(div);
-		
+
 		this.appendChild(wndCriterios);
 		wndCriterios.doModal();
 	}
-	
+
 	/**
 	 * Permite la asignacion del cliente a la caja de texto.
 	 */
@@ -1345,7 +1345,7 @@ public class WndPromociones extends WndBase {
 		}else
 			DlgMessage.information(Messages.getString("WndPromociones.information.noClienteSeleccionado"));
 	}
-	
+
 	/**
 	 * Agrega la promocion a la grilla.
 	 */
@@ -1367,44 +1367,44 @@ public class WndPromociones extends WndBase {
 				throw new FechaInicioNullException();
 			else if(dtbxFechaFin.getValue()==null)
 				throw new FechaVencimientoNullException();
-			
-			
+
+
 			/*Validando el formato del la hora de partida*/
 			if(!(txtHoraPartida.getText().trim().isEmpty())){
-				
+
 			}
-			
-			
-			
+
+
+
 			item = new Listitem();
 			Listcell cell = null;
-			
+
 			promocion.setDenominacion(txtDenominacion.getText().trim().toUpperCase());
 			cell = new Listcell(txtDenominacion.getText().trim());
 			cell.setStyle("background:#99D9EA");
 			item.appendChild(cell);
-	
+
 			promocion.setRutas(txtRuta.getText().trim().isEmpty()?"*":txtRuta.getText().trim());
 			cell = new Listcell(txtRuta.getText().trim().isEmpty()?"*":promocion.getListRutas().toString());
 			item.appendChild(cell);
-			
+
 			promocion.setServicios(txtServicio.getText().trim().isEmpty()?"*":txtServicio.getText().trim());
 			cell = new Listcell(txtServicio.getText().trim().isEmpty()?"*":promocion.getListServicio().toString());
 			item.appendChild(cell);
-			
+
 			promocion.setPuntoVenta(txtPuntoVenta.getText().trim().isEmpty()?"*":txtPuntoVenta.getText().trim());
 			cell = new Listcell(txtPuntoVenta.getText().trim().isEmpty()?"*":promocion.getListPuntoVenta().toString());
 			item.appendChild(cell);
-			
+
 			promocion.setCanalVenta(txtCanalVenta.getText().trim().isEmpty()?"*":txtCanalVenta.getText().trim());
 			cell = new Listcell(txtCanalVenta.getText().trim().isEmpty()?"*":promocion.getListCanalVenta().toString());
 	//		cell.setTooltiptext("celda 1");
 			item.appendChild(cell);
-			
+
 			promocion.setCliente(txtCliente.getText().trim().isEmpty()?"*":txtCliente.getText().trim());
 			cell = new Listcell(txtCliente.getText().trim().isEmpty()?"*":lblCliente.getValue());
 			item.appendChild(cell);
-			
+
 			if(chkbxPorRango.isChecked()){
 				if(spnnrInicio.getValue()==null || spnnrInicio.getValue()<=0)
 					throw new IntervaloAsientosException(IntervaloAsientosException.INTERVALO_INICIAL);
@@ -1421,12 +1421,12 @@ public class WndPromociones extends WndBase {
 			promocion.setAsientos(txtAsientos.getText().trim().isEmpty()?"*":txtAsientos.getText().trim());
 			cell = new Listcell(txtAsientos.getText().trim().isEmpty()?"*":txtAsientos.getText().trim());
 			item.appendChild(cell);
-			
+
 			promocion.setCantidadViajesPasajero(intbxCantidadViajes.getText().trim().isEmpty()?"*":intbxCantidadViajes.getText().trim());
 			cell = new Listcell(intbxCantidadViajes.getText().trim().isEmpty()?"*":intbxCantidadViajes.getText().trim());
 			item.appendChild(cell);
-			
-			if(cmbTipoDescuento.getSelectedItem().getValue().toString().equals(Promocion.PROMOCION_TIPO_DESCUENTO_VALUE_FIJO) 
+
+			if(cmbTipoDescuento.getSelectedItem().getValue().toString().equals(Promocion.PROMOCION_TIPO_DESCUENTO_VALUE_FIJO)
 					|| cmbTipoDescuento.getSelectedItem().getValue().toString().equals(Promocion.PROMOCION_TIPO_DESCUENTO_VALUE_PORCENTAJE)){
 				promocion.setPorImporte(null);
 				promocion.setValorDescuento(dblbxDescuento.getValue());
@@ -1444,67 +1444,67 @@ public class WndPromociones extends WndBase {
 				cell = new Listcell("");
 				item.appendChild(cell);
 			}
-				
+
 //			promocion.setPorImporte(dblbxImporte.getText().trim().isEmpty()?null:dblbxImporte.getValue());
 //			cell = new Listcell(dblbxImporte.getText().trim().isEmpty()?"":dblbxImporte.getText().trim());
 //			item.appendChild(cell);
-//			
+//
 //			promocion.setValorDescuento(dblbxDescuento.getText().trim().isEmpty()?null:dblbxDescuento.getValue());
 //			cell = new Listcell(dblbxDescuento.getText().trim().isEmpty()?"":dblbxDescuento.getText().trim());
 //			item.appendChild(cell);
-			
+
 			promocion.setTipoDescuento(String.valueOf(cmbTipoDescuento.getSelectedItem().getValue()));
 			cell = new Listcell(cmbTipoDescuento.getText());
 			item.appendChild(cell);
-			
+
 			promocion.setEnTemporada(cmbTemporada.getSelectedItem().getValue()==null?"*":String.valueOf(cmbTemporada.getSelectedItem().getValue()));
 			cell = new Listcell(cmbTemporada.getSelectedItem().getValue()==null?"*":cmbTemporada.getText());
 			item.appendChild(cell);
-			
+
 			promocion.setFormaPago(cmbFormaPago.getSelectedItem().getValue()==null?"*":((FormaPago)cmbFormaPago.getSelectedItem().getValue()).getId().toString());
 			cell = new Listcell(cmbFormaPago.getSelectedItem().getValue()==null?"*":cmbFormaPago.getText());
 			item.appendChild(cell);
-			
+
 			promocion.setTipoFormaPago(cmbTipoFormaPago.getText().equals("")?"*":(cmbTipoFormaPago.getSelectedItem().getValue()==null?"*":((TipoFormaPago)cmbTipoFormaPago.getSelectedItem().getValue()).getId().toString()) );
 			cell = new Listcell(cmbTipoFormaPago.getText().equals("")?"*":cmbTipoFormaPago.getText());
 			item.appendChild(cell);
-			
+
 			promocion.setTarjetaCredito(txtTarjeta.getText().trim().isEmpty()?"*":txtTarjeta.getText().trim());
 			cell = new Listcell(txtTarjeta.getText().trim().isEmpty()?"*":promocion.getListTarjetaCredito().toString().substring(1, (promocion.getListTarjetaCredito().toString().length()-1)));
 			item.appendChild(cell);
-			
+
 			promocion.setFechaInicio((dtbxFechaInicio.getValue()==null?null:dtbxFechaInicio.getValue()));
 			cell = new Listcell(dtbxFechaInicio.getValue()==null?"*":Util.DatetoString(dtbxFechaInicio.getValue(), Constantes.DATE_FORMAT));
 			item.appendChild(cell);
-			
+
 			promocion.setFechaFin((dtbxFechaFin.getValue()==null?null:dtbxFechaFin.getValue()));
 			cell = new Listcell(dtbxFechaFin.getValue()==null?"*":Util.DatetoString(dtbxFechaFin.getValue(), Constantes.DATE_FORMAT));
 			item.appendChild(cell);
-			
+
 			promocion.setPasajeroNuevo(chkPasajeroNuevo.isChecked()?"S":"*");
 			cell = new Listcell(chkPasajeroNuevo.isChecked()?"S":"*");
 			item.appendChild(cell);
-			
+
 			promocion.setIdaVuelta(chkIdaVuelta.isChecked()?"S":"*");
 			cell = new Listcell(chkIdaVuelta.isChecked()?"S":"*");
 			item.appendChild(cell);
-			
+
 			promocion.setPasajeroFrecuente(chkPaxFre.isChecked()?"S":"*");
 			cell = new Listcell(chkPaxFre.isChecked()?"S":"*");
 			item.appendChild(cell);
-			
+
 			promocion.setHorasPartida(txtHoraPartida.getText().trim().isEmpty()?"*":txtHoraPartida.getText().trim().replaceAll(":", "."));
 			cell = new Listcell(promocion.getHorasPartida());
 			cell.setStyle("font-size:11px !important");
 			item.appendChild(cell);
-			
+
 			cell = new Listcell();
 			Toolbarbutton toolbarbutton = new Toolbarbutton("", "resources/mp_editarEnabled.png");
 			cell.appendChild(toolbarbutton);
 			toolbarbutton = new Toolbarbutton("", "resources/mp_eliminarEnabled.png");
 			cell.appendChild(toolbarbutton);
 			item.appendChild(cell);
-			
+
 			/*	ARMANDO LA CADENA DE TOKENS	*/
 			StringBuffer expresion = new StringBuffer();
 			expresion.append(Promocion.TOKEN_RUTA+":"+promocion.getRutas()+";");
@@ -1523,7 +1523,7 @@ public class WndPromociones extends WndBase {
 			expresion.append(Promocion.TOKEN_PAXFRE+":"+promocion.getPasajeroFrecuente()+";");
 			expresion.append(Promocion.TOKEN_HORA_PARTIDA+":"+promocion.getHorasPartida());
 			promocion.setExpresion(expresion.toString());
-			
+
 			StringBuffer beneficio = new StringBuffer();
 			beneficio.append(Promocion.TOKEN_TIPO_DESCUENTO+":"+promocion.getTipoDescuento()+";");
 			beneficio.append(Promocion.TOKEN_VALOR_DESCUENTO+":"+(promocion.getValorDescuento()==null?"*":promocion.getValorDescuento())+";");
@@ -1531,7 +1531,7 @@ public class WndPromociones extends WndBase {
 			promocion.setBeneficio(beneficio.toString());
 			promocion.setEsAcumulable(Constantes.FALSE_VALUE);
 //			promocion.setEsTarifa(Constantes.FALSE_VALUE);
-			
+
 			/*Implementado 01/10/2014 - jabanto*/
 			String question=Messages.getString("WndPromociones.information.confirmacionGuardarPromocion");
 			if(lblPermitirDescuento.isVisible() && chbxPermitirDescuento.isVisible() ){
@@ -1541,7 +1541,7 @@ public class WndPromociones extends WndBase {
 				}else
 					question=Messages.getString("WndPromociones.information.noPermitirDescuento");
 			}
-			
+
 			promocion.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 			UtilData.auditarRegistro(promocion, getUsuario(), Executions.getCurrent());
 			Messagebox.show(question, DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
@@ -1571,7 +1571,7 @@ public class WndPromociones extends WndBase {
 						DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 					}
 				}
-			});			
+			});
 		}catch(PromocionExcepcion pex){
 			if(pex.getTipo().intValue()==PromocionExcepcion.DENOMINACION)
 				DlgMessage.information(Messages.getString("WndPromociones.information.noDenominacion"), txtDenominacion);
@@ -1598,11 +1598,11 @@ public class WndPromociones extends WndBase {
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	private void buscar(){
 		try{
 			lbxPromociones.getItems().clear();
-			
+
 			String denominacion = txtDenominacionB.getText().isEmpty()?null:txtDenominacionB.getText().trim().toUpperCase();
 			String ruta = null;
 			if(cmbRutaB.getSelectedItem().getValue() instanceof Ruta)
@@ -1613,8 +1613,8 @@ public class WndPromociones extends WndBase {
 			String clienteb = txtClienteB.getText().isEmpty()?null:txtClienteB.getText().trim();
 			String tipoDescuento = null;
 			if(cmbTipoDescuentoB.getSelectedItem().getValue() instanceof String)
-				tipoDescuento = ((String)cmbTipoDescuentoB.getSelectedItem().getValue()).toString();			
-			
+				tipoDescuento = ((String)cmbTipoDescuentoB.getSelectedItem().getValue()).toString();
+
 //			List<Promocion> lstPromociones = ServiceLocator.getPromocionManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion, fechaInicio");
 			List<Promocion> lstPromociones = ServiceLocator.getPromocionManager().buscarPorCriterios(denominacion, ruta, servicio, clienteb, tipoDescuento, "c_denominacion, d_fecini");
 			if(lstPromociones.size()>0){
@@ -1630,12 +1630,12 @@ public class WndPromociones extends WndBase {
 						for(int i=0; i<ids.length; i++){
 							oCriteriosIN[i]=Integer.valueOf(ids[i]);
 						}
-						List<String> criteriosOrdenar = new ArrayList<String>();
+						List<String> criteriosOrdenar = new ArrayList<>();
 						criteriosOrdenar.add("origen");
 						List<Ruta> lstRutas = ServiceLocator.getRutaManager().buscarPorX("id", oCriteriosIN, criteriosOrdenar, Constantes.VALUE_ACTIVO);
 						cell = new Listcell(lstRutas.toString().substring(1, lstRutas.toString().length()-1));
 					}else{
-						cell = new Listcell(promocion.getRutas());						
+						cell = new Listcell(promocion.getRutas());
 					}
 					item.appendChild(cell);
 					/*	Para mostrar los servicios	*/
@@ -1645,7 +1645,7 @@ public class WndPromociones extends WndBase {
 						for(int i=0; i<ids.length; i++){
 							oCriteriosIN[i]=Integer.valueOf(ids[i]);
 						}
-						List<String> criteriosOrdenar = new ArrayList<String>();
+						List<String> criteriosOrdenar = new ArrayList<>();
 						criteriosOrdenar.add("denominacion");
 						List<Servicio> lstServicios = ServiceLocator.getServicioManager().buscarPorX("id", oCriteriosIN, criteriosOrdenar, Constantes.VALUE_ACTIVO);
 						cell = new Listcell(lstServicios.toString().substring(1, lstServicios.toString().length()-1));
@@ -1659,7 +1659,7 @@ public class WndPromociones extends WndBase {
 						for(int i=0; i<ids.length; i++){
 							oCriteriosIN[i]=Integer.valueOf(ids[i]);
 						}
-						List<String> criteriosOrdenar = new ArrayList<String>();
+						List<String> criteriosOrdenar = new ArrayList<>();
 						criteriosOrdenar.add("denominacion");
 						List<Agencia> lstAgencias = ServiceLocator.getAgenciaManager().buscarPorX("id", oCriteriosIN, criteriosOrdenar, Constantes.VALUE_ACTIVO);
 						cell = new Listcell(lstAgencias.toString().substring(1, lstAgencias.toString().length()-1));
@@ -1673,7 +1673,7 @@ public class WndPromociones extends WndBase {
 						for(int i=0; i<ids.length; i++){
 							oCriteriosIN[i]=Integer.valueOf(ids[i]);
 						}
-						List<String> criteriosOrdenar = new ArrayList<String>();
+						List<String> criteriosOrdenar = new ArrayList<>();
 						criteriosOrdenar.add("denominacion");
 						List<CanalVenta> lstCanalesVenta = ServiceLocator.getCanalVentaManager().buscarPorX("id", oCriteriosIN, criteriosOrdenar, Constantes.VALUE_ACTIVO);
 						cell = new Listcell(lstCanalesVenta.toString().substring(1, lstCanalesVenta.toString().length()-1));
@@ -1719,7 +1719,7 @@ public class WndPromociones extends WndBase {
 						for(int i=0; i<ids.length; i++){
 							oCriteriosIN[i]=Integer.valueOf(ids[i]);
 						}
-						List<String> criteriosOrdenar = new ArrayList<String>();
+						List<String> criteriosOrdenar = new ArrayList<>();
 						criteriosOrdenar.add("denominacion");
 						List<TarjetaCredito> lstTarjetasCredito = ServiceLocator.getTarjetaCreditoManager().buscarPorX("id", oCriteriosIN, criteriosOrdenar, Constantes.VALUE_ACTIVO);
 						cell = new Listcell(lstTarjetasCredito.toString().substring(1, lstTarjetasCredito.toString().length()-1));
@@ -1739,7 +1739,7 @@ public class WndPromociones extends WndBase {
 					cell = new Listcell(promocion.getHorasPartida());
 					cell.setStyle("font-size:11px !important");
 					item.appendChild(cell);
-					
+
 					if(promocion.getEsTarifa().intValue()==Constantes.TRUE_VALUE){
 						cell = new Listcell();
 						Button btnEditar = new Button("Editar");
@@ -1754,8 +1754,8 @@ public class WndPromociones extends WndBase {
 						cell.appendChild(btnEditar);
 						item.appendChild(cell);
 					}
-					
-					
+
+
 					Button btnEliminar=new Button("Eliminar");
 					btnEliminar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 						@Override
@@ -1763,12 +1763,12 @@ public class WndPromociones extends WndBase {
 							Messagebox.show(Messages.getString("Generales.question.delete"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
 								@Override
 								public void onEvent(Event e) throws Exception {
-									if(e.getName().equals("onYes")){		
+									if(e.getName().equals("onYes")){
 										try{
-											
+
 											Listitem oitem=(Listitem) e1.getTarget().getAttribute("ITEM");
 											eliminarPromocion(Long.valueOf(e1.getTarget().getId()), oitem);
-											
+
 										} catch (Exception e2) {
 											e2.printStackTrace();
 											DlgMessage.error(e2.getMessage());
@@ -1783,8 +1783,8 @@ public class WndPromociones extends WndBase {
 					btnEliminar.setAttribute("ITEM", item);
 					cell.appendChild(btnEliminar);
 					item.appendChild(cell);
-					
-					
+
+
 					item.setValue(promocion);
 					lbxPromociones.appendChild(item);
 					grdCriterios.setVisible(false);
@@ -1796,20 +1796,20 @@ public class WndPromociones extends WndBase {
 			ex.printStackTrace();
 		}
 	}
-	
-	
+
+
 	private void eliminarPromocion(Long idPromocion, Listitem item) throws Exception{
 		Promocion oPromocion= ServiceLocator.getPromocionManager().buscarPorId(idPromocion);
 		UtilData.auditarRegistro(oPromocion, true, getUsuario(), Executions.getCurrent());
 		oPromocion.setEstadoRegistro(Constantes.VALUE_INACTIVO);
 		ServiceLocator.getPromocionManager().actualizar(oPromocion);
-		
+
 		lbxPromociones.removeChild(item);
 	}
-	
-	
+
+
 	@SuppressWarnings("deprecation")
-	private void editarPromocion(Long idPromocion){		
+	private void editarPromocion(Long idPromocion){
 		try{
 			Promocion promocion = ServiceLocator.getPromocionManager().buscarPorId(idPromocion);
 			promocionEditar = promocion;
@@ -1838,7 +1838,7 @@ public class WndPromociones extends WndBase {
 			listheader.setAlign("center");
 			listhead.appendChild(listheader);
 			listbox.appendChild(listhead);
-			
+
 			Listitem listitem = new Listitem();
 			Listcell listcell = new Listcell(promocion.getDenominacion());
 			listitem.appendChild(listcell);
@@ -1849,12 +1849,12 @@ public class WndPromociones extends WndBase {
 				for(int i=0; i<ids.length; i++){
 					oCriteriosIN[i]=Integer.valueOf(ids[i]);
 				}
-				List<String> criteriosOrdenar = new ArrayList<String>();
+				List<String> criteriosOrdenar = new ArrayList<>();
 				criteriosOrdenar.add("origen");
 				List<Ruta> lstRutas = ServiceLocator.getRutaManager().buscarPorX("id", oCriteriosIN, criteriosOrdenar, Constantes.VALUE_ACTIVO);
 				listcell = new Listcell(lstRutas.toString().substring(1, lstRutas.toString().length()-1));
 			}else{
-				listcell = new Listcell(promocion.getRutas());						
+				listcell = new Listcell(promocion.getRutas());
 			}
 			listitem.appendChild(listcell);
 			listcell = new Listcell(promocion.getPorImporte()==null?"":Util.toNumberFormat(promocion.getPorImporte(), 2));
@@ -1866,7 +1866,7 @@ public class WndPromociones extends WndBase {
 			listitem.setValue(promocion);
 			listbox.appendChild(listitem);
 			wndCriterios.appendChild(listbox);
-			
+
 			Grid grid = new Grid();
 			Columns columns = new Columns();
 			Column column = new Column();
@@ -1883,7 +1883,7 @@ public class WndPromociones extends WndBase {
 			columns.appendChild(column);
 			Rows rows = new Rows();
 			Row row = new Row();
-			
+
 			Vlayout vlayout = new Vlayout();
 			Label label = new Label("FECHA INICIO :");
 			vlayout.appendChild(label);
@@ -1894,7 +1894,7 @@ public class WndPromociones extends WndBase {
 //			dtbxFechaInicio.setValue(promocion.getFechaInicio());
 			vlayout.appendChild(dtbxFechaInicio);
 			row.appendChild(vlayout);
-			
+
 			vlayout = new Vlayout();
 			label = new Label("FECHA FIN :");
 			vlayout.appendChild(label);
@@ -1903,7 +1903,7 @@ public class WndPromociones extends WndBase {
 			dtbxFechaFin.setConstraint("before "+Util.DatetoString(promocion.getFechaFin(), "yyyyMMdd"));
 			vlayout.appendChild(dtbxFechaFin);
 			row.appendChild(vlayout);
-			
+
 			vlayout = new Vlayout();
 			label = new Label("TARIFA :");
 			vlayout.appendChild(label);
@@ -1913,7 +1913,7 @@ public class WndPromociones extends WndBase {
 //			dblbxTarifa.setValue(0.00);
 			vlayout.appendChild(dblbxTarifa);
 			row.appendChild(vlayout);
-			
+
 			final Button btnAgregar = new Button("Generar", "resources/mp_agregarEnabled.png");
 			btnAgregar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 				@Override
@@ -1927,11 +1927,11 @@ public class WndPromociones extends WndBase {
 			});
 			btnAgregar.setHeight("27px");
 			row.appendChild(btnAgregar);
-			
+
 			rows.appendChild(row);
 			grid.appendChild(rows);
 			wndCriterios.appendChild(grid);
-			
+
 			lbxNuevaPromocion = new Listbox();
 			listhead = new Listhead();
 			listheader = new Listheader("DENOMINACION");
@@ -1951,7 +1951,7 @@ public class WndPromociones extends WndBase {
 			listhead.appendChild(listheader);
 			lbxNuevaPromocion.appendChild(listhead);
 			wndCriterios.appendChild(lbxNuevaPromocion);
-			
+
 			Div div = new Div();
 			div.setAlign("center");
 			btnGuardar = new Button("Guardar", "resources/mp_guardarEnabled.png");
@@ -1960,12 +1960,12 @@ public class WndPromociones extends WndBase {
 				public void onEvent(Event e){
 					try{
 						int result = Constantes.FAILURE;
-						List<Promocion> lstPromocion = new ArrayList<Promocion>();
+						List<Promocion> lstPromocion = new ArrayList<>();
 						for(Listitem listitem : lbxNuevaPromocion.getItems()){
 							if(listitem.getValue() instanceof Promocion){
 								Promocion promocion = listitem.getValue();
 								lstPromocion.add(promocion);
-							}				
+							}
 						}
 						ServiceLocator.getPromocionManager().guardarPromocion(lstPromocion);
 						result = Constantes.CORRECT;
@@ -1997,7 +1997,7 @@ public class WndPromociones extends WndBase {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	private boolean validar(Datebox dtbxFechaInicio, Datebox dtbxFechaFin, Doublebox dblbxTarifa){
 		boolean result = false;
 		try{
@@ -2023,10 +2023,10 @@ public class WndPromociones extends WndBase {
 		}
 		return result;
 	}
-	
+
 	private void generarPromocion(Date fInicio, Date fFin, Double tarifa){
 		try{
-			List<Promocion> lstPromocion = new ArrayList<Promocion>();
+			List<Promocion> lstPromocion = new ArrayList<>();
 			Promocion promocion = (Promocion)promocionEditar.clone();
 			String f1 = Util.DatetoString(promocionEditar.getFechaInicio(),Constantes.DATE_FORMAT);
 			String f2 = Util.DatetoString(fInicio, Constantes.DATE_FORMAT);
@@ -2074,18 +2074,18 @@ public class WndPromociones extends WndBase {
 				UtilData.auditarRegistro(promocion, true, getUsuario(), Executions.getCurrent());
 				lstPromocion.add(promocion);
 				mostrarPromocion(promocion);
-			}			
+			}
 		}catch(PromocionExcepcion pex){
 			DlgMessage.information(Messages.getString("WndPromociones.information.denominacionDuplicada"));
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
-	
+
 	private void mostrarPromocion(Promocion promocion){
 		Listitem listitem = new Listitem();
 		Listcell listcell = null;
-		
+
 		listcell = new Listcell(promocion.getDenominacion());
 		listitem.appendChild(listcell);
 		listcell = new Listcell(Util.toNumberFormat(promocion.getPorImporte(), 2));
@@ -2097,7 +2097,7 @@ public class WndPromociones extends WndBase {
 		listitem.setValue(promocion);
 		lbxNuevaPromocion.appendChild(listitem);
 	}
-	
+
 	private void limpiarCriterios(){
 		cmbRutaB.setSelectedIndex(0);
 		cmbServicioB.setSelectedIndex(0);

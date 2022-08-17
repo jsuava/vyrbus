@@ -4,13 +4,13 @@ import java.util.Date;
 // default package
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 public class VSAfiliacion extends GenericBean implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	 private Long id;
      private VSTipoRegistro vsTipoRegistro;
      private VSLiquidacion vsLiquidacion;
@@ -30,30 +30,30 @@ public class VSAfiliacion extends GenericBean implements java.io.Serializable {
      private Integer agenciaID;
      private String numeroBoleto;
 
-     
+
      private Agencia agencia;	//No mapeado
      private Usuario usuario;	//No mapeado
-     
-     
+
+
     // Constructors
     /** default constructor */
     public VSAfiliacion() {
-    	
+
     }
 
     // Property accessors
     public Long getId() {
         return this.id;
     }
-    
+
     public void setId(Long id) {
         this.id = id;
     }
-    
+
     public Integer getAdicional() {
         return this.adicional;
     }
-    
+
     public void setAdicional(Integer adicional) {
         this.adicional = adicional;
     }
@@ -61,7 +61,7 @@ public class VSAfiliacion extends GenericBean implements java.io.Serializable {
     public String getNumeroCertificado() {
         return this.numeroCertificado;
     }
-    
+
     public void setNumeroCertificado(String numeroCertificado) {
         this.numeroCertificado = numeroCertificado;
     }
@@ -69,7 +69,7 @@ public class VSAfiliacion extends GenericBean implements java.io.Serializable {
     public Double getImportePagado() {
         return this.importePagado;
     }
-    
+
     public void setImportePagado(Double importePagado) {
         this.importePagado = importePagado;
     }
@@ -77,7 +77,7 @@ public class VSAfiliacion extends GenericBean implements java.io.Serializable {
     public Date getFechaVigenciaInicial() {
         return this.fechaVigenciaInicial;
     }
-    
+
     public void setFechaVigenciaInicial(Date fechaVigenciaInicial) {
         this.fechaVigenciaInicial = fechaVigenciaInicial;
     }
@@ -85,7 +85,7 @@ public class VSAfiliacion extends GenericBean implements java.io.Serializable {
     public Date getFechaVigenciaFinal() {
         return this.fechaVigenciaFinal;
     }
-    
+
     public void setFechaVigenciaFinal(Date fechaVigenciaFinal) {
         this.fechaVigenciaFinal = fechaVigenciaFinal;
     }
@@ -93,7 +93,7 @@ public class VSAfiliacion extends GenericBean implements java.io.Serializable {
     public Date getFechaVenta() {
         return this.fechaVenta;
     }
-    
+
     public void setFechaVenta(Date fechaVenta) {
         this.fechaVenta = fechaVenta;
     }
@@ -101,7 +101,7 @@ public class VSAfiliacion extends GenericBean implements java.io.Serializable {
     public Date getFechaProcesoAfiliacion() {
         return this.fechaProcesoAfiliacion;
     }
-    
+
     public void setFechaProcesoAfiliacion(Date fechaProcesoAfiliacion) {
         this.fechaProcesoAfiliacion = fechaProcesoAfiliacion;
     }
@@ -109,7 +109,7 @@ public class VSAfiliacion extends GenericBean implements java.io.Serializable {
     public Date getFechaProcesoPago() {
         return this.fechaProcesoPago;
     }
-    
+
     public void setFechaProcesoPago(Date fechaProcesoPago) {
         this.fechaProcesoPago = fechaProcesoPago;
     }

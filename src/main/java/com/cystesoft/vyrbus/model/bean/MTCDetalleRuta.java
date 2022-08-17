@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 26/08/2014
  * Hora			: 08:42:35
@@ -14,7 +14,7 @@ package com.cystesoft.vyrbus.model.bean;
  */
 public class MTCDetalleRuta extends GenericBean {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer id;
 	private MTCRuta mtcRuta;
 	private Ruta ruta;
@@ -54,7 +54,7 @@ public class MTCDetalleRuta extends GenericBean {
 	public void setRuta(Ruta ruta) {
 		this.ruta = ruta;
 	}
-	
-	
-	
+
+
+
 }

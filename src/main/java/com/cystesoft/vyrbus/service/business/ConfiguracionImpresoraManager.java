@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 21/05/2015
  * Hora			: 15:39:30
@@ -37,6 +37,6 @@ public interface ConfiguracionImpresoraManager {
 	 * @throws Exception
 	 */
 	public void actualizar(ConfiguracionImpresora configuracionImpresora)throws Exception;
-	
+
 	public ArrayList<ConfiguracionImpresora> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
 }

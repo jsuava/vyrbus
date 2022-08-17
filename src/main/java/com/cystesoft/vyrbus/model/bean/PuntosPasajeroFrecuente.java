@@ -17,15 +17,15 @@ public class PuntosPasajeroFrecuente extends GenericBean implements java.io.Seri
     private Date fechaCanje;
     private Date fechaAnulacion;
     private VentaPasaje ventaPasajeCanje;
-    
-    
-    private Integer totalPuntaje;	//No Mapeado 
+
+
+    private Integer totalPuntaje;	//No Mapeado
     private Integer saldoInicial;
     private Integer totalAsignado;
     private Integer totalCajeados;
     private Integer saldoActual;
     private Integer puntosCanjeados;
-    
+
 	// Constructors
 
     /** default constructor */

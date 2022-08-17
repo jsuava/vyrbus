@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 01/08/2013
  */
@@ -24,6 +24,6 @@ public class OcupacionAsientosDesbloqueadosDAOImpl extends GenericDAOImpl implem
 		// TODO Auto-generated method stub
 		super.save(ocupacionAsientosDesbloqueados);
 	}
-	
+
 
 }

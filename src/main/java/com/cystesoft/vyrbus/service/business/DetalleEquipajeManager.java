@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 14 jul. 2021
  * Hora			: 12:06:12
@@ -21,37 +21,37 @@ import com.cystesoft.vyrbus.model.bean.Equipaje;
  */
 public interface DetalleEquipajeManager {
 	/**
-	 * 
+	 *
 	 * @param estado
 	 * @param criterioOrden
 	 * @return
 	 */
 	public ArrayList<DetalleEquipaje> buscarPorEstadoRegistro(String estado, String criterioOrden);
 	/**
-	 * 
+	 *
 	 * @param criteriosBusqueda
 	 * @param criteriosOrdenar
 	 * @return
 	 */
 	public ArrayList<DetalleEquipaje> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
 	/**
-	 * 
+	 *
 	 * @param id
 	 * @return
 	 */
 	public DetalleEquipaje buscarPorId(Long id);
 	/**
-	 * 
+	 *
 	 * @param detalleEquipaje
 	 */
 	public void guardar(DetalleEquipaje detalleEquipaje);
 	/**
-	 * 
+	 *
 	 * @param detalleEquipaje
 	 */
 	public void actualizar(DetalleEquipaje detalleEquipaje);
 	/**
-	 * 
+	 *
 	 * @param listDetalleEquipaje
 	 * @param equipaje
 	 * @throws Exception

@@ -9,7 +9,7 @@ public class Nacionalidad extends GenericBean implements Serializable {
 	private Integer id;
 	private String denominacion;
 	private TipoMoneda tipoMoneda;
-	
+
 	public Nacionalidad() {
 	}
 

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripci�n	: 
+ * Descripci�n	:
  * Fecha		: 25/06/2014
  */
 package com.cystesoft.vyrbus.service.business.impl;
@@ -35,8 +35,8 @@ import com.cystesoft.vyrbus.service.exceptions.VSAfialiacionException;
  *
  */
 public class VentaSeguroManagerImpl implements VentaSeguroManager {
-	private VentaSeguroDAO ventaSeguroDAO; 
-	
+	private VentaSeguroDAO ventaSeguroDAO;
+
 	/**
 	 * @return the ventaSeguroDAO
 	 */
@@ -49,8 +49,8 @@ public class VentaSeguroManagerImpl implements VentaSeguroManager {
 	public void setVentaSeguroDAO(VentaSeguroDAO ventaSeguroDAO) {
 		this.ventaSeguroDAO = ventaSeguroDAO;
 	}
-	
-	
+
+
 	/** TRANSACCIONES REFERIDAS AL TIPO DE DOCUMENTO*/
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaSeguroManager#buscarTipoDocumentoPorEstado(java.lang.String)
@@ -60,7 +60,7 @@ public class VentaSeguroManagerImpl implements VentaSeguroManager {
 		return getVentaSeguroDAO().buscarTipoDocumentoPorEstado(estado);
 	}
 
-	
+
 	/** TRANSACCIONES REFERIDAS SEXO DEL ASEGURADO*/
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaSeguroManager#buscarSexoPorEstado(java.lang.String)
@@ -70,7 +70,7 @@ public class VentaSeguroManagerImpl implements VentaSeguroManager {
 		return getVentaSeguroDAO().buscarSexoPorEstado(estado);
 	}
 
-	
+
 	/** TRANSACCIONES REFERIDAS ESTADO CIVIL */
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaSeguroManager#buscarEstadoCivilPorEstado(java.lang.String)
@@ -80,7 +80,7 @@ public class VentaSeguroManagerImpl implements VentaSeguroManager {
 		return getVentaSeguroDAO().buscarEstadoCivilPorEstado(estado);
 	}
 
-	
+
 	/** TRANSACCIONES REFERIDAS A LAS CIUDADES */
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaSeguroManager#buscarCiudadesPorEstado(java.lang.String)
@@ -90,13 +90,13 @@ public class VentaSeguroManagerImpl implements VentaSeguroManager {
 		return getVentaSeguroDAO().buscarCiudadesPorEstado(estado);
 	}
 
-	
+
 	/** TRANSACCIONES REFERIDAS AL ASEGURADO */
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaSeguroManager#buscarAseguradoByDocumento(java.lang.Integer, java.lang.String)
 	 */
 	@Override
-	public VSAsegurado buscarAseguradoByDocumento(Integer idTipoDocumento,String numeroDocumento) throws Exception {	
+	public VSAsegurado buscarAseguradoByDocumento(Integer idTipoDocumento,String numeroDocumento) throws Exception {
 		return getVentaSeguroDAO().buscarAseguradoByDocumento(idTipoDocumento, numeroDocumento);
 	}
 	/* (non-Javadoc)
@@ -116,7 +116,7 @@ public class VentaSeguroManagerImpl implements VentaSeguroManager {
 		getVentaSeguroDAO().guardarAsegurado(asegurado);
 	}
 
-	
+
 	/** TRANSACCIONES REFERIDAS A LA LIQUIDACION*/
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaSeguroManager#buscarLiquidacion(java.lang.Integer, java.lang.String, java.lang.Integer)
@@ -149,7 +149,7 @@ public class VentaSeguroManagerImpl implements VentaSeguroManager {
 		return getVentaSeguroDAO().buscarLiquidacionVentas(idLiquidacion);
 	}
 
-	
+
 	/** TRANSACCIONES REFERIDAS A LA AFILIACION*/
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaSeguroManager#guardarAfiliacion(com.tepsa.sisvyr.model.bean.VSAfiliacion)
@@ -162,14 +162,14 @@ public class VentaSeguroManagerImpl implements VentaSeguroManager {
 			Boolean existeCertificado=getVentaSeguroDAO().validarCertificadoAfiliacion(vsAfiliacion.getNumeroCertificado());
 			if(existeCertificado)
 				throw new VSAfialiacionException(VSAfialiacionException.DUPLICITY_CERTIFICADO);
-			
+
 			getVentaSeguroDAO().guardarAfiliacion(vsAfiliacion);
-			
+
 		}catch(VSAfialiacionException aex){
 			if(aex.getTipo().intValue()==VSAfialiacionException.DUPLICITY_CERTIFICADO)
 				throw new VSAfialiacionException(VSAfialiacionException.DUPLICITY_CERTIFICADO);
 		}
-				
+
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaSeguroManager#validarBoletoAfiliacion(java.lang.String)
@@ -221,8 +221,8 @@ public class VentaSeguroManagerImpl implements VentaSeguroManager {
 		// TODO Auto-generated method stub
 		getVentaSeguroDAO().anularCertificado(numeroCertificado);
 	}
-		
-	
+
+
 	/** TRANSACCIONES REFERIDAS AL TIPO DE PROCESO*/
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaSeguroManager#buscarTipoProcesoPorEstado(java.lang.String)
@@ -231,8 +231,8 @@ public class VentaSeguroManagerImpl implements VentaSeguroManager {
 	public List<VSTipoProceso> buscarTipoProcesoPorEstado(String estado)throws Exception {
 		return getVentaSeguroDAO().buscarTipoProcesoPorEstado(estado);
 	}
-	
-	
+
+
 	/** TRANSACCIONES REFERIDAS AL TIPO DE PROCESO*/
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaSeguroManager#buscarContratantePorID(java.lang.Integer)
@@ -241,8 +241,8 @@ public class VentaSeguroManagerImpl implements VentaSeguroManager {
 	public VSContratante buscarContratantePorID(Integer id) throws Exception {
 		return getVentaSeguroDAO().buscarContratantePorID(id);
 	}
-	
-	
+
+
 	/** TRANSACCIONES REFERIDAS AL ENCABEZADO DE LA AFILIACION*/
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaSeguroManager#guardarEncabezadoAfiliacion(com.tepsa.sisvyr.model.bean.VSEncabezadoAfiliacion)
@@ -252,8 +252,8 @@ public class VentaSeguroManagerImpl implements VentaSeguroManager {
 	public void guardarEncabezadoAfiliacion(VSEncabezadoAfiliacion vsEncabezadoAfiliacion) throws Exception {
 		getVentaSeguroDAO().guardarEncabezadoAfiliacion(vsEncabezadoAfiliacion);
 	}
-	
-	
+
+
 	/** TRANSACCIONES REFERIDAS A LA ESTRUCTURA DE LA DECLARACION*/
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaSeguroManager#guardarEstructuraDeclaracion(com.tepsa.sisvyr.model.bean.VSEstructuraDeclaracion)
@@ -263,8 +263,8 @@ public class VentaSeguroManagerImpl implements VentaSeguroManager {
 	public void guardarEstructuraDeclaracion(VSEstructuraDeclaracion vsEstructuraDeclaracion) throws Exception {
 		getVentaSeguroDAO().guardarEstructuraDeclaracion(vsEstructuraDeclaracion);
 	}
-	
-	
+
+
 	/** TRANSACCIONES REFERIDAS A LA ESTRUCTURA DEL CONTRATANTE*/
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaSeguroManager#guaradrEstructuraContrantante(com.tepsa.sisvyr.model.bean.VSEstructuraContratante)
@@ -274,8 +274,8 @@ public class VentaSeguroManagerImpl implements VentaSeguroManager {
 	public void guardarEstructuraContrantante(VSEstructuraContratante vsEstructuraContratante) throws Exception {
 		getVentaSeguroDAO().guardarEstructuraContrantante(vsEstructuraContratante);
 	}
-	
-	
+
+
 	/** TRANSACCIONES REFERIDAS A LA ESTRUCTURA DEL ASEGURADO*/
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaSeguroManager#guardarEstructuraAsegurado(com.tepsa.sisvyr.model.bean.VSEstructuraAsegurado)
@@ -285,9 +285,9 @@ public class VentaSeguroManagerImpl implements VentaSeguroManager {
 	public void guardarEstructuraAsegurado(VSEstructuraAsegurado vsEstructuraAsegurado) throws Exception {
 		getVentaSeguroDAO().guardarEstructuraAsegurado(vsEstructuraAsegurado);
 	}
-	
-	
-	
+
+
+
 	/** TRANSACCIONES REFERIDAS A LA ASIGNACION DE CERTIFICADOS*/
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaSeguroManager#buscarAsignacionCertificados(java.lang.Integer)
@@ -354,7 +354,7 @@ public class VentaSeguroManagerImpl implements VentaSeguroManager {
 		// TODO Auto-generated method stub
 		return getVentaSeguroDAO().ValidarAsignacionCertificado(correlativo);
 	}
-	
-			
-	
+
+
+
 }

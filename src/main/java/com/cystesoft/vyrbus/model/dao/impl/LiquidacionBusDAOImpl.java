@@ -8,15 +8,15 @@ import com.cystesoft.vyrbus.model.bean.LiquidacionBus;
 import com.cystesoft.vyrbus.model.dao.LiquidacionBusDAO;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 @SuppressWarnings("unchecked")
 public class LiquidacionBusDAOImpl extends GenericDAOImpl implements LiquidacionBusDAO {
 
-	
-	
+
+
 	@Override
 	public ArrayList<LiquidacionBus> buscarPorEstadoRegistro(String estado,String criterioOrden) {
 		return (ArrayList<LiquidacionBus>) super.findByEstadoRegistro(LiquidacionBus.class, estado, criterioOrden);
@@ -35,7 +35,7 @@ public class LiquidacionBusDAOImpl extends GenericDAOImpl implements Liquidacion
 	@Override
 	public void guardar(LiquidacionBus liquidacionbus) {
 		super.save(liquidacionbus);
-		
+
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class LiquidacionBusDAOImpl extends GenericDAOImpl implements Liquidacion
 
 	@Override
 	public void inactivar(Long id) {
-		super.inactivate(LiquidacionBus.class, id);		
+		super.inactivate(LiquidacionBus.class, id);
 	}
 
 }

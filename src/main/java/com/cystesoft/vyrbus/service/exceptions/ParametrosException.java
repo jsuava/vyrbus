@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José
  * Fecha		: 15/05/2013
  */
@@ -13,7 +13,7 @@ package com.cystesoft.vyrbus.service.exceptions;
  */
 public class ParametrosException extends Exception{
 	private static final long serialVersionUID = 1L;
-	
+
 	public static final int TIEMPO_EXPIRA_RESERVA_NULL=1;
 	public static final int TIEMPO_ACUMULA_VIAJES_PARA_PAXFRE_NULL=2;
 	public static final int VIAJES_REQUERIDOS_INGRESA_PAXFRE_NULL=3;
@@ -33,13 +33,13 @@ public class ParametrosException extends Exception{
 	public static final int USUARIO_GENRENCIA_COMERCIAL_NULL=17;
 	public static final int MAXIMO_ASIENTOS_SELECCIONADOS_NULL=18;
 
-	
+
 	private Integer tipo;
-	
+
 	public ParametrosException(){
 		super();
 	}
-	
+
 	public ParametrosException(Integer tipo){
 		this.setTipo(tipo);
 	}

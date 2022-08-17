@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 04/10/2016
  * Hora			: 11:21:05
@@ -49,7 +49,7 @@ import com.cystesoft.vyrbus.view.ui.WndBase;
 public class WndAnulacionBoletoPool extends WndBase{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Textbox txtNumeroBoleto;
@@ -58,7 +58,7 @@ public class WndAnulacionBoletoPool extends WndBase{
 	private Datebox dtbxFechaFin;
 	private Combobox cmbLocal;
 	private Combobox cmbCounter;
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
@@ -66,7 +66,7 @@ public class WndAnulacionBoletoPool extends WndBase{
 	public void onCreate() throws Exception {
 		dtbxFechaInicio.setValue(new Date());
 		dtbxFechaFin.setValue(new Date());
-		
+
 		UtilData.cargarAgenciaXtipoAgencia(cmbLocal, Constantes.ID_TIPAGE_TEPSA, true);
 		/*Selecciona la agencia por defecto*/
 		for(Comboitem comboitem : cmbLocal.getItems()){
@@ -75,8 +75,8 @@ public class WndAnulacionBoletoPool extends WndBase{
 		}
 		/*Cargando las counetes*/
 		onLoadCounters();
-		
-		
+
+
 		cmbLocal.addEventListener(Events.ON_SELECT,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -84,7 +84,7 @@ public class WndAnulacionBoletoPool extends WndBase{
 			}
 		});
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
 	 */
@@ -97,8 +97,8 @@ public class WndAnulacionBoletoPool extends WndBase{
 		cmbLocal=(Combobox)this.getFellow("cmbLocal");
 		cmbCounter=(Combobox)this.getFellow("cmbCounter");
 	}
-	
-	
+
+
 	public void buscar()throws Exception{
 		try {
 			Util.limpiarListbox(ltxResultados);
@@ -118,7 +118,7 @@ public class WndAnulacionBoletoPool extends WndBase{
 					usuarioId=((Usuario)cmbCounter.getSelectedItem().getValue()).getId();
 				result=ServiceLocator.getVentaPoolManager().buscarVentas(fechaInicio, fechaFin, agenciaId, usuarioId);
 			}
-			
+
 			String styleFont11="font-size:11px !important;";
 			Double total=.00;
 			for(VentaPool ventaPool:result){
@@ -159,14 +159,14 @@ public class WndAnulacionBoletoPool extends WndBase{
 						@Override
 						public void onEvent(final Event event) throws Exception {
 							try {
-								
+
 								Messagebox.show(Messages.getString("WndLiquidacionDiariaVentas.information.confirmarAnulacion"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
 									@Override
 									public void onEvent(Event e){
 										try {
 											if(e.getName().equals("onYes")){
 												anularBoleto((VentaPool)event.getTarget().getAttribute(VentaPool.class.getName()));
-												buscar();	
+												buscar();
 											}
 										} catch (Exception e2) {
 											e2.printStackTrace();
@@ -184,9 +184,9 @@ public class WndAnulacionBoletoPool extends WndBase{
 					item.appendChild(cell);
 				}
 				item.setValue(ventaPool);
-				ltxResultados.appendChild(item);			
+				ltxResultados.appendChild(item);
 			}
-			
+
 			/*Agregando el total*/
 			Listfoot listfoot= new Listfoot();
 			Listfooter listfooter= new Listfooter("TOTAL");
@@ -201,7 +201,7 @@ public class WndAnulacionBoletoPool extends WndBase{
 			DlgMessage.error(e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Realiza la anulacion del Boleto
 	 * @param ventaPool : Instacia del Objeto VentaPool.
@@ -226,7 +226,7 @@ public class WndAnulacionBoletoPool extends WndBase{
 			ServiceLocator.getVentaPoolManager().actualizar(oVentaPool);
 		}
 	}
-	
+
 	public void onValidateFecha(){
 		if(Util.comparaFechas(dtbxFechaInicio.getValue(), dtbxFechaFin.getValue(), Util.OPER_MAYOR)){
 			cmbCounter.getItems().clear();
@@ -237,7 +237,7 @@ public class WndAnulacionBoletoPool extends WndBase{
 				onLoadCounters();
 		}
 	}
-	
+
 	public void onLoadCounters(){
 		try{
 			cmbCounter.getItems().clear();
@@ -245,8 +245,8 @@ public class WndAnulacionBoletoPool extends WndBase{
 			Comboitem cmbitem = null;
 			if(cmbLocal.getSelectedItem().getValue() instanceof Agencia){
 				Agencia agencia = (Agencia)cmbLocal.getSelectedItem().getValue();
-				List<Usuario> lstUsuarios = ServiceLocator.getVentaPoolManager().buscarUsuarioPorAgencia(agencia.getId(), 
-						Util.DatetoString(dtbxFechaInicio.getValue(), Constantes.DATE_FORMAT), 
+				List<Usuario> lstUsuarios = ServiceLocator.getVentaPoolManager().buscarUsuarioPorAgencia(agencia.getId(),
+						Util.DatetoString(dtbxFechaInicio.getValue(), Constantes.DATE_FORMAT),
 						Util.DatetoString(dtbxFechaFin.getValue(), Constantes.DATE_FORMAT));
 				if(lstUsuarios.size()>0){
 					cmbitem = new Comboitem(Constantes.COMBO_LABEL_TODOS);
@@ -261,7 +261,7 @@ public class WndAnulacionBoletoPool extends WndBase{
 					cmbCounter.setDisabled(false);
 				}else
 					cmbCounter.setDisabled(true);
-			}			
+			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}

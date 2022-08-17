@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 27/08/2014
  * Hora			: 10:44:50
@@ -16,7 +16,7 @@ import java.util.Date;
  */
 public class HRE extends GenericBean{
 	private static final long serialVersionUID = 1L;
-	
+
 //	private String numeroHRE;
 	private Ruta ruta;
 	private String numeroPlaca;
@@ -37,18 +37,18 @@ public class HRE extends GenericBean{
 	private MTCDireccionTerminal mtcTerminalLlegada;
 	private MTCRuta mtcRuta;
 	private Itinerario itinerario;
-	
+
 	private ProgramacionServicio programacionServicio; //No mapeado
-	
-	
+
+
 	public HRE(){
 		super();
 	}
-	
+
 	public HRE (NumeroHojaRutaID numeroHojaRutaID){
 		this.numeroHojaRutaID=numeroHojaRutaID;
 	}
-	
+
 	/**
 	 * @return the ruta
 	 */
@@ -85,7 +85,7 @@ public class HRE extends GenericBean{
 	public void setNumeroBus(String numeroBus) {
 		this.numeroBus = numeroBus;
 	}
-	
+
 	/**
 	 * @return the agenciaSalida
 	 */
@@ -98,7 +98,7 @@ public class HRE extends GenericBean{
 	public void setAgenciaSalida(Agencia agenciaSalida) {
 		this.agenciaSalida = agenciaSalida;
 	}
-	
+
 	/**
 	 * @return the agenciaLlegada
 	 */
@@ -183,8 +183,8 @@ public class HRE extends GenericBean{
 	public void setHoraLlegadaReal(String horaLlegadaReal) {
 		this.horaLlegadaReal = horaLlegadaReal;
 	}
-	
-	
+
+
 	/*
 	 * (non-Javadoc)
 	 * @see java.lang.Object#toString()
@@ -205,7 +205,7 @@ public class HRE extends GenericBean{
 	public void setNumeroHojaRutaID(NumeroHojaRutaID numeroHojaRutaID) {
 		this.numeroHojaRutaID = numeroHojaRutaID;
 	}
-	
+
 	/**
 	 * @return the programacionServicio
 	 */
@@ -219,7 +219,7 @@ public class HRE extends GenericBean{
 		this.programacionServicio = programacionServicio;
 	}
 
-	
+
 	/**
 	 * @return the mtcRuta
 	 */

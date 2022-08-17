@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 21/02/2017
  * Hora			: 10:28:08
@@ -24,7 +24,7 @@ import com.cystesoft.vyrbus.service.business.ComprobantesBloqueadosManager;
  */
 public class ComprobantesBloqueadosManagerImpl implements ComprobantesBloqueadosManager{
 	private ComprobantesBloqueadosDAO comprobantesBloqueadosDAO;
-	
+
 	/**
 	 * @return the comprobantesBloqueadosDAO
 	 */
@@ -38,7 +38,7 @@ public class ComprobantesBloqueadosManagerImpl implements ComprobantesBloqueados
 	public void setComprobantesBloqueadosDAO(ComprobantesBloqueadosDAO comprobantesBloqueadosDAO) {
 		this.comprobantesBloqueadosDAO = comprobantesBloqueadosDAO;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.ComprobantesBloqueadosManager#bloquearComprobante(com.tepsa.sisvyr.model.bean.ComprobantesBloqueados)
 	 */
@@ -110,6 +110,6 @@ public class ComprobantesBloqueadosManagerImpl implements ComprobantesBloqueados
 		return getComprobantesBloqueadosDAO().buscarPorId(ventaPasajeId);
 	}
 
-	
+
 
 }

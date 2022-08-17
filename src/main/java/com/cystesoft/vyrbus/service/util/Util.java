@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: Clase que centraliza las funciones utilitarias que se usa en todo el sistema. 
+ * Descripción	: Clase que centraliza las funciones utilitarias que se usa en todo el sistema.
  * Autor		: José Sullo Avalos
  * Fecha		: 08/04/2012
  */
@@ -58,8 +58,6 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Timebox;
 import org.zkoss.zul.Tree;
 
-import pe.gob.mtc.wshr.ResultIdentidad;
-
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.AutorizadorCortesia;
 import com.cystesoft.vyrbus.model.bean.Bus;
@@ -113,6 +111,8 @@ import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.mappers.SecuenciaTramo;
 import com.cystesoft.vyrbus.view.ui.DlgMessage;
 
+import pe.gob.mtc.wshr.ResultIdentidad;
+
 /**
  * Clase que centraliza las funciones utilitarias que se usa en todo el sistema.
  * @author José Sullo Avalos
@@ -130,21 +130,21 @@ public class Util {
 	public static String SHA256 = "SHA-256";
 	public static String SHA384 = "SHA-384";
 	public static String SHA512 = "SHA-512";
-	
+
 	public static final String separator = System.getProperty("file.separator");//Get de system separator
 	public static String base = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@!#$";
-	
+
 	public Util() throws Exception{
 		super();
 	}
-	
+
 	/**
 	 * Permite llenar un Listbox apartir de un Array de Array de datos de tipo Object
 	 * @param listbox
 	 * @param lstDatoso
 	 */
 	public static void llenarListbox(Listbox listbox, ArrayList<Object> lstDatos) {
-		llenarListbox(listbox, lstDatos, false, false);	
+		llenarListbox(listbox, lstDatos, false, false);
 	}
 	/**
 	 * Permite llenar un Listbox apartir de un Array de Array de datos de tipo Object
@@ -153,9 +153,9 @@ public class Util {
 	 * @param primeraColumnaComoValorLista <b>true</b> = usa los valores de la primera columna como el value del Listbox
 	 */
 	public static void llenarListbox(Listbox listbox, ArrayList<Object> lstDatos, boolean primeraColumnaComoValorLista) {
-		llenarListbox(listbox, lstDatos, primeraColumnaComoValorLista, false);	
+		llenarListbox(listbox, lstDatos, primeraColumnaComoValorLista, false);
 	}
-	
+
 
 	/**
 	 * Permite llenar un Listbox apartir de un Array de Array de datos de tipo Object
@@ -167,9 +167,9 @@ public class Util {
 	@SuppressWarnings("unchecked")
 	public static void llenarListbox(Listbox listbox, ArrayList<Object> lstDatos, boolean primeraColumnaComoValorLista, boolean primeraColumnaComoEncabezado) {
 		limpiarListbox(listbox);
-		limpiarListbox(listbox);	
-		for(int f =0; f < lstDatos.size(); f ++) {
-			ArrayList<Object> lstFila = (ArrayList<Object>) lstDatos.get(f);
+		limpiarListbox(listbox);
+		for (Object element : lstDatos) {
+			ArrayList<Object> lstFila = (ArrayList<Object>) element;
 			Listitem oListitem = new Listitem();
 			for(int c = 0; c < lstFila.size(); c ++) {
 				String valor = (lstFila.get(c) == null ? "" : lstFila.get(c).toString());
@@ -190,13 +190,13 @@ public class Util {
 	public static void limpiarListbox(Listbox listbox) {
 		limpiarListbox(listbox, false);
 	}
-	
+
 	public static void limpiarGrid(Grid grid){
 		Rows rows = new Rows();
 		grid.getRows().detach();
 		grid.appendChild(rows);
 	}
-	
+
 	/**
 	 * Limpia el contenido de un Tree
 	 * @param tree
@@ -208,11 +208,11 @@ public class Util {
 				tree.getTreechildren().removeChild(oComponent);
 			}
 		}
-		
+
 	}
 
 	/**
-	 * Permite Limpiar el contenido de un Listbox 
+	 * Permite Limpiar el contenido de un Listbox
 	 * @param oListbox
 	 * @param quitarEncabezado <b>true</b> = limpiar el Listbox incluyendo el encabezado
 	 */
@@ -255,7 +255,7 @@ public class Util {
 			combobox.removeItemAt(i);
 		}
 	}
-	
+
 	/**
 	 * Permite seleccionar un Item del Combobox según el valor
 	 * @param combobox
@@ -265,30 +265,30 @@ public class Util {
 		combobox.setSelectedIndex(-1);
 		/*
 		Comboitem oComboitem = new Comboitem();
-		oComboitem.setValue(valorItem);	
+		oComboitem.setValue(valorItem);
 		*/
 		for (int i = 0; i < combobox.getItemCount(); i ++) {
 			Comboitem oComboitem = combobox.getItemAtIndex(i);
-	
+
 			if (oComboitem.getValue()!=null &&  oComboitem.getValue().equals(valorItem)) {
 				combobox.setSelectedIndex(i);
 				break;
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * Permite seleccionar el Item del combobox segun el valor ID
 	 * @param oClass	: Clase para identificar el tipo de valor del combo.
 	 * @param combobox	: Objeto combobox a analizar.
 	 * @param valorItem	: valor buscado.
 	 */
-	public static void seleccionarValorItemCombo( Class<?> oClass, Combobox combobox, Object valorItem) {	
+	public static void seleccionarValorItemCombo( Class<?> oClass, Combobox combobox, Object valorItem) {
 		combobox.setSelectedIndex(-1);
 		for (int i = 0; i < combobox.getItemCount(); i ++) {
 			Comboitem oComboitem = combobox.getItemAtIndex(i);
-			
+
 			if (oClass.equals(Agencia.class)){ 			/****AGENCIA****/
 				if (oComboitem.getValue()!=null && ((Agencia) oComboitem.getValue()).getId().equals(valorItem)) {
 					combobox.setSelectedIndex(i);
@@ -339,7 +339,7 @@ public class Util {
 					combobox.setSelectedIndex(i);
 					break;
 				}
-				
+
 			}else if (oClass.equals(Sexo.class)){ /****SEXO****/
 				if (oComboitem.getValue()!=null && ((Sexo) oComboitem.getValue()).getId().equals(valorItem)) {
 					combobox.setSelectedIndex(i);
@@ -408,7 +408,7 @@ public class Util {
 			}else if (oClass.equals(UsuarioHardware.class)){ /****USUARIO HARWARE****/
 				if (oComboitem.getValue()!=null && ((UsuarioHardware) oComboitem.getValue()).getId().equals(valorItem)) {
 					combobox.setSelectedIndex(i);
-					
+
 					break;
 				}
 			}else if (oClass.equals(CanalVenta.class)){ /****CANAL VENTA****/
@@ -435,17 +435,17 @@ public class Util {
 				if (oComboitem.getValue()!=null && ((Usuario) oComboitem.getValue()).getId().equals(valorItem)) {
 					combobox.setSelectedIndex(i);
 					break;
-				}	
+				}
 			}else if (oClass.equals(OpcionMenu.class)){ /****OPCION MENU****/
 				if (oComboitem.getValue()!=null && ((OpcionMenu) oComboitem.getValue()).getId().equals(valorItem)) {
 					combobox.setSelectedIndex(i);
 					break;
-				}	
+				}
 			}else if (oClass.equals(TipoGasto.class)){ /****TIPO DE GASTO****/
 				if (oComboitem.getValue()!=null && ((TipoGasto) oComboitem.getValue()).getId().equals(valorItem)) {
 					combobox.setSelectedIndex(i);
 					break;
-				}	
+				}
 			}else if (oClass.equals(AutorizadorCortesia.class)){ /****AUTORIZADOR DE CORTESIAS****/
 				if (oComboitem.getValue()!=null && ((AutorizadorCortesia) oComboitem.getValue()).getId().equals(valorItem)) {
 					combobox.setSelectedIndex(i);
@@ -470,7 +470,7 @@ public class Util {
 				if (oComboitem.getValue()!=null && ((Cliente)oComboitem.getValue()).getId().equals(valorItem)){
 					combobox.setSelectedIndex(i);
 					break;
-				}	
+				}
 			}else if(oClass.equals(TarjetaCredito.class)){ /**TARJETA DE CREDIT*/
 				if (oComboitem.getValue()!=null && ((TarjetaCredito)oComboitem.getValue()).getId().equals(valorItem)){
 					combobox.setSelectedIndex(i);
@@ -486,9 +486,9 @@ public class Util {
 					combobox.setSelectedIndex(i);
 					break;
 				}
-				
-				
-			/** REFERENTES A LA VENTA SEGURO*/	
+
+
+			/** REFERENTES A LA VENTA SEGURO*/
 			}else if (oClass.equals(VSSexo.class)){//SEXO
 				if (oComboitem.getValue()!=null && ((VSSexo)oComboitem.getValue()).getId().equals(valorItem)){
 					combobox.setSelectedIndex(i);
@@ -505,10 +505,10 @@ public class Util {
 					break;
 				}
 			}
-			
+
 		}
-	}	
-		
+	}
+
 	/**
 	 * Convierte un objeto Date s String
 	 * @param myDate	: Datos a convertir
@@ -524,7 +524,7 @@ public class Util {
 		}
 		return date;
 	}
-	
+
 	/**
 	 * Convierte un String a Date de acuerdo a un formato
 	 * @param text		: Fecha en formatotexto a convertir
@@ -541,7 +541,7 @@ public class Util {
 		}
 		return date;
 	}
-	
+
 	/**
 	 * Convierte un String a double con la cantidad de decimales especificada
 	 * @param currency		: Valor String a convertir
@@ -562,18 +562,18 @@ public class Util {
 			NumberFormat nf = NumberFormat.getNumberInstance(Locale.ENGLISH);
 			DecimalFormat df = (DecimalFormat)nf;
 			df.applyPattern(pattern);
-			currency=(currency!=null&&!"".equals(currency.trim()))?currency.trim():"0.0"; 
+			currency=(currency!=null&&!"".equals(currency.trim()))?currency.trim():"0.0";
 			number=df.parse(currency).doubleValue();
 		}catch(Exception e ){
 			e.printStackTrace();
 		}
 		return number;
 	}
-	
+
 	/**
-	 * convierte un double a String con la cantidad de decimales especificados 
+	 * convierte un double a String con la cantidad de decimales especificados
 	 * @param currency		: Valor double a convertir
-	 * @param numDecimales	: Número de decimales 
+	 * @param numDecimales	: Número de decimales
 	 * @return String
 	 */
 	public static String toNumberFormat(double currency, int numDecimales){
@@ -586,7 +586,7 @@ public class Util {
 			}
 			pattern = pattern+"."+decimal;
 		}
-			
+
 		try{
 			NumberFormat nf = NumberFormat.getNumberInstance(Locale.ENGLISH);
 			DecimalFormat df = (DecimalFormat)nf;
@@ -597,11 +597,11 @@ public class Util {
 		}
 		return number;
 	}
-	
+
 	/**
-	 * convierte un double a String con la cantidad de decimales especificados 
+	 * convierte un double a String con la cantidad de decimales especificados
 	 * @param currency		: Valor double a convertir
-	 * @param numDecimales	: Número de decimales 
+	 * @param numDecimales	: Número de decimales
 	 * @return String
 	 */
 	public static String toNumberFormatNotMiles(double currency, int numDecimales){
@@ -614,7 +614,7 @@ public class Util {
 			}
 			pattern = pattern+"."+decimal;
 		}
-			
+
 		try{
 			NumberFormat nf = NumberFormat.getNumberInstance(Locale.ENGLISH);
 			DecimalFormat df = (DecimalFormat)nf;
@@ -625,16 +625,16 @@ public class Util {
 		}
 		return number;
 	}
-	
+
 	/**
 	 * Convierte del sistema decimal a hexadecimal
 	 * @param valor	: Número a convertir
-	 * @return Hexadecimal 
+	 * @return Hexadecimal
 	 */
 	public static String decimalToHexadecimal(long valor){
 		return Long.toHexString(valor).toUpperCase();
 	}
-	
+
 	/**
 	 * Genera el numero de control para el registro de venta.
 	 * @param valor	: Numero hexadecimal con el cual se formara el numero de control.
@@ -646,7 +646,7 @@ public class Util {
 		nControl = "T"+ nControl.substring(nControl.length()-15);
 		return nControl;
 	}
-	
+
 	/**
 	 * Autocompleta en numero de boleto
 	 * @param numeroBoleto	: numero a autocompletar
@@ -659,25 +659,25 @@ public class Util {
 			boleto="00000000";
 			longdig=8;
 		}
-		
+
 		Integer sep=numeroBoleto.indexOf("-");
 		if(sep>=0){
 			String serie=numeroBoleto.substring(0,sep);
 			String numero=numeroBoleto.substring(sep+1,numeroBoleto.length());
-					
+
 			if(numeroBoleto.length()>numero.length()){
 				boleto = boleto.concat(numero);
 				boleto = serie+"-"+ boleto.substring(boleto.length()-longdig);
 			}else{
 				boleto=numeroBoleto;
 			}
-			
+
 			return boleto;
 		}else
 			return numeroBoleto;
 	}
-	
-	
+
+
 	/**
 	 * cantidad de horas y minutos en milisegundos.
 	 * @param cantidadHoras : numero de horas
@@ -685,18 +685,18 @@ public class Util {
 	 */
 	public static Long horasMinutos(Double cantidadHoras){
 		Integer hora = cantidadHoras.intValue();
-		
+
 		String horas = toNumberFormat(cantidadHoras, 2);
 		Integer conPos= horas.indexOf(".");
-		Integer minuto = (new Integer (horas.toString().substring(conPos+1, horas.length())));
+		int minuto = Integer.parseInt(horas.toString().substring(conPos+1, horas.length()));
 
-		Long lHoras= (long) (hora * Constantes.MILISEGUNDOS_X_HORA);
-		Long lMinutos = (long) (minuto * Constantes.MILISEGUNDOS_X_MINUTO);			
-		Long lHorasMinutos = lHoras + lMinutos;
-		
+		long lHoras= (long) (hora * Constantes.MILISEGUNDOS_X_HORA);
+		long lMinutos = (long) (minuto * Constantes.MILISEGUNDOS_X_MINUTO);
+		long lHorasMinutos = lHoras + lMinutos;
+
 		return lHorasMinutos;
 	}
-	
+
 	/**
 	 * Calcula la edad.
 	 * @param fechaNacimiento : fecha de nacimineto
@@ -704,12 +704,12 @@ public class Util {
 	 * @throws Exception
 	 */
 	public static Integer calculaEdad(String fechaNacimiento) throws Exception{
-		Integer edad=0;
+		int edad=0;
 		try {
 			if (!(fechaNacimiento==null || fechaNacimiento=="") ){
 				Long fechaActual = new Date().getTime(); //.getTime().getTime();
 				Long lFechaNacimiento = Constantes.FORMAT_DATE.parse(fechaNacimiento).getTime();
-				Long lEdad = fechaActual - lFechaNacimiento;
+				long lEdad = fechaActual - lFechaNacimiento;
 				edad = (int) (lEdad / (Constantes.MILISEGUNDOS_X_DIA * 365));
 			}
 		} catch (Exception e) {
@@ -717,7 +717,7 @@ public class Util {
 		}
 		return edad;
 	}
-	
+
 	/**
 	 * Convierte un Objeto calendar a String
 	 * @param myCalendar	: Dato a convertir
@@ -733,7 +733,7 @@ public class Util {
 		}
 		return date;
 	}
-	
+
 	/**
 	 * Convierte un objeto String a Calendario
 	 * @param fecha	: Datos a convertir
@@ -755,7 +755,7 @@ public class Util {
 		}
 		return calend;
 	}
-	
+
 	/**
 	 * Compara si un objeto es mayor.
 	 * @param min		: Dato que deseamos comparar.
@@ -768,45 +768,45 @@ public class Util {
         Calendar fech2 = Calendar.getInstance();
         Calendar minuendo = Calendar.getInstance();
         Calendar sustraendo = Calendar.getInstance();
-        
+
         if(min instanceof String)
         	minuendo = StringtoCalendar((String)min, Constantes.DATE_FORMAT);
         else if (min instanceof Date)
         	minuendo = StringtoCalendar(DatetoString((Date)min, Constantes.DATE_FORMAT), Constantes.DATE_FORMAT);
         else
         	minuendo = (Calendar)min;
-        
+
         if(sus instanceof String)
         	sustraendo = StringtoCalendar((String)sus, Constantes.DATE_FORMAT);
         else if (sus instanceof Date)
         	sustraendo = StringtoCalendar(DatetoString((Date)sus, Constantes.DATE_FORMAT), Constantes.DATE_FORMAT);
         else
         	sustraendo = (Calendar)sus;
-        
+
         sustraendo.set(Calendar.HOUR_OF_DAY,0);
         sustraendo.set(Calendar.MINUTE,0);
         sustraendo.set(Calendar.SECOND,0);
-        
+
         minuendo.set(Calendar.HOUR_OF_DAY,0);
         minuendo.set(Calendar.MINUTE,0);
         minuendo.set(Calendar.SECOND,0);
-        
+
         fech1.set(Calendar.YEAR, sustraendo.get(Calendar.YEAR));
         fech1.set(Calendar.MONTH, sustraendo.get(Calendar.MONTH));
         fech1.set(Calendar.DAY_OF_MONTH, sustraendo.get(Calendar.DAY_OF_MONTH));
-        
+
         fech2.set(Calendar.YEAR, minuendo.get(Calendar.YEAR));
         fech2.set(Calendar.MONTH, minuendo.get(Calendar.MONTH));
         fech2.set(Calendar.DAY_OF_MONTH, minuendo.get(Calendar.DAY_OF_MONTH));
-        
+
         Date startDate1 = fech1.getTime();
         Date endDate1   = fech2.getTime();
-                
+
         long diff = endDate1.getTime() - startDate1.getTime();
         long dife = (diff / (1000L*60L*60L*24L));
-        
+
         boolean result = false;
-        
+
         switch (operador) {
 		case OPER_MAYOR:	//Mayor
 			if(dife>0)
@@ -837,12 +837,12 @@ public class Util {
 				result = true;
 			else
 				result = false;
-			break;		
+			break;
 		}
-        
+
         return result;
 	}
-	
+
 	/**
 	 * Compara si un objeto es mayor.
 	 * @param min		: Dato que deseamos comparar.
@@ -855,29 +855,29 @@ public class Util {
 //        Calendar fech2 = Calendar.getInstance();
         Calendar minuendo = Calendar.getInstance();
         Calendar sustraendo = Calendar.getInstance();
-        
+
         if(min instanceof String)
         	minuendo = StringtoCalendar((String)min, Constantes.DATE_TIME_FORMAT);
         else if (min instanceof Date)
         	minuendo = StringtoCalendar(DatetoString((Date)min, Constantes.DATE_TIME_FORMAT), Constantes.DATE_TIME_FORMAT);
         else
         	minuendo = (Calendar)min;
-        
+
         if(sus instanceof String)
         	sustraendo = StringtoCalendar((String)sus, Constantes.DATE_TIME_FORMAT);
         else if (sus instanceof Date)
         	sustraendo = StringtoCalendar(DatetoString((Date)sus, Constantes.DATE_TIME_FORMAT), Constantes.DATE_TIME_FORMAT);
         else
         	sustraendo = (Calendar)sus;
-        
+
         Date startDate1 = sustraendo.getTime();
         Date endDate1   = minuendo.getTime();
-                
+
         long diff = endDate1.getTime() - startDate1.getTime();
         long dife = (diff / (1000L*60L));
-        
+
         boolean result = false;
-        
+
         switch (operador) {
 		case OPER_MAYOR:	//Mayor
 			if(dife>0)
@@ -908,32 +908,32 @@ public class Util {
 				result = true;
 			else
 				result = false;
-			break;		
+			break;
 		}
-        
+
         return result;
 	}
-	
+
 	/**
 	 * @return el primer día del mes.
-	 * @throws ParseException 
+	 * @throws ParseException
 	 */
 	@SuppressWarnings("static-access")
 	public static Date primerDiaDelMes() throws ParseException {
 		MyTime time = new MyTime();
 		Calendar ctime=Util.StringtoCalendar(time.dateServer(), "dd/mm/yyyy");
 		Calendar cal = Calendar.getInstance();
-		
+
 		cal.set(cal.get(Calendar.YEAR),
 		cal.get(Calendar.MONTH),
 		cal.getActualMinimum(Calendar.DAY_OF_MONTH),
 		cal.getMinimum(Calendar.HOUR_OF_DAY),
 		cal.getMinimum(Calendar.MINUTE),
 		cal.getMinimum(Calendar.SECOND));
-		
+
 		return cal.getTime();
 	}
-	
+
 	/**
 	 * calcula el porcentaje de un numero
 	 * @param numeroCalculo : número del cual se calcula el porcentaje
@@ -947,7 +947,7 @@ public class Util {
 
 		return porcenteje;
 	}
-	
+
 	public static String adjuntarFechaHoraExportacion(String nombreArchivoExportar){
 		GregorianCalendar oGregorianCalendar = new GregorianCalendar();
 		SimpleDateFormat oSimpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss", new Locale("es", "PE"));
@@ -956,7 +956,7 @@ public class Util {
 
 		return nombreArchivoExportar;
 	}
-	
+
 	/**
 	 * Realiza la validadcion del RUC
 	 * @param valor	: RUC a validar
@@ -964,10 +964,10 @@ public class Util {
 	 */
 	public static boolean validarRUC(String valor){
 		/*Valida que por lo menos inicie con los numeros correctos - 30/01/2017 - jabanto*/
-		int vr=Integer.valueOf(valor.substring(0,1));	
+		int vr=Integer.valueOf(valor.substring(0,1));
 		if(!(vr==2 || vr==1))
 			return false;
-		
+
 		int suma = 0;
 		int digito = 0;
 		int resto = 0;
@@ -1016,25 +1016,25 @@ public class Util {
 		}
 		return false;
 	}
-	
-	
+
+
 	public static String generaTablaHtml(Listbox oListbox){
 		StringBuilder tablaHtml = new StringBuilder();
-		ArrayList<Listheader> lstCabeceras = new ArrayList<Listheader>();
+		ArrayList<Listheader> lstCabeceras = new ArrayList<>();
 		tablaHtml.append("<table>");
-		
-		for(int f = 0; f < oListbox.getChildren().size(); f ++){
+
+		for (Component element : oListbox.getChildren()) {
 			/*Genera Cabecera*/
-			if(oListbox.getChildren().get(f).getClass().isInstance(new Listhead())){
-				Listhead oListhead = (Listhead) oListbox.getChildren().get(f);
-				
+			if(element.getClass().isInstance(new Listhead())){
+				Listhead oListhead = (Listhead) element;
+
 				tablaHtml.append("<tr>");
-				for(int h = 0; h < oListhead.getChildren().size(); h ++){
-					if(oListhead.getChildren().get(h).getClass().isInstance(new Listheader())){
-						Listheader oListheader = (Listheader) oListhead.getChildren().get(h);
-						
+				for (Component element2 : oListhead.getChildren()) {
+					if(element2.getClass().isInstance(new Listheader())){
+						Listheader oListheader = (Listheader) element2;
+
 						lstCabeceras.add(oListheader);
-						
+
 						if(oListheader.isVisible()){
 							tablaHtml.append("<th>");
 							tablaHtml.append(oListheader.getLabel());
@@ -1043,10 +1043,10 @@ public class Util {
 					}
 				}
 				tablaHtml.append("</tr>");
-				
-			}else if(oListbox.getChildren().get(f).getClass().isInstance(new Listitem())){
+
+			}else if(element.getClass().isInstance(new Listitem())){
 				/*Genera el Detalle*/
-				Listitem oListitem = (Listitem) oListbox.getChildren().get(f);
+				Listitem oListitem = (Listitem) element;
 
 				tablaHtml.append("<tr>");
 				for(int i = 0; i < oListitem.getChildren().size(); i ++){
@@ -1067,10 +1067,10 @@ public class Util {
 			}
 		}
 		tablaHtml.append("</table>");
-		
+
 		return tablaHtml.toString();
-	} 
-	
+	}
+
 	/**
 	 * Activa o desactiva el button Guarbar cliente (Nuevo)
 	 * @param activar : (true)se activara el button, (false) se desactivará el button
@@ -1085,7 +1085,7 @@ public class Util {
 		}
 		btnCancelar.setDisabled(disabled);
 	}
-	
+
 	/**
 	 * Activa o desactiva el button Guarbar cliente (Nuevo)
 	 * @param activar : (true)se activara el button, (false) se desactivará el button
@@ -1098,14 +1098,14 @@ public class Util {
 			btnGuardar.setImage("/resources/mp_guardarDisabled.png");
 			btnGuardar.setStyle("cursor:default");
 		}
-		
+
 		if(accesoGuardar)
 			btnGuardar.setDisabled(disabled);
-		else 
+		else
 			btnGuardar.setDisabled(true);
 	}
-	
-	
+
+
 	/**
 	 * Activa o desactiva el button Nuevo cliente (Nuevo)
 	 * @param activar : (true)se activara el button, (false) se desactivará el button
@@ -1118,13 +1118,13 @@ public class Util {
 			btnNuevo.setImage("/resources/mp_nuevoDisabled.png");
 			btnNuevo.setStyle("cursor:default");
 		}
-		
+
 		if(accesoNuevo)
 			btnNuevo.setDisabled(disabled);
-		else 
+		else
 			btnNuevo.setDisabled(true);
 	}
-	
+
 	/**
 	 * Activa o desactiva el button editar cliente (Editar)
 	 * @param activar : (true)se activara el button, (false) se desactivará el button
@@ -1138,13 +1138,13 @@ public class Util {
 			btnEditar.setImage("/resources/mp_editarDisabled.png");
 			btnEditar.setStyle("cursor:default");
 		}
-		
+
 		if(accesoModificar)
 			btnEditar.setDisabled(disabled);
-		else 
+		else
 			btnEditar.setDisabled(true);
 	}
-	
+
 	/**
 	 * Activa o desactiva el botón Buscar
 	 * @param activar
@@ -1159,10 +1159,10 @@ public class Util {
 		}
 		if(accesoConsultar)
 			btnBuscar.setDisabled(disabled);
-		else 
+		else
 			btnBuscar.setDisabled(true);
 	}
-	
+
 	/**
 	 * Activa o desactiva el botón Exportar
 	 * @param activar
@@ -1177,10 +1177,10 @@ public class Util {
 		}
 		if(accesoExportar)
 			btnExportar.setDisabled(disabled);
-		else 
+		else
 			btnExportar.setDisabled(true);
 	}
-	
+
 	/**
 	 * Activa o desactiva el button agregar
 	 * @param disabled : (true)desactiva el control, (false) activa el control.
@@ -1198,8 +1198,8 @@ public class Util {
 		else
 			btnAgregar.setDisabled(true);
 	}
-	
-	
+
+
 	/**
 	 * Activa o desactiva el button acepta
 	 * @param disabled : (true)desactiva el control, (false) activa el control.
@@ -1217,7 +1217,7 @@ public class Util {
 		else
 			btnAceptar.setDisabled(true);
 	}
-	
+
 	/**
 	 * Activa o desactiva el button acepta
 	 * @param disabled : (true)desactiva el control, (false) activa el control.
@@ -1235,20 +1235,20 @@ public class Util {
 		else
 			btnRefresh.setDisabled(true);
 	}
-	
-	
+
+
 	/*PARA LA IMPORTACION DEL ARCHIVO*/
 	//Subir archivo al servidor.
 	public static boolean uploadFile(Media media) {
 		String path = getPath()+Constantes.DIRECTORY_UPLOADS+separator;
 		return saveFile(media, path);
 	}
-	
+
 	//Obtiene la ruta de la aplicación Web actual
 	public static String getPath(){
 		return Executions.getCurrent().getDesktop().getWebApp().getRealPath(separator);
 	}
-	
+
 	//Guarda el Archivo en el Servidor
 	public static boolean saveFile(Media media, String path){
 		boolean uploaded = false;
@@ -1286,9 +1286,9 @@ public class Util {
 				}
 		return uploaded;
 	}
-	
+
 	/**
-	 * Metodo que permite validar una cadena si es numerico.  
+	 * Metodo que permite validar una cadena si es numerico.
 	 * @param cadena: Cadena a evaluar
 	 * @return (true) si es un numerico, (false) lo contrario250
 	 */
@@ -1300,9 +1300,9 @@ public class Util {
 	    	return false;
 	    }
     }
-    
+
     /**
-	 * Metodo que permite validar una cadena si es un numero decimal  
+	 * Metodo que permite validar una cadena si es un numero decimal
 	 * @param cadena: Cadena a evaluar
 	 * @return (true) si es un numerico, (false) lo contrario250
 	 */
@@ -1314,7 +1314,7 @@ public class Util {
 	    	return false;
 	    }
     }
-    
+
     /**
      * Permite generar la cadena que se enviara como valor al FTI.
      * @param pasajero	: Array con los datos del pasajero.
@@ -1327,7 +1327,7 @@ public class Util {
 		}
 		return result;
 	}
-    
+
     /**
      * Devuelve el dia de la semana de una fecha especifica
      * @param fecha
@@ -1373,19 +1373,19 @@ public class Util {
                 break;
         }
         return dia;
-    } 
-    
+    }
+
     /**
      * Retorna el Nombre del Mes
-     * @param fecha 
-     * @return 
-     * @throws Exception 
+     * @param fecha
+     * @return
+     * @throws Exception
      */
     @SuppressWarnings("deprecation")
 	public static String getNombreMes(String fecha) throws Exception{
     	Date date=Constantes.FORMAT_DATE.parse(fecha);
 		switch (date.getMonth()) {
-			case 0: return "ENERO"; 
+			case 0: return "ENERO";
 			case 1: return "FEBRERO";
 			case 2: return "MARZO";
 			case 3: return "ABRIL";
@@ -1400,7 +1400,7 @@ public class Util {
 		}
 		return null;
 	}
-    
+
     public static String getNumberMes(String abreviacionMEs) throws Exception{
 //    	Date date=Constantes.FORMAT_DATE.parse(fecha);
 		switch (abreviacionMEs.toUpperCase()) {
@@ -1421,12 +1421,12 @@ public class Util {
 			case "DIC": return "12";
 			case "DEC": return "12";
 		}
-		
-		
-		
+
+
+
 		return null;
 	}
-    
+
     /**
      * coloca el foco en el control que se envie como parametros
      * @param oComponent: objeto al cual se pasará el foco.
@@ -1471,7 +1471,7 @@ public class Util {
 			oTimebox.select();
 		}
     }
-    
+
     /**
      * Realiza el calculo del total a pagar de la venta.
      * @param tarifa	: Tarifa del servicio.
@@ -1481,10 +1481,10 @@ public class Util {
      */
     public static double calculoTotalPagar(Double tarifa, Double descuento, Double recargo){
     	double totalPagar=tarifa-descuento;
-    	double d_decimal= ((totalPagar*100)%100)/100; //Obtiene los decimales del total a pagar 
-    	    	
+    	double d_decimal= ((totalPagar*100)%100)/100; //Obtiene los decimales del total a pagar
+
     	totalPagar=totalPagar-d_decimal;
-    	
+
     	if(d_decimal >= 0.00 && d_decimal < 0.25)
     		totalPagar = totalPagar + 0.00;
     	else if(d_decimal >= 0.25 && d_decimal <= 0.50)
@@ -1495,30 +1495,30 @@ public class Util {
     		totalPagar = totalPagar + 1;
     	return totalPagar;
     }
-    
+
     /**
 	 * Obtiene la fecha de caducidad para el PaxFree
 	 * @param fecha	: Fecha a la cual se le sumara el tiempo de caducidad del paxfre.
 	 * @return String en formato <b>dd/MM/yyyy HH:mm:ss<b>
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public static final String getFechaCaducidadPaxFre(String fecha) throws Exception{
 //		MyTime time= new MyTime();
 		Date mtime= Constantes.FORMAT_DATE_TIME_24H.parse(fecha);
-		
-		Long milSec1=Constantes.MILISEGUNDOS_X_DIA*Constantes.TIEMPO_PASAR_PAXFREE;
+
+		long milSec1=Constantes.MILISEGUNDOS_X_DIA*Constantes.TIEMPO_PASAR_PAXFREE;
 		Long milSec2=mtime.getTime();
 		Long milResul=milSec1+milSec2;
-		
+
 		java.util.Calendar calendar= java.util.Calendar.getInstance();
 		calendar.setTimeInMillis(milResul);
-		
+
 		Date dfecha=calendar.getTime();
 		String fechaCaducidad=Constantes.FORMAT_DATE_TIME_24H.format(dfecha);
-		
+
 		return fechaCaducidad;
 	}
-	
+
 	/**
 	 * Genera un numero aleatorio entre 0 y nuemro, donde superior es el intervalo mayor.
 	 * @param superior	: Numero limite del intervalo de aleatorios.
@@ -1530,7 +1530,7 @@ public class Util {
 		result = random.nextInt(superior);
 		return result;
 	}
-	
+
 	/**
 	 * Metodo que genera la contraseña de manera aleatoria.
 	 */
@@ -1545,15 +1545,15 @@ public class Util {
 		}
 		return password;
 	}
-	
+
 	public static final void loadAnios(Combobox combobox){
 		try{
 			combobox.getItems().clear();
 			combobox.setText("");
 			String fecha = ServiceLocator.getVentaPasajesManager().getDateSystem();
 			String anio = Util.DatetoString(Util.StringtoDate(fecha, Constantes.DATE_FORMAT), "yyyy");
-			Integer limSuperior = Integer.valueOf(anio);
-			Integer limInferior = limSuperior - 95;
+			int limSuperior = Integer.parseInt(anio);
+			int limInferior = limSuperior - 95;
 			for(int i = limSuperior; i>limInferior; i--){
 				Comboitem comboitem = new Comboitem(String.valueOf(i));
 				comboitem.setValue(i);
@@ -1563,7 +1563,7 @@ public class Util {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	public static final void loadMeses(Combobox combobox){
 		String[] lstMeses = {"ENERO", "FEBRERO","MARZO","ABRIL","MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"};
 		combobox.getItems().clear();
@@ -1576,7 +1576,7 @@ public class Util {
 		combobox.setSelectedIndex(-1);
 		combobox.setText("");
 	}
-	
+
 	public static final void loadDias(Combobox combobox, Integer mes, Integer anio){
 		combobox.getItems().clear();
 		combobox.setText("");
@@ -1613,7 +1613,7 @@ public class Util {
 			comboitem.setValue(i);
 			combobox.appendChild(comboitem);
 		}
-		
+
 		combobox.setSelectedIndex(-1);
 		combobox.setText("");
 	}
@@ -1625,48 +1625,48 @@ public class Util {
 	 */
 	public static void exportarExcel(Listbox listbox, String title){
 		String nombreArchivo=Util.adjuntarFechaHoraExportacion(title);
-		
+
 		Filedownload.save(Util.generaTablaHtml(listbox), "application/vnd.ms-excel", nombreArchivo+".xls");
 	}
-	
+
 	/**
 	 * Convierta la fecha al formato dd-mm-yyyy Ejempl(Mie 10 Oct 2013)
-	 * @param fecha :Fecha 
-	 * @return 
+	 * @param fecha :Fecha
+	 * @return
 	 * @throws Exception
 	 */
 	public static String toFechaNombreDiaMes(Date fecha) throws Exception{
-		
+
 		String dia=Util.getDiaSemana(Constantes.FORMAT_DATE.format(fecha));
 		String mes=Util.getNombreMes(Constantes.FORMAT_DATE.format(fecha));
-		
+
 		String sFecha=dia.substring(0,3)+"-"+
 				Constantes.FORMAT_DAY.format(fecha)+"-"+
 				mes.substring(0,3)+"-"+
 				Constantes.FORMAT_YEAR.format(fecha);
-		
+
 		return sFecha;
 	}
-	
+
 	/**
 	 * Convierta la fecha al formato dd-mm-yyyy Ejempl(Miercoles 10 de Octubre del 2013)
-	 * @param fecha :Fecha 
-	 * @return 
+	 * @param fecha :Fecha
+	 * @return
 	 * @throws Exception
 	 */
 	public static String toFechaNombreDiaMesLong(Date fecha) throws Exception{
-		
+
 		String dia=Util.getDiaSemana(Constantes.FORMAT_DATE.format(fecha));
 		String mes=Util.getNombreMes(Constantes.FORMAT_DATE.format(fecha));
-		
+
 		String sFecha=dia+" "+
 				Constantes.FORMAT_DAY.format(fecha)+" de "+
 				mes.substring(0,1)+mes.substring(1,mes.length()).toLowerCase()+" del "+
 				Constantes.FORMAT_YEAR.format(fecha);
-		
+
 		return sFecha;
 	}
-	
+
 	/**
      * Encripta un mensaje de texto mediante algoritmo de resumen de mensaje.
      * @return Codigo encriptado.
@@ -1686,7 +1686,7 @@ public class Util {
 //        txtCodigo.setText(hash);
         return toHexadecimal(digest);
 	}
-	
+
 	/**
      * Convierte un arreglo de bytes a String usando valores hexadecimales
      * @param digest arreglo de bytes a convertir
@@ -1701,7 +1701,7 @@ public class Util {
         }
         return hash;
     }
-    
+
     /**
 	 * Genera ceros a la izquierda
 	 * @param longitud	: Longitud que debe de tener el campo
@@ -1710,7 +1710,7 @@ public class Util {
 	 */
 	public static String generarCeros(Integer longitud, String valor){
 		String ceros="";
-		
+
 		if(longitud<valor.length())
 			valor=valor.substring(0,longitud);
 		for(int i=0; i<longitud-valor.length();i++){
@@ -1719,7 +1719,7 @@ public class Util {
 		String svalor=ceros+""+valor;
 		return svalor;
 	}
-    
+
 	/**
 	 * Genera Spacios a la izquierda
 	 * @param longitud	: Longitud que debe de tener el campo
@@ -1739,10 +1739,10 @@ public class Util {
 			svalor=valor+""+spaces;
 		else
 			svalor=spaces+""+valor;
-				
+
 		return svalor;
 	}
-	
+
 	/***
 	 * Quita separador de un numeros decimal
 	 * @param valor
@@ -1756,13 +1756,13 @@ public class Util {
 			String montodeciamal=valor.substring(x+1,valor.length());
 			valor=montoEntero+""+montodeciamal;
 		}
-		
+
 		//Quita el punto (.) de decimales
 		Integer i=valor.indexOf(".");
 		String montoEntero=valor.substring(0,i);
 		String montodeciamal=valor.substring(i+1,valor.length());
 		valor=montoEntero+""+montodeciamal;
-	
+
 		return valor;
 	}
 	/**
@@ -1773,15 +1773,15 @@ public class Util {
 		//Estos caracteres especiales fueron enviados por la positiva, ya que no son aceptados por el sistema Affinity.
 		String caracteresSpeciales=".;´;/;µ;ƒ;Š;š;†;‡;±;ˆ;‰;˜;¶;Þ;Ø;Ÿ;°;*;!;%;&;=;?;¡;¿;|;+;{;};[;];_;<;>;^;@;¢;£;¥;¦;§;¨;©;ª;«;¬;®;¯;Ì;Ë;Ê;È;Ç;Æ;Å;Ä;Ã;Â;À;¾;½;¼;»;º;Î;Ï;Ð;€;™;„;¤;Ž;‹;œ;Œ;—;“;ä;·;ª;…;‘;”;–;;\\;";
 		String caracteresInvalidos="";
-		String arrayCaracteres[] =caracteresSpeciales.split(";");	 
-		
+		String arrayCaracteres[] =caracteresSpeciales.split(";");
+
 			for(int i=0;i<cadena.length();i++){
 				char cd=cadena.charAt(i);
-				
+
 				for(int x=0; x<arrayCaracteres.length-1;x++){
 //					char cr=arrayCarateres.charAt(x);
 					String cr=arrayCaracteres[x].toString();
-					
+
 					if(cr.equals(String.valueOf(cd))){
 						if(caracteresInvalidos.length()==0){
 							caracteresInvalidos=String.valueOf(cd);
@@ -1792,21 +1792,21 @@ public class Util {
 						}
 					}
 				}
-								
+
 //			}
 		}
 		return caracteresInvalidos;
 	}
-	
+
 	/**
-	 * Obtine los subconjuntos de un registro de venta, tmpocupacion o de la ruta que estamos buscando. 
+	 * Obtine los subconjuntos de un registro de venta, tmpocupacion o de la ruta que estamos buscando.
 	 * @param lstSecuencias	: Lista de secuencia segun el itinerario.
 	 * @param idOrigen		: Identificador del origen.
 	 * @param idDestino		: Identificador del destino.
 	 * @return
 	 */
 	public static List<Integer> obtenerSubconjunto(List<SecuenciaTramo> lstSecuencias, Integer idOrigen, Integer idDestino){
-		List<Integer> lstSubconjunto = new ArrayList<Integer>();
+		List<Integer> lstSubconjunto = new ArrayList<>();
 		/*	Recorremos la secuencia de tramos del itinerario	*/
 		for(int j=0; j<lstSecuencias.size(); j++){
 			SecuenciaTramo secuencia = lstSecuencias.get(j);
@@ -1825,7 +1825,7 @@ public class Util {
 		}
 		return lstSubconjunto;
 	}
-	
+
 
 	/**
 	 * Valida y retorna los datos del pasajero obtenidos desde wsmtc, ademas del objeto Reniec. Siempre y cuando esta validacion este activa, segun parametro confirurable
@@ -1840,7 +1840,7 @@ public class Util {
 		/*Recupera parametros*/
 		Parametros parametros=ServiceLocator.getParametrosManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO);
 		if(parametros.getValidarDNIgetIdentidad()!=null){
-			
+
 			/* ### REACTIVACION INACTIVA*/
 //			/**Valida si el parametros ValidarDNIgetIdentidad esta inactivo*/
 //			if(parametros.getValidarDNIgetIdentidad().intValue()==Constantes.FALSE_VALUE){
@@ -1855,34 +1855,34 @@ public class Util {
 //					usuario.setLogin("VYR");
 //					UtilData.auditarRegistro(parametros, usuario, Executions.getCurrent());
 //					ServiceLocator.getParametrosManager().actualizar(parametros);
-//					
+//
 //					/*Envia alerta informado la reactivacion de estos parametros*/
 //					/*Envia alerta informando*/
 //					String mensaje="Se han reactivado las siguientes validaciones y envío de Alertas.: \n";
 //					mensaje+="* Validación con el Método getIdentidad. \n";
 //					mensaje+="* Envío de alertas al registrar una venta a un Pasajero con DNI no valido.";
-//					
+//
 //					DestinatariosEmails window = new DestinatariosEmails();
 //					String toAddress="moscco@tepsa.com.pe,jabanto@tepsa.com.pe";
 //					window.setEmails("TO:"+toAddress);
-//									
+//
 //					//Envia E-Mail
 //					mensaje+="\n\n NOTA: [Este buzon es de envio automático, por favor no responda.]";
 //					Sendmail.enviaEmail(mensaje,"Reactivación automática de Validaciones y envío de alertas", window);
 //				}
 //			}
-						
+
 			if(parametros.getValidarDNIgetIdentidad().intValue()==Constantes.TRUE_VALUE){
 				if(resultIdentidad==null)
 					resultIdentidad = WSMTC.getIdentidad(numeroDni);
-				
+
 				/*ademas consulta nuestra DB de la Reniec*/
 				if(resultIdentidad!=null){
 					Reniec reniec=ServiceLocator.getReniecManager().buscarPax(numeroDni);
 					if(reniec!=null)
 						resultIdentidad.setReniec(reniec);
 				}
-				
+
 				/*Para mostrar la imagen con el estado de la validacion.*/
 				if(resultIdentidad!=null && resultIdentidad.isReturn())
 					Util.imagenValidacionDNIReniec(Constantes.TRUE_VALUE, imageValidacionDNI);
@@ -1892,11 +1892,11 @@ public class Util {
 		}
 		return resultIdentidad;
 	}
-	
+
 	/**
 	 * Valida si el DNI del pasajero es o no valido según validacion previa con el reniec mediante el metodo getIdentidad, para determinar el envio de la alerta
 	 * @param ventaPasaje : Instancia del objeto VentaPasajes
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public static void validarValidacionDNIReniec(VentaPasaje ventaPasaje) throws Exception{
 		/*Valida si es DNI y este ha sido marcado como no valido*/
@@ -1914,7 +1914,7 @@ public class Util {
 			}
 		}
 	}
-	
+
 	/**
 	 * Cuando se realiza una venta a un pasajero con DNI invalido y/o a un menor de edad.
 	 * @param ventaPasaje	: Objeto VentaPasajes
@@ -1934,15 +1934,15 @@ public class Util {
 					title="Venta - Incidencia no controlada";
 					mensaje="Se ha realizado la venta de un boleto a un Pasajero con DNI "+ventaPasaje.getPasajero().getNumeroDocumento()+"\n";
 				}
-			
+
 				mensaje+="Boleto     :"+(ventaPasaje.getNumeroBoleto()!=null?ventaPasaje.getNumeroBoleto():"")+"\n";
 				mensaje+="N° Control :"+ventaPasaje.getNumeroControl()+"\n";
 				mensaje+="Agencia    :"+ventaPasaje.getAgencia().toString()+"\n";
-				mensaje+="Usuario    : "+ventaPasaje.getUsuario().toString()+"\n";;
-				
+				mensaje+="Usuario    : "+ventaPasaje.getUsuario().toString()+"\n";
+
 				String toAddress="moscco@tepsa.com.pe";
 //				String ccAddress="jabanto@tepsa.com.pe";
-				
+
 				//Envia E-Mail
 				mensaje+="\n\n NOTA: [Este buzon es de envio automático, por favor no responda.]";
 				DestinatariosEmails window = new DestinatariosEmails();
@@ -1950,12 +1950,12 @@ public class Util {
 				window.setEmails("TO:"+toAddress);
 				Sendmail.enviaEmail(mensaje,title, window);
 //			}
-			
+
 		} catch (Exception e) {
 			log.error("Error al enviar E-Mail "+e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Establece el icono de la imagen, según el estado de la validacion del pasajero con la reniec.
 	 * @param estadoValidacion : 0=DNI, segun reniec no es válido, 1=DNI, segun reniec es correcto.
@@ -1970,23 +1970,23 @@ public class Util {
 			imageValidacionDNI.setTooltiptext(Messages.getString("WndPasajero.information.validacionDniError"));
 		}
 	}
-	
-	
+
+
 	/**
 	 * Busca el tipo de cambio y calcula su equibalente en el tipo de moneda del pais al cual esta asociado la agencia
 	 * @param agencia	: Agencia la cual esta realizando la venta
-	 * @param El objeto tipoCambio con su equibalente a la moneda local(segun el pais de donde se ingrese) 
+	 * @param El objeto tipoCambio con su equibalente a la moneda local(segun el pais de donde se ingrese)
 	 * @throws Exception
 	 */
 	public static TipoCambio getTipoCambioEquiMonedaLocal(Agencia agencia,Double importeSoles, boolean isDescuento)throws Exception{
 		if(importeSoles.doubleValue()==.00)
 			return null;
-				
+
 		Double tarifaEquivalente=importeSoles;
 		agencia=ServiceLocator.getAgenciaManager().buscarPorId(agencia.getId().longValue());
 		TipoCambio tipoCambio=null;
-		
-		if(agencia.getNacionalidad()!=null && agencia.getNacionalidad().getTipoMoneda()!=null && 
+
+		if(agencia.getNacionalidad()!=null && agencia.getNacionalidad().getTipoMoneda()!=null &&
 				agencia.getNacionalidad().getTipoMoneda().getId().intValue()!=Constantes.ID_TIPMON_SOLES){
 			tipoCambio=ServiceLocator.getTipoCambioManager().buscarUltimoTipoCambio(agencia.getNacionalidad().getTipoMoneda().getId());
 			if(tipoCambio!=null){
@@ -1995,11 +1995,11 @@ public class Util {
 				if(valorEquibalente.doubleValue()!=importeSoles.doubleValue()){
 					tarifaEquivalente=roundToPesosColombianos(valorEquibalente);
 					tipoCambio.setEquivalenteMonedaLocal(tarifaEquivalente);
-					
+
 					/*Valida que lo convertifo no sea menor a la tarifa, si no es un descuento*/
 					if(!(isDescuento)){
 						for(int x=0;x<10;x++){
-							Double importeEquiSoles=tarifaEquivalente*tipoCambio.getTipoCambio();
+							double importeEquiSoles=tarifaEquivalente*tipoCambio.getTipoCambio();
 							if(importeEquiSoles < importeSoles){
 								/*Si es me menor el suma  a la tarifa la diferencia y vuelve a calcular*/
 								valorEquibalente=(importeSoles+(importeSoles-importeEquiSoles))/tipoCambio.getTipoCambio();
@@ -2017,9 +2017,9 @@ public class Util {
 		}
 		return tipoCambio;
 	}
-	
+
 	/**
-	 * Realiza el redondeo a miles ejemplo si es 125,800 dede ser 126,000 si es 125,400 debe ser 126,000  o 51,300 ebe ser 52,000 siempre redinde hacia riba 
+	 * Realiza el redondeo a miles ejemplo si es 125,800 dede ser 126,000 si es 125,400 debe ser 126,000  o 51,300 ebe ser 52,000 siempre redinde hacia riba
 	 * @param importeSeoles	: Tarifa a redondear
 	 * @param numeroRound	: Numero dijitos los que debe realiza el redondeo
 	 * @return
@@ -2030,30 +2030,30 @@ public class Util {
 	    }
 
 	    final double d = Math.ceil(Math.log10(importeSeoles < 0 ? -importeSeoles: importeSeoles));
-	    
+
 	    int numeroRound=(int)d;
 	    if(importeSeoles>=10000.00){
 	    	numeroRound= (int) d/2; //Viene a ser el numero de dijitos que representa los miles a los cuales se debe redondear
 	    }else{
 	    	numeroRound=(int)d-3;
 	    }
-	    
+
 	    final int potencia = numeroRound - (int) d;
 
 	    final double magnitud = Math.pow(10, potencia);
-	    final long shifted = Math.round(importeSeoles*magnitud);    
-	    
+	    final long shifted = Math.round(importeSeoles*magnitud);
+
 	    return shifted/magnitud;
-	    	
+
 	}
-	
+
 	public static void descargarArchivo(File file) throws Exception{
 		/*Nueva implementacion- 20/12/2015*/
 		Filedownload.save(file, "application/txt");
 		/* **********************************************/
-		
+
 	}
-	
+
 	public static void Zippear(String pFile, String pZipFile, String nameFile) throws Exception {
 		nameFile=nameFile+".xml";
 		final int BUFFER_SIZE = 1024;
@@ -2077,7 +2077,7 @@ public class Util {
 			throw e;
 		}
 	}
-	
+
 	/**
 	 * Realiza la validacion si el destino pertenese o no al pool
 	 * @param detalleItinerario : Instancia de la clase.
@@ -2101,10 +2101,10 @@ public class Util {
 			return true;
 		}
 	}
-	
+
 	// redondear decimales
 	public static Double formatearDecimales(Double numero, Integer numeroDecimales) {
 		return Math.round(numero * Math.pow(10, numeroDecimales)) / Math.pow(10, numeroDecimales);
 	}
-		
+
 }

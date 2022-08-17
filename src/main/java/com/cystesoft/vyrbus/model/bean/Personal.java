@@ -30,9 +30,9 @@ public class Personal extends GenericBean implements Serializable {
 	private TipoZona tipoZona;
 	private String nombreZona;
 	private String direccion;
-	
+
 	private Integer tipoConductor; //No mapeado
-	
+
 	public Personal() {
 	}
 

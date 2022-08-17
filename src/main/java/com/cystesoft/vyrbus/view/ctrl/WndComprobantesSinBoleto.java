@@ -72,15 +72,15 @@ public class WndComprobantesSinBoleto extends WndBase {
 	private Combobox cmbTipoComprobanteBusq;
 	private Combobox cmbAgencia;
 	private Window wndComprobantesSinBoleto;
-	
-	
+
+
 	private VentaPasaje boletoReimprimir = null;
 	private Agencia agencia = null;
 	private Window wndReimpresion;
 	private Date fechaLiquidacion = null;
 //	private CanalVenta canalVenta=null;
-		
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
@@ -90,15 +90,15 @@ public class WndComprobantesSinBoleto extends WndBase {
 			super.onCreate();
 			cargarTipoComprobanteBusq();
 			cargarAgencias();
-			
+
 //			canalVenta = (CanalVenta)this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_CANAL_VENTA);
 			agencia = (Agencia)this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
 			fechaLiquidacion = (Date)this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION);
 			if(fechaLiquidacion==null)
 				throw new LiquidacionNullException();
-			
+
 			buscarComprobantes();
-			
+
 		}catch(LiquidacionNullException lex){
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noLiquidacion"));
 			closeTabWindow();
@@ -118,7 +118,7 @@ public class WndComprobantesSinBoleto extends WndBase {
 		cmbTipoComprobanteBusq=(Combobox)this.getFellow("cmbTipoComprobanteBusq");
 		cmbAgencia = (Combobox)this.getFellow("cmbAgencia");
 		wndComprobantesSinBoleto=(Window)this.getFellow("wndComprobantesSinBoleto");
-		
+
 		cmbTipoComprobanteBusq.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
@@ -126,33 +126,33 @@ public class WndComprobantesSinBoleto extends WndBase {
 			}
 		});
 	}
-	
+
 	public void cargarTipoComprobanteBusq() {
 		try{
 			ArrayList<TipoComprobante> lstComprobantes = ServiceLocator.getTipoComprobanteManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
-			UtilData.cargarGenericData(cmbTipoComprobanteBusq, true);	
+			UtilData.cargarGenericData(cmbTipoComprobanteBusq, true);
 			for (TipoComprobante tipoComprobante: lstComprobantes) {
 //				if (!(tipoComprobante.getId().equals(Constantes.ID_TIPCOM_BOLETO_VIAJE) ||
 //						tipoComprobante.getId().equals(Constantes.ID_TIPCOM_MANIFIESTO_PAX))){
 				if(tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_RECIBO_CAJA ||
 						tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES ||
-						tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_VOUCHER_CORPORATIVO){	
+						tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_VOUCHER_CORPORATIVO){
 					Comboitem oComboitem = new Comboitem();
-		
+
 					oComboitem.setValue(tipoComprobante);
 					oComboitem.setLabel(tipoComprobante.getDenominacion());
-		
-					cmbTipoComprobanteBusq.appendChild(oComboitem);	
+
+					cmbTipoComprobanteBusq.appendChild(oComboitem);
 				}
 			}
-			
+
 			cmbTipoComprobanteBusq.setSelectedIndex(0);
 		}catch(Exception ex){
 			ex.printStackTrace();
 			DlgMessage.error(ex.getMessage());
 		}
 	}
-	
+
 	private void cargarAgencias(){
 		try{
 			String fechaPartida = Util.DatetoString(new Date(), Constantes.DATE_FORMAT);
@@ -174,7 +174,7 @@ public class WndComprobantesSinBoleto extends WndBase {
 			DlgMessage.error(ex.getMessage());
 		}
 	}
-	
+
 	public void buscarComprobantes(){
 		try{
 			lbxComprobantes.getItems().clear();
@@ -184,18 +184,18 @@ public class WndComprobantesSinBoleto extends WndBase {
 			Integer idAgenciaEmision = null;
 			if(cmbTipoComprobanteBusq.getSelectedItem().getValue() instanceof TipoComprobante)
 				idTipoComprobante=((TipoComprobante)cmbTipoComprobanteBusq.getSelectedItem().getValue()).getId();
-			
+
 			if(cmbAgencia.getSelectedItem().getValue() instanceof Agencia)
 				idAgenciaEmision = ((Agencia)cmbAgencia.getSelectedItem().getValue()).getId();
-			
-			
+
+
 //			UsuarioRol usuarioRol = ServiceLocator.getUsuarioRolManager().buscarXIdUsuario(getUsuario().getId());
 //			List<UsuarioRol> lstUsuarioRol = ServiceLocator.getUsuarioRolManager().buscarXIdUsuario(getUsuario().getId());
 //			UsuarioRol usuarioRol=null;
 //			if(lstUsuarioRol.size()>0){
 //				usuarioRol=new UsuarioRol();
 //				usuarioRol=lstUsuarioRol.get(0);
-				
+
 //				List<VentaPasaje> lstResult = ServiceLocator.getVentaPasajesManager().buscarComprobantesSinBoleto(fechaPartida, agencia.getId(),idTipoComprobante, usuarioRol.getRol().getId(), idAgenciaEmision);
 			List<VentaPasaje> lstResult = ServiceLocator.getVentaPasajesManager().buscarComprobantesSinBoleto(fechaPartida, agencia.getId(),idTipoComprobante, getRol().getId(), idAgenciaEmision);
 			Listitem listitem = null;
@@ -244,18 +244,18 @@ public class WndComprobantesSinBoleto extends WndBase {
 				}
 			}else
 				DlgMessage.information(Messages.getString("WndComprobantesSinBoleto.information.noComprobantesSinBoleto"));
-				
+
 //			}
-			
-			
+
+
 		}catch(Exception ex){
 			DlgMessage.information(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	private void reimprimir(String idVenta){
 		try{
-			
+
 			boletoReimprimir = null;
 			final VentaPasaje ventaOriginal = ServiceLocator.getVentaPasajesManager().buscarVentaById(Long.valueOf(idVenta));
 			if(ventaOriginal.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA)
@@ -266,18 +266,18 @@ public class WndComprobantesSinBoleto extends WndBase {
 				throw new ManifiestoImpresoException();
 //			else if(ventaOriginal.getManifiesto()!=null)
 //				throw new ManifiestoImpresoException();
-			
+
 			/*Valida si es un voucher corporativo o agencia de viajes y si esta dentro del tiempo permitido para la reimpresion - Impl 14/02/2016 - jabanto*/
-			if(ventaOriginal.getCanalVenta().getId().intValue()==Constantes.ID_CANVEN_CORPORATIVO || 
+			if(ventaOriginal.getCanalVenta().getId().intValue()==Constantes.ID_CANVEN_CORPORATIVO ||
 					ventaOriginal.getCanalVenta().getId().intValue()==Constantes.ID_CANVEN_AGENCIA_VIAJES ||
-					ventaOriginal.getCanalVenta().getId().intValue()==Constantes.ID_CANVEN_WEB){				
+					ventaOriginal.getCanalVenta().getId().intValue()==Constantes.ID_CANVEN_WEB){
 				Date fechaActual=Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date()));
 				long diasDiferencia=(ventaOriginal.getFechaPartida().getTime()-fechaActual.getTime())/Constantes.MILISEGUNDOS_X_DIA;
-				
+
 				//Valida si la agencia a quien pertenece el voucher tiene una autorizacion para que se reimpriman su voucher con tiempo anticipado
 				boolean tieneAutorizacion=ServiceLocator.getReimpresionAnticipadaManager().tieneAutorizacionReimpresion(ventaOriginal.getAgencia().getId(), ventaOriginal.getCanalVenta().getId());
-				//Premite la reimpresion como maximo hasta 1 dia antes de la fecha de viaje 
-				if(tieneAutorizacion==false && diasDiferencia>1){
+				//Premite la reimpresion como maximo hasta 1 dia antes de la fecha de viaje
+				if(!tieneAutorizacion && diasDiferencia>1){
 					DlgMessage.information(Messages.getString("WndReimprimirBoleto.information.reimpresionAntesFecha"));
 					return;
 				}
@@ -305,12 +305,12 @@ public class WndComprobantesSinBoleto extends WndBase {
 			comprobantesBloqueados.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 			UtilData.auditarRegistro(comprobantesBloqueados, getUsuario(), Executions.getCurrent());
 			ServiceLocator.getComprobantesBloqueadosManager().bloquearComprobante(comprobantesBloqueados);
-			
-			
+
+
 			/*##End Begin 28/10/2016 - jabanto*/
 //			UsuarioHardware usuarioHardware = (UsuarioHardware) this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO_HARDWARE);
 //			final String boleto = UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_BOLETO_VIAJE, usuarioHardware.getId());
-			
+
 			/*##Begin 28/10/2016 - jabanto*/
 			/*BEGIN 16/06/2021 - javalos - Correlativo by caja*/
 //			EspecieValorada especieValorada=UtilData.buscarEspecieValorada((ventaOriginal.getCliente()!=null?Constantes.ID_TIPCOM_FACTURA:Constantes.ID_TIPCOM_BOLETA_VENTA), agencia, false);
@@ -319,7 +319,7 @@ public class WndComprobantesSinBoleto extends WndBase {
 			wndReimpresion = createVentanaReimpresion(ventaOriginal, controlEspecieValorada.toString());
 			/*END 16/06/2021 - javalos - Correlativo by caja*/
 			this.appendChild(wndReimpresion);
-			wndReimpresion.setMode(MODAL);			
+			wndReimpresion.setMode(MODAL);
 		}catch(ReimpresionByTipoMovimientoNoPermitidoException rtmnpex){
 			if(rtmnpex.getTipoMovimiento().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA)
 				DlgMessage.information(Messages.getString("WndReimprimirBoleto.information.reimpresionByAnulacionNoPermitido"));
@@ -333,7 +333,7 @@ public class WndComprobantesSinBoleto extends WndBase {
 			WSFE.sendMail(ex.getMessage()+"\n VENPAS_ID:"+idVenta, "Metod: reimprimir()");
 		}
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	private Window createVentanaReimpresion(final VentaPasaje ventaOriginal, final String boleto)throws Exception{
 		Caption caption = null;
@@ -345,23 +345,23 @@ public class WndComprobantesSinBoleto extends WndBase {
 		Row row = null;
 		Label label = null;
 		Textbox text = null;
-		
+
 		final Window win = new Window("", "normal", false);
 		win.setWidth("560px");
-		
+
 		caption = new Caption("REIMPRESION DE BOLETO", "resources/menu/menu_reimprimir.png");
 		win.appendChild(caption);
 		label = new Label("Se va a realizar la Reimpresion con los siguientes datos :");
 		label.setStyle("font-size:12px !important");
 		win.appendChild(label);
-		
+
 		win.appendChild(new Separator("horizontal"));
-		
+
 		groupbox = new Groupbox();
 		groupbox.setClosable(false);
 		caption = new Caption("Información del Servicio");
 		groupbox.appendChild(caption);
-		
+
 		/*	Columna 1	*/
 		column = new Column();
 		column.setAlign("right");
@@ -377,24 +377,24 @@ public class WndComprobantesSinBoleto extends WndBase {
 		/*	Columna 4	*/
 		column = new Column();
 		columns.appendChild(column);
-		
+
 		grid.appendChild(columns);
-		
-		row = new Row();		
+
+		row = new Row();
 		label = new Label("ORIGEN :");
-		row.appendChild(label);		
+		row.appendChild(label);
 		text = new Textbox(ventaOriginal.getRuta().getOrigen());
 		text.setReadonly(true);
 		text.setWidth("80px");
-		row.appendChild(text);		
+		row.appendChild(text);
 		label = new Label("DESTINO :");
-		row.appendChild(label);		
+		row.appendChild(label);
 		text = new Textbox(ventaOriginal.getRuta().getDestino());
 		text.setReadonly(true);
 		text.setWidth("80px");
 		row.appendChild(text);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		label = new Label("FECHA SALIDA :");
 		row.appendChild(label);
@@ -409,7 +409,7 @@ public class WndComprobantesSinBoleto extends WndBase {
 		text.setWidth("80px");
 		row.appendChild(text);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		label = new Label("SERVICIO :");
 		row.appendChild(label);
@@ -423,9 +423,9 @@ public class WndComprobantesSinBoleto extends WndBase {
 		text.setReadonly(true);
 		text.setWidth("80px");
 		row.appendChild(text);
-		
-		rows.appendChild(row);		
-		
+
+		rows.appendChild(row);
+
 		grid.appendChild(rows);
 		groupbox.appendChild(grid);
 		win.appendChild(groupbox);
@@ -434,7 +434,7 @@ public class WndComprobantesSinBoleto extends WndBase {
 		groupbox.setClosable(false);
 		caption = new Caption("Informacion del Comprobante Electrónico");
 		groupbox.appendChild(caption);
-		
+
 		grid = new Grid();
 		rows = new Rows();
 		columns = new Columns();
@@ -454,7 +454,7 @@ public class WndComprobantesSinBoleto extends WndBase {
 		column = new Column();
 		columns.appendChild(column);
 		grid.appendChild(columns);
-		
+
 		row = new Row();
 		row.setSpans("1,3");
 		label = new Label("PASAJERO :");
@@ -464,7 +464,7 @@ public class WndComprobantesSinBoleto extends WndBase {
 		text.setWidth("96%");
 		row.appendChild(text);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		row.setSpans("1,3");
 		label = new Label("CLIENTE :");
@@ -474,10 +474,10 @@ public class WndComprobantesSinBoleto extends WndBase {
 		text.setWidth("96%");
 		row.appendChild(text);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		label = new Label("RUC CLIENTE :");
-		row.appendChild(label);		
+		row.appendChild(label);
 		text = new Textbox(ventaOriginal.getCliente()!=null?ventaOriginal.getCliente().getNumeroDocumento():"");
 		text.setWidth("100px");
 		text.setReadonly(true);
@@ -489,7 +489,7 @@ public class WndComprobantesSinBoleto extends WndBase {
 		text.setWidth("120px");
 		row.appendChild(text);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		if(ventaOriginal.getCliente()!=null)
 			label = new Label("NUEVA N° FACTURA :");
@@ -508,13 +508,13 @@ public class WndComprobantesSinBoleto extends WndBase {
 		text.setWidth("80px");
 		row.appendChild(text);
 		rows.appendChild(row);
-		
-		row = new Row();		
+
+		row = new Row();
 		label = new Label("COMPROBANTE :");
-		row.appendChild(label);		
+		row.appendChild(label);
 		cmbTipoComprobante = new Combobox();
 		cmbTipoComprobante.setWidth("120px");
-		TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+		TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 		criteriosBusqueda.put("rubro", TipoComprobante.RUBRO_PASAJES);
 		UtilData.cargarDataCombo(cmbTipoComprobante, TipoComprobante.class, criteriosBusqueda, false);
 		row.appendChild(cmbTipoComprobante);
@@ -525,10 +525,10 @@ public class WndComprobantesSinBoleto extends WndBase {
 		text.setWidth("120px");
 		row.appendChild(text);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		label = new Label("FORMA DE PAGO :");
-		row.appendChild(label);		
+		row.appendChild(label);
 		text = new Textbox(ventaOriginal.getFormaPago().getDenominacion());
 		text.setWidth("100px");
 		text.setReadonly(true);
@@ -540,24 +540,24 @@ public class WndComprobantesSinBoleto extends WndBase {
 		text.setWidth("120px");
 		row.appendChild(text);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		row.setSpans("1,3");
 		label = new Label("IMPORTE PAGADO :");
-		row.appendChild(label);		
+		row.appendChild(label);
 		text = new Textbox(Util.toNumberFormat(ventaOriginal.getTarifa()+ventaOriginal.getRecargo()-ventaOriginal.getDescuento(),2));
 		text.setWidth("100px");
 		text.setReadonly(true);
 		row.appendChild(text);
 		rows.appendChild(row);
-		
+
 		grid.appendChild(rows);
-		
+
 		groupbox.appendChild(grid);
 		win.appendChild(groupbox);
-		
+
 		onSelectDefaultTipoComprobante(ventaOriginal);
-		
+
 		grid = new Grid();
 //		columns = new Columns();
 //		column = new Column();
@@ -600,7 +600,7 @@ public class WndComprobantesSinBoleto extends WndBase {
 					DlgMessage.information(Messages.getString("WndComprobantesSinBoleto.information.reimpresionEnOtroEquipo"));
 					return;
 				}
-				
+
 				Messagebox.show(Messages.getString("WndComprobantesSinBoleto.question.confirmarReimpresion"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 					@Override
 					public void onEvent(Event e){
@@ -619,7 +619,7 @@ public class WndComprobantesSinBoleto extends WndBase {
 										return;
 									}
 								}
-								
+
 								ComprobantesBloqueados comprobantesBloqueados=ServiceLocator.getComprobantesBloqueadosManager().buscarPorId(ventaOriginal.getId());
 								if(comprobantesBloqueados==null){
 									DlgMessage.information(Messages.getString("WndComprobantesSinBoleto.information.expiracionBloqueo"));
@@ -631,14 +631,14 @@ public class WndComprobantesSinBoleto extends WndBase {
 									DlgMessage.information(Messages.getString("WndComprobantesSinBoleto.information.reimpresionEnOtroEquipo"));
 									return;
 								}
-								
-								
+
+
 								//Clonamos la venta original para luego a este actualizar el campo venta pasaje referencial (VENPAS_IDREF) 16/12/2013 jabanto
 								VentaPasaje ventaPasajereRef= (VentaPasaje) ventaOriginal.clone();
 								ventaPasajereRef.setNumeroBoletoAnterior(boleto);
 								UtilData.auditarRegistro(ventaPasajereRef,true, getUsuario(), Executions.getCurrent());
-								//----->>>	
-								
+								//----->>>
+
 								boletoReimprimir = (VentaPasaje)ventaOriginal.clone();
 								ventaOriginal.setId(null);
 								ventaOriginal.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_ANULACION_SISTEMA));
@@ -646,9 +646,9 @@ public class WndComprobantesSinBoleto extends WndBase {
 								ventaOriginal.setAgencia(getAgencia());
 								ventaOriginal.setUsuario(getUsuario());
 								UtilData.auditarRegistro(ventaOriginal, getUsuario(), Executions.getCurrent());
-								
-								
-								
+
+
+
 								boletoReimprimir.setId(null);
 								boletoReimprimir.setVentaPasaje(ventaPasajereRef);
 //								boletoReimprimir.setVentaPasaje(ventaOriginal);
@@ -659,7 +659,7 @@ public class WndComprobantesSinBoleto extends WndBase {
 //								boletoReimprimir.setCanalVenta(canalVenta);
 								boletoReimprimir.setLiquidacion(null);
 								boletoReimprimir.setFechaTransferencia(null);
-								if(boletoReimprimir.getTipoComprobante().getId().equals(Constantes.ID_TIPCOM_RECIBO_CAJA))								
+								if(boletoReimprimir.getTipoComprobante().getId().equals(Constantes.ID_TIPCOM_RECIBO_CAJA))
 									boletoReimprimir.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_PREPAGADO));
 								else if(ventaOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES
 										|| ventaOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_VOUCHER_CORPORATIVO)
@@ -672,23 +672,23 @@ public class WndComprobantesSinBoleto extends WndBase {
 								/*BEGIN 16/06/2021 - javalos - Correlativo by caja*/
 								boletoReimprimir.setUsuarioHardware(getUsuarioHardware());
 								/*END 16/06/2021 - javalos - Correlativo by caja*/
-								
+
 //								//Coloca en el campo estado documento PAG a todos los boletos o RC que no sen credito. - jabanto 16/10/2014
 								if(boletoReimprimir.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO)
 									boletoReimprimir.setEstadoDocumento(Constantes.ESTADO_DOCUMENTO_ACTIVO);
 								else
 									boletoReimprimir.setEstadoDocumento(Constantes.ESTADO_DOCUMENTO_PAGADO);
-								
+
 								UtilData.auditarRegistro(boletoReimprimir, getUsuario(), Executions.getCurrent());
 								int result = ServiceLocator.getVentaPasajesManager().reimprimirBoleto(ventaOriginal, boletoReimprimir);
 								if(result==Constantes.CORRECT){
 									boletoReimprimir = ServiceLocator.getVentaPasajesManager().buscarVentaById(boletoReimprimir.getId());
-									
+
 									/*###End Begin 28/10/2016 - jabanto*/
 //									/*Implementacion para el nueno formato 01/02/2016 - jabanto */
 //									boolean formato=UtilData.getFormatoImprecion(getAgencia().getId(), getTipocomprobante().getId(), getUsuarioHardware().getId());
 //									File file=CreateDocument.crearBoleto(boletoReimprimir,formato);
-									
+
 //									if(getUsuarioHardware().getPrintApplet().intValue()==Constantes.TRUE_VALUE){
 //										String fileBoleto = Constantes.URL_FORMATOS_BOLETOS +Constantes.CLAVE_PAHT+ boletoReimprimir.getNumeroControl()+".txt";
 //										Window win = (Window)Executions.createComponents("imprimir.zul", null, null);
@@ -703,17 +703,17 @@ public class WndComprobantesSinBoleto extends WndBase {
 //										Util.descargarArchivo(file);
 //										wndReimpresion.onClose();
 //									}
-									
+
 									/*##Begin 28/10/2016 -jabanto*/
 									List<VentaPasaje>listVentaPasaje= new ArrayList<>();
 									listVentaPasaje.add(boletoReimprimir);
 									WSFE.sendVenta(listVentaPasaje, wndComprobantesSinBoleto, true, null);
-									
+
 									wndReimpresion.onClose();
 									buscarComprobantes();
-									
+
 									ServiceLocator.getComprobantesBloqueadosManager().desbloquearComprobante(ventaOriginal.getId());
-								}								
+								}
 							}
 						}catch(NumeroBoletoDuplicadoException nbdex){
 							DlgMessage.information(Messages.getString("WndComprobantesSinBoleto.information.numeroBoletoVendido"));
@@ -729,16 +729,16 @@ public class WndComprobantesSinBoleto extends WndBase {
 		});
 		Hbox hbox=new Hbox();
 //		hbox.setWidth("560px");
-		
+
 		button.setHeight("28px");
 		hbox.appendChild(button);
 //		row.appendChild(button);
-		
+
 		Separator separator=new Separator();
 		separator.setWidth("10px");
 		hbox.appendChild(separator);
-		
-		
+
+
 		button = new Button("Cancelar", "resources/mp_cancelarEnabled.png");
 		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
@@ -750,8 +750,8 @@ public class WndComprobantesSinBoleto extends WndBase {
 					comprobantesBloqueados.setUsuario(getUsuario());
 					comprobantesBloqueados.setUsuarioHardware(getUsuarioHardware());
 					ServiceLocator.getComprobantesBloqueadosManager().desbloquearComprobante(comprobantesBloqueados);
-					
-				} catch (Exception e1) {					
+
+				} catch (Exception e1) {
 					e1.printStackTrace();
 					DlgMessage.information(e1.getMessage());
 				}
@@ -761,23 +761,23 @@ public class WndComprobantesSinBoleto extends WndBase {
 		button.setHeight("28px");
 		button.setFocus(true);
 		hbox.appendChild(button);
-		
+
 		Div div=new Div();
 		div.setAlign("center");
 		div.setWidth(win.getWidth());
 		Toolbar toolbar=new Toolbar();
 		div.appendChild(hbox);
-		
+
 		toolbar.appendChild(div);
 		row.appendChild(toolbar);
-		
+
 		rows.appendChild(row);
-		
+
 		grid.appendChild(rows);
 		win.appendChild(grid);
 		return win;
 	}
-	
+
 	/**
 	 * Para seleccionar el Tipo de Comprobante por defecto
 	 */
@@ -787,7 +787,7 @@ public class WndComprobantesSinBoleto extends WndBase {
 			/*	Si la agencia pertenece a TEPSA*/
 //			if(comboitem.getValue() instanceof TipoComprobante && ((TipoComprobante)comboitem.getValue()).getId().intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE)
 //				cmbTipoComprobante.setSelectedItem(comboitem);
-			
+
 			/*##Begin 28/10/2016 - jabanto*/
 			if(comboitem.getValue() instanceof TipoComprobante){
 				TipoComprobante tipoComprobante=comboitem.getValue();
@@ -796,7 +796,7 @@ public class WndComprobantesSinBoleto extends WndBase {
 				else if (tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_FACTURA && ventaOrieginal.getCliente()!=null)
 					cmbTipoComprobante.setSelectedItem(comboitem);
 			}
-			
+
 		}
 		cmbTipoComprobante.setDisabled(true);
 	}

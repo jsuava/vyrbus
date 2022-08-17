@@ -10,7 +10,7 @@ public class UsuarioRol extends GenericBean implements java.io.Serializable {
 	private UsuarioRolID usuarioRolID;
 	private Usuario usuario;
 	private Rol rol;
-	
+
 	public UsuarioRol() {
 	}
 
@@ -60,5 +60,5 @@ public class UsuarioRol extends GenericBean implements java.io.Serializable {
 	 */
 	public void setRol(Rol rol) {
 		this.rol = rol;
-	}	
+	}
 }

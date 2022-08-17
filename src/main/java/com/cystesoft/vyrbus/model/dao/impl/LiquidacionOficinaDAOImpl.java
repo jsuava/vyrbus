@@ -11,7 +11,7 @@ import com.cystesoft.vyrbus.model.bean.LiquidacionOficina;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.dao.LiquidacionOficinaDAO;
 /**
- * 
+ *
  * @author JABANTO
  *
  */
@@ -19,7 +19,7 @@ public class LiquidacionOficinaDAOImpl extends GenericDAOImpl implements Liquida
 
 	@Override
 	public List<Liquidacion> buscarLiquidacionPendiente(String fecha, Integer idAgencia)throws Exception {
-				
+
 		String sql ="SELECT l.liquidacion_id, l.n_anio, l.agencia_id, l.usuario_id, l.n_estliq, l.c_nomusu as NombreUsuario, " +//0-5
 							"a.c_denominacion as NombreAgencia, "+//6-6
 							"u.c_apepat as ApPaterno, u.c_apemat as ApMarterno, u.c_nombre as Nombres, "+//7-9
@@ -34,18 +34,18 @@ public class LiquidacionOficinaDAOImpl extends GenericDAOImpl implements Liquida
 												   "FROM vrtliqofi lo "+
                               					   "WHERE lo.d_fecliq=to_date('"+fecha+"','dd/MM/yyyy') AND lo.c_estreg='A') "+
 					"ORDER BY l.d_FecLiq";
-		
+
 		log.info(sql);
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<Liquidacion> ListResult = new ArrayList<Liquidacion>();
+		List<Liquidacion> ListResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
-			
+
 			Agencia agencia = new Agencia();
 			agencia.setId(((BigDecimal) obj[2]).intValue());
 			agencia.setDenominacion(obj[6].toString());
-			
+
 			Usuario usuario = new Usuario();
 			usuario.setId(((BigDecimal) obj[3]).intValue());
 			usuario.setLogin(obj[5].toString());
@@ -53,7 +53,7 @@ public class LiquidacionOficinaDAOImpl extends GenericDAOImpl implements Liquida
 			if (obj[8] !=null)
 				usuario.setApellidoMaterno(obj[8].toString());
 			usuario.setNombre(obj[9].toString());
-			
+
 			Liquidacion liquidacion = new Liquidacion();
 			liquidacion.setId(((BigDecimal) obj[0]).intValue());
 			liquidacion.setAnio(((BigDecimal)obj[1]).intValue());
@@ -68,13 +68,13 @@ public class LiquidacionOficinaDAOImpl extends GenericDAOImpl implements Liquida
 				liquidacion.setIpInsercion(obj[13].toString());
 			if (obj[14] !=null)
 				liquidacion.setUsuarioInsercion(obj[14].toString());
-			
+
 			liquidacion.setUsuario(usuario);
 			liquidacion.setAgencia(agencia);
-			
-			ListResult.add(liquidacion);		
-		}	
-		
+
+			ListResult.add(liquidacion);
+		}
+
 		return ListResult;
 	}
 
@@ -100,16 +100,16 @@ public class LiquidacionOficinaDAOImpl extends GenericDAOImpl implements Liquida
 			"ORDER BY l.d_FecLiq";
 
 			log.info(sql);
-		
+
 			List<?> result = getSession().createSQLQuery(sql).list();
-			List<Liquidacion> ListResult = new ArrayList<Liquidacion>();
+			List<Liquidacion> ListResult = new ArrayList<>();
 			for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
-			
+
 			Agencia agencia = new Agencia();
 			agencia.setId(((BigDecimal) obj[2]).intValue());
 			agencia.setDenominacion(obj[6].toString());
-			
+
 			Usuario usuario = new Usuario();
 			usuario.setId(((BigDecimal) obj[3]).intValue());
 			usuario.setLogin(obj[5].toString());
@@ -117,7 +117,7 @@ public class LiquidacionOficinaDAOImpl extends GenericDAOImpl implements Liquida
 			if (obj[8] !=null)
 				usuario.setApellidoMaterno(obj[8].toString());
 			usuario.setNombre(obj[9].toString());
-			
+
 			Liquidacion liquidacion = new Liquidacion();
 			liquidacion.setId(((BigDecimal) obj[0]).intValue());
 			liquidacion.setAnio(((BigDecimal)obj[1]).intValue());
@@ -132,27 +132,27 @@ public class LiquidacionOficinaDAOImpl extends GenericDAOImpl implements Liquida
 				liquidacion.setIpInsercion(obj[13].toString());
 			if (obj[14] !=null)
 				liquidacion.setUsuarioInsercion(obj[14].toString());
-			
+
 			liquidacion.setUsuario(usuario);
 			liquidacion.setAgencia(agencia);
-			
-			ListResult.add(liquidacion);		
-			}	
-			
+
+			ListResult.add(liquidacion);
+			}
+
 			return ListResult;
 	}
 
 	@Override
 	public void guardar(LiquidacionOficina liquidacionOficina) throws Exception {
 		super.save(liquidacionOficina);
-		
+
 	}
 
 
 	@Override
 	public void inactivar(Long id) {
-		super.inactivate(LiquidacionOficina.class, id);		
+		super.inactivate(LiquidacionOficina.class, id);
 	}
-	
+
 
 }

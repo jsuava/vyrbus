@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 26/10/2016
  * Hora			: 15:41:55
@@ -24,7 +24,7 @@ import com.cystesoft.vyrbus.service.business.TipoNotaManager;
  */
 public class TipoNotaManagerImpl implements TipoNotaManager{
 	private TipoNotaDAO tipoNotaDAO;
-	
+
 	/**
 	 * @return the tipoNotaDAO
 	 */
@@ -38,7 +38,7 @@ public class TipoNotaManagerImpl implements TipoNotaManager{
 	public void setTipoNotaDAO(TipoNotaDAO tipoNotaDAO) {
 		this.tipoNotaDAO = tipoNotaDAO;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.TipoNotaManager#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
 	 */

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 12/09/2012
  */
@@ -26,7 +26,7 @@ public interface TipoItinerarioDAO extends GenericDAO {
 	 * @return
 	 */
 	public ArrayList<TipoItinerario> buscarPorEstadoRegistro(String estado, String criterioOrden);
-	
+
 	/**
 	 * Busqueda por un array de criterios.
 	 * @param criteriosBusqueda: Array de criterios de busqueda
@@ -34,26 +34,26 @@ public interface TipoItinerarioDAO extends GenericDAO {
 	 * @return : Array de Tipos de Itinerarios
 	 */
 	public ArrayList<TipoItinerario> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
-	
+
 	/**
-	 * Busqueda por Id del Tipo de Itinerario 
+	 * Busqueda por Id del Tipo de Itinerario
 	 * @param id : Identificador del Tipo de Itinerario
 	 * @return : Lista de tipos de itinerarios
 	 */
 	public TipoItinerario buscarPorId(Long id);
-	
+
 	/**
 	 * Guarda el Tipo de Itinerario.
 	 * @param tipoItinerario :clase TipoItinerario
 	 */
 	public void guardar(TipoItinerario tipoItinerario);
-	
+
 	/**
 	 * Actualiza Tipo de Itinerario.
 	 * @param tipoItinerario : Clase TipoItinerario
 	 */
 	public void actualizar(TipoItinerario tipoItinerario);
-	
+
 	/**
 	 * Inactivar
 	 * @param id : Identificador del TipoItinerario

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 26 oct. 2019
  * Hora			: 15:57:04
@@ -18,21 +18,21 @@ import com.cystesoft.vyrbus.model.bean.TarifaRegular;
  */
 public interface TarifaRegularManager {
 
-//	public List<TarifaRegular> buscarTarifaPorServicio(Integer canalVentaID, Integer servicioID, Integer rutaID, 
-//			
+//	public List<TarifaRegular> buscarTarifaPorServicio(Integer canalVentaID, Integer servicioID, Integer rutaID,
+//
 	public int guardar(TarifaRegular tarifaRegular) throws Exception;
-	
+
 	public void delete (Long idTarifaRegular) throws Exception;
 
 	public List<TarifaRegular> buscarTarifaPorServicio(
-			Integer canalVentaID, 
-			Integer servicioID, 
-			Integer rutaID, 
+			Integer canalVentaID,
+			Integer servicioID,
+			Integer rutaID,
 			String fechaTarifa,
 			String horaPartida,
-			Integer piso, 
+			Integer piso,
 			Integer zona) throws Exception;
-	
+
 	public List<TarifaRegular> listarTarifasPorServicios(Integer canalVentaID,
 			Integer servicioID,
 			Integer origenID,
@@ -42,7 +42,7 @@ public interface TarifaRegularManager {
 			String fechaFin,
 			String horaPartida,
 			Integer con_o_sin_tarifa) throws Exception;
-	
+
 	public String buscarCantidadTarifasAReemplazar(Integer canalVentaID,
 			Integer servicioID,
 			Integer origenID,
@@ -53,7 +53,7 @@ public interface TarifaRegularManager {
 			String fechaFin,
 			String horaPartida,
 			Integer PorServicio)throws Exception;
-	
+
 	public List<TarifaRegular> buscarTarifasAReemplazar(Integer canalVentaID,
 			Integer servicioID,
 			Integer origenID,
@@ -63,7 +63,7 @@ public interface TarifaRegularManager {
 			String fechaInicio,
 			String fechaFin,
 			String horaPartida,
-			Integer PorServicio)throws Exception;	
-	
-	
+			Integer PorServicio)throws Exception;
+
+
 }

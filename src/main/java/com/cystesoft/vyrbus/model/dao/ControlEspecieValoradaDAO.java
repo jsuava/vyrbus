@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 17/09/2012
  */
@@ -36,7 +36,7 @@ public interface ControlEspecieValoradaDAO extends GenericDAO {
 	public int guardar(ControlEspecieValorada controlEspecieValorada)throws Exception;
 	/**
 	 * Actualiza el objeto enviado como parametro.
-	 * @param controlEspecieValorada	: Objeto a actualizar. 
+	 * @param controlEspecieValorada	: Objeto a actualizar.
 	 * @return -1 Fallo, 1 Correcto
 	 */
 	public int actualizar(ControlEspecieValorada controlEspecieValorada)throws Exception;
@@ -59,24 +59,24 @@ public interface ControlEspecieValoradaDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public int actualizarCorrelativoEspecieValorada(Integer idTipCom, Integer idUsuHar, String serie, long correlativo)throws Exception;
-	
+
 	/**
 	 * Inactivar Contorl Especie Valorada
 	 * @param controlEspecieValoradaID : identifocador de ControlEspecieValorada.
 	 * @throws Exception
 	 */
 	public void inactivar (ControlEspecieValoradaID controlEspecieValoradaID) throws Exception;
-	
+
 	/**
 	 * busca Control especies valoradas
 	 * @param idAgencia			: Obsional, Identificador de la agencia
-	 * @param idTipoComprobante	: Obsional, Identificador del Tipo de comprobante 
+	 * @param idTipoComprobante	: Obsional, Identificador del Tipo de comprobante
 	 * @param idUsuarioHarware	: Obsional, Identificador del Usuario Hardware
 	 * @return
 	 * @throws Exception
 	 */
 	public List<ControlEspecieValorada> buscarEspecieValoradas(Integer idAgencia, Integer idTipoComprobante, Integer idUsuarioHarware) throws Exception;
-	
+
 	/**
 	 * Valida que el numero rango de correlativo ingresado no haga intersección con algún otro rango ingresado por otro usuario
 	 * @param idUsuarioHardware	: Identificador del Usuario Hardware.

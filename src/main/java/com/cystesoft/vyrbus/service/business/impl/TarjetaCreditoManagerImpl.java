@@ -25,7 +25,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class TarjetaCreditoManagerImpl implements TarjetaCreditoManager {
 	private TarjetaCreditoDAO tarjetaCreditoDAO;
-	
+
 	/**
 	 * @return the tarjetaCreditoDAO
 	 */
@@ -70,17 +70,17 @@ public class TarjetaCreditoManagerImpl implements TarjetaCreditoManager {
 	@Transactional
 	public void guardar(TarjetaCredito tarjetaCredito) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", tarjetaCredito.getDenominacion());
 			criteriosBusqueda.put("operadorTarjetaCredito", tarjetaCredito.getOperadorTarjetaCredito());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> result = getTarjetaCreditoDAO().buscarPorX(criteriosBusqueda, null);
-			
+
 			if(result.size()>0)
 				throw new DenominacionDuplicadaException();
-			
+
 			getTarjetaCreditoDAO().guardar(tarjetaCredito);
-			
+
 		}catch(DenominacionDuplicadaException ddex){
 			throw new DenominacionDuplicadaException();
 		}catch(Exception ex){
@@ -95,21 +95,21 @@ public class TarjetaCreditoManagerImpl implements TarjetaCreditoManager {
 	@Transactional
 	public void actualizar(TarjetaCredito tarjetaCredito) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", tarjetaCredito.getDenominacion());
 			criteriosBusqueda.put("operadorTarjetaCredito", tarjetaCredito.getOperadorTarjetaCredito());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> result = getTarjetaCreditoDAO().buscarPorX(criteriosBusqueda, null);
-			
+
 			/*Valida duplicidad del Ruc*/
-			for(int r = 0; r < result.size(); r ++) {
-				TarjetaCredito otarjetaCredito = (TarjetaCredito) result.get(r);
+			for (Object element : result) {
+				TarjetaCredito otarjetaCredito = (TarjetaCredito) element;
 					if (!(otarjetaCredito.getId() == tarjetaCredito.getId()))
 						throw new DenominacionDuplicadaException();
 				}
-		
+
 			getTarjetaCreditoDAO().actualizar(tarjetaCredito);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(Exception ex){

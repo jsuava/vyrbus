@@ -25,7 +25,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class TipoMovimientoManagerImpl implements TipoMovimientoManager {
 	private TipoMovimientoDAO tipoMovimientoVentaDAO;
-	
+
 	/**
 	 * @return the condicionVentaDAO
 	 */
@@ -73,16 +73,16 @@ public class TipoMovimientoManagerImpl implements TipoMovimientoManager {
 	@Transactional
 	public void guardar(TipoMovimiento tipoMovimiento) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", tipoMovimiento.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> result = getTipoMovimientoDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de una Ruta*/
 			if(result.size()>0)
 				throw new DenominacionDuplicadaException();
-			
+
 			getTipoMovimientoDAO().guardar(tipoMovimiento);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(Exception ex){
@@ -97,19 +97,19 @@ public class TipoMovimientoManagerImpl implements TipoMovimientoManager {
 	@Transactional
 	public void actualizar(TipoMovimiento tipoMovimiento) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", tipoMovimiento.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getTipoMovimientoDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la denominación*/
-			for(int r = 0; r < resultDenominacion.size(); r ++) {
-				TipoMovimiento ocondicionVenta = (TipoMovimiento) resultDenominacion.get(r);
+			for (Object element : resultDenominacion) {
+				TipoMovimiento ocondicionVenta = (TipoMovimiento) element;
 					if (!(ocondicionVenta.getId() == tipoMovimiento.getId()))
 						throw new DenominacionDuplicadaException();
 				}
-			
+
 			getTipoMovimientoDAO().actualizar(tipoMovimiento);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(Exception ex){

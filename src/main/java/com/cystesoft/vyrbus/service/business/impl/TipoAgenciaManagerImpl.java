@@ -25,7 +25,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class TipoAgenciaManagerImpl implements TipoAgenciaManager {
 	private TipoAgenciaDAO tipoAgenciaDAO;
-	
+
 	/**
 	 * @return the tipoAgenciaDAO
 	 */
@@ -73,16 +73,16 @@ public class TipoAgenciaManagerImpl implements TipoAgenciaManager {
 	@Transactional
 	public void guardar(TipoAgencia tipoAgencia) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", tipoAgencia.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getTipoAgenciaDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la denominación*/
 			if(resultDenominacion.size()>0)
 				throw new DenominacionDuplicadaException();
-						
+
 			getTipoAgenciaDAO().guardar(tipoAgencia);
-			
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(Exception ex){
@@ -97,19 +97,19 @@ public class TipoAgenciaManagerImpl implements TipoAgenciaManager {
 	@Transactional
 	public void actualizar(TipoAgencia tipoAgencia) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", tipoAgencia.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getTipoAgenciaDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la denominación*/
-			for(int r = 0; r < resultDenominacion.size(); r ++) {
-				TipoAgencia otipoAgencia = (TipoAgencia) resultDenominacion.get(r);
+			for (Object element : resultDenominacion) {
+				TipoAgencia otipoAgencia = (TipoAgencia) element;
 					if (!(otipoAgencia.getId() == tipoAgencia.getId()))
 						throw new DenominacionDuplicadaException();
 				}
-			
+
 			getTipoAgenciaDAO().actualizar(tipoAgencia);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(Exception ex){

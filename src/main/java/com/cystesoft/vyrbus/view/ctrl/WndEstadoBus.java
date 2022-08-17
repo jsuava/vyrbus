@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 30/04/2012
  */
@@ -44,14 +44,14 @@ public class WndEstadoBus extends WndOpcionesMantenimiento {
 	private Textbox txtDenominacion;
 	private Combobox cboTipoEstado;
 	private Textbox txtColor;
-	
+
 	private EstadoBus oEstadoBus = null;
-	
+
 	private String estados[] = new String[4];
 
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IBase#onCreate()
 	 */
@@ -66,7 +66,7 @@ public class WndEstadoBus extends WndOpcionesMantenimiento {
 			oComboitem.setValue(e);
 			cboTipoEstado.appendChild(oComboitem);
 		}
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
 	}
 
@@ -79,7 +79,7 @@ public class WndEstadoBus extends WndOpcionesMantenimiento {
 		cboTipoEstado = (Combobox) getFellow("cboTipoEstado");
 		txtColor = (Textbox) getFellow("txtColor");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onNew()
 	 */
@@ -135,7 +135,7 @@ public class WndEstadoBus extends WndOpcionesMantenimiento {
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getEstadoBusManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getEstadoBusManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
 	}
 
@@ -174,10 +174,10 @@ public class WndEstadoBus extends WndOpcionesMantenimiento {
 				throw new DenominacionNullException();
 			else if (cboTipoEstado.getSelectedIndex() == 0)
 				throw new TipoEstadoNullException();
-			
+
 			if (action==ACTION_NEW)
 				oEstadoBus = new EstadoBus();
-			
+
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
 
 			oEstadoBus.setId(id);
@@ -204,7 +204,7 @@ public class WndEstadoBus extends WndOpcionesMantenimiento {
 			criteriosBusqueda.put("denominacion", oEstadoBus.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			listarRegistros(ServiceLocator.getEstadoBusManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-			
+
 		}catch (DenominacionNullException dnex){
 			DlgMessage.information(Messages.getString("Denominacion"),txtDenominacion);
 			throw new CancelaGrabacionException();
@@ -216,9 +216,9 @@ public class WndEstadoBus extends WndOpcionesMantenimiento {
 			throw new CancelaGrabacionException();
 		}catch (Exception ex){
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
-			ex.printStackTrace(); throw new CancelaGrabacionException(); 
+			ex.printStackTrace(); throw new CancelaGrabacionException();
 		}
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -291,11 +291,11 @@ public class WndEstadoBus extends WndOpcionesMantenimiento {
 	}
 
 	private void listarRegistros(ArrayList<EstadoBus> lstRegistros) {
-		ArrayList<Object> lstEstadoBus = new ArrayList<Object>();
+		ArrayList<Object> lstEstadoBus = new ArrayList<>();
 
 		for(int r = 0; r < lstRegistros.size(); r ++) {
 			EstadoBus oEstadoBus = lstRegistros.get(r);
-			ArrayList<Object> lstFila = new ArrayList<Object>();
+			ArrayList<Object> lstFila = new ArrayList<>();
 
 			lstFila.add(oEstadoBus.getId());
 			lstFila.add(r + 1);

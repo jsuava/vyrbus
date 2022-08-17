@@ -31,7 +31,7 @@ import com.cystesoft.vyrbus.model.dao.ManifiestoDAO;
 import com.cystesoft.vyrbus.service.util.Constantes;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
@@ -46,8 +46,8 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 		if(origen.isEmpty())
 			origen=null;
 		else origen="'"+origen+"'";
-		
-		
+
+
 		String Sql="SELECT r.c_origen AS Origen, r.c_destino AS Destino, b.bus_id, b.c_codigo AS codigoBus, b.c_numplaca AS Placa, "+ //0-4
 						"tdb.c_numdocbus AS TarjetHabilitacion, " + //5
 						"di.d_fecpar AS FechaPartida, di.c_horpar AS HoraPartida, di.d_feclle AS FechaLlegada, di.c_horlle AS HoraLlegada, "+ //6-9
@@ -68,28 +68,28 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 						"INNER JOIN VRMSERVICIO s ON (s.servicio_id=i.servicio_id) "+
 						"INNER JOIN vrmtipiti ti ON (ti.tipiti_id=i.tipiti_id) " +
 						"LEFT JOIN vrmruta r ON (r.ruta_id=di.ruta_id) "+
-						"LEFT JOIN (SELECT t.c_numdocbus, t.bus_id FROM vrtdocbus t WHERE t.tipdoc_id="+Constantes.ID_TIPDOC_TARJETA_CIRCULACION+" ) tdb ON (tdb.bus_id=i.bus_id) "+ 
-						"LEFT JOIN vrtproser ps ON (ps.itinerario_id=i.itinerario_id AND ps.c_estreg='A') "+ 
+						"LEFT JOIN (SELECT t.c_numdocbus, t.bus_id FROM vrtdocbus t WHERE t.tipdoc_id="+Constantes.ID_TIPDOC_TARJETA_CIRCULACION+" ) tdb ON (tdb.bus_id=i.bus_id) "+
+						"LEFT JOIN vrtproser ps ON (ps.itinerario_id=i.itinerario_id AND ps.c_estreg='A') "+
 						"LEFT JOIN vrmbus b ON (b.bus_id=ps.bus_id) "+
-						"LEFT JOIN vrmpersonal pp ON (pp.personal_id=ps.personal_idpiloto) "+ 
-						"LEFT JOIN vrmpersonal pc ON (pc.personal_id=ps.personal_idcopiloto) "+ 
+						"LEFT JOIN vrmpersonal pp ON (pp.personal_id=ps.personal_idpiloto) "+
+						"LEFT JOIN vrmpersonal pc ON (pc.personal_id=ps.personal_idcopiloto) "+
 						"LEFT JOIN vrmpersonal pt ON (pt.personal_id=ps.personal_idterramoza) "+
 						"LEFT JOIN vrmpersonal pcx ON (pcx.personal_id=ps.personal_idcopilotoaux) "+
 						"LEFT JOIN vrmgruman gm ON (gm.gruman_id=b.gruman_id) "+
 					"WHERE di.itinerario_id="+ idItinerario +" " +
 						"AND r.c_origen=nvl("+origen+ ",r.c_origen) " +
 						"AND r.c_Destino='"+destino+"' ";
-		 				
+
 		List<?> result = getSession().createSQLQuery(Sql).list();
 		Itinerario itinerario = new Itinerario();
-		for(int i=0; i<result.size(); i++){
-			Object[] obj = (Object[]) result.get(i);
+		for (Object element : result) {
+			Object[] obj = (Object[]) element;
 			ProgramacionServicio programacionServicio = new ProgramacionServicio();
-			
+
 			Ruta ruta = new Ruta();
 			ruta.setOrigen(obj[0].toString());
 			ruta.setDestino(obj[1].toString());
-						
+
 //			if (obj[2] !=null){ //Validacion del bus
 			if (obj[22] !=null){ //Validacion programacion
 				Bus bus = new Bus();
@@ -98,7 +98,7 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 					documentoBus.setNumeroDocumento(obj[5].toString());
 					bus.setDocumentoBus(documentoBus);
 				}
-				
+
 				if(obj[21]!=null){//Valida el grupo mantenimiento
 					GrupoMantenimiento grupoMantenimiento = new GrupoMantenimiento();
 					grupoMantenimiento.setDenominacion(obj[21].toString());
@@ -108,7 +108,7 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 				bus.setId(((BigDecimal) obj[2]).intValue());
 				bus.setCodigo(obj[3].toString());
 				bus.setNumeroPlaca(obj[4].toString());
-				
+
 				/*PILOTO*/
 				Personal piloco = new Personal();
 				piloco.setApellidoPaterno(obj[10]!=null?obj[10].toString():"");
@@ -156,8 +156,8 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 				/*PROGRAMACION*/
 				programacionServicio.setPiloto(piloco);
 				programacionServicio.setCopiloto(copiloto);
-								
-				bus.setProgramacionServicio(programacionServicio);				
+
+				bus.setProgramacionServicio(programacionServicio);
 				itinerario.setBus(bus);
 			}
 
@@ -166,22 +166,22 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			itinerario.setFechaLlegada(((Date) obj[8]));
 			itinerario.setHoraLlegada(obj[9].toString());
 			itinerario.setId(((BigDecimal)obj[39]).longValue());
-			
+
 			/*TIPO ITINERARIO*/
 			TipoItinerario tipoItinerario=new TipoItinerario();
 			tipoItinerario.setId(((BigDecimal)obj[23]).intValue());
 			tipoItinerario.setDenominacion(obj[24].toString());
-			
+
 			/*SERVICIO*/
 			Servicio servicio=new Servicio();
 			servicio.setDenominacion(obj[25].toString());
-			
+
 			itinerario.setServicio(servicio);
 			itinerario.setTipoItinerario(tipoItinerario);
-			itinerario.setRuta(ruta);		
+			itinerario.setRuta(ruta);
 		}
-		
-		
+
+
 		return itinerario;
 	}
 
@@ -216,19 +216,19 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 						"LEFT JOIN vrmpreali pa ON (pa.preali_id=v.preali_id) " +
 					"WHERE  v.itinerario_id="+idItinerario+" And v.c_tiptra=1 And v.c_estreg='A' AND v.tipmov_id not in ("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+ Constantes.ID_TIPMOV_DEVOLUCION+","+ Constantes.ID_TIPMOV_ANULACION+" ) " +
 						"AND v.Agencia_Idpartida=NVL("+idPruntoEmbarque+",v.Agencia_Idpartida) " +
-						"AND v.c_estreg='"+Constantes.VALUE_ACTIVO+"' "+ 
+						"AND v.c_estreg='"+Constantes.VALUE_ACTIVO+"' "+
 					"ORDER BY v.n_numpiso, v.n_numasiento, v.d_fecpar, v.c_horpar";
 		log.info(sql);
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<VentaPasaje> lstResult = new ArrayList<VentaPasaje>();
+		List<VentaPasaje> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
-			
+
 			TipoDocumento tipoDocumento = new TipoDocumento();
 			tipoDocumento.setDenominacion(obj[13].toString());
 			tipoDocumento.setNombreCorto(obj[26]!=null?obj[26].toString():null);
-			
+
 			Pasajero pasajero = new Pasajero();
 			pasajero.setId(((BigDecimal)obj[19]).longValue());
 			pasajero.setApellidoPaterno(obj[2].toString());
@@ -239,39 +239,39 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			if (obj[6] !=null)
 				pasajero.setNumeroDocumento(obj[6].toString());
 			pasajero.setTipoDocumento(tipoDocumento);
-			
+
 			Ruta ruta = new Ruta();
 			ruta.setId(((BigDecimal)obj[25]).intValue());
 			ruta.setOrigen(obj[7].toString());
 			ruta.setDestino(obj[8].toString());
-			
+
 			PreferenciaAlimentaria preferenciaAlimentaria = new PreferenciaAlimentaria();
 			preferenciaAlimentaria.setDenominacion(obj[10]!=null?obj[10].toString():"");
-			
+
 			Agencia agenciaPartida = new Agencia();
 			agenciaPartida.setDenominacion(obj[11].toString());
 			agenciaPartida.setNombreCorto(obj[15].toString());
-			
+
 			TipoComprobante tipoComprobante=new TipoComprobante();
 			tipoComprobante.setId(((BigDecimal)obj[17]).intValue());
 			tipoComprobante.setDenominacion(obj[18].toString());
-			
+
 			FormaPago formaPago=new FormaPago();
 			formaPago.setId(((BigDecimal)obj[20]).intValue());
-			formaPago.setDenominacion(obj[21].toString());			
-			
+			formaPago.setDenominacion(obj[21].toString());
+
 			CanalVenta canalVenta=new CanalVenta();
 			canalVenta.setNombreCorto(obj[22].toString());
-			
+
 			Cliente clienteCredito=null;
 			if(obj[23]!=null){
 				clienteCredito=new Cliente();
 				clienteCredito.setRazonSocial(obj[23].toString());
 			}
-			
+
 			Agencia agenciaVenta=new Agencia();
 			agenciaVenta.setNombreCorto(obj[24].toString());
-			
+
 			VentaPasaje ventaPasaje = new VentaPasaje();
 			ventaPasaje.setId(((BigDecimal) obj[14]).longValue());
 			ventaPasaje.setNumeroAsiento(((BigDecimal) obj[0]).intValue());
@@ -288,9 +288,9 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			ventaPasaje.setCanalVenta(canalVenta);
 			ventaPasaje.setCliente(clienteCredito);
 			ventaPasaje.setAgencia(agenciaVenta);
-			
+
 			lstResult.add(ventaPasaje);
-			
+
 		}
 		return lstResult;
 	}
@@ -307,7 +307,7 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 //					"INNER JOIN vrmlocalidad l ON (l.localidad_id=a.localidad_id) "+
 //					"WHERE di.itinerario_id="+idItinerario+"  "+
 //					"ORDER BY di.d_fecpar, di.c_horpar";
-		String sql="SELECT distinct(a.agencia_id) idAgePart "+ 
+		String sql="SELECT distinct(a.agencia_id) idAgePart "+
 						   ",l.localidad_id " +
 						   ",l.c_denominacion localidad " +
 					       ",vp.d_fecpar "+
@@ -319,24 +319,24 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 					"WHERE vp.itinerario_id="+idItinerario+" AND vp.tipmov_id NOT IN ("+Constantes.ID_TIPMOV_ANULACION+","+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+") "+
 					  "AND vp.c_estreg='"+Constantes.VALUE_ACTIVO+"' "+
 					"ORDER BY vp.d_fecpar, vp.c_horpar";
-		
-		
+
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<Agencia> lstResult = new ArrayList<Agencia>();
+		List<Agencia> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
 			Agencia agencia= new Agencia();
 			Localidad localidad = new Localidad();
-									
+
 			localidad.setId(((BigDecimal) obj[1]).intValue());
 			localidad.setDenominacion(obj[2].toString());
 			agencia.setId(((BigDecimal)obj[0]).intValue());
 			agencia.setLocalidad(localidad);
 			agencia.setNombreCorto(obj[5].toString());
-			
+
 			lstResult.add(agencia);
 		}
-		
+
 		return lstResult;
 	}
 
@@ -354,34 +354,34 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 					"WHERE  v.itinerario_id="+idItinerario+ " And v.c_tiptra=1 And v.c_estreg='A' AND v.tipmov_id not in ("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+ Constantes.ID_TIPMOV_DEVOLUCION+","+ Constantes.ID_TIPMOV_ANULACION+") "+
 					"GROUP BY lo.c_denominacion, ld.c_denominacion, v.d_fecpar /*, v.c_horpar*/,r.ruta_id, lo.localidad_id,ld.localidad_id  "+
 					"ORDER BY v.d_fecpar /*, v.c_horpar*/";
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<VentaPasaje> lstResult = new ArrayList<VentaPasaje>();
+		List<VentaPasaje> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
-			
+
 			Localidad localidadOrigen = new Localidad();
 			localidadOrigen.setId(((BigDecimal)obj[4]).intValue());
 			localidadOrigen.setDenominacion(obj[0].toString());
-			
+
 			Localidad localidadDestino = new Localidad();
 			localidadDestino.setId(((BigDecimal)obj[5]).intValue());
 			localidadDestino.setDenominacion(obj[1].toString());
-			
+
 			Ruta ruta = new Ruta();
 			ruta.setId(((BigDecimal)obj[3]).intValue());
 			ruta.setLocalidadOrigen(localidadOrigen);
 			ruta.setLocalidadDestino(localidadDestino);
 			ruta.setOrigen(obj[0].toString());
 			ruta.setDestino(obj[1].toString());
-			
+
 			VentaPasaje ventaPasaje = new VentaPasaje();
 			ventaPasaje.setCantidadPax( ((BigDecimal) obj[2]).intValue());
 			ventaPasaje.setRuta(ruta);
-						
+
 			lstResult.add(ventaPasaje);
 		}
-		
+
 		return lstResult;
 	}
 
@@ -396,22 +396,22 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 //					"ev.n_corfin "+ //4-4
 //					"FROM vrmespval ev "+
 //					"WHERE ev.agencia_id="+ idAgencia+ " AND ev.c_estreg='A' AND ev.tipcom_id="+Constantes.ID_TIPCOM_MANIFIESTO_PAX+"  ";
-		
-		
+
+
 		/*Modificado 27/11/2014 - jabanto */
 		String sql= "SELECT ev.n_serie, ev.n_coract, ev.c_autsunat, ev.espval_id, "+ //0-3
 				"ev.n_corfin, ev.n_corini "+ //4-5
 				"FROM vrmespval ev "+
 				"WHERE ev.agencia_id="+ idAgencia+ " AND ev.n_coract < ev.n_corfin AND ev.tipcom_id="+Constantes.ID_TIPCOM_MANIFIESTO_PAX+"  "+
 				"ORDER BY ev.n_corini ";
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
 		EspecieValorada especieValorada = new EspecieValorada();
-		
+
 		if(result.size()>=1){
 			/*Prevalece el primer registro, por si recupere mas de uno*/
 			Object[] obj = (Object[]) result.get(0);
-			
+
 			especieValorada.setSerie(((BigDecimal) obj[0]).intValue());
 			especieValorada.setCorrelativoActual(((BigDecimal) obj[1]).longValue());
 			especieValorada.setAutorizacionSunat(obj[2].toString());
@@ -419,18 +419,18 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			especieValorada.setCorrelativoFinal(((BigDecimal) obj[4]).longValue());
 			especieValorada.setCorrelativoInicial(((BigDecimal)obj[5]).longValue());
 		}
-			
+
 		//Calcula el porcentace utilizado de los manifiestos, solamen si recupera un registro
 		if(result.size()==1){
 			long inicial=especieValorada.getCorrelativoInicial();
 			long actual=especieValorada.getCorrelativoActual();
 			long finaL=especieValorada.getCorrelativoFinal();
 			Double porcentajeUtilizado =(double) ((actual-inicial)*100)/(finaL-inicial);
-			
+
 			especieValorada.setPorcentajeUtilizado(porcentajeUtilizado);
 		}
-		
-		
+
+
 		return especieValorada;
 	}
 
@@ -452,15 +452,15 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 					"FROM vrtmanifiesto m "+
 					"INNER JOIN vrmusuario u ON (u.c_login=m.audusuins) "+
 					"WHERE m.itinerario_id="+ idItinerario +" AND m.c_estreg='A'";
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
 		Manifiesto manifiesto = null;
-		for(int i=0; i<result.size(); i++){
-			Object[] obj = (Object[]) result.get(i);
+		for (Object element : result) {
+			Object[] obj = (Object[]) element;
 			manifiesto=new Manifiesto();
 			Itinerario itinerario = new Itinerario();
 			String usuario="";
-			
+
 			itinerario.setId(((BigDecimal) obj[7]).longValue());
 			manifiesto.setCodigoBus(obj[0].toString());
 			manifiesto.setNumeroManifiesto(obj[1].toString());
@@ -473,10 +473,10 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			manifiesto.setAutorizacionSunat(obj[8].toString());
 			manifiesto.setUsuarioInsercion(usuario);
 			manifiesto.setItinerario(itinerario);
-			
+
 		}
-		
-		
+
+
 		return manifiesto;
 	}
 
@@ -488,20 +488,20 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 	public void updateCorrelativo(EspecieValorada especieValorada, Manifiesto manifiesto)throws Exception {
 		String usuarioMod=manifiesto.getUsuarioModificacion();
 		String ipMod=manifiesto.getIpModificacion();
-		
+
 		/*Actualiza correlativo del manifiesto*/
 		EspecieValorada especieValorada2=(EspecieValorada)super.findById(EspecieValorada.class, especieValorada.getId().longValue());
 		especieValorada2.setUsuarioModificacion(usuarioMod);
 		especieValorada2.setIpModificacion(ipMod);
 		especieValorada2.setCorrelativoActual(especieValorada2.getCorrelativoActual()+1);
-		
+
 		/*Implentado el 27/11/2014 - jabanto*/
 		//Si los correlativos se agotan, inhabilita el registro temporalmente
 		if(especieValorada2.getCorrelativoActual().longValue()==especieValorada2.getCorrelativoFinal().longValue())
 			especieValorada2.setEstadoRegistro(Constantes.VALUE_INACTIVO);
 		super.update(especieValorada2);
-		
-		
+
+
 		//si los correlativos estan agotados, busca si la agencia tiene registrado otro registro con correlativos disponibles
 		if(especieValorada2.getCorrelativoActual().longValue()==especieValorada2.getCorrelativoFinal().longValue()){
 			EspecieValorada newEspecieValorada=consultaAutorizacionSunat(especieValorada2.getAgencia().getId());
@@ -518,35 +518,35 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 				super.update(especieValorada2);
 			}
 		}
-		
+
 //		String sql=	"UPDATE vrmespval SET  n_coract="+(especieValorada.getCorrelativoActual()+1) +
-//					" WHERE espval_ID="+especieValorada.getId(); 
+//					" WHERE espval_ID="+especieValorada.getId();
 //		getSession().createSQLQuery(sql).executeUpdate();
-		
-		
-		
+
+
+
 		//comentado el 09/11/2013 en adelante se guardara un detalle en la tabla VRTDetalleManifiesto (vrtdetman)
 //		/*Actualiza las ventas del itinerario con el idManifiesto*/
 //		sql=" UPDATE vrtvenpas SET Manifiesto_ID="+manifiesto.getId()+" "+
 //			" WHERE venpas_id IN (SELECT MAX(v.venpas_id) FROM VRTVENPAS v WHERE v.itinerario_id="+manifiesto.getItinerario().getId()+" GROUP BY v.venpas_idoriginal) "+
 //			" AND itinerario_id="+manifiesto.getItinerario().getId()+" AND tipmov_id NOT IN ("+Constantes.ID_TIPMOV_ANULACION+","+Constantes.ID_TIPMOV_DEVOLUCION+")" +
 //			" AND c_tiptra="+Constantes.TIPO_OPERACION_VENTA+" And c_estreg='A'";
-		
-		
+
+
 //		sql="UPDATE vrtvenpas SET Manifiesto_ID="+manifiesto.getId()+
 //			" WHERE itinerario_id="+manifiesto.getItinerario().getId()+" And c_tiptra="+Constantes.TIPO_OPERACION_VENTA+" And c_estreg='A' "; // v.c_tiptra: 1=Venta
 //		getSession().createSQLQuery(sql).executeUpdate();
-		
+
 	}
-	
-	
+
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.ManifiestoDAO#validaCorrelativoManifiesto(java.lang.Integer)
 	 */
 	@Override
 	public Double validaCorrelativoManifiesto(Integer idAgencia)throws Exception {
-		
+
 		return null;
 	}
 
@@ -556,11 +556,11 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 	 */
 	@Override
 	public List<Manifiesto> buscarManifiesto(String fechaInicial, String fechaFinal,Integer idOrigen, Integer idDestino,Integer idBus,Integer idAgenciaEmision) {
-		
+
 		String sql ="SELECT  m.manifiesto_id, m.c_numman, m.c_codbus, m.itinerario_id, m.c_piloto as piloto, "+ //0-4
 							"m.c_copiloto as copiloto, i.d_fecpar as fechaPartida, m.c_estreg as estado, "+ //5-7
 							"i.c_horpar as horaPartida,lo.c_denominacion as origen, ld.c_denominacion as destino, "+ //8-10
-							"i.ruta_idmayor, "+ //11-11	
+							"i.ruta_idmayor, "+ //11-11
 							"m.audfecins, s.c_denominacion servicio,m.c_copilotoAux, m.c_tripulante,m.audfecmod "+//12-16
 					"FROM vrtitinerario i "+
 						"INNER JOIN vrmservicio s ON (s.servicio_id=i.servicio_id) "+
@@ -575,37 +575,37 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 						+ "AND m.agencia_id=NVL("+idAgenciaEmision+",m.agencia_id) "
 						+ "AND m.c_estreg in ('A','I') "
 						+ "ORDER BY i.d_fecpar,i.c_horpar ";
-						
+
 //					whereOrigen+" "+whereDestino+" AND m.c_estreg in ('A','I') ORDER BY i.d_fecpar,i.c_horpar ";
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<Manifiesto> lstResult = new ArrayList<Manifiesto>();
-		
+		List<Manifiesto> lstResult = new ArrayList<>();
+
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
 			Manifiesto manifiesto = new Manifiesto();
-			
+
 			Localidad localidadOrigen = new Localidad();
 			localidadOrigen.setDenominacion(obj[9].toString());
-			
+
 			Localidad localidadDestino = new Localidad();
 			localidadDestino.setDenominacion(obj[10].toString());
-			
+
 			Ruta ruta=new Ruta();
 			ruta.setId(((BigDecimal) obj[11]).intValue());
 			ruta.setLocalidadOrigen(localidadOrigen);
 			ruta.setLocalidadDestino(localidadDestino);
-						
+
 			Servicio servicio=new Servicio();
 			servicio.setDenominacion(obj[13].toString());
-			
+
 			Itinerario itinerario = new Itinerario();
 			itinerario.setId(((BigDecimal) obj[3]).longValue());
 			itinerario.setFechaPartida((Date)obj[6]);
 			itinerario.setHoraPartida(obj[8].toString());
 			itinerario.setRuta(ruta);
 			itinerario.setServicio(servicio);
-						
+
 			manifiesto.setId(((BigDecimal) obj[0]).longValue());
 			manifiesto.setNumeroManifiesto(obj[1].toString());
 			manifiesto.setCodigoBus(obj[2].toString());
@@ -617,11 +617,11 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			manifiesto.setCopilotoAuxiliar(obj[14]!=null?obj[14].toString():null);
 			manifiesto.setTripulante(obj[15]!=null?obj[15].toString():null);
 			manifiesto.setFechaModificacion(obj[16]!=null?(Date)obj[16]:null);
-					
+
 			lstResult.add(manifiesto);
 		}
-		
-		
+
+
 		return lstResult;
 	}
 
@@ -634,9 +634,9 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 		super.inactivate(Manifiesto.class, id);
 		/*Actualiza las ventas del itinerario con el idManifiesto*/
 		String sql="UPDATE vrtvenpas SET Manifiesto_ID=null"+
-			" WHERE Manifiesto_ID="+id; 
+			" WHERE Manifiesto_ID="+id;
 		getSession().createSQLQuery(sql).executeUpdate();
-		
+
 	}
 
 	/*
@@ -698,7 +698,7 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			"    FROM VRTMANIFIESTO m "+
 			"         INNER JOIN VRMBUS b ON (b.bus_id=m.bus_id) "+
 			"		  INNER JOIN VRMGRUMAN gm on (b.gruman_id = gm.gruman_id) "+
-			"         INNER JOIN VRTDOCBUS db ON (db.bus_id=b.bus_id AND db.tipdoc_id=3 AND db.c_Estreg='A')  "+ //-->3=TARJETA DE CIRCULACION 
+			"         INNER JOIN VRTDOCBUS db ON (db.bus_id=b.bus_id AND db.tipdoc_id=3 AND db.c_Estreg='A')  "+ //-->3=TARJETA DE CIRCULACION
 			"         INNER JOIN VRTITINERARIO i ON (i.itinerario_id=m.itinerario_id) "+
 			"         INNER JOIN VRMAGENCIA ao ON (ao.agencia_id=i.agencia_idpartida) "+
 			"         INNER JOIN VRMUBIGEO DstO ON (DstO.ubigeo_id=ao.ubigeo_id) "+
@@ -720,7 +720,7 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			"                            INNER JOIN VRMRUTA r ON (r.ruta_id=i.ruta_idmayor) "+
 			"                       WHERE i.d_fecpar BETWEEN to_date('" + fechaInicial + "', 'dd/MM/yyyy') AND to_date('" + fechaFinal + "', 'dd/MM/yyyy') "+
 			"                            AND i.n_esanulado=0 "+
-			"                       GROUP BY v.c_numcontrol,i.itinerario_id,i.d_fecpar,r.c_origen,r.c_destino "+       
+			"                       GROUP BY v.c_numcontrol,i.itinerario_id,i.d_fecpar,r.c_origen,r.c_destino "+
 			"                       )venpas_max "+
 			"                   ON (venpas_max.venpas_id=vp.venpas_id) "+
 			"      WHERE vp.c_Tiptra='1' "+
@@ -730,28 +730,28 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			"              ,venpas_max.origen,venpas_max.destino)vtp "+
 			"WHERE man.itinerario_id=vtp.idItinerario "+
 			"ORDER BY VTP.FECHAPARTIDA, SUBSTR(MAN.NroManifiesto,0, 3) ,SUBSTR(MAN.NroManifiesto,5,9) ";
-			
+
 		//		whereOrigen+" "+whereDestino+" AND m.c_estreg in ('A','I') ORDER BY i.d_fecpar,i.c_horpar ";
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<Manifiesto> lstResult = new ArrayList<Manifiesto>();
-		
+		List<Manifiesto> lstResult = new ArrayList<>();
+
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
 			Manifiesto manifiesto = new Manifiesto();
-			
+
 			Itinerario itinerario = new Itinerario();
 			itinerario.setId(((BigDecimal) obj[0]).longValue());
 			itinerario.setFechaPartida((Date)obj[10]);
-	
+
 			manifiesto.setItinerario(itinerario);
 			manifiesto.setCodigoBus(obj[1].toString());
 			manifiesto.setRuc(obj[2].toString());
 			manifiesto.setPer4949(obj[3].toString());
 			manifiesto.setPeriodo(obj[4].toString());
-			
+
 			manifiesto.setNumeroManifiesto(obj[5].toString()+"-"+obj[6].toString());
-			
+
 			GrupoMantenimiento marca = new GrupoMantenimiento();
 			marca.setDenominacion(obj[7].toString());
 			Bus bus = new Bus();
@@ -764,13 +764,13 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			manifiesto.setPuntoLlegadaDepartamento(obj[13].toString());
 			manifiesto.setPuntoLlegadaDistrito(obj[14].toString());
 			manifiesto.setImporte(((BigDecimal) obj[15]).doubleValue());
-			
+
 			lstResult.add(manifiesto);
 		}
-		
-		
+
+
 		return lstResult;
 	}
-	
+
 
 }

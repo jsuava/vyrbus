@@ -13,7 +13,7 @@ import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 
 public interface ItinerarioManager {
 	/**
-	 * 
+	 *
 	 * @param criteriosBusqueda	: parametros para la busqueda.
 	 * @param criteriosOrdenar	: parametros para el orden de los datos
 	 * @return Array con el resultado de la busqueda
@@ -27,14 +27,14 @@ public interface ItinerarioManager {
 	 */
 	public Itinerario buscarPorId(Long id);
 	/**
-	 * 
+	 *
 	 * @param itinerario
 	 * @return
 	 * @throws Exception
 	 */
 	public int guardar(Itinerario itinerario)throws Exception;
 	/**
-	 * 
+	 *
 	 * @param itinerario
 	 * @throws Exception
 	 */
@@ -82,12 +82,12 @@ public interface ItinerarioManager {
 	 * @throws Exception
 	 */
 	public ArrayList<ItinerarioAgenciaLlegada> buscarAgenciasLlegada(Long idItinerario, String estado, Integer idLocalidad)throws Exception;
-	
+
 	/**
 	 * Realiza la busqueda de los itinerarios disponibles para la fecha y origen destino seleccionado.
 	 * @param idItinerario		: Identificador del Itinerario
 	 * @param origen			: Locadildad Origen
-	 * @param destino			: Localidad Destino	
+	 * @param destino			: Localidad Destino
 	 * @param fechaInicio		: Fecha inicial de la busqueda
 	 * @param fechaFinal		: Fecha final de la busqueda
 	 * @param Servicio			: Nombre del Servicio
@@ -96,45 +96,45 @@ public interface ItinerarioManager {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<DetalleItinerario> buscarItinerariosMantenimiento(Long idItinerario, String origen, String destino, String fechaInicio, String fechaFinal, 
+	public List<DetalleItinerario> buscarItinerariosMantenimiento(Long idItinerario, String origen, String destino, String fechaInicio, String fechaFinal,
 			String Servicio,String tipoDeItinerario, String criterioOrden)throws Exception;
 	/**
-	 * Valida que no el nuevo tramo a ingresar no exista. 
+	 * Valida que no el nuevo tramo a ingresar no exista.
 	 * @param idTipoItinerario	: Identificado del Tipo de Itinerario.
 	 * @param idServicio		: Identificador del Servicio.
-	 * @param idRuta			: Identificador de la Ruta.	
+	 * @param idRuta			: Identificador de la Ruta.
 	 * @param fechaPartida		: Fecha de Partida.
 	 * @param horaPartida		: Hora de Partida.
 	 * @param idAgenciaPartida	: Agencia de Partida.
 	 * @param idAgenciaLlegada	: Agencia de Llegada.
-	 * @return	Lista de tramos.				
+	 * @return	Lista de tramos.
 	 * @throws Exception
 	 */
-	public List<DetalleItinerario> validadIngresoTramos(Integer idTipoItinerario, Integer idServicio, Integer idRuta, String fechaPartida, String horaPartida, 
+	public List<DetalleItinerario> validadIngresoTramos(Integer idTipoItinerario, Integer idServicio, Integer idRuta, String fechaPartida, String horaPartida,
 			Integer idAgenciaPartida, Integer idAgenciaLlegada) throws Exception;
-	
-	
+
+
 //	/**
 //	 * Recuperara la Fecha y hora del servidor
 //	 * @return
 //	 */
 //	public Calendar fechaServer();
-//	
+//
 //	 /**
-//     * 
+//     *
 //     * @return fecha en formato Long ser servidor
 //     */
     public String dateServer();
-    
+
     /**
-	 * Valida si el itinerario tiene ventas y si la capacidad del servicio seelccionado no sea menor a algún asiento ya vendido. 
+	 * Valida si el itinerario tiene ventas y si la capacidad del servicio seelccionado no sea menor a algún asiento ya vendido.
 	 * @param idItinerario 		: Identificador del itinerario.
 	 * @param Servicio			: Class Servicio
 	 * @return
 	 * @throws Exception
 	 */
 	public boolean validaCapasidadServicioAsiento(Long idItinerario, Servicio servicio) throws Exception;
-	
+
 	/**
 	 * Obtiene todos los itinerarios afectados en una actualozación por rango de fechas.
 	 * @param fechaPartida		: Fecha Partidad.
@@ -148,9 +148,9 @@ public interface ItinerarioManager {
 	 * @return
 	 * @throws Exception
 	 */
-	public Long ObtienerItinerarioAActualizar(String fechaPartida, Integer idRuta, String secuenciaTramo, String horaPartida, Integer idServicio, 
+	public Long ObtienerItinerarioAActualizar(String fechaPartida, Integer idRuta, String secuenciaTramo, String horaPartida, Integer idServicio,
 			Integer idTipoItinerario, Integer idAgenciaPartida, Integer idAgenciaLlegada) throws Exception;
-		
+
 	/**
 	 * Busca lista de itinerarios a actualizar y las ventas de cada itinerario, si es que los tuviese.
 	 * @param fechaInicio		: Fecha inicio de la busqueda.
@@ -165,7 +165,7 @@ public interface ItinerarioManager {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<VentaPasaje> buscarItinerariosAActualizar(String fechaInicio,String fechaFin,Integer idRuta, String secuenciaTramo, String horaPartida, Integer idServicio, 
+	public List<VentaPasaje> buscarItinerariosAActualizar(String fechaInicio,String fechaFin,Integer idRuta, String secuenciaTramo, String horaPartida, Integer idServicio,
 			Integer idTipoItinerario, Integer idAgenciaPartida, Integer idAgenciaLlegada)throws Exception;
 
 	/**
@@ -184,11 +184,11 @@ public interface ItinerarioManager {
 	 */
 	public List<DetalleItinerario>buscarRutas(String fechaInicio, String fechaFin,Integer idServicio, Integer idOrigen,
 			Integer idDestino, String horaPartida, Long idItinerario,Boolean mostrarDetalle,Integer idTipoItinerario ) throws Exception;
-	
+
 	/**
 	 * Realiza la actualizacion de las tarifas.
 	 * @param tarifaNueva	: Nueva tarifa con la que se va a actualizar.
-	 * @param horaPartida	: Hora de partida de la ruta. 
+	 * @param horaPartida	: Hora de partida de la ruta.
 	 * @param fechaInicio	: Fecha Inicio para la actualizacion de la tarifa.
 	 * @param fechaFin		: Fecha Final para la actualización de la tarifa.
 	 * @param idRuta		: Identificador de la Ruta.
@@ -196,19 +196,19 @@ public interface ItinerarioManager {
 	 * @param tarifaActual	: Tarifa actual de la ruta.
 	 * @param idItinerarioDetalle	: Identificador del detalle itinerario. Utilizado cuando la actualización es en DETALLE
 	 * @param usuarioMod	: usuario que realiza la actualización de la tarifa
-	 * @param ipMod			: IP del equipo de donde se esta asiendo la actualización de la tarifa 
+	 * @param ipMod			: IP del equipo de donde se esta asiendo la actualización de la tarifa
 	 * @param tarifaLista	: Tarifa Lista y/o referencial.
 	 * @throws Exception
 	 */
-	public void actualizarTarifa(Double tarifaNueva, String horaPartida,String fechaInicio, String fechaFin, Integer idRuta, 
+	public void actualizarTarifa(Double tarifaNueva, String horaPartida,String fechaInicio, String fechaFin, Integer idRuta,
 			Integer idServicio,Double tarifaActual, Long idItinerarioDetalle, String usuarioMod, String ipMod, Double tarifaLista) throws Exception;
-	
+
 	/**
 	 * Realiza la busqueda de los itinerarios, a travez de la ruta mayor
 	 * @param fechaPartida		: Fecha de Partida
-	 * @param horaPartida		: Hora de Partida	
+	 * @param horaPartida		: Hora de Partida
 	 * @param localidadIdOrigen	: Identificador de la localidadOrigen
-	 * @param localidadIdDestino: Identificador de la localidadDestino	
+	 * @param localidadIdDestino: Identificador de la localidadDestino
 	 * @return	Lista de itinerarios
 	 * @throws Exception
 	 */

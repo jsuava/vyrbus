@@ -3,14 +3,14 @@ package com.cystesoft.vyrbus.model.bean;
 
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 public class VSTipoPersona extends GenericBean implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
-    // Fields    
+    // Fields
 	private Integer id;
      private String denominacion;
      private String codigo;
@@ -24,12 +24,12 @@ public class VSTipoPersona extends GenericBean implements java.io.Serializable {
 	public VSTipoPersona(Integer id){
 		this.id=id;
 	}
-	   
+
     // Property accessors
     public Integer getId() {
         return this.id;
     }
-    
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -37,7 +37,7 @@ public class VSTipoPersona extends GenericBean implements java.io.Serializable {
     public String getDenominacion() {
         return this.denominacion;
     }
-    
+
     public void setDenominacion(String denominacion) {
         this.denominacion = denominacion;
     }
@@ -45,10 +45,10 @@ public class VSTipoPersona extends GenericBean implements java.io.Serializable {
     public String getCodigo() {
         return this.codigo;
     }
-    
+
     public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
 
-    
+
 }

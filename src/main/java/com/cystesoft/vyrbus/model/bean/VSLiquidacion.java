@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Avalos Sullo
  * Fecha		: 26/06/2014
  */
@@ -16,7 +16,7 @@ import java.util.Date;
  */
 public class VSLiquidacion extends GenericBean implements Serializable{
 	private static final long serialVersionUID = 1L;
-	// Fields    
+	// Fields
 	 private Integer id;
      private Integer anio;
      private Integer usuarioID;
@@ -42,7 +42,7 @@ public class VSLiquidacion extends GenericBean implements Serializable{
     public Integer getId() {
         return this.id;
     }
-    
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -50,7 +50,7 @@ public class VSLiquidacion extends GenericBean implements Serializable{
     public Integer getAnio() {
         return this.anio;
     }
-    
+
     public void setAnio(Integer anio) {
         this.anio = anio;
     }
@@ -58,7 +58,7 @@ public class VSLiquidacion extends GenericBean implements Serializable{
     public String getNombreUsuario() {
         return this.nombreUsuario;
     }
-    
+
     public void setNombreUsuario(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
     }
@@ -66,7 +66,7 @@ public class VSLiquidacion extends GenericBean implements Serializable{
     public Date getFechaLiquidacion() {
         return this.fechaLiquidacion;
     }
-    
+
     public void setFechaLiquidacion(Date fechaLiquidacion) {
         this.fechaLiquidacion = fechaLiquidacion;
     }
@@ -74,7 +74,7 @@ public class VSLiquidacion extends GenericBean implements Serializable{
     public Double getMontoIngresado() {
         return this.montoIngresado;
     }
-    
+
     public void setMontoIngresado(Double montoIngresado) {
         this.montoIngresado = montoIngresado;
     }
@@ -82,7 +82,7 @@ public class VSLiquidacion extends GenericBean implements Serializable{
     public Integer getEstadoLiquidacion() {
         return this.estadoLiquidacion;
     }
-    
+
     public void setEstadoLiquidacion(Integer estadoLiquidacion) {
         this.estadoLiquidacion = estadoLiquidacion;
     }

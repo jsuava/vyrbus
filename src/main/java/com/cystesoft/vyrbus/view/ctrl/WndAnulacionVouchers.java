@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
- * Autor		: José 
+ * Descripción	:
+ * Autor		: José
  * Fecha		: 18/10/2013
  */
 package com.cystesoft.vyrbus.view.ctrl;
@@ -53,7 +53,7 @@ public class WndAnulacionVouchers extends WndBase{
 	private Combobox cmbCliente;
 	private Datebox dtbxFechaPartida;
 	private Timebox tbxHoraPartida;
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
 	 */
@@ -68,7 +68,7 @@ public class WndAnulacionVouchers extends WndBase{
 		dtbxFechaPartida=(Datebox)this.getFellow("dtbxFechaPartida");
 		tbxHoraPartida=(Timebox)this.getFellow("tbxHoraPartida");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
@@ -78,16 +78,16 @@ public class WndAnulacionVouchers extends WndBase{
 		cargarTipoComprobanteVouchers(cmbTipoComprobante);
 		Util.seleccionarValorItemCombo(TipoComprobante.class, cmbTipoComprobante, Constantes.ID_TIPCOM_VOUCHER_CORPORATIVO);
 		cargarClientes(cmbCliente);
-		
+
 		dtbxFechaPartida.setValue(new Date());
 		String fecha = Util.DatetoString(new Date(), "yyyyMMdd");
 		dtbxFechaPartida.setConstraint("after "+fecha);
 	}
-	
+
 	public void buscar() throws Exception{
 		try{
 			Util.limpiarListbox(lsbxVouchers);
-			
+
 			if(!(cmbTipoComprobante.getSelectedItem().getValue() instanceof TipoComprobante))
 				throw new TipoComprobanteNullException();
 			if(txtNumeroVoucher.getText().trim().isEmpty() && txtNumeroControl.getText().isEmpty() &&
@@ -100,135 +100,135 @@ public class WndAnulacionVouchers extends WndBase{
 			String rucCliente=null;
 			String fechaPartida=null;
 			String horaPartida=null;
-			
+
 			Integer idTipoComprobante=((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId();
 			if(dtbxFechaPartida.getValue()!=null)
 				fechaPartida=Constantes.FORMAT_DATE.format(dtbxFechaPartida.getValue());
-			
+
 			if(!(txtNumeroVoucher.getText().trim().isEmpty())){
 				numeroVoucher=Util.autocompleNumberBoleto(txtNumeroVoucher.getText().trim());
 				txtNumeroVoucher.setText(numeroVoucher);
 				fechaPartida=null;
 			}
-			
+
 			if(!(txtNumeroControl.getText().trim().isEmpty())){
 				numeroControl = Util.generateControlNumber(txtNumeroControl.getText().trim().toUpperCase());
 				txtNumeroControl.setText(numeroControl);
 				numeroControl=txtNumeroControl.getText().trim();
 				fechaPartida=null;
 			}
-			
+
 			if(cmbCliente.getSelectedIndex()>0){
-				Agencia agencia=ServiceLocator.getAgenciaManager().buscarPorId(((Agencia)cmbCliente.getSelectedItem().getValue()).getId().longValue());				
+				Agencia agencia=ServiceLocator.getAgenciaManager().buscarPorId(((Agencia)cmbCliente.getSelectedItem().getValue()).getId().longValue());
 				rucCliente=agencia.getConcesionario()!=null?agencia.getConcesionario().getRuc():null;
 			}
-			
+
 			if(tbxHoraPartida.getValue()!=null)
 				horaPartida=tbxHoraPartida.getText().trim();
-							
+
 			List<VentaPasaje>listVouchers=ServiceLocator.getVentaPasajesManager().buscarVoucherForAnulacion(idTipoComprobante, numeroVoucher, numeroControl,rucCliente, fechaPartida,horaPartida,null);
 
 			Listitem item=null;
 			Listcell cell=null;
-									
+
 			if(listVouchers.size()==0){
 				DlgMessage.information(Messages.getString("WndVouchers.information.noRegistros"));
 				return;
 			}
-			
+
 			for(VentaPasaje ventaPasaje: listVouchers){
-				Boolean isAnulado=false;
-				
+				boolean isAnulado=false;
+
 				item=new Listitem();
 				if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION ||
 						ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_DEVOLUCION ||
 						ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION){
 					isAnulado=true;
 				}
-				
+
 				cell=new Listcell(ventaPasaje.getCliente().getRazonSocial());
 				if(isAnulado)cell.setStyle("color:red");
 				item.appendChild(cell);
-				
+
 				cell=new Listcell(ventaPasaje.getPasajero().getNombresApellidos());
 				if(isAnulado)cell.setStyle("color:red");
 				item.appendChild(cell);
-				
+
 				cell= new Listcell(ventaPasaje.getNumeroVoucher());
 				if(isAnulado)cell.setStyle("font-size:11px !important;color:red");
 				else cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
-				
+
 				cell=new Listcell(ventaPasaje.getNumeroBoleto());
 				if(isAnulado)cell.setStyle("font-size:11px !important;color:red");
 				else cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
-				
+
 				cell=new Listcell(ventaPasaje.getNumeroControl());
 				if(isAnulado)cell.setStyle("font-size:11px !important;color:red");
 				else cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
-				
+
 				cell= new Listcell(ventaPasaje.getRuta().toString());
 				if(isAnulado)cell.setStyle("color:red");
 				item.appendChild(cell);
-				
+
 				cell= new Listcell(Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida()));
 				if(isAnulado)cell.setStyle("font-size:11px !important;color:red");
 				else cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
-				
+
 				cell= new Listcell(ventaPasaje.getHoraPartida());
 				if(isAnulado)cell.setStyle("font-size:11px !important;color:red");
 				else cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
-				
+
 				cell=new Listcell(ventaPasaje.getNumeroAsiento().toString());
 				if(isAnulado)cell.setStyle("font-size:11px !important;color:red");
 				else cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
-				
+
 				cell=new Listcell(Constantes.FORMAT_LONG.format(ventaPasaje.getFechaInsercion()));
 				if(isAnulado)cell.setStyle("font-size:11px !important;color:red");
 				else cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
-				
+
 				cell=new Listcell(ventaPasaje.getUsuario().getApellidoPaterno()+" "+ventaPasaje.getUsuario().getApellidoMaterno()+", "+ventaPasaje.getUsuario().getNombre());
 				if(isAnulado)cell.setStyle("color:red");
 				item.appendChild(cell);
-				
+
 				Button btnAnular= new Button("","/resources/mp_anular.png");
 				cell= new Listcell();
 				cell.appendChild(btnAnular);
 				btnAnular.setId(ventaPasaje.getId().toString());
 				btnAnular.setStyle("cursor:pointer");
 				btnAnular.setTooltiptext("Haga click aqui si desea anular el Voucher");
-							
-				
+
+
 				btnAnular.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 					@Override
 					public void onEvent(Event e) throws Exception {
 						// TODO Auto-generated method stub
 						validaAnulacionVoucher(e.getTarget().getId());
-						
+
 					}
 				});
-				
+
 				if(isAnulado)//indica si el registro esta anulado
 					btnAnular.setVisible(false);
-				
+
 				item.appendChild(cell);
 				item.setValue(ventaPasaje);
 				lsbxVouchers.appendChild(item);
 			}
-				
-			
-			
+
+
+
 		}catch (TipoComprobanteNullException tcexn){
 			DlgMessage.information(Messages.getString("WndVouchers.information.noTipoComprobante"),cmbTipoComprobante);
 		}
 	}
-	
+
 	public void validaAnulacionVoucher(final String idVenta){
 		try{
 			//Valida que la fecha de emision del vouchers este dentro del mes acual
@@ -254,15 +254,15 @@ public class WndAnulacionVouchers extends WndBase{
 					}
 				});
 			}
-			
+
 		}catch(Exception ex){
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	private void anularVoucher(VentaPasaje ventaPasaje) throws Exception{
 		Double importePagado=ventaPasaje.getImportePagado();
-				
+
 		ventaPasaje.setTarifa(0.0);
 		ventaPasaje.setRecargo(0.0);
 		ventaPasaje.setDescuento(0.0);
@@ -276,17 +276,17 @@ public class WndAnulacionVouchers extends WndBase{
 		UtilData.auditarRegistro(ventaPasaje, true, getUsuario(), Executions.getCurrent());
 //		int result = ServiceLocator.getVentaPasajesManager().anularMovimiento(ventaPasaje);
 		ServiceLocator.getVentaPasajesManager().anularMovimiento(ventaPasaje,false);
-		
+
 		/*Actualiza el Saldo de la linea de credito - ##19/12/2014 - jabanto*/
 		ServiceLocator.getLineaCreditoClienteManager().actualizarSaldo(importePagado, ventaPasaje.getRucClienteCredito(), getUsuario(), UtilData.ipLocal(Executions.getCurrent()), true);
-		
+
 //		if(result==Constantes.CORRECT){
 		DlgMessage.information(Messages.getString("WndVouchers.information.exitoAnulacion"));
 		buscar();
-//		}		
+//		}
 	}
-	
-	
+
+
 	/**
 	 * Carga los comprobante vouchers de agencia y cliente coprativo
 	 * @param combobox
@@ -294,7 +294,7 @@ public class WndAnulacionVouchers extends WndBase{
 	public void cargarClientes(Combobox combobox) {
 		try{
 			combobox.getItems().clear();
-			
+
 			/*carga todas la agencias de viaje y corporativas*/
 			String sid="";
 			if(cmbTipoComprobante.getSelectedIndex()<=0)
@@ -306,36 +306,36 @@ public class WndAnulacionVouchers extends WndBase{
 				else if(tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_VOUCHER_CORPORATIVO)
 					sid=String.valueOf(Constantes.ID_TIPAGE_CORPORATIVO);
 			}
-			
-			String[] ids =sid.split(","); 
+
+			String[] ids =sid.split(",");
 			Integer[] oCriteriosIN = new Integer[ids.length];
 			for(int i=0; i<ids.length; i++){
 				oCriteriosIN[i]=Integer.valueOf(ids[i]);
 			}
-		
-			List<String> criteriosOrdenar= new ArrayList<String>();
-			criteriosOrdenar.add("denominacion");	
+
+			List<String> criteriosOrdenar= new ArrayList<>();
+			criteriosOrdenar.add("denominacion");
 			UtilData.cargarAgencia("tipoAgencia.id", oCriteriosIN, criteriosOrdenar,combobox , false);
-		
+
 			cmbCliente.setFocus(true);
 			cmbCliente.select();
-			
+
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Carga los comprobante vouchers de agencia y cliente coprativo
 	 * @param combobox
 	 */
 	public void cargarTipoComprobanteVouchers(Combobox combobox) {
 		try{
-			TreeMap<String, Object>parametros = new TreeMap<String, Object>();
+			TreeMap<String, Object>parametros = new TreeMap<>();
 			parametros.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			ArrayList<TipoComprobante> lstEspecieValorada = ServiceLocator.getTipoComprobanteManager().buscarPorX(parametros, null);
-			UtilData.cargarGenericData(combobox, false);	
-					
+			UtilData.cargarGenericData(combobox, false);
+
 			for(TipoComprobante tipoComprobante : lstEspecieValorada){
 				Comboitem oComboitem = new Comboitem();
 				//Carga solamente los vouchers de laa agencias y Clientes corporativos.
@@ -346,8 +346,8 @@ public class WndAnulacionVouchers extends WndBase{
 					oComboitem.setValue(tipoComprobante);
 					combobox.appendChild(oComboitem);
 				}
-			}	
-		 
+			}
+
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}

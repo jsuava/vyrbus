@@ -14,15 +14,15 @@ import com.cystesoft.vyrbus.service.util.Constantes;
 
 public class MotivoCortesiaManagerImpl implements MotivoCortesiaManager{
 	private MotivocortesiaDAO motivocortesiaDAO;
-	
+
 	public MotivocortesiaDAO getMotivocortesiaDAO(){
 		return motivocortesiaDAO;
 	}
-	
+
 	public void setMotivocortesiaDAO (MotivocortesiaDAO motivocortesiaDAO){
 		this.motivocortesiaDAO=motivocortesiaDAO;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.MotivoCorteciaManager#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
@@ -59,19 +59,19 @@ public class MotivoCortesiaManagerImpl implements MotivoCortesiaManager{
 	public void guardar(MotivoCortesia motivoCortesia)throws Exception {
 		try{
 			/*Valida duplicidad de la denominación*/
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", motivoCortesia.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getMotivocortesiaDAO().buscarPorX(criteriosBusqueda, null);
 			if(resultDenominacion.size()>0)
 				throw new DenominacionDuplicadaException();
-			
+
 			getMotivocortesiaDAO().guardar(motivoCortesia);
-			
+
 		}catch (DenominacionDuplicadaException ddex){
 			throw new DenominacionDuplicadaException();
 		}
-		
+
 	}
 
 	/*
@@ -83,21 +83,21 @@ public class MotivoCortesiaManagerImpl implements MotivoCortesiaManager{
 	public void actualizar(MotivoCortesia motivoCortesia) throws Exception {
 		try{
 			/*Valida duplicidad de la denominación*/
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", motivoCortesia.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getMotivocortesiaDAO().buscarPorX(criteriosBusqueda, null);
-			for(int r = 0; r < resultDenominacion.size(); r ++) {
-				MotivoCortesia oMotivoCortesia = (MotivoCortesia) resultDenominacion.get(r);
+			for (Object element : resultDenominacion) {
+				MotivoCortesia oMotivoCortesia = (MotivoCortesia) element;
 					if (!(oMotivoCortesia.getId().equals(motivoCortesia.getId())) )
 						throw new DenominacionDuplicadaException();
 			}
 			getMotivocortesiaDAO().actualizar(motivoCortesia);
-			
+
 		}catch(DenominacionDuplicadaException ddex){
 			throw new DenominacionDuplicadaException();
 		}
-	
+
 	}
 
 	/*
@@ -108,7 +108,7 @@ public class MotivoCortesiaManagerImpl implements MotivoCortesiaManager{
 	@Transactional
 	public void inactivar(Long id) {
 		getMotivocortesiaDAO().inactivar(id);
-		
+
 	}
 
 }

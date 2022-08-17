@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 03/04/2014
  */
@@ -17,7 +17,7 @@ import com.cystesoft.vyrbus.model.bean.TarifaFechaAbierta;
  *
  */
 public interface TarifaFechaAbiertaManager {
-	
+
 	/**
 	 * Realiza la busqueda de la tarifa fecha abierta por ruta y servicio
 	 * @param idRuta		: Identificador de la Ruta.
@@ -26,7 +26,7 @@ public interface TarifaFechaAbiertaManager {
 	 * @throws Exception
 	 */
 	public Double buscarTarifa(Integer idRuta, Integer idServicio)throws Exception;
-	
+
 	/**
 	 * Busca las tarifas a fecha abierta, según los parametros enviados.
 	 * @param idOrigen		: Identificador del origen.
@@ -36,7 +36,7 @@ public interface TarifaFechaAbiertaManager {
 	 * @throws Exception
 	 */
 	public List<TarifaFechaAbierta> buscarTarifas(Integer idOrigen,Integer idDestino, Integer idServicio)throws Exception;
-	
+
 	/**
 	 * Busca las tarifas a fecha abierta, según los parametros enviados.
 	 * @param idOrigen		: Identificador del origen.
@@ -46,10 +46,10 @@ public interface TarifaFechaAbiertaManager {
 	 * @throws Exception
 	 */
 	public List<TarifaFechaAbierta> listarTarifasFA(Integer idOrigen,Integer idDestino, Integer idServicio)throws Exception;
-	
+
 	/**
 	 * Guarda una nueva tarifa a fecha abierta.
-	 * @param tarifaFechaAbierta	
+	 * @param tarifaFechaAbierta
 	 * @throws Exception
 	 */
 	public void guardar(TarifaFechaAbierta tarifaFechaAbierta)throws Exception;

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 20/04/2012
  */
@@ -15,7 +15,7 @@ import com.cystesoft.vyrbus.model.bean.Rol;
 
 /**
  * Interface con los metodos para la clase {@link WndBase}
- * 
+ *
  * @author jM
  * @since JDK1.6
  * @see WndBase
@@ -32,7 +32,7 @@ public interface IBase {
 	 * este metodo es cargado automáticamente antes del metodo onCreate().
 	 */
 	public void initComponents();
-	
+
 	/*Habilita o Deshabilita el acceso al button nuevo, según el sol del usuario*/
 	public Boolean accesoNuevo();
 	/*Habilita o Deshabilita el acceso al button Modificar, según el sol del usuario*/
@@ -49,7 +49,7 @@ public interface IBase {
 	public Boolean accesoExportar();
 	/**
 	 * Habilita controles solamente para el rol super usuario
-	 * @param lstComponents : Lista de controles a los se le aplicara esta restriccion. 
+	 * @param lstComponents : Lista de controles a los se le aplicara esta restriccion.
 	 */
 	public void accesoControlsRolSuperUsuario(List<Component> lstComponents);
 	/**
@@ -65,5 +65,5 @@ public interface IBase {
 	 * @param ocultarControls : valor logico
 	 */
 	public void accesoControlsByRol(List<Component> lstComponents, List<Rol> listRolesAceeso, Boolean ocultarControls);
-	
+
 }

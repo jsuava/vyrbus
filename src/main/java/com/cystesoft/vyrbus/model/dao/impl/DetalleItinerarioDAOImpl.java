@@ -16,9 +16,9 @@ public class DetalleItinerarioDAOImpl extends GenericDAOImpl implements DetalleI
 	@Override
 	public void delete(Long idItinerario) throws Exception {
 		String sql="DELETE FROM VRTDETITI WHERE VRTDETITI.ITINERARIO_ID=" + idItinerario;
-		
+
 		 getSession().createSQLQuery(sql).executeUpdate();
-		
+
 	}
 
 	/*
@@ -29,7 +29,7 @@ public class DetalleItinerarioDAOImpl extends GenericDAOImpl implements DetalleI
 	public ArrayList<DetalleItinerario> buscarPorX(TreeMap<String, Object> criteriosBusqueda,List<String> criteriosOrdenar) {
 		return (ArrayList<DetalleItinerario>) super.findByX(DetalleItinerario.class, criteriosBusqueda, criteriosOrdenar);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.DetalleItinerarioDAO#buscarPorId(java.lang.Long)

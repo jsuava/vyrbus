@@ -15,7 +15,7 @@ public interface PasajeroManager {
 	public void inactivar(Long id)throws Exception;
 	/**
 	 * Realiza la busqueda del pasajero con el indice FullText.
-	 * @param nombres	: Array con los nombres y apellidos del pasajero a buscar. 
+	 * @param nombres	: Array con los nombres y apellidos del pasajero a buscar.
 	 * @return Lista de coincidencias.
 	 * @throws Exception
 	 */

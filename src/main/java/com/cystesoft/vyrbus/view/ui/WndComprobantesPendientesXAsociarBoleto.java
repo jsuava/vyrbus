@@ -18,23 +18,23 @@ import org.zkoss.zul.Window;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 public class WndComprobantesPendientesXAsociarBoleto extends WndBase implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Window oThisWindow = this;
-	private ArrayList<VentaPasaje> lstPendientesXAsociarBoleto= new ArrayList<VentaPasaje>();
-	
-	
-	
+	private ArrayList<VentaPasaje> lstPendientesXAsociarBoleto= new ArrayList<>();
+
+
+
 	public WndComprobantesPendientesXAsociarBoleto() throws Exception{
 		super();
 		initComponents();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
@@ -51,7 +51,7 @@ public class WndComprobantesPendientesXAsociarBoleto extends WndBase implements 
 		this.setHeight("210px");
 		this.setVisible(true);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
@@ -62,7 +62,7 @@ public class WndComprobantesPendientesXAsociarBoleto extends WndBase implements 
 		Listbox listbox=new Listbox();listbox.setHeight("150px");
 		Listhead listhead=new Listhead();
 		Listheader listheader=new Listheader();
-		
+
 		listheader.setLabel("TIPO COMPROBANTE"); listheader.setWidth("180px");listheader.setStyle("color: #ffffff");
 		listhead.appendChild(listheader);
 		listheader=new Listheader();listheader.setLabel("NUMERO"); listheader.setWidth("80px");listheader.setStyle("color: #ffffff");
@@ -74,10 +74,10 @@ public class WndComprobantesPendientesXAsociarBoleto extends WndBase implements 
 		listheader=new Listheader();listheader.setLabel("RUTA"); listheader.setWidth("180px");listheader.setStyle("color: #ffffff");
 		listhead.appendChild(listheader);
 		listbox.appendChild(listhead);
-		
+
 		Listitem item=null;
 		Listcell cell=null;
-		
+
 		for(VentaPasaje pasaje: lstPendientesXAsociarBoleto){
 			item=new Listitem();
 			cell=new Listcell(pasaje.getTipoComprobante().getDenominacion());
@@ -92,28 +92,28 @@ public class WndComprobantesPendientesXAsociarBoleto extends WndBase implements 
 			item.appendChild(cell);
 			cell=new Listcell(pasaje.getRuta().getOrigen()+" - "+pasaje.getRuta().getDestino());
 			item.appendChild(cell);
-			
+
 			item.setValue(pasaje);
 			listbox.appendChild(item);
 		}
 		this.appendChild(listbox);
-		
+
 		Button button=new Button();
 		button.setLabel("Cerrar"); button.setImage("/resources/mp_cerrar.png");
 		button.setClass("btnCommandM");
 		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
-				oThisWindow.onClose();		
+				oThisWindow.onClose();
 			}
 		});
-	
+
 		Div div=new Div();
 		div.setAlign("right");
 		div.appendChild(button);
 		this.appendChild(div);
 	}
-	
+
 	public void setLstPendientesXAsociarBoleto(ArrayList<VentaPasaje> lstPendientesXAsociarBoleto){
 		this.lstPendientesXAsociarBoleto=lstPendientesXAsociarBoleto;
 	}

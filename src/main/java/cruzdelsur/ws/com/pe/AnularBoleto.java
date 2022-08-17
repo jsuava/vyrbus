@@ -10,11 +10,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -27,8 +27,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "serie", "numero" })
@@ -42,10 +42,10 @@ public class AnularBoleto {
 
 	/**
 	 * Gets the value of the serie property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getSerie() {
 		return serie;
@@ -53,11 +53,11 @@ public class AnularBoleto {
 
 	/**
 	 * Sets the value of the serie property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setSerie(JAXBElement<String> value) {
 		this.serie = (value);
@@ -65,10 +65,10 @@ public class AnularBoleto {
 
 	/**
 	 * Gets the value of the numero property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getNumero() {
 		return numero;
@@ -76,11 +76,11 @@ public class AnularBoleto {
 
 	/**
 	 * Sets the value of the numero property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setNumero(JAXBElement<String> value) {
 		this.numero = (value);

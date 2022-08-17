@@ -19,15 +19,15 @@ public class EmailNullException extends Exception implements Serializable {
 	public static final int EMAIL_PERSONAL = 0;
 	public static final int EMAIL_ENVIO_INFO = 1;
 	public static final int EMAIL_INVALID=2;
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public EmailNullException() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	/**
 	 * @param tipoEmail
 	 */
@@ -47,5 +47,5 @@ public class EmailNullException extends Exception implements Serializable {
 	public void setTipoEmail(Integer tipoEmail) {
 		this.tipoEmail = tipoEmail;
 	}
-	
+
 }

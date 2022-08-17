@@ -55,7 +55,7 @@ public interface PromocionManager {
 	 */
 	public ArrayList<Promocion> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar)throws Exception;
 	/**
-	 * 
+	 *
 	 * @param criteriosBusqueda	: Criterios a utilizar para la busqueda.
 	 * @param criteriosOrdenar	: Criterios para realizar el ordenamiento de la informacion
 	 * @param fechaPartida		: Fecha con la que se comparara la vigencia de la promocion.
@@ -65,7 +65,7 @@ public interface PromocionManager {
 	public ArrayList<Promocion> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar, String fechaPartida)throws Exception;
 	/**
 	 * Realiza la busqueda de las promociones que se pueden aplicar.
-	 * @param paxfre			: Indica si el pasajero es paxfre. 
+	 * @param paxfre			: Indica si el pasajero es paxfre.
 	 * @param idCliente			: indica el identificador del Cliente.
 	 * @param estadoRegistro	: Estado de los registros Activos o Inactivos.
 	 * @param fechaPartida		: fecha de partida del servicio.
@@ -73,7 +73,7 @@ public interface PromocionManager {
 	 * @throws Exception
 	 */
 	public List<Promocion> buscarPromocionesAplicables(boolean paxfre, String idCliente, String estadoRegistro, String fechaPartida)throws Exception;
-	
+
 	/**
 	 * Busca promociones que son por Tarifa
 	 * @param fechaPartida 	: Fecha de partida del servicio

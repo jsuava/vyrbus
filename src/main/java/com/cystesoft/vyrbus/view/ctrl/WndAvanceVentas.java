@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISPAS
  * Sistema		: Sistema de Pasajes
- * Descripción	: 
+ * Descripción	:
  * Autor		: Victor Céspedes
  * Fecha		: 8 nov. 2018
  * Hora			: 17:21:50
@@ -51,7 +51,7 @@ public class WndAvanceVentas extends WndBase implements Serializable{
 	private Combobox cmbServicio;
 	private Listbox  lbxAvance = new Listbox();
 	private Checkbox chkMostrarTodo;
-	
+
 	/* (non-Javadoc)
 	 * @see com.movilgroup.sispas.view.ui.WndBase#initComponents()
 	 */
@@ -64,18 +64,18 @@ public class WndAvanceVentas extends WndBase implements Serializable{
 		cmbDestino = (Combobox) this.getFellow("cmbDestino");
 		cmbServicio = (Combobox) this.getFellow("cmbServicio");
 		chkMostrarTodo = (Checkbox) this.getFellow("chkMostrarTodo");
-		
-		
+
+
 		dbDesde.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				String fecha = Util.DatetoString(dbDesde.getValue(), "yyyyMMdd");
 				dbHasta.setConstraint("after "+fecha);
 				dbHasta.setValue(dbDesde.getValue());
-			};
+			}
 		});
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.movilgroup.sispas.view.ui.WndBase#onCreate()
 	 */
@@ -88,7 +88,7 @@ public class WndAvanceVentas extends WndBase implements Serializable{
 		UtilData.cargarDataCombo(cmbDestino, Localidad.class, true);
 		UtilData.cargarDataCombo(cmbServicio, Servicio.class, true);
 	}
-	
+
 	public void onBuscar() {
 		try {
 			lbxAvance.getItems().clear();
@@ -97,82 +97,82 @@ public class WndAvanceVentas extends WndBase implements Serializable{
 			String idServicio = "";
 			String fechaDesde = Constantes.FORMAT_DATE.format(dbDesde.getValue());
 			String fechaHasta = Constantes.FORMAT_DATE.format(dbHasta.getValue());
-			
+
 			if(cmbOrigen.getSelectedItem().getValue() instanceof Localidad)
 				idOrigen = ((Localidad)cmbOrigen.getSelectedItem().getValue()).getId().toString();
 			if(cmbDestino.getSelectedItem().getValue() instanceof Localidad)
 				idDestino = ((Localidad)cmbDestino.getSelectedItem().getValue()).getId().toString();
 			if(cmbServicio.getSelectedItem().getValue() instanceof Servicio)
 				idServicio = ((Servicio)cmbServicio.getSelectedItem().getValue()).getId().toString();
-			
+
 			lbxAvance.detach();
 			lbxAvance = new Listbox();
 			lbxAvance.setHeight("480px");
-			
+
 			Listhead listhead = new Listhead();
-			
+
 			Listheader listheader = new Listheader();
 			listheader.setLabel("#");
 			listheader.setWidth("30px");
 			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
-			
+
 			listheader = new Listheader();
 			listheader.setLabel("FECHA");
 			listheader.setWidth("65px");
 			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
-			
+
 			listheader = new Listheader();
 			listheader.setLabel("HORA");
 			listheader.setWidth("50px");
 			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
-			
+
 			listheader = new Listheader();
 			listheader.setLabel("RUTA");
 			listheader.setWidth("160px");
 			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
-			
+
 			listheader = new Listheader();
 			listheader.setLabel("SERVICIO");
 			listheader.setWidth("100px");
 			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
-			
+
 			listheader = new Listheader();
 			listheader.setLabel("CAPACIDAD");
 			listheader.setWidth("70px");
 			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
-			
+
 			listheader = new Listheader();
 			listheader.setLabel("OCUPACION");
 			listheader.setWidth("70px");
 			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
-			
+
 			listheader = new Listheader();
-			listheader.setLabel("% OCUP..");			
+			listheader.setLabel("% OCUP..");
 			listheader.setWidth("70px");
 			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
-			
+
 			listheader = new Listheader();
 			listheader.setLabel("ING. 100%");
 			listheader.setStyle("text-align:center");
 			listheader.setWidth("80px");
 			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
-			
+
 			listheader = new Listheader();
 			listheader.setLabel("ING. REAL");
 			listheader.setStyle("text-align:center");
 			listheader.setWidth("80px");
 			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
-			
+
 			listheader = new Listheader();
 			listheader.setStyle("text-align:center");
 			listheader.setLabel("DSCTO");
@@ -180,57 +180,57 @@ public class WndAvanceVentas extends WndBase implements Serializable{
 			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
 			listheader.setTooltiptext("Por cortesias");
-			
+
 			listheader = new Listheader();
 			listheader.setLabel("DSCTO %");
 			listheader.setWidth("60px");
 			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
-			
+
 			listheader = new Listheader();
 			listheader.setLabel("SOL/KM REAL");
 			listheader.setWidth("70px");
 			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
-			
+
 			listheader = new Listheader();
 			listheader.setLabel("MAPA");
 			listheader.setWidth("60px");
 			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
-			
+
 			lbxAvance.appendChild(listhead);
-			
+
 			String style = "font-size:12px !important;font-weight:bold;color:white;text-align:right; border-bottom-color: white;";
-			
+
 			List<VentaPasaje> lstAvance = null;
 			List<VentaPasaje> lstTarifario = null;
-			
+
 			if(idOrigen != "" || idDestino != "") {
 				lstAvance = ServiceLocator.getVentaPasajesManager().buscarAvanceVentas(idOrigen, idDestino, idServicio, fechaDesde, fechaHasta);
 			}else {
 				lstAvance = ServiceLocator.getVentaPasajesManager().buscarAvanceVentas(String.valueOf(Constantes.ID_LOC_LIMA), idDestino, idServicio, fechaDesde, fechaHasta);
 			}
-			
+
 			addAvance(lstAvance);
-			
+
 			// Agrega avance de retorno, solamente si origen y destino están seleccionados en todos.
 			if(idOrigen.isEmpty() && idDestino.isEmpty()){
 				//Agregar resumen LIMA Provincias
 				addResumen("Resumen Lima --> Prov","#4285F4",lstAvance);
-				
+
 				//Consulta avance por el destino
-				List<VentaPasaje> lstVentasRetorno = new ArrayList<VentaPasaje>();
+				List<VentaPasaje> lstVentasRetorno = new ArrayList<>();
 				lstVentasRetorno = ServiceLocator.getVentaPasajesManager().buscarAvanceVentas(idOrigen, String.valueOf(Constantes.ID_LOC_LIMA), idServicio, fechaDesde, fechaHasta);
 				addAvance(lstVentasRetorno);
 				addResumen("Resumen Prov --> Lima", "#4285F4", lstVentasRetorno);
-				
+
 				//Consulta avance provincias
-				List<VentaPasaje> lstRegionales = new ArrayList<VentaPasaje>();
+				List<VentaPasaje> lstRegionales = new ArrayList<>();
 				lstRegionales = ServiceLocator.getVentaPasajesManager().buscarAvanceVentas(String.valueOf(Constantes.ID_LOC_LIMA), String.valueOf(Constantes.ID_LOC_LIMA), idServicio, fechaDesde, fechaHasta);
 				addAvance(lstRegionales);
 				addResumen("Resumen Regional", "#4285F4", lstRegionales);
-				
+
 				addNewItem();
 				//Agregar Total Servicios IDA
 				addTotalServiciosParcial(lstAvance, "SERV.LIMA --> PROV.", style);
@@ -264,52 +264,52 @@ public class WndAvanceVentas extends WndBase implements Serializable{
 			DlgMessage.error(this.getClass().getSimpleName()+" "+e.getMessage());
 		}
 	}
-	
+
 	private ArrayList<Object> addAvance(List<VentaPasaje> lstAvance) throws Exception{
 		Listitem item = null;
 		Listcell cell = null;
 		String style="";
-		ArrayList<Object> xx = new ArrayList<Object>();
+		ArrayList<Object> xx = new ArrayList<>();
 		int i = 0;
 		Double ocupacion = 0.0;
 		String servicio = "";
-		
+
 		Boolean bTodos = chkMostrarTodo.isChecked();
 		String fechaActual = MyTime.dateTimeServer();
-		
+
 		for(VentaPasaje venta : lstAvance) {
 			i++;
 			item = new Listitem();
 			cell = new Listcell(String.valueOf(i));
 			cell.setStyle("border-bottom-color: white;");
 			item.appendChild(cell);
-			
+
 			cell = new Listcell(Constantes.FORMAT_DATE.format(venta.getFechaPartida()));
 			cell.setStyle("font-size:11px !important; border-bottom-color: white;");
 			item.appendChild(cell);
-			
+
 			cell = new Listcell(venta.getHoraPartida());
 			cell.setStyle("font-size:11px !important; text-align:center; border-bottom-color: white;");
 			item.appendChild(cell);
-			
+
 			cell = new Listcell(venta.getRuta().getOrigen()+" - "+venta.getRuta().getDestino());
 			cell.setStyle("border-bottom-color: white;");
 			item.appendChild(cell);
-			
-			
-			servicio = venta.getServicio().getDenominacion();			
+
+
+			servicio = venta.getServicio().getDenominacion();
 			cell = new Listcell(servicio);
 			cell.setStyle("border-bottom-color: white;");
 			item.appendChild(cell);
-			
+
 			cell = new Listcell(venta.getServicio().getTotalAsientos().toString());
 			cell.setStyle("font-size:11px !important; text-align:center; border-bottom-color: white;");
 			item.appendChild(cell);
-			
+
 			cell = new Listcell(venta.getCantidadPax().toString());
 			cell.setStyle("font-size:11px !important; text-align:center; border-bottom-color: white;");
 			item.appendChild(cell);
-			
+
 			ocupacion = Double.valueOf(venta.getCantidadPax())/Double.valueOf(venta.getServicio().getTotalAsientos()) * 100;
 			cell = new Listcell(Util.toNumberFormat(ocupacion,2).toString()+"%");
 			if(ocupacion <= 65)
@@ -320,30 +320,30 @@ public class WndAvanceVentas extends WndBase implements Serializable{
 				style = "font-size:11px !important; background:#92D050; text-align:center; color:white; font-weight: bold !important; border-bottom-color: white;";
 			else
 				style = "font-size:11px !important; background:#0066FF; text-align:center; color:white !important; font-weight: bold !important;border-bottom-color: white;";
-			
+
 			cell.setStyle(style);
 			item.appendChild(cell);
-			
+
 			cell = new Listcell(venta.getImporteEsperado()==null?"0":Util.toNumberFormat(venta.getImporteEsperado(), 2));
 			cell.setStyle("font-size:11px !important; text-align:right; border-bottom-color: white;");
 			item.appendChild(cell);
-			
+
 			cell = new Listcell(Util.toNumberFormat(venta.getImporteReal(),2));
 			cell.setStyle("font-size:11px !important; text-align:right; border-bottom-color: white;");
 			item.appendChild(cell);
-			
+
 			cell = new Listcell(Util.toNumberFormat(venta.getImporteDescuentos(), 2));
 			cell.setStyle("font-size:11px !important; text-align:right; border-bottom-color: white;");
 			item.appendChild(cell);
-			
+
 			cell = new Listcell(venta.getImporteEsperado()==null?"0":(Util.toNumberFormat((venta.getImporteDescuentos()/venta.getImporteEsperado())*100, 2)+"%"));
 			cell.setStyle("font-size:11px !important; text-align:right; border-bottom-color: white;");
 			item.appendChild(cell);
-			
+
 			cell = new Listcell(Util.toNumberFormat((venta.getImporteReal()/venta.getRuta().getKilometros()), 2));
 			cell.setStyle("font-size:11px !important; text-align:right; border-bottom-color: white;");
 			item.appendChild(cell);
-			
+
 			cell = new Listcell();
 			final Image plano = new Image("resources/bus.png");
 			plano.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
@@ -359,53 +359,53 @@ public class WndAvanceVentas extends WndBase implements Serializable{
 			cell.setTooltiptext("Hacer click aqui para ver el Croquis");
 			cell.setStyle("font-size:11px !important; text-align:center; border-bottom-color: white;");
 			item.appendChild(cell);
-			
+
 			item.setValue(venta);
-			
+
 			if(bTodos)
 				lbxAvance.appendChild(item);
 			else {
 //				venta = lstAvance.get(j);
 				Boolean valido = Util.comparaFechasWithTime(Util.DatetoString(venta.getFechaPartida(), Constantes.DATE_FORMAT)+" "+venta.getHoraPartida()+":00",fechaActual,  Util.OPER_MAYOR_IGUAL);
 				if(valido)
-					lbxAvance.appendChild(item);;
+					lbxAvance.appendChild(item);
 			}
-			
-			
-			
-			
-			
+
+
+
+
+
 //			lbxAvance.appendChild(item);
 		}
 		return xx;
 	}
-	
+
 	public void addResumen(String descripcion, String background, List<VentaPasaje> lstVenta) {
 		/*	Calculo de totales	*/
 		String style = "font-size:12px !important;font-weight:bold;color:white; border-bottom-color: white;";
 		Listitem newItem = new Listitem();
-		
+
 		newItem.setStyle("border-bottom-color: white");
 		Listcell cell = new Listcell();
 		cell.setStyle(style);
 		newItem.appendChild(cell);
-		
+
 		cell = new Listcell();
 		cell.setStyle(style);
 		newItem.appendChild(cell);
-		
+
 		cell = new Listcell();
 		cell.setStyle(style);
 		newItem.appendChild(cell);
-		
+
 		cell = new Listcell(descripcion);
 		cell.setStyle(style);
 		newItem.appendChild(cell);
-		
+
 		cell = new Listcell(String.valueOf(lstVenta.size()));
 		cell.setStyle("font-size:12px !important;font-weight:bold;color:white;text-align:center; border-bottom-color: white;");
 		newItem.appendChild(cell);
-		
+
 		Integer cap_total = 0;
 		Integer total_pax = 0;
 		Double ocu_porcentaje = 0.0;
@@ -414,9 +414,9 @@ public class WndAvanceVentas extends WndBase implements Serializable{
 		Double dscto_total = 0.0;
 		Double dscto_total_porcentaje = 0.0;
 		Double sol_km_total = 0.0;
-//		Integer total_cortesia = 0;	
-		Double kilometros = 0.0;
-		
+//		Integer total_cortesia = 0;
+		double kilometros = 0.0;
+
 		if(lstVenta == null) {
 			//Calcula el total de pasajeros
 			for(Listitem item : lbxAvance.getItems()) {
@@ -424,12 +424,12 @@ public class WndAvanceVentas extends WndBase implements Serializable{
 				String str_cap_total = ((Listcell)item.getChildren().get(5)).getLabel();
 				String str_total_pax = ((Listcell)item.getChildren().get(6)).getLabel();
 				String str_ingreso_esperado = ((Listcell)item.getChildren().get(8)).getLabel();
-				
+
 				if(!str_total_pax.isEmpty()) {
 					total_pax+=Integer.valueOf(str_total_pax);
 					cap_total+= Integer.valueOf(str_cap_total);
 					ocu_porcentaje = Double.valueOf((total_pax/cap_total)*100);
-					ingreso_esperado += Double.valueOf(str_ingreso_esperado); 
+					ingreso_esperado += Double.valueOf(str_ingreso_esperado);
 				}
 			}
 		}else {
@@ -445,55 +445,55 @@ public class WndAvanceVentas extends WndBase implements Serializable{
 					ingreso_esperado += 0;
 			}
 		}
-		
+
 		ocu_porcentaje+= Util.formatearDecimales(((Double.valueOf(total_pax)/Double.valueOf(cap_total))*100),2);
 		sol_km_total = Util.formatearDecimales(ingreso_real/kilometros, 2);
 		dscto_total = Util.formatearDecimales(dscto_total, 2);
 		ingreso_esperado = Util.formatearDecimales(ingreso_esperado, 2);
 		dscto_total_porcentaje = (dscto_total/ingreso_esperado)*100;
-				
+
 		newItem.setStyle("background:"+background);
-		
+
 		cell = new Listcell(cap_total.toString());
 		cell.setStyle("font-size:12px !important;font-weight:bold;color:white;text-align:center; border-bottom-color: white;");
 		newItem.appendChild(cell);
-		
+
 		cell = new Listcell(total_pax.toString());
 		cell.setStyle("font-size:12px !important;font-weight:bold;color:white;text-align:center; border-bottom-color: white;");
 		newItem.appendChild(cell);
-		
+
 		cell = new Listcell(ocu_porcentaje.toString()+"%");
 		cell.setStyle("font-size:12px !important;font-weight:bold;color:white;text-align:center; border-bottom-color: white;");
 		newItem.appendChild(cell);
-		
+
 		cell = new Listcell(Util.toNumberFormat(ingreso_esperado, 2));
 		cell.setStyle("font-size:12px !important;font-weight:bold;color:white;text-align:right; border-bottom-color: white;");
 		newItem.appendChild(cell);
-		
+
 		cell = new Listcell(Util.toNumberFormat(ingreso_real, 2));
 		cell.setStyle("font-size:12px !important;font-weight:bold;color:white;text-align:right; border-bottom-color: white;");
 		newItem.appendChild(cell);
-		
+
 		cell = new Listcell(Util.toNumberFormat(dscto_total, 2));
 		cell.setStyle("font-size:12px !important;font-weight:bold;color:white;text-align:right; border-bottom-color: white;");
 		newItem.appendChild(cell);
-		
+
 		cell = new Listcell(Util.toNumberFormat(dscto_total_porcentaje, 2)+"%");
 		cell.setStyle("font-size:12px !important;font-weight:bold;color:white;text-align:right; border-bottom-color: white;");
-		newItem.appendChild(cell);		
-		
+		newItem.appendChild(cell);
+
 		cell = new Listcell(sol_km_total.toString());
 		cell.setStyle("font-size:12px !important;font-weight:bold;color:white;text-align:right; border-bottom-color: white;");
 		newItem.appendChild(cell);
-		
+
 		cell = new Listcell();
 		cell.setStyle(style);
 		newItem.appendChild(cell);
 		newItem.appendChild(cell);
-		
+
 		lbxAvance.appendChild(newItem);
 	}
-	
+
 	/**
 	 * Agrega un nuevo item
 	 */
@@ -502,7 +502,7 @@ public class WndAvanceVentas extends WndBase implements Serializable{
 		item.appendChild(new Listcell());
 		lbxAvance.appendChild(item);
 	}
-	
+
 	/**
 	 * Agrega el total de servicios de la Ida, Retorno y Regionales
 	 * @param lstAvance
@@ -518,9 +518,9 @@ public class WndAvanceVentas extends WndBase implements Serializable{
 		cell.setLabel(total_servicios.toString());
 		cell.setStyle("font-size:12px !important; color:white !important; font-weight:bold; text-align:center; border-bottom-color: white;");
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param label
 	 * @param lisVentas1
 	 * @param lstVentas2
@@ -528,19 +528,19 @@ public class WndAvanceVentas extends WndBase implements Serializable{
 	 * @param style
 	 */
 	private void addResumenTotal(String label,List<VentaPasaje> lstVentas1,List<VentaPasaje>lstVentas2,List<VentaPasaje>lstVentas3, String style){
-		Listitem item = new Listitem();;
+		Listitem item = new Listitem();
 		Listcell cell = new Listcell();
 		cell.setStyle(style);
 		item.appendChild(cell);
-		
+
 		cell = new Listcell();
 		cell.setStyle(style);
 		item.appendChild(cell);
-		
+
 		cell = new Listcell();
 		cell.setStyle(style);
 		item.appendChild(cell);
-		
+
 		cell = new Listcell();
 		cell.setStyle(style);
 		item.appendChild(cell);
@@ -548,20 +548,20 @@ public class WndAvanceVentas extends WndBase implements Serializable{
 		cell.setLabel(label);
 		cell.setStyle(style);
 		item.appendChild(cell);
-		
+
 		Integer cap_total = 0;
 		Integer total_pax = 0;
-		Double ocu_porcentaje = 0.0;
+		double ocu_porcentaje = 0.0;
 		Double ingreso_esperado = 0.0;
 		Double ingreso_real = 0.0;
 		Double dscto_total = 0.0;
-		Double dscto_total_porcentaje = 0.0;
+		double dscto_total_porcentaje = 0.0;
 		Double sol_km_total = 0.0;
-//		Integer total_cortesia = 0;	
-		Double kilometros = 0.0;
-		Integer total_servicios = 0;
-		
-		
+//		Integer total_cortesia = 0;
+		double kilometros = 0.0;
+		int total_servicios = 0;
+
+
 		if(lstVentas1!=null) {
 			for(VentaPasaje venta : lstVentas1) {
 				cap_total+=venta.getServicio().getTotalAsientos();
@@ -576,7 +576,7 @@ public class WndAvanceVentas extends WndBase implements Serializable{
 			}
 			total_servicios+=lstVentas1.size();
 		}
-		
+
 		if(lstVentas2!=null) {
 			for(VentaPasaje venta : lstVentas2) {
 				cap_total+=venta.getServicio().getTotalAsientos();
@@ -591,7 +591,7 @@ public class WndAvanceVentas extends WndBase implements Serializable{
 			}
 			total_servicios+=lstVentas2.size();
 		}
-		
+
 		if(lstVentas3!=null) {
 			for(VentaPasaje venta : lstVentas3) {
 				cap_total+=venta.getServicio().getTotalAsientos();
@@ -606,77 +606,77 @@ public class WndAvanceVentas extends WndBase implements Serializable{
 			}
 			total_servicios+=lstVentas3.size();
 		}
-		
+
 		ocu_porcentaje+= Util.formatearDecimales(((Double.valueOf(total_pax)/Double.valueOf(cap_total))*100),2);
 		sol_km_total = Util.formatearDecimales(ingreso_real/kilometros, 2);
 		dscto_total = Util.formatearDecimales(dscto_total, 2);
-		
-		
-		
-		
-		cell = new Listcell(total_servicios.toString());
+
+
+
+
+		cell = new Listcell(Integer.toString(total_servicios));
 		cell.setStyle("font-size:12px !important; color:white !important; font-weight:bold; text-align:center; border-bottom-color: white;");
 		item.appendChild(cell);
-		
+
 		cell = new Listcell(cap_total.toString());
 		cell.setStyle("font-size:12px !important;font-weight:bold;color:white;text-align:center; border-bottom-color: white;");
 		item.appendChild(cell);
-		
+
 		cell = new Listcell(total_pax.toString());
 		cell.setStyle("font-size:12px !important;font-weight:bold;color:white;text-align:center; border-bottom-color: white;");
 		item.appendChild(cell);
-		
-		cell = new Listcell(ocu_porcentaje.toString()+"%");
+
+		cell = new Listcell(Double.toString(ocu_porcentaje)+"%");
 		cell.setStyle("font-size:12px !important;font-weight:bold;color:white;text-align:center; border-bottom-color: white;");
 		item.appendChild(cell);
-		
+
 		cell = new Listcell(Util.toNumberFormat(ingreso_esperado, 2));
 		cell.setStyle("font-size:12px !important;font-weight:bold;color:white;text-align:right; border-bottom-color: white;");
 		item.appendChild(cell);
-		
+
 		cell = new Listcell(Util.toNumberFormat(ingreso_real, 2));
 		cell.setStyle("font-size:12px !important;font-weight:bold;color:white;text-align:right; border-bottom-color: white;");
 		item.appendChild(cell);
-		
+
 		cell = new Listcell(Util.toNumberFormat(dscto_total, 2));
 		cell.setStyle("font-size:12px !important;font-weight:bold;color:white;text-align:right; border-bottom-color: white;");
 		item.appendChild(cell);
-		
+
 		cell = new Listcell(Util.toNumberFormat((dscto_total/ingreso_esperado)*100, 2)+"%");
 		cell.setStyle("font-size:12px !important;font-weight:bold;color:white;text-align:right; border-bottom-color: white;");
 		item.appendChild(cell);
-		
+
 		cell = new Listcell(sol_km_total.toString());
 		cell.setStyle("font-size:12px !important;font-weight:bold;color:white;text-align:right; border-bottom-color: white;");
 		item.appendChild(cell);
-		
+
 		cell = new Listcell();
 		cell.setStyle(style);
 		item.appendChild(cell);
-		item.appendChild(cell);	
-		
-		
-		item.setStyle("background:#000000");		
+		item.appendChild(cell);
+
+
+		item.setStyle("background:#000000");
 		lbxAvance.appendChild(item);
-		
+
 	}
-	
+
 	public  void enlazarVerMapa(String idItinerario, String idRuta, Integer ocupados) throws Exception {
 		List<VentaPasaje> lisOpabilidad = ServiceLocator.getManifiestoManager().consultaDetaPaxXRuta(Long.valueOf(idItinerario));
-		
+
 		final WndVerMapaAvance oWndSeleccionaItinerario = new WndVerMapaAvance();
 		oWndSeleccionaItinerario.setIdItinerario(new Long (idItinerario));
 		oWndSeleccionaItinerario.setCantOcupados(ocupados);
-		oWndSeleccionaItinerario.setListOcupabilidad(lisOpabilidad);		
-		oWndSeleccionaItinerario.setIdRutaDetiti(Integer.parseInt(idRuta));     
-		
+		oWndSeleccionaItinerario.setListOcupabilidad(lisOpabilidad);
+		oWndSeleccionaItinerario.setIdRutaDetiti(Integer.parseInt(idRuta));
+
 		Boolean esVisibleInfoBus, esVisibleOcupabilidad, esVisibleLeyenda, esVisibleButtons;
 		esVisibleInfoBus=true;
 		esVisibleOcupabilidad=true;
 		esVisibleLeyenda=true;
 		esVisibleButtons=true;
 		oWndSeleccionaItinerario.load(esVisibleInfoBus, esVisibleOcupabilidad, esVisibleLeyenda, esVisibleButtons);
-		
+
 		this.appendChild(oWndSeleccionaItinerario);
 		oWndSeleccionaItinerario.setMode("modal");
 	}

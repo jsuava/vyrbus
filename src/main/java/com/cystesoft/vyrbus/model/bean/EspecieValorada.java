@@ -20,7 +20,7 @@ public class EspecieValorada extends GenericBean implements java.io.Serializable
 	private Integer formato;
 	private String seriefe;
 	private String nameSecuenciador;
-	
+
 	private UsuarioHardware usuarioHardware;
 
 	public EspecieValorada() {
@@ -138,7 +138,7 @@ public class EspecieValorada extends GenericBean implements java.io.Serializable
 	public void setAutorizacionSunat(String autorizacionSunat) {
 		this.autorizacionSunat = autorizacionSunat;
 	}
-	
+
 	/**
 	 * @return the usuarioHardware
 	 */
@@ -162,7 +162,7 @@ public class EspecieValorada extends GenericBean implements java.io.Serializable
 			Integer serie=this.serie;
 			String correlativo = "0000000"+actual;
 			String cserie="000"+serie;
-			return cserie.substring(cserie.length()-3) + "-"+ correlativo.substring(correlativo.length()-7);	
+			return cserie.substring(cserie.length()-3) + "-"+ correlativo.substring(correlativo.length()-7);
 		}else{
 			/*para el caso de la fe*/
 			String correlativo = "00000000"+actual;

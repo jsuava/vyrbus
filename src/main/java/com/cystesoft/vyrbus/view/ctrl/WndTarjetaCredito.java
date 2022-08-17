@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 10/06/2012
  */
@@ -43,9 +43,9 @@ public class WndTarjetaCredito extends WndOpcionesMantenimiento {
 
 	private Combobox cboOperadorTarjetaCredito;
 	private Textbox txtDenominacion;
-	
+
 	private TarjetaCredito oTarjetaCredito = null;
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
 
 	/* (non-Javadoc)
@@ -54,10 +54,10 @@ public class WndTarjetaCredito extends WndOpcionesMantenimiento {
 	@Override
 	public void onCreate() throws Exception {
 		UtilData.cargarDataCombo(cboOperadorTarjetaCredito, OperadorTarjetaCredito.class, false);
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IBase#initComponents()
 	 */
@@ -66,7 +66,7 @@ public class WndTarjetaCredito extends WndOpcionesMantenimiento {
 		cboOperadorTarjetaCredito = (Combobox) getFellow("cboOperadorTarjetaCredito");
 		txtDenominacion = (Textbox) getFellow("txtDenominacion");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onNew()
 	 */
@@ -80,7 +80,7 @@ public class WndTarjetaCredito extends WndOpcionesMantenimiento {
 	@Override
 	public void onSearch() {
 		final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
-		
+
 		oWndFiltrar.addParameter("Operador de la Tarjeta de Crédito", OperadorTarjetaCredito.class);
 		oWndFiltrar.addParameter("Denominación", String.class);
 
@@ -97,7 +97,7 @@ public class WndTarjetaCredito extends WndOpcionesMantenimiento {
 				if(denominacion.trim().equals("")){
 					criteriosBusqueda.remove("denominacion");
 				}else{criteriosBusqueda.put("denominacion", "%" + denominacion + "%");}
-				
+
 				if (operadorTrajetaCredito == null){
 					criteriosBusqueda.remove("operadorTarjetaCredito");
 				}else{
@@ -105,7 +105,7 @@ public class WndTarjetaCredito extends WndOpcionesMantenimiento {
 					ooperadorTarjetaCredito.setId(operadorTrajetaCredito);
 					criteriosBusqueda.put("operadorTarjetaCredito", ooperadorTarjetaCredito);
 				}
-		
+
 				criteriosBusqueda.put("estadoRegistro", estadoRegistro);
 
 				listarRegistros(ServiceLocator.getTarjetaCreditoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
@@ -118,7 +118,7 @@ public class WndTarjetaCredito extends WndOpcionesMantenimiento {
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getTarjetaCreditoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getTarjetaCreditoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
 	}
 	/* (non-Javadoc)
@@ -154,14 +154,14 @@ public class WndTarjetaCredito extends WndOpcionesMantenimiento {
 				throw new OperadorTarjetaCreditoNullException();
 			if (txtDenominacion.getText().trim().equals(""))
 				throw new DenominacionNullException();
-						
+
 			if (action==ACTION_NEW)
 				oTarjetaCredito = new TarjetaCredito();
-			
+
 			OperadorTarjetaCredito oOperadorTarjetaCredito = new OperadorTarjetaCredito();
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
 			oOperadorTarjetaCredito.setId(((OperadorTarjetaCredito) cboOperadorTarjetaCredito.getSelectedItem().getValue()).getId());
-			
+
 			oTarjetaCredito.setId(id);
 			oTarjetaCredito.setOperadorTarjetaCredito(oOperadorTarjetaCredito);
 			oTarjetaCredito.setDenominacion(txtDenominacion.getText().trim().toUpperCase());
@@ -185,7 +185,7 @@ public class WndTarjetaCredito extends WndOpcionesMantenimiento {
 			criteriosBusqueda.put("denominacion", oTarjetaCredito.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			listarRegistros(ServiceLocator.getTarjetaCreditoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-			
+
 		}catch (OperadorTarjetaCreditoNullException otcnex){
 			DlgMessage.information(Messages.getString("WndTarjetaCredito.information.TarjetaCredito"),cboOperadorTarjetaCredito);
 			throw new CancelaGrabacionException();
@@ -199,7 +199,7 @@ public class WndTarjetaCredito extends WndOpcionesMantenimiento {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace(); throw new CancelaGrabacionException();
 		}
-	
+
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onDelete(int)
@@ -233,7 +233,7 @@ public class WndTarjetaCredito extends WndOpcionesMantenimiento {
 	@Override
 	public void onExport(int tab) {
 		// TODO Auto-generated method stub
-		
+
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onHelp()
@@ -241,7 +241,7 @@ public class WndTarjetaCredito extends WndOpcionesMantenimiento {
 	@Override
 	public void onHelp() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -252,7 +252,7 @@ public class WndTarjetaCredito extends WndOpcionesMantenimiento {
 		switch (tab) {
 			case TAB_LIST:
 				break;
-	
+
 			case TAB_MAINTENANCE:
 				if (listboxLista.getSelectedIndex() > -1) {
 					this.mantenimientoRegistro(new Long((String) listboxLista.getSelectedItem().getValue()));
@@ -270,18 +270,18 @@ public class WndTarjetaCredito extends WndOpcionesMantenimiento {
 	}
 
 	private void listarRegistros(ArrayList<TarjetaCredito> lstRegistros) throws Exception {
-		ArrayList<Object> lstTarjetaCreditoes = new ArrayList<Object>();
+		ArrayList<Object> lstTarjetaCreditoes = new ArrayList<>();
 
 		for(int r = 0; r < lstRegistros.size(); r ++) {
 			TarjetaCredito oTarjetaCredito = lstRegistros.get(r);
-			ArrayList<Object> lstFila = new ArrayList<Object>();
+			ArrayList<Object> lstFila = new ArrayList<>();
 
 			if (oTarjetaCredito.getOperadorTarjetaCredito().getDenominacion()==null){
 				OperadorTarjetaCredito operadorTarjetaCredito = new OperadorTarjetaCredito();
 				operadorTarjetaCredito = ServiceLocator.getOperadorTarjetaCreditoManager().buscarPorId(oTarjetaCredito.getOperadorTarjetaCredito().getId().longValue());
 				oTarjetaCredito.setOperadorTarjetaCredito(operadorTarjetaCredito);
 			}
-			
+
 			lstFila.add(oTarjetaCredito.getId());
 			lstFila.add(r + 1);
 			lstFila.add(oTarjetaCredito.getOperadorTarjetaCredito().getDenominacion());

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 01/08/2013
  */
@@ -17,7 +17,7 @@ public interface OcupacionAsientosDesbloqueadosDAO extends GenericDAO {
 
 	/**
 	 * Guarda la ocupacion de los asientos desbloqueados.
-	 * @param ocupacionAsientosDesbloqueados : Objeto 
+	 * @param ocupacionAsientosDesbloqueados : Objeto
 	 * @throws Exception
 	 */
 	public void guardar(OcupacionAsientosDesbloqueados ocupacionAsientosDesbloqueados) throws Exception;

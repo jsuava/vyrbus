@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Iterator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -36,11 +35,11 @@ public class XlsEstadosCuenta extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doProcess(request, response);
 	}
-	
+
 
 //	private void doProcess(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException{
 //		Boolean rptEnacbezadosReporte=(Boolean)req.getSession().getAttribute("rptEnacbezadosReporte");
-//		
+//
 //		if(rptEnacbezadosReporte)
 //			exportClientePerso(req, resp);
 
@@ -51,7 +50,7 @@ public class XlsEstadosCuenta extends HttpServlet {
 		else
 			exportClienteEstandar(request, response);
 	}
-	
+
 	/**
 	 * Para algunos clientes como por ejemplo GYM
 	 */
@@ -62,14 +61,14 @@ public class XlsEstadosCuenta extends HttpServlet {
 		response.setContentType("application/vnd.ms-excel");
 		response.setHeader("Expires:", "0");
 		response.setHeader("Content-Disposition", "attachment; filename=DetalladoPersonalizado.xls");
-        
+
 		File template = new File(path);
 		try{
 			POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(template));
 			HSSFWorkbook wb = new HSSFWorkbook(fs);
 			HSSFSheet sheet = wb.getSheetAt(0);
             HSSFRow row = null;
-            HSSFCell cell = null; 
+            HSSFCell cell = null;
             HSSFDataFormat format = wb.createDataFormat();
             HSSFCellStyle style = wb.createCellStyle();
             style.setDataFormat(format.getFormat("#,##0.00"));
@@ -80,14 +79,13 @@ public class XlsEstadosCuenta extends HttpServlet {
 
 			Double total = 0.0;
 			int fila=3,y=0;
-			
-			for(Iterator<Listitem> it=list.getItems().iterator(); it.hasNext();){
-				y++;	
-				Listitem item = it.next();
+
+			for (Listitem item : list.getItems()) {
+				y++;
 				VentaPasaje ventaPasaje=(VentaPasaje)item.getValue();
-								
+
 				row = sheet.createRow((short)fila);
-				
+
 				cell = row.createCell((short)0);
 				cell.setCellStyle(styleNumber);
 				cell.setCellValue(y);
@@ -114,7 +112,7 @@ public class XlsEstadosCuenta extends HttpServlet {
 				cell.setCellStyle(styleDate);
 				cell.setCellValue(ventaPasaje.getFechaPartida());
 				row.createCell((short)14).setCellValue(new HSSFRichTextString(ventaPasaje.getHoraPartida()));
-				row.createCell((short)15).setCellValue(new HSSFRichTextString(ventaPasaje.getHoraLllegada()));	
+				row.createCell((short)15).setCellValue(new HSSFRichTextString(ventaPasaje.getHoraLllegada()));
 				cell = row.createCell((short)16);
 				cell.setCellStyle(style);
 //				cell.setCellValue(ventaPasaje.getImportePagado());
@@ -137,9 +135,9 @@ public class XlsEstadosCuenta extends HttpServlet {
 	              	cell.setCellValue(ventaPasaje.getImportePagado());
 	              	total+=+ventaPasaje.getImportePagado();
 				 }
-				 
-				
-				
+
+
+
 				row.createCell((short)19).setCellValue(new HSSFRichTextString(ventaPasaje.getCliente()!=null?ventaPasaje.getCliente().toString():""));
 				row.createCell((short)20).setCellValue(new HSSFRichTextString(ventaPasaje.getCliente()!=null?ventaPasaje.getCliente().getNumeroDocumento():""));
 				row.createCell((short)21).setCellValue(new HSSFRichTextString(ventaPasaje.getUsuario().toString()));
@@ -164,17 +162,17 @@ public class XlsEstadosCuenta extends HttpServlet {
 			OutputStream outStream = response.getOutputStream();
 		    outStream.write(outArray);
 		    outStream.flush();
-			
-			
+
+
 		}catch(Exception ex){
 			ex.printStackTrace();
 //			throw new ServletException(ex);
 		}
 	}
-	
+
 	/**
 	 * Para pa mayoria de los cliente
-	 * @throws ServletException,IOException 
+	 * @throws ServletException,IOException
 	 */
 	private void exportClienteEstandar(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException{
 		Listbox list = (Listbox)request.getSession().getAttribute("listbox");
@@ -186,15 +184,15 @@ public class XlsEstadosCuenta extends HttpServlet {
 		response.setContentType("application/vnd.ms-excel");
 		response.setHeader("Expires:", "0");
 		response.setHeader("Content-Disposition", "attachment; filename=Detallado_"+agencia+".xls");
-		
-		
+
+
 		File template = new File(path);
 		try{
 			POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(template));
 			HSSFWorkbook wb = new HSSFWorkbook(fs);
 			HSSFSheet sheet = wb.getSheetAt(0);
             HSSFRow row = null;
-            HSSFCell celda = null; 
+            HSSFCell celda = null;
             HSSFDataFormat format = wb.createDataFormat();
             HSSFCellStyle styleDouble = wb.createCellStyle();
             styleDouble.setDataFormat(format.getFormat("#,##0.00"));
@@ -211,15 +209,14 @@ public class XlsEstadosCuenta extends HttpServlet {
             row.createCell((short)1).setCellValue(new HSSFRichTextString(desde));
             row = sheet.createRow((short)5);
             row.createCell((short)1).setCellValue(new HSSFRichTextString(hasta));
-            
+
             int fila=7;
-			
+
 			fila++;
 			Double total = 0.0;
 			int i=0;
-			for(Iterator<Listitem> it=list.getItems().iterator(); it.hasNext();){
+			for (Listitem item : list.getItems()) {
 				row = sheet.createRow((short)fila);
-				Listitem item = it.next();
 				for(int k=0; k<list.getListhead().getChildren().size(); k++){
 					Listcell cell = (Listcell)item.getChildren().get(k);
 					if(k!=11){
@@ -248,16 +245,16 @@ public class XlsEstadosCuenta extends HttpServlet {
 				i=0;
 				fila++;
 			}
-			
+
 			row = sheet.createRow((short)fila);
 			celda = row.createCell((short)10);
 			celda.setCellStyle(styleDouble);
 			celda.setCellValue(total);
-			
+
 			ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
 			wb.write(outByteStream);
 			byte [] outArray = outByteStream.toByteArray();
-			
+
 			response.setContentLength(outArray.length);
 			OutputStream outStream = response.getOutputStream();
 		    outStream.write(outArray);

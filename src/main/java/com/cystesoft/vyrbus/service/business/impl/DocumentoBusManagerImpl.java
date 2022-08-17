@@ -26,7 +26,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class DocumentoBusManagerImpl implements DocumentoBusManager {
 	private DocumentoBusDAO documentoBusDAO;
-	
+
 	/**
 	 * @return the documentoBusDAO
 	 */
@@ -74,26 +74,26 @@ public class DocumentoBusManagerImpl implements DocumentoBusManager {
 	@Transactional
 	public void guardar(DocumentoBus documentoBus) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("numeroDocumento", documentoBus.getNumeroDocumento());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> result = getDocumentoBusDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del número de Documento del bus*/
 			if(result.size()>0)
 				throw new NumeroDocumentoDuplicadoException();
-			
+
 			criteriosBusqueda.remove("numeroDocumento");
 			criteriosBusqueda.put("tipoDocumento", documentoBus.getTipoDocumento());
 			criteriosBusqueda.put("bus", documentoBus.getBus());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultTDocBus = getDocumentoBusDAO().buscarPorX(criteriosBusqueda, null);
-								
+
 			/*Valida duplicidad del tipo de documento y el número del bus*/
 			if(resultTDocBus.size()>0)
 				throw new NumeroBusDuplicadoException();
-			
+
 			getDocumentoBusDAO().guardar(documentoBus);
-			
+
 		}catch (NumeroDocumentoDuplicadoException rsdex){
 			throw new NumeroDocumentoDuplicadoException();
 		}catch (NumeroBusDuplicadoException rsdex){
@@ -110,33 +110,33 @@ public class DocumentoBusManagerImpl implements DocumentoBusManager {
 	@Transactional
 	public void actualizar(DocumentoBus documentoBus) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
-			
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
+
 			criteriosBusqueda.put("numeroDocumento", documentoBus.getNumeroDocumento());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> result = getDocumentoBusDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del número de documento*/
-			for(int r = 0; r < result.size(); r ++) {
-				DocumentoBus odocumentoBus = (DocumentoBus) result.get(r);
+			for (Object element : result) {
+				DocumentoBus odocumentoBus = (DocumentoBus) element;
 				if (!(odocumentoBus.getId() == documentoBus.getId()))
 					throw new NumeroDocumentoDuplicadoException();
 			}
-			
+
 			criteriosBusqueda.remove("numeroDocumento");
 			criteriosBusqueda.put("tipoDocumento", documentoBus.getTipoDocumento());
 			criteriosBusqueda.put("bus", documentoBus.getBus());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultTDocBus = getDocumentoBusDAO().buscarPorX(criteriosBusqueda, null);
-			
+
 			/*Valida duplicidad del tipo de documento y el número del bus*/
-			for(int r = 0; r < resultTDocBus.size(); r ++) {
-				DocumentoBus odocumentoBus = (DocumentoBus) resultTDocBus.get(r);
+			for (Object element : resultTDocBus) {
+				DocumentoBus odocumentoBus = (DocumentoBus) element;
 				if (!(odocumentoBus.getId() == documentoBus.getId()))
 					throw new NumeroBusDuplicadoException();
 			}
-			
+
 			getDocumentoBusDAO().actualizar(documentoBus);
-		
+
 		}catch (NumeroDocumentoDuplicadoException rsdex){
 			throw new NumeroDocumentoDuplicadoException();
 		}catch (NumeroBusDuplicadoException rsdex){

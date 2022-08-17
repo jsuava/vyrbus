@@ -15,10 +15,10 @@ public class HistoricoControlEspecieValorada extends GenericBean implements java
 	private Long correlativoInicio;
 	private Long correlativoFin;
 	private Long correlativoActual;
-	
+
 	public HistoricoControlEspecieValorada() {
 	}
-	
+
 	/**
 	 * @return the historicoControlEspecieValoradaID
 	 */
@@ -78,7 +78,7 @@ public class HistoricoControlEspecieValorada extends GenericBean implements java
 	}
 
 
-	
+
 
 
 }

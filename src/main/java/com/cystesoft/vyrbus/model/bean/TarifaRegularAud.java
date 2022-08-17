@@ -1,7 +1,7 @@
 /**
  * Proyecto		: VYRBUS
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: Marco Oscco
  * Fecha		: 20 jul. 2020
  * Hora			: 11:20:53
@@ -27,11 +27,11 @@ public class TarifaRegularAud extends GenericBean implements java.io.Serializabl
 	private Date fechaTarifa;
 	private String horaPartida;
 	private Double monto;
-	
+
 	public TarifaRegularAud(){
-		
+
 	}
-	
+
 	/**
 	 * @return the idTarreg
 	 */
@@ -58,7 +58,7 @@ public class TarifaRegularAud extends GenericBean implements java.io.Serializabl
 	public void setidTarifa(Long idTarifa) {
 		this.idTarifa = idTarifa;
 	}
-	
+
 	/**
 	 * @return the idCanven
 	 */

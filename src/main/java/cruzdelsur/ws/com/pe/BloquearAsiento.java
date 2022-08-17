@@ -10,11 +10,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -33,8 +33,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "codigoRuta", "localidadEmbarque",
@@ -62,10 +62,10 @@ public class BloquearAsiento {
 
 	/**
 	 * Gets the value of the codigoRuta property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getCodigoRuta() {
 		return codigoRuta;
@@ -73,11 +73,11 @@ public class BloquearAsiento {
 
 	/**
 	 * Sets the value of the codigoRuta property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setCodigoRuta(JAXBElement<String> value) {
 		this.codigoRuta = (value);
@@ -85,10 +85,10 @@ public class BloquearAsiento {
 
 	/**
 	 * Gets the value of the localidadEmbarque property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getLocalidadEmbarque() {
 		return localidadEmbarque;
@@ -96,11 +96,11 @@ public class BloquearAsiento {
 
 	/**
 	 * Sets the value of the localidadEmbarque property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setLocalidadEmbarque(JAXBElement<String> value) {
 		this.localidadEmbarque = (value);
@@ -108,10 +108,10 @@ public class BloquearAsiento {
 
 	/**
 	 * Gets the value of the localidadDesembarque property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getLocalidadDesembarque() {
 		return localidadDesembarque;
@@ -119,11 +119,11 @@ public class BloquearAsiento {
 
 	/**
 	 * Sets the value of the localidadDesembarque property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setLocalidadDesembarque(JAXBElement<String> value) {
 		this.localidadDesembarque = (value);
@@ -131,10 +131,10 @@ public class BloquearAsiento {
 
 	/**
 	 * Gets the value of the numeroServicio property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getNumeroServicio() {
 		return numeroServicio;
@@ -142,11 +142,11 @@ public class BloquearAsiento {
 
 	/**
 	 * Sets the value of the numeroServicio property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setNumeroServicio(JAXBElement<String> value) {
 		this.numeroServicio = (value);
@@ -154,10 +154,10 @@ public class BloquearAsiento {
 
 	/**
 	 * Gets the value of the programacionLlave property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getProgramacionLlave() {
 		return programacionLlave;
@@ -165,11 +165,11 @@ public class BloquearAsiento {
 
 	/**
 	 * Sets the value of the programacionLlave property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setProgramacionLlave(JAXBElement<String> value) {
 		this.programacionLlave = (value);
@@ -177,10 +177,10 @@ public class BloquearAsiento {
 
 	/**
 	 * Gets the value of the servicioLlave property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getServicioLlave() {
 		return servicioLlave;
@@ -188,11 +188,11 @@ public class BloquearAsiento {
 
 	/**
 	 * Sets the value of the servicioLlave property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setServicioLlave(JAXBElement<String> value) {
 		this.servicioLlave = (value);
@@ -200,10 +200,10 @@ public class BloquearAsiento {
 
 	/**
 	 * Gets the value of the codigoAsiento property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getCodigoAsiento() {
 		return codigoAsiento;
@@ -211,11 +211,11 @@ public class BloquearAsiento {
 
 	/**
 	 * Sets the value of the codigoAsiento property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setCodigoAsiento(JAXBElement<String> value) {
 		this.codigoAsiento = (value);
@@ -223,10 +223,10 @@ public class BloquearAsiento {
 
 	/**
 	 * Gets the value of the nivelUnidad property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getNivelUnidad() {
 		return nivelUnidad;
@@ -234,11 +234,11 @@ public class BloquearAsiento {
 
 	/**
 	 * Sets the value of the nivelUnidad property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setNivelUnidad(JAXBElement<String> value) {
 		this.nivelUnidad = (value);

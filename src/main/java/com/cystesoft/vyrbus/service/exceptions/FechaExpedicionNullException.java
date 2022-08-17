@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 06/09/2012
  */
@@ -16,17 +16,17 @@ import java.io.Serializable;
  */
 public class FechaExpedicionNullException extends Exception implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	final public static int FECHA_EXPIRACION_MAYOR=0;
 	final public static int FECHA_EXPIRACION_MENOR=1;
-	
+
 	private int tipo;
-		
-	
+
+
 	public FechaExpedicionNullException(){
 		super();
 	}
-	
+
 	public FechaExpedicionNullException(Integer tipo){
 		this.setTipo(tipo);
 	}
@@ -44,6 +44,6 @@ public class FechaExpedicionNullException extends Exception implements Serializa
 	public void setTipo(int tipo) {
 		this.tipo = tipo;
 	}
-	
-	
+
+
 }

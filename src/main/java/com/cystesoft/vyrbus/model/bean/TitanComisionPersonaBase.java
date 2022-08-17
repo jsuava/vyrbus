@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 31/07/2014
  */
@@ -51,8 +51,8 @@ public class TitanComisionPersonaBase {
 	public void setEstadoRegistroID(Integer estadoRegistroID) {
 		this.estadoRegistroID = estadoRegistroID;
 	}
-	
-	
-	
-	
+
+
+
+
 }

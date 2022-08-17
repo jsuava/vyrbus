@@ -34,39 +34,39 @@ import org.zkoss.zul.Listitem;
 @SuppressWarnings({"rawtypes"})
 public class XlsGastosOtrosIngresos extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
 		doProcess(request, response);
 	}
-	
+
 	protected void doProcess(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
 		Listbox listbox = (Listbox)request.getSession().getAttribute("lbxGastosOtrosIngresos");
         String parcialPath = (String)request.getSession().getAttribute("parcialPath");
         response.setContentType("application/vnd.ms-excel");
         response.setHeader("Content-Disposition", "attachment; filename=GastosOtrosIngresos.xls");
-        
+
         File template = new File(parcialPath);
         try {
 //            Workbook workbook = Workbook.getWorkbook(template);
 //            WritableWorkbook w = Workbook.createWorkbook(response.getOutputStream(), workbook);
 //            WritableSheet s = w.getSheet(0);
-        	
+
         	POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(template));
 			HSSFWorkbook wb = new HSSFWorkbook(fs);
 			HSSFSheet sheet = wb.getSheetAt(0);
             HSSFRow rowh = null;
-            HSSFCell cellh = null; 
+            HSSFCell cellh = null;
             HSSFDataFormat format = wb.createDataFormat();
             HSSFCellStyle style = wb.createCellStyle();
             style.setDataFormat(format.getFormat("#,##0.00"));
-        	
-            
+
+
             HSSFCellStyle heardersStyle = wb.createCellStyle();
             HSSFFont headersFont = wb.createFont();
             headersFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
             heardersStyle.setFont(headersFont);
-            
+
             Listhead head = listbox.getListhead();
             List listItems = listbox.getItems();
             int i = 0;
@@ -86,12 +86,12 @@ public class XlsGastosOtrosIngresos extends HttpServlet {
                 for (Iterator it2 = item.getChildren().iterator(); it2.hasNext();) {
                     Listcell currentCell = (Listcell) it2.next();
                     rowh = sheet.createRow((short)j);
-                     
+
 //                    if (Util.isNumeric(currentCell.getLabel())) {
                     if(i==8) {
                     	cellh = rowh.createCell((short)i);
 						cellh.setCellStyle(style);
-						cellh.setCellValue(Double.parseDouble(currentCell.getLabel().replace(",", ""))); //ITSB001                    	
+						cellh.setCellValue(Double.parseDouble(currentCell.getLabel().replace(",", ""))); //ITSB001
                     } else {
                         rowh.createCell((short) i).setCellValue(new HSSFRichTextString(currentCell.getLabel()));
                     }
@@ -99,8 +99,8 @@ public class XlsGastosOtrosIngresos extends HttpServlet {
                 }
             }
 //            w.write();
-//            w.close(); 
-            
+//            w.close();
+
             ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
 			wb.write(outByteStream);
 			byte [] outArray = outByteStream.toByteArray();
@@ -108,7 +108,7 @@ public class XlsGastosOtrosIngresos extends HttpServlet {
 			OutputStream outStream = response.getOutputStream();
 		    outStream.write(outArray);
 		    outStream.flush();
-		    
+
         } catch (Exception e) {
         	log("EXPORT XLS AVANCE SEMANAL: "+e.toString());
             System.out.println(e.toString());

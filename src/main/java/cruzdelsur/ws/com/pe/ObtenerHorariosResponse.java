@@ -10,11 +10,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -26,8 +26,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "obtenerHorariosResult" })
@@ -39,10 +39,10 @@ public class ObtenerHorariosResponse {
 
 	/**
 	 * Gets the value of the obtenerHorariosResult property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}
 	 *         {@link ArrayOfHorario }{@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<ArrayOfHorario> getObtenerHorariosResult() {
 		return obtenerHorariosResult;
@@ -50,11 +50,11 @@ public class ObtenerHorariosResponse {
 
 	/**
 	 * Sets the value of the obtenerHorariosResult property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}
 	 *            {@link ArrayOfHorario }{@code >}
-	 * 
+	 *
 	 */
 	public void setObtenerHorariosResult(JAXBElement<ArrayOfHorario> value) {
 		this.obtenerHorariosResult = (value);

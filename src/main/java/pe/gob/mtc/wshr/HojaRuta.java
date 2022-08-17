@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for HojaRuta complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="HojaRuta">
  *   &lt;complexContent>
@@ -34,8 +34,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "HojaRuta", propOrder = { "seguridad", "nroRuta", "nroPlaca",
@@ -68,9 +68,9 @@ public class HojaRuta {
 
 	/**
 	 * Gets the value of the seguridad property.
-	 * 
+	 *
 	 * @return possible object is {@link Seguridad }
-	 * 
+	 *
 	 */
 	public Seguridad getSeguridad() {
 		return seguridad;
@@ -78,10 +78,10 @@ public class HojaRuta {
 
 	/**
 	 * Sets the value of the seguridad property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Seguridad }
-	 * 
+	 *
 	 */
 	public void setSeguridad(Seguridad value) {
 		this.seguridad = value;
@@ -89,9 +89,9 @@ public class HojaRuta {
 
 	/**
 	 * Gets the value of the nroRuta property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getNroRuta() {
 		return nroRuta;
@@ -99,10 +99,10 @@ public class HojaRuta {
 
 	/**
 	 * Sets the value of the nroRuta property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setNroRuta(String value) {
 		this.nroRuta = value;
@@ -110,9 +110,9 @@ public class HojaRuta {
 
 	/**
 	 * Gets the value of the nroPlaca property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getNroPlaca() {
 		return nroPlaca;
@@ -120,10 +120,10 @@ public class HojaRuta {
 
 	/**
 	 * Sets the value of the nroPlaca property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setNroPlaca(String value) {
 		this.nroPlaca = value;
@@ -131,7 +131,7 @@ public class HojaRuta {
 
 	/**
 	 * Gets the value of the terSalida property.
-	 * 
+	 *
 	 */
 	public int getTerSalida() {
 		return terSalida;
@@ -139,7 +139,7 @@ public class HojaRuta {
 
 	/**
 	 * Sets the value of the terSalida property.
-	 * 
+	 *
 	 */
 	public void setTerSalida(int value) {
 		this.terSalida = value;
@@ -147,7 +147,7 @@ public class HojaRuta {
 
 	/**
 	 * Gets the value of the terLlegada property.
-	 * 
+	 *
 	 */
 	public int getTerLlegada() {
 		return terLlegada;
@@ -155,7 +155,7 @@ public class HojaRuta {
 
 	/**
 	 * Sets the value of the terLlegada property.
-	 * 
+	 *
 	 */
 	public void setTerLlegada(int value) {
 		this.terLlegada = value;
@@ -163,9 +163,9 @@ public class HojaRuta {
 
 	/**
 	 * Gets the value of the fecSalida property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getFecSalida() {
 		return fecSalida;
@@ -173,10 +173,10 @@ public class HojaRuta {
 
 	/**
 	 * Sets the value of the fecSalida property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setFecSalida(String value) {
 		this.fecSalida = value;
@@ -184,9 +184,9 @@ public class HojaRuta {
 
 	/**
 	 * Gets the value of the horSalida property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getHorSalida() {
 		return horSalida;
@@ -194,10 +194,10 @@ public class HojaRuta {
 
 	/**
 	 * Sets the value of the horSalida property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setHorSalida(String value) {
 		this.horSalida = value;
@@ -205,9 +205,9 @@ public class HojaRuta {
 
 	/**
 	 * Gets the value of the fecEstLlegada property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getFecEstLlegada() {
 		return fecEstLlegada;
@@ -215,10 +215,10 @@ public class HojaRuta {
 
 	/**
 	 * Sets the value of the fecEstLlegada property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setFecEstLlegada(String value) {
 		this.fecEstLlegada = value;
@@ -226,9 +226,9 @@ public class HojaRuta {
 
 	/**
 	 * Gets the value of the horEstLlegada property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getHorEstLlegada() {
 		return horEstLlegada;
@@ -236,10 +236,10 @@ public class HojaRuta {
 
 	/**
 	 * Sets the value of the horEstLlegada property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setHorEstLlegada(String value) {
 		this.horEstLlegada = value;
@@ -247,9 +247,9 @@ public class HojaRuta {
 
 	/**
 	 * Gets the value of the conductores property.
-	 * 
+	 *
 	 * @return possible object is {@link ArrayOfHConductor }
-	 * 
+	 *
 	 */
 	public ArrayOfHConductor getConductores() {
 		return conductores;
@@ -257,10 +257,10 @@ public class HojaRuta {
 
 	/**
 	 * Sets the value of the conductores property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link ArrayOfHConductor }
-	 * 
+	 *
 	 */
 	public void setConductores(ArrayOfHConductor value) {
 		this.conductores = value;
@@ -268,9 +268,9 @@ public class HojaRuta {
 
 	/**
 	 * Gets the value of the tripulantes property.
-	 * 
+	 *
 	 * @return possible object is {@link ArrayOfHTripulante }
-	 * 
+	 *
 	 */
 	public ArrayOfHTripulante getTripulantes() {
 		return tripulantes;
@@ -278,10 +278,10 @@ public class HojaRuta {
 
 	/**
 	 * Sets the value of the tripulantes property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link ArrayOfHTripulante }
-	 * 
+	 *
 	 */
 	public void setTripulantes(ArrayOfHTripulante value) {
 		this.tripulantes = value;

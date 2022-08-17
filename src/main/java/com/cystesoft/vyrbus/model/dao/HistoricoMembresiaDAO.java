@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José
  * Fecha		: 25/05/2013
  */
@@ -21,5 +21,5 @@ public interface HistoricoMembresiaDAO {
 	 * @throws Exception
 	 */
 	public void guardar(HistoricoMembresia historicoMembresia) throws Exception;
-	
+
 }

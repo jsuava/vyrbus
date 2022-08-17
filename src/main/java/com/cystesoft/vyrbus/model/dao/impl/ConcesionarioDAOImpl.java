@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 23/05/2012
  */
@@ -40,8 +40,8 @@ public class ConcesionarioDAOImpl extends GenericDAOImpl implements Concesionari
 	}
 
 
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.dao.ConcesionarioDAO#buscarPorId(java.lang.Long)
 	 */

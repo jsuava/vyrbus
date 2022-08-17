@@ -8,12 +8,12 @@ import com.cystesoft.vyrbus.model.bean.SolicitudCartera;
 import com.cystesoft.vyrbus.model.bean.UsuarioAprobador;
 
 /**
- * 
+ *
  * @author José Abanto
  *
  */
 public interface SolicitudCarteraDAO extends GenericDAO {
-	
+
 	/**
 	 * Buscar solicitud de cartera a travez de un array de criterios.
 	 * @param criteriosBusqueda	: array de criterios para la busqueda.
@@ -21,35 +21,35 @@ public interface SolicitudCarteraDAO extends GenericDAO {
 	 * @return
 	 */
 	public ArrayList<SolicitudCartera> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
-	
+
 	/**
 	 * Buscar solciitud carteda por ID
 	 * @param id : Identificador unico de la solicitudadCartera
 	 * @return
 	 */
 	public SolicitudCartera buscarPorId(Long id);
-	
+
 	/**
 	 * Calcula la Base Historica de un Cliente
 	 * @param idCliente : Identificador del Cliente
 	 * @return Base historica de un cliente
 	 */
 	public Double baseHistoricaCliente(Long idCliente)throws Exception;
-	
+
 	/**
 	 * Guarda solicitud cartera.
 	 * @param solicitudCartera	: Class
 	 * @throws Exception
 	 */
 	public void guardar(SolicitudCartera solicitudCartera) throws Exception;
-	
+
 	/**
 	 * Actualiza solicitud cartera
-	 * @param solicitudCartera : Class 
+	 * @param solicitudCartera : Class
 	 * @throws Exception
 	 */
 	public void actualizar(SolicitudCartera solicitudCartera) throws Exception;
-	
+
 	/**
 	 * Aprueba la solicitud:
 	 * @param idSolicitudCartera: Identificador unico de la solicitudCartera
@@ -57,7 +57,7 @@ public interface SolicitudCarteraDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public void aprobarSolicitud(Long idSolicitudCartera, UsuarioAprobador usuarioAprobador) throws Exception;
-	
+
 	/**
 	 * Anula solcitud de cartera
 	 * @param idSolicitudCartera: Identificador del a solicitud cartera.
@@ -65,7 +65,7 @@ public interface SolicitudCarteraDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public void anulaSolicitud(Integer idSolicitudCartera, UsuarioAprobador usuarioAprobador) throws Exception;
-	
+
 	/**
 	 * Buscar Solictudes de Cartera y/o credito (Invocado desde el formulario Aprobacion de cartera y/o credito)
 	 * @param fechaInicio		: Fecha Inicio de la busqueda
@@ -75,11 +75,11 @@ public interface SolicitudCarteraDAO extends GenericDAO {
 	 * @param UsuarioAprobador	: Class usuario Aprobador
 	 * @param idCliente			: Opcional, Identificador del Cliente
 	 * @param recu_Historia		: (true) Indica la recuperación la recuperación de las solicitudes aprobadas o desaprobadas.
-	 * 							  (false) Indica la recuperacion de las solicitudes pendientes por aprobar.		
+	 * 							  (false) Indica la recuperacion de las solicitudes pendientes por aprobar.
 	 * @return
 	 */
 	public List<SolicitudCartera> BuscarSolicitudes(String fechaInicio, String fechaFin, String estadoSolicitud, Long idFuncionario,
 			UsuarioAprobador usuarioAprobador,Long idCliente, Boolean recu_Historia);
-	 
-	
+
+
 }

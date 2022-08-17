@@ -27,7 +27,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class ClienteManagerImpl implements ClienteManager {
 	private ClienteDAO clienteDAO;
-	
+
 	/**
 	 * @return the clienteDAO
 	 */
@@ -65,7 +65,7 @@ public class ClienteManagerImpl implements ClienteManager {
 	@Override
 	@Transactional(readOnly=true)
 	public Cliente buscarPorId(Long id)throws Exception {
-		return getClienteDAO().buscarPorId(id);		
+		return getClienteDAO().buscarPorId(id);
 	}
 
 	/* (non-Javadoc)
@@ -75,23 +75,23 @@ public class ClienteManagerImpl implements ClienteManager {
 	@Transactional
 	public void guardar(Cliente cliente)throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("numeroDocumento", cliente.getNumeroDocumento());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> result = getClienteDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de RUC*/
 			if(result.size()>0)
-				throw new RucDuplicadoException();			
-			
+				throw new RucDuplicadoException();
+
 			criteriosBusqueda.remove("numeroDocumento");
 			criteriosBusqueda.put("razonSocial", cliente.getRazonSocial());
 			List<?> resultRS = getClienteDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de Razon Social*/
 			if (resultRS.size()>0)
 				throw new RazonSocialDuplicadoException();
-			
+
 			getClienteDAO().guardar(cliente);
-			
+
 		}catch (RazonSocialDuplicadoException rsdex){
 			throw new RazonSocialDuplicadoException();
 		}catch(RucDuplicadoException rdnex){
@@ -108,29 +108,29 @@ public class ClienteManagerImpl implements ClienteManager {
 	@Transactional
 	public void actualizar(Cliente cliente)throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("numeroDocumento", cliente.getNumeroDocumento());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> result = getClienteDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Ruc*/
-			for(int r = 0; r < result.size(); r ++) {
-				Cliente ocliente = (Cliente) result.get(r);
+			for (Object element : result) {
+				Cliente ocliente = (Cliente) element;
 				if (!(ocliente.getId().equals(cliente.getId())))
 					throw new RucDuplicadoException();
 			}
-			
+
 			criteriosBusqueda.remove("numeroDocumento");
 			criteriosBusqueda.put("razonSocial", cliente.getRazonSocial());
 			List<?> resultRS = getClienteDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la Razón Social*/
-			for(int r = 0; r < resultRS.size(); r ++) {
-				Cliente ocliente = (Cliente) resultRS.get(r);
+			for (Object element : resultRS) {
+				Cliente ocliente = (Cliente) element;
 				if (!(ocliente.getId().equals(cliente.getId())))
 					throw new RazonSocialDuplicadoException();
 			}
-		
+
 			getClienteDAO().actualizar(cliente);
-		
+
 		}catch (RazonSocialDuplicadoException rsdex){
 			throw new RazonSocialDuplicadoException();
 		}catch(RucDuplicadoException rdnex){
@@ -148,7 +148,7 @@ public class ClienteManagerImpl implements ClienteManager {
 	public void inactivar(Long id)throws Exception {
 		getClienteDAO().inactivar(id);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.ClienteManager#cargaClientesSolicitud()

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 20/11/2013
  */
@@ -29,8 +29,8 @@ public class SerieEspecieValoradaDAOImpl extends GenericDAOImpl implements Serie
 	@Override
 	public SerieEspecieValorada buscarPorID(String numeroSerie,Integer idTipoComprobante) throws Exception {
 		// TODO Auto-generated method stub
-		TipoComprobante tipoComprobante=new TipoComprobante(idTipoComprobante);		
-		TreeMap<String, Object>criteriosBusqueda=new TreeMap<String, Object>();
+		TipoComprobante tipoComprobante=new TipoComprobante(idTipoComprobante);
+		TreeMap<String, Object>criteriosBusqueda=new TreeMap<>();
 		criteriosBusqueda.put("numeroSerie", numeroSerie);
 		criteriosBusqueda.put("tipoComprobante", tipoComprobante);
 		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
@@ -69,7 +69,7 @@ public class SerieEspecieValoradaDAOImpl extends GenericDAOImpl implements Serie
 	@Override
 	public void inactivar(String numeroSerie, Integer idTipoComprobante)throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 }

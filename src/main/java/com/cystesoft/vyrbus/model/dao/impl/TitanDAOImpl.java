@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Fecha		: 17/06/2014
  */
 package com.cystesoft.vyrbus.model.dao.impl;
@@ -34,16 +34,16 @@ public class TitanDAOImpl implements TitanDAO {
 	private JdbcTemplate jdbcTemplate;
 	Logger log = Logger.getLogger(this.getClass());
 	Integer USUARIO_PERSONAL_SISTEMAS=19388;
-	
+
 	/**
 	 * @param jdbcTemplate the jdbcTemplate to set
 	 */
 	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
-	
+
 	/** ******** TRANSACIONES REFERIDAS A LA LIQUIDACION TURNO PASAJE **********************/
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.titan.dao.TitanDAO#buscarLiquidacionTurnoPasajeByIdLiquidacion(java.lang.Long)
 	 */
@@ -67,17 +67,17 @@ public class TitanDAOImpl implements TitanDAO {
 					"WHERE ltp.idliq_sisvyr="+idLiquidacionSisvyr;
 		log.info(sql);
 		TitanLiquidacionTurnoPasaje liquidacionTurnoPasaje=null;
-		
+
 		List<?> result=jdbcTemplate.queryForList(sql);
-		Map<String, Object> map = new HashMap<String, Object>();
-		for(int i=0;i<result.size();i++){
-			map = (Map<String, Object>)result.get(i);
-			
+		Map<String, Object> map = new HashMap<>();
+		for (Object element : result) {
+			map = (Map<String, Object>)element;
+
 			liquidacionTurnoPasaje=new TitanLiquidacionTurnoPasaje();
 			liquidacionTurnoPasaje.setId(((BigDecimal)map.get("ID")).longValue());
 			liquidacionTurnoPasaje.setFechaApertura((Date)map.get("FECHA_APERTURA"));
 			liquidacionTurnoPasaje.setCantidadCredito(((BigDecimal)map.get("CANTIDADCREDITO")).intValue());
-			liquidacionTurnoPasaje.setTotalCredito(((BigDecimal)map.get("TOTALCREDITO")).doubleValue());;
+			liquidacionTurnoPasaje.setTotalCredito(((BigDecimal)map.get("TOTALCREDITO")).doubleValue());
 			liquidacionTurnoPasaje.setTransferencia(((BigDecimal)map.get("TRANSFERENCIA")).intValue());
 			liquidacionTurnoPasaje.setLiquidacionSisVyrID(((BigDecimal)map.get("LIQUIDACION_IDSISVYR")).longValue());
 			liquidacionTurnoPasaje.setFechaRegistro((Date)map.get("FECHA_REGISTRO"));
@@ -108,11 +108,11 @@ public class TitanDAOImpl implements TitanDAO {
 					    ",totdevpsjes="+liquidacionTurnoPasaje.getTotalDevolucion()+" "+
 					"WHERE id="+liquidacionTurnoPasaje.getId();
 		log.info("Actulizando liquidacion turno pasajes - TITAN "+sql);
-		jdbcTemplate.execute(sql);		
+		jdbcTemplate.execute(sql);
 	}
 
-	
-	
+
+
 	/** ******** TRANSACIONES REFERIDAS A LA VENTA PASAJES **********************/
 	/* (non-Javadoc)
 	 * @see com.tepsa.titan.dao.TitanDAO#buscarBoletoVentaPasaje(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer)
@@ -129,13 +129,13 @@ public class TitanDAOImpl implements TitanDAO {
 					"WHERE vp.serie_comprobante='"+serieBoleto+"' "+
 					      "AND vp.nro_comprobante='"+numeroBoleto+"' "+
 					      "AND vp.idcondicion_boleto="+idCondicionBoleto;
-		
+
 		TitanVentaPasaje ventaPasaje=null;
 		List<?>result=jdbcTemplate.queryForList(sql);
-		HashMap<String, Object>map=new HashMap<String,Object>();
+		HashMap<String, Object>map=new HashMap<>();
 		if(result.size()>0){
 			map=(HashMap<String, Object>)result.get(0);
-			
+
 			ventaPasaje=new TitanVentaPasaje();
 			ventaPasaje.setId(((BigDecimal)map.get("IDVENTA_PASAJES")).longValue());
 			ventaPasaje.setSerie(map.get("SERIE_COMPROBANTE").toString());
@@ -143,10 +143,10 @@ public class TitanDAOImpl implements TitanDAO {
 			ventaPasaje.setIdCondicionBoleto(((BigDecimal)map.get("IDCONDICION_BOLETO")).intValue());
 			ventaPasaje.setFechaTransferencia(map.get("FECHA_TRANSFERENCIA")!=null?Constantes.FORMAT_DATE.parse(map.get("FECHA_TRANSFERENCIA").toString()):null);
 			ventaPasaje.setIdTarjetas(map.get("IDTARJETAS")!=null?((BigDecimal)map.get("IDTARJETAS")).intValue():null);
-		}	
+		}
 		return ventaPasaje;
 	}
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.TitanDAO#anularDevolverBoletoVentaPasaje(java.lang.Long, java.lang.Boolean)
 	 */
@@ -156,7 +156,7 @@ public class TitanDAOImpl implements TitanDAO {
 		/*Valida si es una anulacion*/
 		if(isAnulacion){
 			//Anula el Boleto
-			sql="UPDATE t_venta_pasajes SET "+ 
+			sql="UPDATE t_venta_pasajes SET "+
 				      "idcondicion_boleto=10 "+
 				      ",idestado_registro=2 "+
 				      ",monto_base=0 "+
@@ -169,11 +169,11 @@ public class TitanDAOImpl implements TitanDAO {
 				"WHERE idventa_pasajes="+idVentaPasje;
 		}else{
 			//Devuelve el boleto
-			sql="UPDATE t_venta_pasajes SET "+ 
+			sql="UPDATE t_venta_pasajes SET "+
 				      "idcondicion_boleto=11 "+
 				"WHERE idventa_pasajes="+idVentaPasje;
 		}
-		
+
 		jdbcTemplate.execute(sql);
 	}
 
@@ -183,9 +183,9 @@ public class TitanDAOImpl implements TitanDAO {
 	 */
 	@Override
 	public void actualizarFormaPago(TitanVentaPasaje titanVentaPasaje)throws Exception{
-		
+
 	}
-	
+
 	/********* TRANSACIONES REFERIDAS AL USUARIO PERSONAL **********************/
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.TitanDAO#buscarUsuarioPersonalPorLogin(java.lang.String)
@@ -201,14 +201,14 @@ public class TitanDAOImpl implements TitanDAO {
 					"WHERE up.login='"+login+"' "+
 					  "AND up.idestado_registro=1";
 		log.info(sql);
-		
+
 		List<?> result= jdbcTemplate.queryForList(sql);
-		HashMap<String, Object>map=new HashMap<String,Object>();
+		HashMap<String, Object>map=new HashMap<>();
 		TitanUsuarioPersonal usuarioPersonal=null;
-		
+
 		if(result.size()>0){
 			map=(HashMap<String, Object>)result.get(0);
-			
+
 			usuarioPersonal=new TitanUsuarioPersonal();
 			usuarioPersonal.setId(((BigDecimal)map.get("IDUSUARIO_PERSONAL")).longValue());
 			usuarioPersonal.setLogin(map.get("LOGIN").toString());
@@ -216,7 +216,7 @@ public class TitanDAOImpl implements TitanDAO {
 			usuarioPersonal.setApellidoMaterno(map.get("APELLIDOMATERNO")!=null?map.get("APELLIDOMATERNO").toString():null);
 			usuarioPersonal.setNombres(map.get("NOMBRES")!=null?map.get("NOMBRES").toString():null);
 		}
-		
+
 		return usuarioPersonal;
 	}
 	/* (non-Javadoc)
@@ -232,7 +232,7 @@ public class TitanDAOImpl implements TitanDAO {
 		idIsuarioPersonal= jdbcTemplate.queryForLong(sql);
 		//Setea el nuevo identificador para el usuario personal
 		titanUsuarioPersonal.setId(idIsuarioPersonal);
-		
+
 		//Realiza la creacion del usuario personal
 		sql="INSERT INTO t_usuario_personal "+
 						 "(idusuario_personal "+
@@ -292,8 +292,8 @@ public class TitanDAOImpl implements TitanDAO {
 		log.info(sql);
 		jdbcTemplate.execute(sql);
 	}
-	
-	
+
+
 	/********* TRANSACIONES REFERIDAS AL CLIENTE (T_PERSONAL) **********************/
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.TitanDAO#buscarPersonaPorRuc(java.lang.String)
@@ -321,14 +321,14 @@ public class TitanDAOImpl implements TitanDAO {
 				"WHERE p.nu_docu_suna='"+numeroRuc+"' "+
 				    "AND p.idestado_registro=1";
 		log.info(sql);
-		
+
 		List<?>result=jdbcTemplate.queryForList(sql);
-		HashMap<String, Object>map=new HashMap<String,Object>();
+		HashMap<String, Object>map=new HashMap<>();
 		TitanPersona persona=null;
-		
+
 		if(result.size()>0){
 			map=(HashMap<String, Object>) result.get(0);
-			
+
 			persona=new TitanPersona();
 			persona.setId(((BigDecimal)map.get("IDPERSONA")).longValue());
 			persona.setTipoPersona(map.get("IDTIPO_PERSONA")!=null?((BigDecimal)map.get("IDTIPO_PERSONA")).intValue():null);
@@ -344,7 +344,7 @@ public class TitanDAOImpl implements TitanDAO {
 			persona.setOrigen(map.get("ORIGEN")!=null?((BigDecimal)map.get("ORIGEN")).intValue():null);
 			persona.setEstadoRegistro(map.get("IDESTADO_REGISTRO")!=null?((BigDecimal)map.get("IDESTADO_REGISTRO")).intValue():null);
 		}
-	
+
 		return persona;
 	}
 	/* (non-Javadoc)
@@ -366,14 +366,14 @@ public class TitanDAOImpl implements TitanDAO {
 							       "nombres ='"+persona.getRazonSocial()+"', "+
 							       "origen ="+(persona.getOrigen()!=null?persona.getOrigen():null)+","+
 					 "WHERE idpersona ="+persona.getId()+" ";
-		
+
 		log.info(sql);
 		jdbcTemplate.execute(sql);
 		}catch(Exception ex){
 			ex.printStackTrace();
 			throw new Exception(ex.getMessage());
 		}
-		
+
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.TitanDAO#guardarPersona(com.tepsa.sisvyr.model.bean.TitanPersona)
@@ -382,17 +382,17 @@ public class TitanDAOImpl implements TitanDAO {
 	public void guardarPersona(TitanPersona persona) throws Exception {
 		try {
 			//Variables fijas.
-			final Integer ID_PAIS_PERU=4;
-			final Integer ID_DEPARTAMENTO_LIMA=15;
-			final Integer ID_PROVINCIA_LIMA=17;
-			final Integer ID_DISTRITO_LIMA=2;
-			final Integer NRO_DIGITO_SERIE=3;
-			
+			final int ID_PAIS_PERU=4;
+			final int ID_DEPARTAMENTO_LIMA=15;
+			final int ID_PROVINCIA_LIMA=17;
+			final int ID_DISTRITO_LIMA=2;
+			final int NRO_DIGITO_SERIE=3;
+
 			//Obtiene el id para el cliente
 			String sql="SELECT sec_idpersona.nextval FROM dual";
 			log.info(sql);
 			persona.setId(jdbcTemplate.queryForLong(sql));
-			
+
 			//Inserta el cliente
 			sql="INSERT INTO t_persona "+
 		             "(idpersona "+
@@ -427,7 +427,7 @@ public class TitanDAOImpl implements TitanDAO {
 			   "VALUES "+
 					   "( "+
 					      persona.getId()+
-					  ",1 "+ // Tipo de persona - juridica 
+					  ",1 "+ // Tipo de persona - juridica
 					  ",'"+persona.getCodigoCliente()+"' "+
 					  ",0 "+ //clienteCorporativo - Cliente corporativo
 					  ",'"+persona.getRazonSocial()+"' "+
@@ -437,7 +437,7 @@ public class TitanDAOImpl implements TitanDAO {
 					  ",'"+persona.getNumeroDocumentoSunat()+"' "+
 					  ",350 "+ //Rubro - Generico
 					  ",1 "+ //Clasificacion persona - Pasajes
-					  ",1 "+ //Estado del registro 
+					  ",1 "+ //Estado del registro
 					  ","+(persona.getUsuarioPersonal()!=null?persona.getUsuarioPersonal().getId():USUARIO_PERSONAL_SISTEMAS)+" "+
 					  ",1036 "+ /*Rol Creador - Por defecto el rol de Sistemas */
 					  ",'"+persona.getIp()+"' "+
@@ -458,14 +458,14 @@ public class TitanDAOImpl implements TitanDAO {
 					    ")";
 			log.info(sql);
 			jdbcTemplate.execute(sql);
-						
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}
 	}
 
-	
+
 	/********* TRANSACIONES REFERIDAS FUNCIONARIO PERSONA PASAJE **********************/
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.TitanDAO#buscarFuncionarioPersonaPasajePorIdPersona(java.lang.Long)
@@ -483,16 +483,16 @@ public class TitanDAOImpl implements TitanDAO {
 					"FROM t_funcionario_persona_pasaje pfp "+
 					"WHERE pfp.idpersona="+idPersona+" AND pfp.idestado_registro=1";
 		log.info(sql);
-		
+
 		List<?>result=jdbcTemplate.queryForList(sql);
-		HashMap<String, Object>map=new HashMap<String,Object>();
+		HashMap<String, Object>map=new HashMap<>();
 		TitanFuncionarioPersonaPasaje funcionarioPersonaPasaje=null;
-		
+
 		if(result.size()>0){
 			map=(HashMap<String, Object>) result.get(0);
-			
+
 			funcionarioPersonaPasaje=new TitanFuncionarioPersonaPasaje();
-			
+
 			TitanUsuarioPersonal funcionario=null;
 			if(map.get("IDFUNCIONARIO")!=null){
 				funcionario=new TitanUsuarioPersonal();
@@ -518,13 +518,13 @@ public class TitanDAOImpl implements TitanDAO {
 			if(map.get("IDUSUARIO_PERSONAL")!=null){
 				usuarioPersonal=new TitanUsuarioPersonal(((BigDecimal) map.get("IDUSUARIO_PERSONAL")).longValue());
 			}
-				
+
 			funcionarioPersonaPasaje.setFuncionario(funcionario);
 			funcionarioPersonaPasaje.setFuncionarioActual(funcionarioActual);
 			funcionarioPersonaPasaje.setPersona(persona);
 			funcionarioPersonaPasaje.setUsuarioPersonal(usuarioPersonal);
 		}
-		
+
 		return funcionarioPersonaPasaje;
 	}
 	/* (non-Javadoc)
@@ -554,7 +554,7 @@ public class TitanDAOImpl implements TitanDAO {
 		//Calcula la fecha de suspencion la cual sera de 6 años despues de la fecha de activacion
 		Date dfechaSuspencion=new Date(Constantes.FORMAT_DATE.parse(funcionarioPersonaPasaje.getFechaActivacion()).getTime()+((Constantes.MILISEGUNDOS_X_DIA*Constantes.DIAS_DEL_ANIO)*6));
 		fechaSuspencion=Constantes.FORMAT_DATE.format(dfechaSuspencion);
-		
+
 		String sql="INSERT INTO t_funcionario_persona_pasaje "
 							 +"(idfuncionario "
 							 + ",idfuncionario_actual "
@@ -564,7 +564,7 @@ public class TitanDAOImpl implements TitanDAO {
 							 + ",idrol_usuario "
 							 + ",ip "
 							 + ",fecha_registro "
-							 + ",idusuario_personalmod " 
+							 + ",idusuario_personalmod "
 							 + ",idrol_usuariomod "
 							 + ",ipmod "
 							 + ",fecha_actualizacion "
@@ -593,7 +593,7 @@ public class TitanDAOImpl implements TitanDAO {
 		jdbcTemplate.execute(sql);
 	}
 
-	
+
 	/********* TRANSACIONES REFERIDAS COMISION PERSONA BASE HISTORICA **********************/
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.TitanDAO#buscarBaseHistoricaPorIdPersona(java.lang.Long)
@@ -602,20 +602,20 @@ public class TitanDAOImpl implements TitanDAO {
 	public TitanComisionPersonaBase buscarBaseHistoricaPorIdPersona(Long idPersona) throws Exception {
 		String sql="SELECT idpersona, idestado_registro, monto_base FROM t_comision_persona_base WHERE idPersona="+idPersona+" AND idEstado_registro=1";
 		log.info(sql);
-		
+
 		List<?>result=jdbcTemplate.queryForList(sql);
-		HashMap<String, Object>map=new HashMap<String,Object>();
+		HashMap<String, Object>map=new HashMap<>();
 		TitanComisionPersonaBase comisionPersonaBase=null;
-		
+
 		if(result.size()>0){
 			map=(HashMap<String, Object>) result.get(0);
 			comisionPersonaBase=new TitanComisionPersonaBase();
-			
+
 			comisionPersonaBase.setPersona(new TitanPersona(((BigDecimal)map.get("IDPERSONA")).longValue()));
 			comisionPersonaBase.setMontoBase(((BigDecimal)map.get("MONTO_BASE")).doubleValue());
 			comisionPersonaBase.setEstadoRegistroID(((BigDecimal)map.get("IDESTADO_REGISTRO")).intValue());
 		}
-			
+
 		return comisionPersonaBase;
 	}
 	/* (non-Javadoc)
@@ -661,17 +661,17 @@ public class TitanDAOImpl implements TitanDAO {
 				 	+ "INNER JOIN T_PERSONA P ON (P.IDPERSONA=FO.IDPERSONA) "
 				 + "WHERE FO.SERIE_FACTURA='"+serie+"' AND FO.NRO_FACTURA='"+numero+"' AND P.NU_DOCU_SUNA='"+numeroRuc+"'";
 		log.info(sql);
-		
+
 		String fechaFactura=null;
 		List<?>result=jdbcTemplate.queryForList(sql);
-		Map<String, Object> map = new HashMap<String, Object>();
-		
-		for(int i=0;i<result.size();i++){
-			map = (Map<String, Object>)result.get(i);
-			
+		Map<String, Object> map = new HashMap<>();
+
+		for (Object element : result) {
+			map = (Map<String, Object>)element;
+
 			fechaFactura=map.get("FECHA_FACTURA").toString();
 		}
-		
+
 		return fechaFactura;
 	}
 
@@ -686,12 +686,12 @@ public class TitanDAOImpl implements TitanDAO {
 				+ titanUsuarioHardware.getIdTipoMaquina()+", "+titanUsuarioHardware.getFrecuenciaReloj()+", '"+titanUsuarioHardware.getNombreEquipo()+"', '"
 				+ titanUsuarioHardware.getNombreRed()+"', "+titanUsuarioHardware.getEsServidor()+", "+titanUsuarioHardware.getParticiones()+ ", "
 				+ titanUsuarioHardware.getMemoria()+", "+titanUsuarioHardware.getIdUsuario()+", "+titanUsuarioHardware.getIdRol()+", "
-				+ titanUsuarioHardware.getIdUsuarioModificacion()+", "+titanUsuarioHardware.getRolModificacion()+", '"+titanUsuarioHardware.getIpRegistro()+"', '" 
+				+ titanUsuarioHardware.getIdUsuarioModificacion()+", "+titanUsuarioHardware.getRolModificacion()+", '"+titanUsuarioHardware.getIpRegistro()+"', '"
 				+ titanUsuarioHardware.getIpModificacion()+"', "+titanUsuarioHardware.getIdAgencia()+", "+titanUsuarioHardware.getIdTipoComputador()+", "
 				+ titanUsuarioHardware.getIdTipoIP()+", "+titanUsuarioHardware.getIdUsuarioHardwareVyR()+")";
 		log.info(sql);
-		jdbcTemplate.execute(sql);		
-		
+		jdbcTemplate.execute(sql);
+
 	}
 
 	/* (non-Javadoc)
@@ -702,12 +702,12 @@ public class TitanDAOImpl implements TitanDAO {
 		String sql = "SELECT idagencias FROM T_AGENCIAS WHERE IDAGENCIAS_UNIX="+idAgenciaPasajes;
 		log.info(sql);
 		List<?> result = jdbcTemplate.queryForList(sql);
-		HashMap<String, Object> map = new HashMap<String,Object>();
+		HashMap<String, Object> map = new HashMap<>();
 		Integer idAgencia=null;
 		if(result.size()>0) {
 			map = (HashMap<String, Object>) result.get(0);
 			idAgencia = ((BigDecimal)map.get("idagencias")).intValue();
-		}	
+		}
 		return idAgencia;
 	}
 
@@ -719,15 +719,15 @@ public class TitanDAOImpl implements TitanDAO {
 		String sql = "SELECT ip, nombre_equipo, idusuario_personalmod, idrol_usuariomod, ipmod, idagencias, "
 				+ "idtipo_ip, vyrusuhard_id FROM t_cpu WHERE vyrusuhard_id="+id;
 		log.info(sql);
-		
+
 		List<?> result = jdbcTemplate.queryForList(sql);
-		HashMap<String, Object> map = new HashMap<String,Object>();
+		HashMap<String, Object> map = new HashMap<>();
 		TitanUsuarioHardware titanUsuarioHardware = null;
-		
+
 		if(result.size()>0){
 			map = (HashMap<String, Object>) result.get(0);
 			titanUsuarioHardware = new TitanUsuarioHardware();
-			
+
 			titanUsuarioHardware.setIp(map.get("IP").toString());
 			titanUsuarioHardware.setNombreEquipo(map.get("NOMBRE_EQUIPO").toString());
 			titanUsuarioHardware.setIdUsuarioModificacion(((BigDecimal)map.get("IDUSUARIO_PERSONALMOD")).intValue());
@@ -737,7 +737,7 @@ public class TitanDAOImpl implements TitanDAO {
 			titanUsuarioHardware.setIdTipoIP(((BigDecimal)map.get("IDTIPO_IP")).intValue());
 			titanUsuarioHardware.setIdUsuarioHardwareVyR(((BigDecimal)map.get("VYRUSUHARD_ID")).intValue());
 		}
-		
+
 		return titanUsuarioHardware;
 	}
 
@@ -748,7 +748,7 @@ public class TitanDAOImpl implements TitanDAO {
 	public void actualizarUsuarioHardware(TitanUsuarioHardware titanUsuarioHardware) throws Exception {
 		String sql = "UPDATE t_cpu SET idAgencias="+titanUsuarioHardware.getIdAgencia()+", nombre_equipo='"+titanUsuarioHardware.getNombreEquipo() +
 				"', idtipo_ip="+titanUsuarioHardware.getIdTipoIP() + " WHERE ip = '"+titanUsuarioHardware.getIp()+"'";
-		
+
 		log.info(sql);
 		jdbcTemplate.execute(sql);
 	}
@@ -759,16 +759,16 @@ public class TitanDAOImpl implements TitanDAO {
 	@Override
 	public String buscarIdUsuarioHardware(String ip) throws Exception {
 		String sql = "SELECT ip FROM t_cpu WHERE ip='"+ip+"'";
-		
+
 		log.info(sql);
 		List<?> result = jdbcTemplate.queryForList(sql);
-		HashMap<String, Object> map = new HashMap<String,Object>();
+		HashMap<String, Object> map = new HashMap<>();
 		String idUsuarioHardware=null;
 		if(result.size()>0) {
 			map = (HashMap<String, Object>) result.get(0);
 			idUsuarioHardware = map.get("ip").toString();
-		}	
-		return idUsuarioHardware;		
+		}
+		return idUsuarioHardware;
 	}
 
 	/* (non-Javadoc)
@@ -777,7 +777,7 @@ public class TitanDAOImpl implements TitanDAO {
 	@Override
 	public void inactivarUsuarioHardware(Integer idUsuarioHardwareVyR) {
 		String sql = "UPDATE t_cpu SET idestado_registro=2 WHERE vyrusuhard_id="+idUsuarioHardwareVyR;
-		
+
 		log.info(sql);
 		jdbcTemplate.execute(sql);
 	}

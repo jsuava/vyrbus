@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 03/09/2013
  */
@@ -22,15 +22,15 @@ public class VentaIdaRetorno implements Serializable {
 	private DetalleItinerario detalleItinerarioRETORNO;
 	private VentaPasaje ventaPasajeIDA;
 	private VentaPasaje ventaPasajeRETORNO;
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public VentaIdaRetorno() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	/**
 	 * @param detalleItinerarioIDA
 	 * @param detalleItinerarioRETORNO
@@ -41,7 +41,7 @@ public class VentaIdaRetorno implements Serializable {
 		this.detalleItinerarioIDA = detalleItinerarioIDA;
 		this.detalleItinerarioRETORNO = detalleItinerarioRETORNO;
 	}
-	
+
 	/**
 	 * @return the detalleItinerarioIDA
 	 */
@@ -54,7 +54,7 @@ public class VentaIdaRetorno implements Serializable {
 	public void setDetalleItinerarioIDA(DetalleItinerario detalleItinerarioIDA) {
 		this.detalleItinerarioIDA = detalleItinerarioIDA;
 	}
-	
+
 	/**
 	 * @return the detalleItinerarioRETORNO
 	 */
@@ -95,5 +95,5 @@ public class VentaIdaRetorno implements Serializable {
 	 */
 	public void setVentaPasajeRETORNO(VentaPasaje ventaPasajeRETORNO) {
 		this.ventaPasajeRETORNO = ventaPasajeRETORNO;
-	}	
+	}
 }

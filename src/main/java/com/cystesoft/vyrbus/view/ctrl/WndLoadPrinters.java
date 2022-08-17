@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 14/04/2015
  * Hora			: 14:17:23
@@ -18,11 +18,11 @@ import com.cystesoft.vyrbus.view.ui.WndBase;
 public class WndLoadPrinters extends WndBase{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
@@ -33,9 +33,9 @@ public class WndLoadPrinters extends WndBase{
 //		Object object =response.getParameter("totalPrints");
 //		ServletRequest response2 = (ServletRequest)this.getDesktop().getExecution().getNativeRequest();
 //		ServletRequest response3 = (ServletRequest)this.getDesktop().getExecution().getNativeRequest();
-		
+
 //		mostrarVentana("Configuración de Impresoras", "configPrinter");
-		
-		
+
+
 	}
 }

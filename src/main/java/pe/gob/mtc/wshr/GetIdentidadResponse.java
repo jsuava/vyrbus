@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -24,8 +24,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "getIdentidadResult" })
@@ -36,9 +36,9 @@ public class GetIdentidadResponse {
 
 	/**
 	 * Gets the value of the getIdentidadResult property.
-	 * 
+	 *
 	 * @return possible object is {@link ResultIdentidad }
-	 * 
+	 *
 	 */
 	public ResultIdentidad getGetIdentidadResult() {
 		return getIdentidadResult;
@@ -46,10 +46,10 @@ public class GetIdentidadResponse {
 
 	/**
 	 * Sets the value of the getIdentidadResult property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link ResultIdentidad }
-	 * 
+	 *
 	 */
 	public void setGetIdentidadResult(ResultIdentidad value) {
 		this.getIdentidadResult = value;

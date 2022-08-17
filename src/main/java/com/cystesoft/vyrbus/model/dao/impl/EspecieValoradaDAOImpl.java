@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 04/05/2012
  */
@@ -82,21 +82,21 @@ public class EspecieValoradaDAOImpl extends GenericDAOImpl implements EspecieVal
 				idTipoComprobante.intValue()==Constantes.ID_TIPCOM_FACTURA ||
 				idTipoComprobante.intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO ||
 				idTipoComprobante.intValue()==Constantes.ID_TIPCOM_NOTA_DEBITO ){
-			
+
 			sql="SELECT MAX(ev.c_serie) FROM VRMESPVAL EV WHERE ev.tipcom_id="+idTipoComprobante+" AND ev.c_estreg='A'";
 		}else
 			sql="SELECT MAX(ev.n_serie) FROM VRMESPVAL EV WHERE ev.tipcom_id="+idTipoComprobante+" AND ev.c_estreg='A'";
 		log.info(sql);
-		
+
 		Object ultimaSerie = getSession().createSQLQuery(sql).uniqueResult();
 		String numeroSerie="";
-		
+
 		if(ultimaSerie!=null){
 			if(ultimaSerie instanceof Integer)
 				numeroSerie=String.valueOf(((BigDecimal)ultimaSerie).intValue());
-			else 
+			else
 				numeroSerie=ultimaSerie.toString();
-			
+
 			if (idTipoComprobante.intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO || idTipoComprobante.intValue()==Constantes.ID_TIPCOM_NOTA_DEBITO)
 				numeroSerie="X"+numeroSerie; //Le antepone la "X" solamente para el algoritmo lo pueda interpretar al momento de generar la serie de forma automatica
 		}else{
@@ -110,9 +110,9 @@ public class EspecieValoradaDAOImpl extends GenericDAOImpl implements EspecieVal
 				numeroSerie="0";
 			}
 		}
-		
+
 		return numeroSerie;
-		
+
 //		if(ultimaSerie==null){
 //			numeroSerie="0";
 //			ultimaSerie=0;
@@ -128,26 +128,26 @@ public class EspecieValoradaDAOImpl extends GenericDAOImpl implements EspecieVal
 	@Override
 	public void actualizarCorrelativoEspecieValorada(Integer idTipCom,Integer idAgencia, String serie, long correlativo) throws Exception {
 		// TODO Auto-generated method stub
-//		correlativo=correlativo+1;		
-		
-		if(idTipCom.intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA || idTipCom.intValue()==Constantes.ID_TIPCOM_FACTURA || idTipCom.intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO || idTipCom.intValue()==Constantes.ID_TIPCOM_NOTA_DEBITO){		
+//		correlativo=correlativo+1;
+
+		if(idTipCom.intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA || idTipCom.intValue()==Constantes.ID_TIPCOM_FACTURA || idTipCom.intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO || idTipCom.intValue()==Constantes.ID_TIPCOM_NOTA_DEBITO){
 			String hql = "UPDATE EspecieValorada SET correlativoActual="+correlativo+" " +
 					"WHERE tipoComprobante.id="+idTipCom+" AND agencia.id="+idAgencia+" AND "+
 					"c_serie='"+serie+"' AND estadoRegistro='"+Constantes.VALUE_ACTIVO+"' ";
 			log.info(hql);
-			
+
 			getSession().createQuery(hql).executeUpdate();
 		}else{
-			Integer iserie=Integer.valueOf(serie);		
+			int iserie=Integer.parseInt(serie);
 			String hql = "UPDATE EspecieValorada SET correlativoActual="+correlativo+" " +
 					"WHERE tipoComprobante.id="+idTipCom+" AND agencia.id="+idAgencia+" AND "+
 					"serie='"+iserie+"' AND estadoRegistro='"+Constantes.VALUE_ACTIVO+"' ";
 			log.info(hql);
-			
+
 			getSession().createQuery(hql).executeUpdate();
 		}
-		
-		
+
+
 	}
 
 	/* (non-Javadoc)
@@ -161,27 +161,27 @@ public class EspecieValoradaDAOImpl extends GenericDAOImpl implements EspecieVal
 //					"WHERE ev.tipcom_id="+idTipoComprobante+" " +
 //						"AND ev.n_serie='"+numeroSerie+"' " +
 //						"AND ev.agencia_id="+idAgencia;
-		
+
 		String sql="SELECT MAX(ev.espval_id) as id "+
 				"FROM VRMESPVAL ev "+
 				"WHERE ev.tipcom_id="+idTipoComprobante+" " +
 					"AND ev.n_serie='"+numeroSerie+"' " +
 					"AND ev.agencia_id="+idAgencia;
-				
+
 		Object id=getSession().createSQLQuery(sql).uniqueResult();
 		EspecieValorada especieValorada=null;
 		if(id!=null)
 			especieValorada=buscarPorId(((BigDecimal)id).longValue());
-		
-		
-		
+
+
+
 //		Object objCorrelativoFinal=getSession().createSQLQuery(sql).uniqueResult();
 //		EspecieValorada especieValorada=null;
 //		if(objCorrelativoFinal!=null){
 //			especieValorada=new EspecieValorada();
 //			especieValorada.setCorrelativoFinal(((BigDecimal)objCorrelativoFinal).longValue());
 //		}
-						
+
 		return especieValorada;
 	}
 
@@ -191,11 +191,11 @@ public class EspecieValoradaDAOImpl extends GenericDAOImpl implements EspecieVal
 	@Override
 	public EspecieValorada ejecutarSeqCorrelativo(EspecieValorada especieValorada)throws Exception {
 		String sql="SELECT "+especieValorada.getNameSecuenciador()+".NEXTVAL correlativo FROM DUAL";
-		log.info("SQL: "+sql);		
+		log.info("SQL: "+sql);
 		Object object= getSession().createSQLQuery(sql).uniqueResult();
 		Long correlativo=((BigDecimal)object).longValue();
 		especieValorada.setCorrelativoActual(correlativo);
-		
+
 		return especieValorada;
 	}
 

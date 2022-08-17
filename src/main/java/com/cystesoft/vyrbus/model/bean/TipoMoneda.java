@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 07/08/2015
  * Hora			: 11:18:31
@@ -15,7 +15,7 @@ package com.cystesoft.vyrbus.model.bean;
 public class TipoMoneda extends GenericBean{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Integer id;
@@ -23,15 +23,15 @@ public class TipoMoneda extends GenericBean{
 	private String denominacion;
 	private String unidadMonetaria;
 	private String simboloMonetario;
-	
+
 	public TipoMoneda(){
-		
+
 	}
-	
+
 	public TipoMoneda(Integer id){
 		this.id=id;
 	}
-	
+
 	/**
 	 * @return the id
 	 */
@@ -92,7 +92,7 @@ public class TipoMoneda extends GenericBean{
 	public void setSimboloMonetario(String simboloMonetario) {
 		this.simboloMonetario = simboloMonetario;
 	}
-	
 
-	
+
+
 }

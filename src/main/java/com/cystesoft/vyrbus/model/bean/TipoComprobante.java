@@ -11,7 +11,7 @@ public class TipoComprobante extends GenericBean implements java.io.Serializable
 	private String denominacion;
 	private String abreviatura;
 	private Integer rubro;
-	
+
 	public static final int RUBRO_PASAJES = 1;
 	public static final int RUBRO_CARGA = 2;
 //	public static final int RUBRO_AMBOS = 3;
@@ -23,7 +23,7 @@ public class TipoComprobante extends GenericBean implements java.io.Serializable
 		super();
 		this.id = id;
 	}
-	
+
 	public TipoComprobante(Integer id, String denominacion) {
 		super();
 		this.id = id;

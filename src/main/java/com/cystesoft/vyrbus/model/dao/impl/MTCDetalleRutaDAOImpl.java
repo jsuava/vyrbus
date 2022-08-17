@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 26/08/2014
  * Hora			: 09:16:57
@@ -27,10 +27,10 @@ public class MTCDetalleRutaDAOImpl extends GenericDAOImpl implements MTCDetalleR
 	@Override
 	public MTCDetalleRuta buscarPorIdRuta(Integer idRutaVyr) throws Exception {
 		String hql="FROM MTCDetalleRuta dr WHERE dr.ruta.id="+idRutaVyr+" AND dr.estadoRegistro='"+Constantes.VALUE_ACTIVO+"' ";
-		
+
 		log.info(hql);
 		MTCDetalleRuta mtcDetalleRuta=(MTCDetalleRuta) getSession().createQuery(hql).uniqueResult();
-		
+
 		return mtcDetalleRuta;
 	}
 
@@ -59,10 +59,10 @@ public class MTCDetalleRutaDAOImpl extends GenericDAOImpl implements MTCDetalleR
 	public List<MTCDetalleRuta> buscarPorIdRutaMtc(Integer idRutaMtc)throws Exception {
 		// TODO Auto-generated method stub
 		String hql="FROM MTCDetalleRuta dr WHERE dr.mtcRuta.id="+idRutaMtc+" AND dr.estadoRegistro='"+Constantes.VALUE_ACTIVO+"' ";
-		
+
 		log.info(hql);
-		List<?> lstDetalleRuta= getSession().createQuery(hql).list();		
-		
+		List<?> lstDetalleRuta= getSession().createQuery(hql).list();
+
 		return (List<MTCDetalleRuta>) lstDetalleRuta;
 	}
 
@@ -74,8 +74,8 @@ public class MTCDetalleRutaDAOImpl extends GenericDAOImpl implements MTCDetalleR
 		// TODO Auto-generated method stub
 		return (List<MTCDetalleRuta>) super.findByEstadoRegistro(MTCDetalleRuta.class, estado, "id");
 	}
-	
-	
-	
-	
+
+
+
+
 }

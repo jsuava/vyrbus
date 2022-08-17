@@ -1,14 +1,13 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 22 may. 2021
  * Hora			: 21:42:04
  */
 package com.cystesoft.vyrbus.view.ctrl;
 
-import java.text.DateFormat;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -54,10 +53,10 @@ public class WndAnulacionPostergacion extends WndBase {
 	private Intbox ibxCantidadPostergaciones;
 	private Label lblAgencia;
 	private Label lblUsuario;
-	
+
 	private static final int SEARCH_BY_AGENCIA = 1;
 	private static final int SEARCH_BY_USER = 2;
-	
+
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.view.ui.WndBase#initComponents()
 	 */
@@ -86,11 +85,11 @@ public class WndAnulacionPostergacion extends WndBase {
 		dbHasta.setValue(Constantes.FORMAT_DATE.parse(time.dateServer()));
 		rdgCriterios.setSelectedIndex(0);
 		inicializarControles(true);
-		
+
 		lbxAgencias.addEventListener(Events.ON_DOUBLE_CLICK,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
-				//Si la busqueda es para Anulados 
+				//Si la busqueda es para Anulados
 				if(rdgCriterios.getSelectedIndex()==0){
 					if(lbxAgencias.getSelectedIndex() >= 0)
 						buscarDetallado(SEARCH_BY_AGENCIA);
@@ -99,8 +98,8 @@ public class WndAnulacionPostergacion extends WndBase {
 						buscarDetallado(SEARCH_BY_AGENCIA);
 				}
 			}
-		});		
-		
+		});
+
 		lbxUsuarios.addEventListener(Events.ON_DOUBLE_CLICK,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -113,23 +112,23 @@ public class WndAnulacionPostergacion extends WndBase {
 						buscarDetallado(SEARCH_BY_USER);
 				}
 			}
-		});		
-		
+		});
+
 	}
-	
+
 	private void inicializarControles(boolean estado){
 		ibxCantidadPostergaciones.setDisabled(estado);
 	}
-	
+
 	public void limpiarListbox(){
 		Util.limpiarListbox(lbxAgencias);
 		Util.limpiarListbox(lbxUsuarios);
 		Util.limpiarListbox(lbxDetallado);
 		lbxDetallado.setVisible(false);
 	}
-	
+
 	public void rdgOnClick(){
-		
+
 		if(rdgCriterios.getSelectedIndex() == 0){
 			inicializarControles(true);
 			lblAgencia.setValue("ANULACIONES POR AGENCIA");
@@ -143,9 +142,9 @@ public class WndAnulacionPostergacion extends WndBase {
 			lblUsuario.setValue("POSTERGACIONES POR USUARIO");
 			limpiarListbox();
 		}
-		
+
 	}
-	
+
 	public void onSearch() {
 		String fechaDesde = Constantes.FORMAT_DATE.format(dbDesde.getValue());
 		String fechaHasta = Constantes.FORMAT_DATE.format(dbHasta.getValue());
@@ -154,7 +153,7 @@ public class WndAnulacionPostergacion extends WndBase {
 			DlgMessage.information(Messages.getString("wndAnulacionPostergacion.information.noCriterios"));
 			return;
 		}
-		
+
 		try {
 			if(rdgCriterios.getSelectedIndex()==0) {
 
@@ -172,7 +171,7 @@ public class WndAnulacionPostergacion extends WndBase {
 				List<ResumenAnulacionPostergacion> lstPostergadosByAgencia = ServiceLocator.getVentaPasajesManager().buscarBoletosPostergadosByX(fechaDesde, fechaHasta, SEARCH_BY_AGENCIA, nroPostergaciones);
 				listarAnuladosPostergadosByAgencia(lstPostergadosByAgencia);
 				List<ResumenAnulacionPostergacion> lstPostergadosByUsuario = ServiceLocator.getVentaPasajesManager().buscarBoletosPostergadosByX(fechaDesde, fechaHasta, SEARCH_BY_USER, nroPostergaciones);
-				listarAnuladosPostergadosByUsuario(lstPostergadosByUsuario);				
+				listarAnuladosPostergadosByUsuario(lstPostergadosByUsuario);
 			}else {
 				System.out.println("Posterga x numero");
 			}
@@ -180,72 +179,72 @@ public class WndAnulacionPostergacion extends WndBase {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void listarAnuladosPostergadosByAgencia(List<ResumenAnulacionPostergacion> lstResumen) {
 		Listitem item = null;
 		Listcell cell = null;
-		
+
 		Util.limpiarListbox(lbxAgencias);
 		lbxDetallado.setVisible(false);
-		
+
 		int i=0;
 		for(ResumenAnulacionPostergacion resumen : lstResumen) {
 			i++;
 			item = new Listitem();
-			
+
 			cell = new Listcell(String.valueOf(i));
 			item.appendChild(cell);
-			
+
 			cell = new Listcell(resumen.getId().toString());
 			item.appendChild(cell);
-			
+
 			cell = new Listcell(resumen.getDenominacion());
 			item.appendChild(cell);
-			
+
 			cell = new Listcell(resumen.getTotal().toString());
 			item.appendChild(cell);
-			
+
 			item.setValue(resumen);
-			
+
 			lbxAgencias.appendChild(item);
-			
+
 		}
 	}
-	
+
 
 	public void listarAnuladosPostergadosByUsuario(List<ResumenAnulacionPostergacion> lstResumen) {
 
 		Listitem item = null;
 		Listcell cell = null;
-		
+
 		Util.limpiarListbox(lbxUsuarios);
 		lbxDetallado.setVisible(false);
-		
+
 		int i=0;
 		for(ResumenAnulacionPostergacion resumen : lstResumen) {
 			i++;
 			item = new Listitem();
-			
+
 			cell = new Listcell(String.valueOf(i));
 			item.appendChild(cell);
 
 			cell = new Listcell(resumen.getId().toString());
 			item.appendChild(cell);
-			
+
 			cell = new Listcell(resumen.getDenominacion());
 			item.appendChild(cell);
-			
+
 			cell = new Listcell(resumen.getTotal().toString());
 			item.appendChild(cell);
-			
+
 			item.setValue(resumen);
-			
+
 			lbxUsuarios.appendChild(item);
-			
+
 		}
 
 	}
-	
+
 	public void buscarDetallado(int tipoBusqueda){
 
 		String fechaDesde = Constantes.FORMAT_DATE.format(dbDesde.getValue());
@@ -254,75 +253,75 @@ public class WndAnulacionPostergacion extends WndBase {
 
 		Listitem item = null;
 		Listcell cell = null;
-		
+
 		List<VentaPasaje> lstDetVentas = null;
-		
+
 		Util.limpiarListbox(lbxDetallado);
 		if(rdgCriterios.getSelectedIndex() == 0){
-		
+
 			if(tipoBusqueda == SEARCH_BY_AGENCIA){
 				Integer index = lbxAgencias.getSelectedIndex();
 				Listitem itemAnulado = lbxAgencias.getItemAtIndex(index);
 				lstDetVentas = ServiceLocator.getVentaPasajesManager()
 															.buscarBoletosAnuladosDetalladoByX(
-																	fechaDesde, 
-																	fechaHasta, 
-																	((ResumenAnulacionPostergacion)itemAnulado.getValue()).getId(), 
-																	SEARCH_BY_AGENCIA);			
+																	fechaDesde,
+																	fechaHasta,
+																	((ResumenAnulacionPostergacion)itemAnulado.getValue()).getId(),
+																	SEARCH_BY_AGENCIA);
 			}else{
 				Integer index = lbxUsuarios.getSelectedIndex();
 				Listitem itemAnulado = lbxUsuarios.getItemAtIndex(index);
 				lstDetVentas = ServiceLocator.getVentaPasajesManager()
 															.buscarBoletosAnuladosDetalladoByX(
-																	fechaDesde, 
-																	fechaHasta, 
-																	((ResumenAnulacionPostergacion)itemAnulado.getValue()).getId(), 
+																	fechaDesde,
+																	fechaHasta,
+																	((ResumenAnulacionPostergacion)itemAnulado.getValue()).getId(),
 																	SEARCH_BY_USER);
 			}
 		}else if(rdgCriterios.getSelectedIndex() == 1){
-			
+
 			if(ibxCantidadPostergaciones.intValue()>0 && ibxCantidadPostergaciones.getValue() != null){
 				nroPostergaciones = ibxCantidadPostergaciones.intValue();
 			}else{
 				nroPostergaciones = 0;
 			}
-			
+
 			if(tipoBusqueda == SEARCH_BY_AGENCIA){
 				Integer index = lbxAgencias.getSelectedIndex();
 				Listitem itemPostergado = lbxAgencias.getItemAtIndex(index);
 				lstDetVentas = ServiceLocator.getVentaPasajesManager()
 															.buscarBoletosPostergadosDetalladoByX(
-																	fechaDesde, 
-																	fechaHasta, 
-																	((ResumenAnulacionPostergacion)itemPostergado.getValue()).getId(), 
+																	fechaDesde,
+																	fechaHasta,
+																	((ResumenAnulacionPostergacion)itemPostergado.getValue()).getId(),
 																	SEARCH_BY_AGENCIA,
-																	nroPostergaciones);			
+																	nroPostergaciones);
 			}else{
 				Integer index = lbxUsuarios.getSelectedIndex();
 				Listitem itemPostergado = lbxUsuarios.getItemAtIndex(index);
 				lstDetVentas = ServiceLocator.getVentaPasajesManager()
 															.buscarBoletosPostergadosDetalladoByX(
-																	fechaDesde, 
-																	fechaHasta, 
-																	((ResumenAnulacionPostergacion)itemPostergado.getValue()).getId(), 
+																	fechaDesde,
+																	fechaHasta,
+																	((ResumenAnulacionPostergacion)itemPostergado.getValue()).getId(),
 																	SEARCH_BY_USER,
 																	nroPostergaciones);
 			}
 		}
-		
+
 
 		for(VentaPasaje ventaPasaje : lstDetVentas) {
 			item = new Listitem();
-				
+
 			cell = new Listcell(ventaPasaje.getId().toString());
 			item.appendChild(cell);
-				
+
 			cell = new Listcell(ventaPasaje.getVentaOriginal().toString());
 			item.appendChild(cell);
-				
+
 			cell = new Listcell(ventaPasaje.getNumeroBoleto());
 			item.appendChild(cell);
-				
+
 			cell = new Listcell(ventaPasaje.getNumeroBoletoAnterior());
 			item.appendChild(cell);
 
@@ -375,26 +374,26 @@ public class WndAnulacionPostergacion extends WndBase {
 
 			cell = new Listcell(ventaPasaje.getObservaciones());
 			item.appendChild(cell);
-				
+
 			lbxDetallado.appendChild(item);
-				
+
 		}
-		
+
 		lbxDetallado.setVisible(true);
-			
+
 	}
-	
+
 	public void buscarDetalladoPostergaciones(int tipoBusqueda){
 		Integer index = lbxUsuarios.getSelectedIndex();
 	}
-	
+
 	public void btnExportar_OnClick(){
 		if(lbxDetallado.getItemCount()>0) {
 			Session session = getDesktop().getSession();
 			HttpSession httpSession = (HttpSession)session.getNativeSession();
 			httpSession.setAttribute("parcialPath",Constantes.DIRECTORY_EXCEL+"GastosOtrosIngresos.xls");
 			httpSession.setAttribute("lbxAnulacionesPostergaciones", lbxDetallado);
-			Executions.sendRedirect("/exportXlsAnulacionesPostergaciones.htm");	
-		}		
+			Executions.sendRedirect("/exportXlsAnulacionesPostergaciones.htm");
+		}
 	}
 }

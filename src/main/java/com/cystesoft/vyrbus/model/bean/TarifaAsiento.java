@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 25 oct. 2019
  * Hora			: 13:36:45
@@ -16,7 +16,7 @@ import java.util.Date;
  */
 public class TarifaAsiento extends GenericBean implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer id;
 	private Tarifa tarifa;
 	private Itinerario itinerario;
@@ -25,13 +25,13 @@ public class TarifaAsiento extends GenericBean implements java.io.Serializable {
 	private String dias;
 	private Date fechaActivacion;
 	private Date fechaCaducidad;
-	private String horaPartida;	  
+	private String horaPartida;
 	private Date fechaSuspension;
-	  
+
 	public TarifaAsiento(){
-		  
+
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}

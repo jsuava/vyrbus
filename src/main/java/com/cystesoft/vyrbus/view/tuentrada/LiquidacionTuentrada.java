@@ -8,7 +8,7 @@
 package com.cystesoft.vyrbus.view.tuentrada;
 
 /**
- * 
+ *
  * @author Jose
  *
  */
@@ -16,7 +16,7 @@ public class LiquidacionTuentrada {
 	private Integer cantidad;
 	private Double monto;
 	private String tipo;
-	
+
 //	private String usuarioNombres;
 //	private String usuarioLogin;
 //	private String cantidadEfectivo="0";
@@ -24,8 +24,8 @@ public class LiquidacionTuentrada {
 //	private String cantidadTarjeta="0";
 //	private String montoTarjeta="0.00";
 //	private String fechaOperacion;
-	
-		
+
+
 	public LiquidacionTuentrada() {
 		super();
 	}
@@ -81,5 +81,5 @@ public class LiquidacionTuentrada {
 		this.tipo = tipo;
 	}
 
-	
+
 }

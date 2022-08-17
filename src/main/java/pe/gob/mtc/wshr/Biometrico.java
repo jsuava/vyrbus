@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for Biometrico complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="Biometrico">
  *   &lt;complexContent>
@@ -27,8 +27,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Biometrico", propOrder = { "seguridad", "nroEmp", "nroDoc",
@@ -46,9 +46,9 @@ public class Biometrico {
 
 	/**
 	 * Gets the value of the seguridad property.
-	 * 
+	 *
 	 * @return possible object is {@link Seguridad }
-	 * 
+	 *
 	 */
 	public Seguridad getSeguridad() {
 		return seguridad;
@@ -56,10 +56,10 @@ public class Biometrico {
 
 	/**
 	 * Sets the value of the seguridad property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Seguridad }
-	 * 
+	 *
 	 */
 	public void setSeguridad(Seguridad value) {
 		this.seguridad = value;
@@ -67,9 +67,9 @@ public class Biometrico {
 
 	/**
 	 * Gets the value of the nroEmp property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getNroEmp() {
 		return nroEmp;
@@ -77,10 +77,10 @@ public class Biometrico {
 
 	/**
 	 * Sets the value of the nroEmp property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setNroEmp(String value) {
 		this.nroEmp = value;
@@ -88,9 +88,9 @@ public class Biometrico {
 
 	/**
 	 * Gets the value of the nroDoc property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getNroDoc() {
 		return nroDoc;
@@ -98,10 +98,10 @@ public class Biometrico {
 
 	/**
 	 * Sets the value of the nroDoc property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setNroDoc(String value) {
 		this.nroDoc = value;
@@ -109,7 +109,7 @@ public class Biometrico {
 
 	/**
 	 * Gets the value of the hueDer property.
-	 * 
+	 *
 	 * @return possible object is byte[]
 	 */
 	public byte[] getHueDer() {
@@ -118,7 +118,7 @@ public class Biometrico {
 
 	/**
 	 * Sets the value of the hueDer property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is byte[]
 	 */

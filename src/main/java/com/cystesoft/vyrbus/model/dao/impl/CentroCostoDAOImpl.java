@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: Objeto que implementa los metodos de acceso a datos de la tabla Centro de Costo VRMCENCOS. 
+ * Descripción	: Objeto que implementa los metodos de acceso a datos de la tabla Centro de Costo VRMCENCOS.
  * Autor		: José Sullo Avalos
  * Fecha		: 16/09/2013
  */

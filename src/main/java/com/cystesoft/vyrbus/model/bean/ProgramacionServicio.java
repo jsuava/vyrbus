@@ -14,16 +14,16 @@ public class ProgramacionServicio extends GenericBean implements java.io.Seriali
 	private Personal copiloto;
 	private Personal tripulante;
 	private Personal copilotoAuxiliar;
-	
+
 	private HRE hojaRuta; //No mapeado
-	private Boolean MEE; //No mapeado (determina si el manifiesto electronico ya fue emitido) 
+	private Boolean MEE; //No mapeado (determina si el manifiesto electronico ya fue emitido)
 //	private MTCDetalleRuta mtcDetalleRuta; //No mapeado. (Utilizado en la impresion de la HRE)
 //	private MTCDireccionTerminal mtcDireccionTerminalPart; //No mapeado. (Utilizado en la impresion de la HRE)
 //	private MTCDireccionTerminal mtcDireccionTerminalLleg; //No mapeado. (Utilizado en la impresion de la HRE)
-	
+
 
 	public ProgramacionServicio() {
-		
+
 	}
 
 	/**

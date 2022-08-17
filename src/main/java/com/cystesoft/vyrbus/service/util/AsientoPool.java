@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 05/09/2016
  * Hora			: 09:34:32
@@ -24,7 +24,7 @@ import cruzdelsur.ws.com.pe.ResultBloquearAsiento;
 public class AsientoPool extends Groupbox{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Integer nivelAsiento;
@@ -35,14 +35,14 @@ public class AsientoPool extends Groupbox{
 	private Double tarifa;
 	private Agencia agencia;
 	private Usuario usuario;
-	
+
 	private String asientoID;
 	private ObjectCiva objectCiva;
-	
+
 	/*Variables staticas*/
 	public static String imagenOcupado="/resources/asientos/mp_asientoOcupado.png";
 	public static String imagenBloqueado="/resources/asientos/mp_asientoBloqueado.png";
-	
+
 	/**
 	 * @return the nivelAsiento
 	 */
@@ -163,7 +163,7 @@ public class AsientoPool extends Groupbox{
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-	
-	
-	
+
+
+
 }

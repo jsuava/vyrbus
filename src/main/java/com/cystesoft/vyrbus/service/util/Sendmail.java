@@ -1,7 +1,7 @@
 /**
  * Proyecto		: MANTYBUS
  * Sistema		: Sistema de Mantenimiento de Buses
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 11/08/2011
  */
@@ -32,7 +32,7 @@ public class Sendmail {
 	static String sServidorCorreo;
 	static String sCorreoOrigen;
 	static String[] asCorreoDestino;
-	
+
 	/**
 	 * Envia email sobre incidencias presentadas.
 	 * @param mensaje	: Cuerpo del email
@@ -44,7 +44,7 @@ public class Sendmail {
 	public static final int enviaEmail(String mensaje, String asunto, DestinatariosEmails window)throws Exception
 	{
 		int result = Constantes.FAILURE;
-		try{			
+		try{
 			final String from = "soporte@itsb.pe";
 			final String password = "3tr0p0s2021";
 			Properties props = new Properties();
@@ -59,12 +59,12 @@ public class Sendmail {
 			props.setProperty("mail.smtp.user", from);
 			// Si requiere o no usuario y password para conectarse.
 			props.setProperty("mail.smtp.auth", "false");
-			
+
 			// Preparamos la sesion
 	        Session session = Session.getDefaultInstance(props);
-	        
+
 	        //session.setDebug(true);
-	        
+
 	        // Construir correo de texto con adjunto
 //	        BodyPart texto = new MimeBodyPart();
 //	        texto.setText("Documentos que vencerán");
@@ -72,40 +72,40 @@ public class Sendmail {
 //	        adjunto.setDataHandler(new DataHandler(new FileDataSource("/usr/local/consumos/log/consumos.log")));
 //	        //adjunto.setDataHandler(new DataHandler(new FileDataSource("D:/usr/local/consumos/log/consumos.log")));
 //	        adjunto.setFileName("consumos.log");
-//	        
+//
 //	        //Juntar el texto y la imagen adjunta
 //	        MimeMultipart multiParte = new MimeMultipart();
 //	        multiParte.addBodyPart(texto);
 //	        multiParte.addBodyPart(adjunto);
-//	        
+//
 	        // Construimos el mensaje
 	        MimeMessage message = new MimeMessage(session);
 	        // Quien envia el correo
 	        message.setFrom(new InternetAddress(from));
 	        // A quien va dirigido
 	        String[] lstEmails = window.getEmails().split(";");
-			for(int i=0;i<lstEmails.length;i++){
-				if(lstEmails[i].substring(0, 3).equals("TO:")){
-					String[] email = lstEmails[i].substring(3).split(",");
-					for(int j=0;j<email.length;j++){
-						message.addRecipient(Message.RecipientType.TO, new InternetAddress(email[j]));
+			for (String lstEmail : lstEmails) {
+				if(lstEmail.substring(0, 3).equals("TO:")){
+					String[] email = lstEmail.substring(3).split(",");
+					for (String element : email) {
+						message.addRecipient(Message.RecipientType.TO, new InternetAddress(element));
 					}
-				}else if(lstEmails[i].substring(0, 3).equals("CC:")){
-					String[] email = lstEmails[i].substring(3).split(",");
-					for(int j=0;j<email.length;j++){
-						message.addRecipient(Message.RecipientType.CC, new InternetAddress(email[j]));
+				}else if(lstEmail.substring(0, 3).equals("CC:")){
+					String[] email = lstEmail.substring(3).split(",");
+					for (String element : email) {
+						message.addRecipient(Message.RecipientType.CC, new InternetAddress(element));
 					}
 				}else{
-					String[] email = lstEmails[i].substring(4).split(",");
-					for(int j=0;j<email.length;j++){
-						message.addRecipient(Message.RecipientType.BCC, new InternetAddress(email[j]));
+					String[] email = lstEmail.substring(4).split(",");
+					for (String element : email) {
+						message.addRecipient(Message.RecipientType.BCC, new InternetAddress(element));
 					}
 				}
 			}
 			message.setSubject(asunto);
 	        message.setText(mensaje);
 //	        message.setContent(multiParte);
-	        
+
 	        //Para enviar el mensaje usamos la clase Transport
 	        Transport t = session.getTransport("smtp");
 //	        // Establecemos la conexion
@@ -129,16 +129,16 @@ public class Sendmail {
 			throw new SocketMessagingException(mex.getMessage());
 		}catch(Exception ex){
 			throw new Exception(ex);
-		}        
+		}
 		return result;
 	}
-	
+
 	/**
      * Método público y estático que envía un correo a las direcciones
      * indicadas en el fichero de propiedades, desde la dirección indicada
      * también en el mismo fichero con el asunto y el contenido que se pasan
      * como parámetros.
-     * 
+     *
      * @param sAsunto String
      * @param sTexto String
      * @return boolean
@@ -148,28 +148,28 @@ public class Sendmail {
 			Properties props = new Properties();
 	        props.put("mail.smtp.host", sServidorCorreo );
 	        Session mailSesion = Session.getDefaultInstance(props, null);
-	
+
 	        Message msg = new MimeMessage(mailSesion);
-	   
+
 	        msg.setFrom ( new InternetAddress( sCorreoOrigen ) );
 	        msg.setSubject ( sAsunto );
 	        msg.setSentDate ( new java.util.Date() );
 	        msg.setText ( sTexto );
-	
+
 	        InternetAddress address[] = new InternetAddress[asCorreoDestino.length];
 	        for( int i = 0; i < asCorreoDestino.length; i++ ) {
 	            address[i] = new InternetAddress ( asCorreoDestino[i] );
-	        }         
-	           
+	        }
+
 	        msg.setRecipients (Message.RecipientType.TO, address);
-	                           
+
 	        Transport.send(msg);
 		}catch( MessagingException e ){
 			return false ;
 		}
 		return true ;
 	}
-	
+
 	/**
      * Método para inicializar los valores del seridor de correo,
      * se cargan desde un fichero de configuración con los siguientes valores:
@@ -181,7 +181,7 @@ public class Sendmail {
 		try{
 			Properties props = new Properties();
 	        props.load( new FileInputStream( CONFIG_FILE ) );
-	        
+
 	        sServidorCorreo = props.getProperty( "app.servidorCorreo" );
 	        sCorreoOrigen = props.getProperty( "app.correoOrigen" );
 	        String sTmp = props.getProperty( "app.correoDestino" );

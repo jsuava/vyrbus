@@ -9,11 +9,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for Pasajero complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="Pasajero">
  *   &lt;complexContent>
@@ -39,8 +39,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Pasajero", propOrder = { "razonSocial", "rucEmpresa",
@@ -81,10 +81,10 @@ public class Pasajero {
 
 	/**
 	 * Gets the value of the razonSocial property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getRazonSocial() {
 		return razonSocial;
@@ -92,11 +92,11 @@ public class Pasajero {
 
 	/**
 	 * Sets the value of the razonSocial property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setRazonSocial(JAXBElement<String> value) {
 		this.razonSocial = (value);
@@ -104,10 +104,10 @@ public class Pasajero {
 
 	/**
 	 * Gets the value of the rucEmpresa property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getRucEmpresa() {
 		return rucEmpresa;
@@ -115,11 +115,11 @@ public class Pasajero {
 
 	/**
 	 * Sets the value of the rucEmpresa property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setRucEmpresa(JAXBElement<String> value) {
 		this.rucEmpresa = (value);
@@ -127,10 +127,10 @@ public class Pasajero {
 
 	/**
 	 * Gets the value of the apellidoMaterno property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getApellidoMaterno() {
 		return apellidoMaterno;
@@ -138,11 +138,11 @@ public class Pasajero {
 
 	/**
 	 * Sets the value of the apellidoMaterno property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setApellidoMaterno(JAXBElement<String> value) {
 		this.apellidoMaterno = (value);
@@ -150,10 +150,10 @@ public class Pasajero {
 
 	/**
 	 * Gets the value of the apellidoPaterno property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getApellidoPaterno() {
 		return apellidoPaterno;
@@ -161,11 +161,11 @@ public class Pasajero {
 
 	/**
 	 * Sets the value of the apellidoPaterno property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setApellidoPaterno(JAXBElement<String> value) {
 		this.apellidoPaterno = (value);
@@ -173,10 +173,10 @@ public class Pasajero {
 
 	/**
 	 * Gets the value of the codigoNacionalidad property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getCodigoNacionalidad() {
 		return codigoNacionalidad;
@@ -184,11 +184,11 @@ public class Pasajero {
 
 	/**
 	 * Sets the value of the codigoNacionalidad property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setCodigoNacionalidad(JAXBElement<String> value) {
 		this.codigoNacionalidad = (value);
@@ -196,10 +196,10 @@ public class Pasajero {
 
 	/**
 	 * Gets the value of the codigoTipoDocumento property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getCodigoTipoDocumento() {
 		return codigoTipoDocumento;
@@ -207,11 +207,11 @@ public class Pasajero {
 
 	/**
 	 * Sets the value of the codigoTipoDocumento property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setCodigoTipoDocumento(JAXBElement<String> value) {
 		this.codigoTipoDocumento = (value);
@@ -219,9 +219,9 @@ public class Pasajero {
 
 	/**
 	 * Gets the value of the edad property.
-	 * 
+	 *
 	 * @return possible object is {@link Integer }
-	 * 
+	 *
 	 */
 	public Integer getEdad() {
 		return edad;
@@ -229,10 +229,10 @@ public class Pasajero {
 
 	/**
 	 * Sets the value of the edad property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Integer }
-	 * 
+	 *
 	 */
 	public void setEdad(Integer value) {
 		this.edad = value;
@@ -240,10 +240,10 @@ public class Pasajero {
 
 	/**
 	 * Gets the value of the email property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getEmail() {
 		return email;
@@ -251,11 +251,11 @@ public class Pasajero {
 
 	/**
 	 * Sets the value of the email property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setEmail(JAXBElement<String> value) {
 		this.email = (value);
@@ -263,10 +263,10 @@ public class Pasajero {
 
 	/**
 	 * Gets the value of the fechaNacimiento property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getFechaNacimiento() {
 		return fechaNacimiento;
@@ -274,11 +274,11 @@ public class Pasajero {
 
 	/**
 	 * Sets the value of the fechaNacimiento property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setFechaNacimiento(JAXBElement<String> value) {
 		this.fechaNacimiento = (value);
@@ -286,10 +286,10 @@ public class Pasajero {
 
 	/**
 	 * Gets the value of the menus property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}
 	 *         {@link ArrayOfGeneric }{@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<ArrayOfGeneric> getMenus() {
 		return menus;
@@ -297,11 +297,11 @@ public class Pasajero {
 
 	/**
 	 * Sets the value of the menus property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}
 	 *            {@link ArrayOfGeneric }{@code >}
-	 * 
+	 *
 	 */
 	public void setMenus(JAXBElement<ArrayOfGeneric> value) {
 		this.menus = (value);
@@ -309,10 +309,10 @@ public class Pasajero {
 
 	/**
 	 * Gets the value of the nombres property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getNombres() {
 		return nombres;
@@ -320,11 +320,11 @@ public class Pasajero {
 
 	/**
 	 * Sets the value of the nombres property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setNombres(JAXBElement<String> value) {
 		this.nombres = (value);
@@ -332,10 +332,10 @@ public class Pasajero {
 
 	/**
 	 * Gets the value of the numeroBoleto property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getNumeroBoleto() {
 		return numeroBoleto;
@@ -343,11 +343,11 @@ public class Pasajero {
 
 	/**
 	 * Sets the value of the numeroBoleto property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setNumeroBoleto(JAXBElement<String> value) {
 		this.numeroBoleto = (value);
@@ -355,10 +355,10 @@ public class Pasajero {
 
 	/**
 	 * Gets the value of the numeroDocumento property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getNumeroDocumento() {
 		return numeroDocumento;
@@ -366,11 +366,11 @@ public class Pasajero {
 
 	/**
 	 * Sets the value of the numeroDocumento property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setNumeroDocumento(JAXBElement<String> value) {
 		this.numeroDocumento = (value);
@@ -378,10 +378,10 @@ public class Pasajero {
 
 	/**
 	 * Gets the value of the telefono property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getTelefono() {
 		return telefono;
@@ -389,11 +389,11 @@ public class Pasajero {
 
 	/**
 	 * Sets the value of the telefono property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setTelefono(JAXBElement<String> value) {
 		this.telefono = (value);
@@ -401,10 +401,10 @@ public class Pasajero {
 
 	/**
 	 * Gets the value of the tipoTarifa property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getTipoTarifa() {
 		return tipoTarifa;
@@ -412,11 +412,11 @@ public class Pasajero {
 
 	/**
 	 * Sets the value of the tipoTarifa property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setTipoTarifa(JAXBElement<String> value) {
 		this.tipoTarifa = (value);

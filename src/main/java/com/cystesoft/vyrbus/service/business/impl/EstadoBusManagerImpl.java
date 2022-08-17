@@ -25,7 +25,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class EstadoBusManagerImpl implements EstadoBusManager {
 	private EstadoBusDAO estadoBusDAO;
-	
+
 	/**
 	 * @return the estadoBusDAO
 	 */
@@ -73,16 +73,16 @@ public class EstadoBusManagerImpl implements EstadoBusManager {
 	@Transactional
 	public void guardar(EstadoBus estadoBus) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", estadoBus.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getEstadoBusDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la denominación*/
 			if(resultDenominacion.size()>0)
 				throw new DenominacionDuplicadaException();
-						
+
 			getEstadoBusDAO().guardar(estadoBus);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(Exception ex){
@@ -97,19 +97,19 @@ public class EstadoBusManagerImpl implements EstadoBusManager {
 	@Transactional
 	public void actualizar(EstadoBus estadoBus) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", estadoBus.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getEstadoBusDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la denominación*/
-			for(int r = 0; r < resultDenominacion.size(); r ++) {
-				EstadoBus oestadoBus = (EstadoBus) resultDenominacion.get(r);
+			for (Object element : resultDenominacion) {
+				EstadoBus oestadoBus = (EstadoBus) element;
 					if (!(oestadoBus.getId() == estadoBus.getId()))
 						throw new DenominacionDuplicadaException();
 				}
-				
+
 			getEstadoBusDAO().actualizar(estadoBus);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(Exception ex){

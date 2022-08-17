@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 12/09/2012
  */
@@ -36,7 +36,7 @@ public class TipoItinerarioDAOImpl extends GenericDAOImpl implements TipoItinera
 	public TipoItinerario buscarPorId(Long id) {
 		return (TipoItinerario) super.findById(TipoItinerario.class, id);
 	}
-	
+
 	@Override
 	public void guardar(TipoItinerario tipoItinerario) {
 		super.save(tipoItinerario);
@@ -51,6 +51,6 @@ public class TipoItinerarioDAOImpl extends GenericDAOImpl implements TipoItinera
 	public void inactivar(Long id) {
 		super.inactivate(TipoItinerario.class, id);
 	}
-	
+
 
 }

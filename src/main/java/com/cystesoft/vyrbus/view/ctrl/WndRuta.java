@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 02/05/2012
  */
@@ -52,22 +52,22 @@ public class WndRuta extends WndOpcionesMantenimiento {
 	private Doublebox dbKilometros;
 	private Doublebox spHorasViaje;
 	private Doublebox itPuntaje;
-	
+
 	private Ruta oRuta=null;
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
 
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IBase#onCreate()
 	 */
 	@Override
-	public void onCreate() throws Exception {	
+	public void onCreate() throws Exception {
 		UtilData.cargarDataCombo(cboLocalidadOrigen, Localidad.class, false);
 		UtilData.cargarDataCombo(cboLocalidadDestino, Localidad.class, false);
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("localidadOrigen");
-		
+
 		spHorasViaje.setLocale(Locale.US);
 		dbKilometros.setLocale(Locale.US);
 	}
@@ -83,7 +83,7 @@ public class WndRuta extends WndOpcionesMantenimiento {
 		spHorasViaje = (Doublebox) getFellow("spHorasViaje");
 		itPuntaje = (Doublebox) getFellow("itPuntaje");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onNew()
 	 */
@@ -100,13 +100,13 @@ public class WndRuta extends WndOpcionesMantenimiento {
 	@Override
 	public void onSearch() throws Exception {
 		final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
-		
+
 		oWndFiltrar.addParameter("1. Origen", Localidad.class);
 		oWndFiltrar.addParameter("2. Destino", Localidad.class);
-		
+
 		this.appendChild(oWndFiltrar);
 		oWndFiltrar.setMode("modal");
-		
+
 		oWndFiltrar.addEventListener(com.cystesoft.vyrbus.view.ui.Events.ON_FILTER, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -115,20 +115,20 @@ public class WndRuta extends WndOpcionesMantenimiento {
 					criteriosBusqueda.remove("origen");
 				else
 					criteriosBusqueda.put("origen", localidadOrigen.getDenominacion());
-				
+
 				Localidad localidadDestino = (Localidad) oWndFiltrar.getParameterValue("2. Destino");
 				if(localidadDestino==null)
 					criteriosBusqueda.remove("destino");
 				else
 					criteriosBusqueda.put("destino", localidadDestino.getDenominacion());
-				
+
 	        	String estadoRegistro = Constantes.VALUE_ACTIVO;
 	        	criteriosBusqueda.put("estadoRegistro", estadoRegistro);
 	        	listarRegistros(ServiceLocator.getRutaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 			}
-			
+
 		});
-				
+
 	}
 
 
@@ -138,7 +138,7 @@ public class WndRuta extends WndOpcionesMantenimiento {
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getRutaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getRutaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
 	}
 
@@ -163,7 +163,7 @@ public class WndRuta extends WndOpcionesMantenimiento {
 		switch (action) {
 			case ACTION_NEW:
 				break;
-	
+
 			case ACTION_MODIFY:
 				this.mantenimientoRegistro(new Long(textboxId.getText()));
 				break;
@@ -181,7 +181,7 @@ public class WndRuta extends WndOpcionesMantenimiento {
 				throw new LocalidadNullException(LocalidadNullException.ORIGEN);
 			else if (!(cboLocalidadDestino.getSelectedItem().getValue() instanceof Localidad))
 				throw new LocalidadNullException(LocalidadNullException.DESTINO);
-			else if (dbKilometros.getText().equals(0) || dbKilometros.getText().equals("")) 
+			else if (dbKilometros.getText().equals(0) || dbKilometros.getText().equals(""))
 				throw new KilometrosNullException();
 			else if (spHorasViaje.getText().equals(""))
 				throw new HorasViajeNullException();
@@ -191,19 +191,19 @@ public class WndRuta extends WndOpcionesMantenimiento {
 			}
 			if (itPuntaje.getText()=="")
 				throw new RutaPuntajeNullException();
-						
+
 			if (action==ACTION_NEW)
 				oRuta = new Ruta();
-			
+
 			Localidad oLocalidadOrigen = new Localidad();
 			Localidad oLocalidadDestino = new Localidad();
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
-			
+
 			oLocalidadOrigen.setId(((Localidad) cboLocalidadOrigen.getSelectedItem().getValue()).getId());
 			oLocalidadOrigen.setDenominacion(cboLocalidadOrigen.getText());
 			oLocalidadDestino.setId(((Localidad) cboLocalidadDestino.getSelectedItem().getValue()).getId());
 			oLocalidadDestino.setDenominacion(cboLocalidadDestino.getText());
-			
+
 			oRuta.setId(id);
 			oRuta.setKilometros(dbKilometros.getValue());
 			oRuta.setHorasViaje(spHorasViaje.getValue());
@@ -220,14 +220,14 @@ public class WndRuta extends WndOpcionesMantenimiento {
 					ServiceLocator.getRutaManager().guardar(oRuta);
 					textboxId.setText(oRuta.getId().toString());
 					break;
-		
+
 				case ACTION_MODIFY:
 					UtilData.auditarRegistro(oRuta, true, getUsuario(), Executions.getCurrent());
 					ServiceLocator.getRutaManager().actualizar(oRuta);
 					break;
 			}
 			/*RECUPERA EL REGISTRO ACTUALIZADO O EL NUEVO*/
-	        criteriosBusqueda.remove("destino");	        		
+	        criteriosBusqueda.remove("destino");
 	        criteriosBusqueda.remove("origen");
 	        criteriosBusqueda.put("origen", oRuta.getOrigen());
 	        criteriosBusqueda.put("destino", oRuta.getDestino());
@@ -260,7 +260,7 @@ public class WndRuta extends WndOpcionesMantenimiento {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace(); throw new CancelaGrabacionException();
 		}
-						
+
 	}
 
 
@@ -291,7 +291,7 @@ public class WndRuta extends WndOpcionesMantenimiento {
 	@Override
 	public void onPrint(int tab) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 
@@ -301,7 +301,7 @@ public class WndRuta extends WndOpcionesMantenimiento {
 	@Override
 	public void onExport(int tab) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 
@@ -311,7 +311,7 @@ public class WndRuta extends WndOpcionesMantenimiento {
 	@Override
 	public void onHelp() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 
@@ -337,7 +337,7 @@ public class WndRuta extends WndOpcionesMantenimiento {
 		Listcell cell=null;
 		int x=0;
 		Util.limpiarListbox(listboxLista);
-		
+
 		for(Ruta ruta: lstRegistros){
 			x++;
 			item=new Listitem();
@@ -354,7 +354,7 @@ public class WndRuta extends WndOpcionesMantenimiento {
 			cell=new Listcell(ruta.getHorasViaje().toString());
 			cell.setStyle("font-size:11px !important; text-align:right");
 			item.appendChild(cell);
-			
+
 			item.setValue(ruta);
 			listboxLista.appendChild(item);
 		}
@@ -371,7 +371,7 @@ public class WndRuta extends WndOpcionesMantenimiento {
 		Util.seleccionarValorItemCombo(Localidad.class, cboLocalidadDestino, oRuta.getLocalidadDestino().getId());
 	}
 
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.IOpcionesMantenimiento#onClose()
 	 */

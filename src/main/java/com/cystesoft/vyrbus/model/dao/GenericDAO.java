@@ -33,7 +33,7 @@ public interface GenericDAO {
     /**
      * Busca de acuerdo a los criterios enviados, utiliza un objeto Criteria.
      * @param oClass			: Clase en la cual se buscara.
-     * @param campo				: Alias del campo de la tabla en el cual se realizara la busqueda. 
+     * @param campo				: Alias del campo de la tabla en el cual se realizara la busqueda.
      * @param criterios			: condiciones que debera cumplir el alias.
      * @param criteriosOrdenar	: Criterios a utilizar para ordenar la información.
      * @param estadoRegistro	: Estado del Registro Activo o inactivo.

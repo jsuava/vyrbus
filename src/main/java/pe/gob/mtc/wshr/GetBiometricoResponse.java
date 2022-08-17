@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -24,8 +24,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "getBiometricoResult" })
@@ -36,9 +36,9 @@ public class GetBiometricoResponse {
 
 	/**
 	 * Gets the value of the getBiometricoResult property.
-	 * 
+	 *
 	 * @return possible object is {@link ResultBiometrico }
-	 * 
+	 *
 	 */
 	public ResultBiometrico getGetBiometricoResult() {
 		return getBiometricoResult;
@@ -46,10 +46,10 @@ public class GetBiometricoResponse {
 
 	/**
 	 * Sets the value of the getBiometricoResult property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link ResultBiometrico }
-	 * 
+	 *
 	 */
 	public void setGetBiometricoResult(ResultBiometrico value) {
 		this.getBiometricoResult = value;

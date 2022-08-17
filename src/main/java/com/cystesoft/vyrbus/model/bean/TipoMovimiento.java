@@ -11,7 +11,7 @@ public class TipoMovimiento extends GenericBean implements java.io.Serializable 
 	private Integer id;
 	private String denominacion;
 	private String abreviatura;
-	
+
 	public TipoMovimiento() {
 	}
 

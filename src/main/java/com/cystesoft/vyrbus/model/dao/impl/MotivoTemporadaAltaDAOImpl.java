@@ -8,7 +8,7 @@ import com.cystesoft.vyrbus.model.bean.MotivoTemporadaAlta;
 import com.cystesoft.vyrbus.model.dao.MotivoTemporadaAltaDAO;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */

@@ -10,11 +10,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -28,8 +28,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "fechaProgramacion", "localidadEmbarque",
@@ -46,10 +46,10 @@ public class ObtenerHorarios {
 
 	/**
 	 * Gets the value of the fechaProgramacion property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getFechaProgramacion() {
 		return fechaProgramacion;
@@ -57,11 +57,11 @@ public class ObtenerHorarios {
 
 	/**
 	 * Sets the value of the fechaProgramacion property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setFechaProgramacion(JAXBElement<String> value) {
 		this.fechaProgramacion = (value);
@@ -69,10 +69,10 @@ public class ObtenerHorarios {
 
 	/**
 	 * Gets the value of the localidadEmbarque property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getLocalidadEmbarque() {
 		return localidadEmbarque;
@@ -80,11 +80,11 @@ public class ObtenerHorarios {
 
 	/**
 	 * Sets the value of the localidadEmbarque property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setLocalidadEmbarque(JAXBElement<String> value) {
 		this.localidadEmbarque = (value);
@@ -92,10 +92,10 @@ public class ObtenerHorarios {
 
 	/**
 	 * Gets the value of the localidadDesembarque property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getLocalidadDesembarque() {
 		return localidadDesembarque;
@@ -103,11 +103,11 @@ public class ObtenerHorarios {
 
 	/**
 	 * Sets the value of the localidadDesembarque property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setLocalidadDesembarque(JAXBElement<String> value) {
 		this.localidadDesembarque = (value);

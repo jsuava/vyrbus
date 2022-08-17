@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 17/09/2012
  */
@@ -49,7 +49,7 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 //						throw new EspecieValoradaNotAvailableException();
 //					}
 //				}
-//			}		
+//			}
  			return controlEspecies;
 //		}catch(EspecieValoradaNotAvailableException evnaex){
 //			throw new EspecieValoradaNotAvailableException();
@@ -72,12 +72,12 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 	 */
 	@Override
 	public int actualizar(ControlEspecieValorada controlEspecieValorada)throws Exception {
-			
+
 		/*Gurada el historico*/
 		HistoricoControlEspecieValoradaID hControlEspecieValoradaID= new HistoricoControlEspecieValoradaID();
 		hControlEspecieValoradaID.setIdTipoComprobante(controlEspecieValorada.getTipoComprobante().getId());
 		hControlEspecieValoradaID.setIdUsuarioHardware(controlEspecieValorada.getUsuarioHardware().getId());
-		
+
 		HistoricoControlEspecieValorada hControlEspecieValorada= new HistoricoControlEspecieValorada();
 		hControlEspecieValorada.setHistoricoControlEspecieValoradaID(hControlEspecieValoradaID);
 		hControlEspecieValorada.setTipoComprobante(controlEspecieValorada.getTipoComprobante());
@@ -92,9 +92,9 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 		hControlEspecieValorada.setIpInsercion(controlEspecieValorada.getIpInsercion());
 		hControlEspecieValorada.setIpModificacion(controlEspecieValorada.getIpModificacion());
 		ServiceLocator.getHistoricoControlEspecieValoradaManager().guardar(hControlEspecieValorada);
-		
+
 		super.update(controlEspecieValorada);
-		
+
 		return Constantes.CORRECT;
 	}
 
@@ -119,8 +119,8 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 				"WHERE tipoComprobante.id="+idTipCom+" AND usuarioHardware.id="+idUsuHar+" AND " +
 				"serie='"+serie+"' AND estadoRegistro='"+Constantes.VALUE_ACTIVO+"' ";
 		log.info(hql);
-		
-		return getSession().createQuery(hql).executeUpdate();		
+
+		return getSession().createQuery(hql).executeUpdate();
 	}
 
 	@Override
@@ -129,11 +129,11 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 					"WHERE tipoComprobante.id="+controlEspecieValoradaID.getIdTipoComprobante()+" AND usuarioHardware.id="+controlEspecieValoradaID.getIdUsuarioHardware()+"  " +
 					" AND  estadoRegistro='"+ Constantes.VALUE_ACTIVO+ "' ";
 		log.info(hql);
-		
+
 		getSession().createQuery(hql).executeUpdate();
-		
+
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.ControlEspecieValoradaDAO#buscarEspecieValoradas(java.lang.Integer, java.lang.Integer)
@@ -149,7 +149,7 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 					"INNER JOIN VRMTIPCOM TC ON (TC.TIPCOM_ID=CEV.TIPCOM_ID) " +
 					"WHERE CEV.C_ESTREG='A' " +
 						"AND A.TIPAGE_ID="+Constantes.ID_TIPAGE_TEPSA+" "; //Solo recupera los de TIPO AGENCIA TEPSA, mas no agencias de viaje, corporativos, ect.
-						  
+
 		if(idAgencia!=null)
 			sql+=" AND A.AGENCIA_ID="+idAgencia;
 		if(idTipoComprobante!=null)
@@ -157,23 +157,23 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 		if(idUsuarioHarware!=null)
 			sql+=" AND CEV.USUHARD_ID="+idUsuarioHarware;
 		sql+=" ORDER BY A.C_NOMCOR, TC.C_DENOMINACION";
-		
+
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<ControlEspecieValorada>lstResul= new ArrayList<ControlEspecieValorada>();
-		
+		List<ControlEspecieValorada>lstResul= new ArrayList<>();
+
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[])result.get(i);
-			
+
 			ControlEspecieValorada controlEspecieValorada= new ControlEspecieValorada();
 			ControlEspecieValoradaID controlEspecieValoradaID=new ControlEspecieValoradaID();
 			UsuarioHardware usuarioHardware= new UsuarioHardware();
 			Agencia agencia= new Agencia();
 			TipoComprobante tipoComprobante=new TipoComprobante();
-			
+
 			CanalVenta canalVenta=new CanalVenta();
 			canalVenta.setId(((BigDecimal)obj[13]).intValue());
-			
+
 			tipoComprobante.setId(((BigDecimal)obj[0]).intValue());
 			tipoComprobante.setDenominacion(obj[1].toString());
 			controlEspecieValorada.setSerie(obj[4].toString());
@@ -188,7 +188,7 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 			usuarioHardware.setCanalVenta(canalVenta);
 			controlEspecieValoradaID.setIdTipoComprobante(tipoComprobante.getId());
 			controlEspecieValoradaID.setIdUsuarioHardware(usuarioHardware.getId());
-					
+
 			controlEspecieValorada.setControlEspecieValoradaID(controlEspecieValoradaID);
 			controlEspecieValorada.setTipoComprobante(tipoComprobante);
 			controlEspecieValorada.setUsuarioHardware(usuarioHardware);
@@ -197,12 +197,12 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 			controlEspecieValorada.setIpInsercion(obj[12]!=null? obj[12].toString():" ");
 			controlEspecieValorada.setFormato(((BigDecimal)obj[14]).intValue());
 			controlEspecieValorada.setSecuenciador(obj[15]!=null?obj[15].toString():"");
-						
-			lstResul.add(controlEspecieValorada);	
+
+			lstResul.add(controlEspecieValorada);
 		}
 		return lstResul;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.ControlEspecieValoradaDAO#validaEVOtrasCajas(java.lang.Integer, java.lang.String, java.lang.String, java.lang.String)
@@ -214,11 +214,11 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 		List<ControlEspecieValorada>lstResul=
 				getSession().createQuery(hql).setString(0, serie).setLong(1, Long.valueOf(inicial)).setLong(2, Long.valueOf(Final))
 		.setString(3, serie).setLong(4, Long.valueOf(inicial)).setLong(5, Long.valueOf(Final)).list();
-		
+
 		return lstResul;
-		
+
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.ControlEspecieValoradaDAO#buscarEspecieValoradaPorAgencia(java.lang.Long)
@@ -231,11 +231,11 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 				"INNER JOIN vrmcanven cv ON cv.canven_id=uh.canven_id " +
 				"WHERE uh.agencia_id="+idAgencia+" AND cev.c_estreg='"+Constantes.VALUE_ACTIVO+"' " +
 				"ORDER BY uh.c_descripcion, cev.c_serie";
-		
+
 		log.info(sql);
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<ControlEspecieValorada> lstResult = new ArrayList<ControlEspecieValorada>();
+		List<ControlEspecieValorada> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[])result.get(i);
 			ControlEspecieValorada controlEspecieValorada = new ControlEspecieValorada();
@@ -253,13 +253,13 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 		}
 		return lstResult;
 	}
-	
+
 	@Override
 	public void generarSecuenciador(String nameSequence, Long inicio) {
 		String sql = "CREATE SEQUENCE "+nameSequence+ " START WITH "+inicio+" INCREMENT BY 1 NOMINVALUE NOMAXVALUE NOCACHE ORDER";
-		
+
 		log.info(sql);
-		
+
 		getSession().createSQLQuery(sql).executeUpdate();
 	}
 
@@ -273,7 +273,7 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 		Object object= getSession().createSQLQuery(sql).uniqueResult();
 		Long correlativo=((BigDecimal)object).longValue();
 		controlEspecieValorada.setCorrelativoActual(correlativo);
-		
+
 		return controlEspecieValorada;
 	}
 }

@@ -8,10 +8,10 @@ public class CentroCosto extends GenericBean implements Serializable {
 	private Concesionario concesionario;
 	private String responsable;
 	private String codigo;
-	private String denominacion;	
+	private String denominacion;
 	private TipoCentroCosto tipoCentroCosto;
-	
-	
+
+
 	/**
 	 * Constructor
 	 */
@@ -19,7 +19,7 @@ public class CentroCosto extends GenericBean implements Serializable {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	/**
 	 * @param id	: Identificador del centro de costo.
 	 */
@@ -40,7 +40,7 @@ public class CentroCosto extends GenericBean implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	/**
 	 * @return the concesionario
 	 */
@@ -53,7 +53,7 @@ public class CentroCosto extends GenericBean implements Serializable {
 	public void setConcesionario(Concesionario concesionario) {
 		this.concesionario = concesionario;
 	}
-	
+
 	/**
 	 * @return the codigo
 	 */
@@ -66,7 +66,7 @@ public class CentroCosto extends GenericBean implements Serializable {
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
-	
+
 	/**
 	 * @return the denominacion
 	 */
@@ -113,5 +113,5 @@ public class CentroCosto extends GenericBean implements Serializable {
 	 */
 	public void setTipoCentroCosto(TipoCentroCosto tipoCentroCosto) {
 		this.tipoCentroCosto = tipoCentroCosto;
-	}	
+	}
 }

@@ -11,11 +11,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -33,8 +33,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "codigoRuta", "servicioLlave",
@@ -60,10 +60,10 @@ public class ObtenerAsientosDisponibles {
 
 	/**
 	 * Gets the value of the codigoRuta property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getCodigoRuta() {
 		return codigoRuta;
@@ -71,11 +71,11 @@ public class ObtenerAsientosDisponibles {
 
 	/**
 	 * Sets the value of the codigoRuta property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setCodigoRuta(JAXBElement<String> value) {
 		this.codigoRuta = (value);
@@ -83,10 +83,10 @@ public class ObtenerAsientosDisponibles {
 
 	/**
 	 * Gets the value of the servicioLlave property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getServicioLlave() {
 		return servicioLlave;
@@ -94,11 +94,11 @@ public class ObtenerAsientosDisponibles {
 
 	/**
 	 * Sets the value of the servicioLlave property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setServicioLlave(JAXBElement<String> value) {
 		this.servicioLlave = (value);
@@ -106,10 +106,10 @@ public class ObtenerAsientosDisponibles {
 
 	/**
 	 * Gets the value of the programacionLlave property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getProgramacionLlave() {
 		return programacionLlave;
@@ -117,11 +117,11 @@ public class ObtenerAsientosDisponibles {
 
 	/**
 	 * Sets the value of the programacionLlave property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setProgramacionLlave(JAXBElement<String> value) {
 		this.programacionLlave = (value);
@@ -129,9 +129,9 @@ public class ObtenerAsientosDisponibles {
 
 	/**
 	 * Gets the value of the numeroServicio property.
-	 * 
+	 *
 	 * @return possible object is {@link Integer }
-	 * 
+	 *
 	 */
 	public Integer getNumeroServicio() {
 		return numeroServicio;
@@ -139,10 +139,10 @@ public class ObtenerAsientosDisponibles {
 
 	/**
 	 * Sets the value of the numeroServicio property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Integer }
-	 * 
+	 *
 	 */
 	public void setNumeroServicio(Integer value) {
 		this.numeroServicio = value;
@@ -150,10 +150,10 @@ public class ObtenerAsientosDisponibles {
 
 	/**
 	 * Gets the value of the agenciaEmbarqueLlave property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getAgenciaEmbarqueLlave() {
 		return agenciaEmbarqueLlave;
@@ -161,11 +161,11 @@ public class ObtenerAsientosDisponibles {
 
 	/**
 	 * Sets the value of the agenciaEmbarqueLlave property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setAgenciaEmbarqueLlave(JAXBElement<String> value) {
 		this.agenciaEmbarqueLlave = (value);
@@ -173,10 +173,10 @@ public class ObtenerAsientosDisponibles {
 
 	/**
 	 * Gets the value of the agenciaDesembarqueLlave property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getAgenciaDesembarqueLlave() {
 		return agenciaDesembarqueLlave;
@@ -184,11 +184,11 @@ public class ObtenerAsientosDisponibles {
 
 	/**
 	 * Sets the value of the agenciaDesembarqueLlave property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setAgenciaDesembarqueLlave(JAXBElement<String> value) {
 		this.agenciaDesembarqueLlave = (value);
@@ -196,10 +196,10 @@ public class ObtenerAsientosDisponibles {
 
 	/**
 	 * Gets the value of the unidadLlave property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getUnidadLlave() {
 		return unidadLlave;
@@ -207,11 +207,11 @@ public class ObtenerAsientosDisponibles {
 
 	/**
 	 * Sets the value of the unidadLlave property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setUnidadLlave(JAXBElement<String> value) {
 		this.unidadLlave = (value);

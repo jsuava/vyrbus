@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 07/08/2015
  * Hora			: 11:54:26
@@ -46,7 +46,7 @@ public interface TipoCambioDAO extends GenericDAO{
 	 */
 	public void guardar(TipoCambio tipoCambio)throws Exception;
 	/**
-	 *Actualiza una instancia de un objeto 
+	 *Actualiza una instancia de un objeto
 	 * @param tipoCambio
 	 */
 	public void actualizar(TipoCambio tipoCambio)throws Exception;

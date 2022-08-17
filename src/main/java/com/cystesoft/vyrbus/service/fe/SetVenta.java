@@ -11,11 +11,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -28,8 +28,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "token", "venta" })
@@ -43,10 +43,10 @@ public class SetVenta {
 
 	/**
 	 * Gets the value of the token property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getToken() {
 		return token;
@@ -54,21 +54,21 @@ public class SetVenta {
 
 	/**
 	 * Sets the value of the token property.
-	 * 
+	 *
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 * 
+	 *
 	 */
 	public void setToken(JAXBElement<String> value) {
-		this.token = ((JAXBElement<String>) value);
+		this.token = (value);
 	}
 
 	/**
 	 * Gets the value of the venta property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link Venta
 	 *         }{@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<Venta> getVenta() {
 		return venta;
@@ -76,13 +76,13 @@ public class SetVenta {
 
 	/**
 	 * Sets the value of the venta property.
-	 * 
+	 *
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link Venta
 	 *              }{@code >}
-	 * 
+	 *
 	 */
 	public void setVenta(JAXBElement<Venta> value) {
-		this.venta = ((JAXBElement<Venta>) value);
+		this.venta = (value);
 	}
 
 }

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto.
  * Fecha		: 09/09/2013
  */
@@ -24,5 +24,5 @@ public class HistoricoControlEspecieValoradaDAOImpl extends GenericDAOImpl imple
 		super.save(historicoControlEspecieValorada);
 	}
 
-	
+
 }

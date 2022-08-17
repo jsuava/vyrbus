@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class LineaCreditoCliente extends GenericBean {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Long Id;
 	private CarteraCliente carteraCliente;
 	private TipoCobranza tipoCobranza;
@@ -21,11 +21,11 @@ public class LineaCreditoCliente extends GenericBean {
 	private String esCanje;
 	private String esComisionable;
 	private String motivo;
-	
-	
+
+
 	/*NO MAPEADOS*/
 	private String tipoCliente;
-	
+
 	public Long getId() {
 		return Id;
 	}
@@ -140,6 +140,6 @@ public class LineaCreditoCliente extends GenericBean {
 	public void setMotivo(String motivo) {
 		this.motivo = motivo;
 	}
-	
+
 
 }

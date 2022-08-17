@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 24/04/2013
  */
@@ -28,14 +28,14 @@ import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
 @SuppressWarnings("unused")
 public class WndSolicitudEspecieValorada extends WndOpcionesMantenimiento implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Datebox dbxFecha;
 	private Combobox cmbAgencia;
 	private Combobox cmbTipoComprobante;
 	private Intbox ibxSerie;
 	private Intbox ibxCantidad;
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
 	 */
@@ -47,7 +47,7 @@ public class WndSolicitudEspecieValorada extends WndOpcionesMantenimiento implem
 		ibxSerie=(Intbox)this.getFellow("ibxSerie");
 		ibxCantidad=(Intbox)this.getFellow("ibxCantidad");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
@@ -55,7 +55,7 @@ public class WndSolicitudEspecieValorada extends WndOpcionesMantenimiento implem
 	public void onCreate() throws Exception {
 		UtilData.cargarDataCombo(cmbAgencia, Agencia.class, false);
 		UtilData.cargarDataCombo(cmbTipoComprobante, TipoComprobante.class, false);
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -66,7 +66,7 @@ public class WndSolicitudEspecieValorada extends WndOpcionesMantenimiento implem
 		dbxFecha.setValue(Constantes.FORMAT_DATE.parse(new MyTime().dateServer()));
 		Util.seleccionarValorItemCombo(Agencia.class, cmbAgencia, getAgencia().getId());
 		cmbTipoComprobante.setSelectedIndex(0);
-		
+
 		dbxFecha.setDisabled(true);
 		cmbAgencia.setDisabled(true);
 	}
@@ -77,7 +77,7 @@ public class WndSolicitudEspecieValorada extends WndOpcionesMantenimiento implem
 	@Override
 	public void onSearch() throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -86,7 +86,7 @@ public class WndSolicitudEspecieValorada extends WndOpcionesMantenimiento implem
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		// TODO Auto-generated method tub
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -95,7 +95,7 @@ public class WndSolicitudEspecieValorada extends WndOpcionesMantenimiento implem
 	@Override
 	public void onModify(int tab) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -104,7 +104,7 @@ public class WndSolicitudEspecieValorada extends WndOpcionesMantenimiento implem
 	@Override
 	public void onCancel(int action) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -113,7 +113,7 @@ public class WndSolicitudEspecieValorada extends WndOpcionesMantenimiento implem
 	@Override
 	public void onSave(int action) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -122,7 +122,7 @@ public class WndSolicitudEspecieValorada extends WndOpcionesMantenimiento implem
 	@Override
 	public void onDelete(int tab) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -131,7 +131,7 @@ public class WndSolicitudEspecieValorada extends WndOpcionesMantenimiento implem
 	@Override
 	public void onPrint(int tab) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -140,7 +140,7 @@ public class WndSolicitudEspecieValorada extends WndOpcionesMantenimiento implem
 	@Override
 	public void onExport(int tab) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -149,7 +149,7 @@ public class WndSolicitudEspecieValorada extends WndOpcionesMantenimiento implem
 	@Override
 	public void onHelp() throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -158,9 +158,9 @@ public class WndSolicitudEspecieValorada extends WndOpcionesMantenimiento implem
 	@Override
 	public void onChangeTab(int tab) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.zkoss.zul.Window#onClose()
 	 */
@@ -168,6 +168,6 @@ public class WndSolicitudEspecieValorada extends WndOpcionesMantenimiento implem
 	public void onClose() {
 		closeTabWindow();
 	}
-	
+
 
 }

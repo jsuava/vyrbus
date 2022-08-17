@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 07/10/2016
  * Hora			: 15:32:10
@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class XmlVentaPasaje implements Serializable{
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private XmlConfigPrint configPrint;
@@ -83,5 +83,5 @@ public class XmlVentaPasaje implements Serializable{
 	public void setLiquidacion(XmlLiquidacion liquidacion) {
 		this.liquidacion = liquidacion;
 	}
-	
+
 }

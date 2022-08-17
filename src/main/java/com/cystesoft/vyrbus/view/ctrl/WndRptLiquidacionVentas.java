@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 11 abr. 2022
  * Hora			: 14:56:10
@@ -42,10 +42,10 @@ import com.cystesoft.vyrbus.view.ui.WndIFrame;
 public class WndRptLiquidacionVentas extends WndBase{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private Datebox dtbxFechaInicio;
 //	private Datebox dtbxFechaFin;
 	private Combobox cmbAgencia;
@@ -54,7 +54,7 @@ public class WndRptLiquidacionVentas extends WndBase{
 //	private Button btnDetalleVentas;
 //	private Button btnDetalleGastos;
 //	private Button btnResumenSaldos;
-	
+
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.view.ui.WndBase#initComponents()
 	 */
@@ -62,7 +62,7 @@ public class WndRptLiquidacionVentas extends WndBase{
 	public void initComponents() {
 		// TODO Auto-generated method stub
 		super.initComponents();
-		
+
 		dtbxFechaInicio = (Datebox) this.getFellow("dtxFechaInicio");
 //		dtbxFechaFin = (Datebox) this.getFellow("dtbxFechaFin");
 		cmbAgencia = (Combobox) this.getFellow("cmbAgencia");
@@ -71,10 +71,10 @@ public class WndRptLiquidacionVentas extends WndBase{
 //		btnDetalleVentas = (Button) this.getFellow("btnDetalleVentas");
 //		btnDetalleGastos = (Button) this.getFellow("btnDetalleGastos");
 //		btnResumenSaldos = (Button) this.getFellow("btnResumenSaldos");
-		
+
 	}
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.view.ui.WndBase#onCreate()
 	 */
@@ -82,17 +82,17 @@ public class WndRptLiquidacionVentas extends WndBase{
 	public void onCreate() throws Exception {
 		// TODO Auto-generated method stub
 		super.onCreate();
-		
+
 		dtbxFechaInicio.setValue(new Date());
 //		dtbxFechaFin.setValue(new Date());
-		
+
 //		btnResumenSaldos.setDisabled(true);
 //		btnDetalleVentas.setDisabled(true);
 //		btnDetalleGastos.setDisabled(true);
-		
+
 		UtilData.cargarDataCombo(cmbAgencia, Agencia.class, false);
-	}		
-	
+	}
+
 	/**
 	 * Evento Click del botón buscar
 	 */
@@ -102,43 +102,43 @@ public class WndRptLiquidacionVentas extends WndBase{
 //			btnDetalleVentas.setDisabled(true);
 //			btnDetalleGastos.setDisabled(true);
 //			btnResumenSaldos.setDisabled(true);
-			
+
 			if(!(cmbAgencia.getSelectedItem().getValue() instanceof Agencia)) {
 				DlgMessage.information(Messages.getString("Generales.information.noSeleccionoAgencia"),cmbAgencia);
 				return;
 			}
-			
+
 			String fechaInicial = Constantes.FORMAT_DATE.format(dtbxFechaInicio.getValue());
 			Integer agenciaId = ((Agencia)cmbAgencia.getSelectedItem().getValue()).getId();
-			
+
 			//Busca las liquidaciones de PASAJES.
 			List<Liquidacion> resultPasajes = ServiceLocator.getLiquidacionManager().buscarLiquidacion(fechaInicial, fechaInicial, agenciaId, null, null);
-			
+
 			//Busca las liquidaciones de CARGA
-			TreeMap<String, Liquidacion> resultCarga = ServiceLocator.getTranscarWebManager().buscarLiquidacionCounter(fechaInicial, fechaInicial, agenciaId, null); 
-			
+			TreeMap<String, Liquidacion> resultCarga = ServiceLocator.getTranscarWebManager().buscarLiquidacionCounter(fechaInicial, fechaInicial, agenciaId, null);
+
 			//Carga el listado de liquidaciones
 			cargarListaLiquidaciones(resultPasajes, resultCarga);
-			
+
 			//Valida lista de resultados par activar los controles de reportes
 //			if(ltbxLiquidacionVentas.getSelectedItems().size()>0) {
 //				btnDetalleVentas.setDisabled(false);
 //				btnDetalleGastos.setDisabled(false);
 //				btnResumenSaldos.setDisabled(false);
 //			}
-						
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Evento Click del botón Detalle ventas
 	 */
 	public void viewDetalleVentas(Liquidacion liquidacion) {
 		try {
-			
+
 			String nameFile = CreateDocument.creaRptLiquidacionByDetalleVentas(liquidacion);
 			/*Carga el iframe*/
 			String src=Constantes.URL_FORMATOS_LIQUIDACION +Constantes.CLAVE_PAHT+ nameFile;
@@ -147,16 +147,16 @@ public class WndRptLiquidacionVentas extends WndBase{
 			iFrame.setWidth("810");
 			iFrame.setheight("600");
 			iFrame.loadiframe();
-			
+
 			appendChild(iFrame);
 			iFrame.setMode("modal");
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Carga la vista preliminar del reporte Control Especies Valoradas
 	 * @param liquidacionPasajes
@@ -164,7 +164,7 @@ public class WndRptLiquidacionVentas extends WndBase{
 	 */
 	private void viewCrtolEspeciesValoradas(Liquidacion liquidacion) {
 try {
-			
+
 			String nameFile = CreateDocument.creaRptLiquidacionByEspecieValorada(liquidacion);
 			/*Carga el iframe*/
 			String src=Constantes.URL_FORMATOS_LIQUIDACION +Constantes.CLAVE_PAHT+ nameFile;
@@ -173,16 +173,16 @@ try {
 			iFrame.setWidth("810");
 			iFrame.setheight("600");
 			iFrame.loadiframe();
-			
+
 			appendChild(iFrame);
 			iFrame.setMode("modal");
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
-		}		
+		}
 	}
-	
+
 	/**
 	 * Evento Click del botón Resumen de Saldos
 	 */
@@ -194,7 +194,7 @@ try {
 			}else if(ltbxLiquidacionVentas.getItemCount()>0) {
 				Agencia agencia = (Agencia) cmbAgencia.getSelectedItem().getValue();
 				String fechaLiquidacion = Constantes.FORMAT_DATE.format(dtbxFechaInicio.getValue());
-				
+
 				String nameFile = CreateDocument.creaRptLiquidacionByResumenSaldos(ltbxLiquidacionVentas, agencia, fechaLiquidacion);
 				/*Carga el iframe*/
 				String src=Constantes.URL_FORMATOS_LIQUIDACION +Constantes.CLAVE_PAHT+ nameFile;
@@ -203,34 +203,34 @@ try {
 				iFrame.setWidth("810");
 				iFrame.setheight("600");
 				iFrame.loadiframe();
-				
+
 				appendChild(iFrame);
-				iFrame.setMode("modal");				
+				iFrame.setMode("modal");
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Carga el listado de liquidaciones
 	 * @param liquidaciones : Listado de liquidaciones a cargar
 	 * @throws Exception
 	 */
 	private void cargarListaLiquidaciones(List<Liquidacion> liquidaciones, TreeMap<String, Liquidacion> liquidacionesCarga)throws Exception{
-		
+
 		for(Liquidacion liquidacion: liquidaciones) {
 			Listitem item = new Listitem();
 			Listcell cell =new Listcell(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()));
 			cell.setStyle("font-size:12px !important");
-			item.appendChild(cell);			
+			item.appendChild(cell);
 			cell =new Listcell(liquidacion.getAgencia().toString());
 			item.appendChild(cell);
 			cell =new Listcell(liquidacion.getUsuario().toString());
 			item.appendChild(cell);
-			cell =new Listcell(liquidacion.getUsuario().getLogin());			
+			cell =new Listcell(liquidacion.getUsuario().getLogin());
 			item.appendChild(cell);
 			cell = new Listcell();
 			if (liquidacion.getestadoLiquidacion().equals(Constantes.LIQUI_ESTA_CERRADO)) {
@@ -239,11 +239,11 @@ try {
 			}else
 				cell = new Listcell(Constantes.LIQUI_ESTA_ABIERTO_LABEL);
 			item.appendChild(cell);
-						
+
 			String key = Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
 			key += liquidacion.getAgencia().getId().toString();
 			key += liquidacion.getUsuario().getLogin();
-			Liquidacion liquidacionCarga = liquidacionesCarga.get(key);			
+			Liquidacion liquidacionCarga = liquidacionesCarga.get(key);
 			//Estado liquidacion - Carga
 			cell = new Listcell();
 			if(liquidacionCarga!=null) {
@@ -256,12 +256,12 @@ try {
 				cell = new Listcell("-------------");
 				cell.setTooltiptext("No se encontró liquidación de Carga");
 			}
-			
+
 			item.appendChild(cell);
-									
+
 			cell = new Listcell();
 			Hbox hbox=new Hbox();
-			hbox.setAlign("center");			
+			hbox.setAlign("center");
 			/*Detalle Ventas*/
 			Toolbarbutton toolbarbutton =new Toolbarbutton();
 			toolbarbutton.setAttribute(Liquidacion.class.getName(), liquidacion);
@@ -277,7 +277,7 @@ try {
 				}
 			});
 			hbox.appendChild(toolbarbutton);
-			
+
 			/*Control especies valoradas*/
 			toolbarbutton =new Toolbarbutton();
 			toolbarbutton.setAttribute(Liquidacion.class.getName(), liquidacion);
@@ -293,10 +293,10 @@ try {
 				}
 			});
 			hbox.appendChild(toolbarbutton);
-							
+
 			cell.appendChild(hbox);
 			item.appendChild(cell);
-			
+
 			liquidacion.setLiquidacionCarga(liquidacionCarga);
 			item.setValue(liquidacion);
 			ltbxLiquidacionVentas.appendChild(item);

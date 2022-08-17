@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 30/04/2012
  */
@@ -46,18 +46,18 @@ public class WndGrupoMantenimiento extends WndOpcionesMantenimiento {
 	private Textbox txtDenominacion;
 	private Textbox txtCodigo;
 	private Textbox txtNombreCorto;
-	
+
 	private GrupoMantenimiento oGrupoMantenimiento = null;
 
-	private	TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+	private	TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.IBase#onCreate()
 	 */
 	@Override
 	public void onCreate() {
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
 	}
 
@@ -70,7 +70,7 @@ public class WndGrupoMantenimiento extends WndOpcionesMantenimiento {
 		txtCodigo = (Textbox) getFellow("txtCodigo");
 		txtNombreCorto = (Textbox) getFellow("txtNombreCorto");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onNew()
 	 */
@@ -125,7 +125,7 @@ public class WndGrupoMantenimiento extends WndOpcionesMantenimiento {
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getGrupoMantenimientoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getGrupoMantenimientoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
 	}
 
@@ -167,11 +167,11 @@ public class WndGrupoMantenimiento extends WndOpcionesMantenimiento {
 				throw new CodigoNullException();
 			else if (txtNombreCorto.getText().trim().equals(""))
 				throw new NombreCortoNullException();
-			
-			
+
+
 			if (action==ACTION_NEW)
 				oGrupoMantenimiento = new GrupoMantenimiento();
-			
+
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
 
 			oGrupoMantenimiento.setId(id);
@@ -199,7 +199,7 @@ public class WndGrupoMantenimiento extends WndOpcionesMantenimiento {
 			criteriosBusqueda.put("denominacion", oGrupoMantenimiento.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			listarRegistros(ServiceLocator.getGrupoMantenimientoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-			
+
 		}catch (DenominacionNullException dnex){
 			DlgMessage.information(Messages.getString("Generales.information.noIngresoDenominacion"),txtDenominacion);
 			throw new CancelaGrabacionException();
@@ -221,7 +221,7 @@ public class WndGrupoMantenimiento extends WndOpcionesMantenimiento {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace(); throw new CancelaGrabacionException();
 		}
-				
+
 	}
 
 	/* (non-Javadoc)
@@ -294,11 +294,11 @@ public class WndGrupoMantenimiento extends WndOpcionesMantenimiento {
 	}
 
 	private void listarRegistros(ArrayList<GrupoMantenimiento> lstRegistros) {
-		ArrayList<Object> lstGruposMantenimiento = new ArrayList<Object>();
+		ArrayList<Object> lstGruposMantenimiento = new ArrayList<>();
 
 		for(int r = 0; r < lstRegistros.size(); r ++) {
 			GrupoMantenimiento oGrupoMantenimiento = lstRegistros.get(r);
-			ArrayList<Object> lstFila = new ArrayList<Object>();
+			ArrayList<Object> lstFila = new ArrayList<>();
 
 			lstFila.add(oGrupoMantenimiento.getId());
 			lstFila.add(r + 1);

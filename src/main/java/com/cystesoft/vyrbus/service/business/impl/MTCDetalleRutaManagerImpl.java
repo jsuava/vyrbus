@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 26/08/2014
  * Hora			: 09:17:41
@@ -22,7 +22,7 @@ import com.cystesoft.vyrbus.service.business.MTCDetalleRutaManager;
  */
 public class MTCDetalleRutaManagerImpl implements MTCDetalleRutaManager{
 	private MTCDetalleRutaDAO mtcDetalleRutaDAO;
-	
+
 	/**
 	 * @return the mtcDetalleRutaDAO
 	 */
@@ -35,8 +35,8 @@ public class MTCDetalleRutaManagerImpl implements MTCDetalleRutaManager{
 	public void setMtcDetalleRutaDAO(MTCDetalleRutaDAO mtcDetalleRutaDAO) {
 		this.mtcDetalleRutaDAO = mtcDetalleRutaDAO;
 	}
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.MTCDetalleRutaManager#buscarPorIdRuta(java.lang.Integer)
 	 */
@@ -81,7 +81,7 @@ public class MTCDetalleRutaManagerImpl implements MTCDetalleRutaManager{
 
 
 
-	
-	
+
+
 
 }

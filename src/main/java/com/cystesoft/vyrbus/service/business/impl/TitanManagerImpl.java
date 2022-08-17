@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 06/10/2014
  * Hora			: 10:55:24
@@ -43,7 +43,7 @@ public class TitanManagerImpl implements TitanManager {
 	 */
 	@Override
 	public TitanLiquidacionTurnoPasaje buscarLiquidacionTurnoPasajeByIdLiquidacion(Long idLiquidacionSisvyr) throws Exception {
-		
+
 		return getTitanDAO().buscarLiquidacionTurnoPasajeByIdLiquidacion(idLiquidacionSisvyr);
 	}
 	/* (non-Javadoc)
@@ -51,11 +51,11 @@ public class TitanManagerImpl implements TitanManager {
 	 */
 	@Override
 	public void actualizaLiquidacionTurnoPasajeByIdLiquidacion(TitanLiquidacionTurnoPasaje liquidacionTurnoPasaje)throws Exception {
-		
+
 		getTitanDAO().actualizaLiquidacionTurnoPasajeByIdLiquidacion(liquidacionTurnoPasaje);
 	}
-	
-	
+
+
 	/********* TRANSACIONES REFERIDAS AL USUARIO PERSONAL **********************/
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.TitanManager#buscarUsuarioPersonalPorLogin(java.lang.String)
@@ -70,7 +70,7 @@ public class TitanManagerImpl implements TitanManager {
 	@Override
 	public void guardarUsuarioPersonal(TitanUsuarioPersonal titanUsuarioPersonal)throws Exception {
 		// TODO Auto-generated method stub
-		getTitanDAO().guardarUsuarioPersonal(titanUsuarioPersonal);		
+		getTitanDAO().guardarUsuarioPersonal(titanUsuarioPersonal);
 	}
 
 	/********* TRANSACIONES REFERIDAS AL CLIENTE (T_PERSONAL) **********************/
@@ -147,8 +147,8 @@ public class TitanManagerImpl implements TitanManager {
 	public void guardaBaseHistorica(TitanComisionPersonaBase comsionPersonaBase)throws Exception {
 		getTitanDAO().guardaBaseHistorica(comsionPersonaBase);
 	}
-	
-	
+
+
 	/*****TRANSACCIONES REFERIDAS A LA VENTA DE PASAJEROS*/
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.TitanManager#buscarBoletoVentaPasaje(java.lang.String, java.lang.String, java.lang.Integer)

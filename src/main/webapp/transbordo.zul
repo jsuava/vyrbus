@@ -1,7 +1,7 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
 <window id="wndTransbordoPasajeros" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndTransbordo">
-	<panel id="panel" title="::: TRANSBORDO DE PASAJEROS :::" framable="true" width="805px" border="normal" closable="true" onClose="wndTransbordoPasajeros.closeTabWindow()">
+	<panel id="panel"  framable="true" width="805px" border="none"  onClose="wndTransbordoPasajeros.closeTabWindow()">
         <panelchildren>
         	<div>
 				<grid style="border: none">

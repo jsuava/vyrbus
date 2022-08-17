@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 01/06/2012
  */
@@ -52,13 +52,13 @@ public class WndSeleccionarUbigeo extends WndBase {
 	private Window oThisWindow = this;
 	@SuppressWarnings("rawtypes")
 	private EventListener oEventListenerFilter;
-	
+
 	public Textbox txtNombreUbigeo = new Textbox();
 	private Combobox cmbBuscarEn = new Combobox();
 	private Button btnBuscar = new Button();
 	private Button btnAceptar = new Button();
 	public Listbox lbxUbicacionGeografica = new Listbox();
-	
+
 	private final int BUSCAR_TODO_PAIS = 0;
 	private final int BUSCAR_DEPARTAMENTO = 1;
 	private final int BUSCAR_PROVINCIA = 2;
@@ -66,7 +66,7 @@ public class WndSeleccionarUbigeo extends WndBase {
 
 	private String idUbigeo;
 	private String ubicacionGeografica;
-	
+
 
 	/**
 	 * Constructor
@@ -147,9 +147,9 @@ public class WndSeleccionarUbigeo extends WndBase {
 		column= new Column();
 		column.setWidth("150px");
 		columns.appendChild(column);
-		
+
 		oGrid.appendChild(columns);
-		
+
 		EventListener<Event> selectedEventListener = new EventListener<Event>() {
 			@SuppressWarnings("unchecked")
 			@Override
@@ -160,30 +160,30 @@ public class WndSeleccionarUbigeo extends WndBase {
 						Ubigeo ubigeo=lbxUbicacionGeografica.getSelectedItem().getValue();
 						setIdUbigeo(ubigeo.getId());
 						setUbicacionGeografica(ServiceLocator.getUbigeoManager().ubicacionGeografica(getIdUbigeo()));
-						
+
 						oEventListenerFilter.onEvent(new Event(com.cystesoft.vyrbus.view.ui.Events.ON_SELECT));
 						oThisWindow.onClose();
 					}
 				}
 			}
 		};
-		
+
 //		lbxUbicacionGeografica.addEventListener(Events.ON_OK, new EventListener<Event>() {
 //			@Override
 //			public void onEvent(Event event) throws Exception {
 //				// TODO Auto-generated method stub
-//				
+//
 //			}
 //		});
-		
-		
+
+
 		Label label=new Label("Ubicación Gográfica : ");
 		label.setSclass("label-size11");
 		oRow.appendChild(label);
 
 		txtNombreUbigeo.setWidth("150px");
 		oRow.appendChild(txtNombreUbigeo);
-		
+
 		label=new Label("Buscar en : ");
 		label.setSclass("label-size11");
 		oRow.appendChild(label);
@@ -220,7 +220,7 @@ public class WndSeleccionarUbigeo extends WndBase {
 				try{
 //					if(txtNombreUbigeo.getText().trim().isEmpty())
 //						throw new UbigeoNullException();
-//					
+//
 //					TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
 //
 //					switch ((Integer) cmbBuscarEn.getSelectedItem().getValue()) {
@@ -240,7 +240,7 @@ public class WndSeleccionarUbigeo extends WndBase {
 //					criteriosOrdenar.add("nombreUbigeo");
 //					ArrayList<Ubigeo> lstUbigeosFiltrados = ServiceLocator.getUbigeoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
 //					listarUbigeos(lstUbigeosFiltrados);
-					
+
 					buscar();
 				}catch(UbigeoNullException ub){
 					DlgMessage.information(Messages.getString("WndSeleccionarUbigeo.information.nombreUbicacionNull"));
@@ -257,7 +257,7 @@ public class WndSeleccionarUbigeo extends WndBase {
 				try{
 //					if(txtNombreUbigeo.getText().trim().isEmpty())
 //						throw new UbigeoNullException();
-//					
+//
 //					TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
 //
 //					switch ((Integer) cmbBuscarEn.getSelectedItem().getValue()) {
@@ -287,17 +287,17 @@ public class WndSeleccionarUbigeo extends WndBase {
 				}
 			}
 		});
-		
+
 		oRow.appendChild(btnBuscar);
-		
+
 
 		//fila 2
 		oListheader.setLabel("#");
-		oListheader.setWidth("50px");oListheader.setStyle("color: #ffffff;"); 
-		oListheader2.setLabel("CODIGO");oListheader2.setWidth("70px");oListheader2.setStyle("color: #ffffff;"); 
-		oListheader3.setLabel("DEPARTAMENTO");oListheader3.setStyle("color: #ffffff;"); 
-		oListheader4.setLabel("PROVINCIA");oListheader4.setStyle("color: #ffffff;"); 
-		oListheader5.setLabel("DISTRITO");oListheader5.setStyle("color: #ffffff;"); 
+		oListheader.setWidth("50px");oListheader.setStyle("color: #ffffff;");
+		oListheader2.setLabel("CODIGO");oListheader2.setWidth("70px");oListheader2.setStyle("color: #ffffff;");
+		oListheader3.setLabel("DEPARTAMENTO");oListheader3.setStyle("color: #ffffff;");
+		oListheader4.setLabel("PROVINCIA");oListheader4.setStyle("color: #ffffff;");
+		oListheader5.setLabel("DISTRITO");oListheader5.setStyle("color: #ffffff;");
 		oListheader2.setSort("auto");
 		oListheader3.setSort("auto");
 		oListheader4.setSort("auto");
@@ -325,7 +325,7 @@ public class WndSeleccionarUbigeo extends WndBase {
 		Separator separator=new  Separator();
 		separator.setWidth("605px");
 		hbox.appendChild(separator);
-		
+
 		Button btnCancelar=new Button("Cancelar");
 		btnCancelar.setImage("resources/mp_cancelarEnabled.png");
 		btnCancelar.setClass("btnCommandM");
@@ -338,7 +338,7 @@ public class WndSeleccionarUbigeo extends WndBase {
 //		btnCancelar.setHeight("27px");
 //		btnCancelar.setStyle("cursor:pointer");
 		hbox.appendChild(btnCancelar);
-		
+
 		btnAceptar.setLabel("Aceptar");
 //		btnAceptar.setHeight("27px");
 		btnAceptar.setImage("resources/mp_aceptarEnabled.png");
@@ -347,7 +347,7 @@ public class WndSeleccionarUbigeo extends WndBase {
 		btnAceptar.addEventListener(Events.ON_CLICK, selectedEventListener);
 		hbox.appendChild(btnAceptar);
 
-		
+
 		oRows.appendChild(oRow);
 		oRows.appendChild(oRow2);
 
@@ -355,7 +355,7 @@ public class WndSeleccionarUbigeo extends WndBase {
 
 		appendChild(oGrid);
 		appendChild(hbox);
-		
+
 		this.setTitle(Messages.getString("System.title"));
 		this.setMaximizable(false);
 		this.setMinimizable(false);
@@ -374,8 +374,8 @@ public class WndSeleccionarUbigeo extends WndBase {
 	public void buscar()throws Exception{
 		if(txtNombreUbigeo.getText().trim().isEmpty())
 			throw new UbigeoNullException();
-		
-		TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+
+		TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 
 		switch ((Integer) cmbBuscarEn.getSelectedItem().getValue()) {
 			case BUSCAR_TODO_PAIS:
@@ -390,7 +390,7 @@ public class WndSeleccionarUbigeo extends WndBase {
 
 		criteriosBusqueda.put("nombreUbigeo", "%" + txtNombreUbigeo.getText().trim() + "%");
 		criteriosBusqueda.put("estadoRegistro", "A");
-		List<String> criteriosOrdenar = new ArrayList<String>();
+		List<String> criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("nombreUbigeo");
 		ArrayList<Ubigeo> lstUbigeosFiltrados = ServiceLocator.getUbigeoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
 		listarUbigeos(lstUbigeosFiltrados);
@@ -399,20 +399,20 @@ public class WndSeleccionarUbigeo extends WndBase {
 			lbxUbicacionGeografica.setFocus(true);
 		}
 	}
-	
+
 	private void listarUbigeos(ArrayList<Ubigeo> lstUbigeosFiltrados) throws Exception{
 		Listitem item=null;
 		Listcell cell=null;
 		int x=0;
 		Util.limpiarListbox(lbxUbicacionGeografica);
-		
+
 		for(Ubigeo ubigeo : lstUbigeosFiltrados){
 			if(!(ubigeo.getCodigoProvincia().equals("00")) && !(ubigeo.getCodigoDistrito().equals("00"))){
 				String ubicacionGeografica = ServiceLocator.getUbigeoManager().ubicacionGeografica(ubigeo.getId());
-				String departamento = ubicacionGeografica.split("/")[0].trim(); 
+				String departamento = ubicacionGeografica.split("/")[0].trim();
 				String provincia = ubicacionGeografica.split("/")[1].trim();
 				String distrito = ubicacionGeografica.split("/")[2].trim();
-				
+
 				x++;
 				item=new Listitem();
 				cell=new Listcell(String.valueOf(x));
@@ -427,7 +427,7 @@ public class WndSeleccionarUbigeo extends WndBase {
 				item.appendChild(cell);
 				cell=new Listcell(distrito);
 				item.appendChild(cell);
-				
+
 				item.addEventListener(Events.ON_OK, new EventListener<Event>() {
 					@SuppressWarnings("unchecked")
 					@Override
@@ -436,19 +436,19 @@ public class WndSeleccionarUbigeo extends WndBase {
 						Ubigeo ubigeo=lbxUbicacionGeografica.getSelectedItem().getValue();
 						setIdUbigeo(ubigeo.getId());
 						setUbicacionGeografica(ServiceLocator.getUbigeoManager().ubicacionGeografica(getIdUbigeo()));
-						
+
 						oEventListenerFilter.onEvent(new Event(com.cystesoft.vyrbus.view.ui.Events.ON_OK));
 						oThisWindow.onClose();
-					}					
+					}
 				});
-				
-				
+
+
 				item.setValue(ubigeo);
 				lbxUbicacionGeografica.appendChild(item);
 			}
 		}
 	}
-	
+
 	/**
 	 * @return Objeto idUbigeo.
 	 */

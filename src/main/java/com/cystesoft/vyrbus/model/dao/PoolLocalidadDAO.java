@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 01/09/2016
  * Hora			: 18:15:13
@@ -21,39 +21,39 @@ import com.cystesoft.vyrbus.model.bean.PoolLocalidad;
  */
 public interface PoolLocalidadDAO extends GenericDAO{
 	/**
-	 * 
+	 *
 	 * @param estado
 	 * @param criterioOrden
 	 * @return
 	 */
 	public ArrayList<PoolLocalidad> buscarPorEstadoRegistro(String estado, String criterioOrden);
 	/**
-	 * 
+	 *
 	 * @param criteriosBusqueda
 	 * @param criteriosOrdenar
 	 * @return
 	 */
 	public ArrayList<PoolLocalidad> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
 	/**
-	 * 
+	 *
 	 * @param id
 	 * @return
 	 */
 	public PoolLocalidad buscarPorId(Long id);
 	/**
-	 * 
+	 *
 	 * @param localidadIntegracion
 	 */
 	public void guardar(PoolLocalidad localidadIntegracion);
 	/**
-	 * 
+	 *
 	 * @param localidadIntegracion
 	 */
 	public void actualizar(PoolLocalidad localidadIntegracion);
 	/**
-	 * 
+	 *
 	 * @param id
 	 */
 	public void inactivar(Long id);
-	
+
 }

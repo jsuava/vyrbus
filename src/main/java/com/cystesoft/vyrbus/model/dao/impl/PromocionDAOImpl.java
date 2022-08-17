@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: Objeto que implementa los metodos de acceso a datos de la tabla Promociones VRTPROMOCION. 
+ * Descripción	: Objeto que implementa los metodos de acceso a datos de la tabla Promociones VRTPROMOCION.
  * Autor		: José Sullo Avalos
  * Fecha		: 17/04/2013
  */
@@ -11,8 +11,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.TreeMap;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
@@ -30,7 +30,7 @@ import com.cystesoft.vyrbus.service.util.Util;
  */
 @SuppressWarnings("unchecked")
 public class PromocionDAOImpl extends GenericDAOImpl implements PromocionDAO {
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.PromocionDAO#buscarporId(java.lang.Long)
 	 */
@@ -38,7 +38,7 @@ public class PromocionDAOImpl extends GenericDAOImpl implements PromocionDAO {
 	public Promocion buscarPorId(Long id) throws Exception {
 		return (Promocion)super.findById(Promocion.class, id);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.PromocionDAO#buscarPorX(java.util.TreeMap, java.util.List)
 	 */
@@ -46,7 +46,7 @@ public class PromocionDAOImpl extends GenericDAOImpl implements PromocionDAO {
 	public ArrayList<Promocion> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar) {
 		return (ArrayList<Promocion>)super.findByX(Promocion.class, criteriosBusqueda, criteriosOrdenar);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.PromocionDAO#buscarPorX(java.util.TreeMap, java.util.List, java.util.Date)
@@ -98,7 +98,7 @@ public class PromocionDAOImpl extends GenericDAOImpl implements PromocionDAO {
 				"FROM vrmpromocion " +
 				"WHERE c_cliente='"+idCliente+"' AND c_paxfre='*' AND c_estreg='"+estadoRegistro+"' " +
 						"AND to_date('"+fechaPartida+"','dd/mm/yyyy') BETWEEN d_fecini AND d_fecfin ";
-		
+
 		if(paxfre)
 			sql = sql + " UNION ALL " +
 					"SELECT promocion_id, c_denominacion, c_rutas, c_servicios, c_punven, c_canven, c_pasnue, c_canviapas, c_asientos, " +
@@ -107,9 +107,9 @@ public class PromocionDAOImpl extends GenericDAOImpl implements PromocionDAO {
 				"FROM vrmpromocion " +
 				"WHERE c_cliente='*' AND c_paxfre='S' AND c_estreg='"+estadoRegistro+"' " +
 						"AND to_date('"+fechaPartida+"','dd/mm/yyyy') BETWEEN d_fecini AND d_fecfin ";
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<Promocion> lstResult = new ArrayList<Promocion>();
+		List<Promocion> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[])result.get(i);
 			Promocion promocion = new Promocion();
@@ -143,7 +143,7 @@ public class PromocionDAOImpl extends GenericDAOImpl implements PromocionDAO {
 		}
 		return lstResult;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.PromocionDAO#buscarPorTarifa(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
@@ -153,7 +153,7 @@ public class PromocionDAOImpl extends GenericDAOImpl implements PromocionDAO {
 		/*Primero busca incluyendo la hora de partida - 15/12/2015 - jabanto*/
 		String hql=" FROM Promocion WHERE esTarifa=1 AND to_date('"+fechaPartida+"','dd/mm/yyyy') BETWEEN fechaInicio AND fechaFin " +
 				"AND estadoRegistro='"+Constantes.VALUE_ACTIVO+"' AND rutas LIKE '%"+ruta+"%' AND servicios LIKE '%"+servicio+"%' AND horasPartida LIKE '%"+horaPartida+"%' ";
-		
+
 		List<Promocion> result = getSession().createQuery(hql).list();
 		/*Valida que la promocion por tarifa recuperada corresponda a la ruta que se esta consultando, ya que pueden coinsidir por el tema de la like en el campo "c_ruta" - 10/01/2017 - jabanto*/
 		boolean isRuta=false;
@@ -168,17 +168,17 @@ public class PromocionDAOImpl extends GenericDAOImpl implements PromocionDAO {
 		}
 		if(!(isRuta))
 			result= new ArrayList<>();
-		
+
 		/*Si no hay, busca las que estan configuradas para todas las horas de partida 15/12/2015 - jabanto*/
 		if(result.size()==0){
 			hql=" FROM Promocion WHERE esTarifa=1 AND to_date('"+fechaPartida+"','dd/mm/yyyy') BETWEEN fechaInicio AND fechaFin " +
 					"AND estadoRegistro='"+Constantes.VALUE_ACTIVO+"' AND rutas LIKE '%"+ruta+"%' AND servicios LIKE '%"+servicio+"%' AND horasPartida='*' ";
 			result = getSession().createQuery(hql).list();
 		}
-		
+
 		return result;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.PromocionDAO#buscarPorCriterios(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
@@ -198,7 +198,7 @@ public class PromocionDAOImpl extends GenericDAOImpl implements PromocionDAO {
 			sql = sql + " AND c_servicio LIKE '%"+servicio+"%'";
 		if(cliente != null){
 			if(Character.isDigit(cliente.charAt(0))){
-				TreeMap<String, Object> criteriosBusqueda = new TreeMap<String,Object>();
+				TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 				criteriosBusqueda.put("numeroDocumento", cliente);
 				ArrayList<Cliente> lstCliente = (ArrayList<Cliente>)super.findByX(Cliente.class, criteriosBusqueda, null);
 				if(lstCliente.size() == 1)
@@ -207,13 +207,13 @@ public class PromocionDAOImpl extends GenericDAOImpl implements PromocionDAO {
 		}
 		if(tipoDescuento != null)
 			sql = sql + " AND c_tipdes='"+tipoDescuento+"' ";
-		
+
 		sql = sql + "ORDER BY "+criterioOrden;
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		ArrayList<Promocion> lstResult = new ArrayList<Promocion>();
-		for(int i=0; i<result.size(); i++){
-			Object[] obj = (Object[])result.get(i);
+		ArrayList<Promocion> lstResult = new ArrayList<>();
+		for (Object element : result) {
+			Object[] obj = (Object[])element;
 			Promocion promocion = new Promocion();
 			promocion.setId(((BigDecimal)obj[0]).longValue());
 			promocion.setDenominacion(obj[1].toString());
@@ -250,5 +250,5 @@ public class PromocionDAOImpl extends GenericDAOImpl implements PromocionDAO {
 		}
 		return lstResult;
 	}
-	
+
 }

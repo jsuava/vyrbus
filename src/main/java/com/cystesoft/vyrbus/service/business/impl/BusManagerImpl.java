@@ -28,7 +28,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class BusManagerImpl implements BusManager {
 	private BusDAO busDAO;
-	
+
 	/**
 	 * @return the busDAO
 	 */
@@ -76,37 +76,37 @@ public class BusManagerImpl implements BusManager {
 	@Transactional
 	public void guardar(Bus bus) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("codigo", bus.getCodigo());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultCodigo = getBusDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad codigo del bus "Número del Bus"*/
 			if(resultCodigo.size()>0)
 				throw new NumeroBusDuplicadoException();
-			
+
 			criteriosBusqueda.remove("codigo");
 			criteriosBusqueda.put("numeroPlaca", bus.getNumeroPlaca());
 			List<?> resultPlaca = getBusDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Número de la Placa*/
 			if (resultPlaca.size()>0)
 				throw new NumeroPlacaDuplicadoException();
-			
+
 			criteriosBusqueda.remove("codigo");criteriosBusqueda.remove("numeroPlaca");
 			criteriosBusqueda.put("numeroChasis", bus.getNumeroChasis());
 			List<?> resultChasis = getBusDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Número de Chasis*/
 			if (resultChasis.size()>0)
 				throw new NumeroChasisDuplicadoException();
-			
+
 			criteriosBusqueda.remove("codigo");criteriosBusqueda.remove("numeroPlaca"); criteriosBusqueda.remove("numeroChasis");
 			criteriosBusqueda.put("numeroMotor", bus.getNumeroMotor());
 			List<?> resultMotor = getBusDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Número del Motor*/
 			if (resultMotor.size()>0)
 				throw new NumeroMotorDuplicadoException();
-			
+
 			getBusDAO().guardar(bus);
-			
+
 		}catch (NumeroBusDuplicadoException nbdex){
 			throw new NumeroBusDuplicadoException();
 		}catch (NumeroPlacaDuplicadoException npdex){
@@ -116,7 +116,7 @@ public class BusManagerImpl implements BusManager {
 		}catch (NumeroMotorDuplicadoException nmdex){
 			throw new NumeroMotorDuplicadoException();
 		}catch (Exception ex){
-			throw new Exception(ex); 
+			throw new Exception(ex);
 		}
 	}
 
@@ -127,49 +127,49 @@ public class BusManagerImpl implements BusManager {
 	@Transactional
 	public void actualizar(Bus bus) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("codigo", bus.getCodigo());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultCodigo = getBusDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad codigo del bus "Número del Bus"*/
-			for(int r = 0; r < resultCodigo.size(); r ++) {
-				Bus obusCodigo = (Bus) resultCodigo.get(r);
+			for (Object element : resultCodigo) {
+				Bus obusCodigo = (Bus) element;
 					if (!(obusCodigo.getId() == bus.getId()))
 						throw new NumeroBusDuplicadoException();
 			}
-			
+
 			criteriosBusqueda.remove("codigo");
 			criteriosBusqueda.put("numeroPlaca", bus.getNumeroPlaca());
 			List<?> resultPlaca = getBusDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Número de la Placa*/
-			for(int r = 0; r < resultPlaca.size(); r ++) {
-				Bus obusPlaca= (Bus) resultPlaca.get(r);
+			for (Object element : resultPlaca) {
+				Bus obusPlaca= (Bus) element;
 					if (!(obusPlaca.getId() == bus.getId()))
 						throw new NumeroPlacaDuplicadoException();
-			}	
-			
+			}
+
 			criteriosBusqueda.remove("codigo");criteriosBusqueda.remove("numeroPlaca");
 			criteriosBusqueda.put("numeroChasis", bus.getNumeroChasis());
 			List<?> resultChasis = getBusDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Número de Chasis*/
-			for(int r = 0; r < resultChasis.size(); r ++) {
-				Bus obusChasis= (Bus) resultChasis.get(r);
+			for (Object element : resultChasis) {
+				Bus obusChasis= (Bus) element;
 					if (!(obusChasis.getId() == bus.getId()))
 						throw new NumeroChasisDuplicadoException();
 			}
-			
+
 			criteriosBusqueda.remove("codigo");criteriosBusqueda.remove("numeroPlaca"); criteriosBusqueda.remove("numeroChasis");
 			criteriosBusqueda.put("numeroMotor", bus.getNumeroMotor());
 			List<?> resultMotor = getBusDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Número del Motor*/
-			for(int r = 0; r < resultMotor.size(); r ++) {
-				Bus obusMotor= (Bus) resultMotor.get(r);
+			for (Object element : resultMotor) {
+				Bus obusMotor= (Bus) element;
 					if (!(obusMotor.getId() == bus.getId()))
 						throw new NumeroMotorDuplicadoException();
 			}
-			
-			getBusDAO().actualizar(bus);	
-			
+
+			getBusDAO().actualizar(bus);
+
 		}catch (NumeroBusDuplicadoException nbdex){
 			throw new NumeroBusDuplicadoException();
 		}catch (NumeroPlacaDuplicadoException npdex){
@@ -179,7 +179,7 @@ public class BusManagerImpl implements BusManager {
 		}catch (NumeroMotorDuplicadoException nmdex){
 			throw new NumeroMotorDuplicadoException();
 		}catch (Exception ex){
-			throw new Exception(ex); 
+			throw new Exception(ex);
 		}
 	}
 

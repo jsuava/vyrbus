@@ -39,15 +39,12 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Window;
 
-import pe.gob.mtc.wshr.ResultIdentidad;
-
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.CanalVenta;
 import com.cystesoft.vyrbus.model.bean.Cliente;
 import com.cystesoft.vyrbus.model.bean.ControlEspecieValorada;
 import com.cystesoft.vyrbus.model.bean.Cortesia;
 import com.cystesoft.vyrbus.model.bean.DetalleItinerario;
-import com.cystesoft.vyrbus.model.bean.EstadoCivil;
 import com.cystesoft.vyrbus.model.bean.FormaPago;
 import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaLlegada;
 import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartida;
@@ -95,7 +92,6 @@ import com.cystesoft.vyrbus.service.exceptions.OperadorTarjetaCreditoNullExcepti
 import com.cystesoft.vyrbus.service.exceptions.PasajeroException;
 import com.cystesoft.vyrbus.service.exceptions.PasajeroIndeseableException;
 import com.cystesoft.vyrbus.service.exceptions.PasajeroNoSavedExeption;
-import com.cystesoft.vyrbus.service.exceptions.PreferenciaAlimentariaException;
 import com.cystesoft.vyrbus.service.exceptions.RazonSocialDuplicadoException;
 import com.cystesoft.vyrbus.service.exceptions.RazonSocialNullException;
 import com.cystesoft.vyrbus.service.exceptions.RucDuplicadoException;
@@ -121,9 +117,11 @@ import com.cystesoft.vyrbus.view.ui.IConfirmacion;
 import com.cystesoft.vyrbus.view.ui.WndBase;
 import com.cystesoft.vyrbus.view.ui.WndMapaBus;
 
+import pe.gob.mtc.wshr.ResultIdentidad;
+
 /**
  * @author Jose
- * 
+ *
  */
 public class WndConfirmacion extends WndBase implements IConfirmacion {
 	public static final int SEARCH_BY_DOCUMENTO = 1;
@@ -231,8 +229,8 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 
 	private Row rowNuevoBoleto;
 	private Textbox txtNuevoBoleto;
-	
-	
+
+
 	private VentaPasaje ventaPasaje;
 	private VentaPasaje objetoConfirmar;
 	private DetalleItinerario detailItinerary = null;
@@ -247,13 +245,13 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	private Promocion promocionAplicada = null;
 	private Boolean tieneDescuento=false;
 	private Promocion promocionTarifa=null;
-	
+
 	private int action = Constantes.FAILURE;
 	private int actionc = Constantes.FAILURE;
-	
+
 	private final String LABEL_IMPPAG_TO_TEPSA="IMPORTE TOTAL PAGAR";
 	private final String LABEL_IMPPAG_TO_PASAJERO="IMPORTE TOTAL A DEVOLVER";
-	
+
 	/**
 	 * @return the reservaPasaje
 	 */
@@ -270,7 +268,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.vyrbus.view.ui.IBase#onCreate()
 	 */
 	@Override
@@ -284,7 +282,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		// tipcom = tipoComprobante.getId();
 		fechaLiquidacion = (Date) this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION);
 		/* ********************************************************************************************************* */
-		
+
 		dblTarifa.setLocale(Locale.US);
 		dblRecargo.setLocale(Locale.US);
 		dblDescuento.setLocale(Locale.US);
@@ -292,21 +290,21 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		dblImporte.setLocale(Locale.US);
 		dblImporteEfectivo.setLocale(Locale.US);
 		dblImporteTarjeta.setLocale(Locale.US);
-				
+
 //		UtilData.cargarDataCombo(cmbTipoDocumento, TipoDocumento.class, false);
-		TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+		TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 		criteriosBusqueda.put("tipo", TipoDocumento.PERSONALES);			//Usar los alias de los campos segun el xml de mapeo
 		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);	//Usar los alias de los campos segun el xml de mapeo
 		UtilData.cargarDataCombo(cmbTipoDocumento, TipoDocumento.class, criteriosBusqueda, false);
-		Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, Constantes.ID_TIPDOC_DNI);	
-		
+		Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, Constantes.ID_TIPDOC_DNI);
+
 		UtilData.cargarDataCombo(cmbSexo, Sexo.class, false);
 //		UtilData.cargarDataCombo(cmbEstadoCivil, EstadoCivil.class, false);
 		UtilData.cargarDataCombo(cmbNacionalidad, Nacionalidad.class, false);
 		UtilData.enlazarUbigeo(txtUbigeoIdPax, txtUbigeoPax, btnUbigeoPax,null);
 		UtilData.enlazarUbigeo(txtUbigeoIdCliente, txtUbigeoCliente,btnUbigeoCliente,null);
 
-		criteriosBusqueda = new TreeMap<String, Object>();
+		criteriosBusqueda = new TreeMap<>();
 		criteriosBusqueda.put("rubro", TipoComprobante.RUBRO_PASAJES);
 		UtilData.cargarDataCombo(cmbTipoComprobante, TipoComprobante.class,criteriosBusqueda, false);
 		UtilData.cargarDataCombo(cmbFormaPago, FormaPago.class, false);
@@ -315,30 +313,30 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		loadInformacion();
 		disabledControlsPax(true);
 //		Util.loadAnios(cmbAnio);
-//		Util.loadMeses(cmbMes);	
-		if (getObjetoConfirmar().getTipoMovimiento().getId() == Constantes.ID_TIPMOV_FECHA_ABIERTA || 
+//		Util.loadMeses(cmbMes);
+		if (getObjetoConfirmar().getTipoMovimiento().getId() == Constantes.ID_TIPMOV_FECHA_ABIERTA ||
 				getObjetoConfirmar().getTipoMovimiento().getId() == Constantes.ID_TIPMOV_POSTERGACION_FA){
 			chkPrepagado.setDisabled(true);
 			imgPromocion.setVisible(false);
 			tabCliente.setDisabled(true);
 			txtIdPromocion.setText(getObjetoConfirmar().getPromocion()==null?"":getObjetoConfirmar().getPromocion().getId().toString());
-			
+
 		}else{
 			chkPrepagado.setDisabled(false);
 			imgPromocion.setVisible(true);
 			tabCliente.setDisabled(false);
 		}
-		
+
 		/*Implementado 01/10/2014 - jabanto, para controlar que a una promocion se le aplique mas de una*/
 		if(promocionTarifa!=null && (promocionTarifa.getEsAcumulable().intValue()==Constantes.FALSE_VALUE))
 			imgPromocion.setVisible(false);
-		
+
 		//MAOE- 26/05/2022: Se puso ambos en true porque debe mostrar siempre la eleccion del asiento
 		if(getObjetoConfirmar().getTipoTransaccion().equals("2"))
 			imgMostrarMapa.setVisible(true);
 		else
 			imgMostrarMapa.setVisible(true);
-		
+
 		/*jabanto - 21/04/2022*/
 		tlbbtnGuardarPax.setVisible(false);
 		tlbbtnGuardarClient.setVisible(false);
@@ -346,7 +344,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IBase#initComponents()
 	 */
 	@Override
@@ -466,7 +464,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //				params.put("detalleItinerario", detailItinerary);
 //				params.put("txtAsientoSeleccionado", txtNumeroAsiento);
 //				params.put("txtPisoSeleccionado", txtNumeroPiso);
-//				if(getObjetoConfirmar().getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_POSTERGACION_FA 
+//				if(getObjetoConfirmar().getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_POSTERGACION_FA
 //						|| getObjetoConfirmar().getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_FECHA_ABIERTA)
 //					params.put("selectAsiento", true);
 //				else
@@ -474,7 +472,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //				Window win = (Window) Executions.createComponents("mapa.zul", null, params);
 //				win.setMode(MODAL);
 				enlazarMapaBus();
-				
+
 			}
 		});
 
@@ -486,9 +484,9 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 						if (comboitem.getValue() instanceof TipoComprobante
 								&& ((TipoComprobante) comboitem.getValue()).getId().intValue() == Constantes.ID_TIPCOM_RECIBO_CAJA)
 							cmbTipoComprobante.setSelectedItem(comboitem);
-						
+
 					}
-					
+
 				} else {
 					for (Comboitem comboitem : cmbTipoComprobante.getItems()) {
 						if (comboitem.getValue() instanceof TipoComprobante
@@ -499,7 +497,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				onLoadEspecieValorada();
 			}
 		});
-		
+
 		lbxPasajeros.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e) {
@@ -507,7 +505,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				grpbxListaPasajeros.setVisible(false);
 			}
 		});
-		
+
 		lbxClientes.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e) {
@@ -516,7 +514,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			}
 		});
 
-		//*	En caso haya apretado la tecla enter en el control txtDocumentoPax realiza la busqueda del pasajero	
+		//*	En caso haya apretado la tecla enter en el control txtDocumentoPax realiza la busqueda del pasajero
 		txtDocumentoPax.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
@@ -529,8 +527,8 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 					txtApePat.setFocus(true);
 			}
 		});
-		
-		
+
+
 		txtDocumentoPax.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -538,8 +536,8 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				verificarPaxReniec();
 			}
 		});
-		
-		
+
+
 		txtApePat.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
@@ -554,7 +552,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 					txtApeMat.setFocus(true);
 			}
 		});
-		
+
 		txtApeMat.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
@@ -569,7 +567,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 					txtNombres.setFocus(true);
 			}
 		});
-		
+
 		txtNombres.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
@@ -584,7 +582,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 					txtDireccionPax.setFocus(true);
 			}
 		});
-		
+
 		txtDocumentoCliente.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
@@ -597,7 +595,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 					txtRazonSocial.setFocus(true);
 			}
 		});
-		
+
 		txtRazonSocial.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
@@ -610,50 +608,50 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 					txtContactoCliente.setFocus(true);
 			}
 		});
-		
+
 		tabPasajero.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
 				cmbTipoDocumento.setFocus(true);
 			}
 		});
-		
+
 		tabCliente.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
 				txtDocumentoCliente.setFocus(true);
 			}
 		});
-		
+
 		tabPagos.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
 				cmbTipoFormaPago.setFocus(true);
 			}
 		});
-		
+
 		imgPromocion.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
 				imgPromocion_loadPromociones();
 			}
 		});
-		
+
 		imgQuitarPromocion.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
 				quitarPromocion();
 			}
 		});
-		
+
 		ntbxEdad.addEventListener(Events.ON_BLUR, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				if(!(ntbxEdad.getText().trim().isEmpty()))
-					dtbxFechaNacimiento.setValue(Constantes.FORMAT_DATE.parse(calcularFechaNacimiento()));				
-			}			
+					dtbxFechaNacimiento.setValue(Constantes.FORMAT_DATE.parse(calcularFechaNacimiento()));
+			}
 		});
-		
+
 //		cmbMes.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 //			@Override
 //			public void onEvent(Event e){
@@ -661,7 +659,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //					Util.loadDias(cmbDia, (Integer)cmbMes.getSelectedItem().getValue(), (Integer)cmbAnio.getSelectedItem().getValue());
 //			}
 //		});
-//		
+//
 //		cmbAnio.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 //			@Override
 //			public void onEvent(Event e){
@@ -670,7 +668,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //				cmbDia.setText("");
 //			}
 //		});
-		
+
 		txtNumeroAsiento.addEventListener(Events.ON_CHANGING, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
@@ -684,23 +682,23 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	 */
 	private void loadInformacion() {
 		try {
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("itinerario.id", getObjetoConfirmar().getItinerario().getId());
 			criteriosBusqueda.put("ruta.id", getObjetoConfirmar().getRuta().getId());
-						
+
 			List<DetalleItinerario> lstDetalles = ServiceLocator.getDetalleItinerarioManager().buscarPorX(criteriosBusqueda, null);
 			if (lstDetalles.size() == 1) {
 				detailItinerary = lstDetalles.get(0);
-				
-				
+
+
 				//Obetenr el piso y la zona de mapa bus
 				Integer piso = getObjetoConfirmar().getNumeroPiso() ;
 				Integer zona = 1;
-				
-				//MAOE: La idea es que cada asiento seleccionado tenga su tarifa de acuerdo al nuevo modelo 
+
+				//MAOE: La idea es que cada asiento seleccionado tenga su tarifa de acuerdo al nuevo modelo
 				//Obtener la tarifa regular del asiento y almacenarlo en DetalleItinerario del asientoSeleccionado
 				List<TarifaRegular> lstTarifaRegular = ServiceLocator.getTarifaRegularManager().buscarTarifaPorServicio(
-						1, detailItinerary.getItinerario().getServicio().getId(), 
+						1, detailItinerary.getItinerario().getServicio().getId(),
 						detailItinerary.getRuta().getId(),
 						Util.DatetoString(detailItinerary.getFechaPartida(), Constantes.DATE_FORMAT),
 						detailItinerary.getHoraPartida(),
@@ -711,8 +709,8 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 																		 ?lstTarifaRegular.get(0).getMonto()
 																		 :0.00);
 				else
-					detailItinerary.setTarifa(0.00);				
-				
+					detailItinerary.setTarifa(0.00);
+
 				onLoadDatosVenta(detailItinerary);
 				txtNumeroAsiento.setText(getObjetoConfirmar().getNumeroAsiento() == null ? "" : (getObjetoConfirmar().getNumeroAsiento()==0?"":getObjetoConfirmar().getNumeroAsiento().toString()));
 				txtNumeroPiso.setText(getObjetoConfirmar().getNumeroPiso() == null ? "": getObjetoConfirmar().getNumeroPiso().toString());
@@ -726,7 +724,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //				onLoadEspecieValorada();
 				if (getObjetoConfirmar().getCliente() != null)
 					mantenimientoRegistroClient(getObjetoConfirmar().getCliente().getId());
-				
+
 				onSelectDefaultTipoComprobante();
 				onLoadEspecieValorada();
 			}
@@ -741,9 +739,9 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				}
 			}
 			txtObservaciones.setText(getObjetoConfirmar().getObservaciones()==null?"":getObjetoConfirmar().getObservaciones());
-			
-			/**	
-			 * Esta seccion es para obtener las promociones que son por tarifa	
+
+			/**
+			 * Esta seccion es para obtener las promociones que son por tarifa
 			 * y que reeemplazaran la tarifa real del servicio.
 			 */
 			aplicarPromocionPorTarifa();
@@ -760,14 +758,14 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	 */
 	private void onLoadPagos(DetalleItinerario detalleItinerario)throws Exception {
 		dblTarifa.setValue(detalleItinerario.getTarifa());
-		dblRecargo.setValue(getObjetoConfirmar().getRecargo());		
+		dblRecargo.setValue(getObjetoConfirmar().getRecargo());
 		dblDescuento.setValue(getObjetoConfirmar().getDescuento());
-		
+
 		/*Valida si es una confirmacion de F.A. - 22/02/2017 - jabanto*/
 //		if(objetoConfirmar.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA)){
 //			dblDescuento.setValue(0.00);
-//		}		
-		
+//		}
+
 		/*Valida si es una confirmacion de F.A. - 29/12/2016 - jabanto*/
 //		if(objetoConfirmar.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA)){
 //			dblDescuento.setValue(0.00);
@@ -782,7 +780,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //				dblImporte.setValue(0.0);
 //				tieneDescuento = true;
 //			}else{
-						
+
 			//Si tiene promocion aun que nunca deberia tener - Luego comentar este codigo.
 //			if(getObjetoConfirmar().getPromocion()!=null){
 //				TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
@@ -804,7 +802,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //				tieneDescuento = false;
 //			}
 //		}
-		
+
 		dblPagado.setValue(getObjetoConfirmar().getTarifa() + getObjetoConfirmar().getRecargo() - getObjetoConfirmar().getDescuento());
 //		dblImporte.setValue(dblTarifa.getValue() - dblDescuento.getValue() - dblPagado.getValue() + dblRecargo.getValue());
 		double saldo= dblTarifa.getValue() - dblDescuento.getValue() - dblPagado.getValue() + dblRecargo.getValue();
@@ -817,11 +815,11 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			dblImporte.setValue(saldo+dblRecargo.getValue());
 			lblImporte.setValue(LABEL_IMPPAG_TO_PASAJERO);
 		}
-		
+
 		dblImporteEfectivo.setValue(0.0);
 		dblImporteTarjeta.setValue(0.0);
 	}
-	
+
 	/**
 	 * Muestra los datos del itinerario que figura en la reserva.
 	 * @param detalleItinerario	: Itinerario seleccionado.
@@ -829,7 +827,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	private void onLoadDatosVenta(DetalleItinerario detalleItinerario) {
 		lblOrigen.setValue(detalleItinerario.getRuta().getOrigen());
 		lblDestino.setValue(detalleItinerario.getRuta().getDestino());
-		
+
 		lblTarifa.setValue(Util.toNumberFormat(detalleItinerario.getTarifa(), 2));
 		lblFechaPartida.setValue(Util.DatetoString(detalleItinerario.getFechaPartida(), Constantes.DATE_FORMAT)+" "+detalleItinerario.getHoraPartida());
 		lblFechaLlegada.setValue(Util.DatetoString(detalleItinerario.getFechaLlegada(), Constantes.DATE_FORMAT)+" "+(detalleItinerario.getHoraLlegada()!=null?detalleItinerario.getHoraLlegada():""));
@@ -847,7 +845,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			cmbPtoEmbarque.getItems().clear();
 			int agenciaIgualEmbarque=0;
 
-			ArrayList<ItinerarioAgenciaPartida> arrayItiAgePartida = new ArrayList<ItinerarioAgenciaPartida>();
+			ArrayList<ItinerarioAgenciaPartida> arrayItiAgePartida = new ArrayList<>();
 			/*	Si la agencia de partida del itinerario es la misma del tramo seleccionado	*/
 			arrayItiAgePartida = ServiceLocator.getItinerarioManager().buscarAgenciasPartida(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO, detItinerario.getRuta().getLocalidadOrigen().getId());
 //			if (detItinerario.getItinerario().getAgenciaPartida().getId().intValue() == detItinerario.getAgenciaPartida().getId().intValue())
@@ -870,29 +868,29 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				String fechaPartida="";
 				if (arrayItiAgePartida.size() == 1) {
 					cmbPtoEmbarque.setSelectedItem(item);
-										
+
 					if(lblFechaPartida.getValue().length()>=10)
 						fechaPartida=lblFechaPartida.getValue().substring(0,10);
-					lblFechaPartida.setValue(fechaPartida+" "+(itiAgePartida.getHoraPartida()!=null?itiAgePartida.getHoraPartida():""));	
-						
+					lblFechaPartida.setValue(fechaPartida+" "+(itiAgePartida.getHoraPartida()!=null?itiAgePartida.getHoraPartida():""));
+
 //					lblHoraPartida.setValue(itiAgePartida.getHoraPartida());
 				}else if(agencia.getId().intValue() == itiAgePartida.getAgencia().getId().intValue()){
 					cmbPtoEmbarque.setSelectedItem(item);
 					if(lblFechaPartida.getValue().length()>=10)
 						fechaPartida=lblFechaPartida.getValue().substring(0,10);
 					lblFechaPartida.setValue(fechaPartida+" "+(itiAgePartida.getHoraPartida()!=null?itiAgePartida.getHoraPartida():""));
-					
+
 					agenciaIgualEmbarque = 1;
-				} 
+				}
 				else if(agenciaIgualEmbarque == 0)
 					cmbPtoEmbarque.setSelectedIndex(0);
 //				else if (getObjetoConfirmar().getAgenciaPartida() != null && itiAgePartida.getAgencia().getId().intValue() == getObjetoConfirmar().getAgenciaPartida().getId()) {
 //					cmbPtoEmbarque.setSelectedItem(item);
-//										
+//
 //					if(lblFechaPartida.getValue().length()>=10)
 //						fechaPartida=lblFechaPartida.getValue().substring(0,10);
 //					lblFechaPartida.setValue(fechaPartida+" "+(itiAgePartida.getHoraPartida()!=null?itiAgePartida.getHoraPartida():""));
-//					
+//
 ////					lblHoraPartida.setValue(itiAgePartida.getHoraPartida());
 //				}
 			}
@@ -912,7 +910,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		try {
 			cmbPtoDesembarque.getItems().clear();
 			int agenciaIgualDesembarque=0;
-			ArrayList<ItinerarioAgenciaLlegada> arrayItiAgeLlegada = new ArrayList<ItinerarioAgenciaLlegada>();
+			ArrayList<ItinerarioAgenciaLlegada> arrayItiAgeLlegada = new ArrayList<>();
 			/*	Si la agencia de llegada del itinerario es la misma del tramo seleccionado	*/
 			arrayItiAgeLlegada = ServiceLocator.getItinerarioManager().buscarAgenciasLlegada(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO, detItinerario.getRuta().getLocalidadDestino().getId());
 //			if (detItinerario.getItinerario().getAgenciaLlegada().getId().intValue() == detItinerario.getAgenciaLlegada().getId().intValue())
@@ -934,7 +932,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				item.setValue(itiAgeLlegada);
 				cmbPtoDesembarque.appendChild(item);
 				String fechaLlagada="";
-				
+
 				if (arrayItiAgeLlegada.size() == 1) {
 					cmbPtoDesembarque.setSelectedItem(item);
 //					lblHoraLlegada.setValue(itiAgeLlegada.getHoraLlegada());
@@ -944,7 +942,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				}
 				//Si es una reserva y la agencia de llegada es la misma que la que se reservo
 				else if (getObjetoConfirmar().getAgenciaLlegada() != null
-						&& itiAgeLlegada.getAgencia().getId().intValue() == getObjetoConfirmar().getAgenciaLlegada().getId() 
+						&& itiAgeLlegada.getAgencia().getId().intValue() == getObjetoConfirmar().getAgenciaLlegada().getId()
 						&& getObjetoConfirmar().getTipoMovimiento().getId()== Constantes.ID_TIPMOV_RESERVA) {
 					cmbPtoDesembarque.setSelectedItem(item);
 //					lblHoraLlegada.setValue(itiAgeLlegada.getHoraLlegada());
@@ -965,7 +963,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 
 	/**
 	 * Realiza la busqueda del correlativo para el boleto a emitir.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private void onLoadEspecieValorada() throws Exception {
 		rowNuevoBoleto.setVisible(false);
@@ -975,12 +973,12 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //										|| getObjetoConfirmar().getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO) { //Canje publicitario
 		if (lblImporte.getValue().equals(LABEL_IMPPAG_TO_TEPSA) || getObjetoConfirmar().getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA //Cortesias
 				|| getObjetoConfirmar().getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO) { //Canje publicitario
-			
+
 			/*BEGIN 16/06/2021 - javalos - Correlativo by caja*/
 //			EspecieValorada especieValorada=null;
 			ControlEspecieValorada controlEspecieValorada = null;
 			/*END 16/06/2021 - javalos - Correlativo by caja*/
-			//Carga el nuevo boleto cuando es un CFA 
+			//Carga el nuevo boleto cuando es un CFA
 			if(getObjetoConfirmar().getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA)){
 				rowNuevoBoleto.setVisible(true);
 				txtNumeroBoleto.setValue(getObjetoConfirmar().getNumeroBoleto());
@@ -995,7 +993,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //					especieValorada = UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_BOLETA_VENTA, getAgencia(), false);
 					controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(Constantes.ID_TIPCOM_BOLETA_VENTA, getAgencia(), false, getUsuarioHardware(), null);
 					/*END 16/06/2021 - javalos - Correlativo by caja*/
-				
+
 				/*BEGIN 16/06/2021 - javalos - Correlativo by caja*/
 //				txtNuevoBoleto.setValue(especieValorada.toString());
 				txtNuevoBoleto.setValue(controlEspecieValorada.toString());
@@ -1007,7 +1005,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //				txtNuevoBoleto.setValue(UtilData.buscarEspecieValorada(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId(), usuhar));
 			}else{
 				/*Begin 25/10/2016*/
-				
+
 				/*BEGIN 16/06/2021 - javalos - Correlativo by caja*/
 //				if(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE)
 //					especieValorada=UtilData.buscarEspecieValorada(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(), false);
@@ -1020,7 +1018,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 					controlEspecieValorada=UtilData.buscarEspecieValoradaByCaja(Constantes.ID_TIPCOM_BOLETA_VENTA, getAgencia(), false, getUsuarioHardware(), null);
 				txtNumeroBoleto.setValue(controlEspecieValorada.toString());
 				/*END 16/06/2021 - javalos - Correlativo by caja*/
-				
+
 				/*End Begin 25/10/2016 - jabanto*/
 //				if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPCOM_RECIBO_CAJA){
 //					txtNumeroBoleto.setValue(UtilData.buscarEspecieValorada(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia()));
@@ -1041,7 +1039,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			/* Si la agencia pertenece a TEPSA */
 			if (agencia.getTipoAgencia().getId().intValue() == Constantes.ID_TIPAGE_TEPSA) {
 				if (comboitem.getValue() instanceof TipoComprobante) {
-					if (((TipoComprobante) comboitem.getValue()).getId().intValue() == Constantes.ID_TIPCOM_BOLETO_VIAJE 
+					if (((TipoComprobante) comboitem.getValue()).getId().intValue() == Constantes.ID_TIPCOM_BOLETO_VIAJE
 							&& objetoConfirmar.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE && oCliente==null){
 						if(objetoConfirmar.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA)){
 							/*Cuando la reserva este registrada con la version anterior a la electronica*/
@@ -1049,7 +1047,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 							lblBoleto.setValue("N° BOLETA :");
 							break;
 						}else{
-							cmbTipoComprobante.setSelectedItem(comboitem);	
+							cmbTipoComprobante.setSelectedItem(comboitem);
 							lblBoleto.setValue("N° BOLETO :");
 						}
 					}if(((TipoComprobante) comboitem.getValue()).getId().intValue() == Constantes.ID_TIPCOM_FACTURA &&  oCliente!=null){
@@ -1059,9 +1057,9 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 						cmbTipoComprobante.setSelectedItem(comboitem);
 						lblBoleto.setValue("N° BOLETA :");
 					}
-					
+
 				}
-					
+
 
 //				if (comboitem.getValue() instanceof TipoComprobante
 //						&& ((TipoComprobante) comboitem.getValue()).getId().intValue() == Constantes.ID_TIPCOM_BOLETO_VIAJE)
@@ -1079,9 +1077,9 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		for (Comboitem comboitem : cmbFormaPago.getItems()) {
 			/* Si la agencia pertenece a TEPSA */
 			if(agencia.getTipoAgencia().getId().intValue() == Constantes.ID_TIPAGE_TEPSA) {
-								
+
 				//Cuando es una reserva a fecha abierta y su forma de pago es CORTESIA. - Impl: 04/05/2013
-				if(objetoConfirmar.getFormaPago()!=null && (objetoConfirmar.getFormaPago().getId().equals(Constantes.ID_FORPAG_CORTESIA)) ){ 
+				if(objetoConfirmar.getFormaPago()!=null && (objetoConfirmar.getFormaPago().getId().equals(Constantes.ID_FORPAG_CORTESIA)) ){
 					//Obtenemos la cortesia otorgada
 					Cortesia cortesia= ServiceLocator.getCortesiaManager().buscarXIDventa(objetoConfirmar.getId());
 					//Selecciona la forma de pago CORTESIA por default.
@@ -1089,13 +1087,13 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 						if(comboitem.getValue() instanceof FormaPago && ((FormaPago) comboitem.getValue()).getId().intValue() == Constantes.ID_FORPAG_CORTESIA) {
 							cmbFormaPago.setSelectedItem(comboitem);
 							onLoadTipoFormaPago();
-							
+
 							//selecciona el TIPO DE FORMA DE PAGO de la cortesia y desactiva el control tipo formar pago.
 							Util.seleccionarValorItemCombo(TipoFormaPago.class, cmbTipoFormaPago, objetoConfirmar.getTipoFormaPago().getId());
 							cmbTipoFormaPago.setDisabled(true);
-							
+
 	//						//realiza el descuento según el porcentaje de descuento que contenga la cortesia
-	//						
+	//
 	//						if(cortesia!=null){
 	//							Double tarifa=Double.valueOf(lblTarifa.getValue());
 	//							Double desct= (tarifa*cortesia.getPorcentaje())/100;
@@ -1113,7 +1111,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				}else{/*	Si la forma de pago es contado	*/
 					if (comboitem.getValue() instanceof FormaPago && ((FormaPago) comboitem.getValue()).getId().intValue() == Constantes.ID_FORPAG_CONTADO) {
 						cmbFormaPago.setSelectedItem(comboitem);
-						onLoadTipoFormaPago();						
+						onLoadTipoFormaPago();
 						for (Comboitem item : cmbTipoFormaPago.getItems()) {
 							if (item.getValue() instanceof TipoFormaPago && ((TipoFormaPago) item.getValue()).getId().intValue() == Constantes.ID_TIPFORPAG_EFECTIVO){
 								cmbTipoFormaPago.setSelectedItem(item);
@@ -1122,7 +1120,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 						}
 						break;
 					}
-				}				
+				}
 			}
 		}
 		cmbFormaPago.setDisabled(true);
@@ -1138,10 +1136,10 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			horaPartida=((ItinerarioAgenciaPartida) cmbPtoEmbarque.getSelectedItem().getValue()).getHoraPartida();
 		}//else
 //			lblHoraPartida.setValue("");
-		
+
 		if(lblFechaPartida.getValue().length()>=10)
 			fechaPartida=lblFechaPartida.getValue().substring(0,10);
-		
+
 		lblFechaPartida.setValue(fechaPartida+" "+(horaPartida!=null?horaPartida:""));
 	}
 
@@ -1155,10 +1153,10 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			horaLlegada=((ItinerarioAgenciaLlegada) cmbPtoDesembarque.getSelectedItem().getValue()).getHoraLlegada();
 		}//else
 			//lblHoraLlegada.setValue("");
-		
+
 		if(lblFechaLlegada.getValue().length()>=10)
 			fechaLlegada=lblFechaLlegada.getValue().substring(0,10);
-		
+
 		lblFechaLlegada.setValue(fechaLlegada+" "+(horaLlegada!=null?horaLlegada:""));
 	}
 
@@ -1180,14 +1178,14 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		tlbbtnGuardarPax.setDisabled(false);
 //		cmbTipoDocumento.setFocus(true);
 		oPasajero=null;
-		
+
 		Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, Constantes.ID_TIPDOC_DNI);
 		txtDocumentoPax.setFocus(true);
-		
+
 		txtDocumentoPax.setText(numeroDocumento);
 		verificarPaxReniec();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IConfirmacion#onModifyPax()
@@ -1215,33 +1213,33 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		tlbbtnModificarPax.setDisabled(true);
 		tlbbtnCancelarPax.setDisabled(true);
 		tlbbtnGuardarPax.setDisabled(true);
-		
+
 		disabledControlsPax(true);
-		
+
 //		txtApeMat.setDisabled(false);
 //		txtApePat.setDisabled(false);
 //		txtNombres.setDisabled(false);
-		
+
 //		if(action == Constantes.ACTION_NEW)
 //			onCleanControlsPax();
 		action = Constantes.FAILURE;
 		txtDocumentoPax.setFocus(true);
-		
+
 	}
 
 	public void verificarPaxReniec() /*throws WrongValueException, Exception*/{
 		txtApePat.setDisabled(false);
 		txtApeMat.setDisabled(false);
 		txtNombres.setDisabled(false);
-		
-		if(action==Constantes.ACTION_NEW  
-				&& !(txtDocumentoPax.getText().trim().isEmpty()) 
-				&& cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento 
+
+		if(action==Constantes.ACTION_NEW
+				&& !(txtDocumentoPax.getText().trim().isEmpty())
+				&& cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento
 				&& ((TipoDocumento)cmbTipoDocumento.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPDOC_DNI)
 		{
 			try {
 				String numerodocumento=txtDocumentoPax.getText().trim();
-				
+
 				/*Valida con el metodo getIdentidad */
 				ResultIdentidad resultIdentidad=Util.getResultIdentidad(numerodocumento,imgValidacionDNI);
 				if(resultIdentidad!=null){
@@ -1268,7 +1266,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				}else{
 					/*Consulta BD reniec local*/
 					List<String> dni = RESTCiva.getDatosDni(numerodocumento);
-					
+
 	//				Reniec reniec= ServiceLocator.getReniecManager().buscarPax(numerodocumento);
 					if(dni!=null){
 					Reniec reniec = new Reniec();
@@ -1278,8 +1276,8 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 					reniec.setApellidoMaterno(dni.get(3));
 					ntbxEdad.setValue(30);
 					dtbxFechaNacimiento.setValue(Constantes.FORMAT_DATE.parse(calcularFechaNacimiento()));
-					
-					
+
+
 	//				if(reniec!=null){
 						Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, Constantes.ID_TIPDOC_DNI);
 						txtApePat.setText(reniec.getApellidoPaterno());
@@ -1294,14 +1292,14 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 						Integer idTipoDocumento= null;
 						if(cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento)
 							idTipoDocumento=((TipoDocumento)cmbTipoDocumento.getSelectedItem().getValue()).getId();
-						
-						onCleanControlsPax();		
+
+						onCleanControlsPax();
 						//recupera valores ingresado por el usuario
 						txtDocumentoPax.setText(numeroDocumento);
-						if(idTipoDocumento!=null) 
+						if(idTipoDocumento!=null)
 							Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, idTipoDocumento);
 						txtApePat.setFocus(true);
-						
+
 						if(getAgencia().getTipoAgencia().getId().intValue()!=Constantes.ID_TIPAGE_TEPSA){
 							Ubigeo oUbigeo = new Ubigeo();
 							oUbigeo.setId(Constantes.ID_UBIGEO_LIMA);
@@ -1328,7 +1326,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			}
 		}
 	}
-	
+
 	private void calcularEdad(String fechaNacimiento){
 		if(fechaNacimiento != null){
 			String anio = fechaNacimiento.substring(fechaNacimiento.length()-4);
@@ -1338,30 +1336,30 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		}else
 			ntbxEdad.setValue(null);
 	}
-	
+
 	private String calcularFechaNacimiento(){
 		final DateFormat FORMAT = new SimpleDateFormat ("dd/MM");
 		String year = Util.DatetoString(new Date(), "yyyy");
-		Integer anio = Integer.valueOf(year) - ntbxEdad.getValue();
+		int anio = Integer.valueOf(year) - ntbxEdad.getValue();
 //		String fechaNacimiento = "01/01/"+anio;
 		String fechaNacimiento = FORMAT.format(new Date())+"/"+anio;
 		return fechaNacimiento;
 	}
 
-	
+
 	/**
 	 * Limpia los controles del pasajero.
 	 */
 	public void onCleanControlsPax() {
 		if(oPasajero!=null && oPasajero.isDescuentoAutoByPaxFree()){
-			if(oCliente==null || oCliente.isDescuentoAutoByCliente()==false)
+			if(oCliente==null || !oCliente.isDescuentoAutoByCliente())
 				quitarPromocion();
-			else if(oCliente.isDescuentoAutoByCliente()==true){
+			else if(oCliente.isDescuentoAutoByCliente()){
 				oPasajero = null;
 				mantenimientoRegistroClient(oCliente.getId());
 			}
 		}
-		
+
 		cmbTipoDocumento.setSelectedIndex(0);
 		txtDocumentoPax.setText("");
 		txtApePat.setText("");
@@ -1382,7 +1380,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //		cmbAnio.setSelectedIndex(-1);
 //		cmbMes.setSelectedIndex(-1);
 //		cmbDia.setSelectedIndex(-1);
-		
+
 		imgValidacionDNI.setSrc("");
 		txtApeMat.setDisabled(false);
 		txtApePat.setDisabled(false);
@@ -1394,7 +1392,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	 * @param arg	: Boolean
 	 */
 	public void disabledControlsPax(boolean arg) {
-		
+
 		tlbbtnNuevoPax.setDisabled(false);
 		tlbbtnLimpiarPax.setDisabled(false);
 		cmbTipoDocumento.setDisabled(false);
@@ -1405,7 +1403,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		//Implementado 05/08/2014 - jabanto  (Solicitado por Marco Oscco)
 		/*No permite el cambio de nombre cuando es confirmacion de fecha abierta*/
 		if(getObjetoConfirmar()!=null && getObjetoConfirmar().getTipoMovimiento()!=null){
-			if (getObjetoConfirmar().getTipoMovimiento().getId() == Constantes.ID_TIPMOV_FECHA_ABIERTA || 
+			if (getObjetoConfirmar().getTipoMovimiento().getId() == Constantes.ID_TIPMOV_FECHA_ABIERTA ||
 					getObjetoConfirmar().getTipoMovimiento().getId() == Constantes.ID_TIPMOV_POSTERGACION_FA){
 				tlbbtnNuevoPax.setDisabled(true);
 				tlbbtnLimpiarPax.setDisabled(true);
@@ -1416,7 +1414,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				txtNombres.setDisabled(true);
 			}
 		}
-		
+
 		txtDireccionPax.setDisabled(arg);
 		txtTelefono.setDisabled(arg);
 		txtEmailPax.setDisabled(arg);
@@ -1433,30 +1431,30 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IConfirmacion#onSearchPax()
 	 */
 	@Override
 	public void onSearchPax(Integer criterio){
 		try{
 			oPasajero=null;
-			TreeMap<String, Object> criterioBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criterioBusqueda = new TreeMap<>();
 			ArrayList<Pasajero> lstPasajeros = null;
 			if(criterio.intValue()==SEARCH_BY_DOCUMENTO){
 				criterioBusqueda.put("numeroDocumento", txtDocumentoPax.getText().toUpperCase()+"%");
-				List<String> criteriosOrdenar = new ArrayList<String>();
+				List<String> criteriosOrdenar = new ArrayList<>();
 				criteriosOrdenar.add("apellidoPaterno");
 				criteriosOrdenar.add("apellidoMaterno");
 				criteriosOrdenar.add("nombre");
 				lstPasajeros = ServiceLocator.getPasajeroManager().buscarPorX(criterioBusqueda, criteriosOrdenar);
 			}else{
-				String nombres = txtApePat.getText().trim().toUpperCase() + 
-						(txtApeMat.getText().trim().equals("")?"":(" " + txtApeMat.getText().trim().toUpperCase())) + 
+				String nombres = txtApePat.getText().trim().toUpperCase() +
+						(txtApeMat.getText().trim().equals("")?"":(" " + txtApeMat.getText().trim().toUpperCase())) +
 						" " + txtNombres.getText().trim().toUpperCase();
 				String[] str1 = nombres.trim().split(" ");
 				lstPasajeros = ServiceLocator.getPasajeroManager().buscarPorFullTextIndex(str1);
 			}
-			
+
 			listarRegistrosPax(lstPasajeros);
 		}catch(Exception ex){
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());ex.printStackTrace();
@@ -1470,15 +1468,15 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	 * @throws Exception
 	 */
 	private void listarRegistrosPax(ArrayList<Pasajero> lstRegistros)throws Exception {
-		ArrayList<Object> lstPasajeros = new ArrayList<Object>();
+		ArrayList<Object> lstPasajeros = new ArrayList<>();
 		grpbxListaPasajeros.setVisible(false);
-		
+
 		if(lstRegistros.size()==1){
 			mantenimientoRegistroPax(lstRegistros.get(0).getId());
 		}else if(lstRegistros.size()>1){
 			for (int r = 0; r < lstRegistros.size(); r++) {
 				Pasajero oPasajero = lstRegistros.get(r);
-				ArrayList<Object> lstFila = new ArrayList<Object>();
+				ArrayList<Object> lstFila = new ArrayList<>();
 				lstFila.add(oPasajero.getId());
 				lstFila.add(r + 1);
 				lstFila.add(oPasajero.getTipoDocumento().getDenominacion());
@@ -1497,13 +1495,13 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			txtDocumentoPax.select();
 		}
 		disabledControlsPax(true);
-		
+
 	}
-	
+
 //	/**
 //	 * Verifica si el Pasajero existe el la reniec si es que se registrando un nuevo Pas
-//	 * @throws Exception 
-//	 * @throws WrongValueException 
+//	 * @throws Exception
+//	 * @throws WrongValueException
 //	 */
 //	public void validarPax_MuestraBDReniec() throws WrongValueException, Exception{
 //		if(action==Constantes.ACTION_NEW  && !(txtDocumentoPax.getText().trim().isEmpty()) ){
@@ -1516,13 +1514,13 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 ////				dtbxFechaNacimiento.setValue(Constantes.FORMAT_DATE.parse(reniec.getFechaNacimiento()));
 //				mostrarFechaNacimiento(reniec.getFechaNacimiento());
 //				Util.seleccionarValorItemCombo(Sexo.class, cmbSexo, Integer.valueOf(reniec.getSexo()));
-//				
+//
 //			}else{
 //				String numeroDocumento=txtDocumentoPax.getText().trim();
 //				Integer idTipoDocumento= null;
 //				if(cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento)
 //					idTipoDocumento=((TipoDocumento)cmbTipoDocumento.getSelectedItem().getValue()).getId();
-//				
+//
 //				onCleanControlsPax();
 //				//recupera valores ingresado por el usuario
 //				txtDocumentoPax.setText(numeroDocumento);
@@ -1531,7 +1529,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //			}
 //		}
 //	}
-//	
+//
 //	/**
 //	 * Reliza la validacion del pasajero con el metodop getIdentifidad del WS del mtc en funcion al parametro configurado.
 //	 * @throws WrongValueException
@@ -1548,25 +1546,25 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 
 	/**
 	 * Verifica si el Pasajero existe el la reniec si es que se registrando un nuevo Pas - 04/04/2015 - jabanto
-	 * @throws Exception 
-	 * @throws WrongValueException 
+	 * @throws Exception
+	 * @throws WrongValueException
 	 */
 	//Comentado por MAOE 04/08/2022 se implemento la busqueda como en el modulo de Ventas y Reservas
 //	public void verificarPaxReniec() throws WrongValueException, Exception{
 //		txtApePat.setDisabled(false);
 //		txtApeMat.setDisabled(false);
-//		txtNombres.setDisabled(false);	
-//		
-//		if(actionc==Constantes.ACTION_NEW  
-//				&& !(txtDocumentoPax.getText().trim().isEmpty()) 
-//				&& cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento 
+//		txtNombres.setDisabled(false);
+//
+//		if(actionc==Constantes.ACTION_NEW
+//				&& !(txtDocumentoPax.getText().trim().isEmpty())
+//				&& cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento
 //				&& ((TipoDocumento)cmbTipoDocumento.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPDOC_DNI){
-//				
+//
 //			String numerodocumento=txtDocumentoPax.getText().trim();
-//			
+//
 //			/*Consulta DNI con la reniec a travez del Ws del MTC*/
 //			ResultIdentidad resultIdentidad=Util.getResultIdentidad(numerodocumento,imgValidacionDNI);
-//			if(resultIdentidad!=null){	
+//			if(resultIdentidad!=null){
 //				Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, Constantes.ID_TIPDOC_DNI);
 //				/*si el DNI es correcto*/
 //				if(resultIdentidad.isReturn()){
@@ -1584,7 +1582,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //						Util.seleccionarValorItemCombo(Sexo.class, cmbSexo, Integer.valueOf(resultIdentidad.getReniec().getSexo()));
 //					}
 //					txtDireccionPax.setFocus(true);
-//				}	
+//				}
 //			}else{
 //				/*Consulta con NUESTRA BD reniec*/
 //				Reniec reniec= ServiceLocator.getReniecManager().buscarPax(numerodocumento);
@@ -1609,7 +1607,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //			}
 //		}
 //	}
-	
+
 	/**
 	 * Muestra los datos del registro que se va a modificar.
 	 * @param id	: Identificador del registro a modificar
@@ -1622,17 +1620,17 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			imgQuitarPromocion.setVisible(false);
 			tlbbtnModificarPax.setDisabled(true);
 			oPasajero = ServiceLocator.getPasajeroManager().buscarPorId(idPasajero);
-			
+
 			/* Implementado 07/06/2014 - jabanto */
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("pasajero.id", oPasajero.getId());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<PasajeroFrecuente> lstPaxfree = ServiceLocator.getPasajeroFrecuenteManager().buscarPorX(criteriosBusqueda, null);
 			if (lstPaxfree.size() > 0) {
 				oPasajero.setPaxFree(true);
 			}
-			
-			
+
+
 			Ubigeo oUbigeo = oPasajero.getUbigeo();
 //			EstadoCivil oEstadoCivil = oPasajero.getEstadoCivil();
 			TipoDocumento oTipoDocumento = oPasajero.getTipoDocumento();
@@ -1645,29 +1643,29 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				idUbigeo = oUbigeo.getId();
 				ubicacionCompleta = ServiceLocator.getUbigeoManager().ubicacionGeografica(oUbigeo);
 			}
-			
+
 //			if(oEstadoCivil!=null)
 //				Util.seleccionarValorItemCombo(EstadoCivil.class, cmbEstadoCivil, oPasajero.getEstadoCivil().getId());
 //			else
 //				cmbEstadoCivil.setSelectedIndex(0);
-			
+
 			if(oTipoDocumento!=null)
 				Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, oPasajero.getTipoDocumento().getId());
 			else
 				cmbTipoDocumento.setSelectedIndex(0);
-			
+
 			if(oSexo!=null)
 				Util.seleccionarValorItemCombo(Sexo.class, cmbSexo, oPasajero.getSexo().getId());
 			else
 				cmbSexo.setSelectedIndex(0);
-			
+
 			if(oNacionalidad!=null)
 				Util.seleccionarValorItemCombo(Nacionalidad.class, cmbNacionalidad, oNacionalidad.getId());
 			else
 				cmbNacionalidad.setSelectedIndex(0);
-			
+
 			habilitarNacionalidad();
-			
+
 			txtDocumentoPax.setText(oPasajero.getNumeroDocumento());
 			txtApePat.setText(oPasajero.getApellidoPaterno());
 			txtApeMat.setText(oPasajero.getApellidoMaterno());
@@ -1716,14 +1714,14 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			 */
 			if (oPasajero.getIndeseable().intValue() == Constantes.FALSE_VALUE) {
 				//Si no se trata de una reserva o cortesia
-//				if(!getObjetoConfirmar().getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA) 
+//				if(!getObjetoConfirmar().getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA)
 //						&& getObjetoConfirmar().getFormaPago().getId().intValue()!=Constantes.ID_FORPAG_CORTESIA){
 				if(getObjetoConfirmar().getFormaPago()==null || getObjetoConfirmar().getFormaPago().getId().intValue()!=Constantes.ID_FORPAG_CORTESIA){
 					validarPaxFree();
 //					if (lstPaxfree.size() > 0) {
 //						finicio = Constantes.FORMAT_DATE_TIME_24H.format(lstPaxfree.get(0).getFechaActivacion());
 //						ffin = Constantes.FORMAT_DATE_TIME_24H.format(lstPaxfree.get(0).getFechaCaducidad());
-//						
+//
 //						totalViajes = ServiceLocator.getVentaPasajesManager().contarViajesValidos(oPasajero.getId(), finicio, ffin);
 //						lblInformativo1.setValue("PASAJERO FRECUENTE");
 //						lblInformativo3.setValue("NUMERO DE VIAJES DEL " + finicio.substring(0,10) + "  AL  " + ffin.substring(0,10) + " : " + totalViajes);
@@ -1765,14 +1763,14 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //							lblInformativo3.setValue("");
 //						dblDescuento.setValue(0.00);
 //						dblDescuento.setTooltiptext("");
-//						
+//
 //						dblImporte.setValue(dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue()-dblPagado.getValue());
 //					}
 //				}else if(getObjetoConfirmar().getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA)){
 //					if (lstPaxfree.size() > 0) {
 //						finicio = Constantes.FORMAT_DATE_TIME_24H.format(lstPaxfree.get(0).getFechaActivacion());
 //						ffin = Constantes.FORMAT_DATE_TIME_24H.format(lstPaxfree.get(0).getFechaCaducidad());
-//						
+//
 //						totalViajes = ServiceLocator.getVentaPasajesManager().contarViajesValidos(oPasajero.getId(), finicio, ffin);
 //						lblInformativo1.setValue("PASAJERO FRECUENTE");
 //						lblInformativo3.setValue("NUMERO DE VIAJES DEL " + finicio.substring(0,10) + "  AL  " + ffin.substring(0,10) + " : " + totalViajes);
@@ -1802,46 +1800,46 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //					}
 //					validarPaxFree();
 				}
-				
+
 //				tlbbtnModificarPax.setDisabled(oPasajero.isPaxFree());
-				
+
 				/*Establece la imagen segun validacion del DNI del pasajero con la reniec - 04/04/2015 - jabanto*/
 				if(oPasajero.getTipoDocumento().getId().intValue()==Constantes.ID_TIPDOC_DNI)
 					Util.imagenValidacionDNIReniec(oPasajero.getValidadoReniec(), imgValidacionDNI);
-				
+
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			DlgMessage.error(this.getClass().getSimpleName() + " " + ex.getMessage());	
+			DlgMessage.error(this.getClass().getSimpleName() + " " + ex.getMessage());
 			log.error(ex);
 		}
 	}
-	
+
 	private void validarPaxFree(){
 		try{
 			/*Cunado es una confirmacion de F.A. no aplica descuento de paxfri - 21/12/2016 - jabanto*/
 			if(getObjetoConfirmar().getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA) || getObjetoConfirmar().getEsFechaAbierta().intValue()==Constantes.TRUE_VALUE)
 				return;
-			
+
 			if(getObjetoConfirmar().getFormaPago()==null || getObjetoConfirmar().getFormaPago().getId().intValue()!=Constantes.ID_FORPAG_CORTESIA){
 				if(getObjetoConfirmar().getTarifa().doubleValue() < detailItinerary.getTarifa().doubleValue() && !tieneDescuento){
 					/* RECUPERANDO LOS DATOS DEL PASAJERO FRECUENTE */
-					TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+					TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 					criteriosBusqueda.put("pasajero.id", oPasajero.getId());
 					criteriosBusqueda.put("estado", Constantes.TRUE_VALUE);
 					List<PasajeroFrecuente> lstPaxfree = ServiceLocator.getPasajeroFrecuenteManager().buscarPorX(criteriosBusqueda, null);
-			
+
 					String finicio = "";
 					String ffin = "";
 					Integer totalViajes = 0;
-					
+
 					if(lstPaxfree.size() > 0) {
 						finicio = Constantes.FORMAT_DATE_TIME_24H.format(lstPaxfree.get(0).getFechaActivacion());
 						ffin = Constantes.FORMAT_DATE_TIME_24H.format(lstPaxfree.get(0).getFechaCaducidad());
-						
+
 						oPasajero.setPaxFree(true);
 						oPasajero.setPasajeroFrecuente(lstPaxfree.get(0));
-											
+
 						totalViajes = ServiceLocator.getVentaPasajesManager().contarViajesValidos(oPasajero.getId(), finicio, ffin);
 						/*	Validando que el PAXFRE se encuentre activo	*/
 						if(oPasajero.getPasajeroFrecuente().getEstado().intValue()==Constantes.TRUE_VALUE){
@@ -1849,10 +1847,10 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 							lblInformativo3.setValue("NUMERO DE VIAJES DEL " + finicio.substring(0,10) + "  AL  " + ffin.substring(0,10) + " : " + totalViajes);
 //							oPasajero.setPaxFree(true);
 //							oPasajero.setPasajeroFrecuente(lstPaxfree.get(0));
-												
+
 							if(getObjetoConfirmar().getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_RESERVA){
 								/*	Buscamos la promocion del Pasajero Frecuente	*/
-								criteriosBusqueda = new TreeMap<String, Object>();
+								criteriosBusqueda = new TreeMap<>();
 								criteriosBusqueda.put("cliente", "*");
 								criteriosBusqueda.put("pasajeroFrecuente", "S");
 								criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
@@ -1866,7 +1864,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 										oPasajero.setDescuentoAutoByPaxFree(true);
 									}else if(promocionTarifa!=null)
 										lblPromocion.setValue("Promoción : "+promocionTarifa.getDenominacion());
-									
+
 								}else if(lstPromocion.size()>1)
 									DlgMessage.information(Messages.getString("WndVentaPasajes.information.muchasPromocionesPaxFre"));
 							}
@@ -1877,8 +1875,8 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 							oPasajero.setPasajeroFrecuente(null);
 							dblDescuento.setValue(0.00);
 							imgQuitarPromocion.setVisible(false);
-							dblDescuento.setTooltiptext("");						
-							dblImporte.setValue(dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue()-dblPagado.getValue());					
+							dblDescuento.setTooltiptext("");
+							dblImporte.setValue(dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue()-dblPagado.getValue());
 						}
 					}else {
 						oPasajero.setPaxFree(false);
@@ -1895,7 +1893,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 						dblDescuento.setValue(0.00);
 						imgQuitarPromocion.setVisible(false);
 						dblDescuento.setTooltiptext("");
-						
+
 						dblImporte.setValue(dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue()-dblPagado.getValue());
 						if(getObjetoConfirmar().getCliente()!=null)
 							mantenimientoRegistroClient(getObjetoConfirmar().getCliente().getId());
@@ -1904,21 +1902,21 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 							if(oCliente!=null && oCliente.isDescuentoAutoByCliente())
 								mantenimientoRegistroClient(oCliente.getId());
 						}
-						
-						
+
+
 					}
 				}
-			}	
+			}
 		}catch(Exception ex){
 			ex.printStackTrace();
-			DlgMessage.error(this.getClass().getSimpleName() + " " + ex.getMessage());	
+			DlgMessage.error(this.getClass().getSimpleName() + " " + ex.getMessage());
 			log.error(ex);
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IConfirmacion#onSavePax()
 	 */
 	@Override
@@ -1936,27 +1934,27 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //				throw new UbigeoNullException();
 			else if (!(cmbSexo.getSelectedItem().getValue() instanceof Sexo))
 				throw new SexoNullException();
-			else if(cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento && 
+			else if(cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento &&
 					((TipoDocumento)cmbTipoDocumento.getSelectedItem().getValue()).getId().intValue()!=Constantes.ID_TIPDOC_DNI){
 				if(!(cmbNacionalidad.getSelectedItem().getValue() instanceof Nacionalidad))
 					throw new NacionalidadException();
 				else if(txtEmailPax.getText().equals(""))
 					throw new EmailNullException();
-			}else if(cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento && 
+			}else if(cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento &&
 					((TipoDocumento)cmbTipoDocumento.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPDOC_DNI){
 				if(txtDocumentoPax.getText().trim().length()<8) {
 					DlgMessage.information(Messages.getString("WndVentaReserva.information.noDNICorrecto"), txtDocumentoPax);
 					return false;
 				}
-					
+
 			}
-			
+
 			//Comentado por MAOE TRANSMAR no necesita el email
 //			if (!(txtEmailPax.getText().trim().isEmpty())){
 //				if (!(UtilData.validateEmail(txtEmailPax.getText().trim())))
 //					throw new MailIncorectoException();
 //			}
-			
+
 			/*Validando que los apellidos y nombres no incluyan comillas simples - jabanto */
 			if(txtApePat.getText().trim().indexOf("'")>=0){
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noComillaSimple")+", revice el Apellido Parteno del Pasajero.",txtApePat);
@@ -1979,8 +1977,8 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				oUbigeo.setId(getAgencia().getUbigeo().getId());
 			else
 				oUbigeo.setId(txtUbigeoIdPax.getText());
-			
-			
+
+
 			oPasajero.setApellidoPaterno(txtApePat.getText().trim().toUpperCase());
 			oPasajero.setApellidoMaterno(txtApeMat.getText().trim().equals("")?null:txtApeMat.getText().trim().toUpperCase());
 			oPasajero.setNombre(txtNombres.getText().trim().toUpperCase());
@@ -2007,17 +2005,17 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			} else {
 				UtilData.auditarRegistro(oPasajero, true, usuario, Executions.getCurrent());
 			}
-			
+
 			/*Valida si es DNI y si fue validado correctamente por la RENIEC. - 06/04/2015*/
 			oPasajero.setValidadoReniec(Constantes.FALSE_VALUE);
 			if(oPasajero.getTipoDocumento().getId().intValue()==Constantes.ID_TIPDOC_DNI){
 				if(imgValidacionDNI.getSrc()!=null && !(imgValidacionDNI.getSrc().trim().isEmpty()) && imgValidacionDNI.getSrc().equals(Constantes.IMAGE_VALIDACION_DNI_OK))
 					oPasajero.setValidadoReniec(Constantes.TRUE_VALUE);
 			}
-			
+
 			oPasajero.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 
-			
+
 			//Guarda el Pasaje - jabanto - 19/04/022
 			if (action == Constantes.ACTION_NEW) {
 				ServiceLocator.getPasajeroManager().guardar(oPasajero);
@@ -2025,7 +2023,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				onCancelPax();
 			}else
 				ServiceLocator.getPasajeroManager().actualizar(oPasajero);
-			
+
 //			String msg = "";
 //			if (action == Constantes.ACTION_NEW)
 //				msg = Messages.getString("WndVentaReserva.question.guardarPasajero");
@@ -2061,7 +2059,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			log.error(ex);
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -2118,20 +2116,20 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		tlbbtnCancelarClient.setDisabled(false);
 		tlbbtnGuardarClient.setDisabled(false);
 		txtDocumentoCliente.setFocus(true);
-		
+
 		txtDocumentoCliente.setValue(nroRuc);
 		verificarClienteSunat();
 	}
-	
+
 	public void verificarClienteSunat()throws WrongValueException, Exception{
-		if(actionc==Constantes.ACTION_NEW  
+		if(actionc==Constantes.ACTION_NEW
 			&& !(txtDocumentoCliente.getText().trim().isEmpty())){
-			
+
 			String nroDocumento=txtDocumentoCliente.getText().trim();
-			
+
 			//Consulta RUC EN sunat
 			List<String> ruc = RESTCiva.getDatosRuc(nroDocumento);
-				
+
 
 			if(ruc!=null){
 //			Reniec reniec = new Reniec();
@@ -2141,11 +2139,11 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 
 			}else{
 				String numeroDocumento=txtDocumentoCliente.getText().trim();
-					
-				onCleanControlsClient();		
+
+				onCleanControlsClient();
 				//recupera valores ingresado por el usuario
 				txtDocumentoPax.setText(numeroDocumento);
-					
+
 //					if(getAgencia().getTipoAgencia().getId().intValue()!=Constantes.ID_TIPAGE_TEPSA){
 //						Ubigeo oUbigeo = new Ubigeo();
 //						oUbigeo.setId(Constantes.ID_UBIGEO_LIMA);
@@ -2163,11 +2161,11 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //						}catch(Exception ex){
 //							ex.printStackTrace();
 //						}
-					
+
 				}
-			}		
+			}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IConfirmacion#onModifyClient()
@@ -2182,7 +2180,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		tlbbtnGuardarClient.setDisabled(false);
 		txtDocumentoCliente.setFocus(true);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IConfirmacion#onCancelClient()
@@ -2199,12 +2197,12 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //		if(actionc==Constantes.ACTION_NEW)
 //			onCleanControlsClient();
 		actionc = Constantes.FAILURE;
-		txtDocumentoCliente.setFocus(true);		
+		txtDocumentoCliente.setFocus(true);
 	}
 
 	/**
 	 * Limpia los controles del cliente.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void onCleanControlsClient() throws Exception {
 		/*Si el cliente no tiene promosion, recupera la promocion del paxfree si es que este lo tubiera*/
@@ -2214,7 +2212,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //			quitarPromocion();
 		/*Si el cliente no tiene promosion, recupera la promocion del paxfree si es que este lo tubiera*/
 		if(oCliente!=null && oCliente.isDescuentoAutoByCliente()){
-			if(oPasajero==null || oPasajero.isDescuentoAutoByPaxFree()==false)
+			if(oPasajero==null || !oPasajero.isDescuentoAutoByPaxFree())
 				quitarPromocion();
 			else if(oPasajero.isDescuentoAutoByPaxFree()){
 				try {
@@ -2223,7 +2221,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				} catch (Exception e) {}
 			}
 		}
-		
+
 		txtDocumentoCliente.setText("");
 		txtRazonSocial.setText("");
 		txtDireccionCliente.setText("");
@@ -2239,7 +2237,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		lineaCreditoCliente=null;
 //		lineaContadoCliente=null;
 		txtDocumentoCliente.setFocus(true);
-		
+
 		/*21/10/2016 - jabanto*/
 		onSelectDefaultTipoComprobante();
 		onLoadEspecieValorada();
@@ -2259,7 +2257,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		txtRubro.setDisabled(arg);
 		ibxCantidadTrabajadores.setDisabled(arg);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IConfirmacion#onSearchClient(java.lang.Integer)
@@ -2267,11 +2265,11 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	@Override
 	public void onSearchClient(Integer criterio){
 		try{
-			TreeMap<String, Object> criterioBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criterioBusqueda = new TreeMap<>();
 			ArrayList<Cliente> lstClientes = null;
 			if(criterio.intValue()==SEARCH_BY_DOCUMENTO){
 				criterioBusqueda.put("numeroDocumento", txtDocumentoCliente.getText().toUpperCase()+"%");
-				List<String> criteriosOrdenar = new ArrayList<String>();
+				List<String> criteriosOrdenar = new ArrayList<>();
 				criteriosOrdenar.add("razonSocial");
 				criteriosOrdenar.add("numeroDocumento");
 				lstClientes = ServiceLocator.getClienteManager().buscarPorX(criterioBusqueda, criteriosOrdenar);
@@ -2286,18 +2284,18 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			log.error(ex);
 		}
 	}
-	
+
 	private void listarClientes(ArrayList<Cliente> lstRegistros)throws Exception{
-		ArrayList<Object> lstClientes = new ArrayList<Object>();
+		ArrayList<Object> lstClientes = new ArrayList<>();
 		grpbxListaClientes.setVisible(false);
-		
+
 		if(lstRegistros.size()==1){
 			Cliente cliente = lstRegistros.get(0);
 			mantenimientoRegistroClient(cliente.getId());
 		}else if(lstRegistros.size()>0){
 			for (int r = 0; r < lstRegistros.size(); r++) {
 				Cliente oCliente = lstRegistros.get(r);
-				ArrayList<Object> lstFila = new ArrayList<Object>();
+				ArrayList<Object> lstFila = new ArrayList<>();
 				lstFila.add(oCliente.getId());
 				lstFila.add(r + 1);
 				lstFila.add(oCliente.getNumeroDocumento());
@@ -2306,7 +2304,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				lstClientes.add(lstFila);
 			}
 			Util.llenarListbox(lbxClientes, lstClientes, true);
-			grpbxListaClientes.setVisible(true);			
+			grpbxListaClientes.setVisible(true);
 		}else{
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noClientesEncontrados"));
 			String nroRuc = txtDocumentoCliente.getValue();
@@ -2324,7 +2322,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	 */
 	 private void mantenimientoRegistroClient(Long id) {
 		try {
-						
+
 			promocionAplicada = null;
 			tlbbtnModificarClient.setDisabled(false);
 			oCliente = ServiceLocator.getClienteManager().buscarPorId(id);
@@ -2347,13 +2345,13 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			txtEmailCliente.setText(oCliente.getEmail());
 			txtRubro.setText(oCliente.getRubro());
 			ibxCantidadTrabajadores.setText(oCliente.getCantidadTrabajadores().toString());
-			
+
 			lineaCreditoCliente=null;
-			
+
 			lblDescuento.setValue("");
-			
+
 			/*	Habilitando  deshabilitando la edicion del cliente	*/
-			if(getObjetoConfirmar().getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_FECHA_ABIERTA 
+			if(getObjetoConfirmar().getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_FECHA_ABIERTA
 					|| getObjetoConfirmar().getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_POSTERGACION_FA){
 				tlbbtnModificarClient.setDisabled(true);
 				txtDocumentoCliente.setDisabled(true);
@@ -2363,7 +2361,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				txtDocumentoCliente.setDisabled(false);
 				txtRazonSocial.setDisabled(false);
 			}
-			
+
 			/*	Si la venta es desde un punto TEPSA	*/
 			if(agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_TEPSA){
 				/* Valida si el cliente tiene credito- Implementado 17/03/2013 */
@@ -2380,14 +2378,14 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 					}
 					this.lineaCreditoCliente = lineaCreditoCliente;
 
-					if(getObjetoConfirmar().getFormaPago()!=null && getObjetoConfirmar().getTipoFormaPago()!=null && getObjetoConfirmar().getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO 
+					if(getObjetoConfirmar().getFormaPago()!=null && getObjetoConfirmar().getTipoFormaPago()!=null && getObjetoConfirmar().getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO
 							&& getObjetoConfirmar().getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_CANJE_PUBLICITARIO){
 						Util.seleccionarValorItemCombo(FormaPago.class,cmbFormaPago, Constantes.ID_FORPAG_CREDITO);
 						onLoadTipoFormaPago();
 					}else{
 						Util.seleccionarValorItemCombo(FormaPago.class,cmbFormaPago, Constantes.ID_FORPAG_CONTADO);
 						onLoadTipoFormaPago();
-					}					
+					}
 				}else {
 					lblDescuento.setValue(Constantes.TIPCONVCLI_CONTADO);
 					cmbFormaPago.setDisabled(true);
@@ -2395,28 +2393,28 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 					tlbbtnModificarClient.setImage("resources/mp_editarEnabled.png");
 				}
 			}
-			
-			if(!getObjetoConfirmar().getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA) 
+
+			if(!getObjetoConfirmar().getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA)
 					&& getObjetoConfirmar().getFormaPago().getId().intValue()!=Constantes.ID_FORPAG_CORTESIA){
 				/*	Buscando si existe promocion por Cliente	*/
-				TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+				TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 				criteriosBusqueda.put("cliente", oCliente.getId().toString());
 				criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 				List<Promocion> lstPromocion = ServiceLocator.getPromocionManager().buscarPorX(criteriosBusqueda, null, Util.DatetoString(detailItinerary.getFechaPartida(), Constantes.DATE_FORMAT));
-				for(int i=0; i<lstPromocion.size(); i++){
-					
+				for (Promocion element : lstPromocion) {
+
 					/*Implementado 01/10/2014 - jabanto, para controlar que a una promocion se le aplique mas de una*/
 					if(promocionTarifa==null || (promocionTarifa.getEsAcumulable().intValue()==Constantes.TRUE_VALUE)){
 						lblPromocion.setValue("");
 						AplicarPromocion aplicarPromocion = createObjectAplicarPromocion();
-						promocionAplicada = aplicarPromocion.executePromocion(lstPromocion.get(i).getId().toString(), false);
+						promocionAplicada = aplicarPromocion.executePromocion(element.getId().toString(), false);
 						if(promocionAplicada!=null){
 							break;
 						}
 						imgQuitarPromocion.setVisible(true);
 					}else if(promocionTarifa!=null)
 						lblPromocion.setValue("Promoción : "+promocionTarifa.getDenominacion());
-					
+
 				}
 				Double importe=(dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue())-dblPagado.getValue();
 				if(importe<0)
@@ -2424,40 +2422,40 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				else
 					dblImporte.setValue(importe);
 			}if(getObjetoConfirmar().getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA)){
-				
+
 				/*Implementado 01/10/2014 - jabanto, para controlar que a una promocion se le aplique mas de una*/
 				if(promocionTarifa==null || (promocionTarifa.getEsAcumulable().intValue()==Constantes.TRUE_VALUE)){
 					lblPromocion.setValue("");
 					/*	Buscando si existe promocion por Cliente	*/
-					TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+					TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 					criteriosBusqueda.put("cliente", oCliente.getId().toString());
 					criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 					List<Promocion> lstPromocion = ServiceLocator.getPromocionManager().buscarPorX(criteriosBusqueda, null, Util.DatetoString(detailItinerary.getFechaPartida(), Constantes.DATE_FORMAT));
-					for(int i=0; i<lstPromocion.size(); i++){
+					for (Promocion element : lstPromocion) {
 						AplicarPromocion aplicarPromocion = createObjectAplicarPromocion();
-						promocionAplicada = aplicarPromocion.executePromocion(lstPromocion.get(i).getId().toString(), false);
+						promocionAplicada = aplicarPromocion.executePromocion(element.getId().toString(), false);
 						if(promocionAplicada!=null){
 							oCliente.setDescuentoAutoByCliente(true);
 							break;
 						}
 						imgQuitarPromocion.setVisible(true);
 					}
-					
+
 					/*Si el cliente no tiene promosion, recupera la promocion del paxfree si es que este lo tubiera*/
 					if(promocionAplicada==null && oPasajero!=null && oPasajero.isDescuentoAutoByPaxFree()){
 						validarPaxFree();
-					}else if (promocionAplicada==null && (oPasajero==null || oPasajero.isDescuentoAutoByPaxFree()==false))
+					}else if (promocionAplicada==null && (oPasajero==null || !oPasajero.isDescuentoAutoByPaxFree()))
 						quitarPromocion();
-					
+
 					Double importe=(dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue())-dblPagado.getValue();
 					if(importe<0)
 						dblImporte.setValue(0.00);
 					else
 						dblImporte.setValue(importe);
-					
+
 				}else if(promocionTarifa!=null)
 					lblPromocion.setValue("Promoción : "+promocionTarifa.getDenominacion());
-				
+
 				/*21/10/2016 - jabanto*/
 				onSelectDefaultTipoComprobante();
 				onLoadEspecieValorada();
@@ -2467,10 +2465,10 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			log.error(ex);
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IConfirmacion#onSaveClient()
 	 */
 	@Override
@@ -2496,10 +2494,10 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				if (!(UtilData.validateEmail(txtEmailCliente.getText().trim())))
 					throw new MailIncorectoException();
 			}
-			
+
 			if(!Util.validarRUC(txtDocumentoCliente.getText().trim()))
 				throw new RucInvalidoException();
-			
+
 			/*Validando que los datos del cliente no incluyan comillas simples - 14/12/2016 - jabanto */
 			if(txtRazonSocial.getText().trim().indexOf("'")>=0){
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noComillaSimple")+", revice la Razón Social del Cliente.",txtRazonSocial);
@@ -2508,10 +2506,10 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noComillaSimple")+", revice la Dirección del Cliente.",txtDireccionCliente);
 				return false;
 			}
-			
+
 			if (actionc == Constantes.ACTION_NEW)
 				oCliente = new Cliente();
-			
+
 			Ubigeo oUbigeo = new Ubigeo();
 			//Comentado por MAOE 04/08/2022
 //			oUbigeo.setId(txtUbigeoIdCliente.getText());
@@ -2519,7 +2517,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				oUbigeo.setId(getAgencia().getUbigeo().getId());
 			else
 				oUbigeo.setId(txtUbigeoIdPax.getText());
-			
+
 			oCliente.setNumeroDocumento(txtDocumentoCliente.getValue().toString());
 			oCliente.setRazonSocial(txtRazonSocial.getText().toUpperCase());
 			oCliente.setContacto(txtContactoCliente.getText().toUpperCase());
@@ -2531,16 +2529,16 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			oCliente.setCantidadTrabajadores(0);
 			oCliente.setUbigeo(oUbigeo);
 			oCliente.setAgencia(agencia);
-			
+
 			if(oCliente.getId()==null){
 				oCliente.setKilometros(0.00);
-				UtilData.auditarRegistro(oCliente, false, usuario, Executions.getCurrent()); 
+				UtilData.auditarRegistro(oCliente, false, usuario, Executions.getCurrent());
 			}else{
 				UtilData.auditarRegistro(oCliente, true, usuario, Executions.getCurrent());
 			}
 			oCliente.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-			
-			
+
+
 			//Guarda el cliente
 			if (actionc == Constantes.ACTION_NEW) {
 				ServiceLocator.getClienteManager().guardar(oCliente);
@@ -2550,20 +2548,20 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			} else {
 				ServiceLocator.getClienteManager().actualizar(oCliente);
 			}
-			
+
 			onSelectDefaultTipoComprobante();
 			onLoadEspecieValorada();
 
-			
+
 //			String msg = "";
 //			if(action == Constantes.ACTION_NEW)
 //				msg = Messages.getString("WndVentaReserva.question.guardarCliente");
 //			else
 //				msg = Messages.getString("WndVentaReserva.question.actualizarCliente");
-//			
-//			Messagebox.show(msg, DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, EventSaveClient(oCliente));	
-			
-			
+//
+//			Messagebox.show(msg, DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, EventSaveClient(oCliente));
+
+
 		}catch (MailIncorectoException miec){
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.EmailIncorrecto"), txtEmailCliente);
 			return false;
@@ -2586,7 +2584,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			log.error(ex);
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -2614,8 +2612,8 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 						tlbbtnCancelarClient.setDisabled(true);
 						tlbbtnGuardarClient.setDisabled(true);
 						actionc = Constantes.FAILURE;
-						disabledControlsClient(true);	
-						
+						disabledControlsClient(true);
+
 						/*21/10/2016 - jabanto*/
 						onSelectDefaultTipoComprobante();
 						onLoadEspecieValorada();
@@ -2629,7 +2627,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 					log.error(ex);
 				}
 			}
-		};		
+		};
 		return ev;
 	}
 
@@ -2652,9 +2650,9 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 
 			if (cmbFormaPago.getSelectedItem().getValue() instanceof FormaPago) {
 				FormaPago formaPago = cmbFormaPago.getSelectedItem().getValue();
-				TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+				TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 				criteriosBusqueda.put("formaPago.id", formaPago.getId());
-				List<String> criteriosOrdenar = new ArrayList<String>();
+				List<String> criteriosOrdenar = new ArrayList<>();
 				criteriosOrdenar.add("denominacion");
 				List<TipoFormaPago> lstTipoFormasPago = ServiceLocator.getTipoFormaPagoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
 				UtilData.cargarGenericData(cmbTipoFormaPago, false);
@@ -2709,7 +2707,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	/**
 	 * Realiza una validación del Tipo de Forma de Pago, para habilitar o
 	 * deshabilitar algunos controles.
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public void onValidateTipoFormaPago() throws Exception {
@@ -2719,7 +2717,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		cmbTarjetaCredito.getItems().clear();
 		cmbTarjetaCredito.setText("");
 		cmbTarjetaCredito.setDisabled(true);
-		
+
 		if (cmbTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago) {
 			/* Si es tarjeta cargamos los operadores de tarjeta de credito */
 			if (cmbTipoFormaPago.getText().equals("TARJETA")) {
@@ -2751,9 +2749,9 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 
 			if (cmbOperadorTarjetaCredito.getSelectedItem().getValue() instanceof OperadorTarjetaCredito) {
 				OperadorTarjetaCredito operadorTarjetaCredito = cmbOperadorTarjetaCredito.getSelectedItem().getValue();
-				TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+				TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 				criteriosBusqueda.put("operadorTarjetaCredito.id",operadorTarjetaCredito.getId());
-				List<String> criteriosOrdenar = new ArrayList<String>();
+				List<String> criteriosOrdenar = new ArrayList<>();
 				criteriosOrdenar.add("denominacion");
 				List<TarjetaCredito> lstTarjetaCredito = ServiceLocator.getTarjetaCreditoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
 				UtilData.cargarGenericData(cmbTarjetaCredito, false);
@@ -2788,11 +2786,11 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				throw new NumeroBoletoNullException();
 			//Coentado por MAOE 04/08/2022
 //			else if (!(cmbAlimentacion.getSelectedItem().getValue() instanceof PreferenciaAlimentaria))
-//				throw new PreferenciaAlimentariaException();			
-			
+//				throw new PreferenciaAlimentariaException();
+
 //			else if (!(tlbbtnGuardarPax.isDisabled()))// 06/09/2013 - jabanto
 //				throw new PasajeroNoSavedExeption();
-			
+
 			//Valida los datos del Pasajero - 19/04/2022 - jabanto
 			if(!tlbbtnCancelarPax.isDisabled()){
 				// Crea o actualiza el pasajero
@@ -2800,14 +2798,14 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				if(!isCorrect)
 					return;
 			}
-			
+
 			//Valida los datos del Cliente - 20/04/2022
 			if(!tlbbtnCancelarClient.isDisabled()) {
 				boolean isCorrect = onSaveClient();
 				if(!isCorrect)
 					return;
 			}
-			
+
 			if (oPasajero == null)
 				throw new PasajeroException();
 			else if (!(cmbTipoComprobante.getSelectedItem().getValue() instanceof TipoComprobante))
@@ -2833,38 +2831,38 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			}else if (oCliente!=null && (oCliente.getDireccion()==null || oCliente.getDireccion().trim().isEmpty())){
 				throw new ClienteException(ClienteException.NO_DIRECCION);
 			}
-			
+
 			if(getObjetoConfirmar().getFormaPago()!=null){
 				int idServicio=detailItinerary.getItinerario().getServicio().getId();
-				if( (idServicio==Constantes.ID_SERVICIO_TEPSASUITE || idServicio==Constantes.ID_SERVICIO_TEPSACAMASUITE) 
-						&& getObjetoConfirmar().getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA 
+				if( (idServicio==Constantes.ID_SERVICIO_TEPSASUITE || idServicio==Constantes.ID_SERVICIO_TEPSACAMASUITE)
+						&& getObjetoConfirmar().getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA
 						&& Integer.valueOf(txtNumeroAsiento.getText())<=10){
 					throw new NumeroAsientoFueraRangoException();
 				}
 			}
-			
+
 //			if(getObjetoConfirmar().getTipoFormaPago()!=null){
-//				if(detailItinerary.getItinerario().getServicio().getId().intValue()==Constantes.ID_SERVICIO_TEPSASUITE 
-//						&& getObjetoConfirmar().getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_CORTESIA 
+//				if(detailItinerary.getItinerario().getServicio().getId().intValue()==Constantes.ID_SERVICIO_TEPSASUITE
+//						&& getObjetoConfirmar().getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_CORTESIA
 //						&& Integer.valueOf(txtNumeroAsiento.getText())<=10){
 //					throw new NumeroAsientoFueraRangoException();
 //				}
 //			}
 //			else{
-//				if(detailItinerary.getItinerario().getServicio().getId().intValue()==Constantes.ID_SERVICIO_TEPSASUITE  
+//				if(detailItinerary.getItinerario().getServicio().getId().intValue()==Constantes.ID_SERVICIO_TEPSASUITE
 //						&& Integer.valueOf(txtNumeroAsiento.getText())<=10){
 //					throw new NumeroAsientoFueraRangoException();
 //				}
 //			}
-			
+
 			/*Si es una F.A emitida con boleto de viaje y hay diferencia en la tarifa - 27/10/2016 jabanto*/
-			if(objetoConfirmar.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE 
+			if(objetoConfirmar.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE
 					&& objetoConfirmar.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA)){
 //					&& dblImporte.getValue()>0.00){
 				DlgMessage.information(Messages.getString("WndConfirmarFechaAbierta.information.noAplicaBoleto"));
 				return;
-			}						
-			
+			}
+
 			if(detailItinerary.getTarifa()==0.0)
 				throw new ItinerarioException(ItinerarioException.TARIFA_IDA_CERO);
 
@@ -2878,7 +2876,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 						throw new SaldoInsuficienteException();
 				} else
 					throw new SaldoInsuficienteException();
-				
+
 				if(oCliente.getNumeroDocumento()!=null)
 					ventaPasaje.setRucClienteCredito(oCliente.getNumeroDocumento());
 				else{
@@ -2886,27 +2884,27 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 					ventaPasaje.setRucClienteCredito(cliente.getNumeroDocumento());
 				}
 			}
-			
+
 			DetalleItinerario detalleItinerario = detailItinerary;
-			
+
 			if(chkPagoMixto.isChecked()){
 				if(dblImporteEfectivo.getValue()<=0.0 || dblImporteTarjeta.getValue()<=0.0)
 					throw new ImporteMixtoNullException(ImporteMixtoNullException.IMPORTE_MIXTO_CERO);
 			}
-			
+
 			/*	Validando que el monto en efectivo + el monto en tarjeta sumen el importe pagado	*/
 			if(chkPagoMixto.isChecked()){
 				if(dblImporte.getValue().doubleValue()!=(dblImporteEfectivo.getValue().doubleValue()+dblImporteTarjeta.getValue().doubleValue()))
 					throw new ImporteMixtoNullException(ImporteMixtoNullException.IMPORTE_MIXTO_NOT_EQUALS);
 			}
-			
+
 			ventaPasaje.setItinerario(detalleItinerario.getItinerario());
 			ventaPasaje.setRuta(detalleItinerario.getRuta());
 			ventaPasaje.setCliente(oCliente);
 			ventaPasaje.setPasajero(oPasajero);
 			FormaPago formaPago = (FormaPago) cmbFormaPago.getSelectedItem().getValue();
 			ventaPasaje.setFormaPago(formaPago);
-			
+
 			ventaPasaje.setServicio(detalleItinerario.getItinerario().getServicio());
 			TipoComprobante tipoComprobante = (TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue();
 			ventaPasaje.setTipoComprobante(tipoComprobante);
@@ -2914,13 +2912,13 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			if (getObjetoConfirmar().getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA)) {
 				ventaPasaje.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_CONFIRMACION_FA));
 				ventaPasaje.setNumeroBoletoAnterior(getObjetoConfirmar().getNumeroBoleto());
-				
+
 				/*Valida si la diferencia a es a favor de tepsa*/
 				if(lblImporte.getValue().equals(LABEL_IMPPAG_TO_TEPSA))
 					ventaPasaje.setImportePagadoByDiferencia(dblImporte.getValue());
 				else
 					ventaPasaje.setImportePagadoByDiferencia(0.00);
-				
+
 				if(rowNuevoBoleto.isVisible())
 					ventaPasaje.setNumeroBoleto(txtNuevoBoleto.getText());
 				else
@@ -2937,7 +2935,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				TarjetaCredito tarjetaCredito = (TarjetaCredito) cmbTarjetaCredito.getSelectedItem().getValue();
 				ventaPasaje.setTarjetaCredito(tarjetaCredito);
 			}
-			
+
 			ventaPasaje.setNumeroAsiento(Integer.valueOf(txtNumeroAsiento.getText()));
 			ventaPasaje.setNumeroPiso(Integer.valueOf(txtNumeroPiso.getText()));
 			ItinerarioAgenciaPartida itinerarioAgenciaPartida = (ItinerarioAgenciaPartida) cmbPtoEmbarque.getSelectedItem().getValue();
@@ -2962,19 +2960,19 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			String fechaCaducidad=Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida())+" "+ventaPasaje.getHoraPartida();
 			Date dateCaducidad=Constantes.FORMAT_LONG.parse(fechaCaducidad);
 			ventaPasaje.setFechaCaducidad(dateCaducidad);
-			
+
 			if(lblImporte.getValue().equals(LABEL_IMPPAG_TO_TEPSA)){//Si el importe es a favor de tepsa
 				ventaPasaje.setImportePagado(dblImporte.getValue()+dblPagado.getValue());
 			}else{
 				ventaPasaje.setImportePagado(dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue());
 			}
-			
+
 //			ventaPasaje.setImportePagado(dblImporte.getValue()+dblPagado.getValue());
 //			if(dblImporte.getValue()>0.00)
 //				ventaPasaje.setImportePagado(dblImporte.getValue()+dblPagado.getValue());
 //			else
 //				ventaPasaje.setImportePagado(dblImporte.getValue());
-			
+
 			ventaPasaje.setTipoTransaccion(Constantes.TIPO_OPERACION_VENTA);
 			ventaPasaje.setAgencia(agencia);
 			ventaPasaje.setUsuario(usuario);
@@ -2992,7 +2990,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				ventaPasaje.setDescuento(0.00);
 				ventaPasaje.setImportePagado(ventaPasaje.getTarifa());
 			}
-			
+
 			//Valida el estado del boleto, todos los boleto de forma de pago contado y cortesia se graban como PAG.
 			if(ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO)
 				ventaPasaje.setEstadoDocumento(Constantes.ESTADO_DOCUMENTO_ACTIVO);
@@ -3008,7 +3006,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			/*BEGIN 16/06/2021 - javalos - Correlativo by caja*/
 			ventaPasaje.setUsuarioHardware(getUsuarioHardware());
 			/*END 16/06/2021 - javalos - Correlativo by caja*/
-			
+
 			UtilData.auditarRegistro(ventaPasaje, false, usuario, Executions.getCurrent());
 			ventaPasaje.setUsuarioHardware(new UsuarioHardware(usuhar));
 
@@ -3029,8 +3027,8 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 									//Confirmacion de F.A.
 									TipoNota tipoNotaCredito=null;
 									tipoNotaCredito=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CREDITO_DIFERENCIA_TARIFA_FA);
-									
-									
+
+
 									/*Realiza la busqueda del tipo de nota de credito, por concepto de diferencia en tarifa*/
 //									if(ventaPasaje.getImportePagado()>0.00)
 //										tipoNotaCredito=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CREDITO_DIFERENCIA_TARIFA_FA);
@@ -3049,18 +3047,18 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 										Servicio servicio=ServiceLocator.getServicioManager().buscarPorId(ventaPasaje.getServicio().getId().longValue());
 										ventaPasaje.setServicio(servicio);
 										ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarPorId(ventaPasaje.getId());
-										
+
 										/*Begin 25/10/2016 - jabanto*/
 										List<VentaPasaje>listVentaPasaje= new ArrayList<>();
 										listVentaPasaje.add(ventaPasaje);
 										WSFE.sendVenta(listVentaPasaje, wndConfirmacion, true, notaCredito);
-										
-										
+
+
 										/*###End begin 25/10/2016 - jabanto*/
 //										/*Implementacion para el nuevo formato 01/02/2016 - jabanto */
 //										boolean formato=UtilData.getFormatoImprecion(getAgencia().getId(), getTipocomprobante().getId(), getUsuarioHardware().getId());
 //										File file= CreateDocument.crearBoleto(ventaPasaje,formato);
-//										
+//
 //										if(getUsuarioHardware().getPrintApplet().intValue()==Constantes.TRUE_VALUE){
 ////											String fileBoleto = Constantes.URL_FORMATOS_BOLETOS+ ventaPasaje.getNumeroControl()+ ".txt";
 //											String fileBoleto = Constantes.URL_FORMATOS_BOLETOS+Constantes.CLAVE_PAHT+ ventaPasaje.getNumeroControl()+ ".txt";
@@ -3073,8 +3071,8 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //											//Descarga el archivo para la impresion
 //											Util.descargarArchivo(file);
 //										}
-//										
-									} 
+//
+									}
 									/*###End begin 25/10/2016 - jabanto*/
 //									else{
 //										File file=CreateDocument.crearRecibCaja(ventaPasaje);
@@ -3100,11 +3098,11 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //										}
 //									}
 								}
-								
+
 								/* Resta el saldo de LC del Cliente */
 								if (((FormaPago) cmbFormaPago.getSelectedItem().getValue()).getId().equals(Constantes.ID_FORPAG_CREDITO))
 									ServiceLocator.getLineaCreditoClienteManager().restarSaldo(lineaCreditoCliente.getSaldo(), ventaPasaje.getImportePagado(),lineaCreditoCliente.getId());
-								
+
 								if (result == Constantes.CORRECT) {
 									DlgMessage.information(Messages.getString("WndVentaReserva.information.exitoGuardarVenta")+ ventaPasaje.getNumeroControl());
 									onCleanControlsPax();
@@ -3117,7 +3115,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 							}catch(NumeroBoletoDuplicadoException nbdex){
 								DlgMessage.information(Messages.getString("WndVentaReserva.information.numeroBoletoVendido"));
 							}
-							
+
 						}
 					}catch (CapacityExceedsException ceex) {
 						DlgMessage.information(Messages.getString("WndVentaReserva.information.changeCapacidad"));
@@ -3205,7 +3203,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			log.error(ex);
 		}
 	}
-	
+
 	private void tiempoExpiracionBloqueo(){
 		txtNumeroAsiento.setText(getObjetoConfirmar().getNumeroAsiento()==null?"":getObjetoConfirmar().getNumeroAsiento().toString());
 //		onCleanControlsPax();
@@ -3220,7 +3218,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //		onCleanInformacionVenta();
 //		tabPasajero.setSelected(true);
 	}
-	
+
 	/**
 	 * Limpia la informacion de la venta
 	 */
@@ -3283,7 +3281,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			log.error(ex);
 		}
 	}
-	
+
 	/**
 	 * Realiza la habilitacion del control de nacionalidades
 	 */
@@ -3299,15 +3297,15 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			lblEmail.setValue("EMAIL :");
 			txtDocumentoPax.setMaxlength(8);
 		}
-		
+
 		txtApeMat.setDisabled(false);
 		txtApePat.setDisabled(false);
 		txtNombres.setDisabled(false);
 		imgValidacionDNI.setSrc("");
-		
+
 		txtDocumentoPax.setFocus(true);
 	}
-	
+
 	/**
 	 * Realiza la habilitacion de los controles relacionados con el pago mixto
 	 */
@@ -3315,7 +3313,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		boolean arg = false;
 		if(chkPagoMixto.isChecked())
 			arg = true;
-		
+
 		lblImporteEfectivo.setVisible(arg);
 		lblImporteTarjeta.setVisible(arg);
 		dblImporteEfectivo.setVisible(arg);
@@ -3334,26 +3332,26 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			((Tabbox)this.getParent().getParent().getParent().getParent()).setSelectedIndex(0);
 		super.onClose();
 	}
-	
+
 	/**
 	 * 	Crea un objeto AplicarPromocion pasando parámetros al constructor
 	 */
 	private AplicarPromocion createObjectAplicarPromocion(){
 		AplicarPromocion aplicarPromocion = null;
-		aplicarPromocion = new AplicarPromocion(getObjetoConfirmar().getRuta().getId(), getObjetoConfirmar().getServicio().getId(), 
-				getAgencia().getId(), getUsuarioHardware().getCanalVenta().getId(), null, null, 
-				txtNumeroAsiento.getText().equals("")?"*":txtNumeroAsiento.getText(), oCliente==null?null:oCliente.getId(), 
-				getObjetoConfirmar().getIdaRetorno().intValue()==Constantes.TRUE_VALUE?true:false, 
-				((FormaPago)cmbFormaPago.getSelectedItem().getValue()).getId(), 
-				((TipoFormaPago)cmbTipoFormaPago.getSelectedItem().getValue()).getId(), 
-				(cmbTarjetaCredito.getSelectedItem()==null?null:((TarjetaCredito)cmbTarjetaCredito.getSelectedItem().getValue()).getId()), 
-				(lblFechaPartida.getValue().equals("")?null:Util.StringtoDate(lblFechaPartida.getValue(), Constantes.DATE_FORMAT)), 
+		aplicarPromocion = new AplicarPromocion(getObjetoConfirmar().getRuta().getId(), getObjetoConfirmar().getServicio().getId(),
+				getAgencia().getId(), getUsuarioHardware().getCanalVenta().getId(), null, null,
+				txtNumeroAsiento.getText().equals("")?"*":txtNumeroAsiento.getText(), oCliente==null?null:oCliente.getId(),
+				getObjetoConfirmar().getIdaRetorno().intValue()==Constantes.TRUE_VALUE?true:false,
+				((FormaPago)cmbFormaPago.getSelectedItem().getValue()).getId(),
+				((TipoFormaPago)cmbTipoFormaPago.getSelectedItem().getValue()).getId(),
+				(cmbTarjetaCredito.getSelectedItem()==null?null:((TarjetaCredito)cmbTarjetaCredito.getSelectedItem().getValue()).getId()),
+				(lblFechaPartida.getValue().equals("")?null:Util.StringtoDate(lblFechaPartida.getValue(), Constantes.DATE_FORMAT)),
 				(oPasajero==null?false:oPasajero.isPaxFree()), dblTarifa, dblDescuento, dblImporte, dblRecargo, lblPromocion, imgQuitarPromocion, txtIdPromocion,
 				(getObjetoConfirmar().getHoraPartida()));
-		
+
 		return aplicarPromocion;
 	}
-	
+
 	/**
 	 * Obtiene las promociones vigentes de la base de datos y las muestras en pantalla.
 	 */
@@ -3365,13 +3363,13 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				tabPasajero.setSelected(true);
 				return;
 			}
-				
+
 			if(oPasajero.isPaxFree())
 				paxfre=true;
 			String idCliente = null;
 			if(oCliente!=null)
 				idCliente = oCliente.getId().toString();
-			
+
 			AplicarPromocion aplicarPromocion = createObjectAplicarPromocion();
 			Window win = aplicarPromocion.loadPromociones(paxfre, idCliente, lblFechaPartida.getValue().substring(0,10));
 			/*	Validando que el Objeto Window sea distinto de null	*/
@@ -3384,7 +3382,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			log.error(ex);
 		}
 	}
-	
+
 	private void quitarPromocion(){
 		lblPromocion.setValue("");
 		dblDescuento.setTooltiptext("");
@@ -3393,7 +3391,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		txtIdPromocion.setText("");
 		imgQuitarPromocion.setVisible(false);
 	}
-	
+
 	private void mostrarFechaNacimiento(String fechaNacimiento)throws Exception{
 		if(fechaNacimiento != null){
 //			String dia = fechaNacimiento.substring(0, 2);
@@ -3403,14 +3401,14 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //				if(cmbAnio.getItems().get(i).getValue().toString().equals(anio))
 //					cmbAnio.setSelectedIndex(i);
 //			}
-//			
+//
 //			for(int i=0; i<cmbMes.getItems().size(); i++){
 //				if(((Integer)cmbMes.getItems().get(i).getValue()).intValue()==Integer.valueOf(mes)){
 //					cmbMes.setSelectedIndex(i);
 //					Util.loadDias(cmbDia, (Integer)cmbMes.getSelectedItem().getValue(), (Integer)cmbAnio.getSelectedItem().getValue());
 //				}
 //			}
-//			
+//
 //			for(int i=0; i<cmbDia.getItems().size(); i++){
 //				if(((Integer)cmbDia.getItems().get(i).getValue()).intValue() == Integer.valueOf(dia))
 //					cmbDia.setSelectedIndex(i);
@@ -3426,7 +3424,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			dtbxFechaNacimiento.setValue(null);
 		}
 	}
-	
+
 	private String generarFechaNacimiento(){
 		String fechaNacimiento = Constantes.FORMAT_DATE.format(dtbxFechaNacimiento.getValue());
 //		String fechaNacimiento = null;
@@ -3437,7 +3435,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //		}
 		return fechaNacimiento;
 	}
-	
+
 	private void enlazarMapaBus(){
 		try{
 			final WndMapaBus oWndMapaBus = new WndMapaBus();
@@ -3449,7 +3447,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			oWndMapaBus.setUsuarioHardware(getUsuarioHardware());
 			oWndMapaBus.setTxtAsientoSeleccionado(txtNumeroAsiento);
 			oWndMapaBus.setTxtPisoSeleccionado(txtNumeroPiso);
-			if(getObjetoConfirmar().getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_POSTERGACION_FA 
+			if(getObjetoConfirmar().getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_POSTERGACION_FA
 					|| getObjetoConfirmar().getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_FECHA_ABIERTA)
 				oWndMapaBus.setSelectAsiento(true);
 			else
@@ -3463,16 +3461,16 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				public void onEvent(Event e){
 					getObjetoConfirmar().setNumeroAsiento(Integer.valueOf(txtNumeroAsiento.getText()));
 					getObjetoConfirmar().setNumeroPiso(Integer.valueOf(txtNumeroPiso.getText()));
-					
+
 					detailItinerary.setTarifa(oWndMapaBus.getAsientoSeleccionado().getDetalleItinerario().getTarifa());
-					
-					/**	
-					 * Esta seccion es para obtener las promociones que son por tarifa	
+
+					/**
+					 * Esta seccion es para obtener las promociones que son por tarifa
 					 * y que reeemplazaran la tarifa real del servicio.
 					 */
 					try {
 						aplicarPromocionPorTarifa();
-						
+
 					} catch (Exception ex) {
 						DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 						ex.printStackTrace();
@@ -3483,13 +3481,13 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	private void aplicarPromocionPorTarifa(){
 		try {
 			/*	Obtenemos las promociones que reemplazaran a la tarifa	*/
-			List<Promocion>lstPromocion=ServiceLocator.getPromocionManager().buscarPorTarifa(Util.DatetoString(detailItinerary.getFechaPartida(), 
-																											   Constantes.DATE_FORMAT), 
-																							 detailItinerary.getRuta().getId().toString(), 
+			List<Promocion>lstPromocion=ServiceLocator.getPromocionManager().buscarPorTarifa(Util.DatetoString(detailItinerary.getFechaPartida(),
+																											   Constantes.DATE_FORMAT),
+																							 detailItinerary.getRuta().getId().toString(),
 																							 detailItinerary.getItinerario().getServicio().getId().toString(),
 																							 detailItinerary.getHoraPartida().replaceAll(":", "."));
 			Promocion promo = null;
@@ -3498,21 +3496,21 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				nAsiento = getObjetoConfirmar().getNumeroAsiento().toString();
 			else
 				nAsiento = txtNumeroAsiento.getText();
-				
-			/*	Validando si la promocion cumple con el requisito del Servicio y la Ruta	*/	
-			for(int i=0; i<lstPromocion.size(); i++){
-				String[] rutas = lstPromocion.get(i).getRutas().split(",");
-				String[] servicios = lstPromocion.get(i).getServicios().split(",");
-				String[] asientos = lstPromocion.get(i).getAsientos().split(",");
-				for(int j=0; j<rutas.length; j++){
-					if(rutas[j].equals(detailItinerary.getRuta().getId().toString())){
+
+			/*	Validando si la promocion cumple con el requisito del Servicio y la Ruta	*/
+			for (Promocion element : lstPromocion) {
+				String[] rutas = element.getRutas().split(",");
+				String[] servicios = element.getServicios().split(",");
+				String[] asientos = element.getAsientos().split(",");
+				for (String element2 : rutas) {
+					if(element2.equals(detailItinerary.getRuta().getId().toString())){
 						for(int k=0; k<servicios.length; k++){
 							if(asientos.length==0)
-								promo = lstPromocion.get(i);
+								promo = element;
 							else{
-								for(int m=0; m<asientos.length; m++){
-									if(getObjetoConfirmar().getNumeroAsiento()!=null && asientos[m].equals(nAsiento)){
-										promo = lstPromocion.get(i);
+								for (String element3 : asientos) {
+									if(getObjetoConfirmar().getNumeroAsiento()!=null && element3.equals(nAsiento)){
+										promo = element;
 										break;
 									}
 								}
@@ -3521,7 +3519,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 					}
 				}
 			}
-			
+
 			promocionTarifa=null;
 			if(promo!=null){
 				AplicarPromocion aplicarPromocion=createObjectAplicarPromocion();
@@ -3531,7 +3529,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 					lblTarifa.setValue(Util.toNumberFormat(promocionAplicada.getPorImporte(),2));
 					dblTarifa.setValue(promocionAplicada.getPorImporte());
 					promocionTarifa=(Promocion) promocionAplicada.clone();
-					
+
 					/*End Begin 29/12/2016 - jabanto*/
 //					if(getObjetoConfirmar().getTarifa().doubleValue()<detailItinerary.getTarifa().doubleValue()){
 //						lblTarifa.setValue(Util.toNumberFormat(promocionAplicada.getPorImporte(),2));
@@ -3546,7 +3544,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				/*29/12/2016 - jabanto*/
 				lblTarifa.setValue(Util.toNumberFormat(detailItinerary.getTarifa(), 2));
 				dblTarifa.setValue(detailItinerary.getTarifa());
-				
+
 				/*End Begin 29/12/2016 - jabanto*/
 //				if(getObjetoConfirmar().getTarifa().doubleValue()>=detailItinerary.getTarifa().doubleValue()){
 //					lblTarifa.setValue(Util.toNumberFormat(getObjetoConfirmar().getTarifa(), 2));
@@ -3556,7 +3554,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //					dblTarifa.setValue(detailItinerary.getTarifa());
 //				}
 			}
-			
+
 			/*Valida si es una confirmacion de una F.A*/
 			if(objetoConfirmar.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA)){
 				onLoadEspecieValorada();
@@ -3567,9 +3565,9 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 					dblDescuento.setValue(.00);
 					lblPromocion.setValue("Promoción : "+promocionTarifa.getDenominacion());
 				}
-				
+
 				double saldo = dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue()-dblPagado.getValue();
-				
+
 				lblImporte.setValue(LABEL_IMPPAG_TO_TEPSA);
 				if(saldo>=0)
 					dblImporte.setValue(saldo+dblRecargo.getValue());
@@ -3578,7 +3576,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 					dblImporte.setValue(saldo+dblRecargo.getValue());
 					lblImporte.setValue(LABEL_IMPPAG_TO_PASAJERO);
 				}
-				
+
 //				dblImporte.setValue(saldo<0.0?0.0:saldo);
 			}else{
 				double saldo = dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue()-dblPagado.getValue();
@@ -3588,7 +3586,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 					if(getObjetoConfirmar().getCliente()!=null)
 						mantenimientoRegistroClient(getObjetoConfirmar().getCliente().getId());
 				}
-				
+
 				/*Implementado 01/10/2014 - jabanto, para controlar que a una promocion se le aplique mas de una*/
 				imgPromocion.setVisible(true);
 				if(promocionTarifa!=null && promocionTarifa.getEsAcumulable().intValue()==Constantes.FALSE_VALUE){
@@ -3598,12 +3596,12 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 					imgQuitarPromocion.setVisible(false);
 					saldo = dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue()-dblPagado.getValue();
 					dblImporte.setValue(saldo<0.0?0.0:saldo);
-				}else 
+				}else
 					/*Valida si es una confirmacion de fecha abieta para no permitir aplicar promociones*/
-					if (getObjetoConfirmar().getTipoMovimiento().getId() == Constantes.ID_TIPMOV_FECHA_ABIERTA || 
+					if (getObjetoConfirmar().getTipoMovimiento().getId() == Constantes.ID_TIPMOV_FECHA_ABIERTA ||
 						getObjetoConfirmar().getTipoMovimiento().getId() == Constantes.ID_TIPMOV_POSTERGACION_FA){
 						imgPromocion.setVisible(false);
-						
+
 						//Para el caso de las cortesias
 						if(getObjetoConfirmar().getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA) && getObjetoConfirmar().getFormaPago()!=null){
 							Cortesia cortesia = ServiceLocator.getCortesiaManager().buscarXIDventa(getObjetoConfirmar().getId());
@@ -3615,7 +3613,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 						}
 					}
 			}
-			
+
 //			validarCambioRuta();
 		} catch (Exception ex) {
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
@@ -3623,7 +3621,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			log.error(ex);
 		}
 	}
-	
+
 //	private void validarCambioRuta() throws Exception{
 //		VentaPasaje ventaOriginal = ServiceLocator.getVentaPasajesManager().buscarPorId(getObjetoConfirmar().getId());
 //		if(getObjetoConfirmar().getRuta().getId().intValue()!=ventaOriginal.getRuta().getId().intValue() && dblImporte.getValue()==0.0){

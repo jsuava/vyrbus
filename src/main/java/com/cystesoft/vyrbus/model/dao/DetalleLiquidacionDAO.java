@@ -6,7 +6,7 @@ import com.cystesoft.vyrbus.model.bean.DetalleLiquidacion;
 
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
@@ -18,20 +18,20 @@ public interface DetalleLiquidacionDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public void guarda(DetalleLiquidacion detalleLiquidacion) throws Exception;
-	
+
 	/**
 	 * Actualiza Detalle de la liquidación
 	 * @param detalleLiquidacion
 	 * @throws Exception
 	 */
 	public void actualizar(DetalleLiquidacion detalleLiquidacion) throws Exception;
-	
+
 	/**
 	 * Elimnia el detalle de la loquidacion, segun el idDetalleLiquidacion
 	 * @param id : identificador del detalle de la liquidacion
 	 */
 	public void delete(Long id);
-	
+
 	/**
 	 * Busca ventas a liquidar.
 	 * @param fechaLiquidacion : Fecha de la liquidacion.
@@ -40,7 +40,7 @@ public interface DetalleLiquidacionDAO extends GenericDAO {
 	 * @return
 	 */
 	public List<DetalleLiquidacion> buscarVentasALiquidar(String fechaLiquidacion, Integer idAgencia, Integer idUsuario);
-	
+
 	/**
 	 * Actualiza el campo idLiquidacion de las ventas liquidadas.
 	 * @param idLiquidacion	    : idDentificador de la liquidacion
@@ -55,5 +55,5 @@ public interface DetalleLiquidacionDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public void  deleteXidLiquidacion(Long idLiquidacion)throws Exception;
-	
+
 }

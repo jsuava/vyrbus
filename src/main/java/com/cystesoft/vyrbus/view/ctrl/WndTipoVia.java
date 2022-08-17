@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 30/04/2012
  */
@@ -40,9 +40,9 @@ public class WndTipoVia extends WndOpcionesMantenimiento {
 	private static final long serialVersionUID = 1998913859947825458L;
 	private Textbox txtDenominacion;
 	private Textbox txtNombreCorto;
-	
+
 	private TipoVia oTipoVia = null;
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
 
 	/* (non-Javadoc)
@@ -50,7 +50,7 @@ public class WndTipoVia extends WndOpcionesMantenimiento {
 	 */
 	@Override
 	public void onCreate() {
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
 	}
 
@@ -111,7 +111,7 @@ public class WndTipoVia extends WndOpcionesMantenimiento {
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getTipoViaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getTipoViaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
 	}
 
@@ -150,10 +150,10 @@ public class WndTipoVia extends WndOpcionesMantenimiento {
 				throw new DenominacionNullException();
 			else if (txtNombreCorto.getText().trim().equals(""))
 				throw new NombreCortoNullException();
-			
+
 			if (action==ACTION_NEW)
 				oTipoVia = new TipoVia();
-			
+
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
 			oTipoVia.setId(id);
 			oTipoVia.setDenominacion(txtDenominacion.getText().trim().toUpperCase());
@@ -178,10 +178,10 @@ public class WndTipoVia extends WndOpcionesMantenimiento {
 			criteriosBusqueda.put("denominacion", oTipoVia.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			listarRegistros(ServiceLocator.getTipoViaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-			
+
 		}catch (DenominacionNullException dnex){
 			DlgMessage.information(Messages.getString("Generales.information.noIngresoDenominacion"),txtDenominacion);
-			throw new CancelaGrabacionException(); 
+			throw new CancelaGrabacionException();
 		}catch (NombreCortoNullException ncnex){
 			DlgMessage.information(Messages.getString("Generales.information.noIngresoNombreCorto"),txtNombreCorto);
 			throw new CancelaGrabacionException();
@@ -267,11 +267,11 @@ public class WndTipoVia extends WndOpcionesMantenimiento {
 	}
 
 	private void listarRegistros(ArrayList<TipoVia> lstRegistros) {
-		ArrayList<Object> lstTipoVias = new ArrayList<Object>();
+		ArrayList<Object> lstTipoVias = new ArrayList<>();
 
 		for(int r = 0; r < lstRegistros.size(); r ++) {
 			TipoVia oTipoVia = lstRegistros.get(r);
-			ArrayList<Object> lstFila = new ArrayList<Object>();
+			ArrayList<Object> lstFila = new ArrayList<>();
 
 			lstFila.add(oTipoVia.getId());
 			lstFila.add(r + 1);

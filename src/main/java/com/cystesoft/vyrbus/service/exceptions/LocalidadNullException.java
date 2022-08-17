@@ -27,12 +27,12 @@ public class LocalidadNullException extends Exception implements Serializable {
 		this.origenDestino = origenDestino;
 	}
 	/**
-	 * 
+	 *
 	 */
 	public LocalidadNullException() {
 		super();
 	}
-	
+
 	/**
 	 * @return Objeto esOrigen.
 	 */

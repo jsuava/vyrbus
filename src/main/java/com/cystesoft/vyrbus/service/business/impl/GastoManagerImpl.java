@@ -10,22 +10,22 @@ import com.cystesoft.vyrbus.model.bean.Gasto;
 import com.cystesoft.vyrbus.model.dao.GastoDAO;
 import com.cystesoft.vyrbus.service.business.GastoManager;
 /**
- * 
+ *
  * @author José Abanto
  *
  */
 public class GastoManagerImpl implements GastoManager {
 	private GastoDAO gastoDAO;
-	
+
 	public void setGastoDAO (GastoDAO  gastoDAO){
 		this.gastoDAO=gastoDAO;
 	}
-	
+
 	public GastoDAO getGastoDAO(){
 		return gastoDAO;
 	}
-	
-	
+
+
 	@Override
 	public ArrayList<Gasto> buscarPorEstadoRegistro(String estado,String criterioOrden) {
 		return getGastoDAO().buscarPorEstadoRegistro(estado, criterioOrden);
@@ -40,21 +40,21 @@ public class GastoManagerImpl implements GastoManager {
 	@Override
 	public void guardar(Gasto gasto) {
 		getGastoDAO().guardar(gasto);
-		
+
 	}
 
 	@Transactional
 	@Override
 	public void actualizar(Gasto gasto) {
 		getGastoDAO().actualizar(gasto);
-		
+
 	}
 
 	@Transactional
 	@Override
 	public void inactivar(Long id) {
 		getGastoDAO().inactivar(id);
-		
+
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class GastoManagerImpl implements GastoManager {
 	@Override
 	public Double BuscarTotalGastos(String fecha, Integer idUsuario,Integer idAgencia) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 		return getGastoDAO().BuscarTotalGastos(fecha, idUsuario, idAgencia);
 	}
 

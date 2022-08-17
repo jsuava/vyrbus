@@ -44,7 +44,7 @@ import com.cystesoft.vyrbus.view.ui.WndVerMapaBus;
 public class WndCambioAsiento extends WndBase {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private Textbox txtItinerario;
 	private Image imgItinerario;
 	/* Datos del servicio*/
@@ -56,7 +56,7 @@ public class WndCambioAsiento extends WndBase {
 	private Label lblCapacidad;
 	private Label lblOcupados;
 	private Label lblDisponibles;
-	
+
 	/* Datos del asiento seleccionado*/
 	private Label lblPasajero;
 	private Label lblAsientoSeleccionado;
@@ -68,20 +68,20 @@ public class WndCambioAsiento extends WndBase {
 	private Button btnAplicarCambios;
 	private Label lblNumeroPiso;
 	private Combobox cmbNumeroPiso;
-	
+
 	private Button btnRefrescar;
 	private Space spaceBtnCerar;
-	
+
 	private Groupbox gbxMapa;
 	private Grid grdMapa;
-	
-	private  WndVerMapaBus verMapaBus =null; 
+
+	private  WndVerMapaBus verMapaBus =null;
 	private Map<String, Asiento> mapAsientosId = null;
-	
+
 	private Itinerario itinerario=null;
 	private Asiento asientoSelect=null;
 	private VentaPasaje ventaPasaje=null;
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
 	 */
@@ -98,7 +98,7 @@ public class WndCambioAsiento extends WndBase {
 		lblCapacidad=(Label)this.getFellow("lblCapacidad");
 		lblOcupados=(Label)this.getFellow("lblOcupados");
 		lblDisponibles=(Label)this.getFellow("lblDisponibles");
-		
+
 		/* Datos del asiento seleccionado*/
 		lblPasajero=(Label)this.getFellow("lblPasajero");
 		lblAsientoSeleccionado=(Label)this.getFellow("lblAsientoSeleccionado");
@@ -110,16 +110,16 @@ public class WndCambioAsiento extends WndBase {
 		btnAplicarCambios=(Button)this.getFellow("btnAplicarCambios");
 		lblNumeroPiso=(Label)this.getFellow("lblNumeroPiso");
 		cmbNumeroPiso=(Combobox)this.getFellow("cmbNumeroPiso");
-				
+
 		btnRefrescar=(Button)this.getFellow("btnRefrescar");
 		spaceBtnCerar=(Space)this.getFellow("spaceBtnCerar");
-		
+
 		gbxMapa=(Groupbox)this.getFellow("gbxMapa");
 		grdMapa=(Grid)this.getFellow("grdMapa");
-				
+
 	}
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
@@ -128,7 +128,7 @@ public class WndCambioAsiento extends WndBase {
 		enlazarItinerario(imgItinerario);
 		onLoadPisosBus(cmbNumeroPiso);
 	}
-	
+
 	/**
 	 * Limpia los controles del asiento seleccionado.
 	 */
@@ -142,7 +142,7 @@ public class WndCambioAsiento extends WndBase {
 		ibxNuevoAsiento.setText("");
 		cmbNumeroPiso.setSelectedIndex(0);
 	}
-	
+
 	/**
 	 * Limpia los contros del servicio
 	 */
@@ -175,12 +175,12 @@ public class WndCambioAsiento extends WndBase {
 					 }else
 					 	oComponent = oComponent.getParent();
 				}
-				
+
 				/*Deshabilita las fecha menores a la actual*/
 				String fecha = Util.DatetoString(new Date(), "yyyyMMdd");
 				wndItinerario.dbFechaInicio.setConstraint("after "+fecha);
 				wndItinerario.dbFechaFin.setConstraint("after"+fecha);
-				
+
 				wndItinerario.onCreate();
 				wndItinerario.setMode("modal");
 				wndItinerario.setVisible(true);
@@ -202,21 +202,21 @@ public class WndCambioAsiento extends WndBase {
 			}
 		});
 	}
-	
+
 	/**
-	 * Carga el mapa del bus 
+	 * Carga el mapa del bus
 	 * @param groupbox		: Objeto que contine el grid donde se carga el mapa del bus.
-	 * @param grid			: Objeto que contiene el mapa del bus.  
+	 * @param grid			: Objeto que contiene el mapa del bus.
 	 * @param idItinerario 	: Identificador del itinerario
 	 * @throws Exception
 	 */
 	public void cargarMapa(Groupbox groupbox, Grid grid, Long idItinerario) throws Exception{
 		DetalleItinerario detalleItinerario= new DetalleItinerario();
-		
+
 		/* Busca itinerario para la carga del Mapa */
 		List<DetalleItinerario> list = ServiceLocator.getItinerarioManager().buscarItinerariosMantenimiento(idItinerario,"", "", "", "","", "","");
 		detalleItinerario = list.get(0);
-		
+
 		Grid gridPisos = new Grid();
 		if(verMapaBus==null)
 			verMapaBus= new WndVerMapaBus();
@@ -229,11 +229,11 @@ public class WndCambioAsiento extends WndBase {
 			}
 		});
 	}
-		
+
 	/**
 	 * Evento Click de un asiento.
 	 * @param lstVentas
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private void onClickAsiento(List<VentaPasaje> lstVentas) throws Exception{
 		lblNumeroPiso.setVisible(false);
@@ -242,36 +242,36 @@ public class WndCambioAsiento extends WndBase {
 		ibxNuevoAsiento.setDisabled(true);
 		Util.disabledBtnAceptar(true, btnAplicarCambios, true);
 		ventaPasaje=null;
-		
+
 		if(asientoSelect.getEstadoAsiento().intValue()==Constantes.ASIENTO_DISPONIBLE){
 			DlgMessage.information(Messages.getString("wndCambioAsiento.information.noAsientoOcupado"));
 		}else if (asientoSelect.getEstadoAsiento().intValue()==Constantes.ASIENTO_BLOQUEADO){
 			DlgMessage.information(Messages.getString("wndCambioAsiento.information.asientoBloqueado"));
 		}else{
 			for(VentaPasaje ventaPasaje: lstVentas){
-				if(ventaPasaje.getNumeroAsiento().intValue()==asientoSelect.getNumeroAsiento() && 
+				if(ventaPasaje.getNumeroAsiento().intValue()==asientoSelect.getNumeroAsiento() &&
 						ventaPasaje.getNumeroPiso().intValue()==asientoSelect.getPiso()){
-					
+
 					//Valida si la venta tiene asociado un manifiesto
 					if(ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(ventaPasaje.getId())){
 						DlgMessage.information(Messages.getString("wndCambioAsiento.information.asientoConManifiesto"));
 						break;
 					}
-					
+
 					lblPasajero.setValue(ventaPasaje.getPasajero().toString());
 					lblAsientoSeleccionado.setValue(asientoSelect.getNumeroAsiento().toString());
 					lblRuta.setValue(ventaPasaje.getRuta().toString());
 					lblFechaPartida.setValue(ventaPasaje.getFechaPartida()!=null?Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida()):"");
 					lblHoraPartida.setValue(ventaPasaje.getHoraPartida()!=null?ventaPasaje.getHoraPartida():"");
 					lblPuntoEmbarque.setValue(ventaPasaje.getAgenciaPartida()!=null?ventaPasaje.getAgenciaPartida().getNombreCorto():"");
-				
+
 					ibxNuevoAsiento.setDisabled(false);
 					Util.disabledBtnAceptar(false, btnAplicarCambios, true);
 					ibxNuevoAsiento.setFocus(true);
 					this.ventaPasaje=new VentaPasaje();
 					this.ventaPasaje=ventaPasaje;
-													
-					/*Valida si el bus es de dos pisos*/				
+
+					/*Valida si el bus es de dos pisos*/
 					if(itinerario.getServicio().getNumeroPisos().intValue()>1){
 						lblNumeroPiso.setVisible(true);
 						cmbNumeroPiso.setVisible(true);
@@ -283,7 +283,7 @@ public class WndCambioAsiento extends WndBase {
 			}
 		}
 	}
-	
+
 	/**
 	 * Aplica el cambio de asiento.
 	 * @throws Exception
@@ -292,7 +292,7 @@ public class WndCambioAsiento extends WndBase {
 		if(!(ibxNuevoAsiento.getText().trim().isEmpty()) && ibxNuevoAsiento.getValue()>0){
 			final Integer nuevoAsiento=ibxNuevoAsiento.getValue();
 			final Integer numeroPiso=0;
-			Integer capacidad=Integer.valueOf(lblCapacidad.getValue());
+			int capacidad=Integer.parseInt(lblCapacidad.getValue());
 			if(ventaPasaje==null){
 				DlgMessage.information(Messages.getString("wndCambioAsiento.information.noAsientoOcupado"),ibxNuevoAsiento);
 				return;
@@ -306,7 +306,7 @@ public class WndCambioAsiento extends WndBase {
 				DlgMessage.information(Messages.getString("wndCambioAsiento.information.asientoConManifiesto"));
 				return;
 			}
-			
+
 			Messagebox.show(Messages.getString("wndCambioAsiento.question.aplicaCambios"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e) throws Exception{
@@ -327,7 +327,7 @@ public class WndCambioAsiento extends WndBase {
 		}else
 			DlgMessage.information(Messages.getString("wndCambioAsiento.information.noNuevoAsiento"),ibxNuevoAsiento);
 	}
-	
+
 	/**
 	 * Carga los numeros de pisos del bus
 	 * @param combobox:
@@ -336,19 +336,19 @@ public class WndCambioAsiento extends WndBase {
 		Comboitem comboitem=new Comboitem();
 		Comboitem comboitem0=new Comboitem();
 		Comboitem comboitem1=new Comboitem();
-		
+
 		comboitem.setValue(-1);
 		comboitem0.setValue(0);
 		comboitem1.setValue(1);
 		comboitem.setLabel("SELECCIONE");
 		comboitem0.setLabel("1");
 		comboitem1.setLabel("2");
-		
+
 		combobox.appendChild(comboitem);
 		combobox.appendChild(comboitem0);
 		combobox.appendChild(comboitem1);
 	}
-	
+
 	/**
 	 * Refresca o crea el mapa.
 	 * @throws Exception
@@ -358,7 +358,7 @@ public class WndCambioAsiento extends WndBase {
 		Util.disabledBtnAceptar(true, btnAplicarCambios, true);
 		ibxNuevoAsiento.setDisabled(true);
 		cargarMapa(gbxMapa, grdMapa,Long.valueOf(txtItinerario.getText()));
-		
+
 		lblServicio.setValue(itinerario.getServicio().toString());
 		lblOrigen.setValue(itinerario.getRuta().getOrigen());
 		lblDestino.setValue(itinerario.getRuta().getDestino());

@@ -14,7 +14,7 @@ public class EstadoDocumentoBus extends GenericBean implements java.io.Serializa
 	private String denominacion;
 	private String codigo;
 	private Integer tipoEstado;
-	
+
 	//private Set<EstadoDocumentoBus> estadoDocumentoBuses = new HashSet<EstadoDocumentoBus>(0);
 
 	public EstadoDocumentoBus() {
@@ -24,14 +24,14 @@ public class EstadoDocumentoBus extends GenericBean implements java.io.Serializa
 		super();
 		this.id = id;
 	}
-	
+
 	public EstadoDocumentoBus (String denominacion, String codigo, Integer tipoEstado){
 		this.denominacion = denominacion;
 		this.codigo = codigo;
 		this.tipoEstado = tipoEstado;
 	}
-	
-	
+
+
 	public Integer getId() {
 		return this.id;
 	}
@@ -59,7 +59,7 @@ public class EstadoDocumentoBus extends GenericBean implements java.io.Serializa
 	public void setTipoEstado(Integer tipoEstado) {
 		this.tipoEstado = tipoEstado;
 	}
-	
+
 	/*
 	public Set<DocumentoBus> getDocumentoBuses() {
 		return this.documentoBuses;

@@ -14,8 +14,8 @@ public class DescuentoRecargo extends GenericBean implements java.io.Serializabl
 	private String denominacion;
 	private Double monto;
 	private Integer esPorcentaje;
-	
-	private Set<DetallePago> detallePagos = new HashSet<DetallePago>(0);
+
+	private Set<DetallePago> detallePagos = new HashSet<>(0);
 
 	public DescuentoRecargo() {
 	}
@@ -40,7 +40,7 @@ public class DescuentoRecargo extends GenericBean implements java.io.Serializabl
 	public void setMonto(Double monto) {
 		this.monto = monto;
 	}
-	
+
 	public Integer isEsPorcentaje() {
 		return this.esPorcentaje;
 	}

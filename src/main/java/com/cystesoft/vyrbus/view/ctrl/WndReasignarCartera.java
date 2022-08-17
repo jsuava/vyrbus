@@ -37,14 +37,14 @@ import com.cystesoft.vyrbus.view.ui.DlgMessage;
 import com.cystesoft.vyrbus.view.ui.WndBase;
 
 /**
- * 
+ *
  * @author José Abanto
  *
  */
 public class WndReasignarCartera extends WndBase {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private Combobox cmbFuncionarioAnterior;
 	private Combobox cmbNuevoFuncionario;
 	private Listbox listClientesAReasignar;
@@ -54,20 +54,20 @@ public class WndReasignarCartera extends WndBase {
 	private Image imDerecha;
 	private Image imDerechaDer;
 	private Button btnGuardar;
-	
+
 	String derechaDisabled="/resources/mp_rightArrowDisabled.png";
 	String derechaDerDisabled="/resources/mp_allRightArrowDisabled.png";
 	String derechaEnabled="/resources/mp_rightArrowEnabled.png";
 	String derechaDerEnabled="/resources/mp_allRightArrowEnabled.png";
-	
+
 	String izquierdaDisabled="/resources/mp_leftArrowDisabled.png";
 	String izquierdaIzqDisabled="/resources/mp_allLeftArrowDisabled.png";
 	String izquierdaEnabled="/resources/mp_leftArrowEnabled.png";
 	String izquierdaIzqEnabled="/resources/mp_allLeftArrowEnabled.png";
-	
-	
+
+
 	//private Usuario usuario=new Usuario();
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
@@ -83,7 +83,7 @@ public class WndReasignarCartera extends WndBase {
 		imDerecha=(Image)this.getFellow("imDerecha");
 		imDerechaDer=(Image)this.getFellow("imDerechaDer");
 		btnGuardar=(Button)this.getFellow("btnGuardar");
-				
+
 		/*Evento SELECT Lista Clientes a Reasignar*/
 		listClientesAReasignar.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
 			@Override
@@ -114,8 +114,8 @@ public class WndReasignarCartera extends WndBase {
 					disabledFlecha(imIzquierdaIzq, izquierdaIzqEnabled);
 			}
 		});
-				
-		
+
+
 		/*Evento Deshacer reasignación de cliente(s) seleccionado(s)*/
 		imIzqierda.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 			@Override
@@ -124,7 +124,7 @@ public class WndReasignarCartera extends WndBase {
 					addLists(listClientesReasignados, true, listClientesAReasignar, imIzqierda, imIzquierdaIzq, izquierdaDisabled, izquierdaIzqDisabled);
 				if(listClientesAReasignar.getItems().size()>0)
 					disabledFlecha(imDerechaDer, derechaDerEnabled);
-				
+
 			}
 		});
 		/*Deshacer reasignación de todos los clientes en la lista*/
@@ -148,7 +148,7 @@ public class WndReasignarCartera extends WndBase {
 			}
 		});
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
@@ -160,14 +160,14 @@ public class WndReasignarCartera extends WndBase {
 //		UtilData.cargarFuncionarios(cmbNuevoFuncionario, true,null);
 		cmbFuncionarioAnterior.setSelectedIndex(0);
 		cmbNuevoFuncionario.setSelectedIndex(0);
-		
+
 		btnGuardar.setDisabled(accesoGrabar()?false:true);
-		
+
 	}
-		
+
 	/**
 	 * Cargar los clientes en cartera.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void cargarClientes() throws Exception{
 		try{
@@ -175,11 +175,11 @@ public class WndReasignarCartera extends WndBase {
 			Util.limpiarListbox(listClientesReasignados);
 			disabledFlecha(imDerechaDer,derechaDerDisabled);
 			disabledFlecha(imIzquierdaIzq,izquierdaIzqDisabled);
-			
+
 			/*Carga los funcionarios a quien se le van a asignar los clientes, a exception del funcionario con la cartera actual */
 			if(!(cmbFuncionarioAnterior.getSelectedItem().getValue() instanceof Usuario))
 				throw new FuncionarioNullException();
-			
+
 //			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
 //			List<String> criteriosOrdenar = new ArrayList<String>();
 //			criteriosOrdenar.add("nombre");
@@ -188,8 +188,8 @@ public class WndReasignarCartera extends WndBase {
 //			criteriosBusqueda.put("rol", rol);
 //			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 //			List<UsuarioRol>listUsuarioRol=ServiceLocator.getUsuarioRolManager().buscarPorX(criteriosBusqueda, null);
-//			Util.limpiarCombobox(cmbNuevoFuncionario);		
-//			UtilData.cargarGenericData(cmbNuevoFuncionario, false);		
+//			Util.limpiarCombobox(cmbNuevoFuncionario);
+//			UtilData.cargarGenericData(cmbNuevoFuncionario, false);
 //			for (UsuarioRol usuarioRol : listUsuarioRol) {
 //				if(!(((Usuario)cmbFuncionarioAnterior.getSelectedItem().getValue()).getId().equals(usuarioRol.getUsuario().getId()))){
 //					Usuario usuario=usuarioRol.getUsuario();
@@ -199,47 +199,47 @@ public class WndReasignarCartera extends WndBase {
 //					cmbNuevoFuncionario.appendChild(oComboitem);
 //				}
 //			}
-							
-			/*Carga Clientes*/					
-			TreeMap<String, Object>criteriosBusqueda = new TreeMap<String, Object>();
+
+			/*Carga Clientes*/
+			TreeMap<String, Object>criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("usuario", (cmbFuncionarioAnterior.getSelectedItem().getValue()));
 			criteriosBusqueda.put("estadoCartera", Constantes.ESTADOSOL_ACTIVA);
 			List<CarteraCliente>list=ServiceLocator.getCarteraClienteManager().buscarPorX(criteriosBusqueda, null);
-			
+
 			Listitem item=new Listitem();
 			Listcell cell=new Listcell();
-						
+
 			for(CarteraCliente carteraCliente: list){
-				item=new Listitem();		
+				item=new Listitem();
 				cell = new Listcell(carteraCliente.getCliente().getRazonSocial());
 				item.appendChild(cell);
-				
+
 				item.setValue(carteraCliente);
 				listClientesAReasignar.appendChild(item);
 			}
-			
+
 			Util.limpiarCombobox(cmbNuevoFuncionario);
 			if(list.size()>0)
 				/*Carga todos los funcionarios a excepcion el funcionario del cual se va a realizar la reasignacion*/
 				UtilData.cargarFuncionarios(cmbNuevoFuncionario, false, ((Usuario)cmbFuncionarioAnterior.getSelectedItem().getValue()).getId());
 			else
 				UtilData.cargarGenericData(cmbNuevoFuncionario, false);
-			
+
 			if(listClientesAReasignar.getItems().size()>0)
 				disabledFlecha(imDerechaDer,derechaDerEnabled);
-			
+
 		}catch (FuncionarioNullException fnex){
 			DlgMessage.information(Messages.getString("wndReasignacionCartera.information.noSelecFuncionarioOr"));
-		}	
+		}
 	}
-	
+
 	/**
 	 * Habilita o deshabilita fechas
 	 * @param image	: Imagen
 	 * @param src	: ruta de la imagen.
 	 */
 	private void disabledFlecha(Image image, String src){
-		image.setSrc(src);		
+		image.setSrc(src);
 		if (src.equals(derechaDisabled) || src.equals(derechaDerDisabled) || src.equals(izquierdaDisabled) || src.equals(izquierdaIzqDisabled)){
 			image.setStyle("cursor:default");
 			if(image.getId().equals("imDerecha"))
@@ -248,7 +248,7 @@ public class WndReasignarCartera extends WndBase {
 				image.setTooltiptext("");
 			else if(image.getId().equals("imIzquierda"))
 				image.setTooltiptext("");
-			else if(image.getId().equals("imIzquierdaIzq"))	
+			else if(image.getId().equals("imIzquierdaIzq"))
 				image.setTooltiptext("");
 		}else{
 			image.setStyle("cursor:pointer");
@@ -258,10 +258,10 @@ public class WndReasignarCartera extends WndBase {
 				image.setTooltiptext("Reasignar todos los clientes de la lista");
 			else if(image.getId().equals("imIzquierda"))
 				image.setTooltiptext("Deshacer reasignación de cliente(s) seleccionado(s)");
-			else if(image.getId().equals("imIzquierdaIzq"))	
+			else if(image.getId().equals("imIzquierdaIzq"))
 				image.setTooltiptext("Deshacer reasignación de todos los clientes en la lista");
 		}
-		
+
 	}
 
 	/**
@@ -269,24 +269,24 @@ public class WndReasignarCartera extends WndBase {
 	 * @param listboxOrigen : Listbox Origen.
 	 * @param seleccionados : (true) indica que se agregaran solo los cliente seleccionados; (false) todos los clientes de la lista.
 	 * @param listboxDestino: Listbox Destino.
-	 * @param image			: Objeto Image. 
-	 * @param src			: Ruta de la imagen.	
+	 * @param image			: Objeto Image.
+	 * @param src			: Ruta de la imagen.
 	 */
 	private void addLists(Listbox listboxOrigen, Boolean seleccionados, Listbox listboxDestino, Image image,Image imageAll, String src, String srcAll){
-			List<Listitem> listRemove= new ArrayList<Listitem>();
-			
+			List<Listitem> listRemove= new ArrayList<>();
+
 			for(Listitem iteml: seleccionados?listboxOrigen.getSelectedItems() :listboxOrigen.getItems()){
 				CarteraCliente carteraCliente=iteml.getValue();
 				Listitem item=new Listitem();
 				Listcell cell=new Listcell(carteraCliente.getCliente().getRazonSocial());
 				item.appendChild(cell);
-				
+
 				item.setValue(carteraCliente);
 				listboxDestino.appendChild(item);
 				listRemove.add(iteml);
 			}
 			//Elimina los ítems seleccionados
-			for(Listitem item: listRemove){	
+			for(Listitem item: listRemove){
 				listboxOrigen.removeItemAt(item.getIndex());
 			}
 			if(seleccionados){
@@ -295,10 +295,10 @@ public class WndReasignarCartera extends WndBase {
 			}else{
 				disabledFlecha(imageAll, srcAll);
 			}
-				
+
 			disabledFlecha(image, src );
 	}
-	
+
 	/**
 	 * Guarda la reasignación.
 	 * @throws Exception
@@ -311,12 +311,12 @@ public class WndReasignarCartera extends WndBase {
 				throw new ClienteException(ClienteException.CLIENTE_NULL);
 			else if(cmbFuncionarioAnterior.getSelectedItem().getValue().equals(cmbNuevoFuncionario.getSelectedItem().getValue()))
 				throw new ClienteException(ClienteException.ASIGNACION_CARTERA);
-			
+
 			Messagebox.show(Messages.getString("wndReasignacionCartera.question.confirmarReasignacion"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event event) throws Exception {
 					if(event.getName().equals("onYes")){
-						for (Listitem  item: listClientesReasignados.getItems()){	
+						for (Listitem  item: listClientesReasignados.getItems()){
 							CarteraCliente carteraCliente=item.getValue();
 							reasignaCartera(carteraCliente, ((Usuario)cmbNuevoFuncionario.getSelectedItem().getValue()));
 						}
@@ -327,8 +327,8 @@ public class WndReasignarCartera extends WndBase {
 						disabledFlecha(imIzquierdaIzq, izquierdaIzqDisabled);
 					}
 				}
-			});	
-			
+			});
+
 		}catch (ClienteException cl){
 			if(cl.getTipo().intValue()==ClienteException.ASIGNACION_CARTERA){
 				DlgMessage.information(Messages.getString("wndReasignacionCartera.information.funcionariosIguales"),cmbNuevoFuncionario);
@@ -342,7 +342,7 @@ public class WndReasignarCartera extends WndBase {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Realiza la reasignacion de cartera de los clientes.
 	 * @param carteraCliente : Class CarteraCliente
@@ -353,7 +353,7 @@ public class WndReasignarCartera extends WndBase {
 		Date fecha=Constantes.FORMAT_DATE_TIME_24H.parse(new MyTime().dateServer());
 		long lDefault=Constantes.FORMAT_DATE_TIME_24H.parse(Constantes.FECHA_DEFAULT).getTime();
 		Date fDefault= new Date(lDefault);
-		
+
 		/*Inactiva el registro actual de la cartea.*/
 		carteraCliente.setEstadoCartera(Constantes.ESTADOSOL_INACTIVA);
 		carteraCliente.setFechaSuspension(fecha);
@@ -371,10 +371,10 @@ public class WndReasignarCartera extends WndBase {
 		ocarteraCliente.setEstadoCartera(Constantes.ESTADOSOL_ACTIVA);
 		UtilData.auditarRegistro(ocarteraCliente, getUsuario(), Executions.getCurrent());
 		ServiceLocator.getCarteraClienteManager().guardar(ocarteraCliente);
-				
-		
+
+
 		/*Valida si se trata de un cliente Contado*/
-		TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+		TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 		criteriosBusqueda.put("carteraCliente", carteraCliente);
 		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 		List<LineaContadoCliente> listcc=ServiceLocator.getLineaContadoClienteManager().buscarPorX(criteriosBusqueda, null);
@@ -400,9 +400,9 @@ public class WndReasignarCartera extends WndBase {
 			oLineaContado.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 			UtilData.auditarRegistro(oLineaContado, getUsuario(), Executions.getCurrent());
 			ServiceLocator.getLineaContadoClienteManager().guardar(oLineaContado);
-			
+
 		}else{ //Evalua si es un Cliente Crédito
-			 criteriosBusqueda = new TreeMap<String, Object>();
+			 criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("carteraCliente", carteraCliente);
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<LineaCreditoCliente> listccr=ServiceLocator.getLineaCreditoClienteManager().buscarPorX(criteriosBusqueda, null);
@@ -431,8 +431,8 @@ public class WndReasignarCartera extends WndBase {
 				olineaCredito.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 				UtilData.auditarRegistro(olineaCredito, getUsuario(), Executions.getCurrent());
 				ServiceLocator.getLineaCreditoClienteManager().guardar(olineaCredito);
-				
-				
+
+
 				/**==============================================IMPL- JABANTO - 20/11/2014 ===============================================*/
 				/* Replica la reasignacion en TITAN  */
 				TitanUsuarioPersonal titanUsuarioPersonalRegistro=ServiceLocator.getTitanManager().buscarUsuarioPersonalPorLogin(getUsuario().getLogin());
@@ -447,7 +447,7 @@ public class WndReasignarCartera extends WndBase {
 					titanFuncionarioPasajes.setLogin(carteraCliente.getUsuario().getLogin());
 					ServiceLocator.getTitanManager().guardarUsuarioPersonal(titanFuncionarioPasajes);
 				}
-				
+
 				//Busca el cliente por el numero de RUC.
 				TitanPersona titanPersona= ServiceLocator.getTitanManager().buscarPersonaPorRuc(carteraCliente.getCliente().getNumeroDocumento());
 				if(titanPersona!=null){
@@ -460,11 +460,11 @@ public class WndReasignarCartera extends WndBase {
 						funcionarioPersonaPasaje.setIp(UtilData.ipLocal(Executions.getCurrent()));
 						ServiceLocator.getTitanManager().actualizaFuncionarioPerosnaPasajes(funcionarioPersonaPasaje);
 					}
-					/**==============================================END IMPL- JABANTO - 20/11/2014 ===============================================*/					
+					/**==============================================END IMPL- JABANTO - 20/11/2014 ===============================================*/
 				}
-				
-				
+
+
 			}
-		}		
+		}
 	}
 }

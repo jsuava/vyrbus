@@ -3,6 +3,7 @@ package mstc.ws.gob.pe;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Logger;
+
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 import javax.xml.ws.WebEndpoint;
@@ -13,15 +14,15 @@ import javax.xml.ws.WebServiceClient;
  * Generated source version: 2.0
  * <p>
  * An example of how this class may be used:
- * 
+ *
  * <pre>
  * WSServiciosHR service = new WSServiciosHR();
  * WSServiciosHRSoap portType = service.getWSServiciosHRSoap();
  * portType.getConductor(...);
  * </pre>
- * 
+ *
  * </p>
- * 
+ *
  */
 @WebServiceClient(name = "WSServiciosHR", targetNamespace = "http://wshr.mtc.gob.pe/", wsdlLocation = "http://wshr.mtc.gob.pe/wsServiciosHR.asmx?WSDL")
 public class WSServiciosHR extends Service {
@@ -54,7 +55,7 @@ public class WSServiciosHR extends Service {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return returns WSServiciosHRSoap
 	 */
 	@WebEndpoint(name = "WSServiciosHRSoap")
@@ -64,7 +65,7 @@ public class WSServiciosHR extends Service {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return returns WSServiciosHRSoap
 	 */
 	@WebEndpoint(name = "WSServiciosHRSoap12")

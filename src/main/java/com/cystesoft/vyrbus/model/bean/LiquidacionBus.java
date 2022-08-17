@@ -14,8 +14,8 @@ public class LiquidacionBus extends GenericBean implements java.io.Serializable 
 	private Itinerario itinerario;
 	private Bus bus;
 	private Double total;
-	
-	private Set<GastoBus> gastoBuses = new HashSet<GastoBus>(0);
+
+	private Set<GastoBus> gastoBuses = new HashSet<>(0);
 
 	public LiquidacionBus() {
 	}
@@ -47,7 +47,7 @@ public class LiquidacionBus extends GenericBean implements java.io.Serializable 
 	public void setTotal(Double total) {
 		this.total = total;
 	}
-	
+
 	public Set<GastoBus> getGastoBuses() {
 		return this.gastoBuses;
 	}

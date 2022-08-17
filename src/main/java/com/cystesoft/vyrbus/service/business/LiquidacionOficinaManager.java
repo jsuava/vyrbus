@@ -6,7 +6,7 @@ import com.cystesoft.vyrbus.model.bean.Liquidacion;
 import com.cystesoft.vyrbus.model.bean.LiquidacionOficina;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
@@ -14,7 +14,7 @@ public interface LiquidacionOficinaManager {
 	/**
 	 * Busca Lquidaciones pendientes de po liquidar.
 	 * @param fecha		: fecha de la liquidacion a liquidar
-	 * @param idAgencia	: indentificador de la agencia 
+	 * @param idAgencia	: indentificador de la agencia
 	 * @return
 	 * @throws Exception
 	 */
@@ -27,15 +27,15 @@ public interface LiquidacionOficinaManager {
 	 * @return
 	 */
 	public List<Liquidacion> buscarLiquidacionLiquidadas(String fecha, Integer idAgencia);
-	
-	
+
+
 	/**
 	 * Guara liquidacion de oficina
 	 * @param liquidacionOficina
 	 * @throws Exception
 	 */
-	public void  guardar(LiquidacionOficina liquidacionOficina) throws Exception; 
-	
+	public void  guardar(LiquidacionOficina liquidacionOficina) throws Exception;
+
 	/**
 	 * Inactivar registro
 	 * @param id : Identificador de la Liquidación de Ofician

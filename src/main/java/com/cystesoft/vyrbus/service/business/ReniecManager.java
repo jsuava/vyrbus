@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 05/09/2013
  */
@@ -22,7 +22,7 @@ public interface ReniecManager  {
 	 * @throws Exception
 	 */
 	public Reniec buscarPax(String numeroDocumento) throws Exception;
-	
+
 	/**
 	 *  Valida los datos del pasajero con los de la reniec
 	 * @param oPasajero: oPasajero

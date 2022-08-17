@@ -12,9 +12,9 @@ public class ObjetoBus extends GenericBean implements java.io.Serializable {
 	private String path;
 	private Integer tipoObjeto;
 	public ObjetoBus() {
-	
+
 	}
-	
+
 	public Integer getId() {
 		return this.id;
 	}

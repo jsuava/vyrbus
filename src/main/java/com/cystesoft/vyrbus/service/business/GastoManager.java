@@ -10,31 +10,31 @@ public interface GastoManager {
 
 	/**
 	 * Busqueda por estado registro
-	 * @param estado		: estado 
+	 * @param estado		: estado
 	 * @param criterioOrden	: lista de criterios para el orden de los datos
 	 * @return
 	 */
 	public ArrayList<Gasto> buscarPorEstadoRegistro(String estado, String criterioOrden);
-	
+
 	/**
 	 * Busqueda por un ArraLis de Parametros.
-	 * @param criteriosBusqueda : 
+	 * @param criteriosBusqueda :
 	 * @param criteriosOrdenar	: lista de criterios para el orden de los datos
 	 * @return
 	 */
 	public ArrayList<Gasto> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
-	
+
 	/**
 	 * Busca Gastos de la liquidación de turno
 	 * @param fechaGasto :Fecha emisión del gasto
 	 * @param idTipoGasto:identificador del tipo de gasto
-	 * @param idAgencia	 :identidficador de la agencia 
-	 * @param idUsuario	 : Identificador del usuario 
+	 * @param idAgencia	 :identidficador de la agencia
+	 * @param idUsuario	 : Identificador del usuario
 	 * @return
 	 */
 	public List<Gasto> buscarGasto(String fechaGasto, Integer idTipoGasto, Integer idAgencia, Integer idUsuario);
-	
-	
+
+
 	/**
 	 * Busca gasto de la liquidacion de Oficina.
 	 * @param fechaLiquidacion : Fecha a buscar
@@ -42,33 +42,33 @@ public interface GastoManager {
 	 * @return
 	 */
 	public List<Gasto> buscarGastoLiqOficina(String fechaLiquidacion, String usuario);
-	
+
 	/**
 	 * Busqueda por id.
 	 * @param id : identificador del gasto
 	 * @return
 	 */
 	public Gasto buscarXId(Long id);
-	
+
 	/**
-	 * Guarda 
+	 * Guarda
 	 * @param Gasto
 	 */
 	public void guardar(Gasto gasto) throws Exception;
-	
+
 	/***
 	 * Actualiza
 	 * @param gasto
 	 */
 	public void actualizar(Gasto gasto) throws Exception;
-	
+
 	/**
 	 * Inactiva Gasto
-	 * @param 
-	 * @param 
+	 * @param
+	 * @param
 	 */
 	public void inactivar(Long id);
-	
+
 	/**
 	 * Buscar la suma total de soles en gastos de una liqudiacion
 	 * @param fecha		: Fecha de la liquidación

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 08/09/2016
  * Hora			: 14:28:49
@@ -24,7 +24,7 @@ public class OcupacionAsientosBloqueadosPoolDAOImpl extends GenericDAOImpl imple
 
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.OcupacionAsientosBloqueadosPoolDAO#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
-	 */	
+	 */
 	@Override
 	public ArrayList<OcupacionAsientosBloqueadosPool> buscarPorEstadoRegistro(
 			String estado, String criterioOrden) {

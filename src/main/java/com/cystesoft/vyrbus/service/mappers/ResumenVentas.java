@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 30 may. 2021
  * Hora			: 10:35:46
@@ -9,7 +9,6 @@
 package com.cystesoft.vyrbus.service.mappers;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.CanalVenta;
@@ -22,7 +21,7 @@ import com.cystesoft.vyrbus.model.bean.TipoComprobante;
 public class ResumenVentas implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer rubro;
 	private CanalVenta canalVenta;
 	private Agencia agencia;
@@ -33,7 +32,7 @@ public class ResumenVentas implements Serializable{
 	private String anio;
 	private String mes;
 	private String dia;
-	
+
 	/**
 	 * @return the rubro
 	 */
@@ -154,6 +153,6 @@ public class ResumenVentas implements Serializable{
 	public void setDia(String dia) {
 		this.dia = dia;
 	}
-	
+
 
 }

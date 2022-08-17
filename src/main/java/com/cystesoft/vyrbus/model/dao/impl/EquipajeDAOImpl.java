@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 14 jul. 2021
  * Hora			: 12:06:43
@@ -24,7 +24,7 @@ public class EquipajeDAOImpl extends GenericDAOImpl implements EquipajeDAO{
 
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.model.dao.EquipajeDAO#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
-	 */	
+	 */
 	@Override
 	public ArrayList<Equipaje> buscarPorEstadoRegistro(String estado, String criterioOrden) {
 		// TODO Auto-generated method stub

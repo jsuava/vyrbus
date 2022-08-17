@@ -21,7 +21,7 @@ import com.cystesoft.vyrbus.service.util.UtilData;
 @SuppressWarnings("unchecked")
 public class TemporadaAltaDAOImpl extends GenericDAOImpl  implements TemporadaAltaDAO {
 
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.TemporadaAltaDAO#buscarPorX(java.util.TreeMap, java.util.List)
@@ -57,7 +57,7 @@ public class TemporadaAltaDAOImpl extends GenericDAOImpl  implements TemporadaAl
 	public void actualizar(TemporadaAlta temporadaAlta) {
 		super.update(temporadaAlta);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.TemporadaAltaDAO#buscarTemporadaAlta(java.lang.String, java.lang.String)
@@ -73,24 +73,24 @@ public class TemporadaAltaDAOImpl extends GenericDAOImpl  implements TemporadaAl
 		if(dia.trim().length()>0)
 			sql+=" AND to_char(ta.diatemalt,'DD')='"+dia+"' ";
 		sql+=" ORDER BY ta.diatemalt";
-		
-		
+
+
 		log.info(sql);
 		List<?>result=getSession().createSQLQuery(sql).list();
-		ArrayList<TemporadaAlta> lstResult = new ArrayList<TemporadaAlta>();
-		for(int i=0; i<result.size(); i++){
-			Object[] obj = (Object[])result.get(i);
+		ArrayList<TemporadaAlta> lstResult = new ArrayList<>();
+		for (Object element : result) {
+			Object[] obj = (Object[])element;
 			TemporadaAlta temporadaAlta=new TemporadaAlta();
 			MotivoTemporadaAlta motivoTemporadaAlta= new MotivoTemporadaAlta();
 			motivoTemporadaAlta.setId(((BigDecimal)obj[1]).intValue());
 			motivoTemporadaAlta.setNombreMotivo(obj[3].toString());
-			
+
 			temporadaAlta.setId(((BigDecimal)obj[0]).longValue());
 			temporadaAlta.setDiaTemporadaAlta((Date)obj[2]);
 			temporadaAlta.setMotivoTemporadaAlta(motivoTemporadaAlta);
-			
+
 			lstResult.add(temporadaAlta);
-		}	
+		}
 		return lstResult;
 	}
 
@@ -103,7 +103,7 @@ public class TemporadaAltaDAOImpl extends GenericDAOImpl  implements TemporadaAl
 		TemporadaAlta temporadaAlta= new TemporadaAlta();
 		Usuario usuario=(Usuario)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO);
 		UtilData.auditarRegistro(temporadaAlta, true, usuario, Executions.getCurrent());
-		
+
 		String sql="UPDATE VRMTEMALT SET c_estreg='"+Constantes.VALUE_INACTIVO+"', audusumod='"+usuario.getUsuarioModificacion()+"', " +
 				   "AUDIPMODI='"+temporadaAlta.getIpModificacion()+"' " +
 					"WHERE to_char(diatemalt,'yyyy')='"+anio+"' AND c_estreg='"+Constantes.VALUE_ACTIVO+"' ";
@@ -111,10 +111,10 @@ public class TemporadaAltaDAOImpl extends GenericDAOImpl  implements TemporadaAl
 			sql+=" AND to_char(diatemalt,'mm')='"+mes+"' ";
 		if(dia.length()>0)
 			sql+=" AND to_char(diatemalt,'dd')='"+dia+"' ";
-		
+
 		log.info(sql);
 		getSession().createSQLQuery(sql).executeUpdate();
 	}
-	
-	
+
+
 }

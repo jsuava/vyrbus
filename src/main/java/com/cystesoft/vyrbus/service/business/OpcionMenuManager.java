@@ -7,59 +7,59 @@ import java.util.TreeMap;
 import com.cystesoft.vyrbus.model.bean.OpcionMenu;
 
 /**
- * 
+ *
  * @author José Abanto
  *
  */
 public interface OpcionMenuManager {
 	/**
 	 * Busqueda por estado registro
-	 * @param estado		: estado 
+	 * @param estado		: estado
 	 * @param criterioOrden	: lista de criterios para el orden de los datos
 	 * @return
 	 */
 	public ArrayList<OpcionMenu> buscarPorEstadoRegistro(String estado, String criterioOrden)throws Exception;
-	
+
 	/**
 	 * Busqueda por un ArraLis de Parametros.
-	 * @param criteriosBusqueda : 
+	 * @param criteriosBusqueda :
 	 * @param criteriosOrdenar	: lista de criterios para el orden de los datos
 	 * @return
 	 */
 	public ArrayList<OpcionMenu> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar)throws Exception;
-	
+
 	/**
-	 * Busqueda por id 
+	 * Busqueda por id
 	 * @param id : identificador del ObcionMenu
 	 * @return
 	 */
 	public OpcionMenu buscarPorId(Long id)throws Exception;
-	
+
 	/**
-	 * Guarda 
+	 * Guarda
 	 * @param opcionMenu : Class
 	 */
 	public void guardar(OpcionMenu opcionMenu)throws Exception;
-	
+
 	/***
 	 * Actualiza Rol
-	 * @param opcionMenu : Class 
+	 * @param opcionMenu : Class
 	 */
 	public void actualizar(OpcionMenu opcionMenu)throws Exception;
-	
+
 	/**
 	 * Inactivar
-	 * @param id : identificador 
+	 * @param id : identificador
 	 */
-	public void inactivar(Long id);	
-	
+	public void inactivar(Long id);
+
 	/**
 	 * cosnulta menus padres
 	 * @return
 	 */
-	public List<OpcionMenu> buscaMenusPadres();	
+	public List<OpcionMenu> buscaMenusPadres();
 	/**
-	 * 
+	 *
 	 * @param idMenuPadre
 	 * @param idMenu
 	 * @return

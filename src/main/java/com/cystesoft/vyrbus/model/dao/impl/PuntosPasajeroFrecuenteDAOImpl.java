@@ -33,7 +33,7 @@ import com.cystesoft.vyrbus.service.util.UtilData;
 @SuppressWarnings("unchecked")
 public class PuntosPasajeroFrecuenteDAOImpl extends GenericDAOImpl implements PuntosPasajeroFrecuenteDAO {
 
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.PuntosPasajeroFrecuenteDAO#guardar(com.tepsa.sisvyr.model.bean.PuntosPasajeroFrecuente)
 	 */
@@ -41,7 +41,7 @@ public class PuntosPasajeroFrecuenteDAOImpl extends GenericDAOImpl implements Pu
 	public void guardar(PuntosPasajeroFrecuente puntosPasajeroFrecuente)throws Exception {
 		super.save(puntosPasajeroFrecuente);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.PuntosPasajeroFrecuenteDAO#buscarXIDVenta(java.lang.Long)
@@ -50,9 +50,9 @@ public class PuntosPasajeroFrecuenteDAOImpl extends GenericDAOImpl implements Pu
 	public PuntosPasajeroFrecuente buscarXIDVenta(Long id){
 		Class<?> oClass=PuntosPasajeroFrecuente.class;
 		String hql = "FROM " + oClass.getSimpleName() + " WHERE ventaPasaje ="+id;
-		
+
 		log.info(hql);
-		
+
 		return (PuntosPasajeroFrecuente) getSession().createQuery(hql).uniqueResult();
 	}
 
@@ -63,7 +63,7 @@ public class PuntosPasajeroFrecuenteDAOImpl extends GenericDAOImpl implements Pu
 	public void actualizar(PuntosPasajeroFrecuente puntosPasajeroFrecuente)throws Exception {
 		super.update(puntosPasajeroFrecuente);
 	}
- 
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.PuntosPasajeroFrecuenteDAO#buscarPuntosPaxFree(java.lang.Long)
@@ -74,9 +74,9 @@ public class PuntosPasajeroFrecuenteDAOImpl extends GenericDAOImpl implements Pu
 //		Class<?> oClass=PuntosPasajeroFrecuente.class;
 //		String hql=" FROM " + oClass.getSimpleName() + " " +
 //			" WHERE pasajeroFrecuente=" +idPaxFree+ " AND fechaCanje IS NULL  AND fechaAnulacion IS NULL "+
-//			" AND fechaCaducidad > TO_DATE('"+fechaActual+"','dd/MM/yyyy') AND estadoRegistro='A') "+ 
+//			" AND fechaCaducidad > TO_DATE('"+fechaActual+"','dd/MM/yyyy') AND estadoRegistro='A') "+
 //			" ORDER BY ID ASC";
-		
+
 		String sql="SELECT tp.punpaxfre_id" + // 0
 						  ",tp.venpas_id "+  // 1
 						  ",tp.paxfre_id " + // 2
@@ -90,21 +90,21 @@ public class PuntosPasajeroFrecuenteDAOImpl extends GenericDAOImpl implements Pu
 				   "WHERE TP.PAXFRE_ID="+idPaxFree+" AND TP.D_FECCAN IS NULL  AND TP.D_FECANU IS NULL "+
 				   "AND TP.D_FECCAD >= TO_DATE('"+fechaActual+"','dd/MM/yyyy') AND TP.C_ESTREG='A' "+
 				   "ORDER BY TP.punpaxfre_id";
-		
+
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<PuntosPasajeroFrecuente> lstResult = new ArrayList<PuntosPasajeroFrecuente>();
+		List<PuntosPasajeroFrecuente> lstResult = new ArrayList<>();
 		Integer totalPuntaje=0;
-		
+
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[])result.get(i);
 			PuntosPasajeroFrecuente puntosPasajeroFrecuente= new PuntosPasajeroFrecuente();
 			VentaPasaje ventaPasaje= new VentaPasaje();
 			PasajeroFrecuente pasajeroFrecuente= new PasajeroFrecuente();
-			
+
 			ventaPasaje.setId(((BigDecimal)obj[1]).longValue());
 			pasajeroFrecuente.setId(((BigDecimal)obj[2]).longValue());
-			
+
 			puntosPasajeroFrecuente.setId(((BigDecimal)obj[0]).longValue());
 			puntosPasajeroFrecuente.setPuntosAcumulados(((BigDecimal)obj[3]).intValue());
 			puntosPasajeroFrecuente.setFechaEmision((Date)obj[4]);
@@ -113,31 +113,31 @@ public class PuntosPasajeroFrecuenteDAOImpl extends GenericDAOImpl implements Pu
 			puntosPasajeroFrecuente.setFechaAnulacion(obj[7]!=null?(Date)obj[7]:null);
 			puntosPasajeroFrecuente.setVentaPasaje(ventaPasaje);
 			puntosPasajeroFrecuente.setPasajeroFrecuente(pasajeroFrecuente);
-			
+
 			totalPuntaje+=+puntosPasajeroFrecuente.getPuntosAcumulados();
-			
+
 			lstResult.add(puntosPasajeroFrecuente);
 		}
-		
-		
-		
-		
+
+
+
+
 //		List<PuntosPasajeroFrecuente>lstResul=getSession().createQuery(hql).list();
-//		/*Realiz a la sumatoria del puntaje*/		
+//		/*Realiz a la sumatoria del puntaje*/
 //		for(PuntosPasajeroFrecuente puntaje: lstResul){
 //			totalPuntaje+=+puntaje.getPuntosAcumulados();
 //		}
-		
+
 		/* Setea el total puntaje*/
-		List<PuntosPasajeroFrecuente>lstPuntaje= new ArrayList<PuntosPasajeroFrecuente>();
+		List<PuntosPasajeroFrecuente>lstPuntaje= new ArrayList<>();
 		for(PuntosPasajeroFrecuente puntaje: lstResult){
 			puntaje.setTotalPuntaje(totalPuntaje);
 			lstPuntaje.add(puntaje);
 		}
-				
+
 		return lstPuntaje;
 	}
-		
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.PuntosPasajeroFrecuenteDAO#actualizarPuntosCanjeados(java.lang.String, java.lang.String, java.lang.String)
@@ -152,9 +152,9 @@ public class PuntosPasajeroFrecuenteDAOImpl extends GenericDAOImpl implements Pu
 										  ",VENPAS_IDCANJE="+idVentaCanje+" "+
 					"WHERE punpaxfre_id IN(" + iDsVenta + ")";
 //					"WHERE VENPAS_ID IN(" + iDsVenta + ")";
-		
+
 		log.info(sql);
-		
+
 		getSession().createSQLQuery(sql).executeUpdate();
 	}
 
@@ -167,15 +167,15 @@ public class PuntosPasajeroFrecuenteDAOImpl extends GenericDAOImpl implements Pu
 		String hql=" FROM " + oClass.getSimpleName() + " " +
 			" WHERE pasajeroFrecuente=" +idPaxFree+" "+
 			" AND fechaCanje=TO_DATE('"+fechaCanje+"','dd/MM/yyyy') " +
-			"AND estadoRegistro='A') "+ 
+			"AND estadoRegistro='A') "+
 			" ORDER BY fechaEmision ";
-		
+
 		log.info(hql);
-		
+
 		return getSession().createQuery(hql).list();
 	}
-	
-	
+
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.PuntosPasajeroFrecuenteDAO#buscaEstadoCuentaPaxFree(java.lang.Long, java.lang.String, java.lang.String)
@@ -184,7 +184,7 @@ public class PuntosPasajeroFrecuenteDAOImpl extends GenericDAOImpl implements Pu
 	public List<PuntosPasajeroFrecuente>buscaEstadoCuentaPaxFree(Long idPaxfree, String fechaInico, String fechaFin){
 		String sql=//"SELECT  fechaEmision,NumeroTarjeta,Pasajero,FechaTransaccion,Boleto,Agencia,Puntos,Canjeados,SaldoInical "+
 					 //       ",Asignados,TCanjeados,Sado,Origen, Destino "+
-					//"FROM( "+ 
+					//"FROM( "+
 					    "SELECT pp.d_fecemi  as FechaEmision,pf.c_numtar as NumeroTarjeta,ps.c_nomape as Pasajero,pp.audfecins as FechaTransaccion,vp.c_numboleto as Boleto "+
 					           ",ag.c_denominacion as Agencia,pp.n_punacu as Puntos,.00 as Canjeados,NVL(sldini.SaldoInicial,0)as SaldoInical "+
 					           ",NVL(ptsas.Asignados,0) as Asignados,NVL(utl.Canjeados,0) as TCanjeados "+
@@ -196,34 +196,34 @@ public class PuntosPasajeroFrecuenteDAOImpl extends GenericDAOImpl implements Pu
 					    "INNER JOIN vrtvenpas vp ON (vp.venpas_id=pp.venpas_id) "+
 					    "INNER JOIN vrmagencia ag ON (ag.agencia_id=vp.agencia_id) " +
 					    "INNER JOIN  vrmruta rt ON (rt.ruta_id=vp.ruta_id) "+
-					    "LEFT JOIN (SELECT Paxfre_Id, SUM(n_punacu) as SaldoInicial FROM vrtpunpaxfre "+ 
+					    "LEFT JOIN (SELECT Paxfre_Id, SUM(n_punacu) as SaldoInicial FROM vrtpunpaxfre "+
 					                "WHERE Paxfre_Id="+idPaxfree+" AND  d_Fecanu IS NULL AND d_feccan IS NULL AND c_Estreg='A' "+
 					                "AND to_date(d_Fecemi,'dd/mm/yyy')< to_date('"+fechaInico+"','dd/MM/yyyy') "
 					              + "AND d_feccad>= to_date('"+Constantes.FORMAT_DATE.format(new Date())+"','dd/MM/yyyy')  "//Para validar los caducados
-					              + "GROUP BY Paxfre_Id "+            
+					              + "GROUP BY Paxfre_Id "+
 					                ") sldini ON (sldini.Paxfre_Id=pp.paxfre_id) "+
-					    "LEFT JOIN (SELECT Paxfre_Id, SUM(n_punacu) as Asignados FROM vrtpunpaxfre "+ 
+					    "LEFT JOIN (SELECT Paxfre_Id, SUM(n_punacu) as Asignados FROM vrtpunpaxfre "+
 					                "WHERE Paxfre_Id="+idPaxfree+" AND  d_Fecanu IS NULL AND c_Estreg='A'"+ // AND d_feccan IS NULL "+
 					                "AND to_date(d_Fecemi,'dd/mm/yyy') BETWEEN to_date('"+fechaInico+"','dd/MM/yyyy') AND to_date('"+fechaFin+"','dd/MM/yyyy') GROUP BY Paxfre_Id "+
-					                ") ptsas ON (ptsas.Paxfre_Id=pp.paxfre_id) "+ 
-					    "LEFT JOIN (SELECT Paxfre_Id, SUM(n_punacu) as Canjeados FROM vrtpunpaxfre "+ 
+					                ") ptsas ON (ptsas.Paxfre_Id=pp.paxfre_id) "+
+					    "LEFT JOIN (SELECT Paxfre_Id, SUM(n_punacu) as Canjeados FROM vrtpunpaxfre "+
 					                "WHERE Paxfre_Id="+idPaxfree+" AND  d_Fecanu IS NULL AND d_feccan IS NOT NULL AND c_Estreg='A' "+
 					                "AND to_date(d_Fecemi,'dd/mm/yyy') BETWEEN to_date('"+fechaInico+"','dd/MM/yyyy') AND to_date('"+fechaFin+"','dd/MM/yyyy') GROUP BY Paxfre_Id "+
 					                ") utl ON (utl.Paxfre_Id=pp.paxfre_id) "+
-					    "WHERE pp.Paxfre_Id="+idPaxfree+" AND  pp.d_Fecanu IS NULL "+ 
+					    "WHERE pp.Paxfre_Id="+idPaxfree+" AND  pp.d_Fecanu IS NULL "+
 //					    "AND pp.d_feccan IS NULL "+
 					    "AND pp.c_Estreg='A' "+
 					    "AND to_date(pp.d_Fecemi,'dd/mm/yyy') BETWEEN to_date('"+fechaInico+"','dd/MM/yyyy') AND to_date('"+fechaFin+"','dd/MM/yyyy') " +
 					    "AND vp.tipmov_id NOT IN (5,13,6) AND vp.c_estreg='A' "+
 					    "ORDER BY pp.audfecins";
 					   // ")EstadoCuenta "+
-					 //"ORDER BY FechaTransaccion"; 
-	
+					 //"ORDER BY FechaTransaccion";
+
 		log.info(sql);
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<PuntosPasajeroFrecuente> lstResult = new ArrayList<PuntosPasajeroFrecuente>();
-		
+		List<PuntosPasajeroFrecuente> lstResult = new ArrayList<>();
+
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[])result.get(i);
 			PuntosPasajeroFrecuente puntosPasajeroFrecuente= new PuntosPasajeroFrecuente();
@@ -232,39 +232,39 @@ public class PuntosPasajeroFrecuenteDAOImpl extends GenericDAOImpl implements Pu
 			VentaPasaje ventaPasaje= new VentaPasaje();
 			Agencia agencia= new Agencia();
 			Ruta ruta= new Ruta();
-			
+
 			puntosPasajeroFrecuente.setFechaEmision((Date)obj[0]);
 			puntosPasajeroFrecuente.setFechaInsercion((Date)obj[3]);
 			puntosPasajeroFrecuente.setPuntosAcumulados(((BigDecimal)obj[6]).intValue());
 			puntosPasajeroFrecuente.setPuntosCanjeados(((BigDecimal)obj[7]).intValue());
-			
+
 			puntosPasajeroFrecuente.setSaldoInicial(((BigDecimal)obj[8]).intValue());
 			puntosPasajeroFrecuente.setTotalAsignado(((BigDecimal)obj[9]).intValue());
 			puntosPasajeroFrecuente.setTotalCajeados(((BigDecimal)obj[10]).intValue());
 			puntosPasajeroFrecuente.setSaldoActual(((BigDecimal)obj[11]).intValue());
-								
+
 			pasajeroFrecuente.setNumeroTarjeta(obj[1].toString());
 			pasajero.setNombresApellidos(obj[2].toString());
-			
+
 			ruta.setOrigen(obj[12].toString());
 			ruta.setDestino(obj[13].toString());
-	
+
 			ventaPasaje.setNumeroBoleto(obj[4]!=null?obj[4].toString(): "");
 			agencia.setDenominacion(obj[5]!=null? obj[5].toString(): "");
-			
+
 			pasajeroFrecuente.setPasajero(pasajero);
 			ventaPasaje.setRuta(ruta);
 			ventaPasaje.setAgencia(agencia);
 			ventaPasaje.setPasajero(pasajero);
 			puntosPasajeroFrecuente.setPasajeroFrecuente(pasajeroFrecuente);
 			puntosPasajeroFrecuente.setVentaPasaje(ventaPasaje);
-			
+
 			lstResult.add(puntosPasajeroFrecuente);
-		}	
-		
+		}
+
 		return lstResult;
 	}
-	 
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.PuntosPasajeroFrecuenteDAO#restaurarPuntos(java.lang.Long)
@@ -275,17 +275,17 @@ public class PuntosPasajeroFrecuenteDAOImpl extends GenericDAOImpl implements Pu
 		Usuario usuario= new Usuario();
 		usuario=(Usuario) Executions.getCurrent().getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO);
 		UtilData.auditarRegistro(puntoPasajeroFrecuente,true, usuario, Executions.getCurrent());
-		
+
 		String sql="UPDATE VRTPUNPAXFRE SET D_FECCAN=NULL " +
 										   ",VENPAS_IDCANJE=NULL " +
 										   ",AUDIPMODI='"+puntoPasajeroFrecuente.getIpModificacion()+"' "+
 										   ",AUDUSUMOD='"+puntoPasajeroFrecuente.getUsuarioModificacion()+"' "+
 					"WHERE VENPAS_IDCANJE="+idVentaCaje;
-		
+
 		log.info(sql);
-		
+
 		getSession().createSQLQuery(sql).executeUpdate();
-		
+
 	}
 
 }

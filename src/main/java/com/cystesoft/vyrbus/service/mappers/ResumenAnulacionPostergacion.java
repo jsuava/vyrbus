@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 22 may. 2021
  * Hora			: 22:43:41
@@ -16,7 +16,7 @@ import java.io.Serializable;
  */
 public class ResumenAnulacionPostergacion implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer id;
 	private String denominacion;
 	/**

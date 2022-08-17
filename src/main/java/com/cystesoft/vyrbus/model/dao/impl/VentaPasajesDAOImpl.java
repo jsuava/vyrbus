@@ -93,11 +93,11 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				"AND vp.c_estreg='"+Constantes.VALUE_ACTIVO+"' " +
 			    "AND vp.n_numasiento IS NOT NULL "+
 				"ORDER BY vp.n_numasiento ";
-		
+
 		log.info(sql);
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<VentaPasaje> lstResult = new ArrayList<VentaPasaje>();
+		List<VentaPasaje> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[])result.get(i);
 			VentaPasaje ventaPasaje = new VentaPasaje();
@@ -140,30 +140,30 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			ventaPasaje.setCanalVenta(canalVenta);
 			ventaPasaje.setFechaPartida((Date)obj[26]);
 			ventaPasaje.setHoraPartida(obj[27].toString());
-			
+
 			Agencia agenciaPartida=new Agencia();
-			agenciaPartida.setNombreCorto(obj[28]!=null?obj[28].toString():"");			
+			agenciaPartida.setNombreCorto(obj[28]!=null?obj[28].toString():"");
 			ventaPasaje.setAgenciaPartida(agenciaPartida);
-			
+
 			FormaPago formaPago = new FormaPago();
 			formaPago.setId(obj[30]==null?null:((BigDecimal)obj[30]).intValue());
 			ventaPasaje.setFormaPago(formaPago);
-			
+
 			TipoFormaPago tipoFormaPago = new  TipoFormaPago();
 			tipoFormaPago.setId(obj[31]==null?null:((BigDecimal)obj[31]).intValue());
 			ventaPasaje.setTipoFormaPago(tipoFormaPago);
-			
+
 			ventaPasaje.setRucClienteCredito(obj[32]==null?null:obj[32].toString());
 			ventaPasaje.setImportePagado(obj[33]==null?null:((BigDecimal)obj[33]).doubleValue());
-			
+
 //			TipoMovimiento tipoMovimiento = new TipoMovimiento();
 //			tipoMovimiento.setId(((BigDecimal)obj[34]).intValue());
-			
+
 			lstResult.add(ventaPasaje);
 		}
 		return lstResult;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarVentasByIdVenta(java.lang.Long)
@@ -182,12 +182,12 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				"INNER JOIN vrmruta rm ON rm.ruta_id=i.ruta_idmayor " +
 				"INNER JOIN vrmservicio so ON so.servicio_id=vp.servicio_id " +
 				"WHERE vp.venpas_id="+idVenta+" ORDER BY vp.n_numasiento ";
-		
+
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).list();
 		VentaPasaje ventaPasaje = new VentaPasaje();
-		for(int i=0; i<result.size(); i++){
-			Object[] obj = (Object[])result.get(i);
+		for (Object element : result) {
+			Object[] obj = (Object[])element;
 			ventaPasaje.setId(((BigDecimal)obj[0]).longValue());
 			Ruta ruta = new Ruta();
 			ruta.setId(((BigDecimal)obj[2]).intValue());
@@ -231,10 +231,10 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		}
 		return ventaPasaje;
 	}
-	
+
 	private List<SecuenciaTramo> obtenerSecuencia(String secuencia){
 		String[] sArray = secuencia.split(";");
-		List<SecuenciaTramo> lstResult = new ArrayList<SecuenciaTramo>();
+		List<SecuenciaTramo> lstResult = new ArrayList<>();
 		for(String obj : sArray){
 			SecuenciaTramo secuenciaTramo = new SecuenciaTramo();
 			String[] buffer = obj.split("-");
@@ -260,22 +260,22 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 //						"ON max_venta.venpas_id=vp.venpas_id " +
 //				"WHERE vp.tipmov_id not in("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_ANULACION+") AND " +
 //				"vp.n_numasiento="+asiento+" AND vp.n_numpiso="+piso+" AND vp.c_estreg='"+Constantes.VALUE_ACTIVO+"' ";
-		
+
 		String sql = "SELECT vp.venpas_id, r.localidad_idOrigen, r.localidad_idDestino " +
 				"FROM vrtvenpas vp " +
 				"INNER JOIN (SELECT MAX(venpas_id)venpas_id, c_numcontrol " +
 					"FROM vrtvenpas " +
 					"WHERE itinerario_id="+itinerario.getId()+" GROUP BY c_numcontrol) max_venta " +
 						"ON max_venta.venpas_id=vp.venpas_id " +
-				"INNER JOIN vrmruta r ON r.ruta_id=vp.ruta_id " + 
+				"INNER JOIN vrmruta r ON r.ruta_id=vp.ruta_id " +
 				"WHERE vp.tipmov_id not in("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_ANULACION+") AND " +
 				"vp.c_tiptra not in('"+Constantes.TIPO_OPERACION_PERDIDA_SERVICIO+"') AND vp.n_numasiento="+asiento+" AND vp.n_numpiso="+piso+" AND vp.c_estreg='"+Constantes.VALUE_ACTIVO+"' ";
-		
+
 		log.info(sql);
-		
+
 		/*	Obtenemos las ventas que referencian al mismo asiento y mismo itinerario del boleto a vender.	*/
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<VentaPasaje> lstResult = new ArrayList<VentaPasaje>();
+		List<VentaPasaje> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[])result.get(i);
 			VentaPasaje venta = new VentaPasaje();
@@ -286,12 +286,12 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			venta.setRuta(rutaVendida);
 			/*	Obtenemos el subconjunto que queremos buscar segun la ruta seleccioanda		*/
 			List<Integer> subConjuntoVendido = Util.obtenerSubconjunto(itinerario.getListSecuenciaTramo(), rutaVendida.getLocalidadOrigen().getId(), rutaVendida.getLocalidadDestino().getId());
-			venta.setSubConjunto(subConjuntoVendido);			
+			venta.setSubConjunto(subConjuntoVendido);
 			lstResult.add(venta);
 		}
-		
+
 		List<Integer> subConjuntoPorVender = Util.obtenerSubconjunto(itinerario.getListSecuenciaTramo(), ruta.getLocalidadOrigen().getId(), ruta.getLocalidadDestino().getId());
-		
+
 		for(int i=0; i<lstResult.size(); i++){
 			VentaPasaje venta = lstResult.get(i);
 			for(int j=0; j<subConjuntoPorVender.size(); j++){
@@ -300,10 +300,10 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				}
 			}
 		}
-		
+
 		return Long.valueOf(0);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#validarServicio(java.lang.Integer)
@@ -314,7 +314,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		Long total = (Long)getSession().createQuery(hql).uniqueResult();
 		return total;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarReservasPorConfirmar(java.lang.Integer, java.lang.Integer, java.lang.String[], java.lang.String, java.lang.String, java.lang.String, java.lang.Integer)
@@ -324,7 +324,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		String pax = "";
 		if(pasajero!=null)
 			pax = Util.obtenerFullTextPasajero(pasajero);
-		
+
 		String criterio = idOrigen==null?"":" AND r.localidad_idOrigen=" + idOrigen +" ";
 		criterio = criterio + (idDestino==null?"":" AND r.localidad_idDestino=" + idDestino + " ");
 		criterio = criterio + (pasajero==null?"":" AND CATSEARCH(p.c_nomape, '" + pax + "', null) > 0 ");
@@ -341,13 +341,13 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				"WHERE VP.c_tiptra='2' AND VP.c_estreg='"+Constantes.VALUE_ACTIVO+"' AND "
 						+ "VP.tipmov_id NOT IN("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_ANULACION + ")  "
 						+ "AND VP.d_fecpar IS NOT NULL " ;
-		
+
 		sql = sql + criterio;
 		sql = sql + "ORDER BY VP.pasajero_id, VP.d_fecpar, VP.c_horpar ";
-		
+
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).addEntity("VP",VentaPasaje.class).list();
-		List<VentaPasaje> lstResult = new ArrayList<VentaPasaje>();
+		List<VentaPasaje> lstResult = new ArrayList<>();
 		String sysdate = getDateSystem();
 		String expira = "";
 		for(int i=0; i<result.size(); i++){
@@ -358,11 +358,11 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		}
 		return lstResult;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarVentaById(java.lang.Long) 
-	 */	 
+	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarVentaById(java.lang.Long)
+	 */
 	@Override
 	public VentaPasaje buscarVentaById(Long idVenta)throws Exception{
 		String sql = "SELECT vp.venpas_id, vp.venpas_idref, i.itinerario_id, r.ruta_id, r.c_origen, r.c_destino, c.cliente_id, c.c_numdoc doccli, " +
@@ -403,12 +403,12 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 						"LEFT JOIN vrmagencia ad ON ad.agencia_id=vp.agencia_idllegada " +
 						"LEFT JOIN vrmcencos cc ON (cc.cencos_id=vp.cencos_id) " +
 						"LEFT JOIN vrmtipmon tm ON (tm.tipmon_id=vp.tipmon_id) "+
-					"WHERE vp.venpas_id="+idVenta; 
-		
+					"WHERE vp.venpas_id="+idVenta;
+
 		log.info(sql);
-		
+
 		Object[] obj = (Object[])getSession().createSQLQuery(sql).uniqueResult();
-		
+
 		VentaPasaje ventaPasaje = new VentaPasaje();
 		ventaPasaje.setId(((BigDecimal)obj[0]).longValue());
 		ventaPasaje.setVentaPasaje(obj[1]==null?null:new VentaPasaje(((BigDecimal)obj[1]).longValue()));
@@ -545,7 +545,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		ventaPasaje.setObservaciones(obj[75]==null?null:obj[75].toString());
 		if(obj[76]!=null)
 			ventaPasaje.setVentaOriginal(((BigDecimal)obj[76]).longValue());
-		
+
 		ventaPasaje.setImportePagadoEfectivo(((BigDecimal)obj[77]).doubleValue());
 		ventaPasaje.setImportePagadoTarjeta(((BigDecimal)obj[78]).doubleValue());
 		if(obj[79]!=null){
@@ -554,7 +554,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			ventaPasaje.setPromocion(promocion);
 		}
 		ventaPasaje.setIdentificadorIdaRetorno(obj[80]==null?null:((BigDecimal)obj[80]).longValue());
-		
+
 		if(obj[81]!=null){//Centros de costo (impl: 13/03/2013 - jabanto)
 			CentroCosto centroCosto=new CentroCosto();
 			centroCosto.setId(((BigDecimal)obj[81]).intValue());
@@ -563,7 +563,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			ventaPasaje.setCentroCosto(centroCosto);
 		}
 		ventaPasaje.setEstadoDocumento(obj[84]!=null?obj[84].toString():null);
-		
+
 		/*Valida si tiempo tipo de moneda*/
 		if(obj[85]!=null){
 			TipoMoneda tipoMoneda=new TipoMoneda();
@@ -576,7 +576,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			ventaPasaje.setDescuentoEquibalente(obj[91]!=null?((BigDecimal)obj[91]).doubleValue():null);
 			ventaPasaje.setTipoCambio(obj[92]!=null?((BigDecimal)obj[92]).doubleValue():null);
 		}
-		
+
 		/*igv de la venta*/
 		ventaPasaje.setIgv((obj[97]!=null?((BigDecimal)obj[97]).doubleValue():null));
 		ventaPasaje.setEnviadoSFE(obj[100]!=null?((BigDecimal)obj[100]).intValue():null);
@@ -586,11 +586,11 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			tipoCobranza.setId(((BigDecimal)obj[102]).intValue());
 			ventaPasaje.setTipoCobranza(tipoCobranza);
 		}
-		
-		
+
+
 		return ventaPasaje;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#getDateSystem()
@@ -598,7 +598,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
     @Override
 	public String getDateSystem()throws Exception{
     	String sql = "SELECT to_char(sysdate,'dd/mm/yyyy hh24:mi:ss') DateSystem FROM dual";
-		
+
 		log.info(sql);
 		try{
 			SQLQuery q = getSession().createSQLQuery(sql);
@@ -620,7 +620,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		String pax = "";
 		if(pasajero!=null)
 			pax = Util.obtenerFullTextPasajero(pasajero);
-		
+
 		String criterio = idOrigen==null?"":" AND r.localidad_idOrigen=" + idOrigen +" ";
 		criterio = criterio + (idDestino==null?"":" AND r.localidad_idDestino=" + idDestino + " ");
 		criterio = criterio + (pasajero==null?"":" AND CATSEARCH(p.c_nomape, '" + pax + "', null) > 0 ");
@@ -637,16 +637,16 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				"' AND {VP}.tipmov_id NOT IN ("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+
 				Constantes.ID_TIPMOV_ANULACION+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_SERVICIO_ESPECIAL+")  "
 						+ " AND {VP}.tipcom_id 	IN ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_FACTURA+")  ";
-		
+
 		sql = sql + criterio;
 		sql = sql + "ORDER BY {VP}.pasajero_id ";
-		
+
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).addEntity("VP",VentaPasaje.class).list();
-		
+
 		return (List<VentaPasaje>)result;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarUsuarioPorAgencia(java.lang.Integer, java.lang.String, java.lang.String, java.lang.String)
@@ -669,11 +669,11 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 						"vp.estadoRegistro IN('"+Constantes.VALUE_ACTIVO+"','"+estado+"') " +
 					"ORDER BY u.apellidoPaterno, u.apellidoMaterno, u.nombre";
 		}
-		
-		
+
+
 		log.info(hql);
 		List<?> result = getSession().createQuery(hql).list();
-		List<Usuario> lstResult = new ArrayList<Usuario>();
+		List<Usuario> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[])result.get(i);
 			Usuario usuario = new Usuario();
@@ -686,7 +686,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		}
 		return lstResult;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarDetalladoVentas(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
@@ -696,7 +696,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		idAgencia = idAgencia.equals("")?"%":idAgencia;
 		idUsuario = idUsuario.equals("")?"%":idUsuario;
 		idTipoMovimiento = idTipoMovimiento.equals("")?"%":idTipoMovimiento;
-		
+
 		String sql = "SELECT tm.c_denominacion, vp.c_numcontrol, vp.c_numboleto, vp.n_tarifa, vp.n_recargo, vp.n_descuento, vp.n_acuenta, " +
 				"vp.n_penalidad, vp.n_imppag, u.c_apepat, u.c_apemat, u.c_nombre, fp.forpag_id, fp.c_denominacion forpag, tfp.tipforpag_id, " +
 				"tfp.c_denominacion tipforpag, otc.opetarcre_id, otc.c_denominacion opetarcre, tc.tarcre_id, tc.c_denominacion tarcre, " +
@@ -712,11 +712,11 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					"vp.d_fecliq BETWEEN to_date('"+fechaInicio+"', 'dd/mm/yyyy') AND to_date('"+fechaFin+"', 'dd/mm/yyyy') AND " +
 					"vp.c_estreg IN ('"+Constantes.VALUE_ACTIVO+"','"+estado+"') AND vp.c_tiptra='"+Constantes.TIPO_OPERACION_VENTA+"' " +
 				"ORDER BY vp.c_numboleto, vp.audfecins";
-		
+
 		log.info(sql);
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<VentaPasaje> lstResult = new ArrayList<VentaPasaje>();
+		List<VentaPasaje> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
 			VentaPasaje ventaPasaje = new VentaPasaje();
@@ -761,7 +761,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		}
 		return lstResult;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#validarNumeroBoleto(java.lang.String, java.lang.Integer)
@@ -770,12 +770,12 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	public Integer validarNumeroBoleto(String numeroBoleto, Integer idTipoComprobante)throws Exception{
 		String hql = "FROM VentaPasaje vp WHERE vp.numeroBoleto='"+numeroBoleto+"' AND vp.tipoComprobante.id="+idTipoComprobante+" AND " +
 				"vp.estadoRegistro = '"+Constantes.VALUE_ACTIVO+"'";
-		
+
 		log.info(hql);
 		int result = getSession().createQuery(hql).list().size();
 		return result;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarVentasPostergar(java.lang.Integer, java.lang.Integer, java.lang.String[], java.lang.String, java.lang.String, java.lang.String)
@@ -785,7 +785,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		String pax = "";
 		if(pasajero!=null)
 			pax = Util.obtenerFullTextPasajero(pasajero);
-		
+
 		String criterio = idOrigen==null?"":" AND r.localidad_idOrigen=" + idOrigen +" ";
 		criterio = criterio + (idDestino==null?"":" AND r.localidad_idDestino=" + idDestino + " ");
 		criterio = criterio + (pasajero==null?"":" AND CATSEARCH(p.c_nomape, '" + pax + "', null) > 0 ");
@@ -803,16 +803,16 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 						"AND VP.tipmov_id NOT IN ("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_ANULACION+")" ; //" --AND {VP}.tipmov_id!="+Constantes.TIPMOV_ANULACION + " " +
 						//"AND VP.d_fecpar is not null AND (VP.tipforpag_id="+Constantes.TIPFORPAG_EFECTIVO+ " OR " +
 						//"VP.tipforpag_id="+Constantes.TIPFORPAG_CREDITO+ " OR VP.tipforpag_id="+Constantes.TIPFORPAG_CANJE_PUBLICITARIO+") " ;
-		
+
 		sql = sql + criterio;
 		sql = sql + "ORDER BY VP.c_numboleto, VP.d_fecpar, VP.c_horpar ";
-		
+
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).addEntity("VP",VentaPasaje.class).list();
-		
+
 		return (List<VentaPasaje>)result;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarBoletosReimprimir(java.lang.String, java.lang.String[], java.lang.String)
@@ -822,10 +822,10 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		String passenger = "";
 		if(pasajero!=null)
 			passenger = Util.obtenerFullTextPasajero(pasajero);
-		
+
 		String criterios = numeroDocumento==null?"":" AND p.c_numdoc LIKE '" + numeroDocumento + "%' ";
 		criterios = criterios + (pasajero==null?"":" AND CATSEARCH(p.c_nomape, '" + passenger + "', null) > 0 ");
-		
+
 		String sql = "SELECT vp.venpas_id, r.c_origen, r.c_destino, p.c_apepat, p.c_apemat, p.c_nombre, p.c_nomape, vp.d_fecpar, " +
 				"vp.c_horpar, vp.tipmov_id, tm.c_denominacion, vp.c_numcontrol, (vp.n_tarifa+vp.n_recargo-vp.n_descuento) importe, " +
 				"vp.venpas_idoriginal " +
@@ -839,12 +839,12 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 //				   "AND vp.tipcom_id="+Constantes.ID_TIPCOM_BOLETO_VIAJE+" "
 				   "AND vp.tipcom_id IN ("+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_FACTURA+") "
 				 + "AND vp.tipmov_id NOT IN("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_ANULACION+") ";
-		
+
 		sql = sql + criterios + " ORDER BY p.c_nomape ";
-		
+
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<VentaPasaje> lstResult = new ArrayList<VentaPasaje>();
+		List<VentaPasaje> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[])result.get(i);
 			VentaPasaje ventaPasaje = new VentaPasaje();
@@ -872,7 +872,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		}
 		return lstResult;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarBoletosDevolucion(java.lang.String, java.lang.String, java.lang.String)
@@ -882,13 +882,13 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		String criterio = numeroDocumento==null?"":" AND p.c_numdoc = '" + numeroDocumento + "' ";
 		criterio = criterio + (numeroControl==null?"":" AND {VP}.c_numcontrol='"+ numeroControl +"' ");
 		criterio = criterio + (numeroBoleto==null?"":(" AND {VP}.c_numboleto='" + numeroBoleto.toUpperCase() +"' "));
-		
+
 		String criterioByMax=" WHERE c_estreg='"+Constantes.VALUE_ACTIVO+"' ";
 		if(numeroControl!=null)
 			criterioByMax+="AND c_numcontrol='"+numeroControl+"' ";
 		else if (numeroBoleto!=null)
 			criterioByMax+="AND c_numboleto='"+numeroBoleto.toUpperCase()+"' ";
-		
+
 		String sql = "SELECT {VP.*} FROM vrtvenpas {VP} " +
 				"INNER JOIN (SELECT MAX(venpas_id)venpas_id, c_numcontrol FROM vrtvenpas "+criterioByMax+" GROUP BY c_numcontrol) max_vta " +
 				"ON max_vta.venpas_id={VP}.venpas_id " +
@@ -897,16 +897,16 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				"INNER JOIN vrmpasajero p ON p.pasajero_id={VP}.pasajero_id " +
 				"WHERE {VP}.c_tiptra in('"+Constantes.TIPO_OPERACION_VENTA+"','"+Constantes.TIPO_OPERACION_VENTA_POOL+"','"+Constantes.TIPO_OPERACION_PERDIDA_SERVICIO+"') AND {VP}.c_estreg='"+Constantes.VALUE_ACTIVO+"' "
 			  + "AND {VP}.tipcom_id IN ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_BOLETA_VENTA+", "+Constantes.ID_TIPCOM_FACTURA+")" ;
-		
+
 		sql = sql + criterio;
 		sql = sql + "ORDER BY {VP}.c_numboleto, {VP}.d_fecpar, {VP}.c_horpar ";
-		
+
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).addEntity("VP",VentaPasaje.class).list();
-		
+
 		return (List<VentaPasaje>)result;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarComprobantesSinBoleto(java.lang.String, java.lang.Integer, java.lang.Integer, java.lang.Integer, java.lang.Integer)
@@ -936,16 +936,16 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 						Constantes.ID_TIPCOM_VOUCHER_CORPORATIVO+") ";
 		if(idRol.intValue()!=Constantes.ID_ROL_SUPER_USUARIO)
 			sql+=" AND vp.agencia_idpartida="+idAgencia+" AND ap.n_esterminal=1";
-		
+
 		if(idAgenciaEmision!=null)
 			sql+= " AND a.agencia_id="+idAgenciaEmision;
-		
+
 		sql = sql + " ORDER BY vp.d_fecpar, vp.c_horpar, embarque, comprobante, vp.c_numboleto ";
 		log.info(sql);
-		
+
 		List<?>result = getSession().createSQLQuery(sql).list();
-		List<VentaPasaje>lstResult = new ArrayList<VentaPasaje>();
-		
+		List<VentaPasaje>lstResult = new ArrayList<>();
+
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[])result.get(i);
 			VentaPasaje ventaPasaje = new VentaPasaje();
@@ -986,12 +986,12 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			agencia.setNombreCorto(obj[20]!=null?obj[20].toString():obj[17].toString());
 			ventaPasaje.setAgencia(agencia);
 			ventaPasaje.setFechaInsercion(obj[18]==null?null:(Date)obj[18]);
-						
+
 			lstResult.add(ventaPasaje);
 		}
 		return lstResult;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarAvanceSemanalVentas(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
@@ -1004,7 +1004,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			idOrigen=null;
 		if(idServicio.isEmpty())
 			idServicio=null;
-				
+
 		String sql="SELECT P1.c_horpar,P1.c_origen,P1.c_destino,P1.c_denominacion as Servicio, "+
 					       "P1.d_fecpar,decode(P2.Flag, '1', COUNT(*), 0) Vendidos, P1.Capbus "+
 					"FROM "+
@@ -1018,9 +1018,9 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 									 "AND r.localidad_iddestino!="+idDestino+" ";
 					        }else{
 					        	sql+="AND r.localidad_idorigen=NVL("+idOrigen+",localidad_idorigen) "+
-								"AND r.localidad_iddestino=NVL("+idDestino+",localidad_iddestino) ";	
+								"AND r.localidad_iddestino=NVL("+idDestino+",localidad_iddestino) ";
 					        }
-						        
+
 						    sql+="AND i.servicio_id=NVL("+idServicio+",i.servicio_id) "+
 					        ") P1 "+
 					        "LEFT JOIN "+
@@ -1036,42 +1036,42 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					         "ON  (P2.itinerario_id = P1.itinerario_id ) "+
 					"GROUP BY P1.ruta_idmayor,P1.servicio_id,P1.c_origen,P1.c_destino,P1.c_denominacion,P1.d_fecpar, P1.c_horpar, Flag,P1.Capbus "+
 					"ORDER BY P1.c_horpar,P1.c_origen,P1.c_destino,P1.c_denominacion";
-		
+
 			log.info(sql);
-			
+
 			List<?> result = getSession().createSQLQuery(sql).list();
-			List<VentaPasaje> lstResult = new ArrayList<VentaPasaje>();
+			List<VentaPasaje> lstResult = new ArrayList<>();
 			for(int i=0; i<result.size(); i++){
 				Object[] obj = (Object[]) result.get(i);
 				VentaPasaje ventaPasaje = new VentaPasaje();
 				Ruta ruta = new Ruta();
 				Servicio servicio = new Servicio();
 				Itinerario itinerario= new Itinerario();
-								
+
 				ventaPasaje.setHoraPartida(obj[0].toString());
-				
+
 				ruta.setOrigen(obj[1].toString());
 				ruta.setDestino(obj[2].toString());
-				
+
 				servicio.setDenominacion(obj[3].toString());
 				servicio.setTotalAsientos(((BigDecimal)obj[6]).intValue());
-				
+
 //				itinerario.setId(((BigDecimal)obj[7]).longValue());
 				itinerario.setId(null);
-				
+
 				ventaPasaje.setRuta(ruta);
 				ventaPasaje.setServicio(servicio);
 				ventaPasaje.setFechaPartida(((Date)obj[4]));
 				ventaPasaje.setCantidadPax(((BigDecimal)obj[5]).intValue());
 				ventaPasaje.setItinerario(itinerario);
-				
+
 				lstResult.add(ventaPasaje);
 			}
-		
-		
+
+
 		return lstResult;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarAvanceSemanalVentasColumns(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
@@ -1079,9 +1079,9 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	@Override
 	public List<VentaPasaje> buscarAvanceSemanalVentasColumns(String idOrigen,String idDestino, String tipoTransaction, String idServicio,String fechaDesde, String fechaHasta){
 		String sql ="SELECT i.d_fecpar "+
-					"FROM vrtitinerario i "+ 
+					"FROM vrtitinerario i "+
 					"INNER JOIN vrmruta r ON (r.ruta_id=i.Ruta_Idmayor)  "+
-					"INNER JOIN vrmservicio s ON (i.servicio_id=s.servicio_id) "+ 
+					"INNER JOIN vrmservicio s ON (i.servicio_id=s.servicio_id) "+
 					"WHERE i.d_fecpar between to_date('"+fechaDesde+"','"+Constantes.DATE_FORMAT+"') AND to_date('"+fechaHasta+"','"+Constantes.DATE_FORMAT+"') "  +
 					"AND i.n_esanulado=0 "+
 					"AND i.c_estreg='A' ";
@@ -1091,24 +1091,24 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			sql+="AND r.localidad_iddestino ='"+idDestino+"' ";
 		if(!(idServicio.isEmpty() || idOrigen==null))
 			sql+="AND i.servicio_id ='"+idServicio+"' ";
-		
+
 		sql+="GROUP BY i.d_fecpar "+
 			 "ORDER BY i.d_fecpar";
-		
+
 		log.info(sql);
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<VentaPasaje> lstResult = new ArrayList<VentaPasaje>();
+		List<VentaPasaje> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			VentaPasaje ventaPasaje= new VentaPasaje();
 			ventaPasaje.setFechaPartida((Date)result.get(i));
-			
+
 			lstResult.add(ventaPasaje);
 		}
-		
+
 		return lstResult;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#contarViajesValidos(java.lang.Long, java.lang.String, java.lang.String)
@@ -1116,20 +1116,20 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 */
 	@Override
 	public int contarViajesValidos(Long idPasajero, String fechaInicial, String fechaFinal)throws Exception{
-		
+
 		if(fechaInicial.equals("")){
 
-			//Si hay ultima fecha de canje se recupera para que sea la fecha de inicio			
+			//Si hay ultima fecha de canje se recupera para que sea la fecha de inicio
 			String sql1="SELECT TO_CHAR(MAX(vgp.d_fecemi), 'dd/mm/yyyy') FECEMI FROM vrtvengrapax vgp WHERE vgp.pasajero_id=" + idPasajero;
 			log.info(sql1);
-			
+
 			fechaInicial = ( (getSession().createSQLQuery(sql1).uniqueResult())!=null ? ((String)getSession().createSQLQuery(sql1).uniqueResult()).toString() : "");
 			//
 			//Si no hay se busca desde el inicio de los tiempos
 			if(fechaInicial.equals(""))
 				fechaInicial="01/01/2020";
 		}
-		
+
 		String sql = "SELECT COUNT(vp.venpas_id) " +
 					"FROM vrtvenpas vp " +
 						"INNER JOIN (SELECT MAX(venpas_id)venpas_id, c_numcontrol FROM vrtvenpas  "+
@@ -1146,7 +1146,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 						"AND vp.forpag_id <> 3 " +
 						"AND vp.c_estreg='A' " +
 						"AND vp.pasajero_id="+idPasajero;
-		
+
 //				"INNER JOIN (SELECT MAX(venpas_id) venpas_id, c_numcontrol FROM vrtvenpas " +
 //					"WHERE pasajero_id="+idPasajero+" GROUP BY c_numcontrol) max_idventa ON max_idventa.venpas_id=vp.venpas_id " +
 //				"WHERE vp.pasajero_id="+idPasajero+" AND " +
@@ -1157,15 +1157,15 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 //					"AND vp.c_tiptra="+Constantes.TIPO_OPERACION_VENTA+" "+
 //					"AND vp.tipcom_id IN("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_RECIBO_CAJA+") " +
 //					"AND vp.c_estreg='A' ";
-				
-		
+
+
 		log.info(sql);
-		
+
 		Integer result = ((BigDecimal)getSession().createSQLQuery(sql).uniqueResult()).intValue();
 		return result;
 	}
 
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarPorId(java.lang.Long)
@@ -1174,7 +1174,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	public VentaPasaje buscarPorId(Long id) {
 		return (VentaPasaje) super.findById(VentaPasaje.class, id);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#transbordarPax(java.lang.Integer, java.lang.Long, com.tepsa.sisvyr.model.bean.Itinerario)
@@ -1182,12 +1182,12 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	@Override
 	public void transbordarPax(Integer numeroAsiento, Long idVentaPasaje,Itinerario itinerario) throws Exception {
 //		VentaPasaje ventaPasaje=buscarPorId(idVentaPasaje);
-		
+
 		/*Calcula la fecha de caducidad del boleto - 13/12/2016 - jabanto*/
 		String fechaCaducidad=Constantes.FORMAT_DATE.format(itinerario.getFechaPartida())+" "+itinerario.getHoraPartida();
 		Date dateCaducidad=Constantes.FORMAT_LONG.parse(fechaCaducidad);
-		
-		
+
+
 		String sql="UPDATE vrtvenpas v SET v.n_numasiento="+numeroAsiento+", v.itinerario_id="+itinerario.getId()+", " +
 						  "v.servicio_id="+itinerario.getServicio().getId()+", "+
 				     	  "v.d_fecpar=to_date('"+Constantes.FORMAT_DATE.format(itinerario.getFechaPartida())+"','dd/MM/yyyy'), v.c_horpar='"+itinerario.getHoraPartida()+"', " +
@@ -1199,11 +1199,11 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 //						"WHERE v.itinerario_id="+ventaPasaje.getItinerario().getId()+" AND v.n_numasiento="+ventaPasaje.getNumeroAsiento()+ " ";
 								//"AND v.tipmov_id NOT IN ("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_ANULACION+")  ";
 					    //"WHERE v.venpas_id="+idVentaPasaje;
-			
+
 			log.info(sql);
 			getSession().createSQLQuery(sql).executeUpdate();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarVentasPax(java.lang.String, java.lang.String, java.lang.Long)
@@ -1239,14 +1239,14 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 						"AND v.c_estreg='A' " +
 						"AND v.pasajero_id="+pasajeroID +" "+
 						"ORDER BY v.audfecins desc" ;
-	
+
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).list();
-		ArrayList<VentaPasaje> lstResult = new ArrayList<VentaPasaje>();
-		
-		for(int i=0; i<result.size(); i++){
-			Object[] obj = (Object[]) result.get(i);
-			
+		ArrayList<VentaPasaje> lstResult = new ArrayList<>();
+
+		for (Object element : result) {
+			Object[] obj = (Object[]) element;
+
 			VentaPasaje ventaPasaje=new VentaPasaje();
 			Servicio servicio= new Servicio();
 			Ruta ruta= new Ruta();
@@ -1255,26 +1255,26 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			Cliente cliente=new Cliente();
 			TipoMovimiento tipoMovimiento=new TipoMovimiento();
 			FormaPago formaPago= new FormaPago();
-			
+
 			servicio.setDenominacion(obj[1].toString());
-			
+
 			tipoFormaPago.setDenominacion(obj[5].toString());
-			
+
 			usuario.setApellidoPaterno(obj[9].toString());
 			usuario.setApellidoMaterno(obj[10]!=null?obj[10].toString(): "");
 			usuario.setNombre(obj[11].toString());
-			
+
 			cliente.setNumeroDocumento(obj[12]!=null? obj[12].toString(): "");
 			cliente.setRazonSocial(obj[13]!=null? obj[13].toString(): "");
-			
+
 			ruta.setOrigen(obj[2].toString());
 			ruta.setDestino(obj[3].toString());
-			
+
 			tipoMovimiento.setDenominacion(obj[14].toString());
-			
+
 			formaPago.setId(((BigDecimal)obj[15]).intValue());
 			formaPago.setDenominacion(obj[16].toString());
-			
+
 			ventaPasaje.setNumeroBoleto(obj[0]!=null?obj[0].toString():"");
 			ventaPasaje.setFechaPartida(obj[4] !=null? (Date)obj[4]: null);
 			ventaPasaje.setNumeroAsiento(obj[6]!=null? ((BigDecimal)obj[6]).intValue(): null);
@@ -1287,13 +1287,13 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			ventaPasaje.setRuta(ruta);
 			ventaPasaje.setTipoMovimiento(tipoMovimiento);
 			ventaPasaje.setFormaPago(formaPago);
-			
+
 			lstResult.add(ventaPasaje);
 		}
-		
-		return lstResult;		
+
+		return lstResult;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#validaOcupabilidad(java.lang.Long, java.lang.Integer, java.lang.String, java.lang.Integer)
@@ -1310,20 +1310,20 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				"vp.n_numasiento in ("+numeroAsientos+") AND vp.n_numpiso="+(numeroPiso-1)+" AND vp.c_estreg='"+Constantes.VALUE_ACTIVO+"' " +
 				"AND vp.tipmov_id NOT IN ("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_ANULACION+") " +
 				"ORDER BY vp.n_numasiento ";
-		
+
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<VentaPasaje>listResul= new ArrayList<VentaPasaje>();
+		List<VentaPasaje>listResul= new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
 			VentaPasaje ventaPasaje= new VentaPasaje();
 			ventaPasaje.setId(((BigDecimal)obj[0]).longValue());
 			ventaPasaje.setNumeroAsiento(((BigDecimal)obj[1]).intValue());
 			listResul.add(ventaPasaje);
-		}		
+		}
 		return listResul;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#validaBoletos_ServicioEspecial(java.lang.String, java.lang.String)
@@ -1335,8 +1335,8 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		List<?> result = getSession().createSQLQuery(sql).list();
 		return  ((BigDecimal)result.get(0)).intValue();
 	}
-	
-	
+
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#ultimoCorrelativosEmitidos(java.lang.String, java.lang.String, java.lang.Integer)
@@ -1368,15 +1368,15 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			sql+="AND vp.tipcom_id="+idComprobante;
 		if(idAgencia!=null)
 			sql+="AND vp.agencia_id="+idAgencia;
-		
+
 		sql+="GROUP BY a.c_nomcor, tc.c_denominacion, SUBSTR(vp.c_numboleto,0,INSTR((vp.c_numboleto),'-')-1) ";
 		sql+="ORDER BY a.c_nomcor, tc.c_denominacion, SUBSTR(vp.c_numboleto,0,INSTR((vp.c_numboleto),'-')-1)";
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<VentaPasaje>listResul= new ArrayList<VentaPasaje>();
+		List<VentaPasaje>listResul= new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
-			VentaPasaje ventaPasaje= new VentaPasaje();			
+			VentaPasaje ventaPasaje= new VentaPasaje();
 			Agencia agencia= new Agencia();
 			TipoComprobante tipoComprobante= new TipoComprobante();
 			agencia.setNombreCorto(obj[0].toString());
@@ -1390,14 +1390,14 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			ventaPasaje.setPromedioXdia(((BigDecimal)obj[6]).doubleValue());
 			ventaPasaje.setUltimoEnviadoXAbastecimientos(obj[7]!=null?obj[7].toString(): "");
 			ventaPasaje.setFechaUltimoEnvioXAbastecimientos(obj[8]!=null?obj[8].toString(): "");
-			
+
 			listResul.add(ventaPasaje);
-			
+
 		}
 		return listResul;
 	}
-	
-	
+
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#correlativosFaltantesX(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer)
@@ -1405,7 +1405,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	@Override
 	public List<VentaPasaje> correlativosFaltantesX(String fechaInicio, String serie, Integer idComprobante,Integer idAgencia, String fechaFin, Integer idUsuario) throws Exception{
 //		String fechaActual=Constantes.FORMAT_DATE.format(Constantes.FORMAT_DATE.parse(new MyTime().dateServer()));
-		
+
 		String sql="SELECT a.c_nomcor as Agencia "+
 					       ",tc.c_denominacion as TipoComprobante "+
 					       ",SUBSTR((vp.c_numboleto),0,INSTR((vp.c_numboleto),'-')-1) AS Serie "+
@@ -1429,28 +1429,28 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			sql+=" AND vp.usuario_id="+idUsuario+" ";
 		sql+=" ORDER BY a.c_nomcor, tc.c_denominacion, SUBSTR(vp.c_numboleto,0,INSTR((vp.c_numboleto),'-')-1), " +
 				"SUBSTR((vp.c_numboleto),INSTR(((vp.c_numboleto)),'-')+1, LENGTH((vp.c_numboleto)))";
-		
+
 		log.info(sql);
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<VentaPasaje>listResul= new ArrayList<VentaPasaje>();
+		List<VentaPasaje>listResul= new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
-			VentaPasaje ventaPasaje= new VentaPasaje();			
+			VentaPasaje ventaPasaje= new VentaPasaje();
 			Agencia agencia= new Agencia();
 			TipoComprobante tipoComprobante= new TipoComprobante();
-			
+
 			agencia.setNombreCorto(obj[0].toString());
 			tipoComprobante.setDenominacion(obj[1].toString());
 			ventaPasaje.setAgencia(agencia);
 			ventaPasaje.setTipoComprobante(tipoComprobante);
 			ventaPasaje.setNumeroSerie(obj[2].toString());
 			ventaPasaje.setNumeroBoleto(obj[3].toString());
-						
+
 			listResul.add(ventaPasaje);
 		}
 		return listResul;
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -1459,27 +1459,27 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	@Override
 	public Double buscaTotalVentasEfectivo(Integer idUsuario,Integer idAgencia, String fecha) throws Exception {
 		// TODO Auto-generated method stub
-		String sql="SELECT SUM(vp.n_imppag)As totalVentaEfectivo "+ 
+		String sql="SELECT SUM(vp.n_imppag)As totalVentaEfectivo "+
 					"FROM VRTVENPAS vp "+
 					"WHERE vp.usuario_id="+idUsuario+" AND vp.agencia_id="+idAgencia+" AND to_char(vp.d_fecliq,'dd/mm/yyyy')='"+fecha+"'  "+
 					"AND vp.tipmov_id NOT IN ("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_ANULACION+")  " +
 					"AND vp.forpag_id="+Constantes.ID_FORPAG_CONTADO+" AND vp.tipforpag_id="+Constantes.ID_TIPFORPAG_EFECTIVO+"   " +
 					" AND vp.c_estreg='"+Constantes.VALUE_ACTIVO+" '";
-		
+
 		log.info(sql);
 		Object object=getSession().createSQLQuery(sql).uniqueResult();
-		
+
 		Double totalVentasEfecivo=0.00;
 		if(object!=null){
 			totalVentasEfecivo=((BigDecimal)object).doubleValue();
 		}
-		
+
 //		Double totalVentasEfecivo=((BigDecimal) getSession().createSQLQuery(sql).uniqueResult()).doubleValue();
 //		if(totalVentasEfecivo==null)
 //			totalVentasEfecivo=.00;
-				
+
 		return totalVentasEfecivo;
-	} 
+	}
 
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarPorX(java.util.TreeMap, java.util.List)
@@ -1488,7 +1488,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	public ArrayList<VentaPasaje> buscarPorX(TreeMap<String, Object> criteriosBusqueda,List<String> criteriosOrdenar) {
 		return (ArrayList<VentaPasaje>) super.findByX(VentaPasaje.class, criteriosBusqueda, criteriosOrdenar);
 	}
-//	
+//
 //	/*
 //	 * (non-Javadoc)
 //	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarPorIdReferenciaIdaRetorno(java.lang.Long)
@@ -1496,9 +1496,9 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 //	@Override
 //	public ArrayList<VentaPasaje> buscarPorIdReferenciaIdaRetorno(Long identificador)throws Exception{
 //		String sql = "FROM VentaPasaje vp WHERE vp.identificadorIdaRetorno="+identificador;
-//		
+//
 //	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarDetalladoVentas(java.lang.Integer, java.lang.Integer, java.lang.String, java.lang.String, java.lang.Integer)
@@ -1521,7 +1521,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					+ ",NVL(vp.n_imppagdif,0) imppagdif, vp.n_imppagequ, vp.tipmon_id, vp.n_tipcam "
 					+ ",r.c_origen, r.c_destino, tcp.tipcom_id tipoMovimientoId, tcp.c_denominacion tipoComprobante " //39
 					+ ",cl.c_numdoc ruc, cl.c_razsoc cliente " //41
-				   +"FROM vrtvenpas vp "+ 
+				   +"FROM vrtvenpas vp "+
 					"INNER JOIN vrmpasajero p ON p.pasajero_id=vp.pasajero_id " +
 					"INNER JOIN vrmforpag fp ON fp.forpag_id=vp.forpag_id " +
 					"INNER JOIN vrmtipforpag tfp ON tfp.tipforpag_id=vp.tipforpag_id " +
@@ -1535,7 +1535,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					"INNER JOIN vrmtipcom tcp ON (tcp.tipcom_id=vp.tipcom_id) "+
 					"WHERE vp.agencia_id="+idAgencia+" AND vp.usuario_id= NVL("+idUsuario+",vp.usuario_id) AND vp.d_fecliq BETWEEN to_date('"+fechaInicial+"','dd/mm/yyyy') AND " +
 							"to_date('"+fechaFinal+"','dd/mm/yyyy') AND vp.tipmov_id="+Constantes.ID_TIPMOV_ANULACION+" AND vp.n_imppag=0 ";
-			
+
 			sql = sql + " UNION ALL ";
 			//DEVOLUCIONES
 			sql = sql + "SELECT vp.venpas_id, vp.c_numcontrol NroControl, vp.c_numboleto NroBoleto, vp.c_numbolant NroBoletoRef, " +
@@ -1545,7 +1545,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					"DECODE(vp.n_penalidad, 0,'DEV.100%','DEV.80%') TIPOVENTA, u.c_apepat apepatusu, u.c_nombre nombreusu,u.c_login,vp.d_fecliq,ag.c_denominacion as agencia " +
 					 ",vp.tipmov_id, vp.liquidacion_id, vp.tipforpag_id,vp.tipcom_id, vp.servicio_id, vp.c_rucclicre, vp.canven_id " +
 				     ",NVL(vp.n_imppagdif,0) imppagdif, vp.n_imppagequ, vp.tipmon_id, vp.n_tipcam "+
-				     ",r.c_origen, r.c_destino, tcp.tipcom_id, tcp.c_denominacion tipoComprobante  "+ 
+				     ",r.c_origen, r.c_destino, tcp.tipcom_id, tcp.c_denominacion tipoComprobante  "+
 				     ",cl.c_numdoc ruc, cl.c_razsoc cliente " + //41
 					"FROM vrtvenpas vp " +
 					"INNER JOIN vrmpasajero p ON p.pasajero_id=vp.pasajero_id " +
@@ -1561,7 +1561,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					"INNER JOIN vrmtipcom tcp ON (tcp.tipcom_id=vp.tipcom_id) "+
 					"WHERE vp.agencia_id="+idAgencia+" AND vp.usuario_id=NVL("+idUsuario+",vp.usuario_id) AND vp.d_fecliq BETWEEN to_date('"+fechaInicial+"','dd/mm/yyyy') AND " +
 							"to_date('"+fechaFinal+"','dd/mm/yyyy') AND tm.tipmov_id="+Constantes.ID_TIPMOV_DEVOLUCION+" ";
-			
+
 			sql = sql + " UNION ALL ";
 			//CORTESIAS
 			sql = sql + "SELECT vp.venpas_id, vp.c_numcontrol NroControl, vp.c_numboleto NroBoleto, vp.c_numbolant NroBoletoRef, " +
@@ -1580,7 +1580,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					"INNER JOIN vrmtipmov tm ON tm.tipmov_id=vp.tipmov_id " +
 					"INNER JOIN vrmusuario u ON u.usuario_id=vp.usuario_id " +
 					"INNER JOIN vrmruta r ON (r.ruta_id=vp.ruta_id)  "+
-					"LEFT JOIN vrmtarcre tc ON tc.tarcre_id=vp.tarcre_id " +					
+					"LEFT JOIN vrmtarcre tc ON tc.tarcre_id=vp.tarcre_id " +
 					"LEFT JOIN vrmopetarcre otc ON otc.opetarcre_id=tc.opetarcre_id " +
 					"LEFT JOIN vrmcliente cl ON (cl.cliente_id=vp.cliente_id) "+
 					"INNER JOIN vrmagencia ag ON (ag.agencia_id=vp.agencia_id) "+
@@ -1589,7 +1589,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					"WHERE vp.agencia_id="+idAgencia+" AND vp.usuario_id=NVL("+idUsuario+",vp.usuario_id) AND vp.d_fecliq BETWEEN to_date('"+fechaInicial+"','dd/mm/yyyy') AND " +
 							"to_date('"+fechaFinal+"','dd/mm/yyyy') AND fp.forpag_id=3 AND vp.c_numboleto IS NOT NULL AND "+
 							"vp.tipmov_id NOT IN("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_ANULACION+") ";
-			
+
 			sql = sql + " UNION ALL ";
 			//CREDITO
 			sql = sql + "SELECT vp.venpas_id, vp.c_numcontrol NroControl, vp.c_numboleto NroBoleto, vp.c_numbolant NroBoletoRef, " +
@@ -1645,7 +1645,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					"WHERE vp.agencia_id="+idAgencia+" AND vp.usuario_id=NVL("+idUsuario+",vp.usuario_id) AND vp.d_fecliq BETWEEN to_date('"+fechaInicial+"','dd/mm/yyyy') AND " +
 							"to_date('"+fechaFinal+"','dd/mm/yyyy') AND vp.tipmov_id=12 AND "+
 							"vp.tipmov_id NOT IN("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_ANULACION+") ";
-			
+
 			sql = sql + " UNION ALL ";
 			//RECIBOS DE CAJA
 			sql = sql + "SELECT vp.venpas_id, vp.c_numcontrol NroControl, vp.c_numboleto NroBoleto, vp.c_numbolant NroBoletoRef, " +
@@ -1674,7 +1674,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					"WHERE vp.agencia_id="+idAgencia+" AND vp.usuario_id=NVL("+idUsuario+",vp.usuario_id) AND vp.d_fecliq BETWEEN to_date('"+fechaInicial+"','dd/mm/yyyy') AND " +
 							"to_date('"+fechaFinal+"','dd/mm/yyyy') AND vp.tipcom_id="+Constantes.ID_TIPCOM_RECIBO_CAJA+" AND vp.forpag_id=1 AND " +
 							"vp.tipmov_id NOT IN("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_ANULACION+") ";
-			
+
 			sql = sql + " UNION ALL ";
 			//VENTAS
 			tipoVenta = "DECODE(tm.c_denominacion, 'FECHA ABIERTA', DECODE(tfp.c_denominacion, 'EFECTIVO', 'FA.(EF)', DECODE(tfp.c_denominacion, 'TRANSFERENCIA','FA.(TRA)', 'FA.(TC)')), " +
@@ -1688,7 +1688,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					"DECODE(vp.tipcom_id,"+Constantes.ID_TIPCOM_NOTA_CREDITO+", 'NOTA CREDITO',  " +
 					"DECODE(tm.c_denominacion, 'EFECTIVO', DECODE(tfp.c_denominacion, 'EFECTIVO', 'V.(EF)', DECODE(tfp.c_denominacion, 'TRANSFERENCIA', 'V.(TRA)', 'V.(TC)')"
 					+ "))))))))))) TIPOVENTA ";
-			
+
 			sql = sql + "SELECT vp.venpas_id, vp.c_numcontrol NroControl, vp.c_numboleto NroBoleto, vp.c_numbolant NroBoletoRef, " +
 					"p.c_apepat ApePat, p.c_apemat ApeMat, p.c_nombre Nombre, vp.audfecins FechaActualizacion, vp.n_tarifa MontoBase, " +
 					"vp.n_recargo Recargo, vp.n_descuento Descuento, vp.n_acuenta ACuenta, vp.n_penalidad Penalidad, vp.n_imppag NetoPagado, " +
@@ -1740,7 +1740,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					+ "AND vp.tipmov_id NOT IN ("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_ANULACION+")";
 			break;
 //		case 5:	//EQUIPAJES(PCE)
-			
+
 		case 5:	//Prepagados
 			tipoVenta = "DECODE(tfp.c_denominacion, 'EFECTIVO', 'PREP.(EF)', 'PREP.(TC)') TIPOVENTA ";
 			where = " AND vp.tipmov_id=12 AND vp.tipmov_id NOT IN (5, 12, 13) ";
@@ -1848,9 +1848,9 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		}
 
 		log.info(sql);
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<VentaPasaje> lstResult = new ArrayList<VentaPasaje>();
+		List<VentaPasaje> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
 			VentaPasaje ventaPasaje = new VentaPasaje();
@@ -1887,18 +1887,18 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			usuario.setNombre(obj[21].toString());
 			usuario.setLogin(obj[22].toString());
 			ventaPasaje.setFechaLiquidacion(obj[23]!=null?((Date)obj[23]):null);
-			
+
 			Agencia agenciaVenta=new Agencia();
 			agenciaVenta.setDenominacion(obj[24].toString());
-			
+
 			Ruta ruta= new Ruta();
 			ruta.setOrigen(obj[36].toString());
 			ruta.setDestino(obj[37].toString());
-			
+
 			TipoComprobante tipoComprobante= new TipoComprobante();
 			tipoComprobante.setId(((BigDecimal)obj[38]).intValue());
 			tipoComprobante.setDenominacion(obj[39].toString());
-			
+
 			ventaPasaje.setTipoMovimiento(new TipoMovimiento(((BigDecimal)obj[25]).intValue()));
 			ventaPasaje.setLiquidacion(obj[26]!=null?new Liquidacion(((BigDecimal)obj[26]).intValue()):null);
 //			ventaPasaje.setTipoFormaPago(new TipoFormaPago(((BigDecimal)obj[27]).intValue()));
@@ -1916,7 +1916,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				ventaPasaje.setTipoCambio(((BigDecimal)obj[35]).doubleValue());
 			}
 			ventaPasaje.setRuta(ruta);
-			
+
 			Cliente cliente =null;
 			if(obj[40]!=null) {
 				cliente = new Cliente();
@@ -1924,12 +1924,12 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				cliente.setRazonSocial(obj[41].toString());
 				ventaPasaje.setCliente(cliente);
 			}
-			
+
 			lstResult.add(ventaPasaje);
 		}
 		return lstResult;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarDetalleVentasAgencia(java.lang.String, java.lang.String, java.lang.String, java.lang.Long)
@@ -1939,11 +1939,11 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		//Busca los vouches emitidos
 		if(estadoBoleto!=null)
 			estadoBoleto="'"+estadoBoleto+"'";
-		
+
 		String sql="";
 		if(byFechaReimpresion){
 			sql="SELECT * "
-					 + "FROM ( "					 
+					 + "FROM ( "
 						//Busca los comprobantes credito por fecha de reimprecion del voucher
 						+ "SELECT DECODE(vp.tipmov_id,13,'ANULADO','5','ANULADO',6,'DEVUELTO','VENDIDO') AS Tipo "+ // 0
 						      ",vp.c_numcontrol ,vp.c_numboleto As boleto,vp.c_numbolant AS voucher,tfp.c_denominacion AS TipoPago,vp.n_tarifa AS Bruto "+ //1-5
@@ -1958,7 +1958,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 						      ",NVL(vp.N_TARIFAEQU,0) tarifaEquibalente, NVL(vp.N_DESEQU,0) desctEquibalente, NVL(vp.N_IMPPAGEQU,0) netoEquibalente  "+ //40-42
 						      ",vp.tipmon_id tipoMoneda, cs.concesionario_id, vp.tipcom_id "+//43-45
 						"FROM VRTVENPAS vp "+
-						    "INNER JOIN VRTVENPAS vp_ref ON (vp_ref.venpas_id=vp.venpas_idref) "+ 
+						    "INNER JOIN VRTVENPAS vp_ref ON (vp_ref.venpas_id=vp.venpas_idref) "+
 						    "INNER JOIN VRMUSUARIO u ON (u.usuario_id=vp.usuario_id) " +
 						    "INNER JOIN VRMPASAJERO p ON (p.pasajero_id=vp.pasajero_id) " +
 						    "LEFT JOIN VRMCENCOS cc ON (cc.cencos_id=vp.cencos_id) " +
@@ -1968,7 +1968,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 						    "INNER JOIN VRMTIPFORPAG tfp ON (tfp.tipforpag_id=vp.tipforpag_id) " +
 						    "INNER JOIN VRMRUTA r ON (r.ruta_id=vp.ruta_id)  " +
 						    "LEFT JOIN VRMCLIENTE cl ON (cl.cliente_id=vp.cliente_id) " +
-						    "LEFT JOIN VRMAGENCIA agbol ON (agbol.agencia_id=vp.agencia_id) " +						    
+						    "LEFT JOIN VRMAGENCIA agbol ON (agbol.agencia_id=vp.agencia_id) " +
 						"WHERE vp.d_fecliq BETWEEN to_date('"+fechaInicio+"','"+Constantes.DATE_FORMAT+"') AND to_date('"+fechaFin+"','"+Constantes.DATE_FORMAT+"') "+
 						    "AND vp.c_rucclicre='"+rucClienteCredito+"' "+
 						    "AND vp.Usuario_Id=NVL("+idUsuario+",vp.usuario_id) " +
@@ -1990,7 +1990,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 						      ",NVL(vp.c_estdoc,'PENDIENTE') c_estdoc  "+ //39
 						      ",NVL(vp.N_TARIFAEQU,0) tarifaEquibalente, NVL(vp.N_DESEQU,0) desctEquibalente, NVL(vp.N_IMPPAGEQU,0) netoEquibalente  "+ //40-42
 						      ",vp.tipmon_id tipoMoneda, cs.concesionario_id, vp.tipcom_id "+//43-45
-						"FROM VRTVENPAS vp "+ 
+						"FROM VRTVENPAS vp "+
 						    "INNER JOIN VRMUSUARIO u ON (u.usuario_id=vp.usuario_id) " +
 						    "INNER JOIN VRMPASAJERO p ON (p.pasajero_id=vp.pasajero_id) " +
 						    "LEFT JOIN VRMCENCOS cc ON (cc.cencos_id=vp.cencos_id) " +
@@ -2011,7 +2011,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 							"AND vp.tipmov_id NOT IN (5,6,13) ";
 				sql+=")rpt "
 					+ "WHERE rpt.c_estdoc=NVL("+estadoBoleto+",rpt.c_estdoc) ";
-				
+
 			sql+=" ORDER BY "+orden;
 		}else{
 			sql="SELECT * "
@@ -2030,7 +2030,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 						      ",vp.tipmon_id tipoMoneda,cs.concesionario_id, vp.tipcom_id "+//43-45
 						"FROM VRTVENPAS vp "+
 							  "INNER JOIN (SELECT MIN(VENPAS_ID)VENPAS_ID FROM VRTVENPAS GROUP BY C_NUMCONTROL )VENPAS_MIN " +
-							  		 "ON (VENPAS_MIN.venpas_id=vp.venpas_id) "+    
+							  		 "ON (VENPAS_MIN.venpas_id=vp.venpas_id) "+
 							  "INNER JOIN VRMUSUARIO u ON (u.usuario_id=vp.usuario_id) " +
 							  "INNER JOIN VRMPASAJERO p ON (p.pasajero_id=vp.pasajero_id) " +
 							  "LEFT JOIN VRMCENCOS cc ON (cc.cencos_id=vp.cencos_id) " +
@@ -2050,7 +2050,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 						      "AND vp.c_tiptra=1 ";
 			if(!(incluirAnulados))
 				sql+="AND vp.tipmov_id NOT IN (5,6,13) ";
-				
+
 				sql+="UNION ALL "+
 						//Busca boleto credito sin voucher, ingresados por el counter.
 						"SELECT DECODE(vp.tipmov_id,13,'ANULADO','5','ANULADO',6,'DEVUELTO','VENDIDO') AS Tipo "+ // 0
@@ -2065,7 +2065,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 						      ",NVL(vp.c_estdoc,'PENDIENTE') c_estdoc  "+ //39
 						      ",NVL(vp.N_TARIFAEQU,0) tarifaEquibalente, NVL(vp.N_DESEQU,0) desctEquibalente, NVL(vp.N_IMPPAGEQU,0) netoEquibalente  "+ //40-42
 						      ",vp.tipmon_id tipoMoneda, cs.concesionario_id, vp.tipcom_id "+//43-45
-						"FROM VRTVENPAS vp "+    
+						"FROM VRTVENPAS vp "+
 						    "INNER JOIN VRMUSUARIO u ON (u.usuario_id=vp.usuario_id) " +
 						    "INNER JOIN VRMPASAJERO p ON (p.pasajero_id=vp.pasajero_id) " +
 						    "LEFT JOIN VRMCENCOS cc ON (cc.cencos_id=vp.cencos_id) " +
@@ -2087,16 +2087,16 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 							"AND vp.c_tiptra=1 ";
 				if(!(incluirAnulados))
 					sql+="AND vp.tipmov_id NOT IN (5,6,13) ";
-			
+
 				sql+=")rpt "
 					+ "WHERE rpt.c_estdoc=NVL("+estadoBoleto+",rpt.c_estdoc) ";
-				
+
 			sql+=" ORDER BY "+orden;
-		}		
-		
+		}
+
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<VentaPasaje> lstResult = new ArrayList<VentaPasaje>();
+		List<VentaPasaje> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
 			VentaPasaje ventaPasaje = new VentaPasaje();
@@ -2107,42 +2107,42 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			FormaPago formaPago= new FormaPago();
 			CentroCosto centroCosto= new CentroCosto();
 			Usuario usuario= new Usuario();
-			
+
 			Concesionario concesionario= new Concesionario();
 			concesionario.setComision(obj[24]!=null?((BigDecimal)obj[24]).intValue():0);
 			concesionario.setIncluyeIgv(obj[25]!=null?((BigDecimal)obj[25]).intValue():0);
 			concesionario.setTipoComision(obj[26]!=null?((BigDecimal)obj[26]).intValue():0);
 			concesionario.setId(((BigDecimal)obj[44]).intValue());
-			
+
 			tipoAgencia.setId(((BigDecimal)obj[18]).intValue());
 			agencia.setTipoAgencia(tipoAgencia);
 			agencia.setConcesionario(concesionario);
-			
+
 			pasajero.setNombresApellidos(obj[14]!=null?obj[14].toString():"");
 			pasajero.setApellidoPaterno(obj[15]!=null?obj[15].toString():"");
 			pasajero.setApellidoMaterno(obj[16]!=null?obj[16].toString():"");
 			pasajero.setNombre(obj[17].toString());
 			pasajero.setNumeroDocumento(obj[31]!=null?obj[31].toString():"");
-			
+
 			tipoMovimiento.setDenominacion(obj[0].toString());
 			tipoMovimiento.setId(((BigDecimal)obj[11]).intValue());
-			
+
 			formaPago.setDenominacion(obj[4].toString());
-			
+
 			centroCosto.setId(obj[8]!=null?((BigDecimal)obj[8]).intValue():null);
 			centroCosto.setDenominacion(obj[13]!=null?obj[13].toString():"");
 			centroCosto.setCodigo(obj[22]!=null?obj[22].toString():"");
-			
+
 			usuario.setApellidoPaterno(obj[9]!=null?obj[9].toString():"");
 			usuario.setApellidoMaterno(obj[19]!=null?obj[19].toString():"");
 			usuario.setNombre(obj[20]!=null?obj[20].toString():"");
 			usuario.setLogin(obj[21]!=null?obj[21].toString():"");
-				
+
 			Ruta ruta= new Ruta();
 			ruta.setOrigen(obj[27].toString());
 			ruta.setDestino(obj[28].toString());
 			ruta.setKilometros(obj[38]!=null?((BigDecimal)obj[38]).doubleValue():.00);
-			
+
 			ventaPasaje.setTipoMovimiento(tipoMovimiento);
 			ventaPasaje.setNumeroControl(obj[1].toString());
 			ventaPasaje.setNumeroBoleto(obj[2]!=null?obj[2].toString():"");
@@ -2169,13 +2169,13 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					ventaPasaje.setEstadoDocumento("PENDIENTE");
 			}else
 				ventaPasaje.setEstadoDocumento("------");
-			
-			
+
+
 			//impl: 13/03/2014
 			if(obj[30]!=null){
 				Agencia agenciaBolref=new Agencia();
 				agenciaBolref.setNombreCorto(obj[32]!=null?obj[32].toString():"");
-	
+
 				VentaPasaje ventaPasajeBolRef=new VentaPasaje();
 				ventaPasajeBolRef.setId(((BigDecimal)obj[30]).longValue());
 				ventaPasajeBolRef.setAgencia(agenciaBolref);
@@ -2188,7 +2188,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				cliente.setRazonSocial(obj[37].toString());
 				ventaPasaje.setCliente(cliente);
 			}
-			
+
 			/*implementado 15/08/2015 - jabanto*/
 			if(!(isSoles)){
 				ventaPasaje.setTarifaEquibalente(((BigDecimal)obj[40]).doubleValue());
@@ -2198,13 +2198,13 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			}
 			ventaPasaje.setTipoComprobante(new TipoComprobante(((BigDecimal)obj[45]).intValue()));
 			ventaPasaje.setId(((BigDecimal)obj[12]).longValue());
-			
+
 			lstResult.add(ventaPasaje);
 		}
-		
+
 		return lstResult;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#validadRCReimpreso(java.lang.Long)
@@ -2216,39 +2216,39 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 						 ",vp.tipmov_id "+ // 2
 						 ",vp.c_numboleto "+
 						 ",tm.c_denominacion "+
-					"FROM VRTVENPAS VP "+ 
+					"FROM VRTVENPAS VP "+
 						"INNER JOIN (SELECT MAX(V.VENPAS_ID)VENPAS_ID FROM VRTVENPAS V WHERE V.VENPAS_IDORIGINAL="+idVentaOriginal+" GROUP BY V.VENPAS_IDORIGINAL)MAX_VENTA "+
 					      	"ON (MAX_VENTA.VENPAS_ID=VP.VENPAS_ID) "+
 						"INNER JOIN VRMTIPMOV tm ON (tm.tipmov_id=vp.tipmov_id) "+
 					"WHERE VP.VENPAS_IDORIGINAL="+idVentaOriginal;
 //					"AND VP.TIPCOM_ID IN ("+Constantes.ID_TIPMOV_ANULACION+") "+
 //					"GROUP BY VP.VENPAS_IDORIGINAL";
-		
+
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).list();
-		
+
 		VentaPasaje ventaPasaje = null;
-		for(int i=0; i<result.size(); i++){
-			Object[] obj = (Object[]) result.get(i);
-			
+		for (Object element : result) {
+			Object[] obj = (Object[]) element;
+
 			ventaPasaje = new VentaPasaje();
 			TipoComprobante tipoComprobante= new TipoComprobante();
 			TipoMovimiento tipoMovimiento= new TipoMovimiento();
-			
+
 			tipoComprobante.setId(((BigDecimal)obj[1]).intValue());
 			tipoMovimiento.setId(((BigDecimal)obj[2]).intValue());
 			tipoMovimiento.setDenominacion(obj[4].toString());
-			
+
 			ventaPasaje.setId(((BigDecimal)obj[0]).longValue());
 			ventaPasaje.setTipoComprobante(tipoComprobante);
 			ventaPasaje.setTipoMovimiento(tipoMovimiento);
 			if(obj[3]!=null)
 				ventaPasaje.setNumeroBoleto(obj[3].toString());
-		}	
-		
+		}
+
 		return ventaPasaje;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#activarRecibocaja(java.lang.Long)
@@ -2256,34 +2256,34 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	@Override
 	public void activarReciboCaja(Long idVentaOriginal){
 		//busca el segundo registro del recibo de caja el cual se genera al reimprimirmo
-		TreeMap<String, Object>criteriosBusqueda= new TreeMap<String, Object>();
+		TreeMap<String, Object>criteriosBusqueda= new TreeMap<>();
 		criteriosBusqueda.put("ventaOriginal", idVentaOriginal);
 		List<VentaPasaje>lisVentas=ServiceLocator.getVentaPasajesManager().buscarPorX(criteriosBusqueda, null);
-		
+
 		for(VentaPasaje ventaPasaje: lisVentas){
 			/*Busca el Segundo registro del Recibo de caja el cual se genera al reimprimirmo*/
-			if(ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_RECIBO_CAJA && 
+			if(ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_RECIBO_CAJA &&
 					ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA){
 				/*Quita el venta_idRef del boleto a anular */
 				String sql="UPDATE VRTVENPAS SET VENPAS_IDREF="+ventaPasaje.getVentaOriginal()+" WHERE VENPAS_IDREF="+ventaPasaje.getId();
 				log.info(sql);
 				getSession().createSQLQuery(sql).executeUpdate();
-				
+
 				/*Quita el IdventaOriginal de los boletos asociados a este id*/
 				sql="UPDATE VRTVENPAS SET VENPAS_IDORIGINAL=NULL WHERE VENPAS_IDORIGINAL="+ventaPasaje.getVentaOriginal()+" AND VENPAS_ID!="+ventaPasaje.getVentaOriginal();
 				log.info(sql);
 				getSession().createSQLQuery(sql).executeUpdate();
-				
+
 				/*Elimina el segundo registro del Recibo de caja*/
 				sql="DELETE FROM VRTVENPAS WHERE VENPAS_ID="+ventaPasaje.getId();
 				log.info(sql);
 				getSession().createSQLQuery(sql).executeUpdate();
-				
+
 				/*Activa el registro del Recibo de caja*/
 				sql="UPDATE VRTVENPAS SET VENPAS_IDREF=NULL  WHERE VENPAS_ID="+idVentaOriginal;
 				log.info(sql);
 				getSession().createSQLQuery(sql).executeUpdate();
-				
+
 				break;
 			}
 		}
@@ -2306,7 +2306,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			horaPartida="'"+horaPartida+"'";
 		if(boleto!=null)
 			boleto="'"+boleto+"'";
-		
+
 		// TODO Auto-generated method stub
 		String sql="SELECT DECODE(vpo.tipmov_id,"+Constantes.ID_TIPMOV_ANULACION+",'ANULADO',"+Constantes.ID_TIPMOV_DEVOLUCION+",'DEVUELTO','ACTIVO') AS estado "+ //0
 						   ",vpo.tipmov_id "+ //1
@@ -2337,7 +2337,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					       ",vpo.c_horpar as HoraPartida "+ //26
 					       ",vpo.n_numasiento "+ //27
 					       ",vpo.venpas_idref "+//28
-					"FROM VRTVENPAS vp "+ 
+					"FROM VRTVENPAS vp "+
 					     "INNER JOIN (SELECT MAX(venpas_id)venpas_id, venpas_idoriginal FROM vrtvenpas "+
 //					                 "WHERE c_numboleto=NVL("+numVoucher+",c_numboleto) " +
 //					                 "AND tipcom_id="+idTipoComprobante+" " +
@@ -2350,7 +2350,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					     "INNER JOIN VRMUSUARIO u ON (u.usuario_id=vpo.usuario_id) "+
 					     "INNER JOIN VRMPASAJERO p ON (p.pasajero_id=vpo.pasajero_id) "+
 					     "LEFT JOIN VRMCENCOS cc ON (cc.cencos_id=vpo.cencos_id) "+
-					     "INNER JOIN VRMAGENCIA ag ON (ag.agencia_id=vpo.agencia_id) "+ 
+					     "INNER JOIN VRMAGENCIA ag ON (ag.agencia_id=vpo.agencia_id) "+
 					     "INNER JOIN VRMTIPAGE tag ON (tag.tipage_id=ag.tipage_id) " +
 					     "INNER JOIN VRMRUTA r ON (r.ruta_id=vpo.ruta_id) "+
 				   "WHERE vpo.forpag_id="+Constantes.ID_FORPAG_CREDITO+" "+
@@ -2359,30 +2359,30 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					    	 sql+="AND vpo.tipcom_id="+idTipoComprobante+" ";
 		            sql+="AND vpo.c_numcontrol=NVL("+numcontrol+",vpo.c_numcontrol) " +
 		                 "AND vpo.c_rucclicre=NVL("+rucCliente+",vpo.c_rucclicre) ";
-		            if(fechaPartida!=null)	
+		            if(fechaPartida!=null)
 		                 sql+="AND vpo.d_fecpar=to_date("+fechaPartida+",'"+Constantes.DATE_FORMAT+"') ";
 		                 sql+="AND vpo.c_horpar=NVL("+horaPartida+",vpo.c_horpar) ";
 		            if(boleto!=null)
 		            	sql = sql + "AND vpo.c_numbolant=NVL("+boleto+",vpo.c_numbolant) ";
-		                 		
-		
+
+
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<VentaPasaje> lstResult = new ArrayList<VentaPasaje>();
+		List<VentaPasaje> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
-			
+
 			TipoMovimiento tipoMovimiento= new TipoMovimiento();
 			tipoMovimiento.setDenominacion(obj[0].toString());
 			tipoMovimiento.setId(((BigDecimal)obj[1]).intValue());
-			
+
 			VentaPasaje ventaPasaje= new VentaPasaje();
 			ventaPasaje.setNumeroControl(obj[2].toString());
 			ventaPasaje.setNumeroBoleto(obj[3]!=null?obj[3].toString():"");
 			ventaPasaje.setNumeroVoucher(obj[4].toString());
 			ventaPasaje.setImportePagado(((BigDecimal)obj[8]).doubleValue());
 			ventaPasaje.setDescuento(((BigDecimal)obj[7]).doubleValue());
-			
+
 			CentroCosto centroCosto=null;
 			if(obj[9]!=null){
 				centroCosto=new CentroCosto();
@@ -2391,42 +2391,42 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				centroCosto.setCodigo(obj[19].toString());
 				ventaPasaje.setCentroCosto(centroCosto);
 			}
-			
+
 			ventaPasaje.setFechaInsercion((Date)obj[20]);
 			ventaPasaje.setId(((BigDecimal)obj[11]).longValue());
-			
+
 			Pasajero pasajero= new Pasajero();
 			pasajero.setNombresApellidos(obj[13].toString());
-			
+
 			TipoAgencia  tipoAgencia=new TipoAgencia();
 			tipoAgencia.setId(((BigDecimal)obj[14]).intValue());
-			
+
 			Agencia agencia= new Agencia();
 			agencia.setTipoAgencia(tipoAgencia);
-			
+
 			Usuario usuario= new Usuario();
 			usuario.setApellidoPaterno(obj[15]!=null?obj[15].toString():"");
 			usuario.setApellidoMaterno(obj[16]!=null?obj[16].toString():"");
 			usuario.setNombre(obj[17]!=null?obj[17].toString():"");
-			
+
 			TipoComprobante tipoComprobante= new TipoComprobante();
 			tipoComprobante.setDenominacion(obj[21].toString());
-			
+
 			Cliente cliente= new Cliente();
 			cliente.setRazonSocial(obj[22]!=null?obj[22].toString():"");
-			
+
 			Ruta ruta= new Ruta();
 			ruta.setOrigen(obj[23].toString());
 			ruta.setDestino(obj[24].toString());
-			
+
 			ventaPasaje.setFechaPartida((Date)obj[25]);
 			ventaPasaje.setHoraPartida(obj[26].toString());
 			ventaPasaje.setNumeroAsiento(((BigDecimal)obj[27]).intValue());
-			
+
 			VentaPasaje ventaReferencial=new VentaPasaje();
 			ventaReferencial.setId(obj[28]!=null?((BigDecimal)obj[28]).longValue():null);
 			ventaPasaje.setVentaPasaje(ventaReferencial);
-			
+
 			ventaPasaje.setPasajero(pasajero);
 			ventaPasaje.setAgencia(agencia);
 			ventaPasaje.setUsuario(usuario);
@@ -2434,10 +2434,10 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			ventaPasaje.setCliente(cliente);
 			ventaPasaje.setRuta(ruta);
 			ventaPasaje.setTipoMovimiento(tipoMovimiento);
-			
+
 			lstResult.add(ventaPasaje);
 		}
-		
+
 		return lstResult;
 	}
 
@@ -2451,11 +2451,11 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		int BUSQ_CLIENTE_RAZONSOCIAL=1;
 		int BUSQ_PAX_NRO_DOCUMENTO=0;
 		int BUSQ_PAX_NOMBRES=1;
-				
+
 //		if(fechaPartida!=null) fechaPartida="'"+fechaPartida+"'";
 		if(numeroControl!=null) numeroControl="'"+numeroControl+"'";
 		if(numeroBoleto!=null) numeroBoleto="'"+numeroBoleto+"'";
-		
+
 		String sql="SELECT vp.venpas_id AS idVenta "+ //0
 					      ",r.c_origen AS Origen "+ //1
 					      ",r.c_destino AS Destino "+ //2
@@ -2463,10 +2463,10 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					      ",vp.c_horpar AS HoraPartida "+ //4
 					      ",vp.c_numcontrol AS NumeroControl "+ //5
 					      ",p.c_nomape AS NombreApellidos "+ //6
-					      ",vp.c_numboleto AS numeroBoleto "+//7  
+					      ",vp.c_numboleto AS numeroBoleto "+//7
 						  ",DECODE(tm.tipmov_id,1,'VENTA EFECTIVO','4','VENTA CREDITO','13','ANULADO','5','ANULADO REIMP',tm.c_denominacion) as Tipo"+ //8
 					      ",c.c_Razsoc AS Cliente ," +//9
-					      "vp.d_fecliq AS fechaVenta"+ //10 
+					      "vp.d_fecliq AS fechaVenta"+ //10
 					      ",vp.tipmov_id " +//11
 					      ",vp.n_numasiento" + //12
 					      ",vp.audfecins "+//13
@@ -2474,12 +2474,12 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					      ",vp.n_esfe "+//16
 					      ",vp.venpas_idoriginal, vp.forpag_id "+//17 -18
 					"FROM VRTVENPAS vp ";
-					     
+
 		//Omite el MAX venpas_id Cunado la busqueda es por numero de control o numero de boleto.
 		if(numeroBoleto==null && numeroControl==null)
 			sql+="INNER JOIN (SELECT MAX(venpas_id)venpas_id FROM VRTVENPAS GROUP BY c_numcontrol)venpas_max "+
 							"ON (venpas_max.venpas_id=vp.venpas_id) ";
-			     
+
 		sql+="LEFT JOIN VRMRUTA r ON (r.ruta_id=vp.ruta_id) "+
 		     "INNER JOIN VRMPASAJERO p ON (p.pasajero_id=vp.pasajero_id) "+
 		     "LEFT JOIN VRMCLIENTE c ON (c.cliente_id=vp.cliente_id) " +
@@ -2510,44 +2510,44 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			else//Busca ventas a fecha aviaerta
 				sql+="AND vp.c_tiptra="+Constantes.TIPO_OPERACION_VENTA+" AND vp.tipmov_id="+Constantes.ID_TIPMOV_FECHA_ABIERTA+" AND  vp.n_esfecabi=1";
 		}
-		
+
 		//Por fecha de partida
 		if(fechaPartida!=null)
 			sql+="AND vp.d_fecpar=to_date('"+fechaPartida+"','"+Constantes.DATE_FORMAT+"') ";
 		if(numeroBoleto!=null)
 			sql+="AND vp.c_numboleto="+numeroBoleto.toUpperCase()+" ";
-		
+
 	     sql+="AND vp.usuario_id=NVL("+idUsuario+",vp.usuario_id) "+
 	     "AND vp.c_numcontrol=NVL("+numeroControl+",vp.c_numcontrol) "+
 	     "AND r.localidad_idorigen=NVL("+idOrigen+",r.localidad_idorigen) "+
 	     "AND r.localidad_iddestino=NVL("+idDestino+",r.localidad_iddestino) ";
-	     
+
 	     if(numeroBoleto==null && numeroControl==null)
 	    	 sql+="AND vp.tipmov_id NOT IN ("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+") ";
 //	    	 	"ORDER BY vp.d_fecliq, vp.n_numasiento ";
 //	     }else
 	     sql+="ORDER BY vp.d_fecpar, vp.n_numasiento  ";
-	         
-		
+
+
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<VentaPasaje> lstResult = new ArrayList<VentaPasaje>();
+		List<VentaPasaje> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
-			
+
 			Ruta ruta= new Ruta();
 			ruta.setOrigen(obj[1]!=null?obj[1].toString():"");
 			ruta.setDestino(obj[2]!=null?obj[2].toString():"");
-			
+
 			Pasajero pasajero=new Pasajero();
 			pasajero.setNombresApellidos(obj[6].toString());
-			
+
 			Cliente cliente= new Cliente();
 			cliente.setRazonSocial(obj[9]!=null?obj[9].toString():"");
-			
+
 			TipoMovimiento otipoMovimiento= new TipoMovimiento();
 			otipoMovimiento.setId(((BigDecimal)obj[11]).intValue());
-			
+
 			VentaPasaje ventaPasaje= new VentaPasaje();
 			ventaPasaje.setId(((BigDecimal)obj[0]).longValue());
 			ventaPasaje.setFechaPartida(obj[3]!=null?(Date)obj[3]:null);
@@ -2565,17 +2565,17 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			ventaPasaje.setFechaInsercion(obj[13]!=null?(Date)obj[13]:null);
 			if(obj[18]!=null)
 				ventaPasaje.setFormaPago(new FormaPago(((BigDecimal)obj[18]).intValue()));
-			
+
 			TipoComprobante tipoComprobante= new TipoComprobante();
 			tipoComprobante.setId(((BigDecimal)obj[14]).intValue());
 			tipoComprobante.setDenominacion(obj[15].toString());
 			ventaPasaje.setTipoComprobante(tipoComprobante);
 			ventaPasaje.setEnviadoSFE(obj[16]!=null?((BigDecimal)obj[16]).intValue():null);
 			ventaPasaje.setVentaOriginal(obj[17]!=null?((BigDecimal)obj[17]).longValue():null);
-			
+
 			lstResult.add(ventaPasaje);
 		}
-				     
+
 		return lstResult;
 	}
 
@@ -2584,10 +2584,10 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 */
 	@Override
 	public List<VentaPasaje> buscarOperacionesRemotras(String fechaPartida,Integer idOrigen, Integer idDestino, String numeroBoleto,String numeroControl, String documentoPax) throws Exception {
-		
+
 		numeroBoleto=numeroBoleto!=null?"'"+numeroBoleto.toUpperCase()+"'":numeroBoleto;
 		numeroControl=numeroControl!=null?"'"+numeroControl+"'":numeroControl;
-		
+
 		String sql="SELECT vp.venpas_id "+ //0
 				      ",fp.c_denominacion AS FormaPago "+ //1
 				      ",vp.c_numboleto AS numeroBoleto "+ //2
@@ -2616,29 +2616,29 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				     "AND vp.c_numcontrol=NVL("+numeroControl+",vp.c_numcontrol) " +
 				     "AND vp.tipcom_id in ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_FACTURA+") "+
 				"ORDER BY vp.d_fecpar,vp.c_horpar, vp.n_numasiento";
-		
+
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<VentaPasaje> lstResult = new ArrayList<VentaPasaje>();
+		List<VentaPasaje> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
-			
+
 			FormaPago formaPago=new FormaPago();
 			formaPago.setDenominacion(obj[1].toString());
-			
+
 			Pasajero pasajero=new Pasajero();
 			pasajero.setNombresApellidos(obj[4].toString());
-			
+
 			Servicio servicio=new Servicio();
 			servicio.setDenominacion(obj[5].toString());
-			
+
 			Ruta ruta=new Ruta();
 			ruta.setOrigen(obj[6].toString());
 			ruta.setDestino(obj[7].toString());
-			
+
 			TipoMovimiento tipoMovimiento=new TipoMovimiento();
 			tipoMovimiento.setId(((BigDecimal)obj[11]).intValue());
-			
+
 			VentaPasaje ventaPasaje= new VentaPasaje();
 			ventaPasaje.setId(((BigDecimal)obj[0]).longValue());
 			ventaPasaje.setNumeroBoleto(obj[2].toString());
@@ -2651,10 +2651,10 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			ventaPasaje.setServicio(servicio);
 			ventaPasaje.setRuta(ruta);
 			ventaPasaje.setTipoMovimiento(tipoMovimiento);
-			
+
 			lstResult.add(ventaPasaje);
 		}
-		
+
 		return lstResult;
 	}
 
@@ -2675,7 +2675,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 
 		log.info(sql);
 		Object total = getSession().createSQLQuery(sql).uniqueResult();
-		
+
 		return total==null?0.0:((BigDecimal)total).doubleValue();
 	}
 	/*
@@ -2687,10 +2687,10 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		String hql = "SELECT vp FROM VentaPasaje AS vp JOIN vp.pasajero AS p WHERE vp.tipoComprobante.id IN ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_RECIBO_CAJA+","+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_FACTURA+") AND "
 				+ "vp.tipoMovimiento.id NOT IN (5,11,13) AND vp.numeroBoleto IS NOT NULL AND vp.pasajero.id="+idPasajero+" "
 				+ "ORDER BY vp.fechaPartida desc ";
-		
+
 		log.info(hql);
 		List<?> result = getSession().createQuery(hql).list();
-		List<VentaPasaje>lstResult = new ArrayList<VentaPasaje>();
+		List<VentaPasaje>lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 //			Object[] obj = (Object[])result.get(i);
 			VentaPasaje ventaPasaje = (VentaPasaje)result.get(i);
@@ -2750,39 +2750,39 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					    "AND m.c_estreg='A' ";
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<VentaPasaje>lstResult = new ArrayList<VentaPasaje>();
+		List<VentaPasaje>lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[])result.get(i);
-			
+
 			VentaPasaje ventaPasaje=new VentaPasaje();
 			ventaPasaje.setId(((BigDecimal)obj[0]).longValue());
 			ventaPasaje.setNumeroBoleto(obj[1].toString());
 			ventaPasaje.setNumeroAsiento(((BigDecimal)obj[2]).intValue());
-			
+
 			Pasajero pasajero=new Pasajero();
 			pasajero.setApellidoPaterno(obj[3]!=null?obj[3].toString():null);
 			pasajero.setApellidoMaterno(obj[4]!=null?obj[4].toString():null);
 			pasajero.setNombre(obj[5]!=null?obj[5].toString():null);
 			pasajero.setNumeroDocumento(obj[6]!=null?obj[6].toString():null);
-			
+
 			TipoDocumento tipoDocumento=new TipoDocumento();
 			tipoDocumento.setDenominacion(obj[7].toString());
 			pasajero.setTipoDocumento(tipoDocumento);
-			
+
 			Ruta ruta=new Ruta();
 			ruta.setOrigen(obj[8].toString());
 			ruta.setDestino(obj[9].toString());
-			
+
 			Agencia agenciaPartida=new Agencia();
 			agenciaPartida.setNombreCorto(obj[10].toString());
-			
+
 			ventaPasaje.setPasajero(pasajero);
 			ventaPasaje.setRuta(ruta);
 			ventaPasaje.setAgenciaPartida(agenciaPartida);
-			
+
 			lstResult.add(ventaPasaje);
 		}
-		
+
 		return lstResult;
 	}
 
@@ -2832,18 +2832,18 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				       "AND vp.c_estreg='"+Constantes.VALUE_ACTIVO+"' "+
 				       "AND vp.tipcom_id IN ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+") "+
 				       "AND vp.c_numboleto='"+numeroBoleto.toString()+"' ";
-		
+
 		log.info(sql);
 		List<?> result=getSession().createSQLQuery(sql).list();
-				
+
 		VentaPasaje ventaPasaje=null;
-		for(int x=0; x<result.size();x++){
-			Object[] obj=(Object[]) result.get(x);
-			
+		for (Object element : result) {
+			Object[] obj=(Object[]) element;
+
 			TipoDocumento tipoDocumento=new TipoDocumento();
 			tipoDocumento.setId(((BigDecimal)obj[0]).intValue());
 			tipoDocumento.setDenominacion(obj[1].toString());
-			
+
 			Pasajero pasajero=new Pasajero();
 			pasajero.setId(((BigDecimal)obj[2]).longValue());
 			pasajero.setNumeroDocumento(obj[3]!=null?obj[3].toString():null);
@@ -2859,32 +2859,32 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			else
 				pasajero.setPaxFree(false);
 			pasajero.setTelefono(obj[17]!=null?obj[17].toString():null);
-			
+
 			if(obj[18]!=null){
 				EstadoCivil estadoCivil=new EstadoCivil();
 				estadoCivil.setId(((BigDecimal)obj[18]).intValue());
 				pasajero.setEstadoCivil(estadoCivil);
 			}
-									
+
 			Sexo sexo=new Sexo();
 			sexo.setId(((BigDecimal)obj[19]).intValue());
 			pasajero.setSexo(sexo);
-			
+
 			Ubigeo ubigeo=new Ubigeo();
 			ubigeo.setId(obj[9].toString());
 			ubigeo.setCodigoDepartamento(obj[20].toString());
 			ubigeo.setCodigoProvincia(obj[21].toString());
 			ubigeo.setCodigoDistrito(obj[22].toString());
 			pasajero.setUbigeo(ubigeo);
-			
+
 			if(obj[23]!=null)
 				pasajero.setNacionalidad(new Nacionalidad(((BigDecimal)obj[23]).intValue()));
-			
+
 			Ruta ruta=new Ruta();
 			ruta.setId(((BigDecimal)obj[10]).intValue());
 			ruta.setOrigen(obj[11].toString());
 			ruta.setDestino(obj[12].toString());
-					
+
 			ventaPasaje=new VentaPasaje();
 			ventaPasaje.setId(((BigDecimal)obj[13]).longValue());
 			ventaPasaje.setFechaLiquidacion((Date)obj[14]);
@@ -2892,12 +2892,12 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			ventaPasaje.setPasajero(pasajero);
 			ventaPasaje.setRuta(ruta);
 		}
-		
-		
+
+
 		return ventaPasaje;
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarPasajerosByME(java.lang.Long)
 	 */
@@ -2956,12 +2956,12 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 //						"INNER JOIN vrmagencia av ON (av.agencia_id=v.agencia_id) "+
 					"WHERE  v.itinerario_id="+itinearioId+" And v.c_tiptra=1 And v.c_estreg='A' AND v.tipmov_id not in ("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+ Constantes.ID_TIPMOV_DEVOLUCION+","+ Constantes.ID_TIPMOV_ANULACION+" ) " +
 			//			"AND v.Agencia_Idpartida=NVL("+idPruntoEmbarque+",v.Agencia_Idpartida) " +
-						"AND v.c_estreg='"+Constantes.VALUE_ACTIVO+"' "+ 
+						"AND v.c_estreg='"+Constantes.VALUE_ACTIVO+"' "+
 					"ORDER BY v.n_numpiso, v.n_numasiento, v.d_fecpar, v.c_horpar";
 
 		log.info(sql);
 		List<?>result=getSession().createSQLQuery(sql).list();
-		List<VentaPasaje>lstVenta=new ArrayList<VentaPasaje>();
+		List<VentaPasaje>lstVenta=new ArrayList<>();
 		for(int x=0;x<result.size();x++){
 			Object[] obj=(Object[]) result.get(x);
 
@@ -2995,7 +2995,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 
 //			Manifiesto manifiesto=new Manifiesto();
 //			manifiesto.setId(((BigDecimal)obj[10]).longValue());
-			
+
 			VentaPasaje ventaPasaje=new VentaPasaje();
 			ventaPasaje.setNumeroBoleto(obj[6].toString());
 			ventaPasaje.setImportePagado(((BigDecimal)obj[7]).doubleValue());
@@ -3005,7 +3005,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 
 			lstVenta.add(ventaPasaje);
 		}
-		
+
 		return lstVenta;
 	}
 
@@ -3020,7 +3020,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		}else{
 			queryTiposMov="IN ("+idsTiposMovimientos+") ";
 		}
-		
+
 		String sql="SELECT agencia,usuario,hora,vendidos, importe "
 				 + "FROM( "
 //					    -->Entre als 0 y 8 horas
@@ -3037,7 +3037,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					   	 + "AND vp.usuario_id=NVL("+idUsuario+",vp.usuario_id) "
 					   	 + "AND CAST((TO_CHAR(vp.audfecins,'HH24')) AS NUMBER) BETWEEN 0 AND 8 "
 					   	 + "GROUP BY ag.c_denominacion,vp.audusuins "
-					 + "UNION ALL "      
+					 + "UNION ALL "
 //					    -->Entre las 9 y las 21 Horas
 					   +"SELECT ag.c_denominacion Agencia,vp.audusuins usuario,CAST((TO_CHAR(vp.audfecins,'HH24'))  AS NUMBER)hora "
 					        + ",COUNT(*) vendidos, SUM(vp.n_imppag)importe "
@@ -3066,25 +3066,25 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					     + "AND vp.forpag_id=NVL("+idFormaPago+",vp.forpag_id) "
 					     + "AND vp.usuario_id=NVL("+idUsuario+",vp.usuario_id) "
 					     + "AND CAST((TO_CHAR(vp.audfecins,'HH24')) AS NUMBER) BETWEEN 22 AND 23 "
-					   + "GROUP BY ag.c_denominacion,vp.audusuins " 
+					   + "GROUP BY ag.c_denominacion,vp.audusuins "
 					  +") "
 				 + "ORDER BY agencia,usuario,hora";
-		
+
 		log.info(sql);
 		List<?>result=getSession().createSQLQuery(sql).list();
 //		RptVentasPuntoVenta ventasPuntoVenta=new RptVentasPuntoVenta();
-		List<Agencia>agencias=new ArrayList<Agencia>();
-		List<String> containsAgencias=new ArrayList<String>();
-		List<String>containsUsuarios=new ArrayList<String>();
+		List<Agencia>agencias=new ArrayList<>();
+		List<String> containsAgencias=new ArrayList<>();
+		List<String>containsUsuarios=new ArrayList<>();
 		for(int i=0;i<result.size();i++){
 			Object[] obj=(Object[]) result.get(i);
-			
+
 			if(!(containsAgencias.contains(obj[0].toString()))){
 				/*Agrega la agencia*/
 				containsAgencias.add(obj[0].toString());
-						
+
 				/*Agrega los usuarios*/
-				List<Usuario>usuarios=new ArrayList<Usuario>();
+				List<Usuario>usuarios=new ArrayList<>();
 				Usuario usuario=null;
 				for(int x=0;x<result.size();x++){
 					Object[] obj1=(Object[]) result.get(x);
@@ -3092,20 +3092,20 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 						containsUsuarios.add(obj1[1].toString());
 
 						/*Horas,cantidades, montos de venta*/
-						List<RptVentaUsuario>ventasUsuariosTmp=new ArrayList<RptVentaUsuario>();
+						List<RptVentaUsuario>ventasUsuariosTmp=new ArrayList<>();
 						for(int y=0;y<result.size();y++){
 							Object[] obj2=(Object[]) result.get(y);
 							if(containsAgencias.get(containsAgencias.size()-1).contains(obj2[0].toString()) && containsUsuarios.get(containsUsuarios.size()-1).contains(obj2[1].toString())){
-								RptVentaUsuario ventaUsuario=new RptVentaUsuario(); 
+								RptVentaUsuario ventaUsuario=new RptVentaUsuario();
 								ventaUsuario.setHoraVenta(((BigDecimal)obj2[2]).intValue());
 								ventaUsuario.setCantidad(((BigDecimal)obj2[3]).intValue());
 								ventaUsuario.setImporte(((BigDecimal)obj2[4]).doubleValue());
 								ventasUsuariosTmp.add(ventaUsuario);
 							}
 						}
-						
+
 						/*Agrega las horas y cantidades al ArrayList VentasUsuarios*/
-						List<RptVentaUsuario>ventasUsuarios=new ArrayList<RptVentaUsuario>();
+						List<RptVentaUsuario>ventasUsuarios=new ArrayList<>();
 						for(int xx=8; xx<=22;xx++){
 							RptVentaUsuario oVentaUsuario=null;
 							for(RptVentaUsuario ventaUsuario: ventasUsuariosTmp){
@@ -3122,29 +3122,29 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 							}
 							ventasUsuarios.add(oVentaUsuario);
 						}
-						
+
 						/*Agrega los usuarios y sus ventas al objeto usuario*/
 						usuario=new Usuario();
 						usuario.setLogin(obj1[1].toString());
 						usuario.setVentasUsuarios(ventasUsuarios);
 						usuarios.add(usuario);
-						
-						
+
+
 						/*Agrega la agenia al array agencias*/
 						Agencia agencia=new Agencia();
 						agencia.setDenominacion(obj[0].toString());
 						agencia.setUsuario(usuario);
-						agencias.add(agencia);	
+						agencias.add(agencia);
 					}
 				}
-										
+
 //				/*Agrega la agenia al array agencias*/
 //				Agencia agencia=new Agencia();
 //				agencia.setDenominacion(obj[0].toString());
 //				agencia.setUsuario(usuario);
-//				agencias.add(agencia);		
+//				agencias.add(agencia);
 			}
-		
+
 		}
 		return agencias;
 	}
@@ -3160,7 +3160,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			idOrigen=null;
 		if(idServicio.isEmpty())
 			idServicio=null;
-				
+
 		String sql = " SELECT P1.d_fecpar, P1.c_origen, P1.c_destino, P1.c_horpar, P1.c_denominacion as Servicio, " +
 					       "P1.Capbus, decode(P2.Flag, '1', COUNT(*), 0) Vendidos, SUM(P2.n_imppag) IREAL, " +
 					       "SUM(P2.n_descuento) DESCUENTO, P1.n_kilometros, P1.itinerario_id, P1.ruta_idmayor " +
@@ -3177,12 +3177,12 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 									 " AND r.localidad_iddestino != "+idDestino+" ";
 					        }else{
 					        	sql+=" AND r.localidad_idorigen=NVL("+idOrigen+",localidad_idorigen) "+
-								" AND r.localidad_iddestino=NVL("+idDestino+",localidad_iddestino) ";	
+								" AND r.localidad_iddestino=NVL("+idDestino+",localidad_iddestino) ";
 					        }
-					        
+
 					        if(idServicio != null)
 					        	sql+=" AND s.servicio_id="+idServicio+" ";
-					        
+
 					        sql+= ") P1 "+
 					        "LEFT JOIN "+
 					             "(SELECT '1' Flag, vt.itinerario_id, vt.d_fecpar, vt.c_horpar, vt.d_feclle, vt.c_horlle, vt.servicio_id, vt.ruta_id, vt.n_imppag, vt.n_descuento "+
@@ -3192,50 +3192,50 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					                   		"INNER JOIN VRTITINERARIO i ON (i.itinerario_id=v.itinerario_id) " +
 											"WHERE i.d_fecpar BETWEEN to_date('"+fechaDesde+"','"+Constantes.DATE_FORMAT+"') AND to_date('"+fechaHasta+"','"+Constantes.DATE_FORMAT+"') GROUP BY c_numcontrol) B "+
 					                 "ON (vt.venpas_id = B.venpas_id) " +
-					             " WHERE ";						    
-						    
+					             " WHERE ";
+
 					         sql = sql	+" tipmov_id NOT IN ("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+
-					             
+
 					        		 ","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_ANULACION+") ) P2 "+
 					         "ON  (P2.itinerario_id = P1.itinerario_id ) "+
 					"GROUP BY P1.ruta_idmayor,P1.servicio_id,P1.c_origen,P1.c_destino,P1.c_denominacion,P1.d_fecpar, P1.c_horpar, Flag,"
 					+ "P1.Capbus, P1.n_kilometros, P1.itinerario_id, P1.servicio_id "+
 					"ORDER BY P1.c_horpar,P1.c_origen,P1.c_destino,P1.c_denominacion";
-		
+
 			log.info(sql);
-			
+
 			List<?> result = getSession().createSQLQuery(sql).list();
-			
-			List<VentaPasaje> lstResult = new ArrayList<VentaPasaje>();
+
+			List<VentaPasaje> lstResult = new ArrayList<>();
 			for(int i=0; i<result.size(); i++){
 				Object[] obj = (Object[]) result.get(i);
 				VentaPasaje ventaPasaje = new VentaPasaje();
 				Ruta ruta = new Ruta();
 				Servicio servicio = new Servicio();
 				Itinerario itinerario= new Itinerario();
-								
+
 				ventaPasaje.setFechaPartida(((Date)obj[0]));
-				
+
 				ruta.setOrigen(obj[1].toString());
 				ruta.setDestino(obj[2].toString());
 				ruta.setKilometros(((BigDecimal)obj[9]).doubleValue());
 				ruta.setId(((BigDecimal)obj[11]).intValue());
-				
+
 				ventaPasaje.setHoraPartida(obj[3].toString());
-				
+
 				servicio.setDenominacion(obj[4].toString());
 				servicio.setTotalAsientos(((BigDecimal)obj[5]).intValue());
 //				servicio.setGruposervicio(((BigDecimal)obj[11]).intValue());
-				
+
 				itinerario.setId(((BigDecimal)obj[10]).longValue());
-				
+
 				ventaPasaje.setRuta(ruta);
 				ventaPasaje.setServicio(servicio);
 				ventaPasaje.setCantidadPax(((BigDecimal)obj[6]).intValue());
 				ventaPasaje.setImporteReal(obj[7]==null?0:((BigDecimal)obj[7]).doubleValue());
 				ventaPasaje.setImporteDescuentos(obj[8]==null?0:((BigDecimal)obj[8]).doubleValue());
 				ventaPasaje.setItinerario(itinerario);
-				
+
 				sql = "SELECT SUM(P1.TOTAL) FROM (SELECT t.n_pisbus PISO, t.n_zonbus ZONA, tr.tarreg_id TARREG, tr.tarifa_id IDTARIFA, tr.itinerario_id ITINERARIO, "
 						+ "tr.d_fectar FECHA, tr.c_horpar HORA, tr.n_monto TARIFA, DECODE(t.n_pisbus,0,s.n_numasipis1,s.n_numasipis2) ASIENTOS, "
 						+ "(DECODE(t.n_pisbus,0,s.n_numasipis1,s.n_numasipis2) * tr.n_monto) TOTAL "
@@ -3245,15 +3245,15 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 						+ "WHERE t.ruta_id="+ruta.getId()+" AND s.c_denominacion='"+servicio.getDenominacion()+"' AND t.canven_id=1 AND "
 						+ "tr.d_fectar=to_date('"+ventaPasaje.getFechaPartida().toString().substring(0, 10)+"','yyyy-MM-dd') AND tr.c_horpar='"
 						+ ventaPasaje.getHoraPartida()+"' AND tr.c_estreg='A') P1";
-				
+
 				Object objTotal = getSession().createSQLQuery(sql).uniqueResult();
 				if(objTotal!=null)
 					ventaPasaje.setImporteEsperado(((BigDecimal)objTotal).doubleValue());
 				else
 					ventaPasaje.setImporteEsperado(null);
-				
+
 				lstResult.add(ventaPasaje);
-			}		
+			}
 		return lstResult;
 	}
 
@@ -3279,9 +3279,9 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 							+ "to_date('"+fechaHasta+"', 'dd/mm/yyyy') AND vp.c_tiptra=1 AND vp.tipcom_id IN (2,7) "
 					+ "GROUP BY vp.usuario_id, (u.c_apepat||' '||u.c_apemat||' '||u.c_nombre)"
 					+ "ORDER BY (u.c_apepat||' '||u.c_apemat||' '||u.c_nombre) ASC";
-		
+
 		log.info(sql);
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
 		List<ResumenAnulacionPostergacion> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
@@ -3318,13 +3318,13 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			sql = sql + "AND vp.agencia_id="+id+" ";
 		else
 			sql = sql + "AND vp.usuario_id="+id+" ";
-		
+
 		sql = sql + "ORDER BY a.c_nomcor";
-		
+
 		log.info(sql);
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<VentaPasaje> lstResult = new ArrayList<VentaPasaje>();
+		List<VentaPasaje> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++) {
 			Object[] obj = (Object[]) result.get(i);
 			VentaPasaje ventaPasaje = new VentaPasaje();
@@ -3377,14 +3377,14 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		if(nroPostergaciones > 0){
 			strNroPost = " AND  vp.n_secuencial = " + Integer.toString(nroPostergaciones) + " ";
 		}
-		
+
 		if(criterio == 1)	//By Agencia
 			sql ="SELECT  vp.agencia_id, a.c_denominacion, COUNT(vp.agencia_id) cant "
 				+ "FROM vrtvenpas vp "
 				+ "INNER JOIN vrmagencia a ON a.agencia_id=vp.agencia_id "
 				+ "WHERE vp.tipmov_id IN (2, 9) AND vp.d_fecliq BETWEEN to_date('"+fechaDesde+"', 'dd/mm/yyyy') "
 				+ "AND to_date('"+fechaHasta+"', 'dd/mm/yyyy') AND vp.c_tiptra=1 AND vp.tipcom_id in (2,7) "
-				+ strNroPost 
+				+ strNroPost
 				+ "GROUP BY(vp.agencia_id, a.c_denominacion) "
 				+ "ORDER BY a.c_denominacion DESC";
 		else
@@ -3393,15 +3393,15 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					+ "INNER JOIN vrmusuario u ON u.usuario_id=vp.usuario_id "
 					+ "WHERE vp.tipmov_id in (2, 9) AND vp.d_fecliq BETWEEN to_date('"+fechaDesde+"', 'dd/mm/yyyy') "
 					+ "AND to_date('"+fechaHasta+"', 'dd/mm/yyyy') AND vp.c_tiptra=1 AND vp.tipcom_id in (2,7) "
-					+ strNroPost 
+					+ strNroPost
 					+ "GROUP BY vp.usuario_id, (u.c_apepat||' '||u.c_apemat||' '||u.c_nombre) "
 					+ "ORDER BY (u.c_apepat||' '||u.c_apemat||' '||u.c_nombre) DESC";
-		
+
 		log.info(sql);
-				
+
 		List<?> result = getSession().createSQLQuery(sql).list();
 		List<ResumenAnulacionPostergacion> lstResult = new ArrayList<>();
-		
+
 		for(int i=0; i<result.size(); i++) {
 			Object[] obj = (Object[])result.get(i);
 			ResumenAnulacionPostergacion resumenAnulacionPostergacion = new ResumenAnulacionPostergacion();
@@ -3411,8 +3411,8 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			lstResult.add(resumenAnulacionPostergacion);
 		}
 		return lstResult;
-	}	
-	
+	}
+
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.model.dao.VentaPasajesDAO#buscarBoletosAnuladosDetalladoPorUsuario(java.lang.String, java.lang.String, java.lang.Integer)
 	 */
@@ -3442,14 +3442,14 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			sql = sql + "AND vp.agencia_id="+id+" ";
 		else
 			sql = sql + "AND vp.usuario_id="+id+" ";
-		
+
 		sql = sql + strNroPost + " ORDER BY a.c_nomcor ";
-		
+
 		log.info(sql);
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<VentaPasaje> lstResult = new ArrayList<VentaPasaje>();
-		
+		List<VentaPasaje> lstResult = new ArrayList<>();
+
 		for(int i=0; i<result.size(); i++) {
 			Object[] obj = (Object[]) result.get(i);
 			VentaPasaje ventaPasaje = new VentaPasaje();
@@ -3491,8 +3491,8 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		}
 		return lstResult;
 	}
-	
-	
+
+
 	@Override
 	public List<ResumenVentas> buscarResumenVentas(String fechaDesde, String fechaHasta, Integer idAgencia, Integer nroConsulta) {
 		String sql = "";
@@ -3500,7 +3500,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		String strQueryAnd="";
 		String strGroupBy="";
 		String strQueryOrder="";
-		
+
 		if(nroConsulta == 1){
 			strQuerySelect = "		v.cantidad, v.total, to_char(v.fecven, 'dd/mm/yyyy') FECVEN ";
 			strQueryAnd = "";
@@ -3518,10 +3518,10 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					+ "	v.mes, v.rubro, v.canven_id, v.canal, v.agencia_id, v.agencia, v.tipcom_id, v.comprobante";
 			strQueryOrder = "	       v.mes";
 		}
-		
-			sql = " SELECT " 
+
+			sql = " SELECT "
 				+ "     v.rubro, v.canven_id, v.canal, v.agencia_id, v.agencia, v.tipcom_id, v.comprobante, "
-				+ strQuerySelect 
+				+ strQuerySelect
 				+ "	FROM "
 				+ "	       vrmagencia a right join"
 				+ "	       vrhresven v  on (a.agencia_id = v.agencia_id)"
@@ -3529,7 +3529,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				+ "	       v.fecven BETWEEN to_date('" + fechaDesde + "') "
 				+ "	       AND to_date('" + fechaHasta + "')"
 				+ strQueryAnd
-				+ strGroupBy 
+				+ strGroupBy
 				//	       --Comentar agencia para la primera consulta
 				//	       --AND v.agencia_id=46
 				+ "	ORDER BY "
@@ -3537,16 +3537,16 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				+ strQueryOrder;
 				//	--comentar este orden para la segunda consulta
 				//	--       v.fecven, v.comprobante
-		
+
 		log.info(sql);
-				
+
 		List<?> result = getSession().createSQLQuery(sql).list();
 		List<ResumenVentas> lstResult = new ArrayList<>();
-		
+
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[])result.get(i);
 			ResumenVentas resumenVentas = new ResumenVentas();
-			
+
 			resumenVentas.setRubro(((BigDecimal)obj[0]).intValue());
 			CanalVenta canalVenta = new CanalVenta();
 			canalVenta.setId(((BigDecimal)obj[1]).intValue());
@@ -3562,7 +3562,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			resumenVentas.setTipoComprobante(tipoComprobante);
 			resumenVentas.setCantidad(((BigDecimal)obj[7]).intValue());
 			resumenVentas.setTotal(((BigDecimal)obj[8]).doubleValue());
-			
+
 			if(nroConsulta==3)
 				resumenVentas.setMes(obj[9].toString());
 			else
@@ -3571,12 +3571,12 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		}
 		return lstResult;
 	}
-	
+
 	@Override
 	public List<VentaPasaje> buscarHistorialComprobante(String numeroComprobante){
 		String sql="";
-		
-		sql = "SELECT " 
+
+		sql = "SELECT "
 			+ "	       vp.venpas_id, vp.venpas_idoriginal, "
 			+ "	       vp.ruta_id, r.c_origen, r.c_destino, "
 			+ "	       vp.cliente_id, c.c_numdoc, c.c_razsoc,  "
@@ -3616,20 +3616,20 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			+ "	       LEFT JOIN vrtdetman dm ON (vp.venpas_id = dm.venpas_id) "
 			+ "	       LEFT JOIN vrtmanifiesto m ON (dm.manifiesto_id = m.manifiesto_id) "
 			+ "	WHERE "
-			+ "	       vp.venpas_idoriginal in" 
+			+ "	       vp.venpas_idoriginal in"
 			+ "	       (SELECT "
-			+ "	               vp.venpas_idoriginal" 
-			+ "	        FROM vrtvenpas vp" 
+			+ "	               vp.venpas_idoriginal"
+			+ "	        FROM vrtvenpas vp"
 			+ "	        WHERE "
 			+ "	             vp.c_numboleto='" + numeroComprobante + "')"
 			+ "	        AND vp.tipmov_id NOT IN (5)"
 			+ "	ORDER BY vp.venpas_id";
-		
+
 		log.info(sql);
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
 		List<VentaPasaje> lstResult = new ArrayList<>();
-		
+
 		for(int i=0; i<result.size(); i++) {
 			Object[] obj = (Object[]) result.get(i);
 			VentaPasaje ventaPasaje = new VentaPasaje();
@@ -3681,7 +3681,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			agenciaLlegada.setId( obj[25]==null?0:((BigDecimal)obj[25]).intValue());
 			agenciaLlegada.setNombreCorto(obj[26]==null?"":obj[26].toString());
 			ventaPasaje.setAgenciaLlegada(agenciaLlegada);
-			
+
 			ventaPasaje.setNumeroBoleto(obj[27].toString());
 			ventaPasaje.setNumeroBoletoAnterior(obj[28]==null?"":obj[28].toString());
 			ventaPasaje.setNumeroControl(obj[29]==null?"":obj[29].toString());
@@ -3705,7 +3705,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			usuario.setApellidoPaterno(obj[43]==null?"":obj[43].toString());
 			usuario.setApellidoMaterno(obj[44]==null?"":obj[44].toString());
 			usuario.setNombre(obj[45]==null?"":obj[45].toString());
-			ventaPasaje.setUsuario(usuario);			
+			ventaPasaje.setUsuario(usuario);
 			CanalVenta canalVenta = new CanalVenta();
 			canalVenta.setId(((BigDecimal)obj[46]).intValue());
 			canalVenta.setNombreCorto(obj[47].toString());
@@ -3721,7 +3721,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		}
 		return lstResult;
 	}
-	
+
 	@Override
 	public List<List<VentaPasaje>> obtenerVentasResumenLiquidacion(Integer idAgencia, Integer idUsuario, String fechaLiquidacion) {
 		String sql = "SELECT vp.venpas_id, vp.c_numboleto NroBoleto, vp.c_numbolant NroBoletoRef, vp.n_tarifa MontoBase, vp.n_recargo Recargo, "
@@ -3730,12 +3730,12 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				+ "FROM vrtvenpas vp "
 				+ "WHERE vp.agencia_id="+idAgencia + " AND vp.usuario_id="+idUsuario+" AND vp.d_fecliq = to_date('"+fechaLiquidacion+"','dd/mm/yyyy') AND "
 				+ "vp.forpag_id=1 AND vp.tipcom_id = 7 AND vp.n_tarifa>0 AND vp.tipmov_id NOT IN (4,5,6,10,11,12,13)";
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
 //		List<VentaPasaje> lstResult = new ArrayList<>();
-		
-		for(int i=0; i<result.size(); i++) {
-			Object[] obj = (Object[])result.get(i);
+
+		for (Object element : result) {
+			Object[] obj = (Object[])element;
 			VentaPasaje ventaPasaje = new VentaPasaje();
 			ventaPasaje.setId(((BigDecimal)obj[0]).longValue());
 			ventaPasaje.setNumeroBoleto(obj[1].toString());
@@ -3768,37 +3768,39 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	public void guardarServicioEspecial(VentaPasaje ventaPasaje) throws Exception {
 		super.save(ventaPasaje);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.model.dao.VentaPasajesDAO#buscarFacturasServicioEspecial(java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public List<VentaPasaje> buscarFacturasServicioEspecial (String numComprobante, String fDesde, String fHasta) throws Exception{
 		String sql = "SELECT * FROM vrtvenpas vp "
 				+ "INNER JOIN (SELECT MAX(venpas_id) venpas_id, c_numcontrol FROM vrtvenpas WHERE c_tiptra IN (5) GROUP BY c_numcontrol) max_id "
 				+ "ON max_id.venpas_id=vp.venpas_id WHERE c_estreg='A' AND tipmov_id= "+Constantes.ID_TIPMOV_SERVICIO_ESPECIAL;
-		
+
 		if(numComprobante != null)
 				sql = sql + " AND c_numboleto = '" + numComprobante + "' ";
-			
-		sql = sql + " AND d_fecliq BETWEEN to_date('"+fDesde+"', 'dd/mm/yyyy') AND to_date('"+fHasta+"', 'dd/mm/yyyy') ORDER BY c_numboleto"; 
-		
+
+		sql = sql + " AND d_fecliq BETWEEN to_date('"+fDesde+"', 'dd/mm/yyyy') AND to_date('"+fHasta+"', 'dd/mm/yyyy') ORDER BY c_numboleto";
+
 		List<?> lstResult = getSession().createSQLQuery(sql).list();
-		ArrayList<VentaPasaje> lstVentaPasaje = new ArrayList<VentaPasaje>();
-		
-		for(int i=0; i<lstResult.size(); i++) {
-			Object[] obj = (Object[])lstResult.get(i);
+		ArrayList<VentaPasaje> lstVentaPasaje = new ArrayList<>();
+
+		for (Object element : lstResult) {
+			Object[] obj = (Object[])element;
 			VentaPasaje ventaPasaje = new VentaPasaje();
 			ventaPasaje = buscarPorId(Long.valueOf(((BigDecimal)obj[0]).longValue()));
 			lstVentaPasaje.add(ventaPasaje);
 		}
 		return lstVentaPasaje;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.model.dao.VentaPasajesDAO#buscarVentasPagoPilotos(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public List<VentasPiloto> buscarVentasPagoPilotos(String fInicio, String fFin) throws Exception{
 		String sql = "SELECT vp.d_fecliq FCOMPRA, vp.c_numboleto DOCUMENTO, DECODE(c.cliente_id, null, null, c.c_numdoc) RUC, p.c_numdoc DNI, "
 				+ "DECODE(vp.cliente_id, null, p.c_nomape, c.c_razsoc) RAZON, vp.n_imppag EXONERADO, 0 VENTA, 0 IGV, vp.n_imppag TOTAL, "
@@ -3815,9 +3817,9 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				+ "INNER JOIN vrmagencia ad ON ad.agencia_id=vp.agencia_idllegada "
 				+ "INNER JOIN vrmtipcom tc ON tc.tipcom_id=vp.tipcom_id "
 				+ "WHERE i.d_fecpar BETWEEN to_date('"+fInicio+"','dd/MM/yyyy') AND to_date('"+fFin+"','dd/MM/yyyy')";
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<VentasPiloto> lstVentas = new ArrayList<VentasPiloto>();
+		List<VentasPiloto> lstVentas = new ArrayList<>();
 		for(int i=0; i<result.size(); i++) {
 			Object[] obj = (Object[])result.get(i);
 			VentasPiloto ventasPiloto = new VentasPiloto();
@@ -3854,13 +3856,13 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		String criterio = numeroDocumento==null?"":" AND p.c_numdoc = '" + numeroDocumento + "' ";
 		criterio = criterio + (numeroControl==null?"":" AND {VP}.c_numcontrol='"+ numeroControl +"' ");
 		criterio = criterio + (numeroBoleto==null?"":(" AND {VP}.c_numboleto='" + numeroBoleto.toUpperCase() +"' "));
-		
+
 		String criterioByMax=" WHERE c_estreg='"+Constantes.VALUE_ACTIVO+"' ";
 		if(numeroControl!=null)
 			criterioByMax+="AND c_numcontrol='"+numeroControl+"' ";
 		else if (numeroBoleto!=null)
 			criterioByMax+="AND c_numboleto='"+numeroBoleto.toUpperCase()+"' ";
-		
+
 		String sql = "SELECT {VP.*} FROM vrtvenpas {VP} " +
 				"INNER JOIN (SELECT MAX(venpas_id)venpas_id, c_numcontrol FROM vrtvenpas "+criterioByMax+" GROUP BY c_numcontrol) max_vta " +
 				"ON max_vta.venpas_id={VP}.venpas_id " +
@@ -3869,13 +3871,13 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				"INNER JOIN vrmpasajero p ON p.pasajero_id={VP}.pasajero_id " +
 				"WHERE {VP}.c_tiptra in('"+Constantes.TIPO_OPERACION_VENTA+"','"+Constantes.TIPO_OPERACION_VENTA_POOL+"','"+Constantes.TIPO_OPERACION_PERDIDA_SERVICIO+"') AND {VP}.c_estreg='"+Constantes.VALUE_ACTIVO+"' "
 			  + "AND {VP}.tipcom_id IN ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_BOLETA_VENTA+", "+Constantes.ID_TIPCOM_FACTURA+")" ;
-		
+
 		sql = sql + criterio;
 		sql = sql + "ORDER BY {VP}.c_numboleto, {VP}.d_fecpar, {VP}.c_horpar ";
-		
+
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).addEntity("VP",VentaPasaje.class).list();
-		
+
 		return (List<VentaPasaje>)result;
 	}
 
@@ -3887,9 +3889,9 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		String sql = "UPDATE vrtvenpas SET c_tiptra="+perdidaServicio.getTipoTransaccion()+", c_observaciones='"+perdidaServicio.getObservaciones()+
 				"', audusumod='"+perdidaServicio.getUsuarioModificacion()+"', audipmodi='"+perdidaServicio.getIpModificacion()+
 				"' WHERE venpas_id="+perdidaServicio.getId();
-		
+
 		getSession().createSQLQuery(sql).executeUpdate();
-		
+
 	}
 
 	/*
@@ -3917,13 +3919,13 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				   + "GROUP BY it.d_Fecpar, bs.c_codigo, bs.c_numplaca, ma.c_piloto, ma.c_copiloto, rt.c_origen, rt.c_destino "
 				   + "ORDER BY it.d_Fecpar, bs.c_codigo, ma.c_piloto, ma.c_copiloto";
 		log.info("buscarLiquidacionBus: "+sql);
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		
+
 		List<Manifiesto> listMAnifiestos = new ArrayList<>();
 		for(int i = 0; i<result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
-			
+
 			Itinerario itinerario= new Itinerario();
 			itinerario.setFechaPartida((Date)obj[0]);
 			Bus bus = new Bus();
@@ -3933,18 +3935,18 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			ruta.setOrigen(obj[6].toString());
 			ruta.setDestino(obj[7].toString());
 			itinerario.setRuta(ruta);
-			
+
 			Manifiesto manifiesto = new Manifiesto();
 			manifiesto.setItinerario(itinerario);
 			manifiesto.setBus(bus);
 			manifiesto.setPiloto(obj[3]!=null?obj[3].toString():"");
 			manifiesto.setCopiloto(obj[4]!=null?obj[4].toString():"");
 			manifiesto.setImporte(((BigDecimal)obj[5]).doubleValue());
-			
-			
+
+
 			listMAnifiestos.add(manifiesto);
 		}
-		
+
 		return listMAnifiestos;
 	}
 }

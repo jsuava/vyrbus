@@ -7,7 +7,7 @@ import java.util.TreeMap;
 import com.cystesoft.vyrbus.model.bean.TipoItinerario;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
@@ -19,38 +19,38 @@ public interface TipoItinerarioManager {
 	 * @return
 	 */
 	public ArrayList<TipoItinerario> buscarPorEstadoRegistro(String estado, String criterioOrden)throws Exception;
-	
+
 	/**
 	 * Busqueda por un array de criterios.
 	 * @param criteriosBusqueda: Array de criterios de busqueda
 	 * @param criteriosOrdenar : Lista de criterios para el Orden de los Datos
 	 * @return : Array de Tipos de Itinerarios
-	 * 
+	 *
 	 */
 	public ArrayList<TipoItinerario> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar)throws Exception;
-	
+
 	/**
-	 * Busqueda por Id del Tipo de Itinerario 
+	 * Busqueda por Id del Tipo de Itinerario
 	 * @param id : Identificador del Tipo de Itinerario
 	 * @return : Lista de tipos de itinerarios
 	 */
 	public TipoItinerario buscarPorId(Long id)throws Exception;
-	
+
 	/**
 	 * Guarda el Tipo de Itinerario.
 	 * @param tipoItinerario :clase TipoItinerario
 	 */
 	public void guardar(TipoItinerario tipoItinerario)throws Exception;
-	
+
 	/**
-	 * 
+	 *
 	 * @param tipoItinerario
 	 * @throws Exception
 	 */
 	public void actualizar(TipoItinerario tipoItinerario)throws Exception;
-	
+
 	/**
-	 * 
+	 *
 	 * @param id
 	 * @throws Exception
 	 */

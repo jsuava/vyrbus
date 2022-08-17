@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 04/05/2012
  */
@@ -78,7 +78,7 @@ public class RutaDAOImpl extends GenericDAOImpl implements RutaDAO {
 	public List<Ruta> buscarPorX(String campo, Object[] criterios, List<String> criteriosOrdenar, String estadoRegistro) throws Exception {
 		return (List<Ruta>) super.findByX(Ruta.class, campo, criterios, criteriosOrdenar, estadoRegistro);
 	}
-	
-	
-	
+
+
+
 }

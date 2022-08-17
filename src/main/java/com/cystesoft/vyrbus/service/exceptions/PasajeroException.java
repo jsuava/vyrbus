@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 19/09/2012
  */
@@ -21,11 +21,11 @@ public class PasajeroException extends Exception implements Serializable {
 	public static final int APELLIDO_PATERNO_NULL = 3;
 	public static final int EDAD_NULL = 4;
 	public static final int NUMERO_DOCUMENTO_INCORRECTO = 5;
-	
+
 	private Integer tipo;
 
 	/**
-	 * 
+	 *
 	 */
 	public PasajeroException() {
 		super();

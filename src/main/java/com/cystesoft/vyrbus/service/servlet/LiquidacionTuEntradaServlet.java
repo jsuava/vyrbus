@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 20/08/2015
  * Hora			: 15:55:21
@@ -19,14 +19,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.cystesoft.vyrbus.model.bean.Liquidacion;
+import com.cystesoft.vyrbus.service.report.ReporteLiquidacionTuEntrada;
+
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
-
-import com.cystesoft.vyrbus.model.bean.Liquidacion;
-import com.cystesoft.vyrbus.service.report.ReporteLiquidacionTuEntrada;
 
 /**
  * @author jabanto
@@ -35,14 +35,14 @@ import com.cystesoft.vyrbus.service.report.ReporteLiquidacionTuEntrada;
 public class LiquidacionTuEntradaServlet  extends HttpServlet {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
 	public LiquidacionTuEntradaServlet(){
 		super();
 	}
-	
+
 	/**
 	 * Destruction of the servlet. <br>
 	 */
@@ -52,12 +52,12 @@ public class LiquidacionTuEntradaServlet  extends HttpServlet {
 		// Put your code here
 	}
 
-	
+
 	/**
 	 * The doGet method of the servlet. <br>
 	 *
 	 * This method is called when a form has its tag value method equals to get.
-	 * 
+	 *
 	 * @param request the request send by the client to the server
 	 * @param response the response send by the server to the client
 	 * @throws ServletException if an error occurred
@@ -72,7 +72,7 @@ public class LiquidacionTuEntradaServlet  extends HttpServlet {
 	 * The doPost method of the servlet. <br>
 	 *
 	 * This method is called when a form has its tag value method equals to post.
-	 * 
+	 *
 	 * @param request the request send by the client to the server
 	 * @param response the response send by the server to the client
 	 * @throws ServletException if an error occurred
@@ -92,14 +92,14 @@ public class LiquidacionTuEntradaServlet  extends HttpServlet {
 	public void init() throws ServletException {
 		// Put your code here
 	}
-	
+
 	@SuppressWarnings({"deprecation", "unchecked"})
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	    response.setHeader("Cache-Control", "no-cache");
 	    response.setHeader("Pragma", "no-cache");
 	    response.setDateHeader("Expires", 0);
 	    response.setContentType("application/pdf");
-		
+
 		List<Liquidacion> lstLiquidacion = (List<Liquidacion>)request.getSession().getAttribute("lstLiquidacion");
 		try{
 //			JRTextExporter
@@ -107,14 +107,14 @@ public class LiquidacionTuEntradaServlet  extends HttpServlet {
 			JasperReport reporte;
 	    	InputStream inputStream = getServletContext().getResourceAsStream("WEB-INF/jasper/LiquidacionTuEntrada.jasper");
 	    	reporte = (JasperReport)JRLoader.loadObject(inputStream);
-			
-			Map<String, Object> parameters = new HashMap<String, Object>();
+
+			Map<String, Object> parameters = new HashMap<>();
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, new ReporteLiquidacionTuEntrada(lstLiquidacion));
 			JasperPrintManager.printReport(jasperPrint, false);
-			
+
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
-	
+
 }

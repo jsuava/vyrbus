@@ -11,12 +11,12 @@ import com.cystesoft.vyrbus.model.dao.TemporadaAltaDAO;
 import com.cystesoft.vyrbus.service.business.TemporadaAltaManager;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 public class TemporadaAltaManagerImpl implements TemporadaAltaManager {
-	
+
 	private TemporadaAltaDAO temporadaAltaDAO;
 
 	/**

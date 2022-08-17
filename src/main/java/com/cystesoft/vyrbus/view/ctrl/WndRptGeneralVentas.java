@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 23 may. 2021
  * Hora			: 20:38:25
@@ -15,9 +15,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
-import org.zkoss.zk.ui.Execution;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -47,7 +45,7 @@ import com.cystesoft.vyrbus.view.ui.WndBase;
 public class WndRptGeneralVentas extends WndBase implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private Radio rdFecha;
 	private Radio rdMes;
 	private Radio rdAnual;
@@ -57,12 +55,12 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 
 	private Listbox lsbxVentas;
 //	private Listbox lsbxTarifaFA;
-//	
+//
 
 	private Label lblHoraConsulta;
 	private Label lblUsuarioConsulta;
 	private Label lblFechaConsulta;
-	
+
 	private Tab tabVentas;
 
 	private String[] arMeses = {"NAV", "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SET", "OCT", "NOV", "DIC"};
@@ -72,29 +70,29 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 
 	Integer flag = 0;
 	Integer ambosPisos=0;
-	
+
 	@Override
 	public void initComponents() {
 		// TODO Auto-generated method stub
 		tabVentas = (Tab)this.getFellow("tabVentas");
 //		tabVentasAnual = (Tab)this.getFellow("tabVentasAnual");
-		
+
 		cmbAgencias=(Combobox)this.getFellow("cmbAgencias");
 		dtbxFecInicioBus=(Datebox)this.getFellow("dtbxFecInicioBus");
-		dtbxFecFinBus=(Datebox)this.getFellow("dtbxFecFinBus");		
-		
+		dtbxFecFinBus=(Datebox)this.getFellow("dtbxFecFinBus");
+
 		lsbxVentas=(Listbox)this.getFellow("lsbxVentas");
-		rdFecha = (Radio)this.getFellow("rdFecha"); 
-		rdMes = (Radio)this.getFellow("rdMes"); 
-		rdAnual = (Radio)this.getFellow("rdAnual"); 
-		
-		
+		rdFecha = (Radio)this.getFellow("rdFecha");
+		rdMes = (Radio)this.getFellow("rdMes");
+		rdAnual = (Radio)this.getFellow("rdAnual");
+
+
 		lblHoraConsulta = (Label)this.getFellow("lblHoraConsulta");
 		lblFechaConsulta = (Label)this.getFellow("lblFechaConsulta");
 		lblUsuarioConsulta = (Label)this.getFellow("lblUsuarioConsulta");
-		
+
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
@@ -102,28 +100,28 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 	public void onCreate() throws Exception {
 		// TODO Auto-generated method stub
 		String fecha = Util.DatetoString(new Date(), "dd/MM/yyyy");
-		
+
 		lblFechaConsulta.setValue(fecha);
-		
+
 		Usuario usuario= (Usuario) getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO);
 		lblUsuarioConsulta.setValue(usuario.getLogin());
-		
+
 		//Para la busqueda
 		UtilData.cargarDataCombo(cmbAgencias, Agencia.class,true);
 
 		//dtbxFecInicioBus.setConstraint("after "+fecha);
 		//dtbxFecFinBus.setConstraint("after "+fecha);
 		dtbxFecInicioBus.setValue(new Date());
-		dtbxFecFinBus.setValue(new Date());		
-		
+		dtbxFecFinBus.setValue(new Date());
+
 		inicializarControles(true);
-		
+
 		for(int i=0; i<13; i++){
 			listRecordTotales.add(0.0);
 		}
 		listCabeceraRecordTotales.add("");
 		listCabeceraRecordTotales.add("");
-	
+
 		/*EVENTO ON_CHANGE DEL LA FECHA INICIO*/
 		dtbxFecInicioBus.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
@@ -131,23 +129,23 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 				String fecha = Util.DatetoString(dtbxFecInicioBus.getValue(), "yyyyMMdd");
 				dtbxFecFinBus.setConstraint("after "+fecha);
 				/*Asigna a fecha fin el valor de la fecha inicio*/
-				dtbxFecFinBus.setValue(dtbxFecInicioBus.getValue());				
+				dtbxFecFinBus.setValue(dtbxFecInicioBus.getValue());
 			}
 		});
-		
+
 	}
-	
+
 	public void buscar() throws Exception{
 		String fechaDesde = Constantes.FORMAT_DATE.format(dtbxFecInicioBus.getValue());
 		String fechaHasta = Constantes.FORMAT_DATE.format(dtbxFecFinBus.getValue());
 		Integer idAgencia = 0;
 		Integer tipoConsulta = 0;
-		
+
 		limpiarArrays();
-		
+
 		if(cmbAgencias.getSelectedItem().getValue() instanceof Agencia)
 			idAgencia=((Agencia)cmbAgencias.getSelectedItem().getValue()).getId();
-		
+
 		if(idAgencia > 0){
 			if(rdMes.isChecked()){
 				tipoConsulta=3;
@@ -161,12 +159,12 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 				LocalDate fechaFinal = fecInicial.withDayOfMonth(fecInicial.lengthOfMonth());
 				// Getting system timezone
 				ZoneId systemTimeZone = ZoneId.systemDefault();
-				
+
 				// converting LocalDateTime to ZonedDateTime with the system timezone
 				ZonedDateTime zonedDateTime = fechaFinal.atStartOfDay(systemTimeZone);
 				Date utilDate = Date.from(zonedDateTime.toInstant());
 				fechaHasta = Constantes.FORMAT_DATE.format(utilDate);
-				
+
 			}
 			else
 				tipoConsulta=2;
@@ -179,9 +177,9 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 			else
 				tipoConsulta=1;
 		}
-		
+
 		List<ResumenVentas> lstResumen = ServiceLocator.getVentaPasajesManager().buscarResumenVentas(fechaDesde, fechaHasta, idAgencia, tipoConsulta);
-		
+
 		if(lstResumen.size()>0){
 			if(tipoConsulta ==3)
 				ensamblarResumenVentasByMonth(lstResumen);
@@ -194,33 +192,33 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 			return;
 		}
 	}
-	
-	
+
+
 	public void ensamblarResumenVentas(List<ResumenVentas> lstResumen) {
-		
+
 		List<Double> listRecord = new ArrayList<>();
 		List<String> listCabeceraRecord = new ArrayList<>();
-		
+
 		int i=0;
-		
+
 		Util.limpiarListbox(lsbxVentas);
-		
+
 		int j, k;
-		
+
 		ResumenVentas resumen0 = lstResumen.get(i);
-		
+
 		for(j=0; j<13; j++){
 			listRecord.add(0.0);
 		}
 		listCabeceraRecord.add("");
 		listCabeceraRecord.add("");
 		k=0;
-		
+
 		for(i = 0; i<lstResumen.size(); i++)
 		{
 			ResumenVentas resumen = lstResumen.get(i);
 
-			if( resumen0.getFechaVenta().equals(resumen.getFechaVenta()) 
+			if( resumen0.getFechaVenta().equals(resumen.getFechaVenta())
 			    && resumen0.getAgencia().getId().equals(resumen.getAgencia().getId()) )
 			{
 				//Agencia
@@ -229,7 +227,7 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 					listCabeceraRecord.set(1, resumen.getFechaVenta());
 					k++;
 				}
-				
+
 				//Canal counter
 				if(resumen.getCanalVenta().getId() == 1)
 				{
@@ -240,7 +238,7 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 					}
 					//Comprobantefacturas
 					else if(resumen.getTipoComprobante().getId() == 2)
-					{  
+					{
 						listRecord.set(2, resumen.getTotal());
 						listRecord.set(3, resumen.getCantidad().doubleValue());
 					}
@@ -257,7 +255,7 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 					listRecord.set(10, resumen.getTotal());
 					listRecord.set(11, resumen.getCantidad().doubleValue());
 				}
-				
+
 				if(lstResumen.size()-i == 1)
 				{
 					listarResumenVentas(listRecord, listCabeceraRecord);
@@ -271,43 +269,43 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 				resumen0 = lstResumen.get(i);
 				i--;
 				k=0;
-				
+
 				listarResumenVentas(listRecord, listCabeceraRecord);
-				
+
 				//Limpiar los Arrays
 				for(j=0; j<13; j++){
 					listRecord.set(j, 0.0);
 				}
 				listCabeceraRecord.set(0, "");
 				listCabeceraRecord.set(1, "");
-				
+
 			}
-			
+
 		}
-		
+
 	}
-	
+
 	public void ensamblarResumenVentasByMonth(List<ResumenVentas> lstResumen){
 
 		List<Double> listRecord = new ArrayList<>();
 		List<String> listCabeceraRecord = new ArrayList<>();
-		
+
 		int i=0;
-		
-		
+
+
 		Util.limpiarListbox(lsbxVentas);
-		
+
 		int j, k;
 		//for(ResumenVentas resumen : lstResumen) {
 		ResumenVentas resumen0 = lstResumen.get(i);
-		
+
 		for(j=0; j<13; j++){
 			listRecord.add(0.0);
 		}
 		listCabeceraRecord.add("");
 		listCabeceraRecord.add("");
 		k=0;
-		
+
 		for(i = 0; i<lstResumen.size(); i++)
 		{
 			ResumenVentas resumen = lstResumen.get(i);
@@ -320,7 +318,7 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 					listCabeceraRecord.set(1, arMeses[Integer.parseInt(resumen.getMes())]);
 					k++;
 				}
-				
+
 				//Canal counter
 				if(resumen.getCanalVenta().getId() == 1)
 				{
@@ -331,7 +329,7 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 					}
 					//Comprobantefacturas
 					else if(resumen.getTipoComprobante().getId() == 2)
-					{  
+					{
 						listRecord.set(2, resumen.getTotal());
 						listRecord.set(3, resumen.getCantidad().doubleValue());
 					}
@@ -348,7 +346,7 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 					listRecord.set(10, resumen.getTotal());
 					listRecord.set(11, resumen.getCantidad().doubleValue());
 				}
-				
+
 				if(lstResumen.size()-i == 1)
 				{
 					listarResumenVentas(listRecord, listCabeceraRecord);
@@ -362,27 +360,27 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 				resumen0 = lstResumen.get(i);
 				i--;
 				k=0;
-				
+
 				listarResumenVentas(listRecord, listCabeceraRecord);
-				
+
 				//Limpiar los Arrays
 				for(j=0; j<13; j++){
 					listRecord.set(j, 0.0);
 				}
 				listCabeceraRecord.set(0, "");
 				listCabeceraRecord.set(1, "");
-				
+
 			}
-			
-		}		
+
+		}
 	}
-	
+
 	public void listarTotalesResumenVentas(List<Double> listRecord){
-		
-		
+
+
 		String styleDeposito = "font-size:11px !important; text-align: right; font-weight: bold;color:black";
 		String styleEmpresa = "font-size:11px !important; text-align: right; font-weight: bold;color:red";
-		String styleGeneral = "font-size:11px !important; text-align: right; font-weight: bold;color:blue";		
+		String styleGeneral = "font-size:11px !important; text-align: right; font-weight: bold;color:blue";
 
 		Listitem item = null;
 		Listcell cell = null;
@@ -390,14 +388,14 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 
 		//Insertar las listas cabecera y totales al listbox
 		item = new Listitem();
-		
+
 		cell = new Listcell("TOTAL");
 		cell.setStyle(styleDeposito);
 		item.appendChild(cell);
-		
+
 		cell = new Listcell("");
 		item.appendChild(cell);
-		
+
 		//Total Boletas
 		if(listRecordTotales.get(0)==0){
 			cell = new Listcell("0.00");
@@ -476,7 +474,7 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 			temp=listRecordTotales.get(8).intValue();
 			cell = new Listcell(temp.toString());
 			cell.setStyle(styleDeposito);
-			item.appendChild(cell);					
+			item.appendChild(cell);
 		}
 		//Total Transmar
 		cell = new Listcell(listRecordTotales.get(9).toString());
@@ -491,7 +489,7 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 			cell = new Listcell("0");
 			cell.setStyle(styleDeposito);
 			item.appendChild(cell);
-		}else{				
+		}else{
 			cell = new Listcell(listRecordTotales.get(10).toString());
 			cell.setStyle(styleDeposito);
 			item.appendChild(cell);
@@ -505,14 +503,14 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 		cell = new Listcell(listRecordTotales.get(12).toString());
 		cell.setStyle(styleGeneral);
 		item.appendChild(cell);
-		
-		lsbxVentas.appendChild(item);			
-		
+
+		lsbxVentas.appendChild(item);
+
 
 	}
-	
+
 	public void listarResumenVentas(List<Double> listRecord, List<String> listCabeceraRecord){
-		
+
 		Listitem item = null;
 		Listcell cell = null;
 
@@ -520,7 +518,7 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 		listRecord.set(6, listRecord.get(0)+listRecord.get(2)-listRecord.get(4));
 		listRecord.set(9, listRecord.get(6)+listRecord.get(7));
 		listRecord.set(12, listRecord.get(9)+listRecord.get(10));
-		
+
 		listRecordTotales.set(0, listRecordTotales.get(0)+listRecord.get(0));
 		listRecordTotales.set(1, listRecordTotales.get(1)+listRecord.get(1));
 		listRecordTotales.set(2, listRecordTotales.get(2)+listRecord.get(2));
@@ -535,22 +533,22 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 		listRecordTotales.set(11, listRecordTotales.get(11)+listRecord.get(11));
 		listRecordTotales.set(12, listRecordTotales.get(12)+listRecord.get(12));
 
-		
+
 		String styleDeposito = "font-size:11px !important; text-align: right; font-weight: bold;color:black";
 		String styleEmpresa = "font-size:11px !important; text-align: right; font-weight: bold;color:red";
 		String styleGeneral = "font-size:11px !important; text-align: right; font-weight: bold;color:blue";
-		
+
 		Integer temp=0;
-		
+
 		//Insertar las listas cabecera y totales al listbox
 		item = new Listitem();
-		
+
 		cell = new Listcell(listCabeceraRecord.get(0));
 		item.appendChild(cell);
-		
+
 		cell = new Listcell(listCabeceraRecord.get(1));
 		item.appendChild(cell);
-		
+
 		//Total Boletas
 		if(listRecord.get(0)==0){
 			cell = new Listcell("0.00");
@@ -613,7 +611,7 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 			//Cantidad GRT
 			temp = listRecord.get(8).intValue();
 			cell = new Listcell(temp.toString());
-			item.appendChild(cell);					
+			item.appendChild(cell);
 		}
 		//Total Transmar
 		cell = new Listcell(listRecord.get(9).toString());
@@ -626,7 +624,7 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 			//Cantidad boletas
 			cell = new Listcell("0");
 			item.appendChild(cell);
-		}else{				
+		}else{
 			cell = new Listcell(listRecord.get(10).toString());
 			item.appendChild(cell);
 			//Cantidad web
@@ -638,55 +636,55 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 		cell = new Listcell(listRecord.get(12).toString());
 		cell.setStyle(styleGeneral);
 		item.appendChild(cell);
-		
-		lsbxVentas.appendChild(item);			
-	}	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+		lsbxVentas.appendChild(item);
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	public void limpiarArrays(){
-		
+
 		for(int i=0; i<13; i++){
 			listRecordTotales.set(i, 0.0);
 		}
 		listCabeceraRecordTotales.set(0, "");
-		listCabeceraRecordTotales.set(1, "");		
+		listCabeceraRecordTotales.set(1, "");
 	}
-	
+
 
 	private void inicializarControles(boolean estado){
 //		Util.limpiarListbox(lsbxRutas);
 		cmbAgencias.setSelectedIndex(0);
-		
-/*		
+
+/*
 		String fecha = Util.DatetoString(new Date(), "yyyyMMdd");
 		dtbxFecInicio.setConstraint("after "+fecha);
 		dtbxFecFinal.setConstraint("after "+fecha);
 		dtbxFecInicio.setValue(null);
 	dtbxFecFinal.setValue(null);
-*/	
+*/
 
 	}
 

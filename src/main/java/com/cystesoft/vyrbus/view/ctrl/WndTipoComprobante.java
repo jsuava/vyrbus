@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 30/04/2012
  */
@@ -44,11 +44,11 @@ public class WndTipoComprobante extends WndOpcionesMantenimiento {
 
 	private Textbox txtDenominacion;
 	private Textbox txtNombreCorto;
-	
+
 	private Combobox cmbRubro;
 	private TipoComprobante oTipoComprobante = null;
 
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
 
 	/* (non-Javadoc)
@@ -56,7 +56,7 @@ public class WndTipoComprobante extends WndOpcionesMantenimiento {
 	 */
 	@Override
 	public void onCreate() {
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
 		UtilData.cargarRubroTipoComprobante(cmbRubro, false);
 	}
@@ -120,7 +120,7 @@ public class WndTipoComprobante extends WndOpcionesMantenimiento {
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getTipoComprobanteManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getTipoComprobanteManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
 	}
 
@@ -161,10 +161,10 @@ public class WndTipoComprobante extends WndOpcionesMantenimiento {
 				throw new NombreCortoNullException();
 			else if (cmbRubro.getSelectedIndex()<=0)
 				throw new TipocomprobanteRubroNullException();
-			
+
 			if (action==ACTION_NEW)
 				oTipoComprobante = new TipoComprobante();
-			
+
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
 			oTipoComprobante.setId(id);
 			oTipoComprobante.setDenominacion(txtDenominacion.getText().trim().toUpperCase());
@@ -189,7 +189,7 @@ public class WndTipoComprobante extends WndOpcionesMantenimiento {
 			criteriosBusqueda.put("denominacion", oTipoComprobante.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			listarRegistros(ServiceLocator.getTipoComprobanteManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-			
+
 		}catch (DenominacionNullException dnex){
 			DlgMessage.information(Messages.getString("Generales.information.noIngresoDenominacion"),txtDenominacion);
 			throw new CancelaGrabacionException();
@@ -281,11 +281,11 @@ public class WndTipoComprobante extends WndOpcionesMantenimiento {
 	}
 
 	private void listarRegistros(ArrayList<TipoComprobante> lstRegistros) {
-		ArrayList<Object> lstTipoComprobantes = new ArrayList<Object>();
+		ArrayList<Object> lstTipoComprobantes = new ArrayList<>();
 
 		for(int r = 0; r < lstRegistros.size(); r ++) {
 			TipoComprobante oTipoComprobante = lstRegistros.get(r);
-			ArrayList<Object> lstFila = new ArrayList<Object>();
+			ArrayList<Object> lstFila = new ArrayList<>();
 
 			lstFila.add(oTipoComprobante.getId());
 			lstFila.add(r + 1);
@@ -299,7 +299,7 @@ public class WndTipoComprobante extends WndOpcionesMantenimiento {
 				lstFila.add(Constantes.RUBRO_AMBOS_DESC);
 			else
 				lstFila.add("NO DEFINIDO");
-			
+
 			lstTipoComprobantes.add(lstFila);
 		}
 

@@ -25,7 +25,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class RutaManagerImpl implements RutaManager {
 	private RutaDAO rutaDAO;
-	
+
 	/**
 	 * @return the rutaDAO
 	 */
@@ -70,7 +70,7 @@ public class RutaManagerImpl implements RutaManager {
 	@Transactional
 	public void guardar(Ruta ruta) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("localidadOrigen", ruta.getLocalidadOrigen());
 			criteriosBusqueda.put("localidadDestino", ruta.getLocalidadDestino());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
@@ -78,9 +78,9 @@ public class RutaManagerImpl implements RutaManager {
 			/*Valida duplicidad de una Ruta*/
 			if(resultRutaDuplicada.size()>0)
 				throw new RutaDuplicadaException();
-			
+
 			getRutaDAO().guardar(ruta);
-			
+
 		}catch (RutaDuplicadaException rdex){
 			throw new RutaDuplicadaException();
 		}catch(Exception ex){
@@ -95,20 +95,20 @@ public class RutaManagerImpl implements RutaManager {
 	@Transactional
 	public void actualizar(Ruta ruta) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("localidadOrigen", ruta.getLocalidadOrigen());
 			criteriosBusqueda.put("localidadDestino", ruta.getLocalidadDestino());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> result = getRutaDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Ruc*/
-			for(int r = 0; r < result.size(); r ++) {
-				Ruta oruta = (Ruta) result.get(r);
+			for (Object element : result) {
+				Ruta oruta = (Ruta) element;
 					if (!(oruta.getId().intValue() == ruta.getId().intValue()))
 						throw new RutaDuplicadaException();
 				}
-		
+
 			getRutaDAO().actualizar(ruta);
-		
+
 		}catch (RutaDuplicadaException rsdex){
 			throw new RutaDuplicadaException();
 		}catch(Exception ex){

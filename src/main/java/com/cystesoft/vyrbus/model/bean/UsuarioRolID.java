@@ -7,11 +7,11 @@ package com.cystesoft.vyrbus.model.bean;
  */
 public class UsuarioRolID extends GenericBean implements java.io.Serializable {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
-	
+
 	private Integer idUsuario;
 	private Integer idRol;
 
@@ -23,7 +23,7 @@ public class UsuarioRolID extends GenericBean implements java.io.Serializable {
 		this.idRol = idRol;
 		this.idUsuario = idUsuario;
 	}
-	
+
 	/**
 	 * @return Objeto idUsuario.
 	 */
@@ -54,9 +54,7 @@ public class UsuarioRolID extends GenericBean implements java.io.Serializable {
 	public boolean equals(Object other) {
 		if ((this == other))
 			return true;
-		if ((other == null))
-			return false;
-		if (!(other instanceof UsuarioRolID))
+		if ((other == null) || !(other instanceof UsuarioRolID))
 			return false;
 		UsuarioRolID castOther = (UsuarioRolID) other;
 

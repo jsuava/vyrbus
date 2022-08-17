@@ -15,11 +15,11 @@ public class ItinerarioAgenciaLlegada extends GenericBean implements Serializabl
 	private Agencia agencia;
 	private String horaLlegada;
 	private Localidad localidad;
-	
+
 	public ItinerarioAgenciaLlegada() {
-		
+
 	}
-	
+
 	/**
 	 * @return Objeto itinerarioAgenciaLlegadaID.
 	 */

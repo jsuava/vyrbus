@@ -6,16 +6,16 @@ import com.cystesoft.vyrbus.model.bean.Liquidacion;
 import com.cystesoft.vyrbus.model.bean.LiquidacionOficina;
 
 public interface LiquidacionOficinaDAO extends GenericDAO {
-	
+
 	/**
 	 * Busca Liquidaciones pendientes de po liquidar.
 	 * @param fecha		: fecha de la liquidacion a liquidar
-	 * @param idAgencia	: indentificador de la agencia 
+	 * @param idAgencia	: indentificador de la agencia
 	 * @return
 	 * @throws Exception
 	 */
 	public List<Liquidacion> buscarLiquidacionPendiente(String fecha,Integer idAgencia) throws Exception;
-		
+
 
 //	/**
 //	 * Busca liquidacion de oficina.
@@ -26,7 +26,7 @@ public interface LiquidacionOficinaDAO extends GenericDAO {
 //	 */
 //	public List<LiquidacionOficina> buscarLiquidacionOficiana(Integer idUsuario, String fecha, Integer idAgencia);
 
-	
+
 	/**
 	 * Busca las liquidaciones del counter que ya aysn sido liquidadas
 	 * @param fecha		: fecha liquidacion
@@ -34,15 +34,15 @@ public interface LiquidacionOficinaDAO extends GenericDAO {
 	 * @return
 	 */
 	public List<Liquidacion> buscarLiquidacionLiquidadas(String fecha, Integer idAgencia);
-	
-	
+
+
 	/**
 	 * Guara liquidacion de oficina
 	 * @param liquidacionOficina
 	 * @throws Exception
 	 */
-	public void  guardar(LiquidacionOficina liquidacionOficina) throws Exception; 
-	
+	public void  guardar(LiquidacionOficina liquidacionOficina) throws Exception;
+
 	/**
 	 * Inactivar registro
 	 * @param id : Identificador de la Liquidación de Ofician

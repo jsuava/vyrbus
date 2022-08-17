@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 19/04/2013
  */
@@ -37,12 +37,12 @@ import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
  */
 public class WndMotivoTemporadaAlta extends WndOpcionesMantenimiento {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Textbox txtNombreMotivo;
-	
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
-	
+
 	private MotivoTemporadaAlta motivoTemporadaAlta=null;
 
 	/* (non-Javadoc)
@@ -52,24 +52,24 @@ public class WndMotivoTemporadaAlta extends WndOpcionesMantenimiento {
 	public void initComponents() {
 		txtNombreMotivo=(Textbox)this.getFellow("txtNombreMotivo");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
 	@Override
 	public void onCreate() throws Exception {
-		criteriosOrdenar = new ArrayList<String>();
-		criteriosOrdenar.add("nombreMotivo");	
+		criteriosOrdenar = new ArrayList<>();
+		criteriosOrdenar.add("nombreMotivo");
 	}
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onNew()
 	 */
 	@Override
 	public void onNew() throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -77,7 +77,7 @@ public class WndMotivoTemporadaAlta extends WndOpcionesMantenimiento {
 	 */
 	@Override
 	public void onSearch() throws Exception {
-		criteriosBusqueda = new TreeMap<String, Object>();
+		criteriosBusqueda = new TreeMap<>();
 		final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
 
 		oWndFiltrar.addParameter("Nombre Motivo", String.class);
@@ -94,13 +94,13 @@ public class WndMotivoTemporadaAlta extends WndOpcionesMantenimiento {
 				if(nombreMotivo.trim().equals("")){
 					criteriosBusqueda.remove("nombreMotivo");
 				}else{criteriosBusqueda.put("nombreMotivo", "%" + nombreMotivo + "%");}
-				
+
 				criteriosBusqueda.put("estadoRegistro", estadoRegistro);
 
 				listarRegistros(ServiceLocator.getMotivoTemporadaAltaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 			}
 		});
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -109,9 +109,9 @@ public class WndMotivoTemporadaAlta extends WndOpcionesMantenimiento {
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getMotivoTemporadaAltaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getMotivoTemporadaAltaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -119,10 +119,10 @@ public class WndMotivoTemporadaAlta extends WndOpcionesMantenimiento {
 	 */
 	@Override
 	public void onModify(int tab) throws Exception {
-		
+
 		Integer id = ((MotivoTemporadaAlta) listboxLista.getSelectedItem().getValue()).getId();
 		this.mantenimientoRegistro(id);
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -131,7 +131,7 @@ public class WndMotivoTemporadaAlta extends WndOpcionesMantenimiento {
 	@Override
 	public void onCancel(int action) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -144,27 +144,27 @@ public class WndMotivoTemporadaAlta extends WndOpcionesMantenimiento {
 				throw new DenominacionNullException();
 			if (action==ACTION_NEW)
 				motivoTemporadaAlta = new MotivoTemporadaAlta();
-						
+
 			motivoTemporadaAlta.setNombreMotivo(txtNombreMotivo.getText().trim().toUpperCase());
 			motivoTemporadaAlta.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-			 			 
+
 			 switch (action) {
 				case ACTION_NEW:
 					UtilData.auditarRegistro(motivoTemporadaAlta, getUsuario(), Executions.getCurrent());
 					ServiceLocator.getMotivoTemporadaAltaManager().guardar(motivoTemporadaAlta);
 					textboxId.setText(motivoTemporadaAlta.getId().toString());
 					break;
-		
+
 				case ACTION_MODIFY:
 					UtilData.auditarRegistro(motivoTemporadaAlta, true, getUsuario(), Executions.getCurrent());
 					ServiceLocator.getMotivoTemporadaAltaManager().actualizar(motivoTemporadaAlta);
 					break;
 			}
 			 /*Recupera el registro actualizado o el Nuevo*/
-			criteriosBusqueda = new TreeMap<String, Object>();
+			criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("id", motivoTemporadaAlta.getId());
 			listarRegistros(ServiceLocator.getMotivoTemporadaAltaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-					
+
 		}catch (DenominacionDuplicadaException ddex){
 			DlgMessage.information(Messages.getString("wndMotivoTemporadaAlta.Information.NombreMotivoDuplicado"),txtNombreMotivo);
 			throw new CancelaGrabacionException();
@@ -175,7 +175,7 @@ public class WndMotivoTemporadaAlta extends WndOpcionesMantenimiento {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace(); throw new CancelaGrabacionException();
 		}
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -185,7 +185,7 @@ public class WndMotivoTemporadaAlta extends WndOpcionesMantenimiento {
 	public void onDelete(int tab) throws Exception {
 		Integer id= ((MotivoTemporadaAlta)listboxLista.getSelectedItem().getValue()).getId();
 		ServiceLocator.getMotivoTemporadaAltaManager().inactivar(id.longValue());
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -194,7 +194,7 @@ public class WndMotivoTemporadaAlta extends WndOpcionesMantenimiento {
 	@Override
 	public void onPrint(int tab) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -203,7 +203,7 @@ public class WndMotivoTemporadaAlta extends WndOpcionesMantenimiento {
 	@Override
 	public void onExport(int tab) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -212,7 +212,7 @@ public class WndMotivoTemporadaAlta extends WndOpcionesMantenimiento {
 	@Override
 	public void onHelp() throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -223,16 +223,16 @@ public class WndMotivoTemporadaAlta extends WndOpcionesMantenimiento {
 		switch (tab) {
 			case TAB_LIST:
 				break;
-	
+
 			case TAB_MAINTENANCE:
 				if (listboxLista.getSelectedIndex() > -1) {
 					this.mantenimientoRegistro(((MotivoTemporadaAlta)listboxLista.getSelectedItem().getValue()).getId());
 				}
 				break;
-		}		
-		
+		}
+
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.zkoss.zul.Window#onClose()
 	 */
@@ -240,13 +240,13 @@ public class WndMotivoTemporadaAlta extends WndOpcionesMantenimiento {
 	public void onClose() {
 			closeTabWindow();
 	}
-	
+
 	private void listarRegistros(ArrayList<MotivoTemporadaAlta> lstRegistros) {
 		Listitem item=null;
 		Listcell cell=null;
 		int x=0;
 		Util.limpiarListbox(listboxLista);
-		
+
 		for(MotivoTemporadaAlta motivoTemporadaAlta: lstRegistros){
 			x++;
 			item=new Listitem();
@@ -255,19 +255,19 @@ public class WndMotivoTemporadaAlta extends WndOpcionesMantenimiento {
 			item.appendChild(cell);
 			cell=new Listcell(motivoTemporadaAlta.getNombreMotivo());
 			item.appendChild(cell);
-			
+
 			item.setValue(motivoTemporadaAlta);
 			listboxLista.appendChild(item);
 		}
 	}
-	
+
 	private void mantenimientoRegistro(Integer id) throws Exception {
 		motivoTemporadaAlta = new MotivoTemporadaAlta();
 		motivoTemporadaAlta = ServiceLocator.getMotivoTemporadaAltaManager().buscarPorId(id.longValue());
 
 		textboxId.setText(motivoTemporadaAlta.getId().toString());
 		txtNombreMotivo.setText(motivoTemporadaAlta.getNombreMotivo());
-		
+
 	}
 
 }

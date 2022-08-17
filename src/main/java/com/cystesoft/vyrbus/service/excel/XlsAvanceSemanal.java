@@ -32,34 +32,34 @@ import com.cystesoft.vyrbus.service.util.Util;
 @SuppressWarnings({"rawtypes"})
 public class XlsAvanceSemanal extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
 		doProcess(request, response);
 	}
-	
+
 	protected void doProcess(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
 		Listbox listbox = (Listbox)request.getSession().getAttribute("lbxAvance");
         String parcialPath = (String)request.getSession().getAttribute("parcialPath");
         response.setContentType("application/vnd.ms-excel");
         response.setHeader("Content-Disposition", "attachment; filename=avance_semanal.xls");
-        
+
         File template = new File(parcialPath);
         try {
 //            Workbook workbook = Workbook.getWorkbook(template);
 //            WritableWorkbook w = Workbook.createWorkbook(response.getOutputStream(), workbook);
 //            WritableSheet s = w.getSheet(0);
-        	
+
         	POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(template));
 			HSSFWorkbook wb = new HSSFWorkbook(fs);
 			HSSFSheet sheet = wb.getSheetAt(0);
             HSSFRow rowh = null;
-            HSSFCell cellh = null; 
+            HSSFCell cellh = null;
             HSSFDataFormat format = wb.createDataFormat();
             HSSFCellStyle style = wb.createCellStyle();
             style.setDataFormat(format.getFormat("#,##0.00"));
-        	
-        	
+
+
             Listhead head = listbox.getListhead();
             List listItems = listbox.getItems();
             int i = 0;
@@ -79,7 +79,7 @@ public class XlsAvanceSemanal extends HttpServlet {
                 for (Iterator it2 = item.getChildren().iterator(); it2.hasNext();) {
                     Listcell currentCell = (Listcell) it2.next();
                     rowh = sheet.createRow((short)j);
-                    
+
                     if (Util.isNumeric(currentCell.getLabel())) {
 //                        NumberFormat numberformat = new NumberFormat("##,##0");
 //                        WritableCellFormat cellNumberFormat = new WritableCellFormat(numberformat);
@@ -87,7 +87,7 @@ public class XlsAvanceSemanal extends HttpServlet {
                     	cellh = rowh.createCell((short)i);
 						cellh.setCellStyle(style);
 						cellh.setCellValue(Integer.valueOf(currentCell.getLabel()));
-                    	
+
                     } else {
                         if (Util.isNumeric(currentCell.getLabel())) {
 //                            NumberFormat numberformat = new NumberFormat("##,##0.00");
@@ -105,8 +105,8 @@ public class XlsAvanceSemanal extends HttpServlet {
                 }
             }
 //            w.write();
-//            w.close(); 
-            
+//            w.close();
+
             ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
 			wb.write(outByteStream);
 			byte [] outArray = outByteStream.toByteArray();
@@ -114,7 +114,7 @@ public class XlsAvanceSemanal extends HttpServlet {
 			OutputStream outStream = response.getOutputStream();
 		    outStream.write(outArray);
 		    outStream.flush();
-		    
+
         } catch (Exception e) {
         	log("EXPORT XLS AVANCE SEMANAL: "+e.toString());
             System.out.println(e.toString());

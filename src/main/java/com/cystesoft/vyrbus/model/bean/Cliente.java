@@ -25,7 +25,7 @@ public class Cliente extends GenericBean implements java.io.Serializable {
 	private String contactoFinaciero;
 	private String movil1;
 	private String movil2;
-	
+
 	private String tipo;									/*NO MAPEADO*/
 	private TipoCobranza tipoCobranza;						/*NO MAPEADO*/
 	private Double descuento;								/*NO MAPEADO*/
@@ -35,7 +35,7 @@ public class Cliente extends GenericBean implements java.io.Serializable {
 	public Cliente() {
 	}
 
-	
+
 	/**
 	 * @param id
 	 */
@@ -134,7 +134,7 @@ public class Cliente extends GenericBean implements java.io.Serializable {
 	public void setUbigeo(Ubigeo ubigeo) {
 		this.ubigeo = ubigeo;
 	}
-	
+
 	public String getOrigen() {
 		return origen;
 	}

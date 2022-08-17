@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 15/06/2015
  * Hora			: 11:41:47
@@ -45,7 +45,7 @@ import com.cystesoft.vyrbus.view.ui.WndBase;
  */
 public class WndRptVentaPuntoVenta extends WndBase{
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Datebox dtbxFechaInical;
@@ -110,7 +110,7 @@ public class WndRptVentaPuntoVenta extends WndBase{
 		lbl22=(Label)this.getFellow("lbl22");
 		lblTotal=(Label)this.getFellow("lblTotal");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
@@ -119,7 +119,7 @@ public class WndRptVentaPuntoVenta extends WndBase{
 		// TODO Auto-generated method stub
 		dtbxFechaInical.setValue(new Date());
 		dtbxFechaFinal.setValue(new Date());
-		
+
 		UtilData.cargarAgenciaXtipoAgencia(cmbAgencia, Constantes.ID_TIPAGE_TEPSA, true);
 		cmbAgencia.setSelectedIndex(0);
 		UtilData.cargarGenericData(cmbUsuario, true);
@@ -128,12 +128,12 @@ public class WndRptVentaPuntoVenta extends WndBase{
 		cargarTiposMovimiento();
 
 	}
-	
+
 	/**
 	 * Realiza la busqueda de las ventas por punto de venta y usuario
 	 * @throws Exception
 	 */
-	public void buscar() throws Exception{	
+	public void buscar() throws Exception{
 		lstbxVentasPuntoVenta.getItems().clear();
 		frzVentasPuntoVenta.setStart(0);
 		/*Automatiza el tamanio de las columnas, segun la condicion seleccionada(Contabilizar o Sumar importes)*/
@@ -154,22 +154,22 @@ public class WndRptVentaPuntoVenta extends WndBase{
 					listheader.setWidth("100px");
 			}
 		}
-		
-		
-		String fechaInicial=Constantes.FORMAT_DATE.format(dtbxFechaInical.getValue()); 
+
+
+		String fechaInicial=Constantes.FORMAT_DATE.format(dtbxFechaInical.getValue());
 		String fechaFinal=Constantes.FORMAT_DATE.format(dtbxFechaFinal.getValue());
 		Integer idAgencia=null;
 		Integer idUsuario=null;
 		String idsTiposMovimientos=null;
 		Integer idFormaPago=null;
-		
+
 		if(cmbAgencia.getSelectedIndex()>0 && cmbAgencia.getSelectedItem().getValue() instanceof Agencia)
 			idAgencia=((Agencia)cmbAgencia.getSelectedItem().getValue()).getId();
 		if(cmbUsuario.getSelectedItem().getValue() instanceof Usuario)
 			idUsuario=((Usuario)cmbUsuario.getSelectedItem().getValue()).getId();
 		if(cmbFormaPago.getSelectedItem().getValue() instanceof FormaPago)
 			idFormaPago=((FormaPago)cmbFormaPago.getSelectedItem().getValue()).getId();
-		
+
 		for(Listitem item :lstbxTipoMovimiento.getSelectedItems()){
 			TipoMovimiento tipoMovimiento=(TipoMovimiento)item.getValue();
 			if(idsTiposMovimientos==null)
@@ -177,12 +177,12 @@ public class WndRptVentaPuntoVenta extends WndBase{
 			else
 				idsTiposMovimientos+=","+tipoMovimiento.getId().toString();
 		}
-		
+
 		List<Agencia> listVentasCounter=ServiceLocator.getVentaPasajesManager().buscarVentasPorPuntoVenta(fechaInicial, fechaFinal, idAgencia, idUsuario, idsTiposMovimientos, idFormaPago);
 		int countItem=0;
 		Listitem item=null;
 		Listcell cell=null;
-		List<String>totales=new ArrayList<String>();
+		List<String>totales=new ArrayList<>();
 		Double totalGeneral=.00;
 		for(Agencia agencia:listVentasCounter){
 			Double totalRight=.00;
@@ -195,7 +195,7 @@ public class WndRptVentaPuntoVenta extends WndBase{
 			item.appendChild(cell);
 			cell=new Listcell(agencia.getUsuario().getLogin());
 			item.appendChild(cell);
-			
+
 			for(RptVentaUsuario ventaUsuario:agencia.getUsuario().getVentasUsuarios()){
 				cell=new Listcell(rdContabilizar.isChecked()?ventaUsuario.getCantidad().toString():Util.toNumberFormat(ventaUsuario.getImporte(), 2));
 				if((rdContabilizar.isChecked() && ventaUsuario.getCantidad()>0) || (rdSumarImportes.isChecked() && ventaUsuario.getImporte()>0))
@@ -204,30 +204,30 @@ public class WndRptVentaPuntoVenta extends WndBase{
 					cell.setStyle("font-size:11px !important;color:black");
 				item.appendChild(cell);
 				totalRight+=rdContabilizar.isChecked()?Double.valueOf(ventaUsuario.getCantidad()):ventaUsuario.getImporte();
-				
+
 				/*Agrega al array para totalizar*/
 				String totalCol=String.valueOf(countItem)+"-"+ventaUsuario.getHoraVenta()+"-"+ventaUsuario.getCantidad()+"-"+ventaUsuario.getImporte();
 				totales.add(totalCol);
 			}
 			totalGeneral+=totalRight;
-			
+
 			cell=new Listcell(rdContabilizar.isChecked()?Util.toNumberFormat(totalRight, 0):Util.toNumberFormat(totalRight, 2));
 			cell.setStyle("font-size:11px !important;color:#DF0101;font-weight: bold;");
 			item.appendChild(cell);
 			lstbxVentasPuntoVenta.appendChild(item);
 		}
-		
+
 		if(lstbxVentasPuntoVenta.getItems().size()>0)
 			lstbxVentasPuntoVenta.selectItem(lstbxVentasPuntoVenta.getItemAtIndex(0));
-		
-		
+
+
 		/*Calcula total*/
 		Double total_8=.00,total_9=.00,total_10=.00,total_11=.00,total_12=.00,total_13=.00,total_14=.00,total_15=.00,total_16=.00;
 		Double total_17=.00,total_18=.00,total_19=.00,total_20=.00,total_21=.00,total_22=.00;
 		for(String fila :totales){
-			Integer hora=Integer.valueOf(fila.split("-")[1]);
-			Object valor=rdContabilizar.isChecked()?Integer.valueOf(fila.split("-")[2]):Double.valueOf(fila.split("-")[3]);;
-			
+			int hora=Integer.parseInt(fila.split("-")[1]);
+			Object valor=rdContabilizar.isChecked()?Integer.valueOf(fila.split("-")[2]):Double.valueOf(fila.split("-")[3]);
+
 			switch (hora) {
 				case 8:
 					total_8+=valor instanceof Integer? (Integer)valor:(Double)valor;
@@ -276,9 +276,9 @@ public class WndRptVentaPuntoVenta extends WndBase{
 					break;
 				default:
 					break;
-			}		
+			}
 		}
-		
+
 		lbl8.setValue(Util.toNumberFormat(total_8,rdContabilizar.isChecked()?0:2));
 		lbl9.setValue(Util.toNumberFormat(total_9,rdContabilizar.isChecked()?0:2));
 		lbl10.setValue(Util.toNumberFormat(total_10,rdContabilizar.isChecked()?0:2));
@@ -296,7 +296,7 @@ public class WndRptVentaPuntoVenta extends WndBase{
 		lbl22.setValue(Util.toNumberFormat(total_22,rdContabilizar.isChecked()?0:2));
 		lblTotal.setValue(Util.toNumberFormat(totalGeneral,rdContabilizar.isChecked()?0:2));
 	}
-	
+
 	/**
 	 * Carga usuaros en funcion a la agencia seleccionda y las ventas segun rango de fechas.
 	 * @throws Exception
@@ -312,36 +312,36 @@ public class WndRptVentaPuntoVenta extends WndBase{
 			UtilData.cargarGenericData(cmbUsuario, true);
 		}
 	}
-	
-	
+
+
 	/**
 	 * Carga los tipos de movimiento
 	 * @throws Exception
 	 */
 	private void cargarTiposMovimiento()throws Exception{
 		List<TipoMovimiento>result=ServiceLocator.getTipoMovimientoManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
-		
+
 		for(TipoMovimiento movimiento:result){
-			if(movimiento.getId().intValue()!=Constantes.ID_TIPMOV_ANULACION && 
+			if(movimiento.getId().intValue()!=Constantes.ID_TIPMOV_ANULACION &&
 					movimiento.getId().intValue()!=Constantes.ID_TIPMOV_ANULACION_SISTEMA &&
 					movimiento.getId().intValue()!=Constantes.ID_TIPMOV_DEVOLUCION &&
 					movimiento.getId().intValue()!=Constantes.ID_TIPMOV_RESERVA){
 				Listitem item=new Listitem();
 				Listcell cell=new Listcell(movimiento.getDenominacion());
 				item.appendChild(cell);
-				
+
 				item.setValue(movimiento);
 				lstbxTipoMovimiento.appendChild(item);
-				
+
 				if(movimiento.getId().intValue()==Constantes.ID_TIPMOV_EFECTIVO)
 					lstbxTipoMovimiento.setSelectedItem(item);
 			}
 		}
-		
+
 		onSelect_lstbxTipomovimiento();
 	}
-	
-	
+
+
 	public void onSelect_lstbxTipomovimiento()throws Exception{
 		String tiposMovimientos="";
 		for(Listitem item :lstbxTipoMovimiento.getSelectedItems()){
@@ -351,11 +351,11 @@ public class WndRptVentaPuntoVenta extends WndBase{
 			else
 				tiposMovimientos+=";"+tipoMovimiento.getDenominacion();
 		}
-		
+
 		bnbxTipoMovimiento.setValue(tiposMovimientos);
 	}
-	
-	
+
+
 	/**
 	 * Exporta a un archivo excel
 	 * @throws Exception

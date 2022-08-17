@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 25/08/2012
  */
@@ -48,19 +48,19 @@ import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
 
 public class WndDocumentoBus  extends WndOpcionesMantenimiento{
    private static final long serialVersionUID = -5451880424114680419L;
-   
+
    private Combobox cboTipoDocumento;
    private Combobox cboBus;
    private Combobox cboEstadoDocumento;
    private Textbox  txtnumeroDocumento;
    private Datebox  dbfechaExpedicion;
    private Datebox 	dbfechaVencimiento;
-   
+
    private DocumentoBus odocumentoBus=null;
 
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
-   
+
 	@Override
 	public void onNew() {
 		cboTipoDocumento.setSelectedIndex(0);
@@ -70,13 +70,13 @@ public class WndDocumentoBus  extends WndOpcionesMantenimiento{
 
 	@Override
 	public void onCreate() throws Exception {
-		TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+		TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 		criteriosBusqueda.put("tipo", TipoDocumento.BUS);
 		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 		UtilData.cargarDataCombo(cboTipoDocumento, TipoDocumento.class, criteriosBusqueda, false);
 		UtilData.cargarDataCombo(cboBus, Bus.class, false);
 		UtilData.cargarDataCombo(cboEstadoDocumento, EstadoDocumentoBus.class, false);
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("tipoDocumento");
 	}
 
@@ -89,14 +89,14 @@ public class WndDocumentoBus  extends WndOpcionesMantenimiento{
 		dbfechaExpedicion = (Datebox) getFellow("dbfechaExpedicion");
 		dbfechaVencimiento = (Datebox) getFellow("dbfechaVencimiento");
 	}
-	
+
 	@Override
 	public void onSearch() throws Exception {
 	   final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
-	   
+
 	   oWndFiltrar.addParameter("Estado Documento Bus", EstadoDocumentoBus.class);
 	   oWndFiltrar.addParameter("Número de Bus", Bus.class);
-	   
+
 	   this.appendChild(oWndFiltrar);
 		oWndFiltrar.setMode("modal");
 		oWndFiltrar.addEventListener(com.cystesoft.vyrbus.view.ui.Events.ON_FILTER, new EventListener<Event>() {
@@ -106,7 +106,7 @@ public class WndDocumentoBus  extends WndOpcionesMantenimiento{
 				Integer estadoDocumentoBus = (Integer) oWndFiltrar.getParameterValue("Estado Documento Bus");
 				Integer numeroBus = (Integer) oWndFiltrar.getParameterValue("Número de Bus");
 				String estadoRegistro = Constantes.VALUE_ACTIVO;
-				
+
 				criteriosBusqueda.remove("numeroDocumento");
 				if (estadoDocumentoBus == null || estadoDocumentoBus == 0){
 					criteriosBusqueda.remove("estadoDocumentoBus");
@@ -115,7 +115,7 @@ public class WndDocumentoBus  extends WndOpcionesMantenimiento{
 					oestadoDocumentoBus.setId(estadoDocumentoBus);
 					criteriosBusqueda.put("estadoDocumentoBus", oestadoDocumentoBus);
 				}
-				
+
 				if (numeroBus== null || numeroBus==0) {
 					criteriosBusqueda.remove("bus");
 				}else{
@@ -123,18 +123,18 @@ public class WndDocumentoBus  extends WndOpcionesMantenimiento{
 					obus.setId(numeroBus);
 					criteriosBusqueda.put("bus", obus);
 				}
-				
+
 				criteriosBusqueda.put("estadoRegistro", estadoRegistro);
 				listarRegistros(ServiceLocator.getDocumentoBusManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 			}
 		});
 	}
-	
-	
+
+
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getDocumentoBusManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getDocumentoBusManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
 	}
 
@@ -172,34 +172,34 @@ public class WndDocumentoBus  extends WndOpcionesMantenimiento{
 				throw new FechaExpedicionNullException();
 			else if (dbfechaVencimiento.getText().equals(""))
 				throw new FechaVencimientoNullException();
-			
+
 			if (action==ACTION_NEW)
 				odocumentoBus = new DocumentoBus();
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
 
 			odocumentoBus.setId(id);
-			
+
 			if (cboTipoDocumento.getSelectedIndex() > -1) {
-				TipoDocumento otipoDocumento = new TipoDocumento();			
+				TipoDocumento otipoDocumento = new TipoDocumento();
 				otipoDocumento.setId(((TipoDocumento) cboTipoDocumento.getSelectedItem().getValue()).getId());
 				otipoDocumento.setDenominacion(((TipoDocumento) cboTipoDocumento.getSelectedItem().getValue()).getDenominacion());
 				odocumentoBus.setTipoDocumento(otipoDocumento);
 			}
-			
+
 			if (cboBus.getSelectedIndex()> -1){
 				Bus obus = new Bus();
 				obus.setId(((Bus) cboBus.getSelectedItem().getValue()).getId());
 				obus.setCodigo( ((Bus) cboBus.getSelectedItem().getValue()).getCodigo());
 				odocumentoBus.setBus(obus);
 			}
-			
+
 			if (cboEstadoDocumento.getSelectedIndex()>-1){
 				EstadoDocumentoBus oestaDocumentoBus = new EstadoDocumentoBus();
 				oestaDocumentoBus.setId(((EstadoDocumentoBus) cboEstadoDocumento.getSelectedItem().getValue()).getId());
 				oestaDocumentoBus.setDenominacion(((EstadoDocumentoBus) cboEstadoDocumento.getSelectedItem().getValue()).getDenominacion());
 				odocumentoBus.setEstadoDocumentoBus(oestaDocumentoBus);
 			}
-			
+
 			odocumentoBus.setNumeroDocumento(txtnumeroDocumento.getText().trim().toString());
 			odocumentoBus.setFechaExpedicion(dbfechaExpedicion.getText());
 			odocumentoBus.setFechaVencimiento(dbfechaVencimiento.getText());
@@ -222,7 +222,7 @@ public class WndDocumentoBus  extends WndOpcionesMantenimiento{
 			criteriosBusqueda.put("numeroDocumento", odocumentoBus.getNumeroDocumento());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			listarRegistros(ServiceLocator.getDocumentoBusManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-			
+
 		}catch (TipoDocumentoNullException tdnex){
 			DlgMessage.information(Messages.getString("WndPersonal.information.TipoDocumento"),cboTipoDocumento);
 			throw new CancelaGrabacionException();
@@ -245,47 +245,47 @@ public class WndDocumentoBus  extends WndOpcionesMantenimiento{
 			DlgMessage.information(Messages.getString("WndPersonal.information.NumeroDocumentoDuplicado"),txtnumeroDocumento);
 			throw new CancelaGrabacionException();
 		}catch (NumeroBusDuplicadoException nbdex){
-			DlgMessage.information(Messages.getString("WndDucmentoBus.information.TipoDocBusDuplicado"),cboTipoDocumento);	
+			DlgMessage.information(Messages.getString("WndDucmentoBus.information.TipoDocBusDuplicado"),cboTipoDocumento);
 			throw new CancelaGrabacionException();
 		}catch (Exception ex){
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace(); throw new CancelaGrabacionException();
 		}
-		
+
 	}
 
-	
+
 	@Override
 	public void onDelete(int tab) throws Exception {
 		Long id = (long) 0;
 		id = new Long((String) listboxLista.getSelectedItem().getValue());
-		
+
 		DocumentoBus documentoBus=ServiceLocator.getDocumentoBusManager().buscarPorId(id);
 		documentoBus.setEstadoRegistro(Constantes.VALUE_INACTIVO);
 		UtilData.auditarRegistro(documentoBus, true, getUsuario(), Executions.getCurrent());
 		ServiceLocator.getDocumentoBusManager().actualizar(documentoBus);
-//		ServiceLocator.getDocumentoBusManager().inactivar(id);	
+//		ServiceLocator.getDocumentoBusManager().inactivar(id);
 	}
-	
+
 	@Override
 	public void onClose() {
 		closeTabWindow();
 	}
-	
+
 	@Override
 	public void onPrint(int tab) {
-		
+
 	}
 
 	@Override
 	public void onExport(int tab) {
-		
+
 	}
 
 	@Override
 	public void onHelp() {
 
-		
+
 	}
 
 	@Override
@@ -300,13 +300,13 @@ public class WndDocumentoBus  extends WndOpcionesMantenimiento{
 				break;
 		}
 	}
-	
+
 	private void listarRegistros(ArrayList<DocumentoBus> lstRegistros) {
-		ArrayList<Object> lstDocumentos = new ArrayList<Object>();
+		ArrayList<Object> lstDocumentos = new ArrayList<>();
 
 		for(int r = 0; r < lstRegistros.size(); r ++) {
 			DocumentoBus odocumentoBus = lstRegistros.get(r);
-			ArrayList<Object> lstFila = new ArrayList<Object>();
+			ArrayList<Object> lstFila = new ArrayList<>();
 
 			lstFila.add(odocumentoBus.getId());
 			lstFila.add(r + 1);
@@ -322,14 +322,14 @@ public class WndDocumentoBus  extends WndOpcionesMantenimiento{
 
 		Util.llenarListbox(listboxLista, lstDocumentos, true);
 	}
-	
+
 	private void mantenimientoRegistro(Long id) throws Exception {
 		odocumentoBus = ServiceLocator.getDocumentoBusManager().buscarPorId(id);
-		
+
 		TipoDocumento otipoDocumento = odocumentoBus.getTipoDocumento();
 		Bus obus = odocumentoBus.getBus();
 		EstadoDocumentoBus oestadoDocumentoBus = odocumentoBus.getEstadoDocumentoBus();
-		
+
 		textboxId.setText(String.valueOf(odocumentoBus.getId()));
 		if (otipoDocumento != null){
 			Util.seleccionarValorItemCombo(TipoDocumento.class, cboTipoDocumento, otipoDocumento.getId());
@@ -340,9 +340,9 @@ public class WndDocumentoBus  extends WndOpcionesMantenimiento{
 		if (oestadoDocumentoBus != null){
 			Util.seleccionarValorItemCombo(EstadoDocumentoBus.class, cboEstadoDocumento, oestadoDocumentoBus.getId());
 		}
-		
+
 		txtnumeroDocumento.setText(odocumentoBus.getNumeroDocumento());
 		dbfechaExpedicion.setText(odocumentoBus.getFechaExpedicion());
-		dbfechaVencimiento.setText(odocumentoBus.getFechaVencimiento());	
+		dbfechaVencimiento.setText(odocumentoBus.getFechaVencimiento());
 	}
 }

@@ -1,35 +1,12 @@
 /**
  * Proyecto		: SISPAS
  * Sistema		: Sistema de Pasajes
- * Descripción	: 
+ * Descripción	:
  * Autor		: Jose Avalos
  * Fecha		: 16 nov. 2018
  * Hora			: 22:59:03
  */
 package com.cystesoft.vyrbus.view.ctrl;
-
-import com.cystesoft.vyrbus.model.bean.Bus;
-import com.cystesoft.vyrbus.model.bean.DetalleItinerario;
-import com.cystesoft.vyrbus.model.bean.MapaBus;
-import com.cystesoft.vyrbus.model.bean.Servicio;
-import com.cystesoft.vyrbus.model.bean.TmpOcupacionAsientos;
-import com.cystesoft.vyrbus.model.bean.TmpOcupacionAsientosID;
-import com.cystesoft.vyrbus.model.bean.Usuario;
-import com.cystesoft.vyrbus.model.bean.UsuarioHardware;
-import com.cystesoft.vyrbus.model.bean.VentaPasaje;
-import com.cystesoft.vyrbus.service.locator.ServiceLocator;
-import com.cystesoft.vyrbus.service.mappers.Asiento;
-import com.cystesoft.vyrbus.service.mappers.Cafeteria;
-import com.cystesoft.vyrbus.service.mappers.Coordenada;
-import com.cystesoft.vyrbus.service.mappers.Monitor;
-import com.cystesoft.vyrbus.service.mappers.SecuenciaTramo;
-import com.cystesoft.vyrbus.service.mappers.ServiciosHigienicos;
-import com.cystesoft.vyrbus.service.util.Constantes;
-import com.cystesoft.vyrbus.service.util.Messages;
-import com.cystesoft.vyrbus.service.util.Util;
-import com.cystesoft.vyrbus.service.util.UtilData;
-import com.cystesoft.vyrbus.view.ui.DlgMessage;
-import com.cystesoft.vyrbus.view.ui.WndBase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,6 +34,29 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Window;
 
+import com.cystesoft.vyrbus.model.bean.Bus;
+import com.cystesoft.vyrbus.model.bean.DetalleItinerario;
+import com.cystesoft.vyrbus.model.bean.MapaBus;
+import com.cystesoft.vyrbus.model.bean.Servicio;
+import com.cystesoft.vyrbus.model.bean.TmpOcupacionAsientos;
+import com.cystesoft.vyrbus.model.bean.TmpOcupacionAsientosID;
+import com.cystesoft.vyrbus.model.bean.Usuario;
+import com.cystesoft.vyrbus.model.bean.UsuarioHardware;
+import com.cystesoft.vyrbus.model.bean.VentaPasaje;
+import com.cystesoft.vyrbus.service.locator.ServiceLocator;
+import com.cystesoft.vyrbus.service.mappers.Asiento;
+import com.cystesoft.vyrbus.service.mappers.Cafeteria;
+import com.cystesoft.vyrbus.service.mappers.Coordenada;
+import com.cystesoft.vyrbus.service.mappers.Monitor;
+import com.cystesoft.vyrbus.service.mappers.SecuenciaTramo;
+import com.cystesoft.vyrbus.service.mappers.ServiciosHigienicos;
+import com.cystesoft.vyrbus.service.util.Constantes;
+import com.cystesoft.vyrbus.service.util.Messages;
+import com.cystesoft.vyrbus.service.util.Util;
+import com.cystesoft.vyrbus.service.util.UtilData;
+import com.cystesoft.vyrbus.view.ui.DlgMessage;
+import com.cystesoft.vyrbus.view.ui.WndBase;
+
 
 /**
  * @author Jose
@@ -66,33 +66,33 @@ public class WndVerMapaAvance extends WndBase {
 	private static final long serialVersionUID = 666325160644254381L;
 	private Window oThisWindow = this;
 	public final Grid oGrid    = new Grid();
-	
+
 	private String  prefijoAsiento ="";
 	private Long    idItinerario;
 	private Integer idRutaDetiti;
 	private Integer cantOcupados;
 	private Integer bus;
-	
+
 	private List<VentaPasaje>    lstOcupabilidad     = null;
 	private List<VentaPasaje>    lstVentas 	         = null; 		//Utilizado en el Transbordo de Pasajeros.
 	public  Map<String, Asiento> mapAsientosId       = null;
 	private Asiento              asientoSeleccionado = null;
 	private EventListener 		 oEventListenerFilter;
 	private Map<String, Asiento> mapaAsientos 		 = null;
-	
+
 	private static final String IMAGE_PRIMER_PISO = "resources/mapa/bus_primerPisoHor.png";
 	private static final String IMAGE_SEGUNDO_PISO = "resources/mapa/bus_segundoPisoHor.png";
 	private static final int    TIPO_ASIENTO = 0;
 	private static final int    TIPO_MONITOR = 1;
 	private static final int    TIPO_CAFETERIA = 2;
 //	private static final int    PISO_DOS = 2;
-	
+
 	private String key 			= "-1";
     private String previousKey  = "-1";
-	
+
     /**
 	 * Constructor
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public WndVerMapaAvance() throws Exception {
@@ -103,7 +103,7 @@ public class WndVerMapaAvance extends WndBase {
 
 	@Override
 	public void onCreate() throws Exception {
-		
+
 	}
 
 	@Override
@@ -120,42 +120,41 @@ public class WndVerMapaAvance extends WndBase {
 
 	/**
 	 * Carga el Mapa
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@SuppressWarnings("deprecation")
 	public void load(Boolean esVisibleInfoBus, Boolean esVisibleOcupabilidad, Boolean esVisibleLeyenda, Boolean esVisibleButtons ) throws Exception {
 		/* Busca itinerario para la carga del Mapa */
 		List<DetalleItinerario> list = ServiceLocator.getItinerarioManager().buscarItinerariosMantenimiento(new Long(getIdItinerario()),"", "", "", "", "","","");
-//		DetalleItinerario detalleItinerario = new DetalleItinerario();		
+//		DetalleItinerario detalleItinerario = new DetalleItinerario();
 		DetalleItinerario odeti = new DetalleItinerario();
-		for (int i=0; i<list.size(); i++ ){
-			DetalleItinerario detalleItinerario = list.get(i);						
+		for (DetalleItinerario detalleItinerario : list) {
 			if( detalleItinerario.getRuta().getId().equals(getIdRutaDetiti())) {
-				odeti = list.get(i);				
+				odeti = detalleItinerario;
 				break;
 			}
-				
-		}		
-		DetalleItinerario detalleItinerario = odeti;								
+
+		}
+		DetalleItinerario detalleItinerario = odeti;
 		// DetalleItinerario detalleItinerario = list.get(0);
-		
+
 		Caption caption = null;
-		
+
 //		String styleMovil11f = "font-size: 11px !important; color:#ec6827";
-		
+
 		/* ------------------ CONTENEDOR DE OBJETOS --------------------- */
 		Grid grdContenedor = new Grid();
 		grdContenedor.setStyle("padding:0px; border:none");
 		Columns columns = new Columns();
-		Column column = new Column(); 
+		Column column = new Column();
 		column.setWidth("686px");
 		columns.appendChild(column);
 //		column = new Column();
 ////		column.setWidth("274px");
 //		columns.appendChild(column);
 		grdContenedor.appendChild(columns);
-		
+
 		Rows rowsContenedor = new Rows();
 		Row rowContenedor = new Row();
 		rowContenedor.setValign("top");
@@ -164,39 +163,39 @@ public class WndVerMapaAvance extends WndBase {
 		rowContenedor2.setValign("top");
 		rowsContenedor.appendChild(rowContenedor2);
 		grdContenedor.appendChild(rowsContenedor);
-		
-		
+
+
 		Bus bus = null;
-		if (detalleItinerario.getItinerario().getBus().getId() != null) 
+		if (detalleItinerario.getItinerario().getBus().getId() != null)
 			bus = ServiceLocator.getBusManager().buscarPorId(detalleItinerario.getItinerario().getBus().getId().longValue());
-		
-		Integer capacidad = detalleItinerario.getItinerario().getServicio().getNumeroAsientosPiso1() + (detalleItinerario.getItinerario().getServicio().getNumeroAsientosPiso2()==null?0:detalleItinerario.getItinerario().getServicio().getNumeroAsientosPiso2());
+
+		int capacidad = detalleItinerario.getItinerario().getServicio().getNumeroAsientosPiso1() + (detalleItinerario.getItinerario().getServicio().getNumeroAsientosPiso2()==null?0:detalleItinerario.getItinerario().getServicio().getNumeroAsientosPiso2());
 //		String strServicio = detalleItinerario.getItinerario().getServicio().getDenominacion();
-		
+
 		String infoBus = "";
-		
+
 		if(bus!=null) {
 			infoBus = "INFORMACION DEL BUS ---> MARCA: " + bus.getGrupoMantenimiento().getDenominacion();
 			infoBus += " --> N° BUS: "+ bus.getCodigo();
 			infoBus += " --> PLACA: "+ bus.getNumeroPlaca().toUpperCase();
 		}else
 			infoBus = "INFORMACION DEL BUS ---> MARCA: MOVIL --> N° BUS: N/A --> PLACA: AAA-000";
-		
-		infoBus += " --> CAPACIDAD: "+capacidad.toString();//+" --> SERVICIO:"+strServicio;
-		
-		
-		
-		// ------------------ MAPA DEL BUS	--------------------- 
+
+		infoBus += " --> CAPACIDAD: "+Integer.toString(capacidad);//+" --> SERVICIO:"+strServicio;
+
+
+
+		// ------------------ MAPA DEL BUS	---------------------
 		Groupbox grpMapa = new Groupbox();
 		grpMapa.setMold("3d");
 		caption = new Caption();
 		caption.setLabel(infoBus);
 		caption.setStyle("font-weight:bold !important; font-size: 15px !important; color:#ffffff");
 		grpMapa.appendChild(caption);
-		
+
 		crearEstructura(detalleItinerario.getItinerario().getServicio().getId(), grpMapa, false, detalleItinerario, mapAsientosId, null);//, gridPiso,"manifiesto",false);
 		rowContenedor.appendChild(grpMapa);
-		
+
 		/* ------------------ INFORMACION DEL BUS --------------------- */
 		Grid grdContenedorInfo = new Grid();
 		grdContenedorInfo.setStyle("border:none");
@@ -207,34 +206,34 @@ public class WndVerMapaAvance extends WndBase {
 		colum = new Column();
 		columns2.appendChild(colum);
 		grdContenedorInfo.appendChild(columns2);
-		
+
 		Rows rowsContenedorInfo = new Rows();
 		Row rowContenedorInfo = null;
-		
+
 		rowContenedorInfo = new Row();
 		rowContenedorInfo.setValign("top");
 		Rows rows = new Rows();
 		Row row = null;
 		Label label = null;
-		
+
 		/* ------------------ Leyenda	------------------ */
-		Groupbox grpLeyenda = new Groupbox(); 
+		Groupbox grpLeyenda = new Groupbox();
 		grpLeyenda.setMold("3d");
 		grpLeyenda.setClosable(false);
 		grpLeyenda.setVisible(esVisibleLeyenda);
 		caption = new Caption("LEYENDA DE IMAGENES");
 		caption.setStyle("font-weight:bold !important; font-size: 15px !important; color:#ffffff");
 		grpLeyenda.appendChild(caption);
-		
+
 		Grid grdLeyenda = new Grid();
 		grdLeyenda.setStyle("border:none");
 		rows = new Rows();
-		
-		
+
+
 		Image image = null;
 		Hbox hboxRow = null;
 		Hbox hboxObjeto = null;
-		
+
 		row = new Row();
 		hboxRow = new Hbox();
 		hboxRow.setAlign("center");
@@ -251,7 +250,7 @@ public class WndVerMapaAvance extends WndBase {
 		hboxObjeto.setWidth("100px");
 		hboxObjeto.appendChild(label);
 		hboxRow.appendChild(hboxObjeto);
-		
+
 		hboxObjeto = new Hbox();
 		hboxObjeto.setAlign("center");
 		hboxObjeto.setWidth("35px");
@@ -264,7 +263,7 @@ public class WndVerMapaAvance extends WndBase {
 		hboxObjeto.setWidth("100px");
 		hboxObjeto.appendChild(label);
 		hboxRow.appendChild(hboxObjeto);
-		
+
 		hboxObjeto = new Hbox();
 		hboxObjeto.setAlign("center");
 		hboxObjeto.setWidth("35px");
@@ -277,10 +276,10 @@ public class WndVerMapaAvance extends WndBase {
 		hboxObjeto.setWidth("100px");
 		hboxObjeto.appendChild(label);
 		hboxRow.appendChild(hboxObjeto);
-		
+
 		row.appendChild(hboxRow);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		hboxRow = new Hbox();
 		hboxRow.setAlign("center");
@@ -297,7 +296,7 @@ public class WndVerMapaAvance extends WndBase {
 		hboxObjeto.setWidth("100px");
 		hboxObjeto.appendChild(label);
 		hboxRow.appendChild(hboxObjeto);
-		
+
 		hboxObjeto = new Hbox();
 		hboxObjeto.setAlign("center");
 		hboxObjeto.setWidth("35px");
@@ -310,7 +309,7 @@ public class WndVerMapaAvance extends WndBase {
 		hboxObjeto.setWidth("100px");
 		hboxObjeto.appendChild(label);
 		hboxRow.appendChild(hboxObjeto);
-		
+
 		hboxObjeto = new Hbox();
 		hboxObjeto.setAlign("center");
 		hboxObjeto.setWidth("35px");
@@ -323,10 +322,10 @@ public class WndVerMapaAvance extends WndBase {
 		hboxObjeto.setWidth("100px");
 		hboxObjeto.appendChild(label);
 		hboxRow.appendChild(hboxObjeto);
-		
+
 		row.appendChild(hboxRow);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		hboxRow = new Hbox();
 		hboxRow.setAlign("center");
@@ -355,7 +354,7 @@ public class WndVerMapaAvance extends WndBase {
 		hboxObjeto.setWidth("100px");
 		hboxObjeto.appendChild(label);
 		hboxRow.appendChild(hboxObjeto);
-		
+
 		hboxObjeto = new Hbox();
 		hboxObjeto.setAlign("center");
 		hboxObjeto.setWidth("35px");
@@ -368,28 +367,28 @@ public class WndVerMapaAvance extends WndBase {
 		hboxObjeto.setWidth("100px");
 		hboxObjeto.appendChild(label);
 		hboxRow.appendChild(hboxObjeto);
-		
+
 		row.appendChild(hboxRow);
 		rows.appendChild(row);
-		
-		
+
+
 
 		grdLeyenda.appendChild(rows);
 		grpLeyenda.appendChild(grdLeyenda);
 		rowContenedorInfo.appendChild(grpLeyenda);
 		rowsContenedorInfo.appendChild(rowContenedorInfo);
-		
-		
+
+
 		/* ------------------ PASAJEROS POR TRAMO ------------------ */
 //		rowContenedorInfo = new Row();
-		Groupbox grpOcupabilidad = new Groupbox(); 
+		Groupbox grpOcupabilidad = new Groupbox();
 		grpOcupabilidad.setMold("3d");
 		grpOcupabilidad.setVisible(esVisibleOcupabilidad);
 		grpOcupabilidad.setClosable(false);
 		caption = new Caption();
 		caption.setLabel("CANTIDAD PASAJEROS X RUTAS");
 		grpOcupabilidad.appendChild(caption);
-		
+
 		Grid grdOcupabilidad = new Grid();
 //		grdOcupabilidad.setStyle("border:none");
 		Columns columnsRuta = new Columns();
@@ -401,18 +400,18 @@ public class WndVerMapaAvance extends WndBase {
 		columnsRuta.appendChild(columnRuta);
 		grdOcupabilidad.appendChild(columnsRuta);
 		rows = new Rows();
-		
-		Map<String, Integer> mapOcupacionRutas = new HashMap<String, Integer>();
-		for(int i=0; i<getLisOcupabilidad().size();i++) {
-			String key = getLisOcupabilidad().get(i).getRuta().getOrigen()+" - "+getLisOcupabilidad().get(i).getRuta().getDestino();
+
+		Map<String, Integer> mapOcupacionRutas = new HashMap<>();
+		for (VentaPasaje element : getLisOcupabilidad()) {
+			String key = element.getRuta().getOrigen()+" - "+element.getRuta().getDestino();
 			Integer cant = 0;
 			if(mapOcupacionRutas.get(key)!=null) {
-				cant = mapOcupacionRutas.get(key) + getLisOcupabilidad().get(i).getCantidadPax();
+				cant = mapOcupacionRutas.get(key) + element.getCantidadPax();
 				mapOcupacionRutas.put(key, cant);
 			}else
-				mapOcupacionRutas.put(key, getLisOcupabilidad().get(i).getCantidadPax());
+				mapOcupacionRutas.put(key, element.getCantidadPax());
 		}
-		
+
 		for(String key : mapOcupacionRutas.keySet()) {
 			row = new Row();
 			label = new Label(key);
@@ -420,15 +419,15 @@ public class WndVerMapaAvance extends WndBase {
 			label = new Label(": " + mapOcupacionRutas.get(key));
 			label.setStyle("font-size:11px !important");
 			row.appendChild(label);
-			rows.appendChild(row);			
-		}	
-		
+			rows.appendChild(row);
+		}
+
 		grdOcupabilidad.appendChild(rows);
 		grpOcupabilidad.appendChild(grdOcupabilidad);
 		rowContenedorInfo.appendChild(grpOcupabilidad);
 		rowsContenedorInfo.appendChild(rowContenedorInfo);
-		
-		
+
+
 		/* 	------------------------ Grid de Botones 	---------------------------	*/
 		rowContenedorInfo = new Row();
 		rowContenedorInfo.setSpans("2");
@@ -436,7 +435,7 @@ public class WndVerMapaAvance extends WndBase {
 		grdBotones.setStyle("border:none");
 		rows = new Rows();
 		row = new Row();
-		
+
 		Button buttonRefresh = new Button();
 		buttonRefresh.setLabel("Refrescar");
 		buttonRefresh.setHeight("30px");
@@ -446,7 +445,7 @@ public class WndVerMapaAvance extends WndBase {
 		buttonRefresh.setClass("btn-movil");
 		buttonRefresh.setVisible(false);
 		row.appendChild(buttonRefresh);
-		
+
 		Button buttonAceptar = new Button();
 		buttonAceptar.setLabel("Cerrar");
 		buttonAceptar.setVisible(esVisibleInfoBus);
@@ -456,8 +455,8 @@ public class WndVerMapaAvance extends WndBase {
 		buttonAceptar.setClass("btnCommandS");
 		row.appendChild(buttonAceptar);
 		rows.appendChild(row);
-		
-		
+
+
 		/*Validacion del numero de pisos del bus para la aliniación.*/
 //		if (detalleItinerario.getItinerario().getServicio().getNumeroPisos().equals(PISO_DOS)){
 //			grdBotones.setHeight("140px");
@@ -466,16 +465,16 @@ public class WndVerMapaAvance extends WndBase {
 //			row = new Row();
 //			row.setSpans("2");
 //			row.appendChild(separator);
-//			rows.appendChild(row);			
+//			rows.appendChild(row);
 ////		}else{
-////			grdSegundoPiso.setHeight("448px"); 
+////			grdSegundoPiso.setHeight("448px");
 ////			Separator separator = new Separator();separator.setHeight("38px");
-////			rowMB2.appendChild(separator);		
+////			rowMB2.appendChild(separator);
 //		}
 		grdBotones.appendChild(rows);
 		rowContenedorInfo.appendChild(grdBotones);
 		rowsContenedorInfo.appendChild(rowContenedorInfo);
-		
+
 		grdContenedorInfo.appendChild(rowsContenedorInfo);
 		rowContenedor2.appendChild(grdContenedorInfo);
 
@@ -500,7 +499,7 @@ public class WndVerMapaAvance extends WndBase {
 		});
 
 	}
-	
+
 //	private Label createLabel(String value, String style, String sclass){
 //		Label label = new Label(value);
 //		if(style!=null)
@@ -509,57 +508,57 @@ public class WndVerMapaAvance extends WndBase {
 //			label.setClass(sclass);
 //		return label;
 //	}
-	
+
 //	/**
 //	 * Crea la estructura del mapa del Bus
 //	 * @param idServicio		: Identificador del servicio
 //	 * @param grpbxParent		: objeto GroupBox
 //	 * @param esRetorno			: indica si es retorno
 //	 * @param detalleItinerario	: objeto DetalleItinerario
-//	 * @param mapaAsientos		: 
+//	 * @param mapaAsientos		:
 //	 * @param gridOcupabilidad	: objeto Grid donde se mostrara el mapa del bus
 //	 * @param gridPiso			: objeto Grid Utilizado para los transbordos(diferenciar las variables definidad para cada mapa)
 //	 * @param identifica		: Utilizado para los transbordos(diferenciar las variables definidad para cada mapa)
 //	 */
 //	@SuppressWarnings({ "deprecation","unchecked" })
-//	public void crearEstructura(Integer idServicio, Groupbox grpbxParent, boolean esRetorno, final DetalleItinerario detalleItinerario, Map<String, Asiento> mapaAsientos, 
+//	public void crearEstructura(Integer idServicio, Groupbox grpbxParent, boolean esRetorno, final DetalleItinerario detalleItinerario, Map<String, Asiento> mapaAsientos,
 //								final Grid gridOcupabilidad, Grid gridPiso, String identifica,final Boolean isTransbordo){
-//		try{			
+//		try{
 //			/*Retorna el numero de asiento seleccionado*/
 //			EventListener selectedEventListener = new EventListener<Event>() {
 //				@Override
 //				public void onEvent(Event event) throws Exception {
 //					if (event.getTarget() instanceof Asiento) {
 //						if(oEventListenerFilter !=null){
-//							asientoSeleccionado=(Asiento)event.getTarget();	
+//							asientoSeleccionado=(Asiento)event.getTarget();
 //							oEventListenerFilter.onEvent(new Event(com.movilgroup.sispas.view.ui.Events.ON_SELECT));
 //						}
 //					}
 //				}
 //			};
-//		
+//
 //			Servicio servicio = null;
 //			// ac - 12/09/2016 -- Cambiaremos los items de mapeo para diferencias los tipos de tarifas.
-////			List<MapaBus> lstMapaBus = ServiceLocator.getMapaBusManager().buscarMapaBus(idServicio, Constantes.VALUE_ACTIVO);															
+////			List<MapaBus> lstMapaBus = ServiceLocator.getMapaBusManager().buscarMapaBus(idServicio, Constantes.VALUE_ACTIVO);
 //			DetalleItinerario tmpdetalleItinerario = new DetalleItinerario();
 //			tmpdetalleItinerario = detalleItinerario;
-//			Itinerario tmpitinerario = new Itinerario(); 
-//			tmpitinerario = ServiceLocator.getItinerarioManager().buscarPorId(detalleItinerario.getItinerario().getId());		   		    		    
+//			Itinerario tmpitinerario = new Itinerario();
+//			tmpitinerario = ServiceLocator.getItinerarioManager().buscarPorId(detalleItinerario.getItinerario().getId());
 //			// canal de id : 3 (Solo el canal de counter )
-//		    tmpdetalleItinerario = ServiceLocator.getDetalleItinerarioManager().validarxQueryxItinerario(tmpitinerario, tmpdetalleItinerario.getRuta(), 3 ,Constantes.FORMAT_DATE.format(tmpdetalleItinerario.getFechaPartida()));						
+//		    tmpdetalleItinerario = ServiceLocator.getDetalleItinerarioManager().validarxQueryxItinerario(tmpitinerario, tmpdetalleItinerario.getRuta(), 3 ,Constantes.FORMAT_DATE.format(tmpdetalleItinerario.getFechaPartida()));
 //			// List<MapaBus> lstMapaBus = ServiceLocator.getMapaBusManager().buscarMapaBusxTipoTarifario(idServicio, detalleItinerario, Constantes.VALUE_ACTIVO);
-//		    List<MapaBus> lstMapaBus = ServiceLocator.getMapaBusManager().buscarMapaBusxTipoTarifario(idServicio, tmpdetalleItinerario, Constantes.VALUE_ACTIVO);			
-//			
-//			
+//		    List<MapaBus> lstMapaBus = ServiceLocator.getMapaBusManager().buscarMapaBusxTipoTarifario(idServicio, tmpdetalleItinerario, Constantes.VALUE_ACTIVO);
+//
+//
 //			Map<Coordenada, MapaBus> mapCoordenadas = new HashMap<Coordenada, MapaBus>();
 //			for(MapaBus mapaBus : lstMapaBus){
 //				Coordenada coordenada = new Coordenada(mapaBus.getNumeroFila(), mapaBus.getNumeroColumna(), mapaBus.getNumeroPiso());
 //				mapCoordenadas.put(coordenada, mapaBus);
 //			}
-//			
+//
 //			if(lstMapaBus.size()>0)
 //				servicio = lstMapaBus.get(0).getServicio();
-//			
+//
 //			int nPisos = servicio.getNumeroPisos();
 //			int nFilas = servicio.getNumeroFilasPiso1();
 //			int nColumnas = servicio.getNumeroColumnasPiso1();
@@ -567,14 +566,14 @@ public class WndVerMapaAvance extends WndBase {
 //			if(esRetorno)
 //				prefijoAsiento = "imgAsientoRetornoPiso1_"+identifica;
 //			Integer numeroAsiento = 0;
-//			
+//
 //			inicializarEstructura(grpbxParent);
-//			
+//
 //			Image imagen = generarImagen(IMAGE_PRIMER_PISO, 43, 154);
-//			
+//
 //			mapaAsientos = new HashMap<String, Asiento>();
 //			this.mapaAsientos = new HashMap<String, Asiento>();
-//			
+//
 //			for(int i=0; i<nPisos; i++){
 //				String idGrid = "grdIdaPiso1"+identifica;
 //				if(i==1){
@@ -587,14 +586,14 @@ public class WndVerMapaAvance extends WndBase {
 //						idGrid = "grdRetornoPiso2";
 //					}
 //					imagen = generarImagen(IMAGE_SEGUNDO_PISO, 34, 154);
-//					
+//
 //				}
 //				gridPiso = new Grid();
 //				gridPiso.setId(idGrid);
 //				gridPiso.setStyle("border:none;background:#f5af42");
 //				gridPiso.setHeight("154px");
-//				
-//				
+//
+//
 //				Rows rows = new Rows();
 //				Row row = new Row();
 ////				row.setSpans(String.valueOf(nColumnas));
@@ -605,33 +604,33 @@ public class WndVerMapaAvance extends WndBase {
 //				for(int j=0; j<nColumnas; j++){
 //					if(j!=0)
 //						row = new Row();
-//					
+//
 //					for(int k=0; k<nFilas; k++){
 //						Div oDiv = new Div();
 //						oDiv.setWidth("28px");
 //						oDiv.setHeight("28px");
 //						oDiv.setStyle("padding:none");
-//						
+//
 //						String coordenadaActual = j+"-"+k+"-"+i;
-//						
+//
 //						for(Coordenada coordenada : mapCoordenadas.keySet()){
 //							if(coordenada.toString().equals(coordenadaActual)){
 //								MapaBus objetoBus = mapCoordenadas.get(coordenada);
-//								
+//
 //								HashMap<String, String> propiedades = new HashMap<String, String>();
 //								numeroAsiento++;
-//								
+//
 //								if(objetoBus.getTipoObjeto().intValue()==TIPO_ASIENTO){
 //									Asiento asiento = new Asiento();
-//									asiento.addEventListener(Events.ON_CLICK, selectedEventListener);										
-//								
+//									asiento.addEventListener(Events.ON_CLICK, selectedEventListener);
+//
 //									asiento.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 //										public void onEvent(Event e){
 //											if(isTransbordo)
 //													onClickAsiento(e,detalleItinerario,gridOcupabilidad );
 //										}
 //									});
-//									
+//
 //									propiedades.put("ocupante", "pasajero");
 //									asiento.setId(prefijoAsiento + objetoBus.getNumeroAsiento());
 //									asiento.setOcupante(Asiento.OCUPANTE_PASAJERO);
@@ -640,10 +639,10 @@ public class WndVerMapaAvance extends WndBase {
 //									asiento.setColumna(k);
 //									asiento.setPiso(i);
 //									asiento.setNumeroAsiento(objetoBus.getNumeroAsiento());
-//									// ac- 12/09/2016 -- Agregamos la tarifa y los tipos de tarifa de cada asiento.									
+//									// ac- 12/09/2016 -- Agregamos la tarifa y los tipos de tarifa de cada asiento.
 //									asiento.setTiposTarifa(objetoBus.getTiposTarifa());
 //									asiento.setTarifa(objetoBus.getTarifa());
-//									asiento.setSrc(objetoBus.getPathImagen());								
+//									asiento.setSrc(objetoBus.getPathImagen());
 //									asiento.setPropiedades(propiedades);
 //									asiento.setDraggable("true");
 //									asiento.setDetalleItinerario(detalleItinerario);
@@ -680,7 +679,7 @@ public class WndVerMapaAvance extends WndBase {
 //									sshh.setSrc(objetoBus.getPathImagen());
 //									sshh.setPropiedades(propiedades);
 //									oDiv.appendChild(sshh);
-//									
+//
 //								}
 //								break;
 //							}
@@ -697,19 +696,19 @@ public class WndVerMapaAvance extends WndBase {
 ////					mapaAsientosRetorno = mapaAsientos;
 ////				else
 //					mapAsientosId = mapaAsientos;
-//					
-//					
-//					
-//					
+//
+//
+//
+//
 //			}
 //		}catch(Exception ex){
 //			ex.printStackTrace();
 //		}
 //	}
-//  
+//
 
 	/**
-	 * Crea la estructura que va a contener el Mapa del Bus.	 * 
+	 * Crea la estructura que va a contener el Mapa del Bus.	 *
 	 * @param idServicio		: Identificador del servicio.
 	 * @param grpbxParent		: Objeto padre contenedor.
 	 * @param esRetorno			: Indica si el mapa es de ida o retorno.
@@ -725,7 +724,7 @@ public class WndVerMapaAvance extends WndBase {
 			List<MapaBus> lstMapaBus = ServiceLocator.getMapaBusManager().buscarMapaBusHorizontal(idServicio, Constantes.VALUE_ACTIVO);
 			// Creamos un Map el cual tendra como key un objeto coordenada y como valor el objeto MapaBus esto es deacuerdo
 			// a lo que tenemos en la Base de datos
-			Map<Coordenada, MapaBus> mapCoordenadas = new HashMap<Coordenada, MapaBus>();
+			Map<Coordenada, MapaBus> mapCoordenadas = new HashMap<>();
 			for (MapaBus mapaBus : lstMapaBus) {
 				Coordenada coordenada = new Coordenada(mapaBus.getNumeroFila(), mapaBus.getNumeroColumna(), mapaBus.getNumeroPiso());
 				mapCoordenadas.put(coordenada, mapaBus);
@@ -740,12 +739,12 @@ public class WndVerMapaAvance extends WndBase {
 			prefijoAsiento = "imgAsientoIdaPiso1_";
 			if (esRetorno)
 				prefijoAsiento = "imgAsientoRetornoPiso1_";
-			Integer numeroAsiento = 0;
+			int numeroAsiento = 0;
 			// ac -- 21/12/2016 :: AGREGO LA POSICION DEL CROQUIS
 			inicializarEstructura(grpbxParent);
 			Image imagen = generarImagen(IMAGE_PRIMER_PISO, 43, 170);
 
-			mapaAsientos = new HashMap<String, Asiento>();
+			mapaAsientos = new HashMap<>();
 			Hlayout ohlayout = new Hlayout();
 
 			/* Recorremos la cantidad de pisos del servicio */
@@ -803,7 +802,7 @@ public class WndVerMapaAvance extends WndBase {
 								// Obtenemos el objeto y empezamos a setear las
 								// imagenes
 								MapaBus objetoBus = mapCoordenadas.get(coordenada);
-								HashMap<String, String> propiedades = new HashMap<String, String>();
+								HashMap<String, String> propiedades = new HashMap<>();
 								numeroAsiento++;
 
 								// Verificamos que el objeto sea del tipo
@@ -893,8 +892,8 @@ public class WndVerMapaAvance extends WndBase {
 			log.error(ex);
 		}
 	}
-	
-	
+
+
 	/**
 	 * Evento utilizado cuando el usuario hace click en un asiento.
 	 * @param e					: Evento
@@ -903,11 +902,11 @@ public class WndVerMapaAvance extends WndBase {
 	 * @param esIda				: Indica si es Ida o retorno.
 	 */
 	private void onClickAsiento(Event e,DetalleItinerario detalleItinerario, Grid gridOcupabilidad){
-		Asiento asientoSeleccionado =(Asiento)e.getTarget();		
-		previousKey = key;				
-		
+		Asiento asientoSeleccionado =(Asiento)e.getTarget();
+		previousKey = key;
+
 		key = asientoSeleccionado.getKey();
-		
+
 		/*	Elimina el asiento de la lista de asientos seleccionados y desbloquea el asiento*/
 		if(removerAsientoSeleccionado(previousKey, key,detalleItinerario)){
 			return;
@@ -942,7 +941,7 @@ public class WndVerMapaAvance extends WndBase {
 				tmpOcupacionAsientosID.setIdItinerario(tmpOcupacionAsientos.getItinerario().getId());
 				tmpOcupacionAsientosID.setNumeroAsiento(tmpOcupacionAsientos.getNumeroAsiento());
 				tmpOcupacionAsientos.setTmpOcupacionAsientosID(tmpOcupacionAsientosID);
-				
+
 				int result = ServiceLocator.getTmpOcupacionAsientosManager().bloquearAsiento(tmpOcupacionAsientos);
 				if(result < 0){
 					DlgMessage.information(Messages.getString("WndVentaReserva.information.asientoBloqueado"));
@@ -954,15 +953,15 @@ public class WndVerMapaAvance extends WndBase {
 					mapaAsientos.get(key).setEstadoAsiento(Constantes.ASIENTO_BLOQUEADO);
 					/*	Esto es para desbloquear el asiento en caso seleccione otro asiento sin haber cerrado la ventana del mapa	*/
 					if(!previousKey.equals("-1") && !previousKey.equals(key)){
-						String[] buffer = previousKey.split("-");	//Almacenamos en un array el asiento y el piso						
+						String[] buffer = previousKey.split("-");	//Almacenamos en un array el asiento y el piso
 						TmpOcupacionAsientos tmpOcupacion = new TmpOcupacionAsientos();
 						tmpOcupacion.setRuta(detalleItinerario.getRuta());
 						tmpOcupacion.setItinerario(detalleItinerario.getItinerario());
 						tmpOcupacion.setNumeroAsiento(Integer.valueOf(buffer[0]));
 						tmpOcupacion.setNumeroPiso(Integer.valueOf(buffer[1]));
-						ServiceLocator.getTmpOcupacionAsientosManager().desbloquearAsiento(tmpOcupacion);																		
+						ServiceLocator.getTmpOcupacionAsientosManager().desbloquearAsiento(tmpOcupacion);
 						// ac - 12/09/2016 ::
-						mapaAsientos.get(previousKey).setSrc(Constantes.PATH_PARTIAL+"asientoDisponible_"+buffer[0]+Constantes.IMAGE_EXTENSION);						   									
+						mapaAsientos.get(previousKey).setSrc(Constantes.PATH_PARTIAL+"asientoDisponible_"+buffer[0]+Constantes.IMAGE_EXTENSION);
 						mapaAsientos.get(previousKey).setEstadoAsiento(Constantes.ASIENTO_DISPONIBLE);
 					}
 				}
@@ -976,7 +975,7 @@ public class WndVerMapaAvance extends WndBase {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Realiza la eliminacion del asiento seleccionado y luego lo desbloquea.
 	 * @param seatSelected	: Asiento seleccionado.
@@ -985,11 +984,11 @@ public class WndVerMapaAvance extends WndBase {
 	private boolean removerAsientoSeleccionado(String previusKey, String key, DetalleItinerario detalleItinerario){
 		try{
 			String[] buffer = key.split("-");	//Almacenamos en un array el asiento y el piso
-			if(previusKey.equals(key)){		
+			if(previusKey.equals(key)){
 				if(mapaAsientos.get(key).getEstadoAsiento().intValue()==Constantes.ASIENTO_BLOQUEADO){
 					mapaAsientos.get(key).setEstadoAsiento(Constantes.ASIENTO_DISPONIBLE);
 					mapaAsientos.get(key).setSrc(Constantes.ICON_DISPONIBLE+buffer[0]+Constantes.IMAGE_EXTENSION);
-					
+
 					TmpOcupacionAsientos tmpOcupacion = new TmpOcupacionAsientos();
 					tmpOcupacion.setRuta(detalleItinerario.getRuta());
 					tmpOcupacion.setItinerario(detalleItinerario.getItinerario());
@@ -998,14 +997,14 @@ public class WndVerMapaAvance extends WndBase {
 					ServiceLocator.getTmpOcupacionAsientosManager().desbloquearAsiento(tmpOcupacion);
 					return true;
 				}else
-					return false;				
+					return false;
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Consulta si el asiento esta bloqueado.
 	 * @param key	: Clave a buscar en el mapa de asientos.
@@ -1031,7 +1030,7 @@ public class WndVerMapaAvance extends WndBase {
 //		return padding;
 //	}
 
-	
+
 	/**
 	 * Realiza el refresco del mapa del bus.
 	 * @param mapa				: Mapa de asientos
@@ -1040,11 +1039,11 @@ public class WndVerMapaAvance extends WndBase {
 	@SuppressWarnings("unchecked")
 	public void onRefreshMapaAsientos(Map<String, Asiento> mapaAsientos, DetalleItinerario detalleItinerario, Grid gridOcupabilidad){
 		try{
-						
+
 			onCleanMap(mapaAsientos);
 			/* Obtenemos el subconjunto que queremos buscar segun la ruta seleccioanda */
 			List<Integer> subConjuntoBuscar = obtenerSubconjunto(detalleItinerario.getItinerario().getListSecuenciaTramo(), detalleItinerario.getRuta().getLocalidadOrigen().getId(), detalleItinerario.getItinerario().getRuta().getLocalidadDestino().getId());
-			
+
 			lstVentas = ServiceLocator.getVentaPasajesManager().buscarVentasForMapaBus(detalleItinerario.getItinerario().getId());
 			lstVentas = obtenerConjuntos(lstVentas, detalleItinerario.getItinerario().getListSecuenciaTramo());
 			if(lstVentas.size()>0){
@@ -1056,7 +1055,7 @@ public class WndVerMapaAvance extends WndBase {
 							//if(mapaAsientos.containsKey(key)){
 							Asiento asiento = mapaAsientos.get(key);
 							/*	Para identificar si la venta es completa o es un tramo	*/
-							
+
 							if(venta.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA)){
 								if(venta.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA && venta.getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_CORTESIA)
 									asiento.setSrc(Constantes.ASIENTO_AVANCE_CORTESIA+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
@@ -1082,16 +1081,16 @@ public class WndVerMapaAvance extends WndBase {
 							}
 							asiento.setTooltiptext(venta.getRuta().toString()+"\n"+venta.getPasajero().toString()+"\n"+"PRECIO : S/. "+venta.getImportePagado().toString());
 							break;
-						}	
+						}
 					}
 					/*	Para identificar las prioridades del tramos para la venta	*/
 					if(venta.getRuta().getLocalidadDestino().getId() == detalleItinerario.getRuta().getLocalidadOrigen().getId()){
 						Asiento asiento = mapaAsientos.get(key);
-						asiento.setSrc(Constantes.ICON_SEMI_OCUPADO+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);								
+						asiento.setSrc(Constantes.ICON_SEMI_OCUPADO+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
 					}
 				}
-			}			
-			
+			}
+
 			/*	BUSCAMOS LOS ASIENTOS QUE ESTEN BLOQUEADOS PARA EL ITINERARIO SELECCIONADO	*/
 			List<TmpOcupacionAsientos> lstBloqueados = ServiceLocator.getTmpOcupacionAsientosManager().buscarAsientosBloqueados(detalleItinerario.getItinerario().getId());
 			lstBloqueados = obtenerConjuntos(lstBloqueados, detalleItinerario.getItinerario().getListSecuenciaTramo());
@@ -1114,7 +1113,7 @@ public class WndVerMapaAvance extends WndBase {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Obtine los subconjuntos de un registro de venta, tmpocupacion o de la
 	 * ruta que estamos buscando.
@@ -1126,7 +1125,7 @@ public class WndVerMapaAvance extends WndBase {
 	private List<Integer> obtenerSubconjunto(
 			List<SecuenciaTramo> lstSecuencias, Integer idOrigen,
 			Integer idDestino) {
-		List<Integer> lstSubconjunto = new ArrayList<Integer>();
+		List<Integer> lstSubconjunto = new ArrayList<>();
 		/* Recorremos la secuencia de tramos del itinerario */
 		for (int j = 0; j < lstSecuencias.size(); j++) {
 			SecuenciaTramo secuencia = lstSecuencias.get(j);
@@ -1180,8 +1179,8 @@ public class WndVerMapaAvance extends WndBase {
 		}
 		return result;
 	}
-	
-	
+
+
 	/**
 	 * Inicializa(limpia los objetos existentes) el contenedor de los asientos.
 	 */
@@ -1192,7 +1191,7 @@ public class WndVerMapaAvance extends WndBase {
 				groupbox.removeChild(component);
 		}
 	}
-	
+
 
 	/**
 	 * Genera el objeto imagen para los pisos del bus
@@ -1208,7 +1207,7 @@ public class WndVerMapaAvance extends WndBase {
 		imagen.setHeight(String.valueOf(height)+"px");
 		return imagen;
 	}
-	
+
 	@Override
 	public boolean addEventListener(String evtnm, EventListener<? extends Event> listener) {
 		boolean resultadoEvento = true;
@@ -1220,11 +1219,11 @@ public class WndVerMapaAvance extends WndBase {
 		}
 		return resultadoEvento;
 	}
-	
+
 	public List<VentaPasaje>getLstVentas(){
 		return this.lstVentas;
 	}
-	
+
 	/**
 	 * @return Objeto idItinerario.
 	 */
@@ -1268,29 +1267,29 @@ public class WndVerMapaAvance extends WndBase {
 	public void setBus(Integer bus) {
 		this.bus = bus;
 	}
-	
+
 	public List<VentaPasaje> getLisOcupabilidad(){
 		return lstOcupabilidad;
 	}
-	
+
 	public void setListOcupabilidad(List<VentaPasaje> lisOpabilidad){
 		this.lstOcupabilidad=lisOpabilidad;
 	}
-	
+
 	public void  setAsientoSeleccionado(Asiento asientoSeleccionado){
 		this.asientoSeleccionado=asientoSeleccionado;
 	}
-	
+
 	public Asiento getAsientoSeleccionado(){
 		return asientoSeleccionado;
 	}
-	
+
 	public List<VentaPasaje> getListVentas(){
 		return lstVentas;
 	}
 
-	
-	
+
+
 	public Integer getIdRutaDetiti() {
 		return idRutaDetiti;
 	}
@@ -1305,10 +1304,10 @@ public class WndVerMapaAvance extends WndBase {
 	public void onCleanMap(Map<String, Asiento> mapa){
 		for(String key : mapa.keySet()){
 			Asiento asiento = mapa.get(key);
-			// ac -- 12/09/2016			
+			// ac -- 12/09/2016
 			// asiento.setSrc(Constantes.ICON_DISPONIBLE+asiento.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
-//			if (asiento.getTiposTarifa() == Constantes.TIPO_TARIFARIO_INSUPERABLE ){				
-//				asiento.setSrc(Constantes.ICON_DISPONIBLE_INSUPERABLE+asiento.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);				
+//			if (asiento.getTiposTarifa() == Constantes.TIPO_TARIFARIO_INSUPERABLE ){
+//				asiento.setSrc(Constantes.ICON_DISPONIBLE_INSUPERABLE+asiento.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
 //				asiento.setTooltiptext(Constantes.INSUPERABLE+" disponible - S/ "+asiento.getTarifa());
 //			}
 //			if (asiento.getTiposTarifa() == Constantes.TIPO_TARIFARIO_OCASION){
@@ -1330,10 +1329,10 @@ public class WndVerMapaAvance extends WndBase {
 			asiento.setSrc(Constantes.ASIENTO_AVANCE_DISPONIBLE+asiento.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
 			// asiento.setTooltiptext(Constantes.VIP1+" disponible - S/ "+asiento.getTarifa());
 //			asiento.setTooltiptext("Disponible - S/ "+asiento.getTarifa());
-			asiento.setEstadoAsiento(Constantes.ASIENTO_DISPONIBLE);									
+			asiento.setEstadoAsiento(Constantes.ASIENTO_DISPONIBLE);
 		}
-		
+
 	}
-	
+
 
 }

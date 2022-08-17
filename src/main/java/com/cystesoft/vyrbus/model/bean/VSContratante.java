@@ -3,14 +3,14 @@ package com.cystesoft.vyrbus.model.bean;
 import java.util.Date;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 public class VSContratante extends GenericBean  implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
-	
-    // Fields    
+
+    // Fields
 	private Long id;
      private VSSexo vsSexo;
      private VSTipoRegistro vsTipoRegistro;
@@ -40,7 +40,7 @@ public class VSContratante extends GenericBean  implements java.io.Serializable 
     public Long getId() {
         return this.id;
     }
-    
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -49,7 +49,7 @@ public class VSContratante extends GenericBean  implements java.io.Serializable 
     public String getNumeroDocumento() {
         return this.numeroDocumento;
     }
-    
+
     public void setNumeroDocumento(String numeroDocumento) {
         this.numeroDocumento = numeroDocumento;
     }
@@ -57,7 +57,7 @@ public class VSContratante extends GenericBean  implements java.io.Serializable 
     public String getApellidoPaterno() {
         return this.apellidoPaterno;
     }
-    
+
     public void setApellidoPaterno(String apellidoPaterno) {
         this.apellidoPaterno = apellidoPaterno;
     }
@@ -65,7 +65,7 @@ public class VSContratante extends GenericBean  implements java.io.Serializable 
     public String getApellidoMaterno() {
         return this.apellidoMaterno;
     }
-    
+
     public void setApellidoMaterno(String apellidoMaterno) {
         this.apellidoMaterno = apellidoMaterno;
     }
@@ -73,7 +73,7 @@ public class VSContratante extends GenericBean  implements java.io.Serializable 
     public String getNombre() {
         return this.nombre;
     }
-    
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -81,7 +81,7 @@ public class VSContratante extends GenericBean  implements java.io.Serializable 
     public Date getFechaNacimiento() {
         return this.fechaNacimiento;
     }
-    
+
     public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
@@ -89,7 +89,7 @@ public class VSContratante extends GenericBean  implements java.io.Serializable 
     public String getDireccion() {
         return this.direccion;
     }
-    
+
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
@@ -97,7 +97,7 @@ public class VSContratante extends GenericBean  implements java.io.Serializable 
     public String getUbigeoDepartamento() {
         return this.ubigeoDepartamento;
     }
-    
+
     public void setUbigeoDepartamento(String ubigeoDepartamento) {
         this.ubigeoDepartamento = ubigeoDepartamento;
     }
@@ -105,7 +105,7 @@ public class VSContratante extends GenericBean  implements java.io.Serializable 
     public String getUbigeoProvincia() {
         return this.ubigeoProvincia;
     }
-    
+
     public void setUbigeoProvincia(String ubigeoProvincia) {
         this.ubigeoProvincia = ubigeoProvincia;
     }
@@ -113,7 +113,7 @@ public class VSContratante extends GenericBean  implements java.io.Serializable 
     public String getUbigeoDistrito() {
         return this.ubigeoDistrito;
     }
-    
+
     public void setUbigeoDistrito(String ubigeoDistrito) {
         this.ubigeoDistrito = ubigeoDistrito;
     }
@@ -121,7 +121,7 @@ public class VSContratante extends GenericBean  implements java.io.Serializable 
     public String getTelefono() {
         return this.telefono;
     }
-    
+
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
@@ -129,7 +129,7 @@ public class VSContratante extends GenericBean  implements java.io.Serializable 
     public String getCelular() {
         return this.celular;
     }
-    
+
     public void setCelular(String celular) {
         this.celular = celular;
     }
@@ -137,7 +137,7 @@ public class VSContratante extends GenericBean  implements java.io.Serializable 
     public String getRazonSocial() {
         return this.razonSocial;
     }
-    
+
     public void setRazonSocial(String razonSocial) {
         this.razonSocial = razonSocial;
     }
@@ -145,7 +145,7 @@ public class VSContratante extends GenericBean  implements java.io.Serializable 
     public String getTelefonoComercial() {
         return this.telefonoComercial;
     }
-    
+
     public void setTelefonoComercial(String telefonoComercial) {
         this.telefonoComercial = telefonoComercial;
     }

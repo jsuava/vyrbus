@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 02/09/2016
  * Hora			: 13:56:11
@@ -94,5 +94,5 @@ public class ObjectCruzdelsur {
 		this.btnNextTabVenta = btnNextTabVenta;
 	}
 
-	
+
 }

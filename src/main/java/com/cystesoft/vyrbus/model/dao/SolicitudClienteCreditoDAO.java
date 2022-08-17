@@ -8,7 +8,7 @@ import com.cystesoft.vyrbus.model.bean.SolicitudClienteCredito;
 import com.cystesoft.vyrbus.model.bean.UsuarioAprobador;
 
 public interface SolicitudClienteCreditoDAO extends GenericDAO {
-	
+
 	/**
 	 * Buscar solicitud de cartera de cliente credito a travez de un array de criterios.
 	 * @param criteriosBusqueda	: array de criterios para la busqueda.
@@ -16,28 +16,28 @@ public interface SolicitudClienteCreditoDAO extends GenericDAO {
 	 * @return
 	 */
 	public ArrayList<SolicitudClienteCredito> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
-	
+
 	/**
 	 * Buscar solciitud cliente credito por ID
 	 * @param id : Identificador unico de la solicitudadClienteCredito
 	 * @return
 	 */
 	public SolicitudClienteCredito buscarPorId(Long id);
-	
+
 	/**
 	 * Guarda solicitud cliente credito cartera.
 	 * @param solicitudClienteCredito	: Class
 	 * @throws Exception
 	 */
 	public void guardar(SolicitudClienteCredito solicitudClienteCredito) throws Exception;
-	
+
 	/**
 	 * Actualzia la solicitudad del cliente a creadito
 	 * @param solicitudClienteCredito : Class
 	 * @throws Exception
 	 */
 	public void actualizar(SolicitudClienteCredito solicitudClienteCredito) throws Exception;
-	
+
 	/**
 	 * Aprueba la solicitud:
 	 * @param idSolicitudClienteCredito: Identificador unico de la solicitudClienteCredito
@@ -45,7 +45,7 @@ public interface SolicitudClienteCreditoDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public void aprobarSolicitud(Long idSolicitudClienteCredito, UsuarioAprobador usuarioAprobador) throws Exception;
-	
+
 	/**
 	 * Anula solcitud de cartera
 	 * @param idSolicitudClienteCredito: Identificador del a solicitud cartera.
@@ -53,35 +53,35 @@ public interface SolicitudClienteCreditoDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public void anulaSolicitud(Integer idSolicitudClienteCredito, UsuarioAprobador usuarioAprobador) throws Exception;
-	
+
 	/**
 	 * Inactiva solcititud credito
 	 * @param id
 	 */
 	public void inactivar(Long id);
-	
+
 	/**
 	 * Valida solicitudes pendientes por aprobar
 	 * @param idCliente : Identidicador del Cliente
-	 * @return 
+	 * @return
 	 */
 	public SolicitudClienteCredito validadSolicitudPendiente(Long idCliente) throws Exception;
-	
+
 	/**
-	 * Busca el historial de las solicitudes de cartera y/o credito (Invocado de la solicitud de cartera y/ocredito) 
+	 * Busca el historial de las solicitudes de cartera y/o credito (Invocado de la solicitud de cartera y/ocredito)
 	 * @param fechaInicial 	: Fecha inical de la busqueda
 	 * @param fechaFinal 	: Fecha final de la busqueda
 	 * @param idFuncionario	: Obsional, Identificador del Funcionario(usuario)
-	 * @param idCliente		: Obsional, Identidicador del Cliente 
+	 * @param idCliente		: Obsional, Identidicador del Cliente
 	 * @return
 	 * @throws Exception
 	 */
 	public List<SolicitudClienteCredito> buscarHistorialSolicitudesCarteraCredito(String fechaInicial, String fechaFinal, Integer idFuncionario, Long idCliente) throws Exception;
-	
+
 	/**
 	 * Busca las solicitudes pendientes por aprobar
 	 * @return
 	 */
 	public List<SolicitudClienteCredito> buscarPendientesN1();
-	
+
 }

@@ -115,7 +115,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 	private Grid grdPostergacion;
 	private Tab tabListado;
 	private Tab tabDetalle;
-	
+
 	private Textbox txtNumeroControlActual;
 	private Textbox txtItinerarioActual;
 	private Textbox txtNumeroAsientoActual;
@@ -128,7 +128,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 	private Textbox txtHoraEmbarqueActual;
 	private Textbox txtServicioActual;
 	private Textbox txtSalidaActual;
-	
+
 	private Textbox txtItinerarioPostergado;
 	private Textbox txtNumeroAsientoPostergado;
 	private Textbox txtNumeroPisoPostergado;
@@ -184,8 +184,8 @@ public class WndPostergacion extends WndBase implements Serializable {
 	private Checkbox chkCambioServicio;
 //	private Label lblDescuento;
 	private Label lblPromocion;
-	
-	
+
+
 //	private TipoComprobante tipoComprobante;
 	private UsuarioHardware usuarioHardware;
 	private DetalleItinerario detalleItinerario;
@@ -197,14 +197,14 @@ public class WndPostergacion extends WndBase implements Serializable {
 	private Date fechaLiquidacion;
 	private Promocion promocionAplicada = null;
 	private boolean isCorporativo=false;
-	
+
 	private Window wndCambiarRazoSocial = null;
 	private Window wndCambiarDireccionFiscal = null;
-	
+
 	private VentaPasaje gastoAdmin=null;
 	private final String LABEL_IMPPAG_TO_TEPSA="IMPORTE TOTAL PAGAR";
 	private final String LABEL_IMPPAG_TO_PASAJERO="IMPORTE TOTAL A DEVOLVER";
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
@@ -214,7 +214,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 			/*Valida si el usuario tiene una liquidación aperturada*/
 			if(getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION)==null)
 				throw new LiquidacionNullException();
-			
+
 			super.onCreate();
 			UtilData.cargarDataCombo(cmbOrigen, Localidad.class, false);
 			UtilData.cargarDataCombo(cmbDestino, Localidad.class, false);
@@ -224,15 +224,15 @@ public class WndPostergacion extends WndBase implements Serializable {
 //			usuario = (Usuario)this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO);
 			canalVenta = (CanalVenta)this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_CANAL_VENTA);
 			fechaLiquidacion = (Date)this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION);
-			
+
 			enlazarItinerario(imgBuscarItinerario);
-			
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("rubro", TipoComprobante.RUBRO_PASAJES);
 			UtilData.cargarDataCombo(cmbTipoComprobante, TipoComprobante.class, criteriosBusqueda, false);
 			UtilData.cargarDataCombo(cmbtipoComprobantePostergado, TipoComprobante.class, criteriosBusqueda, false);
 			UtilData.cargarDataCombo(cmbFormaPago, FormaPago.class, false);
-			
+
 			String fecha = Util.DatetoString(new Date(), "yyyyMMdd");
 			dtbxFechaPartida.setConstraint("after "+fecha);
 			txtNumeroControl.setFocus(true);
@@ -240,7 +240,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noLiquidacion"));
 			closeTabWindow();
 		}
-		
+
 	}
 
 
@@ -261,7 +261,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 		grdPostergacion = (Grid)this.getFellow("grdPostergacion");
 		tabListado = (Tab)this.getFellow("tabListado");
 		tabDetalle = (Tab)this.getFellow("tabDetalle");
-		
+
 		txtNumeroControlActual = (Textbox)this.getFellow("txtNumeroControlActual");
 		txtItinerarioActual = (Textbox)this.getFellow("txtItinerarioActual");
 		txtNumeroAsientoActual = (Textbox)this.getFellow("txtNumeroAsientoActual");
@@ -275,7 +275,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 		txtServicioActual = (Textbox)this.getFellow("txtServicioActual");
 		txtSalidaActual = (Textbox)this.getFellow("txtSalidaActual");
 		cmbtipoComprobantePostergado=(Combobox)this.getFellow("cmbtipoComprobantePostergado");
-		
+
 		txtItinerarioPostergado = (Textbox)this.getFellow("txtItinerarioPostergado");
 		txtNumeroAsientoPostergado = (Textbox)this.getFellow("txtNumeroAsientoPostergado");
 		txtNumeroPisoPostergado = (Textbox)this.getFellow("txtNumeroPisoPostergado");
@@ -306,7 +306,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 		chkCambioFacturaBoleta =(Checkbox)this.getFellow("chkCambioFacturaBoleta");
 		chkCambioDestino=(Checkbox)this.getFellow("chkCambioDestino");
 		chkCambioServicio=(Checkbox)this.getFellow("chkCambioServicio");
-		
+
 		dblbxMontoAnterior = (Doublebox)this.getFellow("dblbxMontoAnterior");
 		dblbxTarifa = (Doublebox)this.getFellow("dblbxTarifa");
 		dblbxDescuento = (Doublebox)this.getFellow("dblbxDescuento");
@@ -329,9 +329,9 @@ public class WndPostergacion extends WndBase implements Serializable {
 		cmbOperadorTarjetaCredito = (Combobox)this.getFellow("cmbOperadorTarjetaCredito");
 		cmbTarjetaCredito = (Combobox)this.getFellow("cmbTarjetaCredito");
 		lblPromocion = (Label)this.getFellow("lblPromocion");
-		
-		
-		
+
+
+
 		dblbxMontoAnterior.setLocale(Locale.US);
 		dblbxTarifa.setLocale(Locale.US);
 		dblbxDescuento.setLocale(Locale.US);
@@ -342,7 +342,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 		dblbxImporteTarjeta.setLocale(Locale.US);
 		dblbxImporteEfectivo.setValue(0.0);
 		dblbxImporteTarjeta.setValue(0.0);
-				
+
 		lbxVentas.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e)throws Exception{
@@ -366,7 +366,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 						throw new PostergacionByFormaPagoNoPermitidoException(Constantes.ID_FORPAG_CORTESIA);
 					else if(venta.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_PERDIDA_SERVICIO))
 						throw new PerdidaServicioException();
-					
+
 					/*###End begin 08/11/2016 - jabanto*/
 //					if(postergacion.getSecuencial().intValue() >= Constantes.MAXIMO_POSTERGACIONES)
 //						throw new LimiteSecuencialException();
@@ -374,7 +374,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 //						throw new FechaCaducidadNullException();
 //					if(ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(postergacion.getId()))
 //						throw new ManifiestoImpresoException();
-					
+
 //					String fechaPartida = Util.DatetoString(venta.getFechaPartida(),Constantes.DATE_FORMAT)+" "+venta.getHoraPartida()+":00";
 //					Long limite = Util.StringtoDate(fechaPartida, Constantes.DATE_TIME_FORMAT).getTime()-(Constantes.MILISEGUNDOS_X_HORA * Constantes.TIEMPO_LIMITE_POSTERGACION);
 //					@SuppressWarnings("unused")
@@ -383,13 +383,13 @@ public class WndPostergacion extends WndBase implements Serializable {
 //						throw new PostergacionByFechaLimitePostergarException();
 
 					isCorporativo=false;
-					/* Valida si es corporativo - 30/12/2016 - jabanto*/					
+					/* Valida si es corporativo - 30/12/2016 - jabanto*/
 					if(venta.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO && venta.getRucClienteCredito()!=null){
 						Agencia agencia=ServiceLocator.getAgenciaManager().buscarAgenciaByRucClienteCredito(venta.getRucClienteCredito());
 						if(agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_CORPORATIVO)
 							isCorporativo=true;
 					}
-					
+
 					onSelectDefaultTipoComprobante(cmbTipoComprobante);
 					onSelectDefaultTipoComprobante(cmbtipoComprobantePostergado);
 					mostrarEstadoVenta(venta);
@@ -397,9 +397,9 @@ public class WndPostergacion extends WndBase implements Serializable {
 					grdPostergacion.setVisible(true);
 					tabDetalle.setSelected(true);
 					imgBuscarItinerario.setVisible(true);
-					
+
 					Date dateSys=Constantes.FORMAT_LONG.parse(ServiceLocator.getVentaPasajesManager().getDateSystem());
-					
+
 					/*Realiza la validacion para determinar si se puede o no postergar - 08/11/2016 - jabanto*/
 					if(isCorporativo || postergacion.getSecuencial().intValue() >= Constantes.MAXIMO_POSTERGACIONES){
 						chkFechaAbierta.setDisabled(true);
@@ -417,13 +417,13 @@ public class WndPostergacion extends WndBase implements Serializable {
 						chkFechaAbierta.setDisabled(true);
 						chkCambioNombre.setDisabled(true);
 						imgBuscarItinerario.setVisible(false);
-					}					
-					
+					}
+
 				}catch(PostergacionByTipoMovimientoNoPermitidoException ptmnpex){
 					if(ptmnpex.getTipoMovimiento().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA)
 						DlgMessage.information(Messages.getString("WndPostergacion.information.postergacionByAnulacionNoPermitido"));
 					else if(ptmnpex.getTipoMovimiento().intValue()==Constantes.ID_TIPMOV_FECHA_ABIERTA || ptmnpex.getTipoMovimiento().intValue()==Constantes.ID_TIPMOV_POSTERGACION_FA)
-						DlgMessage.information(Messages.getString("WndPostergacion.information.postergacionByFechaAbiertaNoPermitido"));					
+						DlgMessage.information(Messages.getString("WndPostergacion.information.postergacionByFechaAbiertaNoPermitido"));
 				}catch(PostergacionByFormaPagoNoPermitidoException pfpnpex){
 					DlgMessage.information(Messages.getString("WndPostergacion.information.postergacionByCortesiaNoPermitido"));
 				}catch(PostergacionByTipoAgenciaNoPermitidoException ptanpex){
@@ -443,29 +443,29 @@ public class WndPostergacion extends WndBase implements Serializable {
 				}
 			}
 		});
-		
+
 		imgSeleccionarAsiento.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e) throws Exception{
 				enlazarMapaBus();
 			}
 		});
-		
+
 		chkFechaAbierta.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e) throws Exception{
-				chkFechaAbierta_onCheck();				
-			}			
+				chkFechaAbierta_onCheck();
+			}
 		});
-		
-		
+
+
 		chkCambioNombre.addEventListener(Events.ON_CHECK,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e) throws Exception {
 				chkCambioNombre_onCheck();
 			}
-		});					
-		
+		});
+
 		chkCambioRuc.addEventListener(Events.ON_CHECK,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e) throws Exception {
@@ -473,23 +473,23 @@ public class WndPostergacion extends WndBase implements Serializable {
 				chkCambioRuc_onCheck();
 			}
 		});
-		
+
 		chkCambioRazonSocial.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
 			@Override
-			public void onEvent(Event event) throws Exception {		
+			public void onEvent(Event event) throws Exception {
 				resetCheck_despuesViaje((Checkbox)event.getTarget());
 				chkCambioRazonSocial_onCheck();
 			}
 		});
-				
+
 		chkCambioDireccionFiscal.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				resetCheck_despuesViaje((Checkbox)event.getTarget());
-				chkCambioDireccionFiscal_onCheck();				
+				chkCambioDireccionFiscal_onCheck();
 			}
 		});
-		
+
 		chkCambioBoletaFactura.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -497,7 +497,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 				chkCambioBoletaFactura_onCheck();
 			}
 		});
-		
+
 		chkCambioFacturaBoleta.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -505,26 +505,26 @@ public class WndPostergacion extends WndBase implements Serializable {
 				chkCambioFacturaBoleta_onCheck();
 			}
 		});
-		
-		
-		
+
+
+
 		imgQuitarPromocion.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
 				quitarPromocion();
 			}
 		});
-		
-		
-		
-		
+
+
+
+
 		txtNumeroAsientoPostergado.addEventListener(Events.ON_FOCUS, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
-				
+
 			}
 		});
-		
+
 		imgBuscarPasajero.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e) throws Exception{
@@ -539,13 +539,13 @@ public class WndPostergacion extends WndBase implements Serializable {
 						txtPasajeroPostergado.setText(oWndBuscarPasajero.getPasajero().toString());
 						postergacion.setPasajero(oWndBuscarPasajero.getPasajero());
 //						aplicarPromocion(); //Segun lo combersado el 03/12/2013 con Marco y Jose Avalos) para cambio de nombre no aplica promoción
-												
+
 						chkCambioNombre.setDisabled(chkCambioNombre.isChecked());
 					}
 				});
 			}
 		});
-		
+
 		imgBuscarClienteRuc.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -566,7 +566,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 						txtClientePostergado.setText(oWndBuscarPasajero.getCliente().toString());
 						txtClienteDireccion.setText(oWndBuscarPasajero.getCliente().getDireccion()!=null?oWndBuscarPasajero.getCliente().getDireccion():"");
 						postergacion.setCliente(oWndBuscarPasajero.getCliente());
-						
+
 						/*Desactiva el control segun la operacion que se este realizando*/
 						if(chkCambioBoletaFactura.isChecked())
 							chkCambioBoletaFactura.setDisabled(true);
@@ -580,16 +580,16 @@ public class WndPostergacion extends WndBase implements Serializable {
 //						chkCambioRuc.setDisabled(chkCambioRuc.isChecked());
 					}
 				});
-			}			
+			}
 		});
-		
+
 		imgBuscarCliente.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				openWindowCambioRazonSocial();
 			}
 		});
-		
+
 		imgBuscarClienteDireccion.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -597,18 +597,18 @@ public class WndPostergacion extends WndBase implements Serializable {
 			}
 		});
 	}
-	
+
 	private void chkCambioRazonSocial_onCheck(){
-		try {			
+		try {
 			imgBuscarCliente.setVisible(chkCambioRazonSocial.isChecked());
-			
+
 			if(!(chkFechaAbierta.isChecked() || chkCambioNombre.isChecked()) ){//Si no es fecha Abierta o cambio de nombre
 				//Valida son itinerarios diferentes, se asume que es una postergacion
 				if(chkCambioRazonSocial.isChecked() && (
-						(txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText()) && txtNumeroAsientoActual.getText().equals(txtNumeroAsientoPostergado.getText())) 
+						(txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText()) && txtNumeroAsientoActual.getText().equals(txtNumeroAsientoPostergado.getText()))
 								|| txtItinerarioPostergado.getText().isEmpty())){
 					copiarDatosVenta();
-				}else if(chkCambioRazonSocial.isChecked()==false && txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText()) && txtNumeroAsientoActual.getText().equals(txtNumeroAsientoPostergado.getText()) ) {
+				}else if(!chkCambioRazonSocial.isChecked() && txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText()) && txtNumeroAsientoActual.getText().equals(txtNumeroAsientoPostergado.getText()) ) {
 					//Si los itinerarios son iguales, el valor de la penalidad es cero
 					limpiarControlesPostergacion();
 				}
@@ -618,20 +618,20 @@ public class WndPostergacion extends WndBase implements Serializable {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
 		}
-		
+
 	}
-	
+
 	private void chkCambioDireccionFiscal_onCheck(){
-		try {			
+		try {
 			imgBuscarClienteDireccion.setVisible(chkCambioDireccionFiscal.isChecked());
-			
+
 			if(!(chkFechaAbierta.isChecked() || chkCambioNombre.isChecked()) ){//Si no es fecha Abierta o cambio de nombre
 				//Valida son itinerarios diferentes, se asume que es una postergacion
 				if(chkCambioDireccionFiscal.isChecked() && (
-						(txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText()) && txtNumeroAsientoActual.getText().equals(txtNumeroAsientoPostergado.getText())) 
+						(txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText()) && txtNumeroAsientoActual.getText().equals(txtNumeroAsientoPostergado.getText()))
 								|| txtItinerarioPostergado.getText().isEmpty())){
 					copiarDatosVenta();
-				}else if(chkCambioDireccionFiscal.isChecked()==false && txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText()) && txtNumeroAsientoActual.getText().equals(txtNumeroAsientoPostergado.getText()) ) {
+				}else if(!chkCambioDireccionFiscal.isChecked() && txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText()) && txtNumeroAsientoActual.getText().equals(txtNumeroAsientoPostergado.getText()) ) {
 					//Si los itinerarios son iguales, el valor de la penalidad es cero
 					limpiarControlesPostergacion();
 				}
@@ -642,26 +642,26 @@ public class WndPostergacion extends WndBase implements Serializable {
 			DlgMessage.error(e.getMessage());
 		}
 	}
-	
+
 	private void chkCambioBoletaFactura_onCheck(){
 		try {
 			imgBuscarClienteRuc.setVisible(chkCambioBoletaFactura.isChecked());
-			
+
 			/*cambia el tipo de comprobante*/
 			onSelectDefaultTipoComprobante(cmbTipoComprobante);
 			onSelectDefaultTipoComprobante(cmbtipoComprobantePostergado);
 			onLoadEspecieValorada(txtNumeroBoletoPostergado, cmbtipoComprobantePostergado);
-			
+
 			if(!(chkCambioNombre.isChecked())){
 //				Double penalidad=dblbxPenalidad.getValue()!=null?dblbxPenalidad.getValue():0;
-				
+
 				if(!(chkFechaAbierta.isChecked())){//Si no es fecha Abierta
 					//Valida si el son itinerarios diferentes, se asume que es una postergacion
 					if(chkCambioBoletaFactura.isChecked() && (
-							(txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText()) && txtNumeroAsientoActual.getText().equals(txtNumeroAsientoPostergado.getText())) 
+							(txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText()) && txtNumeroAsientoActual.getText().equals(txtNumeroAsientoPostergado.getText()))
 							|| txtItinerarioPostergado.getText().isEmpty())  ){
 						copiarDatosVenta();
-					}else if(chkCambioBoletaFactura.isChecked()==false && txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText())) {
+					}else if(!chkCambioBoletaFactura.isChecked() && txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText())) {
 						//Si los itinerarios son iguales, el valor de la penalidad es cero
 						dblbxPenalidad.setValue(0);
 						limpiarControlesPostergacion();
@@ -672,7 +672,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 //					}else if (chkCambioBoletaFactura.isChecked()==false && penalidad>0){
 //						dblbxPenalidad.setValue(penalidad-Constantes.PENALIDAD_CAMBIO_NOMBRE);
 //					}
-					
+
 				}
 				calcularPagos();
 			}
@@ -681,26 +681,26 @@ public class WndPostergacion extends WndBase implements Serializable {
 			DlgMessage.error(e.getMessage());
 		}
 	}
-	
+
 	private void chkCambioFacturaBoleta_onCheck(){
-		try {			
+		try {
 			/*cambia el tipo de comprobante*/
 			onSelectDefaultTipoComprobante(cmbTipoComprobante);
 			onSelectDefaultTipoComprobante(cmbtipoComprobantePostergado);
 			onLoadEspecieValorada(txtNumeroBoletoPostergado, cmbtipoComprobantePostergado);
-			
+
 			if(!(chkCambioNombre.isChecked())){
 				if(!(chkFechaAbierta.isChecked())){//Si no es fecha Abierta
 					//Valida si el son itinerarios diferentes, se asume que es una postergacion
 					if(chkCambioFacturaBoleta.isChecked() && (
-							(txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText()) && txtNumeroAsientoActual.getText().equals(txtNumeroAsientoPostergado.getText())) 
+							(txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText()) && txtNumeroAsientoActual.getText().equals(txtNumeroAsientoPostergado.getText()))
 							|| txtItinerarioPostergado.getText().isEmpty())  ){
 						copiarDatosVenta();
-					}else if(chkCambioFacturaBoleta.isChecked()==false && txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText())) {
+					}else if(!chkCambioFacturaBoleta.isChecked() && txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText())) {
 						//Si los itinerarios son iguales, el valor de la penalidad es cero
 						dblbxPenalidad.setValue(0);
 						limpiarControlesPostergacion();
-					}					
+					}
 				}
 				calcularPagos();
 			}
@@ -709,7 +709,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 			DlgMessage.error(e.getMessage());
 		}
 	}
-	
+
 	public void buscarVentas(){
 		try{
 			lbxVentas.getItems().clear();
@@ -721,7 +721,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 			if(numeroControl!=null){
 				numeroControl = Util.generateControlNumber(txtNumeroControl.getText().trim().toUpperCase());
 				txtNumeroControl.setText(numeroControl);
-			}			
+			}
 //			String numeroBoleto = txtNumeroBoleto.getText().trim().equals("")?null:txtNumeroBoleto.getText().trim().toUpperCase();
 			String numeroBoleto=null;
 			if(!(txtNumeroBoleto.getText().trim().isEmpty())){
@@ -731,21 +731,21 @@ public class WndPostergacion extends WndBase implements Serializable {
 			String fechaPartida = dtbxFechaPartida.getValue()==null?null:
 					(Util.DatetoString(dtbxFechaPartida.getValue(),Constantes.DATE_FORMAT).equals(Util.DatetoString(Constantes.FECHA_NULL, Constantes.DATE_FORMAT))?
 							null:Util.DatetoString(dtbxFechaPartida.getValue(), Constantes.DATE_FORMAT));
-			
+
 			if(numeroControl==null && numeroBoleto == null){
 				if(fechaPartida==null)
 					throw new FechaViajeNoValidaException();
 				else if(idOrigen==null && idDestino==null && pasajero==null)
 					throw new CriteriosBusquedaIncompletosException();
 			}
-			
+
 			txtNumeroControl.addEventListener(Events.ON_FOCUS, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e){
 					txtNumeroControl.setSelectionRange(0, txtNumeroControl.getText().length());
 				}
 			});
-			
+
 			List<VentaPasaje> lstReservas = ServiceLocator.getVentaPasajesManager().buscarVentasPostergar(idOrigen, idDestino, pasajero, numeroControl, numeroBoleto, fechaPartida);
 			if(lstReservas.size()>0){
 				lbxVentas.getItems().clear();
@@ -774,8 +774,8 @@ public class WndPostergacion extends WndBase implements Serializable {
 					cell = new Listcell(Util.DatetoString(ventaPasaje.getFechaInsercion(), Constantes.DATE_TIME_FORMAT));
 					item.appendChild(cell);
 					item.setValue(ventaPasaje);
-					
-					
+
+
 //					item.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
 //						public void onEvent(Event e)throws Exception{
 //							try{
@@ -783,7 +783,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 //								secuencial = venta.getSecuencial();
 //								postergacion = (VentaPasaje)venta.clone();
 //								postergacion.setVentaPasaje(venta);
-//								
+//
 //								if(venta.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA)
 //									throw new PostergacionByTipoMovimientoNoPermitidoException(Constantes.ID_TIPMOV_ANULACION_SISTEMA);
 //								else if(venta.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_FECHA_ABIERTA)
@@ -796,23 +796,23 @@ public class WndPostergacion extends WndBase implements Serializable {
 //										throw new PostergacionByTipoAgenciaNoPermitidoException(Constantes.ID_TIPAGE_CORPORATIVO);
 //								}else if(venta.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA)
 //									throw new PostergacionByFormaPagoNoPermitidoException(Constantes.ID_FORPAG_CORTESIA);
-//								
+//
 //								if(postergacion.getSecuencial().intValue() >= Constantes.MAXIMO_POSTERGACIONES)
 //									throw new LimiteSecuencialException();
-//								
+//
 //								if(Util.comparaFechas(postergacion.getFechaCaducidad(), new Date(), Util.OPER_MENOR))
 //									throw new FechaCaducidadNullException();
-//								
+//
 //								if(ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(postergacion.getId()))
 //									throw new ManifiestoImpresoException();
-//								
+//
 //								String fechaPartida = Util.DatetoString(venta.getFechaPartida(),Constantes.DATE_FORMAT)+" "+venta.getHoraPartida()+":00";
 //								Long limite = Util.StringtoDate(fechaPartida, Constantes.DATE_TIME_FORMAT).getTime()-(Constantes.MILISEGUNDOS_X_HORA * Constantes.TIEMPO_LIMITE_POSTERGACION);
 //								@SuppressWarnings("unused")
 //								String fechaLimitePostergar = Util.DatetoString(new Date(limite), Constantes.DATE_TIME_FORMAT);
 ////								if(Util.comparaFechasWithTime(ServiceLocator.getVentaPasajesManager().getDateSystem(), fechaLimitePostergar, Util.OPER_MAYOR))
 ////									throw new PostergacionByFechaLimitePostergarException();
-//									
+//
 //								mostrarEstadoVenta(venta);
 //								onSelectDefaultTipoComprobante();
 //								onSelectDefaultFormaPago();
@@ -823,7 +823,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 //								if(ptmnpex.getTipoMovimiento().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA)
 //									DlgMessage.information(Messages.getString("WndPostergacion.information.postergacionByAnulacionNoPermitido"));
 //								else if(ptmnpex.getTipoMovimiento().intValue()==Constantes.ID_TIPMOV_FECHA_ABIERTA || ptmnpex.getTipoMovimiento().intValue()==Constantes.ID_TIPMOV_POSTERGACION_FA)
-//									DlgMessage.information(Messages.getString("WndPostergacion.information.postergacionByFechaAbiertaNoPermitido"));					
+//									DlgMessage.information(Messages.getString("WndPostergacion.information.postergacionByFechaAbiertaNoPermitido"));
 //							}catch(PostergacionByFormaPagoNoPermitidoException pfpnpex){
 //								DlgMessage.information(Messages.getString("WndPostergacion.information.postergacionByCortesiaNoPermitido"));
 //							}catch(PostergacionByTipoAgenciaNoPermitidoException ptanpex){
@@ -841,14 +841,14 @@ public class WndPostergacion extends WndBase implements Serializable {
 //							}
 //						}
 //					});
-					
+
 					lbxVentas.appendChild(item);
 				}
 				tabListado.setSelected(true);
 			}else{
 				DlgMessage.information(Messages.getString("WndPostergacion.information.noVentas"));
 				dtbxFechaPartida.setValue(null);
-			}						
+			}
 		}catch(FechaViajeNoValidaException fvnvex){
 			DlgMessage.information(Messages.getString("WndPostergacion.informacion.noFechaViaje"), dtbxFechaPartida);
 		}catch(CriteriosBusquedaIncompletosException cbiex){
@@ -858,11 +858,11 @@ public class WndPostergacion extends WndBase implements Serializable {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	private void mostrarEstadoVenta(VentaPasaje venta){
 		try{
 			limpiarControles();
-			
+
 			if(venta!=null){
 				venta = ServiceLocator.getVentaPasajesManager().buscarVentaById(venta.getId());
 				txtNumeroControlActual.setText(venta.getNumeroControl());
@@ -879,7 +879,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 				txtHoraEmbarqueActual.setText(venta.getHoraPartida());
 				txtServicioActual.setText(venta.getServicio().getDenominacion());
 				txtSalidaActual.setText(Util.DatetoString(venta.getFechaPartida(), Constantes.DATE_FORMAT)+" "+venta.getHoraPartida());
-				
+
 				//Nuevos datos de la venta
 				txtPasajeroPostergado.setText(venta.getPasajero().toString());
 				if(venta.getCliente()!=null){
@@ -897,18 +897,18 @@ public class WndPostergacion extends WndBase implements Serializable {
 //				EspecieValorada especieValorada=UtilData.buscarEspecieValorada(venta.getTipoComprobante().getId(), getAgencia(), true);
 //				String boleto =especieValorada.toString();
 //				txtNumeroBoletoPostergado.setText(boleto);
-				
+
 				onLoadEspecieValorada(txtNumeroBoletoPostergado, cmbtipoComprobantePostergado);
-				
+
 				dblbxMontoAnterior.setValue(venta.getTarifa()+venta.getRecargo()-venta.getDescuento());
 				txtIdPromocion.setText(venta.getPromocion()==null?"":venta.getPromocion().getId().toString());
-				
-				
+
+
 				/*##Valida si es una factura para habilitar ciertas opciones - 07/11/2016 - jabanto*/
 				boolean disabledOpFacturas=true;
 				if(venta.getCliente()!=null && venta.getCliente()!=null) // venta.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_FACTURA)
 					disabledOpFacturas=false;
-				
+
 				chkCambioRuc.setDisabled(disabledOpFacturas);
 				chkCambioRazonSocial.setDisabled(disabledOpFacturas);
 				chkCambioDireccionFiscal.setDisabled(disabledOpFacturas);
@@ -931,7 +931,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 	}
 	/**
 	 * Realiza la busqueda del correlativo para el boleto a emitir.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private void onLoadEspecieValorada(Textbox txtBoleto, Combobox comboTipoComprobante) throws Exception{
 		/*BEGIN 15/06/2021 - javalos - Correlativo by caja*/
@@ -957,7 +957,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 	 * Permite enlazar los controles a la ventana de selección de Itinerario
 	 * @param textboxItinerario :en este Textbox se devolvera el Id del itinerario seleccionado.
 	 * @param button :ha este Button se le adjuntara un listener con la llamada a la ventana de selección de itinerario
-	 * @see WndItinerario: 
+	 * @see WndItinerario:
 	 */
 	public void enlazarItinerario(final Image image) {
 		image.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
@@ -977,7 +977,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 							liberarAsientos();
 							System.out.println("==================================================================================================");
 						}
-						
+
 						/*Valida si la ruta esta configurada para permitir la venta antes o despuesta de la hora de salida ## impl 10/11/2014 - jabanto*/
 						txtItinerarioPostergado.setText("");
 						imgSeleccionarAsiento.setVisible(false);
@@ -987,16 +987,16 @@ public class WndPostergacion extends WndBase implements Serializable {
 							DlgMessage.information(Messages.getString("WndVentaReserva.information.ventaNoPermitida"));
 							return;
 						}
-						
+
 						loadDatosPostergacion(oWndSeleccionarItinerario.getIdDetalleItinerario());
-						imgSeleccionarAsiento.setVisible(true);						
+						imgSeleccionarAsiento.setVisible(true);
 					}
 				});
-				
+
 			}
 		});
 	}
-	
+
 	private void loadDatosPostergacion(Long idDetalleItinerario){
 		try{
 
@@ -1035,8 +1035,8 @@ public class WndPostergacion extends WndBase implements Serializable {
 //					lblDescuento.setValue("");
 ////					dblbxSaldo.setValue(dblbxTarifa.getValue()-dblbxMontoAnterior.getValue()>0.0?dblbxTarifa.getValue()-dblbxMontoAnterior.getValue():0.0);
 //				}
-				
-//				if(!txtIdPromocion.getText().isEmpty()){	
+
+//				if(!txtIdPromocion.getText().isEmpty()){
 //					Promocion promocion = ServiceLocator.getPromocionManager().buscarPorId(Long.valueOf(txtIdPromocion.getText()));
 //					AplicarPromocion aplicarPromocion = createObjectAplicarPromocion();
 //					promocionAplicada = aplicarPromocion.executePromocion(promocion.getId().toString(), false);
@@ -1045,56 +1045,56 @@ public class WndPostergacion extends WndBase implements Serializable {
 //					}
 //				}
 //				imgBuscarPasajero.setVisible(true);
-				
-				//Buscando al venta originar 
+
+				//Buscando al venta originar
 //				final VentaPasaje ventaOriginal=ServiceLocator.getVentaPasajesManager().buscarPorId(postergacion.getId());
-				
+
 				//Buscando el tipo de nota de credito a aplicar
 //				tipoNotaCredito=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_POSTERGACION);
-				
+
 				VentaPasaje venta=lbxVentas.getSelectedItem().getValue();
 				/*Valida si a cambiado el destino*/
 				if(postergacion.getRuta().getId().intValue()!=venta.getRuta().getId().intValue()){
 					chkCambioDestino.setChecked(true);
 					chkCambioDestino.setDisabled(true);
 				}
-				
+
 				/*Valida si a cambiado el servicio*/
 				if(postergacion.getServicio().getId().intValue()!=venta.getServicio().getId().intValue()){
 					chkCambioServicio.setChecked(true);
 					chkCambioServicio.setDisabled(true);
 				}
-				
-				
+
+
 				/*Valida si se ha cambiado el nombre del pasajero*/
 //				if(chkCambioNombre.isChecked() && postergacion.getPasajero().getId().longValue()!=ventaOriginal.getPasajero().getId().longValue()){
 				calcularPagos();
 //				}
-				
+
 				/*##End begin 03/11/2016 **/
 //				if(chkCambioNombre.isChecked() || rdCambioRuc.isChecked())
 //					calcularPagos(Constantes.PENALIDAD_POSTERGACION+Constantes.PENALIDAD_CAMBIO_NOMBRE);
 //				else
 //					calcularPagos(Constantes.PENALIDAD_POSTERGACION);
-								
+
 //				dblbxSaldo.setValue(dblbxTarifa.getValue()-dblbxMontoAnterior.getValue()>0.0?dblbxTarifa.getValue()-dblbxMontoAnterior.getValue()-dblbxDescuento.getValue():0.0);
 //				dblbxPenalidad.setValue(Constantes.PENALIDAD_POSTERGACION);
-//				dblbxImporteTotal.setValue(dblbxSaldo.getValue()+dblbxPenalidad.getValue());				
+//				dblbxImporteTotal.setValue(dblbxSaldo.getValue()+dblbxPenalidad.getValue());
 			}else
 				DlgMessage.information(Messages.getString("WndPostergacion.information.postergacionByItinerarioDespachado"));
 		}catch(Exception ex){
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-		
+
 //	private Double aplicarPorcentajeDescuento(Double porcentajeDesct){
 //		Double dsct=.00;
 //		if(porcentajeDesct>0){
 //			dsct=dblbxTarifa.getValue()*(porcentajeDesct/100);
-//		}				
+//		}
 //		return dsct;
 //	}
-	
+
 	/**
 	 * Cargamos los puntos de embarque.
 	 * @param detItinerario	: Itinerario del cual deseamos cargar los puntos de embarque.
@@ -1103,8 +1103,8 @@ public class WndPostergacion extends WndBase implements Serializable {
 	private void onLoadPuntoEmbarque(DetalleItinerario detItinerario){
 		try{
 			cmbEmbarquePostergado.getItems().clear();
-			
-			ArrayList<ItinerarioAgenciaPartida> arrayItiAgePartida = new ArrayList<ItinerarioAgenciaPartida>();
+
+			ArrayList<ItinerarioAgenciaPartida> arrayItiAgePartida = new ArrayList<>();
 			arrayItiAgePartida = ServiceLocator.getItinerarioManager().buscarAgenciasPartida(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO, detItinerario.getRuta().getLocalidadOrigen().getId());
 //			if(detItinerario.getItinerario().getAgenciaPartida().getId().intValue()==detItinerario.getAgenciaPartida().getId().intValue())
 //				arrayItiAgePartida = ServiceLocator.getItinerarioManager().buscarAgenciasPartida(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO);
@@ -1136,7 +1136,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Muestra la hora de embarque segun el punto de embarque seleccionado
 	 */
@@ -1148,7 +1148,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 			txtHoraEmbarquePostergado.setValue("");
 		}
 	}
-	
+
 	private void limpiarControles(){
 		txtNumeroControlActual.setText("");
 		txtItinerarioActual.setText("");
@@ -1161,7 +1161,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 		txtHoraEmbarqueActual.setText("");
 		txtServicioActual.setText("");
 		txtSalidaActual.setText("");
-		
+
 		txtItinerarioPostergado.setText("");
 		txtNumeroAsientoPostergado.setText("");
 		txtNumeroControlPostergado.setText("");
@@ -1176,22 +1176,22 @@ public class WndPostergacion extends WndBase implements Serializable {
 		txtSalidaPostergado.setText("");
 		txtClienteRuc.setText("");
 		txtClienteDireccion.setText("");
-		
+
 		chkFechaAbierta.setChecked(false);
 		chkCambioNombre.setChecked(false);
 		chkCambioRuc.setChecked(false);
-		
+
 		chkFechaAbierta.setDisabled(false);
 		chkCambioNombre.setDisabled(false);
 		chkCambioRuc.setDisabled(false);
-		
+
 		/*##Begin 07/11/2016 - jabanto*/
 		chkCambioRazonSocial.setChecked(false);
 		chkCambioRuc.setChecked(false);
 		chkCambioDireccionFiscal.setChecked(false);
 		chkCambioBoletaFactura.setChecked(false);
 		chkCambioFacturaBoleta.setChecked(false);
-				
+
 		dblbxMontoAnterior.setValue(0.0);
 		dblbxTarifa.setValue(0.0);
 		dblbxSaldo.setValue(0.0);
@@ -1200,7 +1200,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 		dblbxImporteEfectivo.setValue(0.0);
 		dblbxImporteTarjeta.setValue(0.0);
 		dblbxDescuento.setValue(0.0);
-		
+
 		cmbTipoComprobante.setSelectedIndex(0);
 		cmbFormaPago.setSelectedIndex(0);
 		cmbTipoFormaPago.setText("");
@@ -1212,7 +1212,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 		cmbTarjetaCredito.setText("");
 		cmbTarjetaCredito.getItems().clear();
 		cmbTarjetaCredito.setDisabled(true);
-		
+
 		lblPromocion.setValue("");
 		imgQuitarPromocion.setVisible(false);
 		imgBuscarPasajero.setVisible(false);
@@ -1221,9 +1221,9 @@ public class WndPostergacion extends WndBase implements Serializable {
 		imgSeleccionarAsiento.setVisible(false);
 		imgBuscarClienteRuc.setVisible(false);
 		imgBuscarClienteDireccion.setVisible(false);
-		
+
 	}
-	
+
 	private void limpiarControlesPostergacion(){
 		txtItinerarioPostergado.setText("");
 		txtNumeroAsientoPostergado.setText("");
@@ -1238,7 +1238,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 		txtServicioPostergado.setText("");
 		txtSalidaPostergado.setText("");
 	}
-	
+
 	/**
 	 * Carga los tipos de Forma de pago.
 	 */
@@ -1247,9 +1247,9 @@ public class WndPostergacion extends WndBase implements Serializable {
 			cmbTipoFormaPago.getItems().clear();
 			if(cmbFormaPago.getSelectedItem().getValue() instanceof FormaPago){
 				FormaPago formaPago = cmbFormaPago.getSelectedItem().getValue();
-				TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+				TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 				criteriosBusqueda.put("formaPago.id", formaPago.getId());
-				List<String> criteriosOrdenar = new ArrayList<String>();
+				List<String> criteriosOrdenar = new ArrayList<>();
 				criteriosOrdenar.add("denominacion");
 				List<TipoFormaPago> lstTipoFormasPago = ServiceLocator.getTipoFormaPagoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
 				UtilData.cargarGenericData(cmbTipoFormaPago, false);
@@ -1260,7 +1260,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 					cmbTipoFormaPago.appendChild(item);
 				}
 				cmbTipoFormaPago.setDisabled(false);
-				
+
 				/*30/12/2016 - jabanto*/
 				if(formaPago.getId().intValue()==Constantes.ID_FORPAG_CREDITO){
 					for(Comboitem comboitem: cmbTipoFormaPago.getItems())
@@ -1274,7 +1274,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 						}
 					}
 				}
-					
+
 			}else{
 				cmbTipoFormaPago.setDisabled(true);
 				cmbTipoFormaPago.getItems().clear();
@@ -1290,13 +1290,13 @@ public class WndPostergacion extends WndBase implements Serializable {
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Realiza una validación del Tipo de Forma de Pago, para habilitar o deshabilitar algunos controles.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void onValidateTipoFormaPago() throws Exception{
-		if(cmbTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago){ 
+		if(cmbTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago){
 			/*	Si es tarjeta cargamos los operadores de tarjeta de credito	*/
 //			if(cmbTipoFormaPago.getText().equals("TARJETA")){
 			if(((TipoFormaPago)cmbTipoFormaPago.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA){
@@ -1319,10 +1319,10 @@ public class WndPostergacion extends WndBase implements Serializable {
 			cmbTarjetaCredito.getItems().clear();
 			cmbTarjetaCredito.setText("");
 		}
-		
+
 		calcularPagos();
-	}	
-	
+	}
+
 	/**
 	 * Carga los diferentes tarjetas de credito, de acuerdo al operador seleccionado.
 	 */
@@ -1332,9 +1332,9 @@ public class WndPostergacion extends WndBase implements Serializable {
 			cmbTarjetaCredito.setText("");
 			if(cmbOperadorTarjetaCredito.getSelectedItem().getValue() instanceof OperadorTarjetaCredito){
 				OperadorTarjetaCredito operadorTarjetaCredito = cmbOperadorTarjetaCredito.getSelectedItem().getValue();
-				TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+				TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 				criteriosBusqueda.put("operadorTarjetaCredito.id", operadorTarjetaCredito.getId());
-				List<String> criteriosOrdenar = new ArrayList<String>();
+				List<String> criteriosOrdenar = new ArrayList<>();
 				criteriosOrdenar.add("denominacion");
 				List<TarjetaCredito> lstTarjetaCredito = ServiceLocator.getTarjetaCreditoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
 				UtilData.cargarGenericData(cmbTarjetaCredito, false);
@@ -1352,7 +1352,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	public void guardar(){
 		try{
 			if(!chkFechaAbierta.isChecked()){
@@ -1377,19 +1377,19 @@ public class WndPostergacion extends WndBase implements Serializable {
 				else if(!(cmbTarjetaCredito.getSelectedItem().getValue() instanceof TarjetaCredito))
 					throw new TarjetaCreditoNullException();
 			}
-			
+
 			if(!chkFechaAbierta.isChecked() && detalleItinerario.getTarifa()==0.0)
 				throw new ItinerarioException(ItinerarioException.TARIFA_IDA_CERO);
-			
-			if(chkCambioNombre.isChecked() && chkCambioNombre.isDisabled()==false){
+
+			if(chkCambioNombre.isChecked() && !chkCambioNombre.isDisabled()){
 				throw new PostergacionNoCambioNombreException();
 			}
-			if (chkCambioRuc.isChecked() && chkCambioRuc.isDisabled()==false){
+			if (chkCambioRuc.isChecked() && !chkCambioRuc.isDisabled()){
 				throw new PostergacionNoCambioRazonSozialException();
-			}else if(chkCambioRazonSocial.isChecked() && chkCambioRazonSocial.isDisabled()==false){
+			}else if(chkCambioRazonSocial.isChecked() && !chkCambioRazonSocial.isDisabled()){
 				DlgMessage.information(Messages.getString("WndPostergacion.information.noCambioRazonSocial"));
 				return;
-			}else if (chkCambioDireccionFiscal.isChecked() && chkCambioDireccionFiscal.isDisabled()==false){
+			}else if (chkCambioDireccionFiscal.isChecked() && !chkCambioDireccionFiscal.isDisabled()){
 				DlgMessage.information(Messages.getString("WndPostergacion.information.noCambioDireccionFiscal"));
 				return;
 			}else if (chkCambioBoletaFactura.isChecked() && postergacion.getCliente()==null){
@@ -1405,25 +1405,25 @@ public class WndPostergacion extends WndBase implements Serializable {
 					return;
 				}
 			}
-			
+
 			/*Validando el  tipo de nota de credito - 04/11/2016 - jabanto*/
 			if(tipoNotaCredito==null){
 				DlgMessage.information(Messages.getString("WndPostergacion.information.noTipoNota"));
 				return;
 			}
-			
-			
+
+
 			if(chkPagoMixto.isChecked()){
 				if(dblbxImporteEfectivo.getValue()<=0.0 || dblbxImporteTarjeta.getValue()<=0.0)
 					throw new ImporteMixtoNullException(ImporteMixtoNullException.IMPORTE_MIXTO_CERO);
 			}
-			
+
 			/*	Validando que el monto en efectivo + el monto en tarjeta sumen el importe pagado	*/
 			if(chkPagoMixto.isChecked()){
 				if(dblbxImporteTotal.getValue().doubleValue()!=(dblbxImporteEfectivo.getValue().doubleValue()+dblbxImporteTarjeta.getValue().doubleValue()))
 					throw new ImporteMixtoNullException(ImporteMixtoNullException.IMPORTE_MIXTO_NOT_EQUALS);
 			}
-			
+
 			FormaPago formaPago = (FormaPago)cmbFormaPago.getSelectedItem().getValue();
 			postergacion.setFormaPago(formaPago);
 			TipoComprobante tipoComprobante = (TipoComprobante)cmbtipoComprobantePostergado.getSelectedItem().getValue();
@@ -1435,7 +1435,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 				postergacion.setTarjetaCredito(tarjetaCredito);
 			}else
 				postergacion.setTarjetaCredito(null);
-			
+
 //			postergacion.setId(null);
 			postergacion.setTipoNota(tipoNotaCredito);
 			postergacion.setNumeroBoleto(txtNumeroBoletoPostergado.getText().equals("")?null:txtNumeroBoletoPostergado.getText());
@@ -1449,7 +1449,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 				postergacion.setAgenciaLlegada(null);
 				postergacion.setNumeroPiso(null);
 				postergacion.setEsFechaAbierta(Constantes.TRUE_VALUE);
-				postergacion.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_POSTERGACION_FA));		
+				postergacion.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_POSTERGACION_FA));
 				postergacion.setFechaCaducidad(new Date(new Date().getTime()+(Constantes.TIEMPO_CADUCA_BOLETO*Constantes.MILISEGUNDOS_X_DIA)));
 			}else{
 				postergacion.setNumeroAsiento(Integer.valueOf(txtNumeroAsientoPostergado.getText()));
@@ -1462,17 +1462,17 @@ public class WndPostergacion extends WndBase implements Serializable {
 				postergacion.setAgenciaLlegada(postergacion.getVentaPasaje().getAgenciaLlegada());
 				postergacion.setNumeroPiso(Integer.valueOf(txtNumeroPisoPostergado.getText()));
 				postergacion.setEsFechaAbierta(Constantes.FALSE_VALUE);
-				
+
 				/*Calcula la fecha de caducidad del boleto - 13/12/2016 - jabanto*/
 				String fechaCaducidad=Constantes.FORMAT_DATE.format(postergacion.getFechaPartida())+" "+postergacion.getHoraPartida();
 				Date dateCaducidad=Constantes.FORMAT_LONG.parse(fechaCaducidad);
 				postergacion.setFechaCaducidad(dateCaducidad);
-				
+
 				//Valida si se trata de una postergacion
-				if(!(txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText())) || 
+				if(!(txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText())) ||
 						(txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText()) && !(txtNumeroAsientoActual.getText().equals(txtNumeroAsientoPostergado.getText())) ) ){
 					postergacion.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_POSTERGACION));
-					
+
 				}else{
 					/*Valida si es un comprobante corporativo - 30/12/2016 - jabanto*/
 					if(isCorporativo)
@@ -1480,9 +1480,9 @@ public class WndPostergacion extends WndBase implements Serializable {
 					else
 						postergacion.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_EFECTIVO));
 				}
-					
+
 			}
-			
+
 			/*Coloca en observaciones una glosa segun la(s) operaciones realizadas*/
 			String observaciones="";
 			if(chkFechaAbierta.isChecked())
@@ -1517,7 +1517,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 //					postergacion.setObservaciones(observacion);
 //				}
 //			}
-			
+
 			postergacion.setObservaciones(observaciones);
 			postergacion.setSecuencial(secuencial+1);
 			postergacion.setTarifa(dblbxTarifa.getValue());
@@ -1527,7 +1527,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 			postergacion.setPenalidad(0.0);
 			postergacion.setAcuenta(0.0);
 //			postergacion.setImportePagado(dblbxImporteTotal.getValue());
-//			postergacion.setImportePagado(dblbxMontoAnterior.getValue()+dblbxSaldo.getValue()); //El nuevo Comprobante sera por el monto que pago el pax mas el saldo 
+//			postergacion.setImportePagado(dblbxMontoAnterior.getValue()+dblbxSaldo.getValue()); //El nuevo Comprobante sera por el monto que pago el pax mas el saldo
 			postergacion.setImportePagado(dblbxTarifa.getValue()-dblbxDescuento.getValue());
 			postergacion.setImportePagadoEfectivo(dblbxImporteEfectivo.getValue());
 			postergacion.setImportePagadoTarjeta(dblbxImporteTarjeta.getValue());
@@ -1539,7 +1539,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 			postergacion.setNumeroControl("-----");
 			postergacion.setLiquidacion(null);
 			postergacion.setFechaTransferencia(null);
-			if(isCorporativo==false){
+			if(!isCorporativo){
 				postergacion.setRucClienteCredito(null); // a solicitud de maroc - 28/09/2015
 				postergacion.setEstadoDocumento(Constantes.ESTADO_DOCUMENTO_PAGADO);
 			}
@@ -1551,8 +1551,8 @@ public class WndPostergacion extends WndBase implements Serializable {
 			else
 				postergacion.setImportePagadoByDiferencia(0.00);
 			UtilData.auditarRegistro(postergacion,getUsuario(), Executions.getCurrent());
-			
-			
+
+
 			/*Instancia el gasto administrativo*/
 			VentaPasaje venta=(VentaPasaje)lbxVentas.getSelectedItem().getValue();
 			gastoAdmin=null;
@@ -1592,16 +1592,16 @@ public class WndPostergacion extends WndBase implements Serializable {
 				gastoAdmin.setCanalVenta(getUsuarioHardware().getCanalVenta());
 				gastoAdmin.setIdaRetorno(Constantes.FALSE_VALUE);
 				gastoAdmin.setEsFechaAbierta(Constantes.FALSE_VALUE);
-				gastoAdmin.setEstadoRegistro(Constantes.VALUE_ACTIVO);			
+				gastoAdmin.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 				gastoAdmin.setObservaciones(observaciones);
 				/*Calcula el igv del gasto administrativo*/
 				Double igv=gastoAdmin.getImportePagado()- Double.valueOf(Util.toNumberFormat(gastoAdmin.getImportePagado()/((Constantes.IGV/100)+1),2));
 				gastoAdmin.setIgv(igv);
 				UtilData.auditarRegistro(gastoAdmin, getUsuario(), Executions.getCurrent());
-				
+
 				if(chkCambioRazonSocial.isChecked()){
 					Cliente cliente=postergacion.getCliente();
-					cliente.setRazonSocial(txtClientePostergado.getText().trim().toUpperCase());				
+					cliente.setRazonSocial(txtClientePostergado.getText().trim().toUpperCase());
 					postergacion.setCliente(cliente);
 					gastoAdmin.setCliente(cliente);
 				}else if (chkCambioDireccionFiscal.isChecked()){
@@ -1611,8 +1611,8 @@ public class WndPostergacion extends WndBase implements Serializable {
 					gastoAdmin.setCliente(cliente);
 				}
 			}
-			
-			
+
+
 			Messagebox.show(Messages.getString("WndPostergacion.information.confirmacionPostergacion"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e){
@@ -1626,18 +1626,18 @@ public class WndPostergacion extends WndBase implements Serializable {
 										!(txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText())))
 									validaBloqueAsiento=true;
 							}
-							
+
 							/*##End begin 07/11/2016 - jabanto*/
 //							if(chkCambioFacturaBoleta.isChecked() || chkCambioNombre.isChecked() || chkCambioRuc.isChecked())
-//								validaBloqueAsiento=false;							
-							
+//								validaBloqueAsiento=false;
+
 							postergacion.setId(null);
 							postergacion.setEnviadoSFE(null);
 							postergacion.setFechaEnvioSFE(null);
 							/*##End Begin 07/11/2016 - jabanto*/
 //							int result = ServiceLocator.getVentaPasajesManager().postergarBoleto(postergacion,validaBloqueAsiento);
 //							postergacion = ServiceLocator.getVentaPasajesManager().buscarVentaById(postergacion.getId());
-														
+
 							/*##Begin 04/11/2016 - jabanto*/
 							VentaPasaje notaCredito = ServiceLocator.getVentaPasajesManager().postergarBoleto(postergacion,validaBloqueAsiento, gastoAdmin);
 							postergacion = ServiceLocator.getVentaPasajesManager().buscarVentaById(postergacion.getId());
@@ -1646,15 +1646,15 @@ public class WndPostergacion extends WndBase implements Serializable {
 							listVentaPasaje.add(postergacion);
 							if(gastoAdmin!=null)
 								listVentaPasaje.add(gastoAdmin);
-							
+
 							//Comentado temporalmente por MAOE
 							WSFE.sendVenta(listVentaPasaje, wndPostergacion, true, notaCredito);
 							/*Realiza el envio del gasto administrativo*/
-							
+
 							//End begin 04/11/2016 - jabanto
 //							/*Implementacion para el nueno formato 01/02/2016 - jabanto */
 //							boolean formato=UtilData.getFormatoImprecion(getAgencia().getId(), getTipocomprobante().getId(), getUsuarioHardware().getId());
-//							File file= CreateDocument.crearBoleto(postergacion,formato);							
+//							File file= CreateDocument.crearBoleto(postergacion,formato);
 //							if(getUsuarioHardware().getPrintApplet().intValue()==Constantes.TRUE_VALUE){
 //								String fileBoleto = Constantes.URL_FORMATOS_BOLETOS +Constantes.CLAVE_PAHT+ postergacion.getNumeroControl()+".txt";
 //								Window win = (Window)Executions.createComponents("imprimir.zul", null, null);
@@ -1707,7 +1707,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 		}catch(NumeroAsientoNullException nanex){
 			DlgMessage.information(Messages.getString("WndPostergacion.information.noAsientoSeleccionado"), imgSeleccionarAsiento);
 		}catch(NumeroBoletoNullException nbnex){
-			DlgMessage.information(Messages.getString("WndPostergacion.information.noNumeroBoleto"));			
+			DlgMessage.information(Messages.getString("WndPostergacion.information.noNumeroBoleto"));
 		}catch(TipoComprobanteNullException tcnex){
 			DlgMessage.information(Messages.getString("WndPostergacion.information.noTipoComprobante"), cmbTipoComprobante);
 		}catch(FormaPagoNullException fpnex){
@@ -1732,11 +1732,11 @@ public class WndPostergacion extends WndBase implements Serializable {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	private void tiempoExpiracionBloqueo(){
 		txtNumeroAsientoPostergado.setText("");
 	}
-	
+
 	public void cancelar(){
 		tabListado.setSelected(true);
 		grdPostergacion.setVisible(false);
@@ -1747,12 +1747,12 @@ public class WndPostergacion extends WndBase implements Serializable {
 		chkFechaAbierta.setChecked(false);
 //		imgSeleccionarAsiento.setVisible(false);
 	}
-	
+
 	public void cerrar(){
 		UtilData.liberarAsientos(usuarioHardware.getId());
 		closeTabWindow();
 	}
-	
+
 	/**
 	 * Para seleccionar el Tipo de Comprobante por defecto
 	 */
@@ -1773,18 +1773,18 @@ public class WndPostergacion extends WndBase implements Serializable {
 							break;
 						}
 					}
-					
-					
+
+
 //					if((postergacion.getCliente()!=null || chkCambioBoletaFactura.isChecked()) && ((TipoComprobante)comboitem.getValue()).getId().intValue()==Constantes.ID_TIPCOM_FACTURA)
 //						comboTipoComprobante.setSelectedItem(comboitem);
 //					else if (((TipoComprobante)comboitem.getValue()).getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA)
 //						comboTipoComprobante.setSelectedItem(comboitem);
 				}
-				
+
 				/*##End Begin 07/11/2016 - jabanto*/
 //				if(comboitem.getValue() instanceof TipoComprobante && ((TipoComprobante)comboitem.getValue()).getId().intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE)
 //						cmbTipoComprobante.setSelectedItem(comboitem);
-				
+
 			}else if(agencia.getTipoAgencia().getId().intValue() == Constantes.ID_TIPAGE_VIAJES){	//Si es AGENCIA DE VIAJES
 				if(comboitem.getValue() instanceof TipoComprobante && ((TipoComprobante)comboitem.getValue()).getId().intValue()==Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES)
 					comboTipoComprobante.setSelectedItem(comboitem);
@@ -1795,7 +1795,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 		}
 		comboTipoComprobante.setDisabled(true);
 	}
-	
+
 	/**
 	 * Selecciona por defecto el item del Combo Forma de Pago.
 	 */
@@ -1818,7 +1818,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 					}
 				}
 			}
-			
+
 			/*End begin 30/12/2016 - jabanto*/
 			/*	Si la agencia pertenece a TEPSA*/
 //			if(agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_TEPSA){
@@ -1839,12 +1839,12 @@ public class WndPostergacion extends WndBase implements Serializable {
 		}
 		cmbFormaPago.setDisabled(true);
 	}
-	
+
 	public void habilitarPagoMixto(){
 		boolean arg = false;
 		if(chkPagoMixto.isChecked())
 			arg = true;
-		
+
 		lblImporteEfectivo.setVisible(arg);
 		lblImporteTarjeta.setVisible(arg);
 		dblbxImporteEfectivo.setVisible(arg);
@@ -1853,7 +1853,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 		dblbxImporteTarjeta.setValue(0.0);
 		dblbxImporteEfectivo.setFocus(true);
 	}
-	
+
 	/**
 	 * 	Crea un objeto AplicarPromocion pasando parámetros al constructor
 	 */
@@ -1864,22 +1864,22 @@ public class WndPostergacion extends WndBase implements Serializable {
 			boolean paxfre = false;
 			if(pasajeroFrecuente!=null)
 				paxfre = true;
-			aplicarPromocion = new AplicarPromocion(postergacion.getRuta().getId(), postergacion.getServicio().getId(), 
-				getAgencia().getId(), getUsuarioHardware().getCanalVenta().getId(), null, null, 
-				postergacion.getNumeroAsiento().toString(), postergacion.getCliente()==null?null:postergacion.getCliente().getId(), 
-				postergacion.getIdaRetorno().intValue()==Constantes.TRUE_VALUE?true:false, postergacion.getFormaPago().getId(), 
-				postergacion.getTipoFormaPago().getId(), postergacion.getTarjetaCredito()==null?null:postergacion.getTarjetaCredito().getId(), 
-				postergacion.getFechaPartida(), paxfre, dblbxTarifa, dblbxDescuento, 
+			aplicarPromocion = new AplicarPromocion(postergacion.getRuta().getId(), postergacion.getServicio().getId(),
+				getAgencia().getId(), getUsuarioHardware().getCanalVenta().getId(), null, null,
+				postergacion.getNumeroAsiento().toString(), postergacion.getCliente()==null?null:postergacion.getCliente().getId(),
+				postergacion.getIdaRetorno().intValue()==Constantes.TRUE_VALUE?true:false, postergacion.getFormaPago().getId(),
+				postergacion.getTipoFormaPago().getId(), postergacion.getTarjetaCredito()==null?null:postergacion.getTarjetaCredito().getId(),
+				postergacion.getFechaPartida(), paxfre, dblbxTarifa, dblbxDescuento,
 				dblbxImporteTotal, null, lblPromocion, imgQuitarPromocion, txtIdPromocion,
 				postergacion.getHoraPartida());
 		}catch(Exception ex){
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace();
 		}
-		
+
 		return aplicarPromocion;
 	}
-	
+
 	private void quitarPromocion(){
 		lblPromocion.setValue("");
 		dblbxDescuento.setTooltiptext("");
@@ -1889,23 +1889,23 @@ public class WndPostergacion extends WndBase implements Serializable {
 		dblbxImporteTotal.setValue(dblbxSaldo.getValue()+dblbxPenalidad.getValue());
 		imgQuitarPromocion.setVisible(false);
 	}
-	
+
 	private void chkFechaAbierta_onCheck() throws Exception {
-		
+
 		limpiarControlesPostergacion();
-		
-		
+
+
 		if(chkFechaAbierta.isChecked()){
 			chkFechaAbierta.setDisabled(true);
 			VentaPasaje venta=lbxVentas.getSelectedItem().getValue();
-			
+
 			imgBuscarItinerario.setVisible(false);
 			imgSeleccionarAsiento.setVisible(false);
 			txtOrigenPostergado.setText(txtOrigenActual.getText());
 			txtDestinoPostergado.setText(txtDestinoActual.getText());
 			txtServicioPostergado.setText(txtServicioActual.getText());
 			cmbEmbarquePostergado.setDisabled(true);
-			
+
 			//##Begin 04/11/2016 - jabanto
 			chkCambioDestino.setChecked(false);
 			chkCambioServicio.setChecked(false);
@@ -1913,7 +1913,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 			postergacion.setRuta(venta.getRuta());
 			postergacion.setTarifa(venta.getTarifa());
 			postergacion.setDescuento(venta.getDescuento());
-			
+
 			//##End Begin 03/11/2016
 //			dblbxTarifa.setValue(postergacion.getTarifa());
 //			dblbxDescuento.setValue(postergacion.getDescuento());
@@ -1925,10 +1925,10 @@ public class WndPostergacion extends WndBase implements Serializable {
 //			else
 //				dblbxPenalidad.setValue(Constantes.PENALIDAD_POSTERGACION);
 //			dblbxImporteTotal.setValue(dblbxSaldo.getValue()+dblbxPenalidad.getValue());
-						
+
 			/*	Seteando el objeto postergacion con los nuevos datos para la venta	*/
  			postergacion.setItinerario(new Itinerario(Long.valueOf(1)));
- 			
+
  			/*End Begin 04/11/2016 - jabanto*/
 //			postergacion.setServicio(postergacion.getServicio());
 //			postergacion.setRuta(postergacion.getRuta());
@@ -1937,13 +1937,13 @@ public class WndPostergacion extends WndBase implements Serializable {
 			imgSeleccionarAsiento.setVisible(false);
 //			imgSeleccionarAsiento.setVisible(true);
 			cmbEmbarquePostergado.setDisabled(false);
-								
-			
+
+
 			//##End Begin 03/11/2016
 			//04/12/2013 - jabanto
 //			Double penalidad=dblbxPenalidad.getValue()!=null?dblbxPenalidad.getValue():0;
 //			dblbxPenalidad.setValue(penalidad-Constantes.PENALIDAD_POSTERGACION);
-//			
+//
 //			if(!(chkCambioNombre.isDisabled())){
 //				chkCambioNombre.setChecked(false);
 //				chkCambioNombre_onCheck();
@@ -1960,12 +1960,12 @@ public class WndPostergacion extends WndBase implements Serializable {
 //		calcularTotaPago();
 		detalleItinerario = null;
 	}
-	
-	
+
+
 	/**
 	 * @date 03/12/2013
 	 * @user jabanto
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private void chkCambioNombre_onCheck () throws Exception{
 		imgBuscarPasajero.setVisible(chkCambioNombre.isChecked());
@@ -1975,10 +1975,10 @@ public class WndPostergacion extends WndBase implements Serializable {
 			if(!(chkFechaAbierta.isChecked())){//Si no es fecha Abierta
 				//Valida son itinerarios diferentes, se asume que es una postergacion
 				if(chkCambioNombre.isChecked() && (
-						(txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText()) && txtNumeroAsientoActual.getText().equals(txtNumeroAsientoPostergado.getText())) 
+						(txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText()) && txtNumeroAsientoActual.getText().equals(txtNumeroAsientoPostergado.getText()))
 						|| txtItinerarioPostergado.getText().isEmpty() )  ){
 					copiarDatosVenta();
-				}else if(chkCambioNombre.isChecked()==false && txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText()) && txtNumeroAsientoActual.getText().equals(txtNumeroAsientoPostergado.getText())) {
+				}else if(!chkCambioNombre.isChecked() && txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText()) && txtNumeroAsientoActual.getText().equals(txtNumeroAsientoPostergado.getText())) {
 					//Si los itinerarios son iguales, el valor de la penalidad es cero
 //					dblbxPenalidad.setValue(0);
 					calcularPagos();
@@ -1986,7 +1986,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 //				}else if (chkCambioNombre.isChecked() && !(txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText()))){
 					//Si los itinerarios son diferentes, se resta la penalidad.
 //					dblbxPenalidad.setValue(penalidad+Constantes.PENALIDAD_CAMBIO_NOMBRE);
-					
+
 //				}else if (chkCambioNombre.isChecked()==false && penalidad>0){
 //					dblbxPenalidad.setValue(penalidad-Constantes.PENALIDAD_CAMBIO_NOMBRE);
 				}
@@ -1998,12 +1998,12 @@ public class WndPostergacion extends WndBase implements Serializable {
 //				else if(penalidad>0)
 //					dblbxPenalidad.setValue(penalidad-Constantes.PENALIDAD_CAMBIO_NOMBRE);
 			}
-//			
+//
 //			calcularTotaPago();
 //			validarPromocion();
 		}
 	}
-	
+
 	private void resetCheck_despuesViaje(Checkbox chkException)throws Exception{
 		if(chkException.getId().equals(chkCambioRuc.getId())){
 			if(chkCambioRazonSocial.isChecked()){
@@ -2019,8 +2019,8 @@ public class WndPostergacion extends WndBase implements Serializable {
 				chkCambioBoletaFactura_onCheck();
 			}
 			if(chkCambioFacturaBoleta.isChecked()){
-				chkCambioFacturaBoleta.setChecked(false);		
-				chkCambioFacturaBoleta_onCheck();	
+				chkCambioFacturaBoleta.setChecked(false);
+				chkCambioFacturaBoleta_onCheck();
 			}
 		}else if (chkException.getId().equals(chkCambioRazonSocial.getId())){
 			if(chkCambioRuc.isChecked()){
@@ -2036,8 +2036,8 @@ public class WndPostergacion extends WndBase implements Serializable {
 				chkCambioBoletaFactura_onCheck();
 			}
 			if(chkCambioFacturaBoleta.isChecked()){
-				chkCambioFacturaBoleta.setChecked(false);		
-				chkCambioFacturaBoleta_onCheck();	
+				chkCambioFacturaBoleta.setChecked(false);
+				chkCambioFacturaBoleta_onCheck();
 			}
 		}else if (chkException.getId().equals(chkCambioDireccionFiscal.getId())){
 			if(chkCambioRuc.isChecked()){
@@ -2053,8 +2053,8 @@ public class WndPostergacion extends WndBase implements Serializable {
 				chkCambioBoletaFactura_onCheck();
 			}
 			if(chkCambioFacturaBoleta.isChecked()){
-				chkCambioFacturaBoleta.setChecked(false);		
-				chkCambioFacturaBoleta_onCheck();	
+				chkCambioFacturaBoleta.setChecked(false);
+				chkCambioFacturaBoleta_onCheck();
 			}
 		}else if (chkException.getId().equals(chkCambioBoletaFactura.getId())){
 			if(chkCambioRuc.isChecked()){
@@ -2070,8 +2070,8 @@ public class WndPostergacion extends WndBase implements Serializable {
 				chkCambioDireccionFiscal_onCheck();
 			}
 			if(chkCambioFacturaBoleta.isChecked()){
-				chkCambioFacturaBoleta.setChecked(false);		
-				chkCambioFacturaBoleta_onCheck();	
+				chkCambioFacturaBoleta.setChecked(false);
+				chkCambioFacturaBoleta_onCheck();
 			}
 		}else if (chkException.getId().equals(chkCambioFacturaBoleta.getId())){
 			if(chkCambioRuc.isChecked()){
@@ -2090,26 +2090,26 @@ public class WndPostergacion extends WndBase implements Serializable {
 				chkCambioBoletaFactura.setChecked(false);
 				chkCambioBoletaFactura_onCheck();
 			}
-		}		
+		}
 	}
-	
+
 	/**
 	 * @date 03/12/2013
 	 * @user jabanto
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private void chkCambioRuc_onCheck () throws Exception{
 		imgBuscarClienteRuc.setVisible(chkCambioRuc.isChecked());
-		
+
 		if(!(chkCambioNombre.isChecked())){
-//			Double penalidad=dblbxPenalidad.getValue()!=null?dblbxPenalidad.getValue():0;			
+//			Double penalidad=dblbxPenalidad.getValue()!=null?dblbxPenalidad.getValue():0;
 			if(!(chkFechaAbierta.isChecked())){//Si no es fecha Abierta
 				//Valida si el son itinerarios diferentes, se asume que es una postergacion
-				if(chkCambioRuc.isChecked() && ( 
-						(txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText()) && txtNumeroAsientoActual.getText().equals(txtNumeroAsientoPostergado.getText())) 
+				if(chkCambioRuc.isChecked() && (
+						(txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText()) && txtNumeroAsientoActual.getText().equals(txtNumeroAsientoPostergado.getText()))
 						|| txtItinerarioPostergado.getText().isEmpty())  ){
 					copiarDatosVenta();
-				}else if(chkCambioRuc.isChecked()==false && txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText()) && txtNumeroAsientoActual.getText().equals(txtNumeroAsientoPostergado.getText()) ) {
+				}else if(!chkCambioRuc.isChecked() && txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText()) && txtNumeroAsientoActual.getText().equals(txtNumeroAsientoPostergado.getText()) ) {
 					//Si los itinerarios son iguales, el valor de la penalidad es cero
 					dblbxPenalidad.setValue(0);
 					limpiarControlesPostergacion();
@@ -2121,29 +2121,29 @@ public class WndPostergacion extends WndBase implements Serializable {
 //					dblbxPenalidad.setValue(penalidad-Constantes.PENALIDAD_CAMBIO_NOMBRE);
 //				}
 			}
-//			
+//
 //			else{//Si es fecha abierta
 //				if(chkCambioRuc.isChecked())
 //					dblbxPenalidad.setValue(penalidad+Constantes.PENALIDAD_CAMBIO_NOMBRE);
 //				else if(penalidad>0)
 //					dblbxPenalidad.setValue(penalidad-Constantes.PENALIDAD_CAMBIO_NOMBRE);
 //			}
-			
+
 //			calcularTotaPago();
 			calcularPagos();
 //			validarPromocion();
-		}		
+		}
 	}
 	/**
 	 * @date 03/12/2013
 	 * @user jabanto
 	 * Copia los datos de la venta para el cambio de nombre
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private void copiarDatosVenta() throws Exception{
 		VentaPasaje venta=lbxVentas.getSelectedItem().getValue();
 		if(venta!=null){
-			TreeMap<String, Object>criteriosBusqueda=new TreeMap<String, Object>();
+			TreeMap<String, Object>criteriosBusqueda=new TreeMap<>();
 			criteriosBusqueda.put("itinerario", venta.getItinerario());
 			criteriosBusqueda.put("ruta", venta.getRuta());
 			criteriosBusqueda.put("horaPartida", venta.getHoraPartida());
@@ -2155,7 +2155,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 				//MAOE: 22/06/2022
 				//Insertar la tarifa en el detalleItinerario para el cambio de nombre
 				detalleItinerario.setTarifa(postergacion.getTarifa());
-				
+
 				postergacion.setItinerario(detalleItinerario.getItinerario());
 				postergacion.setServicio(detalleItinerario.getItinerario().getServicio());
 				postergacion.setRuta(detalleItinerario.getRuta());
@@ -2172,23 +2172,23 @@ public class WndPostergacion extends WndBase implements Serializable {
 				txtServicioPostergado.setText(detalleItinerario.getItinerario().getServicio().getDenominacion());
 				txtSalidaPostergado.setText(Util.DatetoString(detalleItinerario.getFechaPartida(), Constantes.DATE_FORMAT));
 				onLoadPuntoEmbarque(detalleItinerario);
-				
+
 //				Double valorPenalidad=dblbxPenalidad.getValue()!=null?dblbxPenalidad.getValue():0;
 //				if(chkCambioNombre.isChecked() || rdCambioRuc.isChecked())
 //					calcularPagos(Constantes.PENALIDAD_CAMBIO_NOMBRE+valorPenalidad);
-				
+
 				/*Begin 03/11/2016 - jabanto*/
 				if(chkCambioNombre.isChecked()){
 					calcularPagos();
 				}
-					
-									
+
+
 			}
 		}
 	}
-	
-	
-	
+
+
+
 	private void enlazarMapaBus() throws Exception{
 		if(!txtItinerarioPostergado.getText().trim().equals("")){
 			final WndMapaBus oWndMapaBus = new WndMapaBus();
@@ -2208,25 +2208,25 @@ public class WndPostergacion extends WndBase implements Serializable {
 				public void onEvent(Event e) throws Exception{
 					postergacion.setNumeroAsiento(Integer.valueOf(txtNumeroAsientoPostergado.getText()));
 					postergacion.setNumeroPiso(Integer.valueOf(txtNumeroPisoPostergado.getText()));
-					
+
 					/*##End Begin 03/11/2016 - jabanto*/
 //					if(chkCambioNombre.isChecked() || rdCambioRuc.isChecked())
 //						calcularPagos(Constantes.PENALIDAD_POSTERGACION+Constantes.PENALIDAD_CAMBIO_NOMBRE);
 //					else
 //						calcularPagos(Constantes.PENALIDAD_POSTERGACION);
-					
+
 					/*Begin 03/11/2016 - jabanto*/
 //					tipoNotaCredito=
-					
+
 					calcularPagos();
 //					validarPromocion();
-					
+
 //					calcularPagos();
-					
-					
-					
-//					/**	
-//					 * Esta seccion es para obtener las promociones que son por tarifa	
+
+
+
+//					/**
+//					 * Esta seccion es para obtener las promociones que son por tarifa
 //					 * y que reeemplazaran la tarifa real del servicio.
 //					 */
 //					try {
@@ -2257,7 +2257,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 //								}
 //							}
 //						}
-//						
+//
 //						if(promo!=null){
 //							AplicarPromocion aplicarPromocion=createObjectAplicarPromocion();
 //							aplicarPromocion.executePromocion(promo.getId().toString(), false);
@@ -2274,35 +2274,35 @@ public class WndPostergacion extends WndBase implements Serializable {
 			});
 		}
 	}
-	
+
 	private void validarPromocion(){
-		/**	
-		 * Esta seccion es para obtener las promociones que son por tarifa	
+		/**
+		 * Esta seccion es para obtener las promociones que son por tarifa
 		 * y que reeemplazaran la tarifa real del servicio.
 		 */
 		try {
 			if(detalleItinerario!=null){
 				Promocion promo = null;
 				/*	Obtenemos las promociones que reemplazaran a la tarifa	*/
-				List<Promocion>lstPromocion=ServiceLocator.getPromocionManager().buscarPorTarifa(Util.DatetoString(detalleItinerario.getFechaPartida(), 
-																								Constantes.DATE_FORMAT), detalleItinerario.getRuta().getId().toString(), 
+				List<Promocion>lstPromocion=ServiceLocator.getPromocionManager().buscarPorTarifa(Util.DatetoString(detalleItinerario.getFechaPartida(),
+																								Constantes.DATE_FORMAT), detalleItinerario.getRuta().getId().toString(),
 																								detalleItinerario.getItinerario().getServicio().getId().toString(),
 																								detalleItinerario.getHoraPartida().replaceAll(":", "."));
 				/*	Validando si la promocion cumple con el requisito del Servicio y la Ruta	*/
-				for(int i=0; i<lstPromocion.size(); i++){
-					String[] rutas = lstPromocion.get(i).getRutas().split(",");
-					String[] servicios = lstPromocion.get(i).getServicios().split(",");
-					String[] asientos = lstPromocion.get(i).getAsientos().split(",");
-					for(int j=0; j<rutas.length; j++){
-						if(rutas[j].equals(detalleItinerario.getRuta().getId().toString())){
-							for(int k=0; k<servicios.length; k++){
-								if(servicios[k].equals(detalleItinerario.getItinerario().getServicio().getId().toString())){
+				for (Promocion element : lstPromocion) {
+					String[] rutas = element.getRutas().split(",");
+					String[] servicios = element.getServicios().split(",");
+					String[] asientos = element.getAsientos().split(",");
+					for (String element2 : rutas) {
+						if(element2.equals(detalleItinerario.getRuta().getId().toString())){
+							for (String element3 : servicios) {
+								if(element3.equals(detalleItinerario.getItinerario().getServicio().getId().toString())){
 									if(asientos.length==0)
-										promo = lstPromocion.get(i);
+										promo = element;
 									else{
-										for(int m=0; m<asientos.length; m++){
-											if(asientos[m].equals(postergacion.getNumeroAsiento().toString())){
-												promo = lstPromocion.get(i);
+										for (String element4 : asientos) {
+											if(element4.equals(postergacion.getNumeroAsiento().toString())){
+												promo = element;
 												break;
 											}
 										}
@@ -2312,7 +2312,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 						}
 					}
 				}
-				
+
 				quitarPromocion();
 				if(promo!=null){
 					AplicarPromocion aplicarPromocion=createObjectAplicarPromocion();
@@ -2327,8 +2327,8 @@ public class WndPostergacion extends WndBase implements Serializable {
 					}
 					else
 						dblbxDescuento.setValue(0.00);
-						
-					
+
+
 					/*##Begin 07/11/2016 - jabanto*/
 //					dblbxTarifa.setValue(dblbxMontoAnterior.getValue()>=dblbxTarifa.getValue()?postergacion.getTarifa():dblbxTarifa.getValue());
 //					dblbxSaldo.setValue(dblbxTarifa.getValue()-dblbxMontoAnterior.getValue()-dblbxDescuento.getValue());
@@ -2336,10 +2336,10 @@ public class WndPostergacion extends WndBase implements Serializable {
 				}else{
 //					if(detalleItinerario.getTarifa().doubleValue()<=postergacion.getTarifa().doubleValue()){
 					//Obtener la tarifa con el nuevo enfoque
-					
-					
-					
-					
+
+
+
+
 					if(detalleItinerario.getTarifa().doubleValue()==postergacion.getTarifa().doubleValue()){
 						dblbxDescuento.setValue(postergacion.getDescuento());
 						dblbxTarifa.setValue(postergacion.getTarifa());
@@ -2348,8 +2348,8 @@ public class WndPostergacion extends WndBase implements Serializable {
 						dblbxDescuento.setValue(0.00);
 						dblbxTarifa.setValue(detalleItinerario.getTarifa());
 					}
-					
-					
+
+
 					/*End Begin 28/11/2016 - jabanto*/
 //					if(detalleItinerario.getTarifa().doubleValue()<=postergacion.getTarifa().doubleValue()){
 //						dblbxDescuento.setValue(postergacion.getDescuento());
@@ -2359,14 +2359,14 @@ public class WndPostergacion extends WndBase implements Serializable {
 //						dblbxTarifa.setValue(detalleItinerario.getTarifa());
 //					}
 				}
-				
-//				aplicarPromocion();  
+
+//				aplicarPromocion();
 			}
 		}catch(Exception ex){
 			DlgMessage.error(Messages.getString(ex.getMessage()));
 		}
 	}
-	
+
 	private void liberarAsientos(){
 		try{
 			if(!txtNumeroAsientoPostergado.getText().isEmpty()){
@@ -2382,21 +2382,21 @@ public class WndPostergacion extends WndBase implements Serializable {
 			DlgMessage.information(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 //	private void calcularPagos(Double penalidad){
 	private void calcularPagos()throws Exception{
 		tipoNotaCredito=null;
 		//Si es una postergacion
 		if(!(txtItinerarioPostergado.getText().isEmpty()) && !(txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText())) ||
 				(txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText()) && !(txtNumeroAsientoActual.getText().equals(txtNumeroAsientoPostergado.getText())))){
-			
+
 			tipoNotaCredito=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_POSTERGACION);
-			
+
 			validarPromocion();
 		}else{
 			dblbxDescuento.setValue(postergacion.getDescuento());
 			dblbxTarifa.setValue(postergacion.getTarifa());
-			
+
 			if(chkFechaAbierta.isChecked())//Fecha abierta
 				tipoNotaCredito=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_POSTERGACION);
 			else if(chkCambioNombre.isChecked()) //Cambio de nombre
@@ -2412,39 +2412,39 @@ public class WndPostergacion extends WndBase implements Serializable {
 			else if (chkCambioFacturaBoleta.isChecked()) //Cambio Boleta a Factura
 				tipoNotaCredito=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CAMBIO_FACTURA_BOLETA);
 		}
-		
+
 //		dblbxTarifa.setValue(detalleItinerario.getTarifa()<postergacion.getTarifa()?dblbxMontoAnterior.getValue():detalleItinerario.getTarifa());
-		
+
 		//Calculando el saldo
 		dblbxSaldo.setValue(dblbxTarifa.getValue()-dblbxMontoAnterior.getValue()-dblbxDescuento.getValue());
 //		if(dblbxSaldo.getValue()<0)
 //			dblbxSaldo.setValue(0.00);
-		
+
 		/*End begin 17/11/2016 - jabanto*/
 		//Calculando la penalidad, tomando en cuenta la forma de pago (efectivo, tarjeta)
 //		if(cmbTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago){
 //			TipoFormaPago tipoFormaPago=cmbTipoFormaPago.getSelectedItem().getValue();
 //			if(tipoFormaPago.getId().intValue()==Constantes.ID_TIPFORPAG_EFECTIVO)
 //				dblbxPenalidad.setValue(tipoNotaCredito!=null?tipoNotaCredito.getGastoAdminEfectivo():.00);
-//			else 
+//			else
 //				dblbxPenalidad.setValue(tipoNotaCredito!=null?tipoNotaCredito.getGastoAdminTarjeta():.00);
 //		}else
 //			dblbxPenalidad.setValue(tipoNotaCredito!=null?tipoNotaCredito.getGastoAdminEfectivo():.00);
-			
-		
+
+
 			//Calculando la penalidad, tomando en cuenta la forma de pago (efectivo, tarjeta) - 17//11/2016 - jabanto
 		if(postergacion.getTipoFormaPago().getId().intValue()!=Constantes.ID_TIPFORPAG_TARJETA)
 			dblbxPenalidad.setValue(tipoNotaCredito!=null?tipoNotaCredito.getGastoAdminEfectivo():.00);
-		else 
+		else
 			dblbxPenalidad.setValue(tipoNotaCredito!=null?tipoNotaCredito.getGastoAdminTarjeta():.00);
-		
-		
+
+
 //		if(dblbxSaldo.getValue()>=0)
 //			dblbxImporteTotal.setValue(dblbxSaldo.getValue()+dblbxPenalidad.getValue());
 //		else
 //			dblbxImporteTotal.setValue(dblbxPenalidad.getValue());
-		
-			
+
+
 		//Calculando el importe total a pagar
 		lblSaldo.setValue("SALDO : ");
 		lblSaldo.setStyle("");
@@ -2457,7 +2457,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 			lblSaldo.setValue("SALDO A FAVOR DEL PASAJERO : ");
 			lblSaldo.setStyle("color:black;font-weight: bold");
 			dblbxSaldo.setStyle("color:black;font-weight: bold");
-			
+
 			dblbxSaldo.setValue(dblbxSaldo.getValue()*-1); /*Lo convierte en un valor positivo*/
 			if(dblbxSaldo.getValue()>=dblbxPenalidad.getValue()){
 				dblbxImporteTotal.setValue(dblbxSaldo.getValue()-dblbxPenalidad.getValue());
@@ -2468,36 +2468,36 @@ public class WndPostergacion extends WndBase implements Serializable {
 				lblImportePagar.setValue(LABEL_IMPPAG_TO_TEPSA);
 //				lblImportePagar.setValue("IMPORTE TOTAL PAGAR : ");
 			}
-			
+
 		}
-			
+
 	}
-	
+
 //	private void calcularTotaPago()throws Exception{
 //		calcularPagos();
 //		//##End Begin 03/11/2016
 ////		if(detalleItinerario!=null)
 ////			dblbxTarifa.setValue(detalleItinerario.getTarifa()<postergacion.getTarifa()?dblbxMontoAnterior.getValue():detalleItinerario.getTarifa());
-////			
+////
 ////		dblbxSaldo.setValue(dblbxTarifa.getValue()-dblbxMontoAnterior.getValue()-dblbxDescuento.getValue());
 ////		dblbxImporteTotal.setValue(dblbxSaldo.getValue()+dblbxPenalidad.getValue());
 //	}
-	
+
 	private void aplicarPromocion(){
 		try{
 			if(dblbxMontoAnterior.getValue()<dblbxTarifa.getValue()){
 				/* RECUPERANDO LOS DATOS DEL PASAJERO FRECUENTE */
-				TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+				TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 				criteriosBusqueda.put("pasajero.id", postergacion.getPasajero().getId());
 				criteriosBusqueda.put("estado", Constantes.TRUE_VALUE);
 				List<PasajeroFrecuente> lstPaxfree = ServiceLocator.getPasajeroFrecuenteManager().buscarPorX(criteriosBusqueda, null);
-				
+
 				if (postergacion.getPasajero().getIndeseable().intValue() == Constantes.FALSE_VALUE) {
 					if (lstPaxfree.size() > 0) {
 						postergacion.getPasajero().setPaxFree(true);
 						postergacion.getPasajero().setPasajeroFrecuente(lstPaxfree.get(0));
 						/*	Buscamos la promocion del Pasajero Frecuente	*/
-						criteriosBusqueda = new TreeMap<String, Object>();
+						criteriosBusqueda = new TreeMap<>();
 						criteriosBusqueda.put("cliente", "*");
 						criteriosBusqueda.put("pasajeroFrecuente", "S");
 						criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
@@ -2510,13 +2510,13 @@ public class WndPostergacion extends WndBase implements Serializable {
 							}else{
 								lstPromocion = ServiceLocator.getPromocionManager().buscarPorX(criteriosBusqueda, null, Util.DatetoString(detalleItinerario.getFechaPartida(), Constantes.DATE_FORMAT));
 							}
-							
+
 							if(lstPromocion!=null && lstPromocion.size()==1){
 								AplicarPromocion aplicarPromocion = createObjectAplicarPromocion();
 								promocionAplicada = aplicarPromocion.executePromocion(lstPromocion.get(0).getId().toString(), false);
 								imgQuitarPromocion.setVisible(true);
 								dblbxSaldo.setValue(dblbxTarifa.getValue()-dblbxMontoAnterior.getValue()-dblbxDescuento.getValue());
-								dblbxImporteTotal.setValue(dblbxSaldo.getValue()+dblbxPenalidad.getValue());							
+								dblbxImporteTotal.setValue(dblbxSaldo.getValue()+dblbxPenalidad.getValue());
 							}else if(lstPromocion.size()>1)
 								DlgMessage.information(Messages.getString("WndVentaPasajes.information.muchasPromocionesPaxFre"));
 						}else{
@@ -2539,18 +2539,18 @@ public class WndPostergacion extends WndBase implements Serializable {
 						}
 					}
 				}
-				
+
 				/*	Verificamos promociones para el cliente */
 				if(postergacion.getCliente()!=null){
-					criteriosBusqueda = new TreeMap<String, Object>();
+					criteriosBusqueda = new TreeMap<>();
 					criteriosBusqueda.put("cliente", postergacion.getCliente().getId().toString());
 					criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 					if(detalleItinerario!=null){
 						List<Promocion> lstPromocion = ServiceLocator.getPromocionManager().buscarPorX(criteriosBusqueda, null, Util.DatetoString(detalleItinerario.getFechaPartida(), Constantes.DATE_FORMAT));
-								
-						for(int i=0; i<lstPromocion.size(); i++){
+
+						for (Promocion element : lstPromocion) {
 							AplicarPromocion aplicarPromocion = createObjectAplicarPromocion();
-							promocionAplicada = aplicarPromocion.executePromocion(lstPromocion.get(i).getId().toString(), false);
+							promocionAplicada = aplicarPromocion.executePromocion(element.getId().toString(), false);
 							if(promocionAplicada!=null){
 								break;
 							}
@@ -2571,17 +2571,17 @@ public class WndPostergacion extends WndBase implements Serializable {
 				}
 			}
 		}catch(Exception ex){
-			ex.printStackTrace();		
+			ex.printStackTrace();
 			DlgMessage.error(this.getClass().getSimpleName() + " " + ex.getMessage());
 		}
 	}
-	
+
 	private void openWindowCambioRazonSocial(){
 		wndCambiarRazoSocial = createWindowCambioRazonSocial();
 		this.appendChild(wndCambiarRazoSocial);
 		wndCambiarRazoSocial.setMode("modal");
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	private Window createWindowCambioRazonSocial(){
 		final Window window = new Window("CAMBIO DE RAZION SOCIAL", "none", true);
@@ -2589,30 +2589,30 @@ public class WndPostergacion extends WndBase implements Serializable {
 //		window.setWidth("450px");
 		window.appendChild(new Separator());
 		window.appendChild(new Separator());
-		
+
 		Vbox vbox= new Vbox();
-		
+
 		Label label= new Label("INGRESE LA RAZON SOCIAL");
 		label.setStyle("color:blue;font-weight: bold;font-size:11px !important");
 		final Textbox txtNuevaRazonSocial= new Textbox();
 		txtNuevaRazonSocial.setWidth("300px");
 		txtNuevaRazonSocial.setStyle("font-size:11px !important");
-		
+
 		vbox.appendChild(label);
 		vbox.appendChild(txtNuevaRazonSocial);
-		
+
 		window.appendChild(vbox);
 		window.appendChild(new Separator());
 		window.appendChild(new Separator());
 		window.appendChild(new Separator());
 		window.appendChild(new Separator());
-		
+
 		/*Aceptar*/
 		final Button btnAceptar = new Button("Aceptar");
 		btnAceptar.setImage("/resources/mp_aceptarEnabled.png");
 		btnAceptar.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 			@Override
-			public void onEvent(Event event) throws Exception {		
+			public void onEvent(Event event) throws Exception {
 				if(txtNuevaRazonSocial.getText().trim().isEmpty()){
 					DlgMessage.information(Messages.getString("WndPostergacion.informacion.cambioRazonSocialNoNuevaRazonSocial"));
 					return;
@@ -2623,12 +2623,12 @@ public class WndPostergacion extends WndBase implements Serializable {
 				txtClientePostergado.setText(txtNuevaRazonSocial.getText().trim().toUpperCase());
 				chkCambioRazonSocial.setDisabled(true);
 				chkCambioRuc.setDisabled(true);
-				chkCambioDireccionFiscal.setDisabled(true); 
-				
+				chkCambioDireccionFiscal.setDisabled(true);
+
 				window.onClose();
 			}
 		});
-		
+
 		/*Cancelar*/
 		Button btncancelar = new Button("Cancelar");
 		btncancelar.setImage("/resources/mp_cancelarEnabled.png");
@@ -2638,26 +2638,26 @@ public class WndPostergacion extends WndBase implements Serializable {
 				window.onClose();
 			}
 		});
-		
+
 		Hbox hbox= new Hbox();
 		hbox.appendChild(btncancelar);
 		hbox.appendChild(btnAceptar);
-		
+
 		Div div= new Div();
 		div.setAlign("center");
 		div.appendChild(hbox);
 		window.appendChild(div);
 		window.appendChild(new Separator());
-				
+
 		return window;
 	}
-	
+
 	private void openWindowCambioDireccionFiscal(){
 		wndCambiarDireccionFiscal = createWindowDireccionFiscal();
 		this.appendChild(wndCambiarDireccionFiscal);
 		wndCambiarDireccionFiscal.setMode("modal");
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	private Window createWindowDireccionFiscal(){
 		final Window window = new Window("CAMBIO DE LA DIRECCION FISCAL", "none", true);
@@ -2665,30 +2665,30 @@ public class WndPostergacion extends WndBase implements Serializable {
 //		window.setWidth("450px");
 		window.appendChild(new Separator());
 		window.appendChild(new Separator());
-		
+
 		Vbox vbox= new Vbox();
-		
+
 		Label label= new Label("INGRESE LA DIRECCION");
 		label.setStyle("color:blue;font-weight: bold;font-size:11px !important");
 		final Textbox txtNuevaDireccion= new Textbox();
 		txtNuevaDireccion.setWidth("300px");
 		txtNuevaDireccion.setStyle("font-size:11px !important");
-		
+
 		vbox.appendChild(label);
 		vbox.appendChild(txtNuevaDireccion);
-		
+
 		window.appendChild(vbox);
 		window.appendChild(new Separator());
 		window.appendChild(new Separator());
 		window.appendChild(new Separator());
 		window.appendChild(new Separator());
-		
+
 		/*Aceptar*/
 		final Button btnAceptar = new Button("Aceptar");
 		btnAceptar.setImage("/resources/mp_aceptarEnabled.png");
 		btnAceptar.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 			@Override
-			public void onEvent(Event event) throws Exception {		
+			public void onEvent(Event event) throws Exception {
 				if(txtNuevaDireccion.getText().trim().isEmpty()){
 					DlgMessage.information(Messages.getString("WndPostergacion.informacion.cambioDireccionNoNuevaDireccion"));
 					return;
@@ -2700,11 +2700,11 @@ public class WndPostergacion extends WndBase implements Serializable {
 				chkCambioDireccionFiscal.setDisabled(true);
 				chkCambioRazonSocial.setDisabled(true);
 				chkCambioRuc.setDisabled(true);
-				
+
 				window.onClose();
 			}
 		});
-		
+
 		/*Cancelar*/
 		Button btncancelar = new Button("Cancelar");
 		btncancelar.setImage("/resources/mp_cancelarEnabled.png");
@@ -2714,17 +2714,17 @@ public class WndPostergacion extends WndBase implements Serializable {
 				window.onClose();
 			}
 		});
-		
+
 		Hbox hbox= new Hbox();
 		hbox.appendChild(btncancelar);
 		hbox.appendChild(btnAceptar);
-		
+
 		Div div= new Div();
 		div.setAlign("center");
 		div.appendChild(hbox);
 		window.appendChild(div);
 		window.appendChild(new Separator());
-				
+
 		return window;
 	}
 }

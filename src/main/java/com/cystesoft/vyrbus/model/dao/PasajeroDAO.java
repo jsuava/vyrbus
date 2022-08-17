@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 04/05/2012
  */
@@ -27,7 +27,7 @@ public interface PasajeroDAO extends GenericDAO {
 	public void inactivar(Long id);
 	/**
 	 * Realiza la busqueda del pasajero con el indice FullText.
-	 * @param nombres	: Array con los nombres y apellidos del pasajero a buscar. 
+	 * @param nombres	: Array con los nombres y apellidos del pasajero a buscar.
 	 * @return Lista de coincidencias.
 	 * @throws Exception
 	 */

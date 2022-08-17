@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 15/05/2013
  */
@@ -13,7 +13,7 @@ package com.cystesoft.vyrbus.service.exceptions;
  */
 public class ItinerarioException extends Exception {
 	private static final long serialVersionUID = 1L;
-	
+
 	public static final int FECHA_MENOR=1;
 	public static final int NO_SELECT=2;
 	public static final int ITINERARIO_NULL=3;
@@ -33,13 +33,13 @@ public class ItinerarioException extends Exception {
 	public static final int TARIFA_IDA_CERO = 17;
 	public static final int TARIFA_RETORNO_CERO = 18;
 	public static final int CON_HRE=19;
-		
+
 	private Integer tipo;
-	
+
 	public ItinerarioException(){
 		super();
 	}
-	
+
 	public ItinerarioException(Integer tipo){
 		this.setTipo(tipo);
 	}

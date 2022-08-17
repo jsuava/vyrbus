@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripci�n	: 
+ * Descripci�n	:
  * Fecha		: 16/07/2014
  */
 package com.cystesoft.vyrbus.view.ctrl;
@@ -52,13 +52,13 @@ public class WndVSAsignacionCertificados extends WndOpcionesMantenimiento implem
 	private Longbox lbxCorrelativoInicial;
 	private Longbox lbxCorrelativoFinal;
 	private Listbox listboxLista;
-	
+
 	private Combobox cmbAgenciaBusqueda;
 	private VSAsignacionCertificados vsAsignacionCertificados;
 	private Agencia agencia;
-	
+
 	private Window wndBusqueda = null;
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
 	 */
@@ -70,7 +70,7 @@ public class WndVSAsignacionCertificados extends WndOpcionesMantenimiento implem
 		listboxLista=(Listbox)this.getFellow("listboxLista");
 	}
 
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
@@ -80,7 +80,7 @@ public class WndVSAsignacionCertificados extends WndOpcionesMantenimiento implem
 		UtilData.cargarAgenciaXtipoAgencia(cmbAgencia, Constantes.ID_TIPAGE_TEPSA, true);
 		cmbAgencia.setSelectedIndex(0);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onNew()
 	 */
@@ -95,7 +95,7 @@ public class WndVSAsignacionCertificados extends WndOpcionesMantenimiento implem
 	 */
 	@Override
 	public void onSearch() throws Exception {
-		ventanaBusqueda();	
+		ventanaBusqueda();
 	}
 
 	/* (non-Javadoc)
@@ -122,7 +122,7 @@ public class WndVSAsignacionCertificados extends WndOpcionesMantenimiento implem
 	@Override
 	public void onCancel(int action) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -139,9 +139,9 @@ public class WndVSAsignacionCertificados extends WndOpcionesMantenimiento implem
 				throw new CorrelativoException(CorrelativoException.FINAL_NULL);
 			else if (lbxCorrelativoInicial.getValue().longValue()>lbxCorrelativoFinal.getValue().longValue())
 				throw new CorrelativoException(CorrelativoException.CORRELATIVO_FINAL_MENOR_DB);
-			
+
 			Agencia oAgencia=cmbAgencia.getSelectedItem().getValue();
-			
+
 			//Valida que el correlativo inicial no este dentro del algun rando asignado ha otra agencia.
 			VSAsignacionCertificados rangoCertificados=ServiceLocator.getVentaSeguroManager().ValidarAsignacionCertificado(lbxCorrelativoInicial.getValue());
 			if(rangoCertificados!=null && rangoCertificados.getAgenciaID().intValue()!=oAgencia.getId().intValue()){
@@ -156,7 +156,7 @@ public class WndVSAsignacionCertificados extends WndOpcionesMantenimiento implem
 				DlgMessage.information(Messages.getString("WndVsAsignacionCertificados.information.correlativoFinalUtilizado")+" "+agenciaCer.getDenominacion(),lbxCorrelativoInicial);
 				throw new CancelaGrabacionException();
 			}
-			
+
 			//Inactiva el registro anterior si es que la agencia ya tenga una ***Comentado 06/09/2014
 //			VSAsignacionCertificados  asignacionCertificados=ServiceLocator.getVentaSeguroManager().buscarAsignacionCertificadosPorIdAgencia(oAgencia.getId());
 //			if(asignacionCertificados!=null){
@@ -164,15 +164,15 @@ public class WndVSAsignacionCertificados extends WndOpcionesMantenimiento implem
 //				asignacionCertificados.setEstadoRegistro(Constantes.VALUE_INACTIVO);
 //				ServiceLocator.getVentaSeguroManager().actualizarAsignacionCertificados(asignacionCertificados);
 //			}
-						
-			vsAsignacionCertificados=new VSAsignacionCertificados();		
+
+			vsAsignacionCertificados=new VSAsignacionCertificados();
 			vsAsignacionCertificados.setAgenciaID(oAgencia.getId());
 			vsAsignacionCertificados.setCorrelativoInicial(lbxCorrelativoInicial.getValue());
 			vsAsignacionCertificados.setCorrelativoFinal(lbxCorrelativoFinal.getValue());
 			vsAsignacionCertificados.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 			UtilData.auditarRegistro(vsAsignacionCertificados, getUsuario(), Executions.getCurrent());
 			ServiceLocator.getVentaSeguroManager().guardarAsignacionCertificados(vsAsignacionCertificados);
-			
+
 			ejecutaBusqueda(oAgencia);
 		}catch (CancelaGrabacionException cex){
 			throw new CancelaGrabacionException();
@@ -192,7 +192,7 @@ public class WndVSAsignacionCertificados extends WndOpcionesMantenimiento implem
 			DlgMessage.error(ex.getMessage());
 			throw new CancelaGrabacionException();
 		}
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -208,7 +208,7 @@ public class WndVSAsignacionCertificados extends WndOpcionesMantenimiento implem
 //					if(arg0.getName().equals("onYes")){
 						VSAsignacionCertificados asignacionCertificados=listboxLista.getSelectedItem().getValue();
 						ServiceLocator.getVentaSeguroManager().inactivarAsignacionCertificado(asignacionCertificados.getId());
-						
+
 //					}
 //				}
 //			});
@@ -221,7 +221,7 @@ public class WndVSAsignacionCertificados extends WndOpcionesMantenimiento implem
 	@Override
 	public void onPrint(int tab) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -230,7 +230,7 @@ public class WndVSAsignacionCertificados extends WndOpcionesMantenimiento implem
 	@Override
 	public void onExport(int tab) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -239,9 +239,9 @@ public class WndVSAsignacionCertificados extends WndOpcionesMantenimiento implem
 	@Override
 	public void onHelp() throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.zkoss.zul.Window#onClose()
 	 */
@@ -266,7 +266,7 @@ public class WndVSAsignacionCertificados extends WndOpcionesMantenimiento implem
 			break;
 	}
 	}
-	
+
 	/**
 	 * Lista los certificados asignados a las agencias.
 	 * @param lstRegsitros : lista de certificados asignados a las agencias a cargar en la lista.
@@ -274,7 +274,7 @@ public class WndVSAsignacionCertificados extends WndOpcionesMantenimiento implem
 	 */
 	private void listarRegistros(List<VSAsignacionCertificados> lstRegsitros)throws Exception{
 		Util.limpiarListbox(listboxLista);
-		
+
 		int x=0;
 		for(VSAsignacionCertificados asignacionCertificados: lstRegsitros){
 			x++;
@@ -290,13 +290,13 @@ public class WndVSAsignacionCertificados extends WndOpcionesMantenimiento implem
 			cell=new Listcell(asignacionCertificados.getCorrelativoFinal().toString());
 			cell.setStyle("font-size:11px !important");
 			item.appendChild(cell);
-			
+
 			item.setValue(asignacionCertificados);
 			listboxLista.appendChild(item);
 		}
 	}
-	
-	
+
+
 	private void mantenimiento(){
 		if(listboxLista.getSelectedItem().getValue() instanceof VSAsignacionCertificados){
 			vsAsignacionCertificados=listboxLista.getSelectedItem().getValue();
@@ -305,13 +305,13 @@ public class WndVSAsignacionCertificados extends WndOpcionesMantenimiento implem
 			lbxCorrelativoFinal.setValue(vsAsignacionCertificados.getCorrelativoFinal());
 		}
 	}
-	
+
 	private void ventanaBusqueda() throws Exception{
 		wndBusqueda = createWindowsBusqueda();
 		this.appendChild(wndBusqueda);
 		wndBusqueda.setMode("modal");
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	private Window createWindowsBusqueda() throws Exception{
 		Caption caption = null;
@@ -322,7 +322,7 @@ public class WndVSAsignacionCertificados extends WndOpcionesMantenimiento implem
 		cmbAgenciaBusqueda=new Combobox();
 		cmbAgenciaBusqueda.setReadonly(true);
 		Label label=null;
-						
+
 		Grid grid=new Grid();
 		Columns columns=new Columns();
 		Column column=new Column();
@@ -331,7 +331,7 @@ public class WndVSAsignacionCertificados extends WndOpcionesMantenimiento implem
 		columns.appendChild(column);
 		columns.appendChild(new Column());
 		grid.appendChild(columns);
-		
+
 		Rows rows=new Rows();
 		Row row=new Row();
 		label=new Label("AGENCIA :");
@@ -339,14 +339,14 @@ public class WndVSAsignacionCertificados extends WndOpcionesMantenimiento implem
 		row.appendChild(label);
 		row.appendChild(cmbAgenciaBusqueda);
 		rows.appendChild(row);
-			
+
 		grid.appendChild(rows);
 		window.appendChild(grid);
-		
-		
+
+
 		final Button btnFiltrar=new Button("Filtrar");
 		btnFiltrar.setImage("/resources/mp_filtrar.png");
-		
+
 		Grid grid2=new Grid();
 		row =new Row();
 		rows=new Rows();
@@ -357,12 +357,12 @@ public class WndVSAsignacionCertificados extends WndOpcionesMantenimiento implem
 		rows.appendChild(row);
 		grid2.appendChild(rows);
 		window.appendChild(grid2);
-		
+
 		//******
 		Util.limpiarCombobox(cmbAgenciaBusqueda);
 		UtilData.cargarAgenciaXtipoAgencia(cmbAgenciaBusqueda, Constantes.ID_TIPAGE_TEPSA, true);
 		cmbAgenciaBusqueda.setSelectedIndex(0);
-				
+
 		btnFiltrar.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -377,11 +377,11 @@ public class WndVSAsignacionCertificados extends WndOpcionesMantenimiento implem
 				window.onClose();
 			}
 		});
-		
+
 		return window;
-		
+
 	}
-	
+
 	private void ejecutaBusqueda(Agencia agencia) throws Exception{
 		if(agencia!=null){
 			listarRegistros(ServiceLocator.getVentaSeguroManager().buscarAsignacionCertificados(agencia.getId()));
