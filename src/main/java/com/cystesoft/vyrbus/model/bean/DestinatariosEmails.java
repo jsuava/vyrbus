@@ -21,7 +21,7 @@ public class DestinatariosEmails extends GenericBean implements Serializable {
 	private String objeto;
 	private String subject;
 	private String emails;
-	
+
 	public DestinatariosEmails() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -33,28 +33,28 @@ public class DestinatariosEmails extends GenericBean implements Serializable {
 		this.subject=subject;
 		this.emails = emails;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	public String getDenominacion() {
 		return denominacion;
 	}
 	public void setDenominacion(String denominacion) {
 		this.denominacion = denominacion;
 	}
-	
+
 	public String getObjeto() {
 		return objeto;
 	}
 	public void setObjeto(String objeto) {
 		this.objeto = objeto;
 	}
-	
+
 	public String getEmails() {
 		return emails;
 	}

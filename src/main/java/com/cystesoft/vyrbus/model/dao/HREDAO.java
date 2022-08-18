@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 27/08/2014
  * Hora			: 11:56:40
@@ -42,7 +42,7 @@ public interface HREDAO extends GenericDAO {
 	 * @param fechaInicial	: Fecha Inicial
 	 * @param fechaFinal	: Fecha Final
 	 * @param idOrigen		: Identificador de la localidad origen
-	 * @param idDestino		: Identificador de la localidad destino	
+	 * @param idDestino		: Identificador de la localidad destino
 	 * @return Lista de HRE
 	 * @throws Exception
 	 */

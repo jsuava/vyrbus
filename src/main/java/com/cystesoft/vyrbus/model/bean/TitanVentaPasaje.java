@@ -14,7 +14,7 @@ public class TitanVentaPasaje {
 	private Integer idCondicionBoleto;
 	private Date fechaTransferencia;
 	private Integer idTarjetas;
-	
+
 	/**
 	 * @return the id
 	 */
@@ -51,7 +51,7 @@ public class TitanVentaPasaje {
 	public void setNumeroBoleto(String numeroBoleto) {
 		this.numeroBoleto = numeroBoleto;
 	}
-	
+
 	/**
 	 * @return the fechaTransferencia
 	 */
@@ -88,6 +88,6 @@ public class TitanVentaPasaje {
 	public void setIdTarjetas(Integer idTarjetas) {
 		this.idTarjetas = idTarjetas;
 	}
-	
-	
+
+
 }

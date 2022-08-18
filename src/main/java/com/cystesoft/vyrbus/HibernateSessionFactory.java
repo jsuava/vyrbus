@@ -11,17 +11,17 @@ import org.hibernate.cfg.Configuration;
  */
 public class HibernateSessionFactory {
 
-    /** 
+    /**
      * Location of hibernate.cfg.xml file.
-     * Location should be on the classpath as Hibernate uses  
-     * #resourceAsStream style lookup for its configuration file. 
-     * The default classpath location of the hibernate config file is 
-     * in the default package. Use #setConfigFile() to update 
-     * the location of the configuration file for the current session.   
+     * Location should be on the classpath as Hibernate uses
+     * #resourceAsStream style lookup for its configuration file.
+     * The default classpath location of the hibernate config file is
+     * in the default package. Use #setConfigFile() to update
+     * the location of the configuration file for the current session.
      */
     private static String CONFIG_FILE_LOCATION = "/vyrbus/src/main/webapp/WEB-INF/hibernate.cfg.xml";
-	private static final ThreadLocal<Session> threadLocal = new ThreadLocal<Session>();
-    private  static Configuration configuration = new Configuration();    
+	private static final ThreadLocal<Session> threadLocal = new ThreadLocal<>();
+    private  static Configuration configuration = new Configuration();
     private static org.hibernate.SessionFactory sessionFactory;
     private static String configFile = CONFIG_FILE_LOCATION;
 
@@ -37,7 +37,7 @@ public class HibernateSessionFactory {
     }
     private HibernateSessionFactory() {
     }
-	
+
 	/**
      * Returns the ThreadLocal Session instance.  Lazy initialize
      * the <code>SessionFactory</code> if needed.

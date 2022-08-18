@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 27/01/2017
  * Hora			: 16:07:10
@@ -62,7 +62,7 @@ import com.cystesoft.vyrbus.view.ui.WndBase;
 public class WndAnulacionDocumentos extends WndBase{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Radio rdAnulacionRegular;
@@ -84,7 +84,7 @@ public class WndAnulacionDocumentos extends WndBase{
 	private Button btnBuscar;
 	private Label lblInfoAnulMasivo;
 	private Button btnAplicar;
-	
+
 	private Label lblAdvertencia= null;
 	private Combobox cmbUsuarioLiq= null;
 	private Combobox cmbAgenciaLiq=null;
@@ -92,7 +92,7 @@ public class WndAnulacionDocumentos extends WndBase{
 	private Button btnProcesarAnulacion=null;
 	private Textbox txtMotivoAnulacion=null;
 	private Window wndAnulacionBoleto;
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
@@ -100,7 +100,7 @@ public class WndAnulacionDocumentos extends WndBase{
 	public void onCreate() throws Exception {
 		dtbxFechaInicio.setValue(new Date());
 		dtbxFechaFin.setValue(new Date());
-		
+
 		/*Caga los tipos de agencia*/
 		List<TipoAgencia>tiposAgencias=ServiceLocator.getTipoAgenciaManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
 		UtilData.cargarGenericData(cmbTipoAgencia, false);
@@ -113,8 +113,8 @@ public class WndAnulacionDocumentos extends WndBase{
 		}
 		cmbTipoAgencia.setSelectedIndex(0);
 	}
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
 	 */
@@ -139,19 +139,19 @@ public class WndAnulacionDocumentos extends WndBase{
 		btnBuscar=(Button)this.getFellow("btnBuscar");
 		lblInfoAnulMasivo=(Label)this.getFellow("lblInfoAnulMasivo");
 		btnAplicar=(Button)this.getFellow("btnAplicar");
-		
+
 		cmbTipoAgencia.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				try {
-					onLoadAgencias();					
+					onLoadAgencias();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
-				}				
+				}
 			}
 		});
-		
+
 		btnBuscar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -160,14 +160,14 @@ public class WndAnulacionDocumentos extends WndBase{
 						txtNumeroComprobante.setText(Util.autocompleNumberBoleto(txtNumeroComprobante.getText()));
 						buscarComprobanteByNumero();
 					}else
-						buscarComprobantesByFechas();										
+						buscarComprobantesByFechas();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
 				}
 			}
 		});
-		
+
 		txtNumeroComprobante.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -176,14 +176,14 @@ public class WndAnulacionDocumentos extends WndBase{
 						txtNumeroComprobante.setText(Util.autocompleNumberBoleto(txtNumeroComprobante.getText()));
 						buscarComprobanteByNumero();
 					}else
-						buscarComprobantesByFechas();										
+						buscarComprobantesByFechas();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
 				}
 			}
 		});
-		
+
 		btnAplicar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -193,7 +193,7 @@ public class WndAnulacionDocumentos extends WndBase{
 			}
 		});
 	}
-	
+
 	public void onCheckedAnulacionPersonalizada(){
 		try {
 				Util.limpiarListbox(ltbxAnulacionComprobantes);
@@ -204,18 +204,18 @@ public class WndAnulacionDocumentos extends WndBase{
 			DlgMessage.error(e.getMessage());
 		}
 	}
-	
+
 	public void onCheckedAnulacionRegular(){
 		try {
 			Util.limpiarListbox(ltbxAnulacionComprobantes);
 			habilitarAnulacionPersonalizada(rdAnulacionPersonalizada.isChecked());
-			limpiarControlesAnulacionPersonalizada();			
+			limpiarControlesAnulacionPersonalizada();
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
 		}
 	}
-	
+
 	private void limpiarControlesAnulacionPersonalizada()throws Exception{
 		Util.limpiarCombobox(cmbAgencia);
 		txtNumeroComprobante.setText("");
@@ -226,9 +226,9 @@ public class WndAnulacionDocumentos extends WndBase{
 		rdRegular.setChecked(true);
 		ckbxGeneraMovimientoSistema.setChecked(true);
 		ckbxGeneraMovimientoSistema.setDisabled(true);
-		
+
 	}
-	
+
 	/**
 	 * habilita los controles para la anulacion personalizada
 	 * @param enabled: true=habilta: false=Dseshabilita
@@ -240,23 +240,23 @@ public class WndAnulacionDocumentos extends WndBase{
 		rowOpcionNC.setVisible(visible);
 		rowAplicar.setVisible(visible);
 	}
-	
+
 	/**
 	 * Carga las agencias, segun el tipo de agencia seleccionada
 	 * @throws Exception
 	 */
 	private void onLoadAgencias()throws Exception{
-		Util.limpiarCombobox(cmbAgencia);		
+		Util.limpiarCombobox(cmbAgencia);
 		if(cmbTipoAgencia.getSelectedItem().getValue() instanceof TipoAgencia)
 			UtilData.cargarAgenciaXtipoAgencia(cmbAgencia, ((TipoAgencia)cmbTipoAgencia.getSelectedItem().getValue()).getId(), false);
 		else
 			UtilData.cargarGenericData(cmbAgencia, false);
 		cmbAgencia.setSelectedIndex(0);
 	}
-	
+
 	public void onchangeAgencia()throws Exception{
 		/* *******************************************************************/
-		/* DE FORMA EXCLUCIVA PARA EL CLIENTE CORPORATIVO MOTA ENGIL - (SE HABILITO PARA TODOS - 03/02/2016) - 
+		/* DE FORMA EXCLUCIVA PARA EL CLIENTE CORPORATIVO MOTA ENGIL - (SE HABILITO PARA TODOS - 03/02/2016) -
 		 * Ya que es posible que a la hora de anular el comprobante con N.C. no sea necesario anular el registro con un tipo de movimiento del Sistema (5)*/
 		/* *******************************************************************/
 //		ckbxGeneraMovimientoSistema.setDisabled(true);
@@ -265,12 +265,12 @@ public class WndAnulacionDocumentos extends WndBase{
 //				ckbxGeneraMovimientoSistema.setDisabled(false);
 //		}
 	}
-	
+
 	/**
 	 * Realiza la busqueda del comprobante por su numero
 	 * @throws Exception
 	 */
-	private void buscarComprobanteByNumero()throws Exception{		
+	private void buscarComprobanteByNumero()throws Exception{
 		List<VentaPasaje> lstVentaPasaje = ServiceLocator.getVentaPasajesManager().buscarBoletosDevolucion(null, null, txtNumeroComprobante.getText().trim().toUpperCase());
 		if(lstVentaPasaje.size()>0){
 			/*Busca por el ultimo movimiento agrupado por numero de control*/
@@ -284,7 +284,7 @@ public class WndAnulacionDocumentos extends WndBase{
 			else if(ventaAnular.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_DEVOLUCION)
 				lstVentaPasaje= new ArrayList<>();
 		}
-		onLoadComprobantes(lstVentaPasaje);		
+		onLoadComprobantes(lstVentaPasaje);
 	}
 	/**
 	 * Realiza la busqueda de los comprobantes por rango de fechas y segun otros parametros seleccionados
@@ -314,14 +314,14 @@ public class WndAnulacionDocumentos extends WndBase{
 			String fechaFin=Constantes.FORMAT_DATE.format(dtbxFechaFin.getValue());
 			Integer agenciaId=((Agencia)cmbAgencia.getSelectedItem().getValue()).getId();
 			Agencia agencia=ServiceLocator.getAgenciaManager().buscarPorId(agenciaId.longValue());
-			
+
 			List<VentaPasaje> lstVentaPasaje =ServiceLocator.getVentaPasajesManager().buscarDetalleVentasAgencia(fechaInicio, fechaFin, agencia.getConcesionario().getRuc(), null,orderByX,true,true,null,null,true);
 			onLoadComprobantes(lstVentaPasaje);
 		}else{
 			buscarComprobanteByNumero();
 		}
 	}
-	
+
 	/**
 	 * carga los comprobantes
 	 * @param lstComprobantes	: lista de comprobantes a cargar
@@ -340,9 +340,9 @@ public class WndAnulacionDocumentos extends WndBase{
 		}
 		if(lstComprobantes.size()>10)
 			ltbxAnulacionComprobantes.setRows(10);
-		
+
 		for(VentaPasaje ventaPasaje : lstComprobantes){
-			if(ventaPasaje.getTipoMovimiento().getId().intValue()!=Constantes.ID_TIPMOV_ANULACION && 
+			if(ventaPasaje.getTipoMovimiento().getId().intValue()!=Constantes.ID_TIPMOV_ANULACION &&
 					ventaPasaje.getTipoMovimiento().getId().intValue()!=Constantes.ID_TIPMOV_DEVOLUCION &&
 					ventaPasaje.getTipoMovimiento().getId().intValue()!=Constantes.ID_TIPMOV_ANULACION_SISTEMA){
 				Listitem item=new Listitem();
@@ -380,7 +380,7 @@ public class WndAnulacionDocumentos extends WndBase{
 								if(((VentaPasaje)event.getTarget().getAttribute(VentaPasaje.class.getName())).getTipoTransaccion().equals(Constantes.TIPO_OPERACION_PERDIDA_SERVICIO))
 									throw new PerdidaServicioException();
 								createWindowAnulacion((VentaPasaje)event.getTarget().getAttribute(VentaPasaje.class.getName()));
-								
+
 							}catch(PerdidaServicioException psex) {
 								DlgMessage.information("No se puede anular un comprobante que esta marcado como Perdida de Servicio");
 							} catch (Exception e) {
@@ -391,13 +391,13 @@ public class WndAnulacionDocumentos extends WndBase{
 					});
 				}
 				item.setValue(ventaPasaje);
-				ltbxAnulacionComprobantes.appendChild(item);	
+				ltbxAnulacionComprobantes.appendChild(item);
 			}
 		}
 	}
-	
+
 	/**
-	 * Realiza la anulacion o aplica la nota de credito al o los comprobantes seleccionados 
+	 * Realiza la anulacion o aplica la nota de credito al o los comprobantes seleccionados
 	 */
 	private void aplicar(){
 		try {
@@ -411,19 +411,19 @@ public class WndAnulacionDocumentos extends WndBase{
 				DlgMessage.information("No se puede anular un comprobante marcado como Perdida de Servicio.");
 				return;
 			}
-				
+
 			VentaPasaje ventaPasaje=null;
 			if(rdRegular.isChecked() && ltbxAnulacionComprobantes.getSelectedItems().size()==1)
 				ventaPasaje=ltbxAnulacionComprobantes.getSelectedItem().getValue();
-			
+
 			createWindowAnulacion(ventaPasaje);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * crea la venta para confirmar la anulacion
 	 * @throws Exception
@@ -431,17 +431,17 @@ public class WndAnulacionDocumentos extends WndBase{
 	@SuppressWarnings("deprecation")
 	private void createWindowAnulacion(final VentaPasaje ventaPasaje)throws Exception{
 		final boolean isAnulacionSinNC=isAnulacionSinNC(ventaPasaje);
-		
+
 		final Window win = new Window("", "normal", true);
 		win.setWidth("500px");
-		
+
 		Caption caption = new Caption(":::CONFIRMAR ANULACION:::", "");
 		win.appendChild(caption);
-		
-//		Groupbox groupbox= new Groupbox();		
+
+//		Groupbox groupbox= new Groupbox();
 //		caption= new Caption("Datos de la Liquidación a quién se asignaran los comprobantes que se tengan que generar");
 //		groupbox.appendChild(caption);
-		
+
 		Grid grid= new Grid();
 		grid.setStyle("border:none");
 		Columns columns= new Columns();
@@ -451,7 +451,7 @@ public class WndAnulacionDocumentos extends WndBase{
 		columns.appendChild(column);
 		columns.appendChild(new Column());
 		grid.appendChild(columns);
-		
+
 		Rows rows= new Rows();
 		Row row= new Row();
 		row.setSpans("2");
@@ -462,7 +462,7 @@ public class WndAnulacionDocumentos extends WndBase{
 		div.appendChild(lblinfo);
 		row.appendChild(div);
 		rows.appendChild(row);
-		
+
 		row= new Row();
 		row.appendChild(new Label("AGENCIA : "));
 		cmbAgenciaLiq= new Combobox();
@@ -474,7 +474,7 @@ public class WndAnulacionDocumentos extends WndBase{
 		row.appendChild(cmbAgenciaLiq);
 		row.setVisible(isAnulacionSinNC?false:true);
 		rows.appendChild(row);
-		
+
 		row= new Row();
 		row.appendChild(new Label("USUARIO : "));
 		cmbUsuarioLiq= new Combobox();
@@ -484,7 +484,7 @@ public class WndAnulacionDocumentos extends WndBase{
 		row.appendChild(cmbUsuarioLiq);
 		row.setVisible(isAnulacionSinNC?false:true);
 		rows.appendChild(row);
-		
+
 		row= new Row();
 		row.appendChild(new Label("MOTIVO ANULACION (*) : "));
 		txtMotivoAnulacion= new Textbox();
@@ -494,7 +494,7 @@ public class WndAnulacionDocumentos extends WndBase{
 		txtMotivoAnulacion.setWidth("250px");
 		row.appendChild(txtMotivoAnulacion);
 		rows.appendChild(row);
-		
+
 		row= new Row();
 		row.setSpans("2");
 		div= new Div();
@@ -505,11 +505,11 @@ public class WndAnulacionDocumentos extends WndBase{
 		div.appendChild(lblAdvertencia);
 		row.appendChild(div);
 		rows.appendChild(row);
-		
+
 		grid.appendChild(rows);
 		win.appendChild(grid);
 		win.appendChild(new Separator("horizontal"));
-		
+
 		div= new Div();
 		div.setAlign("center");
 		btnProcesarAnulacion= new Button("Procesar Anulación","/resources/mp_anular.png");
@@ -517,30 +517,30 @@ public class WndAnulacionDocumentos extends WndBase{
 		btnProcesarAnulacion.setAutodisable("self");
 		div.appendChild(btnProcesarAnulacion);
 		win.appendChild(div);
-		
+
 		/*Realiza la busqueda de una liquidacion del usuario que esta realizando la anulacion*/
-		if(isAnulacionSinNC==false){
+		if(!isAnulacionSinNC){
 			btnProcesarAnulacion.setDisabled(true);
 			liquidacion=UtilData.estadoLiquidacionUsuario(getUsuario(), getAgencia());
 			String fechaLiquidacion=Constantes.FORMAT_DATE.format(new Date());
 			UtilData.cargarUsuariosLiquidacion(cmbUsuarioLiq, fechaLiquidacion,fechaLiquidacion, false,((Agencia)cmbAgenciaLiq.getSelectedItem().getValue()).getId());
 			validarLiquidacion(liquidacion);
 			if(liquidacion!=null)
-				Util.seleccionarValorItemCombo(Usuario.class, cmbUsuarioLiq, liquidacion.getUsuario().getId());	
+				Util.seleccionarValorItemCombo(Usuario.class, cmbUsuarioLiq, liquidacion.getUsuario().getId());
 		}
-		
+
 		cmbAgenciaLiq.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
-			public void onEvent(Event event) throws Exception {				
+			public void onEvent(Event event) throws Exception {
 				Util.limpiarCombobox(cmbUsuarioLiq);
 				if(cmbAgenciaLiq.getSelectedItem().getValue() instanceof Agencia){
 					String fechaLiquidacion=Constantes.FORMAT_DATE.format(Constantes.FORMAT_DATE.parse(MyTime.dateTimeServer()));
-					UtilData.cargarUsuariosLiquidacion(cmbUsuarioLiq, fechaLiquidacion,fechaLiquidacion, false,((Agencia)cmbAgenciaLiq.getSelectedItem().getValue()).getId());	
+					UtilData.cargarUsuariosLiquidacion(cmbUsuarioLiq, fechaLiquidacion,fechaLiquidacion, false,((Agencia)cmbAgenciaLiq.getSelectedItem().getValue()).getId());
 				}else
 					UtilData.cargarGenericData(cmbUsuarioLiq, false);
 			}
 		});
-		
+
 		cmbUsuarioLiq.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -548,12 +548,12 @@ public class WndAnulacionDocumentos extends WndBase{
 				validarLiquidacion(liquidacion);
 			}
 		});
-		
+
 		btnProcesarAnulacion.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				try {
-					if(isAnulacionSinNC==false && !(cmbUsuarioLiq.getSelectedItem().getValue() instanceof Usuario)){
+					if(!isAnulacionSinNC && !(cmbUsuarioLiq.getSelectedItem().getValue() instanceof Usuario)){
 						DlgMessage.information("Debe de seleccionar el usuario",cmbUsuarioLiq);
 						return;
 					}else if(txtMotivoAnulacion.getText().trim().isEmpty()){
@@ -582,16 +582,16 @@ public class WndAnulacionDocumentos extends WndBase{
 				}
 			}
 		});
-		
+
 		wndAnulacionBoleto = win;
 		this.appendChild(wndAnulacionBoleto);
 		wndAnulacionBoleto.setMode(MODAL);
 	}
-	
+
 	private void validarLiquidacion(Liquidacion liquidacion)throws Exception{
 		lblAdvertencia.setVisible(false);
-		btnProcesarAnulacion.setDisabled(true);		
-		
+		btnProcesarAnulacion.setDisabled(true);
+
 		if(btnProcesarAnulacion.isDisabled()){
 			if(liquidacion!=null && liquidacion.getestadoLiquidacion().intValue()==Constantes.TRUE_VALUE){
 				Date date=Constantes.FORMAT_DATE.parse(MyTime.dateTimeServer());
@@ -602,29 +602,29 @@ public class WndAnulacionDocumentos extends WndBase{
 			}else{
 				lblAdvertencia.setValue("El Usuario Seleccionado no tiene una Liquidación aperturada, esta es necesaria para continuar con el proceso de Anulación.");
 				lblAdvertencia.setVisible(true);
-			}	
+			}
 		}
 	}
-	
+
 	private boolean isAnulacionSinNC(VentaPasaje ventaPasaje)throws Exception{
 		boolean isAnualcion=false;
 		/*Valida que la anulacion este dentro de las 72 horas, desde el dia siguiente a la emision*/
 		if(ventaPasaje!=null && (rdAnulacionRegular.isChecked() || rdRegular.isChecked())){
 			Integer horas_maximo=Constantes.HORAS_MAXIMO_ANULACION;
 			Date dateStartLimit= new Date(ventaPasaje.getFechaLiquidacion().getTime()+Constantes.MILISEGUNDOS_X_DIA);
-			Long horasTrans= (new Date().getTime()-dateStartLimit.getTime())/Constantes.MILISEGUNDOS_X_HORA;
+			long horasTrans= (new Date().getTime()-dateStartLimit.getTime())/Constantes.MILISEGUNDOS_X_HORA;
 			if(horasTrans<=horas_maximo)
 				isAnualcion=true;
 		}
-		
+
 		return isAnualcion;
 	}
-	
+
 	/**
 	 * Procesa la anulacion
 	 * @throws Exception
 	 */
-	private void procesarAnulacion(VentaPasaje ventaPasaje, Window window)throws Exception{		
+	private void procesarAnulacion(VentaPasaje ventaPasaje, Window window)throws Exception{
 		List<VentaPasaje>lstVentas= new ArrayList<>();
 		if(ventaPasaje!=null){
 			VentaPasaje anulacion= ServiceLocator.getVentaPasajesManager().buscarVentaById(ventaPasaje.getId());
@@ -649,11 +649,11 @@ public class WndAnulacionDocumentos extends WndBase{
 				tipoAnulacion=Constantes.TIPO_ANULACION_NC;
 			else if (rdNCNuevoComprobante.isChecked())
 				tipoAnulacion=Constantes.TIPO_ANULACION_NC_NEW_COMPROBANTE;
-			
-			if(ckbxGeneraMovimientoSistema.isDisabled()==false)
+
+			if(!ckbxGeneraMovimientoSistema.isDisabled())
 				anularMovimiento=ckbxGeneraMovimientoSistema.isChecked();
 		}
-		
+
 		VentasNotas ventasNotas= ServiceLocator.getVentaPasajesManager().procesarAnulacionBy(lstVentas, tipoAnulacion, anularMovimiento, this.liquidacion);
 		/*Realiza el envio de las nuevas ventas generadas al Servidor F.E.*/
 		List<VentaPasaje> lstVentasenviar= new ArrayList<>();
@@ -663,20 +663,20 @@ public class WndAnulacionDocumentos extends WndBase{
 		}
 		if(lstVentasenviar.size()>0)
 			WSFE.sendVenta(lstVentasenviar, window, false, null);
-		
+
 		/*Realiza el envio de las notas de credito generadas al Servidor F.E.*/
 		for(VentaPasaje notaCredito:ventasNotas.getListNotasCredito()){
 			WSFE.sendNota(notaCredito);
 		}
-		
+
 		if(!(txtNumeroComprobante.getText().trim().isEmpty())){
 			txtNumeroComprobante.setText(Util.autocompleNumberBoleto(txtNumeroComprobante.getText()));
 			buscarComprobanteByNumero();
 		}else
-			buscarComprobantesByFechas();	
-		
+			buscarComprobantesByFechas();
+
 		DlgMessage.information("El Proceso de anulación termino correctamente");
-		
+
 		window.onClose();
 	}
 }

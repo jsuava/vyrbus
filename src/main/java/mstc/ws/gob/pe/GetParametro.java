@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -24,8 +24,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "oParametro" })
@@ -36,9 +36,9 @@ public class GetParametro {
 
 	/**
 	 * Gets the value of the oParametro property.
-	 * 
+	 *
 	 * @return possible object is {@link Parametro }
-	 * 
+	 *
 	 */
 	public Parametro getOParametro() {
 		return oParametro;
@@ -46,10 +46,10 @@ public class GetParametro {
 
 	/**
 	 * Sets the value of the oParametro property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Parametro }
-	 * 
+	 *
 	 */
 	public void setOParametro(Parametro value) {
 		this.oParametro = value;

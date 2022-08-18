@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 27/08/2014
  * Hora			: 12:11:57
@@ -49,6 +49,6 @@ public class DetalleFlotaHREDAOImpl extends GenericDAOImpl implements DetalleFlo
 		return (ArrayList<DetalleFlotaHRE>) super.findByX(DetalleFlotaHRE.class, criteriosBusqueda, criteriosOrdenar);
 	}
 
-	
+
 
 }

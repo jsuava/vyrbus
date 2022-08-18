@@ -26,7 +26,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class TipoDocumentoManagerImpl implements TipoDocumentoManager {
 	private TipoDocumentoDAO tipoDocumentoDAO;
-	
+
 	/**
 	 * @return the tipoDocumentoDAO
 	 */
@@ -74,22 +74,22 @@ public class TipoDocumentoManagerImpl implements TipoDocumentoManager {
 	@Transactional
 	public void guardar(TipoDocumento tipoDocumento) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", tipoDocumento.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getTipoDocumentoDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la denominación*/
 			if(resultDenominacion.size()>0)
 				throw new DenominacionDuplicadaException();
-			
+
 			criteriosBusqueda.remove("denominacion");
 			criteriosBusqueda.put("nombreCorto", tipoDocumento.getNombreCorto());
 			List<?> resultNombreCorto = getTipoDocumentoDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Nombre corto*/
 			if (resultNombreCorto.size()>0)
 				throw new NombreCortoDuplicadoException();
-			
-			getTipoDocumentoDAO().guardar(tipoDocumento);		
+
+			getTipoDocumentoDAO().guardar(tipoDocumento);
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(NombreCortoDuplicadoException rdnex){
@@ -106,29 +106,29 @@ public class TipoDocumentoManagerImpl implements TipoDocumentoManager {
 	@Transactional
 	public void actualizar(TipoDocumento tipoDocumento) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", tipoDocumento.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getTipoDocumentoDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la denominación*/
-			for(int r = 0; r < resultDenominacion.size(); r ++) {
-				TipoDocumento otipodocumento = (TipoDocumento) resultDenominacion.get(r);
+			for (Object element : resultDenominacion) {
+				TipoDocumento otipodocumento = (TipoDocumento) element;
 					if (!(otipodocumento.getId() == tipoDocumento.getId()))
 						throw new DenominacionDuplicadaException();
 				}
-			
+
 			criteriosBusqueda.remove("denominacion");
 			criteriosBusqueda.put("nombreCorto", tipoDocumento.getNombreCorto());
 			List<?> resultnombreCorto = getTipoDocumentoDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Nombre corto*/
-			for(int r = 0; r < resultnombreCorto.size(); r ++) {
-				TipoDocumento otipoDocumentoN= (TipoDocumento) resultnombreCorto.get(r);
+			for (Object element : resultnombreCorto) {
+				TipoDocumento otipoDocumentoN= (TipoDocumento) element;
 					if (!(otipoDocumentoN.getId() == tipoDocumento.getId()))
 						throw new NombreCortoDuplicadoException();
-				}		
-		
+				}
+
 			getTipoDocumentoDAO().actualizar(tipoDocumento);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(NombreCortoDuplicadoException rdnex){

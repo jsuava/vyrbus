@@ -3,15 +3,15 @@ package com.cystesoft.vyrbus.model.bean;
 import java.io.Serializable;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 public class TipoCobranza extends GenericBean implements Serializable {
-	private static final long serialVersionUID = 1L;	
+	private static final long serialVersionUID = 1L;
 	private Integer id;
-	private String denominacion;	
-	
+	private String denominacion;
+
 	public Integer getId() {
 		return id;
 	}

@@ -16,7 +16,7 @@ import com.cystesoft.vyrbus.model.dao.CarteraClienteDAO;
 import com.cystesoft.vyrbus.service.util.Constantes;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
@@ -58,19 +58,19 @@ public class CarteraClienteDAOImpl extends GenericDAOImpl implements CarteraClie
 	public void inactivar(Long id) {
 		super.inactivate(CarteraCliente.class, id);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.CarteraClienteDAO#buscarClientesCartera(java.lang.Integer, java.lang.Long)
 	 */
 	@Override
 	public List<CarteraCliente> buscarClientesCartera(Integer idFuncionario, Long idCliente){
-		String cons="";	
+		String cons="";
 		if(idFuncionario!=null)
 			cons=" AND cc.usuario_id="+idFuncionario;
 		if(idCliente!=null)
 			cons+=" AND cc.cliente_id="+idCliente;
-		
+
 //		String sql=" SELECT cliente_id, c_numdoc, c_razsoc, carcli_id, d_fecasigna, tipo, Estado, usuario_id, c_nombre, c_apepat," +
 //				   "c_apemat, idTipoCombranza, n_bashisto, c_Escomisio " +
 //				   "FROM (" +
@@ -78,7 +78,7 @@ public class CarteraClienteDAOImpl extends GenericDAOImpl implements CarteraClie
 //						         "'"+Constantes.TIPCON_CONTADO_DESC+"'  AS tipo, "+
 //						         "lcn.c_estlincon AS Estado, "+
 //						         "u.usuario_id, u.c_nombre, u.c_apepat, u.c_apemat, null as idTipoCombranza, sc.n_bashisto, " +
-//						         "lcn.c_Escomisio   "+                     
+//						         "lcn.c_Escomisio   "+
 //						  "FROM vrmcliente c "+
 //						  "INNER JOIN vrtcarcli cc ON (cc.cliente_id=c.cliente_id) "+
 //						  "INNER JOIN vrmusuario u ON (u.usuario_id=cc.usuario_id) "+
@@ -90,7 +90,7 @@ public class CarteraClienteDAOImpl extends GenericDAOImpl implements CarteraClie
 					         "'"+Constantes.TIPCON_CREDITO_DESC+"' AS tipo, "+
 					         "lcc.c_Estlincre AS Estado,  "+
 					         "u.usuario_id, u.c_nombre, u.c_apepat, u.c_apemat, lcc.tipcob_id as idTipoCombranza, sc.n_bashisto," +
-					         "lcc.c_escomision, lcc.n_lincreapro, lcc.n_sobregiro, lcc.n_saldo, lcc.c_escanje, scr.c_escanje esCanje   "+    //18               
+					         "lcc.c_escomision, lcc.n_lincreapro, lcc.n_sobregiro, lcc.n_saldo, lcc.c_escanje, scr.c_escanje esCanje   "+    //18
 					  "FROM vrmcliente c "+
 					  "INNER JOIN vrtcarcli cc ON (cc.cliente_id=c.cliente_id) "+
 					  "INNER JOIN vrmusuario u ON (u.usuario_id=cc.usuario_id) "+
@@ -101,44 +101,44 @@ public class CarteraClienteDAOImpl extends GenericDAOImpl implements CarteraClie
 					  "ORDER BY c_nombre, c_razsoc ";
 //					  ")consul " +
 //					  " ORDER BY c_nombre, c_razsoc";
-		
+
 		log.info(sql);
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<CarteraCliente> lstResult = new ArrayList<CarteraCliente>();
-		
+		List<CarteraCliente> lstResult = new ArrayList<>();
+
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[])result.get(i);
-			
+
 			Cliente cliente=new Cliente();
 			CarteraCliente carteraCliente=new CarteraCliente();
 			Usuario funcionario=new Usuario();
 			TipoCobranza tipoCobranza=new TipoCobranza();
 			SolicitudCartera solicitudCartera=new SolicitudCartera();
-			
+
 			solicitudCartera.setBaseHistorica(((BigDecimal)obj[12]).doubleValue());
 			if(obj[13]!=null)
 				solicitudCartera.setEsComisionable(obj[13].toString());
 			else solicitudCartera.setEsComisionable("");
-				
-			
+
+
 			if(obj[11]!=null)
 				tipoCobranza.setId(((BigDecimal)obj[11]).intValue());
-			 
+
 			cliente.setId(((BigDecimal)obj[0]).longValue());
 			cliente.setNumeroDocumento(obj[1].toString());
 			cliente.setRazonSocial(obj[2].toString());
 			cliente.setTipo(obj[5].toString());
-			
+
 			/*Valida si es un Credito o un credito por canje publicitario*/
 			if(obj[18]!=null && obj[18].toString().equals(Constantes.SI))
 				cliente.setTipo("CANJE");
-			
+
 			if(obj[6]!=null){
 				if (obj[6].toString().equals(Constantes.ESTADOSOL_ACTIVA))
 					cliente.setEstadoRegistro(Constantes.LABEL_ESTADOSOL_ACTIVA_DESC);
 				else cliente.setEstadoRegistro(Constantes.LABEL_ESTADOSOL_INACTIVA_DESC);
-								
+
 				LineaCreditoCliente lineaCreditoCliente=new LineaCreditoCliente();
 				lineaCreditoCliente.setLineaCreditoAprobada(((BigDecimal)obj[14]).doubleValue());
 				lineaCreditoCliente.setSobregiro(((BigDecimal)obj[15]).doubleValue());
@@ -146,27 +146,27 @@ public class CarteraClienteDAOImpl extends GenericDAOImpl implements CarteraClie
 				lineaCreditoCliente.setEsCanje(obj[17].toString());
 				carteraCliente.setLineaCreditoCliente(lineaCreditoCliente);
 			}else cliente.setEstadoRegistro("POR APROB");
-				
+
 			cliente.setTipoCobranza(tipoCobranza);
-					
+
 			funcionario.setId(((BigDecimal)obj[7]).intValue());
 			funcionario.setNombre(obj[8].toString());
 			funcionario.setApellidoPaterno(obj[9].toString());
 			funcionario.setApellidoMaterno(obj[10]!=null? obj[10].toString(): "");
-					
+
 			carteraCliente.setId(((BigDecimal)obj[3]).longValue());
 			carteraCliente.setFechaAsignacion((Date)obj[4]);
 			carteraCliente.setUsuario(funcionario);
 			carteraCliente.setCliente(cliente);
 			carteraCliente.setSolicitudCartera(solicitudCartera);
-			
+
 			lstResult.add(carteraCliente);
 		}
-		
-		
-		
-		
-		
+
+
+
+
+
 		return lstResult;
 	}
 
@@ -177,7 +177,7 @@ public class CarteraClienteDAOImpl extends GenericDAOImpl implements CarteraClie
 	@Override
 	public void actualizar(CarteraCliente carteraCliente) {
 		super.update(carteraCliente);
-		
+
 	}
 
 	/* (non-Javadoc)

@@ -10,7 +10,7 @@ public interface CanalVentaManager {
 	/**
 	 * Busca los canales de venta por el estado del registro
 	 * @param estado		: Estado de los registro a buscar.
-	 * @param criterioOrden	: Criterio para ordenar los registros. 
+	 * @param criterioOrden	: Criterio para ordenar los registros.
 	 * @return ArrayList de Canales de venta
 	 */
 	public ArrayList<CanalVenta> buscarPorEstadoRegistro(String estado, String criterioOrden)throws Exception;

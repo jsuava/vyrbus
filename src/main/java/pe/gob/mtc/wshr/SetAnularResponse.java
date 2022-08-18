@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -24,8 +24,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "setAnularResult" })
@@ -36,9 +36,9 @@ public class SetAnularResponse {
 
 	/**
 	 * Gets the value of the setAnularResult property.
-	 * 
+	 *
 	 * @return possible object is {@link ResultAnular }
-	 * 
+	 *
 	 */
 	public ResultAnular getSetAnularResult() {
 		return setAnularResult;
@@ -46,10 +46,10 @@ public class SetAnularResponse {
 
 	/**
 	 * Sets the value of the setAnularResult property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link ResultAnular }
-	 * 
+	 *
 	 */
 	public void setSetAnularResult(ResultAnular value) {
 		this.setAnularResult = value;

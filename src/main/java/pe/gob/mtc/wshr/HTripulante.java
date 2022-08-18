@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for HTripulante complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="HTripulante">
  *   &lt;complexContent>
@@ -25,8 +25,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "HTripulante", propOrder = { "tpoDocumento", "nroDocumento" })
@@ -39,9 +39,9 @@ public class HTripulante {
 
 	/**
 	 * Gets the value of the tpoDocumento property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getTpoDocumento() {
 		return tpoDocumento;
@@ -49,10 +49,10 @@ public class HTripulante {
 
 	/**
 	 * Sets the value of the tpoDocumento property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setTpoDocumento(String value) {
 		this.tpoDocumento = value;
@@ -60,9 +60,9 @@ public class HTripulante {
 
 	/**
 	 * Gets the value of the nroDocumento property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getNroDocumento() {
 		return nroDocumento;
@@ -70,10 +70,10 @@ public class HTripulante {
 
 	/**
 	 * Sets the value of the nroDocumento property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setNroDocumento(String value) {
 		this.nroDocumento = value;

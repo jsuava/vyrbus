@@ -4,17 +4,17 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 public class TemporadaAlta extends GenericBean implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Long id;
 	private MotivoTemporadaAlta motivoTemporadaAlta;
 	private Date diaTemporadaAlta;
-	
+
 	/**
 	 * @return the id
 	 */

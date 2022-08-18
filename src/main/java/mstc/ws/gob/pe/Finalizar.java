@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for Finalizar complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="Finalizar">
  *   &lt;complexContent>
@@ -27,8 +27,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Finalizar", propOrder = { "seguridad", "code", "fecLlegada",
@@ -46,9 +46,9 @@ public class Finalizar {
 
 	/**
 	 * Gets the value of the seguridad property.
-	 * 
+	 *
 	 * @return possible object is {@link Seguridad }
-	 * 
+	 *
 	 */
 	public Seguridad getSeguridad() {
 		return seguridad;
@@ -56,10 +56,10 @@ public class Finalizar {
 
 	/**
 	 * Sets the value of the seguridad property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Seguridad }
-	 * 
+	 *
 	 */
 	public void setSeguridad(Seguridad value) {
 		this.seguridad = value;
@@ -67,9 +67,9 @@ public class Finalizar {
 
 	/**
 	 * Gets the value of the code property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getCode() {
 		return code;
@@ -77,10 +77,10 @@ public class Finalizar {
 
 	/**
 	 * Sets the value of the code property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setCode(String value) {
 		this.code = value;
@@ -88,9 +88,9 @@ public class Finalizar {
 
 	/**
 	 * Gets the value of the fecLlegada property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getFecLlegada() {
 		return fecLlegada;
@@ -98,10 +98,10 @@ public class Finalizar {
 
 	/**
 	 * Sets the value of the fecLlegada property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setFecLlegada(String value) {
 		this.fecLlegada = value;
@@ -109,9 +109,9 @@ public class Finalizar {
 
 	/**
 	 * Gets the value of the horLlegada property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getHorLlegada() {
 		return horLlegada;
@@ -119,10 +119,10 @@ public class Finalizar {
 
 	/**
 	 * Sets the value of the horLlegada property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setHorLlegada(String value) {
 		this.horLlegada = value;

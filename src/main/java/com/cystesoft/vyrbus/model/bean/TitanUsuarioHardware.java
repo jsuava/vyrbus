@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 26 oct. 2021
  * Hora			: 22:38:15
@@ -16,7 +16,7 @@ import java.io.Serializable;
  */
 public class TitanUsuarioHardware implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer id;
 	private String ip;
 	private Integer idDepartamento;
@@ -277,5 +277,5 @@ public class TitanUsuarioHardware implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 }

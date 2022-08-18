@@ -31,13 +31,13 @@ public class Asiento extends ElementoBus implements Serializable {
 	private TipoAsiento tipoAsiento;
 	private Integer numeroZona;
 //	private Ruta ruta;
-	
+
 	public static final int OCUPANTE_PILOTO = 1;
 	public static final int OCUPANTE_COPILOTO = 2;
 	public static final int OCUPANTE_TRIPULANTE = 3;
 	public static final int OCUPANTE_PASAJERO = 4;
-	
-	
+
+
 	/**
 	 * @return Objeto numeroAsiento.
 	 */
@@ -51,7 +51,7 @@ public class Asiento extends ElementoBus implements Serializable {
 		this.numeroAsiento = numeroAsiento;
 //		generarImagenes();
 	}
-	
+
 	public Integer getNumeroZona() {
 		return numeroZona;
 	}
@@ -70,7 +70,7 @@ public class Asiento extends ElementoBus implements Serializable {
 	public void setEstadoAsiento(Integer estadoAsiento) {
 		this.estadoAsiento = estadoAsiento;
 	}
-	
+
 	/**
 	 * @return the ocupante
 	 */
@@ -83,7 +83,7 @@ public class Asiento extends ElementoBus implements Serializable {
 	public void setOcupante(Integer ocupante) {
 		this.ocupante = ocupante;
 	}
-	
+
 	/**
 	 * @return the directoryImages
 	 */
@@ -96,7 +96,7 @@ public class Asiento extends ElementoBus implements Serializable {
 	public void setDirectoryImages(String directoryImages) {
 		this.directoryImages = directoryImages;
 	}
-	
+
 	public void generarImagenes(){
 		StringBuilder pathImage = new StringBuilder();
 		pathImage.append(getDirectoryImages()+"asiento");
@@ -117,31 +117,31 @@ public class Asiento extends ElementoBus implements Serializable {
 			case Constantes.ASIENTO_DISPONIBLE :
 				pathImage.append("Disponible_");
 				break;
-				
+
 //			case ESTADO_TRAMO_RESERVADO:
 //				pathImage.append("TramoReservado");
 //				break;
-//				
+//
 //			case Constantes.ASIENTO_RESERVADO:
 //				pathImage.append("Reservado");
 //				break;
-//				
+//
 //			case ESTADO_MULTI_RESERVA:
 //				pathImage.append("");/*TODO imagen pendiente*/
 //				break;
-//				
+//
 //			case Constantes.ASIENTO_BLOQUEADO:
 //				pathImage.append("Bloqueado");
 //				break;
-//				
+//
 //			case ESTADO_PRIORIDAD_VENTA_TRAMO:
 //				pathImage.append("SemiOcupado");
 //				break;
-//				
+//
 //			case ESTADO_TRAMO_VENDIDO:
 //				pathImage.append("TramoVendido");
 //				break;
-//				
+//
 //			case Constantes.ASIENTO_VENDIDO:
 //				pathImage.append("Vendido");
 //				break;
@@ -151,7 +151,7 @@ public class Asiento extends ElementoBus implements Serializable {
 		pathImage.append(Constantes.IMAGE_EXTENSION);
 		this.setSrc(pathImage.toString());
 	}
-	
+
 	/**
 	 * @return the detalleItinerario
 	 */
@@ -164,9 +164,9 @@ public class Asiento extends ElementoBus implements Serializable {
 	public void setDetalleItinerario(DetalleItinerario detalleItinerario) {
 		this.detalleItinerario = detalleItinerario;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return the ventaPasaje
 	 */
 	public VentaPasaje getVentaPasaje(){
@@ -178,8 +178,8 @@ public class Asiento extends ElementoBus implements Serializable {
 	public void setVentaPasaje(VentaPasaje ventaPasaje){
 		this.ventaPasaje=ventaPasaje;
 	}
-	
-	
+
+
 	/**
 	 * Clave con el siguiente formato <b>nAsiento-nPiso
 	 * @return the key

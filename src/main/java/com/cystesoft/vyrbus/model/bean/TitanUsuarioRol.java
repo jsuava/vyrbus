@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 31/07/2014
  */
@@ -15,9 +15,9 @@ public class TitanUsuarioRol {
 	private TitanRolUsuario rolUsuario;
 	private TitanUsuarioPersonal usuarioPersona;
 	private Integer estado;
-	
-	
-	
+
+
+
 	/**
 	 * @return the rolUsuario
 	 */
@@ -54,7 +54,7 @@ public class TitanUsuarioRol {
 	public void setEstado(Integer estado) {
 		this.estado = estado;
 	}
-	
-	
+
+
 
 }

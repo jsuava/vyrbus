@@ -1,13 +1,13 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 04/05/2012
  */
 package com.cystesoft.vyrbus.model.dao.impl;
 
-import java.util.ArrayList;	
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 

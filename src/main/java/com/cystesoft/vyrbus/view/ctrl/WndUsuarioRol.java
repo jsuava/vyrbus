@@ -34,24 +34,24 @@ import com.cystesoft.vyrbus.view.ui.WndFiltrarParametros;
 import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
 
 /**
- * 
+ *
  * @author José Abanto.
- * 
+ *
  */
 public class WndUsuarioRol extends WndOpcionesMantenimiento {
 	private static final long serialVersionUID = 6628909148731885949L;
 
 	private Combobox cmbRol;
 	private Combobox cmbUsuario;
-	
+
 	private UsuarioRol usuarioRol=null;
 
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
-	
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IBase#initComponents()
 	 */
 	@Override
@@ -63,7 +63,7 @@ public class WndUsuarioRol extends WndOpcionesMantenimiento {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IBase#onCreate()
 	 */
 	@Override
@@ -73,14 +73,14 @@ public class WndUsuarioRol extends WndOpcionesMantenimiento {
 
 		btnEliminar.setLabel("Desactivar");
 		btnEliminar.setTooltiptext("Desactivar el registro seleccionado");
-		
-		criteriosOrdenar = new ArrayList<String>();
+
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("rol");
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onNew()
 	 */
 	@Override
@@ -91,12 +91,12 @@ public class WndUsuarioRol extends WndOpcionesMantenimiento {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onSearch()
 	 */
 	@Override
 	public void onSearch() throws Exception {
-		criteriosBusqueda = new TreeMap<String, Object>();
+		criteriosBusqueda = new TreeMap<>();
 		final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
 
 		oWndFiltrar.addParameter("Rol", Rol.class);
@@ -135,10 +135,10 @@ public class WndUsuarioRol extends WndOpcionesMantenimiento {
 	public void onClose() {
 		closeTabWindow();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onRefresh(int)
 	 */
 	@Override
@@ -150,7 +150,7 @@ public class WndUsuarioRol extends WndOpcionesMantenimiento {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onModify(int)
 	 */
 	@Override
@@ -162,7 +162,7 @@ public class WndUsuarioRol extends WndOpcionesMantenimiento {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onCancel(int)
 	 */
 	@Override
@@ -173,7 +173,7 @@ public class WndUsuarioRol extends WndOpcionesMantenimiento {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onSave(int)
 	 */
 	@Override
@@ -183,12 +183,12 @@ public class WndUsuarioRol extends WndOpcionesMantenimiento {
 				throw new RolNullException();
 			else if (cmbUsuario.getSelectedIndex() < 0)
 				throw new UsuarioNullException();
-			
+
 			Rol rol= cmbRol.getSelectedItem().getValue();
 			Usuario usuario =  cmbUsuario.getSelectedItem().getValue();
-						
+
 			/* Valida que el usuario tenga el mail configurado  para las alertas que envíe el sistema */
-			if(rol.getId().intValue()==Constantes.ID_ROL_GERENCIA_COMERCIAL 
+			if(rol.getId().intValue()==Constantes.ID_ROL_GERENCIA_COMERCIAL
 					|| rol.getId().intValue()==Constantes.ID_ROL_JEFE_VENTAS
 					|| rol.getId().intValue()==Constantes.ID_ROL_FINANZAS
 					|| rol.getId().intValue()==Constantes.ID_ROL_FUNCIONARIO){
@@ -200,7 +200,7 @@ public class WndUsuarioRol extends WndOpcionesMantenimiento {
 						throw new EmailNullException();
 				}
 			}
-			
+
 			if (action==ACTION_NEW){
 				usuarioRol= null;
 				/*Valida si el usuario tiene algún rol asociado y activo*/
@@ -226,7 +226,7 @@ public class WndUsuarioRol extends WndOpcionesMantenimiento {
 					usuarioRol.setEstadoRegistro(Constantes.VALUE_INACTIVO);
 					UtilData.auditarRegistro(usuarioRol, true, getUsuario(), Executions.getCurrent());
 					ServiceLocator.getUsuarioRolManager().actualizar(usuarioRol);
-					
+
 					/*para validar si el usuario tubo en algun momento el rol seleccionado y por algun motivo este esta inactivo*/
 					usuarioRol= ServiceLocator.getUsuarioRolManager().buscarXidUsuarioAndIdRol(usuario.getId(), rol.getId());
 					if(usuarioRol!=null){
@@ -238,13 +238,13 @@ public class WndUsuarioRol extends WndOpcionesMantenimiento {
 						usuarioRol.setRol(rol);
 						usuarioRol.setUsuario(usuario);
 						guardarUsuarioRol(action,usuarioRol);
-					}					
+					}
 				}
 				/*Elimina el rol anterior*/
 //				UsuarioRolID usuarioRolID=((UsuarioRol)listboxLista.getSelectedItem().getValue()).getUsuarioRolID();
 //				ServiceLocator.getUsuarioRolManager().activaInactiva(usuarioRolID, null);
 			}
-			
+
 		}catch (UsuarioRolNullException urx){
 			DlgMessage.information(Messages.getString("WndUsuarioRol.information.usuarioTieneRol"));
 			throw new CancelaGrabacionException();
@@ -266,10 +266,10 @@ public class WndUsuarioRol extends WndOpcionesMantenimiento {
 		}
 
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onDelete(int)
 	 */
 	@Override
@@ -277,15 +277,15 @@ public class WndUsuarioRol extends WndOpcionesMantenimiento {
 		try{
 			/*Desactiva el Usuario*/
 			Listitem listitem = listboxLista.getItemAtIndex(listboxLista.getSelectedIndex());
-			
+
 			if ( ((UsuarioRol) listitem.getValue()).getEstadoRegistro().equals(Constantes.VALUE_ACTIVO))
 				ServiceLocator.getUsuarioRolManager().activaInactiva(((UsuarioRol) listitem.getValue()).getUsuarioRolID(), Constantes.VALUE_INACTIVO);
 			else
 				ServiceLocator.getUsuarioRolManager().activaInactiva(((UsuarioRol) listitem.getValue()).getUsuarioRolID(), Constantes.VALUE_ACTIVO);
-			
+
 			Util.limpiarListbox(listboxLista);
 			ListarUsuarioRol(ServiceLocator.getUsuarioRolManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-			
+
 			limpiarControles();
 			habilitaControles(false);
 			btnNuevo.setDisabled(false);
@@ -296,25 +296,25 @@ public class WndUsuarioRol extends WndOpcionesMantenimiento {
 			btnEliminar.setDisabled(true);
 			btnImprimir.setDisabled(true);
 			btnExportar.setDisabled(true);
-			
+
 			/*Evita ser removido el registro del ListBox*/
-			throw new NoRemoverRegistroDelListBox();	
-			
-			
+			throw new NoRemoverRegistroDelListBox();
+
+
 		}catch (NoRemoverRegistroDelListBox e) {
 			throw new NoRemoverRegistroDelListBox();
 		}catch (SelectIndexNullException sinex){
 			DlgMessage.information(Messages.getString("Generales.information.noSeleccionoUsuario"));
 			throw new NoRemoverRegistroDelListBox();
 		}
-		
-		
+
+
 
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onPrint(int)
 	 */
 	@Override
@@ -325,7 +325,7 @@ public class WndUsuarioRol extends WndOpcionesMantenimiento {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onExport(int)
 	 */
 	@Override
@@ -336,7 +336,7 @@ public class WndUsuarioRol extends WndOpcionesMantenimiento {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onHelp()
 	 */
 	@Override
@@ -347,7 +347,7 @@ public class WndUsuarioRol extends WndOpcionesMantenimiento {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onChangeTab(int)
 	 */
 	@Override
@@ -355,17 +355,17 @@ public class WndUsuarioRol extends WndOpcionesMantenimiento {
 		if (listboxLista.getSelectedIndex() >= 0)
 			mantenimiento();
 	}
-	
+
 	private void ListarUsuarioRol(List<UsuarioRol> lstUsuariorol){
 		Listitem item = null;
 		Listcell cell = null;
 		listboxLista.getItems().clear();
-		
-		Integer x = 0;
+
+		int x = 0;
 		for(UsuarioRol usuarioRol : lstUsuariorol){
 			x += +1;
 			item = new Listitem();
-			cell = new Listcell((x.toString()));
+			cell = new Listcell((Integer.toString(x)));
 			item.appendChild(cell); //Correlativo
 			cell = new Listcell(usuarioRol.getRol().getDenominacion());
 			item.appendChild(cell);
@@ -376,9 +376,9 @@ public class WndUsuarioRol extends WndOpcionesMantenimiento {
 			else
 				cell = new Listcell(Constantes.LABEL_INACTIVO_DESCP);
 			item.appendChild(cell);
-					
+
 			item.setValue(usuarioRol);
-			listboxLista.appendChild(item);			
+			listboxLista.appendChild(item);
 			}
 	}
 
@@ -386,13 +386,13 @@ public class WndUsuarioRol extends WndOpcionesMantenimiento {
 		UsuarioRolID usuarioRolID = new UsuarioRolID();
 		usuarioRolID.setIdRol(usuarioRol.getRol().getId());
 		usuarioRolID.setIdUsuario(usuarioRol.getUsuario().getId());
-		
-		
+
+
 		usuarioRol.setUsuarioRolID(usuarioRolID);
 		usuarioRol.setRol(usuarioRol.getRol());
 		usuarioRol.setUsuario(usuarioRol.getUsuario());
 		usuarioRol.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-		
+
 		switch (action) {
 			case ACTION_NEW:
 				UtilData.auditarRegistro(usuarioRol, this.getUsuario(), Executions.getCurrent());
@@ -404,14 +404,14 @@ public class WndUsuarioRol extends WndOpcionesMantenimiento {
 				ServiceLocator.getUsuarioRolManager().actualizar(usuarioRol);
 				break;
 		}
-		
-		criteriosBusqueda = new TreeMap<String, Object>();
+
+		criteriosBusqueda = new TreeMap<>();
 		criteriosBusqueda.put("rol", usuarioRol.getRol());
 		criteriosBusqueda.put("usuario", usuarioRol.getUsuario());
 		ListarUsuarioRol(ServiceLocator.getUsuarioRolManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 	}
-	
-	
+
+
 	private void mantenimiento() throws Exception{
 		Listitem listitem = listboxLista.getItemAtIndex(listboxLista.getSelectedIndex());
 	   usuarioRol =  new UsuarioRol();
@@ -419,13 +419,13 @@ public class WndUsuarioRol extends WndOpcionesMantenimiento {
 
 	   Util.seleccionarValorItemCombo(Rol.class, cmbRol, usuarioRol.getRol().getId());
 	   Util.seleccionarValorItemCombo(Usuario.class, cmbUsuario, usuarioRol.getUsuario().getId());
-	   
+
 	   cmbUsuario.setDisabled(true);
 	}
-	
+
 	public void onchangeListBox(){
 		Listitem lItemUsuario = listboxLista.getItemAtIndex(listboxLista.getSelectedIndex());
-		
+
 		if ( ((UsuarioRol) lItemUsuario.getValue()).getEstadoRegistro().equals(Constantes.VALUE_ACTIVO)){
 			btnEliminar.setLabel("Desactivar");
 			btnEliminar.setImage("resources/toolbar/mp_toolbarEliminar.png");

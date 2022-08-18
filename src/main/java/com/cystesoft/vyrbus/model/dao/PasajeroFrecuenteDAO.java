@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 31/08/2012
  */
@@ -23,7 +23,7 @@ public interface PasajeroFrecuenteDAO extends GenericDAO {
 	public PasajeroFrecuente buscarPorId(Long id);
 	public void guardar(PasajeroFrecuente pasajeroFrecuente);
 	public void actualizar(PasajeroFrecuente pasajeroFrecuente);
-	
+
 	public void inactivar(Long id);
 	/**
 	 * Realiza la busqueda del PaxFree por pasajero y el estado del registro.
@@ -40,23 +40,23 @@ public interface PasajeroFrecuenteDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public PasajeroFrecuente buscarPaxFree(Long idPasajero)throws Exception;
-	
+
 	/**
 	 * Busca el numero mayor de la tarjeta para el PAXFREE.
-	 * @return 
+	 * @return
 	 * @throws Exception
 	 */
 	public PasajeroFrecuente buscarMaxNumTarjeta() throws Exception;
-	
+
 	/**
 	 * Bucar PaxFree y sus puntos.
 	 * @param idPasajero : Identificado del pasajero
-	 * @param estado	 : null todos los estados o x estado del Paxfree 	
+	 * @param estado	 : null todos los estados o x estado del Paxfree
 	 * @return
 	 * @throws Exception
 	 */
 	public PasajeroFrecuente buscarPaxFreeAndPuntos(Long idPasajero,  Integer estado) throws Exception;
-	
+
 	/**
 	 * Busca al Paxfree por Número de Documento.
 	 * @param numeroDocumento	: Número de documento del Pasajero.

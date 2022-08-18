@@ -23,23 +23,23 @@ public class DetalleItinerario extends GenericBean implements Serializable, Clon
 	private String horaLlegada;
 	private Double tarifa;
 	private Double tarifaLista;
-	
+
 	private String asiento;							//No mapeado
 	private String piso;							//No mapeado
 	private String zona;
 	private Boolean esIda;							//No mapeado
-	private TarifaFechaAbierta tarifaFechaAbierta; 	//No mapeado	
-	
+	private TarifaFechaAbierta tarifaFechaAbierta; 	//No mapeado
+
 	private Double tarifaSegundoPiso; 				//No Mapeado (Tarifa del Segundo piso - para el caso del Pul "cruz del sur y/o civa")
 	private ObjectCruzdelsur objectCruzdelsur;  	//No Mapeado
-	private ObjectCiva objectCiva;					//No Mapeado	
+	private ObjectCiva objectCiva;					//No Mapeado
 	private PoolLocalidad poolLocalidad; 			//No Mapeado - Guarda la localidad destino si es que esta pertence al pool.
-	
+
 	private List<ItinerarioAgenciaPartida> lstItinerarioAgenciaPartida;	//No mapeado
 	private List<ItinerarioAgenciaLlegada> lstItinerarioAgenciaLlegada;	//No mapeado
 
 	public DetalleItinerario() {
-		
+
 	}
 
 	/**

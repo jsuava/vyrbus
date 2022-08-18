@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 04/05/2012
  */
@@ -20,46 +20,46 @@ import com.cystesoft.vyrbus.model.bean.Personal;
  */
 public interface PersonalDAO extends GenericDAO {
 	/**
-	 * 
+	 *
 	 * @param estado
 	 * @param criterioOrden
 	 * @return
 	 */
 	public ArrayList<Personal> buscarPorEstadoRegistro(String estado, String criterioOrden);
-	
+
 	/**
-	 * 
+	 *
 	 * @param criteriosBusqueda
 	 * @param criteriosOrdenar
 	 * @return
 	 */
 	public ArrayList<Personal> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
-	
+
 	/**
-	 * 
+	 *
 	 * @param id
 	 * @return
 	 */
 	public Personal buscarPorId(Long id);
-	
+
 	/**
-	 * 
+	 *
 	 * @param personal
 	 */
 	public void guardar(Personal personal);
-	
+
 	/**
-	 * 
+	 *
 	 * @param personal
 	 */
 	public void actualizar(Personal personal);
-	
+
 	/**
-	 * 
+	 *
 	 * @param id
 	 */
 	public void inactivar(Long id);
-	
+
 	/**
 	 * Buscar E-Mails para el envio del alertas.
 	 * @param iDsRol : Identificador del Rol

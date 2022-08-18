@@ -26,7 +26,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class TipoZonaManagerImpl implements TipoZonaManager {
 	private TipoZonaDAO tipoZonaDAO;
-	
+
 	/**
 	 * @return the tipoZonaDAO
 	 */
@@ -74,23 +74,23 @@ public class TipoZonaManagerImpl implements TipoZonaManager {
 	@Transactional
 	public void guardar(TipoZona tipoZona) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", tipoZona.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getTipoZonaDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la denominación*/
 			if(resultDenominacion.size()>0)
 				throw new DenominacionDuplicadaException();
-			
+
 			criteriosBusqueda.remove("denominacion");
 			criteriosBusqueda.put("abreviatura", tipoZona.getAbreviatura());
 			List<?> resultNombreCorto = getTipoZonaDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Nombre corto*/
 			if (resultNombreCorto.size()>0)
 				throw new NombreCortoDuplicadoException();
-			
+
 			getTipoZonaDAO().guardar(tipoZona);
-			
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(NombreCortoDuplicadoException rdnex){
@@ -107,29 +107,29 @@ public class TipoZonaManagerImpl implements TipoZonaManager {
 	@Transactional
 	public void actualizar(TipoZona tipoZona) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", tipoZona.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getTipoZonaDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la denominación*/
-			for(int r = 0; r < resultDenominacion.size(); r ++) {
-				TipoZona otipozona = (TipoZona) resultDenominacion.get(r);
+			for (Object element : resultDenominacion) {
+				TipoZona otipozona = (TipoZona) element;
 				if (!(otipozona.getId().intValue() == tipoZona.getId().intValue()))
 					throw new DenominacionDuplicadaException();
 			}
-			
+
 			criteriosBusqueda.remove("denominacion");
 			criteriosBusqueda.put("abreviatura", tipoZona.getAbreviatura());
 			List<?> resultnombreCorto = getTipoZonaDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Nombre corto*/
-			for(int r = 0; r < resultnombreCorto.size(); r ++) {
-				TipoZona oTipoZona= (TipoZona) resultnombreCorto.get(r);
+			for (Object element : resultnombreCorto) {
+				TipoZona oTipoZona= (TipoZona) element;
 				if (!(oTipoZona.getId().intValue() == tipoZona.getId().intValue()))
 					throw new NombreCortoDuplicadoException();
-			}		
-		
+			}
+
 			getTipoZonaDAO().actualizar(tipoZona);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(NombreCortoDuplicadoException rdnex){

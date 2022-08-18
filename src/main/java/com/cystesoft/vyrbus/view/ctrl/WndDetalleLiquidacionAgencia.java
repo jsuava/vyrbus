@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 14/10/2013
  */
@@ -77,7 +77,7 @@ import com.cystesoft.vyrbus.view.ui.WndIFrame;
  */
 public class WndDetalleLiquidacionAgencia extends WndBase {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Combobox cmbAgencia;
 	private Combobox cmbCounter;
 	private Datebox dtbxFechaInicio;
@@ -102,7 +102,7 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 	private Radio rdSoloNotaCredito;
 	private Radio rdSoloNotaCreditoNuevoComprobante;
 	private Button btnAplicarNotaCredito;
-	
+
 	private Iframe iFrame=new Iframe();
 	List<VentaPasaje>listVentas=new ArrayList<>();
 
@@ -124,18 +124,18 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 			Comboitem comboitem=new Comboitem();
 			comboitem.setLabel(agencia.getDenominacion());
 			comboitem.setValue(agencia);
-			
+
 			cmbAgencia.appendChild(comboitem);
 		}
-		
-		//Por defecto selecciona la agencia que corresponde. 
+
+		//Por defecto selecciona la agencia que corresponde.
 		Util.seleccionarValorItemCombo(Agencia.class, cmbAgencia, getAgencia().getId());
 		if(cmbAgencia.getSelectedIndex()<0)
 			cmbAgencia.setSelectedIndex(0);
-				
+
 		//---Controla el acceso a los controles------------------------
 		cmbAgencia.setDisabled(getAgencia().getTipoAgencia().getId().intValue()!=Constantes.ID_TIPAGE_TEPSA);
-		
+
 		/*Carga el combo estado*/
 		Comboitem comboitem=new Comboitem("TODOS");
 		cmbEstado.appendChild(comboitem);
@@ -146,28 +146,28 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 		comboitem.setValue("ACT");
 		cmbEstado.appendChild(comboitem);
 		cmbEstado.setSelectedIndex(0);
-		
+
 		List<Component>lstControles=new ArrayList<>();
 		lstControles.add(lblEstado);
 		lstControles.add(cmbEstado);
-		
+
 		List<Rol>lstRoles=new ArrayList<>();
 		lstRoles.add(new Rol(Constantes.ID_ROL_SUPER_USUARIO));
 		lstRoles.add(new Rol(Constantes.ID_ROL_CREDITOS_COBRANZAS));
 		lstRoles.add(new Rol(Constantes.ID_ROL_FINANZAS));
 		accesoControlsByRol(lstControles, lstRoles, true);
-		
+
 		if(!(cmbEstado.isVisible())){
 			cmbAgencia.setWidth("265px");
 		}
-		
+
 		//--------------------------------------------------------------
-		
+
 		//Carga las counters--------------------------------------------------------------
 		onLoadCounters();
 		onLoadCentroCosto();
 		//--------------------------------------------------------------
-		
+
 		dtbxFechaInicio.addEventListener(Events.ON_CHANGE,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -176,7 +176,7 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 				onLoadCentroCosto();
 			}
 		});
-		
+
 		dtbxFechaFin.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -185,7 +185,7 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 				onLoadCentroCosto();
 			}
 		});
-		
+
 		cmbAgencia.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -197,29 +197,29 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 				iFrame.detach();
 			}
 		});
-		
-		
+
+
 		cmbCentroCosto.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				try {
-					
+
 					onSelectCentroCosto();
-					
+
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
-				}	
+				}
 			}
 		});
-		
+
 		ckbxByFechaReimpresion.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				Util.limpiarListbox(lstbxVentasReimpresion);
 				dtbxFechaInicioByEmision.setValue(null);
 				dtbxFechaFinByEmision.setValue(null);
-				
+
 				dtbxFechaInicioByEmision.setDisabled(!ckbxByFechaReimpresion.isChecked());
 				dtbxFechaFinByEmision.setDisabled(!ckbxByFechaReimpresion.isChecked());
 				btnBuscarByFechaEmision.setDisabled(!ckbxByFechaReimpresion.isChecked());
@@ -227,20 +227,20 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 					dtbxFechaInicioByEmision.setValue(new Date());
 					dtbxFechaFinByEmision.setValue(new Date());
 				}
-				
+
 			}
 		});
-		
+
 		ckbxEmisonNotacredito.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				rdSoloNotaCredito.setDisabled(!ckbxEmisonNotacredito.isChecked());
 				rdSoloNotaCreditoNuevoComprobante.setDisabled(!ckbxEmisonNotacredito.isChecked());
-				btnAplicarNotaCredito.setDisabled(!ckbxEmisonNotacredito.isChecked());				
+				btnAplicarNotaCredito.setDisabled(!ckbxEmisonNotacredito.isChecked());
 			}
 		});
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
 	 */
@@ -272,12 +272,12 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 		rdSoloNotaCreditoNuevoComprobante=(Radio)this.getFellow("rdSoloNotaCreditoNuevoComprobante");
 		btnAplicarNotaCredito=(Button)this.getFellow("btnAplicarNotaCredito");
 	}
-	
-	
+
+
 	private void onSelectCentroCosto()throws Exception{
 		onLoadVentasReimpresion();
 	}
-	
+
 	private void onLoadVentasReimpresion()throws Exception{
 		Util.limpiarListbox(lstbxVentasReimpresion);
 		String styleActivo_11px="font-size:11px !important";
@@ -287,15 +287,15 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 		for(VentaPasaje ventaPasaje: listVentas){
 			//Valida si el registro esta anulado
 			Boolean isAnulado=false;
-			if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION || 
+			if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION ||
 					ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA ||
 					ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_DEVOLUCION){
 				isAnulado=true;
 			}
-			
+
 			Integer centroCostoId=(cmbCentroCosto.getSelectedIndex()>0?((CentroCosto)cmbCentroCosto.getSelectedItem().getValue()).getId():null);
-			
-			if(isAnulado==false && //ventaPasaje.getVentaPasaje()!=null && 
+
+			if(!isAnulado && //ventaPasaje.getVentaPasaje()!=null &&
 					(centroCostoId==null || centroCostoId.intValue()==ventaPasaje.getCentroCosto().getId().intValue()) &&
 					(ventaPasaje.getNumeroBoleto().toUpperCase().indexOf("B")>=0 || ventaPasaje.getNumeroBoleto().toUpperCase().indexOf("F")>=0)){
 				x++;
@@ -318,18 +318,18 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 				cell.setStyle(styleActivo_9px);
 				item.appendChild(cell);
 				/*BRUTO*/
-				if(cmbTipoMoneda.isVisible() && cmbTipoMoneda.getSelectedIndex()>0 && 
+				if(cmbTipoMoneda.isVisible() && cmbTipoMoneda.getSelectedIndex()>0 &&
 						((TipoMoneda)cmbTipoMoneda.getSelectedItem().getValue()).getId().intValue()!=Constantes.ID_TIPMON_SOLES){
 					cell=new Listcell(ventaPasaje.getTarifaEquibalente()!=null?Util.toNumberFormat(ventaPasaje.getTarifaEquibalente(),2):"0.00");
 //					cell=new Listcell("129,000.00");
 				}else{
-					cell=new Listcell(Util.toNumberFormat(ventaPasaje.getTarifa(),2));	
+					cell=new Listcell(Util.toNumberFormat(ventaPasaje.getTarifa(),2));
 				}
 				cell.setStyle(styleActivo_11px);
 				item.appendChild(cell);
 				/*DESCUENTO*/
 				//Validando la moneda - jabanto 15/08/2015
-				if(cmbTipoMoneda.isVisible() && cmbTipoMoneda.getSelectedIndex()>0 && 
+				if(cmbTipoMoneda.isVisible() && cmbTipoMoneda.getSelectedIndex()>0 &&
 						((TipoMoneda)cmbTipoMoneda.getSelectedItem().getValue()).getId().intValue()!=Constantes.ID_TIPMON_SOLES){
 					cell=new Listcell(ventaPasaje.getDescuentoEquibalente()!=null?Util.toNumberFormat(ventaPasaje.getDescuentoEquibalente(),2):"0.00");
 				}else{
@@ -339,7 +339,7 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 				item.appendChild(cell);
 				/*NETO PAGADO*/
 				//Validando la moneda - jabanto 15/08/2015
-				if(cmbTipoMoneda.isVisible() && cmbTipoMoneda.getSelectedIndex()>0 && 
+				if(cmbTipoMoneda.isVisible() && cmbTipoMoneda.getSelectedIndex()>0 &&
 						((TipoMoneda)cmbTipoMoneda.getSelectedItem().getValue()).getId().intValue()!=Constantes.ID_TIPMON_SOLES){
 					cell=new Listcell(ventaPasaje.getImportePagadoEquibalente()!=null?Util.toNumberFormat(ventaPasaje.getImportePagadoEquibalente(),2):"0.00");
 				}else{
@@ -374,13 +374,13 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 				cell=new Listcell(ventaPasaje.getEstadoDocumento()!=null?ventaPasaje.getEstadoDocumento():"");
 				cell.setStyle(styleActivo_9px);
 				item.appendChild(cell);
-				
-				item.setValue(ventaPasaje);							
+
+				item.setValue(ventaPasaje);
 				lstbxVentasReimpresion.appendChild(item);
 			}
 		}
 	}
-	
+
 	/**
 	 * Carga los centros de costo del cliente
 	 * @throws Exception
@@ -400,7 +400,7 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 				List<String>criteriosOrdenar= new ArrayList<>();
 				criteriosOrdenar.add("denominacion");
 				List<CentroCosto>  result = ServiceLocator.getCentroCostoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
-				
+
 				for(CentroCosto centroCosto: result){
 					cmbitem= new Comboitem(centroCosto.getDenominacion());
 					cmbitem.setValue(centroCosto);
@@ -408,13 +408,13 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 				}
 			}
 		}
-		
+
 		cmbCentroCosto.setSelectedIndex(0);
 	}
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * Carga los usuarios
 	 */
@@ -423,12 +423,12 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 			cmbCounter.getItems().clear();
 			cmbCounter.setText("");
 			Comboitem cmbitem = null;
-			
+
 			if(cmbAgencia.getSelectedIndex()>0 && cmbAgencia.getSelectedItem().getValue() instanceof Agencia){
 //				Agencia agencia = (Agencia)cmbAgencia.getSelectedItem().getValue();
 				Agencia agencia=ServiceLocator.getAgenciaManager().buscarPorId(((Agencia)cmbAgencia.getSelectedItem().getValue()).getId().longValue());
-				List<Usuario> lstUsuarios = ServiceLocator.getVentaPasajesManager().buscarUsuarioPorAgencia(null, 
-						Constantes.VALUE_ACTIVO, Util.DatetoString(dtbxFechaInicio.getValue(), Constantes.DATE_FORMAT), 
+				List<Usuario> lstUsuarios = ServiceLocator.getVentaPasajesManager().buscarUsuarioPorAgencia(null,
+						Constantes.VALUE_ACTIVO, Util.DatetoString(dtbxFechaInicio.getValue(), Constantes.DATE_FORMAT),
 						Util.DatetoString(dtbxFechaFin.getValue(), Constantes.DATE_FORMAT),agencia.getConcesionario().getRuc());
 				if(lstUsuarios.size()>0){
 					cmbitem = new Comboitem(Constantes.COMBO_LABEL_TODOS);
@@ -441,13 +441,13 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 						cmbCounter.appendChild(cmbitem);
 					}
 					cmbCounter.setDisabled(false);
-					
+
 				}else
 					cmbCounter.setDisabled(true);
 			}else
 				cmbCounter.setDisabled(true);
-			
-			
+
+
 			/*tipo de moneda - jabanto 15/08/2015*/
 			Util.limpiarCombobox(cmbTipoMoneda);
 			cmbTipoMoneda.setVisible(false);
@@ -464,10 +464,10 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 						comboitem=new Comboitem(tipoMoneda.getDenominacion());
 						comboitem.setValue(tipoMoneda);
 						cmbTipoMoneda.appendChild(comboitem);
-						
+
 						cmbTipoMoneda.setVisible(true);
 						cmbCounter.setWidth("140px");
-						
+
 						if(getAgencia().getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_TEPSA){
 							Util.seleccionarValorItemCombo(TipoMoneda.class, cmbTipoMoneda, Constantes.ID_TIPMON_SOLES);
 //							cmbTipoMoneda.setDisabled(false);
@@ -475,72 +475,72 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 							Util.seleccionarValorItemCombo(TipoMoneda.class, cmbTipoMoneda, tipoMoneda.getId());
 //							cmbTipoMoneda.setDisabled(true);
 						}
-						
+
 					}
 				}
 			}
-			
-			
+
+
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
-	
-	
+
+
 	public void cargarListaVentas() throws Exception{
 //		tabReimpresionTicket.setVisible(false);
-		Util.limpiarListbox(lstbxVentas);		
+		Util.limpiarListbox(lstbxVentas);
 		iFrame.detach();
 		tabListaVouchers.setSelected(true);
-				
+
 		if(cmbAgencia.getSelectedIndex()>0){
 			String fechaInicial=Constantes.FORMAT_DATE.format(dtbxFechaInicio.getValue());
 			String fechaFinal=Constantes.FORMAT_DATE.format(dtbxFechaFin.getValue());
 			Agencia agencia=ServiceLocator.getAgenciaManager().buscarPorId(((Agencia)cmbAgencia.getSelectedItem().getValue()).getId().longValue());
 			String estadoBoletos=(String) (cmbEstado.getSelectedIndex()>0?cmbEstado.getSelectedItem().getValue():null);
-			
-			
+
+
 			if(agencia.getConcesionario()!=null){
 //				Concesionario concesionario=ServiceLocator.getConcesionarioManager().buscarPorId(agencia.getConcesionario().getId().longValue());
 //				String rucCliente=concesionario.getRuc();
 				Long idUsuario =null;
 				if(cmbCounter.getSelectedIndex()>0)
 					idUsuario=((Usuario)cmbCounter.getSelectedItem().getValue()).getId().longValue();
-				
+
 				boolean isSoles=true;
 				if(cmbTipoMoneda.isVisible() && cmbTipoMoneda.getSelectedIndex()>=0 && ((TipoMoneda)cmbTipoMoneda.getSelectedItem().getValue()).getId().intValue()!=Constantes.ID_TIPMON_SOLES)
 					isSoles=false;
 				Integer centroCostoId=null;
 				if(cmbCentroCosto.getSelectedIndex()>0)
 					centroCostoId=(((CentroCosto)cmbCentroCosto.getSelectedItem().getValue()).getId());
-				
+
 				String orderByX="voucher";
 				listVentas=ServiceLocator.getVentaPasajesManager().buscarDetalleVentasAgencia(fechaInicial, fechaFinal, agencia.getConcesionario().getRuc(), idUsuario,orderByX,true,isSoles,estadoBoletos,centroCostoId,false);
-				
+
 				if(listVentas.size()==0){
 					DlgMessage.information(Messages.getString("Generales.information.noDatosEncontrados"));
-				}else{				
+				}else{
 					Listitem item=null;
 					Listcell cell=null;
 					int x=0;
-					
+
 					String styleAnulado_11px="font-size:11px !important; color:red";
 					String styleActivo_11px="font-size:11px !important";
 					String styleAnulado_9px="font-size:9px !important; color:red";
 					String styleActivo_9px="font-size:9px !important";
-									
+
 					for(VentaPasaje ventaPasaje: listVentas){
 						x++;
 						item=new Listitem();
-											
+
 						//Valida si el registro esta anulado
-						Boolean isAnulado=false;
-						if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION || 
+						boolean isAnulado=false;
+						if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION ||
 								ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA ||
 								ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_DEVOLUCION){
 							isAnulado=true;
 						}
-												
+
 						/*ITEM*/
 						cell= new Listcell(String.valueOf(x));
 						cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
@@ -575,18 +575,18 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 						item.appendChild(cell);
 						/*BRUTO*/
 						//Validando la moneda - jabanto 15/08/2015
-						if(cmbTipoMoneda.isVisible() && cmbTipoMoneda.getSelectedIndex()>0 && 
+						if(cmbTipoMoneda.isVisible() && cmbTipoMoneda.getSelectedIndex()>0 &&
 								((TipoMoneda)cmbTipoMoneda.getSelectedItem().getValue()).getId().intValue()!=Constantes.ID_TIPMON_SOLES){
 							cell=new Listcell(ventaPasaje.getTarifaEquibalente()!=null?Util.toNumberFormat(ventaPasaje.getTarifaEquibalente(),2):"0.00");
 //							cell=new Listcell("129,000.00");
 						}else{
-							cell=new Listcell(Util.toNumberFormat(ventaPasaje.getTarifa(),2));	
+							cell=new Listcell(Util.toNumberFormat(ventaPasaje.getTarifa(),2));
 						}
 						cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
 						item.appendChild(cell);
 						/*DESCUENTO*/
 						//Validando la moneda - jabanto 15/08/2015
-						if(cmbTipoMoneda.isVisible() && cmbTipoMoneda.getSelectedIndex()>0 && 
+						if(cmbTipoMoneda.isVisible() && cmbTipoMoneda.getSelectedIndex()>0 &&
 								((TipoMoneda)cmbTipoMoneda.getSelectedItem().getValue()).getId().intValue()!=Constantes.ID_TIPMON_SOLES){
 							cell=new Listcell(ventaPasaje.getDescuentoEquibalente()!=null?Util.toNumberFormat(ventaPasaje.getDescuentoEquibalente(),2):"0.00");
 						}else{
@@ -596,7 +596,7 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 						item.appendChild(cell);
 						/*NETO PAGADO*/
 						//Validando la moneda - jabanto 15/08/2015
-						if(cmbTipoMoneda.isVisible() && cmbTipoMoneda.getSelectedIndex()>0 && 
+						if(cmbTipoMoneda.isVisible() && cmbTipoMoneda.getSelectedIndex()>0 &&
 								((TipoMoneda)cmbTipoMoneda.getSelectedItem().getValue()).getId().intValue()!=Constantes.ID_TIPMON_SOLES){
 							cell=new Listcell(ventaPasaje.getImportePagadoEquibalente()!=null?Util.toNumberFormat(ventaPasaje.getImportePagadoEquibalente(),2):"0.00");
 						}else{
@@ -616,7 +616,7 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 						else
 							imgExport.setVisible(true);
 						item.appendChild(cell);
-						
+
 						imgExport.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 							@Override
 							public void onEvent(Event event) throws Exception {
@@ -647,13 +647,13 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 									agencia.setId(ventaPasaje.getAgenciaPartida().getId());
 									agencia.setDenominacion(ventaPasaje.getAgenciaPartida().getDenominacion());
 									ventaPasaje.setAgenciaPartida(agencia);
-									
+
 									if(ventaPasaje.getCentroCosto()!=null){
 										CentroCosto centroCosto=ServiceLocator.getCentroCostoManager().buscarPorId(ventaPasaje.getCentroCosto().getId().longValue());
 										ventaPasaje.setCentroCosto(centroCosto);
 									}
-									
-									TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+
+									TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 									ItinerarioAgenciaPartidaID itinerarioAgenciaPartidaID = new ItinerarioAgenciaPartidaID();
 									itinerarioAgenciaPartidaID.setIdItinerario(ventaPasaje.getItinerario().getId());
 									itinerarioAgenciaPartidaID.setIdAgencia(ventaPasaje.getAgenciaPartida().getId());
@@ -663,15 +663,15 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 										ventaPasaje.setHoraEmbarque(ventaPasaje.getHoraPartida());
 									else
 										ventaPasaje.setHoraEmbarque(lstItinerarioAgenciaPartida.get(0).getHoraPartida());
-									
+
 									if(ventaPasaje.getTipoMoneda()!=null){
 										TipoMoneda tipoMoneda=ServiceLocator.getTipoMonedaManager().buscarPorId(ventaPasaje.getTipoMoneda().getId().longValue());
 										ventaPasaje.setTipoMoneda(tipoMoneda);
 									}
-									
+
 									exportTicket(ventaPasaje);
 								}
-								
+
 							}
 						});
 
@@ -702,17 +702,17 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 						cell=new Listcell(ventaPasaje.getEstadoDocumento()!=null?ventaPasaje.getEstadoDocumento():"");
 						cell.setStyle(isAnulado?styleAnulado_9px:styleActivo_9px);
 						item.appendChild(cell);
-						
+
 						item.setValue(ventaPasaje);
 						lstbxVentas.appendChild(item);
-						
+
 					}
-					
+
 					/*Carga las ventas para la reimpresoon de tickets*/
 					onLoadVentasReimpresion();
 				}
 			}
-			
+
 //			tabReimpresionTicket.setVisible(lstbxVentasReimpresion.getItemCount()>0);
 			ckbxByFechaReimpresion.setChecked(false);
 			dtbxFechaInicioByEmision.setDisabled(true);
@@ -720,26 +720,26 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 			btnBuscarByFechaEmision.setDisabled(true);
 			dtbxFechaInicioByEmision.setValue(null);
 			dtbxFechaFinByEmision.setValue(null);
-			btnPreliminar.setDisabled(lstbxVentas.getItems().size()==0);	
+			btnPreliminar.setDisabled(lstbxVentas.getItems().size()==0);
 		}else{
 			DlgMessage.information(Messages.getString("WndDetalleLiquidacionAgencia.information.noAgencia"),cmbAgencia);
-		}	
+		}
 	}
-	
+
 	private void exportTicket(VentaPasaje venta){
-		TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+		TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-		List<String> criteriosOrdenar = new ArrayList<String>();
+		List<String> criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("idioma");
 		criteriosOrdenar.add("orden");
 		List<TerminosVenta> lstTerminos = ServiceLocator.getTerminosVentaManager().buscarPorX(criteriosBusqueda, null);
-		
+
 		try{
 			Agencia agencia = ServiceLocator.getAgenciaManager().buscarPorId(venta.getAgencia().getId().longValue());
 			Cliente cliente = (venta.getCliente()!=null?ServiceLocator.getClienteManager().buscarPorId(venta.getCliente().getId()):null);
 			venta.setCliente(cliente);
 			venta.setAgencia(agencia);
-			List<VentaPasaje> lstVentas = new ArrayList<VentaPasaje>();
+			List<VentaPasaje> lstVentas = new ArrayList<>();
 			lstVentas.add(venta);
 			Session session = getDesktop().getSession();
 	        HttpSession httpSession = (HttpSession)session.getNativeSession();
@@ -750,8 +750,8 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 //	        	TipoMoneda tipoMoneda=ServiceLocator.getTipoMonedaManager().buscarPorId(venta.getTipoMoneda().getId().longValue());
 //	        	httpSession.setAttribute("tipoMoneda", tipoMoneda);
 //	        }
-	        
-	        	        
+
+
 	        final WndIFrame iFrame = new WndIFrame();
 	        iFrame.btnCerrar.setVisible(false);
 	        iFrame.oThisWindow.setTitle("E-VOUCHER");
@@ -769,8 +769,8 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 		}
     }
 
-	
-	
+
+
 //	private void exportTicket(VentaPasaje venta){
 //		try{
 //			Agencia agencia = ServiceLocator.getAgenciaManager().buscarPorId(venta.getAgencia().getId().longValue());
@@ -781,7 +781,7 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 //			Session session = getDesktop().getSession();
 //	        HttpSession httpSession = (HttpSession)session.getNativeSession();
 //	        httpSession.setAttribute("lstVentas", lstVentas);
-//	        	        
+//
 //	        final WndIFrame iFrame = new WndIFrame();
 //	        iFrame.btnCerrar.setVisible(false);
 //	        iFrame.oThisWindow.setTitle("E-VOUCHER");
@@ -798,16 +798,16 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 //			ex.printStackTrace();
 //		}
 //    }
-	
+
 	public void rptVentasRealizadas(){
 		try{
 			iFrame.detach();
-			
+
 			String fechaInicial=Constantes.FORMAT_DATE.format(dtbxFechaInicio.getValue());
 			String fechaFinal=Constantes.FORMAT_DATE.format(dtbxFechaFin.getValue());
 			Agencia agencia=ServiceLocator.getAgenciaManager().buscarPorId(((Agencia)cmbAgencia.getSelectedItem().getValue()).getId().longValue());
 			String estadoBoletos=(String) (cmbEstado.getSelectedIndex()>0?cmbEstado.getSelectedItem().getValue():null);
-			
+
 			if(agencia.getConcesionario()!=null){
 				Concesionario concesionario=ServiceLocator.getConcesionarioManager().buscarPorId(agencia.getConcesionario().getId().longValue());
 //				String rucCliente=concesionario.getRuc();
@@ -815,7 +815,7 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 				if(cmbCounter.getSelectedItem().getValue() instanceof Usuario)
 					idUsuario=((Usuario)cmbCounter.getSelectedItem().getValue()).getId().longValue();
 				String orderByX="c_codigo,voucher, fechaVenta";
-				
+
 				boolean isSoles=true;
 				if(cmbTipoMoneda.isVisible() && cmbTipoMoneda.getSelectedIndex()>=0 && ((TipoMoneda)cmbTipoMoneda.getSelectedItem().getValue()).getId().intValue()!=Constantes.ID_TIPMON_SOLES)
 					isSoles=false;
@@ -823,14 +823,14 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 				if(cmbCentroCosto.getSelectedIndex()>0)
 					centroCostoId=(((CentroCosto)cmbCentroCosto.getSelectedItem().getValue()).getId());
 				List<VentaPasaje>lstVentas=ServiceLocator.getVentaPasajesManager().buscarDetalleVentasAgencia(fechaInicial, fechaFinal, agencia.getConcesionario().getRuc(), idUsuario,orderByX,true,isSoles,estadoBoletos,centroCostoId,false);
-									
-				
+
+
 				TipoAgencia tipoAgencia= new TipoAgencia();
 				tipoAgencia.setId(((Agencia)cmbAgencia.getSelectedItem().getValue()).getTipoAgencia().getId());
-				
+
 				Integer porComision=concesionario.getComision()!=null?concesionario.getComision():0;
 				Double igv=.00;
-								
+
 				Session session=getDesktop().getSession();
 				HttpSession httpSession=(HttpSession)session.getNativeSession();
 				httpSession.setAttribute("lstVentas", lstVentas);
@@ -841,21 +841,21 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 				httpSession.setAttribute("fechaFinal", Constantes.FORMAT_DATE.format(dtbxFechaFin.getValue()));
 				httpSession.setAttribute("comision", porComision);
 				httpSession.setAttribute("igv", igv);
-								
+
 				iFrame.setSrc("reporteVentasRealizadas.zul");
 				iFrame.setWidth("100%");
 				iFrame.setHeight("570px");
 //				this.appendChild(iFrame);
 				tabPanelPrevio.appendChild(iFrame);
-				
+
 				tabPrevio.setSelected(true);
-				
+
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
-	
+
 	public void exportarExcel(){
 		Agencia agencia = (Agencia)cmbAgencia.getSelectedItem().getValue();
 		if(agencia!=null){
@@ -879,7 +879,7 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 				radiogroup.appendChild(separator);
 				row.appendChild(radiogroup);
 				rows.appendChild(row);
-				
+
 				row = new Row();
 				row.setAlign("center");
 				Hlayout hlayout = new Hlayout();
@@ -889,17 +889,17 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 					public void onEvent(Event e){
 						if(lstbxVentas.getItems().size()>0){
 							Cliente cliente=((VentaPasaje)lstbxVentas.getItemAtIndex(0).getValue()).getCliente();
-							
+
 							Session session = getDesktop().getSession();
 							HttpSession httpSession = (HttpSession)session.getNativeSession();
 							httpSession.setAttribute("cliente", cliente);
-							
+
 							Boolean rptPersonalizado=false;
 							if(rdEstandar.isSelected())
 								rptPersonalizado=false;
 							else
 								rptPersonalizado=true;
-							
+
 							if(rptPersonalizado)
 								httpSession.setAttribute("path", Constantes.DIRECTORY_EXCEL+"DetalladoPersonalizado.xls");
 							else
@@ -930,14 +930,14 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 				hlayout.appendChild(button);
 				row.appendChild(hlayout);
 				rows.appendChild(row);
-				
+
 				grid.appendChild(rows);
 				win.appendChild(grid);
 				if(agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_CORPORATIVO)
 					rdDetallado.setSelected(true);
 				else
 					rdEstandar.setSelected(true);
-				
+
 				this.appendChild(win);
 				win.doModal();
 			}else
@@ -945,55 +945,55 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 		}else
 			DlgMessage.information(Messages.getString("Generales.information.noSeleccionoAgencia"), cmbAgencia);
 	}
-	
+
 	/**
 	 * Realiza la rempresion masiva de los tickets
 	 */
 	public void reimprimirTickts(){
 		try {
-			
+
 			List<VentaPasaje>listVentas= new ArrayList<>();
 			for(Listitem item:lstbxVentasReimpresion.getSelectedItems()){
 				VentaPasaje oventaPasaje=item.getValue();
 				boolean isAnulado=false;
 				/*Valida que no este anulado*/
-				if(oventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION || 
+				if(oventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION ||
 						oventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA ||
 								oventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_DEVOLUCION){
 					isAnulado = true;
 				}
-				
+
 				/*Solo los que no esten anulados - 10/01/2017 - jabanto*/
-				if(isAnulado==false){
+				if(!isAnulado){
 					if(ckbxByFechaReimpresion.isChecked()){
 						VentaPasaje ventaPasaje=ServiceLocator.getVentaPasajesManager().buscarVentaById(oventaPasaje.getId());
 						listVentas.add(ventaPasaje);
 					}else{
 						if(oventaPasaje.getVentaPasaje()!=null){
 							VentaPasaje ventaPasaje=ServiceLocator.getVentaPasajesManager().buscarVentaById(oventaPasaje.getVentaPasaje().getId());
-							listVentas.add(ventaPasaje);	
+							listVentas.add(ventaPasaje);
 						}
 					}
 				}
 				/*End begin 10/01/2017 - jabanto*/
 //				if(isAnulado==false && oventaPasaje.getVentaPasaje()!=null){
 //					VentaPasaje ventaPasaje=ServiceLocator.getVentaPasajesManager().buscarVentaById(oventaPasaje.getVentaPasaje().getId());
-//					listVentas.add(ventaPasaje);	
+//					listVentas.add(ventaPasaje);
 //				}
 			}
-			
-			
+
+
 			WSFE.reimprimirComprobante(listVentas, wndDetLiqAg);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Realiza la busqueda de los comprobantes electronicos por fecha de emision
-	 */	
+	 */
 	public void buscarByFechaEmision(){
 		try {
 			if(cmbAgencia.getSelectedIndex()==0){
@@ -1011,21 +1011,21 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 			Integer centroCostoId=null;
 			if(cmbCentroCosto.getSelectedIndex()>0)
 				centroCostoId=(((CentroCosto)cmbCentroCosto.getSelectedItem().getValue()).getId());
-							
+
 			String orderByX="FechaVenta, boleto";
-							
+
 			String fechaInicio=Constantes.FORMAT_DATE.format(dtbxFechaInicioByEmision.getValue());
 			String fechaFin=Constantes.FORMAT_DATE.format(dtbxFechaFinByEmision.getValue());
 			listVentas=ServiceLocator.getVentaPasajesManager().buscarDetalleVentasAgencia(fechaInicio, fechaFin, agencia.getConcesionario().getRuc(), idUsuario,orderByX,true,isSoles,estadoBoletos,centroCostoId,true);
 			onLoadVentasReimpresion();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
 		}
 	}
-	
-	
+
+
 	public void emitriNotaCredito(){
 		try {
 //			if(rdSoloNotaCredito.isChecked()==false && rdSoloNotaCreditoNuevoComprobante.isChecked()==false){
@@ -1050,7 +1050,7 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 //					}
 //				}
 //			}
-//						
+//
 //			Messagebox.show("Este proceso es irreversible y puede tardar  varios minutos. \n ¿Realment esta seguro de continuar?  ", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 //				@Override
 //				public void onEvent(Event e){
@@ -1061,12 +1061,12 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 //								VentaPasaje oventaPasaje=item.getValue();
 //								boolean isAnulado=false;
 //								/*Valida que no este anulado*/
-//								if(oventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION || 
+//								if(oventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION ||
 //										oventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA ||
 //												oventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_DEVOLUCION){
 //									isAnulado = true;
 //								}
-//								
+//
 //								if(!(isAnulado)){
 //									if(ckbxByFechaReimpresion.isChecked()){
 //										VentaPasaje ventaPasaje=ServiceLocator.getVentaPasajesManager().buscarVentaById(oventaPasaje.getId());
@@ -1074,21 +1074,21 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 //									}else{
 //										if(oventaPasaje.getVentaPasaje()!=null){
 //											VentaPasaje ventaPasaje=ServiceLocator.getVentaPasajesManager().buscarVentaById(oventaPasaje.getVentaPasaje().getId());
-//											listVentas.add(ventaPasaje);	
+//											listVentas.add(ventaPasaje);
 //										}
 //									}
 //								}
 //							}
-//							
+//
 //							/*Genera las notas de credito*/
 //							TipoNota tipoNota= ServiceLocator.getTipoNotaManager().buscarPorId(Long.valueOf(Constantes.ID_TIPNOTA_ANULACION));
 //							VentasNotas ventasNotas= ServiceLocator.getVentaPasajesManager().generarNotaCreditoRegularizacion(listVentas, tipoNota, rdSoloNotaCreditoNuevoComprobante.isChecked());
-//							
+//
 //							/*Realiza el envio de las notas de credito al Servidor F.E*/
 //							for(VentaPasaje nota: ventasNotas.getListNotasCredito()){
 //								WSFE.sendNota(nota);
 //							}
-//							
+//
 //							/*Luego los nuevos comprobantes, si es que se hayan generado*/
 //							if(ventasNotas.getListVentas()!=null && ventasNotas.getListVentas().size()>0){
 //								List<VentaPasaje>listVentasPasajes= new ArrayList<>();
@@ -1098,10 +1098,10 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 //								}
 //								WSFE.sendVenta(listVentasPasajes, wndDetLiqAg, true, null);
 //							}
-//							
+//
 //							/*Refresca la busqueda*/
 //							buscarByFechaEmision();
-//							
+//
 //							DlgMessage.information("El proceso terminó correctamente");
 //						}
 //					} catch (Exception e2) {
@@ -1110,8 +1110,8 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 //					}
 //				}
 //			});
-//			
-			
+//
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());

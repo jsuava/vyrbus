@@ -25,7 +25,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class EstadoCivilManagerImpl implements EstadoCivilManager {
 	private EstadoCivilDAO estadoCivilDAO;
-	
+
 	/**
 	 * @return the estadoCivilDAO
 	 */
@@ -73,17 +73,17 @@ public class EstadoCivilManagerImpl implements EstadoCivilManager {
 	@Transactional
 	public void guardar(EstadoCivil estadoCivil) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", estadoCivil.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getEstadoCivilDAO().buscarPorX(criteriosBusqueda, null);
-			
+
 			/*Valida duplicidad de la denominación*/
 			if(resultDenominacion.size()>0)
 				throw new DenominacionDuplicadaException();
-			
+
 			getEstadoCivilDAO().guardar(estadoCivil);
-			
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(Exception ex){
@@ -98,20 +98,20 @@ public class EstadoCivilManagerImpl implements EstadoCivilManager {
 	@Transactional
 	public void actualizar(EstadoCivil estadoCivil) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", estadoCivil.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getEstadoCivilDAO().buscarPorX(criteriosBusqueda, null);
-			
+
 			/*Valida duplicidad de la denominación*/
-			for(int r = 0; r < resultDenominacion.size(); r ++) {
-				EstadoCivil oestadoCivil = (EstadoCivil) resultDenominacion.get(r);
+			for (Object element : resultDenominacion) {
+				EstadoCivil oestadoCivil = (EstadoCivil) element;
 					if (!(oestadoCivil.getId() == estadoCivil.getId()))
 						throw new DenominacionDuplicadaException();
 				}
-					
+
 			getEstadoCivilDAO().actualizar(estadoCivil);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(Exception ex){

@@ -9,11 +9,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for ResultVenta complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="ResultVenta">
  *   &lt;complexContent>
@@ -28,8 +28,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ResultVenta", propOrder = { "error", "isCorrect",
@@ -46,10 +46,10 @@ public class ResultVenta {
 
 	/**
 	 * Gets the value of the error property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link Error }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<Error> getError() {
 		return error;
@@ -57,11 +57,11 @@ public class ResultVenta {
 
 	/**
 	 * Sets the value of the error property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link Error }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setError(JAXBElement<Error> value) {
 		this.error = (value);
@@ -69,9 +69,9 @@ public class ResultVenta {
 
 	/**
 	 * Gets the value of the isCorrect property.
-	 * 
+	 *
 	 * @return possible object is {@link Boolean }
-	 * 
+	 *
 	 */
 	public Boolean isIsCorrect() {
 		return isCorrect;
@@ -79,10 +79,10 @@ public class ResultVenta {
 
 	/**
 	 * Sets the value of the isCorrect property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Boolean }
-	 * 
+	 *
 	 */
 	public void setIsCorrect(Boolean value) {
 		this.isCorrect = value;
@@ -90,10 +90,10 @@ public class ResultVenta {
 
 	/**
 	 * Gets the value of the numeroBoleto property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getNumeroBoleto() {
 		return numeroBoleto;
@@ -101,11 +101,11 @@ public class ResultVenta {
 
 	/**
 	 * Sets the value of the numeroBoleto property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setNumeroBoleto(JAXBElement<String> value) {
 		this.numeroBoleto = (value);
@@ -113,10 +113,10 @@ public class ResultVenta {
 
 	/**
 	 * Gets the value of the resultadoTransaccion property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getResultadoTransaccion() {
 		return resultadoTransaccion;
@@ -124,11 +124,11 @@ public class ResultVenta {
 
 	/**
 	 * Sets the value of the resultadoTransaccion property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setResultadoTransaccion(JAXBElement<String> value) {
 		this.resultadoTransaccion = (value);

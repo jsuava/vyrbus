@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 14/09/2012
  */
@@ -13,12 +13,12 @@ import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 
 public class MyTime {
 	Calendar Hora = Calendar.getInstance();
-	
+
 	public String dateServer(){
 		return ServiceLocator.getItinerarioManager().dateServer();
 	}
-	
-	
+
+
 	public static String dateTimeServer(){
 		return ServiceLocator.getItinerarioManager().dateServer();
 	}

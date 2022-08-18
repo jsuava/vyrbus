@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 20/10/2012
  */
@@ -16,9 +16,9 @@ import org.zkoss.zul.Toolbarbutton;
 public class ButtonGenerarMapa extends Toolbarbutton {
 	private static final long serialVersionUID = 1L;
 	private Integer idServicio;
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public ButtonGenerarMapa() {
 		super();
@@ -39,7 +39,7 @@ public class ButtonGenerarMapa extends Toolbarbutton {
 		super(label);
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	/**
 	 * @return the idServicio
 	 */

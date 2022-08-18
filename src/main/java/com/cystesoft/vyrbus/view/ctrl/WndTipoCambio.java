@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 10/08/2015
  * Hora			: 15:45:30
@@ -37,24 +37,24 @@ import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
  * @author jabanto
  *
  */
-public class WndTipoCambio extends WndOpcionesMantenimiento{	
+public class WndTipoCambio extends WndOpcionesMantenimiento{
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Datebox dtbxFecha;
 	private Combobox cmbTipoMoneda;
 	private Doublebox dlbxTipoCambio;
-	
-	
-	
+
+
+
 	private Date fechaInicio=null;
 	private Date fechaFin=null;
 	private TipoMoneda tipoMoneda=null;
 	private TipoCambio tipoCambio=null;
 
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
 	 */
@@ -64,10 +64,10 @@ public class WndTipoCambio extends WndOpcionesMantenimiento{
 		dtbxFecha=(Datebox)this.getFellow("dtbxFecha");
 		cmbTipoMoneda=(Combobox)this.getFellow("cmbTipoMoneda");
 		dlbxTipoCambio=(Doublebox)this.getFellow("dlbxTipoCambio");
-		
+
 	}
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
@@ -107,19 +107,19 @@ public class WndTipoCambio extends WndOpcionesMantenimiento{
 		this.appendChild(oWndFiltrar);
 		oWndFiltrar.setMode("modal");
 		oWndFiltrar.addEventListener(com.cystesoft.vyrbus.view.ui.Events.ON_FILTER, new EventListener<Event>() {
-			
+
 			@Override
 			public void onEvent(Event event) throws Exception {
 				fechaInicio = (Date) oWndFiltrar.getParameterValue("1.Fecha Inicio");
 				fechaFin = (Date) oWndFiltrar.getParameterValue("2.Fecha Fin");
 				tipoMoneda=(TipoMoneda)oWndFiltrar.getParameterValue("3.Tipo Moneda");
-				
+
 				buscar();
 			}
 		});
-		
-		
-		
+
+
+
 	}
 
 
@@ -129,7 +129,7 @@ public class WndTipoCambio extends WndOpcionesMantenimiento{
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		buscar();
-		
+
 	}
 
 
@@ -140,13 +140,13 @@ public class WndTipoCambio extends WndOpcionesMantenimiento{
 	public void onModify(int tab) throws Exception {
 		try {
 			if(listboxLista.getSelectedIndex()>=0){
-				mantenimiento(((TipoCambio)listboxLista.getSelectedItem().getValue()).getId().longValue());	
+				mantenimiento(((TipoCambio)listboxLista.getSelectedItem().getValue()).getId().longValue());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
 		}
-		
+
 	}
 
 
@@ -156,12 +156,12 @@ public class WndTipoCambio extends WndOpcionesMantenimiento{
 	@Override
 	public void onCancel(int action) throws Exception {
 		try {
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
 		}
-		
+
 	}
 
 
@@ -181,16 +181,16 @@ public class WndTipoCambio extends WndOpcionesMantenimiento{
 				DlgMessage.information(Messages.getString("wndTipoCambio.information.noTipoCambio"),dlbxTipoCambio);
 				throw new CancelaGrabacionException();
 			}
-				
-			
+
+
 			if(action==Constantes.ACTION_NEW)
 				tipoCambio=new TipoCambio();
-			
+
 			tipoCambio.setFecha(Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(dtbxFecha.getValue())));
 			tipoCambio.setTipoMoneda(((TipoMoneda)cmbTipoMoneda.getSelectedItem().getValue()));
 			tipoCambio.setTipoCambio(dlbxTipoCambio.getValue());
 			tipoCambio.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-			
+
 			switch (action) {
 			case Constantes.ACTION_NEW:
 				UtilData.auditarRegistro(tipoCambio, getUsuario(), Executions.getCurrent());
@@ -201,19 +201,19 @@ public class WndTipoCambio extends WndOpcionesMantenimiento{
 				ServiceLocator.getTipoCambioManager().actualizar(tipoCambio);
 				break;
 			}
-			
+
 			/*Recupera el registro insertado/actualizado*/
 			fechaInicio=tipoCambio.getFecha();
 			fechaFin=fechaInicio;
 			tipoMoneda=tipoCambio.getTipoMoneda();
 			buscar();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
 			throw new CancelaGrabacionException();
 		}
-		
+
 	}
 
 
@@ -242,7 +242,7 @@ public class WndTipoCambio extends WndOpcionesMantenimiento{
 	@Override
 	public void onPrint(int tab) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 
@@ -252,7 +252,7 @@ public class WndTipoCambio extends WndOpcionesMantenimiento{
 	@Override
 	public void onExport(int tab) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 
@@ -262,7 +262,7 @@ public class WndTipoCambio extends WndOpcionesMantenimiento{
 	@Override
 	public void onHelp() throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 
@@ -273,15 +273,15 @@ public class WndTipoCambio extends WndOpcionesMantenimiento{
 	public void onChangeTab(int tab) throws Exception {
 		try {
 			if(listboxLista.getSelectedIndex()>=0){
-				mantenimiento(((TipoCambio)listboxLista.getSelectedItem().getValue()).getId().longValue());	
+				mantenimiento(((TipoCambio)listboxLista.getSelectedItem().getValue()).getId().longValue());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
 		}
 	}
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see org.zkoss.zul.Window#onClose()
 	 */
@@ -290,11 +290,11 @@ public class WndTipoCambio extends WndOpcionesMantenimiento{
 		// TODO Auto-generated method stub
 		closeTabWindow();
 	}
-	
-	private void buscar()throws Exception{	
+
+	private void buscar()throws Exception{
 		Util.limpiarListbox(listboxLista);
 		List<TipoCambio>result=ServiceLocator.getTipoCambioManager().buscarTiposCambio(Constantes.FORMAT_DATE.format(fechaInicio), Constantes.FORMAT_DATE.format(fechaFin), (tipoMoneda!=null?tipoMoneda.getId():null));
-		
+
 		int x=0;
 		for(TipoCambio tipoCambio: result){
 			Listitem item=new Listitem();
@@ -312,18 +312,18 @@ public class WndTipoCambio extends WndOpcionesMantenimiento{
 			cell=new Listcell(Constantes.FORMAT_LONG.format(tipoCambio.getFechaInsercion()));
 			cell.setStyle("font-size:11px !important");
 			item.appendChild(cell);
-			
+
 			item.setValue(tipoCambio);
 			listboxLista.appendChild(item);
 		}
 	}
-	
+
 	private void mantenimiento(Long id)throws Exception{
 		tipoCambio=ServiceLocator.getTipoCambioManager().buscarPorId(id);
 		dtbxFecha.setValue(tipoCambio.getFecha());
 		Util.seleccionarValorItemCombo(TipoMoneda.class, cmbTipoMoneda, tipoCambio.getTipoMoneda().getId());
 		dlbxTipoCambio.setValue(tipoCambio.getTipoCambio());
-		
+
 		dtbxFecha.setDisabled(true);
 	}
 

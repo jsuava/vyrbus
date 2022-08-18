@@ -9,11 +9,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for Menu complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="Menu">
  *   &lt;complexContent>
@@ -26,8 +26,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Menu", propOrder = { "key", "value" })
@@ -40,10 +40,10 @@ public class Menu {
 
 	/**
 	 * Gets the value of the key property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getKey() {
 		return key;
@@ -51,11 +51,11 @@ public class Menu {
 
 	/**
 	 * Sets the value of the key property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setKey(JAXBElement<String> value) {
 		this.key = (value);
@@ -63,10 +63,10 @@ public class Menu {
 
 	/**
 	 * Gets the value of the value property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getValue() {
 		return value;
@@ -74,11 +74,11 @@ public class Menu {
 
 	/**
 	 * Sets the value of the value property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setValue(JAXBElement<String> value) {
 		this.value = (value);

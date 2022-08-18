@@ -11,7 +11,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.Util;
 
 /**
- * 
+ *
  * @author José Abanto
  *
  */
@@ -53,7 +53,7 @@ public class OpcionMenuDAOImpl extends GenericDAOImpl implements OpcionMenuDAO {
 	@Override
 	public void guardar(OpcionMenu opcionMenu) {
 		super.save(opcionMenu);
-		
+
 	}
 
 	/*
@@ -63,7 +63,7 @@ public class OpcionMenuDAOImpl extends GenericDAOImpl implements OpcionMenuDAO {
 	@Override
 	public void actualizar(OpcionMenu opcionMenu) {
 		super.update(opcionMenu);
-		
+
 	}
 
 	/*
@@ -73,9 +73,9 @@ public class OpcionMenuDAOImpl extends GenericDAOImpl implements OpcionMenuDAO {
 	@Override
 	public void inactivar(Long id) {
 		super.inactivate(OpcionMenu.class, id);
-		
+
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.OpcionMenuDAO#cargarMenusPadres()
@@ -86,22 +86,22 @@ public class OpcionMenuDAOImpl extends GenericDAOImpl implements OpcionMenuDAO {
 					 "FROM vrmopcmen op "+
 					 "WHERE op.c_url is null AND op.c_estreg='A' " +
 					 "ORDER BY op.n_ordopcmen";
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<OpcionMenu> lstResult = new ArrayList<OpcionMenu>();
+		List<OpcionMenu> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
-			
+
 			OpcionMenu opcionMenu = new OpcionMenu();
 			opcionMenu.setId(((BigDecimal) obj[0]).intValue());
 			opcionMenu.setDenominacion(obj[1].toString());
-			
+
 			lstResult.add(opcionMenu);
 		}
-		
+
 		return lstResult;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.OpcionMenuDAO#buscarMenus(java.lang.Integer)
@@ -116,34 +116,34 @@ public class OpcionMenuDAOImpl extends GenericDAOImpl implements OpcionMenuDAO {
 		}else{
 			condi=" WHERE op.c_estreg='A' ORDER BY  om.c_denominacion ";
 		}
-		
-		
+
+
 		String sql="SELECT op.opcmen_id, om.c_denominacion as menu, op.opcmen_idpadre, op.c_denominacion as subMenu, "+ //0-3
 							"op.n_ordopcmen, op.c_nomobj, op.c_url, op.n_habilitado "+ //4-7
 					"FROM vrmopcmen op "+
 					"LEFT JOIN vrmopcmen om ON (om.opcmen_id=op.opcmen_idpadre) "+
 					 condi;
 					//"WHERE op.opcmen_idpadre ="+idMenuPadre+
-					//" ORDER BY  op.n_ordopcmen";	
-		
+					//" ORDER BY  op.n_ordopcmen";
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<OpcionMenu> lstResult = new ArrayList<OpcionMenu>();
+		List<OpcionMenu> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
-			
+
 			OpcionMenu opcionMenuPadre = new OpcionMenu();
 			OpcionMenu opcionMenuHijo = new OpcionMenu();
-			
+
 			if (obj[0] !=null )
 				opcionMenuPadre.setId(((BigDecimal) obj[0]).intValue());
 			if (obj[1] !=null)
 				opcionMenuPadre.setDenominacion(obj[1].toString());
-			
+
 			opcionMenuHijo.setOpcionMenuPadre(opcionMenuPadre);
-			
-			if (obj[2] !=null)		
+
+			if (obj[2] !=null)
 				opcionMenuHijo.setId(((BigDecimal) obj[2]).intValue());
-			if (obj[3] !=null)	
+			if (obj[3] !=null)
 				opcionMenuHijo.setDenominacion(obj[3].toString());
 			if (obj[4] !=null)
 				opcionMenuHijo.setOrdenOpcionMenu(((BigDecimal) obj[4]).intValue());
@@ -156,13 +156,13 @@ public class OpcionMenuDAOImpl extends GenericDAOImpl implements OpcionMenuDAO {
 			else
 				opcionMenuHijo.setUrl("");
 			opcionMenuHijo.setHabilitado(((BigDecimal) obj[7]).intValue());
-			
+
 			lstResult.add(opcionMenuHijo);
-			
+
 		}
 		return lstResult;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.OpcionMenuDAO#buscarOpcionesMenu()
@@ -179,11 +179,11 @@ public class OpcionMenuDAOImpl extends GenericDAOImpl implements OpcionMenuDAO {
 				"INNER JOIN vrmopcmen omN1 ON omN1.opcmen_id=menus.abuelo " +
 				"INNER JOIN vrmopcmen omN2 ON omN2.opcmen_id=menus.IDPADRE " +
 				"ORDER BY ABUELO,IDPADRE, /*menus.opcmen_id,*/ menus.n_ordopcmen ";
-		
+
 		log.info(sql);
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<OpcionMenu> lstResult = new ArrayList<OpcionMenu>();
+		List<OpcionMenu> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[])result.get(i);
 			OpcionMenu opcionMenu = new OpcionMenu();

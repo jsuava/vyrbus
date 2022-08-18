@@ -8,7 +8,7 @@ import com.cystesoft.vyrbus.model.bean.EstadoCivil;
 
 public interface EstadoCivilManager {
 	public ArrayList<EstadoCivil> buscarPorEstadoRegistro(String estado, String criterioOrden)throws Exception;
-	public ArrayList<EstadoCivil> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar)throws Exception;	
+	public ArrayList<EstadoCivil> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar)throws Exception;
 	public EstadoCivil buscarPorId(Long id)throws Exception;
 	public void guardar(EstadoCivil estadoCivil)throws Exception;
 	public void actualizar(EstadoCivil estadoCivil)throws Exception;

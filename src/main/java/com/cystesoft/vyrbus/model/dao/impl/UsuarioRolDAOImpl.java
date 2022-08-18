@@ -1,7 +1,6 @@
 package com.cystesoft.vyrbus.model.dao.impl;
 
 import java.util.ArrayList;
-
 import java.util.List;
 import java.util.TreeMap;
 
@@ -10,7 +9,7 @@ import com.cystesoft.vyrbus.model.bean.UsuarioRolID;
 import com.cystesoft.vyrbus.model.dao.UsuarioRolDAO;
 
 /**
- * 
+ *
  * @author JOsé Abanto
  *
  */
@@ -70,12 +69,12 @@ public class UsuarioRolDAOImpl extends GenericDAOImpl implements UsuarioRolDAO {
 	public void activaInactiva(UsuarioRolID usuarioRolID, String estado) {
 		String sql ="DELETE FROM vrtusuario_rol  "+
 					 "WHERE rol_id="+usuarioRolID.getIdRol()+" And usuario_id="+usuarioRolID.getIdUsuario();
-		
+
 		log.info(sql);
 		getSession().createSQLQuery(sql).executeUpdate();
-		
+
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.UsuarioRolDAO#buscarXIdRol(java.lang.Integer)
@@ -84,11 +83,11 @@ public class UsuarioRolDAOImpl extends GenericDAOImpl implements UsuarioRolDAO {
 	public List<UsuarioRol> buscarXIdUsuario(Integer idUsuario){
 		Class<?> oClass=UsuarioRol.class;
 		String hql="FROM "+oClass.getSimpleName()+" WHERE usuario=? AND estadoRegistro='A' AND rol.sistema=0 ORDER BY rol.denominacion "; //Sistema=0: solo los roles para acceso al sisvyr
-		
+
 		return getSession().createQuery(hql).setInteger(0, idUsuario).list();
-		
+
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.UsuarioRolDAO#buscarXidUsuario(java.lang.Integer)
@@ -97,7 +96,7 @@ public class UsuarioRolDAOImpl extends GenericDAOImpl implements UsuarioRolDAO {
 	public UsuarioRol buscarXidUsuarioAndIdRol(Integer idUsuario, Integer idRol){
 		Class<?> oClass=UsuarioRol.class;
 		String hql="FROM "+oClass.getSimpleName()+" WHERE usuario=? AND rol=?";
-		
+
 		return (UsuarioRol) getSession().createQuery(hql).setInteger(0, idUsuario).setInteger(1, idRol).uniqueResult();
 	}
 
@@ -110,15 +109,15 @@ public class UsuarioRolDAOImpl extends GenericDAOImpl implements UsuarioRolDAO {
 		return (List<UsuarioRol>)super.findByX(UsuarioRol.class, campo, criterios, criteriosOrdenar, estadoRegistro);
 	}
 
-	
-	
-	
+
+
+
 //	public void delete(Integer rol_id, Integer usuario_id){
 //		String sql="DELETE FROM vrtusuario_rol WHERE rol_id="+rol_id+" AND usuario_id="+usuario_id+" AND C_estReg='A' ";
-//		
+//
 //		log.info(sql);
 //		getSession().createSQLQuery(sql).executeUpdate();
 //	}
-	
+
 
 }

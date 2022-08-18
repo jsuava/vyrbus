@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 05/07/2016
  * Hora			: 14:43:48
@@ -18,7 +18,7 @@ import java.util.Date;
 public class ReimpresionAnticipada  extends GenericBean implements Serializable{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Integer id;
@@ -62,7 +62,7 @@ public class ReimpresionAnticipada  extends GenericBean implements Serializable{
 	public void setCanalVenta(CanalVenta canalVenta) {
 		this.canalVenta = canalVenta;
 	}
-	
+
 	/**
 	 * @return the tiempoReimpresion
 	 */
@@ -87,7 +87,7 @@ public class ReimpresionAnticipada  extends GenericBean implements Serializable{
 	public void setFechaEmision(Date fechaEmision) {
 		this.fechaEmision = fechaEmision;
 	}
-	
-	
+
+
 
 }

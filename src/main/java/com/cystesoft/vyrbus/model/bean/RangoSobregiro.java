@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 30/12/2014
  * Hora			: 09:56:25
@@ -17,7 +17,7 @@ import java.io.Serializable;
 public class RangoSobregiro extends GenericBean implements Serializable{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Integer id;
@@ -99,9 +99,9 @@ public class RangoSobregiro extends GenericBean implements Serializable{
 	public void setPorcentajeSobregiroMaximo(Double porcentajeSobregiroMaximo) {
 		this.porcentajeSobregiroMaximo = porcentajeSobregiroMaximo;
 	}
-	
-	
-		
+
+
+
 	public boolean esEditableSobregiro(){
 		if(this.porcentajeSobregiroSugerida.doubleValue()>=this.porcentajeSobregiroMaximo)
 			return false;

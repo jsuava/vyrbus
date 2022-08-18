@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 25/08/2014
  * Hora			: 14:56:58
@@ -28,7 +28,7 @@ public class MTCRutaDAOImpl extends GenericDAOImpl implements MTCRutaDAO {
 	public List<MTCRuta> buscarPorEstado(String estado) throws Exception {
 		return (List<MTCRuta>) findByEstadoRegistro(MTCRuta.class, estado, "denominacion");
 	}
-	
-	
+
+
 
 }

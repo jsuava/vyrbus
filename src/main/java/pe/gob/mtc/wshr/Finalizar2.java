@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for Finalizar2 complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="Finalizar2">
  *   &lt;complexContent>
@@ -28,8 +28,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Finalizar2", propOrder = { "seguridad", "code", "tipo",
@@ -49,9 +49,9 @@ public class Finalizar2 {
 
 	/**
 	 * Gets the value of the seguridad property.
-	 * 
+	 *
 	 * @return possible object is {@link Seguridad }
-	 * 
+	 *
 	 */
 	public Seguridad getSeguridad() {
 		return seguridad;
@@ -59,10 +59,10 @@ public class Finalizar2 {
 
 	/**
 	 * Sets the value of the seguridad property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Seguridad }
-	 * 
+	 *
 	 */
 	public void setSeguridad(Seguridad value) {
 		this.seguridad = value;
@@ -70,9 +70,9 @@ public class Finalizar2 {
 
 	/**
 	 * Gets the value of the code property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getCode() {
 		return code;
@@ -80,10 +80,10 @@ public class Finalizar2 {
 
 	/**
 	 * Sets the value of the code property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setCode(String value) {
 		this.code = value;
@@ -91,9 +91,9 @@ public class Finalizar2 {
 
 	/**
 	 * Gets the value of the tipo property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getTipo() {
 		return tipo;
@@ -101,10 +101,10 @@ public class Finalizar2 {
 
 	/**
 	 * Sets the value of the tipo property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setTipo(String value) {
 		this.tipo = value;
@@ -112,9 +112,9 @@ public class Finalizar2 {
 
 	/**
 	 * Gets the value of the fecTermino property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getFecTermino() {
 		return fecTermino;
@@ -122,10 +122,10 @@ public class Finalizar2 {
 
 	/**
 	 * Sets the value of the fecTermino property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setFecTermino(String value) {
 		this.fecTermino = value;
@@ -133,9 +133,9 @@ public class Finalizar2 {
 
 	/**
 	 * Gets the value of the horTermino property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getHorTermino() {
 		return horTermino;
@@ -143,10 +143,10 @@ public class Finalizar2 {
 
 	/**
 	 * Sets the value of the horTermino property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setHorTermino(String value) {
 		this.horTermino = value;

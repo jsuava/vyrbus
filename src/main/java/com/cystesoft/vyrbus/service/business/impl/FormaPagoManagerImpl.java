@@ -25,7 +25,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class FormaPagoManagerImpl implements FormaPagoManager {
 	private FormaPagoDAO formaPagoDAO;
-	
+
 	/**
 	 * @return the formaPagoDAO
 	 */
@@ -73,16 +73,16 @@ public class FormaPagoManagerImpl implements FormaPagoManager {
 	@Transactional
 	public void guardar(FormaPago formaPago) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", formaPago.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getFormaPagoDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la denominación*/
 			if(resultDenominacion.size()>0)
 				throw new DenominacionDuplicadaException();
-			
+
 			getFormaPagoDAO().guardar(formaPago);
-			
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(Exception ex){
@@ -97,19 +97,19 @@ public class FormaPagoManagerImpl implements FormaPagoManager {
 	@Transactional
 	public void actualizar(FormaPago formaPago) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", formaPago.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getFormaPagoDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la denominación*/
-			for(int r = 0; r < resultDenominacion.size(); r ++) {
-				FormaPago oformFormaPago = (FormaPago) resultDenominacion.get(r);
+			for (Object element : resultDenominacion) {
+				FormaPago oformFormaPago = (FormaPago) element;
 					if (!(oformFormaPago.getId() == formaPago.getId()))
 						throw new DenominacionDuplicadaException();
 				}
-			
+
 			getFormaPagoDAO().actualizar(formaPago);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(Exception ex){

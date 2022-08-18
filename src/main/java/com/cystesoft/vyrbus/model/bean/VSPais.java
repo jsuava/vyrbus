@@ -2,18 +2,18 @@ package com.cystesoft.vyrbus.model.bean;
 // default package
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 public class VSPais  extends GenericBean implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
-    // Fields    
+    // Fields
 	private Integer id;
      private String denominacion;
      private String docigo;
-    
+
 
     // Constructors
     /** default constructor */
@@ -32,7 +32,7 @@ public class VSPais  extends GenericBean implements java.io.Serializable {
     public Integer getId() {
         return this.id;
     }
-    
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -40,7 +40,7 @@ public class VSPais  extends GenericBean implements java.io.Serializable {
     public String getDenominacion() {
         return this.denominacion;
     }
-    
+
     public void setDenominacion(String denominacion) {
         this.denominacion = denominacion;
     }
@@ -48,7 +48,7 @@ public class VSPais  extends GenericBean implements java.io.Serializable {
     public String getDocigo() {
         return this.docigo;
     }
-    
+
     public void setDocigo(String docigo) {
         this.docigo = docigo;
     }

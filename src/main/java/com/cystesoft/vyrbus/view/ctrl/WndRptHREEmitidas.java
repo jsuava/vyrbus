@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 27/08/2014
  * Hora			: 10:02:39
@@ -32,14 +32,14 @@ import com.cystesoft.vyrbus.view.ui.WndBase;
  */
 public class WndRptHREEmitidas extends WndBase{
 	private static final long serialVersionUID = 1L;
-	
+
 	private Datebox dtbxFechaInicial;
 	private Datebox dtbxFechaFinal;
 	private Combobox cmbOrigen;
 	private Combobox cmbDestino;
 	private Listbox lsbxHREEmitidas;
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
 	 */
@@ -51,7 +51,7 @@ public class WndRptHREEmitidas extends WndBase{
 		cmbDestino=(Combobox)this.getFellow("cmbDestino");
 		lsbxHREEmitidas=(Listbox)this.getFellow("lsbxHREEmitidas");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
@@ -59,14 +59,14 @@ public class WndRptHREEmitidas extends WndBase{
 	public void onCreate() throws Exception {
 		dtbxFechaInicial.setValue(new Date());
 		dtbxFechaFinal.setValue(new Date());
-		
+
 		UtilData.cargarDataCombo(cmbOrigen, Localidad.class, true);
 		UtilData.cargarDataCombo(cmbDestino, Localidad.class, true);
-		
+
 		/*Por defecto LIMA*/
-		Util.seleccionarValorItemCombo(Localidad.class, cmbOrigen, Constantes.ID_LOC_LIMA);		
+		Util.seleccionarValorItemCombo(Localidad.class, cmbOrigen, Constantes.ID_LOC_LIMA);
 	}
-	
+
 	/**
 	 * Busca las HRE emitidas
 	 * @throws Exception
@@ -81,8 +81,8 @@ public class WndRptHREEmitidas extends WndBase{
 				idOrigen=((Localidad)cmbOrigen.getSelectedItem().getValue()).getId();
 			if(cmbDestino.getSelectedItem().getValue() instanceof Localidad)
 				idDestino=((Localidad)cmbDestino.getSelectedItem().getValue()).getId();
-			String style="font-size:11px !important"; 
-			
+			String style="font-size:11px !important";
+
 			List<HRE>lstHRE=ServiceLocator.getHREManager().buscarHREEmitida(fechaInicial, fechaFinal, idOrigen, idDestino);
 			for(HRE hre:lstHRE){
 				Listitem item=new  Listitem();
@@ -122,19 +122,19 @@ public class WndRptHREEmitidas extends WndBase{
 				item.appendChild(cell);
 				cell=new Listcell(hre.getProgramacionServicio().getCopilotoAuxiliar()!=null?hre.getProgramacionServicio().getCopilotoAuxiliar().toString():"");
 				item.appendChild(cell);
-				
+
 				lsbxHREEmitidas.appendChild(item);
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
 		}
-		
-		
-		
+
+
+
 	}
-	
+
 	/**
 	 * Exporta ha excel
 	 */
@@ -146,5 +146,5 @@ public class WndRptHREEmitidas extends WndBase{
 	/**
 	 * CUSTOMERASSIGNEDACCOUNTID
 	 */
-	
+
 }

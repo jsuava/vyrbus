@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 31/08/2012
  */
@@ -18,7 +18,7 @@ public class NumeroFilasNullException extends Exception implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private Integer numeroPiso;
 	/**
-	 * 
+	 *
 	 */
 	public NumeroFilasNullException() {
 		super();
@@ -31,7 +31,7 @@ public class NumeroFilasNullException extends Exception implements Serializable{
 		super();
 		this.numeroPiso = numeroPiso;
 	}
-	
+
 	/**
 	 * @return the numeroPiso
 	 */

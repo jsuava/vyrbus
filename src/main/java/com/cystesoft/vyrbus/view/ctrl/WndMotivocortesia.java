@@ -27,22 +27,22 @@ import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
 
 public class WndMotivocortesia extends WndOpcionesMantenimiento  {
 	private static final long serialVersionUID = -9184053961402319107L;
-	
+
 	private Textbox txtDenominacion;
 	private Intbox intbxCodigoTitan;
-	
+
 	private MotivoCortesia motivoCortesia=null;
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
 	@Override
 	public void onCreate() throws Exception {
-		criteriosOrdenar = new ArrayList<String>();
-		criteriosOrdenar.add("denominacion");	
+		criteriosOrdenar = new ArrayList<>();
+		criteriosOrdenar.add("denominacion");
 	}
 
 	/*
@@ -54,7 +54,7 @@ public class WndMotivocortesia extends WndOpcionesMantenimiento  {
 		txtDenominacion = (Textbox) this.getFellow("txtDenominacion");
 		intbxCodigoTitan=(Intbox)this.getFellow("intbxCodigoTitan");
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onNew()
@@ -62,17 +62,17 @@ public class WndMotivocortesia extends WndOpcionesMantenimiento  {
 	@Override
 	public void onNew() throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 /*
- * 
+ *
  *(non-Javadoc)
  * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onSearch()
  */
 	@Override
 	public void onSearch() throws Exception {
-		 criteriosBusqueda = new TreeMap<String, Object>();
+		 criteriosBusqueda = new TreeMap<>();
 			final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
 			oWndFiltrar.addParameter("Denominación", String.class);
 
@@ -88,12 +88,12 @@ public class WndMotivocortesia extends WndOpcionesMantenimiento  {
 					if(denominacion.trim().equals(""))
 						criteriosBusqueda.remove("denominacion");
 					else criteriosBusqueda.put("denominacion", "%"+denominacion +"%");
-					
+
 					criteriosBusqueda.put("estadoRegistro", estadoRegistro);
 					listarRegistros(ServiceLocator.getMotivoCortesiaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 				}
 			});
-		
+
 	}
 
 	/*
@@ -103,7 +103,7 @@ public class WndMotivocortesia extends WndOpcionesMantenimiento  {
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getMotivoCortesiaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getMotivoCortesiaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
 	}
 
@@ -138,8 +138,8 @@ public class WndMotivocortesia extends WndOpcionesMantenimiento  {
 				throw new DenominacionNullException();
 			else if (intbxCodigoTitan.getValue()==null || intbxCodigoTitan.getValue()<=0)
 				throw new GenericException(Messages.getString("WndMotivoCortesia.information.noCodigotitan"),intbxCodigoTitan);
-				
-			
+
+
 			if (action==ACTION_NEW){
 				motivoCortesia = new MotivoCortesia();
 				motivoCortesia.setId(null);
@@ -149,24 +149,24 @@ public class WndMotivocortesia extends WndOpcionesMantenimiento  {
 			 motivoCortesia.setDenominacion(txtDenominacion.getText().trim().toUpperCase());
 			 motivoCortesia.setCodigoTitan(intbxCodigoTitan.getValue());
 			 motivoCortesia.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-			 			 
+
 			 switch (action) {
 				case ACTION_NEW:
 					UtilData.auditarRegistro(motivoCortesia, getUsuario(), Executions.getCurrent());
 					ServiceLocator.getMotivoCortesiaManager().guardar(motivoCortesia);
 					textboxId.setText(motivoCortesia.getId().toString());
 					break;
-		
+
 				case ACTION_MODIFY:
 					UtilData.auditarRegistro(motivoCortesia, true, getUsuario(), Executions.getCurrent());
 					ServiceLocator.getMotivoCortesiaManager().actualizar(motivoCortesia);
 					break;
 			}
 			/*Recupera el registro actualizado o el Nuevo*/
-			criteriosBusqueda = new TreeMap<String, Object>();
+			criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("id", motivoCortesia.getId());
 			listarRegistros(ServiceLocator.getMotivoCortesiaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-			
+
 		}catch (GenericException gex){
 			DlgMessage.information(gex.getMessage(),(gex.getObjectFocus()!=null?gex.getObjectFocus():null));
 			throw new CancelaGrabacionException();
@@ -180,7 +180,7 @@ public class WndMotivocortesia extends WndOpcionesMantenimiento  {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace(); throw new CancelaGrabacionException();
 		}
-		
+
 	}
 
 	/*
@@ -210,7 +210,7 @@ public class WndMotivocortesia extends WndOpcionesMantenimiento  {
 	@Override
 	public void onPrint(int tab) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/*
@@ -220,7 +220,7 @@ public class WndMotivocortesia extends WndOpcionesMantenimiento  {
 	@Override
 	public void onExport(int tab) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/*
@@ -230,7 +230,7 @@ public class WndMotivocortesia extends WndOpcionesMantenimiento  {
 	@Override
 	public void onHelp() throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 	/*
 	 * (non-Javadoc)
@@ -242,12 +242,12 @@ public class WndMotivocortesia extends WndOpcionesMantenimiento  {
 			case TAB_LIST:
 				break;
 			case TAB_MAINTENANCE:
-				if (listboxLista.getSelectedIndex() > -1) 
+				if (listboxLista.getSelectedIndex() > -1)
 					this.mantenimientoRegistro(new Long((String) listboxLista.getSelectedItem().getValue()));
 				break;
-		}		
+		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.zkoss.zul.Window#onClose()
@@ -262,17 +262,17 @@ public class WndMotivocortesia extends WndOpcionesMantenimiento  {
 	 * @param lstRegistros : array que contuienne los resultapdos
 	 */
 	private void listarRegistros(ArrayList<MotivoCortesia> lstRegistros) {
-		ArrayList<Object> lstmotivoCortecia = new ArrayList<Object>();
+		ArrayList<Object> lstmotivoCortecia = new ArrayList<>();
 
 		for(int r = 0; r < lstRegistros.size(); r ++) {
 			MotivoCortesia motivoCortesia = lstRegistros.get(r);
-			ArrayList<Object> lstFila = new ArrayList<Object>();
+			ArrayList<Object> lstFila = new ArrayList<>();
 
 			lstFila.add(motivoCortesia.getId());
 			lstFila.add(r + 1);
 			lstFila.add(motivoCortesia.getDenominacion());
 			lstFila.add(motivoCortesia.getCodigoTitan()!=null?motivoCortesia.getCodigoTitan():"");
-			
+
 			lstmotivoCortecia.add(lstFila);
 		}
 		Util.llenarListbox(listboxLista, lstmotivoCortecia, true);
@@ -286,5 +286,5 @@ public class WndMotivocortesia extends WndOpcionesMantenimiento  {
 		txtDenominacion.setText(motivoCortesia.getDenominacion());
 		intbxCodigoTitan.setValue(motivoCortesia.getCodigoTitan()!=null?motivoCortesia.getCodigoTitan():null);
 	}
-	
+
 }

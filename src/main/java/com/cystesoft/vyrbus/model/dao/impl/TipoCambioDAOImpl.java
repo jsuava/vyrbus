@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 07/08/2015
  * Hora			: 12:47:56
@@ -79,14 +79,14 @@ public class TipoCambioDAOImpl extends GenericDAOImpl implements TipoCambioDAO{
 		// TODO Auto-generated method stub
 		String sql="SELECT MAX(tc.tipCam_id)tipoCambio_id FROM VRTTIPCAM tc WHERE tc.tipmon_id="+idTipoMoneda+" AND tc.c_estreg='A'";
 		log.info(sql);
-		
+
 		Object object=getSession().createSQLQuery(sql).uniqueResult();
 		TipoCambio tipoCambio=null;
 		if(object!=null){
 			Integer idTipoCambio=((BigDecimal) object).intValue();
 			tipoCambio=buscarPorId(idTipoCambio.longValue());
 		}
-		
+
 		return tipoCambio;
 	}
 
@@ -104,27 +104,27 @@ public class TipoCambioDAOImpl extends GenericDAOImpl implements TipoCambioDAO{
 				   + "AND tc.tipmon_id=NVL(NULL,tc.tipmon_id) "
 				 + "ORDER BY tc.d_fec, tm.c_denominacion";
 		log.info(sql);
-		
+
 		List<Object>result=getSession().createSQLQuery(sql).list();
-		
-		List<TipoCambio>lstTipoambio=new ArrayList<TipoCambio>();
+
+		List<TipoCambio>lstTipoambio=new ArrayList<>();
 		for(int x=0;x<result.size();x++){
 			Object[] obj=(Object[]) result.get(x);
 			TipoCambio tipoCambio=new TipoCambio();
 			tipoCambio.setId(((BigDecimal)obj[0]).intValue());
 			tipoCambio.setFecha(((Date)obj[1]));
-			
+
 			TipoMoneda tipoMoneda=new TipoMoneda();
 			tipoMoneda.setId(((BigDecimal)obj[2]).intValue());
 			tipoMoneda.setDenominacion(obj[3].toString());
-			
+
 			tipoCambio.setTipoMoneda(tipoMoneda);
 			tipoCambio.setTipoCambio(((BigDecimal)obj[4]).doubleValue());
 			tipoCambio.setFechaInsercion(obj[5]!=null?(Date)obj[5]:null);
-			
+
 			lstTipoambio.add(tipoCambio);
 		}
-		
+
 		return lstTipoambio;
 	}
 

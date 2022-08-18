@@ -49,30 +49,30 @@ import com.cystesoft.vyrbus.view.ui.WndSeleccionaItinerario;
 public class WndLiquidacionBus extends WndOpcionesMantenimiento {
 
 	private static final long serialVersionUID = -7470312268557569150L;
-	
+
 	private  Longbox lbitinerario;
 	private Combobox cmbBus;
 	private Doublebox dbTotal;
 	private Button btnBuscar;
 	private Listbox listGastosXBus;
-	
+
 	private Button btnDelete;
-	
+
 	private LiquidacionBus liquidacionBus = null;
 	private GastoBus gastoBus = null;
-	
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
-	
+
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
+
 	@Override
 	public void onCreate() throws Exception {
 		UtilData.cargarDataCombo(cmbBus, Bus.class, false);
 		enlazarItinerario(btnBuscar);
 		dbTotal.setLocale(Locale.US);
 		onDeleteItem();
-		
+
 	}
-	
-	
+
+
 	@Override
 	public void initComponents() {
 		lbitinerario = (Longbox) this.getFellow("lbitinerario");
@@ -82,7 +82,7 @@ public class WndLiquidacionBus extends WndOpcionesMantenimiento {
 		btnDelete= (Button) this.getFellow("btnDelete");
 		listGastosXBus = (Listbox) this.getFellow("listGastosXBus");
 	}
-	
+
 	/**
 	 * Elimina el item de la lista "Gastos por bus"
 	 */
@@ -104,23 +104,23 @@ public class WndLiquidacionBus extends WndOpcionesMantenimiento {
 				}else{
 					DlgMessage.information(Messages.getString("WndLiquidacionBus.Information.SeleccioneIndex"));
 				}
-			}			
+			}
 		});
 	}
-	
+
 	public void calculatotal(){
 		double total =0;
 		for (int i=0; i < listGastosXBus.getItems().size(); i++){
 			Component component =  listGastosXBus.getChildren().get(i+1);
 			Listcell listcell = (Listcell) component.getChildren().get(2);
 			Double monto = ((Doublebox) listcell.getChildren().get(0)).getValue();
-			total +=+monto; 	
-			
+			total +=+monto;
+
 		}
 		dbTotal.setValue(total);
 	}
-	
-	
+
+
 	@Override
 	public void onNew() throws Exception {
 		dbTotal.setReadonly(true);
@@ -131,7 +131,7 @@ public class WndLiquidacionBus extends WndOpcionesMantenimiento {
 
 	@Override
 	public void onSearch() throws Exception {
-		
+
 		final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
 
 		oWndFiltrar.addParameter("Número de Itinerario", Longbox.class);
@@ -142,10 +142,10 @@ public class WndLiquidacionBus extends WndOpcionesMantenimiento {
 
 			@Override
 			public void onEvent(Event event) throws Exception {
-				
+
 				Long iditinerario = ((Longbox) oWndFiltrar.getParameterValue("Número de Itinerario")).getValue();
 				String estadoRegistro = Constantes.VALUE_ACTIVO;
-				
+
 				criteriosBusqueda.remove("itinerario");
 				criteriosBusqueda.remove("estadoRegistro");
 				criteriosBusqueda.remove("id");
@@ -155,7 +155,7 @@ public class WndLiquidacionBus extends WndOpcionesMantenimiento {
 					criteriosBusqueda.put("itinerario", itinerario);
 				}
 				criteriosBusqueda.put("estadoRegistro", estadoRegistro);
-				
+
 				listarRegistros(ServiceLocator.getLiquidacionBusManager().buscarPorX(criteriosBusqueda, null));
 			}
 		});
@@ -164,7 +164,7 @@ public class WndLiquidacionBus extends WndOpcionesMantenimiento {
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			listarRegistros(ServiceLocator.getLiquidacionBusManager().buscarPorX(criteriosBusqueda, null));					
+			listarRegistros(ServiceLocator.getLiquidacionBusManager().buscarPorX(criteriosBusqueda, null));
 		}
 	}
 
@@ -173,13 +173,13 @@ public class WndLiquidacionBus extends WndOpcionesMantenimiento {
 		Long id = new Long(0);
 		id = new Long((String) listboxLista.getSelectedItem().getValue());
 		mantenimiento(id);
-		
+
 	}
 
 	@Override
 	public void onCancel(int action) throws Exception {
 		Util.limpiarListbox(listGastosXBus);
-		
+
 	}
 
 	@Override
@@ -191,26 +191,26 @@ public class WndLiquidacionBus extends WndOpcionesMantenimiento {
 				throw new BusNullException();
 			else if (listGastosXBus.getItems().size() == 0)
 				throw new GastosXBusNullException();
-			
+
 			/*Valida que esten correctamente ingresados los gastos Bus*/
 			validadGastoXBus();
-			
-			if (action == ACTION_NEW) 
+
+			if (action == ACTION_NEW)
 				liquidacionBus= new LiquidacionBus();
 			else
 				liquidacionBus.setId(new Integer(textboxId.getText()));
-			
+
 			Itinerario itinerario = new Itinerario();
 			itinerario.setId(lbitinerario.getValue());
 			Bus bus = new Bus();
 			bus.setId(((Bus) cmbBus.getSelectedItem().getValue()).getId());
 			bus.setCodigo(((Bus) cmbBus.getSelectedItem().getValue()).getCodigo());
-			
+
 			liquidacionBus.setItinerario(itinerario);
 			liquidacionBus.setBus(bus);
 			liquidacionBus.setTotal(dbTotal.getValue());
 			liquidacionBus.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-			
+
 			switch (action) {
 				case ACTION_NEW:
 					UtilData.auditarRegistro(liquidacionBus, getUsuario(), Executions.getCurrent());
@@ -219,7 +219,7 @@ public class WndLiquidacionBus extends WndOpcionesMantenimiento {
 				case ACTION_MODIFY:
 					UtilData.auditarRegistro(liquidacionBus, true, getUsuario(), Executions.getCurrent());
 					ServiceLocator.getLiquidacionBusManager().actualizar(liquidacionBus);
-					
+
 					ServiceLocator.getGastoBusManager().delete(liquidacionBus.getId().longValue());
 					break;
 			}
@@ -247,7 +247,7 @@ public class WndLiquidacionBus extends WndOpcionesMantenimiento {
 				Component txtObservaciones =  listGastosXBus.getChildren().get(i+1);
 				Listcell listcell5 = (Listcell) txtObservaciones.getChildren().get(5);
 				String observacion = ( ((Textbox) listcell5.getChildren().get(0)).getText());
-								
+
 				gastoBus.setLiquidacionBus(liquidacionBus);
 				gastoBus.setTipoGasto(tipoGasto);
 				gastoBus.setMonto(monto);
@@ -255,19 +255,19 @@ public class WndLiquidacionBus extends WndOpcionesMantenimiento {
 				gastoBus.setFechaOperacion(fechaOperacion);
 				gastoBus.setObservacion(observacion);
 				gastoBus.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-				
+
 				UtilData.auditarRegistro(gastoBus, getUsuario(), Executions.getCurrent());
-				ServiceLocator.getGastoBusManager().guardar(gastoBus);					
-				
+				ServiceLocator.getGastoBusManager().guardar(gastoBus);
+
 			}
-			
+
 			Util.limpiarListbox(listGastosXBus);
 			criteriosBusqueda.remove("estadoRegistro");
 			criteriosBusqueda.remove("itinerario");
 			criteriosBusqueda.put("id", liquidacionBus.getId());
 			listarRegistros(ServiceLocator.getLiquidacionBusManager().buscarPorX(criteriosBusqueda, null));
-			
-			
+
+
 		} catch (GastosXBusNullException gxbnex){
 			DlgMessage.information(Messages.getString("WndLiquidacionBus.Information.GastosXBusNull"));
 			throw new CancelaGrabacionException();
@@ -291,13 +291,13 @@ public class WndLiquidacionBus extends WndOpcionesMantenimiento {
 				throw new CancelaGrabacionException();
 			}
 		}catch (Exception ex) {
-			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage()); 
+			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace(); throw new CancelaGrabacionException();
 		}
-		
+
 	}
-	
-	 
+
+
 	@Override
 	public void onClose() {
 		closeTabWindow();
@@ -318,25 +318,25 @@ public class WndLiquidacionBus extends WndOpcionesMantenimiento {
 		}
 
 		ServiceLocator.getLiquidacionBusManager().inactivar(id);
-		
+
 	}
 
 	@Override
 	public void onPrint(int tab) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onExport(int tab) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onHelp() throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -344,21 +344,21 @@ public class WndLiquidacionBus extends WndOpcionesMantenimiento {
 		switch (tab) {
 			case TAB_LIST:
 				break;
-	
+
 			case TAB_MAINTENANCE:
 				if (listboxLista.getSelectedIndex() > -1) {
 					mantenimiento(new Long((String) listboxLista.getSelectedItem().getValue()));
 				}
 				break;
 		}
-		
+
 	}
-	
+
 
 	/**
 	 * Permite enlazar los controles a la ventana de selección de Itinerario
 	 * @param button :ha este Button se le adjuntara un listener con la llamada a la ventana de selección de itinerario
-	 * @see WndItinerario: 
+	 * @see WndItinerario:
 	 */
 	public  void enlazarItinerario(final Button button) {
 		button.setTooltiptext("Seleccionar Itinerario");
@@ -387,36 +387,36 @@ public class WndLiquidacionBus extends WndOpcionesMantenimiento {
 							Util.seleccionarValorItemCombo(Bus.class, cmbBus, oWndSeleccionaItinerario.getItinerario().getBus().getId());
 						else
 							cmbBus.setSelectedIndex(0);
-						
+
 						lbitinerario.setValue(oWndSeleccionaItinerario.getItinerario().getId());
-						
+
 					}
 				});
 			}
 		});
 	}
-	
-	
+
+
 	/***
-	 * 
+	 *
 	 * @param cargarDetalle	: true(indica que sera invocado desde la edicon), false(sera invocado desde el button "insertar item")
 	 * @throws Exception
 	 */
 	public void AddFilaGastoXBuss(Boolean cargarDetalle) throws Exception{
-		
-		
+
+
 		MyTime myTime = new MyTime();
-		
+
 		Listitem item = null;
 		Listcell cell =null;
 		Combobox cmbTipoGasto = new Combobox();
-				
+
 		/*item*/
-		Integer index = listGastosXBus.getItemCount()+1; 
+		int index = listGastosXBus.getItemCount()+1;
 		item = new Listitem();
-		cell = new Listcell(index.toString());
+		cell = new Listcell(Integer.toString(index));
 		item.appendChild(cell);
-		
+
 		/*Tipo de Gasto*/
 		cell = new Listcell();
 		UtilData.cargarDataCombo(cmbTipoGasto, TipoGasto.class, false);
@@ -426,8 +426,8 @@ public class WndLiquidacionBus extends WndOpcionesMantenimiento {
 			cmbTipoGasto.setSelectedIndex(0);
 		cmbTipoGasto.setWidth("120px");cmbTipoGasto.setReadonly(true);
 		cell.appendChild(cmbTipoGasto);
-		item.appendChild(cell); 	
-		
+		item.appendChild(cell);
+
 		/*Monto*/
 		cell = new Listcell();
 		final Doublebox dbMonto = new Doublebox();
@@ -436,7 +436,7 @@ public class WndLiquidacionBus extends WndOpcionesMantenimiento {
 		dbMonto.setWidth("60px");
 		if (cargarDetalle)
 			dbMonto.setValue(gastoBus.getMonto());
-		else		
+		else
 			dbMonto.setValue(0);
 		cell.appendChild(dbMonto);
 		item.appendChild(cell);
@@ -446,10 +446,10 @@ public class WndLiquidacionBus extends WndOpcionesMantenimiento {
 				calculatotal();
 			}
 		});
-		
+
 		/*Operacion*/
 		cell = new Listcell();
-		Combobox cmbOperacion= new Combobox();	
+		Combobox cmbOperacion= new Combobox();
 		cmbOperacion.setWidth("90px");cmbOperacion.setReadonly(true);
 		UtilData.cargarTipoOperacion(cmbOperacion);
 		if (cargarDetalle)
@@ -458,10 +458,10 @@ public class WndLiquidacionBus extends WndOpcionesMantenimiento {
 			cmbOperacion.setSelectedIndex(0);
 		cell.appendChild(cmbOperacion);
 		item.appendChild(cell);
-		
+
 		/*Fecha operacion*/
 		cell = new Listcell();
-		Datebox dbFechaOperacion= new Datebox();	
+		Datebox dbFechaOperacion= new Datebox();
 		dbFechaOperacion.setFormat("dd/MM/yyyy"); dbFechaOperacion.setWidth("98px");
 		if (cargarDetalle)
 			dbFechaOperacion.setValue(gastoBus.getFechaOperacion());
@@ -469,36 +469,36 @@ public class WndLiquidacionBus extends WndOpcionesMantenimiento {
 			dbFechaOperacion.setValue(Constantes.FORMAT_DATE.parse(myTime.dateServer()));
 		cell.appendChild(dbFechaOperacion);
 		item.appendChild(cell);
-		
+
 		/*Observaciones*/
 		cell = new Listcell();
-		Textbox txtObservacion= new Textbox();	
+		Textbox txtObservacion= new Textbox();
 		txtObservacion.setWidth("230px");txtObservacion.setMaxlength(255);
 		if (cargarDetalle)
 			txtObservacion.setText(gastoBus.getObservacion());
 		cell.appendChild(txtObservacion);
 		item.appendChild(cell);
-		
+
 		/*accion*/
 //		cell=new Listcell();
 //		Image imgEditar= new Image();
 //		imgEditar.setSrc("/resources/mp_editarEnabled.png");
 //		cell.appendChild(imgEditar);
 //		item.appendChild(cell);
-		
+
 		listGastosXBus.appendChild(item);
-		
+
 	}
-	
+
 	/**
 	 * Lista los registro encontrados
 	 */
 	public void listaRegis(List<GastoBus> lstgastBus){
-		
+
 		Listitem item= null;
 		Listcell cell= null;
 		int x=0;
-		
+
 		for(GastoBus gastoBus: lstgastBus){
 			x++;
 			item=new Listitem();
@@ -516,36 +516,36 @@ public class WndLiquidacionBus extends WndOpcionesMantenimiento {
 			item.appendChild(cell);
 			cell=new Listcell(gastoBus.getObservacion());
 			item.appendChild(cell);
-			
+
 			final Image imgEdit= new Image();
 			imgEdit.setSrc("/resources/mp_editarEnabled.png");
-			
+
 			imgEdit.setId(String.valueOf(x));
 			cell= new Listcell();
 			cell.appendChild(imgEdit);
 			item.appendChild(cell);
-			
+
 			imgEdit.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event event) throws Exception {
 //					Listitem item= listGastosXBus.getItemAtIndex(Integer.valueOf(imgEdit.getId()));
-//			
+//
 //					Combobox combobox= new   Combobox();
-					
-					
+
+
 				}
 			});
-			
-			
+
+
 			item.setValue(gastoBus);
 			listGastosXBus.appendChild(item);
-			
+
 		}
-		
-		
+
+
 	}
-	
-	
+
+
 	public void validadGastoXBus() throws Exception{
 		try{
 			for (int i=0; i < listGastosXBus.getItems().size(); i++){
@@ -566,9 +566,9 @@ public class WndLiquidacionBus extends WndOpcionesMantenimiento {
 				Component cmbOperacion =  listGastosXBus.getChildren().get(i+1);
 				Listcell listcell3 = (Listcell) cmbOperacion.getChildren().get(3);
 				 if( ((Combobox) listcell3.getChildren().get(0)).getSelectedIndex() == 0)
-					 throw new  OperacionNullException();				 
+					 throw new  OperacionNullException();
 			}
-		
+
 		}catch (GastosException gex){
 			if(gex.getTipo()==GastosException.MONTO_NULL){
 				throw new GastosException(GastosException.MONTO_NULL);
@@ -581,13 +581,13 @@ public class WndLiquidacionBus extends WndOpcionesMantenimiento {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	private void listarRegistros(ArrayList<LiquidacionBus> lstRegistros) {
-		ArrayList<Object> lstLiquidacionBus = new ArrayList<Object>();
+		ArrayList<Object> lstLiquidacionBus = new ArrayList<>();
 
 		for(int r = 0; r < lstRegistros.size(); r ++) {
 			LiquidacionBus liquidacionBus = lstRegistros.get(r);
-			ArrayList<Object> lstFila = new ArrayList<Object>();
+			ArrayList<Object> lstFila = new ArrayList<>();
 
 			lstFila.add(liquidacionBus.getId());
 			lstFila.add(r + 1);
@@ -600,20 +600,20 @@ public class WndLiquidacionBus extends WndOpcionesMantenimiento {
 
 		Util.llenarListbox(listboxLista, lstLiquidacionBus, true);
 	}
-	
+
 	private void mantenimiento(Long id) throws Exception{
 		liquidacionBus = new LiquidacionBus();
 		liquidacionBus = ServiceLocator.getLiquidacionBusManager().buscarXId(id);
-		
+
 		textboxId.setText(liquidacionBus.getId().toString());
 		lbitinerario.setValue(liquidacionBus.getItinerario().getId());
 		Util.seleccionarValorItemCombo(Bus.class, cmbBus, liquidacionBus.getBus().getId());
 		dbTotal.setValue(liquidacionBus.getTotal());
-				
+
 		/*Recupera gastos del bus*/
 		Util.limpiarListbox(listGastosXBus);
-		TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
-		ArrayList<GastoBus> list = new ArrayList<GastoBus>();
+		TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
+		ArrayList<GastoBus> list = new ArrayList<>();
 		criteriosBusqueda.put("liquidacionBus", liquidacionBus);
 		list = ServiceLocator.getGastoBusManager().buscarPorX(criteriosBusqueda, null);
 //		listaRegis(list);
@@ -622,6 +622,6 @@ public class WndLiquidacionBus extends WndOpcionesMantenimiento {
 			AddFilaGastoXBuss(true);
 		}
 	}
-	
-	
+
+
 }

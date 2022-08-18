@@ -26,7 +26,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class ConcesionarioManagerImpl implements ConcesionarioManager {
 	private ConcesionarioDAO concesionarioDAO;
-	
+
 	/**
 	 * @return the concesionarioDAO
 	 */
@@ -75,20 +75,20 @@ public class ConcesionarioManagerImpl implements ConcesionarioManager {
 	public int guardar(Concesionario concesionario) throws Exception {
 		int result = Constantes.FAILURE;
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("ruc", concesionario.getRuc());
 			List<?> lstResult = getConcesionarioDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de RUC*/
 			if(lstResult.size()>0)
 				throw new RucDuplicadoException();
-			
+
 			criteriosBusqueda.remove("ruc");
 			criteriosBusqueda.put("razonSocial", concesionario.getRazonSocial());
 			List<?> resultRS = getConcesionarioDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de Razon Social*/
 			if (resultRS.size()>0)
 				throw new RazonSocialDuplicadoException();
-			
+
 			getConcesionarioDAO().guardar(concesionario);
 			result = Constantes.CORRECT;
 		}catch (RazonSocialDuplicadoException rsdex){
@@ -108,29 +108,29 @@ public class ConcesionarioManagerImpl implements ConcesionarioManager {
 	@Transactional
 	public void actualizar(Concesionario concesionario) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("ruc", concesionario.getRuc());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> result = getConcesionarioDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Ruc*/
-			for(int r = 0; r < result.size(); r ++) {
-				Concesionario oConcesionario = (Concesionario) result.get(r);
+			for (Object element : result) {
+				Concesionario oConcesionario = (Concesionario) element;
 				if (oConcesionario.getId().intValue() != concesionario.getId().intValue())
 					throw new RucDuplicadoException();
 			}
-			
+
 			criteriosBusqueda.remove("ruc");
 			criteriosBusqueda.put("razonSocial", concesionario.getRazonSocial());
 			List<?> resultRS = getConcesionarioDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la Razón Social*/
-			for(int r = 0; r < resultRS.size(); r ++) {
-				Concesionario oConcesionario = (Concesionario) resultRS.get(r);
+			for (Object element : resultRS) {
+				Concesionario oConcesionario = (Concesionario) element;
 				if (oConcesionario.getId().intValue() != concesionario.getId().intValue())
 					throw new RazonSocialDuplicadoException();
 			}
-		
+
 			getConcesionarioDAO().actualizar(concesionario);
-		
+
 		}catch (RazonSocialDuplicadoException rsdex){
 			throw new RazonSocialDuplicadoException();
 		}catch(RucDuplicadoException rdnex){

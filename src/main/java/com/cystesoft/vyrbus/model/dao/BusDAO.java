@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: JA
  * Fecha		: 13/08/2012
  */
@@ -24,6 +24,6 @@ public interface BusDAO {
 	public void guardar(Bus bus);
 	public void actualizar(Bus bus);
 	public void inactivar(long id);
-	
+
 
 }

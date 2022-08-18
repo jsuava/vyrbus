@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 07/08/2015
  * Hora			: 12:23:26
@@ -45,9 +45,9 @@ public interface TipoMonedaManager {
 	 */
 	public void guardar(TipoMoneda tipoMoneda)throws Exception;
 	/**
-	 *Actualiza una instancia de un objeto 
+	 *Actualiza una instancia de un objeto
 	 * @param tipoMoneda
 	 */
 	public void actualizar(TipoMoneda tipoMoneda)throws Exception;
-	
+
 }

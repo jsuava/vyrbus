@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 14/05/2013
  */
@@ -13,7 +13,7 @@ package com.cystesoft.vyrbus.service.exceptions;
  */
 public class PasswordException extends Exception {
 	private static final long serialVersionUID = 1L;
-	
+
 	public static final int PASSWORD_INCOREC=1;
 	public static final int PASSWORD_NULL=2;
 	public static final int PASSWORD_CONFIRMATION_NULL=3;
@@ -22,13 +22,13 @@ public class PasswordException extends Exception {
 	public static final int PASSWORD_ACTUAL_NULL=6;
 	public static final int PASSWORD_ACTUAL_DIFERENTE=7;
 	public static final int PASSWORD_IGUAL_LOGIN = 8;
-	
+
 	private Integer tipo;
-	
+
 	public PasswordException(){
 		super();
 	}
-	
+
 	public PasswordException(Integer tipo){
 		super();
 		this.setTipo(tipo);

@@ -147,5 +147,5 @@ public class DetalleLiquidacion extends GenericBean implements java.io.Serializa
 		this.cantidad = cantidad;
 	}
 
-	
+
 }

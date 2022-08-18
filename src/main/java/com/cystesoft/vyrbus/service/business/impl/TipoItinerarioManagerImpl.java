@@ -26,7 +26,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class TipoItinerarioManagerImpl implements TipoItinerarioManager {
 	private TipoItinerarioDAO tipoItinerarioDAO;
-	
+
 	/**
 	 * @return the tipoItinerarioDAO
 	 */
@@ -71,31 +71,31 @@ public class TipoItinerarioManagerImpl implements TipoItinerarioManager {
 	@Transactional
 	public void guardar(TipoItinerario tipoItinerario) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", tipoItinerario.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> result = getTipoItinerarioDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida la denominacion. Para evitar duplicados*/
 			if (result.size()>0)
 				throw new DenominacionDuplicadaException();
-			
-			criteriosBusqueda = new TreeMap<String, Object>();
+
+			criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("nombreCorto", tipoItinerario.getNombreCorto());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultNomcorto = getTipoItinerarioDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida la Nombre Corto. Para evitar duplicados*/
 			if (resultNomcorto.size() > 0)
 				throw new NombreCortoDuplicadoException();
-			
+
 			getTipoItinerarioDAO().guardar(tipoItinerario);
-			
+
 		}catch (DenominacionDuplicadaException ddnex){
 			throw new DenominacionDuplicadaException();
 		}catch (NombreCortoDuplicadoException ncdex){
 			throw new NombreCortoDuplicadoException();
 		}
-		
-		
+
+
 	}
 
 	/* (non-Javadoc)
@@ -105,31 +105,31 @@ public class TipoItinerarioManagerImpl implements TipoItinerarioManager {
 	@Transactional
 	public void actualizar(TipoItinerario tipoItinerario) throws Exception {
 		try {
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", tipoItinerario.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> result = getTipoItinerarioDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida la denominacion. Para evitar duplicados*/
-			for(int r = 0; r < result.size(); r ++) {
-				TipoItinerario oTipoItinerario = (TipoItinerario) result.get(r);
+			for (Object element : result) {
+				TipoItinerario oTipoItinerario = (TipoItinerario) element;
 					if (!(oTipoItinerario.getId().equals(tipoItinerario.getId())))
 						throw new DenominacionDuplicadaException();
 			}
-			
-			criteriosBusqueda = new TreeMap<String, Object>();
+
+			criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("nombreCorto", tipoItinerario.getNombreCorto());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultNomcorto = getTipoItinerarioDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida la Nombre Corto. Para evitar duplicados*/
-			for(int r = 0; r < resultNomcorto.size(); r ++) {
-				TipoItinerario oTipoItinerario = (TipoItinerario) resultNomcorto.get(r);
+			for (Object element : resultNomcorto) {
+				TipoItinerario oTipoItinerario = (TipoItinerario) element;
 					if (!(oTipoItinerario.getId().equals(tipoItinerario.getId())))
 						throw new NombreCortoDuplicadoException();
 			}
-			
-			
+
+
 			getTipoItinerarioDAO().actualizar(tipoItinerario);
-			
+
 		}catch (DenominacionDuplicadaException dndex){
 			throw new DenominacionDuplicadaException();
 		}catch (NombreCortoDuplicadoException ncdex){

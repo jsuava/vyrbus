@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for Anular complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="Anular">
  *   &lt;complexContent>
@@ -25,8 +25,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Anular", propOrder = { "seguridad", "code" })
@@ -39,9 +39,9 @@ public class Anular {
 
 	/**
 	 * Gets the value of the seguridad property.
-	 * 
+	 *
 	 * @return possible object is {@link Seguridad }
-	 * 
+	 *
 	 */
 	public Seguridad getSeguridad() {
 		return seguridad;
@@ -49,10 +49,10 @@ public class Anular {
 
 	/**
 	 * Sets the value of the seguridad property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Seguridad }
-	 * 
+	 *
 	 */
 	public void setSeguridad(Seguridad value) {
 		this.seguridad = value;
@@ -60,9 +60,9 @@ public class Anular {
 
 	/**
 	 * Gets the value of the code property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getCode() {
 		return code;
@@ -70,10 +70,10 @@ public class Anular {
 
 	/**
 	 * Sets the value of the code property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setCode(String value) {
 		this.code = value;

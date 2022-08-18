@@ -2,14 +2,14 @@ package com.cystesoft.vyrbus.model.bean;
 // default package
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 public class VSEncabezadoAfiliacion extends GenericBean  implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
-	
-    // Fields    
+
+    // Fields
 	private Long id;
 	 private VSMoneda vsMoneda;
 	 private String codigoPatrocinador;
@@ -29,12 +29,12 @@ public class VSEncabezadoAfiliacion extends GenericBean  implements java.io.Seri
     public VSEncabezadoAfiliacion() {
     }
 
-	
+
     // Property accessors
     public Long getId() {
         return this.id;
     }
-    
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -42,7 +42,7 @@ public class VSEncabezadoAfiliacion extends GenericBean  implements java.io.Seri
     public String getCodigoPatrocinador() {
         return this.codigoPatrocinador;
     }
-    
+
     public void setCodigoPatrocinador(String codigoPatrocinador) {
         this.codigoPatrocinador = codigoPatrocinador;
     }
@@ -50,7 +50,7 @@ public class VSEncabezadoAfiliacion extends GenericBean  implements java.io.Seri
     public String getNumeroRamo() {
         return this.numeroRamo;
     }
-    
+
     public void setNumeroRamo(String numeroRamo) {
         this.numeroRamo = numeroRamo;
     }
@@ -58,7 +58,7 @@ public class VSEncabezadoAfiliacion extends GenericBean  implements java.io.Seri
     public String getCodigoProducto() {
         return this.codigoProducto;
     }
-    
+
     public void setCodigoProducto(String codigoProducto) {
         this.codigoProducto = codigoProducto;
     }
@@ -66,7 +66,7 @@ public class VSEncabezadoAfiliacion extends GenericBean  implements java.io.Seri
     public String getNumeroPoliza() {
         return this.numeroPoliza;
     }
-    
+
     public void setNumeroPoliza(String numeroPoliza) {
         this.numeroPoliza = numeroPoliza;
     }
@@ -74,7 +74,7 @@ public class VSEncabezadoAfiliacion extends GenericBean  implements java.io.Seri
     public String getTipoDeclaracion() {
         return this.tipoDeclaracion;
     }
-    
+
     public void setTipoDeclaracion(String tipoDeclaracion) {
         this.tipoDeclaracion = tipoDeclaracion;
     }
@@ -82,7 +82,7 @@ public class VSEncabezadoAfiliacion extends GenericBean  implements java.io.Seri
     public String getFechaProceso() {
         return this.fechaProceso;
     }
-    
+
     public void setFechaProceso(String fechaProceso) {
         this.fechaProceso = fechaProceso;
     }
@@ -90,7 +90,7 @@ public class VSEncabezadoAfiliacion extends GenericBean  implements java.io.Seri
     public String getFechaInicio() {
         return this.fechaInicio;
     }
-    
+
     public void setFechaInicio(String fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
@@ -98,7 +98,7 @@ public class VSEncabezadoAfiliacion extends GenericBean  implements java.io.Seri
     public String getFechaFin() {
         return this.fechaFin;
     }
-    
+
     public void setFechaFin(String fechaFin) {
         this.fechaFin = fechaFin;
     }
@@ -106,7 +106,7 @@ public class VSEncabezadoAfiliacion extends GenericBean  implements java.io.Seri
     public String getCantidadRegistros() {
         return this.cantidadRegistros;
     }
-    
+
     public void setCantidadRegistros(String cantidadRegistros) {
         this.cantidadRegistros = cantidadRegistros;
     }
@@ -114,7 +114,7 @@ public class VSEncabezadoAfiliacion extends GenericBean  implements java.io.Seri
     public String getCantidadMovimientos() {
         return this.cantidadMovimientos;
     }
-    
+
     public void setCantidadMovimientos(String cantidadMovimientos) {
         this.cantidadMovimientos = cantidadMovimientos;
     }
@@ -122,7 +122,7 @@ public class VSEncabezadoAfiliacion extends GenericBean  implements java.io.Seri
     public String getMonto() {
         return this.monto;
     }
-    
+
     public void setMonto(String monto) {
         this.monto = monto;
     }

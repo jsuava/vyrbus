@@ -11,7 +11,7 @@ import com.cystesoft.vyrbus.model.dao.LineaContadoClienteDAO;
 import com.cystesoft.vyrbus.service.business.LineaContadoClienteManager;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
@@ -82,7 +82,7 @@ public class LineaContadoClienteManagerImpl implements LineaContadoClienteManage
 	public void inactivar(Long id) {
 		getLineaContadoClienteDAO().inactivar(id);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.LineaContadoClienteManager#validaDescuenteCliente(java.lang.Long)
@@ -91,6 +91,6 @@ public class LineaContadoClienteManagerImpl implements LineaContadoClienteManage
 	public LineaContadoCliente validaDescuentoCliente(Long idCliente) {
 		return getLineaContadoClienteDAO().validaDescuentoCliente(idCliente);
 	}
-	
+
 
 }

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 31/08/2013
  */
@@ -20,10 +20,10 @@ public class VentaReservaException extends Exception implements Serializable {
 	public static final int TARIFA_RETORNO_CERO = 3;
 	public static final int LONGITUD_NUMERO_DOCUMENTO = 4;
 	public static final int NO_SELECTION_TIPO_MONEDA = 5;
-	
+
 	private Integer tipo;
 	/**
-	 * 
+	 *
 	 */
 	public VentaReservaException() {
 		super();
@@ -35,7 +35,7 @@ public class VentaReservaException extends Exception implements Serializable {
 		super();
 		this.tipo = tipo;
 	}
-	
+
 	/**
 	 * @return the tipo
 	 */
@@ -47,5 +47,5 @@ public class VentaReservaException extends Exception implements Serializable {
 	 */
 	public void setTipo(Integer tipo) {
 		this.tipo = tipo;
-	}	
+	}
 }

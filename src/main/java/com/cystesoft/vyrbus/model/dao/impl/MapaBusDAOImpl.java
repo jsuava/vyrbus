@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 07/07/2012
  */
@@ -35,7 +35,7 @@ public class MapaBusDAOImpl extends GenericDAOImpl implements MapaBusDAO {
 //				"INNER JOIN vrmservicio s ON s.servicio_id=mb.servicio_id " +
 //				"WHERE mb.servicio_id="+idServicio+" AND mb.c_estreg IN ('"+Constantes.VALUE_ACTIVO+"', '"+estado+"') " +
 //				"ORDER BY mb.n_numfil, mb.n_numcol";
-		
+
 		String sql = "SELECT mb.mapabus_id, s.servicio_id, s.c_denominacion, s.n_numpis pisoServicio, s.n_numasipis1, s.n_numfilpis1, s.n_numcolpis1, " +
 				"s.n_numasipis2, s.n_numfilpis2, s.n_numcolpis2, mb.c_pathimg, mb.n_tipobj, mb.n_numasi, mb.n_numfil, mb.n_numcol, mb.n_numpis, mb.n_zonbus " +
 //				+ "ta.tipasi_id, ta.c_denominacion tipoasiento " +
@@ -44,14 +44,14 @@ public class MapaBusDAOImpl extends GenericDAOImpl implements MapaBusDAO {
 				"INNER JOIN vrmservicio s ON s.servicio_id=mb.servicio_id " +
 				"WHERE mb.servicio_id="+idServicio+" AND mb.c_estreg IN ('"+Constantes.VALUE_ACTIVO+"', '"+estado+"') " +
 				"ORDER BY mb.n_numfil, mb.n_numcol";
-		
-		
+
+
 		log.info(sql);
-		
+
 		try{
 			List<?> result = getSession().createSQLQuery(sql).list();
-			List<MapaBus> lstResult = new ArrayList<MapaBus>();
-			
+			List<MapaBus> lstResult = new ArrayList<>();
+
 			for(int i=0; i<result.size(); i++){
 				Object[] obj = (Object[])result.get(i);
 				MapaBus mapaBus = new MapaBus();
@@ -76,18 +76,18 @@ public class MapaBusDAOImpl extends GenericDAOImpl implements MapaBusDAO {
 				mapaBus.setPathImagen(obj[10].toString());
 				mapaBus.setTipoObjeto(((BigDecimal)obj[11]).intValue());
 				mapaBus.setNumeroAsiento(obj[12]==null?null:((BigDecimal)obj[12]).intValue());
-				mapaBus.setNumeroFila(((BigDecimal)obj[13]).intValue());
-				mapaBus.setNumeroColumna(((BigDecimal)obj[14]).intValue());
-				mapaBus.setNumeroPiso(((BigDecimal)obj[15]).intValue());
 				
-				mapaBus.setNumeroZona(obj[16]==null?null:((BigDecimal)obj[16]).intValue());				
+				mapaBus.setNumeroFila(((BigDecimal)obj[13]).intValue());
+				mapaBus.setNumeroColumna(((BigDecimal)obj[14]).intValue());				
+				mapaBus.setNumeroPiso(((BigDecimal)obj[15]).intValue());
+				mapaBus.setNumeroZona(obj[16]==null?null:((BigDecimal)obj[16]).intValue());
 //				if(obj[16]!=null){
 //					TipoAsiento tipoAsiento=new TipoAsiento();
 //					tipoAsiento.setId(((BigDecimal)obj[16]).intValue());
 //					tipoAsiento.setDenominacion(obj[17].toString());
 //					mapaBus.setTipoAsiento(tipoAsiento);
 //				}
-				
+
 				lstResult.add(mapaBus);
 			}
 			return lstResult;
@@ -96,7 +96,7 @@ public class MapaBusDAOImpl extends GenericDAOImpl implements MapaBusDAO {
 			throw new Exception(ex);
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.MapaBusDAO#buscarServiciosWithMapa()
@@ -104,10 +104,10 @@ public class MapaBusDAOImpl extends GenericDAOImpl implements MapaBusDAO {
 	@Override
 	public List<MapaBus> buscarServiciosWithMapa()throws Exception{
 		String hql = "SELECT DISTINCT(servicio.id) FROM MapaBus WHERE estadoRegistro='"+Constantes.VALUE_ACTIVO+"'";
-		
+
 		log.info(hql);
 		List<?> result = getSession().createQuery(hql).list();
-		List<MapaBus> lstResult = new ArrayList<MapaBus>();
+		List<MapaBus> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Integer idServicio = (Integer)result.get(i);
 			MapaBus mapaBus = new MapaBus();
@@ -116,7 +116,7 @@ public class MapaBusDAOImpl extends GenericDAOImpl implements MapaBusDAO {
 			mapaBus.setServicio(servicio);
 			lstResult.add(mapaBus);
 		}
-		return lstResult;		
+		return lstResult;
 	}
 
 	/* (non-Javadoc)
@@ -142,14 +142,14 @@ public class MapaBusDAOImpl extends GenericDAOImpl implements MapaBusDAO {
 				"INNER JOIN vrmservicio s ON s.servicio_id=mb.servicio_id " +
 				"WHERE mb.servicio_id="+idServicio+" AND mb.c_estreg IN ('"+Constantes.VALUE_ACTIVO+"', '"+estado+"') " +
 				"ORDER BY mb.n_numfil, mb.n_numcol";
-		
-		
+
+
 		log.info(sql);
-		
+
 		try{
 			List<?> result = getSession().createSQLQuery(sql).list();
-			List<MapaBus> lstResult = new ArrayList<MapaBus>();
-			
+			List<MapaBus> lstResult = new ArrayList<>();
+
 			for(int i=0; i<result.size(); i++){
 				Object[] obj = (Object[])result.get(i);
 				MapaBus mapaBus = new MapaBus();
@@ -168,18 +168,18 @@ public class MapaBusDAOImpl extends GenericDAOImpl implements MapaBusDAO {
 				mapaBus.setPathImagen(obj[10].toString());
 				mapaBus.setTipoObjeto(((BigDecimal)obj[11]).intValue());
 				mapaBus.setNumeroAsiento(obj[12]==null?null:((BigDecimal)obj[12]).intValue());
-				if (((BigDecimal)obj[15]).intValue()== 0 ){                     
+				if (((BigDecimal)obj[15]).intValue()== 0 ){
                     //servicio.setNumeroColumnasPiso1(((BigDecimal)obj[6]).intValue());
-                    mapaBus.setNumeroFila(((BigDecimal)obj[6]).intValue()-(1+ ((BigDecimal)obj[14]).intValue())); 
+                    mapaBus.setNumeroFila(((BigDecimal)obj[6]).intValue()-(1+ ((BigDecimal)obj[14]).intValue()));
                     mapaBus.setNumeroColumna(((BigDecimal)obj[13]).intValue());
                 }
-                if ( ((BigDecimal)obj[15]).intValue() == 1 ){                   
-                    mapaBus.setNumeroFila(((BigDecimal)obj[9]).intValue()-(1+((BigDecimal)obj[14]).intValue())); 
+                if ( ((BigDecimal)obj[15]).intValue() == 1 ){
+                    mapaBus.setNumeroFila(((BigDecimal)obj[9]).intValue()-(1+((BigDecimal)obj[14]).intValue()));
                     mapaBus.setNumeroColumna(((BigDecimal)obj[13]).intValue());
                 }
-				mapaBus.setNumeroPiso(((BigDecimal)obj[15]).intValue());	
-				mapaBus.setNumeroZona(obj[16]==null?null:((BigDecimal)obj[16]).intValue());				
-				
+				mapaBus.setNumeroPiso(((BigDecimal)obj[15]).intValue());
+				mapaBus.setNumeroZona(obj[16]==null?null:((BigDecimal)obj[16]).intValue());
+
 				lstResult.add(mapaBus);
 			}
 			return lstResult;

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 22/07/2015
  * Hora			: 09:32:29
@@ -25,7 +25,7 @@ public class TipoCentroCostoDAOImpl extends GenericDAOImpl implements TipoCentro
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.TipoCentroCostoDAO#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
 	 */
-	
+
 	@Override
 	public ArrayList<TipoCentroCosto> buscarPorEstadoRegistro(String estado,String criterioOrden) {
 		// TODO Auto-generated method stub

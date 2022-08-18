@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 10/11/2014
  * Hora			: 14:30:17
@@ -36,9 +36,9 @@ public class VentaTramoDAOImpl extends GenericDAOImpl implements VentaTramoDAO {
 		// TODO Auto-generated method stub
 		String hql=" FROM VentaTramo vt WHERE to_date('"+fechaPartida+"','dd/MM/yyyy') BETWEEN vt.fechaInicio AND vt.fechaFin AND  vt.ruta.id="+idRuta+" AND vt.estadoRegistro='"+Constantes.VALUE_ACTIVO+"' ";
 		log.info(hql);
-				
+
 		List<VentaTramo> listVentaTramos=getSession().createQuery(hql).list();
-		
+
 		return listVentaTramos;
 	}
 
@@ -51,7 +51,7 @@ public class VentaTramoDAOImpl extends GenericDAOImpl implements VentaTramoDAO {
 		super.save(ventaTramo);
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaTramoDAO#buscarPorItinerarioRuta(com.tepsa.sisvyr.model.bean.Itinerario, com.tepsa.sisvyr.model.bean.Ruta)
 	 */
@@ -60,7 +60,7 @@ public class VentaTramoDAOImpl extends GenericDAOImpl implements VentaTramoDAO {
 		// TODO Auto-generated method stub
 		String hql="FROM VentaTramo vt WHERE vt.itinerario.id="+itinerario.getId()+" AND vt.ruta.id="+ruta.getId()+" AND vt.estadoRegistro='"+Constantes.VALUE_ACTIVO+"' ";// AND vt.despuesHoraSalida="+isNotVentaAdelantada;
 		log.info(hql);
-		
+
 		VentaTramo ventaTramo=(VentaTramo) getSession().createQuery(hql).uniqueResult();
 		return ventaTramo;
 	}
@@ -101,10 +101,10 @@ public class VentaTramoDAOImpl extends GenericDAOImpl implements VentaTramoDAO {
 				  + "ORDER BY di.d_Fecpar";
 		log.info(sql);
 		List<?>result=getSession().createSQLQuery(sql).list();
-		List<VentaTramo>listVentaTramo=new ArrayList<VentaTramo>();
+		List<VentaTramo>listVentaTramo=new ArrayList<>();
 		for(int x=0;x<result.size();x++){
 			Object[] obj=(Object[]) result.get(x);
-			
+
 			Ruta ruta=new Ruta();
 			ruta.setId(((BigDecimal)obj[1]).intValue());
 			ruta.setOrigen(obj[3].toString());
@@ -112,19 +112,19 @@ public class VentaTramoDAOImpl extends GenericDAOImpl implements VentaTramoDAO {
 
 			Servicio servicio=new Servicio();
 			servicio.setDenominacion(obj[5].toString());
-			
+
 			Itinerario itinerario=new Itinerario();
 			itinerario.setId(((BigDecimal)obj[2]).longValue());
 			itinerario.setFechaPartida((Date)obj[6]);
 			itinerario.setHoraPartida(obj[7].toString());
 			itinerario.setServicio(servicio);
-			
+
 			VentaTramo ventaTramo=new VentaTramo();
 			ventaTramo.setId(((BigDecimal)obj[0]).longValue());
 			ventaTramo.setItinerario(itinerario);
 			ventaTramo.setRuta(ruta);
 			ventaTramo.setDespuesHoraSalida(((BigDecimal)obj[8]).intValue());
-			
+
 			listVentaTramo.add(ventaTramo);
 		}
 		return listVentaTramo;
@@ -138,7 +138,7 @@ public class VentaTramoDAOImpl extends GenericDAOImpl implements VentaTramoDAO {
 		// TODO Auto-generated method stub
 		String sql="UPDATE VRTVENTRA SET c_estreg='I' WHERE ventra_id="+id;
 		log.info(sql);
-		
+
 		getSession().createSQLQuery(sql).executeUpdate();
 	}
 

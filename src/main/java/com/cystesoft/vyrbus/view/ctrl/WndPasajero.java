@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 20/08/2012
  */
@@ -36,10 +36,6 @@ import org.zkoss.zul.Tab;
 import org.zkoss.zul.Tabbox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
-
-
-
-import pe.gob.mtc.wshr.ResultIdentidad;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.EstadoCivil;
@@ -79,6 +75,8 @@ import com.cystesoft.vyrbus.view.ui.DlgMessage;
 import com.cystesoft.vyrbus.view.ui.WndFiltrarParametros;
 import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
 
+import pe.gob.mtc.wshr.ResultIdentidad;
+
 /**
  *
  * @author JABANTO
@@ -105,7 +103,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 	private Checkbox chkPersonaNoGrata;
 	private Textbox txtMotivoNoGrata;
 	private Image imgValidacionDNI;
-	
+
 	private Tab tabPaxFree;
 	private Label lblKilometrosAcumulados;
 	private Checkbox chkPasajeroFrecuente;
@@ -127,18 +125,18 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 //	private Textbox txtPersonaAutoriza;
 	private Window wndHistory;
 	private Window wndPasajero;
-	
+
 	private Listbox listPasajesAcumulados;
-	
+
 	private Pasajero oPasajero = null;
 	private PasajeroFrecuente opasajeroFrecuente =null;
-	
-	private TreeMap<String, Object> condicionBusqueda = new TreeMap<String, Object>();
+
+	private TreeMap<String, Object> condicionBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
 //	private Integer paxFree;
 
 	public static final String ESTADO_PAXFREE_NOREGISTRADO="NO REGISTRADO";
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IBase#onCreate()
 	 */
@@ -146,13 +144,13 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 	public void onCreate() throws Exception {
 		UtilData.cargarDataCombo(cboEstadoCivil, EstadoCivil.class, false);
 		UtilData.cargarDataCombo(cboSexo, Sexo.class, false);
-		TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+		TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 		criteriosBusqueda.put("tipo", TipoDocumento.PERSONALES);
 		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 		UtilData.cargarDataCombo(cboDocumentoIdentificacion, TipoDocumento.class, criteriosBusqueda, false);
 		UtilData.enlazarUbigeo(txtIdUbigeo, txtUbicacionGeografica, btnUbicacionGeografica,null);
 //		UtilData.cargarDataCombo(cmbAgencia, Agencia.class, false);
-		
+
 		/*Carga todos las agencias, sin importar su estado - 04/04/2015*/
 //		criteriosBusqueda=new TreeMap<String, Object>();
 //		List<String>criteriosOrden=new ArrayList<String>();
@@ -164,8 +162,8 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 //			comboitem.setValue(agencia);
 //			cmbAgencia.appendChild(comboitem);
 //		}
-		
-		
+
+
 		chkPasajeroFrecuente.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -180,7 +178,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 				txtMotivoNoGrata.setFocus(true);
 			}
 		});
-				
+
 		cboDocumentoIdentificacion.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -194,14 +192,14 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 				}
 			}
 		});
-		
-		
-		criteriosOrdenar = new ArrayList<String>();
+
+
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("apellidoPaterno");
 		criteriosOrdenar.add("apellidoMaterno");
-		criteriosOrdenar.add("nombre");		
+		criteriosOrdenar.add("nombre");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IBase#initComponents()
 	 */
@@ -209,7 +207,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 	public void initComponents() {
 		wndPasajero = (Window)getFellow("wndPasajero");
 		tbPasajero = (Tabbox) getFellow("tbPasajero");
-		
+
 		txtApellidoPaterno=(Textbox) getFellow("txtApellidoPaterno");
 		txtApellidoMaterno=(Textbox) getFellow("txtApellidoMaterno");
 		txtNombre=(Textbox) getFellow("txtNombre");
@@ -247,7 +245,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 		lbtotalViajes=(Label)this.getFellow("lbtotalViajes");
 		lbtotalViajesValidos=(Label)this.getFellow("lbtotalViajesValidos");
 //		txtPersonaAutoriza=(Textbox)this.getFellow("txtPersonaAutoriza");
-		
+
 		listPasajesAcumulados=(Listbox)this.getFellow("listPasajesAcumulados");
 	}
 
@@ -260,12 +258,12 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 		lblKilometrosAcumulados.setValue("0");
 		habilitarPasajeroFrecuente(false);
 		habilitarPersonaNoGrata(false);
-		
+
 		cboDocumentoIdentificacion.setSelectedIndex(0);
 		cboEstadoCivil.setSelectedIndex(0);
 		cboSexo.setSelectedIndex(0);
 //		Util.seleccionarValorItemCombo(Agencia.class, cmbAgencia, getAgencia().getId());
-		
+
 		chkPasajeroFrecuente.setDisabled(true);
 		dbfechaNacimiento.setText("01/01/1900");
 		listPasajesAcumulados.getItems().clear();
@@ -281,7 +279,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 	@Override
 	public void onSearch() throws Exception {
 		final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
-		
+
 		oWndFiltrar.addParameter("1. Apellido Paterno", String.class);
 		oWndFiltrar.addParameter("2. Apellido Materno", String.class);
 		oWndFiltrar.addParameter("3. Nombres", String.class);
@@ -292,16 +290,16 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 
 			@Override
 			public void onEvent(Event event) throws Exception {
-				condicionBusqueda= new TreeMap<String, Object>();
-				
+				condicionBusqueda= new TreeMap<>();
+
 				String numeroIdentificacion = (String) oWndFiltrar.getParameterValue("4. Nº de Documento");
 				String apellidoPaterno = (String) oWndFiltrar.getParameterValue("1. Apellido Paterno");
 				String apellidoMaterno = (String) oWndFiltrar.getParameterValue("2. Apellido Materno");
 				String nombre = (String) oWndFiltrar.getParameterValue("3. Nombres");
-								
+
 				String nombresApellidos=nombre+" "+apellidoPaterno+" "+apellidoMaterno;
-								
-				
+
+
 				if(!(nombresApellidos.trim().isEmpty()) && numeroIdentificacion.trim().isEmpty()){
 					condicionBusqueda.put("nombresApellidos", nombresApellidos.trim());
 					String[] str1 = nombresApellidos.trim().split(" ");
@@ -312,15 +310,15 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 					if(!(nombresApellidos.trim().isEmpty()))
 						condicionBusqueda.put("nombresApellidos", nombresApellidos.trim());
 					condicionBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-					
+
 					listarRegistros(ServiceLocator.getPasajeroManager().buscarPorX(condicionBusqueda, criteriosOrdenar));
 				}
-				
-								
-				
-				
-				
-//				listarRegistros(ServiceLocator.getPasajeroManager().buscarPorX(condicionBusqueda, criteriosOrdenar), paxFree);							
+
+
+
+
+
+//				listarRegistros(ServiceLocator.getPasajeroManager().buscarPorX(condicionBusqueda, criteriosOrdenar), paxFree);
 			}
 		});
 	}
@@ -330,7 +328,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!condicionBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getPasajeroManager().buscarPorX(condicionBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getPasajeroManager().buscarPorX(condicionBusqueda, criteriosOrdenar));
 		}
 	}
 
@@ -345,22 +343,22 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 		habilitarPasajeroFrecuente(chkPasajeroFrecuente.isChecked());
 		habilitarPersonaNoGrata(chkPersonaNoGrata.isChecked());
 		tabPaxFree.setDisabled(false);
-		
+
 		/*Aplica acceso a los siguientes controles */
-		List<Component>lstComponents=new ArrayList<Component>();
+		List<Component>lstComponents=new ArrayList<>();
 		lstComponents.add(cboDocumentoIdentificacion);
 		lstComponents.add(txtNumeroIdentificacion);
 		lstComponents.add(txtApellidoMaterno);
 		lstComponents.add(txtApellidoPaterno);
 		lstComponents.add(txtNombre);
-		
-		List<Rol>listaRolesAcceso=new ArrayList<Rol>();
+
+		List<Rol>listaRolesAcceso=new ArrayList<>();
 		listaRolesAcceso.add(new Rol(Constantes.ID_ROL_SUPER_USUARIO));
 		listaRolesAcceso.add(new Rol(Constantes.ID_ROL_ADMIN_COMERCIAL));
 		listaRolesAcceso.add(new Rol(Constantes.ID_ROL_GERENCIA_COMERCIAL));
 		listaRolesAcceso.add(new Rol(Constantes.ID_ROL_ASISTENTE_ADMIN_COMERCIAL));
 		accesoControlsByRol(lstComponents, listaRolesAcceso);
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -369,7 +367,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 	@Override
 	public void onCancel(int action) throws Exception {
 		tbPasajero.setSelectedIndex(0);
-		
+
 	}
 
 	@Override
@@ -404,9 +402,9 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 //			else if (!(cmbAgencia.getSelectedItem().getValue() instanceof Agencia))
 //				throw new AgenciaNullException();
 			else if (!(txtCorreoElectronico.getText().trim().isEmpty()))
-				if (UtilData.validateEmail(txtCorreoElectronico.getText().trim())==false)
+				if (!UtilData.validateEmail(txtCorreoElectronico.getText().trim()))
 					throw new MailIncorectoException();
-			
+
 			/*Validando que los apellidos y nombres no incluyan comillas simples - jabanto */
 			if(txtApellidoPaterno.getText().trim().indexOf("'")>=0){
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noComillaSimple")+", revice el Apellido Parteno del Pasajero.",txtApellidoPaterno);
@@ -418,20 +416,20 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noComillaSimple")+", revice los Nombres del Pasajero.",txtNombre);
 				return;
 			}
-			
+
 			if (action==ACTION_NEW)
 				oPasajero = new Pasajero();
-			
+
 			TipoDocumento oTipoDocumento = new TipoDocumento();
 			Sexo oSexo = new Sexo();
 			Ubigeo oUbigeo = new Ubigeo();
 			Agencia oAgencia = new Agencia();
-			
+
 			Long id = (textboxId.getText().equals("") ? null : new Long(textboxId.getText()));
 
 			oTipoDocumento.setId(((TipoDocumento) cboDocumentoIdentificacion.getSelectedItem().getValue()).getId());
 			oTipoDocumento.setDenominacion(((TipoDocumento) cboDocumentoIdentificacion.getSelectedItem().getValue()).getDenominacion());
-			
+
 			/*Valida el dicumento cuando es DNI*/
 			if(oTipoDocumento.getId().intValue()==Constantes.ID_TIPDOC_DNI){
 				if(txtNumeroIdentificacion.getText().trim().length()!=8){
@@ -442,13 +440,13 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 					throw new CancelaGrabacionException();
 				}
 			}
-			
-			
+
+
 			oSexo.setId(((Sexo) cboSexo.getSelectedItem().getValue()).getId());
 			oUbigeo.setId(txtIdUbigeo.getText());
 			oAgencia.setId(getAgencia().getId());
 //			oAgencia.setId(((Agencia) cmbAgencia.getSelectedItem().getValue()).getId());
-			
+
 			oPasajero.setId(id);
 			oPasajero.setTipoDocumento(oTipoDocumento);
 			oPasajero.setNumeroDocumento(txtNumeroIdentificacion.getText().trim());
@@ -458,7 +456,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 			oPasajero.setNombresApellidos(oPasajero.getNombre()+" "+oPasajero.getApellidoPaterno()+" "+oPasajero.getApellidoMaterno());
 			oPasajero.setFechaNacimiento(Util.DatetoString(dbfechaNacimiento.getValue(), Constantes.DATE_FORMAT)
 					.equals(Util.DatetoString(Constantes.FECHA_NULL, Constantes.DATE_FORMAT))?null:Util.DatetoString(dbfechaNacimiento.getValue(), Constantes.DATE_FORMAT));
-			
+
 			oPasajero.setSexo(oSexo);
 			if (!(cboEstadoCivil.getSelectedItem().getValue() instanceof EstadoCivil)){
 				oPasajero.setEstadoCivil(null);
@@ -483,15 +481,15 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 				if(imgValidacionDNI.getSrc()!=null && !(imgValidacionDNI.getSrc().trim().isEmpty()) && imgValidacionDNI.getSrc().equals(Constantes.IMAGE_VALIDACION_DNI_OK))
 					oPasajero.setValidadoReniec(Constantes.TRUE_VALUE);
 			}
-			
+
 			//VALIDACION PARA EL PAXFREE
 			if(action==ACTION_MODIFY){
 				if( opasajeroFrecuente.getId() !=null){//PAXFREE ya fue registrado anteriormente)
 					if(opasajeroFrecuente.getEstado().equals(Constantes.TRUE_VALUE)){ //PAXFREE ACTIVO
-						if(!(chkPasajeroFrecuente.isChecked())){//El PAXFRE esta siendo desactivado. 
+						if(!(chkPasajeroFrecuente.isChecked())){//El PAXFRE esta siendo desactivado.
 							opasajeroFrecuente.setEstado(Constantes.FALSE_VALUE);
 							opasajeroFrecuente.setFechaSuspension(Constantes.FORMAT_DATE_TIME_24H.parse(lblFechaSuspension.getValue()));
-														
+
 							UtilData.auditarRegistro(opasajeroFrecuente, true, getUsuario(),Executions.getCurrent());
 							ServiceLocator.getPasajeroFrecuenteManager().actualizar(opasajeroFrecuente);
 
@@ -511,23 +509,23 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 							historicoMembresia.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 							UtilData.auditarRegistro(historicoMembresia, getUsuario(), Executions.getCurrent());
 							ServiceLocator.getHistoricoMembresiaManager().guardar(historicoMembresia);
-							//Actualiza el pasajero frecuente.							
+							//Actualiza el pasajero frecuente.
 							opasajeroFrecuente.setFechaActivacion(Constantes.FORMAT_DATE_TIME_24H.parse(lblFechaActivacion.getValue()));
 							opasajeroFrecuente.setFechaCaducidad(Constantes.FORMAT_DATE_TIME_24H.parse(lblFechaCaducidad.getValue()));
 							opasajeroFrecuente.setFechaSuspension(null);
 							opasajeroFrecuente.setEstado(Constantes.TRUE_VALUE);
 							UtilData.auditarRegistro(opasajeroFrecuente, true, getUsuario(),Executions.getCurrent());
 							ServiceLocator.getPasajeroFrecuenteManager().actualizar(opasajeroFrecuente);
-							
+
 							enviarMail(true, opasajeroFrecuente);
 						}
 					}
-					
+
 				}else{
 					if(chkPasajeroFrecuente.isChecked()){//EL PAXFREE esta siendo activado por primara vez
 						opasajeroFrecuente = new PasajeroFrecuente();
 						UtilData.auditarRegistro(opasajeroFrecuente, false, getUsuario(),Executions.getCurrent());
-						
+
 						opasajeroFrecuente.setEstado(Constantes.TRUE_VALUE);
 						opasajeroFrecuente.setPasajero(oPasajero);
 						opasajeroFrecuente.setId(null);
@@ -543,12 +541,12 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 						opasajeroFrecuente.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 						opasajeroFrecuente.setAgencia(oAgencia);
 						ServiceLocator.getPasajeroFrecuenteManager().guardar(opasajeroFrecuente);
-						
+
 						enviarMail(true, opasajeroFrecuente);
 					}
 				}
 			}
-			
+
 			switch (action) {
 				case ACTION_NEW:
 					UtilData.auditarRegistro(oPasajero, getUsuario(), Executions.getCurrent());
@@ -562,11 +560,11 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 					break;
 			}
 			/*RECUEPRA EL REGISTRO ACTUALIZADO O EL NUEVO*/
-			condicionBusqueda= new TreeMap<String, Object>();
+			condicionBusqueda= new TreeMap<>();
 			condicionBusqueda.put("id", oPasajero.getId());
 			condicionBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			listarRegistros(ServiceLocator.getPasajeroManager().buscarPorX(condicionBusqueda, criteriosOrdenar));
-			
+
 		}catch (CancelaGrabacionException cex){
 			throw new CancelaGrabacionException();
 		}catch (FechaNacimientoNullxception fnexc){
@@ -628,9 +626,9 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 		}catch(Exception ex){
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace(); throw new CancelaGrabacionException();
-		}		
-			
-	}	
+		}
+
+	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onDelete(int)
 	 */
@@ -648,22 +646,22 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 		}
 		ServiceLocator.getPasajeroManager().inactivar(id);
 	}
-	
+
 	@Override
 	public void onPrint(int tab) {
 		// TODO Auto-generated method stub
 	}
-	
+
 	@Override
 	public void onExport(int tab) {
 		// TODO Auto-generated method stub
 	}
-	
+
 	@Override
 	public void onHelp() {
 		// TODO Auto-generated method stub
 	}
-	
+
 	@Override
 	public void onChangeTab(int tab) throws Exception {
 		switch (tab) {
@@ -677,8 +675,8 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 				break;
 		}
 	}
-	
-	
+
+
 	@Override
 	public void onClose() {
 		closeTabWindow();
@@ -694,16 +692,16 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 			txtMotivoNoGrata.setText("");
 		}
 	}
-	
+
 	private void listarRegistros(ArrayList<Pasajero> lstRegistros) throws Exception {
 		listboxLista.getItems().clear();
-		
-		Listitem item=null;	
+
+		Listitem item=null;
 		Listcell cell=null;
 		int i=0;
 		for(Pasajero pasajero: lstRegistros){
 			i++;
-			
+
 			item=new Listitem();
 			cell=new Listcell(String.valueOf(i));
 			item.appendChild(cell);
@@ -742,8 +740,8 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 
 //	/**
 //	 * Verifica si el Pasajero existe el la reniec si es que se registrando un nuevo Pas
-//	 * @throws Exception 
-//	 * @throws WrongValueException 
+//	 * @throws Exception
+//	 * @throws WrongValueException
 //	 */
 //	public void validarPax_MuestraBDReniec() throws WrongValueException, Exception{
 //		if(oPasajero==null  && !(txtNumeroIdentificacion.getText().trim().isEmpty()) ){
@@ -755,13 +753,13 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 //				txtNombre.setText(reniec.getNombres());
 //				dbfechaNacimiento.setValue(Constantes.FORMAT_DATE.parse(reniec.getFechaNacimiento()));
 //				Util.seleccionarValorItemCombo(Sexo.class, cboSexo, Integer.valueOf(reniec.getSexo()));
-//				
+//
 //			}else{
 //				String numeroDocumento=txtNumeroIdentificacion.getText().trim();
 //				Integer idTipoDocumento= null;
 //				if(cboDocumentoIdentificacion.getSelectedItem().getValue() instanceof TipoDocumento)
 //					idTipoDocumento=((TipoDocumento)cboDocumentoIdentificacion.getSelectedItem().getValue()).getId();
-//				
+//
 //				limpiarControles();
 //				dbfechaNacimiento.setValue(Constantes.FECHA_NULL);
 //				cboSexo.setSelectedIndex(0);
@@ -773,7 +771,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 //			}
 //		}
 //	}
-//	
+//
 //	/**
 //	 * Reliza la validacion del pasajero con el metodop getIdentifidad del WS del mtc en funcion al parametro configurado.
 //	 * @throws WrongValueException
@@ -787,22 +785,22 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 //		else
 //			validarPax_MuestraBDReniec();
 //	}
-	
+
 	/**
 	 * Verifica si el Pasajero existe el la reniec si es que se registrando un nuevo Pas
-	 * @throws Exception 
-	 * @throws WrongValueException 
+	 * @throws Exception
+	 * @throws WrongValueException
 	 */
 	public void verificarPaxReniec() throws WrongValueException, Exception{
 		txtApellidoPaterno.setDisabled(false);
 		txtApellidoMaterno.setDisabled(false);
 		txtNombre.setDisabled(false);
-				
-		if(oPasajero==null  
-				&& !(txtNumeroIdentificacion.getText().trim().isEmpty()) 
-				&& cboDocumentoIdentificacion.getSelectedItem().getValue() instanceof TipoDocumento 
+
+		if(oPasajero==null
+				&& !(txtNumeroIdentificacion.getText().trim().isEmpty())
+				&& cboDocumentoIdentificacion.getSelectedItem().getValue() instanceof TipoDocumento
 				&& ((TipoDocumento)cboDocumentoIdentificacion.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPDOC_DNI){
-			
+
 			String numerodocumento=txtNumeroIdentificacion.getText().trim();
 			ResultIdentidad resultIdentidad=Util.getResultIdentidad(numerodocumento,imgValidacionDNI);
 			if(resultIdentidad!=null){
@@ -837,7 +835,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 					Integer idTipoDocumento= null;
 					if(cboDocumentoIdentificacion.getSelectedItem().getValue() instanceof TipoDocumento)
 						idTipoDocumento=((TipoDocumento)cboDocumentoIdentificacion.getSelectedItem().getValue()).getId();
-					
+
 					limpiarControles();
 					dbfechaNacimiento.setValue(Constantes.FECHA_NULL);
 					cboSexo.setSelectedIndex(0);
@@ -850,7 +848,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 			}
 		}
 	}
-	
+
 	/**
 	 * Para la edición del pasajero
 	 * @param id : Identificacor del Pasajero.
@@ -863,11 +861,11 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 		PasajeroFrecuente paxFree= ServiceLocator.getPasajeroFrecuenteManager().buscarPaxFreeAndPuntos(oPasajero.getId(),null);
 		if(paxFree!=null)
 			oPasajero.setPasajeroFrecuente(paxFree);
-		
+
 		Ubigeo oUbigeo = ServiceLocator.getUbigeoManager().buscarPorId(oPasajero.getUbigeo().getId());
 		String ubicacionCompleta = new String();
-		
-		if (oPasajero.getUbigeo() != null) 
+
+		if (oPasajero.getUbigeo() != null)
 			ubicacionCompleta = ServiceLocator.getUbigeoManager().ubicacionGeografica(oUbigeo);
 		if (oPasajero.getEstadoCivil() != null)
 			Util.seleccionarValorItemCombo(EstadoCivil.class, cboEstadoCivil, oPasajero.getEstadoCivil().getId());
@@ -880,7 +878,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 		else cboSexo.setSelectedIndex(0);
 //		if (oPasajero.getAgencia() !=null)
 //			Util.seleccionarValorItemCombo(Agencia.class,cmbAgencia, oPasajero.getAgencia().getId());
-		
+
 		textboxId.setText(oPasajero.getId().toString());
 		txtNumeroIdentificacion.setText(oPasajero.getNumeroDocumento());
 		txtApellidoPaterno.setText(oPasajero.getApellidoPaterno());
@@ -888,7 +886,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 		txtNombre.setText(oPasajero.getNombre());
 		if (oPasajero.getFechaNacimiento() != null)
 			dbfechaNacimiento.setText(oPasajero.getFechaNacimiento().toString());
-		else 
+		else
 			dbfechaNacimiento.setText(null);
 		txtDireccion.setText(oPasajero.getDireccion());
 		txtIdUbigeo.setText(oUbigeo.getId());
@@ -898,10 +896,10 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 		lblKilometrosAcumulados.setValue(oPasajero.getKilometros()!=null?oPasajero.getKilometros().toString():"0");
 		chkPersonaNoGrata.setChecked(oPasajero.getIndeseable()!=null?(oPasajero.getIndeseable() == 1):false);
 		txtMotivoNoGrata.setText(oPasajero.getMotivo());
-		
+
 		/* RECUPERA DATOS DEL PASAJERO FRECUENTE */
 		opasajeroFrecuente = new PasajeroFrecuente();
-		if(oPasajero.getPasajeroFrecuente() !=null){		
+		if(oPasajero.getPasajeroFrecuente() !=null){
 			opasajeroFrecuente =oPasajero.getPasajeroFrecuente(); //((Pasajero)listitem.getValue()).getPasajeroFrecuente();
 			txtIdPasajeroFrecuente.setText(opasajeroFrecuente.getId().toString());
 			txtNumeroTarjeta.setText(opasajeroFrecuente.getNumeroTarjeta().toString());
@@ -937,26 +935,26 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 			txtNumeroIdentificacion.setDisabled(false);
 		}
 		cargarPasajesAcumulados(oPasajero);
-		
+
 		/*Establece la imagen segun validacion del DNI del pasajero con la reniec - 04/04/2015 - jabanto*/
 		if(oPasajero.getTipoDocumento().getId().intValue()==Constantes.ID_TIPDOC_DNI)
 			Util.imagenValidacionDNIReniec(oPasajero.getValidadoReniec(), imgValidacionDNI);
-		
+
 		tbPasajero.setSelectedIndex(0);
 //		cmbAgencia.setDisabled(true);
 //		List<VentaPasaje> lstVentas = ServiceLocator.getVentaPasajesManager().buscarVentasByPasajero(oPasajero.getId());
 	}
-	
+
 	public void onchkPasajeroFrecuente() throws Exception{
 		MyTime time=new MyTime();
 		Date mtime=Constantes.FORMAT_DATE_TIME_24H.parse(time.dateServer());
-		
+
 		if(oPasajero.getPasajeroFrecuente() !=null){//
 			if(opasajeroFrecuente.getEstado().equals(Constantes.TRUE_VALUE)){ //El PAXFREE esta Activo.
 				if (!(chkPasajeroFrecuente.isChecked())){ //El usuario inactiva el PaxFree
 					lblFechaSuspension.setValue(Constantes.FORMAT_DATE_TIME_24H.format(mtime));
 					lbEstado.setValue(Constantes.LABEL_INACTIVO_DESCP);
-					
+
 				}else{//El usuario Activa el PaxFree
 					lbEstado.setValue(Constantes.LABEL_ACTIVO_DESCP);
 					lblFechaSuspension.setValue("");
@@ -979,7 +977,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 		}else{
 			if (chkPasajeroFrecuente.isChecked()){
 				String fechaCaducidad=fechaCaducidad();
-				
+
 				lblFechaIngreso.setValue(Constantes.FORMAT_DATE_TIME_24H.format(mtime));
 				lblPuntosAcumulados.setValue("0");
 				lblPuntosUtilizados.setValue("0");
@@ -988,7 +986,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 				lblFechaCaducidad.setValue(fechaCaducidad);
 				lbEstado.setValue(Constantes.LABEL_ACTIVO_DESCP);
 				txtNumeroTarjeta.setValue(numTarjetaPaxFree()); //txtNumeroTarjeta.setValue(agencia.getId()+"-"+usuario.getId()+"-");
-				
+
 				//txtNumeroTarjeta.setReadonly(true);
 			}else{
 				//txtNumeroTarjeta.setReadonly(true);
@@ -1004,19 +1002,19 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 			}
 		}
 	}
-	
+
 	public void cargarPasajesAcumulados(Pasajero pasajero) throws Exception{
 		listPasajesAcumulados.getItems().clear();
 
 		MyTime time= new MyTime();
 		Date mfechaActual=Constantes.FORMAT_DATE_TIME_24H.parse(time.dateServer());
-		
+
 //		String fechaFinal=Constantes.FORMAT_DATE.format(time.fechaServer().getTime());
 		String fechaFinal=Constantes.FORMAT_DATE_TIME_24H.format(mfechaActual);
-		Long milSec_Menos=(long)0;
+		long milSec_Menos=(long)0;
 		Long milSec_Act=(long)0;
 		String fechaInicial="";
-		
+
 		//Cuando un pasajero frecuente esta activo
 		if(pasajero.getPasajeroFrecuente() !=null && pasajero.getPasajeroFrecuente().getEstado().equals(Constantes.TRUE_VALUE)){
 			fechaInicial=Constantes.FORMAT_DATE_TIME_24H.format(pasajero.getPasajeroFrecuente().getFechaActivacion());
@@ -1024,7 +1022,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 		}else if(pasajero.getPasajeroFrecuente()!=null && pasajero.getPasajeroFrecuente().getEstado().intValue()==Constantes.FALSE_VALUE){
 			//Cuando un pasajero frecuente esta inactivo
 			long diasTrasncurridos=mfechaActual.getTime()-pasajero.getPasajeroFrecuente().getFechaSuspension().getTime();
-			
+
 			//Si los dias transcurridos desde la fecha de suspension hasta la fecha actual es menor o igual se toma la fecha inicial desde la fecha suspencion
 			if(diasTrasncurridos<=Constantes.MILISEGUNDOS_X_DIA*Constantes.TIEMPO_PASAR_PAXFREE){
 				fechaInicial=Constantes.FORMAT_DATE_TIME_24H.format(pasajero.getPasajeroFrecuente().getFechaSuspension());
@@ -1032,10 +1030,10 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 				//Si los dias transcurridos desde la fecha de suspension hasta la fecha actual es Mayor se toma la fecha inicial desde la fecha actual menos 6 meses atras.
 				fechaInicial=Constantes.FORMAT_DATE_TIME_24H.format(mfechaActual.getTime()-(Constantes.MILISEGUNDOS_X_DIA*Constantes.TIEMPO_PASAR_PAXFREE));
 			}
-	
+
 		}else{
 			//Cuando noes aun pasajero frecuente
-			milSec_Menos=Constantes.MILISEGUNDOS_X_DIA*Constantes.TIEMPO_PASAR_PAXFREE;	
+			milSec_Menos=Constantes.MILISEGUNDOS_X_DIA*Constantes.TIEMPO_PASAR_PAXFREE;
 			milSec_Act=mfechaActual.getTime(); //.fechaServer().getTimeInMillis();
 			Long milResul=milSec_Act-milSec_Menos;
 			Calendar calendar= Calendar.getInstance();
@@ -1043,83 +1041,83 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 			Date dFechaInicial=calendar.getTime();
 			fechaInicial=Constantes.FORMAT_DATE.format(dFechaInicial);
 		}
-		
+
 		ArrayList<VentaPasaje>list =ServiceLocator.getVentaPasajesManager().buscarVentasPax(fechaInicial, fechaFinal, pasajero.getId());
-			
+
 		Listitem item = null;
 		Listcell cell = null;
-		
-		Integer viajesNOValidos=0;
-		
+
+		int viajesNOValidos=0;
+
 		for(VentaPasaje ventas: list){
 			item= new Listitem();
-			
+
 			cell= new Listcell(ventas.getNumeroBoleto());
 			cell.setStyle("font-size: 11px !important");
 			if (ventas.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA)
 				cell.setStyle("color: #FA5858; font-size: 11px !important");
 			item.appendChild(cell);
-			
+
 			cell=new Listcell(ventas.getServicio().getDenominacion());
 			if (ventas.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA)
 				cell.setStyle("color: #FA5858;");
 			item.appendChild(cell);
-			
+
 			cell=new Listcell(ventas.getRuta().getOrigen()+" - "+ventas.getRuta().getDestino());
 			if (ventas.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA)
 				cell.setStyle("color: #FA5858;");
 			item.appendChild(cell);
-			
+
 			cell=new Listcell(ventas.getFechaPartida()!=null? Constantes.FORMAT_DATE.format(ventas.getFechaPartida()): "");
 			cell.setStyle("font-size: 11px !important");
 			if (ventas.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA)
 				cell.setStyle("color: #FA5858; font-size: 11px !important");
 			item.appendChild(cell);
-			
+
 			cell=new Listcell(ventas.getFormaPago().getDenominacion());
 			if (ventas.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA)
 				cell.setStyle("color: #FA5858;");
 			item.appendChild(cell);
-			
+
 			cell=new Listcell(ventas.getNumeroAsiento()!=null?ventas.getNumeroAsiento().toString(): "");
 			cell.setStyle("font-size: 11px !important");
 			if (ventas.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA)
 				cell.setStyle("color: #FA5858; font-size: 11px !important");
 			item.appendChild(cell);
-			
+
 			cell=new Listcell(ventas.getImportePagado().toString());
 			cell.setStyle("font-size: 11px !important");
 			if (ventas.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA)
 				cell.setStyle("color: #FA5858; font-size: 11px !important");
 			item.appendChild(cell);
-			
+
 			cell=new Listcell(Constantes.FORMAT_DATE.format(ventas.getFechaLiquidacion()));
 			cell.setStyle("font-size: 11px !important");
 			if (ventas.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA)
 				cell.setStyle("color: #FA5858; font-size: 11px !important");
 			item.appendChild(cell);
-			
+
 			cell=new Listcell(ventas.getTipoMovimiento().getDenominacion());
 			if (ventas.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA)
 				cell.setStyle("color: #FA5858");
 			item.appendChild(cell);
-			
+
 			cell=new Listcell(ventas.getUsuario().getApellidoPaterno()+" "+ventas.getUsuario().getApellidoMaterno()+", "+ventas.getUsuario().getNombre());
 			if (ventas.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA)
 				cell.setStyle("color: #FA5858");
 			item.appendChild(cell);
-			
+
 			cell=new Listcell(ventas.getCliente().getNumeroDocumento());
 			cell.setStyle("font-size: 11px !important");
 			if (ventas.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA)
 				cell.setStyle("color: #FA5858");
 			item.appendChild(cell);
-			
+
 			cell=new Listcell(ventas.getCliente().getRazonSocial());
 			if (ventas.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA)
 				cell.setStyle("color: #FA5858");
 			item.appendChild(cell);
-			
+
 			if(ventas.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA)
 				viajesNOValidos++;
 
@@ -1128,9 +1126,9 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 		}
 
 		chkPasajeroFrecuente.setDisabled(true);
-		
-		Integer viajesValidos=list.size()-viajesNOValidos;
-		
+
+		int viajesValidos=list.size()-viajesNOValidos;
+
 		Listitem listitem=listboxLista.getItemAtIndex(listboxLista.getSelectedIndex());
 		PasajeroFrecuente frecuente =  ServiceLocator.getPasajeroFrecuenteManager().buscarPaxfreeXNumeroDocumento(((Pasajero)listitem.getValue()).getNumeroDocumento());//((Pasajero)listitem.getValue()).getPasajeroFrecuente();
 		if (frecuente!=null || viajesValidos>=Constantes.NUMERO_VIAJES_PAXFREE)
@@ -1140,73 +1138,73 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 			if(pasajero.getPasajeroFrecuente()!=null){
 				if(pasajero.getPasajeroFrecuente().getEstado().intValue()==Constantes.TRUE_VALUE){
 					lbViajesAcumulados.setValue("Viajes acumulados en los últimos "+Constantes.TIEMPO_PASAR_PAXFREE / 30+" meses (del "
-							+ Util.DatetoString(Constantes.FORMAT_DATE_TIME_24H.parse(lblFechaActivacion.getValue()), Constantes.DATE_FORMAT) +" al " 
+							+ Util.DatetoString(Constantes.FORMAT_DATE_TIME_24H.parse(lblFechaActivacion.getValue()), Constantes.DATE_FORMAT) +" al "
 							+ Util.DatetoString(Constantes.FORMAT_DATE_TIME_24H.parse(lblFechaCaducidad.getValue()), Constantes.DATE_FORMAT)+" )");
 				}else{
 					lbViajesAcumulados.setValue("Viajes acumulados en los últimos "+Constantes.TIEMPO_PASAR_PAXFREE / 30+" meses (del "
-							+ Util.DatetoString(Constantes.FORMAT_DATE_TIME_24H.parse(lblFechaSuspension.getValue()), Constantes.DATE_FORMAT) +" al " 
+							+ Util.DatetoString(Constantes.FORMAT_DATE_TIME_24H.parse(lblFechaSuspension.getValue()), Constantes.DATE_FORMAT) +" al "
 							+ (fechaFinal.length()>=10?fechaFinal.substring(0,10):fechaFinal)+" )");
 				}
 			}
 		}else{
 			lbViajesAcumulados.setValue("Viajes acumulados en los últimos "+Constantes.TIEMPO_PASAR_PAXFREE / 30+" meses");
 		}
-		
-		
+
+
 		lbtotalViajes.setValue("Total viajes ==========> "+String.valueOf(list.size()));
-		lbtotalViajesValidos.setValue("Total viajes válidos ====> "+viajesValidos.toString());
+		lbtotalViajesValidos.setValue("Total viajes válidos ====> "+Integer.toString(viajesValidos));
 	}
-	
+
 	/**
 	 * Obtiene la fecha de caducidad apara el PaxFree
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private String fechaCaducidad() throws Exception{
 		MyTime time= new MyTime();
 		Date mtime= Constantes.FORMAT_DATE_TIME_24H.parse(time.dateServer());
-		
-		Long milSec1=Constantes.MILISEGUNDOS_X_DIA*Constantes.TIEMPO_PASAR_PAXFREE;
+
+		long milSec1=Constantes.MILISEGUNDOS_X_DIA*Constantes.TIEMPO_PASAR_PAXFREE;
 		Long milSec2=mtime.getTime();
 		Long milResul=milSec1+milSec2;
-		
+
 		Calendar calendar= Calendar.getInstance();
 		calendar.setTimeInMillis(milResul);
-		
+
 		Date dfecha=calendar.getTime();
 		String fecha=Constantes.FORMAT_DATE_TIME_24H.format(dfecha);
-		
+
 		return fecha;
 	}
 
 	private String  numTarjetaPaxFree() throws Exception {
 		String numeroTarjeta="";
-		
+
 		PasajeroFrecuente frecuente=ServiceLocator.getPasajeroFrecuenteManager().buscarMaxNumTarjeta();
 		if(frecuente !=null){
 			String gr1="0000"+""+getAgencia().getId().toString();
 			String gr2="00000"+""+getUsuario().getId().toString();
 			String gr3="000000"+""+frecuente.getNumeroTarjeta();
-			
+
 			numeroTarjeta=gr1.substring(gr1.length()-4,gr1.length())+"-"+gr2.substring(gr2.length()-5,gr2.length())+"-"+gr3.substring(gr3.length()-6,gr3.length());
-			
-			
+
+
 //			numeroTarjeta=getAgencia().getId()+"-"+getUsuario().getId()+"-"+frecuente.getNumeroTarjeta();
 		}
-			
+
 		return numeroTarjeta;
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	private Window onCreateWindowsHistory(String idPasajero){
 		String[][]col = new String[][]{{"COMPROBANTE","100px"},{"COMP.ANT","100px"},{"RAZON SOCIAL","160px"},{"SERVICIO","80px"},
 				{"ORIGEN","80px"},{"DESTINO","80px"},{"F.PARTIDA","80px"},{"F.PAGO","80px"},{"ASI.","50px"},{"IMPORTE","70px"},
 				{"F.VENTA","80px"},{"MOVIMIENTO","80px"},{"USUARIO","160px"}};
-		
+
 		Window window = null;
 		try{
 			List<VentaPasaje> lstVentas = ServiceLocator.getVentaPasajesManager().buscarVentasByPasajero(Long.valueOf(idPasajero));
-			
+
 			Caption caption = null;
 			Listbox listbox = null;
 			Listhead listhead = null;
@@ -1214,7 +1212,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 			Listitem listitem = null;
 			Listcell listcell = null;
 			window = new Window("", "normal", true);
-			window.setWidth("900px");;
+			window.setWidth("900px");
 			caption = new Caption("HISTORIAL DE VIAJES");
 			window.appendChild(caption);
 			listbox = new Listbox();
@@ -1231,9 +1229,9 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 				else if(i==9)
 					listheader.setAlign("right");
 				listhead.appendChild(listheader);
-			}			
+			}
 			listbox.appendChild(listhead);
-			
+
 			for(VentaPasaje venta : lstVentas){
 				listitem = new Listitem();
 				listcell = new Listcell(venta.getNumeroBoleto());
@@ -1294,7 +1292,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 //		if(isActivo)
 //			asunto="Activación de pasajero frecuente";
 //		else asunto="Inactivación de Pasajero Frecuente";
-//		
+//
 //		String mensaje="[Nota: este mensaje ha sido generado automaticamente, no responda por favor]\n\n";
 //		mensaje+=tabular(7)+pasajeroFrecuente.getPasajero().getTipoDocumento().getDenominacion()+" :"+pasajeroFrecuente.getPasajero().getNumeroDocumento()+"\n";
 //		mensaje+=tabular(2)+"Pasajero :"+pasajeroFrecuente.getPasajero().getNombresApellidos()+"\n";
@@ -1306,14 +1304,14 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 //		}else
 //			mensaje+=tabular(2)+"Fecha inactivación :"+new MyTime().dateServer()+"\n";
 //		mensaje+=tabular(3)+"Usuario :"+getUsuario().getNombre()+" "+getUsuario().getApellidoPaterno();
-//		
+//
 //		DestinatariosEmails emails= new DestinatariosEmails();
 //		emails.setEmails("TO:jabanto@tepsa.com.pe");
-//		
+//
 //		Sendmail.enviaEmail(mensaje, asunto, emails);
 	}
-	
-	
+
+
 	/**
 	 * Devuelve una cadena de espacios en blanco.
 	 * @param espacios	: Numero de espacios en blanco.
@@ -1326,5 +1324,5 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 //		}
 //		return cadena;
 //	}
-	
+
 }

@@ -31,7 +31,7 @@ public interface ConcesionarioManager {
 	 */
 	public Concesionario buscarPorId(Long id)throws Exception;
 	/**
-	 * Realiza el guardado de la informacion del concesionario. 
+	 * Realiza el guardado de la informacion del concesionario.
 	 * @param concesionario	: Objeto concesionario que se desea guardar.
 	 * @throws Exception
 	 */
@@ -48,6 +48,6 @@ public interface ConcesionarioManager {
 	 * @throws Exception
 	 */
 	public void inactivar(Long id)throws Exception;
-	
+
 	public List<Concesionario> buscarPorX(String campo, Object[] criterios, List<String> criteriosOrdenar, String estadoRegistro) throws Exception;
 }

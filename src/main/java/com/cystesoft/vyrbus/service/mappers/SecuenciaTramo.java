@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 03/09/2012
  */
@@ -20,7 +20,7 @@ public class SecuenciaTramo implements Serializable {
 	private Integer destino;
 	private Integer orden;
 	/**
-	 * 
+	 *
 	 */
 	public SecuenciaTramo() {
 		super();
@@ -37,7 +37,7 @@ public class SecuenciaTramo implements Serializable {
 		this.destino = destino;
 		this.orden = orden;
 	}
-	
+
 	/**
 	 * @return Objeto origen.
 	 */
@@ -50,7 +50,7 @@ public class SecuenciaTramo implements Serializable {
 	public void setOrigen(Integer origen) {
 		this.origen = origen;
 	}
-	
+
 	/**
 	 * @return Objeto destino.
 	 */
@@ -63,7 +63,7 @@ public class SecuenciaTramo implements Serializable {
 	public void setDestino(Integer destino) {
 		this.destino = destino;
 	}
-	
+
 	/**
 	 * @return Objeto orden.
 	 */
@@ -82,5 +82,5 @@ public class SecuenciaTramo implements Serializable {
 	@Override
 	public String toString() {
 		return this.origen.toString()+"-"+this.destino+"-"+this.orden;
-	}	
+	}
 }

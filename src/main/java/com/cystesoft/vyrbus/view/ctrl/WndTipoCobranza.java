@@ -23,7 +23,7 @@ import com.cystesoft.vyrbus.view.ui.DlgMessage;
 import com.cystesoft.vyrbus.view.ui.WndFiltrarParametros;
 import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
 /**
- * 
+ *
  * @author JABANTO
  *
  */
@@ -31,11 +31,11 @@ public class WndTipoCobranza extends WndOpcionesMantenimiento {
 	private static final long serialVersionUID = 1L;
 
 	private Textbox txtDenominacion;
-	
+
 	private TipoCobranza tipoCobranza=null;
 	private TreeMap<String, Object> criteriosBusqueda = null;
 	private List<String> criteriosOrdenar = null;
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
@@ -43,19 +43,19 @@ public class WndTipoCobranza extends WndOpcionesMantenimiento {
 	@Override
 	public void initComponents() {
 		txtDenominacion=(Textbox)this.getFellow("txtDenominacion");
-		
+
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
 	@Override
 	public void onCreate() throws Exception {
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
-	}	
-	
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onNew()
@@ -63,7 +63,7 @@ public class WndTipoCobranza extends WndOpcionesMantenimiento {
 	@Override
 	public void onNew() throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/*
@@ -73,27 +73,27 @@ public class WndTipoCobranza extends WndOpcionesMantenimiento {
 	@Override
 	public void onSearch() throws Exception {
 final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
-		
+
 		oWndFiltrar.addParameter("Denominación", String.class);
-		
+
 		this.appendChild(oWndFiltrar);
 		oWndFiltrar.setMode("modal");
 		oWndFiltrar.addEventListener(com.cystesoft.vyrbus.view.ui.Events.ON_FILTER, new EventListener<Event>() {
 
 			@Override
 			public void onEvent(Event event) throws Exception {
-				criteriosBusqueda = new  TreeMap<String, Object>();
+				criteriosBusqueda = new  TreeMap<>();
 				String denominacion = (String) oWndFiltrar.getParameterValue("Denominación");
 				String estadoRegistro = Constantes.VALUE_ACTIVO;
 				if(!(denominacion.trim().isEmpty()))
 					criteriosBusqueda.put("denominacion","%"+denominacion+"%");
 				criteriosBusqueda.put("estadoRegistro", estadoRegistro);
-				
+
 				listarRegistros(ServiceLocator.getTipoCobranzaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 			}
 		});
-		
-		
+
+
 	}
 
 	/*
@@ -103,7 +103,7 @@ final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if(!(criteriosBusqueda.isEmpty()))
-			listarRegistros(ServiceLocator.getTipoCobranzaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));	
+			listarRegistros(ServiceLocator.getTipoCobranzaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 	}
 
 	/*
@@ -114,7 +114,7 @@ final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
 	public void onModify(int tab) throws Exception {
 		// TODO Auto-generated method stub
 		mantenimiento();
-		
+
 	}
 
 	/*
@@ -124,7 +124,7 @@ final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
 	@Override
 	public void onCancel(int action) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/*
@@ -136,12 +136,12 @@ final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
 		try{
 			if(txtDenominacion.getText().trim().isEmpty())
 				throw new DenominacionNullException();
-			
+
 			if(action==ACTION_NEW)
 				tipoCobranza=new TipoCobranza();
 			tipoCobranza.setDenominacion(txtDenominacion.getText().trim().toUpperCase());
 			tipoCobranza.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-			
+
 			switch (action) {
 				case ACTION_NEW:
 					UtilData.auditarRegistro(tipoCobranza, getUsuario(), Executions.getCurrent());
@@ -152,11 +152,11 @@ final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
 					ServiceLocator.getTipoCobranzaManager().actualizar(tipoCobranza);
 					break;
 			}
-			/*RECUPERA EL REGISTRO*/ 
-			criteriosBusqueda = new  TreeMap<String, Object>();
+			/*RECUPERA EL REGISTRO*/
+			criteriosBusqueda = new  TreeMap<>();
 			criteriosBusqueda.put("id", tipoCobranza.getId());
 			listarRegistros(ServiceLocator.getTipoCobranzaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-			
+
 		}catch (DenominacionNullException dnex){
 			DlgMessage.information(Messages.getString("Generales.information.noIngresoDenominacion"),txtDenominacion);
 			throw new CancelaGrabacionException();
@@ -164,7 +164,7 @@ final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
 			DlgMessage.error(this.getClass().getName()+" "+e.getMessage());
 			e.printStackTrace(); throw new CancelaGrabacionException();
 		}
-		
+
 	}
 
 	/*
@@ -188,7 +188,7 @@ final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
 	public void onClose() {
 		closeTabWindow();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onPrint(int)
@@ -196,7 +196,7 @@ final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
 	@Override
 	public void onPrint(int tab) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/*
@@ -206,7 +206,7 @@ final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
 	@Override
 	public void onExport(int tab) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/*
@@ -216,7 +216,7 @@ final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
 	@Override
 	public void onHelp() throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/*
@@ -228,20 +228,20 @@ final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
 		// TODO Auto-generated method stub
 		mantenimiento();
 	}
-	
+
 	private void mantenimiento(){
 		if(listboxLista.getSelectedIndex() >=0){
 			tipoCobranza=listboxLista.getSelectedItem().getValue();
 			txtDenominacion.setText(tipoCobranza.getDenominacion());
 		}
 	}
-	
+
 	private void listarRegistros(List<TipoCobranza> list){
 		Listitem item=null;
 		Listcell cell=null;
 		int x=0;
 		Util.limpiarListbox(listboxLista);
-		
+
 		for(TipoCobranza tipoCobranza: list){
 			x++;
 			item=new Listitem();
@@ -249,13 +249,13 @@ final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
 			item.appendChild(cell);
 			cell=new Listcell(tipoCobranza.getDenominacion());
 			item.appendChild(cell);
-			
+
 			item.setValue(tipoCobranza);
 			listboxLista.appendChild(item);
-						
+
 		}
-		
+
 	}
-	
+
 
 }

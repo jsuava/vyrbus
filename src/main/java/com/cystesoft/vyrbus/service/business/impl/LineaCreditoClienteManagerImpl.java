@@ -19,7 +19,7 @@ import com.cystesoft.vyrbus.service.util.Sendmail;
 import com.cystesoft.vyrbus.service.util.Util;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
@@ -90,7 +90,7 @@ public class LineaCreditoClienteManagerImpl implements LineaCreditoClienteManage
 	public void inactivar(Long id) {
 		getLineaCreditoClienteDAO().inactivar(id);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.SolicitudClienteCreditoManger#buscarSolicitudLineaCredito(java.lang.String, java.lang.String, java.lang.String, java.lang.Long, java.lang.Integer, java.lang.Boolean)
@@ -161,12 +161,12 @@ public class LineaCreditoClienteManagerImpl implements LineaCreditoClienteManage
 	@Override
 	public void restarSaldo(Double SaldoActual, Double monto,Long idLineaCreditoCliente)throws Exception {
 		getLineaCreditoClienteDAO().restarSaldo(SaldoActual, monto, idLineaCreditoCliente);
-		
+
 		/*Valida y envia alerta si el cliente esta sobregirado.*/
 		validarSaldo(idLineaCreditoCliente, null);
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.LineaCreditoClienteManager#saldobyReduccion(java.lang.Double, java.lang.String)
 	 */
@@ -188,17 +188,17 @@ public class LineaCreditoClienteManagerImpl implements LineaCreditoClienteManage
 			validarSaldo(null, rucClienteCredito);
 		}
 	}
-	
+
 	/**
 	 * Valida y envia alerta si el cliente esta sobregirado.
 	 * @param idLineaCreditoCliente	: Identificador de la Linea de Credito
 	 * @param ruc	: Numero de ruc del cliente.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private void validarSaldo(Long idLineaCreditoCliente, String ruc) throws Exception {
 		LineaCreditoCliente lineaCreditoCliente =null;
 		Cliente cliente=null;
-		
+
 		//Obtiene el registro de la linea de credito.
 		if(idLineaCreditoCliente!=null){
 			//x el identificador de la linea de credito
@@ -206,7 +206,7 @@ public class LineaCreditoClienteManagerImpl implements LineaCreditoClienteManage
 			cliente=lineaCreditoCliente.getCarteraCliente().getCliente();
 		}else if (ruc!=null){
 			//x numero de ruc del cliente
-			TreeMap<String, Object>criteriosBusqueda=new TreeMap<String, Object>();
+			TreeMap<String, Object>criteriosBusqueda=new TreeMap<>();
 			criteriosBusqueda.put("numeroDocumento", ruc);
 			List<Cliente> result= ServiceLocator.getClienteManager().buscarPorX(criteriosBusqueda, null);
 			if(result.size()>0){
@@ -214,12 +214,12 @@ public class LineaCreditoClienteManagerImpl implements LineaCreditoClienteManage
 				lineaCreditoCliente=lineaCreditoCliente(cliente.getId());
 			}
 		}
-		
+
 		/*Realiza la validación para determinar el uso del sobregiro y enviar la alerta*/
 		if(lineaCreditoCliente!=null && lineaCreditoCliente.getEsCanje()!=null && lineaCreditoCliente.getEsCanje().equals(Constantes.NO)){
 			//Calcula el monto del sobregiro
 			Double valorSobregiro=lineaCreditoCliente.getLineaCreditoAprobada()*(lineaCreditoCliente.getSobregiro()/100);
-			Double montoSobregirado=valorSobregiro-lineaCreditoCliente.getSaldo(); 
+			Double montoSobregirado=valorSobregiro-lineaCreditoCliente.getSaldo();
 			//Valida si el cliente esta utilizado el sobregiro
 			if(montoSobregirado >=0){
 				/*Busca funcionario*/
@@ -229,16 +229,16 @@ public class LineaCreditoClienteManagerImpl implements LineaCreditoClienteManage
 				Usuario funcionario=ServiceLocator.getUsuarioManager().buscarPorId(lineaCreditoCliente.getCarteraCliente().getUsuario().getId().longValue());
 				if(funcionario.getPersonal()!=null && funcionario.getPersonal().getEmail()!=null)
 					toFuncionario=funcionario.getPersonal().getEmail();
-				
+
 				/*SOLO DESCOMENTAR PARA REALIZAR PRUEBAS */
 //				toFuncionario="jabanto@tepsa.com.pe";
 //				ccJefeVentas="jabanto@tepsa.com.pe";
 //				bccSistema="jabanto@tepsa.com.pe";
-								
+
 				String lineaCredito=Util.toNumberFormat(lineaCreditoCliente.getLineaCreditoAprobada(),2);
 				String sobregiro=Util.toNumberFormat(valorSobregiro,2);//+" ("+Util.toNumberFormat(lineaCreditoCliente.getSobregiro(),2)+" %)";
 				String saldo=Util.toNumberFormat(lineaCreditoCliente.getSaldo(), 2);
-								
+
 				int base=12;
 				//Envia E-Mail
 				String mensaje="CLIENTE       : "+cliente.toString()+"\n";
@@ -251,7 +251,7 @@ public class LineaCreditoClienteManagerImpl implements LineaCreditoClienteManage
 					toFuncionario="moscco@tepsa.com.pe";
 					mensaje+="No se ha encontrado el E-Mail del Funcionario al cual esta asigndo este Cliente, por lo que no se ha podido notificar.";
 				}
-				
+
 				mensaje+="\n\n\n";
 				mensaje+="NOTA: [Este buzon es de envio automático, por favor no responda.]";
 				DestinatariosEmails window = new DestinatariosEmails();
@@ -260,9 +260,9 @@ public class LineaCreditoClienteManagerImpl implements LineaCreditoClienteManage
 				Sendmail.enviaEmail(mensaje,"Sobregiro de Clientes", window);
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * Devuelve una cadena de espacios en blanco.
 	 * @param espacios	: Numero de espacios en blanco.

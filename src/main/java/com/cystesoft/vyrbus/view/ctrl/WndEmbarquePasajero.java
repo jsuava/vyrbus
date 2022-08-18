@@ -49,14 +49,14 @@ import com.cystesoft.vyrbus.view.ui.WndBase;
 import com.cystesoft.vyrbus.view.ui.WndSeleccionaItinerario;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 
 public class WndEmbarquePasajero extends WndBase implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Longbox lbxItinerario;
 	private Button btnBuscarItinerario;
 	private Label lbBus;
@@ -71,17 +71,17 @@ public class WndEmbarquePasajero extends WndBase implements Serializable {
 	private Textbox txtNumeroDocumento;
 	private Button btnAbrirEmbarque;
 	private Button btnCerrar;
-	
+
 	private Itinerario itinerario=null;
 	private DetalleItinerario detalleItinerario=null;
-		
+
 	List<VentaPasaje> listVentas=null;
-	List<DetalleManifiesto> listPasajeros= new ArrayList<DetalleManifiesto>();
-	
+	List<DetalleManifiesto> listPasajeros= new ArrayList<>();
+
 	String lbTab1Defaul="PASAJEROS";
 	String lb2PTab1="PASAJEROS: PRIMER PISO";
 	String lb2PTab2="PASAJEROS: SEGUNDO PISO";
-	
+
 	Tabbox tabbox= new Tabbox();
 	Tabs tabs= new Tabs();
 	Tab tab1= new Tab();
@@ -89,20 +89,20 @@ public class WndEmbarquePasajero extends WndBase implements Serializable {
 	Tabpanels tabpanels= new Tabpanels();
 	Tabpanel tabpanel= new Tabpanel();
 	Groupbox groupbox= new Groupbox();
-	
+
 	Label lbNumPax_l= new Label();
 	Label lbCapBus_l= new Label();
 	Label lbNumPax= new Label();
 	Label lbCapBus= new Label();
-	
+
 	private EmbarquePasajero embarquePasajero;
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
 	@Override
-	public void onCreate() throws Exception {		
+	public void onCreate() throws Exception {
 		/*Carga los tipos de documento*/
 		TreeMap<String, Object>criteriosBusqueda= new TreeMap<>();
 		criteriosBusqueda.put("tipo", 0);
@@ -122,10 +122,10 @@ public class WndEmbarquePasajero extends WndBase implements Serializable {
 		cmbTipoDocumento.setSelectedIndex(0);
 		cmbTipoDocumento.setDisabled(true);
 		txtNumeroDocumento.setDisabled(true);
-		
+
 		enlazarItinerario(btnBuscarItinerario);
-	}	
-	
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
@@ -147,7 +147,7 @@ public class WndEmbarquePasajero extends WndBase implements Serializable {
 		btnAbrirEmbarque=(Button)this.getFellow("btnAbrirEmbarque");
 		btnCerrar=(Button)this.getFellow("btnCerrar");
 //		wndDespachoPasajeros=(Window)this.getFellow("wndDespachoPasajeros");
-		
+
 		cmbTipoDocumento.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -163,22 +163,22 @@ public class WndEmbarquePasajero extends WndBase implements Serializable {
 	 * Evento que se ejecuta cuando el usuario lee el codigo de barras del documento
 	 * @throws Exception
 	 */
-	public void Onchanging_txtNumeroDocumento(String value, Event event)throws Exception{		
+	public void Onchanging_txtNumeroDocumento(String value, Event event)throws Exception{
 		if(cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento){
 			TipoDocumento tipoDocumento=cmbTipoDocumento.getSelectedItem().getValue();
 			/*DNI*/
 			if(tipoDocumento.getId().intValue()==Constantes.ID_TIPDOC_DNI && value.trim().length()==8){
 				boolean paxEmbarcado = agregarPax(tipoDocumento.getId(), value);
-				if(paxEmbarcado==false)
+				if(!paxEmbarcado)
 					DlgMessage.warning("Pasajero no encontrado.",cmbTipoDocumento);
 			}else if(tipoDocumento.getId().intValue()!=Constantes.ID_TIPDOC_DNI)
 				/*OTROS TIPOS DE DOCUMENTO*/
-				agregarPax(tipoDocumento.getId(), value);			
+				agregarPax(tipoDocumento.getId(), value);
 		}else{
 			DlgMessage.information("Debe de seleccionar el Tipo de Documento.",cmbTipoDocumento);
 		}
 	}
-	
+
 	/**
 	 * Agrega el pasajero a las lista de Pasajeros embarcados
 	 * @param tipoDocumentoID : Identificador del tipo de documento.
@@ -186,12 +186,12 @@ public class WndEmbarquePasajero extends WndBase implements Serializable {
 	 * @throws Exception
 	 */
 	private boolean agregarPax(int tipoDocumentoID, String value)throws Exception{
-		
+
 		boolean duplicidadEmbarquePax=false;
 		/*Primero valida la existencia del pasajero en la lista de pasajeros embarcados*/
 		for(Listitem item : lbxPasajerosPiso1.getItems()){
 			VentaPasaje ventaPasaje=((DetalleEmbarquePasajero)item.getValue()).getVentaPasaje();
-			if(ventaPasaje.getPasajero().getTipoDocumento().getId().intValue()==tipoDocumentoID && 
+			if(ventaPasaje.getPasajero().getTipoDocumento().getId().intValue()==tipoDocumentoID &&
 					ventaPasaje.getPasajero().getNumeroDocumento().equals(value.trim().toUpperCase())){
 				duplicidadEmbarquePax=true;
 				Messagebox.show("El tipo y número de documento ingresado, corresponden a un Pasajero ya embarcado.", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_OK, Messagebox.ERROR,new EventListener<Event>() {
@@ -204,15 +204,15 @@ public class WndEmbarquePasajero extends WndBase implements Serializable {
 				break;
 			}
 		}
-		
+
 		boolean pasajeroEmbarcado=false;
 		/*Busca al pasajero y lo agrega a la lista de pasajeros embarcados*/
-		if(duplicidadEmbarquePax==false){
+		if(!duplicidadEmbarquePax){
 			for(VentaPasaje ventaPasaje : listVentas){
 				if(ventaPasaje.getPasajero().getTipoDocumento().getId().intValue()==tipoDocumentoID &&
 						ventaPasaje.getPasajero().getNumeroDocumento().equals(value.trim().toUpperCase())){
 					pasajeroEmbarcado=true;
-					
+
 					Listitem item= new Listitem();
 					Listcell cell= new Listcell(ventaPasaje.getNumeroAsiento().toString().length()==1?"0"+ventaPasaje.getNumeroAsiento().toString():ventaPasaje.getNumeroAsiento().toString());
 					cell.setStyle("font-size:11px !important");
@@ -240,27 +240,27 @@ public class WndEmbarquePasajero extends WndBase implements Serializable {
 					item.appendChild(cell);
 					cell= new Listcell(ventaPasaje.getRuta().toString());
 					item.appendChild(cell);
-					
+
 					DetalleEmbarquePasajero detalleEmbarquePasajero= new DetalleEmbarquePasajero();
 					detalleEmbarquePasajero.setVentaPasaje(ventaPasaje);
 
 					item.setValue(detalleEmbarquePasajero);
 					lbxPasajerosPiso1.appendChild(item);
-					
+
 					txtNumeroDocumento.setText(value);//Es necesario para que el control se pueda limpiar
 					txtNumeroDocumento.setText("");
 				}
 			}
 		}
-		
+
 		return pasajeroEmbarcado;
 	}
-	
-	
+
+
 	/**
 	 * Permite enlazar los controles a la ventana de selección de Itinerario
 	 * @param button :ha este Button se le adjuntara un listener con la llamada a la ventana de selección de itinerario
-	 * @see WndDespachoPasajeros: 
+	 * @see WndDespachoPasajeros:
 	 */
 	public  void enlazarItinerario(final Button button) {
 		button.setTooltiptext("Seleccionar Itinerario");
@@ -305,14 +305,14 @@ public class WndEmbarquePasajero extends WndBase implements Serializable {
 	 * @throws Exception
 	 */
 	public void onRefress() throws Exception{
-		listVentas=new ArrayList<>();		
+		listVentas=new ArrayList<>();
 		limpiaCabecera();
 //		Util.disabledBtnAceptar(true, btnCerrarEmbarque, true);
 //		Util.disabledBtnRefresh(true, btnRefress, true);
-				
+
 		if(itinerario!=null && detalleItinerario!=null){
 			//Busca manifiesto
-			TreeMap<String, Object>criteriosBusqueda=new TreeMap<String, Object>();
+			TreeMap<String, Object>criteriosBusqueda=new TreeMap<>();
 			criteriosBusqueda.put("itinerario", itinerario);
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<Manifiesto> listManifiesto=ServiceLocator.getManifiestoManager().buscarPorX(criteriosBusqueda, null);
@@ -323,24 +323,24 @@ public class WndEmbarquePasajero extends WndBase implements Serializable {
 					lbServicio.setValue(itinerario.getServicio().getDenominacion());
 					lbSalida.setValue(Constantes.FORMAT_DATE.format(itinerario.getFechaPartida())+" "+itinerario.getHoraPartida());
 					listVentas= ServiceLocator.getVentaPasajesManager().buscarVentasForMapaBus(itinerario.getId());
-					
+
 					Util.limpiarListbox(lbxPasajerosPiso1);
-					
+
 					/*Busca un embarque abierto de la agencia para el servicio seleccionado*/
 					criteriosBusqueda= new TreeMap<>();
 					criteriosBusqueda.put("itinerario", itinerario);
 					criteriosBusqueda.put("agencia", getAgencia());
 					criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 					List<EmbarquePasajero> resultEmb=ServiceLocator.getEmbarquePasajeroManager().buscarPorX(criteriosBusqueda, null);
-					for(EmbarquePasajero embarquePasajero: resultEmb){						
-						/*Buscando los pasajeros embarcados*/						
+					for(EmbarquePasajero embarquePasajero: resultEmb){
+						/*Buscando los pasajeros embarcados*/
 						criteriosBusqueda= new TreeMap<>();
 						criteriosBusqueda.put("embarquePasajero", embarquePasajero);
 						criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 						List<String> criteriosOrdenar= new ArrayList<>();
 						criteriosOrdenar.add("id");
 						List<DetalleEmbarquePasajero>resultDetemb=ServiceLocator.getDetalleEmbarquePasajeroManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
-						
+
 						for(DetalleEmbarquePasajero detalleEmbarquePasajero:resultDetemb){
 							VentaPasaje ventaPasaje=detalleEmbarquePasajero.getVentaPasaje();
 							Listitem item= new Listitem();
@@ -351,7 +351,7 @@ public class WndEmbarquePasajero extends WndBase implements Serializable {
 							cell.setStyle("font-size:11px !important");
 							item.appendChild(cell);
 							cell= new Listcell(ventaPasaje.getPasajero().toString());
-							item.appendChild(cell);							
+							item.appendChild(cell);
 							cell= new Listcell(ventaPasaje.getPasajero().getTipoDocumento().getDenominacion());
 							cell.setStyle("font-size:11px !important");
 							item.appendChild(cell);
@@ -360,17 +360,17 @@ public class WndEmbarquePasajero extends WndBase implements Serializable {
 							item.appendChild(cell);
 							cell= new Listcell(ventaPasaje.getRuta().toString());
 							item.appendChild(cell);
-							
+
 							item.setValue(detalleEmbarquePasajero);
-							
+
 							lbxPasajerosPiso1.appendChild(item);
 						}
-						
+
 						/*Validando el estado del embarque*/
 						if(embarquePasajero.getEstadoEmbarque().intValue()==Constantes.TRUE_VALUE)
 							this.embarquePasajero=embarquePasajero;
 					}
-					
+
 					if(resultEmb.size()==0)
 						btnAbrirEmbarque.setVisible(true);
 					else{
@@ -380,25 +380,25 @@ public class WndEmbarquePasajero extends WndBase implements Serializable {
 							cmbTipoDocumento.setDisabled(false);
 							txtNumeroDocumento.setDisabled(false);
 							txtNumeroDocumento.setFocus(true);
-							
+
 							btnAbrirEmbarque.setVisible(false);
-							btnCerrarEmbarque.setVisible(true);	
+							btnCerrarEmbarque.setVisible(true);
 							txtNumeroDocumento.setFocus(true);
 						}else
 							btnAbrirEmbarque.setVisible(true);
 					}
-					
+
 //					if(resultEmb.size()>0){
 //						embarquePasajero=resultEmb.get(0);
-//						
-//						/*Buscando los pasajeros embarcados*/						
+//
+//						/*Buscando los pasajeros embarcados*/
 //						criteriosBusqueda= new TreeMap<>();
 //						criteriosBusqueda.put("embarquePasajero", embarquePasajero);
 //						criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 //						List<String> criteriosOrdenar= new ArrayList<>();
 //						criteriosOrdenar.add("id");
 //						List<DetalleEmbarquePasajero>resultDetemb=ServiceLocator.getDetalleEmbarquePasajeroManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
-//						
+//
 //						for(DetalleEmbarquePasajero detalleEmbarquePasajero:resultDetemb){
 //							VentaPasaje ventaPasaje=detalleEmbarquePasajero.getVentaPasaje();
 //							Listitem item= new Listitem();
@@ -409,7 +409,7 @@ public class WndEmbarquePasajero extends WndBase implements Serializable {
 //							cell.setStyle("font-size:11px !important");
 //							item.appendChild(cell);
 //							cell= new Listcell(ventaPasaje.getPasajero().toString());
-//							item.appendChild(cell);							
+//							item.appendChild(cell);
 //							cell= new Listcell(ventaPasaje.getPasajero().getTipoDocumento().getDenominacion());
 //							cell.setStyle("font-size:11px !important");
 //							item.appendChild(cell);
@@ -418,21 +418,21 @@ public class WndEmbarquePasajero extends WndBase implements Serializable {
 //							item.appendChild(cell);
 //							cell= new Listcell(ventaPasaje.getRuta().toString());
 //							item.appendChild(cell);
-//							
+//
 //							item.setValue(detalleEmbarquePasajero);
-//							
+//
 //							lbxPasajerosPiso1.appendChild(item);
 //						}
-//						
+//
 //						/*Validando el estado del embarque*/
 //						if(embarquePasajero.getEstadoEmbarque().intValue()==Constantes.TRUE_VALUE){
 //							Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, Constantes.ID_TIPDOC_DNI);
 //							cmbTipoDocumento.setDisabled(false);
 //							txtNumeroDocumento.setDisabled(false);
 //							txtNumeroDocumento.setFocus(true);
-//							
+//
 //							btnAbrirEmbarque.setVisible(false);
-//							btnCerrarEmbarque.setVisible(true);	
+//							btnCerrarEmbarque.setVisible(true);
 //							txtNumeroDocumento.setFocus(true);
 //						}else
 //							btnAbrirEmbarque.setVisible(true);
@@ -444,14 +444,14 @@ public class WndEmbarquePasajero extends WndBase implements Serializable {
 			}else{
 				DlgMessage.information(Messages.getString("wndDespachoPasajerosUpdateDocPax.information.noManifiesto"));
 			}
-			
+
 			btnRefress.setImage("resources/mp_refrescarEnabled.png");
 			btnRefress.setStyle("cursor:pointer");
-			
+
 			btnRefress.setDisabled(false);
 		}
 	}
-	
+
 	/**
 	 * Abre el embarque de pasajeros
 	 */
@@ -461,7 +461,7 @@ public class WndEmbarquePasajero extends WndBase implements Serializable {
 			Date dateApertura= Constantes.FORMAT_DATE.parse(dateServer);
 			String horaApertura=dateServer.split(" ")[1];
 			horaApertura=horaApertura.substring(0, horaApertura.length()-3).trim();
-			
+
 			embarquePasajero= new EmbarquePasajero();
 			embarquePasajero.setItinerario(itinerario);
 			embarquePasajero.setAgencia(getAgencia());
@@ -470,13 +470,13 @@ public class WndEmbarquePasajero extends WndBase implements Serializable {
 			embarquePasajero.setEstadoEmbarque(Constantes.TRUE_VALUE);
 			embarquePasajero.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 			UtilData.auditarRegistro(embarquePasajero, getUsuario(), Executions.getCurrent());
-			
+
 			Messagebox.show(Messages.getString("wndDespachoPasajeros.question.apertura"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e) throws Exception {
 					if(e.getName().equals("onYes")){
 						try {
-							
+
 							ServiceLocator.getEmbarquePasajeroManager().guardar(embarquePasajero);
 							btnAbrirEmbarque.setVisible(false);
 							btnCerrarEmbarque.setVisible(true);
@@ -498,12 +498,12 @@ public class WndEmbarquePasajero extends WndBase implements Serializable {
 			DlgMessage.error(e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Realiza el cierre de embarque
 	 */
 	public void cerraDespacho(){
-		try {			
+		try {
 			Messagebox.show(Messages.getString("wndDespachoPasajeros.question.cerrarDespacho"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e) throws Exception {
@@ -531,18 +531,18 @@ public class WndEmbarquePasajero extends WndBase implements Serializable {
 							embarquePasajero.setCantidadPasajerosEmbarcados(lbxPasajerosPiso1.getItems().size());
 							UtilData.auditarRegistro(embarquePasajero, true, getUsuario(), Executions.getCurrent());
 							ServiceLocator.getEmbarquePasajeroManager().actualizar(embarquePasajero);
-							
-							
+
+
 							cmbTipoDocumento.setDisabled(true);
 							txtNumeroDocumento.setDisabled(true);
 							btnCerrarEmbarque.setVisible(false);
 							btnCerrar.setVisible(true);
-							
+
 							DlgMessage.information("Se realizó correctamente");
 						} catch (Exception e2) {
 							e2.printStackTrace();
-							
-						}			
+
+						}
 					}
 				}
 			});
@@ -561,9 +561,9 @@ public class WndEmbarquePasajero extends WndBase implements Serializable {
 		lbServicio.setValue("");
 		lbSalida.setValue("");
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param pisos : Números de pisos del bus.
 	 */
 	private void generaTabs_Bus2Pisos(Integer pisos){
@@ -574,30 +574,30 @@ public class WndEmbarquePasajero extends WndBase implements Serializable {
 		if(pisos==2){
 			tabbox= new Tabbox();
 			tabpanels= new Tabpanels();
-				
+
 			tab1=new Tab();
 			tab1.setLabel(lb2PTab1);
-				
+
 			tab2=new Tab();
 			tab2.setLabel(lb2PTab2);
-				
+
 			tabs.appendChild(tab1);
 			tabs.appendChild(tab2);
 			tabbox.appendChild(tabs);
-				
+
 			tabpanel=new Tabpanel();
 			tabpanel.appendChild(lbxPasajerosPiso1);
 			tabpanels.appendChild(tabpanel);
-				
+
 			lbxPasajerosPiso2.setVisible(true);
 			tabpanel = new Tabpanel();
 			tabpanel.appendChild(lbxPasajerosPiso2);
-				
+
 			tabpanels.appendChild(tabpanel);
 			tabbox.appendChild(tabpanels);
 			this.appendChild(tabbox);
 		}else{
-			
+
 			Caption caption=new Caption();
 			caption.setLabel("Lista de Pasajeros");
 			lbxPasajerosPiso2.setVisible(false);
@@ -609,5 +609,5 @@ public class WndEmbarquePasajero extends WndBase implements Serializable {
 			this.appendChild(groupbox);
 		}
 	}
-	
+
 }

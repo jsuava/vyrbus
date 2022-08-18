@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 07/07/2016
  * Hora			: 11:22:30
@@ -85,5 +85,5 @@ public class TarifaClienteManagerImpl implements TarifaClienteManager{
 		// TODO Auto-generated method stub
 		getTarifaClienteDAO().actualizar(tarifaCliente);
 	}
-	
+
 }

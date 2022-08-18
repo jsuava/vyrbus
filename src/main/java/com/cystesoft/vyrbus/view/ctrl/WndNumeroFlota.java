@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 30/04/2012
  */
@@ -44,18 +44,18 @@ public class WndNumeroFlota extends WndOpcionesMantenimiento {
 	private Textbox txtDenominacion;
 	private Textbox txtCodigo;
 	private Textbox txtNombreCorto;
-	
+
 	private NumeroFlota oNumeroFlota = null;
 
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IBase#onCreate()
 	 */
 	@Override
 	public void onCreate() {
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
 	}
 
@@ -68,7 +68,7 @@ public class WndNumeroFlota extends WndOpcionesMantenimiento {
 		txtCodigo = (Textbox) getFellow("txtCodigo");
 		txtNombreCorto = (Textbox) getFellow("txtNombreCorto");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onNew()
 	 */
@@ -123,7 +123,7 @@ public class WndNumeroFlota extends WndOpcionesMantenimiento {
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getNumeroFlotaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getNumeroFlotaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
 	}
 
@@ -162,10 +162,10 @@ public class WndNumeroFlota extends WndOpcionesMantenimiento {
 				throw new DenominacionNullException();
 			else if (txtCodigo.getText().trim().equals(""))
 				throw new CodigoNullException();
-						
+
 			if (action==ACTION_NEW)
 				oNumeroFlota = new NumeroFlota();
-			
+
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
 			oNumeroFlota.setId(id);
 			oNumeroFlota.setDenominacion(txtDenominacion.getText().trim().toUpperCase());
@@ -192,7 +192,7 @@ public class WndNumeroFlota extends WndOpcionesMantenimiento {
 			criteriosBusqueda.put("denominacion", oNumeroFlota.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			listarRegistros(ServiceLocator.getNumeroFlotaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-			
+
 		}catch (DenominacionNullException dnex){
 			DlgMessage.information(Messages.getString("Generales.information.noIngresoDenominacion"),txtDenominacion);
 			throw new CancelaGrabacionException();
@@ -212,7 +212,7 @@ public class WndNumeroFlota extends WndOpcionesMantenimiento {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace(); throw new CancelaGrabacionException();
 		}
-				
+
 	}
 
 	/* (non-Javadoc)
@@ -275,7 +275,7 @@ public class WndNumeroFlota extends WndOpcionesMantenimiento {
 				break;
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onClose()
 	 */
@@ -285,11 +285,11 @@ public class WndNumeroFlota extends WndOpcionesMantenimiento {
 	}
 
 	private void listarRegistros(ArrayList<NumeroFlota> lstRegistros) {
-		ArrayList<Object> lstNumeroFlotas = new ArrayList<Object>();
+		ArrayList<Object> lstNumeroFlotas = new ArrayList<>();
 
 		for(int r = 0; r < lstRegistros.size(); r ++) {
 			NumeroFlota oNumeroFlota = lstRegistros.get(r);
-			ArrayList<Object> lstFila = new ArrayList<Object>();
+			ArrayList<Object> lstFila = new ArrayList<>();
 
 			lstFila.add(oNumeroFlota.getId());
 			lstFila.add(r + 1);

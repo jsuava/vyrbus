@@ -26,7 +26,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class AgenciaManagerImpl implements AgenciaManager {
 	private AgenciaDAO agenciaDAO;
-	
+
 	/**
 	 * @return the agenciaDAO
 	 */
@@ -72,7 +72,7 @@ public class AgenciaManagerImpl implements AgenciaManager {
 	public int guardar(Agencia agencia)throws Exception {
 		int result = Constantes.FAILURE;
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", agencia.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getAgenciaDAO().buscarPorX(criteriosBusqueda, null);
@@ -80,9 +80,9 @@ public class AgenciaManagerImpl implements AgenciaManager {
 			if(resultDenominacion.size()>0){
 				throw new DenominacionDuplicadaException();
 			}
-				
-			
-			criteriosBusqueda = new TreeMap<String, Object>();
+
+
+			criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("nombreCorto", agencia.getNombreCorto());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultNombreCorto = getAgenciaDAO().buscarPorX(criteriosBusqueda, null);
@@ -90,8 +90,8 @@ public class AgenciaManagerImpl implements AgenciaManager {
 			if (resultNombreCorto.size()>0){
 				throw new NombreCortoDuplicadoException();
 			}
-				
-			
+
+
 			getAgenciaDAO().guardar(agencia);
 			result = Constantes.CORRECT;
 		}catch (DenominacionDuplicadaException rsdex){
@@ -109,31 +109,31 @@ public class AgenciaManagerImpl implements AgenciaManager {
 	@Transactional
 	public void actualizar(Agencia agencia)throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", agencia.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getAgenciaDAO().buscarPorX(criteriosBusqueda, null);
-			
+
 			criteriosBusqueda.remove("denominacion");
 			criteriosBusqueda.put("nombreCorto", agencia.getNombreCorto());
 			List<?> resultnombreCorto = getAgenciaDAO().buscarPorX(criteriosBusqueda, null);
-			
+
 			/*Valida duplicidad de la denominación*/
-			for(int r = 0; r < resultDenominacion.size(); r ++) {
-				Agencia oagencia = (Agencia) resultDenominacion.get(r);
+			for (Object element : resultDenominacion) {
+				Agencia oagencia = (Agencia) element;
 				if (!(oagencia.getId().equals(agencia.getId())))
 					throw new DenominacionDuplicadaException();
 			}
-			
+
 			/*Valida duplicidad del Nombre corto*/
-			for(int r = 0; r < resultnombreCorto.size(); r ++) {
-				Agencia oAgencia= (Agencia) resultnombreCorto.get(r);
+			for (Object element : resultnombreCorto) {
+				Agencia oAgencia= (Agencia) element;
 				if (!(oAgencia.getId().equals(agencia.getId())))
 					throw new NombreCortoDuplicadoException();
 			}
-		
+
 			getAgenciaDAO().actualizar(agencia);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(NombreCortoDuplicadoException rdnex){
@@ -151,7 +151,7 @@ public class AgenciaManagerImpl implements AgenciaManager {
 	public void inactivar(Long id) {
 		getAgenciaDAO().inactivar(id);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.AgenciaManager#buscarAgenciaByRucClienteCredito(java.lang.String)
@@ -183,7 +183,7 @@ public class AgenciaManagerImpl implements AgenciaManager {
 		// TODO Auto-generated method stub
 		return getAgenciaDAO().buscarAgenciasByDetalleCorporativo();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.service.business.AgenciaManager#buscarAgenciaByLocalidad(java.lang.String)
@@ -200,5 +200,5 @@ public class AgenciaManagerImpl implements AgenciaManager {
 		// TODO Auto-generated method stub
 		return getAgenciaDAO().buscarAgencia_Idtranscarweb(agencia_idvrybus);
 	}
-	
+
 }

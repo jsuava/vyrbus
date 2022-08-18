@@ -1,7 +1,7 @@
 /**
  * Proyecto		: VYRBUS
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Avalos Sullo
  * Fecha		: 05/07/2012
  */
@@ -72,9 +72,9 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 				"WHERE di.d_fecpar=to_date('"+fechaPartida+"','dd/mm/yyyy') AND r.c_origen LIKE '"+origen+"%' AND r.c_destino LIKE '"+destino+"%' AND " +
 					"n_esanulado=0 " +
 				"ORDER BY di.d_fecpar, to_date(di.c_horpar,'HH24:MI'), s.c_denominacion, di.d_feclle, to_date(di.c_horlle,'HH24:MI')";
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<DetalleItinerario> lstResult = new ArrayList<DetalleItinerario>();
+		List<DetalleItinerario> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
 			DetalleItinerario detalleItinerario = new DetalleItinerario();
@@ -84,16 +84,16 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 			itinerario.setId(((BigDecimal)obj[0]).longValue());
 			itinerario.setSecuenciaTramo(obj[1].toString());
 			itinerario.setTipoItinerario(tipoItinerario);
-			
+
 			Ruta rutaMayor=new Ruta(((BigDecimal)obj[33]).intValue());
 			itinerario.setRuta(rutaMayor);
-			
+
 //			itinerario.setListSecuenciaTramo(obtenerSecuencia(itinerario.getSecuenciaTramo()));
 			Agencia agenciaPartidaItinerario = new Agencia();
 			agenciaPartidaItinerario.setId(((BigDecimal)obj[2]).intValue());
 			itinerario.setAgenciaPartida(agenciaPartidaItinerario);
 			Agencia agenciaLlegadaItinerario = new Agencia();
-			agenciaLlegadaItinerario.setId(((BigDecimal)obj[3]).intValue());			
+			agenciaLlegadaItinerario.setId(((BigDecimal)obj[3]).intValue());
 			itinerario.setAgenciaLlegada(agenciaLlegadaItinerario);
 			if(obj[4]!=null){
 				Bus bus = new Bus();
@@ -141,14 +141,14 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 			servicio.setNumeroFilasPiso2(obj[29]==null?null:((BigDecimal)obj[29]).intValue());
 			servicio.setNumeroColumnasPiso2(obj[30]==null?null:((BigDecimal)obj[30]).intValue());
 			itinerario.setFechaRealPartida(obj[31]==null?null:(Date)obj[31]);
-			
+
 			if(obj[34]!=null){
 				String hql="FROM PoolLocalidad WHERE id="+((BigDecimal)obj[34]).intValue();
 				PoolLocalidad localidadIntegracion=(PoolLocalidad) getSession().createQuery(hql).uniqueResult();
 				detalleItinerario.setPoolLocalidad(localidadIntegracion);
 			}
-			
-			
+
+
 			lstResult.add(detalleItinerario);
 		}
 		return lstResult;
@@ -173,9 +173,9 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 				"WHERE di.d_fecpar=to_date('"+fechaPartida+"','dd/mm/yyyy') AND r.c_origen LIKE '"+origen+"%' AND r.c_destino LIKE '"+destino+"%' " +
 						"AND n_esanulado=0 " +
 				"ORDER BY s.c_denominacion ";
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<DetalleItinerario> lstResult = new ArrayList<DetalleItinerario>();
+		List<DetalleItinerario> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
 			DetalleItinerario detalleItinerario = new DetalleItinerario();
@@ -217,7 +217,7 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 		}
 		return lstResult;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.model.dao.ItinerarioDAO#buscarAgenciasPartida(java.lang.Long, java.lang.String, java.lang.Integer)
@@ -230,9 +230,9 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 				"INNER JOIN vrmlocalidad l ON l.localidad_id=iap.localidad_id " +
 				"WHERE iap.itinerario_id="+idItinerario+" AND iap.c_estreg IN ('"+Constantes.VALUE_ACTIVO+"','"+estado+"') AND iap.localidad_id="+idLocalidad;
 		List<?> result = getSession().createSQLQuery(sql).list();
-		ArrayList<ItinerarioAgenciaPartida> lstResult = new ArrayList<ItinerarioAgenciaPartida>();
-		for(int i=0; i<result.size(); i++){
-			Object[] obj = (Object[])result.get(i);
+		ArrayList<ItinerarioAgenciaPartida> lstResult = new ArrayList<>();
+		for (Object element : result) {
+			Object[] obj = (Object[])element;
 			ItinerarioAgenciaPartida itAgePartida = new ItinerarioAgenciaPartida();
 			Itinerario itinerario =  new Itinerario(((BigDecimal)obj[0]).longValue());
 			itAgePartida.setItinerario(itinerario);
@@ -245,7 +245,7 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 				Localidad localidad = new Localidad();
 				localidad.setId(((BigDecimal)obj[5]).intValue());
 				localidad.setDenominacion(obj[6].toString());
-				itAgePartida.setLocalidad(localidad);				
+				itAgePartida.setLocalidad(localidad);
 			}
 			lstResult.add(itAgePartida);
 		}
@@ -263,9 +263,9 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 				"INNER JOIN vrmlocalidad l ON l.localidad_id=iad.localidad_id " +
 				"WHERE iad.itinerario_id="+idItinerario+" AND iad.c_estreg IN ('"+Constantes.VALUE_ACTIVO+"','"+estado+"') AND iad.localidad_id="+idLocalidad;
 		List<?> result = getSession().createSQLQuery(sql).list();
-		ArrayList<ItinerarioAgenciaLlegada> lstResult = new ArrayList<ItinerarioAgenciaLlegada>();
-		for(int i=0; i<result.size(); i++){
-			Object[] obj = (Object[])result.get(i);
+		ArrayList<ItinerarioAgenciaLlegada> lstResult = new ArrayList<>();
+		for (Object element : result) {
+			Object[] obj = (Object[])element;
 			ItinerarioAgenciaLlegada itAgeLlegada = new ItinerarioAgenciaLlegada();
 			Itinerario itinerario =  new Itinerario(((BigDecimal)obj[0]).longValue());
 			itAgeLlegada.setItinerario(itinerario);
@@ -278,13 +278,13 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 				Localidad localidad = new Localidad();
 				localidad.setId(((BigDecimal)obj[5]).intValue());
 				localidad.setDenominacion(obj[6].toString());
-				itAgeLlegada.setLocalidad(localidad);				
+				itAgeLlegada.setLocalidad(localidad);
 			}
 			lstResult.add(itAgeLlegada);
 		}
 		return lstResult;
 	}
-	
+
 //	private List<SecuenciaTramo> obtenerSecuencia(String secuencia){
 //		String[] sArray = secuencia.split(";");
 //		List<SecuenciaTramo> lstResult = new ArrayList<SecuenciaTramo>();
@@ -309,10 +309,10 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 				"FROM vrtitinerario i " +
 				"INNER JOIN vrmservicio s ON s.servicio_id=i.servicio_id " +
 				"WHERE i.itinerario_id="+idItinerario +" AND i.c_estreg='"+Constantes.VALUE_ACTIVO+"' ";
-		
+
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<Object> lstResult = new LinkedList<Object>();
+		List<Object> lstResult = new LinkedList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[])result.get(i);
 			if(piso==0){
@@ -328,42 +328,42 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 					lstResult.add(false);
 				lstResult.add(obj[0].toString());
 			}
-			
+
 		}
 		return lstResult;
 	}
-	
+
 	@Override
 	public List<DetalleItinerario> buscarItinerariosMantenimiento(Long idItinerario, String origen,String destino, String fechaInicio, String fechaFinal,
 		String Servicio, String tipoDeItinerario, String criterioOrden) throws Exception {
-		
+
 		 if(origen.isEmpty())
 			 origen=null;
 		 else
 			 origen="'"+origen+"'";
-		 
+
 		if(destino.isEmpty())
 			destino=null;
 		else
 			destino="'"+destino+"'";
-		
+
 		if(Servicio.isEmpty())
 			Servicio=null;
 		else
 			Servicio="'"+Servicio+"'";
-		
+
 		if(tipoDeItinerario.isEmpty())
 			tipoDeItinerario=null;
 		else
 			tipoDeItinerario="'"+tipoDeItinerario+"'";
-		
-		
+
+
 		String sql="";
 		String where="";
 		if (criterioOrden=="" )
 			criterioOrden="di.d_fecpar, di.c_horpar,di.d_feclle, di.c_horlle "; /*MUY IMPORTANTE PARA LA RECUPERACION DEL DETALLE DEL ITINERARIO*/
-		
-		List<DetalleItinerario> lstResult = new ArrayList<DetalleItinerario>();		
+
+		List<DetalleItinerario> lstResult = new ArrayList<>();
 		sql = "SELECT i.itinerario_id, i.bus_id, b.c_codigo, s.servicio_id, s.c_denominacion servicio, r.ruta_id, r.c_origen origen, " +
 					"ao.c_nomcor agpartida, di.d_fecpar, di.c_horpar, r.c_destino destino, ad.c_nomcor agllegada, di.d_feclle, di.c_horlle, di.n_tarifa, " +
 					"s.n_numpis, s.n_numasipis1, s.n_numfilpis1, s.n_numcolpis1, ao.agencia_id idAgeOrigen, ad.agencia_id idAgeDestino, i.c_sectra, " +
@@ -395,7 +395,7 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 					   "AND ti.c_denominacion =NVL("+tipoDeItinerario+",ti.c_denominacion) ";
 			}
 			sql+=where+" And i.N_EsAnulado=0 And i.C_EstReg='"+Constantes.VALUE_ACTIVO+"' ORDER BY " + criterioOrden;
-			
+
 			log.info(sql);
 			List<?> result = getSession().createSQLQuery(sql).list();
 			for(int i=0; i<result.size(); i++){
@@ -404,8 +404,8 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 				TipoItinerario tipoItinerario = new TipoItinerario();
 				tipoItinerario.setId(((BigDecimal)obj[24]).intValue());
 				tipoItinerario.setDenominacion((obj[25]).toString());
-				
-				
+
+
 				Localidad localidadOrigenMayor= new Localidad();
 				localidadOrigenMayor.setId(((BigDecimal)obj[34]).intValue());
 				Localidad localidadDestinoMayor= new Localidad();
@@ -413,8 +413,8 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 				Ruta rutaMayor= new Ruta();
 				rutaMayor.setLocalidadOrigen(localidadOrigenMayor);
 				rutaMayor.setLocalidadDestino(localidadDestinoMayor);
-				
-				
+
+
 				Itinerario itinerario = new Itinerario();
 				itinerario.setId(((BigDecimal)obj[0]).longValue());
 				itinerario.setSecuenciaTramo(obj[21].toString());
@@ -425,7 +425,7 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 					bus.setId(((BigDecimal)obj[1]).intValue());
 					bus.setCodigo(obj[2].toString());
 				}
-				
+
 				itinerario.setBus(bus);
 				Servicio servicio = new Servicio();
 				servicio.setId(((BigDecimal)obj[3]).intValue());
@@ -472,13 +472,13 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 				detalleItinerario.setFechaInsercion((Date)obj[37]);
 				detalleItinerario.setUsuarioInsercion(obj[38].toString());
 				detalleItinerario.setIpInsercion(obj[39].toString());
-				
+
 				lstResult.add(detalleItinerario);
 			}
-		
+
 		return lstResult;
 	}
-	
+
 
 	/*
 	 * (non-Javadoc)
@@ -488,7 +488,7 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 	public ArrayList<Itinerario> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar) {
 		return (ArrayList<Itinerario>) super.findByX(Itinerario.class, criteriosBusqueda, criteriosOrdenar);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.ItinerarioDAO#buscarPorId(java.lang.Long)
@@ -497,7 +497,7 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 	public Itinerario buscarPorId(Long id) {
 		return (Itinerario) super.findById(Itinerario.class, id);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.ItinerarioDAO#inactivar(java.lang.Long)
@@ -513,25 +513,25 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 					   "WHERE v.itinerario_id="+id+" AND v.tipmov_id NOT IN ("+Constantes.ID_TIPMOV_ANULACION+","+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+") AND v.c_estreg='A' ";
 			log.info(sql);
 			List<?> result = getSession().createSQLQuery(sql).list();
-			int coun=((BigDecimal)result.get(0)).intValue(); 
+			int coun=((BigDecimal)result.get(0)).intValue();
 			if(coun>0)
 				throw new ItinerarioException(ItinerarioException.CON_VENTAS); // ItinerarioTieneVentasException();
-			
+
 			//Si no hay ventas o reserveas, se realiza la anulacion.
 			Itinerario itinerario=buscarPorId(id);
 			itinerario.setEsAnulado(ESTADO_ITINERARIO_ANULADO);
 			UtilData.auditarRegistro(itinerario, true,(Usuario)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO), Executions.getCurrent());
 			super.update(itinerario);
-						
+
 //			String sqll="UPDATE vrtitinerario SET n_esanulado="+ESTADO_ITINERARIO_ANULADO+" WHERE itinerario_id="+id;
 //			String sqll="UPDATE vrtitinerario SET n_esanulado="+Constantes.ITINIRARIO_ANULADO+" WHERE itinerario_id="+id;
 //			getSession().createSQLQuery(sqll).executeUpdate();
-								
+
 		}catch(ItinerarioException itvex){
 			if(itvex.getTipo().intValue()==ItinerarioException.CON_VENTAS)
 				throw new ItinerarioException(ItinerarioException.CON_VENTAS);
 		}
-		
+
 	}
 
 	/*
@@ -542,7 +542,7 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 //	public  Calendar fechaServer() {
 //		return super.fechaServer();
 //	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.impl.GenericDAOImpl#fechaServerLong()
@@ -551,7 +551,7 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 	public String dateServer() {
 		return super.dateServer();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.ItinerarioDAO#validadIngresoTramos(java.lang.Integer, java.lang.Integer, java.lang.Integer, java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer)
@@ -560,26 +560,26 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 	public List<DetalleItinerario> validadIngresoTramos(Integer idTipoItinerario,Integer idServicio, Integer idRuta, String fechaPartida,String horaPartida, Integer idAgenciaPartida,
 			Integer idAgenciaLlegada) throws Exception {
 			String sql =null;
-			
-			List<DetalleItinerario> lstResult = new ArrayList<DetalleItinerario>();
+
+			List<DetalleItinerario> lstResult = new ArrayList<>();
 			sql="Select di.itinerario_id, di.d_FecPar, di.c_HorPar " +
 				"From vrtdetiti di "	+
 				"Inner Join vrtitinerario i On (i.itinerario_id=di.itinerario_id) " +
 				"Where i.TipIti_ID=" + idTipoItinerario + " And i.Servicio_ID=" + idServicio + " And di.Ruta_ID=" + idRuta +
 				" And di.d_fecpar=to_date('" + fechaPartida + "','dd/mm/yyyy') And di.c_HorPar='" + horaPartida + "' And di.Agencia_IDPartida=" + idAgenciaPartida +
-				" And di.Agencia_IDLlegada=" + idAgenciaLlegada + " And di.C_EstReg='" + Constantes.VALUE_ACTIVO + "' And i.N_EsAnulado=0 AND i.C_EstReg='" + Constantes.VALUE_ACTIVO + "'";	
-					
+				" And di.Agencia_IDLlegada=" + idAgenciaLlegada + " And di.C_EstReg='" + Constantes.VALUE_ACTIVO + "' And i.N_EsAnulado=0 AND i.C_EstReg='" + Constantes.VALUE_ACTIVO + "'";
+
 			List<?> result = getSession().createSQLQuery(sql).list();
 			for(int i=0; i<result.size(); i++){
 				Object[] obj = (Object[]) result.get(i);
 				DetalleItinerario detalleItinerario = new DetalleItinerario();
 				Itinerario itinerario = new Itinerario();
-				
+
 				itinerario.setId(((BigDecimal)obj[0]).longValue());
 				detalleItinerario.setFechaPartida((Date)obj[1]);
 				detalleItinerario.setHoraPartida(obj[2].toString());
 				detalleItinerario.setItinerario(itinerario);
-				
+
 				lstResult.add(detalleItinerario);
 			}
 		return lstResult;
@@ -588,7 +588,7 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 	public boolean validaCapasidadServicioAsiento(Long idItinerario,Servicio servicio) throws Exception {
 		String sql="";
 		List<?> result=null;
-		
+
 		if(servicio.getNumeroPisos() ==2){ //Servicio de dos Niveles
 			/*Pregunta por el piso del primer nivel*/
 			sql="SELECT v.venpas_id "+
@@ -600,7 +600,7 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 					"AND v.n_numpiso=0 " +
 					"AND v.tipmov_id not in("+Constantes.ID_TIPMOV_ANULACION+","+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+") "+
 					"AND v.c_estreg='"+Constantes.VALUE_ACTIVO+"' ";
-			
+
 			log.info(sql);
 			result = getSession().createSQLQuery(sql).list();
 			if(result.size()==0){
@@ -614,7 +614,7 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 						"AND v.n_numpiso=1 " +
 						"AND v.tipmov_id not in("+Constantes.ID_TIPMOV_ANULACION+","+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+") "+
 						"AND v.c_estreg='"+Constantes.VALUE_ACTIVO+"' ";
-				
+
 				log.info(sql);
 				result = getSession().createSQLQuery(sql).list();
 			}
@@ -628,23 +628,23 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 					"AND v.n_numpiso=0 "+
 					"AND v.tipmov_id not in("+Constantes.ID_TIPMOV_ANULACION+","+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+") "+
 					"AND v.c_estreg='"+Constantes.VALUE_ACTIVO+"' ";
-			
+
 			log.info(sql);
 			result = getSession().createSQLQuery(sql).list();
-		}	 
-				
+		}
+
 		if(result.size()>0)
 			return true;
 		else
 			return false;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.ItinerarioDAO#ObtienerItinerariosAfectadosUpdate(java.lang.String, java.lang.String, java.lang.Integer)
 	 */
 	@Override
-	public Long ObtienerItinerarioAActualizar(String fechaPartida,Integer idRuta, String secuenciaTramo, String horaPartida, Integer idServicio, 
+	public Long ObtienerItinerarioAActualizar(String fechaPartida,Integer idRuta, String secuenciaTramo, String horaPartida, Integer idServicio,
 			Integer idTipoItinerario, Integer idAgenciaPartida, Integer idAgenciaLlegada){
 		String sql="SELECT i.itinerario_id "+
 				   "FROM vrtitinerario i "+
@@ -653,23 +653,23 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 				   "AND i.servicio_id="+idServicio+ " AND i.tipiti_id="+idTipoItinerario+" " +
 				   "AND i.agencia_idpartida="+idAgenciaPartida+" AND i.agencia_idllegada="+idAgenciaLlegada+" "+
 				   "AND i.c_estreg='A' AND I.N_ESANULADO=0 ";
-		
+
 		log.info(sql);
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		Long idItinerario=(long) 0;
+		long idItinerario=(long) 0;
 		if(result.size()>0)
 			idItinerario=(new Long(result.get(0).toString()));
-		
+
 		return idItinerario;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.ItinerarioDAO#ItinerariosAActualizar(java.lang.String, java.lang.String, java.lang.Integer, java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer, java.lang.Integer, java.lang.Integer)
 	 */
 	@Override
-	public List<VentaPasaje> buscarItinerariosAActualizar(String fechaInicio,String fechaFin,Integer idRuta, String secuenciaTramo, String horaPartida, Integer idServicio, 
+	public List<VentaPasaje> buscarItinerariosAActualizar(String fechaInicio,String fechaFin,Integer idRuta, String secuenciaTramo, String horaPartida, Integer idServicio,
 			Integer idTipoItinerario, Integer idAgenciaPartida, Integer idAgenciaLlegada){
 		String sql="SELECT i.itinerario_id, r.c_origen, r.c_destino, di.d_fecpar, di.c_horpar,  p.c_nomape, "+ //0-5
 					       "v.n_numasiento, v.c_tiptra, v.venpas_id, r.ruta_id,i.d_fecpar as FechaPArtidaItinerario, "+ //6-10
@@ -677,7 +677,7 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 					"FROM vrtitinerario i  "+
 					"INNER JOIN vrtdetiti di ON (di.itinerario_id=i.itinerario_id) "+
 					"INNER JOIN vrmruta r ON (r.ruta_id=di.ruta_id) "+
-					"LEFT OUTER JOIN (SELECT v.c_numcontrol, v.ruta_id, v.venpas_id,v.pasajero_id,v.itinerario_id,v.n_numasiento,v.c_tiptra, v.tipmov_id "+ 
+					"LEFT OUTER JOIN (SELECT v.c_numcontrol, v.ruta_id, v.venpas_id,v.pasajero_id,v.itinerario_id,v.n_numasiento,v.c_tiptra, v.tipmov_id "+
 						              "FROM vrtvenpas v " +
 						              "INNER JOIN (SELECT MAX(venpas_id)venpas_id, c_numcontrol " +
 												   "FROM vrtvenpas " +
@@ -686,25 +686,25 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 						              "WHERE v.tipmov_id NOT IN("+Constantes.ID_TIPMOV_ANULACION+","+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+") AND v.c_estreg='A' "+
 						              " ) v ON (v.itinerario_id=i.itinerario_id AND v.ruta_id=r.ruta_id)"+
 					"LEFT OUTER JOIN vrmpasajero p ON (p.pasajero_id=v.pasajero_id) "+
-					"WHERE i.d_fecpar BETWEEN to_date('"+fechaInicio+"','dd/MM/yyyy') AND to_date('"+fechaFin+"','dd/MM/yyyy') AND i.ruta_idmayor="+idRuta+" "+ 
+					"WHERE i.d_fecpar BETWEEN to_date('"+fechaInicio+"','dd/MM/yyyy') AND to_date('"+fechaFin+"','dd/MM/yyyy') AND i.ruta_idmayor="+idRuta+" "+
 					"AND i.c_sectra='"+secuenciaTramo+"' AND i.c_horpar='"+horaPartida+"' AND i.servicio_id="+idServicio+ " "+
 					"AND i.tipiti_id="+idTipoItinerario+" AND i.agencia_idpartida="+idAgenciaPartida+" "+
 					"AND i.agencia_idllegada="+idAgenciaLlegada+" AND i.c_estreg='A' AND I.N_ESANULADO=0 "+
 					"ORDER BY i.itinerario_id,di.d_fecpar, di.c_horpar, r.c_origen,r.c_destino";
-		
+
 		log.info(sql);
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<VentaPasaje>lisResult= new ArrayList<VentaPasaje>();
+		List<VentaPasaje>lisResult= new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
-			
+
 			VentaPasaje ventaPasaje=new VentaPasaje();
 			Itinerario itinerario=new Itinerario();
 			DetalleItinerario  detalleItinerario=new DetalleItinerario();
 			Ruta ruta=new Ruta();
 			Pasajero pasajero=null;
-			
+
 			itinerario.setId(((BigDecimal)obj[0]).longValue());
 			itinerario.setFechaPartida((Date)obj[10]);
 			ruta.setOrigen(obj[1].toString());
@@ -728,12 +728,12 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 			ventaPasaje.setPasajero(pasajero);
 			ventaPasaje.setDetalleItinerario(detalleItinerario);
 			ventaPasaje.setRuta(ruta);
-			
+
 			lisResult.add(ventaPasaje);
 		}
 		return lisResult;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.ItinerarioDAO#buscarRutas(java.lang.String, java.lang.String)
@@ -741,15 +741,15 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 	@Override
 	public List<DetalleItinerario>buscarRutas(String fechaInicio, String fechaFin,Integer idServicio, Integer idOrigen,
 			Integer idDestino, String horaPartida, Long idItinerario, Boolean mostrarDetalle,Integer idTipoItinerario ){
-		
+
 		String select="SELECT r.ruta_id, di.c_horpar, "+ //0-1
 					 "r.c_origen as Origen, r.c_destino as Destino, s.servicio_id, s.c_denominacion as Servicio, " +//2-5
 					 "di.n_tarifa, NVL(di.n_tarifaLista,0)n_tarifaLista "; //6-7";
-		
+
 		/* Cuando mostrarDetalle es TRUE*/
 		if(mostrarDetalle)
 			select+=" ,di.d_fecpar, di.detiti_id as itinerarioDetalle, i.itinerario_id as idItinerario "; //7-10
-		
+
 		String sql=select+" "+
 			"FROM vrtitinerario i "+
 				"INNER JOIN vrtdetiti di ON (di.itinerario_id=i.itinerario_id) "+
@@ -757,17 +757,17 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 				"INNER JOIN vrmservicio s ON (s.servicio_id=i.servicio_id) "+
 			"WHERE di.d_fecpar BETWEEN to_date('"+fechaInicio+"','dd/MM/yyyy') AND to_date('"+fechaFin+"','dd/MM/yyyy') AND i.c_estreg='"+Constantes.VALUE_ACTIVO+"' AND i.n_esanulado="+Constantes.FALSE_VALUE+" " +
 				"AND di.c_estreg='"+Constantes.VALUE_ACTIVO+"' ";
-		
 
-		
-		
-		
+
+
+
+
 		if(idItinerario!=null && idItinerario!=0)
 			sql+=" AND i.itinerario_id="+idItinerario;
 		else{
 			if(idServicio!=null && idServicio!=0)
 				sql+=" AND i.servicio_id="+idServicio;
-			if(idOrigen!=null && idOrigen!=0)	
+			if(idOrigen!=null && idOrigen!=0)
 				sql+=" AND r.localidad_idOrigen="+idOrigen;
 			if(idDestino!=null && idDestino!=0)
 				sql+=" AND r.localidad_idDestino="+idDestino;
@@ -776,7 +776,7 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 			if(idTipoItinerario!=null && idTipoItinerario!=0)
 				sql+=" AND i.tipIti_id="+idTipoItinerario;
 		}
-				
+
 		/* Cuando mostrarDetalle es TRUE*/
 		if(mostrarDetalle){
 			//sql+=" GROUP BY i.itinerario_id, r.ruta_id,di.c_horpar,r.c_origen, r.c_destino, s.servicio_id, s.c_denominacion, di.n_tarifa ";
@@ -785,56 +785,56 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 			sql+=" GROUP BY r.ruta_id,di.c_horpar,r.c_origen, r.c_destino, s.servicio_id, s.c_denominacion, di.n_tarifa, di.n_tarifaLista ";
 			sql+=" ORDER BY di.c_horpar";
 		}
-			
+
 		log.info(sql);
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<DetalleItinerario>lisResult= new ArrayList<DetalleItinerario>();
+		List<DetalleItinerario>lisResult= new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
 			DetalleItinerario detalleItinerario= new DetalleItinerario();
 			Ruta ruta= new Ruta();
 			Servicio servicio= new Servicio();
 			Itinerario itinerario= new Itinerario();
-			
+
 			ruta.setId(((BigDecimal)obj[0]).intValue());
 			ruta.setOrigen(obj[2].toString());
 			ruta.setDestino(obj[3].toString());
-			
+
 			servicio.setId(((BigDecimal)obj[4]).intValue());
 			servicio.setDenominacion(obj[5].toString());
-			
+
 			itinerario.setServicio(servicio);
-			
+
 			/* Cuando mostrar detalle es TRUE*/
 			if (mostrarDetalle){
 				detalleItinerario.setFechaPartida((Date)obj[8]);
 				detalleItinerario.setId(((BigDecimal)obj[9]).longValue());
 				itinerario.setId(((BigDecimal)obj[10]).longValue());
 			}
-			
+
 			detalleItinerario.setItinerario(itinerario);
 			detalleItinerario.setHoraPartida(obj[1].toString());
 			detalleItinerario.setTarifa(((BigDecimal)obj[6]).doubleValue());
 			detalleItinerario.setTarifaLista(((BigDecimal)obj[7]).doubleValue());
 			detalleItinerario.setRuta(ruta);
-					
-				
+
+
 			lisResult.add(detalleItinerario);
 		}
 		return lisResult;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.ItinerarioDAO#actualizarTarifa(java.lang.Double, java.lang.String, java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer, java.lang.Double, java.lang.Long, java.lang.String, java.lang.String, java.lang.Double)
 	 */
 	@Override
-	public void actualizarTarifa(Double tarifaNueva, String horaPartida,String fechaInicio, String fechaFin, Integer idRuta, Integer idServicio,Double tarifaActual, 
+	public void actualizarTarifa(Double tarifaNueva, String horaPartida,String fechaInicio, String fechaFin, Integer idRuta, Integer idServicio,Double tarifaActual,
 			Long idItinerarioDetalle, String usuarioMod, String ipMod, Double tarifaLista){
-		
+
 		String sql="UPDATE vrtdetiti "+
-						"SET vrtdetiti.n_tarifa="+tarifaNueva+ ",n_tarifaLista="+tarifaLista+", audusumod='"+usuarioMod+"', audipmodi='"+ipMod+"' "+ 
+						"SET vrtdetiti.n_tarifa="+tarifaNueva+ ",n_tarifaLista="+tarifaLista+", audusumod='"+usuarioMod+"', audipmodi='"+ipMod+"' "+
 					"WHERE vrtdetiti.c_horpar='"+horaPartida+"' AND vrtdetiti.ruta_id="+idRuta+" AND vrtdetiti.n_tarifa="+tarifaActual+" "+
 						"AND vrtdetiti.d_fecpar>=to_date('"+fechaInicio+"','"+Constantes.DATE_FORMAT+"') and vrtdetiti.d_fecpar<=to_date('"+fechaFin+"','"+Constantes.DATE_FORMAT+"') "+
 						"AND vrtdetiti.itinerario_id in(SELECT di.itinerario_id "+
@@ -846,12 +846,12 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 													 		"AND i.n_esanulado="+Constantes.FALSE_VALUE+" AND i.c_estreg='"+Constantes.VALUE_ACTIVO+"' "+
 													    ")  " +
 						"AND vrtdetiti.c_Estreg='A' ";
-			
+
 			if(idItinerarioDetalle!=null && idItinerarioDetalle>0)
 				sql+="AND vrtdetiti.detiti_id="+idItinerarioDetalle;
 
 			log.info(sql);
-			
+
 			getSession().createSQLQuery(sql).executeUpdate();
 	}
 	/* (non-Javadoc)
@@ -861,7 +861,7 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 	public List<Itinerario> buscarItinerarioByRutaMayor(String fechaPartida,String horaPartida, Integer localidadIdOrigen,Integer localidadIdDestino) throws Exception {
 		// TODO Auto-generated method stub
 		horaPartida=horaPartida!=null?"'"+horaPartida+"'":null;
-		
+
 		String sql="SELECT i.itinerario_id "
 					   + ",r.c_origen "
 					   + ",r.c_Destino "
@@ -881,29 +881,29 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 				 + "ORDER BY i.c_horpar";
 		log.info(sql);
 		List<?>result=getSession().createSQLQuery(sql).list();
-		List<Itinerario>listItinerarios=new ArrayList<Itinerario>();
+		List<Itinerario>listItinerarios=new ArrayList<>();
 		for(int x=0;x<result.size();x++){
 			Object[] obj=(Object[]) result.get(x);
-			
+
 			Ruta ruta=new Ruta();
 			ruta.setId(((BigDecimal)obj[6]).intValue());
 			ruta.setOrigen(obj[1].toString());
 			ruta.setDestino(obj[2].toString());
-			
+
 			Servicio servicio=new Servicio();
 			servicio.setDenominacion(obj[3].toString());
-			
+
 			Itinerario itinerario=new Itinerario(((BigDecimal)obj[0]).longValue());
 			itinerario.setFechaPartida((Date)obj[4]);
 			itinerario.setHoraPartida(obj[5].toString());
 			itinerario.setRuta(ruta);
 			itinerario.setServicio(servicio);
-			
+
 			listItinerarios.add(itinerario);
 		}
-		
-		
-		
+
+
+
 		return listItinerarios;
 	}
 	/* (non-Javadoc)
@@ -926,19 +926,19 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 				+ "ORDER BY di.d_Fecpar, di.c_horpar";
 		log.info(sql);
 		List<?>result=getSession().createSQLQuery(sql).list();
-		List<Itinerario>listItinerarios=new ArrayList<Itinerario>();
+		List<Itinerario>listItinerarios=new ArrayList<>();
 		for(int x =0;x<result.size();x++){
 			Object[] obj=(Object[]) result.get(x);
-			
+
 			Ruta ruta=new Ruta(((BigDecimal)obj[1]).intValue());
 			Itinerario itinerario=new Itinerario(((BigDecimal)obj[0]).longValue());
 			itinerario.setRuta(ruta);
 			itinerario.setFechaPartida((Date)obj[2]);
-			
+
 			listItinerarios.add(itinerario);
 		}
-		
-		
+
+
 		return listItinerarios;
 	}
 }

@@ -19,7 +19,7 @@ public class LineaCreditoClienteException extends Exception implements Serializa
 	public static final int LINEA_CREDITO_SIN_SALDO = 2;
 	private Integer tipo;
 	/**
-	 * 
+	 *
 	 */
 	public LineaCreditoClienteException() {
 		super();
@@ -32,7 +32,7 @@ public class LineaCreditoClienteException extends Exception implements Serializa
 		super();
 		this.tipo = tipo;
 	}
-	
+
 	/**
 	 * @return the tipo
 	 */

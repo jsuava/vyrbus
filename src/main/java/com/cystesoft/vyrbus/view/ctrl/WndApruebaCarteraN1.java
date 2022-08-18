@@ -53,20 +53,20 @@ import com.cystesoft.vyrbus.view.ui.WndBase;
 public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	
+
 	/*Tabs*/
 	private Tab tabHistSilicitudes;
-	private Tab tabPendientes;	
+	private Tab tabPendientes;
 	Boolean selectPendientes=false; //Tru(selecciona el tabHistorial solicitudes), (false) Solicitudes pendientes.
-	
+
 	private Listbox listPendientes;
 	private Button btnBuscar;
 	private Grid grPendientes;
 	private Combobox cmbCliente;
-	
+
 	private Button btnCancelar;
 	private Button btnAceptar;
-	
+
 	/*Datos del cliente*/
 //	private Grid grCliente;
 	private Groupbox grbCliente;
@@ -74,11 +74,11 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 	private Label lblRazonSocial;
 	private Label lblBaseHistorica;
 	private Label lblOrigen;
-	
+
 	/*Datos de la solicitud*/
 	private Groupbox grbSolicitud;
 	//private Grid grSolicitud;
-	
+
 	/*Datos solicitud contado*/
 	private Grid grContado;
 	private Textbox txtFechaSolcitud_Contado;
@@ -90,7 +90,7 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 	private Radio rbAnular_Contado;
 	private Textbox txtMotivoAnulacion_Contado;
 	private Groupbox grbAproDesaContado;
-	
+
 	/*Datos solicitud credito*/
 	private Grid grCredito;
 	private Label lblFechaSolicitud;
@@ -110,7 +110,7 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 	private Textbox txtMotivoAnulacion_Credito;
 	private Groupbox grbAproDesaCredito;
 	private Label lblAmpliacion;
-	
+
 
 	/*Historia Solicitudes*/
 	private Listbox listHistSolicitudes;
@@ -119,7 +119,7 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 	private Combobox cmbEstadoSolicitud;
 	private Combobox cmbClienteHist;
 	private Button btnBuscarSolApro;
-	
+
 	/*class*/
 	public SolicitudCartera solicitudCartera=null;
 	public SolicitudClienteCredito solicitudClienteCredito=null;
@@ -127,9 +127,9 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 //	private CarteraCliente carteraCliente=null;
 	private UsuarioAprobador  usuarioAprobador=null;
 	/*Otras*/
-	private int action; 
-	
-	
+	private int action;
+
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
@@ -139,7 +139,7 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 		/*Tabs*/
 		tabHistSilicitudes=(Tab)this.getFellow("tabHistSilicitudes");
 		tabPendientes=(Tab)this.getFellow("tabPendientes");
-		
+
 		/*Tab Solcicitudes pendientes por aprobar*/
 		listPendientes=(Listbox)this.getFellow("listPendientes");
 		btnBuscar=(Button)this.getFellow("btnBuscar");
@@ -149,7 +149,7 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 		cmbCliente=(Combobox)this.getFellow("cmbCliente");
 		/*Datos de la solicitud*/
 		grbSolicitud=(Groupbox)this.getFellow("grbSolicitud");
-		
+
 		/*Datos del cliente*/
 		grbCliente=(Groupbox)this.getFellow("grbCliente");
 //		grCliente=(Grid)this.getFellow("grCliente");
@@ -157,7 +157,7 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 		lblRazonSocial=(Label)this.getFellow("lblRazonSocial");
 		lblBaseHistorica=(Label)this.getFellow("lblBaseHistorica");
 		lblOrigen=(Label)this.getFellow("lblOrigen");
-		
+
 		/*Datos de la solicitud contado*/
 		grContado=(Grid)this.getFellow("grContado");
 		txtFechaSolcitud_Contado=(Textbox)this.getFellow("txtFechaSolcitud_Contado");
@@ -169,7 +169,7 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 		txtMotivoAnulacion_Contado=(Textbox)this.getFellow("txtMotivoAnulacion_Contado");
 		chbEsComisionable_Contado=(Checkbox)this.getFellow("chbEsComisionable_Contado");
 		grbAproDesaContado=(Groupbox)this.getFellow("grbAproDesaContado");
-		
+
 		/*Datos solicitud credito*/
 		grCredito=(Grid)this.getFellow("grCredito");
 		lblFechaSolicitud=(Label)this.getFellow("lblFechaSolicitud");
@@ -189,7 +189,7 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 		txtMotivoAnulacion_Credito=(Textbox)this.getFellow("txtMotivoAnulacion_Credito");
 		grbAproDesaCredito=(Groupbox)this.getFellow("grbAproDesaCredito");
 		lblAmpliacion=(Label)this.getFellow("lblAmpliacion");
-		
+
 		/*Historial de Solicitudes*/
 		listHistSolicitudes=(Listbox)this.getFellow("listHistSolicitudes");
 		dtxFechaInicio=(Datebox)this.getFellow("dtxFechaInicio");
@@ -197,9 +197,9 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 		cmbEstadoSolicitud=(Combobox)this.getFellow("cmbEstadoSolicitud");
 		cmbClienteHist=(Combobox)this.getFellow("cmbClienteHist");
 		btnBuscarSolApro=(Button)this.getFellow("btnBuscarSolApro");
-		
+
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sis vyr.view.ui.WndBase#onCreate()
@@ -211,20 +211,20 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 			if(usuarioAprobador==null)
 				throw new UsuarioAprobadorNullException();
 //			else{
-//				//Validando que el usuario aprobador tenga el nivel correcto 
+//				//Validando que el usuario aprobador tenga el nivel correcto
 //				if(usuarioAprobador.getNivelAprobacion().intValue()!=Constantes.NIVEL_UNO)
 //					throw new UsuarioAprobadorNullException();
 //			}
-			
+
 			/*Pendientes*/
 			CargarListaPendientes();
 			cargarClientesSolicitudPendientes();
 			/*solicitud*/
 			grbSolicitud.setVisible(false);
 //			grSolicitud.setVisible(false);
-			
+
 			/*cliente*/
-			grbCliente.setVisible(false);		
+			grbCliente.setVisible(false);
 			/*Solicitud Contado*/
 			grContado.setVisible(false);
 			grbAproDesaContado.setVisible(grContado.isVisible());
@@ -238,25 +238,25 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 //			lblCreditoSolicitado.setLocale(Locale.US);
 //			lblSobregiro.setLocale(Locale.US);
 			dbxCreditoAprobado.setLocale(Locale.US);
-			
+
 			/*Historial de Solicitudes*/
 			UtilData.cargarEstadoSolicitud(cmbEstadoSolicitud, true);
 			UtilData.cargarClientesSolicitud(cmbClienteHist, true);
 			cmbEstadoSolicitud.setSelectedIndex(0);
 			dtxFechaInicio.setValue(Constantes.FORMAT_DATE.parse(new MyTime().dateServer()));
 			dtxFechaFinal.setValue(Constantes.FORMAT_DATE.parse(new MyTime().dateServer()));
-			
+
 			/*---*/
 			Util.disabledBtnBuscar(false, btnBuscar, accesoConsultar());
 			Util.disabledBtnBuscar(false, btnBuscarSolApro, accesoConsultar());
-			
+
 		}catch (UsuarioAprobadorNullException uanex){
 			DlgMessage.information(Messages.getString("wndApruebaCartera.infomation.UsuarioAprobadorNull"));
 			closeTabWindow();
 		}
-		
+
 	}
-	
+
 	/**
 	 * Lista las solicitudes pendientes por aprobar
 	 */
@@ -264,7 +264,7 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 //		TreeMap<String, Object> criterioBusqueda = new TreeMap<String, Object>();
 //		List<String> criteriosOrdenar= new ArrayList<String>();
 //		criteriosOrdenar.add("fechaSolicitud");
-//		
+//
 //		criterioBusqueda.put("estadoSolicitud", Constantes.ESTADOSOLCAR_EN_ESPERA);
 //		criterioBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 //		ArrayList<SolicitudClienteCredito>list=ServiceLocator.getSolicitudClienteCreditoManger().buscarPorX(criterioBusqueda, criteriosOrdenar);
@@ -273,7 +273,7 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 		Listcell cell=null;
 		int x=0;
 		Util.limpiarListbox(listPendientes);
-		
+
 		for(SolicitudClienteCredito solicitudCredito: list){
 			SolicitudCartera solicitudCartera=solicitudCredito.getSolicitudCartera();
 			Usuario funcionario = solicitudCartera.getUsuario();
@@ -302,23 +302,23 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 				else tipo=Constantes.TIPCON_CREDITO_DESC;
 			}
 			cell=new Listcell(tipo);
-			item.appendChild(cell);	
-			
+			item.appendChild(cell);
+
 			final Toolbarbutton button= new Toolbarbutton("VER SOLICITUD ");
 			button.setId(String.valueOf(x-1));
 			button.setStyle("color:blue; font-style:inherit; font-size: 9px !important");
 			cell=new Listcell();
 			cell.appendChild(button);
 			item.appendChild(cell);
-			
+
 			button.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 				@Override
 				public void onEvent(Event event) throws Exception {
 					Listitem listitem=listPendientes.getItemAtIndex(Integer.valueOf(button.getId()));
 					SolicitudClienteCredito solicitudClienteCredito=ServiceLocator.getSolicitudClienteCreditoManager().buscarPorId(((SolicitudClienteCredito)listitem.getValue()).getId());
 					showDetalleSolicitud(solicitudClienteCredito);
-//					showDetalleSolicitud((SolicitudClienteCredito)listitem.getValue());	
-					
+//					showDetalleSolicitud((SolicitudClienteCredito)listitem.getValue());
+
 					visibleListPendientes(false);
 					grbCliente.setVisible(true);
 					btnCancelar.setVisible(true);
@@ -329,34 +329,34 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 					DisableAprobarAnular(false);
 					selectPendientes=true;
 					dbxCreditoAprobado.setReadonly(false);
-					
+
 //					Util.disabledBtnAceptar(false, btnAceptar, accesoGrabar());
 					btnAceptar.setDisabled(usuarioAprobador.getNivelAprobacion().intValue()!=Constantes.NIVEL_UNO);
-					
+
 					action=Constantes.ACTION_NEW;
 				}
-				
+
 			});
-			
+
 			item.setValue(solicitudCredito);
 			listPendientes.appendChild(item);
 		}
 	}
-	
+
 	/**
 	 * Carga los clientes con solicitudes pendendientes en el comobobox
 	 */
 	private void cargarClientesSolicitudPendientes(){
-		TreeMap<String, Object> criterioBusqueda = new TreeMap<String, Object>();
-		List<String> criteriosOrdenar= new ArrayList<String>();
+		TreeMap<String, Object> criterioBusqueda = new TreeMap<>();
+		List<String> criteriosOrdenar= new ArrayList<>();
 		criteriosOrdenar.add("fechaSolicitud");
-		
+
 		criterioBusqueda.put("estadoSolicitud", Constantes.ESTADOSOLCAR_EN_ESPERA);
 		criterioBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 		List<SolicitudClienteCredito>list=ServiceLocator.getSolicitudClienteCreditoManager().buscarPendientesN1();
 //		ArrayList<SolicitudClienteCredito>list=ServiceLocator.getSolicitudClienteCreditoManger().buscarPorX(criterioBusqueda, criteriosOrdenar);
-		
-		
+
+
 		UtilData.cargarGenericData(cmbCliente, true);
 		for(SolicitudClienteCredito solicitudCredito: list){
 			Cliente cliente=solicitudCredito.getSolicitudCartera().getCliente();
@@ -368,7 +368,7 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 		}
 		cmbCliente.setSelectedIndex(0);
 	}
-	
+
 	/**
 	 * Muestra detalle de la solicitud
 	 * @param solicitudClienteCredito : Class SoliciTudCredito
@@ -378,22 +378,22 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 		solicitudCartera=solicitudClienteCredito.getSolicitudCartera();
 		Cliente cliente=solicitudCartera.getCliente();
 		Usuario funcionario=solicitudCartera.getUsuario();
-		
+
 		lblRuc.setValue(cliente.getNumeroDocumento());
 		lblRazonSocial.setValue(cliente.getRazonSocial());
 		if(cliente.getOrigen().equals(Constantes.ORIGEN_LIMA))
 			lblOrigen.setValue(Constantes.ORIGEN_LIMA_DESC);
 		else lblOrigen.setValue(Constantes.ORIGEN_PROVINCIAS_DESC);
 		lblBaseHistorica.setValue(Util.toNumberFormat(solicitudCartera.getBaseHistorica(),2));
-		
+
 		if(solicitudClienteCredito.getEsComisionable().equals(Constantes.SI)){
 			chbEsComisionable_Credito.setChecked(true);
 			chbEsComisionable_Contado.setChecked(true);
 		}else{
 			chbEsComisionable_Credito.setChecked(false);
 			chbEsComisionable_Contado.setChecked(false);}
-		
-		if(solicitudClienteCredito.getLineaCreditoSolicitada()==0){ //CONTADO	
+
+		if(solicitudClienteCredito.getLineaCreditoSolicitada()==0){ //CONTADO
 			txtFechaSolcitud_Contado.setText(Constantes.FORMAT_DATE.format(solicitudCartera.getFechaSolicitud()));
 			txtFuncionario_Contado.setText(funcionario.toString());//.getApellidoPaterno()+" "+funcionario.getApellidoMaterno()+", "+funcionario.getNombre());
 			dbxDescuentoBaja_Contado.setValue(solicitudCartera.getDescuentoBaja());
@@ -401,7 +401,7 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 			rbAprueba_Contado.setChecked(true);
 			grContado.setVisible(true);
 			grbAproDesaContado.setVisible(grContado.isVisible());
-			
+
 		}else{ // CREDITO
 			lblFechaSolicitud.setValue(Constantes.FORMAT_DATE.format(solicitudCartera.getFechaSolicitud()));
 			lblFuncionario.setValue(funcionario.toString());//.getApellidoPaterno()+" "+funcionario.getApellidoMaterno()+", "+funcionario.getNombre());
@@ -412,7 +412,7 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 				lblMontoSobregiro.setValue("% |"+Util.toNumberFormat((dbxCreditoAprobado.getValue()*(solicitudClienteCredito.getSobregiro()/100)),2));
 			else
 				lblMontoSobregiro.setValue("%");
-			
+
 			if(solicitudClienteCredito.getEsCanje().equals(Constantes.SI))
 				chbesCanje.setChecked(true);
 			else chbesCanje.setChecked(false);
@@ -425,17 +425,17 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 			rbAprueba_Credito.setChecked(true);
 			grCredito.setVisible(true);
 			grbAproDesaCredito.setVisible(grCredito.isVisible());
-			
-			
+
+
 			/*valida si es una extencion de canje publicitario*/
 			if(chbesCanje.isChecked() && chbEsAmpliacion.isChecked())
 				lblAmpliacion.setValue("EXTENSIÓN DE CANJE PUBLICITARIO");
 			else
 				lblAmpliacion.setValue("AMPLIACIÓN");
-			
-		}	
+
+		}
 	}
-	
+
 	/**
 	 * Visualizar o ocultar lista de solicitudes
 	 * @param visible : (true)visualizar lista de solicitudes, (False)ocultar lista de solictudes
@@ -445,7 +445,7 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 		listPendientes.setVisible(visible);
 		grPendientes.setVisible(visible);
 	}
-	
+
 	/**
 	 * Cancela la Aprobacion de la solicitud
 	 */
@@ -459,18 +459,18 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 		visibleListPendientes(true);
 		btnCancelar.setVisible(false);
 		btnAceptar.setVisible(false);
-		
+
 		tabHistSilicitudes.setDisabled(false);
-		
+
 		clearControlSolicitud();
-		
+
 		tabPendientes.setLabel("Solicitudes Pendientes por Aprobar");
 		tabHistSilicitudes.setVisible(true);
-		
-		if(selectPendientes==false) tabHistSilicitudes.setSelected(true);
-		
+
+		if(!selectPendientes) tabHistSilicitudes.setSelected(true);
+
 	}
-	
+
 	/**
 	 * Cuando el usuario aprobador pulsa el botón Aceptar
 	 */
@@ -480,19 +480,19 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 			if(rbAnular_Contado.isChecked() || rbAnular_Credito.isChecked())
 				msConfimacion="Se va a deshaprobar la solicitud. ¿Desa continuar? ";
 			else msConfimacion="Se va a aprobar la solicitud. ¿Desa continuar? ";
-			
+
 			/*Valida el ingreso del motivo de la desaprobacion, en caso de que esta sea desaprovada*/
 			if (rbAnular_Contado.isChecked() && txtMotivoAnulacion_Contado.getText().trim().isEmpty())
 				throw new MotivoDesapruebaNullException();
 			else if (rbAnular_Credito.isChecked() && txtMotivoAnulacion_Credito.getText().trim().isEmpty())
 				throw new MotivoDesapruebaNullException();
-			
+
 			//Valiad si el usuario tiene el nivel requerido para la aprobacion
 			if(usuarioAprobador.getNivelAprobacion().intValue()!=Constantes.NIVEL_UNO){
 				DlgMessage.information(Messages.getString("wndAprobarCredito.information.noAccesoAprobar"));
 				return;
-			}	
-			
+			}
+
 			/*Solicita consfirmación de la Aprobación o Desaprobación*/
 			Messagebox.show(msConfimacion, DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 				@Override
@@ -502,27 +502,27 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 						if(action==Constantes.ACTION_NEW){
 							/*Actualiza solicitud cartera*/
 							actualizaSolicitudCartera(solicitudCartera);
-							
+
 							/*Asigna a la cartera siempre y cuando la solicitud no sea una ampliación o un canje*/
 							CarteraCliente carteraCliente= new CarteraCliente();
 							if (rbAprueba_Contado.isChecked() || rbAprueba_Credito.isChecked())
 								if (!(chbEsAmpliacion.isChecked()))
 									carteraCliente=insertarCarteraCliente(solicitudCartera);
-							
+
 							if(rbAprueba_Contado.isChecked()) //inserta linea contado si es un Cliente Contado
 								insertarLineaContadoCliente(carteraCliente, solicitudCartera,solicitudClienteCredito.getEsComisionable());
-							
+
 							/*actualiza la solicitud como atendido.*/
 							/*Insertar solicitud cliente credito*/
 							insertarSolicitudClienteCredito(solicitudCartera, solicitudClienteCredito);
 							/*Refresca las solicitudes pendientes*/
 							CargarListaPendientes();
-							
+
 						}else if (action==Constantes.ACTION_MODIFY){
 							/*Verifica si es una desaprobacion*/
 							if (rbAnular_Contado.isChecked() || rbAnular_Credito.isChecked())
 								anulaSolicitudCartera(solicitudCartera);
-							
+
 							/*Anula el registro actual solicitudClienteCredito */
 							/*inserta un nuevo registro solicitudClienteCredito con los cambios realizados el la Linea de Credito*/
 							insertarSolicitudClienteCredito(solicitudCartera, solicitudClienteCredito);
@@ -530,11 +530,11 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 							cargarSolicitudesAproDesapro();
 						}
 						onClickCancelAprobacion();
-						
+
 					}
 				}
 			});
-			
+
 		}catch(MotivoDesapruebaNullException mdnex){
 			DlgMessage.information(Messages.getString("wndApruebaCartera.infomation.MotivoDesapuebraNull"))	;
 		}catch (Exception e) {
@@ -542,10 +542,10 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Anula la solicitud Cartera.
-	 * @param solicitudCartera : class 
+	 * @param solicitudCartera : class
 	 * @throws Exception
 	 */
 	private void anulaSolicitudCartera(SolicitudCartera solicitudCartera)throws Exception{
@@ -553,14 +553,14 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 		solicitudCartera.setEstadoSolicitud(Constantes.ESTADOSOL_ANULADA);
 		UtilData.auditarRegistro(solicitudCartera, true,usuarioAprobador.getUsuario(), Executions.getCurrent());
 		ServiceLocator.getSolicitudCarteraManager().actualizar(solicitudCartera);
-		//Inserta un nuevo registro con la desaprobacion de la Solicitud								
+		//Inserta un nuevo registro con la desaprobacion de la Solicitud
 		insertarSolicitudCartera(solicitudCartera);
 	}
-	
+
 	/**
 	 * Actualiza solicitud cartera
 	 * @param solicitudCartera
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private void actualizaSolicitudCartera(SolicitudCartera solicitudCartera) throws Exception{
 		Date fecha= Constantes.FORMAT_DATE_TIME_24H.parse(new MyTime().dateServer());
@@ -568,7 +568,7 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 			/*Solcitud cartera*/
 			solicitudCartera.setEstadoSolicitud(Constantes.ESTADOSOL_ANULADA);
 			solicitudCartera.setFechaAnulacion(fecha);
-		}else{ //Aprueba 
+		}else{ //Aprueba
 			/*solicid caretra*/
 			solicitudCartera.setEstadoSolicitud(Constantes.ESTADOSOL_INACTIVA);
 			solicitudCartera.setFechaAprobacion(fecha);
@@ -578,8 +578,8 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 		UtilData.auditarRegistro(solicitudCartera, true,usuarioAprobador.getUsuario(), Executions.getCurrent());
 		ServiceLocator.getSolicitudCarteraManager().actualizar(solicitudCartera);
 	}
-	
-	
+
+
 	/**
 	 * Insertar CarteraCliente
 	 * @param carteraCliente : class
@@ -589,23 +589,23 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 		long lDefault=Constantes.FORMAT_DATE_TIME_24H.parse(Constantes.FECHA_DEFAULT).getTime();
 		Date fDefault= new Date(lDefault);
 		Date fecha= Constantes.FORMAT_DATE_TIME_24H.parse(new MyTime().dateServer());
-		
+
 		CarteraCliente carteraCliente=new CarteraCliente();
 		carteraCliente.setUsuario(solicitudCartera.getUsuario());
 		carteraCliente.setCliente(solicitudCartera.getCliente());
 		carteraCliente.setSolicitudCartera(solicitudCartera);
 		carteraCliente.setBaseHistorica(solicitudCartera.getBaseHistorica());
-		carteraCliente.setFechaAsignacion(fecha);	
+		carteraCliente.setFechaAsignacion(fecha);
 		carteraCliente.setFechaSuspension(fDefault);
 		carteraCliente.setEstadoCartera(Constantes.ESTADOSOL_ACTIVA);
 		carteraCliente.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 
 		UtilData.auditarRegistro(carteraCliente,usuarioAprobador.getUsuario(), Executions.getCurrent());
 		ServiceLocator.getCarteraClienteManager().guardar(carteraCliente);
-		
+
 		return carteraCliente;
 	}
-	
+
 	/**
 	 * Inserta Linea Contado Cliente
 	 * @param carteraCliente
@@ -615,7 +615,7 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 		long lDefault=Constantes.FORMAT_DATE_TIME_24H.parse(Constantes.FECHA_DEFAULT).getTime();
 		Date fDefault= new Date(lDefault);
 		Date fecha= Constantes.FORMAT_DATE_TIME_24H.parse(new MyTime().dateServer());
-		
+
 		LineaContadoCliente lineaContadoCliente=new LineaContadoCliente();
 		lineaContadoCliente.setCarteraCliente(carteraCliente);
 		lineaContadoCliente.setSolicitudCartera(solicitudCartera);
@@ -629,7 +629,7 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 		UtilData.auditarRegistro(lineaContadoCliente,usuarioAprobador.getUsuario(), Executions.getCurrent());
 		ServiceLocator.getLineaContadoClienteManager().guardar(lineaContadoCliente);
 	}
-	
+
 	/**
 	 * Inserta solicitud cliente credito
 	 * @param solicitudCartera
@@ -638,7 +638,7 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 	 */
 	private void insertarSolicitudClienteCredito(SolicitudCartera solicitudCartera, SolicitudClienteCredito solicitudClienteCredito) throws Exception{
 		Date fecha= Constantes.FORMAT_DATE_TIME_24H.parse(new MyTime().dateServer());
-		
+
 		SolicitudClienteCredito clienteCredito= new SolicitudClienteCredito();
 		clienteCredito.setUsuarioAprobador(usuarioAprobador);
 		clienteCredito.setSolicitudCartera(solicitudCartera);
@@ -648,7 +648,7 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 			clienteCredito.setLineaCreditoSolicitada(Util.parseNumberFormat(lblCreditoSolicitado.getValue(),2));
 			clienteCredito.setLineaCreditoAprobada(dbxCreditoAprobado.getValue()!=null?dbxCreditoAprobado.getValue():.00);
 			clienteCredito.setSobregiro(Util.parseNumberFormat(lblSobregiro.getValue(),2));
-			
+
 		}else{ //Cliente Contado
 			clienteCredito.setLineaCreditoSolicitada(.00);
 			clienteCredito.setLineaCreditoAprobada(.00);
@@ -676,7 +676,7 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 		UtilData.auditarRegistro(clienteCredito, usuarioAprobador.getUsuario(), Executions.getCurrent());
 		ServiceLocator.getSolicitudClienteCreditoManager().guardar(clienteCredito);
 	}
-	
+
 	/**
 	 * Inserta solicitud Cartera
 	 * @param solicitudCartera
@@ -684,7 +684,7 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 	 */
 	private void insertarSolicitudCartera(SolicitudCartera solicitudCartera) throws Exception{
 		Date fecha= Constantes.FORMAT_DATE_TIME_24H.parse(new MyTime().dateServer());
-		
+
 		SolicitudCartera cartera=new SolicitudCartera();
 		cartera.setUsuario(solicitudCartera.getUsuario());
 		cartera.setCliente(solicitudCartera.getCliente());
@@ -704,7 +704,7 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 		UtilData.auditarRegistro(cartera, usuarioAprobador.getUsuario(), Executions.getCurrent());
 		ServiceLocator.getSolicitudCarteraManager().guardar(cartera);
 	}
-	
+
 	/**
 	 * Limpia los controles de la solicitud
 	 */
@@ -741,7 +741,7 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 		txtMotivoAnulacion_Credito.setText("");
 		txtMotivoAnulacion_Credito.setReadonly(true);
 	}
-	
+
 	/**
 	 * Calcula el monto del sobregiro, solo es referencial no se guarda en la DB
 	 * solo se guarda el porcentaje.
@@ -755,52 +755,52 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 //			lblMontoSobregiro.setValue("0.00");
 //		}
 	}
-	
+
 	private void DisableAprobarAnular(Boolean disabled){
 		rbAnular_Contado.setDisabled(disabled);
 		rbAnular_Credito.setDisabled(disabled);
 		rbAprueba_Contado.setDisabled(disabled);
 		rbAprueba_Credito.setDisabled(disabled);
-		
+
 	}
-	
+
 	/**
 	 * Desaprueba la silicitud
 	 */
 	public void onCheckAnular(){
 //		if(rbAnular_Credito.isChecked())
 //			if(selectPendientes==true){
-//				rbAprueba_Credito.setChecked(false); 
+//				rbAprueba_Credito.setChecked(false);
 //				txtMotivoAnulacion_Credito.setReadonly(false);
 //				txtMotivoAnulacion_Credito.setFocus(true);
 //				dbxCreditoAprobado.setReadonly(true);
 //				dbxCreditoAprobado.setText("");
 //			}
-			
+
 	}
-	
-	
+
+
 	/** HISTORIAL DE SOLICITUDES **/
 	/**
 	 * Cargar el historial de solicitudes aprobadas y/o desaprobadas
 	 */
 	public void cargarSolicitudesAproDesapro(){
-		String fechaInicio=Constantes.FORMAT_DATE.format(dtxFechaInicio.getValue()); 
+		String fechaInicio=Constantes.FORMAT_DATE.format(dtxFechaInicio.getValue());
 		String fechaFin=Constantes.FORMAT_DATE.format(dtxFechaFinal.getValue());
 		String estadoSolicitud="";Long idFuncionario=null; Long idCliente=null; Boolean recu_Historia=true;
-		
+
 		if(cmbEstadoSolicitud.getSelectedIndex()>0)
 			estadoSolicitud=cmbEstadoSolicitud.getSelectedItem().getValue();
 		if (cmbClienteHist.getSelectedItem().getValue() instanceof Cliente)
-			idCliente=((Cliente)cmbClienteHist.getSelectedItem().getValue()).getId();	
-		
+			idCliente=((Cliente)cmbClienteHist.getSelectedItem().getValue()).getId();
+
 		List<SolicitudCartera>list=ServiceLocator.getSolicitudCarteraManager().BuscarSolicitudes(fechaInicio, fechaFin, estadoSolicitud, idFuncionario, usuarioAprobador,idCliente, recu_Historia);
 
 		Listitem item=null;
 		Listcell cell=null;
 		int y=0;
 		Util.limpiarListbox(listHistSolicitudes);
-		
+
 		for(SolicitudCartera solicitudCartera: list){
 			Usuario funcionario = solicitudCartera.getUsuario();
 			Cliente cliente=solicitudCartera.getCliente();
@@ -828,17 +828,17 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 			else
 				cell=new Listcell(Constantes.DESAPROBADO_DESC);
 			item.appendChild(cell);
-			
+
 			/*Verifica si la solicitud es o no credito*/
 			if(solicitudCartera.getSolicitudClienteCredito().getLineaCreditoSolicitada()==0)
 				tipo=Constantes.TIPCON_CONTADO_DESC;
 			else tipo=Constantes.TIPCON_CREDITO_DESC;
 			cell=new Listcell(tipo);
 			item.appendChild(cell);
-			
+
 			final String LABEL_MODIFICADAR="Modificar";
 			final String LABEL_CONSULTAR="Consultar";
-			
+
 			final Toolbarbutton button= new Toolbarbutton();
 			button.setZindex(y-1);
 			button.setMode(tipo);
@@ -848,16 +848,16 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 			}else if (tipo.equals(Constantes.TIPCON_CREDITO_DESC)){
 				if(solicitudCartera.getSolicitudClienteCredito().getNivelAprobacion().equals(Constantes.NIVEL_UNO))
 					button.setLabel(LABEL_MODIFICADAR);
-				else 
+				else
 					button.setLabel(LABEL_CONSULTAR);
 			}else{
 				button.setLabel("no definido");
 				button.setDisabled(true);
 			}
-			
+
 			if(!(accesoConsultar()))
 				button.setDisabled(true);
-			
+
 			button.addEventListener(Events.ON_CLICK, new  EventListener<Event>() {
 				@Override
 				public void onEvent(Event event) throws Exception {
@@ -870,16 +870,16 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 					tabHistSilicitudes.setVisible(false);
 					tabPendientes.setSelected(true);
 					selectPendientes=false;
-					
+
 					Listitem listitem=listHistSolicitudes.getItemAtIndex(button.getZindex());
 					SolicitudCartera solicitudCartera=listitem.getValue();
 					solicitudClienteCredito=new SolicitudClienteCredito();
 					solicitudClienteCredito=solicitudCartera.getSolicitudClienteCredito();
 					solicitudClienteCredito.setSolicitudCartera(solicitudCartera);
 					showDetalleSolicitud(solicitudClienteCredito);
-					
+
 					btnAceptar.setVisible(true);
-					
+
 					/*Valdiación para la edicion de la solicitud*/
 					Long id=solicitudClienteCredito.getId();
 					solicitudClienteCredito=ServiceLocator.getSolicitudClienteCreditoManager().buscarPorId(id);
@@ -904,7 +904,7 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 			cell=new Listcell();
 			cell.appendChild(button);
 			item.appendChild(cell);
-			
+
 			listHistSolicitudes.addEventListener(Events.ON_DOUBLE_CLICK,new EventListener<Event>() {
 				@Override
 				public void onEvent(Event event) throws Exception {
@@ -921,18 +921,18 @@ public class WndApruebaCarteraN1 extends WndBase implements Serializable{
 					tabPendientes.setSelected(true);
 					selectPendientes=false;
 					dbxCreditoAprobado.setReadonly(true);
-					
+
 					Listitem listitem=listHistSolicitudes.getItemAtIndex(listHistSolicitudes.getSelectedIndex());
 					SolicitudCartera solicitudCartera=listitem.getValue();
 					solicitudClienteCredito=new SolicitudClienteCredito();
 					solicitudClienteCredito=solicitudCartera.getSolicitudClienteCredito();
 					solicitudClienteCredito.setSolicitudCartera(solicitudCartera);
 					showDetalleSolicitud(solicitudClienteCredito);
-				}				
+				}
 			});
 			item.setValue(solicitudCartera);
 			listHistSolicitudes.appendChild(item);
 		}
 	}
-	
+
 }

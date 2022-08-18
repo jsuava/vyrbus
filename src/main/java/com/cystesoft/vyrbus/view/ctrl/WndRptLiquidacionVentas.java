@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 11 abr. 2022
  * Hora			: 14:56:10
@@ -51,10 +51,10 @@ import com.cystesoft.vyrbus.view.ui.WndIFrame;
 public class WndRptLiquidacionVentas extends WndBase{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private Datebox dtbxFechaInicio;
 	private Combobox cmbAgencia;
 	private Listbox ltbxLiquidacionVentas;
@@ -77,7 +77,7 @@ public class WndRptLiquidacionVentas extends WndBase{
 	public void initComponents() {
 		// TODO Auto-generated method stub
 		super.initComponents();
-		
+
 		dtbxFechaInicio = (Datebox) this.getFellow("dtxFechaInicio");
 		dtbxFechaFin = (Datebox) this.getFellow("dtbxFechaFin");
 		cmbAgencia = (Combobox) this.getFellow("cmbAgencia");
@@ -116,8 +116,8 @@ public class WndRptLiquidacionVentas extends WndBase{
 		});
 		
 	}
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.view.ui.WndBase#onCreate()
 	 */
@@ -125,7 +125,7 @@ public class WndRptLiquidacionVentas extends WndBase{
 	public void onCreate() throws Exception {
 		// TODO Auto-generated method stub
 		super.onCreate();
-		
+
 		dtbxFechaInicio.setValue(new Date());
 		dtbxFechaFin.setValue(new Date());
 		UtilData.cargarDataCombo(cmbAgencia, Agencia.class, true);
@@ -174,13 +174,13 @@ public class WndRptLiquidacionVentas extends WndBase{
 			DlgMessage.error(e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Evento Click del botón Detalle ventas
 	 */
 	public void viewDetalleVentas(Liquidacion liquidacion) {
 		try {
-			
+
 			String nameFile = CreateDocument.creaRptLiquidacionByDetalleVentas(liquidacion);
 			/*Carga el iframe*/
 			String src=Constantes.URL_FORMATOS_LIQUIDACION + Constantes.CLAVE_PAHT+ nameFile;
@@ -191,16 +191,16 @@ public class WndRptLiquidacionVentas extends WndBase{
 			iFrame.setWidth("810");
 			iFrame.setheight("600");
 			iFrame.loadiframe();
-			
+
 			appendChild(iFrame);
 			iFrame.setMode("modal");
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Carga la vista preliminar del reporte Control Especies Valoradas
 	 * @param liquidacionPasajes
@@ -219,14 +219,14 @@ public class WndRptLiquidacionVentas extends WndBase{
 			iFrame.setWidth("810");
 			iFrame.setheight("600");
 			iFrame.loadiframe();
-			
+
 			appendChild(iFrame);
 			iFrame.setMode("modal");
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
-		}		
+		}
 	}
 	
 	public void onClick_btnExportar() {
@@ -250,7 +250,7 @@ public class WndRptLiquidacionVentas extends WndBase{
 			}else if(ltbxLiquidacionVentas.getItemCount()>0) {
 				Agencia agencia = (Agencia) cmbAgencia.getSelectedItem().getValue();
 				String fechaLiquidacion = Constantes.FORMAT_DATE.format(dtbxFechaInicio.getValue());
-				
+
 				String nameFile = CreateDocument.creaRptLiquidacionByResumenSaldos(ltbxLiquidacionVentas, agencia, fechaLiquidacion);
 				/*Carga el iframe*/
 				String src=Constantes.URL_FORMATOS_LIQUIDACION +Constantes.CLAVE_PAHT+ nameFile;
@@ -259,11 +259,11 @@ public class WndRptLiquidacionVentas extends WndBase{
 				iFrame.setWidth("810");
 				iFrame.setheight("600");
 				iFrame.loadiframe();
-				
+
 				appendChild(iFrame);
-				iFrame.setMode("modal");				
+				iFrame.setMode("modal");
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
@@ -353,12 +353,12 @@ public class WndRptLiquidacionVentas extends WndBase{
 			Listitem item = new Listitem();
 			Listcell cell =new Listcell(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()));
 			cell.setStyle("font-size:12px !important");
-			item.appendChild(cell);			
+			item.appendChild(cell);
 			cell =new Listcell(liquidacion.getAgencia().toString());
 			item.appendChild(cell);
 			cell =new Listcell(liquidacion.getUsuario().toString());
 			item.appendChild(cell);
-			cell =new Listcell(liquidacion.getUsuario().getLogin());			
+			cell =new Listcell(liquidacion.getUsuario().getLogin());
 			item.appendChild(cell);
 			
 			Double saldoLiquidacion = buscarEfectivoLiquidacion(liquidacion);

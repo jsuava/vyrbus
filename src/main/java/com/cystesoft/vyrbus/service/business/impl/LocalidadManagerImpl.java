@@ -25,7 +25,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class LocalidadManagerImpl implements LocalidadManager {
 	private LocalidadDAO localidadDAO;
-	
+
 	/**
 	 * @return the localidadDAO
 	 */
@@ -73,16 +73,16 @@ public class LocalidadManagerImpl implements LocalidadManager {
 	@Transactional
 	public void guardar(Localidad localidad) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", localidad.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> result = getLocalidadDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de una Ruta*/
 			if(result.size()>0)
 				throw new DenominacionDuplicadaException();
-			
+
 			getLocalidadDAO().guardar(localidad);
-			
+
 		}catch (DenominacionDuplicadaException ddex){
 			throw new DenominacionDuplicadaException();
 		}catch(Exception ex){
@@ -97,19 +97,19 @@ public class LocalidadManagerImpl implements LocalidadManager {
 	@Transactional
 	public void actualizar(Localidad localidad) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", localidad.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> result = getLocalidadDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la denominación*/
-			for(int r = 0; r < result.size(); r ++) {
-				Localidad olocaLocalidad = (Localidad) result.get(r);
+			for (Object element : result) {
+				Localidad olocaLocalidad = (Localidad) element;
 					if (!(olocaLocalidad.getId() == localidad.getId()))
 						throw new DenominacionDuplicadaException();
 				}
-		
+
 			getLocalidadDAO().actualizar(localidad);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(Exception ex){

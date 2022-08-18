@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 19/09/2012
  */
@@ -18,11 +18,11 @@ public class PreferenciaAlimentariaException extends Exception implements Serial
 	private static final long serialVersionUID = 1L;
 	public static final int ALIMENTACION_IDA_NULL=1;
 	public static final int ALIMENTACION_RETORNO_NULL=2;
-		
+
 	private Integer tipo;
 
 	/**
-	 * 
+	 *
 	 */
 	public PreferenciaAlimentariaException() {
 		super();

@@ -25,7 +25,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class TipoPersonalManagerImpl implements TipoPersonalManager {
 	private TipoPersonalDAO tipoPersonalDAO;
-	
+
 	/**
 	 * @return the tipoPersonalDAO
 	 */
@@ -73,17 +73,17 @@ public class TipoPersonalManagerImpl implements TipoPersonalManager {
 	@Transactional
 	public void guardar(TipoPersonal tipoPersonal) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", tipoPersonal.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getTipoPersonalDAO().buscarPorX(criteriosBusqueda, null);
-			
+
 			/*Valida duplicidad de la denominación*/
 			if(resultDenominacion.size()>0)
 				throw new DenominacionDuplicadaException();
-		
+
 			getTipoPersonalDAO().guardar(tipoPersonal);
-			
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(Exception ex){
@@ -98,20 +98,20 @@ public class TipoPersonalManagerImpl implements TipoPersonalManager {
 	@Transactional
 	public void actualizar(TipoPersonal tipoPersonal) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", tipoPersonal.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getTipoPersonalDAO().buscarPorX(criteriosBusqueda, null);
-			
+
 			/*Valida duplicidad de la denominación*/
-			for(int r = 0; r < resultDenominacion.size(); r ++) {
-				TipoPersonal otipoPersonal = (TipoPersonal) resultDenominacion.get(r);
+			for (Object element : resultDenominacion) {
+				TipoPersonal otipoPersonal = (TipoPersonal) element;
 					if (!(otipoPersonal.getId() == tipoPersonal.getId()))
 						throw new DenominacionDuplicadaException();
 				}
-			
+
 			getTipoPersonalDAO().actualizar(tipoPersonal);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(Exception ex){

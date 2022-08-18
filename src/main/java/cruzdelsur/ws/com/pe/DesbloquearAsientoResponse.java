@@ -10,11 +10,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -26,8 +26,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "desbloquearAsientoResult" })
@@ -39,10 +39,10 @@ public class DesbloquearAsientoResponse {
 
 	/**
 	 * Gets the value of the desbloquearAsientoResult property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}
 	 *         {@link ResultDesbloquearAsiento }{@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<ResultDesbloquearAsiento> getDesbloquearAsientoResult() {
 		return desbloquearAsientoResult;
@@ -50,11 +50,11 @@ public class DesbloquearAsientoResponse {
 
 	/**
 	 * Sets the value of the desbloquearAsientoResult property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}
 	 *            {@link ResultDesbloquearAsiento }{@code >}
-	 * 
+	 *
 	 */
 	public void setDesbloquearAsientoResult(
 			JAXBElement<ResultDesbloquearAsiento> value) {

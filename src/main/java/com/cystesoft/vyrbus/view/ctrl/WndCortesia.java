@@ -1,9 +1,9 @@
 package com.cystesoft.vyrbus.view.ctrl;
 
-import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -25,6 +25,7 @@ import org.zkoss.zul.Groupbox;
 import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Intbox;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 //import org.zkoss.zul.Listheader;
@@ -35,10 +36,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Separator;
 import org.zkoss.zul.Textbox;
-import org.zkoss.zul.Label;
 import org.zkoss.zul.Window;
-
-import pe.gob.mtc.wshr.ResultIdentidad;
 
 import com.cystesoft.vyrbus.model.bean.AutorizadorCortesia;
 import com.cystesoft.vyrbus.model.bean.CanalVenta;
@@ -93,10 +91,12 @@ import com.cystesoft.vyrbus.view.ui.DlgMessage;
 import com.cystesoft.vyrbus.view.ui.WndFiltrarParametros;
 import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
 
+import pe.gob.mtc.wshr.ResultIdentidad;
+
 /**
- * 
+ *
  * @author JABANTO
- * 
+ *
  */
 public class WndCortesia extends WndOpcionesMantenimiento {
 	private static final long serialVersionUID = 5027089313223381893L;
@@ -151,7 +151,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 	private Combobox cmbTipoFormaPago;
 	private Image imgValidacionDNI;
 	/* End */
-	 
+
 
 	private Cortesia cortesia = null;
 	private Pasajero pasajero = null;
@@ -165,10 +165,10 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 
 	int ID_MOTCOR_ORDEN_TRABAJO=3;
 	int ID_MOTCOR_CANJE_PUBLICITARIO=15;
-	
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IBase#initComponents()
 	 */
 	@Override
@@ -227,7 +227,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IBase#onCreate()
 	 */
 	@Override
@@ -242,9 +242,9 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 		UtilData.cargarDataCombo(cmbAutorizadorCortesia,AutorizadorCortesia.class, false);
 		UtilData.enlazarUbigeo(txtIdUbigeo, txtUbicacionGeografica,btnUbicacionGeografica,null);
 		cargarTipoFormaPago();
-		
+
 		/* Carga combo para el Mantenimiento de Pasajeros */
-		TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+		TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 		criteriosBusqueda.put("tipo", TipoDocumento.PERSONALES);
 		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 		UtilData.cargarDataCombo(cmbDocumentoIdentificacion,TipoDocumento.class, criteriosBusqueda, false);
@@ -254,15 +254,15 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 		cmbSexo.setSelectedIndex(0);
 		cmbEstadoCivil.setSelectedIndex(0);
 		dbfechaNacimiento.setText("01/01/1900");
-				
+
 		listboxLista.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				// TODO Auto-generated method stub
 				btnModificar.setDisabled(true);
 			}
-		});	
-		
+		});
+
 		btnCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -270,7 +270,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 				btnModificar.setDisabled(true);
 			}
 		});
-		
+
 		oTabLista.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -280,11 +280,11 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 				}
 			}
 		});
-		
+
 		cmbMotivoCortesia.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
-				if(cmbMotivoCortesia.getSelectedItem().getValue() instanceof MotivoCortesia 
+				if(cmbMotivoCortesia.getSelectedItem().getValue() instanceof MotivoCortesia
 						&& ((MotivoCortesia)cmbMotivoCortesia.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_MOTCOR_OTROS){
 					rowDetalleCortesia.setVisible(true);
 					txtDetalleCortesia.setText("");
@@ -300,7 +300,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onNew()
 	 */
 	@Override
@@ -325,7 +325,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 //		dbFechaInicio.setValue(Constantes.FORMAT_DATE.parse(time.dateServer()));
 		fechaCaducidad();// Establece la fecha de caducidad por defecto.
 		lisboxPasajeros.setVisible(false);
-		
+
 		lblCliente.setVisible(false);
 		rowDetalleCortesia.setVisible(false);
 		rowCanje.setVisible(false);
@@ -336,7 +336,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 		activarBtnBuscar(true);
 		habilitaControleCortesia(true);
 		gbxDatosCortesia.setVisible(true);
-		
+
 		String fecha = Util.DatetoString(new Date(), "yyyyMMdd");
 		dbFechaCaducidad.setConstraint("after "+fecha);
 		dbFechaCaducidad.setValue(new Date());
@@ -344,7 +344,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onSearch()
 	 */
 	@Override
@@ -370,10 +370,10 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 						Cortesia ocortesia = new Cortesia();
 						if (!(docPasajero.isEmpty())) {
 							Pasajero pasajero = new Pasajero();
-							TreeMap<String, Object> criterioBusqueda = new TreeMap<String, Object>();
+							TreeMap<String, Object> criterioBusqueda = new TreeMap<>();
 							criterioBusqueda.put("numeroDocumento", docPasajero);
 							List<?> listPax = ServiceLocator.getPasajeroManager().buscarPorX(criterioBusqueda, null);
-							
+
 							if (listPax.size() > 0) {
 								Long idPasajero = ((Pasajero) listPax.get(0)).getId();
 								pasajero.setId(idPasajero);
@@ -394,7 +394,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onRefresh(int)
 	 */
 	@Override
@@ -403,7 +403,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onModify(int)
 	 */
 	@Override
@@ -413,7 +413,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onCancel(int)
 	 */
 	@Override
@@ -430,7 +430,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onSave(int)
 	 */
 //	@SuppressWarnings("deprecation")
@@ -455,8 +455,8 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 				throw new MotivoCorteciaNullException();
 			else if (itProcentejeDescuento.getValue() == null)
 				throw new PorcentajeDescuentoNullException();
-			else if(cmbTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago 
-					&& ((TipoFormaPago)cmbTipoFormaPago.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPFORPAG_CANJE_PUBLICITARIO 
+			else if(cmbTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago
+					&& ((TipoFormaPago)cmbTipoFormaPago.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPFORPAG_CANJE_PUBLICITARIO
 					&& !TIENE_CANJE)
 				throw new TipoFormaPagoException();
 			else if (rowDetalleCortesia.isVisible() && txtDetalleCortesia.getText().trim().isEmpty()){
@@ -465,7 +465,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 			}
 
 			final TipoFormaPago tipoFormaPago = cmbTipoFormaPago.getSelectedItem().getValue();
-			
+
 			/* Solicita confirmacion al usuario*/
 			final int accion=action;
 			Messagebox.show(Messages.getString("WndCortesia.information.confirmaGuardarCortesia"),DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
@@ -481,8 +481,8 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 								guardaCortesia(tipoFormaPago);
 						}else
 							guardaCortesia(tipoFormaPago);
-					}	
-				}	
+					}
+				}
 			});
 			throw new CancelaGrabacionException();
 		}catch (TipoFormaPagoNullException tfpnex){
@@ -528,15 +528,15 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 		}
 	}
 
-	/**		
+	/**
 	 * @param tipoFormaPago	: TipoFormaPago de la cortesia
 	 * @throws Exception
 	 */
-	private void guardaCortesia(TipoFormaPago tipoFormaPago) throws Exception{		
+	private void guardaCortesia(TipoFormaPago tipoFormaPago) throws Exception{
 		cortesia = new Cortesia();
 		Ruta ruta = new Ruta();
 		ruta = cmbRuta.getSelectedItem().getValue();
-							
+
 		/* Realiza la Reserva a fecha abierta */
 		VentaPasaje ventaPasaje = new VentaPasaje();
 		Itinerario itinerario = new Itinerario();
@@ -544,7 +544,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 		Servicio servicio = new Servicio();
 		TipoComprobante tipoComprobante = new TipoComprobante();
 		TipoMovimiento tipoMovimiento = new TipoMovimiento();
-		
+
 		itinerario.setId(new Long(1));
 		// Esto es para el CANJE PUBLICITARIO
 		if(tipoFormaPago.getId().intValue()==Constantes.ID_TIPFORPAG_CANJE_PUBLICITARIO){
@@ -557,7 +557,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 		servicio.setId(1);
 //		tipoComprobante.setId(Constantes.ID_TIPCOM_BOLETO_VIAJE);
 		tipoMovimiento.setId(Constantes.ID_TIPMOV_FECHA_ABIERTA);
-		
+
 		ventaPasaje.setItinerario(itinerario);
 		ventaPasaje.setRuta(ruta);
 		ventaPasaje.setPasajero(pasajero);
@@ -593,10 +593,10 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 			ventaPasaje.setCliente(oCliente);
 			ventaPasaje.setRucClienteCredito(oCliente.getNumeroDocumento());
 		}
-			
+
 		UtilData.auditarRegistro(ventaPasaje, false, getUsuario(),Executions.getCurrent());
 		ServiceLocator.getVentaPasajesManager().guardarVenta(ventaPasaje, true, true, false, true);
-		
+
 		/* Guarda la cortesia */
 		cortesia.setTipoFormaPago(tipoFormaPago);
 		cortesia.setPasajero(pasajero);
@@ -608,12 +608,12 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 			cortesia.setAutorizadorCortesia(autorizadorCortesia);
 			cortesia.setPersonaAutoriza(cmbAutorizadorCortesia.getText());
 		}
-		
+
 		if(cmbMotivoCortesia.getSelectedItem().getValue() instanceof MotivoCortesia){
 			cortesia.setMotivoCortesia(((MotivoCortesia)cmbMotivoCortesia.getSelectedItem().getValue()));
 			cortesia.setDetalleMotivoCortesia(txtDetalleCortesia.getText().trim().isEmpty()?null:txtDetalleCortesia.getText().trim().toUpperCase());
 		}
-		
+
 		cortesia.setRuta(ruta);
 		cortesia.setFechaInicio(Util.StringtoDate(Util.DatetoString(new Date(), Constantes.DATE_FORMAT), Constantes.DATE_FORMAT));
 		cortesia.setFechaCaducidad(Util.StringtoDate(Util.DatetoString(dbFechaCaducidad.getValue(), Constantes.DATE_FORMAT)+ " 23:59:59", Constantes.DATE_TIME_FORMAT));
@@ -621,11 +621,11 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 		cortesia.setFechaViaje(null);
 //		cortesia.setAnioCumpleanios(itAnioCortesia.getValue());
 		cortesia.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-		
+
 		UtilData.auditarRegistro(cortesia, getUsuario(),Executions.getCurrent());
 		ServiceLocator.getCortesiaManager().guardar(cortesia);
 		textboxId.setText(cortesia.getId().toString());
-		
+
 		oTabLista.setDisabled(false);
 		habilitaControles(false);
 		oTabbox.setSelectedIndex(0);
@@ -640,18 +640,18 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 		btnGuardar.setDisabled(true);
 		btnEliminar.setDisabled(true);
 		btnCerrar.setDisabled(false);
-				
+
 		DlgMessage.information("Registro grabado");
-		
+
 		limpiaControlesPasajero();
 		Util.limpiarListbox(listboxLista);
 		listarCortesia(ServiceLocator.getCortesiaManager().BuscarCortesia(cortesia));
 	}
-	
-	
+
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onDelete(int)
 	 */
 	@Override
@@ -659,16 +659,16 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 		try {
 			Listitem itemList = listboxLista.getItemAtIndex(listboxLista.getSelectedIndex());
 			Cortesia cortesia = itemList.getValue();
-			
+
 			if(cortesia.getTipoFormaPago().getId().equals(Constantes.ID_TIPFORPAG_PUNTOS))
 				if(cortesia.getRuta().getPuntaje()==null || cortesia.getRuta().getPuntaje()<=0)
 					throw new RutaSinPuntajeException();
-			
-			//Valida si la cortesia esta confirmada. 
+
+			//Valida si la cortesia esta confirmada.
 			if (!(ServiceLocator.getCortesiaManager().cortesiaConfirmada(cortesia.getVentaPasaje().getNumeroControl()))) {
 				//Anula cortesia
 				ServiceLocator.getCortesiaManager().inactivar(cortesia.getId());
-				
+
 				//Anula la reserva fecha habierta
 				TipoMovimiento tipoMovimiento= new TipoMovimiento();
 				VentaPasaje movimiento= ServiceLocator.getVentaPasajesManager().buscarPorId(cortesia.getVentaPasaje().getId());
@@ -676,7 +676,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 				tipoMovimiento.setId(Constantes.ID_TIPMOV_ANULACION_SISTEMA);
 				movimiento.setTipoMovimiento(tipoMovimiento);
 				ServiceLocator.getVentaPasajesManager().anularMovimiento(movimiento,false);
-				
+
 				limpiaControlesPasajero();
 			} else {
 				throw new NoRemoverRegistroDelListBox();
@@ -704,7 +704,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.zkoss.zul.Window#onClose()
 	 */
 	@Override
@@ -714,7 +714,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onChangeTab(int)
 	 */
 	@Override
@@ -724,7 +724,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 
 	/**
 	 * Carga Rutas, según la Ciudad Origen.
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public void onChangeRutas() throws Exception {
@@ -732,7 +732,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 		if (cmbCiudadOrigen.getSelectedItem().getValue() instanceof Localidad) {
 			Integer Origen = ((Localidad) cmbCiudadOrigen.getSelectedItem().getValue()).getId();
 //			String puntos =lbPuntosPax.getValue().substring(lbPuntosPax.getValue().indexOf(":")+1,lbPuntosPax.getValue().toString().trim().length());
-			
+
 			UtilData.cargarRutas(cmbRuta, false, Origen,null,true);
 		} else
 			UtilData.cargarGenericData(cmbRuta, false);
@@ -741,7 +741,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 
 	/**
 	 * Corresponde al evento onSelect del combo tipo Forma de Pago.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void onSelectTipoFormaPago() throws Exception{
 		Util.limpiarCombobox(cmbMotivoCortesia);
@@ -756,7 +756,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 		txtRazonSocial.setText("");
 		lblCliente.setValue("");
 		TIENE_CANJE = false;
-			
+
 		if(cmbTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago){
 			TipoFormaPago tipoFormaPago=cmbTipoFormaPago.getSelectedItem().getValue();
 
@@ -768,16 +768,16 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 				cmbMotivoCortesia.setDisabled(false);
 				itProcentejeDescuento.setDisabled(false);
 			}
-			
+
 			if(tipoFormaPago.getId().intValue() == Constantes.ID_TIPFORPAG_CANJE_PUBLICITARIO)
-				rowCanje.setVisible(true);				
+				rowCanje.setVisible(true);
 			else
 				rowCanje.setVisible(false);
-				
+
 		}
 	}
-		
-	
+
+
 	/**
 	 * Realiza la busqueda, según los parametros elejidos por el usuario.
 	 */
@@ -786,16 +786,16 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 			if (txtBuscarPax.getText().trim().isEmpty())
 				throw new PasajeroException();
 
-			TreeMap<String, Object> criterioBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criterioBusqueda = new TreeMap<>();
 			if (rdPorApellidos.isSelected())
 				criterioBusqueda.put("apellidoPaterno", txtBuscarPax.getText().trim().toUpperCase()+ "%");
 			else if (rdPorDocumento.isSelected())
 				criterioBusqueda.put("numeroDocumento", txtBuscarPax.getText().trim().toUpperCase()+ "%");
-			List<String> criteriosOrdenar = new ArrayList<String>();
+			List<String> criteriosOrdenar = new ArrayList<>();
 			criteriosOrdenar.add("apellidoPaterno");
 			criteriosOrdenar.add("apellidoMaterno");
 			criteriosOrdenar.add("nombre");
-			
+
 			ArrayList<Pasajero> lstPasajeros = ServiceLocator.getPasajeroManager().buscarPorX(criterioBusqueda,criteriosOrdenar);
 			listarPasajeros(lstPasajeros);
 		} catch (PasajeroException pnex) {
@@ -808,7 +808,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 
 	/**
 	 * Lista los pasajeros encontrados en l abusqueda
-	 * 
+	 *
 	 * @param lstPasajero
 	 * @throws Exception
 	 */
@@ -822,12 +822,12 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 			/* cuando el resultado de la busqueda solo un registro */
 			pasajero = lstPasajero.get(0);
 			habilitaControleCortesia(false);
-			
+
 			muestraPax(pasajero);
 			grInfoPax.setVisible(true);
 			lisboxPasajeros.setVisible(false);
 			btnEditarPax.setDisabled(true);
-			
+
 		} else if (lstPasajero.size() > 1) {
 			grInfoPax.setVisible(false);
 			/* cuando el resultado de la busqueda es mas de un registro */
@@ -873,12 +873,12 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 		txtBuscarPax.setText("");
 //		cmbAutorizadorCortesia.setDisabled(true);
 //		cmbMotivoCortesia.setDisabled(true);
-	}	
-	
+	}
+
 //	/**
 //	 * Verifica si el Pasajero existe el la reniec si es que se registrando un nuevo Pas
-//	 * @throws Exception 
-//	 * @throws WrongValueException 
+//	 * @throws Exception
+//	 * @throws WrongValueException
 //	 */
 //	public void validarPax_MuestraBDReniec() throws Exception{
 //		if(action==Constantes.ACTION_NEW  && !(txtNumeroDocumento.getText().trim().isEmpty()) ){
@@ -890,23 +890,23 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 //				txtNombre.setText(reniec.getNombres());
 //				dbfechaNacimiento.setValue(Constantes.FORMAT_DATE.parse(reniec.getFechaNacimiento()));
 //				Util.seleccionarValorItemCombo(Sexo.class, cmbSexo, Integer.valueOf(reniec.getSexo()));
-//				
+//
 //			}else{
 //				String numeroDocumento=txtNumeroDocumento.getText().trim();
 //				Integer idTipoDocumento= null;
 //				if(cmbDocumentoIdentificacion.getSelectedItem().getValue() instanceof TipoDocumento)
 //					idTipoDocumento=((TipoDocumento)cmbDocumentoIdentificacion.getSelectedItem().getValue()).getId();
-//				
+//
 //				clearControsMantPax();
 //				dbfechaNacimiento.setValue(Constantes.FECHA_NULL);
-//				
+//
 //				//recupera valores ingresado por el usuario
 //				txtNumeroDocumento.setText(numeroDocumento);
 //				if(idTipoDocumento!=null) Util.seleccionarValorItemCombo(TipoDocumento.class, cmbDocumentoIdentificacion, idTipoDocumento);
 //			}
 //		}
 //	}
-//	
+//
 //	/**
 //	 * Reliza la validacion del pasajero con el metodop getIdentifidad del WS del mtc en funcion al parametro configurado.
 //	 * @throws WrongValueException
@@ -920,27 +920,27 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 //		else
 //			validarPax_MuestraBDReniec();
 //	}
-	
+
 	/**
 	 * Verifica si el Pasajero existe el la reniec si es que se registrando un nuevo Pas - 04/04/2015 - jabanto
-	 * @throws Exception 
-	 * @throws WrongValueException 
+	 * @throws Exception
+	 * @throws WrongValueException
 	 */
 	public void verificarPaxReniec() throws Exception{
 		txtApellidoMaterno.setDisabled(false);
 		txtApellidoPaterno.setDisabled(false);
 		txtNombre.setDisabled(false);
-		
-		if(action==Constantes.ACTION_NEW  
-				&& !(txtNumeroDocumento.getText().trim().isEmpty()) 
-				&& cmbDocumentoIdentificacion.getSelectedItem().getValue() instanceof TipoDocumento 
+
+		if(action==Constantes.ACTION_NEW
+				&& !(txtNumeroDocumento.getText().trim().isEmpty())
+				&& cmbDocumentoIdentificacion.getSelectedItem().getValue() instanceof TipoDocumento
 				&& ((TipoDocumento)cmbDocumentoIdentificacion.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPDOC_DNI){
-			
+
 			String numerodocumento=txtNumeroDocumento.getText().trim();
-			
-			/*Busca el DNI en la reniec, a travez del WS del MTC*/			
+
+			/*Busca el DNI en la reniec, a travez del WS del MTC*/
 			ResultIdentidad resultIdentidad=Util.getResultIdentidad(numerodocumento,imgValidacionDNI);
-			if(resultIdentidad!=null){	
+			if(resultIdentidad!=null){
 				Util.seleccionarValorItemCombo(TipoDocumento.class, cmbDocumentoIdentificacion, Constantes.ID_TIPDOC_DNI);
 				/*Si el DNI es correcto*/
 				if(resultIdentidad.isReturn()){
@@ -967,10 +967,10 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 					reniec.setNombres(dni.get(1));
 					reniec.setApellidoPaterno(dni.get(2));
 					reniec.setApellidoMaterno(dni.get(3));
-					
+
 //					ntbxEdad.setValue(30);
 					dbfechaNacimiento.setValue(Constantes.FORMAT_DATE.parse(calcularFechaNacimiento()));
-				
+
 				/*Consulta con NUESTRA BD reniec*/
 //				Reniec reniec= ServiceLocator.getReniecManager().buscarPax(numerodocumento);
 //				if(reniec!=null){
@@ -979,7 +979,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 					txtApellidoPaterno.setText(reniec.getApellidoMaterno());
 					txtNombre.setText(reniec.getNombres());
 					dbfechaNacimiento.setValue(Constantes.FORMAT_DATE.parse(calcularFechaNacimiento()));
-					
+
 					//Comentado porque ahora se consulta a Reniec pro un API y no devuelve estos datos
 //					dbfechaNacimiento.setValue(Constantes.FORMAT_DATE.parse(reniec.getFechaNacimiento()));
 //					Util.seleccionarValorItemCombo(Sexo.class, cmbSexo, Integer.valueOf(reniec.getSexo()));
@@ -988,10 +988,10 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 					Integer idTipoDocumento= null;
 					if(cmbDocumentoIdentificacion.getSelectedItem().getValue() instanceof TipoDocumento)
 						idTipoDocumento=((TipoDocumento)cmbDocumentoIdentificacion.getSelectedItem().getValue()).getId();
-					
+
 					clearControsMantPax();
 					dbfechaNacimiento.setValue(Constantes.FECHA_NULL);
-					
+
 					//recupera valores ingresado por el usuario
 					txtNumeroDocumento.setText(numeroDocumento);
 					if(idTipoDocumento!=null) Util.seleccionarValorItemCombo(TipoDocumento.class, cmbDocumentoIdentificacion, idTipoDocumento);
@@ -999,20 +999,20 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 			}
 		}
 	}
-	
+
 	private String calcularFechaNacimiento(){
 		final DateFormat FORMAT = new SimpleDateFormat ("dd/MM");
 		String year = Util.DatetoString(new Date(), "yyyy");
-		Integer anio = Integer.valueOf(year) - 30;
+		int anio = Integer.valueOf(year) - 30;
 //		String fechaNacimiento = "01/01/"+anio;
 		String fechaNacimiento = FORMAT.format(new Date())+"/"+anio;
 		return fechaNacimiento;
 	}
-	
-	
+
+
 	/**
 	 * Muestra datos del Pasajero
-	 * 
+	 *
 	 * @param pasajero
 	 *            : clase que contiene datos del pasajero a mostrar al usuario.
 	 * @throws Exception
@@ -1022,7 +1022,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 			if (pasajero.getIndeseable().equals(Constantes.PASAJERO_INDESEABLE))
 				throw new PasajeroIndeseableException();
 			pasajero=ServiceLocator.getPasajeroManager().buscarPorId(pasajero.getId());
-			
+
 			txtidPasajero.setText(pasajero.getId().toString());
 			lbNumeroDocumento.setValue(pasajero.getNumeroDocumento());
 			lbPasajero.setValue(pasajero.toString());
@@ -1033,14 +1033,14 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 				cmbTipoFormaPago.setSelectedIndex(1);
 			else
 				cmbTipoFormaPago.setSelectedIndex(0);
-			
-			onSelectTipoFormaPago();		
-			
+
+			onSelectTipoFormaPago();
+
 			/*Establece la imagen segun validacion del DNI del pasajero con la reniec - 04/04/2015 - jabanto*/
 			imgValidacionDNISearch.setSrc("");
 			if(pasajero.getTipoDocumento().getId().intValue()==Constantes.ID_TIPDOC_DNI)
 				Util.imagenValidacionDNIReniec(pasajero.getValidadoReniec(), imgValidacionDNISearch);
-			
+
 			cmbCiudadOrigen.setFocus(true);
 			cmbCiudadOrigen.select();
 		} catch (PasajeroIndeseableException pxidex) {
@@ -1051,7 +1051,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 
 	/**
 	 * Carga cortecias emitidas, según el resultado de la busqueda.
-	 * 
+	 *
 	 * @param lstCortecia
 	 *            : Array con las cortecias a mostrar en el Listbox
 	 */
@@ -1084,14 +1084,14 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 					Constantes.VALUE_INACTIVO))
 				cell = new Listcell(Constantes.LABEL_INACTIVO_DESCP);
 			item.appendChild(cell);
-			
+
 			cell= new Listcell(cortesia.getNumeroControl());
 			cell.setStyle("font-size:11px !important");
 			item.appendChild(cell);
 			cell= new Listcell(cortesia.getVentaPasaje().getNumeroBoleto());
 			cell.setStyle("font-size:11px !important");
 			item.appendChild(cell);
-			
+
 
 			item.setValue(cortesia);
 			listboxLista.appendChild(item);
@@ -1109,7 +1109,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 
 	/**
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	private void edicionCortesia() throws Exception {
 		activarBtnNuevo(false);
@@ -1138,23 +1138,23 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 			onChangeRutas();
 			Util.seleccionarValorItemCombo(Ruta.class, cmbRuta, cortesia.getRuta().getId());
 //			dbFechaInicio.setValue(cortesia.getFechaInicio());
-			
+
 			String fecha = Util.DatetoString(cortesia.getFechaCaducidad(), "yyyyMMdd");
 			dbFechaCaducidad.setConstraint("after "+fecha);
 			dbFechaCaducidad.setValue(cortesia.getFechaCaducidad());
-			
+
 			if(cortesia.getAutorizadorCortesia()!=null)
 				Util.seleccionarValorItemCombo(AutorizadorCortesia.class,cmbAutorizadorCortesia, cortesia.getAutorizadorCortesia().getId());
 			else{
 				cmbAutorizadorCortesia.setSelectedIndex(0);
 			}
-			
+
 			Util.seleccionarValorItemCombo(TipoFormaPago.class, cmbTipoFormaPago, cortesia.getTipoFormaPago().getId());
-			
+
 			if(cortesia.getMotivoCortesia()!=null){
 				cargarMotivoCortesia();
 				Util.seleccionarValorItemCombo(MotivoCortesia.class,cmbMotivoCortesia, cortesia.getMotivoCortesia().getId());
-				
+
 				if(cmbMotivoCortesia.getSelectedIndex()>0){
 					MotivoCortesia motivoCortesia=cmbMotivoCortesia.getSelectedItem().getValue();
 					if(motivoCortesia.getId().intValue()==Constantes.ID_MOTCOR_OTROS){
@@ -1175,7 +1175,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 //			Util.seleccionarValorItemCombo(TipoFormaPago.class, cmbTipoFormaPago, cortesia.getTipoFormaPago().getId());
 //			if (cortesia.getFechaViaje() != null) dbxFechaViaje.setValue(cortesia.getFechaViaje());
 			itProcentejeDescuento.setValue(cortesia.getPorcentaje());
-			
+
 		}
 	}
 
@@ -1190,7 +1190,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 		if (pasajero != null)
 			activarBtnEditar(true);
 		activarBtnBuscar(true);
-		
+
 	}
 
 	/**
@@ -1212,8 +1212,8 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 		Util.disabledBtnBuscar(estado, btnBuscarCliente, true);
 //		dbxFechaViaje.setDisabled(estado);
 //		itAnioCortesia.setDisabled(estado);
-		
-		if (estado == true) {
+
+		if (estado) {
 			cmbCiudadOrigen.setSelectedIndex(0);
 			Util.limpiarCombobox(cmbRuta);
 			UtilData.cargarGenericData(cmbRuta, false);
@@ -1229,7 +1229,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 
 	/**
 	 * Establece la fecha de caducidad segun la fecha inicio seleccionada
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public void fechaCaducidad() throws Exception {
@@ -1243,20 +1243,20 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 	 * Carga los motivos de cortesia asiciados al autorizador de la cortesia.
 	 */
 	public void cargarMotivoCortesia() throws Exception {
-				
+
 		itProcentejeDescuento.setText("");
 		//itProcentejeDescuento.setDisabled(false);
 		cmbMotivoCortesia.getItems().clear();
 		UtilData.cargarGenericData(cmbMotivoCortesia, false);
 
 		if (cmbAutorizadorCortesia.getSelectedIndex()>0) {
-			
+
 			List<MotivoCortesia> lstMotivos = ServiceLocator.getAutorizadorMotivoCortesiaManager().buscarMotivosCortesia(((AutorizadorCortesia) cmbAutorizadorCortesia.getSelectedItem().getValue()).getPersonal().getId());
 
 			for (MotivoCortesia motivoCortesia : lstMotivos) {
 				if(cmbTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago){
 					TipoFormaPago tipoFormaPago=cmbTipoFormaPago.getSelectedItem().getValue();
-					
+
 					/* Cuando el tipo forma de pago es ORDEN DE TRABAJO*/
 					if(tipoFormaPago.getId().intValue()==Constantes.ID_TIPFORPAG_ORDEN_TRABAJO){
 						if(motivoCortesia.getId().intValue()==ID_MOTCOR_ORDEN_TRABAJO){
@@ -1297,7 +1297,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 	 */
 	/**
 	 * Pasajero Nuevo o edisión del mismo.
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public void onNewEdit(Integer action) throws Exception {
@@ -1342,7 +1342,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 
 	/**
 	 * Guarda Pasajero
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public void onSavePax() throws Exception {
@@ -1370,7 +1370,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 			}
 
 			if (txtCorreoElectronico.getText().length() > 0)
-				if (UtilData.validateEmail(txtCorreoElectronico.getText().trim()) == false)
+				if (!UtilData.validateEmail(txtCorreoElectronico.getText().trim()))
 					throw new MailIncorectoException();
 			if (action == ACTION_NEW)
 				pasajero = new Pasajero();
@@ -1402,14 +1402,14 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 			pasajero.setKilometros(action == ACTION_NEW ? Double.valueOf(0): pasajero.getKilometros());
 			pasajero.setIndeseable(Constantes.FALSE_VALUE);
 			pasajero.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-			
+
 			/*Valida si es DNI y si fue validado correctamente por la RENIEC. - 06/04/2015*/
 			pasajero.setValidadoReniec(Constantes.FALSE_VALUE);
 			if(pasajero.getTipoDocumento().getId().intValue()==Constantes.ID_TIPDOC_DNI){
 				if(imgValidacionDNI.getSrc()!=null && !(imgValidacionDNI.getSrc().trim().isEmpty()) && imgValidacionDNI.getSrc().equals(Constantes.IMAGE_VALIDACION_DNI_OK))
 					pasajero.setValidadoReniec(Constantes.TRUE_VALUE);
 			}
-			
+
 			switch (action) {
 				case ACTION_NEW:
 					UtilData.auditarRegistro(pasajero, getUsuario(),Executions.getCurrent());
@@ -1426,7 +1426,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 			activarBtnNuevo(true);
 			activarBtnEditar(true);
 			activarBtnBuscar(true);
-			
+
 			if(action==ACTION_NEW && cmbTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago){
 				if(((TipoFormaPago)cmbTipoFormaPago.getSelectedItem().getValue()).getId().equals(Constantes.ID_TIPFORPAG_CUMPLEANIOS)){
 					cmbTipoFormaPago.setSelectedIndex(0);
@@ -1488,7 +1488,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 
 	/**
 	 * Activa o Inactiva el botón Nuevo pasajero
-	 * 
+	 *
 	 * @param activar
 	 */
 	private void activarBtnNuevo(boolean activar) {
@@ -1509,7 +1509,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 
 	/**
 	 * Activa o inactiva el botón Editar Pasajero.
-	 * 
+	 *
 	 * @param activar
 	 */
 	private void activarBtnEditar(boolean activar) {
@@ -1531,7 +1531,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 
 	/**
 	 * Activa o desactiva el botón Buscar pasajero
-	 * 
+	 *
 	 * @param activar
 	 */
 	private void activarBtnBuscar(boolean activar) {
@@ -1584,23 +1584,23 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 
 	/**
 	 * Carga los tipos de pago que guardan relación con la forma de fago cortesia.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private void cargarTipoFormaPago() throws Exception{
-		List<String> criteriosOrdenar = new ArrayList<String>();
+		List<String> criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
-		
-		TreeMap<String, Object> criterioBusqueda = new TreeMap<String, Object>();
+
+		TreeMap<String, Object> criterioBusqueda = new TreeMap<>();
 //		FormaPago formaPago= new FormaPago();
 //		formaPago.setId(Constantes.ID_FORPAG_CORTESIA);
 //		criterioBusqueda.put("formaPago", formaPago);
 		criterioBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-		
+
 		List<TipoFormaPago> lstResut= ServiceLocator.getTipoFormaPagoManager().buscarPorX(criterioBusqueda, criteriosOrdenar);
-		
+
 		UtilData.cargarGenericData(cmbTipoFormaPago, false);
 		for (TipoFormaPago tipoFormaPago: lstResut){
-			if(tipoFormaPago.getId().intValue()==Constantes.ID_TIPFORPAG_CORTESIA 
+			if(tipoFormaPago.getId().intValue()==Constantes.ID_TIPFORPAG_CORTESIA
 					|| tipoFormaPago.getId().intValue()==Constantes.ID_TIPFORPAG_ORDEN_TRABAJO
 					|| tipoFormaPago.getId().intValue()==Constantes.ID_TIPFORPAG_CANJE_PUBLICITARIO){ //Solo muestra el tipo forma pago "CORTESIA"
 				Comboitem oComboitem = new Comboitem();
@@ -1608,31 +1608,31 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 				oComboitem.setValue(tipoFormaPago);
 				cmbTipoFormaPago.appendChild(oComboitem);
 			}
-			
+
 		}
 	}
-	
+
 	private void ventanaSolicitaPassword(int action){
 		wndValidaUsuario = createVentanaSolicitaPassword(action);
 		this.appendChild(wndValidaUsuario);
 		wndValidaUsuario.setMode("modal");
 	}
-	
+
 	/**
-	 * Crea la ventana para validar con password 
+	 * Crea la ventana para validar con password
 	 * @return
 	 */
 	@SuppressWarnings("deprecation")
 	private Window createVentanaSolicitaPassword(final int action){
 		final Window window = new Window("", "none", false);
 		window.setWidth("250px");
-		
+
 		final Button btnAceptar = new Button("Aceptar");
 		btnAceptar.setImage("/resources/mp_aceptarEnabled.png");
-		
+
 		Button btncancelar = new Button("Cancelar");
 		btncancelar.setImage("/resources/mp_cancelarEnabled.png");
-		
+
 		Grid grid= new Grid();
 		Columns columns= new Columns();
 		Column column= new Column();
@@ -1640,15 +1640,15 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 		Row row= new Row();
 		column.setWidth("75px");
 		columns.appendChild(column);
-				
+
 //		grid.appendChild(columns);
-		
+
 		final Textbox txtPassrowd = new Textbox();
 		txtPassrowd.setType("password");
 		txtPassrowd.setWidth("130px");
 		txtPassrowd.setMaxlength(20);
 		txtPassrowd.setStyle("font-size:12px !important");
-		
+
 		Div div= new Div();
 		div.setAlign("center");
 		Label label= new Label("Debe de ingresar el Password de autorización para la emisión de la Cortersia");
@@ -1657,16 +1657,16 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 		row=new Row();
 		row.appendChild(div);
 		rows.appendChild(row);
-		
+
 		label= new Label("------------------------------------------------------------------------------");
 		label.setStyle("color:blue");
 		row=new Row();
 		row.appendChild(label);
 		rows.appendChild(row);
-		
+
 		label= new Label("Password ");
 		label.setSclass("label-size11");
-		
+
 		row=new Row();
 		Hbox hbox= new Hbox();
 		hbox.setAlign("center");
@@ -1677,17 +1677,17 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 		row=new Row();
 		row.appendChild(new Separator());
 		rows.appendChild(row);
-		
+
 		hbox= new Hbox();
 		Separator separator= new Separator();
 		separator.setWidth("30px");
 		hbox.appendChild(separator);
 		hbox.appendChild(btncancelar);
 		hbox.appendChild(btnAceptar);
-				
+
 		grid.appendChild(rows);
 		window.appendChild(grid);
-		
+
 		txtPassrowd.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -1706,7 +1706,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 				}
 			}
 		});
-		
+
 		btnAceptar.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -1726,21 +1726,21 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 				}
 			}
 		});
-		
+
 		btncancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				window.onClose();
 			}
 		});
-			
+
 		window.appendChild(hbox);
 		return window;
 	}
-	
+
 	public void buscarCliente(){
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new  TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new  TreeMap<>();
 			criteriosBusqueda.put("numeroDocumento", txtRuc.getText().trim());
 			List<Cliente> lstClientes = ServiceLocator.getClienteManager().buscarPorX(criteriosBusqueda, null);
 			oCliente = null;
@@ -1756,7 +1756,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 					if(lineaCreditoCliente.getEsCanje().equals(Constantes.SI)){
 						TIENE_CANJE = true;
 						lblCliente.setStyle("color:#008db7; font-weight:bold; font-size:10px");
-						lblCliente.setValue(Constantes.TIPCONVCLI_CREDITO_CANJE_PUBLICITARIO);						
+						lblCliente.setValue(Constantes.TIPCONVCLI_CREDITO_CANJE_PUBLICITARIO);
 					}else{
 						TIENE_CANJE = false;
 						lblCliente.setValue(Constantes.TIPCONVCLI_CREDITO_SIN_CANJE_PUBLICITARIO);

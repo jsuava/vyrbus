@@ -45,7 +45,7 @@ import com.cystesoft.vyrbus.view.ui.DlgMessage;
 import com.cystesoft.vyrbus.view.ui.WndBase;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
@@ -71,14 +71,14 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 	private Intbox ibxAnio;
 	private Combobox cmbMes;
 	private Treecol tcDelete;
-	
+
 	private String deleteEnable="resources/mp_eliminarEnabled.png";
 	private int action=0;
 	private  Treechildren treechildren = new Treechildren();
 	private Treechildren treechildrenHijo = new Treechildren();
 	private Treeitem treeitem = new Treeitem();
 	private ArrayList<TemporadaAlta>listDiasEliminados= null;
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
@@ -105,7 +105,7 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 		cmbMes=(Combobox)this.getFellow("cmbMes");
 		tcDelete=(Treecol)this.getFellow("tcDelete");
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
@@ -116,7 +116,7 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 		cargarMeses();
 		cmbMes.setSelectedIndex(0);
 		cmbMotivoTemporadaAlta.setSelectedIndex(0);
-		
+
 		//CALENDAR INICIO TEMPORADA ALTA
 		calInicioTempAlta.addEventListener(Events.ON_CHANGE,new EventListener<Event>() {
 			@Override
@@ -139,15 +139,15 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 		calFinTempalta.addEventListener(Events.ON_CHANGE,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
-				// TODO Auto-generated method stub			
+				// TODO Auto-generated method stub
 				selectDate();
 			}
 		});
 	}
-	
+
 	/**
 	 * Apertura nuevo calendario
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void onAperturaCalendario() throws Exception{
 		Util.limpiarCombobox(cmbMotivoTemporadaAlta);
@@ -171,7 +171,7 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 		gbFinTempAlta.setVisible(false);
 		listDiasEliminados=null;
 	}
-	
+
 	/**
 	 * Habilita los parametros para realizar la busqueda
 	 */
@@ -187,9 +187,9 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 		ibxAnio.setFocus(true);
 		limpiaControles(true);
 	}
-	
+
 	/**
-	 * Modificar 
+	 * Modificar
 	 * @throws Exception
 	 */
 	public void onModificar()throws Exception{
@@ -203,7 +203,7 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 		disabledImgBuscar(true);
 		action=Constantes.ACTION_MODIFY;
 	}
-	
+
 	/**
 	 * Cancela la apertura
 	 */
@@ -224,7 +224,7 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 		gbFinTempAlta.setVisible(false);
 		listDiasEliminados=null;
 	}
-	
+
 	/**
 	 * Guarda calendario
 	 * @throws Exception
@@ -236,7 +236,7 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 				public void onEvent(Event e) throws Exception {
 					if(e.getName().equals("onYes")){
 						Date dateRp= new Date();//Para validar fechas repetidas, por un tema de los grupos.
-						
+
 						if(action==Constantes.ACTION_MODIFY && listDiasEliminados!=null){
 							String mes=""; String dia="";String anio="";
 //							if(cmbMes.getSelectedIndex()>0)
@@ -249,18 +249,18 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 								ServiceLocator.getTemporadaAltaManager().anularTemporadaAlta(anio, mes,dia);
 							}
 						}
-						
+
 						for(Treeitem treeitem: trTempAlta.getItems()){
 							TemporadaAlta ta= treeitem.getValue();
 							TemporadaAlta temporadaAlta=null;
-							
+
 							if (!(dateRp.getTime()==ta.getDiaTemporadaAlta().getTime())){
 								temporadaAlta=new TemporadaAlta();
 								temporadaAlta.setId((((TemporadaAlta)treeitem.getValue()).getId()));
 								temporadaAlta.setDiaTemporadaAlta(ta.getDiaTemporadaAlta());
 								temporadaAlta.setMotivoTemporadaAlta((((TemporadaAlta)treeitem.getValue()).getMotivoTemporadaAlta()));
 								temporadaAlta.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-								
+
 								if(action==Constantes.ACTION_MODIFY){
 									if(temporadaAlta.getId()==null){
 										UtilData.auditarRegistro(temporadaAlta, getUsuario(), Executions.getCurrent());
@@ -271,11 +271,11 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 									ServiceLocator.getTemporadaAltaManager().guardar(temporadaAlta);
 								}
 							}
-							
+
 							if(temporadaAlta!=null)
-								dateRp=temporadaAlta.getDiaTemporadaAlta();								
-						}	
-						
+								dateRp=temporadaAlta.getDiaTemporadaAlta();
+						}
+
 						disabledControls(true);
 						disabledImgBuscar(true);
 						disabledImgAdd(true);
@@ -291,13 +291,13 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 						listDiasEliminados=null;
 					}
 				}
-			});	
+			});
 		} catch (Exception e) {
 			DlgMessage.error(this.getClass().getName()+" "+e.getMessage());
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void onAnularTodo(){
 //		Messagebox.show(Messages.getString("wndTempAlta.question.anularTodo"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 //			@Override
@@ -321,8 +321,8 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 //			}
 //		});
 	}
-	
-	
+
+
 	/**
 	 * Valida y carga el calendario en el año ingresado y con el primer mes del mismo.
 	 * @throws Exception
@@ -335,7 +335,7 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 					throw new AnioAperturaCalendarioErronioException();
 				else if (ibxAnio.getValue()< 2013 )
 					throw new AnioAperturaCalendarioErronioException();
-				
+
 				if (!(ibxAnio.getText().trim().isEmpty())){
 					java.util.Calendar  calendar=java.util.Calendar.getInstance();
 //					calendar.set(ibxAnio.getValue(), 0, 1);
@@ -352,7 +352,7 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 				calendar.set(ibxAnio.getValue(), 0, 1);
 				calInicioTempAlta.setValue(calendar.getTime());
 			}
-			
+
 		}catch (AnioAperturaCalendarioErronioException aperex){
 			DlgMessage.information(Messages.getString("wndTempAlta.Information.anioAperturaErronio"));
 			ibxAnio.setFocus(true);
@@ -361,7 +361,7 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 			disabledImgAdd(true);
 		}
 	}
-	
+
 	/**
 	 * Agregar al calendario de fechas altas.
 	 * @param fechaDel 	:Fecha del que inicia.
@@ -381,16 +381,16 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 					throw new AnioDiferenteException();
 				else if (dateact.getTime() >= datefc.getTime() )
 					throw new FechaPasadaException();
-							
-				Long cDias=(Constantes.FORMAT_DATE.parse(lblAl.getValue()).getTime()-Constantes.FORMAT_DATE.parse(lblDel.getValue()).getTime());
-				cDias=cDias/Constantes.MILISEGUNDOS_X_DIA+1;	
+
+				long cDias=(Constantes.FORMAT_DATE.parse(lblAl.getValue()).getTime()-Constantes.FORMAT_DATE.parse(lblDel.getValue()).getTime());
+				cDias=cDias/Constantes.MILISEGUNDOS_X_DIA+1;
 				Long lnexDia=Constantes.FORMAT_DATE.parse(lblDel.getValue()).getTime()-Constantes.MILISEGUNDOS_X_DIA;
 //				trTempAlta.setVisible(true);
-				
+
 				for (int i=0; i<cDias; i++){
 					lnexDia+=+Constantes.MILISEGUNDOS_X_DIA;
 					Date nextDia= new Date(lnexDia);
-										
+
 					/*Valida que el dia no este registrado*/
 					if(action==Constantes.ACTION_NEW){
 						String anio=Constantes.FORMAT_YEAR.format(nextDia);
@@ -402,12 +402,12 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 							throw new DiaExisteException();
 						}
 					}
-						
+
 					/*Setea temporada alta*/
 					TemporadaAlta temporadaAlta= new TemporadaAlta();
 					temporadaAlta.setMotivoTemporadaAlta(((MotivoTemporadaAlta)cmbMotivoTemporadaAlta.getSelectedItem().getValue()));
 					temporadaAlta.setDiaTemporadaAlta(nextDia);
-					
+
 					/*Valida que el anio sea el mismo al anterior agregado a las lista de temporas altas*/
 					String anio="";String mes="";
 					for (Treeitem treeitems : trTempAlta.getItems()){
@@ -415,38 +415,38 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 						if(temporadaAlta !=null){
 							anio=Constantes.FORMAT_YEAR.format(tempAltItems.getDiaTemporadaAlta());
 							mes=Constantes.FORMAT_MONTH.format(tempAltItems.getDiaTemporadaAlta());
-							
+
 							if(mes.equals(Constantes.FORMAT_MONTH.format(temporadaAlta.getDiaTemporadaAlta()))){
 								if (!(anio.equals(Constantes.FORMAT_YEAR.format(temporadaAlta.getDiaTemporadaAlta()))))
 									throw new AnioDiferenteException();
 								else if (nextDia.getTime() <= tempAltItems.getDiaTemporadaAlta().getTime())
-									throw new FechaMenorCalendarioException();	
+									throw new FechaMenorCalendarioException();
 							}
 						}
 					}
-					
+
 					/*Valida para la creacion de un nuevo gropo con el Mes*/
-					Boolean newMonth=true;
+					boolean newMonth=true;
 					for (Treeitem treeitems : trTempAlta.getItems()){
 						TemporadaAlta tempAltItems= treeitems.getValue();
 						if(temporadaAlta !=null && tempAltItems.getDiaTemporadaAlta().getMonth()==temporadaAlta.getDiaTemporadaAlta().getMonth()){
 							newMonth=false;
 							break;
-						}	
+						}
 					}
-					
-					
+
+
 					if(newMonth){ //Crea un grupo por mes
 						addItem(temporadaAlta);//Crea grupo con el nombre del mes
-						
+
 						/*Agrega subItem con el dia*/
 						treechildrenHijo= new Treechildren();
 						addSubItem(treechildrenHijo,temporadaAlta);
 						treeitem.appendChild(treechildrenHijo);
-						treechildren.appendChild(treeitem);	
+						treechildren.appendChild(treeitem);
 						trTempAlta.appendChild(treechildren);
-					}else{//Agrega dia segun el Mes al que corresponde 
-												
+					}else{//Agrega dia segun el Mes al que corresponde
+
 						for (Treeitem treeitem : trTempAlta.getItems()){
 							TemporadaAlta tampAltaItems= treeitem.getValue();
 							if(Constantes.FORMAT_MONTH.format(tampAltaItems.getDiaTemporadaAlta()).equals(Constantes.FORMAT_MONTH.format(temporadaAlta.getDiaTemporadaAlta()))){
@@ -457,11 +457,11 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 						}
 					}
 				}
-				
+
 				cmbMotivoTemporadaAlta.setSelectedIndex(0);
 				trTempAlta.setHeight("472px");
 			}
-		
+
 		}catch (FechaPasadaException fpex){
 			DlgMessage.information(Messages.getString("wndTempAlta.Information.fechaPasada"));
 		}catch (DiaExisteException deex){
@@ -474,17 +474,17 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 			DlgMessage.information(Messages.getString("wndTempAlta.Information.nullDenominacion"),cmbMotivoTemporadaAlta);
 		}
 	}
-	
+
 	/**
 	 * Agrega un nuevo Grupo.(Mes)
 	 * @throws Exception
 	 */
-	private void addItem(TemporadaAlta temporadaAlta) throws Exception{	
+	private void addItem(TemporadaAlta temporadaAlta) throws Exception{
 		Treerow treerow = new Treerow();
 		Treecell treecell = null;
 //		Treecell treecell = new Treecell();
 //		treerow = new Treerow();
-		
+
 		treeitem = new Treeitem();
 		treecell = new Treecell(Util.getNombreMes(Constantes.FORMAT_DATE.format(temporadaAlta.getDiaTemporadaAlta())));
 		treecell.setStyle("color:#0431B4; font-weight: bold;");
@@ -493,16 +493,16 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 		treeitem.setValue(temporadaAlta);
 		treeitem.appendChild(treerow);
 	}
-	
+
 	/**
 	 * Agrega los subItmes al Tree
 	 * @param treechildrenSub : Treechildren donde se agregara el subItem
-	 * @throws ParseException 
+	 * @throws ParseException
 	 */
 	private Treeitem addSubItem(Treechildren treechildrenSub, TemporadaAlta temporadaAlta) throws ParseException{
 		Treeitem treeSubitem = new Treeitem();
 		Treerow treerow = new Treerow();
-		
+
 		/*Dia del Mes*/
 		Treecell treecell = new Treecell(Constantes.FORMAT_DATE.format(temporadaAlta.getDiaTemporadaAlta()).substring(0,2));
 		treecell.setTooltiptext(Util.getDiaSemana(Constantes.FORMAT_DATE.format(temporadaAlta.getDiaTemporadaAlta())));
@@ -511,7 +511,7 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 		treecell = new Treecell(temporadaAlta.getMotivoTemporadaAlta().getNombreMotivo());
 		treecell.setStyle("font-size: 11px !important;");
 		treerow.appendChild(treecell);
-		
+
 		//solo muestra la opcion a eliminar a las que son de fecha mayor o igual a la actual
 		MyTime myTime= new MyTime();
 		String fechaActual=myTime.dateServer();
@@ -522,20 +522,20 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 			image.setTooltiptext("Elimar Día");
 			treecell.appendChild(image);
 			treerow.appendChild(treecell);
-			
+
 			/*Elimainar item*/
 			image.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 				@Override
 				public void onEvent(Event event) throws Exception {
 					Treeitem treeitem=trTempAlta.getSelectedItem();
-					
+
 					/*Registra el dia que se esta eliminado para actualizar en la DB al guardar los cambios*/
 					if(action==Constantes.ACTION_MODIFY){
 						if(listDiasEliminados==null)
-							 listDiasEliminados= new ArrayList<TemporadaAlta>();
+							 listDiasEliminados= new ArrayList<>();
 						listDiasEliminados.add((TemporadaAlta)treeitem.getValue());
 					}
-					
+
 					if(treeitem.getParent().getChildren().size()==1)
 						trTempAlta.getSelectedItem().getParentItem().detach();
 					else
@@ -543,17 +543,17 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 				}
 			});
 		}
-		
+
 		treeSubitem.appendChild(treerow);
 		treeSubitem.setValue(temporadaAlta);
 		treechildrenSub.appendChild(treeSubitem);
-		
+
 		return treeSubitem;
 	}
-		
+
 	@SuppressWarnings("deprecation")
 	public void buscarTemporadaAlta() throws Exception{
-			
+
 		if(imgBuscar.getId().equals(Constantes.LABEL_ESTADOSOL_ACTIVA_DESC)){
 			Util.limpiarTree(trTempAlta);
 			tcDelete.setVisible(false);
@@ -562,18 +562,18 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 			if (cmbMes.getSelectedIndex()>0)
 				mes=cmbMes.getSelectedItem().getValue().toString();
 			ArrayList<TemporadaAlta>lsresul=ServiceLocator.getTemporadaAltaManager().buscarTemporadaAlta(anio, mes, "");
-			
+
 			for(TemporadaAlta temporadaAlta: lsresul){
 				/*Valida para la creacion de un nuevo grupo con el Mes*/
-				Boolean newMonth=true;
+				boolean newMonth=true;
 				for (Treeitem treeitems : trTempAlta.getItems()){
 					TemporadaAlta tempAltItems= treeitems.getValue();
 					if(temporadaAlta !=null && tempAltItems.getDiaTemporadaAlta().getMonth()==temporadaAlta.getDiaTemporadaAlta().getMonth()){
 						newMonth=false;
-						break;	
-					}	
+						break;
+					}
 				}
-						
+
 				if(newMonth){ //Crea un grupo con un nuevo mes
 					addItem(temporadaAlta);//Crea grupo con el nombre del mes
 					/*Agrega subItem con el dia*/
@@ -581,10 +581,10 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 					addSubItem(treechildrenHijo,temporadaAlta);
 					treeitem.appendChild(treechildrenHijo);
 					treeitem.setOpen(false);
-					treechildren.appendChild(treeitem);	
+					treechildren.appendChild(treeitem);
 					trTempAlta.appendChild(treechildren);
-						
-				}else{//Agrega dia segun el Mes al que correspoende 
+
+				}else{//Agrega dia segun el Mes al que correspoende
 					for (Treeitem treeitems : trTempAlta.getItems()){
 						TemporadaAlta tampAltaItems= treeitems.getValue();
 						if(Constantes.FORMAT_MONTH.format(tampAltaItems.getDiaTemporadaAlta()).equals(Constantes.FORMAT_MONTH.format(temporadaAlta.getDiaTemporadaAlta()))){
@@ -593,20 +593,20 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 						}
 					}
 				}
-				
+
 				if(trTempAlta.getItems().size()>0){
 					disabledTbbAnularTodo(false, accesoEliminar());
 					disabledTbbModificar(false, accesoModificar());
 				}else{
 					disabledTbbAnularTodo(true, accesoEliminar());
 					disabledTbbModificar(true, accesoModificar());
-				}		
+				}
 			}
 //			trTempAlta.setVisible(true);
 		}
 	}
-	
-	
+
+
 	/**
 	 * Carga en el Combobox los meses del anio
 	 * @throws Exception
@@ -615,23 +615,23 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 	private void cargarMeses() throws Exception{
 		java.util.Calendar  calendar=java.util.Calendar.getInstance();
 		UtilData.cargarGenericData(cmbMes, false);
-		
+
 		for(int i=0; i<12; i++){
 			calendar.set(2013, i, 1);
 			String idMes=String.valueOf(calendar.getTime().getMonth()+1);
-			
+
 			if(idMes.length()==1)
 				idMes="0"+idMes;
 			Comboitem oComboitem = new Comboitem();
-			
+
 			oComboitem.setLabel(Util.getNombreMes(Constantes.FORMAT_DATE.format(calendar.getTime())));
 			oComboitem.setValue(idMes);
-			
+
 			cmbMes.appendChild(oComboitem);
 		}
 		cmbMes.setSelectedIndex(0);
 	}
-	
+
 	/**
 	 * Al seleccionar la fecha del Calendario
 	 * @throws Exception
@@ -641,12 +641,12 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 		if (tbbAperturaCalendario.isDisabled()){
 			if(!(ibxAnio.getText().trim().isEmpty()) && ibxAnio.getText().trim().length()==4 && ibxAnio.getValue()>= new Date().getYear()){
 				disabledControls(false);
-				
+
 				//valida y se asegura que la fecha del calendario fin siempre NO sea sea menor al calendario de inicio.
 				if(calInicioTempAlta.getValue().getTime()>calFinTempalta.getValue().getTime())
 					calFinTempalta.setValue(calInicioTempAlta.getValue());
-								
-				if (cbxRangoFechas.isChecked()){ 
+
+				if (cbxRangoFechas.isChecked()){
 					lblDel.setValue(Constantes.FORMAT_DATE.format(calInicioTempAlta.getValue()));
 					lblAl.setValue(Constantes.FORMAT_DATE.format(calFinTempalta.getValue()));
 				}else{
@@ -660,7 +660,7 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 				ibxAnio.setFocus(true);
 			}
 		}
-				
+
 	}
 
 	/**
@@ -668,16 +668,16 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 	 */
 	public void onCheck_XRango(){
 		if(!(cbxRangoFechas.isDisabled())){
-			if(cbxRangoFechas.isChecked()){ 
+			if(cbxRangoFechas.isChecked()){
 				calFinTempalta.setValue(calInicioTempAlta.getValue());
 				gbFinTempAlta.setVisible(true);
-				lblAl.setValue(lblDel.getValue());				
+				lblAl.setValue(lblDel.getValue());
 			}else{
 				gbFinTempAlta.setVisible(false);
 			}
 		}
 	}
-	
+
 	/*ESTADOS DE LOS CONTROLES*/
 	 private void limpiaControles(Boolean clearAnioMes){
 		cbxRangoFechas.setChecked(false);
@@ -689,8 +689,8 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 			cmbMes.setSelectedIndex(0);
 		}
 	}
-	
-	
+
+
 	/**
 	 * Activa o deshabilita controles.
 	 * @param disabled
@@ -700,7 +700,7 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 		cmbMotivoTemporadaAlta.setDisabled(disabled);
 		disabledImgAdd(disabled);
 	}
-	
+
 	/**
 	 * Activa o desactiva el toolbarbutton apertura de calendario
 	 * @param disabled : (true)desactiva el control, (false) activa el control.
@@ -713,13 +713,13 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 			tbbAperturaCalendario.setImage("/resources/mp_calendarDisabled.png");
 			tbbAperturaCalendario.setStyle("cursor:default");
 		}
-		
+
 		if(accesoNuevo)
 			tbbAperturaCalendario.setDisabled(disabled);
 		else
 			tbbAperturaCalendario.setDisabled(true);
 	}
-	
+
 	/**
 	 * Activa o desactiva el toolbarbutton Buscar
 	 * @param disabled : (true)desactiva el control, (false) activa el control.
@@ -732,12 +732,12 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 			tbbBusqueda.setImage("/resources/mp_buscarDisabled.png");
 			tbbBusqueda.setStyle("cursor:default");
 		}
-		
+
 		if(accesoBuscar)
 			tbbBusqueda.setDisabled(disabled);
 		else tbbBusqueda.setDisabled(true);
 	}
-	
+
 	/**
 	 * Activa o desactiva el toolbarbutton Modificar
 	 * @param disabled : (true)desactiva el control, (false) activa el control.
@@ -750,12 +750,12 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 			tbbModificar.setImage("/resources/mp_editarDisabled.png");
 			tbbModificar.setStyle("cursor:default");
 		}
-		
+
 		if(accesoModificar)
 			tbbModificar.setDisabled(disabled);
 		else tbbModificar.setDisabled(true);
 	}
-	
+
 	/**
 	 * Activa o desactiva el toolbarbutton Cancelar Apertura
 	 * @param disabled : (true)desactiva el control, (false) activa el control.
@@ -768,10 +768,10 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 			tbbCancelar.setImage("/resources/mp_cancelarDisabled.png");
 			tbbCancelar.setStyle("cursor:default");
 		}
-		
+
 		tbbCancelar.setDisabled(disabled);
 	}
-	
+
 	/**
 	 * Activa o desactiva el toolbarbutton Guardar
 	 * @param disabled : (true)desactiva el control, (false) activa el control.
@@ -784,13 +784,13 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 			tbbGurdar.setImage("/resources/mp_guardarDisabled.png");
 			tbbGurdar.setStyle("cursor:default");
 		}
-		
+
 		if(accesoGuardar)
 			tbbGurdar.setDisabled(disabled);
 		else tbbGurdar.setDisabled(true);
 	}
-	
-	
+
+
 	/**
 	 * Activa o desactiva el toolbarbutton Guardar
 	 * @param disabled : (true)desactiva el control, (false) activa el control.
@@ -803,12 +803,12 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 			tbbAnularTodo.setImage("/resources/mp_anularDisabled.png");
 			tbbAnularTodo.setStyle("cursor:default");
 		}
-		
+
 		if(accesoAnular)
 			tbbAnularTodo.setDisabled(disabled);
 		else tbbAnularTodo.setDisabled(true);
 	}
-	
+
 
 	/**
 	 * Activa o desactiva la busqueda de temporada alta.
@@ -825,7 +825,7 @@ public class WndTemporadaAlta extends WndBase implements Serializable {
 			imgBuscar.setId(Constantes.LABEL_INACTIVO_DESCP); //Indica que su estado es Disabled
 		}
 	}
-	
+
 	/**
 	 * Activa o desactiva agregar Temporada alta
 	 * @param disabled : (true)desactiva el control, (false) activa el control.

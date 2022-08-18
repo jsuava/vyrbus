@@ -14,7 +14,7 @@ public class ItinerarioAgenciaPartida extends GenericBean implements Serializabl
 	private Agencia agencia;
 	private String horaPartida;
 	private Localidad localidad;
-	
+
 	/**
 	 * @return the localidad
 	 */
@@ -30,9 +30,9 @@ public class ItinerarioAgenciaPartida extends GenericBean implements Serializabl
 	}
 
 	public ItinerarioAgenciaPartida() {
-		
+
 	}
-	
+
 	/**
 	 * @return Objeto itinerarioAgenciaPartidaID.
 	 */
@@ -95,5 +95,5 @@ public class ItinerarioAgenciaPartida extends GenericBean implements Serializabl
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-	
+
 }

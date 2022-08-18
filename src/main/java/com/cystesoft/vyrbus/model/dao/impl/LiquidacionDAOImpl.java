@@ -17,14 +17,14 @@ import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.view.tuentrada.LiquidacionTuentrada;
 
 /**
- * 
+ *
  * @author José Abanto
  *
  */
 @SuppressWarnings("unchecked")
 public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDAO {
 
-	
+
 	/*Apertura Liquidacion*/
 	@Override
 	public void aperturarLiquidacion(Liquidacion liquidacion) {
@@ -43,11 +43,11 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 		if(estadoLiquidacion!=null){
 			if (estadoLiquidacion.equals(Constantes.LIQUI_ESTA_ABIERTO) || estadoLiquidacion.equals(Constantes.LIQUI_ESTA_CERRADO) )
 				criterios=" AND l.n_estliq="+estadoLiquidacion;
-		}		
-		
+		}
+
 		if (idUsuario!=null)
 			criteriosUsuario=" AND l.usuario_id="+idUsuario;
-				
+
 		String sql ="SELECT l.liquidacion_id, l.n_anio, l.agencia_id, l.usuario_id, l.n_estliq, l.c_nomusu as NombreUsuario, "+ //0-5
 						"a.c_nomcor as NombreAgencia, "+ //6-6
 						"u.c_apepat as ApPaterno, u.c_apemat as ApMarterno, u.c_nombre as Nombres, "+//7-9
@@ -60,18 +60,18 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 				"WHERE l.d_fecliq >= to_date('"+fechaInicial+"','dd/MM/yyyy') AND l.d_fecliq <= to_date('"+FechaFinal+"', 'dd/MM/yyyy') "+
 					"AND l.agencia_id=NVL("+idAgencia+",l.agencia_id) "+criteriosUsuario+" "+criterios+" AND l.c_estreg='A' " +
 				"ORDER BY l.d_FecLiq, l.audfecins ";
-		
+
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<Liquidacion> ListResult = new ArrayList<Liquidacion>();
+		List<Liquidacion> ListResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
-			
+
 			Agencia agencia = new Agencia();
 			agencia.setId(((BigDecimal) obj[2]).intValue());
 			agencia.setDenominacion(obj[6].toString());
 			agencia.setCodigo(obj[17]!=null?obj[17].toString():null);
-			
+
 			Usuario usuario = new Usuario();
 			usuario.setId(((BigDecimal) obj[3]).intValue());
 			usuario.setLogin(obj[5].toString());
@@ -79,7 +79,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 			if (obj[8] !=null)
 				usuario.setApellidoMaterno(obj[8].toString());
 			usuario.setNombre(obj[9].toString());
-			
+
 			Liquidacion liquidacion = new Liquidacion();
 			liquidacion.setId(((BigDecimal) obj[0]).intValue());
 			liquidacion.setAnio(((BigDecimal)obj[1]).intValue());
@@ -102,17 +102,17 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 //=======
 //			if (obj[16] !=null)
 				liquidacion.setMontoIngresadoDolares(((BigDecimal) obj[16]).doubleValue());
-			
+
 //>>>>>>> ced84039982e9139bf3cb6857a8e1ae3016943a5
 			liquidacion.setUsuario(usuario);
 			liquidacion.setAgencia(agencia);
-			
-			ListResult.add(liquidacion);		
+
+			ListResult.add(liquidacion);
 		}
-		
+
 		return ListResult;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.LiquidacionDAO#buscarUltimaLiquidacion(java.lang.Integer, java.lang.Integer, java.lang.Integer)
@@ -125,7 +125,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 									 "FROM vrtliquidacion " +
 									 "WHERE agencia_id="+idAgencia+" AND usuario_id="+idUsuario+" AND n_estliq="+estadoLiquidacion+" AND c_estreg='A') max_liq " +
 							 "ON max_liq.liquidacion_id = l.liquidacion_id";
-		
+
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).list();
 		Liquidacion liquidacion = null;
@@ -142,7 +142,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 			liquidacion.setUsuario(usuario);
 			liquidacion.setNombreUsuario(obj[5].toString());
 			liquidacion.setFechaLiquidacion((Date)obj[5]);
-			liquidacion.setEstadoLiquidacion(((BigDecimal)obj[6]).intValue());			
+			liquidacion.setEstadoLiquidacion(((BigDecimal)obj[6]).intValue());
 		}
 		return liquidacion;
 	}
@@ -155,7 +155,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 		log.info(sql);
 		getSession().createSQLQuery(sql).executeUpdate();
 		//super.update(liquidacion);
-		
+
 	}
 
 	/*
@@ -175,30 +175,30 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 					"FROM( "+
 					       //Recupera todos menos las confirmaciones de fecha habierta de fecha habierta
 					      "SELECT tc.tipcom_id tipoComprobanteId, tc.c_denominacion as TipoComprobante, "+
-					      		 "DECODE(tc.tipcom_id,1, MIN(SUBSTR(vp.c_numboleto,0,3)), MIN(SUBSTR(vp.c_numboleto,0,4))) AS Serie, "+  
-		                         "DECODE(tc.tipcom_id,1, MIN(SUBSTR(vp.c_numboleto,5, LENGTH(vp.c_numboleto))), MIN(SUBSTR(vp.c_numboleto,6, LENGTH(vp.c_numboleto)))) AS boletoInicial, "+  
-		                         "DECODE(tc.tipcom_id,1, MAX(SUBSTR(vp.c_numboleto,5, LENGTH(vp.c_numboleto))), MAX(SUBSTR(vp.c_numboleto,6, LENGTH(vp.c_numboleto))))  AS BoletoFinal, "+ 
-		                         "COUNT(DISTINCT(nb.c_numboleto)) AS cantRegistros "+ 
-		                 "FROM vrtvenpas vp "+  
-			                  "INNER JOIN vrmtipcom tc ON (tc.tipcom_id=vp.tipcom_id) "+ 
-			                  "INNER JOIN (SELECT c_numboleto FROM vrtvenpas "+  
-			                            "WHERE c_numboleto IS NOT NULL "+ 
-			                            "GROUP BY c_numboleto)nb ON (nb.c_numboleto=vp.c_numboleto) "+ 
-		                "WHERE vp.d_fecliq = to_date('"+fechaLiquidacion+"','dd/MM/yyyy') "+  
+					      		 "DECODE(tc.tipcom_id,1, MIN(SUBSTR(vp.c_numboleto,0,3)), MIN(SUBSTR(vp.c_numboleto,0,4))) AS Serie, "+
+		                         "DECODE(tc.tipcom_id,1, MIN(SUBSTR(vp.c_numboleto,5, LENGTH(vp.c_numboleto))), MIN(SUBSTR(vp.c_numboleto,6, LENGTH(vp.c_numboleto)))) AS boletoInicial, "+
+		                         "DECODE(tc.tipcom_id,1, MAX(SUBSTR(vp.c_numboleto,5, LENGTH(vp.c_numboleto))), MAX(SUBSTR(vp.c_numboleto,6, LENGTH(vp.c_numboleto))))  AS BoletoFinal, "+
+		                         "COUNT(DISTINCT(nb.c_numboleto)) AS cantRegistros "+
+		                 "FROM vrtvenpas vp "+
+			                  "INNER JOIN vrmtipcom tc ON (tc.tipcom_id=vp.tipcom_id) "+
+			                  "INNER JOIN (SELECT c_numboleto FROM vrtvenpas "+
+			                            "WHERE c_numboleto IS NOT NULL "+
+			                            "GROUP BY c_numboleto)nb ON (nb.c_numboleto=vp.c_numboleto) "+
+		                "WHERE vp.d_fecliq = to_date('"+fechaLiquidacion+"','dd/MM/yyyy') "+
 		                  "AND vp.agencia_id="+idAgencia+" AND vp.usuario_id="+idUsuario+" "+
-		                  "AND vp.c_numboleto IS NOT NULL "+   
+		                  "AND vp.c_numboleto IS NOT NULL "+
 		                  "AND vp.tipmov_id NOT IN (5,6,13) "+
 		                  "AND vp.c_tiptra IN ('1','3','4','5','6','7') "+
 		                "GROUP BY tc.tipcom_id, tc.c_denominacion,tc.tipcom_id, DECODE(tc.tipcom_id,1,(substrc(vp.c_numboleto,0,3)),(substrc(vp.c_numboleto,0,4))) "+ 
 //					"UNION ALL " +
 //							//Solo confirmaciones de fecha habierta que tienen importe mayor a cero
 //							"SELECT tc.c_denominacion as TipoComprobante, "+
-//					             "MIN(SUBSTR(vp.c_numboleto,0,4)) AS Serie, "+ 
-//					             "MIN(SUBSTR(vp.c_numboleto,5, LENGTH(vp.c_numboleto))) AS boletoInicial, "+ 
+//					             "MIN(SUBSTR(vp.c_numboleto,0,4)) AS Serie, "+
+//					             "MIN(SUBSTR(vp.c_numboleto,5, LENGTH(vp.c_numboleto))) AS boletoInicial, "+
 //					             "MAX(SUBSTR(vp.c_numboleto,5, LENGTH(vp.c_numboleto))) AS BoletoFinal, "+
 //					             "COUNT(DISTINCT(nb.c_numboleto)) AS cantRegistros "+
 //					        "FROM vrtvenpas vp  "+
-//						      	"INNER JOIN vrmtipcom tc ON (tc.tipcom_id=vp.tipcom_id) "+ 
+//						      	"INNER JOIN vrmtipcom tc ON (tc.tipcom_id=vp.tipcom_id) "+
 //						      	"INNER JOIN (SELECT c_numboleto FROM vrtvenpas  "+
 //					                  "WHERE c_numboleto IS NOT NULL "+
 //					                  "GROUP BY c_numboleto)nb ON (nb.c_numboleto=vp.c_numboleto) "+
@@ -209,18 +209,18 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 //							      "AND vp.n_imppag>0 "+
 //					        "GROUP BY tc.c_denominacion, (substrc(vp.c_numboleto,0,3)) "+
 					     ")esv ";
-		
+
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<Liquidacion> ListResult = new ArrayList<Liquidacion>();
-		
+		List<Liquidacion> ListResult = new ArrayList<>();
+
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
-			
+
 			TipoComprobante tipoComprobante= new TipoComprobante();
 			tipoComprobante.setDenominacion(obj[0].toString());
 			tipoComprobante.setId(((BigDecimal)obj[6]).intValue());
-			
+
 			Liquidacion liquidacion= new Liquidacion();
 			liquidacion.setTipoComprobante(tipoComprobante);
 			liquidacion.setSerie(obj[1].toString().length()==3?" "+obj[1].toString():obj[1].toString());
@@ -228,12 +228,12 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 			liquidacion.setBoletoFinal(obj[3].toString().length()==7?"0"+obj[3].toString():obj[3].toString());
 			liquidacion.setCantidadBoletos(((BigDecimal)obj[4]).intValue());
 			liquidacion.setCorte(((BigDecimal)obj[5]).intValue());
-			
-			
+
+
 			ListResult.add(liquidacion);
 		}
-		
-		
+
+
 		return ListResult;
 	}
 
@@ -292,8 +292,8 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 							"AND v.n_imppag>0 AND NVL(v.n_imppagdif,0)>0 "+
 						"GROUP BY tc.tipcom_id, fp.forpag_id, tfp.tipforpag_id, otc.opetarcre_id, tm.tipmov_id, v.c_tiptra,v.c_rucclicre,v.canven_id,v.tipmon_id "+
 					"UNION ALL "+
-						"SELECT NULL,NULL,NULL,NULL,NULL,tg.tipgas_id, "+ 					         
-						        "COUNT(g.n_monto) AS CANTIDAD,  "+ 
+						"SELECT NULL,NULL,NULL,NULL,NULL,tg.tipgas_id, "+
+						        "COUNT(g.n_monto) AS CANTIDAD,  "+
 						        "SUM(g.n_monto) AS MONTO,  "+
 						        "0.00 AS MIX_EFECTIVO, " +
 						        "0.00 AS MIX_TARJETA, "+
@@ -307,15 +307,15 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 							            "WHERE l.d_fecliq=to_date('"+fechaLiquidacion+"','dd/MM/yyyy')  "+
 							            "AND l.agencia_id="+idAgencia+" AND l.usuario_id="+idUsuario+" AND l.c_estreg='A') dl ON (dl.gasto_id=g.gasto_id) "+
 						"WHERE g.c_estreg='A' "+
-						"GROUP BY tg.tipgas_id, tg.c_denominacion "+             
+						"GROUP BY tg.tipgas_id, tg.c_denominacion "+
 					")RPT_LIQ ";
-					
+
 		log.info(sql);
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
 		Liquidacion liquidacion= new Liquidacion();
 		initVar(liquidacion);
-		
+
 		Integer cantidadDev=0; double montoDev=0;
 		Integer cantidadCredito=0; double montoCredito=0;
 		Integer cantidadTarjetaVisa=0; double montoTarjetaVisa=0;
@@ -328,31 +328,31 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 		Integer cantidadEfecPool=0;double montoEfecPool=.00;
 		Integer cantidadTCVisaPool=0;double montoTCVisaPool=.00;
 		Integer cantidadTCMastercardPool=0;double montoTCMastercardPool=.00;
-		
-		Integer cantidadTarjetaVisaRC=0;double montoTarjetaVisaRC=0;;
+
+		Integer cantidadTarjetaVisaRC=0;double montoTarjetaVisaRC=0;
 		Integer cantidadTarjetaMasterCardRC = 0;double montoTarjetaMasterCardRC=0;
 		Integer cantidadDevTarjeta=0;double montoDevTarjeta=0;
-		
+
 		Integer cantidadGastoAdminEfectivo=0;double montoGastoAdminEfectivo=.00;
 		Integer cantidadGastoAdminTarjetaVisa=0;double montoGastoAdminTarjetaVisa=.00;
 		Integer cantidadGastoAdminTarjetaMastercard=0;double montoGastoAdminTarjetaMastercard=.00;
 		Integer cantidadContadoDolares=0; double montoContadoDolares = 0.0;
 		Integer cantidadCreditoDolares=0; double montoCreditoDolares = 0.0;
-		
+
 		Integer cantidadPCE=0; double montoPCE=0.0;
-		
-		
-		for(int i=0; i<result.size(); i++){
-			Object[] obj = (Object[]) result.get(i);
-			Integer tipoComprobanteID=(obj[0]!=null?((BigDecimal)obj[0]).intValue():null);	
+
+
+		for (Object element : result) {
+			Object[] obj = (Object[]) element;
+			Integer tipoComprobanteID=(obj[0]!=null?((BigDecimal)obj[0]).intValue():null);
 			Integer formaPagoID=(obj[1]!=null?((BigDecimal)obj[1]).intValue():null);
 			Integer tipoMovimientoID=(obj[4]!=null?((BigDecimal)obj[4]).intValue():null);
 			String tipoTransaccion=(obj[10]!=null?obj[10].toString():null);
 			String rucClienteCredito=(obj[11]!=null?obj[11].toString():null);
-			
+
 			Double importePagadoDiferecnia=((BigDecimal)obj[13]).doubleValue();
 			Integer idTipoMoneda = obj[14]==null?null:((BigDecimal)obj[14]).intValue();
-			
+
 			Double importeOperacion=.00;
 			Integer cantidadOperacion=0;
 			/*Valida la diferencia */
@@ -364,21 +364,21 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 				importeOperacion=((BigDecimal)obj[7]).doubleValue();
 				cantidadOperacion=((BigDecimal)obj[6]).intValue();
 			}
-			
+
 			/*Pago mixto*/
 			Double importeMixtoEfectivo=(obj[8]!=null?((BigDecimal)obj[8]).doubleValue():.00);
 			Double importeMixtoTarjeta=(obj[9]!=null?((BigDecimal)obj[9]).doubleValue():.00);
-			
+
 			/*INGRESOS*/
 			//SOLO CONTADO.
 			if(tipoComprobanteID !=null && formaPagoID.intValue()==Constantes.ID_FORPAG_CONTADO && tipoMovimientoID.intValue()!=Constantes.ID_TIPMOV_DEVOLUCION){
 				int tipoFormaPagoID=((BigDecimal)obj[2]).intValue();
-				
+
 				if(tipoComprobanteID.intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE || tipoComprobanteID.intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA || tipoComprobanteID.intValue()==Constantes.ID_TIPCOM_FACTURA || tipoComprobanteID==Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA){
-					if(tipoMovimientoID.intValue()==Constantes.ID_TIPMOV_PREPAGADO ) { //PREPAGADOS	
+					if(tipoMovimientoID.intValue()==Constantes.ID_TIPMOV_PREPAGADO ) { //PREPAGADOS
 						cantidadPrepagado+=+cantidadOperacion;
 						montoPrepagado+=+importeOperacion;
-						
+
 					}else if(tipoFormaPagoID==Constantes.ID_TIPFORPAG_EFECTIVO || tipoFormaPagoID==Constantes.ID_TIPFORPAG_TRANSFERENCIA){ //EFECTIVO
 						if(tipoTransaccion!=null && tipoTransaccion.equals(Constantes.TIPO_OPERACION_VENTA_POOL)){ //Valida si es venta pool
 							cantidadEfecPool+= +cantidadOperacion;
@@ -404,19 +404,19 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 								montoTCVisaPool+=+importeOperacion;
 								//Valida si es mixto
 								if(importeMixtoEfectivo>0){
-									montoTCVisaPool+=+importeMixtoTarjeta;;//Suma el monto del pago mixo con tarjeta
-									
+									montoTCVisaPool+=+importeMixtoTarjeta;//Suma el monto del pago mixo con tarjeta
+
 									montoEfecPool+=+importeMixtoEfectivo; //Suma el monto del pago mixo al Efectivo
 									cantidadEfecPool+=+cantidadOperacion; //Suma la cantidad en efectivo
 								}
 							}else{
 								if(tipoMovimientoID.intValue()==Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS){
-									cantidadGastoAdminTarjetaVisa+=+cantidadOperacion; 
+									cantidadGastoAdminTarjetaVisa+=+cantidadOperacion;
 									montoGastoAdminTarjetaVisa+=+importeOperacion;
 									//Valida si es mixto
 									if(importeMixtoEfectivo>0){
 										montoGastoAdminTarjetaVisa+=+importeMixtoTarjeta;//Suma el monto del pago mixo con tarjeta
-										
+
 										montoGastoAdminEfectivo+=+importeMixtoEfectivo;//Suma el monto del pago mixo al Efectivo
 										cantidadGastoAdminEfectivo+=+cantidadOperacion;//Suma la cantidad en efectivo
 									}
@@ -426,7 +426,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 									//Valida si es mixto
 									if(importeMixtoEfectivo>0){
 										montoTarjetaVisa+=+importeMixtoTarjeta;//Suma el monto del pago mixo con tarjeta
-										
+
 										montoContado+=+importeMixtoEfectivo;//Suma el monto del pago mixo al Efectivo
 										cantidadContado+=+cantidadOperacion; //Suma la cantidad en efectivo
 									}
@@ -439,7 +439,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 								//Valida si es mixto
 								if(importeMixtoEfectivo>0){
 									montoTCMastercardPool+=+importeMixtoTarjeta;//Suma el monto del pago mixo con tarjeta
-									
+
 									montoEfecPool+=+importeMixtoEfectivo;//Suma el monto del pago mixo al Efectivo
 									cantidadEfecPool+=+cantidadOperacion; //Suma la cantidad en efectivo
 								}
@@ -450,7 +450,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 									//Valida si es mixto
 									if(importeMixtoEfectivo>0){
 										montoGastoAdminTarjetaMastercard+=+importeMixtoTarjeta;//Suma el monto del pago mixo con tarjeta
-										
+
 										montoGastoAdminEfectivo+=+importeMixtoEfectivo;//Suma el monto del pago mixo al Efectivo
 										cantidadGastoAdminEfectivo+=+cantidadOperacion; //Suma la cantidad en efectivo
 									}
@@ -460,10 +460,10 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 									//Valida si es mixto
 									if(importeMixtoEfectivo>0){
 										montoTarjetaMasterCard+=+importeMixtoTarjeta;//Suma el monto del pago mixo con tarjeta
-										
+
 										montoContado+=+importeMixtoEfectivo;//Suma el monto del pago mixo al Efectivo
 										cantidadContado+=+cantidadOperacion; //Suma la cantidad en efectivo
-									}	
+									}
 								}
 							}
 						}
@@ -474,7 +474,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 				}else if (tipoComprobanteID.intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO){
 					cantidadNotasCredito+= +cantidadOperacion;
 					montoNotasCredito+= +importeOperacion;
-					
+
 				}else if (tipoComprobanteID.intValue()==Constantes.ID_TIPCOM_RECIBO_CAJA){
 					/*TARJETA*/
 					if(tipoFormaPagoID==Constantes.ID_TIPFORPAG_TARJETA ){// TARJETA
@@ -484,37 +484,37 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 							//Valida si es mixto
 							if(importeMixtoEfectivo>0){
 								montoTarjetaVisaRC+=+importeMixtoTarjeta;//Suma el monto pago mixo con tarjeta
-								
+
 								montoRc+=+importeMixtoEfectivo;//Suma el monto del pago mixo al Efectivo
 								cantidadRc+=+cantidadOperacion; //Suma la cantidad en efectivo
 							}
-							
+
 						}else if(((BigDecimal)obj[3]).intValue()==Constantes.ID_OPETARCRE_MSTERCARD){ //MASTER CARD
 							cantidadTarjetaMasterCardRC+=+cantidadOperacion;
 							montoTarjetaMasterCardRC+=+importeOperacion;
 							//Valida si es mixto
 							if(importeMixtoEfectivo>0){
 								montoTarjetaVisaRC+=+importeMixtoTarjeta;//Suma el pago mixo con tarjeta
-								
+
 								montoRc+=+importeMixtoEfectivo;//Suma el Monto del pago mixo al Efectivo
 								cantidadRc+=+cantidadOperacion;//Suma la cantidad en efectivo
 							}
-						}	
+						}
 					}else{
 						cantidadRc+=+cantidadOperacion;
 						montoRc+=+importeOperacion;
 					}
 				}
-				
-			//BOLETO DE VIAJE - CORTESIA - PREPAGADOS - CREDITOS.	
-			}else if(tipoComprobanteID!=null 
-					&& (tipoComprobanteID.intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE || tipoComprobanteID.intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA || tipoComprobanteID.intValue()==Constantes.ID_TIPCOM_FACTURA) 
+
+			//BOLETO DE VIAJE - CORTESIA - PREPAGADOS - CREDITOS.
+			}else if(tipoComprobanteID!=null
+					&& (tipoComprobanteID.intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE || tipoComprobanteID.intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA || tipoComprobanteID.intValue()==Constantes.ID_TIPCOM_FACTURA)
 					&& tipoMovimientoID.intValue()!=Constantes.ID_TIPMOV_DEVOLUCION) {
 				if(((BigDecimal)obj[1]).intValue()==Constantes.ID_FORPAG_CORTESIA){ //CORTECIA
 					cantidadCortecia+=+cantidadOperacion;
 					montoCortecia+=+importeOperacion;
-									
-										
+
+
 				}else if(((BigDecimal)obj[1]).intValue()==Constantes.ID_FORPAG_CREDITO){ //CREDITO
 					if(idTipoMoneda==null) {
 						cantidadCredito+=+cantidadOperacion;
@@ -524,35 +524,35 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 						montoCreditoDolares+=+importeOperacion;
 					}
 				}
-				
-			/*OTROS INGRESOS*/	
-			//GASTOS	
+
+			/*OTROS INGRESOS*/
+			//GASTOS
 			}else if(tipoComprobanteID==null){
 				if(((BigDecimal)obj[5]).intValue()==Constantes.ID_TIPGAS_GASTOS_VARIOS){ //GASTOS VARIOS
 					liquidacion.setCantidadGastoVarios(cantidadOperacion);
 					liquidacion.setMontoGastoVarios(importeOperacion);
 				}else if(((BigDecimal)obj[5]).intValue()==Constantes.ID_TIPGAS_CONDOCUMENTO){ //GASTOS CON DOCUMENTO
 						liquidacion.setCantidadGastoConDocumento(cantidadOperacion);
-						liquidacion.setMontoGastoConDocumento(importeOperacion);						
+						liquidacion.setMontoGastoConDocumento(importeOperacion);
 				}else if(((BigDecimal)obj[5]).intValue()==Constantes.ID_TIPGAS_PEAJES){//PEAJES
 					liquidacion.setCantidadPeajes(cantidadOperacion);
 					liquidacion.setMontoPeajes(importeOperacion);
-					
+
 				}else if(((BigDecimal)obj[5]).intValue()==Constantes.ID_TIPGAS_PAGO_GIROS){//PAGO DE GIROS
 					liquidacion.setCantidadPagoGiros(cantidadOperacion);
 					liquidacion.setMontoPagoGiros(importeOperacion);
 				}
 			}
-			
-			if(tipoComprobanteID !=null && tipoMovimientoID.intValue()==Constantes.ID_TIPMOV_DEVOLUCION){			
+
+			if(tipoComprobanteID !=null && tipoMovimientoID.intValue()==Constantes.ID_TIPMOV_DEVOLUCION){
 				/*Si es una devolucion de un boleto de viaje o recivo de caja*/
 				if (tipoComprobanteID.intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE || tipoComprobanteID.intValue()==Constantes.ID_TIPCOM_RECIBO_CAJA){
-					
+
 					if(rucClienteCredito!=null){
 						/*No considera las devoluciones de boletos de viaje emitidos por operados del POOL - jabanto 14/12/2016*/
 						if(!(rucClienteCredito.equals(Constantes.RUC_CIVA)) && !(rucClienteCredito.equals(Constantes.RUC_CRUZ_DEL_SUR))){
 							cantidadDev += +cantidadOperacion;
-							montoDev += +importeOperacion;	
+							montoDev += +importeOperacion;
 						}
 					}else{
 						/*Otras devoluciones de boletos de viaje*/
@@ -569,19 +569,19 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 							if(canalVentaId==Constantes.ID_CANVEN_AGENCIA_VIAJES || canalVentaId==Constantes.ID_CANVEN_WEB){
 								cantidadDev += +cantidadOperacion;
 								montoDev += +importeOperacion;
-							}	
+							}
 						}
 					}else{
 						/*Valida si es una devolucion de una canal Agencia de Viajes o Web*/
 						if(canalVentaId==Constantes.ID_CANVEN_AGENCIA_VIAJES || canalVentaId==Constantes.ID_CANVEN_WEB){
 							cantidadDev += +cantidadOperacion;
 							montoDev += +importeOperacion;
-						}	
+						}
 					}
 				}
 			}
 		}
-		
+
 		liquidacion.setCantidadContado(cantidadContado);
 		liquidacion.setMontoContado(montoContado);
 		liquidacion.setCantidadTarjetaVisa(cantidadTarjetaVisa);
@@ -624,10 +624,10 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 		liquidacion.setMontoCreditosDolares(montoCreditoDolares);
 		liquidacion.setCantidadContadoDolares(cantidadContadoDolares);
 		liquidacion.setMontoContadoDolares(montoContadoDolares);
-		
+
 		return liquidacion;
 	}
-	
+
 	/**
 	 * Inicia variables del RPT liquidacion turno
 	 * @param liquidacion
@@ -654,7 +654,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 		liquidacion.setCantidadPeajes(0);
 		liquidacion.setMontoPeajes(0);
 		liquidacion.setCantidadPagoGiros(0);
-		liquidacion.setMontoPagoGiros(0);	
+		liquidacion.setMontoPagoGiros(0);
 		liquidacion.setCantidadGastoConDocumento(0);
 		liquidacion.setMontoGastoConDocumento(0);
 	}
@@ -667,7 +667,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 		// TODO Auto-generated method stub
 		return (Liquidacion) super.findById(Liquidacion.class, id);
 	}
-	
+
     @Override
 	public List<LiquidacionTuentrada> liquidacionTuentrada(Integer idAgencia, Integer idUsuario, String fechaliquidacion){
     	String sql = "SELECT parcial.tipo, SUM(parcial.cantidad),SUM(parcial.IMPORTE) "
@@ -677,13 +677,13 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
     			+ "GROUP BY vp.tarcre_id) parcial "
     			+ "GROUP BY parcial.tipo "
     			+ "ORDER BY parcial.tipo ";
-    	
+
     	log.info(sql);
-    	
+
     	List<?> result = getSession().createSQLQuery(sql).list();
     	List<LiquidacionTuentrada> lstResult = null;
     	if(result.size()>0){
-    		lstResult = new ArrayList<LiquidacionTuentrada>();
+    		lstResult = new ArrayList<>();
     		for(int i=0; i<result.size(); i++){
     			Object[] obj = (Object[])result.get(i);
     			LiquidacionTuentrada liquidacionTuentrada = new LiquidacionTuentrada();
@@ -693,7 +693,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
     			lstResult.add(liquidacionTuentrada);
     		}
     	}
-    	return lstResult;	
+    	return lstResult;
     }
 //
 //	/* (non-Javadoc)
@@ -710,8 +710,9 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 //		log.info(sql);
 //		getSession().createSQLQuery(sql).executeUpdate();
 //	}
-//	
-    public Map<String, ResumenComprobante> buscarResumenComprobantes(String fechaLiquidacion, Integer idAgencia, Integer idUsuario){
+//
+    @Override
+	public Map<String, ResumenComprobante> buscarResumenComprobantes(String fechaLiquidacion, Integer idAgencia, Integer idUsuario){
     	String sql = "SELECT  tc.tipcom_id, tc.c_denominacion, substr(v.c_numboleto,1,4) serie, fp.forpag_id, tm.tipmov_id, COUNT(v.n_imppag) AS CANTIDAD, "
     			+ "SUM(v.n_imppag) AS MONTO, SUM(v.n_imppagefe) AS MIX_EFECTIVO, SUM(v.n_imppagtar) AS MIX_TARJETA, SUM(NVL(v.n_imppagdif,0)) n_imppagdif "
     			+ "FROM vrtvenpas v "
@@ -733,16 +734,16 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 //    			+ "v.usuario_id="+idUsuario+" AND v.tipmov_id not in(5,6,13) AND v.c_Estreg='A' AND v.n_imppag>0 AND NVL(v.n_imppagdif,0)>0 "
     			+ "v.usuario_id="+idUsuario+" AND v.tipmov_id not in(5,6) AND v.c_Estreg='A' AND NVL(v.n_imppagdif,0)>0 "
     			+ "GROUP BY tc.tipcom_id, tc.c_denominacion, substr(v.c_numboleto,1,4), fp.forpag_id, tm.tipmov_id ";
-    	
+
     	log.info(sql);
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		
-		Map<String, ResumenComprobante> map = new TreeMap<String, ResumenComprobante>();
+
+		Map<String, ResumenComprobante> map = new TreeMap<>();
 		ResumenComprobante resumenComprobante = null;
-		
-		for(int i=0; i<result.size(); i++) {
-			Object[] obj = (Object[])result.get(i);
+
+		for (Object element : result) {
+			Object[] obj = (Object[])element;
 			String key = obj[0].toString()+obj[2].toString();
 			if(map.containsKey(key)) {
 				resumenComprobante = map.get(key);
@@ -757,7 +758,7 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 				resumenComprobante.setCantidad(((BigDecimal)obj[5]).intValue());
 				resumenComprobante.setMonto(((BigDecimal)obj[6]).doubleValue());
 				map.put(key, resumenComprobante);
-			}			
+			}
 		}
 		return map;
     }

@@ -25,7 +25,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
 public class MapaBusManagerImpl implements MapaBusManager {
 	private MapaBusDAO mapaBusDAO;
 	private VentaPasajesDAO ventaPasajesDAO;
-	
+
 	/**
 	 * @return the mapaBusDAO
 	 */
@@ -58,7 +58,7 @@ public class MapaBusManagerImpl implements MapaBusManager {
 	public List<MapaBus> buscarMapaBus(Integer idServicio, String estado)throws Exception {
 		return getMapaBusDAO().buscarMapaBus(idServicio, estado);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.MapaBusManager#buscarServiciosWithMapa()
 	 */
@@ -73,14 +73,14 @@ public class MapaBusManagerImpl implements MapaBusManager {
 	@Transactional
 	public int guardarMapaBus(List<MapaBus> lstMapaBus) throws Exception {
 		int result = Constantes.FAILURE;
-		
+
 		if(getVentaPasajesDAO().validarServicio(lstMapaBus.get(0).getServicio().getId()).longValue() > 0)
 			throw new MapaBusNotUpdateException();
-		
+
 		getMapaBusDAO().deleteMapaBus(lstMapaBus.get(0).getServicio().getId());
-		
+
 		for(MapaBus mapaBus : lstMapaBus){
-			getMapaBusDAO().save(mapaBus);			
+			getMapaBusDAO().save(mapaBus);
 		}
 		result = Constantes.CORRECT;
 		return result;
@@ -92,5 +92,5 @@ public class MapaBusManagerImpl implements MapaBusManager {
 	public List<MapaBus> buscarMapaBusHorizontal(Integer idServicio, String estado) throws Exception {
 		return getMapaBusDAO().buscarMapaBusHorizontal(idServicio, estado);
 	}
-	
+
 }

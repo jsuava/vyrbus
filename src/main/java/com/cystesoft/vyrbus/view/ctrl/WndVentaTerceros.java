@@ -159,7 +159,7 @@ public class WndVentaTerceros extends WndBase {
 	public static final int SEARCH_BY_DOCUMENTO = 1;
 	public static final int SEARCH_BY_NOMBRES = 2;
 	public static final int SEARCH_BY_RAZON = 3;
-	
+
 	private Row rowNacionalidad;
 	private Row rowAdicional;
 	private Checkbox chkPagoMixto;
@@ -269,7 +269,7 @@ public class WndVentaTerceros extends WndBase {
 	private Image imgFidelizarPasajero;
 	private Intbox ibxCantidadTrabajadores;
 	private Bandbox bndbxUsuarioHardware;
-	
+
 	private DetalleItinerario detalleItinerarioIda = null;
 	private Pasajero oPasajero = null;
 	private Cliente oCliente = null;
@@ -289,13 +289,13 @@ public class WndVentaTerceros extends WndBase {
 	 */
 	private Cliente clienteCredito=null; //Se puede referir a una agencia o un cliente corporativo - 16/03/2013
 	private Agencia agenciaRemota = null;
-	
+
 	private static final String IMAGE_PRIMER_PISO = "resources/mapa/bus_primerPiso.png";
 	private static final String IMAGE_SEGUNDO_PISO = "resources/mapa/bus_segundoPiso.png";
 	private static final int TIPO_ASIENTO = 0;
 	private static final int TIPO_MONITOR = 1;
 	private static final int TIPO_CAFETERIA = 2;
-	
+
 	private int action = Constantes.FAILURE;
 	private String prefijoAsiento="";
 	private String key = "-1";
@@ -303,7 +303,7 @@ public class WndVentaTerceros extends WndBase {
 //	private List<DetalleCalculadora> lstDetalleCalculadora = new ArrayList<DetalleCalculadora>();
 	private boolean convertirPaxFre = false;
 	private Date fechaLiquidacionRemota = null;
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IBase#onCreate()
 	 */
@@ -312,38 +312,38 @@ public class WndVentaTerceros extends WndBase {
 		try{
 //			/*Valida si el usuario tiene una liquidación aperturada*/
 //			if(getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION)==null)
-//				throw new LiquidacionNullException();	
-//			
+//				throw new LiquidacionNullException();
+//
 			tabAsientos.setDisabled(true);
 			tabVenta.setDisabled(true);
 			dblImporte.setReadonly(true);
 			dblTarifa.setReadonly(true);
-			
+
 			/*	Realizamos la carga de información a los controles combobox	*/
 			UtilData.cargarDataCombo(cmbOrigen, Localidad.class, false );
 			UtilData.cargarDataCombo(cmbDestino, Localidad.class, true);
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("tipo", TipoDocumento.PERSONALES);			//Usar los alias de los campos segun el xml de mapeo
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);	//Usar los alias de los campos segun el xml de mapeo
 			UtilData.cargarDataCombo(cmbTipoDocumento, TipoDocumento.class, criteriosBusqueda, false);
-			Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, Constantes.ID_TIPDOC_DNI);			
+			Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, Constantes.ID_TIPDOC_DNI);
 			UtilData.cargarDataCombo(cmbSexo, Sexo.class, false);
 			UtilData.cargarDataCombo(cmbEstadoCivil, EstadoCivil.class, false);
 			UtilData.cargarDataCombo(cmbNacionalidad, Nacionalidad.class, false);
 			UtilData.enlazarUbigeo(txtUbigeoIdPax, txtUbigeoPax, btnUbigeoPax,null);
 			UtilData.enlazarUbigeo(txtUbigeoIdCliente, txtUbigeoCliente, btnUbigeoCliente,null);
-			
-			criteriosBusqueda = new TreeMap<String, Object>();
+
+			criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("rubro", TipoComprobante.RUBRO_PASAJES);
 			UtilData.cargarDataCombo(cmbTipoComprobante, TipoComprobante.class, criteriosBusqueda, false);
 			cargarFormaPago(cmbFormaPago, false);
 			UtilData.cargarDataCombo(cmbAlimentacion, PreferenciaAlimentaria.class, false);
-			
+
 			disabledControlsPax(true);
 			disabledControlsClient(true);
-			
+
 			lbxItinerariosIda.getPagingChild().setMold("os");
-			
+
 			/*	*********************************************************************************************************	*/
 			/*	Obteniendo las variables de la Sesion	*/
 			UsuarioHardware usuarioHardware = (UsuarioHardware) this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO_HARDWARE);
@@ -351,13 +351,13 @@ public class WndVentaTerceros extends WndBase {
 			usuario = (Usuario)this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO);
 //			canalVenta = (CanalVenta)this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_CANAL_VENTA);
 			fechaLiquidacion = (Date)this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION);
-			
+
 			usuhar = usuarioHardware.getId();
 			/*	*********************************************************************************************************	*/
 			/*	Seleccionamos por defecto como origen la localidad de la Agencia.	*/
 			Util.seleccionarValorItemCombo(Localidad.class, cmbOrigen, agencia.getLocalidad().getId());
 
-			
+
 			/*	Definiendo el formato de moneda a utilizar en los controles	*/
 			dblTarifa.setLocale(Locale.US);
 			dblRecargo.setLocale(Locale.US);
@@ -365,36 +365,36 @@ public class WndVentaTerceros extends WndBase {
 			dblImporte.setLocale(Locale.US);
 			dblImporteEfectivo.setLocale(Locale.US);
 			dblImporteTarjeta.setLocale(Locale.US);
-			
+
 			/*	Verificamos que no se trate de una agencia TEPSA	*/
 			if(agencia.getTipoAgencia().getId().intValue()!=Constantes.ID_TIPAGE_TEPSA){
-				
+
 				/*Valida concesionario para luego recuperarlo*/
 				if(agencia.getConcesionario()==null)
 					throw new ConcesionarioNullException();
 				Concesionario concesionario=ServiceLocator.getConcesionarioManager().buscarPorId(agencia.getConcesionario().getId().longValue());
-				
+
 				/*	Busca que la agencia se encuentre registrada como cliente */
-				TreeMap<String, Object> mapCliente = new TreeMap<String, Object>();
+				TreeMap<String, Object> mapCliente = new TreeMap<>();
 				mapCliente.put("numeroDocumento",concesionario.getRuc());
 				mapCliente.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 				List<Cliente> listCliente = ServiceLocator.getClienteManager().buscarPorX(mapCliente, null);
 				if(!(listCliente.size()>0))
 					throw new ClienteException();
-				
+
 				clienteCredito=listCliente.get(0);
 				lineaCreditoCliente= ServiceLocator.getLineaCreditoClienteManager().validacionCreditoCliente(clienteCredito.getId());
-				
+
 				/*Valida el credito de la Agencia o cliente Corporativo - 15-03-2013*/
 				if(lineaCreditoCliente == null || lineaCreditoCliente.getSaldo()<=0)
 					throw new LineaCreditoClienteException(LineaCreditoClienteException.LINEA_CREDITO_SIN_SALDO);
-				
+
 				/*	Si se trata de una agencia corporativa	*/
 				if(agencia.getTipoAgencia().getId().equals(Constantes.ID_TIPAGE_CORPORATIVO)){
 					mantenimientoRegistroClient(clienteCredito.getId());
 					tlbbtnNuevoClient.setDisabled(true);
 					tlbbtnModificarClient.setDisabled(true);
-					btnUbigeoCliente.setDisabled(true);					
+					btnUbigeoCliente.setDisabled(true);
 					lblDescuento.setValue(Constantes.TIPCONVCLI_CORPORATIVO);
 					txtDocumentoCliente.setDisabled(true);
 					txtRazonSocial.setDisabled(true);
@@ -402,7 +402,7 @@ public class WndVentaTerceros extends WndBase {
 			}
 			onSelectDefaultFormaPago();
 			loadTipoAgenciaRemota();
-			onChangeTipoAgenciaRemota();	
+			onChangeTipoAgenciaRemota();
 			Util.loadAnios(cmbAnio);
 			Util.loadMeses(cmbMes);
 		}catch (ConcesionarioNullException ccnex){
@@ -467,7 +467,7 @@ public class WndVentaTerceros extends WndBase {
 		imgRefreshBoleto = (Image)this.getFellow("imgRefreshBoleto");
 		cmbAlimentacion = (Combobox)this.getFellow("cmbAlimentacion");
 		txtObservacionesIda = (Textbox)this.getFellow("txtObservacionesIda");
-		
+
 		tabPasajero = (Tab)this.getFellow("tabPasajero");
 		tabCliente = (Tab)this.getFellow("tabCliente");
 		tabPagos = (Tab)this.getFellow("tabPagos");
@@ -548,14 +548,14 @@ public class WndVentaTerceros extends WndBase {
 		cmbTipoFormaPago = (Combobox)this.getFellow("cmbTipoFormaPago");
 		cmbOperadorTarjetaCredito = (Combobox)this.getFellow("cmbOperadorTarjetaCredito");
 		cmbTarjetaCredito = (Combobox)this.getFellow("cmbTarjetaCredito");
-		
+
 		imgRefreshBoleto.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
 				onLoadEspecieValorada(txtNumeroBoleto);
 			}
 		});
-		
+
 		/*	En caso haga docble click en la lista de pasajeros, muestra la informacion del mismo.	*/
 		lbxPasajeros.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
 			@Override
@@ -564,7 +564,7 @@ public class WndVentaTerceros extends WndBase {
 				grpbxListaPasajeros.setVisible(false);
 			}
 		});
-		
+
 		/*	En caso haga doble click en la lista de clientes, muestra la informacion del mismo.	*/
 		lbxClientes.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
 			@Override
@@ -573,7 +573,7 @@ public class WndVentaTerceros extends WndBase {
 				grpbxListaClientes.setVisible(false);
 			}
 		});
-		
+
 		/*	En caso haya apretado la tecla enter en el control txtDocumentoPax realiza la busqueda del pasajero	*/
 		txtDocumentoPax.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
@@ -587,7 +587,7 @@ public class WndVentaTerceros extends WndBase {
 					txtApePat.setFocus(true);
 			}
 		});
-		
+
 		/*	En caso haya apretado la tecla enter en el control txtApePat realiza la busqueda del pasajero	*/
 		txtApePat.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
@@ -603,7 +603,7 @@ public class WndVentaTerceros extends WndBase {
 					txtApeMat.setFocus(true);
 			}
 		});
-		
+
 		/*	En caso haya apretado la tecla enter en el control txtApeMat realiza la busqueda del pasajero	*/
 		txtApeMat.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
@@ -619,7 +619,7 @@ public class WndVentaTerceros extends WndBase {
 					txtNombres.setFocus(true);
 			}
 		});
-		
+
 		/*	En caso haya apretado la tecla enter en el control txtNombres realiza la busqueda del pasajero	*/
 		txtNombres.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
@@ -635,7 +635,7 @@ public class WndVentaTerceros extends WndBase {
 					txtDireccionPax.setFocus(true);
 			}
 		});
-		
+
 		/*	En caso haya apretado la tecla enter en el control txtDocumentoCliente realiza la busqueda del cliente	*/
 		txtDocumentoCliente.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
@@ -649,7 +649,7 @@ public class WndVentaTerceros extends WndBase {
 					txtRazonSocial.setFocus(true);
 			}
 		});
-		
+
 		/*	En caso haya apretado la tecla enter en el control txtRazonSocial realiza la busqueda del cliente	*/
 		txtRazonSocial.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
@@ -663,49 +663,49 @@ public class WndVentaTerceros extends WndBase {
 					txtContactoCliente.setFocus(true);
 			}
 		});
-		
+
 		tabPasajero.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
 				cmbTipoDocumento.setFocus(true);
 			}
 		});
-		
+
 		tabCliente.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
 				txtDocumentoCliente.setFocus(true);
 			}
 		});
-		
+
 		tabPagos.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
 				cmbTipoFormaPago.setFocus(true);
 			}
 		});
-		
+
 		imgPromocion.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
 				imgPromocion_loadPromociones();
 			}
 		});
-		
+
 		imgQuitarPromocion.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
 				quitarPromocion();
 			}
 		});
-		
+
 		imgFidelizarPasajero.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
 				convertirPaxfree();
 			}
 		});
-		
+
 		cmbDestino.addEventListener(Events.ON_CHANGING, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
@@ -718,35 +718,35 @@ public class WndVentaTerceros extends WndBase {
 				lbxItinerariosIda.getItems().clear();
 			}
 		});
-		
+
 		cmbTipoAgenciaRemota.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
  				onChangeTipoAgenciaRemota();
 			}
 		});
-		
+
 		cmbAgenciaRemota.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
  				onChangeAgenciaRemota();
 			}
 		});
-		
+
 		cmbUsuarioRemoto.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
  				onChangeUsuarioRemoto();
 			}
 		});
-		
+
 		lbxUsuarioHardware.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
 				onSelectUsuarioHardware();
 			}
 		});
-		
+
 		cmbMes.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
@@ -754,7 +754,7 @@ public class WndVentaTerceros extends WndBase {
 					Util.loadDias(cmbDia, (Integer)cmbMes.getSelectedItem().getValue(), (Integer)cmbAnio.getSelectedItem().getValue());
 			}
 		});
-		
+
 		cmbAnio.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
@@ -764,7 +764,7 @@ public class WndVentaTerceros extends WndBase {
 			}
 		});
 	}
-	
+
 	/**
 	 * Para seleccionar el Tipo de Comprobante por defecto
 	 */
@@ -780,7 +780,7 @@ public class WndVentaTerceros extends WndBase {
 		}
 		cmbTipoComprobante.setDisabled(true);
 	}
-	
+
 	/**
 	 * Selecciona por defecto el item del Combobox Forma de Pago.
 	 */
@@ -789,12 +789,12 @@ public class WndVentaTerceros extends WndBase {
 		for(Comboitem comboitem : cmbFormaPago.getItems()){
 			if(comboitem.getValue() instanceof FormaPago && ((FormaPago)comboitem.getValue()).getId().intValue()==Constantes.ID_FORPAG_CREDITO){
 				cmbFormaPago.setSelectedItem(comboitem);
-				onLoadTipoFormaPago();					
+				onLoadTipoFormaPago();
 			}
 		}
 		cmbFormaPago.setDisabled(true);
 	}
-	
+
 	/**
 	 * Realiza la busqueda del correlativo para el boleto a emitir.
 	 */
@@ -804,7 +804,7 @@ public class WndVentaTerceros extends WndBase {
 //		else
 //			txtBoleto.setValue(UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_VOUCHER_CORPORATIVO, agenciaRemota));
 	}
-	
+
 	/**
 	 * Realiza la limpieza de las variables globales relacionadas con los itinerarios, mapa de asientos y listbox de itinerarios.
 	 */
@@ -813,15 +813,15 @@ public class WndVentaTerceros extends WndBase {
 		mapaAsientosIda = null;
 		detalleItinerarioIda = null;
 	}
-	
+
 	/**
-	 * Para limpiar la lista de itinerarios en caso se seleccione otra fecha de partida. 
+	 * Para limpiar la lista de itinerarios en caso se seleccione otra fecha de partida.
 	 */
 	public void onSelectCalendarIda() throws Exception{
 		limpiarDatosItinerario();
 		onBuscarItinerarios();
 	}
-	
+
 	/**
 	 * Realiza la busqueda de los itinerarios segun la fecha de partida, origen o destino.
 	 */
@@ -830,17 +830,17 @@ public class WndVentaTerceros extends WndBase {
 			Date fechaActual= Constantes.FORMAT_DATE.parse(new MyTime().dateServer());
 			if (cldrFechaPartida.getValue().getTime() < fechaActual.getTime())
 				throw new FechaViajeNoValidaException();
-			
+
 			lbxItinerariosIda.getItems().clear();
 			if(!(cmbOrigen.getSelectedItem().getValue() instanceof Localidad))
 				throw new LocalidadNullException(LocalidadNullException.ORIGEN);
-			
+
 			String fechaPartida = Util.DatetoString(cldrFechaPartida.getValue(), Constantes.DATE_FORMAT);
 			String origen = cmbOrigen.getText();
 			String destino = "";
 			if(cmbDestino.getSelectedItem().getValue() instanceof Localidad)
 				destino = cmbDestino.getText();
-			
+
 			/*	Si no se trata de una venta a fecha abierta	*/
 			List<DetalleItinerario> lstItinerarios = ServiceLocator.getItinerarioManager().buscarItinerarios(fechaPartida, origen, destino);
 			if(lstItinerarios.size()>0){
@@ -865,7 +865,7 @@ public class WndVentaTerceros extends WndBase {
 			}else
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noItinerariosIda"));
 		}catch (FechaViajeNoValidaException fnv){
-			DlgMessage.information(Messages.getString("WndVentaReserva.information.FechaViajeNoValida"));			
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.FechaViajeNoValida"));
 		}catch(FechaMenorCalendarioException fmcex){
 			DlgMessage.warning(Messages.getString("WndVentaReserva.warning.fechaRetornoNoValida"));
 		}catch(LocalidadNullException lnex){
@@ -877,7 +877,7 @@ public class WndVentaTerceros extends WndBase {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Metodo utilizado cuando el usuario selecciona un itinerario.
 	 * @param direccion	: Indica si es ida o retorno.
@@ -888,9 +888,9 @@ public class WndVentaTerceros extends WndBase {
 				detalleItinerarioIda = lbxItinerariosIda.getSelectedItem().getValue();
 				btnNextTabAsientos.setDisabled(false);
 			}
-		}		
+		}
 	}
-	
+
 	/**
 	 * Para controlar la funcionalidad del boton siguiente.
 	 */
@@ -900,7 +900,7 @@ public class WndVentaTerceros extends WndBase {
 				/*Valida si el usuario tiene una liquidación aperturada*/
 //				if(cmbTipoOperacion.getSelectedIndex()==0 && getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION)==null)
 //					throw new LiquidacionNullException();
-				
+
 				if(detalleItinerarioIda==null)
 					throw new ItinerarioException(ItinerarioException.ES_NULL_IDA);// ItinerarioNullException(ItinerarioNullException.ES_IDA);
 
@@ -913,37 +913,37 @@ public class WndVentaTerceros extends WndBase {
 					throw new UsuarioNullException();
 				else if(!(lbxUsuarioHardware.getSelectedIndex()>=0))
 					throw new UsuarioHardwareNullException();
-					
+
 				usuarioHardwareRemoto = ((EspecieValorada)lbxUsuarioHardware.getSelectedItem().getValue()).getUsuarioHardware();
 				agenciaRemota = (Agencia)cmbAgenciaRemota.getSelectedItem().getValue();
-				
+
 				/*Valida concesionario para luego recuperarlo*/
 				if(agenciaRemota.getConcesionario()==null)
 					throw new ConcesionarioNullException();
-				
+
 				Concesionario concesionario=ServiceLocator.getConcesionarioManager().buscarPorId(agenciaRemota.getConcesionario().getId().longValue());
-				
+
 				/*	Busca que la agencia remota se encuentre registrada como cliente */
-				TreeMap<String, Object> mapCliente = new TreeMap<String, Object>();
+				TreeMap<String, Object> mapCliente = new TreeMap<>();
 				mapCliente.put("numeroDocumento",concesionario.getRuc());
 				mapCliente.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 				List<Cliente> listCliente = ServiceLocator.getClienteManager().buscarPorX(mapCliente, null);
 				if(!(listCliente.size()>0))
 					throw new ClienteException();
-				
+
 				clienteCredito=listCliente.get(0);
 				lineaCreditoCliente= ServiceLocator.getLineaCreditoClienteManager().validacionCreditoCliente(clienteCredito.getId());
-				
+
 				/*Valida el credito de la Agencia o cliente Corporativo - 15-03-2013*/
 				if(lineaCreditoCliente == null || lineaCreditoCliente.getSaldo()<=0)
 					throw new LineaCreditoClienteException(LineaCreditoClienteException.LINEA_CREDITO_SIN_SALDO);
-				
+
 				/*	Si se trata de una agencia corporativa	*/
 				if(agenciaRemota.getTipoAgencia().getId().equals(Constantes.ID_TIPAGE_CORPORATIVO)){
 					mantenimientoRegistroClient(clienteCredito.getId());
 					tlbbtnNuevoClient.setDisabled(true);
 					tlbbtnModificarClient.setDisabled(true);
-					btnUbigeoCliente.setDisabled(true);					
+					btnUbigeoCliente.setDisabled(true);
 					lblDescuento.setValue(Constantes.TIPCONVCLI_CORPORATIVO);
 					txtDocumentoCliente.setDisabled(true);
 					txtRazonSocial.setDisabled(true);
@@ -962,7 +962,7 @@ public class WndVentaTerceros extends WndBase {
 				lbxAsientos_onSelect();
 				txtDocumentoPax.setFocus(true);
 			}
-			
+
 		}catch (LiquidacionNullException lnullex){
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noLiquidacion"));
 			closeTabWindow();
@@ -997,7 +997,7 @@ public class WndVentaTerceros extends WndBase {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Crea la estructura que va a contener el Mapa del Bus.
 	 * @param idServicio		: Identificador del servicio.
@@ -1012,33 +1012,33 @@ public class WndVentaTerceros extends WndBase {
 		try{
 			Servicio servicio = null;
 			/*	Busca el mapa del bus de acuerdo al servicio	*/
-			List<MapaBus> lstMapaBus = ServiceLocator.getMapaBusManager().buscarMapaBus(idServicio, Constantes.VALUE_ACTIVO);			
-			
-			/*	Creamos un Map el cual tendra como key un objeto coordenada y como valor el objeto MapaBus esto es deacuerdo a 
+			List<MapaBus> lstMapaBus = ServiceLocator.getMapaBusManager().buscarMapaBus(idServicio, Constantes.VALUE_ACTIVO);
+
+			/*	Creamos un Map el cual tendra como key un objeto coordenada y como valor el objeto MapaBus esto es deacuerdo a
 			 * lo que tenemos en la Base de datos	*/
-			Map<Coordenada, MapaBus> mapCoordenadas = new HashMap<Coordenada, MapaBus>();
+			Map<Coordenada, MapaBus> mapCoordenadas = new HashMap<>();
 			for(MapaBus mapaBus : lstMapaBus){
 				Coordenada coordenada = new Coordenada(mapaBus.getNumeroFila(), mapaBus.getNumeroColumna(), mapaBus.getNumeroPiso());
 				mapCoordenadas.put(coordenada, mapaBus);
 			}
-			
+
 			if(lstMapaBus.size()>0)
 				servicio = lstMapaBus.get(0).getServicio();
-			
+
 			int nPisos = servicio.getNumeroPisos();
 			int nFilas = servicio.getNumeroFilasPiso1();
 			int nColumnas = servicio.getNumeroColumnasPiso1();
 			prefijoAsiento = "imgAsientoIdaPiso1_";
 			if(esRetorno)
 				prefijoAsiento = "imgAsientoRetornoPiso1_";
-			Integer numeroAsiento = 0;
-			
+			int numeroAsiento = 0;
+
 			inicializarEstructura(grpbxParent);
-			
+
 			Image imagen = generarImagen(IMAGE_PRIMER_PISO, 154, 43);
-			
-			mapaAsientos = new HashMap<String, Asiento>();
-			
+
+			mapaAsientos = new HashMap<>();
+
 			/*	Recorremos la cantidad de pisos del servicio	*/
 			for(int i=0; i<nPisos; i++){
 				String idGrid = "grdIdaPiso1";
@@ -1054,7 +1054,7 @@ public class WndVentaTerceros extends WndBase {
 						prefijoAsiento = "imgAsientoRetornoPiso2_";
 						idGrid = "grdRetornoPiso2";
 					}
-					imagen = generarImagen(IMAGE_SEGUNDO_PISO, 154, 34);					
+					imagen = generarImagen(IMAGE_SEGUNDO_PISO, 154, 34);
 				}
 				/*	Creando la grilla contenedora de asientos	*/
 				Grid gridPiso = new Grid();
@@ -1077,19 +1077,19 @@ public class WndVentaTerceros extends WndBase {
 						oDiv.setWidth("28px");
 						oDiv.setHeight("28px");
 						oDiv.setStyle("padding:none");
-						
+
 						/*	Definimos la coordenada actual	*/
 						String coordenadaActual = j+"-"+k+"-"+i;
-						
+
 						/*	Iteramos el mapa de coordenadas creado al inicio y comparamos	*/
 						for(Coordenada coordenada : mapCoordenadas.keySet()){
 							if(coordenada.toString().equals(coordenadaActual)){
 								/*	Obtenemos el objeto y empezamos a setear las imagenes	*/
 								MapaBus objetoBus = mapCoordenadas.get(coordenada);
-								
-								HashMap<String, String> propiedades = new HashMap<String, String>();
+
+								HashMap<String, String> propiedades = new HashMap<>();
 								numeroAsiento++;
-								
+
 								/*	Verificamos que el objeto sea del tipo Asiento	*/
 								if(objetoBus.getTipoObjeto().intValue()==TIPO_ASIENTO){
 									Asiento asiento = new Asiento();
@@ -1163,7 +1163,7 @@ public class WndVentaTerceros extends WndBase {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Inicializa(limpia los objetos existentes) el contenedor de los asientos.
 	 */
@@ -1174,7 +1174,7 @@ public class WndVentaTerceros extends WndBase {
 				groupbox.removeChild(component);
 		}
 	}
-	
+
 	/**
 	 * Genera el objeto imagen para los pisos del bus
 	 * @param src		: Path de la imagen a mostrar.
@@ -1189,7 +1189,7 @@ public class WndVentaTerceros extends WndBase {
 		imagen.setHeight(String.valueOf(height)+"px");
 		return imagen;
 	}
-	
+
 	/**
 	 * Realiza el refresco del mapa del bus.
 	 * @throws Exception
@@ -1197,7 +1197,7 @@ public class WndVentaTerceros extends WndBase {
 	public void onRefreshMap() {
 		onRefreshMapaAsientos(mapaAsientosIda, detalleItinerarioIda, grdOcupabilidadIda);
 	}
-	
+
 	/**
 	 * Realiza el refresco del mapa del bus.
 	 * @param mapa				: Mapa de asientos
@@ -1209,7 +1209,7 @@ public class WndVentaTerceros extends WndBase {
 			onCleanMap(mapaAsientos);
 			/*	Obtenemos el subconjunto que queremos buscar segun la ruta seleccioanda		*/
 			List<Integer> subConjuntoBuscar = obtenerSubconjunto(detalleItinerario.getItinerario().getListSecuenciaTramo(), detalleItinerario.getRuta().getLocalidadOrigen().getId(), detalleItinerario.getRuta().getLocalidadDestino().getId());
-			
+
 			int nOcupados = 0;
 			List<VentaPasaje> lstVentas = ServiceLocator.getVentaPasajesManager().buscarVentasForMapaBus(detalleItinerario.getItinerario().getId());
 			lstVentas = obtenerConjuntos(lstVentas, detalleItinerario.getItinerario().getListSecuenciaTramo());
@@ -1244,11 +1244,11 @@ public class WndVentaTerceros extends WndBase {
 					/*	Para identificar las prioridades del tramos para la venta	*/
 					if(venta.getRuta().getLocalidadDestino().getId()==detalleItinerario.getRuta().getLocalidadOrigen().getId()){
 						Asiento asiento = mapaAsientos.get(key);
-						asiento.setSrc(Constantes.ICON_SEMI_OCUPADO+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);								
+						asiento.setSrc(Constantes.ICON_SEMI_OCUPADO+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
 					}
 				}
-			}			
-			
+			}
+
 			/*	BUSCAMOS LOS ASIENTOS QUE ESTEN BLOQUEADOS PARA EL ITINERARIO SELECCIONADO	*/
 			List<TmpOcupacionAsientos> lstBloqueados = ServiceLocator.getTmpOcupacionAsientosManager().buscarAsientosBloqueados(detalleItinerario.getItinerario().getId());
 			lstBloqueados = obtenerConjuntos(lstBloqueados, detalleItinerario.getItinerario().getListSecuenciaTramo());
@@ -1271,7 +1271,7 @@ public class WndVentaTerceros extends WndBase {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Realiza la limpieza del mapa del bus
 	 */
@@ -1283,7 +1283,7 @@ public class WndVentaTerceros extends WndBase {
 			asiento.setTooltiptext("DISPONIBLE");
 		}
 	}
-	
+
 	/**
 	 * Obtiene los subconjuntos de una lista de ventas, tmpOcupacion.
 	 * @param lista			: Lista de registros de los cuales queremos obtener los subconjuntos.
@@ -1309,16 +1309,16 @@ public class WndVentaTerceros extends WndBase {
 		}
 		return result;
 	}
-	
+
 	/**
-	 * Obtine los subconjuntos de un registro de venta, tmpocupacion o de la ruta que estamos buscando. 
+	 * Obtine los subconjuntos de un registro de venta, tmpocupacion o de la ruta que estamos buscando.
 	 * @param lstSecuencias	: Lista de secuencia segun el itinerario.
 	 * @param idOrigen		: Identificador del origen.
 	 * @param idDestino		: Identificador del destino.
 	 * @return
 	 */
 	private List<Integer> obtenerSubconjunto(List<SecuenciaTramo> lstSecuencias, Integer idOrigen, Integer idDestino){
-		List<Integer> lstSubconjunto = new ArrayList<Integer>();
+		List<Integer> lstSubconjunto = new ArrayList<>();
 		/*	Recorremos la secuencia de tramos del itinerario	*/
 		for(int j=0; j<lstSecuencias.size(); j++){
 			SecuenciaTramo secuencia = lstSecuencias.get(j);
@@ -1337,7 +1337,7 @@ public class WndVentaTerceros extends WndBase {
 		}
 		return lstSubconjunto;
 	}
-	
+
 	/**
 	 * Muestra los valores de la ocupabilidad de asientos
 	 * @param nOcupados			: Cantidad de asientos ocupados
@@ -1347,7 +1347,7 @@ public class WndVentaTerceros extends WndBase {
 	private void mostrarOcupabilidad(Integer nOcupados, DetalleItinerario detalleItinerario, Grid grid){
 		grid.getRows().detach();
 		Rows rows = new Rows();
-		
+
 		Row row = new Row();
 		Label label = new Label(detalleItinerario.getRuta().toString());
 		row.appendChild(label);
@@ -1358,7 +1358,7 @@ public class WndVentaTerceros extends WndBase {
 		rows.appendChild(row);
 		grid.appendChild(rows);
 	}
-	
+
 	/**
 	 * Evento utilizado cuando el usuario hace click en un asiento.
 	 * @param e				: Evento
@@ -1369,9 +1369,9 @@ public class WndVentaTerceros extends WndBase {
 	private void onClickAsiento(Event e, DetalleItinerario detalleItinerario, Map<String, Asiento> mapaAsientos, boolean esIda){
 		Asiento asientoSeleccionado = (Asiento)e.getTarget();
 		key = asientoSeleccionado.getKey();
-		
+
 		/*	Elimina el asiento de la lista de asientos seleccionados y desbloquea el asiento*/
-		if(removerAsientoSeleccionado(key, mapaAsientos, asientoSeleccionado.getDetalleItinerario()))			
+		if(removerAsientoSeleccionado(key, mapaAsientos, asientoSeleccionado.getDetalleItinerario()))
 			return;
 
 		try{
@@ -1401,7 +1401,7 @@ public class WndVentaTerceros extends WndBase {
 					tmpOcupacionAsientosID.setIdItinerario(tmpOcupacionAsientos.getItinerario().getId());
 					tmpOcupacionAsientosID.setNumeroAsiento(tmpOcupacionAsientos.getNumeroAsiento());
 					tmpOcupacionAsientos.setTmpOcupacionAsientosID(tmpOcupacionAsientosID);
-					
+
 					int result = ServiceLocator.getTmpOcupacionAsientosManager().bloquearAsiento(tmpOcupacionAsientos);
 					/*	En caso el bloqueo de asiento no haya tenido exito	*/
 					if(result < 0){
@@ -1412,7 +1412,7 @@ public class WndVentaTerceros extends WndBase {
 					}else{	/*	Agregamos el asiento a la lista de seleccionados	*/
 						mapaAsientos.get(key).setSrc(Constantes.PATH_PARTIAL+"asientoBloqueado_"+asientoSeleccionado.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
 						mapaAsientos.get(key).setEstadoAsiento(Constantes.ASIENTO_BLOQUEADO);
-						
+
 						Listitem listitemAsientos = new Listitem();
 						Listcell cell = new Listcell(asientoSeleccionado.getDetalleItinerario().getRuta().toString());
 						listitemAsientos.appendChild(cell);
@@ -1438,14 +1438,14 @@ public class WndVentaTerceros extends WndBase {
 			ex.printStackTrace();
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 		}
-		
+
 		/*	Habilita o deshablita el boton para pasar a la siguiente pestana	*/
 		if(lbxAsientos.getItems().size()==0)
 			btnNextTabVenta.setDisabled(true);
 		else
 			btnNextTabVenta.setDisabled(false);
 	}
-	
+
 	/**
 	 * Realiza la eliminacion del asiento seleccionado y luego lo desbloquea.
 	 * @param seatSelected	: Asiento seleccionado.
@@ -1457,7 +1457,7 @@ public class WndVentaTerceros extends WndBase {
 			List<Listitem> items = lbxAsientos.getItems();
 			for(int i=0; i<items.size(); i++){
 				Listitem listitem = items.get(i);
-				if(((DetalleItinerario)listitem.getValue()).getItinerario().getId().intValue()==detalleItinerario.getItinerario().getId().intValue() 
+				if(((DetalleItinerario)listitem.getValue()).getItinerario().getId().intValue()==detalleItinerario.getItinerario().getId().intValue()
 						&& ((DetalleItinerario)listitem.getValue()).getAsiento().equals(buffer[0]) && ((DetalleItinerario)listitem.getValue()).getPiso().equals(buffer[1])){
 					lbxAsientos.removeItemAt(i);
 					if(mapaAsientos.get(key).getEstadoAsiento().intValue()==Constantes.ASIENTO_BLOQUEADO){
@@ -1469,7 +1469,7 @@ public class WndVentaTerceros extends WndBase {
 						btnNextTabVenta.setDisabled(true);
 					else
 						btnNextTabVenta.setDisabled(false);
-					
+
 					/*	Desbloqueamos el asiento	*/
 					TmpOcupacionAsientos tmpOcupacion = new TmpOcupacionAsientos();
 					tmpOcupacion.setRuta(detalleItinerario.getRuta());
@@ -1479,13 +1479,13 @@ public class WndVentaTerceros extends WndBase {
 					ServiceLocator.getTmpOcupacionAsientosManager().desbloquearAsiento(tmpOcupacion);
 					return true;
 				}
-			}						
+			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Consulta si el asiento esta bloqueado.
 	 * @param key	: Clave a buscar en el mapa de asientos.
@@ -1496,7 +1496,7 @@ public class WndVentaTerceros extends WndBase {
 			return false;
 		return true;
 	}
-	
+
 	/**
 	 * Selecciona el asiento de la lista de asientos escogidos para venta.
 	 */
@@ -1514,7 +1514,7 @@ public class WndVentaTerceros extends WndBase {
 			buscarPromocionPorTarifa(detailItinerary, lblTarifa, true);
 		}
 	}
-	
+
 	/**
 	 * Buscamos las promociones que haran de tarifa en el caso del TEPSA SUITE o cualquier otro servicio.
 	 * @param detalleItinerario	: Datos del itinerario a utilizar para realizar la busqueda de promocion por tarifa.
@@ -1522,8 +1522,8 @@ public class WndVentaTerceros extends WndBase {
 	 * @param esIda				: Booleano que indica si es la ida o el retorno.
 	 */
 	private void buscarPromocionPorTarifa(DetalleItinerario detalleItinerario, Label lblTarifa, boolean esIda){
-		/**	
-		 * Esta seccion es para obtener las promociones que son por tarifa	
+		/**
+		 * Esta seccion es para obtener las promociones que son por tarifa
 		 * y que reeemplazaran la tarifa real del servicio.
 		 */
 		try {
@@ -1531,21 +1531,21 @@ public class WndVentaTerceros extends WndBase {
 			List<Promocion>lstPromocion=ServiceLocator.getPromocionManager().buscarPorTarifa(Util.DatetoString(detalleItinerario.getFechaPartida(), Constantes.DATE_FORMAT), detalleItinerario.getRuta().getId().toString(), detalleItinerario.getItinerario().getServicio().getId().toString(),detalleItinerario.getHoraPartida().replaceAll(":", "."));
 			Promocion promo = null;
 			/*	Validando si la promocion cumple con el requisito del Servicio y la Ruta	*/
-			for(int i=0; i<lstPromocion.size(); i++){
-				String[] rutas = lstPromocion.get(i).getRutas().split(",");
-				String[] servicios = lstPromocion.get(i).getServicios().split(",");
-				for(int j=0; j<rutas.length; j++){
-					if(rutas[j].equals(detalleItinerario.getRuta().getId().toString())){
-						for(int k=0; k<servicios.length; k++){
-							if(servicios[k].equals(detalleItinerario.getItinerario().getServicio().getId().toString())){
-								promo = lstPromocion.get(i);
+			for (Promocion element : lstPromocion) {
+				String[] rutas = element.getRutas().split(",");
+				String[] servicios = element.getServicios().split(",");
+				for (String element2 : rutas) {
+					if(element2.equals(detalleItinerario.getRuta().getId().toString())){
+						for (String element3 : servicios) {
+							if(element3.equals(detalleItinerario.getItinerario().getServicio().getId().toString())){
+								promo = element;
 								break;
 							}
 						}
 					}
 				}
 			}
-			
+
 			/*	Solo en caso de ventas	*/
 			if(promo!=null){
 				AplicarPromocion aplicarPromocion=createObjectAplicarPromocion(esIda);
@@ -1553,20 +1553,20 @@ public class WndVentaTerceros extends WndBase {
 				if(promocionAplicada!=null)
 					lblTarifa.setValue(Util.toNumberFormat(promocionAplicada.getPorImporte(),2));
 			}
-			
+
 		} catch (Exception ex) {
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 			ex.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Realiza la carga de los pagos que se debe realizar.
 	 * @param detalleItinerario	: tarifa del servicio de acuerdo al Itinerario.
 	 */
 	private void onLoadPagos(DetalleItinerario detalleItinerario){
 		dblTarifa.setValue(detalleItinerario.getTarifa());
-		dblDescuento.setValue(0.0);	
+		dblDescuento.setValue(0.0);
 		dblRecargo.setValue(0.0);
 		dblImporte.setValue(dblTarifa.getValue()+dblRecargo.getValue() - dblDescuento.getValue());
 		chkPagoMixto.setChecked(false);
@@ -1576,7 +1576,7 @@ public class WndVentaTerceros extends WndBase {
 		lblPromocion.setValue("");
 		imgQuitarPromocion.setVisible(false);
 	}
-	
+
 	/**
 	 * Muestra los datos del itinerario seleccionado.
 	 * @param detalleItinerario	: Itinerario seleccionado.
@@ -1589,7 +1589,7 @@ public class WndVentaTerceros extends WndBase {
 		lblHoraPartida.setValue(detalleItinerario.getHoraPartida());
 		lblHoraLlegada.setValue(detalleItinerario.getHoraLlegada());
 	}
-	
+
 	/**
 	 * Cargamos los puntos de embarque.
 	 * @param detItinerario	: Itinerario del cual deseamos cargar los puntos de embarque.
@@ -1598,8 +1598,8 @@ public class WndVentaTerceros extends WndBase {
 	private void onLoadPuntoEmbarque(DetalleItinerario detItinerario, Combobox cmbParent){
 		try{
 			cmbParent.getItems().clear();
-			
-			ArrayList<ItinerarioAgenciaPartida> arrayItiAgePartida = new ArrayList<ItinerarioAgenciaPartida>();
+
+			ArrayList<ItinerarioAgenciaPartida> arrayItiAgePartida = new ArrayList<>();
 			arrayItiAgePartida = ServiceLocator.getItinerarioManager().buscarAgenciasPartida(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO, detItinerario.getRuta().getLocalidadOrigen().getId());/*	Si la agencia de partida del itinerario es la misma a la agencia de la ruta seleccionada	*/
 //			if(detItinerario.getItinerario().getAgenciaPartida().getId().intValue()==detItinerario.getAgenciaPartida().getId().intValue())
 //				arrayItiAgePartida = ServiceLocator.getItinerarioManager().buscarAgenciasPartida(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO);
@@ -1625,13 +1625,13 @@ public class WndVentaTerceros extends WndBase {
 					cmbParent.setSelectedItem(item);
 					lblHoraPartida.setValue(itiAgePartida.getHoraPartida());
 				}
-			}			
+			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Cargamos los puntos de desembarque.
 	 * @param detItinerario	: Itinerario del cual deseamos cargar los puntos de desembarque.
@@ -1640,7 +1640,7 @@ public class WndVentaTerceros extends WndBase {
 	private void onLoadPuntoDesembarque(DetalleItinerario detItinerario, Combobox cmbParent) {
 		try{
 			cmbParent.getItems().clear();
-			ArrayList<ItinerarioAgenciaLlegada> arrayItiAgeLlegada = new ArrayList<ItinerarioAgenciaLlegada>();
+			ArrayList<ItinerarioAgenciaLlegada> arrayItiAgeLlegada = new ArrayList<>();
 			arrayItiAgeLlegada = ServiceLocator.getItinerarioManager().buscarAgenciasLlegada(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO, detItinerario.getRuta().getLocalidadDestino().getId());
 //			/*	Si la agencia de llegada del itinerario es la misma a la agencia de llegada de la ruta seleccionada	*/
 //			if(detItinerario.getItinerario().getAgenciaLlegada().getId().intValue()==detItinerario.getAgenciaLlegada().getId().intValue())
@@ -1654,7 +1654,7 @@ public class WndVentaTerceros extends WndBase {
 //				itiAgeLlegada.setHoraLlegada(detItinerario.getAgenciaLlegada().getHoraPartida());
 //				arrayItiAgeLlegada.add(itiAgeLlegada);
 //			}
-			
+
 			UtilData.cargarGenericData(cmbParent, false);
 			for(ItinerarioAgenciaLlegada itiAgeLlegada : arrayItiAgeLlegada){
 				Comboitem item = new Comboitem(itiAgeLlegada.getAgencia().getDenominacion());
@@ -1667,12 +1667,12 @@ public class WndVentaTerceros extends WndBase {
 					cmbParent.setSelectedItem(item);
 					lblHoraLlegada.setValue(itiAgeLlegada.getHoraLlegada());
 				}
-			}			
+			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 		}
-	}	
+	}
 	/**
 	 * Muestra la hora de embarque segun el punto de embarque seleccionado
 	 */
@@ -1682,7 +1682,7 @@ public class WndVentaTerceros extends WndBase {
 		else
 			lblHoraPartida.setValue("");
 	}
-	
+
 	/**
 	 * Muestrala hora de llegada segun el punto de desembarque seleccionado.
 	 */
@@ -1692,7 +1692,7 @@ public class WndVentaTerceros extends WndBase {
 		else
 			lblHoraLlegada.setValue("");
 	}
-	
+
 	/* *******************************	IMPLEMENTACIONES PARA EL PASAJERO	******************************************** */
 	/**
 	 * Para un nuevo pasajero
@@ -1726,7 +1726,7 @@ public class WndVentaTerceros extends WndBase {
 		tlbbtnGuardarPax.setDisabled(false);
 		cmbTipoDocumento.setFocus(true);
 	}
-	
+
 	/**
 	 * Para cancelar el registro o la modificacion del pasajero
 	 */
@@ -1739,12 +1739,12 @@ public class WndVentaTerceros extends WndBase {
 		tlbbtnLimpiarPax.setDisabled(false);
 		action = Constantes.FAILURE;
 		txtDocumentoPax.setFocus(true);
-		
+
 		//06/09/2013 - jabanto
 		if(oPasajero==null)
 			onCleanControlsPax();
 	}
-	
+
 	/**
 	 * Limpia los controles del pasajero.
 	 */
@@ -1769,7 +1769,7 @@ public class WndVentaTerceros extends WndBase {
 		cmbAnio.setSelectedIndex(-1);
 		cmbMes.setSelectedIndex(-1);
 		cmbDia.setSelectedIndex(-1);
-		cmbTipoDocumento.setFocus(true);		
+		cmbTipoDocumento.setFocus(true);
 	}
 
 	/**
@@ -1789,7 +1789,7 @@ public class WndVentaTerceros extends WndBase {
 		cmbMes.setDisabled(arg);
 		cmbDia.setDisabled(arg);
 	}
-	
+
 	/**
 	 * Realiza la busqueda de pasajeros
 	 * @param criterio
@@ -1797,45 +1797,45 @@ public class WndVentaTerceros extends WndBase {
 	public void onSearchPax(Integer criterio){
 		try{
 			oPasajero=null;
-			TreeMap<String, Object> criterioBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criterioBusqueda = new TreeMap<>();
 			ArrayList<Pasajero> lstPasajeros = null;
 			if(criterio.intValue()==SEARCH_BY_DOCUMENTO){
 				criterioBusqueda.put("numeroDocumento", txtDocumentoPax.getText().toUpperCase()+"%");
-				List<String> criteriosOrdenar = new ArrayList<String>();
+				List<String> criteriosOrdenar = new ArrayList<>();
 				criteriosOrdenar.add("apellidoPaterno");
 				criteriosOrdenar.add("apellidoMaterno");
 				criteriosOrdenar.add("nombre");
 				lstPasajeros = ServiceLocator.getPasajeroManager().buscarPorX(criterioBusqueda, criteriosOrdenar);
 			}else{
-				String nombres = txtApePat.getText().trim().toUpperCase() + 
-						(txtApeMat.getText().trim().equals("")?"":(" " + txtApeMat.getText().trim().toUpperCase())) + 
+				String nombres = txtApePat.getText().trim().toUpperCase() +
+						(txtApeMat.getText().trim().equals("")?"":(" " + txtApeMat.getText().trim().toUpperCase())) +
 						" " + txtNombres.getText().trim().toUpperCase();
 				String[] str1 = nombres.trim().split(" ");
 				lstPasajeros = ServiceLocator.getPasajeroManager().buscarPorFullTextIndex(str1);
 			}
-			
+
 			listarRegistrosPax(lstPasajeros);
 		}catch(Exception ex){
 			ex.printStackTrace();
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Lista los resultados de la busqueda
 	 * @param lstRegistros	: Lista de resultados.
 	 * @throws Exception
 	 */
 	private void listarRegistrosPax(ArrayList<Pasajero> lstRegistros)throws Exception {
-		ArrayList<Object> lstPasajeros = new ArrayList<Object>();
+		ArrayList<Object> lstPasajeros = new ArrayList<>();
 		grpbxListaPasajeros.setVisible(false);
-		
+
 		if(lstRegistros.size()==1){
 			mantenimientoRegistroPax(lstRegistros.get(0).getId());
 		}else if(lstRegistros.size()>1){
 			for (int r = 0; r < lstRegistros.size(); r++) {
 				Pasajero oPasajero = lstRegistros.get(r);
-				ArrayList<Object> lstFila = new ArrayList<Object>();
+				ArrayList<Object> lstFila = new ArrayList<>();
 				lstFila.add(oPasajero.getId());
 				lstFila.add(r + 1);
 				lstFila.add(oPasajero.getTipoDocumento().getDenominacion());
@@ -1852,16 +1852,16 @@ public class WndVentaTerceros extends WndBase {
 		}
 		disabledControlsPax(true);
 	}
-	
-	
+
+
 	/**
 	 * Verifica si el Pasajero existe el la reniec si es que se registrando un nuevo Pas
-	 * @throws Exception 
-	 * @throws WrongValueException 
+	 * @throws Exception
+	 * @throws WrongValueException
 	 */
 	public void verificarPaxReniec() throws WrongValueException, Exception{
-		if(action==Constantes.ACTION_NEW  && !(txtDocumentoPax.getText().trim().isEmpty()) 
-				&& cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento 
+		if(action==Constantes.ACTION_NEW  && !(txtDocumentoPax.getText().trim().isEmpty())
+				&& cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento
 				&& ((TipoDocumento)cmbTipoDocumento.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPDOC_DNI){
 			Reniec reniec= ServiceLocator.getReniecManager().buscarPax(txtDocumentoPax.getText().trim());
 			if(reniec!=null){
@@ -1871,13 +1871,13 @@ public class WndVentaTerceros extends WndBase {
 				txtNombres.setText(reniec.getNombres());
 				mostrarFechaNacimiento(reniec.getFechaNacimiento());
 				Util.seleccionarValorItemCombo(Sexo.class, cmbSexo, Integer.valueOf(reniec.getSexo()));
-				
+
 			}else{
 				String numeroDocumento=txtDocumentoPax.getText().trim();
 				Integer idTipoDocumento= null;
 				if(cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento)
 					idTipoDocumento=((TipoDocumento)cmbTipoDocumento.getSelectedItem().getValue()).getId();
-				
+
 				onCleanControlsPax();
 				//recupera valores ingresado por el usuario
 				txtDocumentoPax.setText(numeroDocumento);
@@ -1886,7 +1886,7 @@ public class WndVentaTerceros extends WndBase {
 			}
 		}
 	}
-	
+
 	/**
 	 * Muestra los datos del registro que se va a modificar.
 	 * @param id	: Identificador del registro a modificar
@@ -1901,12 +1901,12 @@ public class WndVentaTerceros extends WndBase {
 			imgFidelizarPasajero.setVisible(false);
 			tlbbtnModificarPax.setDisabled(false);
 			oPasajero = ServiceLocator.getPasajeroManager().buscarPorId(idPasajero);
-			
+
 			Ubigeo oUbigeo = oPasajero.getUbigeo();
 			EstadoCivil oEstadoCivil = oPasajero.getEstadoCivil();
 			TipoDocumento oTipoDocumento = oPasajero.getTipoDocumento();
 			Sexo oSexo = oPasajero.getSexo();
-			
+
 			Nacionalidad oNacionalidad = oPasajero.getNacionalidad();
 			String idUbigeo = new String();
 			String ubicacionCompleta = new String();
@@ -1915,29 +1915,29 @@ public class WndVentaTerceros extends WndBase {
 				idUbigeo = oUbigeo.getId();
 				ubicacionCompleta = ServiceLocator.getUbigeoManager().ubicacionGeografica(oUbigeo);
 			}
-			
+
 			if(oEstadoCivil!=null)
 				Util.seleccionarValorItemCombo(EstadoCivil.class, cmbEstadoCivil, oPasajero.getEstadoCivil().getId());
 			else
 				cmbEstadoCivil.setSelectedIndex(0);
-			
+
 			if(oTipoDocumento!=null)
 				Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, oPasajero.getTipoDocumento().getId());
 			else
 				cmbTipoDocumento.setSelectedIndex(0);
-			
+
 			if(oSexo!=null)
 				Util.seleccionarValorItemCombo(Sexo.class, cmbSexo, oPasajero.getSexo().getId());
 			else
 				cmbSexo.setSelectedIndex(0);
-			
+
 			if(oNacionalidad!=null)
 				Util.seleccionarValorItemCombo(Nacionalidad.class, cmbNacionalidad, oNacionalidad.getId());
 			else
 				cmbNacionalidad.setSelectedIndex(0);
-			
+
 			habilitarNacionalidad();
-			
+
 			txtDocumentoPax.setText(oPasajero.getNumeroDocumento());
 			txtApePat.setText(oPasajero.getApellidoPaterno());
 			txtApeMat.setText(oPasajero.getApellidoMaterno());
@@ -1973,7 +1973,7 @@ public class WndVentaTerceros extends WndBase {
 
 			rowAdicional.setVisible(true);
 			/* RECUPERANDO LOS DATOS DEL PASAJERO FRECUENTE */
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("pasajero.id", oPasajero.getId());
 			criteriosBusqueda.put("estado", Constantes.TRUE_VALUE);
 			List<PasajeroFrecuente> lstPaxfree = ServiceLocator.getPasajeroFrecuenteManager().buscarPorX(criteriosBusqueda, null);
@@ -1994,7 +1994,7 @@ public class WndVentaTerceros extends WndBase {
 					oPasajero.setPaxFree(true);
 					oPasajero.setPasajeroFrecuente(lstPaxfree.get(0));
 					/*	Buscamos la promocion del Pasajero Frecuente	*/
-					criteriosBusqueda = new TreeMap<String, Object>();
+					criteriosBusqueda = new TreeMap<>();
 					criteriosBusqueda.put("cliente", "*");
 					criteriosBusqueda.put("pasajeroFrecuente", "S");
 					criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
@@ -2002,7 +2002,7 @@ public class WndVentaTerceros extends WndBase {
 					if(oPasajero.getPasajeroFrecuente().getEstado().intValue()==Constantes.TRUE_VALUE){
 						List<Promocion> lstPromocion = null;
 						lstPromocion = ServiceLocator.getPromocionManager().buscarPorX(criteriosBusqueda, null, Util.DatetoString(detailItinerary.getFechaPartida(), Constantes.DATE_FORMAT));
-						
+
 						if(lstPromocion!=null && lstPromocion.size()==1){
 							AplicarPromocion aplicarPromocion = createObjectAplicarPromocion(true);
 							promocionAplicada = aplicarPromocion.executePromocion(lstPromocion.get(0).getId().toString(), false);
@@ -2032,15 +2032,15 @@ public class WndVentaTerceros extends WndBase {
 					dblDescuento.setTooltiptext("");
 					dblImporte.setValue(dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue());
 				}
-				
+
 				tlbbtnModificarPax.setDisabled(oPasajero.isPaxFree());
 			}
 		} catch (Exception ex) {
-			ex.printStackTrace();		
+			ex.printStackTrace();
 			DlgMessage.error(this.getClass().getSimpleName() + " " + ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Realiza el guardado del pasajero
 	 */
@@ -2058,18 +2058,18 @@ public class WndVentaTerceros extends WndBase {
 				throw new UbigeoNullException();
 			else if (!(cmbSexo.getSelectedItem().getValue() instanceof Sexo))
 				throw new SexoNullException();
-			else if(cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento && 
+			else if(cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento &&
 					((TipoDocumento)cmbTipoDocumento.getSelectedItem().getValue()).getId().intValue()!=Constantes.ID_TIPDOC_DNI){
 				if(!(cmbNacionalidad.getSelectedItem().getValue() instanceof Nacionalidad))
 					throw new NacionalidadException();
 //				else if(txtEmailPax.getText().equals(""))
 //					throw new EmailNullException();
-			}else if(cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento && 
+			}else if(cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento &&
 					((TipoDocumento)cmbTipoDocumento.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPDOC_DNI){
 				if(txtDocumentoPax.getText().trim().length()<8)
 					throw new VentaReservaException(VentaReservaException.LONGITUD_NUMERO_DOCUMENTO);
 			}
-			
+
 			if (!(txtEmailPax.getText().trim().isEmpty())){
 				if (!(UtilData.validateEmail(txtEmailPax.getText().trim())))
 					throw new MailIncorectoException();
@@ -2118,7 +2118,7 @@ public class WndVentaTerceros extends WndBase {
 			Messagebox.show(msg, DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, EventSavePax(oPasajero));
 
 		} catch (TipoDocumentoNullException tdnex) {
-			DlgMessage.information(Messages.getString("WndVentaReserva.information.noSelectionTipoDocumento"), cmbTipoDocumento);			
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noSelectionTipoDocumento"), cmbTipoDocumento);
 		} catch (NumeroDocumentoNullException ndnex) {
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noDocumentoPax"), txtDocumentoPax);
 		} catch (ApellidoPaternoNullException apnex) {
@@ -2142,7 +2142,7 @@ public class WndVentaTerceros extends WndBase {
 			DlgMessage.error(this.getClass().getName() + " " + ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Evento para controlar el guardado del registro de Pasajero.
 	 * @param action	: Indica si es una insercion o actualizacion.
@@ -2178,7 +2178,7 @@ public class WndVentaTerceros extends WndBase {
 		};
 		return ev;
 	}
-	
+
 
 	/* *******************************	IMPLEMENTACIONES PARA EL CLIENTE	******************************************** */
 	/**
@@ -2193,14 +2193,14 @@ public class WndVentaTerceros extends WndBase {
 		tlbbtnCancelarClient.setDisabled(false);
 		tlbbtnGuardarClient.setDisabled(false);
 		txtDocumentoCliente.setFocus(true);
-		
+
 		dblDescuento.setValue(0.0);
 		imgQuitarPromocion.setVisible(false);
 		lblPromocion.setValue("");
 		promocionAplicada=null;
 		dblImporte.setValue(dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue());
 	}
-	
+
 	/**
 	 * Para modificar un Cliente existente
 	 */
@@ -2212,9 +2212,9 @@ public class WndVentaTerceros extends WndBase {
 		tlbbtnCancelarClient.setDisabled(false);
 		tlbbtnGuardarClient.setDisabled(false);
 		txtDocumentoCliente.setFocus(true);
-		
+
 	}
-	
+
 	/**
 	 * Para cancelar la edicion o registro de un cliente
 	 */
@@ -2226,7 +2226,7 @@ public class WndVentaTerceros extends WndBase {
 		tlbbtnGuardarClient.setDisabled(true);
 		tlbbtnLimpiarClient.setDisabled(false);
 		action = Constantes.FAILURE;
-		txtDocumentoCliente.setFocus(true);		
+		txtDocumentoCliente.setFocus(true);
 	}
 
 	/**
@@ -2264,18 +2264,18 @@ public class WndVentaTerceros extends WndBase {
 		txtRubro.setDisabled(arg);
 		ibxCantidadTrabajadores.setDisabled(arg);
 	}
-	
+
 	/**
 	 * Busca los clientes de acuerdo al criterio de busqueda.
 	 * @param criterio	: Puede ser DOCUMENTO o RAZON SOCIAL.
 	 */
 	public void onSearchClient(Integer criterio){
 		try{
-			TreeMap<String, Object> criterioBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criterioBusqueda = new TreeMap<>();
 			ArrayList<Cliente> lstClientes = null;
 			if(criterio.intValue()==SEARCH_BY_DOCUMENTO){
 				criterioBusqueda.put("numeroDocumento", txtDocumentoCliente.getText().toUpperCase()+"%");
-				List<String> criteriosOrdenar = new ArrayList<String>();
+				List<String> criteriosOrdenar = new ArrayList<>();
 				criteriosOrdenar.add("razonSocial");
 				criteriosOrdenar.add("numeroDocumento");
 				lstClientes = ServiceLocator.getClienteManager().buscarPorX(criterioBusqueda, criteriosOrdenar);
@@ -2289,23 +2289,23 @@ public class WndVentaTerceros extends WndBase {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Permite crear un array de array para luego cargarlos en un listbox.
 	 * @param lstRegistros	: ArrayList con los datos de los clientes encontrados.
 	 * @throws Exception
 	 */
 	private void listarClientes(ArrayList<Cliente> lstRegistros)throws Exception{
-		ArrayList<Object> lstClientes = new ArrayList<Object>();
+		ArrayList<Object> lstClientes = new ArrayList<>();
 		grpbxListaClientes.setVisible(false);
-		
+
 		if(lstRegistros.size()==1){
 			Cliente cliente = lstRegistros.get(0);
 			mantenimientoRegistroClient(cliente.getId());
 		}else if(lstRegistros.size()>0){
 			for (int r = 0; r < lstRegistros.size(); r++) {
 				Cliente oCliente = lstRegistros.get(r);
-				ArrayList<Object> lstFila = new ArrayList<Object>();
+				ArrayList<Object> lstFila = new ArrayList<>();
 				lstFila.add(oCliente.getId());
 				lstFila.add(r + 1);
 				lstFila.add(oCliente.getNumeroDocumento());
@@ -2314,14 +2314,14 @@ public class WndVentaTerceros extends WndBase {
 				lstClientes.add(lstFila);
 			}
 			Util.llenarListbox(lbxClientes, lstClientes, true);
-			grpbxListaClientes.setVisible(true);			
+			grpbxListaClientes.setVisible(true);
 		}else{
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noClientesEncontrados"));
 			onCleanControlsClient();
 		}
 		disabledControlsPax(true);
 	}
-	
+
 	/**
 	 * Muestra los datos del registro que se va a modificar.
 	 * @param id	: Identificador del registro a modificar.
@@ -2351,17 +2351,17 @@ public class WndVentaTerceros extends WndBase {
 			txtEmailCliente.setText(oCliente.getEmail());
 			txtRubro.setText(oCliente.getRubro());
 			ibxCantidadTrabajadores.setText(oCliente.getCantidadTrabajadores().toString());
-			
+
 			lineaCreditoCliente=null;
 
 			lblDescuento.setValue("");
-			
+
 			if(((TipoAgencia)cmbTipoAgenciaRemota.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPAGE_CORPORATIVO){
 				loadCentroCosto();
 				tlbbtnLimpiarClient.setDisabled(true);
 			}else
 				tlbbtnLimpiarClient.setDisabled(false);
-				
+
 			/*	Si la venta es desde un punto TEPSA	*/
 			if(agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_TEPSA){
 				/* Valida si el cliente tiene credito- Implementado 17/03/2013 */
@@ -2386,21 +2386,21 @@ public class WndVentaTerceros extends WndBase {
 					tlbbtnModificarClient.setImage("resources/mp_editarEnabled.png");
 				}
 			}
-			
+
 			/*	Verificamos promociones para el cliente */
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("cliente", oCliente.getId().toString());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-			
+
 			List<Promocion> lstPromocion = null;
-			
+
 			if(detailItinerary!=null)
 				lstPromocion = ServiceLocator.getPromocionManager().buscarPorX(criteriosBusqueda, null, Util.DatetoString(detailItinerary.getFechaPartida(), Constantes.DATE_FORMAT));
 
 			if(lstPromocion!=null && lstPromocion.size()>0){
-				for(int i=0; i<lstPromocion.size(); i++){
+				for (Promocion element : lstPromocion) {
 					AplicarPromocion aplicarPromocion = createObjectAplicarPromocion(true);
-					promocionAplicada = aplicarPromocion.executePromocion(lstPromocion.get(i).getId().toString(), false);
+					promocionAplicada = aplicarPromocion.executePromocion(element.getId().toString(), false);
 					if(promocionAplicada!=null){
 						break;
 					}
@@ -2413,8 +2413,8 @@ public class WndVentaTerceros extends WndBase {
 			DlgMessage.error(this.getClass().getSimpleName() + " " + ex.getMessage());
 		}
 	}
-	
-	 
+
+
 	/**
 	 * Realiza el guardado de los datos del cliente
 	 * @throws Exception
@@ -2429,21 +2429,21 @@ public class WndVentaTerceros extends WndBase {
 				throw new UbigeoNullException();
 //			else if (ibxCantidadTrabajadores.getText().trim().isEmpty() || ibxCantidadTrabajadores.getValue().intValue()<=0)
 //				throw new CantidadTrabajadoresNullException();
-			
+
 			if (!(txtEmailCliente.getText().trim().isEmpty())){
 				if (!(UtilData.validateEmail(txtEmailCliente.getText().trim())))
 					throw new MailIncorectoException();
 			}
-			
+
 			if(!Util.validarRUC(txtDocumentoCliente.getText().trim()))
 				throw new RucInvalidoException();
-			
+
 			if (action == Constantes.ACTION_NEW)
 				oCliente = new Cliente();
-			
+
 			Ubigeo oUbigeo = new Ubigeo();
 			oUbigeo.setId(txtUbigeoIdCliente.getText());
-			
+
 			oCliente.setNumeroDocumento(txtDocumentoCliente.getValue().toString());
 			oCliente.setRazonSocial(txtRazonSocial.getText().toUpperCase());
 			oCliente.setContacto(txtContactoCliente.getText().toUpperCase());
@@ -2455,24 +2455,24 @@ public class WndVentaTerceros extends WndBase {
 			oCliente.setCantidadTrabajadores(0);
 			oCliente.setUbigeo(oUbigeo);
 			oCliente.setAgencia(agencia);
-			
+
 			if(oCliente.getId()==null){
 				oCliente.setKilometros(0.00);
-				UtilData.auditarRegistro(oCliente, false, usuario, Executions.getCurrent()); 
+				UtilData.auditarRegistro(oCliente, false, usuario, Executions.getCurrent());
 			}else{
 				UtilData.auditarRegistro(oCliente, true, usuario, Executions.getCurrent());
 			}
 			oCliente.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-			
+
 			String msg = "";
 			if(action == Constantes.ACTION_NEW)
 				msg = Messages.getString("WndVentaReserva.question.guardarCliente");
 			else
 				msg = Messages.getString("WndVentaReserva.question.actualizarCliente");
-			
+
 			Messagebox.show(msg, DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, EventSaveClient(oCliente));
 //		}catch (CantidadTrabajadoresNullException ctnex){
-//			DlgMessage.information(Messages.getString("WndCliente.information.CantidadTrabajadoresNull"));	
+//			DlgMessage.information(Messages.getString("WndCliente.information.CantidadTrabajadoresNull"));
 		}catch (MailIncorectoException miec){
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.EmailIncorrecto"), txtEmailCliente);
 		}catch(NumeroDocumentoNullException ndnex){
@@ -2489,7 +2489,7 @@ public class WndVentaTerceros extends WndBase {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Evento para controlar el guardado del registro de Cliente.
 	 * @param action	: Indica si es una insercion o actualizacion.
@@ -2514,7 +2514,7 @@ public class WndVentaTerceros extends WndBase {
 						tlbbtnCancelarClient.setDisabled(true);
 						tlbbtnGuardarClient.setDisabled(true);
 						action = Constantes.FAILURE;
-						disabledControlsClient(true);						
+						disabledControlsClient(true);
 					}
 				} catch (RucDuplicadoException rdex) {
 					DlgMessage.information(Messages.getString("WndCliente.information.RucDuplicado"), txtDocumentoCliente);
@@ -2524,17 +2524,17 @@ public class WndVentaTerceros extends WndBase {
 					DlgMessage.error(this.getClass().getSimpleName() + " " + ex.getMessage());
 				}
 			}
-		};		
+		};
 		return ev;
 	}
-	
+
 	/**
 	 * Carga los tipos de Forma de pago.
 	 */
 	public void onLoadTipoFormaPago(){
-		try{			
+		try{
 			cmbTipoFormaPago.getItems().clear();
-			
+
 			/*Implementado 15-03-2013 - jabanto*/
 			cmbOperadorTarjetaCredito.getItems().clear();
 			cmbTarjetaCredito.getItems().clear();
@@ -2543,12 +2543,12 @@ public class WndVentaTerceros extends WndBase {
 			cmbTarjetaCredito.setText(null);
 			cmbOperadorTarjetaCredito.setDisabled(true);
 			cmbTarjetaCredito.setDisabled(true);
-					
+
 			if(cmbFormaPago.getSelectedItem().getValue() instanceof FormaPago){
 				FormaPago formaPago = cmbFormaPago.getSelectedItem().getValue();
-				TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+				TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 				criteriosBusqueda.put("formaPago.id", formaPago.getId());
-				List<String> criteriosOrdenar = new ArrayList<String>();
+				List<String> criteriosOrdenar = new ArrayList<>();
 				criteriosOrdenar.add("denominacion");
 				List<TipoFormaPago> lstTipoFormasPago = ServiceLocator.getTipoFormaPagoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
 				UtilData.cargarGenericData(cmbTipoFormaPago, false);
@@ -2558,11 +2558,11 @@ public class WndVentaTerceros extends WndBase {
 					item.setValue(tipoFormaPago);
 					cmbTipoFormaPago.appendChild(item);
 				}
-				cmbTipoFormaPago.setDisabled(true);				
-				
+				cmbTipoFormaPago.setDisabled(true);
+
 				/*Valida si el Cliente credito cuenta con saldo suficiente - Implementado 15/03/2013 jabanto*/
 				if(agencia.getTipoAgencia().getId().equals(Constantes.ID_TIPAGE_TEPSA)){
-					cmbTipoFormaPago.setDisabled(false);					
+					cmbTipoFormaPago.setDisabled(false);
 					if(formaPago.getId().equals(Constantes.ID_FORPAG_CREDITO)){
 						if(lineaCreditoCliente!=null){
 							if(lineaCreditoCliente.getSaldo()<=0 || lineaCreditoCliente.getSaldo() < (dblImporte.getValue()!=null? dblImporte.getValue(): .00)){
@@ -2572,11 +2572,11 @@ public class WndVentaTerceros extends WndBase {
 								cmbTipoFormaPago.setDisabled(true);
 								throw new SaldoInsuficienteException();
 							}
-							
+
 							if(lineaCreditoCliente.getEsCanje().equals(Constantes.SI))
-								Util.seleccionarValorItemCombo(TipoFormaPago.class, cmbTipoFormaPago, Constantes.ID_TIPFORPAG_CANJE_PUBLICITARIO);								
+								Util.seleccionarValorItemCombo(TipoFormaPago.class, cmbTipoFormaPago, Constantes.ID_TIPFORPAG_CANJE_PUBLICITARIO);
 							else
-								Util.seleccionarValorItemCombo(TipoFormaPago.class, cmbTipoFormaPago, Constantes.ID_TIPFORPAG_CREDITO);								
+								Util.seleccionarValorItemCombo(TipoFormaPago.class, cmbTipoFormaPago, Constantes.ID_TIPFORPAG_CREDITO);
 							cmbTipoFormaPago.setDisabled(true);
 						}
 					}else if(formaPago.getId().equals(Constantes.ID_FORPAG_CONTADO))
@@ -2589,17 +2589,17 @@ public class WndVentaTerceros extends WndBase {
 				}
 			}else
 				cmbTipoFormaPago.setDisabled(true);
-			
+
 		}catch(SaldoInsuficienteException siex){
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.saldoInsuficiente"));
 		}catch(Exception ex){
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Realiza una validación del Tipo de Forma de Pago, para habilitar o deshabilitar algunos controles.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void onValidateTipoFormaPago() throws Exception{
 		cmbOperadorTarjetaCredito.getItems().clear();
@@ -2608,8 +2608,8 @@ public class WndVentaTerceros extends WndBase {
 		cmbTarjetaCredito.getItems().clear();
 		cmbTarjetaCredito.setText("");
 		cmbTarjetaCredito.setDisabled(true);
-		
-		if(cmbTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago){ 
+
+		if(cmbTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago){
 			/*	Si es tarjeta cargamos los operadores de tarjeta de credito	*/
 			/*	Aqui realizamos una jugada para el caso de TU ENTRADA y agencias de viaje para que ingresen la tarjeta de credito	*/
 			if(cmbTipoFormaPago.getText().equals("TARJETA") || cmbTipoFormaPago.getText().equals("CREDITO")){
@@ -2626,8 +2626,8 @@ public class WndVentaTerceros extends WndBase {
 			txtOperacionBancaria.setDisabled(true);
 			cmbOperadorTarjetaCredito.setDisabled(true);
 		}
-	}	
-	
+	}
+
 	/**
 	 * Carga los diferentes tarjetas de credito, de acuerdo al operador seleccionado.
 	 */
@@ -2636,12 +2636,12 @@ public class WndVentaTerceros extends WndBase {
 			cmbTarjetaCredito.getItems().clear();
 			cmbTarjetaCredito.setText("");
 			cmbTarjetaCredito.setDisabled(true);
-			
+
 			if(cmbOperadorTarjetaCredito.getSelectedItem().getValue() instanceof OperadorTarjetaCredito){
 				OperadorTarjetaCredito operadorTarjetaCredito = cmbOperadorTarjetaCredito.getSelectedItem().getValue();
-				TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+				TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 				criteriosBusqueda.put("operadorTarjetaCredito.id", operadorTarjetaCredito.getId());
-				List<String> criteriosOrdenar = new ArrayList<String>();
+				List<String> criteriosOrdenar = new ArrayList<>();
 				criteriosOrdenar.add("denominacion");
 				List<TarjetaCredito> lstTarjetaCredito = ServiceLocator.getTarjetaCreditoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
 				UtilData.cargarGenericData(cmbTarjetaCredito, false);
@@ -2657,7 +2657,7 @@ public class WndVentaTerceros extends WndBase {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Proceso que selecciona el metodo correcto a utilizar al momento de guaradr la venta o reserva.
 	 */
@@ -2669,15 +2669,15 @@ public class WndVentaTerceros extends WndBase {
 				lineaCreditoCliente= ServiceLocator.getLineaCreditoClienteManager().validacionCreditoCliente(clienteCredito.getId());
 
 				if(lineaCreditoCliente!=null && lineaCreditoCliente.getSaldo() < dblImporte.getValue())
-					throw new LineaCreditoClienteException(LineaCreditoClienteException.LINEA_CREDITO_SIN_SALDO);				
+					throw new LineaCreditoClienteException(LineaCreditoClienteException.LINEA_CREDITO_SIN_SALDO);
 			}
-			
+
 			/*	Validando que el pasajero sea convertido a Paxfre */
 			if(convertirPaxFre)
 				throw new VentaReservaException(VentaReservaException.CONVERTIR_PASAJERO_PAXFRE);
-			
+
 			onCrearObjetoVenta();
-			
+
 		}catch (LineaCreditoClienteException lccex) {
 			if(lccex.getTipo().intValue()==LineaCreditoClienteException.LINEA_CREDITO_SIN_SALDO)
 				DlgMessage.information(Messages.getString("tblLineaCreditoCliente.information.noSaldoDisponible"));
@@ -2694,12 +2694,12 @@ public class WndVentaTerceros extends WndBase {
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	public VentaPasaje onCrearObjetoVenta(){
 		try{
 			imgRefreshBoleto.setVisible(false);
 			ventaPasaje = null;
-			
+
 			if(detailItinerary == null)
 				throw new ItinerarioException(ItinerarioException.NO_SELECT); // ItinerarioNotSelectedException();
 			else if(!(cmbPtoEmbarque.getSelectedItem().getValue() instanceof ItinerarioAgenciaPartida))
@@ -2707,8 +2707,8 @@ public class WndVentaTerceros extends WndBase {
 			else if(!(cmbPtoDesembarque.getSelectedItem().getValue() instanceof ItinerarioAgenciaLlegada))
 				throw new ItinerarioException(ItinerarioException.AGENCIA_LLEGADA_NULL); //ItinerarioAgenciaLlegadaNullException();
 			else if(!(cmbAlimentacion.getSelectedItem().getValue() instanceof PreferenciaAlimentaria))
-				throw new PreferenciaAlimentariaException(PreferenciaAlimentariaException.ALIMENTACION_IDA_NULL);			
-			
+				throw new PreferenciaAlimentariaException(PreferenciaAlimentariaException.ALIMENTACION_IDA_NULL);
+
 			if(txtNumeroBoleto.getText().trim().equals(""))
 				throw new NumeroBoletoNullException();
 			else if (!(tlbbtnGuardarPax.isDisabled()))// 06/09/2013 - jabanto
@@ -2733,32 +2733,32 @@ public class WndVentaTerceros extends WndBase {
 					throw new NumeroOperacionBancariaNullException();
 			}else if(oPasajero.getIndeseable().intValue()==Constantes.TRUE_VALUE)
 				throw new PasajeroIndeseableException();
-			else if(cmbTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago 
+			else if(cmbTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago
 					&& cmbTipoFormaPago.getText().equals(TipoFormaPago.TIPO_CREDITO)){
 				if((cmbOperadorTarjetaCredito.getItems().size()>0 && cmbOperadorTarjetaCredito.getSelectedItem().getValue() instanceof OperadorTarjetaCredito) && !(cmbTarjetaCredito.getSelectedItem().getValue() instanceof TarjetaCredito))
 					throw new TarjetaCreditoNullException();
 			}else if(dblTarifa.getValue()<=0.0)
 				throw new VentaReservaException(VentaReservaException.TARIFA_IDA_CERO);
-			
-			Liquidacion liquidacion = ServiceLocator.getLiquidacionManager().buscarUltimaLiquidacion(((Agencia)cmbAgenciaRemota.getSelectedItem().getValue()).getId(), 
+
+			Liquidacion liquidacion = ServiceLocator.getLiquidacionManager().buscarUltimaLiquidacion(((Agencia)cmbAgenciaRemota.getSelectedItem().getValue()).getId(),
 						((Usuario)cmbUsuarioRemoto.getSelectedItem().getValue()).getId(), Constantes.LIQUI_ESTA_ABIERTO);
 			if(liquidacion==null){
 				fechaLiquidacionRemota = fechaLiquidacion;
 			}else
 				fechaLiquidacionRemota = liquidacion.getFechaLiquidacion();
-			
+
 			ventaPasaje = new VentaPasaje();
-			
+
 			DetalleItinerario detalleItinerario = null;
 			detalleItinerario = (DetalleItinerario)lbxAsientos.getSelectedItem().getValue();
 			ventaPasaje.setEsFechaAbierta(Constantes.FALSE_VALUE);
 			ventaPasaje.setIdaRetorno(Constantes.FALSE_VALUE);
-			
+
 			if(chkPagoMixto.isChecked()){
 				if(dblImporteEfectivo.getValue()<=0.0 || dblImporteTarjeta.getValue()<=0.0)
 					throw new ImporteMixtoNullException(ImporteMixtoNullException.IMPORTE_MIXTO_CERO);
 			}
-			
+
 			ventaPasaje.setItinerario(detalleItinerario.getItinerario());
 			ventaPasaje.setRuta(detalleItinerario.getRuta());
 			ventaPasaje.setCliente(oCliente);
@@ -2774,8 +2774,8 @@ public class WndVentaTerceros extends WndBase {
 			if(cmbTarjetaCredito.getSelectedItem()!=null && cmbTarjetaCredito.getSelectedItem().getValue() instanceof TarjetaCredito){
 				TarjetaCredito tarjetaCredito = (TarjetaCredito)cmbTarjetaCredito.getSelectedItem().getValue();
 				ventaPasaje.setTarjetaCredito(tarjetaCredito);
-			}			
-			ventaPasaje.setNumeroBoleto(txtNumeroBoleto.getText().equals("")?null:txtNumeroBoleto.getText());			
+			}
+			ventaPasaje.setNumeroBoleto(txtNumeroBoleto.getText().equals("")?null:txtNumeroBoleto.getText());
 			/*	Realizar si no es Fecha Abierta	*/
 			ventaPasaje.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_CREDITO));
 			ventaPasaje.setNumeroAsiento(Integer.valueOf(lblNroAsiento.getValue()));
@@ -2790,7 +2790,7 @@ public class WndVentaTerceros extends WndBase {
 			PreferenciaAlimentaria preferenciaAlimentaria = (PreferenciaAlimentaria)cmbAlimentacion.getSelectedItem().getValue();
 			ventaPasaje.setPreferenciaAlimentaria(preferenciaAlimentaria);
 			ventaPasaje.setNumeroPiso(Integer.valueOf(detalleItinerario.getPiso()));
-			
+
 			ventaPasaje.setSecuencial(0);
 			ventaPasaje.setTarifa(dblTarifa.getValue());
 			ventaPasaje.setRecargo(dblRecargo.getValue());
@@ -2815,24 +2815,24 @@ public class WndVentaTerceros extends WndBase {
 			ventaPasaje.setUsuarioRemoto(getUsuario());
 			ventaPasaje.setUsuarioHardwareRemoto(getUsuarioHardware());
 			ventaPasaje.setEsRemoto(true);
-			
-			if(agenciaRemota.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_CORPORATIVO 
-					&& cmbCentroCosto.getItems().size()>0 
+
+			if(agenciaRemota.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_CORPORATIVO
+					&& cmbCentroCosto.getItems().size()>0
 					&& cmbCentroCosto.getSelectedItem().getValue() instanceof CentroCosto)
 				ventaPasaje.setCentroCosto((CentroCosto)cmbCentroCosto.getSelectedItem().getValue());
-			
+
 			/*	Obteniendo el RUC del concesionario en caso no sea una agencia TEPSA	*/
 			if(agencia.getTipoAgencia().getId().intValue()!=Constantes.ID_TIPAGE_TEPSA){
 				Agencia agencia = ServiceLocator.getAgenciaManager().buscarPorId(Long.valueOf(this.agencia.getId()));
 				ventaPasaje.setRucClienteCredito(agencia.getConcesionario().getRuc());
 			}
-			
+
 			/*	Numero de Control inicial	*/
 			ventaPasaje.setNumeroControl("T00000");
 			UtilData.auditarRegistro(ventaPasaje, false, usuario, Executions.getCurrent());
 			/*	Clonamos la venta de IDA	*/
 			ventaIDA = (VentaPasaje)ventaPasaje.clone();
-			
+
 			/*	Validando que el monto en efectivo + el monto en tarjeta sumen el importe pagado	*/
 			if(chkPagoMixto.isChecked()){
 				if(dblImporte.getValue().doubleValue()!=(dblImporteEfectivo.getValue().doubleValue()+dblImporteTarjeta.getValue().doubleValue()))
@@ -2840,7 +2840,7 @@ public class WndVentaTerceros extends WndBase {
 				if(((TipoFormaPago)cmbTipoFormaPago.getSelectedItem().getValue()).getId().intValue()!=Constantes.ID_TIPFORPAG_TARJETA)
 						throw new ImporteMixtoNullException(ImporteMixtoNullException.IMPORTE_MIXTO_NOT_SELECT_CARD);
 			}
-			
+
 			guardarVenta(ventaIDA);
 		}catch (ItinerarioException i){
 			if(i.getTipo().intValue()==ItinerarioException.NO_SELECT)
@@ -2856,7 +2856,7 @@ public class WndVentaTerceros extends WndBase {
 			if(panex.getTipo().intValue()==PreferenciaAlimentariaException.ALIMENTACION_IDA_NULL)
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noPreferenciaAlimentaria"), cmbAlimentacion);
 		}catch(NumeroBoletoNullException nbnex){
-			DlgMessage.information(Messages.getString("WndVentaReserva.information.noNumeroBoleto"));			
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noNumeroBoleto"));
 		}catch(PasajeroException pnex){
 			tabPasajero.setSelected(true);
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noPasajero"), txtDocumentoPax);
@@ -2907,7 +2907,7 @@ public class WndVentaTerceros extends WndBase {
 		}
 		return ventaPasaje;
 	}
-	
+
 	private void guardarVenta(VentaPasaje venta){
 		ventaPasaje = venta;
 		Messagebox.show(Messages.getString("WndVentaReserva.information.confirmacionGuardarVenta"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
@@ -2916,17 +2916,17 @@ public class WndVentaTerceros extends WndBase {
 				try{
 					if(e.getName().equals("onYes")){
 						int result = ServiceLocator.getVentaPasajesManager().guardarVenta(ventaPasaje, false, true, true,true);
-						
+
 						/*Resta el saldo de LC del Cliente*/
 						if(((FormaPago)cmbFormaPago.getSelectedItem().getValue()).getId().equals(Constantes.ID_FORPAG_CREDITO))
 							ServiceLocator.getLineaCreditoClienteManager().restarSaldo(lineaCreditoCliente.getSaldo(), dblImporte.getValue(), lineaCreditoCliente.getId());
-															
+
 						if(result == Constantes.CORRECT){
 							DlgMessage.information(Messages.getString("WndVentaReserva.information.exitoGuardarVenta")+ventaPasaje.getNumeroControl());
 							onCleanControlsPax();
-							
+
 							if(((TipoAgencia)cmbTipoAgenciaRemota.getSelectedItem().getValue()).getId().intValue()!=Constantes.ID_TIPAGE_CORPORATIVO){
-								onCleanControlsClient();								
+								onCleanControlsClient();
 							}else if(((TipoAgencia)cmbTipoAgenciaRemota.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPAGE_CORPORATIVO){
 								if(cmbCentroCosto.getItems().size()>0)
 									cmbCentroCosto.setSelectedIndex(0);
@@ -2954,11 +2954,11 @@ public class WndVentaTerceros extends WndBase {
 			}
 		});
 	}
-	
+
 	private void tiempoExpiracionBloqueo(){
 		if(lbxAsientos.getSelectedIndex()>=0)
 			lbxAsientos.removeItemAt(lbxAsientos.getSelectedIndex());
-		
+
 		onCleanControlsPax();
 		if(agenciaRemota.getTipoAgencia().getId().intValue()!=Constantes.ID_TIPAGE_CORPORATIVO)
 			onCleanControlsClient();
@@ -2972,7 +2972,7 @@ public class WndVentaTerceros extends WndBase {
 		tabPasajero.setSelected(true);
 	}
 
-	
+
 	/**
 	 * Limpiando el contenido de los controles relacionados a los pagos
 	 */
@@ -3000,7 +3000,7 @@ public class WndVentaTerceros extends WndBase {
 		txtIdPromocion.setText("");
 		imgQuitarPromocion.setVisible(false);
 	}
-	
+
 	/**
 	 * Limpiando el contenido de los controles que muestran informacion de la venta
 	 */
@@ -3025,20 +3025,20 @@ public class WndVentaTerceros extends WndBase {
 		txtObservacionesIda.setText("");
 		ventaIDA = null;
 	}
-	
+
 	/**
 	 * Limpiando controles
 	 */
 	private void onCleanPartialListAsientosSeleccionados(){
 		if(lbxAsientos.getSelectedIndex()>=0)
 			lbxAsientos.removeItemAt(lbxAsientos.getSelectedIndex());
-		
+
 		/*	Validando la cantidad de asientos seleccionados para reiniciar todos los objetos	*/
 		if(lbxAsientos.getItems().size() == 0){
 			selectedTabItinerario();
 		}
 	}
-	
+
 	/**
 	 * Limpia los datos del itinerarios seleccionado
 	 */
@@ -3048,7 +3048,7 @@ public class WndVentaTerceros extends WndBase {
 		detalleItinerarioIda = null;
 		mapaAsientosIda = null;
 	}
-	
+
 	/**
 	 * Permite liberar los asientos cuando se cambia de pestaña dentro de la venta
 	 */
@@ -3060,7 +3060,7 @@ public class WndVentaTerceros extends WndBase {
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Utilizado cuando el usuario hace click en el tab de Itinerarios, efecto de regresar
 	 */
@@ -3072,17 +3072,17 @@ public class WndVentaTerceros extends WndBase {
 			onCleanDatosItinerario();
 			btnNextTabAsientos.setDisabled(true);
 			btnNextTabVenta.setDisabled(true);
-			
+
 			if(grdOcupabilidadIda.getRows().getChildren().size()>0)
 				grdOcupabilidadIda.getRows().getChildren().get(0).detach();
-			
+
 			cmbTipoAgenciaRemota.setSelectedIndex(0);
 			onChangeTipoAgenciaRemota();
 			tabItinerario.setSelected(true);
 			tabPasajero.setSelected(true);
 		}
 	}
-	
+
 	/**
 	 * Utilizado cuando el usuario hace click en el tab de Asientos, efecto de regresar
 	 */
@@ -3095,7 +3095,7 @@ public class WndVentaTerceros extends WndBase {
 		onCleanPagos();
 		tabPasajero.setSelected(true);
 	}
-	
+
 	/**
 	 * habilita los controles de la nacionalidad.
 	 */
@@ -3111,7 +3111,7 @@ public class WndVentaTerceros extends WndBase {
 			txtDocumentoPax.setMaxlength(8);
 		}
 	}
-	
+
 	/**
 	 * Habilita los controles para el pago mixto.
 	 */
@@ -3119,7 +3119,7 @@ public class WndVentaTerceros extends WndBase {
 		boolean arg = false;
 		if(chkPagoMixto.isChecked())
 			arg = true;
-		
+
 		lblImporteEfectivo.setVisible(arg);
 		lblImporteTarjeta.setVisible(arg);
 		dblImporteEfectivo.setVisible(arg);
@@ -3128,7 +3128,7 @@ public class WndVentaTerceros extends WndBase {
 		dblImporteTarjeta.setValue(0.0);
 		dblImporteEfectivo.setFocus(true);
 	}
-	
+
 	/**
 	 * Realiza el llenado del combobox con las formas de pago.
 	 * @param combobox	: Objeto al cual se le cargaran los datos.
@@ -3137,17 +3137,17 @@ public class WndVentaTerceros extends WndBase {
 	 */
 	public static void cargarFormaPago(Combobox combobox, boolean todos) throws Exception {
 		ArrayList<FormaPago> lstFormaPago = ServiceLocator.getFormaPagoManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
-		UtilData.cargarGenericData(combobox, todos);	
+		UtilData.cargarGenericData(combobox, todos);
 		for (FormaPago formaPago: lstFormaPago) {
 			if (!(formaPago.getId().equals(Constantes.ID_FORPAG_CORTESIA))){
-				Comboitem oComboitem = new Comboitem();	
+				Comboitem oComboitem = new Comboitem();
 				oComboitem.setValue(formaPago);
-				oComboitem.setLabel(formaPago.getDenominacion());	
+				oComboitem.setLabel(formaPago.getDenominacion());
 				combobox.appendChild(oComboitem);
 			}
 		}
 	}
-	
+
 	/**
 	 * Obtiene las promociones vigentes de la base de datos y las muestras en pantalla.
 	 */
@@ -3159,13 +3159,13 @@ public class WndVentaTerceros extends WndBase {
 				tabPasajero.setSelected(true);
 				return;
 			}
-				
+
 			if(oPasajero.isPaxFree())
 				paxfre=true;
 			String idCliente = null;
 			if(oCliente!=null)
 				idCliente = oCliente.getId().toString();
-			
+
 			AplicarPromocion aplicarPromocion = createObjectAplicarPromocion(true);
 			Window win = aplicarPromocion.loadPromociones(paxfre, idCliente, lblFechaPartida.getValue());
 			/*	Validando que el Objeto Window sea distinto de null	*/
@@ -3177,37 +3177,37 @@ public class WndVentaTerceros extends WndBase {
 			DlgMessage.information(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	private AplicarPromocion createObjectAplicarPromocion(boolean esIda){
 		AplicarPromocion aplicarPromocion = null;
 		DetalleItinerario detalle = null;
-		
+
 		Integer idCanalVenta = ((EspecieValorada)lbxUsuarioHardware.getSelectedItem().getValue()).getUsuarioHardware().getCanalVenta().getId();
 		Integer idAgencia = agenciaRemota.getId();
-		
+
 		if(esIda){
 			detalle = (DetalleItinerario)lbxAsientos.getSelectedItem().getValue();
-			
-			aplicarPromocion = new AplicarPromocion(detalle.getRuta().getId(), detalle.getItinerario().getServicio().getId(), 
-					idAgencia, idCanalVenta, null, null, lblNroAsiento.getValue().equals("")?"*":lblNroAsiento.getValue(), 
-					oCliente==null?null:oCliente.getId(), false, ((FormaPago)cmbFormaPago.getSelectedItem().getValue()).getId(), 
-					((TipoFormaPago)cmbTipoFormaPago.getSelectedItem().getValue()).getId(), 
-					(cmbTarjetaCredito.getSelectedItem()==null?null:((TarjetaCredito)cmbTarjetaCredito.getSelectedItem().getValue()).getId()), 
-					(lblFechaPartida.getValue().equals("")?null:Util.StringtoDate(lblFechaPartida.getValue(), Constantes.DATE_FORMAT)), 
-					(oPasajero==null?false:oPasajero.isPaxFree()), dblTarifa, dblDescuento, dblImporte, dblRecargo, lblPromocion, imgQuitarPromocion, txtIdPromocion,lblFechaPartida.getValue());			
+
+			aplicarPromocion = new AplicarPromocion(detalle.getRuta().getId(), detalle.getItinerario().getServicio().getId(),
+					idAgencia, idCanalVenta, null, null, lblNroAsiento.getValue().equals("")?"*":lblNroAsiento.getValue(),
+					oCliente==null?null:oCliente.getId(), false, ((FormaPago)cmbFormaPago.getSelectedItem().getValue()).getId(),
+					((TipoFormaPago)cmbTipoFormaPago.getSelectedItem().getValue()).getId(),
+					(cmbTarjetaCredito.getSelectedItem()==null?null:((TarjetaCredito)cmbTarjetaCredito.getSelectedItem().getValue()).getId()),
+					(lblFechaPartida.getValue().equals("")?null:Util.StringtoDate(lblFechaPartida.getValue(), Constantes.DATE_FORMAT)),
+					(oPasajero==null?false:oPasajero.isPaxFree()), dblTarifa, dblDescuento, dblImporte, dblRecargo, lblPromocion, imgQuitarPromocion, txtIdPromocion,lblFechaPartida.getValue());
 		}
 		return aplicarPromocion;
 	}
-	
+
 	private void quitarPromocion(){
 		lblPromocion.setValue("");
 		dblDescuento.setTooltiptext("");
 		dblDescuento.setValue(0.0);
 		dblImporte.setValue(dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue());
 		txtIdPromocion.setText("");
-		imgQuitarPromocion.setVisible(false);		
+		imgQuitarPromocion.setVisible(false);
 	}
-	
+
 	private void convertirPaxfree(){
 		Messagebox.show(Messages.getString("WndVentaReserva.question.fidelizarPasajeroFrecuente"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 			@Override
@@ -3245,7 +3245,7 @@ public class WndVentaTerceros extends WndBase {
 							historicoMembresia.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 							UtilData.auditarRegistro(historicoMembresia, getUsuario(), Executions.getCurrent());
 							ServiceLocator.getHistoricoMembresiaManager().guardar(historicoMembresia);
-							/*	Actualizando al pasajero frecuente	*/				
+							/*	Actualizando al pasajero frecuente	*/
 							pasajeroFrecuente = paxfree;
 							pasajeroFrecuente.setFechaActivacion(Constantes.FORMAT_DATE_TIME_24H.parse(dateTimeSystem));
 							pasajeroFrecuente.setFechaCaducidad(Constantes.FORMAT_DATE_TIME_24H.parse((fechaCaducidad)));
@@ -3266,11 +3266,11 @@ public class WndVentaTerceros extends WndBase {
 			}
 		});
 	}
-	
+
 	private void loadTipoAgenciaRemota(){
 		try{
 			UtilData.cargarDataCombo(cmbTipoAgenciaRemota, TipoAgencia.class, false);
-			
+
 			for(int i =0; i<cmbTipoAgenciaRemota.getItems().size(); i++){
 				Comboitem comboitem = cmbTipoAgenciaRemota.getItems().get(i);
 				if(comboitem.getValue() instanceof TipoAgencia && ((TipoAgencia)comboitem.getValue()).getId().intValue()==Constantes.ID_TIPAGE_TEPSA){
@@ -3279,15 +3279,15 @@ public class WndVentaTerceros extends WndBase {
 			}
 			cmbTipoAgenciaRemota.setSelectedIndex(0);
 			String[] buffer = Constantes.USUARIO_REMOTO.split(",");
-			for(int i=0; i<buffer.length; i++){
-				if(buffer[i].equals(getUsuario().getId().toString()))
+			for (String element : buffer) {
+				if(element.equals(getUsuario().getId().toString()))
 					cmbTipoAgenciaRemota.setDisabled(false);
 			}
 		}catch(Exception ex){
 			DlgMessage.information(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	private void onChangeTipoAgenciaRemota(){
 		if(cmbTipoAgenciaRemota.getSelectedItem().getValue() instanceof TipoAgencia){
 			loadAgenciasRemotas();
@@ -3302,22 +3302,22 @@ public class WndVentaTerceros extends WndBase {
 			bndbxUsuarioHardware.setDisabled(true);
 			bndbxUsuarioHardware.setText("");
 			lbxUsuarioHardware.getItems().clear();
-		}		
+		}
 	}
-	
+
 	private void loadAgenciasRemotas(){
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("tipoAgencia.id", ((TipoAgencia)cmbTipoAgenciaRemota.getSelectedItem().getValue()).getId());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-			List<String> criteriosOrdenar = new ArrayList<String>();
+			List<String> criteriosOrdenar = new ArrayList<>();
 			criteriosOrdenar.add("denominacion");
 			UtilData.cargarAgencia(cmbAgenciaRemota, false, criteriosBusqueda, criteriosOrdenar);
 		}catch(Exception ex){
 			DlgMessage.information(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	private void onChangeAgenciaRemota(){
 		if(cmbAgenciaRemota.getSelectedItem().getValue() instanceof Agencia){
 			loadUsuarioRemoto();
@@ -3328,9 +3328,9 @@ public class WndVentaTerceros extends WndBase {
 			bndbxUsuarioHardware.setDisabled(true);
 			bndbxUsuarioHardware.setText("");
 			lbxUsuarioHardware.getItems().clear();
-		}		
+		}
 	}
-	
+
 	private void onChangeUsuarioRemoto(){
 		if(cmbUsuarioRemoto.getSelectedItem().getValue() instanceof Usuario)
 			loadUsuarioHardware();
@@ -3338,14 +3338,14 @@ public class WndVentaTerceros extends WndBase {
 			bndbxUsuarioHardware.setDisabled(true);
 			bndbxUsuarioHardware.setText("");
 			lbxUsuarioHardware.getItems().clear();
-		}			
+		}
 	}
-	
+
 	private void loadUsuarioRemoto(){
 		try{
 			cmbUsuarioRemoto.setDisabled(false);
 			Agencia agencia = (Agencia)cmbAgenciaRemota.getSelectedItem().getValue();
-			TreeMap<String, Object> parametros = new TreeMap<String, Object>();
+			TreeMap<String, Object> parametros = new TreeMap<>();
 			parametros.put("agencia.id", agencia.getId());
 			parametros.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			UtilData.cargarDataCombo(cmbUsuarioRemoto, Usuario.class, parametros, false);
@@ -3353,17 +3353,17 @@ public class WndVentaTerceros extends WndBase {
 			DlgMessage.information(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	private void loadUsuarioHardware(){
 		try{
 			lbxUsuarioHardware.getItems().clear();
 			if(cmbAgenciaRemota.getSelectedItem().getValue() instanceof Agencia){
 				Usuario usuario = (Usuario)cmbUsuarioRemoto.getSelectedItem().getValue();
 				Agencia agencia = (Agencia)cmbAgenciaRemota.getSelectedItem().getValue();
-				TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+				TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 				criteriosBusqueda.put("agencia.id", agencia.getId());
 				criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-				List<String> criteriosOrdenar = new ArrayList<String>();
+				List<String> criteriosOrdenar = new ArrayList<>();
 				criteriosOrdenar.add("serie");
 				List<EspecieValorada> lstEspecies = ServiceLocator.getEspecieValoradaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
 				for(EspecieValorada especieValorada : lstEspecies){
@@ -3387,7 +3387,7 @@ public class WndVentaTerceros extends WndBase {
 			DlgMessage.information(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	private void onSelectUsuarioHardware(){
 		try{
 			if(lbxUsuarioHardware.getSelectedItem().getValue() instanceof EspecieValorada){
@@ -3399,7 +3399,7 @@ public class WndVentaTerceros extends WndBase {
 			DlgMessage.information(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	private void mostrarFechaNacimiento(String fechaNacimiento){
 		if(fechaNacimiento != null){
 			String dia = fechaNacimiento.substring(0, 2);
@@ -3409,7 +3409,7 @@ public class WndVentaTerceros extends WndBase {
 				if(cmbAnio.getItems().get(i).getValue().toString().equals(anio))
 					cmbAnio.setSelectedIndex(i);
 			}
-			
+
 			if(cmbAnio.getSelectedIndex()>=0){
 				for(int i=0; i<cmbMes.getItems().size(); i++){
 					if(((Integer)cmbMes.getItems().get(i).getValue()).intValue()==Integer.valueOf(mes)){
@@ -3417,7 +3417,7 @@ public class WndVentaTerceros extends WndBase {
 						Util.loadDias(cmbDia, (Integer)cmbMes.getSelectedItem().getValue(), (Integer)cmbAnio.getSelectedItem().getValue());
 					}
 				}
-				
+
 				for(int i=0; i<cmbDia.getItems().size(); i++){
 					if(((Integer)cmbDia.getItems().get(i).getValue()).intValue() == Integer.valueOf(dia))
 						cmbDia.setSelectedIndex(i);
@@ -3432,7 +3432,7 @@ public class WndVentaTerceros extends WndBase {
 			cmbDia.setText("");
 		}
 	}
-	
+
 	private String generarFechaNacimiento(){
 		String fechaNacimiento = null;
 		if(cmbAnio.getSelectedIndex()>=0 && cmbMes.getSelectedIndex()>=0 && cmbDia.getSelectedIndex()>=0){
@@ -3442,14 +3442,14 @@ public class WndVentaTerceros extends WndBase {
 		}
 		return fechaNacimiento;
 	}
-	
+
 	private void loadCentroCosto(){
 		try{
 			cmbCentroCosto.getItems().clear();
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("concesionario.id", agenciaRemota.getConcesionario().getId());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-			List<String> criteriosOrdenar = new ArrayList<String>();
+			List<String> criteriosOrdenar = new ArrayList<>();
 			criteriosOrdenar.add("denominacion");
 			List<CentroCosto> lstCentroCosto = ServiceLocator.getCentroCostoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
 			cmbCentroCosto.getItems().clear();
@@ -3472,7 +3472,7 @@ public class WndVentaTerceros extends WndBase {
 			ex.printStackTrace();
 		}
 	}
-//	
+//
 //	private void exportTicket(VentaPasaje venta){
 //		TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
 //		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
@@ -3480,7 +3480,7 @@ public class WndVentaTerceros extends WndBase {
 //		criteriosOrdenar.add("idioma");
 //		criteriosOrdenar.add("orden");
 //		List<TerminosVenta> lstTerminos = ServiceLocator.getTerminosVentaManager().buscarPorX(criteriosBusqueda, null);
-//		
+//
 //		try{
 //			Agencia agencia = ServiceLocator.getAgenciaManager().buscarPorId(venta.getAgencia().getId().longValue());
 //			Session session = getDesktop().getSession();

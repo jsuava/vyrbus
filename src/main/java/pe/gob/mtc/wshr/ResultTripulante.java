@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for ResultTripulante complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="ResultTripulante">
  *   &lt;complexContent>
@@ -25,8 +25,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ResultTripulante", propOrder = { "_return", "errores" })
@@ -39,7 +39,7 @@ public class ResultTripulante {
 
 	/**
 	 * Gets the value of the return property.
-	 * 
+	 *
 	 */
 	public boolean isReturn() {
 		return _return;
@@ -47,7 +47,7 @@ public class ResultTripulante {
 
 	/**
 	 * Sets the value of the return property.
-	 * 
+	 *
 	 */
 	public void setReturn(boolean value) {
 		this._return = value;
@@ -55,9 +55,9 @@ public class ResultTripulante {
 
 	/**
 	 * Gets the value of the errores property.
-	 * 
+	 *
 	 * @return possible object is {@link ArrayOfErrores }
-	 * 
+	 *
 	 */
 	public ArrayOfErrores getErrores() {
 		return errores;
@@ -65,10 +65,10 @@ public class ResultTripulante {
 
 	/**
 	 * Sets the value of the errores property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link ArrayOfErrores }
-	 * 
+	 *
 	 */
 	public void setErrores(ArrayOfErrores value) {
 		this.errores = value;

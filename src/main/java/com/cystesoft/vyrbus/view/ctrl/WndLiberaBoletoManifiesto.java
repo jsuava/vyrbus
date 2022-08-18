@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Avalos Sullo
  * Fecha		: 28/04/2014
  */
@@ -39,17 +39,17 @@ public class WndLiberaBoletoManifiesto extends WndBase {
 	private static final long serialVersionUID = 1L;
 	private Textbox txtNroBoleto;
 	private Listbox lsbxPasajeros;
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
 	@Override
 	public void onCreate() throws Exception {
-		
+
 	}
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
 	 */
@@ -58,20 +58,20 @@ public class WndLiberaBoletoManifiesto extends WndBase {
 		txtNroBoleto=(Textbox)this.getFellow("txtNroBoleto");
 		lsbxPasajeros=(Listbox)this.getFellow("lsbxPasajeros");
 	}
-	
-	
+
+
 	public void buscarBoleto() throws Exception, Exception{
 		Util.limpiarListbox(lsbxPasajeros);
-		
+
 		if(!(txtNroBoleto.getText().trim().isEmpty())){
 			String numeroBoleto=Util.autocompleNumberBoleto(txtNroBoleto.getText().trim());
 			txtNroBoleto.setText(numeroBoleto);
 			List<VentaPasaje>listVenta=ServiceLocator.getVentaPasajesManager().buscarBoletoLiberarManifiesto(numeroBoleto);
-			
+
 			Listitem item=null;
 			Listcell cell=null;
 			String styleFont="font-size:11PX !important";
-			
+
 			for(VentaPasaje ventaPasaje:listVenta){
 				item=new Listitem();
 				cell=new Listcell(ventaPasaje.getNumeroBoleto());
@@ -91,7 +91,7 @@ public class WndLiberaBoletoManifiesto extends WndBase {
 				item.appendChild(cell);
 				cell=new Listcell(ventaPasaje.getAgenciaPartida().getNombreCorto());
 				item.appendChild(cell);
-				
+
 				Toolbarbutton btnLiberar=new Toolbarbutton("Liberar boleto");
 				btnLiberar.setTooltiptext("Click para liberar el Boleto del Manifiesto.");
 				btnLiberar.setStyle("text-transform:lowercase; color:blue;font-size:12px !important");
@@ -106,21 +106,21 @@ public class WndLiberaBoletoManifiesto extends WndBase {
 						liberarBoletoManifiesto(Long.valueOf(event.getTarget().getId()));
 					}
 				});
-				
+
 				item.setValue(ventaPasaje);
 				lsbxPasajeros.appendChild(item);
 			}
 		}
 	}
-	
-	
+
+
 	private void liberarBoletoManifiesto(final Long idVenta) throws Exception{
 		Messagebox.show(Messages.getString("WndLiberarBoletoMAnifiesto.question.confirmLiberarcion"), DlgMessage.NOMBREAPLICACION+" CONSIMACIÓN", DlgMessage.BTN_YESNO, Messagebox.QUESTION, Messagebox.NO, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e) throws Exception{
 				if(e.getName().equals(Messagebox.ON_YES)){
 					//Realiza la busqueda para la liberacion del manifiesto.
-					TreeMap<String, Object>criteriosBusqueda=new TreeMap<String,Object>();
+					TreeMap<String, Object>criteriosBusqueda=new TreeMap<>();
 					criteriosBusqueda.put("ventaPasaje", new VentaPasaje(idVenta));
 					criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 					List<DetalleManifiesto> listDetalleManifiesto =ServiceLocator.getDetalleManifiestoManager().buscarPorX(criteriosBusqueda, null);
@@ -131,15 +131,15 @@ public class WndLiberaBoletoManifiesto extends WndBase {
 							detalleManifiesto.setEstadoRegistro(Constantes.VALUE_INACTIVO);
 							UtilData.auditarRegistro(detalleManifiesto,true, getUsuario(), Executions.getCurrent());
 							ServiceLocator.getDetalleManifiestoManager().actualizar(detalleManifiesto);
-							
+
 							Util.limpiarListbox(lsbxPasajeros);
 							DlgMessage.information(Messages.getString("WndLiberarBoletoMAnifiesto.onformation.confirmLiberarcion"),txtNroBoleto);
 						}
 					}
-					
+
 				}
 			}
 		});
-		
+
 	}
 }

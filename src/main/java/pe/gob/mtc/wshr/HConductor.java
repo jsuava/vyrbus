@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for HConductor complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="HConductor">
  *   &lt;complexContent>
@@ -29,8 +29,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "HConductor", propOrder = { "tpoDocumento", "nroDocumento",
@@ -52,9 +52,9 @@ public class HConductor {
 
 	/**
 	 * Gets the value of the tpoDocumento property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getTpoDocumento() {
 		return tpoDocumento;
@@ -62,10 +62,10 @@ public class HConductor {
 
 	/**
 	 * Sets the value of the tpoDocumento property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setTpoDocumento(String value) {
 		this.tpoDocumento = value;
@@ -73,9 +73,9 @@ public class HConductor {
 
 	/**
 	 * Gets the value of the nroDocumento property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getNroDocumento() {
 		return nroDocumento;
@@ -83,10 +83,10 @@ public class HConductor {
 
 	/**
 	 * Sets the value of the nroDocumento property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setNroDocumento(String value) {
 		this.nroDocumento = value;
@@ -94,9 +94,9 @@ public class HConductor {
 
 	/**
 	 * Gets the value of the fecInicio property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getFecInicio() {
 		return fecInicio;
@@ -104,10 +104,10 @@ public class HConductor {
 
 	/**
 	 * Sets the value of the fecInicio property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setFecInicio(String value) {
 		this.fecInicio = value;
@@ -115,9 +115,9 @@ public class HConductor {
 
 	/**
 	 * Gets the value of the horInicio property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getHorInicio() {
 		return horInicio;
@@ -125,10 +125,10 @@ public class HConductor {
 
 	/**
 	 * Sets the value of the horInicio property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setHorInicio(String value) {
 		this.horInicio = value;
@@ -136,9 +136,9 @@ public class HConductor {
 
 	/**
 	 * Gets the value of the fecTermino property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getFecTermino() {
 		return fecTermino;
@@ -146,10 +146,10 @@ public class HConductor {
 
 	/**
 	 * Sets the value of the fecTermino property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setFecTermino(String value) {
 		this.fecTermino = value;
@@ -157,9 +157,9 @@ public class HConductor {
 
 	/**
 	 * Gets the value of the horTermino property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getHorTermino() {
 		return horTermino;
@@ -167,10 +167,10 @@ public class HConductor {
 
 	/**
 	 * Sets the value of the horTermino property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setHorTermino(String value) {
 		this.horTermino = value;

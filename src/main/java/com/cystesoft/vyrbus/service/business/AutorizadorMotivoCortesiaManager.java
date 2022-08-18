@@ -23,7 +23,7 @@ public interface AutorizadorMotivoCortesiaManager {
 	 * Realiza la busqueda por estado del registro;
 	 * @param estado		: Activo o inactivo.
 	 * @param criterioOrden	: criterios para ordenar la informacion
-	 * @return ArrayList 
+	 * @return ArrayList
 	 */
 	public ArrayList<AutorizadorMotivoCortesia> buscarPorEstadoRegistro(String estado, String criterioOrden);
 	/**

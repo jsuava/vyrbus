@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
@@ -22,9 +22,9 @@ public class Liquidacion extends GenericBean implements java.io.Serializable {
 	private Double montoIngresado;
 	private Integer estadoLiquidacion;
 	private Double montoIngresadoDolares;
-	
-	private Set<DetalleLiquidacion> detalleLiquidaciones = new HashSet<DetalleLiquidacion>(0);
-	private Set<LiquidacionOficina> liquidacionOficinas = new HashSet<LiquidacionOficina>(0);
+
+	private Set<DetalleLiquidacion> detalleLiquidaciones = new HashSet<>(0);
+	private Set<LiquidacionOficina> liquidacionOficinas = new HashSet<>(0);
 
 	//NO MAPEADO
 	//Resumen Especie Valorada
@@ -36,8 +36,8 @@ public class Liquidacion extends GenericBean implements java.io.Serializable {
 	private Double importe;
 	private Integer cortes;
 	private TipoComprobante tipoComprobante;
-	
-		
+
+
 	//Resumen de ventas
 	private double totalVoublers;
 	private Integer cantidadContado;
@@ -58,15 +58,15 @@ public class Liquidacion extends GenericBean implements java.io.Serializable {
 	private double montoCreditosDolares;
 	private Integer cantidadContadoDolares;
 	private double montoContadoDolares;
-	
-	
-	//recibos de caja con tarjeta 
+
+
+	//recibos de caja con tarjeta
 	private Integer cantidadTarjetaVisaRC;
 	private double montoTarjetaVisaRC;
 	private Integer cantidadTarjetaMasterCardRC;
 	private double montoTarjetaMasterCardRC;
-	
-	
+
+
 	//Otros ingresos
 	private Integer cantidadRC;
 	private double montoRC;
@@ -76,7 +76,7 @@ public class Liquidacion extends GenericBean implements java.io.Serializable {
 	private double montoGastosAdminTarjetaVisa;
 	private Integer cantidadGastosAdminTarjetaMastercard;
 	private double montoGastosAdminTarjetaMastercard;
-	
+
 	//Egresos
 	private Integer cantidadGastoVarios;
 	private double montoGastoVarios;
@@ -96,7 +96,7 @@ public class Liquidacion extends GenericBean implements java.io.Serializable {
 	private double montoTCVisaPool;
 	private Integer cantidadTCMastercardPool;
 	private double montoTCMastercardPool;
-	
+
 	/*Operaciones complementarias*/
 	private Integer cantidadDevolucionTarjeta;
 	private double montoDevolucionTarjeta;
@@ -104,12 +104,12 @@ public class Liquidacion extends GenericBean implements java.io.Serializable {
 //	private double montoDevolucion80;
 //	private Integer cantidadDevolucion100;
 //	private double montoDevolucion100;
-	
+
 	private Liquidacion liquidacionCarga;
-	
+
 	public Liquidacion() {
 	}
-	
+
 	public Liquidacion(Integer id) {
 		super();
 		this.id = id;
@@ -127,7 +127,7 @@ public class Liquidacion extends GenericBean implements java.io.Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	/**
 	 * @return Objeto anio.
 	 */
@@ -140,7 +140,7 @@ public class Liquidacion extends GenericBean implements java.io.Serializable {
 	public void setAnio(Integer anio) {
 		this.anio = anio;
 	}
-	
+
 	/**
 	 * @return Objeto agencia.
 	 */
@@ -153,7 +153,7 @@ public class Liquidacion extends GenericBean implements java.io.Serializable {
 	public void setAgencia(Agencia agencia) {
 		this.agencia = agencia;
 	}
-	
+
 	/**
 	 * @return Objeto usuario.
 	 */
@@ -166,7 +166,7 @@ public class Liquidacion extends GenericBean implements java.io.Serializable {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-	
+
 	/**
 	 * @return Objeto nombreUsuario.
 	 */
@@ -179,7 +179,7 @@ public class Liquidacion extends GenericBean implements java.io.Serializable {
 	public void setNombreUsuario(String nombreUsuario) {
 		this.nombreUsuario = nombreUsuario;
 	}
-	
+
 	/**
 	 * @return Objeto fechaLiquidacion.
 	 */
@@ -192,7 +192,7 @@ public class Liquidacion extends GenericBean implements java.io.Serializable {
 	public void setFechaLiquidacion(Date fechaLiquidacion) {
 		this.fechaLiquidacion = fechaLiquidacion;
 	}
-	
+
 	/**
 	 * @return Objeto montoIngresado.
 	 */
@@ -217,8 +217,8 @@ public class Liquidacion extends GenericBean implements java.io.Serializable {
 	public void setEstadoLiquidacion(Integer estadoLiquidacion){
 		this.estadoLiquidacion=estadoLiquidacion;
 	}
-	
-	
+
+
 	//NO MAPEADOS-UTILIZADOS PARA EL REPORTE DE LA LIQUIDACION DE TURNO//
 	//Especie valoradas
 	public Integer getCantidadBoletos(){
@@ -227,35 +227,35 @@ public class Liquidacion extends GenericBean implements java.io.Serializable {
 	public void setCantidadBoletos(Integer cantidadBoletos){
 		this.cantidadBoletos=cantidadBoletos;
 	}
-	
+
 	public String getboletoFinal(){
 		return boletoFinal;
 	}
 	public void setBoletoFinal(String boletoFinal){
 		this.boletoFinal=boletoFinal;
 	}
-	
+
 	public String getBoletoInicial(){
 		return boletoInicial;
 	}
 	public void setBoletoInicial(String boletoInicial){
 		this.boletoInicial=boletoInicial;
 	}
-	
+
 	public String getSerie(){
 		return serie;
 	}
 	public void setSerie(String serie){
 		this.serie=serie;
 	}
-	
+
 	public TipoComprobante getTipoComprobante(){
 		return tipoComprobante;
 	}
 	public void setTipoComprobante(TipoComprobante tipoComprobante){
 		this.tipoComprobante=tipoComprobante;
 	}
-	
+
 	public Integer getCorte(){
 		return cortes;
 	}
@@ -263,7 +263,7 @@ public class Liquidacion extends GenericBean implements java.io.Serializable {
 		this.cortes=corte;
 	}
 
-	
+
 	//Resumen de ventas
 	public double getTotalVouchers(){
 		return totalVoublers;
@@ -429,7 +429,7 @@ public class Liquidacion extends GenericBean implements java.io.Serializable {
 //	public void setMontoDevolucion100(double montoDevolucion100){
 //		this.montoDevolucion100=montoDevolucion100;
 //	}
-	
+
 	public Set<DetalleLiquidacion> getDetalleLiquidacions() {
 		return this.detalleLiquidaciones;
 	}
@@ -437,7 +437,7 @@ public class Liquidacion extends GenericBean implements java.io.Serializable {
 			Set<DetalleLiquidacion> detalleLiquidacions) {
 		this.detalleLiquidaciones = detalleLiquidacions;
 	}
-	
+
 	public Set<LiquidacionOficina> getLiquidacionOficinas() {
 		return this.liquidacionOficinas;
 	}

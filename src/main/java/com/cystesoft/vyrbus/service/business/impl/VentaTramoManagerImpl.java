@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 10/11/2014
  * Hora			: 14:30:53
@@ -61,7 +61,7 @@ public class VentaTramoManagerImpl implements VentaTramoManager{
 	}
 
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaTramoManager#buscarPorItinerarioRuta(com.tepsa.sisvyr.model.bean.Itinerario, com.tepsa.sisvyr.model.bean.Ruta)
 	 */

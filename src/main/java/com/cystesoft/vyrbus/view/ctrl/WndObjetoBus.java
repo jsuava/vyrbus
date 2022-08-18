@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 21/06/2012
  */
@@ -40,14 +40,14 @@ import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
 public class WndObjetoBus extends WndOpcionesMantenimiento {
 
 	private static final long serialVersionUID = 840536814791612125L;
-	
+
 	private Combobox cboTipoObjeto;
 	private Textbox txtDenominacion;
 	private Textbox txtRutaImagen;
-	
+
 	private ObjetoBus oObjetoBus = null;
 
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
 
 	/* (non-Javadoc)
@@ -56,7 +56,7 @@ public class WndObjetoBus extends WndOpcionesMantenimiento {
 	@Override
 	public void onCreate() throws Exception {
 		UtilData.cargarTipoObjeto(cboTipoObjeto);
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
 	}
 
@@ -67,9 +67,9 @@ public class WndObjetoBus extends WndOpcionesMantenimiento {
 	public void initComponents() {
 		cboTipoObjeto = (Combobox) getFellow("cboTipoObjeto");
 		txtDenominacion = (Textbox) getFellow("txtDenominacion");
-		txtRutaImagen = (Textbox) getFellow("txtRutaImagen"); 
+		txtRutaImagen = (Textbox) getFellow("txtRutaImagen");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onNew()
 	 */
@@ -84,7 +84,7 @@ public class WndObjetoBus extends WndOpcionesMantenimiento {
 	@Override
 	public void onSearch() throws Exception {
 		final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
-		
+
 		oWndFiltrar.addParameter("Denominación", String.class);
 
 		this.appendChild(oWndFiltrar);
@@ -95,7 +95,7 @@ public class WndObjetoBus extends WndOpcionesMantenimiento {
 			public void onEvent(Event event) throws Exception {
 				String denominacion = (String) oWndFiltrar.getParameterValue("Denominación");
 				String estadoRegistro = Constantes.VALUE_ACTIVO;
-				
+
 				if(denominacion.trim().equals("")) {
 					criteriosBusqueda.remove("denominacion");
 				}else{criteriosBusqueda.put("denominacion", "%" + denominacion + "%");}
@@ -113,7 +113,7 @@ public class WndObjetoBus extends WndOpcionesMantenimiento {
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getObjetoBusManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getObjetoBusManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
 	}
 
@@ -135,7 +135,7 @@ public class WndObjetoBus extends WndOpcionesMantenimiento {
 		switch (action) {
 			case ACTION_NEW:
 				break;
-	
+
 			case ACTION_MODIFY:
 				this.mantenimientoRegistro(new Long(textboxId.getText()));
 				break;
@@ -154,10 +154,10 @@ public class WndObjetoBus extends WndOpcionesMantenimiento {
 				throw new DenominacionNullException();
 			else if (txtRutaImagen.getText().trim().equals(""))
 				throw new RutaImagenNullException();
-			
+
 			if (action==ACTION_NEW)
 				oObjetoBus = new ObjetoBus();
-					
+
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
 			oObjetoBus.setId(id);
 			oObjetoBus.setDenominacion(txtDenominacion.getText().trim().toUpperCase());
@@ -199,7 +199,7 @@ public class WndObjetoBus extends WndOpcionesMantenimiento {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace(); throw new CancelaGrabacionException();
 		}
-				
+
 	}
 
 	/* (non-Javadoc)
@@ -257,7 +257,7 @@ public class WndObjetoBus extends WndOpcionesMantenimiento {
 		switch (tab) {
 			case TAB_LIST:
 				break;
-	
+
 			case TAB_MAINTENANCE:
 				if (listboxLista.getSelectedIndex() > -1) {
 					this.mantenimientoRegistro(new Long((String) listboxLista.getSelectedItem().getValue()));
@@ -275,11 +275,11 @@ public class WndObjetoBus extends WndOpcionesMantenimiento {
 	}
 
 	private void listarRegistros(ArrayList<ObjetoBus> lstRegistros) {
-		ArrayList<Object> lstObjetosBus = new ArrayList<Object>();
+		ArrayList<Object> lstObjetosBus = new ArrayList<>();
 
 		for(int r = 0; r < lstRegistros.size(); r ++) {
 			ObjetoBus oObjetoBus = lstRegistros.get(r);
-			ArrayList<Object> lstFila = new ArrayList<Object>();
+			ArrayList<Object> lstFila = new ArrayList<>();
 
 			lstFila.add(oObjetoBus.getId());
 			lstFila.add(r + 1);
@@ -295,7 +295,7 @@ public class WndObjetoBus extends WndOpcionesMantenimiento {
 
 	private void mantenimientoRegistro(Long id) throws Exception {
 		oObjetoBus = ServiceLocator.getObjetoBusManager().buscarPorId(id);
-		
+
 		textboxId.setText((new Long(oObjetoBus.getId())).toString());
 		txtDenominacion.setText(oObjetoBus.getDenominacion());
 		Util.seleccionarValorItemCombobox(cboTipoObjeto, oObjetoBus.getTipoObjeto());

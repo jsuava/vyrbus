@@ -18,17 +18,17 @@ public interface ReportesDAO extends GenericDAO {
 	 * @param idServicio	: Identificador del Servicio
 	 * @param idLocalidad	: identificador de la Localidad
 	 * @param incluirTarifaCero : true=Incluye tarifa Cero, false=no incluye
-	 * @param idRuta		: Identificador de la ruta	
+	 * @param idRuta		: Identificador de la ruta
 	 * @return
 	 * @throws Exception
 	 */
 	public ArrayList<DetalleItinerario> tarifario(String fechaInical, String fechaFinal, Integer idServicio, Integer idLocalidad, boolean incluirTarifaCero, Integer idRuta) throws Exception;
-	
+
 //	/**
 //	 * CONSULTA: DIARIO ACUMULADO.
 //	 * @param fechaInical 	: Fecha inicial.
 //	 * @param fechaFinal  	: Fecha final
-//	 * @param servicio		: Nombre del Servicio a consultar 
+//	 * @param servicio		: Nombre del Servicio a consultar
 //	 * @param rutaItinerario: (0)Lima-Provincias; (1)Provincias-Lima, (2)Entre Provincias.
 //	 * @return
 //	 * @throws Exception
@@ -37,16 +37,16 @@ public interface ReportesDAO extends GenericDAO {
 	/**
 	 * CONSULTA: DIARIO ACUMULADO.
 	 * @param fechaInicial	: Fecha inciacial de la busqueda.
-	 * @param fechaFinal	: Fecha final de la busqueda.	
+	 * @param fechaFinal	: Fecha final de la busqueda.
 	 * @param idServicio		: Identificador del Servicio
-	 * @param limaProvincias	: Indica si la consulta es lima provincias, provincias lima, provincias o todos. 
+	 * @param limaProvincias	: Indica si la consulta es lima provincias, provincias lima, provincias o todos.
 	 * @param mostrarCuadroIngresos	: true=mostrar cuadro de ingresos; false lo contrario.
 	 * @return
 	 * @throws Exception
 	 */
 	public ArrayList<Object> diarioAcumulado(Date fechaInicial, Date fechaFinal, long idServicio, int limaProvincias, boolean mostrarCuadroIngresos)throws Exception;
 	/**
-	 * CONSULTA: DETALLEDO DEL DIARIO ACUMULADO.	
+	 * CONSULTA: DETALLEDO DEL DIARIO ACUMULADO.
 	 * @param fechaInicial	: Fecha inicial de la busqueda.
 	 * @param fechaFinal	: Fecha final de la busqueda.
 	 * @param idServicio	: Identificador del servicio.
@@ -56,12 +56,12 @@ public interface ReportesDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public ArrayList<Object> diarioAcumuladoDetallado(Date fechaInicial, Date fechaFinal, long idServicio, int limaProvincias, boolean mostrarCuadroIngresos) throws Exception;
-	
+
 	/**
 	 * CONSULTA: AVANCE SEMANAL DE VENTAS POR RUTAS.
 	 * @param fechaInicial 	: Fecha Inicial
 	 * @param fechaFinal	: Fecha Final
-	 * @param tipoConsulta	: Indica (0) Todos, (1) ida, (2)Retorno, (3)Provincias 
+	 * @param tipoConsulta	: Indica (0) Todos, (1) ida, (2)Retorno, (3)Provincias
 	 * @param transaccion	: Indica (1) Venta, (2) Reserva
 	 * @return
 	 * @throws Exception
@@ -81,10 +81,10 @@ public interface ReportesDAO extends GenericDAO {
 	public ArrayList<Transbordo> pasajerosTransbordados(String fechaTransInicio, String fechaTransFin,String origen, String destino, String boleto, Long idPasajero) throws Exception;
 	/**
 	 * CONSULTA: CENAS POR RUTA.
-	 * @param fechaInicial	: Fecha inicio de la busqueda 
+	 * @param fechaInicial	: Fecha inicio de la busqueda
 	 * @param fechaFinal	: Fecha fin de la busqueda.
 	 * @param tipoConsulta	: Indica el tipo de consulta, Ida,retorno o procincias
-	 * @return	
+	 * @return
 	 * @throws Exception
 	 */
 	public ArrayList<PreferenciaAlimentaria> cenasXRutas(String fechaInicial,String fechaFinal, String tipoConsulta)throws Exception;
@@ -120,7 +120,7 @@ public interface ReportesDAO extends GenericDAO {
 	 * @param fechaInicio	: Fecha inicio de la busqueda.
 	 * @param fechaFin	: Fecha fina de la busqueda.
 	 * @param idLocalidadOrigen	 : Identificador de la localidad origen (Opcional)
-	 * @param idLocalidadDestino : Identificador de la localidad destino (Opcional) 
+	 * @param idLocalidadDestino : Identificador de la localidad destino (Opcional)
 	 * @param idServicio : Identificador del Tipo de Servicio (Opcional)
 	 * @param codigoBus : código del bus (Opcional)
 	 * @return Objet RptAvanceBuses.

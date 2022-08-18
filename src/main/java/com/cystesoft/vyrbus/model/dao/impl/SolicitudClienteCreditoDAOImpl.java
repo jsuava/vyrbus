@@ -17,7 +17,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.MyTime;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
@@ -59,7 +59,7 @@ public class SolicitudClienteCreditoDAOImpl extends GenericDAOImpl implements So
 	public void actualizar(SolicitudClienteCredito solicitudClienteCredito)throws Exception {
 		super.update(solicitudClienteCredito);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.SolicitudClienteCreditoDAO#aprobarSolicitud(java.lang.Long, com.tepsa.sisvyr.model.bean.UsuarioAprobador)
@@ -86,7 +86,7 @@ public class SolicitudClienteCreditoDAOImpl extends GenericDAOImpl implements So
 					                     "USUAPRO_ID="+usuarioAprobador.getNivelAprobacion()+", "+
 					                     "N_NIVAPRO="+usuarioAprobador.getNivelAprobacion()+"  "+
 					"WHERE SOLCLICRE_ID="+idSolicitudClienteCredito+" ";
-		
+
 		log.info(sql);
 		getSession().createSQLQuery(sql).executeUpdate();
 	}
@@ -98,9 +98,9 @@ public class SolicitudClienteCreditoDAOImpl extends GenericDAOImpl implements So
 	@Override
 	public void inactivar(Long id) {
 		super.inactivate(SolicitudClienteCredito.class, id);
-		
+
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.SolicitudClienteCreditoDAO#validadSolicitudPendiente(java.lang.Long)
@@ -109,7 +109,7 @@ public class SolicitudClienteCreditoDAOImpl extends GenericDAOImpl implements So
 	public SolicitudClienteCredito validadSolicitudPendiente(Long idCliente){
 		String sql ="SELECT scr.solclicre_id, scr.d_fecsoli as FechaSolicitud, scr.tipcob_id, scr.n_lincresol," +
 							"scr.n_nivapro, scr.c_estsol,scr.c_esamplia " +
-					"FROM vrtsolclicre scr "+ 
+					"FROM vrtsolclicre scr "+
 					"WHERE scr.solclicre_id in (SELECT MAX(scr.solclicre_id) "+
 					                            "FROM vrtsolcar sc "+
 					                            "INNER JOIN vrtsolclicre scr ON (scr.solcar_id=sc.solcar_id) "+
@@ -119,12 +119,12 @@ public class SolicitudClienteCreditoDAOImpl extends GenericDAOImpl implements So
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).list();
 		SolicitudClienteCredito  solicitudClienteCredito=null;
-		for(int i=0; i<result.size(); i++){
-			Object[] obj = (Object[])result.get(i);
-			
+		for (Object element : result) {
+			Object[] obj = (Object[])element;
+
 			solicitudClienteCredito=new SolicitudClienteCredito();
 			TipoCobranza tipoCobranza=new TipoCobranza();
-			
+
 			solicitudClienteCredito.setId(((BigDecimal)obj[0]).longValue());
 			solicitudClienteCredito.setFechaSolicitud(((Date)obj[1]));
 			if(obj[2]!=null){
@@ -138,7 +138,7 @@ public class SolicitudClienteCreditoDAOImpl extends GenericDAOImpl implements So
 		}
 		return solicitudClienteCredito;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.SolicitudClienteCreditoDAO#buscarHistorialSolicitudesCarteraCredito(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Long)
@@ -157,49 +157,49 @@ public class SolicitudClienteCreditoDAOImpl extends GenericDAOImpl implements So
 					"INNER JOIN (SELECT MAX(solclicre_id) as solclicre_id FROM vrtsolclicre GROUP BY c_numcontrol) maxid on (maxid.solclicre_id=scr.solclicre_id) "+
 //					"WHERE sc.d_fecsoli BETWEEN '"+fechaInicial+"' AND '"+fechaFinal+"' AND scr.c_estreg='A' ";
 					"WHERE to_char(sc.d_fecsoli,'dd/mm/yyyy')>=to_date('"+fechaInicial+"','dd/MM/yyyy') AND to_date(sc.d_fecsoli,'dd/mm/yyyy')<= to_date('"+fechaFinal+"','dd/MM/yyyy') AND scr.c_estreg='A' ";
-		
-		if(idFuncionario!=null)		
+
+		if(idFuncionario!=null)
 			sql+=" AND sc.usuario_id="+idFuncionario;
 		if(idCliente !=null )
 			sql+=" AND sc.cliente_id="+idCliente;
-		
+
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<SolicitudClienteCredito> listResult= new ArrayList<SolicitudClienteCredito>();
-		
+		List<SolicitudClienteCredito> listResult= new ArrayList<>();
+
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[])result.get(i);
-			
+
 			Usuario funcionario=new Usuario();
 			Cliente cliente=new Cliente();
 			SolicitudCartera solicitudCartera=new SolicitudCartera();
 			SolicitudClienteCredito solicitudClienteCredito=new SolicitudClienteCredito();
 			TipoCobranza tipoCobranza=null;
-			
+
 			funcionario.setId(((BigDecimal)obj[0]).intValue());
 			funcionario.setApellidoPaterno(obj[1].toString());
 			if(obj[2]!=null) funcionario.setApellidoMaterno(obj[2].toString());
 			else funcionario.setApellidoMaterno("");
 			funcionario.setNombre(obj[3].toString());
-			
+
 			cliente.setId(((BigDecimal)obj[4]).longValue());
 			cliente.setNumeroDocumento(obj[5].toString());
 			cliente.setRazonSocial(obj[6].toString());
-			
+
 			solicitudCartera.setId(((BigDecimal)obj[7]).longValue());
 			solicitudCartera.setFechaSolicitud((Date)obj[8]);
-			
-			if(obj[9].toString().equals(Constantes.ESTADOSOLCAR_EN_ESPERA)) 
+
+			if(obj[9].toString().equals(Constantes.ESTADOSOLCAR_EN_ESPERA))
 				solicitudClienteCredito.setEstadoSolicitud(Constantes.LABEL_ESTADOSOLCAR_EN_ESPERA_DESC);
-			else if(obj[9].toString().equals(Constantes.ESTADOSOL_ACTIVA)) 
+			else if(obj[9].toString().equals(Constantes.ESTADOSOL_ACTIVA))
 				solicitudClienteCredito.setEstadoSolicitud(Constantes.LABEL_ESTADOSOL_ACTIVA_DESC);
-			else if(obj[9].toString().equals(Constantes.ESTADOSOL_ANULADA) && obj[14] ==null) 
+			else if(obj[9].toString().equals(Constantes.ESTADOSOL_ANULADA) && obj[14] ==null)
 				solicitudClienteCredito.setEstadoSolicitud(Constantes.LABEL_ESTADOSOL_ANULADA_DESC);
 			else if (obj[9].toString().equals(Constantes.ESTADOSOL_ANULADA) && obj[14] !=null)
 				solicitudClienteCredito.setEstadoSolicitud(Constantes.DESAPROBADO_DESC);
-			else 
+			else
 				solicitudClienteCredito.setEstadoSolicitud("DESCONOCIDO");
-			
+
 			solicitudClienteCredito.setId(((BigDecimal)obj[10]).longValue());
 			solicitudClienteCredito.setLineaCreditoSolicitada(((BigDecimal)obj[12]).doubleValue());
 			solicitudClienteCredito.setEsAmpliacion(obj[13]!=null?obj[13].toString():"");
@@ -212,15 +212,15 @@ public class SolicitudClienteCreditoDAOImpl extends GenericDAOImpl implements So
 						cliente.setTipo(Constantes.TIPCON_CREDITO_DESC+"(AMPLI.)");
 					else cliente.setTipo(Constantes.TIPCON_CREDITO_DESC);
 				}
-				
-				
+
+
 			}else
 				cliente.setTipo(Constantes.TIPCON_CONTADO_DESC);
-			
+
 			solicitudCartera.setCliente(cliente);
 			solicitudCartera.setUsuario(funcionario);
 			solicitudClienteCredito.setSolicitudCartera(solicitudCartera);
-			
+
 			listResult.add(solicitudClienteCredito);
 		}
 		return listResult;
@@ -241,46 +241,46 @@ public class SolicitudClienteCreditoDAOImpl extends GenericDAOImpl implements So
 						"INNER JOIN vrmcliente c ON (c.cliente_id=sc.cliente_id)  "+
 						"INNER JOIN (SELECT MAX(solclicre_id) as solclicre_id FROM vrtsolclicre GROUP BY c_numcontrol) maxid on (maxid.solclicre_id=scr.solclicre_id) "+
 					"WHERE scr.usuapro_id IS NULL AND scr.c_estsol='"+Constantes.ESTADOSOLCAR_EN_ESPERA+"' AND scr.c_estreg='A' ";
-		
+
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<SolicitudClienteCredito> listResult= new ArrayList<SolicitudClienteCredito>();
-		
+		List<SolicitudClienteCredito> listResult= new ArrayList<>();
+
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[])result.get(i);
 			Usuario funcionario=new Usuario();
 			Cliente cliente=new Cliente();
 			SolicitudCartera solicitudCartera=new SolicitudCartera();
 			SolicitudClienteCredito solicitudClienteCredito=new SolicitudClienteCredito();
-			
+
 			funcionario.setId(((BigDecimal)obj[0]).intValue());
 			funcionario.setApellidoPaterno(obj[1].toString());
 			if(obj[2]!=null) funcionario.setApellidoMaterno(obj[2].toString());
 			else funcionario.setApellidoMaterno("");
 			funcionario.setNombre(obj[3].toString());
-			
+
 			cliente.setId(((BigDecimal)obj[4]).longValue());
 			cliente.setNumeroDocumento(obj[5].toString());
 			cliente.setRazonSocial(obj[6].toString());
-			
+
 			solicitudCartera.setId(((BigDecimal)obj[7]).longValue());
 			solicitudCartera.setFechaSolicitud((Date)obj[8]);
-			
-			solicitudClienteCredito.setEstadoSolicitud(obj[9].toString());		
+
+			solicitudClienteCredito.setEstadoSolicitud(obj[9].toString());
 			solicitudClienteCredito.setId(((BigDecimal)obj[10]).longValue());
 			solicitudClienteCredito.setLineaCreditoSolicitada(((BigDecimal)obj[12]).doubleValue());
 			solicitudClienteCredito.setEsAmpliacion(obj[13]!=null?obj[13].toString():"");
-			
+
 			solicitudCartera.setCliente(cliente);
 			solicitudCartera.setUsuario(funcionario);
 			solicitudClienteCredito.setSolicitudCartera(solicitudCartera);
-			
+
 			listResult.add(solicitudClienteCredito);
 		}
-		
+
 		return listResult;
 	}
-	
 
-	
+
+
 }

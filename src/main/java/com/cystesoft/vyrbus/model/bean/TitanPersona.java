@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 31/07/2014
  */
@@ -31,8 +31,8 @@ public class TitanPersona {
 	private Integer rolUsuarioID;
 	private String ip;
 	private String fechaRegistro;
-		
-	
+
+
 	public TitanPersona(){
 		super();
 	}
@@ -147,7 +147,7 @@ public class TitanPersona {
 	public void setRubroID(Integer rubroID) {
 		this.rubroID = rubroID;
 	}
-	
+
 	/**
 	 * @return the tipoCredito
 	 */
@@ -244,6 +244,6 @@ public class TitanPersona {
 	public void setClasificacionPersonaID(Integer clasificacionPersonaID) {
 		this.clasificacionPersonaID = clasificacionPersonaID;
 	}
-	
-	
+
+
 }

@@ -13,7 +13,7 @@ import com.cystesoft.vyrbus.service.business.ItinerarioAgenciaLlegadaManager;
 public class ItinerarioAgenciaLlegadaManagerImpl implements ItinerarioAgenciaLlegadaManager {
 
 	private ItinerarioAgenciaLlegadaDAO itinerarioAgenciaLlegadaDAO;
-	
+
 	/**
 	 * @return the itinerarioAgenciaLlegadaDAO
 	 */
@@ -26,26 +26,26 @@ public class ItinerarioAgenciaLlegadaManagerImpl implements ItinerarioAgenciaLle
 	public void setItinerarioAgenciaLlegadaDAO(ItinerarioAgenciaLlegadaDAO itinerarioAgenciaLlegadaDAO) {
 		this.itinerarioAgenciaLlegadaDAO = itinerarioAgenciaLlegadaDAO;
 	}
-	
+
 	@Override
 	@Transactional
 	public void guardar(ItinerarioAgenciaLlegada itinerarioAgenciaLlegada)throws Exception {
 		getItinerarioAgenciaLlegadaDAO().save(itinerarioAgenciaLlegada);
-		
+
 	}
 
 	@Override
 	@Transactional
 	public void actualizar(ItinerarioAgenciaLlegada itinerarioAgenciaLlegada)throws Exception {
 		getItinerarioAgenciaLlegadaDAO().update(itinerarioAgenciaLlegada);
-		
+
 	}
 
 	@Override
 	@Transactional
 	public void inactivar(Long id) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 	@Override
 	public ArrayList<ItinerarioAgenciaLlegada> buscarPorX(
@@ -62,7 +62,7 @@ public class ItinerarioAgenciaLlegadaManagerImpl implements ItinerarioAgenciaLle
 	@Override
 	public void delete(Long idItinerario, Integer idLocalidad) throws Exception {
 		getItinerarioAgenciaLlegadaDAO().delete(idItinerario, idLocalidad);
-		
+
 	}
 	/*
 	 * (non-Javadoc)

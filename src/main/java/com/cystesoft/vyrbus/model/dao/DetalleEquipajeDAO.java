@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 04/05/2012
  */
@@ -20,32 +20,32 @@ import com.cystesoft.vyrbus.model.bean.DetalleEquipaje;
  */
 public interface DetalleEquipajeDAO extends GenericDAO {
 	/**
-	 * 
+	 *
 	 * @param estado
 	 * @param criterioOrden
 	 * @return
 	 */
 	public ArrayList<DetalleEquipaje> buscarPorEstadoRegistro(String estado, String criterioOrden);
 	/**
-	 * 
+	 *
 	 * @param criteriosBusqueda
 	 * @param criteriosOrdenar
 	 * @return
 	 */
 	public ArrayList<DetalleEquipaje> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
 	/**
-	 * 
+	 *
 	 * @param id
 	 * @return
 	 */
 	public DetalleEquipaje buscarPorId(Long id);
 	/**
-	 * 
+	 *
 	 * @param detalleEquipaje
 	 */
 	public void guardar(DetalleEquipaje detalleEquipaje);
 	/**
-	 * 
+	 *
 	 * @param detalleEquipaje
 	 */
 	public void actualizar(DetalleEquipaje detalleEquipaje);
@@ -57,5 +57,5 @@ public interface DetalleEquipajeDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public List<DetalleEquipaje> buscarManifiestoEquipaje(Long itinerarioId, Integer agenciaId)throws Exception;
-	
+
 }

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: VYRBUS
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: Marco Oscco
  * Fecha		: 12 jul. 2020
  * Hora			: 23:46:36
@@ -20,7 +20,7 @@ import com.cystesoft.vyrbus.model.bean.Tarifa;
 public interface TarifaManager {
 	/**
 	 * Guarda una nueva tarifa a fecha abierta.
-	 * @param tarifaFechaAbierta	
+	 * @param tarifaFechaAbierta
 	 * @throws Exception
 	 */
 	public int guardar(Tarifa tarifa) throws Exception;
@@ -36,11 +36,11 @@ public interface TarifaManager {
 	 * @throws Exception
 	 */
 	public void inactivate(Long id)throws Exception;
-	
-	public List<Tarifa> buscarTarifa(Integer canalVentaID, 
-			Integer servicioID, 
-			Integer localidadOrigenID, 
-			Integer localidadDestinoID, 
-			Integer piso, 
+
+	public List<Tarifa> buscarTarifa(Integer canalVentaID,
+			Integer servicioID,
+			Integer localidadOrigenID,
+			Integer localidadDestinoID,
+			Integer piso,
 			Integer zona) throws Exception;
 }

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 07/08/2015
  * Hora			: 12:24:26
@@ -85,5 +85,5 @@ public class TipoMonedaManagerImpl implements TipoMonedaManager{
 		getTipoMonedaDAO().actualizar(tipoMoneda);
 	}
 
-	
+
 }

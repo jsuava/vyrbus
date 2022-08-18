@@ -2,7 +2,6 @@ package com.cystesoft.vyrbus.view.ctrl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.TreeMap;
 
 import org.zkoss.zk.ui.Executions;
@@ -50,17 +49,17 @@ import com.cystesoft.vyrbus.view.ui.WndFiltrarParametros;
 import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
 
 /**
- * 
+ *
  * @author José Abanto.
  *
  */
 public class WndUsuarioSistema extends WndOpcionesMantenimiento {
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -2840650005808576854L;
-	
+
 	private Combobox cmbPersonal;
 	private Combobox cmbAgencia;
 	private Textbox	txtApellidoPaterno;
@@ -88,14 +87,14 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 	private Label lblRolesSeleccionadosCarga;
 	private Checkbox chbxIngresaComprobanteOtraAgencia;
 	private Checkbox chbxAutorizaEntregaSinVerificarUsuario;
-	
+
 	private Usuario usuarioSistema=null;
 	private TranscarUsuarioPersonal transcarUsuarioPersonal= null;
 //	private UsuarioRol usuarioRol= null;
-	private List<UsuarioRol>lstUsuarioRol=new ArrayList<UsuarioRol>();;
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+	private List<UsuarioRol>lstUsuarioRol=new ArrayList<>();
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
-	
+
 	public static String base = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@!#$";
 
 	/*
@@ -131,7 +130,7 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 		chbxIngresaComprobanteOtraAgencia = (Checkbox)this.getFellow("chbxIngresaComprobanteOtraAgencia");
 		chbxAutorizaEntregaSinVerificarUsuario = (Checkbox)this.getFellow("chbxAutorizaEntregaSinVerificarUsuario");
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IBase#onCreate()
@@ -146,20 +145,20 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 		cargarRoles();
 		cargarRolesCarga();
 		disabledLbxRoels(true);
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("apellidoPaterno");
-		
+
 		btnEliminar.setLabel("Desactivar");
 		btnEliminar.setTooltiptext("Desactivar el registro seleccionado");
-		
+
 		lblRolesSeleccionados.setValue("0");
 		if(getRol().getId()==Constantes.ID_ROL_SUPER_USUARIO)
 			imgShowPassword.setVisible(true);
-					
-		
+
+
 		lblRolesSeleccionadosCarga.setValue("0");
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onNew()
@@ -184,8 +183,8 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 		chbxSoloRolesSeleccionados.setChecked(false);
 		chbxSoloRolesSeleccionadosCarga.setChecked(false);
 		soloRolesSeleccionados();
-		tabRoles.setSelectedIndex(0);		
-		
+		tabRoles.setSelectedIndex(0);
+
 	}
 
 	/*
@@ -194,9 +193,9 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 	 */
 	@Override
 	public void onSearch() throws Exception {
-		criteriosBusqueda = new TreeMap<String, Object>();
+		criteriosBusqueda = new TreeMap<>();
 		final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
-		
+
 		oWndFiltrar.addParameter("1. Agencia", Agencia.class);
 		oWndFiltrar.addParameter("2. Apellido Paterno", String.class);
 		oWndFiltrar.addParameter("3. Apellido Materno", String.class);
@@ -214,7 +213,7 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 				String apellidoMaterno = (String) oWndFiltrar.getParameterValue("3. Apellido Materno");
 				String nombres = (String) oWndFiltrar.getParameterValue("4. Nombres");
 				String login = (String) oWndFiltrar.getParameterValue("5. Usuario");
-				
+
 				//String estadoRegistro = Constantes.ACTIVO;
 				if(agencia==null){
 					criteriosBusqueda.remove("agencia");
@@ -225,21 +224,21 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 //					}
 				}else
 					criteriosBusqueda.put("agencia", agencia);
-				
+
 				if (apellidoPaterno.trim().isEmpty()) {
 					criteriosBusqueda.remove("apellidoPaterno");
 				}else {
 					criteriosBusqueda.put("apellidoPaterno", "%" + apellidoPaterno + "%");
 				}
-				
+
 				if (apellidoMaterno.trim().isEmpty()) {
 					criteriosBusqueda.remove("apellidoMaterno");
 				}else {criteriosBusqueda.put("apellidoMaterno", "%" + apellidoMaterno + "%");}
-				
+
 				if (nombres.trim().isEmpty()) {
 					criteriosBusqueda.remove("nombre");
 				}else {criteriosBusqueda.put("nombre", "%" + nombres + "%");}
-				
+
 				if (login.trim().isEmpty()) {
 					criteriosBusqueda.remove("login");
 				}else {criteriosBusqueda.put("login", "%" + login + "%");}
@@ -258,9 +257,9 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
 			Util.limpiarListbox(listboxLista);
-			ListarUsuarios(ServiceLocator.getUsuarioManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			ListarUsuarios(ServiceLocator.getUsuarioManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
-		
+
 	}
 
 	/*
@@ -272,7 +271,7 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 		Long id = new Long(0);
 		id = new Long( ((Usuario) listboxLista.getItemAtIndex(listboxLista.getSelectedIndex()).getValue()).getId());
 		this.mantenimientoUsuario(id);
-		
+
 		txtLogin.setDisabled(true);
 //		txtCodigo.setDisabled(true);
 		txtPassword.setReadonly(false);
@@ -325,50 +324,50 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 				DlgMessage.information(Messages.getString("WndUsuarioRol.information.noSelectRolCarga"));
 				throw new CancelaGrabacionException();
 			}
-			
+
 //			Rol rol= ((Rol)cmbRol.getSelectedItem().getValue());
-//			
+//
 //			/* Valida que el usuario tenga el mail configurado  para las alertas que envíe el sistema */
-//			if(rol.getId().intValue()==Constantes.ID_ROL_GERENCIA_COMERCIAL 
+//			if(rol.getId().intValue()==Constantes.ID_ROL_GERENCIA_COMERCIAL
 //					|| rol.getId().intValue()==Constantes.ID_ROL_JEFE_VENTAS
 //					|| rol.getId().intValue()==Constantes.ID_ROL_FINANZAS
 //					|| rol.getId().intValue()==Constantes.ID_ROL_FUNCIONARIO){
-//				
+//
 //				if(txtEmail.getText().trim().isEmpty())
 //					throw new EmailNullException(EmailNullException.EMAIL_PERSONAL);
 //			}
-			
+
 //			Rol rol= ((Rol)cmbRol.getSelectedItem().getValue());
-			
+
 			/* Valida que el usuario tenga el mail configurado  para las alertas que envíe el sistema */
 			for(Listitem item:lbxRoles.getSelectedItems()){
 				Rol rol=item.getValue();
-				
-				if(rol.getId().intValue()==Constantes.ID_ROL_GERENCIA_COMERCIAL 
+
+				if(rol.getId().intValue()==Constantes.ID_ROL_GERENCIA_COMERCIAL
 						|| rol.getId().intValue()==Constantes.ID_ROL_JEFE_VENTAS
 						|| rol.getId().intValue()==Constantes.ID_ROL_FINANZAS
 						|| rol.getId().intValue()==Constantes.ID_ROL_FUNCIONARIO){
-					
+
 					if(txtEmail.getText().trim().isEmpty())
 						throw new EmailNullException(EmailNullException.EMAIL_PERSONAL);
 				}
 			}
-					
+
 			boolean isNewUserCargo=true;
 			if(action==ACTION_NEW){
 				usuarioSistema= new Usuario();
 				usuarioSistema.setId(null);
 				usuarioSistema.setTipoPassword(Usuario.TIPPAS_ALEATORIO);
-				
-				transcarUsuarioPersonal = new TranscarUsuarioPersonal();				
+
+				transcarUsuarioPersonal = new TranscarUsuarioPersonal();
 			}else {
 				usuarioSistema.setId(new Integer((textboxId.getValue())));
-				
-				if(transcarUsuarioPersonal==null) 
+
+				if(transcarUsuarioPersonal==null)
 					transcarUsuarioPersonal= new TranscarUsuarioPersonal();
 				else if(transcarUsuarioPersonal.getId()!=null)
 					isNewUserCargo = false;
-			}	
+			}
 			if(cmbPersonal.getSelectedItem().getValue() instanceof Personal){
 				Personal personal = cmbPersonal.getSelectedItem().getValue();
 				usuarioSistema.setPersonal(personal);
@@ -378,16 +377,16 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 					personal.setEmail(txtEmail.getText().trim().toLowerCase());
 					ServiceLocator.getPersonalManager().actualizar(personal);
 				}
-			}else 
+			}else
 				usuarioSistema.setPersonal(null);
-				
+
 			if(cmbAgencia.getSelectedItem().getValue() instanceof Agencia){
 				Agencia agencia = new Agencia();
 				agencia.setId(((Agencia) cmbAgencia.getSelectedItem().getValue()).getId());
 				usuarioSistema.setAgencia(agencia);
-			}else 
+			}else
 				usuarioSistema.setAgencia(null);
-			
+
 			String estadoRegistro=null;
 			if (rdSi.isSelected()) {
 				estadoRegistro=Constantes.VALUE_ACTIVO;
@@ -396,8 +395,8 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 				estadoRegistro=Constantes.VALUE_INACTIVO;
 				transcarUsuarioPersonal.setEstadoRegistro(Constantes.VALUE_INACTIVO);
 			}
-					
-			
+
+
 			//instancia para la creacion/actualizacion del usuario en Pasajes
 			usuarioSistema.setApellidoPaterno(txtApellidoPaterno.getText().trim().toUpperCase());
 			usuarioSistema.setApellidoMaterno(txtApellidoMaterno.getText().trim().toUpperCase());
@@ -409,7 +408,7 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 			usuarioSistema.setEmailInfo(txtEmailInfo.getText().trim());
 			usuarioSistema.setTipoSeguridad(usuarioSistema.getTipoSeguridad()==null?Constantes.TRUE_VALUE:usuarioSistema.getTipoSeguridad());
 			usuarioSistema.setEmailInfo(txtEmailInfo.getText().trim());
-						
+
 			//instancia para la creacion/actualizacion del usuario en Carga
 			if(usuarioSistema.getAgencia()==null) {
 				DlgMessage.information(Messages.getString("WndUsuarioRol.information.noAgenciaCarga"));
@@ -417,12 +416,12 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 			}
 			Agencia _agencia = ServiceLocator.getAgenciaManager().buscarPorId(usuarioSistema.getAgencia().getId().longValue());
 			Integer agenciaIdCarga = _agencia.getId();
-					
+
 			if(agenciaIdCarga==null) {
 				DlgMessage.information(Messages.getString("WndUsuarioRol.information.noAgenciaCarga"));
 				throw new CancelaGrabacionException();
 			}
-			
+
 			transcarUsuarioPersonal.setAgenciaId(agenciaIdCarga);
 			transcarUsuarioPersonal.setNombres(usuarioSistema.getNombre());
 			transcarUsuarioPersonal.setApellidoParterno(usuarioSistema.getApellidoPaterno());
@@ -430,7 +429,7 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 			transcarUsuarioPersonal.setLogin(usuarioSistema.getLogin());
 			transcarUsuarioPersonal.setPassword(txtPassword.getText());
 			transcarUsuarioPersonal.setEmail(usuarioSistema.getEmailInfo());
-			
+
 //			transcarUsuarioPersonal.setSexoId(1);
 //			transcarUsuarioPersonal.setPermiteVentaOtrasAgencias(chbxIngresaComprobanteOtraAgencia.isChecked()?Constantes.TRUE_VALUE:Constantes.FALSE_VALUE);
 //			transcarUsuarioPersonal.setAutorizaEntregaSinVerificarUsuario(chbxAutorizaEntregaSinVerificarUsuario.isChecked()?Constantes.TRUE_VALUE:Constantes.FALSE_VALUE);
@@ -443,14 +442,14 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 				else
 					idsRolesUsuarioCarga = ","+rolUsuario.getId().toString();
 			}
-			
-			
+
+
 			switch (action) {
 				case ACTION_NEW:
 					UtilData.auditarRegistro(usuarioSistema,getUsuario(), Executions.getCurrent());
 					ServiceLocator.getUsuarioManager().guardar(usuarioSistema);
 					textboxId.setText(usuarioSistema.getId().toString());
-					
+
 					transcarUsuarioPersonal.setUsuarioInsercion(usuarioSistema.getUsuarioInsercion());
 					transcarUsuarioPersonal.setUsuarioModificacion(usuarioSistema.getUsuarioModificacion());
 					transcarUsuarioPersonal.setIpInsercion(usuarioSistema.getIpInsercion());
@@ -459,27 +458,27 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 				case ACTION_MODIFY:
 					UtilData.auditarRegistro(usuarioSistema, true, getUsuario(), Executions.getCurrent());
 					ServiceLocator.getUsuarioManager().actualizar(usuarioSistema);
-					
+
 					transcarUsuarioPersonal.setUsuarioModificacion(usuarioSistema.getUsuarioModificacion());
 					transcarUsuarioPersonal.setIpModificacion(usuarioSistema.getIpModificacion());
 					break;
 			}
-			
+
 			//Guarda usuario rol
 			onSave_usuarioRol(usuarioSistema, action);
-			
+
 			//Guarda el usuario en carga
 			ServiceLocator.getTranscarWebManager().guardarUsuario(transcarUsuarioPersonal, idsRolesUsuarioCarga, isNewUserCargo);
-			
-			
-			
+
+
+
 			/* Realiza la asociación del rol con el usuario*/
 //			if (action==ACTION_NEW){
 //				usuarioRol= new UsuarioRol();
 //				usuarioRol.setRol(rol);
 //				usuarioRol.setUsuario(usuarioSistema);
 //				guardarUsuarioRol(action,usuarioRol);
-//			}else{				
+//			}else{
 //				if(usuarioRol==null){
 //					usuarioRol= new UsuarioRol();
 //					usuarioRol.setRol(rol);
@@ -491,7 +490,7 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 //						usuarioRol.setEstadoRegistro(Constantes.VALUE_INACTIVO);
 //						UtilData.auditarRegistro(usuarioRol, true, getUsuario(), Executions.getCurrent());
 //						ServiceLocator.getUsuarioRolManager().actualizar(usuarioRol);
-//						
+//
 //						/*	Para validar si el usuario tuvo en algun momento el rol seleccionado y por algun motivo este esta inactivo	*/
 //						usuarioRol= ServiceLocator.getUsuarioRolManager().buscarXidUsuarioAndIdRol(usuarioSistema.getId(), rol.getId());
 //						if(usuarioRol!=null){
@@ -503,17 +502,17 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 //							usuarioRol.setRol(rol);
 //							usuarioRol.setUsuario(usuarioSistema);
 //							guardarUsuarioRol(action,usuarioRol);
-//						}					
-//					}	
+//						}
+//					}
 //				}
 //			}
-			
-			criteriosBusqueda = new TreeMap<String, Object>();
+
+			criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("id", usuarioSistema.getId());
 			lbxRoles.setDisabled(true);
 			Util.limpiarListbox(listboxLista);
 			ListarUsuarios(ServiceLocator.getUsuarioManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-		
+
 		}catch(EmailNullException enex){
 			if(enex.getTipoEmail().intValue()==EmailNullException.EMAIL_PERSONAL){
 				DlgMessage.information(Messages.getString("WndUsuarioRol.information.noIngresoEmailUsuario"));
@@ -557,12 +556,12 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 			cmbAgencia.setFocus(true);
 			throw new CancelaGrabacionException();
 		}catch (Exception ex) {
-			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage()); 
+			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace(); throw new CancelaGrabacionException();
 		}
 	}
-	
-	
+
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onDelete(int)
@@ -574,16 +573,16 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 			if (listboxLista.getSelectedIndex() >= 0){
 				id = new Long(((Usuario) listboxLista.getItemAtIndex(listboxLista.getSelectedIndex()).getValue()).getId());
 			}else{throw new SelectIndexNullException();}
-			
+
 			/*Desactiva el Usuario*/
 			if ( ((Usuario) listboxLista.getItemAtIndex(listboxLista.getSelectedIndex()).getValue()).getEstadoRegistro().equals(Constantes.VALUE_ACTIVO))
 				ServiceLocator.getUsuarioManager().inactivar(id);
 			else /*Reactiva el Usuario*/
 				ServiceLocator.getUsuarioManager().activar(id);
-			
+
 			Util.limpiarListbox(listboxLista);
 			ListarUsuarios(ServiceLocator.getUsuarioManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-			
+
 			limpiarControles();
 			habilitaControles(false);
 			btnNuevo.setDisabled(false);
@@ -595,17 +594,17 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 			btnImprimir.setDisabled(true);
 			btnExportar.setDisabled(true);
 
-			
+
 			/*Evita ser removido el registro del ListBox*/
-			throw new NoRemoverRegistroDelListBox();	
-			
+			throw new NoRemoverRegistroDelListBox();
+
 		}catch (NoRemoverRegistroDelListBox e) {
 			throw new NoRemoverRegistroDelListBox();
 		}catch (SelectIndexNullException sinex){
 			DlgMessage.information(Messages.getString("Generales.information.noSeleccionoUsuario"));
 			throw new NoRemoverRegistroDelListBox();
 		}
-		
+
 	}
 
 	/*
@@ -615,14 +614,14 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 	@Override
 	public void onPrint(int tab) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onClose() {
 		closeTabWindow();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onExport(int)
@@ -630,7 +629,7 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 	@Override
 	public void onExport(int tab) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/*
@@ -640,7 +639,7 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 	@Override
 	public void onHelp() throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/*
@@ -658,7 +657,7 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 					this.mantenimientoUsuario(((Usuario) itList.getValue()).getId().longValue());
 				}
 				break;
-		}	
+		}
 	}
 
 	private void ListarUsuarios(List<Usuario> lstUsuarios){
@@ -676,42 +675,42 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 				item.appendChild(cell);
 				cell = new Listcell(usuario.getLogin());
 				item.appendChild(cell);
-				
+
 				if (usuario.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO))
 					cell = new Listcell(Constantes.LABEL_ACTIVO_DESCP);
 				if (usuario.getEstadoRegistro().equals(Constantes.VALUE_INACTIVO))
 					cell = new Listcell(Constantes.LABEL_INACTIVO_DESCP);
-				
+
 				item.appendChild(cell);
-							
+
 				item.setValue(usuario);
-				listboxLista.appendChild(item);			
+				listboxLista.appendChild(item);
 			}
 		}else
 			DlgMessage.information(Messages.getString("Generales.information.noDatosEncontrados"));
 	}
-	
-	
+
+
 	private void quitaSelecLbxRoles(){
 		for(Listitem item:lbxRoles.getItems()){
 			item.setSelected(false);
 		}
-		
+
 		for(Listitem item:lbxRolesCarga.getItems()){
 			item.setSelected(false);
 		}
 	}
-	
+
 	private void disabledLbxRoels(Boolean estado){
 		for(Listitem item:lbxRoles.getItems()){
 			item.setDisabled(estado);
 		}
-		
+
 		for(Listitem item:lbxRolesCarga.getItems()){
 			item.setDisabled(estado);
 		}
 	}
-	
+
 	/**
 	 * Recupera datos del usuario para la edicion o consulta.
 	 * @param id
@@ -722,7 +721,7 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 		quitaSelecLbxRoles();
 		usuarioSistema = ServiceLocator.getUsuarioManager().buscarPorId(id);
 		lstUsuarioRol=ServiceLocator.getUsuarioRolManager().buscarXIdUsuario(id.intValue());
-		
+
 		cargarRoles();
 		lblRolesSeleccionados.setValue("0");
 		if(lstUsuarioRol.size()>0){
@@ -739,8 +738,8 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 //			lblRolesSeleccionados.setValue(String.valueOf(lbxRoles.getSelectedItems().size()));
 		}
 		lblRolesSeleccionados.setValue(String.valueOf(lstUsuarioRol.size()));
-		chbxSoloRolesSeleccionados.setChecked(true);		
-		
+		chbxSoloRolesSeleccionados.setChecked(true);
+
 		disabledLbxRoels(btnGuardar.isDisabled());
 
 		txtEmail.setText("");
@@ -766,7 +765,7 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 //				cmbPersonal.setDisabled(false);
 			}
 		}
-		
+
 		txtApellidoPaterno.setValue(usuarioSistema.getApellidoPaterno());
 		txtApellidoMaterno.setValue(usuarioSistema.getApellidoMaterno());
 		txtNombres.setValue(usuarioSistema.getNombre());
@@ -775,17 +774,17 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 		txtLogin.setValue(usuarioSistema.getLogin());
 		txtPassword.setText(usuarioSistema.getPwdNormal());
 		txtConfirmaPassword.setValue(usuarioSistema.getPwdNormal());
-		
+
 		if (usuarioSistema.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO))
 			rdSi.setSelected(true);
 		else
 			rdNo.setSelected(true);
 		txtEmail.setFocus(true);
 
-		
+
 		//Buscar el usuario en la db de carga
 		 transcarUsuarioPersonal = ServiceLocator.getTranscarWebManager().buscarUsuario(usuarioSistema.getLogin());
-		 if(transcarUsuarioPersonal!=null) {			 
+		 if(transcarUsuarioPersonal!=null) {
 			 List<TranscarRolUsuario> result = ServiceLocator.getTranscarWebManager().buscarRolesUsuario(transcarUsuarioPersonal.getId());
 			 if(result.size()>0) {
 				 TranscarUsuarioPersonal _usuarioPersonal= result.get(0).getTranscarUsuarioPersonal();
@@ -793,7 +792,7 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 					 chbxAutorizaEntregaSinVerificarUsuario.setChecked(_usuarioPersonal.getAutorizaEntregaSinVerificarUsuario()==Constantes.TRUE_VALUE?true:false);
 				 if(_usuarioPersonal.getPermiteVentaOtrasAgencias()!=null)
 					 chbxIngresaComprobanteOtraAgencia.setChecked(_usuarioPersonal.getPermiteVentaOtrasAgencias()==Constantes.TRUE_VALUE?true:false);
-				 
+
 				 chbxSoloRolesSeleccionadosCarga.setChecked(true);
 			 }
 			 for(Listitem item: lbxRolesCarga.getItems()) {
@@ -801,15 +800,15 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 				 for(TranscarRolUsuario _rolUsuario: result) {
 					if(rolUsuario.getId().intValue()==_rolUsuario.getId().intValue())
 						item.setSelected(true);
-				 }				 
+				 }
 			 }
 		 }
-		 lblRolesSeleccionadosCarga.setValue(String.valueOf(lbxRolesCarga.getSelectedItems().size()));		 
-		 
+		 lblRolesSeleccionadosCarga.setValue(String.valueOf(lbxRolesCarga.getSelectedItems().size()));
+
 		 soloRolesSeleccionados();
 	}
 
-	/** 
+	/**
 	 * Recupera datos al seleccionar personal.
 	 * @throws Exception
 	 */
@@ -821,7 +820,7 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 		txtEmail.setText("");
 		if(cmbPersonal.getSelectedIndex()<0)
 			cmbPersonal.setSelectedIndex(0);
-				
+
 		if(cmbPersonal.getSelectedItem().getValue() instanceof Personal){
 			cmbAgencia.setDisabled(true);
 			txtApellidoPaterno.setReadonly(true);
@@ -838,7 +837,7 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 			/*	Sugiere el nombre de usuario	*/
 			if(!(txtLogin.isDisabled()))
 				txtLogin.setValue(((Personal) cmbPersonal.getSelectedItem().getValue()).getNombre().substring(0, 1) + ((Personal) cmbPersonal.getSelectedItem().getValue()).getApellidoPaterno());
-			
+
 			txtEmail.setFocus(true);
 //			txtEmail.setReadonly(false);
 		}else{
@@ -853,28 +852,28 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 		}
 		txtPassword.setText("");
 		txtConfirmaPassword.setText("");
-		
+
 //		txtEmail.setReadonly(false);
 		cmbAgencia.setSelectedIndex(0);
-		
-		
+
+
 //		if (cmbPersonal.getSelectedIndex() >= 0){
 //			if (cmbPersonal.getSelectedItem().getValue() instanceof Personal){
-//				
+//
 //				txtApellidoPaterno.setDisabled(true);
 //				txtApellidoMaterno.setDisabled(true);
 //				txtNombres.setDisabled(true);
 //				txtEmail.setReadonly(false);
 //			}
-//		}	
+//		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public void onchangeListBox(){
 		Listitem lItemUsuario = listboxLista.getItemAtIndex(listboxLista.getSelectedIndex());
-		
+
 		if ( ((Usuario) lItemUsuario.getValue()).getEstadoRegistro().equals(Constantes.VALUE_ACTIVO)){
 			btnEliminar.setLabel("Desactivar");
 			btnEliminar.setImage("resources/toolbar/mp_toolbarEliminar.png");
@@ -887,7 +886,7 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 			questionDelete="¿Desea reactivar al Usuario: " + ((Usuario)lItemUsuario.getValue()).getLogin();
 		}
 	}
-	
+
 	/**
 	 * Realiza la asociación entre el usuario y los roles.
 	 * @param usuario	: Objeto Usuario
@@ -896,13 +895,13 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 	 */
 	private void onSave_usuarioRol(Usuario usuario,int action) throws Exception{
 		for(Listitem item:lbxRoles.getSelectedItems()){
-			Rol rolSeleccionado=item.getValue();	
+			Rol rolSeleccionado=item.getValue();
 			if (action==ACTION_NEW){
 				UsuarioRol usuarioRol= new UsuarioRol();
 				usuarioRol.setRol(rolSeleccionado);
 				usuarioRol.setUsuario(usuarioSistema);
 				saveUsuarioRol(action,usuarioRol);
-			}else{				
+			}else{
 				if(lstUsuarioRol.size()==0){
 					UsuarioRol usuarioRol=new UsuarioRol();
 					usuarioRol.setRol(rolSeleccionado);
@@ -925,13 +924,13 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 				}
 			}
 		}
-		
+
 		/*Inactiva el registro actual si es que el rol seleccionado es diferente al actual*/
 		for(UsuarioRol usuarioRol:lstUsuarioRol){
 			UsuarioRol usuarioRolAnular=null;
 			for(Listitem itemSelect:lbxRoles.getItems()){
 				Rol rol=itemSelect.getValue();
-				if(rol.getId().intValue()==usuarioRol.getRol().getId().intValue() && itemSelect.isSelected()==false){
+				if(rol.getId().intValue()==usuarioRol.getRol().getId().intValue() && !itemSelect.isSelected()){
 					usuarioRolAnular=new UsuarioRol();
 					usuarioRolAnular=usuarioRol;
 					break;
@@ -943,8 +942,8 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 				ServiceLocator.getUsuarioRolManager().actualizar(usuarioRolAnular);
 			}
 		}
-		
-		
+
+
 	}
 
 	/**
@@ -957,12 +956,12 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 		UsuarioRolID usuarioRolID = new UsuarioRolID();
 		usuarioRolID.setIdRol(usuarioRol.getRol().getId());
 		usuarioRolID.setIdUsuario(usuarioRol.getUsuario().getId());
-		
+
 		usuarioRol.setUsuarioRolID(usuarioRolID);
 		usuarioRol.setRol(usuarioRol.getRol());
 		usuarioRol.setUsuario(usuarioRol.getUsuario());
 		usuarioRol.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-		
+
 		switch (action) {
 			case ACTION_NEW:
 				UtilData.auditarRegistro(usuarioRol, this.getUsuario(), Executions.getCurrent());
@@ -975,7 +974,7 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 				break;
 		}
 	}
-	
+
 	public void generarPassword(){
 //		int lengthPassword = 8;
 //		String password = "";
@@ -993,75 +992,74 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 	private void cargarRoles(){
 		Util.limpiarListbox(lbxRoles);
 		List<Rol>lstRoles=ServiceLocator.getRolManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
-		
+
 		for(Rol rol:lstRoles){
 			Listitem item=new Listitem();
 			Listcell cell=null;
-			
+
 			cell=new Listcell(rol.getDenominacion());
 			item.appendChild(cell);
-			
+
 			item.setValue(rol);
-			
+
 			lbxRoles.addEventListener(Events.ON_SELECT,new EventListener<Event>() {
 				@Override
 				public void onEvent(Event event) throws Exception {
 					lblRolesSeleccionados.setValue(String.valueOf(lbxRoles.getSelectedItems().size()));
 				}
 			});
-			
+
 			lbxRoles.appendChild(item);
 		}
-		
+
 	}
-	
+
 	/*
-	 * Carga los roles de Carga	
+	 * Carga los roles de Carga
 	 */
 	private void cargarRolesCarga() throws Exception {
 		Util.limpiarListbox(lbxRolesCarga);
 		List<TranscarRolUsuario> result = ServiceLocator.getTranscarWebManager().buscarRolesUsuario();
-		
+
 		for(TranscarRolUsuario rolUsuario:result){
 			Listitem item = new Listitem();
 			Listcell cell = new Listcell(rolUsuario.getNombre());
-			item.appendChild(cell);	
+			item.appendChild(cell);
 			item.setValue(rolUsuario);
-			
+
 			lbxRolesCarga.addEventListener(Events.ON_SELECT,new EventListener<Event>() {
 				@Override
 				public void onEvent(Event event) throws Exception {
 					lblRolesSeleccionadosCarga.setValue(String.valueOf(lbxRolesCarga.getSelectedItems().size()));
 				}
 			});
-			
+
 			lbxRolesCarga.appendChild(item);
 		}
 	}
-	
-	
+
+
 	public void reiniciarPWD(){
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("tipoPassword", 3);
 			List<String>criteriosOrdenar=null;
 			List<Usuario> lstUsuarios = ServiceLocator.getUsuarioManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
-			for(int i=0; i<lstUsuarios.size(); i++){
-				Usuario user = lstUsuarios.get(i);
+			for (Usuario user : lstUsuarios) {
 				user.setPwdNormal(user.getLogin().trim());
 				user.setTipoPassword(0);
 //				usuario.setEmailInfo("jsullo@tepsa.com.pe");
 				UtilData.auditarRegistro(user, true, getUsuario(), Executions.getCurrent());
 				ServiceLocator.getUsuarioManager().actualizar(user);
 			}
-			
+
 		}catch(Exception ex){
-			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage()); 
+			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace();
 		}
 	}
-	
-	
+
+
 	public void soloRolesSeleccionados(){
 		if(chbxSoloRolesSeleccionados.isChecked()){
 			for(Listitem item:lbxRoles.getItems()){
@@ -1072,8 +1070,8 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 				item.setVisible(true);
 			}
 		}
-		
-		
+
+
 		if(chbxSoloRolesSeleccionadosCarga.isChecked()){
 			for(Listitem item:lbxRolesCarga.getItems()){
 				item.setVisible(item.isSelected());
@@ -1084,7 +1082,7 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 			}
 		}
 	}
-	
+
 	public void soloRolesSeleccionadosCarga(){
 		if(chbxSoloRolesSeleccionadosCarga.isChecked()){
 			for(Listitem item:lbxRolesCarga.getItems()){
@@ -1096,12 +1094,12 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 			}
 		}
 	}
-	
-	public void mostrarPassword(){		
+
+	public void mostrarPassword(){
 		if ( !(txtPassword.getText().equals("") || txtLogin.getText().equals("")) ){
-			String clave = "";																	  				
-			clave = txtPassword.getText();						
-			DlgMessage.information("El Password es : "+clave);			
+			String clave = "";
+			clave = txtPassword.getText();
+			DlgMessage.information("El Password es : "+clave);
 		}
 	}
 }

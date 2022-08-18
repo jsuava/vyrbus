@@ -9,11 +9,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for ResultDesbloquearAsiento complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="ResultDesbloquearAsiento">
  *   &lt;complexContent>
@@ -30,8 +30,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ResultDesbloquearAsiento", propOrder = { "codigoAsiento",
@@ -53,10 +53,10 @@ public class ResultDesbloquearAsiento {
 
 	/**
 	 * Gets the value of the codigoAsiento property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getCodigoAsiento() {
 		return codigoAsiento;
@@ -64,11 +64,11 @@ public class ResultDesbloquearAsiento {
 
 	/**
 	 * Sets the value of the codigoAsiento property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setCodigoAsiento(JAXBElement<String> value) {
 		this.codigoAsiento = (value);
@@ -76,10 +76,10 @@ public class ResultDesbloquearAsiento {
 
 	/**
 	 * Gets the value of the codigoTransaccion property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getCodigoTransaccion() {
 		return codigoTransaccion;
@@ -87,11 +87,11 @@ public class ResultDesbloquearAsiento {
 
 	/**
 	 * Sets the value of the codigoTransaccion property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setCodigoTransaccion(JAXBElement<String> value) {
 		this.codigoTransaccion = (value);
@@ -99,10 +99,10 @@ public class ResultDesbloquearAsiento {
 
 	/**
 	 * Gets the value of the error property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link Error }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<Error> getError() {
 		return error;
@@ -110,11 +110,11 @@ public class ResultDesbloquearAsiento {
 
 	/**
 	 * Sets the value of the error property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link Error }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setError(JAXBElement<Error> value) {
 		this.error = (value);
@@ -122,9 +122,9 @@ public class ResultDesbloquearAsiento {
 
 	/**
 	 * Gets the value of the isCorrect property.
-	 * 
+	 *
 	 * @return possible object is {@link Boolean }
-	 * 
+	 *
 	 */
 	public Boolean isIsCorrect() {
 		return isCorrect;
@@ -132,10 +132,10 @@ public class ResultDesbloquearAsiento {
 
 	/**
 	 * Sets the value of the isCorrect property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Boolean }
-	 * 
+	 *
 	 */
 	public void setIsCorrect(Boolean value) {
 		this.isCorrect = value;
@@ -143,10 +143,10 @@ public class ResultDesbloquearAsiento {
 
 	/**
 	 * Gets the value of the nivelUnidad property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getNivelUnidad() {
 		return nivelUnidad;
@@ -154,11 +154,11 @@ public class ResultDesbloquearAsiento {
 
 	/**
 	 * Sets the value of the nivelUnidad property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setNivelUnidad(JAXBElement<String> value) {
 		this.nivelUnidad = (value);
@@ -166,10 +166,10 @@ public class ResultDesbloquearAsiento {
 
 	/**
 	 * Gets the value of the resultadoTransaccion property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getResultadoTransaccion() {
 		return resultadoTransaccion;
@@ -177,11 +177,11 @@ public class ResultDesbloquearAsiento {
 
 	/**
 	 * Sets the value of the resultadoTransaccion property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setResultadoTransaccion(JAXBElement<String> value) {
 		this.resultadoTransaccion = (value);

@@ -22,22 +22,22 @@ public class UsuarioHardwareManagerImpl implements UsuarioHardwareManager{
 	private UsuarioHardwareDAO usuarioHardwareDAO;
 	private AgenciaDAO agenciaDAO;
 	private TitanDAO titanDAO;
-	
+
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	public UsuarioHardwareDAO getUsuarioHardwareDAO(){
 		return usuarioHardwareDAO;
 	}
 	/**
-	 * 
+	 *
 	 * @param usuarioHardwareDAO
 	 */
 	public void setUsuarioHardwareDAO (UsuarioHardwareDAO usuarioHardwareDAO){
 		this.usuarioHardwareDAO = usuarioHardwareDAO;
-	}	
-	
+	}
+
 	/**
 	 * @return the agenciaDAO
 	 */
@@ -50,7 +50,7 @@ public class UsuarioHardwareManagerImpl implements UsuarioHardwareManager{
 	public void setAgenciaDAO(AgenciaDAO agenciaDAO) {
 		this.agenciaDAO = agenciaDAO;
 	}
-	
+
 	/**
 	 * @return the titanDAO
 	 */
@@ -99,7 +99,7 @@ public class UsuarioHardwareManagerImpl implements UsuarioHardwareManager{
 	public int guardar(UsuarioHardware usuarioHardware) throws Exception {
 		int result = Constantes.FAILURE;
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 //			Long idAgencia = usuarioHardware.getAgencia().getId().longValue();
 			Agencia agencia = getAgenciaDAO().buscarPorId(usuarioHardware.getAgencia().getId().longValue());
 			usuarioHardware.setAgencia(agencia);
@@ -111,8 +111,8 @@ public class UsuarioHardwareManagerImpl implements UsuarioHardwareManager{
 				if(resultcodigo.size()>0)
 					throw new CodigoDuplicadoException();
 			}
-			
-			criteriosBusqueda = new TreeMap<String, Object>();
+
+			criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("descripcion", usuarioHardware.getDescripcion());
 			criteriosBusqueda.put("codigo", usuarioHardware.getCodigo());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
@@ -120,20 +120,20 @@ public class UsuarioHardwareManagerImpl implements UsuarioHardwareManager{
 			/*Valida Duplicidad de la Descripcion*/
 			if(resultDescripcion.size()>0)
 				throw new UsuarioHardwareDuplicidadDescripcionException();
-			
+
 			/*	Validamos que la agencia exista en Carga	*/
 //			Integer idAgenciaTranscar = getTitanDAO().buscarAgencia(agencia.getId());
 //			if(idAgenciaTranscar != null)
 //				usuarioHardware.getTitanUsuarioHardware().setIdAgencia(idAgenciaTranscar);
 //			else
 //				throw new AgenciaTranscarNullException();
-			
+
 			/*	Validamos que no exista el usuario Hardware en Carga	*/
 //			String idUsuarioHardware = getTitanDAO().buscarIdUsuarioHardware(usuarioHardware.getTitanUsuarioHardware().getIp());
 //			if(idUsuarioHardware != null)
 //				throw new UsuarioHardwareCargaDuplicateException();
-			
-			getUsuarioHardwareDAO().guardar(usuarioHardware);			
+
+			getUsuarioHardwareDAO().guardar(usuarioHardware);
 //			usuarioHardware.getTitanUsuarioHardware().setIdUsuarioHardwareVyR(usuarioHardware.getId());
 //			getTitanDAO().guardarUsuarioHardware(usuarioHardware.getTitanUsuarioHardware());
 			result = Constantes.CORRECT;
@@ -161,33 +161,33 @@ public class UsuarioHardwareManagerImpl implements UsuarioHardwareManager{
 		try{
 			Agencia agencia = getAgenciaDAO().buscarPorId(usuarioHardware.getAgencia().getId().longValue());
 			usuarioHardware.setAgencia(agencia);
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			if(usuarioHardware.getAgencia().getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_TEPSA){
 				criteriosBusqueda.put("codigo", usuarioHardware.getCodigo());
 				criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 				List<?> resultcodigo = getUsuarioHardwareDAO().buscarPorX(criteriosBusqueda, null);
 				/*Valida duplicidad del código*/
-				for(int r = 0; r < resultcodigo.size(); r ++) {
-					UsuarioHardware oUsuarioHardware = (UsuarioHardware) resultcodigo.get(r);
+				for (Object element : resultcodigo) {
+					UsuarioHardware oUsuarioHardware = (UsuarioHardware) element;
 					if (oUsuarioHardware.getId().intValue()!=usuarioHardware.getId().intValue())
 						throw new CodigoDuplicadoException();
 				}
 			}
-			
-			criteriosBusqueda = new TreeMap<String, Object>();
+
+			criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("descripcion", usuarioHardware.getDescripcion());
 			criteriosBusqueda.put("codigo", usuarioHardware.getCodigo());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDescripcion = getUsuarioHardwareDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la Descripcion*/
-			for(int r = 0; r < resultDescripcion.size(); r ++) {
-				UsuarioHardware oUsuarioHardware = (UsuarioHardware) resultDescripcion.get(r);
+			for (Object element : resultDescripcion) {
+				UsuarioHardware oUsuarioHardware = (UsuarioHardware) element;
 					if (!(oUsuarioHardware.getId().equals(usuarioHardware.getId())))
 						throw new UsuarioHardwareDuplicidadDescripcionException();
 				}
-			
+
 			getUsuarioHardwareDAO().actualizar(usuarioHardware);
-			
+
 			Integer idAgenciaTranscar = getTitanDAO().buscarAgencia(agencia.getId());
 			if(idAgenciaTranscar != null)
 				usuarioHardware.getTitanUsuarioHardware().setIdAgencia(idAgenciaTranscar);
@@ -195,8 +195,8 @@ public class UsuarioHardwareManagerImpl implements UsuarioHardwareManager{
 				throw new AgenciaTranscarNullException();
 //			usuarioHardware.getTitanUsuarioHardware().setIdUsuarioHardwareVyR(usuarioHardware.getId());
 			getTitanDAO().actualizarUsuarioHardware(usuarioHardware.getTitanUsuarioHardware());
-			
-		
+
+
 		}catch (CodigoDuplicadoException rsdex){
 			throw new CodigoDuplicadoException();
 		}catch (UsuarioHardwareDuplicidadDescripcionException uhddex){
@@ -206,8 +206,8 @@ public class UsuarioHardwareManagerImpl implements UsuarioHardwareManager{
 		}catch(Exception ex){
 			throw new Exception(ex);
 		}
-		
-		
+
+
 	}
 
 	/*
@@ -219,7 +219,7 @@ public class UsuarioHardwareManagerImpl implements UsuarioHardwareManager{
 	public void inactivar(Long id) {
 		getUsuarioHardwareDAO().inactivar(id);
 		//Inactivamos el Usuario Hardware
-		getTitanDAO().inactivarUsuarioHardware(id.intValue());		
+		getTitanDAO().inactivarUsuarioHardware(id.intValue());
 	}
 
 	/*

@@ -26,7 +26,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class TipoComprobanteManagerImpl implements TipoComprobanteManager {
 	private TipoComprobanteDAO tipoComprobanteDAO;
-	
+
 	/**
 	 * @return the tipoComprobanteDAO
 	 */
@@ -74,23 +74,23 @@ public class TipoComprobanteManagerImpl implements TipoComprobanteManager {
 	@Transactional
 	public void guardar(TipoComprobante tipoComprobante) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", tipoComprobante.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getTipoComprobanteDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la denominación*/
 			if(resultDenominacion.size()>0)
 				throw new DenominacionDuplicadaException();
-			
+
 			criteriosBusqueda.remove("denominacion");
 			criteriosBusqueda.put("abreviatura", tipoComprobante.getAbreviatura());
 			List<?> resultNombreCorto = getTipoComprobanteDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Nombre corto*/
 			if (resultNombreCorto.size()>0)
 				throw new NombreCortoDuplicadoException();
-			
+
 			getTipoComprobanteDAO().guardar(tipoComprobante);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(NombreCortoDuplicadoException rdnex){
@@ -107,31 +107,31 @@ public class TipoComprobanteManagerImpl implements TipoComprobanteManager {
 	@Transactional
 	public void actualizar(TipoComprobante tipoComprobante) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", tipoComprobante.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getTipoComprobanteDAO().buscarPorX(criteriosBusqueda, null);
-			
+
 			criteriosBusqueda.remove("denominacion");
 			criteriosBusqueda.put("abreviatura", tipoComprobante.getAbreviatura());
 			List<?> resultnombreCorto = getTipoComprobanteDAO().buscarPorX(criteriosBusqueda, null);
-			
+
 			/*Valida duplicidad de la denominación*/
-			for(int r = 0; r < resultDenominacion.size(); r ++) {
-				TipoComprobante otipoComprobante = (TipoComprobante) resultDenominacion.get(r);
+			for (Object element : resultDenominacion) {
+				TipoComprobante otipoComprobante = (TipoComprobante) element;
 					if (!(otipoComprobante.getId() == tipoComprobante.getId()))
 						throw new DenominacionDuplicadaException();
 				}
-			
+
 			/*Valida duplicidad del Nombre corto*/
-			for(int r = 0; r < resultnombreCorto.size(); r ++) {
-				TipoComprobante otipoComprobante= (TipoComprobante) resultnombreCorto.get(r);
+			for (Object element : resultnombreCorto) {
+				TipoComprobante otipoComprobante= (TipoComprobante) element;
 					if (!(otipoComprobante.getId() == tipoComprobante.getId()))
 						throw new NombreCortoDuplicadoException();
-				}		
-		
+				}
+
 			getTipoComprobanteDAO().actualizar(tipoComprobante);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(NombreCortoDuplicadoException rdnex){

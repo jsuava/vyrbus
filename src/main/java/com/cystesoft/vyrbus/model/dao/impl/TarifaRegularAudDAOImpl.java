@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 20 jul. 2020
  * Hora			: 11:42:03
@@ -33,7 +33,7 @@ public class TarifaRegularAudDAOImpl extends GenericDAOImpl implements TarifaReg
 	@Override
 	public void update(Object object) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/* (non-Javadoc)

@@ -234,161 +234,108 @@
 				</groupbox>
 			</tabpanel>
 			<tabpanel><!-- MAPA DEL BUS -->
-			<grid style="border:none">
-				<columns>
-					<column width="70%"/>
-					<column align="right"/>
-				</columns>
-				<rows>
-					<row style="background: white">
-						<hlayout>		
-							<groupbox id="grpbxMapaIda" closable="false" mold="3d">
-								<caption label="SELECCION  ASIENTOS  DE  IDA" style="color: #ffffff;"/>
-								<!--<grid width="193px" height="474px" style="padding:0px;border:none">
-									<rows>
-										<row style="padding:0px;border:none; background:#EEEEEE" >
-											
-											<vbox style="padding:0px;border:none" spacing="0px">
-												<image src="/resources/frontal.png" height="110px" width="194px"/>
-												<hbox spacing="0px">
-													<image src="/resources/borde-inferior.png" height="324px" width="32px"/>
-													<grid id="grdMapaIdaPiso1" style="border:none" width="130px"/>
-													<image src="/resources/borde-superior.png" height="324px" width="32px"/>
-												</hbox>
-												<image src="/resources/posterior.png" height="35px" width="194px"/>
-											</vbox>
-										</row>
-									</rows>
-								</grid>-->				
-							</groupbox>
-							<separator orient="horizontal" width="30px"/>
-							<groupbox id="grpbxMapaRetorno" closable="false" visible="false" mold="3d">
-								<caption label="SELECCION ASIENTOS DE RETORNO" style="color: #ffffff;"/>
-								<!--<grid width="193px" height="474px" style="padding:0px;border:none">
-									<rows>
-										<row style="padding:0px;border:none; background:#EEEEEE" >
-											<vbox style="padding:0px;border:none" spacing="0px">
-												<image src="/resources/frontal.png" height="110px" width="194px"/>
-												<hbox spacing="0px">
-													<image src="/resources/borde-inferior.png" height="324px" width="32px"/>
-													<grid id="grdMapaRetornoPiso1" style="border:none" width="130px"/>
-													<image src="/resources/borde-superior.png" height="324px" width="32px"/>
-												</hbox>
-												<image src="/resources/posterior.png" height="35px" width="194px"/>
-											</vbox>
-										</row>
-									</rows>
-								</grid>-->						
-							</groupbox>
-							<separator orient="horizontal" width="30px"/>
-							<vlayout>
-								<groupbox mold="3d" closable="false">
-									<caption label="LEYENDA DE IMAGENES" style="color: #ffffff;"/>
-									<grid width="280px">
-										<rows>
-											<row>
-												<hbox width="260px" align="center">
-													<hbox align="center" width="26px"><image src="/resources/asientos/asientoDisponible_1.png" style="font-size:9px"/></hbox>
-													<hbox align="center" width="100px"><label value="Disponible" style="font-size:9px"/></hbox>
-													<hbox align="center" width="26px"><image src="/resources/asientos/asientoReservado_1.png"/></hbox>
-													<hbox align="center" width="100px"><label value="Reservado" style="font-size:9px"/></hbox>																															
-												</hbox>
-											</row>
-											<row>
-												<hbox width="260px" align="center">
-													<hbox align="center" width="26px"><image src="/resources/asientos/asientoReservadoDelivery_1.png"/></hbox>
-													<hbox align="center" width="100px"><label value="Reservado x Delivery" style="font-size:9px"/></hbox>
-													<hbox align="center" width="26px"><image src="/resources/asientos/asientoReservadoAgente_1.png"/></hbox>
-													<hbox align="center" width="100px"><label value="Reservado x Agente" style="font-size:9px"/></hbox>
-												</hbox>
-											</row>
-											<row>
-												<hbox width="260px" align="center">
-													<hbox align="center" width="26px"><image src="/resources/asientos/asientoVendidoFemale_1.png"/></hbox>
-													<hbox align="center" width="100px"><label value="Venta Counter" style="font-size:9px"/></hbox>
-													<hbox align="center" width="26px"><image src="/resources/asientos/asientoVendidoMale_1.png"/></hbox>
-													<hbox align="center" width="100px"><label value="Venta Counter" style="font-size:9px"/></hbox>																				
-												</hbox>
-											</row>
-											<row>
-												<hbox width="260px" align="center">
-													<hbox align="center" width="26px"><image src="/resources/asientos/asientoVendidoWebFemale_1.png"/></hbox>
-													<hbox align="center" width="100px"><label value="Venta Web" style="font-size:9px"/></hbox>
-													<hbox align="center" width="26px"><image src="/resources/asientos/asientoVendidoWebMale_1.png"/></hbox>
-													<hbox align="center" width="100px"><label value="Venta Web" style="font-size:9px"/></hbox>																				
-												</hbox>
-											</row>
-											<row>
-												<hbox width="260px" align="center">
-													<hbox  width="26px"><image src="/resources/asientos/asientoBloqueado_1.png"/></hbox>
-													<hbox  width="100px"><label value="Bloqueado" style="font-size:9px"/></hbox>
-													<hbox align="center" width="26px"><image src="/resources/asientos/asientoSemiOcupado_1.png"/></hbox>
-													<hbox align="center" width="100px"><label value="Prioridad de Venta en Tramo" style="font-size:9px"/></hbox>
-												</hbox>
-											</row>
-										</rows>
-									</grid>
-								</groupbox>
-								<separator orient="vertical" />
-								<vlayout spacing="1px">
-								<grid id="grdOcupabilidadIda" width="292px" style="padding:0px">
-									<auxhead>
-										<auxheader label="Ocupabilidad del servicio" colspan="3"/>
-									</auxhead>
-									<columns>
-										<column label="RUTA" width="40%"/>
-										<column label="OCUPADOS" width="30%" align="center"/>
-										<column label="DISPONIBLES" width="30%" align="center"/>
-									</columns>
-									<rows/>
-								</grid>
-								<grid id="grdOcupabilidadRetorno" width="292px">
-									<columns>
-										<column width="40%"/>
-										<column width="30%" align="center"/>
-										<column width="30%" align="center"/>
-									</columns>
-									<rows/>
-								</grid>
-								</vlayout>
-								<grid style="border:none" width="290px">
-									<rows>
-										<row style="background:white">
-											<button label="Refrescar Mapa" 
-													sclass="btnCommandXL" 
-													autodisable="self" 
-													image="/resources/mp_recargar16.png" 
-													onClick="wndVentaReserva.onRefreshMap()"/>
-										</row>
-										<row style="background:white">
-											<button id="btnNextTabVenta" 
-													sclass="btnCommandL" 
-													autodisable="self" 
-													label="Siguiente" 
-													image="/resources/mp_next.png" 
-													disabled="true" 
-													onClick="wndVentaReserva.next()"/>
-										</row>
-										<row style="background:white">
-											<button label="Cerrar" 
-													sclass="btnCommandL" 
-													autodisable="self" 
-													image="resources/mp_cerrarEnabled.png" 
-													onClick="wndVentaReserva.liberarAsientos(); wndVentaReserva.closeTabWindow()" />
-										</row>
-									</rows>
-								</grid>
-							</vlayout>
-						</hlayout>
-						<div id="divLogOperadorPor1" visible="true">
-							<vbox align="center" style="position: absolute;right:9px;top:52px;">
-								<label value="OPERADO POR " style="padding: 0px;font-weight: bold;font-size:27px !important;color:red"  />
-								<image id="imgLogoOperadorPor1"/>
-							</vbox>
-						</div>		
-					</row>
-				</rows>	
-			</grid>
+				<hlayout style="display:flex;flex-wrap:wrap">
+					<vlayout>
+						<groupbox id="grpbxMapaIda" closable="false" mold="3d">
+							<caption label="SELECCION  ASIENTOS  DE  IDA" style="color: #ffffff;"/>											
+						</groupbox>
+						<separator orient="horizontal" width="30px"/>
+						<groupbox id="grpbxMapaRetorno" closable="false" visible="false" mold="3d">
+							<caption label="SELECCION ASIENTOS DE RETORNO" style="color: #ffffff;"/>													
+						</groupbox>
+					</vlayout>
+					<separator orient="horizontal" width="30px"/>
+					<vlayout>
+						<groupbox mold="3d" closable="false">
+							<caption label="LEYENDA DE IMAGENES" style="color: #ffffff;"/>
+							<grid width="280px">
+								<rows>
+									<row>
+										<hbox width="260px" align="center">
+											<hbox align="center" width="26px"><image src="/resources/asientos/asientoDisponible_1.png" style="font-size:9px"/></hbox>
+											<hbox align="center" width="100px"><label value="Disponible" style="font-size:9px"/></hbox>
+											<hbox align="center" width="26px"><image src="/resources/asientos/asientoReservado_1.png"/></hbox>
+											<hbox align="center" width="100px"><label value="Reservado" style="font-size:9px"/></hbox>																															
+										</hbox>
+									</row>
+									<row>
+										<hbox width="260px" align="center">
+											<hbox align="center" width="26px"><image src="/resources/asientos/asientoReservadoDelivery_1.png"/></hbox>
+											<hbox align="center" width="100px"><label value="Reservado x Delivery" style="font-size:9px"/></hbox>
+											<hbox align="center" width="26px"><image src="/resources/asientos/asientoReservadoAgente_1.png"/></hbox>
+											<hbox align="center" width="100px"><label value="Reservado x Agente" style="font-size:9px"/></hbox>
+										</hbox>
+									</row>
+									<row>
+										<hbox width="260px" align="center">
+											<hbox align="center" width="26px"><image src="/resources/asientos/asientoVendidoFemale_1.png"/></hbox>
+											<hbox align="center" width="100px"><label value="Venta Counter" style="font-size:9px"/></hbox>
+											<hbox align="center" width="26px"><image src="/resources/asientos/asientoVendidoMale_1.png"/></hbox>
+											<hbox align="center" width="100px"><label value="Venta Counter" style="font-size:9px"/></hbox>																				
+										</hbox>
+									</row>
+									<row>
+										<hbox width="260px" align="center">
+											<hbox align="center" width="26px"><image src="/resources/asientos/asientoVendidoWebFemale_1.png"/></hbox>
+											<hbox align="center" width="100px"><label value="Venta Web" style="font-size:9px"/></hbox>
+											<hbox align="center" width="26px"><image src="/resources/asientos/asientoVendidoWebMale_1.png"/></hbox>
+											<hbox align="center" width="100px"><label value="Venta Web" style="font-size:9px"/></hbox>																				
+										</hbox>
+									</row>
+									<row>
+										<hbox width="260px" align="center">
+											<hbox  width="26px"><image src="/resources/asientos/asientoBloqueado_1.png"/></hbox>
+											<hbox  width="100px"><label value="Bloqueado" style="font-size:9px"/></hbox>
+											<hbox align="center" width="26px"><image src="/resources/asientos/asientoSemiOcupado_1.png"/></hbox>
+											<hbox align="center" width="100px"><label value="Prioridad de Venta en Tramo" style="font-size:9px"/></hbox>
+										</hbox>
+									</row>
+								</rows>
+							</grid>
+						</groupbox>
+						<separator orient="vertical" />
+						<vlayout spacing="1px">
+						<grid id="grdOcupabilidadIda" width="292px" style="padding:0px">
+							<auxhead>
+								<auxheader label="Ocupabilidad del servicio" colspan="3"/>
+							</auxhead>
+							<columns>
+								<column label="RUTA" width="40%"/>
+								<column label="OCUPADOS" width="30%" align="center"/>
+								<column label="DISPONIBLES" width="30%" align="center"/>
+							</columns>
+							<rows/>
+						</grid>
+						<grid id="grdOcupabilidadRetorno" width="292px">
+							<columns>
+								<column width="40%"/>
+								<column width="30%" align="center"/>
+								<column width="30%" align="center"/>
+							</columns>
+							<rows/>
+						</grid>
+						</vlayout>
+						<grid style="border:none" width="290px">
+							<rows>
+								<row >
+									<button label="Refrescar Mapa" sclass="btnCommandXL" autodisable="self" image="/resources/mp_recargar16.png" onClick="wndVentaReserva.onRefreshMap()"/>
+								</row>
+								<row >
+									<button id="btnNextTabVenta" sclass="btnCommandL" autodisable="self" label="Siguiente" image="/resources/mp_next.png" disabled="true" onClick="wndVentaReserva.next()"/>
+								</row>
+								<row >
+									<button label="Cerrar" sclass="btnCommandL" autodisable="self" image="resources/mp_cerrarEnabled.png" onClick="wndVentaReserva.liberarAsientos(); wndVentaReserva.closeTabWindow()" />
+								</row>
+							</rows>
+						</grid>
+					</vlayout>
+					<div id="divLogOperadorPor1" visible="true">
+						<vbox align="center" style="position: absolute;right:9px;top:52px;">
+							<label value="OPERADO POR " style="padding: 0px;font-weight: bold;font-size:27px !important;color:red"  />
+							<image id="imgLogoOperadorPor1"/>
+						</vbox>
+					</div>
+				</hlayout>
 			</tabpanel>
 			<tabpanel><!-- INFORMACION DE LA VENTA -->
 				<grid>

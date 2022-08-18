@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 03/04/2014
  */
@@ -16,10 +16,10 @@ import java.util.Date;
 public class TarifaFechaAbierta extends GenericBean {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private long id;
 	private Ruta ruta;
 	private Servicio servicio;
@@ -111,5 +111,5 @@ public class TarifaFechaAbierta extends GenericBean {
 	public void setFechaSuspencion(Date fechaSuspencion) {
 		this.fechaSuspencion = fechaSuspencion;
 	}
-	
+
 }

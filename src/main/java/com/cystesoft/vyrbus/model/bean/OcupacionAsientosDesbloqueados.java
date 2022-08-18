@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 09/07/2012
  */
@@ -28,8 +28,8 @@ public class OcupacionAsientosDesbloqueados extends GenericBean implements Seria
 	private Integer numeroPiso;
 	private Date fechaBloqueo;
 	private Date fechaExpiracionBloqueo;
-	
-	
+
+
 
 	/**
 	 * @return the ocupacionAsientosDesbloqueadosID
@@ -56,7 +56,7 @@ public class OcupacionAsientosDesbloqueados extends GenericBean implements Seria
 	public void setUsuarioHardware(UsuarioHardware usuarioHardware) {
 		this.usuarioHardware = usuarioHardware;
 	}
-	
+
 	/**
 	 * @return Objeto usuario.
 	 */
@@ -69,7 +69,7 @@ public class OcupacionAsientosDesbloqueados extends GenericBean implements Seria
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-	
+
 	/**
 	 * @return Objeto ruta.
 	 */
@@ -82,7 +82,7 @@ public class OcupacionAsientosDesbloqueados extends GenericBean implements Seria
 	public void setRuta(Ruta ruta) {
 		this.ruta = ruta;
 	}
-	
+
 	/**
 	 * @return Objeto itinerario.
 	 */
@@ -95,7 +95,7 @@ public class OcupacionAsientosDesbloqueados extends GenericBean implements Seria
 	public void setItinerario(Itinerario itinerario) {
 		this.itinerario = itinerario;
 	}
-	
+
 	/**
 	 * @return Objeto numeroAsiento.
 	 */
@@ -108,7 +108,7 @@ public class OcupacionAsientosDesbloqueados extends GenericBean implements Seria
 	public void setNumeroAsiento(Integer numeroAsiento) {
 		this.numeroAsiento = numeroAsiento;
 	}
-	
+
 	/**
 	 * @return the numeroPiso
 	 */
@@ -121,7 +121,7 @@ public class OcupacionAsientosDesbloqueados extends GenericBean implements Seria
 	public void setNumeroPiso(Integer numeroPiso) {
 		this.numeroPiso = numeroPiso;
 	}
-	
+
 	/**
 	 * @return Objeto fechaPartida.
 	 */
@@ -134,7 +134,7 @@ public class OcupacionAsientosDesbloqueados extends GenericBean implements Seria
 	public void setFechaPartida(String fechaPartida) {
 		this.fechaPartida = fechaPartida;
 	}
-	
+
 	/**
 	 * @return Objeto horaPartida.
 	 */
@@ -171,5 +171,5 @@ public class OcupacionAsientosDesbloqueados extends GenericBean implements Seria
 	public void setFechaExpiracionBloqueo(Date fechaExpiracionBloqueo) {
 		this.fechaExpiracionBloqueo = fechaExpiracionBloqueo;
 	}
-	
+
 }

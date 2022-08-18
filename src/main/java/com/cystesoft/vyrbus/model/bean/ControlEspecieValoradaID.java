@@ -12,7 +12,7 @@ public class ControlEspecieValoradaID implements java.io.Serializable, Cloneable
 	private String strSerie;
 
 	public ControlEspecieValoradaID() {
-	}	
+	}
 	/**
 	 * @param idTipoComprobante
 	 * @param idUsuarioHardware
@@ -35,7 +35,7 @@ public class ControlEspecieValoradaID implements java.io.Serializable, Cloneable
 	public void setIdTipoComprobante(Integer idTipoComprobante) {
 		this.idTipoComprobante = idTipoComprobante;
 	}
-	
+
 	/**
 	 * @return Objeto idUsuarioHardware.
 	 */
@@ -68,8 +68,8 @@ public class ControlEspecieValoradaID implements java.io.Serializable, Cloneable
 		// TODO Auto-generated method stub
 		return super.clone();
 	}
-	
-	
+
+
 //	public boolean equals(Object other) {
 //		if ((this == other))
 //			return true;

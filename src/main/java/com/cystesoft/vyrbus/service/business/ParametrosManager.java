@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 14/05/2013
  */
@@ -22,16 +22,16 @@ public interface ParametrosManager  {
 	 * @return
 	 */
 	public Parametros buscarPorEstadoRegistro(String estado);
-	
+
 
 	/**
 	 * Guarda Parametros
-	 * @param parametros	
+	 * @param parametros
 	 * @throws Exception
 	 */
 	@Transactional
 	public void guardar(Parametros parametros) throws Exception;
-	
+
 	/**
 	 * Actualizar parámetros
 	 * @param parametros

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 28/11/2016
  * Hora			: 09:51:38
@@ -20,32 +20,32 @@ import com.cystesoft.vyrbus.model.bean.DetalleEmbarquePasajero;
  */
 public interface DetalleEmbarquePasajeroManager{
 	/**
-	 * 
+	 *
 	 * @param estado
 	 * @param criterioOrden
 	 * @return
 	 */
 	public ArrayList<DetalleEmbarquePasajero> buscarPorEstadoRegistro(String estado, String criterioOrden);
 	/**
-	 * 
+	 *
 	 * @param criteriosBusqueda
 	 * @param criteriosOrdenar
 	 * @return
 	 */
 	public ArrayList<DetalleEmbarquePasajero> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
 	/**
-	 * 
+	 *
 	 * @param id
 	 * @return
 	 */
 	public DetalleEmbarquePasajero buscarPorId(Long id);
 	/**
-	 * 
+	 *
 	 * @param detalleEmbarquePasajero
 	 */
 	public void guardar(DetalleEmbarquePasajero detalleEmbarquePasajero);
 	/**
-	 * 
+	 *
 	 * @param detalleEmbarquePasajero
 	 */
 	public void actualizar(DetalleEmbarquePasajero detalleEmbarquePasajero);

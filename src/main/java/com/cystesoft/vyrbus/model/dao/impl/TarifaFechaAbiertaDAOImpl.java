@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 03/04/2014
  */
@@ -31,7 +31,7 @@ public class TarifaFechaAbiertaDAOImpl extends GenericDAOImpl implements TarifaF
 	 */
 	@Override
 	public Double buscarTarifa(Integer idRuta,Integer idServicio) throws Exception {
-				
+
 		String sql="SELECT NVL(tf.n_monto,0)as monto,tf.d_Feccad FROM VRTTARIFAFA tf " +
 				   "WHERE tf.ruta_id="+idRuta+" " +
 				   		"AND tf.servicio_id="+idServicio+" " +
@@ -40,21 +40,21 @@ public class TarifaFechaAbiertaDAOImpl extends GenericDAOImpl implements TarifaF
 				   	"ORDER BY tf.tarifafa_id ";
 		log.info(sql);
 		List<?>result=getSession().createSQLQuery(sql).list();
-		
+
 		Date fechaHoraActual=Constantes.FORMAT_DATE_TIME_24H.parse(new MyTime().dateServer());
 		Double tarifa=.00;
-		
-		for(int i=0; i<result.size(); i++){
-			Object[] obj=(Object[])result.get(i);			
-			
+
+		for (Object element : result) {
+			Object[] obj=(Object[])element;
+
 			Date fechaCaducidad=(Date)obj[1];
-			
+
 			if(fechaCaducidad.getTime()>=fechaHoraActual.getTime())
 				tarifa=((BigDecimal)obj[0]).doubleValue();
 			else
 				tarifa=.00;
 		}
-		
+
 		return tarifa;
 	}
 
@@ -81,24 +81,24 @@ public class TarifaFechaAbiertaDAOImpl extends GenericDAOImpl implements TarifaF
 						"INNER JOIN VRMRUTA r ON (r.ruta_id=tfa.ruta_id) "+
 					"WHERE r.localidad_idorigen=NVL("+idOrigen+",r.localidad_idorigen) " +
 						 "AND r.localidad_iddestino=NVL("+idDestino+",r.localidad_iddestino) "+
-					     "AND tfa.servicio_id=NVL("+idServicio+",tfa.servicio_id) "+ 
+					     "AND tfa.servicio_id=NVL("+idServicio+",tfa.servicio_id) "+
 					     "AND tfa.d_Fecsus IS NULL "+
 					     "AND tfa.c_estreg='A'";
 		log.info(sql);
 		List<?>lstResult=getSession().createSQLQuery(sql).list();
-		List<TarifaFechaAbierta>lstTarifasFA=new ArrayList<TarifaFechaAbierta>();
+		List<TarifaFechaAbierta>lstTarifasFA=new ArrayList<>();
 		for(int i=0; i<lstResult.size();i++){
 			Object[] obj=(Object[])lstResult.get(i);
-			
+
 			TarifaFechaAbierta tarifaFechaAbierta=new TarifaFechaAbierta();
 			tarifaFechaAbierta.setId(((BigDecimal)obj[0]).longValue());
-			
+
 			Ruta ruta=new Ruta();
 			ruta.setId(((BigDecimal)obj[1]).intValue());
-			
+
 			Servicio servicio=new Servicio();
 			servicio.setId(((BigDecimal)obj[2]).intValue());
-			
+
 			tarifaFechaAbierta.setRuta(ruta);
 			tarifaFechaAbierta.setServicio(servicio);
 			tarifaFechaAbierta.setMonto(((BigDecimal)obj[3]).doubleValue());
@@ -112,7 +112,7 @@ public class TarifaFechaAbiertaDAOImpl extends GenericDAOImpl implements TarifaF
 			tarifaFechaAbierta.setFechaModificacion(obj[11]!=null?(Date)obj[11]:null);
 			tarifaFechaAbierta.setUsuarioModificacion(obj[12]!=null?obj[12].toString():null);
 			tarifaFechaAbierta.setIpModificacion(obj[13]!=null?obj[13].toString():null);
-			
+
 			/* Valida que la fecha de caducidad de la tarifa a fecha abierta */
 			Date fechaHoraActual=Constantes.FORMAT_DATE_TIME_24H.parse(new MyTime().dateServer());
 			if(tarifaFechaAbierta.getFechaCaducidad().getTime()>=fechaHoraActual.getTime())
@@ -120,7 +120,7 @@ public class TarifaFechaAbiertaDAOImpl extends GenericDAOImpl implements TarifaF
 		}
 		return lstTarifasFA;
 	}
-	
+
 	@Override
 	public List<TarifaFechaAbierta> listarTarifasFA(Integer idOrigen,Integer idDestino, Integer idServicio)throws Exception{
 		String sql="SELECT   " +
@@ -141,50 +141,50 @@ public class TarifaFechaAbiertaDAOImpl extends GenericDAOImpl implements TarifaF
 					"WHERE  " +
 					"	s.servicio_id = NVL(" + idServicio + ", s.servicio_id) " +
 					"	AND r.localidad_idorigen = NVL(" + idOrigen + ", r.localidad_idorigen) " +
-					"	AND r.localidad_iddestino = NVL(" + idDestino + ", r.localidad_iddestino) " + 
+					"	AND r.localidad_iddestino = NVL(" + idDestino + ", r.localidad_iddestino) " +
 					"	AND fa.c_estreg='A' " +
 					"ORDER BY s.c_denominacion, r.c_origen||'-'||r.c_destino";
-		
+
 		log.info(sql);
 		List<?>lstResult=getSession().createSQLQuery(sql).list();
-		List<TarifaFechaAbierta>lstTarifasFA=new ArrayList<TarifaFechaAbierta>();
+		List<TarifaFechaAbierta>lstTarifasFA=new ArrayList<>();
 		for(int i=0; i<lstResult.size();i++){
 			Object[] obj=(Object[])lstResult.get(i);
-			
+
 			TarifaFechaAbierta tarifaFechaAbierta=new TarifaFechaAbierta();
 			tarifaFechaAbierta.setId(((BigDecimal)obj[0]).longValue());
 
 			Servicio servicio=new Servicio();
 			servicio.setId(((BigDecimal)obj[1]).intValue());
 			servicio.setDenominacion(obj[2]!=null?obj[2].toString():null);
-			
+
 			Ruta ruta=new Ruta();
 			ruta.setId(((BigDecimal)obj[3]).intValue());
 			ruta.setOrigen(obj[4]!=null?obj[4].toString():null);
 			ruta.setDestino(obj[5]!=null?obj[5].toString():null);
-			
+
 			Localidad origen = new Localidad();
 			origen.setId(((BigDecimal)obj[9]).intValue());
 			Localidad destino = new Localidad();
 			destino.setId(((BigDecimal)obj[10]).intValue());
 			ruta.setLocalidadOrigen(origen);
 			ruta.setLocalidadDestino(destino);
-			
+
 			tarifaFechaAbierta.setRuta(ruta);
 			tarifaFechaAbierta.setServicio(servicio);
 			tarifaFechaAbierta.setMonto(((BigDecimal)obj[6]).doubleValue());
 			tarifaFechaAbierta.setFechaActivacion((Date)obj[7]);
 			tarifaFechaAbierta.setFechaCaducidad((Date)obj[8]);
-			
+
 			/* Valida que la fecha de caducidad de la tarifa a fecha abierta */
 			Date fechaHoraActual=Constantes.FORMAT_DATE_TIME_24H.parse(new MyTime().dateServer());
 			if(tarifaFechaAbierta.getFechaCaducidad().getTime()>=fechaHoraActual.getTime())
 				lstTarifasFA.add(tarifaFechaAbierta);
 		}
-		return lstTarifasFA;		
+		return lstTarifasFA;
 	}
-	
-	
+
+
 
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.TarifaFechaAbiertaDAO#guardar(com.tepsa.sisvyr.model.bean.TarifaFechaAbierta)
@@ -212,5 +212,5 @@ public class TarifaFechaAbiertaDAOImpl extends GenericDAOImpl implements TarifaF
 		// TODO Auto-generated method stub
 		super.inactivate(TarifaFechaAbierta.class, id);
 	}
-	
+
 }

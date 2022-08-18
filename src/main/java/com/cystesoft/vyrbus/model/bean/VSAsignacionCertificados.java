@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Avalos Sullo
  * Fecha		: 28/06/2014
  */
@@ -15,19 +15,19 @@ import java.io.Serializable;
  */
 public class VSAsignacionCertificados extends GenericBean implements Serializable{
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer id;
 	private Integer agenciaID;
 	private Long correlativoInicial;
 	private Long correlativoFinal;
-	
+
 	private Agencia agencia; //No mapeado
-	
-	
-	
+
+
+
 	/**
 	 * @return the id
 	 */
@@ -88,5 +88,5 @@ public class VSAsignacionCertificados extends GenericBean implements Serializabl
 	public void setAgencia(Agencia agencia) {
 		this.agencia = agencia;
 	}
-	
+
 }

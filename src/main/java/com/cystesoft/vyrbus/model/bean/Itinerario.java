@@ -28,13 +28,13 @@ public class Itinerario extends GenericBean implements Serializable, Cloneable {
 	private Integer esAnulado;
 	private String secuenciaTramo;
 	private Date fechaRealPartida;
-	
+
 	private List<SecuenciaTramo> listSecuenciaTramo;		//No mapeado
 	private String operadoPor; //No Mapeado
-	
+
 	public Itinerario() {
 	}
-	
+
 	/**
 	 * @param id
 	 */
@@ -55,7 +55,7 @@ public class Itinerario extends GenericBean implements Serializable, Cloneable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	/**
 	 * @return Objeto tipoItinerario.
 	 */
@@ -68,7 +68,7 @@ public class Itinerario extends GenericBean implements Serializable, Cloneable {
 	public void setTipoItinerario(TipoItinerario tipoItinerario) {
 		this.tipoItinerario = tipoItinerario;
 	}
-	
+
 	/**
 	 * @return Objeto bus.
 	 */
@@ -81,7 +81,7 @@ public class Itinerario extends GenericBean implements Serializable, Cloneable {
 	public void setBus(Bus bus) {
 		this.bus = bus;
 	}
-	
+
 	/**
 	 * @return Objeto ruta.
 	 */
@@ -94,7 +94,7 @@ public class Itinerario extends GenericBean implements Serializable, Cloneable {
 	public void setRuta(Ruta ruta) {
 		this.ruta = ruta;
 	}
-	
+
 	/**
 	 * @return Objeto servicio.
 	 */
@@ -107,7 +107,7 @@ public class Itinerario extends GenericBean implements Serializable, Cloneable {
 	public void setServicio(Servicio servicio) {
 		this.servicio = servicio;
 	}
-	
+
 	/**
 	 * @return Objeto agenciaPartida.
 	 */
@@ -120,7 +120,7 @@ public class Itinerario extends GenericBean implements Serializable, Cloneable {
 	public void setAgenciaPartida(Agencia agenciaPartida) {
 		this.agenciaPartida = agenciaPartida;
 	}
-	
+
 	/**
 	 * @return Objeto agenciaLlegada.
 	 */
@@ -133,7 +133,7 @@ public class Itinerario extends GenericBean implements Serializable, Cloneable {
 	public void setAgenciaLlegada(Agencia agenciaLlegada) {
 		this.agenciaLlegada = agenciaLlegada;
 	}
-	
+
 	/**
 	 * @return Objeto fechaPartida.
 	 */
@@ -146,7 +146,7 @@ public class Itinerario extends GenericBean implements Serializable, Cloneable {
 	public void setFechaPartida(Date fechaPartida) {
 		this.fechaPartida = fechaPartida;
 	}
-	
+
 	/**
 	 * @return Objeto horaPartida.
 	 */
@@ -159,7 +159,7 @@ public class Itinerario extends GenericBean implements Serializable, Cloneable {
 	public void setHoraPartida(String horaPartida) {
 		this.horaPartida = horaPartida;
 	}
-	
+
 	/**
 	 * @return Objeto fechaLlegada.
 	 */
@@ -172,7 +172,7 @@ public class Itinerario extends GenericBean implements Serializable, Cloneable {
 	public void setFechaLlegada(Date fechaLlegada) {
 		this.fechaLlegada = fechaLlegada;
 	}
-	
+
 	/**
 	 * @return Objeto horaLlegada.
 	 */
@@ -185,7 +185,7 @@ public class Itinerario extends GenericBean implements Serializable, Cloneable {
 	public void setHoraLlegada(String horaLlegada) {
 		this.horaLlegada = horaLlegada;
 	}
-	
+
 	/**
 	 * @return Objeto esAnulado.
 	 */
@@ -225,7 +225,7 @@ public class Itinerario extends GenericBean implements Serializable, Cloneable {
 	public void setListSecuenciaTramo(List<SecuenciaTramo> listSecuenciaTramo) {
 		this.listSecuenciaTramo = listSecuenciaTramo;
 	}
-	
+
 	/**
 	 * @return the fechaRealPartida
 	 */
@@ -241,7 +241,7 @@ public class Itinerario extends GenericBean implements Serializable, Cloneable {
 
 	private List<SecuenciaTramo> obtenerSecuencia(String secuencia){
 		String[] sArray = secuencia.split(";");
-		List<SecuenciaTramo> lstResult = new ArrayList<SecuenciaTramo>();
+		List<SecuenciaTramo> lstResult = new ArrayList<>();
 		for(String obj : sArray){
 			SecuenciaTramo secuenciaTramo = new SecuenciaTramo();
 			String[] buffer = obj.split("-");

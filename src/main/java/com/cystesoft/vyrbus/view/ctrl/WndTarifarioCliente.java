@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 12/07/2016
  * Hora			: 10:08:11
@@ -59,12 +59,12 @@ import com.cystesoft.vyrbus.view.ui.WndBase;
 public class WndTarifarioCliente extends WndBase{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Textbox txtRucCliente;
 	private Groupbox gpbxDatosTarifa;
-	private Listbox listbxDatosTarifa;	
+	private Listbox listbxDatosTarifa;
 	private Combobox cmbOrigen;
 	private Combobox cmbDestino;
 	private Combobox cmbServicio;
@@ -82,7 +82,7 @@ public class WndTarifarioCliente extends WndBase{
 	private Label lblRazonSocial;
 	private Tab tabLista;
 	private Tab tabMantenimiento;
-	
+
 	private TarifaCliente tarifaCliente=null;
 	private Cliente cliente=null;
 	/* (non-Javadoc)
@@ -94,15 +94,15 @@ public class WndTarifarioCliente extends WndBase{
 		UtilData.cargarDataCombo(cmbDestino, Localidad.class, false);
 		UtilData.cargarDataCombo(cmbServicio, Servicio.class, false);
 		UtilData.cargarTipoAsiento(cmbTipoAsiento, false);
-		
+
 		dbbxTarifa.setLocale(Locale.US);
 		disabledControlsTarifa(true);
 		disabledControlsAgregarDetalle(true);
 		btnGuardar.setDisabled(true);
 		btnCancelar.setDisabled(true);
 	}
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
 	 */
@@ -129,7 +129,7 @@ public class WndTarifarioCliente extends WndBase{
 		tabLista=(Tab)this.getFellow("tabLista");
 		tabMantenimiento=(Tab)this.getFellow("tabMantenimiento");
 	}
-	
+
 	public void buscarCliente(){
 		try {
 			cliente=null;
@@ -181,10 +181,10 @@ public class WndTarifarioCliente extends WndBase{
 					cell= new Listcell(Util.toNumberFormat(tarifaClienteDetalle.getTarifa(),2));
 					cell.setStyle(style);
 					item.appendChild(cell);
-					
+
 					Hbox hbox= new Hbox();
 					hbox.setAlign("ceilnter");
-					
+
 					Toolbarbutton toolbarbutton= new Toolbarbutton("Editar");
 					toolbarbutton.setDisabled((isEditable?false:true));
 					toolbarbutton.setStyle("text-transform:none;color:blue");
@@ -195,7 +195,7 @@ public class WndTarifarioCliente extends WndBase{
 							try {
 								TarifaClienteDetalle tarifaDetalle=(TarifaClienteDetalle) event.getTarget().getAttribute(TarifaClienteDetalle.class.getName());
 								editarTarifa(tarifaDetalle);
-								
+
 							} catch (Exception e) {
 								e.printStackTrace();
 								DlgMessage.error(e.getMessage());
@@ -203,7 +203,7 @@ public class WndTarifarioCliente extends WndBase{
 						}
 					});
 					hbox.appendChild(toolbarbutton);
-					
+
 					toolbarbutton= new Toolbarbutton("Anular");
 					toolbarbutton.setDisabled((isEditable?false:true));
 					toolbarbutton.setStyle("text-transform:none;color:blue");
@@ -214,7 +214,7 @@ public class WndTarifarioCliente extends WndBase{
 							try {
 								TarifaClienteDetalle tarifaDetalle=(TarifaClienteDetalle) event.getTarget().getAttribute(TarifaClienteDetalle.class.getName());
 								anularTarifa(tarifaDetalle);
-								
+
 							} catch (Exception e) {
 								e.printStackTrace();
 								DlgMessage.error(e.getMessage());
@@ -225,17 +225,17 @@ public class WndTarifarioCliente extends WndBase{
 					cell= new Listcell();
 					cell.appendChild(hbox);
 					item.appendChild(cell);
-					
+
 					item.setValue(tarifaClienteDetalle);
 					listbxDatosTarifa.appendChild(item);
 				}
-				
+
 				gpbxDatosTarifa.setOpen(true);
-			}	
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
-		}		
+		}
 	}
 	/**
 	 * Realiza la edicion de la tarifa
@@ -246,7 +246,7 @@ public class WndTarifarioCliente extends WndBase{
 		Util.limpiarListbox(listbxDetalleTarifa);
 		DateFormat DATE_FORMAT = new SimpleDateFormat ("yyyyMMdd");
 		Date fechaActual= Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date()));
-		
+
 		tarifaCliente = ServiceLocator.getTarifaClienteManager().buscarPorId(tarifaClienteDetalle.getTarifaCliente().getId().longValue());
 		Util.seleccionarValorItemCombo(Localidad.class, cmbOrigen, tarifaCliente.getRuta().getLocalidadOrigen().getId());
 		Util.seleccionarValorItemCombo(Localidad.class, cmbDestino, tarifaCliente.getRuta().getLocalidadDestino().getId());
@@ -257,8 +257,8 @@ public class WndTarifarioCliente extends WndBase{
 			dtbxFechaActivacion.setConstraint("after "+DATE_FORMAT.format(fechaActual));
 		dtbxFechaActivacion.setValue(tarifaCliente.getFechaActivacion());
 		dtbxFechaCaducidad.setValue(tarifaCliente.getFechaCaducidad());
-		
-		
+
+
 		//Buscando el detalle
 		TreeMap<String, Object>criteriosBusqueda=new TreeMap<>();
 		criteriosBusqueda.put("tarifaCliente", tarifaCliente);
@@ -269,19 +269,19 @@ public class WndTarifarioCliente extends WndBase{
 		for(TarifaClienteDetalle tarifaClienteDetalle2:resultTarifaClienteDetalle){
 			agregarDetalleTarifaItem(tarifaClienteDetalle2);
 		}
-		
+
 		disabledControlsTarifa(true);
 		dtbxFechaActivacion.setDisabled(false);
 		dtbxFechaCaducidad.setDisabled(false);
 		disabledControlsAgregarDetalle(false);
-		
+
 		btnNuevo.setDisabled(true);
 		btnGuardar.setDisabled(false);
 		btnCancelar.setDisabled(false);
-		
+
 		tabMantenimiento.setSelected(true);
 	}
-	
+
 	/**
 	 * Realiza la anulacion de la tarifa
 	 * @param tarifaClienteDetalle
@@ -296,7 +296,7 @@ public class WndTarifarioCliente extends WndBase{
 					detalleTarifaCliente.setEstadoRegistro(Constantes.VALUE_INACTIVO);
 					UtilData.auditarRegistro(detalleTarifaCliente, true, getUsuario(), Executions.getCurrent());
 					ServiceLocator.getTarifaClienteDetalleManager().actualizar(detalleTarifaCliente);
-					
+
 					TreeMap<String, Object>criteriosBusqueda=new TreeMap<>();
 					criteriosBusqueda.put("tarifaCliente", detalleTarifaCliente.getTarifaCliente());
 					criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
@@ -307,14 +307,14 @@ public class WndTarifarioCliente extends WndBase{
 						UtilData.auditarRegistro(tarifaCliente, true, getUsuario(), Executions.getCurrent());
 						ServiceLocator.getTarifaClienteManager().actualizar(tarifaCliente);
 					}
-					
+
 					buscarCliente();
 				}
 			}
 		});
-		
+
 	}
-	
+
 	public boolean validadDatosTarifa()throws Exception{
 		if(!(cmbOrigen.getSelectedItem().getValue() instanceof Localidad)){
 			DlgMessage.information(Messages.getString("wndTarifacliente.information.noOrigen"),cmbOrigen);
@@ -335,10 +335,10 @@ public class WndTarifarioCliente extends WndBase{
 			DlgMessage.information(Messages.getString("wndTarifacliente.information.fechaActivacionMayorFechaCaducidad"),dtbxFechaCaducidad);
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	public void agregarDetalleTarifa(){
 		try {
 			if(!(validadDatosTarifa()))
@@ -362,13 +362,13 @@ public class WndTarifarioCliente extends WndBase{
 				DlgMessage.information(Messages.getString("wndTarifacliente.information.noTarifa"),dbbxTarifa);
 				return;
 			}
-			
+
 			final Ruta ruta=getRuta();
 			if(ruta==null){
 				DlgMessage.information(Messages.getString("wndTarifacliente.information.noRutaOrigenDestinoSelect"),cmbDestino);
 				return;
 			}
-			
+
 			//Valida que el rango de asientos no es registrado en la dase de batos - Fecha activacion
 			TreeMap<String, Object>criteriosBusqueda=new TreeMap<>();
 			criteriosBusqueda.put("ruta", ruta);
@@ -381,8 +381,8 @@ public class WndTarifarioCliente extends WndBase{
 				//Validando que la fecha activacion no este en un rango de fechas de activacion y suspencion
 				if( (dtbxFechaActivacion.getValue().getTime()>=tarifaCliente.getFechaActivacion().getTime() && dtbxFechaActivacion.getValue().getTime()<=tarifaCliente.getFechaCaducidad().getTime()) ||
 						(dtbxFechaCaducidad.getValue().getTime()>=tarifaCliente.getFechaActivacion().getTime() && dtbxFechaCaducidad.getValue().getTime()<=tarifaCliente.getFechaCaducidad().getTime())){
-					
-					//Validacion por sea una edicion 
+
+					//Validacion por sea una edicion
 					if(this.tarifaCliente==null || this.tarifaCliente.getId().intValue()!=tarifaCliente.getId().intValue()){
 						//Busca el detalle de la tarifa, para valodar el rando de asientos.
 						criteriosBusqueda=new TreeMap<>();
@@ -411,15 +411,15 @@ public class WndTarifarioCliente extends WndBase{
 					return;
 				}
 			}
-			
+
 			TarifaClienteDetalle tarifaClienteDetalle=new TarifaClienteDetalle();
 			tarifaClienteDetalle.setAsientoInicio(itbxAsientoInicio.getValue());
 			tarifaClienteDetalle.setAsientoFin(itbxAsientoFin.getValue());
 			tarifaClienteDetalle.setTipoAsiento((TipoAsiento)cmbTipoAsiento.getSelectedItem().getValue());
 			tarifaClienteDetalle.setTarifa(dbbxTarifa.getValue());
-			
+
 			agregarDetalleTarifaItem(tarifaClienteDetalle);
-						
+
 			limpiarControlesAgregarDetalle();
 			itbxAsientoInicio.setFocus(true);
 		} catch (Exception e) {
@@ -427,7 +427,7 @@ public class WndTarifarioCliente extends WndBase{
 			DlgMessage.error(e.getMessage());
 		}
 	}
-	
+
 	private void agregarDetalleTarifaItem(TarifaClienteDetalle tarifaClienteDetalle)throws Exception{
 		String style="font-size:11px !important";
 		Listitem item= new Listitem();
@@ -442,7 +442,7 @@ public class WndTarifarioCliente extends WndBase{
 		cell=new Listcell(Util.toNumberFormat(tarifaClienteDetalle.getTarifa(), 2));
 		cell.setStyle(style);
 		item.appendChild(cell);
-		
+
 		Hbox hbox= new Hbox();
 		Image image= new Image("/resources/mp_eliminarEnabled.png");
 		image.setAttribute(Listitem.class.getName(), item);
@@ -453,22 +453,22 @@ public class WndTarifarioCliente extends WndBase{
 			public void onEvent(Event event) throws Exception {
 				listbxDetalleTarifa.removeItemAt(((Listitem)event.getTarget().getAttribute(Listitem.class.getName())).getIndex());
 			}
-		});		
+		});
 		cell=new Listcell();
 		cell.appendChild(hbox);
 		item.appendChild(cell);
-		
+
 		item.setValue(tarifaClienteDetalle);
 		listbxDetalleTarifa.appendChild(item);
 	}
-	
+
 	private void limpiarControlesAgregarDetalle()throws Exception{
 		itbxAsientoInicio.setText(null);
 		itbxAsientoFin.setText(null);
 		cmbTipoAsiento.setSelectedIndex(0);
 		dbbxTarifa.setText(null);
 	}
-	
+
 	private void limpiarControlesTarifa()throws Exception{
 		tarifaCliente=null;
 		cmbOrigen.setSelectedIndex(0);
@@ -477,7 +477,7 @@ public class WndTarifarioCliente extends WndBase{
 		dtbxFechaActivacion.setText("");
 		dtbxFechaCaducidad.setText("");
 	}
-	
+
 	private void disabledControlsTarifa(boolean arg){
 		cmbOrigen.setDisabled(arg);
 		cmbDestino.setDisabled(arg);
@@ -492,8 +492,8 @@ public class WndTarifarioCliente extends WndBase{
 		dbbxTarifa.setDisabled(arg);
 		btnAgregar.setDisabled(arg);
 	}
-	
-	
+
+
 	public void nuevo(){
 		try {
 			Util.limpiarListbox(listbxDetalleTarifa);
@@ -513,7 +513,7 @@ public class WndTarifarioCliente extends WndBase{
 			DlgMessage.error(e.getMessage());
 		}
 	}
-	
+
 	public void cancelar(){
 		try {
 			Util.limpiarListbox(listbxDetalleTarifa);
@@ -529,8 +529,8 @@ public class WndTarifarioCliente extends WndBase{
 			DlgMessage.error(e.getMessage());
 		}
 	}
-	
-	
+
+
 	/**
 	 * Buscamos la ruta, en funcion el origen y destino seleccionados
 	 * @return
@@ -545,19 +545,19 @@ public class WndTarifarioCliente extends WndBase{
 		Ruta ruta=null;
 		if(rutas.size()>0)
 			ruta=rutas.get(0);
-		
+
 		return ruta;
 	}
 	public void grabar(){
 		try {
 			if(validadDatosTarifa()){
-				
+
 				final Ruta ruta=getRuta();
 				if(ruta==null){
 					DlgMessage.information(Messages.getString("wndTarifacliente.information.noRutaOrigenDestinoSelect"),cmbDestino);
 					return;
 				}
-				
+
 				Messagebox.show(Messages.getString("Generales.query.guardar"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
 					@Override
 					public void onEvent(Event e) throws Exception {
@@ -576,7 +576,7 @@ public class WndTarifarioCliente extends WndBase{
 							tarifaCliente.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 							UtilData.auditarRegistro(tarifaCliente, getUsuario(), Executions.getCurrent());
 							ServiceLocator.getTarifaClienteManager().guardar(tarifaCliente);
-							
+
 							for(Listitem item: listbxDetalleTarifa.getItems()){
 								TarifaClienteDetalle tarifaClienteDetalle=item.getValue();
 								tarifaClienteDetalle.setTarifaCliente(tarifaCliente);
@@ -584,20 +584,20 @@ public class WndTarifarioCliente extends WndBase{
 								UtilData.auditarRegistro(tarifaClienteDetalle, getUsuario(), Executions.getCurrent());
 								ServiceLocator.getTarifaClienteDetalleManager().guardar(tarifaClienteDetalle);
 							}
-							
+
 							disabledControlsTarifa(true);
 							disabledControlsAgregarDetalle(true);
 							btnNuevo.setDisabled(false);
 							btnGuardar.setDisabled(true);
 							btnCancelar.setDisabled(true);
-							
+
 							buscarCliente();
 							tabMantenimiento.setSelected(true);
 							DlgMessage.information(Messages.getString("Generales.information.exitoGuardar"));
 						}
 					}
 				});
-				
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

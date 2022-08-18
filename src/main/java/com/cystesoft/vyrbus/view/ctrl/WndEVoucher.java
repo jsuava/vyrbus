@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 14/10/2013
  */
@@ -18,8 +18,8 @@ import com.cystesoft.vyrbus.view.ui.WndBase;
  */
 public class WndEVoucher extends WndBase {
 	private static final long serialVersionUID = 1L;
-	private Window oWindow = this; 
-	
+	private Window oWindow = this;
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
@@ -30,10 +30,10 @@ public class WndEVoucher extends WndBase {
 //        httpSession.setAttribute("venta", getVentaPasaje());
 //        httpSession.setAttribute("terminos", getLstTerminosVenta());
 //        httpSession.setAttribute("concesionario", getConcesionario());
-		
+
         Executions.sendRedirect("/servlet/EticketServlet");
 	}
-	
+
 	public void onLoad() throws Exception{
 		oWindow.setTitle("E-Voucher");
 	}

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Avalos Sullo
  * Fecha		: 31/07/2014
  */
@@ -20,7 +20,7 @@ public class TitanUsuarioPersonal {
 	private String apellidoMaterno;
 	private String nombres;
 	private List<TitanUsuarioRol> lstUsuarioRol;
-	
+
 	public TitanUsuarioPersonal(){
 		super();
 	}
@@ -98,8 +98,8 @@ public class TitanUsuarioPersonal {
 	 */
 	public void setLstUsuarioRol(List<TitanUsuarioRol> lstUsuarioRol) {
 		this.lstUsuarioRol = lstUsuarioRol;
-	}	
-	
+	}
+
 	@Override
 	public String toString(){
 		return (this.apellidoPaterno!=null?this.apellidoPaterno:"")+""+(this.apellidoMaterno!=null?this.apellidoMaterno:"")+","+(this.nombres!=null?this.nombres:"");

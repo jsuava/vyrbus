@@ -1,29 +1,24 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 2 may. 2022
  * Hora			: 22:44:11
  */
 package com.cystesoft.vyrbus.model.dao.impl;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Random;
 import java.util.TreeMap;
 
 import org.jfree.util.Log;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.Bus;
@@ -38,7 +33,6 @@ import com.cystesoft.vyrbus.model.bean.TipoComprobante;
 import com.cystesoft.vyrbus.model.bean.TipoFormaPago;
 import com.cystesoft.vyrbus.model.bean.TipoMoneda;
 import com.cystesoft.vyrbus.model.bean.TipoMovimiento;
-import com.cystesoft.vyrbus.model.bean.TitanUsuarioHardware;
 import com.cystesoft.vyrbus.model.bean.TranscarLiquidacionTurno;
 import com.cystesoft.vyrbus.model.bean.TranscarRolUsuario;
 import com.cystesoft.vyrbus.model.bean.TranscarUsuarioPersonal;
@@ -56,7 +50,7 @@ import com.cystesoft.vyrbus.service.util.UtilData;
  */
 @SuppressWarnings("unchecked")
 public class TranscarWebDAOImpl implements TranscarWebDAO{
-	
+
 	private JdbcTemplate jdbcTemplate;
 	private int ID_TIPPAG_EFECTIVO = 1;
 //	private int ID_TIPPAG_TARJETA = 2;
@@ -70,7 +64,7 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 	private int ID_TIPCOM_PCE = 3;
 //	private int ID_OPE_TARJETA_VISA = 1;
 //	private int ID_OPE_TARJETA_MASTERCARD = 2;
-	
+
 	/**
 	 * @return the jdbcTemplate
 	 */
@@ -84,28 +78,28 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.model.dao.TranscarWebDAO#buscarRolesUsuario()
-	 */	
+	 */
 	@Override
 	public List<TranscarRolUsuario> buscarRolesUsuario() throws Exception {
-		
+
 		String sql = "Select r.rol_id, r.c_denominacion From TCMROL r Where r.c_estreg='A'";
 		List<?> result=getJdbcTemplate().queryForList(sql);
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		List<TranscarRolUsuario> resultRolUsuario= new ArrayList<TranscarRolUsuario>();
+
+		Map<String, Object> map = new HashMap<>();
+		List<TranscarRolUsuario> resultRolUsuario= new ArrayList<>();
 		for(int i=0;i<result.size();i++){
 			map = (Map<String, Object>)result.get(i);
 			TranscarRolUsuario rol = new TranscarRolUsuario();
 			rol.setId(((BigDecimal)map.get("ROL_ID")).intValue());
 			rol.setNombre(map.get("C_DENOMINACION").toString());
-			
+
 			resultRolUsuario.add(rol);
 		}
-		
+
 		return resultRolUsuario;
 	}
 
@@ -115,25 +109,25 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 	@Override
 	public List<TranscarRolUsuario> buscarRolesUsuario(Integer usuarioId) throws Exception {
 
-		String sql= "Select u.usuario_id, u.c_login, r.rol_id, r.c_denominacion rol " + 
-				"From tcmusuario u " + 
-				" Inner Join tctusuario_rol ur On (ur.usuario_id=u.usuario_id) " + 
-				" Inner Join tcmrol r On (r.rol_id=ur.rol_id) " + 
+		String sql= "Select u.usuario_id, u.c_login, r.rol_id, r.c_denominacion rol " +
+				"From tcmusuario u " +
+				" Inner Join tctusuario_rol ur On (ur.usuario_id=u.usuario_id) " +
+				" Inner Join tcmrol r On (r.rol_id=ur.rol_id) " +
 				"Where u.usuario_id =" + usuarioId + " " +
 				"  And ur.c_estreg = 'A'";
-		
+
 		List<?> result=getJdbcTemplate().queryForList(sql);
-		
-		List<TranscarRolUsuario> resultRolesUsuario = new ArrayList<TranscarRolUsuario>();
-		Map<String, Object> map = new HashMap<String, Object>();
+
+		List<TranscarRolUsuario> resultRolesUsuario = new ArrayList<>();
+		Map<String, Object> map = new HashMap<>();
 		for(int i=0;i<result.size();i++){
 			map = (Map<String, Object>)result.get(i);
-			
+
 			TranscarRolUsuario rolUsuario = new TranscarRolUsuario();
 			rolUsuario.setTranscarUsuarioPersonal(new TranscarUsuarioPersonal(((BigDecimal)map.get("USUARIO_ID")).intValue(), map.get("C_LOGIN").toString()));
 			rolUsuario.setId(((BigDecimal)map.get("ROL_ID")).intValue());
 			rolUsuario.setNombre(map.get("ROL").toString());
-			
+
 			resultRolesUsuario.add(rolUsuario);
 		}
 
@@ -146,20 +140,20 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 	@Override
 	public TranscarUsuarioPersonal buscarUsuario(String login) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 		String sql = "Select u.usuario_id, u.c_login From tcmusuario u Where u.c_login = '"+login+"' And u.c_estreg = 'A'";
-		
+
 		List<?> result=getJdbcTemplate().queryForList(sql);
-		
+
 		TranscarUsuarioPersonal usuarioPersonal=null;
-		Map<String, Object> map = new HashMap<String, Object>();
-		for(int i=0;i<result.size();i++){
-			map = (Map<String, Object>)result.get(i);
+		Map<String, Object> map = new HashMap<>();
+		for (Object element : result) {
+			map = (Map<String, Object>)element;
 			usuarioPersonal = new TranscarUsuarioPersonal();
 			usuarioPersonal.setId(((BigDecimal)map.get("USUARIO_ID")).intValue());
 			usuarioPersonal.setLogin(map.get("C_LOGIN").toString());
 		}
-				
+
 		return usuarioPersonal;
 	}
 
@@ -169,14 +163,14 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 	@Override
 	public void guardarUsuario(TranscarUsuarioPersonal transcarUsuario, String idsRoles, boolean isNuevo) throws Exception {
 		Integer agencia_idtranscar = UtilData.getAgencia_Idtranscarweb(transcarUsuario.getAgenciaId());
-		
+
 		//Valida que la agencia del vyrbus este asociada a la del transcar web
 		if(agencia_idtranscar==null) {
 			throw new Exception(Messages.getString("Generales.informacion.agenciaNoAsociadaTranscarweb"));
 		}
-		
+
 		String sql = null;
-		
+
 		Integer usuario_id = null;
 		//Cuando es un usuario nuevo
 		if(transcarUsuario.getId()==null) {
@@ -185,7 +179,7 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 			Integer usuarioHardware_id = getJdbcTemplate().queryForInt(sql);
 			String direccionMac = getDireccionMacDinamica();
 			String codigo = Util.generarCodigo(direccionMac);
-			
+
 			//Realiza el insert del usuario hardware
 			sql = "INSERT INTO tcmusuhard "
 					+ "VALUES ( "
@@ -201,16 +195,16 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 					+ ",current_timestamp "
 					+ ",'"+ transcarUsuario.getUsuarioInsercion() + "' "
 					+ ",'"+ transcarUsuario.getIpInsercion() + "' "
-					+ ") ";			
+					+ ") ";
 			getJdbcTemplate().update(sql);
-			
-			
+
+
 			//Genera el identificador para el usuario
 			sql = "select nextval('seq_tcmusuario_id') usuario_id ";
 			usuario_id= getJdbcTemplate().queryForInt(sql);
-			
+
 			//Inserta el usuario
-			sql = "INSERT INTO tcmusuario (usuario_id, agencia_id, c_apepat, c_apemat, c_nombre, c_email, c_login, c_password, audipinse, audipmodi, audusuins, audusumod, usuhard_id, n_tipseg ) " + 
+			sql = "INSERT INTO tcmusuario (usuario_id, agencia_id, c_apepat, c_apemat, c_nombre, c_email, c_login, c_password, audipinse, audipmodi, audusuins, audusumod, usuhard_id, n_tipseg ) " +
 					"VALUES ( "
 					+ usuario_id +", "
 					+ agencia_idtranscar + ","
@@ -229,8 +223,8 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 					+ ")";
 			getJdbcTemplate().update(sql);
 		}else {
-			
-			//Cuando es una modificación			
+
+			//Cuando es una modificación
 			sql = "UPDATE tcmusuario SET "
 					+ " c_apepat='"+transcarUsuario.getApellidoParterno()+"' "
 					+ ",c_apemat="+(transcarUsuario.getApellidoMaterno()!=null? "'"+transcarUsuario.getApellidoMaterno()+"' ":"Null ")
@@ -242,21 +236,21 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 					+ ",c_estreg='"+transcarUsuario.getEstadoRegistro()+"' "
 				+ "WHERE usuario_id="+transcarUsuario.getId();
 			getJdbcTemplate().update(sql);
-			
+
 			//Elimina los roles asocuados al usario, para luego insertar los nuevos enviados
 			sql = "DELETE FROM tctusuario_rol ur WHERE ur.usuario_id="+transcarUsuario.getId();
 			getJdbcTemplate().update(sql);
-			
+
 			usuario_id = transcarUsuario.getId();
-		}		
-		
+		}
+
 		//Inserta los roles
 		String[] roles = idsRoles.split(",");
-		for(String rol_id: roles) {			
+		for(String rol_id: roles) {
 			sql = "INSERT INTO tctusuario_rol (rol_id, usuario_id) VALUES ("+rol_id+", "+usuario_id+" )";
-			getJdbcTemplate().update(sql);	
-		}		
-		
+			getJdbcTemplate().update(sql);
+		}
+
 	}
 
 //	/* (non-Javadoc)
@@ -273,29 +267,29 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 	 */
 	@Override
 	public String aperturarLiquidacion(TranscarLiquidacionTurno liquidacionTurno) throws Exception {
-		
-		Integer agencia_idtranscar = UtilData.getAgencia_Idtranscarweb(liquidacionTurno.getAgenciaId());		
+
+		Integer agencia_idtranscar = UtilData.getAgencia_Idtranscarweb(liquidacionTurno.getAgenciaId());
 		//Valida que la agencia del vyrbus este asociada a la del transcar web
 		if(agencia_idtranscar==null) {
 			throw new Exception(Messages.getString("Generales.informacion.agenciaNoAsociadaTranscarweb"));
 		}
-		
-		String sql = "INSERT INTO tctliquidacion " + 
-				"		         (liquidacion_id, agencia_id, usuario_id, d_fecliq, n_totefeliq, n_totefeing, n_estliq, c_estreg) " + 
-				"          VALUES " + 
+
+		String sql = "INSERT INTO tctliquidacion " +
+				"		         (liquidacion_id, agencia_id, usuario_id, d_fecliq, n_totefeliq, n_totefeing, n_estliq, c_estreg) " +
+				"          VALUES " +
 				"				 (nextval('seq_tctliquidacion_id'), "
 								+ agencia_idtranscar + ", "
 								+ liquidacionTurno.getTranscarUsuarioPersonal().getId() + ", "
 								+ "'"+ Constantes.FORMAT_DATE.format(liquidacionTurno.getFechaApertura()) + "', "
-								+ "0.00, 0.00, 1, 'A' "								
+								+ "0.00, 0.00, 1, 'A' "
 								+ ") ";
 		Log.info("Apertura Liquidacion - Transcar: "+sql);
 		int isCorret = getJdbcTemplate().update(sql);
-		
+
 		String messageError = null;
 		if(isCorret == Constantes.FALSE_VALUE)
 			messageError = "Ha ocurrido un error al aperturar la liquidación";
-		
+
 		return messageError;
 	}
 
@@ -305,72 +299,72 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 	@Override
 	public List<VentaPasaje> buscarDetalleVentas(TranscarUsuarioPersonal usuario, Integer agenciaId,String fechaInicial, String fechaFinal) throws Exception {
 
-		Integer agencia_idtranscar = agenciaId;		
+		Integer agencia_idtranscar = agenciaId;
 		if(agencia_idtranscar!=null) {
-			agencia_idtranscar = UtilData.getAgencia_Idtranscarweb(agenciaId);		
+			agencia_idtranscar = UtilData.getAgencia_Idtranscarweb(agenciaId);
 			//Valida que la agencia del vyrbus este asociada a la del transcar web
 			if(agencia_idtranscar==null) {
 				throw new Exception(Messages.getString("Generales.informacion.agenciaNoAsociadaTranscarweb"));
-			}	
+			}
 		}
-		
+
 		Integer usuario_id = (usuario!=null? usuario.getId():null);
-		
-		String sql="SELECT ec.envcon_id, ec.d_fecven, av.agencia_id, av.c_denominacion agencia, cl.c_numdoc cliente_numdoc, cl.c_razsoc cliente_razonSocial " + 
-				"         ,rt.c_origen, rt.c_destino " + 
-				"         ,ec.forpag_id, ec.tippag_id, dp.opetar_id, ec.tipcom_id, ec.c_numcom, ec.n_subtotal, ec.n_impuesto, ec.n_total " + 
-				"	      ,us.c_apepat usuario_apepat, us.c_apemat usuario_apemat, us.c_nombre usuario_nombre, us.c_login usuario_login " + 
-				"		  ,CASE WHEN ec.d_fecanu IS NOT NULL AND ec.usuario_idanula IS NOT NULL THEN 2 ELSE 1 END estadoComprobante " + //-->1= Activo, 2=Anulado\r\n" + 
-				"		  ,ec.audfecins " + 
-				"FROM tctenvcon ec " + 
-				"  INNER JOIN tcmusuario us ON (us.usuario_id=ec.usuario_id) " + 
-				"	INNER JOIN tcmagencia av ON (av.agencia_id=ec.agencia_idventa) " + 
-				"	INNER JOIN tcmcliente cl ON (cl.cliente_id=ec.cliente_id) " + 
+
+		String sql="SELECT ec.envcon_id, ec.d_fecven, av.agencia_id, av.c_denominacion agencia, cl.c_numdoc cliente_numdoc, cl.c_razsoc cliente_razonSocial " +
+				"         ,rt.c_origen, rt.c_destino " +
+				"         ,ec.forpag_id, ec.tippag_id, dp.opetar_id, ec.tipcom_id, ec.c_numcom, ec.n_subtotal, ec.n_impuesto, ec.n_total " +
+				"	      ,us.c_apepat usuario_apepat, us.c_apemat usuario_apemat, us.c_nombre usuario_nombre, us.c_login usuario_login " +
+				"		  ,CASE WHEN ec.d_fecanu IS NOT NULL AND ec.usuario_idanula IS NOT NULL THEN 2 ELSE 1 END estadoComprobante " + //-->1= Activo, 2=Anulado\r\n" +
+				"		  ,ec.audfecins " +
+				"FROM tctenvcon ec " +
+				"  INNER JOIN tcmusuario us ON (us.usuario_id=ec.usuario_id) " +
+				"	INNER JOIN tcmagencia av ON (av.agencia_id=ec.agencia_idventa) " +
+				"	INNER JOIN tcmcliente cl ON (cl.cliente_id=ec.cliente_id) " +
 				"	INNER JOIN tcmruta rt ON (rt.ruta_id=ec.ruta_id) " +
 				"   LEFT JOIN tctdetpag dp ON (ec.envcon_id = dp.envcon_id)" +
 				"WHERE ec.d_fecven BETWEEN to_date('"+fechaInicial+"', 'dd/MM/yyyy') AND to_date('"+fechaFinal+"', 'dd/MM/yyyy') " + 
 				"  AND ec.agencia_idventa = COALESCE("+agencia_idtranscar+", ec.agencia_idventa) " + 
 				"  AND ec.usuario_id = COALESCE("+usuario_id+", ec.usuario_id) " + 
 				"  AND ec.c_estreg = 'A'";
-		
-		
+
+
 		Log.info("buscarDetalleVentas - Transcar: "+sql);
 		List<?> result = getJdbcTemplate().queryForList(sql);
-		
-		List<VentaPasaje> listVentasCarga = new ArrayList<VentaPasaje>();
+
+		List<VentaPasaje> listVentasCarga = new ArrayList<>();
 		Map<String, Object> map = null;
 		int tipoPagoId=0;
 		for(int i=0;i<result.size();i++){
 			map = (Map<String, Object>)result.get(i);
-			
+
 			int idEstadoRegistro = (int)map.get("ESTADOCOMPROBANTE");
 			int formaPagoId = ((BigDecimal)map.get("FORPAG_ID")).intValue();
 			//Consistencia el tipo de pago para PCE que vienen de TRANSCAR
-			if(map.get("TIPPAG_ID") != null) 
+			if(map.get("TIPPAG_ID") != null)
 				tipoPagoId = ((BigDecimal)map.get("TIPPAG_ID")).intValue();
 			int tipoComprobanteId = ((BigDecimal)map.get("TIPCOM_ID")).intValue();
 			String simboloMoneda= "S/";
-			
+
 			Agencia agencia= new Agencia();
 			agencia.setId(((BigDecimal)map.get("AGENCIA_ID")).intValue());
 			agencia.setDenominacion(map.get("AGENCIA").toString());
-			
+
 			Pasajero pasajero= new Pasajero();
 			pasajero.setNumeroDocumento(map.get("CLIENTE_NUMDOC")!=null?map.get("CLIENTE_NUMDOC").toString():"");
 			pasajero.setNombresApellidos(map.get("CLIENTE_RAZONSOCIAL").toString());
-			
+
 			Ruta ruta= new Ruta();
 			ruta.setOrigen(map.get("C_ORIGEN").toString());
 			ruta.setDestino(map.get("C_DESTINO").toString());
-			
+
 			Usuario usuarioVenta = new Usuario();
 			usuarioVenta.setApellidoPaterno(map.get("USUARIO_APEPAT").toString());
 			usuarioVenta.setApellidoMaterno(map.get("USUARIO_APEMAT")!=null?map.get("USUARIO_APEMAT").toString():null);
 			usuarioVenta.setNombre(map.get("USUARIO_NOMBRE").toString());
 			usuarioVenta.setLogin(map.get("USUARIO_LOGIN").toString());
-			
+
 			VentaPasaje ventaCarga= new VentaPasaje();
-			if(idEstadoRegistro==2) 
+			if(idEstadoRegistro==2)
 				ventaCarga.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_ANULACION));
 			else
 				ventaCarga.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_EFECTIVO));
@@ -387,17 +381,17 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 			}else if(formaPagoId==ID_FORPAG_CREDITO) {
 				ventaCarga.setTipoTransaccion("CREDITO");
 				ventaCarga.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CREDITO, "CREDITO"));
-				ventaCarga.setTipoFormaPago(new TipoFormaPago(Constantes.ID_TIPFORPAG_CREDITO, "CREDITO"));			
+				ventaCarga.setTipoFormaPago(new TipoFormaPago(Constantes.ID_TIPFORPAG_CREDITO, "CREDITO"));
 			}else if(formaPagoId==ID_FORPAG_PCE) {
 				ventaCarga.setTipoTransaccion("PCE");
 				ventaCarga.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CREDITO, "PCE"));
 				ventaCarga.setTipoFormaPago(new TipoFormaPago(Constantes.ID_TIPFORPAG_PCE, "PCE"));
 			}else {
-				ventaCarga.setTipoTransaccion("CORT"); 
+				ventaCarga.setTipoTransaccion("CORT");
 				ventaCarga.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CORTESIA, "CORTESIA"));
 				ventaCarga.setTipoFormaPago(new TipoFormaPago(Constantes.ID_TIPFORPAG_CORTESIA, "CORTESIA"));
 			}
-			
+
 			if(tipoComprobanteId==ID_TIPCOM_FACTURA)
 				ventaCarga.setTipoComprobante(new TipoComprobante(Constantes.ID_TIPCOM_FACTURA, "FACTURA"));
 			else if(tipoComprobanteId==ID_TIPCOM_BOLETA)
@@ -407,10 +401,10 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 				ventaCarga.setTipoTransaccion("NOTA CREDITO");
 			}else if(tipoComprobanteId==ID_TIPCOM_PCE)
 				ventaCarga.setTipoComprobante(new TipoComprobante(Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA, "GUIA TRANSPORTISTA"));
-						
+
 			if(!(simboloMoneda.equals("S/")))
 				ventaCarga.setTipoMoneda(new TipoMoneda(2)); //Dolares
-			
+
 			ventaCarga.setOperadorTarjetaCredito(map.get("OPETAR_ID")!=null?new OperadorTarjetaCredito(((BigDecimal)map.get("OPETAR_ID")).intValue()):null);
 			ventaCarga.setNumeroBoleto(map.get("C_NUMCOM").toString());
 			ventaCarga.setId(((BigDecimal)map.get("ENVCON_ID")).longValue());
@@ -427,12 +421,12 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 			ventaCarga.setPasajero(pasajero);
 			ventaCarga.setRuta(ruta);
 			ventaCarga.setUsuario(usuarioVenta);
-			
+
 			listVentasCarga.add(ventaCarga);
 		}
-		
-		
-		
+
+
+
 		return listVentasCarga;
 	}
 
@@ -450,14 +444,14 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 	 */
 	@Override
 	public List<Usuario> buscarUsuariosByVenta(Integer agenciaId, String fechaInicio, String fechaFin) throws Exception {
-		
-		Integer agencia_idtranscar = agenciaId;		
+
+		Integer agencia_idtranscar = agenciaId;
 		if(agencia_idtranscar!=null) {
-			agencia_idtranscar = UtilData.getAgencia_Idtranscarweb(agenciaId);		
+			agencia_idtranscar = UtilData.getAgencia_Idtranscarweb(agenciaId);
 			//Valida que la agencia del vyrbus este asociada a la del transcar web
 			if(agencia_idtranscar==null) {
 				throw new Exception(Messages.getString("Generales.informacion.agenciaNoAsociadaTranscarweb"));
-			}	
+			}
 		}
 		
 		String sql = "SELECT ec.usuario_id, u.c_apepat, u.c_apemat, u.c_nombre, u.c_login " + 
@@ -468,14 +462,14 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 				"	AND ec.c_estreg = 'A' " + 
 				"GROUP BY ec.usuario_id, u.c_apepat, u.c_apemat, u.c_nombre, u.c_login";
 		Log.info("buscarUsuariosByVenta - Transcar: " + sql);
-		
+
 		List<?> result=getJdbcTemplate().queryForList(sql);
-		
-		List<Usuario> listUsuariosenta = new ArrayList<Usuario>();
+
+		List<Usuario> listUsuariosenta = new ArrayList<>();
 		Map<String, Object> map = null;
 		for(int i=0;i<result.size();i++){
 			map = (Map<String, Object>)result.get(i);
-			
+
 			Usuario usuario= new Usuario();
 			usuario.setId(((BigDecimal)map.get("USUARIO_ID")).intValue());
 			usuario.setApellidoPaterno(map.get("C_APEPAT").toString());
@@ -484,8 +478,8 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 			usuario.setLogin(map.get("C_LOGIN").toString());
 			listUsuariosenta.add(usuario);
 		}
-		
-		
+
+
 		return listUsuariosenta;
 	}
 
@@ -494,24 +488,24 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 	 */
 	@Override
 	public List<Liquidacion> buscarLiquidacionTurnoResumenEspVal(Integer usuarioId, Integer agenciaId, String fechaInicio, String fechaFin) throws Exception {
-		
-		Integer agencia_idtranscar = agenciaId;		
+
+		Integer agencia_idtranscar = agenciaId;
 		if(agencia_idtranscar!=null) {
-			agencia_idtranscar = UtilData.getAgencia_Idtranscarweb(agenciaId);		
+			agencia_idtranscar = UtilData.getAgencia_Idtranscarweb(agenciaId);
 			//Valida que la agencia del vyrbus este asociada a la del transcar web
 			if(agencia_idtranscar==null) {
 				throw new Exception(Messages.getString("Generales.informacion.agenciaNoAsociadaTranscarweb"));
-			}	
+			}
 		}
-				
-		String sql = "SELECT TipoComprobante, Serie, boletoInicial, BoletoFinal, BoletoFinal::INTEGER - boletoInicial::INTEGER +1 AS Cantidad, importe  " + 
-					"		,(BoletoFinal::INTEGER - boletoInicial::INTEGER +1) - cantRegistros AS Cortes, tipoComprobanteId  " + 
-					"FROM(   " + 
-//					"	   Recupera todos menos las confirmaciones de fecha habierta de fecha habierta  " + 
-					"		SELECT tc.tipcom_id tipoComprobanteId, tc.c_nomcor as TipoComprobante  " + 
+
+		String sql = "SELECT TipoComprobante, Serie, boletoInicial, BoletoFinal, BoletoFinal::INTEGER - boletoInicial::INTEGER +1 AS Cantidad, importe  " +
+					"		,(BoletoFinal::INTEGER - boletoInicial::INTEGER +1) - cantRegistros AS Cortes, tipoComprobanteId  " +
+					"FROM(   " +
+//					"	   Recupera todos menos las confirmaciones de fecha habierta de fecha habierta  " +
+					"		SELECT tc.tipcom_id tipoComprobanteId, tc.c_nomcor as TipoComprobante  " +
 //					"			  ,MIN(SUBSTR(vp.c_numcom ,0,4)) AS Serie    " +
 					"			  ,MIN(lpad( substr(vp.c_numcom, 1, (position('-' in vp.c_numcom )-1)), 4, '0' )) AS Serie" +
-//					"		      ,MIN(SUBSTR(vp.c_numcom,6, LENGTH(vp.c_numcom))) AS boletoInicial     " + 
+//					"		      ,MIN(SUBSTR(vp.c_numcom,6, LENGTH(vp.c_numcom))) AS boletoInicial     " +
 					"			  ,MIN(lpad( substr(vp.c_numcom, (position('-' in vp.c_numcom )+1), (length(vp.c_numcom) - position('-' in vp.c_numcom ))), 8, '0' )) AS BoletoInicial" +
 //					"		      ,MAX(SUBSTR(vp.c_numcom,6, LENGTH(vp.c_numcom)))  AS BoletoFinal  " +
 					"			  ,MAX(lpad( substr(vp.c_numcom, (position('-' in vp.c_numcom )+1), (length(vp.c_numcom) - position('-' in vp.c_numcom ))), 8, '0' )) AS BoletoFinal" +
@@ -527,15 +521,15 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 					"		  AND vp.d_fecanu IS NULL AND vp.usuario_idanula IS NULL  " + 
 					"		GROUP BY tc.tipcom_id, tc.c_denominacion, tc.tipcom_id " + 
 					")esv";
-		
+
 		Log.info("BuscarLiquidacionTurnoResumenEspval:" + sql);
-		List<?> result = getJdbcTemplate().queryForList(sql); 
-		
-		List<Liquidacion> listLiquidacion = new ArrayList<Liquidacion>();
+		List<?> result = getJdbcTemplate().queryForList(sql);
+
+		List<Liquidacion> listLiquidacion = new ArrayList<>();
 		Map<String, Object> map = null;
 		for(int i=0;i<result.size();i++){
-			map = (Map<String, Object>)result.get(i);		
-			
+			map = (Map<String, Object>)result.get(i);
+
 			Liquidacion liquidacion= new Liquidacion();
 //			liquidacion.setTipoComprobante(new TipoComprobante(((BigDecimal)map.get("TIPOCOMPROBANTEID")).intValue(), map.get("TIPOCOMPROBANTE").toString()));
 			liquidacion.setComprobante(map.get("TIPOCOMPROBANTE").toString());
@@ -544,10 +538,10 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 			liquidacion.setBoletoFinal(map.get("BOLETOFINAL").toString());
 			liquidacion.setCantidadBoletos(Integer.valueOf(map.get("CANTIDAD").toString()));
 			liquidacion.setImporte(((BigDecimal)map.get("IMPORTE")).doubleValue());
-			
+
 			listLiquidacion.add(liquidacion);
 		}
-		
+
 		return listLiquidacion;
 	}
 
@@ -556,25 +550,25 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 	 */
 	@Override
 	public Liquidacion buscarLiquidacionTurno(Integer usuarioId, Integer agenciaId, String fechaInicio, String fechaFin) throws Exception {
-				
+
 		List<VentaPasaje> result = buscarDetalleVentas(new TranscarUsuarioPersonal(usuarioId), agenciaId, fechaInicio, fechaFin);
-				
+
 		Integer cantidadEfectivo=0, cantidadTarjetaVisa=0, cantidadTarjetaMastercard=0, cantidadNotaCredito=0, cantidadPce=0;
         Double efectivo=.00, tarjetaVisa=.00, tarjetaMastercard=.00, notaCredito=.00, pce=.00;
-		
+
 		for(VentaPasaje ventaPasaje: result) {
-			
+
 			int tipoPagoId = ventaPasaje.getTipoFormaPago().getId();
 			int formaPagoId = ventaPasaje.getFormaPago().getId();
 			int tipoComprobanteId = ventaPasaje.getTipoComprobante().getId();
 			int operadorTarjetaId = (ventaPasaje.getOperadorTarjetaCredito()!=null? ventaPasaje.getOperadorTarjetaCredito().getId(): 0);
-			Double totalCosto = ventaPasaje.getImportePagado();			
-			
+			Double totalCosto = ventaPasaje.getImportePagado();
+
 			if(formaPagoId==Constantes.ID_FORPAG_CONTADO){
 				if(tipoComprobanteId==Constantes.ID_TIPCOM_BOLETA_VENTA || tipoComprobanteId==Constantes.ID_TIPCOM_FACTURA){
 					if(tipoPagoId==Constantes.ID_TIPFORPAG_EFECTIVO){
 						cantidadEfectivo ++;
-						efectivo += totalCosto;					
+						efectivo += totalCosto;
 					}else if(tipoPagoId==Constantes.ID_TIPFORPAG_TARJETA && operadorTarjetaId==Constantes.ID_OPETARCRE_VISA){
 						cantidadTarjetaVisa ++;
 						tarjetaVisa += totalCosto;
@@ -590,9 +584,9 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 				cantidadPce ++;
 				pce += totalCosto;
 			}
-			
+
 		}
-		
+
 		Liquidacion liquidacion= new Liquidacion();
         liquidacion.setMontoContado(efectivo);
         liquidacion.setCantidadContado(cantidadEfectivo);
@@ -608,27 +602,27 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
         liquidacion.setCantidadCortesia(0);
         liquidacion.setMontoCreditos(.00);
         liquidacion.setCantidadCreditos(0);
-		
+
 		return liquidacion;
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.model.dao.TranscarWebDAO#cerrarLiquidacion(java.lang.Integer, java.lang.Integer, java.lang.String, java.lang.Double, java.lang.Double)
 	 */
 	@Override
 	public void cerrarLiquidacion(Integer usuarioId, Integer agenciaId, String fechaLiquidacion, Double efectivoIngresado, Double efectivoLiquidado)throws Exception{
-		
-		Integer agencia_idtranscar = agenciaId;		
+
+		Integer agencia_idtranscar = agenciaId;
 		if(agencia_idtranscar!=null) {
-			agencia_idtranscar = UtilData.getAgencia_Idtranscarweb(agenciaId);		
+			agencia_idtranscar = UtilData.getAgencia_Idtranscarweb(agenciaId);
 			//Valida que la agencia del vyrbus este asociada a la del transcar web
 			if(agencia_idtranscar==null) {
 				throw new Exception(Messages.getString("Generales.informacion.agenciaNoAsociadaTranscarweb"));
-			}	
+			}
 		}
-		
-		
+
+
 		String sql = "Select lq.liquidacion_id "
 				+ "From tctliquidacion lq "
 				+ "where lq.usuario_id =" + usuarioId + 
@@ -638,15 +632,15 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 				"	 AND lq.c_estreg = 'A'";
 		Log.info("Obteniendo el identificador de la liquidacion - transcar:" + sql);
 		long liquidacion_id = jdbcTemplate.queryForLong(sql);
-		
-		
-		sql ="UPDATE tctliquidacion " + 
-					"   SET n_totefeing = "+efectivoIngresado+", n_totefeliq = "+efectivoLiquidado+", n_estliq = 0 " + 
-					"WHERE liquidacion_id =" + liquidacion_id;		
+
+
+		sql ="UPDATE tctliquidacion " +
+					"   SET n_totefeing = "+efectivoIngresado+", n_totefeliq = "+efectivoLiquidado+", n_estliq = 0 " +
+					"WHERE liquidacion_id =" + liquidacion_id;
 		Log.info("Cerrando Liquidacion - Transcar: " + sql);
-		int isCorrect = getJdbcTemplate().update(sql);						
-		
-		
+		int isCorrect = getJdbcTemplate().update(sql);
+
+
 		//Actualiza la ventas con el identificador de la liquidacion
 		if(isCorrect == Constantes.TRUE_VALUE) {
 			sql ="UPDATE tctenvcon SET liquidacion_id="+liquidacion_id+" "+
@@ -656,9 +650,9 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 		                             "   AND ec.agencia_idventa="+agencia_idtranscar+" AND ec.usuario_id="+usuarioId+"  "+
 		                             "   AND ec.c_estreg = 'A') ";
 			getJdbcTemplate().update(sql);
-			
-		}		
-		
+
+		}
+
 	}
 
 	/* (non-Javadoc)
@@ -680,15 +674,15 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 				"	AND gt.c_numunitra = COALESCE(null, gt.c_numunitra) " + 
 				"GROUP BY gt.d_fecsal, ut.c_numuni, ut.c_placa, pt.c_apepat, pt.c_apemat, pt.c_nombre " + 
 				"ORDER BY gt.d_fecsal, ut.c_numuni, ut.c_placa, pt.c_apepat, pt.c_apemat, pt.c_nombre";
-		
+
 		Log.info("BuscarLiquidacionBus - Transcar: " + sql);
 		List<?> result = getJdbcTemplate().queryForList(sql);
-		
+
 		TreeMap<String, Manifiesto> liquidacionBus = new TreeMap<>();
 		Map<String, Object> map = null;
-		for(int i=0;i<result.size();i++){
-			map = (Map<String, Object>)result.get(i);
-			
+		for (Object element : result) {
+			map = (Map<String, Object>)element;
+
 			Itinerario itinerario = new Itinerario();
 			itinerario.setFechaPartida((Date)map.get("fecha_salida"));
 			Bus bus = new Bus();
@@ -697,20 +691,20 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 			String piloto = (map.get("PILOTO_APEPAT")!=null?map.get("PILOTO_APEPAT").toString():"");
 			piloto += (map.get("PILOTO_APEMAT")!=null?map.get("PILOTO_APEMAT").toString():"");
 			piloto += (map.get("PILOTO_NOMBRES")!=null?map.get("PILOTO_NOMBRES").toString():"");
-			
+
 			Manifiesto manifiesto = new Manifiesto();
 			manifiesto.setItinerario(itinerario);
 			manifiesto.setBus(bus);
 			manifiesto.setPiloto(piloto);
 			manifiesto.setImporte(((BigDecimal)map.get("TOTAL_SOLES")).doubleValue());
-			
+
 			String keymap = Constantes.FORMAT_DATE.format(itinerario.getFechaPartida());
 			keymap += "-" + bus.getCodigo();
-			
+
 			liquidacionBus.put(keymap, manifiesto);
 		}
-		
-		
+
+
 		return liquidacionBus;
 	}
 
@@ -719,14 +713,14 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 	 */
 	@Override
 	public TreeMap<String, Liquidacion> buscarLiquidacionCounter(String fechaInicio, String fechaFin, Integer agenciaId, Integer usuarioId) throws Exception {
-		
-		Integer agencia_idtranscar = agenciaId;		
+
+		Integer agencia_idtranscar = agenciaId;
 		if(agencia_idtranscar!=null) {
-			agencia_idtranscar = UtilData.getAgencia_Idtranscarweb(agenciaId);		
+			agencia_idtranscar = UtilData.getAgencia_Idtranscarweb(agenciaId);
 			//Valida que la agencia del vyrbus este asociada a la del transcar web
 			if(agencia_idtranscar==null) {
 				throw new Exception(Messages.getString("Generales.informacion.agenciaNoAsociadaTranscarweb"));
-			}	
+			}
 		}
 		
 		String sql = "SELECT to_char(lq.d_fecliq,'dd/MM/yyyy') fecha, lq.usuario_id ,up.c_login, ag.agencia_id, COALESCE(lq.n_totefeing,0) entre_soles " + 
@@ -738,17 +732,17 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 					"	AND ag.agencia_id = COALESCE("+agencia_idtranscar+", lq.agencia_id) " + 
 					"	AND lq.c_estreg = 'A'";
 	 	List<?> result = jdbcTemplate.queryForList(sql);
-		
-	 	Map<String, Object> map = new HashMap<String, Object>();
-		
-		TreeMap<String, Liquidacion> resultLiquidacion = new TreeMap<String, Liquidacion>();
-		for(int i=0;i<result.size();i++){
-			map = (Map<String, Object>)result.get(i);
-			
+
+	 	Map<String, Object> map = new HashMap<>();
+
+		TreeMap<String, Liquidacion> resultLiquidacion = new TreeMap<>();
+		for (Object element : result) {
+			map = (Map<String, Object>)element;
+
 			Usuario usuario= new Usuario();
 			usuario.setId(((BigDecimal)map.get("USUARIO_ID")).intValue());
 			usuario.setLogin(map.get("C_LOGIN").toString());
-			
+
 			Liquidacion liquidacion= new Liquidacion();
 			liquidacion.setFechaLiquidacion(Constantes.FORMAT_DATE.parse(map.get("FECHA").toString()));
 			liquidacion.setUsuario(usuario);
@@ -757,15 +751,15 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 			liquidacion.setEstadoLiquidacion(((BigDecimal)map.get("CERRADO")).intValue());
 			if(liquidacion.getestadoLiquidacion().intValue() == Constantes.FALSE_VALUE)
 				liquidacion.setFechaModificacion(map.get("FECHA_CIERRE")!=null?(Date)map.get("FECHA_CIERRE"):null);
-			
+
 			//Key
 			String key = Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
 			key += liquidacion.getAgencia().getId().toString();
 			key += liquidacion.getUsuario().getLogin();
-			
+
 			resultLiquidacion.put(key, liquidacion);
 		}
-		
+
 		return resultLiquidacion;
 	}
 
@@ -775,27 +769,27 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 	@Override
 	public void actualizarPasswordUsuarioByLogin(String login, String passwordNew) throws Exception {
 		String sql = "Update tcmusuario Set c_password= '"+passwordNew+"' Where c_login='"+login+"' ";
-		
+
 		Log.info("Actualiza Password Usuario - Carga: "+sql);
 		getJdbcTemplate().update(sql);
 	}
 
-	private String getDireccionMacDinamica() {		
+	private String getDireccionMacDinamica() {
 		String direccionMac = "";
 		String[] patron_A = {"A0","00", "0A" ,"00", "A0", "00"};
 		String patron_B = "ABCDEFGHIJKLMNIOPQRSTUVWXYZ";
-	
+
 		try {
 			Random random= new Random();
-			
+
 			int x = 0;
 			for(String comp: patron_A) {
 				x++;
 				String pmac = "";
 				String p1 = comp.substring(0,1);
 				String p2 = comp.substring(1);
-				int randomChar =  random.nextInt(patron_B.length());				
-				
+				int randomChar =  random.nextInt(patron_B.length());
+
 				if(Util.isNumeric(p1)) {
 					int randomInt =  random.nextInt(13);
 					pmac += String.valueOf(randomInt);
@@ -803,28 +797,28 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 					char ochar = patron_B.charAt(randomChar);
 					pmac += ochar;
 				}
-				
+
 				if(Util.isNumeric(p2)) {
 					int randomInt =  random.nextInt(13);
-					pmac += String.valueOf(randomInt);				
+					pmac += String.valueOf(randomInt);
 				}else {
 					char ochar = patron_B.charAt(randomChar);
 					pmac += ochar;
 				}
-				
+
 				if(pmac.length()>2)
 					pmac = pmac.substring(0,2);
-				
+
 				direccionMac += pmac;
 				if (patron_A.length > x)
-					direccionMac += "-";								
-			}	
-			
+					direccionMac += "-";
+			}
+
 		} catch (Exception e) {
 			direccionMac = "AB-00-BA-11-AC-99";
 			e.printStackTrace();
 		}
-		
+
 		return direccionMac;
 	}
 }

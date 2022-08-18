@@ -1,7 +1,7 @@
 /**
  * Proyecto		: VYRBUS
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: Marco Oscco
  * Fecha		: 12 jul. 2020
  * Hora			: 23:34:42
@@ -18,33 +18,33 @@ import com.cystesoft.vyrbus.model.bean.Tarifa;
  *
  */
 public interface TarifaDAO extends GenericDAO{
-	
+
 	/**
-	 * Guarda una nueva cabecera de tarifa 
-	 * @param tarifaFechaAbierta	
+	 * Guarda una nueva cabecera de tarifa
+	 * @param tarifaFechaAbierta
 	 * @throws Exception
 	 */
 	public void guardar(Tarifa tarifa)throws Exception;
-	
+
 	/**
-	 * Actualiza una cabecera de tarifa 
+	 * Actualiza una cabecera de tarifa
 	 * @param tarifaFechaAbierta
 	 * @throws Exception
 	 */
 	public void actualizar(Tarifa tarifa)throws Exception;
-	
+
 	/**
 	 * Inactiva el registro
-	 * @param id	: Identificador de la cabecera de tarifa 
+	 * @param id	: Identificador de la cabecera de tarifa
 	 * @throws Exception
 	 */
 	public void inactivate(Long id)throws Exception;
-	
-	public List<Tarifa> buscarTarifa(Integer canalVentaID, 
-							Integer servicioID, 
-							Integer localidadOrigenID, 
-							Integer localidadDestinoID, 
-							Integer piso, 
+
+	public List<Tarifa> buscarTarifa(Integer canalVentaID,
+							Integer servicioID,
+							Integer localidadOrigenID,
+							Integer localidadDestinoID,
+							Integer piso,
 							Integer zona) throws Exception;
 
 }

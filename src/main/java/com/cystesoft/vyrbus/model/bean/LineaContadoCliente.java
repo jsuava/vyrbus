@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class LineaContadoCliente extends GenericBean {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Long id;
 	private CarteraCliente carteraCliente;
 	private SolicitudCartera solicitudCartera;
@@ -15,8 +15,8 @@ public class LineaContadoCliente extends GenericBean {
 	private Date fechaSuspension;
 	private String estadoLineaContado;
 	private String esComisionable;
-	
-	
+
+
 	public Long getId() {
 		return id;
 	}

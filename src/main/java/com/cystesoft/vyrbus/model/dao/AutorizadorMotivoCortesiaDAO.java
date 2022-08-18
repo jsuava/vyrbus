@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 03/04/2014
  */
@@ -24,7 +24,7 @@ public interface AutorizadorMotivoCortesiaDAO extends GenericDAO {
 	 * Realiza la busqueda por estado del registro;
 	 * @param estado		: Activo o inactivo.
 	 * @param criterioOrden	: criterios para ordenar la informacion
-	 * @return ArrayList 
+	 * @return ArrayList
 	 */
 	public ArrayList<AutorizadorMotivoCortesia> buscarPorEstadoRegistro(String estado, String criterioOrden);
 	/**

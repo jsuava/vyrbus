@@ -77,11 +77,11 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	private Date fechaEnvioSFE;
 	private Double importePagadoByDiferencia;
 	private TipoCobranza tipoCobranza;
-	
+
 	private UsuarioHardware usuarioHardware;
 	private List<Integer> subConjunto;
 	private Integer cantidadPax;
-	private Integer cantidadPaxRuta; 
+	private Integer cantidadPaxRuta;
 	private String key;
 	private DetalleItinerario detalleItinerario;
 	private Boolean servicioEspecialFactura=false;
@@ -98,15 +98,15 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	private String horaEmbarque;
 	private String horaDesembarque;
 	private List<VentaPasaje> lstVentaXRuta;
-	private List<VentaPasaje> lstPasajeros;	
+	private List<VentaPasaje> lstPasajeros;
 	private Result result;
 
 	private Double importeDescuentos;
 	private Double importeReal;
 	private Double importeEsperado;
-	
+
 	private String operadoPor;
-	
+
 	/**
 	 * Usuario que realiza la Operación Remota
 	 */
@@ -116,11 +116,11 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	 */
 	private UsuarioHardware usuarioHardwareRemoto;
 	private Boolean esRemoto;
-	
-	
+
+
 	public VentaPasaje() {
 	}
-	
+
 	public VentaPasaje(Long id) {
 		super();
 		this.id = id;
@@ -137,7 +137,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	/**
 	 * @return Objeto ventaPasaje.
 	 */
@@ -150,7 +150,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setVentaPasaje(VentaPasaje ventaPasaje) {
 		this.ventaPasaje = ventaPasaje;
 	}
-	
+
 	/**
 	 * @return the ventaOriginal
 	 */
@@ -163,7 +163,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setVentaOriginal(Long ventaOriginal) {
 		this.ventaOriginal = ventaOriginal;
 	}
-	
+
 	/**
 	 * @return Objeto itinerario.
 	 */
@@ -176,7 +176,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setItinerario(Itinerario itinerario) {
 		this.itinerario = itinerario;
 	}
-	
+
 	/**
 	 * @return Objeto ruta.
 	 */
@@ -189,7 +189,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setRuta(Ruta ruta) {
 		this.ruta = ruta;
 	}
-	
+
 	/**
 	 * @return Objeto cliente.
 	 */
@@ -202,7 +202,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
-	
+
 	/**
 	 * @return Objeto pasajero.
 	 */
@@ -215,7 +215,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setPasajero(Pasajero pasajero) {
 		this.pasajero = pasajero;
 	}
-	
+
 	/**
 	 * @return Objeto formaPago.
 	 */
@@ -228,7 +228,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setFormaPago(FormaPago formaPago) {
 		this.formaPago = formaPago;
 	}
-	
+
 	/**
 	 * @return Objeto servicio.
 	 */
@@ -241,7 +241,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setServicio(Servicio servicio) {
 		this.servicio = servicio;
 	}
-	
+
 	/**
 	 * @return Objeto tipoComprobante.
 	 */
@@ -254,7 +254,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setTipoComprobante(TipoComprobante tipoComprobante) {
 		this.tipoComprobante = tipoComprobante;
 	}
-	
+
 	/**
 	 * @return Objeto condicionVenta.
 	 */
@@ -267,7 +267,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setTipoMovimiento(TipoMovimiento tipoMovimiento) {
 		this.tipoMovimiento = tipoMovimiento;
 	}
-	
+
 	/**
 	 * @return Objeto tipoFormaPago.
 	 */
@@ -280,7 +280,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setTipoFormaPago(TipoFormaPago tipoFormaPago) {
 		this.tipoFormaPago = tipoFormaPago;
 	}
-	
+
 	/**
 	 * @return Objeto tarjetaCredito.
 	 */
@@ -293,7 +293,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setTarjetaCredito(TarjetaCredito tarjetaCredito) {
 		this.tarjetaCredito = tarjetaCredito;
 	}
-	
+
 	/**
 	 * @return Objeto agencia.
 	 */
@@ -306,7 +306,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setAgencia(Agencia agencia) {
 		this.agencia = agencia;
 	}
-	
+
 	/**
 	 * @return Objeto agenciaPartida.
 	 */
@@ -319,7 +319,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setAgenciaPartida(Agencia agenciaPartida) {
 		this.agenciaPartida = agenciaPartida;
 	}
-	
+
 	/**
 	 * @return Objeto agenciaLlegada.
 	 */
@@ -332,7 +332,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setAgenciaLlegada(Agencia agenciaLlegada) {
 		this.agenciaLlegada = agenciaLlegada;
 	}
-	
+
 	/**
 	 * @return Objeto usuario.
 	 */
@@ -345,7 +345,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-	
+
 	/**
 	 * @return Objeto canalVenta.
 	 */
@@ -358,7 +358,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setCanalVenta(CanalVenta canalVenta) {
 		this.canalVenta = canalVenta;
 	}
-	
+
 	/**
 	 * @return Objeto manifiesto.
 	 */
@@ -371,7 +371,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setManifiesto(Manifiesto manifiesto) {
 		this.manifiesto = manifiesto;
 	}
-	
+
 	/**
 	 * @return Objeto preferenciaAlimentaria.
 	 */
@@ -385,7 +385,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 			PreferenciaAlimentaria preferenciaAlimentaria) {
 		this.preferenciaAlimentaria = preferenciaAlimentaria;
 	}
-	
+
 	/**
 	 * @return Objeto numeroBoleto.
 	 */
@@ -398,7 +398,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setNumeroBoleto(String numeroBoleto) {
 		this.numeroBoleto = numeroBoleto;
 	}
-	
+
 	/**
 	 * @return the numeroBoletoAnterior
 	 */
@@ -411,7 +411,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setNumeroBoletoAnterior(String numeroBoletoAnterior) {
 		this.numeroBoletoAnterior = numeroBoletoAnterior;
 	}
-	
+
 	/**
 	 * @return Objeto numeroAsiento.
 	 */
@@ -424,7 +424,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setNumeroAsiento(Integer numeroAsiento) {
 		this.numeroAsiento = numeroAsiento;
 	}
-	
+
 	/**
 	 * @return the numeroPiso
 	 */
@@ -437,7 +437,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setNumeroPiso(Integer numeroPiso) {
 		this.numeroPiso = numeroPiso;
 	}
-	
+
 	/**
 	 * @return the numeroControl
 	 */
@@ -450,7 +450,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setNumeroControl(String numeroControl) {
 		this.numeroControl = numeroControl;
 	}
-	
+
 	/**
 	 * @return Objeto fechaPartida.
 	 */
@@ -463,7 +463,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setFechaPartida(Date fechaPartida) {
 		this.fechaPartida = fechaPartida;
 	}
-	
+
 	/**
 	 * @return Objeto horaPartida.
 	 */
@@ -476,7 +476,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setHoraPartida(String horaPartida) {
 		this.horaPartida = horaPartida;
 	}
-	
+
 	/**
 	 * @return Objeto fechaLlegada.
 	 */
@@ -489,7 +489,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setFechaLlegada(Date fechaLlegada) {
 		this.fechaLlegada = fechaLlegada;
 	}
-	
+
 	/**
 	 * @return Objeto horaLllegada.
 	 */
@@ -502,7 +502,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setHoraLllegada(String horaLllegada) {
 		this.horaLllegada = horaLllegada;
 	}
-	
+
 	/**
 	 * @return Objeto secuencial.
 	 */
@@ -515,7 +515,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setSecuencial(Integer secuencial) {
 		this.secuencial = secuencial;
 	}
-	
+
 	/**
 	 * @return Objeto tarifa.
 	 */
@@ -528,7 +528,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setTarifa(Double tarifa) {
 		this.tarifa = tarifa;
 	}
-	
+
 	/**
 	 * @return Objeto recargo.
 	 */
@@ -541,7 +541,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setRecargo(Double recargo) {
 		this.recargo = recargo;
 	}
-	
+
 	/**
 	 * @return Objeto descuento.
 	 */
@@ -554,7 +554,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setDescuento(Double descuento) {
 		this.descuento = descuento;
 	}
-	
+
 	/**
 	 * @return Objeto penalidad.
 	 */
@@ -567,7 +567,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setPenalidad(Double penalidad) {
 		this.penalidad = penalidad;
 	}
-	
+
 	/**
 	 * @return the acuenta
 	 */
@@ -580,7 +580,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setAcuenta(Double acuenta) {
 		this.acuenta = acuenta;
 	}
-	
+
 	/**
 	 * @return Objeto importePagado.
 	 */
@@ -593,7 +593,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setImportePagado(Double importePagado) {
 		this.importePagado = importePagado;
 	}
-	
+
 	/**
 	 * @return Objeto tipoTransaccion.
 	 */
@@ -606,7 +606,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setTipoTransaccion(String tipoTransaccion) {
 		this.tipoTransaccion = tipoTransaccion;
 	}
-	
+
 	/**
 	 * @return Objeto fechaCaducidad.
 	 */
@@ -619,7 +619,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setFechaCaducidad(Date fechaCaducidad) {
 		this.fechaCaducidad = fechaCaducidad;
 	}
-	
+
 	/**
 	 * @return the liquidacion
 	 */
@@ -632,7 +632,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setLiquidacion(Liquidacion liquidacion) {
 		this.liquidacion = liquidacion;
 	}
-	
+
 	/**
 	 * @return Objeto fechaLiquidacion.
 	 */
@@ -645,7 +645,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setFechaLiquidacion(Date fechaLiquidacion) {
 		this.fechaLiquidacion = fechaLiquidacion;
 	}
-	
+
 	/**
 	 * @return Objeto numeroOperacionBancaria.
 	 */
@@ -658,7 +658,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setNumeroOperacionBancaria(String numeroOperacionBancaria) {
 		this.numeroOperacionBancaria = numeroOperacionBancaria;
 	}
-	
+
 	/**
 	 * @return Objeto fechaExpiracionReserva.
 	 */
@@ -671,7 +671,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setFechaExpiracionReserva(Date fechaExpiracionReserva) {
 		this.fechaExpiracionReserva = fechaExpiracionReserva;
 	}
-	
+
 	/**
 	 * @return Objeto horaExpiracionReserva.
 	 */
@@ -684,7 +684,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setHoraExpiracionReserva(String horaExpiracionReserva) {
 		this.horaExpiracionReserva = horaExpiracionReserva;
 	}
-	
+
 	/**
 	 * @return the idaRetorno
 	 */
@@ -697,7 +697,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setIdaRetorno(Integer idaRetorno) {
 		this.idaRetorno = idaRetorno;
 	}
-	
+
 	/**
 	 * @return the rucClienteCredito
 	 */
@@ -710,7 +710,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setRucClienteCredito(String rucClienteCredito) {
 		this.rucClienteCredito = rucClienteCredito;
 	}
-	
+
 	/**
 	 * @return the esAbierta
 	 */
@@ -723,7 +723,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setEsFechaAbierta(Integer esFechaAbierta) {
 		this.esFechaAbierta = esFechaAbierta;
 	}
-	
+
 	/**
 	 * @return the observaciones
 	 */
@@ -736,7 +736,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setObservaciones(String observaciones) {
 		this.observaciones = observaciones;
 	}
-	
+
 	/**
 	 * @return the importePagadoEfectivo
 	 */
@@ -749,7 +749,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setImportePagadoEfectivo(Double importePagadoEfectivo) {
 		this.importePagadoEfectivo = importePagadoEfectivo;
 	}
-	
+
 	/**
 	 * @return the importePagadoTarjeta
 	 */
@@ -762,7 +762,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setImportePagadoTarjeta(Double importePagadoTarjeta) {
 		this.importePagadoTarjeta = importePagadoTarjeta;
 	}
-	
+
 	/**
 	 * @return the promocion
 	 */
@@ -775,7 +775,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setPromocion(Promocion promocion) {
 		this.promocion = promocion;
 	}
-	
+
 	/**
 	 * @return the identificadorIdaRetorno
 	 */
@@ -788,7 +788,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setIdentificadorIdaRetorno(Long identificadorIdaRetorno) {
 		this.identificadorIdaRetorno = identificadorIdaRetorno;
 	}
-	
+
 	/**
 	 * @return the usuarioHardware
 	 */
@@ -801,21 +801,21 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setUsuarioHardware(UsuarioHardware usuarioHardware) {
 		this.usuarioHardware = usuarioHardware;
 	}
-	
+
 	/**
 	 * @return cantidadpax
 	 */
 	public  Integer getCantidadPax(){
 		return cantidadPax;
 	}
-	
+
 	/**
 	 * @param cantidadPax: cantidad de pasajeros
 	 */
 	public void setCantidadPax(Integer cantidadPax){
 		this.cantidadPax=cantidadPax;
 	}
-	
+
 	/**
 	 * @return the subConjunto
 	 */
@@ -828,7 +828,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	public void setSubConjunto(List<Integer> subConjunto) {
 		this.subConjunto = subConjunto;
 	}
-	
+
 	/**
 	 * Clave con el siguiente formato <b>nAsiento-nPiso
 	 * @return the key
@@ -1362,5 +1362,5 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	}
 
 	//No mapeados
-	
+
 }

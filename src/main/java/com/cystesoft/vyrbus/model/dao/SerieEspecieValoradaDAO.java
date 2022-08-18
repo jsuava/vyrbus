@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 20/11/2013
  */
@@ -22,11 +22,11 @@ public interface SerieEspecieValoradaDAO extends GenericDAO{
 	 * Realiza la busqueda por el Id (serie, tipoComprobante)
 	 * @param numeroSerie		: Numero de Serie
 	 * @param idTipoComprobante	: Identifiador del tipo de comprobante
-	 * @return	
+	 * @return
 	 * @throws Exception
 	 */
 	public SerieEspecieValorada buscarPorID(String numeroSerie, Integer idTipoComprobante) throws Exception;
-	
+
 	/***
 	 * Realiza la buqueda segun los parametros enviados
 	 * @param criteriosBusqueda	: Criterios de busqueda
@@ -40,7 +40,7 @@ public interface SerieEspecieValoradaDAO extends GenericDAO{
 	 * @param serieEspecieValorada
 	 */
 	public void guardar(SerieEspecieValorada serieEspecieValorada) throws Exception;
-	
+
 	/**
 	 * Inactiva el registro por su id
 	 * @param numeroSerie		: Número de serie
@@ -48,5 +48,5 @@ public interface SerieEspecieValoradaDAO extends GenericDAO{
 	 * @throws Exception
 	 */
 	public void inactivar(String numeroSerie, Integer idTipoComprobante) throws Exception;
-	
+
 }

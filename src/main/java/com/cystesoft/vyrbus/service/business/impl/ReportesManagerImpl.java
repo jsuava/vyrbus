@@ -13,17 +13,17 @@ import com.cystesoft.vyrbus.model.dao.ReportesDAO;
 import com.cystesoft.vyrbus.service.business.ReportesManager;
 
 /**
- * 
+ *
  * @author José Abanto
  *
  */
 public class ReportesManagerImpl implements ReportesManager {
 	private ReportesDAO reportesDAO;
-	
+
 	public ReportesDAO getReportesDAO(){
 		return reportesDAO;
 	}
-	
+
 	public void setReportesDAO (ReportesDAO reportesDAO){
 		this.reportesDAO=reportesDAO;
 	}
@@ -53,7 +53,7 @@ public class ReportesManagerImpl implements ReportesManager {
 	public ArrayList<Object> diarioAcumulado(Date fechaInicial,Date fechaFinal, long idServicio, int limaProvincias,boolean mostrarCuadroIngresos) throws Exception {
 		return getReportesDAO().diarioAcumulado(fechaInicial, fechaFinal, idServicio, limaProvincias, mostrarCuadroIngresos);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.ReportesManager#avanceSemanalXRutas(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
@@ -105,7 +105,7 @@ public class ReportesManagerImpl implements ReportesManager {
 	@Override
 	public ArrayList<Object> ventasPromocionLstPromociones(String fechaInicio, String fechaFin) throws Exception {
 		// TODO Auto-generated method stub
-		return getReportesDAO().ventasPromocionLstPromociones(fechaInicio, fechaFin); 
+		return getReportesDAO().ventasPromocionLstPromociones(fechaInicio, fechaFin);
 	}
 
 	/* (non-Javadoc)
@@ -117,7 +117,7 @@ public class ReportesManagerImpl implements ReportesManager {
 		return getReportesDAO().ventasPromocionDeta(fechaInicio, fechafin, idPromocion);
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.ReportesManager#avancesBuses(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer, java.lang.Integer, java.lang.Integer)
 	 */

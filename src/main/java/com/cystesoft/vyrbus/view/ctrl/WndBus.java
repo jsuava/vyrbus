@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 01/08/2012
  */
@@ -54,7 +54,7 @@ import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
  * @since JDK1.6
  */
 public class WndBus  extends WndOpcionesMantenimiento {
-	
+
 	private static final long serialVersionUID = 7015174319519567765L;
 	private Combobox 	cboTipoFlota;
 	private Combobox 	cboServicio;
@@ -72,11 +72,11 @@ public class WndBus  extends WndOpcionesMantenimiento {
 	private Textbox  	txtcapacidad;
 	private Textbox  	txtanioFabricacion;
 	private Combobox 	cbonumeroFlota;
-	
+
 	private Bus oBus = null;
-	
-	
-	private TreeMap<String, Object> criteriosBusqueda = new  TreeMap<String, Object>();
+
+
+	private TreeMap<String, Object> criteriosBusqueda = new  TreeMap<>();
 	private List<String> criteriosOrdenar = null;
 
 	@Override
@@ -86,9 +86,9 @@ public class WndBus  extends WndOpcionesMantenimiento {
 		UtilData.cargarDataCombo(cboServicio, Servicio.class, false);
 		UtilData.cargarDataCombo(cboGrupoMantenimiento, GrupoMantenimiento.class, false);
 		UtilData.cargarDataCombo(cbonumeroFlota, NumeroFlota.class, false);
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("codigo");
-		
+
 		dbkmRecoridoXDia.setLocale(Locale.US);
 		dbkmAcumuladoOdoMetro.setLocale(Locale.US);
 		dbkilAcumuladoEstandar.setLocale(Locale.US);
@@ -111,10 +111,10 @@ public class WndBus  extends WndOpcionesMantenimiento {
 		txttarjetaPropiedad = (Textbox) getFellow("txttarjetaPropiedad");
 		txtcapacidad = (Textbox) getFellow("txtcapacidad");
 		txtanioFabricacion = (Textbox) getFellow("txtanioFabricacion");
-		cbonumeroFlota = (Combobox) getFellow("cbonumeroFlota");	
+		cbonumeroFlota = (Combobox) getFellow("cbonumeroFlota");
 		cbonumeroFlota	 = (Combobox) getFellow("cbonumeroFlota");
 	}
-	
+
 	@Override
 	public void onNew() {
 		cboTipoFlota.setSelectedIndex(0);
@@ -126,13 +126,13 @@ public class WndBus  extends WndOpcionesMantenimiento {
 	@Override
 	public void onSearch() {
 		final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
-		
+
 		oWndFiltrar.addParameter("1. Tipo de Flota", TipoFlota.class);
 		oWndFiltrar.addParameter("2. Servicio", Servicio.class);
 		oWndFiltrar.addParameter("3. Número de Flota", NumeroFlota.class);
 		oWndFiltrar.addParameter("4. Número de Bus", String.class);
-		
-		
+
+
 		this.appendChild(oWndFiltrar);
 		oWndFiltrar.setMode("modal");
 		oWndFiltrar.addEventListener(com.cystesoft.vyrbus.view.ui.Events.ON_FILTER, new EventListener<Event>() {
@@ -144,7 +144,7 @@ public class WndBus  extends WndOpcionesMantenimiento {
 				Integer numeroFlota = (Integer) oWndFiltrar.getParameterValue("3. Número de Flota");
 				String codigo = oWndFiltrar.getParameterValue("4. Número de Bus").toString();
 				String estadoRegistro = Constantes.VALUE_ACTIVO;
-				
+
 				if (tipoFlota == null || tipoFlota == 0){
 					criteriosBusqueda.remove("tipoFlota");
 				}else{
@@ -152,14 +152,14 @@ public class WndBus  extends WndOpcionesMantenimiento {
 					otipoFlota.setId(tipoFlota);
 					criteriosBusqueda.put("tipoFlota", otipoFlota);
 				}
-				
+
 				if (oservicio == null ){
 					criteriosBusqueda.remove("servicio");
 				}else{
-					
+
 					criteriosBusqueda.put("servicio", oservicio);
 				}
-				
+
 				if (numeroFlota == null || numeroFlota == 0){
 					criteriosBusqueda.remove("numeroFlota");
 				}else{
@@ -167,17 +167,17 @@ public class WndBus  extends WndOpcionesMantenimiento {
 					onumeroFlota.setId(numeroFlota);
 					criteriosBusqueda.put("numeroFlota", onumeroFlota);
 				}
-				
+
 				if (codigo.trim().equals("")) {
 					criteriosBusqueda.remove("codigo");
 				}else{criteriosBusqueda.put("codigo", "%" + codigo + "%");}
-				
+
 				criteriosBusqueda.put("estadoRegistro", estadoRegistro);
-				
+
 				listarRegistros(ServiceLocator.getBusManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 			}
 		});
-		
+
 	}
 
 	@Override
@@ -226,14 +226,14 @@ public class WndBus  extends WndOpcionesMantenimiento {
 				throw new NumeroPlacaNullException();
 			else if (txtnumeroChasis.getText().trim().equals(""))
 				throw new NumeroChasisNullException();
-						
+
 			if (action==ACTION_NEW)
 				oBus = new Bus();
-			
+
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
 			oBus.setId(id);
 			if (cboTipoFlota.getSelectedItem().getValue() instanceof TipoFlota) {
-				TipoFlota oTipoFlota = new TipoFlota();			
+				TipoFlota oTipoFlota = new TipoFlota();
 				oTipoFlota.setId(((TipoFlota) cboTipoFlota.getSelectedItem().getValue()).getId());
 				oTipoFlota.setDenominacion( ((TipoFlota) cboTipoFlota.getSelectedItem().getValue()).getDenominacion());
 				oBus.setTipoFlota(oTipoFlota);
@@ -257,11 +257,11 @@ public class WndBus  extends WndOpcionesMantenimiento {
 				oGrupoMantenimiento.setDenominacion(((GrupoMantenimiento) cboGrupoMantenimiento.getSelectedItem().getValue()).getDenominacion());
 				oBus.setGrupoMantenimiento(oGrupoMantenimiento);
 			}
-						
+
 			oBus.setCodigo(txtnumeroBus.getText());
 			oBus.setKilRecorridoDia(dbkmRecoridoXDia.getValue());
 			oBus.setKilAcumuladoOdometro(dbkmAcumuladoOdoMetro.getValue());
-			
+
 			if (!(dbkilAcumuladoEstandar.getText().equals("")))
 				oBus.setKilAcumuladoEstandar(dbkilAcumuladoEstandar.getValue());
 			oBus.setNumeroPlaca(txtnumeroPlaca.getText().trim().toUpperCase());
@@ -270,7 +270,7 @@ public class WndBus  extends WndOpcionesMantenimiento {
 			oBus.setNumeroMotor(txtnumeroMotor.getText().trim().toUpperCase());
 			oBus.setTarjetaPropiedad(txttarjetaPropiedad.getText().trim().toUpperCase());
 			oBus.setCapacidad(txtcapacidad.getText().equals("") ? 0 : new Integer(txtcapacidad.getText()));
-			oBus.setAnioFabricacion(txtanioFabricacion.getText().equals("") ? 0 : new Integer(txtanioFabricacion.getText()));	
+			oBus.setAnioFabricacion(txtanioFabricacion.getText().equals("") ? 0 : new Integer(txtanioFabricacion.getText()));
 			oBus.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 			switch (action) {
 				case ACTION_NEW:
@@ -283,7 +283,7 @@ public class WndBus  extends WndOpcionesMantenimiento {
 					ServiceLocator.getBusManager().actualizar(oBus);
 					break;
 			}
-			/*RECUPERA EL REGISTRO ACTUALIZADO O EL NUEVO*/        
+			/*RECUPERA EL REGISTRO ACTUALIZADO O EL NUEVO*/
 			criteriosBusqueda.remove("tipoFlota");
 			criteriosBusqueda.remove("servicio");
 			criteriosBusqueda.remove("numeroFlota");
@@ -291,7 +291,7 @@ public class WndBus  extends WndOpcionesMantenimiento {
 			criteriosBusqueda.put("codigo", oBus.getCodigo());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			listarRegistros(ServiceLocator.getBusManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-			
+
 		}catch (TipoFlotaNullExceptipo tfnex){
 			DlgMessage.information(Messages.getString("WndBus.information.TipoFlota"),cboTipoFlota);
 			throw new CancelaGrabacionException();
@@ -335,7 +335,7 @@ public class WndBus  extends WndOpcionesMantenimiento {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace(); throw new CancelaGrabacionException();
 		}
-		
+
 	}
 
 	@Override
@@ -356,25 +356,25 @@ public class WndBus  extends WndOpcionesMantenimiento {
 		UtilData.auditarRegistro(bus, true, getUsuario(), Executions.getCurrent());
 		ServiceLocator.getBusManager().actualizar(bus);
 //		ServiceLocator.getBusManager().inactivar(id);
-		
+
 	}
 
 	@Override
 	public void onPrint(int tab) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onExport(int tab) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onHelp() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -396,13 +396,13 @@ public class WndBus  extends WndOpcionesMantenimiento {
 	}
 
 	public void listarRegistros(ArrayList<Bus> arrayList) {
-		
+
 		Listitem item=null;
 		Listcell cell=null;
 		int x=1;
-		
+
 		Util.limpiarListbox(listboxLista);
-		
+
 		for(Bus bus: arrayList){
 			item=new Listitem();
 			cell=new Listcell(String.valueOf(x++));
@@ -431,21 +431,21 @@ public class WndBus  extends WndOpcionesMantenimiento {
 			cell=new Listcell(bus.getAnioFabricacion().toString());
 			cell.setStyle("font-size:11px !important");
 			item.appendChild(cell);
-			
+
 			item.setValue(bus);
 			listboxLista.appendChild(item);
-		}		
+		}
 	}
-	
+
 	public void mantenimientoRegistro (Long id) throws Exception {
 		oBus = ServiceLocator.getBusManager().buscarPorId(id);
 		TipoFlota otipoFlota = oBus.getTipoFlota();
 		Servicio oservicio = oBus.getServicio();
 		NumeroFlota onumeroFlota = oBus.getNumeroFlota();
 		GrupoMantenimiento ogrupoMantenimiento = oBus.getGrupoMantenimiento();
-		
+
 		textboxId.setText(String.valueOf(oBus.getId()));
-		
+
 		if(otipoFlota != null){
 			Util.seleccionarValorItemCombo(TipoFlota.class, cboTipoFlota, otipoFlota.getId());
 		}
@@ -469,6 +469,6 @@ public class WndBus  extends WndOpcionesMantenimiento {
 		txtnumeroMotor.setText(oBus.getNumeroMotor());
 		txttarjetaPropiedad.setText(oBus.getTarjetaPropiedad());
 		txtcapacidad.setText(String.valueOf(oBus.getCapacidad()));
-		txtanioFabricacion.setText(String.valueOf(oBus.getAnioFabricacion()));	
+		txtanioFabricacion.setText(String.valueOf(oBus.getAnioFabricacion()));
 	}
 }

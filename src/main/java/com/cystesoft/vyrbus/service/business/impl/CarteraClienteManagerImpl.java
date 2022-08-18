@@ -20,7 +20,7 @@ public class CarteraClienteManagerImpl implements CarteraClienteManager {
 	public void setCarteraClienteDAO(CarteraClienteDAO carteraClienteDAO) {
 		this.carteraClienteDAO = carteraClienteDAO;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.CarteraClienteManager#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
@@ -76,7 +76,7 @@ public class CarteraClienteManagerImpl implements CarteraClienteManager {
 	@Transactional
 	public void actualizar(CarteraCliente carteraCliente) {
 		getCarteraClienteDAO().actualizar(carteraCliente);
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -86,5 +86,5 @@ public class CarteraClienteManagerImpl implements CarteraClienteManager {
 	public CarteraCliente buscarPorId(Long id) throws Exception {
 		return getCarteraClienteDAO().buscarPorId(id);
 	}
-	
+
 }

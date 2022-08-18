@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 08/04/2022
  * Hora			: 12:05:13
@@ -34,18 +34,18 @@ import com.cystesoft.vyrbus.view.ui.WndBase;
 public class WndRptLiquidacionBus extends WndBase {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private Datebox dtbxFechaInicio;
 	private Datebox dtbxFechaFin;
 	private Combobox cmbBus;
 	private Listbox ltbxLiquidacionBus;
-	
-	
-	
-	
+
+
+
+
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.view.ui.WndBase#initComponents()
 	 */
@@ -53,14 +53,14 @@ public class WndRptLiquidacionBus extends WndBase {
 	public void initComponents() {
 		// TODO Auto-generated method stub
 		super.initComponents();
-		
+
 		dtbxFechaInicio = (Datebox)this.getFellow("dtbxFechaInicio");
 		dtbxFechaFin = (Datebox)this.getFellow("dtbxFechaFin");
 		cmbBus = (Combobox)this.getFellow("cmbBus");
 		ltbxLiquidacionBus = (Listbox)this.getFellow("ltbxLiquidacionBus");
 	}
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.view.ui.WndBase#onCreate()
 	 */
@@ -68,12 +68,12 @@ public class WndRptLiquidacionBus extends WndBase {
 	public void onCreate() throws Exception {
 		// TODO Auto-generated method stub
 		super.onCreate();
-		
+
 		dtbxFechaInicio.setValue(new Date());
 		dtbxFechaFin.setValue(new Date());
 		UtilData.cargarDataCombo(cmbBus, Bus.class,true);
 	}
-	
+
 	/**
 	 * Realiza la busqueda de la liquidacion x bus
 	 */
@@ -85,13 +85,13 @@ public class WndRptLiquidacionBus extends WndBase {
 			String codigoBus = null;
 			if(cmbBus.getSelectedItem().getValue() instanceof Bus)
 				codigoBus = ((Bus)cmbBus.getSelectedItem().getValue()).getCodigo();
-			
+
 			//Busca en Pasajes
 			List<Manifiesto> resultPasajes = ServiceLocator.getVentaPasajesManager().buscarLiquidacionBus(fechaInicio, fechaFin, codigoBus);
-			
+
 			//Buscar en Carga (Transcar)
 			TreeMap<String, Manifiesto> resultCarga = ServiceLocator.getTranscarWebManager().buscarLiquidacionBus(fechaInicio, fechaFin, codigoBus);
-			
+
 			for(Manifiesto manifiesto : resultPasajes){
 				Listitem item = new Listitem();
 				Listcell cell = new Listcell(Constantes.FORMAT_DATE.format(manifiesto.getItinerario().getFechaPartida()));
@@ -129,11 +129,10 @@ public class WndRptLiquidacionBus extends WndBase {
 				cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
 				
-				
 				item.setValue(manifiesto);
 				ltbxLiquidacionBus.appendChild(item);
-			}			
-			
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
@@ -145,10 +144,10 @@ public class WndRptLiquidacionBus extends WndBase {
 	 */
 	public void onClick_btnExportar(){
 		try {
-			
+
 			if(ltbxLiquidacionBus.getItemCount()>0)
 				Util.exportarExcel(ltbxLiquidacionBus, "LiquidacionBus_");
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());

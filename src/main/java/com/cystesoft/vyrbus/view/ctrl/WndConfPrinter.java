@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 13/04/2015
  * Hora			: 16:30:17
@@ -38,7 +38,7 @@ import com.cystesoft.vyrbus.view.ui.WndBase;
  */
 public class WndConfPrinter extends WndBase{
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Combobox cmbAgencia;
@@ -51,8 +51,8 @@ public class WndConfPrinter extends WndBase{
 	private Combobox cmbBistParada;
 	private Button btnGuardar;
 //	private Button btnNuevo;
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
 	 */
@@ -70,8 +70,8 @@ public class WndConfPrinter extends WndBase{
 		btnGuardar=(Button)this.getFellow("btnGuardar");
 //		btnNuevo=(Button)this.getFellow("btnNuevo");
 	}
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
@@ -82,7 +82,7 @@ public class WndConfPrinter extends WndBase{
 		Util.seleccionarValorItemCombo(Agencia.class, cmbAgencia, getAgencia().getId());
 		/*carga los usuarios hardware asociados a la agencia*/
 		onchange_usuarioHardware();
-		
+
 		/*Carga los puestos*/
 		UtilData.cargarGenericData(cmbPuerto, false);
 		for(int x=1;x<=20;x++){
@@ -92,7 +92,7 @@ public class WndConfPrinter extends WndBase{
 			cmbPuerto.appendChild(comboitem);
 		}
 		cmbPuerto.setSelectedIndex(0);
-		
+
 		/*carga Bist por segundo*/
 		UtilData.cargarGenericData(cmbBistPorSegundo, false);
 		String arrayBistSegundo[] = {"75", "110", "134", "150", "300", "600", "1200", "1800", "2400", "4800", "7200", "9600", "14400", "19200",
@@ -103,7 +103,7 @@ public class WndConfPrinter extends WndBase{
 			cmbBistPorSegundo.appendChild(comboitem);
 		}
 		cmbBistPorSegundo.setSelectedIndex(0);
-		
+
 		/*carga los bist de datos*/
 		UtilData.cargarGenericData(cmbBistDatos, false);
 		String arrayBistDatos[] = {"5", "6", "7", "8"};
@@ -113,7 +113,7 @@ public class WndConfPrinter extends WndBase{
 			cmbBistDatos.appendChild(comboitem);
 		}
 		cmbBistDatos.setSelectedIndex(0);
-		
+
 		/*carga paridad*/
 		UtilData.cargarGenericData(cmbParidad, false);
 		Comboitem comboitem= new Comboitem("SIN PARIDAD");
@@ -132,7 +132,7 @@ public class WndConfPrinter extends WndBase{
 		comboitem.setValue(4);
 		cmbParidad.appendChild(comboitem);
 		cmbParidad.setSelectedIndex(0);
-		
+
 		/*bist de parada*/
 		UtilData.cargarGenericData(cmbBistParada, false);
 		String arrayBistParada[] = {"1", "2"};
@@ -142,16 +142,16 @@ public class WndConfPrinter extends WndBase{
 			cmbBistParada.appendChild(comboitem);
 		}
 		cmbBistParada.setSelectedIndex(0);
-		
+
 		/*Solamente se habilita para el rol Super Usuario*/
 		cmbAgencia.setDisabled(getRol().getId().intValue()!=Constantes.ID_ROL_SUPER_USUARIO);
 	}
-	
+
 	public void onchange_usuarioHardware(){
 		try {
 			Util.limpiarCombobox(cmbUsuarioHardware);
 			UtilData.cargarGenericData(cmbUsuarioHardware, false);
-			if(cmbAgencia.getSelectedItem().getValue() instanceof Agencia){				
+			if(cmbAgencia.getSelectedItem().getValue() instanceof Agencia){
 				TreeMap<String, Object>criteriosBusqueda= new TreeMap<>();
 				criteriosBusqueda.put("agencia", cmbAgencia.getSelectedItem().getValue());
 				criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
@@ -170,7 +170,7 @@ public class WndConfPrinter extends WndBase{
 			DlgMessage.error(e.getMessage());
 		}
 	}
-	
+
 	private void limpiarControles(){
 		cmbUsuarioHardware.setSelectedIndex(0);
 		txtNombreImpresora.setText("");
@@ -180,7 +180,7 @@ public class WndConfPrinter extends WndBase{
 		cmbParidad.setSelectedIndex(0);
 		cmbBistParada.setSelectedIndex(0);
 	}
-	
+
 	private void habilitarControles(boolean disabled){
 		cmbAgencia.setDisabled(getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO?false:true);
 		cmbUsuarioHardware.setDisabled(disabled);
@@ -190,21 +190,21 @@ public class WndConfPrinter extends WndBase{
 		cmbBistDatos.setDisabled(disabled);
 		cmbParidad.setDisabled(disabled);
 		cmbBistParada.setDisabled(disabled);
-	}	
-	
+	}
+
 	public void nuevo(){
 		try {
 			limpiarControles();
 			habilitarControles(false);
 			cmbUsuarioHardware.setFocus(true);
-			
+
 			btnGuardar.setDisabled(false);
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
 		}
 	}
-	
+
 	public void guardar()throws Exception{
 		try {
 			if(!(cmbAgencia.getSelectedItem().getValue() instanceof Agencia)){
@@ -232,7 +232,7 @@ public class WndConfPrinter extends WndBase{
 				DlgMessage.information(Messages.getString("wndConfigPrint.information.noBistParada"));
 				return;
 			}
-			
+
 			Messagebox.show(Messages.getString("wndConfigImpresora.question.save"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e){
@@ -241,7 +241,7 @@ public class WndConfPrinter extends WndBase{
 							ConfiguracionImpresora configuracionImpresora= new ConfiguracionImpresora();
 							configuracionImpresora.setUsuarioHardware((UsuarioHardware)cmbUsuarioHardware.getSelectedItem().getValue());
 							configuracionImpresora.setImpresora(txtNombreImpresora.getText().trim().toUpperCase());
-							configuracionImpresora.setPuerto((String)cmbPuerto.getSelectedItem().getValue());	
+							configuracionImpresora.setPuerto((String)cmbPuerto.getSelectedItem().getValue());
 							configuracionImpresora.setBistPorSegundo((Long)cmbBistPorSegundo.getSelectedItem().getValue());
 							configuracionImpresora.setBistDatos((Long)cmbBistDatos.getSelectedItem().getValue());
 							configuracionImpresora.setParidad((Integer)cmbParidad.getSelectedItem().getValue());
@@ -249,8 +249,8 @@ public class WndConfPrinter extends WndBase{
 							configuracionImpresora.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 							UtilData.auditarRegistro(configuracionImpresora, getUsuario(), Executions.getCurrent());
 							ServiceLocator.getConfiguracionImpresoraManager().guardar(configuracionImpresora);
-							
-							
+
+
 							DlgMessage.information(Messages.getString("Generales.information.exitoGuardar"));
 							habilitarControles(true);
 							btnGuardar.setDisabled(true);

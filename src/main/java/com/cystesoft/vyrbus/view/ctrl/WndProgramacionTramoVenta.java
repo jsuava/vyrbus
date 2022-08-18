@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 26/01/2015
  * Hora			: 12:36:17
@@ -48,7 +48,7 @@ import com.cystesoft.vyrbus.view.ui.WndBase;
 public class WndProgramacionTramoVenta extends WndBase{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Combobox cmbOrigen;
@@ -62,16 +62,16 @@ public class WndProgramacionTramoVenta extends WndBase{
 	private Intbox itbxTiempo;
 	private Button btnGuardar;
 	private Checkbox chbxVentaAdelantada;
-	
+
 	/*Lista de tramos programados*/
 	private Datebox dtbxFechaInicial;
 	private Datebox dtbxFechaFinal;
 	private Combobox cmbOrigenList;
 	private Combobox cmbDestinoList;
 	private Listbox lsbxListaTramosProgramados;
-	
-	
-	
+
+
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
 	 */
@@ -88,7 +88,7 @@ public class WndProgramacionTramoVenta extends WndBase{
 		itbxTiempo=(Intbox)this.getFellow("itbxTiempo");
 		btnGuardar=(Button)this.getFellow("btnGuardar");
 		chbxVentaAdelantada=(Checkbox)this.getFellow("chbxVentaAdelantada");
-		
+
 		/*Lista de tramos programados*/
 		dtbxFechaInicial=(Datebox)this.getFellow("dtbxFechaInicial");
 		dtbxFechaFinal=(Datebox)this.getFellow("dtbxFechaFinal");
@@ -96,7 +96,7 @@ public class WndProgramacionTramoVenta extends WndBase{
 		cmbDestinoList=(Combobox)this.getFellow("cmbDestinoList");
 		lsbxListaTramosProgramados=(Listbox)this.getFellow("lsbxListaTramosProgramados");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
@@ -109,10 +109,10 @@ public class WndProgramacionTramoVenta extends WndBase{
 		cmbDestinoList.setSelectedIndex(0);
 		dtbxFechaInicial.setValue(new Date());
 		dtbxFechaFinal.setValue(new Date());
-		
-		
+
+
 		UtilData.cargarDataCombo(cmbOrigen, Localidad.class, false);
-		UtilData.cargarDataCombo(cmbDestino, Localidad.class, false);		
+		UtilData.cargarDataCombo(cmbDestino, Localidad.class, false);
 		cmbOrigen.setSelectedIndex(0);
 		cmbDestino.setSelectedIndex(0);
 		dtbxFechaPartida.setValue(new Date());
@@ -134,14 +134,14 @@ public class WndProgramacionTramoVenta extends WndBase{
 			dtbxDesde.setDisabled(true);
 			dtbxHasta.setDisabled(true);
 			btnGuardar.setDisabled(true);
-			
-			if(cmbOrigen.getSelectedItem().getValue() instanceof Localidad && cmbDestino.getSelectedItem().getValue() instanceof Localidad){			
+
+			if(cmbOrigen.getSelectedItem().getValue() instanceof Localidad && cmbDestino.getSelectedItem().getValue() instanceof Localidad){
 				String fechaPartida=Constantes.FORMAT_DATE.format(dtbxFechaPartida.getValue());
 				String horaPartida=(tmbxHoraPartida.getValue()!=null?Constantes.FORMAT_TIME.format(tmbxHoraPartida.getValue()):null);
 				Integer localidadIdOrigen=((Localidad)cmbOrigen.getSelectedItem().getValue()).getId();
 				Integer localidadIdDestino=((Localidad)cmbDestino.getSelectedItem().getValue()).getId();
 				List<Itinerario>listItinerario=ServiceLocator.getItinerarioManager().buscarItinerarioByRutaMayor(fechaPartida,horaPartida,localidadIdOrigen,localidadIdDestino);
-				
+
 				int x=1;
 				for(Itinerario itinerario: listItinerario){
 					Listitem item=new Listitem();
@@ -160,7 +160,7 @@ public class WndProgramacionTramoVenta extends WndBase{
 					cell=new Listcell(itinerario.getHoraPartida());
 					cell.setStyle("font-size:11px !important");
 					item.appendChild(cell);
-										
+
 					item.setValue(itinerario);
 					lsbxitinerarios.appendChild(item);
 				}
@@ -169,9 +169,9 @@ public class WndProgramacionTramoVenta extends WndBase{
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
 		}
-		
+
 	}
-	
+
 	/**
 	 * Busca el detalle del itinerario seleccionado.
 	 */
@@ -179,20 +179,20 @@ public class WndProgramacionTramoVenta extends WndBase{
 		try {
 			Util.limpiarListbox(lsbxDetalleItinerario);
 			Itinerario itinerario=(Itinerario)lsbxitinerarios.getSelectedItem().getValue();
-			
-			TreeMap<String, Object>criteriosBusqueda=new TreeMap<String, Object>();
+
+			TreeMap<String, Object>criteriosBusqueda=new TreeMap<>();
 			criteriosBusqueda.put("itinerario",itinerario);
 			criteriosBusqueda.put("estadoRegistro",Constantes.VALUE_ACTIVO);
-			List<String>criteriosOrdenar=new ArrayList<String>();
+			List<String>criteriosOrdenar=new ArrayList<>();
 			criteriosOrdenar.add("fechaPartida");
 			criteriosOrdenar.add("horaPartida");
 			List<DetalleItinerario>lstDetalleItinerario=ServiceLocator.getDetalleItinerarioManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
-			
+
 			int x=1;
 			for(DetalleItinerario detalleItinerario:lstDetalleItinerario){
 				if(detalleItinerario.getRuta().getId().intValue()!=itinerario.getRuta().getId().intValue()){
 					Listitem item=new Listitem();
-					
+
 					Listcell cell=new Listcell();
 					item.appendChild(cell);
 					cell=new Listcell(String.valueOf(x++));
@@ -209,17 +209,17 @@ public class WndProgramacionTramoVenta extends WndBase{
 					cell=new Listcell(Util.toNumberFormat(detalleItinerario.getTarifa(),2));
 					cell.setStyle("font-size:11px !important");
 					item.appendChild(cell);
-					
+
 					item.setValue(detalleItinerario);
 					lsbxDetalleItinerario.appendChild(item);
 				}
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
 		}
-		
+
 	}
 
 	/**
@@ -234,16 +234,16 @@ public class WndProgramacionTramoVenta extends WndBase{
 			dtbxDesde.setDisabled(false);
 			dtbxHasta.setDisabled(false);
 			btnGuardar.setDisabled(false);
-				
+
 			String fecha = Util.DatetoString(detalleItinerario.getFechaPartida(), "yyyyMMdd");
 			dtbxDesde.setConstraint("after "+fecha);
 			dtbxHasta.setConstraint("after "+fecha);
-				
+
 			dtbxDesde.setValue(detalleItinerario.getFechaPartida());
 			dtbxHasta.setValue(detalleItinerario.getFechaPartida());
 		}
 	}
-	
+
 	/**
 	 * Guarda las rutas(tramos) seleccionadas con la activacion de la venta
 	 */
@@ -257,36 +257,36 @@ public class WndProgramacionTramoVenta extends WndBase{
 				DlgMessage.information(Messages.getString("Debe de seleccionar el Tramo, el cual desea Programar."));
 				return;
 			}
-			
+
 			Messagebox.show(Messages.getString("Generales.query.guardar"),DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e) throws Exception {
 					if(e.getName().equals("onYes")){
 						Itinerario itinerario=(Itinerario)lsbxitinerarios.getSelectedItem().getValue();
-						
+
 						String fechaInicial=Constantes.FORMAT_DATE.format(dtbxDesde.getValue());
 						String fechaFinal=Constantes.FORMAT_DATE.format(dtbxHasta.getValue());
-						
+
 						for(Listitem item:lsbxDetalleItinerario.getSelectedItems()){
 							DetalleItinerario detalleItinerario=(DetalleItinerario)item.getValue();
-							
+
 							//-->Busca los itinerarios y rutas a guardar
 							List<Itinerario>listItinerarios=ServiceLocator.getItinerarioManager().buscarItinerariosByVentaTramo(fechaInicial, fechaFinal, itinerario.getRuta().getId()
 									,detalleItinerario.getRuta().getId(), detalleItinerario.getHoraPartida(), itinerario.getHoraPartida());
-							
+
 							Integer isNotVentaAdelantada=Constantes.TRUE_VALUE;
 							if(chbxVentaAdelantada.isChecked())
 								isNotVentaAdelantada=Constantes.FALSE_VALUE;
-							
+
 							//Valida los itinerarios y rutas a insertar
-							List<VentaTramo>listaVentaTramoDuplicado=new ArrayList<VentaTramo>();
+							List<VentaTramo>listaVentaTramoDuplicado=new ArrayList<>();
 							for(Itinerario oItinerario:listItinerarios){
 								//Guarda la venta por tramo
 								VentaTramo ventaTramo=ServiceLocator.getVentaTramoManager().buscarPorItinerarioRuta(oItinerario, oItinerario.getRuta());
 								if(ventaTramo!=null)
 									listaVentaTramoDuplicado.add(ventaTramo);
 							}
-							
+
 							if(listaVentaTramoDuplicado.size()>0){
 								DlgMessage.information(Messages.getString("WndProgramacionVentaTramos.information.tramosDuplicate"));
 								return;
@@ -318,15 +318,15 @@ public class WndProgramacionTramoVenta extends WndBase{
 			DlgMessage.error(e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Realiza la busqueda de los tramos programados
 	 */
 	public void buscarTramosProgramados(){
 		try {
-			
+
 			Util.limpiarListbox(lsbxListaTramosProgramados);
-			
+
 			String fechaInicial=Constantes.FORMAT_DATE.format(dtbxFechaInicial.getValue());
 			String fechaFinal=Constantes.FORMAT_DATE.format(dtbxFechaFinal.getValue());
 			Integer origenId=null;
@@ -336,7 +336,7 @@ public class WndProgramacionTramoVenta extends WndBase{
 			if(cmbDestinoList.getSelectedItem().getValue() instanceof Localidad)
 				destinoId=((Localidad)cmbDestinoList.getSelectedItem().getValue()).getId();
 			List<VentaTramo>result=ServiceLocator.getVentaTramoManager().buscarPor(fechaInicial, fechaFinal, origenId, destinoId);
-						
+
 			int x=1;
 			for(VentaTramo ventaTramo:result){
 				Listitem item=new Listitem();
@@ -366,16 +366,16 @@ public class WndProgramacionTramoVenta extends WndBase{
 				if(ventaTramo.getItinerario().getFechaPartida().getTime()< Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date())).getTime())
 					btnEliminar.setDisabled(true);
 				btnEliminar.setLabel("Elimnar");
-				
+
 				cell=new Listcell();
 				cell.appendChild(btnEliminar);
 				item.appendChild(cell);
-				
-				
+
+
 				item.setValue(ventaTramo);
 				lsbxListaTramosProgramados.appendChild(item);
-				
-				
+
+
 				btnEliminar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 					@Override
 					public void onEvent(Event event) throws Exception {
@@ -389,7 +389,7 @@ public class WndProgramacionTramoVenta extends WndBase{
 			DlgMessage.error(e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Elimina el tramo programado
 	 * @param ventaTramo

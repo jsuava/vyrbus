@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 02/05/2012
  */
@@ -39,28 +39,28 @@ public class WndTipoAgencia extends WndOpcionesMantenimiento {
 	private static final long serialVersionUID = -2451880424114680419L;
 
 	private Textbox txtDenominacion;
-	
+
 	private TipoAgencia oTipoAgencias=null;
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
 
-	
+
 	@Override
 	public void onCreate() throws Exception {
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
 	}
-	
+
 	@Override
 	public void initComponents() {
 		txtDenominacion = (Textbox) getFellow("txtDenominacion");
 	}
-	
+
 	@Override
 	public void onNew() {
 		// TODO Auto-generated method stub
 	}
-	
+
 	@Override
 	public void onSearch() {
 		final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
@@ -91,7 +91,7 @@ public class WndTipoAgencia extends WndOpcionesMantenimiento {
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getTipoAgenciaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getTipoAgenciaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
 	}
 	/* (non-Javadoc)
@@ -111,7 +111,7 @@ public class WndTipoAgencia extends WndOpcionesMantenimiento {
 		switch (action) {
 			case ACTION_NEW:
 				break;
-	
+
 			case ACTION_MODIFY:
 				this.mantenimientoRegistro(new Long(textboxId.getText()));
 				break;
@@ -125,15 +125,15 @@ public class WndTipoAgencia extends WndOpcionesMantenimiento {
 		try{
 			if (txtDenominacion.getText().trim().equals(""))
 				throw new DenominacionNullException();
-			
-			if (action==ACTION_NEW)	
+
+			if (action==ACTION_NEW)
 				oTipoAgencias = new TipoAgencia();
-			
+
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
 			oTipoAgencias.setId(id);
 			oTipoAgencias.setDenominacion(txtDenominacion.getText().trim().toUpperCase());
 			oTipoAgencias.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-			
+
 			switch (action) {
 				case ACTION_NEW:
 					UtilData.auditarRegistro(oTipoAgencias, getUsuario(), Executions.getCurrent());
@@ -151,7 +151,7 @@ public class WndTipoAgencia extends WndOpcionesMantenimiento {
 			criteriosBusqueda.put("denominacion", oTipoAgencias.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			listarRegistros(ServiceLocator.getTipoAgenciaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-			
+
 		}catch (DenominacionNullException dnex){
 			DlgMessage.information(Messages.getString("Generales.information.noIngresoDenominacion"),txtDenominacion);
 			throw new CancelaGrabacionException();
@@ -162,7 +162,7 @@ public class WndTipoAgencia extends WndOpcionesMantenimiento {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace(); throw new CancelaGrabacionException();
 		}
-		
+
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onDelete(int)
@@ -189,7 +189,7 @@ public class WndTipoAgencia extends WndOpcionesMantenimiento {
 	@Override
 	public void onPrint(int tab) {
 		// TODO Auto-generated method stub
-		
+
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onExport(int)
@@ -197,7 +197,7 @@ public class WndTipoAgencia extends WndOpcionesMantenimiento {
 	@Override
 	public void onExport(int tab) {
 		// TODO Auto-generated method stub
-		
+
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onHelp()
@@ -205,7 +205,7 @@ public class WndTipoAgencia extends WndOpcionesMantenimiento {
 	@Override
 	public void onHelp() {
 		// TODO Auto-generated method stub
-		
+
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onChangeTab(int)
@@ -215,7 +215,7 @@ public class WndTipoAgencia extends WndOpcionesMantenimiento {
 		switch (tab) {
 			case TAB_LIST:
 				break;
-	
+
 			case TAB_MAINTENANCE:
 				if (listboxLista.getSelectedIndex() > -1) {
 					this.mantenimientoRegistro(new Long((String) listboxLista.getSelectedItem().getValue()));
@@ -231,13 +231,13 @@ public class WndTipoAgencia extends WndOpcionesMantenimiento {
 		closeTabWindow();
 	}
 
-	
+
 	private void listarRegistros(ArrayList<TipoAgencia> lstRegistros) {
-		ArrayList<Object> lstTipoAgencias = new ArrayList<Object>();
+		ArrayList<Object> lstTipoAgencias = new ArrayList<>();
 
 		for(int r = 0; r < lstRegistros.size(); r ++) {
 			TipoAgencia oTipoAgencia = lstRegistros.get(r);
-			ArrayList<Object> lstFila = new ArrayList<Object>();
+			ArrayList<Object> lstFila = new ArrayList<>();
 
 			lstFila.add(oTipoAgencia.getId());
 			lstFila.add(r + 1);

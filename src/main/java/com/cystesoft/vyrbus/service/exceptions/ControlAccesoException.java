@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 29 dic. 2021
  * Hora			: 13:47:28
@@ -18,7 +18,7 @@ public class ControlAccesoException extends Exception implements Serializable {
 	private static final long serialVersionUID = 1L;
 	public static final int EMPTY_CODIGO=1;
 	public static final int EXPIRED_CODIGO=2;
-	
+
 	private Integer tipo;
 
 	/**
@@ -30,7 +30,7 @@ public class ControlAccesoException extends Exception implements Serializable {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public ControlAccesoException() {
 		super();

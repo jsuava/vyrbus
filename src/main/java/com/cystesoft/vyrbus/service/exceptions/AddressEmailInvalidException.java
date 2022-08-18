@@ -1,7 +1,7 @@
 /**
  * Proyecto		: MANTYBUS
  * Sistema		: Sistema de Mantenimiento de Buses
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 06/07/2011
  */
@@ -23,7 +23,7 @@ public class AddressEmailInvalidException extends Exception implements Serializa
 		super(message);
 		this.message=message;
 	}
-	
+
 	@Override
 	public String getMessage() {
 		return message;

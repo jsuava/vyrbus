@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 28/11/2016
  * Hora			: 09:07:56
@@ -17,7 +17,7 @@ import java.util.Date;
 public class EmbarquePasajero extends GenericBean{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Long id;
@@ -138,6 +138,6 @@ public class EmbarquePasajero extends GenericBean{
 			Integer cantidadPasajerosEmbarcados) {
 		this.cantidadPasajerosEmbarcados = cantidadPasajerosEmbarcados;
 	}
-	
-	
+
+
 }

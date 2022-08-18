@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 30/09/2014
  * Hora			: 15:50:46
@@ -25,17 +25,17 @@ import net.sf.jasperreports.engine.JRField;
 public class ReporteManifiesto implements JRDataSource{
 	private int index = -1;
 	private List<VentaPasaje> listPasajeros;
-	
+
 	public ReporteManifiesto(List<VentaPasaje> listPasajeros){
 		this.listPasajeros = listPasajeros;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.jasperreports.engine.JRDataSource#getFieldValue(net.sf.jasperreports.engine.JRField)
 	 */
 	@Override
 	public Object getFieldValue(JRField field) throws JRException {
-		Object value = null;	
+		Object value = null;
 		String fieldName = field.getName();
 		if("asiento".equals(fieldName))
 			value = (listPasajeros.get(index).getNumeroAsiento());
@@ -64,7 +64,7 @@ public class ReporteManifiesto implements JRDataSource{
 				value = (listPasajeros.get(index).getFormaPago().getId().intValue()!=Constantes.ID_FORPAG_CORTESIA?"CONTADO":listPasajeros.get(index).getFormaPago().getDenominacion());
 			else
 				value="";
-		}	
+		}
 		return value;
 	}
 

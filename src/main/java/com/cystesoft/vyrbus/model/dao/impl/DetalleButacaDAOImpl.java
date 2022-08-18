@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 05/01/2017
  * Hora			: 15:50:53
@@ -25,7 +25,7 @@ public class DetalleButacaDAOImpl extends GenericDAOImpl implements DetalleButac
 
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.DetalleButacaDAO#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
-	 */	
+	 */
 	@Override
 	public ArrayList<DetalleButaca> buscarPorEstadoRegistro(String estado,String criterioOrden) {
 		// TODO Auto-generated method stub
@@ -74,7 +74,7 @@ public class DetalleButacaDAOImpl extends GenericDAOImpl implements DetalleButac
 	@Override
 	public void inactivar(Long id) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -91,8 +91,8 @@ public class DetalleButacaDAOImpl extends GenericDAOImpl implements DetalleButac
 		 		 + "And "+(detalleButaca.getUsuario()==null?"db.usuario.id is null":"db.usuario.id="+detalleButaca.getUsuario().getId())+" "
 				 + "And db.estadoRegistro='A'";
 		List<DetalleButaca> result=getSession().createQuery(hql).list();
-		
+
 		return result;
 	}
-	
+
 }

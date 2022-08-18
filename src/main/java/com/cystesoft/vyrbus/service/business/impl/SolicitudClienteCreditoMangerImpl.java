@@ -19,18 +19,18 @@ import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.Sendmail;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 public class SolicitudClienteCreditoMangerImpl implements SolicitudClienteCreditoManager {
-	
+
 	public SolicitudClienteCreditoDAO solicitudClienteCreditoDAO;
-	
+
 	public void setSolicitudClienteCreditoDAO(SolicitudClienteCreditoDAO solicitudClienteCreditoDAO){
 		this.solicitudClienteCreditoDAO=solicitudClienteCreditoDAO;
 	}
-	
+
 	public SolicitudClienteCreditoDAO getSolicitudClienteCreditoDAO(){
 		return this.solicitudClienteCreditoDAO;
 	}
@@ -62,29 +62,29 @@ public class SolicitudClienteCreditoMangerImpl implements SolicitudClienteCredit
 	public void guardar(SolicitudClienteCredito solicitudClienteCredito)throws Exception {
 		//Guarda
 		getSolicitudClienteCreditoDAO().guardar(solicitudClienteCredito);
-		
-		
+
+
 		//Solamente envia las alertas si es que el nievel de aprobacion es diferente a tres.
 		if(solicitudClienteCredito.getNivelAprobacion().intValue()!=Constantes.NIVEL_TRES){
 			//True si la solicitud es de credito, false si es al contado
-			Boolean esSolicitudCredito=solicitudClienteCredito.getLineaCreditoSolicitada()>0;
-			
+			boolean esSolicitudCredito=solicitudClienteCredito.getLineaCreditoSolicitada()>0;
+
 			SolicitudCartera solicitudCartera=ServiceLocator.getSolicitudCarteraManager().buscarPorId(solicitudClienteCredito.getSolicitudCartera().getId());
 			Usuario funcionario=ServiceLocator.getUsuarioManager().buscarXId(solicitudCartera.getUsuario().getId().longValue());
 			//Busca el usuario aprobador por su id.
 			if(solicitudClienteCredito.getUsuarioAprobador()!=null){
 				UsuarioAprobador  usuarioAprobador=ServiceLocator.getUsuarioAprobadorManager().buscarPorId(solicitudClienteCredito.getUsuarioAprobador().getId().longValue());
 				solicitudClienteCredito.setUsuarioAprobador(usuarioAprobador);
-				
+
 			}
-			
-			String title=""; 
-			String toAddress=""; 
-			String ccAddress=""; 
-			String bccAddress=""; 
+
+			String title="";
+			String toAddress="";
+			String ccAddress="";
+			String bccAddress="";
 			String mensaje = "";
 			String emailFuncionario=funcionario.getPersonal()==null?funcionario.getEmailFuncionario():funcionario.getPersonal().getEmail();
-			
+
 			mensaje="Funcionario     : "+funcionario.toString()+"\n";
 			mensaje+="Fecha Solicitud : "+Constantes.FORMAT_LONG.format(solicitudCartera.getFechaSolicitud())+"\n";
 			mensaje+="RUC Cliente     : "+solicitudCartera.getCliente().getNumeroDocumento()+"\n";
@@ -105,7 +105,7 @@ public class SolicitudClienteCreditoMangerImpl implements SolicitudClienteCredit
 				if(solicitudCartera.getDescuentoAlta()>0)
 					mensaje+="Desct. temporada alta: "+solicitudCartera.getDescuentoAlta()+" % \n";
 			}
-			
+
 			//Cuando se realiza la solicitud por parte del funcionario.
 			if(solicitudClienteCredito.getNivelAprobacion()==0 || solicitudClienteCredito.getNivelAprobacion()==null){
 				if(solicitudClienteCredito.getEsAmpliacion().equals(Constantes.SI)){//Valida si es un Ampliación
@@ -117,9 +117,9 @@ public class SolicitudClienteCreditoMangerImpl implements SolicitudClienteCredit
 					title="Solicitud Canje Publicitario - ";
 				else
 					title="Solicitud Cartera - ";
-				
+
 				//Obtiene los usuarios aprobadores de nivel uno para realizar el envio del email.
-				List<UsuarioAprobador> listUsuApro= ServiceLocator.getUsuarioAprobadorManager().buscarXNivel(Constantes.NIVEL_UNO);	
+				List<UsuarioAprobador> listUsuApro= ServiceLocator.getUsuarioAprobadorManager().buscarXNivel(Constantes.NIVEL_UNO);
 				for(UsuarioAprobador aprobador: listUsuApro){
 					if(aprobador.getUsuario().getPersonal()!=null && aprobador.getUsuario().getPersonal().getEmail()!=null){
 						if(toAddress.length()==0)
@@ -132,7 +132,7 @@ public class SolicitudClienteCreditoMangerImpl implements SolicitudClienteCredit
 				ccAddress=emailFuncionario;
 			}else{
 				/*En las aprovaciones de los diferentes niveles*/
-				
+
 				//configura el titulo del mensaje
 				if(solicitudClienteCredito.getEsAmpliacion().equals(Constantes.SI)){
 					if(solicitudClienteCredito.getEsCanje()!=null && solicitudClienteCredito.getEsCanje().equals(Constantes.SI))
@@ -154,9 +154,9 @@ public class SolicitudClienteCreditoMangerImpl implements SolicitudClienteCredit
 						break;
 					default:
 						break;
-					}			
+					}
 				}
-					
+
 				//valida el envio de email segun el estado de la solicitud
 				if(!(solicitudClienteCredito.getEstadoSolicitud().equals(Constantes.ESTADOSOL_ACTIVA))){//Desaprobacion
 					title+="Desaprobado - ";
@@ -173,13 +173,13 @@ public class SolicitudClienteCreditoMangerImpl implements SolicitudClienteCredit
 							toAddress=emailFuncionario;
 					}
 				}
-							
+
 //				if(solicitudClienteCredito.getNivelAprobacion()!=Constantes.NIVEL_TRES){
 				if(solicitudClienteCredito.getNivelAprobacion()!=Constantes.NIVEL_DOS){
 					//Valida si es el Cliente es de tipo crédito y la solicitud es aprobada.
 					if(solicitudClienteCredito.getLineaCreditoSolicitada()>0 && solicitudClienteCredito.getTipoCobranza()!=null && (solicitudClienteCredito.getEstadoSolicitud().equals(Constantes.ESTADOSOL_ACTIVA)) ){
 						//Recupera el usuario aprobador del siguiente nivel
-						List<UsuarioAprobador> listUsuApro= ServiceLocator.getUsuarioAprobadorManager().buscarXNivel(solicitudClienteCredito.getNivelAprobacion()+1);		
+						List<UsuarioAprobador> listUsuApro= ServiceLocator.getUsuarioAprobadorManager().buscarXNivel(solicitudClienteCredito.getNivelAprobacion()+1);
 						for(UsuarioAprobador aprobador: listUsuApro){
 							if(aprobador.getUsuario().getPersonal()!=null && aprobador.getUsuario().getPersonal().getEmail()!=null){
 								if(toAddress.length()==0) toAddress=aprobador.getUsuario().getPersonal().getEmail();
@@ -187,10 +187,10 @@ public class SolicitudClienteCreditoMangerImpl implements SolicitudClienteCredit
 							}
 						}
 					}
-					
+
 				}else{
 					/*Busca usuario(s) probador(es) de nivel 1 para enviar correo de confirmacion de la aprobacion final por parte de la gerencia comercial*/
-					List<UsuarioAprobador> listUsuApro= ServiceLocator.getUsuarioAprobadorManager().buscarXNivel(Constantes.NIVEL_UNO);		
+					List<UsuarioAprobador> listUsuApro= ServiceLocator.getUsuarioAprobadorManager().buscarXNivel(Constantes.NIVEL_UNO);
 					for(UsuarioAprobador aprobador: listUsuApro){
 						if(aprobador.getUsuario().getPersonal()!=null && aprobador.getUsuario().getPersonal().getEmail()!=null){
 							if(toAddress.length()==0) toAddress=aprobador.getUsuario().getPersonal().getEmail();
@@ -201,13 +201,13 @@ public class SolicitudClienteCreditoMangerImpl implements SolicitudClienteCredit
 //					if(toAddress.length()==0) toAddress+=emailFuncionario;
 //					else toAddress+=","+emailFuncionario;
 				}
-							
+
 				if(ccAddress.length()==0)//Copia el correo al usuario aprobador
 					ccAddress=solicitudClienteCredito.getUsuarioAprobador().getUsuario().getPersonal().getEmail();
-				else 
+				else
 					ccAddress+=","+solicitudClienteCredito.getUsuarioAprobador().getUsuario().getPersonal().getEmail();
 			}
-			
+
 			//Datos de la Aprobación/desaprobacion.
 			if(solicitudClienteCredito.getNivelAprobacion()!=null && solicitudClienteCredito.getNivelAprobacion()>0){
 				String mensajeApro="\n\n";
@@ -236,33 +236,33 @@ public class SolicitudClienteCreditoMangerImpl implements SolicitudClienteCredit
 				case Constantes.NIVEL_TRES:
 					usuApro+=" - Gerencia comercial \n";
 					break;
-					
+
 				default:
 					break;
-				}				
+				}
 				mensajeApro+=usuApro;
 				if(solicitudClienteCredito.getObservaciones()!=null  &&  solicitudClienteCredito.getEstadoSolicitud().equals(Constantes.ESTADOSOL_ACTIVA) ){
 					if(!(solicitudClienteCredito.getObservaciones().trim().isEmpty()))
 						mensajeApro+="Observaciones         : "+solicitudClienteCredito.getObservaciones()+"\n";
 				}
-					
+
 				mensaje+=mensajeApro;
 			}
 			title+=solicitudClienteCredito.getSolicitudCartera().getCliente().getRazonSocial();//Agrega al titulo la rozón social
-					
-			//SOLO COMENTAR PARA PRUEBAS 
+
+			//SOLO COMENTAR PARA PRUEBAS
 			bccAddress="sistemas@tepsa.com.pe";
-			
+
 			/*SOLO DESCOMENTAR PARA REALIZAR PRUEBAS */
 //			toAddress="jabanto@tepsa.com.pe";
 //			ccAddress="jabanto@tepsa.com.pe";
 //			bccAddress="jabanto@tepsa.com.pe";
-			
+
 			if(toAddress.isEmpty())
 				toAddress=ccAddress;
 			if(ccAddress.isEmpty())
 				ccAddress=toAddress;
-		
+
 			//Envia E-Mail
 			mensaje+="\n\n";
 			mensaje+="NOTA: [Este buzon es de envio automático, por favor no responda.]";
@@ -296,7 +296,7 @@ public class SolicitudClienteCreditoMangerImpl implements SolicitudClienteCredit
 	 */
 	@Override
 	public void anulaSolicitud(Integer idSolicitudClienteCredito,UsuarioAprobador usuarioAprobador) throws Exception {
-		getSolicitudClienteCreditoDAO().anulaSolicitud(idSolicitudClienteCredito, usuarioAprobador);		
+		getSolicitudClienteCreditoDAO().anulaSolicitud(idSolicitudClienteCredito, usuarioAprobador);
 	}
 
 	/*

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 18 jul. 2021
  * Hora			: 21:19:46
@@ -41,11 +41,9 @@ import com.cystesoft.vyrbus.model.bean.CanalVenta;
 import com.cystesoft.vyrbus.model.bean.Cliente;
 import com.cystesoft.vyrbus.model.bean.ControlEspecieValorada;
 import com.cystesoft.vyrbus.model.bean.DetalleEquipaje;
-import com.cystesoft.vyrbus.model.bean.DetalleItinerario;
 import com.cystesoft.vyrbus.model.bean.Equipaje;
 import com.cystesoft.vyrbus.model.bean.EspecieValorada;
 import com.cystesoft.vyrbus.model.bean.FormaPago;
-import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartida;
 import com.cystesoft.vyrbus.model.bean.OperadorTarjetaCredito;
 import com.cystesoft.vyrbus.model.bean.TarjetaCredito;
 import com.cystesoft.vyrbus.model.bean.TipoComprobante;
@@ -69,7 +67,7 @@ import com.cystesoft.vyrbus.view.ui.WndBase;
 public class WndEquipaje extends WndBase implements Serializable{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 //	private Textbox txtitinerario;
@@ -103,16 +101,16 @@ public class WndEquipaje extends WndBase implements Serializable{
 	private Textbox txtRazonSocial;
 	private Textbox txtDireccionFiscal;
 	private Textbox txtobservaciones;
-	
+
 	private TreeMap<String, Object> criteriosBusqueda;
-	private int KG_X_BOLETO_LIBRES = 20;	
+	private int KG_X_BOLETO_LIBRES = 20;
 	private List<DetalleEquipaje> listDetalleEquipaje=null;
 	private Date fechaLiquidacion=null;
 	private Equipaje equipaje=null;
 	private CanalVenta canalVenta = null;
 	private Cliente cliente=null;
 //	private Itinerario itinerario;
-	
+
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.view.ui.WndBase#initComponents()
 	 */
@@ -120,7 +118,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 	public void initComponents() {
 		// TODO Auto-generated method stub
 		super.initComponents();
-		
+
 //		txtitinerario = (Textbox)this.getFellow("txtitinerario");
 //		btnBuscarItinerario = (Button)this.getFellow("btnBuscarItinerario");
 		wndEquipaje = (Window)this.getFellow("wndEquipaje");
@@ -152,7 +150,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 		txtRazonSocial = (Textbox)this.getFellow("txtRazonSocial");
 		txtDireccionFiscal = (Textbox)this.getFellow("txtDireccionFiscal");
 		txtobservaciones = (Textbox)this.getFellow("txtobservaciones");
-		
+
 		txtNumeroBoleto.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -163,13 +161,13 @@ public class WndEquipaje extends WndBase implements Serializable{
 		btnBuscar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
-				searchBoleto();				
+				searchBoleto();
 			}
 		});
 		itbxTotalKilos.addEventListener(Events.ON_CHANGING, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
-				onChanging_itbxTotalKilos(event);				
+				onChanging_itbxTotalKilos(event);
 			}
 		});
 		cmbTipoComprobante.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
@@ -209,15 +207,16 @@ public class WndEquipaje extends WndBase implements Serializable{
 				searchCliente();
 			}
 		});
-		
+
 		cmbOperadorTarjeta.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event event) {
 				onLoadTarjetas();
 			}
 		});
 	}
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.view.ui.WndBase#onCreate()
 	 */
@@ -226,19 +225,19 @@ public class WndEquipaje extends WndBase implements Serializable{
 		try {
 			// TODO Auto-generated method stub
 			super.onCreate();
-			
-//			enlazarItinerario(btnBuscarItinerario);					
-			
+
+//			enlazarItinerario(btnBuscarItinerario);
+
 			/*	*********************************************************************************************************	*/
 			/*	Obteniendo las variables de la Sesion	*/
-			fechaLiquidacion = (Date)this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION);	
+			fechaLiquidacion = (Date)this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION);
 			canalVenta = (CanalVenta)this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_CANAL_VENTA);
-			
+
 			dtbxFechaPartida.setDisabled(true);
 			dtbxFechaPartida.setValue(new Date());
-			
+
 			//Carga los tipos de comprobante
-			List<TipoComprobante> resultTipoComprobante = ServiceLocator.getTipoComprobanteManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion"); 
+			List<TipoComprobante> resultTipoComprobante = ServiceLocator.getTipoComprobanteManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
 			for(TipoComprobante tipoComprobante: resultTipoComprobante) {
 				if(tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA || tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_FACTURA ||
 						tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA) {
@@ -251,10 +250,10 @@ public class WndEquipaje extends WndBase implements Serializable{
 			dbxTotalPago.setLocale(Locale.US);
 			cmbOperadorTarjeta.setDisabled(true);
 			cmbTarjetaCredito.setDisabled(true);
-			
+
 			disabledControls(true);
 			btnGuardar.setDisabled(true);
-				
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
@@ -262,7 +261,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 	}
 
 	/**
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	private void searchBoleto()throws Exception{
@@ -273,18 +272,18 @@ public class WndEquipaje extends WndBase implements Serializable{
 		if(!(txtNumeroBoleto.getText().trim().isEmpty())) {
 			txtNumeroBoleto.setText(Util.autocompleNumberBoleto(txtNumeroBoleto.getText().trim().toUpperCase()));
 			String numeroBoleto = txtNumeroBoleto.getText().trim().toUpperCase();
-			
+
 			//Valida que el boleto no exista en la lista (Listbox)
 			if(existsListBoleto(numeroBoleto)) {
 				DlgMessage.information(Messages.getString("WndRecepcionEquipajes.boleto.duplicate"),txtNumeroBoleto);
 				return;
-			}	
-			
+			}
+
 			String fechaPartida = Constantes.FORMAT_DATE.format(dtbxFechaPartida.getValue());
 			List<VentaPasaje> resultVenta= ServiceLocator.getVentaPasajesManager().buscarVentasPostergar(null, null, null, null, numeroBoleto, fechaPartida);
 			if(resultVenta.size()>0) {
 				VentaPasaje ventaPasaje = resultVenta.get(0);
-				
+
 //				/*Valida que la agencia en donde se esta ingresando el equipaje sea un punto de embarque/partida del itinerario */
 //				criteriosBusqueda = new TreeMap<>();
 //				criteriosBusqueda.put("itinerario", ventaPasaje.getItinerario());
@@ -303,16 +302,16 @@ public class WndEquipaje extends WndBase implements Serializable{
 //						return;
 //					}
 //				}
-				
+
 				//Valida que el segundo Boleto (de ser el caso) corresponda al mismo itinerario
 				for(Listitem item: ltbxBoletos.getItems()) {
 					VentaPasaje _ventaPasaje=item.getValue();
 					if(_ventaPasaje.getItinerario().getId().longValue()!=ventaPasaje.getItinerario().getId().longValue()) {
 						DlgMessage.information(Messages.getString("WndRecepcionEquipajes.itinerarioDiferente"),txtNumeroBoleto);
 						return;
-					}					
-				}				
-				
+					}
+				}
+
 				//Valida que el boleto no haya sido registrado con algun otro equipaje
 				criteriosBusqueda = new TreeMap<>();
 				criteriosBusqueda.put("ventaPasaje", ventaPasaje);
@@ -322,8 +321,8 @@ public class WndEquipaje extends WndBase implements Serializable{
 					DlgMessage.information(Messages.getString("WndRecepcionEquipajes.boleto.duplicate"),txtNumeroBoleto);
 					return;
 				}
-				
-				addItemBoleto(ventaPasaje);	
+
+				addItemBoleto(ventaPasaje);
 				lblKilosLibres.setValue(String.valueOf(KG_X_BOLETO_LIBRES * ltbxBoletos.getItemCount()));
 				if(ltbxBoletos.getItemCount()==1) {
 					lblFechaPartida.setValue(Constantes.FORMAT_DATE.format(dtbxFechaPartida.getValue()));
@@ -331,12 +330,12 @@ public class WndEquipaje extends WndBase implements Serializable{
 					lblRuta.setValue(ventaPasaje.getRuta().toString());
 					lblHoraSalida.setValue(ventaPasaje.getHoraPartida());
 				}
-												
+
 				//Recalcula el exceso, por si aya valores en el campo de Kg
 				calcularExceso(null);
 				disabledControls(false);
 				btnGuardar.setDisabled(false);
-				
+
 				txtNumeroBoleto.setText("");
 				txtNumeroBoleto.setFocus(true);
 			}else {
@@ -346,20 +345,20 @@ public class WndEquipaje extends WndBase implements Serializable{
 			DlgMessage.information(Messages.getString("WndRecepcionEquipajes.boleto.null"),txtNumeroBoleto);
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	private void searchCliente()throws Exception{
-		cliente = null;		
+		cliente = null;
 		txtRazonSocial.setText("");
 		txtDireccionFiscal.setText("");
 		if(txtNumeroRUC.getText().trim().isEmpty()) {
 			DlgMessage.information(Messages.getString("WndRecepcionEquipajes.cliente.ruc.null"), txtNumeroRUC);
 			return;
 		}
-		
+
 		criteriosBusqueda = new TreeMap<>();
 		criteriosBusqueda.put("numeroDocumento", txtNumeroRUC.getText().trim());
 		List<Cliente> resultCliente = ServiceLocator.getClienteManager().buscarPorX(criteriosBusqueda, null);
@@ -370,22 +369,22 @@ public class WndEquipaje extends WndBase implements Serializable{
 		}else {
 			txtRazonSocial.setReadonly(false);
 			txtDireccionFiscal.setReadonly(false);
-			DlgMessage.information(Messages.getString("WndRecepcionEquipajes.cliente.ruc.noExists"), txtRazonSocial);			
+			DlgMessage.information(Messages.getString("WndRecepcionEquipajes.cliente.ruc.noExists"), txtRazonSocial);
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @throws Exception
 	 */
-	private void onChanging_itbxTotalKilos(Event event)throws Exception{		
+	private void onChanging_itbxTotalKilos(Event event)throws Exception{
 		if(((InputEvent)event).getValue()!=null && ((InputEvent)event).getValue().toString().trim().length()>0) {
 			calcularExceso(Integer.valueOf(((InputEvent)event).getValue()));
-		}		
+		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	private void onSelect_cmbTipoComprobante()throws Exception{
@@ -405,9 +404,9 @@ public class WndEquipaje extends WndBase implements Serializable{
 				rowRuc.setVisible(true);
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	private void onSelect_cmbTipoPago()throws Exception{
@@ -420,28 +419,28 @@ public class WndEquipaje extends WndBase implements Serializable{
 				cmbOperadorTarjeta.setDisabled(false);
 				cmbTarjetaCredito.setDisabled(false);
 			}
-		}		
+		}
 	}
-		
+
 	/**
-	 * 
+	 *
 	 * @throws Exception
 	 */
-	private void onClick_btnGuardar()throws Exception{		
+	private void onClick_btnGuardar()throws Exception{
 		/*Valida si el usuario tiene una liquidación aperturada*/
 		if(getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION)==null) {
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noLiquidacion"));
 			return;
-		}					
+		}
 		//Valida que, la fecha de la liquidación sea igual a la actual - 22/07/2021 - jabanto
 		String fechaActual=Constantes.FORMAT_DATE.format(new Date());
 		String s_fechaLiquidacion=(fechaLiquidacion!=null?Constantes.FORMAT_DATE.format(fechaLiquidacion):"");
 		if(!(fechaActual.equals(s_fechaLiquidacion))) {
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.fechaLiquidacionDiferente"));
 			return;
-		}		
+		}
 		if(ltbxBoletos.getItems().size()==0) {
-			DlgMessage.information(Messages.getString("WndRecepcionEquipajes.listboletos.null"), txtNumeroBoleto);			
+			DlgMessage.information(Messages.getString("WndRecepcionEquipajes.listboletos.null"), txtNumeroBoleto);
 			return;
 		}else if(itbxNumeroMaletas.getValue()==null || itbxNumeroMaletas.getValue()<=0 || itbxNumeroMaletas.getText().trim().isEmpty()) {
 			DlgMessage.information(Messages.getString("WndRecepcionEquipajes.numeroMaletas.null"), itbxNumeroMaletas);
@@ -473,10 +472,10 @@ public class WndEquipaje extends WndBase implements Serializable{
 		if(rowRuc.isVisible()) {
 			if(cliente==null && txtNumeroRUC.getText().trim().isEmpty()) {
 				DlgMessage.information(Messages.getString("WndRecepcionEquipajes.cliente.ruc.null"), txtNumeroRUC);
-				return;	
+				return;
 			}else if(cliente==null && txtRazonSocial.getText().trim().isEmpty()) {
 				DlgMessage.information(Messages.getString("WndRecepcionEquipajes.cliente.razonSocial.null"), txtRazonSocial);
-				return;			
+				return;
 			}else if(cliente==null && txtDireccionFiscal.getText().trim().isEmpty()) {
 				DlgMessage.information(Messages.getString("WndRecepcionEquipajes.cliente.direccionFiscal.null"), txtDireccionFiscal);
 				return;
@@ -484,7 +483,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 				DlgMessage.information(Messages.getString("WndRecepcionEquipajes.cliente.ruc.invalid"), txtNumeroRUC);
 				return;
 			}
-			
+
 			if(cliente==null) {
 				cliente = new Cliente();
 				cliente.setNumeroDocumento(txtNumeroRUC.getText().trim());
@@ -497,8 +496,8 @@ public class WndEquipaje extends WndBase implements Serializable{
 				cliente.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 				UtilData.auditarRegistro(cliente, getUsuario(), Executions.getCurrent());
 			}
-		}		
-		
+		}
+
 		/*Cabecera*/
 		equipaje= new Equipaje();
 		equipaje.setItinerario(((VentaPasaje)ltbxBoletos.getItemAtIndex(0).getValue()).getItinerario());
@@ -509,7 +508,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 		if(!(txtobservaciones.getText().trim().isEmpty()))
 			equipaje.setObservaciones(txtobservaciones.getText().trim().toUpperCase());
 		UtilData.auditarRegistro(equipaje, getUsuario(), Executions.getCurrent());
-				
+
 		//Obtiene el numero de Ticket inicial
 		String nroTicketInicio = onLoadEspecieValorada(new TipoComprobante(Constantes.ID_TIPCOM_TICKET_EQUIPAJE));
 		if(nroTicketInicio==null || nroTicketInicio.trim().isEmpty()) {
@@ -517,14 +516,14 @@ public class WndEquipaje extends WndBase implements Serializable{
 			return;
 		}
 		String serie = nroTicketInicio.split("-")[0];
-		Long numeroTicket = Long.valueOf(nroTicketInicio.split("-")[1]) -1;
-		
+		long numeroTicket = Long.valueOf(nroTicketInicio.split("-")[1]) -1;
+
 		//Calcula el exceso
 		Integer totalKilosLibres = Integer.valueOf(lblKilosLibres.getValue());
 		Double pesoExceso = equipaje.getPeso() - totalKilosLibres.doubleValue();
 		Integer kilosLibres = (int) (pesoExceso>0? equipaje.getPeso()-pesoExceso: equipaje.getPeso());
-		
-		//Calcula el peso promedio para el detalle 
+
+		//Calcula el peso promedio para el detalle
 		Double pesoLibrePromedio = 0.00;
 		if(pesoExceso>0) {
 			if(itbxNumeroMaletas.getValue()>1)
@@ -532,29 +531,29 @@ public class WndEquipaje extends WndBase implements Serializable{
 			else
 				pesoLibrePromedio = kilosLibres.doubleValue();
 		}else
-			pesoLibrePromedio = (kilosLibres.doubleValue() / itbxNumeroMaletas.getValue().doubleValue());						
+			pesoLibrePromedio = (kilosLibres.doubleValue() / itbxNumeroMaletas.getValue().doubleValue());
 		//Redondea a 2 decimales
 		pesoLibrePromedio = new BigDecimal(pesoLibrePromedio).setScale(2, RoundingMode.HALF_UP).doubleValue();
-		
+
 		/*crea el Detalle*/
 		int index = -1;
-		listDetalleEquipaje= new ArrayList<DetalleEquipaje>();
-		for(int x=0; x<itbxNumeroMaletas.getValue();x++) {			
+		listDetalleEquipaje= new ArrayList<>();
+		for(int x=0; x<itbxNumeroMaletas.getValue();x++) {
 			index++;
 			if(index>=ltbxBoletos.getItemCount())
-				index=0;						
+				index=0;
 			int principal = (x==0?Constantes.TRUE_VALUE:Constantes.FALSE_VALUE);
 			numeroTicket ++;
-			
+
 			//
 			Listitem item = ltbxBoletos.getItemAtIndex(index);
 			VentaPasaje ventaPasaje= item.getValue();
-			String ticket = Util.autocompleNumberBoleto(serie +"-"+numeroTicket.toString());
+			String ticket = Util.autocompleNumberBoleto(serie +"-"+Long.toString(numeroTicket));
 			Integer correlativo = (x+1);
 			Double peso = (principal==Constantes.TRUE_VALUE && pesoExceso>0? pesoExceso: pesoLibrePromedio);
-			DetalleEquipaje detalleEquipaje = getDetellaEquipaje(ventaPasaje, ticket, correlativo, peso, principal);	
+			DetalleEquipaje detalleEquipaje = getDetellaEquipaje(ventaPasaje, ticket, correlativo, peso, principal);
 			listDetalleEquipaje.add(detalleEquipaje);
-			
+
 			//Por si el numero de maletas sea menor a la cantidad de boletos ingresados, duplica el ultimo registro
 			if((x+1)==itbxNumeroMaletas.getValue() && listDetalleEquipaje.size()<ltbxBoletos.getItemCount()) {
 				int dif = (ltbxBoletos.getItemCount() - listDetalleEquipaje.size());
@@ -566,21 +565,21 @@ public class WndEquipaje extends WndBase implements Serializable{
 							if(_detalleEquipaje.getVentaPasaje().getId().longValue()==_ventaPasaje.getId().longValue()) {
 								existe=true;
 								break;
-							}														
+							}
 						}
-						if(existe==false) {
+						if(!existe) {
 							detalleEquipaje = getDetellaEquipaje(_ventaPasaje, ticket, correlativo, .00, Constantes.FALSE_VALUE);
 							listDetalleEquipaje.add(detalleEquipaje);
 						}
-					}					
-					
+					}
+
 				}
 			}
 		}
-		
+
 		//Si hay un exceso
 		if(pesoExceso>0) {
-			VentaPasaje ventaPrincipal =listDetalleEquipaje.get(0).getVentaPasaje(); 
+			VentaPasaje ventaPrincipal =listDetalleEquipaje.get(0).getVentaPasaje();
 			TipoFormaPago tipoFormaPago = (TipoFormaPago)cmbTipoPago.getSelectedItem().getValue();
 			VentaPasaje ventaExceso= new VentaPasaje();
 			ventaExceso.setVentaOriginal(ventaPrincipal.getVentaOriginal()!=null?ventaPrincipal.getVentaOriginal():null);
@@ -589,7 +588,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 			ventaExceso.setRuta(ventaPrincipal.getRuta());
 			ventaExceso.setCliente(cliente);
 			ventaExceso.setPasajero(ventaPrincipal.getPasajero());
-			ventaExceso.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CONTADO));			
+			ventaExceso.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CONTADO));
 			ventaExceso.setServicio(ventaPrincipal.getServicio());
 			ventaExceso.setTipoComprobante((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue());
 			ventaExceso.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_GRT));
@@ -625,17 +624,17 @@ public class WndEquipaje extends WndBase implements Serializable{
 			ventaExceso.setTarjetaCredito(cmbOperadorTarjeta.getSelectedIndex()<0?null:((TarjetaCredito)cmbTarjetaCredito.getSelectedItem().getValue()));
 			Double igv=ventaExceso.getImportePagado()- Double.valueOf(Util.toNumberFormat(ventaExceso.getImportePagado()/((Constantes.IGV/100)+1),2));
 			ventaExceso.setIgv(igv);
-			UtilData.auditarRegistro(ventaExceso, getUsuario(), Executions.getCurrent());	
-			
+			UtilData.auditarRegistro(ventaExceso, getUsuario(), Executions.getCurrent());
+
 			listDetalleEquipaje.get(0).setVentaPasajeExceso(ventaExceso);
 		}
-		
+
 		Messagebox.show(Messages.getString("Generales.query.guardar"),DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
 				try {
 					if(e.getName().equals("onYes")){
-						
+
 						ServiceLocator.getDetalleEquipajeManager().guardar(listDetalleEquipaje, equipaje);
 						
 //						boolean timerdownloadFileEquipaje = false;
@@ -644,14 +643,14 @@ public class WndEquipaje extends WndBase implements Serializable{
 							VentaPasaje ventaExceso= ServiceLocator.getVentaPasajesManager().buscarVentaById(listDetalleEquipaje.get(0).getVentaPasajeExceso().getId());
 							ventaExceso.setObservaciones(ventaExceso.getObservaciones()+" [MALETAS:"+itbxNumeroMaletas.getText()+" PESO:"+itbxTotalKilos.getText()+"Kg]");
 							/**Solo Boletas y facturas*/
-							if(ventaExceso.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA || 
+							if(ventaExceso.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA ||
 									ventaExceso.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_FACTURA){
 								/*Realiza el envio del boleto y realiza la impresion*/
 //								boolean printComprobante=(chkVentaRemota.isChecked()?false:true);
-								
+
 								List<VentaPasaje> listVentaPasajes= new ArrayList<>();
 								listVentaPasajes.add(ventaExceso);
-								
+
 								//Aqui se envia el comprobante al servidor de Facturación Electrónica
 								//Comentado temporalmente por jabanto
 								WSFE.sendVenta(listVentaPasajes, wndEquipaje, true, null);
@@ -659,20 +658,20 @@ public class WndEquipaje extends WndBase implements Serializable{
 //								timerdownloadFileEquipaje = true;
 							}
 						}
-						
+
 						//Envia impresion del Ticket de Equipaje
 //						WSFE.printEquipaje(listDetalleEquipaje, wndEquipaje, timerdownloadFileEquipaje);
 						
 						Messagebox.show(Messages.getString("Generales.information.exitoGuardar"),DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_OK, Messagebox.INFORMATION ,DlgMessage.BTN_OK, new EventListener<Event>() {
 							@Override
 							public void onEvent(Event event) throws Exception {
-								clearControlFull();								
-								txtNumeroBoleto.setFocus(true);	
+								clearControlFull();
+								txtNumeroBoleto.setFocus(true);
 								disabledControls(true);
 								dbxTotalPago.setDisabled(true);
 								btnGuardar.setDisabled(true);
-							}								
-						});						
+							}
+						});
 					}
 				} catch (Exception e2) {
 					e2.printStackTrace();
@@ -682,25 +681,25 @@ public class WndEquipaje extends WndBase implements Serializable{
 			}
 		});
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @throws Exception
 	 */
-	private void onClick_btnCancelar()throws Exception{		
-		clearControlFull();	
+	private void onClick_btnCancelar()throws Exception{
+		clearControlFull();
 		txtNumeroBoleto.setFocus(true);
 		dbxTotalPago.setDisabled(true);
 	}
-	
-	
-	
+
+
+
 	/**
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	private void clearControlFull()throws Exception{
-		equipaje = null;		
+		equipaje = null;
 //		itinerario = null;
 		Util.limpiarListbox(ltbxBoletos);
 //		txtitinerario.setText("");
@@ -714,9 +713,9 @@ public class WndEquipaje extends WndBase implements Serializable{
 		dbxTotalPago.setValue(null);
 		clearControlsExceso();
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	private void disabledControls(boolean isDisabled)throws Exception{
@@ -725,9 +724,9 @@ public class WndEquipaje extends WndBase implements Serializable{
 		txtGlosa.setDisabled(isDisabled);
 		txtobservaciones.setDisabled(isDisabled);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param ventaPasaje
 	 * @return
 	 * @throws Exception
@@ -739,17 +738,17 @@ public class WndEquipaje extends WndBase implements Serializable{
 		detalleEquipaje.setNumeroCorrelativo(correlativo);
 //		detalleEquipaje.setTicket(Util.autocompleNumberBoleto(serie +"-"+numeroTicket.toString()));
 		detalleEquipaje.setTicket(numeroTicket);
-//		detalleEquipaje.setPeso(principal==Constantes.TRUE_VALUE && pesoExceso>0? pesoExceso: pesoLibrePromedio);	
+//		detalleEquipaje.setPeso(principal==Constantes.TRUE_VALUE && pesoExceso>0? pesoExceso: pesoLibrePromedio);
 		detalleEquipaje.setPeso(peso);
 		detalleEquipaje.setPrincipal(principal);
 		detalleEquipaje.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 		UtilData.auditarRegistro(detalleEquipaje, getUsuario(), Executions.getCurrent());
-		
+
 		return detalleEquipaje;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param tipoComprobante
 	 * @throws Exception
 	 */
@@ -760,7 +759,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 		cmbTipoPago.setText("");
 		cmbOperadorTarjeta.setSelectedIndex(-1);
 		Util.limpiarCombobox(cmbTipoPago);
-		if(tipoComprobante.getRubro().intValue()==Constantes.RUBRO_CARGA) {			
+		if(tipoComprobante.getRubro().intValue()==Constantes.RUBRO_CARGA) {
 			TipoFormaPago tipoFormaPago = ServiceLocator.getTipoFormaPagoManager().buscarPorId(Long.valueOf(Constantes.ID_TIPFORPAG_PCE));
 			Comboitem comboitem= new Comboitem(tipoFormaPago.getDenominacion());
 			comboitem.setValue(tipoFormaPago);
@@ -775,14 +774,14 @@ public class WndEquipaje extends WndBase implements Serializable{
 				if(tipoFormaPago.getId().intValue()==Constantes.ID_TIPFORPAG_EFECTIVO || tipoFormaPago.getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA) {
 					Comboitem comboitem= new Comboitem(tipoFormaPago.getDenominacion());
 					comboitem.setValue(tipoFormaPago);
-					cmbTipoPago.appendChild(comboitem);	
-				}				
-			}			
+					cmbTipoPago.appendChild(comboitem);
+				}
+			}
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param ventaPasaje
 	 * @throws Exception
 	 */
@@ -798,11 +797,11 @@ public class WndEquipaje extends WndBase implements Serializable{
 		cell = new Listcell(ventaPasaje.getNumeroAsiento().toString());
 		cell.setStyle("font-size:11px");
 		item.appendChild(cell);
-		
+
 		item.setValue(ventaPasaje);
-		ltbxBoletos.appendChild(item);				
+		ltbxBoletos.appendChild(item);
 	}
-	
+
 	private void calcularExceso(Integer valor)throws Exception{
 		clearControlsExceso();
 		if(valor==null && itbxTotalKilos.getValue()!=null)
@@ -819,9 +818,9 @@ public class WndEquipaje extends WndBase implements Serializable{
 			}
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	private void clearControlsExceso()throws Exception{
@@ -841,13 +840,13 @@ public class WndEquipaje extends WndBase implements Serializable{
 		txtGlosa.setText("");
 		txtobservaciones.setText("");
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	private void generatedGlosaByExceso()throws Exception{
-		String _subGlosa = "";	
+		String _subGlosa = "";
 		for(Listitem item: ltbxBoletos.getItems()) {
 			VentaPasaje ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarPorId(((VentaPasaje)item.getValue()).getId());
 			_subGlosa = (_subGlosa.isEmpty()?ventaPasaje.getNumeroBoleto()+"-->"+ventaPasaje.getRuta().toString():", "+ventaPasaje.getNumeroBoleto()+"-->"+ventaPasaje.getRuta().toString());
@@ -856,9 +855,9 @@ public class WndEquipaje extends WndBase implements Serializable{
 		}
 		txtGlosa.setText("EXCESO DE EQUIPAJES, COMP.N° " + _subGlosa);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return
 	 * @throws Exception
 	 */
@@ -869,16 +868,16 @@ public class WndEquipaje extends WndBase implements Serializable{
 			if(ventaPasaje.getNumeroBoleto().equals(numeroBoleto)) {
 				exists = true;
 				break;
-			}			
+			}
 		}
-				
+
 		return exists;
 	}
-	
+
 	/**
 	 * Realiza la busqueda del correlativo para el boleto a emitir.
 	 */
-	private String onLoadEspecieValorada(TipoComprobante tipoComprobante)throws Exception{		
+	private String onLoadEspecieValorada(TipoComprobante tipoComprobante)throws Exception{
 		String numeroComprobante = "";
 		EspecieValorada especieValorada=null;
 		ControlEspecieValorada controlEspecieValorada = null;
@@ -892,10 +891,10 @@ public class WndEquipaje extends WndBase implements Serializable{
 			especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_VOUCHER_CORPORATIVO, getAgencia(),false);
 			numeroComprobante= especieValorada.toString();
 		}
-		
+
 		return numeroComprobante;
 	}
-	
+
 	/**
 	 * Carga los diferentes tarjetas de credito, de acuerdo al operador seleccionado.
 	 */
@@ -904,12 +903,12 @@ public class WndEquipaje extends WndBase implements Serializable{
 			cmbTarjetaCredito.getItems().clear();
 			cmbTarjetaCredito.setText("");
 			cmbTarjetaCredito.setDisabled(true);
-			
+
 			if(cmbOperadorTarjeta.getSelectedItem().getValue() instanceof OperadorTarjetaCredito){
 				OperadorTarjetaCredito operadorTarjetaCredito = cmbOperadorTarjeta.getSelectedItem().getValue();
-				TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+				TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 				criteriosBusqueda.put("operadorTarjetaCredito.id", operadorTarjetaCredito.getId());
-				List<String> criteriosOrdenar = new ArrayList<String>();
+				List<String> criteriosOrdenar = new ArrayList<>();
 				criteriosOrdenar.add("denominacion");
 				List<TarjetaCredito> lstTarjetaCredito = ServiceLocator.getTarjetaCreditoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
 				UtilData.cargarGenericData(cmbTarjetaCredito, false);
@@ -926,12 +925,12 @@ public class WndEquipaje extends WndBase implements Serializable{
 			log.error(ex);
 		}
 	}
-	
+
 //	/**
 //	 * Permite enlazar los controles a la ventana de selecciï¿½n de Itinerario
 //	 * @param textboxItinerario :en este Textbox se devolvera el Id del itinerario seleccionado.
 //	 * @param button :ha este Button se le adjuntara un listener con la llamada a la ventana de selecciï¿½n de itinerario
-//	 * @see WndItinerario: 
+//	 * @see WndItinerario:
 //	 */
 //	public  void enlazarItinerario(final Button button) {
 //		button.setTooltiptext("Seleccionar Itinerario");
@@ -954,8 +953,8 @@ public class WndEquipaje extends WndBase implements Serializable{
 //				oWndSeleccionaItinerario.dbFechaFin.setDisabled(true);
 //				oWndSeleccionaItinerario.setMode("modal");
 //				oWndSeleccionaItinerario.setVisible(true);
-//				
-//				
+//
+//
 //				oWndSeleccionaItinerario.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
 //					@Override
 //					public void onEvent(Event event) throws Exception {

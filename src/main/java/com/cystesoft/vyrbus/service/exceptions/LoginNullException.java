@@ -15,5 +15,5 @@ import java.io.Serializable;
  * @since JDK1.6
  */
 public class LoginNullException extends Exception implements Serializable {
-	private static final long serialVersionUID = 1L;	
+	private static final long serialVersionUID = 1L;
 }

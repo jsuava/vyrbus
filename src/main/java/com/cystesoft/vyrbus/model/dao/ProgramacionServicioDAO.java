@@ -7,25 +7,25 @@ import java.util.TreeMap;
 import com.cystesoft.vyrbus.model.bean.ProgramacionServicio;
 
 public interface ProgramacionServicioDAO extends GenericDAO {
-	
+
 	/**
-	 * 
+	 *
 	 * @param itinerario : indentificador del Itinerario.
 	 * @return
 	 * @throws Exception
 	 */
 	public List<ProgramacionServicio> buscarProgramacion(Long itinerario)throws Exception;
-	
+
 	/**
-	 * 
+	 *
 	 * @param criteriosBusqueda
 	 * @param criteriosOrdenar
 	 * @return
 	 */
 	public ArrayList<ProgramacionServicio> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
-	
+
 	/**
-	 * 
+	 *
 	 * @param idItinerario
 	 * @param origen
 	 * @param destino
@@ -36,7 +36,7 @@ public interface ProgramacionServicioDAO extends GenericDAO {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<ProgramacionServicio> buscarItinerariosProgramados(Long idItinerario, String origen, String destino, String fechaInicio, String fechaFinal, 
+	public List<ProgramacionServicio> buscarItinerariosProgramados(Long idItinerario, String origen, String destino, String fechaInicio, String fechaFinal,
 			String Servicio, Boolean itinerariosProgramados)throws Exception;
 
 	/**
@@ -48,23 +48,23 @@ public interface ProgramacionServicioDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public List<ProgramacionServicio> validacionBusesProgramados (String fechaPartida,String horaPartida, Integer idBus,Integer idAgeciaPartida) throws Exception;
-	
+
 	/**
 	 * Anula Programación
 	 * @param id  : indentificador de la Programación
 	 * @throws Exception
 	 */
 	public void inactivar(Long id)throws Exception;
-	
+
 	/**
-	 * Actualiza el bus en el itinerario. 
+	 * Actualiza el bus en el itinerario.
 	 * @param idItinerario : identificador del itinerario
 	 * @param idBus		   : identificador del Bus.
 	 * @throws Exception
 	 */
 	public void updateItinerarioBus(Long idItinerario, Long idBus) throws Exception;
-	
-	
+
+
 	/**
 	 * Valida que el piloto, copiloto o tripulante no este asociado a otro servicio en la misma fecha
 	 * @param fecha			: Fecha de la Programación
@@ -75,7 +75,7 @@ public interface ProgramacionServicioDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public ProgramacionServicio validaIngresoChoferTripulante(String fecha, Long idPiloto, Long idCopiloto, Long idTripulante,String horaPartida, Integer idAgenciaPartida) throws Exception;
-	
+
 	/**
 	 * Busca programacion para generar la hoja de ruta electronica (HRE)
 	 * @param idAgencia	: Idenificador de la Agencia que va a generar la HRE
@@ -89,9 +89,9 @@ public interface ProgramacionServicioDAO extends GenericDAO {
 	/**
 	 * Busca la programacion por su Id
 	 * @param id	: Identificador de la programacion.
-	 * @return	
+	 * @return
 	 * @throws Exception
 	 */
 	public ProgramacionServicio buscarPorId(Long id)throws Exception;
-	
+
 }

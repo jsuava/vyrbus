@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 14 jul. 2021
  * Hora			: 12:18:25
@@ -14,11 +14,9 @@ import java.util.TreeMap;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.ControlEspecieValorada;
 import com.cystesoft.vyrbus.model.bean.DetalleEquipaje;
 import com.cystesoft.vyrbus.model.bean.Equipaje;
-import com.cystesoft.vyrbus.model.bean.UsuarioHardware;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.model.dao.ControlEspecieValoradaDAO;
 import com.cystesoft.vyrbus.model.dao.DetalleEquipajeDAO;
@@ -34,9 +32,9 @@ import com.cystesoft.vyrbus.service.util.UtilData;
  */
 public class DetalleEquipajeManagerImpl implements DetalleEquipajeManager{
 	private DetalleEquipajeDAO detalleEquipajeDAO;
-	private EquipajeDAO equipajeDAO;	
+	private EquipajeDAO equipajeDAO;
 	private ControlEspecieValoradaDAO controlEspecieValoradaDAO;
-	
+
 	/**
 	 * @return the detalleEquipajeDAO
 	 */
@@ -50,7 +48,7 @@ public class DetalleEquipajeManagerImpl implements DetalleEquipajeManager{
 	public void setDetalleEquipajeDAO(DetalleEquipajeDAO detalleEquipajeDAO) {
 		this.detalleEquipajeDAO = detalleEquipajeDAO;
 	}
-	
+
 	/**
 	 * @return the equipajeDAO
 	 */
@@ -78,8 +76,8 @@ public class DetalleEquipajeManagerImpl implements DetalleEquipajeManager{
 	public void setControlEspecieValoradaDAO(ControlEspecieValoradaDAO controlEspecieValoradaDAO) {
 		this.controlEspecieValoradaDAO = controlEspecieValoradaDAO;
 	}
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.service.business.DetalleEquipajeManager#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
 	 */
@@ -138,19 +136,19 @@ public class DetalleEquipajeManagerImpl implements DetalleEquipajeManager{
 
 		//Guardar el equipaje
 		getEquipajeDAO().guardar(equipaje);
-		
+
 		//Si existe Exceso
 		VentaPasaje ventaExceso =null;
 		if(listDetalleEquipaje.get(0).getVentaPasajeExceso()!=null) {
 			ventaExceso = listDetalleEquipaje.get(0).getVentaPasajeExceso();
-			
+
 			//Valida si un comprobante con RUC y si este existe
 			if(ventaExceso.getCliente()!=null && ventaExceso.getCliente().getId()==null) {
 				ServiceLocator.getClienteManager().guardar(ventaExceso.getCliente());
 			}
-			
+
 			//Graba el exceso
-			//Obtenemos el correlativo actualizado 
+			//Obtenemos el correlativo actualizado
 //			ControlEspecieValorada controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(ventaExceso.getTipoComprobante().getId(), ventaExceso.getAgencia(), true, ventaExceso.getUsuarioHardware(), null);
 //			ventaExceso.setNumeroBoleto(controlEspecieValorada.toString());
 //			//Actualizamos el correlativo
@@ -158,13 +156,13 @@ public class DetalleEquipajeManagerImpl implements DetalleEquipajeManager{
 //			Long correlativo = Long.valueOf(ventaExceso.getNumeroBoleto().substring(position+1))+1;
 //			controlEspecieValorada.setCorrelativoActual(correlativo);
 //			getControlEspecieValoradaDAO().update(controlEspecieValorada);
-			
+
 			ServiceLocator.getVentaPasajesManager().guardarVenta(ventaExceso, false, true, false, false);
 		}
-		
+
 		//Guarda el detalle del equipaje
 //		DetalleEquipaje detalleEquipaje = null;
-		for(DetalleEquipaje _detalleEquipaje: listDetalleEquipaje) {			
+		for(DetalleEquipaje _detalleEquipaje: listDetalleEquipaje) {
 			_detalleEquipaje.setEquipaje(equipaje);
 			//Obtenemos el correlativo actualizado para los tickets
 //			ControlEspecieValorada controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(Constantes.ID_TIPCOM_TICKET_EQUIPAJE, ventaExceso.getAgencia(), true, ventaExceso.getUsuarioHardware(), null);
@@ -175,11 +173,11 @@ public class DetalleEquipajeManagerImpl implements DetalleEquipajeManager{
 			Long correlativo = Long.valueOf(_detalleEquipaje.getTicket().substring(position+1))+1;
 			controlEspecieValorada.setCorrelativoActual(correlativo);
 			getControlEspecieValoradaDAO().update(controlEspecieValorada);
-			
+
 			getDetalleEquipajeDAO().guardar(_detalleEquipaje);
 //			detalleEquipaje = _detalleEquipaje;
 		}
-		
+
 //		//Actualiza correlativos de los tikects
 //		Long numeroCorrelativo = Long.valueOf(detalleEquipaje.getTicket().split("-")[1]);
 //		ControlEspecieValorada controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(Constantes.ID_TIPCOM_TICKET_EQUIPAJE, equipaje.getAgencia(), false, equipaje.getUsuarioHardware(), null);
@@ -196,7 +194,7 @@ public class DetalleEquipajeManagerImpl implements DetalleEquipajeManager{
 		return getDetalleEquipajeDAO().buscarManifiestoEquipaje(itinerarioId, agenciaId);
 	}
 
-	
 
-	
+
+
 }

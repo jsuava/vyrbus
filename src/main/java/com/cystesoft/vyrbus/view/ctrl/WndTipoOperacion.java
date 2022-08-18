@@ -25,13 +25,13 @@ import com.cystesoft.vyrbus.view.ui.DlgMessage;
 import com.cystesoft.vyrbus.view.ui.WndBase;
 
 /**
- * 
+ *
  * @author José Abanto
  *
  */
 public class WndTipoOperacion extends WndBase{
 	private static final long serialVersionUID = 1L;
-	
+
 	private Datebox dtbxFechaLiquidacion;
 	private Button btnCaja;
 	private Button btnMostrarCalendario;
@@ -39,15 +39,15 @@ public class WndTipoOperacion extends WndBase{
 	private Groupbox grpbxFecha;
 	private Label lblInformativo1;
 	private Label lblInformativo2;
-	
+
 
 	Liquidacion oliquidacion=null;
-	
+
 	public WndTipoOperacion() throws Exception{
 		super();
-		
+
 	}
-	
+
 	@Override
 	public void initComponents() {
 		dtbxFechaLiquidacion = (Datebox) this.getFellow("dtbxFechaLiquidacion");
@@ -58,23 +58,23 @@ public class WndTipoOperacion extends WndBase{
 		lblInformativo2 = (Label)this.getFellow("lblInformativo2");
 		btnCerrar = (Button)this.getFellow("btnCerrar");
 	}
-	
+
 	@Override
 	public void onCreate() throws Exception {
 		final MyTime myTime = new MyTime();
 		dtbxFechaLiquidacion.setValue(Constantes.FORMAT_DATE.parse(myTime.dateServer()));
 		String fecha = Util.DatetoString(new Date(dtbxFechaLiquidacion.getValue().getTime()-Constantes.MILISEGUNDOS_X_DIA), "yyyyMMdd");
 		dtbxFechaLiquidacion.setConstraint("after "+fecha);
-		
+
 		btnMostrarCalendario.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				grpbxFecha.setVisible(true);
 			}
 		});
-				
+
 		oliquidacion = UtilData.estadoLiquidacionUsuario(getUsuario(), getAgencia());
-		
+
 		if(oliquidacion!=null){
 			btnMostrarCalendario.setDisabled(true);
 			lblInformativo1.setValue("El sistema ha detectado que tiene una apertura de caja con fecha: " + Constantes.FORMAT_DATE.format(oliquidacion.getFechaLiquidacion())+". " +
@@ -87,7 +87,7 @@ public class WndTipoOperacion extends WndBase{
 			lblInformativo2.setValue("Si no va realizar ninguna operación que implique ingreso o egreso de dinero no aperture caja.");
 			btnCerrar.setVisible(false);
 		}
-		
+
 		/*APERTURAR CAJA*/
 		btnCaja.addEventListener(Events.ON_CLICK, new EventListener<Event>(){
 			@SuppressWarnings("deprecation")
@@ -95,7 +95,7 @@ public class WndTipoOperacion extends WndBase{
 			public void onEvent(Event event) throws Exception {
 				try{
 					/*Busca Liquidaciones abiertas del usuario*/
-					if (oliquidacion==null){											
+					if (oliquidacion==null){
 						//Valida si el usuario tiene una liquidacion cerrada en la agencia.
 						Liquidacion oLiquidacion= ServiceLocator.getLiquidacionManager().buscarUltimaLiquidacion(getAgencia().getId(), getUsuario().getId(), Constantes.FALSE_VALUE);
 						if(oLiquidacion!=null){
@@ -107,7 +107,7 @@ public class WndTipoOperacion extends WndBase{
 								return;
 							}
 						}
-						
+
 						//Valida que la fecha de la liquidación no se a mayor a la actual
 						Date fechaActual=new Date();
 						fechaActual.setHours(0);
@@ -121,8 +121,8 @@ public class WndTipoOperacion extends WndBase{
 							DlgMessage.information("No es posible aperturar una liquidación con una fecha mayor a la actual.");
 							return;
 						}
-						
-						
+
+
 						/*********************************************************************************************/
 						//Primero apertura la liquidacion de carga
 						TranscarLiquidacionTurno liquidacionTurnoCarga= new TranscarLiquidacionTurno();
@@ -147,15 +147,15 @@ public class WndTipoOperacion extends WndBase{
 							DlgMessage.information(messageError+" - TRANSCAR");
 							return;
 						}
-						
+
 						/*********************************************************************************************/
 						//Segundo apertura la de pasajes
 						Liquidacion liquidacion=UtilData.aperturarLiquidacion(dtbxFechaLiquidacion.getValue(),getUsuario(),getAgencia());
-						
+
 						btnCaja.getParent().getParent().getParent().getDesktop().getSession().setAttribute("FECLIQ",liquidacion.getFechaLiquidacion());
-						oliquidacion = new Liquidacion();		
+						oliquidacion = new Liquidacion();
 						oliquidacion= liquidacion;
-						
+
 						Executions.sendRedirect("principal.zul");
 					}else{
 						Messagebox.show("El sistema ha detectado una caja abierta, con fecha: " + Constantes.FORMAT_DATE.format(oliquidacion.getFechaLiquidacion())+". "+

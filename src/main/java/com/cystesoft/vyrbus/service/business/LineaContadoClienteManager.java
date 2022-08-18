@@ -7,7 +7,7 @@ import java.util.TreeMap;
 import com.cystesoft.vyrbus.model.bean.LineaContadoCliente;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
@@ -19,7 +19,7 @@ public interface LineaContadoClienteManager {
 	 * @return
 	 */
 	public ArrayList<LineaContadoCliente> buscarPorEstadoRegistro(String estado, String criterioOrden);
-	
+
 	/**
 	 * Buscar lineaContadoCliente según un array de criterios
 	 * @param criteriosBusqueda : Array de criterios para la busqueda
@@ -27,35 +27,35 @@ public interface LineaContadoClienteManager {
 	 * @return
 	 */
 	public ArrayList<LineaContadoCliente> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
-	
+
 	/**
 	 * Buscar lineaContadoCliente por ID
-	 * @param id :Identificador del lineaContadoCliente 
+	 * @param id :Identificador del lineaContadoCliente
 	 * @return
 	 */
 	public LineaContadoCliente buscarPorId(Long id);
-	
+
 	/**
 	 * Guarda lineaContadoCliente
 	 * @param lineaContadoCliente: class LineaContadoCliente
 	 */
 	public void guardar(LineaContadoCliente lineaContadoCliente);
-	
+
 	/**
 	 * Actualiza LineaContadoCliente
 	 * @param LineaContadoCliente: Class LineaContadoCliente
 	 */
 	public void actualizar(LineaContadoCliente lineaContadoCliente);
-	
+
 	/**
 	 * Inactivar Usuario Aprobador
 	 * @param id : Identificador de LineaContadoCliente
 	 */
 	public void inactivar(Long id);
-	
+
 	/**
 	 * Verifica si el Cliente cuenta con descuento corporativo.
-	 * @param idCliente : Identificador del Cliente. 
+	 * @param idCliente : Identificador del Cliente.
 	 * @return
 	 */
 	public LineaContadoCliente validaDescuentoCliente(Long idCliente);

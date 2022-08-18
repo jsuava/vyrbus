@@ -18,14 +18,14 @@ public class Ruta extends GenericBean implements java.io.Serializable {
 	private Double kilometros;
 	private Double horasViaje;
 	private Integer puntaje;
-	
-	private Set<VentaPasaje> ventaPasajes = new HashSet<VentaPasaje>(0);
-	private Set<Itinerario> itinerarios = new HashSet<Itinerario>(0);
-	private Set<Tarifa> tarifas = new HashSet<Tarifa>(0);
-		
+
+	private Set<VentaPasaje> ventaPasajes = new HashSet<>(0);
+	private Set<Itinerario> itinerarios = new HashSet<>(0);
+	private Set<Tarifa> tarifas = new HashSet<>(0);
+
 	public Ruta() {
 	}
-	
+
 	/**
 	 * @param id
 	 */
@@ -46,7 +46,7 @@ public class Ruta extends GenericBean implements java.io.Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	/**
 	 * @return Objeto localidadOrigen.
 	 */
@@ -59,7 +59,7 @@ public class Ruta extends GenericBean implements java.io.Serializable {
 	public void setLocalidadOrigen(Localidad localidadOrigen) {
 		this.localidadOrigen = localidadOrigen;
 	}
-	
+
 	/**
 	 * @return Objeto localidadDestino.
 	 */
@@ -72,7 +72,7 @@ public class Ruta extends GenericBean implements java.io.Serializable {
 	public void setLocalidadDestino(Localidad localidadDestino) {
 		this.localidadDestino = localidadDestino;
 	}
-	
+
 	/**
 	 * @return Objeto origen.
 	 */
@@ -85,7 +85,7 @@ public class Ruta extends GenericBean implements java.io.Serializable {
 	public void setOrigen(String origen) {
 		this.origen = origen;
 	}
-	
+
 	/**
 	 * @return Objeto destino.
 	 */
@@ -98,7 +98,7 @@ public class Ruta extends GenericBean implements java.io.Serializable {
 	public void setDestino(String destino) {
 		this.destino = destino;
 	}
-	
+
 	/**
 	 * @return Objeto kilometros.
 	 */
@@ -111,7 +111,7 @@ public class Ruta extends GenericBean implements java.io.Serializable {
 	public void setKilometros(Double kilometros) {
 		this.kilometros = kilometros;
 	}
-	
+
 	/**
 	 * @return Objeto horasViaje.
 	 */
@@ -124,7 +124,7 @@ public class Ruta extends GenericBean implements java.io.Serializable {
 	public void setHorasViaje(Double horasViaje) {
 		this.horasViaje = horasViaje;
 	}
-	
+
 	/**
 	 * @return the puntaje
 	 */
@@ -167,5 +167,5 @@ public class Ruta extends GenericBean implements java.io.Serializable {
 		return this.origen+" - "+this.getDestino();
 	}
 
-	
+
 }

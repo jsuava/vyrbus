@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 25 oct. 2019
  * Hora			: 13:26:01
@@ -22,11 +22,11 @@ public class TarifaRegular extends GenericBean implements java.io.Serializable {
 	private Date fechaTarifa;
 	private String horaPartida;
 	private Double monto;
-	
+
 	public TarifaRegular(){
-		
+
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -63,6 +63,6 @@ public class TarifaRegular extends GenericBean implements java.io.Serializable {
 	public void setMonto(Double monto) {
 		this.monto = monto;
 	}
-	
-	
+
+
 }

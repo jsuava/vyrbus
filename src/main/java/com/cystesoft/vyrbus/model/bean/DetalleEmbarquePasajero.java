@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 28/11/2016
  * Hora			: 09:15:14
@@ -15,7 +15,7 @@ package com.cystesoft.vyrbus.model.bean;
 public class DetalleEmbarquePasajero extends GenericBean{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Long id;
@@ -122,5 +122,5 @@ public class DetalleEmbarquePasajero extends GenericBean{
 	public void setBarcode(String barcode) {
 		this.barcode = barcode;
 	}
-	
+
 }

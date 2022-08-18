@@ -16,30 +16,30 @@ import com.cystesoft.vyrbus.model.bean.PuntosPasajeroFrecuente;
  *
  */
 public interface PuntosPasajeroFrecuenteManager {
-	
+
 	/**
 	 * Guarda los puntos del Pasajero frecuente.
 	 * @param puntosPasajeroFrecuente
 	 * @throws Exception
 	 */
 	public void guardar(PuntosPasajeroFrecuente puntosPasajeroFrecuente) throws Exception;
-	
+
 	/**
 	 * Buscar puntos por de la IDVenta
 	 * @param id	: Identificador de la Venta
-	 * @return	
+	 * @return
 	 * @throws Exception
 	 */
 	public PuntosPasajeroFrecuente buscarXIDVenta(Long id) throws Exception;
-	
+
 	/**
 	 * @param puntosPasajeroFrecuente
 	 * @throws Exception
 	 */
    public void actualizar(PuntosPasajeroFrecuente puntosPasajeroFrecuente) throws Exception;
-   
+
    /**
-    * Busca puntos disponibles. 
+    * Busca puntos disponibles.
     * @param idPaxFree	: Identificador de pasajero frecuente
     * @return
     * @throws Exception
@@ -47,15 +47,15 @@ public interface PuntosPasajeroFrecuenteManager {
    public List<PuntosPasajeroFrecuente> buscarPuntosDisponibles(Long idPaxFree) throws Exception;
 
    /**
-    * Actualiza los puntos canjeados por el pasajero.  
+    * Actualiza los puntos canjeados por el pasajero.
     * @param iDsVenta 	: Identificadores de las ventas.
     * @param usuario	: Usuario que realiza el canje
     * @param ip			: Ip de donde se realiza el canje
-    * @param idVentaCanje	: Identificador de la Venta generada por el Caje	
+    * @param idVentaCanje	: Identificador de la Venta generada por el Caje
     * @throws Exception
     */
    public void actualizarPuntosCanjeados(String iDsVenta, String usuario,String ip,Long idVentaCanje ) throws Exception;
-   
+
    /**
     * Busca puntos utilizados.
     * @param idPaxFree	: Identificador del pasajero frecuente
@@ -64,7 +64,7 @@ public interface PuntosPasajeroFrecuenteManager {
     * @throws Exception
     */
    public List<PuntosPasajeroFrecuente>buscarPuntosUtilizados(String idPaxFree, String fechaCanje) throws Exception;
-   
+
    /**
     * Busca el estado de cuenta de puntos del Paxfree.
     * @param idPaxfree	: Identificador de paxfree
@@ -74,7 +74,7 @@ public interface PuntosPasajeroFrecuenteManager {
     * @throws Exception
     */
    public List<PuntosPasajeroFrecuente>buscaEstadoCuentaPaxFree(Long idPaxfree, String fechaInico, String fechaFin) throws Exception;
-   
+
    /**
     * Restaura los puntos ante una anulación.
     * @param idVentaCaje	: Identificación de la venta con la que se realizó enl canje

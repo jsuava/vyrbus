@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 21/02/2017
  * Hora			: 10:27:33
@@ -34,7 +34,7 @@ public class ComprobantesBloqueadosDAOImpl extends GenericDAOImpl implements Com
 		try{
 			super.save(ComprobantesBloqueados);
 			result = Constantes.CORRECT;
-			
+
 		}catch(DataIntegrityViolationException divex){
 			throw new DataIntegrityException();
 		}catch(Exception ex){
@@ -50,7 +50,7 @@ public class ComprobantesBloqueadosDAOImpl extends GenericDAOImpl implements Com
 	public int desbloquearComprobante(ComprobantesBloqueados comprobantesBloqueados) throws Exception {
 		String hql = "DELETE FROM ComprobantesBloqueados tmp WHERE tmp.ventaPasaje.id = :venpasID "
 				   + "AND usuario.id= :usuarioID AND usuarioHardware.id= :usuhardID ";
-		
+
 		log.info(hql);
 		int result = getSession().createQuery(hql)
 				.setLong("venpasID", comprobantesBloqueados.getVentaPasaje().getId())
@@ -66,7 +66,7 @@ public class ComprobantesBloqueadosDAOImpl extends GenericDAOImpl implements Com
 	@Override
 	public int desbloquearComprobanteByUsuarioHardware(Integer idUsuarioHardware)throws Exception {
 		String hql = "DELETE FROM ComprobantesBloqueados tmp WHERE tmp.usuarioHardware.id = :usuHardID ";
-		
+
 		log.info(hql);
 		int result = getSession().createQuery(hql)
 				.setInteger("usuHardID", idUsuarioHardware).executeUpdate();
@@ -87,7 +87,7 @@ public class ComprobantesBloqueadosDAOImpl extends GenericDAOImpl implements Com
 	@Override
 	public int desbloquearComprobante(Long idVentaPasaje) throws Exception {
 		String hql = "DELETE FROM ComprobantesBloqueados tmp WHERE tmp.ventaPasaje.id = :venpasID";
-		
+
 		log.info(hql);
 		int result = getSession().createQuery(hql)
 				.setLong("venpasID", idVentaPasaje)
@@ -113,7 +113,7 @@ public class ComprobantesBloqueadosDAOImpl extends GenericDAOImpl implements Com
 		String hql="FROM ComprobantesBloqueados tmp WHERE tmp.ventaPasaje.id="+ventaPasajeId;
 		log.info(hql);
 		ComprobantesBloqueados comprobantesBloqueados=(ComprobantesBloqueados) getSession().createQuery(hql).uniqueResult();
-		
+
 		return comprobantesBloqueados;
 	}
 

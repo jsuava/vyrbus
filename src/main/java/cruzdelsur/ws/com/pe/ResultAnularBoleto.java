@@ -9,11 +9,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for ResultAnularBoleto complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="ResultAnularBoleto">
  *   &lt;complexContent>
@@ -26,8 +26,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ResultAnularBoleto", propOrder = { "anulado", "error" })
@@ -39,9 +39,9 @@ public class ResultAnularBoleto {
 
 	/**
 	 * Gets the value of the anulado property.
-	 * 
+	 *
 	 * @return possible object is {@link Boolean }
-	 * 
+	 *
 	 */
 	public Boolean isAnulado() {
 		return anulado;
@@ -49,10 +49,10 @@ public class ResultAnularBoleto {
 
 	/**
 	 * Sets the value of the anulado property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Boolean }
-	 * 
+	 *
 	 */
 	public void setAnulado(Boolean value) {
 		this.anulado = value;
@@ -60,10 +60,10 @@ public class ResultAnularBoleto {
 
 	/**
 	 * Gets the value of the error property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link Error }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<Error> getError() {
 		return error;
@@ -71,11 +71,11 @@ public class ResultAnularBoleto {
 
 	/**
 	 * Sets the value of the error property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link Error }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setError(JAXBElement<Error> value) {
 		this.error = (value);

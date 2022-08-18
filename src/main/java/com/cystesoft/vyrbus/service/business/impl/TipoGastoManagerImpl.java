@@ -14,31 +14,31 @@ import com.cystesoft.vyrbus.service.exceptions.NombreCortoDuplicadoException;
 import com.cystesoft.vyrbus.service.util.Constantes;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 
 public class TipoGastoManagerImpl implements TipoGastoManager {
-	
+
 	private TipoGastoDAO tipoGastoDAO;
-	
+
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	public TipoGastoDAO getGastoDAO (){
 		return tipoGastoDAO;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param tipoGastoDAO
 	 */
 	public void setTipoGastoDAO (TipoGastoDAO tipoGastoDAO){
 		this.tipoGastoDAO=tipoGastoDAO;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.TipoGastoManager#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
@@ -75,25 +75,25 @@ public class TipoGastoManagerImpl implements TipoGastoManager {
 	public void guardar(TipoGasto tipoGasto) throws Exception {
 		try{
 			/*Valida duplicidad de la denominación*/
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", tipoGasto.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getGastoDAO().buscarPorX(criteriosBusqueda, null);
 			if(resultDenominacion.size()>0)
 				throw new DenominacionDuplicadaException();
-			
-			
+
+
 			/*Valida duplicidad del nombre corto*/
-			criteriosBusqueda = new TreeMap<String, Object>();
+			criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("nombreCorto", tipoGasto.getNombreCorto());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultNombCorto = getGastoDAO().buscarPorX(criteriosBusqueda, null);
 			if (resultNombCorto.size()>0)
 				throw new NombreCortoDuplicadoException();
-			
-		
+
+
 			getGastoDAO().guardar(tipoGasto);
-			
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch (NombreCortoDuplicadoException ncdex){
@@ -112,29 +112,29 @@ public class TipoGastoManagerImpl implements TipoGastoManager {
 	public void actualizar(TipoGasto tipoGasto) throws Exception {
 		try{
 			/*Valida duplicidad de la denominación*/
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", tipoGasto.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getGastoDAO().buscarPorX(criteriosBusqueda, null);
-			for(int r = 0; r < resultDenominacion.size(); r ++) {
-				TipoGasto oTipoGasto = (TipoGasto) resultDenominacion.get(r);
+			for (Object element : resultDenominacion) {
+				TipoGasto oTipoGasto = (TipoGasto) element;
 					if (!(oTipoGasto.getId().equals(tipoGasto.getId())) )
 						throw new DenominacionDuplicadaException();
 			}
-					
+
 			/*Valida duplicidad del nombre corto*/
-			criteriosBusqueda = new TreeMap<String, Object>();
+			criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("nombreCorto", tipoGasto.getNombreCorto());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultNombCorto = getGastoDAO().buscarPorX(criteriosBusqueda, null);
-			for(int r = 0; r < resultNombCorto.size(); r ++) {
-				TipoGasto oTipoGasto = (TipoGasto) resultNombCorto.get(r);
+			for (Object element : resultNombCorto) {
+				TipoGasto oTipoGasto = (TipoGasto) element;
 					if (!(oTipoGasto.getId().equals(tipoGasto.getId())) )
 						throw new NombreCortoDuplicadoException();
 			}
-			
+
 			getGastoDAO().actualizar(tipoGasto);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch (NombreCortoDuplicadoException ncdex){
@@ -152,6 +152,6 @@ public class TipoGastoManagerImpl implements TipoGastoManager {
 	public void inactivar(Long id) throws Exception {
 		getGastoDAO().inactivar(id);
 	}
-	
+
 
 }

@@ -51,11 +51,11 @@ import com.cystesoft.vyrbus.service.util.Messages;
 public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcionesMantenimiento{
 	private static final long serialVersionUID = 6977003857234834917L;
 
-	private ArrayList<Component> lstControles = new ArrayList<Component>();
-	private HashMap<String, Constraint> lstConstraints = new HashMap<String, Constraint>();
+	private ArrayList<Component> lstControles = new ArrayList<>();
+	private HashMap<String, Constraint> lstConstraints = new HashMap<>();
 	private InputElement inputElementEnfocable;
 	private int accionUsuario;
-	
+
 	public int tabUsuario = TAB_LIST;
 
 	private Borderlayout oBorderlayout = new Borderlayout();
@@ -77,7 +77,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 	public String questionDelete="¿Desea eliminar el registro Seleccionado ";
 	public String questionInsert="¿Desea guardar el registro?";
 	public String questionUpdate="¿Desea actualizar el registro?";
-	
+
 	public Toolbarbutton btnCerrar = new Toolbarbutton();
 	private Space oSpace = new Space();
 
@@ -88,8 +88,8 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 	private Tabpanels oTabpanels = new Tabpanels();
 	private Tabpanel oTabpanelLista = new Tabpanel();
 	private Tabpanel oTabpanelMantenimiento = new Tabpanel();
-	
-	
+
+
 //	Rol rol = new Rol();
 
 	/**
@@ -108,7 +108,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 	 * Textbox que se usara como id en el tab mantenimiento.
 	 */
 	public Textbox 	textboxId;
-	
+
 	/**
 	 * Metodo lanzado antes que se contruya la pagina
 	 */
@@ -120,14 +120,14 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 
 		this.setHeight("100%");
 		this.appendChild(oBorderlayout);
-		
+
 		/*Habili/Desabilita según la configuracion del rol del usuario*/
 		/*NUEVO*/
 		btnNuevo.setDisabled(accesoNuevo()?false:true);
 		/*BUSCAR*/
 		btnBuscar.setDisabled(accesoConsultar()?false:true);
 	}
-	
+
 
 	/**
 	 * Metodo lanzado despues de contruir la pagina.
@@ -135,10 +135,10 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 	@Override
 	public void afterCompose(){
 		super.afterCompose();
-		
+
 		this.generaControlesMantenimiento();
 	}
-	
+
 	/**
 	 * Genera la barra de herramientas para los mantenimientos.
 	 */
@@ -157,10 +157,10 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 				onNew();
 				if (!oTabLista.isDisabled())
 					oTabLista.setDisabled(true);
-				
+
 				oTabbox.setSelectedIndex(1);
 				tabUsuario = TAB_MAINTENANCE;
-				if (inputElementEnfocable != null) 
+				if (inputElementEnfocable != null)
 					inputElementEnfocable.setFocus(true);
 
 				accionUsuario = ACTION_NEW;
@@ -207,7 +207,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 				oTabbox.setSelectedIndex(0);
 				btnModificar.setDisabled(true);
 				btnEliminar.setDisabled(true);
-				
+
 				/*Habili/Desabilita según la configuracion del rol del usuario*/
 				/*IMPRIMIR*/
 				if (accesoImprimir()){
@@ -248,12 +248,12 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 				onCancel(accionUsuario);
 				if(accionUsuario == ACTION_NEW)
 					limpiarControles();
-				
-				oTabbox.setSelectedIndex(0);					
+
+				oTabbox.setSelectedIndex(0);
 				oTabLista.setDisabled(false);
 				habilitaControles(false);
 				btnModificar.setTooltiptext("Modificar el registro actual");
-				
+
 				/*Habili/Desabilita según la configuracion del rol del usuario*/
 				/*NEUVO*/
 				btnNuevo.setDisabled(accesoNuevo()?false:true);
@@ -266,7 +266,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 					else
 						btnModificar.setDisabled(accionUsuario == ACTION_NEW);
 				}else btnModificar.setDisabled(true);
-				
+
 				/*ELIMINAR*/
 				if (accesoEliminar()){
 					if(listboxLista.getItems().size()>0 && listboxLista.getSelectedIndex()>=0)
@@ -274,7 +274,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 					else
 						btnEliminar.setDisabled(accionUsuario == ACTION_NEW);
 				}else btnEliminar.setDisabled(true);
-				
+
 				/*IMPRIMIR*/
 				if (accesoImprimir()) {
 					if(listboxLista.getItems().size()>0)
@@ -289,17 +289,17 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 					else
 						btnExportar.setDisabled(accionUsuario == ACTION_NEW);
 				}else btnExportar.setDisabled(true);
-					
+
 				if(listboxLista.getItems().size()>0)
 					btnRefrescar.setDisabled(false);
 				else
 					btnRefrescar.setDisabled(!(accionUsuario == ACTION_MODIFY));
-				
-				
+
+
 				btnCancelar.setDisabled(true);
 				btnGuardar.setDisabled(true);
 				btnCerrar.setDisabled(false);
-				
+
 			}
 		});
 
@@ -318,7 +318,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 							try {
 								if(e.getName().equals("onYes")){
 									onSave(accionUsuario);
-									
+
 									String accionMensaje = "";
 									switch(accionUsuario){
 										case ACTION_NEW:
@@ -331,7 +331,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 									DlgMessage.information("Registro " + accionMensaje);
 									oTabLista.setDisabled(false);
 									habilitaControles(false);
-														
+
 									/*Habili/Desabilita según la configuracion del rol del usuario*/
 									/*NUEVO*/
 									btnNuevo.setDisabled(accesoNuevo()?false:true);
@@ -341,28 +341,28 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 									btnImprimir.setDisabled(accesoImprimir()?false:true);
 									/*EXPORTAR*/
 									btnExportar.setDisabled(accesoExportar()?false:true);
-		
+
 									btnRefrescar.setDisabled(false);
 									btnModificar.setDisabled(true);
 									btnCancelar.setDisabled(true);
 									btnGuardar.setDisabled(true);
 									btnEliminar.setDisabled(true);
 									btnCerrar.setDisabled(false);
-									
+
 									oTabbox.setSelectedIndex(0);
 								}else
 									return;
-							}catch (CancelaGrabacionException ex){}	
+							}catch (CancelaGrabacionException ex){}
 						}
 					});
-					
-					
+
+
 				}catch (Exception ex){
 					throw new Exception();
 				}
 			}
-		});		
-			
+		});
+
 		btnEliminar.setAutodisable("self");
 		btnEliminar.setLabel("Eliminar");
 		btnEliminar.setTooltiptext("Eliminar el registro seleccionado");
@@ -370,7 +370,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 		btnEliminar.setDisabled(true);
 		btnEliminar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
-			public void onEvent(Event event) throws Exception {	
+			public void onEvent(Event event) throws Exception {
 
 				Messagebox.show(questionDelete +  "?", Messages.getString("System.title"), Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
 						new EventListener<Event>() {
@@ -390,13 +390,13 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 
 										limpiarControles();
 										habilitaControles(false);
-										
+
 										/*Habilita/Desabilita según la configuracion del rol del usuario*/
 										/*NUEVO*/
 										btnNuevo.setDisabled(accesoNuevo()?false:true);
 										/*BUSCAR*/
 										btnBuscar.setDisabled(accesoConsultar()?false:true);
-																				
+
 										btnModificar.setDisabled(true);
 										btnCancelar.setDisabled(true);
 										btnGuardar.setDisabled(true);
@@ -408,7 +408,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 									}
 								}catch (NoRemoverRegistroDelListBox e) {
 								}
-								
+
 							}
 						}
 					);
@@ -484,7 +484,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 
 		oBorderlayout.appendChild(oNorth);
 	}
-	
+
 	/**
 	 * Genera los tabs en los que se mostrara la información.
 	 */
@@ -511,35 +511,35 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 		oCenter.appendChild(oTabbox);
 		oBorderlayout.appendChild(oCenter);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private void generaControlesMantenimiento() {
 		divLista = (Div) getFellow("divLista");
 		divMantenimiento = (Div) getFellow("divMantenimiento");
 		listboxLista = (Listbox) getFellow("listboxLista");
-				
+
 		textboxId = (Textbox) getFellow("textboxId");
 		textboxId.setVisible(false);
-		
+
 		divMantenimiento.setWidth("730px");
 		oTabpanelLista.appendChild(divLista);
 		oTabpanelMantenimiento.appendChild(divMantenimiento);
-		
+
 		/*	Lanzado cuando el usuario seleccione el tab Lista	*/
 		oTabLista.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				if (tabUsuario != TAB_LIST) {
 					/*	Realiza el llenado de los controles con los datos del registro seleccionado para su edición	*/
-					onChangeTab(TAB_LIST);					
-					
+					onChangeTab(TAB_LIST);
+
 					tabUsuario = TAB_LIST;
 					btnRefrescar.setDisabled(listboxLista.getItemCount() < 1);
 					btnModificar.setTooltiptext("Modificar el registro seleccionado");
 					btnEliminar.setTooltiptext("Eliminar el registro seleccionado");
-						
+
 					/*Habili/Desabilita según la configuracion del rol del usuario*/
 					/*MODIFICAR*/
 					if (accesoModificar())
@@ -567,22 +567,22 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 			public void onEvent(Event event) throws Exception {
 				if ((event.getTarget() instanceof Listbox && ((Listbox) event.getTarget()).getSelectedIndex() > -1)
 						|| (event.getTarget() instanceof Tab && tabUsuario != TAB_MAINTENANCE)) {
-					
+
 					Integer id;
 					limpiarControles();
 					onChangeTab(TAB_MAINTENANCE);
 
 					if (event.getTarget() instanceof Listbox) {
-						oTabbox.setSelectedIndex(1);						
+						oTabbox.setSelectedIndex(1);
 					}
 
 					tabUsuario = TAB_MAINTENANCE;
-					id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));					
+					id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
 
 					btnRefrescar.setDisabled(!(id > 0));
 					btnModificar.setTooltiptext("Modificar el registro actual");
 					btnEliminar.setTooltiptext("Eliminar el registro actual");
-					
+
 					/*Habili/Desabilita según la configuracion del rol del usuario*/
 					/*MODIFICAR*/
 					if (accesoModificar())
@@ -609,10 +609,10 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 		listboxLista.setMold("paging");
 		listboxLista.setPageSize(20);
 //		listboxLista.addEventListener(Events.ON_DOUBLE_CLICK, changeTabEventListener); new EventListener<Event>()
-		
-		
-		
-		
+
+
+
+
 		listboxLista.addEventListener(Events.ON_DOUBLE_CLICK,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -628,7 +628,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 			@Override
 			public void onEvent(Event event) throws Exception {
 				btnRefrescar.setDisabled(false);//TODO optimizar la habilitacion del boton refrescar despues de realizar una busqueda
-				
+
 				/*Habili/Desabilita según la configuracion del rol del usuario*/
 				/*MODIFICAR*/
 				btnModificar.setDisabled(accesoModificar()?false:true);
@@ -637,21 +637,19 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 				/*IMPRIMIR*/
 				btnImprimir.setDisabled(accesoImprimir()?false:true);
 				/*EXPORTAR*/
-				btnExportar.setDisabled(accesoExportar()?false:true);							
+				btnExportar.setDisabled(accesoExportar()?false:true);
 			}
 		});
 
 		this.registrarControles(divMantenimiento);
 		this.habilitaControles(false);
 	}
-	
+
 	/**
 	 * Realiza la limpieza de los controles de usuario
 	 */
 	public void limpiarControles() {
-		for(int c = 0; c < lstControles.size(); c ++) {
-			Component oComponent = lstControles.get(c);
-
+		for (Component oComponent : lstControles) {
 			if(oComponent instanceof Combobox) {
 				((Combobox) oComponent).setSelectedIndex(-1);
 			}else if(oComponent instanceof Checkbox) {
@@ -679,13 +677,13 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 	}
 
 	/**
-	 * 
+	 *
 	 * @param oComponent
 	 */
 	private void registrarControles(Component oComponent) {
 		if(oComponent instanceof InputElement || oComponent instanceof Checkbox
 				|| oComponent instanceof Radio || oComponent instanceof Button) {
-			
+
 			lstControles.add(oComponent);
 			if(oComponent instanceof InputElement) {
 				InputElement oInputElement = (InputElement) oComponent;
@@ -703,15 +701,13 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 			}
 		}
 	}
-	
+
 	/**
 	 * Habilita o deshabilita los controles.
 	 * @param habilita	: Argumento true o false
 	 */
 	public void habilitaControles(boolean habilita) {
-		for(int c = 0; c < lstControles.size(); c ++) {
-			Component oComponent = lstControles.get(c);
-
+		for (Component oComponent : lstControles) {
 			if(oComponent instanceof InputElement) {
 				((InputElement) oComponent).setDisabled(!habilita);
 			}
@@ -726,7 +722,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 			}
 		}
 	}
-	
+
 	public boolean validarDatos() {
 		boolean validado = true;
 		/*
@@ -742,7 +738,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 					validado = false;
 					oInputElement.setFocus(true);
 				}
-							
+
 				oInputElement.setConstraint(null);
 
 				if (!validado) {
@@ -757,16 +753,16 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 	private void modify(){
 		limpiarControles();
 		habilitaControles(true);
-		
+
 		if(!oTabLista.isDisabled()) {
 			oTabLista.setDisabled(true);
 		}
 		tabUsuario = TAB_MAINTENANCE;
 		oTabbox.setSelectedIndex(1);
 
-		if (inputElementEnfocable != null) 
+		if (inputElementEnfocable != null)
 			inputElementEnfocable.setFocus(true);
-		
+
 		accionUsuario = ACTION_MODIFY;
 		btnNuevo.setDisabled(true);
 		btnBuscar.setDisabled(true);
@@ -778,9 +774,9 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 		btnImprimir.setDisabled(true);
 		btnExportar.setDisabled(true);
 		btnCerrar.setDisabled(true);
-		
+
 	}
-	
+
 	private void onCloseSuper(){
 		super.onClose();
 	}

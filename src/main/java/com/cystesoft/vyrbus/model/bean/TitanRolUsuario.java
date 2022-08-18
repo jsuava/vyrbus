@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 31/07/2014
  */
@@ -14,8 +14,8 @@ package com.cystesoft.vyrbus.model.bean;
 public class TitanRolUsuario {
 	private Integer id;
 	private String nombre;
-	
-	
+
+
 	/**
 	 * @return the id
 	 */
@@ -40,6 +40,6 @@ public class TitanRolUsuario {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	
-	
+
+
 }

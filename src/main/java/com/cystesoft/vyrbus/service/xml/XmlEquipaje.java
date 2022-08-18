@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 24 abr. 2022
  * Hora			: 01:20:51
@@ -20,10 +20,10 @@ import javax.xml.bind.annotation.XmlType;
 public class XmlEquipaje implements Serializable{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private String v1_numero;
 	private String v2_destino;
 	private String v3_servicio;
@@ -154,5 +154,5 @@ public class XmlEquipaje implements Serializable{
 	public void setZ_ticket(String z_ticket) {
 		this.z_ticket = z_ticket;
 	}
-	
+
 }

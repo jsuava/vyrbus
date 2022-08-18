@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 04/05/2012
  */
@@ -37,11 +37,11 @@ public interface ClienteDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public ArrayList<Cliente> buscarPorRazonSocial(String[] razonSocial)throws Exception;
-	
+
 	/**
 	 * Realiza la busqueda del Cliente por el número de Ruc, en el Modulo de Servicios Espesiales
 	 * @param Ruc : Número de Ruc del Cliente.
-	 * @return 
+	 * @return
 	 * @throws Exception
 	 */
 	public Cliente buscarCliente_ServicioEspecial(String Ruc) throws Exception;

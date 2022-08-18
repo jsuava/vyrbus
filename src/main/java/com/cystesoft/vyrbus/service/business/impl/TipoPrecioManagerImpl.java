@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 05/01/2017
  * Hora			: 15:35:25
@@ -94,5 +94,5 @@ public class TipoPrecioManagerImpl implements TipoPrecioManager{
 		// TODO Auto-generated method stub
 		getTipoPrecioDAO().inactivar(id);
 	}
-	
+
 }

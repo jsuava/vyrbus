@@ -12,11 +12,11 @@ import net.sf.jasperreports.engine.JRField;
 public class ReporteEticket implements JRDataSource {
 	private List<VentaPasaje> lstSales;
 	private int index=-1;
-	
+
 	public ReporteEticket(List<VentaPasaje> lstSales){
 		this.lstSales=lstSales;
 	}
-	
+
 	@Override
 	public Object getFieldValue(JRField field) throws JRException {
 		Object value = null;

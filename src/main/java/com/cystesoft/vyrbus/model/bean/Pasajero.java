@@ -33,7 +33,7 @@ public class Pasajero extends GenericBean implements java.io.Serializable {
 	private Date fechaTieneEmail;
 	private Usuario usuarioTieneEmail;
 	private Agencia agenciaTieneEmail;
-	
+
 	/**
 	 * Para saber si es o no Pasajero Frecuente
 	 */
@@ -95,7 +95,7 @@ public class Pasajero extends GenericBean implements java.io.Serializable {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	
+
 	/**
 	 * @return Objeto tipoDocumento.
 	 */
@@ -121,7 +121,7 @@ public class Pasajero extends GenericBean implements java.io.Serializable {
 	public void setNumeroDocumento(String numeroDocumento) {
 		this.numeroDocumento = numeroDocumento;
 	}
-	
+
 	/**
 	 * @return Objeto kilometros.
 	 */
@@ -236,7 +236,7 @@ public class Pasajero extends GenericBean implements java.io.Serializable {
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
-	
+
 	/**
 	 * @return the paxFree
 	 */

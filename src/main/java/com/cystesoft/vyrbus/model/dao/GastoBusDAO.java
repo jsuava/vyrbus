@@ -7,33 +7,33 @@ import java.util.TreeMap;
 import com.cystesoft.vyrbus.model.bean.GastoBus;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 public interface GastoBusDAO extends GenericDAO {
-		
+
 	/**
 	 * Busqueda por un ArraLis de Parametros.
-	 * @param criteriosBusqueda : 
+	 * @param criteriosBusqueda :
 	 * @param criteriosOrdenar	: lista de criterios para el orden de los datos
 	 * @return
 	 */
 	public ArrayList<GastoBus> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
-	
+
 	/**
 	 * Guarda los gastos del bus
 	 * @param gastoBus
 	 */
 	public void guardar(GastoBus gastoBus);
-	
+
 	/**
-	 * 
+	 *
 	 * @param id : identificador de la liquidacion del bus.
 	 */
 	public void delete(Long idLiquidacionBus);
-	
-	
-	
+
+
+
 
 }

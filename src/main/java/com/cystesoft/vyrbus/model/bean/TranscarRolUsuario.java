@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 26 oct. 2021
  * Hora			: 10:51:38
@@ -17,14 +17,14 @@ import java.io.Serializable;
 public class TranscarRolUsuario implements Serializable{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String nombre;
 	private TranscarUsuarioPersonal transcarUsuarioPersonal;
 	//	private Integer usuarioId;
-	
+
 	/**
 	 * @return the id
 	 */
@@ -73,6 +73,6 @@ public class TranscarRolUsuario implements Serializable{
 	public void setTranscarUsuarioPersonal(TranscarUsuarioPersonal transcarUsuarioPersonal) {
 		this.transcarUsuarioPersonal = transcarUsuarioPersonal;
 	}
-	
+
 
 }

@@ -9,7 +9,7 @@ import com.cystesoft.vyrbus.model.dao.LineaContadoClienteDAO;
 import com.cystesoft.vyrbus.service.util.Constantes;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
@@ -49,7 +49,7 @@ public class LineaContadoClienteDAOImpl extends GenericDAOImpl implements LineaC
 	 */
 	@Override
 	public void guardar(LineaContadoCliente lineaContadoCliente) {
-		super.save(lineaContadoCliente);		
+		super.save(lineaContadoCliente);
 	}
 
 	/*
@@ -58,7 +58,7 @@ public class LineaContadoClienteDAOImpl extends GenericDAOImpl implements LineaC
 	 */
 	@Override
 	public void actualizar(LineaContadoCliente lineaContadoCliente) {
-		super.update(lineaContadoCliente);		
+		super.update(lineaContadoCliente);
 	}
 
 	/*
@@ -67,9 +67,9 @@ public class LineaContadoClienteDAOImpl extends GenericDAOImpl implements LineaC
 	 */
 	@Override
 	public void inactivar(Long id) {
-		super.inactivate(LineaContadoCliente.class, id);		
+		super.inactivate(LineaContadoCliente.class, id);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.LineaContadoClienteDAO#validaDescuenteCliente(java.lang.Long)
@@ -78,9 +78,9 @@ public class LineaContadoClienteDAOImpl extends GenericDAOImpl implements LineaC
 	public LineaContadoCliente validaDescuentoCliente(Long idCliente){
 		String sql="SELECT lcd.linconcli_id "+
 					"FROM Vrtlinconcli lcd " +
-					"INNER JOIN vrtcarcli cc ON (cc.carcli_id=lcd.carcli_id) "+  
+					"INNER JOIN vrtcarcli cc ON (cc.carcli_id=lcd.carcli_id) "+
 					"WHERE cc.cliente_id="+idCliente+" AND lcd.c_estlincon='"+Constantes.ESTADOSOL_ACTIVA+"' ";
-		
+
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).list();
 		LineaContadoCliente lineaContadoCliente=null;
@@ -88,7 +88,7 @@ public class LineaContadoClienteDAOImpl extends GenericDAOImpl implements LineaC
 			String id= result.get(0).toString();
 			lineaContadoCliente=buscarPorId(Long.valueOf(id));
 		}
-		
+
 		return lineaContadoCliente;
 	}
 

@@ -25,7 +25,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class SexoManagerImpl implements SexoManager {
 	private SexoDAO sexoDAO;
-	
+
 	/**
 	 * @return the sexoDAO
 	 */
@@ -73,17 +73,17 @@ public class SexoManagerImpl implements SexoManager {
 	@Transactional
 	public void guardar(Sexo sexo) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", sexo.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getSexoDAO().buscarPorX(criteriosBusqueda, null);
-			
+
 			/*Valida duplicidad de la denominación*/
 			if(resultDenominacion.size()>0)
 				throw new DenominacionDuplicadaException();
-		
+
 			getSexoDAO().guardar(sexo);
-			
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(Exception ex){
@@ -98,20 +98,20 @@ public class SexoManagerImpl implements SexoManager {
 	@Transactional
 	public void actualizar(Sexo sexo) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", sexo.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getSexoDAO().buscarPorX(criteriosBusqueda, null);
-			
+
 			/*Valida duplicidad de la denominación*/
-			for(int r = 0; r < resultDenominacion.size(); r ++) {
-				Sexo osexo = (Sexo) resultDenominacion.get(r);
+			for (Object element : resultDenominacion) {
+				Sexo osexo = (Sexo) element;
 					if (!(osexo.getId() == sexo.getId()))
 						throw new DenominacionDuplicadaException();
 				}
-					
+
 			getSexoDAO().actualizar(sexo);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(Exception ex){

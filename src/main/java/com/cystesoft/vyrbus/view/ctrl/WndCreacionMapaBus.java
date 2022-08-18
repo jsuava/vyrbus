@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 21/06/2012
  */
@@ -93,42 +93,42 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 	private Button btnCancelar;
 	private Tabbox tbMantenimiento;
 	private Tab tabEstructura;
-	
+
 	private String prefijoAsiento="";
 	private String sufijoAsiento="";
 	private String prefijoElementos = "";
 	private int contadorIdImagen = 0;
 	private boolean generarElementos = true;
-	
+
 	private Servicio oServicio = null;
 
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
-	private ArrayList<Grid> listaGridPisos = new ArrayList<Grid>();
+	private ArrayList<Grid> listaGridPisos = new ArrayList<>();
 	private Servicio servicio = null;
 	private ArrayList<Object> lstElementosBus = null;
-	
+
 	private static final String IMAGE_PRIMER_PISO = "resources/mapa/bus_primerPiso.png";
 	private static final String IMAGE_SEGUNDO_PISO = "resources/mapa/bus_segundoPiso.png";
 	private static final String IMAGE_CAFETERIA = "resources/mapa/bus_cafeteria.png";
 	private static final String IMAGE_TELEVISOR = "resources/mapa/bus_tv.png";
 	private static final String IMAGE_SSHH = "resources/mapa/bus_wc.png";
 	private static final String IMAGE_PAPELERA = "resources/mapa/bus_papelera.png";
-	
+
 	private static final int TIPO_ASIENTO = 0;
 	private static final int TIPO_MONITOR = 1;
 	private static final int TIPO_CAFETERIA = 2;
 	private static final int TIPO_SSHH = 3;
 
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IBase#onCreate()
 	 */
 	@Override
 	public void onCreate() throws Exception {
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
-		
+
 		chkBusDosPisos.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
 
 			@Override
@@ -198,7 +198,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 		oWndFiltrar.addParameter("DENOMINACION :", String.class);
 		oWndFiltrar.addParameter("CODIGO :", String.class);
 		oWndFiltrar.addParameter("NOMBRE CORTO :", String.class);
-		
+
 		this.appendChild(oWndFiltrar);
 		oWndFiltrar.setMode("modal");
 		oWndFiltrar.addEventListener(com.cystesoft.vyrbus.view.ui.Events.ON_FILTER, new EventListener<Event>() {
@@ -209,7 +209,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 				String codigo = (String) oWndFiltrar.getParameterValue("CODIGO :");
 				String nombreCorto = (String) oWndFiltrar.getParameterValue("NOMBRE CORTO :");
 				String estadoRegistro = Constantes.VALUE_ACTIVO;
-				
+
 				if (denominacion.trim().equals("")) {
 					criteriosBusqueda.remove("denominacion");
 				}else {criteriosBusqueda.put("denominacion", "%" + denominacion + "%");}
@@ -227,32 +227,32 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 			}
 		});
 	}
-	
+
 	private void listarRegistros(ArrayList<Servicio> lstRegistros) {
-		
-		ArrayList<Object> lstServicios = new ArrayList<Object>();
+
+		ArrayList<Object> lstServicios = new ArrayList<>();
 
 		for(int r = 0; r < lstRegistros.size(); r ++) {
 			Servicio oServicio = lstRegistros.get(r);
-			ArrayList<Object> lstFila = new ArrayList<Object>();
+			ArrayList<Object> lstFila = new ArrayList<>();
 			lstFila.add(oServicio.getId());
 			lstFila.add(r + 1);
 			lstFila.add(oServicio.getDenominacion());
 			lstFila.add(oServicio.getNombreCorto());
 			lstFila.add(oServicio.getNumeroPisos());
-			lstFila.add(oServicio.getNumeroAsientosPiso1());	
+			lstFila.add(oServicio.getNumeroAsientosPiso1());
 			lstFila.add(oServicio.getNumeroFilasPiso1());
 			lstFila.add(oServicio.getNumeroColumnasPiso1());
 			lstServicios.add(lstFila);
 		}
-		
+
 		Util.llenarListbox(listboxLista, lstServicios, true);
-		
+
 		try{
 			List<MapaBus> lstServiceWithMap = ServiceLocator.getMapaBusManager().buscarServiciosWithMapa();
 			for(int i=0; i<listboxLista.getItemCount(); i++){
 				Listitem item = listboxLista.getItems().get(i);
-				
+
 				final ButtonGenerarMapa tblButon = new ButtonGenerarMapa("Generar Estructura");
 				tblButon.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 					@Override
@@ -273,7 +273,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 						break;
 					}
 				}
-				
+
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
@@ -302,7 +302,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 		id = new Long((String) listboxLista.getSelectedItem().getValue());
 		this.mantenimientoRegistro(id);
 	}
-	
+
 	/**
 	 * Realiza la asignación de información a los controles.
 	 * @param id	: Identificador del registro a modificar
@@ -310,7 +310,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 	private void mantenimientoRegistro(Long id) {
 		try{
 			oServicio = ServiceLocator.getServicioManager().buscarPorId(id);
-			
+
 			textboxId.setText(oServicio.getId().toString());
 			txtDenominacion.setText(oServicio.getDenominacion());
 			txtNombreCorto.setText(oServicio.getNombreCorto());
@@ -343,7 +343,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 		switch (action) {
 			case ACTION_NEW:
 				break;
-	
+
 			case ACTION_MODIFY:
 				this.mantenimientoRegistro(new Long(textboxId.getText()));
 				break;
@@ -374,12 +374,12 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 				else if (spColumnas2.getValue().intValue()==0)
 					throw new NumeroColumnasNullException(2);
 			}
-			
+
 			if(action==ACTION_NEW)
 				oServicio = new Servicio();
-			
+
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
-			
+
 			oServicio.setId(id);
 			oServicio.setDenominacion(txtDenominacion.getText().toUpperCase());
 			oServicio.setNombreCorto(txtNombreCorto.getText().toUpperCase());
@@ -390,9 +390,9 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 			oServicio.setNumeroAsientosPiso2(spAsientos2.getValue()==0?null:spAsientos2.getValue());
 			oServicio.setNumeroFilasPiso2(spFilas2.getValue()==0?null:spFilas2.getValue());
 			oServicio.setNumeroColumnasPiso2(spColumnas2.getValue()==0?null:spColumnas2.getValue());
-			
+
 			oServicio.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-			
+
 			switch (action) {
 				case ACTION_NEW:
 					UtilData.auditarRegistro(oServicio, getUsuario(), Executions.getCurrent());
@@ -410,14 +410,14 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 			criteriosBusqueda.put("denominacion", "%");
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			this.listarRegistros(ServiceLocator.getServicioManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-						
+
 		}catch (DenominacionNullException dnex){
 			DlgMessage.information(Messages.getString("Generales.information.noIngresoDenominacion"));
 			throw new CancelaGrabacionException();
 		}catch (NombreCortoNullException ncnex){
 			DlgMessage.information(Messages.getString("Generales.information.noIngresoNombreCorto"),txtNombreCorto);
 			throw new CancelaGrabacionException();
-			
+
 		}catch (NumeroAsientoNullException nanex){
 			if(nanex.getNumeroPiso().intValue()==1)
 				DlgMessage.information(Messages.getString("WndServicio.information.noIngresoNumeroAsientos")+" del Primer Piso");
@@ -436,7 +436,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 			else
 				DlgMessage.information(Messages.getString("WndServicio.information.noIngresoCantidadColumnas")+" del Segundo Piso", spColumnas);
 			throw new CancelaGrabacionException();
-			
+
 		}catch (DenominacionDuplicadaException rsdex){
 			DlgMessage.information(Messages.getString("Generales.information.denominacionDuplicada"),txtDenominacion);
 			throw new CancelaGrabacionException();
@@ -456,7 +456,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 	@Override
 	public void onDelete(int tab) {
 		// TODO Auto-generated method stub
-		
+
 
 	}
 
@@ -521,7 +521,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 		spFilas2.setValue(0);
 		spColumnas2.setValue(0);
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	private void generaEstructura(Integer idServicio){
 		try{
@@ -537,7 +537,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 			inicializarEstructura();
 			if(generarElementos)
 				generarImagen();
-			
+
 			Image imagen = generarImagen(IMAGE_PRIMER_PISO, 154, 43);
 			numeroAsiento = 0;
 			for(int i=0; i<nPisos; i++){
@@ -574,10 +574,10 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 						oDiv.setAttribute("fila", j);
 						oDiv.setAttribute("columna", k);
 						oDiv.setStyle("padding:none");
-						
+
 						if(numeroAsiento < nAsientos){
 							Asiento asiento = new Asiento();
-							HashMap<String, String> propiedades = new HashMap<String, String>();
+							HashMap<String, String> propiedades = new HashMap<>();
 							numeroAsiento++;
 							contadorIdImagen++;
 							propiedades.put("ocupante", "pasajero");
@@ -590,7 +590,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 							asiento.setDraggable("true");
 							divAsientos.appendChild((Asiento) asiento.clone());
 						}
-						
+
 						oDiv.addEventListener(Events.ON_DROP, new EventListener<Event>() {
 							@Override
 							public void onEvent(Event e){
@@ -601,14 +601,14 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 									DlgMessage.information(Messages.getString("WndCreacionMapaBus.information.draggedAsiento"));
 									return;
 								}
-								
+
 								/*	Para clonar la imagen en caso que no sea un asiento	*/
 								if(elementoMovido.getId().indexOf(prefijoElementos) > -1){
 									contadorIdImagen ++;
 									elementoMovido = (Component) elementoMovido.clone();
 									elementoMovido.setId(sufijoAsiento + contadorIdImagen);
 								}
-								
+
 								if(elementoMovido instanceof Asiento){
 									Asiento oAsientoBus = (Asiento) elementoMovido;
 									oAsientoBus.setFila((Integer) divContenedor.getAttribute("fila"));
@@ -645,7 +645,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 				vbxEstructuraBus.appendChild(gridPiso);
 				listaGridPisos.add(gridPiso);
 			}
-			
+
 			tabEstructura.setVisible(true);
 			((Tabbox)tbMantenimiento.getParent().getParent().getParent().getParent()).setSelectedIndex(1);
 			tabEstructura.setSelected(true);
@@ -656,7 +656,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Inicializa(limpia los objetos existentes) el contenedor de los asientos.
 	 */
@@ -665,16 +665,16 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 			Component component = vbxEstructuraBus.getChildren().get(i);
 			vbxEstructuraBus.removeChild(component);
 		}
-		
+
 		for(int i=divAsientos.getChildren().size()-1; i>-1; i--){
 			Component component = divAsientos.getChildren().get(i);
 			divAsientos.removeChild(component);
 		}
-		
+
 		listaGridPisos.clear();
 //		oAsientoPlantilla.setOcupante(new Integer((String) cboAsiento.getSelectedItem().getValue()));
 	}
-	
+
 	/**
 	 * Genera el objeto imagen para los pisos del bus
 	 * @param src		: Path de la imagen a mostrar.
@@ -689,7 +689,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 		imagen.setHeight(String.valueOf(height)+"px");
 		return imagen;
 	}
-	
+
 	/**
 	 * Genera las imagenes para los monitores, cafeteria y ss.hh.
 	 */
@@ -700,19 +700,19 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 		monitor.setId(prefijoElementos+contadorIdImagen);
 		monitor.setDraggable("true");
 		divTv.appendChild(monitor);
-		
+
 		contadorIdImagen++;
 		Cafeteria cafeteria = new Cafeteria(IMAGE_CAFETERIA);
 		cafeteria.setId(prefijoElementos+contadorIdImagen);
 		cafeteria.setDraggable("true");
 		divCafeteria.appendChild(cafeteria);
-		
+
 		contadorIdImagen++;
 		ServiciosHigienicos sshh = new ServiciosHigienicos(IMAGE_SSHH);
 		sshh.setId(prefijoElementos+contadorIdImagen);
 		sshh.setDraggable("true");
 		divSSHH.appendChild(sshh);
-		
+
 		contadorIdImagen++;
 		Papelera papelera = new Papelera(IMAGE_PAPELERA);
 		papelera.addEventListener(Events.ON_DROP, new EventListener<Event>() {
@@ -734,37 +734,37 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 		divPapelera.appendChild(papelera);
 		generarElementos = false;
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	private void modificaEstructura(Integer idServicio){
 		try{
 			deshabilitarToolbar(true);
 //			Servicio servicio = null;
 			List<MapaBus> lstMapaBus = ServiceLocator.getMapaBusManager().buscarMapaBus(idServicio, Constantes.VALUE_ACTIVO);
-			
-			Map<Coordenada, MapaBus> mapCoordenadas = new HashMap<Coordenada, MapaBus>();
+
+			Map<Coordenada, MapaBus> mapCoordenadas = new HashMap<>();
 			for(MapaBus mapaBus : lstMapaBus){
 				Coordenada coordenada = new Coordenada(mapaBus.getNumeroFila(), mapaBus.getNumeroColumna(), mapaBus.getNumeroPiso());
 				mapCoordenadas.put(coordenada, mapaBus);
 			}
-			
+
 			if(lstMapaBus.size()>0)
 				servicio = lstMapaBus.get(0).getServicio();
-			
+
 			int nPisos = servicio.getNumeroPisos();
 //			int nAsientos = servicio.getNumeroAsientosPiso1();
 			int nFilas = servicio.getNumeroFilasPiso1();
 			int nColumnas = servicio.getNumeroColumnasPiso1();
 			prefijoAsiento = "imgAsientoPiso1_";
-			Integer numeroAsiento = 0;
-			
+			int numeroAsiento = 0;
+
 			inicializarEstructura();
 			/*	Generamos las imagenes de los monitores, cafeteria, SSHH	*/
 			if(generarElementos)
 				generarImagen();
-			
+
 			Image imagen = generarImagen(IMAGE_PRIMER_PISO, 154, 43);
-			
+
 			for(int i=0; i<nPisos; i++){
 				String idGrid = "grdPiso1";
 				if(i==1){
@@ -798,16 +798,16 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 						oDiv.setAttribute("fila", j);
 						oDiv.setAttribute("columna", k);
 						oDiv.setStyle("padding:none");
-						
+
 						String coordenadaActual = j+"-"+k+"-"+i;
-						
+
 						for(Coordenada coordenada : mapCoordenadas.keySet()){
 							if(coordenada.toString().equals(coordenadaActual)){
 								MapaBus objetoBus = mapCoordenadas.get(coordenada);
-								
+
 								if(objetoBus.getTipoObjeto().intValue()==TIPO_ASIENTO){
 									Asiento asiento = new Asiento();
-									HashMap<String, String> propiedades = new HashMap<String, String>();
+									HashMap<String, String> propiedades = new HashMap<>();
 									numeroAsiento++;
 									contadorIdImagen++;
 									propiedades.put("ocupante", "pasajero");
@@ -824,7 +824,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 									oDiv.appendChild(asiento);
 								}else if(objetoBus.getTipoObjeto().intValue()==TIPO_MONITOR){
 									Monitor monitor = new Monitor();
-									HashMap<String, String> propiedades = new HashMap<String, String>();
+									HashMap<String, String> propiedades = new HashMap<>();
 									numeroAsiento++;
 									contadorIdImagen++;
 									monitor.setId(prefijoAsiento + numeroAsiento);
@@ -837,7 +837,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 									oDiv.appendChild(monitor);
 								}else if(objetoBus.getTipoObjeto().intValue()==TIPO_CAFETERIA){
 									Cafeteria cafeteria = new Cafeteria();
-									HashMap<String, String> propiedades = new HashMap<String, String>();
+									HashMap<String, String> propiedades = new HashMap<>();
 									numeroAsiento++;
 									contadorIdImagen++;
 									cafeteria.setId(prefijoAsiento + numeroAsiento);
@@ -850,7 +850,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 									oDiv.appendChild(cafeteria);
 								}else{
 									ServiciosHigienicos sshh = new ServiciosHigienicos();
-									HashMap<String, String> propiedades = new HashMap<String, String>();
+									HashMap<String, String> propiedades = new HashMap<>();
 									numeroAsiento++;
 									contadorIdImagen++;
 									sshh.setId(prefijoAsiento + numeroAsiento);
@@ -865,7 +865,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 								break;
 							}
 						}
-						
+
 						oDiv.addEventListener(Events.ON_DROP, new EventListener<Event>() {
 							@Override
 							public void onEvent(Event e){
@@ -876,14 +876,14 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 									DlgMessage.information(Messages.getString("WndCreacionMapaBus.information.draggedAsiento"));
 									return;
 								}
-								
+
 								/*	Para clonar la imagen en caso que no sea un asiento	*/
 								if(elementoMovido.getId().indexOf(prefijoElementos) > -1){
 									contadorIdImagen ++;
 									elementoMovido = (Component) elementoMovido.clone();
 									elementoMovido.setId(sufijoAsiento + contadorIdImagen);
 								}
-								
+
 								if(elementoMovido instanceof Asiento){
 									Asiento oAsientoBus = (Asiento) elementoMovido;
 									oAsientoBus.setFila((Integer) divContenedor.getAttribute("fila"));
@@ -929,14 +929,14 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Permite la grabación del Mapa del Bus.
 	 */
 	public void grabarEstructura(){
 		try{
-			lstElementosBus = new ArrayList<Object>();
-			
+			lstElementosBus = new ArrayList<>();
+
 			if(divAsientos.getChildren().size()==1 && !(divAsientos.getChildren().get(0) instanceof Separator)){
 				DlgMessage.information(Messages.getString("WndCreacionMapaBus.information.validateAsientos"));
 				return;
@@ -950,27 +950,26 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 					for(int rs = 1; rs < oGrid.getRows().getChildren().size(); rs ++){
 						Row oRow = (Row) oGrid.getRows().getChildren().get(rs);
 						/*	Recorremos las celdas de la fila	*/
-						for(int r = 0; r < oRow.getChildren().size(); r ++){
-							Div oDiv = (Div) oRow.getChildren().get(r);
+						for (Component element : oRow.getChildren()) {
+							Div oDiv = (Div) element;
 							if(oDiv.getChildren().size()>0)
 								lstElementosBus.add(oDiv.getChildren().get(0));
 						}
 					}
-				}				
+				}
 			}
-			
+
 			if(lstElementosBus.size()>0){
-				List<MapaBus> lstMapaBus = new ArrayList<MapaBus>();
-				for(int i= 0; i<lstElementosBus.size(); i++){
+				List<MapaBus> lstMapaBus = new ArrayList<>();
+				for (Object obj : lstElementosBus) {
 					MapaBus mapaBus = new MapaBus();
-					Object obj = lstElementosBus.get(i);
 					ElementoBus elementoBus = (ElementoBus)obj;
 					mapaBus.setPathImagen(elementoBus.getSrc());
 					mapaBus.setNumeroFila(elementoBus.getFila());
 					mapaBus.setNumeroColumna(elementoBus.getColumna());
 					mapaBus.setNumeroPiso(elementoBus.getPiso());
 					mapaBus.setServicio(servicio);
-					
+
 					if(obj instanceof Asiento){
 						Asiento asiento = (Asiento)obj;
 						mapaBus.setTipoObjeto(TIPO_ASIENTO);
@@ -981,12 +980,12 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 						mapaBus.setTipoObjeto(TIPO_CAFETERIA);
 					else
 						mapaBus.setTipoObjeto(TIPO_SSHH);
-						
+
 					mapaBus.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 					UtilData.auditarRegistro(mapaBus,getUsuario(), Executions.getCurrent());
 					lstMapaBus.add(mapaBus);
 				}
-				
+
 				int result = ServiceLocator.getMapaBusManager().guardarMapaBus(lstMapaBus);
 				if(result==Constantes.CORRECT){
 					btnGuardarEstructura.setDisabled(true);
@@ -1008,7 +1007,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	private void deshabilitarToolbar(boolean arg){
 		btnNuevo.setDisabled(arg);
 		btnBuscar.setDisabled(arg);
@@ -1020,12 +1019,12 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 		btnImprimir.setDisabled(arg);
 		btnExportar.setDisabled(arg);
 	}
-	
+
 	private void habilitarToolbar(boolean arg){
 		btnNuevo.setDisabled(arg);
-		btnBuscar.setDisabled(arg);		
+		btnBuscar.setDisabled(arg);
 	}
-	
+
 	public void cancelarCreacion(){
 		/*	Regresando el foco al tab del Servicio	*/
 		((Tabbox)tabEstructura.getParent().getParent()).setSelectedIndex(0);
@@ -1033,11 +1032,11 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 		((Tabbox)tabEstructura.getParent().getParent().getParent().getParent().getParent().getParent()).setSelectedIndex(0);
 		habilitarToolbar(false);
 	}
-	
+
 //	private boolean validar(){
 //		lstElementosBus = new ArrayList<Object>();
 //		boolean validado = true;
-//		
+//
 //		if(divAsientos.getChildren().size()==1 && !(divAsientos.getChildren().get(0) instanceof Separator)){
 //			DlgMessage.information(Messages.getString("WndMapaBus.information.validateAsientos"));
 //			validado = false;
@@ -1061,7 +1060,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 //		}
 //		return validado;
 //	}
-	
+
 
 //	private void limpiarEstructuraBus() {
 //		List<Component> lstElementoEstructura = vbxEstructuraBus.getChildren();
@@ -1073,8 +1072,8 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 //	}
 //
 //	private void generarEstructuraBus() {
-//		
+//
 //	}
 
-	
+
 }

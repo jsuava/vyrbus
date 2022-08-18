@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 05/07/2012
  */
@@ -25,7 +25,7 @@ import com.cystesoft.vyrbus.model.bean.VentaPasaje;
  */
 public interface ItinerarioDAO extends GenericDAO {
 	public ArrayList<Itinerario> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
-	
+
 	public Itinerario buscarPorId(Long id);
 	/**
 	 * Realiza la busqueda de los itinerarios disponibles para la fecha y origen destino seleccionado.
@@ -68,7 +68,7 @@ public interface ItinerarioDAO extends GenericDAO {
 	 * Realiza la busqueda de los itinerarios disponibles para la fecha y origen destino seleccionado.
 	 * @param idItinerario		: Identificador del Itinerario
 	 * @param origen			: Locadildad Origen
-	 * @param destino			: Localidad Destino	
+	 * @param destino			: Localidad Destino
 	 * @param fechaInicio		: Fecha inicial de la busqueda
 	 * @param fechaFinal		: Fecha final de la busqueda
 	 * @param Servicio			: Nombre del Servicio
@@ -77,7 +77,7 @@ public interface ItinerarioDAO extends GenericDAO {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<DetalleItinerario> buscarItinerariosMantenimiento(Long idItinerario, String origen, String destino, String fechaInicio, String fechaFinal, 
+	public List<DetalleItinerario> buscarItinerariosMantenimiento(Long idItinerario, String origen, String destino, String fechaInicio, String fechaFinal,
 			String Servicio,String tipoDeItinerario, String criterioOrden)throws Exception;
 
 	/**
@@ -89,23 +89,23 @@ public interface ItinerarioDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public List<Object> validateCapacity(Long idItinerario, Integer asiento, Integer piso)throws Exception;
-	
-	
+
+
 	/**
-	 * Valida que no el nuevo tramo a ingresar no exista. 
+	 * Valida que no el nuevo tramo a ingresar no exista.
 	 * @param idTipoItinerario	: Identificado del Tipo de Itinerario.
 	 * @param idServicio		: Identificador del Servicio.
-	 * @param idRuta			: Identificador de la Ruta.	
+	 * @param idRuta			: Identificador de la Ruta.
 	 * @param fechaPartida		: Fecha de Partida.
 	 * @param horaPartida		: Hora de Partida.
 	 * @param idAgenciaPartida	: Agencia de Partida.
 	 * @param idAgenciaLlegada	: Agencia de Llegada.
-	 * @return	Lista de tramos.				
+	 * @return	Lista de tramos.
 	 * @throws Exception
 	 */
-	public List<DetalleItinerario> validadIngresoTramos(Integer idTipoItinerario, Integer idServicio, Integer idRuta, String fechaPartida, String horaPartida, 
+	public List<DetalleItinerario> validadIngresoTramos(Integer idTipoItinerario, Integer idServicio, Integer idRuta, String fechaPartida, String horaPartida,
 			Integer idAgenciaPartida, Integer idAgenciaLlegada) throws Exception;
-	
+
 	/**
 	 * Anula un Itinerario.
 	 * @param id		: identificador unico del Itinerario
@@ -113,21 +113,21 @@ public interface ItinerarioDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public void inactivar(Long id,Integer idUsuario) throws Exception;
-	
+
 //	/**
 //	 *  Para recuperar la fecha del Servicidor
 //	 * @return retorna fecha del servidor.
 //	 */
 //	public Calendar fechaServer();
-//	
+//
 //	/**
-	 /* 
+	 /*
 	 * @return fecha en formato long
 	 */
 	public String dateServer();
-	
+
 	/**
-	 * Valida si el itinerario tiene ventas y si la capacidad del servicio seelccionado no sea menor a algún asiento ya vendido. 
+	 * Valida si el itinerario tiene ventas y si la capacidad del servicio seelccionado no sea menor a algún asiento ya vendido.
 	 * @param idItinerario 		: Identificador del itinerario.
 	 * @param Servicio			: Class Servicio
 	 * @return
@@ -148,9 +148,9 @@ public interface ItinerarioDAO extends GenericDAO {
 	 * @return
 	 * @throws Exception
 	 */
-	public Long ObtienerItinerarioAActualizar(String fechaPartida,Integer idRuta, String secuenciaTramo, String horaPartida, Integer idServicio, 
+	public Long ObtienerItinerarioAActualizar(String fechaPartida,Integer idRuta, String secuenciaTramo, String horaPartida, Integer idServicio,
 			Integer idTipoItinerario, Integer idAgenciaPartida, Integer idAgenciaLlegada) throws Exception;
-	
+
 	/**
 	 * Busca lista de itinerarios a actualizar y las ventas de cada itinerario, si es que los tuviese.
 	 * @param fechaInicio		: Fecha inicio de la busqueda.
@@ -165,9 +165,9 @@ public interface ItinerarioDAO extends GenericDAO {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<VentaPasaje> buscarItinerariosAActualizar(String fechaInicio,String fechaFin,Integer idRuta, String secuenciaTramo, String horaPartida, Integer idServicio, 
+	public List<VentaPasaje> buscarItinerariosAActualizar(String fechaInicio,String fechaFin,Integer idRuta, String secuenciaTramo, String horaPartida, Integer idServicio,
 			Integer idTipoItinerario, Integer idAgenciaPartida, Integer idAgenciaLlegada)throws Exception;
-	
+
 	/**
 	 * Realiza la busqueda de las rutas para la actualización las tarifas
 	 * @param fechaInicio	: Fecha de iniciao de la busqueda.
@@ -184,11 +184,11 @@ public interface ItinerarioDAO extends GenericDAO {
 	 */
 	public List<DetalleItinerario>buscarRutas(String fechaInicio, String fechaFin,Integer idServicio, Integer idOrigen,
 			Integer idDestino, String horaPartida, Long idItinerario,Boolean mostrarDetalle,Integer idTipoItinerario ) throws Exception;
-	
+
 	/**
 	 * Realiza la actualizacion de las tarifas.
 	 * @param tarifaNueva	: Nueva tarifa con la que se va a actualizar.
-	 * @param horaPartida	: Hora de partida de la ruta. 
+	 * @param horaPartida	: Hora de partida de la ruta.
 	 * @param fechaInicio	: Fecha Inicio para la actualizacion de la tarifa.
 	 * @param fechaFin		: Fecha Final para la actualización de la tarifa.
 	 * @param idRuta		: Identificador de la Ruta.
@@ -200,14 +200,14 @@ public interface ItinerarioDAO extends GenericDAO {
 	 * @param tarifaLista	: Tarifa Lista y/o Referencial.
 	 * @throws Exception
 	 */
-	public void actualizarTarifa(Double tarifaNueva, String horaPartida,String fechaInicio, String fechaFin, Integer idRuta, 
+	public void actualizarTarifa(Double tarifaNueva, String horaPartida,String fechaInicio, String fechaFin, Integer idRuta,
 			Integer idServicio,Double tarifaActual, Long idItinerarioDetalle, String usuarioMod, String ipMod, Double tarifaLista) throws Exception;
 	/**
 	 * Realiza la busqueda de los itinerarios, a travez de la ruta mayor
 	 * @param fechaPartida		: Fecha de Partida
-	 * @param horaPartida		: Hora de Partida	
+	 * @param horaPartida		: Hora de Partida
 	 * @param localidadIdOrigen	: Identificador de la localidadOrigen
-	 * @param localidadIdDestino: Identificador de la localidadDestino	
+	 * @param localidadIdDestino: Identificador de la localidadDestino
 	 * @return	Lista de itinerarios
 	 * @throws Exception
 	 */
@@ -224,5 +224,5 @@ public interface ItinerarioDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public List<Itinerario>buscarItinerariosByVentaTramo(String fechaInicial, String fechaFinal,Integer rutaIdMayor, Integer rutaIdTramo,String horaPartidaTramo,String horaPartidaItinerario)throws Exception;
-	
+
 }

@@ -44,7 +44,7 @@ public class UsuarioHardwareDAOImpl extends GenericDAOImpl implements UsuarioHar
 	@Override
 	public void guardar(UsuarioHardware usuarioHardware) throws Exception {
 		super.save(usuarioHardware);
-		
+
 	}
 
 	/*
@@ -54,10 +54,10 @@ public class UsuarioHardwareDAOImpl extends GenericDAOImpl implements UsuarioHar
 	@Override
 	public void actualizar(UsuarioHardware usuarioHardware) throws Exception {
 		super.update(usuarioHardware);
-		
+
 	}
 
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.UsuarioHardwareDAO#inactivar(java.lang.Long)
@@ -65,7 +65,7 @@ public class UsuarioHardwareDAOImpl extends GenericDAOImpl implements UsuarioHar
 	@Override
 	public void inactivar(Long id) {
 		super.inactivate(UsuarioHardware.class, id);
-		
+
 	}
 
 	/*
@@ -78,13 +78,13 @@ public class UsuarioHardwareDAOImpl extends GenericDAOImpl implements UsuarioHar
 		oClass=UsuarioHardware.class;
 		String hql = "FROM " + oClass.getSimpleName() + " WHERE  estadoRegistro='A' AND codigo = ? ";
 		List<UsuarioHardware> list= getSession().createQuery(hql).setString(0, codigo).list();
-			
+
 		UsuarioHardware usuarioHardware = new UsuarioHardware();
 		if (list.size()>0)
 			usuarioHardware=list.get(0);
-		
+
 		return usuarioHardware;
 	}
-	
+
 
 }

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Avalos Sullo
  * Fecha		: 12/06/2014
  */
@@ -30,12 +30,12 @@ public class JavaTest extends JApplet {
 	private JLabel lblJavaVersion = new JLabel();
 	private JLabel lblSystem = new JLabel();
 	private JLabel lblImagen = new JLabel();
-	
+
 	private String msgJavaInstalado = "Versión de Java verificada";
 	private String msgJavaNoInstalado = "Versión de Java no verificada";
 	private String msgOk = "Enhorabuena.";
 	private String msgError = "Lo sentimos.";
-	
+
 	/* (non-Javadoc)
 	 * @see java.applet.Applet#init()
 	 */
@@ -46,7 +46,7 @@ public class JavaTest extends JApplet {
 		addContents();
 		validarJava();
 	}
-	
+
 	/**
 	 * Agregamos los controles al contenedor de objetos.
 	 */
@@ -60,13 +60,13 @@ public class JavaTest extends JApplet {
 		container.add(lblSystem);
 		container.setBackground(new Color(223, 225, 227));
 	}
-	
+
 	private void validarJava(){
 		String javaVersion = System.getProperty("java.version");
 //		String javaVendor = System.getProperty("java.vendor");
 		String osName = System.getProperty("os.name");
 		String osVersion = System.getProperty("os.version");
-		
+
 		if(javaVersion!=null){
 			lblMessage1.setText(msgJavaInstalado);
 			lblMessage1.setForeground(Color.RED);
@@ -93,7 +93,7 @@ public class JavaTest extends JApplet {
 			lblJavaVersion.setBounds(75, 75, 400, 20);
 		}
 	}
-	
+
 	private void readingPicture(String namePicture){
 		try{
 			BufferedImage myPicture = ImageIO.read(this.getClass().getResource(namePicture));
@@ -105,5 +105,5 @@ public class JavaTest extends JApplet {
 			ex.printStackTrace();
 		}
 	}
-	
+
 }

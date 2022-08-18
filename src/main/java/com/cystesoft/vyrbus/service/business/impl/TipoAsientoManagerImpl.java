@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 11/07/2016
  * Hora			: 17:38:45
@@ -85,5 +85,5 @@ public class TipoAsientoManagerImpl implements TipoAsientoManager{
 		// TODO Auto-generated method stub
 		getTipoAsientoDAO().actualizar(tipoAsiento);
 	}
-	
+
 }

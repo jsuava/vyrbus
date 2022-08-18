@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -24,8 +24,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "oConductor" })
@@ -36,9 +36,9 @@ public class GetConductor {
 
 	/**
 	 * Gets the value of the oConductor property.
-	 * 
+	 *
 	 * @return possible object is {@link Conductor }
-	 * 
+	 *
 	 */
 	public Conductor getOConductor() {
 		return oConductor;
@@ -46,10 +46,10 @@ public class GetConductor {
 
 	/**
 	 * Sets the value of the oConductor property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Conductor }
-	 * 
+	 *
 	 */
 	public void setOConductor(Conductor value) {
 		this.oConductor = value;

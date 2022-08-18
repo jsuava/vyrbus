@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for MPasajero complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="MPasajero">
  *   &lt;complexContent>
@@ -32,8 +32,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "MPasajero", propOrder = { "tpoDoc", "nroDoc", "nombre",
@@ -61,9 +61,9 @@ public class MPasajero {
 
 	/**
 	 * Gets the value of the tpoDoc property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getTpoDoc() {
 		return tpoDoc;
@@ -71,10 +71,10 @@ public class MPasajero {
 
 	/**
 	 * Sets the value of the tpoDoc property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setTpoDoc(String value) {
 		this.tpoDoc = value;
@@ -82,9 +82,9 @@ public class MPasajero {
 
 	/**
 	 * Gets the value of the nroDoc property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getNroDoc() {
 		return nroDoc;
@@ -92,10 +92,10 @@ public class MPasajero {
 
 	/**
 	 * Sets the value of the nroDoc property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setNroDoc(String value) {
 		this.nroDoc = value;
@@ -103,9 +103,9 @@ public class MPasajero {
 
 	/**
 	 * Gets the value of the nombre property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getNombre() {
 		return nombre;
@@ -113,10 +113,10 @@ public class MPasajero {
 
 	/**
 	 * Sets the value of the nombre property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setNombre(String value) {
 		this.nombre = value;
@@ -124,9 +124,9 @@ public class MPasajero {
 
 	/**
 	 * Gets the value of the paterno property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getPaterno() {
 		return paterno;
@@ -134,10 +134,10 @@ public class MPasajero {
 
 	/**
 	 * Sets the value of the paterno property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setPaterno(String value) {
 		this.paterno = value;
@@ -145,9 +145,9 @@ public class MPasajero {
 
 	/**
 	 * Gets the value of the materno property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getMaterno() {
 		return materno;
@@ -155,10 +155,10 @@ public class MPasajero {
 
 	/**
 	 * Sets the value of the materno property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setMaterno(String value) {
 		this.materno = value;
@@ -166,9 +166,9 @@ public class MPasajero {
 
 	/**
 	 * Gets the value of the serBol property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getSerBol() {
 		return serBol;
@@ -176,10 +176,10 @@ public class MPasajero {
 
 	/**
 	 * Sets the value of the serBol property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setSerBol(String value) {
 		this.serBol = value;
@@ -187,9 +187,9 @@ public class MPasajero {
 
 	/**
 	 * Gets the value of the numBol property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getNumBol() {
 		return numBol;
@@ -197,10 +197,10 @@ public class MPasajero {
 
 	/**
 	 * Sets the value of the numBol property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setNumBol(String value) {
 		this.numBol = value;
@@ -208,9 +208,9 @@ public class MPasajero {
 
 	/**
 	 * Gets the value of the mtoBol property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getMtoBol() {
 		return mtoBol;
@@ -218,10 +218,10 @@ public class MPasajero {
 
 	/**
 	 * Sets the value of the mtoBol property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setMtoBol(String value) {
 		this.mtoBol = value;
@@ -229,9 +229,9 @@ public class MPasajero {
 
 	/**
 	 * Gets the value of the asiBol property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getAsiBol() {
 		return asiBol;
@@ -239,10 +239,10 @@ public class MPasajero {
 
 	/**
 	 * Sets the value of the asiBol property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setAsiBol(String value) {
 		this.asiBol = value;

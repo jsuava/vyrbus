@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for Conductor complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="Conductor">
  *   &lt;complexContent>
@@ -26,8 +26,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Conductor", propOrder = { "seguridad", "tpoDocumento",
@@ -43,9 +43,9 @@ public class Conductor {
 
 	/**
 	 * Gets the value of the seguridad property.
-	 * 
+	 *
 	 * @return possible object is {@link Seguridad }
-	 * 
+	 *
 	 */
 	public Seguridad getSeguridad() {
 		return seguridad;
@@ -53,10 +53,10 @@ public class Conductor {
 
 	/**
 	 * Sets the value of the seguridad property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Seguridad }
-	 * 
+	 *
 	 */
 	public void setSeguridad(Seguridad value) {
 		this.seguridad = value;
@@ -64,9 +64,9 @@ public class Conductor {
 
 	/**
 	 * Gets the value of the tpoDocumento property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getTpoDocumento() {
 		return tpoDocumento;
@@ -74,10 +74,10 @@ public class Conductor {
 
 	/**
 	 * Sets the value of the tpoDocumento property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setTpoDocumento(String value) {
 		this.tpoDocumento = value;
@@ -85,9 +85,9 @@ public class Conductor {
 
 	/**
 	 * Gets the value of the nroDocumento property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getNroDocumento() {
 		return nroDocumento;
@@ -95,10 +95,10 @@ public class Conductor {
 
 	/**
 	 * Sets the value of the nroDocumento property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setNroDocumento(String value) {
 		this.nroDocumento = value;

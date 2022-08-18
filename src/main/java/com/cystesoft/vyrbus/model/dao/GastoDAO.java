@@ -7,34 +7,34 @@ import java.util.TreeMap;
 import com.cystesoft.vyrbus.model.bean.Gasto;
 
 /**
- * 
+ *
  * @author José Abano
  *
  */
 public interface GastoDAO extends GenericDAO {
-	
+
 	/**
 	 * Busqueda por estado registro
-	 * @param estado		: estado 
+	 * @param estado		: estado
 	 * @param criterioOrden	: lista de criterios para el orden de los datos
 	 * @return
 	 */
 	public ArrayList<Gasto> buscarPorEstadoRegistro(String estado, String criterioOrden);
-	
+
 	/**
 	 * Busqueda por un ArraLis de Parametros.
-	 * @param criteriosBusqueda : 
+	 * @param criteriosBusqueda :
 	 * @param criteriosOrdenar	: lista de criterios para el orden de los datos
 	 * @return
 	 */
 	public ArrayList<Gasto> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
-	
+
 	/**
 	 * Busca Gastos de liquidación de turno
 	 * @param fechaGasto :Fecha emisión del gasto
 	 * @param idTipoGasto:identificador del tipo de gasto
-	 * @param idAgencia	 :identidficador de la agencia 
-	 * @param idUsuario	 : login del usuario 
+	 * @param idAgencia	 :identidficador de la agencia
+	 * @param idUsuario	 : login del usuario
 	 * @return
 	 */
 	public List<Gasto> buscarGasto(String fechaGasto, Integer idTipoGasto, Integer idAgencia,Integer idUsuario);
@@ -48,7 +48,6 @@ public interface GastoDAO extends GenericDAO {
 	 * @return
 	 */
 	public List<Gasto> buscarGasto(String fechaGasto, String fechaFinGasto, Integer idTipoGasto, Integer idAgencia,Integer idUsuario);
-	
 	/**
 	 * Busca gasto de la liquidacion de Oficina.
 	 * @param fechaLiquidacion : Fecha a buscar
@@ -56,33 +55,33 @@ public interface GastoDAO extends GenericDAO {
 	 * @return
 	 */
 	public List<Gasto> buscarGastoLiqOficina(String fechaLiquidacion, String usuario);
-	
+
 	/**
 	 * Busqueda por id.
 	 * @param id : identificador del gasto
 	 * @return
 	 */
 	public Gasto buscarXId(Long id);
-	
+
 	/**
-	 * Guarda 
+	 * Guarda
 	 * @param Gasto
 	 */
 	public void guardar(Gasto gasto);
-	
+
 	/***
 	 * Actualiza
 	 * @param gasto
 	 */
 	public void actualizar(Gasto gasto);
-	
+
 	/**
 	 * Inactiva Gasto
-	 * @param 
-	 * @param 
+	 * @param
+	 * @param
 	 */
 	public void inactivar(Long id);
-	
+
 	/**
 	 * Buscar la suma total de soles en gastos de una liqudiacion
 	 * @param fecha		: Fecha de la liquidación

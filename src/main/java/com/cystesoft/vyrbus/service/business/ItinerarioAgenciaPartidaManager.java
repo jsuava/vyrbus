@@ -8,7 +8,7 @@ import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartida;
 
 public interface ItinerarioAgenciaPartidaManager {
 	/**
-	 * 
+	 *
 	 * @param criteriosBusqueda	: Array de parametros para la busqueda.
 	 * @param criteriosOrdenar	: lista de parametros para el orden.
 	 * @return Array con el resultado de la busqueda
@@ -16,25 +16,25 @@ public interface ItinerarioAgenciaPartidaManager {
 	 */
 	public ArrayList<ItinerarioAgenciaPartida> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar)throws Exception;
 	/**
-	 * 
+	 *
 	 * @param id : Identidicador unico para la busqueda.
 	 * @return Agencia(s) de partida del itinerario..
 	 */
 	public ItinerarioAgenciaPartida buscarPorId(Long id);
 	/**
-	 * 
+	 *
 	 * @param itinerarioAgenciaPartida
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void guardar(ItinerarioAgenciaPartida itinerarioAgenciaPartida)throws Exception;
 	/**
-	 * 
+	 *
 	 * @param itinerarioAgenciaPartida
 	 * @throws Exception
 	 */
 	public void actualizar(ItinerarioAgenciaPartida itinerarioAgenciaPartida)throws Exception;
 	/**
-	 * 
+	 *
 	 * @param id
 	 * @throws Exception
 	 */
@@ -55,5 +55,5 @@ public interface ItinerarioAgenciaPartidaManager {
 	 * @throws Exception
 	 */
 	public List<ItinerarioAgenciaPartida> buscarAgenciasPartida(Long idItinerario, String estado, String strLocalidad)throws Exception;
-	
+
 }

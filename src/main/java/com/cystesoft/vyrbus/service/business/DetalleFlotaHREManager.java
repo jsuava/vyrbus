@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 27/08/2014
  * Hora			: 12:11:11
@@ -20,7 +20,7 @@ import com.cystesoft.vyrbus.model.bean.DetalleFlotaHRE;
  */
 public interface DetalleFlotaHREManager {
 	/**
-	 * Guarda el detalle de flota de la HRE. 
+	 * Guarda el detalle de flota de la HRE.
 	 * @param detalleFlotaHRE	: Nueva instancia del detalle flota HRE
 	 * @throws Exception
 	 */

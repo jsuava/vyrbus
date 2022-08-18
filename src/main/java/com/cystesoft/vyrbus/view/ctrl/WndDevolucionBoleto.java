@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 08/02/2013
  */
@@ -82,7 +82,7 @@ public class WndDevolucionBoleto extends WndBase {
 	private Listbox lbxVentas;
 	private Window wndDevolucionBoleto;
 	private Window wndDevolucion;
-	
+
 	private Combobox cmbResponsable;
 	private Combobox cmbPorcentajeDevolucion;
 	private Combobox  cmbTipoComprobante;
@@ -91,38 +91,38 @@ public class WndDevolucionBoleto extends WndBase {
 	private Textbox txtRazonSocial;
 	private Textbox txtDireccion;
 //	private Combobox cmbTipoFormaPago;
-//	private Combobox cmbOperador;	
+//	private Combobox cmbOperador;
 //	private Combobox cmbTarjetaCredito;
 	private Doublebox dblImportePagar;
 	private Label lblCargosPlicados;
-	private Label lblTipoComprobante;	
-	private Label lblNumeroComprobante;	
+	private Label lblTipoComprobante;
+	private Label lblNumeroComprobante;
 	private Label lblRuc;
 	private Label lblRazonSocial;
 	private Label lblDireccion;
-//	private Label lblFormaPago;	
+//	private Label lblFormaPago;
 //	private Label lblOperaodor;
-//	private Label lblTarjetaCredito;	
+//	private Label lblTarjetaCredito;
 	private Label lblImportePagar;
 	private Image imgBuscarCliente;
-	
+
 	private Row rowRuc;
 	private Row rowRazonSocial;
 	private Row rowDireccion;
-	
+
 //	private Doublebox dbltarifa;
 //	private Doublebox dblDescuento;
 //	private Doublebox dblRecargo;
 	private Doublebox dblImporte;
 	private Tab tabListado;
-	
+
 	private VentaPasaje boletoDevolver = null;
-	
+
 	private Date fechaLiquidacion = null;
-	
+
 //	private static final String DEVOLUCION_80 = "DEVOLUCION AL 80%";
 	private static final String DEVOLUCION_100 = "DEVOLUCION AL 100%";
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
@@ -132,18 +132,18 @@ public class WndDevolucionBoleto extends WndBase {
 			/*Valida si el usuario tiene una liquidación aperturada*/
 			if(getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION)==null)
 				throw new LiquidacionNullException();
-			
+
 			super.onCreate();
 			fechaLiquidacion = (Date) this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION);
 			txtNumeroBoleto.setFocus(true);
-			
+
 		}catch (LiquidacionNullException lnullex){
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noLiquidacion"));
 			closeTabWindow();
 		}
-		
+
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
 	 */
@@ -158,7 +158,7 @@ public class WndDevolucionBoleto extends WndBase {
 		tabListado = (Tab)this.getFellow("tabListado");
 		wndDevolucionBoleto=(Window)this.getFellow("wndDevolucionBoleto");
 	}
-	
+
 	public void buscarVentas(){
 		try{
 			String numeroDocumento = txtNumeroDocumento.getText().trim().equals("")?null:txtNumeroDocumento.getText().trim().toUpperCase();
@@ -172,12 +172,12 @@ public class WndDevolucionBoleto extends WndBase {
 				numeroBoleto = Util.autocompleNumberBoleto(numeroBoleto);
 				txtNumeroBoleto.setText(numeroBoleto);
 			}
-			
+
 			if(numeroDocumento==null && numeroControl==null && numeroBoleto==null){
 				DlgMessage.warning(Messages.getString("WndDevolucionBoleto.warning.noExisteCriteriosBusqueda"));
 				return;
 			}
-			
+
 			List<VentaPasaje> lstReservas = ServiceLocator.getVentaPasajesManager().buscarBoletosDevolucion(numeroDocumento, numeroControl, numeroBoleto);
 			if(lstReservas.size()>0){
 				lbxVentas.getItems().clear();
@@ -225,17 +225,17 @@ public class WndDevolucionBoleto extends WndBase {
 				tabListado.setSelected(true);
 			}else
 				DlgMessage.information(Messages.getString("WndDevolucionBoleto.information.noVentas"));
-			
+
 		}catch(Exception ex){
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
-	
+
+
 	private void validateDevolucion(String idVenta){
 		validateDevolucion(idVenta,true);
-	}	
-	
+	}
+
 	/**
 	 * Realiza la validacón para ver si al boleto se le puede aplicar este proceso.
 	 * @param idVenta	: Identificador de la venta.
@@ -243,13 +243,13 @@ public class WndDevolucionBoleto extends WndBase {
 	private boolean validateDevolucion(String idVenta, boolean createVentanaDevolucion){
 		try{
 			boletoDevolver = null;
-			/*Busca el registro original*/			
+			/*Busca el registro original*/
 			VentaPasaje ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarVentaById(Long.valueOf(idVenta));
 			/*Busca por el ultimo movimiento agrupado por numero de control*/
 			List<VentaPasaje> lstResult= ServiceLocator.getVentaPasajesManager().buscarBoletosDevolucion(null, ventaPasaje.getNumeroControl(), null);
 			/*Busca por el identificador del ultmio movimiento, el registro a validar*/
 			final VentaPasaje ventaDevolver=ServiceLocator.getVentaPasajesManager().buscarVentaById(lstResult.get(0).getId());
-			
+
 			if(ventaDevolver.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA)
 				throw new DevolucionByTipoMovimientoNoPermitidoException(Constantes.ID_TIPMOV_ANULACION_SISTEMA);
 			else if (ventaDevolver.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION)
@@ -262,11 +262,11 @@ public class WndDevolucionBoleto extends WndBase {
 					throw new DevolucionByTipoAgenciaNoPermitidoException(Constantes.ID_TIPAGE_CORPORATIVO);
 			}else if(ventaDevolver.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_PERDIDA_SERVICIO))
 				throw new PerdidaServicioException();
-			
+
 			if (ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(Long.valueOf(idVenta)))
 				throw new ManifiestoImpresoException();
 			if(Util.comparaFechas(ventaDevolver.getFechaCaducidad(), ServiceLocator.getVentaPasajesManager().getDateSystem(), Util.OPER_MENOR))
-				throw new FechaCaducidadNullException();		
+				throw new FechaCaducidadNullException();
 			else if(ventaDevolver.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA && createVentanaDevolucion){
 				Messagebox.show(Messages.getString("WndDevolucionBoleto.question.noDevolucionCortesia"), DlgMessage.NOMBREAPLICACION+" PREGUNTA", DlgMessage.BTN_YESNO, Messagebox.QUESTION, Messagebox.NO, new EventListener<Event>() {
 					@Override
@@ -299,7 +299,7 @@ public class WndDevolucionBoleto extends WndBase {
 				}else if ( createVentanaDevolucion)
 					createVentanaDevolucion(ventaDevolver);
 			}
-			
+
 			return true;
 		}catch(DevolucionByTipoMovimientoNoPermitidoException dtmnpex){
 			if(dtmnpex.getTipoMovimiento().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA)
@@ -324,8 +324,8 @@ public class WndDevolucionBoleto extends WndBase {
 			ex.printStackTrace();
 			return false;
 		}
-	}	
-	
+	}
+
 //	/**
 //	 * Realiza la creación de la Ventana para la confirmación de la devolución.
 //	 * @param ventaOriginal	: Boleto que se desea devolver.
@@ -342,23 +342,23 @@ public class WndDevolucionBoleto extends WndBase {
 //		Row row = null;
 //		Label label = null;
 //		Textbox text = null;
-//		
+//
 //		final Window win = new Window("", "normal", true);
 //		win.setWidth("500px");
-//		
+//
 //		caption = new Caption("DEVOLUCION DE BOLETO", "resources/menu/menu_reimprimir.png");
 //		win.appendChild(caption);
 //		label = new Label("Se va a realizar la Devolución del Comprobante con los siguientes datos :");
 //		label.setStyle("font-size:12px !important");
 //		win.appendChild(label);
-//		
+//
 //		win.appendChild(new Separator("horizontal"));
-//		
+//
 //		groupbox = new Groupbox();
 //		groupbox.setClosable(false);
 //		caption = new Caption("Información del Comprobante a devolver");
 //		groupbox.appendChild(caption);
-//		
+//
 //		/*	Columna 1	*/
 //		column = new Column();
 //		column.setAlign("right");
@@ -373,10 +373,10 @@ public class WndDevolucionBoleto extends WndBase {
 //		/*	Columna 4	*/
 //		column = new Column();
 //		columns.appendChild(column);
-//		
+//
 //		grid.appendChild(columns);
-//		
-//		row = new Row();		
+//
+//		row = new Row();
 //		if(ventaOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE)
 //			label = new Label("NUMERO BOLETO :");
 //		else if(ventaOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA)
@@ -384,21 +384,21 @@ public class WndDevolucionBoleto extends WndBase {
 //		else if(ventaOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_FACTURA)
 //			label = new Label("NUMERO FACTURA :");
 //		label.setStyle("color:blue");
-//		row.appendChild(label);		
+//		row.appendChild(label);
 //		text = new Textbox(ventaOriginal.getNumeroBoleto());
 //		text.setStyle("font-size:11px !important");
 //		text.setReadonly(true);
 //		text.setWidth("80px");
-//		row.appendChild(text);		
+//		row.appendChild(text);
 //		label = new Label("FECHA VIAJE :");
-//		row.appendChild(label);		
+//		row.appendChild(label);
 //		text = new Textbox(ventaOriginal.getFechaPartida()==null?"":Util.DatetoString(ventaOriginal.getFechaPartida(), Constantes.DATE_FORMAT));
 //		text.setStyle("font-size:11px !important");
 //		text.setReadonly(true);
 //		text.setWidth("80px");
 //		row.appendChild(text);
 //		rows.appendChild(row);
-//		
+//
 //		row = new Row();
 //		label = new Label("NUMERO ASIENTO :");
 //		row.appendChild(label);
@@ -415,7 +415,7 @@ public class WndDevolucionBoleto extends WndBase {
 //		text.setWidth("80px");
 //		row.appendChild(text);
 //		rows.appendChild(row);
-//		
+//
 //		row = new Row();
 //		row.setSpans("1,3");
 //		label = new Label("PASAJERO :");
@@ -425,7 +425,7 @@ public class WndDevolucionBoleto extends WndBase {
 //		text.setWidth("90%");
 //		row.appendChild(text);
 //		rows.appendChild(row);
-//		
+//
 //		row = new Row();
 //		row.setSpans("1,3");
 //		label = new Label("CLIENTE :");
@@ -435,7 +435,7 @@ public class WndDevolucionBoleto extends WndBase {
 //		text.setWidth("90%");
 //		row.appendChild(text);
 //		rows.appendChild(row);
-//		
+//
 //		row = new Row();
 //		row.setSpans("1,3");
 //		label = new Label("CANAL VENTA :");
@@ -454,8 +454,8 @@ public class WndDevolucionBoleto extends WndBase {
 //		lblCanalVenta.setWidth("100%");
 //		row.appendChild(lblCanalVenta);
 //		rows.appendChild(row);
-//		
-//		
+//
+//
 //		grid.appendChild(rows);
 //		groupbox.appendChild(grid);
 //		win.appendChild(groupbox);
@@ -464,7 +464,7 @@ public class WndDevolucionBoleto extends WndBase {
 //		groupbox.setClosable(false);
 //		caption = new Caption("Información de la Devolución");
 //		groupbox.appendChild(caption);
-//		
+//
 //		grid = new Grid();
 //		rows = new Rows();
 //		columns = new Columns();
@@ -477,10 +477,10 @@ public class WndDevolucionBoleto extends WndBase {
 //		column = new Column();
 //		columns.appendChild(column);
 //		grid.appendChild(columns);
-//		
-//		row = new Row();		
+//
+//		row = new Row();
 //		label = new Label("% DE DEVOLUCION (*) :");
-//		row.appendChild(label);		
+//		row.appendChild(label);
 //		cmbPorcentajeDevolucion = new Combobox();
 //		cmbPorcentajeDevolucion.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 //			public void onEvent(Event e){
@@ -503,9 +503,9 @@ public class WndDevolucionBoleto extends WndBase {
 //		cmbPorcentajeDevolucion.setReadonly(true);
 //		cmbPorcentajeDevolucion.setAutodrop(true);
 //		llenarTiposDevolucion(cmbPorcentajeDevolucion);
-//		row.appendChild(cmbPorcentajeDevolucion);		
+//		row.appendChild(cmbPorcentajeDevolucion);
 //		rows.appendChild(row);
-//		
+//
 //		row = new Row();
 //		label = new Label("TARIFA :");
 //		row.appendChild(label);
@@ -513,7 +513,7 @@ public class WndDevolucionBoleto extends WndBase {
 //		dbltarifa.setFormat("##0.00");
 //		row.appendChild(dbltarifa);
 //		rows.appendChild(row);
-//		
+//
 //		row = new Row();
 //		label = new Label("DESCUENTO :");
 //		row.appendChild(label);
@@ -521,7 +521,7 @@ public class WndDevolucionBoleto extends WndBase {
 //		dblDescuento.setFormat("##0.00");
 //		row.appendChild(dblDescuento);
 //		rows.appendChild(row);
-//		
+//
 //		row = new Row();
 //		label = new Label("RECARGO :");
 //		row.appendChild(label);
@@ -529,7 +529,7 @@ public class WndDevolucionBoleto extends WndBase {
 //		dblRecargo.setFormat("##0.00");
 //		row.appendChild(dblRecargo);
 //		rows.appendChild(row);
-//		
+//
 //		row = new Row();
 //		label = new Label("PENALIDAD :");
 //		row.appendChild(label);
@@ -537,7 +537,7 @@ public class WndDevolucionBoleto extends WndBase {
 //		dblPenalidad.setFormat("##0.00");
 //		row.appendChild(dblPenalidad);
 //		rows.appendChild(row);
-//		
+//
 //		row = new Row();
 //		label = new Label("IMPORTE :");
 //		row.appendChild(label);
@@ -545,7 +545,7 @@ public class WndDevolucionBoleto extends WndBase {
 //		dblImporte.setFormat("##0.00");
 //		row.appendChild(dblImporte);
 //		rows.appendChild(row);
-//		
+//
 //		row = new Row();
 //		label = new Label("MOTIVO (*) :");
 //		row.appendChild(label);
@@ -556,11 +556,11 @@ public class WndDevolucionBoleto extends WndBase {
 //		txtMotivo.setHeight("50px");
 //		row.appendChild(txtMotivo);
 //		rows.appendChild(row);
-//		
-//		grid.appendChild(rows);		
+//
+//		grid.appendChild(rows);
 //		groupbox.appendChild(grid);
 //		win.appendChild(groupbox);
-//		
+//
 //		grid = new Grid();
 //		columns = new Columns();
 //		column = new Column();
@@ -587,7 +587,7 @@ public class WndDevolucionBoleto extends WndBase {
 //				/*Nuevamente valida la devolucion*/
 //				if(!(validateDevolucion(ventaOriginal.getId().toString(), false)))
 //					return;
-//				
+//
 //				Messagebox.show(Messages.getString("WndDevolucionBoleto.question.confirmarDevolucion"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 //					public void onEvent(Event e){
 //						try{
@@ -611,15 +611,15 @@ public class WndDevolucionBoleto extends WndBase {
 ////									UtilData.auditarRegistro(boletoDevolver,true,getUsuario(), Executions.getCurrent());
 //								UtilData.auditarRegistro(boletoDevolver,getUsuario(), Executions.getCurrent());
 //								int result = ServiceLocator.getVentaPasajesManager().devolucionBoleto(boletoDevolver);
-//								
+//
 //								//
-//								
+//
 //								if(result==Constantes.CORRECT){
 //									DlgMessage.information(Messages.getString("WndDevolucionBoleto.information.exitoDevolucion")+" "+boletoDevolver.getNumeroControl());
 //									wndDevolucion.onClose();
 //									//win.onClose();
 //									buscarVentas();
-//								}								
+//								}
 //							}
 //						}catch(Exception ex){
 //							ex.printStackTrace();
@@ -640,19 +640,19 @@ public class WndDevolucionBoleto extends WndBase {
 //		button.setHeight("28px");
 //		button.setFocus(true);
 //		row.appendChild(button);
-//		
+//
 //		rows.appendChild(row);
-//		
+//
 //		grid.appendChild(rows);
 //		win.appendChild(grid);
-//		
+//
 //		wndDevolucion = win;
 //		this.appendChild(wndDevolucion);
 //		wndDevolucion.setMode(MODAL);
-//		
+//
 ////		return win;
 //	}
-	
+
 	/**
 	 * Realiza la creación de la Ventana para la confirmación de la devolución.
 	 * @param ventaOriginal	: Boleto que se desea devolver.
@@ -660,9 +660,9 @@ public class WndDevolucionBoleto extends WndBase {
 	 */
 	@SuppressWarnings("deprecation")
 	private void createVentanaDevolucion(final VentaPasaje ventaOriginal)throws Exception{
-		final TipoNota tipoNotaCredito = ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CREDITO_DEVOLUCION);		
-		
-		
+		final TipoNota tipoNotaCredito = ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CREDITO_DEVOLUCION);
+
+
 		Caption caption = null;
 		Groupbox groupbox = null;
 		Grid grid = new Grid();
@@ -672,25 +672,25 @@ public class WndDevolucionBoleto extends WndBase {
 		Row row = null;
 		Label label = null;
 		Textbox text = null;
-		
+
 		final Window win = new Window("", "normal", true);
 		win.setWidth("500px");
-		
+
 		caption = new Caption("DEVOLUCION DE BOLETO", "resources/menu/menu_reimprimir.png");
 		win.appendChild(caption);
 		label = new Label("Se va a realizar la Devolución del Comprobante con los siguientes datos :");
 		label.setStyle("font-size:12px !important");
 		win.appendChild(label);
-		
+
 		win.appendChild(new Separator("horizontal"));
-		
+
 		groupbox = new Groupbox();
 		groupbox.setClosable(false);
 		groupbox.setMold("3d");
 		caption = new Caption("INFORMACION DEL COMPROBANTE A DEVOLVER");
 		caption.setStyle("color: #ffffff; font-size:12px !important");
 		groupbox.appendChild(caption);
-		
+
 		/*	Columna 1	*/
 		column = new Column();
 		column.setAlign("right");
@@ -705,10 +705,10 @@ public class WndDevolucionBoleto extends WndBase {
 		/*	Columna 4	*/
 		column = new Column();
 		columns.appendChild(column);
-		
+
 		grid.appendChild(columns);
-		
-		row = new Row();		
+
+		row = new Row();
 		if(ventaOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE)
 			label = new Label("NUMERO BOLETO :");
 		else if(ventaOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA)
@@ -716,21 +716,21 @@ public class WndDevolucionBoleto extends WndBase {
 		else if(ventaOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_FACTURA)
 			label = new Label("NUMERO FACTURA :");
 		label.setStyle("color:blue");
-		row.appendChild(label);		
+		row.appendChild(label);
 		text = new Textbox(ventaOriginal.getNumeroBoleto());
 		text.setStyle("font-size:11px !important");
 		text.setReadonly(true);
 		text.setWidth("80px");
-		row.appendChild(text);		
+		row.appendChild(text);
 		label = new Label("FECHA VIAJE :");
-		row.appendChild(label);		
+		row.appendChild(label);
 		text = new Textbox(ventaOriginal.getFechaPartida()==null?"":Util.DatetoString(ventaOriginal.getFechaPartida(), Constantes.DATE_FORMAT));
 		text.setStyle("font-size:11px !important");
 		text.setReadonly(true);
 		text.setWidth("80px");
 		row.appendChild(text);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		label = new Label("NUMERO ASIENTO :");
 		row.appendChild(label);
@@ -750,7 +750,7 @@ public class WndDevolucionBoleto extends WndBase {
 		dblImporte.setFormat("##0.00");
 		row.appendChild(dblImporte);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		row.setSpans("1,3");
 		label = new Label("PASAJERO :");
@@ -760,7 +760,7 @@ public class WndDevolucionBoleto extends WndBase {
 		text.setWidth("90%");
 		row.appendChild(text);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		row.setSpans("1,3");
 		label = new Label("CLIENTE :");
@@ -770,7 +770,7 @@ public class WndDevolucionBoleto extends WndBase {
 		text.setWidth("90%");
 		row.appendChild(text);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		row.setSpans("1,3");
 		label = new Label("TIPO FORMA PAGO :");
@@ -782,7 +782,7 @@ public class WndDevolucionBoleto extends WndBase {
 		text.setWidth("90%");
 		row.appendChild(text);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		row.setSpans("1,3");
 		label = new Label("CANAL VENTA :");
@@ -801,8 +801,8 @@ public class WndDevolucionBoleto extends WndBase {
 		lblCanalVenta.setWidth("100%");
 		row.appendChild(lblCanalVenta);
 		rows.appendChild(row);
-		
-		
+
+
 		grid.appendChild(rows);
 		groupbox.appendChild(grid);
 		win.appendChild(groupbox);
@@ -813,7 +813,7 @@ public class WndDevolucionBoleto extends WndBase {
 		caption = new Caption("INFORMACION DE LA DEVOLUCION");
 		caption.setStyle("color: #ffffff");
 		groupbox.appendChild(caption);
-		
+
 		grid = new Grid();
 		rows = new Rows();
 		columns = new Columns();
@@ -835,17 +835,17 @@ public class WndDevolucionBoleto extends WndBase {
 		column = new Column();
 		columns.appendChild(column);
 		grid.appendChild(columns);
-		
-		row = new Row();		
+
+		row = new Row();
 		label = new Label("% DE DEVOLUCION :");
-		row.appendChild(label);		
+		row.appendChild(label);
 		cmbPorcentajeDevolucion = new Combobox();
-		cmbPorcentajeDevolucion.setDisabled(true);;
+		cmbPorcentajeDevolucion.setDisabled(true);
 		cmbPorcentajeDevolucion.setWidth("130px");
 		llenarTiposDevolucion(cmbPorcentajeDevolucion);
-		row.appendChild(cmbPorcentajeDevolucion);		
+		row.appendChild(cmbPorcentajeDevolucion);
 		rows.appendChild(row);
-		
+
 		label = new Label("RESPONSABLE :");
 		row.appendChild(label);
 		cmbResponsable = new Combobox();
@@ -854,7 +854,7 @@ public class WndDevolucionBoleto extends WndBase {
 		onloadResposablesDevolucion(cmbResponsable);
 		row.appendChild(cmbResponsable);
 		rows.appendChild(row);
-		
+
 		row= new Row();
 		Div div= new Div();
 		div.setAlign("center");
@@ -864,7 +864,7 @@ public class WndDevolucionBoleto extends WndBase {
 		row.setSpans("4");
 		row.appendChild(div);
 		rows.appendChild(row);
-		
+
 		row= new Row();
 		lblTipoComprobante= new Label("TIPO COMPROBANTE:");
 		row.appendChild(lblTipoComprobante);
@@ -873,20 +873,20 @@ public class WndDevolucionBoleto extends WndBase {
 		cmbTipoComprobante.setReadonly(true);
 		onloadTiposComprobante(cmbTipoComprobante);
 		row.appendChild(cmbTipoComprobante);
-		
+
 		lblNumeroComprobante = new Label("N° COMPROBANTE:");
 		lblNumeroComprobante.setStyle("color:blue");
-		row.appendChild(lblNumeroComprobante);		
+		row.appendChild(lblNumeroComprobante);
 		txtNuevoComprobante= new Textbox();
 		txtNuevoComprobante.setStyle("font-size:11px !important;color:blue");
 		txtNuevoComprobante.setReadonly(true);
 		txtNuevoComprobante.setWidth("110px");
 		row.appendChild(txtNuevoComprobante);
 		rows.appendChild(row);
-		
-		
+
+
 		rowRuc= new Row();
-		rowRuc.setSpans("1,3");		
+		rowRuc.setSpans("1,3");
 		lblRuc = new Label("RUC :");
 		rowRuc.appendChild(lblRuc);
 		txtRuc= new Textbox();
@@ -901,7 +901,7 @@ public class WndDevolucionBoleto extends WndBase {
 		rowRuc.setVisible(false);
 		rowRuc.appendChild(hbox);
 		rows.appendChild(rowRuc);
-		
+
 		rowRazonSocial= new Row();
 		rowRazonSocial.setSpans("1,3");
 		lblRazonSocial = new Label("RAZON SOCIAL :");
@@ -912,7 +912,7 @@ public class WndDevolucionBoleto extends WndBase {
 		rowRazonSocial.setVisible(false);
 		rowRazonSocial.appendChild(txtRazonSocial);
 		rows.appendChild(rowRazonSocial);
-		
+
 		rowDireccion= new Row();
 		rowDireccion.setSpans("1,3");
 		lblDireccion= new Label("DIECCION :");
@@ -923,7 +923,7 @@ public class WndDevolucionBoleto extends WndBase {
 		rowDireccion.setVisible(false);
 		rowDireccion.appendChild(txtDireccion);
 		rows.appendChild(rowDireccion);
-				
+
 //		row= new Row();
 //		lblFormaPago= new Label("FORMA PAGO :");
 //		row.appendChild(lblFormaPago);
@@ -932,7 +932,7 @@ public class WndDevolucionBoleto extends WndBase {
 //		cmbTipoFormaPago.setReadonly(true);
 //		onLoadTipoFormaPago(cmbTipoFormaPago);
 //		row.appendChild(cmbTipoFormaPago);
-		
+
 //		lblOperaodor = new Label("OPERADOR :");
 //		row.appendChild(lblOperaodor);
 //		cmbOperador= new Combobox();
@@ -942,7 +942,7 @@ public class WndDevolucionBoleto extends WndBase {
 //		onLoadOperadoresTarjeta(cmbOperador);
 //		row.appendChild(cmbOperador);
 //		rows.appendChild(row);
-		
+
 		row= new Row();
 //		lblTarjetaCredito = new Label("TARJETA CREDITO :");
 //		row.appendChild(lblTarjetaCredito);
@@ -951,7 +951,7 @@ public class WndDevolucionBoleto extends WndBase {
 //		cmbTarjetaCredito.setReadonly(true);
 //		cmbTarjetaCredito.setDisabled(true);
 //		row.appendChild(cmbTarjetaCredito);
-		
+
 		row.setSpans("1,3");
 		lblImportePagar = new Label("IMPORTE PAGAR :");
 		row.appendChild(lblImportePagar);
@@ -961,8 +961,8 @@ public class WndDevolucionBoleto extends WndBase {
 		dblImportePagar.setLocale(Locale.US);
 		dblImportePagar.setReadonly(true);
 		row.appendChild(dblImportePagar);
-		rows.appendChild(row);		
-		
+		rows.appendChild(row);
+
 		row = new Row();
 		label = new Label("MOTIVO (*) :");
 		row.appendChild(label);
@@ -974,11 +974,11 @@ public class WndDevolucionBoleto extends WndBase {
 		row.setSpans("1,3");
 		row.appendChild(txtMotivo);
 		rows.appendChild(row);
-		
-		grid.appendChild(rows);		
+
+		grid.appendChild(rows);
 		groupbox.appendChild(grid);
 		win.appendChild(groupbox);
-		
+
 		grid = new Grid();
 		columns = new Columns();
 		column = new Column();
@@ -990,10 +990,10 @@ public class WndDevolucionBoleto extends WndBase {
 		grid.appendChild(columns);
 		rows = new Rows();
 		row = new Row();
-		
+
 		visibleControlsPago(false);
-		visibleControlsClienteFactura(false);		
-		
+		visibleControlsClienteFactura(false);
+
 		cmbResponsable.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -1008,7 +1008,7 @@ public class WndDevolucionBoleto extends WndBase {
 					else{
 						visibleControlsPago(true);
 						dblImportePagar.setValue(0.00);
-						
+
 						/*Calcula el importe a pagar - 17/11/2016 - jabanto*/
 						if(ventaOriginal.getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA && ventaOriginal.getCanalVenta().getId().intValue()!=Constantes.ID_CANVEN_WEB)
 							dblImportePagar.setValue(tipoNotaCredito.getGastoAdminTarjeta());
@@ -1016,10 +1016,10 @@ public class WndDevolucionBoleto extends WndBase {
 							dblImportePagar.setValue(tipoNotaCredito.getGastoAdminEfectivo());
 					}
 				}
-				
+
 			}
 		});
-		
+
 		cmbTipoComprobante.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -1038,21 +1038,21 @@ public class WndDevolucionBoleto extends WndBase {
 					txtNuevoComprobante.setText("");
 			}
 		});
-		
+
 		txtRuc.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				buscarCliente();
 			}
 		});
-		
+
 		imgBuscarCliente.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				buscarCliente();
 			}
 		});
-		
+
 //		cmbTipoFormaPago.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 //			@Override
 //			public void onEvent(Event event) throws Exception {
@@ -1062,16 +1062,16 @@ public class WndDevolucionBoleto extends WndBase {
 //				Util.limpiarCombobox(cmbTarjetaCredito);
 //				cmbTarjetaCredito.setText("");
 //				cmbTarjetaCredito.setDisabled(true);
-//				
+//
 //				if(cmbTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago){
 //					if(((TipoFormaPago)cmbTipoFormaPago.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA){
 //						cmbOperador.setSelectedIndex(0);
-//						cmbOperador.setDisabled(false);						
+//						cmbOperador.setDisabled(false);
 //					}
 //				}
 //			}
 //		});
-		
+
 //		cmbOperador.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 //			@Override
 //			public void onEvent(Event event) throws Exception {
@@ -1085,8 +1085,8 @@ public class WndDevolucionBoleto extends WndBase {
 //				}
 //			}
 //		});
-		
-		
+
+
 		Button button = new Button("Continuar", "resources/mp_aceptarEnabled.png");
 		button.setAutodisable("self");
 		button.setClass("btnCommandL");
@@ -1103,11 +1103,11 @@ public class WndDevolucionBoleto extends WndBase {
 //				/*Nuevamente valida la devolucion*/
 				if(!(validateDevolucion(ventaOriginal.getId().toString(), false)))
 					return;
-				
+
 				try {
-					
+
 					devolverComprobante(tipoNotaCredito, ventaOriginal);
-					
+
 				} catch (Exception e1) {
 					e1.printStackTrace();
 					DlgMessage.information(this.getClass().getSimpleName()+" "+e1.getMessage());
@@ -1127,27 +1127,27 @@ public class WndDevolucionBoleto extends WndBase {
 		button.setClass("btnCommandL");
 		button.setFocus(true);
 		row.appendChild(button);
-		
+
 		rows.appendChild(row);
-		
+
 		grid.appendChild(rows);
 		win.appendChild(grid);
-		
+
 		wndDevolucion = win;
 		this.appendChild(wndDevolucion);
 		wndDevolucion.setMode(MODAL);
-		
+
 //		return win;
 	}
-	
+
 	private void devolverComprobante(final TipoNota tipoNota, final VentaPasaje ventaOriginal)throws Exception{
 		if(cmbResponsable.getSelectedIndex()<=0){
 			DlgMessage.information(Messages.getString("WndDevolucionBoleto.information.niResponsable"),cmbResponsable);
 			return;
 		}else if((int)cmbResponsable.getSelectedItem().getValue()==Constantes.TRUE_VALUE){
 			/*Si es LA EMPRESA*/
-			
-			
+
+
 		}else{
 			/*Si es el PASAJERO*/
 			if(!(cmbTipoComprobante.getSelectedItem().getValue() instanceof TipoComprobante)){
@@ -1164,7 +1164,7 @@ public class WndDevolucionBoleto extends WndBase {
 //				DlgMessage.information(Messages.getString("WndDevolucionBoleto.information.noTipoFormaPago"),cmbTipoFormaPago);
 //				return;
 //			}
-//			if(((TipoFormaPago)cmbTipoFormaPago.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA && 
+//			if(((TipoFormaPago)cmbTipoFormaPago.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA &&
 //					!(cmbOperador.getSelectedItem().getValue() instanceof OperadorTarjetaCredito)){
 //				DlgMessage.information(Messages.getString("WndDevolucionBoleto.information.noOperadorTarjetaCredito"),cmbOperador);
 //				return;
@@ -1180,16 +1180,16 @@ public class WndDevolucionBoleto extends WndBase {
 			DlgMessage.information(Messages.getString("WndDevolucionBoleto.information.noMotivoDevolucion"), txtMotivo);
 			return;
 		}
-		
+
 		Cliente cliente=null;
 		if(!(txtRazonSocial.getText().trim().isEmpty())){
 			cliente=buscarCliente();
 			if(cliente==null)
 				return;
 		}
-		
+
 		final Cliente oCliente=cliente;
-		
+
 		Messagebox.show(Messages.getString("WndDevolucionBoleto.question.confirmarDevolucion"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e) throws Exception{
@@ -1204,7 +1204,7 @@ public class WndDevolucionBoleto extends WndBase {
 								RESTCiva.anularBoleto(ventaOriginal.getNumeroBoleto());
 							}
 						}
-						
+
 						/*Boleto a devolver*/
 						boletoDevolver = (VentaPasaje)ventaOriginal.clone();
 						boletoDevolver.setId(null);
@@ -1223,19 +1223,19 @@ public class WndDevolucionBoleto extends WndBase {
 						boletoDevolver.setFechaLiquidacion(fechaLiquidacion);
 						boletoDevolver.setLiquidacion(null);
 						boletoDevolver.setFechaTransferencia(null);
-						if(ventaOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA || 
+						if(ventaOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA ||
 								ventaOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_FACTURA)
-							boletoDevolver.setTipoNota(tipoNota);	
-						
+							boletoDevolver.setTipoNota(tipoNota);
+
 						UtilData.auditarRegistro(boletoDevolver,getUsuario(), Executions.getCurrent());
-						
+
 						/*Valida si es por parte de tepsa*/
 						if((int)cmbResponsable.getSelectedItem().getValue()==Constantes.TRUE_VALUE){
 							VentaPasaje notaCredito=ServiceLocator.getVentaPasajesManager().devolucionBoleto(boletoDevolver, null);
 							if(notaCredito!=null)
 								WSFE.sendNota(notaCredito);
 						}else{
-							/*Emitir el gasto administrativo*/		
+							/*Emitir el gasto administrativo*/
 							VentaPasaje gastoAdmin= new VentaPasaje();
 							gastoAdmin.setVentaOriginal(ventaOriginal.getVentaOriginal());
 							gastoAdmin.setVentaPasaje(ventaOriginal);
@@ -1275,39 +1275,39 @@ public class WndDevolucionBoleto extends WndBase {
 							gastoAdmin.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 							gastoAdmin.setObservaciones("POR DEVOLUCION DEL COMPROBANTE N°: "+boletoDevolver.getNumeroBoleto());
 							UtilData.auditarRegistro(gastoAdmin, getUsuario(), Executions.getCurrent());
-							
+
 							Double igv=gastoAdmin.getImportePagado()- Double.valueOf(Util.toNumberFormat(gastoAdmin.getImportePagado()/((Constantes.IGV/100)+1),2));
 							gastoAdmin.setIgv(igv);
-									
+
 							VentaPasaje notaCredito = ServiceLocator.getVentaPasajesManager().devolucionBoleto(boletoDevolver, gastoAdmin);
-							
+
 							gastoAdmin=ServiceLocator.getVentaPasajesManager().buscarVentaById(gastoAdmin.getId());
 							List<VentaPasaje>listVentaPasaje= new ArrayList<>();
 							listVentaPasaje.add(gastoAdmin);
 							WSFE.sendVenta(listVentaPasaje, wndDevolucionBoleto, true, notaCredito);
 						}
-						
-						
-						
+
+
+
 						/*Confirma la operacion*/
 						DlgMessage.information(Messages.getString("WndDevolucionBoleto.information.exitoDevolucion")+" "+boletoDevolver.getNumeroControl());
 						wndDevolucion.onClose();
 						buscarVentas();
-	
-					}						
+
+					}
 				} catch (Exception e2) {
 					throw e2;
 				}
 			}
 		});
 	}
-	
+
 	private Cliente buscarCliente()throws Exception{
 		Cliente cliente=null;
 		if(!(txtRuc.getText().trim().isEmpty())){
 			txtRazonSocial.setText("");
 			txtDireccion.setText("");
-			
+
 			TreeMap<String, Object>criteriosBusqueda= new TreeMap<>();
 			criteriosBusqueda.put("numeroDocumento", txtRuc.getText().trim());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
@@ -1319,34 +1319,34 @@ public class WndDevolucionBoleto extends WndBase {
 			}else
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noCliente"),txtRuc);
 		}
-		
+
 		return cliente;
 	}
-	
+
 //	private void onLoadTarjetasCredito(Combobox combobox, OperadorTarjetaCredito operadorTarjetaCredito)throws Exception{
 //		Util.limpiarCombobox(cmbTarjetaCredito);
-//		
+//
 //		TreeMap<String, Object>criteriosBusqueda= new TreeMap<>();
 //		criteriosBusqueda.put("operadorTarjetaCredito", operadorTarjetaCredito);
 //		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-//		
+//
 //		List<String>criteriosOrdenar= new ArrayList<>();
 //		criteriosOrdenar.add("denominacion");
 //		List<TarjetaCredito> result= ServiceLocator.getTarjetaCreditoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
-//		
+//
 //		Comboitem comboitem = new Comboitem(Constantes.COMBO_LABEL_SELECCIONE);
 //		combobox.appendChild(comboitem);
-//		
+//
 //		for(TarjetaCredito tarjetaCredito: result){
 //			comboitem= new Comboitem(tarjetaCredito.getDenominacion());
 //			comboitem.setValue(tarjetaCredito);
 //			combobox.appendChild(comboitem);
 //		}
 //		combobox.setSelectedIndex(0);
-//		
+//
 //	}
-	
-	
+
+
 //	private void onLoadOperadoresTarjeta(Combobox combobox)throws Exception{
 //		List<OperadorTarjetaCredito> result=ServiceLocator.getOperadorTarjetaCreditoManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
 //		Comboitem comboitem = new Comboitem(Constantes.COMBO_LABEL_SELECCIONE);
@@ -1358,7 +1358,7 @@ public class WndDevolucionBoleto extends WndBase {
 //		}
 //		combobox.setSelectedIndex(0);
 //	}
-//	
+//
 //	private void onLoadTipoFormaPago(Combobox combobox)throws Exception{
 //		List<TipoFormaPago> result= ServiceLocator.getTipoFormaPagoManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
 //		Comboitem comboitem = new Comboitem(Constantes.COMBO_LABEL_SELECCIONE);
@@ -1371,10 +1371,10 @@ public class WndDevolucionBoleto extends WndBase {
 //				combobox.appendChild(comboitem);
 //			}
 //		}
-//		
+//
 //		Util.seleccionarValorItemCombo(TipoFormaPago.class, combobox, Constantes.ID_TIPFORPAG_EFECTIVO);
 //	}
-	
+
 	private String getEspecieValorada(Integer tipoComprobanteID)throws Exception{
 		/*BEGIN 15/06/2021 - javalos - Correlativo by caja*/
 //		EspecieValorada especieValorada=UtilData.buscarEspecieValorada(tipoComprobanteID, getAgencia(), false);
@@ -1383,21 +1383,21 @@ public class WndDevolucionBoleto extends WndBase {
 		return controlEspecieValorada.toString();
 		/*END 15/06/2021 - javalos - Correlativo by caja*/
 	}
-	
-	
+
+
 	private void onloadTiposComprobante(Combobox combobox) throws Exception{
 		List<TipoComprobante>result=ServiceLocator.getTipoComprobanteManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
 		Comboitem comboitem = new Comboitem(Constantes.COMBO_LABEL_SELECCIONE);
 		combobox.appendChild(comboitem);
 		for(TipoComprobante tipoComprobante: result){
-			if(tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA || 
+			if(tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA ||
 					tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_FACTURA){
 				comboitem= new Comboitem(tipoComprobante.getDenominacion());
 				comboitem.setValue(tipoComprobante);
 				combobox.appendChild(comboitem);
 			}
 		}
-		
+
 		combobox.setSelectedIndex(0);
 	}
 
@@ -1412,7 +1412,7 @@ public class WndDevolucionBoleto extends WndBase {
 		combobox.appendChild(comboitem);
 		combobox.setSelectedIndex(0);
 	}
-	
+
 	private void llenarTiposDevolucion(Combobox cmbPorcentajeDevolucion){
 		/*End Begin 28/10/2016 - jabanto*/
 //		Comboitem item = new Comboitem(Constantes.COMBO_LABEL_SELECCIONE);
@@ -1421,47 +1421,47 @@ public class WndDevolucionBoleto extends WndBase {
 //		item = new Comboitem(DEVOLUCION_80);
 //		item.setValue(80);
 //		cmbPorcentajeDevolucion.appendChild(item);
-		
-		
+
+
 		/*Todas las devoluciones son al 100% - 28/10/2016 - jabanto*/
 		Comboitem  item = new Comboitem(DEVOLUCION_100);
 		item.setValue(100);
 		cmbPorcentajeDevolucion.appendChild(item);
 		cmbPorcentajeDevolucion.setSelectedIndex(0);
 	}
-	
-	
+
+
 	private void limpiarControlsClienteFactura()throws Exception{
 		txtRuc.setText("");
-		txtRazonSocial.setText("");;
+		txtRazonSocial.setText("");
 		txtDireccion.setText("");
 	}
-	
+
 	private void limpiarControlsPago()throws Exception{
-		cmbTipoComprobante.setSelectedIndex(0);;
-		txtNuevoComprobante.setText("");;		
+		cmbTipoComprobante.setSelectedIndex(0);
+		txtNuevoComprobante.setText("");
 //		cmbTipoFormaPago.setSelectedIndex(0);
 //		cmbOperador.setSelectedIndex(0);
 //		Util.limpiarCombobox(cmbTarjetaCredito);
 		dblImportePagar.setValue(null);
 	}
-	
+
 	private void visibleControlsPago(boolean visible)throws Exception{
 		cmbTipoComprobante.setVisible(visible);
-		txtNuevoComprobante.setVisible(visible);		
+		txtNuevoComprobante.setVisible(visible);
 //		cmbTipoFormaPago.setVisible(visible);
 //		cmbOperador.setVisible(visible);
 //		cmbTarjetaCredito.setVisible(visible);
 		dblImportePagar.setVisible(visible);
 		lblCargosPlicados.setVisible(visible);
 		lblTipoComprobante.setVisible(visible);
-		lblNumeroComprobante.setVisible(visible);		
+		lblNumeroComprobante.setVisible(visible);
 //		lblFormaPago.setVisible(visible);
 //		lblOperaodor.setVisible(visible);
 //		lblTarjetaCredito.setVisible(visible);
 		lblImportePagar.setVisible(visible);
 	}
-	
+
 	private void visibleControlsClienteFactura(boolean visible)throws Exception{
 		rowRuc.setVisible(visible);
 		rowRazonSocial.setVisible(visible);

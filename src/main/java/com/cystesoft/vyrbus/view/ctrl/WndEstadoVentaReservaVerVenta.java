@@ -28,7 +28,7 @@ import com.cystesoft.vyrbus.view.ui.WndBase;
  */
 public class WndEstadoVentaReservaVerVenta extends WndBase {
 	private static final long serialVersionUID = 1L;
-	
+
 	/*INFORMACION DE LA VENTA*/
 	private Label lblTipoOperacion;
 	private Label lblCanalVenta;
@@ -98,20 +98,20 @@ public class WndEstadoVentaReservaVerVenta extends WndBase {
 	private Label lblCortesiaAgenciaEmision;
 	/*DOCUMENTO REFERENCIA (N.C.)*/
 	private Tab tbDoctReferencia;
-	private Label lblDocRefTipoDocumento;						
+	private Label lblDocRefTipoDocumento;
 	private Label lblDocRefNumerodo;
 	private Label lblDocRefFechaEmision;
 	private Label lblDocRefMotivo;
 	private Label lblDocRefAgenciaUsuario;
-	
+
 //	private Window wndEstadoVyRVerVenta;
 //	private Button btnEnviarSunat;
-	
+
 	/*OTAS VARIABLES*/
 	private VentaPasaje ventaPasaje;
-	
-	
-	
+
+
+
 	/**
 	 * @return the ventaPasaje
 	 */
@@ -125,7 +125,7 @@ public class WndEstadoVentaReservaVerVenta extends WndBase {
 	public void setVentaPasaje(VentaPasaje ventaPasaje) {
 		this.ventaPasaje = ventaPasaje;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
 	 */
@@ -201,7 +201,7 @@ public class WndEstadoVentaReservaVerVenta extends WndBase {
 		lblCortesiaAgenciaEmision=(Label)this.getFellow("lblCortesiaAgenciaEmision");
 		/*DOCUMENTO REFERENCIA (N.C)*/
 		tbDoctReferencia=(Tab)this.getFellow("tbDoctReferencia");
-		lblDocRefTipoDocumento=(Label)this.getFellow("lblDocRefTipoDocumento");						
+		lblDocRefTipoDocumento=(Label)this.getFellow("lblDocRefTipoDocumento");
 		lblDocRefNumerodo=(Label)this.getFellow("lblDocRefNumerodo");
 		lblDocRefFechaEmision=(Label)this.getFellow("lblDocRefFechaEmision");
 		lblDocRefMotivo=(Label)this.getFellow("lblDocRefMotivo");
@@ -209,7 +209,7 @@ public class WndEstadoVentaReservaVerVenta extends WndBase {
 //		wndEstadoVyRVerVenta=(Window)this.getFellow("wndEstadoVyRVerVenta");
 //		btnEnviarSunat=(Button)this.getFellow("btnEnviarSunat");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
@@ -228,7 +228,7 @@ public class WndEstadoVentaReservaVerVenta extends WndBase {
 				lblCanalVenta.setValue(ventaPasaje.getCanalVenta().getDenominacion()+" <===> "+"AGENCIA NO ENCONTRADA");
 		}else
 			lblCanalVenta.setValue(ventaPasaje.getCanalVenta().getDenominacion()+" <===> "+ventaPasaje.getAgencia().getDenominacion());
-		
+
 		lblServicio.setValue(ventaPasaje.getServicio()!=null?ventaPasaje.getServicio().getDenominacion():"");
 		lblOrigen.setValue(ventaPasaje.getRuta()!=null?ventaPasaje.getRuta().getOrigen():"");
 		lblDestino.setValue(ventaPasaje.getRuta()!=null?ventaPasaje.getRuta().getDestino():"");
@@ -296,21 +296,21 @@ public class WndEstadoVentaReservaVerVenta extends WndBase {
 			lblPagoImporteTarjeta.setVisible(true);
 			lblPagoImporteEfectivo.setValue(Util.toNumberFormat(ventaPasaje.getImportePagadoEfectivo(), 2));
 			lblPagoImporteTarjeta.setValue(Util.toNumberFormat(ventaPasaje.getImportePagadoTarjeta(), 2));
-		}		
+		}
 		lblPagoOperadorTarjeta.setValue(ventaPasaje.getTarjetaCredito()!=null? ventaPasaje.getTarjetaCredito().getOperadorTarjetaCredito().getDenominacion(): "");
 		lblPagoTarjetaCredito.setValue(ventaPasaje.getTarjetaCredito()!=null? ventaPasaje.getTarjetaCredito().getDenominacion():"");
 		lblPagoNumeroOperacion.setValue(ventaPasaje.getNumeroOperacionBancaria()!=null? ventaPasaje.getNumeroOperacionBancaria():"");
 		lblMoneda.setValue(ventaPasaje.getTipoMoneda()!=null ? ventaPasaje.getTipoMoneda().getDenominacion() : "SOLES");
-		
+
 		/*Si es que fue aplicada alguna promocion */
 		if(ventaPasaje.getPromocion()!=null){
 			Promocion promocion=ventaPasaje.getPromocion();
 			String tipoDescuento=promocion.getTipoDescuento().equals("P")?" %":" S/";
 			String descPromocion="PROMOCIÓN: "+promocion.getDenominacion()+" <=======> BENEFICIO : "+Util.toNumberFormat(Double.valueOf(promocion.getValorDescuento()),2)+tipoDescuento;
 			lblDescPromocion.setValue(descPromocion);
-			
+
 		}
-		
+
 		tbCortesia.setVisible(false);
 		/*CORTESIA*/
 		if(ventaPasaje.getFormaPago()!=null && ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA){
@@ -320,7 +320,7 @@ public class WndEstadoVentaReservaVerVenta extends WndBase {
 				//Busca el registro por la idVentaOriginal
 				VentaPasaje ventaOriginal=ServiceLocator.getVentaPasajesManager().buscarPorId(ventaPasaje.getVentaOriginal()!=null?ventaPasaje.getVentaOriginal():ventaPasaje.getId());
 				//Busca la cortesia emitida como fecha abierta
-				TreeMap<String, Object>criteriosBusqueda=new TreeMap<String, Object>();
+				TreeMap<String, Object>criteriosBusqueda=new TreeMap<>();
 				criteriosBusqueda.put("numeroControl", ventaOriginal.getNumeroControl());
 				criteriosBusqueda.put("tipoTransaccion", Constantes.TIPO_OPERACION_RESERVA);
 				List<VentaPasaje> lstVentaCortesia=ServiceLocator.getVentaPasajesManager().buscarPorX(criteriosBusqueda, null);
@@ -340,7 +340,7 @@ public class WndEstadoVentaReservaVerVenta extends WndBase {
 				}
 			}
 		}
-		
+
 		/*DOCUMENTO REFERENCIA*/
 		tbDoctReferencia.setVisible(false);
 		//Valida si es una Boleta o Factura
@@ -360,17 +360,17 @@ public class WndEstadoVentaReservaVerVenta extends WndBase {
 				lblDocRefAgenciaUsuario.setValue(notaCredito.getAgencia().toString() + " - " + notaCredito.getUsuario().toString() );
 				tbDoctReferencia.setLabel("Nota de Crédito");
 				tbDoctReferencia.setVisible(true);
-			}			
+			}
 		}else if(ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO){
 			//Si es una nota de credito
 			VentaPasaje ventaReferencial = ServiceLocator.getVentaPasajesManager().buscarPorId(ventaPasaje.getVentaPasaje().getId());
 			String tipoDocuemnto=ventaReferencial.getTipoComprobante().getDenominacion();
 			lblDocRefTipoDocumento.setValue(tipoDocuemnto);
 			lblDocRefNumerodo.setValue(ventaReferencial.getNumeroBoleto());
-			lblDocRefFechaEmision.setValue(Constantes.FORMAT_DATE.format(ventaReferencial.getFechaLiquidacion()));			
-			lblDocRefAgenciaUsuario.setValue(ventaReferencial.getAgencia().toString() + " - " +ventaReferencial.getUsuario().toString() );			
+			lblDocRefFechaEmision.setValue(Constantes.FORMAT_DATE.format(ventaReferencial.getFechaLiquidacion()));
+			lblDocRefAgenciaUsuario.setValue(ventaReferencial.getAgencia().toString() + " - " +ventaReferencial.getUsuario().toString() );
 			tbDoctReferencia.setLabel(tipoDocuemnto.substring(0,1)+""+tipoDocuemnto.substring(1).toLowerCase());
 			tbDoctReferencia.setVisible(true);
-		}		
+		}
 	}
 }

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 01/09/2016
  * Hora			: 18:20:06
@@ -75,9 +75,9 @@ public class PoolLocalidadDAOImpl extends GenericDAOImpl implements PoolLocalida
 	@Override
 	public void inactivar(Long id) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 
-	
+
 }

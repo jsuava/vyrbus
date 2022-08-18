@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 14/11/2012
  */
@@ -54,7 +54,7 @@ public interface TmpOcupacionAsientosManager {
 	 * @throws Exception
 	 */
 	public List<TmpOcupacionAsientos> buscarAsientosBloqueados(Long idItinerario) throws Exception;
-	
+
 	/**
 	 * Busca por estado registro
 	 * @param estado	: estado a consultar
@@ -62,7 +62,7 @@ public interface TmpOcupacionAsientosManager {
 	 * @return
 	 */
 	public ArrayList<TmpOcupacionAsientos> buscarPorEstadoRegistro(String estado);
-	
+
 	/**
 	 * Realiza el desbloqueo por usuario hardware y itinerario
 	 * @param idUsuarioHardware	: Identificador del usuario hardware
@@ -71,10 +71,10 @@ public interface TmpOcupacionAsientosManager {
 	 * @throws Exception
 	 */
 	public int desbloquearAsientoByUsuarioHardwareAndItinerario(Integer idUsuarioHardware, Long idItinerario) throws Exception;
-	
+
 	/***
 	 * realiza el desbloque del asiento por usuario hardware, itinerario y numero de asiento
-	 * @param idUsuarioHardware	: Identificador del usuario hardware.	
+	 * @param idUsuarioHardware	: Identificador del usuario hardware.
 	 * @param idItinerario		: Identificador del itinerario.
 	 * @param asiento			: Numero del asiento a desbloquear
 	 * @return

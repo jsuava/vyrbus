@@ -24,11 +24,11 @@ public class Manifiesto extends GenericBean implements java.io.Serializable {
 	private String tripulante;
 	private Integer mee;
 	private Agencia agencia;
-	
+
 	//Variables para la devolucion del ISC
 	private String ruc;
 	private String per4949;
-	private String periodo;	
+	private String periodo;
 	private String puntoPartidaDepartamento;
 	private String puntoPartidaDistrito;
 	private String puntoLlegadaDepartamento;
@@ -159,11 +159,11 @@ public class Manifiesto extends GenericBean implements java.io.Serializable {
 		this.puntoLlegadaDistrito = puntoLlegadaDistrito;
 	}
 
-	private Set<VentaPasaje> ventaPasajes = new HashSet<VentaPasaje>(0);
+	private Set<VentaPasaje> ventaPasajes = new HashSet<>(0);
 
 	public Manifiesto() {
 	}
-	
+
 	public Manifiesto(Long id) {
 		super();
 		this.id = id;
@@ -181,7 +181,7 @@ public class Manifiesto extends GenericBean implements java.io.Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	/**
 	 * @return Objeto itinerario.
 	 */
@@ -194,7 +194,7 @@ public class Manifiesto extends GenericBean implements java.io.Serializable {
 	public void setItinerario(Itinerario itinerario) {
 		this.itinerario = itinerario;
 	}
-	
+
 	/**
 	 * @return Objeto bus.
 	 */
@@ -207,7 +207,7 @@ public class Manifiesto extends GenericBean implements java.io.Serializable {
 	public void setBus(Bus bus) {
 		this.bus = bus;
 	}
-	
+
 	/**
 	 * @return Objeto numeroManifiesto.
 	 */
@@ -220,7 +220,7 @@ public class Manifiesto extends GenericBean implements java.io.Serializable {
 	public void setNumeroManifiesto(String numeroManifiesto) {
 		this.numeroManifiesto = numeroManifiesto;
 	}
-	
+
 	/**
 	 * @return Objeto codigoBus.
 	 */
@@ -233,7 +233,7 @@ public class Manifiesto extends GenericBean implements java.io.Serializable {
 	public void setCodigoBus(String codigoBus) {
 		this.codigoBus = codigoBus;
 	}
-	
+
 	/**
 	 * @return Objeto piloto.
 	 */
@@ -246,7 +246,7 @@ public class Manifiesto extends GenericBean implements java.io.Serializable {
 	public void setPiloto(String piloto) {
 		this.piloto = piloto;
 	}
-	
+
 	/**
 	 * @return Objeto copiloto.
 	 */
@@ -259,7 +259,7 @@ public class Manifiesto extends GenericBean implements java.io.Serializable {
 	public void setCopiloto(String copiloto) {
 		this.copiloto = copiloto;
 	}
-	
+
 	/**
 	 * @return Objeto certificadoHabilitacion.
 	 */
@@ -272,7 +272,7 @@ public class Manifiesto extends GenericBean implements java.io.Serializable {
 	public void setCertificadoHabilitacion(String certificadoHabilitacion) {
 		this.certificadoHabilitacion = certificadoHabilitacion;
 	}
-	
+
 	/**
 	 * @return Objeto placa.
 	 */
@@ -285,7 +285,7 @@ public class Manifiesto extends GenericBean implements java.io.Serializable {
 	public void setPlaca(String placa) {
 		this.placa = placa;
 	}
-	
+
 	public Set<VentaPasaje> getVentaPasajes() {
 		return this.ventaPasajes;
 	}
@@ -377,5 +377,5 @@ public class Manifiesto extends GenericBean implements java.io.Serializable {
 		this.importe2 = importe2;
 	}
 
-	
+
 }

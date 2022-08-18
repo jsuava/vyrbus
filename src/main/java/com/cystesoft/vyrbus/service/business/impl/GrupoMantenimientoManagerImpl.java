@@ -27,7 +27,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class GrupoMantenimientoManagerImpl implements GrupoMantenimientoManager {
 	private GrupoMantenimientoDAO grupoMantenimientoDAO;
-	
+
 	/**
 	 * @return the grupoMantenimientoDAO
 	 */
@@ -75,30 +75,30 @@ public class GrupoMantenimientoManagerImpl implements GrupoMantenimientoManager 
 	@Transactional
 	public void guardar(GrupoMantenimiento grupoMantenimiento) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", grupoMantenimiento.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getGrupoMantenimientoDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la denominación*/
 			if(resultDenominacion.size()>0)
 				throw new DenominacionDuplicadaException();
-			
+
 			criteriosBusqueda.remove("denominacion");
 			criteriosBusqueda.put("nombreCorto", grupoMantenimiento.getNombreCorto());
 			List<?> resultNombreCorto = getGrupoMantenimientoDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Nombre corto*/
 			if (resultNombreCorto.size()>0)
 				throw new NombreCortoDuplicadoException();
-			
+
 			criteriosBusqueda.remove("denominacion");criteriosBusqueda.remove("nombreCorto");
 			criteriosBusqueda.put("codigo", grupoMantenimiento.getCodigo());
 			List<?> resultCodigo = getGrupoMantenimientoDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Código*/
 			if (resultCodigo.size()>0)
 				throw new CodigoDuplicadoException();
-			
+
 			getGrupoMantenimientoDAO().guardar(grupoMantenimiento);
-			
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(NombreCortoDuplicadoException rdnex){
@@ -117,39 +117,39 @@ public class GrupoMantenimientoManagerImpl implements GrupoMantenimientoManager 
 	@Transactional
 	public void actualizar(GrupoMantenimiento grupoMantenimiento)throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", grupoMantenimiento.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getGrupoMantenimientoDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la denominación*/
-			for(int r = 0; r < resultDenominacion.size(); r ++) {
-				GrupoMantenimiento ogrupoMan = (GrupoMantenimiento) resultDenominacion.get(r);
+			for (Object element : resultDenominacion) {
+				GrupoMantenimiento ogrupoMan = (GrupoMantenimiento) element;
 				if (!(ogrupoMan.getId() == grupoMantenimiento.getId()))
 					throw new DenominacionDuplicadaException();
 			}
-			
+
 			criteriosBusqueda.remove("denominacion");
 			criteriosBusqueda.put("nombreCorto", grupoMantenimiento.getNombreCorto());
 			List<?> resultNombreCorto = getGrupoMantenimientoDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Nombre corto*/
-			for(int r = 0; r < resultNombreCorto.size(); r ++) {
-				GrupoMantenimiento ogrupoMan = (GrupoMantenimiento) resultNombreCorto.get(r);
+			for (Object element : resultNombreCorto) {
+				GrupoMantenimiento ogrupoMan = (GrupoMantenimiento) element;
 				if (!(ogrupoMan.getId() == grupoMantenimiento.getId()))
 					throw new NombreCortoDuplicadoException();
-			}	
-			
+			}
+
 			criteriosBusqueda.remove("denominacion");criteriosBusqueda.remove("nombreCorto");
 			criteriosBusqueda.put("codigo", grupoMantenimiento.getCodigo());
 			List<?> resultCodigo = getGrupoMantenimientoDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Código*/
-			for(int r = 0; r < resultCodigo.size(); r ++) {
-				GrupoMantenimiento ogrupoMan = (GrupoMantenimiento) resultCodigo.get(r);
+			for (Object element : resultCodigo) {
+				GrupoMantenimiento ogrupoMan = (GrupoMantenimiento) element;
 				if (!(ogrupoMan.getId() == grupoMantenimiento.getId()))
 					throw new CodigoDuplicadoException();
 			}
-		
+
 			getGrupoMantenimientoDAO().actualizar(grupoMantenimiento);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(NombreCortoDuplicadoException rdnex){

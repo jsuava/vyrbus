@@ -13,8 +13,8 @@ public class PrintBoleto implements Printable {
 	private static final String FORMATO = "dd/MM/yyyy";
 	/*	Para expresar el tiempo en milisegundos	*/
 	public static final long MILISEGUNDOS_X_DIA = 86400000;
-	
-	
+
+
 	public PrintBoleto(Boleto boleto) {
 		super();
 		this.boleto = boleto;
@@ -43,9 +43,9 @@ public class PrintBoleto implements Printable {
 			//Linea 3
 			g.drawString(boleto.getPasajero().toString(), 5, 32);
 			if(boleto.getFechaNacimiento()!=null){
-				Long edad = (new Date().getTime()-StringtoDate(boleto.getFechaNacimiento(), FORMATO).getTime())/(MILISEGUNDOS_X_DIA*365);
-				g.drawString(edad.toString(), 190, 32);
-				g.drawString(edad.toString(), 440, 32);
+				long edad = (new Date().getTime()-StringtoDate(boleto.getFechaNacimiento(), FORMATO).getTime())/(MILISEGUNDOS_X_DIA*365);
+				g.drawString(Long.toString(edad), 190, 32);
+				g.drawString(Long.toString(edad), 440, 32);
 			}
 			g.drawString(boleto.getPasajero().toString(), 335, 32);
 			//Linea 4
@@ -53,17 +53,17 @@ public class PrintBoleto implements Printable {
 			g.drawString(boleto.getNumeroDocumento(), 190, 42);
 			g.drawString(boleto.getOrigen(), 345, 42);
 			g.drawString(boleto.getDestino(), 410, 42);
-			
+
 			//Linea 5
 			g.drawString(boleto.getOrigen(), 5, 52);
 			g.drawString(boleto.getDestino(), 180, 52);
-			
+
 			//Linea 6
 			g.drawString(boleto.getFechaPartida(), 330, 62);
 			g.drawString(boleto.getHoraPartida(), 400, 62);
 			String asiento = "00"+boleto.getNumeroAsiento();
 			g.drawString(asiento.substring(asiento.length()-2), 440, 62);
-			
+
 			//Linea 7
 			g.drawString(boleto.getImportePagado(), 230, 72);
 			//Linea 8
@@ -76,7 +76,7 @@ public class PrintBoleto implements Printable {
 			return NO_SUCH_PAGE;
 		}
 	}
-	
+
 	/**
 	 * Convierte un String a Date de acuerdo a un formato
 	 * @param text		: Fecha en formatotexto a convertir

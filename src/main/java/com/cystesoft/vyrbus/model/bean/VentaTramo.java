@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 10/11/2014
  * Hora			: 14:21:54
@@ -109,7 +109,7 @@ public class VentaTramo extends GenericBean implements Serializable{
 	public void setFechaFin(Date fechaFin) {
 		this.fechaFin = fechaFin;
 	}
-	
-	
-	
+
+
+
 }

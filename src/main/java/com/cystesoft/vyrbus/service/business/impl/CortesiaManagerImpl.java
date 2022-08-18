@@ -12,17 +12,17 @@ import com.cystesoft.vyrbus.service.business.CortesiaManager;
 
 public class CortesiaManagerImpl implements CortesiaManager {
 	private CortesiaDAO cortesiaDAO;
-	
+
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	public CortesiaDAO getCortesiaDAO(){
 		return cortesiaDAO;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param corteciaDAO
 	 */
 	public void setCortesiaDAO (CortesiaDAO cortesiaDAO){

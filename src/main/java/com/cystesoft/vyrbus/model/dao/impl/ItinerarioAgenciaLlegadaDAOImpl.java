@@ -28,9 +28,9 @@ public class ItinerarioAgenciaLlegadaDAOImpl extends GenericDAOImpl implements I
 	@Override
 	public void delete(Long idItinerario, Integer idLocalidad) throws Exception {
 		String sql="DELETE FROM vrtitiagelle WHERE vrtitiagelle.itinerario_id=" + idItinerario+ " AND vrtitiagelle.localidad_id=" + idLocalidad;
-		
+
 		 getSession().createSQLQuery(sql).executeUpdate();
-		
+
 	}
 	@Override
 	public List<ItinerarioAgenciaLlegada> buscarAgenciasLlegada(Long idItinerario, String estado, String strLocalidad)throws Exception{
@@ -40,12 +40,12 @@ public class ItinerarioAgenciaLlegadaDAOImpl extends GenericDAOImpl implements I
 				"INNER JOIN vrmagencia a ON a.agencia_id=ial.agencia_id " +
 				"INNER JOIN vrmlocalidad l ON l.localidad_id=ial.localidad_id " +
 				"WHERE ial.itinerario_id="+idItinerario+" AND ial.c_estreg IN ('"+Constantes.VALUE_ACTIVO+"','"+estado+"') ";
-		
+
 		if(strLocalidad != null)
 			sql = sql + " AND ial.localidad_id IN("+strLocalidad+")";
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<ItinerarioAgenciaLlegada> lstResult = new ArrayList<ItinerarioAgenciaLlegada>();
+		List<ItinerarioAgenciaLlegada> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[])result.get(i);
 			ItinerarioAgenciaLlegada itAgeLlegada = new ItinerarioAgenciaLlegada();

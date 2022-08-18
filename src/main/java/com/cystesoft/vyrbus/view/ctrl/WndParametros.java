@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
- * Autor		: José 
+ * Descripción	:
+ * Autor		: José
  * Fecha		: 15/05/2013
  */
 package com.cystesoft.vyrbus.view.ctrl;
@@ -33,8 +33,8 @@ import com.cystesoft.vyrbus.view.ui.WndBase;
  */
 public class WndParametros extends WndBase {
 	private static final long serialVersionUID = 1L;
-	
-	
+
+
 	private Intbox itTiempoExpiraReserva;
 	private Intbox itTiempoAcumulaViajesParaPaxFree;
 	private Intbox itViajesRequeridosIngresarPaxFre;
@@ -54,14 +54,14 @@ public class WndParametros extends WndBase {
 	private Intbox itMaximoBloqueoasiento;
 	private Intbox itMaximoReservaAntesServicio;
 	private Intbox iCantidadViajesParaCortesia;
-	
+
 	private Listbox lbxUsuarioGerenciaComercialAprobador;
 	private Listbox lbxUsuarioComercialAprobador;
 	private Listbox lbxUsuarioFinazasAprobador;
 	private Listbox lbxUsuarioGerenciaComercial;
 
 	Parametros parametros=null;
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
 	 */
@@ -81,13 +81,13 @@ public class WndParametros extends WndBase {
 		itAlertaEnvioEspecieValorada=(Intbox)this.getFellow("itAlertaEnvioEspecieValorada");
 		itAlertaSolicitaManifiestoPax=(Intbox)this.getFellow("itAlertaSolicitaManifiestoPax");
 		itMaximoAsientosSeleccionados=(Intbox)this.getFellow("itMaximoAsientosSeleccionados");
-		
+
 		itMaximoDuplicidadComprobante=(Intbox)this.getFellow("itMaximoDuplicidadComprobante");
 		itMontoPenalidadCambioNombre=(Intbox)this.getFellow("itMontoPenalidadCambioNombre");
 		itMaximoBloqueoasiento=(Intbox)this.getFellow("itMaximoBloqueoasiento");
 		itMaximoReservaAntesServicio=(Intbox)this.getFellow("itMaximoReservaAntesServicio");
 		iCantidadViajesParaCortesia=(Intbox)this.getFellow("iCantidadViajesParaCortesia");
-		
+
 		lbxUsuarioGerenciaComercialAprobador=(Listbox)this.getFellow("lbxUsuarioGerenciaComercialAprobador");
 		lbxUsuarioComercialAprobador=(Listbox)this.getFellow("lbxUsuarioComercialAprobador");
 		lbxUsuarioFinazasAprobador=(Listbox)this.getFellow("lbxUsuarioFinazasAprobador");
@@ -100,7 +100,7 @@ public class WndParametros extends WndBase {
 	public void onCreate() throws Exception {
 		parametros= ServiceLocator.getParametrosManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO);
 //		parametros=(Parametros) getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_PARAMETROS);
-						
+
 		itTiempoExpiraReserva.setValue(parametros.getTiempoExpiraReserva());
 		itTiempoAcumulaViajesParaPaxFree.setValue(parametros.getTiempoProgramaPasajeroFrecuente());
 		itViajesRequeridosIngresarPaxFre.setValue(parametros.getViajesRequeridosPasajeroFrecuente());
@@ -115,27 +115,27 @@ public class WndParametros extends WndBase {
 		itAlertaEnvioEspecieValorada.setValue(parametros.getAlertarEnvioEspecieValorda());
 		itAlertaSolicitaManifiestoPax.setValue(parametros.getAlertarEnvioManifiestoPasajeros());
 		itMaximoAsientosSeleccionados.setValue(parametros.getMaximoAsientosSeleccionados());
-		
+
 		itMaximoDuplicidadComprobante.setValue(parametros.getTiempoMaximoDuplicarBoleto());
 		itMontoPenalidadCambioNombre.setValue(parametros.getPenalidadCambioNombre());
 		itMaximoBloqueoasiento.setValue(parametros.getTiempoExpiraBloqueo());
 		itMaximoReservaAntesServicio.setValue(parametros.getTiempoMaximoPermiteReserva());
 		iCantidadViajesParaCortesia.setValue(parametros.getViajesAcumuladosPasajero());
-		
+
 //		/*carga usuarios aprobadores*/
 //		cargarListaUsuarios(lbxUsuarioGerenciaComercialAprobador);//Generancia Comercial Aprobador (Genencia comercial)
 //		cargarListaUsuarios(lbxUsuarioComercialAprobador);//Asigancion de cartera (Jefe de Ventas)
 //		cargarListaUsuarios(lbxUsuarioFinazasAprobador);//Aprobacion de Credito
 //		cargarListaUsuarios(lbxUsuarioGerenciaComercial);//Usuario Genencia Comercial
-//		
+//
 //		/*Realiza el select de los usuarios aprobadores*/
 //		selectItemsUsuarios(lbxUsuarioGerenciaComercialAprobador, parametros.getUsuarioGerenciaComercialAprobador());
 //		selectItemsUsuarios(lbxUsuarioComercialAprobador, parametros.getUsuarioComercialAprobador());
 //		selectItemsUsuarios(lbxUsuarioFinazasAprobador, parametros.getUsuarioFinanzasAprobador());
 //		selectItemsUsuarios(lbxUsuarioGerenciaComercial, parametros.getUsuarioGerenciaComercial());
 	}
-	
-	
+
+
 	public void GuardarParametros()throws Exception{
 		try{
 			if(itTiempoExpiraReserva.getText().trim().isEmpty())
@@ -166,13 +166,13 @@ public class WndParametros extends WndBase {
 				throw new ParametrosException(ParametrosException.ALERTA_SOLICITA_MANIFIESTOPAX_NULL);
 			else if(itMaximoAsientosSeleccionados.getText().trim().isEmpty())
 				throw new ParametrosException(ParametrosException.MAXIMO_ASIENTOS_SELECCIONADOS_NULL);
-			
+
 			/*Usuario Gerencia Comercial Aprobador*/
 			final String iDsUsuarioGerenciaComercialAprobador=getIDsUsuario(lbxUsuarioGerenciaComercialAprobador);
 			final String iDsUsuarioComercialAprobador=getIDsUsuario(lbxUsuarioComercialAprobador);
 			final String iDsUsuarioFinanzasAprobador=getIDsUsuario(lbxUsuarioFinazasAprobador);
 			final String iDsUsuarioGerenciaComercial=getIDsUsuario(lbxUsuarioGerenciaComercial);
-			
+
 //			if(iDsUsuarioGerenciaComercialAprobador.length()==0)
 //				throw new ParametrosException(ParametrosException.USUARIO_GENECIA_APROBADOR_NULL);
 //			else if (iDsUsuarioComercialAprobador.length()==0)
@@ -181,7 +181,7 @@ public class WndParametros extends WndBase {
 //				throw new ParametrosException(ParametrosException.USUARIO_FINANZAS_APROBADOR_NULL);
 //			else if (iDsUsuarioGerenciaComercial.length()==0)
 //				throw new ParametrosException(ParametrosException.USUARIO_GENRENCIA_COMERCIAL_NULL);
-				
+
 			Messagebox.show(Messages.getString("wndParametros.question.confirmaUpdate"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e) throws Exception {
@@ -190,7 +190,7 @@ public class WndParametros extends WndBase {
 						parametros.setEstadoRegistro(Constantes.VALUE_INACTIVO);
 						UtilData.auditarRegistro(parametros, true, getUsuario(), Executions.getCurrent());
 						ServiceLocator.getParametrosManager().actualizar(parametros);
-						
+
 						/*Inserta un nuevo registro*/
 						parametros= new Parametros();
 						parametros.setTiempoExpiraReserva(itTiempoExpiraReserva.getValue());
@@ -215,14 +215,14 @@ public class WndParametros extends WndBase {
 						UtilData.auditarRegistro(parametros, getUsuario(), Executions.getCurrent());
 						ServiceLocator.getParametrosManager().guardar(parametros);
 						parametros.setFechaInsercion(Constantes.FORMAT_DATE_TIME_24H.parse(new MyTime().dateServer()));
-					
+
 						/*actualiza el atributo PARAMETROS*/
 //						getDesktop().getSession().removeAttribute(Constantes.ATRIBUTO_PARAMETROS);
 //						getDesktop().getSession().setAttribute(Constantes.ATRIBUTO_PARAMETROS, parametros);
 					}
 				}
 			});
-			
+
 		}catch (ParametrosException p){
 			if(p.getTipo().intValue()==ParametrosException.TIEMPO_EXPIRA_RESERVA_NULL){
 				DlgMessage.information(Messages.getString("wndParametros.information.noTiempoExpiraReserva"),itTiempoExpiraReserva);
@@ -266,17 +266,17 @@ public class WndParametros extends WndBase {
 			e.printStackTrace();
 		}
 	}
-	
+
 //	/**
 //	 * selecciona los items de las listas de los usuarios aprobadores.
-//	 * @param listbox		: listbox donde se ara el select.	
+//	 * @param listbox		: listbox donde se ara el select.
 //	 * @param iDsUsuario	: ids de los usuarios aprobadores
 //	 */
 //	private void selectItemsUsuarios(Listbox listbox, String iDsUsuario){
 //		/*Selecciona usuarios Gerencia Comercial Aprobador*/
 //		String[] lstUGC = iDsUsuario.split(",");
 //		String iDugc="";
-//		
+//
 //		for(int i=0;i<lstUGC.length;i++){
 //			iDugc=lstUGC[i].toString();
 //			int x=-1;
@@ -288,7 +288,7 @@ public class WndParametros extends WndBase {
 //			}
 //		}
 //	}
-	
+
 	/**
 	 * Optiene los IDs del usuarios, según el parametro indicado
 	 * @param listbox	: Listbox del cual se optienen los IDs del usuario.
@@ -305,18 +305,18 @@ public class WndParametros extends WndBase {
 		}
 		return iDsUsuario;
 	}
-	
-	
+
+
 //	/**
 //	 * Cargar listboxs con los usuarios
 //	 * @param listbox
 //	 */
 //	private void cargarListaUsuarios(Listbox listbox){
 //		ArrayList<UsuarioAprobador> lstUsuarioAprobador = ServiceLocator.getUsuarioAprobadorManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO,null);
-//		
+//
 //		Listitem item= null;
 //		Listcell cell= null;
-//		
+//
 //		for (UsuarioAprobador usuarioAprobador: lstUsuarioAprobador) {
 //			Usuario  usuario= usuarioAprobador.getUsuario();
 //			if(usuario.getApellidoMaterno()==null)
@@ -324,11 +324,11 @@ public class WndParametros extends WndBase {
 //			item= new Listitem();
 //			cell=new Listcell(usuario.getApellidoPaterno()+" "+usuario.getApellidoMaterno()+", "+ usuario.getNombre());
 //			item.appendChild(cell);
-//			
+//
 //			item.setValue(usuarioAprobador);
 //			listbox.appendChild(item);
 //		}
 //	}
-	
-	
+
+
 }

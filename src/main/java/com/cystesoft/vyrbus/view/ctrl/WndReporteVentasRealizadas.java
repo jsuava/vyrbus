@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 14/10/2013
  */
@@ -17,7 +17,7 @@ import com.cystesoft.vyrbus.view.ui.WndBase;
  */
 public class WndReporteVentasRealizadas extends WndBase {
 	private static final long serialVersionUID = 1L;
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
@@ -25,7 +25,7 @@ public class WndReporteVentasRealizadas extends WndBase {
 	public void onCreate() throws Exception {
         Executions.sendRedirect("/servlet/DetalladoVentasServlet");
 	}
-	
+
 	public void onLoad() throws Exception{
 	}
 }

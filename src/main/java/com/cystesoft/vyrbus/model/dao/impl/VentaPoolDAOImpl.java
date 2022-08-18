@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 08/09/2016
  * Hora			: 14:28:03
@@ -39,7 +39,7 @@ public class VentaPoolDAOImpl extends GenericDAOImpl implements VentaPoolDAO {
 
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPoolDAO#buscarPorX(java.util.TreeMap, java.util.List)
-	 */	
+	 */
 	@Override
 	public ArrayList<VentaPool> buscarPorX(TreeMap<String, Object> criteriosBusqueda,List<String> criteriosOrdenar) {
 		// TODO Auto-generated method stub
@@ -79,10 +79,10 @@ public class VentaPoolDAOImpl extends GenericDAOImpl implements VentaPoolDAO {
 	@Override
 	public void inactivar(Long id) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPoolDAO#buscarUsuarioPorAgencia(java.lang.Integer, java.lang.String, java.lang.String)
 	 */
@@ -92,10 +92,10 @@ public class VentaPoolDAOImpl extends GenericDAOImpl implements VentaPoolDAO {
 				"FROM VentaPool vp JOIN vp.usuario u WHERE vp.agencia.id="+idAgencia+" AND " +
 					"vp.fechaLiquidacion BETWEEN to_date('"+fechaInicio+"', 'dd/mm/yyyy') AND to_date('"+fechaFin+"', 'dd/mm/yyyy') " +
 				"ORDER BY u.apellidoPaterno, u.apellidoMaterno, u.nombre";
-		
+
 		log.info(hql);
 		List<?> result = getSession().createQuery(hql).list();
-		List<Usuario> lstResult = new ArrayList<Usuario>();
+		List<Usuario> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[])result.get(i);
 			Usuario usuario = new Usuario();
@@ -126,7 +126,7 @@ public class VentaPoolDAOImpl extends GenericDAOImpl implements VentaPoolDAO {
 			     + "ORDER BY  vp.c_numboltepsa";
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<VentaPool> lstResult = new ArrayList<VentaPool>();
+		List<VentaPool> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[])result.get(i);
 			VentaPool ventaPool=new VentaPool();
@@ -154,8 +154,8 @@ public class VentaPoolDAOImpl extends GenericDAOImpl implements VentaPoolDAO {
 			}
 			lstResult.add(ventaPool);
 		}
-		
-		return lstResult; 
+
+		return lstResult;
 	}
 
 }

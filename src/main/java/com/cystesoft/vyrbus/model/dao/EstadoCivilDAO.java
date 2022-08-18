@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 04/05/2012
  */
@@ -21,7 +21,7 @@ import com.cystesoft.vyrbus.model.bean.EstadoCivil;
 public interface EstadoCivilDAO extends GenericDAO {
 	public ArrayList<EstadoCivil> buscarPorEstadoRegistro(String estado, String criterioOrden);
 	public ArrayList<EstadoCivil> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
-	
+
 	public EstadoCivil buscarPorId(Long id);
 	public void guardar(EstadoCivil estadoCivil);
 	public void actualizar(EstadoCivil estadoCivil);

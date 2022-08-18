@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -24,8 +24,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "setHojaRutaResult" })
@@ -36,9 +36,9 @@ public class SetHojaRutaResponse {
 
 	/**
 	 * Gets the value of the setHojaRutaResult property.
-	 * 
+	 *
 	 * @return possible object is {@link ResultHojaRuta }
-	 * 
+	 *
 	 */
 	public ResultHojaRuta getSetHojaRutaResult() {
 		return setHojaRutaResult;
@@ -46,10 +46,10 @@ public class SetHojaRutaResponse {
 
 	/**
 	 * Sets the value of the setHojaRutaResult property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link ResultHojaRuta }
-	 * 
+	 *
 	 */
 	public void setSetHojaRutaResult(ResultHojaRuta value) {
 		this.setHojaRutaResult = value;

@@ -3,6 +3,7 @@ package cruzdelsur.ws.com.pe;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Logger;
+
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 import javax.xml.ws.WebEndpoint;
@@ -13,15 +14,15 @@ import javax.xml.ws.WebServiceClient;
  * Generated source version: 2.0
  * <p>
  * An example of how this class may be used:
- * 
+ *
  * <pre>
  * Servicecruzdelsur service = new Servicecruzdelsur();
  * IServicecruzdelsur portType = service.getBasicHttpBindingIServicecruzdelsur();
  * portType.obtenerHorarios(...);
  * </pre>
- * 
+ *
  * </p>
- * 
+ *
  */
 @WebServiceClient(name = "Servicecruzdelsur", targetNamespace = "http://tempuri.org/", wsdlLocation = "http://192.168.200.80:8080/Servicecruzdelsur.svc?wsdl")
 public class Servicecruzdelsur extends Service {
@@ -55,7 +56,7 @@ public class Servicecruzdelsur extends Service {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return returns IServicecruzdelsur
 	 */
 	@WebEndpoint(name = "BasicHttpBinding_IServicecruzdelsur")

@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -24,8 +24,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "oFinalizar" })
@@ -36,9 +36,9 @@ public class SetFinalizar2 {
 
 	/**
 	 * Gets the value of the oFinalizar property.
-	 * 
+	 *
 	 * @return possible object is {@link Finalizar2 }
-	 * 
+	 *
 	 */
 	public Finalizar2 getOFinalizar() {
 		return oFinalizar;
@@ -46,10 +46,10 @@ public class SetFinalizar2 {
 
 	/**
 	 * Sets the value of the oFinalizar property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Finalizar2 }
-	 * 
+	 *
 	 */
 	public void setOFinalizar(Finalizar2 value) {
 		this.oFinalizar = value;

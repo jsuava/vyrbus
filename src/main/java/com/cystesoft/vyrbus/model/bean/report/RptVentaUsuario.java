@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 16/06/2015
  * Hora			: 12:37:49
@@ -17,7 +17,7 @@ import java.io.Serializable;
 public class RptVentaUsuario implements Serializable{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Integer horaVenta;
@@ -59,7 +59,7 @@ public class RptVentaUsuario implements Serializable{
 	public void setImporte(Double importe) {
 		this.importe = importe;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see java.lang.Object#toString()

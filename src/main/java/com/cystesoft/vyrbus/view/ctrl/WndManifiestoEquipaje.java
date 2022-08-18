@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 21 jul. 2021
  * Hora			: 10:52:07
@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
@@ -46,10 +45,10 @@ import com.cystesoft.vyrbus.view.ui.WndSeleccionaItinerario;
 public class WndManifiestoEquipaje extends WndBase implements Serializable{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 //	private Window wndManifiestoEquipaje;
 	private Textbox txtItinerario;
 	private Button btnBuscarItinerario;
@@ -68,12 +67,12 @@ public class WndManifiestoEquipaje extends WndBase implements Serializable{
 	private Label lbcopiloto;
 	private Label lbCopilotoAux;
 	private Listbox ltbxManifiestoEquipajes;
-	
-	
+
+
 	private Itinerario itinerario;
 	private List<DetalleEquipaje>resultDetalleEquipaje;
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.view.ui.WndBase#onCreate()
 	 */
@@ -81,10 +80,10 @@ public class WndManifiestoEquipaje extends WndBase implements Serializable{
 	public void onCreate() throws Exception {
 		// TODO Auto-generated method stub
 		super.onCreate();
-		
+
 		enlazarItinerario(btnBuscarItinerario);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.view.ui.WndBase#initComponents()
 	 */
@@ -92,7 +91,7 @@ public class WndManifiestoEquipaje extends WndBase implements Serializable{
 	public void initComponents() {
 		// TODO Auto-generated method stub
 		super.initComponents();
-		
+
 //		wndManifiestoEquipaje = (Window)this.getFellow("wndManifiestoEquipaje");
 		txtItinerario = (Textbox)this.getFellow("txtItinerario");
 		btnBuscarItinerario = (Button)this.getFellow("btnBuscarItinerario");
@@ -111,7 +110,7 @@ public class WndManifiestoEquipaje extends WndBase implements Serializable{
 		lbcopiloto = (Label)this.getFellow("lbcopiloto");
 		lbCopilotoAux = (Label)this.getFellow("lbCopilotoAux");
 		ltbxManifiestoEquipajes = (Listbox)this.getFellow("ltbxManifiestoEquipajes");
-		
+
 		cmbPuntocontrol.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -141,26 +140,26 @@ public class WndManifiestoEquipaje extends WndBase implements Serializable{
 			}
 		});
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	private void change_cmbPuntoControl()throws Exception{
 		if(!(txtItinerario.getText().trim().isEmpty())) {
 			Long idItinerario = Long.valueOf(txtItinerario.getText());
 			Integer agencia_idpuntoControl = ((Agencia)cmbPuntocontrol.getSelectedItem().getValue()).getId();
-			
-			resultDetalleEquipaje=ServiceLocator.getDetalleEquipajeManager().buscarManifiestoEquipaje(idItinerario, agencia_idpuntoControl);	
-			cargarDetalleManifiesto(resultDetalleEquipaje);	
-		}		
+
+			resultDetalleEquipaje=ServiceLocator.getDetalleEquipajeManager().buscarManifiestoEquipaje(idItinerario, agencia_idpuntoControl);
+			cargarDetalleManifiesto(resultDetalleEquipaje);
+		}
 	}
-	
+
 	/**
 	 * Permite enlazar los controles a la ventana de selecciï¿½n de Itinerario
 	 * @param textboxItinerario :en este Textbox se devolvera el Id del itinerario seleccionado.
 	 * @param button :ha este Button se le adjuntara un listener con la llamada a la ventana de selecciï¿½n de itinerario
-	 * @see WndItinerario: 
+	 * @see WndItinerario:
 	 */
 	public  void enlazarItinerario(final Button button) {
 		button.setTooltiptext("Seleccionar Itinerario");
@@ -181,19 +180,19 @@ public class WndManifiestoEquipaje extends WndBase implements Serializable{
 				oWndSeleccionaItinerario.onCreate();
 				oWndSeleccionaItinerario.setMode("modal");
 				oWndSeleccionaItinerario.setVisible(true);
-				
-				
+
+
 				oWndSeleccionaItinerario.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
 					@Override
 					public void onEvent(Event event) throws Exception {
 //						Itinerario itinerario = ServiceLocator.getItinerarioManager().buscarPorId(oWndSeleccionaItinerario.getIdItinerario());
 						/*lista de puntos de control*/
 						cargaPuntoControl(oWndSeleccionaItinerario.getIdItinerario());
-						
+
 						cmbImprimir.getItems().clear();
 						cmbImprimir.appendChild(new Comboitem("MANIFIESTO EQUIPAJES"));
 						cmbImprimir.setSelectedIndex(0);
-						
+
 						/*Selecciona el origen en el punto de control*/
 						Util.seleccionarValorItemCombo(Agencia.class, cmbPuntocontrol, getAgencia().getId());
 						if(cmbPuntocontrol.getSelectedIndex()<0){
@@ -206,7 +205,7 @@ public class WndManifiestoEquipaje extends WndBase implements Serializable{
 			}
 		});
 	}
-	
+
 	/**
 	 * Carga datos del itinerario.
 	 * @param idItinerario	: identificador del itinerario.
@@ -225,10 +224,10 @@ public class WndManifiestoEquipaje extends WndBase implements Serializable{
 		lbPiloto.setValue("");
 		lbcopiloto.setValue("");
 		lbCopilotoAux.setValue("");
-		
+
 		itinerario =  new Itinerario();
 		itinerario = ServiceLocator.getManifiestoManager().consultaItinerario(idItinerario, tramoOrigen, tramoDestino);
-		
+
 		txtItinerario.setText(idItinerario.toString());
 		lbRuta.setValue(itinerario.getRuta().toString());
 		/*Valida si el itinerario esta o no asiciado a un bus*/
@@ -244,16 +243,16 @@ public class WndManifiestoEquipaje extends WndBase implements Serializable{
 		lbFechaSalida.setValue(Constantes.FORMAT_DATE.format(itinerario.getFechaPartida())+" "+itinerario.getHoraPartida());
 		lbFechaLlegada.setValue(Constantes.FORMAT_DATE.format( itinerario.getFechaLlegada())+" "+itinerario.getHoraLlegada());
 		lbServicio.setValue(itinerario.getServicio().getDenominacion());
-		
+
 		if(cmbPuntocontrol.getSelectedIndex()>=0) {
 			Integer agencia_idpuntoControl = ((Agencia)cmbPuntocontrol.getSelectedItem().getValue()).getId();
-			resultDetalleEquipaje=ServiceLocator.getDetalleEquipajeManager().buscarManifiestoEquipaje(idItinerario, agencia_idpuntoControl);	
+			resultDetalleEquipaje=ServiceLocator.getDetalleEquipajeManager().buscarManifiestoEquipaje(idItinerario, agencia_idpuntoControl);
 			cargarDetalleManifiesto(resultDetalleEquipaje);
-		}		
+		}
 	}
-	
+
 	/**
-	 *Carga el detalle del manifiesto de equipajes 
+	 *Carga el detalle del manifiesto de equipajes
 	 * @param listDetalleEquipaje
 	 * @throws Exception
 	 */
@@ -272,14 +271,14 @@ public class WndManifiestoEquipaje extends WndBase implements Serializable{
 			item.appendChild(cell);
 			cell = new Listcell(detalleEquipaje.getTicket());
 			cell.setStyle("font-size:11px");
-			item.appendChild(cell);			
-			
+			item.appendChild(cell);
+
 			item.setValue(detalleEquipaje);
 			ltbxManifiestoEquipajes.appendChild(item);
 		}
 	}
-	
-	
+
+
 	/**
 	 * carga puntos de Control, segï¿½n el itinerario
 	 * @param idItinerario : identificador del itinerario.
@@ -288,26 +287,25 @@ public class WndManifiestoEquipaje extends WndBase implements Serializable{
 	private void cargaPuntoControl(Long idItinerario) throws Exception{
 		ArrayList<Agencia> lsta= (ArrayList<Agencia>) ServiceLocator.getManifiestoManager().consultaPtoControl(idItinerario);
 		cmbPuntocontrol.getItems().clear();
-		for (int l = 0; l < lsta.size(); l ++) {
-			Agencia agencia= lsta.get(l);
+		for (Agencia agencia : lsta) {
 			Comboitem oComboitem = new Comboitem();
 			oComboitem.setLabel(agencia.getNombreCorto());
 			oComboitem.setValue(agencia);
 			cmbPuntocontrol.appendChild(oComboitem);
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param isPrevio
 	 * @throws Exception
 	 */
-	private void printManifiestoEquipaje(boolean isPrevio)throws Exception {		
+	private void printManifiestoEquipaje(boolean isPrevio)throws Exception {
 		if(resultDetalleEquipaje!=null && resultDetalleEquipaje.size()>0) {
 			String numeroManifiesto = (Util.autocompleNumberBoleto("000-"+resultDetalleEquipaje.get(0).getEquipaje().getId().toString())).split("-")[1];
-			File file = CreateDocument.creaManifiesto_Equipajes(resultDetalleEquipaje, itinerario);			
+			File file = CreateDocument.creaManifiesto_Equipajes(resultDetalleEquipaje, itinerario);
 			String src = Constantes.URL_FORMATOS_MANIFIESTOS+Constantes.CLAVE_PAHT+"MANIFIESTO_EQUIPAJE_"+ numeroManifiesto	+".txt";
-			
+
 			if(isPrevio) {
 				final WndIFrame iFrame = new WndIFrame();
 				iFrame.oThisWindow.setTitle("MANIFIESTO DE EQUIPAJES");
@@ -323,7 +321,7 @@ public class WndManifiestoEquipaje extends WndBase implements Serializable{
 				Util.descargarArchivo(file);
 		}
 	}
-	
-	
-	
+
+
+
 }

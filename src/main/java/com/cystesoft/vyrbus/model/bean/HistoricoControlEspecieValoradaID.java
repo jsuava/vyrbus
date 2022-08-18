@@ -11,7 +11,7 @@ public class HistoricoControlEspecieValoradaID implements java.io.Serializable {
 	private Integer idUsuarioHardware;
 
 	public HistoricoControlEspecieValoradaID() {
-	}	
+	}
 	/**
 	 * @param idTipoComprobante
 	 * @param idUsuarioHardware
@@ -33,7 +33,7 @@ public class HistoricoControlEspecieValoradaID implements java.io.Serializable {
 	public void setIdTipoComprobante(Integer idTipoComprobante) {
 		this.idTipoComprobante = idTipoComprobante;
 	}
-	
+
 	/**
 	 * @return Objeto idUsuarioHardware.
 	 */

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 01/09/2016
  * Hora			: 18:25:05
@@ -40,7 +40,7 @@ public class PoolLocalidadManagerImpl implements PoolLocalidadManager{
 	public void setPoolLocalidadDAO(PoolLocalidadDAO poolLocalidadDAO) {
 		this.poolLocalidadDAO = poolLocalidadDAO;
 	}
-	
+
 
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.LocalidadIntegracionManager#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
@@ -95,7 +95,7 @@ public class PoolLocalidadManagerImpl implements PoolLocalidadManager{
 	@Override
 	public void inactivar(Long id) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -103,15 +103,15 @@ public class PoolLocalidadManagerImpl implements PoolLocalidadManager{
 	 */
 	@Override
 	public List<PoolLocalidad> buscarByLocalidadID(Integer localidadIDTepsa) {
-		TreeMap<String, Object> criteriosBusqueda= new TreeMap<>(); 
+		TreeMap<String, Object> criteriosBusqueda= new TreeMap<>();
 		criteriosBusqueda.put("localidadDestino", new Localidad(localidadIDTepsa));
 		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-		
+
 		List<PoolLocalidad> result= buscarPorX(criteriosBusqueda, null);
-		
+
 		return result;
 	}
 
-	
+
 
 }

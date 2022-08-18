@@ -11,12 +11,12 @@ import com.cystesoft.vyrbus.service.mappers.ResumenComprobante;
 import com.cystesoft.vyrbus.view.tuentrada.LiquidacionTuentrada;
 
 /**
- * 
+ *
  * @author José Abanto
  *
  */
 public interface LiquidacionDAO extends GenericDAO {
-	
+
 	/**
 	 * Busca por el idenficador de la entidad
 	 * @param id	: Identificador de la entidad
@@ -24,28 +24,28 @@ public interface LiquidacionDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public Liquidacion buscarPorId(Long id)throws Exception;
-	
+
 	/**
 	 * Apertura Liquidacion
 	 * @param liquidacion
 	 */
 	public void aperturarLiquidacion(Liquidacion liquidacion);
-	
+
 	/**
-	 * 
+	 *
 	 * @param criteriosBusqueda
 	 * @param criteriosOrdenar
 	 * @return
 	 */
 	public ArrayList<Liquidacion> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
-	
-	
+
+
 	/**
 	 * Busca Lquidacion
-	 * @param fechaInicial	: Fecha inicial de la busqueda 
+	 * @param fechaInicial	: Fecha inicial de la busqueda
 	 * @param FechaFinal	: Fecha final de la busqueda
 	 * @param idAgencia		: identificador de la agencia
-	 * @param idUsuario		: identificador del usuario	
+	 * @param idUsuario		: identificador del usuario
 	 * @param estadoLiquidacion
 	 * @return
 	 * @throws Exception
@@ -66,7 +66,7 @@ public interface LiquidacionDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public void actualizar(Liquidacion liquidacion)throws Exception;
-	
+
 	/**
 	 * Busca las especies valoradas utilizadas en las ventas
 	 * @param fechaLiquidacion: fecha de la liquidacion
@@ -75,7 +75,7 @@ public interface LiquidacionDAO extends GenericDAO {
 	 * @return
 	 */
 	public List<Liquidacion> BuscarEspeciesValoradas(String fechaLiquidacion, Integer idAgencia, Integer idUsuario);
-	
+
 	/**
 	 * Utilizado para la recuperacion de datos para generar el reporte/imprecion de la liquidacion de turno.
 	 * @param fecha		: fecha de la liquidacion.
@@ -99,7 +99,7 @@ public interface LiquidacionDAO extends GenericDAO {
 	 * @param idUsuario			: Identificador del usuario propietario de la liquidacion
 	 * @return
 	 */
-	public Map<String, ResumenComprobante> buscarResumenComprobantes(String fechaLiquidacion, Integer idAgencia, Integer idUsuario);	
+	public Map<String, ResumenComprobante> buscarResumenComprobantes(String fechaLiquidacion, Integer idAgencia, Integer idUsuario);
 //	/**
 //	 * Reapertura una liquidación
 //	 * @param idliquidacion	: Identificador de la liquidacion.

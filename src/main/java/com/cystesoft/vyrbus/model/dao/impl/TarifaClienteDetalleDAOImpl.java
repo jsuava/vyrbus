@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 07/07/2016
  * Hora			: 11:21:48
@@ -96,7 +96,7 @@ public class TarifaClienteDetalleDAOImpl extends GenericDAOImpl implements Tarif
 		return null;
 	}
 
-	
+
 	private List<TarifaClienteDetalle> buscarTarifa(Long clienteID,Integer rutaID, Integer servicioID, String fechaPartida,Integer asiento){
 		String sql="SELECT tcd.tarcli_id, tcd.tarclidet_id, tcd.n_asiini, tcd.n_asifin, tcd.tipasi_id, tcd.n_tarifa "
 				 + "FROM VRTTARCLIDET tcd "
@@ -110,7 +110,7 @@ public class TarifaClienteDetalleDAOImpl extends GenericDAOImpl implements Tarif
 		if(asiento!=null)
 			sql+="AND "+asiento+" BETWEEN tcd.n_asiini AND tcd.n_asifin ";
 		sql += "ORDER BY tcd.tarclidet_id ";
-		
+
 		log.info(sql);
 		List<?>result =getSession().createSQLQuery(sql).list();
 		List<TarifaClienteDetalle> lstTarifaDetalle=new ArrayList<>();
@@ -118,7 +118,7 @@ public class TarifaClienteDetalleDAOImpl extends GenericDAOImpl implements Tarif
 			Object[] obj = (Object[]) result.get(i);
 			TarifaCliente tarifaCliente=new TarifaCliente();
 			tarifaCliente.setId(((BigDecimal)obj[0]).intValue());
-			
+
 			TarifaClienteDetalle tarifaClienteDetalle=new TarifaClienteDetalle();
 			tarifaClienteDetalle.setTarifaCliente(tarifaCliente);
 			tarifaClienteDetalle.setId(((BigDecimal)obj[1]).intValue());
@@ -126,12 +126,12 @@ public class TarifaClienteDetalleDAOImpl extends GenericDAOImpl implements Tarif
 			tarifaClienteDetalle.setAsientoFin(((BigDecimal)obj[3]).intValue());
 			tarifaClienteDetalle.setTipoAsiento(new  TipoAsiento(((BigDecimal)obj[4]).intValue()));
 			tarifaClienteDetalle.setTarifa(((BigDecimal)obj[5]).doubleValue());
-			
+
 			lstTarifaDetalle.add(tarifaClienteDetalle);
 		}
-		
+
 		return lstTarifaDetalle;
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -155,7 +155,7 @@ public class TarifaClienteDetalleDAOImpl extends GenericDAOImpl implements Tarif
 		List<TarifaClienteDetalle> lstTarifadetalle=new ArrayList<>();
 		for(int x=0;x<result.size();x++){
 			Object[] obj= (Object[]) result.get(x);
-				
+
 			Ruta ruta=new Ruta();
 			ruta.setOrigen(obj[2].toString());
 			ruta.setDestino(obj[3].toString());
@@ -163,14 +163,14 @@ public class TarifaClienteDetalleDAOImpl extends GenericDAOImpl implements Tarif
 			servicio.setDenominacion(obj[4].toString());
 			TipoAsiento tipoAsiento=new TipoAsiento();
 			tipoAsiento.setDenominacion(obj[9].toString());
-			
+
 			TarifaCliente tarifaCliente=new TarifaCliente();
 			tarifaCliente.setId(((BigDecimal)obj[0]).intValue());
 			tarifaCliente.setFechaActivacion((Date)obj[5]);
 			tarifaCliente.setFechaCaducidad((Date)obj[6]);
 			tarifaCliente.setRuta(ruta);
 			tarifaCliente.setServicio(servicio);
-			
+
 			TarifaClienteDetalle tarifaClienteDetalle=new TarifaClienteDetalle();
 			tarifaClienteDetalle.setId(((BigDecimal)obj[1]).intValue());
 			tarifaClienteDetalle.setAsientoInicio(((BigDecimal)obj[7]).intValue());
@@ -178,7 +178,7 @@ public class TarifaClienteDetalleDAOImpl extends GenericDAOImpl implements Tarif
 			tarifaClienteDetalle.setTarifa(((BigDecimal)obj[10]).doubleValue());
 			tarifaClienteDetalle.setTipoAsiento(tipoAsiento);
 			tarifaClienteDetalle.setTarifaCliente(tarifaCliente);
-			
+
 			lstTarifadetalle.add(tarifaClienteDetalle);
 		}
 		return lstTarifadetalle;

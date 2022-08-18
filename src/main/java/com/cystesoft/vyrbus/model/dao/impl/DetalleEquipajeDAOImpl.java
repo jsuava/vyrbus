@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 14 jul. 2021
  * Hora			: 12:10:27
@@ -28,7 +28,7 @@ public class DetalleEquipajeDAOImpl  extends GenericDAOImpl implements DetalleEq
 
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.model.dao.DetalleEquipajeDAO#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
-	 */	
+	 */
 	@Override
 	public ArrayList<DetalleEquipaje> buscarPorEstadoRegistro(String estado, String criterioOrden) {
 		// TODO Auto-generated method stub
@@ -88,12 +88,12 @@ public class DetalleEquipajeDAOImpl  extends GenericDAOImpl implements DetalleEq
 				+ "Order by deq.c_ticket ";
 		log.info("ManifiestoEquipaje:"+sql);
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<DetalleEquipaje> lstResult = new ArrayList<DetalleEquipaje>();
+		List<DetalleEquipaje> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[])result.get(i);
 			DetalleEquipaje detalleEquipaje = new DetalleEquipaje();
 			detalleEquipaje.setId(((BigDecimal)obj[0]).longValue());
-			detalleEquipaje.setEquipaje(new Equipaje(((BigDecimal)obj[1]).longValue()));			
+			detalleEquipaje.setEquipaje(new Equipaje(((BigDecimal)obj[1]).longValue()));
 			if(obj[2]!=null) {
 				VentaPasaje ventaPasaje= new VentaPasaje();
 				ventaPasaje.setNumeroBoleto(obj[2]!=null?obj[2].toString():null);
@@ -104,12 +104,12 @@ public class DetalleEquipajeDAOImpl  extends GenericDAOImpl implements DetalleEq
 				ventaPasaje.setPasajero(pasajero);
 				ventaPasaje.setNumeroAsiento(((BigDecimal)obj[7]).intValue());
 				detalleEquipaje.setVentaPasaje(ventaPasaje);
-			}						
+			}
 			detalleEquipaje.setTicket(obj[6].toString());
-			
+
 			lstResult.add(detalleEquipaje);
 		}
-		
+
 		return lstResult;
 	}
 

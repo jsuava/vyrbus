@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 14/10/2013
  */
@@ -19,6 +19,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.cystesoft.vyrbus.model.bean.TipoAgencia;
+import com.cystesoft.vyrbus.model.bean.VentaPasaje;
+import com.cystesoft.vyrbus.service.report.ReporteVentasRealizadas;
+import com.cystesoft.vyrbus.service.util.Constantes;
+
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -26,11 +31,6 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
-
-import com.cystesoft.vyrbus.model.bean.TipoAgencia;
-import com.cystesoft.vyrbus.model.bean.VentaPasaje;
-import com.cystesoft.vyrbus.service.report.ReporteVentasRealizadas;
-import com.cystesoft.vyrbus.service.util.Constantes;
 
 /**
  * @author JABANTO
@@ -59,7 +59,7 @@ public class DetalladoVentasServlet extends HttpServlet {
 	 * The doGet method of the servlet. <br>
 	 *
 	 * This method is called when a form has its tag value method equals to get.
-	 * 
+	 *
 	 * @param request the request send by the client to the server
 	 * @param response the response send by the server to the client
 	 * @throws ServletException if an error occurred
@@ -67,15 +67,15 @@ public class DetalladoVentasServlet extends HttpServlet {
 	 */
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		processRequest(request, response);	
+		processRequest(request, response);
 	}
 
-	
+
 	/**
 	 * The doPost method of the servlet. <br>
 	 *
 	 * This method is called when a form has its tag value method equals to post.
-	 * 
+	 *
 	 * @param request the request send by the client to the server
 	 * @param response the response send by the server to the client
 	 * @throws ServletException if an error occurred
@@ -83,7 +83,7 @@ public class DetalladoVentasServlet extends HttpServlet {
 	 */
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		processRequest(request, response);	
+		processRequest(request, response);
 	}
 
 	/**
@@ -108,9 +108,9 @@ public class DetalladoVentasServlet extends HttpServlet {
 	    response.setHeader("Pragma", "no-cache");
 	    response.setDateHeader("Expires", 0);
 	    response.setContentType("application/pdf");
-	    
+
 	    ServletOutputStream out = response.getOutputStream();
-	    
+
 	    /*Recupera variables de sesión*/
 	    @SuppressWarnings("unchecked")
 		List<VentaPasaje>lstVentas=(List<VentaPasaje>)request.getSession().getAttribute("lstVentas");
@@ -129,21 +129,21 @@ public class DetalladoVentasServlet extends HttpServlet {
 	    	else
 //	    		reporte = (JasperReport)JRLoader.loadObject(getServletContext().getRealPath("WEB-INF/jasper/VentasRealizadas.jasper"));
 	    		inputStream = getServletContext().getResourceAsStream("WEB-INF/jasper/VentasRealizadas.jasper");
-	    	
+
 	    	reporte = (JasperReport)JRLoader.loadObject(inputStream);
-	    	
-	    	Map<String, Object> parameters = new HashMap<String, Object>();
+
+	    	Map<String, Object> parameters = new HashMap<>();
 			parameters.put("usuario",usuario);
 			parameters.put("local",agencia);
 			parameters.put("desde",fechaInicio);
 			parameters.put("hasta",fechaFinal);
-			
+
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, new ReporteVentasRealizadas(lstVentas));
 			JRExporter jrExporter = new JRPdfExporter();
 			jrExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
 			jrExporter.setParameter(JRExporterParameter.OUTPUT_STREAM, out);
 			jrExporter.exportReport();
-			
+
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

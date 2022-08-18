@@ -25,7 +25,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class PreferenciaAlimentariaManagerImpl implements PreferenciaAlimentariaManager {
 	private PreferenciaAlimentariaDAO preferenciaAlimentariaDAO;
-	
+
 	/**
 	 * @return the preferenciaAlimentariaDAO
 	 */
@@ -74,17 +74,17 @@ public class PreferenciaAlimentariaManagerImpl implements PreferenciaAlimentaria
 	@Transactional
 	public void guardar(PreferenciaAlimentaria preferenciaAlimentaria)throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", preferenciaAlimentaria.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getPreferenciaAlimentariaDAO().buscarPorX(criteriosBusqueda, null);
-			
+
 			/*Valida duplicidad de la denominación*/
-			for(int r = 0; r < resultDenominacion.size(); r ++) {
-				PreferenciaAlimentaria opreferenciaAlimentaria = (PreferenciaAlimentaria) resultDenominacion.get(r);
+			for (Object element : resultDenominacion) {
+				PreferenciaAlimentaria opreferenciaAlimentaria = (PreferenciaAlimentaria) element;
 					if (!(opreferenciaAlimentaria.getId() == preferenciaAlimentaria.getId()))
 						throw new DenominacionDuplicadaException();
-			}		
+			}
 			getPreferenciaAlimentariaDAO().guardar(preferenciaAlimentaria);
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
@@ -100,14 +100,14 @@ public class PreferenciaAlimentariaManagerImpl implements PreferenciaAlimentaria
 	@Transactional
 	public void actualizar(PreferenciaAlimentaria preferenciaAlimentaria)throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", preferenciaAlimentaria.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getPreferenciaAlimentariaDAO().buscarPorX(criteriosBusqueda, null);
-			
+
 			/*Valida duplicidad de la denominación*/
-			for(int r = 0; r < resultDenominacion.size(); r ++) {
-				PreferenciaAlimentaria opreferenciaAlimentaria = (PreferenciaAlimentaria) resultDenominacion.get(r);
+			for (Object element : resultDenominacion) {
+				PreferenciaAlimentaria opreferenciaAlimentaria = (PreferenciaAlimentaria) element;
 					if (!(opreferenciaAlimentaria.getId() == preferenciaAlimentaria.getId()))
 						throw new DenominacionDuplicadaException();
 			}

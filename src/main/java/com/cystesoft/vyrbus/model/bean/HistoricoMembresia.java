@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José
  * Fecha		: 25/05/2013
  */
@@ -16,7 +16,7 @@ import java.util.Date;
  */
 public class HistoricoMembresia extends GenericBean implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Long id;
 	private PasajeroFrecuente pasajeroFrecuente;
 	private Date fechaActivacionAnterior;
@@ -24,17 +24,17 @@ public class HistoricoMembresia extends GenericBean implements Serializable {
 	private Date fechaSuspensionAnterior;
 	private Date nuevaFechaActivacion;
 	private Date nuevaFechaCaducidad;
-	
-	
+
+
 	public HistoricoMembresia(){
-		
+
 	}
-	
+
 	public HistoricoMembresia(Long id){
 		super();
 		this.id=id;
 	}
-	
+
 	/**
 	 * @return the id
 	 */
@@ -120,6 +120,6 @@ public class HistoricoMembresia extends GenericBean implements Serializable {
 		this.nuevaFechaCaducidad = nuevaFechaCaducidad;
 	}
 
-	
-	
+
+
 }

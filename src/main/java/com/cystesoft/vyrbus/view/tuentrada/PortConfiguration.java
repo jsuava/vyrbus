@@ -47,7 +47,7 @@ import javax.swing.JPanel;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class PortConfiguration extends JPanel implements ActionListener, Serializable
 {
-    
+
 	private static final long serialVersionUID = 1L;
 	/**
      * This variable contains the "loadDriver" value
@@ -64,7 +64,7 @@ public class PortConfiguration extends JPanel implements ActionListener, Seriali
     /**
      * This variable contains the bin value
      * */
-    private static String BIN_FOLDER = "bin";    
+    private static String BIN_FOLDER = "bin";
     /**
      * This variable contains the Java home value
      * */
@@ -88,23 +88,23 @@ public class PortConfiguration extends JPanel implements ActionListener, Seriali
     /**
      * This variable contains the label for bits per second
      * */
-    private JLabel lbBitsPerSecond = new JLabel("Bits por segundo:");    
+    private JLabel lbBitsPerSecond = new JLabel("Bits por segundo:");
     /**
      * This variable contains the combobox where the bits por second are
-     * */    
+     * */
     private JComboBox cmbBitsPorSecond = new JComboBox();
     /**
      * This variable contains the label for databits
      * */
-    private JLabel lbDatabits = new JLabel("Databits:");        
+    private JLabel lbDatabits = new JLabel("Databits:");
     /**
      * This variable contains the combobox where the data bits are
      * */
-    private JComboBox cmbDataBits = new JComboBox();     
+    private JComboBox cmbDataBits = new JComboBox();
     /**
      * This variable contains the label for databits
      * */
-    private JLabel lbParity = new JLabel("Paridad:");            
+    private JLabel lbParity = new JLabel("Paridad:");
     /**
      * This variable contains the combobox where the parity options are
      * */
@@ -112,7 +112,7 @@ public class PortConfiguration extends JPanel implements ActionListener, Seriali
     /**
      * This variable contains the label for databits
      * */
-    private JLabel lbStopBits = new JLabel("Bits de stop:");                
+    private JLabel lbStopBits = new JLabel("Bits de stop:");
     /**
      * This variable contains the combobox where the stop bits are
      * */
@@ -132,12 +132,12 @@ public class PortConfiguration extends JPanel implements ActionListener, Seriali
     JButton acceptButton = new JButton("Aceptar");
     /**
      * This variable is the button when the user press cancelar
-     **/    
-    JButton cancelButton = new JButton("Cancelar");    
+     **/
+    JButton cancelButton = new JButton("Cancelar");
     /**
      * This variable is the main frame where the visual components are
-     **/    
-    private static JFrame frame = new JFrame("Configuración de puerto");   
+     **/
+    private static JFrame frame = new JFrame("Configuración de puerto");
 
     private String currentPort = null;
     private String currentBitsPerSecond = null;
@@ -146,7 +146,7 @@ public class PortConfiguration extends JPanel implements ActionListener, Seriali
     private String currentStopBits = null;
 
     /**
-     * Default constructor 
+     * Default constructor
      * */
     public PortConfiguration()
     {
@@ -167,20 +167,20 @@ public class PortConfiguration extends JPanel implements ActionListener, Seriali
      * */
     private void fillCombobox(){
         String[] availablePorts = getPortsAsStrings();
-        cmbPortsAvailables = new JComboBox(availablePorts);        
+        cmbPortsAvailables = new JComboBox(availablePorts);
 
         String[] bitPorSeconds = new String[]{"75","110","134","150","300","600","1200","1800",
                 "2400","4800","7200","9600","14400","19200","38400","57600","11520","12800"};
-        cmbBitsPorSecond = new JComboBox(bitPorSeconds);        
+        cmbBitsPorSecond = new JComboBox(bitPorSeconds);
 
-        String[] dataBits = new String[]{"5","6","7","8"};        
+        String[] dataBits = new String[]{"5","6","7","8"};
         cmbDataBits = new JComboBox(dataBits);
 
-        String[] parityOptions = new String[]{"Par","Impar","Marca","Espacio","Sin paridad"};        
+        String[] parityOptions = new String[]{"Par","Impar","Marca","Espacio","Sin paridad"};
         cmbParityOptions = new JComboBox(parityOptions);
 
-        String[] stopBits = new String[]{"1","1.5","2"};        
-        cmbStopBits = new JComboBox(stopBits);                
+        String[] stopBits = new String[]{"1","1.5","2"};
+        cmbStopBits = new JComboBox(stopBits);
     }
     /**
      * Set the initial size
@@ -188,7 +188,7 @@ public class PortConfiguration extends JPanel implements ActionListener, Seriali
     private void setInitialSize(){
         lbStatus.setSize(new Dimension(20,40));
         acceptButton.setSize(new Dimension(20,40));
-        cancelButton.setSize(new Dimension(20,40));        
+        cancelButton.setSize(new Dimension(20,40));
     }
 
     /**
@@ -201,20 +201,20 @@ public class PortConfiguration extends JPanel implements ActionListener, Seriali
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(5, 5, 5, 5);        
+        gbc.insets = new Insets(5, 5, 5, 5);
 
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridwidth=2;
         lbStatus.setBorder(BorderFactory.createTitledBorder("Configuración actual"));
-        add(lbStatus, gbc);        
+        add(lbStatus, gbc);
 
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
         panel.setBorder(BorderFactory.createTitledBorder("Editar detalles"));
 
-        //Add subcomponents        
+        //Add subcomponents
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth=1;
@@ -283,7 +283,7 @@ public class PortConfiguration extends JPanel implements ActionListener, Seriali
         add(panel,gbc);
         //add(panel);
 
-        gbc.gridx = 0;  
+        gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth=1;
         gbc.anchor = GridBagConstraints.CENTER;
@@ -293,7 +293,7 @@ public class PortConfiguration extends JPanel implements ActionListener, Seriali
         gbc.gridy = 2;
         gbc.gridwidth=1;
         gbc.anchor = GridBagConstraints.CENTER;
-        add(cancelButton, gbc);        
+        add(cancelButton, gbc);
     }
 
 
@@ -325,9 +325,9 @@ public class PortConfiguration extends JPanel implements ActionListener, Seriali
         try
         {
             String path = System.getProperty(
-                    JAVA_HOME) + File.separator + BIN_FOLDER + File.separator;    
+                    JAVA_HOME) + File.separator + BIN_FOLDER + File.separator;
             File configurationFile=new File(path+CONFIGURATION_FILE_NAME);
-            if(!configurationFile.exists())                
+            if(!configurationFile.exists())
                 currentPort = null;
 
             FileInputStream fis=null;
@@ -345,7 +345,7 @@ public class PortConfiguration extends JPanel implements ActionListener, Seriali
                 if(!currentPort.startsWith(COM))
                     currentPort=null;
 
-            } 
+            }
         } catch (FileNotFoundException e)
         {
             e.printStackTrace();
@@ -355,38 +355,38 @@ public class PortConfiguration extends JPanel implements ActionListener, Seriali
         {
             e.printStackTrace();
             currentPort = null;
-        }             
+        }
     }
-    
+
     private void showCurrentConfiguration(){
         if(currentPort==null)
             lbStatus.setText("No existe la configuración");
         else{
             lbStatus.setText("Puerto: "+currentPort);
             cmbPortsAvailables.setSelectedItem(currentPort);
-        }      
-        
+        }
+
         if(currentBitsPerSecond!=null){
-            cmbBitsPorSecond.setSelectedItem(currentBitsPerSecond);            
+            cmbBitsPorSecond.setSelectedItem(currentBitsPerSecond);
         }
         if(currentDataBits!=null){
-            cmbDataBits.setSelectedItem(currentDataBits);            
+            cmbDataBits.setSelectedItem(currentDataBits);
         }
         if(currentParity!=null){
-            cmbParityOptions.setSelectedItem(currentParity);            
+            cmbParityOptions.setSelectedItem(currentParity);
         }
         if(currentStopBits!=null){
-            cmbStopBits.setSelectedItem(currentStopBits);            
+            cmbStopBits.setSelectedItem(currentStopBits);
         }
-        
+
     }
-    
+
     /**
      * This method return the list of ports availables as a String[]
      * @return String[]List of availables ports
      * */
 	private String []getPortsAsStrings(){
-        List<String> lstPortsAsList = new ArrayList<String>();
+        List<String> lstPortsAsList = new ArrayList<>();
         String [] strPortAsList = new String[]{};
         Enumeration portList = enumerateSerialPorts();
         while(portList.hasMoreElements()){
@@ -397,7 +397,7 @@ public class PortConfiguration extends JPanel implements ActionListener, Seriali
         }
         strPortAsList = lstPortsAsList.toArray(strPortAsList);
         return strPortAsList;
-    }    
+    }
 
     /**
      * This method return the enumeration of the PORTS available in the PC. First refresh the javax.comm.properties
@@ -426,7 +426,7 @@ public class PortConfiguration extends JPanel implements ActionListener, Seriali
         }
         portList = CommPortIdentifier.getPortIdentifiers();
         return portList;
-    }  
+    }
 
     /**
      * This method write the selected configuration
@@ -435,7 +435,7 @@ public class PortConfiguration extends JPanel implements ActionListener, Seriali
         try
         {
             String path = System.getProperty(
-                    JAVA_HOME) + File.separator + BIN_FOLDER + File.separator;    
+                    JAVA_HOME) + File.separator + BIN_FOLDER + File.separator;
             PrintWriter printWriter;
             printWriter = new PrintWriter(
                     new BufferedWriter(new FileWriter(path+CONFIGURATION_FILE_NAME)));
@@ -443,7 +443,7 @@ public class PortConfiguration extends JPanel implements ActionListener, Seriali
             printWriter.println(cmbBitsPorSecond.getSelectedItem().toString());
             printWriter.println(cmbDataBits.getSelectedItem().toString());
             printWriter.println(cmbParityOptions.getSelectedItem().toString());
-            printWriter.println(cmbStopBits.getSelectedItem().toString());            
+            printWriter.println(cmbStopBits.getSelectedItem().toString());
             printWriter.close();
             return true;
         } catch (IOException e)
@@ -453,7 +453,7 @@ public class PortConfiguration extends JPanel implements ActionListener, Seriali
         return false;
     }
 
-    
+
     @Override
 	public void actionPerformed(ActionEvent e)
     {
@@ -469,7 +469,7 @@ public class PortConfiguration extends JPanel implements ActionListener, Seriali
         }
         else if(e.getSource()==cancelButton){
             frame.setVisible(false);
-            frame.dispose();                
+            frame.dispose();
         }
 
     }

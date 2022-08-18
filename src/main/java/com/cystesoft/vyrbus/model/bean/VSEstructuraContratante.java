@@ -10,10 +10,10 @@ import java.util.Date;
 public class VSEstructuraContratante extends GenericBean  implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
-    // Fields    
+    // Fields
 	private Long id;
      private VSSexo vsSexo;
-     private VSTipoRegistro vsTipoRegistro; 
+     private VSTipoRegistro vsTipoRegistro;
      private VSEstadoCivil  vsEstadoCivil;
      private VSEncabezadoAfiliacion vsEncabezadoAfiliacion;
      private VSTipoDocumento vsTipoDocumento;
@@ -34,7 +34,7 @@ public class VSEstructuraContratante extends GenericBean  implements java.io.Ser
      private String numeroCuenta;
      private String telefonoComercial;
      private String numeroCertificado;
-    
+
     // Constructors
     /** default constructor */
     public VSEstructuraContratante() {
@@ -44,7 +44,7 @@ public class VSEstructuraContratante extends GenericBean  implements java.io.Ser
     public Long getId() {
         return this.id;
     }
-    
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -52,7 +52,7 @@ public class VSEstructuraContratante extends GenericBean  implements java.io.Ser
     public String getNumeroDocumento() {
         return this.numeroDocumento;
     }
-    
+
     public void setNumeroDocumento(String numeroDocumento) {
         this.numeroDocumento = numeroDocumento;
     }
@@ -60,7 +60,7 @@ public class VSEstructuraContratante extends GenericBean  implements java.io.Ser
     public String getApellidoPaterno() {
         return this.apellidoPaterno;
     }
-    
+
     public void setApellidoPaterno(String apellidoPaterno) {
         this.apellidoPaterno = apellidoPaterno;
     }
@@ -68,7 +68,7 @@ public class VSEstructuraContratante extends GenericBean  implements java.io.Ser
     public String getApellidoMaterno() {
         return this.apellidoMaterno;
     }
-    
+
     public void setApellidoMaterno(String apellidoMaterno) {
         this.apellidoMaterno = apellidoMaterno;
     }
@@ -76,7 +76,7 @@ public class VSEstructuraContratante extends GenericBean  implements java.io.Ser
     public String getNombre() {
         return this.nombre;
     }
-    
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -84,7 +84,7 @@ public class VSEstructuraContratante extends GenericBean  implements java.io.Ser
     public Date getFechaNacimiento() {
         return this.fechaNacimiento;
     }
-    
+
     public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
@@ -92,7 +92,7 @@ public class VSEstructuraContratante extends GenericBean  implements java.io.Ser
     public String getDireccion() {
         return this.direccion;
     }
-    
+
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
@@ -100,7 +100,7 @@ public class VSEstructuraContratante extends GenericBean  implements java.io.Ser
     public String getUbigeoDepartamento() {
         return this.ubigeoDepartamento;
     }
-    
+
     public void setUbigeoDepartamento(String ubigeoDepartamento) {
         this.ubigeoDepartamento = ubigeoDepartamento;
     }
@@ -108,7 +108,7 @@ public class VSEstructuraContratante extends GenericBean  implements java.io.Ser
     public String getUbigeoProvincia() {
         return this.ubigeoProvincia;
     }
-    
+
     public void setUbigeoProvincia(String ubigeoProvincia) {
         this.ubigeoProvincia = ubigeoProvincia;
     }
@@ -116,7 +116,7 @@ public class VSEstructuraContratante extends GenericBean  implements java.io.Ser
     public String getUbigeoDistrito() {
         return this.ubigeoDistrito;
     }
-    
+
     public void setUbigeoDistrito(String ubigeoDistrito) {
         this.ubigeoDistrito = ubigeoDistrito;
     }
@@ -124,7 +124,7 @@ public class VSEstructuraContratante extends GenericBean  implements java.io.Ser
     public String getTelefono() {
         return this.telefono;
     }
-    
+
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
@@ -132,7 +132,7 @@ public class VSEstructuraContratante extends GenericBean  implements java.io.Ser
     public String getCelular() {
         return this.celular;
     }
-    
+
     public void setCelular(String celular) {
         this.celular = celular;
     }
@@ -140,7 +140,7 @@ public class VSEstructuraContratante extends GenericBean  implements java.io.Ser
     public String getRazonSocial() {
         return this.razonSocial;
     }
-    
+
     public void setRazonSocial(String razonSocial) {
         this.razonSocial = razonSocial;
     }
@@ -148,7 +148,7 @@ public class VSEstructuraContratante extends GenericBean  implements java.io.Ser
     public String getProfesion() {
         return this.profesion;
     }
-    
+
     public void setProfesion(String profesion) {
         this.profesion = profesion;
     }
@@ -156,7 +156,7 @@ public class VSEstructuraContratante extends GenericBean  implements java.io.Ser
     public String getNumeroCuenta() {
         return this.numeroCuenta;
     }
-    
+
     public void setNumeroCuenta(String numeroCuenta) {
         this.numeroCuenta = numeroCuenta;
     }
@@ -164,7 +164,7 @@ public class VSEstructuraContratante extends GenericBean  implements java.io.Ser
     public String getTelefonoComercial() {
         return this.telefonoComercial;
     }
-    
+
     public void setTelefonoComercial(String telefonoComercial) {
         this.telefonoComercial = telefonoComercial;
     }
@@ -172,7 +172,7 @@ public class VSEstructuraContratante extends GenericBean  implements java.io.Ser
     public String getNumeroCertificado() {
         return this.numeroCertificado;
     }
-    
+
     public void setNumeroCertificado(String numeroCertificado) {
         this.numeroCertificado = numeroCertificado;
     }

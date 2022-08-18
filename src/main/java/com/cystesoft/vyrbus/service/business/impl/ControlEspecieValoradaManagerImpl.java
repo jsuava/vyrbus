@@ -26,7 +26,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class ControlEspecieValoradaManagerImpl implements ControlEspecieValoradaManager {
 	private ControlEspecieValoradaDAO controlEspecieValoradaDAO;
-	
+
 	/**
 	 * @return the controlEspecieValoradaDAO
 	 */
@@ -41,7 +41,7 @@ public class ControlEspecieValoradaManagerImpl implements ControlEspecieValorada
 		this.controlEspecieValoradaDAO = controlEspecieValoradaDAO;
 	}
 
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.ControlEspecieValoradaManager#buscarPorX(java.util.TreeMap, java.util.List)
 	 */
@@ -57,75 +57,75 @@ public class ControlEspecieValoradaManagerImpl implements ControlEspecieValorada
 	@Transactional
 	public int guardar(ControlEspecieValorada controlEspecieValorada) throws Exception {
 		try{
-			
-			if(controlEspecieValorada.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO || 
+
+			if(controlEspecieValorada.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO ||
 					controlEspecieValorada.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_DEBITO) {
-				
-				TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+
+				TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 				criteriosBusqueda.put("tipoComprobante", controlEspecieValorada.getTipoComprobante());
 				criteriosBusqueda.put("usuarioHardware", controlEspecieValorada.getUsuarioHardware());
 				List<?> result = getControlEspecieValoradaDAO().buscarPorX(criteriosBusqueda, null);
-				
+
 				/*Valida duplicidad del tipo comprobante y UsuarioHardware*/
 				if(result.size()>0)
 					throw new CorrelativoException(CorrelativoException.DUPLICADO);
-				
+
 				ControlEspecieValorada controlEspecieValorada2 = (ControlEspecieValorada)controlEspecieValorada.clone();
 				ControlEspecieValoradaID controlEspecieValoradaID = (ControlEspecieValoradaID)controlEspecieValorada.getControlEspecieValoradaID().clone();
-				
+
 				controlEspecieValorada.setSerie("B"+controlEspecieValorada.getSerie());
 				controlEspecieValorada.getControlEspecieValoradaID().setStrSerie(controlEspecieValorada.getSerie());
 				controlEspecieValorada.setSecuenciador(controlEspecieValorada.getSecuenciador()+controlEspecieValorada.getSerie());
 				controlEspecieValorada.setAplica(1);
-				
+
 				/*Inserta el control especie valorada*/
 				getControlEspecieValoradaDAO().guardar(controlEspecieValorada);
 				/*Generar secuenciador de la caja*/
 				getControlEspecieValoradaDAO().generarSecuenciador(controlEspecieValorada.getSecuenciador(), controlEspecieValorada.getCorrelativoActual());
-				
+
 				controlEspecieValorada2.setSerie("F"+controlEspecieValorada2.getSerie());
 				controlEspecieValoradaID.setStrSerie(controlEspecieValorada2.getSerie());
 				controlEspecieValorada2.setControlEspecieValoradaID(controlEspecieValoradaID);
 				controlEspecieValorada2.setSecuenciador(controlEspecieValorada2.getSecuenciador()+controlEspecieValorada2.getSerie());
 				controlEspecieValorada2.setAplica(2);
-				
+
 				/*Inserta el control especie valorada*/
 				getControlEspecieValoradaDAO().guardar(controlEspecieValorada2);
 				/*Generar secuenciador de la caja*/
 				getControlEspecieValoradaDAO().generarSecuenciador(controlEspecieValorada2.getSecuenciador(), controlEspecieValorada2.getCorrelativoActual());
-				
+
 				return Constantes.CORRECT;
 			}else {
-				TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+				TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 				criteriosBusqueda.put("tipoComprobante", controlEspecieValorada.getTipoComprobante());
 				criteriosBusqueda.put("usuarioHardware", controlEspecieValorada.getUsuarioHardware());
 				//criteriosBusqueda.put("estadoRegistro", Constantes.ACTIVO);
 				List<?> result = getControlEspecieValoradaDAO().buscarPorX(criteriosBusqueda, null);
-				
+
 				/*Valida duplicidad del tipo comprobante y UsuarioHardware*/
 				if(result.size()>0)
 					throw new CorrelativoException(CorrelativoException.DUPLICADO); //ControlEspecieValoradaDuplicidadException();
-				
-				criteriosBusqueda = new TreeMap<String, Object>();
+
+				criteriosBusqueda = new TreeMap<>();
 				criteriosBusqueda.put("serie", controlEspecieValorada.getSerie());
 				criteriosBusqueda.put("tipoComprobante", controlEspecieValorada.getTipoComprobante());
 				result = getControlEspecieValoradaDAO().buscarPorX(criteriosBusqueda, null);
-				
+
 				/*Valida duplicidad de la serie*/
 				if(result.size()>0)
 					throw new CorrelativoException(CorrelativoException.SERIE_DUPLICADA); //ControlEspecieValoradaDuplicidadException();
-				
+
 				/*Inserta el control especie valorada*/
 				getControlEspecieValoradaDAO().guardar(controlEspecieValorada);
-				
+
 				/*Generar secuenciador de la caja*/
 				getControlEspecieValoradaDAO().generarSecuenciador(controlEspecieValorada.getSecuenciador(), controlEspecieValorada.getCorrelativoActual());
-				
+
 				/*Inserta los correlativos para para la validacion*/
 	//			guardarValidacionEspecieValorada(controlEspecieValorada);
-				
+
 				return Constantes.CORRECT;
-			}			
+			}
 		}catch (CorrelativoException c){
 			if(c.getTipo().intValue()==CorrelativoException.DUPLICADO)
 				throw new CorrelativoException(CorrelativoException.DUPLICADO);
@@ -136,7 +136,7 @@ public class ControlEspecieValoradaManagerImpl implements ControlEspecieValorada
 				throw new Exception(c);
 		}catch(Exception ex){
 			throw new Exception(ex);
-		}	
+		}
 	}
 
 	/* (non-Javadoc)
@@ -147,19 +147,19 @@ public class ControlEspecieValoradaManagerImpl implements ControlEspecieValorada
 	public int actualizar(ControlEspecieValorada controlEspecieValorada) throws Exception {
 		/*actualiza el control especie valorada*/
 		getControlEspecieValoradaDAO().actualizar(controlEspecieValorada);
-		
+
 		/*Inserta los correlativos para para la validacion*/
 //		guardarValidacionEspecieValorada(controlEspecieValorada);
-		
+
 		return Constantes.CORRECT;
 	}
-	
+
 	@Override
 	@Transactional
 	public void inactivar(ControlEspecieValoradaID controlEspecieValoradaID)throws Exception {
 		 getControlEspecieValoradaDAO().inactivar(controlEspecieValoradaID);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.ControlEspecieValoradaManager#buscarEspecieValoradas(java.lang.Integer, java.lang.Integer)
@@ -190,7 +190,7 @@ public class ControlEspecieValoradaManagerImpl implements ControlEspecieValorada
 	 */
 	@Override
 	public int actualizarCorrelativoEspecieValorada(Integer idTipCom, Integer idUsuHar, String serie, long correlativo) throws Exception {
-		return getControlEspecieValoradaDAO().actualizarCorrelativoEspecieValorada(idTipCom, idUsuHar, serie, correlativo);	
+		return getControlEspecieValoradaDAO().actualizarCorrelativoEspecieValorada(idTipCom, idUsuHar, serie, correlativo);
 	}
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.service.business.ControlEspecieValoradaManager#ejecutarSeqCorrelativo(com.cystesoft.vyrbus.model.bean.ControlEspecieValorada)
@@ -199,7 +199,7 @@ public class ControlEspecieValoradaManagerImpl implements ControlEspecieValorada
 	public ControlEspecieValorada ejecutarSecuenciador(ControlEspecieValorada controlEspecieValorada) throws Exception {
 		return getControlEspecieValoradaDAO().ejecutarSecuenciador(controlEspecieValorada);
 	}
-	
+
 //	@Transactional
 //	/**
 //	 * Guarda los correlativos para la validacion al momento del cierre de caja.

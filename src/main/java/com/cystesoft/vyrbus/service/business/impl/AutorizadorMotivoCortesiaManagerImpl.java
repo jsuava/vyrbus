@@ -26,7 +26,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class AutorizadorMotivoCortesiaManagerImpl implements AutorizadorMotivoCortesiaManager {
 	private AutorizadorMotivoCortesiaDAO autorizadorMotivoCortesiaDAO;
-	
+
 
 	/**
 	 * @return the autorizadorMotivoCortesiaDAO

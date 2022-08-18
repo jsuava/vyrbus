@@ -14,13 +14,13 @@ public class PreferenciaAlimentaria extends GenericBean implements java.io.Seria
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String denominacion;
-	
+
 	private Integer cantidad;							//No mapeado
 	private List<VentaPasaje>lstVentaXItinerario;		//No mapeado.
 	private Integer tipoConsulta;						//No mapeado.
 	private Date fecha;									//No mapeado.
-	
-	private Set<VentaPasaje> ventaPasajes = new HashSet<VentaPasaje>(0);
+
+	private Set<VentaPasaje> ventaPasajes = new HashSet<>(0);
 
 	public PreferenciaAlimentaria() {
 		super();
@@ -29,7 +29,7 @@ public class PreferenciaAlimentaria extends GenericBean implements java.io.Seria
 	public PreferenciaAlimentaria (Integer id){
 		this.id=id;
 	}
-	
+
 	public Integer getId() {
 		return this.id;
 	}

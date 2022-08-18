@@ -8,41 +8,41 @@ import com.cystesoft.vyrbus.model.bean.RolOpcionMenu;
 import com.cystesoft.vyrbus.model.bean.RolOpcionMenuID;
 
 /**
- * 
+ *
  * @author José Abanto
  *
  */
 public interface RolOpcionMenuManager {
-	
+
 	/**
 	 * Busqueda por estado registro
-	 * @param estado		: estado 
+	 * @param estado		: estado
 	 * @param criterioOrden	: lista de criterios para el orden de los datos
 	 * @return
 	 */
 	public ArrayList<RolOpcionMenu> buscarPorEstadoRegistro(String estado, String criterioOrden);
-	
+
 	/**
 	 * Busqueda por un ArraLis de Parametros.
-	 * @param criteriosBusqueda : 
+	 * @param criteriosBusqueda :
 	 * @param criteriosOrdenar	: lista de criterios para el orden de los datos
 	 * @return
 	 */
 	public ArrayList<RolOpcionMenu> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
-	
-	
+
+
 	/**
-	 * Guarda 
+	 * Guarda
 	 * @param rolOpcionMenu : Class
 	 */
 	public void guardar(RolOpcionMenu rolOpcionMenu);
-	
+
 	/***
 	 * Actualiza RolOpcionMenu
-	 * @param rolOpcionMenu : Class 
+	 * @param rolOpcionMenu : Class
 	 */
 	public void actualizar(RolOpcionMenu rolOpcionMenu);
-	
+
 	/**
 	 * Activa y/o deshactiva RolOpcionMenu
 	 * @param rolOpcionMenuID	: identificador

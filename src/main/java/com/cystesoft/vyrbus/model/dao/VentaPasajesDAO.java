@@ -115,7 +115,7 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 */
 	public List<VentaPasaje> buscarDetalladoVentas(String idAgencia, String idUsuario, String idTipoMovimiento, String fechaInicio, String fechaFin, String estado)throws Exception;
 	/**
-	 * Valida que un boleto no haya sido utilizado. 
+	 * Valida que un boleto no haya sido utilizado.
 	 * @param numeroBoleto		: Numero de boleto a validar.
 	 * @param idTipoComprobante	: Identificador del tipo de comprobante a validar.
 	 * @return Integer
@@ -133,7 +133,7 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public List<VentaPasaje> buscarVentasPostergar(Integer idOrigen, Integer idDestino, String[] pasajero, String numeroControl, String numeroBoleto, String fechaPartida)throws Exception;
-	
+
 	/**
 	 * Busca el avance semanal de las ventas
 	 * @param idOrigen			: Identificador de la localidad origen.
@@ -142,11 +142,11 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @param idServicio		: Identificador del Servicio.
 	 * @param fechaDesde		: Fecha desde de la busqueda, basada en la fecha de viaje del pasajero
 	 * @param fechaHasta		: Fecha Hasta de la busqueda, basada en la fecha de viaje del pasajero
-	 * @return 
+	 * @return
 	 * @throws Exception
 	 */
 	public List<VentaPasaje> buscarAvanceSemanalVentas(String idOrigen, String idDestino, String tipoTransaction, String idServicio, String fechaDesde, String fechaHasta) throws Exception;
-	
+
 	/**
 	 * Busca el avance semanal de las ventas para generar las columnas en el Listbox de la consulta.
 	 * @param idOrigen			: Identificador de la localidad origen.
@@ -155,11 +155,11 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @param idServicio		: Identificador del Servicio.
 	 * @param fechaDesde		: Fecha desde de la busqueda, basada en la fecha de viaje del pasajero
 	 * @param fechaHasta		: Fecha Hasta de la busqueda, basada en la fecha de viaje del pasajero
-	 * @return 
+	 * @return
 	 * @throws Exception
 	 */
 	public List<VentaPasaje> buscarAvanceSemanalVentasColumns(String idOrigen,String idDestino, String tipoTransaction, String idServicio,String fechaDesde, String fechaHasta)throws Exception;
-	
+
 	/**
 	 * Cuenta la cantidad de viajes validos en el intervalo de fechas solicitado.
 	 * @param idPasajero	: Identificador del pasajero del cual se desea sus viajes.
@@ -183,8 +183,8 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public void transbordarPax(Integer numeroAsiento, Long idVentaPasaje, Itinerario itinerario) throws Exception;
-	
-	
+
+
 	/**
 	 * Busca pasajes de un determinado pasajero para la activacion a Pasajero Frecuente.
 	 * @param fechaInicial 	: Fecha inical de la busqueda
@@ -222,7 +222,7 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public List<VentaPasaje> buscarComprobantesSinBoleto(String fechaPartida, Integer idAgencia, Integer idTipoComprobante, Integer idRol, Integer idAgenciaEmision)throws Exception;
-	
+
 	/**
 	 * Valida Ocupabilidad de todos los asientos ha a generar las ventas del servicio especial.
 	 * @param idItinerario	: Identificador del Itinerario
@@ -233,7 +233,7 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public List<VentaPasaje> validaOcupabilidad(Long idItinerario, Integer idRuta, String numeroAsientos, Integer numeroPiso ) throws Exception;
-	
+
 	/**
 	 * Valida los boletos que se van a generar para las ventas en los Servicios Especiales, que no esten utilizados.
 	 * @param boletoInicial : Boleto inical
@@ -242,9 +242,9 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public Integer validaBoletos_ServicioEspecial(String boletoInicial, String boletoFinal) throws Exception;
-	
+
 	/**
-	 * Busca los ultimos correlativo utilizados poar la agencia. 
+	 * Busca los ultimos correlativo utilizados poar la agencia.
 	 * @param fechaUltimoEnvio : Fecha del ultimo envio del las especies valoradas el punto de venta(Agencia).
 	 * @param serie			   : Numero de serie a consultal.
 	 * @param idComprobante	   : Identimicsr de tipo de comprobante.
@@ -252,7 +252,7 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @return
 	 */
 	public List<VentaPasaje> buscarUltimoCorrelativoEmitido(String fechaUltimoEnvio, String serie, Integer idComprobante, Integer idAgencia) throws Exception;
-	
+
 	/**
 	 * Busca los correlativos faltantes
 	 * @param fechaInico		: Fecha inicio
@@ -264,7 +264,7 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public List<VentaPasaje> correlativosFaltantesX(String fechaInico, String serie, Integer idComprobante,Integer idAgencia, String fechaFin, Integer idUsuario) throws Exception;
-	
+
 	/**
 	 * Busca el total de ventas en efectivo de un detarmido usuario, Esto es para validar el ingreso de gastos a la liquidacion.
 	 * @param idUsuario	: Identificador del usuario
@@ -274,7 +274,7 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public Double buscaTotalVentasEfectivo(Integer idUsuario,Integer idAgencia, String fecha) throws Exception;
-	
+
 	/**
 	 * Realiza la busqueda a travez de los criterios enviado en el treeMap
 	 * @param criteriosBusqueda : treeMap con los criterios de busqueda
@@ -300,14 +300,14 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public List<VentaPasaje> buscarDetalladoVentas(Integer idAgencia, Integer idUsuario, String fechaInicial, String fechaFinal, Integer criterio)throws Exception;
-	
+
 	/**
 	 * Busca el detalle de venta diarias de una agencia de viajes o cliente corporativo.
 	 * @param fechaInicio	: Fecha de Inicio de la busqueda.
 	 * @param fechaFin		: Fecha final de la busqueda.
 	 * @param rucClienteCredito		: Numero de ruc del cliente credito
 	 * @param idUsuario		: Idenficador del Usuario.
-	 * @param orden			: campos por el cual de debe de ordenar la consulta. 
+	 * @param orden			: campos por el cual de debe de ordenar la consulta.
 	 * @param incluirAnulados : true=incluye vauchers anulados, false=lo contrario.
 	 * @param isSoles : indica si la consulta es en nomeda soles(true), o en moneda extranjeta(false)
 	 * @param estadoBoletos : Determina el estado de los boletos (PAG) pagados, (PEN) pendientes, Null todos.
@@ -315,24 +315,24 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public List<VentaPasaje> buscarDetalleVentasAgencia(String fechaInicio, String fechaFin,String  rucClienteCredito, Long idUsuario, String orden, Boolean incluirAnulados,boolean isSoles, String estadoBoletos, Integer centroCostoID, boolean byFechaReimpresion) throws Exception;
-	
+
 	/**
 	 * Obtiene el ultimo registro de la venta, para la validación en las anulaciones
 	 * @param idVentaOriginal: Identificador de l aventa original
 	 * @return
 	 */
 	public VentaPasaje buscarUltimoRegistro(Long idVentaOriginal);
-	
+
 	/**
 	 * Activa el recibo de caja
 	 * @param idVentaOriginal : Identificador de la venta original
 	 */
 	public void activarReciboCaja(Long idVentaOriginal);
-	
+
 	/**
 	 * Busca vaucher para la anulación.
 	 * @param numVoucher		: Número del Voucher.
-	 * @param numcontrol		: Número de control del Voucher.	
+	 * @param numcontrol		: Número de control del Voucher.
 	 * @param idTipoComprobante : Identificador del tipo de comprobante.
 	 * @param rucCliente 		: Númerod e ruc del Cliente
 	 * @param fechaPartida 		: Fecha de partida
@@ -340,7 +340,7 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @param boleto			: Número de boleto
 	 */
 	public List<VentaPasaje> buscarVoucherForAnulacion(Integer idTipoComprobante,String numVoucher, String numcontrol,String rucCliente,String fechaPartida,String horaPartida,String boleto);
-	
+
 	/**
 	 * Busca ventas o reservas, de la consulta ESTADO DE VENTAS Y RESERVAS.
 	 * @param fechaInicialVenta	: Fecha inicial de la venta.
@@ -354,18 +354,18 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @param numeroControl		: Número de Control.
 	 * @param numeroBoleto		: Número de Boleto
 	 * @param idOrigen			: Identificador del Origen.
-	 * @param idDestino			: Identificador del Destino.	
+	 * @param idDestino			: Identificador del Destino.
 	 * @param tipoMovimiento	: Tipode movimiento; (venta, reserva o fecha abirta)
 	 * @return Lista de ventas o reservas
 	 * @throws Exception
 	 */
 	public List<VentaPasaje> buscarEstadoVentasReservas(String fechaInicialVenta, String fechaFinVenta, Integer tipoBusqCliente, String busqCliente,Integer tipoBusqPax, String busqPax, String fechaPartida, Integer idUsuario,String numeroControl,String numeroBoleto, Integer idOrigen, Integer idDestino, Integer tipoMovimiento) throws Exception;
-	
+
 	/**
 	 * Busca ventas para la consulta de operaciones remotas, segun parametros enviados.
 	 * @param fechaPartida	: Fecha de partida del servicio.
 	 * @param idOrigen		: Identificado del Origen.
-	 * @param idDestino		: Identificador del Destino.	
+	 * @param idDestino		: Identificador del Destino.
 	 * @param numeroBoleto	: Numero de Boleto
 	 * @param numeroControl	: Numero de Control
 	 * @param documentoPax	: Numero de documento del Pasajero
@@ -373,7 +373,7 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public List<VentaPasaje> buscarOperacionesRemotras(String fechaPartida,Integer idOrigen, Integer idDestino,String numeroBoleto, String numeroControl, String documentoPax) throws Exception;
-	
+
 	/**
 	 * Busca el total de ventas emitidas, segun parametros enviados.
 	 * @param fechaLiquidacion	: Fecha de la liquidacion.
@@ -395,8 +395,8 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public List<VentaPasaje> buscarBoletoLiberarManifiesto(String numeroboleto)throws Exception;
-	
-	
+
+
 	/**
 	 * Busca el boleto para la venta del seguro.
 	 * @param numeroBoleto	: Número del Boleto
@@ -407,7 +407,7 @@ public interface VentaPasajesDAO extends GenericDAO {
 	/**
 	 * Busca pasajeros para el envio del manifiesto de pasajeros
 	 * @param codigoBus		: Identificador del Itinerario
-	 * @return 
+	 * @return
 	 * @throws Exception
 	 */
 	public List<VentaPasaje>buscarPasajerosByME(Long itinerarioId)throws Exception;
@@ -470,24 +470,24 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @return
 	 */
 	public List<VentaPasaje> buscarBoletosPostergadosDetalladoByX(String fechaDesde, String fechaHasta, Integer id, Integer criterio, Integer nroPostergaciones);
-	
+
 	/**
-	 * Busca el resumen de ventas 
+	 * Busca el resumen de ventas
 	 * @param fechaDesde	: Fecha de inicio de busqueda
 	 * @param fechaHasta	: Fecha fin de la busqueda
 	 * @param idagencia		: Especifica alguna agencia en especial, 0 equivale a todos.
 	 * @param nroConsulta	: 1, 2 o 3 diferentes tipos de consulta.
 	 * @return
-	 */	
+	 */
 	public List<ResumenVentas> buscarResumenVentas(String fechaDesde, String fechaHasta, Integer idAgencia, Integer nroConsulta);
-	
+
 	/**
 	 * Busca el historial de un comprobante a partir de su numero
 	 * @param numeroComprobante	: Numero del comprobante a buscar
 	 * @return
-	 */	
+	 */
 	public List<VentaPasaje> buscarHistorialComprobante(String numeroComprobante);
-	
+
 	public List<List<VentaPasaje>> obtenerVentasResumenLiquidacion(Integer idAgencia, Integer idUsuario, String fechaLiquidacion);
 	/**
 	 * Guarda las ventas de Servicios Especiales
@@ -533,7 +533,7 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @param fechaInicio	: Fecha inicio de la busqueda
 	 * @param fechaFin		: Fecha fin de la busqueda
 	 * @param codigoBus		: codigo del bus
-	 * @return	
+	 * @return
 	 * @throws Exception
 	 */
 	public List<Manifiesto> buscarLiquidacionBus(String fechaInicio, String fechaFin, String codigoBus)throws Exception;

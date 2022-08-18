@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 09/09/2013
  */
@@ -39,7 +39,7 @@ public class HistoricoControlEspecieValoradaManagerImpl implements HistoricoCont
 	public void guardar(HistoricoControlEspecieValorada historicoControlEspecieValorada)throws Exception {
 		// TODO Auto-generated method stub
 		getHistoricoControlEspecieValoradaDAO().guardar(historicoControlEspecieValorada);
-	} 
-	
+	}
+
 
 }

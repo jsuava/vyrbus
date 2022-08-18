@@ -12,25 +12,25 @@ import com.cystesoft.vyrbus.model.dao.SolicitudCarteraDAO;
 import com.cystesoft.vyrbus.service.business.SolicitudCarteraManager;
 
 public class SolicitudCarteraManagerImpl implements SolicitudCarteraManager {
-	
+
 	public SolicitudCarteraDAO solicitudCarteraDAO;
-	
+
 	/**
-	 * 
+	 *
 	 * @param carteraFuncionarioDAO
 	 */
 	public void setSolicitudCarteraDAO(SolicitudCarteraDAO carteraFuncionarioDAO){
 		this.solicitudCarteraDAO=carteraFuncionarioDAO;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	public SolicitudCarteraDAO getSolicitudCartera(){
 		return this.solicitudCarteraDAO;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.SolicitudAsignarClienteCarteraFuncionarioManajer#baseHistoricaCliente(java.lang.Long)
@@ -65,7 +65,7 @@ public class SolicitudCarteraManagerImpl implements SolicitudCarteraManager {
 	@Override
 	@Transactional
 	public void guardar(SolicitudCartera solicitudCartera) throws Exception {
-		getSolicitudCartera().guardar(solicitudCartera);		
+		getSolicitudCartera().guardar(solicitudCartera);
 	}
 
 	/*

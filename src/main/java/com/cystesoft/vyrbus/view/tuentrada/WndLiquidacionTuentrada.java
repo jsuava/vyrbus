@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Avalos Sullo
  * Fecha		: 09/06/2014
  */
@@ -19,7 +19,7 @@ import com.cystesoft.vyrbus.service.util.WSFE;
 import com.cystesoft.vyrbus.view.ui.WndBase;
 
 /**
- * 
+ *
  * @author Jose
  *
  */
@@ -46,9 +46,9 @@ public class WndLiquidacionTuentrada extends WndBase {
 	@Override
 	public void onCreate(){
 		lstLiquidacion = (List<LiquidacionTuentrada>)this.getAttribute("lstLiquidacion");
-		showLiquidacion();		
+		showLiquidacion();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
@@ -68,7 +68,7 @@ public class WndLiquidacionTuentrada extends WndBase {
 		lblFecha = (Label)this.getFellow("lblFecha");
 		wndLiquidacionTuentrada=(Window)this.getFellow("wndLiquidacionTuentrada");
 	}
-	
+
 	private void showLiquidacion(){
 		lblPtoVenta.setValue("TUENTRADA");
 		lblUsuario.setValue(((Usuario)this.getAttribute("usuario")).toString());
@@ -81,15 +81,14 @@ public class WndLiquidacionTuentrada extends WndBase {
 		int cantidad = 0;
 		double total = 0.0;
 		if(lstLiquidacion!=null){
-			for(int i=0; i<lstLiquidacion.size(); i++){
-				LiquidacionTuentrada liquidacionTuentrada = lstLiquidacion.get(i);
+			for (LiquidacionTuentrada liquidacionTuentrada : lstLiquidacion) {
 				if(liquidacionTuentrada.getTipo().equals("CONTADO")){
 					lblCantidadContado.setValue(liquidacionTuentrada.getCantidad().toString());
-					lblMontoContado.setValue(Util.toNumberFormat(liquidacionTuentrada.getMonto(), 2));				
+					lblMontoContado.setValue(Util.toNumberFormat(liquidacionTuentrada.getMonto(), 2));
 					lblEfectivo.setValue(Util.toNumberFormat(liquidacionTuentrada.getMonto(), 2));
 				}else{
 					lblCantidadTarjeta.setValue(liquidacionTuentrada.getCantidad().toString());
-					lblMontoTarjeta.setValue(Util.toNumberFormat(liquidacionTuentrada.getMonto(), 2));				
+					lblMontoTarjeta.setValue(Util.toNumberFormat(liquidacionTuentrada.getMonto(), 2));
 				}
 				cantidad = cantidad + liquidacionTuentrada.getCantidad();
 				total = total + liquidacionTuentrada.getMonto();
@@ -100,12 +99,12 @@ public class WndLiquidacionTuentrada extends WndBase {
 		lblLogin.setValue((String)this.getAttribute("login"));
 		lblFecha.setValue((String)this.getAttribute("fechaLiquidacion"));
 	}
-	
+
 //	/**
 //	 * jabanto - 22/08/2015
 //	 */
 //	public void crearLiquidacion(){
-//        try { 
+//        try {
 //        	Liquidacion liquidacion=new Liquidacion();
 //        	liquidacion.setAgencia(getAgencia());
 //        	liquidacion.setFechaLiquidacion(Constantes.FORMAT_DATE.parse((String)this.getAttribute("fechaLiquidacion")));
@@ -117,14 +116,14 @@ public class WndLiquidacionTuentrada extends WndBase {
 //        	liquidacion.setCantidadTarjetaVisa(Integer.valueOf(lblCantidadTarjeta.getValue()));
 //        	liquidacion.setMontoContado(Util.parseNumberFormat(lblMontoContado.getValue(), 2));
 //        	liquidacion.setMontoTarjetaVisa(Util.parseNumberFormat(lblMontoTarjeta.getValue(), 2));
-//        	
+//
 //        	List<Liquidacion>lstLiquidacion=new ArrayList<Liquidacion>();
 //        	lstLiquidacion.add(liquidacion);
-//        	
+//
 //        	Session session = getDesktop().getSession();
 //    	    HttpSession httpSession = (HttpSession)session.getNativeSession();
 //    	    httpSession.setAttribute("lstLiquidacion", lstLiquidacion);
-//    	    
+//
 //    	    final WndIFrame iFrame = new WndIFrame();
 //    	    iFrame.btnCerrar.setVisible(false);
 //    	    iFrame.oThisWindow.setTitle("LIQUIDACION");
@@ -136,7 +135,7 @@ public class WndLiquidacionTuentrada extends WndBase {
 //    		this.appendChild(iFrame);
 //    		iFrame.setMode("modal");
 //    		iFrame.setVisible(false);
-//    		
+//
 //    		Messagebox.show("La liquidación fue creada correctamente.", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_OK, Messagebox.INFORMATION, new EventListener<Event>() {
 //    			@Override
 //    			public void onEvent(Event e){
@@ -150,18 +149,18 @@ public class WndLiquidacionTuentrada extends WndBase {
 //			ex.printStackTrace();
 //		}
 //	}
-	
-	
+
+
 	public void crearLiquidacion(){
-        try { 
+        try {
         	/*Begin 20/01/2017 - jabanto*/
         	@SuppressWarnings("unchecked")
 			List<LiquidacionTuentrada>listLiquidacion=(List<LiquidacionTuentrada>) this.getAttribute("lstLiquidacion");
         	String fechaLiquidacion=(String) this.getAttribute("fechaLiquidacion");
         	Usuario usuario=(Usuario)this.getAttribute("usuario");
         	WSFE.printLiquidacionTuentrada(listLiquidacion, usuario, fechaLiquidacion, wndLiquidacionTuentrada);
-        	
-        	
+
+
         	/*End Begin 20/01/2017 - jabanto */
 //        	  Window win = (Window)Executions.createComponents("ticketTuentrada.zul", this, null);
 //            win.setAttribute("formato", WndTicketTuentrada.FORMAT_LIQUIDACION_TURNO);
@@ -179,7 +178,7 @@ public class WndLiquidacionTuentrada extends WndBase {
         }catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		
+
       //End custom 06-OCT-2010 TEPSA lloaiza CR#VyRWeb003
 	}
 }

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 30/09/2014
  * Hora			: 15:33:54
@@ -18,7 +18,7 @@ import com.cystesoft.vyrbus.view.ui.WndBase;
  */
 public class WndReporteManifiesto extends WndBase{
 	private static final long serialVersionUID = 1L;
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
@@ -26,7 +26,7 @@ public class WndReporteManifiesto extends WndBase{
 	public void onCreate() throws Exception {
         Executions.sendRedirect("/servlet/ReporteManifiestoServlet");
 	}
-	
+
 	public void onLoad() throws Exception{
 	}
 }

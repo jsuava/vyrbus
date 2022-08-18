@@ -19,11 +19,14 @@ import org.zkoss.zul.Div;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Groupbox;
 import org.zkoss.zul.Hbox;
+import org.zkoss.zul.Hlayout;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Separator;
+import org.zkoss.zul.Vbox;
+import org.zkoss.zul.Vlayout;
 import org.zkoss.zul.Window;
 
 import com.cystesoft.vyrbus.model.bean.Bus;
@@ -49,42 +52,46 @@ import com.cystesoft.vyrbus.service.util.Util;
 import com.cystesoft.vyrbus.service.util.UtilData;
 
 /**
- * 
+ *
  * @author José Abanto
- * 
+ *
  */
 @SuppressWarnings("rawtypes")
 public class WndVerMapaBus extends WndBase {
 	private static final long serialVersionUID = 666325160644254381L;
 	private Window oThisWindow = this;
 	public final Grid oGrid = new Grid();
-	
+
 	private String prefijoAsiento="";
 	private Long idItinerario;
 	private Integer cantOcupados;
 	private Integer bus;
-	
+
 	private List<VentaPasaje> lstOcupabilidad=null;
 	private List<VentaPasaje> lstVentas = null; 		//Utilizado en el Transbordo de Pasajeros.
 	public Map<String, Asiento> mapAsientosId = null;
 	private Asiento asientoSeleccionado = null;
 	private EventListener oEventListenerFilter;
 	private Map<String, Asiento> mapaAsientos = null;
-	
-	private static final String IMAGE_PRIMER_PISO = "resources/mapa/bus_primerPiso.png";
-	private static final String IMAGE_SEGUNDO_PISO = "resources/mapa/bus_segundoPiso.png";
+
+	private static final String IMAGE_PRIMER_PISO = "resources/mapa/bus_primerPisoHor.png";
+	private static final String IMAGE_SEGUNDO_PISO = "resources/mapa/bus_segundoPisoHor.png";
 	private static final int TIPO_ASIENTO = 0;
 	private static final int TIPO_MONITOR = 1;
 	private static final int TIPO_CAFETERIA = 2;
 	private static final int PISO_DOS = 2;
-	
+
 	private String key = "-1";
     private String previousKey = "-1";
+    
+    private Div divContenedorBus;
+	private Vbox vbxEstructuraBus;
 	
-        
+
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public WndVerMapaBus() throws Exception {
@@ -95,7 +102,7 @@ public class WndVerMapaBus extends WndBase {
 
 	@Override
 	public void onCreate() throws Exception {
-		
+
 	}
 
 	@Override
@@ -105,14 +112,14 @@ public class WndVerMapaBus extends WndBase {
 		this.setSizable(false);
 		this.setClosable(false);
 		this.setStyle("padding: 5px");
-		this.setWidth("452px");
+		this.setWidth("685px");
 		this.setVisible(true);
 
 	}
 
 	/**
 	 * Carga el Mapa
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@SuppressWarnings("deprecation")
@@ -121,28 +128,15 @@ public class WndVerMapaBus extends WndBase {
 		List<DetalleItinerario> list = ServiceLocator.getItinerarioManager().buscarItinerariosMantenimiento(new Long(getIdItinerario()),"", "", "", "", "", "","");
 //		DetalleItinerario detalleItinerario = new DetalleItinerario();
 		DetalleItinerario detalleItinerario = list.get(0);
-		
+
 		Caption caption = null;
-		
+
 		String styleBlue11f = "font-size: 11px !important; color:#0000CF";
-		
+
 		/* ------------------ CONTENEDOR DE OBJETOS --------------------- */
-		Grid grdContenedor = new Grid();
-		grdContenedor.setStyle("padding:0px; border:none");
-		Columns columns = new Columns();
-		Column column = new Column(); 
-		column.setWidth("174px");
-		columns.appendChild(column);
-		column = new Column();
-		column.setWidth("274px");
-		columns.appendChild(column);
-		grdContenedor.appendChild(columns);
-		
-		Rows rowsContenedor = new Rows();
-		Row rowContenedor = new Row();
-		rowContenedor.setValign("top");
-		rowsContenedor.appendChild(rowContenedor);
-		grdContenedor.appendChild(rowsContenedor);
+		divContenedorBus = new Div();
+		Vlayout vLayoutPrincipal = new Vlayout();
+		vbxEstructuraBus = new Vbox();
 		
 		/* ------------------ MAPA DEL BUS	--------------------- */
 		Groupbox grpMapa = new Groupbox();
@@ -151,19 +145,52 @@ public class WndVerMapaBus extends WndBase {
 		caption.setLabel("MAPA DEL BUS");
 		caption.setStyle("color: #ffffff;");
 		grpMapa.appendChild(caption);
+		grpMapa.appendChild(vbxEstructuraBus);
+		vLayoutPrincipal.appendChild(grpMapa);
 		
+		Hlayout hlayout = new Hlayout();	
+		
+		
+//		Grid grdContenedor = new Grid();
+//		grdContenedor.setStyle("padding:0px; border:none");
+//		Columns columns = new Columns();
+//		Column column = new Column();
+//		column.setWidth("680px");
+//		columns.appendChild(column);
+//		column = new Column();
+//		column.setWidth("274px");
+//		columns.appendChild(column);
+//		grdContenedor.appendChild(columns);
+//
+//		Rows rowsContenedor = new Rows();
+//		Row rowContenedor = new Row();
+//		rowContenedor.setValign("top");
+//		rowsContenedor.appendChild(rowContenedor);
+//		grdContenedor.appendChild(rowsContenedor);
+
+		/* ------------------ MAPA DEL BUS	--------------------- */
+//		Groupbox grpMapa = new Groupbox();
+//		grpMapa.setMold("3d");
+//		caption = new Caption();
+//		caption.setLabel("MAPA DEL BUS");
+//		caption.setStyle("color: #ffffff;");
+//		grpMapa.appendChild(caption);
+//
 		Grid gridPiso = new Grid();
 		crearEstructura(detalleItinerario.getItinerario().getServicio().getId(), grpMapa, false, detalleItinerario, mapAsientosId, null, gridPiso,"manifiesto",false);
-		rowContenedor.appendChild(grpMapa);
+//		vlayout.appendChild(grpMapa);
+		//rowContenedor.appendChild(vlayout);
+
 		
-		/* ------------------ INFORMACION DEL BUS --------------------- */
-		Grid grdContenedorInfo = new Grid();
-		grdContenedorInfo.setStyle("border:none");;
-		Rows rowsContenedorInfo = new Rows();
-		Row rowContenedorInfo = null;
-		
-		rowContenedorInfo = new Row();
-		Groupbox grpInformacion = new Groupbox(); 
+		Vlayout vlayout1 = new Vlayout();
+		/* ------------------ INFORMACION DEL BUS --------------------- */		
+//		Grid grdContenedorInfo = new Grid();
+//		grdContenedorInfo.setStyle("border:none");
+//		Rows rowsContenedorInfo = new Rows();
+//		Row rowContenedorInfo = null;
+
+//		rowContenedorInfo = new Row();
+		Groupbox grpInformacion = new Groupbox();
 		grpInformacion.setMold("3d");
 		grpInformacion.setClosable(false);
 		grpInformacion.setVisible(esVisibleInfoBus);
@@ -171,82 +198,101 @@ public class WndVerMapaBus extends WndBase {
 		caption.setLabel("INFORMACION DEL BUS");
 		caption.setStyle("color: #ffffff;");
 		grpInformacion.appendChild(caption);
-		
+
 		Grid grdInformacion = new Grid();
+		grdInformacion.setWidth("300px");
 		grdInformacion.setStyle("border:none");
+		Columns columns = new Columns();
+		Column column = new Column();
+		column.setWidth("30%");
+		columns.appendChild(column);
+		column = new Column();
+		column.setWidth("70%");
+		columns.appendChild(column);
+		grdInformacion.appendChild(columns);
 		Rows rows = new Rows();
 		Row row = null;
 		Label label = null;
-		
+
 		Bus bus = null;
-		if (detalleItinerario.getItinerario().getBus().getId() != null) 
+		if (detalleItinerario.getItinerario().getBus().getId() != null)
 			bus = ServiceLocator.getBusManager().buscarPorId(detalleItinerario.getItinerario().getBus().getId().longValue());
-		
+
 		label = createLabel("N° BUS", null, null);
 		row = new Row();
 		row.appendChild(label);
 		label = createLabel(bus==null?":":": "  + bus.getCodigo(), styleBlue11f, null);
 		row.appendChild(label);
 		rows.appendChild(row);
-		
+
 		label = createLabel("MARCA", null, null);
 		row = new Row();
 		row.appendChild(label);
 		label = createLabel(bus==null?":":": "  + bus.getGrupoMantenimiento().getDenominacion(), styleBlue11f, null);
 		row.appendChild(label);
 		rows.appendChild(row);
-		
+
 		label = createLabel("PLACA", null, null);
 		row = new Row();
 		row.appendChild(label);
 		label = createLabel(bus==null?":":": "  + bus.getNumeroPlaca(), styleBlue11f, null);
 		row.appendChild(label);
 		rows.appendChild(row);
-		
+
 //		label = createLabel("DESCRIPCION", null, null);
 //		row = new Row();
 //		row.appendChild(label);
 //		label = createLabel(bus==null?":":": "  + bus.getNumeroEjes().toString(), styleBlue11f, null);
 //		row.appendChild(label);
 //		rows.appendChild(row);
-		
+
 		label = createLabel("CAPACIDAD", null, null);
 		row = new Row();
 		row.appendChild(label);
-		Integer capacidad = detalleItinerario.getItinerario().getServicio().getNumeroAsientosPiso1() + 
+		Integer capacidad = detalleItinerario.getItinerario().getServicio().getNumeroAsientosPiso1() +
 							(detalleItinerario.getItinerario().getServicio().getNumeroPisos().intValue()==2
 							? detalleItinerario.getItinerario().getServicio().getNumeroAsientosPiso2() : 0);
 		label = createLabel(": "  + capacidad.toString(), styleBlue11f, null);
 		row.appendChild(label);
 		rows.appendChild(row);
-		
+
 		label = createLabel("SERVICIO", null, null);
 		row = new Row();
 		row.appendChild(label);
 		label = createLabel(": "  + detalleItinerario.getItinerario().getServicio().getDenominacion().toString(), styleBlue11f, null);
 		row.appendChild(label);
 		rows.appendChild(row);
-		
+
 		grdInformacion.appendChild(rows);
 		grpInformacion.appendChild(grdInformacion);
-		rowContenedorInfo.appendChild(grpInformacion);
-		rowsContenedorInfo.appendChild(rowContenedorInfo);
-		
-		
+		vlayout1.appendChild(grpInformacion);
+		//rowContenedorInfo.appendChild(grpInformacion);
+		//rowsContenedorInfo.appendChild(rowContenedorInfo);
+
+
 		/* ------------------ OCUPABILIDAD DEL BUS ------------------ */
-		rowContenedorInfo = new Row();
+		//rowContenedorInfo = new Row();
 		Groupbox grpOcupabilidad = new Groupbox(); grpOcupabilidad.setMold("3d");
 		grpOcupabilidad.setVisible(esVisibleOcupabilidad);
 		grpOcupabilidad.setClosable(false);
 		caption = new Caption();
 		caption.setLabel("OCUPABILIDAD DEL SERVICIO");
 		caption.setStyle("color: #ffffff;");
-		grpOcupabilidad.appendChild(caption);		
-		
+		grpOcupabilidad.appendChild(caption);
+
 		Grid grdOcupabilidad = new Grid();
+		columns = new Columns();
+		column = new Column();
+		column.setWidth("30%");
+		columns.appendChild(column);
+		column = new Column();
+		column.setWidth("70%");
+		columns.appendChild(column);
+		grdOcupabilidad.appendChild(columns);
+		grdOcupabilidad.setWidth("300px");
 		grdOcupabilidad.setStyle("border:none");
 		rows = new Rows();
-		
+
 		row = new Row();
 		label = new Label("OCUPADOS");
 		row.appendChild(label);
@@ -254,7 +300,7 @@ public class WndVerMapaBus extends WndBase {
 		label.setStyle("font-size:11px !important");
 		row.appendChild(label);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		label = new Label("DISPONIBLES");
 		row.appendChild(label);
@@ -262,32 +308,37 @@ public class WndVerMapaBus extends WndBase {
 		label.setStyle("font-size:11px !important");
 		row.appendChild(label);
 		rows.appendChild(row);
-		
+
 		grdOcupabilidad.appendChild(rows);
 		grpOcupabilidad.appendChild(grdOcupabilidad);
-		rowContenedorInfo.appendChild(grpOcupabilidad);
-		rowsContenedorInfo.appendChild(rowContenedorInfo);
-		
-		
+		vlayout1.appendChild(grpOcupabilidad);
+		hlayout.appendChild(vlayout1);
+//		rowContenedorInfo.appendChild(grpOcupabilidad);
+//		rowsContenedorInfo.appendChild(rowContenedorInfo);
+
+
+		Vlayout vlayout2 = new Vlayout();
 		/* ------------------ Leyenda	------------------ */
-		rowContenedorInfo = new Row();
-		Groupbox grpLeyenda = new Groupbox(); 
+		//rowContenedorInfo = new Row();
+		Groupbox grpLeyenda = new Groupbox();
 		grpLeyenda.setMold("3d");
+//		grpLeyenda.setWidth("320px");
 		grpLeyenda.setClosable(false);
 		grpLeyenda.setVisible(esVisibleLeyenda);
 		caption = new Caption("LEYENDA DE IMAGENES");
 		caption.setStyle("color: #ffffff;");
 		grpLeyenda.appendChild(caption);
-		
+
 		Grid grdLeyenda = new Grid();
+		grdLeyenda.setWidth("353px");
 		grdLeyenda.setStyle("border:none");
 		rows = new Rows();
-		
-		
+
+
 		Image image = null;
 		Hbox hboxRow = null;
 		Hbox hboxObjeto = null;
-		
+
 		row = new Row();
 		hboxRow = new Hbox();
 		hboxRow.setAlign("center");
@@ -318,7 +369,7 @@ public class WndVerMapaBus extends WndBase {
 		hboxRow.appendChild(hboxObjeto);
 		row.appendChild(hboxRow);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		hboxRow = new Hbox();
 		hboxRow.setAlign("center");
@@ -349,7 +400,7 @@ public class WndVerMapaBus extends WndBase {
 		hboxRow.appendChild(hboxObjeto);
 		row.appendChild(hboxRow);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		hboxRow = new Hbox();
 		hboxRow.setAlign("center");
@@ -380,7 +431,7 @@ public class WndVerMapaBus extends WndBase {
 		hboxRow.appendChild(hboxObjeto);
 		row.appendChild(hboxRow);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		hboxRow = new Hbox();
 		hboxRow.setAlign("center");
@@ -411,7 +462,7 @@ public class WndVerMapaBus extends WndBase {
 		hboxRow.appendChild(hboxObjeto);
 		row.appendChild(hboxRow);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		hboxRow = new Hbox();
 		hboxRow.setAlign("center");
@@ -445,17 +496,20 @@ public class WndVerMapaBus extends WndBase {
 
 		grdLeyenda.appendChild(rows);
 		grpLeyenda.appendChild(grdLeyenda);
-		rowContenedorInfo.appendChild(grpLeyenda);
-		rowsContenedorInfo.appendChild(rowContenedorInfo);
-		
-		
+		vlayout2.appendChild(grpLeyenda);
+//		rowContenedorInfo.appendChild(grpLeyenda);
+//		rowsContenedorInfo.appendChild(rowContenedorInfo);
+
+
 		/* 	------------------------ Grid de Botones 	---------------------------	*/
-		rowContenedorInfo = new Row();
+		//rowContenedorInfo = new Row();
 		Grid grdBotones = new Grid();
-		grdBotones.setStyle("border:none");
+		grdBotones.setWidth("353px");
+		grdBotones.setStyle("border:none; background:white");
 		rows = new Rows();
 		row = new Row();
-		
+		row.setStyle("background:white");
+
 		Button buttonRefresh = new Button();
 		buttonRefresh.setLabel("Refrescar");
 		buttonRefresh.setClass("btnCommandL");
@@ -464,7 +518,7 @@ public class WndVerMapaBus extends WndBase {
 		buttonRefresh.setTooltiptext("Refrescar Mapa");
 		buttonRefresh.setImage("/resources/mp_recargar16.png");
 		row.appendChild(buttonRefresh);
-		
+
 		Button buttonAceptar = new Button();
 		buttonAceptar.setLabel("Aceptar");
 		buttonAceptar.setVisible(esVisibleInfoBus);
@@ -473,30 +527,37 @@ public class WndVerMapaBus extends WndBase {
 		buttonAceptar.setImage("/resources/mp_aceptarEnabled.png");
 		row.appendChild(buttonAceptar);
 		rows.appendChild(row);
-		
-		
-		/*Validacion del numero de pisos del bus para la aliniación.*/
-		if (detalleItinerario.getItinerario().getServicio().getNumeroPisos().equals(PISO_DOS)){
-			grdBotones.setHeight("140px");
-			Separator separator = new Separator("vertical");
-			separator.setHeight("98px");
-			row = new Row();
-			row.setSpans("2");
-			row.appendChild(separator);
-			rows.appendChild(row);			
-//		}else{
-//			grdSegundoPiso.setHeight("448px"); 
-//			Separator separator = new Separator();separator.setHeight("38px");
-//			rowMB2.appendChild(separator);		
-		}
-		grdBotones.appendChild(rows);
-		rowContenedorInfo.appendChild(grdBotones);
-		rowsContenedorInfo.appendChild(rowContenedorInfo);
-		
-		grdContenedorInfo.appendChild(rowsContenedorInfo);
-		rowContenedor.appendChild(grdContenedorInfo);
 
-		appendChild(grdContenedor);
+
+		/*Validacion del numero de pisos del bus para la aliniación.*/
+//		if (detalleItinerario.getItinerario().getServicio().getNumeroPisos().equals(PISO_DOS)){
+//			grdBotones.setHeight("140px");
+//			Separator separator = new Separator("vertical");
+//			separator.setHeight("98px");
+//			row = new Row();
+//			row.setSpans("2");
+//			row.appendChild(separator);
+//			rows.appendChild(row);
+////		}else{
+////			grdSegundoPiso.setHeight("448px");
+////			Separator separator = new Separator();separator.setHeight("38px");
+////			rowMB2.appendChild(separator);
+//		}
+		grdBotones.appendChild(rows);
+		vlayout2.appendChild(grdBotones);
+		hlayout.appendChild(vlayout2);
+		
+		vLayoutPrincipal.appendChild(hlayout);
+		divContenedorBus.appendChild(vLayoutPrincipal);
+//		rowContenedorInfo.appendChild(grdBotones);
+//		rowsContenedorInfo.appendChild(rowContenedorInfo);
+
+//		grdContenedorInfo.appendChild(rowsContenedorInfo);
+//		vlayout.appendChild(grdContenedorInfo);
+//		rowContenedor.appendChild(vlayout);
+
+//		appendChild(grdContenedor);
+		appendChild(divContenedorBus);
 
 		buttonAceptar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
@@ -517,7 +578,7 @@ public class WndVerMapaBus extends WndBase {
 		});
 
 	}
-	
+
 	private Label createLabel(String value, String style, String sclass){
 		Label label = new Label(value);
 		if(style!=null)
@@ -526,90 +587,98 @@ public class WndVerMapaBus extends WndBase {
 			label.setClass(sclass);
 		return label;
 	}
-	
+
 	/**
 	 * Crea la estructura del mapa del Bus
 	 * @param idServicio		: Identificador del servicio
 	 * @param grpbxParent		: objeto GroupBox
 	 * @param esRetorno			: indica si es retorno
 	 * @param detalleItinerario	: objeto DetalleItinerario
-	 * @param mapaAsientos		: 
+	 * @param mapaAsientos		:
 	 * @param gridOcupabilidad	: objeto Grid donde se mostrara el mapa del bus
 	 * @param gridPiso			: objeto Grid Utilizado para los transbordos(diferenciar las variables definidad para cada mapa)
 	 * @param identifica		: Utilizado para los transbordos(diferenciar las variables definidad para cada mapa)
 	 */
 	@SuppressWarnings({ "deprecation","unchecked" })
-	public void crearEstructura(Integer idServicio, Groupbox grpbxParent, boolean esRetorno, final DetalleItinerario detalleItinerario, 
-								Map<String, Asiento> mapaAsientos, final Grid gridOcupabilidad, Grid gridPiso, 
+	public void crearEstructura(Integer idServicio, Groupbox grpbxParent, boolean esRetorno, final DetalleItinerario detalleItinerario,
+								Map<String, Asiento> mapaAsientos, final Grid gridOcupabilidad, Grid gridPiso,
 								String identifica,final Boolean isTransbordo){
 		try{
-			
+
 			/*Retorna el numero de asiento seleccionado*/
 			EventListener selectedEventListener = new EventListener<Event>() {
 				@Override
 				public void onEvent(Event event) throws Exception {
 					if (event.getTarget() instanceof Asiento) {
 						if(oEventListenerFilter !=null){
-							asientoSeleccionado=(Asiento)event.getTarget();	
+							asientoSeleccionado=(Asiento)event.getTarget();
 							oEventListenerFilter.onEvent(new Event(com.cystesoft.vyrbus.view.ui.Events.ON_SELECT));
 						}
 					}
 				}
 			};
-		
+
 			Servicio servicio = null;
-			List<MapaBus> lstMapaBus = ServiceLocator.getMapaBusManager().buscarMapaBus(idServicio, Constantes.VALUE_ACTIVO);			
-			
-			Map<Coordenada, MapaBus> mapCoordenadas = new HashMap<Coordenada, MapaBus>();
+			List<MapaBus> lstMapaBus = ServiceLocator.getMapaBusManager().buscarMapaBusHorizontal(idServicio, Constantes.VALUE_ACTIVO);
+
+			Map<Coordenada, MapaBus> mapCoordenadas = new HashMap<>();
 			for(MapaBus mapaBus : lstMapaBus){
 				Coordenada coordenada = new Coordenada(mapaBus.getNumeroFila(), mapaBus.getNumeroColumna(), mapaBus.getNumeroPiso());
 				mapCoordenadas.put(coordenada, mapaBus);
 			}
-			
+
 			if(lstMapaBus.size()>0)
 				servicio = lstMapaBus.get(0).getServicio();
-			
+
 			int nPisos = servicio.getNumeroPisos();
 			int nFilas = servicio.getNumeroFilasPiso1();
 			int nColumnas = servicio.getNumeroColumnasPiso1();
 			prefijoAsiento = "imgAsientoIdaPiso1_"+identifica;
 			if(esRetorno)
 				prefijoAsiento = "imgAsientoRetornoPiso1_"+identifica;
-			Integer numeroAsiento = 0;
-			
-			inicializarEstructura(grpbxParent);
-			
-			Image imagen = generarImagen(IMAGE_PRIMER_PISO, 154, 43);
-			
-			mapaAsientos = new HashMap<String, Asiento>();
-			this.mapaAsientos = new HashMap<String, Asiento>();
-			
+			int numeroAsiento = 0;
+
+			inicializarEstructura();
+
+//			Image imagen = generarImagen(IMAGE_PRIMER_PISO, 154, 43);
+			Image imagen = generarImagen(IMAGE_PRIMER_PISO, 43, 170);
+
+			mapaAsientos = new HashMap<>();
+			Hlayout ohlayout = new Hlayout();
+			this.mapaAsientos = new HashMap<>();
+
 			for(int i=0; i<nPisos; i++){
 				String idGrid = "grdIdaPiso1"+identifica;
+				String idTam = (nPisos == 2 ? "130px" : "500px");
 				if(i==1){
 					nFilas = servicio.getNumeroFilasPiso2();
 					nColumnas = servicio.getNumeroColumnasPiso2();
 					prefijoAsiento = "imgAsientoIdaPiso2_"+identifica;
 					idGrid = "grdIdaPiso2"+identifica;
+					idTam = "450px";
 					if(esRetorno){
 						prefijoAsiento = "imgAsientoRetornoPiso2_";
 						idGrid = "grdRetornoPiso2";
 					}
-					imagen = generarImagen(IMAGE_SEGUNDO_PISO, 154, 34);
-					
+//					imagen = generarImagen(IMAGE_SEGUNDO_PISO, 154, 34);
+					imagen = generarImagen(IMAGE_SEGUNDO_PISO, 34, 170);
+
 				}
+				/*	Creando la grilla contenedora de asientos	*/
+				ohlayout.appendChild(imagen);
 				gridPiso = new Grid();
 				gridPiso.setId(idGrid);
 				gridPiso.setStyle("border:none;background:white");
-				gridPiso.setWidth("154px");
-				
-				
+//				gridPiso.setWidth("154px");
+				gridPiso.setWidth(idTam);
+				gridPiso.setHeight("170px");
+
 				Rows rows = new Rows();
 				Row row = new Row();
-				row.setSpans(String.valueOf(nColumnas));
-				row.appendChild(imagen);
-				row.setStyle("background:white; padding:0px");
-				rows.appendChild(row);
+//				row.setSpans(String.valueOf(nColumnas));
+//				row.appendChild(imagen);
+//				row.setStyle("background:white; padding:0px");
+//				rows.appendChild(row);
 				numeroAsiento = 0;
 				for(int j=0; j<nFilas; j++){
 					row = new Row();
@@ -618,20 +687,20 @@ public class WndVerMapaBus extends WndBase {
 						oDiv.setWidth("28px");
 						oDiv.setHeight("28px");
 						oDiv.setStyle("padding:none");
-						
+
 						String coordenadaActual = j+"-"+k+"-"+i;
-						
+
 						for(Coordenada coordenada : mapCoordenadas.keySet()){
 							if(coordenada.toString().equals(coordenadaActual)){
 								MapaBus objetoBus = mapCoordenadas.get(coordenada);
-								
-								HashMap<String, String> propiedades = new HashMap<String, String>();
+
+								HashMap<String, String> propiedades = new HashMap<>();
 								numeroAsiento++;
-								
+
 								if(objetoBus.getTipoObjeto().intValue()==TIPO_ASIENTO){
 									Asiento asiento = new Asiento();
-									asiento.addEventListener(Events.ON_CLICK, selectedEventListener);										
-								
+									asiento.addEventListener(Events.ON_CLICK, selectedEventListener);
+
 									asiento.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 										@Override
 										public void onEvent(Event e){
@@ -639,7 +708,7 @@ public class WndVerMapaBus extends WndBase {
 													onClickAsiento(e,detalleItinerario,gridOcupabilidad );
 										}
 									});
-									
+
 									propiedades.put("ocupante", "pasajero");
 									asiento.setId(prefijoAsiento + objetoBus.getNumeroAsiento());
 									asiento.setOcupante(Asiento.OCUPANTE_PASAJERO);
@@ -687,7 +756,7 @@ public class WndVerMapaBus extends WndBase {
 									sshh.setSrc(objetoBus.getPathImagen());
 									sshh.setPropiedades(propiedades);
 									oDiv.appendChild(sshh);
-									
+
 								}
 								break;
 							}
@@ -698,25 +767,24 @@ public class WndVerMapaBus extends WndBase {
 					rows.appendChild(row);
 				}
 				gridPiso.appendChild(rows);
-				grpbxParent.appendChild(gridPiso);
+//				grpbxParent.appendChild(gridPiso);
+				ohlayout.appendChild(gridPiso);
+				vbxEstructuraBus.appendChild(ohlayout);
 				onRefreshMapaAsientos(mapaAsientos, detalleItinerario, gridOcupabilidad);
 //				if(esRetorno)
 //					mapaAsientosRetorno = mapaAsientos;
 //				else
 					mapAsientosId = mapaAsientos;
-					
-					
-					
-					
 			}
+			grpbxParent.appendChild(vbxEstructuraBus);
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
-  
 
-	
-	
+
+
+
 	/**
 	 * Evento utilizado cuando el usuario hace click en un asiento.
 	 * @param e					: Evento
@@ -726,10 +794,10 @@ public class WndVerMapaBus extends WndBase {
 	 */
 	private void onClickAsiento(Event e,DetalleItinerario detalleItinerario, Grid gridOcupabilidad){
 		Asiento asientoSeleccionado =(Asiento)e.getTarget();
-		
+
 		previousKey = key;
 		key = asientoSeleccionado.getKey();
-		
+
 		/*	Elimina el asiento de la lista de asientos seleccionados y desbloquea el asiento*/
 		if(removerAsientoSeleccionado(previousKey, key,detalleItinerario)){
 			return;
@@ -764,7 +832,7 @@ public class WndVerMapaBus extends WndBase {
 				tmpOcupacionAsientosID.setIdItinerario(tmpOcupacionAsientos.getItinerario().getId());
 				tmpOcupacionAsientosID.setNumeroAsiento(tmpOcupacionAsientos.getNumeroAsiento());
 				tmpOcupacionAsientos.setTmpOcupacionAsientosID(tmpOcupacionAsientosID);
-				
+
 				int result = ServiceLocator.getTmpOcupacionAsientosManager().bloquearAsiento(tmpOcupacionAsientos);
 				if(result < 0){
 					DlgMessage.information(Messages.getString("WndVentaReserva.information.asientoBloqueado"));
@@ -797,7 +865,7 @@ public class WndVerMapaBus extends WndBase {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Realiza la eliminacion del asiento seleccionado y luego lo desbloquea.
 	 * @param seatSelected	: Asiento seleccionado.
@@ -806,11 +874,11 @@ public class WndVerMapaBus extends WndBase {
 	private boolean removerAsientoSeleccionado(String previusKey, String key, DetalleItinerario detalleItinerario){
 		try{
 			String[] buffer = key.split("-");	//Almacenamos en un array el asiento y el piso
-			if(previusKey.equals(key)){		
+			if(previusKey.equals(key)){
 				if(mapaAsientos.get(key).getEstadoAsiento().intValue()==Constantes.ASIENTO_BLOQUEADO){
 					mapaAsientos.get(key).setEstadoAsiento(Constantes.ASIENTO_DISPONIBLE);
 					mapaAsientos.get(key).setSrc(Constantes.ICON_DISPONIBLE+buffer[0]+Constantes.IMAGE_EXTENSION);
-					
+
 					TmpOcupacionAsientos tmpOcupacion = new TmpOcupacionAsientos();
 					tmpOcupacion.setRuta(detalleItinerario.getRuta());
 					tmpOcupacion.setItinerario(detalleItinerario.getItinerario());
@@ -819,14 +887,14 @@ public class WndVerMapaBus extends WndBase {
 					ServiceLocator.getTmpOcupacionAsientosManager().desbloquearAsiento(tmpOcupacion);
 					return true;
 				}else
-					return false;				
+					return false;
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Consulta si el asiento esta bloqueado.
 	 * @param key	: Clave a buscar en el mapa de asientos.
@@ -852,7 +920,7 @@ public class WndVerMapaBus extends WndBase {
 //		return padding;
 //	}
 
-	
+
 	/**
 	 * Realiza el refresco del mapa del bus.
 	 * @param mapa				: Mapa de asientos
@@ -861,11 +929,11 @@ public class WndVerMapaBus extends WndBase {
 	@SuppressWarnings("unchecked")
 	public void onRefreshMapaAsientos(Map<String, Asiento> mapaAsientos, DetalleItinerario detalleItinerario, Grid gridOcupabilidad){
 		try{
-						
+
 			//onCleanMap(mapaAsientos);
 			/*	Obtenemos el subconjunto que queremos buscar segun la ruta seleccioanda		*/
 			List<Integer> subConjuntoBuscar = obtenerSubconjunto(detalleItinerario.getItinerario().getListSecuenciaTramo(), detalleItinerario.getRuta().getLocalidadOrigen().getId(), detalleItinerario.getItinerario().getRuta().getLocalidadDestino().getId());
-			
+
 			lstVentas = ServiceLocator.getVentaPasajesManager().buscarVentasForMapaBus(detalleItinerario.getItinerario().getId());
 			lstVentas = obtenerConjuntos(lstVentas, detalleItinerario.getItinerario().getListSecuenciaTramo());
 			if(lstVentas.size()>0){
@@ -908,16 +976,16 @@ public class WndVerMapaBus extends WndBase {
 												   "Fecha Venta: "+ Util.DatetoString(venta.getFechaInsercion(), Constantes.DATE_TIME_FORMAT)
 									);
 							break;
-						}	
+						}
 					}
 					/*	Para identificar las prioridades del tramos para la venta	*/
 					if(venta.getRuta().getLocalidadDestino().getId()==detalleItinerario.getRuta().getLocalidadOrigen().getId()){
 						Asiento asiento = mapaAsientos.get(key);
-						asiento.setSrc(Constantes.ICON_SEMI_OCUPADO+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);								
+						asiento.setSrc(Constantes.ICON_SEMI_OCUPADO+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
 					}
 				}
-			}			
-			
+			}
+
 			/*	BUSCAMOS LOS ASIENTOS QUE ESTEN BLOQUEADOS PARA EL ITINERARIO SELECCIONADO	*/
 			List<TmpOcupacionAsientos> lstBloqueados = ServiceLocator.getTmpOcupacionAsientosManager().buscarAsientosBloqueados(detalleItinerario.getItinerario().getId());
 			lstBloqueados = obtenerConjuntos(lstBloqueados, detalleItinerario.getItinerario().getListSecuenciaTramo());
@@ -940,7 +1008,7 @@ public class WndVerMapaBus extends WndBase {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Obtine los subconjuntos de un registro de venta, tmpocupacion o de la
 	 * ruta que estamos buscando.
@@ -952,7 +1020,7 @@ public class WndVerMapaBus extends WndBase {
 	private List<Integer> obtenerSubconjunto(
 			List<SecuenciaTramo> lstSecuencias, Integer idOrigen,
 			Integer idDestino) {
-		List<Integer> lstSubconjunto = new ArrayList<Integer>();
+		List<Integer> lstSubconjunto = new ArrayList<>();
 		/* Recorremos la secuencia de tramos del itinerario */
 		for (int j = 0; j < lstSecuencias.size(); j++) {
 			SecuenciaTramo secuencia = lstSecuencias.get(j);
@@ -1008,19 +1076,19 @@ public class WndVerMapaBus extends WndBase {
 		}
 		return result;
 	}
-	
-	
+
+
 	/**
 	 * Inicializa(limpia los objetos existentes) el contenedor de los asientos.
 	 */
-	private void inicializarEstructura(Groupbox groupbox){
-		for(int i=groupbox.getChildren().size()-1; i>-1; i--){
-			Component component = groupbox.getChildren().get(i);
+	private void inicializarEstructura(){
+		for(int i=vbxEstructuraBus.getChildren().size()-1; i>-1; i--){
+			Component component = vbxEstructuraBus.getChildren().get(i);
 			if(!(component instanceof Caption))
-				groupbox.removeChild(component);
+				vbxEstructuraBus.removeChild(component);
 		}
 	}
-	
+
 
 	/**
 	 * Genera el objeto imagen para los pisos del bus
@@ -1036,7 +1104,7 @@ public class WndVerMapaBus extends WndBase {
 		imagen.setHeight(String.valueOf(height)+"px");
 		return imagen;
 	}
-	
+
 	@Override
 	public boolean addEventListener(String evtnm, EventListener<? extends Event> listener) {
 		boolean resultadoEvento = true;
@@ -1048,11 +1116,11 @@ public class WndVerMapaBus extends WndBase {
 		}
 		return resultadoEvento;
 	}
-	
+
 	public List<VentaPasaje>getLstVentas(){
 		return this.lstVentas;
 	}
-	
+
 	/**
 	 * @return Objeto idItinerario.
 	 */
@@ -1096,28 +1164,28 @@ public class WndVerMapaBus extends WndBase {
 	public void setBus(Integer bus) {
 		this.bus = bus;
 	}
-	
+
 	public List<VentaPasaje> getLisOcupabilidad(){
 		return lstOcupabilidad;
 	}
-	
+
 	public void setListOcupabilidad(List<VentaPasaje> lisOpabilidad){
 		this.lstOcupabilidad=lisOpabilidad;
 	}
-	
+
 	public void  setAsientoSeleccionado(Asiento asientoSeleccionado){
 		this.asientoSeleccionado=asientoSeleccionado;
 	}
-	
+
 	public Asiento getAsientoSeleccionado(){
 		return asientoSeleccionado;
 	}
-	
+
 	public List<VentaPasaje> getListVentas(){
 		return lstVentas;
 	}
 
-	
-	
-	
+
+
+
 }

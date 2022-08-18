@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 08/09/2016
  * Hora			: 11:58:36
@@ -18,7 +18,7 @@ import java.util.Date;
 public class OcupacionAsientosBloqueadosPool extends GenericBean{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Long id;
@@ -164,6 +164,6 @@ public class OcupacionAsientosBloqueadosPool extends GenericBean{
 	public void setFechaExpiraBloqueo(Date fechaExpiraBloqueo) {
 		this.fechaExpiraBloqueo = fechaExpiraBloqueo;
 	}
-	
+
 
 }

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 17/07/2013
  */
@@ -13,24 +13,24 @@ package com.cystesoft.vyrbus.service.exceptions;
  */
 public class ContactoException extends Exception {
 	private static final long serialVersionUID = 1L;
-	
+
 	public static final int APELLIDOS_NULL=1;
 	public static final int NOMBRES_NULL=2;
 	public static final int FINANCIERO_APELLIDOS_NULL=3;
 	public static final int FINANCIERO_NOMBRES_NULL=4;
-	
+
 	private Integer tipo;
 
-	
+
 	public ContactoException(){
 		super();
 	}
-	
+
 	public ContactoException(Integer tipo){
 		this.tipo=tipo;
 	}
-	
-	
+
+
 	/**
 	 * @return the tipo
 	 */
@@ -44,7 +44,7 @@ public class ContactoException extends Exception {
 	public void setTipo(Integer tipo) {
 		this.tipo = tipo;
 	}
-	
-	
+
+
 
 }

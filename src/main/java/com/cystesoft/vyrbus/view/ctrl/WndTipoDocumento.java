@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 17/05/2012
  */
@@ -50,9 +50,9 @@ public class WndTipoDocumento extends WndOpcionesMantenimiento {
 	private Textbox txtColorAlerta;
 	private Intbox ibSegundaAlerta;
 	private Textbox txtColorSegundaAlerta;
-	
+
 	private TipoDocumento oTipoDocumento = null;
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
 
 	/* (non-Javadoc)
@@ -60,7 +60,7 @@ public class WndTipoDocumento extends WndOpcionesMantenimiento {
 	 */
 	@Override
 	public void onCreate() throws Exception {
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
 	}
 
@@ -129,7 +129,7 @@ public class WndTipoDocumento extends WndOpcionesMantenimiento {
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getTipoDocumentoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getTipoDocumentoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
 	}
 
@@ -173,11 +173,11 @@ public class WndTipoDocumento extends WndOpcionesMantenimiento {
 				throw new DenominacionNullException();
 			else if (txtNombreCortoSufijo.getText().trim().equals(""))
 				throw new NombreCortoNullException();
-			
-			
+
+
 			if (action==ACTION_NEW)
 				oTipoDocumento = new TipoDocumento();
-			
+
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
 			oTipoDocumento.setId(id);
 			oTipoDocumento.setDenominacion(txtDenominacion.getText().trim().toUpperCase());
@@ -208,7 +208,7 @@ public class WndTipoDocumento extends WndOpcionesMantenimiento {
 			criteriosBusqueda.put("denominacion", oTipoDocumento.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			listarRegistros(ServiceLocator.getTipoDocumentoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-			
+
 
 		}catch (DenominacionNullException dnex){
 			DlgMessage.information(Messages.getString("Generales.information.noIngresoDenominacion"),txtDenominacion);
@@ -291,7 +291,7 @@ public class WndTipoDocumento extends WndOpcionesMantenimiento {
 				break;
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onClose()
 	 */
@@ -301,11 +301,11 @@ public class WndTipoDocumento extends WndOpcionesMantenimiento {
 	}
 
 	private void listarRegistros(ArrayList<TipoDocumento> lstRegistros) {
-		ArrayList<Object> lstTipoDocumentos = new ArrayList<Object>();
+		ArrayList<Object> lstTipoDocumentos = new ArrayList<>();
 
 		for(int r = 0; r < lstRegistros.size(); r ++) {
 			TipoDocumento oTipoDocumento = lstRegistros.get(r);
-			ArrayList<Object> lstFila = new ArrayList<Object>();
+			ArrayList<Object> lstFila = new ArrayList<>();
 
 			lstFila.add(oTipoDocumento.getId());
 			lstFila.add(r + 1);
@@ -319,26 +319,26 @@ public class WndTipoDocumento extends WndOpcionesMantenimiento {
 
 		Util.llenarListbox(listboxLista, lstTipoDocumentos, true);
 	}
-	
+
 	private void mantenimientoRegistro(Long id) throws Exception {
 		oTipoDocumento = ServiceLocator.getTipoDocumentoManager().buscarPorId(id);
 
 		textboxId.setText(oTipoDocumento.getId().toString());
 		txtDenominacion.setText(oTipoDocumento.getDenominacion());
 		txtNombreCortoSufijo.setText(oTipoDocumento.getNombreCorto());
-		
+
 		if (oTipoDocumento.getMaskerade() !=null)
 			txtMascaraFormatoIngresoDatos.setText(oTipoDocumento.getMaskerade());
-		
+
 		if (oTipoDocumento.getAlerta1() !=null)
 			ibAlerta.setValue(oTipoDocumento.getAlerta1().intValue());
-		
+
 		if (oTipoDocumento.getAlerta2() !=null)
 			ibSegundaAlerta.setValue(oTipoDocumento.getAlerta2().intValue());
 
 		chkMarcarDocumentacionBus.setChecked(oTipoDocumento.getTipo().intValue()==TipoDocumento.BUS?true:false);
 		txtColorAlerta.setText(oTipoDocumento.getColorAlerta1());
 		txtColorSegundaAlerta.setText(oTipoDocumento.getColorAlerta2());
-		
+
 	}
 }

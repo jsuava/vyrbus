@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 25/08/2012
  */
@@ -22,12 +22,12 @@ import com.cystesoft.vyrbus.model.dao.EstadoDocumentoBusDAO;
 @SuppressWarnings("unchecked")
 public class EstadoDocumentoBusDAOImpl extends GenericDAOImpl implements EstadoDocumentoBusDAO {
 
-	
+
 	@Override
 	public ArrayList<EstadoDocumentoBus> buscarPorEstadoRegistro(String estado,String criterioOrden) {
 		return (ArrayList<EstadoDocumentoBus>) super.findByEstadoRegistro(EstadoDocumentoBus.class, estado, criterioOrden);
 	}
-	
+
 	@Override
 	public ArrayList<EstadoDocumentoBus> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar) {
 		return (ArrayList<EstadoDocumentoBus>) super.findByX(EstadoDocumentoBus.class, criteriosBusqueda, criteriosOrdenar);

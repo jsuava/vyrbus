@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripciï¿½n	: 
+ * Descripciï¿½n	:
  * Autor		: Josï¿½ Avalos Sullo
  * Fecha		: 25/06/2014
  */
@@ -39,8 +39,8 @@ public interface VentaSeguroManager {
 	 * @throws Exception
 	 */
 	public List<VSTipoDocumento> buscarTipoDocumentoPorEstado(String estado)throws Exception;
-	
-	
+
+
 	/*TRANSACCIONES REFERIDAS SEXO DEL ASEGURADO*/
 	/**
 	 * Busca Sexos del Asegurado
@@ -49,8 +49,8 @@ public interface VentaSeguroManager {
 	 * @throws Exception
 	 */
 	public List<VSSexo> buscarSexoPorEstado(String estado)throws Exception;
-	
-	
+
+
 	/*TRANSACCIONES REFERIDAS ESTADO CIVIL */
 	/**
 	 * Busca los estado Civil
@@ -59,8 +59,8 @@ public interface VentaSeguroManager {
 	 * @throws Exception
 	 */
 	public List<VSEstadoCivil>buscarEstadoCivilPorEstado(String estado)throws Exception;
-	
-	
+
+
 	/*TRANSACCIONES REFERIDAS A LAS CIUDADES */
 	/**
 	 * Busca las ciudades destino
@@ -69,11 +69,11 @@ public interface VentaSeguroManager {
 	 * @throws Exception
 	 */
 	public List<VSCiudad>buscarCiudadesPorEstado(String estado)throws Exception;
-	
-	
+
+
 	/*TRANSACCIONES REFERIDAS AL ASEGURADO */
 	/**
-	 * Busca el asegurado por su tipo y numero de documento. 
+	 * Busca el asegurado por su tipo y numero de documento.
 	 * @param idTipoDocumento	: Identificadoe del tipo de documento.
 	 * @param numeroDocumento	: Nï¿½mero de documento.
 	 * @return Asegurado.
@@ -92,8 +92,8 @@ public interface VentaSeguroManager {
 	 * @throws Exception
 	 */
 	public void guardarAsegurado(VSAsegurado asegurado)throws Exception;
-	
-	
+
+
 	/*TRANSACCIONES REFERIDAS A LA LIQUIDACION*/
 	/**
 	 * Busca la liquidacion para la venta de seguros.
@@ -123,12 +123,12 @@ public interface VentaSeguroManager {
 	 * @throws Exception
 	 */
 	public VSLiquidacion buscarLiquidacionVentas (Integer idLiquidacion)throws Exception;
-	
-	
+
+
 	/*TRANSACCIONES REFERIDAS A LA AFILIACION*/
 	/**
 	 * Guarda una nueva instancia de la afiliacion
-	 * @param vsAfiliacion	: 
+	 * @param vsAfiliacion	:
 	 * @throws Exception
 	 */
 	public void guardarAfiliacion(VSAfiliacion vsAfiliacion)throws Exception;
@@ -166,7 +166,7 @@ public interface VentaSeguroManager {
 	 */
 	public List<VSAfiliacion>buscarAfiliacionesByConsulta(String fechaInicio, String fechaFin,String tipoPasajero,String numDoctoPax,Integer idUsuario, Integer idAgencia,String boleto)throws Exception;
 	/**
-	 * Busca las agencias que han realizado afiliaciones, segï¿½n el rango de fechas. 
+	 * Busca las agencias que han realizado afiliaciones, segï¿½n el rango de fechas.
 	 * @param fechaInicio	: Fecha incio de la busqueda
 	 * @param fechaFin		: Fecha fin de la busqyeda.
 	 * @return	Lista de agencias.
@@ -174,7 +174,7 @@ public interface VentaSeguroManager {
 	 */
 	public List<Agencia>buscarAgenciasAfiliacionesByConsulta(String fechaInicio, String fechaFin)throws Exception;
 	/**
-	 * Busca los usuarios que han realizado las afiliaciones, segï¿½n el rango de fechas y la agencia que se haya seleccionado. 
+	 * Busca los usuarios que han realizado las afiliaciones, segï¿½n el rango de fechas y la agencia que se haya seleccionado.
 	 * @param fechaInicio
 	 * @param fechaFin
 	 * @param idAgencia
@@ -187,8 +187,8 @@ public interface VentaSeguroManager {
 	 * @param numeroCertificado : Número de Certificado.
 	 * @throws Exception
 	 */
-	public void anularCertificado(String numeroCertificado)throws Exception;	
-	
+	public void anularCertificado(String numeroCertificado)throws Exception;
+
 	/*TRANSACCIONES REFERIDAS AL TIPO DE PROCESO*/
 	/**
 	 * Busca los tipos de proceso por su estado
@@ -197,8 +197,8 @@ public interface VentaSeguroManager {
 	 * @throws Exception
 	 */
 	public List<VSTipoProceso>buscarTipoProcesoPorEstado(String estado)throws Exception;
-	
-	
+
+
 	/*TRANSACCIONES REFERIDAS AL CONTRATANTE*/
 	/**
 	 * Busca el contratante
@@ -207,17 +207,17 @@ public interface VentaSeguroManager {
 	 * @throws Exception
 	 */
 	public VSContratante buscarContratantePorID(Integer id)throws Exception;
-	
-	
+
+
 	/*TRANSACCIONES REFERIDAS AL ENCABESADO DE LA AFILIACON*/
 	/**
-	 * Guarada en El encabezado de la afiliaiï¿½n 
+	 * Guarada en El encabezado de la afiliaiï¿½n
 	 * @param vsEncabezadoAfiliacion : Nueva instancia del EncabezadoAfiliacion
 	 * @throws Exception
 	 */
 	public void guardarEncabezadoAfiliacion(VSEncabezadoAfiliacion vsEncabezadoAfiliacion)throws Exception;
-	
-	
+
+
 	/*TRANSACCIONES REFERIDAS A LA ESTRUCTURA DE LA DECLARACION*/
 	/**
 	 * Guarda la estruictura de la declaracion
@@ -225,8 +225,8 @@ public interface VentaSeguroManager {
 	 * @throws Exception
 	 */
 	public void guardarEstructuraDeclaracion(VSEstructuraDeclaracion vsEstructuraDeclaracion)throws Exception;
-	
-	
+
+
 	/*TRANSACCIONES REFERIDAS A LA ESTRUCTURA DEL CONTRANTE*/
 	/**
 	 * Guarda la estructura del contratante
@@ -234,8 +234,8 @@ public interface VentaSeguroManager {
 	 * @throws Exception
 	 */
 	public void guardarEstructuraContrantante(VSEstructuraContratante vsEstructuraContratante)throws Exception;
-	
-	
+
+
 	/*TRANSACCIONES REFERIDAS A LA ESTRUCTURA DEL ASEGURADO*/
 	/**
 	 * Gurada la estructura del asegurado
@@ -243,8 +243,8 @@ public interface VentaSeguroManager {
 	 * @throws Exception
 	 */
 	public void guardarEstructuraAsegurado(VSEstructuraAsegurado vsEstructuraAsegurado) throws Exception;
-	
-	
+
+
 	/*TRANSACCIONES REFERIDAS A LA ASIGNACION DE CERTIFICADOS*/
 	/**
 	 * Busca la asignacion de certificados por el identificador de la agencia
@@ -285,7 +285,7 @@ public interface VentaSeguroManager {
 	 */
 	public void inactivarAsignacionCertificado(Integer id)throws Exception;
 	/**
-	 * Valida la existencia del correlativo.  
+	 * Valida la existencia del correlativo.
 	 * @param correlativo : nÃºmero de correlativo a evaluar
 	 * @throws Exception
 	 */

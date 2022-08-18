@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 22/08/2014
  * Hora			: 10:16:19
@@ -18,16 +18,6 @@ import java.util.TreeMap;
 
 import javax.xml.ws.WebServiceException;
 
-import mstc.ws.gob.pe.ArrayOfMConductor;
-import mstc.ws.gob.pe.ArrayOfMPasajero;
-import mstc.ws.gob.pe.ArrayOfMTripulante;
-import mstc.ws.gob.pe.Finalizar;
-import mstc.ws.gob.pe.MConductor;
-import mstc.ws.gob.pe.MPasajero;
-import mstc.ws.gob.pe.MTripulante;
-import mstc.ws.gob.pe.Manifiesto;
-import mstc.ws.gob.pe.Tripulante;
-
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
@@ -40,9 +30,9 @@ import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Div;
+import org.zkoss.zul.Grid;
 import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Label;
-import org.zkoss.zul.Grid;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listheader;
@@ -85,6 +75,16 @@ import com.cystesoft.vyrbus.view.ui.WndBase;
 import com.cystesoft.vyrbus.view.ui.WndIFrame;
 import com.cystesoft.vyrbus.view.ui.WndImprimir;
 
+import mstc.ws.gob.pe.ArrayOfMConductor;
+import mstc.ws.gob.pe.ArrayOfMPasajero;
+import mstc.ws.gob.pe.ArrayOfMTripulante;
+import mstc.ws.gob.pe.Finalizar;
+import mstc.ws.gob.pe.MConductor;
+import mstc.ws.gob.pe.MPasajero;
+import mstc.ws.gob.pe.MTripulante;
+import mstc.ws.gob.pe.Manifiesto;
+import mstc.ws.gob.pe.Tripulante;
+
 /**
  * @author JABANTO
  *
@@ -92,7 +92,7 @@ import com.cystesoft.vyrbus.view.ui.WndImprimir;
 @SuppressWarnings("deprecation")
 public class WndEmisonHRE extends WndBase {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Combobox cmbAgencia;
 	private Datebox dtbxFecha;
 	private Listbox lstbxSalidas;
@@ -116,13 +116,13 @@ public class WndEmisonHRE extends WndBase {
 
 	private String ATTRIBUTE_NRO_HOJARUTA="numeroHojaRuta";
 	private String ATTRIBUTE_HORA_PARTIDA="horaPartida";
-	
-	
-	List<ProgramacionServicio>lstProgramacion=new ArrayList<ProgramacionServicio>();
+
+
+	List<ProgramacionServicio>lstProgramacion=new ArrayList<>();
 	private Window wndFinalizarHRE = null;
 	private Window wndGenerarHRE = null;
 	private String codigoME="";
-		
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
 	 */
@@ -144,18 +144,18 @@ public class WndEmisonHRE extends WndBase {
 		divMEEmitidas=(Div)this.getFellow("divMEEmitidas");
 //		rdLlegada=(Radio)this.getFellow("rdLlegada");
 	}
-	
+
 	/* (non-Javadoc)
-	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate() 
+	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
 	@Override
 	public void onCreate() throws Exception {
 		/*Carga por defecto salida*/
 		rdSalida.setChecked(true);
 		/*Carga agencias, solamente terminales*/
-		List<String>criteriosOrdenar=new ArrayList<String>();
+		List<String>criteriosOrdenar=new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
-		TreeMap<String, Object>criteriosBusqueda=new TreeMap<String, Object>();
+		TreeMap<String, Object>criteriosBusqueda=new TreeMap<>();
 		criteriosBusqueda.put("tipoAgencia", new TipoAgencia(Constantes.ID_TIPAGE_TEPSA));
 		criteriosBusqueda.put("esTerminal", true);
 		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
@@ -168,45 +168,45 @@ public class WndEmisonHRE extends WndBase {
 			cmbAgencia.appendChild(comboitem);
 		}
 		Util.seleccionarValorItemCombo(Agencia.class, cmbAgencia, getAgencia().getId());
-		
-		
+
+
 		lblNorServicios.setValue("0");
 		dtbxFecha.setValue(new Date());
 		buscar();
 		cargarBuses(lstProgramacion);
-				
-		
+
+
 		/**APLICA PERMISOS COMPLETOS A LOS SIGUIENTES ROLES*/
 		/*Valida si es rol SUPER USUARIO*/
-		List<Rol>listRolesAcceeso=new ArrayList<Rol>();
+		List<Rol>listRolesAcceeso=new ArrayList<>();
 		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_SUPER_USUARIO));
 		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_ADMIN_COMERCIAL));
 		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_ASISTENTE_ADMIN_COMERCIAL));
 		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_GERENCIA_COMERCIAL));
 		/*Componentes a validar*/
-		List<Component>lstComponents=new ArrayList<Component>();
+		List<Component>lstComponents=new ArrayList<>();
 		lstComponents.add(cmbAgencia);
 		lstComponents.add(dtbxFecha);
 		/*Aplica persimos*/
 		accesoControlsByRol(lstComponents, listRolesAcceeso);
-		
+
 //		if(getRol().getId().intValue()!=Constantes.ID_ROL_SUPER_USUARIO){
 //			cmbAgencia.setDisabled(true);
 //			dtbxFecha.setDisabled(true);
 //		}
 	}
-	
+
 	/**
 	 * Busca programacion.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void buscar() throws Exception{
 		Util.limpiarListbox(lstbxSalidas);
 		lblNorServicios.setValue("0");
-		
+
 //		if(cmbAgencia.getSelectedItem().getValue() instanceof Agencia){
 			Parametros parametros=ServiceLocator.getParametrosManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO);
-			
+
 //			Agencia agenciaPartida=(Agencia)cmbAgencia.getSelectedItem().getValue();
 			Integer  idAgenciaPartida=null;
 			if(cmbAgencia.getSelectedItem().getValue() instanceof Agencia)
@@ -220,27 +220,27 @@ public class WndEmisonHRE extends WndBase {
 			final String styleFont="font-size:11px !important;";
 			final String styleLeft="text-align: left;";
 			Integer totalHreEmitidas=0,totalHreFinalizadas=0;
-			
+
 			/*Busca programacion de servicio*/
 			lstProgramacion=ServiceLocator.getProgramacionServiciosManager().buscarProgracion(idAgenciaPartida, fecha,codigoBus,isSalida);
-			
+
 			/*Si no hay algun bus seleccionado, estos se vuelven a cargar*/
 			if(!(cmbBus.getSelectedIndex()>0))
 				cargarBuses(lstProgramacion);
-			
+
 			/*Carga los servicios programados*/
 			int meEmitidas=0;
 			for(ProgramacionServicio programacion: lstProgramacion){
 				Itinerario itinerario=programacion.getItinerario();
 				Listitem item=new Listitem();
-				
+
 				//cuenta las ME emitidas
 				if(programacion.isMEE()!=null && programacion.isMEE())
 					meEmitidas++;
-				
+
 				//Estado de la HRE
-				Boolean isHreEmitida=false;
-				Boolean isHreFinalizada=false;
+				boolean isHreEmitida=false;
+				boolean isHreFinalizada=false;
 				if(programacion.getHojaRuta()!=null){
 					isHreEmitida=true;
 					totalHreEmitidas++;
@@ -274,13 +274,13 @@ public class WndEmisonHRE extends WndBase {
 				cell=new Listcell(isHreEmitida?programacion.getHojaRuta().toString():"--- --------------");
 				cell.setStyle("font-size:11px !important;");
 				item.appendChild(cell);
-				
+
 				cell=new Listcell();
 				/*SALIDA*/
 				if(rdSalida.isChecked()){
 					Toolbarbutton btnGenerarME=new Toolbarbutton();
 					/**
-					 * Cuando la hoja de ruta aún no ha sido emitida 
+					 * Cuando la hoja de ruta aún no ha sido emitida
 					 */
 					if(!(isHreEmitida)){
 						Toolbarbutton btnGenerarHRE=new Toolbarbutton();
@@ -302,11 +302,11 @@ public class WndEmisonHRE extends WndBase {
 						dfechaHoraPartida.setSeconds(0);
 						Date dFechaHoraActual=new Date();
 						dFechaHoraActual.setTime(dFechaHoraActual.getTime()+(Constantes.MILISEGUNDOS_X_MINUTO*tipempoEmisonHRE));
-						//Valida la fecha y hora de partida. 
+						//Valida la fecha y hora de partida.
 						if(!(dFechaHoraActual.getTime()>=dfechaHoraPartida.getTime())){
 							btnGenerarHRE.setImage("/resources/mp_generarhreDisabled.png");
 							btnGenerarHRE.setTooltiptext("Se habilitará "+tipempoEmisonHRE.toString()+" Minutos antes de la hora de partida del Servicio.");
-							btnGenerarHRE.setDisabled(true);					
+							btnGenerarHRE.setDisabled(true);
 						}
 						/*
 						 * Evento del ON_CLICK
@@ -321,13 +321,13 @@ public class WndEmisonHRE extends WndBase {
 								   itinerario.setHoraPartida(horaPartida);
 								   programacionServicio.setItinerario(itinerario);
 								   openWindowsGenerarHRE(programacionServicio);
-									
+
 							    } catch (Exception e) {
 								   DlgMessage.information(e.getMessage());
-							    }					
+							    }
 							}
 						});
-						
+
 						/*Deshabilita la emision del Manifiesto electrónico*/
 						btnGenerarME.setImage("/resources/mp_generarmeDisabled.png");
 						btnGenerarME.setDisabled(true);
@@ -336,7 +336,7 @@ public class WndEmisonHRE extends WndBase {
 						cell.appendChild(btnGenerarME);
 						item.appendChild(cell);
 					}else{
-						
+
 						/**CUANDO LA HOJA DE RUTA YA ESTA EMITIDA*/
 						Hbox hbox=new Hbox();
 						hbox.setAlign("center");
@@ -356,7 +356,7 @@ public class WndEmisonHRE extends WndBase {
 						btnPrevioPrintHRE.setTooltiptext("Vista preliminar de la Hoja de Ruta Electrónica.");
 						btnPrevioPrintHRE.setAttribute(ATTRIBUTE_NRO_HOJARUTA, programacion.getHojaRuta().toString());
 						hbox.appendChild(btnPrevioPrintHRE);
-						
+
 						/*
 						 * Evento imprimir HRE
 						 */
@@ -367,7 +367,7 @@ public class WndEmisonHRE extends WndBase {
 								try {
 									/*Procesa impresión de HRE*/
 									procesar(Long.valueOf(event.getTarget().getId()),PROCESO_IMPRIMIR_HRE,String.valueOf(event.getTarget().getAttribute(ATTRIBUTE_NRO_HOJARUTA)),null,null);
-									
+
 								} catch (Exception e) {
 									e.getStackTrace();
 									DlgMessage.error(e.getMessage());
@@ -383,30 +383,30 @@ public class WndEmisonHRE extends WndBase {
 								try {
 									/*Procesa previsualización de la impresion de la HRE*/
 									procesar(Long.valueOf(event.getTarget().getId()),PROCESO_PREVISUALIZA_HRE,String.valueOf(event.getTarget().getAttribute(ATTRIBUTE_NRO_HOJARUTA)),null,null);
-									
+
 								} catch (Exception e) {
 									e.getStackTrace();
 									DlgMessage.error(e.getMessage());
 								}
-								
+
 							}
 						});
-						
+
 						/*Anulacion de la hoja de ruta*/
 						/*Valida disponibilidad de la anulacion de la hre.*/
 						if(   (getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO || getRol().getId().intValue()==Constantes.ID_ROL_ADMIN_PUNTO_VENTA ||
 							   getRol().getId().intValue()==Constantes.ID_ROL_ADMIN_COMERCIAL || getRol().getId().intValue()==Constantes.ID_ROL_ASISTENTE_ADMIN_COMERCIAL ||
-							   getRol().getId().intValue()==Constantes.ID_ROL_GERENCIA_COMERCIAL) 
-						   && 
+							   getRol().getId().intValue()==Constantes.ID_ROL_GERENCIA_COMERCIAL)
+						   &&
 							   programacion.getItinerario().getFechaPartida().getTime()==Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date())).getTime()){
-							
+
 							final Toolbarbutton btnAnularHre =new Toolbarbutton();
 							btnAnularHre.setImage("/resources/mp_anulacion.png");
 							btnAnularHre.setTooltiptext("Anular Hoja de Ruta Eletrónica.");
 							btnAnularHre.setAutodisable("self");
 							btnAnularHre.setAttribute(ATTRIBUTE_NRO_HOJARUTA, programacion.getHojaRuta().toString());
 							hbox.appendChild(btnAnularHre);
-							
+
 							/*Si es rol ADIM.PUNTO VENTA, valida que sea la agencia en donde se emitio la hre*/
 							if(getRol().getId().intValue()==Constantes.ID_ROL_ADMIN_PUNTO_VENTA &&
 									programacion.getHojaRuta().getAgenciaSalida().getId().intValue()!=getAgencia().getId().intValue()){
@@ -440,13 +440,13 @@ public class WndEmisonHRE extends WndBase {
 									}
 								});
 							}
-						}	
+						}
 						cell.appendChild(hbox);
 						item.appendChild(cell);
-						
-						
+
+
 						/** MANIFIESTO ELECTRONICO ****************/
-						if(programacion.isMEE()==null || programacion.isMEE()==false){
+						if(programacion.isMEE()==null || !programacion.isMEE()){
 							cell=new Listcell();
 							btnGenerarME.setAutodisable("self");
 							btnGenerarME.setAttribute(ATTRIBUTE_NRO_HOJARUTA, programacion.getHojaRuta().toString());
@@ -485,7 +485,7 @@ public class WndEmisonHRE extends WndBase {
 												}
 											}
 										}
-									});						
+									});
 								}
 							});
 						}else{
@@ -511,7 +511,7 @@ public class WndEmisonHRE extends WndBase {
 						/*Valida que tenga hoja de ruta*/
 						if(programacion.getHojaRuta()!=null){
 							/*Habilita/inhabilita la finalizacion de la hoja de ruta (Se puede finalizar 3 horas antes de la fecha de llegada.)*/
-							Integer TIEMPO_MINIMO_ANTES_LLEGE_BUS=3; //Indica que se puede finalizar 3 horas entes de la fecha de llegada del servicio
+							int TIEMPO_MINIMO_ANTES_LLEGE_BUS=3; //Indica que se puede finalizar 3 horas entes de la fecha de llegada del servicio
 							String fechaLlegada=Constantes.FORMAT_DATE.format(programacion.getItinerario().getFechaLlegada());
 							String horaLlegada=programacion.getItinerario().getHoraLlegada();
 							Date dfechaHoraLlegada=Constantes.FORMAT_DATE.parse(fechaLlegada);
@@ -550,9 +550,9 @@ public class WndEmisonHRE extends WndBase {
 					divHREFinalizadas.setVisible(true);
 					divMEEmitidas.setVisible(false);
 				}
-								
+
 				item.setValue(programacion);
-				lstbxSalidas.appendChild(item);		
+				lstbxSalidas.appendChild(item);
 			}
 			lblNorServicios.setValue(String.valueOf(lstbxSalidas.getItems().size()));
 			lblServicioAsociadosHRE.setValue(totalHreEmitidas.toString());
@@ -562,11 +562,11 @@ public class WndEmisonHRE extends WndBase {
 				lstbxSalidas.setSelectedIndex(0);
 //		}
 	}
-	
+
 	/**
 	 * Genera la hoja de ruta Electronica.
 	 * @param idProgramacion 	: Identificador de la programacion.
-	 * @param proceso			: tipo de proceso a ejecutar. 
+	 * @param proceso			: tipo de proceso a ejecutar.
 	 * @param numeroHRE			: Numero de hoja de ruta. (para el caso de la impresion y previsualización de la hoja de ruta, asi como para la generacion del ME)
 	 * @param pilotoIniciaConduccion : Piloto que inicia la conducción. (Solo la generación de la Hoja de Ruta Electronica)
 	 * @throws Exception
@@ -576,14 +576,14 @@ public class WndEmisonHRE extends WndBase {
 			ProgramacionServicio programacion=null;
 			if(idProgramacion!=null)
 				programacion=ServiceLocator.getProgramacionServiciosManager().buscarPorId(idProgramacion);
-						
+
 			if(proceso==PROCESO_GENERAR_HRE || proceso==PROCESO_GENERAR_ME){
 				/**Busca pasajeros para la emision del Manifiesto electronico*/
 				final List<VentaPasaje>listaPasajeros=ServiceLocator.getVentaPasajesManager().buscarPasajerosByME(programacion.getItinerario().getId());
 				if(listaPasajeros.size()==0){
 					throw new WSMTCExcepcion(Messages.getString("WndEmisonme.information.noManifiesto"));
 				}
-				
+
 				/**Proceso que genera la HRE y el MUE - 12/01/2015*/
 				generarHRE(programacion,pilotoIniciaConduccion,horaPartida,listaPasajeros);
 //			if(proceso==PROCESO_GENERAR_HRE ){
@@ -593,7 +593,7 @@ public class WndEmisonHRE extends WndBase {
 //			}else if(proceso==PROCESO_GENERAR_ME){
 				//Genera Manifiesto electronico (ME)
 				//=============================
-				
+
 //				/**Busca pasajeros para la emision del Manifiesto electronico*/
 //				final List<VentaPasaje>listaPasajeros=ServiceLocator.getVentaPasajesManager().buscarPasajerosByME(programacion.getItinerario().getId());
 //				if(listaPasajeros.size()==0){
@@ -625,7 +625,7 @@ public class WndEmisonHRE extends WndBase {
 			throw new Exception(e.getMessage());
 		}
 	}
-	
+
 //	/**
 //	 * Genera la hre
 //	 * @param idProgramacion
@@ -634,16 +634,16 @@ public class WndEmisonHRE extends WndBase {
 //	private void generarHRE(ProgramacionServicio programacion, Personal pilotoIniciaConduccion, String horaPartida)throws WSMTCExcepcion, Exception{
 ////		ProgramacionServicio programacion=ServiceLocator.getProgramacionServiciosManager().buscarPorId(programacions.getId());
 //		Itinerario itinerario=programacion.getItinerario();
-//		
+//
 //		/** Busca detalle de la ruta registrada en el MTC*/
 //		MTCDetalleRuta mtcDetalleRuta=ServiceLocator.getMTCDetalleRutaManager().buscarPorIdRuta(itinerario.getRuta().getId());
 //		if(mtcDetalleRuta==null)
 //			throw new WSMTCExcepcion(Messages.getString("WndEmisonhre.information.noRuta"));
-//		
+//
 //		/**Busca terminales origen y destino registrados en el MTC*/
 //		if(!(cmbAgencia.getSelectedItem().getValue() instanceof Agencia))
 //			throw new WSMTCExcepcion(Messages.getString("WndEmisonhre.information.noSelectAgencia"));
-//		
+//
 ////		MTCDireccionTerminal mtcTerminalSalida=ServiceLocator.getMTCDireccionTerminalManager().buscarPorIdAgencia(itinerario.getAgenciaPartida().getId());
 //		MTCDireccionTerminal mtcTerminalSalida=ServiceLocator.getMTCDireccionTerminalManager().buscarPorIdAgencia(((Agencia)cmbAgencia.getSelectedItem().getValue()).getId());
 //		MTCDireccionTerminal mtcTerminalLlegada=ServiceLocator.getMTCDireccionTerminalManager().buscarPorIdAgencia(itinerario.getAgenciaLlegada().getId());
@@ -651,7 +651,7 @@ public class WndEmisonHRE extends WndBase {
 //			throw new WSMTCExcepcion(Messages.getString("WndEmisonhre.information.noTerminalPartida"));
 //		else if (mtcTerminalLlegada==null)
 //			throw new WSMTCExcepcion(Messages.getString("WndEmisonhre.information.noTerminalLlegada"));
-//		
+//
 ////		Viaje viaje=new Viaje();
 ////		viaje.setNroRuta(mtcDetalleRuta.getMtcRuta().getCodigo());
 ////		viaje.setTerSalida(mtcTerminalSalida.getCodigo());
@@ -661,14 +661,14 @@ public class WndEmisonHRE extends WndBase {
 ////		viaje.setTerLlegada(mtcTerminalLlegada.getCodigo());
 ////		viaje.setHorEstLlegada(itinerario.getHoraLlegada());
 ////		viaje.setFecEstLlegada(Constantes.FORMAT_DATE.format(itinerario.getFechaLlegada()));
-//		
-//		
+//
+//
 //		/**Llena al array con el turno de conduccion de los conductores*/
 //		Personal piloto=ServiceLocator.getPersonalManager().buscarPorId(pilotoIniciaConduccion.getId()); //programacion.getPiloto();
 //		Personal copiloto=programacion.getCopiloto();
 //		if(pilotoIniciaConduccion.getId().intValue()==programacion.getCopiloto().getId().longValue())
 //			copiloto=programacion.getPiloto();
-//		
+//
 //		Personal copilotoAux=programacion.getCopilotoAuxiliar()!=null?programacion.getCopilotoAuxiliar():null;
 //		int cantPilotos=2; //Por defectos piloto + copiloto
 //		if(programacion.getCopilotoAuxiliar()!=null)//Valida la programacion de un copiloto auxiliar.
@@ -676,16 +676,16 @@ public class WndEmisonHRE extends WndBase {
 ////		String duracion=duracionViaje(itinerario.getFechaPartida(),itinerario.getHoraPartida(),itinerario.getFechaLlegada(),itinerario.getHoraLlegada());//Obtiene la duracion del viaje
 //		String duracion=duracionViaje(itinerario.getFechaPartida(),horaPartida,itinerario.getFechaLlegada(),itinerario.getHoraLlegada());//Obtiene la duracion del viaje
 //		int totalHorasViaje=Integer.valueOf(duracion.split(":")[0].toString());
-//		
+//
 //		Date fechahoraLlegada=itinerario.getFechaLlegada();
 //		fechahoraLlegada.setHours(Integer.valueOf(itinerario.getHoraLlegada().split(":")[0].toString()));
 //		fechahoraLlegada.setMinutes(Integer.valueOf(itinerario.getHoraLlegada().split(":")[1].toString()));
-//		
-//		
+//
+//
 //		Date fechaHoraInicio=toIntegrateDateTime(itinerario.getFechaPartida(),horaPartida);
 //		ArrayOfHConductor arrayOfHConductor=new ArrayOfHConductor();
 //		int p=1;
-//		
+//
 //		/*Validando la hora de inicio de conduccion para determinar si es nocturna*/
 //		int horasInica=WSMTC.HORAS_CONDUCCION;
 //		int horasConduccion=WSMTC.HORAS_CONDUCCION;
@@ -695,32 +695,32 @@ public class WndEmisonHRE extends WndBase {
 //			horasInica=WSMTC.HORAS_CONDUCCION_NOCTURNA;
 //			horasConduccion=WSMTC.HORAS_CONDUCCION_NOCTURNA;
 //		}
-//		
+//
 //		Date fechaHoraTermino=new Date();
 //		/*Genera el turno de conduccion de los conductores, segun las horas establecidas en el parametro */
 //		for(int h=horasInica; h<=totalHorasViaje;){
 //			p++;
 //			Boolean isFinConduccionCopiloto=false; //Indica si el copiloto a finalizado su turno de conduccion
 //			Personal conductor=null;
-//			
+//
 //			/*Determina el numero de horas de conduccion */
 //			fechaHoraTermino=getFechaHoraTermino(fechaHoraInicio,horasConduccion);
-//			if(     
+//			if(
 //				(fechaHoraInicio.getHours()==WSMTC.HORA_INICIO_NORTURNO && fechaHoraInicio.getMinutes()>=WSMTC.MINUTO_INICIO_NORTURNO) ||
 //				(fechaHoraInicio.getHours()>WSMTC.HORA_INICIO_NORTURNO && fechaHoraInicio.getHours()<24) ||
 //				(fechaHoraInicio.getHours()>=0 && fechaHoraInicio.getHours()<WSMTC.HORA_FIN_NORTURNO) ||
-//			
+//
 //				(fechaHoraTermino.getHours()==WSMTC.HORA_INICIO_NORTURNO && fechaHoraTermino.getMinutes()>WSMTC.MINUTO_INICIO_NORTURNO) ||
 //			    (fechaHoraTermino.getHours()>WSMTC.HORA_INICIO_NORTURNO && fechaHoraTermino.getHours()<24) ||
-//			    (fechaHoraTermino.getHours()>=0 && fechaHoraTermino.getHours()<WSMTC.HORA_FIN_NORTURNO) 
+//			    (fechaHoraTermino.getHours()>=0 && fechaHoraTermino.getHours()<WSMTC.HORA_FIN_NORTURNO)
 //			  ){
-//				
+//
 //				horasConduccion=WSMTC.HORAS_CONDUCCION_NOCTURNA;
 //			}else{
 //				horasConduccion=WSMTC.HORAS_CONDUCCION;
 //			}
-//			
-//			
+//
+//
 //			/*Cuando solo van piloto y copiloto*/
 //			if(cantPilotos==2){
 //				if(p%2==0){ //Inicia piloto
@@ -748,7 +748,7 @@ public class WndEmisonHRE extends WndBase {
 //			}
 //			/*Calcula la fecha y hora de termino*/
 //			fechaHoraTermino=getFechaHoraTermino(fechaHoraInicio,horasConduccion);
-//						
+//
 //			/*Valida si la fecha hora de termino es mayor o igual a la fecha hora de llegada del servicio*/
 //			if(fechaHoraTermino.getTime()>=fechahoraLlegada.getTime())
 //				fechaHoraTermino=toIntegrateDateTime(itinerario.getFechaLlegada(),itinerario.getHoraLlegada());
@@ -770,8 +770,8 @@ public class WndEmisonHRE extends WndBase {
 ////			System.out.println("FECHA TERMINO : "+Constantes.FORMAT_DATE.format(fechaHoraTermino));
 ////			System.out.println("HORA TERMINO  : "+Constantes.FORMAT_TIME.format(fechaHoraTermino));
 ////			System.out.println("PILOTO  : "+conductor.toString());
-//			
-//			arrayOfHConductor.getHConductor().add(hConductor);	
+//
+//			arrayOfHConductor.getHConductor().add(hConductor);
 //			/*Finaliza cuando haya culminado el viaje*/
 ////			if(h==totalHorasViaje)
 //			if(fechaHoraTermino.getTime()>=fechahoraLlegada.getTime())
@@ -782,7 +782,7 @@ public class WndEmisonHRE extends WndBase {
 //				(fechaHoraTermino.getHours()>WSMTC.HORA_INICIO_NORTURNO && fechaHoraTermino.getHours()<24) ||
 //			    (fechaHoraTermino.getHours()>=0 && fechaHoraTermino.getHours()<WSMTC.HORA_FIN_NORTURNO)
 //			  ){
-//				
+//
 //				h+=+WSMTC.HORAS_CONDUCCION_NOCTURNA;
 //				horasConduccion=WSMTC.HORAS_CONDUCCION_NOCTURNA;
 //			}else{
@@ -793,9 +793,9 @@ public class WndEmisonHRE extends WndBase {
 //			if(h>totalHorasViaje)
 //				h=totalHorasViaje;
 //			fechaHoraInicio=fechaHoraTermino;
-//			
+//
 //		}
-//		
+//
 //		/**Llena parametros a un array la tripulante*/
 //		Personal tripulante=programacion.getTripulante();
 //		ArrayOfHTripulante arrayOfHTripulante=new ArrayOfHTripulante();
@@ -804,7 +804,7 @@ public class WndEmisonHRE extends WndBase {
 //		hTripulante.setPersonal(tripulante);
 //		hTripulante.setNroDocumento(tripulante.getNroDocumento());
 //		arrayOfHTripulante.getHTripulante().add(hTripulante);
-//		
+//
 //		/**Pasa parametros a la Hoja de ruta Electronica*/
 //		Bus bus=programacion.getBus();
 //		HojaRuta hojaRuta=new HojaRuta();
@@ -818,7 +818,7 @@ public class WndEmisonHRE extends WndBase {
 //		hojaRuta.setFecEstLlegada(Constantes.FORMAT_DATE.format(itinerario.getFechaLlegada()));
 //		hojaRuta.setHorEstLlegada(itinerario.getHoraLlegada());
 //		hojaRuta.setNroPlaca(WSMTC.toFormatNroPlaca(bus.getNumeroPlaca()));
-//					
+//
 //		//===================================================================================================================
 //		//IMPACTA EN LA BASE DE DATOS DEL MTC
 //		//===================================================================================================================
@@ -827,7 +827,7 @@ public class WndEmisonHRE extends WndBase {
 //		HRE hre= ServiceLocator.getHREManager().buscarHREEmitida(itinerario.getId());
 //		if(hre!=null)
 //			throw new WSMTCExcepcion(Messages.getString("WndEmisonhre.information.duplicate"));
-//		
+//
 //		/** Guarda el tripulante - DATOS ENVIADOS SON SOLAMENTE PARA PRUEBA, FALTA DETERMINAR DE DONDE SE VA A OBTENER ESTA IMFORMACION - 10/4/2015*/
 //		Tripulante oTripulante =new Tripulante();
 //		oTripulante.setApellido(hTripulante.getPersonal().getApellidoPaterno());
@@ -840,17 +840,17 @@ public class WndEmisonHRE extends WndBase {
 //		oTripulante.setNroDocumento(hTripulante.getNroDocumento());
 //		oTripulante.setSexo(hTripulante.getPersonal().getSexo().getId().intValue()==Constantes.TRUE_VALUE?"F":"M");
 //		WSMTC.setTripulante(oTripulante);
-//						
+//
 //		/**Guarda el Viaje*/
 ////		WSMTC.setViaje(viaje); Segun Erick(MTC) ya no es necesario.
 //		/**Genera la Hoja de Ruta Electronica*/
 //		String NroHojaRuta=WSMTC.setHojaRuta(hojaRuta);
-//		
-//		
+//
+//
 //		/*Se asegura que las fechas del itinerario no cambien ya que esto es transaccional*/
 //		itinerario.setFechaPartida(Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(itinerario.getFechaPartida())));
 //		itinerario.setFechaLlegada(Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(itinerario.getFechaLlegada())));
-//		
+//
 //		//===================================================================================================================
 //		//IMPACTA EN NUESTA BASE DE DATOS
 //		//===================================================================================================================
@@ -875,11 +875,11 @@ public class WndEmisonHRE extends WndBase {
 //		hojaRutaE.setNumeroPlaca(hojaRuta.getNroPlaca());
 //		hojaRutaE.setRuta(itinerario.getRuta());
 //		hojaRutaE.setItinerario(itinerario);
-//		
+//
 //		hojaRutaE.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 //		UtilData.auditarRegistro(hojaRutaE, getUsuario(), Executions.getCurrent());
 //		ServiceLocator.getHREManager().guardar(hojaRutaE);
-//		
+//
 //		/*Guarda detalle flota hre*/
 //		//Conductores
 //		for(HConductor hConductor: hojaRuta.getConductores().getHConductor()){
@@ -917,9 +917,9 @@ public class WndEmisonHRE extends WndBase {
 //			UtilData.auditarRegistro(detalleFlotaHRE, getUsuario(), Executions.getCurrent());
 //			ServiceLocator.getDetalleFlotaHREManager().guardar(detalleFlotaHRE);
 //		}
-//		
+//
 //	}
-	
+
 	/**
 	 * Genera la hre
 	 * @param idProgramacion
@@ -928,16 +928,16 @@ public class WndEmisonHRE extends WndBase {
 	private void generarHRE(ProgramacionServicio programacion, Personal pilotoIniciaConduccion, String horaPartida,List<VentaPasaje> listaPasajeros)throws WSMTCExcepcion, Exception{
 //		ProgramacionServicio programacion=ServiceLocator.getProgramacionServiciosManager().buscarPorId(programacions.getId());
 		Itinerario itinerario=programacion.getItinerario();
-		
+
 		/** Busca detalle de la ruta registrada en el MTC*/
 		MTCDetalleRuta mtcDetalleRuta=ServiceLocator.getMTCDetalleRutaManager().buscarPorIdRuta(itinerario.getRuta().getId());
 		if(mtcDetalleRuta==null)
 			throw new WSMTCExcepcion(Messages.getString("WndEmisonhre.information.noRuta"));
-		
+
 		/**Busca terminales origen y destino registrados en el MTC*/
 		if(!(cmbAgencia.getSelectedItem().getValue() instanceof Agencia))
 			throw new WSMTCExcepcion(Messages.getString("WndEmisonhre.information.noSelectAgencia"));
-		
+
 //		MTCDireccionTerminal mtcTerminalSalida=ServiceLocator.getMTCDireccionTerminalManager().buscarPorIdAgencia(itinerario.getAgenciaPartida().getId());
 		MTCDireccionTerminal mtcTerminalSalida=ServiceLocator.getMTCDireccionTerminalManager().buscarPorIdAgencia(((Agencia)cmbAgencia.getSelectedItem().getValue()).getId());
 		MTCDireccionTerminal mtcTerminalLlegada=ServiceLocator.getMTCDireccionTerminalManager().buscarPorIdAgencia(itinerario.getAgenciaLlegada().getId());
@@ -945,7 +945,7 @@ public class WndEmisonHRE extends WndBase {
 			throw new WSMTCExcepcion(Messages.getString("WndEmisonhre.information.noTerminalPartida"));
 		else if (mtcTerminalLlegada==null)
 			throw new WSMTCExcepcion(Messages.getString("WndEmisonhre.information.noTerminalLlegada"));
-		
+
 //		Viaje viaje=new Viaje();
 //		viaje.setNroRuta(mtcDetalleRuta.getMtcRuta().getCodigo());
 //		viaje.setTerSalida(mtcTerminalSalida.getCodigo());
@@ -955,14 +955,14 @@ public class WndEmisonHRE extends WndBase {
 //		viaje.setTerLlegada(mtcTerminalLlegada.getCodigo());
 //		viaje.setHorEstLlegada(itinerario.getHoraLlegada());
 //		viaje.setFecEstLlegada(Constantes.FORMAT_DATE.format(itinerario.getFechaLlegada()));
-		
-		
+
+
 		/**Llena al array con el turno de conduccion de los conductores*/
 		Personal piloto=ServiceLocator.getPersonalManager().buscarPorId(pilotoIniciaConduccion.getId()); //programacion.getPiloto();
 		Personal copiloto=programacion.getCopiloto();
 		if(pilotoIniciaConduccion.getId().intValue()==programacion.getCopiloto().getId().longValue())
 			copiloto=programacion.getPiloto();
-		
+
 		Personal copilotoAux=programacion.getCopilotoAuxiliar()!=null?programacion.getCopilotoAuxiliar():null;
 		int cantPilotos=2; //Por defectos piloto + copiloto
 		if(programacion.getCopilotoAuxiliar()!=null)//Valida la programacion de un copiloto auxiliar.
@@ -970,17 +970,17 @@ public class WndEmisonHRE extends WndBase {
 //		String duracion=duracionViaje(itinerario.getFechaPartida(),itinerario.getHoraPartida(),itinerario.getFechaLlegada(),itinerario.getHoraLlegada());//Obtiene la duracion del viaje
 		String duracion=duracionViaje(itinerario.getFechaPartida(),horaPartida,itinerario.getFechaLlegada(),itinerario.getHoraLlegada());//Obtiene la duracion del viaje
 		int totalHorasViaje=Integer.valueOf(duracion.split(":")[0].toString());
-		
+
 		Date fechahoraLlegada=itinerario.getFechaLlegada();
 		fechahoraLlegada.setHours(Integer.valueOf(itinerario.getHoraLlegada().split(":")[0].toString()));
 		fechahoraLlegada.setMinutes(Integer.valueOf(itinerario.getHoraLlegada().split(":")[1].toString()));
-		
-		
+
+
 		Date fechaHoraInicio=toIntegrateDateTime(itinerario.getFechaPartida(),horaPartida);
 //		ArrayOfHConductor arrayOfHConductor=new ArrayOfHConductor();
 		ArrayOfMConductor arrayOfmConductor=new ArrayOfMConductor();
 		int p=1;
-		
+
 		/*Validando la hora de inicio de conduccion para determinar si es nocturna*/
 		int horasInica=WSMTC.HORAS_CONDUCCION;
 		int horasConduccion=WSMTC.HORAS_CONDUCCION;
@@ -990,32 +990,32 @@ public class WndEmisonHRE extends WndBase {
 			horasInica=WSMTC.HORAS_CONDUCCION_NOCTURNA;
 			horasConduccion=WSMTC.HORAS_CONDUCCION_NOCTURNA;
 		}
-		
+
 		Date fechaHoraTermino=new Date();
 		/*Genera el turno de conduccion de los conductores, segun las horas establecidas en el parametro */
 		for(int h=horasInica; h<=totalHorasViaje;){
 			p++;
 			Boolean isFinConduccionCopiloto=false; //Indica si el copiloto a finalizado su turno de conduccion
 			Personal conductor=null;
-			
+
 			/*Determina el numero de horas de conduccion */
 			fechaHoraTermino=getFechaHoraTermino(fechaHoraInicio,horasConduccion);
-			if(     
+			if(
 				(fechaHoraInicio.getHours()==WSMTC.HORA_INICIO_NORTURNO && fechaHoraInicio.getMinutes()>=WSMTC.MINUTO_INICIO_NORTURNO) ||
 				(fechaHoraInicio.getHours()>WSMTC.HORA_INICIO_NORTURNO && fechaHoraInicio.getHours()<24) ||
 				(fechaHoraInicio.getHours()>=0 && fechaHoraInicio.getHours()<WSMTC.HORA_FIN_NORTURNO) ||
-			
+
 				(fechaHoraTermino.getHours()==WSMTC.HORA_INICIO_NORTURNO && fechaHoraTermino.getMinutes()>WSMTC.MINUTO_INICIO_NORTURNO) ||
 			    (fechaHoraTermino.getHours()>WSMTC.HORA_INICIO_NORTURNO && fechaHoraTermino.getHours()<24) ||
-			    (fechaHoraTermino.getHours()>=0 && fechaHoraTermino.getHours()<WSMTC.HORA_FIN_NORTURNO) 
+			    (fechaHoraTermino.getHours()>=0 && fechaHoraTermino.getHours()<WSMTC.HORA_FIN_NORTURNO)
 			  ){
-				
+
 				horasConduccion=WSMTC.HORAS_CONDUCCION_NOCTURNA;
 			}else{
 				horasConduccion=WSMTC.HORAS_CONDUCCION;
 			}
-			
-			
+
+
 			/*Cuando solo van piloto y copiloto*/
 			if(cantPilotos==2){
 				if(p%2==0){ //Inicia piloto
@@ -1027,7 +1027,7 @@ public class WndEmisonHRE extends WndBase {
 				}
 			}else if (cantPilotos==3){//Cuando van piloto, copiloto y copilotoAuxiliar
 				if(p%2==0){
-					if(h==horasConduccion || isFinConduccionCopiloto==false){
+					if(h==horasConduccion || !isFinConduccionCopiloto){
 						conductor=piloto;
 						conductor.setTipoConductor(WSMTC.TIPO_CONDUCTOR_PILOTO);
 					}else{
@@ -1043,7 +1043,7 @@ public class WndEmisonHRE extends WndBase {
 			}
 			/*Calcula la fecha y hora de termino*/
 			fechaHoraTermino=getFechaHoraTermino(fechaHoraInicio,horasConduccion);
-						
+
 			/*Valida si la fecha hora de termino es mayor o igual a la fecha hora de llegada del servicio*/
 			if(fechaHoraTermino.getTime()>=fechahoraLlegada.getTime())
 				fechaHoraTermino=toIntegrateDateTime(itinerario.getFechaLlegada(),itinerario.getHoraLlegada());
@@ -1064,8 +1064,8 @@ public class WndEmisonHRE extends WndBase {
 //			System.out.println("FECHA TERMINO : "+Constantes.FORMAT_DATE.format(fechaHoraTermino));
 //			System.out.println("HORA TERMINO  : "+Constantes.FORMAT_TIME.format(fechaHoraTermino));
 //			System.out.println("PILOTO  : "+conductor.toString());
-			
-			arrayOfmConductor.getMConductor().add(hConductor);	
+
+			arrayOfmConductor.getMConductor().add(hConductor);
 			/*Finaliza cuando haya culminado el viaje*/
 //			if(h==totalHorasViaje)
 			if(fechaHoraTermino.getTime()>=fechahoraLlegada.getTime())
@@ -1076,7 +1076,7 @@ public class WndEmisonHRE extends WndBase {
 				(fechaHoraTermino.getHours()>WSMTC.HORA_INICIO_NORTURNO && fechaHoraTermino.getHours()<24) ||
 			    (fechaHoraTermino.getHours()>=0 && fechaHoraTermino.getHours()<WSMTC.HORA_FIN_NORTURNO)
 			  ){
-				
+
 				h+=+WSMTC.HORAS_CONDUCCION_NOCTURNA;
 				horasConduccion=WSMTC.HORAS_CONDUCCION_NOCTURNA;
 			}else{
@@ -1087,9 +1087,9 @@ public class WndEmisonHRE extends WndBase {
 			if(h>totalHorasViaje)
 				h=totalHorasViaje;
 			fechaHoraInicio=fechaHoraTermino;
-			
+
 		}
-		
+
 		/**Llena parametros a un array la tripulante*/
 		Personal tripulante=programacion.getTripulante();
 		ArrayOfMTripulante arrayOfMTripulante=new ArrayOfMTripulante();
@@ -1098,15 +1098,15 @@ public class WndEmisonHRE extends WndBase {
 		hTripulante.setPersonal(tripulante);
 		hTripulante.setNroDoc(tripulante.getNroDocumento());
 		arrayOfMTripulante.getMTripulante().add(hTripulante);
-		
-		
+
+
 		/**Setea Pasajeros*/
 //		long manifiestoId=0;
 		ArrayOfMPasajero arrayOfMPasajero=new ArrayOfMPasajero();
 		for(VentaPasaje ventaPasaje:listaPasajeros){
 			Pasajero pasajero=ventaPasaje.getPasajero();
 //			manifiestoId=ventaPasaje.getManifiesto().getId();
-			
+
 			MPasajero mPasajero=new MPasajero();
 			mPasajero.setTpoDoc(pasajero.getTipoDocumento().getNombreCorto());
 			mPasajero.setNroDoc(pasajero.getNumeroDocumento());
@@ -1117,10 +1117,10 @@ public class WndEmisonHRE extends WndBase {
 			mPasajero.setNumBol(ventaPasaje.getNumeroBoleto().split("-")[1]);
 			mPasajero.setMtoBol(Util.toNumberFormat(ventaPasaje.getImportePagado(), 2));
 			mPasajero.setAsiBol(ventaPasaje.getNumeroAsiento().toString());
-								
+
 			arrayOfMPasajero.getMPasajero().add(mPasajero);
 		}
-		
+
 		/**Pasa parametros a la Hoja de ruta Electronica*/
 		Bus bus=programacion.getBus();
 		/** Setea Manifiesto*/
@@ -1136,8 +1136,8 @@ public class WndEmisonHRE extends WndBase {
 		manifiesto.setHorEstLlegada(itinerario.getHoraLlegada());
 		manifiesto.setNroPlaca(WSMTC.toFormatNroPlaca(bus.getNumeroPlaca()));
 		manifiesto.setPasajeros(arrayOfMPasajero);
-		
-		
+
+
 		//===================================================================================================================
 		//IMPACTA EN LA BASE DE DATOS DEL MTC
 		//===================================================================================================================
@@ -1146,7 +1146,7 @@ public class WndEmisonHRE extends WndBase {
 		HRE hre= ServiceLocator.getHREManager().buscarHREEmitida(itinerario.getId());
 		if(hre!=null)
 			throw new WSMTCExcepcion(Messages.getString("WndEmisonhre.information.duplicate"));
-		
+
 		/** Guarda el tripulante - DATOS ENVIADOS SON SOLAMENTE PARA PRUEBA, FALTA DETERMINAR DE DONDE SE VA A OBTENER ESTA IMFORMACION - 10/4/2015*/
 		Tripulante oTripulante =new Tripulante();
 		oTripulante.setApellido(hTripulante.getPersonal().getApellidoPaterno());
@@ -1159,21 +1159,21 @@ public class WndEmisonHRE extends WndBase {
 		oTripulante.setNroDocumento(hTripulante.getNroDoc());
 		oTripulante.setSexo(hTripulante.getPersonal().getSexo().getId().intValue()==Constantes.TRUE_VALUE?"F":"M");
 		WSMTC.setTripulante(oTripulante);
-		
+
 		/**Genera la HRE y el MUE*/
-		codigoME=WSMTC.setManifiesto(manifiesto); //Impacta el ME			
-		
+		codigoME=WSMTC.setManifiesto(manifiesto); //Impacta el ME
+
 		/*Actualiza el manifiesto en nuestra BD*/
 //		com.tepsa.sisvyr.model.bean.Manifiesto manifiestoTepsa=ServiceLocator.getManifiestoManager().buscarPorId(manifiestoId);
 //		manifiestoTepsa.setMee(Constantes.TRUE_VALUE);
 //		UtilData.auditarRegistro(manifiestoTepsa,true, getUsuario(),Executions.getCurrent());
 //		ServiceLocator.getManifiestoManager().actualizar(manifiestoTepsa);
-		
-		
+
+
 		/*Se asegura que las fechas del itinerario no cambien ya que esto es transaccional*/
 		itinerario.setFechaPartida(Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(itinerario.getFechaPartida())));
 		itinerario.setFechaLlegada(Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(itinerario.getFechaLlegada())));
-		
+
 		//===================================================================================================================
 		//IMPACTA EN NUESTA BASE DE DATOS
 		//===================================================================================================================
@@ -1198,11 +1198,11 @@ public class WndEmisonHRE extends WndBase {
 		hojaRutaE.setNumeroPlaca(manifiesto.getNroPlaca());
 		hojaRutaE.setRuta(itinerario.getRuta());
 		hojaRutaE.setItinerario(itinerario);
-		
+
 		hojaRutaE.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 		UtilData.auditarRegistro(hojaRutaE, getUsuario(), Executions.getCurrent());
 		ServiceLocator.getHREManager().guardar(hojaRutaE);
-		
+
 		/*Guarda detalle flota hre*/
 		//Conductores
 		for(MConductor hConductor: manifiesto.getConductores().getMConductor()){
@@ -1240,7 +1240,7 @@ public class WndEmisonHRE extends WndBase {
 			UtilData.auditarRegistro(detalleFlotaHRE, getUsuario(), Executions.getCurrent());
 			ServiceLocator.getDetalleFlotaHREManager().guardar(detalleFlotaHRE);
 		}
-		
+
 	}
 //	/**
 //	 * Genera el Manifiesto electronico (ME)
@@ -1250,18 +1250,18 @@ public class WndEmisonHRE extends WndBase {
 //	 * @throws Exception
 //	 */
 //	private void generarME(HRE hre, List<VentaPasaje> listaPasajeros)throws Exception{
-//		
+//
 ////		if(Constantes.PROXY!=null){
 ////			String puerto="";
 ////			String proxy=Constantes.PROXY;
 ////			String ipProxy=proxy.split(":")[0].toString();
 ////			if(proxy.split(":").length==2)
 ////				puerto=proxy.split(":")[1].toString();
-////			
+////
 ////			System.setProperty("http.proxyHost", ipProxy);
 ////			System.setProperty("http.proxyPort", puerto);
 ////		}
-//		
+//
 ////		WSServiciosHR wsServiciosHR=new WSServiciosHR();
 ////		/**Clase de seguridad tempora (hasta que se pase a produccion)*/
 ////		Seguridad seguridad=new Seguridad();
@@ -1269,8 +1269,8 @@ public class WndEmisonHRE extends WndBase {
 ////		seguridad.setUsuario("059979");
 ////		seguridad.setClave("123456");
 ////		seguridad.setPartida("000530PNR");
-//		
-//		
+//
+//
 //		/*Busca el detalle de la hoja de ruta generada*/
 //		TreeMap<String, Object> criteriosBusqueda=new TreeMap<String, Object>();
 //		criteriosBusqueda.put("hre", hre);
@@ -1278,7 +1278,7 @@ public class WndEmisonHRE extends WndBase {
 //		List<String>criteriosOrden=new ArrayList<String>();
 //		criteriosOrden.add("id");
 //		List<DetalleFlotaHRE>detalleHRE=ServiceLocator.getDetalleFlotaHREManager().buscarPorX(criteriosBusqueda, criteriosOrden);
-//		
+//
 //		/*Setea la tripulantes y pilotos*/
 //		ArrayOfMTripulante arrayOfMTripulante=new ArrayOfMTripulante();
 //		ArrayOfMConductor arrayOfMConductor=new ArrayOfMConductor();
@@ -1297,12 +1297,12 @@ public class WndEmisonHRE extends WndBase {
 //					MTripulante mTripulante=new MTripulante();
 //					mTripulante.setTpoDoc(WSMTC.getTipoDocumento(detalleFlotaHRE.getPersonal().getTipoDocumento().getId(), Constantes.ID_TIPPER_TRIPULANTE));
 //					mTripulante.setNroDoc(detalleFlotaHRE.getPersonal().getNroDocumento());
-//										
+//
 //					arrayOfMTripulante.getMTripulante().add(mTripulante);
 //				}
 //			}
 //		}else
-//			throw new Exception(Messages.getString("WndEmisonme.information.noHRE"));				
+//			throw new Exception(Messages.getString("WndEmisonme.information.noHRE"));
 //		if(arrayOfMTripulante.getMTripulante().size()==0)
 //			throw new Exception(Messages.getString("WndEmisonme.information.noTripulante"));
 //
@@ -1312,7 +1312,7 @@ public class WndEmisonHRE extends WndBase {
 //		for(VentaPasaje ventaPasaje:listaPasajeros){
 //			Pasajero pasajero=ventaPasaje.getPasajero();
 //			manifiestoId=ventaPasaje.getManifiesto().getId();
-//			
+//
 //			MPasajero mPasajero=new MPasajero();
 //			mPasajero.setTpoDoc(pasajero.getTipoDocumento().getNombreCorto());
 //			mPasajero.setNroDoc(pasajero.getNumeroDocumento());
@@ -1323,10 +1323,10 @@ public class WndEmisonHRE extends WndBase {
 //			mPasajero.setNumBol(ventaPasaje.getNumeroBoleto().split("-")[1]);
 //			mPasajero.setMtoBol(Util.toNumberFormat(ventaPasaje.getImportePagado(), 2));
 //			mPasajero.setAsiBol(ventaPasaje.getNumeroAsiento().toString());
-//								
+//
 //			arrayOfMPasajero.getMPasajero().add(mPasajero);
 //		}
-//		
+//
 //		/** Setea Manifiesto*/
 //		Manifiesto manifiesto=new Manifiesto();
 //		manifiesto.setNroRuta(hre.getMtcCodigoRuta());//.getNumeroHojaRutaID().getIdNumeroHojaRuta()
@@ -1341,8 +1341,8 @@ public class WndEmisonHRE extends WndBase {
 //		manifiesto.setConductores(arrayOfMConductor);
 //		manifiesto.setPasajeros(arrayOfMPasajero);
 //		codigoME=WSMTC.setManifiesto(manifiesto); //Impacta el ME
-//		
-//		
+//
+//
 //		//END BEGIN 09/01/2016 - JABANTO
 ////		manifiesto.setSeguridad(seguridad);
 ////		ResultManifiesto resultManifiesto= wsServiciosHR.getWSServiciosHRSoap().setManifiesto(manifiesto);
@@ -1358,15 +1358,15 @@ public class WndEmisonHRE extends WndBase {
 ////			else
 ////				codigoME="NO CODE";
 ////		}
-//				
+//
 //		/*Actualiza el manifiesto*/
 //		com.tepsa.sisvyr.model.bean.Manifiesto manifiestoTepsa=ServiceLocator.getManifiestoManager().buscarPorId(manifiestoId);
 //		manifiestoTepsa.setMee(Constantes.TRUE_VALUE);
 //		UtilData.auditarRegistro(manifiestoTepsa,true, getUsuario(),Executions.getCurrent());
 //		ServiceLocator.getManifiestoManager().actualizar(manifiestoTepsa);
 //	}
-//	
-	
+//
+
 	/**
 	 * Finaliza la generacion de hoja de ruta.
 	 * @param nroHojaRuta	: Numero de La HRE.
@@ -1381,14 +1381,14 @@ public class WndEmisonHRE extends WndBase {
 			finalizar.setFecLlegada(fechaLlegada);
 			finalizar.setHorLlegada(horaLlegada);
 			WSMTC.setFinalizar(finalizar);
-			
+
 			/*Impacta en nuestra BD*/
 			HRE hre=ServiceLocator.getHREManager().buscarPorId(nroHojaRuta);
 			hre.setFechaLlegadaReal(Constantes.FORMAT_DATE.parse(fechaLlegada));
 			hre.setHoraLlegadaReal(horaLlegada);
 			UtilData.auditarRegistro(hre, true, getUsuario(), Executions.getCurrent());
 			ServiceLocator.getHREManager().actualizar(hre);
-			
+
 		}catch (WebServiceException wse){
 			throw new WebServiceException(wse.getMessage());
 		}catch (WSMTCExcepcion wsexc){
@@ -1398,7 +1398,7 @@ public class WndEmisonHRE extends WndBase {
 			throw new Exception(e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Imprime hoja de ruta.
 	 * @param hojaRuta		: Instancia de la HojaRuta (Class MTC ws)
@@ -1426,7 +1426,7 @@ public class WndEmisonHRE extends WndBase {
 		}
 
 	}
-	
+
 	/**
 	 * Previsializa la impresion de la hoja de ruta.
 	 * @param hojaRuta		: Instancia de la HojaRuta (Class MTC ws)
@@ -1438,7 +1438,7 @@ public class WndEmisonHRE extends WndBase {
 		String namefile=numeroHRE;//programacion.getHojaRuta().toString();
 		/*Crea el archivo a imprimir*/
 		CreateDocument.crearHRE(namefile,numeroHRE);
-		
+
 		/*Inicia proceso de previsualizacion*/
 		final WndIFrame iFrame = new WndIFrame();
 //		iFrame.setSrc(Constantes.URL_FORMATOS_HRE + namefile+".txt");
@@ -1446,11 +1446,11 @@ public class WndEmisonHRE extends WndBase {
 		iFrame.setWidth("1050");
 		iFrame.setheight("600");
 		iFrame.loadiframe();
-		
+
 		this.appendChild(iFrame);
 		iFrame.setMode("modal");
 	}
-	
+
 	/**
 	 * Anular hoja de ruta Electronica
 	 * @param numeroHRE : Número de la hoja de ruta.
@@ -1458,20 +1458,20 @@ public class WndEmisonHRE extends WndBase {
 	 */
 	private void anularHRE(String numeroHRE)throws Exception{
 		try {
-			
+
 			if(WSMTC.anularHRE(numeroHRE)){
 				HRE hre=ServiceLocator.getHREManager().buscarPorId(numeroHRE);
 				hre.setEstadoRegistro(Constantes.VALUE_INACTIVO);
 				UtilData.auditarRegistro(hre, true, getUsuario(), Executions.getCurrent());
 				ServiceLocator.getHREManager().actualizar(hre);
 			}
-			
+
 		}catch (WSMTCExcepcion wsex){
 			throw new Exception(wsex.getMessage());
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());
 		}
-		
+
 	}
 	/**
 	 * Carga los buses que estan programados.
@@ -1482,12 +1482,12 @@ public class WndEmisonHRE extends WndBase {
 	}
 	/**
 	 * Carga los buses que estan programados.
-	 * @param bus 
+	 * @param bus
 	 * @throws Exception
 	 */
 	private void cargarBuses(List<ProgramacionServicio> lstProgramacion)throws Exception{
 		if(lstProgramacion==null){
-			lstProgramacion=new ArrayList<ProgramacionServicio>();
+			lstProgramacion=new ArrayList<>();
 			if(cmbAgencia.getSelectedItem().getValue() instanceof Agencia){
 				Agencia agenciaPartida=(Agencia)cmbAgencia.getSelectedItem().getValue();
 				String fecha=Constantes.FORMAT_DATE.format(dtbxFecha.getValue());
@@ -1495,7 +1495,7 @@ public class WndEmisonHRE extends WndBase {
 				lstProgramacion=ServiceLocator.getProgramacionServiciosManager().buscarProgracion(agenciaPartida.getId(), fecha,null,isSalida);
 			}
 		}
-		
+
 		Util.limpiarCombobox(cmbBus);
 		/*Ordena de manera ascendente los numero de buses*/
 		Object[]obj=new String[lstProgramacion.size()];
@@ -1506,21 +1506,21 @@ public class WndEmisonHRE extends WndBase {
 			obj[x]=bus.getCodigo();
 		}
 		Arrays.sort(obj, 0, lstProgramacion.size());
-		
+
 		//Llena el combo
-		UtilData.cargarGenericData(cmbBus, true);		
-		for (int y=0;y<obj.length;y++) {
-			String codigoBus=obj[y].toString();
+		UtilData.cargarGenericData(cmbBus, true);
+		for (Object element : obj) {
+			String codigoBus=element.toString();
 			Bus bus=new Bus();
 			bus.setCodigo(codigoBus);
-			
+
 			Comboitem comboitem=new Comboitem(bus.getCodigo());
 			comboitem.setValue(bus);
-			
+
 			cmbBus.appendChild(comboitem);
 		}
 	}
-	
+
 	/*
 	 * Calcula la duracion del viaje
 	 */
@@ -1528,45 +1528,45 @@ public class WndEmisonHRE extends WndBase {
 		//Cancula duracion del viaje
 		Date dateSalida=toIntegrateDateTime(fechaPartida, horaPartida);
 		Date dateLlegada=toIntegrateDateTime(fechaLlegada, horaLlegada);
-		
+
 		Calendar calendarSalida=Calendar.getInstance();
 		Calendar calendarLlegada=Calendar.getInstance();
 		calendarSalida.set(dateSalida.getYear(), dateSalida.getMonth(), dateSalida.getDate(), dateSalida.getHours(), dateSalida.getMinutes());
 		calendarLlegada.set(dateLlegada.getYear(), dateLlegada.getMonth(), dateLlegada.getDate(), dateLlegada.getHours(), dateLlegada.getMinutes());
-		
+
 		long milSalida=calendarSalida.getTimeInMillis();
 		long milLlegada=calendarLlegada.getTimeInMillis();
 		long diff=milLlegada-milSalida;
-		
+
 		long difHoras=(diff / Constantes.MILISEGUNDOS_X_HORA);
 		long difMinutos=Math.abs(diff / Constantes.MILISEGUNDOS_X_MINUTO);
 		long restoMinutos=difMinutos%60;
-		
+
 		String duracion=String.valueOf(difHoras+ ":"+restoMinutos);
-		
+
 		return duracion;
 	}
-	 
+
 	/**
 	 * Calcula la fecha y hora en que debe terminar el conductor de conducir.
-	 * @param fechaHoraInicio 	: Fecha y hora en que inicia 
+	 * @param fechaHoraInicio 	: Fecha y hora en que inicia
 	 * @param horasConduccion	: Horas de cnduccion.
 	 * @return fechaTermino
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private Date getFechaHoraTermino(Date fechaHoraInicio, int horasConduccion) throws Exception{
 		Date fechaInicio=Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(fechaHoraInicio));
 		String horaInicio=Constantes.FORMAT_TIME.format(fechaHoraInicio);
-				
+
 		 Date fechaTermino=toIntegrateDateTime(fechaInicio, horaInicio);
 		 long milfechaTermino=fechaTermino.getTime()+(horasConduccion*Constantes.MILISEGUNDOS_X_HORA);
 		 fechaTermino=new Date(milfechaTermino);
-		 
+
 		 return fechaTermino;
 	}
 	/**
 	  * Integra la fecha y la hora a un objeto date
-	  * @param fecha 	: Fecha 
+	  * @param fecha 	: Fecha
 	  * @param hora		: Hora
 	  * @return Date
 	*/
@@ -1575,12 +1575,12 @@ public class WndEmisonHRE extends WndBase {
 		fechaHora.setHours(Integer.valueOf(hora.split(":")[0]));
 		fechaHora.setMinutes(Integer.valueOf(hora.split(":")[1]));
 		fechaHora.setSeconds(0);
-		
+
 		return fechaHora;
 	 }
-	
-	
-	
+
+
+
 	/**
 	 * Permite abrir la venta para generar la hre
 	 * @param programacionServicio
@@ -1598,12 +1598,12 @@ public class WndEmisonHRE extends WndBase {
 	 * @throws Exception
 	 */
 	private  Window createWindowsGenerarHRE(final ProgramacionServicio programacionServicio) throws Exception {
-		
-		final Window window = new Window();	
+
+		final Window window = new Window();
 		window.setWidth("440px");
 		window.setBorder(true);
 		window.setTitle("GENERAR LA HOJA DE RUTA ELECTRÓNICA (HRE)");
-		
+
 		Grid grid = new Grid();
 		Columns columns=new Columns();
 		Column column=new Column();column.setWidth("110px");column.setAlign("right");
@@ -1611,10 +1611,10 @@ public class WndEmisonHRE extends WndBase {
 		column=new Column();
 		columns.appendChild(column);
 		grid.appendChild(columns);
-		
+
 		Rows rows = new Rows();
 		Row row = new Row();
-		
+
 		Label  label =  new Label();
 		label.setValue("BUS :");
 		row.appendChild(label);
@@ -1623,7 +1623,7 @@ public class WndEmisonHRE extends WndBase {
 		lblBus.setValue(programacionServicio.getBus().getCodigo());
 		row.appendChild(lblBus);
 		rows.appendChild(row);
-		
+
 		row=new Row();
 		label =  new Label();
 		label.setValue("FECHA/HORA SALIDA :");
@@ -1633,7 +1633,7 @@ public class WndEmisonHRE extends WndBase {
 		lblFechaSalida.setValue(Constantes.FORMAT_DATE.format(programacionServicio.getItinerario().getFechaPartida())+" "+programacionServicio.getItinerario().getHoraPartida());
 		row.appendChild(lblFechaSalida);
 		rows.appendChild(row);
-		
+
 		row=new Row();
 		label =  new Label();
 		label.setValue("RUTA :");
@@ -1644,7 +1644,7 @@ public class WndEmisonHRE extends WndBase {
 		lblRuta.setValue(programacionServicio.getItinerario().getRuta().toString());
 		row.appendChild(lblRuta);
 		rows.appendChild(row);
-		
+
 		row=new Row();
 		label =  new Label();
 		label.setValue("SERVICIO :");
@@ -1655,28 +1655,28 @@ public class WndEmisonHRE extends WndBase {
 		lblServicio.setValue(programacionServicio.getItinerario().getServicio().toString());
 		row.appendChild(lblServicio);
 		rows.appendChild(row);
-		
+
 		row=new Row();
 		row.setSpans("1,2");
 		label =  new Label();
 		label.setValue("PILOTO QUE INICIA LA CONDUCCIÓN :");
-		label.setStyle("color:red;font-weight: bold;font-size:10px !important");		
+		label.setStyle("color:red;font-weight: bold;font-size:10px !important");
 		row.appendChild(label);
 		final Combobox cmbPilotIniciaConduccion=new Combobox();
 		cmbPilotIniciaConduccion.setReadonly(true);
 		cmbPilotIniciaConduccion.setWidth("250px");
 		row.appendChild(cmbPilotIniciaConduccion);
 		rows.appendChild(row);
-		
+
 		row=new Row();
 		row.appendChild(new Separator());
 		row.appendChild(new Separator());
 		rows.appendChild(row);
-		
-		
+
+
 		grid.appendChild(rows);
-		
-		
+
+
 		Hbox hbox=new Hbox();
 		hbox.setAlign("center");
 		Div div=new Div();
@@ -1689,25 +1689,25 @@ public class WndEmisonHRE extends WndBase {
 		tbbCancelar.setAutodisable("self");
 		tbbCancelar.setMold("trendy");
 		hbox.appendChild(tbbCancelar);
-		
+
 		Separator separator=new Separator();
 		separator.setWidth("10px");
 		hbox.appendChild(separator);
-		
+
 		Button tbbAceptar=new Button("Aceptar", "/resources/mp_aceptarEnabled.png");
 		tbbAceptar.setStyle("font-size:12px !important");
 		tbbAceptar.setWidth("120px");
 		tbbAceptar.setAutodisable("self");
 		tbbAceptar.setMold("trendy");
 		hbox.appendChild(tbbAceptar);
-		
+
 		div.appendChild(hbox);
 		toolbar.appendChild(div);
 
 		window.appendChild(grid);
 		window.appendChild(toolbar);
-		
-		
+
+
 		/*Carga pilotos*/
 		UtilData.cargarGenericData(cmbPilotIniciaConduccion, false);
 		//Piloto
@@ -1724,9 +1724,9 @@ public class WndEmisonHRE extends WndBase {
 			comboitem.setValue(programacionServicio.getCopilotoAuxiliar());
 			cmbPilotIniciaConduccion.appendChild(comboitem);
 		}
-			
-		
-		
+
+
+
 		/*CANCELAR*/
 		tbbCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
@@ -1734,7 +1734,7 @@ public class WndEmisonHRE extends WndBase {
 				window.onClose();
 			}
 		});
-		
+
 		tbbAceptar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -1742,7 +1742,7 @@ public class WndEmisonHRE extends WndBase {
 				    DlgMessage.information(Messages.getString("WndEmisonhre.information.noSelectPilotoInicio"));
 					return;
 				}
-								
+
 				Messagebox.show(Messages.getString("WndEmisonhre.question.generarhre"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
 					@Override
 					public void onEvent(Event e) throws Exception {
@@ -1750,12 +1750,12 @@ public class WndEmisonHRE extends WndBase {
 							try{
 								/*Porcesa Manifiesto electronico*/
 								procesar(programacionServicio.getId(),PROCESO_GENERAR_HRE,null,(Personal)cmbPilotIniciaConduccion.getSelectedItem().getValue(),programacionServicio.getItinerario().getHoraPartida());
-								
+
 								/*Confirma exito del fin del proceso*/
 								DlgMessage.information(Messages.getString("WndEmisonhre.information.confirmaGenerarhre"));
-								
+
 								window.onClose();
-								
+
 								/*Refresca lista*/
 								buscar();
 							}catch (WebServiceException wse){
@@ -1773,8 +1773,8 @@ public class WndEmisonHRE extends WndBase {
 		});
 		return window;
 	}
-	
-	
+
+
 	/**
 	 * Permiter abrir la venta para finalizar la hre
 	 * @param programacionServicio
@@ -1792,13 +1792,13 @@ public class WndEmisonHRE extends WndBase {
 	 * @throws Exception
 	 */
 	private  Window createWindowsfinalizarHRE(ProgramacionServicio programacionServicio) throws Exception {
-				
-		final Window window = new Window();	
+
+		final Window window = new Window();
 		window.setWidth("440px");
 		window.setBorder(true);
 		window.setTitle("Finalizar Hoja de Ruta Electrónica (HRE)");
 //		window.setClosable(true);
-		
+
 		Grid grid = new Grid();
 //		grid.setStyle("background:black");
 		Columns columns=new Columns();
@@ -1811,10 +1811,10 @@ public class WndEmisonHRE extends WndBase {
 		column=new Column();
 		columns.appendChild(column);
 		grid.appendChild(columns);
-		
+
 		Rows rows = new Rows();
 		Row row = new Row();
-		
+
 		Label  label =  new Label();
 		label.setValue("NRO. HOJA RUTA :");
 		row.appendChild(label);
@@ -1826,7 +1826,7 @@ public class WndEmisonHRE extends WndBase {
 		row.appendChild(new Separator());
 		row.appendChild(new Separator());
 		rows.appendChild(row);
-		
+
 		row=new Row();
 		label =  new Label();
 		label.setValue("FECHA/HORA SALIDA :");
@@ -1836,7 +1836,7 @@ public class WndEmisonHRE extends WndBase {
 		lblFechaSalida.setStyle("color:blue;font-size:11px !important");
 		lblFechaSalida.setValue(Constantes.FORMAT_DATE.format(programacionServicio.getItinerario().getFechaPartida())+" "+programacionServicio.getItinerario().getHoraPartida());
 		row.appendChild(lblFechaSalida);
-		
+
 		label =  new Label();
 		label.setValue("RUTA :");
 		row.appendChild(label);
@@ -1846,7 +1846,7 @@ public class WndEmisonHRE extends WndBase {
 		lblRuta.setValue(programacionServicio.getItinerario().getRuta().toString());
 		row.appendChild(lblRuta);
 		rows.appendChild(row);
-		
+
 		row=new Row();
 		label =  new Label();
 		label.setValue("SERVICIO :");
@@ -1856,7 +1856,7 @@ public class WndEmisonHRE extends WndBase {
 		lblServicio.setStyle("color:blue");
 		lblServicio.setValue(programacionServicio.getItinerario().getServicio().toString());
 		row.appendChild(lblServicio);
-		
+
 		label =  new Label();
 		label.setValue("BUS :");
 		row.appendChild(label);
@@ -1866,7 +1866,7 @@ public class WndEmisonHRE extends WndBase {
 		lblBus.setValue(programacionServicio.getItinerario().getBus().getCodigo());
 		row.appendChild(lblBus);
 		rows.appendChild(row);
-		
+
 		row=new Row();
 		label =  new Label();
 		label.setValue("FECHA LLEGADA :");
@@ -1875,7 +1875,7 @@ public class WndEmisonHRE extends WndBase {
 		final Label lblFechaLlegada=new Label(Constantes.FORMAT_DATE.format(new Date()));
 		lblFechaLlegada.setStyle("color:blue;font-size:11px !important");
 		row.appendChild(lblFechaLlegada);
-		
+
 		label =  new Label();
 		label.setValue("HORA LLEGADA :");
 		row.appendChild(label);
@@ -1884,9 +1884,9 @@ public class WndEmisonHRE extends WndBase {
 		tmbxHoraLlegada.setFormat("HH:mm");
 		row.appendChild(tmbxHoraLlegada);
 		rows.appendChild(row);
-		
+
 		grid.appendChild(rows);
-		
+
 		Hbox hbox=new Hbox();
 		Div div=new Div();
 		div.setAlign("center");
@@ -1898,24 +1898,24 @@ public class WndEmisonHRE extends WndBase {
 		tbbCancelar.setAutodisable("self");
 		tbbCancelar.setMold("trendy");
 		hbox.appendChild(tbbCancelar);
-		
+
 		Separator separator=new Separator();
 		separator.setWidth("10px");
 		hbox.appendChild(separator);
-		
+
 		Button tbbAceptar=new Button("Aceptar", "/resources/mp_aceptarEnabled.png");
 		tbbAceptar.setStyle("font-size:12px !important");
 		tbbAceptar.setWidth("120px");
 		tbbAceptar.setAutodisable("self");
 		tbbAceptar.setMold("trendy");
 		hbox.appendChild(tbbAceptar);
-		
+
 		div.appendChild(hbox);
 		toolbar.appendChild(div);
 
 		window.appendChild(grid);
 		window.appendChild(toolbar);
-		
+
 		/*CANCELAR*/
 		tbbCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
@@ -1923,15 +1923,15 @@ public class WndEmisonHRE extends WndBase {
 				window.onClose();
 			}
 		});
-		
+
 		tbbAceptar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				if(tmbxHoraLlegada.getText().isEmpty()){
-					DlgMessage.information(Messages.getString("WndEmisonhre.information.noHoraLlegadaRela"),tmbxHoraLlegada);					
+					DlgMessage.information(Messages.getString("WndEmisonhre.information.noHoraLlegadaRela"),tmbxHoraLlegada);
 					return;
 				}
-								
+
 				Messagebox.show(Messages.getString("WndEmisonhre.question.finalizaHRE"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
 					@Override
 					public void onEvent(Event e) throws Exception {

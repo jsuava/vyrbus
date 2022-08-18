@@ -49,7 +49,7 @@ import com.cystesoft.vyrbus.view.ui.WndBuscarPasajero;
  */
 public class WndEstadoVentaReserva extends WndBase {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Datebox dtbxFechaInicioVenta;
 	private Datebox dtbxFechaFinVenta;
 	private Datebox dtbxFechaPartida;
@@ -65,28 +65,28 @@ public class WndEstadoVentaReserva extends WndBase {
 	private Combobox cmbTipomovimiento;
 	private Combobox cmbOrigen;
 	private Combobox cmbDestino;
-	private Listbox lstbxListaMovimientos;	
-	
+	private Listbox lstbxListaMovimientos;
+
 	private Listbox lstbxHistorial;
 	private Tab tabEstado;
 	private Tab tabHistorial;
 	private Checkbox chkHistorial;
-	
+
 //	private Radio rdAnular;
 //	private Radio rdNotaCredito;
-	
+
 	int BUSQ_CLIENTE_RUC=0;
 	int BUSQ_CLIENTE_RAZONSOCIAL=1;
 	int BUSQ_PAX_NRO_DOCUMENTO=0;
 	int BUSQ_PAX_NOMBRES=1;
-	
+
 	private Window wndEstadoVyR;
 	private Menupopup menupopup= new Menupopup();
-	
-	
-	
+
+
+
 //	private Window wndAnular;
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
 	 */
@@ -110,12 +110,12 @@ public class WndEstadoVentaReserva extends WndBase {
 		cmbOrigen=(Combobox)this.getFellow("cmbOrigen");
 		cmbDestino=(Combobox)this.getFellow("cmbDestino");
 		lstbxListaMovimientos=(Listbox)this.getFellow("lstbxListaMovimientos");
-		
+
 		lstbxHistorial=(Listbox)this.getFellow("lstbxHistorial");
 		tabEstado = (Tab)this.getFellow("tabEstado");
 		tabHistorial = (Tab)this.getFellow("tabHistorial");
 		chkHistorial = (Checkbox)this.getFellow("chkHistorial");
-		
+
 		//Auto completa el numero de control
 		txtNumeroControl.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
@@ -125,7 +125,7 @@ public class WndEstadoVentaReserva extends WndBase {
 					txtNumeroControl.setText(Util.generateControlNumber(txtNumeroControl.getText().trim().toUpperCase()));
 			}
 		});
-		
+
 		//Autocompleta el numero de Boleto
 		txtNumeroBoleto.addEventListener(Events.ON_CHANGE,new EventListener<Event>() {
 			@Override
@@ -133,13 +133,13 @@ public class WndEstadoVentaReserva extends WndBase {
 				if(txtNumeroBoleto.getText().trim().length()>0)
 					txtNumeroBoleto.setText(Util.autocompleNumberBoleto(txtNumeroBoleto.getText()));
 			}
-			
+
 		});
-		
-		
+
+
 	}
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
@@ -148,13 +148,13 @@ public class WndEstadoVentaReserva extends WndBase {
 		// TODO Auto-generated method stub
 //		String fecha = Util.DatetoString(new Date(), "yyyyMMdd");
 //		dtbxFechaPartida.setConstraint("after "+fecha);
-		
+
 		UtilData.cargarGenericData(cmbUsuario, true);
 		onLoadMovimientos(cmbTipomovimiento);
 		UtilData.cargarDataCombo(cmbOrigen, Localidad.class, true);
 		UtilData.cargarDataCombo(cmbDestino, Localidad.class, true);
 	}
-	
+
 	/**
 	 * Ejecuta la busqueda, segun los parametros seleccionados.
 	 * @throws Exception
@@ -162,7 +162,7 @@ public class WndEstadoVentaReserva extends WndBase {
 	public void buscar() throws Exception{
 		try{
 			menupopup.detach();
-			
+
 			if (dtbxFechaInicioVenta.getValue()==null && dtbxFechaFinVenta.getValue()==null && dtbxFechaPartida.getValue()==null
 					&& txtNumeroBoleto.getText().trim().isEmpty() && txtNumeroControl.getText().trim().isEmpty() )
 				throw new EstadoVentasReservasException(EstadoVentasReservasException.FECHAS_NULL);
@@ -170,12 +170,12 @@ public class WndEstadoVentaReserva extends WndBase {
 				throw new EstadoVentasReservasException(EstadoVentasReservasException.FECHA_FIN_NULL);
 			else if(dtbxFechaInicioVenta.getValue()==null && dtbxFechaFinVenta.getValue()!=null)
 				throw new EstadoVentasReservasException(EstadoVentasReservasException.FECHA_INCIO_NULL);
-			
+
 			String styleActivo_11px="font-size:11px !important";
 			String styleActivo_9px="font-size:9px !important";
 			String styleAnulado_11px="font-size:11px !important; color:red";
 			String styleAnulado_9px="font-size:9px !important; color:red";
-			
+
 			String fechaInicialVenta=null;
 			String fechaFinVenta=null;
 			String fechaPartida=null;
@@ -189,7 +189,7 @@ public class WndEstadoVentaReserva extends WndBase {
 			String numeroBoleto=null;
 			String busqPax=null;
 			String busqCliente=null;
-			
+
 			if(dtbxFechaInicioVenta.getValue()!=null)
 				fechaInicialVenta=Constantes.FORMAT_DATE.format(dtbxFechaInicioVenta.getValue());
 			if(dtbxFechaFinVenta.getValue()!=null)
@@ -212,34 +212,34 @@ public class WndEstadoVentaReserva extends WndBase {
 				busqPax=txtBusquedaPasajero.getText().trim().toUpperCase();
 			if(!(txtBusquedaCliente.getText().trim().isEmpty()))
 				busqCliente=txtBusquedaCliente.getText().trim().toUpperCase();
-			
+
 			if(!chkHistorial.isChecked()){
 				tabEstado.setVisible(true);
 				tabHistorial.setVisible(false);
 				tabEstado.setSelected(true);
-				tabHistorial.setSelected(false);				
+				tabHistorial.setSelected(false);
 				List<VentaPasaje>lstVenta=ServiceLocator.getVentaPasajesManager().
-										  buscarEstadoVentasReservas(fechaInicialVenta, 
-												  					 fechaFinVenta, 
-												  					 tipoBusqCliente, 
-												  					 busqCliente, 
-												  					 tipoBusqPax, 
-												  					 busqPax, 
-												  					 fechaPartida, 
-												  					 idUsuario, 
-												  					 numeroControl, 
-												  					 numeroBoleto, 
-												  					 idOrigen, 
-												  					 idDestino, 
+										  buscarEstadoVentasReservas(fechaInicialVenta,
+												  					 fechaFinVenta,
+												  					 tipoBusqCliente,
+												  					 busqCliente,
+												  					 tipoBusqPax,
+												  					 busqPax,
+												  					 fechaPartida,
+												  					 idUsuario,
+												  					 numeroControl,
+												  					 numeroBoleto,
+												  					 idOrigen,
+												  					 idDestino,
 												  					 tipoMovimiento);
 				Util.limpiarListbox(lstbxListaMovimientos);
 				Util.limpiarListbox(lstbxHistorial);
 				int x=-1;
-				
+
 				for(VentaPasaje ventaPasaje: lstVenta){
 					TipoMovimiento otipoMovimiento=ventaPasaje.getTipoMovimiento();
 					boolean isAnulado=otipoMovimiento.getId().intValue()==Constantes.ID_TIPMOV_ANULACION || otipoMovimiento.getId().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA  ?true:false;
-					
+
 					Listitem item= new Listitem();
 					Listcell cell=new Listcell(ventaPasaje.getFechaLiquidacion()!=null?Constantes.FORMAT_DATE.format(ventaPasaje.getFechaLiquidacion()):Constantes.FORMAT_DATE.format(ventaPasaje.getFechaInsercion()));
 					cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
@@ -253,7 +253,7 @@ public class WndEstadoVentaReserva extends WndBase {
 					cell=new Listcell(ventaPasaje.getNumeroBoleto());
 					cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
 					item.appendChild(cell);
-					
+
 	//				cell=new Listcell("T"+ventaPasaje.getNumeroControl().substring(5,ventaPasaje.getNumeroControl().length()));
 	//				cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
 	//				item.appendChild(cell);
@@ -275,19 +275,19 @@ public class WndEstadoVentaReserva extends WndBase {
 					cell=new Listcell(ventaPasaje.getNumeroAsiento()!=null?ventaPasaje.getNumeroAsiento().toString():"");
 					cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
 					item.appendChild(cell);
-					
+
 					item.addEventListener(Events.ON_DOUBLE_CLICK,new EventListener<Event>() {
 						@Override
 						public void onEvent(Event event) throws Exception {
 							// TODO Auto-generated method stub
 							VentaPasaje ventaPasaje=((VentaPasaje)lstbxListaMovimientos.getSelectedItem().getValue());
-							Map<String, Object> params = new HashMap<String, Object>();
+							Map<String, Object> params = new HashMap<>();
 							params.put("ventaPasaje", ventaPasaje);
 							Window win = (Window) Executions.createComponents("estadoVentaReservaVerVenta.zul", null, params);
 							win.setMode(MODAL);
 						}
 					});
-					
+
 					Toolbarbutton tbverVenta= new Toolbarbutton("Ver venta");
 					tbverVenta.setStyle("text-transform:uppercase; color:blue;");
 					x++;
@@ -301,13 +301,13 @@ public class WndEstadoVentaReserva extends WndBase {
 							// TODO Auto-generated method stub
 							Listitem item= lstbxListaMovimientos.getItemAtIndex(Integer.valueOf(event.getTarget().getId()));
 							VentaPasaje ventaPasaje=item.getValue();
-							Map<String, Object> params = new HashMap<String, Object>();
+							Map<String, Object> params = new HashMap<>();
 							params.put("ventaPasaje", ventaPasaje);
 							Window win = (Window) Executions.createComponents("estadoVentaReservaVerVenta.zul", null, params);
 							win.setMode(MODAL);
 						}
 					});
-					
+
 					item.setValue(ventaPasaje);
 					item.setTooltiptext("Haga doble click para ver la información de la Venta ");
 					item.setContext(getMenucontex(ventaPasaje));
@@ -319,13 +319,13 @@ public class WndEstadoVentaReserva extends WndBase {
 				tabHistorial.setVisible(true);
 				tabEstado.setSelected(false);
 				tabHistorial.setSelected(true);
-				
+
 				List<VentaPasaje>lstVenta=ServiceLocator.getVentaPasajesManager().buscarHistorialComprobante(numeroBoleto);
 
 				listarHistorial(lstVenta);
-				
+
 			}
-			
+
 		}catch (EstadoVentasReservasException esx){
 			if(esx.getTipo().intValue()==EstadoVentasReservasException.FECHA_INCIO_NULL){
 				DlgMessage.information(Messages.getString("WndEstadoVentasReservas.information.noSelectFechaInicio"),dtbxFechaInicioVenta);
@@ -335,11 +335,11 @@ public class WndEstadoVentaReserva extends WndBase {
 				DlgMessage.information(Messages.getString("WndEstadoVentasReservas.information.noSelectFechas"),dtbxFechaInicioVenta);
 			}
 		}
-		
-		
+
+
 	}
-	
-	
+
+
 	public void listarHistorial(List<VentaPasaje> lstHistorial){
 		String styleActivo_11px="font-size:11px !important";
 		String styleActivo_9px="font-size:9px !important";
@@ -349,24 +349,24 @@ public class WndEstadoVentaReserva extends WndBase {
 		Util.limpiarListbox(lstbxHistorial);
 		Util.limpiarListbox(lstbxListaMovimientos);
 		int x=-1;
-		
+
 		for(VentaPasaje ventaPasaje: lstHistorial){
 			TipoMovimiento otipoMovimiento=ventaPasaje.getTipoMovimiento();
-			boolean isAnulado=otipoMovimiento.getId().intValue()==Constantes.ID_TIPMOV_ANULACION || 
+			boolean isAnulado=otipoMovimiento.getId().intValue()==Constantes.ID_TIPMOV_ANULACION ||
 							  otipoMovimiento.getId().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA  ? true : false;
-			
+
 			Listitem item= new Listitem();
 			Listcell cell=new Listcell(ventaPasaje.getId().toString());
 			cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
 			item.appendChild(cell);
-			
+
 			//cell=new Listcell(ventaPasaje.getVentaOriginal().toString());
 			cell=new Listcell("");
 			cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
 			item.appendChild(cell);
-			
-			cell=new Listcell(ventaPasaje.getFechaLiquidacion()!=null ? 
-							  Constantes.FORMAT_DATE.format(ventaPasaje.getFechaLiquidacion()) : 
+
+			cell=new Listcell(ventaPasaje.getFechaLiquidacion()!=null ?
+							  Constantes.FORMAT_DATE.format(ventaPasaje.getFechaLiquidacion()) :
 							  Constantes.FORMAT_DATE.format(ventaPasaje.getFechaInsercion()));
 			cell.setStyle(isAnulado?styleAnulado_9px:styleActivo_9px);
 			item.appendChild(cell);
@@ -379,21 +379,21 @@ public class WndEstadoVentaReserva extends WndBase {
 			cell.setStyle(isAnulado?styleAnulado_9px:styleActivo_9px);
 			item.appendChild(cell);
 
-			
+
 			cell=new Listcell(ventaPasaje.getTipoComprobante().getAbreviatura());
 			cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
 			item.appendChild(cell);
-			
+
 			cell=new Listcell(ventaPasaje.getNumeroBoleto());
 			cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
 			item.appendChild(cell);
 			cell=new Listcell(ventaPasaje.getNumeroBoletoAnterior());
 			cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
-			item.appendChild(cell);	
+			item.appendChild(cell);
 			cell=new Listcell(ventaPasaje.getNumeroControl());
 			cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
 			item.appendChild(cell);
-			
+
 			cell=new Listcell(ventaPasaje.getFechaPartida()!=null?Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida()):"");
 			cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
 			item.appendChild(cell);
@@ -406,14 +406,14 @@ public class WndEstadoVentaReserva extends WndBase {
 			cell=new Listcell(ventaPasaje.getCliente().toString());
 			cell.setStyle(isAnulado?styleAnulado_9px:styleActivo_9px);
 			item.appendChild(cell);
-			
+
 			cell=new Listcell(ventaPasaje.getNumeroAsiento()!=null?ventaPasaje.getNumeroAsiento().toString():"");
 			cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
 			item.appendChild(cell);
 			cell=new Listcell(otipoMovimiento.getDenominacion());
 			cell.setStyle(isAnulado?styleAnulado_9px:styleActivo_9px);
 			item.appendChild(cell);
-			
+
 			cell=new Listcell(ventaPasaje.getImportePagado().toString());
 			cell.setStyle(isAnulado?styleAnulado_9px:styleActivo_9px);
 			item.appendChild(cell);
@@ -439,13 +439,13 @@ public class WndEstadoVentaReserva extends WndBase {
 				public void onEvent(Event event) throws Exception {
 					// TODO Auto-generated method stub
 					VentaPasaje ventaPasaje=((VentaPasaje)lstbxHistorial.getSelectedItem().getValue());
-					Map<String, Object> params = new HashMap<String, Object>();
+					Map<String, Object> params = new HashMap<>();
 					params.put("ventaPasaje", ventaPasaje);
 					Window win = (Window) Executions.createComponents("estadoVentaReservaVerVenta.zul", null, params);
 					win.setMode(MODAL);
 				}
 			});
-			
+
 			Toolbarbutton tbverVenta= new Toolbarbutton("Ver venta");
 			tbverVenta.setStyle("text-transform:lowercase; color:blue;");
 			x++;
@@ -459,20 +459,20 @@ public class WndEstadoVentaReserva extends WndBase {
 					// TODO Auto-generated method stub
 					Listitem item= lstbxHistorial.getItemAtIndex(Integer.valueOf(event.getTarget().getId()));
 					VentaPasaje ventaPasaje=item.getValue();
-					Map<String, Object> params = new HashMap<String, Object>();
+					Map<String, Object> params = new HashMap<>();
 					params.put("ventaPasaje", ventaPasaje);
 					Window win = (Window) Executions.createComponents("estadoVentaReservaVerVenta.zul", null, params);
 					win.setMode(MODAL);
 				}
 			});
-			
+
 			item.setValue(ventaPasaje);
 			item.setTooltiptext("Haga doble click para ver la información de la Venta ");
 			//item.setContext(getMenucontex(ventaPasaje));
 			lstbxHistorial.appendChild(item);
 		}
 	}
-	
+
 	/**
 	 * Crea el menu contextual para el Listbox (Click derecho)
 	 * @param ventaPasaje
@@ -481,7 +481,7 @@ public class WndEstadoVentaReserva extends WndBase {
 	 */
 	private Menupopup getMenucontex(final VentaPasaje ventaPasaje)throws Exception{
 		String idContext=ventaPasaje.getId().toString();
-		
+
 		/*Elimina el componemte que coincida con el nuevo a agregar*/
 		for(Component component :this.wndEstadoVyR.getChildren()){
 			if(component instanceof Menupopup){
@@ -492,17 +492,17 @@ public class WndEstadoVentaReserva extends WndBase {
 				}
 			}
 		}
-		
+
 		menupopup= new Menupopup();
 		menupopup.setId(idContext);
-		
+
 		/*========================================================================================*/
 		/*ANULACION DE COMPROBANTES - END BEGIN - 01/02/2017 - JABANTO (Se translado al modulo "anulacion de comprobantes")*/
 		/*========================================================================================*/
 //		Menuitem menuitem=new Menuitem("Anular Comprobante","/resources/mp_anularEnabled.png");
 //		menuitem.setVisible(false);
 //		menuitem.setDisabled(true);
-//				
+//
 //		if(getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO || getRol().getId().intValue()==Constantes.ID_ROL_GESTION_CORPORATIVA){
 //			menuitem.setDisabled(false);
 //			if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION){
@@ -533,23 +533,23 @@ public class WndEstadoVentaReserva extends WndBase {
 //							return;
 //						}
 //					}
-//				
+//
 //					createWindowAnulacion(ventaPasaje, soloAlicaNotaCredito);
-//					
+//
 //				} catch (Exception e) {
 //					e.printStackTrace();
 //					DlgMessage.error(e.getMessage());
 //				}
 //			}
-//		});		
+//		});
 //		menupopup.appendChild(menuitem);
-		
+
 		/*========================================================================================*/
 		/*ENVIO DE COMPROBANTE AL S.F.E.*/
 		/*========================================================================================*/
-		Menuitem menuitem=new Menuitem("Enviar Comprobante S.F.E.","/resources/mp_acceptEnabled.png");		
+		Menuitem menuitem=new Menuitem("Enviar Comprobante S.F.E.","/resources/mp_acceptEnabled.png");
 		menuitem.setDisabled(true);
-		if((ventaPasaje.getEnviadoSFE()==null || ventaPasaje.getEnviadoSFE().intValue()==Constantes.FAILURE) && 
+		if((ventaPasaje.getEnviadoSFE()==null || ventaPasaje.getEnviadoSFE().intValue()==Constantes.FAILURE) &&
 				(getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO || getRol().getId().intValue()==Constantes.ID_ROL_FISCALIZACION))
 			menuitem.setDisabled(false);
 		menuitem.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
@@ -562,15 +562,15 @@ public class WndEstadoVentaReserva extends WndBase {
 					DlgMessage.error(e.getMessage());
 				}
 			}
-		});		
+		});
 		menupopup.appendChild(menuitem);
-		
-		
-		
+
+
+
 		wndEstadoVyR.appendChild(menupopup);
 		return menupopup;
-	}	
-	
+	}
+
 	/**
 	 * Realiza el envio del comprobante al Servidor de Facturacion electronica
 	 * @param ventaPasajeId
@@ -591,7 +591,7 @@ public class WndEstadoVentaReserva extends WndBase {
 							listVentaPasaje.add(oveVentaPasaje);
 							result= WSFE.sendVenta(listVentaPasaje, wndEstadoVyR, false, null,true);
 						}
-						
+
 						if(result!=null){
 							DlgMessage.information(result.getMessage().getValue());
 							buscar();
@@ -601,31 +601,31 @@ public class WndEstadoVentaReserva extends WndBase {
 				} catch (Exception e2) {
 					e2.printStackTrace();
 					DlgMessage.error(e2.getMessage());
-				}						
+				}
 			}
-		});			
+		});
 	}
-	
+
 //	private void createWindowAnulacion(VentaPasaje ventaPasaje, boolean soloAlicaNotaCredito)throws Exception{
 //		final VentaPasaje ventaOriginal = ServiceLocator.getVentaPasajesManager().buscarVentaById(Long.valueOf(ventaPasaje.getId()));
 //		final VentaPasaje ultimoMoviento = ServiceLocator.getVentaPasajesManager().buscarUltimoRegistro(ventaOriginal.getVentaOriginal());
-//		
+//
 //		if(ultimoMoviento.getId().longValue()!=ventaOriginal.getId().longValue()){
 //			DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.noAnulacion"));
 //			return;
 //		}
-//		
+//
 //		//Validación para la anulación de un Reecibo de caja
 //		if (ventaOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_RECIBO_CAJA){
 //			VentaPasaje ultimoRegistro=ServiceLocator.getVentaPasajesManager().buscarUltimoRegistro(ventaOriginal.getVentaOriginal());
-//			//Valida si RC esta reimpreso y no esta anulado para continuar con la anulación. 
+//			//Valida si RC esta reimpreso y no esta anulado para continuar con la anulación.
 //			if (ultimoRegistro.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_RECIBO_CAJA &&
 //					ultimoRegistro.getTipoMovimiento().getId().intValue()!=Constantes.ID_TIPMOV_ANULACION){
 //				DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.RCReimpreso"));
 //				return;
 //			}
 //		}
-//		
+//
 //		if(ventaOriginal.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION){
 //			DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.boletoAnulado"));
 //			return;
@@ -636,16 +636,16 @@ public class WndEstadoVentaReserva extends WndBase {
 //			DlgMessage.information(Messages.getString("Generales.information.manifiestoImpreso"));
 //			return;
 //		}
-//		
+//
 //		wndAnular = createVentanaAnulacion(ventaPasaje.getId(), soloAlicaNotaCredito);
 //		this.appendChild(wndAnular);
 //		wndAnular.setMode("modal");
 //	}
-	
+
 //	@SuppressWarnings("deprecation")
 //	private Window createVentanaAnulacion(Long ventaPasajeid, boolean soloAlicaNotaCredito)throws Exception{
 //		final VentaPasaje ventaOriginal=ServiceLocator.getVentaPasajesManager().buscarPorId(ventaPasajeid);
-//		
+//
 //		Caption caption = null;
 //		Groupbox groupbox = null;
 //		Grid grid = new Grid();
@@ -655,23 +655,23 @@ public class WndEstadoVentaReserva extends WndBase {
 //		Row row = null;
 //		Label label = null;
 //		Textbox text = null;
-//		
+//
 //		final Window win = new Window("", "normal", true);
 //		win.setWidth("500px");
-//		
+//
 //		caption = new Caption("ANULACION DEl COMPROBANTE", "");
 //		win.appendChild(caption);
 //		label = new Label("Se va a realizar la Anulacion del Comprobante con los siguientes datos :");
 //		label.setStyle("font-size:12px !important");
 //		win.appendChild(label);
-//		
+//
 //		win.appendChild(new Separator("horizontal"));
-//		
+//
 //		groupbox = new Groupbox();
 //		groupbox.setClosable(false);
 //		caption = new Caption("Datos del Comprobante");
 //		groupbox.appendChild(caption);
-//		
+//
 //		/*	Columna 1	*/
 //		column = new Column();
 //		column.setAlign("right");
@@ -686,26 +686,26 @@ public class WndEstadoVentaReserva extends WndBase {
 //		/*	Columna 4	*/
 //		column = new Column();
 //		columns.appendChild(column);
-//		
+//
 //		grid.appendChild(columns);
-//		
-//		row = new Row();		
+//
+//		row = new Row();
 //		label = new Label("NUMERO BOLETO :");
-//		row.appendChild(label);		
+//		row.appendChild(label);
 //		text = new Textbox(ventaOriginal.getNumeroBoleto());
 //		text.setReadonly(true);
 //		text.setWidth("80px");
 //		text.setStyle("font-size:11px !important");
-//		row.appendChild(text);		
+//		row.appendChild(text);
 //		label = new Label("FECHA VIAJE :");
-//		row.appendChild(label);		
+//		row.appendChild(label);
 //		text = new Textbox(ventaOriginal.getFechaPartida()==null?"":Util.DatetoString(ventaOriginal.getFechaPartida(), Constantes.DATE_FORMAT));
 //		text.setReadonly(true);
 //		text.setWidth("80px");
 //		text.setStyle("font-size:11px !important");
-//		row.appendChild(text);		
+//		row.appendChild(text);
 //		rows.appendChild(row);
-//		
+//
 //		row = new Row();
 //		row.setSpans("1,3");
 //		label = new Label("PASAJERO :");
@@ -714,29 +714,29 @@ public class WndEstadoVentaReserva extends WndBase {
 //		text.setReadonly(true);
 //		text.setWidth("314px");
 //		text.setStyle("font-size:11px !important");
-//		row.appendChild(text);		
+//		row.appendChild(text);
 //		rows.appendChild(row);
-//		
-//		row = new Row();		
+//
+//		row = new Row();
 //		label = new Label("RUTA :");
-//		row.appendChild(label);		
+//		row.appendChild(label);
 //		text = new Textbox(ventaOriginal.getRuta().getOrigen()+" - " + ventaOriginal.getRuta().getDestino());
 //		text.setReadonly(true);
 //		text.setWidth("80px");
-//		row.appendChild(text);		
+//		row.appendChild(text);
 //		label = new Label("IMPORTE :");
-//		row.appendChild(label);		
+//		row.appendChild(label);
 //		text = new Textbox(Util.toNumberFormat(ventaOriginal.getImportePagado(), 2));
 //		text.setReadonly(true);
 //		text.setWidth("80px");
 //		text.setStyle("font-size:11px !important");
-//		row.appendChild(text);		
+//		row.appendChild(text);
 //		rows.appendChild(row);
-//		
+//
 //		row=new Row();
 //		row.setSpans("1,3");
 //		label = new Label("TIPO OPERACION (*) :");
-//		row.appendChild(label);		
+//		row.appendChild(label);
 //		rdAnular= new Radio("Anular comprobante");
 //		rdAnular.setStyle("color:red");
 //		rdNotaCredito= new Radio("Aplicar Nota de Crédito");
@@ -751,25 +751,25 @@ public class WndEstadoVentaReserva extends WndBase {
 //		hbox.appendChild(rdNotaCredito);
 //		row.appendChild(hbox);
 //		rows.appendChild(row);
-//		
+//
 //		row=new Row();
 //		row.setSpans("1,4");
 //		label = new Label("MOTIVO (*) :");
-//		row.appendChild(label);		
+//		row.appendChild(label);
 //		final Textbox txtMotivoAnulacion = new Textbox();
 //		txtMotivoAnulacion.setWidth("314px");
 //		txtMotivoAnulacion.setMultiline(true);
 //		txtMotivoAnulacion.setRows(3);
 //		txtMotivoAnulacion.setMaxlength(255);
 //		txtMotivoAnulacion.setStyle("font-size:11px !important");
-//		row.appendChild(txtMotivoAnulacion);		
+//		row.appendChild(txtMotivoAnulacion);
 //		rows.appendChild(row);
-//		
-//		
+//
+//
 //		grid.appendChild(rows);
 //		groupbox.appendChild(grid);
 //		win.appendChild(groupbox);
-//		
+//
 //		grid = new Grid();
 //		columns = new Columns();
 //		column = new Column();
@@ -781,10 +781,10 @@ public class WndEstadoVentaReserva extends WndBase {
 //		grid.appendChild(columns);
 //		rows = new Rows();
 //		row = new Row();
-//		
+//
 //		Button button = new Button("Continuar", "resources/mp_anular.png");
 //		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
-//			public void onEvent(Event e){				
+//			public void onEvent(Event e){
 //				if (rdAnular.isChecked()==false && rdNotaCredito.isChecked()==false){
 //					DlgMessage.information("Debe de seleccionar el tipo de Operación a realizar");
 //					return;
@@ -796,9 +796,9 @@ public class WndEstadoVentaReserva extends WndBase {
 //					public void onEvent(Event e){
 //						try{
 //							if(e.getName().equals("onYes")){
-//								
+//
 //								anularVenta(ventaOriginal, wndAnular, txtMotivoAnulacion.getText().trim().toUpperCase());
-//								
+//
 //							}
 //						}catch(Exception ex){
 //							ex.printStackTrace();
@@ -819,15 +819,15 @@ public class WndEstadoVentaReserva extends WndBase {
 //		button.setHeight("28px");
 //		button.setFocus(true);
 //		row.appendChild(button);
-//		
+//
 //		rows.appendChild(row);
-//		
+//
 //		grid.appendChild(rows);
 //		win.appendChild(grid);
 //		return win;
 //	}
-	
-	
+
+
 //	/**
 //	 * Realiza la anulacion de la venta
 //	 * @param ventaPasajeId : Identificador de la Venta a anular.
@@ -835,11 +835,11 @@ public class WndEstadoVentaReserva extends WndBase {
 //	 */
 //	private void anularVenta(VentaPasaje ventaOriginal,Window wndAnular, String motivo)throws Exception{
 //		int result=Constantes.FAILURE;
-//		
+//
 //		/*Valida si es una venta del pool - 09/12/2016 - jabanto*/
 //		if(ventaOriginal.getServicio()!=null && (ventaOriginal.getServicio().getId().intValue()==Constantes.ID_SERVICIO_POOL_CRUZDELSUR ||
 //											    ventaOriginal.getServicio().getId().intValue()==Constantes.ID_SERVICIO_POOL_EXCLUCIVA)){
-//			
+//
 //			/*Valida el operador*/
 //			if(ventaOriginal.getServicio().getId().intValue()==Constantes.ID_SERVICIO_POOL_CRUZDELSUR){
 //				/*Realiza la anulacion del boleto en el WS de cruz de sur*/
@@ -849,9 +849,9 @@ public class WndEstadoVentaReserva extends WndBase {
 //				RESTCiva.anularBoleto(ventaOriginal.getNumeroBoleto());
 //			}
 //		}
-//		
+//
 //		boolean forzarNotaCredito=(rdNotaCredito.isChecked()?true:false);
-//		
+//
 //		ventaOriginal.setTarifa(0.0);
 //		ventaOriginal.setRecargo(0.0);
 //		ventaOriginal.setDescuento(0.0);
@@ -873,28 +873,28 @@ public class WndEstadoVentaReserva extends WndBase {
 //			DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.exitoAnulacion"));
 //			wndAnular.onClose();
 //			buscar();
-//		}			
+//		}
 //	}
-	
-	
-	
+
+
+
 	/**
 	 * Carga usuarios, en base a las liquidaciones, segun le rango de fechas seleccionado
 	 * @param combobox : Control que va contener los usuarios
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void onLoadUsuarios(Combobox combobox) throws Exception{
 		if(dtbxFechaInicioVenta.getValue()!=null && dtbxFechaFinVenta.getValue()!=null){
 			String fechaInicial=Constantes.FORMAT_DATE.format(dtbxFechaInicioVenta.getValue());
 			String fechaFinal=Constantes.FORMAT_DATE.format(dtbxFechaFinVenta.getValue());
-			
+
 			UtilData.cargarUsuariosLiquidacion(combobox, fechaInicial, fechaFinal, true, null);
 		}else{
 			cmbUsuario.getItems().clear();
 			UtilData.cargarGenericData(cmbUsuario, true);
 		}
 	}
-	
+
 	/**
 	 * Cargar los tipos de movimiento para la consulta
 	 * @param combobox: control que va contiener los tipos de movimientos.
@@ -904,24 +904,24 @@ public class WndEstadoVentaReserva extends WndBase {
 		Comboitem comboitem_venta= new Comboitem();
 		Comboitem comboitem_reserva= new Comboitem();
 		Comboitem comboitem_fechaAbi= new Comboitem();
-			
+
 		comboitem_0.setLabel("TODOS");
 		comboitem_venta.setLabel("VENTA");
 		comboitem_reserva.setLabel("RESERVA");
 		comboitem_fechaAbi.setLabel("FECHA ABIRTA");
-		
+
 		comboitem_0.setValue(0);
 		comboitem_venta.setValue(Constantes.TIPO_OPERACION_VENTA);
 		comboitem_reserva.setValue(Constantes.TIPO_OPERACION_RESERVA);
 		comboitem_fechaAbi.setValue(String.valueOf(Constantes.ID_TIPMOV_FECHA_ABIERTA));
-		
+
 		combobox.appendChild(comboitem_0);
 		combobox.appendChild(comboitem_venta);
 		combobox.appendChild(comboitem_reserva);
 		combobox.appendChild(comboitem_fechaAbi);
 		combobox.setSelectedIndex(0);
 	}
-	
+
 	public void buscarPasajero() throws Exception{
 		final WndBuscarPasajero oWndBuscarPasajero = new WndBuscarPasajero();
 		wndEstadoVyR.appendChild(oWndBuscarPasajero);
@@ -938,11 +938,11 @@ public class WndEstadoVentaReserva extends WndBase {
 					rdByNombres.setChecked(true);
 					txtBusquedaPasajero.setText(oWndBuscarPasajero.getPasajero().getNombresApellidos());
 				}
-				
+
 			}
 		});
 	}
-	
+
 	public void buscarCliente() throws Exception{
 		final WndBuscarPasajero oWndBuscarPasajero = new WndBuscarPasajero();
 		wndEstadoVyR.appendChild(oWndBuscarPasajero);
@@ -964,7 +964,7 @@ public class WndEstadoVentaReserva extends WndBase {
 					rdByRazonSocial.setChecked(true);
 					txtBusquedaCliente.setText(oWndBuscarPasajero.getCliente().getRazonSocial());
 				}
-				
+
 			}
 		});
 	}

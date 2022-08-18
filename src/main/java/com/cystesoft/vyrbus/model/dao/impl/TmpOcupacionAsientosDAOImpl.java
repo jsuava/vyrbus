@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 14/11/2012
  */
@@ -43,7 +43,7 @@ public class TmpOcupacionAsientosDAOImpl extends GenericDAOImpl implements TmpOc
 		try{
 			super.save(tmpOcupacion);
 			result = Constantes.CORRECT;
-			
+
 		}catch(DataIntegrityViolationException divex){
 			throw new DataIntegrityException();
 		}catch(Exception ex){
@@ -60,7 +60,7 @@ public class TmpOcupacionAsientosDAOImpl extends GenericDAOImpl implements TmpOc
 		if(tmpOcupacion.getUsuarioHardware()!=null){
 			String hql = "DELETE FROM TmpOcupacionAsientos tmp WHERE tmp.ruta.id = :rutaID AND tmp.itinerario.id =:itinerarioID AND " +
 					"tmp.numeroAsiento =:asiento AND tmp.numeroPiso =:piso AND tmp.usuarioHardware.id=:usuHardID ";
-			
+
 			log.info(hql);
 			int result = getSession().createQuery(hql)
 					.setLong("itinerarioID", tmpOcupacion.getItinerario().getId())
@@ -73,7 +73,7 @@ public class TmpOcupacionAsientosDAOImpl extends GenericDAOImpl implements TmpOc
 		}else{
 			String hql = "DELETE FROM TmpOcupacionAsientos tmp WHERE tmp.ruta.id = :rutaID AND tmp.itinerario.id =:itinerarioID AND " +
 					"tmp.numeroAsiento =:asiento AND tmp.numeroPiso =:piso ";
-			
+
 			log.info(hql);
 			int result = getSession().createQuery(hql)
 					.setLong("itinerarioID", tmpOcupacion.getItinerario().getId())
@@ -91,7 +91,7 @@ public class TmpOcupacionAsientosDAOImpl extends GenericDAOImpl implements TmpOc
 	@Override
 	public int desbloquearAsientoByUsuarioHardware(Integer idUsuarioHardware) throws Exception {
 		String hql = "DELETE FROM TmpOcupacionAsientos tmp WHERE tmp.usuarioHardware.id = :usuHardID ";
-		
+
 		log.info(hql);
 		int result = getSession().createQuery(hql)
 				.setInteger("usuHardID", idUsuarioHardware).executeUpdate();
@@ -104,7 +104,7 @@ public class TmpOcupacionAsientosDAOImpl extends GenericDAOImpl implements TmpOc
 //	@Override
 //	public List<TmpOcupacionAsientos> buscarAsientosBloqueados(String campo, String patron, String estado) throws Exception {
 //		String sql = "SELECT n_asiento FROM vrttmpocuasi WHERE itinerario_id=4";
-//		
+//
 //		log.info(sql);
 //		List<?> result = getSession().createSQLQuery(sql).list();
 //		List<TmpOcupacionAsientos> lstResult = new ArrayList<TmpOcupacionAsientos>();
@@ -126,10 +126,10 @@ public class TmpOcupacionAsientosDAOImpl extends GenericDAOImpl implements TmpOc
 				"FROM vrttmpocuasi tmp " +
 				"INNER JOIN vrmruta r ON r.ruta_id=tmp.ruta_id " +
 				"WHERE tmp.itinerario_id="+idItinerario;
-		
-		log.info(sql);		
+
+		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<TmpOcupacionAsientos> lstResult = new ArrayList<TmpOcupacionAsientos>();
+		List<TmpOcupacionAsientos> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[])result.get(i);
 			TmpOcupacionAsientos tmpOcupacionAsientos = new TmpOcupacionAsientos();
@@ -171,57 +171,57 @@ public class TmpOcupacionAsientosDAOImpl extends GenericDAOImpl implements TmpOc
 						"INNER JOIN vrmagencia a ON (a.agencia_id=uh.agencia_id) "+
 					"WHERE oa.c_estreg='A' " +
 					"ORDER BY i.d_fecpar, i.c_horpar, oa.n_asiento ";
-		
+
 		log.info(sql);
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		ArrayList<TmpOcupacionAsientos> lstResult = new ArrayList<TmpOcupacionAsientos>();
-		for(int i=0; i<result.size(); i++){
-			Object[] obj = (Object[])result.get(i);
-			
+		ArrayList<TmpOcupacionAsientos> lstResult = new ArrayList<>();
+		for (Object element : result) {
+			Object[] obj = (Object[])element;
+
 			TmpOcupacionAsientos tmpOcupacionAsientos = new TmpOcupacionAsientos();
 			Ruta ruta=new Ruta();
 			Itinerario itinerario=new Itinerario();
 			Bus bus= new Bus();
 			Usuario usuario=new Usuario();
 			UsuarioHardware usuarioHardware=new UsuarioHardware();
-					
+
 			ruta.setId(((BigDecimal)obj[0]).intValue());
 			ruta.setOrigen(obj[1].toString());
 			ruta.setDestino(obj[2].toString());
-			
+
 			bus.setCodigo(obj[3]!=null?obj[3].toString():"");
-			
+
 			itinerario.setId(((BigDecimal)obj[4]).longValue());
 			itinerario.setFechaPartida((Date)obj[6]);
 			itinerario.setHoraPartida(obj[7].toString());
-			itinerario.setBus(bus);			
-			
+			itinerario.setBus(bus);
+
 			tmpOcupacionAsientos.setNumeroAsiento(((BigDecimal)obj[5]).intValue());
 			tmpOcupacionAsientos.setFechaInsercion((Date)obj[8]);
 			tmpOcupacionAsientos.setNumeroPiso(((BigDecimal)obj[9]).intValue());
 			tmpOcupacionAsientos.setFechaExpiraBloqueo((Date)obj[17]);
-			
+
 			usuario.setApellidoPaterno(obj[10].toString());
 			usuario.setApellidoMaterno(obj[11]!=null?obj[11].toString():"");
 			usuario.setNombre(obj[12].toString());
 			usuario.setId(((BigDecimal)obj[15]).intValue());
-			
+
 			Agencia agencia=new Agencia();
 			agencia.setId(((BigDecimal)obj[16]).intValue());
 			agencia.setDenominacion(obj[13].toString());
 			usuarioHardware.setAgencia(agencia);
 			usuarioHardware.setId(((BigDecimal)obj[14]).intValue());
-									
+
 			tmpOcupacionAsientos.setRuta(ruta);
 			tmpOcupacionAsientos.setItinerario(itinerario);
 			tmpOcupacionAsientos.setUsuario(usuario);
 			tmpOcupacionAsientos.setUsuarioHardware(usuarioHardware);
-					
+
 			lstResult.add(tmpOcupacionAsientos);
 		}
-		
-		
+
+
 		return lstResult;
 	}
 
@@ -233,7 +233,7 @@ public class TmpOcupacionAsientosDAOImpl extends GenericDAOImpl implements TmpOc
 		// TODO Auto-generated method stub
 		String hql = "DELETE FROM TmpOcupacionAsientos tmp WHERE tmp.itinerario.id =:itinerarioID AND " +
 				"tmp.usuarioHardware.id = :usuHardID ";
-		
+
 		log.info(hql);
 		int result = getSession().createQuery(hql)
 				.setLong("itinerarioID", idItinerario)
@@ -241,7 +241,7 @@ public class TmpOcupacionAsientosDAOImpl extends GenericDAOImpl implements TmpOc
 				.executeUpdate();
 		return result;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.TmpOcupacionAsientosDAO#desbloquearAsiento(java.lang.Integer, java.lang.Long, java.lang.Integer)
@@ -251,7 +251,7 @@ public class TmpOcupacionAsientosDAOImpl extends GenericDAOImpl implements TmpOc
 		// TODO Auto-generated method stub
 		String hql = "DELETE FROM TmpOcupacionAsientos tmp WHERE  tmp.itinerario.id =:itinerarioID AND " +
 				"tmp.numeroAsiento =:asiento AND tmp.usuarioHardware.id = :usuHardID ";
-		
+
 		log.info(hql);
 		int result = getSession().createQuery(hql)
 				.setLong("itinerarioID", idItinerario)
@@ -268,5 +268,5 @@ public class TmpOcupacionAsientosDAOImpl extends GenericDAOImpl implements TmpOc
 	public ArrayList<TmpOcupacionAsientos> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar)throws Exception{
 		return (ArrayList<TmpOcupacionAsientos>)super.findByX(TmpOcupacionAsientos.class, criteriosBusqueda, criteriosOrdenar);
 	}
-	
+
 }

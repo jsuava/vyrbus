@@ -1,7 +1,7 @@
 package com.cystesoft.vyrbus.view.ctrl;
 
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +23,7 @@ import org.zkoss.zul.Grid;
 import org.zkoss.zul.Groupbox;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Intbox;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listheader;
@@ -30,14 +31,12 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Radio;
 import org.zkoss.zul.Textbox;
-import org.zkoss.zul.Label;
 import org.zkoss.zul.Window;
 
 import com.cystesoft.vyrbus.model.bean.CanalVenta;
 import com.cystesoft.vyrbus.model.bean.ControlEspecieValorada;
 import com.cystesoft.vyrbus.model.bean.Cortesia;
 import com.cystesoft.vyrbus.model.bean.DetalleItinerario;
-import com.cystesoft.vyrbus.model.bean.EspecieValorada;
 import com.cystesoft.vyrbus.model.bean.FormaPago;
 import com.cystesoft.vyrbus.model.bean.Itinerario;
 import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaLlegada;
@@ -91,9 +90,9 @@ import com.cystesoft.vyrbus.view.ui.WndFiltrarParametros;
 import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
 
 /**
- * 
+ *
  * @author JABANTO
- * 
+ *
  */
 public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 	private static final long serialVersionUID = 5027089313223381893L;
@@ -137,7 +136,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 	private Listheader lstHeaderAnio;
 	private Bandbox bdbxServicios;
 	private Window wndCortesia;
-	
+
 	private Cortesia cortesia = null;
 	private Pasajero pasajero = null;
 	private CanalVenta canalVenta = null;
@@ -148,16 +147,16 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 	private String imgEnabledBusq="resources/mp_buscarEnabled.png";
 	private String imgDisabledRefresh="resources/mp_refrescarDisabled.png";
 	private String imgEnabledRefresh="resources/mp_refrescarEnabled.png";
-		
+
 	public Integer action = null;
-	
+
 //	/*Variables utilizadas para la validacion de la tarifa por asiento, en el caso de los servicios suite*/
 //	public Doublebox dblImporte=null;
 //	public Label lblPromocion=null;
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IBase#initComponents()
 	 */
 	@Override
@@ -201,7 +200,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 		imgRefreshBoleto=(Image)this.getFellow("imgRefreshBoleto");
 		txtObserveaciones=(Textbox)this.getFellow("txtObserveaciones");
 		wndCortesia=(Window)this.getFellow("wndCortesia");
-		
+
 		imgSelectAsiento.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -212,7 +211,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 					DetalleItinerario detalleItinerario= lstServicios.getSelectedItem().getValue();
 					Itinerario itinerario=detalleItinerario.getItinerario();
 					ItinerarioAgenciaPartida itinerarioAgenciaPartida=(ItinerarioAgenciaPartida)cmbPuntoEmbarque.getSelectedItem().getValue();
-					
+
 					VentaPasaje ventaPasaje= new VentaPasaje();
 					ventaPasaje.setServicio(itinerario.getServicio());
 					ventaPasaje.setRuta((Ruta)cmbRuta.getSelectedItem().getValue());
@@ -220,9 +219,9 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 					ventaPasaje.setFechaPartida(dbxFechaViaje.getValue());
 					ventaPasaje.setHoraPartida(itinerarioAgenciaPartida.getHoraPartida());
 //					ventaPasaje.setHoraPartida(detalleItinerario.getHoraPartida());
-					
-					
-					Map<String, Object> params = new HashMap<String, Object>();
+
+
+					Map<String, Object> params = new HashMap<>();
 					params.put("ventaPasaje", ventaPasaje);
 					params.put("detalleItinerario", (lstServicios.getSelectedItem().getValue()));
 					params.put("txtAsientoSeleccionado", txtAsiento);
@@ -233,7 +232,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 				}
 			}
 		});
-		
+
 		imgRefreshBoleto.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e) throws Exception{
@@ -241,13 +240,13 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 					onLoadEspecieValorada();
 			}
 		});
-		
-		
+
+
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IBase#onCreate()
 	 */
 	@Override
@@ -263,23 +262,23 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 		UtilData.cargarGenericData(cmbPuntoEmbarque, false);
 		UtilData.cargarGenericData(cmbPuntoLlegada, false);
 		cargarTipoFormaPago();
-		
+
 		/* Carga combo para el Mantenimiento de Pasajeros */
-		TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+		TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 		criteriosBusqueda.put("tipo", TipoDocumento.PERSONALES);
 		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-			
+
 		btnEliminar.setVisible(false);
 		btnRefrescar.setVisible(false);
-		
+
 		listboxLista.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				// TODO Auto-generated method stub
 				btnModificar.setDisabled(true);
 			}
-		});	
-		
+		});
+
 		btnCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -287,7 +286,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 				btnModificar.setDisabled(true);
 			}
 		});
-		
+
 		oTabLista.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -301,7 +300,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onNew()
 	 */
 	@Override
@@ -317,21 +316,21 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 		cmbRuta.setSelectedIndex(0);
 		cmbTipoFormaPago.setSelectedIndex(0);
 		cmbAlimentacion.setSelectedIndex(0);
-		
+
 		rdPorDocumento.setSelected(true);
 		lisboxPasajeros.setVisible(false);
-		
+
 //		dbxFechaViaje.setValue(Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date())));
 
 		activarBtnBuscar(true);
 		habilitaControleCortesia(true);
 		gbxDatosCortesia.setVisible(true);
-		
+
 		onLoadEspecieValorada();
-		
+
 		String fecha = Util.DatetoString(new Date(), "yyyyMMdd");
 		dbxFechaViaje.setConstraint("after "+fecha);
-		
+
 		limpiaControlesPasajero();
 		limpiarDatosItinerario();
 		disabledImgRefresh(false);
@@ -342,7 +341,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onSearch()
 	 */
 	@Override
@@ -363,42 +362,42 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 						Date fecha = (Date) oWndFiltrar.getParameterValue("Fecha");
 						String docPasajero = (String) oWndFiltrar.getParameterValue("Doct.Pasajero");
 
-						TreeMap<String, Object>criterioBusqueda= new TreeMap<String, Object>();
-						if(tipoFormaPago!=null)							
+						TreeMap<String, Object>criterioBusqueda= new TreeMap<>();
+						if(tipoFormaPago!=null)
 							criterioBusqueda.put("tipoFormaPago", tipoFormaPago);
 						criterioBusqueda.put("fechaLiquidacion", fecha);
 						if(!(docPasajero.trim().isEmpty())){
-							TreeMap<String, Object> criterioBusquedaPax = new TreeMap<String, Object>();
+							TreeMap<String, Object> criterioBusquedaPax = new TreeMap<>();
 							criterioBusquedaPax.put("numeroDocumento", docPasajero);
 							List<?> listPax = ServiceLocator.getPasajeroManager().buscarPorX(criterioBusquedaPax, null);
 							Pasajero pasajero = new Pasajero();
-							if (listPax.size() > 0) 
+							if (listPax.size() > 0)
 								pasajero.setId(((Pasajero) listPax.get(0)).getId());
-							 else 
+							 else
 								pasajero.setId((long) -1);
 							criterioBusqueda.put("pasajero", pasajero);
 						}
 						FormaPago formaPago= new FormaPago();
 						formaPago.setId(Constantes.ID_FORPAG_CORTESIA);
-						
+
 						criterioBusqueda.put("formaPago",formaPago );
 						criterioBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-						
+
 						Integer idTipoFormaPago=null;
-						if(tipoFormaPago!=null) 
+						if(tipoFormaPago!=null)
 							idTipoFormaPago=tipoFormaPago.getId();
-						
+
 						listarCortesia(ServiceLocator.getCortesiaManager().buscarCortesia(Constantes.FORMAT_DATE.format(fecha), docPasajero, idTipoFormaPago));
 //						listarCortesia(ServiceLocator.getVentaPasajesManager().buscarPorX(criterioBusqueda, null));
-						
-						
+
+
 //						Cortesia ocortesia = new Cortesia();
 //						if (!(docPasajero.isEmpty())) {
 //							Pasajero pasajero = new Pasajero();
 ////							TreeMap<String, Object> criterioBusqueda = new TreeMap<String, Object>();
 //							criterioBusqueda.put("numeroDocumento", docPasajero);
 //							List<?> listPax = ServiceLocator.getPasajeroManager().buscarPorX(criterioBusqueda, null);
-//							
+//
 //							if (listPax.size() > 0) {
 //								Long idPasajero = (Long) ((Pasajero) listPax.get(0)).getId();
 //								pasajero.setId(idPasajero);
@@ -408,11 +407,11 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 //								ocortesia.setPasajero(pasajero);
 //							}
 //						}
-						
+
 //						ocortesia.setFechaInicio(fechaInicio);
 //						ocortesia.setTipoFormaPago(tipoFormaPago);
 //						Util.limpiarListbox(listboxLista);
-						
+
 //						listarCortesia(ServiceLocator.getCortesiaManager().BuscarCortesia(ocortesia));
 					}
 				});
@@ -420,17 +419,17 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onRefresh(int)
 	 */
 	@Override
 	public void onRefresh(int tab) throws Exception {
-		
+
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onModify(int)
 	 */
 	@Override
@@ -440,7 +439,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onCancel(int)
 	 */
 	@Override
@@ -451,7 +450,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onSave(int)
 	 */
 //	@SuppressWarnings("deprecation")
@@ -481,7 +480,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 			else if (((TipoFormaPago) cmbTipoFormaPago.getSelectedItem().getValue()).getId().equals(Constantes.ID_TIPFORPAG_CUMPLEANIOS))
 				if (itAnioCortesia.getValue() == null|| itAnioCortesia.getValue().toString().length() < 4)
 					throw new AnioCumpleaniosPaxNullException();
-			
+
 			// Valida que el pasajero sea PAXFREE y que este activo, para los casos de canje por cumpleanios o puntos.
 			final TipoFormaPago tipoFormaPago = cmbTipoFormaPago.getSelectedItem().getValue();
 			if (tipoFormaPago.getId().equals(Constantes.ID_TIPFORPAG_CUMPLEANIOS) || tipoFormaPago.getId().equals(Constantes.ID_TIPFORPAG_PUNTOS)) {
@@ -492,14 +491,14 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 			}
 
 			List<PuntosPasajeroFrecuente>lstPuntaje=null;
-						
+
 			// Si la forma de pago es por Cumpleaños.
 			if (tipoFormaPago.getId().equals(Constantes.ID_TIPFORPAG_CUMPLEANIOS)) {
-				
+
 				if (!(validadFechaCumpleanios(null)))
 					throw new RangoCanjeCumpleaniosException();
 
-				// Valida si el pasajero tiene algún boleto cajeado por cumpleanios en el anio ingresado. 
+				// Valida si el pasajero tiene algún boleto cajeado por cumpleanios en el anio ingresado.
 				Integer anio = itAnioCortesia.getValue();
 				for (int x = 0; x < listViajesPax.getItems().size(); x++) {
 					Listitem listitem = listViajesPax.getItemAtIndex(x);
@@ -507,28 +506,28 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 					if (cortesia.getAnioCumpleanios().equals(anio)|| anio < cortesia.getAnioCumpleanios())
 						throw new CortesiaXCumpleaniosEmitidaException();
 				}
-				
+
 				/* Si la forma de pago es por puntos	*/
-			} else if (tipoFormaPago.getId().equals(Constantes.ID_TIPFORPAG_PUNTOS)) { 
+			} else if (tipoFormaPago.getId().equals(Constantes.ID_TIPFORPAG_PUNTOS)) {
 				Ruta ruta = cmbRuta.getSelectedItem().getValue();
 				/*Valida que la ruta cuenta con puntaje*/
-				if (ruta.getPuntaje() == null || ruta.getPuntaje() <= 0) 
+				if (ruta.getPuntaje() == null || ruta.getPuntaje() <= 0)
 					throw new RutaSinPuntajeException();
-			
+
 				Integer puntosRuta = ruta.getPuntaje();
 				Integer puntosPax=0;
 				/*Busca puntaje del Paxfree*/
-				lstPuntaje=new ArrayList<PuntosPasajeroFrecuente>(ServiceLocator.getPuntosPasajeroFrecuenteManager().buscarPuntosDisponibles(pasajero.getPasajeroFrecuente().getId()));
+				lstPuntaje=new ArrayList<>(ServiceLocator.getPuntosPasajeroFrecuenteManager().buscarPuntosDisponibles(pasajero.getPasajeroFrecuente().getId()));
 				if(lstPuntaje.size()>0)
 					puntosPax=lstPuntaje.get(0).getTotalPuntaje();
-				
+
 				//Valida que el Pasajero cuente con los puntos necesarios para el canje.
 				if (puntosPax < puntosRuta){
 					lbPuntosPax.setValue("PUNTOS: "+puntosPax);
 					throw new PuntosPaxfreeInsuficientesException();
 				}
 			}
-			
+
 			//Valida si la fecha de viaje esta dentro de lo permitido
 			if (tipoFormaPago.getId().equals(Constantes.ID_TIPFORPAG_CUMPLEANIOS))
 				if (!(validadFechaCumpleanios(dbxFechaViaje.getValue())))
@@ -541,14 +540,14 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 				public void onEvent(Event e) throws Exception {
 					if(e.getName().equals("onYes")){
 						guardaCortesia(tipoFormaPago,lstePuntaje);
-					}	
-				}	
+					}
+				}
 			});
-			
-			
+
+
 		throw new CancelaGrabacionException();
-		
-		
+
+
 		}catch (FechaViajeFueraRangoException fvfrex){
 			DlgMessage.information(Messages.getString("WndCortesia.information.fechaViajeFueraRango"));
 			throw new CancelaGrabacionException();
@@ -611,17 +610,17 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 		}
 	}
 
-	/**		
+	/**
 	 * @param tipoFormaPago	: TipoFormaPago de la cortesia
-	 * @param lstPuntaje	: Opsional, lista con los puntos del paxfree, solo si es un canje por puntos si no sera null. 
+	 * @param lstPuntaje	: Opsional, lista con los puntos del paxfree, solo si es un canje por puntos si no sera null.
 	 * @throws Exception
 	 */
-	private void guardaCortesia(TipoFormaPago tipoFormaPago, List<PuntosPasajeroFrecuente> lstPuntaje) throws Exception{		
+	private void guardaCortesia(TipoFormaPago tipoFormaPago, List<PuntosPasajeroFrecuente> lstPuntaje) throws Exception{
 		try{
 			cortesia = new Cortesia();
 			Ruta ruta = new Ruta();
 			ruta = cmbRuta.getSelectedItem().getValue();
-								
+
 			/* genera la venta  */
 			VentaPasaje ventaPasaje = new VentaPasaje();
 			Itinerario itinerario = new Itinerario();
@@ -632,37 +631,35 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 			TipoDocumento tipoDocumento= new TipoDocumento();
 			tipoDocumento=ServiceLocator.getTipoDocumentoManager().buscarPorId(pasajero.getTipoDocumento().getId().longValue());
 			pasajero.setTipoDocumento(tipoDocumento);
-			
+
 			DetalleItinerario detalleItinerario= lstServicios.getSelectedItem().getValue();
-						
+
 			itinerario=detalleItinerario.getItinerario();
 			servicio=itinerario.getServicio();
-			
+
 			//Valida el itinerario tiene tarifa
 			if(detalleItinerario.getTarifa().doubleValue()==0.0)
 				throw new ItinerarioException(ItinerarioException.TARIFA_IDA_CERO);
-			
-			if(servicio.getId().intValue()==Constantes.ID_SERVICIO_TEPSASUITE && Integer.valueOf(txtAsiento.getText())<=10)
+
+			if((servicio.getId().intValue()==Constantes.ID_SERVICIO_TEPSASUITE && Integer.valueOf(txtAsiento.getText())<=10) || (servicio.getId().intValue()==Constantes.ID_SERVICIO_TEPSACAMASUITE && Integer.valueOf(txtAsiento.getText())<=10))
 				throw new NumeroAsientoFueraRangoException();
-			if(servicio.getId().intValue()==Constantes.ID_SERVICIO_TEPSACAMASUITE && Integer.valueOf(txtAsiento.getText())<=10)
-				throw new NumeroAsientoFueraRangoException();
-			
+
 			ventaPasaje.setNumeroAsiento(Integer.valueOf(txtAsiento.getText()));
 			buscarPromocionPorTarifa(detalleItinerario, ventaPasaje);
 			if(ventaPasaje.getTarifa()==null){
 				ventaPasaje.setTarifa(detalleItinerario.getTarifa());
 				ventaPasaje.setImportePagado(detalleItinerario.getTarifa());
 			}
-			
-			
-					
+
+
+
 			/* Valida si se trara de servico SUITE, para recuperar la tarifa por asiento */
 //			if(servicio.getId().intValue()==Constantes.ID_SERVICIO_TEPSASUITE){
 //				List<Promocion>lstPromocion=ServiceLocator.getPromocionManager().buscarPorTarifa(Constantes.FORMAT_DATE.format(dbxFechaViaje.getValue()), ruta.getId().toString(), servicio.getId().toString());
 //				if(lstPromocion.size()>0){
 //					Promocion promocion=lstPromocion.get(0);
 //					String[] asientos=promocion.getAsientos().split(",");
-//					for(int i=0;i<asientos.length; i++){	
+//					for(int i=0;i<asientos.length; i++){
 //						if(txtAsiento.getText().equals(asientos[i].toString())){
 //							tarifa=promocion.getPorImporte();
 //							break;
@@ -670,12 +667,12 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 //					}
 //				}
 //			}
-			
+
 			formaPago.setId(Constantes.ID_FORPAG_CORTESIA);
 			formaPago.setDenominacion("CORTESIA");
 			tipoComprobante.setId(Constantes.ID_TIPCOM_BOLETA_VENTA);
 			tipoMovimiento.setId(Constantes.ID_TIPMOV_EFECTIVO);
-			
+
 			ventaPasaje.setItinerario(itinerario);
 			ventaPasaje.setRuta(ruta);
 			ventaPasaje.setPasajero(pasajero);
@@ -702,7 +699,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 			ventaPasaje.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 			ventaPasaje.setImportePagadoEfectivo(.00);
 			ventaPasaje.setImportePagadoTarjeta(.00);
-			ventaPasaje.setFechaLiquidacion(fechaLiquidacion); 
+			ventaPasaje.setFechaLiquidacion(fechaLiquidacion);
 			ventaPasaje.setFechaPartida(dbxFechaViaje.getValue());
 			ventaPasaje.setFechaLlegada(Constantes.FORMAT_DATE.parse(lblFechaLlegada.getValue()));
 			ventaPasaje.setHoraPartida(lblHoraPartida.getValue());
@@ -713,17 +710,17 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 			ventaPasaje.setUsuarioHardware(usuarioHardware);
 			ventaPasaje.setObservaciones(txtObserveaciones.getText());
 			ventaPasaje.setEsRemoto(false);
-			
-			UtilData.auditarRegistro(ventaPasaje, false, getUsuario(),Executions.getCurrent());			
+
+			UtilData.auditarRegistro(ventaPasaje, false, getUsuario(),Executions.getCurrent());
 			ServiceLocator.getVentaPasajesManager().guardarVenta(ventaPasaje, false, true, true,true);
-			
-			
+
+
 			/*Begin 27/10/2016 - jabanto*/
 			List<VentaPasaje> listVentaPasaje= new ArrayList<>();
 			VentaPasaje oventaPasaje=ServiceLocator.getVentaPasajesManager().buscarVentaById(ventaPasaje.getId());
 			listVentaPasaje.add(oventaPasaje);
 			WSFE.sendVenta(listVentaPasaje, wndCortesia, true, null);
-			
+
 			/*##End Begin 27/10/2016 - jabanto*/
 			/*Implementacion para el nueno formato 01/02/2016 - jabanto */
 //			boolean formato=UtilData.getFormatoImprecion(getAgencia().getId(), getTipocomprobante().getId(), getUsuarioHardware().getId());
@@ -734,14 +731,14 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 //				win.setAttribute("formato", WndImprimir.FORMAT_BOLETO);
 //				win.setAttribute("msg", "Imprimiendo boleto por "+ventaPasaje.getTipoFormaPago().getDenominacion()+"...");
 //				win.setAttribute("urlDocumento", fileBoleto);
-//				win.doPopup();	
+//				win.doPopup();
 //			}else{
 //				/*Descarga el archivo para la impresion*/
 //				Util.descargarArchivo(file);
 //			}
-			
-					
-			
+
+
+
 			/* Guarda la cortesia */
 			cortesia.setTipoFormaPago(tipoFormaPago);
 			cortesia.setPasajero(pasajero);
@@ -751,17 +748,17 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 			cortesia.setFechaViaje(dbxFechaViaje.getValue() != null ? dbxFechaViaje.getValue() : null);
 			cortesia.setAnioCumpleanios(itAnioCortesia.getValue());
 			cortesia.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-			
+
 			UtilData.auditarRegistro(cortesia, getUsuario(),Executions.getCurrent());
 			ServiceLocator.getCortesiaManager().guardar(cortesia);
 			textboxId.setText(cortesia.getId().toString());
-			
+
 			/* Si es una Cortesia por Puntos */
 			if(tipoFormaPago.getId().equals(Constantes.ID_TIPFORPAG_PUNTOS)){
 				/* Resta puntos */
-				String iDsPuntPaxFree=""; 
-				Integer tPuntosPaxfree=0; //acumula el puntaje necesario para el canje
-				
+				String iDsPuntPaxFree="";
+				int tPuntosPaxfree=0; //acumula el puntaje necesario para el canje
+
 				for (PuntosPasajeroFrecuente puntos: lstPuntaje){
 					tPuntosPaxfree+=+puntos.getPuntosAcumulados();
 					/*Valida que el puntaje de la ruta aun sea mayor al puntaje que se va acumulando en el for (tPuntosPaxfree)*/
@@ -771,7 +768,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 							iDsPuntPaxFree=puntos.getId().toString();
 						else
 							iDsPuntPaxFree+=","+puntos.getId().toString();
-//							iDsVenta+=","+puntos.getVentaPasaje().getId().toString();						
+//							iDsVenta+=","+puntos.getVentaPasaje().getId().toString();
 					}
 					/*actualiza puntos Si el puntaje de la ruta es menor a la suma de los puntos necesarios para el canje(tPuntosPaxfree) */
 					if(ruta.getPuntaje()<=tPuntosPaxfree){
@@ -780,10 +777,10 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 					}
 				}
 			}
-			
-		
+
+
 			oTabLista.setDisabled(false);
-			habilitaControles(false);						
+			habilitaControles(false);
 			oTabbox.setSelectedIndex(0);
 			/*Habilita/Desabilita controles del menu*/
 			btnNuevo.setDisabled(false);
@@ -796,15 +793,15 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 			btnGuardar.setDisabled(true);
 			btnEliminar.setDisabled(true);
 			btnCerrar.setDisabled(false);
-					
+
 			DlgMessage.information("Registro grabado");
-			
+
 			limpiaControlesPasajero();
 			Util.limpiarListbox(listboxLista);
 			Util.limpiarListbox(lstServicios);
 			Util.limpiarListbox(listViajesPax);
-			
-			TreeMap<String,Object> criteriosBusqueda= new TreeMap<String, Object>();
+
+			TreeMap<String,Object> criteriosBusqueda= new TreeMap<>();
 			criteriosBusqueda.put("id", cortesia.getId());
 			listarCortesia(ServiceLocator.getCortesiaManager().buscarPorX(criteriosBusqueda, null));
 			gbxViajesPax.setVisible(false);
@@ -826,15 +823,15 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 			DlgMessage.error(this.getClass().getName() + " " + ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Buscamos las promociones que haran de tarifa en el caso del TEPSA SUITE o cualquier otro servicio.
 	 * @param detalleItinerario	: Datos del itinerario a utilizar para realizar la busqueda de promocion por tarifa.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private void buscarPromocionPorTarifa(DetalleItinerario detalleItinerario,VentaPasaje ventaPasaje) throws Exception{
-		/**	
-		 * Esta seccion es para obtener las promociones que son por tarifa	
+		/**
+		 * Esta seccion es para obtener las promociones que son por tarifa
 		 * y que reeemplazaran la tarifa real del servicio.
 		 */
 		try {
@@ -842,20 +839,20 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 			List<Promocion>lstPromocion=ServiceLocator.getPromocionManager().buscarPorTarifa(Util.DatetoString(detalleItinerario.getFechaPartida(), Constantes.DATE_FORMAT), detalleItinerario.getRuta().getId().toString(), detalleItinerario.getItinerario().getServicio().getId().toString(),detalleItinerario.getHoraPartida().replaceAll(":", "."));
 			Promocion promo = null;
 			/*	Validando si la promocion cumple con el requisito del Servicio y la Ruta	*/
-			for(int i=0; i<lstPromocion.size(); i++){
-				String[] rutas = lstPromocion.get(i).getRutas().split(",");
-				String[] servicios = lstPromocion.get(i).getServicios().split(",");
-				String[] asientos = lstPromocion.get(i).getAsientos().split(",");
-				for(int j=0; j<rutas.length; j++){
-					if(rutas[j].equals(detalleItinerario.getRuta().getId().toString())){
-						for(int k=0; k<servicios.length; k++){
-							if(servicios[k].equals(detalleItinerario.getItinerario().getServicio().getId().toString())){	
+			for (Promocion element : lstPromocion) {
+				String[] rutas = element.getRutas().split(",");
+				String[] servicios = element.getServicios().split(",");
+				String[] asientos = element.getAsientos().split(",");
+				for (String element2 : rutas) {
+					if(element2.equals(detalleItinerario.getRuta().getId().toString())){
+						for (String element3 : servicios) {
+							if(element3.equals(detalleItinerario.getItinerario().getServicio().getId().toString())){
 								if(asientos.length==1 && asientos[0].equals("*"))
-									promo = lstPromocion.get(i);
+									promo = element;
 								else{
-									for(int m=0; m<asientos.length; m++){
-										if(asientos[m].equals(ventaPasaje.getNumeroAsiento().toString())){
-											promo = lstPromocion.get(i);
+									for (String element4 : asientos) {
+										if(element4.equals(ventaPasaje.getNumeroAsiento().toString())){
+											promo = element;
 											break;
 										}
 									}
@@ -865,39 +862,39 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 					}
 				}
 			}
-			
+
 			/*	Solo en caso de ventas	*/
 			if(promo!=null){
 				Integer idCanalVenta = getUsuarioHardware().getCanalVenta().getId();
 				Integer idAgencia = getAgencia().getId();
-				AplicarPromocion aplicarPromocion= new AplicarPromocion(detalleItinerario.getRuta().getId(), detalleItinerario.getItinerario().getServicio().getId(), 
-						idAgencia, idCanalVenta, null, null, ventaPasaje.getNumeroAsiento().toString(),null, false, Constantes.ID_FORPAG_CORTESIA, 
-						((TipoFormaPago)cmbTipoFormaPago.getSelectedItem().getValue()).getId(),null, 
-						Util.StringtoDate(lblFechaPartida.getValue(), Constantes.DATE_FORMAT), 
-						true,new Doublebox(0), new Doublebox(0), new Doublebox(0), null, new Label(), new Image(), new Textbox(),lblHoraPartida.getValue());	
+				AplicarPromocion aplicarPromocion= new AplicarPromocion(detalleItinerario.getRuta().getId(), detalleItinerario.getItinerario().getServicio().getId(),
+						idAgencia, idCanalVenta, null, null, ventaPasaje.getNumeroAsiento().toString(),null, false, Constantes.ID_FORPAG_CORTESIA,
+						((TipoFormaPago)cmbTipoFormaPago.getSelectedItem().getValue()).getId(),null,
+						Util.StringtoDate(lblFechaPartida.getValue(), Constantes.DATE_FORMAT),
+						true,new Doublebox(0), new Doublebox(0), new Doublebox(0), null, new Label(), new Image(), new Textbox(),lblHoraPartida.getValue());
 				Promocion promocionAplicada= aplicarPromocion.executePromocion(promo.getId().toString(), false);
-				
+
 				if(promocionAplicada!=null){
 					ventaPasaje.setTarifa(promocionAplicada.getPorImporte());
 					ventaPasaje.setImportePagado(promocionAplicada.getPorImporte());
 					ventaPasaje.setPromocion(promocionAplicada);
 				}
 			}
-			
+
 		} catch (Exception ex) {
 			log.error(ex);
 			throw new Exception(ex.getMessage());
 		}
 	}
-	
+
 	private void tiempoExpiracionBloqueo(){
 		txtAsiento.setText("");
 	}
-	
-	
+
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onDelete(int)
 	 */
 	@Override
@@ -905,16 +902,16 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 //		try {
 //			Listitem itemList = listboxLista.getItemAtIndex(listboxLista.getSelectedIndex());
 //			Cortesia cortesia = itemList.getValue();
-//			
+//
 //			if(cortesia.getTipoFormaPago().getId().equals(Constantes.ID_TIPFORPAG_PUNTOS))
 //				if(cortesia.getRuta().getPuntaje()==null || cortesia.getRuta().getPuntaje()<=0)
 //					throw new RutaSinPuntajeException();
-//			
-//			//Valida si la cortesia esta confirmada. 
+//
+//			//Valida si la cortesia esta confirmada.
 //			if (!(ServiceLocator.getCortesiaManager().cortesiaConfirmada(cortesia.getVentaPasaje().getNumeroControl()))) {
 //				//Anula cortesia
 //				ServiceLocator.getCortesiaManager().inactivar(cortesia.getId());
-//				
+//
 //				//Anula la reserva fecha habierta
 //				TipoMovimiento tipoMovimiento= new TipoMovimiento();
 //				VentaPasaje movimiento= ServiceLocator.getVentaPasajesManager().buscarPorId(cortesia.getVentaPasaje().getId());
@@ -922,7 +919,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 //				tipoMovimiento.setId(Constantes.ID_TIPMOV_ANULACION);
 //				movimiento.setTipoMovimiento(tipoMovimiento);
 //				ServiceLocator.getVentaPasajesManager().anularMovimiento(movimiento);
-//				
+//
 //				/* Si es por Puntos*/
 //				if(cortesia.getTipoFormaPago().getId().equals(Constantes.ID_TIPFORPAG_PUNTOS)){
 //					//Buscar paxfree
@@ -931,22 +928,22 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 //						/* Busca puntos utilizados*/
 //						List<PuntosPasajeroFrecuente>lstResul=ServiceLocator.getPuntosPasajeroFrecuenteManager().buscarPuntosUtilizados
 //								(paxFree.getId().toString(), Constantes.FORMAT_DATE.format(cortesia.getFechaInsercion()));
-//						
+//
 //						Integer puntosRuta=cortesia.getRuta().getPuntaje();
 //						Integer puntoConsumidos=0;
 //						for(PuntosPasajeroFrecuente  puntosPasajeroFrecuente: lstResul){
 //							puntoConsumidos+=+puntosPasajeroFrecuente.getPuntosAcumulados();
-//							
+//
 //							//reactiva los puntos utilizados
 //							if(puntoConsumidos.intValue()<=puntosRuta.intValue()){
 //								puntosPasajeroFrecuente.setFechaCanje(null);
 //								UtilData.auditarRegistro(puntosPasajeroFrecuente, true, getUsuario(), Executions.getCurrent());
 //								ServiceLocator.getPuntosPasajeroFrecuenteManager().actualizar(puntosPasajeroFrecuente);
 //							}
-//							
+//
 //							//Termina instruccion.
 //							if(puntoConsumidos.intValue()>=puntosRuta.intValue())
-//								break;					
+//								break;
 //						}
 //					}
 //				}
@@ -977,7 +974,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.zkoss.zul.Window#onClose()
 	 */
 	@Override
@@ -987,26 +984,26 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onChangeTab(int)
 	 */
 	@Override
 	public void onChangeTab(int tab) throws Exception {
 		EdicionCortesia();
 	}
-	
+
 	/**
 	 * Carga Rutas, según la Ciudad Origen.
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public void onChangeRutas() throws Exception {
 		limpiarDatosItinerario();
 		cmbRuta.getItems().clear();
-						
+
 		if (cmbCiudadOrigen.getSelectedItem().getValue() instanceof Localidad && cmbTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago) {
 			Integer Origen = ((Localidad) cmbCiudadOrigen.getSelectedItem().getValue()).getId();
-			
+
 			/*Si es porpuntos, carga rutas cuyo puntaje sea equivalente al puntaje del pasajero*/
 			if(((TipoFormaPago)cmbTipoFormaPago.getSelectedItem().getValue()).getId().equals(Constantes.ID_TIPFORPAG_PUNTOS)){
 				String puntos =lbPuntosPax.getValue().substring(lbPuntosPax.getValue().indexOf(":")+1,lbPuntosPax.getValue().toString().trim().length());
@@ -1022,7 +1019,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 
 	/**
 	 * Corresponde al evento onSelect del combo tipo Forma de Pago.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void onSelectTipoFormaPago() throws Exception{
 		try {
@@ -1034,7 +1031,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 			gbxViajesPax.setVisible(false);
 			itAnioCortesia.setText("");
 			itAnioCortesia.setReadonly(true);
-			
+
 			if(cmbTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago){
 				TipoFormaPago tipoFormaPago=cmbTipoFormaPago.getSelectedItem().getValue();
 
@@ -1043,8 +1040,8 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 				else if (pasajero.getPasajeroFrecuente() == null)
 					throw new PaxFreeNoRegistradoException();
 				else if (pasajero.getPasajeroFrecuente().getEstado().equals(Constantes.FALSE_VALUE))
-					throw new PaxFreeInactivoException();		
-				
+					throw new PaxFreeInactivoException();
+
 				//Carga lista de pasajes emitidos por cumpleanios emitidos al pasajero.
 				if (tipoFormaPago.getId().equals(Constantes.ID_TIPFORPAG_CUMPLEANIOS)) {
 					ArrayList<Cortesia> lstCortesia = ServiceLocator.getCortesiaManager().buscarBoletosPaxFreXTipoFormaPago(pasajero.getId(), tipoFormaPago.getId());
@@ -1067,8 +1064,8 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 					habilitaControleCortesia(false);
 					itAnioCortesia.setReadonly(true);
 				}
-				
-				
+
+
 			}else{
 				habilitaControleCortesia(true);
 				cmbTipoFormaPago.setDisabled(false);
@@ -1087,8 +1084,8 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 			txtBuscarPax.setFocus(true);
 		}
 	}
-		
-	
+
+
 	/**
 	 * Realiza la busqueda, según los parametros elejidos por el usuario.
 	 */
@@ -1097,16 +1094,16 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 			if (txtBuscarPax.getText().trim().isEmpty())
 				throw new PasajeroException();
 
-			TreeMap<String, Object> criterioBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criterioBusqueda = new TreeMap<>();
 			if (rdPorApellidos.isSelected())
 				criterioBusqueda.put("apellidoPaterno", txtBuscarPax.getText().trim().toUpperCase()+ "%");
 			else if (rdPorDocumento.isSelected())
 				criterioBusqueda.put("numeroDocumento", txtBuscarPax.getText().trim().toUpperCase()+ "%");
-			List<String> criteriosOrdenar = new ArrayList<String>();
+			List<String> criteriosOrdenar = new ArrayList<>();
 			criteriosOrdenar.add("apellidoPaterno");
 			criteriosOrdenar.add("apellidoMaterno");
 			criteriosOrdenar.add("nombre");
-			
+
 			ArrayList<Pasajero> lstPasajeros = ServiceLocator.getPasajeroManager().buscarPorX(criterioBusqueda,criteriosOrdenar);
 			listarPasajeros(lstPasajeros);
 
@@ -1120,7 +1117,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 
 	/**
 	 * Lista los pasajeros encontrados en la busqueda
-	 * 
+	 *
 	 * @param lstPasajero
 	 * @throws Exception
 	 */
@@ -1135,19 +1132,19 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 			pasajero = lstPasajero.get(0);
 
 			/* Verifica si es paxfre */
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("pasajero", pasajero);
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<PasajeroFrecuente> list = ServiceLocator.getPasajeroFrecuenteManager().buscarPorX(criteriosBusqueda, null);
-						
+
 			for (PasajeroFrecuente frecuente : list) {
 				pasajero.setPasajeroFrecuente(frecuente);
 			}
-						
+
 			muestraPax(pasajero);
 			grInfoPax.setVisible(true);
 			lisboxPasajeros.setVisible(false);
-						
+
 		} else if (lstPasajero.size() > 1) {
 			grInfoPax.setVisible(false);
 			/* cuando el resultado de la busqueda es mas de un registro */
@@ -1173,7 +1170,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 							try {
 								pasajero = ServiceLocator.getPasajeroManager().buscarPorId(((Pasajero) lisboxPasajeros.getSelectedItem().getValue()).getId());
 								/* Verifica si es paxfre */
-								TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+								TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 								criteriosBusqueda.put("pasajero", pasajero);
 								criteriosBusqueda.put("estadoRegistro",Constantes.VALUE_ACTIVO);
 								List<PasajeroFrecuente> list = ServiceLocator.getPasajeroFrecuenteManager().buscarPorX(criteriosBusqueda, null);
@@ -1203,7 +1200,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 
 	/**
 	 * Muestra datos del Pasajero
-	 * 
+	 *
 	 * @param pasajero
 	 *            : clase que contiene datos del pasajero a mostrar al usuario.
 	 * @throws Exception
@@ -1213,7 +1210,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 			limpiarDatosItinerario();
 			gbxViajesPax.setVisible(false);
 			cmbTipoFormaPago.setDisabled(true);
-			
+
 			if (pasajero.getIndeseable().equals(Constantes.PASAJERO_INDESEABLE))
 				throw new PasajeroIndeseableException();
 
@@ -1226,13 +1223,13 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 			/* Validación PAXFREE */
 			if (pasajero.getPasajeroFrecuente() != null)
 				if (pasajero.getPasajeroFrecuente().getEstado().equals(Constantes.TRUE_VALUE)){
-					
+
 					Integer puntosPax=0;
 					/*Busca puntaje del Paxfree*/
-					ArrayList<PuntosPasajeroFrecuente> lstPuntaje=new ArrayList<PuntosPasajeroFrecuente>(ServiceLocator.getPuntosPasajeroFrecuenteManager().buscarPuntosDisponibles(pasajero.getPasajeroFrecuente().getId()));
+					ArrayList<PuntosPasajeroFrecuente> lstPuntaje=new ArrayList<>(ServiceLocator.getPuntosPasajeroFrecuenteManager().buscarPuntosDisponibles(pasajero.getPasajeroFrecuente().getId()));
 					if(lstPuntaje.size()>0)
 						puntosPax=lstPuntaje.get(0).getTotalPuntaje();
-	
+
 					lbPaxfri.setValue("PAX FREE: ACTIVO");
 					lbPuntosPax.setValue("PUNTOS: "+puntosPax);
 					cmbTipoFormaPago.setDisabled(false);
@@ -1244,10 +1241,10 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 				lbPaxfri.setValue("");
 				lbPuntosPax.setValue("");
 			}
-			
+
 			cmbTipoFormaPago.setFocus(true);
 			cmbTipoFormaPago.select();
-			
+
 		} catch (PasajeroIndeseableException pxidex) {
 			DlgMessage.information(Messages.getString("WndCortesia.information.pasajeroIndeseable"));
 			txtBuscarPax.setFocus(true);
@@ -1256,13 +1253,13 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 
 	/**
 	 * Carga cortecias emitidas, según el resultado de la busqueda.
-	 * 
+	 *
 	 * @param lstCortecia
 	 *            : Array con las cortecias a mostrar en el Listbox
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private void listarCortesia(List<Cortesia> lstcortesia) throws Exception {
-		
+
 		Util.limpiarListbox(listboxLista);
 		Listitem item = null;
 		Listcell cell = null;
@@ -1272,7 +1269,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 			TipoComprobante tipoComprobante=ventaPasaje.getTipoComprobante();
 			if(ventaPasaje.getTipoComprobante()==null || ventaPasaje.getTipoComprobante().getDenominacion()==null )
 				tipoComprobante=ServiceLocator.getTipoComprobanteManager().buscarPorId(tipoComprobante.getId().longValue());
-			
+
 			x++;
 			item = new Listitem();
 			cell = new Listcell(String.valueOf(x));
@@ -1299,7 +1296,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 			item.appendChild(cell);
 			cell = new Listcell(ventaPasaje.getTipoFormaPago().getDenominacion());
 			item.appendChild(cell);
-			
+
 			item.setValue(cortesia);
 			listboxLista.appendChild(item);
 		}
@@ -1307,7 +1304,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 
 	/**
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	private void EdicionCortesia() throws Exception {
 		Util.limpiarListbox(listViajesPax);
@@ -1316,7 +1313,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 		lbPuntosPax.setValue("PUNTOS : 0");
 		limpiarDatosItinerario();
 		habilitaControleCortesia(true);
-		
+
 		if (listboxLista.getSelectedItem().getValue() instanceof Cortesia) {
 			cortesia= new Cortesia();
 			cortesia=ServiceLocator.getCortesiaManager().buscarPorId(((Cortesia)listboxLista.getSelectedItem().getValue()).getId().longValue());
@@ -1330,7 +1327,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 			lbFechaNacimiento.setValue(pasajero.getFechaNacimiento()!=null?pasajero.getFechaNacimiento():"");
 			lbUbigeo.setValue(ServiceLocator.getUbigeoManager().ubicacionGeografica(pasajero.getUbigeo()));
 			/* Verifica si es paxfre */
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("pasajero", pasajero);
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<PasajeroFrecuente> list = ServiceLocator.getPasajeroFrecuenteManager().buscarPorX(criteriosBusqueda, null);
@@ -1367,12 +1364,12 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 			Util.seleccionarValorItemCombo(PreferenciaAlimentaria.class, cmbAlimentacion, ventaPasaje.getPreferenciaAlimentaria().getId());
 			itAnioCortesia.setText(cortesia.getAnioCumpleanios() != null ? String.valueOf(cortesia.getAnioCumpleanios()) : "");
 			txtObserveaciones.setText(ventaPasaje.getObservaciones());
-			
+
 			activarBtnBuscar(false);
 			btnGuardar.setDisabled(true);
 			disabledImgBusqAsiento(true);
 			disabledImgRefresh(true);
-	
+
 		}
 	}
 
@@ -1385,7 +1382,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 		Listcell cell = null;
 		int i = 0;
 		listViajesPax.getItems().clear();//setRows(0);
-		
+
 		for (Cortesia cortesia : lst) {
 			i++;
 			VentaPasaje pasaje = cortesia.getVentaPasaje();
@@ -1400,11 +1397,11 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 			cell = new Listcell(Constantes.FORMAT_DATE.format(cortesia.getFechaInsercion()));
 			cell.setStyle("font-size:11px !important");
 			item.appendChild(cell);
-			
+
 			cell = new Listcell(pasaje.getNumeroBoleto() != null ? pasaje.getNumeroBoleto(): "");
 			cell.setStyle("font-size:11px !important");
 			item.appendChild(cell);
-			
+
 			/*	Validando si es un boleto por cumpleanios	*/
 			cell = null;
 			if(cortesia.getAnioCumpleanios()==null){
@@ -1415,7 +1412,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 				lstHeaderAnio.setVisible(true);
 			}
 			item.appendChild(cell);
-			
+
 			cell = new Listcell(ruta);
 			item.appendChild(cell);
 			cell = new Listcell(pasaje.getServicio().getDenominacion() != null ? pasaje.getServicio().getDenominacion() : "");
@@ -1428,7 +1425,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 
 			item.setValue(cortesia);
 			listViajesPax.appendChild(item);
-			
+
 			if(listViajesPax.getItems().size()>5)
 				listViajesPax.setRows(5);
 		}
@@ -1447,11 +1444,11 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 		bdbxServicios.setDisabled(estado);
 		cmbPuntoEmbarque.setDisabled(estado);
 		cmbPuntoLlegada.setDisabled(estado);
-		txtAsiento.setReadonly(true);	
+		txtAsiento.setReadonly(true);
 		cmbAlimentacion.setDisabled(estado);
 		txtObserveaciones.setDisabled(estado);
-		
-		if (estado == true) {
+
+		if (estado) {
 			cmbCiudadOrigen.setSelectedIndex(0);
 			Util.limpiarCombobox(cmbRuta);
 			UtilData.cargarGenericData(cmbRuta, false);
@@ -1470,7 +1467,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 
 	/**
 	 * Activa o desactiva el botón Buscar pasajero
-	 * 
+	 *
 	 * @param activar
 	 */
 	private void activarBtnBuscar(boolean activar) {
@@ -1499,7 +1496,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 		lbUbigeo.setValue("");
 		lbPaxfri.setValue("");
 		lbPuntosPax.setValue("");
-		
+
 		/*Desbloquea el asiento*/
 		if(!(txtAsiento.getText().trim().isEmpty())){
 			DetalleItinerario detalleItinerario= ((DetalleItinerario)lstServicios.getSelectedItem().getValue());
@@ -1513,7 +1510,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 		cmbPuntoLlegada.getItems().clear();
 		bdbxServicios.setText("");
 		Util.limpiarListbox(lstServicios);
-		
+
 		disabledImgBusqAsiento(true);
 		UtilData.cargarGenericData(cmbPuntoEmbarque, false);
 		UtilData.cargarGenericData(cmbPuntoLlegada, false);
@@ -1526,20 +1523,20 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 	}
 	/**
 	 * Carga los tipos de pago que guardan relación con la forma de fago cortesia.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private void cargarTipoFormaPago() throws Exception{
-		TreeMap<String, Object> criterioBusqueda = new TreeMap<String, Object>();
-		List<String> criteriosOrdenar = new ArrayList<String>();
+		TreeMap<String, Object> criterioBusqueda = new TreeMap<>();
+		List<String> criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
-		
+
 		FormaPago formaPago= new FormaPago();
 		formaPago.setId(Constantes.ID_FORPAG_CORTESIA);
 		criterioBusqueda.put("formaPago", formaPago);
 		criterioBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-		
+
 		List<TipoFormaPago> lstResut= ServiceLocator.getTipoFormaPagoManager().buscarPorX(criterioBusqueda, criteriosOrdenar);
-		
+
 		UtilData.cargarGenericData(cmbTipoFormaPago, false);
 		for (TipoFormaPago tipoFormaPago: lstResut){
 //			if(!(tipoFormaPago.getId().intValue()==Constantes.ID_TIPFORPAG_CORTESIA)){
@@ -1549,10 +1546,10 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 				oComboitem.setValue(tipoFormaPago);
 				cmbTipoFormaPago.appendChild(oComboitem);
 			}
-						
+
 		}
 	}
-	
+
 	/**
 	 * Valida si la fecha de viaje esta dentro de lo permitido
 	 * @param fechaViaje : fecha de viaje del pasajero
@@ -1562,32 +1559,32 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 	@SuppressWarnings("deprecation")
 	private boolean validadFechaCumpleanios(Date fechaViaje) throws Exception{
 		/*Valida que este dentro del periodo permitido(segun parametro configurable). Ejemplo 2 meses antes o despues del cumpleaños */
-		Long rangoPermitido = (Constantes.MILISEGUNDOS_X_DIA * Constantes.RANGO_CANJE_CUMPLEANIOS);
+		long rangoPermitido = (Constantes.MILISEGUNDOS_X_DIA * Constantes.RANGO_CANJE_CUMPLEANIOS);
 		Date fCumpleanios = new Date();
 		fCumpleanios = Constantes.FORMAT_DATE.parse(pasajero.getFechaNacimiento());
 		fCumpleanios.setYear(Constantes.FORMAT_YEAR.parse(itAnioCortesia.getValue().toString()).getYear());
 		Date fActual = (Constantes.FORMAT_DATE.parse(new MyTime().dateServer()));
-		
+
 		// El canje es despues de la fecha de cumpleaños.
 		if (fCumpleanios.getTime() > fActual.getTime()) {
-			Long rangoActual = fCumpleanios.getTime()- fActual.getTime();
+			long rangoActual = fCumpleanios.getTime()- fActual.getTime();
 			if (rangoActual > rangoPermitido)
 				return false;
-			
+
 			//Valida que la fecha de viaje selecionada este dentro del periodo permitido
 			if(fechaViaje!=null){
 				rangoActual = fechaViaje.getTime()-fActual.getTime();
 				if(rangoActual > rangoPermitido)
 					return false;
 			}
-			
+
 		} else {//El canje es antes de la fecha de cumpleaños.
-			Long rangoActual = fActual.getTime()-fCumpleanios.getTime();
+			long rangoActual = fActual.getTime()-fCumpleanios.getTime();
 			if (rangoActual > rangoPermitido)
 				return false;
-			
+
 			//Valida que la fecha de viaje selecionada este dentro del periodo permitido
-			if(fechaViaje!=null){				
+			if(fechaViaje!=null){
 				rangoActual = fechaViaje.getTime()-fActual.getTime();
 				if(rangoActual > rangoPermitido)
 					return false;
@@ -1595,14 +1592,14 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 		}
 		return true;
 	}
-	
-	
-	
-	
+
+
+
+
 	public void onSelectServicio(DetalleItinerario  detalleItinerario){
 		bdbxServicios.setText(detalleItinerario.getItinerario().getServicio().getDenominacion()+" ; "+detalleItinerario.getHoraPartida());
 		bdbxServicios.close();
-		 
+
 		lblFechaPartida.setValue(Constantes.FORMAT_DATE.format(dbxFechaViaje.getValue()));
 		lblFechaLlegada.setValue(Constantes.FORMAT_DATE.format(detalleItinerario.getFechaLlegada()));
 		onLoadPuntoEmbarque(detalleItinerario);
@@ -1611,24 +1608,24 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 		txtAsiento.setText("");
 		liberarAsientos();
 	}
-	
+
 	public void cargarPuntosEmbarque(){
-		
-		
+
+
 	}
-	
+
 	public void cargarServicios() throws Exception{
 		try{
 			limpiarDatosItinerario();
-			
+
 			if(dbxFechaViaje.getValue()==null)
 				throw new FechaViajeNoValidaException();
-			
+
 			if(cmbRuta.getSelectedItem().getValue() instanceof Ruta){
 				String fechaPartida=Constantes.FORMAT_DATE.format(dbxFechaViaje.getValue());
 				String origen=((Ruta)cmbRuta.getSelectedItem().getValue()).getOrigen();
 				String destino=((Ruta)cmbRuta.getSelectedItem().getValue()).getDestino();
-			
+
 				List<DetalleItinerario> lstItinerarios = ServiceLocator.getItinerarioManager().buscarItinerarios(fechaPartida, origen, destino);
 				if(lstItinerarios.size()>0){
 					Listitem item = null;
@@ -1642,7 +1639,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 							cell = new Listcell(detalleItinerario.getHoraPartida());
 							cell.setStyle("font-size:11px !important");
 							item.appendChild(cell);
-							
+
 							item.setValue(detalleItinerario);
 							lstServicios.appendChild(item);
 						}
@@ -1652,9 +1649,9 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 			}
 		}catch (FechaViajeNoValidaException fve){
 			DlgMessage.information(Messages.getString("WndCortesia.information.noSeleccionoFechaViaje"),dbxFechaViaje);
-		}	
+		}
 	}
-	
+
 	/**
 	 * Cargamos los puntos de embarque.
 	 * @param detItinerario	: Itinerario del cual deseamos cargar los puntos de embarque.
@@ -1663,8 +1660,8 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 	private void onLoadPuntoEmbarque(DetalleItinerario detItinerario){
 		try{
 			cmbPuntoEmbarque.getItems().clear();
-			
-			ArrayList<ItinerarioAgenciaPartida> arrayItiAgePartida = new ArrayList<ItinerarioAgenciaPartida>();
+
+			ArrayList<ItinerarioAgenciaPartida> arrayItiAgePartida = new ArrayList<>();
 			arrayItiAgePartida = ServiceLocator.getItinerarioManager().buscarAgenciasPartida(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO, detItinerario.getRuta().getLocalidadOrigen().getId());
 			/*	Si la agencia de partida del itinerario es la misma a la agencia de la ruta seleccionada	*/
 //			arrayItiAgePartida = ServiceLocator.getItinerarioManager().buscarAgenciasPartida(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO);
@@ -1693,13 +1690,13 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 					cmbPuntoEmbarque.setSelectedItem(item);
 					lblHoraPartida.setValue(itiAgePartida.getHoraPartida());
 				}
-			}				
+			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Cargamos los puntos de desembarque.
 	 * @param detItinerario	: Itinerario del cual deseamos cargar los puntos de desembarque.
@@ -1708,8 +1705,8 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 	private void onLoadPuntoDesembarque(DetalleItinerario detItinerario) {
 		try{
 			cmbPuntoLlegada.getItems().clear();
-			
-			ArrayList<ItinerarioAgenciaLlegada> arrayItiAgeLlegada = new ArrayList<ItinerarioAgenciaLlegada>();
+
+			ArrayList<ItinerarioAgenciaLlegada> arrayItiAgeLlegada = new ArrayList<>();
 			/*	Si la agencia de llegada del itinerario es la misma a la agencia de llegada de la ruta seleccionada	*/
 //			arrayItiAgeLlegada = ServiceLocator.getItinerarioManager().buscarAgenciasLlegada(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO);
 			arrayItiAgeLlegada = ServiceLocator.getItinerarioManager().buscarAgenciasLlegada(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO, detItinerario.getRuta().getLocalidadDestino().getId());
@@ -1724,7 +1721,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 //				itiAgeLlegada.setHoraLlegada(detItinerario.getAgenciaLlegada().getHoraPartida());
 //				arrayItiAgeLlegada.add(itiAgeLlegada);
 //			}
-			
+
 			UtilData.cargarGenericData(cmbPuntoLlegada, false);
 			for(ItinerarioAgenciaLlegada itiAgeLlegada : arrayItiAgeLlegada){
 				Comboitem item = new Comboitem(itiAgeLlegada.getAgencia().getDenominacion());
@@ -1737,13 +1734,13 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 					cmbPuntoLlegada.setSelectedItem(item);
 					lblHoraLlegada.setValue(itiAgeLlegada.getHoraLlegada());
 				}
-			}			
+			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 		}
-	}	
-	
+	}
+
 	/**
 	 * Muestra la hora de embarque segun el punto de embarque seleccionado
 	 */
@@ -1753,7 +1750,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 		else
 			lblHoraPartida.setValue("");
 	}
-	
+
 	/**
 	 * Muestrala hora de llegada segun el punto de desembarque seleccionado.
 	 */
@@ -1763,10 +1760,10 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 		else
 			lblHoraLlegada.setValue("");
 	}
-	
+
 	/**
 	 * Realiza la busqueda del correlativo para el boleto a emitir.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private void onLoadEspecieValorada() throws Exception{
 //		txtNumeroBoleto.setValue(UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_BOLETO_VIAJE, usuarioHardware.getId()));
@@ -1777,7 +1774,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 		txtNumeroBoleto.setText(controlEspecieValorada.toString());
 		/*END 15/06/2021 - javalos - Correlativo by caja*/
 	}
-	
+
 	private void disabledImgBusqAsiento(boolean estado){
 		if(estado){
 			imgSelectAsiento.setSrc(imgDisabledBusq);
@@ -1789,7 +1786,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 			imgSelectAsiento.setTooltiptext("Haga click aqui para seleccionar un Asiento.");
 		}
 	}
-	
+
 	private void disabledImgRefresh(boolean estado){
 		if(estado){
 			imgRefreshBoleto.setSrc(imgDisabledRefresh);
@@ -1801,7 +1798,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 			imgRefreshBoleto.setTooltiptext("Haga click aqui para refrescar el Número de Boleto.");
 		}
 	}
-	
+
 	/**
 	 * Permite liberar los asientos cuando se cambia de pestaña dentro de la venta
 	 */
@@ -1814,5 +1811,5 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 }

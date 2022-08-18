@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 04/05/2012
  */
@@ -25,24 +25,24 @@ public interface EspecieValoradaDAO extends GenericDAO {
 	public void guardar(EspecieValorada especieValorada);
 	public void actualizar(EspecieValorada especieValorada);
 	public void inactivar(Long id);
-	
+
 	/**
 	 * Busca la ultima seria utilizada, para la generación de los correlativos automáticos
 	 * @param idTipoComprobante :Identificador del tipio de comprobante
-	 * @return 
+	 * @return
 	 */
 	public String buscarUltimaSerieUtilAge(Integer idTipoComprobante);
-	
+
 	/**
 	 * Realiza la actualización de la especia valorada
-	 * @param idTipCom	: Identificador del tipo de comprobante.	
+	 * @param idTipCom	: Identificador del tipo de comprobante.
 	 * @param idAgencia	: Identifiador de la Agencia.
 	 * @param serie		: Número de serie.
 	 * @param correlativo	: Número de Correlativo.
 	 * @throws Exception
 	 */
 	public void actualizarCorrelativoEspecieValorada(Integer idTipCom, Integer idAgencia, String serie, long correlativo) throws Exception;
-	
+
 	/***
 	 * Busca la ultima especie valorada registrada, segun los paramentros enviados
 	 * @param idTipoComprobante	: Identificador de tipo de comprobante

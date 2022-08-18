@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 20/08/2014
  * Hora			: 11:18:57
@@ -19,9 +19,6 @@ import java.util.concurrent.TimeoutException;
 
 import org.apache.log4j.Logger;
 import org.zkoss.zk.ui.Executions;
-
-import pe.gob.mtc.wshr.Identidad;
-import pe.gob.mtc.wshr.ResultIdentidad;
 
 import com.cystesoft.vyrbus.model.bean.DestinatariosEmails;
 import com.cystesoft.vyrbus.model.bean.Parametros;
@@ -54,6 +51,8 @@ import mstc.ws.gob.pe.Tripulante;
 import mstc.ws.gob.pe.Vehiculo;
 import mstc.ws.gob.pe.WSServiciosHR;
 import mstc.ws.gob.pe.WSServiciosHRSoap;
+import pe.gob.mtc.wshr.Identidad;
+import pe.gob.mtc.wshr.ResultIdentidad;
 
 /**
  * @author JABANTO
@@ -75,7 +74,7 @@ public class WSMTC {
 	private static ArrayOfDocumento arrayOfDocumento=null;
 	private static String MESSAGE_NO_CONECTION_WEBSERVICE="No se pudo establecer conexión con el Servicio Web del MTC";
 	private static String EXCEPTION_MESSAGE=null;
-	
+
 	/**
 	 * @return the soap
 	 */
@@ -88,14 +87,14 @@ public class WSMTC {
 					String ipProxy=proxy.split(":")[0].toString();
 					if(proxy.split(":").length==2)
 						puerto=proxy.split(":")[1].toString();
-					
+
 					System.setProperty("http.proxyHost", ipProxy);
 					System.setProperty("http.proxyPort", puerto);
 				}
 
 				WSServiciosHR wsServiciosHR=new WSServiciosHR();
 				soap=wsServiciosHR.getWSServiciosHRSoap();
-				
+
 				EXCEPTION_MESSAGE=null;
 			}
 			return soap;
@@ -103,9 +102,9 @@ public class WSMTC {
 			EXCEPTION_MESSAGE=ex.getMessage();
 			throw new Exception(MESSAGE_NO_CONECTION_WEBSERVICE);
 		}
-		
+
 	}
-	
+
 	/**
 	 * Realiza la validacion del Conductor.
 	 * @param tipoDocumento		: Tipo de documento (L.E., etc)
@@ -117,7 +116,7 @@ public class WSMTC {
 	public static String validarConductor(String tipoDocumento,String NumeroDocumento, Integer tipoConductor) throws WSMTCExcepcion, Exception{
 		try {
 			validarConductor(tipoDocumento, NumeroDocumento);
-						
+
 			return null;
 		} catch (WSMTCExcepcion wse) {
 			String stipoConductor=getTipoPersona(tipoConductor);
@@ -133,7 +132,7 @@ public class WSMTC {
 //			throw new WSMTCExcepcion(e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Realiza la validacion del Conductor con el WS del MTC
 	 * @param conductor	: Objeto conductor
@@ -146,7 +145,7 @@ public class WSMTC {
 		conductor.setNroDocumento(NumeroDocumento);
 		conductor.setSeguridad(getSeguridad());
 		ResultConductor resultConductor= getSoap().getConductor(conductor);
-			
+
 		/* En el caso que el MTC reporte algún error*/
 		if(!(resultConductor.isReturn())){
 			String messages=getMessageError(resultConductor.getErrores().getErrores());
@@ -162,34 +161,34 @@ public class WSMTC {
 	public static String validarVehiculo(String numeroPlaca) throws Exception,WSMTCExcepcion {
 		try {
 			numeroPlaca=toFormatNroPlaca(numeroPlaca);
-			
+
 			Vehiculo vehiculo=new Vehiculo();
 			vehiculo.setNroPlaca(numeroPlaca);
 			vehiculo.setSeguridad(getSeguridad());
 			ResultVehiculo resultVehiculo=getSoap().getVehiculo(vehiculo);
-			
+
 			/* En el caso que el MTC reporte algún error*/
 			if(!(resultVehiculo.isReturn())){
 				String message=getMessageError(resultVehiculo.getErrores().getErrores());
 				String messages="El MTC reporta lo siguiente sobre el BUS \n seleccionado : \n"+message;
-				
+
 				if(permitirAlRolOmicionErres())
 					return messages;
 				else
 					throw new WSMTCExcepcion(messages);
 			}
-			
+
 			return null;
-			
+
 		} catch (Exception e) {
 			if(permitirAlRolOmicionErres(e.getMessage()))
 				return e.getMessage();
 			return e.getMessage();
 //			throw new WSMTCExcepcion(e.getMessage());
 		}
-		
+
 	}
-	
+
 //	/** ### END BEGIN 25/05/2015
 //	 * Registra el viaje.
 //	 * @param viaje	: Nueva instancia del Objeto Viaje
@@ -198,14 +197,14 @@ public class WSMTC {
 //	public static void setViaje(Viaje viaje)throws Exception{
 //		viaje.setSeguridad(getSeguridad());
 //		ResultViaje resultViaje= getSoap().setViaje(viaje);
-//		
+//
 //		/* En el caso que el MTC reporte algún error*/
 //		if(!(resultViaje.isReturn())){
 //			String messages=resultViaje.getErrores()!=null?getMessageError(resultViaje.getErrores().getErrores()):MESSAGE_NULL_MTC;
 //			throw new WSMTCExcepcion("El MTC reporta el siguiente error al intentar registrar el Viaje : \n"+messages);
 //		}
 //	}
-	
+
 	/**
 	 * Registra la hoja de ruta Electronica.
 	 * @param hojaRuta	: Nueva instancia del Objeto hojaRuta
@@ -215,16 +214,16 @@ public class WSMTC {
 	public static String setHojaRuta(HojaRuta hojaRuta)throws Exception{
 		hojaRuta.setSeguridad(getSeguridad());
 		ResultHojaRuta resultHojaRuta= getSoap().setHojaRuta(hojaRuta);
-		
+
 		/* En el caso que el MTC reporte algún error*/
 		if(!(resultHojaRuta.isReturn())){
 			String message=resultHojaRuta.getErrores()!=null?getMessageError(resultHojaRuta.getErrores().getErrores()):MESSAGE_NULL_MTC;
 			throw new WSMTCExcepcion("El MTC reporta el siguiente error al intentar registrar la HRE: \n"+message);
 		}
-		
+
 		return resultHojaRuta.getCode();
 	}
-	
+
 	/**
 	 * Anula la hoja de ruta Electrinica
 	 * @param numeroHRE
@@ -234,17 +233,17 @@ public class WSMTC {
 		Anular anular=new Anular();
 		anular.setSeguridad(getSeguridad());
 		anular.setCode(numeroHRE);
-		
+
 		ResultAnular resultAnular=getSoap().setAnular(anular);
 		if(!(resultAnular.isReturn())){
 			String message=resultAnular.getErrores().getInfo();
 			throw new WSMTCExcepcion("El MTC reporta el siguiente error al intentar anular la HRE: \n"+message);
 		}
-		
+
 		return true;
 	}
-	
-	
+
+
 	/**
 	 * Finaliza el registro de la hoja de ruta Electronica
 	 * @param finalizar
@@ -253,14 +252,14 @@ public class WSMTC {
 	public static void setFinalizar(Finalizar finalizar)throws Exception{
 		finalizar.setSeguridad(getSeguridad());
 		ResultFinalizar resultFinalizar= getSoap().setFinalizar(finalizar);
-		
+
 		/* En el caso que el MTC reporte algún error*/
 		if(!(resultFinalizar.isReturn())){
 			String message=resultFinalizar.getErrores()!=null?getMessageError(resultFinalizar.getErrores().getErrores()):MESSAGE_NULL_MTC;
 			throw new WSMTCExcepcion("El MTC reporta el siguiente error al finalizar el registro de la HRE: \n"+message);
 		}
 	}
-	
+
 	/**
 	 * envia el tripulante
 	 * @param tripulante
@@ -272,8 +271,8 @@ public class WSMTC {
 		ResultTripulante resultTripulante=getSoap().setTripulante(tripulante);
 		return resultTripulante;
 	}
-	
-	
+
+
 	/**
 	 * @return the seguridad
 	 */
@@ -285,7 +284,7 @@ public class WSMTC {
 		seguridad.setPartida("000530PNR");
 		return seguridad;
 	}
-	
+
 	public static String toFormatNroPlaca(String numeroPlaca){
 		//Busca el simbolo (-) en el numero de placa, ya que este no es aceptado por el MTC
 		int simbo=numeroPlaca.indexOf("-");
@@ -293,11 +292,11 @@ public class WSMTC {
 			numeroPlaca=numeroPlaca.substring(0,simbo)+""+numeroPlaca.substring((simbo+1),numeroPlaca.length());
 		return numeroPlaca;
 	}
-	
+
 	/**
 	 * Da formato a la lista de erres, retornada por le MTC
 	 * @param lstErrores : Lista de errores
-	 * @return String 
+	 * @return String
 	 */
 	private static String getMessageError(List<Errores>lstErrores){
 		String messages="";
@@ -306,8 +305,8 @@ public class WSMTC {
 		}
 		return messages;
 	}
-	
-	
+
+
 	/**
 	 * Realiza el Maching entre el tipo de documento de los conductores o tripulantes registrado en el sisvyr y el de MTC.
 	 * @param idTipoDocumentoSisVyr : Identificador del tipo de documento del conductor o tripulante, tal como este registrado en el sisvyr
@@ -320,7 +319,7 @@ public class WSMTC {
 			String stipoPersona=null;
 			if(tipoPersona!=null)
 				stipoPersona=getTipoPersona(tipoPersona);
-			
+
 			String tipoDocumento=null;
 			if(arrayOfDocumento==null){
 				Parametro parametro=new Parametro();
@@ -338,7 +337,7 @@ public class WSMTC {
 					}
 				}
 			}
-			
+
 			if(arrayOfDocumento!=null && arrayOfDocumento.getDocumento()!=null){
 				for(Documento documento: arrayOfDocumento.getDocumento()){
 					if(documento.getCode().equals("L.E.") && idTipoDocumentoSisVyr.intValue()==Constantes.ID_TIPDOC_DNI){
@@ -358,7 +357,7 @@ public class WSMTC {
 				else
 					throw new WSMTCExcepcion(MESSAGE_ERROR_PARAMETROS);
 			}
-						
+
 			/*Valida si el tipo documento es null*/
 			if(tipoDocumento==null){
 				String message="";
@@ -371,10 +370,10 @@ public class WSMTC {
 				else
 					throw new WSMTCExcepcion(message);
 			}
-			
+
 			return tipoDocumento;
-			
-			
+
+
 		}catch (WSMTCExcepcion wsex){
 			if(permitirAlRolOmicionErres(wsex.getMessage()))
 				return wsex.getMessage();
@@ -387,10 +386,10 @@ public class WSMTC {
 			else{
 				throw new Exception(e.getMessage());
 			}
-				
+
 		}
 	}
-	
+
 	/**
 	 * Compra el tipo de persona (Piloto, copiloto, tripulante, etc.)
 	 * @param tipo	: Tipo a comparar
@@ -412,10 +411,10 @@ public class WSMTC {
 		case TIPO_TRIPULANTE:
 			stipo="TRIPULANTE";
 		}
-		
+
 		return stipo;
 	}
-	
+
 	/**
 	 * Valida los roles a los cuales se le debe permitir amitir la validacion en caso de que la ws del MTC retorne algun error.
 	 * @return true si al usuario se le permitira omitir el error emitido por el MTC
@@ -431,14 +430,14 @@ public class WSMTC {
 		if( exceptionMessage==null){
 			Parametros parametros= ServiceLocator.getParametrosManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO);
 			Rol rol= (Rol) Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_ROL);//Para permitir omitir el error que retorne el mtc, solo para el rol superusuario.
-			
+
 			//Valida los roles a los cuales se le debe permitir amitir la validacion en caso de que la ws retorne algun error.
 			if(parametros.getRolesOmitirValidacionWsMTCError()!=null){
 				String[] rolesOmitir=parametros.getRolesOmitirValidacionWsMTCError().split(";"); /*Recupera los roles configurados en el parametro*/
-				
+
 				/*Realiza la validacion de los Roles*/
-				for(int i=0;i<rolesOmitir.length;i++){
-					if(rol.getId().intValue()==Integer.valueOf(rolesOmitir[i]).intValue()){
+				for (String element : rolesOmitir) {
+					if(rol.getId().intValue()==Integer.valueOf(element).intValue()){
 						return true;
 					}
 				}
@@ -448,17 +447,17 @@ public class WSMTC {
 			if(exceptionMessage.equals(MESSAGE_NO_CONECTION_WEBSERVICE) || exceptionMessage.equals(MESSAGE_NULL_MTC) || exceptionMessage.equals(MESSAGE_ERROR_PARAMETROS))
 				return true;
 		}
-		
+
 		return false;
 	}
-	
-	
+
+
 	/**
 	 * Envia Correo cuando el usuario omite el mensaje de error retornado por el MTC
 	 * @param messageMtc	: Mensaje de error que retorna el MTC.
 	 * @param idItinerario	: Identificador del Itinerario.
 	 * @param usuario		: Nombres del Usuario.
-	 * @param agencia		: Nombre de la Agencia. 
+	 * @param agencia		: Nombre de la Agencia.
 	 */
 	public static void enviarCorreo(String messageMtc,ProgramacionServicio programacionServicio, String usuario, String agencia){
 		Logger log = Logger.getLogger(WSMTC.class);
@@ -474,22 +473,22 @@ public class WSMTC {
 		try {
 			String toAddress="legal@tepsa.com.pe,lbustios@tepsa.com.pe,oficinagps@tepsa.com.pe";
 			String ccAddress="moscco@tepsa.com.pe,jabanto@tepsa.com.pe";
-			
+
 			//Envia E-Mail
 			mensaje+="\n\n NOTA: [Este buzon es de envio automático, por favor no responda.]";
 			DestinatariosEmails window = new DestinatariosEmails();
 			window.setEmails("TO:"+toAddress+";BCC:"+ccAddress);
 			Sendmail.enviaEmail(mensaje,"Omision Mensajes del MTC", window);
-			
+
 			log.error("Omision Mensajes del MTC : "+mensaje);
 		} catch (Exception e) {
 			log.error("Error al enviar E-Mail "+e.getMessage());
 			log.error("Omision Mensajes del MTC : "+mensaje);
 		}
 	}
-	
-	
-	
+
+
+
 //	/**
 //	 * Valida y retorna los datos del pasajero obtenidos desde wsmtc, ademas del objeto Reniec.
 //	 * @param numeroDni 	: número de DNI
@@ -497,7 +496,7 @@ public class WSMTC {
 //	 */
 //	public static ResultIdentidad getIdentidad(String numeroDni){
 //		return getIdentidad(numeroDni,null);
-////		return getIdentidad(numeroDni, false,null); 
+////		return getIdentidad(numeroDni, false,null);
 //	}
 //	/**
 //	 * Valida y retorna los datos del pasajero obtenidos desde wsmtc, ademas del objeto Reniec.
@@ -505,9 +504,9 @@ public class WSMTC {
 //	 * @return ResultIdentidad
 //	 */
 //	public static ResultIdentidad getIdentidad(String numeroDni, Image imageValidacionDNI){
-//		return getIdentidad(numeroDni, false,imageValidacionDNI); 
+//		return getIdentidad(numeroDni, false,imageValidacionDNI);
 //	}
-	
+
 	/**
 	 * Valida y retorna los datos del pasajero obtenidos desde wsmtc, ademas del objeto Reniec.
 	 * @return ResultIdentidad
@@ -523,7 +522,7 @@ public class WSMTC {
 				System.setProperty("http.proxyHost", ipProxy);
 				System.setProperty("http.proxyPort", puerto);
 			}
-			
+
 			/*Temporal consulta el WS DE PRUEBA DEL MTC*/
 			final pe.gob.mtc.wshr.WSServiciosHR serviciosHR=new pe.gob.mtc.wshr.WSServiciosHR();
 			pe.gob.mtc.wshr.Seguridad seguridad=new pe.gob.mtc.wshr.Seguridad();
@@ -531,12 +530,12 @@ public class WSMTC {
 			seguridad.setUsuario("059979");
 			seguridad.setClave("123456");
 			seguridad.setPartida("000530PNR");
-			
+
 			final Identidad oIdentidad=new Identidad();
 			oIdentidad.setSeguridad(seguridad);
 			oIdentidad.setNroEmp("29633222");
 			oIdentidad.setNroDoc(numeroDni);
-						
+
 			/*Para poder determinar el tiempo maximo de espera del servicio web. Modificado 02/06/2015 - jabanto*/
 			ExecutorService executorService=Executors.newFixedThreadPool(1);
 			Future<ResultIdentidad> future = executorService.submit(new Callable<ResultIdentidad>() {
@@ -547,7 +546,7 @@ public class WSMTC {
 			});
 			try {
 				ResultIdentidad resultIdentidad=future.get(30, TimeUnit.SECONDS); //Tempo maxiomo de espera 30 Segundos de la respuesta del metodo
-				
+
 				/**Valida longitud de apellidos y nombres*/
 				if(resultIdentidad!=null && resultIdentidad.isReturn()){
 					int longitudMax=30;
@@ -567,14 +566,14 @@ public class WSMTC {
 						resultIdentidad.setNombre(nombres.substring(0, longitudMax));
 					}
 				}
-				
+
 				return resultIdentidad;
-				
+
 			} catch (TimeoutException tout) {
 				/*Lanza la excepcion para terminar el proceso*/
 				throw new TimeoutException();
 			}
-			
+
 		} catch (TimeoutException tout){
 			try {
 				inactivarValidacon("Timeout");
@@ -591,9 +590,9 @@ public class WSMTC {
 			}
 			return null;
 		}
-	}	
-	
-	
+	}
+
+
 	private static void inactivarValidacon(String messageException)throws Exception{
 		/*******************************************************************************************************************/
 		/**DESHABILITA LA VALIDACION CON ESTE METODO "getIdentidad" ASI COMO TAMBIEN EL ENVIO DE ALERTAS POR DNI NO VALIDO */
@@ -607,7 +606,7 @@ public class WSMTC {
 			usuario.setLogin("VYR");
 			UtilData.auditarRegistro(parametros, usuario, Executions.getCurrent());
 			ServiceLocator.getParametrosManager().actualizar(parametros);
-			
+
 			/*Envia alerta informando*/
 			String mensaje="Se han desactivado las siguientes validaciones y envío de Alertas, debido a que no hay respuesta del método getIdentidad: \n";
 			mensaje+="* Validación con el Método getIdentidad. \n";
@@ -638,7 +637,7 @@ public class WSMTC {
 				ResultIdentidad resultIdentidad=getIdentidad(pasajero.getNumeroDocumento());
 				if(resultIdentidad!=null && resultIdentidad.isReturn()){
 					/*Actualiza los datos personales de pasajero con los retornados por la reniec*/
-					pasajero.setNombre(resultIdentidad.getNombre().trim().toUpperCase());			
+					pasajero.setNombre(resultIdentidad.getNombre().trim().toUpperCase());
 					//Valida que el apellido paterno
 					if(resultIdentidad.getPaterno()!=null && !(resultIdentidad.getPaterno().trim().isEmpty()))
 						pasajero.setApellidoPaterno(resultIdentidad.getPaterno().trim().toUpperCase());
@@ -649,7 +648,7 @@ public class WSMTC {
 						pasajero.setApellidoMaterno(resultIdentidad.getMaterno().trim().toUpperCase());
 					else
 						pasajero.setApellidoMaterno(null);
-					
+
 					pasajero.setNombresApellidos(pasajero.getNombre() +" "+pasajero.getApellidoPaterno()+" "+(pasajero.getApellidoMaterno()!=null?pasajero.getApellidoMaterno():""));
 					pasajero.setValidadoReniec(Constantes.TRUE_VALUE);
 					pasajero.setUsuarioModificacion("VYR");
@@ -657,15 +656,15 @@ public class WSMTC {
 					ServiceLocator.getPasajeroManager().actualizar(pasajero);
 				}
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return pasajero;
 	}
-	
-	
+
+
 	/**
 	 * Genera el manifiesto electronico de pasajeros.
 	 * @param manifiesto
@@ -675,7 +674,7 @@ public class WSMTC {
 	public static String setManifiesto(Manifiesto manifiesto)throws Exception{
 		manifiesto.setSeguridad(getSeguridad());
 		ResultManifiesto  resultManifiesto= getSoap().setManifiesto(manifiesto);
-		
+
 		if(!(resultManifiesto.isReturn())){
 			String message="El MTC ha retornado los siguientes mensajes al Generar le Manifiesto Electrónico. \n";
 			if(resultManifiesto.getErrores()!=null)
@@ -689,5 +688,5 @@ public class WSMTC {
 				return "NO CODE";
 		}
 	}
-	
+
 }

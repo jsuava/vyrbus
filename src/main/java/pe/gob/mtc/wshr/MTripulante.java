@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for MTripulante complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="MTripulante">
  *   &lt;complexContent>
@@ -25,8 +25,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "MTripulante", propOrder = { "tpoDoc", "nroDoc" })
@@ -39,9 +39,9 @@ public class MTripulante {
 
 	/**
 	 * Gets the value of the tpoDoc property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getTpoDoc() {
 		return tpoDoc;
@@ -49,10 +49,10 @@ public class MTripulante {
 
 	/**
 	 * Sets the value of the tpoDoc property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setTpoDoc(String value) {
 		this.tpoDoc = value;
@@ -60,9 +60,9 @@ public class MTripulante {
 
 	/**
 	 * Gets the value of the nroDoc property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getNroDoc() {
 		return nroDoc;
@@ -70,10 +70,10 @@ public class MTripulante {
 
 	/**
 	 * Sets the value of the nroDoc property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setNroDoc(String value) {
 		this.nroDoc = value;

@@ -25,7 +25,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class DescuentoRecargoManagerImpl implements DescuentoRecargoManager {
 	private DescuentoRecargoDAO descuentoRecargoDAO;
-	
+
 	/**
 	 * @return the descuentoRecargoDAO
 	 */
@@ -73,16 +73,16 @@ public class DescuentoRecargoManagerImpl implements DescuentoRecargoManager {
 	@Transactional
 	public void guardar(DescuentoRecargo descuentoRecargo) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", descuentoRecargo.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultRutaDuplicada = getDescuentoRecargoDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad Denominacion*/
 			if(resultRutaDuplicada.size()>0)
 				throw new DenominacionDuplicadaException();
-		
+
 			getDescuentoRecargoDAO().guardar(descuentoRecargo);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(Exception ex){
@@ -97,19 +97,19 @@ public class DescuentoRecargoManagerImpl implements DescuentoRecargoManager {
 	@Transactional
 	public void actualizar(DescuentoRecargo descuentoRecargo) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", descuentoRecargo.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getDescuentoRecargoDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la denominación*/
-			for(int r = 0; r < resultDenominacion.size(); r ++) {
-				DescuentoRecargo odescuentoRecargo = (DescuentoRecargo) resultDenominacion.get(r);
+			for (Object element : resultDenominacion) {
+				DescuentoRecargo odescuentoRecargo = (DescuentoRecargo) element;
 					if (!(odescuentoRecargo.getId() == descuentoRecargo.getId()))
 						throw new DenominacionDuplicadaException();
 			}
-	
+
 			getDescuentoRecargoDAO().actualizar(descuentoRecargo);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(Exception ex){

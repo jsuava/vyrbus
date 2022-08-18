@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 09/07/2012
  */
@@ -29,10 +29,10 @@ public class TmpOcupacionAsientos extends GenericBean implements Serializable {
 	private String horaPartida;
 	private Integer numeroPiso;
 	private Date fechaExpiraBloqueo;
-	
+
 	private List<Integer> subConjunto;			//No mapeado
 	private String key;							//No mapeado
-	
+
 	/**
 	 * @return Objeto tmpOcupacionAsientosID.
 	 */
@@ -58,7 +58,7 @@ public class TmpOcupacionAsientos extends GenericBean implements Serializable {
 	public void setUsuarioHardware(UsuarioHardware usuarioHardware) {
 		this.usuarioHardware = usuarioHardware;
 	}
-	
+
 	/**
 	 * @return Objeto usuario.
 	 */
@@ -71,7 +71,7 @@ public class TmpOcupacionAsientos extends GenericBean implements Serializable {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-	
+
 	/**
 	 * @return Objeto ruta.
 	 */
@@ -84,7 +84,7 @@ public class TmpOcupacionAsientos extends GenericBean implements Serializable {
 	public void setRuta(Ruta ruta) {
 		this.ruta = ruta;
 	}
-	
+
 	/**
 	 * @return Objeto itinerario.
 	 */
@@ -97,7 +97,7 @@ public class TmpOcupacionAsientos extends GenericBean implements Serializable {
 	public void setItinerario(Itinerario itinerario) {
 		this.itinerario = itinerario;
 	}
-	
+
 	/**
 	 * @return Objeto numeroAsiento.
 	 */
@@ -110,7 +110,7 @@ public class TmpOcupacionAsientos extends GenericBean implements Serializable {
 	public void setNumeroAsiento(Integer numeroAsiento) {
 		this.numeroAsiento = numeroAsiento;
 	}
-	
+
 	/**
 	 * @return the numeroPiso
 	 */
@@ -123,7 +123,7 @@ public class TmpOcupacionAsientos extends GenericBean implements Serializable {
 	public void setNumeroPiso(Integer numeroPiso) {
 		this.numeroPiso = numeroPiso;
 	}
-	
+
 	/**
 	 * @return Objeto fechaPartida.
 	 */
@@ -136,7 +136,7 @@ public class TmpOcupacionAsientos extends GenericBean implements Serializable {
 	public void setFechaPartida(String fechaPartida) {
 		this.fechaPartida = fechaPartida;
 	}
-	
+
 	/**
 	 * @return Objeto horaPartida.
 	 */

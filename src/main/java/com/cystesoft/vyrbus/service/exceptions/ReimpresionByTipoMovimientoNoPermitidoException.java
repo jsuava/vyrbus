@@ -16,12 +16,12 @@ import java.io.Serializable;
 public class ReimpresionByTipoMovimientoNoPermitidoException extends Exception implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Integer tipoMovimiento;
-	
+
 	public ReimpresionByTipoMovimientoNoPermitidoException(Integer tipoMovimiento) {
 		super();
 		this.tipoMovimiento = tipoMovimiento;
 	}
-	
+
 	/**
 	 * @return the tipoMovimiento
 	 */

@@ -22,9 +22,9 @@ public class TitanLiquidacionTurnoPasaje {
 	private Double totalTarjetaCredito;
 	private Integer cantidadDevolucion;
 	private Double totalDevolucion;
-	
-	
-	
+
+
+
 	/**
 	 * @return the id
 	 */
@@ -193,7 +193,7 @@ public class TitanLiquidacionTurnoPasaje {
 	public void setTotalDevolucion(Double totalDevolucion) {
 		this.totalDevolucion = totalDevolucion;
 	}
-	
-	
-	
+
+
+
 }

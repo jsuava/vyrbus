@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 28/01/2013
  */
@@ -21,7 +21,7 @@ public class PostergacionByFormaPagoNoPermitidoException extends Exception imple
 		super();
 		this.formapago = formapago;
 	}
-	
+
 	/**
 	 * @return the formapago
 	 */

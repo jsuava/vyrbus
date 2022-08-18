@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 28/01/2013
  */
@@ -16,12 +16,12 @@ import java.io.Serializable;
 public class PostergacionByTipoMovimientoNoPermitidoException extends Exception implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Integer tipoMovimiento;
-	
+
 	public PostergacionByTipoMovimientoNoPermitidoException(Integer tipoMovimiento) {
 		super();
 		this.setTipoMovimiento(tipoMovimiento);
 	}
-	
+
 	/**
 	 * @return the tipoMovimiento
 	 */

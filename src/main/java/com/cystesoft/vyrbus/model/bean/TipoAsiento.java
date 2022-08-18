@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 11/07/2016
  * Hora			: 17:21:59
@@ -17,22 +17,22 @@ import java.util.List;
 public class TipoAsiento extends GenericBean{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String denominacion;
-	
+
 	private List<Integer> asientos; //No mapeado.
-	
+
 	public TipoAsiento(){
 		super();
 	}
-	
+
 	public TipoAsiento(Integer id){
 		this.id=id;
 	}
-	
+
 	/**
 	 * @return the id
 	 */

@@ -11,17 +11,17 @@ import com.cystesoft.vyrbus.service.business.LiquidacionOficinaManager;
 
 public class LiquidacionOficinaManagerImpl implements LiquidacionOficinaManager{
 	private LiquidacionOficinaDAO liquidacionOficinaDAO;
-	
-	
+
+
 	public LiquidacionOficinaDAO getLiquidacionOficinaDAO(){
 		return liquidacionOficinaDAO;
 	}
-	
+
 	public void setLiquidacionOficinaDAO(LiquidacionOficinaDAO liquidacionOficinaDAO){
 		this.liquidacionOficinaDAO=liquidacionOficinaDAO;
 	}
-	
-	
+
+
 
 	/*
 	 * (non-Javadoc)
@@ -58,7 +58,7 @@ public class LiquidacionOficinaManagerImpl implements LiquidacionOficinaManager{
 	@Override
 	public void guardar(LiquidacionOficina liquidacionOficina) throws Exception {
 		getLiquidacionOficinaDAO().guardar(liquidacionOficina);
-		
+
 	}
 
 	/*
@@ -69,7 +69,7 @@ public class LiquidacionOficinaManagerImpl implements LiquidacionOficinaManager{
 	public void inactivar(Long id) {
 		getLiquidacionOficinaDAO().inactivar(id);
 	}
-	
-	
+
+
 
 }

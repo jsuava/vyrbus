@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 27 oct. 2021
  * Hora			: 11:48:01
@@ -17,7 +17,7 @@ import java.util.Date;
 public class TranscarLiquidacionTurno extends GenericBean{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Long id;
@@ -25,7 +25,7 @@ public class TranscarLiquidacionTurno extends GenericBean{
 	private Date fechaApertura;
 	private TranscarUsuarioPersonal transcarUsuarioPersonal;
 	private Integer agenciaId;
-	
+
 	/**
 	 * @return the id
 	 */
@@ -86,6 +86,6 @@ public class TranscarLiquidacionTurno extends GenericBean{
 	public void setAgenciaId(Integer agenciaId) {
 		this.agenciaId = agenciaId;
 	}
-	
+
 
 }

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 27 jun. 2021
  * Hora			: 21:26:32
@@ -38,7 +38,7 @@ public class VentaServicioEspecial extends GenericBean implements Serializable {
 	private Date fechaEnvioSFE;
 	private Agencia agencia;
 	private UsuarioHardware usuarioHardware;
-	
+
 	/**
 	 * @return the id
 	 */

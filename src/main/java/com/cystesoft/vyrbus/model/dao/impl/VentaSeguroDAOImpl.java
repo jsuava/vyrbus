@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripci�n	: 
+ * Descripci�n	:
  * Fecha		: 25/06/2014
  */
 package com.cystesoft.vyrbus.model.dao.impl;
@@ -51,7 +51,7 @@ public class VentaSeguroDAOImpl extends GenericDAOImpl implements VentaSeguroDAO
 		return (List<VSTipoDocumento>) findByEstadoRegistro(VSTipoDocumento.class, estado, "denominacion");
 	}
 
-	
+
 	/** TRANSACCIONES REFERIDAS SEXO DEL ASEGURADO*/
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#buscarSexoPorEstado(java.lang.String)
@@ -61,7 +61,7 @@ public class VentaSeguroDAOImpl extends GenericDAOImpl implements VentaSeguroDAO
 		return (List<VSSexo>) findByEstadoRegistro(VSSexo.class, estado, "denominacion");
 	}
 
-	
+
 	/** TRANSACCIONES REFERIDAS ESTADO CIVIL */
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#buscarEstadoCivilPorEstado(java.lang.String)
@@ -71,7 +71,7 @@ public class VentaSeguroDAOImpl extends GenericDAOImpl implements VentaSeguroDAO
 		return (List<VSEstadoCivil>) findByEstadoRegistro(VSEstadoCivil.class, estado, "denominacion");
 	}
 
-	
+
 	/** TRANSACCIONES REFERIDAS A LAS CIUDADES */
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#buscarCiudadesPorEstado(java.lang.String)
@@ -88,10 +88,10 @@ public class VentaSeguroDAOImpl extends GenericDAOImpl implements VentaSeguroDAO
 	 */
 	@Override
 	public VSAsegurado buscarAseguradoByDocumento(Integer idTipoDocumento,String numeroDocumento) throws Exception {
-		
+
 		String hql="FROM VSAsegurado ag WHERE ag.vsTipoDocumento.id="+idTipoDocumento+" AND ag.numeroDocumento='"+numeroDocumento+"' AND ag.estadoRegistro='A' ";
 		VSAsegurado asegurado=(VSAsegurado) getSession().createQuery(hql).uniqueResult();
-		
+
 		return asegurado;
 	}
 	/* (non-Javadoc)
@@ -99,7 +99,7 @@ public class VentaSeguroDAOImpl extends GenericDAOImpl implements VentaSeguroDAO
 	 */
 	@Override
 	public void actualizarAsegurado(VSAsegurado asegurado) throws Exception {
-		super.update(asegurado);		
+		super.update(asegurado);
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#aseguradoGuardar(com.tepsa.sisvyr.model.bean.VSAsegurado)
@@ -109,20 +109,20 @@ public class VentaSeguroDAOImpl extends GenericDAOImpl implements VentaSeguroDAO
 		super.save(asegurado);
 	}
 
-	
+
 	/** TRANSACCIONES REFERIDAS A LA LIQUIDACION */
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#buscarLiquidacion(java.lang.Integer, java.lang.String, java.lang.Integer)
 	 */
 	@Override
 	public VSLiquidacion buscarLiquidacion(Integer idUsuario,Integer idAgencia,String fechaLiquidacion, Integer estado) throws Exception {
-		String hql="FROM VSLiquidacion lq WHERE lq.usuarioID="+idUsuario+" AND fechaLiquidacion='"+fechaLiquidacion+"' AND lq.agenciaID="+idAgencia+" "+ 
+		String hql="FROM VSLiquidacion lq WHERE lq.usuarioID="+idUsuario+" AND fechaLiquidacion='"+fechaLiquidacion+"' AND lq.agenciaID="+idAgencia+" "+
 				 "AND estadoRegistro='A' ";
 		if(estado!=null)
 			hql+="AND estadoLiquidacion="+estado+" ";
-				
+
 		VSLiquidacion vsLiquidacion=(VSLiquidacion) getSession().createQuery(hql).uniqueResult();
-		
+
 		return vsLiquidacion;
 	}
 	/* (non-Javadoc)
@@ -130,7 +130,7 @@ public class VentaSeguroDAOImpl extends GenericDAOImpl implements VentaSeguroDAO
 	 */
 	@Override
 	public void aperturarLiquidacion(VSLiquidacion vsLiquidacion)throws Exception {
-		super.save(vsLiquidacion);		
+		super.save(vsLiquidacion);
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#cerrarLiquidacion(com.tepsa.sisvyr.model.bean.VSLiquidacion)
@@ -150,15 +150,15 @@ public class VentaSeguroDAOImpl extends GenericDAOImpl implements VentaSeguroDAO
 				   "FROM LAPOSITIVA.svtafiliacion af  "+
 				   "WHERE af.liquidacion_id="+idLiquidacion+" "+
 				   	 "AND af.c_estreg='A' "+
-				   "GROUP BY af.c_paxfre ";	
+				   "GROUP BY af.c_paxfre ";
 		List<?>result=getSession().createSQLQuery(sql).list();
-		VSLiquidacion vsLiquidacion=new VSLiquidacion();;
-		
+		VSLiquidacion vsLiquidacion=new VSLiquidacion();
+
 		Integer cantidadTotal=0;
 		Double montoTotal=0.00;
-		for(int i=0;i<result.size();i++){
-			Object[] obj=(Object[]) result.get(i);
-								
+		for (Object element : result) {
+			Object[] obj=(Object[]) element;
+
 			if(obj[0].toString().equals("S")){//Si es pasajero Frecuente
 				vsLiquidacion.setCantidadVentasPaxFree(((BigDecimal)obj[1]).intValue());
 				vsLiquidacion.setMontoVentasPaxFree(((BigDecimal)obj[2]).doubleValue());
@@ -166,14 +166,14 @@ public class VentaSeguroDAOImpl extends GenericDAOImpl implements VentaSeguroDAO
 				vsLiquidacion.setCantidadVentasPaxNromal(((BigDecimal)obj[1]).intValue());
 				vsLiquidacion.setMontoVentasPaxNromal(((BigDecimal)obj[2]).doubleValue());
 			}
-			
+
 			cantidadTotal+=((BigDecimal)obj[1]).intValue();
-			montoTotal+=((BigDecimal)obj[2]).doubleValue();		
+			montoTotal+=((BigDecimal)obj[2]).doubleValue();
 		}
-		
+
 		vsLiquidacion.setCantidadVentasTotal(cantidadTotal);
 		vsLiquidacion.setMontoVentasTotal(montoTotal);
-		
+
 		return vsLiquidacion;
 	}
 
@@ -192,7 +192,7 @@ public class VentaSeguroDAOImpl extends GenericDAOImpl implements VentaSeguroDAO
 	@Override
 	public Boolean validarBoletoAfiliacion(String numeroBoleto)throws Exception {
 		String hql="FROM VSAfiliacion af WHERE af.numeroBoleto='"+numeroBoleto+"' AND estadoRegistro='A' ";
-		
+
 		if(getSession().createQuery(hql).list().size()>0)
 			return true;
 		else
@@ -204,7 +204,7 @@ public class VentaSeguroDAOImpl extends GenericDAOImpl implements VentaSeguroDAO
 	@Override
 	public Boolean validarCertificadoAfiliacion(String numeroCertificado)throws Exception {
 		String hql="FROM VSAfiliacion af WHERE af.numeroCertificado='"+numeroCertificado+"' AND estadoRegistro='A' ";
-		
+
 		if(getSession().createQuery(hql).list().size()>0)
 			return true;
 		else
@@ -253,7 +253,7 @@ public class VentaSeguroDAOImpl extends GenericDAOImpl implements VentaSeguroDAO
 			      ",c.ciudad_id "+ //35
 			      ",c.c_denominacion as ciudad "+ //36
 			      ",c.c_codigo as codigociudad "+ //37
-			"FROM LAPOSITIVA.SVTAFILIACION af "+ 
+			"FROM LAPOSITIVA.SVTAFILIACION af "+
 			     "INNER JOIN LAPOSITIVA.SVMTIPREG tr ON (tr.tipreg_id=af.tipreg_id) "+
 			     "INNER JOIN LAPOSITIVA.SVMTIPPER tper ON (tper.tipper_id=af.tipper_id) "+
 			     "INNER JOIN LAPOSITIVA.SVMASEGURADO ase ON (ase.asegurado_id=af.asegurado_id) "+
@@ -264,43 +264,43 @@ public class VentaSeguroDAOImpl extends GenericDAOImpl implements VentaSeguroDAO
 			"WHERE af.d_fecven BETWEEN to_date('"+fechaInicio+"','"+Constantes.DATE_FORMAT+"') AND to_date('"+fechaFin+"','"+Constantes.DATE_FORMAT+"') "+
 			"AND af.c_estreg='A' "+
 			"AND af.d_fecproafi IS NULL ";
-						     
+
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<VSAfiliacion> lstResult = new ArrayList<VSAfiliacion>();
+		List<VSAfiliacion> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[])result.get(i);
-			
+
 			VSTipoRegistro tipoRegistro=new VSTipoRegistro();
 			tipoRegistro.setId(((BigDecimal)obj[0]).intValue());
 			tipoRegistro.setDenominacion(obj[1].toString());
 			tipoRegistro.setCodigo(((BigDecimal)obj[2]).intValue());
-			
+
 			VSTipoPersona tipoPersona=new VSTipoPersona();
 			tipoPersona.setId(((BigDecimal)obj[3]).intValue());
 			tipoPersona.setDenominacion(obj[4].toString());
 			tipoPersona.setCodigo(obj[5].toString());
-			
+
 			VSTipoDocumento tipoDocumento=new VSTipoDocumento();
 			tipoDocumento.setId(((BigDecimal)obj[6]).intValue());
 			tipoDocumento.setDenominacion(obj[7].toString());
 			tipoDocumento.setCodigo(((BigDecimal)obj[8]).intValue());
-			
+
 			VSSexo sexo= new VSSexo();
 			sexo.setId(((BigDecimal)obj[9]).intValue());
 			sexo.setDenominacion(obj[10].toString());
 			sexo.setCodigo(obj[11].toString());
-			
+
 			VSEstadoCivil estadoCivil=new VSEstadoCivil();
 			estadoCivil.setId(((BigDecimal)obj[12]).intValue());
 			estadoCivil.setDenominacion(obj[13].toString());
 			estadoCivil.setCodigo(((BigDecimal)obj[14]).intValue());
-			
+
 			VSCiudad ciudad=new VSCiudad();
 			ciudad.setId(((BigDecimal)obj[35]).intValue());
 			ciudad.setDenominacion(obj[6].toString());
 			ciudad.setCodigo(obj[37].toString());
-			
+
 			VSAsegurado asegurado=new VSAsegurado();
 			asegurado.setId(((BigDecimal)obj[15]).longValue());
 			asegurado.setNumeroDocumento(obj[16]!=null?obj[16].toString():"");
@@ -317,7 +317,7 @@ public class VentaSeguroDAOImpl extends GenericDAOImpl implements VentaSeguroDAO
 			asegurado.setVsTipoDocumento(tipoDocumento);
 			asegurado.setVsSexo(sexo);
 			asegurado.setVsEstadoCivil(estadoCivil);
-						
+
 			VSAfiliacion afiliacion=new VSAfiliacion();
 			afiliacion.setId(((BigDecimal)obj[27]).longValue());
 			afiliacion.setAdicional(obj[28]!=null?((BigDecimal)obj[28]).intValue():0);
@@ -331,10 +331,10 @@ public class VentaSeguroDAOImpl extends GenericDAOImpl implements VentaSeguroDAO
 			afiliacion.setVsTipoPersona(tipoPersona);
 			afiliacion.setVsAsegurado(asegurado);
 			afiliacion.setVsCiudad(ciudad);
-			
+
 			lstResult.add(afiliacion);
 		}
-		
+
 		return lstResult;
 	}
 	/* (non-Javadoc)
@@ -345,10 +345,10 @@ public class VentaSeguroDAOImpl extends GenericDAOImpl implements VentaSeguroDAO
 		VSAfiliacion afiliacion= new VSAfiliacion();
 		Usuario usuario=(Usuario) Executions.getCurrent().getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO);
 		UtilData.auditarRegistro(afiliacion, true, usuario, Executions.getCurrent());
-				
+
 		String sql="UPDATE LAPOSITIVA.SVTAFILIACION SET D_FECPROAFI= SYSDATE, AUDUSUMOD='"+afiliacion.getUsuarioModificacion()+"', " +
 				   "AUDIPMODI='"+afiliacion.getIpModificacion()+"' WHERE AFILIACION_ID IN ("+Ids+")";
-		
+
 		log.info(sql);
 		getSession().createSQLQuery(sql).executeUpdate();
 	}
@@ -357,10 +357,10 @@ public class VentaSeguroDAOImpl extends GenericDAOImpl implements VentaSeguroDAO
 	 */
 	@Override
 	public List<VSAfiliacion> buscarAfiliacionesByConsulta(String fechaInicio,String fechaFin, String tipoPasajero, String numDoctoPax,Integer idUsuario, Integer idAgencia, String boleto)throws Exception {
-		
+
 		tipoPasajero=tipoPasajero!=null?"'"+tipoPasajero+"'":null;
 		boleto=boleto!=null?"'"+boleto+"'":null;
-		
+
 		String sql="SELECT  asg.c_apepat as apePaternoAseg "+
 					      ",asg.c_apemat as apeMaternoAseg "+
 					      ",asg.c_nombre as nombresAseg "+
@@ -381,7 +381,7 @@ public class VentaSeguroDAOImpl extends GenericDAOImpl implements VentaSeguroDAO
 					      ",ag.c_nomcor as agencia "+
 					      ",u.usuario_id "+
 					"FROM LAPOSITIVA.svtafiliacion af  "+
-					    "INNER JOIN LAPOSITIVA.svmasegurado asg ON (asg.asegurado_id=af.asegurado_id) "+ 
+					    "INNER JOIN LAPOSITIVA.svmasegurado asg ON (asg.asegurado_id=af.asegurado_id) "+
 					    "INNER JOIN LAPOSITIVA.svmciudad cd ON (cd.ciudad_id=af.ciudad_id) "+
 					    "INNER JOIN VRMUSUARIO u ON (u.usuario_id=af.usuario_id) "+
 					    "LEFT JOIN VRMAGENCIA ag ON (ag.agencia_id=af.agencia_id) "+
@@ -392,16 +392,16 @@ public class VentaSeguroDAOImpl extends GenericDAOImpl implements VentaSeguroDAO
 						"AND asg.c_numdoc=NVL("+numDoctoPax+",asg.c_numdoc) ";
 					if(fechaInicio!=null && fechaFin!=null)
 						sql+="AND af.d_fecven BETWEEN to_date('"+fechaInicio+"','dd/MM/yyyy') AND to_date('"+fechaFin+"','dd/MM/yyyy') ";
-					if(boleto!=null)    
+					if(boleto!=null)
 					    sql+="AND af.c_numboleto=NVL("+boleto+",af.c_numboleto) ";
 					if(idAgencia!=null)
 					    sql+="AND af.agencia_id=NVL("+idAgencia+",af.agencia_id) ";
-					
+
 				 sql+="AND af.c_estreg='A' "+
 					"ORDER BY af.d_fecven,ag.c_nomcor,af.c_numcer,u.c_Apepat||''||u.c_Apemat||','||u.c_nombre  ";
 		log.info(sql);
 		List<?>result=getSession().createSQLQuery(sql).list();
-		List<VSAfiliacion>lstAfiliaciones =new ArrayList<VSAfiliacion>();
+		List<VSAfiliacion>lstAfiliaciones =new ArrayList<>();
 		for(int x=0; x<result.size();x++){
 			Object[] obj=(Object[])result.get(x);
 
@@ -441,10 +441,10 @@ public class VentaSeguroDAOImpl extends GenericDAOImpl implements VentaSeguroDAO
 			afiliacion.setVsAsegurado(asegurado);
 			afiliacion.setUsuario(usuario);
 			afiliacion.setAgencia(agencia);
-			
+
 			lstAfiliaciones.add(afiliacion);
 		}
-		
+
 		return lstAfiliaciones;
 	}
 	/* (non-Javadoc)
@@ -455,19 +455,19 @@ public class VentaSeguroDAOImpl extends GenericDAOImpl implements VentaSeguroDAO
 		String sql="SELECT DISTINCT(ag.agencia_id) agencia_id "+
 			      ",ag.c_nomcor as agencia  "+
 			"FROM lapositiva.svtafiliacion af "+
-			     "INNER JOIN vyr.vrmagencia ag ON (ag.agencia_id=af.agencia_id) "+ 
+			     "INNER JOIN vyr.vrmagencia ag ON (ag.agencia_id=af.agencia_id) "+
 			"WHERE af.d_fecven BETWEEN to_date('"+fechaInicio+"','dd/MM/yyyy') AND to_date('"+fechaFin+"','dd/MM/yyyy') "+
 			    "AND af.c_estreg='A'  ";
 		log.info(sql);
 		List<?>result=getSession().createSQLQuery(sql).list();
-		List<Agencia>lstAgencias=new ArrayList<Agencia>();
+		List<Agencia>lstAgencias=new ArrayList<>();
 		for(int x=0; x<result.size();x++){
 			Object[] obj=(Object[])result.get(x);
 			Agencia agencia=new Agencia(((BigDecimal)obj[0]).intValue());
 			agencia.setNombreCorto(obj[1].toString());
-			
+
 			lstAgencias.add(agencia);
-			
+
 		}
 		return lstAgencias;
 	}
@@ -475,29 +475,29 @@ public class VentaSeguroDAOImpl extends GenericDAOImpl implements VentaSeguroDAO
 	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#buscarUsuariosAfiliacionesByConsulta(java.lang.String, java.lang.String, java.lang.Integer)
 	 */
 	@Override
-	public List<Usuario> buscarUsuariosAfiliacionesByConsulta(String fechaInicio, String fechaFin, Integer idAgencia)throws Exception {		
+	public List<Usuario> buscarUsuariosAfiliacionesByConsulta(String fechaInicio, String fechaFin, Integer idAgencia)throws Exception {
 		String sql="SELECT DISTINCT(u.usuario_id)usuario_id "+
 					      ",u.c_apepat  "+
 					      ",u.c_apemat "+
 					      ",u.c_nombre  "+
 					"FROM lapositiva.svtafiliacion af "+
-					     "INNER JOIN vyr.vrmusuario u ON (u.usuario_id=af.usuario_id) "+ 
+					     "INNER JOIN vyr.vrmusuario u ON (u.usuario_id=af.usuario_id) "+
 					"WHERE af.d_fecven BETWEEN to_date('"+fechaInicio+"','dd/MM/yyyy') AND to_date('"+fechaFin+"','dd/MM/yyyy') "+
 					    "AND af.agencia_id="+idAgencia+ " "+
 					    "AND af.c_estreg='A'  ";
 		log.info(sql);
 		List<?>result=getSession().createSQLQuery(sql).list();
-		List<Usuario>lstUsuario=new ArrayList<Usuario>();
+		List<Usuario>lstUsuario=new ArrayList<>();
 		for(int x=0;x<result.size();x++){
 			Object[] obj=(Object[])result.get(x);
 			Usuario usuario=new Usuario(((BigDecimal)obj[0]).intValue());
 			usuario.setApellidoPaterno(obj[0]!=null?obj[1].toString():null);
 			usuario.setApellidoMaterno(obj[1]!=null?obj[2].toString():null);
 			usuario.setNombre(obj[3]!=null?obj[3].toString():null);
-			
+
 			lstUsuario.add(usuario);
 		}
-		
+
 		return lstUsuario;
 	}
 	/* (non-Javadoc)
@@ -509,7 +509,7 @@ public class VentaSeguroDAOImpl extends GenericDAOImpl implements VentaSeguroDAO
 		String sql="UPDATE lapositiva.svtafiliacion SET c_estreg='I' WHERE c_numcer='"+numeroCertificado+"' ";
 		getSession().createSQLQuery(sql).executeUpdate();
 	}
-	
+
 	/** TRANSACCIONES REFERIDAS AL TIPO DE PROCESO*/
 	/*
 	 * (non-Javadoc)
@@ -531,7 +531,7 @@ public class VentaSeguroDAOImpl extends GenericDAOImpl implements VentaSeguroDAO
 		return (VSContratante) super.findById(VSContratante.class, id.longValue());
 	}
 
-	
+
 	/** TRANSACCIONES REFERIDAS AL ENCABEZADO DE LA AFILIACION*/
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaSeguroDAO#guardarEncabezadoAfiliacion(com.tepsa.sisvyr.model.bean.VSEncabezadoAfiliacion)
@@ -578,9 +578,9 @@ public class VentaSeguroDAOImpl extends GenericDAOImpl implements VentaSeguroDAO
 	 */
 	@Override
 	public VSAsignacionCertificados buscarAsignacionCertificadosPorIdAgencia(Integer idAgencia) throws Exception {
-		String hql="FROM VSAsignacionCertificados ac WHERE ac.agenciaID="+idAgencia+" AND ac.estadoRegistro='A' ";	
+		String hql="FROM VSAsignacionCertificados ac WHERE ac.agenciaID="+idAgencia+" AND ac.estadoRegistro='A' ";
 		VSAsignacionCertificados vsAsignacionCertificados=(VSAsignacionCertificados) getSession().createQuery(hql).uniqueResult();
-		
+
 		return vsAsignacionCertificados;
 	}
 	/* (non-Javadoc)
@@ -600,14 +600,14 @@ public class VentaSeguroDAOImpl extends GenericDAOImpl implements VentaSeguroDAO
 				   "ORDER BY ag.c_nomcor,ac.n_corini ";
 		log.info(sql);
 		List<?>result=getSession().createSQLQuery(sql).list();
-		List<VSAsignacionCertificados>lstAsigCertificados=new ArrayList<VSAsignacionCertificados>();
+		List<VSAsignacionCertificados>lstAsigCertificados=new ArrayList<>();
 		for(int x=0; x<result.size();x++){
 			Object[] obj=(Object[]) result.get(x);
 			Agencia agencia=new Agencia();
 			agencia.setId(((BigDecimal)obj[0]).intValue());
 			agencia.setNombreCorto(obj[1]!=null?obj[1].toString():null);
-			
-			
+
+
 			VSAsignacionCertificados asignacionCertificados=new  VSAsignacionCertificados();
 			asignacionCertificados.setId(((BigDecimal)obj[2]).intValue());
 			asignacionCertificados.setCorrelativoInicial(((BigDecimal)obj[3]).longValue());
@@ -616,7 +616,7 @@ public class VentaSeguroDAOImpl extends GenericDAOImpl implements VentaSeguroDAO
 			asignacionCertificados.setAgencia(agencia);
 			lstAsigCertificados.add(asignacionCertificados);
 		}
-		
+
 		return lstAsigCertificados;
 	}
 	/* (non-Javadoc)
@@ -640,24 +640,24 @@ public class VentaSeguroDAOImpl extends GenericDAOImpl implements VentaSeguroDAO
 			       ",ac.n_corfin "+
 				   "FROM LAPOSITIVA.SVMASICER AC "+
 				   "WHERE "+correlativo+" BETWEEN AC.N_CORINI AND AC.N_CORFIN";
-		
+
 		List<?>result=getSession().createSQLQuery(sql).list();
 		VSAsignacionCertificados asignacionCertificados=null;
-		for(int x=0; x<result.size();x++){
-			Object[] obj=(Object[]) result.get(x);
+		for (Object element : result) {
+			Object[] obj=(Object[]) element;
 			asignacionCertificados=new VSAsignacionCertificados();
 			asignacionCertificados.setId(((BigDecimal)obj[0]).intValue());
 			asignacionCertificados.setAgenciaID(((BigDecimal)obj[1]).intValue());
 			asignacionCertificados.setCorrelativoInicial(((BigDecimal)obj[2]).longValue());
 			asignacionCertificados.setCorrelativoFinal(((BigDecimal)obj[3]).longValue());
-			
+
 		}
-		
+
 		return asignacionCertificados;
 	}
 
 
-	
 
-	
+
+
 }

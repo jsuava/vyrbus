@@ -18,6 +18,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Tree;
 import org.zkoss.zul.Treecell;
 import org.zkoss.zul.Treecol;
@@ -29,12 +30,12 @@ import com.cystesoft.vyrbus.service.util.Util;
 @SuppressWarnings({"rawtypes"})
 public class XlsAvanceSemanalXRutas extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response){	
+	public void doGet(HttpServletRequest request, HttpServletResponse response){
 		doProcess(request, response);
 	}
-	
+
 	public void doProcess(HttpServletRequest request, HttpServletResponse response){
 		Tree treeItinerarios = (Tree)request.getSession().getAttribute("tree");
 		String partialPath = (String)request.getSession().getAttribute("path");
@@ -47,11 +48,11 @@ public class XlsAvanceSemanalXRutas extends HttpServlet {
 			HSSFWorkbook wb = new HSSFWorkbook(fs);
 			HSSFSheet sheet = wb.getSheetAt(0);
             HSSFRow rowh = null;
-            HSSFCell cellh = null; 
+            HSSFCell cellh = null;
             HSSFDataFormat format = wb.createDataFormat();
             HSSFCellStyle style = wb.createCellStyle();
             style.setDataFormat(format.getFormat("#,##0.00"));
-			
+
 //			Workbook workbook = Workbook.getWorkbook(file);
 //			WritableWorkbook w = Workbook.createWorkbook(response.getOutputStream(),workbook);
 //			WritableSheet s = w.getSheet(0);
@@ -72,9 +73,9 @@ public class XlsAvanceSemanalXRutas extends HttpServlet {
 				Treerow row = item.getTreerow();
 				rowh = sheet.createRow(j);//((short)j);
 //				rowh.setHeight((short)0.54);
-				
-				for(int k=0;k<row.getChildren().size();k++){
-					Treecell cell = (Treecell)row.getChildren().get(k);
+
+				for (Component element : row.getChildren()) {
+					Treecell cell = (Treecell)element;
 					if(Util.isNumeric(cell.getLabel())){
 //						s.addCell(new Number(i, j, Integer.parseInt(cell.getLabel()),cellFormat));
 //						rowh.createCell((short)i).setCellValue(new HSSFRichTextString(cell.getLabel()));
@@ -92,7 +93,7 @@ public class XlsAvanceSemanalXRutas extends HttpServlet {
 			}
 //			w.write();
 //			w.close();
-			
+
 			ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
 			wb.write(outByteStream);
 			byte [] outArray = outByteStream.toByteArray();
@@ -100,7 +101,7 @@ public class XlsAvanceSemanalXRutas extends HttpServlet {
 			OutputStream outStream = response.getOutputStream();
 		    outStream.write(outArray);
 		    outStream.flush();
-		    
+
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}

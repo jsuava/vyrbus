@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 11/07/2016
  * Hora			: 17:30:52
@@ -45,7 +45,7 @@ public interface TipoAsientoManager {
 	 */
 	public void guardar(TipoAsiento tipoAsiento)throws Exception;
 	/**
-	 *Actualiza una instancia de un objeto 
+	 *Actualiza una instancia de un objeto
 	 * @param tipoAsiento
 	 */
 	public void actualizar(TipoAsiento tipoAsiento)throws Exception;

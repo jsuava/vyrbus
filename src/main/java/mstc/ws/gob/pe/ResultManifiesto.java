@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for ResultManifiesto complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="ResultManifiesto">
  *   &lt;complexContent>
@@ -26,8 +26,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ResultManifiesto", propOrder = { "_return", "errores", "code" })
@@ -42,7 +42,7 @@ public class ResultManifiesto {
 
 	/**
 	 * Gets the value of the return property.
-	 * 
+	 *
 	 */
 	public boolean isReturn() {
 		return _return;
@@ -50,7 +50,7 @@ public class ResultManifiesto {
 
 	/**
 	 * Sets the value of the return property.
-	 * 
+	 *
 	 */
 	public void setReturn(boolean value) {
 		this._return = value;
@@ -58,9 +58,9 @@ public class ResultManifiesto {
 
 	/**
 	 * Gets the value of the errores property.
-	 * 
+	 *
 	 * @return possible object is {@link Errores }
-	 * 
+	 *
 	 */
 	public Errores getErrores() {
 		return errores;
@@ -68,10 +68,10 @@ public class ResultManifiesto {
 
 	/**
 	 * Sets the value of the errores property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Errores }
-	 * 
+	 *
 	 */
 	public void setErrores(Errores value) {
 		this.errores = value;
@@ -79,9 +79,9 @@ public class ResultManifiesto {
 
 	/**
 	 * Gets the value of the code property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getCode() {
 		return code;
@@ -89,10 +89,10 @@ public class ResultManifiesto {
 
 	/**
 	 * Sets the value of the code property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setCode(String value) {
 		this.code = value;

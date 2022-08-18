@@ -53,7 +53,7 @@ public class MotivocortesiaDAOImpl extends GenericDAOImpl implements Motivocorte
 	@Override
 	public void actualizar(MotivoCortesia motivoCortesia) {
 		super.update(motivoCortesia);
-		
+
 	}
 
 	/*
@@ -63,8 +63,8 @@ public class MotivocortesiaDAOImpl extends GenericDAOImpl implements Motivocorte
 	@Override
 	public void inactivar(Long id) {
 		super.inactivate(MotivoCortesia.class, id);
-		
+
 	}
-	
+
 
 }

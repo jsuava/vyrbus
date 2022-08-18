@@ -8,14 +8,14 @@ import com.cystesoft.vyrbus.model.bean.DetalleItinerario;
 
 public interface DetalleItinerarioDAO extends GenericDAO {
 	/**
-	 * 
+	 *
 	 * @param idItinerario
 	 * @throws Exception
 	 */
 	public void delete (Long idItinerario) throws Exception;
-	
+
 	/**
-	 * 
+	 *
 	 * @param criteriosBusqueda
 	 * @param criteriosOrdenar
 	 * @return

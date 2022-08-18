@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Avalos
  * Fecha		: 26 mar. 2022
  * Hora			: 07:41:56
@@ -16,16 +16,16 @@ import java.io.Serializable;
  */
 public class PerdidaServicioException extends Exception implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private Integer tipo; 
-	
-	
+	private Integer tipo;
+
+
 	/**
-	 * 
+	 *
 	 */
 	public PerdidaServicioException() {
 		super();
 	}
-	
+
 	/**
 	 * @param tipo
 	 */
@@ -33,7 +33,7 @@ public class PerdidaServicioException extends Exception implements Serializable 
 		super();
 		this.tipo = tipo;
 	}
-	
+
 	/**
 	 * @return the tipo
 	 */

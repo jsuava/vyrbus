@@ -4,14 +4,14 @@ import java.util.Date;
 // default package
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 public class VSEstructuraAsegurado extends GenericBean  implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
-    // Fields    
+    // Fields
 	private Long id;
      private VSSexo vsSexo;
      private VSTipoRegistro vsTipoRegistro;
@@ -39,12 +39,12 @@ public class VSEstructuraAsegurado extends GenericBean  implements java.io.Seria
     public VSEstructuraAsegurado() {
     }
 
-   
+
     // Property accessors
     public Long getId() {
         return this.id;
     }
-    
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -52,7 +52,7 @@ public class VSEstructuraAsegurado extends GenericBean  implements java.io.Seria
     public String getNumeroDocumento() {
         return this.numeroDocumento;
     }
-    
+
     public void setNumeroDocumento(String numeroDocumento) {
         this.numeroDocumento = numeroDocumento;
     }
@@ -60,7 +60,7 @@ public class VSEstructuraAsegurado extends GenericBean  implements java.io.Seria
     public String getApellidoParterno() {
         return this.apellidoParterno;
     }
-    
+
     public void setApellidoParterno(String apellidoParterno) {
         this.apellidoParterno = apellidoParterno;
     }
@@ -68,7 +68,7 @@ public class VSEstructuraAsegurado extends GenericBean  implements java.io.Seria
     public String getApellidoMaterno() {
         return this.apellidoMaterno;
     }
-    
+
     public void setApellidoMaterno(String apellidoMaterno) {
         this.apellidoMaterno = apellidoMaterno;
     }
@@ -76,7 +76,7 @@ public class VSEstructuraAsegurado extends GenericBean  implements java.io.Seria
     public String getNombres() {
         return this.nombres;
     }
-    
+
     public void setNombres(String nombres) {
         this.nombres = nombres;
     }
@@ -84,7 +84,7 @@ public class VSEstructuraAsegurado extends GenericBean  implements java.io.Seria
     public Date getFechaNacimiento() {
         return this.fechaNacimiento;
     }
-    
+
     public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
@@ -92,7 +92,7 @@ public class VSEstructuraAsegurado extends GenericBean  implements java.io.Seria
     public String getDireccion() {
         return this.direccion;
     }
-    
+
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
@@ -100,7 +100,7 @@ public class VSEstructuraAsegurado extends GenericBean  implements java.io.Seria
     public String getUbigeoDepartamento() {
         return this.ubigeoDepartamento;
     }
-    
+
     public void setUbigeoDepartamento(String ubigeoDepartamento) {
         this.ubigeoDepartamento = ubigeoDepartamento;
     }
@@ -108,7 +108,7 @@ public class VSEstructuraAsegurado extends GenericBean  implements java.io.Seria
     public String getUbigeoProvincia() {
         return this.ubigeoProvincia;
     }
-    
+
     public void setUbigeoProvincia(String ubigeoProvincia) {
         this.ubigeoProvincia = ubigeoProvincia;
     }
@@ -116,7 +116,7 @@ public class VSEstructuraAsegurado extends GenericBean  implements java.io.Seria
     public String getUbigeoDistrito() {
         return this.ubigeoDistrito;
     }
-    
+
     public void setUbigeoDistrito(String ubigeoDistrito) {
         this.ubigeoDistrito = ubigeoDistrito;
     }
@@ -124,7 +124,7 @@ public class VSEstructuraAsegurado extends GenericBean  implements java.io.Seria
     public String getTelefono() {
         return this.telefono;
     }
-    
+
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
@@ -132,7 +132,7 @@ public class VSEstructuraAsegurado extends GenericBean  implements java.io.Seria
     public String getCelular() {
         return this.celular;
     }
-    
+
     public void setCelular(String celular) {
         this.celular = celular;
     }
@@ -140,7 +140,7 @@ public class VSEstructuraAsegurado extends GenericBean  implements java.io.Seria
     public Integer getAdicional() {
         return this.adicional;
     }
-    
+
     public void setAdicional(Integer adicional) {
         this.adicional = adicional;
     }
@@ -148,7 +148,7 @@ public class VSEstructuraAsegurado extends GenericBean  implements java.io.Seria
     public String getNumeroCertificado() {
         return this.numeroCertificado;
     }
-    
+
     public void setNumeroCertificado(String numeroCertificado) {
         this.numeroCertificado = numeroCertificado;
     }
