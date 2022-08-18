@@ -106,9 +106,15 @@ public class WndRptLiquidacionBus extends WndBase {
 				item.appendChild(cell);
 				cell = new Listcell(manifiesto.getCopiloto()!=null? manifiesto.getCopiloto():"");
 				item.appendChild(cell);
+				//Cabtidad de Pasajeros
+				cell = new Listcell(Util.toNumberFormat(manifiesto.getCantidadPasajeros(), 0));
+				cell.setStyle("font-size:11px !important");
+				item.appendChild(cell);
+				//Total venta pasajes
 				cell = new Listcell(Util.toNumberFormat(manifiesto.getImporte(), 2));
 				cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
+				
 				Double totalSolesCarga = .00;
 				String key = Constantes.FORMAT_DATE.format(manifiesto.getItinerario().getFechaPartida()) + "-" +manifiesto.getBus().getCodigo();
 				Manifiesto manifiestoCarga = resultCarga.get(key);
@@ -117,6 +123,12 @@ public class WndRptLiquidacionBus extends WndBase {
 				cell = new Listcell(Util.toNumberFormat(totalSolesCarga, 2));
 				cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
+				
+				//Total Ingresos
+				cell = new Listcell(Util.toNumberFormat(manifiesto.getImporte() + totalSolesCarga, 2));
+				cell.setStyle("font-size:11px !important");
+				item.appendChild(cell);
+				
 				
 				item.setValue(manifiesto);
 				ltbxLiquidacionBus.appendChild(item);

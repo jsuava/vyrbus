@@ -3776,7 +3776,8 @@ public class CreateDocument implements Serializable {
 			/*Para obtener los totales de la venta de pasajes y carga, ademas de la venta con tarjeta*/
 			if(ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_FACTURA || 
 					ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_BOLETA_VENTA ||
-					ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA) {
+					ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA ||
+					ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_NOTA_CREDITO) {
 				
 				if(ventaPasaje.getTipoConsulta().intValue()==rubroPasajes)
 					totalVentaPasajes += ventaPasaje.getImportePagado();
@@ -3785,6 +3786,7 @@ public class CreateDocument implements Serializable {
 				
 				if(ventaPasaje.getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA)
 					totalVentaTarjeta += ventaPasaje.getImportePagado(); 
+				
 			}
 			
 			

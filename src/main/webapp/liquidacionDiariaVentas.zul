@@ -62,7 +62,7 @@
 		<listhead>
 			<listheader label="#" width="30px" style="color: #ffffff;"/>
 			<listheader label="TIPO" width="100px" sort="auto" style="color: #ffffff;"/>
-			<listheader label="N° CONTROL" width="80px" sort="auto" style="color: #ffffff;"/>
+			<listheader label="N° CONTROL" width="80px" sort="auto" style="color: #ffffff;" visible="false" />
 			<listheader label="N° COMPROBANTE" width="110px" sort="auto" tooltiptext="Número de Comprobante" style="color: #ffffff;"/>
 			<listheader label="N° COMP. REF." width="110px" style="color: #ffffff;"/>
 			<listheader label="MONEDA" align="center" width="55px" style="color: #ffffff;"/>
@@ -72,7 +72,7 @@
 			<listheader label="A CUENTA" align="right" width="60px" style="color: #ffffff;"/>
 			<listheader label="PENALIDAD" align="right" width="60px" style="color: #ffffff;"/>
 			<listheader label="NETO" align="right" width="65px" style="color: #ffffff;"/>
-			<listheader label="USUARIO VENTA" width="180px" style="color: #ffffff;" />
+			<listheader label="USUARIO VENTA" width="100px" style="color: #ffffff;" />
 			<listheader label="FECHA VENTA" width="120px" sort="auto" style="color: #ffffff;"/>
 			<listheader label="ACCION" width="140px" align="center" style="color: #ffffff;" />
 			<listheader label=" "  style="color: #ffffff;"/>

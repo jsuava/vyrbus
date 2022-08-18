@@ -5040,11 +5040,13 @@ public class WndVentaReserva extends WndBase {
 				criteriosOrdenar.add("denominacion");
 				List<TarjetaCredito> lstTarjetaCredito = ServiceLocator.getTarjetaCreditoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
 				UtilData.cargarGenericData(cmbTarjetaCredito, false);
-				for(TarjetaCredito tarjetaCredito : lstTarjetaCredito){
-					Comboitem item = new Comboitem();
-					item.setLabel(tarjetaCredito.getDenominacion());
-					item.setValue(tarjetaCredito);
-					cmbTarjetaCredito.appendChild(item);
+ 				for(TarjetaCredito tarjetaCredito : lstTarjetaCredito){
+					if(tarjetaCredito.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO)) {
+						Comboitem item = new Comboitem();
+						item.setLabel(tarjetaCredito.getDenominacion());
+						item.setValue(tarjetaCredito);
+						cmbTarjetaCredito.appendChild(item);
+					}
 				}
 				cmbTarjetaCredito.setDisabled(false);
 			}

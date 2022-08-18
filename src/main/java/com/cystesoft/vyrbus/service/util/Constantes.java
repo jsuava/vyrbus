@@ -160,10 +160,10 @@ public class Constantes {
 
 	//http://168.121.236.46:8080/
 
-    public static final String SERVER_HOST = "localhost:8080";
+//    public static final String SERVER_HOST = "localhost:8080";
 
 	//SERVER_HOST PRODUCCION TRANSMAR
-//	public static final String SERVER_HOST = "119.8.145.122:8080";
+	public static final String SERVER_HOST = "119.8.145.122:8080";
 //	public static final String SERVER_HOST = "190.119.140.203:8080";
 
 
@@ -347,7 +347,8 @@ public class Constantes {
 	public static final int ID_ROL_GERENCIA_COMERCIAL=2;
 	public static final int ID_ROL_JEFE_VENTAS=3;
 	public static final int ID_ROL_FUNCIONARIO=4;
-	public static final int ID_ROL_FINANZAS=5;
+	public static final int ID_ROL_ADMIN=5;
+	public static final int ID_ROL_FINANZAS=10;
 	public static final int ID_ROL_SUPER_USUARIO=1;
 	public static final int ID_ROL_AGENCIA_VIAJES=15;
 	public static final int ID_ROL_CLIENTE_CORPORATIVO=16;

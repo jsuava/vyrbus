@@ -1538,7 +1538,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					+ ",vp.tipmov_id, vp.liquidacion_id, vp.tipforpag_id,vp.tipcom_id, vp.servicio_id, vp.c_rucclicre, vp.canven_id "
 					+ ",NVL(vp.n_imppagdif,0) imppagdif, vp.n_imppagequ, vp.tipmon_id, vp.n_tipcam "
 					+ ",r.c_origen, r.c_destino, tcp.tipcom_id tipoMovimientoId, tcp.c_denominacion tipoComprobante " //39
-					+ ",cl.c_numdoc ruc, cl.c_razsoc cliente " //41
+					+ ",cl.c_numdoc ruc, cl.c_razsoc cliente, p.c_numdoc NUMDOC   " //41
 				   +"FROM vrtvenpas vp "+ 
 					"INNER JOIN vrmpasajero p ON p.pasajero_id=vp.pasajero_id " +
 					"INNER JOIN vrmforpag fp ON fp.forpag_id=vp.forpag_id " +
@@ -1564,7 +1564,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					 ",vp.tipmov_id, vp.liquidacion_id, vp.tipforpag_id,vp.tipcom_id, vp.servicio_id, vp.c_rucclicre, vp.canven_id " +
 				     ",NVL(vp.n_imppagdif,0) imppagdif, vp.n_imppagequ, vp.tipmon_id, vp.n_tipcam "+
 				     ",r.c_origen, r.c_destino, tcp.tipcom_id, tcp.c_denominacion tipoComprobante  "+ 
-				     ",cl.c_numdoc ruc, cl.c_razsoc cliente " + //41
+				     ",cl.c_numdoc ruc, cl.c_razsoc cliente, p.c_numdoc NUMDOC  " + //41
 					"FROM vrtvenpas vp " +
 					"INNER JOIN vrmpasajero p ON p.pasajero_id=vp.pasajero_id " +
 					"INNER JOIN vrmforpag fp ON fp.forpag_id=vp.forpag_id " +
@@ -1590,7 +1590,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					",vp.tipmov_id, vp.liquidacion_id, vp.tipforpag_id,vp.tipcom_id, vp.servicio_id, vp.c_rucclicre, vp.canven_id " +
 					",NVL(vp.n_imppagdif,0) imppagdif, vp.n_imppagequ, vp.tipmon_id, vp.n_tipcam "+
 					",r.c_origen, r.c_destino, tcp.tipcom_id, tcp.c_denominacion tipoComprobante  "+
-					",cl.c_numdoc ruc, cl.c_razsoc cliente " + //41
+					",cl.c_numdoc ruc, cl.c_razsoc cliente, p.c_numdoc NUMDOC  " + //41
 					"FROM vrtvenpas vp " +
 					"INNER JOIN vrmpasajero p ON p.pasajero_id=vp.pasajero_id " +
 					"INNER JOIN vrmforpag fp ON fp.forpag_id=vp.forpag_id " +
@@ -1618,7 +1618,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					",vp.tipmov_id, vp.liquidacion_id, vp.tipforpag_id,vp.tipcom_id, vp.servicio_id, vp.c_rucclicre, vp.canven_id " +
 					",NVL(vp.n_imppagdif,0) imppagdif, vp.n_imppagequ, vp.tipmon_id, vp.n_tipcam "+
 					",r.c_origen, r.c_destino, tcp.tipcom_id, tcp.c_denominacion tipoComprobante  "+
-					",cl.c_numdoc ruc, cl.c_razsoc cliente " + //41
+					",cl.c_numdoc ruc, cl.c_razsoc cliente, p.c_numdoc NUMDOC  " + //41
 					"FROM vrtvenpas vp " +
 					"INNER JOIN vrmpasajero p ON p.pasajero_id=vp.pasajero_id " +
 					"INNER JOIN vrmforpag fp ON fp.forpag_id=vp.forpag_id " +
@@ -1647,7 +1647,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					",vp.tipmov_id, vp.liquidacion_id, vp.tipforpag_id,vp.tipcom_id, vp.servicio_id, vp.c_rucclicre, vp.canven_id " +
 					",NVL(vp.n_imppagdif,0) imppagdif, vp.n_imppagequ, vp.tipmon_id, vp.n_tipcam "+
 					",r.c_origen, r.c_destino, tcp.tipcom_id, tcp.c_denominacion tipoComprobante  "+
-					",cl.c_numdoc ruc, cl.c_razsoc cliente " + //41
+					",cl.c_numdoc ruc, cl.c_razsoc cliente, p.c_numdoc NUMDOC  " + //41
 					"FROM vrtvenpas vp " +
 					"INNER JOIN vrmpasajero p ON p.pasajero_id=vp.pasajero_id " +
 					"INNER JOIN vrmforpag fp ON fp.forpag_id=vp.forpag_id " +
@@ -1676,7 +1676,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					",vp.tipmov_id, vp.liquidacion_id, vp.tipforpag_id,vp.tipcom_id, vp.servicio_id, vp.c_rucclicre, vp.canven_id " +
 					",NVL(vp.n_imppagdif,0) imppagdif, vp.n_imppagequ, vp.tipmon_id, vp.n_tipcam "+
 					",r.c_origen, r.c_destino, tcp.tipcom_id, tcp.c_denominacion tipoComprobante  "+
-					",cl.c_numdoc ruc, cl.c_razsoc cliente " + //41
+					",cl.c_numdoc ruc, cl.c_razsoc cliente, p.c_numdoc NUMDOC  " + //41
 					"FROM vrtvenpas vp " +
 					"INNER JOIN vrmpasajero p ON p.pasajero_id=vp.pasajero_id " +
 					"INNER JOIN vrmforpag fp ON fp.forpag_id=vp.forpag_id " +
@@ -1715,7 +1715,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					",vp.tipmov_id, vp.liquidacion_id, vp.tipforpag_id,vp.tipcom_id, vp.servicio_id, vp.c_rucclicre, vp.canven_id " +
 					",NVL(vp.n_imppagdif,0) imppagdif, vp.n_imppagequ, vp.tipmon_id, vp.n_tipcam "+
 					",r.c_origen, r.c_destino, tcp.tipcom_id, tcp.c_denominacion tipoComprobante  "+
-					",cl.c_numdoc ruc, cl.c_razsoc cliente " + //41
+					",cl.c_numdoc ruc, cl.c_razsoc cliente, p.c_numdoc NUMDOC  " + //41
 					"FROM vrtvenpas vp " +
 					"INNER JOIN vrmpasajero p ON p.pasajero_id=vp.pasajero_id " +
 					"INNER JOIN vrmforpag fp ON fp.forpag_id=vp.forpag_id " +
@@ -1814,7 +1814,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					",vp.tipmov_id, vp.liquidacion_id, vp.tipforpag_id,vp.tipcom_id, vp.servicio_id, vp.c_rucclicre, vp.canven_id " +
 					",NVL(vp.n_imppagdif,0) imppagdif, vp.n_imppagequ, vp.tipmon_id, vp.n_tipcam "+
 					",r.c_origen, r.c_destino, tcp.tipcom_id, tcp.c_denominacion tipoComprobante  "+
-					",cl.c_numdoc ruc, cl.c_razsoc cliente " + //41
+					",cl.c_numdoc ruc, cl.c_razsoc cliente, p.c_numdoc NUMDOC  " + //41
 					"FROM vrtvenpas vp " +
 //					"INNER JOIN (SELECT MAX(venpas_id)venpas_id, c_numcontrol FROM vrtvenpas GROUP BY c_numcontrol) max_vta ON max_vta.venpas_id=vp.venpas_id " +
 					"INNER JOIN vrmpasajero p ON p.pasajero_id=vp.pasajero_id " +
@@ -1843,7 +1843,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					",vp.tipmov_id, vp.liquidacion_id, vp.tipforpag_id,vp.tipcom_id, vp.servicio_id, vp.c_rucclicre, vp.canven_id " +
 					",NVL(vp.n_imppagdif,0) imppagdif, vp.n_imppagequ, vp.tipmon_id, vp.n_tipcam "+
 					",r.c_origen, r.c_destino, tcp.tipcom_id, tcp.c_denominacion tipoComprobante  "+
-					",cl.c_numdoc ruc, cl.c_razsoc cliente " + //41
+					",cl.c_numdoc ruc, cl.c_razsoc cliente, p.c_numdoc NUMDOC  " + //41
 					"FROM vrtvenpas vp " +
 					"INNER JOIN vrmpasajero p ON p.pasajero_id=vp.pasajero_id " +
 					"INNER JOIN vrmforpag fp ON fp.forpag_id=vp.forpag_id " +
@@ -1880,6 +1880,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			pasajero.setApellidoPaterno(obj[4].toString());
 			pasajero.setApellidoMaterno(obj[5]!=null?obj[5].toString():null);
 			pasajero.setNombre(obj[6].toString());
+			pasajero.setNumeroDocumento(obj[42]!=null?obj[42].toString():null);
 			ventaPasaje.setPasajero(pasajero);
 			ventaPasaje.setFechaInsercion((Date)obj[7]);
 			ventaPasaje.setTarifa(((BigDecimal)obj[8]).doubleValue());
@@ -2702,7 +2703,11 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 */
 	@Override
 	public List<VentaPasaje> buscarVentasByPasajero(Long idPasajero){
-		String hql = "SELECT vp FROM VentaPasaje AS vp JOIN vp.pasajero AS p WHERE vp.tipoComprobante.id IN ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_RECIBO_CAJA+","+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_FACTURA+") AND "
+		String hql = "SELECT vp FROM VentaPasaje AS vp JOIN vp.pasajero AS p WHERE vp.tipoComprobante.id IN ("+
+				  Constantes.ID_TIPCOM_BOLETO_VIAJE+","+
+				  Constantes.ID_TIPCOM_RECIBO_CAJA+","+
+				  Constantes.ID_TIPCOM_BOLETA_VENTA+","+
+				  Constantes.ID_TIPCOM_FACTURA+") AND "
 				+ "vp.tipoMovimiento.id NOT IN (5,11,13) AND vp.numeroBoleto IS NOT NULL AND vp.pasajero.id="+idPasajero+" "
 				+ "ORDER BY vp.fechaPartida desc ";
 		
@@ -3918,13 +3923,15 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	public List<Manifiesto> buscarLiquidacionBus(String fechaInicio,String fechaFin, String codigoBus) throws Exception {
 		String sql = "SELECT it.d_Fecpar fecha_salida, bs.c_codigo bus_codigo, bs.c_numplaca bus_placa "
 						 + ",ma.c_piloto piloto, ma.c_copiloto copiloto, SUM(vp.n_imppag) total_soles, rt.c_origen, rt.c_destino "
+						 + ",count(vp.c_numboleto) cant "
 				   + "FROM vrtvenpas vp "
 				     + "INNER JOIN (Select max(vp.venpas_id) venpas_id From vrtvenpas vp Group By vp.c_numcontrol ) "
 				                  + "vpx ON (vpx.venpas_id = vp.venpas_id)  "
 				     + "INNER JOIN vrtmanifiesto ma ON (ma.itinerario_id=vp.itinerario_id) "
 				     + "INNER JOIN vrtitinerario it ON (it.itinerario_id=vp.itinerario_id) "
 				     + "INNER JOIN vrmbus bs ON (bs.bus_id=ma.bus_id) "
-				     + "INNER JOIN vrmruta rt ON (rt.ruta_id=vp.ruta_id) "
+//				     + "INNER JOIN vrmruta rt ON (rt.ruta_id=vp.ruta_id) "
+				     + "INNER JOIN vrmruta rt ON (rt.ruta_id=it.ruta_idmayor) "
 				   + "WHERE it.d_fecpar BETWEEN to_date('"+fechaInicio+"', 'dd/MM/yyyy') AND to_date('"+fechaFin+"', 'dd/MM/yyyy') "
 				     + "AND vp.tipmov_id NOT IN (5,6,13) "
 				     + "AND vp.c_tiptra = '1' "
@@ -3958,7 +3965,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			manifiesto.setPiloto(obj[3]!=null?obj[3].toString():"");
 			manifiesto.setCopiloto(obj[4]!=null?obj[4].toString():"");
 			manifiesto.setImporte(((BigDecimal)obj[5]).doubleValue());
-			
+			manifiesto.setCantidadPasajeros(((BigDecimal)obj[8]).intValue());
 			
 			listMAnifiestos.add(manifiesto);
 		}

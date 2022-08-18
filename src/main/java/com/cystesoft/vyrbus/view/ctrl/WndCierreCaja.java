@@ -139,6 +139,7 @@ public class WndCierreCaja extends WndBase {
 			List<Rol>rolAcceso=new ArrayList<Rol>();
 			rolAcceso.add(new Rol(Constantes.ID_ROL_SUPER_USUARIO));
 			rolAcceso.add(new Rol(Constantes.ID_ROL_FISCALIZACION));
+			rolAcceso.add(new Rol(Constantes.ID_ROL_ADMIN));
 			accesoControlsByRol(components, rolAcceso);
 			
 			//roles que tiene acceso al control cmbusuario

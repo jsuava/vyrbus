@@ -35,7 +35,18 @@ public class Manifiesto extends GenericBean implements java.io.Serializable {
 	private String puntoLlegadaDistrito;
 	private Double importe;
 	private Double importe2;
+	private Integer cantidadPasajeros;
 	
+	//Se agrego esta variable para el conteo de pasajeros en el reporte de Liqudacion de Bus	
+	//MAOE 17/08/2022
+	public Integer getCantidadPasajeros() {
+		return cantidadPasajeros;
+	}
+
+	public void setCantidadPasajeros(Integer cantidadPasajeros) {
+		this.cantidadPasajeros = cantidadPasajeros;
+	}
+
 	/**
 	 * @return the ruc
 	 */

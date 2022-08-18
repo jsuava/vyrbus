@@ -19,7 +19,7 @@
 		<caption label="DATOS DEL GASTO" style="color: #ffffff;"/>
 		<grid>
 			<columns>
-				<column width="130px" align="right" />
+				<column width="150px" align="right" />
 				<column width="250px"/>
 				<column width="120px" align="right"/>
 <!-- 				<column width="250px"/> -->
@@ -45,7 +45,7 @@
 							onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNroDocumento)" />
 				</row>
 				<row>
-					<label value="NRO. DOCUMENTO :"/>
+					<label value="NRO. COMPROBANTE/OPER. :"/>
 					<textbox id="txtNroDocumento" 
 							maxlength="20" 
 							style="font-size: 11px !important" 

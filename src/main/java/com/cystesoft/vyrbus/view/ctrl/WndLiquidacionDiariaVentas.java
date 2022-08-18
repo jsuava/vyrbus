@@ -158,9 +158,10 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 		
 		//RESTRICCION PARA EL ACCESO A LA SELECCION DE AGENCIAS.
 		if(getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO ||
-				getRol().getId().intValue()==Constantes.ID_ROL_GERENCIA_COMERCIAL ||
-						getRol().getId().intValue()==Constantes.ID_ROL_FISCALIZACION ||
-								getRol().getId().intValue()==Constantes.ID_ROL_ADMIN_COMERCIAL){
+		   getRol().getId().intValue()==Constantes.ID_ROL_GERENCIA_COMERCIAL ||
+		   getRol().getId().intValue()==Constantes.ID_ROL_FISCALIZACION ||
+		   getRol().getId().intValue()==Constantes.ID_ROL_ADMIN_COMERCIAL ||
+		   getRol().getId().intValue()==Constantes.ID_ROL_ADMIN){
 			cmbAgencia.setDisabled(false);
 		}else
 			cmbAgencia.setDisabled(true);
@@ -769,7 +770,9 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 							if((getRol().getId().intValue()==Constantes.ID_ROL_ADMIN_PUNTO_VENTA || getRol().getId().intValue()==Constantes.ID_ROL_REP_VENTAS) 
 									&& venta.getLiquidacion()==null){
 								cell.appendChild(a);
-							}else if(getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO && 
+							}else if((getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO || 
+									  getRol().getId().intValue()==Constantes.ID_ROL_ADMIN ||
+									  getRol().getId().intValue()==Constantes.ID_ROL_FISCALIZACION) && 
 									venta.getFechaLiquidacion().getTime()>Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date())).getTime()-(Constantes.MILISEGUNDOS_X_DIA*3)){
 								//Rol superusuario y como maximo 3 días con anterioridad
 								cell.appendChild(a);
@@ -797,12 +800,15 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 					cell.setStyle(style);
 					item.appendChild(cell);
 					cell = new Listcell(Util.toNumberFormat(venta.getRecargo(), 2));
+//					cell = new Listcell(venta.getPasajero().getNumeroDocumento());
 					cell.setStyle(style);
 					item.appendChild(cell);
 					cell = new Listcell(Util.toNumberFormat(venta.getDescuento(), 2));
+//					cell = new Listcell(venta.getPasajero().toString());
 					cell.setStyle(style);
 					item.appendChild(cell);
 					cell = new Listcell(Util.toNumberFormat(venta.getAcuenta(), 2));
+//					cell = new Listcell(Util.toNumberFormat(venta.getDescuento(), 2));
 					cell.setStyle(style);
 					item.appendChild(cell);
 					cell = new Listcell(Util.toNumberFormat(venta.getPenalidad(), 2));
@@ -811,7 +817,8 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 					cell = new Listcell(Util.toNumberFormat(venta.getImportePagado(), 2));
 					cell.setStyle(style);
 					item.appendChild(cell);
-					cell = new Listcell(venta.getUsuario().getApellidoPaterno()+" "+venta.getUsuario().getNombre());
+//					cell = new Listcell(venta.getUsuario().getApellidoPaterno()+" "+venta.getUsuario().getNombre());
+					cell = new Listcell(venta.getUsuario().getLogin());
 					cell.setStyle(style);
 					item.appendChild(cell);
 					cell = new Listcell(Util.DatetoString(venta.getFechaInsercion(), Constantes.DATE_TIME_FORMAT));
