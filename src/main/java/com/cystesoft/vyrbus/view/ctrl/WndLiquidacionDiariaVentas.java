@@ -800,11 +800,9 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 					cell.setStyle(style);
 					item.appendChild(cell);
 					cell = new Listcell(Util.toNumberFormat(venta.getRecargo(), 2));
-//					cell = new Listcell(venta.getPasajero().getNumeroDocumento());
 					cell.setStyle(style);
 					item.appendChild(cell);
 					cell = new Listcell(Util.toNumberFormat(venta.getDescuento(), 2));
-//					cell = new Listcell(venta.getPasajero().toString());
 					cell.setStyle(style);
 					item.appendChild(cell);
 					cell = new Listcell(Util.toNumberFormat(venta.getAcuenta(), 2));
@@ -854,11 +852,22 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 					btnAnular.setImage("resources/mp_anular.png");
 					btnAnular.setClass("btnImage");
 //					btnAnular.setStyle("cursor:pointer");
-					btnAnular.setTooltiptext("Haga click aqui si desea anular el Boleto");
+					btnAnular.setTooltiptext("Haga click aqui si desea anular el Comprobante");
 					hlayout.appendChild(btnAnular);
 					cell.appendChild(hlayout);
 					item.appendChild(cell);
-
+					
+					//Datos adicionales sobre el pasajero y ruta MAOE 18/08/2022
+					cell = new Listcell(venta.getPasajero().getNumeroDocumento());
+					cell.setStyle(style);
+					item.appendChild(cell);
+					cell = new Listcell(venta.getPasajero().toString());
+					cell.setStyle(style);
+					item.appendChild(cell);
+					cell = new Listcell(venta.getRuta().getOrigen()+"-"+venta.getRuta().getDestino());
+					cell.setStyle(style);
+					item.appendChild(cell);
+					
 					/*Muestra las devoluciones de un boleto de viaje o recivo de caja - 15/12/2016 - jabanto*/
 					if(venta.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_DEVOLUCION &&
 							(venta.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE || venta.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_RECIBO_CAJA)){

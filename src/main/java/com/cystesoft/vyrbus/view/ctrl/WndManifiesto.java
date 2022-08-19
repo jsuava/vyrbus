@@ -905,7 +905,8 @@ public class WndManifiesto extends WndBase {
 					loadCorrelativosManifiesto();
 					manifiesto=new Manifiesto();
 					if(especieValoradaSunat !=null){
-						numeroManifiesto=especieValoradaSunat.getSerie()+"-"+especieValoradaSunat.getCorrelativoActual();
+//						numeroManifiesto=especieValoradaSunat.getSerie()+"-"+especieValoradaSunat.getCorrelativoActual();
+						numeroManifiesto=especieValoradaSunat.toString();
 						autorizacionSunat=especieValoradaSunat.getAutorizacionSunat();
 					}
 					manifiesto.setNumeroManifiesto(numeroManifiesto);

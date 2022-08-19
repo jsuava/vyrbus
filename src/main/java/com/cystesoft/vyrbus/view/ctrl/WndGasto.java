@@ -60,12 +60,14 @@ public class WndGasto extends WndOpcionesMantenimiento {
 	private Textbox txtNombrePiloto;
 	private Textbox txtConsignado;
 	private Textbox txtObservacion;
+	private Textbox txtNroCtacte;
+	private Textbox txtHoraDeposito;
 //	private Textbox txtBus;
 	private Combobox cmbBus;
 	private Datebox dbFecha;
 	private Radio rbGasto;
 	private Radio rbIngreso;
-
+	private Row filaDeposito; 
 
 //	private Agencia agencia = null;
 	private Gasto gasto=null;
@@ -109,6 +111,9 @@ public class WndGasto extends WndOpcionesMantenimiento {
 		txtNombrePiloto = (Textbox) this.getFellow("txtNombrePiloto");
 		txtConsignado = (Textbox) this.getFellow("txtConsignado");
 		txtObservacion = (Textbox) this.getFellow("txtObservacion");
+		txtNroCtacte = (Textbox) this.getFellow("txtNroCtacte");
+		txtHoraDeposito = (Textbox) this.getFellow("txtHoraDeposito");
+		filaDeposito = (Row) this.getFellow("filaDeposito");
 		dbFecha = (Datebox) this.getFellow("dbFecha");
 		cmbBus=(Combobox)this.getFellow("cmbBus");
 		rbGasto = (Radio)this.getFellow("rbGasto");
@@ -157,7 +162,9 @@ public class WndGasto extends WndOpcionesMantenimiento {
 	@Override
 	public void onNew() throws Exception {
 		/*	Busca una liquidacion aperturada para la fecha actual	*/
-		Liquidacion liquidacion = ServiceLocator.getLiquidacionManager().buscarUltimaLiquidacion(getAgencia().getId(), getUsuario().getId(), Constantes.LIQUI_ESTA_ABIERTO);
+		Liquidacion liquidacion = ServiceLocator.getLiquidacionManager().buscarUltimaLiquidacion(getAgencia().getId(), 
+																								 getUsuario().getId(), 
+																								 Constantes.LIQUI_ESTA_ABIERTO);
 		try{
 			if(liquidacion==null)
 				throw new LiquidacionNullException();
@@ -174,6 +181,7 @@ public class WndGasto extends WndOpcionesMantenimiento {
 		cmbTipoGasto.setSelectedIndex(0);
 		cmbBus.setSelectedIndex(0);
 		rbGasto.setChecked(true);
+		filaDeposito.setVisible(false);
 
 		isClikSaved=false;
 	}
@@ -274,7 +282,9 @@ public class WndGasto extends WndOpcionesMantenimiento {
 				throw new GastosException(GastosException.MONTO_NULL);
 			else if (dbMonto.getValue() <=0)
 				throw new GastosException(GastosException.MONTO_NULL);
-
+			else if(txtObservacion.getText().trim().isEmpty())
+				throw new GastosException(GastosException.OBSERVACIONES_NULL);
+			
 			if(((TipoGasto)cmbTipoGasto.getSelectedItem().getValue()).getId().equals(Constantes.ID_TIPGAS_PEAJES)){
 				if(!(cmbBus.getSelectedItem().getValue() instanceof Bus))
 					throw new BusNullException();
@@ -287,8 +297,15 @@ public class WndGasto extends WndOpcionesMantenimiento {
 					throw new GastosException(GastosException.DOCUMENTO_NO_VALIDO);
 				else if(txtConsignado.getText().trim().isEmpty())
 					throw new GastosException(GastosException.CONSIGNADO_NULL);
-			}else if(txtObservacion.getText().trim().isEmpty())
-				throw new GastosException(GastosException.OBSERVACIONES_NULL);
+			}
+			else if(((TipoGasto)cmbTipoGasto.getSelectedItem().getValue()).getId().equals(Constantes.ID_TIPGAS_CTACTE)) {
+				if(txtNroDocumento.getText().trim().isEmpty())
+					throw new NumeroDocumentoNullException();
+				else if(txtNroCtacte.getText().trim().isEmpty())
+					throw new GastosException(GastosException.CTACTE_NULL);
+				else if(txtHoraDeposito.getText().trim().isEmpty())
+					throw new GastosException(GastosException.HORADEPOSITO_NULL);
+			}
 
 
 			/*	Busca una liquidacion aperturada para la fecha actual	*/
@@ -321,7 +338,7 @@ public class WndGasto extends WndOpcionesMantenimiento {
 			tipoGasto.setDenominacion(((TipoGasto) cmbTipoGasto.getSelectedItem().getValue()).getDenominacion());
 
 			gasto.setTipoGasto(tipoGasto);
-			gasto.setNumeroDocumento(txtNroDocumento.getText().trim());
+			gasto.setNumeroDocumento(txtNroDocumento.getText().trim().toUpperCase());
 			gasto.setMonto(dbMonto.getValue());
 			gasto.setNombrePiloto(txtNombrePiloto.getText().trim().toUpperCase());
 			if(cmbBus.getSelectedItem().getValue() instanceof Bus)
@@ -329,6 +346,8 @@ public class WndGasto extends WndOpcionesMantenimiento {
 
 			gasto.setConsignado(txtConsignado.getText().trim().toUpperCase());
 			gasto.setObservacion(txtObservacion.getText().trim().toUpperCase());
+			gasto.setNroCtacte(txtNroCtacte.getText().trim().toUpperCase());
+			gasto.setHoraDeposito(txtHoraDeposito.getText().trim().toUpperCase());
 			gasto.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 
 
@@ -386,6 +405,12 @@ public class WndGasto extends WndOpcionesMantenimiento {
 			}else if (gex.getTipo()==GastosException.CONSIGNADO_NULL){
 				DlgMessage.information(Messages.getString("WndGasto.Information.ConsignadoNull"));
 				txtConsignado.setFocus(true);throw new CancelaGrabacionException();
+			}else if (gex.getTipo()==GastosException.CTACTE_NULL){
+				DlgMessage.information(Messages.getString("WndGasto.Information.CtacteNull"));
+				txtNroCtacte.setFocus(true);throw new CancelaGrabacionException();
+			}else if (gex.getTipo()==GastosException.HORADEPOSITO_NULL){
+				DlgMessage.information(Messages.getString("WndGasto.Information.HoraDepositoNull"));
+				txtHoraDeposito.setFocus(true);throw new CancelaGrabacionException();
 			}else if (gex.getTipo()==GastosException.OBSERVACIONES_NULL){
 				DlgMessage.information(Messages.getString("WndGasto.Information.ObservacionesNull"));
 				txtObservacion.setFocus(true);throw new CancelaGrabacionException();
@@ -486,11 +511,15 @@ public class WndGasto extends WndOpcionesMantenimiento {
 			item = new Listitem();
 			cell = new Listcell((Integer.toString(x)));
 			item.appendChild(cell); //Correlativo
-			cell = new Listcell(gasto.getAgencia().getNombreCorto());
+			cell = new Listcell(Util.DatetoString(gasto.getLiquidacion().getFechaLiquidacion(), "dd/MM/yyyy"));
+			item.appendChild(cell);
+			cell = new Listcell(gasto.getAgencia().getDenominacion());
 			item.appendChild(cell);
 			cell = new Listcell(gasto.getLiquidacion().getNombreUsuario());
 			item.appendChild(cell);
 			cell = new Listcell(gasto.getTipoGasto().getDenominacion());
+			item.appendChild(cell);
+			cell = new Listcell(gasto.getNumeroDocumento());
 			item.appendChild(cell);
 			cell = new Listcell(gasto.getMonto().toString());
 			cell.setStyle("font-size:11px !Important");
@@ -518,12 +547,16 @@ public class WndGasto extends WndOpcionesMantenimiento {
 			gasto=listitem.getValue();
 
 			textboxId.setText(gasto.getId().toString());
-			Util.seleccionarValorItemCombo(TipoGasto.class, cmbTipoGasto, (gasto.getTipoGasto().getId()));
+//			Util.seleccionarValorItemCombo(TipoGasto.class, cmbTipoGasto, (gasto.getTipoGasto().getId()));
 
 			if(gasto.getTipoGasto().getTipoOperacion().intValue()==Constantes.FALSE_VALUE)
 				rbGasto.setChecked(true);
 			else
 				rbIngreso.setChecked(true);
+			
+			onCheck_tipoOperacion();
+			Util.seleccionarValorItemCombo(TipoGasto.class, cmbTipoGasto, (gasto.getTipoGasto().getId()));
+			
 			detalleLiquidacion = new DetalleLiquidacion();
 			detalleLiquidacion=(gasto.getDetalleLiquidacion());
 
@@ -538,6 +571,9 @@ public class WndGasto extends WndOpcionesMantenimiento {
 			txtNombrePiloto.setText(gasto.getNombrePiloto());
 			txtConsignado.setText(gasto.getConsignado());
 			txtObservacion.setText(gasto.getObservacion());
+			
+			txtNroCtacte.setText(gasto.getNroCtacte());
+			txtHoraDeposito.setText(gasto.getHoraDeposito());
 
 			onSelectTipoGasto();
 			if(gasto.getLiquidacion().getestadoLiquidacion().equals(Constantes.LIQUI_ESTA_CERRADO)){
@@ -568,6 +604,7 @@ public class WndGasto extends WndOpcionesMantenimiento {
 		txtConsignado.setReadonly(false);
 		txtNombrePiloto.setReadonly(false);
 		cmbBus.setDisabled(false);
+		filaDeposito.setVisible(false);
 
 		if(cmbTipoGasto.getSelectedItem().getValue() instanceof TipoGasto){
 			TipoGasto tipoGasto = cmbTipoGasto.getSelectedItem().getValue();
@@ -575,11 +612,17 @@ public class WndGasto extends WndOpcionesMantenimiento {
 				if(tipoGasto.getId().intValue()==Constantes.ID_TIPGAS_PEAJES){
 					txtConsignado.setReadonly(true);
 					txtConsignado.setText("");
+					
 				}else if (((TipoGasto)cmbTipoGasto.getSelectedItem().getValue()).getId().equals(Constantes.ID_TIPGAS_PAGO_GIROS)){
 					cmbBus.setDisabled(true);
 					cmbBus.setSelectedIndex(0);
 					txtNombrePiloto.setText("");
 					txtNombrePiloto.setReadonly(true);
+				}else if(((TipoGasto)cmbTipoGasto.getSelectedItem().getValue()).getId().equals(Constantes.ID_TIPGAS_CTACTE)) {
+					filaDeposito.setVisible(true);
+					txtConsignado.setReadonly(true);
+					txtNombrePiloto.setReadonly(true);
+					cmbBus.setDisabled(true);
 				}
 			}else {
 				txtConsignado.setReadonly(true);

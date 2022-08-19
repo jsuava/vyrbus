@@ -654,8 +654,8 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				"WHERE {VP}.d_fecpar is null AND {VP}.c_estreg='"+Constantes.VALUE_ACTIVO+
 				"' AND {VP}.tipmov_id NOT IN ("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+
 				Constantes.ID_TIPMOV_ANULACION+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_SERVICIO_ESPECIAL+")  "
-						+ " AND {VP}.tipcom_id 	IN ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_FACTURA+")  ";
-
+						+ " AND {VP}.tipcom_id 	IN ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_FACTURA+")  "
+			    +"  AND {VP}.d_Feccad > sysdate ";
 		sql = sql + criterio;
 		sql = sql + "ORDER BY {VP}.pasajero_id ";
 

@@ -113,6 +113,7 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 					"dlq.audfecins as fechaInsercion, dlq.audusuins as UsuarioInsercion, dlq.audipinse as IpInsercion, "+//14-16
 					"g.audfecins as GfechaInsercion, g.audusuins as GUsuarioInsercion, g.audipinse as GIpInsercion, "+//17-19
 					"lq.n_estliq, a.c_nomcor as nombreCorto, nvl(tg.n_tipope,0) tipope, tg.c_nomcor nomCarGasto "+//20-23
+					", g.c_ctacte ctacte, g.c_hordep hordep  "+ //24-25
 			"FROM vrtgasto g "+
 				"INNER JOIN vrtdetliq dlq ON (dlq.gasto_id=g.gasto_id) "+
 				"INNER JOIN vrtliquidacion lq ON (lq.liquidacion_id=dlq.liquidacion_id) "+
@@ -123,7 +124,7 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 				 "AND g.tipgas_id=NVL("+idTipoGasto+",g.tipgas_id) " +
 				 "AND lq.usuario_id=NVL("+idUsuario+",lq.usuario_id) " +
 				 "AND lq.c_estreg='A' AND g.c_estreg='A' " +
-		    "ORDER BY nvl(tg.n_tipope,0), tg.c_denominacion ";
+		    "ORDER BY lq.d_fecliq, a.c_denominacion, nvl(tg.n_tipope,0), tg.c_denominacion ";
 //			"WHERE lq.d_fecliq = to_date('"+fechaGasto+"', 'dd/MM/yyyy') AND lq.c_estreg='A' AND g.c_estreg='A' "+ criterios;
 					//"AND lq.agencia_id=1 AND g.c_estreg='A' AND lq.c_estreg='A' ";
 
@@ -181,7 +182,10 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 				gasto.setUsuarioInsercion(obj[18].toString());
 			if (obj[19] !=null)
 				gasto.setIpInsercion(obj[19].toString());
-
+			//Se añadieron dos campos adicionales para el gasto
+			gasto.setNroCtacte(obj[24] != null ? obj[24].toString() : "");
+			gasto.setHoraDeposito(obj[25] != null ? obj[25].toString() : "");
+			
 			gasto.setAgencia(agencia);
 			gasto.setLiquidacion(liquidacion);
 			gasto.setTipoGasto(tipoGasto);

@@ -19,6 +19,8 @@ public class Gasto extends GenericBean implements java.io.Serializable {
 	private String codigoBus;
 	private String consignado;
 	private String observacion;
+	private String nroCtacte;
+	private String horaDeposito;
 
 	//No mapeados
 	private Usuario usuario;
@@ -33,6 +35,27 @@ public class Gasto extends GenericBean implements java.io.Serializable {
 
 	public Gasto() {
 	}
+
+	
+	public String getNroCtacte() {
+		return nroCtacte;
+	}
+
+
+	public void setNroCtacte(String nroCtacte) {
+		this.nroCtacte = nroCtacte;
+	}
+
+
+	public String getHoraDeposito() {
+		return horaDeposito;
+	}
+
+
+	public void setHoraDeposito(String horaDeposito) {
+		this.horaDeposito = horaDeposito;
+	}
+
 
 	public Integer getId() {
 		return this.id;

@@ -882,6 +882,17 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 
 					agenciaIgualEmbarque = 1;
 				}
+				//Si es una reserva y la agencia de llegada es la misma que la que se reservo
+				else if (getObjetoConfirmar().getAgenciaPartida() != null
+						&& itiAgePartida.getAgencia().getId().intValue() == getObjetoConfirmar().getAgenciaPartida().getId()
+						&& getObjetoConfirmar().getTipoMovimiento().getId()== Constantes.ID_TIPMOV_RESERVA) {
+					cmbPtoEmbarque.setSelectedItem(item);
+//					lblHoraLlegada.setValue(itiAgeLlegada.getHoraLlegada());
+					if(lblFechaLlegada.getValue().length()>=10)
+						fechaPartida=lblFechaLlegada.getValue().substring(0,10);
+					lblFechaLlegada.setValue(fechaPartida+" "+(itiAgePartida.getHoraPartida()!=null?itiAgePartida.getHoraPartida():""));
+					agenciaIgualEmbarque = 1;
+				}
 				else if(agenciaIgualEmbarque == 0)
 					cmbPtoEmbarque.setSelectedIndex(0);
 //				else if (getObjetoConfirmar().getAgenciaPartida() != null && itiAgePartida.getAgencia().getId().intValue() == getObjetoConfirmar().getAgenciaPartida().getId()) {

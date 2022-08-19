@@ -24,6 +24,8 @@ public class GastosException extends Exception {
 	public static final int CONSIGNADO_NULL=4;
 	public static final int OBSERVACIONES_NULL=5;
 	public static final int	DOCUMENTO_NO_VALIDO=6;
+	public static final int	CTACTE_NULL=7;
+	public static final int	HORADEPOSITO_NULL=8;
 
 
 	private int tipo;
