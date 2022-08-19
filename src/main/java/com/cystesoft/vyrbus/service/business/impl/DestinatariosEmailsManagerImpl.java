@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 27/06/2015
  * Hora			: 08:48:20
@@ -36,7 +36,7 @@ public class DestinatariosEmailsManagerImpl implements DestinatariosEmailsManage
 	public void setDestinatariosEmailsDAO(DestinatariosEmailsDAO destinatariosEmailsDAO) {
 		this.destinatariosEmailsDAO = destinatariosEmailsDAO;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.WindowsManager#buscarByObjeto(java.lang.String)
 	 */
@@ -75,6 +75,6 @@ public class DestinatariosEmailsManagerImpl implements DestinatariosEmailsManage
 		getDestinatariosEmailsDAO().guardar(windows);
 	}
 
-	
+
 
 }

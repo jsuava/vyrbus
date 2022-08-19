@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 20/11/2013
  */
@@ -22,7 +22,7 @@ public interface SerieEspecieValoradaManager {
 	 * Realiza la busqueda por el Id (serie, tipoComprobante)
 	 * @param numeroSerie		: Numero de Serie
 	 * @param idTipoComprobante	: Identifiador del tipo de comprobante
-	 * @return	
+	 * @return
 	 * @throws Exception
 	 */
 	public SerieEspecieValorada buscarPorID(String numeroSerie, Integer idTipoComprobante) throws Exception;

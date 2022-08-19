@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 20/04/2012
  */
@@ -66,17 +66,17 @@ public class WndPrincipal extends WndBase {
 	private Label lblUsuario;
 	private Label lblAgencia;
 	private Label lblPC;
-	private Tabs tabsVentana;	
+	private Tabs tabsVentana;
 	private Tabpanels tabpanelsVentana;
-	
+
 	private Menu menu_N1 = null;
 	private Menupopup menupopup_N1 = null;
 	private Menu menu_N2 = null;
 	private Menupopup menupopup_N2 = null;
 	private Menuitem menuitem = null;
-	
+
 //	private Menuitem miCambiarPassword;
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.WndBaseInterface#onCreate()
 	 */
@@ -84,8 +84,8 @@ public class WndPrincipal extends WndBase {
 	@Override
 	public void onCreate() throws Exception {
 		try{
-			
-			
+
+
 			/*##End Begibin 25/10/2016 - jabanto*/
 			/*Para la configuracion de la impresora - 21/05/2015*/
 //			boolean executeApplePrint=false;
@@ -100,12 +100,12 @@ public class WndPrincipal extends WndBase {
 //			if(response.getParameter("prints")!=null){
 //				List<String> lstPrints=new ArrayList<String>();
 //				countPrints= Integer.valueOf(response.getParameter("prints"));
-//				
+//
 //				/*Valida si hay impresoras configuradas*/
 //				if(countPrints>0){
 //					for(int x=0;x<countPrints;x++){
 //						String name=response.getParameter("print"+String.valueOf(x+1));
-//						
+//
 //						if(name!=null)
 //							lstPrints.add(name);
 //					}
@@ -117,23 +117,23 @@ public class WndPrincipal extends WndBase {
 //				}
 //			}
 			/* ******/
-			
+
 			Usuario usuario= (Usuario) getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO);
 			Agencia agencia = (Agencia) getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
 			UsuarioHardware usuarioHardware = (UsuarioHardware) getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO_HARDWARE);
 //			TipoComprobante tipoComprobante = (TipoComprobante) getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_TIPO_COMPROBANTE);
-			
+
 			//*********************************************************************
 			lblUsuario.setValue(usuario.toString());
 			lblAgencia.setValue(agencia.getDenominacion());
 			lblPC.setValue(usuarioHardware.getDescripcion());
-			
+
 			/*CONFIGURA ACCESOS PARA LOS MENUS*/
 			obtenerOpcionesMenu();
 			disabledMenus();
 			configuraAccesos(usuario);
-			
-			
+
+
 			/*End begin 25/10/2016*/
 			/*Valida si hay una liquidacion abierta. para luego mostra la venta de "Control se Especie Valorada"*/
 //			Liquidacion liquidacion = new Liquidacion();
@@ -141,30 +141,30 @@ public class WndPrincipal extends WndBase {
 //			if (!(liquidacion==null) && executeApplePrint==false){
 ////			if (!(liquidacion==null)){
 //				/*Muestra venta "Control Especie Valorada"*/
-//				TreeMap<String, Object>criteriosBusqueda = new TreeMap<String, Object>();	
+//				TreeMap<String, Object>criteriosBusqueda = new TreeMap<String, Object>();
 //				ControlEspecieValorada controlEspecieValorada = new ControlEspecieValorada();
-//				//Busca especies valoras asignadas al pc 
+//				//Busca especies valoras asignadas al pc
 //				criteriosBusqueda.put("tipoComprobante", tipoComprobante);
 //				criteriosBusqueda.put("usuarioHardware", usuarioHardware );
-//				criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);	
+//				criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 //				List<ControlEspecieValorada> list = ServiceLocator.getControlEspecieValoradaManager().buscarPorX(criteriosBusqueda, null);
-//					
+//
 //				if(agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_TEPSA){
 //					if (list.size()>0){ //SI tiene configurado la especie valorada
 //						controlEspecieValorada=list.get(0);
 //	//					DlgMessage.information(Messages.getString("WndControlEspecieValorada.Information.ControlEspecieValoradaVericar"));
-//						
+//
 //						WndControlEspecieValorada_LoadInicio wndUpdateEspecieValorada = new WndControlEspecieValorada_LoadInicio(agencia);
 //						wndUpdateEspecieValorada.setUsuario(usuario);
 //						wndUpdateEspecieValorada.setControlEspecieValorada(controlEspecieValorada);
 //	//					wndUpdateEspecieValorada.cargaLisEspeciesValoradas(agencia);
 //						appendChild(wndUpdateEspecieValorada);
-//							
+//
 //						wndUpdateEspecieValorada.setMode("modal");
 //						wndUpdateEspecieValorada.setVisible(true);
-//						
+//
 //					}else{//NO tiene configurado la especie valorada
-//						
+//
 //						final Usuario usuario_f = usuario;
 //						final Agencia agencia_f = agencia;
 //						Messagebox.show(Messages.getString("WndControlEspecieValorada.Information.ControlEspecieValoradaNull"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_OK, Messagebox.INFORMATION, new EventListener<Event>() {
@@ -177,7 +177,7 @@ public class WndPrincipal extends WndBase {
 //									wndUpdateEspecieValorada.setUsuarioHardware(getUsuarioHardware());
 //									wndUpdateEspecieValorada.setTipoComprobante(getTipocomprobante());
 //									appendChild(wndUpdateEspecieValorada);
-//										
+//
 //									wndUpdateEspecieValorada.setMode("modal");
 //									wndUpdateEspecieValorada.setVisible(true);
 //								}
@@ -186,7 +186,7 @@ public class WndPrincipal extends WndBase {
 //					}
 //				}
 //			}
-			
+
 			if(usuario.getTipoPassword().intValue()==Usuario.TIPPAS_ALEATORIO){
 				final Window win = new Window("", "normal", false);
 				win.setHeight("210px");
@@ -202,7 +202,7 @@ public class WndPrincipal extends WndBase {
 				columns.appendChild(column);
 				grid.appendChild(columns);
 				Rows rows = new Rows();
-				
+
 				Row row = new Row();
 				Div div = new Div();
 				div.setAlign("center");
@@ -212,7 +212,7 @@ public class WndPrincipal extends WndBase {
 				row.appendChild(div);
 				row.setSpans("2");
 				rows.appendChild(row);
-				
+
 				row = new Row();
 				label = new Label("Usuario :");
 				label.setStyle("font-weight:bold; font-size:10px !important;");
@@ -225,7 +225,7 @@ public class WndPrincipal extends WndBase {
 				txtLogin.setStyle("text-transform:none");
 				row.appendChild(txtLogin);
 				rows.appendChild(row);
-				
+
 				row = new Row();
 				label = new Label("Contraseña actual :");
 				label.setStyle("font-weight:bold; font-size:10px !important;");
@@ -237,7 +237,7 @@ public class WndPrincipal extends WndBase {
 				txtPasswordActual.setStyle("text-transform:none");
 				row.appendChild(txtPasswordActual);
 				rows.appendChild(row);
-				
+
 				row = new Row();
 				label = new Label("Nueva contraseña :");
 				label.setStyle("font-weight:bold; font-size:10px !important;");
@@ -249,7 +249,7 @@ public class WndPrincipal extends WndBase {
 				txtPasswordNuevo.setStyle("text-transform:none");
 				row.appendChild(txtPasswordNuevo);
 				rows.appendChild(row);
-				
+
 				row = new Row();
 				label = new Label("Confirmar contraseña :");
 				label.setStyle("font-weight:bold; font-size:10px !important;");
@@ -261,7 +261,7 @@ public class WndPrincipal extends WndBase {
 				txtConfirmPassword.setStyle("text-transform:none");
 				row.appendChild(txtConfirmPassword);
 				rows.appendChild(row);
-				
+
 				final Usuario user = usuario;
 				row = new Row();
 				row.setSpans("2");
@@ -280,12 +280,12 @@ public class WndPrincipal extends WndBase {
 								throw new PasswordException(PasswordException.PASSWORD_DIFERENTES);
 							else if (txtLogin.getText().trim().equals(txtPasswordNuevo.getText().trim()))
 								throw new PasswordException(PasswordException.PASSWORD_IGUAL_LOGIN);
-							
+
 							user.setPwdNormal(txtPasswordNuevo.getText().trim());
 							user.setTipoPassword(Usuario.TIPPAS_USUARIO);
 							UtilData.auditarRegistro(user, true, user, Executions.getCurrent());
 							ServiceLocator.getUsuarioManager().actualizar(user);
-	
+
 							win.onClose();
 						}catch(PasswordException pex){
 							if(pex.getTipo().intValue()==PasswordException.PASSWORD_ACTUAL_NULL){
@@ -306,19 +306,19 @@ public class WndPrincipal extends WndBase {
 				button.setHeight("26px");
 				row.appendChild(button);
 				rows.appendChild(row);
-				
+
 				grid.appendChild(rows);
 				win.appendChild(grid);
 				this.appendChild(win);
 				txtPasswordActual.setFocus(true);
 				win.doModal();
 			}
-		
+
 	}catch (EspecieValoradaNotAvailableException env){
 		DlgMessage.information(Messages.getString("UtilData.information.notAvailableEspecieValorada"));
 	}
 }
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IBase#initComponents()
 	 */
@@ -335,24 +335,24 @@ public class WndPrincipal extends WndBase {
 	public void configuraAccesos(Usuario usuario) throws Exception{
 //		Rol rol = new Rol();
 //		rol= UtilData.getRol(usuario);
-		
-		List<String> criteriosOrdenar = new ArrayList<String>();
+
+		List<String> criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("opcionMenu");
-		
+
 //		OpcionMenu oopcionMenu = new OpcionMenu();
 //		oopcionMenu.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-		
-		TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+
+		TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 		criteriosBusqueda.put("rol", getRol());
 		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 		List<RolOpcionMenu> lisRolOpcionMenu = ServiceLocator.getRolOpcionMenuManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
-	
-		Map<Integer, String> mapRolOpciones = new HashMap<Integer, String>();
-		
-		for (int i=0; i< lisRolOpcionMenu.size(); i++){
-			mapRolOpciones.put(lisRolOpcionMenu.get(i).getOpcionMenu().getId(), lisRolOpcionMenu.get(i).getOpcionMenu().getNombreObjeto());
+
+		Map<Integer, String> mapRolOpciones = new HashMap<>();
+
+		for (RolOpcionMenu element : lisRolOpcionMenu) {
+			mapRolOpciones.put(element.getOpcionMenu().getId(), element.getOpcionMenu().getNombreObjeto());
 		}
-		
+
 		for(Component component : menubarMenu.getChildren()){
 			if(!(component instanceof Menuitem)){
 				for(Component component2 : component.getChildren()){
@@ -367,7 +367,7 @@ public class WndPrincipal extends WndBase {
 //												((Menuitem) component3).setVisible(true);
 											}
 										}
-										
+
 									}
 								}
 							}else{
@@ -376,7 +376,7 @@ public class WndPrincipal extends WndBase {
 //									((Menuitem) component3).setVisible(true);
 								}
 								//Habilitado solo para desarrollo.
-//								else if (((Menuitem)component3).getId().equals("mnmConfigPrinters")){ 
+//								else if (((Menuitem)component3).getId().equals("mnmConfigPrinters")){
 ////										|| (((Menuitem)component3).getId().equals("mntAsociarRutasMtcSisvyr"))
 ////										|| (((Menuitem)component3).getId().equals("mntRptHojaRutaElectronica"))){
 //									((Menuitem) component3).setDisabled(false);
@@ -388,17 +388,17 @@ public class WndPrincipal extends WndBase {
 			}
 		}
 	}
-	
+
 	/*
-	 * 
+	 *
 	 */
-	
+
 	/**
 	 * Muestra Ventana Como Ficha (Tab)
 	 * @param titulo
 	 * @param urlZul
 	 */
-	public void mostrarVentana(String titulo, String urlZul){		
+	public void mostrarVentana(String titulo, String urlZul){
 		Tab oTab = new Tab();
 		oTab.setClosable(true);
 		Tabpanel oTabpanel = new Tabpanel();
@@ -406,17 +406,17 @@ public class WndPrincipal extends WndBase {
 
 		oInclude.setSrc(urlZul);
 		oInclude.setHeight("100%");
-		
+
 		oTab.setLabel(titulo);
 		oTabpanel.appendChild(oInclude);
-		
-		
+
+
 		tabsVentana.appendChild(oTab);
 		tabpanelsVentana.appendChild(oTabpanel);
 
 		oTab.setSelected(true);
 	}
-	
+
 	public void obtenerOpcionesMenu(){
 		try{
 			List<OpcionMenu> lstOpcionesMenu = ServiceLocator.getOpcionMenuManager().buscarOpcionesMenu();
@@ -437,7 +437,7 @@ public class WndPrincipal extends WndBase {
 					menu_N2.appendChild(menupopup_N2);
 					menupopup_N1.appendChild(menu_N2);
 					menu_N1.appendChild(menupopup_N1);
-					
+
 					menubarMenu.appendChild(menu_N1);
 				}else{
 					OpcionMenu pivot = lstOpcionesMenu.get(i-1);
@@ -455,7 +455,7 @@ public class WndPrincipal extends WndBase {
 //							}
 						}else{
 							menu_N2 = new Menu(opcionMenu.getHijo());
-							
+
 						}
 					}else{
 						if(pivot.getIdHijo().intValue()==opcionMenu.getIdHijo().intValue() && opcionMenu.getIdPadre().intValue()==opcionMenu.getIdHijo().intValue()){
@@ -479,13 +479,13 @@ public class WndPrincipal extends WndBase {
 							menupopup_N1.appendChild(menu_N2);
 						}
 					}
-				}	
+				}
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
-	
+
 	private EventListener<Event> addEventListener(final OpcionMenu opcionMenu){
 		EventListener<Event> ev = new EventListener<Event>() {
 			@Override
@@ -497,7 +497,7 @@ public class WndPrincipal extends WndBase {
 		};
 		return ev;
 	}
-	
+
 	public void cerrarSesion(){
 		Messagebox.show("¿Desea Salir del Sistema?", Messages.getString("System.title"), Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
 				new EventListener<Event>() {
@@ -523,12 +523,12 @@ public class WndPrincipal extends WndBase {
 				}
 		);
 	}
-	
+
 	public void mostrarMantenimiento(){
 		Window w = (Window)Executions.createComponents("opcionesMantenimientoVenta.zul", this, null);
-		w.doModal();	
+		w.doModal();
 	}
-	
+
 	public void disabledMenus(){
 		for(Component component : menubarMenu.getChildren()){
 			if(!(component instanceof Menuitem)){
@@ -544,7 +544,7 @@ public class WndPrincipal extends WndBase {
 //												((Menuitem) component5).setVisible(false);
 											}
 										}
-										
+
 									}
 								}
 							}else{
@@ -557,6 +557,6 @@ public class WndPrincipal extends WndBase {
 					}
 				}
 			}
-		}	
+		}
 	}
 }

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 20/04/2012
  */
@@ -73,9 +73,9 @@ public interface IOpcionesMantenimiento {
 	public void onCancel(int action) throws Exception;
 	/**
 	 * evento asignado al botón Guardar
-	 * @param action 
+	 * @param action
 	 * @return void
-	 * @throws Exception 
+	 * @throws Exception
 	 * @see IOpcionesMantenimiento#ACTION_NEW
 	 * @see IOpcionesMantenimiento#ACTION_MODIFY
 	 */

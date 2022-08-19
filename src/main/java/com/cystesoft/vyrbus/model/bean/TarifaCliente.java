@@ -1,7 +1,7 @@
 /**
  * Proyecto		: VYRBUS
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 07/07/2016
  * Hora			: 11:00:32
@@ -108,7 +108,7 @@ public class TarifaCliente extends GenericBean{
 	public void setFechaSuspension(Date fechaSuspension) {
 		this.fechaSuspension = fechaSuspension;
 	}
-	
-	
-	
+
+
+
 }

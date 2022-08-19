@@ -103,7 +103,7 @@ public class WndOperacionesRemotas extends WndBase {
 	private Textbox txtNumeroBoleto;
 	private Textbox txtNumeroControl;
 	private Textbox txtNumeroDocumetoPasajero;
-	private Listbox lsbxVentas;	
+	private Listbox lsbxVentas;
 	//Devolucion
 	private Window wndDevolucion;
 //	private Combobox cmbDevPorcentaje;
@@ -120,7 +120,7 @@ public class WndOperacionesRemotas extends WndBase {
 //	private Combobox  cmbTipoComprobante;
 //	private Combobox cmbTipoFormaPago;
 //	private Combobox cmbTarjetaCredito;
-	
+
 	//Postergación
 	private Window wndPostergacion;
 	private Textbox txtPosSituActuRuta;
@@ -145,7 +145,7 @@ public class WndOperacionesRemotas extends WndBase {
 	private VentaPasaje postergacion;
 	private DetalleItinerario detalleItinerario;
 	private int secuencial=0;
-	
+
 	//Reimpresión
 //	private Window wndReimpresion;
 	private Combobox cmbTipoComprobante;
@@ -157,15 +157,15 @@ public class WndOperacionesRemotas extends WndBase {
 	private Listbox lbxUsuarioHardware;
 	private Bandbox bndbxUsuarioHardware;
 //	private Textbox txtNumeroboletoReimpresion;
-		
+
 	String styleActivo_11px="font-size:11px !important";
 	String styleActivo_9px="font-size:9px !important";
 	String styleAnulado_11px="font-size:11px !important; color:red";
 	String styleAnulado_9px="font-size:9px !important; color:red";
-	
+
 //	private static final String DEVOLUCION_80 = "DEVOLUCION AL 80%";
 	private static final String DEVOLUCION_100 = "DEVOLUCION AL 100%";
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
 	 */
@@ -178,7 +178,7 @@ public class WndOperacionesRemotas extends WndBase {
 		txtNumeroControl=(Textbox)this.getFellow("txtNumeroControl");
 		txtNumeroDocumetoPasajero=(Textbox)this.getFellow("txtNumeroDocumetoPasajero");
 		lsbxVentas=(Listbox)this.getFellow("lsbxVentas");
-		
+
 		txtNumeroControl.addEventListener(Events.ON_CHANGE,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -186,7 +186,7 @@ public class WndOperacionesRemotas extends WndBase {
 					txtNumeroControl.setText(Util.generateControlNumber(txtNumeroControl.getText().trim()));
 			}
 		});
-		
+
 		txtNumeroBoleto.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -195,7 +195,7 @@ public class WndOperacionesRemotas extends WndBase {
 			}
 		});
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
@@ -207,9 +207,9 @@ public class WndOperacionesRemotas extends WndBase {
 		String fecha = Util.DatetoString(new Date(), "yyyyMMdd");
 		dtbxFechaPartida.setConstraint("after "+fecha);
 		dtbxFechaPartida.setValue(new Date());
-				
+
 	}
-	
+
 	public void buscarVentas() throws Exception{
 		String fechaPartida=Constantes.FORMAT_DATE.format(dtbxFechaPartida.getValue());
 		Integer idOrigen=null;
@@ -217,7 +217,7 @@ public class WndOperacionesRemotas extends WndBase {
 		String numeroBoleto=null;
 		String numeroControl=null;
 		String documentoPax=null;
-		
+
 		if(cmbOrigen.getSelectedItem().getValue() instanceof Localidad)
 			idOrigen=((Localidad)cmbOrigen.getSelectedItem().getValue()).getId();
 		if(cmbDestino.getSelectedItem().getValue() instanceof Localidad)
@@ -228,16 +228,16 @@ public class WndOperacionesRemotas extends WndBase {
 			numeroControl=txtNumeroControl.getText().trim().toUpperCase();
 		if(txtNumeroDocumetoPasajero.getText().trim().length()>0)
 			documentoPax=txtNumeroDocumetoPasajero.getText().trim().toUpperCase();
-				
+
 		List<VentaPasaje>listVentas=ServiceLocator.getVentaPasajesManager().buscarOperacionesRemotras(fechaPartida, idOrigen, idDestino, numeroBoleto, numeroControl, documentoPax);
-		
+
 		Util.limpiarListbox(lsbxVentas);
-		
+
 		for(VentaPasaje ventaPasaje: listVentas){
-			Boolean isAnulado=ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION ||
+			boolean isAnulado=ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION ||
 					ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA ||
 							ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_DEVOLUCION;
-						
+
 			Listitem item=new Listitem();
 			Listcell cell=new Listcell(ventaPasaje.getNumeroBoleto());
 			cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
@@ -263,7 +263,7 @@ public class WndOperacionesRemotas extends WndBase {
 			cell=new Listcell(ventaPasaje.getNumeroAsiento().toString());
 			cell.setStyle(isAnulado?styleAnulado_11px:styleActivo_11px);
 			item.appendChild(cell);
-			
+
 			//DEVOLVER
 			Toolbarbutton btnDevolver = new Toolbarbutton();
 			btnDevolver.setImage("resources/menu/menu_devolucion.png");
@@ -276,25 +276,25 @@ public class WndOperacionesRemotas extends WndBase {
 				public void onEvent(Event event) throws Exception {
 					try{
 						VentaPasaje ventaOriginal=ServiceLocator.getVentaPasajesManager().buscarPorId(Long.valueOf(event.getTarget().getId()));
-												
+
 						if(ventaOriginal.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA)
 							throw new DevolucionByTipoMovimientoNoPermitidoException(Constantes.ID_TIPMOV_ANULACION_SISTEMA);
 						if(ventaOriginal.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION)
 							throw new DevolucionByTipoMovimientoNoPermitidoException(Constantes.ID_TIPMOV_ANULACION_SISTEMA);
 						else if(ventaOriginal.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_DEVOLUCION)
 							throw new DevolucionByTipoMovimientoNoPermitidoException(Constantes.ID_TIPMOV_DEVOLUCION);
-						
+
 						createVentanaDevolucion(ventaOriginal);
-						
+
 					}catch(DevolucionByTipoMovimientoNoPermitidoException dtmnpex){
 						if(dtmnpex.getTipoMovimiento().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA)
 							DlgMessage.information(Messages.getString("WndDevolucionBoleto.information.noDevolucionAnulacion"));
 						else if(dtmnpex.getTipoMovimiento().intValue()==Constantes.ID_TIPMOV_DEVOLUCION)
 							DlgMessage.information(Messages.getString("WndDevolucionBoleto.information.noDevolucionByDevuelto"));
-					}					
+					}
 				}
 			});
-						
+
 			//POSTERGACION
 			Toolbarbutton btnPostergar = new Toolbarbutton();
 			btnPostergar.setDisabled(true);
@@ -308,7 +308,7 @@ public class WndOperacionesRemotas extends WndBase {
 					postergacion=new VentaPasaje();
 					postergacion=ServiceLocator.getVentaPasajesManager().buscarPorId(Long.valueOf(event.getTarget().getId()));
 					secuencial=postergacion.getSecuencial();
-					
+
 					try{
 						if(postergacion.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA)
 							throw new PostergacionByTipoMovimientoNoPermitidoException(Constantes.ID_TIPMOV_ANULACION_SISTEMA);
@@ -327,20 +327,20 @@ public class WndOperacionesRemotas extends WndBase {
 
 						if(postergacion.getSecuencial().intValue() >= Constantes.MAXIMO_POSTERGACIONES)
 							throw new LimiteSecuencialException();
-						
+
 						if(Util.comparaFechas(postergacion.getFechaCaducidad(), new Date(), Util.OPER_MENOR))
 							throw new FechaCaducidadNullException();
-						
+
 						if(ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(postergacion.getId()))
 							throw new ManifiestoImpresoException();
-						
+
 						createVentanaPostergacion(postergacion);
-						
+
 					}catch(PostergacionByTipoMovimientoNoPermitidoException ptmnpex){
 						if(ptmnpex.getTipoMovimiento().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA)
 							DlgMessage.information(Messages.getString("WndPostergacion.information.postergacionByAnulacionNoPermitido"));
 						else if(ptmnpex.getTipoMovimiento().intValue()==Constantes.ID_TIPMOV_FECHA_ABIERTA || ptmnpex.getTipoMovimiento().intValue()==Constantes.ID_TIPMOV_POSTERGACION_FA)
-							DlgMessage.information(Messages.getString("WndPostergacion.information.postergacionByFechaAbiertaNoPermitido"));					
+							DlgMessage.information(Messages.getString("WndPostergacion.information.postergacionByFechaAbiertaNoPermitido"));
 					}catch(PostergacionByFormaPagoNoPermitidoException pfpnpex){
 						DlgMessage.information(Messages.getString("WndPostergacion.information.postergacionByCortesiaNoPermitido"));
 					}catch(PostergacionByTipoAgenciaNoPermitidoException ptanpex){
@@ -358,7 +358,7 @@ public class WndOperacionesRemotas extends WndBase {
 					}
 				}
 			});
-						
+
 //			//REIMPRESION
 //			Toolbarbutton btnReimprimir = new Toolbarbutton();
 //			btnReimprimir.setImage("resources/menu/menu_reimprimir.png");
@@ -370,7 +370,7 @@ public class WndOperacionesRemotas extends WndBase {
 //				public void onEvent(Event event) throws Exception {
 //					try{
 //						VentaPasaje ventaOriginal=ServiceLocator.getVentaPasajesManager().buscarPorId(Long.valueOf(event.getTarget().getId()));
-//						
+//
 //						if(ventaOriginal.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA)
 //							throw new ReimpresionByTipoMovimientoNoPermitidoException(Constantes.ID_TIPMOV_ANULACION_SISTEMA);
 //						if(ventaOriginal.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION)
@@ -379,12 +379,12 @@ public class WndOperacionesRemotas extends WndBase {
 //							throw new ReimpresionByTipoMovimientoNoPermitidoException(Constantes.ID_TIPMOV_DEVOLUCION);
 //						else if (ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(ventaOriginal.getId()))
 //							throw new ManifiestoImpresoException();
-//						
+//
 //						wndReimpresion = createVentanaReimpresion(ventaOriginal);
 //						appendChild(wndReimpresion);
-//						wndReimpresion.setMode(MODAL);	
-//						
-//						
+//						wndReimpresion.setMode(MODAL);
+//
+//
 //					}catch(ReimpresionByTipoMovimientoNoPermitidoException rtmnpex){
 //						if(rtmnpex.getTipoMovimiento().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA)
 //							DlgMessage.information(Messages.getString("WndReimprimirBoleto.information.reimpresionByAnulacionNoPermitido"));
@@ -395,21 +395,21 @@ public class WndOperacionesRemotas extends WndBase {
 //					}catch(Exception ex){
 //						DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 //					}
-//					
+//
 //				}
 //			});
 			item.appendChild(cell);
-			
+
 			item.setValue(ventaPasaje);
 			lsbxVentas.appendChild(item);
 		}
 	}
 
-	
+
 //	/**
 //	 * Crea una venta para la devolucion
-//	 * @param ventaOriginal 
-//	 * @throws Exception 
+//	 * @param ventaOriginal
+//	 * @throws Exception
 //	 */
 //	private void creaVentanaDevolucion(final VentaPasaje ventaOriginal) throws Exception{
 //		Caption caption = null;
@@ -421,19 +421,19 @@ public class WndOperacionesRemotas extends WndBase {
 //		Row row = null;
 //		Label label = null;
 //		Textbox text = null;
-//		
+//
 //		final Window win = new Window("", "normal", true);
 //		win.setWidth("500px");
-//		
+//
 //		caption = new Caption("DEVOLUCION DE BOLETO", "resources/menu/menu_devolucion.png");
 //		win.appendChild(caption);
-//		
+//
 //		groupbox = new Groupbox();
 //		groupbox.setClosable(false);
 //		caption = new Caption("Información del Boleto");
 //		caption.setStyle("color:#C03131");
 //		groupbox.appendChild(caption);
-//		
+//
 //		/*	Columna 1	*/
 //		column = new Column();
 //		column.setAlign("right");
@@ -448,26 +448,26 @@ public class WndOperacionesRemotas extends WndBase {
 //		/*	Columna 4	*/
 //		column = new Column();
 //		columns.appendChild(column);
-//		
+//
 //		grid.appendChild(columns);
-//		
-//		row = new Row();		
+//
+//		row = new Row();
 //		label = new Label("NUMERO BOLETO :");
-//		row.appendChild(label);		
+//		row.appendChild(label);
 //		text = new Textbox(ventaOriginal.getNumeroBoleto());
 //		text.setStyle(styleActivo_11px);
 //		text.setReadonly(true);
 //		text.setWidth("80px");
 //		row.appendChild(text);
 //		label = new Label("FECHA VIAJE :");
-//		row.appendChild(label);		
+//		row.appendChild(label);
 //		text = new Textbox(ventaOriginal.getFechaPartida()==null?"":Util.DatetoString(ventaOriginal.getFechaPartida(), Constantes.DATE_FORMAT));
 //		text.setStyle(styleActivo_11px);
 //		text.setReadonly(true);
 //		text.setWidth("80px");
 //		row.appendChild(text);
 //		rows.appendChild(row);
-//		
+//
 //		row = new Row();
 //		label = new Label("NUMERO ASIENTO :");
 //		row.appendChild(label);
@@ -485,7 +485,7 @@ public class WndOperacionesRemotas extends WndBase {
 //		text.setWidth("80px");
 //		row.appendChild(text);
 //		rows.appendChild(row);
-//		
+//
 //		row = new Row();
 //		row.setSpans("1,3");
 //		label = new Label("PASAJERO :");
@@ -495,7 +495,7 @@ public class WndOperacionesRemotas extends WndBase {
 //		text.setWidth("90%");
 //		row.appendChild(text);
 //		rows.appendChild(row);
-//		
+//
 //		row = new Row();
 //		row.setSpans("1,3");
 //		label = new Label("CLIENTE :");
@@ -505,7 +505,7 @@ public class WndOperacionesRemotas extends WndBase {
 //		text.setWidth("90%");
 //		row.appendChild(text);
 //		rows.appendChild(row);
-//		
+//
 //		grid.appendChild(rows);
 //		groupbox.appendChild(grid);
 //		win.appendChild(groupbox);
@@ -516,7 +516,7 @@ public class WndOperacionesRemotas extends WndBase {
 //		caption.setStyle("color:#C03131");
 //		groupbox.appendChild(caption);
 //		groupbox.appendChild(caption);
-//		
+//
 //		Hbox hboxDev=new Hbox();
 //		grid = new Grid();
 //		rows = new Rows();
@@ -526,7 +526,7 @@ public class WndOperacionesRemotas extends WndBase {
 //		columnInfoDev = new Column();
 //		columnsInfoDev.appendChild(columnInfoDev);
 //		grid.appendChild(columnsInfoDev);
-//				
+//
 //		/* INFO DEVOLUCION********************************/
 //		Grid gridDev= new Grid();
 //		gridDev.setWidth("145px");
@@ -544,7 +544,7 @@ public class WndOperacionesRemotas extends WndBase {
 //		columns.appendChild(column);
 //		gridDev.appendChild(columns);
 //		/* ********************************/
-//		
+//
 //		/*  REMOTA*************************/
 //		Groupbox groupRemoto=new Groupbox();
 //		groupRemoto.setClosable(false);
@@ -562,7 +562,7 @@ public class WndOperacionesRemotas extends WndBase {
 //		columnRemoto.setWidth("70px");
 //		columnsRemoto.appendChild(columnRemoto);
 //		gridRemoto.appendChild(columnsRemoto);
-//		
+//
 //		label=new Label("AGENCIA (*) :");
 //		final Combobox cmbAgenciaRemota= new Combobox();
 //		cmbAgenciaRemota.setReadonly(true);
@@ -572,7 +572,7 @@ public class WndOperacionesRemotas extends WndBase {
 //		rowRemoto.appendChild(label);
 //		rowRemoto.appendChild(cmbAgenciaRemota);
 //		rowsRemoto.appendChild(rowRemoto);
-//				
+//
 //		final Combobox cmbUsuarioRemoto= new Combobox();
 //		UtilData.cargarGenericData(cmbUsuarioRemoto, false);
 //		cmbUsuarioRemoto.setReadonly(true);
@@ -583,7 +583,7 @@ public class WndOperacionesRemotas extends WndBase {
 //		rowRemoto.appendChild(cmbUsuarioRemoto);
 //		rowsRemoto.appendChild(rowRemoto);
 //		gridRemoto.appendChild(rowsRemoto);
-//		
+//
 //		cmbAgenciaRemota.addEventListener(Events.ON_CHANGE,new EventListener<Event>() {
 //			@Override
 //			public void onEvent(Event event) throws Exception {
@@ -596,30 +596,30 @@ public class WndOperacionesRemotas extends WndBase {
 //				}
 //			}
 //		});
-//				
+//
 //		cmbUsuarioRemoto.addEventListener(Events.ON_CHANGE,new EventListener<Event>() {
 //			@Override
 //			public void onEvent(Event event) throws Exception {
 //				txtDevMotivo.setFocus(true);
 //			}
 //		});
-//		
+//
 //		/* *************************************/
-//				
+//
 //		/* ******DEVOLUCION EXTEMPORANEA */
 //		Grid gridExtempo=new Grid();
 //		columns =new Columns();
 //		column=new Column();
 //		columns.appendChild(column);
 //		gridExtempo.appendChild(columns);
-//		
+//
 //		rows=new Rows();
 //		row=new Row();
-//		
+//
 //		final Checkbox chbxExtempo=new Checkbox("Devolución Extemporánea");
 //		row.appendChild(chbxExtempo);
 //		rows.appendChild(row);
-//		
+//
 //		row=new Row();
 //		Hbox hbox=new Hbox();
 //		label=new Label("Password Autorizador :");
@@ -633,9 +633,9 @@ public class WndOperacionesRemotas extends WndBase {
 //		hbox.appendChild(txtPasAutorizador);
 //		row.appendChild(hbox);
 //		rows.appendChild(row);
-//		
+//
 //		gridExtempo.appendChild(rows);
-//		
+//
 //		chbxExtempo.addEventListener(Events.ON_CHECK,new EventListener<Event>() {
 //			@Override
 //			public void onEvent(Event event) throws Exception {
@@ -649,12 +649,12 @@ public class WndOperacionesRemotas extends WndBase {
 //				}
 //			}
 //		});
-//		
-//		
+//
+//
 //		/* ************************************/
-//		
-//		
-//		rowDev = new Row();		
+//
+//
+//		rowDev = new Row();
 //		label = new Label("DEVOLUCION (*) :");
 //		cmbDevPorcentaje = new Combobox();
 //		cmbDevPorcentaje.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
@@ -679,7 +679,7 @@ public class WndOperacionesRemotas extends WndBase {
 //		cmbDevPorcentaje.setReadonly(true);
 //		cmbDevPorcentaje.setAutodrop(true);
 //		onLoadDevolucion(cmbDevPorcentaje);
-////		Hbox 
+////		Hbox
 //		rows=new Rows();
 //		hbox=new Hbox();
 //		Space space=new Space();
@@ -691,7 +691,7 @@ public class WndOperacionesRemotas extends WndBase {
 //		row=new Row();
 //		row.appendChild(hbox);
 //		rows.appendChild(row);
-//					
+//
 //		rowDev = new Row();
 //		label = new Label("TARIFA :");
 //		rowDev.appendChild(label);
@@ -701,7 +701,7 @@ public class WndOperacionesRemotas extends WndBase {
 //		dblDevtarifa.setReadonly(true);
 //		rowDev.appendChild(dblDevtarifa);
 //		rowsDev.appendChild(rowDev);
-//		
+//
 //		rowDev = new Row();
 //		label = new Label("DESCUENTO :");
 //		rowDev.appendChild(label);
@@ -711,7 +711,7 @@ public class WndOperacionesRemotas extends WndBase {
 //		dblDevDescuento.setReadonly(true);
 //		rowDev.appendChild(dblDevDescuento);
 //		rowsDev.appendChild(rowDev);
-//		
+//
 //		rowDev = new Row();
 //		label = new Label("RECARGO :");
 //		rowDev.appendChild(label);
@@ -721,7 +721,7 @@ public class WndOperacionesRemotas extends WndBase {
 //		dblDevRecargo.setReadonly(true);
 //		rowDev.appendChild(dblDevRecargo);
 //		rowsDev.appendChild(rowDev);
-//		
+//
 //		rowDev = new Row();
 //		label = new Label("PENALIDAD :");
 //		rowDev.appendChild(label);
@@ -731,7 +731,7 @@ public class WndOperacionesRemotas extends WndBase {
 //		dblDevPenalidad.setReadonly(true);
 //		rowDev.appendChild(dblDevPenalidad);
 //		rowsDev.appendChild(rowDev);
-//		
+//
 //		rowDev = new Row();
 //		label = new Label("IMPORTE :");
 //		rowDev.appendChild(label);
@@ -741,20 +741,20 @@ public class WndOperacionesRemotas extends WndBase {
 //		dblDevImporte.setReadonly(true);
 //		rowDev.appendChild(dblDevImporte);
 //		rowsDev.appendChild(rowDev);
-//		
+//
 //		gridDev.appendChild(rowsDev);
 //		groupRemoto.appendChild(gridRemoto);
 //		row=new Row();
 //		hboxDev.appendChild(gridDev);
-//		
+//
 //		Vbox vbox=new Vbox();
 //		vbox.appendChild(groupRemoto);
 //		vbox.appendChild(gridExtempo);
-//		
+//
 //		hboxDev.appendChild(vbox);
 //		row.appendChild(hboxDev);
 //		rows.appendChild(row);
-//		
+//
 //		row = new Row();
 //		hbox=new Hbox();
 //		hbox.setAlign("center");
@@ -768,11 +768,11 @@ public class WndOperacionesRemotas extends WndBase {
 //		hbox.appendChild(txtDevMotivo);
 //		row.appendChild(hbox);
 //		rows.appendChild(row);
-//		
-//		grid.appendChild(rows);		
+//
+//		grid.appendChild(rows);
 //		groupbox.appendChild(grid);
 //		win.appendChild(groupbox);
-//		
+//
 //		grid = new Grid();
 //		columns = new Columns();
 //		column = new Column();
@@ -810,7 +810,7 @@ public class WndOperacionesRemotas extends WndBase {
 //					}else{
 //						//Valida password autorizador
 //						TreeMap<String, Object>criteriosBusqueda=new TreeMap<String,Object>();
-//						criteriosBusqueda.put("password", txtPasAutorizador.getText().trim());	
+//						criteriosBusqueda.put("password", txtPasAutorizador.getText().trim());
 //						criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 //						List<AutorizadorCortesia> lstAutCort= ServiceLocator.getAutorizadorCortesiaManager().buscarPorX(criteriosBusqueda, null);
 //						if(lstAutCort.size()==0){
@@ -822,15 +822,15 @@ public class WndOperacionesRemotas extends WndBase {
 //					DlgMessage.information(Messages.getString("Generales.information.manifiestoImpreso"));
 //					return;
 //				}
-//					
-//												
+//
+//
 //				//Valida que el usuario remoto seleccionado tenga una liquidacion abierta
 //				final Liquidacion liquidacion=ServiceLocator.getLiquidacionManager().buscarUltimaLiquidacion(((Agencia)cmbAgenciaRemota.getSelectedItem().getValue()).getId(),((Usuario)cmbUsuarioRemoto.getSelectedItem().getValue()).getId(), Constantes.TRUE_VALUE);
 //				if(liquidacion==null){
 //					DlgMessage.information(Messages.getString("wndOperacionesRemotas.information.noLiquidacionAbierta"));
 //					return;
 //				}
-//				
+//
 //				Messagebox.show(Messages.getString("WndDevolucionBoleto.question.confirmarDevolucion"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 //					public void onEvent(Event e){
 //						try{
@@ -853,7 +853,7 @@ public class WndOperacionesRemotas extends WndBase {
 ////									boletoDevolver.setFechaTransferencia(null);
 ////									UtilData.auditarRegistro(boletoDevolver, getUsuario(), Executions.getCurrent());
 ////									int result = ServiceLocator.getVentaPasajesManager().devolucionBoleto(boletoDevolver);
-////									
+////
 ////									if(result==Constantes.CORRECT){
 ////										DlgMessage.information(Messages.getString("WndDevolucionBoleto.information.exitoDevolucion")+" "+boletoDevolver.getNumeroControl());
 ////										wndDevolucion.onClose();
@@ -879,21 +879,21 @@ public class WndOperacionesRemotas extends WndBase {
 //		button.setHeight("28px");
 //		button.setFocus(true);
 //		row.appendChild(button);
-//		
+//
 //		rows.appendChild(row);
-//		
+//
 //		grid.appendChild(rows);
 //		win.appendChild(grid);
-//		
+//
 //		wndDevolucion = win;
 //		this.appendChild(wndDevolucion);
 //		wndDevolucion.setMode(MODAL);
 //	}
-	
+
 	/**
 	 * Crea una venta para la devolucion
-	 * @param ventaOriginal 
-	 * @throws Exception 
+	 * @param ventaOriginal
+	 * @throws Exception
 	 */
 	private void createVentanaDevolucion(final VentaPasaje ventaOriginal) throws Exception{
 		Caption caption = null;
@@ -905,24 +905,24 @@ public class WndOperacionesRemotas extends WndBase {
 		Row row = null;
 		Label label = null;
 		Textbox text = null;
-		
+
 		final Window win = new Window("", "normal", true);
 		win.setWidth("500px");
-		
+
 		caption = new Caption("DEVOLUCION DE BOLETO", "resources/menu/menu_reimprimir.png");
 		win.appendChild(caption);
 		label = new Label("Se va a realizar la Devolución del Comprobante con los siguientes datos :");
 		label.setStyle("font-size:12px !important");
 		win.appendChild(label);
-		
+
 		win.appendChild(new Separator("horizontal"));
-		
+
 		groupbox = new Groupbox();
 		groupbox.setClosable(false);
 		caption = new Caption("Información del Comprobante a devolver");
 		caption.setStyle("font-size:12px !important;color:black;font-weight: bold");
 		groupbox.appendChild(caption);
-		
+
 		/*	Columna 1	*/
 		column = new Column();
 		column.setAlign("right");
@@ -937,10 +937,10 @@ public class WndOperacionesRemotas extends WndBase {
 		/*	Columna 4	*/
 		column = new Column();
 		columns.appendChild(column);
-		
+
 		grid.appendChild(columns);
-		
-		row = new Row();		
+
+		row = new Row();
 		if(ventaOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE)
 			label = new Label("NUMERO BOLETO :");
 		else if(ventaOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA)
@@ -948,21 +948,21 @@ public class WndOperacionesRemotas extends WndBase {
 		else if(ventaOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_FACTURA)
 			label = new Label("NUMERO FACTURA :");
 		label.setStyle("color:blue");
-		row.appendChild(label);		
+		row.appendChild(label);
 		text = new Textbox(ventaOriginal.getNumeroBoleto());
 		text.setStyle("font-size:11px !important");
 		text.setReadonly(true);
 		text.setWidth("80px");
-		row.appendChild(text);		
+		row.appendChild(text);
 		label = new Label("FECHA VIAJE :");
-		row.appendChild(label);		
+		row.appendChild(label);
 		text = new Textbox(ventaOriginal.getFechaPartida()==null?"":Util.DatetoString(ventaOriginal.getFechaPartida(), Constantes.DATE_FORMAT));
 		text.setStyle("font-size:11px !important");
 		text.setReadonly(true);
 		text.setWidth("80px");
 		row.appendChild(text);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		label = new Label("NUMERO ASIENTO :");
 		row.appendChild(label);
@@ -979,7 +979,7 @@ public class WndOperacionesRemotas extends WndBase {
 		text.setWidth("80px");
 		row.appendChild(text);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		row.setSpans("1,3");
 		label = new Label("PASAJERO :");
@@ -989,7 +989,7 @@ public class WndOperacionesRemotas extends WndBase {
 		text.setWidth("90%");
 		row.appendChild(text);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		row.setSpans("1,3");
 		label = new Label("CLIENTE :");
@@ -999,7 +999,7 @@ public class WndOperacionesRemotas extends WndBase {
 		text.setWidth("90%");
 		row.appendChild(text);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		row.setSpans("1,3");
 		label = new Label("CANAL VENTA :");
@@ -1018,21 +1018,21 @@ public class WndOperacionesRemotas extends WndBase {
 		lblCanalVenta.setWidth("100%");
 		row.appendChild(lblCanalVenta);
 		rows.appendChild(row);
-		
-		
+
+
 		grid.appendChild(rows);
 		groupbox.appendChild(grid);
 		win.appendChild(groupbox);
 		/* ***************************************** */
-		
-		
+
+
 		/**INFORMACION REMOTA*/
 		groupbox = new Groupbox();
 		groupbox.setClosable(false);
 		caption = new Caption("Información Remota");
 		caption.setStyle("font-size:12px !important;color:blue;font-weight: bold");
 		groupbox.appendChild(caption);
-		
+
 		Grid gr= new Grid();
 		rows= new  Rows();
 		row= new Row();
@@ -1044,7 +1044,7 @@ public class WndOperacionesRemotas extends WndBase {
 		column= new Column();
 		columns.appendChild(column);
 		gr.appendChild(columns);
-		
+
 		final Combobox cmbAgenciaRemota= new Combobox();
 		cmbAgenciaRemota.setReadonly(true);
 		UtilData.cargarAgenciaXtipoAgencia(cmbAgenciaRemota, Constantes.ID_TIPAGE_TEPSA,false);
@@ -1054,7 +1054,7 @@ public class WndOperacionesRemotas extends WndBase {
 		row.appendChild(label);
 		row.appendChild(cmbAgenciaRemota);
 		rows.appendChild(row);
-				
+
 		final Combobox cmbUsuarioRemoto= new Combobox();
 		UtilData.cargarGenericData(cmbUsuarioRemoto, false);
 		cmbUsuarioRemoto.setReadonly(true);
@@ -1065,7 +1065,7 @@ public class WndOperacionesRemotas extends WndBase {
 		row.appendChild(cmbUsuarioRemoto);
 		rows.appendChild(row);
 		gr.appendChild(rows);
-		
+
 		cmbAgenciaRemota.addEventListener(Events.ON_CHANGE,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -1081,14 +1081,14 @@ public class WndOperacionesRemotas extends WndBase {
 		groupbox.appendChild(gr);
 		win.appendChild(groupbox);
 		/**FIN INFORMACION REMOTA*/
-		
-		
+
+
 		groupbox = new Groupbox();
 		groupbox.setClosable(false);
 		caption = new Caption("Información de la Devolución");
 		caption.setStyle("font-size:12px !important;color:black;font-weight: bold");
 		groupbox.appendChild(caption);
-		
+
 		grid = new Grid();
 		rows = new Rows();
 		columns = new Columns();
@@ -1110,16 +1110,16 @@ public class WndOperacionesRemotas extends WndBase {
 		column = new Column();
 		columns.appendChild(column);
 		grid.appendChild(columns);
-		
+
 		row = new Row();
 		row.setSpans("1,3");
 		label = new Label("% DE DEVOLUCION :");
-		row.appendChild(label);		
+		row.appendChild(label);
 		cmbPorcentajeDevolucion = new Combobox();
-		cmbPorcentajeDevolucion.setDisabled(true);;
+		cmbPorcentajeDevolucion.setDisabled(true);
 		cmbPorcentajeDevolucion.setWidth("130px");
 		llenarTiposDevolucion(cmbPorcentajeDevolucion);
-		row.appendChild(cmbPorcentajeDevolucion);		
+		row.appendChild(cmbPorcentajeDevolucion);
 		rows.appendChild(row);
 
 		row = new Row();
@@ -1133,11 +1133,11 @@ public class WndOperacionesRemotas extends WndBase {
 		row.setSpans("1,3");
 		row.appendChild(txtMotivo);
 		rows.appendChild(row);
-		
-		grid.appendChild(rows);		
+
+		grid.appendChild(rows);
 		groupbox.appendChild(grid);
 		win.appendChild(groupbox);
-		
+
 		grid = new Grid();
 		columns = new Columns();
 		column = new Column();
@@ -1149,7 +1149,7 @@ public class WndOperacionesRemotas extends WndBase {
 		grid.appendChild(columns);
 		rows = new Rows();
 		row = new Row();
-		
+
 		Button button = new Button("Continuar", "resources/mp_aceptarEnabled.png");
 		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
@@ -1176,7 +1176,7 @@ public class WndOperacionesRemotas extends WndBase {
 //					}else{
 //						//Valida password autorizador
 //						TreeMap<String, Object>criteriosBusqueda=new TreeMap<String,Object>();
-//						criteriosBusqueda.put("password", txtPasAutorizador.getText().trim());	
+//						criteriosBusqueda.put("password", txtPasAutorizador.getText().trim());
 //						criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 //						List<AutorizadorCortesia> lstAutCort= ServiceLocator.getAutorizadorCortesiaManager().buscarPorX(criteriosBusqueda, null);
 //						if(lstAutCort.size()==0){
@@ -1195,7 +1195,7 @@ public class WndOperacionesRemotas extends WndBase {
 					DlgMessage.information(Messages.getString("wndOperacionesRemotas.information.noLiquidacionAbierta"));
 					return;
 				}
-				
+
 				Messagebox.show(Messages.getString("WndDevolucionBoleto.question.confirmarDevolucion"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 					@Override
 					public void onEvent(Event e){
@@ -1216,21 +1216,21 @@ public class WndOperacionesRemotas extends WndBase {
 									boletoDevolver.setFechaLiquidacion(liquidacion.getFechaLiquidacion());
 									boletoDevolver.setLiquidacion(null);
 									boletoDevolver.setFechaTransferencia(null);
-									
+
 									/*Buscando el tipo de nota de credito a aplicar*/
-									if(boletoDevolver.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA || 
+									if(boletoDevolver.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA ||
 											boletoDevolver.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_FACTURA){
 										TipoNota tipoNota=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CREDITO_DEVOLUCION);
 										boletoDevolver.setTipoNota(tipoNota);
 									}
-									
+
 									UtilData.auditarRegistro(boletoDevolver, getUsuario(), Executions.getCurrent());
 									VentaPasaje notaCredito= ServiceLocator.getVentaPasajesManager().devolucionBoleto(boletoDevolver, null);
-									
+
 									/*Realiza el envio de la nota de credito - 11/11/2016 - jabanto*/
 									if(notaCredito!=null)
 										WSFE.sendNota(notaCredito);
-									
+
 									DlgMessage.information(Messages.getString("WndDevolucionBoleto.information.exitoDevolucion")+" "+boletoDevolver.getNumeroControl());
 									wndDevolucion.onClose();
 									buscarVentas();
@@ -1255,28 +1255,28 @@ public class WndOperacionesRemotas extends WndBase {
 		button.setHeight("28px");
 		button.setFocus(true);
 		row.appendChild(button);
-		
+
 		rows.appendChild(row);
-		
+
 		grid.appendChild(rows);
 		win.appendChild(grid);
-		
+
 		wndDevolucion = win;
 		this.appendChild(wndDevolucion);
 		wndDevolucion.setMode(MODAL);
 	}
-	
-	private void llenarTiposDevolucion(Combobox cmbPorcentajeDevolucion){		
+
+	private void llenarTiposDevolucion(Combobox cmbPorcentajeDevolucion){
 		/*Todas las devoluciones son al 100% - 28/10/2016 - jabanto*/
 		Comboitem  item = new Comboitem(DEVOLUCION_100);
 		item.setValue(100);
 		cmbPorcentajeDevolucion.appendChild(item);
 		cmbPorcentajeDevolucion.setSelectedIndex(0);
-	}	
-	
+	}
+
 	private void createVentanaPostergacion(final VentaPasaje postergacion)throws Exception{
 		final VentaPasaje postergacionOrg=(VentaPasaje) postergacion.clone();
-		
+
 		Caption caption = null;
 		Groupbox groupbox = new Groupbox();
 		Grid grid = new Grid();
@@ -1286,17 +1286,17 @@ public class WndOperacionesRemotas extends WndBase {
 		Row row = null;
 		Label label = null;
 		Textbox text = null;
-		
+
 		final Window win = new Window("", "normal", false);
 		win.setWidth("700px");
 		caption = new Caption("POSTERGACIÓN", "resources/mp_calendarEnabled.png");
 		win.appendChild(caption);
-		
+
 		groupbox.setClosable(false);
 		caption = new Caption("Situación Actual");
 		caption.setStyle("color:#C03131");
 		groupbox.appendChild(caption);
-				
+
 		/*column 1 */
 		column=new Column();
 		column.setWidth("100px");
@@ -1314,9 +1314,9 @@ public class WndOperacionesRemotas extends WndBase {
 		/*column 4 */
 		column=new Column();
 		columns.appendChild(column);
-		
+
 		grid.appendChild(columns);
-		
+
 		row=new Row();
 		label=new Label("ITINERARIO :");
 		row.appendChild(label);
@@ -1326,7 +1326,7 @@ public class WndOperacionesRemotas extends WndBase {
 		txtPosSituActuItinerario.setWidth("100px");
 		row.appendChild(txtPosSituActuItinerario);
 		rows.appendChild(row);
-		
+
 		label=new Label("ASIENTO :");
 		row.appendChild(label);
 		text=new Textbox(postergacionOrg.getNumeroAsiento().toString());
@@ -1335,7 +1335,7 @@ public class WndOperacionesRemotas extends WndBase {
 		text.setWidth("50px");
 		row.appendChild(text);
 		rows.appendChild(row);
-		
+
 		row=new Row();
 		label=new Label("PASAJERO :");
 		row.appendChild(label);
@@ -1344,7 +1344,7 @@ public class WndOperacionesRemotas extends WndBase {
 		text.setWidth("210px");
 		row.appendChild(text);
 		rows.appendChild(row);
-		
+
 		label=new Label("CLIENTE :");
 		row.appendChild(label);
 		text=new Textbox(postergacionOrg.getCliente()!=null?postergacionOrg.getCliente().toString():"");
@@ -1352,7 +1352,7 @@ public class WndOperacionesRemotas extends WndBase {
 		text.setWidth("210px");
 		row.appendChild(text);
 		rows.appendChild(row);
-		
+
 		row=new Row();
 		label=new Label("NRO. BOLETO :");
 		row.appendChild(label);
@@ -1362,7 +1362,7 @@ public class WndOperacionesRemotas extends WndBase {
 		text.setWidth("150px");
 		row.appendChild(text);
 		rows.appendChild(row);
-		
+
 		label=new Label("NRO. CONTROL :");
 		row.appendChild(label);
 		text=new Textbox(postergacionOrg.getNumeroControl());
@@ -1381,7 +1381,7 @@ public class WndOperacionesRemotas extends WndBase {
 		txtPosSituActuRuta.setWidth("150px");
 		row.appendChild(txtPosSituActuRuta);
 		rows.appendChild(row);
-		
+
 		label=new Label("SERVICO :");
 		row.appendChild(label);
 		text=new Textbox(postergacionOrg.getServicio().getDenominacion());
@@ -1390,7 +1390,7 @@ public class WndOperacionesRemotas extends WndBase {
 		text.setWidth("150px");
 		row.appendChild(text);
 		rows.appendChild(row);
-		
+
 		row=new Row();
 		label=new Label("PTO. EMBARQUE :");
 		row.appendChild(label);
@@ -1400,7 +1400,7 @@ public class WndOperacionesRemotas extends WndBase {
 		text.setWidth("150px");
 		row.appendChild(text);
 		rows.appendChild(row);
-		
+
 		label=new Label("FECHA HORA SALIDA :");
 		row.appendChild(label);
 		text=new Textbox(Constantes.FORMAT_DATE.format(postergacionOrg.getFechaPartida())+" "+postergacionOrg.getHoraPartida());
@@ -1409,11 +1409,11 @@ public class WndOperacionesRemotas extends WndBase {
 		text.setWidth("100px");
 		row.appendChild(text);
 		rows.appendChild(row);
-						
+
 		grid.appendChild(rows);
 		groupbox.appendChild(grid);
 		win.appendChild(groupbox);
-		
+
 		//NUEVOS DATOS DE LA VENTA
 		groupbox=new Groupbox();
 		grid=new Grid();
@@ -1421,7 +1421,7 @@ public class WndOperacionesRemotas extends WndBase {
 		caption = new Caption("Nuevos datos de la Venta");
 		caption.setStyle("color:#C03131");
 		groupbox.appendChild(caption);
-		
+
 		/*column 1 */
 		columns=new Columns();
 		column=new Column();
@@ -1440,9 +1440,9 @@ public class WndOperacionesRemotas extends WndBase {
 		/*column 4 */
 		column=new Column();
 		columns.appendChild(column);
-		
+
 		grid.appendChild(columns);
-		
+
 		rows=new Rows();
 		row=new Row();
 		label=new Label("ITINERARIO :");
@@ -1458,11 +1458,11 @@ public class WndOperacionesRemotas extends WndBase {
 		imgItinerario.setStyle("cursor:pointer");
 		imgItinerario.setTooltiptext("Seleccionar itinerario");
 		hbox.appendChild(imgItinerario);
-		
+
 		Separator separator=new Separator();
 		separator.setWidth("25px");
 		hbox.appendChild(separator);
-		
+
 		label=new Label("ASIENTO :");
 		hbox.appendChild(label);
 		txtNumeroAsientoPostergado=new Textbox();
@@ -1473,19 +1473,19 @@ public class WndOperacionesRemotas extends WndBase {
 		txtNumeroPisoPostergado.setVisible(false);
 		hbox.appendChild(txtNumeroPisoPostergado);
 		hbox.appendChild(txtNumeroAsientoPostergado);
-		
+
 		String pathImg=imgAsiento.getSrc();
 		imgAsiento=new Image(pathImg);
 		imgAsiento.setStyle("cursor:pointer");
 		imgAsiento.setVisible(false);
 		hbox.appendChild(imgAsiento);
 		row.appendChild(hbox);
-		
+
 		row.setSpans("1,2");
 		chkFechaAbierta=new Checkbox("Fecha Abierta");
 		row.appendChild(chkFechaAbierta);
 		rows.appendChild(row);
-		
+
 		row=new Row();
 		label=new Label("PASAJERO :");
 		row.appendChild(label);
@@ -1494,7 +1494,7 @@ public class WndOperacionesRemotas extends WndBase {
 		text.setWidth("210px");
 		row.appendChild(text);
 		rows.appendChild(row);
-				
+
 		label=new Label("CLIENTE :");
 		row.appendChild(label);
 		text=new Textbox(postergacionOrg.getCliente()!=null?postergacionOrg.getCliente().toString():"");
@@ -1502,7 +1502,7 @@ public class WndOperacionesRemotas extends WndBase {
 		text.setWidth("210px");
 		row.appendChild(text);
 		rows.appendChild(row);
-		
+
 		row=new Row();
 		label=new Label("NRO. BOLETO :");
 		row.appendChild(label);
@@ -1512,7 +1512,7 @@ public class WndOperacionesRemotas extends WndBase {
 		txtBoletoPostergado.setWidth("150px");
 		row.appendChild(txtBoletoPostergado);
 		rows.appendChild(row);
-		
+
 		label=new Label("RUTA :");
 		row.appendChild(label);
 		txtRutaPostergado=new Textbox();
@@ -1521,7 +1521,7 @@ public class WndOperacionesRemotas extends WndBase {
 		txtRutaPostergado.setWidth("150px");
 		row.appendChild(txtRutaPostergado);
 		rows.appendChild(row);
-		
+
 		row=new Row();
 		label=new Label("SERVICO :");
 		row.appendChild(label);
@@ -1531,7 +1531,7 @@ public class WndOperacionesRemotas extends WndBase {
 		txtServicioPostergado.setWidth("150px");
 		row.appendChild(txtServicioPostergado);
 		rows.appendChild(row);
-		
+
 		label=new Label("PTO. EMBARQUE :");
 		row.appendChild(label);
 		cmbEmbarquePostergado=new Combobox();
@@ -1539,7 +1539,7 @@ public class WndOperacionesRemotas extends WndBase {
 		cmbEmbarquePostergado.setWidth("160px");
 		row.appendChild(cmbEmbarquePostergado);
 		rows.appendChild(row);
-		
+
 		row=new Row();
 		label=new Label("FECHA SALIDA :");
 		row.appendChild(label);
@@ -1549,7 +1549,7 @@ public class WndOperacionesRemotas extends WndBase {
 		txtSalidaPostergado.setWidth("150px");
 		row.appendChild(txtSalidaPostergado);
 		rows.appendChild(row);
-		
+
 		label=new Label("HORA EMBARQUE:");
 		row.appendChild(label);
 		txtHoraEmbarque=new Textbox();
@@ -1558,11 +1558,11 @@ public class WndOperacionesRemotas extends WndBase {
 		txtHoraEmbarque.setWidth("150px");
 		row.appendChild(txtHoraEmbarque);
 		rows.appendChild(row);
-						
+
 		grid.appendChild(rows);
 		groupbox.appendChild(grid);
 		win.appendChild(groupbox);
-		
+
 		/* DATOS DEL PAGO*/
 		hbox=new Hbox();
 		groupbox=new Groupbox();
@@ -1573,7 +1573,7 @@ public class WndOperacionesRemotas extends WndBase {
 		caption = new Caption("Información del Pago");
 		caption.setStyle("color:#C03131");
 		groupbox.appendChild(caption);
-		
+
 		/*columns 1*/
 		columns=new Columns();
 		column=new Column();
@@ -1592,10 +1592,10 @@ public class WndOperacionesRemotas extends WndBase {
 		/*column 4*/
 		column=new Column();
 		columns.appendChild(column);
-		
+
 		grid.appendChild(columns);
 		rows=new Rows();
-		
+
 		row=new Row();
 		label=new Label("MONTO ANTERIOR :");
 		row.appendChild(label);
@@ -1605,7 +1605,7 @@ public class WndOperacionesRemotas extends WndBase {
 		dblbxMontoAnterior.setFormat("##0.00");
 		dblbxMontoAnterior.setLocale(Locale.US);
 		row.appendChild(dblbxMontoAnterior);
-		
+
 		label=new Label("TIPO COMPROBANTE :");
 		row.appendChild(label);
 		cmbTipoComprobante=new Combobox();
@@ -1614,7 +1614,7 @@ public class WndOperacionesRemotas extends WndBase {
 		Util.seleccionarValorItemCombo(TipoComprobante.class, cmbTipoComprobante, Constantes.ID_TIPCOM_BOLETO_VIAJE);
 		row.appendChild(cmbTipoComprobante);
 		rows.appendChild(row);
-		
+
 		row=new Row();
 		label=new Label("TARIFA :");
 		row.appendChild(label);
@@ -1633,7 +1633,7 @@ public class WndOperacionesRemotas extends WndBase {
 		Util.seleccionarValorItemCombo(FormaPago.class, cmbFormaPago, Constantes.ID_FORPAG_CONTADO);
 		row.appendChild(cmbFormaPago);
 		rows.appendChild(row);
-		
+
 		row=new Row();
 		label=new Label("DESCUENTO :");
 		row.appendChild(label);
@@ -1643,24 +1643,24 @@ public class WndOperacionesRemotas extends WndBase {
 		dblbxDescuento.setLocale(Locale.US);
 		dblbxDescuento.setFormat("##0.00");
 		row.appendChild(dblbxDescuento);
-			
+
 		label=new Label("TIPO FORMA PAGO :");
 		row.appendChild(label);
 		cmbTipoFormaPago=new Combobox();
 		cmbTipoFormaPago.setReadonly(true);
 		row.appendChild(cmbTipoFormaPago);
 		rows.appendChild(row);
-				
+
 		row=new Row();
 		label=new Label("SALDO :");
 		row.appendChild(label);
 		dblbxSaldo=new Doublebox(.00);
 		dblbxSaldo.setWidth("40px");
-		dblbxSaldo.setReadonly(true);	
+		dblbxSaldo.setReadonly(true);
 		dblbxSaldo.setLocale(Locale.US);
 		dblbxSaldo.setFormat("##0.00");
 		row.appendChild(dblbxSaldo);
-				
+
 		label=new Label("OPERADOR TARJETA :");
 		row.appendChild(label);
 		cmbOperadorTarjetaCredito=new Combobox();
@@ -1668,7 +1668,7 @@ public class WndOperacionesRemotas extends WndBase {
 		cmbOperadorTarjetaCredito.setDisabled(true);
 		row.appendChild(cmbOperadorTarjetaCredito);
 		rows.appendChild(row);
-						
+
 		row=new Row();
 		label=new Label("PENALIDAD :");
 		row.appendChild(label);
@@ -1678,7 +1678,7 @@ public class WndOperacionesRemotas extends WndBase {
 		dblbxPenalidad.setLocale(Locale.US);
 		dblbxPenalidad.setFormat("##0.00");
 		row.appendChild(dblbxPenalidad);
-		
+
 		label=new Label("TARJETA CRDITO :");
 		row.appendChild(label);
 		cmbTarjetaCredito=new Combobox();
@@ -1686,7 +1686,7 @@ public class WndOperacionesRemotas extends WndBase {
 		cmbTarjetaCredito.setDisabled(true);
 		row.appendChild(cmbTarjetaCredito);
 		rows.appendChild(row);
-		
+
 		row=new Row();
 		Hbox hbox2= new Hbox();
 		row.setSpans("1,3");
@@ -1702,7 +1702,7 @@ public class WndOperacionesRemotas extends WndBase {
 		hbox2.appendChild(chbxPagoMixto);
 		row.appendChild(hbox2);
 		rows.appendChild(row);
-		
+
 		row=new Row();
 		row.setSpans("1,3");
 		final Label lblImporteEfectivo=new Label("IMPORTE FECTIVO :");
@@ -1715,7 +1715,7 @@ public class WndOperacionesRemotas extends WndBase {
 		dblbxImporteEfectivo.setFormat("##0.00");
 		row.appendChild(dblbxImporteEfectivo);
 		rows.appendChild(row);
-		
+
 		row=new Row();
 		row.setSpans("1,3");
 		final Label lblImporteTarjeta=new Label("IMPORTE TARJETA :");
@@ -1728,12 +1728,12 @@ public class WndOperacionesRemotas extends WndBase {
 		dblbxImporteTarjeta.setFormat("##0.00");
 		row.appendChild(dblbxImporteTarjeta);
 		rows.appendChild(row);
-		
-		
+
+
 		grid.appendChild(rows);
 		groupbox.appendChild(grid);
 		hbox.appendChild(groupbox);
-		
+
 		/* DATOS DE LA AGENCIA REMOTA*/
 		Vbox vbox=new Vbox();
 		groupbox=new Groupbox();
@@ -1748,7 +1748,7 @@ public class WndOperacionesRemotas extends WndBase {
 		label=new Label("AGENCIA");
 		row.appendChild(label);
 		rows.appendChild(row);
-		
+
 		row=new Row();
 		final Combobox cmbAgenciaRemota =new Combobox();
 		cmbAgenciaRemota.setWidth("240px");
@@ -1756,12 +1756,12 @@ public class WndOperacionesRemotas extends WndBase {
 		cmbAgenciaRemota.setSelectedIndex(0);
 		row.appendChild(cmbAgenciaRemota);
 		rows.appendChild(row);
-		
+
 		row=new Row();
 		label=new Label("USUARIO");
 		row.appendChild(label);
 		rows.appendChild(row);
-		
+
 		row=new Row();
 		final Combobox cmbUsuarioRemoto=new Combobox();
 		cmbUsuarioRemoto.setWidth("240px");
@@ -1769,13 +1769,13 @@ public class WndOperacionesRemotas extends WndBase {
 		cmbUsuarioRemoto.setDisabled(true);
 		row.appendChild(cmbUsuarioRemoto);
 		rows.appendChild(row);
-			
-		
+
+
 		row=new Row();
 		label=new Label("ESPECIE VALORADA");
 		row.appendChild(label);
 		rows.appendChild(row);
-		
+
 		row=new Row();
 		bndbxUsuarioHardware=new Bandbox();
 		bndbxUsuarioHardware.setDisabled(true);
@@ -1783,7 +1783,7 @@ public class WndOperacionesRemotas extends WndBase {
 		bndbxUsuarioHardware.setAutodrop(true);
 		bndbxUsuarioHardware.setWidth("240px");
 		bndbxUsuarioHardware.setStyle("font-size:9px");
-		bndbxUsuarioHardware.setReadonly(true);	
+		bndbxUsuarioHardware.setReadonly(true);
 		Bandpopup bandpopup=new Bandpopup();
 		lbxUsuarioHardware=new Listbox();
 		lbxUsuarioHardware.setWidth("295px");
@@ -1799,10 +1799,10 @@ public class WndOperacionesRemotas extends WndBase {
 		bndbxUsuarioHardware.appendChild(bandpopup);
 		row.appendChild(bndbxUsuarioHardware);
 		rows.appendChild(row);
-		
+
 		grid.appendChild(rows);
 		groupbox.appendChild(grid);
-		
+
 		Div div=new Div();
 		div.setAlign("right");
 		hbox2=new Hbox();
@@ -1810,17 +1810,17 @@ public class WndOperacionesRemotas extends WndBase {
 		Button btnContinuar=new Button("Continuar", "/resources/mp_aceptarEnabled.png");
 		btnContinuar.setHeight("27px");
 		hbox2.appendChild(btnContinuar);
-		
+
 		Button btnCancelar=new Button("Cancelar","/resources/mp_cerrar.png");
 		btnCancelar.setHeight("27px");
 		hbox2.appendChild(btnCancelar);
 		div.appendChild(hbox2);
-						
+
 		vbox.appendChild(groupbox);
 		vbox.appendChild(div);
 		hbox.appendChild(vbox);
 		win.appendChild(hbox);
-		
+
 		/* Carga el tipo de forma de pago*/
 		onLoadTipoFormaPago(cmbTipoFormaPago,cmbFormaPago,cmbOperadorTarjetaCredito, cmbTarjetaCredito);
 		Util.seleccionarValorItemCombo(TipoFormaPago.class, cmbTipoFormaPago, Constantes.ID_TIPFORPAG_EFECTIVO);
@@ -1829,10 +1829,10 @@ public class WndOperacionesRemotas extends WndBase {
 		imgAsiento.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
-				enlazarMapaBus(imgAsiento);			
+				enlazarMapaBus(imgAsiento);
 			}
 		});
-		
+
 		/* Cuando selecciona el tipo forma de pago */
 		cmbTipoFormaPago.addEventListener(Events.ON_CHANGE,new EventListener<Event>() {
 			@Override
@@ -1840,7 +1840,7 @@ public class WndOperacionesRemotas extends WndBase {
 				onValidateTipoFormaPago(cmbTipoFormaPago,cmbOperadorTarjetaCredito,cmbTarjetaCredito);
 			}
 		});
-		
+
 		/* Cuando selecciona el operador tarjeta de credito*/
 		cmbOperadorTarjetaCredito.addEventListener(Events.ON_CHANGE,new EventListener<Event>() {
 			@Override
@@ -1848,7 +1848,7 @@ public class WndOperacionesRemotas extends WndBase {
 				onLoadTarjetas(cmbTarjetaCredito,cmbOperadorTarjetaCredito);
 			}
 		});
-			
+
 		/* Cuando selecciona pago mixo*/
 		chbxPagoMixto.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
 			@Override
@@ -1861,8 +1861,8 @@ public class WndOperacionesRemotas extends WndBase {
 				dblbxImporteTarjeta.setValue(.00);
 			}
 		});
-		
-		
+
+
 		/** OPCIONES REMOTAS*/
 		/* Cuando recive el foco el contros cmbAgenciaRemota*/
 		cmbAgenciaRemota.addEventListener(Events.ON_FOCUS,new EventListener<Event>() {
@@ -1871,7 +1871,7 @@ public class WndOperacionesRemotas extends WndBase {
 				cmbAgenciaRemota.select();
 			}
 		});
-		
+
 		/* Cuando se pulsa enter*/
 		cmbAgenciaRemota.addEventListener(Events.ON_OK,new EventListener<Event>() {
 			@Override
@@ -1879,7 +1879,7 @@ public class WndOperacionesRemotas extends WndBase {
 				Util.setFocus(cmbUsuarioRemoto);
 			}
 		});
-		
+
 		/* Cuando selecciona la agencia remota*/
 		cmbAgenciaRemota.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
@@ -1888,20 +1888,20 @@ public class WndOperacionesRemotas extends WndBase {
 				bndbxUsuarioHardware.setDisabled(true);
 				Util.limpiarCombobox(cmbUsuarioRemoto);
 				cmbUsuarioRemoto.setText("");
-				bndbxUsuarioHardware.setText(""); 
+				bndbxUsuarioHardware.setText("");
 				txtBoletoPostergado.setText("");
 				if(cmbAgenciaRemota.getSelectedIndex()>0){
 					UtilData.cargarUsuariosLiquidacion(cmbUsuarioRemoto,((Agencia)cmbAgenciaRemota.getSelectedItem().getValue()).getId(),Constantes.TRUE_VALUE,false);
 					loadUsuarioHardware(cmbAgenciaRemota, cmbUsuarioRemoto,txtBoletoPostergado);
 					cmbUsuarioRemoto.setFocus(true);
-					
+
 					cmbUsuarioRemoto.setDisabled(false);
 					bndbxUsuarioHardware.setDisabled(false);
 				}else
 					cmbAgenciaRemota.setSelectedIndex(0);
 			}
 		});
-		
+
 		/* Cuando el usuario cierra la venta*/
 		btnCancelar.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 			@Override
@@ -1910,21 +1910,21 @@ public class WndOperacionesRemotas extends WndBase {
 				win.onClose();
 			}
 		});
-		
+
 		dblbxImporteEfectivo.addEventListener(Events.ON_FOCUS,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				dblbxImporteEfectivo.select();
 			}
 		});
-		
+
 		dblbxImporteTarjeta.addEventListener(Events.ON_FOCUS,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				dblbxImporteTarjeta.select();
 			}
 		});
-		
+
 		btnContinuar.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -1952,11 +1952,11 @@ public class WndOperacionesRemotas extends WndBase {
 						else if(!(cmbTarjetaCredito.getSelectedItem().getValue() instanceof TarjetaCredito))
 							throw new TarjetaCreditoNullException();
 					}
-					
+
 					//Valida datos de la agencia remota
 					if(!(cmbAgenciaRemota.getSelectedItem().getValue() instanceof Agencia)){
 						DlgMessage.information(Messages.getString("wndOperacionesRemotas.information.noAgenciaRemota"),cmbAgenciaRemota);
-						return; 
+						return;
 					}else if (!(cmbUsuarioRemoto.getSelectedItem().getValue() instanceof Usuario)){
 						DlgMessage.information(Messages.getString("wndOperacionesRemotas.information.noUsuarioRemoto"),cmbUsuarioRemoto);
 						return;
@@ -1964,37 +1964,37 @@ public class WndOperacionesRemotas extends WndBase {
 						DlgMessage.information(Messages.getString("wndOperacionesRemotas.information.noEspecieValorada"));
 						return;
 					}
-						
-					
+
+
 //					if(chkCambioNombre.isChecked() && chkCambioNombre.isDisabled()==false){
 //						throw new PostergacionNoCambioNombreException();
 //					}else if (chkCambioRazonsocial.isChecked() && chkCambioRazonsocial.isDisabled()==false){
 //						throw new PostergacionNoCambioRazonSozialException();
 //					}
-					
+
 					if(chbxPagoMixto.isChecked()){
 						if(dblbxImporteEfectivo.getValue()<=0.0 || dblbxImporteTarjeta.getValue()<=0.0)
 							throw new ImporteMixtoNullException(ImporteMixtoNullException.IMPORTE_MIXTO_CERO);
 					}
-					
+
 					/*	Validando que el monto en efectivo + el monto en tarjeta sumen el importe pagado	*/
 					if(chbxPagoMixto.isChecked()){
 						if(dblbxImporteTotal.getValue().doubleValue()!=(dblbxImporteEfectivo.getValue().doubleValue()+dblbxImporteTarjeta.getValue().doubleValue()))
 							throw new ImporteMixtoNullException(ImporteMixtoNullException.IMPORTE_MIXTO_NOT_EQUALS);
 					}
-					
+
 					//Valida que el usuario remoto seleccionado tenga una liquidacion abierta
 					final Liquidacion liquidacion=ServiceLocator.getLiquidacionManager().buscarUltimaLiquidacion(((Agencia)cmbAgenciaRemota.getSelectedItem().getValue()).getId(),((Usuario)cmbUsuarioRemoto.getSelectedItem().getValue()).getId(), Constantes.TRUE_VALUE);
 					if(liquidacion==null){
 						DlgMessage.information(Messages.getString("wndOperacionesRemotas.information.noLiquidacionAbierta"));
 						return;
 					}
-					
+
 					Agencia agenciaRemota=(Agencia)cmbAgenciaRemota.getSelectedItem().getValue();
 					Usuario usuarioRemoto=(Usuario)cmbUsuarioRemoto.getSelectedItem().getValue();
 					UsuarioHardware usuarioHardwareRemoto=((ControlEspecieValorada)lbxUsuarioHardware.getSelectedItem().getValue()).getUsuarioHardware();
-					
-					
+
+
 					postergacion.setVentaPasaje(postergacionOrg);
 					FormaPago formaPago = (FormaPago)cmbFormaPago.getSelectedItem().getValue();
 					postergacion.setFormaPago(formaPago);
@@ -2007,7 +2007,7 @@ public class WndOperacionesRemotas extends WndBase {
 						postergacion.setTarjetaCredito(tarjetaCredito);
 					}else
 						postergacion.setTarjetaCredito(null);
-					
+
 					postergacion.setId(null);
 					postergacion.setNumeroBoleto(txtBoletoPostergado.getText().equals("")?null:txtBoletoPostergado.getText());
 					if(chkFechaAbierta.isChecked()){
@@ -2020,7 +2020,7 @@ public class WndOperacionesRemotas extends WndBase {
 						postergacion.setAgenciaLlegada(null);
 						postergacion.setNumeroPiso(null);
 						postergacion.setEsFechaAbierta(Constantes.TRUE_VALUE);
-						postergacion.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_POSTERGACION_FA));				
+						postergacion.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_POSTERGACION_FA));
 					}else{
 						postergacion.setNumeroAsiento(Integer.valueOf(txtNumeroAsientoPostergado.getText()));
 						postergacion.setFechaPartida(detalleItinerario.getFechaPartida());
@@ -2032,13 +2032,13 @@ public class WndOperacionesRemotas extends WndBase {
 						postergacion.setAgenciaLlegada(detalleItinerario.getAgenciaLlegada()); //opostergacion.getAgenciaLlegada());
 						postergacion.setNumeroPiso(Integer.valueOf(txtNumeroPisoPostergado.getText()));
 						postergacion.setEsFechaAbierta(Constantes.FALSE_VALUE);
-						
+
 						//Valida si se trata de una postergacion
 //						if(!(txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText()))){
 						postergacion.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_POSTERGACION));
 //						}
 					}
-					
+
 					//Coloca como observaciones una glosa y es que es un cambio de nombtre o razón social
 //					if(chkCambioNombre.isChecked())
 //						postergacion.setObservaciones("CAMBIO DE NOMBRE");
@@ -2050,7 +2050,7 @@ public class WndOperacionesRemotas extends WndBase {
 //							postergacion.setObservaciones(observacion);
 //						}
 //					}
-					
+
 					postergacion.setSecuencial(secuencial+1);
 					postergacion.setTarifa(dblbxTarifa.getValue());
 					postergacion.setRecargo(postergacion.getRecargo());
@@ -2072,13 +2072,13 @@ public class WndOperacionesRemotas extends WndBase {
 					postergacion.setNumeroBoletoAnterior(postergacion.getVentaPasaje().getNumeroBoleto());
 					postergacion.setEstadoDocumento(Constantes.ESTADO_DOCUMENTO_PAGADO);
 					UtilData.auditarRegistro(postergacion,getUsuario(), Executions.getCurrent());
-					
+
 //					Messagebox.show(Messages.getString("WndPostergacion.information.confirmacionPostergacion"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 //						@Override
 //						public void onEvent(Event e){
 //							try{
 //								if(e.getName().equals("onYes")){
-//									int result = ServiceLocator.getVentaPasajesManager().postergarBoleto(postergacion,true);						
+//									int result = ServiceLocator.getVentaPasajesManager().postergarBoleto(postergacion,true);
 //									if(result == Constantes.CORRECT){
 //										DlgMessage.information(Messages.getString("WndPostergacion.information.exitoPostergacion")+postergacion.getNumeroControl());
 //										buscarVentas();
@@ -2098,7 +2098,7 @@ public class WndOperacionesRemotas extends WndBase {
 //							}
 //						}
 //					});
-			
+
 				}catch (ItinerarioException i){
 					if(i.getTipo().intValue()==ItinerarioException.NO_SELECT){
 						DlgMessage.information(Messages.getString("WndPostergacion.information.noItinerarioSeleccionado"));
@@ -2111,7 +2111,7 @@ public class WndOperacionesRemotas extends WndBase {
 					DlgMessage.information(Messages.getString("WndPostergacion.information.noAsientoSeleccionado"));
 					imgAsiento.setFocus(true);
 				}catch(NumeroBoletoNullException nbnex){
-					DlgMessage.information(Messages.getString("WndPostergacion.information.noNumeroBoleto"));			
+					DlgMessage.information(Messages.getString("WndPostergacion.information.noNumeroBoleto"));
 				}catch(TipoComprobanteNullException tcnex){
 					DlgMessage.information(Messages.getString("WndPostergacion.information.noTipoComprobante"));
 					cmbTipoComprobante.setFocus(true);
@@ -2142,7 +2142,7 @@ public class WndOperacionesRemotas extends WndBase {
 				}
 			}
 		});
-		
+
 		chkFechaAbierta.addEventListener(Events.ON_CHECK,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -2157,7 +2157,7 @@ public class WndOperacionesRemotas extends WndBase {
 				cmbEmbarquePostergado.setText("");
 				txtSalidaPostergado.setText("");
 				txtHoraEmbarque.setText("");
-				
+
 				/* Si es una fecha abierta*/
 				if(chkFechaAbierta.isChecked()){
 					imgItinerario.setVisible(false);
@@ -2167,14 +2167,14 @@ public class WndOperacionesRemotas extends WndBase {
 					cmbEmbarquePostergado.setDisabled(true);
 					dblbxTarifa.setValue(postergacionOrg.getTarifa());
 					dblbxDescuento.setValue(postergacionOrg.getDescuento());
-					
+
 					dblbxSaldo.setValue(dblbxTarifa.getValue()-dblbxMontoAnterior.getValue()-dblbxDescuento.getValue()>0.0?dblbxTarifa.getValue()-dblbxMontoAnterior.getValue()-dblbxDescuento.getValue():0.0);
 //					if(chkCambioNombre.isChecked() || chkCambioRazonsocial.isChecked())
 //						dblbxPenalidad.setValue(Constantes.PENALIDAD_POSTERGACION+Constantes.PENALIDAD_CAMBIO_NOMBRE);
 //					else
 						dblbxPenalidad.setValue(Constantes.PENALIDAD_POSTERGACION);
 					dblbxImporteTotal.setValue(dblbxSaldo.getValue()+dblbxPenalidad.getValue());
-					
+
 					/*	Seteando el objeto postergacion con los nuevos datos para la venta	*/
 					postergacion.setItinerario(new Itinerario(Long.valueOf(1)));
 					postergacion.setServicio(postergacionOrg.getServicio());
@@ -2184,10 +2184,10 @@ public class WndOperacionesRemotas extends WndBase {
 					imgItinerario.setVisible(true);
 					imgAsiento.setVisible(false);
 					cmbEmbarquePostergado.setDisabled(false);
-															
+
 					Double penalidad=dblbxPenalidad.getValue()!=null?dblbxPenalidad.getValue():0;
 					dblbxPenalidad.setValue(penalidad-Constantes.PENALIDAD_POSTERGACION);
-					
+
 //					if(!(chkCambioNombre.isDisabled())){
 //						chkCambioNombre.setChecked(false);
 //						chkCambioNombre_onCheck();
@@ -2203,15 +2203,15 @@ public class WndOperacionesRemotas extends WndBase {
 				detalleItinerario = null;
 			}
 		});
-		
-		
+
+
 		enlazarItinerario(imgItinerario);
 		wndPostergacion = win;
 		this.appendChild(wndPostergacion);
 		wndPostergacion.setMode(MODAL);
 	}
-	
-	
+
+
 //	/**
 //	 * Crea la venta para la reimpresion
 //	 * @return
@@ -2227,10 +2227,10 @@ public class WndOperacionesRemotas extends WndBase {
 //		Row row = null;
 //		Label label = null;
 //		Textbox text = null;
-//		
+//
 //		final Window win = new Window("", "normal", true);
 //		win.setWidth("500px");
-//		
+//
 //		caption = new Caption("REIMPRESION DE BOLETO", "resources/menu/menu_reimprimir.png");
 //		win.appendChild(caption);
 //
@@ -2239,7 +2239,7 @@ public class WndOperacionesRemotas extends WndBase {
 //		caption = new Caption("Información del Boleto");
 //		caption.setStyle("color:#C03131");
 //		groupbox.appendChild(caption);
-//		
+//
 //		/*	Columna 1	*/
 //		column = new Column();
 //		column.setAlign("right");
@@ -2256,17 +2256,17 @@ public class WndOperacionesRemotas extends WndBase {
 //		/*	Columna 4	*/
 //		column = new Column();
 //		columns.appendChild(column);
-//		
+//
 //		grid.appendChild(columns);
-//		
-//		row = new Row();		
+//
+//		row = new Row();
 //		label = new Label("NUEVO BOLETO :");
-//		row.appendChild(label);		
+//		row.appendChild(label);
 //		txtNumeroboletoReimpresion=new Textbox();
 //		txtNumeroboletoReimpresion.setReadonly(true);
 //		txtNumeroboletoReimpresion.setWidth("80px");
 //		txtNumeroboletoReimpresion.setStyle(styleActivo_11px);
-//		row.appendChild(txtNumeroboletoReimpresion);		
+//		row.appendChild(txtNumeroboletoReimpresion);
 //		label = new Label("FECHA VIAJE :");
 //		row.appendChild(label);
 //		text = new Textbox(ventaOriginal.getFechaPartida()==null?"":Util.DatetoString(ventaOriginal.getFechaPartida(), Constantes.DATE_FORMAT));
@@ -2275,7 +2275,7 @@ public class WndOperacionesRemotas extends WndBase {
 //		text.setStyle(styleActivo_11px);
 //		row.appendChild(text);
 //		rows.appendChild(row);
-//		
+//
 //		row = new Row();
 //		label = new Label("NUMERO ASIENTO :");
 //		row.appendChild(label);
@@ -2293,7 +2293,7 @@ public class WndOperacionesRemotas extends WndBase {
 //		text.setStyle(styleActivo_11px);
 //		row.appendChild(text);
 //		rows.appendChild(row);
-//		
+//
 //		row = new Row();
 //		row.setSpans("1,3");
 //		label = new Label("PASAJERO :");
@@ -2303,7 +2303,7 @@ public class WndOperacionesRemotas extends WndBase {
 //		text.setWidth("96%");
 //		row.appendChild(text);
 //		rows.appendChild(row);
-//		
+//
 //		row = new Row();
 //		row.setSpans("1,3");
 //		label = new Label("CLIENTE :");
@@ -2313,7 +2313,7 @@ public class WndOperacionesRemotas extends WndBase {
 //		text.setWidth("96%");
 //		row.appendChild(text);
 //		rows.appendChild(row);
-//		
+//
 //		row = new Row();
 //		label = new Label("RUTA :");
 //		row.appendChild(label);
@@ -2328,7 +2328,7 @@ public class WndOperacionesRemotas extends WndBase {
 //		text.setWidth("100px");
 //		row.appendChild(text);
 //		rows.appendChild(row);
-//		
+//
 //		grid.appendChild(rows);
 //		groupbox.appendChild(grid);
 //		win.appendChild(groupbox);
@@ -2338,7 +2338,7 @@ public class WndOperacionesRemotas extends WndBase {
 //		caption = new Caption("Informacion del Pago");
 //		caption.setStyle("color:#C03131");
 //		groupbox.appendChild(caption);
-//		
+//
 //		grid = new Grid();
 //		rows = new Rows();
 //		columns = new Columns();
@@ -2358,15 +2358,15 @@ public class WndOperacionesRemotas extends WndBase {
 //		column.setWidth("100px");
 //		columns.appendChild(column);
 //		/*	Columna 4	*/
-//		column = new Column();		
+//		column = new Column();
 //		columns.appendChild(column);
-//		
+//
 //		grid.appendChild(columns);
-//		
+//
 //		row = new Row();
 //		row.setSpans("1,3");
 //		label = new Label("TIPO  COMPROBANTE :");
-//		row.appendChild(label);		
+//		row.appendChild(label);
 //		cmbTipoComprobante = new Combobox();
 //		cmbTipoComprobante.setWidth("110px");
 //		cmbTipoComprobante.setDisabled(true);
@@ -2375,18 +2375,18 @@ public class WndOperacionesRemotas extends WndBase {
 //		UtilData.cargarDataCombo(cmbTipoComprobante, TipoComprobante.class, criteriosBusqueda, false);
 //		row.appendChild(cmbTipoComprobante);
 //		rows.appendChild(row);
-//		
+//
 //		row = new Row();
 //		label = new Label("FORMA DE PAGO :");
-//		row.appendChild(label);		
+//		row.appendChild(label);
 //		cmbFormaPago = new Combobox();
 //		cmbFormaPago.setWidth("110px");
 //		UtilData.cargarDataCombo(cmbFormaPago, FormaPago.class, false);
-//		row.appendChild(cmbFormaPago);		
+//		row.appendChild(cmbFormaPago);
 //		rows.appendChild(row);
 //
 //		label = new Label("TIPO FORMA DE PAGO :");
-//		row.appendChild(label);		
+//		row.appendChild(label);
 //		cmbTipoFormaPago = new Combobox();
 //		cmbTipoFormaPago.setReadonly(true);
 //		cmbTipoFormaPago.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
@@ -2395,12 +2395,12 @@ public class WndOperacionesRemotas extends WndBase {
 //			}
 //		});
 //		cmbTipoFormaPago.setWidth("110px");
-//		row.appendChild(cmbTipoFormaPago);		
+//		row.appendChild(cmbTipoFormaPago);
 //		rows.appendChild(row);
-//		
+//
 //		row = new Row();
 //		label = new Label("OPERADOR TARJETA CREDITO :");
-//		row.appendChild(label);		
+//		row.appendChild(label);
 //		cmbOperadorTarjetaCredito = new Combobox();
 //		cmbOperadorTarjetaCredito.setReadonly(true);
 //		cmbOperadorTarjetaCredito.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
@@ -2410,29 +2410,29 @@ public class WndOperacionesRemotas extends WndBase {
 //		});
 //		cmbOperadorTarjetaCredito.setWidth("110px");
 //		cmbOperadorTarjetaCredito.setDisabled(true);
-//		row.appendChild(cmbOperadorTarjetaCredito);		
+//		row.appendChild(cmbOperadorTarjetaCredito);
 //		rows.appendChild(row);
-//		
+//
 //		label = new Label("TARJETA CREDITO :");
-//		row.appendChild(label);		
+//		row.appendChild(label);
 //		cmbTarjetaCredito = new Combobox();
 //		cmbTarjetaCredito.setWidth("110px");
 //		cmbTarjetaCredito.setReadonly(true);
 //		cmbTarjetaCredito.setDisabled(true);
-//		row.appendChild(cmbTarjetaCredito);		
+//		row.appendChild(cmbTarjetaCredito);
 //		rows.appendChild(row);
-//		
+//
 //		grid.appendChild(rows);
 //		groupbox.appendChild(grid);
 //		win.appendChild(groupbox);
-//		
+//
 //		/* Datos remotos */
 //		groupbox = new Groupbox();
 //		groupbox.setClosable(false);
 //		caption = new Caption("Informacion de la Agencia Remota.");
 //		caption.setStyle("color:#C03131");
 //		groupbox.appendChild(caption);
-//		
+//
 //		grid = new Grid();
 //		rows = new Rows();
 //		columns = new Columns();
@@ -2445,7 +2445,7 @@ public class WndOperacionesRemotas extends WndBase {
 //		column = new Column();
 //		columns.appendChild(column);
 //		grid.appendChild(columns);
-//		
+//
 //		row=new Row();
 //		label= new Label("AGENCIA (*) :");
 //		row.appendChild(label);
@@ -2455,7 +2455,7 @@ public class WndOperacionesRemotas extends WndBase {
 //		cmbAgenciaRemota.setWidth("330px");
 //		row.appendChild(cmbAgenciaRemota);
 //		rows.appendChild(row);
-//						
+//
 //		row=new Row();
 //		label= new Label("USUARIO (*) :");
 //		row.appendChild(label);
@@ -2465,7 +2465,7 @@ public class WndOperacionesRemotas extends WndBase {
 //		cmbUsuarioRemoto.setReadonly(true);
 //		row.appendChild(cmbUsuarioRemoto);
 //		rows.appendChild(row);
-//				
+//
 //		row=new Row();
 //		label= new Label("ESPECIE VALORADA (*) :");
 //		row.appendChild(label);
@@ -2475,8 +2475,8 @@ public class WndOperacionesRemotas extends WndBase {
 //		bndbxUsuarioHardware.setAutodrop(true);
 //		bndbxUsuarioHardware.setWidth("330px");
 //		bndbxUsuarioHardware.setStyle("font-size:9px");
-//		bndbxUsuarioHardware.setReadonly(true);	
-//		
+//		bndbxUsuarioHardware.setReadonly(true);
+//
 //		Bandpopup bandpopup=new Bandpopup();
 //		lbxUsuarioHardware=new Listbox();
 //		lbxUsuarioHardware.setWidth("320px");
@@ -2492,7 +2492,7 @@ public class WndOperacionesRemotas extends WndBase {
 //		bndbxUsuarioHardware.appendChild(bandpopup);
 //		row.appendChild(bndbxUsuarioHardware);
 //		rows.appendChild(row);
-//		
+//
 //		/* Cuando recive el foco la agencia, selecciona todo el texto */
 //		cmbAgenciaRemota.addEventListener(Events.ON_FOCUS,new EventListener<Event>() {
 //			@Override
@@ -2500,7 +2500,7 @@ public class WndOperacionesRemotas extends WndBase {
 //				cmbAgenciaRemota.select();
 //			}
 //		});
-//		
+//
 //		/* Cuando el usuario pulsa la tecla enter */
 //		cmbAgenciaRemota.addEventListener(Events.ON_OK,new EventListener<Event>() {
 //			@Override
@@ -2508,7 +2508,7 @@ public class WndOperacionesRemotas extends WndBase {
 //				cmbUsuarioRemoto.setFocus(true);
 //			}
 //		});
-//		
+//
 //		/* Cuando El usuario seleciona la agencia Remota*/
 //		cmbAgenciaRemota.addEventListener(Events.ON_CHANGE,new EventListener<Event>() {
 //			@Override
@@ -2523,23 +2523,23 @@ public class WndOperacionesRemotas extends WndBase {
 //					UtilData.cargarUsuariosLiquidacion(cmbUsuarioRemoto,((Agencia)cmbAgenciaRemota.getSelectedItem().getValue()).getId(),Constantes.TRUE_VALUE,false);
 //					loadUsuarioHardware(cmbAgenciaRemota, cmbUsuarioRemoto,txtNumeroboletoReimpresion);
 //					cmbUsuarioRemoto.setFocus(true);
-//					
+//
 //					cmbUsuarioRemoto.setDisabled(false);
 //					bndbxUsuarioHardware.setDisabled(false);
 //				}else
 //					cmbAgenciaRemota.setSelectedIndex(0);
 //			}
 //		});
-//		
 //
-//			
+//
+//
 //		grid.appendChild(rows);
 //		groupbox.appendChild(grid);
 //		win.appendChild(groupbox);
-//		
+//
 //		Util.seleccionarValorItemCombo(TipoComprobante.class, cmbTipoComprobante, Constantes.ID_TIPCOM_BOLETO_VIAJE);
 //		onSelectDefaultFormaPago();
-//		
+//
 //		grid = new Grid();
 //		columns = new Columns();
 //		column = new Column();
@@ -2570,7 +2570,7 @@ public class WndOperacionesRemotas extends WndBase {
 //					//Validacion de los datos demotos
 //					if(!(cmbAgenciaRemota.getSelectedItem().getValue() instanceof Agencia)){
 //						DlgMessage.information(Messages.getString("wndOperacionesRemotas.information.noAgenciaRemota"),cmbAgenciaRemota);
-//						return; 
+//						return;
 //					}else if (!(cmbUsuarioRemoto.getSelectedItem().getValue() instanceof Usuario)){
 //						DlgMessage.information(Messages.getString("wndOperacionesRemotas.information.noUsuarioRemoto"),cmbUsuarioRemoto);
 //						return;
@@ -2578,14 +2578,14 @@ public class WndOperacionesRemotas extends WndBase {
 //						DlgMessage.information(Messages.getString("wndOperacionesRemotas.information.noEspecieValorada"));
 //						return;
 //					}
-//					
+//
 //					//Valida que el usuario remoto seleccionado tenga una liquidacion abierta
 //					final Liquidacion liquidacion=ServiceLocator.getLiquidacionManager().buscarUltimaLiquidacion(((Agencia)cmbAgenciaRemota.getSelectedItem().getValue()).getId(),((Usuario)cmbUsuarioRemoto.getSelectedItem().getValue()).getId(), Constantes.TRUE_VALUE);
 //					if(liquidacion==null){
 //						DlgMessage.information(Messages.getString("wndOperacionesRemotas.information.noLiquidacionAbierta"));
 //						return;
 //					}
-//					
+//
 //					Messagebox.show(Messages.getString("WndReimprimirBoleto.question.confirmarReimpresion"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 //						public void onEvent(Event e){
 //							try{
@@ -2593,11 +2593,11 @@ public class WndOperacionesRemotas extends WndBase {
 //									Agencia agenciaRemota=(Agencia)cmbAgenciaRemota.getSelectedItem().getValue();
 //									Usuario usuarioRemoto=(Usuario)cmbUsuarioRemoto.getSelectedItem().getValue();
 //									UsuarioHardware usuarioHardwareRemoto=((ControlEspecieValorada)lbxUsuarioHardware.getSelectedItem().getValue()).getUsuarioHardware();
-//																											
+//
 //									VentaPasaje ventaPasajereRef= (VentaPasaje) ventaOriginal.clone();
 //									UtilData.auditarRegistro(ventaPasajereRef,true, getUsuario(), Executions.getCurrent());
-//									//----->>>									
-//																		
+//									//----->>>
+//
 //									ventaOriginal.setImportePagadoEfectivo(0.0);
 //									ventaOriginal.setImportePagadoTarjeta(0.0);
 //									boletoReimprimir = (VentaPasaje)ventaOriginal.clone();
@@ -2606,7 +2606,7 @@ public class WndOperacionesRemotas extends WndBase {
 //									ventaOriginal.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_ANULACION_SISTEMA));
 //									ventaOriginal.setUsuario(usuarioRemoto);
 //									UtilData.auditarRegistro(ventaOriginal, getUsuario(), Executions.getCurrent());
-//									
+//
 //									boletoReimprimir.setId(null);
 //									boletoReimprimir.setAgencia(agenciaRemota);
 //									boletoReimprimir.setUsuario(usuarioRemoto);
@@ -2621,7 +2621,7 @@ public class WndOperacionesRemotas extends WndBase {
 //									boletoReimprimir.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_REIMPRESION));
 //									boletoReimprimir.setUsuarioHardware(usuarioHardwareRemoto);
 //									boletoReimprimir.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-//									boletoReimprimir.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CONTADO));									
+//									boletoReimprimir.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CONTADO));
 //									TipoFormaPago tipoFormaPago = (TipoFormaPago)cmbTipoFormaPago.getSelectedItem().getValue();
 //									boletoReimprimir.setTipoFormaPago(tipoFormaPago);
 //									/*	Si ha seleccionado algun tipo de Tarjeta de Credito	*/
@@ -2638,7 +2638,7 @@ public class WndOperacionesRemotas extends WndBase {
 //										DlgMessage.information(Messages.getString("WndReimprimirBoleto.information.exitoReimpresion")+" "+boletoReimprimir.getNumeroControl());
 //										buscarVentas();
 //										wndReimpresion.onClose();
-//									}								
+//									}
 //								}
 //							}catch(NumeroBoletoDuplicadoException nbdex){
 //								DlgMessage.information(Messages.getString("WndReimprimirBoleto.information.numeroBoletoVendido"));
@@ -2670,15 +2670,15 @@ public class WndOperacionesRemotas extends WndBase {
 //		button.setHeight("28px");
 //		row.appendChild(button);
 //		rows.appendChild(row);
-//		
+//
 //		grid.appendChild(rows);
 //		win.appendChild(grid);
-//		
+//
 //		cmbAgenciaRemota.setFocus(true);
-//		
+//
 //		return win;
 //	}
-	
+
 	private void enlazarMapaBus(Image image) throws Exception{
 //		image.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 //			@Override
@@ -2701,22 +2701,22 @@ public class WndOperacionesRemotas extends WndBase {
 						public void onEvent(Event e){
 							postergacion.setNumeroAsiento(Integer.valueOf(txtNumeroAsientoPostergado.getText()));
 							postergacion.setNumeroPiso(Integer.valueOf(txtNumeroPisoPostergado.getText()));
-												
+
 //							if(chkCambioNombre.isChecked() || chkCambioRazonsocial.isChecked())
 //								calcularPagos(Constantes.PENALIDAD_POSTERGACION+Constantes.PENALIDAD_CAMBIO_NOMBRE);
 //							else
 								calcularPagos(Constantes.PENALIDAD_POSTERGACION);
-												
+
 						}
 					});
 				}
 	}
-	
+
 	/**
 	 * Permite enlazar los controles a la ventana de selección de Itinerario
 	 * @param textboxItinerario :en este Textbox se devolvera el Id del itinerario seleccionado.
 	 * @param button :ha este Button se le adjuntara un listener con la llamada a la ventana de selección de itinerario
-	 * @see WndItinerario: 
+	 * @see WndItinerario:
 	 */
 	private void enlazarItinerario(final Image image) {
 		image.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
@@ -2724,7 +2724,7 @@ public class WndOperacionesRemotas extends WndBase {
 			public void onEvent(Event e)throws Exception{
 				int p=txtPosSituActuRuta.getText().indexOf("-");
 				String origen=txtPosSituActuRuta.getText().substring(0,p).trim();
-				String destino=txtPosSituActuRuta.getText().substring(p+1,txtPosSituActuRuta.getText().length()).trim();;
+				String destino=txtPosSituActuRuta.getText().substring(p+1,txtPosSituActuRuta.getText().length()).trim();
 				final WndSeleccionaItinerario oWndSeleccionarItinerario = new WndSeleccionaItinerario();
 				wndPostergacion.appendChild(oWndSeleccionarItinerario);
 				oWndSeleccionarItinerario.onCreate();
@@ -2738,7 +2738,7 @@ public class WndOperacionesRemotas extends WndBase {
 						if(!txtPosSituActuItinerario.getText().isEmpty()){
 							liberarAsientos();
 						}
-						
+
 						/*Valida si la ruta esta configurada para permitir la venta antes o despuesta de la hora de salida ## impl 10/11/2014 - jabanto*/
 						detalleItinerario=null;
 						txtItinerarioPostergado.setText("");
@@ -2748,18 +2748,18 @@ public class WndOperacionesRemotas extends WndBase {
 							DlgMessage.information(Messages.getString("WndVentaReserva.information.ventaNoPermitida"));
 							return;
 						}
-						
+
 						loadDatosPostergacion(oWndSeleccionarItinerario.getIdDetalleItinerario());
-						imgAsiento.setVisible(true);						
+						imgAsiento.setVisible(true);
 					}
 				});
-				
+
 			}
 		});
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Carga datos de la postergacion
 	 */
@@ -2787,7 +2787,7 @@ public class WndOperacionesRemotas extends WndBase {
 //					calcularPagos(Constantes.PENALIDAD_POSTERGACION+Constantes.PENALIDAD_CAMBIO_NOMBRE);
 //				else
 				calcularPagos(Constantes.PENALIDAD_POSTERGACION);
-				
+
 			}else
 				DlgMessage.information(Messages.getString("WndPostergacion.information.postergacionByItinerarioDespachado"));
 		}catch(Exception ex){
@@ -2801,11 +2801,11 @@ public class WndOperacionesRemotas extends WndBase {
 	private void calcularPagos(Double penalidad){
 		dblbxTarifa.setValue(detalleItinerario.getTarifa()<postergacion.getTarifa()?dblbxMontoAnterior.getValue():detalleItinerario.getTarifa());
 		dblbxSaldo.setValue(dblbxTarifa.getValue()-dblbxMontoAnterior.getValue()-dblbxDescuento.getValue());
-		
+
 		dblbxPenalidad.setValue(penalidad);
 		dblbxImporteTotal.setValue(dblbxSaldo.getValue()+dblbxPenalidad.getValue());
 	}
-	
+
 	private void calcularPagos(){
 		if(detalleItinerario!=null)
 			dblbxTarifa.setValue(detalleItinerario.getTarifa()<postergacion.getTarifa()?dblbxMontoAnterior.getValue():detalleItinerario.getTarifa());
@@ -2813,7 +2813,7 @@ public class WndOperacionesRemotas extends WndBase {
 		dblbxSaldo.setValue(dblbxTarifa.getValue()-dblbxMontoAnterior.getValue()-dblbxDescuento.getValue());
 		dblbxImporteTotal.setValue(dblbxSaldo.getValue()+dblbxPenalidad.getValue());
 	}
-	
+
 	/**
 	 * Cargamos los puntos de embarque.
 	 * @param detItinerario	: Itinerario del cual deseamos cargar los puntos de embarque.
@@ -2822,8 +2822,8 @@ public class WndOperacionesRemotas extends WndBase {
 	private void onLoadPuntoEmbarque(DetalleItinerario detItinerario){
 		try{
 			cmbEmbarquePostergado.getItems().clear();
-			
-			ArrayList<ItinerarioAgenciaPartida> arrayItiAgePartida = new ArrayList<ItinerarioAgenciaPartida>();
+
+			ArrayList<ItinerarioAgenciaPartida> arrayItiAgePartida = new ArrayList<>();
 			arrayItiAgePartida = ServiceLocator.getItinerarioManager().buscarAgenciasPartida(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO, detItinerario.getRuta().getLocalidadOrigen().getId());
 //			if(detItinerario.getItinerario().getAgenciaPartida().getId().intValue()==detItinerario.getAgenciaPartida().getId().intValue())
 //				arrayItiAgePartida = ServiceLocator.getItinerarioManager().buscarAgenciasPartida(detItinerario.getItinerario().getId(), Constantes.VALUE_ACTIVO);
@@ -2856,7 +2856,7 @@ public class WndOperacionesRemotas extends WndBase {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Libera asientos bloqueados por el usuario
 	 */
@@ -2875,7 +2875,7 @@ public class WndOperacionesRemotas extends WndBase {
 			DlgMessage.information(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Carga los usuarios harware
 	 */
@@ -2884,17 +2884,17 @@ public class WndOperacionesRemotas extends WndBase {
 			lbxUsuarioHardware.getItems().clear();
 			if(cmbAgenciaRemota.getSelectedIndex()>0){
 				Agencia agencia = (Agencia)cmbAgenciaRemota.getSelectedItem().getValue();
-				TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+				TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 				criteriosBusqueda.put("agencia", agencia);
 				criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 				List<UsuarioHardware>lstUsuHard=ServiceLocator.getUsuarioHardwareManager().buscarPorX(criteriosBusqueda, null);
-				
+
 					for(UsuarioHardware usuarioHardware: lstUsuHard){
 						Listitem listitem = new Listitem();
 						List<ControlEspecieValorada>lstCtrol=ServiceLocator.getControlEspecieValoradaManager().buscarEspecieValoradas(agencia.getId(),Constantes.ID_TIPCOM_BOLETO_VIAJE, usuarioHardware.getId());
 						if(lstCtrol.size()==1){
 							ControlEspecieValorada controlEspecieValorada=lstCtrol.get(0);
-							
+
 							Listcell listcell = new Listcell(usuarioHardware.getDescripcion());
 							listitem.appendChild(listcell);
 							String serie = "000"+controlEspecieValorada.getSerie();
@@ -2905,7 +2905,7 @@ public class WndOperacionesRemotas extends WndBase {
 							listcell = new Listcell(sboleto.substring(sboleto.length()-7));
 							listcell.setStyle(styleActivo_11px);
 							listitem.appendChild(listcell);
-														
+
 							listitem.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 								@Override
 								public void onEvent(Event event)throws Exception {
@@ -2928,7 +2928,7 @@ public class WndOperacionesRemotas extends WndBase {
 			DlgMessage.information(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 //	/**
 //	 * Selecciona por defecto el item del Combo Forma de Pago.
 //	 */
@@ -2942,7 +2942,7 @@ public class WndOperacionesRemotas extends WndBase {
 //					if(item.getValue() instanceof TipoFormaPago && ((TipoFormaPago)item.getValue()).getId().intValue()==Constantes.ID_TIPFORPAG_EFECTIVO)
 //						cmbTipoFormaPago.setSelectedItem(item);
 //				}
-//			}			
+//			}
 //		}
 //		cmbFormaPago.setDisabled(true);
 //	}
@@ -2954,9 +2954,9 @@ public class WndOperacionesRemotas extends WndBase {
 			cmbTipoFormaPago.getItems().clear();
 			if(cmbFormaPago.getSelectedItem().getValue() instanceof FormaPago){
 				FormaPago formaPago = cmbFormaPago.getSelectedItem().getValue();
-				TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+				TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 				criteriosBusqueda.put("formaPago.id", formaPago.getId());
-				List<String> criteriosOrdenar = new ArrayList<String>();
+				List<String> criteriosOrdenar = new ArrayList<>();
 				criteriosOrdenar.add("denominacion");
 				List<TipoFormaPago> lstTipoFormasPago = ServiceLocator.getTipoFormaPagoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
 				UtilData.cargarGenericData(cmbTipoFormaPago, false);
@@ -2991,9 +2991,9 @@ public class WndOperacionesRemotas extends WndBase {
 			cmbTarjetaCredito.setText("");
 			if(cmbOperadorTarjetaCredito.getSelectedItem().getValue() instanceof OperadorTarjetaCredito){
 				OperadorTarjetaCredito operadorTarjetaCredito = cmbOperadorTarjetaCredito.getSelectedItem().getValue();
-				TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+				TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 				criteriosBusqueda.put("operadorTarjetaCredito.id", operadorTarjetaCredito.getId());
-				List<String> criteriosOrdenar = new ArrayList<String>();
+				List<String> criteriosOrdenar = new ArrayList<>();
 				criteriosOrdenar.add("denominacion");
 				List<TarjetaCredito> lstTarjetaCredito = ServiceLocator.getTarjetaCreditoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
 				UtilData.cargarGenericData(cmbTarjetaCredito, false);
@@ -3011,14 +3011,14 @@ public class WndOperacionesRemotas extends WndBase {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Realiza una validación del Tipo de Forma de Pago, para habilitar o deshabilitar algunos controles.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void onValidateTipoFormaPago(Combobox cmbTipoFormaPago, Combobox cmbOperadorTarjetaCredito, Combobox cmbTarjetaCredito){
 		try{
-			if(cmbTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago){ 
+			if(cmbTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago){
 				/*	Si es tarjeta cargamos los operadores de tarjeta de credito	*/
 				if(cmbTipoFormaPago.getText().equals("TARJETA")){
 					cmbOperadorTarjetaCredito.getItems().clear();
@@ -3044,7 +3044,7 @@ public class WndOperacionesRemotas extends WndBase {
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 //	private void onLoadDevolucion(Combobox cmbPorcentajeDevolucion){
 //		Comboitem item = new Comboitem(Constantes.COMBO_LABEL_SELECCIONE);
 //		cmbPorcentajeDevolucion.appendChild(item);
@@ -3056,5 +3056,5 @@ public class WndOperacionesRemotas extends WndBase {
 //		item.setValue(100);
 //		cmbPorcentajeDevolucion.appendChild(item);
 //	}
-	
+
 }

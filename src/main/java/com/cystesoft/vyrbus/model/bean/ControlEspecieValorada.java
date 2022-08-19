@@ -24,21 +24,21 @@ public class ControlEspecieValorada extends GenericBean implements Serializable,
 	private Agencia agencia;
 	private String secuenciador;
 	private Integer aplica;
-	
+
 	public ControlEspecieValorada() {
 	}
-	
+
 	/**
 	 * @return Objeto controlEspecieValoradaID.
 	 */
-	
+
 	public ControlEspecieValoradaID getControlEspecieValoradaID() {
 		return controlEspecieValoradaID;
 	}
 	/*
 	 * @param controlEspecieValoradaID	: Setea el objeto controlEspecieValoradaID.
 	 */
-	
+
 	public void setControlEspecieValoradaID(ControlEspecieValoradaID controlEspecieValoradaID) {
 		this.controlEspecieValoradaID = controlEspecieValoradaID;
 	}

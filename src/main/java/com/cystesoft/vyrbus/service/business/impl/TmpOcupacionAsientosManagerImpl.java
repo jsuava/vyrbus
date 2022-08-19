@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 14/11/2012
  */
@@ -28,7 +28,7 @@ import com.cystesoft.vyrbus.service.util.Util;
 public class TmpOcupacionAsientosManagerImpl implements TmpOcupacionAsientosManager {
 	private TmpOcupacionAsientosDAO tmpOcupacionAsientosDAO;
 	private VentaPasajesDAO ventaPasajesDAO;
-	
+
 	/**
 	 * @return the tmpOcupacionAsientosDAO
 	 */
@@ -54,7 +54,7 @@ public class TmpOcupacionAsientosManagerImpl implements TmpOcupacionAsientosMana
 	public void setVentaPasajesDAO(VentaPasajesDAO ventaPasajesDAO) {
 		this.ventaPasajesDAO = ventaPasajesDAO;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.TmpOcupacionAsientosManager#bloquearAsiento(com.tepsa.sisvyr.model.bean.TmpOcupacionAsientos)
 	 */
@@ -105,7 +105,7 @@ public class TmpOcupacionAsientosManagerImpl implements TmpOcupacionAsientosMana
 	public List<TmpOcupacionAsientos> buscarAsientosBloqueados(Long idItinerario) throws Exception {
 		return getTmpOcupacionAsientosDAO().buscarAsientosBloqueados(idItinerario);
 	}
-	
+
 	@Override
 	public ArrayList<TmpOcupacionAsientos> buscarPorEstadoRegistro(String estado) {
 		return getTmpOcupacionAsientosDAO().buscarPorEstadoRegistro(estado);

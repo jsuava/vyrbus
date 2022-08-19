@@ -21,7 +21,7 @@ import com.cystesoft.vyrbus.model.dao.ProgramacionServicioDAO;
 import com.cystesoft.vyrbus.service.util.Constantes;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
@@ -45,9 +45,9 @@ public class ProgramacionServicioDAOImpl extends GenericDAOImpl implements Progr
 	@Override
 	public ArrayList<ProgramacionServicio> buscarPorX(TreeMap<String, Object> criteriosBusqueda,List<String> criteriosOrdenar) {
 		return (ArrayList<ProgramacionServicio>) super.findByX(ProgramacionServicio.class, criteriosBusqueda, criteriosOrdenar);
-		
+
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.ProgramacionServicioDAO#buscarItinerariosProgramados(java.lang.Long, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean)
@@ -55,14 +55,14 @@ public class ProgramacionServicioDAOImpl extends GenericDAOImpl implements Progr
 	@Override
 	public List<ProgramacionServicio> buscarItinerariosProgramados(Long idItinerario, String origen,String destino, String fechaInicio, String fechaFinal,
 		String Servicio, Boolean itinerariosProgramados) throws Exception {
-		
+
 		String sql=null;
 		String where=null;
 
-		List<ProgramacionServicio> lstResult = new ArrayList<ProgramacionServicio>();
+		List<ProgramacionServicio> lstResult = new ArrayList<>();
 		if (idItinerario != null){
 			//*BUSQUEDA POR NÚMERO ITINERARIO*/
-			where="i.itinerario_id="+idItinerario+" ";	
+			where="i.itinerario_id="+idItinerario+" ";
 		}else if (origen != null  && fechaInicio !=null && fechaFinal !=null && destino ==null && Servicio==null && idItinerario ==null){
 			//*BUSQUEDA POR ORIGEN Y RANGO DE FECHAS*/
 			where="i.d_fecpar between to_date('"+fechaInicio+"','dd/mm/yyyy') AND to_date('"+fechaFinal+"','dd/mm/yyyy') AND " +
@@ -103,11 +103,11 @@ public class ProgramacionServicioDAOImpl extends GenericDAOImpl implements Progr
 			//*BUSQUEDA POR RANGO DE FECHAS*/
 			where="i.d_fecpar between to_date('"+fechaInicio+"','dd/mm/yyyy') AND to_date('"+fechaFinal+"','dd/mm/yyyy') And i.N_EsAnulado=0 And i.C_EstReg='A'";
 		}
-		
-	
+
+
 		if (where != null){
-			
-			if (itinerariosProgramados==true){
+
+			if (itinerariosProgramados){
 				/*RECUPERA PROGRAMACION.*/
 				sql = "SELECT i.itinerario_id, i.d_fecpar, i.c_horpar, i.d_feclle, i.c_horlle, " + //4
 							"0, 0, " + //6
@@ -121,7 +121,7 @@ public class ProgramacionServicioDAOImpl extends GenericDAOImpl implements Progr
 							"ps.bus_ID, ps.personal_idpiloto, personal_idcopiloto, personal_idterramoza, b.bus_id, ps.proser_Id, " +  //27
 							"ps.audfecins, ps.audusuins, ps.audipinse, personal_idcopilotoaux, " + //31
 							"b.c_codigo NROBUS, b.c_numplaca PLACA, " + //33
-						    "pil.c_apepat pilapepat, pil.c_apemat pilapemat, pil.c_nombre pilnom, " +  //36 
+						    "pil.c_apepat pilapepat, pil.c_apemat pilapemat, pil.c_nombre pilnom, " +  //36
 						    "copil.c_apepat copapepat, copil.c_apemat copapemat, copil.c_nombre copnom, " +  //39
 						    "trip.c_apepat triapemat, trip.c_apemat triapemat, trip.c_nombre trinom " +  //42
 						"FROM vrtitinerario i " +
@@ -134,12 +134,12 @@ public class ProgramacionServicioDAOImpl extends GenericDAOImpl implements Progr
 							"INNER JOIN vrmtipiti ti ON ti.tipiti_id=i.tipiti_id " +
 							"INNER JOIN vrtproser ps ON (ps.itinerario_ID=i.itinerario_ID) " +
 							"INNER JOIN vrmbus b ON b.bus_id=ps.bus_id " +
-							"INNER JOIN vrmpersonal pil ON ps.personal_idpiloto = pil.personal_id " + 
-							"INNER JOIN vrmpersonal copil ON ps.personal_idcopiloto = copil.personal_id " + 
+							"INNER JOIN vrmpersonal pil ON ps.personal_idpiloto = pil.personal_id " +
+							"INNER JOIN vrmpersonal copil ON ps.personal_idcopiloto = copil.personal_id " +
 							"LEFT JOIN vrmpersonal trip ON ps.personal_idterramoza = trip.personal_id " +
 						"WHERE " + where + " And i.N_EsAnulado=0 And i.C_EstReg='A' And ps.c_estreg='A' " +
 						" ORDER BY i.d_fecpar, i.c_horpar ";
-				
+
 			}else{
 				/*RECUPERA ITINERARIOS PARA LA PROGRAMACION*/
 				sql = "SELECT i.itinerario_id, i.d_fecpar, i.c_horpar, i.d_feclle, i.c_horlle, " + //4
@@ -160,17 +160,17 @@ public class ProgramacionServicioDAOImpl extends GenericDAOImpl implements Progr
 							"INNER JOIN vrmlocalidad ld ON ld.localidad_id=r.localidad_idDestino " +
 							"INNER JOIN vrmtipiti ti ON ti.tipiti_id=i.tipiti_id " +
 						"WHERE " + where + " And i.N_EsAnulado=0 And i.C_EstReg='A' " +
-						"and i.itinerario_ID not in (Select ps.itinerario_ID From vrtproser ps where ps.itinerario_ID =itinerario_ID And ps.c_estreg='A') " +  
+						"and i.itinerario_ID not in (Select ps.itinerario_ID From vrtproser ps where ps.itinerario_ID =itinerario_ID And ps.c_estreg='A') " +
 						" ORDER BY  i.d_fecpar, i.c_horpar";
 			}
-			
+
 			List<?> result = getSession().createSQLQuery(sql).list();
 			for(int i=0; i<result.size(); i++){
 				Object[] obj = (Object[]) result.get(i);
-				
+
 				Localidad localidadOrigen = new Localidad();
 				localidadOrigen.setId(((BigDecimal)obj[18]).intValue());
-				
+
 				Localidad localidadDestino = new Localidad();
 				localidadDestino.setId(((BigDecimal)obj[19]).intValue());
 
@@ -180,17 +180,17 @@ public class ProgramacionServicioDAOImpl extends GenericDAOImpl implements Progr
 				ruta.setDestino(obj[11].toString());
 				ruta.setLocalidadDestino(localidadDestino);
 				ruta.setLocalidadOrigen(localidadOrigen);
-				
+
 				Agencia agenciaPartida = new Agencia();
 				agenciaPartida.setId(((BigDecimal)obj[12]).intValue());
 				agenciaPartida.setNombreCorto(obj[13].toString());
 				agenciaPartida.setDenominacion(obj[14].toString());
-				
+
 				Agencia agenciaLlegada = new Agencia();
 				agenciaLlegada.setId(((BigDecimal)obj[15]).intValue());
 				agenciaLlegada.setNombreCorto(obj[16].toString());
 				agenciaLlegada.setDenominacion(obj[17].toString());
-				
+
 				TipoItinerario tipoItinerario = new TipoItinerario();
 				tipoItinerario.setId(((BigDecimal)obj[20]).intValue());
 				tipoItinerario.setDenominacion((obj[21]).toString());
@@ -198,55 +198,55 @@ public class ProgramacionServicioDAOImpl extends GenericDAOImpl implements Progr
 				Servicio servicio = new Servicio();
 				servicio.setId(((BigDecimal)obj[7]).intValue());
 				servicio.setDenominacion(obj[8].toString());
-							
+
 				Itinerario itinerario = new Itinerario();
 				itinerario.setId(((BigDecimal)obj[0]).longValue());
 				itinerario.setFechaPartida((Date)obj[1]);
 				itinerario.setHoraPartida(obj[2].toString());
 				itinerario.setFechaLlegada((Date)obj[3]);
 				itinerario.setHoraLlegada(obj[4].toString());
-				
+
 				itinerario.setTipoItinerario(tipoItinerario);
-				itinerario.setAgenciaPartida(agenciaPartida);		
+				itinerario.setAgenciaPartida(agenciaPartida);
 				itinerario.setAgenciaLlegada(agenciaLlegada);
 				itinerario.setAgenciaLlegada(agenciaLlegada);
 				//itinerario.setBus(bus);
 				itinerario.setServicio(servicio);
 				itinerario.setRuta(ruta);
-				
+
 				ProgramacionServicio programacionServicio = new ProgramacionServicio();
-				
+
 				/*Solo cuando para la busqueda programaciones */
-				if (itinerariosProgramados==true){
+				if (itinerariosProgramados){
 					Bus bus = new Bus();
 					bus.setId(((BigDecimal)obj[26]).intValue());
-					bus.setCodigo((String)obj[32].toString());
-					bus.setNumeroPlaca((String)obj[33].toString());
+					bus.setCodigo(obj[32].toString());
+					bus.setNumeroPlaca(obj[33].toString());
 					Personal piloto = new Personal();
 					piloto.setId(((BigDecimal)obj[23]).longValue());
-					piloto.setApellidoPaterno((String)obj[34].toString());
+					piloto.setApellidoPaterno(obj[34].toString());
 					piloto.setApellidoMaterno(obj[35]==null ? "" : (String)obj[35].toString());
-					piloto.setNombre((String)obj[36].toString());
+					piloto.setNombre(obj[36].toString());
 					Personal copiloto = new Personal();
 					copiloto.setId(((BigDecimal)obj[24]).longValue());
-					copiloto.setApellidoPaterno((String)obj[37].toString());
+					copiloto.setApellidoPaterno(obj[37].toString());
 					copiloto.setApellidoMaterno(obj[38]==null ? "" : (String)obj[38].toString());
-					copiloto.setNombre((String)obj[39].toString());
+					copiloto.setNombre(obj[39].toString());
 					Personal copilotoAux=null;
 					if(obj[31]!=null)
 						copilotoAux=new Personal(((BigDecimal)obj[31]).longValue());
-					
+
 					//Se hizo esta modificacion porque no se estaba obligando la tripulante
 					//Por MAOE 27/06/2021
 					if(obj[25] != null){
 						Personal tripulante = new Personal();
 						tripulante.setId(((BigDecimal)obj[25]).longValue());
-						tripulante.setApellidoPaterno((String)obj[40].toString());
+						tripulante.setApellidoPaterno(obj[40].toString());
 						tripulante.setApellidoMaterno(obj[41]==null ? "" : (String)obj[41].toString());
-						tripulante.setNombre((String)obj[42].toString());						
+						tripulante.setNombre(obj[42].toString());
 						programacionServicio.setTripulante(tripulante);
 					}
-					
+
 					programacionServicio.setId(((BigDecimal)obj[27]).longValue());
 					programacionServicio.setBus(bus);
 					programacionServicio.setPiloto(piloto);
@@ -256,9 +256,9 @@ public class ProgramacionServicioDAOImpl extends GenericDAOImpl implements Progr
 					programacionServicio.setUsuarioInsercion(obj[29].toString());
 					programacionServicio.setIpInsercion(obj[30].toString());
 				}
-				
+
 				programacionServicio.setItinerario(itinerario);
-				
+
 				lstResult.add(programacionServicio);
 			}
 		}
@@ -272,8 +272,8 @@ public class ProgramacionServicioDAOImpl extends GenericDAOImpl implements Progr
 	@SuppressWarnings("deprecation")
 	@Override
 	public List<ProgramacionServicio> validacionBusesProgramados(String fechaPartida,String horaPartida, Integer idBus,Integer idAgeciaPartida) throws Exception {
-		
-		List<ProgramacionServicio> lstResult = new ArrayList<ProgramacionServicio>();
+
+		List<ProgramacionServicio> lstResult = new ArrayList<>();
 
 		String sql="SELECT ps.itinerario_ID,  i.ruta_idmayor " +
 				   		 ",r.c_origen, r.c_destino, ps.proser_ID " +
@@ -285,19 +285,19 @@ public class ProgramacionServicioDAOImpl extends GenericDAOImpl implements Progr
 //				   "INNER JOIN vrmpersonal cp on (cp.personal_ID=ps.personal_idcopiloto) " +
 //				   "INNER JOIN vrmpersonal t on (t.personal_ID=ps.personal_idterramoza) " +
 				   " WHERE ps.bus_id=" + idBus + " and i.d_fecpar = to_date('"+fechaPartida+"','dd/mm/yyyy') And ps.c_estreg='A' ";
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
 		for(int i=0; i < result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
-			
+
 			Ruta ruta = new Ruta();
 			ruta.setId(((BigDecimal)obj[1]).intValue());
 			ruta.setOrigen(obj[2].toString());
 			ruta.setDestino(obj[3].toString());
-			
+
 			Agencia agenciaLlegada=new Agencia();
 			agenciaLlegada.setId(((BigDecimal)obj[9]).intValue());
-			
+
 			Itinerario itinerario = new Itinerario();
 			itinerario.setId(((BigDecimal)obj[0]).longValue());
 			itinerario.setFechaPartida((Date)obj[5]);
@@ -306,35 +306,35 @@ public class ProgramacionServicioDAOImpl extends GenericDAOImpl implements Progr
 			itinerario.setHoraLlegada(obj[8].toString());
 			itinerario.setAgenciaLlegada(agenciaLlegada);
 			itinerario.setRuta(ruta);
-			
-						
+
+
 			ProgramacionServicio programacionServicio = new ProgramacionServicio();
 			programacionServicio.setId(((BigDecimal)obj[4]).longValue());
 			programacionServicio.setItinerario(itinerario);
-			
+
 			//Valida si el bus esta en el lugar de donde se esta programando. (En base a la fecha y hora de llegada)
 			//Fecha hora de llegada el bus ya programado
 			Date dfechaHoraLlegada=itinerario.getFechaLlegada();
 			dfechaHoraLlegada.setHours(Integer.valueOf(itinerario.getHoraLlegada().substring(0, itinerario.getHoraLlegada().indexOf(":"))) );
 			dfechaHoraLlegada.setMinutes(Integer.valueOf(itinerario.getHoraLlegada().substring(itinerario.getHoraLlegada().indexOf(":")+1,itinerario.getHoraLlegada().length())) );
-			
+
 			//Fecha y hora de partida de la programacion que se esta realizando
 			Date dfechaHoraPartida=itinerario.getFechaPartida();
 			dfechaHoraPartida.setHours(Integer.valueOf(horaPartida.substring(0,horaPartida.indexOf(":"))));
 			dfechaHoraPartida.setMinutes(Integer.valueOf(horaPartida.substring(horaPartida.indexOf(":")+1,horaPartida.length())));
-			//Realiza validacion 
+			//Realiza validacion
 			if(dfechaHoraPartida.getTime()<dfechaHoraLlegada.getTime() || idAgeciaPartida.intValue()!=agenciaLlegada.getId().intValue()){
 				lstResult.add(programacionServicio);
 			}
 		}
-		
+
 		return lstResult;
 	}
 
-	
-	
-	
-	
+
+
+
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.ProgramacionServicioDAO#inactivar(java.lang.Long)
@@ -342,7 +342,7 @@ public class ProgramacionServicioDAOImpl extends GenericDAOImpl implements Progr
 	@Override
 	public void inactivar(Long id) throws Exception {
 		super.inactivate(ProgramacionServicio.class, id);
-		
+
 	}
 
 	/*
@@ -352,7 +352,7 @@ public class ProgramacionServicioDAOImpl extends GenericDAOImpl implements Progr
 	@Override
 	public void updateItinerarioBus(Long idItinerario, Long idBus) throws Exception {
 		String Sql= "Update vrtitinerario set Bus_ID="+idBus + " " +
-					"Where itinerario_ID="+idItinerario ;	
+					"Where itinerario_ID="+idItinerario ;
 		getSession().createSQLQuery(Sql).executeUpdate();
 	}
 
@@ -378,21 +378,21 @@ public class ProgramacionServicioDAOImpl extends GenericDAOImpl implements Progr
 		}else if(idTripulante!=null){
 			sql+=" AND ps.personal_idterramoza="+idTripulante;
 		}
-		
+
 		sql+="ORDER BY ps.proser_id ";
-		
+
 		log.info(sql);
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
 		ProgramacionServicio programacion=null;
-		for(int i=0; i < result.size(); i++){
-			Object[] obj = (Object[]) result.get(i);
+		for (Object element : result) {
+			Object[] obj = (Object[]) element;
 			programacion=new ProgramacionServicio();
-			
+
 			Ruta ruta=new Ruta();
 			ruta.setOrigen(obj[2].toString());
 			ruta.setDestino(obj[3].toString());
-			
+
 			Itinerario itinerario=new Itinerario();
 			itinerario.setId(((BigDecimal)obj[0]).longValue());
 			itinerario.setHoraPartida(obj[1].toString());
@@ -400,31 +400,31 @@ public class ProgramacionServicioDAOImpl extends GenericDAOImpl implements Progr
 			itinerario.setFechaLlegada((Date)obj[7]);
 			itinerario.setHoraLlegada(obj[8].toString());
 			itinerario.setRuta(ruta);
-					
+
 			Agencia agenciaLlegada=new Agencia();
 			agenciaLlegada.setId(((BigDecimal)obj[9]).intValue());
-			
+
 			itinerario.setAgenciaLlegada(agenciaLlegada);
-			
+
 			Bus bus=new Bus();
 			bus.setCodigo(obj[4].toString());
-		
+
 			programacion.setId(((BigDecimal)obj[5]).longValue());
 			programacion.setItinerario(itinerario);
 			programacion.setBus(bus);
-			
+
 			//Valida si el bus esta en el lugar de donde se esta programando. (En base a la fecha y hora de llegada)
 			//Fecha hora de llegada el bus ya programado
 			Date dfechaHoraLlegada=itinerario.getFechaLlegada();
 			dfechaHoraLlegada.setHours(Integer.valueOf(itinerario.getHoraLlegada().substring(0, itinerario.getHoraLlegada().indexOf(":"))) );
 			dfechaHoraLlegada.setMinutes(Integer.valueOf(itinerario.getHoraLlegada().substring(itinerario.getHoraLlegada().indexOf(":")+1,itinerario.getHoraLlegada().length())) );
-			
+
 			//Fecha y hora de partida de la programacion que se esta realizando
 			Date dfechaHoraPartida=itinerario.getFechaPartida();
 			dfechaHoraPartida.setHours(Integer.valueOf(horaPartida.substring(0,horaPartida.indexOf(":"))));
 			dfechaHoraPartida.setMinutes(Integer.valueOf(horaPartida.substring(horaPartida.indexOf(":")+1,horaPartida.length())));
-			
-			//Realiza validacion 
+
+			//Realiza validacion
 			if(dfechaHoraPartida.getTime()>dfechaHoraLlegada.getTime() && idAgenciaPartida.intValue()==agenciaLlegada.getId().intValue()){
 				programacion=null;
 			}
@@ -432,7 +432,7 @@ public class ProgramacionServicioDAOImpl extends GenericDAOImpl implements Progr
 		return programacion;
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.ProgramacionServicioDAO#buscarProgracion(java.lang.Integer, java.lang.String, java.lang.String, java.lang.Boolean)
 	 */
@@ -457,8 +457,8 @@ public class ProgramacionServicioDAOImpl extends GenericDAOImpl implements Progr
 					     "INNER JOIN VRTITIAGEPAR iap ON (iap.itinerario_id=ps.itinerario_id) "+
 					     //Consistencia para mostrar solamente los servicios del punto de embarque con la hora menor.
 //						 "INNER JOIN(SELECT AP.ITINERARIO_ID, AP.C_HORPAR,AP.AGENCIA_ID "+
-//									"FROM VRTITIAGEPAR AP "+ 
-//									     "INNER JOIN (SELECT AP.ITINERARIO_ID, MIN(AP.C_HORPAR)C_HORPAR FROM VRTITIAGEPAR AP GROUP BY AP.ITINERARIO_ID "+     
+//									"FROM VRTITIAGEPAR AP "+
+//									     "INNER JOIN (SELECT AP.ITINERARIO_ID, MIN(AP.C_HORPAR)C_HORPAR FROM VRTITIAGEPAR AP GROUP BY AP.ITINERARIO_ID "+
 //									                ")APM ON (APM.ITINERARIO_ID=AP.ITINERARIO_ID AND APM.C_HORPAR=AP.C_HORPAR ) "+
 //									 ")iap ON (iap.ITINERARIO_ID=ps.ITINERARIO_ID) "+
 						 //--
@@ -468,7 +468,7 @@ public class ProgramacionServicioDAOImpl extends GenericDAOImpl implements Progr
 					     "LEFT JOIN VRTMANIFIESTO m ON (m.itinerario_id=ps.itinerario_id AND m.c_estreg='A') "+
 					     "LEFT JOIN VRTHOJRUTELE hre ON (hre.itinerario_id=i.itinerario_id AND hre.c_estreg='A' ";
 //					     "LEFT JOIN VRTHOJRUTELE hre ON (hre.ruta_id=i.ruta_idmayor AND hre.c_nrobus=b.c_codigo AND hre.c_estreg='A' ";
-							
+
 						if(isSalida){
 							sql+=" AND hre.d_fecsal=i.d_fecpar ) ";
 						}else{
@@ -485,18 +485,18 @@ public class ProgramacionServicioDAOImpl extends GenericDAOImpl implements Progr
 							 "AND iap.agencia_id=i.agencia_idpartida ";
 					}
 				    sql+="AND b.c_codigo=NVL("+codigoBus+",b.c_codigo) "+
-					     "AND i.c_estreg='"+Constantes.VALUE_ACTIVO+"'  "+ 
+					     "AND i.c_estreg='"+Constantes.VALUE_ACTIVO+"'  "+
 					     "AND ps.c_estreg='"+Constantes.VALUE_ACTIVO+"' ";
 				    if (isSalida)
 				    	sql+="ORDER BY i.d_fecpar, iap.c_horpar, concat(r.c_origen,r.c_destino)";
-				    else 
+				    else
 				    	sql+="ORDER BY i.d_fecpar, i.c_horlle, concat(r.c_origen,r.c_destino)";
 		log.info(sql);
 		List<?> result=getSession().createSQLQuery(sql).list();
-		List<ProgramacionServicio>lstProgramacion=new ArrayList<ProgramacionServicio>();
-		List<Long>identificadoresProgramacion=new ArrayList<Long>();
+		List<ProgramacionServicio>lstProgramacion=new ArrayList<>();
+		List<Long>identificadoresProgramacion=new ArrayList<>();
 		for(int x=0; x<result.size(); x++){
-			
+
 			Object[] obj=(Object[]) result.get(x);
 			/*Programacion*/
 			ProgramacionServicio programacion=new ProgramacionServicio();
@@ -517,7 +517,7 @@ public class ProgramacionServicioDAOImpl extends GenericDAOImpl implements Progr
 			/*Servicio*/
 			Servicio servicio=new Servicio();
 			servicio.setDenominacion(obj[8].toString());
-			
+
 			/*Sea datos de la HRE*/
 			HRE hojaRuta=null;
 			if(obj[9]!=null){
@@ -527,7 +527,7 @@ public class ProgramacionServicioDAOImpl extends GenericDAOImpl implements Progr
 				hojaRuta.setHoraLlegadaReal(obj[11]!=null?obj[11].toString():null);
 				hojaRuta.setAgenciaSalida(new Agencia(((BigDecimal)obj[13]).intValue()));
 			}
-						
+
 			itinerario.setBus(bus);
 			itinerario.setServicio(servicio);
 			itinerario.setRuta(ruta);
@@ -536,14 +536,14 @@ public class ProgramacionServicioDAOImpl extends GenericDAOImpl implements Progr
 			programacion.setHojaRuta(hojaRuta);
 			if(obj[12]!=null)
 				programacion.setMEE(((BigDecimal)obj[12]).intValue()==0?false:true);
-			
+
 			/*Permite obviar duplicados en el caso que se seleccione en el fitro agencia "TODOS"*/
 			if(!(identificadoresProgramacion.contains(programacion.getId()))){
 				identificadoresProgramacion.add(programacion.getId());
-				lstProgramacion.add(programacion);			
+				lstProgramacion.add(programacion);
 			}
-		}		
-		
+		}
+
 		return lstProgramacion;
 	}
 

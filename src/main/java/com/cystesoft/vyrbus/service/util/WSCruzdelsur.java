@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 01/09/2016
  * Hora			: 11:12:13
@@ -67,26 +67,26 @@ import cruzdelsur.ws.com.pe.Servicecruzdelsur;
  */
 public class WSCruzdelsur implements Serializable{
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	public static String NAMESPACE="http://schemas.datacontract.org/2004/07/wscruzdelsur.Entities";
 	private static IServicecruzdelsur iServicecruzdelsur;
 	/**
-	 * 
+	 *
 	 */
 	private static IServicecruzdelsur getSoap()throws Exception{
-		
+
 		try {
 			System.setProperty("http.proxyHost", "192.168.50.1");
 			System.setProperty("http.proxyPort", "8080");
-			
+
 			if(iServicecruzdelsur==null){
 				Servicecruzdelsur servicecruzdelsur= new Servicecruzdelsur();
 				iServicecruzdelsur=servicecruzdelsur.getBasicHttpBindingIServicecruzdelsur();
 			}
-			
-			return iServicecruzdelsur;	
+
+			return iServicecruzdelsur;
 		} catch (Exception e) {
 			DestinatariosEmails window= new DestinatariosEmails();
 			window.setEmails("jabanto@tepsa.com.pe");
@@ -95,7 +95,7 @@ public class WSCruzdelsur implements Serializable{
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Realiza la busqueda de los itinerarios
 	 * @param fechaProgramacion	: Fecha de viaje
@@ -128,7 +128,7 @@ public class WSCruzdelsur implements Serializable{
 					}
 				}
 			}
-			
+
 			/*Valida si las localidades origen y destino*/
 //			localidadDesembarque="AQP";
 			if(localidadEmbarque!=null && localidadDesembarque!=null){
@@ -148,7 +148,7 @@ public class WSCruzdelsur implements Serializable{
 					itinerario.setOperadoPor(Constantes.OPERADO_POR_CRUZ_DEL_SUR);
 					TipoItinerario tipoItinerario= new TipoItinerario();
 					tipoItinerario.setId(Constantes.ID_TIPITI_REGULAR);
-					itinerario.setTipoItinerario(tipoItinerario); 
+					itinerario.setTipoItinerario(tipoItinerario);
 					detalleItinerario.setItinerario(itinerario);
 					Ruta ruta= new Ruta();
 					ruta.setOrigen(horario.getRuta().getValue().trim().split("-")[0].trim().toUpperCase());
@@ -158,7 +158,7 @@ public class WSCruzdelsur implements Serializable{
 					detalleItinerario.setFechaPartida(Constantes.FORMAT_DATE.parse(horario.getFechaHoraEmbarque1().getValue().split(" ")[0].trim()));
 					detalleItinerario.setTarifa(horario.getTarifaPrimerPiso()!=null?horario.getTarifaPrimerPiso():.00);
 					detalleItinerario.setTarifaSegundoPiso(horario.getTarifaSegundoPiso()!=null?horario.getTarifaSegundoPiso():.00);
-					
+
 					ObjectCruzdelsur objectCruzdelsur= new ObjectCruzdelsur();
 					objectCruzdelsur.setHorario(horario);
 					objectCruzdelsur.setLocalidadEmbarque(localidadEmbarque);
@@ -167,15 +167,15 @@ public class WSCruzdelsur implements Serializable{
 					result.add(detalleItinerario);
 				}
 			}
-				
+
 			return result;
-			
+
 		} catch (Exception e) {
 			DlgMessage.information("El Servicio de Cruz del Sur ha retornado el Siguiente error: \n"+e.getMessage());
 			return result;
 		}
 	}
-	
+
 	public static void crearEstructura(Groupbox grpbxParent, DetalleItinerario detalleItinerario, Grid gridOcupabilidad, Agencia agencia, Usuario usuario)throws Exception{
 		try {
 			inicializarEstructura(grpbxParent);
@@ -188,15 +188,15 @@ public class WSCruzdelsur implements Serializable{
 																						,horario.getAgenciaEmbarqueLlave1().getValue()
 																						,horario.getAgenciaDesembarqueLlave1().getValue()
 																						,horario.getUnidadLlave().getValue());
-			
+
 			Image imagen = generarImagen("/resources/mapa/bus_primerPiso.png", 247, 35);
 			Div divPiso1=new Div();
 			divPiso1.appendChild(imagen);
-			
+
 			imagen = generarImagen("/resources/mapa/bus_segundoPiso.png", 245, 30);
 			Div divPiso2=new Div();
 			divPiso2.appendChild(imagen);
-			
+
 			int asientosOcupados=0;
 			Div divMapaPriso1=new Div();
 			Div divMapaPriso2=null;
@@ -211,11 +211,11 @@ public class WSCruzdelsur implements Serializable{
 					}
 					int W=distribucion.getAnchoObjeto();
 					int H=distribucion.getAltoObjeto()-1;
-					
+
 					AsientoPool asiento=new AsientoPool();
 					asiento.setWidth(String.valueOf(W)+"px");
-					asiento.setHeight(String.valueOf(H)+"px");				
-					
+					asiento.setHeight(String.valueOf(H)+"px");
+
 					/*Colocando en su posicion correcta a cada asiento*/
 					String styleAsiento="position: absolute;left: "+(distribucion.getX1()-7)+"px;top: "+Y+"px;background-color: #D1CFCF;";
 					/*Validando el estado del asientos*/
@@ -224,7 +224,7 @@ public class WSCruzdelsur implements Serializable{
 						Label label= new Label((distribucion.getAsiento().getValue().toString().length()==1?"0"+distribucion.getAsiento().getValue().toString():distribucion.getAsiento().getValue().toString()));
 						int X_2=((W/2)-label.getValue().length())-5,Y_2=(H/2)-6;
 						String styleLabel="cursor:pointer;font-size:12px !important;color:black;position: absolute;left: "+X_2+"px;top: "+Y_2+"px;";
-						label.setStyle(styleLabel);	
+						label.setStyle(styleLabel);
 						asiento.appendChild(label);
 						asiento.setObjectCruzdelsur(objectCruzdelsur);
 						asiento.setNivelAsiento(Integer.valueOf(distribucion.getNivelPiso().getValue()));
@@ -237,13 +237,13 @@ public class WSCruzdelsur implements Serializable{
 							@Override
 							public void onEvent(Event event) throws Exception {
 								try {
-									
+
 									onClickAsiento(event);
-									
+
 								} catch (Exception e) {
 									e.printStackTrace();
 									DlgMessage.error(e.getMessage());
-								}															
+								}
 							}
 						});
 					}else if (distribucion.getDisponible().intValue()==Constantes.FALSE_VALUE){
@@ -253,7 +253,7 @@ public class WSCruzdelsur implements Serializable{
 						asientosOcupados++;
 					}
 					asiento.setStyle(styleAsiento);
-					
+
 					/*Calculando el alto de cada Div del piso*/
 					if(piso==1)
 						divMapaPriso1.appendChild(asiento);
@@ -272,25 +272,25 @@ public class WSCruzdelsur implements Serializable{
 			divMapaPriso1.setWidth("245px");
 			divMapaPriso1.setHeight(String.valueOf(heightDivPiso1-20)+"px");
 			divMapaPriso1.setStyle("background:#99D9EA");
-			
+
 			if(divMapaPriso2!=null){
 				divMapaPriso2.setWidth("245px");
 				divMapaPriso2.setHeight(String.valueOf((heightDivPiso2-heightDivPiso1))+"px");
-				divMapaPriso2.setStyle("background:#99D9EA");	
+				divMapaPriso2.setStyle("background:#99D9EA");
 			}
-				
+
 			grpbxParent.appendChild(divPiso1);
 			grpbxParent.appendChild(divMapaPriso1);
 			if(divMapaPriso2!=null){
 				grpbxParent.appendChild(divPiso2);
 				grpbxParent.appendChild(divMapaPriso2);
 			}
-			
-			
+
+
 			int asientosDisponibles=horario.getAsientoDisponiblePrimerPiso()+(horario.getAsientoDisponibleSegundoPiso()!=null?horario.getAsientoDisponibleSegundoPiso():0);
 			gridOcupabilidad.getRows().detach();
 			Rows rows = new Rows();
-			
+
 			Row row = new Row();
 			Label label = new Label(detalleItinerario.getRuta().toString());
 			row.appendChild(label);
@@ -304,14 +304,14 @@ public class WSCruzdelsur implements Serializable{
 			DlgMessage.information("El Servicio de Cruz del Sur ha retornado el Siguiente error: \n"+e.getMessage());
 		}
 	}
-	
+
 	private static void onClickAsiento(Event e)throws Exception{
 		AsientoPool asiento= (AsientoPool) e.getTarget();
 		ObjectCruzdelsur objectCruzdelsur =asiento.getObjectCruzdelsur();
 		Horario horario=objectCruzdelsur.getHorario();
 		Listbox listAsientos=objectCruzdelsur.getListAsientos();
 		Button btnNextTabVenta=objectCruzdelsur.getBtnNextTabVenta();
-		
+
 		if(asiento.getDisponible().intValue()==Constantes.TRUE_VALUE){
 			/*Bloquea el asiento seleccionado*/
 			ResultBloquearAsiento resultBloquearAsiento=getSoap().bloquearAsiento(horario.getCodigoRuta().getValue()
@@ -322,7 +322,7 @@ public class WSCruzdelsur implements Serializable{
 			if(resultBloquearAsiento.isIsCorrect()){
 				asiento.setDisponible(Constantes.ASIENTO_BLOQUEADO);
 				asiento.setResultBloquearAsiento(resultBloquearAsiento);
-				
+
 				for(Component component : asiento.getChildren()){
 					if(component instanceof Label && ((Label)component).getValue().equals(asiento.getNumeroAsiento())){
 						Label label=(Label)component;
@@ -330,11 +330,11 @@ public class WSCruzdelsur implements Serializable{
 						break;
 					}
 				}
-				
+
 				Image imagen=generarImagen(AsientoPool.imagenBloqueado, null, 18);
 				imagen.setStyle("position: absolute;left:10px;top:4px;");
 				asiento.appendChild(imagen);
-				
+
 				/*Agrega el asiento seleccionado a la lista de asientos seleccionados*/
 				Listitem listitemAsientos = new Listitem();
 				Listcell cell = new Listcell(horario.getRuta().getValue().toString().toUpperCase());
@@ -343,7 +343,7 @@ public class WSCruzdelsur implements Serializable{
 				listitemAsientos.setValue(asiento);
 				listitemAsientos.appendChild(cell);
 				listAsientos.appendChild(listitemAsientos);
-				
+
 				/*Registra el bloqueo del asiento*/
 				registrarBloqueoAsiento(asiento);
 			}else{
@@ -353,7 +353,7 @@ public class WSCruzdelsur implements Serializable{
 			/*Desbloquea el asiento*/
 			ResultDesbloquearAsiento resultDesbloquearAsiento= desbloquearAsiento(asiento);
 			if(resultDesbloquearAsiento.isIsCorrect()){
-				//Elimina el asiento del listbox				
+				//Elimina el asiento del listbox
 				List<Listitem> items = listAsientos.getItems();
 				for(int i=0; i<items.size(); i++){
 					AsientoPool asiento2 = items.get(i).getValue();
@@ -362,19 +362,19 @@ public class WSCruzdelsur implements Serializable{
 						break;
 					}
 				}
-								
+
 			}else{
 				DlgMessage.information(resultDesbloquearAsiento.getError().getValue().getMessage().getValue());
 			}
 		}
-		
+
 		/*	Habilita o deshablita el boton para pasar a la siguiente pestana	*/
 		if(listAsientos.getItems().size()==0)
 			btnNextTabVenta.setDisabled(true);
 		else
 			btnNextTabVenta.setDisabled(false);
 	}
-	
+
 	/**
 	 * Desbloquea un asiento
 	 * @param asiento : Objeto asientoPool
@@ -386,10 +386,10 @@ public class WSCruzdelsur implements Serializable{
 		if(resultDesbloquearAsiento.isIsCorrect()){
 			/*Elimnia el registro de la db con el bloqueo*/
 			eliminarBloqueoAsiento(asiento.getResultBloquearAsiento().getCodigoTransaccion().getValue());
-			
+
 			asiento.setDisponible(Constantes.TRUE_VALUE); //Coloca el estado nuevamente como Disponible
 			asiento.setResultBloquearAsiento(null);
-		
+
 			Component componentImage=null;
 			for(Component component : asiento.getChildren()){
 				if(component instanceof Label && ((Label)component).getValue().equals(asiento.getNumeroAsiento())){
@@ -404,7 +404,7 @@ public class WSCruzdelsur implements Serializable{
 		}
 		return resultDesbloquearAsiento;
 	}
-	
+
 	/***
 	 * Desbloquea todos los asientos bloqueados
 	 * @param listAsientos : Listbox con los asientos bloqueados
@@ -415,65 +415,65 @@ public class WSCruzdelsur implements Serializable{
 			AsientoPool asiento=item.getValue();
 			desbloquearAsiento(asiento);
 		}
-		
+
 		Util.limpiarListbox(listAsientos);
 	}
-	
-	
-	public static ResultVenta enviarVenta(String codigoTransaccion, String agenciaEmbarqueLlave, String agenciaDesembarqueLlave,com.cystesoft.vyrbus.model.bean.Pasajero oPasajero, List<Generic> menus, String numeroBoleto)throws Exception{		
+
+
+	public static ResultVenta enviarVenta(String codigoTransaccion, String agenciaEmbarqueLlave, String agenciaDesembarqueLlave,com.cystesoft.vyrbus.model.bean.Pasajero oPasajero, List<Generic> menus, String numeroBoleto)throws Exception{
 		Pasajero pasajero= new Pasajero();
 		/*Tipo de identidad*/
 		switch (oPasajero.getTipoDocumento().getId().intValue()) {
 		case Constantes.ID_TIPDOC_DNI:
-			pasajero.setCodigoTipoDocumento(new JAXBElement<String>(new QName(NAMESPACE,"codigoTipoDocumento"), String.class, "DNI"));
+			pasajero.setCodigoTipoDocumento(new JAXBElement<>(new QName(NAMESPACE,"codigoTipoDocumento"), String.class, "DNI"));
 			break;
 		case Constantes.ID_TIPDOC_PASAPORTE:
-			pasajero.setCodigoTipoDocumento(new JAXBElement<String>(new QName(NAMESPACE,"codigoTipoDocumento"), String.class, "PAS"));
+			pasajero.setCodigoTipoDocumento(new JAXBElement<>(new QName(NAMESPACE,"codigoTipoDocumento"), String.class, "PAS"));
 			break;
 		case Constantes.ID_TIPDOC_CARNET_EXTRANJERIA:
-			pasajero.setCodigoTipoDocumento(new JAXBElement<String>(new QName(NAMESPACE,"codigoTipoDocumento"), String.class, "CEX"));
+			pasajero.setCodigoTipoDocumento(new JAXBElement<>(new QName(NAMESPACE,"codigoTipoDocumento"), String.class, "CEX"));
 			break;
 		case Constantes.ID_TIPDOC_CEDULA_IDENTIDAD:
-			pasajero.setCodigoTipoDocumento(new JAXBElement<String>(new QName(NAMESPACE,"codigoTipoDocumento"), String.class, "CID"));
+			pasajero.setCodigoTipoDocumento(new JAXBElement<>(new QName(NAMESPACE,"codigoTipoDocumento"), String.class, "CID"));
 			break;
 		case Constantes.ID_TIPDOC_SN:
-			pasajero.setCodigoTipoDocumento(new JAXBElement<String>(new QName(NAMESPACE,"codigoTipoDocumento"), String.class, "SID"));
+			pasajero.setCodigoTipoDocumento(new JAXBElement<>(new QName(NAMESPACE,"codigoTipoDocumento"), String.class, "SID"));
 			break;
 		default:
-			pasajero.setCodigoTipoDocumento(new JAXBElement<String>(new QName(NAMESPACE,"codigoTipoDocumento"), String.class, "CID"));
+			pasajero.setCodigoTipoDocumento(new JAXBElement<>(new QName(NAMESPACE,"codigoTipoDocumento"), String.class, "CID"));
 			break;
 		}
 		if(oPasajero.getNumeroDocumento()!=null)
-			pasajero.setNumeroDocumento(new JAXBElement<String>(new QName(NAMESPACE,"numeroDocumento"), String.class, oPasajero.getNumeroDocumento()));
+			pasajero.setNumeroDocumento(new JAXBElement<>(new QName(NAMESPACE,"numeroDocumento"), String.class, oPasajero.getNumeroDocumento()));
 		else
-			pasajero.setNumeroDocumento(new JAXBElement<String>(new QName(NAMESPACE,"numeroDocumento"), String.class, ""));
-		pasajero.setFechaNacimiento(new JAXBElement<String>(new QName(NAMESPACE,"fechaNacimiento"), String.class, oPasajero.getFechaNacimiento()));
+			pasajero.setNumeroDocumento(new JAXBElement<>(new QName(NAMESPACE,"numeroDocumento"), String.class, ""));
+		pasajero.setFechaNacimiento(new JAXBElement<>(new QName(NAMESPACE,"fechaNacimiento"), String.class, oPasajero.getFechaNacimiento()));
 		pasajero.setEdad(Util.calculaEdad(oPasajero.getFechaNacimiento()));
-		pasajero.setTipoTarifa(new JAXBElement<String>(new QName(NAMESPACE,"tipoTarifa"), String.class, "A")); //Por default
-		pasajero.setCodigoNacionalidad(new JAXBElement<String>(new QName(NAMESPACE,"codigoNacionalidad"), String.class, "01")); //Peru
-		pasajero.setApellidoPaterno(new JAXBElement<String>(new QName(NAMESPACE,"apellidoPaterno"), String.class, oPasajero.getApellidoPaterno()));
+		pasajero.setTipoTarifa(new JAXBElement<>(new QName(NAMESPACE,"tipoTarifa"), String.class, "A")); //Por default
+		pasajero.setCodigoNacionalidad(new JAXBElement<>(new QName(NAMESPACE,"codigoNacionalidad"), String.class, "01")); //Peru
+		pasajero.setApellidoPaterno(new JAXBElement<>(new QName(NAMESPACE,"apellidoPaterno"), String.class, oPasajero.getApellidoPaterno()));
 		if(oPasajero.getApellidoMaterno()!=null)
-			pasajero.setApellidoMaterno(new JAXBElement<String>(new QName(NAMESPACE,"apellidoMaterno"), String.class, oPasajero.getApellidoMaterno()));
-		pasajero.setNombres(new JAXBElement<String>(new QName(NAMESPACE,"nombres"), String.class, oPasajero.getNombre()));
-		
+			pasajero.setApellidoMaterno(new JAXBElement<>(new QName(NAMESPACE,"apellidoMaterno"), String.class, oPasajero.getApellidoMaterno()));
+		pasajero.setNombres(new JAXBElement<>(new QName(NAMESPACE,"nombres"), String.class, oPasajero.getNombre()));
+
 		String telelefono=oPasajero.getTelefono();
 		if(telelefono.trim().length()>10){
 			telelefono=telelefono.substring(0,11);
 		}
-		
-		pasajero.setTelefono(new JAXBElement<String>(new QName(NAMESPACE,"telefono"), String.class, telelefono));
-		pasajero.setNumeroBoleto(new JAXBElement<String>(new QName(NAMESPACE,"numeroBoleto"), String.class, numeroBoleto));
+
+		pasajero.setTelefono(new JAXBElement<>(new QName(NAMESPACE,"telefono"), String.class, telelefono));
+		pasajero.setNumeroBoleto(new JAXBElement<>(new QName(NAMESPACE,"numeroBoleto"), String.class, numeroBoleto));
 		/*Pasando la alimentacion*/
 		ArrayOfGeneric arrayOfMenu= new ArrayOfGeneric();
 		for(Generic generic : menus){
-			arrayOfMenu.getGeneric().add(generic);	
+			arrayOfMenu.getGeneric().add(generic);
 		}
-		pasajero.setMenus(new JAXBElement<ArrayOfGeneric>(new QName(NAMESPACE,"menus"), ArrayOfGeneric.class, arrayOfMenu));
-		
+		pasajero.setMenus(new JAXBElement<>(new QName(NAMESPACE,"menus"), ArrayOfGeneric.class, arrayOfMenu));
+
 		ResultVenta resultVenta=getSoap().venderPasaje(codigoTransaccion, agenciaEmbarqueLlave, agenciaDesembarqueLlave, pasajero);
 		return resultVenta;
 	}
-	
+
 	/**
 	 * Inicializa(limpia los objetos existentes) el contenedor de los asientos.
 	 */
@@ -500,7 +500,7 @@ public class WSCruzdelsur implements Serializable{
 			imagen.setHeight(String.valueOf(height)+"px");
 		return imagen;
 	}
-	
+
 	public static void registrarBloqueoAsiento(AsientoPool asiento)throws Exception{
 		OcupacionAsientosBloqueadosPool bloqueadosPool= new OcupacionAsientosBloqueadosPool();
 		bloqueadosPool.setAgencia(asiento.getAgencia());
@@ -516,12 +516,12 @@ public class WSCruzdelsur implements Serializable{
 		UtilData.auditarRegistro(bloqueadosPool, asiento.getUsuario(), Executions.getCurrent());
 		ServiceLocator.getOcupacionAsientosBloqueadosPoolManager().guardar(bloqueadosPool);
 	}
-	
-	
+
+
 	public static void eliminarBloqueoAsiento(String codigoTransaccion)throws Exception{
 		ServiceLocator.getOcupacionAsientosBloqueadosPoolManager().delete(codigoTransaccion);
 	}
-	
+
 	/**
 	 * Realiza la anulacion de Boleto
 	 * @param numeroBoleto : numero de boleto de Cruz del Sur
@@ -530,10 +530,10 @@ public class WSCruzdelsur implements Serializable{
 	public static void anularBoleto(String numeroBoleto)throws Exception{
 		String serie=numeroBoleto.split("-")[0];
 		String numero=numeroBoleto.split("-")[1];
-		
+
 		ResultAnularBoleto resultAnularBoleto=getSoap().anularBoleto(serie, numero);
 		if(resultAnularBoleto.isAnulado()){
-			
+
 		}else{
 			if(resultAnularBoleto.getError().getValue()==null){
 				throw new Exception("No se pudo anular el Boleto.");
@@ -542,5 +542,5 @@ public class WSCruzdelsur implements Serializable{
 			}
 		}
 	}
-	
+
 }

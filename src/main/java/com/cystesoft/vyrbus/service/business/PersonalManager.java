@@ -13,7 +13,7 @@ public interface PersonalManager {
 	public void guardar(Personal personal)throws Exception;
 	public void actualizar(Personal personal)throws Exception;
 	public void inactivar(Long id)throws Exception;
-	
+
 	/**
 	 * Buscar E-Mails para el envio del alertas.
 	 * @param iDsRol : Identificador del Rol

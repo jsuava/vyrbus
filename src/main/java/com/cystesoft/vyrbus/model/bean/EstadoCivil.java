@@ -10,13 +10,13 @@ public class EstadoCivil extends GenericBean implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String denominacion;
-	
+
 	public EstadoCivil() {
 	}
 	public EstadoCivil(Integer id){
 		this.id=id;
 	}
-	
+
 	public Integer getId() {
 		return this.id;
 	}

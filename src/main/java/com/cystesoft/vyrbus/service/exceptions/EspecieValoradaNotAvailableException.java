@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 17/09/2012
  */
@@ -15,5 +15,5 @@ import java.io.Serializable;
  * @since JDK1.6
  */
 public class EspecieValoradaNotAvailableException extends Exception implements Serializable {
-	private static final long serialVersionUID = 1L;	
+	private static final long serialVersionUID = 1L;
 }

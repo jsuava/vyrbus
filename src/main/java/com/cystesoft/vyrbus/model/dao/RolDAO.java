@@ -15,34 +15,34 @@ public interface RolDAO extends GenericDAO {
 	 * @return
 	 */
 	public ArrayList<Rol> buscarPorEstadoRegistro(String estado, String criterioOrden);
-	
+
 	/**
 	 * Busqueda por un ArraLis de Parametros.
-	 * @param criteriosBusqueda : 
+	 * @param criteriosBusqueda :
 	 * @param criteriosOrdenar	: lista de criterios para el orden de los datos
 	 * @return
 	 */
 	public ArrayList<Rol> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
-	
+
 	/**
 	 * Busqueda por id del Rol
 	 * @param id : identificador del Rol
 	 * @return
 	 */
 	public Rol buscarPorId(Long id);
-	
+
 	/**
 	 * Guarda Rol
 	 * @param rol : Class
 	 */
 	public void guardar(Rol rol);
-	
+
 	/***
 	 * Actualiza Rol
-	 * @param rol : Class 
+	 * @param rol : Class
 	 */
 	public void actualizar(Rol rol);
-	
+
 	/**
 	 * Inactiva Rol
 	 * @param id

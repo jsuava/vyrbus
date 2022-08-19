@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 26/08/2014
  * Hora			: 08:45:44
@@ -25,8 +25,8 @@ public interface MTCDetalleRutaManager {
 	 */
 	public MTCDetalleRuta buscarPorIdRuta(Integer idRutaVyr)throws Exception;
 	/**
-	 * Guarda el detalle de la ruta	
-	 * @param detalleRuta	
+	 * Guarda el detalle de la ruta
+	 * @param detalleRuta
 	 * @throws Exception
 	 */
 	public void guardar(MTCDetalleRuta detalleRuta)throws Exception;
@@ -42,7 +42,7 @@ public interface MTCDetalleRutaManager {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<MTCDetalleRuta> buscarPorIdRutaMtc(Integer idRutaMtc)throws Exception;	
+	public List<MTCDetalleRuta> buscarPorIdRutaMtc(Integer idRutaMtc)throws Exception;
 	/**
 	 * Busca el detalle de la rutaMTC por estado
 	 * @param estado	: Estado

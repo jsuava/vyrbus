@@ -52,7 +52,7 @@ public class MacAddress extends JApplet {
 //			URL url = new URL("http://192.168.50.40:8080/sisvyr/validateAccess.zul?address="+cripto);
 			/*	PRODUCCION	*/
 			URL url = new URL("http://ventas.tepsa.com.pe/sisvyr/validateAccess.zul?address="+cripto);
-			context.showDocument(url, "_self");			
+			context.showDocument(url, "_self");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -60,9 +60,9 @@ public class MacAddress extends JApplet {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	/**
 	 * Obtenemos la direccion MAC de la Interfaz de Red.
 	 */
@@ -89,12 +89,12 @@ public class MacAddress extends JApplet {
     	}
     	return result;
     }
-	
+
 	private void showErrorMessage(String errorMessage, boolean showErrorMessage){
         if(showErrorMessage)
             JOptionPane.showMessageDialog(this, errorMessage, "TEPSA VyR", JOptionPane.ERROR_MESSAGE);
     }
-	
+
 	/**
      * Convierte un arreglo de bytes a String usando valores hexadecimales
      * @param digest arreglo de bytes a convertir
@@ -129,7 +129,7 @@ public class MacAddress extends JApplet {
         }
         return toHexadecimal(digest);
     }
-    
+
 //    /* (non-Javadoc)
 //	 * @see java.applet.Applet#init()
 //	 */
@@ -143,7 +143,7 @@ public class MacAddress extends JApplet {
 //		add(b);
 //		postRequest();
 //	}
-//	
+//
 //	public void actionPerformed(ActionEvent e) {
 //		try {
 //			AppletContext a = getAppletContext();
@@ -155,11 +155,11 @@ public class MacAddress extends JApplet {
 //			ex.printStackTrace();
 //		}
 //	}
-//	
+//
 //	public static void postRequest() {
 //	    try {
 //	        String urlParameters = "param1=a&param2=b&param3=c";
-//	    	
+//
 //	    	URL url = new URL("http://localhost:8080/sisvyr/parame.zul");
 //
 //            URLConnection conn = url.openConnection();

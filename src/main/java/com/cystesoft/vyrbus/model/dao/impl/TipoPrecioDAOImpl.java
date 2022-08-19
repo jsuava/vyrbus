@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 05/01/2017
  * Hora			: 15:43:51
@@ -24,7 +24,7 @@ public class TipoPrecioDAOImpl extends GenericDAOImpl implements TipoPrecioDAO{
 
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.TipoPrecioDAO#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
-	 */	
+	 */
 	@Override
 	public ArrayList<TipoPrecio> buscarPorEstadoRegistro(String estado,String criterioOrden) {
 		// TODO Auto-generated method stub
@@ -73,7 +73,7 @@ public class TipoPrecioDAOImpl extends GenericDAOImpl implements TipoPrecioDAO{
 	@Override
 	public void inactivar(Long id) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 }

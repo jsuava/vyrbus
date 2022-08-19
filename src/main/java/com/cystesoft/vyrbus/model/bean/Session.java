@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 04/05/2016
  * Hora			: 11:28:17
@@ -17,7 +17,7 @@ import java.util.Date;
 public class Session extends GenericBean implements java.io.Serializable{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -3160476508730765011L;
 	private long id;
@@ -189,6 +189,6 @@ public class Session extends GenericBean implements java.io.Serializable{
 	public void setObservaciones(String observaciones) {
 		this.observaciones = observaciones;
 	}
-	
-	
+
+
 }

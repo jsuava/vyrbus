@@ -1,7 +1,7 @@
 /**
  * Proyecto		: VYRBUS
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: Marco Oscco
  * Fecha		: 27/08/2014
  * Hora			: 11:38:05
@@ -16,16 +16,16 @@ import java.io.Serializable;
  */
 public class NumeroHojaRutaID implements Serializable{
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private String idNumeroHojaRuta;
 
-	
+
 	public NumeroHojaRutaID(){
 		super();
 	}
-	
+
 	public NumeroHojaRutaID(String idNumeroHojaRuta){
 		super();
 		this.setIdNumeroHojaRuta(idNumeroHojaRuta);
@@ -45,8 +45,8 @@ public class NumeroHojaRutaID implements Serializable{
 		this.idNumeroHojaRuta = idNumeroHojaRuta;
 	}
 
-	
-	
-	
-	
+
+
+
+
 }

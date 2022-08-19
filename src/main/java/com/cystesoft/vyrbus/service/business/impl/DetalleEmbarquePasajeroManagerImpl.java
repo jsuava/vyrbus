@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 28/11/2016
  * Hora			: 09:55:45
@@ -76,7 +76,7 @@ public class DetalleEmbarquePasajeroManagerImpl implements DetalleEmbarquePasaje
 	@Override
 	public void guardar(DetalleEmbarquePasajero detalleEmbarquePasajero) {
 		// TODO Auto-generated method stub
-		getDetalleEmbarquePasajeroDAO().guardar(detalleEmbarquePasajero);;
+		getDetalleEmbarquePasajeroDAO().guardar(detalleEmbarquePasajero);
 	}
 
 	/* (non-Javadoc)
@@ -88,6 +88,6 @@ public class DetalleEmbarquePasajeroManagerImpl implements DetalleEmbarquePasaje
 		// TODO Auto-generated method stub
 		getDetalleEmbarquePasajeroDAO().actualizar(detalleEmbarquePasajero);
 	}
-	
-	
+
+
 }

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 15 jul. 2021
  * Hora			: 23:34:16
@@ -16,7 +16,7 @@ import java.io.Serializable;
  */
 public class ResumenComprobante implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer idTipoComprobante;
 	private String comprobante;
 	private String serie;
@@ -82,5 +82,5 @@ public class ResumenComprobante implements Serializable {
 	public void setMonto(Double monto) {
 		this.monto = monto;
 	}
-	
+
 }

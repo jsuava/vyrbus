@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 26/10/2016
  * Hora			: 15:30:14
@@ -17,7 +17,7 @@ import java.io.Serializable;
 public class TipoNota extends GenericBean implements Serializable{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Integer id;
@@ -111,6 +111,6 @@ public class TipoNota extends GenericBean implements Serializable{
 	public void setGastoAdminTarjeta(Double gastoAdminTarjeta) {
 		this.gastoAdminTarjeta = gastoAdminTarjeta;
 	}
-	
+
 
 }

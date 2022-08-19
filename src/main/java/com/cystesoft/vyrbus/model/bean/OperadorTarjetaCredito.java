@@ -12,13 +12,13 @@ public class OperadorTarjetaCredito extends GenericBean implements java.io.Seria
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String denominacion;
-	
-	private Set<TarjetaCredito> tarjetaCreditos = new HashSet<TarjetaCredito>(0);
+
+	private Set<TarjetaCredito> tarjetaCreditos = new HashSet<>(0);
 
 	public OperadorTarjetaCredito() {
 		super();
 	}
-	
+
 	public OperadorTarjetaCredito(Integer id){
 		this.id=id;
 	}

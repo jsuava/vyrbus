@@ -12,13 +12,13 @@ public class Localidad extends GenericBean implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String denominacion;
-	
-	private Set<Agencia> agencias = new HashSet<Agencia>(0);
-	private Set<Ruta> rutasForLocalidadIddestino = new HashSet<Ruta>(0);
-	private Set<Ruta> rutasForLocalidadIdorigen = new HashSet<Ruta>(0);
+
+	private Set<Agencia> agencias = new HashSet<>(0);
+	private Set<Ruta> rutasForLocalidadIddestino = new HashSet<>(0);
+	private Set<Ruta> rutasForLocalidadIdorigen = new HashSet<>(0);
 
 	public Localidad() {
-		
+
 	}
 	/**
 	 * @param id

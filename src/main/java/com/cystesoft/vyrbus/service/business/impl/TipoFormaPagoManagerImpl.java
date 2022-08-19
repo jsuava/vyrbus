@@ -26,7 +26,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class TipoFormaPagoManagerImpl implements TipoFormaPagoManager {
 	private TipoFormaPagoDAO tipoFormaPagoDAO;
-	
+
 	/**
 	 * @return the tipoFormaPagoDAO
 	 */
@@ -74,24 +74,24 @@ public class TipoFormaPagoManagerImpl implements TipoFormaPagoManager {
 	@Transactional
 	public void guardar(TipoFormaPago tipoFormaPago) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", tipoFormaPago.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getTipoFormaPagoDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la denominación*/
 			if(resultDenominacion.size()>0)
 				throw new DenominacionDuplicadaException();
-			
+
 			criteriosBusqueda.remove("denominacion");
 			criteriosBusqueda.put("nombreCorto", tipoFormaPago.getNombreCorto());
 			List<?> resultNombreCorto = getTipoFormaPagoDAO().buscarPorX(criteriosBusqueda, null);
-			
+
 			/*Valida duplicidad del Nombre corto*/
 			if (resultNombreCorto.size()>0)
 				throw new NombreCortoDuplicadoException();
-			
+
 			getTipoFormaPagoDAO().guardar(tipoFormaPago);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(NombreCortoDuplicadoException rdnex){
@@ -108,29 +108,29 @@ public class TipoFormaPagoManagerImpl implements TipoFormaPagoManager {
 	@Transactional
 	public void actualizar(TipoFormaPago tipoFormaPago) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", tipoFormaPago.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getTipoFormaPagoDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la denominación*/
-			for(int r = 0; r < resultDenominacion.size(); r ++) {
-				TipoFormaPago otipoFormaPago = (TipoFormaPago) resultDenominacion.get(r);
+			for (Object element : resultDenominacion) {
+				TipoFormaPago otipoFormaPago = (TipoFormaPago) element;
 				if (!(otipoFormaPago.getId() == tipoFormaPago.getId()))
 					throw new DenominacionDuplicadaException();
 			}
-			
+
 			criteriosBusqueda.remove("denominacion");
 			criteriosBusqueda.put("nombreCorto", tipoFormaPago.getNombreCorto());
 			List<?> resultnombreCorto = getTipoFormaPagoDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Nombre corto*/
-			for(int r = 0; r < resultnombreCorto.size(); r ++) {
-				TipoFormaPago otipoFormaPago= (TipoFormaPago) resultnombreCorto.get(r);
+			for (Object element : resultnombreCorto) {
+				TipoFormaPago otipoFormaPago= (TipoFormaPago) element;
 				if (!(otipoFormaPago.getId() == tipoFormaPago.getId()))
 					throw new NombreCortoDuplicadoException();
-			}		
-		
+			}
+
 			getTipoFormaPagoDAO().actualizar(tipoFormaPago);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(NombreCortoDuplicadoException rdnex){

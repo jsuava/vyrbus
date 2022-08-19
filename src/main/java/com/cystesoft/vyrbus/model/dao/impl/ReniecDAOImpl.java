@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 05/09/2013
  */
@@ -28,24 +28,24 @@ public class ReniecDAOImpl extends GenericDAOImpl implements ReniecDAO{
 	@Override
 	public Reniec buscarPax(String numeroDocumento) throws Exception {
 		try {
-			
+
 			// TODO Auto-generated method stub
 			String sql="select r.num_doc, r.ape_pat, r.ape_mat, r.nom_per, r.fec_nac, r.cod_sex, r.tip_doc "+
 					  "from RENIEC.bdreniec r where r.num_doc='"+numeroDocumento+"' ";
-			
+
 			log.info(sql);
-			
+
 			List<?> result = getSession().createSQLQuery(sql).list();
 			Reniec reniec=null;
-			for(int i=0; i<result.size(); i++){
-				Object[] obj = (Object[])result.get(i);
-				
+			for (Object element : result) {
+				Object[] obj = (Object[])element;
+
 				reniec= new Reniec();
 				reniec.setNumeroDocumento(obj[0].toString());
 				reniec.setApellidoPaterno(obj[1].toString());
 				reniec.setApellidoMaterno(obj[2].toString());
 				reniec.setNombres(obj[3].toString());
-				
+
 				/*Da formato a la fechaNacimiento*/
 				String anio =obj[4].toString().substring(0,4);
 				String mes=obj[4].toString().substring(4,6);
@@ -56,19 +56,19 @@ public class ReniecDAOImpl extends GenericDAOImpl implements ReniecDAO{
 				if(obj[5].toString().equals("1"))
 					reniec.setSexo(String.valueOf(Constantes.ID_SEXO_MASCULINO));
 				else reniec.setSexo(String.valueOf(Constantes.ID_SEXO_FEMENINO));
-				
+
 				reniec.setTipoDocumento(obj[6].toString());
 			}
-			
+
 			return reniec;
-			
+
 		} catch (Exception e) {
 			// TODO: handle exception
 			return null;
 		}
-		
+
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.ReniecDAO#validarPaxConReniec(com.tepsa.sisvyr.model.bean.Pasajero)
@@ -96,7 +96,7 @@ public class ReniecDAOImpl extends GenericDAOImpl implements ReniecDAO{
 				}
 				if(updatePax)
 					oPasajero.setNombresApellidos(oPasajero.getNombre()+" "+oPasajero.getApellidoPaterno()+" "+oPasajero.getApellidoMaterno());
-								
+
 				/*Compara sexo*/
 				if(reniec.getSexo().equals(oPasajero.getSexo().getId().toString())){
 					Sexo oSexo= ServiceLocator.getSexoManager().buscarPorId(Long.valueOf(reniec.getSexo()));
@@ -107,17 +107,17 @@ public class ReniecDAOImpl extends GenericDAOImpl implements ReniecDAO{
 					oPasajero.setFechaNacimiento(reniec.getFechaNacimiento());
 					updatePax=true;
 				}
-				
+
 				if(updatePax){
 					ServiceLocator.getPasajeroManager().actualizar(oPasajero);
-				}				
-				
+				}
+
 				oPasajero.setSincronizadoReniec(true);
 			}
 		}
-		
+
 		return oPasajero;
 	}
-		
-	
+
+
 }

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 11/01/2017
  * Hora			: 09:27:45
@@ -20,7 +20,7 @@ import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 public class VentasNotas implements Serializable{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private List<VentaPasaje> listVentas;

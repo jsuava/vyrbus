@@ -35,7 +35,7 @@ import com.cystesoft.vyrbus.view.ui.WndFiltrarParametros;
 import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
@@ -50,13 +50,13 @@ public class WndAutorizadorCortesia extends WndOpcionesMantenimiento {
 	private Label lblPasswordActual;
 	private Label lblPassword;
 	private Listbox lbxMotivosCortesia;
-	
+
 	private AutorizadorCortesia autorizadorCortesia=null;
 	private AutorizadorMotivoCortesia autorizadorMotivoCortesia=null;
-	
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
@@ -72,7 +72,7 @@ public class WndAutorizadorCortesia extends WndOpcionesMantenimiento {
 		lblPassword=(Label)this.getFellow("lblPassword");
 		lbxMotivosCortesia=(Listbox)this.getFellow("lbxMotivosCortesia");
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
@@ -82,17 +82,17 @@ public class WndAutorizadorCortesia extends WndOpcionesMantenimiento {
 		UtilData.cargarDataCombo(cmbPersonal, Personal.class, false);
 		UtilData.cargarDataCombo(cmbMotivoCortesia, MotivoCortesia.class, false);
 		cargarMotivosCortesia();
-				
-		criteriosOrdenar = new ArrayList<String>();
+
+		criteriosOrdenar = new ArrayList<>();
 		lblPasswordActual.setValue(lblPasswordActual.getValue()+":");
 		//criteriosOrdenar.add("denominacion");
-		
+
 		txtPasswordActual.setVisible(false);
 		lblPasswordActual.setVisible(false);
-		
+
 	}
-	
-	
+
+
 	@Override
 	public void onNew() throws Exception {
 		Util.limpiarCombobox(cmbPersonal);
@@ -100,16 +100,16 @@ public class WndAutorizadorCortesia extends WndOpcionesMantenimiento {
 		UtilData.cargarDataCombo(cmbPersonal, Personal.class, false);
 //		UtilData.cargarDataCombo(cmbMotivoCortesia, MotivoCortesia.class, false);
 		cargarMotivosCortesia();
-		
+
 		cmbPersonal.setSelectedIndex(-1);
 //		cmbMotivoCortesia.setSelectedIndex(0);
-		
+
 		lblPassword.setValue("PASSWORD (*) :");
 		lblPasswordActual.setValue("PASSWORD ACTUAL :");
-		
+
 		txtPasswordActual.setVisible(false);
 		lblPasswordActual.setVisible(false);
-		
+
 	}
 
 	@Override
@@ -128,26 +128,26 @@ public class WndAutorizadorCortesia extends WndOpcionesMantenimiento {
 				AutorizadorCortesia autorizadorCortesia=(AutorizadorCortesia)oWndFiltrar.getParameterValue("Autorizador Cortesia");
 				MotivoCortesia motivoCortesia=(MotivoCortesia)oWndFiltrar.getParameterValue("Motivo Cortesia");
 				String estadoRegistro = Constantes.VALUE_ACTIVO;
-				
-				criteriosBusqueda = new TreeMap<String, Object>();
+
+				criteriosBusqueda = new TreeMap<>();
 				if(autorizadorCortesia!=null)
 					criteriosBusqueda.put("autorizadorCortesia", autorizadorCortesia);
 				if(motivoCortesia!=null)
 					criteriosBusqueda.put("motivoCortesia", motivoCortesia);
 				criteriosBusqueda.put("estadoRegistro", estadoRegistro);
-				
+
 				listarRegistros(ServiceLocator.getAutorizadorMotivoCortesiaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 			}
 		});
-		
+
 	}
 
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getAutorizadorMotivoCortesiaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getAutorizadorMotivoCortesiaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
-		
+
 	}
 
 	/*
@@ -159,15 +159,15 @@ public class WndAutorizadorCortesia extends WndOpcionesMantenimiento {
 //		Long id = new Long(0);
 //		id = ((AutorizadorCortesia)listboxLista.getItemAtIndex(listboxLista.getSelectedIndex()).getValue()).getId().longValue();
 		this.mantenimientoRegistro();
-		
+
 	}
 
 	@Override
 	public void onCancel(int action) throws Exception {
 		// TODO Auto-generated method stub
 		txtPasswordActual.setVisible(false);
-		lblPasswordActual.setVisible(false);		
-		
+		lblPasswordActual.setVisible(false);
+
 	}
 
 	/*
@@ -186,9 +186,9 @@ public class WndAutorizadorCortesia extends WndOpcionesMantenimiento {
 			else if (txtPassword.getText().trim().isEmpty() && action==ACTION_NEW)
 				throw new PasswordException(PasswordException.PASSWORD_NULL);
 			else if (txtConfirmarPassword.getText().trim().isEmpty() && action==ACTION_NEW)
-				throw new PasswordException(PasswordException.PASSWORD_CONFIRMATION_NULL); 
+				throw new PasswordException(PasswordException.PASSWORD_CONFIRMATION_NULL);
 			else if (!(txtPassword.getText().trim().equals(txtConfirmarPassword.getText().trim())))
-				throw new PasswordException(PasswordException.PASSWORD_DIFERENTES);	
+				throw new PasswordException(PasswordException.PASSWORD_DIFERENTES);
 
 
 			if(action==ACTION_NEW)
@@ -200,8 +200,8 @@ public class WndAutorizadorCortesia extends WndOpcionesMantenimiento {
 
 			autorizadorCortesia.setPersonal((Personal)cmbPersonal.getSelectedItem().getValue());
 //			autorizadorCortesia.setMotivoCortesia((MotivoCortesia) cmbMotivoCortesia.getSelectedItem().getValue());
-			
-			List<MotivoCortesia> lstMotivoCortesias = new ArrayList<MotivoCortesia>();
+
+			List<MotivoCortesia> lstMotivoCortesias = new ArrayList<>();
 			for(int i=0; i<lbxMotivosCortesia.getItemCount(); i++){
 				if(lbxMotivosCortesia.getItemAtIndex(i).isSelected()){
 					MotivoCortesia motivoCortesia = lbxMotivosCortesia.getItemAtIndex(i).getValue();
@@ -209,11 +209,11 @@ public class WndAutorizadorCortesia extends WndOpcionesMantenimiento {
 				}
 			}
 			autorizadorCortesia.setListaMotivoCortesia(lstMotivoCortesias);
-			
+
 			if(lstMotivoCortesias.size()==0)
 				throw new MotivoCorteciaNullException();
-			
-			
+
+
 			if (!txtPassword.getText().trim().isEmpty())
 				autorizadorCortesia.setPassword(txtPassword.getText().trim().toLowerCase());
 			autorizadorCortesia.setEstadoRegistro(Constantes.VALUE_ACTIVO);
@@ -223,26 +223,26 @@ public class WndAutorizadorCortesia extends WndOpcionesMantenimiento {
 					UtilData.auditarRegistro(autorizadorCortesia, getUsuario(), Executions.getCurrent());
 					ServiceLocator.getAutorizadorCortesiaManager().guardar(autorizadorCortesia);
 					break;
-	
+
 				case ACTION_MODIFY:
 					UtilData.auditarRegistro(autorizadorCortesia, true, getUsuario(), Executions.getCurrent());
 					ServiceLocator.getAutorizadorCortesiaManager().actualizar(autorizadorCortesia);
 					break;
 			}
-			
+
 			AutorizadorMotivoCortesia autorizadorMotivoCortesia = new AutorizadorMotivoCortesia();
 			autorizadorMotivoCortesia.setAutorizadorCortesia(autorizadorCortesia);
 			ServiceLocator.getAutorizadorMotivoCortesiaManager().guardar(autorizadorMotivoCortesia);
-			
-			
+
+
 			/*RECUPERA EL REGISTRO */
-			criteriosBusqueda= new TreeMap<String, Object>();
-			criteriosBusqueda.put("autorizadorCortesia", autorizadorCortesia);	
+			criteriosBusqueda= new TreeMap<>();
+			criteriosBusqueda.put("autorizadorCortesia", autorizadorCortesia);
 //			criteriosBusqueda.put("motivoCortesia", autorizadorCortesia.getMotivoCortesia());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			listarRegistros(ServiceLocator.getAutorizadorMotivoCortesiaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-			
-		
+
+
 		}catch (PasswordException cp){
 			if(cp.getTipo().intValue()==PasswordException.PASSWORD_CONFIRMATION_NULL){
 				DlgMessage.information(Messages.getString("wndAutoprizadorCortesia.information.PasswordCanfirmaNull"),txtConfirmarPassword);
@@ -276,7 +276,7 @@ public class WndAutorizadorCortesia extends WndOpcionesMantenimiento {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace(); throw new CancelaGrabacionException();
 		}
-		
+
 	}
 
 	/*
@@ -304,19 +304,19 @@ public class WndAutorizadorCortesia extends WndOpcionesMantenimiento {
 	@Override
 	public void onPrint(int tab) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onExport(int tab) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onHelp() throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -329,9 +329,9 @@ public class WndAutorizadorCortesia extends WndOpcionesMantenimiento {
 					this.mantenimientoRegistro();
 				}
 				break;
-		}	
+		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.zkoss.zul.Window#onClose()
@@ -342,31 +342,31 @@ public class WndAutorizadorCortesia extends WndOpcionesMantenimiento {
 	}
 
 	/**
-	 * 
-	 * @param id : Identificador del autorizador de la cortesia 
+	 *
+	 * @param id : Identificador del autorizador de la cortesia
 	 * @throws Exception
 	 */
 	private void mantenimientoRegistro() throws Exception {
-		
+
 		Listitem listitem=listboxLista.getItemAtIndex(listboxLista.getSelectedIndex());
-		
+
 		autorizadorMotivoCortesia = listitem.getValue();
 		autorizadorCortesia = new AutorizadorCortesia();
 		autorizadorCortesia= ServiceLocator.getAutorizadorCortesiaManager().buscarPorId(autorizadorMotivoCortesia.getAutorizadorCortesia().getId().longValue());
-		
+
 		textboxId.setText(String.valueOf(autorizadorMotivoCortesia.getAutorizadorCortesia().getId()));
 		Util.seleccionarValorItemCombo(Personal.class, cmbPersonal, autorizadorMotivoCortesia.getAutorizadorCortesia().getPersonal().getId());
 //		Util.seleccionarValorItemCombo(MotivoCortesia.class, cmbMotivoCortesia, autorizadorCortesia.getMotivoCortesia().getId());
 //		txtPassword.setText(autorizadorCortesia.getPassword());
 //		txtConfirmarPassword.setText(autorizadorCortesia.getPassword());
-		
-		TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+
+		TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 		criteriosBusqueda.put("autorizadorCortesia", autorizadorMotivoCortesia.getAutorizadorCortesia());
 		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-		
+
 		cargarMotivosCortesia();
 		List<AutorizadorMotivoCortesia> lstAutorizadorMotivos = ServiceLocator.getAutorizadorMotivoCortesiaManager().buscarPorX(criteriosBusqueda, null);
-		
+
 		for(AutorizadorMotivoCortesia autorizadorMotivoCortesia :lstAutorizadorMotivos){
 			for(int i=0; i<lbxMotivosCortesia.getItemCount(); i++){
 				MotivoCortesia motivoCortesia = lbxMotivosCortesia.getItems().get(i).getValue();
@@ -376,17 +376,17 @@ public class WndAutorizadorCortesia extends WndOpcionesMantenimiento {
 				}
 			}
 		}
-		
+
 		lblPasswordActual.setValue("PASSWORD ACTUAL (*) :");
 		lblPassword.setValue("NUEVO PASSWORD (*) :");
 
 		cmbPersonal.setDisabled(true);
 		cmbMotivoCortesia.setDisabled(true);
-		
+
 		txtPasswordActual.setVisible((btnModificar.isDisabled()));
-		lblPasswordActual.setVisible((btnModificar.isDisabled()));		
+		lblPasswordActual.setVisible((btnModificar.isDisabled()));
 	}
-	
+
 	/**
 	 * Lista el resultado de la busqueda
 	 * @param lstRegistros : arraylist con los registros a mostrar en le Listbox
@@ -395,10 +395,10 @@ public class WndAutorizadorCortesia extends WndOpcionesMantenimiento {
 		Listitem item=null;
 		Listcell cell=null;
 		int x=0;
-		
+
 		Util.limpiarListbox(listboxLista);
-		
-		TreeMap<String, AutorizadorMotivoCortesia> map = new TreeMap<String, AutorizadorMotivoCortesia>();
+
+		TreeMap<String, AutorizadorMotivoCortesia> map = new TreeMap<>();
 		AutorizadorMotivoCortesia autorizadorMotivoCortesia = null;
 		for(AutorizadorMotivoCortesia autorizadorMotivo: lstRegistros){
 			if(autorizadorMotivo.getAutorizadorCortesia().getEstadoRegistro().equals(Constantes.VALUE_ACTIVO)){
@@ -408,51 +408,51 @@ public class WndAutorizadorCortesia extends WndOpcionesMantenimiento {
 //					autorizadorMotivoCortesia.getListMotivos().add(autorizadorMotivo.getMotivoCortesia().getDenominacion());
 				}else{
 					autorizadorMotivoCortesia = new AutorizadorMotivoCortesia();
-					List<String> lstMotivos = new ArrayList<String>();
+					List<String> lstMotivos = new ArrayList<>();
 					autorizadorMotivoCortesia.setListMotivos(lstMotivos);
-					
+
 				}
 				autorizadorMotivoCortesia.getListMotivos().add(autorizadorMotivo.getMotivoCortesia().getDenominacion());
-				autorizadorMotivoCortesia.setAutorizadorCortesia(autorizadorMotivo.getAutorizadorCortesia());			
+				autorizadorMotivoCortesia.setAutorizadorCortesia(autorizadorMotivo.getAutorizadorCortesia());
 				map.put(key, autorizadorMotivoCortesia);
 			}
-			
+
 		}
-		
+
 		for(String key: map.keySet()){
 			x++;
 			item= new Listitem();
-			
+
 			cell=new Listcell(String.valueOf(x));
 			item.appendChild(cell);
 			cell=new Listcell(key);
 			item.appendChild(cell);
 			cell= new Listcell(map.get(key).getListMotivos().toString());
 			item.appendChild(cell);
-			
+
 			item.setValue(map.get(key));
 			listboxLista.appendChild(item);
 		}
 	}
-	
+
 	private void cargarMotivosCortesia(){
 		lbxMotivosCortesia.getItems().clear();
 		List<MotivoCortesia> lstMotivosCortesia = ServiceLocator.getMotivoCortesiaManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
 		for(MotivoCortesia motivoCortesia : lstMotivosCortesia){
 			Listitem item=new Listitem();
 			Listcell cell=null;
-			
+
 			cell=new Listcell(motivoCortesia.getDenominacion());
-			item.appendChild(cell);			
+			item.appendChild(cell);
 			item.setValue(motivoCortesia);
-			
+
 			lbxMotivosCortesia.addEventListener(Events.ON_SELECT,new EventListener<Event>() {
 				@Override
 				public void onEvent(Event event) throws Exception {
 //					lblRolesSeleccionados.setValue(String.valueOf(lbxMotivosCortesia.getSelectedItems().size()));
 				}
 			});
-			
+
 			lbxMotivosCortesia.appendChild(item);
 		}
 	}

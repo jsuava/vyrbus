@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 02/05/2012
  */
@@ -46,23 +46,23 @@ public class WndDescuentoRecargo extends WndOpcionesMantenimiento {
 	private Textbox txtDenominacion;
 	private Doublebox dbMonto;
 	private Checkbox chkMarcarPorcentaje;
-	
+
 	private DescuentoRecargo oDescuentoRecargo = null;
 
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IBase#onCreate()
 	 */
 	@Override
 	public void onCreate() throws Exception {
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
-		
+
 		dbMonto.setLocale(Locale.US);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IBase#initComponents()
 	 */
@@ -72,7 +72,7 @@ public class WndDescuentoRecargo extends WndOpcionesMantenimiento {
 		dbMonto = (Doublebox) getFellow("dbMonto");
 		chkMarcarPorcentaje = (Checkbox) getFellow("chkMarcarPorcentaje");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onNew()
 	 */
@@ -89,7 +89,7 @@ public class WndDescuentoRecargo extends WndOpcionesMantenimiento {
 
 		oWndFiltrar.addParameter("Denominación", String.class);
 		oWndFiltrar.addParameter("Porcentaje", Combobox.class);
-		
+
 		this.appendChild(oWndFiltrar);
 		oWndFiltrar.setMode("modal");
 		oWndFiltrar.addEventListener(com.cystesoft.vyrbus.view.ui.Events.ON_FILTER, new EventListener<Event>() {
@@ -103,11 +103,11 @@ public class WndDescuentoRecargo extends WndOpcionesMantenimiento {
 				if (denominacion.trim().equals("")) {
 					criteriosBusqueda.remove("denominacion");
 				}else {criteriosBusqueda.put("denominacion", "%" + denominacion + "%");}
-				
+
 				if (esPorcentaje == -1 ){
 					criteriosBusqueda.remove("esPorcentaje");
 				}else {criteriosBusqueda.put("esPorcentaje", esPorcentaje);}
-				
+
 				criteriosBusqueda.put("estadoRegistro", estadoRegistro);
 
 				listarRegistros(ServiceLocator.getDescuentoRecargoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
@@ -120,7 +120,7 @@ public class WndDescuentoRecargo extends WndOpcionesMantenimiento {
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getDescuentoRecargoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getDescuentoRecargoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
 	}
 	/* (non-Javadoc)
@@ -140,7 +140,7 @@ public class WndDescuentoRecargo extends WndOpcionesMantenimiento {
 		switch (action) {
 			case ACTION_NEW:
 				break;
-	
+
 			case ACTION_MODIFY:
 				this.mantenimientoRegistro(new Long(textboxId.getText()));
 				break;
@@ -156,11 +156,11 @@ public class WndDescuentoRecargo extends WndOpcionesMantenimiento {
 				throw new DenominacionNullException();
 			if (dbMonto.getText().equals("") || dbMonto.getValue().doubleValue() == 0)
 				throw new MontoDescuentoNullException();
-			
-			
+
+
 			if (action==ACTION_NEW)
 				oDescuentoRecargo = new DescuentoRecargo();
-			
+
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
 
 			oDescuentoRecargo.setId(id);
@@ -188,7 +188,7 @@ public class WndDescuentoRecargo extends WndOpcionesMantenimiento {
 			criteriosBusqueda.put("denominacion", oDescuentoRecargo.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			listarRegistros(ServiceLocator.getDescuentoRecargoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-			
+
 		}catch (DenominacionNullException dnex){
 			DlgMessage.information(Messages.getString("Denominacion"),txtDenominacion);
 			throw new CancelaGrabacionException();
@@ -228,7 +228,7 @@ public class WndDescuentoRecargo extends WndOpcionesMantenimiento {
 	@Override
 	public void onPrint(int tab) {
 		// TODO Auto-generated method stub
-		
+
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onExport(int)
@@ -236,7 +236,7 @@ public class WndDescuentoRecargo extends WndOpcionesMantenimiento {
 	@Override
 	public void onExport(int tab) {
 		// TODO Auto-generated method stub
-		
+
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onHelp()
@@ -244,7 +244,7 @@ public class WndDescuentoRecargo extends WndOpcionesMantenimiento {
 	@Override
 	public void onHelp() {
 		// TODO Auto-generated method stub
-		
+
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onChangeTab(int)
@@ -254,7 +254,7 @@ public class WndDescuentoRecargo extends WndOpcionesMantenimiento {
 		switch (tab) {
 			case TAB_LIST:
 				break;
-	
+
 			case TAB_MAINTENANCE:
 				if (listboxLista.getSelectedIndex() > -1) {
 					this.mantenimientoRegistro(new Long((String) listboxLista.getSelectedItem().getValue()));
@@ -262,7 +262,7 @@ public class WndDescuentoRecargo extends WndOpcionesMantenimiento {
 				break;
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.IOpcionesMantenimiento#onClose()
 	 */
@@ -272,11 +272,11 @@ public class WndDescuentoRecargo extends WndOpcionesMantenimiento {
 	}
 
 	private void listarRegistros(ArrayList<DescuentoRecargo> lstRegistros) {
-		ArrayList<Object> lstDescuentosRecargos = new ArrayList<Object>();
+		ArrayList<Object> lstDescuentosRecargos = new ArrayList<>();
 
 		for(int r = 0; r < lstRegistros.size(); r ++) {
 			DescuentoRecargo oDescuentoRecargo = lstRegistros.get(r);
-			ArrayList<Object> lstFila = new ArrayList<Object>();
+			ArrayList<Object> lstFila = new ArrayList<>();
 
 			lstFila.add(oDescuentoRecargo.getId());
 			lstFila.add(r + 1);

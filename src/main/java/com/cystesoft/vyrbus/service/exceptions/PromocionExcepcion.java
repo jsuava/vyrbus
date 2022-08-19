@@ -19,7 +19,7 @@ public class PromocionExcepcion extends Exception {
 	public static final int NO_DESCUENTO_IMPORTE = 4;
 	public static final int DESCUENTO_IMPORTE = 5;
 	public static final int DENOMINACION_DUPLICADA = 6;
-	
+
 	private Integer tipo;
 
 	public PromocionExcepcion() {

@@ -1,14 +1,13 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 26 mar. 2022
  * Hora			: 06:28:30
  */
 package com.cystesoft.vyrbus.view.ctrl;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -20,13 +19,9 @@ import org.zkoss.zul.Button;
 import org.zkoss.zul.Caption;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
-import org.zkoss.zul.Combobox;
-import org.zkoss.zul.Div;
 import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Groupbox;
-import org.zkoss.zul.Hbox;
-import org.zkoss.zul.Image;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
@@ -40,13 +35,7 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
-import com.cystesoft.vyrbus.model.bean.TipoComprobante;
-import com.cystesoft.vyrbus.model.bean.TipoMovimiento;
-import com.cystesoft.vyrbus.model.bean.TipoNota;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
-import com.cystesoft.vyrbus.service.exceptions.DevolucionByTipoAgenciaNoPermitidoException;
-import com.cystesoft.vyrbus.service.exceptions.DevolucionByTipoMovimientoNoPermitidoException;
-import com.cystesoft.vyrbus.service.exceptions.FechaCaducidadNullException;
 import com.cystesoft.vyrbus.service.exceptions.LiquidacionNullException;
 import com.cystesoft.vyrbus.service.exceptions.ManifiestoImpresoException;
 import com.cystesoft.vyrbus.service.exceptions.ObservacionesNullException;
@@ -71,12 +60,12 @@ public class WndPerdidaServicio extends WndBase {
 	private Textbox txtMotivo;
 	private Listbox lbxVentas;
 	private Tab tabListado;
-	private Window wndPerdidaServicio;	
+	private Window wndPerdidaServicio;
 	private Doublebox dblImporte;
-	
-	
+
+
 	private VentaPasaje boletoPerdidaServicio = null;
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
@@ -86,18 +75,18 @@ public class WndPerdidaServicio extends WndBase {
 			/*Valida si el usuario tiene una liquidación aperturada*/
 			if(getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION)==null)
 				throw new LiquidacionNullException();
-			
+
 			super.onCreate();
 //			fechaLiquidacion = (Date) this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION);
 			txtNumeroBoleto.setFocus(true);
-			
+
 		}catch (LiquidacionNullException lnullex){
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noLiquidacion"));
 			closeTabWindow();
 		}
-		
+
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
 	 */
@@ -112,7 +101,7 @@ public class WndPerdidaServicio extends WndBase {
 		tabListado = (Tab)this.getFellow("tabListado");
 //		wndPerdidaServicio=(Window)this.getFellow("wndPerdidaServicio");
 	}
-	
+
 	public void buscarVentas(){
 		try{
 			String numeroDocumento = txtNumeroDocumento.getText().trim().equals("")?null:txtNumeroDocumento.getText().trim().toUpperCase();
@@ -126,12 +115,12 @@ public class WndPerdidaServicio extends WndBase {
 				numeroBoleto = Util.autocompleNumberBoleto(numeroBoleto);
 				txtNumeroBoleto.setText(numeroBoleto);
 			}
-			
+
 			if(numeroDocumento==null && numeroControl==null && numeroBoleto==null){
 				DlgMessage.warning(Messages.getString("WndPerdidaServicio.warning.noExisteCriteriosBusqueda"));
 				return;
 			}
-			
+
 			List<VentaPasaje> lstReservas = ServiceLocator.getVentaPasajesManager().buscarBoletosPerdidaServicio(numeroDocumento, numeroControl, numeroBoleto);
 			if(lstReservas.size()>0){
 				lbxVentas.getItems().clear();
@@ -179,16 +168,16 @@ public class WndPerdidaServicio extends WndBase {
 				tabListado.setSelected(true);
 			}else
 				DlgMessage.information(Messages.getString("WndPerdidaServicio.information.noVentas"));
-			
+
 		}catch(Exception ex){
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
-	}	
-	
+	}
+
 	private void validatePerdidaServicio(String idVenta){
 		validatePerdidaServicio(idVenta,true);
-	}	
-	
+	}
+
 	/**
 	 * Realiza la validacón para ver si al boleto se le puede aplicar el proceso de Perdida de Servicio.
 	 * @param idVenta	: Identificador de la venta.
@@ -197,13 +186,13 @@ public class WndPerdidaServicio extends WndBase {
 	private boolean validatePerdidaServicio(String idVenta, boolean createVentanaDevolucion){
 		try{
 			boletoPerdidaServicio = null;
-			/*Busca el registro original*/			
+			/*Busca el registro original*/
 			VentaPasaje ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarVentaById(Long.valueOf(idVenta));
 			/*Busca por el ultimo movimiento agrupado por numero de control*/
 			List<VentaPasaje> lstResult= ServiceLocator.getVentaPasajesManager().buscarBoletosPerdidaServicio(null, ventaPasaje.getNumeroControl(), null);
 			/*Busca por el identificador del ultmio movimiento, el registro a validar*/
 			final VentaPasaje ventaPerdidaServicio=ServiceLocator.getVentaPasajesManager().buscarVentaById(lstResult.get(0).getId());
-			
+
 			if(ventaPerdidaServicio.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA)
 				throw new PerdidaServicioException(Constantes.ID_TIPMOV_ANULACION_SISTEMA);
 			else if (ventaPerdidaServicio.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION)
@@ -213,11 +202,13 @@ public class WndPerdidaServicio extends WndBase {
 			else if(ventaPerdidaServicio.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_PERDIDA_SERVICIO))
 				throw new PerdidaServicioException(Integer.valueOf(Constantes.TIPO_OPERACION_PERDIDA_SERVICIO));
 
-			if (ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(Long.valueOf(idVenta)))
-				throw new ManifiestoImpresoException();
+			//Debe permitir colocarlo como perdida de servicio aunque este manifestado pues esta operacion se realizara
+			//Despues de emitir el manifiesto de pasajeros  MAOE 11/08/2022
+//			if (ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(Long.valueOf(idVenta)))
+//				throw new ManifiestoImpresoException();
 			
 			createVentanaPerdidaServicio(ventaPerdidaServicio);
-			
+
 			return true;
 		}catch(PerdidaServicioException psex){
 			if(psex.getTipo().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA)
@@ -236,7 +227,7 @@ public class WndPerdidaServicio extends WndBase {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Realiza la creación de la Ventana para marcar el boleto como perdida de Servicio.
 	 * @param ventaOriginal	: Boleto que se desea marcar.
@@ -244,7 +235,7 @@ public class WndPerdidaServicio extends WndBase {
 	 */
 	@SuppressWarnings("deprecation")
 	private void createVentanaPerdidaServicio(final VentaPasaje ventaOriginal)throws Exception{
-		
+
 		Caption caption = null;
 		Groupbox groupbox = null;
 		Grid grid = new Grid();
@@ -254,25 +245,25 @@ public class WndPerdidaServicio extends WndBase {
 		Row row = null;
 		Label label = null;
 		Textbox text = null;
-		
+
 		final Window win = new Window("", "normal", true);
 		win.setWidth("500px");
-		
+
 		caption = new Caption("PERDIDA DE SERVICIO", "resources/menu/menu_reimprimir.png");
 		win.appendChild(caption);
 		label = new Label("Se va a proceder a marcar el boleto como Perdida de Servicio :");
 		label.setStyle("font-size:12px !important");
 		win.appendChild(label);
-		
+
 		win.appendChild(new Separator("horizontal"));
-		
+
 		groupbox = new Groupbox();
 		groupbox.setClosable(false);
 		groupbox.setMold("3d");
 		caption = new Caption("INFORMACION DEL COMPROBANTE A MARCAR COMO PERDIDA DE SERVICIO");
 		caption.setStyle("color: #ffffff; font-size:12px !important");
 		groupbox.appendChild(caption);
-		
+
 		/*	Columna 1	*/
 		column = new Column();
 		column.setAlign("right");
@@ -287,10 +278,10 @@ public class WndPerdidaServicio extends WndBase {
 		/*	Columna 4	*/
 		column = new Column();
 		columns.appendChild(column);
-		
+
 		grid.appendChild(columns);
-		
-		row = new Row();		
+
+		row = new Row();
 		if(ventaOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE)
 			label = new Label("NUMERO BOLETO :");
 		else if(ventaOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA)
@@ -298,21 +289,21 @@ public class WndPerdidaServicio extends WndBase {
 		else if(ventaOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_FACTURA)
 			label = new Label("NUMERO FACTURA :");
 		label.setStyle("color:blue");
-		row.appendChild(label);		
+		row.appendChild(label);
 		text = new Textbox(ventaOriginal.getNumeroBoleto());
 		text.setStyle("font-size:11px !important");
 		text.setReadonly(true);
 		text.setWidth("80px");
-		row.appendChild(text);		
+		row.appendChild(text);
 		label = new Label("FECHA VIAJE :");
-		row.appendChild(label);		
+		row.appendChild(label);
 		text = new Textbox(ventaOriginal.getFechaPartida()==null?"":Util.DatetoString(ventaOriginal.getFechaPartida(), Constantes.DATE_FORMAT));
 		text.setStyle("font-size:11px !important");
 		text.setReadonly(true);
 		text.setWidth("80px");
 		row.appendChild(text);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		label = new Label("NUMERO ASIENTO :");
 		row.appendChild(label);
@@ -324,7 +315,10 @@ public class WndPerdidaServicio extends WndBase {
 		label = new Label("IMPORTE :");
 		row.appendChild(label);
 		dblImporte= new Doublebox();
-		dblImporte.setValue(ventaOriginal.getTarifa()+ventaOriginal.getRecargo()-ventaOriginal.getDescuento());
+		//Ya no se utiliza la formula para determinar el importe pagado, se utiliza el campo n_impag directamente
+		//MAOE 11/08/2022
+//		dblImporte.setValue(ventaOriginal.getTarifa()+ventaOriginal.getRecargo()-ventaOriginal.getDescuento());
+		dblImporte.setValue(ventaOriginal.getImportePagado());
 		dblImporte.setStyle("align:right;font-size:11px !important");
 		dblImporte.setReadonly(true);
 		dblImporte.setWidth("80px");
@@ -332,7 +326,7 @@ public class WndPerdidaServicio extends WndBase {
 		dblImporte.setFormat("##0.00");
 		row.appendChild(dblImporte);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		row.setSpans("1,3");
 		label = new Label("PASAJERO :");
@@ -342,7 +336,7 @@ public class WndPerdidaServicio extends WndBase {
 		text.setWidth("90%");
 		row.appendChild(text);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		row.setSpans("1,3");
 		label = new Label("CLIENTE :");
@@ -352,7 +346,7 @@ public class WndPerdidaServicio extends WndBase {
 		text.setWidth("90%");
 		row.appendChild(text);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		row.setSpans("1,3");
 		label = new Label("TIPO FORMA PAGO :");
@@ -364,7 +358,7 @@ public class WndPerdidaServicio extends WndBase {
 		text.setWidth("90%");
 		row.appendChild(text);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		row.setSpans("1,3");
 		label = new Label("CANAL VENTA :");
@@ -383,7 +377,7 @@ public class WndPerdidaServicio extends WndBase {
 		lblCanalVenta.setWidth("100%");
 		row.appendChild(lblCanalVenta);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		row.setSpans("1,3");
 		label = new Label("MOTIVO (*) :");
@@ -395,12 +389,12 @@ public class WndPerdidaServicio extends WndBase {
 		txtMotivo.setHeight("50px");
 		row.appendChild(txtMotivo);
 		rows.appendChild(row);
-		
-		
+
+
 		grid.appendChild(rows);
 		groupbox.appendChild(grid);
 		win.appendChild(groupbox);
-		
+
 		grid = new Grid();
 		columns = new Columns();
 		column = new Column();
@@ -412,7 +406,7 @@ public class WndPerdidaServicio extends WndBase {
 		grid.appendChild(columns);
 		rows = new Rows();
 		row = new Row();
-		
+
 		Button button = new Button("Continuar", "resources/mp_aceptarEnabled.png");
 		button.setAutodisable("self");
 		button.setClass("btnCommandL");
@@ -435,24 +429,25 @@ public class WndPerdidaServicio extends WndBase {
 		button.setClass("btnCommandL");
 		button.setFocus(true);
 		row.appendChild(button);
-		
+
 		rows.appendChild(row);
-		
+
 		grid.appendChild(rows);
 		win.appendChild(grid);
-		
+
 		wndPerdidaServicio = win;
 		this.appendChild(wndPerdidaServicio);
 		wndPerdidaServicio.setMode(MODAL);
 	}
-	
+
 	private void guardarPerdida(VentaPasaje venta) {
 		Messagebox.show("Se va marcar el boleto como perdida de servicio, esta acción no se puede deshacer, ¿Seguro que desea continuar?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event ev) throws Exception{
 				try {
 					if(txtMotivo.getText().trim().equals(""))
 						throw new ObservacionesNullException();
-					
+
 					if(ev.getName().equals("onYes")) {
 						venta.setTipoTransaccion(Constantes.TIPO_OPERACION_PERDIDA_SERVICIO);
 						venta.setObservaciones(txtMotivo.getText().trim().toUpperCase());
@@ -462,7 +457,7 @@ public class WndPerdidaServicio extends WndBase {
 					DlgMessage.information(Messages.getString("WndPerdidaServicio.information.exitoPerdidaServicio")+" "+venta.getNumeroControl());
 					wndPerdidaServicio.onClose();
 				}catch(ObservacionesNullException onex) {
-					DlgMessage.information(Messages.getString("WndPerdidaServicio.information.motivoPerdidaServicio"));							
+					DlgMessage.information(Messages.getString("WndPerdidaServicio.information.motivoPerdidaServicio"));
 				}catch(Exception ex) {
 					ex.printStackTrace();
 					DlgMessage.error(ex.getMessage());

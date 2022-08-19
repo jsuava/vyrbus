@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 30/12/2014
  * Hora			: 10:14:42
@@ -27,7 +27,7 @@ public class RangoSobregiroDAOImpl extends GenericDAOImpl implements RangoSobreg
 		String hql="FROM RangoSobregiro rs WHERE "+lineaCredito+" BETWEEN rs.lineaCreditoMinima AND rs.lineaCreditoMaxima AND rs.estadoRegistro='"+Constantes.VALUE_ACTIVO+"' ";
 		log.info(hql);
 		RangoSobregiro rangoSobregiro=(RangoSobregiro)getSession().createQuery(hql).uniqueResult();
-		
+
 		return rangoSobregiro;
 	}
 

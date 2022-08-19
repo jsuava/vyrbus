@@ -14,8 +14,8 @@ public class NumeroFlota extends GenericBean implements java.io.Serializable {
 	private String codigo;
 	private String denominacion;
 	private String nombreCorto;
-	
-	private Set<Bus> buses = new HashSet<Bus>(0);
+
+	private Set<Bus> buses = new HashSet<>(0);
 
 	public NumeroFlota() {
 	}

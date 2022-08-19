@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 11/04/2015
  * Hora			: 10:48:08
@@ -17,7 +17,7 @@ import java.io.Serializable;
 public class GenericException extends Exception implements Serializable{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Object objectFocus;
@@ -25,11 +25,11 @@ public class GenericException extends Exception implements Serializable{
 	public GenericException(){
 		super();
 	}
-	
+
 	public GenericException(String message){
 		super(message);
 	}
-	
+
 	public GenericException(String message,Object objectFocus){
 		super(message);
 		this.setObjectFocus(objectFocus);
@@ -48,5 +48,5 @@ public class GenericException extends Exception implements Serializable{
 	public void setObjectFocus(Object objectFocus) {
 		this.objectFocus = objectFocus;
 	}
-	
+
 }

@@ -7,7 +7,7 @@ import java.util.TreeMap;
 import com.cystesoft.vyrbus.model.bean.UsuarioAprobador;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
@@ -19,7 +19,7 @@ public interface UsuarioAprobadorManager {
 	 * @return
 	 */
 	public ArrayList<UsuarioAprobador> buscarPorEstadoRegistro(String estado, String criterioOrden);
-	
+
 	/**
 	 * Buscar Usuario(s) Aprobador(es) según un array de criterios
 	 * @param criteriosBusqueda : Array de criterios para la busqueda
@@ -27,32 +27,32 @@ public interface UsuarioAprobadorManager {
 	 * @return
 	 */
 	public ArrayList<UsuarioAprobador> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
-	
+
 	/**
 	 * Buscar usuario aprobador por ID
-	 * @param id :Identificador del usuarioAprobador 
+	 * @param id :Identificador del usuarioAprobador
 	 * @return
 	 */
 	public UsuarioAprobador buscarPorId(Long id);
-	
+
 	/**
 	 * Guarda UsuarioAprobador
 	 * @param usuarioAprobador: class UsuarioAprobador
 	 */
 	public void guardar(UsuarioAprobador usuarioAprobador);
-	
+
 	/**
 	 * Actualiza usuario identificador
 	 * @param usuarioAprobador: Class usuarioAprobador
 	 */
 	public void actualizar(UsuarioAprobador usuarioAprobador);
-	
+
 	/**
 	 * Inactivar Usuario Aprobador
 	 * @param id : Identificador del usuario Aprobador
 	 */
 	public void inactivar(Long id);
-	
+
 	/**
 	 * Busca el o los usuarios aprobadores por nivel de aprobación
 	 * @param nivel	: Nivel a buscar.

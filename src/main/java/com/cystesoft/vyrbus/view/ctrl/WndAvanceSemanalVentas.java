@@ -30,7 +30,7 @@ import com.cystesoft.vyrbus.view.ui.DlgMessage;
 import com.cystesoft.vyrbus.view.ui.WndBase;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
@@ -44,9 +44,9 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 	private Combobox cmbDestino;
 	private Combobox cmbServicio;
 	private Listbox lbxAvance = new Listbox();
-	
+
 	Integer rowReco=0;
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
@@ -61,7 +61,7 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 		cmbServicio = (Combobox) this.getFellow("cmbServicio");
 		//lbxAvance = (Listbox) this.getFellow("lbxAvance");
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
@@ -75,15 +75,15 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 		UtilData.cargarDataCombo(cmbDestino, Localidad.class, true);
 		UtilData.cargarDataCombo(cmbServicio, Servicio.class, true);
 		UtilData.cargarTipoTransaction(cmbTipo);
-		
+
 		cmbTipo.setSelectedIndex(0);
 
 	}
-	
+
 
 	public void onBuscarAvance(){
 		try{
-			
+
 			lbxAvance.getItems().clear();
 			String idOrigen="";
 			String idDestino="";
@@ -91,67 +91,67 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 			String fechaDesde = Constantes.FORMAT_DATE.format(dbDesde.getValue());
 			String fechaHasta = Constantes.FORMAT_DATE.format(dbHasta.getValue());
 			String tipoTransaction=cmbTipo.getSelectedItem().getValue().toString();
-			
+
 			if(cmbOrigen.getSelectedItem().getValue() instanceof Localidad)
 				idOrigen=((Localidad)cmbOrigen.getSelectedItem().getValue()).getId().toString();
 			if(cmbDestino.getSelectedItem().getValue() instanceof Localidad)
 				idDestino=((Localidad)cmbDestino.getSelectedItem().getValue()).getId().toString();
 			if(cmbServicio.getSelectedItem().getValue() instanceof Servicio)
 				idServicio=((Servicio)cmbServicio.getSelectedItem().getValue()).getId().toString();
-									
-			
+
+
 			lbxAvance.detach();
 			lbxAvance = new Listbox();
 			lbxAvance.setHeight("480px");
-						
+
 			Listhead listhead = new Listhead();
 		    Listheader listheader = new Listheader();
-		    
+
 			listheader.setLabel("#");
 			listheader.setWidth("30px");
 			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
-					
+
 			listheader =  new Listheader();
 			listheader.setLabel("HORA");
 			listheader.setWidth("70px");
 			listheader.setSort("auto");
 			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
-						
+
 			listheader =  new Listheader();
 			listheader.setLabel("SERVICIO");
 			listheader.setWidth("160px");
 			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
-			
+
 			listheader =  new Listheader();
 			listheader.setLabel("RUTA");
 			listheader.setWidth("200px");
 			listheader.setStyle("color: #ffffff;");
 			listhead.appendChild(listheader);
-						
+
 			listheader =  new Listheader();
 			listheader.setLabel("CAP.ASIENTOS");
 			listheader.setStyle("color: #ffffff;");
 			listheader.setVisible(false);
 			listhead.appendChild(listheader);
-			
-			lbxAvance.appendChild(listhead);	
+
+			lbxAvance.appendChild(listhead);
 			String style = "font-size:12px !important;font-weight:bold;color:white";
-		
-			ArrayList<Object> columnFechas = new ArrayList<Object>();
+
+			ArrayList<Object> columnFechas = new ArrayList<>();
 			List<VentaPasaje> lstAvance=null;
 			List<VentaPasaje>lstAvanceColumns=null;
-			
+
 			if(idOrigen!="" || idDestino!=""){
 				lstAvance = ServiceLocator.getVentaPasajesManager().buscarAvanceSemanalVentas(idOrigen, idDestino, tipoTransaction, idServicio, fechaDesde, fechaHasta);
 				lstAvanceColumns=ServiceLocator.getVentaPasajesManager().buscarAvanceSemanalVentasColumns(idOrigen, idDestino, tipoTransaction, idServicio, fechaDesde, fechaHasta);
-			}else{ 
+			}else{
 				lstAvance = ServiceLocator.getVentaPasajesManager().buscarAvanceSemanalVentas(String.valueOf(Constantes.ID_LOC_LIMA), idDestino, tipoTransaction, idServicio, fechaDesde, fechaHasta);
 				lstAvanceColumns=ServiceLocator.getVentaPasajesManager().buscarAvanceSemanalVentasColumns(String.valueOf(Constantes.ID_LOC_LIMA), idDestino, tipoTransaction, idServicio, fechaDesde, fechaHasta);
 			}
-					
+
 			/*Genera columnas de a cuerdo al rango de fechas de busqueda*/
 			for(VentaPasaje column: lstAvanceColumns){
 			    listheader = new Listheader();
@@ -168,32 +168,32 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 			String pasBackground="#448aff";
 			String ocuBackground="#2962ff";
 			String totalesBackground = "#2962ff";
-			
+
 			//*Agrega avace de retorno, solamente si origen y destono están seleccionados en todos.
 			if(idOrigen.isEmpty() && idDestino.isEmpty()){
 				//Agrega resumen Lima provincias
 				addResumen(columnFechas,"Pas Lima==>Prov",pasBackground,lstAvance);
 				//Agrega ocupabilidad lima provincias
 				addOcupabilidad(columnFechas, "%Ocup Lima==>Prov", ocuBackground, lstAvance);
-				
+
 				//consulta avance por el destino
-				List<VentaPasaje>lstServicioRetorno=new ArrayList<VentaPasaje>();
+				List<VentaPasaje>lstServicioRetorno=new ArrayList<>();
 				lstServicioRetorno = ServiceLocator.getVentaPasajesManager().buscarAvanceSemanalVentas(idOrigen, String.valueOf(Constantes.ID_LOC_LIMA), tipoTransaction, idServicio, fechaDesde, fechaHasta);
 				addAvance(columnFechas, lstServicioRetorno);
 				//Agrega resumen provincias Lima
 				addResumen(columnFechas,"Pas Prov==>Lima", pasBackground,lstServicioRetorno);
-				//Agrega ocupabilidad provincias lima 
+				//Agrega ocupabilidad provincias lima
 				addOcupabilidad(columnFechas, "%Ocup Prov==>Lima", ocuBackground, lstServicioRetorno);
-				
+
 				//Consulta avance provincias
-				List<VentaPasaje>lstServicioProvincias=new ArrayList<VentaPasaje>();
+				List<VentaPasaje>lstServicioProvincias=new ArrayList<>();
 				lstServicioProvincias = ServiceLocator.getVentaPasajesManager().buscarAvanceSemanalVentas(String.valueOf(Constantes.ID_LOC_LIMA), String.valueOf(Constantes.ID_LOC_LIMA), tipoTransaction, idServicio, fechaDesde, fechaHasta);
 				addAvance(columnFechas, lstServicioProvincias);
 				//Agrega resumen provincias
 				addResumen(columnFechas,"Pas Provincias", pasBackground,lstServicioProvincias);
-				//Agrega ocupabilidad provincias 
+				//Agrega ocupabilidad provincias
 				addOcupabilidad(columnFechas, "%Ocup Provincias", ocuBackground, lstServicioProvincias);
-				
+
 				addNewItem();
 				//Agrega Total servicios - ida
 				addTotalServiciosXIda(lstAvance, "SERV.LIMA==>PROV.", style);
@@ -205,7 +205,7 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 				//Agera resumen según el origen y destino seleccionados.
 				if(idOrigen.equals(String.valueOf(Constantes.ID_LOC_LIMA)) && idDestino.isEmpty()){
 					addResumen(columnFechas,"Pas Lima==>Prov", pasBackground,lstAvance);
-					addOcupabilidad(columnFechas,"%Ocup Lima==>Prov", ocuBackground,lstAvance);				
+					addOcupabilidad(columnFechas,"%Ocup Lima==>Prov", ocuBackground,lstAvance);
 					//Agrega Total servicios - ida
 					addNewItem();
 					addTotalServiciosXIda(lstAvance, "SERV.LIMA==>PROV.", style);
@@ -227,22 +227,22 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 					addTotalServiciosXIda(lstAvance, "SERV."+cmbOrigen.getText()+"==>"+cmbDestino.getText(), style);
 					//Agrega el total servicios
 					addTotalServicios("TOTAL SERVICIOS", lstAvance, new ArrayList<VentaPasaje>(),new ArrayList<VentaPasaje>(), style);
-				}	
+				}
 			}
-			
+
 			//Agraga total pasajeros
 			addResumen(columnFechas,"Total Pasajeros","#2962ff",null);
 			//Calcula el total Ocupalidad
 			addOcupabilidad(columnFechas,"%OCUPABILIDAD TOTAL","#2962ff",null);
 			this.appendChild(lbxAvance);
-			
+
 
 		}catch(Exception ex){
 			ex.printStackTrace();
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Agrega un nuevo item
 	 */
@@ -251,7 +251,7 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 		item.appendChild(new Listcell());
 		lbxAvance.appendChild(item);
 	}
-	
+
 	/**
 	 * Agrega el total servicios
 	 * @param label			: El nombre que representa la fila. "TOTAL SERVICIOS"
@@ -260,9 +260,9 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 	 * @param style			: Stylo de la celda
 	 */
 	private void addTotalServicios(String label,List<VentaPasaje> lisVentas1,List<VentaPasaje>lstVentas2,List<VentaPasaje>lstVentas3,String style){
-		Listitem item = new Listitem();;
+		Listitem item = new Listitem();
 		Listcell cell = new Listcell();
-	
+
 		item.appendChild(new Listcell());
 		item.appendChild(new Listcell());
 		item.appendChild(new Listcell());
@@ -271,22 +271,22 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 		cell.setStyle(style);
 		item.appendChild(cell);
 		item.appendChild(new Listcell());
-		
+
 		//Obtiene el heardes del listbox (estos es para obtener las fechas para validar con la fecha de partida del servicio)
 		Object component[]= lbxAvance.getHeads().toArray();
 		Listhead listhead =(Listhead)component[0];
-		
+
 		for(int y=0; y <listhead.getChildren().size()-5; y++){
 			Listheader listheader=(Listheader) listhead.getChildren().get(y+5);
 			String fechaHeader=listheader.getLabel();
-			Integer cont=0;
+			int cont=0;
 			for(VentaPasaje ventas : lisVentas1){
 				String fechaPartida=Constantes.FORMAT_DATE.format(ventas.getFechaPartida());
 				//Compara con la fecha del header
 				if(fechaPartida.equals(fechaHeader))
 						cont++;
 			}
-			
+
 			//Cuando es de ida y retorno
 			for(VentaPasaje ventas : lstVentas2){
 				String fechaPartida=Constantes.FORMAT_DATE.format(ventas.getFechaPartida());
@@ -294,7 +294,7 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 				if(fechaPartida.equals(fechaHeader))
 						cont++;
 			}
-			
+
 			//Cuando es de ida y retorno
 			for(VentaPasaje ventas : lstVentas3){
 				String fechaPartida=Constantes.FORMAT_DATE.format(ventas.getFechaPartida());
@@ -302,19 +302,19 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 				if(fechaPartida.equals(fechaHeader))
 						cont++;
 			}
-			
-			cell= new Listcell(cont.toString());
+
+			cell= new Listcell(Integer.toString(cont));
 			cell.setStyle(style);
 			item.appendChild(cell);
 		}
 		cell.setStyle(style);
 		item.appendChild(cell);
 		item.setStyle("background:#2962ff");
-		lbxAvance.appendChild(item);	
+		lbxAvance.appendChild(item);
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Agrega resumen por ida y/o vuela.
 	 * @param columnFechas	: Array con las columnas generadas dinamicamente.
@@ -325,7 +325,7 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 		/*Calcula totales*/
 		String style = "font-size:12px !important;font-weight:bold;color:white";
 		Listitem newItem= new Listitem();
-		
+
 		newItem.appendChild(new Listcell());
 		newItem.appendChild(new Listcell());
 		newItem.appendChild(new Listcell());
@@ -333,10 +333,10 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 		cell.setStyle(style);
 		newItem.appendChild(cell);
 		newItem.appendChild(new Listcell());
-		
+
 		int index=4;
-		for(int i=0; i < columnFechas.size(); i++){
-			Integer total=0;
+		for (Object element : columnFechas) {
+			int total=0;
 			index++;
 			if(lstVenta==null){
 				//Calcula el total pasajeros
@@ -350,26 +350,26 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 							total+=Integer.valueOf(cantidad);
 					}
 				}
-				
+
 			}else{
 				//Calcula el total pasajeros por ida o vuelta
 				for (VentaPasaje ventaPasaje: lstVenta){
-					String columnFecha=columnFechas.get(i).toString();
+					String columnFecha=element.toString();
 					String fechaPartida=Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida());
 					if(columnFecha.trim().equals(fechaPartida.trim()))
 						total+=ventaPasaje.getCantidadPax();
 				}
 			}
-			
-			cell= new Listcell(total.toString());
+
+			cell= new Listcell(Integer.toString(total));
 			cell.setStyle(style);
 			newItem.appendChild(cell);
-			
+
 			newItem.setStyle("background:"+background);
 			lbxAvance.appendChild(newItem);
 		}
 	}
-	
+
 	private void addOcupabilidad(ArrayList<Object> columnFechas,String descripcion,String background,List<VentaPasaje> lstVenta  ){
 		String style = "font-size:12px !important;font-weight:bold;color:white";
 		Listitem newItem= new Listitem();
@@ -380,11 +380,11 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 		cell.setStyle(style);
 		newItem.appendChild(cell);
 		newItem.appendChild(new Listcell());
-				
+
 		int index=4;
-		for(int i=0; i < columnFechas.size(); i++){
-			Integer CapMAxAsientos=0;
-			Integer asientosOcupados=0;
+		for (Object element : columnFechas) {
+			int CapMAxAsientos=0;
+			int asientosOcupados=0;
 			index++;
 			if(lstVenta==null){
 				//Calcula el total pasajeros
@@ -403,53 +403,53 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 			}else{
 				//Calcula el total pasajeros por ida o vuelta
 				for (VentaPasaje ventaPasaje: lstVenta){
-					if(columnFechas.get(i).toString().equals(Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida()))){
+					if(element.toString().equals(Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida()))){
 						asientosOcupados+=ventaPasaje.getCantidadPax();
 						CapMAxAsientos+=ventaPasaje.getServicio().getTotalAsientos();
 					}
 				}
 			}
-			
-			
+
+
 			Double ocup=(double) (asientosOcupados*100);
 			ocup=ocup/CapMAxAsientos;
-			
+
 			cell= new Listcell(Util.toNumberFormat(ocup,2));
 			cell.setStyle(style);
 			newItem.appendChild(cell);
-			
+
 			newItem.setStyle("background:"+background);
 			lbxAvance.appendChild(newItem);
 		}
 	}
-	
-	
+
+
 	@SuppressWarnings({"unused" })
 	private ArrayList<Object> addAvance (ArrayList<Object> columnFechas,List<VentaPasaje> lstAvance) throws Exception{
 		Listitem item = null;
 		Listcell cell = null;
 		int i=0;// int vl=0;
 		String fechaviaje_A=null;
-		
-		ArrayList<Object> totales=new ArrayList<Object>();
-		ArrayList<Object> hora_A = new ArrayList<Object>();
-		ArrayList<Object> servicio_A = new ArrayList<Object>();
-		ArrayList<Object> ruta_A = new ArrayList<Object>();
-		
-		Integer p =0;
-		
-		Integer iTotalServicios=0;
-		Integer iTotalPasajeros=0;
-		ArrayList<Object>cantServicios=new ArrayList<Object>();
-		
+
+		ArrayList<Object> totales=new ArrayList<>();
+		ArrayList<Object> hora_A = new ArrayList<>();
+		ArrayList<Object> servicio_A = new ArrayList<>();
+		ArrayList<Object> ruta_A = new ArrayList<>();
+
+		int p =0;
+
+		int iTotalServicios=0;
+		int iTotalPasajeros=0;
+		ArrayList<Object>cantServicios=new ArrayList<>();
+
 		//Obtiene el heardes del listbox (estos es para obtener las fechas para validar con la fecha de partida del servicio)
 		Object component[]= lbxAvance.getHeads().toArray();
 		Listhead listhead =(Listhead)component[0];
-		
+
 		/*agrega los items al listbox*/
-		for(VentaPasaje venta : lstAvance){		
+		for(VentaPasaje venta : lstAvance){
 			fechaviaje_A=Constantes.FORMAT_DATE.format(venta.getFechaPartida());
-			Boolean existe=false;
+			boolean existe=false;
 			String hora="";
 			String ruta="";
 			String servicio="";
@@ -459,7 +459,7 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 				ruta=venta.getRuta().toString();//.getOrigen()+" - "+venta.getRuta().getDestino();
 				servicio=venta.getServicio().getDenominacion();
 				if (ruta_A.get(y).equals(ruta) && servicio_A.get(y).equals(servicio) && hora_A.get(y).equals(hora) ){
-					existe=true; 
+					existe=true;
 					break;}
 			}
 
@@ -475,30 +475,30 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 				item.appendChild(cell);
 				cell = new Listcell(venta.getRuta().toString());
 				item.appendChild(cell);
-				
+
 				//Capasidad del bus (esta columna esta oculta)
 				cell = new Listcell(venta.getServicio().getTotalAsientos().toString());
 				item.appendChild(cell);
-				
+
 				hora=venta.getHoraPartida();
 				ruta=venta.getRuta().toString(); //.getOrigen()+" - "+venta.getRuta().getDestino();
 				servicio=venta.getServicio().getDenominacion();
-										
+
 				for(int y=0; y <listhead.getChildren().size()-5; y++){
 					Listheader listheader=(Listheader) listhead.getChildren().get(y+5);
 					String fechaHeader=listheader.getLabel();
-					
-					Integer cont=0;
+
+					int cont=0;
 					for(VentaPasaje ventas : lstAvance){
 						String fechaPartida=Constantes.FORMAT_DATE.format(ventas.getFechaPartida());
-						
+
 						//Compara con la fecha del header
 						if(fechaPartida.equals(fechaHeader)){
 							String horaPartida=ventas.getHoraPartida();
 							String servicios=ventas.getServicio().getDenominacion();
 							String rutas=ventas.getRuta().toString();
-														
-							//Realiza la compracion para colocar la cantidad de pasajeros 
+
+							//Realiza la compracion para colocar la cantidad de pasajeros
 							if(rutas.equals(ruta) && servicios.equals(servicio) && horaPartida.equals(hora)){
 								cell= new Listcell(ventas.getCantidadPax().toString());
 								cell.setStyle("font-size:11px !important");
@@ -511,17 +511,17 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 						item.appendChild(new Listcell(""));
 				}
 			}
-				
-			item.setValue(venta);				
+
+			item.setValue(venta);
 			lbxAvance.appendChild(item);
-							
+
 			hora_A.add(venta.getHoraPartida());
 			ruta_A.add(venta.getRuta().toString()); //.getOrigen()+" - "+venta.getRuta().getDestino());
 			servicio_A.add(venta.getServicio().getDenominacion());
 		}
 		return cantServicios;
 	}
-	
+
 	/**
 	 * Agrega el total de servicios
 	 * @param lstAvance
@@ -531,7 +531,7 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 	public void addTotalServiciosXIda(List<VentaPasaje> lstAvance, String label,String style){
 		Listitem item = new Listitem();
 		Listcell cell = new Listcell();
-	
+
 		item.appendChild(new Listcell());
 		item.appendChild(new Listcell());
 		item.appendChild(new Listcell());
@@ -540,33 +540,33 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 		cell.setStyle(style);
 		item.appendChild(cell);
 		item.appendChild(new Listcell());
-		
+
 		//Obtiene el heardes del listbox (estos es para obtener las fechas para validar con la fecha de partida del servicio)
 		Object component[]= lbxAvance.getHeads().toArray();
 		Listhead listhead =(Listhead)component[0];
-				
-								
+
+
 		for(int y=0; y <listhead.getChildren().size()-5; y++){
 			Listheader listheader=(Listheader) listhead.getChildren().get(y+5);
 			String fechaHeader=listheader.getLabel();
-			Integer cont=0;
+			int cont=0;
 			for(VentaPasaje ventas : lstAvance){
 				String fechaPartida=Constantes.FORMAT_DATE.format(ventas.getFechaPartida());
 				//Compara con la fecha del header
 				if(fechaPartida.equals(fechaHeader))
 					cont++;
 			}
-			cell=new Listcell(cont.toString());
+			cell=new Listcell(Integer.toString(cont));
 			cell.setStyle(style);
 			item.appendChild(cell);
 		}
-		
+
 		cell.setStyle(style);
 		item.appendChild(cell);
 		item.setStyle("background:#2962ff");
 		lbxAvance.appendChild(item);
 	}
-	
+
 	public void btnExportar_OnClick(){
 		Session session = getDesktop().getSession();
 		HttpSession httpSession = (HttpSession)session.getNativeSession();
@@ -574,8 +574,8 @@ public class WndAvanceSemanalVentas extends WndBase implements Serializable{
 		httpSession.setAttribute("lbxAvance", lbxAvance);
 		Executions.sendRedirect("/exportXlsAvanceSemanal.htm");
 	}
-	
-	
+
+
 	@AfterCompose //@ContextParam(ContextType.VIEW) Component view
 	public void initSetup() {
 	    Clients.print(); // fire the printdialog

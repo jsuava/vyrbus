@@ -10,7 +10,7 @@ import com.cystesoft.vyrbus.model.dao.RolOpcionMenuDAO;
 import com.cystesoft.vyrbus.model.dao.impl.GenericDAOImpl;
 
 /**
- * 
+ *
  * @author José Abanto
  *
  */
@@ -34,7 +34,7 @@ public class RolOpcionMenuDAOImpl extends GenericDAOImpl implements RolOpcionMen
 	public ArrayList<RolOpcionMenu> buscarPorX(TreeMap<String, Object> criteriosBusqueda,List<String> criteriosOrdenar) {
 		return (ArrayList<RolOpcionMenu>) super.findByX(RolOpcionMenu.class, criteriosBusqueda, criteriosOrdenar);
 	}
-	
+
 
 	/*
 	 * (non-Javadoc)
@@ -63,10 +63,10 @@ public class RolOpcionMenuDAOImpl extends GenericDAOImpl implements RolOpcionMen
 		String Sql="UPDATE  vrtrol_opcmen rpm SET  rpm.c_estreg='"+estado+"', " +
 					"rpm.audusumod='"+ rolOpcionMenuID.getUsuarioModificacion()+"', rpm.audipmodi='"+rolOpcionMenuID.getIpModificacion()+"' "+
 					"WHERE rpm.rol_id="+rolOpcionMenuID.getIdRol()+" AND rpm.opcmen_id="+rolOpcionMenuID.getIdOpcionMenu();
-					
+
 		getSession().createSQLQuery(Sql).executeUpdate();
-		
+
 	}
-	
+
 
 }

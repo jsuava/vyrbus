@@ -18,10 +18,10 @@ public class UsuarioHardware extends GenericBean implements Serializable {
 	private CanalVenta canalVenta;
 	private Integer printApplet;
 	private TitanUsuarioHardware titanUsuarioHardware;
-	
+
 	public UsuarioHardware() {
 	}
-	
+
 	/**
 	 * @param id
 	 */
@@ -47,11 +47,11 @@ public class UsuarioHardware extends GenericBean implements Serializable {
 	public CanalVenta getCanalVenta(){
 		return this.canalVenta;
 	}
-	
+
 	public void setCanalVenta(CanalVenta canalVenta){
 		this.canalVenta=canalVenta;
 	}
-	
+
 	/**
 	 * @return the direccionMAC
 	 */

@@ -1,15 +1,15 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 25/08/2012
  */
 package com.cystesoft.vyrbus.view.ctrl;
 
-import java.util.TreeMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
@@ -39,45 +39,45 @@ import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
 public class WndEstadoDocumentoBus extends WndOpcionesMantenimiento {
 
 	private static final long serialVersionUID = 7015174319519567765L;
-	
+
 	private Textbox 	txtdenominacion;
 	private Textbox 	txtcodigo;
 	private Combobox 	cbotipoEstado;
-	
+
 	private EstadoDocumentoBus oestadoDocumentoBus = null;
-	
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar=null;
-	
-		
+
+
 	@Override
 	public void initComponents() {
 		txtdenominacion = (Textbox) getFellow("txtdenominacion");
 		txtcodigo = (Textbox) getFellow("txtcodigo");
 		cbotipoEstado = (Combobox) getFellow("cbotipoEstado");
 	}
-	
-	
+
+
 	@Override
 	public void onCreate() throws Exception {
 		UtilData.cargarTipoEstado(cbotipoEstado);
-		criteriosOrdenar = new ArrayList<String>();
-		criteriosOrdenar.add("denominacion");		
+		criteriosOrdenar = new ArrayList<>();
+		criteriosOrdenar.add("denominacion");
 	}
 
-	
+
 	@Override
-	public void onNew() {		
+	public void onNew() {
 		cbotipoEstado.setSelectedIndex(0);
 	}
 
 	@Override
 	public void onSearch() {
 		final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
-		
+
 		oWndFiltrar.addParameter("CODIGO", String.class);
 		oWndFiltrar.addParameter("DENOMINACION", String.class);
-		
+
 		this.appendChild(oWndFiltrar);
 		oWndFiltrar.setMode("modal");
 		oWndFiltrar.addEventListener(com.cystesoft.vyrbus.view.ui.Events.ON_FILTER, new EventListener<Event>() {
@@ -86,21 +86,21 @@ public class WndEstadoDocumentoBus extends WndOpcionesMantenimiento {
 				String codigo = oWndFiltrar.getParameterValue("CODIGO").toString().trim();
 				String denominacion = oWndFiltrar.getParameterValue("DENOMINACION").toString().trim();
 				String estadoRegistro = Constantes.VALUE_ACTIVO;
-				
+
 				if (denominacion.trim().equals("")){
 					criteriosBusqueda.remove("denominacion");
 				}else{criteriosBusqueda.put("denominacion", "%" + denominacion + "%");}
-				
+
 				if (codigo.trim().equals("")){
 					criteriosBusqueda.remove("codigo");
 				}else{criteriosBusqueda.put("codigo", "%"  + codigo + "%");}
-				
+
 				criteriosBusqueda.put("estadoRegistro", estadoRegistro);
 				listarRegistros(ServiceLocator.getEstadoDocumentoBusManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 			}
-	
+
 		});
-		
+
 	}
 
 	@Override
@@ -136,21 +136,21 @@ public class WndEstadoDocumentoBus extends WndOpcionesMantenimiento {
 				throw new DenominacionNullException();
 			else if (cbotipoEstado.getSelectedIndex()==0)
 				throw new TipoEstadoNullException();
-						
+
 			if (action==ACTION_NEW)
 				oestadoDocumentoBus = new EstadoDocumentoBus();
-			
+
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
-			
+
 			oestadoDocumentoBus.setId(id);
-			
+
 			if (cbotipoEstado.getSelectedIndex() > -1) {
 				oestadoDocumentoBus.setTipoEstado((Integer) cbotipoEstado.getSelectedItem().getValue());
 			}
 			oestadoDocumentoBus.setDenominacion(txtdenominacion.getText().trim().toUpperCase());
 			oestadoDocumentoBus.setCodigo(txtcodigo.getText().trim().toUpperCase());
 			oestadoDocumentoBus.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-			
+
 			switch (action) {
 			case ACTION_NEW:
 				UtilData.auditarRegistro(oestadoDocumentoBus, getUsuario(), Executions.getCurrent());
@@ -159,16 +159,16 @@ public class WndEstadoDocumentoBus extends WndOpcionesMantenimiento {
 				break;
 			case ACTION_MODIFY:
 				UtilData.auditarRegistro(oestadoDocumentoBus, true, getUsuario(), Executions.getCurrent());
-				ServiceLocator.getEstadoDocumentoBusManager().actualizar(oestadoDocumentoBus);	
+				ServiceLocator.getEstadoDocumentoBusManager().actualizar(oestadoDocumentoBus);
 				break;
 			}
 			/*RECUPERA EL REGISTRO ACTUALIZADO O EL NUEVO*/
 			criteriosBusqueda.remove("denominacion");
 			criteriosBusqueda.remove("codigo");
-			criteriosBusqueda.put("denominacion", oestadoDocumentoBus.getDenominacion());	
+			criteriosBusqueda.put("denominacion", oestadoDocumentoBus.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			listarRegistros(ServiceLocator.getEstadoDocumentoBusManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-			
+
 		}catch (DenominacionNullException dnex){
 			DlgMessage.information(Messages.getString("Denominacion"),txtdenominacion);
 			throw new CancelaGrabacionException();
@@ -182,7 +182,7 @@ public class WndEstadoDocumentoBus extends WndOpcionesMantenimiento {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace(); throw new CancelaGrabacionException();
 		}
-		
+
 	}
 
 	@Override
@@ -199,25 +199,25 @@ public class WndEstadoDocumentoBus extends WndOpcionesMantenimiento {
 				break;
 		}
 		ServiceLocator.getEstadoDocumentoBusManager().buscarPorId(id);
-		
+
 	}
 
 	@Override
 	public void onPrint(int tab) {
 
-		
+
 	}
 
 	@Override
 	public void onExport(int tab) {
 
-		
+
 	}
 
 	@Override
 	public void onHelp() {
 
-		
+
 	}
 
 	@Override
@@ -238,34 +238,34 @@ public class WndEstadoDocumentoBus extends WndOpcionesMantenimiento {
 	public void onClose() {
 		closeTabWindow();
 	}
-	
+
    public void listarRegistros (ArrayList<EstadoDocumentoBus> listRegistro ) {
-	   ArrayList<Object> listEstadoDocumentoBus = new ArrayList<Object>();
-	   
+	   ArrayList<Object> listEstadoDocumentoBus = new ArrayList<>();
+
 	   for (int r =0; r < listRegistro.size(); r++ ) {
 		   EstadoDocumentoBus oestadoDocumentoBus = listRegistro.get(r);
-		   ArrayList<Object> listFila = new  ArrayList<Object>();
-		   
+		   ArrayList<Object> listFila = new  ArrayList<>();
+
 		   listFila.add(oestadoDocumentoBus.getId());
 		   listFila.add(r + 1);//Item
 		   listFila.add(oestadoDocumentoBus.getDenominacion());
 		   listFila.add(oestadoDocumentoBus.getCodigo());
 		   listFila.add(oestadoDocumentoBus.getTipoEstado());
-		   
+
 		   listEstadoDocumentoBus.add(listFila);
 	   }
 	   Util.llenarListbox(listboxLista, listEstadoDocumentoBus, true);
    }
-   
-   
+
+
    private void mantenimientoRegistro(Long id) throws Exception {
 	   oestadoDocumentoBus = ServiceLocator.getEstadoDocumentoBusManager().buscarPorId(id);
-	   
+
 	   textboxId.setText(oestadoDocumentoBus.getId().toString());
 	   txtdenominacion.setText(oestadoDocumentoBus.getDenominacion());
 	   txtcodigo.setText(oestadoDocumentoBus.getCodigo());
 	   Util.seleccionarValorItemCombobox(cbotipoEstado, oestadoDocumentoBus.getTipoEstado());
-	   
+
    }
 
 }

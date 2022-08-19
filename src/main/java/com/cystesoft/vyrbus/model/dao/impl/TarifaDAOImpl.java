@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 12 jul. 2020
  * Hora			: 23:41:08
@@ -53,33 +53,33 @@ public class TarifaDAOImpl extends GenericDAOImpl implements TarifaDAO{
 		// TODO Auto-generated method stub
 		super.inactivate(Tarifa.class, id);
 	}
-	
+
 	@Override
-	public List<Tarifa> buscarTarifa(Integer canalVentaID, 
-			Integer servicioID, 
-			Integer localidadOrigenID, 
-			Integer localidadDestinoID, 
-			Integer piso, 
+	public List<Tarifa> buscarTarifa(Integer canalVentaID,
+			Integer servicioID,
+			Integer localidadOrigenID,
+			Integer localidadDestinoID,
+			Integer piso,
 			Integer zona) throws Exception{
-		String sql = "SELECT " +  
+		String sql = "SELECT " +
 						"t.tarifa_id, t.canven_id, t.servicio_id, " + 				//2
 						"t.ruta_id, r.localidad_idorigen, r.localidad_iddestino, " +	//5
 						"t.n_pisbus, t.n_zonbus " +					//7
 						"FROM vrttarifa t  " +
-						"INNER JOIN vrmruta r ON (t.ruta_id = r.ruta_id) " + 
+						"INNER JOIN vrmruta r ON (t.ruta_id = r.ruta_id) " +
 						"WHERE   " +
 						"t.c_estreg='A' " +
-						" AND t.canven_id = " + canalVentaID + 
-						" AND t.servicio_id = " +  servicioID + 
-						" AND r.localidad_idorigen = " + localidadOrigenID + 
-						" AND r.localidad_iddestino = " + localidadDestinoID  + 
+						" AND t.canven_id = " + canalVentaID +
+						" AND t.servicio_id = " +  servicioID +
+						" AND r.localidad_idorigen = " + localidadOrigenID +
+						" AND r.localidad_iddestino = " + localidadDestinoID  +
 						" AND t.n_zonbus =  " + zona;
-		
+
 		if(piso!=null){
 			sql += " AND t.n_pisbus = ";
 			sql += piso;
 		}
-			
+
 		log.info(sql);
 		List<?>result = getSession().createSQLQuery(sql).list();
 		List<Tarifa> lstTarifa = new ArrayList<>();
@@ -104,10 +104,10 @@ public class TarifaDAOImpl extends GenericDAOImpl implements TarifaDAO{
 			tarifa.setRuta(ruta);
 			tarifa.setPisoBus(((BigDecimal)obj[6]).intValue());
 			tarifa.setZonaBus(((BigDecimal)obj[7]).intValue());
-			
+
 			lstTarifa.add(tarifa);
 		}
-		
-		return lstTarifa;		
+
+		return lstTarifa;
 	}
 }

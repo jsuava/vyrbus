@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 02/05/2012
  */
@@ -39,9 +39,9 @@ public class WndEstadoCivil extends WndOpcionesMantenimiento {
 	private static final long serialVersionUID = -1721402526478904823L;
 
 	private Textbox txtDenominacion;
-	
+
 	private EstadoCivil oEstadoCivil = null;
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
 
 	/* (non-Javadoc)
@@ -49,10 +49,10 @@ public class WndEstadoCivil extends WndOpcionesMantenimiento {
 	 */
 	@Override
 	public void onCreate() throws Exception {
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IBase#initComponents()
 	 */
@@ -101,7 +101,7 @@ public class WndEstadoCivil extends WndOpcionesMantenimiento {
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getEstadoCivilManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getEstadoCivilManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
 	}
 	/* (non-Javadoc)
@@ -135,10 +135,10 @@ public class WndEstadoCivil extends WndOpcionesMantenimiento {
 		try {
 			if (txtDenominacion.getText().trim().equals(""))
 				throw new DenominacionNullException();
-						
+
 			if (action==ACTION_NEW)
 				oEstadoCivil = new EstadoCivil();
-			
+
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
 
 			oEstadoCivil.setId(id);
@@ -162,7 +162,7 @@ public class WndEstadoCivil extends WndOpcionesMantenimiento {
 			criteriosBusqueda.put("denominacion", oEstadoCivil.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			listarRegistros(ServiceLocator.getEstadoCivilManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-					
+
 		}catch (DenominacionNullException dnex){
 			DlgMessage.information(Messages.getString("Denominacion"),txtDenominacion);
 			throw new CancelaGrabacionException();
@@ -173,7 +173,7 @@ public class WndEstadoCivil extends WndOpcionesMantenimiento {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace(); throw new CancelaGrabacionException();
 		}
-	
+
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onDelete(int)
@@ -200,7 +200,7 @@ public class WndEstadoCivil extends WndOpcionesMantenimiento {
 	@Override
 	public void onPrint(int tab) {
 		// TODO Auto-generated method stub
-		
+
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onExport(int)
@@ -208,7 +208,7 @@ public class WndEstadoCivil extends WndOpcionesMantenimiento {
 	@Override
 	public void onExport(int tab) {
 		// TODO Auto-generated method stub
-		
+
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onHelp()
@@ -216,7 +216,7 @@ public class WndEstadoCivil extends WndOpcionesMantenimiento {
 	@Override
 	public void onHelp() {
 		// TODO Auto-generated method stub
-		
+
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onChangeTab(int)
@@ -234,7 +234,7 @@ public class WndEstadoCivil extends WndOpcionesMantenimiento {
 				break;
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.IOpcionesMantenimiento#onClose()
 	 */
@@ -244,11 +244,11 @@ public class WndEstadoCivil extends WndOpcionesMantenimiento {
 	}
 
 	private void listarRegistros(ArrayList<EstadoCivil> lstRegistros) {
-		ArrayList<Object> lstEstadosCiviles = new ArrayList<Object>();
+		ArrayList<Object> lstEstadosCiviles = new ArrayList<>();
 
 		for(int r = 0; r < lstRegistros.size(); r ++) {
 			EstadoCivil oEstadoCivil = lstRegistros.get(r);
-			ArrayList<Object> lstFila = new ArrayList<Object>();
+			ArrayList<Object> lstFila = new ArrayList<>();
 
 			lstFila.add(oEstadoCivil.getId());
 			lstFila.add(r + 1);

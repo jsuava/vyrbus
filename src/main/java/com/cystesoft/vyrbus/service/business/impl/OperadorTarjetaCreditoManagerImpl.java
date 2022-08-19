@@ -25,7 +25,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class OperadorTarjetaCreditoManagerImpl implements OperadorTarjetaCreditoManager {
 	private OperadorTarjetaCreditoDAO operadorTarjetaCreditoDAO;
-	
+
 	/**
 	 * @return the operadorTarjetaCreditoDAO
 	 */
@@ -73,16 +73,16 @@ public class OperadorTarjetaCreditoManagerImpl implements OperadorTarjetaCredito
 	@Transactional
 	public void guardar(OperadorTarjetaCredito operadorTarjetaCredito) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", operadorTarjetaCredito.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getOperadorTarjetaCreditoDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la denominación*/
 			if(resultDenominacion.size()>0)
 				throw new DenominacionDuplicadaException();
-			
+
 			getOperadorTarjetaCreditoDAO().guardar(operadorTarjetaCredito);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(Exception ex){
@@ -97,20 +97,20 @@ public class OperadorTarjetaCreditoManagerImpl implements OperadorTarjetaCredito
 	@Transactional
 	public void actualizar(OperadorTarjetaCredito operadorTarjetaCredito) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", operadorTarjetaCredito.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getOperadorTarjetaCreditoDAO().buscarPorX(criteriosBusqueda, null);
-			
+
 			/*Valida duplicidad de la denominación*/
-			for(int r = 0; r < resultDenominacion.size(); r ++) {
-				OperadorTarjetaCredito ooperadorTarjetaCredito = (OperadorTarjetaCredito) resultDenominacion.get(r);
+			for (Object element : resultDenominacion) {
+				OperadorTarjetaCredito ooperadorTarjetaCredito = (OperadorTarjetaCredito) element;
 					if (!(ooperadorTarjetaCredito.getId() == operadorTarjetaCredito.getId()))
 						throw new DenominacionDuplicadaException();
 				}
-			
+
 			getOperadorTarjetaCreditoDAO().actualizar(operadorTarjetaCredito);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(Exception ex){

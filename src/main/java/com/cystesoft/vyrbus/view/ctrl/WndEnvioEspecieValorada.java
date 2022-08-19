@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 25/04/2013
  */
@@ -38,7 +38,7 @@ import com.cystesoft.vyrbus.view.ui.WndBase;
 
 /**
  * @author JABANTO
- * 
+ *
  */
 @SuppressWarnings("unused")
 public class WndEnvioEspecieValorada extends WndBase implements Serializable {
@@ -50,7 +50,7 @@ public class WndEnvioEspecieValorada extends WndBase implements Serializable {
 	private Intbox ibxNumeroSerieEnvio;
 	private Intbox ibxUltCorrEnvio;
 	private Intbox ibxCantidadEnvio;
-	
+
 	private Textbox txtUltimoCorrelativoEmitido;
 	private Doublebox dbxPromedioBoletosPorDia;
 	private Textbox txtUltimoCorrelativoEnviado;
@@ -78,12 +78,12 @@ public class WndEnvioEspecieValorada extends WndBase implements Serializable {
 	private Textbox txtXUtilizado;
 	private Combobox cmbTipoComprobanteBq;
 	private Intbox ibxSerieBq;
-		
+
 	private String fechaUltimoEnvio="01/04/2013";
-	
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
 	 */
 	@Override
@@ -121,13 +121,13 @@ public class WndEnvioEspecieValorada extends WndBase implements Serializable {
 		txtXUtilizado=(Textbox)this.getFellow("txtXUtilizado");
 		cmbTipoComprobanteBq=(Combobox)this.getFellow("cmbTipoComprobanteBq");
 		ibxSerieBq=(Intbox)this.getFellow("ibxSerieBq");
-		
-		
+
+
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
 	@Override
@@ -140,13 +140,13 @@ public class WndEnvioEspecieValorada extends WndBase implements Serializable {
 		UtilData.cargarDataCombo(cmbTipoComprobanteSolicita, TipoComprobante.class,false);
 		UtilData.cargarDataCombo(cmbTipoComprobanteEnvio, TipoComprobante.class,false);
 		dbxPromedioBoletosPorDia.setLocale(Locale.US);
-		
+
 		UtilData.cargarDataCombo(cmbTipoComprobanteBq, TipoComprobante.class, true);
-		
+
 		//String serie=null;Integer idComprobante=null;Integer idAgencia=null;
-		
+
 		//List<VentaPasaje> lstResul = ServiceLocator.getVentaPasajesManager().correlativosFaltantesX(fechaUltimoEnvio, serie, idComprobante, idAgencia);
-		
+
 	}
 
 	/**
@@ -163,7 +163,7 @@ public class WndEnvioEspecieValorada extends WndBase implements Serializable {
 	}
 
 	/**
-	 * cuando el usuario seleccionada (Envios) 
+	 * cuando el usuario seleccionada (Envios)
 	 */
 	public void onCheckEnvios() {
 		lbxListaSolicitudes.setVisible(false);
@@ -174,9 +174,9 @@ public class WndEnvioEspecieValorada extends WndBase implements Serializable {
 		dtxMesAnio.setVisible(true);
 		lblMesAnio.setVisible(true);
 	}
-	
+
 	/**
-	 * Cuando el usuario selecciona la busqueda de (Estado de correlativos por agencia) 
+	 * Cuando el usuario selecciona la busqueda de (Estado de correlativos por agencia)
 	 * @throws Exception
 	 */
 	public void onCheckEstadoCorrAgencia() throws Exception {
@@ -230,30 +230,30 @@ public class WndEnvioEspecieValorada extends WndBase implements Serializable {
 	 * Limpia los controles de datos del envio
 	 */
 	private void limpiarControles() {
-		//Limpia comtroles de la solicitud 
+		//Limpia comtroles de la solicitud
 		dtxFechaSolicitud.setText("");
 		cmbAgencia.setSelectedIndex(0);
 		cmbTipoComprobanteSolicita.setSelectedIndex(0);
 		ibxSerieSolicita.setText("");
 		ibxCantidadSolicita.setText("");
 		txtUsuarioSolicita.setText("");
-				
+
 		//Limpia controles del envio
 		cmbAgencia.setSelectedIndex(0);
 		cmbTipoComprobanteEnvio.setSelectedIndex(0);
 		ibxNumeroSerieEnvio.setText("");
 		ibxUltCorrEnvio.setText("");
 		ibxCantidadEnvio.setText("");
-		
+
 		//Ultimos correlativos
 		txtUltimoCorrelativoEmitido.setText("");
 		dbxPromedioBoletosPorDia.setText("");
 		txtXUtilizado.setText("");
 		txtUltimoCorrelativoEnviado.setText("");
 		txtFechaUltimoEnvio.setText("");
-		
+
 	}
-	
+
 	/**
 	 * Limpia los controles de los ultimos correlativos utilizados
 	 */
@@ -264,7 +264,7 @@ public class WndEnvioEspecieValorada extends WndBase implements Serializable {
 		txtUltimoCorrelativoEnviado.setText("");
 		txtFechaUltimoEnvio.setText("");
 	}
-	
+
 	/**
 	 * Habilida o deshabilita controels
 	 * @param disabled : true desactiva controles; false activa controles
@@ -292,7 +292,7 @@ public class WndEnvioEspecieValorada extends WndBase implements Serializable {
 		limpiarControlesUltimoCorrelatiovo();
 		Util.limpiarListbox(lbxVerificaCorrelativos);
 		lbxVerificaCorrelativos.setRows(0);
-		
+
 		if(serie!=null && idAgencia!=null && idComprobante!=null){
 			List<VentaPasaje> lstResul = ServiceLocator.getVentaPasajesManager().buscarUltimoCorrelativoEmitido(fechaUltimoEnvio, serie, idComprobante, idAgencia);
 			//------
@@ -304,7 +304,7 @@ public class WndEnvioEspecieValorada extends WndBase implements Serializable {
 				VentaPasaje venta=lstResul.get(0);
 				txtUltimoCorrelativoEmitido.setText(venta.getUltimoEmitido());
 				dbxPromedioBoletosPorDia.setValue(venta.getPromedioXdia());
-				txtXUtilizado.setText(String.valueOf(Util.calculaPorcentaje(Double.valueOf(venta.getUltimoEmitido()), Double.valueOf(venta.getUltimoEnviadoXAbastecimientos()))));	
+				txtXUtilizado.setText(String.valueOf(Util.calculaPorcentaje(Double.valueOf(venta.getUltimoEmitido()), Double.valueOf(venta.getUltimoEnviadoXAbastecimientos()))));
 				txtUltimoCorrelativoEnviado.setText(venta.getUltimoEnviadoXAbastecimientos());
 				txtFechaUltimoEnvio.setText(venta.getFechaUltimoEnvioXAbastecimientos());
 			}else
@@ -312,9 +312,9 @@ public class WndEnvioEspecieValorada extends WndBase implements Serializable {
 		}else
 			gbxVerificaCorrelativo.setVisible(false);
 	}
-	
+
 	/**
-	 * Lista los relativos de la agencia 
+	 * Lista los relativos de la agencia
 	 * @throws Exception
 	 */
 	public void listEstadoCorrAgencia() throws Exception {
@@ -335,8 +335,8 @@ public class WndEnvioEspecieValorada extends WndBase implements Serializable {
 
 			for (VentaPasaje venta : lstResul) {
 				x++;
-				double xUtilizado=Util.calculaPorcentaje(Double.valueOf(venta.getUltimoEmitido()),Double.valueOf(venta.getUltimoEnviadoXAbastecimientos())); 
-				
+				double xUtilizado=Util.calculaPorcentaje(Double.valueOf(venta.getUltimoEmitido()),Double.valueOf(venta.getUltimoEnviadoXAbastecimientos()));
+
 				item = new Listitem();
 				cell = new Listcell(String.valueOf(x));
 				if(xUtilizado>Constantes.ALERTAR_ENVIO_ESPECIES_VALORADAS)
@@ -382,7 +382,7 @@ public class WndEnvioEspecieValorada extends WndBase implements Serializable {
 				else
 					cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
-				
+
 				cell = new Listcell(venta.getFechaUltimoEnvioXAbastecimientos());
 				if(xUtilizado>Constantes.ALERTAR_ENVIO_ESPECIES_VALORADAS)
 					cell.setStyle("font-size:11px !important; color:red");
@@ -401,22 +401,22 @@ public class WndEnvioEspecieValorada extends WndBase implements Serializable {
 			}
 		}
 	}
-	
-		 
+
+
 	/**
 	 * Lista de correlativos de la agencia para verificar los posibles cortes que esta pueda tener
 	 * @throws Exception
 	 */
 	public void listaVerificaCorrelativos() throws Exception{
 		String serie = null;Integer idComprobante = null;Integer idAgencia = null;
-		
+
 		if(cmbAgencia.getSelectedItem().getValue() instanceof Agencia)
 			idAgencia=((Agencia)cmbAgencia.getSelectedItem().getValue()).getId();
 		if(!(ibxNumeroSerieEnvio.getText().trim().isEmpty()))
 			serie=ibxNumeroSerieEnvio.getValue().toString();
 		if(cmbTipoComprobanteEnvio.getSelectedItem().getValue() instanceof TipoComprobante)
 			idComprobante=((TipoComprobante)cmbTipoComprobanteEnvio.getSelectedItem().getValue()).getId();
-		
+
 		if(serie!=null && idAgencia!=null && idComprobante!=null){
 			List<VentaPasaje> lstResul = ServiceLocator.getVentaPasajesManager().correlativosFaltantesX(fechaUltimoEnvio, serie, idComprobante, idAgencia, Constantes.FORMAT_DATE.format(new Date()),null);
 			if(lstResul.size()>0){
@@ -424,18 +424,18 @@ public class WndEnvioEspecieValorada extends WndBase implements Serializable {
 				txtUltimoCorrelativoEmitido.setText(venta.getUltimoEmitido());
 				dbxPromedioBoletosPorDia.setValue(venta.getPromedioXdia());
 				txtFechaUltimoEnvio.setText(fechaUltimoEnvio);
-				
+
 				Listitem item=null;
 				Listcell cell=null;
 				int x=0;
 				Long n_bolBack=(long)0;
 				Long n_bolNext=(long)0;
-				Integer parametro=10;//Indica la cantidad de correlativos del inicio al final
+				int parametro=10;//Indica la cantidad de correlativos del inicio al final
 				String c_inicio="";
 				String c_fin="";
 				String c_serieNext="";
 				String c_faltantes="";
-				
+
 				for(int i=0; i<lstResul.size();i++){
 					c_faltantes="";x=0;
 					if(i>0)
@@ -443,18 +443,18 @@ public class WndEnvioEspecieValorada extends WndBase implements Serializable {
 					if(i<lstResul.size()){
 						VentaPasaje vp=lstResul.get(i);
 						String c_serie=vp.getNumeroSerie();
-						c_inicio=vp.getNumeroBoleto();					
-													
+						c_inicio=vp.getNumeroBoleto();
+
 						/*Obtiene el ultimo número segun el rango configurador en la variable "parametro" y valida los correlativos faltantes*/
 						String c_serieBack="";
 						for(int z=i; z<lstResul.size(); z++){
 							x++;
 							if(Integer.valueOf(x)>parametro)
 								break;
-							
+
 							c_serieNext=lstResul.get(z).getNumeroSerie();
 							n_bolNext=Long.valueOf(lstResul.get(z).getNumeroBoleto());
-							
+
 							//Valida los correlativos faltantes
 							if(n_bolBack>0)
 								if(!(n_bolBack+1==n_bolNext)){
@@ -469,42 +469,42 @@ public class WndEnvioEspecieValorada extends WndBase implements Serializable {
 									else
 										c_faltantes+=String.valueOf(n_falIni)+"; ";
 								}
-							
+
 							//Obtiene el ultimo numero segun el rango configurador en la variable "parametro"
 							if(c_serieNext.equals(c_serie))
 								c_fin=lstResul.get(z).getNumeroBoleto();
-							
+
 							if(c_serieBack.length()>0 && (!c_serieNext.equals(c_serieBack)))
 								break;
-							
+
 							c_serieBack=lstResul.get(z).getNumeroSerie();
 							n_bolBack=Long.valueOf(lstResul.get(z).getNumeroBoleto());
 						}
-																	
+
 						item=new Listitem();
 						cell=new Listcell(vp.getAgencia().getNombreCorto());
 						if(c_faltantes.length()>0) cell.setStyle("color:red");
 						item.appendChild(cell);
-						
+
 						cell=new Listcell(vp.getTipoComprobante().getDenominacion());
 						if(c_faltantes.length()>0) cell.setStyle("color:red");
 						item.appendChild(cell);
-						
+
 						cell=new Listcell(c_serie);
 						if(c_faltantes.length()>0)cell.setStyle("font-size:11px !important; color:red");
 						else cell.setStyle("font-size:11px !important");
 						item.appendChild(cell);
-						
+
 						cell=new Listcell(c_inicio);
 						if(c_faltantes.length()>0)cell.setStyle("font-size:11px !important; color:red");
 						else cell.setStyle("font-size:11px !important");
 						item.appendChild(cell);
-												
+
 						cell=new Listcell(c_fin);
 						if(c_faltantes.length()>0)cell.setStyle("font-size:11px !important; color:red");
 						else cell.setStyle("font-size:11px !important");
 						item.appendChild(cell);
-						
+
 						if(c_faltantes.length()>0){
 							cell=new Listcell(c_faltantes.length()>0? "Faltantes: "+c_faltantes:"");
 							cell.setStyle("color:red; text-transform:capitalize; font-size:11px !important");
@@ -516,15 +516,15 @@ public class WndEnvioEspecieValorada extends WndBase implements Serializable {
 							cell.appendChild(img);
 						}
 						item.appendChild(cell);
-						lbxVerificaCorrelativos.appendChild(item);	
-					}	
+						lbxVerificaCorrelativos.appendChild(item);
+					}
 					if(lbxVerificaCorrelativos.getItems().size()>5)
 						lbxVerificaCorrelativos.setRows(5);
 				}
-				
+
 			}
 		}
-		
+
 	}
 
 }

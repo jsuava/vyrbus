@@ -25,7 +25,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class PasajeroFrecuenteManagerImpl implements PasajeroFrecuenteManager {
 	private PasajeroFrecuenteDAO pasajeroFrecuenteDAO;
-	
+
 	/**
 	 * @return the pasajeroFrecuenteDAO
 	 */
@@ -73,17 +73,17 @@ public class PasajeroFrecuenteManagerImpl implements PasajeroFrecuenteManager {
 	@Transactional
 	public void guardar(PasajeroFrecuente pasajeroFrecuente) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("numeroTarjeta", pasajeroFrecuente.getNumeroTarjeta());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> result = getPasajeroFrecuenteDAO().buscarPorX(criteriosBusqueda, null);
-											
+
 			/*Valida duplicidad de la tarjeta*/
 			if(result.size()>0)
 				throw new TarjetaDuplicadaException();
-			
+
 			getPasajeroFrecuenteDAO().guardar(pasajeroFrecuente);
-			
+
 		}catch (TarjetaDuplicadaException tdex){
 			throw new TarjetaDuplicadaException();
 		}catch(Exception ex){
@@ -102,16 +102,16 @@ public class PasajeroFrecuenteManagerImpl implements PasajeroFrecuenteManager {
 //			criteriosBusqueda.put("numeroTarjeta", pasajeroFrecuente.getNumeroTarjeta());
 //			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 //			List<?> result = getPasajeroFrecuenteDAO().buscarPorX(criteriosBusqueda, null);
-//					
+//
 //			/*Valida duplicidad del numero de tarjeta*/
 //			for(int r = 0; r < result.size(); r ++) {
 //				PasajeroFrecuente opasajeroFrecuente = (PasajeroFrecuente) result.get(r);
 //					if (!(opasajeroFrecuente.getId() == pasajeroFrecuente.getId()))
 //						throw new TarjetaDuplicadaException();
 //			}
-			
+
 			getPasajeroFrecuenteDAO().actualizar(pasajeroFrecuente);
-		
+
 		}catch(Exception ex){
 			throw new Exception(ex);
 		}
@@ -125,7 +125,7 @@ public class PasajeroFrecuenteManagerImpl implements PasajeroFrecuenteManager {
 	public void inactivar(Long id) throws Exception {
 		getPasajeroFrecuenteDAO().inactivar(id);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.PasajeroFrecuenteManager#buscarMaxNumTarjeta()
@@ -141,7 +141,7 @@ public class PasajeroFrecuenteManagerImpl implements PasajeroFrecuenteManager {
 	public PasajeroFrecuente buscarPaxFree(Long idPasajero, Integer estado)throws Exception {
 		return getPasajeroFrecuenteDAO().buscarPaxFree(idPasajero, estado);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.PasajeroFrecuenteManager#buscarPaxFree(java.lang.Long)

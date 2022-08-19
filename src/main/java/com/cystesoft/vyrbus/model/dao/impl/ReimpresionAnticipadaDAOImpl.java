@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 05/07/2016
  * Hora			: 15:12:12
@@ -72,33 +72,33 @@ public class ReimpresionAnticipadaDAOImpl extends GenericDAOImpl implements Reim
 		super.update(reimpresionAnticipada);
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.ReimpresionAnticipadaDAO#tieneAutorizacionReimpresion(java.lang.Integer, java.lang.Integer)
 	 */
 	@Override
 	public boolean tieneAutorizacionReimpresion(Integer agenciaID, Integer canalVentaID) throws Exception {
 		boolean isAutorizado=false;
-		
+
 		TreeMap<String, Object>criteriosBusqueda=new TreeMap<>();
 		criteriosBusqueda.put("agencia", new Agencia(agenciaID));
 		criteriosBusqueda.put("canalVenta", new CanalVenta(canalVentaID));
 		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-		
+
 		List<ReimpresionAnticipada> result= buscarPorX(criteriosBusqueda, null);
 		for(ReimpresionAnticipada reimpresionAnticipada : result){
 			long milFechaActual= new Date().getTime();
 			long milFechaAutorizacion=reimpresionAnticipada.getFechaEmision().getTime()+(Constantes.MILISEGUNDOS_X_MINUTO*reimpresionAnticipada.getTiempoReimpresion());
-			
+
 			if(milFechaAutorizacion>=milFechaActual){
 				isAutorizado=true;
 				break;
 			}
 		}
-		
+
 		return isAutorizado;
 	}
 
-	
+
 
 }

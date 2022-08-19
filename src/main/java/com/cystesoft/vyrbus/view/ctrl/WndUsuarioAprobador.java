@@ -28,20 +28,20 @@ import com.cystesoft.vyrbus.view.ui.WndFiltrarParametros;
 import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 public class WndUsuarioAprobador extends WndOpcionesMantenimiento {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Combobox cmbUsuario;
 	private Intbox itbNivelAprobacion;
 
 	private UsuarioAprobador usuarioAprobador=null;
 	private TreeMap<String, Object> criteriosBusqueda = null;
 	private List<String> criteriosOrdenar = null;
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
@@ -51,19 +51,19 @@ public class WndUsuarioAprobador extends WndOpcionesMantenimiento {
 		cmbUsuario=(Combobox)this.getFellow("cmbUsuario");
 		itbNivelAprobacion=(Intbox)this.getFellow("itbNivelAprobacion");
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
 	@Override
 	public void onCreate() throws Exception {
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("nivelAprobacion");
-		
+
 		UtilData.cargarUsuarios(cmbUsuario, false);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onNew()
@@ -81,8 +81,8 @@ public class WndUsuarioAprobador extends WndOpcionesMantenimiento {
 	public void onSearch() throws Exception {
 		// TODO Auto-generated method stub
 		final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
-		criteriosBusqueda = new TreeMap<String, Object>();
-		
+		criteriosBusqueda = new TreeMap<>();
+
 		oWndFiltrar.addParameter("Usuario aprobador", UsuarioAprobador.class);
 
 		this.appendChild(oWndFiltrar);
@@ -100,7 +100,7 @@ public class WndUsuarioAprobador extends WndOpcionesMantenimiento {
 				listarUsuariosAprobador(ServiceLocator.getUsuarioAprobadorManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 			}
 		});
-		
+
 	}
 
 	/*
@@ -112,7 +112,7 @@ public class WndUsuarioAprobador extends WndOpcionesMantenimiento {
 		// TODO Auto-generated method stub
 		if(!(criteriosBusqueda.isEmpty()))
 			listarUsuariosAprobador(ServiceLocator.getUsuarioAprobadorManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-				
+
 	}
 
 	/*
@@ -132,7 +132,7 @@ public class WndUsuarioAprobador extends WndOpcionesMantenimiento {
 	@Override
 	public void onCancel(int action) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/*
@@ -146,40 +146,40 @@ public class WndUsuarioAprobador extends WndOpcionesMantenimiento {
 				throw new UsuarioNullException();
 			else if (itbNivelAprobacion.getValue()==null || itbNivelAprobacion.getValue().toString().trim().isEmpty())
 				throw new NivelUsuarioAprobadorNullException();
-						
+
 			//Valida si el usuario tiene un Email Configurado.
 			if (!(UtilData.validateUserMail((Usuario)cmbUsuario.getSelectedItem().getValue())))
 				throw new EmailNullException(EmailNullException.EMAIL_PERSONAL);
-			
+
 			if(action==ACTION_NEW)
 				usuarioAprobador=new UsuarioAprobador();
 			Usuario usuario=(Usuario)cmbUsuario.getSelectedItem().getValue();
 			usuarioAprobador.setUsuario(usuario);
 			usuarioAprobador.setNivelAprobacion(itbNivelAprobacion.getValue());
 			usuarioAprobador.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-			
+
 			switch (action) {
 				case ACTION_NEW:
 					UtilData.auditarRegistro(usuarioAprobador, getUsuario(), Executions.getCurrent());
 					ServiceLocator.getUsuarioAprobadorManager().guardar(usuarioAprobador);
 					break;
-	
+
 				case ACTION_MODIFY:
 					UtilData.auditarRegistro(usuarioAprobador, true, getUsuario(), Executions.getCurrent());
 					ServiceLocator.getUsuarioAprobadorManager().actualizar(usuarioAprobador);
 					break;
 			}
-			/*RECUEPRA EL REGISTRO*/	
-			criteriosBusqueda= new TreeMap<String, Object>();
+			/*RECUEPRA EL REGISTRO*/
+			criteriosBusqueda= new TreeMap<>();
 			criteriosBusqueda.put("id", usuarioAprobador.getId());
 			listarUsuariosAprobador(ServiceLocator.getUsuarioAprobadorManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-					
-			
+
+
 			/*Cuando se actualiza un usuario aprobador el sistema modifica el password, falta investigar por que*/
 			/*Ha manera temporal esta es la solucion.*/
 			usuario=ServiceLocator.getUsuarioManager().buscarXId(usuario.getId().longValue());
 			ServiceLocator.getUsuarioManager().actualizar(usuario);
-			
+
 		}catch (EmailNullException emx){
 			if(emx.getTipoEmail().intValue()==EmailNullException.EMAIL_PERSONAL){
 				DlgMessage.information(Messages.getString("WndUsuarioAprobador.information.noMailUser"),cmbUsuario);
@@ -205,7 +205,7 @@ public class WndUsuarioAprobador extends WndOpcionesMantenimiento {
 	public void onDelete(int tab) throws Exception {
 			UsuarioAprobador usuarioAprobador=((UsuarioAprobador)listboxLista.getSelectedItem().getValue());
 			ServiceLocator.getUsuarioAprobadorManager().inactivar(usuarioAprobador.getId().longValue());
-		
+
 	}
 
 	@Override
@@ -221,7 +221,7 @@ public class WndUsuarioAprobador extends WndOpcionesMantenimiento {
 	public void onPrint(int tab) throws Exception {
 		// TODO Auto-generated method stub
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/*
@@ -231,7 +231,7 @@ public class WndUsuarioAprobador extends WndOpcionesMantenimiento {
 	@Override
 	public void onExport(int tab) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/*
@@ -241,7 +241,7 @@ public class WndUsuarioAprobador extends WndOpcionesMantenimiento {
 	@Override
 	public void onHelp() throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/*
@@ -257,21 +257,21 @@ public class WndUsuarioAprobador extends WndOpcionesMantenimiento {
 				mantenimiento();
 				break;
 		}
-		
+
 	}
-	
+
 	private void listarUsuariosAprobador(List<UsuarioAprobador> list){
-		
+
 		Listitem item=null;
 		Listcell cell=null;
 		int x=0;
 		Util.limpiarListbox(listboxLista);
-		
+
 		for (UsuarioAprobador usuarioAprobador: list){
 			Usuario usuario=usuarioAprobador.getUsuario();
 			if(usuario.getApellidoMaterno()==null)
 				usuario.setApellidoMaterno("");
-			
+
 			x++;
 			item=new Listitem();
 			cell=new Listcell(String.valueOf(x));
@@ -280,7 +280,7 @@ public class WndUsuarioAprobador extends WndOpcionesMantenimiento {
 			item.appendChild(cell);
 			cell=new Listcell(usuarioAprobador.getNivelAprobacion().toString());
 			item.appendChild(cell);
-			
+
 			item.setValue(usuarioAprobador);
 			listboxLista.appendChild(item);
 		}

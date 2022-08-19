@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 07/07/2012
  */
@@ -45,5 +45,5 @@ public interface MapaBusDAO extends GenericDAO {
 	 * @return -1=Fallo 1=Exito
 	 * @throws Exception
 	 */
-	public int deleteMapaBus(Integer idServicio)throws Exception;	
+	public int deleteMapaBus(Integer idServicio)throws Exception;
 }

@@ -21,7 +21,7 @@ import com.cystesoft.vyrbus.model.bean.Usuario;
  */
 public interface UsuarioDAO extends GenericDAO {
 	/**
-	 * Busca en la tabla usuarios si el login existe.	
+	 * Busca en la tabla usuarios si el login existe.
 	 * @param login	: Nombre o texto a buscar.
 	 * @return Devuelve el usuario.
 	 * @throws Exception
@@ -41,43 +41,43 @@ public interface UsuarioDAO extends GenericDAO {
 	 * @param criterioOrden	: Criterios para el orden de los datos.
 	 * @return
 	 */
-	public ArrayList<Usuario> buscarPorEstadoRegistro(String estado, String criterioOrden);	
+	public ArrayList<Usuario> buscarPorEstadoRegistro(String estado, String criterioOrden);
 	/**
 	 * Busqueda por un array de criterios.
 	 * @param criteriosBusqueda: Array de criterios de busqueda
 	 * @param criteriosOrdenar : Lista de criterios para el Orden de los Datos
-	 * @return : 
+	 * @return :
 	 */
-	public ArrayList<Usuario> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);	
+	public ArrayList<Usuario> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
 	/**
 	 * Busqueda de usuario por id
 	 * @param id : Identificador Usuario
-	 * @return : 
+	 * @return :
 	 */
-	public Usuario buscarPorId(Long id);	
-	/**
-	 * 
-	 * @param 
-	 */
-	public void guardar(Usuario usuario);	
+	public Usuario buscarPorId(Long id);
 	/**
 	 *
-	 * @param 
+	 * @param
 	 */
-	public void actualizar(Usuario usuario);	
+	public void guardar(Usuario usuario);
+	/**
+	 *
+	 * @param
+	 */
+	public void actualizar(Usuario usuario);
 	/**
 	 * Inactivar Usuario
 	 * @param id : Identificador del Usuario
 	 */
-	public void inactivar(Long id);	
+	public void inactivar(Long id);
 	/**
 	 * Activar Usuario
 	 * @param id: Identificador del Usuario
 	 */
 	public void activar (Long id);
-	
+
 	/**
-	 * Busca los usuarios que tengan una liquidacion 
+	 * Busca los usuarios que tengan una liquidacion
 	 * @param fechaInicio	: Fecha inicial de la búsqueda.
 	 * @param fechaFinal   	: Fecha final de la búsqueda.
 	 * @param idAgencia		: Identificador de la agencia.
@@ -86,7 +86,7 @@ public interface UsuarioDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public List<Usuario> buscarUsuarioLiquidacion(String fechaInicio, String fechaFinal, Integer idAgencia, Integer estadoLiquidacion) throws Exception;
-	
+
 	/**
 	 * Realiza la busqueda de los usuarios de acuerdo a lso criterios enviados
 	 * @param campo				: Campo que debera cumplir con los criterios enviados.

@@ -76,7 +76,7 @@ import com.cystesoft.vyrbus.view.ui.DlgMessage;
 import com.cystesoft.vyrbus.view.ui.WndBase;
 
 /**
- * 
+ *
  * @author 	JOSE ABANTO
  * @date	16/02/2013
  *
@@ -86,15 +86,15 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Window wndVerEstado = null;
-	
+
 	private Boolean selectTabHistorial=false;
 	private Boolean esAmpliacion=false;
 	private Boolean EditarClienteCartera=false;
-		
+
 	private Tab tabClientes;
 	private Tab tabSolicitud;
 	private Tab tabHistorialSolicitudes;
-		
+
 	/*CARTERA CLIENTES*/
 	private Combobox cmbFuncionario;
 	private Combobox cmbCliente;
@@ -105,7 +105,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 	private Textbox txtRubro;
 	private Intbox ibxCantidadTrabajadores;
 	private Hbox hbxEstadoLc;
-	
+
 	/* Cliente */
 	private Radio rdPorRuc;
 	private Textbox txtBuscarCliente;
@@ -158,20 +158,20 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 	private Button btnAnulaSoli;
 	private Button btnEditarSoli;
 	private Button btnBuscarHistSoli;
-	
-	
+
+
 	/*Otras variables*/
 	private int action;
 	private int actionSol;
 	/*Class*/
 	private Cliente cliente=null;
 	private RangoSobregiro rangoSobregiro=null;
-	
+
 	/*constructor*/
 	public WndSolicitudCartera(){
 		super();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
@@ -181,7 +181,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 		tabClientes=(Tab)this.getFellow("tabClientes");
 		tabSolicitud=(Tab)this.getFellow("tabSolicitud");
 		tabHistorialSolicitudes=(Tab)this.getFellow("tabHistorialSolicitudes");
-		
+
 		/*CARTERA CLIENTES*/
 		cmbFuncionario=(Combobox)this.getFellow("cmbFuncionario");
 		cmbCliente=(Combobox)this.getFellow("cmbCliente");
@@ -190,7 +190,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 		btnExportar=(Button)this.getFellow("btnExportar");
 		btnBuscaClienteCartera=(Button)this.getFellow("btnBuscaClienteCartera");
 		hbxEstadoLc=(Hbox)this.getFellow("hbxEstadoLc");
-		
+
 		/*CLIENTE*/
 		rdPorRuc=(Radio)this.getFellow("rdPorRuc");
 		txtBuscarCliente=(Textbox)this.getFellow("txtBuscarCliente");
@@ -237,7 +237,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 		chbEsAmpliacion=(Checkbox)this.getFellow("chbEsAmpliacion");
 		txtObservaciones=(Textbox)this.getFellow("txtObservaciones");
 		listHistirialSolicitudes=(Listbox)this.getFellow("listHistirialSolicitudes");
-		
+
 		/*Historial de solicitudes*/
 		dtFechaInicialHistSoli=(Datebox)this.getFellow("dtFechaInicialHistSoli");
 		dtFechaFinalHistSoli=(Datebox)this.getFellow("dtFechaFinalHistSoli");
@@ -247,7 +247,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 		btnEditarSoli=(Button)this.getFellow("btnEditarSoli");
 		btnBuscarHistSoli=(Button)this.getFellow("btnBuscarHistSoli");
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
@@ -255,19 +255,19 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 	@Override
 	public void onCreate() throws Exception {
 		MyTime time= new MyTime();
-		
+
 		/*CARTERA CLIENTES*/
 		UtilData.cargarFuncionarios(cmbFuncionario, true,null);
 		UtilData.cargarClientesCartera(cmbCliente, true, getUsuario());
-		
+
 		Util.seleccionarValorItemCombo(Usuario.class, cmbFuncionario, getUsuario().getId());
 		cmbCliente.setSelectedIndex(0);
-		
+
 		if(cmbFuncionario.getSelectedIndex()==-1){
 			cmbFuncionario.setSelectedIndex(0);
 		}
-		
-		
+
+
 		/*SOLICITUD*/
 		/* Cliente */
 		rdPorRuc.setChecked(true);
@@ -276,7 +276,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 		visibleGuardarCancelarCliente(false);
 		disabledControlsCliente(true);
 //		dbxBaseHistorica.setLocale(Locale.US);
-		
+
 		/* Solicitud */
 		UtilData.cargarTipoConvenio(cmbTipoConvenio, false);
 		dbxFechaSolicitud.setText(time.dateServer());
@@ -288,81 +288,81 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 		dbxSobregiroPermitido.setLocale(Locale.US);
 		/*Otros*/
 		actionSol=Constantes.ACTION_NEW;
-		
+
 		/*Historial de solicitudes*/
 		dtFechaInicialHistSoli.setValue(Constantes.FORMAT_DATE.parse(time.dateServer()));
 		dtFechaFinalHistSoli.setValue(Constantes.FORMAT_DATE.parse(time.dateServer()));
 		UtilData.cargarFuncionarios(cmbFuncionarioHistSoli, true,null);
 		UtilData.cargarClientesCartera(cmbClienteHistSoli, true, getUsuario());
-		
+
 		Util.seleccionarValorItemCombo(Usuario.class, cmbFuncionarioHistSoli, getUsuario().getId());
 		cmbClienteHistSoli.setSelectedIndex(0);
-		
+
 		if(cmbFuncionarioHistSoli.getSelectedIndex()==-1)
 			cmbFuncionarioHistSoli.setSelectedIndex(0);
-		
+
 		/*Aplica acceso segun rol*/
 		Util.disabledBtnBuscar(false,btnBuscaClienteCartera,accesoConsultar());
 		Util.disabledBtnExportar(false,btnExportar, accesoExportar());
 		Util.disabledBtnBuscar(false,btnBuscarHistSoli,accesoConsultar());
 		disabledBuscarCliente(false);
 		Util.disabledBtnNuevo(false, btnNuevaSolicitud, accesoNuevo());
-		
+
 		if(getRol().getId().intValue()==Constantes.ID_ROL_FUNCIONARIO){
 			cmbFuncionario.setDisabled(true);
 			cmbFuncionarioHistSoli.setDisabled(true);
-			
+
 			if (!(cmbFuncionario.getSelectedItem().getValue() instanceof Usuario)){
 				cmbCliente.setDisabled(true);
 				cmbClienteHistSoli.setDisabled(true);
 			}
 		}
 	}
-	
+
 	/**
-	 * Valida si el cliente ya esta asignado a la cartera de algún funcionario 
+	 * Valida si el cliente ya esta asignado a la cartera de algún funcionario
 	 * @return
 	 */
 	private CarteraCliente validacionClienteCartera(){
-		TreeMap<String, Object> criterioBusqueda = new TreeMap<String, Object>();
+		TreeMap<String, Object> criterioBusqueda = new TreeMap<>();
 		criterioBusqueda.put("cliente", cliente);
 		criterioBusqueda.put("estadoCartera", Constantes.ESTADOSOL_ACTIVA);
 		ArrayList<CarteraCliente>list=ServiceLocator.getCarteraClienteManager().buscarPorX(criterioBusqueda, null);
-		
+
 		CarteraCliente carteraCliente=null;
 		if(list.size()>0)
 			carteraCliente=list.get(0);
 		return carteraCliente;
 	}
-	
-	/** 
+
+	/**
 	 * Valida solicitudes pendentes por aprobar.
 	 * @return : solicitudClienteCredito
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private SolicitudClienteCredito estadoUltimaSolicitado(Long idCliente) throws Exception{
 		SolicitudClienteCredito  solicitudClienteCredito=ServiceLocator.getSolicitudClienteCreditoManager().validadSolicitudPendiente(idCliente);
-	
+
 		return solicitudClienteCredito;
 	}
-	
-	
+
+
 	/*Mantenimiento CLIENTE*/
-	public void searchCliente() throws Exception { 
+	public void searchCliente() throws Exception {
 		try{
 			Util.disabledBtnEditar(true, btnEditar, accesoModificar());
 			clearControlCliente();
 			clearControlsSolicitud();
 			cliente=null;
-			
+
 			if (!(txtBuscarCliente.getText().trim().isEmpty())){
-				TreeMap<String, Object> criterioBusqueda = new TreeMap<String, Object>();
+				TreeMap<String, Object> criterioBusqueda = new TreeMap<>();
 				criterioBusqueda.put("numeroDocumento", txtBuscarCliente.getText().trim());
 				criterioBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 				ArrayList<Cliente> arrayCliente=ServiceLocator.getClienteManager().buscarPorX(criterioBusqueda, null);
 				if(arrayCliente.size()>0){
 					cliente=arrayCliente.get(0);
-					
+
 					//Valida si el Cliente ya esta asignado ha algun funcionario
 					SolicitudClienteCredito solicitudClienteCredito=estadoUltimaSolicitado(cliente.getId());
 					if(solicitudClienteCredito!=null && solicitudClienteCredito.getNivelAprobacion()<3 &&!(solicitudClienteCredito.getEstadoSolicitud().equals(Constantes.ESTADOSOL_ANULADA)) )
@@ -370,7 +370,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 					// Valida si el cliente, ya esta asignado a alguna cartera de un funcionario.
 					CarteraCliente carteraCliente=validacionClienteCartera();
 					if(carteraCliente!=null && carteraCliente.getUsuario().getId().intValue()!=getUsuario().getId().intValue())
-						throw new ClienteException(ClienteException.ASIGNACION_CARTERA); 
+						throw new ClienteException(ClienteException.ASIGNACION_CARTERA);
 					else if(carteraCliente!=null && carteraCliente.getUsuario().getId().intValue()==getUsuario().getId().intValue()){
 						if (solicitudClienteCredito.getEsAmpliacion().equals("S") &&  (solicitudClienteCredito.getEstadoSolicitud().equals(Constantes.ESTADOSOL_ANULADA)) )
 							throw new ClienteException(ClienteException.ASIGNACION_CARTERA);
@@ -378,17 +378,17 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 							throw new ClienteException(ClienteException.ASIGNACION_CARTERA);
 					}
 					CargarDatosCliente(cliente);
-					
+
 					txtBuscarCliente.setText("");
 					Util.disabledBtnEditar(false, btnEditar, accesoModificar());
 					disabledTipoConvenio(false);
 				}else{
 					cliente=null;
 					clearControlCliente();
-					throw new ClienteException(ClienteException.NO_EXISTE); // ClienteNoEncontradoException();	
+					throw new ClienteException(ClienteException.NO_EXISTE); // ClienteNoEncontradoException();
 				}
-			}	
-			
+			}
+
 		}catch (ClienteException cl){
 			if(cl.getTipo().intValue()==ClienteException.SOLICITUD_CARTERA){
 				DlgMessage.information(Messages.getString("wndSolicitudCartera.information.ClienteSolicitadoCartera"));
@@ -405,17 +405,17 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 			}else if (cl.getTipo().intValue()==ClienteException.CLIENTE_NULL){
 				DlgMessage.information(Messages.getString("wndAutoprizadorCortesia.information.buscarCliente"));
 				txtBuscarCliente.setFocus(true);
-			}		
+			}
 		}catch (Exception e) {
 			DlgMessage.error(this.getClass().getName()+" "+e.getMessage());
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Carga los datos del cliente
-	 * @param cliente: Class Cliente 
-	 * @throws Exception 
+	 * @param cliente: Class Cliente
+	 * @throws Exception
 	 */
 	private void CargarDatosCliente(Cliente cliente) throws Exception{
 		txtNumeroRuc.setText(cliente.getNumeroDocumento());
@@ -429,7 +429,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 				txtConApellidos.setText(contacto.trim().substring(0, indexAps));
 			txtConNombres.setText(contacto.trim().substring(indexAps+1, contacto.length()));
 		}
-		String contactoFinanciero =cliente.getContactoFinaciero();		
+		String contactoFinanciero =cliente.getContactoFinaciero();
 		if(contactoFinanciero!=null){
 			int indexNb=contactoFinanciero.trim().indexOf(",");
 			if(indexNb>0)
@@ -438,7 +438,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 		}
 		txtMovil1.setText(cliente.getMovil1());
 		txtMovil2.setText(cliente.getMovil2());
-				
+
 		txtTelefono.setText(cliente.getTelefonoFijo());
 		txtEmail.setText(cliente.getEmail());
 		txtIdUbigeo.setText(cliente.getUbigeo().getId());
@@ -451,9 +451,9 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 		if(cliente.getTipoCobranza()!=null)
 			if(cliente.getTipoCobranza().getId()!=null)
 				Util.seleccionarValorItemCombo(TipoCobranza.class, cmbTipoCobranza, cliente.getTipoCobranza().getId());
-		
+
 	}
-	
+
 	/**
 	 * Neuvo cliente
 	 */
@@ -468,7 +468,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 		txtNumeroRuc.setFocus(true);
 		visibleSolicitud(false);
 		disabledBuscarCliente(true);
-		
+
 		tabHistorialSolicitudes.setDisabled(true);
 		tabClientes.setDisabled(true);
 	}
@@ -477,17 +477,17 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 	 * @throws Exception
 	 */
 	public void onEditCliente() throws Exception{
-		action=Constantes.ACTION_MODIFY;		
+		action=Constantes.ACTION_MODIFY;
 		Util.disabledBtnEditar(true, btnEditar, accesoModificar());
 		Util.disabledBtnNuevo(true,btnNuevo,accesoNuevo());
 		disabledControlsCliente(false);
 		visibleGuardarCancelarCliente(true);
 		disabledBuscarCliente(true);
 		visibleSolicitud(false);
-		hbxEstadoLc.setVisible(false);		
+		hbxEstadoLc.setVisible(false);
 	}
 	/**
-	 * 
+	 *
 	 * @param action
 	 * @throws Exception
 	 */
@@ -504,7 +504,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 			else if (txtDireccion.getText().trim().isEmpty())
 				throw new DireccionNullException();
 			else if (txtUbigeo.getText().trim().isEmpty())
-				throw new UbigeoNullException();	
+				throw new UbigeoNullException();
 			else if (txtConApellidos.getText().trim().isEmpty())
 				throw new ContactoException(ContactoException.APELLIDOS_NULL);
 			else if (txtConNombres.getText().trim().isEmpty())
@@ -516,21 +516,21 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 			else if (ibxCantidadTrabajadores.getText().trim().isEmpty() || ibxCantidadTrabajadores.getValue()<=0)
 				throw new CantidadTrabajadoresNullException();
 			else if (!(txtEmail.getText().trim().isEmpty())){
-				if (UtilData.validateEmail(txtEmail.getText().trim())==false)
+				if (!UtilData.validateEmail(txtEmail.getText().trim()))
 					throw new MailIncorectoException();
 			}
-					
+
 			if (action==Constantes.ACTION_NEW)
 				cliente = new Cliente();
-			
+
 			Ubigeo ubigeo = new Ubigeo();
 			ubigeo.setId(txtIdUbigeo.getText());
-			
+
 			cliente.setId(action==Constantes.ACTION_NEW? null: cliente.getId());
 			cliente.setRazonSocial(txtRazonSocial.getText().trim().toUpperCase());
 			cliente.setNumeroDocumento(txtNumeroRuc.getText().trim());
 			cliente.setDireccion(txtDireccion.getText().trim().toUpperCase());
-			cliente.setUbigeo(ubigeo);		
+			cliente.setUbigeo(ubigeo);
 			cliente.setTelefonoFijo(txtTelefono.getText());
 			cliente.setEmail(txtEmail.getText());
 			cliente.setKilometros(.00);
@@ -555,15 +555,15 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 					ServiceLocator.getClienteManager().actualizar(cliente);
 					break;
 			}
-			
+
 			if(action==Constantes.ACTION_NEW){
 				DlgMessage.information(Messages.getString("wndSolicitudCartera.information.saveCliente"));
-				disabledTipoConvenio(false);	
+				disabledTipoConvenio(false);
 			}else{
 				DlgMessage.information(Messages.getString("wndSolicitudCartera.information.updateCliente"));
-				
+
 			}
-			
+
 			/*Cuando el funcionario edita el cliente desde la lista de clientes en cartera (tabClientes)*/
 			if(EditarClienteCartera){
 				clearControlCliente();
@@ -581,8 +581,8 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 			disabledBuscarCliente(esAmpliacion);
 			Util.disabledBtnNuevo(chbEsAmpliacion.isChecked(),btnNuevo,accesoNuevo());
 			visibleSolicitud(true);
-			
-			
+
+
 		}catch (CantidadTrabajadoresNullException ctnex){
 			DlgMessage.information(Messages.getString("WndCliente.information.CantidadTrabajadoresNull"),ibxCantidadTrabajadores);
 		}catch (NumeroDocumentoIncorrectoException ndiex){
@@ -617,7 +617,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 	}
 	/**
 	 * Cancela la edicion el nuevo registro de un cliente
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void onCancelCliente() throws Exception{
 		if(EditarClienteCartera){/*Cuando el funcionario edita el cliente desde la lista de clientes en cartera (tabClientes)*/
@@ -629,7 +629,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 			hbxEstadoLc.setVisible(true);
 		}else{
 			/*Cuando se edita el cliente desde la Solicitud (tabSolicitud)*/
-			if(cliente!=null){ 
+			if(cliente!=null){
 				Util.disabledBtnEditar(false, btnEditar, accesoModificar());
 			}else {
 				Util.disabledBtnEditar(true, btnEditar, accesoModificar());
@@ -637,7 +637,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 				//Habilita o deshabilita el Button Enviar Solicitud
 				Util.disabledBtnAceptar(true, btnEnviarSolicitud, accesoGrabar());
 				cmbTipoConvenio.setDisabled(true);
-			}	
+			}
 		}
 		if(!(chbEsAmpliacion.isChecked())){
 			Util.disabledBtnNuevo(false,btnNuevo,accesoNuevo());
@@ -695,9 +695,9 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 		txtMovil1.setText("");
 		txtMovil2.setText("");
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Activa o desactiva el botón Buscar cliente en la solicitud
 	 * @param activar
@@ -713,9 +713,9 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 		}
 		if(accesoConsultar())
 			txtBuscarCliente.setDisabled(disabled);
-		else 
+		else
 			txtBuscarCliente.setDisabled(true);
-	}	
+	}
 
 	/**
 	 * Activa o desactiva el button Cancelar solicitud
@@ -731,7 +731,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 		}
 		btnCancelarSolicitud.setDisabled(disabled);
 	}
-	
+
 	/**
 	 * Oculta o visualiza los buttons Guardar y cancelar del mantenimiento de clientes
 	 * @param visible: (true) visualizar, (false) ocultar
@@ -741,11 +741,11 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 		btnCancelar.setVisible(visible);
 	}
 
-	
+
 /* ****SOLICITUD**********************************/
 	/**
 	 * Selecciona el tipo de Convenio
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void onSelectTipoConvenio() throws Exception{
 		try{
@@ -755,7 +755,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 			disabledControlsContado_Credito(true);
 			//Habilita o deshabilita el Button Enviar Solicitud
 			Util.disabledBtnAceptar(true, btnEnviarSolicitud, accesoGrabar());
-			
+
 			if(cliente!=null){
 				if (cmbTipoConvenio.getSelectedIndex()>0){
 					grCredito.setVisible(true);
@@ -766,14 +766,14 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 				}
 			}else
 				throw new ClienteException(ClienteException.CLIENTE_NULL); // ClienteNullException();
-			
+
 		}catch (ClienteException cl){
 			if(cl.getTipo().intValue()==ClienteException.CLIENTE_NULL)
 				DlgMessage.information(Messages.getString("wndSolicitudCartera.information.clienteNull"));
-		}			
+		}
 	}
-	
-	
+
+
 	/**
 	 * Evento onChange del control LineaCreditoSolicita
 	 */
@@ -793,12 +793,12 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 					return;
 				}
 			}
-			
+
 			//Calcula el monto del sobregiro
 			onChangeSobregiro();
 		}
 	}
-	
+
 	/**
 	 * Calcula el monto del sobregiro, solo es referencial no se guarda en la DB
 	 * solo se guarda el porcentaje.
@@ -807,22 +807,22 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 		if(rangoSobregiro!=null){
 			Double lineaSolicta=dbxLineaCreditoSolicita.getValue()!=null?dbxLineaCreditoSolicita.getValue():.00;
 			Double porcentaSobregiro=dbxSobregiroPermitido.getValue()!=null?dbxSobregiroPermitido.getValue():.00;
-			
+
 			/*Valida el porcentaje maximo perimitido*/
 			if(porcentaSobregiro>rangoSobregiro.getPorcentajeSobregiroMaximo()){
 				dbxSobregiroPermitido.setValue(rangoSobregiro.getPorcentajeSobregiroSugerida());
 				DlgMessage.information(Messages.getString("wndSolicitudCartera.information.porcentajeSobregiroMayorMaximo")+" "+Util.toNumberFormat(rangoSobregiro.getPorcentajeSobregiroMaximo(), 2)+" %",dbxSobregiroPermitido);
 				return;
 			}
-			
+
 			/*Valida el porcentaje minimo reuqerio*/
 			if(porcentaSobregiro<rangoSobregiro.getPorcentajeSobregiroMinimo()){
 				dbxSobregiroPermitido.setValue(rangoSobregiro.getPorcentajeSobregiroSugerida());
 				DlgMessage.information(Messages.getString("wndSolicitudCartera.information.porcentajeSobregiroMenorMinimo")+" "+Util.toNumberFormat(rangoSobregiro.getPorcentajeSobregiroMinimo(), 2)+" %",dbxSobregiroPermitido);
 				return;
 			}
-				
-			
+
+
 			Double montoSobregiro=lineaSolicta*(porcentaSobregiro/100);
 			dbxMontoSobregiro.setValue(montoSobregiro);
 		}else{
@@ -831,7 +831,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 			return;
 		}
 	}
-	
+
 	/**
 	 * Cuando se selecciona comisionable
 	 */
@@ -840,12 +840,12 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 			chbesCanje.setChecked(false);
 			chbesCanje.setDisabled(true);
 			dbxSobregiroPermitido.setReadonly(false);
-			
-		}else if (chbEsAmpliacion.isChecked()==false){
+
+		}else if (!chbEsAmpliacion.isChecked()){
 			chbesCanje.setDisabled(false);
 		}
 	}
-	
+
 	/**
 	 * cuando selecciona por caje
 	 */
@@ -863,7 +863,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 //			chbEsAmpliacion.setDisabled(false);
 			dbxSobregiroPermitido.setDisabled(false);
 		}
-		
+
 		onChangeLineaCreditoSolicita();
 	}
 
@@ -878,17 +878,17 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 			chbesCanje.setDisabled(false);
 		}
 	}
-	
+
 	/**
 	 * Activa o desactiva el combo tipo de convenio.
 	 * @param disabled: (true) desactiva, (false)activa
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private void disabledTipoConvenio(boolean disabled) throws Exception{
 //		cmbTipoConvenio.setSelectedIndex(0);
 		onSelectTipoConvenio();
 		clearControlsSolicitud();
-		
+
 		if(!(disabled)){
 			cmbTipoConvenio.setFocus(true);
 			cmbTipoConvenio.select();
@@ -898,7 +898,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 
 	/**
 	 * Nueva solicitud
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void onClikNuevaSolicitud() throws Exception{
 		actionSol=Constantes.ACTION_NEW;
@@ -916,7 +916,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 		cliente=null;
 		lblAmpliacion.setValue("AMPLIACIÓN");
 	}
-	
+
 	/**
 	 * Activa o desactiva controls contado y credito.
 	 * @param disabled	: (true) desactiva, (false)activa
@@ -928,7 +928,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 		chbesCanje.setDisabled(disabled);
 		txtObservaciones.setDisabled(disabled);
 	}
-	
+
 	/**
 	 * Genera Solicitudad
 	 * @throws Exception
@@ -948,7 +948,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 				throw new TelefonoNullException();
 			else if (cmbOrigen.getSelectedIndex() <=0)
 				throw new OrigenNullException();
-						
+
 			/*Valida datos de la solicitud*/
 			else if (cmbTipoConvenio.getSelectedIndex() <=0 )
 				throw new TipoConvenioNullException();
@@ -972,15 +972,15 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 				}
 			}
 
-			//Valida si el funcionario tiene un E-Mail configurado. 
+			//Valida si el funcionario tiene un E-Mail configurado.
 			if(!UtilData.validateUserMail(getUsuario()))
 				throw new EmailNullException(EmailNullException.EMAIL_PERSONAL);
-			
+
 			Messagebox.show(Messages.getString("wndSolicitudCartera.question.ConfirmaEnvioSolicitud"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e) throws Exception {
 					if(e.getName().equals("onYes")){
-						
+
 						//VALIDA SI TIENE ALGUNA SOLICITUD DE CREDITO RECHASADA.
 						if(!(chbEsAmpliacion.isChecked())){
 							SolicitudClienteCredito  solicitudClienteCredito=ServiceLocator.getSolicitudClienteCreditoManager().validadSolicitudPendiente(cliente.getId());
@@ -998,13 +998,13 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 								return;
 							}
 						}
-												
-						
+
+
 						/*Guarda Solicitud cartera*/
 						SolicitudCartera solicitudCartera= insertarSolicitudCartera();
-						/*Inserta solicitud cliente credito (Tambien se insertan los contados)*/		
+						/*Inserta solicitud cliente credito (Tambien se insertan los contados)*/
 						insertarSolicitudClienteCredito(solicitudCartera);
-									
+
 						disabledBuscarCliente(true);
 						Util.disabledBtnNuevo(true,btnNuevo,accesoNuevo());
 						Util.disabledBtnEditar(true, btnEditar, accesoModificar());
@@ -1013,18 +1013,18 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 						Util.disabledBtnNuevo(false, btnNuevaSolicitud, accesoNuevo());
 						//Habilita o deshabilita el Button Enviar Solicitud
 						Util.disabledBtnAceptar(true, btnEnviarSolicitud, accesoGrabar());
-						
+
 						tabClientes.setDisabled(false);
 						tabHistorialSolicitudes.setDisabled(false);
-						
+
 						if(actionSol==Constantes.ACTION_NEW)
 							DlgMessage.information(Messages.getString("wndSolicitudCartera.information.SaveSolicitud"));
 						else
 							DlgMessage.information(Messages.getString("wndSolicitudCartera.information.UpdateSolicitud"));
-					}	
-				}	
+					}
+				}
 			});
-			
+
 		}catch (EmailNullException emx){
 			if(emx.getTipoEmail().intValue()==EmailNullException.EMAIL_PERSONAL)
 				DlgMessage.information(Messages.getString("wndSolicitudCartera.information.noMailFunc"));
@@ -1036,7 +1036,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 			cmbTipoCobranza.setFocus(true);
 		}catch (DireccionFacturacionNullException dfnex){
 			DlgMessage.information(Messages.getString("wndSolicitudCartera.information.DireccionFacturacionNull"));
-			txtDireccionFactuaracion.setFocus(true);			
+			txtDireccionFactuaracion.setFocus(true);
 		}catch (OrigenNullException onex){
 			DlgMessage.information(Messages.getString("wndSolicitudCartera.information.OrigenNullException"));
 			cmbOrigen.setFocus(true);
@@ -1070,7 +1070,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 			ex.printStackTrace();
 		}
 	}
-		
+
 	/**
 	 * Inserta solicitud Cartera
 	 * @return	: solicitudCaretra
@@ -1086,22 +1086,22 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 		solicitudCartera.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 		UtilData.auditarRegistro(solicitudCartera,getUsuario(), Executions.getCurrent());
 		ServiceLocator.getSolicitudCarteraManager().guardar(solicitudCartera);
-		
+
 		return solicitudCartera;
 	}
-	
+
 	/**
 	 * Insertar Solicitud cliente credito (También se insertar los contados)
 	 * @param solicitudCartera: Class solicitudCartera
 	 * @throws Exception
 	 */
 	private void insertarSolicitudClienteCredito(SolicitudCartera solicitudCartera) throws Exception{
-		
+
 		SolicitudClienteCredito solicitudClienteCredito=new SolicitudClienteCredito();
 		solicitudClienteCredito.setSolicitudCartera(solicitudCartera);
 		if(cmbTipoCobranza.getSelectedItem().getValue() instanceof TipoCobranza && cmbTipoConvenio.getSelectedItem().getValue().equals(Constantes.TIPCON_CREDITO))
 			solicitudClienteCredito.setTipoCobranza((TipoCobranza) cmbTipoCobranza.getSelectedItem().getValue());
-		
+
 		solicitudClienteCredito.setLineaCreditoSolicitada(dbxLineaCreditoSolicita.getValue()!=null? dbxLineaCreditoSolicita.getValue():0);
 		solicitudClienteCredito.setLineaCreditoAprobada(dbxLineaCreditoSolicita.getValue()!=null? dbxLineaCreditoSolicita.getValue():0);
 		solicitudClienteCredito.setSobregiro(dbxSobregiroPermitido.getValue()!=null?dbxSobregiroPermitido.getValue(): 0);
@@ -1120,7 +1120,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 		solicitudClienteCredito.setNumeroControl(controlNumber(solicitudClienteCredito.getId()));
 		ServiceLocator.getSolicitudClienteCreditoManager().actualizar(solicitudClienteCredito);
 	}
-	
+
 	/**
 	 * Oculta o visualiza el grupo solicitud.
 	 * @param visible : (true)visualizar, (false)ocultar
@@ -1132,9 +1132,9 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 		//btnCerrar.setVisible(visible);
 		btnCancelarSolicitud.setVisible(visible);
 	}
-	
+
 	/**
-	 * Limpia controles de solicitud 
+	 * Limpia controles de solicitud
 	 */
 	private void clearControlsSolicitud(){
 		dbxLineaCreditoSolicita.setText("");
@@ -1145,7 +1145,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 		chbEsAmpliacion.setChecked(false);
 		txtObservaciones.setText("");
 	}
-	
+
 	/**
 	 * Genera el numero de control para el registro de la solicitud.
 	 * @param valor	: Numero hexadecimal con el cual se formara el numero de control.
@@ -1156,7 +1156,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 		nControl ="T"+nControl.substring(nControl.length()-11);
 		return nControl;
 	}
-	
+
 	/**
 	 * Cancela solicitud
 	 */
@@ -1182,7 +1182,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 		hbxEstadoLc.setVisible(true);
 		lblAmpliacion.setValue("AMPLIACIÓN");
 	}
-	
+
 	/*CARTERA CLIENTES*/
 	public void listClientesCartera(){
 		Util.disabledBtnEditar(true, btnEditarClienteCartera, accesoModificar());
@@ -1192,16 +1192,16 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 			idFuncionario=((Usuario)cmbFuncionario.getSelectedItem().getValue()).getId();
 		if(cmbCliente.getSelectedItem().getValue() instanceof Cliente)
 			idCliente=((Cliente)cmbCliente.getSelectedItem().getValue()).getId();
-					
+
 		List<CarteraCliente>listCarteraCliente=ServiceLocator.getCarteraClienteManager().buscarClientesCartera(idFuncionario, idCliente);
-		
+
 		Listitem item=null;
 		Listcell cell=null;
 		int x=0;
 		Util.limpiarListbox(listClientesCartera);
 		String colorInactivo=";color:red";
-		String colorEnProceso=";color:#59B808"; 
-				
+		String colorEnProceso=";color:#59B808";
+
 		for (CarteraCliente carteraCliente: listCarteraCliente) {
 			x++;
 			Cliente cliente=carteraCliente.getCliente();
@@ -1210,7 +1210,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 				estadoLcColor=colorEnProceso;
 			else if(carteraCliente.getCliente().getEstadoRegistro().equals(Constantes.LABEL_ESTADOSOL_INACTIVA_DESC))
 				estadoLcColor=colorInactivo;
-			
+
 			item=new Listitem();
 			cell=new Listcell(cliente.getNumeroDocumento());
 			cell.setStyle("font-size:11px !important "+estadoLcColor);
@@ -1236,7 +1236,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 			cell=new Listcell(carteraCliente.getUsuario().toString());
 			cell.setStyle(estadoLcColor);
 			item.appendChild(cell);
-			
+
 			final Toolbarbutton button= new Toolbarbutton("Ampliación");
 			button.setTooltiptext("Solicitud ampliación de Linea de Crédito.");
 			//Valida si es canje
@@ -1244,7 +1244,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 				button.setLabel("Extensión");
 				button.setTooltiptext("Solicitud extensión de Canje publicitario.");
 			}
-			
+
 			button.setId(String.valueOf(x-1));
 			button.setStyle("color:blue; font-size: 8.5px !important");
 //			if(cliente.getTipo().equals(Constantes.TIPCON_CREDITO_DESC) && cliente.getEstadoRegistro().equals(Constantes.LABEL_ESTADOSOL_ACTIVA_DESC))
@@ -1254,7 +1254,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 			cell=new Listcell();
 			cell.appendChild(button);
 			item.appendChild(cell);
-			
+
 			//Solicitar ampliacion de Line ade Credito.
 			button.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 				@Override
@@ -1263,14 +1263,14 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 						Listitem listitem=listClientesCartera.getItemAtIndex(Integer.valueOf(button.getId()));
 						CarteraCliente carteraCliente=listitem.getValue();
 						Cliente cliente= ServiceLocator.getClienteManager().buscarPorId(carteraCliente.getCliente().getId());
-						
+
 						/*Valida si el cliente tiene alguna solicitud pendiente por aprobar*/
 						SolicitudClienteCredito solicitudClienteCredito=estadoUltimaSolicitado(cliente.getId());
 						if(solicitudClienteCredito!=null && solicitudClienteCredito.getNivelAprobacion()<3 && !(solicitudClienteCredito.getEstadoSolicitud().equals(Constantes.ESTADOSOL_ANULADA)) ){
 							DlgMessage.information(Messages.getString("wndSolicitudCartera.information.ClienteSolicitadoCartera"));
 							return;
 						}
-						
+
 						CargarDatosCliente(cliente);
 
 						Util.seleccionarValorItemCombo(TipoCobranza.class, cmbTipoCobranza, carteraCliente.getCliente().getTipoCobranza().getId());
@@ -1279,7 +1279,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 							chbEsComisionable.setChecked(true);
 						else chbEsComisionable.setChecked(false);
 						WndSolicitudCartera.this.cliente=cliente;
-										
+
 						disabledCancelarSolicitud(false);
 						disabledControlsContado_Credito(false);
 						Util.disabledBtnAceptar(false, btnEnviarSolicitud, accesoGrabar());
@@ -1288,22 +1288,22 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 						tabHistorialSolicitudes.setDisabled(true);
 						tabClientes.setDisabled(true);
 						Util.disabledBtnNuevo(true,btnNuevo,accesoNuevo());
-						
+
 						chbEsAmpliacion.setChecked(true);
 						chbEsAmpliacion.setDisabled(true);
 						chbesCanje.setDisabled(true);
 						grCredito.setVisible(true);
 						hbxEstadoLc.setVisible(false);
-						
+
 						esAmpliacion=true;
 						selectTabHistorial=false;
 						tabSolicitud.setSelected(true);
 						dbxLineaCreditoSolicita.setFocus(true);
-						
+
 						dbxLineaCreditoSolicita.setText("");
 						dbxSobregiroPermitido.setText("");
 						dbxMontoSobregiro.setText("");
-						
+
 						/*Valida si es una extencion de canje publictario*/
 						if(carteraCliente.getLineaCreditoCliente()!=null && carteraCliente.getLineaCreditoCliente().getEsCanje().equals(Constantes.SI)){
 							chbEsComisionable.setChecked(false);
@@ -1318,17 +1318,17 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 					}
 				}
 			});
-			
+
 			Util.disabledBtnEditar(false, btnEditarClienteCartera, true);
 			item.setValue(carteraCliente);
 			listClientesCartera.appendChild(item);
 		}
 	}
-	
+
 	/**
 	 * Permite al funcionario editar el cliente desde la lista de cartera de clientes.
-	 * @throws Exception 
-	 * 
+	 * @throws Exception
+	 *
 	 */
 	public void onClickEditarClienteCartera() throws Exception{
 		if(listClientesCartera.getSelectedIndex()>=0){
@@ -1346,7 +1346,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 			tabHistorialSolicitudes.setDisabled(true);
 		}
 	}
-	
+
 	/**
 	 * Exporta Cartera de clientes al Excel
 	 */
@@ -1355,14 +1355,14 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
         Filedownload.save(Util.generaTablaHtml(listClientesCartera), "application/vnd.ms-excel", nombreArchivo+".xls");
 //        Filedownload.save(Util.generaTablaHtml(listClientesCartera), "application/pdf", nombreArchivo+".pdf");
 	}
-		
-	
+
+
 	/*HISTORIAL DE SOLICITUDES*/
 	public void listHistorial() throws Exception{
 		Util.limpiarListbox(listHistirialSolicitudes);
 		disabledEditarSolicitud(true);
 		disabledAnularSolicitud(true);
-		
+
 		String fechaInicial=Constantes.FORMAT_DATE.format(dtFechaInicialHistSoli.getValue());
 		String fechaFinal=Constantes.FORMAT_DATE.format(dtFechaFinalHistSoli.getValue());
 		Integer idFuncionario=null; Long idCliente=null;
@@ -1370,17 +1370,17 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 			idFuncionario=((Usuario)cmbFuncionarioHistSoli.getSelectedItem().getValue()).getId();
 		if(cmbClienteHistSoli.getSelectedItem().getValue() instanceof Cliente)
 			idCliente=((Cliente)cmbClienteHistSoli.getSelectedItem().getValue()).getId();
-		
+
 		List<SolicitudClienteCredito> lista=ServiceLocator.getSolicitudClienteCreditoManager().buscarHistorialSolicitudesCarteraCredito(fechaInicial, fechaFinal, idFuncionario, idCliente);
-		
+
 		Listitem item=null;
 		Listcell cell=null;
 		int x=0;
-		
+
 		for (SolicitudClienteCredito solicitudClienteCredito: lista){
-			Usuario funcionario= solicitudClienteCredito.getSolicitudCartera().getUsuario(); 
+			Usuario funcionario= solicitudClienteCredito.getSolicitudCartera().getUsuario();
 			Cliente cliente=solicitudClienteCredito.getSolicitudCartera().getCliente();
-			
+
 			x++;
 			item=new Listitem();
 			cell=new Listcell(String.valueOf(x));
@@ -1399,7 +1399,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 			item.appendChild(cell);
 			cell=new Listcell(cliente.getTipo());
 			item.appendChild(cell);
-			
+
 			final Toolbarbutton btnVerEstado= new Toolbarbutton("Ver estado");
 			btnVerEstado.setZindex(solicitudClienteCredito.getSolicitudCartera().getId().intValue());
 			btnVerEstado.setAttribute("TIPO", cliente.getTipo());
@@ -1408,14 +1408,14 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 			cell=new Listcell();
 			cell.appendChild(btnVerEstado);
 			item.appendChild(cell);
-			
+
 			btnVerEstado.addEventListener(Events.ON_CLICK, new  EventListener<Event>() {
 				@Override
 				public void onEvent(Event event) throws Exception {
 					verEstado(Long.valueOf(btnVerEstado.getZindex()), btnVerEstado.getAttribute("TIPO").toString());
 				}
 			});
-				
+
 			item.addEventListener(Events.ON_DOUBLE_CLICK,new EventListener<Event>() {
 				@Override
 				public void onEvent(Event event) throws Exception {
@@ -1427,15 +1427,15 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 						cliente.setTipoCobranza(solicitudClienteCredito.getSolicitudCartera().getCliente().getTipoCobranza());
 					CargarDatosCliente(cliente);
 					Util.disabledBtnNuevo(true,btnNuevo,accesoNuevo());
-					
-					TreeMap<String, Object> criterioBusqueda = new TreeMap<String, Object>();
-					List<String> criteriosOrdenar=new ArrayList<String>();
+
+					TreeMap<String, Object> criterioBusqueda = new TreeMap<>();
+					List<String> criteriosOrdenar=new ArrayList<>();
 					criteriosOrdenar.add("solicitudCartera");
 					criterioBusqueda.put("solicitudCartera", solicitudClienteCredito.getSolicitudCartera());
 					List<SolicitudClienteCredito>list=ServiceLocator.getSolicitudClienteCreditoManager().buscarPorX(criterioBusqueda, criteriosOrdenar);
 					solicitudClienteCredito=new SolicitudClienteCredito();
 					solicitudClienteCredito=list.get(0);
-										
+
 					Util.seleccionarValorItemCombobox(cmbTipoConvenio, Constantes.TIPCON_CREDITO);
 					grCredito.setVisible(true);
 					dbxLineaCreditoSolicita.setValue(solicitudClienteCredito.getLineaCreditoSolicitada());
@@ -1450,7 +1450,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 						chbEsComisionable.setChecked(true);
 					else chbEsComisionable.setChecked(false);
 					txtObservaciones.setText(solicitudClienteCredito.getObservaciones());
-					
+
 					selectTabHistorial=true;
 					tabClientes.setDisabled(true);
 					tabHistorialSolicitudes.setDisabled(true);
@@ -1458,14 +1458,14 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 					disabledBuscarCliente(true);
 				}
 			});
-			
+
 			item.setValue(solicitudClienteCredito);
 			listHistirialSolicitudes.appendChild(item);
 		}
 	}
-	
-	
-	
+
+
+
 	public void listHistirialSolicitudes_onSelect(){
 		Listitem listitem=listHistirialSolicitudes.getItemAtIndex(listHistirialSolicitudes.getSelectedIndex());
 		SolicitudClienteCredito  solicitudClienteCredito=listitem.getValue();
@@ -1477,42 +1477,42 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 			disabledAnularSolicitud(true);
 		}
 	}
-	
-			
-	
-	
+
+
+
+
 	public void onClickAnulaSolicitud() throws Exception{
 		Messagebox.show(Messages.getString("wndSolicitudCartera.question.ConfirmaAnulacionSolicitud"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e) throws Exception {
 				if(e.getName().equals("onYes")){
-		
+
 					Date fecha= Constantes.FORMAT_DATE_TIME_24H.parse((new MyTime().dateServer()));
-					
+
 					Listitem itemHist=listHistirialSolicitudes.getItemAtIndex(listHistirialSolicitudes.getSelectedIndex());
 					Long idSolicitudCartera=((SolicitudClienteCredito)itemHist.getValue()).getSolicitudCartera().getId();
 					Long idSolicitudClienteCredito=((SolicitudClienteCredito)itemHist.getValue()).getId();
 					SolicitudCartera  solicitudCartera= ServiceLocator.getSolicitudCarteraManager().buscarPorId(idSolicitudCartera);
 					solicitudCartera.setFechaAnulacion(fecha);
 					solicitudCartera.setEstadoSolicitud(Constantes.ESTADOSOL_ANULADA);
-					
+
 					/*Anula solicitud cartera*/
 					UtilData.auditarRegistro(solicitudCartera, true, getUsuario(), Executions.getCurrent());
 					ServiceLocator.getSolicitudCarteraManager().actualizar(solicitudCartera);
-					
+
 					/*Anula solicitud credito*/
 					SolicitudClienteCredito solicitudClienteCredito=ServiceLocator.getSolicitudClienteCreditoManager().buscarPorId(idSolicitudClienteCredito);
 					solicitudClienteCredito.setFechaAnulacion(fecha);
 					solicitudClienteCredito.setEstadoSolicitud(Constantes.ESTADOSOL_ANULADA);
 					UtilData.auditarRegistro(solicitudClienteCredito, true, getUsuario(), Executions.getCurrent());
 					ServiceLocator.getSolicitudClienteCreditoManager().actualizar(solicitudClienteCredito);
-					
+
 					listHistorial();
 				}
 			}
 		});
 	}
-	
+
 	/**
 	 * Activa o desactiva o button Editar solicitud
 	 * @param disabled: (true) desactiva, (false)activa
@@ -1527,7 +1527,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 		}
 		btnEditarSoli.setDisabled(disabled);
 	}
-	
+
 	/**
 	 * Activa o desactiva o button anular solicitud
 	 * @param disabled: (true) desactiva, (false)activa
@@ -1545,28 +1545,28 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 		else
 			btnAnulaSoli.setDisabled(true);
 	}
-	
-	
+
+
 	public void onSelectfuncionario(Combobox comboboxFuncionario, Combobox comboboxCliente ) throws Exception{
 		Util.limpiarCombobox(comboboxCliente);
-		
+
 		if(comboboxFuncionario.getSelectedItem().getValue() instanceof Usuario)
 			UtilData.cargarClientesCartera(comboboxCliente, true, ((Usuario)comboboxFuncionario.getSelectedItem().getValue()));
 		else
 			UtilData.cargarClientesCartera(comboboxCliente, true, null);
-		comboboxCliente.setSelectedIndex(0);	
+		comboboxCliente.setSelectedIndex(0);
 	}
-	
-	
+
+
 	private void verEstado(Long idSolicitudCartera, String tipoCliente){
 		wndVerEstado = createVentanaVerEstado(idSolicitudCartera, tipoCliente);
 		this.appendChild(wndVerEstado);
 		wndVerEstado.setMode("modal");
 	}
-	
+
 	private Window createVentanaVerEstado(Long idSolicitudCartera, String tipoCliente){
 		Caption caption = null;
-			
+
 		final Window window = new Window("", "normal", true);
 		caption = new Caption("SEGUIMIENTO A LA SOLICITUD");
 		window.appendChild(caption);
@@ -1575,7 +1575,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 		Listbox listbox=new Listbox();
 		Listhead listhead= new Listhead();
 		Listheader listheader=new Listheader();
-		
+
 		listheader.setLabel("TIPO ");listheader.setWidth("150px");listhead.appendChild(listheader);listheader=new Listheader();
 		listheader.setLabel("FECHA HORA");listheader.setWidth("100px");listhead.appendChild(listheader);listheader=new Listheader();
 		if(tipoCliente.equals(Constantes.TIPCON_CONTADO_DESC)){
@@ -1584,28 +1584,28 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 		}else{
 			listheader.setLabel("LC.SOLICITADA");listheader.setWidth("80px"); listhead.appendChild(listheader);listheader=new Listheader();
 			listheader.setLabel("LC.APROBADA");listheader.setWidth("80px");listhead.appendChild(listheader);listheader=new Listheader();
-		}		
+		}
 		listheader.setLabel("USUARIO");listheader.setWidth("100px");listhead.appendChild(listheader);listheader=new Listheader();
 		listheader.setLabel("ROL");listheader.setWidth("120px");listhead.appendChild(listheader);listheader=new Listheader();
 		listheader.setLabel("ESTADO");listheader.setWidth("100px");listhead.appendChild(listheader);
-	
+
 		listbox.appendChild(listhead);
-			
+
 		/*Busca historial de la solicitud*/
-		TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
-		List<String> criteriosOrdenar=new ArrayList<String>();
+		TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
+		List<String> criteriosOrdenar=new ArrayList<>();
 		SolicitudCartera solicitudCartera= new SolicitudCartera();
 		solicitudCartera.setId(idSolicitudCartera);
 		criteriosOrdenar.add("id");
 		criteriosBusqueda.put("solicitudCartera", solicitudCartera);
 		List<SolicitudClienteCredito>list=ServiceLocator.getSolicitudClienteCreditoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
-		
+
 		Listitem item=null;
 		Listcell cell=null;
-		
+
 		for(SolicitudClienteCredito solicitud: list){
 			item=new Listitem();
-			
+
 			/*  Column TIPO*/
 			if(solicitud.getNivelAprobacion().intValue()==0)//Es solicitud
 				cell=new Listcell("SOLICITUD");
@@ -1618,7 +1618,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 			else
 				cell=new Listcell("NIVEL DESCONCIDO");
 			item.appendChild(cell);
-			
+
 			/*  Column FECHA*/
 			if(solicitud.getFechaAprobacion()==null && solicitud.getFechaAnulacion()==null)
 				cell=new Listcell(Constantes.FORMAT_LONG.format(solicitud.getFechaSolicitud()));
@@ -1630,7 +1630,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 				cell=new Listcell("");
 			cell.setStyle("font-size:11px !important");
 			item.appendChild(cell);
-			
+
 			/*  Column LINEA CREDITO SOLICITADO*/
 			cell=new Listcell(Util.toNumberFormat(solicitud.getLineaCreditoSolicitada(),2));
 			cell.setStyle("font-size:11px !important; text-align: right");
@@ -1647,7 +1647,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 			item.appendChild(cell);
 			/*Busca el Area que aprueba*/
 			if(solicitud.getUsuarioAprobador()!=null){
-				criteriosBusqueda = new TreeMap<String, Object>();
+				criteriosBusqueda = new TreeMap<>();
 				criteriosBusqueda.put("usuario", solicitud.getUsuarioAprobador().getUsuario());
 				List<UsuarioRol>lstUsuarioRol=ServiceLocator.getUsuarioRolManager().buscarPorX(criteriosBusqueda, null);
 				if(lstUsuarioRol.size()>0){
@@ -1657,9 +1657,9 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 					cell=new Listcell("NO ENCONTRADO");
 			}else
 				cell=new Listcell("FUNCIONARIO");
-			
+
 			item.appendChild(cell);
-			
+
 			/*  Column ESTADO*/
 			if(solicitud.getEstadoSolicitud().equals(Constantes.ESTADOSOLCAR_EN_ESPERA))
 				cell=new Listcell(Constantes.LABEL_ESTADOSOLCAR_EN_ESPERA_DESC);
@@ -1670,15 +1670,15 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 			else if (solicitud.getEstadoSolicitud().equals(Constantes.ESTADOSOL_ACTIVA))
 				cell=new Listcell(Constantes.APROBADO_DESC);
 			else cell=new Listcell("DESCONOCIDO");
-			
+
 			item.appendChild(cell);
 			listbox.appendChild(item);
 		}
-		
+
 		window.appendChild(listbox);
-		
+
 		return window;
 	}
 
-	
+
 }

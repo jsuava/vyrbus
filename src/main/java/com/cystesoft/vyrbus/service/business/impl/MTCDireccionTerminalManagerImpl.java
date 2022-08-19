@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 25/08/2014
  * Hora			: 15:05:30
@@ -40,6 +40,6 @@ public class MTCDireccionTerminalManagerImpl implements MTCDireccionTerminalMana
 	public MTCDireccionTerminal buscarPorIdAgencia(Integer idAgencia)throws Exception {
 		return getMtcDireccionTerminalDAO().buscarPorIdAgencia(idAgencia);
 	}
-	
+
 
 }

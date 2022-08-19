@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Fecha		: 17/06/2014
  */
 package com.cystesoft.vyrbus.model.dao;
@@ -19,10 +19,10 @@ import com.cystesoft.vyrbus.model.bean.TitanVentaPasaje;
  *
  */
 public interface TitanDAO {
-	
+
 	/* ******** TRANSACIONES REFERIDAS A LA LIQUIDACION TURNO PASAJE **********************/
 	/**
-	 * Busca la liquidacion del usuario 
+	 * Busca la liquidacion del usuario
 	 * @param idLiquidacionSisvyr	: Identificador de la liquidacion de turno del Sisvyr.
 	 * @return LiquidacionTurnoPasaje
 	 * @throws Exception
@@ -35,7 +35,7 @@ public interface TitanDAO {
 	 */
 	public void actualizaLiquidacionTurnoPasajeByIdLiquidacion(TitanLiquidacionTurnoPasaje liquidacionTurnoPasaje)throws Exception;
 
-	
+
 	/* ******** TRANSACIONES REFERIDAS A LA VENTA PASAJES **********************/
 	/**
 	 * Busca el Boleto
@@ -59,8 +59,8 @@ public interface TitanDAO {
 	 * @throws Exception
 	 */
 	public void actualizarFormaPago(TitanVentaPasaje titanVentaPasaje)throws Exception;
-	
-	
+
+
 	/* ******** TRANSACIONES REFERIDAS AL USUARIO PERSONAL **********************/
 	/**
 	 * Busca el UsuarioPerosnal por su Login
@@ -75,8 +75,8 @@ public interface TitanDAO {
 	 * @throws Exception
 	 */
 	public void guardarUsuarioPersonal(TitanUsuarioPersonal titanUsuarioPersonal)throws Exception;
-	
-	
+
+
 	/* ******** TRANSACIONES REFERIDAS AL CLIENTE (T_PERSONAL) **********************/
 	/**
 	 * Busca el Cliente (T_Perosna)
@@ -86,8 +86,8 @@ public interface TitanDAO {
 	 */
 	public TitanPersona buscarPersonaPorRuc(String numeroRuc)throws Exception;
 	/**
-	 * Actualiza el Cliente (T_Persona)	
-	 * @param persona : 
+	 * Actualiza el Cliente (T_Persona)
+	 * @param persona :
 	 */
 	public void actualizaPersona(TitanPersona persona)throws Exception;
 	/**
@@ -96,8 +96,8 @@ public interface TitanDAO {
 	 * @throws Exception
 	 */
 	public void guardarPersona(TitanPersona persona)throws Exception;
-	
-	
+
+
 	/* ******** TRANSACIONES REFERIDAS FUNCIONARIO PERSONA PASAJE **********************/
 	/**
 	 * Busca en funcionario persona pasajes por el id Persona.
@@ -106,7 +106,7 @@ public interface TitanDAO {
 	 */
 	public TitanFuncionarioPersonaPasaje buscarFuncionarioPersonaPasajePorIdPersona(Long idPersona)throws Exception;
 	/**
-	 * Actualiza la asociación del funcionario con cliente	
+	 * Actualiza la asociación del funcionario con cliente
 	 * @param funcionarioPersonaPasaje
 	 * @throws Exception
 	 */
@@ -117,8 +117,8 @@ public interface TitanDAO {
 	 * @throws Exception
 	 */
 	public void guardaFuncionarioPerosnaPasajes(TitanFuncionarioPersonaPasaje funcionarioPersonaPasaje)throws Exception;
-	
-	
+
+
 	/* ******** TRANSACIONES REFERIDAS COMISION PERSONA BASE HISTORICA **********************/
 	/**
 	 * Busca base historica del Cliente.
@@ -139,10 +139,10 @@ public interface TitanDAO {
 	 * @throws Exception
 	 */
 	public void guardaBaseHistorica(TitanComisionPersonaBase comsionPersonaBase)throws Exception;
-	
+
 	/* ******** OTRAS TRANSACIONES **********************/
 	/**
-	 * Realiza la busqueda de la fecha con la fue emitida la factura 
+	 * Realiza la busqueda de la fecha con la fue emitida la factura
 	 * @param serie	: numero de serie de la factura
 	 * @param numero	: Numero de la factura
 	 * @param numeroRuc : Numero de Ruc del Cliente
@@ -150,7 +150,7 @@ public interface TitanDAO {
 	 * @throws Exception
 	 */
 	public String buscarFechaFacturaEspecial(String serie, String numero, String numeroRuc)throws Exception;
-	
+
 	/* ******** TRANSACIONES REFERIDAS AL USUARIO HARDWARE (T_CPU) **********************/
 	/**
 	 * Guarda el usuario hardware
@@ -190,5 +190,5 @@ public interface TitanDAO {
 	 * @param idUsuarioHardwareVyR	: Identificador del Usuario Hardware de Pasajes
 	 */
 	public void inactivarUsuarioHardware(Integer idUsuarioHardwareVyR);
-	
+
 }

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Avalos Sullo
  * Fecha		: 19/05/2014
  */
@@ -36,7 +36,7 @@ import com.cystesoft.vyrbus.view.ui.WndBuscarPasajero;
  *
  */
 public class WndRptTransbordos extends WndBase {
-	
+
 	private static final long serialVersionUID = 1L;
 	private Datebox dtbxFechaInicio;
 	private Datebox dtbxFechaFin;
@@ -45,11 +45,11 @@ public class WndRptTransbordos extends WndBase {
 	private Textbox txtNumeroBoleto;
 	private Textbox txtPasajero;
 	private Listbox lstTransbordos;
-	
+
 	Pasajero pasajero=null;
 	private Window wndBusqPasajero;
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
 	 */
@@ -62,10 +62,10 @@ public class WndRptTransbordos extends WndBase {
 		 txtNumeroBoleto=(Textbox)this.getFellow("txtNumeroBoleto");
 		 txtPasajero=(Textbox)this.getFellow("txtPasajero");
 		 lstTransbordos=(Listbox)this.getFellow("lstTransbordos");
-		
+
 	}
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
@@ -74,21 +74,21 @@ public class WndRptTransbordos extends WndBase {
 		// TODO Auto-generated method stub
 		dtbxFechaInicio.setValue(new Date());
 		dtbxFechaFin.setValue(new Date());
-		
+
 		UtilData.cargarDataCombo(cmbOrigen, Localidad.class, true);
 		UtilData.cargarDataCombo(cmbDestino, Localidad.class, true);
-		
-		
-		
+
+
+
 	}
-	
-	
+
+
 	public void buscar() throws Exception{
 		Util.limpiarListbox(lstTransbordos);
-		
+
 		String fechaTransInicio=null, fechaTransFin=null, origen=null, destino=null,boleto=null;
 		Long idPasajero=null;
-		
+
 		if(dtbxFechaInicio.getValue()!=null)
 			fechaTransInicio=Constantes.FORMAT_DATE.format(dtbxFechaInicio.getValue());
 		if(dtbxFechaFin.getValue()!=null)
@@ -101,13 +101,13 @@ public class WndRptTransbordos extends WndBase {
 			boleto=txtNumeroBoleto.getText().trim();
 		if(pasajero!=null)
 			idPasajero=pasajero.getId();
-		
+
 		List<Transbordo>lstTransbordo=ServiceLocator.getReportesManager().pasajerosTransbordados(fechaTransInicio, fechaTransFin, origen, destino, boleto, idPasajero);
-		String style="font-size:11px !important"; 
-		
+		String style="font-size:11px !important";
+
 		for(Transbordo transbordo:lstTransbordo){
 			Listitem item=new Listitem();
-			
+
 			Listcell cell=new Listcell(Constantes.FORMAT_DATE_TIME_24H.format(transbordo.getFechaInsercion()));
 			cell.setStyle(style);
 			item.appendChild(cell);
@@ -144,11 +144,11 @@ public class WndRptTransbordos extends WndBase {
 			item.appendChild(cell);
 			cell=new Listcell(transbordo.getUsuarioInsercion());
 			item.appendChild(cell);
-			
+
 			lstTransbordos.appendChild(item);
 		}
 	}
-	
+
 	public void buscarPasajero() throws Exception{
 		pasajero=null;
 		final WndBuscarPasajero oWndBuscarPasajero = new WndBuscarPasajero();
@@ -165,11 +165,11 @@ public class WndRptTransbordos extends WndBase {
 			}
 		});
 	}
-	
+
 	public void exportarExcel(){
 		if(lstTransbordos.getItems().size()>0)
 			Util.exportarExcel(lstTransbordos, "TRANSBORDOS");
 	}
-	
-	
+
+
 }

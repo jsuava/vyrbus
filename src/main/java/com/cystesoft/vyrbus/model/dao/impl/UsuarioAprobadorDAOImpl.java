@@ -8,7 +8,7 @@ import com.cystesoft.vyrbus.model.bean.UsuarioAprobador;
 import com.cystesoft.vyrbus.model.dao.UsuarioArobadorDAO;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
@@ -59,10 +59,10 @@ public class UsuarioAprobadorDAOImpl extends GenericDAOImpl implements UsuarioAr
 //				      "'"+usuarioAprobador.getIpInsercion()+"', " +
 //				      "'"+usuarioAprobador.getUsuarioModificacion()+"'," +
 //				      "'"+usuarioAprobador.getIpModificacion()+"')";
-//		
+//
 //		log.info(sql);
 //		getSession().createSQLQuery(sql).executeUpdate();
-		
+
 		super.save(usuarioAprobador);
 	}
 
@@ -101,11 +101,11 @@ public class UsuarioAprobadorDAOImpl extends GenericDAOImpl implements UsuarioAr
 	public List<UsuarioAprobador> buscarXNivel(Integer nivel) throws Exception {
 		// TODO Auto-generated method stub
 		Class<?> oClass=UsuarioAprobador.class;
-		
+
 		String hql="FROM "+oClass.getSimpleName()+" WHERE nivelAprobacion=?";
-				
+
 		 return getSession().createQuery(hql).setInteger(0, nivel).list();
 	}
-	
+
 
 }

@@ -11,28 +11,28 @@ public interface EspecieValoradaManager {
 	public ArrayList<EspecieValorada> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar)throws Exception;
 	public EspecieValorada buscarPorId(Long id)throws Exception;
 	/**
-	 * Guarda una nueva instancia de una especia valorada  
+	 * Guarda una nueva instancia de una especia valorada
 	 * @param especieValorada		: Objeto especie valorada
 	 * @param confirmaDuplicidadSerie	: true cuanto el usuario confirma que desea utilizar la misma serie aun cuando esta ya este registrada
 	 * en otra agencia
 	 * @throws Exception
 	 */
 	public void guardar(EspecieValorada especieValorada)throws Exception;
-	
+
 	public void actualizar(EspecieValorada especieValorada)throws Exception;
-	
+
 	public void inactivar(Long id)throws Exception;
-	
+
 	/**
 	 * Busca la ultima seria utilizada, para la generación de los correlativos automáticos
 	 * @param idTipoComprobante :Identificador del tipio de comprobante
-	 * @return 
+	 * @return
 	 */
 	public String buscarUltimaSerieUtilAge(Integer idTipoComprobante);
-	
+
 	/**
 	 * Realiza la actualización de la especia valorada
-	 * @param idTipCom	: Identificador del tipo de comprobante.	
+	 * @param idTipCom	: Identificador del tipo de comprobante.
 	 * @param idAgencia	: Identifiador de la Agencia.
 	 * @param serie		: Número de serie.
 	 * @param correlativo	: Número de Correlativo.
@@ -40,7 +40,7 @@ public interface EspecieValoradaManager {
 	 * @throws Exception
 	 */
 	public void actualizarCorrelativoEspecieValorada(Integer idTipCom, Integer idAgencia, String serie, long correlativo) throws Exception;
-	
+
 	/***
 	 * Busca la ultima especie valorada registrada, segun los paramentros enviados
 	 * @param idTipoComprobante	: Identificador de tipo de comprobante

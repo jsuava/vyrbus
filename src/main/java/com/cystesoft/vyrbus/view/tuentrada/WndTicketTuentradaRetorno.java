@@ -27,14 +27,14 @@ public class WndTicketTuentradaRetorno extends WndBase {
 	private static final String DATE_DEFAULT_FORMAT = "dd/MM/yyyy";
 	private static final String URL_CONFIGURATION_FILES_INSTALLER = "http://localhost:8080/sisvyr/installer.exe";
 	public static final String FORMAT_BOLETO="BOLETO";
-	
+
 	private Applet comPrinter;
 	private Label lblStatus;
 	private Label lblNumeroControl;
 	private List<VentaPasaje> lstVentaPasaje = null;
 	private String formato;
 	private String msg;
-	
+
 	@Override
 	@SuppressWarnings("unchecked")
 	public void onCreate() throws Exception{
@@ -42,18 +42,18 @@ public class WndTicketTuentradaRetorno extends WndBase {
 		String nControl = (String)this.getAttribute("numeroControl");
 		formato = (String)this.getAttribute("formato");
 		msg = (String)this.getAttribute("msg");
-		
+
 		lblStatus.setValue(msg);
-		
+
 		if(formato.equals(FORMAT_BOLETO)){
 			comPrinter.setParam("msg",proccessBytesToSendVoucher(lstVentaPasaje));
-			comPrinter.setParam("URLInstaller", URL_CONFIGURATION_FILES_INSTALLER);		
+			comPrinter.setParam("URLInstaller", URL_CONFIGURATION_FILES_INSTALLER);
 		}
 		if(nControl!=null)
 			lblNumeroControl.setValue(nControl);
 		this.doModal();
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
 	 */
@@ -68,18 +68,18 @@ public class WndTicketTuentradaRetorno extends WndBase {
 	/**
 	 * Metodo que procesa las ventas.
 	 * @param lstSales	: Lista de ventas a imprimir.
-	 * @return 
-	 * @throws Exception 
+	 * @return
+	 * @throws Exception
 	 */
 	private String proccessBytesToSendVoucher(List<VentaPasaje> lstSales) throws Exception{
-		return proccessBytesOneSale(lstSales.get(0));		
+		return proccessBytesOneSale(lstSales.get(0));
 	}
 
 	/**
 	 * Metodo para crear el texto para imprimir el boleto de viaje.
 	 * @param ventaPasaje
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private String proccessBytesOneSale(VentaPasaje ventaPasaje) throws Exception{
 		Agencia puntoEmbarque=ServiceLocator.getAgenciaManager().buscarPorId(ventaPasaje.getAgenciaPartida().getId().longValue());
@@ -98,7 +98,7 @@ public class WndTicketTuentradaRetorno extends WndBase {
 		sb.append("<RC170,50><F9>PASAJERO");
 		sb.append("<RC170,730><F9>DOC. IDENTIDAD");
 		sb.append("<RC190,50><F3><BS15,12>"+ventaPasaje.getPasajero().toString());
-		sb.append("<RC190,730><F3><BS15,12>"+ventaPasaje.getPasajero().getNumeroDocumento());			
+		sb.append("<RC190,730><F3><BS15,12>"+ventaPasaje.getPasajero().getNumeroDocumento());
 		sb.append("<RC230,50><F9>EMPRESA");
 		sb.append("<RC230,730><F9>RUC");
 		if(ventaPasaje.getCliente()!=null){
@@ -121,17 +121,17 @@ public class WndTicketTuentradaRetorno extends WndBase {
 		sb.append("<RC400,100><F2>3) El Ticket debe ser canjeado 30 minutos antes de la fecha y hora de viaje.");
 		sb.append("<RC420,100><F2>4) Las condiciones generales que rigen este contrato figuran en el boleto de viaje.");
 		sb.append("<RC448,100><F9> USUARIO : "+ventaPasaje.getUsuario().getLogin() + "         F.OPERACION :"+(ventaPasaje.getFechaInsercion()==null?Util.DatetoString(new Date(), DATE_DEFAULT_FORMAT):Util.DatetoString(ventaPasaje.getFechaInsercion(), DATE_DEFAULT_FORMAT)));
-		
+
 		sb.append("<RC1,300><F10><BS18,12>e-Ticket:");
 		sb.append("<RC1,450><F10><BS18,15>"+" "+ventaPasaje.getNumeroBoleto());
-		
+
 		sb.append("<RC100,1090><RR><F9>www.tepsa.com.pe");
 		sb.append("<RC1,1050><RR><F9>RUC");
 		sb.append("<RC135,1050><RR><F9>"+" : 20502324927");
 		sb.append("<RC1,1025><RR><F9>RAZON SOCIAL");
 		sb.append("<RC135,1025><RR><F9>"+" :TRANSPORTES EL PINO S.A.C.");
 		sb.append("<RC1,1000><RR><F9> AV. MANUEL ECHEANDIA 303 - SAN LUIS");
-		
+
 		sb.append("<p>");
 		return sb.toString();
 	}

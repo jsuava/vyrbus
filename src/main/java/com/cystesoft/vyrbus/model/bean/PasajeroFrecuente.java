@@ -20,7 +20,7 @@ public class PasajeroFrecuente extends GenericBean implements java.io.Serializab
 	private Date fechaCaducidad;
 	private Date fechaSuspension;
 	private Integer estado;
-	
+
 	private HistoricoMembresia historicoMembresia;			//No mapeado.
 
 	public PasajeroFrecuente() {

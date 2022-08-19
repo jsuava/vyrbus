@@ -27,7 +27,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class PersonalManagerImpl implements PersonalManager {
 	private PersonalDAO personalDAO;
-	
+
 	/**
 	 * @return the personalDAO
 	 */
@@ -75,14 +75,14 @@ public class PersonalManagerImpl implements PersonalManager {
 	@Transactional
 	public void guardar(Personal personal) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("codigo", personal.getCodigo());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultCodigo = getPersonalDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Código del Personal*/
 			if(resultCodigo.size()>0)
 				throw new CodigoDuplicadoException();
-			
+
 			criteriosBusqueda.remove("codigo");
 			criteriosBusqueda.put("licencia", personal.getLicencia());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
@@ -90,7 +90,7 @@ public class PersonalManagerImpl implements PersonalManager {
 			/*Valida duplicidad del la Licencia del Personal*/
 			if(resultLicencia.size()>0)
 				throw new LicenciaDuplicadaException();
-			
+
 			criteriosBusqueda.remove("codigo");criteriosBusqueda.remove("licencia");
 			criteriosBusqueda.put("nroDocumento", personal.getNroDocumento());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
@@ -98,9 +98,9 @@ public class PersonalManagerImpl implements PersonalManager {
 			/*Valida duplicidad del Número de Documento del Personal*/
 			if(resultnroDocumento.size()>0)
 				throw new NumeroDocumentoDuplicadoException();
-			
+
 			getPersonalDAO().guardar(personal);
-		
+
 		}catch (CodigoDuplicadoException cpdex){
 			throw new CodigoDuplicadoException();
 		}catch (LicenciaDuplicadaException ldex){
@@ -119,42 +119,42 @@ public class PersonalManagerImpl implements PersonalManager {
 	@Transactional
 	public void actualizar(Personal personal) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("codigo", personal.getCodigo());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultCodigo = getPersonalDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Código del Personal*/
-			for(int r = 0; r < resultCodigo.size(); r ++) {
-				Personal operosnaCod= (Personal) resultCodigo.get(r);
+			for (Object element : resultCodigo) {
+				Personal operosnaCod= (Personal) element;
 					if (!(operosnaCod.getId().equals(personal.getId())))
 						throw new CodigoDuplicadoException();
 				}
-			
+
 			criteriosBusqueda.remove("codigo");
 			criteriosBusqueda.put("licencia", personal.getLicencia());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultLicencia = getPersonalDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del la Licencia del Personal*/
-			for(int r = 0; r < resultLicencia.size(); r ++) {
-				Personal opersonalLic= (Personal) resultLicencia.get(r);
+			for (Object element : resultLicencia) {
+				Personal opersonalLic= (Personal) element;
 					if (!(opersonalLic.getId().equals(personal.getId())))
 						throw new LicenciaDuplicadaException();
-				}		
-			
+				}
+
 			criteriosBusqueda.remove("codigo");criteriosBusqueda.remove("licencia");
 			criteriosBusqueda.put("nroDocumento", personal.getNroDocumento());
 			criteriosBusqueda.put("tipoDocumento", personal.getTipoDocumento());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultnroDocumento = getPersonalDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Número de Documento del Personal*/
-			for(int r = 0; r < resultnroDocumento.size(); r ++) {
-				Personal opersonalNroDocumento= (Personal) resultnroDocumento.get(r);
+			for (Object element : resultnroDocumento) {
+				Personal opersonalNroDocumento= (Personal) element;
 					if (!(opersonalNroDocumento.getId().equals(personal.getId())))
 						throw new NumeroDocumentoDuplicadoException();
-				}		
-			
+				}
+
 			getPersonalDAO().actualizar(personal);
-		
+
 		}catch (CodigoDuplicadoException cpdex){
 			throw new CodigoDuplicadoException();
 		}catch (LicenciaDuplicadaException ldex){

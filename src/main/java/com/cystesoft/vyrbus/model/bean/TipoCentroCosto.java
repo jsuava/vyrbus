@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 22/07/2015
  * Hora			: 09:07:54
@@ -15,7 +15,7 @@ package com.cystesoft.vyrbus.model.bean;
 public class TipoCentroCosto extends GenericBean{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Integer id;

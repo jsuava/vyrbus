@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 27/08/2014
  * Hora			: 12:04:10
@@ -54,7 +54,7 @@ public class HREDAOImpl extends GenericDAOImpl implements HREDAO {
 	public HRE buscarPorId(String nroHojaRuta) throws Exception {
 		// TODO Auto-generated method stub
 		String hql="FROM HRE WHERE numeroHojaRutaID.idNumeroHojaRuta='"+nroHojaRuta+"' ";
-		
+
 		HRE hre=(HRE) getSession().createQuery(hql).uniqueResult();
 		return hre;
 	}
@@ -88,9 +88,9 @@ public class HREDAOImpl extends GenericDAOImpl implements HREDAO {
 					      ",cpx.c_apemat AS cpx_ApeMaterno "+
 					      ",cpx.c_nombre AS cpx_ApeNombre "+
 					"FROM VRTHOJRUTELE hre "+
-					    "INNER JOIN VRMRUTA r ON (r.ruta_id=hre.ruta_id) "+ 
+					    "INNER JOIN VRMRUTA r ON (r.ruta_id=hre.ruta_id) "+
 					    "INNER JOIN VRMBUS b ON (b.c_codigo=hre.c_nrobus) "+
-//					    "INNER JOIN VRTITINERARIO i ON (i.d_fecpar=hre.d_fecsal AND i.c_horpar=hre.c_horsal AND i.bus_id=b.bus_id AND i.n_esanulado=0 AND i.c_estreg='A') "+          
+//					    "INNER JOIN VRTITINERARIO i ON (i.d_fecpar=hre.d_fecsal AND i.c_horpar=hre.c_horsal AND i.bus_id=b.bus_id AND i.n_esanulado=0 AND i.c_estreg='A') "+
 						"INNER JOIN VRTITINERARIO i ON (i.itinerario_id=hre.itinerario_id) "+
 					    "INNER JOIN VRMSERVICIO s ON (s.servicio_id=i.servicio_id) "+
 					    "INNER JOIN VRTPROSER ps ON (ps.itinerario_id=i.itinerario_id) "+
@@ -126,10 +126,10 @@ public class HREDAOImpl extends GenericDAOImpl implements HREDAO {
 					"ORDER BY concat(hre.d_Fecsal,hre.c_horsal) ";
 		log.info(sql);
 		List<?>result=getSession().createSQLQuery(sql).list();
-		List<HRE>lstHRE=new ArrayList<HRE>();
+		List<HRE>lstHRE=new ArrayList<>();
 		for(int x=0;x<result.size();x++){
 			Object[] obj=(Object[]) result.get(x);
-			
+
 			HRE hre=new HRE();
 			hre.setFechaSalida((Date)obj[0]);
 			hre.setHoraSalida(obj[1].toString());
@@ -139,29 +139,29 @@ public class HREDAOImpl extends GenericDAOImpl implements HREDAO {
 			hre.setNumeroHojaRutaID(new NumeroHojaRutaID(obj[5].toString()));
 			hre.setFechaLlegadaReal(obj[6]!=null?(Date)obj[6]:null);
 			hre.setHoraLlegadaReal(obj[7]!=null?obj[7].toString():null);
-			
+
 			Ruta ruta=new Ruta();
 			ruta.setOrigen(obj[8].toString());
 			ruta.setDestino(obj[9].toString());
-			
+
 			Servicio servicio=new Servicio();
 			servicio.setDenominacion(obj[10].toString());
-			
+
 			Personal tripulante=new Personal();
 			tripulante.setApellidoPaterno(obj[11]!=null?obj[11].toString():null);
 			tripulante.setApellidoMaterno(obj[12]!=null?obj[12].toString():null);
 			tripulante.setNombre(obj[13]!=null?obj[13].toString():null);
-			
+
 			Personal piloto=new Personal();
 			piloto.setApellidoPaterno(obj[14]!=null?obj[14].toString():null);
 			piloto.setApellidoMaterno(obj[15]!=null?obj[15].toString():null);
 			piloto.setNombre(obj[16]!=null?obj[16].toString():null);
-			
+
 			Personal copiloto=new Personal();
 			copiloto.setApellidoPaterno(obj[17]!=null?obj[17].toString():null);
 			copiloto.setApellidoMaterno(obj[18]!=null?obj[18].toString():null);
 			copiloto.setNombre(obj[19]!=null?obj[19].toString():null);
-			
+
 			Personal copilotoAuxiliar=null;
 			if(obj[20]!=null){
 				copilotoAuxiliar=new Personal();
@@ -169,29 +169,29 @@ public class HREDAOImpl extends GenericDAOImpl implements HREDAO {
 				copilotoAuxiliar.setApellidoMaterno(obj[21]!=null?obj[21].toString():null);
 				copilotoAuxiliar.setNombre(obj[22]!=null?obj[22].toString():null);
 			}
-			
-			
+
+
 			Itinerario itinerario=new Itinerario();
 			itinerario.setServicio(servicio);
-			
+
 			ProgramacionServicio programacionServicio=new ProgramacionServicio();
 			programacionServicio.setTripulante(tripulante);
 			programacionServicio.setPiloto(piloto);
 			programacionServicio.setCopiloto(copiloto);
 			programacionServicio.setCopilotoAuxiliar(copilotoAuxiliar);
 			programacionServicio.setItinerario(itinerario);
-			
+
 			hre.setRuta(ruta);
 			hre.setProgramacionServicio(programacionServicio);
-			
-			
+
+
 			lstHRE.add(hre);
 		}
-		
+
 		return lstHRE;
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.HREDAO#buscarHREEmitida(java.lang.Long)
 	 */
@@ -200,7 +200,7 @@ public class HREDAOImpl extends GenericDAOImpl implements HREDAO {
 //		String hql="FROM HRE WHERE fechaSalida='"+fechaPartida+"' AND numeroBus='"+codigoBus+"' AND estadoRegistro='"+Constantes.VALUE_ACTIVO+"'";
 		String hql="FROM HRE WHERE itinerario_id="+idItinerario+" AND estadoRegistro='"+Constantes.VALUE_ACTIVO+"'";
 		HRE hre=(HRE)getSession().createQuery(hql).uniqueResult();
-		
+
 		return hre;
 	}
 
@@ -213,5 +213,5 @@ public class HREDAOImpl extends GenericDAOImpl implements HREDAO {
 		// TODO Auto-generated method stub
 		return (List<HRE>) super.findByX(HRE.class, criteriosBusqueda, criteriosOrden);
 	}
-	
+
 }

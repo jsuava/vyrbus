@@ -8,7 +8,7 @@ import com.cystesoft.vyrbus.model.bean.TipoGasto;
 import com.cystesoft.vyrbus.model.dao.TipoGastoDAO;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
@@ -16,7 +16,7 @@ import com.cystesoft.vyrbus.model.dao.TipoGastoDAO;
 @SuppressWarnings("unchecked")
 public class TipoGastoDAOImpl extends GenericDAOImpl implements TipoGastoDAO{
 
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.TipoGastoDAO#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
@@ -43,7 +43,7 @@ public class TipoGastoDAOImpl extends GenericDAOImpl implements TipoGastoDAO{
 	public TipoGasto buscarPorId(Long id) {
 		return (TipoGasto) super.findById(TipoGasto.class, id);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.TipoGastoDAO#guardar(com.tepsa.sisvyr.model.bean.TipoGasto)

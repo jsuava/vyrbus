@@ -42,7 +42,7 @@ import com.cystesoft.vyrbus.view.ui.WndImprimir;
  */
 public class WndVSRptVentaSeguros extends WndBase {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Datebox dtbxFechaInico;
 	private Datebox dtbxFechaFin;
 	private Combobox cmbTipoPasajero;
@@ -52,13 +52,13 @@ public class WndVSRptVentaSeguros extends WndBase {
 	private Combobox cmbAgencias;
 	private Textbox txtNumeroBoleto;
 	private Button btnBuscar;
-	
+
 	private Label lblTotalPaxNormal;
 	private Textbox txtTotalPaxNormal;
 	private Label lblTotalPaxFree;
 	private Textbox txtTotalPaxFree;
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.vs.view.ui.WndBase#onCreate()
 	 */
@@ -88,13 +88,13 @@ public class WndVSRptVentaSeguros extends WndBase {
 		cmbAgencias=(Combobox)this.getFellow("cmbAgencias");
 		txtNumeroBoleto=(Textbox)this.getFellow("txtNumeroBoleto");
 		btnBuscar=(Button)this.getFellow("btnBuscar");
-		
+
 		lblTotalPaxNormal=(Label)this.getFellow("lblTotalPaxNormal");
 		txtTotalPaxNormal=(Textbox)this.getFellow("txtTotalPaxNormal");
 		lblTotalPaxFree=(Label)this.getFellow("lblTotalPaxFree");
 		txtTotalPaxFree=(Textbox)this.getFellow("txtTotalPaxFree");
 	}
-	
+
 	public void buscarAfiliaciones() throws Exception{
 		Util.limpiarListbox(lsbxAfiliaciones);
 		txtTotalPaxNormal.setText("0.00");
@@ -103,7 +103,7 @@ public class WndVSRptVentaSeguros extends WndBase {
 		txtTotalPaxNormal.setVisible(false);
 		lblTotalPaxFree.setVisible(false);
 		txtTotalPaxFree.setVisible(false);
-				
+
 		String fechaInicio=Constantes.FORMAT_DATE.format(dtbxFechaInico.getValue());
 		String fechaFin=Constantes.FORMAT_DATE.format(dtbxFechaFin.getValue());
 		String documentoPax=txtDocumentoPasajero.getText().trim().isEmpty()?null:txtDocumentoPasajero.getText().trim();
@@ -116,14 +116,14 @@ public class WndVSRptVentaSeguros extends WndBase {
 			idAgencia=((Agencia)cmbAgencias.getSelectedItem().getValue()).getId();
 		if(cmbTipoPasajero.getSelectedIndex()>0)
 			tipoPax=cmbTipoPasajero.getSelectedItem().getValue();
-		
+
 		List<VSAfiliacion>lisAfilaiciones=ServiceLocator.getVentaSeguroManager().buscarAfiliacionesByConsulta(fechaInicio, fechaFin, tipoPax, documentoPax, idUsuario, idAgencia, boleto);
-		
+
 		Double totalPaxFree=.00;
 		Double totalPaxNormal=.00;
 		Listcell cell=null;
 		for(VSAfiliacion afiliacion:lisAfilaiciones){
-			
+
 			Listitem item=new Listitem();
 			cell=new Listcell(Constantes.FORMAT_DATE.format(afiliacion.getFechaVenta()));
 			cell.setStyle("font-size:11px !important;");
@@ -162,17 +162,17 @@ public class WndVSRptVentaSeguros extends WndBase {
 //			cell=new Listcell(afiliacion.getFechaProcesoPago()!=null?Constantes.FORMAT_DATE.format(afiliacion.getFechaProcesoPago()):"");
 //			cell.setStyle("font-size:11px !important;");
 //			item.appendChild(cell);
-			
-			
+
+
 			if(afiliacion.getVsAsegurado().getTipoPasajero().equals("FRECUENTE"))
 				totalPaxFree+=afiliacion.getImportePagado();
-			else 
+			else
 				totalPaxNormal+=afiliacion.getImportePagado();
-						
+
 			item.setValue(afiliacion);
 			lsbxAfiliaciones.appendChild(item);
 		}
-		
+
 		txtTotalPaxNormal.setText(Util.toNumberFormat(totalPaxNormal, 2));
 		txtTotalPaxFree.setText(Util.toNumberFormat(totalPaxFree, 2));
 		if(lisAfilaiciones.size()>0){
@@ -192,7 +192,7 @@ public class WndVSRptVentaSeguros extends WndBase {
 				lblTotalPaxFree.setVisible(true);
 				txtTotalPaxFree.setVisible(true);
 			}
-		}	
+		}
 	}
 
 	/**
@@ -212,19 +212,19 @@ public class WndVSRptVentaSeguros extends WndBase {
 			Comboitem comboitem=new Comboitem();
 			comboitem.setLabel(agencia.getNombreCorto());
 			comboitem.setValue(agencia);
-			
+
 			cmbAgencias.appendChild(comboitem);
 		}
-		
+
 		/*Selecciona la agencia*/
 		Util.seleccionarValorItemCombo(Agencia.class, cmbAgencias, getAgencia().getId());
 		if(cmbAgencias.getSelectedIndex()<0)
 			cmbAgencias.setSelectedIndex(0);
-		
+
 		/*Cargar Usuarios*/
 		cargarUsuarios();
 	}
-	
+
 	/**
 	 * Carga los usuarios, segun el rango de fechas y agencia seleccionada.
 	 * @throws Exception
@@ -242,29 +242,29 @@ public class WndVSRptVentaSeguros extends WndBase {
 				Comboitem comboitem=new Comboitem();
 				comboitem.setLabel(usuario.toString());
 				comboitem.setValue(usuario);
-				
+
 				cmbUsuario.appendChild(comboitem);
 			}
-		}	
-		
+		}
+
 		/*Selecciona el usuario*/
 		Util.seleccionarValorItemCombo(Usuario.class, cmbUsuario, getUsuario().getId());
 		if(cmbUsuario.getSelectedIndex()<0)
 			cmbUsuario.setSelectedIndex(0);
-				
+
 		/*Verifica acceso a los controles*/
 		verivicarAcessoControles();
 	}
-	
+
 	private String getFechaInicio(){
 		String fechaInicio=Constantes.FORMAT_DATE.format(dtbxFechaInico.getValue());
 		return fechaInicio;
-	}	
+	}
 	private String getFechaFin(){
 		String fechaFin=Constantes.FORMAT_DATE.format(dtbxFechaFin.getValue());
 		return fechaFin;
 	}
-	
+
 	/**
 	 * Exporta las afiliaciones a un archivo excel.
 	 */
@@ -279,26 +279,26 @@ public class WndVSRptVentaSeguros extends WndBase {
 			Executions.sendRedirect("/exportXlsDetalleVentaSeguros.htm");
 		}
 	}
-	
+
 	/**
 	 * Carga los tipos de pasajero
 	 */
 	public static void cargarTipoPax(Combobox combobox,Boolean todos){
 		UtilData.cargarGenericData(combobox, todos);
-		
+
 		Comboitem comboitemNormal=new Comboitem();
 		comboitemNormal.setLabel("NORMAL");
 		comboitemNormal.setValue("N");
 		Comboitem comboitemPaxFree=new Comboitem();
 		comboitemPaxFree.setLabel("FRECUENTE");
 		comboitemPaxFree.setValue("S");
-				
+
 		combobox.appendChild(comboitemNormal);
 		combobox.appendChild(comboitemPaxFree);
 		combobox.setSelectedIndex(0);
 	}
-	
-	
+
+
 	public void imprimir() throws Exception{
 		try {
 			if(lsbxAfiliaciones.getItems().size()>0){
@@ -308,7 +308,7 @@ public class WndVSRptVentaSeguros extends WndBase {
 				if(getUsuarioHardware().getPrintApplet().intValue()==Constantes.TRUE_VALUE){
 //					String src = Constantes.URL_DIRECTORY_DETALLE_VENTA_SEGUROS+nameFile+".txt";
 					String src = Constantes.URL_DIRECTORY_DETALLE_VENTA_SEGUROS + Constantes.CLAVE_PAHT + nameFile+".txt";
-					
+
 					Window win = (Window)Executions.createComponents("imprimir.zul", null, null);
 					win.setAttribute("formato", WndImprimir.FORMAT_DETALLE_LIQUIDACION);
 					win.setAttribute("msg", "Imprimiendo el Detallado Venta de Seguros...");
@@ -319,8 +319,8 @@ public class WndVSRptVentaSeguros extends WndBase {
 					Util.descargarArchivo(file);
 				}
 			}
-			
-			
+
+
 		} catch (Exception e) {
 			// TODO: handle exception
 			DlgMessage.error(e.getMessage());
@@ -331,29 +331,29 @@ public class WndVSRptVentaSeguros extends WndBase {
 	 * Metodo que verifica si el usuario tiene o no acceso a determinados controles
 	 */
 	private void verivicarAcessoControles(){
-		
+
 		/*Controla el acceso al control agencias*/
-		List<Rol>listRolesAcceeso=new ArrayList<Rol>();
+		List<Rol>listRolesAcceeso=new ArrayList<>();
 		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_SUPER_USUARIO));
 		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_FISCALIZACION));
 		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_GERENCIA_COMERCIAL));
 		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_MARKETING));
-		List<Component>listComponet=new ArrayList<Component>();
+		List<Component>listComponet=new ArrayList<>();
 		listComponet.add(cmbAgencias);
 		accesoControlsByRol(listComponet,listRolesAcceeso );
-		
+
 		/*Controla el acceso al control usuarios*/
 		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_ADMIN_PUNTO_VENTA));
-		listComponet=new ArrayList<Component>();
+		listComponet=new ArrayList<>();
 		listComponet.add(cmbUsuario);
 		accesoControlsByRol(listComponet,listRolesAcceeso );
-		
-		
+
+
 		/*Si el usuario es diferentes a los roles arriba mensionados y no tiene ventas, no se le permitira realizar busqueda*/
 		if(cmbUsuario.getSelectedIndex()==0 && cmbUsuario.isDisabled())
 			Util.disabledBtnBuscar(true, btnBuscar,false);
 		else
 			Util.disabledBtnBuscar(false, btnBuscar,true);
 	}
-	
+
 }

@@ -13,15 +13,15 @@ import net.sf.jasperreports.engine.JRField;
 
 public class ReporteVentasRealizadas implements JRDataSource {
 	private int index = -1;
-	private List<VentaPasaje> lstTickets=new LinkedList<VentaPasaje>();
-	
+	private List<VentaPasaje> lstTickets=new LinkedList<>();
+
 	public ReporteVentasRealizadas(List<VentaPasaje> lstVentas){
 		lstTickets = lstVentas;
 	}
-	
+
 	@Override
 	public Object getFieldValue(JRField field) throws JRException {
-		Object value = null;	
+		Object value = null;
 		if("transaccion".equals(field.getName()))
 			value = lstTickets.get(index).getTipoMovimiento().getDenominacion();
 		else if("control".equals(field.getName()))
@@ -38,7 +38,7 @@ public class ReporteVentasRealizadas implements JRDataSource {
 			else
 				value = Util.parseNumberFormat(lstTickets.get(index).getTarifa().toString(), 2);
 		}else if("descuento".equals(field.getName())){
-			if(lstTickets.get(index).getTipoMoneda()!=null && lstTickets.get(index).getTipoMoneda().getId().intValue()!=Constantes.ID_TIPMON_SOLES)				
+			if(lstTickets.get(index).getTipoMoneda()!=null && lstTickets.get(index).getTipoMoneda().getId().intValue()!=Constantes.ID_TIPMON_SOLES)
 				value = (lstTickets.get(index).getDescuentoEquibalente()!=null?Util.parseNumberFormat(lstTickets.get(index).getDescuentoEquibalente().toString(), 2):0.00);
 			else
 				value = Util.parseNumberFormat(lstTickets.get(index).getDescuento().toString(), 2);

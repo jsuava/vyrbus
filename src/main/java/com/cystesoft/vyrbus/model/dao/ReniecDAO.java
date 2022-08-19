@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 05/09/2013
  */
@@ -15,7 +15,7 @@ import com.cystesoft.vyrbus.model.bean.Reniec;
  *
  */
 public interface ReniecDAO extends GenericDAO {
-	
+
 	/**
 	 * Realiza la busqueda del pasajero en la BD del reniec
 	 * @param numeroDocumento : Número de documento del Pasajero
@@ -23,7 +23,7 @@ public interface ReniecDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public Reniec buscarPax(String numeroDocumento)throws Exception;
-	
+
 	/**
 	 *  Valida los datos del pasajero con los de la reniec
 	 * @param oPasajero: oPasajero
@@ -31,5 +31,5 @@ public interface ReniecDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	Pasajero validarPaxConReniec(Pasajero oPasajero) throws Exception;
-	
+
 }

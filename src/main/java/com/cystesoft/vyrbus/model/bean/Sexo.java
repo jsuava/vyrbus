@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SYSVYR
  * Sistema		: Sistema de Mantenimiento de Buses
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 31/10/2010
  */
@@ -19,14 +19,14 @@ public class Sexo extends GenericBean implements Serializable {
 
 	private Integer id;
 	private String denominacion;
-	
+
 	public Integer getId() {
 		return id;
 	}
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	public String getDenominacion() {
 		return denominacion;
 	}

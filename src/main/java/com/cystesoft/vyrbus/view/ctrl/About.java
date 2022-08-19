@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 18/07/2013
  */
@@ -19,7 +19,7 @@ import com.cystesoft.vyrbus.view.ui.WndBase;
 public class About extends WndBase {
 	private Label lblVersion;
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -33,6 +33,6 @@ public class About extends WndBase {
 		lblVersion = (Label)this.getFellow("lblVersion");
 		lblVersion.setValue(Constantes.SYSTEM_VERSION);
 	}
-	
+
 
 }

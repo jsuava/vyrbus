@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 30/04/2012
  */
@@ -42,9 +42,9 @@ public class WndTipoZona extends WndOpcionesMantenimiento {
 
 	private Textbox txtDenominacion;
 	private Textbox txtNombreCorto;
-	
+
 	private TipoZona oTipoZona=null;
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
 
 	/* (non-Javadoc)
@@ -52,7 +52,7 @@ public class WndTipoZona extends WndOpcionesMantenimiento {
 	 */
 	@Override
 	public void onCreate() {
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
 	}
 
@@ -111,7 +111,7 @@ public class WndTipoZona extends WndOpcionesMantenimiento {
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getTipoZonaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getTipoZonaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
 	}
 
@@ -150,10 +150,10 @@ public class WndTipoZona extends WndOpcionesMantenimiento {
 				throw new DenominacionNullException();
 			else if (txtNombreCorto.getText().trim().equals(""))
 				throw new NombreCortoNullException();
-			
+
 			if (action==ACTION_NEW)
 				oTipoZona = new TipoZona();
-			
+
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
 			oTipoZona.setId(id);
 			oTipoZona.setDenominacion(txtDenominacion.getText().trim().toUpperCase());
@@ -177,8 +177,8 @@ public class WndTipoZona extends WndOpcionesMantenimiento {
 			criteriosBusqueda.put("denominacion", oTipoZona.getDenominacion());
 			criteriosBusqueda.put("abreviatura", oTipoZona.getAbreviatura());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-			listarRegistros(ServiceLocator.getTipoZonaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));		
-			
+			listarRegistros(ServiceLocator.getTipoZonaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
+
 		}catch (DenominacionNullException dnex){
 			DlgMessage.information(Messages.getString("Generales.information.noIngresoDenominacion"),txtDenominacion);
 			throw new CancelaGrabacionException();
@@ -257,7 +257,7 @@ public class WndTipoZona extends WndOpcionesMantenimiento {
 				break;
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onClose()
 	 */
@@ -267,11 +267,11 @@ public class WndTipoZona extends WndOpcionesMantenimiento {
 	}
 
 	private void listarRegistros(ArrayList<TipoZona> lstRegistros) {
-		ArrayList<Object> lstTipoZonas = new ArrayList<Object>();
+		ArrayList<Object> lstTipoZonas = new ArrayList<>();
 
 		for(int r = 0; r < lstRegistros.size(); r ++) {
 			TipoZona oTipoZona = lstRegistros.get(r);
-			ArrayList<Object> lstFila = new ArrayList<Object>();
+			ArrayList<Object> lstFila = new ArrayList<>();
 
 			lstFila.add(oTipoZona.getId());
 			lstFila.add(r + 1);

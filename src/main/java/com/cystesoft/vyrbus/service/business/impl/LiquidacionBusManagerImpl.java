@@ -11,21 +11,21 @@ import com.cystesoft.vyrbus.model.dao.LiquidacionBusDAO;
 import com.cystesoft.vyrbus.service.business.LiquidacionBusManager;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 public class LiquidacionBusManagerImpl implements LiquidacionBusManager{
 	private LiquidacionBusDAO liquidacionBusDAO;
-	
+
 	public void setLiquidacionBusDAO (LiquidacionBusDAO liquidacionBusDAO){
 		this.liquidacionBusDAO=liquidacionBusDAO;
 	}
-	
+
 	public LiquidacionBusDAO getLiquidacionBusDAO(){
 		return liquidacionBusDAO;
 	}
-	
+
 
 	@Override
 	public ArrayList<LiquidacionBus> buscarPorEstadoRegistro(String estado,String criterioOrden) {
@@ -51,7 +51,7 @@ public class LiquidacionBusManagerImpl implements LiquidacionBusManager{
 	@Transactional
 	@Override
 	public void actualizar(LiquidacionBus liquidacionBus) {
-		getLiquidacionBusDAO().actualizar(liquidacionBus);		
+		getLiquidacionBusDAO().actualizar(liquidacionBus);
 	}
 
 	@Transactional

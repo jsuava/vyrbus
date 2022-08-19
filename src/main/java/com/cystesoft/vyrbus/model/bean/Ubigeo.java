@@ -8,22 +8,22 @@ import java.io.Serializable;
 
 public class Ubigeo extends GenericBean implements Serializable {
 
-	private static final long serialVersionUID = 1L;     
+	private static final long serialVersionUID = 1L;
 	private String id;
     private String codigoDepartamento;
     private String codigoProvincia;
     private String codigoDistrito;
     private String nombreUbigeo;
-     
+
     public Ubigeo() {
     	super();
     }
 
-    
+
     public Ubigeo(String id){
     	this.id=id;
     }
-    
+
 	/**
 	 * @return Objeto id.
 	 */
@@ -64,5 +64,5 @@ public class Ubigeo extends GenericBean implements Serializable {
 	}
 	public void setNombreUbigeo(String nombreUbigeo) {
 		this.nombreUbigeo = nombreUbigeo;
-	}    
+	}
 }

@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for Errores complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="Errores">
  *   &lt;complexContent>
@@ -25,8 +25,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Errores", propOrder = { "code", "info" })
@@ -39,9 +39,9 @@ public class Errores {
 
 	/**
 	 * Gets the value of the code property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getCode() {
 		return code;
@@ -49,10 +49,10 @@ public class Errores {
 
 	/**
 	 * Sets the value of the code property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setCode(String value) {
 		this.code = value;
@@ -60,9 +60,9 @@ public class Errores {
 
 	/**
 	 * Gets the value of the info property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getInfo() {
 		return info;
@@ -70,10 +70,10 @@ public class Errores {
 
 	/**
 	 * Sets the value of the info property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setInfo(String value) {
 		this.info = value;

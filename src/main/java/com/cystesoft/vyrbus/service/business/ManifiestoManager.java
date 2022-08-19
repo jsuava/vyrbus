@@ -17,26 +17,26 @@ public interface ManifiestoManager {
 	 * @param id :identificador del manifiesto
 	 */
 	public void inactivar(Long id);
-	
+
 	/**
 	 * consulta itinerario.
 	 * @param itinerario : identificador del Itinerario.
 	 * @param origen	 : Localidad origen
-	 * @param destino	 : Localidad destino 
+	 * @param destino	 : Localidad destino
 	 * @return
 	 * @throws Exception
 	 */
 	public Itinerario consultaItinerario (Long idItinerario, String origen, String destino) throws Exception;
-	
+
 	/**
-	 * consulta los pasajeros asociados al itinerarios a consultar. 
+	 * consulta los pasajeros asociados al itinerarios a consultar.
 	 * @param idItinerario : identificador del Itinerario
 	 * @param idPruntoEmbarque: Identificador del punto de embarque
 	 * @return
 	 * @throws Exception
 	 */
 	public List<VentaPasaje> consultaPasajeros (Long idItinerario, Integer idPruntoEmbarque) throws Exception;
-	
+
 	/**
 	 * Consulta los puntos de control del Itinerario.
 	 * @param idItinerario :identificador del Itinerario
@@ -44,7 +44,7 @@ public interface ManifiestoManager {
 	 * @throws Exception
 	 */
 	public List<Agencia> consultaPtoControl(Long idItinerario) throws Exception;
-	
+
 	/**
 	 * Consulta detalle de pasajeros por Ruta.
 	 * @param idItinerario
@@ -52,7 +52,7 @@ public interface ManifiestoManager {
 	 * @throws Exception
 	 */
 	public List<VentaPasaje> consultaDetaPaxXRuta(Long idItinerario) throws Exception;
-	
+
 	/**
 	 * Consulta datos de autorizaci�n por la Sunat. (numero de autorizaci�n, serie y munero de manifiesto)
 	 * @param idAgencia : identificador de la Agencia.
@@ -60,12 +60,12 @@ public interface ManifiestoManager {
 	 * @throws Exception
 	 */
 	public EspecieValorada consultaAutorizacionSunat(Integer idAgencia) throws Exception;
-	
+
 	/**
 	 * Guarda Manifiesto
 	 */
 	public void guarda(Manifiesto manifiesto) throws Exception;
-	
+
 	/**
 	 * Consulta si el manifiesto ya fue impreso
 	 * @param idItinerario : identificador del Itinerario.
@@ -73,7 +73,7 @@ public interface ManifiestoManager {
 	 * @throws Exception
 	 */
 	public Manifiesto consultaMinifiestImpreso(Long idItinerario) throws Exception;
-	
+
 	/**
 	 * Actualiza el correlativo del numero de manifiesto y las ventas con el idManifiesto
 	 * @param especieValorada : Clase de donde se toma el numero del manifiesto.
@@ -94,7 +94,7 @@ public interface ManifiestoManager {
 	 */
 	public List<Manifiesto> buscarManifiesto(String fechaInicial, String fechaFinal, Integer idOrigen, Integer idDestino, Integer idBus, Integer idAgenciaEmision);
 	/**
-	 * 
+	 *
 	 * @param criteriosBusqueda
 	 * @param criteriosOrdenar
 	 * @return
@@ -113,14 +113,14 @@ public interface ManifiestoManager {
 	 * @throws Exception
 	 */
 	public void actualizar(Manifiesto manifiesto)throws Exception;
-	
+
 	/**
 	 * Busqueda manifiestos emitidas, para el mantenimiento
 	 * @param fechaInicial	: fecha inicial de la busqueda
 	 * @param fechaFinal	: fecha final de la busqueda
 	 * @param per4949		: parametro otorgado por SUNAT, el usuario debe ingresarlo
 	 * @param periodo		: perodo al cual pertenece el ISC
-	 * 
+	 *
 	 */
 	public List<Manifiesto> buscarDevolucionIsc(String fechaInicial, String fechaFinal, String per4949, String periodo);
-}	
+}

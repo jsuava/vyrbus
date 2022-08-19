@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 26/12/2013
  */
@@ -14,5 +14,5 @@ import java.io.Serializable;
  *
  */
 public class TiempoExpiracionBloqueoException extends Exception implements Serializable {
-	private static final long serialVersionUID = 1L;	
+	private static final long serialVersionUID = 1L;
 }

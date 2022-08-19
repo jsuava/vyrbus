@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 30/04/2012
  */
@@ -23,7 +23,6 @@ import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Textbox;
-import org.zkoss.zul.Window;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.Cliente;
@@ -72,11 +71,11 @@ public class WndCliente extends WndOpcionesMantenimiento {
 	private Textbox txtRubro;
 	private Intbox ibxCantidadTrabajadores;
 	private Image imgBuscarClienteSunat;
-	
+
 	private Cliente oCliente = null;
 	private String imgEnabledBusq="resources/mp_buscarEnabled.png";
-	
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
 
 	/* (non-Javadoc)
@@ -85,13 +84,13 @@ public class WndCliente extends WndOpcionesMantenimiento {
 	@Override
 	public void onCreate() throws Exception {
 		UtilData.enlazarUbigeo(txtIdUbigeo, txtUbicacionGeografica, btnUbicacionGeografica,null);
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("razonSocial");
 		UtilData.cargarDataCombo(cmbAgencia, Agencia.class, false);
-		
+
 		dbNumeroKilometros.setLocale(Locale.US);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.IBase#initComponents()
 	 */
@@ -112,7 +111,7 @@ public class WndCliente extends WndOpcionesMantenimiento {
 		txtRubro=(Textbox)this.getFellow("txtRubro");
 		ibxCantidadTrabajadores=(Intbox)this.getFellow("ibxCantidadTrabajadores");
 		imgBuscarClienteSunat=(Image)this.getFellow("imgBuscarClienteSunat");
-		
+
 		imgBuscarClienteSunat.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e) throws Exception{
@@ -120,9 +119,9 @@ public class WndCliente extends WndOpcionesMantenimiento {
 					onBuscarCienteSunat();
 				}
 		});
-		
+
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.IOpcionesMantenimiento#onNew()
 	 */
@@ -178,7 +177,7 @@ public class WndCliente extends WndOpcionesMantenimiento {
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getClienteManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getClienteManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
 	}
 
@@ -190,9 +189,9 @@ public class WndCliente extends WndOpcionesMantenimiento {
 		Long id = new Long(0);
 		id = new Long((String) listboxLista.getSelectedItem().getValue());
 		this.mantenimientoRegistro(id);
-				
+
 		/*Aplica acceso a los siguientes controles */
-		List<Component>lstComponents=new ArrayList<Component>();
+		List<Component>lstComponents=new ArrayList<>();
 		lstComponents.add(txtNumeroDocumento);
 		lstComponents.add(txtRazonSocial);
 		accesoControlsRolSuperUsuario(lstComponents);
@@ -226,13 +225,13 @@ public class WndCliente extends WndOpcionesMantenimiento {
 			else if (txtRazonSocial.getText().trim().equals(""))
 				throw new RazonSocialNullException();
 			else if (txtUbicacionGeografica.getText().trim().equals(""))
-				throw new UbigeoNullException();	
+				throw new UbigeoNullException();
 			else if (!(cmbAgencia.getSelectedItem().getValue() instanceof Agencia))
 				throw new AgenciaNullException();
 			else if (ibxCantidadTrabajadores.getText().trim().isEmpty() || ibxCantidadTrabajadores.getValue().intValue()<=0)
 				throw new CantidadTrabajadoresNullException();
 			else if (!(txtCorreoElectronico.getText().trim().isEmpty())){
-				if (UtilData.validateEmail(txtCorreoElectronico.getText().trim())==false)
+				if (!UtilData.validateEmail(txtCorreoElectronico.getText().trim()))
 					throw new MailIncorectoException();
 			}else if (txtRazonSocial.getText().trim().length()<=5){
 					DlgMessage.information(Messages.getString("WndVentaReserva.information.razonSocialIncorrect"), txtRazonSocial);
@@ -244,7 +243,7 @@ public class WndCliente extends WndOpcionesMantenimiento {
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.direccionIncorrect"), txtDireccion);
 				return;
 			}
-				
+
 			/*Validando que los datos del cliente no incluyan comillas simples - jabanto */
 			if(txtRazonSocial.getText().trim().indexOf("'")>=0){
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noComillaSimple")+", revice la Razón Social del Cliente.",txtRazonSocial);
@@ -253,10 +252,10 @@ public class WndCliente extends WndOpcionesMantenimiento {
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noComillaSimple")+", revice la Dirección del Cliente.",txtDireccion);
 				return;
 			}
-			
+
 			if (action==ACTION_NEW)
 				oCliente = new Cliente();
-			
+
 			Long id = (textboxId.getText().equals("") ? 0 : new Long(textboxId.getText()));
 			Ubigeo oUbigeo = new Ubigeo();
 			Agencia oAgencia = new Agencia();
@@ -279,7 +278,7 @@ public class WndCliente extends WndOpcionesMantenimiento {
 			oCliente.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 			oCliente.setRubro(txtRubro.getText().trim().toUpperCase());
 			oCliente.setCantidadTrabajadores(ibxCantidadTrabajadores.getValue());
-			
+
 			switch (action) {
 				case ACTION_NEW:
 					UtilData.auditarRegistro(oCliente,getUsuario(), Executions.getCurrent());
@@ -292,16 +291,16 @@ public class WndCliente extends WndOpcionesMantenimiento {
 					ServiceLocator.getClienteManager().actualizar(oCliente);
 					break;
 			}
-			
-			/*RECUERA EL REGISTRO ACTUALIZADO O EL NUEVO*/ 
+
+			/*RECUERA EL REGISTRO ACTUALIZADO O EL NUEVO*/
 			criteriosBusqueda.remove("razonSocial");
 			criteriosBusqueda.remove("numeroDocumento");
 			criteriosBusqueda.remove("contacto");
 			criteriosBusqueda.put("razonSocial", oCliente.getRazonSocial());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			listarRegistros(ServiceLocator.getClienteManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-					
-			
+
+
 		}catch (CantidadTrabajadoresNullException ctnex){
 			DlgMessage.information(Messages.getString("WndCliente.information.CantidadTrabajadoresNull"),ibxCantidadTrabajadores);
 			throw new CancelaGrabacionException();
@@ -333,7 +332,7 @@ public class WndCliente extends WndOpcionesMantenimiento {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace(); throw new CancelaGrabacionException();
 		}
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -407,11 +406,11 @@ public class WndCliente extends WndOpcionesMantenimiento {
 
 
 	private void listarRegistros(ArrayList<Cliente> lstRegistros) {
-		ArrayList<Object> lstClientes = new ArrayList<Object>();
+		ArrayList<Object> lstClientes = new ArrayList<>();
 
 		for(int r = 0; r < lstRegistros.size(); r ++) {
 			Cliente oCliente = lstRegistros.get(r);
-			ArrayList<Object> lstFila = new ArrayList<Object>();
+			ArrayList<Object> lstFila = new ArrayList<>();
 
 			lstFila.add(oCliente.getId());
 			lstFila.add(r + 1);
@@ -434,7 +433,7 @@ public class WndCliente extends WndOpcionesMantenimiento {
 		oCliente = ServiceLocator.getClienteManager().buscarPorId(id);
 		Ubigeo oUbigeo = oCliente.getUbigeo();
 		Agencia oAgencia = oCliente.getAgencia();
-		
+
 		String idUbigeo = new String();
 		String ubicacionCompleta = new String();
 
@@ -460,34 +459,34 @@ public class WndCliente extends WndOpcionesMantenimiento {
 		txtRubro.setText(oCliente.getRubro());
 		ibxCantidadTrabajadores.setText(oCliente.getCantidadTrabajadores().toString());
 	}
-	
+
 	public void onBuscarCienteSunat() throws Exception{
 		if(!txtNumeroDocumento.getText().trim().isEmpty()){
-				
+
 				String nroDocumento=txtNumeroDocumento.getText().trim();
-				
+
 				//Consulta RUC EN sunat
 				List<String> ruc = RESTCiva.getDatosRuc(nroDocumento);
-					
+
 
 				if(ruc!=null){
 //				Reniec reniec = new Reniec();
 					txtNumeroDocumento.setValue(ruc.get(0));
 					txtRazonSocial.setValue(ruc.get(1));
 					txtDireccion.setValue(ruc.get(2));
-					
+
 					Util.setFocus(btnUbicacionGeografica);
 
 				}else{
 					String numeroDocumento=txtNumeroDocumento.getText().trim();
-						
+
 					//onCleanControlsClient();
-					
+
 					//recupera valores ingresado por el usuario
 					txtNumeroDocumento.setText(numeroDocumento);
 				}
 		}
 	}
-	
+
 
 }

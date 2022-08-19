@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 06/10/2014
  * Hora			: 10:55:43
@@ -23,7 +23,7 @@ import com.cystesoft.vyrbus.model.bean.TitanVentaPasaje;
 public interface TitanManager {
 	/* ******** TRANSACIONES REFERIDAS A LA LIQUIDACION TURNO PASAJE **********************/
 	/**
-	 * Busca la liquidacion del usuario 
+	 * Busca la liquidacion del usuario
 	 * @param idLiquidacionSisvyr	: Identificador de la liquidacion de turno del Sisvyr.
 	 * @return LiquidacionTurnoPasaje
 	 * @throws Exception
@@ -35,7 +35,7 @@ public interface TitanManager {
 	 * @throws Exception
 	 */
 	public void actualizaLiquidacionTurnoPasajeByIdLiquidacion(TitanLiquidacionTurnoPasaje liquidacionTurnoPasaje)throws Exception;
-	
+
 	/* ******** TRANSACIONES REFERIDAS AL USUARIO PERSONAL **********************/
 	/**
 	 * Busca el UsuarioPerosnal por su Login
@@ -50,8 +50,8 @@ public interface TitanManager {
 	 * @throws Exception
 	 */
 	public void guardarUsuarioPersonal(TitanUsuarioPersonal titanUsuarioPersonal)throws Exception;
-	
-	
+
+
 	/* ******** TRANSACIONES REFERIDAS AL CLIENTE (T_PERSONAL) **********************/
 	/**
 	 * Busca el Cliente (T_Perosna)
@@ -61,8 +61,8 @@ public interface TitanManager {
 	 */
 	public TitanPersona buscarPersonaPorRuc(String numeroRuc)throws Exception;
 	/**
-	 * Actualiza el Cliente (T_Persona)	
-	 * @param persona : 
+	 * Actualiza el Cliente (T_Persona)
+	 * @param persona :
 	 */
 	public void actualizaPersona(TitanPersona persona)throws Exception;
 	/**
@@ -71,8 +71,8 @@ public interface TitanManager {
 	 * @throws Exception
 	 */
 	public void guardarPersona(TitanPersona persona)throws Exception;
-	
-	
+
+
 	/* ******** TRANSACIONES REFERIDAS FUNCIONARIO PERSONA PASAJE **********************/
 	/**
 	 * Busca en funcionario persona pasajes por el id Persona.
@@ -81,7 +81,7 @@ public interface TitanManager {
 	 */
 	public TitanFuncionarioPersonaPasaje buscarFuncionarioPersonaPasajePorIdPersona(Long idPersona)throws Exception;
 	/**
-	 * Actualiza la asociación del funcionario con cliente	
+	 * Actualiza la asociación del funcionario con cliente
 	 * @param funcionarioPersonaPasaje
 	 * @throws Exception
 	 */
@@ -92,8 +92,8 @@ public interface TitanManager {
 	 * @throws Exception
 	 */
 	public void guardaFuncionarioPerosnaPasajes(TitanFuncionarioPersonaPasaje funcionarioPersonaPasaje)throws Exception;
-	
-	
+
+
 	/* ******** TRANSACIONES REFERIDAS COMISION PERSONA BASE HISTORICA **********************/
 	/**
 	 * Busca base historica del Cliente.
@@ -114,8 +114,8 @@ public interface TitanManager {
 	 * @throws Exception
 	 */
 	public void guardaBaseHistorica(TitanComisionPersonaBase comsionPersonaBase)throws Exception;
-	
-	
+
+
 	/* ******** TRANSACIONES REFERIDAS A LA VENTA PASAJES **********************/
 	/**
 	 * Busca el Boleto
@@ -132,10 +132,10 @@ public interface TitanManager {
 	 * @throws Exception
 	 */
 	public void actualizarFormaPago(TitanVentaPasaje titanVentaPasaje)throws Exception;
-	
+
 	/* ******** OTRAS TRANSACIONES **********************/
 	/**
-	 * Realiza la busqueda de la fecha con la fue emitida la factura 
+	 * Realiza la busqueda de la fecha con la fue emitida la factura
 	 * @param serie	: numero de serie de la factura
 	 * @param numero	: Numero de la factura
 	 * @param numeroRuc : Numero de Ruc del Cliente
@@ -143,14 +143,14 @@ public interface TitanManager {
 	 * @throws Exception
 	 */
 	public String buscarFechaFacturaEspecial(String serie, String numero, String numeroRuc)throws Exception;
-	
+
 	/* ******** TRANSACIONES REFERIDAS AL USUARIO HARDWARE (T_CPU) **********************/
 	/**
 	 * Guarda el usuario hardware
 	 * @param titanUsuarioHardware	: Objeto a guardar
 	 * @throws Exception
 	 */
-	public void guardarUsuarioHardware(TitanUsuarioHardware titanUsuarioHardware) throws Exception; 
+	public void guardarUsuarioHardware(TitanUsuarioHardware titanUsuarioHardware) throws Exception;
 	/**
 	 * Realiza la busqueda del usuario Hardware
 	 * @param id	: Identificador unico del usuario Hardware

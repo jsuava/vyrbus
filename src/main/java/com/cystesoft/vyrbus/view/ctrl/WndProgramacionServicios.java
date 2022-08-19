@@ -41,7 +41,6 @@ import com.cystesoft.vyrbus.service.exceptions.EdicionNoPermitidaException;
 import com.cystesoft.vyrbus.service.exceptions.ItinerarioException;
 import com.cystesoft.vyrbus.service.exceptions.PilotoNullException;
 import com.cystesoft.vyrbus.service.exceptions.PilotosIgualesException;
-import com.cystesoft.vyrbus.service.exceptions.TripulanteNullException;
 import com.cystesoft.vyrbus.service.exceptions.WSMTCExcepcion;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.util.Constantes;
@@ -54,7 +53,7 @@ import com.cystesoft.vyrbus.view.ui.DlgMessage;
 import com.cystesoft.vyrbus.view.ui.WndBase;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
@@ -85,7 +84,7 @@ public class WndProgramacionServicios extends WndBase {
 	private Label lblAgenciaLlegada;
 	private Label lblPiloto;
 	private	Label lblCopiloto;
-	private Label lblCopilotoAux; 
+	private Label lblCopilotoAux;
 	private Label lblTripulante;
 	private Toolbarbutton tbtNuevo;
 	private Toolbarbutton tbtModificar;
@@ -94,13 +93,13 @@ public class WndProgramacionServicios extends WndBase {
 	private Toolbarbutton tbtanular;
 	private Toolbarbutton tbtCerrar;
 	private Button cmdBuscar;
-	
+
 	private int action;
 	private ProgramacionServicio programacionServicio=null;
 
-	
+
 	@Override
-	public void onCreate() throws Exception {			
+	public void onCreate() throws Exception {
 		UtilData.cargarDataCombo(cmbServicio, Servicio.class, false);
 		UtilData.cargarDataCombo(cmbOrigen, Localidad.class, true);
 		UtilData.cargarDataCombo(cmbDestino, Localidad.class, true);
@@ -108,31 +107,31 @@ public class WndProgramacionServicios extends WndBase {
 		UtilData.cargarPersonalXtipo(cmbCopiloto, false, Constantes.ID_TIPPER_PILOTO_COPILOTO);
 		UtilData.cargarPersonalXtipo(cmbCopilotoAuxiliar, false, Constantes.ID_TIPPER_PILOTO_COPILOTO);
 		UtilData.cargarPersonalXtipo(cmbTripulante, false, Constantes.ID_TIPPER_TRIPULANTE);
-		
+
 		MyTime myTime = new MyTime();
 		Date date=Constantes.FORMAT_DATE.parse(myTime.dateServer());
 		dbFechaPartida.setValue(date);
 		dbFechaLlegada.setValue(date);
-		
+
 		/*Carga por defecto el Origen Lima*/
 		Util.seleccionarValorItemCombo(Localidad.class, cmbOrigen,getAgencia().getLocalidad().getId());
-		
+
 		habilitaControlesIngresoDatos(true);
-		
+
 		/*Habilta o deshabilita botones*/
 		Boolean nuevo, Modificar, Guardar, Cancelar, anular, cerrar;
 		nuevo=true; Modificar=true; Guardar=true; Cancelar=true; anular=true; cerrar=false;
 		HabiltaBotones(nuevo, Modificar, Guardar, Cancelar, anular, cerrar);
-		
+
 		/*Habili/Desabilita según la configuracion del rol del usuario*/
 		/*BUSCAR*/
-		cmdBuscar.setDisabled(accesoConsultar()?false:true);	
-				
+		cmdBuscar.setDisabled(accesoConsultar()?false:true);
+
 //		String fecha = Util.DatetoString(new Date(), "yyyyMMdd");
 //		dbFechaPartida.setConstraint("after "+fecha);
 //		dbFechaLlegada.setConstraint("after "+fecha);
-		
-		
+
+
 		cmbPiloto.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event arg0) throws Exception {
@@ -199,7 +198,7 @@ public class WndProgramacionServicios extends WndBase {
 		tbtCerrar= (Toolbarbutton) this.getFellow("tbtCerrar");
 		cmdBuscar = (Button) this.getFellow("cmdBuscar");
 	}
-	
+
 	/**
 	 * Modifica Programación.
 	 * @throws Exception
@@ -207,15 +206,15 @@ public class WndProgramacionServicios extends WndBase {
 	public void onModificar() throws Exception{
 		try{
 			/*Valida si el servicio ya tiene manifiesto*/
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("bus", programacionServicio.getBus());
 			criteriosBusqueda.put("itinerario", programacionServicio.getItinerario());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-						
+
 			List<Manifiesto>listManifiesto=ServiceLocator.getManifiestoManager().buscarPorX(criteriosBusqueda, null);
 			if(listManifiesto.size()>0)
 				throw new EdicionNoPermitidaException();
-						
+
 			/*Valida si el servicio ya esta asociado a una hre*/
 			HRE hre= ServiceLocator.getHREManager().buscarHREEmitida(programacionServicio.getItinerario().getId());
 //			HRE hre= ServiceLocator.getHREManager().buscarHREEmitida(Constantes.FORMAT_DATE.format(programacionServicio.getItinerario().getFechaPartida()), ((Bus)cmbbus.getSelectedItem().getValue()).getCodigo());
@@ -223,24 +222,24 @@ public class WndProgramacionServicios extends WndBase {
 				DlgMessage.information(Messages.getString("WndProgramacionServicios.Information.modifiServicioHRE"));
 				return;
 			}
-			
+
 			action=Constantes.ACTION_MODIFY;
 			habilitaControlesIngresoDatos(false);
-			
+
 			/*Habilta o deshabilita botones*/
 			Boolean nuevo, Modificar, Guardar, Cancelar, anular, cerrar;
 			nuevo=true; Modificar=true; Guardar=false; Cancelar=false; anular=true; cerrar=true;
 			HabiltaBotones(nuevo, Modificar, Guardar, Cancelar, anular, cerrar);
-		
+
 		}catch (EdicionNoPermitidaException end){
 			DlgMessage.information(Messages.getString("WndProgramacionServicios.Information.EdicionNoPermitida"));
 		}catch (Exception ex){
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace();
 		}
-		
+
 	}
-	
+
 	/**
 	 * Cancela la Operacion de la Programación.
 	 * @throws Exception
@@ -252,20 +251,20 @@ public class WndProgramacionServicios extends WndBase {
 				/*Habilta o deshabilita botones*/
 				Boolean nuevo, Modificar, Guardar, Cancelar, anular, cerrar;
 				Modificar=true; Guardar=true; Cancelar=true; anular=true; cerrar=false;
-				
+
 				/*Habili/Desabilita según la configuracion del rol del usuario*/
 				/*NUEVO*/
 				if(rdProgramados.isChecked())
 					nuevo=true;
 				else
 					nuevo= (accesoNuevo()?false:true);
-							
+
 				HabiltaBotones(nuevo, Modificar, Guardar, Cancelar, anular, cerrar);
 			}else{
 				/*Habilta o deshabilita botones*/
 				Boolean nuevo, Modificar, Guardar, Cancelar, anular, cerrar;
 				Guardar=true; Cancelar=true; cerrar=false;
-				
+
 				/*Habili/Desabilita según la configuracion del rol del usuario*/
 				/*NEUVO*/
 				if(rdProgramados.isChecked())
@@ -276,19 +275,19 @@ public class WndProgramacionServicios extends WndBase {
 				Modificar=(accesoModificar()?false:true);
 				/*ELIMINAR*/
 				anular=(accesoEliminar()?false:true);
-							
+
 				HabiltaBotones(nuevo, Modificar, Guardar, Cancelar, anular, cerrar);
 			}
 			habilitaControlesIngresoDatos(true);
-		
-			
+
+
 			action=Constantes.ACTION_CONSULTA;
 		}catch (Exception ex){
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Guarda Programación.
 	 * @throws Exception
@@ -322,9 +321,9 @@ public class WndProgramacionServicios extends WndBase {
 			}
 			if(cmbPiloto.getSelectedItem().getValue().equals(cmbCopiloto.getSelectedItem().getValue()))
 				throw new PilotosIgualesException();
-			
+
 			Itinerario itinerario = ((ProgramacionServicio)listboxItinerarios.getSelectedItem().getValue()).getItinerario();
-			
+
 			if (action==Constantes.ACTION_NEW){
 //				//Valida que la programacion pertenesca a la fecha actual.
 //				String fechaActual=Constantes.FORMAT_DATE.format(Constantes.FORMAT_DATE.parse(new MyTime().dateServer()));
@@ -342,21 +341,21 @@ public class WndProgramacionServicios extends WndBase {
 //				}
 				programacionServicio=new ProgramacionServicio();
 			}
-			
+
 			Bus bus=(Bus)cmbbus.getSelectedItem().getValue();
 			Personal piloto = (Personal) cmbPiloto.getSelectedItem().getValue();
 			Personal copiloto = (Personal) cmbCopiloto.getSelectedItem().getValue();
 			Personal copilotoAuxiliar=null;
 			if(cmbCopilotoAuxiliar.getSelectedIndex()>0)
 				copilotoAuxiliar = (Personal) cmbCopilotoAuxiliar.getSelectedItem().getValue();
-			
+
 			//Comentado por MAOE 27/06/2021
 //			Personal tripulante = (Personal) cmbTripulante.getSelectedItem().getValue();
 			//MAOE 13/06/2022: Permitir grabar o no tripulante si existe
 			Personal tripulante = null;
 			if(cmbTripulante.getSelectedIndex() >= 0)
 				tripulante = (Personal) cmbTripulante.getSelectedItem().getValue();
-			
+
 			Long id = (textboxId.getText().equals("") ? 0 : new Long(textboxId.getText()));
 			programacionServicio.setId(id);
 			programacionServicio.setItinerario(itinerario);
@@ -370,8 +369,8 @@ public class WndProgramacionServicios extends WndBase {
 			if(tripulante != null)
 				programacionServicio.setTripulante(tripulante);
 			programacionServicio.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-			
-			
+
+
 			/* *****VALIDACION DE LOS PILOTOS Y BUS CON EL WS DEL MTC*******Impl: 20/08/2014 - jabanto  --desactivado el 08/11/2014*/
 			String tipoDcouemnto="";
 			String messageWSMTC=null;
@@ -404,7 +403,7 @@ public class WndProgramacionServicios extends WndBase {
 					messageWSMTC=WSMTC.validarVehiculo(bus.getNumeroPlaca());
 				/* ***********FIN VALIDACIN WS MTC *****/
 			}
-			
+
 			//Cuando los metodos de validacion con el WSMTC encuentran algun error y el rol es super usuario, permitira omitir tal validación y continuar con la programacion del servicio.
 			if(messageWSMTC!=null){
 				final String messageWSMTCf=messageWSMTC;
@@ -421,11 +420,11 @@ public class WndProgramacionServicios extends WndBase {
 				Messagebox.show(Messages.getString("Generales.query.guardar"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
 					@Override
 					public void onEvent(Event e) throws Exception {
-						if(e.getName().equals("onYes")){		
+						if(e.getName().equals("onYes")){
 							try{
-								
+
 								savedProgramacion();
-								
+
 							}catch (ItinerarioException inex){
 								if(inex.getTipo().intValue()==ItinerarioException.ITINERARIO_NULL)
 									DlgMessage.information(Messages.getString("WndProgramacionServicios.Information.SeleccioneItinerario"));
@@ -436,7 +435,7 @@ public class WndProgramacionServicios extends WndBase {
 					}
 				});
 			}
-			
+
 		}catch (PilotosIgualesException piex){
 			DlgMessage.information(Messages.getString("WndProgramacionServicios.Information.PilotosIguales"),cmbPiloto);
 		}catch(PilotoNullException pnex){
@@ -452,7 +451,7 @@ public class WndProgramacionServicios extends WndBase {
 			if(inex.getTipo().intValue()==ItinerarioException.ITINERARIO_NULL)
 				DlgMessage.information(Messages.getString("WndProgramacionServicios.Information.SeleccioneItinerario"));
 		}catch(WSMTCExcepcion  wec){
-			DlgMessage.information(wec.getMessage());	
+			DlgMessage.information(wec.getMessage());
 		}catch(DuplicateSeatException  ds){
 			DlgMessage.information(Messages.getString("WndProgramacionServicios.Information.duplicate"));
 		}catch (WebServiceException wse){
@@ -462,12 +461,12 @@ public class WndProgramacionServicios extends WndBase {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	private void savedProgramacion()throws Exception{
 		try{
 			//Actualiza el itinerario con el identificacion del bus.
 			ServiceLocator.getProgramacionServiciosManager().updateItinerarioBus(programacionServicio.getItinerario().getId(), programacionServicio.getBus().getId().longValue());
-			
+
 			switch (action) {
 				case Constantes.ACTION_NEW:
 					UtilData.auditarRegistro(programacionServicio, false, getUsuario(), Executions.getCurrent());
@@ -482,15 +481,15 @@ public class WndProgramacionServicios extends WndBase {
 					DlgMessage.information(Messages.getString("WndProgramacionServicios.Information.ActualizadoCorrectamente"));
 					break;
 			}
-			
-			textboxId.setText(programacionServicio.getId().toString());			
+
+			textboxId.setText(programacionServicio.getId().toString());
 			habilitaControlesIngresoDatos(true);
 			/*Recupera los itinerarios Programados*/
 			List<ProgramacionServicio> lstProgramacionServicio;
 			rdProgramados.setChecked(true);
-			lstProgramacionServicio= ServiceLocator.getProgramacionServiciosManager().buscarItinerariosProgramados(programacionServicio.getItinerario().getId(), null, null, 
+			lstProgramacionServicio= ServiceLocator.getProgramacionServiciosManager().buscarItinerariosProgramados(programacionServicio.getItinerario().getId(), null, null,
 					Constantes.FORMAT_DATE.format(dbFechaPartida.getValue()),
-					Constantes.FORMAT_DATE.format(dbFechaLlegada.getValue()), 
+					Constantes.FORMAT_DATE.format(dbFechaLlegada.getValue()),
 					null,true);
 			Util.limpiarListbox(listboxItinerarios);
 			cargaItinerario(lstProgramacionServicio);
@@ -500,32 +499,32 @@ public class WndProgramacionServicios extends WndBase {
 			/*Habili/Desabilita según la configuracion del rol del usuario*/
 			/*MODIFICAR*/
 			Modificar=(accesoModificar()?false:true);
-			/*ELIMINAR*/		
+			/*ELIMINAR*/
 			anular=(accesoEliminar()?false:true);
-			
-			HabiltaBotones(nuevo, Modificar, Guardar, Cancelar, anular, cerrar);			
+
+			HabiltaBotones(nuevo, Modificar, Guardar, Cancelar, anular, cerrar);
 			action=Constantes.ACTION_CONSULTA;
 		}catch(DuplicateSeatException  ds){
 			DlgMessage.information(Messages.getString("WndProgramacionServicios.Information.duplicate"));
 		}
 	}
-	
-	
+
+
 	/**
 	 * Anula Programación.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void onAnularProgramacion() throws Exception{
 		try{
 			/*Valida si el servicio ya tiene manifiesto*/
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("bus", programacionServicio.getBus());
 			criteriosBusqueda.put("itinerario", programacionServicio.getItinerario());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<Manifiesto>listManifiesto=ServiceLocator.getManifiestoManager().buscarPorX(criteriosBusqueda, null);
 			if(listManifiesto.size()>0)
 				throw new EdicionNoPermitidaException();
-			
+
 			/*Valida si el servicio ya esta asociado a una hre*/
 			HRE hre= ServiceLocator.getHREManager().buscarHREEmitida(programacionServicio.getItinerario().getId());
 //			HRE hre= ServiceLocator.getHREManager().buscarHREEmitida(Constantes.FORMAT_DATE.format(programacionServicio.getItinerario().getFechaPartida()), ((Bus)cmbbus.getSelectedItem().getValue()).getCodigo());
@@ -533,8 +532,8 @@ public class WndProgramacionServicios extends WndBase {
 				DlgMessage.information(Messages.getString("WndProgramacionServicios.Information.deleteServicioHRE"));
 				return;
 			}
-			
-			Messagebox.show(Messages.getString("WndProgramacionServicios.question.AnularProgramacion"), 
+
+			Messagebox.show(Messages.getString("WndProgramacionServicios.question.AnularProgramacion"),
 										DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e) throws Exception {
@@ -542,21 +541,21 @@ public class WndProgramacionServicios extends WndBase {
 						ServiceLocator.getProgramacionServiciosManager().inactivar(new Long(textboxId.getValue()));
 						onSearch();
 					}
-				}	
+				}
 			});
 		}catch (EdicionNoPermitidaException ede){
 			DlgMessage.information(Messages.getString("WndProgramacionServicios.Information.EliminacionNoPermitida"));
 		}
-		
+
 	}
-	
+
 	/**
 	 * Cierra la Venta de Programación.
 	 */
 	public void cerrar(){
 		closeTabWindow();
 	}
-	
+
 	/**
 	 * Nueva Programación.
 	 * @throws Exception
@@ -565,17 +564,17 @@ public class WndProgramacionServicios extends WndBase {
 		try{
 			if (listboxItinerarios.getItems().size() >0  && listboxItinerarios.getSelectedIndex() >=0){
 				action=Constantes.ACTION_NEW;
-				
+
 				programacionServicio= null;
-				
+
 				onChangePrevioProgramacion(); /*Carga el Previo de la programación*/
 				habilitaControlesIngresoDatos(false);
-				
+
 				/*Habilta o deshabilita botones*/
 				Boolean nuevo, Modificar, Guardar, Cancelar, anular, cerrar;
 				nuevo=true; Modificar=true; Guardar=false; Cancelar=false; anular=true; cerrar=true;
 				HabiltaBotones(nuevo, Modificar, Guardar, Cancelar, anular, cerrar);
-				
+
 				cmbbus.setFocus(true);
 			}else{
 				DlgMessage.information(Messages.getString("WndProgramacionServicios.Information.SeleccionItinerario"),cmbbus);
@@ -585,8 +584,8 @@ public class WndProgramacionServicios extends WndBase {
 			ex.printStackTrace();
 		}
 	}
-	
-	
+
+
 	/**
 	 * Busqueda de Itinerarios para generar la Programación o para recuperar una Programación.
 	 * @throws Exception
@@ -595,12 +594,12 @@ public class WndProgramacionServicios extends WndBase {
 		try{
 			if (!(cmdBuscar.isDisabled())){
 				List<ProgramacionServicio> lstProgramacionServicio=null;
-				
+
 				Long itinerario = null;
 				String servicio= null;
 				String origen = null;
 				String destino = null;
-				
+
 				if (ibItinerario.getValue() !=null)
 					itinerario=ibItinerario.getValue().longValue();
 				if (cmbServicio.getSelectedItem().getValue() instanceof Servicio)
@@ -609,41 +608,41 @@ public class WndProgramacionServicios extends WndBase {
 					origen =(((Localidad) cmbOrigen.getSelectedItem().getValue()).getDenominacion());
 				if (cmbDestino.getSelectedItem().getValue() instanceof Localidad)
 					destino =(((Localidad) cmbDestino.getSelectedItem().getValue()).getDenominacion());
-				
+
 				/*Buqueda por estado*/
 				if (rdNoProgramados.isSelected()){
 					/*Recupera Itinerarios No Programados*/
-					lstProgramacionServicio= ServiceLocator.getProgramacionServiciosManager().buscarItinerariosProgramados(itinerario, origen, destino, 
+					lstProgramacionServicio= ServiceLocator.getProgramacionServiciosManager().buscarItinerariosProgramados(itinerario, origen, destino,
 							Constantes.FORMAT_DATE.format(dbFechaPartida.getValue()),
-							Constantes.FORMAT_DATE.format(dbFechaLlegada.getValue()), 
+							Constantes.FORMAT_DATE.format(dbFechaLlegada.getValue()),
 							servicio,false);
 				}else if (rdProgramados.isSelected()){
 					/*Recupera los itinerarios Programados*/
-					lstProgramacionServicio= ServiceLocator.getProgramacionServiciosManager().buscarItinerariosProgramados(itinerario, origen, destino, 
+					lstProgramacionServicio= ServiceLocator.getProgramacionServiciosManager().buscarItinerariosProgramados(itinerario, origen, destino,
 							Constantes.FORMAT_DATE.format(dbFechaPartida.getValue()),
-							Constantes.FORMAT_DATE.format(dbFechaLlegada.getValue()), 
+							Constantes.FORMAT_DATE.format(dbFechaLlegada.getValue()),
 							servicio,true);
 				}
 				Util.limpiarListbox(listboxItinerarios);
 				cargaItinerario(lstProgramacionServicio);
-				
+
 				/*Habilta o deshabilita botones*/
 				Boolean nuevo, Modificar, Guardar, Cancelar, anular, cerrar;
-				nuevo=true; Modificar=true; Guardar=true; Cancelar=true; anular=true; cerrar=false;		
-				
+				nuevo=true; Modificar=true; Guardar=true; Cancelar=true; anular=true; cerrar=false;
+
 				HabiltaBotones(nuevo, Modificar, Guardar, Cancelar, anular, cerrar);
-				
+
 				limpiaPrevioProgramacion();
-				
+
 				action=Constantes.ACTION_CONSULTA;
 			}
 		}catch (Exception ex){
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace();
 		}
-		
+
 	}
-	
+
 	/**
 	 * Carga lista de Itinerarios en el ListBox, según la busqueda realizado.
 	 * @param lstItinerario	: Lista de Itinerarios a Cargar en el ListBox.
@@ -652,11 +651,11 @@ public class WndProgramacionServicios extends WndBase {
 		if(lstProgramacionServicios.size()>0){
 			Listitem item = null;
 			Listcell cell = null;
-			Integer x =0;
+			int x =0;
 			for(ProgramacionServicio programacionServicio : lstProgramacionServicios){
 				item = new Listitem();
 				x += +1;
-				cell = new Listcell((x.toString()));
+				cell = new Listcell((Integer.toString(x)));
 				item.appendChild(cell); //Correlativo
 				cell = new Listcell(programacionServicio.getItinerario().getId().toString());
 				cell.setStyle("font-size:11px !important");
@@ -674,10 +673,10 @@ public class WndProgramacionServicios extends WndBase {
 				cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
 				cell = new Listcell(programacionServicio.getItinerario().getRuta().getDestino());
-				item.appendChild(cell);	
+				item.appendChild(cell);
 				cell = new Listcell(programacionServicio.getItinerario().getAgenciaLlegada().getNombreCorto());
 				item.appendChild(cell);
-				
+
 				//Se agrego lo siguiente para obtener el reporte de las programaciones en un rango de fecha
 				if(programacionServicio.getBus() != null) {
 					cell = new Listcell(programacionServicio.getBus().getCodigo().toString());
@@ -711,14 +710,14 @@ public class WndProgramacionServicios extends WndBase {
 					cell = new Listcell("");
 					item.appendChild(cell);
 				}
-				
+
 				item.setValue(programacionServicio);
 				listboxItinerarios.appendChild(item);
 			}
 		}
 	}
-	
-	
+
+
 	/**
 	 * Habilita o desabilita ingreso de datos para la programación.
 	 * @param disabled	: true=Desabilitado; false=Habilitado.
@@ -730,7 +729,7 @@ public class WndProgramacionServicios extends WndBase {
 		cmbTripulante.setDisabled(disabled);
 		cmbbus.setDisabled(disabled);
 	}
-		
+
 	public void onChangeConductorTripulante(final Combobox combobox, final Label lblPrevio,String message)throws Exception{
 		if (combobox.getSelectedIndex() >=0 ){
 			if (combobox.getSelectedItem().getValue() instanceof Personal){
@@ -738,7 +737,7 @@ public class WndProgramacionServicios extends WndBase {
 				/*Valida si el piloto no este asociado a otro servicio en la misma fecha*/
 				String fechaPartida=Constantes.FORMAT_DATE.format(itinerario.getFechaPartida());//lblFechaPartida.getValue();//Constantes.FORMAT_DATE.format(dbFechaPartida.getValue());
 				Long idConductor=((Personal)combobox.getSelectedItem().getValue()).getId();
-				
+
 				ProgramacionServicio programacion=ServiceLocator.getProgramacionServiciosManager().validaIngresoChoferTripulante(fechaPartida, idConductor, null, null,itinerario.getHoraPartida(),itinerario.getAgenciaPartida().getId());
 				if(programacion==null){
 					lblPrevio.setValue(combobox.getText());
@@ -748,13 +747,13 @@ public class WndProgramacionServicios extends WndBase {
 					Messagebox.show("El "+message+" seleccionado se encuentra programado en el Servicio: " +
 							programacion.getItinerario().getRuta().getOrigen() +" - "+programacion.getItinerario().getRuta().getDestino() +
 							",  Hora Partida:"+programacion.getItinerario().getHoraPartida()+", Bus:"+programacion.getBus().getCodigo() +
-							". 	¿Desea continuar?", 
+							". 	¿Desea continuar?",
 												DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 							@Override
 							public void onEvent(Event e) throws Exception {
 								if(e.getName().equals("onYes")){
-									lblPrevio.setValue(((Personal) combobox.getSelectedItem().getValue()).getApellidoPaterno() +" "+ 
-											((Personal) combobox.getSelectedItem().getValue()).getApellidoMaterno() + ", " + 
+									lblPrevio.setValue(((Personal) combobox.getSelectedItem().getValue()).getApellidoPaterno() +" "+
+											((Personal) combobox.getSelectedItem().getValue()).getApellidoMaterno() + ", " +
 											((Personal) combobox.getSelectedItem().getValue()).getNombre());
 								}else{
 									if (programacionServicio!=null && action==Constantes.ACTION_MODIFY){
@@ -762,7 +761,7 @@ public class WndProgramacionServicios extends WndBase {
 									}else{
 										combobox.setValue("");
 										lblPrevio.setValue("");
-										combobox.setFocus(true);	
+										combobox.setFocus(true);
 									}
 								}
 							}
@@ -780,23 +779,23 @@ public class WndProgramacionServicios extends WndBase {
 			//DlgMessage.information(Messages.getString("WndProgramacionServicios.Information.PiloNoexiste"));
 		}
 	}
-	
+
 	/**
-	 * Carga códigos de los Buses en el ComboBox 
-	 * @throws Exception 
+	 * Carga códigos de los Buses en el ComboBox
+	 * @throws Exception
 	 */
-	public void onChangeBus() throws Exception{ 
+	public void onChangeBus() throws Exception{
 		Boolean busProgramado=false; /*False=Bus no Programado; true=Bus Programado*/
 		if (cmbbus.getSelectedIndex() >=0){
 			if (cmbbus.getSelectedItem().getValue() instanceof Bus){
 				Bus bus=cmbbus.getSelectedItem().getValue();
 				Itinerario itinerario=(((ProgramacionServicio)listboxItinerarios.getSelectedItem().getValue()).getItinerario());
-				
+
 				/*Valida si el bus seleccionado ya esta programado*/
 				String fechaPartidad= Constantes.FORMAT_DATE.format(itinerario.getFechaPartida());
 				String horaPartida=itinerario.getHoraPartida();
 				List<ProgramacionServicio> list = ServiceLocator.getProgramacionServiciosManager().validacionBusesProgramados(fechaPartidad,horaPartida,bus.getId(),itinerario.getAgenciaPartida().getId());
-				Long id = null;				
+				Long id = null;
 				if (action== Constantes.ACTION_MODIFY){
 					id = (new Long(textboxId.getText()));
 					if (list.size() > 0 && (list.get(0).getId().equals(id))){
@@ -811,14 +810,14 @@ public class WndProgramacionServicios extends WndBase {
 							busProgramado=false;
 					}
 				}
-				
-				if (busProgramado==true){
+
+				if (busProgramado){
 					ProgramacionServicio programacionServicio = new ProgramacionServicio();
 					programacionServicio = list.get(0);
-					Messagebox.show("El Bus seleccionado ya ésta Programado para esta fecha. "+ 
+					Messagebox.show("El Bus seleccionado ya ésta Programado para esta fecha. "+
 									"	Itinerario:" +  programacionServicio.getItinerario().getId() +
 									"	Ruta:" + programacionServicio.getItinerario().getRuta().getOrigen() + " - " + programacionServicio.getItinerario().getRuta().getDestino() +
-									". 	¿Desea continuar?", 
+									". 	¿Desea continuar?",
 														DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 						@Override
 						public void onEvent(Event e) throws Exception {
@@ -828,7 +827,7 @@ public class WndProgramacionServicios extends WndBase {
 								cmbbus.setText("");
 								lblBus.setValue("");
 							}
-						}	
+						}
 					});
 				}else{
 					lblBus.setValue(((Bus) cmbbus.getSelectedItem().getValue()).getCodigo());
@@ -838,28 +837,27 @@ public class WndProgramacionServicios extends WndBase {
 			}
 		}
 	}
-	
+
 	/**
 	 * Carga los buses según el Servicio del Itinerario seleccionado.
 	 * @param servicio
 	 * @throws Exception
 	 */
 	private void cargarDataComboBuses(Servicio servicio) throws Exception{
-		List<String> criteriosOrdenar = new ArrayList<String>();
-		TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+		List<String> criteriosOrdenar = new ArrayList<>();
+		TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 		criteriosOrdenar.add("codigo");
-		
+
 		if (servicio == null )
 			criteriosBusqueda.remove("servicio");
 		else
 			criteriosBusqueda.put("servicio", servicio);
 		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 		ArrayList<Bus> lstBuses = ServiceLocator.getBusManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
-		
+
 		cmbbus.getItems().clear();
 		UtilData.cargarGenericData(cmbbus, false);
-		for (int l = 0; l < lstBuses.size(); l ++) {
-			Bus bus = lstBuses.get(l);
+		for (Bus bus : lstBuses) {
 			Comboitem oComboitem = new Comboitem();
 			oComboitem.setValue(bus);
 			oComboitem.setLabel(bus.getCodigo() +"  Cap. "+ bus.getCapacidad());
@@ -867,13 +865,13 @@ public class WndProgramacionServicios extends WndBase {
 			cmbbus.appendChild(oComboitem);
 	   }
 	}
-	
+
 	/**
 	 * Carga el Previo de la Programación
 	 */
 	public void onChangePrevioProgramacion(){
 		Itinerario itinerario=((ProgramacionServicio)listboxItinerarios.getSelectedItem().getValue()).getItinerario();
-		
+
 		lblTipoServicio.setValue(itinerario.getServicio().getDenominacion());
 		lblOrigen.setValue(itinerario.getRuta().getOrigen());
 		lblFechaPartida.setValue(Constantes.FORMAT_DATE.format(itinerario.getFechaPartida())+" "+itinerario.getHoraPartida() );
@@ -882,7 +880,7 @@ public class WndProgramacionServicios extends WndBase {
 		lblFechaLlegada.setValue(Constantes.FORMAT_DATE.format(itinerario.getFechaLlegada())+" "+itinerario.getHoraLlegada());
 		lblAgenciaLlegada.setValue(itinerario.getAgenciaLlegada().getDenominacion());
 	}
-	
+
 	/**
 	 * Limpia el Previo de la Programación.
 	 */
@@ -892,7 +890,7 @@ public class WndProgramacionServicios extends WndBase {
 		cmbCopilotoAuxiliar.setText("");
 		cmbTripulante.setText("");
 		cmbbus.setText("");
-		
+
 //		lblItinerario.setValue("");
 		lblBus.setValue("");
 		lblTipoServicio.setValue("");
@@ -907,9 +905,9 @@ public class WndProgramacionServicios extends WndBase {
 		lblPiloto.setValue("");
 		lblCopiloto.setValue("");
 		lblTripulante.setValue("");
-		
+
 	}
-	
+
 	/**
 	 * Habilita o desabilita Menú
 	 * @param nuevo		: True=Desabilitado; false=Habilitado.
@@ -927,33 +925,33 @@ public class WndProgramacionServicios extends WndBase {
 		disabledEliminar(anular,tbtanular);
 		disabledCerrar(cerrar,tbtCerrar);
 	}
-	
+
 	/**
 	 * Cuando el seleccionar un itinerario de la lista.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void onClickLisBox() throws Exception{
 		Boolean nuevo, Modificar, Guardar, Cancelar, anular, cerrar;
-		
+
 		programacionServicio =(ProgramacionServicio) listboxItinerarios.getSelectedItem().getValue();
 		/*Carga buses según el tipo de servicio del Itinerario seleccionado.*/
 		Servicio servicio = new Servicio();
 //		servicio.setId(((ProgramacionServicio) listboxItinerarios.getItemAtIndex(listboxItinerarios.getSelectedIndex()).getValue()).getItinerario().getServicio().getId());
 		servicio.setId(programacionServicio.getItinerario().getServicio().getId());
 		cargarDataComboBuses(servicio);
-		
+
 		habilitaControlesIngresoDatos(true);
-		
+
 		if (rdNoProgramados.isChecked()){
 			/*Habilta o deshabilita botones , para ingresar una nueva programacion*/
 			Modificar=true; Guardar=true; Cancelar=true; anular=true; cerrar=false;
-			
+
 			/*Habili/Desabilita según la configuracion del rol del usuario*/
 			nuevo=(accesoNuevo()?false:true);
-						
+
 			HabiltaBotones(nuevo, Modificar, Guardar, Cancelar, anular, cerrar);
 			limpiaPrevioProgramacion();
-			
+
 		}else if (rdProgramados.isChecked()){
 			/*Habilta o deshabilita botones , para modificar o consultar una programacion*/
 			nuevo=true; Guardar=true; Cancelar=true; cerrar=false;
@@ -963,7 +961,7 @@ public class WndProgramacionServicios extends WndBase {
 			/*ANULAR*/
 			anular=(accesoEliminar()?false:true);
 			HabiltaBotones(nuevo, Modificar, Guardar, Cancelar, anular, cerrar);
-						
+
 			/*Carga Pilo, Copiloto, Tripulante y Bus en Ingreso de Datos.*/
 			Util.seleccionarValorItemCombo(Personal.class, cmbPiloto, programacionServicio.getPiloto().getId());
 			Util.seleccionarValorItemCombo(Personal.class, cmbCopiloto, programacionServicio.getCopiloto().getId());
@@ -975,10 +973,10 @@ public class WndProgramacionServicios extends WndBase {
 			else
 				cmbCopilotoAuxiliar.setText("");
 			Util.seleccionarValorItemCombo(Bus.class, cmbbus, programacionServicio.getBus().getId());
-			
+
 			//Carga el previo
 			onChangePrevioProgramacion();//Carga detalle del itinerario el Previo
-			lblPiloto.setValue(cmbPiloto.getText());			
+			lblPiloto.setValue(cmbPiloto.getText());
 			lblCopiloto.setValue(cmbCopiloto.getText());
 			lblCopilotoAux.setValue(cmbCopilotoAuxiliar.getText());
 			lblTripulante.setValue(cmbTripulante.getText());
@@ -987,17 +985,17 @@ public class WndProgramacionServicios extends WndBase {
 			textboxId.setText(programacionServicio.getId().toString());
 		}
 	}
-	
+
 	public void onCheckProgramadosNoProgramados(){
-		Util.limpiarListbox(listboxItinerarios);		
+		Util.limpiarListbox(listboxItinerarios);
 		/*Habilta o deshabilita botones*/
 		Boolean nuevo, Modificar, Guardar, Cancelar, anular, cerrar;
-		nuevo=true; Modificar=true; Guardar=true; Cancelar=true; anular=true; cerrar=false;		
+		nuevo=true; Modificar=true; Guardar=true; Cancelar=true; anular=true; cerrar=false;
 		HabiltaBotones(nuevo, Modificar, Guardar, Cancelar, anular, cerrar);
 		limpiaPrevioProgramacion();
 	}
-	
-	
+
+
 	/**
 	 * Activa o desactiva el button Nuevo
 	 * @param activar : (true)se activara el button, (false) se desactivará el button
@@ -1012,7 +1010,7 @@ public class WndProgramacionServicios extends WndBase {
 		}
 		btnNuevo.setDisabled(disabled);
 	}
-	
+
 	/**
 	 * Activa o desactiva el button editar
 	 * @param activar : (true)se activara el button, (false) se desactivará el button
@@ -1028,7 +1026,7 @@ public class WndProgramacionServicios extends WndBase {
 		}
 		btnEditar.setDisabled(disabled);
 	}
-	
+
 	/**
 	 * Activa o desactiva el button Cancelar
 	 * @param activar : (true)se activara el button, (false) se desactivará el button
@@ -1043,7 +1041,7 @@ public class WndProgramacionServicios extends WndBase {
 		}
 		btnCancelar.setDisabled(disabled);
 	}
-	
+
 	/**
 	 * Activa o desactiva el button Guardar
 	 * @param activar : (true)se activara el button, (false) se desactivará el button
@@ -1058,7 +1056,7 @@ public class WndProgramacionServicios extends WndBase {
 		}
 		btnGuardar.setDisabled(disabled);
 	}
-	
+
 	/**
 	 * Activa o desactiva el button Eliminar
 	 * @param activar : (true)se activara el button, (false) se desactivará el button
@@ -1073,7 +1071,7 @@ public class WndProgramacionServicios extends WndBase {
 		}
 		btnElimienar.setDisabled(disabled);
 	}
-	
+
 	/**
 	 * Activa o desactiva el button Cerrar
 	 * @param activar : (true)se activara el button, (false) se desactivará el button
@@ -1088,5 +1086,5 @@ public class WndProgramacionServicios extends WndBase {
 		}
 		btnCerrar.setDisabled(disabled);
 	}
-	
+
 }

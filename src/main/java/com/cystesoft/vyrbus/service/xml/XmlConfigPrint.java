@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 19/01/2017
  * Hora			: 11:17:04
@@ -20,10 +20,10 @@ import javax.xml.bind.annotation.XmlType;
 public class XmlConfigPrint implements Serializable{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	private String v1_EsTuentrada; 
+	private String v1_EsTuentrada;
 	private String v2_NombreImpresora;
 	private String v3_Puerto;
 	private String v4_BistBySegundo;

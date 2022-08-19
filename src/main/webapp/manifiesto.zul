@@ -88,7 +88,7 @@
 								<listbox  rows="7" id="ListPasajeros" height="190px"  width="835px" droppable="true">
 									<listhead>
 										<listheader label="ASNTO" width="40px" style="color: #ffffff;"/>
-										<listheader label="N° CONTROL" width="95px" style="color: #ffffff;"/>	
+										<listheader label="N° CONTROL" width="95px" style="color: #ffffff;" visible="false"/>	
 										<listheader label="N°COMPROBANTE" width="95px" style="color: #ffffff;"/>
 										<listheader label="PASAJERO" width="200px" style="color: #ffffff;"/>
 										<listheader label="EDAD" width="40px" style="color: #ffffff;"/>

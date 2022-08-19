@@ -19,7 +19,7 @@ public class Concesionario extends GenericBean implements java.io.Serializable {
 	private Integer comision;
 	private Integer tipoComision;
 	private Integer incluyeIgv;
-	
+
 	public Concesionario() {
 	}
 
@@ -36,7 +36,7 @@ public class Concesionario extends GenericBean implements java.io.Serializable {
 	public void setRuc(String ruc) {
 		this.ruc = ruc;
 	}
-	
+
 	public String getRazonSocial() {
 		return this.razonSocial;
 	}

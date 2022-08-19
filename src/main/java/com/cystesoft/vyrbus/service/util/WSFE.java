@@ -1,7 +1,8 @@
 /**
+/**
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
- * Autor		: José Abanto
+ * Descripcin	: 
+ * Autor		: Jos Abanto
  * Fecha		: 10/10/2016
  * Hora			: 09:39:06
  */
@@ -408,7 +409,7 @@ public class WSFE implements Serializable{
 	
 	
 	/**
-	 * Realiza la impresion de la liquidacion, en formato térmico
+	 * Realiza la impresion de la liquidacion, en formato trmico
 	 * @param liquidacion
 	 */
 	public static void printLiquidacion(Liquidacion liquidacion, Window window){
@@ -1007,7 +1008,7 @@ public class WSFE implements Serializable{
 					
 					//jabanto - 11/08/2022
 					if(isReimpresion) {
-						String reimpresion = (xmlVenta.getV0_ObserImport()!=null? xmlVenta.getV0_ObserImport() + " - REIMPRESIÓN" : "REIMPRESIÓN" );
+						String reimpresion = (xmlVenta.getV0_ObserImport()!=null? xmlVenta.getV0_ObserImport() + " - REIMPRESIN" : "REIMPRESIN" );
 						xmlVenta.setV0_ObserImport(reimpresion);
 					}
 						
@@ -1562,7 +1563,7 @@ public class WSFE implements Serializable{
 	
 	/**
 	 * Completa el numero de digitos del correlativo a 8 digitos.
-	 * @param correlativo	: Númere de correlativo.
+	 * @param correlativo	: Nmere de correlativo.
 	 * @return	Correlativo formateado a 8 digitos.
 	 * @throws Exception
 	 */

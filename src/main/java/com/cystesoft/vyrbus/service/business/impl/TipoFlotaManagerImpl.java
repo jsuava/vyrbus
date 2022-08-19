@@ -27,7 +27,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class TipoFlotaManagerImpl implements TipoFlotaManager {
 	private TipoFlotaDAO tipoFlotaDAO;
-	
+
 	/**
 	 * @return the tipoFlotaDAO
 	 */
@@ -75,30 +75,30 @@ public class TipoFlotaManagerImpl implements TipoFlotaManager {
 	@Transactional
 	public void guardar(TipoFlota tipoFlota) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", tipoFlota.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getTipoFlotaDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la denominación*/
 			if(resultDenominacion.size()>0)
 				throw new DenominacionDuplicadaException();
-			
+
 			criteriosBusqueda.remove("denominacion");
 			criteriosBusqueda.put("nombreCorto", tipoFlota.getNombreCorto());
 			List<?> resultnombreCorto = getTipoFlotaDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Nombre corto*/
 			if (resultnombreCorto.size()>0)
 				throw new NombreCortoDuplicadoException();
-			
+
 			criteriosBusqueda.remove("denominacion"); criteriosBusqueda.remove("nombreCorto");
 			criteriosBusqueda.put("codigo", tipoFlota.getCodigo());
 			List<?> resultcodigo = getTipoFlotaDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Nombre corto*/
 			if (resultcodigo.size()>0)
 				throw new CodigoDuplicadoException();
-			
+
 			getTipoFlotaDAO().guardar(tipoFlota);
-			
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(NombreCortoDuplicadoException rdnex){
@@ -117,45 +117,45 @@ public class TipoFlotaManagerImpl implements TipoFlotaManager {
 	@Transactional
 	public void actualizar(TipoFlota tipoFlota) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", tipoFlota.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getTipoFlotaDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la denominación*/
-			for(int r = 0; r < resultDenominacion.size(); r ++) {
-				TipoFlota otipoFlota = (TipoFlota) resultDenominacion.get(r);
+			for (Object element : resultDenominacion) {
+				TipoFlota otipoFlota = (TipoFlota) element;
 					if (!(otipoFlota.getId() == tipoFlota.getId()))
 						throw new DenominacionDuplicadaException();
 				}
-			
+
 			criteriosBusqueda.remove("denominacion");
 			criteriosBusqueda.put("nombreCorto", tipoFlota.getNombreCorto());
 			List<?> resultnombreCorto = getTipoFlotaDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Nombre corto*/
-			for(int r = 0; r < resultnombreCorto.size(); r ++) {
-				TipoFlota oTipoFlota= (TipoFlota) resultnombreCorto.get(r);
+			for (Object element : resultnombreCorto) {
+				TipoFlota oTipoFlota= (TipoFlota) element;
 					if (!(oTipoFlota.getId() == tipoFlota.getId()))
 						throw new NombreCortoDuplicadoException();
-				}	
-			
+				}
+
 			criteriosBusqueda.remove("denominacion"); criteriosBusqueda.remove("nombreCorto");
 			criteriosBusqueda.put("codigo", tipoFlota.getCodigo());
 			List<?> resultcodigo = getTipoFlotaDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Código*/
-			for(int r = 0; r < resultcodigo.size(); r ++) {
-				TipoFlota oTipoFlota= (TipoFlota) resultcodigo.get(r);
+			for (Object element : resultcodigo) {
+				TipoFlota oTipoFlota= (TipoFlota) element;
 					if (!(oTipoFlota.getId() == tipoFlota.getId()))
 						throw new CodigoDuplicadoException();
 				}
-		
+
 			getTipoFlotaDAO().actualizar(tipoFlota);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(NombreCortoDuplicadoException rdnex){
 			throw new NombreCortoDuplicadoException();
 		}catch(CodigoDuplicadoException cdex){
-			throw new CodigoDuplicadoException();	
+			throw new CodigoDuplicadoException();
 		}catch(Exception ex){
 			throw new Exception(ex);
 		}

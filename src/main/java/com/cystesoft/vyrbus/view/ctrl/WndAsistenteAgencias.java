@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 13/09/2013
  */
@@ -174,7 +174,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 	private Listbox lbxTiposCentroCosto;
 	private Combobox cmbEstadoTipoCentroCosto;
 	private Combobox cmbBusqGrupoCentroCosto;
-	
+
 	private Concesionario concesionario = null;
 	private Agencia agencia = null;
 	private UsuarioHardware usuarioHardware = null;
@@ -184,7 +184,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 	private UsuarioRol usuarioRol = null;
 	private CarteraCliente carteraCliente=null;
 	private Boolean comisionable=false;
-	
+
 	private static final int ACTION_NEW = 1;
 	private static final int ACTION_MODIFY = 2;
 	/* (non-Javadoc)
@@ -246,7 +246,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 		txtLogin = (Textbox)this.getFellow("txtLogin");
 		txtPassword = (Textbox)this.getFellow("txtPassword");
 		txtEmailInfo = (Textbox)this.getFellow("txtEmailInfo");
-		dblbxLineaAprobada = (Doublebox)this.getFellow("dblbxLineaAprobada"); 
+		dblbxLineaAprobada = (Doublebox)this.getFellow("dblbxLineaAprobada");
 		dblbxSobregiro = (Doublebox)this.getFellow("dblbxSobregiro");
 		dtbxFechaActivacionCliente = (Datebox)this.getFellow("dtbxFechaActivacionCliente");
 		dtbxFechaSuspensionCliente = (Datebox)this.getFellow("dtbxFechaSuspensionCliente");
@@ -295,11 +295,11 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 		lbxTiposCentroCosto=(Listbox)this.getFellow("lbxTiposCentroCosto");
 		cmbEstadoTipoCentroCosto=(Combobox)this.getFellow("cmbEstadoTipoCentroCosto");
 		cmbBusqGrupoCentroCosto=(Combobox)this.getFellow("cmbBusqGrupoCentroCosto");
-						
+
 		dblbxLineaAprobada.setLocale(Locale.US);
 		dblbxSobregiro.setLocale(Locale.US);
-		
-		
+
+
 		tabCentrosCosto.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event arg0) throws Exception {
@@ -308,7 +308,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				tlbrbtnCancelar_cancelar();
 			}
 		});
-		
+
 		tabGrupoCentroCosto.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event arg0) throws Exception {
@@ -317,28 +317,28 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				tlbrbtnCancelar_cancelar();
 			}
 		});
-		
+
 		txtBuscar.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
 				btnBuscar_buscarCliente();
 			}
 		});
-		
+
 		btnBuscar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
 				btnBuscar_buscarCliente();
 			}
 		});
-		
+
 		btnMostrarTabConcesionario.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
-				btnMostrarTabConcesionario_mostrarConcesionario();				
+				btnMostrarTabConcesionario_mostrarConcesionario();
 			}
 		});
-		
+
 		btnMostrarTabAgencia.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
@@ -357,48 +357,48 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 						});
 					}else{
 						btnMostrarTabAgencia_guardarConcesionario();
-					}					
+					}
 				}catch (NumberFormatException nfex ){
 					DlgMessage.information(Messages.getString("WndConcesionario.information.noComision"),ibxComision);
 				}catch (TipoComisionException tcex){
 					DlgMessage.information(Messages.getString("WndConcesionario.information.noSelectedTipoComision"),cmbTipoComision);
 				}
-				
+
 			}
 		});
-		
+
 		btnMostrarTabUsuarioHW.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
 				btnMostrarTabUsuarioHW_guardarAgencia();
 			}
 		});
-		
+
 		btnMostrarTabUsuario.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
 				btnMostrarTabUsuario_guardarUsuarioHW();
 			}
 		});
-		
+
 //		btnNuevoCentroCosto.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 //			public void onEvent(Event e){
 //				btnNuevoCentroCosto_nuevo();
 //			}
 //		});
-//		
+//
 //		btnModificarCentroCosto.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 //			public void onEvent(Event e){
 //				btnModificarCentroCosto_modificar();
 //			}
 //		});
-//		
+//
 //		btnGuardarCentroCosto.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 //			public void onEvent(Event e){
 //				btnGuardarCentroCosto_guardar();
 //			}
 //		});
-		
+
 		tlbrbtnNuevo.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
@@ -429,53 +429,53 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				tlbrbtnGuardar_guardar();
 			}
 		});
-		
-		
+
+
 //		btnNuevoUsuario.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 //			public void onEvent(Event e){
 //				btnNuevoUsuario_nuevo();
 //			}
 //		});
-//		
+//
 //		btnModificarUsuario.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 //			public void onEvent(Event e){
 //				btnModificarUsuario_modificar();
 //			}
 //		});
-//		
+//
 //		btnGuardarUsuario.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 //			public void onEvent(Event e){
 //				btnGuardarUsuario_guardar();
 //			}
 //		});
-		
+
 		chkCentroCosto.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
 				chkCentroCosto_mostrarCentrosCosto();
 			}
 		});
-		
+
 //		lbxCentroCosto.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
 //			public void onEvent(Event e){
 //				lbxCentroCosto_seleccionar();
 //			}
 //		});
-		
+
 		lbxUsuarios.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
 				lbxUsuario_seleccionar();
 			}
 		});
-		
+
 		imgGeneratePassword.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
 				generarPassword();
 			}
 		});
-		
+
 		cmbBusqGrupoCentroCosto.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event arg0) throws Exception {
@@ -484,7 +484,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 			}
 		});
 	}
-	
+
 	/**
 	 * Busca el cliente en base al RUC ingresado.
 	 */
@@ -492,13 +492,13 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 		try{
 			if(txtBuscar.getText().trim().isEmpty())
 				throw new ClienteException(ClienteException.RUC_NULL);
-			
+
 //			List<Cliente> lstClientes = ServiceLocator.getClienteManager().buscarClienteAgencia(txtBuscar.getText().trim());
-			
-			TreeMap<String, Object> criteriosBusqueda = new  TreeMap<String, Object>();
+
+			TreeMap<String, Object> criteriosBusqueda = new  TreeMap<>();
 			criteriosBusqueda.put("numeroDocumento", txtBuscar.getText().trim());
 			List<Cliente> lstClientes = ServiceLocator.getClienteManager().buscarPorX(criteriosBusqueda, null);
-			
+
 			if(lstClientes.size()==1){
 				mostrarDatosCliente(lstClientes.get(0));
 				btnMostrarTabConcesionario.setFocus(true);
@@ -518,7 +518,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Muetra los datos del Cliente y la linea de Credito.
 	 * @param cliente	: Objeto cliente.
@@ -532,7 +532,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 			txtDireccionCliente.setText(cliente.getDireccion());
 			String ubigeo = ServiceLocator.getUbigeoManager().ubicacionGeografica(cliente.getUbigeo());
 			txtUbigeoCliente.setText(ubigeo);
-			
+
 			LineaCreditoCliente lineaCreditoCliente = ServiceLocator.getLineaCreditoClienteManager().lineaCreditoCliente(cliente.getId());
 			if(lineaCreditoCliente!=null){
 				dblbxLineaAprobada.setValue(lineaCreditoCliente.getLineaCreditoAprobada());
@@ -542,7 +542,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				dtbxFechaSuspensionCliente.setValue(lineaCreditoCliente.getFechaSuspension());
 				lblInformativo.setValue("CLIENTE CON LINEA DE CREDITO ACTIVA");
 				lblInformativo.setStyle("color:blue; font-size:12px !important; font-weight:bold");
-				btnMostrarTabConcesionario.setDisabled(false);	
+				btnMostrarTabConcesionario.setDisabled(false);
 				carteraCliente=lineaCreditoCliente.getCarteraCliente();
 				carteraCliente.setCliente(cliente);
 				comisionable=(lineaCreditoCliente.getEsComisionable().equals(Constantes.SI)?true:false);
@@ -555,7 +555,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Muestra la informacion del Concesionario
 	 */
@@ -563,8 +563,8 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 		try{
 			ibxComision.setDisabled(false);
 			cmbTipoComision.setDisabled(false);
-			
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("ruc", txtRUCCliente.getText().trim());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<Concesionario> lstConcesionario = ServiceLocator.getConcesionarioManager().buscarPorX(criteriosBusqueda, null);
@@ -577,29 +577,29 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				ibxComision.setValue(concesionario.getComision()!=null?concesionario.getComision():null);
 				if(concesionario.getTipoComision()!=null)
 					Util.seleccionarValorItemCombobox(cmbTipoComision, concesionario.getTipoComision());
-				else 
+				else
 					cmbTipoComision.setSelectedIndex(0);
 				ckbIncluyeIgv.setChecked(concesionario.getIncluyeIgv()!=null? concesionario.getIncluyeIgv()==1:true);
-				
+
 //				ibxComision.setDisabled(true);
 //				cmbTipoComision.setDisabled(true);
 //				ckbIncluyeIgv.setDisabled(true);
-				
+
 			}else{
 				concesionario = null;
 				txtRUCConcesionario.setText(txtRUCCliente.getText().trim());
 				txtRazonSocialConcesionario.setText(txtRazonSocialCliente.getText().trim());
 				txtDireccionConcesionario.setText(txtDireccionCliente.getText());
-				dtbxFechaActivacionConcesionario.setValue(Util.StringtoDate(ServiceLocator.getVentaPasajesManager().getDateSystem(), Constantes.DATE_FORMAT));		
+				dtbxFechaActivacionConcesionario.setValue(Util.StringtoDate(ServiceLocator.getVentaPasajesManager().getDateSystem(), Constantes.DATE_FORMAT));
 				ibxComision.setValue(null);
 				cmbTipoComision.setSelectedIndex(0);
 				ckbIncluyeIgv.setChecked(true);
-				
+
 //				ibxComision.setDisabled(false);
 //				cmbTipoComision.setDisabled(false);
 				ckbIncluyeIgv.setDisabled(false);
 			}
-			
+
 			btnMostrarTabAgencia.setDisabled(false);
 			tabConcesionario.setDisabled(false);
 			tabConcesionario.setSelected(true);
@@ -609,7 +609,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Guardar los datos del Concesionario (si es necesario) y muestra la informacion de la Agencia.
 	 */
@@ -619,7 +619,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 			Integer incluyeIgv=ckbIncluyeIgv.isChecked()?1:0;
 			Integer comision=ibxComision.getValue()!=null? ibxComision.getValue():0;
 			Integer tipoComision=cmbTipoComision.getSelectedItem().getValue();
-			
+
 			if(concesionario==null){
 				concesionario = new Concesionario();
 				concesionario.setRuc(txtRUCConcesionario.getText());
@@ -628,11 +628,11 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				concesionario.setFechaActivacion(dtbxFechaActivacionConcesionario.getValue());
 				concesionario.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 				concesionario.setId(0);
-				
+
 				concesionario.setComision(comision);
 				concesionario.setTipoComision(tipoComision>-1?tipoComision:null);
 				concesionario.setIncluyeIgv(comision>0?incluyeIgv:null);
-				
+
 				UtilData.auditarRegistro(concesionario, getUsuario(), Executions.getCurrent());
 				int result = ServiceLocator.getConcesionarioManager().guardar(concesionario);
 				if(result==Constantes.FAILURE){
@@ -642,7 +642,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 			}else{
 				if(concesionario.getComision()!=comision || concesionario.getTipoComision()!=tipoComision ||
 						concesionario.getIncluyeIgv()!=incluyeIgv){
-					
+
 					concesionario.setComision(comision);
 					concesionario.setTipoComision(tipoComision>-1?tipoComision:null);
 					concesionario.setIncluyeIgv(comision>0?incluyeIgv:null);
@@ -654,9 +654,9 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 			UtilData.cargarDataCombo(cmbTipoAgencia, TipoAgencia.class, false);
 			UtilData.cargarDataCombo(cmbLocalidad, Localidad.class, false);
 			UtilData.cargarDataCombo(cmbConcesionario, Concesionario.class, false);
-			
+
 			if(concesionario != null && concesionario.getId()!=null){
-				TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+				TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 				criteriosBusqueda.put("concesionario.id", concesionario.getId());
 				criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 				List<Agencia> lstAgencia = ServiceLocator.getAgenciaManager().buscarPorX(criteriosBusqueda, null);
@@ -674,7 +674,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 					txtDenominacionAgencia.setText(agencia.getDenominacion());
 					txtNombreCortoAgencia.setText(agencia.getNombreCorto()==null?"":agencia.getNombreCorto());
 					deshabilitarAgencia(true);
-					
+
 					//Busca el correlativo asignado a la agencia o cliente corporativo.
 					if(agencia.getTipoAgencia().getId().equals(Constantes.ID_TIPAGE_VIAJES)){
 						EspecieValorada especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES, agencia, false);
@@ -685,13 +685,13 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 						txtCorrelativo.setText(especieValorada.toString());
 //						txtCorrelativo.setText(UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_VOUCHER_CORPORATIVO, agencia));
 					}
-														
+
 				}else{
 					UtilData.cargarDataCombo(cmbConcesionario, Concesionario.class, false);
 					Util.seleccionarValorItemCombo(Concesionario.class, cmbConcesionario, concesionario.getId());
 					deshabilitarAgencia(false);
 				}
-				
+
 				loadEstado(cmbEstadoCentroCosto);
 				loadEstado(cmbEstadoTipoCentroCosto);
 				btnMostrarTabAgencia.setDisabled(false);
@@ -700,8 +700,8 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				tabConcesionario.setDisabled(true);
 				tabAgencia.setSelected(true);
 				cmbTipoAgencia.setFocus(true);
-			}	
-			
+			}
+
 		}catch (RazonSocialDuplicadoException rsdex){
 			DlgMessage.information(Messages.getString("WndConcesionario.information.razonSocialDuplicada"));
 		}catch(RucDuplicadoException rdnex){
@@ -711,7 +711,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	private void btnMostrarTabUsuarioHW_guardarAgencia(){
 		try{
 			if(agencia==null){
@@ -728,8 +728,8 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				else if (txtNombreCortoAgencia.getText().trim().equals(""))
 					throw new NombreCortoNullException();
 				else if (txtCorrelativo.getText().trim().isEmpty())
-					throw new CorrelativoException();								
-				
+					throw new CorrelativoException();
+
 				agencia = new Agencia();
 				agencia.setTipoAgencia((TipoAgencia)cmbTipoAgencia.getSelectedItem().getValue());
 				agencia.setConcesionario((Concesionario)cmbConcesionario.getSelectedItem().getValue());
@@ -742,14 +742,14 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				agencia.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 				agencia.setEsTerminal(false);
 				UtilData.auditarRegistro(agencia, getUsuario(), Executions.getCurrent());
-				
+
 				int result = ServiceLocator.getAgenciaManager().guardar(agencia);
 				if(result==Constantes.FAILURE){
 					DlgMessage.information(Messages.getString("WndAsistenteAgencias.information.errorGuardarAgencia"));
 					return;
 				}
 				generarCorrelativo(agencia);
-				
+
 				/*Guarda base historica si esta es mayor a Cero, esto se deberia cumplir solo para los clientes corporativos*/
 				if(!(txtBaseHistorica.getText().isEmpty()) && Util.parseNumberFormat(txtBaseHistorica.getText(),2)>0){
 					CarteraCliente oCarteraCliente=ServiceLocator.getCarteraClienteManager().buscarPorId(carteraCliente.getId());
@@ -758,12 +758,12 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 					ServiceLocator.getCarteraClienteManager().actualizar(oCarteraCliente);
 				}
 			}
-			
+
 			/*********ASOCIA EL CLIENTE A LA CARTERA DEL FUNCIONARIO EN EL SISTEMA TITAN*********************/
 			/**==============================================IMPL- JABANTO - 20/11/2014 ===============================================*/
 			/* Registra y/o Asocia el cliente al funcionario en TITAN  */
 			TitanUsuarioPersonal titanUsuarioPersonalRegistro=ServiceLocator.getTitanManager().buscarUsuarioPersonalPorLogin(getUsuario().getLogin());
-			
+
 			//Busca el funcionario por su login.
 			TitanUsuarioPersonal titanFuncionario = ServiceLocator.getTitanManager().buscarUsuarioPersonalPorLogin(carteraCliente.getUsuario().getLogin());
 			if(titanFuncionario==null){
@@ -775,7 +775,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				titanFuncionario.setLogin(carteraCliente.getUsuario().getLogin());
 				ServiceLocator.getTitanManager().guardarUsuarioPersonal(titanFuncionario);
 			}
-			
+
 			//Busca el cliente por el numero de RUC.
 			TitanPersona titanPersona= ServiceLocator.getTitanManager().buscarPersonaPorRuc(carteraCliente.getCliente().getNumeroDocumento());
 			if(titanPersona==null){
@@ -796,7 +796,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				titanPersona.setIp(UtilData.ipLocal(Executions.getCurrent()));
 				ServiceLocator.getTitanManager().guardarPersona(titanPersona);
 			}
-			
+
 			//Valida si el cliente esta actualmente en alguna cartera
 			TitanFuncionarioPersonaPasaje titanFuncionarioPersonaPasaje=ServiceLocator.getTitanManager().buscarFuncionarioPersonaPasajePorIdPersona(titanPersona.getId());
 			if(titanFuncionarioPersonaPasaje==null){
@@ -812,7 +812,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				titanFuncionarioPersonaPasaje.setIp(UtilData.ipLocal(Executions.getCurrent()));
 				titanFuncionarioPersonaPasaje.setUsuarioPersonal(titanUsuarioPersonalRegistro!=null?titanUsuarioPersonalRegistro:null);
 				ServiceLocator.getTitanManager().guardaFuncionarioPerosnaPasajes(titanFuncionarioPersonaPasaje);
-							
+
 				//Registra base historica.
 				TitanComisionPersonaBase titanComisionPersonaBase=ServiceLocator.getTitanManager().buscarBaseHistoricaPorIdPersona(titanPersona.getId());
 				if(titanComisionPersonaBase!=null){
@@ -825,7 +825,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				titanComisionPersonaBase.setMontoBase(carteraCliente.getBaseHistorica());
 				titanComisionPersonaBase.setEstadoRegistroID(Constantes.TRUE_VALUE);
 				ServiceLocator.getTitanManager().guardaBaseHistorica(titanComisionPersonaBase);
-				
+
 			}else if (titanFuncionarioPersonaPasaje.getFuncionarioActual()==null || titanFuncionarioPersonaPasaje.getFuncionarioActual().getId().longValue()!=titanFuncionario.getId().longValue()){
 				/*Solo si el funcionario al que esta asignado el cliente en TITAN es diferente al que esta asignado en SISVYR*/
 				titanFuncionarioPersonaPasaje.setFuncionario(titanFuncionario);
@@ -838,36 +838,36 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				ServiceLocator.getTitanManager().actualizaFuncionarioPerosnaPasajes(titanFuncionarioPersonaPasaje);
 			}
 			/***==============================================END IMPL- JABANTO - 20/11/2014 ===============================================*/
-			
-			
-			
-			
+
+
+
+
 			if(agencia != null && agencia.getId()!=null){
 				tabAgencia.setDisabled(true);
 				tabUsuarioHardware.setDisabled(false);
 				tabUsuarioHardware.setSelected(true);
 				UtilData.cargarDataCombo(cmbCanalVenta, CanalVenta.class, false);
-				
+
 				for(int i=0; i<cmbCanalVenta.getItems().size();i++){
 					CanalVenta canalVenta = cmbCanalVenta.getItems().get(i).getValue();
 					if(canalVenta != null){
-						if(agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_VIAJES 
+						if(agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_VIAJES
 								&& canalVenta.getId().intValue()==Constantes.ID_CANVEN_AGENCIA_VIAJES){
 							cmbCanalVenta.setSelectedIndex(i);
 							break;
-						}else if(agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_CORPORATIVO 
+						}else if(agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_CORPORATIVO
 								&& canalVenta.getId().intValue()==Constantes.ID_CANVEN_CORPORATIVO){
 							cmbCanalVenta.setSelectedIndex(i);
 							break;
 						}
-					}						
+					}
 				}
 				txtDireccionMAC.setText("00-00-00-00-00-00");
 				txtCodigoPC.setText(Util.generarCodigo(txtDireccionMAC.getText()));
 				String nombre = (agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_CORPORATIVO?"COR-":"AGE-")+agencia.getConcesionario().getRuc();
-				txtNombrePC.setText(nombre);				
+				txtNombrePC.setText(nombre);
 			}
-			
+
 		}catch (CorrelativoException cexc){
 			DlgMessage.information(Messages.getString("WndAsistenteAgencias.information.noCorrelativo"), cmbTipoAgencia);
 		}catch (TipoAgenciaNullException tanex){
@@ -891,27 +891,27 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	private void btnMostrarTabUsuario_guardarUsuarioHW(){
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("agencia.id", agencia.getId());
 			List<UsuarioHardware> lstUsuariohardware = ServiceLocator.getUsuarioHardwareManager().buscarPorX(criteriosBusqueda, null);
 			if(lstUsuariohardware.size()>0)
 				usuarioHardware = lstUsuariohardware.get(0);
 			else
 				usuarioHardware = null;
-			
-			if(usuarioHardware==null){				
+
+			if(usuarioHardware==null){
 				usuarioHardware = new UsuarioHardware();
-				usuarioHardware.setAgencia(agencia); 
+				usuarioHardware.setAgencia(agencia);
 				usuarioHardware.setCanalVenta((CanalVenta)cmbCanalVenta.getSelectedItem().getValue());
 				usuarioHardware.setCodigo(txtCodigoPC.getText().trim());
 				usuarioHardware.setDireccionMAC(txtDireccionMAC.getText().trim());
 				usuarioHardware.setDescripcion(txtNombrePC.getText().trim());
 				usuarioHardware.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 				UtilData.auditarRegistro(usuarioHardware, getUsuario(), Executions.getCurrent());
-				
+
 				int result = ServiceLocator.getUsuarioHardwareManager().guardar(usuarioHardware);
 				lstUsuariohardware = ServiceLocator.getUsuarioHardwareManager().buscarPorX(criteriosBusqueda, null);
 				if(result==Constantes.FAILURE){
@@ -919,7 +919,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 					return;
 				}
 			}
-						
+
 			UtilData.cargarDataCombo(cmbAgencia, Agencia.class, false);
 			UtilData.cargarDataCombo(cmbRol, Rol.class, false);
 			if(agencia != null && agencia.getId()!=null){
@@ -929,19 +929,19 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				tabUsuarios.setSelected(true);
 				loadEstado(cmbEstadoUsuario);
 				loadUsuarioHardware(lstUsuariohardware);
-				buscarUsuarios();				
+				buscarUsuarios();
 			}
 			tlbrBarraHerramientas.setParent(rowUsuario);
-			txtEmailInfo.setPlaceholder("Ingrese una dirección de correo valida");			
+			txtEmailInfo.setPlaceholder("Ingrese una dirección de correo valida");
 		}catch(Exception ex){
 			ex.printStackTrace();
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Realiza la busqueda de la ultima seria asignada segun el tipo de agencia seleccionada.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void cmbTipoAgencia_OnChange() throws Exception{
 		txtBaseHistorica.setText("0.00");
@@ -952,7 +952,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				idTipoComprobante=Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES;
 			else if(tipoAgencia.getId().equals(Constantes.ID_TIPAGE_CORPORATIVO)){
 				idTipoComprobante=Constantes.ID_TIPCOM_VOUCHER_CORPORATIVO;
-				
+
 				/*Calcula la base historica del Cliente - 27/12/2014*/
 				Double baseHistorica=ServiceLocator.getSolicitudCarteraManager().baseHistoricaCliente(carteraCliente.getCliente().getId());
 				txtBaseHistorica.setText(Util.toNumberFormat(baseHistorica, 2));
@@ -963,9 +963,9 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				txtCorrelativo.setText(String.valueOf(Integer.valueOf(ultimaSeria).intValue()+1)+" - 0000001");
 			}else txtCorrelativo.setText("");
 		}
-		
+
 	}
-	
+
 	/**
 	 * Habilita o deshabilita los controles relacionados a la Agencia.
 	 * @param arg	: Boolean
@@ -978,7 +978,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 		txtNombreCortoAgencia.setDisabled(arg);
 		btnUbigeoAgencia.setDisabled(arg);
 	}
-	
+
 	/**
 	 * Muestra la informacion relacioanda a los Centros de Costo.
 	 */
@@ -989,13 +989,13 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				grpbxCentroCosto.setVisible(true);
 				UtilData.cargarDataCombo(cmbConcesionarioCentroCosto, Concesionario.class, false);
 				Util.seleccionarValorItemCombo(Concesionario.class, cmbConcesionarioCentroCosto, concesionario.getId());
-				
+
 				/*Tipo Centro de costo*/
 				Util.limpiarCombobox(cmbGrupoCentroCosto);
 				UtilData.cargarDataCombo(cmbConcesionarioTipoCentroCosto, Concesionario.class, false);
 				Util.seleccionarValorItemCombo(Concesionario.class, cmbConcesionarioTipoCentroCosto, concesionario.getId());
-				loadGruposCentroCosto();								
-				
+				loadGruposCentroCosto();
+
 				tlbrbtnBuscar_buscar();
 //				List<CentroCosto> lstCentroCosto = buscarCentroCosto();
 //				listarCentroCosto(lstCentroCosto);
@@ -1007,7 +1007,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Realiza el llenado del combo de Estado de los Centros de Costo
 	 */
@@ -1022,7 +1022,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 		combobox.appendChild(comboitem);
 		combobox.setSelectedIndex(0);
 	}
-	
+
 	/**
 	 * Realiza el llenado del combo de Usuarios Hardware.
 	 */
@@ -1039,8 +1039,8 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 		else
 			cmbUsuarioHardware.setSelectedIndex(1);
 	}
-	
-	
+
+
 	/******************************		PARA LA BARRA DE HERRAMIENTAS	***********************************/
 	private void tlbrbtnNuevo_nuevo(){
 		deshabilitar(false);
@@ -1050,7 +1050,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 		tlbrbtnEditar.setDisabled(true);
 		tlbrbtnCancelar.setDisabled(false);
 		tlbrbtnGuardar.setDisabled(false);
-		
+
 		if(tabAgencia.isSelected()){
 			txtDenominacionCentroCosto.setFocus(true);
 			centroCosto=null;
@@ -1059,7 +1059,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 			txtApellidoPaterno.setFocus(true);
 			usuario=null;
 			cmbEstadoUsuario.setSelectedIndex(1);
-			
+
 			cmbRol.setDisabled(true);
 			if(agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_CORPORATIVO){
 				Util.seleccionarValorItemCombo(Rol.class, cmbRol, Constantes.ID_ROL_CLIENTE_CORPORATIVO);
@@ -1067,10 +1067,10 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				Util.seleccionarValorItemCombo(Rol.class, cmbRol, Constantes.ID_ROL_AGENCIA_VIAJES);
 			}else
 				cmbRol.setSelectedIndex(0);
-			
+
 		}
 	}
-	
+
 	private void tlbrbtnEditar_editar(){
 		deshabilitar(false);
 		tlbrbtnNuevo.setDisabled(true);
@@ -1078,11 +1078,11 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 		tlbrbtnEditar.setDisabled(true);
 		tlbrbtnCancelar.setDisabled(false);
 		tlbrbtnGuardar.setDisabled(false);
-		
+
 		if(usuario!=null)
 			txtEmailInfo.setDisabled(usuario.getEstadoRegistro().equals(Constantes.VALUE_INACTIVO));
 	}
-	
+
 	private void tlbrbtnBuscar_buscar(){
 		deshabilitar(true);
 		if(tabAgencia.isSelected()){
@@ -1091,14 +1091,14 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 			buscarTipoCentroCosto();
 		}else
 			buscarUsuarios();
-		
+
 		tlbrbtnNuevo.setDisabled(false);
 		tlbrbtnBuscar.setDisabled(false);
 		tlbrbtnEditar.setDisabled(true);
 		tlbrbtnCancelar.setDisabled(true);
 		tlbrbtnGuardar.setDisabled(true);
 	}
-	
+
 	private void tlbrbtnCancelar_cancelar(){
 		tlbrbtnNuevo.setDisabled(false);
 		tlbrbtnBuscar.setDisabled(false);
@@ -1108,7 +1108,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 		deshabilitar(true);
 		limpiar();
 	}
-	
+
 	private void tlbrbtnGuardar_guardar() throws Exception{
 //		tlbrbtnNuevo.setDisabled(false);
 //		tlbrbtnBuscar.setDisabled(false);
@@ -1122,9 +1122,9 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				guardarTipoCentroCosto();
 			}
 		}else
-			guardarUsuario();				
+			guardarUsuario();
 	}
-	
+
 	private void deshabilitar(boolean arg){
 		if(tabAgencia.isSelected()){
 			if(tabCentrosCosto.isSelected()){
@@ -1149,7 +1149,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 			imgGeneratePassword.setVisible(!arg);
 		}
 	}
-	
+
 	private void limpiar(){
 		if(tabAgencia.isSelected()){
 			if(tabCentrosCosto.isSelected()){
@@ -1176,36 +1176,36 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 //			txtEmailInfo.setText("-");
 		}
 	}
-		
-	
-	
+
+
+
 	private List<CentroCosto> buscarCentroCosto(){
 		List<CentroCosto> lstCentroCosto = null;
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("concesionario.id", concesionario.getId());
 			if(cmbBusqGrupoCentroCosto.getSelectedItem().getValue() instanceof TipoCentroCosto)
 				criteriosBusqueda.put("tipoCentroCosto", cmbBusqGrupoCentroCosto.getSelectedItem().getValue());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-			List<String> criteriosOrdenar = new ArrayList<String>();
+			List<String> criteriosOrdenar = new ArrayList<>();
 			criteriosOrdenar.add("denominacion");
 			lstCentroCosto = ServiceLocator.getCentroCostoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
 			listarCentroCosto(lstCentroCosto);
-			
-			
+
+
 		}catch(Exception ex){
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 			ex.printStackTrace();
 		}
 		return lstCentroCosto;
 	}
-	
+
 	private List<TipoCentroCosto> buscarTipoCentroCosto(){
 		List<TipoCentroCosto> lstTipoCentroCosto = null;
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("concesionario.id", concesionario.getId());
-			List<String> criteriosOrdenar = new ArrayList<String>();
+			List<String> criteriosOrdenar = new ArrayList<>();
 			criteriosOrdenar.add("denominacion");
 			lstTipoCentroCosto = ServiceLocator.getTipoCentroCostoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
 			listarTiposCentroCosto(lstTipoCentroCosto);
@@ -1215,8 +1215,8 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 		}
 		return lstTipoCentroCosto;
 	}
-	
-	
+
+
 	private void listarCentroCosto(List<CentroCosto> lstCentroCosto){
 		lbxCentroCosto.getItems().clear();
 		if(lstCentroCosto.size()>0){
@@ -1244,7 +1244,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				cell.setStyle("padding: 1px;");
 				item.appendChild(cell);
 				item.setValue(centroCosto);
-				
+
 				item.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
 					@Override
 					public void onEvent(Event arg0) throws Exception {
@@ -1252,13 +1252,13 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 						lbxCentroCosto_seleccionar();
 					}
 				});
-				
+
 				lbxCentroCosto.appendChild(item);
 			}
 		}
 	}
-	
-	
+
+
 	private void listarTiposCentroCosto(List<TipoCentroCosto> lstTipoCentroCosto){
 		lbxTiposCentroCosto.getItems().clear();
 		if(lstTipoCentroCosto.size()>0){
@@ -1277,7 +1277,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				cell.setStyle("padding: 1px;");
 				item.appendChild(cell);
 				item.setValue(tipoCentroCosto);
-				
+
 				item.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
 					@Override
 					public void onEvent(Event arg0) throws Exception {
@@ -1285,12 +1285,12 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 						lbxTipoCentroCosto_seleccionar();
 					}
 				});
-				
+
 				lbxTiposCentroCosto.appendChild(item);
 			}
 		}
 	}
-	
+
 	private void lbxTipoCentroCosto_seleccionar(){
 		if(lbxTiposCentroCosto.getSelectedItem().getValue() instanceof TipoCentroCosto){
 			tipoCentroCosto = (TipoCentroCosto)lbxTiposCentroCosto.getSelectedItem().getValue();
@@ -1299,7 +1299,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 			tlbrbtnEditar.setDisabled(false);
 		}
 	}
-	
+
 	private void lbxCentroCosto_seleccionar(){
 		cmbGrupoCentroCosto.setSelectedIndex(0);
 		if(lbxCentroCosto.getSelectedItem().getValue() instanceof CentroCosto){
@@ -1313,7 +1313,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 			tlbrbtnEditar.setDisabled(false);
 		}
 	}
-	
+
 	private void guardarCentroCosto(){
 		try{
 			if(!(cmbConcesionarioCentroCosto.getSelectedItem().getValue() instanceof Concesionario))
@@ -1324,10 +1324,10 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				throw new CentroCostoException(CentroCostoException.CODIGO_NULL);
 			else if(cmbEstadoCentroCosto.getSelectedItem().getValue() == null)
 				throw new CentroCostoException(CentroCostoException.ESTADO_NULL);
-			
+
 			if(centroCosto==null)
 				centroCosto = new CentroCosto();
-			
+
 			centroCosto.setConcesionario(concesionario);
 			if(cmbGrupoCentroCosto.getSelectedItem().getValue() instanceof TipoCentroCosto)
 				centroCosto.setTipoCentroCosto((TipoCentroCosto)cmbGrupoCentroCosto.getSelectedItem().getValue());
@@ -1339,7 +1339,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				UtilData.auditarRegistro(centroCosto, getUsuario(), Executions.getCurrent());
 			else
 				UtilData.auditarRegistro(centroCosto, true, getUsuario(), Executions.getCurrent());
-			
+
 			String msg = "";
 			if (centroCosto.getId() == null)
 				msg = Messages.getString("WndAsistenteAgencias.question.guardarCentroCosto");
@@ -1368,13 +1368,13 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 							tlbrbtnCancelar_cancelar();
 							limpiar();
 							tlbrbtnBuscar_buscar();
-							
+
 							tlbrbtnNuevo.setDisabled(false);
 							tlbrbtnBuscar.setDisabled(false);
 							tlbrbtnEditar.setDisabled(true);
 							tlbrbtnCancelar.setDisabled(true);
 							tlbrbtnGuardar.setDisabled(true);
-							
+
 						}
 					}catch(Exception ex){
 						DlgMessage.error(this.getClass().getSimpleName() + " " + ex.getMessage());
@@ -1396,7 +1396,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 			siGuardarFalla();
 		}
 	}
-	
+
 	private void guardarTipoCentroCosto(){
 		try{
 			if(!(cmbConcesionarioTipoCentroCosto.getSelectedItem().getValue() instanceof Concesionario))
@@ -1405,10 +1405,10 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				throw new CentroCostoException(CentroCostoException.DENOMINACION_NULL);
 			else if(cmbEstadoTipoCentroCosto.getSelectedItem().getValue() == null)
 				throw new CentroCostoException(CentroCostoException.ESTADO_NULL);
-			
+
 			if(tipoCentroCosto==null)
 				tipoCentroCosto = new TipoCentroCosto();
-			
+
 			tipoCentroCosto.setConcesionario(concesionario);
 			tipoCentroCosto.setDenominacion(txtDenominacionTipoCentroCosto.getText().trim().toUpperCase());
 			tipoCentroCosto.setEstadoRegistro(cmbEstadoTipoCentroCosto.getSelectedItem().getValue().toString());
@@ -1416,7 +1416,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				UtilData.auditarRegistro(tipoCentroCosto, getUsuario(), Executions.getCurrent());
 			else
 				UtilData.auditarRegistro(tipoCentroCosto, true, getUsuario(), Executions.getCurrent());
-			
+
 //			String msg = "";
 //			if (tipoCentroCosto.getId() == null)
 //			msg = Messages.getString("Generales.query.guardar");
@@ -1430,7 +1430,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 							if(tipoCentroCosto.getId()==null)
 								ServiceLocator.getTipoCentroCostoManager().guardar(tipoCentroCosto);
 							else
-								ServiceLocator.getTipoCentroCostoManager().actualizar(tipoCentroCosto);							
+								ServiceLocator.getTipoCentroCostoManager().actualizar(tipoCentroCosto);
 							DlgMessage.information(Messages.getString("Generales.information.exitoGuardar"));
 
 							tipoCentroCosto = null;
@@ -1438,7 +1438,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 							limpiar();
 							tlbrbtnBuscar_buscar();
 							loadGruposCentroCosto();
-							
+
 							tlbrbtnNuevo.setDisabled(false);
 							tlbrbtnBuscar.setDisabled(false);
 							tlbrbtnEditar.setDisabled(true);
@@ -1471,22 +1471,22 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 	private void loadGruposCentroCosto()throws Exception{
 		Util.limpiarCombobox(cmbGrupoCentroCosto);
 		Util.limpiarCombobox(cmbBusqGrupoCentroCosto);
-		
-		TreeMap<String, Object>parametros=new TreeMap<String, Object>();
+
+		TreeMap<String, Object>parametros=new TreeMap<>();
 		parametros.put("concesionario", concesionario);
 		parametros.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 		UtilData.cargarDataCombo(cmbGrupoCentroCosto, TipoCentroCosto.class, parametros, false);
 		UtilData.cargarDataCombo(cmbBusqGrupoCentroCosto, TipoCentroCosto.class, parametros, true);
 	}
-	
+
 	/**
 	 * Realiza la busqueda de los usuarios de la agencia.
 	 */
 	private void buscarUsuarios(){
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
    			criteriosBusqueda.put("agencia.id", ((Agencia)cmbAgencia.getSelectedItem().getValue()).getId());
-			List<String> criteriosOrdenar = new ArrayList<String>();
+			List<String> criteriosOrdenar = new ArrayList<>();
 			criteriosOrdenar.add("apellidoPaterno");
 			criteriosOrdenar.add("apellidoMaterno");
 			criteriosOrdenar.add("nombre");
@@ -1496,7 +1496,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Lista los usuarios encontrados
 	 * @param lstUsuarios	: Lista de usuarios a mostrar.
@@ -1524,7 +1524,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 		}else
 			DlgMessage.information(Messages.getString("WndAsistenteAgencias.information.usuariosNoEncontrados"));
 	}
-	
+
 	private void lbxUsuario_seleccionar(){
 		try{
 			if(lbxUsuarios.getSelectedItem().getValue() instanceof Usuario){
@@ -1542,8 +1542,8 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 					usuarioRol=lstUsuarioRol.get(0);
 					Util.seleccionarValorItemCombo(Rol.class, cmbRol, usuarioRol.getRol().getId());
 				}
-				
-				
+
+
 				tlbrbtnNuevo.setDisabled(false);
 				tlbrbtnBuscar.setDisabled(false);
 				tlbrbtnEditar.setDisabled(false);
@@ -1555,7 +1555,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	private void guardarUsuario(){
 		try{
 			if(!(cmbAgencia.getSelectedItem().getValue() instanceof Agencia))
@@ -1574,18 +1574,18 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				throw new  PasswordException(PasswordException.PASSWORD_NULL);
 			else if(!(cmbRol.getSelectedItem().getValue() instanceof Rol))
 				throw new RolNullException();
-			
-			if(txtEmailInfo.isDisabled()==false && txtEmailInfo.getText().trim().isEmpty())
+
+			if(!txtEmailInfo.isDisabled() && txtEmailInfo.getText().trim().isEmpty())
 				throw new EmailNullException(EmailNullException.EMAIL_ENVIO_INFO);
-			else if (txtEmailInfo.isDisabled()==false){
+			else if (!txtEmailInfo.isDisabled()){
 				if(!(UtilData.validateEmail(txtEmailInfo.getText().trim()))){
 					throw new EmailNullException(EmailNullException.EMAIL_INVALID);
 				}
 			}
-			
+
 			if(usuario==null)
 				usuario = new Usuario();
-			
+
 //			usuario.setAgencia((Agencia)cmbAgencia.getSelectedItem().getValue());
 //			usuario.setApellidoPaterno(txtApellidoPaterno.getText().trim().toUpperCase());
 //			usuario.setApellidoMaterno(txtApellidoMaterno.getText().trim().isEmpty()?null:txtApellidoMaterno.getText().trim().toUpperCase());
@@ -1601,19 +1601,19 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 //				UtilData.auditarRegistro(usuario, getUsuario(), Executions.getCurrent());
 //			else
 //				UtilData.auditarRegistro(usuario, true, getUsuario(), Executions.getCurrent());
-			
+
 			String msg = "";
 			if (usuario==null)
 				msg = Messages.getString("WndAsistenteAgencias.question.guardarUsuario");
 			else
 				msg = Messages.getString("WndAsistenteAgencias.question.actualizarUsuario");
-			
+
 			Messagebox.show(msg, DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e){
 					try{
 						if(e.getName().equals("onYes")){
-							
+
 							if(usuario==null)
 								usuario = new Usuario();
 							usuario.setAgencia((Agencia)cmbAgencia.getSelectedItem().getValue());
@@ -1627,15 +1627,15 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 							usuario.setEmailInfo(txtEmailInfo.getText().trim().isEmpty()?null:txtEmailInfo.getText().trim().toLowerCase());
 							usuario.setUsuarioHardware((UsuarioHardware)cmbUsuarioHardware.getSelectedItem().getValue());
 							usuario.setTipoSeguridad(Constantes.FALSE_VALUE);
-							
+
 							int result = Constantes.FAILURE;
 							Rol rol= ((Rol)cmbRol.getSelectedItem().getValue());
-							
+
 							if(usuario.getId()==null){
 								UtilData.auditarRegistro(usuario, getUsuario(), Executions.getCurrent());
 								result = ServiceLocator.getUsuarioManager().guardar(usuario);
 								if(result==Constantes.CORRECT){
-									
+
 									usuarioRol= new UsuarioRol();
 									usuarioRol.setRol(rol);
 									usuarioRol.setUsuario(usuario);
@@ -1646,13 +1646,13 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 							}else{
 								UtilData.auditarRegistro(usuario, true, getUsuario(), Executions.getCurrent());
 								ServiceLocator.getUsuarioManager().actualizar(usuario);
-								
+
 								result = Constantes.CORRECT;
 								if(rol.getId().intValue()!=usuarioRol.getRol().getId().intValue()){
 									usuarioRol.setEstadoRegistro(Constantes.VALUE_INACTIVO);
 									UtilData.auditarRegistro(usuarioRol, true, getUsuario(), Executions.getCurrent());
 									ServiceLocator.getUsuarioRolManager().actualizar(usuarioRol);
-									
+
 									/*	Para validar si el usuario tuvo en algun momento el rol seleccionado y por algun motivo este esta inactivo	*/
 									usuarioRol= ServiceLocator.getUsuarioRolManager().buscarXidUsuarioAndIdRol(usuario.getId(), rol.getId());
 									if(usuarioRol!=null){
@@ -1664,9 +1664,9 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 										usuarioRol.setRol(rol);
 										usuarioRol.setUsuario(usuario);
 										guardarUsuarioRol(ACTION_NEW, usuarioRol);
-									}					
+									}
 								}
-								
+
 								if(result==Constantes.CORRECT)
 									DlgMessage.information(Messages.getString("WndAsistenteAgencias.information.exitoActualizarUsuario"));
 								else
@@ -1677,7 +1677,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 							tlbrbtnCancelar_cancelar();
 							limpiar();
 							tlbrbtnBuscar_buscar();
-							
+
 							tlbrbtnNuevo.setDisabled(false);
 							tlbrbtnBuscar.setDisabled(false);
 							tlbrbtnEditar.setDisabled(true);
@@ -1695,7 +1695,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 			});
 		}catch(RolNullException rne){
 			siGuardarFalla();
-			DlgMessage.information(Messages.getString("WndAsistenteAgencias.information.noSeleccionoRol"),cmbRol);			
+			DlgMessage.information(Messages.getString("WndAsistenteAgencias.information.noSeleccionoRol"),cmbRol);
 		}catch(ApellidoPaternoNullException apnex){
 			siGuardarFalla();
 			DlgMessage.information(Messages.getString("WndAsistenteAgencias.information.noApellidoPaterno"),txtApellidoPaterno);
@@ -1704,7 +1704,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 			DlgMessage.information(Messages.getString("WndAsistenteAgencias.information.noNombres"),txtNombres);
 		}catch(LoginNullException lnex){
 			siGuardarFalla();
-			DlgMessage.information(Messages.getString("WndAsistenteAgencias.information.noLogin"),txtLogin);			
+			DlgMessage.information(Messages.getString("WndAsistenteAgencias.information.noLogin"),txtLogin);
 		}catch(PasswordException cp){
 			if(cp.getTipo().intValue()==PasswordException.PASSWORD_NULL){
 				DlgMessage.information(Messages.getString("WndAsistenteAgencias.information.noPassword"),txtPassword);
@@ -1718,15 +1718,15 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 			DlgMessage.information(Messages.getString("WndAsistenteAgencias.information.emailinvalid"), txtEmailInfo);
 		}catch(Exception ex){
 			siGuardarFalla();
-			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());			
+			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	public void generarPassword(){
 		String passwd = Util.generarPassword();
 		txtPassword.setText(passwd);
 	}
-	
+
 	/**
 	 * Guarda el Usuario rol
 	 * @param action		: accion a realizar (nuevo actualizar)
@@ -1737,12 +1737,12 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 		UsuarioRolID usuarioRolID = new UsuarioRolID();
 		usuarioRolID.setIdRol(usuarioRol.getRol().getId());
 		usuarioRolID.setIdUsuario(usuarioRol.getUsuario().getId());
-		
+
 		usuarioRol.setUsuarioRolID(usuarioRolID);
 		usuarioRol.setRol(usuarioRol.getRol());
 		usuarioRol.setUsuario(usuarioRol.getUsuario());
 		usuarioRol.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-		
+
 		switch (action) {
 			case ACTION_NEW:
 				UtilData.auditarRegistro(usuarioRol, this.getUsuario(), Executions.getCurrent());
@@ -1754,8 +1754,8 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				ServiceLocator.getUsuarioRolManager().actualizar(usuarioRol);
 				break;
 		}
-	}	
-	
+	}
+
 	private void siGuardarFalla(){
 		tlbrbtnNuevo.setDisabled(true);
 		tlbrbtnBuscar.setDisabled(true);
@@ -1769,7 +1769,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 		if(cmbEstadoUsuario.getSelectedItem().getValue() instanceof String)
 			txtEmailInfo.setDisabled(cmbEstadoUsuario.getSelectedItem().getValue().toString().equals(Constantes.VALUE_INACTIVO));
 	}
-	
+
 	public void btnNuevo_OnClick(){
 		//Informacion cliente
 		txtBuscar.setText("");
@@ -1782,7 +1782,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 		dtbxFechaActivacionCliente.setValue(null);
 		dtbxFechaSuspensionCliente.setValue(null);
 		lblInformativo.setValue("");
-		
+
 		//Infromación de concesionario.
 		txtRUCConcesionario.setText("");
 		txtRazonSocialConcesionario.setText("");
@@ -1791,7 +1791,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 		ibxComision.setText("");
 		cmbTipoComision.setSelectedIndex(0);
 		ckbIncluyeIgv.setChecked(false);
-		
+
 		//Información de la Agencia
 		cmbAgencia.setSelectedIndex(0);
 		cmbConcesionario.setSelectedIndex(0);
@@ -1809,7 +1809,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 		cmbEstadoCentroCosto.setText("");
 		txtCorrelativo.setText("");
 		Util.limpiarListbox(lbxCentroCosto);
-		
+
 		//Informa usuario
 		cmbAgencia.setSelectedIndex(0);
 		txtApellidoPaterno.setText("");
@@ -1819,21 +1819,21 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 		txtPassword.setText("");
 //		txtEmailInfo.setText(null);
 		Util.limpiarListbox(lbxUsuarios);
-		
+
 		tabCliente.setDisabled(false);
 		tabConcesionario.setDisabled(true);
 		tabAgencia.setDisabled(true);
 		tabUsuarios.setDisabled(true);
-		
+
 		btnMostrarTabConcesionario.setDisabled(true);
-		
+
 		tabCliente.setSelected(true);
 		txtBuscar.setFocus(true);
 	}
-	
+
 	private void generarCorrelativo(Agencia agencia) throws Exception{
 		Integer ultimaSeria= Integer.valueOf(txtCorrelativo.getText().substring(0,txtCorrelativo.getText().indexOf("-")).trim() );
-		
+
 		//Genera Especie Valorada.
 		EspecieValorada especieValorada= new EspecieValorada();
 		if(agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_CORPORATIVO)
@@ -1849,7 +1849,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 		UtilData.auditarRegistro(especieValorada, getUsuario(), Executions.getCurrent());
 		ServiceLocator.getEspecieValoradaManager().guardar(especieValorada);
 	}
-//	
+//
 //	private void siBuscarFalla(){
 //		tlbrbtnNuevo.setDisabled(false);
 //		tlbrbtnBuscar.setDisabled(false);
@@ -1857,7 +1857,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 //		tlbrbtnCancelar.setDisabled(true);
 //		tlbrbtnGuardar.setDisabled(true);
 //	}
-//	
+//
 //	private void siEditarFalla(){
 //		tlbrbtnNuevo.setDisabled(false);
 //		tlbrbtnBuscar.setDisabled(false);
@@ -1865,7 +1865,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 //		tlbrbtnCancelar.setDisabled(true);
 //		tlbrbtnGuardar.setDisabled(true);
 //	}
-//	
+//
 //	private void siNuevoFalla(){
 //		tlbrbtnNuevo.setDisabled(false);
 //		tlbrbtnBuscar.setDisabled(false);

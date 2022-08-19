@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 04/05/2012
  */
@@ -72,7 +72,7 @@ public class AgenciaDAOImpl extends GenericDAOImpl implements AgenciaDAO {
 	public void inactivar(Long id) {
 		super.inactivate(Agencia.class, id);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.AgenciaDAO#buscarAgenciaByRucClienteCredito(java.lang.String)
@@ -80,9 +80,9 @@ public class AgenciaDAOImpl extends GenericDAOImpl implements AgenciaDAO {
 	@Override
 	public Agencia buscarAgenciaByRucClienteCredito(String ruc)throws Exception{
 		String hql = "SELECT A FROM Agencia as A JOIN A.concesionario as C WHERE C.ruc='"+ruc+"' AND A.estadoRegistro='"+Constantes.VALUE_ACTIVO+"'";
-		
+
 		log.info(hql);
-		
+
 		Agencia agencia = (Agencia)getSession().createQuery(hql).uniqueResult();
 		return agencia;
 	}
@@ -109,16 +109,16 @@ public class AgenciaDAOImpl extends GenericDAOImpl implements AgenciaDAO {
 				+ "vp.c_tiptra='"+Constantes.TIPO_OPERACION_VENTA+"' "+" AND vp.c_estreg='A' AND vp.tipmov_id NOT IN (5,6,13) " ;
 			if(idTipoComprobante!=null)
 				sql = sql + "AND vp.tipcom_id = "+idTipoComprobante+" ";
-			else 
+			else
 				sql = sql + "AND vp.tipcom_id IN ("+Constantes.ID_TIPCOM_RECIBO_CAJA+","+Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES+","+
 						Constantes.ID_TIPCOM_VOUCHER_CORPORATIVO+") ";
-			
+
 			sql = sql + "ORDER BY a.c_denominacion ";
-		
+
 		log.info(sql);
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<Agencia> lstResult = new ArrayList<Agencia>();
+		List<Agencia> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[])result.get(i);
 			Agencia agencia = new Agencia();
@@ -135,13 +135,13 @@ public class AgenciaDAOImpl extends GenericDAOImpl implements AgenciaDAO {
 	@Override
 	public List<Agencia> buscarAgenciasByDetalleCorporativo() throws Exception {
 		String hql="SELECT A FROM Agencia as A JOIN A.concesionario as C WHERE A.estadoRegistro='"+Constantes.VALUE_ACTIVO+"' ORDER BY A.denominacion ";
-		
+
 		log.info(hql);
-		
+
 		List<Agencia> lstAgencias = getSession().createQuery(hql).list();
 		return lstAgencias;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.model.dao.AgenciaDAO#buscarAgenciaByLocalidad(java.lang.String)
@@ -152,7 +152,7 @@ public class AgenciaDAOImpl extends GenericDAOImpl implements AgenciaDAO {
 				+ "FROM vrmagencia WHERE localidad_id in ("+localidades+") and n_esterminal=1 and c_estreg='A' "
 						+ "ORDER BY c_nomcor";
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<Agencia> lstResult = new ArrayList<Agencia>();
+		List<Agencia> lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++) {
 			Object[] obj = (Object[])result.get(i);
 			Agencia agencia = new Agencia();
@@ -169,18 +169,18 @@ public class AgenciaDAOImpl extends GenericDAOImpl implements AgenciaDAO {
 
 	@Override
 	public Integer buscarAgencia_Idtranscarweb(Integer agencia_idvrybus)throws Exception{
-		String sql ="SELECT  et.ent_idtranscar agencia_idtranscarweb, et.ent_idvyr " + 
-				"FROM VRTENTVYR_TRANSCAR et " + 
+		String sql ="SELECT  et.ent_idtranscar agencia_idtranscarweb, et.ent_idvyr " +
+				"FROM VRTENTVYR_TRANSCAR et " +
 				"WHERE et.ent_idvyr="+agencia_idvrybus+" AND et.tipent_idvyrtranscar = 1 AND et.c_estreg='A' ";
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		
+
 		Integer agencia_idtranscarweb = null;
-		for(int i=0;i<result.size();i++){
-			Object[] obj = (Object[])result.get(i);
+		for (Object element : result) {
+			Object[] obj = (Object[])element;
 			agencia_idtranscarweb = ((BigDecimal)obj[0]).intValue();
 		}
-		
+
 		return agencia_idtranscarweb;
 	}
 }

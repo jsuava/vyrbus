@@ -11,11 +11,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -27,8 +27,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "setUpdateStatusCDRResult" })
@@ -40,10 +40,10 @@ public class SetUpdateStatusCDRResponse {
 
 	/**
 	 * Gets the value of the setUpdateStatusCDRResult property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link Result
 	 *         }{@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<Result> getSetUpdateStatusCDRResult() {
 		return setUpdateStatusCDRResult;
@@ -51,13 +51,13 @@ public class SetUpdateStatusCDRResponse {
 
 	/**
 	 * Sets the value of the setUpdateStatusCDRResult property.
-	 * 
+	 *
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link Result
 	 *              }{@code >}
-	 * 
+	 *
 	 */
 	public void setSetUpdateStatusCDRResult(JAXBElement<Result> value) {
-		this.setUpdateStatusCDRResult = ((JAXBElement<Result>) value);
+		this.setUpdateStatusCDRResult = (value);
 	}
 
 }

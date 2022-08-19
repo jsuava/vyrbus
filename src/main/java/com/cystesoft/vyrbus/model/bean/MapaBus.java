@@ -22,16 +22,16 @@ public class MapaBus extends GenericBean implements java.io.Serializable {
 //	private TipoAsiento tipoAsiento;
 	private Integer numeroZona;
 
-	
+
 	private List<Integer>listaAsientos;	//No mapeado
 	private String rangoAsientos;		//No mapeado
 	private TipoPrecio tipoPrecio;		//No mapeado
 	private Double precio;				//No mapeado
 	private Ruta ruta;					//No mapeado
-	
+
 	public MapaBus() {
 	}
-	
+
 	public Integer getId() {
 		return this.id;
 	}

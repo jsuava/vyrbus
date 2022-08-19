@@ -16,7 +16,7 @@ import com.cystesoft.vyrbus.service.util.Messages;
 import com.cystesoft.vyrbus.service.util.UtilData;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
@@ -27,9 +27,9 @@ public class WndCambiarPassword extends WndBase implements Serializable{
 	private Textbox txtPasswordActual;
 	private Textbox txtNuevoPassword;
 	private Textbox txtConfirmarPassword;
-	
+
 	Usuario usuario=new Usuario();
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
@@ -41,7 +41,7 @@ public class WndCambiarPassword extends WndBase implements Serializable{
 		txtNuevoPassword=(Textbox)getFellow("txtNuevoPassword");
 		txtConfirmarPassword=(Textbox)getFellow("txtConfirmarPassword");
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
@@ -49,11 +49,11 @@ public class WndCambiarPassword extends WndBase implements Serializable{
 	@Override
 	public void onCreate() throws Exception {
 		usuario=(Usuario)getDesktop().getSession().getAttribute("USUARIO");
-		
+
 		txtNombreUsuario.setValue(usuario.getLogin());
 		txtPasswordActual.setFocus(true);
 	}
-	
+
 	public void saved()throws Exception{
 		try{
 			if(txtPasswordActual.getText().trim().length()==0)
@@ -63,13 +63,13 @@ public class WndCambiarPassword extends WndBase implements Serializable{
 			else if (txtConfirmarPassword.getText().trim().length()==0)
 				throw new PasswordException(PasswordException.PASSWORD_CONFIRMATION_NULL);
 			else if (!(txtNuevoPassword.getText().trim().equals(txtConfirmarPassword.getText().trim())))
-				throw new PasswordException(PasswordException.PASSWORD_DIFERENTES);			
-		
+				throw new PasswordException(PasswordException.PASSWORD_DIFERENTES);
+
 			/*Valida que el password actual sea el correcto*/
 			Usuario usuario=ServiceLocator.getUsuarioManager().buscarUsuarioPorLoginPassword(txtNombreUsuario.getText(), txtPasswordActual.getText().trim(), Constantes.VALUE_ACTIVO);
 			if(usuario==null)
 				throw new PasswordException(PasswordException.PASSWORD_INCOREC);
-			
+
 			usuario.setPwdNormal(txtNuevoPassword.getText().trim());
 			ServiceLocator.getUsuarioManager().actualizar(usuario);
 			
@@ -126,7 +126,7 @@ public class WndCambiarPassword extends WndBase implements Serializable{
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace();
 		}
-		
+
 	}
 
 }

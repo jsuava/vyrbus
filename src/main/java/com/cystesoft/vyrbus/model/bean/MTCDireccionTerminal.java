@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 25/08/2014
  * Hora			: 14:27:24
@@ -14,7 +14,7 @@ package com.cystesoft.vyrbus.model.bean;
  */
 public class MTCDireccionTerminal extends GenericBean {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer id;
 	private Integer codigo;
 	private String direccion;
@@ -67,7 +67,7 @@ public class MTCDireccionTerminal extends GenericBean {
 	public void setAgencia(Agencia agencia) {
 		this.agencia = agencia;
 	}
-	
+
 	@Override
 	public String toString(){
 		return this.direccion;

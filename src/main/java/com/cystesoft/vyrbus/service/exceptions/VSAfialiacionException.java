@@ -1,7 +1,7 @@
 /**
  * Proyecto		: ventaseguro
  * Sistema		: Sistema de Venta de Seguros
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 25/06/2014 09:59:24
  */
@@ -16,17 +16,17 @@ import java.io.Serializable;
 public class VSAfialiacionException extends Exception implements Serializable {
 	private static final long serialVersionUID = 1L;
 	public static final int DUPLICITY_CERTIFICADO=1;
-	
+
 	private Integer tipo;
-	
+
 	public VSAfialiacionException(){
 		super();
 	}
-	
+
 	public VSAfialiacionException(int tipo){
 		this.tipo=tipo;
 	}
-	
+
 	/**
 	 * @return the tipo
 	 */
@@ -40,5 +40,5 @@ public class VSAfialiacionException extends Exception implements Serializable {
 	public void setTipo(Integer tipo) {
 		this.tipo = tipo;
 	}
-	
+
 }

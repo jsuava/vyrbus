@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Fecha		: 24/06/2014
  */
 package com.cystesoft.vyrbus.view.ctrl;
@@ -106,7 +106,7 @@ public class WndVSAfiliacion extends WndBase {
 	private Toolbarbutton tbbAfiliacionGrabar;
 	private Toolbarbutton tbbAfiliacionCancelar;
 	private Separator sepToolsAfiliacion;
-	
+
 	private VSAsegurado vsAsegurado;
 	private VentaPasaje ventaPasaje;
 	private VSLiquidacion vsLiquidacion;
@@ -116,7 +116,7 @@ public class WndVSAfiliacion extends WndBase {
 	private String imageEnabled="/resources/mp_buscarEnabled.png";
 	private String imageDisabled="/resources/mp_buscarDisabled.png";
 	private String labelPaxFree="PAXFREE";
-	private List<VSCiudad>listCiudades=new ArrayList<VSCiudad>();
+	private List<VSCiudad>listCiudades=new ArrayList<>();
 	private Integer VIGENCIA_SEGURO=10; //Expresado en días
 	private Double COSTO_X_SEGURO_PAXFREE=0.00;
 	private Double COSTO_X_SEGURO=2.00;
@@ -125,7 +125,7 @@ public class WndVSAfiliacion extends WndBase {
 	private Integer ID_TIPPER_NATURAL=1;
 	private String LABEL_TIPPER_NATURAL="NATURAL";
 	Date fechaTope=new Date();
-	
+
 	//Controles de la Anulacion de Certificado
 	private Textbox txtNumeroBoletoAnular;
 	private Label lblNumeroCertificado;
@@ -134,26 +134,26 @@ public class WndVSAfiliacion extends WndBase {
 	private Label lblBoletoAnulacion;
 	private Checkbox chbxAnularBoleto;
 	private Toolbarbutton btnAnularCertificado;
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.vs.view.ui.IBase#initComponents()
 	 */
 	@Override
 	public void initComponents() {
 		// TODO Auto-generated method stub
-		
+
 		ScriptEngineManager mgr = new ScriptEngineManager();
 		ScriptEngine engine = mgr.getEngineByName("JavaScript");
 		String expresion = "40+2-5";
-		
+
 		try {
 			System.out.println(engine.eval(expresion));
-			
+
 		} catch (ScriptException e) {
 			e.printStackTrace();
 		}
-		
-		
+
+
 		//Parametros de busqueda
 		txtNumeroBoleto=(Textbox)this.getFellow("txtNumeroBoleto");
 		imgBuscar=(Image)this.getFellow("imgBuscar");
@@ -196,7 +196,7 @@ public class WndVSAfiliacion extends WndBase {
 		//ToolBar afiliacion
 		tbbAfiliacionGrabar=(Toolbarbutton)this.getFellow("tbbAfiliacionGrabar");
 		tbbAfiliacionCancelar=(Toolbarbutton)this.getFellow("tbbAfiliacionCancelar");
-		
+
 		/*Anulacion de certificado*/
 		txtNumeroBoletoAnular=(Textbox)this.getFellow("txtNumeroBoletoAnular");
 		lblNumeroCertificado=(Label)this.getFellow("lblNumeroCertificado");
@@ -205,7 +205,7 @@ public class WndVSAfiliacion extends WndBase {
 		lblBoletoAnulacion=(Label)this.getFellow("lblBoletoAnulacion");
 		chbxAnularBoleto=(Checkbox)this.getFellow("chbxAnularBoleto");
 		btnAnularCertificado=(Toolbarbutton)this.getFellow("btnAnularCertificado");
-		
+
 		imgBuscar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -215,7 +215,7 @@ public class WndVSAfiliacion extends WndBase {
 			}
 		});
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.vs.view.ui.WndBase#onCreate()
 	 */
@@ -247,24 +247,24 @@ public class WndVSAfiliacion extends WndBase {
 					return;
 				}
 			}
-			
+
 			cargarTipoDocumento(cmbTipoDocumento);
 			cargarSexo(cmbSexo);
 			cargarEstoCivil(cmbEstadoCivil);
 			UtilData.cargarDataCombo(cmbNacionalidad, Nacionalidad.class, false);
 			//Carga las ciudades destino
 			listCiudades=ServiceLocator.getVentaSeguroManager().buscarCiudadesPorEstado(Constantes.VALUE_ACTIVO);
-			
+
 			UtilData.enlazarUbigeo(txtIdUbigeo, txtUbigeo, btnBuscarUbigeo,null);
 			cmbTipoDocumento.setSelectedIndex(0);
 			cmbSexo.setSelectedIndex(0);
 			cmbEstadoCivil.setSelectedIndex(0);
-			
+
 			fechaTope=Constantes.FORMAT_DATE.parse("01/01/1914");
 			String fecha = Util.DatetoString(fechaTope, "yyyyMMdd");
 			dtbxFechaNacimineto.setConstraint("after "+fecha);
-			
-			
+
+
 			sepToolsAfiliacion.setHeight("18px");
 		}else{
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noLiquidacion"));
@@ -285,19 +285,19 @@ public class WndVSAfiliacion extends WndBase {
 		disabledBtnGuardar(true, tbbAseguradoGuardar, accesoGrabar());
 		disabledBtnCancelar(true, tbbAfiliacionCancelar);
 		disabledBtnGuardar(true, tbbAfiliacionGrabar, accesoGrabar());
-		
+
 		if(!(txtNumeroBoleto.getText().trim().isEmpty())){
 			txtNumeroBoleto.setText(Util.autocompleNumberBoleto(txtNumeroBoleto.getText().trim()));
 			ventaPasaje=ServiceLocator.getVentaPasajesManager().buscarBoletoByAsegurado(txtNumeroBoleto.getText().trim());
 			if(ventaPasaje!=null){
-				
+
 				/*Valida que la fecha de emision del boleto corresponda al mismo día (Solo permite)*/
 				Date fechaActual=Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date()));
 				if(ventaPasaje.getFechaPartida().getTime()<fechaActual.getTime()){
 					DlgMessage.information("No puede registrar una Afiliación cuya fecha de viaje sea menor a la de hoy (Fecha viaje "+Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida())+")" );
 					return;
 				}
-				
+
 				/* Valida si el pasajero existe en la DB ventaSeguro*/
 				vsAsegurado=ServiceLocator.getVentaSeguroManager().buscarAseguradoByDocumento(ventaPasaje.getPasajero().getTipoDocumento().getId(), ventaPasaje.getPasajero().getNumeroDocumento());
 				if(vsAsegurado==null){//No se encontro el asegurado.
@@ -320,18 +320,18 @@ public class WndVSAfiliacion extends WndBase {
 					if(pasajero.getTelefono()!=null)
 						vsAsegurado.setTelefono(pasajero.getTelefono());
 					if(pasajero.getEstadoCivil()!=null)
-						vsAsegurado.setVsEstadoCivil(new VSEstadoCivil(pasajero.getEstadoCivil().getId()));						
+						vsAsegurado.setVsEstadoCivil(new VSEstadoCivil(pasajero.getEstadoCivil().getId()));
 				}
 				cargarDatosAsegurado(vsAsegurado);
 				cargarDatosAfiliacion(ventaPasaje);
 //				lblCertificado.setDisabled(false);
-//				lblCertificado.setFocus(true);	
+//				lblCertificado.setFocus(true);
 				disabledBtnGuardar(false, tbbAfiliacionGrabar, accesoGrabar());
 				disabledBtnCancelar(false, tbbAfiliacionCancelar);
 			}else
 				DlgMessage.information(Messages.getString("WndVSAfiliacion.information.noResulBusuqeda"),txtNumeroBoleto);
 		}
-	}	
+	}
 	/**
 	 * Cargar los datos del asegurado.
 	 * @param asegurado	: Objeto asegurado.
@@ -346,8 +346,8 @@ public class WndVSAfiliacion extends WndBase {
 		//Sea el id del ubigeo
 		Ubigeo ubigeo=new Ubigeo();
 		ubigeo.setId(asegurado.getUbigeoDepartamento()+""+asegurado.getUbigeoProvincia()+""+asegurado.getUbigeoDistrito());
-		asegurado.setUbigeo(ubigeo);;
-		
+		asegurado.setUbigeo(ubigeo);
+
 		if(asegurado.getVsTipoDocumento().getId().intValue()!=Constantes.ID_TIPDOC_SN){
 			Util.seleccionarValorItemCombo(VSTipoDocumento.class, cmbTipoDocumento, asegurado.getVsTipoDocumento().getId());
 			if(cmbTipoDocumento.getSelectedIndex()==-1)
@@ -371,7 +371,7 @@ public class WndVSAfiliacion extends WndBase {
 			Util.seleccionarValorItemCombo(VSEstadoCivil.class, cmbEstadoCivil, asegurado.getVsEstadoCivil().getId());
 			if(cmbEstadoCivil.getSelectedIndex()==-1)
 				cmbEstadoCivil.setSelectedIndex(0);
-		}else 
+		}else
 			cmbEstadoCivil.setSelectedIndex(0);
 		txtUbigeo.setText(ServiceLocator.getUbigeoManager().ubicacionGeografica(asegurado.getUbigeo().getId()));
 		txtIdUbigeo.setText(asegurado.getUbigeo().getId());
@@ -381,16 +381,16 @@ public class WndVSAfiliacion extends WndBase {
 				txtTelefonoDomicilio.setText(asegurado.getTelefono());
 			else
 				txtTelefonoDomicilio.setText(asegurado.getTelefono().substring(0,12));
-				
+
 		}
-		
+
 		/*si es dni la nacionalidad es PERU*/
 		if(asegurado.getNacionalidadID()==null && asegurado.getVsTipoDocumento().getId().intValue()==Constantes.ID_TIPDOC_DNI)
 			asegurado.setNacionalidadID(184);
-				
+
 		if(asegurado.getNacionalidadID()!=null)
 			Util.seleccionarValorItemCombo(Nacionalidad.class, cmbNacionalidad, asegurado.getNacionalidadID());
-		
+
 		if(asegurado.getUrbanizacion()!=null)
 			txtUrbanizacion.setText(asegurado.getUrbanizacion());
 		if(asegurado.getEmail()!=null)
@@ -401,16 +401,16 @@ public class WndVSAfiliacion extends WndBase {
 			else
 				txtTelefonoCelular.setText(asegurado.getCelular().substring(0,12));
 		}
-		
-		
+
+
 		disabledBtnEditar(false, tbbAseguradoEditar, accesoModificar());
-		
+
 		sepToolsAfiliacion.setHeight("0px");
 	}
 	/**
 	 * Carga datos para la afiliacion.
 	 * @param ventaPasaje
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private void cargarDatosAfiliacion(VentaPasaje ventaPasaje) throws Exception{
 		lblTipoRegistro.setValue(LABEL_TIPREG_ASEGURADO);
@@ -424,17 +424,17 @@ public class WndVSAfiliacion extends WndBase {
 		lblFechaVigenciaInicial.setValue(Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida()));
 		/* Calcula la fecha de vigencia final*/
 		Long fechaInicial=Constantes.FORMAT_DATE.parse(lblFechaVigenciaInicial.getValue()).getTime();
-		Long diasVigencia=Constantes.MILISEGUNDOS_X_DIA*VIGENCIA_SEGURO;
+		long diasVigencia=Constantes.MILISEGUNDOS_X_DIA*VIGENCIA_SEGURO;
 		Date fechaFinVigencia=new Date(fechaInicial+diasVigencia);
 		lblFechaVigenciaFinal.setValue(Constantes.FORMAT_DATE.format(fechaFinVigencia));
 		lblCostoSeguro.setValue(Util.toNumberFormat(COSTO_X_SEGURO,2));
 		lblBoleto.setValue(txtNumeroBoleto.getText().trim());
-		
+
 		/*Conbierte el Nro de boleto a Certificado*/
 		String serie=txtNumeroBoleto.getText().substring(0,txtNumeroBoleto.getText().indexOf("-"));
 		String numero=txtNumeroBoleto.getText().substring(txtNumeroBoleto.getText().indexOf("-")+1,txtNumeroBoleto.getText().length());
 		lblCertificado.setValue(serie+""+numero);
-		
+
 		/* Valida si es frecuente o no*/
 		if(ventaPasaje.getPasajero().isPaxFree())
 			lblImportePagar.setValue(Util.toNumberFormat(COSTO_X_SEGURO_PAXFREE,2));
@@ -457,7 +457,7 @@ public class WndVSAfiliacion extends WndBase {
 		return ciudadDestino;
 	}
 	/**
-	 * Evento editar asegurado	
+	 * Evento editar asegurado
 	 */
 	public void editarAsegurado(){
 		disabledControlsAsegurado(false);
@@ -470,14 +470,14 @@ public class WndVSAfiliacion extends WndBase {
 	}
 	/**
 	 * Evento Cancelar operacion asegurado
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void cancelarOperacionAsegurado() throws Exception{
 		disabledControlsAsegurado(true);
 		disabledBtnEditar(false, tbbAseguradoEditar, accesoModificar());
 		disabledBtnGuardar(true, tbbAseguradoGuardar, accesoGrabar());
 		disabledBtnCancelar(true, tbbAseguradoCancelar);
-		cargarDatosAsegurado(vsAsegurado);	
+		cargarDatosAsegurado(vsAsegurado);
 		txtNumeroBoleto.setDisabled(false);
 		disabledImageBuscar(imageEnabled);
 	}
@@ -487,13 +487,13 @@ public class WndVSAfiliacion extends WndBase {
 	 */
 	public void guardarAsegurado(Boolean SolictaConsfir) throws Exception{
 		try{
-			if(validarDatosAsegurado()==false)
+			if(!validarDatosAsegurado())
 				return;
 	 		if(vsAsegurado.getId()==null)
 				actionAsegurado=Constantes.ACTION_NEW;
 			else
 				actionAsegurado=Constantes.ACTION_MODIFY;
-			
+
 			Ubigeo ubigeo=ServiceLocator.getUbigeoManager().buscarPorId(txtIdUbigeo.getText().trim());
 			if(actionAsegurado==Constantes.ACTION_NEW)
 				vsAsegurado=new VSAsegurado();
@@ -518,7 +518,7 @@ public class WndVSAfiliacion extends WndBase {
 			vsAsegurado.setUrbanizacion(txtUrbanizacion.getText().trim().toUpperCase());
 			vsAsegurado.setEmail(txtEmail.getText().trim().toUpperCase());
 			vsAsegurado.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-						
+
 			if(SolictaConsfir){
 				Messagebox.show(Messages.getString("Generales.query.guardar"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
 					@Override
@@ -535,12 +535,12 @@ public class WndVSAfiliacion extends WndBase {
 									break;
 							}
 							disabledControlsAsegurado(true);
-							txtNumeroBoleto.setDisabled(false);		
+							txtNumeroBoleto.setDisabled(false);
 							disabledImageBuscar(imageEnabled);
 							disabledBtnEditar(false, tbbAseguradoEditar, accesoModificar());
 							disabledBtnGuardar(true, tbbAseguradoGuardar, accesoGrabar());
 							disabledBtnCancelar(true, tbbAseguradoCancelar);
-							
+
 							//Realiza la compraracion de los datos del Asegurado con los registrados en la tabla VRMPASAJEROS, para actualizarlos.
 //							comprarDatosPaxAsegurado(vsAsegurado);
 						}
@@ -553,7 +553,7 @@ public class WndVSAfiliacion extends WndBase {
 					    VSAsegurado	ovsAsegurado=ServiceLocator.getVentaSeguroManager().buscarAseguradoByDocumento(vsAsegurado.getVsTipoDocumento().getId(), vsAsegurado.getNumeroDocumento());
 					    if(ovsAsegurado==null){
 					    	UtilData.auditarRegistro(vsAsegurado, getUsuario(), Executions.getCurrent());
-							ServiceLocator.getVentaSeguroManager().guardarAsegurado(vsAsegurado);	
+							ServiceLocator.getVentaSeguroManager().guardarAsegurado(vsAsegurado);
 					    }else{
 					    	UtilData.auditarRegistro(vsAsegurado, true, getUsuario(), Executions.getCurrent());
 							ServiceLocator.getVentaSeguroManager().actualizarAsegurado(vsAsegurado);
@@ -565,16 +565,16 @@ public class WndVSAfiliacion extends WndBase {
 						break;
 				}
 				disabledControlsAsegurado(true);
-				txtNumeroBoleto.setDisabled(false);		
+				txtNumeroBoleto.setDisabled(false);
 				disabledImageBuscar(imageEnabled);
 				disabledBtnEditar(false, tbbAseguradoEditar, accesoModificar());
 				disabledBtnGuardar(true, tbbAseguradoGuardar, accesoGrabar());
 				disabledBtnCancelar(true, tbbAseguradoCancelar);
-				
+
 				//Realiza la compraracion de los datos del Asegurado con los registrados en la tabla VRMPASAJEROS, para actualizarlos.
 //				comprarDatosPaxAsegurado(vsAsegurado);
 			}
-			
+
 		}catch (WrongValueException fr){
 			DlgMessage.information(Messages.getString("WndVSAfiliacion.information.FechaNacimientoFueraRango"),dtbxFechaNacimineto);
 		}catch (Exception ex){
@@ -586,7 +586,7 @@ public class WndVSAfiliacion extends WndBase {
 //	/**
 //	 * Realiza la compraracion de los datos del Asegurado con los registrados en la tabla VRMPASAJEROS, para actualizarlos.
 //	 * @param vsAsegurado
-//	 * @throws Exception 
+//	 * @throws Exception
 //	 */
 //	private void comprarDatosPaxAsegurado(VSAsegurado vsAsegurado) throws Exception{
 //		Pasajero pasajero=ventaPasaje.getPasajero();
@@ -596,7 +596,7 @@ public class WndVSAfiliacion extends WndBase {
 //		int EST_CIV_DIVORCIADO=4;
 //		Boolean updatePax=false;
 //		Boolean updateNumDoc=false;
-//		
+//
 //		//Tipo y numero de documento.
 //		if(pasajero.getTipoDocumento().getId().intValue()==Constantes.ID_TIPDOC_SN){
 //			if(vsAsegurado.getVsTipoDocumento().getId().intValue()==4){//Si es carnet de extrangeria
@@ -649,7 +649,7 @@ public class WndVSAfiliacion extends WndBase {
 //			if(!(pasajero.getTelefono()==null))
 //				updatePax=true;
 //		}
-//		
+//
 //		//Si existen cambios
 //		if(updatePax || updateNumDoc){
 //			Pasajero oPasajero=ServiceLocator.getPasajeroManager().buscarPorId(pasajero.getId());
@@ -667,10 +667,10 @@ public class WndVSAfiliacion extends WndBase {
 //				oPasajero.setTelefono(pasajero.getTelefono());
 //			ServiceLocator.getPasajeroManager().actualizar(oPasajero);
 //		}
-		
+
 //	}
-	
-	
+
+
 	/**
 	 * Valida los datos del asegurado.
 	 * @return true, si los datos son correctos, false lo contrario
@@ -727,13 +727,13 @@ public class WndVSAfiliacion extends WndBase {
 				return false;
 			}
 		}
-		
+
 		if(isCaracteresInvalidos())//Valida caracteres no permitidos por la positiva.
 			return false;
-		
+
 		return true;
 	}
-	
+
 	private Boolean isCaracteresInvalidos(){
 		String chrApePaterno=Util.validarCaracteresEspeciales(txtApellidoPaterno.getText().trim());
 		String chrApeMaterno=Util.validarCaracteresEspeciales(txtApellidoMaterno.getText().trim());
@@ -764,7 +764,7 @@ public class WndVSAfiliacion extends WndBase {
 			DlgMessage.information(Messages.getString("Se ha encontrado caracteres no válidos en el Campo Teléfono Celular del Asegurado:")+"( "+chrCelular+" ). Se debe corregir para continuar.",txtTelefonoCelular);
 			return true;
 		}
-		
+
 		return false;
 	}
 	/**
@@ -816,18 +816,18 @@ public class WndVSAfiliacion extends WndBase {
 		ventaPasaje=null;
 		txtUrbanizacion.setText("");
 	}
-	
-	
-	
+
+
+
 	/* ****************AFILIACION******************** */
 	/**
 	 * Evento cancelar operacion de la afiliacion
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void cancelarOperacionAfiliacion() throws Exception{
 		limpiaControlsAsegurado();
 		txtNumeroBoleto.setText("");
-			
+
 		limpiaControlesAfiliacion();
 //		lblCertificado.setDisabled(true);
 		disabledBtnEditar(true, tbbAseguradoEditar, accesoModificar());
@@ -836,12 +836,12 @@ public class WndVSAfiliacion extends WndBase {
 		disabledBtnGuardar(true, tbbAfiliacionGrabar, accesoGrabar());
 		disabledBtnCancelar(true, tbbAfiliacionCancelar);
 		disabledImageBuscar(imageEnabled);
-		
+
 		disabledControlsAsegurado(true);
 		txtNumeroBoleto.setDisabled(false);
 		txtNumeroBoleto.setFocus(true);
-				
-		
+
+
 		sepToolsAfiliacion.setHeight("18px");
 	}
 	/**
@@ -867,7 +867,7 @@ public class WndVSAfiliacion extends WndBase {
 	public void guardarAfiliacion()throws Exception{
 		if(vsAsegurado!=null){
 			try{
-				if(tbbAseguradoGuardar.isDisabled()==false){
+				if(!tbbAseguradoGuardar.isDisabled()){
 					DlgMessage.information(Messages.getString("WndVSAfiliacion.information.noSavedAsegurado"),tbbAseguradoGuardar);
 					return;
 				}
@@ -878,7 +878,7 @@ public class WndVSAfiliacion extends WndBase {
 //					return;
 //				}else if(!(validarDatosAsegurado()))
 //					return;
-				
+
 				/*Vuelve a validar los datos del asegudado*/
 				if(!(validarDatosAsegurado()))
 					return;
@@ -915,9 +915,9 @@ public class WndVSAfiliacion extends WndBase {
 					DlgMessage.information(Messages.getString("WndVSAfiliacion.information.noCiudadDestino"));
 					return;
 				}
-					
+
 				/* Realiza la validacion del Certificado, para determinar si la agencia que la esta emitiendo este le corresponde. */
-				//Comentado 30/09/2014 el certificado se cambio a ser el boleto 
+				//Comentado 30/09/2014 el certificado se cambio a ser el boleto
 //				List<VSAsignacionCertificados>  lstAsignacionCertificados=ServiceLocator.getVentaSeguroManager().buscarAsignacionCertificados(getAgencia().getId());
 //				if(lstAsignacionCertificados.size()>0){
 //					Long numeroInio=(long)0, numeroFinal=(long)0;
@@ -926,7 +926,7 @@ public class WndVSAfiliacion extends WndBase {
 //					for(VSAsignacionCertificados asignacionCertificados: lstAsignacionCertificados){
 //						numeroInio=asignacionCertificados.getCorrelativoInicial();
 //						numeroFinal=asignacionCertificados.getCorrelativoFinal();
-//						
+//
 //						if(numeroCertificado>=numeroInio && numeroCertificado<=numeroFinal){
 //							isCertificadoCorrecto=true;
 //							break;
@@ -940,8 +940,8 @@ public class WndVSAfiliacion extends WndBase {
 //					DlgMessage.information(Messages.getString("WndVSAfiliacion.information.certificadoNotAgencia"));
 //					return;
 //				}
-				
-				
+
+
 				afiliacion= new VSAfiliacion();
 				afiliacion.setVsAsegurado(vsAsegurado);
 				afiliacion.setVsTipoRegistro(new VSTipoRegistro(ID_TIPREG_ASEGURADO));
@@ -958,11 +958,11 @@ public class WndVSAfiliacion extends WndBase {
 				afiliacion.setVsCiudad(vsCiudad);
 
 //				String certificado=autoCompletaCerosCertificado(10,lblCertificado.getText());
-//				afiliacion.setNumeroCertificado(certificado);							
+//				afiliacion.setNumeroCertificado(certificado);
 				afiliacion.setNumeroCertificado(lblCertificado.getValue());
 				afiliacion.setEsPasajeroFrecuente(ventaPasaje.getPasajero().isPaxFree()?"S":"N");
 				UtilData.auditarRegistro(afiliacion, getUsuario(), Executions.getCurrent());
-								
+
 				//Valida que el boleto no este asociado ha un seguro.
 				Boolean existeBoleto=ServiceLocator.getVentaSeguroManager().validarBoletoAfiliacion(afiliacion.getNumeroBoleto());
 				if(existeBoleto){//Si el Boleto existe.
@@ -982,17 +982,17 @@ public class WndVSAfiliacion extends WndBase {
 												}
 												if(vsAsegurado.getId()==null)//Para controlar por si al momento de guardar el asegurado se produce alguna excepcion.
 													throw new Exception(Messages.getString("WndVSAfiliacion.information.ErrorSaveAsegurado"));
-												
+
 												/*Guarda la Afiliación*/
 												ServiceLocator.getVentaSeguroManager().guardarAfiliacion(afiliacion);
 												disabledBtnGuardar(true, tbbAfiliacionGrabar, accesoGrabar());
 												disabledBtnCancelar(true, tbbAfiliacionCancelar);
 												disabledBtnEditar(true, tbbAseguradoEditar, accesoModificar());
 												txtNumeroBoleto.setText("");
-												
+
 												//Confirma
 //												DlgMessage.information(Messages.getString("Generales.information.exitoGuardar"),txtNumeroBoleto);
-												
+
 												//Imprime el Certificado.
 												CreateDocument.creaCertificadoSeguro(afiliacion);
 //												String fileCertificado = Constantes.URL_FORMATOS_CERTIFICADOS+afiliacion.getNumeroCertificado()+".txt";
@@ -1002,7 +1002,7 @@ public class WndVSAfiliacion extends WndBase {
 												win.setAttribute("msg", "Imprimiendo el Certificado: "+ afiliacion.getNumeroCertificado()+"... ");
 												win.setAttribute("urlDocumento", fileCertificado);
 												win.doPopup();
-												
+
 											}catch(VSAfialiacionException aex){
 												if(aex.getTipo().intValue()==VSAfialiacionException.DUPLICITY_CERTIFICADO)
 													DlgMessage.information(Messages.getString("WndVSAfiliacion.information.duplicityCertificado"),lblCertificado);
@@ -1029,14 +1029,14 @@ public class WndVSAfiliacion extends WndBase {
 									}
 									if(vsAsegurado.getId()==null)//Para controlar por si al momento de guardar el asegurado se produce alguna excepcion.
 										throw new Exception(Messages.getString("WndVSAfiliacion.information.ErrorSaveAsegurado"));
-									
+
 									/*Guarda la Afiliación*/
 									ServiceLocator.getVentaSeguroManager().guardarAfiliacion(afiliacion);
 									disabledBtnGuardar(true, tbbAfiliacionGrabar, accesoGrabar());
 									disabledBtnCancelar(true, tbbAfiliacionCancelar);
 									disabledBtnEditar(true, tbbAseguradoEditar, accesoModificar());
 									txtNumeroBoleto.setText("");
-																	
+
 									//Imprime el Certificado.
 									File file=CreateDocument.creaCertificadoSeguro(afiliacion);
 									if(getUsuarioHardware().getPrintApplet().intValue()==Constantes.TRUE_VALUE){
@@ -1051,10 +1051,10 @@ public class WndVSAfiliacion extends WndBase {
 										//Descarga el archivo para la impresion
 										Util.descargarArchivo(file);
 									}
-									
+
 									//Confirma
 //									DlgMessage.information(Messages.getString("Generales.information.exitoGuardar"),txtNumeroBoleto);
-									
+
 								}catch(VSAfialiacionException aex){
 									if(aex.getTipo().intValue()==VSAfialiacionException.DUPLICITY_CERTIFICADO)
 										DlgMessage.information(Messages.getString("WndVSAfiliacion.information.duplicityCertificado"));
@@ -1082,13 +1082,13 @@ public class WndVSAfiliacion extends WndBase {
 	 */
 	private void cargarEstoCivil(Combobox combobox) throws Exception{
 		List<VSEstadoCivil>lstEstadoCivil=ServiceLocator.getVentaSeguroManager().buscarEstadoCivilPorEstado(Constantes.VALUE_ACTIVO);
-		
+
 		UtilData.cargarGenericData(combobox, false);
 		for(VSEstadoCivil estadoCivil:lstEstadoCivil){
 			Comboitem comboitem=new Comboitem();
 			comboitem.setLabel(estadoCivil.getDenominacion());
 			comboitem.setValue(estadoCivil);
-			
+
 			combobox.appendChild(comboitem);
 		}
 	}
@@ -1099,13 +1099,13 @@ public class WndVSAfiliacion extends WndBase {
 	 */
 	private void cargarSexo(Combobox combobox) throws Exception{
 		List<VSSexo>lstSexo=ServiceLocator.getVentaSeguroManager().buscarSexoPorEstado(Constantes.VALUE_ACTIVO);
-		
+
 		UtilData.cargarGenericData(combobox, false);
 		for(VSSexo sexo:lstSexo){
 			Comboitem comboitem=new Comboitem();
 			comboitem.setLabel(sexo.getDenominacion());
 			comboitem.setValue(sexo);
-			
+
 			combobox.appendChild(comboitem);
 		}
 	}
@@ -1116,17 +1116,17 @@ public class WndVSAfiliacion extends WndBase {
 	 */
 	private void cargarTipoDocumento(Combobox combobox) throws Exception{
 		List<VSTipoDocumento>lstTipoDocumento=ServiceLocator.getVentaSeguroManager().buscarTipoDocumentoPorEstado(Constantes.VALUE_ACTIVO);
-		
+
 		UtilData.cargarGenericData(combobox, false);
 		for(VSTipoDocumento tipoDocumento:lstTipoDocumento){
 			Comboitem comboitem=new Comboitem();
 			comboitem.setLabel(tipoDocumento.getDenominacion());
 			comboitem.setValue(tipoDocumento);
-			
+
 			combobox.appendChild(comboitem);
 		}
 	}
-	
+
 	private void disabledImageBuscar(String src){
 		if(src.equals(imageEnabled)){
 			imgBuscar.setSrc(imageEnabled);
@@ -1151,10 +1151,10 @@ public class WndVSAfiliacion extends WndBase {
 			btnEditar.setImage("/resources/toolbar/mp_toolbarModificarDisabled.png");
 			btnEditar.setStyle("cursor:default");
 		}
-		
+
 		if(accesoModificar)
 			btnEditar.setDisabled(disabled);
-		else 
+		else
 			btnEditar.setDisabled(true);
 	}
 	/**
@@ -1185,7 +1185,7 @@ public class WndVSAfiliacion extends WndBase {
 		}
 		if(accesoGuardar)
 			btnGuardar.setDisabled(disabled);
-		else 
+		else
 			btnGuardar.setDisabled(true);
 	}
 	/**
@@ -1204,7 +1204,7 @@ public class WndVSAfiliacion extends WndBase {
 		String svalor=ceros+""+valor;
 		return svalor;
 	}
-	
+
 	/**
 	 * busca el certificado a anular
 	 * @throws Exception
@@ -1213,7 +1213,7 @@ public class WndVSAfiliacion extends WndBase {
 		try {
 			/*Limapia los controles*/
 			limpiarControlesAnulacion(false);
-						
+
 			if(!(txtNumeroBoletoAnular.getText().trim().isEmpty())){
 				txtNumeroBoletoAnular.setText(Util.autocompleNumberBoleto(txtNumeroBoletoAnular.getText().trim()));
 				List<VSAfiliacion>result=ServiceLocator.getVentaSeguroManager().buscarAfiliacionesByConsulta(null, null, null, null, null, null,txtNumeroBoletoAnular.getText().trim());
@@ -1221,7 +1221,7 @@ public class WndVSAfiliacion extends WndBase {
 					DlgMessage.information(Messages.getString("WndVSAfiliacion.anulacion.information.noResults"),txtNumeroBoletoAnular);
 				}else if(result.size()==1){
 					VSAfiliacion afiliacion=result.get(0);
-					
+
 					if(getRol().getId().intValue()!=Constantes.ID_ROL_SUPER_USUARIO){
 						if(afiliacion.getUsuario().getId().intValue()!=vsLiquidacion.getUsuarioID().intValue()){/*Valida el usuario*/
 							DlgMessage.information(Messages.getString("WndVSAfiliacion.anulacion.inrmation.noUsuario"));
@@ -1238,7 +1238,7 @@ public class WndVSAfiliacion extends WndBase {
 						DlgMessage.information(Messages.getString("WndVSAfiliacion.anulacion.inforrmation.certificadoProcesado"));
 						return;
 					}
-					
+
 					/*Carga datos basicos de la afiliacion*/
 					lblNumeroCertificado.setValue(afiliacion.getNumeroCertificado());
 					lblFechaCertificado.setValue(Constantes.FORMAT_DATE.format(afiliacion.getFechaVenta()));
@@ -1255,7 +1255,7 @@ public class WndVSAfiliacion extends WndBase {
 			DlgMessage.error(e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Anula el certificado.
 	 */
@@ -1263,12 +1263,12 @@ public class WndVSAfiliacion extends WndBase {
 		try {
 			if(!(lblNumeroCertificado.getValue().trim().isEmpty())){
 				final String certificado=lblNumeroCertificado.getValue();
-				
-				
+
+
 				if(chbxAnularBoleto.isChecked()){
 					/*Busca el boleto por su numero*/
 					final VentaPasaje boleto=ServiceLocator.getVentaPasajesManager().buscarBoletoByAsegurado(lblBoletoAnulacion.getValue());
-					
+
 					/*Si no encuentra el boleto*/
 					if(boleto==null){
 						Messagebox.show(Messages.getString("WndVSAfiliacion.anulacion.information.noFindBoleto"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
@@ -1278,10 +1278,10 @@ public class WndVSAfiliacion extends WndBase {
 									try{
 										/*Anula el certificado*/
 										ServiceLocator.getVentaSeguroManager().anularCertificado(certificado);
-										
+
 										/*Limapia los controles*/
 										limpiarControlesAnulacion(true);
-										
+
 										/*Muestra confirmacion de la anulacion*/
 										DlgMessage.information(Messages.getString("WndVSAfiliacion.anulacion.information.confirmacion"),txtNumeroBoletoAnular);
 									}catch (Exception ex){
@@ -1294,7 +1294,7 @@ public class WndVSAfiliacion extends WndBase {
 					}else{
 						/*Busca por su identificador*/
 						final VentaPasaje ventaOriginal=ServiceLocator.getVentaPasajesManager().buscarVentaById(boleto.getId());
-						
+
 						/*Validacion previa a la anulacion del boleto*/
 						if (getRol().getId().intValue()!=Constantes.ID_ROL_SUPER_USUARIO && !(ventaOriginal.getUsuario().getId().equals(getUsuario().getId()))){
 							DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.otroUsuario"));
@@ -1312,7 +1312,7 @@ public class WndVSAfiliacion extends WndBase {
 							DlgMessage.information(Messages.getString("Generales.information.manifiestoImpreso"));
 							return;
 						}
-						
+
 						Messagebox.show(Messages.getString("WndVSAfiliacion.anulacion.question.anularCertificadoAndBoleto"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 							@Override
 							public void onEvent(Event e) throws Exception {
@@ -1320,7 +1320,7 @@ public class WndVSAfiliacion extends WndBase {
 									try{
 										/*Anula el certificado*/
 										ServiceLocator.getVentaSeguroManager().anularCertificado(certificado);
-																				
+
 										/*Anula el Boleto*/
 										VentaPasaje ventaOriginal1=ventaOriginal;
 										ventaOriginal1.setTarifa(0.0);
@@ -1332,12 +1332,12 @@ public class WndVSAfiliacion extends WndBase {
 										ventaOriginal1.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_ANULACION));
 										UtilData.auditarRegistro(ventaOriginal1, true, getUsuario(), Executions.getCurrent());
 										ServiceLocator.getVentaPasajesManager().anularMovimiento(ventaOriginal1,false);
-																					
+
 										/*Limapia los controles*/
 										limpiarControlesAnulacion(true);
-										
+
 										/*Muestra confirmacion de la anulacion*/
-										DlgMessage.information(Messages.getString("WndVSAfiliacion.anulacion.information.confirmacionInBoloto"),txtNumeroBoletoAnular);	
+										DlgMessage.information(Messages.getString("WndVSAfiliacion.anulacion.information.confirmacionInBoloto"),txtNumeroBoletoAnular);
 									}catch(Exception ex){
 										ex.printStackTrace();
 										DlgMessage.error(ex.getMessage());
@@ -1354,13 +1354,13 @@ public class WndVSAfiliacion extends WndBase {
 								try{
 									/*Anula el certificado*/
 									ServiceLocator.getVentaSeguroManager().anularCertificado(certificado);
-										
+
 									/*Limapia los controles*/
 									limpiarControlesAnulacion(true);
-									
+
 									/*Muestra confirmacion de la anulacion*/
 									DlgMessage.information(Messages.getString("WndVSAfiliacion.anulacion.information.confirmacion"),txtNumeroBoletoAnular);
-									
+
 								}catch (Exception ex){
 									ex.printStackTrace();
 									DlgMessage.error(ex.getMessage());
@@ -1375,7 +1375,7 @@ public class WndVSAfiliacion extends WndBase {
 			DlgMessage.error(e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Limpia los controles de la anulacion
 	 * @throws Exception

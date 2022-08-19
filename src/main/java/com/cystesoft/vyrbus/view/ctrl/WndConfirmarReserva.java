@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 02/11/2012
  */
@@ -52,7 +52,7 @@ import com.cystesoft.vyrbus.view.ui.WndBase;
  */
 public class WndConfirmarReserva extends WndBase {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Listbox lbxReservas;
 	private Include incConfirmacion;
 	private Combobox cmbOrigen;
@@ -69,7 +69,7 @@ public class WndConfirmarReserva extends WndBase {
 	private Tab tabListado;
 	private Tab tabDetalle;
 	private VentaPasaje reserva = null;
-	
+
 
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IBase#onCreate()
@@ -80,56 +80,56 @@ public class WndConfirmarReserva extends WndBase {
 			/*Valida si el usuario tiene una liquidación aperturada*/
 			if(getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION)==null)
 				throw new LiquidacionNullException();
-			
+
 			Agencia agencia = (Agencia) this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
 			/*valida que se trate de una Agencia Tepsa*/
 			if(!(agencia.getTipoAgencia().getId().equals(Constantes.ID_TIPAGE_TEPSA))){
 				closeTabWindow();
 				throw new EsAgenciaTepsaException();
 			}
-			
+
 			String[] buffer = Constantes.USUARIO_ANULA_RESERVA.split(",");
-			for(int i=0; i<buffer.length; i++){
-				if(buffer[i].equals(getUsuario().getId().toString())){
+			for (String element : buffer) {
+				if(element.equals(getUsuario().getId().toString())){
 					cmbAgencia.setDisabled(false);
 					break;
 				}
 			}
-			
+
 			UtilData.cargarDataCombo(cmbOrigen, Localidad.class, false);
 			UtilData.cargarDataCombo(cmbDestino, Localidad.class, false);
-			TreeMap<String, Object> parametros = new TreeMap<String, Object>();
+			TreeMap<String, Object> parametros = new TreeMap<>();
 			parametros.put("tipoAgencia.id", Constantes.ID_TIPAGE_TEPSA);
 			parametros.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-			List<String> criteriosOrdenar = new ArrayList<String>();
+			List<String> criteriosOrdenar = new ArrayList<>();
 			criteriosOrdenar.add("denominacion");
-			
+
 			UtilData.cargarAgencia(cmbAgencia, true, parametros, criteriosOrdenar);
 			Util.seleccionarValorItemCombo(Agencia.class, cmbAgencia, getAgencia().getId());
 			String fecha = Util.DatetoString(new Date(), "yyyyMMdd");
 			dtbxFechaPartida.setConstraint("after "+fecha);
-			cmbOrigen.setFocus(true);			
-			
+			cmbOrigen.setFocus(true);
+
 			/*Anulacion multiple*/
-			List<Component>lstComponents=new ArrayList<Component>();
+			List<Component>lstComponents=new ArrayList<>();
 //			lstComponents.add(listHeaderCheck);
 			lstComponents.add(listFootAnulacionMasiva);
-			
-			List<Rol>listRolesAcceeso=new ArrayList<Rol>();
+
+			List<Rol>listRolesAcceeso=new ArrayList<>();
 			listRolesAcceeso.add(new Rol(Constantes.ID_ROL_SUPER_USUARIO));
 			listRolesAcceeso.add(new Rol(Constantes.ID_ROL_JEFE_VENTAS));
 			listRolesAcceeso.add(new Rol(Constantes.ID_ROL_FUNCIONARIO));
 			listRolesAcceeso.add(new Rol(Constantes.ID_ROL_ADMIN_COMERCIAL));
 			listRolesAcceeso.add(new Rol(Constantes.ID_ROL_GESTION_CORPORATIVA));
 			accesoControlsByRol(lstComponents, listRolesAcceeso, true);
-						
+
 		}catch (LiquidacionNullException lnullex){
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noLiquidacion"));
 			closeTabWindow();
 		}catch (EsAgenciaTepsaException esagtep) {
 			DlgMessage.information(Messages.getString("WndConfirmarReserva.information.noEsAgenciaTepsa"));
-		}	
-		
+		}
+
 	}
 
 	/* (non-Javadoc)
@@ -152,7 +152,7 @@ public class WndConfirmarReserva extends WndBase {
 		listHeaderCheck=(Listheader)this.getFellow("listHeaderCheck");
 		listFootAnulacionMasiva=(Listfoot)this.getFellow("listFootAnulacionMasiva");
 		chbxActivaAnulacionMasiva=(Checkbox)this.getFellow("chbxActivaAnulacionMasiva");
-		
+
 		lbxReservas.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
@@ -168,7 +168,7 @@ public class WndConfirmarReserva extends WndBase {
 			}
 		});
 	}
-	
+
 	public void buscarReservas(){
 		try{
 			lbxReservas.getItems().clear();
@@ -185,12 +185,12 @@ public class WndConfirmarReserva extends WndBase {
 			String fechaPartida = dtbxFechaPartida.getValue()==null?null:
 					(Util.DatetoString(dtbxFechaPartida.getValue(),Constantes.DATE_FORMAT).equals(Util.DatetoString(Constantes.FECHA_NULL, Constantes.DATE_FORMAT))?
 							null:Util.DatetoString(dtbxFechaPartida.getValue(), Constantes.DATE_FORMAT));
-			
+
 			if(idOrigen==null && idDestino==null && pasajero==null && numeroDocumento==null && fechaPartida==null){
 				DlgMessage.warning(Messages.getString("WndConfirmarReserva.warning.noExisteIngresoBusqueda"));
 				return;
 			}
-			
+
 			List<VentaPasaje> lstReservas = ServiceLocator.getVentaPasajesManager().buscarReservasPorConfirmar(idOrigen, idDestino, pasajero, numeroDocumento, null, fechaPartida, idAgencia);
 			if(lstReservas.size()>0){
 				lbxReservas.getItems().clear();
@@ -239,16 +239,16 @@ public class WndConfirmarReserva extends WndBase {
 					lbxReservas.appendChild(item);
 					i++;
 				}
-				tabListado.setSelected(true);				
+				tabListado.setSelected(true);
 			}else{
-				DlgMessage.information(Messages.getString("WndConfirmarReserva.information.noReservas"));			
+				DlgMessage.information(Messages.getString("WndConfirmarReserva.information.noReservas"));
 				dtbxFechaPartida.setValue(null);
 			}
 		}catch(Exception ex){
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	private void anularReserva(VentaPasaje reserva1){
 		reserva = reserva1;
 		Messagebox.show(Messages.getString("WndConfirmarReserva.information.confirmaAnularReserva"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
@@ -272,8 +272,8 @@ public class WndConfirmarReserva extends WndBase {
 			}
 		});
 	}
-	
-	
+
+
 	/**
 	 * Realiza la anulacion de las recervas de manera masiva.
 	 * @throws Exception
@@ -291,7 +291,7 @@ public class WndConfirmarReserva extends WndBase {
 								UtilData.auditarRegistro(reserva, true, getUsuario(), Executions.getCurrent());
 								ServiceLocator.getVentaPasajesManager().anularReserva(reserva);
 							}
-							
+
 							DlgMessage.information(Messages.getString("WndConfirmarReserva.information.reservaAnuladaMasiva"));
 							buscarReservas();
 							tabBusqueda.setSelected(true);
@@ -303,10 +303,10 @@ public class WndConfirmarReserva extends WndBase {
 				}
 			});
 		}
-		
+
 	}
-	
-	
+
+
 	/**
 	 * Activa la anulacion masiva
 	 * @throws Exception
@@ -328,5 +328,5 @@ public class WndConfirmarReserva extends WndBase {
 			DlgMessage.error(this.getClass().getSimpleName()+" "+e.getMessage());
 		}
 	}
-	
+
 }

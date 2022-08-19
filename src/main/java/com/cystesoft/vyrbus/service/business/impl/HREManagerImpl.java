@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 27/08/2014
  * Hora			: 12:04:42
@@ -23,7 +23,7 @@ import com.cystesoft.vyrbus.service.business.HREManager;
  */
 public class HREManagerImpl implements HREManager{
 	private HREDAO hreDao;
-	
+
 	/**
 	 * @return the hredao
 	 */
@@ -36,9 +36,9 @@ public class HREManagerImpl implements HREManager{
 	public void setHreDao(HREDAO hreDao) {
 		this.hreDao = hreDao;
 	}
-	
 
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.HREManager#guardar(com.tepsa.sisvyr.model.bean.HRE)
 	 */
@@ -74,7 +74,7 @@ public class HREManagerImpl implements HREManager{
 		// TODO Auto-generated method stub
 		return getHreDao().buscarHREEmitida(fechaInicial, fechaFinal, idOrigen, idDestino);
 	}
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.HREManager#buscarHREEmitida(java.lang.Long)
 	 */
@@ -92,6 +92,6 @@ public class HREManagerImpl implements HREManager{
 		return getHreDao().buscarPorX(criteriosBusqueda, criteriosOrden);
 	}
 
-	
+
 
 }

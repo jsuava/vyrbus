@@ -8,19 +8,19 @@ import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartida;
 
 public interface ItinerarioAgenciaPartidaDAO extends GenericDAO {
 	/**
-	 * 
+	 *
 	 * @param criteriosBusqueda
 	 * @param criteriosOrdenar
 	 * @return
 	 */
 	public ArrayList<ItinerarioAgenciaPartida> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
 	/**
-	 * 
+	 *
 	 * @param id
 	 * @return
 	 */
 	public ItinerarioAgenciaPartida buscarPorId(Long id);
-	
+
 	/**
 	 * Elimina los terminales de partida de un Itinerario segun su localidad.
 	 * @param idItinerario
@@ -37,5 +37,5 @@ public interface ItinerarioAgenciaPartidaDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public List<ItinerarioAgenciaPartida> buscarAgenciasPartida(Long idItinerario, String estado, String strLocalidad)throws Exception;
-	
+
 }

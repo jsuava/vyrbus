@@ -1,6 +1,5 @@
 package com.cystesoft.vyrbus.view.ctrl;
 
-import java.math.BigDecimal;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -39,13 +38,13 @@ import com.cystesoft.vyrbus.view.ui.WndFiltrarParametros;
 import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
 
 /**
- * 
+ *
  * @author José Abanto
  *
  */
 public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 	private static final long serialVersionUID = -4363466393354816965L;
-	
+
 	private Combobox cmbCanalVenta;
 	private Combobox cmbAgencia;
 	private Textbox	txtCodigo;
@@ -53,12 +52,12 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 	private Textbox txtDescripcion;
 	private Textbox txtDireccionIP;
 	private Combobox cmbTipoIP;
-	
+
 	private UsuarioHardware usuarioHardware=null;
 	private TitanUsuarioHardware titanUsuarioHardware = null;
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
-	
+
 	public static String MD2 = "MD2";
 	public static String MD5 = "MD5";
 	public static String SHA1 = "SHA-1";
@@ -80,7 +79,7 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 		txtDireccionIP = (Textbox)this.getFellow("txtDireccionIP");
 		cmbTipoIP = (Combobox) this.getFellow("cmbTipoIP");
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IBase#onCreate()
@@ -90,10 +89,10 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 		UtilData.cargarDataCombo(cmbCanalVenta, CanalVenta.class, false);
 		UtilData.cargarDataCombo(cmbAgencia, Agencia.class, false);
 		onLoadTipoIP();
-		
-		criteriosOrdenar = new ArrayList<String>();
+
+		criteriosOrdenar = new ArrayList<>();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onNew()
@@ -112,28 +111,28 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 	@Override
 	public void onSearch() throws Exception {
 		final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("codigo");
 		criteriosOrdenar.add("descripcion");
-		
+
 		oWndFiltrar.addParameter("Agencia", Agencia.class);
 		oWndFiltrar.addParameter("Canal de Venta", CanalVenta.class);
 		oWndFiltrar.addParameter("Código", String.class);
 		oWndFiltrar.addParameter("Descripcion", String.class);
-		
+
 		this.appendChild(oWndFiltrar);
 		oWndFiltrar.setMode("modal");
 		oWndFiltrar.addEventListener(com.cystesoft.vyrbus.view.ui.Events.ON_FILTER, new EventListener<Event>() {
-			
+
 			@Override
 			public void onEvent(Event event) throws Exception {
-				criteriosBusqueda = new TreeMap<String, Object>();
+				criteriosBusqueda = new TreeMap<>();
 				Agencia agencia = (Agencia) oWndFiltrar.getParameterValue("Agencia");
 				CanalVenta canalVenta = (CanalVenta) oWndFiltrar.getParameterValue("Canal de Venta");
 				String codigo = oWndFiltrar.getParameterValue("Código").toString();
 				String descripcion = oWndFiltrar.getParameterValue("Descripcion").toString();
 				String estadoRegistro = Constantes.VALUE_ACTIVO;
-				
+
 				if (agencia==null){
 					criteriosBusqueda.remove("agencia");
 				}else {
@@ -141,30 +140,30 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 //					oagencia.setId(agencia);
 					criteriosBusqueda.put("agencia", agencia);
 				}
-												
+
 				if (canalVenta == null )
 					criteriosBusqueda.remove("canalVenta");
 				else
 					criteriosBusqueda.put("canalVenta", canalVenta);
-				
+
 				if (codigo==null)
 					criteriosBusqueda.remove("codigo");
 				else
 					criteriosBusqueda.put("codigo", codigo + "%" );
-				
+
 				if (descripcion==null)
 					criteriosBusqueda.remove("descripcion");
 				else
 					criteriosBusqueda.put("descripcion", descripcion + "%");
-								
+
 				criteriosBusqueda.put("estadoRegistro", estadoRegistro);
 
 				listarRegistros(ServiceLocator.getUsuarioHardwareManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 			}
 		});
-		
+
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onRefresh(int)
@@ -172,11 +171,11 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getUsuarioHardwareManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getUsuarioHardwareManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
-		
+
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onModify(int)
@@ -192,9 +191,9 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 	 */
 	@Override
 	public void onCancel(int action) throws Exception {
-		
+
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.zkoss.zul.Window#onClose()
@@ -203,7 +202,7 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 	public void onClose() {
 		closeTabWindow();
 	}
-	
+
 	@Override
 	public void onSave(int action) throws Exception {
 		try{
@@ -219,18 +218,18 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 				throw new CodigoNullException();
 			else if (txtDescripcion.getValue().trim() =="")
 				throw new UsuarioHardwareDescripcionNullException();
-			
+
 			if (action==ACTION_NEW)
 				usuarioHardware=new UsuarioHardware();
-			
+
 			Agencia agencia = new Agencia();
 			agencia.setId(((Agencia)cmbAgencia.getSelectedItem().getValue()).getId());
 			CanalVenta canalVenta = new CanalVenta();
 			canalVenta.setId(((CanalVenta) cmbCanalVenta.getSelectedItem().getValue()).getId());
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
-			
+
 			generarCodigo(txtDireccionMAC.getText().trim().toUpperCase());
-			
+
 			usuarioHardware.setId(id);
 			usuarioHardware.setAgencia(agencia);
 			usuarioHardware.setCanalVenta(canalVenta);
@@ -238,7 +237,7 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 			usuarioHardware.setCodigo(txtCodigo.getValue().trim());
 			usuarioHardware.setDescripcion(txtDescripcion.getValue().trim().toUpperCase());
 			usuarioHardware.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-			
+
 
 //			if (action==ACTION_NEW) {
 //				TitanUsuarioHardware titanUsuarioHardware = new TitanUsuarioHardware();
@@ -260,7 +259,7 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 //	//			titanUsuarioHardware.setIdAgencia(id);
 //				titanUsuarioHardware.setIdTipoComputador(1);
 //				titanUsuarioHardware.setIdTipoIP(((BigDecimal) cmbTipoIP.getSelectedItem().getValue()).intValue());
-//			
+//
 //				usuarioHardware.setTitanUsuarioHardware(titanUsuarioHardware);
 //			}else {
 //				titanUsuarioHardware.setNombreEquipo(txtDescripcion.getText());
@@ -268,24 +267,24 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 //				titanUsuarioHardware.setIpModificacion(UtilData.ipLocal(Executions.getCurrent()));
 //				usuarioHardware.setTitanUsuarioHardware(titanUsuarioHardware);
 //			}
-			
+
 			switch (action) {
 				case ACTION_NEW:
 					UtilData.auditarRegistro(usuarioHardware, getUsuario(), Executions.getCurrent());
 					ServiceLocator.getUsuarioHardwareManager().guardar(usuarioHardware);
 					break;
-	
+
 				case ACTION_MODIFY:
 					UtilData.auditarRegistro(usuarioHardware, true, getUsuario(), Executions.getCurrent());
 					ServiceLocator.getUsuarioHardwareManager().actualizar(usuarioHardware);
 					break;
 			}
-						
+
 			/*Recupera el Usuario Harware Actualizado o Nuevo*/
-			criteriosBusqueda = new TreeMap<String, Object>();
+			criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("codigo", usuarioHardware.getCodigo());
 			listarRegistros(ServiceLocator.getUsuarioHardwareManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-			
+
 		}catch (UsuarioHardwareCanalVentaNullException uhcvnex){
 			DlgMessage.information(Messages.getString("Generales.information.noSeleccionoCanalVenta"),cmbCanalVenta);
 			throw new CancelaGrabacionException();
@@ -320,7 +319,7 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace();throw new CancelaGrabacionException();
 		}
-		
+
 	}
 
 	/*
@@ -330,7 +329,7 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 	@Override
 	public void onDelete(int tab) throws Exception {
 		Long id = (long) 0;
-		
+
 		switch (tab) {
 			case TAB_LIST:
 				id = new Long((String) listboxLista.getSelectedItem().getValue());
@@ -351,7 +350,7 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 	@Override
 	public void onPrint(int tab) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/*
@@ -361,7 +360,7 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 	@Override
 	public void onExport(int tab) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/*
@@ -371,7 +370,7 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 	@Override
 	public void onHelp() throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/*
@@ -381,19 +380,19 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 	@Override
 	public void onChangeTab(int tab) throws Exception {
 		mantenimiento();
-		
+
 	}
-	
+
 	/**
 	 * Recupera lista de registros, según la busqueda.
 	 * @param lstRegistros
 	 */
 	private void listarRegistros(ArrayList<UsuarioHardware> lstRegistros) {
-		ArrayList<Object> lstEspeciesValoradas = new ArrayList<Object>();
+		ArrayList<Object> lstEspeciesValoradas = new ArrayList<>();
 
 		for(int r = 0; r < lstRegistros.size(); r ++) {
 			UsuarioHardware usuarioHardware  = lstRegistros.get(r);
-			ArrayList<Object> lstFila = new ArrayList<Object>();
+			ArrayList<Object> lstFila = new ArrayList<>();
 
 			lstFila.add(usuarioHardware.getId());
 			lstFila.add(r + 1);
@@ -408,7 +407,7 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 
 		Util.llenarListbox(listboxLista, lstEspeciesValoradas, true);
 	}
-	
+
 	/**
 	 * Recupera datos para la edición.
 	 */
@@ -416,14 +415,14 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 		if(listboxLista.getSelectedIndex()>=0){
 			usuarioHardware = new UsuarioHardware();
 			usuarioHardware = ServiceLocator.getUsuarioHardwareManager().buscarPorId(new Long((String) listboxLista.getSelectedItem().getValue()));
-			
+
 			textboxId.setText(usuarioHardware.getId().toString());
 			Util.seleccionarValorItemCombo(Agencia.class, cmbAgencia, usuarioHardware.getAgencia().getId());
 			Util.seleccionarValorItemCombo(CanalVenta.class, cmbCanalVenta, usuarioHardware.getCanalVenta().getId());
 			txtCodigo.setValue(usuarioHardware.getCodigo());
 			txtDireccionMAC.setText(usuarioHardware.getDireccionMAC());
 			txtDescripcion.setValue(usuarioHardware.getDescripcion());
-			
+
 			try {
 				titanUsuarioHardware = ServiceLocator.getTitanManager().buscarUsuarioHardwareByIdVyR(usuarioHardware.getId());
 				if(titanUsuarioHardware != null) {
@@ -438,9 +437,9 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 				e.printStackTrace();
 			}
 		}
-		
+
 	}
-	
+
 	/**
      * Encripta un mensaje de texto mediante algoritmo de resumen de mensaje.
      * @return Codigo encriptado.
@@ -460,7 +459,7 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
         txtCodigo.setText(hash);
         return toHexadecimal(digest);
 	}
-	
+
 	/**
      * Convierte un arreglo de bytes a String usando valores hexadecimales
      * @param digest arreglo de bytes a convertir
@@ -475,7 +474,7 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
         }
         return hash;
     }
-    
+
     private void onLoadTipoIP() {
     	UtilData.cargarGenericData(cmbTipoIP, false);
 		Comboitem item = new Comboitem();
@@ -485,6 +484,6 @@ public class WndUsuarioHardware extends WndOpcionesMantenimiento{
 		item = new Comboitem();
 		item.setLabel("MOVIL");
 		item.setValue(2);
-		cmbTipoIP.appendChild(item);		
+		cmbTipoIP.appendChild(item);
     }
 }

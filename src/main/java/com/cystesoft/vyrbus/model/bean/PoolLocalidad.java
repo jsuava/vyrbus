@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 01/09/2016
  * Hora			: 18:08:19
@@ -14,7 +14,7 @@ package com.cystesoft.vyrbus.model.bean;
  */
 public class PoolLocalidad extends GenericBean {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Integer id;
@@ -95,7 +95,7 @@ public class PoolLocalidad extends GenericBean {
 	public void setRazonSocial(String razonSocial) {
 		this.razonSocial = razonSocial;
 	}
-	
-	
-	
+
+
+
 }

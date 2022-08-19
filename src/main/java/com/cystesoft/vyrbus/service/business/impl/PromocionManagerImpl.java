@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 18/04/2013
  */
@@ -38,7 +38,7 @@ public class PromocionManagerImpl implements PromocionManager {
 	public void setPromocionDAO(PromocionDAO promocionDAO) {
 		this.promocionDAO = promocionDAO;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.PromocionManager#buscarporId(java.lang.Long)
 	 */
@@ -54,13 +54,13 @@ public class PromocionManagerImpl implements PromocionManager {
 	public int guardarPromocion(Promocion promocion) throws Exception {
 		int result = Constantes.FAILURE;
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", promocion.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> lstDenominacion = getPromocionDAO().buscarPorX(criteriosBusqueda, null);
 			if(lstDenominacion.size()>0)
 				throw new PromocionExcepcion();
-			
+
 //			if(promocion.getId()==null)
 				getPromocionDAO().save(promocion);
 //			else
@@ -73,7 +73,7 @@ public class PromocionManagerImpl implements PromocionManager {
 		}
 		return result;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.PromocionManager#guardarPromocion(java.util.List)
@@ -95,7 +95,7 @@ public class PromocionManagerImpl implements PromocionManager {
 		}
 		return result;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.PromocionManager#buscarPromociones(java.lang.String)
 	 */
@@ -126,7 +126,7 @@ public class PromocionManagerImpl implements PromocionManager {
 	public List<Promocion> buscarPromocionesAplicables(boolean paxfre, String idCliente, String estadoRegistro, String fechaPartida) throws Exception {
 		return getPromocionDAO().buscarPromocionesAplicables(paxfre, idCliente, estadoRegistro, fechaPartida);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.PromocionManager#buscarPorTarifa(java.lang.String, java.lang.String, java.lang.String, java.lang.String)

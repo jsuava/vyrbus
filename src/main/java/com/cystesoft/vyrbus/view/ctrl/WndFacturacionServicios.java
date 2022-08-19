@@ -1,7 +1,7 @@
 /**
  * Proyecto		: VYRBUS
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Avalos
  * Fecha		: 24 jun. 2021
  * Hora			: 20:41:09
@@ -81,8 +81,6 @@ import com.cystesoft.vyrbus.service.util.WSFE;
 import com.cystesoft.vyrbus.view.ui.DlgMessage;
 import com.cystesoft.vyrbus.view.ui.WndBase;
 
-import oracle.net.aso.l;
-
 /**
  * @author Jose
  *
@@ -90,7 +88,7 @@ import oracle.net.aso.l;
 public class WndFacturacionServicios extends WndBase {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private Combobox cmbTipoComprobante;
 	private Combobox cmbFormaPago;
 	private Combobox cmbTipoCobranza;
@@ -118,20 +116,20 @@ public class WndFacturacionServicios extends WndBase {
 	private Datebox dtbxDesde;
 	private Datebox dtbxHasta;
 	private Listbox listboxLista;
-	
+
 
 	private CanalVenta canalVenta = null;
 	private Date fechaLiquidacion = null;
 	private Liquidacion liquidacion = null;
-		
-	
+
+
 	public static final int SEARCH_BY_DOCUMENTO = 1;
 	public static final int SEARCH_BY_NOMBRES = 2;
 	public static final int SEARCH_BY_RAZON = 3;
-	
+
 	private VentaPasaje servicioEspecial;
 
-	
+
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.view.ui.WndBase#onCreate()
 	 */
@@ -139,7 +137,7 @@ public class WndFacturacionServicios extends WndBase {
 	public void onCreate() throws Exception {
 		canalVenta = (CanalVenta)this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_CANAL_VENTA);
 		fechaLiquidacion = (Date)this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION);
-		
+
 		dtbxDesde.setValue(new Date());
 		dtbxHasta.setValue(new Date());
 	}
@@ -152,10 +150,10 @@ public class WndFacturacionServicios extends WndBase {
 		dtbxDesde = (Datebox)getFellow("dtbxDesde");
 		dtbxHasta = (Datebox)getFellow("dtbxHasta");
 		listboxLista = (Listbox)getFellow("listboxLista");
-		
-		wndFacturacionServicios = (Window)getFellow("wndFacturacionServicios");		
+
+		wndFacturacionServicios = (Window)getFellow("wndFacturacionServicios");
 	}
-	
+
 	/**
 	 * Limpia los controles del cliente.
 	 */
@@ -174,10 +172,10 @@ public class WndFacturacionServicios extends WndBase {
 		dbxTotalResumen.setValue(0.00);
 		onLoadEspecieValorada();
 	}
-	
+
 //	public void verificarClienteSunat()throws WrongValueException, Exception{
-	public void verificarClienteSunat()throws Exception{		
-		if(!(txtDocumento.getText().trim().isEmpty())){			
+	public void verificarClienteSunat()throws Exception{
+		if(!(txtDocumento.getText().trim().isEmpty())){
 			String nroDocumento=txtDocumento.getText().trim();
 			//Consulta RUC EN sunat
 			List<String> ruc = RESTCiva.getDatosRuc(nroDocumento);
@@ -189,9 +187,9 @@ public class WndFacturacionServicios extends WndBase {
 			}else{
 				onCleanControls();
 			}
-		}		
+		}
 	}
-		
+
 	/**
 	 * Limpia los controles para un nuevo documento
 	 */
@@ -204,7 +202,7 @@ public class WndFacturacionServicios extends WndBase {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.view.ui.IOpcionesMantenimiento#onSearch()
 	 */
@@ -213,7 +211,7 @@ public class WndFacturacionServicios extends WndBase {
 			String numComprobante = txtComprobante.getText().trim().isEmpty()?null:txtComprobante.getText().trim();
 			String fechaInicio = Util.DatetoString(dtbxDesde.getValue(), Constantes.DATE_FORMAT);
 			String fechaFin = Util.DatetoString(dtbxHasta.getValue(), Constantes.DATE_FORMAT);
-			
+
 			List<VentaPasaje> lstVentas = ServiceLocator.getVentaPasajesManager().buscarFacturasServicioEspecial(numComprobante, fechaInicio, fechaFin);
 			if(lstVentas.size()>0)
 				listarRegistros(lstVentas);
@@ -224,55 +222,55 @@ public class WndFacturacionServicios extends WndBase {
 			DlgMessage.error(e.getMessage());
 		}
 	}
-	
+
 	public void listarRegistros(List<VentaPasaje> arrayList) {
-		
+
 		Listitem item=null;
 		Listcell cell=null;
 		int x=1;
-		
+
 		Util.limpiarListbox(listboxLista);
-		
+
 		for(VentaPasaje ventaPasaje: arrayList){
 			item=new Listitem();
 			cell=new Listcell(String.valueOf(x++));
 			item.appendChild(cell);
-			
+
 			cell=new Listcell(ventaPasaje.getTipoComprobante().getDenominacion());
 			item.appendChild(cell);
-			
+
 			cell=new Listcell(ventaPasaje.getNumeroBoleto());
 			item.appendChild(cell);
-			
+
 			cell=new Listcell(Util.DatetoString(ventaPasaje.getFechaLiquidacion(), Constantes.DATE_FORMAT));
 			item.appendChild(cell);
-			
+
 			if(ventaPasaje.getCliente()!=null)
 				cell=new Listcell(ventaPasaje.getCliente().getNumeroDocumento());
 			else
 				cell=new Listcell(ventaPasaje.getPasajero().getNumeroDocumento());
 			cell.setStyle("font-size:11px !important");
 			item.appendChild(cell);
-			
+
 			if(ventaPasaje.getCliente()!=null)
 				cell=new Listcell(ventaPasaje.getCliente().getRazonSocial());
 			else
 				cell=new Listcell(ventaPasaje.getPasajero().getNombresApellidos());
 			cell.setStyle("font-size:11px !important");
 			item.appendChild(cell);
-			
+
 			cell=new Listcell(ventaPasaje.getFormaPago().getDenominacion());
 			cell.setStyle("font-size:11px !important");
 			item.appendChild(cell);
-			
+
 			cell=new Listcell(Util.toNumberFormat(ventaPasaje.getTarifa()/1.18, 2));
 			cell.setStyle("font-size:11px !important");
 			item.appendChild(cell);
-			
+
 			cell=new Listcell(Util.toNumberFormat(ventaPasaje.getIgv(), 2));
 			cell.setStyle("font-size:11px !important");
 			item.appendChild(cell);
-			
+
 			cell=new Listcell(Util.toNumberFormat(ventaPasaje.getImportePagado(), 2));
 			cell.setStyle("font-size:11px !important");
 			item.appendChild(cell);
@@ -282,23 +280,25 @@ public class WndFacturacionServicios extends WndBase {
 			imgAnular.setSrc("/resources/mp_anular.png");
 			imgAnular.setTooltiptext("Anular documento electrónico");
 			imgAnular.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+				@Override
 				public void onEvent(Event e) {
 					anularComprobante(e.getTarget().getId());
 				}
 			});
 			cell.appendChild(imgAnular);
 			item.appendChild(cell);
-			
+
 			item.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
+				@Override
 				public void onEvent(Event e) {
 					VentaPasaje ventaPasaje=((VentaPasaje)listboxLista.getSelectedItem().getValue());
 					verFacturacion(ventaPasaje);
 				}
 			});
-			
+
 			item.setValue(ventaPasaje);
 			listboxLista.appendChild(item);
-		}		
+		}
 	}
 
 	/* (non-Javadoc)
@@ -314,8 +314,8 @@ public class WndFacturacionServicios extends WndBase {
 				throw new DireccionFacturacionNullException();
 			else if(!(cmbFormaPago.getSelectedItem().getValue() instanceof FormaPago))
 				throw new FormaPagoNullException();
-			else if(cmbFormaPago.getSelectedItem().getValue() instanceof FormaPago 
-					&& ((FormaPago)cmbFormaPago.getSelectedItem().getValue()).getId() == Constantes.ID_FORPAG_CREDITO 
+			else if(cmbFormaPago.getSelectedItem().getValue() instanceof FormaPago
+					&& ((FormaPago)cmbFormaPago.getSelectedItem().getValue()).getId() == Constantes.ID_FORPAG_CREDITO
 					&& !(cmbTipoCobranza.getSelectedItem().getValue() instanceof TipoCobranza))
 				throw new TipoCobranzaNullException();
 			else if(dbxImporte.getValue() == null || dbxImporte.getValue()==0.0)
@@ -326,13 +326,14 @@ public class WndFacturacionServicios extends WndBase {
 				throw new TipoCambioNullException();
 			else if(txtGlosa.getText().trim().equals(""))
 				throw new DenominacionNullException();
-			
+
 			Messagebox.show("Se va registrar la Venta, ¿Desea continuar?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+				@Override
 				public void onEvent(Event e) {
 					try {
 						if(e.getName().equals("onYes")){
 							servicioEspecial = new VentaPasaje();
-							
+
 							servicioEspecial.setItinerario(new Itinerario(new Long(1)));
 							servicioEspecial.setRuta(new Ruta(1));
 							if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId() == Constantes.ID_TIPCOM_FACTURA) {
@@ -342,7 +343,7 @@ public class WndFacturacionServicios extends WndBase {
 								servicioEspecial.setCliente(null);
 								servicioEspecial.setPasajero(new Pasajero(Long.valueOf(txtIdCliente.getText())));
 							}
-							
+
 							servicioEspecial.setFormaPago((FormaPago)cmbFormaPago.getSelectedItem().getValue());
 							if(((FormaPago)cmbFormaPago.getSelectedItem().getValue()).getId() == Constantes.ID_FORPAG_CREDITO) {
 								servicioEspecial.setTipoCobranza((TipoCobranza)cmbTipoCobranza.getSelectedItem().getValue());
@@ -353,17 +354,17 @@ public class WndFacturacionServicios extends WndBase {
 								servicioEspecial.setTipoCobranza(null);
 								servicioEspecial.setEstadoDocumento(Constantes.ESTADO_DOCUMENTO_PAGADO);
 							}
-							
+
 							servicioEspecial.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_SERVICIO_ESPECIAL));
 							servicioEspecial.setServicio(new Servicio(1));
-							
+
 							servicioEspecial.setTipoComprobante((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue());
 							servicioEspecial.setNumeroBoleto(txtNumeroComprobante.getText().trim().toUpperCase());
 							servicioEspecial.setTarifa(dbxTotalResumen.getValue());
 							servicioEspecial.setImportePagado(dbxTotalResumen.getValue());
 							servicioEspecial.setTipoTransaccion(Constantes.TIPO_OPERACION_VENTA_ESPECIAL);
 							servicioEspecial.setFechaCaducidad(new Date());
-							
+
 							servicioEspecial.setFechaLiquidacion(fechaLiquidacion);
 							servicioEspecial.setAgencia(getAgencia());
 							servicioEspecial.setUsuario(getUsuario());
@@ -380,32 +381,32 @@ public class WndFacturacionServicios extends WndBase {
 							servicioEspecial.setImportePagadoTarjeta(0.0);
 							servicioEspecial.setEsFechaAbierta(0);
 							servicioEspecial.setNumeroControl("T00000");
-							
+
 							if(((TipoMoneda)cmbTipoMoneda.getSelectedItem().getValue()).getId()!=Constantes.ID_TIPMON_SOLES) {
 								servicioEspecial.setTipoMoneda((TipoMoneda)cmbTipoMoneda.getSelectedItem().getValue());
 								servicioEspecial.setTipoCambio(dbxTipoCambio.getValue());
 								servicioEspecial.setImportePagadoEquibalente(dbxTipoCambio.getValue() * servicioEspecial.getTarifa());
 							}
-							
+
 							UtilData.auditarRegistro(servicioEspecial, getUsuario(), Executions.getCurrent());
 							servicioEspecial.setUsuarioHardware(getUsuarioHardware());
 							servicioEspecial.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-							
+
 							int result = ServiceLocator.getVentaPasajesManager().guardarServicioEspecial(servicioEspecial);
-							
+
 							servicioEspecial = ServiceLocator.getVentaPasajesManager().buscarVentaById(servicioEspecial.getId());
-							
-							if(servicioEspecial.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA || 
+
+							if(servicioEspecial.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA ||
 									servicioEspecial.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_FACTURA){
 								boolean printComprobante=(false);
-								
+
 								List<VentaPasaje> listVentaPasajes= new ArrayList<>();
-								listVentaPasajes.add(servicioEspecial);				
+								listVentaPasajes.add(servicioEspecial);
 								//Aqui se envia el comprobante al servidor de Facturación Electrónica
 								/*Comentado para lanzar a pruebas Transmar*/
 								WSFE.sendVenta(listVentaPasajes, wndFacturacionServicios, printComprobante, null);
 							}
-							
+
 							if(result == Constantes.CORRECT) {
 								DlgMessage.information("La venta se registro correctamente");
 								onCleanControls();
@@ -418,7 +419,7 @@ public class WndFacturacionServicios extends WndBase {
 					}
 				}
 			});
-			
+
 		}catch(ClienteException cex) {
 			DlgMessage.information("Debe de indicar el Cliente al que se emitira el documento", txtDocumento);
 		}catch(RazonSocialNullException rsex) {
@@ -442,12 +443,12 @@ public class WndFacturacionServicios extends WndBase {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void onClose() {
 		closeTabWindow();
 	}
-	
+
 //	public void mantenimientoRegistro (Long id) throws Exception {
 //		servicioEspecial = ServiceLocator.getVentaPasajesManager().buscarPorId(id);
 //		TipoComprobante oTipoComprobante = servicioEspecial.getTipoComprobante();
@@ -456,9 +457,9 @@ public class WndFacturacionServicios extends WndBase {
 //		TipoCobranza oTipoCobranza = servicioEspecial.getTipoCobranza();
 //		Cliente oCliente = servicioEspecial.getCliente();
 //		Pasajero oPasajero = servicioEspecial.getPasajero();
-//		
+//
 //		textboxId.setText(String.valueOf(servicioEspecial.getId()));
-//		
+//
 //		if(oTipoComprobante != null){
 //			Util.seleccionarValorItemCombo(TipoComprobante.class, cmbTipoComprobante, oTipoComprobante.getId());
 //		}
@@ -472,7 +473,7 @@ public class WndFacturacionServicios extends WndBase {
 ////			Util.seleccionarValorItemCombo(TipoCobranza.class, cboGrupoMantenimiento, oTipoCobranza.getId());
 ////		}
 //		txtNumeroComprobante.setText(servicioEspecial.getNumeroBoleto());
-//		
+//
 //		if(servicioEspecial.getCliente()!=null) {
 //			txtDocumento.setText(servicioEspecial.getCliente().getNumeroDocumento());
 //			txtCliente.setText(servicioEspecial.getCliente().getRazonSocial());
@@ -482,7 +483,7 @@ public class WndFacturacionServicios extends WndBase {
 //			txtCliente.setText(servicioEspecial.getPasajero().getNombresApellidos());
 //			txtDireccion.setText(servicioEspecial.getPasajero().getDireccion());
 //		}
-//		
+//
 //		txtGlosa.setText((servicioEspecial.getObservaciones()));
 //		dbxImporte.setValue(servicioEspecial.getTarifa());
 //		dbxImporteResumen.setValue(servicioEspecial.getTarifa());
@@ -492,7 +493,7 @@ public class WndFacturacionServicios extends WndBase {
 //		calcularPagos();
 //		disabledControls(false);
 //	}
-	
+
 	public void disabledControls(boolean estado) {
 		cmbTipoComprobante.setReadonly(estado);
 		txtNumeroComprobante.setReadonly(!estado);
@@ -507,60 +508,61 @@ public class WndFacturacionServicios extends WndBase {
 		dbxIGVResumen.setReadonly(!estado);
 		dbxTotalResumen.setReadonly(!estado);
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	private Window onCreateWindowNewFactura() throws Exception {
 		Caption caption = null;
 		Column column = null;
 		Row row = null;
 		Label label = null;
-		
+
 		final Window win = new Window("", "normal", true);
 		win.setWidth("690px");
 		caption = new Caption("FACTURACION DE SERVICIOS ESPECIALES");
 		win.appendChild(caption);
-		
+
 		Grid grid = new Grid();
 		grid.setStyle("border:none");
-		
+
 		Columns columns = new Columns();
-		
+
 		column = new Column();
 		column.setAlign("right");
 		column.setWidth("120px");
 		columns.appendChild(column);
-		
+
 		column = new Column();
 		column.setWidth("130px");
 		columns.appendChild(column);
-		
+
 		column = new Column();
 		column.setAlign("right");
 		column.setWidth("40px");
 		columns.appendChild(column);
-		
+
 		column = new Column();
 		column.setWidth("100px");
 		columns.appendChild(column);
-		
+
 		column = new Column();
 		column.setAlign("right");
 		column.setWidth("110px");
 		columns.appendChild(column);
-		
+
 		column = new Column();
 		columns.appendChild(column);
-		
+
 		grid.appendChild(columns);
-		
+
 		Rows rows = new Rows();
-		
+
 		row = new Row();
 		label = new Label("TIPO COMPROBANTE :");
 		row.appendChild(label);
-		
+
 		cmbTipoComprobante = new Combobox();
 		cmbTipoComprobante.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) {
 				txtDocumento.setFocus(true);
 			}
@@ -568,32 +570,33 @@ public class WndFacturacionServicios extends WndBase {
 		cmbTipoComprobante.setWidth("110px");
 		cmbTipoComprobante.setDisabled(true);
 		row.appendChild(cmbTipoComprobante);
-		
+
 		label = new Label();
 		row.appendChild(label);
-		
+
 		label = new Label();
 		row.appendChild(label);
-		
+
 		label = new Label("N° COMPROBANTE :");
 		label.setStyle("color:blue; font-weight: bold;");
 		row.appendChild(label);
-		
+
 		txtNumeroComprobante = new Textbox();
 		txtNumeroComprobante.setDisabled(true);
 		txtNumeroComprobante.setWidth("130px");
 		txtNumeroComprobante.setStyle("font-weight:bold; font-size:14px !important; text-align: center;");
 		row.appendChild(txtNumeroComprobante);
-		
+
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		label = new Label("RUC :");
 		row.appendChild(label);
-		
+
 		Hlayout hlayout = new Hlayout();
 		txtDocumento = new Textbox();
 		txtDocumento.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) {
 				buscarCliente();
 			}
@@ -607,54 +610,55 @@ public class WndFacturacionServicios extends WndBase {
 		txtIdCliente.setVisible(false);
 		hlayout.appendChild(txtIdCliente);
 		row.appendChild(hlayout);
-		
+
 		label = new Label();
 		row.appendChild(label);
-		
+
 		label = new Label();
 		row.appendChild(label);
-		
+
 		label = new Label();
 		row.appendChild(label);
-		
+
 		label = new Label();
 		row.appendChild(label);
-		
+
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		row.setSpans("1,5");
-		
+
 		label = new Label("RAZON SOCIAL :");
 		row.appendChild(label);
-		
+
 		txtCliente = new Textbox();
 		txtCliente.setWidth("520px");
 		txtCliente.setReadonly(true);
 		row.appendChild(txtCliente);
-		
+
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		row.setSpans("1,5");
-		
+
 		label = new Label("DIRECCION :");
 		row.appendChild(label);
-		
+
 		txtDireccion = new Textbox();
 		txtDireccion.setWidth("520px");
 		txtDireccion.setReadonly(true);
 		row.appendChild(txtDireccion);
-		
+
 		rows.appendChild(row);
-		
+
 		row = new Row();
-		
+
 		label = new Label("FORMA PAGO :");
 		row.appendChild(label);
-		
+
 		cmbFormaPago = new Combobox();
 		cmbFormaPago.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) {
 				if(cmbFormaPago.getSelectedItem()!= null && cmbFormaPago.getSelectedItem().getValue() instanceof FormaPago && ((FormaPago)cmbFormaPago.getSelectedItem().getValue()).getId()==Constantes.ID_FORPAG_CONTADO)
 					dbxImporte.setFocus(true);
@@ -664,12 +668,13 @@ public class WndFacturacionServicios extends WndBase {
 		});
 		cmbFormaPago.setWidth("110px");
 		row.appendChild(cmbFormaPago);
-		
+
 		label = new Label("TIPO :");
 		row.appendChild(label);
-		
+
 		cmbTipoCobranza = new Combobox();
 		cmbTipoCobranza.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) {
 				dbxImporte.setFocus(true);
 			}
@@ -677,14 +682,15 @@ public class WndFacturacionServicios extends WndBase {
 		cmbTipoCobranza.setWidth("90px");
 		cmbTipoCobranza.setDisabled(true);
 		row.appendChild(cmbTipoCobranza);
-		
+
 		label = new Label("IMPORTE :");
 		label.setStyle("color:red; font-weight: bold;");
 		row.appendChild(label);
-		
+
 		hlayout = new Hlayout();
 		dbxImporte = new Doublebox();
 		dbxImporte.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) {
 				cmbTipoMoneda.setFocus(true);
 			}
@@ -697,14 +703,15 @@ public class WndFacturacionServicios extends WndBase {
 		chkIGV = new Checkbox("Incluido IGV");
 		hlayout.appendChild(chkIGV);
 		row.appendChild(hlayout);
-		
+
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		label = new Label("MONEDA :");
 		row.appendChild(label);
 		cmbTipoMoneda = new Combobox();
 		cmbTipoMoneda.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) {
 				if(cmbTipoMoneda.getSelectedItem().getValue() instanceof TipoMoneda) {
 					if(((TipoMoneda)cmbTipoMoneda.getSelectedItem().getValue()).getId()==Constantes.ID_TIPMON_SOLES)
@@ -722,6 +729,7 @@ public class WndFacturacionServicios extends WndBase {
 		row.appendChild(label);
 		dbxTipoCambio = new Doublebox();
 		dbxTipoCambio.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) {
 				txtGlosa.setFocus(true);
 			}
@@ -730,12 +738,12 @@ public class WndFacturacionServicios extends WndBase {
 		dbxTipoCambio.setDisabled(true);
 		dbxTipoCambio.setLocale(Locale.US);
 		row.appendChild(dbxTipoCambio);
-		
+
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		row.setSpans("1,5");
-		
+
 		label = new Label("GLOSA :");
 		row.appendChild(label);
 		txtGlosa = new Textbox();
@@ -743,9 +751,9 @@ public class WndFacturacionServicios extends WndBase {
 		txtGlosa.setHeight("90px");
 		txtGlosa.setWidth("520px");
 		row.appendChild(txtGlosa);
-		
+
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		row.setSpans("6");
 		row.setStyle("text-align:center");
@@ -759,49 +767,49 @@ public class WndFacturacionServicios extends WndBase {
 		groupbox.appendChild(caption);
 		groupbox.setClosable(true);
 		//groupbox.setSclass("detalle");
-		
+
 		Grid grdPagos = new Grid();
 		grdPagos.setStyle("border:none");
-		
+
 		columns = new Columns();
 		column = new Column();
 		column.setWidth("95px");
 		column.setAlign("right");
 		columns.appendChild(column);
-		
+
 		column = new Column();
 		column.setWidth("95px");
 		column.setAlign("left");
 		columns.appendChild(column);
-		
+
 		column = new Column();
 		column.setWidth("95px");
 		column.setAlign("right");
 		columns.appendChild(column);
-		
+
 		column = new Column();
 		column.setWidth("95px");
 		column.setAlign("left");
 		columns.appendChild(column);
-		
+
 		column = new Column();
 		column.setWidth("95px");
 		column.setAlign("right");
 		columns.appendChild(column);
-		
+
 		column = new Column();
 		column.setAlign("left");
 		columns.appendChild(column);
-		
+
 		grdPagos.appendChild(columns);
-		
+
 		Rows rowsPagos = new Rows();
 		Row rowPagos = new Row();
-		
+
 		label = new Label("SUB TOTAL :");
 		label.setStyle("color:red; font-weight: bold;");
 		rowPagos.appendChild(label);
-		
+
 		dbxImporteResumen = new Doublebox();
 		dbxImporteResumen.setFormat("###,##0.00");
 		dbxImporteResumen.setWidth("70px");
@@ -809,11 +817,11 @@ public class WndFacturacionServicios extends WndBase {
 		dbxImporteResumen.setLocale(Locale.US);
 		dbxImporteResumen.setReadonly(true);
 		rowPagos.appendChild(dbxImporteResumen);
-		
+
 		label = new Label("IGV :");
 		label.setStyle("color:red; font-weight: bold;");
 		rowPagos.appendChild(label);
-		
+
 		dbxIGVResumen = new Doublebox();
 		dbxIGVResumen.setFormat("###,##0.00");
 		dbxIGVResumen.setWidth("70px");
@@ -821,11 +829,11 @@ public class WndFacturacionServicios extends WndBase {
 		dbxIGVResumen.setLocale(Locale.US);
 		dbxIGVResumen.setReadonly(true);
 		rowPagos.appendChild(dbxIGVResumen);
-		
+
 		label = new Label("IMPORTE TOTAL :");
 		label.setStyle("color:red; font-weight: bold;");
 		rowPagos.appendChild(label);
-		
+
 		dbxTotalResumen = new Doublebox();
 		dbxTotalResumen.setFormat("###,##0.00");
 		dbxTotalResumen.setWidth("70px");
@@ -833,22 +841,23 @@ public class WndFacturacionServicios extends WndBase {
 		dbxTotalResumen.setLocale(Locale.US);
 		dbxTotalResumen.setReadonly(true);
 		rowPagos.appendChild(dbxTotalResumen);
-		
+
 		rowsPagos.appendChild(rowPagos);
 		grdPagos.appendChild(rowsPagos);
 		groupbox.appendChild(grdPagos);
-		
+
 		row.appendChild(groupbox);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		row.setSpans("6");
-		
+
 		Hbox hbox = new Hbox();
 		hbox.setAlign("center");
-		
+
 		Button btnGuardar = new Button("Guardar");
 		btnGuardar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) throws Exception {
 				onSave(win);
 			}
@@ -857,13 +866,14 @@ public class WndFacturacionServicios extends WndBase {
 		btnGuardar.setSclass("btnCommandL");
 		btnGuardar.setStyle("width: 90px");
 		hbox.appendChild(btnGuardar);
-		
+
 		Separator separator = new Separator();
 		separator.setWidth("15px");
 		hbox.appendChild(separator);
-		
+
 		Button btnCancelar = new Button("Cancelar");
 		btnCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) {
 				win.onClose();
 			}
@@ -872,21 +882,22 @@ public class WndFacturacionServicios extends WndBase {
 		btnCancelar.setSclass("btnCommandL");
 		btnCancelar.setStyle("width: 90px");
 		hbox.appendChild(btnCancelar);
-		
+
 		row.appendChild(hbox);
 		rows.appendChild(row);
-		
+
 		grid.appendChild(rows);
 		win.appendChild(grid);
-		
+
 		onLoadFormaPago();
 		UtilData.cargarTipoComprobanteSunat(cmbTipoComprobante, false);
 		UtilData.cargarDataCombo(cmbTipoCobranza, TipoCobranza.class, false);
 		UtilData.cargarTipoMoneda(cmbTipoMoneda, false);
 		cmbTipoComprobante.setSelectedIndex(2);
 		onLoadEspecieValorada();
-		
+
 		cmbTipoComprobante.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) {
 				onLoadEspecieValorada();
 				onCleanControls();
@@ -894,8 +905,9 @@ public class WndFacturacionServicios extends WndBase {
 				txtDocumento.setFocus(true);
 			}
 		});
-		
+
 		cmbFormaPago.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) {
 				if(cmbFormaPago.getSelectedItem().getValue() instanceof FormaPago) {
 					if(((FormaPago)cmbFormaPago.getSelectedItem().getValue()).getId()==Constantes.ID_FORPAG_CREDITO)
@@ -905,54 +917,57 @@ public class WndFacturacionServicios extends WndBase {
 				}
 			}
 		});
-		
+
 		dbxImporte.addEventListener(Events.ON_BLUR, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) {
 				calcularPagos();
 			}
 		});
-		
+
 		chkIGV.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) {
 				calcularPagos();
 			}
 		});
-		
+
 		imgBuscar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) {
 				buscarCliente();
 			}
 		});
-		
+
 		cmbTipoMoneda.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) {
-				if(cmbTipoMoneda.getSelectedItem().getValue() instanceof TipoMoneda && ((TipoMoneda)cmbTipoMoneda.getSelectedItem().getValue()).getId()!=Constantes.ID_TIPMON_SOLES) 
+				if(cmbTipoMoneda.getSelectedItem().getValue() instanceof TipoMoneda && ((TipoMoneda)cmbTipoMoneda.getSelectedItem().getValue()).getId()!=Constantes.ID_TIPMON_SOLES)
 					dbxTipoCambio.setDisabled(false);
-				else 
+				else
 					dbxTipoCambio.setDisabled(true);
-				
+
 				dbxTipoCambio.setValue(null);
 			}
-		});		
-		
-		
+		});
+
+
 		return win;
 	}
-	
+
 	public void onLoadFormaPago() {
 		try{
-			TreeMap<String, Object> parametros = new TreeMap<String, Object>();
+			TreeMap<String, Object> parametros = new TreeMap<>();
 			parametros.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-			ArrayList<String> criteriosOrdenar = new ArrayList<String>();
+			ArrayList<String> criteriosOrdenar = new ArrayList<>();
 			criteriosOrdenar.add("denominacion");
 			ArrayList<FormaPago> lstFormaPago = ServiceLocator.getFormaPagoManager().buscarPorX(parametros, criteriosOrdenar);
-			UtilData.cargarGenericData(cmbFormaPago, false);	
-			for (int l = 0; l < lstFormaPago.size(); l ++) {
-				FormaPago oFormaPago = lstFormaPago.get(l);
+			UtilData.cargarGenericData(cmbFormaPago, false);
+			for (FormaPago oFormaPago : lstFormaPago) {
 				if(oFormaPago.getId()!=Constantes.ID_FORPAG_CORTESIA) {
-				Comboitem oComboitem = new Comboitem();	
+				Comboitem oComboitem = new Comboitem();
 				oComboitem.setValue(oFormaPago);
-				oComboitem.setLabel(oFormaPago.getDenominacion());	
+				oComboitem.setLabel(oFormaPago.getDenominacion());
 				cmbFormaPago.appendChild(oComboitem);
 				}
 			}
@@ -960,7 +975,7 @@ public class WndFacturacionServicios extends WndBase {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	private void onLoadEspecieValorada() {
 		try {
 			ControlEspecieValorada controlEspecieValorada = null;
@@ -973,19 +988,19 @@ public class WndFacturacionServicios extends WndBase {
 			DlgMessage.information(ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Busca los clientes de acuerdo al criterio de busqueda.
 	 * @param criterio	: Puede ser DOCUMENTO o RAZON SOCIAL.
 	 */
 	public void buscarCliente(){
 		try{
-			TreeMap<String, Object> criterioBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criterioBusqueda = new TreeMap<>();
 			if(!(txtDocumento.getText().trim().isEmpty())){
 				if(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId() == Constantes.ID_TIPCOM_FACTURA) {
 					ArrayList<Cliente> lstClientes = null;
 					criterioBusqueda.put("numeroDocumento", txtDocumento.getText().toUpperCase()+"%");
-					List<String> criteriosOrdenar = new ArrayList<String>();
+					List<String> criteriosOrdenar = new ArrayList<>();
 					criteriosOrdenar.add("razonSocial");
 					criteriosOrdenar.add("numeroDocumento");
 					lstClientes = ServiceLocator.getClienteManager().buscarPorX(criterioBusqueda, criteriosOrdenar);
@@ -999,7 +1014,7 @@ public class WndFacturacionServicios extends WndBase {
 //					listarPasajero(lstPasajeros);
 				}
 			}else {
-				
+
 			}
 		}catch(Exception ex){
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
@@ -1007,14 +1022,14 @@ public class WndFacturacionServicios extends WndBase {
 			log.error(ex);
 		}
 	}
-	
+
 	/**
 	 * Permite crear un array de array para luego cargarlos en un listbox.
 	 * @param lstRegistros	: ArrayList con los datos de los clientes encontrados.
 	 * @throws Exception
 	 */
 	private void listarCliente(ArrayList<Cliente> lstRegistros)throws Exception{
-		
+
 		if(lstRegistros.size()==1){
 			Cliente cliente = lstRegistros.get(0);
 			txtCliente.setText(cliente.getRazonSocial());
@@ -1030,7 +1045,7 @@ public class WndFacturacionServicios extends WndBase {
 			verificarClienteSunat();
 		}
 	}
-	
+
 	public void calcularPagos() {
 		if(dbxImporte.getValue() != null) {
 			if(chkIGV.isChecked()) {
@@ -1044,7 +1059,7 @@ public class WndFacturacionServicios extends WndBase {
 			}
 		}
 	}
-	
+
 	public void anularComprobante(String idComprobante) {
 		try {
 			VentaPasaje ventaServicioEspecial = ServiceLocator.getVentaPasajesManager().buscarPorId(Long.valueOf(idComprobante));
@@ -1055,7 +1070,7 @@ public class WndFacturacionServicios extends WndBase {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	private Window createVentanaAnulacion(final VentaPasaje ventaOriginal){
 		Caption caption = null;
@@ -1069,13 +1084,13 @@ public class WndFacturacionServicios extends WndBase {
 		Label label = null;
 		Textbox text = null;
 		Radiogroup radiogroup = new Radiogroup();
-		
+
 		final Window win = new Window("", "normal", true);
 		win.setWidth("520px");
-		
+
 		caption = new Caption("ANULACION DE COMPROBANTE", "resources/mp_anular.png");
 		win.appendChild(caption);
-		
+
 		groupbox = new Groupbox();
 		groupbox.setMold("3d");
 		groupbox.setClosable(false);
@@ -1090,15 +1105,15 @@ public class WndFacturacionServicios extends WndBase {
 		rdAnulacionNC.setStyle("color: blue");
 		radiogroup.appendChild(rdAnulacionNC);
 		groupbox.appendChild(radiogroup);
-		
+
 		groupbox.appendChild(new Separator("horizontal"));
-		
+
 		groupboxDetalle = new Groupbox();
 		groupboxDetalle.setMold("3d");
 		groupboxDetalle.setClosable(false);
 		caption = new Caption("DATOS DEL COMPROBANTE");
 		groupboxDetalle.appendChild(caption);
-		
+
 		/*	Columna 1	*/
 		column = new Column();
 		column.setAlign("right");
@@ -1113,26 +1128,26 @@ public class WndFacturacionServicios extends WndBase {
 		/*	Columna 4	*/
 		column = new Column();
 		columns.appendChild(column);
-		
+
 		grid.appendChild(columns);
-		
-		row = new Row();		
+
+		row = new Row();
 		label = new Label("NUMERO COMPROBANTE :");
-		row.appendChild(label);		
+		row.appendChild(label);
 		text = new Textbox(ventaOriginal.getNumeroBoleto());
 		text.setReadonly(true);
 		text.setWidth("80px");
 		text.setStyle("font-size:11px !important");
-		row.appendChild(text);		
+		row.appendChild(text);
 		label = new Label("FECHA EMISION :");
-		row.appendChild(label);		
+		row.appendChild(label);
 		text = new Textbox(ventaOriginal.getFechaLiquidacion()==null?"":Util.DatetoString(ventaOriginal.getFechaLiquidacion(), Constantes.DATE_FORMAT));
 		text.setReadonly(true);
 		text.setWidth("80px");
 		text.setStyle("font-size:11px !important");
-		row.appendChild(text);		
+		row.appendChild(text);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		row.setSpans("1,3");
 		label = new Label("CLIENTE :");
@@ -1141,46 +1156,46 @@ public class WndFacturacionServicios extends WndBase {
 		text.setReadonly(true);
 		text.setWidth("314px");
 		text.setStyle("font-size:11px !important");
-		row.appendChild(text);		
+		row.appendChild(text);
 		rows.appendChild(row);
-		
-		row = new Row();		
+
+		row = new Row();
 		label = new Label("RUC / DNI :");
-		row.appendChild(label);		
+		row.appendChild(label);
 		text = new Textbox(ventaOriginal.getCliente()==null?ventaOriginal.getPasajero().getNumeroDocumento():ventaOriginal.getCliente().getNumeroDocumento());
 		text.setReadonly(true);
 		text.setWidth("100px");
 		text.setStyle("font-size:12px !important; font-weight: bold; text-align: center;");
-		row.appendChild(text);		
+		row.appendChild(text);
 		label = new Label("IMPORTE :");
-		row.appendChild(label);		
+		row.appendChild(label);
 		text = new Textbox(Util.toNumberFormat(ventaOriginal.getImportePagado(), 2));
 		text.setReadonly(true);
 		text.setWidth("80px");
 		text.setStyle("font-size:12px !important; color: red; font-weight: bold; text-align: right;");
-		row.appendChild(text);		
+		row.appendChild(text);
 		rows.appendChild(row);
-		
+
 		row=new Row();
 		row.setSpans("1,4");
 		label = new Label("MOTIVO ANULACIÓN (*) :");
-		row.appendChild(label);		
+		row.appendChild(label);
 		final Textbox txtMotivoAnulacion = new Textbox();
 		txtMotivoAnulacion.setWidth("314px");
 		txtMotivoAnulacion.setMultiline(true);
 		txtMotivoAnulacion.setRows(3);
 		txtMotivoAnulacion.setMaxlength(255);
 		txtMotivoAnulacion.setStyle("font-size:11px !important");
-		row.appendChild(txtMotivoAnulacion);		
+		row.appendChild(txtMotivoAnulacion);
 		rows.appendChild(row);
-		
-		
+
+
 		grid.appendChild(rows);
 		groupboxDetalle.appendChild(grid);
-		
+
 		groupbox.appendChild(groupboxDetalle);
 		win.appendChild(groupbox);
-		
+
 		grid = new Grid();
 		columns = new Columns();
 		column = new Column();
@@ -1192,7 +1207,7 @@ public class WndFacturacionServicios extends WndBase {
 		grid.appendChild(columns);
 		rows = new Rows();
 		row = new Row();
-		
+
 		Button button = new Button("Continuar", "resources/mp_anular.png");
 		button.setClass("btnCommandM");
 		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
@@ -1207,7 +1222,7 @@ public class WndFacturacionServicios extends WndBase {
 					public void onEvent(Event e){
 						try{
 							if(e.getName().equals("onYes")){
-								procesarAnulacion(ventaOriginal, wndAnular, txtMotivoAnulacion.getText().trim().toUpperCase());				
+								procesarAnulacion(ventaOriginal, wndAnular, txtMotivoAnulacion.getText().trim().toUpperCase());
 							}
 						}catch(Exception ex){
 							ex.printStackTrace();
@@ -1232,22 +1247,22 @@ public class WndFacturacionServicios extends WndBase {
 		button.setWidth("100px");
 		button.setFocus(true);
 		row.appendChild(button);
-		
+
 		rows.appendChild(row);
-		
+
 		grid.appendChild(rows);
 		win.appendChild(grid);
 		return win;
 	}
-	
-	private void procesarAnulacion(VentaPasaje ventaServicioEspecial, Window window, String motivo)throws Exception{		
+
+	private void procesarAnulacion(VentaPasaje ventaServicioEspecial, Window window, String motivo)throws Exception{
 		List<VentaPasaje>lstVentas= new ArrayList<>();
 		if(ventaServicioEspecial!=null){
 			VentaPasaje anulacion= ServiceLocator.getVentaPasajesManager().buscarPorId(ventaServicioEspecial.getId());
 			anulacion.setObservaciones(motivo);
 			lstVentas.add(anulacion);
 		}
-		
+
 		/*Determina el tipo de anulacion*/
 		int tipoAnulacion=0;
 		boolean anularMovimiento=true;
@@ -1255,9 +1270,9 @@ public class WndFacturacionServicios extends WndBase {
 			tipoAnulacion=Constantes.TIPO_ANULACION_REGULAR;
 		else if (rdAnulacionNC.isChecked())
 			tipoAnulacion=Constantes.TIPO_ANULACION_NC;
-			
+
 		liquidacion = UtilData.estadoLiquidacionUsuario(getUsuario(), getAgencia());
-		
+
 		VentasNotas ventasNotas= ServiceLocator.getVentaPasajesManager().procesarAnulacionServicioEspecial(lstVentas, tipoAnulacion, anularMovimiento, this.liquidacion);
 		/*Realiza el envio de las nuevas ventas generadas al Servidor F.E.*/
 		List<VentaPasaje> lstVentasenviar= new ArrayList<>();
@@ -1268,17 +1283,17 @@ public class WndFacturacionServicios extends WndBase {
 		/*	COMENTADO PARA LANZAR EL ENTORNO DE PRUEBAS EN TRANSMAR	*/
 //		if(lstVentasenviar.size()>0)
 //			WSFE.sendVenta(lstVentasenviar, window, false, null);
-//		
+//
 //		/*Realiza el envio de las notas de credito generadas al Servidor F.E.*/
 //		for(VentaPasaje notaCredito:ventasNotas.getListNotasCredito()){
 //			WSFE.sendNota(notaCredito);
 //		}
 
 		DlgMessage.information("El Proceso de anulación termino correctamente");
-		
+
 		window.onClose();
 	}
-	
+
 	public void verFacturacion(VentaPasaje ventaServicioEspecial) {
 		try {
 			ventaServicioEspecial = ServiceLocator.getVentaPasajesManager().buscarPorId(ventaServicioEspecial.getId());
@@ -1289,19 +1304,19 @@ public class WndFacturacionServicios extends WndBase {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private Window onCreateWindowVerFactura(VentaPasaje venta) throws Exception {
 		Caption caption = null;
 		Column column = null;
 		Row row = null;
 		Label label = null;
 		String style = "font-size:11px !important; color:blue";
-		
+
 		final Window win = new Window("", "normal", true);
 		win.setWidth("690px");
 		caption = new Caption("INFORMACION DE LA VENTA");
 		win.appendChild(caption);
-		
+
 		Groupbox groupbox = new Groupbox();
 		groupbox.setMold("3d");
 		caption = new Caption();
@@ -1309,197 +1324,197 @@ public class WndFacturacionServicios extends WndBase {
 		caption.setStyle("color: #ffffff;");
 		groupbox.appendChild(caption);
 		groupbox.setClosable(true);
-		
+
 		Grid grid = new Grid();
 		grid.setStyle("border:none");
-		
+
 		Columns columns = new Columns();
-		
+
 		column = new Column();
 		column.setAlign("right");
 		column.setWidth("120px");
 		columns.appendChild(column);
-		
+
 		column = new Column();
 		column.setWidth("130px");
 		columns.appendChild(column);
-		
+
 		column = new Column();
 		column.setAlign("right");
 		column.setWidth("40px");
 		columns.appendChild(column);
-		
+
 		column = new Column();
 		column.setWidth("100px");
 		columns.appendChild(column);
-		
+
 		column = new Column();
 		column.setAlign("right");
 		column.setWidth("110px");
 		columns.appendChild(column);
-		
+
 		column = new Column();
 		columns.appendChild(column);
-		
+
 		grid.appendChild(columns);
-		
+
 		Rows rows = new Rows();
-		
+
 		row = new Row();
 		label = new Label("TIPO COMPROBANTE :");
 		row.appendChild(label);
-		
+
 		label = new Label();
 		label.setValue(venta.getTipoComprobante().getDenominacion());
 		label.setStyle(style);
 		row.appendChild(label);
-		
+
 		label = new Label();
 		row.appendChild(label);
-		
+
 		label = new Label();
 		row.appendChild(label);
-		
+
 		label = new Label("N° COMPROBANTE :");
 		row.appendChild(label);
-		
+
 		label = new Label();
 		label.setValue(venta.getNumeroBoleto());
 		label.setStyle("font-size:13px !important; color:red; font-weight: bold;");
 		row.appendChild(label);
-		
+
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		label = new Label("RUC :");
 		row.appendChild(label);
-		
+
 		label = new Label();
 		label.setValue(venta.getCliente().getNumeroDocumento());
 		label.setStyle(style);
 		row.appendChild(label);
-		
+
 		label = new Label();
 		row.appendChild(label);
-		
+
 		label = new Label();
 		row.appendChild(label);
-		
+
 		label = new Label();
 		row.appendChild(label);
-		
+
 		label = new Label();
 		row.appendChild(label);
-		
+
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		row.setSpans("1,5");
-		
+
 		label = new Label("RAZON SOCIAL :");
 		row.appendChild(label);
-		
+
 		label = new Label();
 		label.setValue(venta.getCliente().getRazonSocial());
 		label.setStyle(style);
 		row.appendChild(label);
-		
+
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		row.setSpans("1,5");
-		
+
 		label = new Label("DIRECCION :");
 		row.appendChild(label);
-		
+
 		label = new Label();
 		label.setValue(venta.getCliente().getDireccion());
 		label.setStyle(style);
 		row.appendChild(label);
-		
+
 		rows.appendChild(row);
-		
+
 		row = new Row();
-		
+
 		label = new Label("FORMA PAGO :");
 		row.appendChild(label);
-		
+
 		label = new Label();
 		label.setValue(venta.getFormaPago().getDenominacion());
 		label.setStyle(style);
 		row.appendChild(label);
-		
+
 		row.appendChild(new Label());
-		
+
 		row.appendChild(new Label());
-		
+
 		label = new Label("TIPO :");
 		row.appendChild(label);
-		
+
 		label = new Label();
 		label.setValue(venta.getTipoCobranza()!=null?venta.getTipoCobranza().getDenominacion():"");
 		label.setStyle(style);
 		row.appendChild(label);
-		
+
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		label = new Label("MONEDA :");
 		row.appendChild(label);
-		
+
 		label = new Label();
 		label.setValue(venta.getTipoMoneda()==null?"SOLES (S/.)":venta.getTipoMoneda().getDenominacion());
 		label.setStyle(style);
 		row.appendChild(label);
-		
+
 		row.appendChild(new Label());
-		
+
 		row.appendChild(new Label());
-		
+
 		label = new Label("TIPO CAMBIO :");
 		row.appendChild(label);
-		
+
 		label = new Label();
 		label.setValue(venta.getTipoCambio()==null?"":Util.toNumberFormat(venta.getTipoCambio(),2));
 		label.setStyle(style);
 		row.appendChild(label);
-		
+
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		label = new Label("SUB TOTAL :");
 		row.appendChild(label);
-		
+
 		label = new Label();
 		Double importe = venta.getImportePagado()-venta.getIgv();
 		label.setValue(Util.toNumberFormat(importe, 2));
 		label.setStyle("font-size:13px !important; color:red; font-weight: bold;");
 		row.appendChild(label);
-		
+
 		label = new Label("IGV :");
 		row.appendChild(label);
-		
+
 		label = new Label();
 		label.setValue(Util.toNumberFormat(venta.getIgv(), 2));
 		label.setStyle("font-size:13px !important; color:red; font-weight: bold;");
 		row.appendChild(label);
-		
+
 		label = new Label("IMPORTE :");
 		row.appendChild(label);
-		
+
 		label = new Label();
 		label.setValue(Util.toNumberFormat(venta.getImportePagado(), 2));
 		label.setStyle("font-size:13px !important; color:red; font-weight: bold;");
 		row.appendChild(label);
-		
+
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		row.setSpans("1,5");
-		
+
 		label = new Label("GLOSA :");
 		row.appendChild(label);
-		
+
 		txtGlosa = new Textbox();
 		txtGlosa.setText(venta.getObservaciones());
 		txtGlosa.setDisabled(true);
@@ -1507,17 +1522,18 @@ public class WndFacturacionServicios extends WndBase {
 		txtGlosa.setHeight("90px");
 		txtGlosa.setWidth("520px");
 		row.appendChild(txtGlosa);
-		
+
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		row.setSpans("6");
-		
+
 		Hbox hbox = new Hbox();
 		hbox.setAlign("center");
-		
+
 		Button btnCancelar = new Button("Cerrar");
 		btnCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
 			public void onEvent(Event e) {
 				win.onClose();
 			}
@@ -1526,14 +1542,14 @@ public class WndFacturacionServicios extends WndBase {
 		btnCancelar.setSclass("btnCommandL");
 		btnCancelar.setStyle("width: 90px");
 		hbox.appendChild(btnCancelar);
-		
+
 		row.appendChild(hbox);
 		rows.appendChild(row);
-		
+
 		grid.appendChild(rows);
-		groupbox.appendChild(grid);		
+		groupbox.appendChild(grid);
 		win.appendChild(groupbox);
-		
+
 		return win;
 	}
 }

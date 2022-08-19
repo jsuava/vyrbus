@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 05/01/2017
  * Hora			: 14:59:06
@@ -18,7 +18,7 @@ import java.util.Date;
 public class DetalleButaca extends GenericBean implements Serializable, Cloneable{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Long id;
@@ -35,11 +35,11 @@ public class DetalleButaca extends GenericBean implements Serializable, Cloneabl
 	private Double precioMinimo=0.0;
 	private Double precioMaximo=0.0;
 	private Date fecha;
-	
+
 	private TipoAsiento tipoAsiento; //No mapeado
 	private String ragoAsientos;	 //No mapeado
 //	private String rangoFechas;		 //No mapeado
-//	private Servicio servicio;		 //No mapeado	
+//	private Servicio servicio;		 //No mapeado
 	/**
 	 * @return the id
 	 */
@@ -232,7 +232,7 @@ public class DetalleButaca extends GenericBean implements Serializable, Cloneabl
 //	public void setServicio(Servicio servicio) {
 //		this.servicio = servicio;
 //	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see java.lang.Object#clone()

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 05/01/2017
  * Hora			: 15:40:01
@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.TreeMap;
 
 import org.springframework.transaction.annotation.Transactional;
+
 import com.cystesoft.vyrbus.model.bean.DetalleButaca;
 import com.cystesoft.vyrbus.model.bean.MapaBus;
 import com.cystesoft.vyrbus.model.bean.Usuario;
@@ -99,7 +100,7 @@ public class DetalleButacaManagerImpl implements DetalleButacaManager{
 		getDetalleButacaDAO().inactivar(id);
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.DetalleButacaManager#guardar(java.util.List, java.lang.String, java.lang.String, java.lang.Integer, com.tepsa.sisvyr.model.bean.Usuario)
 	 */
@@ -108,13 +109,13 @@ public class DetalleButacaManagerImpl implements DetalleButacaManager{
 	public int guardar(List<DetalleButaca> detalleButacas, String fechaInicial, String fechaFinal, Integer servicioId, Usuario usuario) throws Exception {
 		int isCorrect=Constantes.FAILURE;
 		System.out.println(Constantes.FORMAT_DATE_TIME_24H.format(new Date())+" - Buscando asientos..");
-		List<MapaBus> lstMApabus=ServiceLocator.getMapaBusManager().buscarMapaBus(servicioId, Constantes.VALUE_ACTIVO);;
-		
+		List<MapaBus> lstMApabus=ServiceLocator.getMapaBusManager().buscarMapaBus(servicioId, Constantes.VALUE_ACTIVO);
+
 		Date _fechaInicial=Constantes.FORMAT_DATE.parse(fechaInicial);
 		Date _fechaFinal=Constantes.FORMAT_DATE.parse(fechaFinal);
 		long cantDias=1;
 		cantDias+= (_fechaFinal.getTime()-_fechaInicial.getTime())/Constantes.MILISEGUNDOS_X_DIA;
-		for(int x=0; x<(int)cantDias;x++){						
+		for(int x=0; x<(int)cantDias;x++){
 			Date fecha= new Date(_fechaInicial.getTime()+(x*Constantes.MILISEGUNDOS_X_DIA));
 			System.out.println(Constantes.FORMAT_DATE_TIME_24H.format(new Date())+" - Obteniendo fecha "+Constantes.FORMAT_DATE.format(fecha)+"...");
 			for(DetalleButaca detalleButaca : detalleButacas) {
@@ -124,12 +125,12 @@ public class DetalleButacaManagerImpl implements DetalleButacaManager{
 //					if(oMapaBus.getTipoObjeto().intValue()==0 && oMapaBus.getNumeroAsiento()!=null && oMapaBus.getTipoAsiento()!=null){
 //						if(oMapaBus.getNumeroAsiento().intValue()==detalleButaca.getMapaBus().getNumeroAsiento().intValue() &&
 //								oMapaBus.getTipoAsiento().getId().intValue()==detalleButaca.getMapaBus().getTipoAsiento().getId().intValue()){
-//							
+//
 //							DetalleButaca nuevaTarifa=(DetalleButaca) detalleButaca.clone();
 //							nuevaTarifa.setMapaBus(oMapaBus);
 //							nuevaTarifa.setFecha(fecha);
-//							nuevaTarifa.setEstadoRegistro(Constantes.VALUE_ACTIVO);		
-//							
+//							nuevaTarifa.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+//
 //							System.out.println(Constantes.FORMAT_DATE_TIME_24H.format(new Date())+" - Validando existencia de tarifa para el asiento ("+oMapaBus.getNumeroAsiento()+") ...");
 //							/*Valida si existe una tarifa con los mismos parametros*/
 //							List<DetalleButaca> result= getDetalleButacaDAO().validarExisteTarifa(nuevaTarifa);
@@ -137,10 +138,10 @@ public class DetalleButacaManagerImpl implements DetalleButacaManager{
 //								DetalleButaca _detalleButaca=result.get(0);
 //								_detalleButaca.setEstadoRegistro(Constantes.VALUE_INACTIVO);
 //								UtilData.auditarRegistro(_detalleButaca, true, usuario, Executions.getCurrent());
-//								
+//
 //								System.out.println(Constantes.FORMAT_DATE_TIME_24H.format(new Date())+" - Anulando tarifa...");
 //								getDetalleButacaDAO().actualizar(_detalleButaca);
-//								
+//
 //								nuevaTarifa.setDetalleButacaRef(_detalleButaca);
 //								nuevaTarifa.setDetalleButacaOriginal(_detalleButaca.getDetalleButacaOriginal());
 //							}
@@ -148,7 +149,7 @@ public class DetalleButacaManagerImpl implements DetalleButacaManager{
 //							/*Inserta la nueva tarifa*/
 //							UtilData.auditarRegistro(nuevaTarifa, usuario, Executions.getCurrent());
 //							getDetalleButacaDAO().guardar(nuevaTarifa);
-//							
+//
 //							/* actualiza el idoriginal si es que un null (va ser null cuando es una tarifa completamente nueva) */
 //							if(nuevaTarifa.getDetalleButacaOriginal()==null){
 //								System.out.println(Constantes.FORMAT_DATE_TIME_24H.format(new Date())+" - actualizando id original...");
@@ -161,11 +162,11 @@ public class DetalleButacaManagerImpl implements DetalleButacaManager{
 				}
 			}
 		}
-		
 
-		
+
+
 		isCorrect=Constantes.CORRECT;
-		
+
 		return isCorrect;
 	}
 }

@@ -8,7 +8,7 @@ import com.cystesoft.vyrbus.model.bean.TipoCobranza;
 import com.cystesoft.vyrbus.model.dao.TipoCobranzaDAO;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
@@ -68,6 +68,6 @@ public class TipoCobranzaDAOImpl extends GenericDAOImpl implements TipoCobranzaD
 	public void inactivar(Long id) {
 		super.inactivate(TipoCobranza.class, id);
 	}
-	
+
 
 }

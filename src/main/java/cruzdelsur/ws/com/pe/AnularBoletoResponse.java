@@ -10,11 +10,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -26,8 +26,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "anularBoletoResult" })
@@ -39,10 +39,10 @@ public class AnularBoletoResponse {
 
 	/**
 	 * Gets the value of the anularBoletoResult property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}
 	 *         {@link ResultAnularBoleto }{@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<ResultAnularBoleto> getAnularBoletoResult() {
 		return anularBoletoResult;
@@ -50,11 +50,11 @@ public class AnularBoletoResponse {
 
 	/**
 	 * Sets the value of the anularBoletoResult property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}
 	 *            {@link ResultAnularBoleto }{@code >}
-	 * 
+	 *
 	 */
 	public void setAnularBoletoResult(JAXBElement<ResultAnularBoleto> value) {
 		this.anularBoletoResult = (value);

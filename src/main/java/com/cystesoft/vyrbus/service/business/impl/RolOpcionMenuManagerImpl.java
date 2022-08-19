@@ -12,21 +12,21 @@ import com.cystesoft.vyrbus.model.dao.RolOpcionMenuDAO;
 import com.cystesoft.vyrbus.service.business.RolOpcionMenuManager;
 
 /**
- * 
+ *
  * @author José Abanto
  *
  */
 public class RolOpcionMenuManagerImpl implements RolOpcionMenuManager{
 	private RolOpcionMenuDAO rolOpcionMenuDAO;
-	
+
 	public RolOpcionMenuDAO getRolOpcionMenuDAO(){
 		return rolOpcionMenuDAO;
 	}
-	
+
 	public void setRolOpcionMenuDAO(RolOpcionMenuDAO rolOpcionMenuDAO){
 		this.rolOpcionMenuDAO=rolOpcionMenuDAO;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.RolOpcionMenuManager#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
@@ -73,6 +73,6 @@ public class RolOpcionMenuManagerImpl implements RolOpcionMenuManager{
 	public void inactivarActivar(RolOpcionMenuID rolOpcionMenuID, String estado) {
 		getRolOpcionMenuDAO().inactivarActivar(rolOpcionMenuID, estado);
 	}
-	
+
 
 }

@@ -19,7 +19,9 @@ public class Gasto extends GenericBean implements java.io.Serializable {
 	private String codigoBus;
 	private String consignado;
 	private String observacion;
-	
+	private String nroCtacte;
+	private String horaDeposito;
+
 	//No mapeados
 	private Usuario usuario;
 	private Date fecha;
@@ -27,13 +29,34 @@ public class Gasto extends GenericBean implements java.io.Serializable {
 	private Liquidacion liquidacion;
 	private DetalleLiquidacion detalleLiquidacion;
 	private LiquidacionOficina liquidacionOficina;
-	private Integer cantidad;		
-	private Set<DetalleLiquidacion> detalleLiquidacions = new HashSet<DetalleLiquidacion>(0);
-	private Set<LiquidacionOficina> liquidacionOficinas = new HashSet<LiquidacionOficina>(0);
+	private Integer cantidad;
+	private Set<DetalleLiquidacion> detalleLiquidacions = new HashSet<>(0);
+	private Set<LiquidacionOficina> liquidacionOficinas = new HashSet<>(0);
 
 	public Gasto() {
 	}
+
 	
+	public String getNroCtacte() {
+		return nroCtacte;
+	}
+
+
+	public void setNroCtacte(String nroCtacte) {
+		this.nroCtacte = nroCtacte;
+	}
+
+
+	public String getHoraDeposito() {
+		return horaDeposito;
+	}
+
+
+	public void setHoraDeposito(String horaDeposito) {
+		this.horaDeposito = horaDeposito;
+	}
+
+
 	public Integer getId() {
 		return this.id;
 	}
@@ -89,39 +112,39 @@ public class Gasto extends GenericBean implements java.io.Serializable {
 	public void setObservacion(String observacion) {
 		this.observacion = observacion;
 	}
-	
+
 	public Agencia getAgencia(){
 		return agencia;
 	}
-	
+
 	public void setAgencia(Agencia agencia){
 		this.agencia=agencia;
 	}
-	
+
 	public Liquidacion getLiquidacion(){
 		return liquidacion;
 	}
-	
+
 	public void setLiquidacion (Liquidacion liquidacion){
 		this.liquidacion=liquidacion;
 	}
-	
+
 	public DetalleLiquidacion getDetalleLiquidacion(){
 		return detalleLiquidacion;
 	}
-	
+
 	public void setDetalleLiquidacion(DetalleLiquidacion detalleLiquidacion){
 		this.detalleLiquidacion=detalleLiquidacion;
 	}
-	
+
 	public LiquidacionOficina getLiquidacionOficina(){
 		return liquidacionOficina;
 	}
-	
+
 	public void setLiquidacionOficina(LiquidacionOficina liquidacionOficina){
 		this.liquidacionOficina=liquidacionOficina;
 	}
-	
+
 	/**
 	 * @return the cantidad
 	 */

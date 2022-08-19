@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
- * Autor		: José 
+ * Descripción	:
+ * Autor		: José
  * Fecha		: 09/11/2013
  */
 package com.cystesoft.vyrbus.service.business.impl;
@@ -23,7 +23,7 @@ import com.cystesoft.vyrbus.service.business.DetalleManifiestoManager;
 public class DetalleManifiestoManagerImpl implements DetalleManifiestoManager {
 	private DetalleManifiestoDAO detalleManifiestoDAO;
 
-	
+
 
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.DetalleManifiestoManager#buscarPorX(java.util.TreeMap, java.util.List)
@@ -94,8 +94,8 @@ public class DetalleManifiestoManagerImpl implements DetalleManifiestoManager {
 		// TODO Auto-generated method stub
 		return getDetalleManifiestoDAO().validarVentaManifiesto(idVenta);
 	}
-	
-	
-	
-	
+
+
+
+
 }

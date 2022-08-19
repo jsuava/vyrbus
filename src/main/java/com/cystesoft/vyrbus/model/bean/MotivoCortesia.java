@@ -10,7 +10,7 @@ public class MotivoCortesia extends GenericBean implements java.io.Serializable 
 	private Integer id;
 	private String denominacion;
 	private Integer codigoTitan;
-	
+
 	public MotivoCortesia() {
 	}
 

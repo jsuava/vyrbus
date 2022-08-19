@@ -67,28 +67,28 @@ import com.cystesoft.vyrbus.view.ui.WndIFrame;
 import com.cystesoft.vyrbus.view.ui.WndImprimir;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 public class WndCierreCaja extends WndBase {
 
 	private static final long serialVersionUID = -2594940987176197401L;
-	
+
 	private Datebox dbFechaInicio;
 	private Datebox dbFechaFin;
 	private Combobox cmbUsuario;
 	private Listbox listLiquidacion;
 	private Combobox cmbAgencia;
 	private Button btnBuscar;
-	
+
 	private String ATRIBUTTE_LIQUIDACION="liquidacion";
-	
+
 	@SuppressWarnings("unused")
 	private Agencia agencia=null;
 	private Window wndValidaUsuario = null;
 	private Window wndIngresoMonto = null;
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
@@ -102,7 +102,7 @@ public class WndCierreCaja extends WndBase {
 		cmbAgencia=(Combobox) this.getFellow("cmbAgencia");
 		btnBuscar=(Button)this.getFellow("btnBuscar");
 	}
-	
+
 	/*
 	 * Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
@@ -113,21 +113,21 @@ public class WndCierreCaja extends WndBase {
 		agencia = (Agencia) getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
 		/**************************************************/
 		MyTime time = new MyTime();
-		Date date = Constantes.FORMAT_DATE_TIME_24H.parse(time.dateServer()); 
+		Date date = Constantes.FORMAT_DATE_TIME_24H.parse(time.dateServer());
 
 		dbFechaFin.setValue(date);
 		Date fechaInico=new Date();
 		fechaInico.setTime(date.getTime()-(Constantes.MILISEGUNDOS_X_DIA * 2));
 		dbFechaInicio.setValue(fechaInico);
-				
+
 		UtilData.cargarAgenciaXtipoAgencia(cmbAgencia, getAgencia().getTipoAgencia().getId().intValue(), true);
 		Util.seleccionarValorItemCombo(Agencia.class, cmbAgencia, getAgencia().getId());
-		
+
 		UtilData.cargarUsuariosLiquidacion(cmbUsuario, Constantes.FORMAT_DATE.format(fechaInico), Constantes.FORMAT_DATE.format(dbFechaFin.getValue()), true, getAgencia().getId());
 		Util.seleccionarValorItemCombo(Usuario.class, cmbUsuario, getUsuario().getId());
 		if(cmbUsuario.getSelectedIndex()==-1)
 			cmbUsuario.setSelectedIndex(0);
-		
+
 		//Realiza la busqueda liquidaciones
 		if(cmbUsuario.getSelectedIndex()>0)
 			buscarLiquidacion();
@@ -135,31 +135,32 @@ public class WndCierreCaja extends WndBase {
 			cmbAgencia.setDisabled(true);
 		else{
 			//roles que tiene acceso al control cmbagencia
-			List<Component>components=new ArrayList<Component>();
+			List<Component>components=new ArrayList<>();
 			components.add(cmbAgencia);
-			List<Rol>rolAcceso=new ArrayList<Rol>();
+			List<Rol>rolAcceso=new ArrayList<>();
 			rolAcceso.add(new Rol(Constantes.ID_ROL_SUPER_USUARIO));
 			rolAcceso.add(new Rol(Constantes.ID_ROL_FISCALIZACION));
+			rolAcceso.add(new Rol(Constantes.ID_ROL_ADMIN));
 			accesoControlsByRol(components, rolAcceso);
-			
+
 			//roles que tiene acceso al control cmbusuario
-			components=new ArrayList<Component>();
+			components=new ArrayList<>();
 			components.add(cmbUsuario);
 			rolAcceso.add(new Rol(Constantes.ID_ROL_ADMIN_PUNTO_VENTA));
 			accesoControlsByRol(components, rolAcceso);
-			
-			
+
+
 			onLoadDatosDefault();
 		}
 	}
-	
+
 	/*
 	 * Carga datos para los filtros
 	 */
 	public void onLoadDatosDefault() throws Exception{
 		String fechaInicio=Constantes.FORMAT_DATE.format(dbFechaInicio.getValue());
 		String fechaFin=Constantes.FORMAT_DATE.format(dbFechaFin.getValue());
-			
+
 		//Carga Usuarios
 		if(cmbAgencia.getSelectedIndex()>0){
 			Agencia agencia=cmbAgencia.getSelectedItem().getValue();
@@ -167,24 +168,24 @@ public class WndCierreCaja extends WndBase {
 			Util.seleccionarValorItemCombo(Usuario.class, cmbUsuario, getUsuario().getId());
 		}else
 			UtilData.cargarGenericData(cmbUsuario, true);
-				
+
 		if(cmbUsuario.getSelectedIndex()==-1)
 			cmbUsuario.setSelectedIndex(0);
-		
+
 		//Controla el button buscar
 		btnBuscar.setDisabled(getRol().getId().intValue()!=Constantes.ID_ROL_SUPER_USUARIO && cmbUsuario.isDisabled() && cmbUsuario.getSelectedIndex()<1);
-		
+
 		Util.limpiarListbox(listLiquidacion);
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Busca Liquidación, según los parametros seleccionados.
 	 * @throws Exception
 	 */
 	public void buscarLiquidacion() throws Exception{
-		
+
 		Util.limpiarListbox(listLiquidacion);
 		String fechaInicial=Constantes.FORMAT_DATE.format(dbFechaInicio.getValue());
 		String FechaFinal = Constantes.FORMAT_DATE.format(dbFechaFin.getValue());
@@ -195,16 +196,16 @@ public class WndCierreCaja extends WndBase {
 		if(cmbAgencia.getSelectedIndex()>0)
 			idAgencia=((Agencia)cmbAgencia.getSelectedItem().getValue()).getId();
 		Integer estadoLiquidacion= Constantes.AMBOS;
-		
+
 		/*Busca liquidaciones, segun parametros seleccionados*/
 		List<Liquidacion> lstLiquidacion=ServiceLocator.getLiquidacionManager().buscarLiquidacion(fechaInicial, FechaFinal, idAgencia, idUsuario, estadoLiquidacion);
 		Listitem item = null;
 		Listcell cell = null;
-		Integer x=0;
+		int x=0;
 		for(Liquidacion liquidacion : lstLiquidacion){
 			item = new Listitem();
 			x += +1;
-			cell = new Listcell(x.toString());
+			cell = new Listcell(Integer.toString(x));
 			item.appendChild(cell);
 			cell = new Listcell(liquidacion.getUsuario().toString());
 			item.appendChild(cell);
@@ -226,11 +227,11 @@ public class WndCierreCaja extends WndBase {
 				cell.setStyle("font-size:11px !important");
 			}
 			item.appendChild(cell);
-			
+
 			cell=new Listcell();
 			Hbox hbox=new Hbox();
 			hbox.setAlign("center");
-			
+
 			/*Vista preliminar*/
 			Toolbarbutton toolbarbutton =new Toolbarbutton();
 			toolbarbutton.setAttribute(ATRIBUTTE_LIQUIDACION, liquidacion);
@@ -259,6 +260,7 @@ public class WndCierreCaja extends WndBase {
 						String src=Constantes.URL_FORMATOS_LIQUIDACION +Constantes.CLAVE_PAHT+ nameFile;
 						/*Carga el iframe*/
 //							String src=Constantes.URL_FORMATOS_LIQUIDACION +Constantes.CLAVE_PAHT+ liquidacion.getId()+".txt";
+<<<<<<< HEAD
 						final WndIFrame iFrame = new WndIFrame();
 						iFrame.setSrc(src);
 						iFrame.setWidth("810");
@@ -267,10 +269,20 @@ public class WndCierreCaja extends WndBase {
 						
 						appendChild(iFrame);
 						iFrame.setMode("modal");
+=======
+							final WndIFrame iFrame = new WndIFrame();
+							iFrame.setSrc(src);
+							iFrame.setWidth("810");
+							iFrame.setheight("600");
+							iFrame.loadiframe();
+
+							appendChild(iFrame);
+							iFrame.setMode("modal");
+>>>>>>> d237d68d148b9ceccbf5532b2e25c7560eceafef
 					}
 				}
 			});
-						
+
 			/*Impresión*/
 			toolbarbutton =new Toolbarbutton();
 			toolbarbutton.setAttribute(ATRIBUTTE_LIQUIDACION, liquidacion);
@@ -287,7 +299,7 @@ public class WndCierreCaja extends WndBase {
 					openWindowPrintLiquidacion(liquidacion);
 				}
 			});
-			
+
 			/*Cierre*/
 			toolbarbutton =new Toolbarbutton();
 			toolbarbutton.setAttribute(ATRIBUTTE_LIQUIDACION, liquidacion);
@@ -314,8 +326,8 @@ public class WndCierreCaja extends WndBase {
 					});
 				}
 			});
-			
-			
+
+
 			/*reaperturar*/
 			toolbarbutton =new Toolbarbutton();
 			toolbarbutton.setAttribute(ATRIBUTTE_LIQUIDACION, liquidacion);
@@ -329,7 +341,7 @@ public class WndCierreCaja extends WndBase {
 				toolbarbutton.setDisabled(false);
 			}else if (getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO)
 				toolbarbutton.setDisabled(false);
-			
+
 			hbox.appendChild(toolbarbutton);
 			toolbarbutton.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 				@Override
@@ -350,24 +362,24 @@ public class WndCierreCaja extends WndBase {
 									ServiceLocator.getDetalleLiquidacionManager().deleteXidLiquidacion(liquidacion.getId().longValue());
 									//
 									buscarLiquidacion();
-									
+
 									DlgMessage.information(Messages.getString("WndCierreCaja.Information.liquidacionReaperturada"));
 								} catch (Exception e2) {
 									DlgMessage.error(e2.getMessage());
-								}								
+								}
 							}
 						}
 					});
 				}
 			});
-			
+
 			toolbarbutton =new Toolbarbutton();
 			toolbarbutton.setAttribute(ATRIBUTTE_LIQUIDACION, liquidacion);
 			toolbarbutton.setImage("/resources/mp_previo.png");
 			toolbarbutton.setTooltiptext("Resumen Liquidacion");
 			toolbarbutton.setAutodisable("self");
 			//toolbarbutton.setDisabled(true);
-			
+
 			hbox.appendChild(toolbarbutton);
 			toolbarbutton.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 				@Override
@@ -375,15 +387,15 @@ public class WndCierreCaja extends WndBase {
 					System.out.println("Listo para mostrar");
 				}
 			});
-			
+
 			cell.appendChild(hbox);
 			item.appendChild(cell);
-			
+
 			item.setValue(liquidacion);
-			listLiquidacion.appendChild(item);					
-		}	
+			listLiquidacion.appendChild(item);
+		}
 	}
-	
+
 	/**
 	 * Realiza la validacion de los cortes en las especies valoradas.
 	 * @param liquidacion : Instancia del objeto liquidacion.
@@ -400,40 +412,40 @@ public class WndCierreCaja extends WndBase {
 		Listheader listheader= new Listheader();
 		listheader.setLabel("SERIE");listheader.setWidth("40px");
 		listhead.appendChild(listheader);
-		lbxVerificaCorrelativos.appendChild(listhead);	
+		lbxVerificaCorrelativos.appendChild(listhead);
 		listheader= new Listheader();
 		listheader.setLabel("NÚMERO FALTANTES");
 		listhead.appendChild(listheader);
-		lbxVerificaCorrelativos.appendChild(listhead);		
-				
-		if(lstResul.size()>0){			
+		lbxVerificaCorrelativos.appendChild(listhead);
+
+		if(lstResul.size()>0){
 			Listitem item=null;
 			Listcell cell=null;
 //			int x=0;
 			Long n_bolBack=(long)0;
 			Long n_bolNext=(long)0;
-			
+
 //			String c_inicio="";
 //			String c_fin="";
 			String c_serieNext="";
 			String c_faltantes="";
-			
+
 			for(int i=0; i<lstResul.size();i++){
 				c_faltantes=""; //x=0;
 
 				if(i<lstResul.size()){
 					VentaPasaje vp=lstResul.get(i);
 					String c_serie=vp.getNumeroSerie();
-//					c_inicio=vp.getNumeroBoleto();					
-												
+//					c_inicio=vp.getNumeroBoleto();
+
 					/*Obtiene el ultimo número segun el rango configurador en la variable "parametro" y valida los correlativos faltantes*/
 					String c_serieBack="";
 					for(int z=i; z<lstResul.size(); z++){
 //						x++;
-						
+
 						c_serieNext=lstResul.get(z).getNumeroSerie();
 						n_bolNext=Long.valueOf(lstResul.get(z).getNumeroBoleto());
-						
+
 						//Valida los correlativos faltantes
 						if(n_bolBack>0)
 							if(!(n_bolBack+1==n_bolNext)){
@@ -443,7 +455,7 @@ public class WndCierreCaja extends WndBase {
 									n_falFin=n_falIni+t;
 									if(t==(n_bolNext-n_bolBack)-1)n_falFin--;
 								}
-								
+
 								if((n_falIni.equals(n_falFin))){
 									String correlativo = "0000000"+n_falIni;
 									String numero=correlativo.substring(correlativo.length()-7);
@@ -452,45 +464,45 @@ public class WndCierreCaja extends WndBase {
 									else
 										c_faltantes+=String.valueOf(numero);
 								}
-									
+
 							}
-						
+
 						//Obtiene el ultimo numero segun el rango configurador en la variable "parametro"
 //						if(c_serieNext.equals(c_serie))
 //							c_fin=((VentaPasaje)lstResul.get(z)).getNumeroBoleto();
-						
+
 						if(c_serieBack.length()>0 && (!c_serieNext.equals(c_serieBack)))
 							break;
-						
+
 						c_serieBack=lstResul.get(z).getNumeroSerie();
 						n_bolBack=Long.valueOf(lstResul.get(z).getNumeroBoleto());
 						i=z;
 					}
-																
+
 					if(c_faltantes.length()>0){
 						item= new Listitem();
-						
+
 						cell=new Listcell(c_serie);
 						if(c_faltantes.length()>0)cell.setStyle("font-size:11px !important;");
 						else cell.setStyle("font-size:11px !important");
 						item.appendChild(cell);
-						
+
 						cell=new Listcell(c_faltantes);
 						if(c_faltantes.length()>0)cell.setStyle("font-size:11px !important;");
 						else cell.setStyle("font-size:11px !important");
 						item.appendChild(cell);
-												
-						lbxVerificaCorrelativos.appendChild(item);	
-						
+
+						lbxVerificaCorrelativos.appendChild(item);
+
 						c_faltantes="";
 					}
-					
-				}	
+
+				}
 			}
-		}	
+		}
 		return lbxVerificaCorrelativos;
 	}
-	
+
 	/**
 	 * Abre la ventada con los cortes encontrados en las especies valoradas.
 	 * @param listbox 		: Objeto listbox de donde se van a leer los correlativos faltantes
@@ -514,18 +526,18 @@ public class WndCierreCaja extends WndBase {
 		label.setStyle("font-size:11px !important; font-weight: bold");
 		window.appendChild(label);
 		window.appendChild(new Separator());
-		
+
 		/*Aceptar*/
 		final Button btnAceptar = new Button("Continuar");
 		btnAceptar.setImage("/resources/mp_aceptarEnabled.png");
 		btnAceptar.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 			@Override
-			public void onEvent(Event event) throws Exception {		
+			public void onEvent(Event event) throws Exception {
 				openWindowSolicitaPassword(liquidacion);
 				window.onClose();
 			}
 		});
-		
+
 		/*Cancelar*/
 		Button btncancelar = new Button("Cancelar");
 		btncancelar.setImage("/resources/mp_cancelarEnabled.png");
@@ -535,11 +547,11 @@ public class WndCierreCaja extends WndBase {
 				window.onClose();
 			}
 		});
-		
+
 		Groupbox groupbox= new Groupbox();
 		groupbox.appendChild(listbox);
 		window.appendChild(groupbox);
-					
+
 		Hbox hbox= new Hbox();
 		Separator separator= new Separator();
 		separator.setWidth("30px");
@@ -547,13 +559,13 @@ public class WndCierreCaja extends WndBase {
 		hbox.appendChild(btncancelar);
 		hbox.appendChild(btnAceptar);
 		window.appendChild(hbox);
-				
+
 		return window;
 	}
 
-	
+
 	/**
-	 * Abre la venta que solicita el password para identificar al usuario que reliza el cierre de la liquidacion 
+	 * Abre la venta que solicita el password para identificar al usuario que reliza el cierre de la liquidacion
 	 * @param liquidacion	: Instancia del objeto liquidacion
 	 */
 	private void openWindowSolicitaPassword(Liquidacion liquidacion){
@@ -561,9 +573,9 @@ public class WndCierreCaja extends WndBase {
 		this.appendChild(wndValidaUsuario);
 		wndValidaUsuario.setMode("modal");
 	}
-	
+
 	/**
-	 * Crea la venta que solicita el password para identificar al usuario que reliza el cierre de la liquidacion 
+	 * Crea la venta que solicita el password para identificar al usuario que reliza el cierre de la liquidacion
 	 * @return objet window
 	 */
 	@SuppressWarnings("deprecation")
@@ -572,59 +584,59 @@ public class WndCierreCaja extends WndBase {
 		window.setTitle("::: Identificación del Usuario :::");
 		window.setBorder(true);
 		window.setWidth("350px");
-		
+
 		Grid grid= new Grid();
 		Columns columns= new Columns();
-		
+
 		Rows rows= new Rows();
 		Row row= new Row();
 		Column column= new Column();
-		
+
 		column.setWidth("100px");
 		column.setAlign("right");
 		columns.appendChild(column);
-		
-				
+
+
 		column= new Column();
 		columns.appendChild(column);
-		
+
 		grid.appendChild(columns);
-		
+
 		final Textbox txtUsurio = new Textbox();
 		txtUsurio.setWidth("160px");
 		txtUsurio.setMaxlength(20);
 		txtUsurio.setStyle("font-size:12px !important; text-transform:lowercase");
-				
+
 		final Textbox txtPassrowd = new Textbox();
 		txtPassrowd.setType("password");
 		txtPassrowd.setWidth("160px");
 		txtPassrowd.setMaxlength(20);
 		txtPassrowd.setStyle("font-size:12px !important");
-				
+
 		Label label= new Label("Usuario (*) :");
 		label.setSclass("label-size11");
 		row=new Row();
 		row.appendChild(label);
 		row.appendChild(txtUsurio);
 		rows.appendChild(row);
-		
+
 		label= new Label("Password (*) :");
 		label.setSclass("label-size11");
 		row=new Row();
-		
+
 		row.appendChild(label);
 		row.appendChild(txtPassrowd);
 		rows.appendChild(row);
-		
+
 		row=new Row();
 		row.appendChild(new Separator());
 		row.appendChild(new Separator());
 		rows.appendChild(row);
- 		
-		rows.appendChild(row);				
+
+		rows.appendChild(row);
 		grid.appendChild(rows);
 		window.appendChild(grid);
-		
+
 		Hbox hbox=new Hbox();
 		hbox.setAlign("center");
 		Div div=new Div();
@@ -638,11 +650,11 @@ public class WndCierreCaja extends WndBase {
 //		btncancelar.setMold("trendy");
 		btncancelar.setSclass("btnCommandM");
 		hbox.appendChild(btncancelar);
-		
+
 		Separator separator=new Separator();
 		separator.setWidth("10px");
 		hbox.appendChild(separator);
-		
+
 		Button btnAceptar=new Button("Aceptar", "/resources/mp_aceptarEnabled.png");
 		btnAceptar.setStyle("font-size:12px !important");
 		btnAceptar.setWidth("120px");
@@ -650,18 +662,18 @@ public class WndCierreCaja extends WndBase {
 //		btnAceptar.setMold("trendy");
 		btnAceptar.setSclass("btnCommandM");
 		hbox.appendChild(btnAceptar);
-		
+
 		div.appendChild(hbox);
 		toolbar.appendChild(div);
 		window.appendChild(toolbar);
-		
+
 		txtUsurio.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				txtPassrowd.setFocus(true);
 			}
 		});
-		
+
 		txtPassrowd.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -670,11 +682,11 @@ public class WndCierreCaja extends WndBase {
 						throw new UsuarioNullException();
 					else if (txtPassrowd.getText().trim().isEmpty())
 						throw new PasswordException(PasswordException.PASSWORD_NULL);
-					
+
 					ServiceLocator.getUsuarioManager().buscarUsuarioPorLoginPassword(txtUsurio.getText().trim(), txtPassrowd.getText().trim(), Constantes.VALUE_ACTIVO);
 					openWindowIngresoMonto(liquidacion);
 					window.onClose();
-										
+
 				}catch (UsuarioNullException une){
 					DlgMessage.information(Messages.getString("WndCierreCaja.Information.UsuarioNull"),txtUsurio);
 				}catch (PasswordException cp){
@@ -683,15 +695,15 @@ public class WndCierreCaja extends WndBase {
 					else if (cp.getTipo().intValue()==PasswordException.PASSWORD_INCOREC)
 						DlgMessage.information(Messages.getString("WndCierreCaja.Information.SolicitaPasswordInvalido"),txtPassrowd);
 				}catch (LoginException le){
-					DlgMessage.information(Messages.getString("WndCierreCaja.Information.SolicitaPasswordInvalido"),txtPassrowd);	
+					DlgMessage.information(Messages.getString("WndCierreCaja.Information.SolicitaPasswordInvalido"),txtPassrowd);
 				}catch (Exception ex) {
 					DlgMessage.error(this.getClass().getName() + " " + ex.getMessage());
 					ex.printStackTrace();
 				}
-				
+
 			}
 		});
-		
+
 		btnAceptar.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -700,11 +712,11 @@ public class WndCierreCaja extends WndBase {
 						throw new UsuarioNullException();
 					else if (txtPassrowd.getText().trim().isEmpty())
 						throw new PasswordException(PasswordException.PASSWORD_NULL);
-					
+
 					ServiceLocator.getUsuarioManager().buscarUsuarioPorLoginPassword(txtUsurio.getText().trim(), txtPassrowd.getText().trim(), Constantes.VALUE_ACTIVO);
 					openWindowIngresoMonto(liquidacion);
 					window.onClose();
-	
+
 				}catch (UsuarioNullException une){
 					DlgMessage.information(Messages.getString("WndCierreCaja.Information.UsuarioNull"),txtUsurio);
 				}catch (PasswordException cp){
@@ -718,20 +730,20 @@ public class WndCierreCaja extends WndBase {
 					DlgMessage.error(this.getClass().getName() + " " + ex.getMessage());
 					ex.printStackTrace();
 				}
-				
+
 			}
 		});
-		
+
 		btncancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				window.onClose();
 			}
 		});
-			
+
 		return window;
 	}
-	
+
 	/**
 	 * Abre la ventana para que el usuario ingrese el monto con el cual esta cerrando la liquidacion
 	 * @param liquidacion	: Instancia del Objeto liquidacion.
@@ -742,9 +754,9 @@ public class WndCierreCaja extends WndBase {
 		this.appendChild(wndIngresoMonto);
 		wndIngresoMonto.setMode("modal");
 	}
-	
+
 	/**
-	 * Crea la venta que solicita el password para identificar al usuario que reliza el cierre de la liquidacion 
+	 * Crea la venta que solicita el password para identificar al usuario que reliza el cierre de la liquidacion
 	 * @return objet window
 	 */
 	@SuppressWarnings("deprecation")
@@ -753,47 +765,47 @@ public class WndCierreCaja extends WndBase {
 		window.setTitle("::: Impresión :::");
 		window.setBorder(true);
 		window.setWidth("350px");
-		
+
 		Grid grid= new Grid();
 		Columns columns= new Columns();
-		
+
 		Rows rows= new Rows();
 		Row row= new Row();
 		Column column= new Column();
-		
+
 		column.setWidth("120px");
 		column.setAlign("right");
 		columns.appendChild(column);
-		
-				
+
+
 		column= new Column();
 		columns.appendChild(column);
-		
+
 		grid.appendChild(columns);
-		
+
 		final Radiogroup radiogroup= new Radiogroup();
 		Radio radioTermico = new Radio("Térmico");
 		radioTermico.setChecked(true);
 		final Radio radioMatrical = new Radio("Matricial");
 		radiogroup.appendChild(radioTermico);
 		radiogroup.appendChild(radioMatrical);
-				
+
 		Label label= new Label("Tipo de impresión (*) :");
 		label.setSclass("label-size11");
 		row=new Row();
 		row.appendChild(label);
 		row.appendChild(radiogroup);
 		rows.appendChild(row);
-				
+
 		row=new Row();
 		row.appendChild(new Separator());
 		row.appendChild(new Separator());
 		rows.appendChild(row);
- 		
-		rows.appendChild(row);				
+
+		rows.appendChild(row);
 		grid.appendChild(rows);
 		window.appendChild(grid);
-		
+
 		Hbox hbox=new Hbox();
 		hbox.setAlign("center");
 		Div div=new Div();
@@ -807,11 +819,11 @@ public class WndCierreCaja extends WndBase {
 //		btncancelar.setMold("trendy");
 		btncancelar.setSclass("btnCommandM");
 		hbox.appendChild(btncancelar);
-		
+
 		Separator separator=new Separator();
 		separator.setWidth("10px");
 		hbox.appendChild(separator);
-		
+
 		Button btnAceptar=new Button("Aceptar", "/resources/mp_aceptarEnabled.png");
 		btnAceptar.setStyle("font-size:12px !important");
 		btnAceptar.setWidth("120px");
@@ -819,11 +831,11 @@ public class WndCierreCaja extends WndBase {
 //		btnAceptar.setMold("trendy");
 		btnAceptar.setSclass("btnCommandM");
 		hbox.appendChild(btnAceptar);
-		
+
 		div.appendChild(hbox);
 		toolbar.appendChild(div);
 		window.appendChild(toolbar);
-		
+
 		btnAceptar.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -839,21 +851,21 @@ public class WndCierreCaja extends WndBase {
 					DlgMessage.error(this.getClass().getName() + " " + ex.getMessage());
 					ex.printStackTrace();
 				}
-				
+
 			}
 		});
-		
+
 		btncancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				window.onClose();
 			}
 		});
-			
+
 		return window;
 	}
-	
-	
+
+
 	/**
 	 * Abre la ventana para que el usuario ingrese el monto con el cual esta cerrando la liquidacion
 	 * @param liquidacion	: Instancia del Objeto liquidacion.
@@ -877,9 +889,9 @@ public class WndCierreCaja extends WndBase {
 		window.setTitle("::: Cierre Liquidación de Turno :::");
 //		window.setWidth("350px");
 		window.setBorder(true);
-		
+
 		Grid grid = new Grid();
-		
+
 		Columns columns=new Columns();
 		Column column=new Column();
 		column.setAlign("right");
@@ -887,7 +899,7 @@ public class WndCierreCaja extends WndBase {
 		columns.appendChild(column);
 		columns.appendChild(new Column());
 		grid.appendChild(columns);
-		
+
 		Rows rows = new Rows();
 		Row row = new Row();
 		row=new Row();
@@ -902,7 +914,7 @@ public class WndCierreCaja extends WndBase {
 		dbMonto.setLocale(Locale.US);
 		row.appendChild(dbMonto);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		label = new Label("Ingrese el efectivo en US$ a Liquidar :");
 		label.setStyle("font-size:11px !important;color:break");
@@ -915,22 +927,22 @@ public class WndCierreCaja extends WndBase {
 		dbxMontoDolares.setLocale(Locale.US);
 		row.appendChild(dbxMontoDolares);
 		rows.appendChild(row);
-		
+
 		row=new Row();
 		row.appendChild(new Space());
 		row.appendChild(new Space());
 		rows.appendChild(row);
-		
+
 		Space space = new Space();
 		space.setWidth("70px");
 		space.setHeight("35px");
 		Hbox hbox = new Hbox();
 		hbox.setAlign("right");
 		hbox.appendChild(space);
-		
+
 		grid.appendChild(rows);
 		window.appendChild(grid);
-		
+
 		hbox=new Hbox();
 		hbox.setAlign("center");
 		Div div=new Div();
@@ -944,11 +956,11 @@ public class WndCierreCaja extends WndBase {
 //		btnCancelar.setMold("trendy");
 		btnCancelar.setSclass("btnCommandM");
 		hbox.appendChild(btnCancelar);
-		
+
 		Separator separator=new Separator();
 		separator.setWidth("10px");
 		hbox.appendChild(separator);
-		
+
 		Button btnAceptar=new Button("Aceptar", "/resources/mp_aceptarEnabled.png");
 		btnAceptar.setStyle("font-size:12px !important");
 		btnAceptar.setWidth("120px");
@@ -956,12 +968,12 @@ public class WndCierreCaja extends WndBase {
 //		btnAceptar.setMold("trendy");
 		btnAceptar.setSclass("btnCommandM");
 		hbox.appendChild(btnAceptar);
-		
+
 		div.appendChild(hbox);
 		toolbar.appendChild(div);
 		window.appendChild(toolbar);
-		
-		
+
+
 		/*CANCELAR*/
 		btnCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
@@ -1006,7 +1018,7 @@ public class WndCierreCaja extends WndBase {
 		});
 		return window;
 	}
-	
+
 	/**
 	 * Realiza la peticion del cierre de la liquidacion
 	 * @param liquidacion		: Instancia del objeto liquidacion.
@@ -1017,7 +1029,7 @@ public class WndCierreCaja extends WndBase {
 	private final void cerrarLiquidacion(final Liquidacion liquidacion, double montoIngresado, Window window, double montoIngresadoDolares) throws Exception{
 		/* Procesa cierre de caja*/
 		UtilData.procesaCierreCaja(liquidacion, montoIngresado, getUsuario(), montoIngresadoDolares);
-		
+
 		/* Procesa el cierre de caja en Carga*/
 		try {
 			TranscarUsuarioPersonal transcarUsuarioPersonal = ServiceLocator.getTranscarWebManager().buscarUsuario(liquidacion.getUsuario().getLogin());
@@ -1031,9 +1043,9 @@ public class WndCierreCaja extends WndBase {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
-		
+
+
+
 		/* Procesa cierre de caja de la venta de seguros*/
 //		VSLiquidacion vsLiquidacion=ServiceLocator.getVentaSeguroManager().buscarLiquidacion(liquidacion.getUsuario().getId(),liquidacion.getAgencia().getId(), Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()),Constantes.TRUE_VALUE);
 //		if(vsLiquidacion!=null){
@@ -1043,25 +1055,25 @@ public class WndCierreCaja extends WndBase {
 //			UtilData.auditarRegistro(vsLiquidacion, true, getUsuario(), Executions.getCurrent());
 //			ServiceLocator.getVentaSeguroManager().cerrarLiquidacion(vsLiquidacion);
 //		}
-		
+
 		/*Solicita confirmación del usuario para la impresion de la liquidacion*/
 		Messagebox.show(Messages.getString("WndCierreCaja.Question.Impresion"),DlgMessage.NOMBREAPLICACION,DlgMessage.BTN_YESNO,Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event)throws Exception {
 				if(event.getName().equals("onYes"))
 					openWindowPrintLiquidacion(liquidacion);
-//					imprimirLiquidacion(liquidacion); 
+//					imprimirLiquidacion(liquidacion);
 			}
 		});
 		buscarLiquidacion();
 		Executions.getCurrent().getSession().setAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION, null);
 		window.onClose();
 	}
-	
+
 
 	/**
 	 * @param liquidacion
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void imprimirLiquidacion(Liquidacion liquidacion) throws Exception{	
 		//Busca las liquidaciones de CARGA
@@ -1084,7 +1096,7 @@ public class WndCierreCaja extends WndBase {
 //			Util.descargarArchivo(file);
 //		}
 	}
-	
+
 	private void mostrarLiquidacionTuentrada(List<LiquidacionTuentrada> lstLiquidacion, Usuario usuario, String fechaLiquidacion){
 		Window win = (Window)Executions.createComponents("/liquidacionTuentrada.zul", null, null);
 		win.setAttribute("lstLiquidacion", lstLiquidacion);
@@ -1092,6 +1104,6 @@ public class WndCierreCaja extends WndBase {
 //		win.setAttribute("usuario", getUsuario().toString());
 //		win.setAttribute("login", usuario.getLogin());
 		win.setAttribute("fechaLiquidacion", fechaLiquidacion);
-		win.doModal();		
+		win.doModal();
 	}
 }

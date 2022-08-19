@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 27 jun. 2021
  * Hora			: 22:51:23
@@ -90,9 +90,9 @@ public class VentaServicioEspecialManagerImpl implements VentaServicioEspecialMa
 	public int guardar(VentaServicioEspecial ventaServicioEspecial) throws Exception {
 		ControlEspecieValorada controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(ventaServicioEspecial.getTipoComprobante().getId(), ventaServicioEspecial.getAgencia(), true, ventaServicioEspecial.getUsuarioHardware(), null);
 		ventaServicioEspecial.setNumeroComprobante(controlEspecieValorada.toString());
-		
+
 		int result = Constantes.FAILURE;
-		
+
 		try {
 		/*Actualiza el correlativo*/
 //		if(ventaPasaje.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE){
@@ -115,7 +115,7 @@ public class VentaServicioEspecialManagerImpl implements VentaServicioEspecialMa
 	@Override
 	public void actualizar(VentaServicioEspecial ventaServicioEspecial) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/* (non-Javadoc)

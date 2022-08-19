@@ -26,7 +26,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class CanalVentaManagerImpl implements CanalVentaManager {
 	private CanalVentaDAO canalVentaDAO;
-	
+
 	/**
 	 * @return the canalVentaDAO
 	 */
@@ -71,23 +71,23 @@ public class CanalVentaManagerImpl implements CanalVentaManager {
 	@Transactional
 	public void guardar(CanalVenta canalVenta) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", canalVenta.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getCanalVentaDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la denominación*/
 			if(resultDenominacion.size()>0)
 				throw new DenominacionDuplicadaException();
-			
+
 			criteriosBusqueda.remove("denominacion");
 			criteriosBusqueda.put("nombreCorto", canalVenta.getNombreCorto());
 			List<?> resultNombreCorto = getCanalVentaDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Nombre corto*/
 			if (resultNombreCorto.size()>0)
 				throw new NombreCortoDuplicadoException();
-			
+
 			getCanalVentaDAO().guardar(canalVenta);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(NombreCortoDuplicadoException rdnex){
@@ -104,30 +104,30 @@ public class CanalVentaManagerImpl implements CanalVentaManager {
 	@Transactional
 	public void actualizar(CanalVenta canalVenta) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", canalVenta.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getCanalVentaDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la denominación*/
-			for(int r = 0; r < resultDenominacion.size(); r ++) {
-				CanalVenta ocanalVenta = (CanalVenta) resultDenominacion.get(r);
+			for (Object element : resultDenominacion) {
+				CanalVenta ocanalVenta = (CanalVenta) element;
 					if (!(ocanalVenta.getId() == canalVenta.getId()))
 						throw new DenominacionDuplicadaException();
 				}
-			
+
 			criteriosBusqueda.remove("denominacion");
 			criteriosBusqueda.put("nombreCorto", canalVenta.getNombreCorto());
 			List<?> resultnombreCorto = getCanalVentaDAO().buscarPorX(criteriosBusqueda, null);
-			
+
 			/*Valida duplicidad del Nombre corto*/
-			for(int r = 0; r < resultnombreCorto.size(); r ++) {
-				CanalVenta ocanalVenta = (CanalVenta) resultnombreCorto.get(r);
+			for (Object element : resultnombreCorto) {
+				CanalVenta ocanalVenta = (CanalVenta) element;
 					if (!(ocanalVenta.getId() == canalVenta.getId()))
 						throw new NombreCortoDuplicadoException();
-				}		
-		
+				}
+
 			getCanalVentaDAO().actualizar(canalVenta);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(NombreCortoDuplicadoException rdnex){
@@ -152,5 +152,5 @@ public class CanalVentaManagerImpl implements CanalVentaManager {
 	public List<CanalVenta> buscarPorX(String campo, Object[] criterios, List<String> criteriosOrdenar, String estadoRegistro) throws Exception {
 		return getCanalVentaDAO().buscarPorX(campo, criterios, criteriosOrdenar, estadoRegistro);
 	}
-	
+
 }

@@ -18,17 +18,17 @@ import com.cystesoft.vyrbus.service.util.VentasNotas;
 
 public interface VentaPasajesManager {
 	/**
-	 * Guarda la operacion de la venta. 
+	 * Guarda la operacion de la venta.
 	 * @param ventaPasaje		: Objeto a guardar.
 	 * @param isFechaAbierta	: Indica si se trata de una venta fecha abierta.
 	 * @param generaControl		: Indica si se va a generar numero de control.
 	 * @param validaBloqueo		: indica si se debe validar que el registro del bloqueo de asiento exista.
 	 * @return -1=Fallo, 1=Exito
 	 * @throws Exception
-	 */	
+	 */
 	public int guardarVenta(VentaPasaje ventaPasaje, boolean isFechaAbierta, boolean generaControl, boolean validaBloqueo, boolean validarDuplicidadAsiento)throws Exception;
 	/**
-	 * Guarda la operacion de la venta. 
+	 * Guarda la operacion de la venta.
 	 * @param lstVentas			: Objeto que contiene la venta de ida y retorno.
 	 * @param generaControl		: Indica si se va a generar numero de control.
 	 * @return -1=Fallo, 1=Exito
@@ -171,7 +171,7 @@ public interface VentaPasajesManager {
 	 * @throws Exception
 	 */
 	public VentaPasaje devolucionBoleto(VentaPasaje venta, VentaPasaje gastoAdministrativo)throws Exception;
-	
+
 	/**
 	 * Busca el avance semanal de las ventas.
 	 * @param idOrigen			: Identificador de la localidad origen.
@@ -180,11 +180,11 @@ public interface VentaPasajesManager {
 	 * @param idServicio		: Identificador del Servicio.
 	 * @param fechaDesde		: Fecha desde de la busqueda, basada en la fecha de viaje del pasajero
 	 * @param fechaHasta		: Fecha Hasta de la busqueda, basada en la fecha de viaje del pasajero
-	 * @return 
+	 * @return
 	 * @throws Exception
 	 */
 	public List<VentaPasaje> buscarAvanceSemanalVentas(String idOrigen, String idDestino, String tipoTransaction, String idServicio, String fechaDesde, String fechaHasta) throws Exception;
-	
+
 	/**
 	 * Busca el avance semanal de las ventas para generar las columnas en el Listbox de la consulta.
 	 * @param idOrigen			: Identificador de la localidad origen.
@@ -193,11 +193,11 @@ public interface VentaPasajesManager {
 	 * @param idServicio		: Identificador del Servicio.
 	 * @param fechaDesde		: Fecha desde de la busqueda, basada en la fecha de viaje del pasajero
 	 * @param fechaHasta		: Fecha Hasta de la busqueda, basada en la fecha de viaje del pasajero
-	 * @return 
+	 * @return
 	 * @throws Exception
 	 */
 	public List<VentaPasaje> buscarAvanceSemanalVentasColumns(String idOrigen,String idDestino, String tipoTransaction, String idServicio,String fechaDesde, String fechaHasta)throws Exception;
-	
+
 	/**
 	 * Cuenta la cantidad de viajes validos en el intervalo de fechas solicitado.
 	 * @param idPasajero	: Identificador del pasajero del cual se desea sus viajes.
@@ -227,8 +227,8 @@ public interface VentaPasajesManager {
 	 * @throws Exception
 	 */
 	public List<VentaPasaje> buscarComprobantesSinBoleto(String fechaPartida, Integer idAgencia, Integer idTipoComprobante, Integer idRol, Integer idAgenciaEmision)throws Exception;
-	
-	
+
+
 	/*UTILIZADO EN LOS TRANSBORDOS*/
 	/**
 	 * Buascar venta - Utilizado para el transbordo de Pasajeros
@@ -244,7 +244,7 @@ public interface VentaPasajesManager {
 	 * @throws Exception
 	 */
 	public void transbordarPax(Integer numeroAsiento, Long idVentaPasaje, Itinerario itinerario) throws Exception;
-	
+
 
 	/**
 	 * Busca pasajes de un determinado pasajero para la activacion a Pasajero Frecuente.
@@ -254,7 +254,7 @@ public interface VentaPasajesManager {
 	 * @return
 	 */
 	public ArrayList<VentaPasaje> buscarVentasPax(String fechaInicial, String fechaFinal,Long pasajeroID)throws Exception;
-	
+
 	/**
 	 * Valida Ocupabilidad de todos los asientos ha a generar las ventas del servicio especial.
 	 * @param idItinerario	: Identificador del Itinerario
@@ -265,7 +265,7 @@ public interface VentaPasajesManager {
 	 * @throws Exception
 	 */
 	public List<VentaPasaje> validaOcupabilidad(Long idItinerario, Integer idRuta, String numeroAsientos, Integer numeroPiso ) throws Exception;
-	
+
 	/**
 	 * Valida los boletos que se van a generar para las ventas en los Servicios Especiales, que no esten utilizados.
 	 * @param boletoInicial : Boleto inical
@@ -274,9 +274,9 @@ public interface VentaPasajesManager {
 	 * @throws Exception
 	 */
 	public Integer validaBoletos_ServicioEspecial(String boletoInicial, String boletoFinal) throws Exception;
-	
+
 	/**
-	 * Busca los ultimos correlativo utilizados poar la agencia. 
+	 * Busca los ultimos correlativo utilizados poar la agencia.
 	 * @param fechaUltimoEnvio : Fecha del ultimo envio del las especies valoradas el punto de venta(Agencia).
 	 * @param serie			   : Numero de serie a consultal.
 	 * @param idComprobante	   : Identimicsr de tipo de comprobante.
@@ -284,7 +284,7 @@ public interface VentaPasajesManager {
 	 * @return
 	 */
 	public List<VentaPasaje> buscarUltimoCorrelativoEmitido(String fechaUltimoEnvio, String serie, Integer idComprobante, Integer idAgencia) throws Exception;
-	
+
 	/**
 	 * Busca los correlativos faltantes
 	 * @param fechaInico		: Fecha inicio
@@ -296,7 +296,7 @@ public interface VentaPasajesManager {
 	 * @throws Exception
 	 */
 	public List<VentaPasaje> correlativosFaltantesX(String fechaInico, String serie, Integer idComprobante,Integer idAgencia, String fechaFin, Integer idUsuario) throws Exception;
-	
+
 	/**
 	 * Busca el total de ventas en efectivo de un detarmido usuario, Esto es para validar el ingreso de gastos a la liquidacion.
 	 * @param idUsuario	: Identificador del usuario
@@ -306,7 +306,7 @@ public interface VentaPasajesManager {
 	 * @throws Exception
 	 */
 	public Double buscaTotalVentasEfectivo(Integer idUsuario,Integer idAgencia, String fecha) throws Exception;
-	
+
 	/**
 	 * Realiza la busqueda a travez de los criterios enviado en el treeMap
 	 * @param criteriosBusqueda : treeMap con los criterios de busqueda
@@ -325,7 +325,7 @@ public interface VentaPasajesManager {
 	 * @throws Exception
 	 */
 	public List<VentaPasaje> buscarDetalladoVentas(Integer idAgencia, Integer idUsuario, String fechaInicial, String fechaFinal, Integer criterio)throws Exception;
-	
+
 	/**
 	 * Busca el detalle de venta diarias de una agencia de viajes o cliente corporativo.
 	 * @param fechaInicio	: Fecha de Inicio de la busqueda.
@@ -335,23 +335,23 @@ public interface VentaPasajesManager {
 	 * @param orden			: campos por el cual de debe de ordenar la consulta.
 	 * @param incluirAnulados : true=incluye vauchers anulados, false=lo contrario.
 	 * @param isSoles : indica si la consulta es en nomeda soles(true), o en moneda extranjeta(false)
-	 * @param estadoBoletos : Determina el estado de los boletos (PAG) pagados, (PEN) pendientes, Null todos. 
+	 * @param estadoBoletos : Determina el estado de los boletos (PAG) pagados, (PEN) pendientes, Null todos.
 	 * @return Lista de Ventas
 	 * @throws Exception
 	 */
 	public List<VentaPasaje> buscarDetalleVentasAgencia(String fechaInicio, String fechaFin,String rucClienteCredito, Long idUsuario, String orden,Boolean incluirAnulados, boolean isSoles, String estadoBoletos, Integer centroCostoID,boolean byFechaReimpresion) throws Exception;
-	
+
 	/**
 	 *Obtiene el ultimo registro de la venta, para la validación en las anulaciones
 	 * @param idVentaOriginal: Identificador de l aventa original
 	 * @return
 	 */
 	public VentaPasaje buscarUltimoRegistro(Long idVentaOriginal);
-	
+
 	/**
 	 * Busca vaucher para la anulación.
 	 * @param numVoucher		: Número del Voucher.
-	 * @param numcontrol		: Número de control del Voucher.	
+	 * @param numcontrol		: Número de control del Voucher.
 	 * @param idTipoComprobante : Identificador del tipo de comprobante.
 	 * @param rucCliente 		: Númerod e ruc del Cliente
 	 * @param fechaPartida 		: fecha de partida
@@ -365,7 +365,7 @@ public interface VentaPasajesManager {
 	 * @return -1 error, 1=Exito.
 	 */
 	public int anularReserva(VentaPasaje reserva)throws Exception;
-	
+
 	/**
 	 * Busca ventas o reservas, de la consulta ESTADO DE VENTAS Y RESERVAS.
 	 * @param fechaInicialVenta	: Fecha inicial de la venta.
@@ -379,18 +379,18 @@ public interface VentaPasajesManager {
 	 * @param numeroControl		: Número de Control.
 	 * @param numeroBoleto		: Número de Boleto
 	 * @param idOrigen			: Identificador del Origen.
-	 * @param idDestino			: Identificador del Destino.	
+	 * @param idDestino			: Identificador del Destino.
 	 * @param tipoMovimiento	: Tipode movimiento; (venta, reserva o fecha abirta)
 	 * @return Lista de ventas o reservas
 	 * @throws Exception
 	 */
 	public List<VentaPasaje> buscarEstadoVentasReservas(String fechaInicialVenta, String fechaFinVenta, Integer tipoBusqCliente, String busqCliente,Integer tipoBusqPax, String busqPax, String fechaPartida, Integer idUsuario,String numeroControl,String numeroBoleto, Integer idOrigen, Integer idDestino, Integer tipoMovimiento) throws Exception;
-	
+
 	/**
 	 * Busca ventas para la consulta de operaciones remotas, segun parametros enviados.
 	 * @param fechaPartida	: Fecha de partida del servicio.
 	 * @param idOrigen		: Identificado del Origen.
-	 * @param idDestino		: Identificador del Destino.	
+	 * @param idDestino		: Identificador del Destino.
 	 * @param numeroBoleto	: Numero de Boleto
 	 * @param numeroControl	: Numero de Control
 	 * @param documentoPax	: Numero de documento del Pasajero
@@ -398,12 +398,12 @@ public interface VentaPasajesManager {
 	 * @throws Exception
 	 */
 	public List<VentaPasaje> buscarOperacionesRemotras(String fechaPartida,Integer idOrigen, Integer idDestino,String numeroBoleto, String numeroControl, String documentoPax) throws Exception;
-	
+
 	/**
 	 * Realiza el cambio de asiento de un pasajero en el mismo servicio.
 	 * @param nuevoAsiento	: Nuevo numero de asiento que se le va asignar al pasajero
 	 * @param numeroPiso	: Numero del piso a donde corresponde el asiento.
-	 * @param idVentaPasajes: Identificador de la venta de pasajes donde se va a realizar la actualizacion. 	
+	 * @param idVentaPasajes: Identificador de la venta de pasajes donde se va a realizar la actualizacion.
 	 * @throws Exception
 	 */
 	public void cambiarAsientoPax(Integer nuevoAsiento,Integer numeroPiso, Long idVentaPasajes)throws Exception;
@@ -434,7 +434,7 @@ public interface VentaPasajesManager {
 	 * @throws Exception
 	 */
 	public VentaPasaje anularBoletoCredito(VentaPasaje boleto,Usuario usuarioAuditoria)throws Exception;
-	
+
 	/**
 	 * Busca el boleto para la venta del seguro.
 	 * @param numeroBoleto	: Número del Boleto
@@ -445,7 +445,7 @@ public interface VentaPasajesManager {
 	/**
 	 * Busca pasajeros para el envio del manifiesto de pasajeros
 	 * @param codigoBus		: Identificador del Itinerario
-	 * @return 
+	 * @return
 	 * @throws Exception
 	 */
 	public List<VentaPasaje>buscarPasajerosByME(Long itinerarioId)throws Exception;
@@ -468,7 +468,7 @@ public interface VentaPasajesManager {
 	 */
 	public List<Agencia> buscarVentasPorPuntoVenta(String fechaInicial, String fechaFinal,Integer idAgencia, Integer idUsuario, String idsTiposMovimientos, Integer idFormaPago)throws Exception;
 	/**
-	 * Genera una nota de credito a un determinado comprobante 
+	 * Genera una nota de credito a un determinado comprobante
 	 * @param ventaAplica : Instancia de la venta a quien se va aplicar la nota de credito
 	 * @param tipoNota : Instancia del tipo de nota de credito que se va aplicar
 	 * @param anularMovimiento	: True=Genera un movimiento "Anulacion Sistema"; false=No genera.
@@ -478,7 +478,7 @@ public interface VentaPasajesManager {
 	 */
 	public VentaPasaje generarNotaCredito(VentaPasaje ventaAplica, TipoNota tipoNota,boolean anularMovimiento,boolean copyCanalOriginal)throws Exception;
 	/**
-	 * Genera una nota de credito a un determinado comprobante 
+	 * Genera una nota de credito a un determinado comprobante
 	 * @param ventaAplica : Instancia de la venta a quien se va aplicar la nota de credito
 	 * @param tipoNota : Instancia del tipo de nota de credito que se va aplicar
 	 * @param anularMovimiento	: True=Genera un movimiento "Anulacion Sistema"; false=No genera.
@@ -489,7 +489,7 @@ public interface VentaPasajesManager {
 	 */
 	public VentaPasaje generarNotaCredito(VentaPasaje ventaAplica, TipoNota tipoNota,boolean anularMovimiento,boolean copyCanalOriginal, Liquidacion liquidacion)throws Exception;
 	/**
-	 * 
+	 *
 	 * @param gastoAdministrativo
 	 * @param generarCorrelativo : True=Genera el correlativo; false=No genera, solamente lo valida
 	 * @return
@@ -505,7 +505,7 @@ public interface VentaPasajesManager {
 //	 * @throws Exception
 //	 */
 //	public VentasNotas generarNotaCreditoRegularizacion(List<VentaPasaje> listVentas, TipoNota tipoNota, boolean newCompVenta)throws Exception;
-	
+
 	/**
 	 * Procesa las anulaciones, segun su tipo.
 	 * @param lstVentas	: Lista de ventas a anular
@@ -552,7 +552,7 @@ public interface VentaPasajesManager {
 	 * @return
 	 */
 	public List<ResumenAnulacionPostergacion> buscarBoletosPostergadosByX(String fechaDesde, String fechaHasta, Integer criterio, Integer nroPostergaciones);
-	
+
 	/**
 	 * Busca los boletos postergados por Usuario o Agencia
 	 * @param fechaDesde	: Fecha de inicio de busqueda
@@ -562,7 +562,7 @@ public interface VentaPasajesManager {
 	 * @return
 	 */
 	public List<VentaPasaje> buscarBoletosPostergadosDetalladoByX(String fechaDesde, String fechaHasta, Integer id, Integer criterio, Integer nroPostergaciones);
-	
+
 	/**
 	 * Busca los boletos postergados por Usuario o Agencia
 	 * @param fechaDesde	: Fecha de inicio de busqueda
@@ -572,7 +572,7 @@ public interface VentaPasajesManager {
 	 * @return
 	 */
 	public List<ResumenVentas> buscarResumenVentas(String fechaDesde, String fechaHasta, Integer idAgencia, Integer nroConsulta);
-	
+
 	/**
 	 * Busca los boletos postergados por Usuario o Agencia
 	 * @param numeroComprobante		: Numero del comprobante a obtener el historial.
@@ -589,7 +589,7 @@ public interface VentaPasajesManager {
 	/**
 	 * Procesa las anulaciones de los Servicios de traslado de personal
 	 * @param lstVentas			: Lista de ventas que se desea anular
-	 * @param tipoAnulacion		: 
+	 * @param tipoAnulacion		:
 	 * @param anularMovimiento	:
 	 * @param liquidacion		:
 	 * @return
@@ -633,7 +633,7 @@ public interface VentaPasajesManager {
 	 * @param fechaInicio	: Fecha inicio de la busqueda
 	 * @param fechaFin		: Fecha fin de la busqueda
 	 * @param codigoBus		: codigo del bus
-	 * @return	
+	 * @return
 	 * @throws Exception
 	 */
 	public List<Manifiesto> buscarLiquidacionBus(String fechaInicio, String fechaFin, String codigoBus)throws Exception;

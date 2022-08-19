@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Fecha		: 24/06/2014
  */
 package com.cystesoft.vyrbus.model.bean;
@@ -16,7 +16,7 @@ import java.util.Date;
  */
 public class VSAsegurado extends GenericBean implements Serializable {
 private static final long serialVersionUID = 1L;
-	
+
 	 private Long id;
      private VSSexo vsSexo;
      private VSEstadoCivil vsEstadoCivil;
@@ -35,11 +35,11 @@ private static final long serialVersionUID = 1L;
      private String urbanizacion;
      private Integer nacionalidadID;
      private String email;
-     
+
      private Ubigeo ubigeo;
      private String tipoPasajero;		//No mapeado -- Indica si es un pasajero normal o frecuente
-     
-     
+
+
 
     // Constructors
 
@@ -51,12 +51,12 @@ private static final long serialVersionUID = 1L;
     public Long getId() {
         return this.id;
     }
-    
+
     public void setId(Long id) {
         this.id = id;
     }
 
-	
+
 
 
 	/**
@@ -227,7 +227,7 @@ private static final long serialVersionUID = 1L;
 		this.tipoPasajero = tipoPasajero;
 	}
 
-	
+
 	/**
 	 * @return the vsEstadoCivil
 	 */
@@ -332,5 +332,5 @@ private static final long serialVersionUID = 1L;
 	public void setNacionalidadID(Integer nacionalidadID) {
 		this.nacionalidadID = nacionalidadID;
 	}
-    
+
 }

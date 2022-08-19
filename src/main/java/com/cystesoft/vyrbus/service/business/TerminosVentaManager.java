@@ -25,7 +25,7 @@ public interface TerminosVentaManager {
 	 * @return
 	 */
 	public ArrayList<TerminosVenta> buscarPorEstadoRegistro(String estado, String criterioOrden);
-	
+
 	/**
 	 * Busqueda por un array de criterios.
 	 * @param criteriosBusqueda: Array de criterios de busqueda
@@ -33,26 +33,26 @@ public interface TerminosVentaManager {
 	 * @return : Array de Terminos de Venta-
 	 */
 	public ArrayList<TerminosVenta> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
-	
+
 	/**
 	 * Busqueda por Id del Termino de Venta
 	 * @param id : Identificador del Termino de Venta
 	 * @return : Lista de terminos de venta.
 	 */
 	public TerminosVenta buscarPorId(Long id);
-	
+
 	/**
 	 * Guarda el Termino de venta.
 	 * @param terminosVenta : Clase TerminosVenta
 	 */
 	public void guardar(TerminosVenta terminosVenta);
-	
+
 	/**
 	 * Actualiza el termino de venta.
 	 * @param terminosVenta : Clase TerminosVenta
 	 */
 	public void actualizar(TerminosVenta terminosVenta);
-	
+
 	/**
 	 * Inactivar
 	 * @param id : Identificador del Termino de Venta

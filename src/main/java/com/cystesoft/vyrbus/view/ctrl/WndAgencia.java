@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 02/05/2012
  */
@@ -62,31 +62,31 @@ public class WndAgencia extends WndOpcionesMantenimiento {
 	private Button btnUbicacionGeografica;
 	private Textbox txtDireccion;
 	private Textbox txtCodigo;
-	
+
 	private Agencia oAgencia=null;
 	//private Usuario usuario= new Usuario();
 
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
 
 	@Override
 	public void onCreate() throws Exception {
 		//	usuario= (Usuario) getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO);
 		/*********************************************************************/
-		
-		
-		
+
+
+
 //		ServiceLocator.getAgenciaManager().guardar(getAgencia());
-		
+
 		UtilData.cargarDataCombo(cboTipoAgencia, TipoAgencia.class, false);
 		UtilData.cargarDataCombo(cboLocalidad, Localidad.class, false);
 		UtilData.cargarDataCombo(cboConcesionario, Concesionario.class, false);
 		UtilData.enlazarUbigeo(txtIdUbigeo, txtUbicacionGeografica, btnUbicacionGeografica,null);
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
 	}
 
-	
+
 	@Override
 	public void initComponents() {
 		cboTipoAgencia = (Combobox) getFellow("cboTipoAgencia");
@@ -101,7 +101,7 @@ public class WndAgencia extends WndOpcionesMantenimiento {
 		txtDireccion = (Textbox) this.getFellow("txtDireccion");
 		txtCodigo = (Textbox) this.getFellow("txtCodigo");
 	}
-	
+
 	@Override
 	public void onNew() {
 		cboTipoAgencia.setSelectedIndex(0);
@@ -112,20 +112,20 @@ public class WndAgencia extends WndOpcionesMantenimiento {
 	@Override
 	public void onSearch() {
 		final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
-		
+
 		oWndFiltrar.addParameter("1. Tipo de Agencia", TipoAgencia.class);
 		oWndFiltrar.addParameter("2. Localidad", Localidad.class);
 		oWndFiltrar.addParameter("3. Concesionario", Concesionario.class);
 		oWndFiltrar.addParameter("4. Denominación", String.class);
 		oWndFiltrar.addParameter("5. Nombre Corto (o sufijo)", String.class);
-		
+
 		this.appendChild(oWndFiltrar);
 		oWndFiltrar.setMode("modal");
 		oWndFiltrar.addEventListener(com.cystesoft.vyrbus.view.ui.Events.ON_FILTER, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
-				criteriosBusqueda = new TreeMap<String, Object>();
-				
+				criteriosBusqueda = new TreeMap<>();
+
 				Integer tipoAgencia = (Integer) oWndFiltrar.getParameterValue("1. Tipo de Agencia");
 				Integer localidad = (Integer) oWndFiltrar.getParameterValue("2. Localidad");
 				Integer concesionario = (Integer) oWndFiltrar.getParameterValue("3. Concesionario");
@@ -140,25 +140,25 @@ public class WndAgencia extends WndOpcionesMantenimiento {
 				if(nombreCorto.trim().equals("")) {
 					criteriosBusqueda.remove("nombreCorto");
 				}else{criteriosBusqueda.put("nombreCorto", "%" + nombreCorto + "%");}
-				
+
 				if (tipoAgencia != null){
 					TipoAgencia otipoAgencia = new TipoAgencia();
 					otipoAgencia.setId(tipoAgencia);
 					criteriosBusqueda.put("tipoAgencia", otipoAgencia);
 				}else{criteriosBusqueda.remove("tipoAgencia");}
-				
+
 				if (localidad != null){
 					Localidad olocaLocalidad = new Localidad();
 					olocaLocalidad.setId(localidad);
 					criteriosBusqueda.put("localidad", olocaLocalidad);
 				}else{criteriosBusqueda.remove("localidad");}
-				
+
 				if (concesionario != null){
 					Concesionario oconcesionario = new Concesionario();
 					oconcesionario.setId(concesionario);
 					criteriosBusqueda.put("concesionario", oconcesionario);
 				}else{criteriosBusqueda.remove("concesionario");}
-								
+
 				criteriosBusqueda.put("estadoRegistro", estadoRegistro);
 				listarRegistros(ServiceLocator.getAgenciaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 			}
@@ -169,7 +169,7 @@ public class WndAgencia extends WndOpcionesMantenimiento {
 	public void onRefresh(int tab) {
 		try{
 			if (!criteriosBusqueda.isEmpty()) {
-				this.listarRegistros(ServiceLocator.getAgenciaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+				this.listarRegistros(ServiceLocator.getAgenciaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
@@ -178,7 +178,7 @@ public class WndAgencia extends WndOpcionesMantenimiento {
 
 	@Override
 	public void onModify(int tab) throws Exception{
-		Long id = new Long(0);		
+		Long id = new Long(0);
 		id = new Long((String) listboxLista.getSelectedItem().getValue());
 		this.mantenimientoRegistro(id);
 	}
@@ -197,7 +197,7 @@ public class WndAgencia extends WndOpcionesMantenimiento {
 
 	@Override
 	public void onSave(int action) throws Exception {
-		try {		
+		try {
 			if (!(cboTipoAgencia.getSelectedItem().getValue() instanceof TipoAgencia))
 				throw new TipoAgenciaNullException();
 			else if (!(cboLocalidad.getSelectedItem().getValue() instanceof Localidad))
@@ -214,14 +214,14 @@ public class WndAgencia extends WndOpcionesMantenimiento {
 				DlgMessage.information(Messages.getString("WndAgencia.information.noCodigo"),txtCodigo);
 				return;
 			}
-						
+
 			if(action==ACTION_NEW)
 				 oAgencia = new Agencia();
-			
+
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
 			oAgencia.setId(id);
 			if (cboTipoAgencia.getSelectedIndex() > -1) {
-				TipoAgencia oTipoAgencia = new TipoAgencia();			
+				TipoAgencia oTipoAgencia = new TipoAgencia();
 				oTipoAgencia.setId(((TipoAgencia) cboTipoAgencia.getSelectedItem().getValue()).getId());
 				oAgencia.setTipoAgencia(oTipoAgencia);
 			}
@@ -259,10 +259,10 @@ public class WndAgencia extends WndOpcionesMantenimiento {
 					break;
 			}
 			/*RECUPERA EL REGISTRO ACTUALIZADO O EL NUEVO*/
-			criteriosBusqueda = new TreeMap<String, Object>();
+			criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("id", oAgencia.getId());
 			listarRegistros(ServiceLocator.getAgenciaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-			
+
 		}catch (TipoAgenciaNullException tanex){
 			DlgMessage.information(Messages.getString("WndAgencia.information.noSeleccionoTipoAgencia"),cboTipoAgencia);
 			throw new CancelaGrabacionException();
@@ -291,7 +291,7 @@ public class WndAgencia extends WndOpcionesMantenimiento {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace();throw new CancelaGrabacionException();
 		}
-			
+
 	}
 
 	@Override
@@ -314,19 +314,19 @@ public class WndAgencia extends WndOpcionesMantenimiento {
 	@Override
 	public void onPrint(int tab) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onExport(int tab) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onHelp() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -346,13 +346,13 @@ public class WndAgencia extends WndOpcionesMantenimiento {
 	public void onClose() {
 		closeTabWindow();
 	}
-	
+
 	public void listarRegistros(ArrayList<Agencia> lstRegistro) throws Exception{
-		ArrayList<Object> lstAgencias = new ArrayList<Object>();
+		ArrayList<Object> lstAgencias = new ArrayList<>();
 
 		for(int r = 0; r < lstRegistro.size(); r ++) {
 			Agencia oAgencia = lstRegistro.get(r);
-			ArrayList<Object> lstFila = new ArrayList<Object>();
+			ArrayList<Object> lstFila = new ArrayList<>();
 			if (oAgencia.getTipoAgencia().getDenominacion()==null){
 				TipoAgencia tipoAgencia = new TipoAgencia();
 				tipoAgencia= ServiceLocator.getTipoAgenciaManager().buscarPorId(oAgencia.getTipoAgencia().getId().longValue());
@@ -363,7 +363,7 @@ public class WndAgencia extends WndOpcionesMantenimiento {
 				localidad = ServiceLocator.getLocalidadManager().buscarPorId(oAgencia.getLocalidad().getId().longValue());
 				oAgencia.setLocalidad(localidad);
 			}
-			
+
 			if(oAgencia.getConcesionario()!=null){
 				if (oAgencia.getConcesionario().getRazonSocial()==null){
 					Concesionario concesionario = new Concesionario();
@@ -371,13 +371,13 @@ public class WndAgencia extends WndOpcionesMantenimiento {
 					oAgencia.setConcesionario(concesionario);
 				}
 			}
-			
-			
+
+
 			Ubigeo ubigeo = new Ubigeo();
 			ubigeo = ServiceLocator.getUbigeoManager().buscarPorId(oAgencia.getUbigeo().getId());
 			oAgencia.setUbigeo(ubigeo);
-			
-			
+
+
 			lstFila.add(oAgencia.getId());//idAgencia
 			lstFila.add(r + 1);//Item
 			lstFila.add(oAgencia.getTipoAgencia().getDenominacion());
@@ -403,14 +403,14 @@ public class WndAgencia extends WndOpcionesMantenimiento {
 		Concesionario oConcesionario = oAgencia.getConcesionario();
 
 		textboxId.setText(oAgencia.getId().toString());
-		
-		
+
+
 
 		if (oTipoAgencia != null) {
 			Util.seleccionarValorItemCombo(TipoAgencia.class, cboTipoAgencia, oTipoAgencia.getId());
 		}else
 			cboTipoAgencia.setSelectedIndex(0);
-		
+
 		if (oLocalidad != null) {
 			Util.seleccionarValorItemCombo(Localidad.class, cboLocalidad, oLocalidad.getId());
 		}else

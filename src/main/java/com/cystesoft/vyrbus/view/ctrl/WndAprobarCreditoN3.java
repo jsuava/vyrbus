@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TreeMap;
 
-import org.zkoss.zhtml.Messagebox;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -51,22 +50,22 @@ import com.cystesoft.vyrbus.view.ui.DlgMessage;
 import com.cystesoft.vyrbus.view.ui.WndBase;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	/*Tabs*/
 	private Tab tabPendientes;
 	private Tab tabHistorial;
 	Boolean selectPendientes=false; //Tru(selecciona el tabHistorial solicitudes), (false)  pendientes.
-	
+
 	private Button btnBuscar;
 	private Listbox listPendientes;
 	private Combobox cmbCliente;
-	
+
 	/*Solicitud*/
 	private Label lblRuc;
 	private Label lblRazonSocial;
@@ -106,11 +105,11 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 	CarteraCliente carteraCliente=null;
 	SolicitudClienteCredito solicitudClienteCredito=null;
 	LineaCreditoCliente lineaCreditoCliente=null;
-	
-	
+
+
 	/*Otras variables*/
 	int action=0;
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
@@ -120,7 +119,7 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 		/*Tabs*/
 		tabPendientes=(Tab)this.getFellow("tabPendientes");
 		tabHistorial=(Tab)this.getFellow("tabHistorial");
-		
+
 		btnBuscar=(Button)this.getFellow("btnBuscar");
 		listPendientes=(Listbox)this.getFellow("listPendientes");
 		grbSolicitud=(Groupbox)this.getFellow("grbSolicitud");
@@ -159,7 +158,7 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 		cmbClienteHist=(Combobox)this.getFellow("cmbClienteHist");
 		btnBuscarSolApro=(Button)this.getFellow("btnBuscarSolApro");
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
@@ -168,40 +167,40 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 	public void onCreate() throws Exception {
 		try{
 			usuarioAprobador=(UsuarioAprobador)getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO_APROBADOR);
-			
+
 			if(usuarioAprobador==null)
 				throw new UsuarioAprobadorNullException();
 			Date date=new Date();
 			date=Constantes.FORMAT_DATE.parse(new MyTime().dateServer());
-			
+
 			cargarClientePendientes();
 			UtilData.cargarClientesSolicitud(cmbClienteHist, true);
-			
+
 			visibleSolicitud(false);
 			listPendientes();
-			
+
 //			lblSobregiro.setLocale(Locale.US);
 			dbxCreditoREconsiderar.setLocale(Locale.US);
 //			lblCreditoSolicitado.setLocale(Locale.US);
 //			dbxMontoSobregiro.setLocale(Locale.US);
 //			dbxDescuentoBaja.setLocale(Locale.US);
 //			dbxDescuentoAlta.setLocale(Locale.US);
-			
+
 			dtxFechaInicio.setValue(date);
 			dtxFechaFinal.setValue(date);
 			UtilData.cargarEstadoSolicitudLC(cmbEstadoSolicitud, true);
 			cmbEstadoSolicitud.setSelectedIndex(0);
-			
+
 			Util.disabledBtnBuscar(false, btnBuscar, accesoConsultar());
 			Util.disabledBtnBuscar(false, btnBuscarSolApro, accesoConsultar());
-			
+
 		}catch (UsuarioAprobadorNullException uanex){
 			DlgMessage.information(Messages.getString("wndApruebaCartera.infomation.UsuarioAprobadorNull"));
 			closeTabWindow();
 		}
 	}
-	
-	
+
+
 	/**
 	 * Muestra detalle de la solicitud
 	 * @param solicitudClienteCredito : class
@@ -209,19 +208,19 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 	private void showDetalleSolicitud(SolicitudClienteCredito solicitudClienteCredito){
 		//this.lineaCreditoCliente=lineaCreditoCliente;
 		//.solicitudClienteCredito=solicitudClienteCredito; //lineaCreditoCliente.getSolicitudClienteCredito();
-		
+
 		Cliente cliente=solicitudClienteCredito.getSolicitudCartera().getCliente();
 		Usuario funcionario=solicitudClienteCredito.getSolicitudCartera().getUsuario();
-		
+
 		lblRuc.setValue(cliente.getNumeroDocumento());
 		lblRazonSocial.setValue(cliente.getRazonSocial());
 		if(cliente.getOrigen().equals(Constantes.ORIGEN_LIMA))
 			lblOrigen.setValue(Constantes.ORIGEN_LIMA_DESC);
-		else 
+		else
 			lblOrigen.setValue(Constantes.ORIGEN_PROVINCIAS_DESC);
 		lblBaseHistorica.setValue(Util.toNumberFormat(solicitudClienteCredito.getSolicitudCartera().getBaseHistorica(),2));
 		lblTipoCombranza.setValue(solicitudClienteCredito.getTipoCobranza().getDenominacion());
-		
+
 		lblFechaSolicitud.setValue(Constantes.FORMAT_DATE.format(solicitudClienteCredito.getFechaSolicitud()));
 		lblFuncionario.setValue(funcionario.getApellidoPaterno()+" "+funcionario.getApellidoMaterno()+", "+funcionario.getNombre());
 //		dbxDescuentoBaja.setValue(solicitudClienteCredito.getSolicitudCartera().getDescuentoBaja());
@@ -229,8 +228,8 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 		chbesCanje.setChecked(solicitudClienteCredito.getEsCanje().equals(Constantes.SI)? true: false);
 		chbEsAmpliacion.setChecked(solicitudClienteCredito.getEsAmpliacion().equals(Constantes.SI)? true: false);
 		chbEsComisionable.setChecked(solicitudClienteCredito.getEsComisionable().equals(Constantes.SI)? true: false);
-		
-		if(selectPendientes==true){
+
+		if(selectPendientes){
 			lblCreditoSolicitado.setValue(Util.toNumberFormat(solicitudClienteCredito.getLineaCreditoAprobada(),2));
 			lblSobregiro.setValue(Util.toNumberFormat(solicitudClienteCredito.getSobregiro(),2));
 		}else{
@@ -244,32 +243,32 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 			txtObservaciones.setText(solicitudClienteCredito.getObservaciones());
 		}
 		onChangeSobregiro();
-		
-		
+
+
 		/*valida si es una extencion de canje publicitario*/
 		if(chbesCanje.isChecked() && chbEsAmpliacion.isChecked())
 			lblAmpliacion.setValue("EXTENSIÓN DE CANJE PUBLICITARIO");
 		else
 			lblAmpliacion.setValue("AMPLIACIÓN");
 	}
-	
+
 	/**
 	 * Lista pendienpes por aprobar LC.
 	 */
 	public void listPendientes(){
 		String fechaInicio=null; String fechaFin=null; String estadoSolicitud=null; Long idCliente=null;
-//		final UsuarioAprobador usuarioAprobador=null; 
+//		final UsuarioAprobador usuarioAprobador=null;
 		Boolean recu_Historia=false;
 		if(cmbCliente.getSelectedItem().getValue() instanceof Cliente)
 			idCliente=((Cliente)cmbCliente.getSelectedItem().getValue()).getId();
-		
+
 		List<LineaCreditoCliente>list=ServiceLocator.getLineaCreditoClienteManager().buscarSolicitudLineaCreditoN3(fechaInicio, fechaFin, estadoSolicitud, idCliente, null, recu_Historia);
-					
+
 		Listitem item=null;
 		Listcell cell=null;
 		int x=0;
 		Util.limpiarListbox(listPendientes);
-		
+
 		for(LineaCreditoCliente lineaCreditoCliente: list){
 			SolicitudCartera solicitudCartera=lineaCreditoCliente.getSolicitudClienteCredito().getSolicitudCartera();
 			Usuario funcionario = solicitudCartera.getUsuario();
@@ -292,14 +291,14 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 			cell.setStyle("font-size:11px !important");
 			item.appendChild(cell);
 			cell=new Listcell(lineaCreditoCliente.getUsuarioInsercion());
-			item.appendChild(cell);		
+			item.appendChild(cell);
 			final Toolbarbutton button= new Toolbarbutton("VER SOLICITUD ");
 			button.setId(String.valueOf(x-1));
 			button.setStyle("color:blue; font-size:9px !important");
 			cell=new Listcell();
 			cell.appendChild(button);
 			item.appendChild(cell);
-			
+
 			button.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 				@Override
 				public void onEvent(Event event) throws Exception {
@@ -307,7 +306,7 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 					Listitem listitem=listPendientes.getItemAtIndex(Integer.valueOf(button.getId()));
 					solicitudClienteCredito= new SolicitudClienteCredito();
 					solicitudClienteCredito=ServiceLocator.getSolicitudClienteCreditoManager().buscarPorId(((LineaCreditoCliente)listitem.getValue()).getSolicitudClienteCredito().getId());
-					
+
 					try{
 						if(!(solicitudClienteCredito.getEstadoSolicitud().equals(Constantes.ESTADOSOL_ACTIVA) && solicitudClienteCredito.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO)))
 							throw new SolicitudClienteCreditoAnuladaException();
@@ -315,7 +314,7 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 
 						visibleSolicitud(true);
 						visibleLisPendientes(false);
-						
+
 						tabHistorial.setDisabled(true);
 						btnAceptar.setVisible(true);
 						disabledControlsSolciitud(false);
@@ -323,27 +322,27 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 //						Util.disabledBtnAceptar(false, btnAceptar, accesoGrabar());
 						Util.disabledBtnAceptar(usuarioAprobador.getNivelAprobacion().intValue()!=Constantes.NIVEL_TRES, btnAceptar, accesoGrabar());
 						action=Constantes.ACTION_NEW;
-						
+
 					}catch (SolicitudClienteCreditoAnuladaException sccanex){
 						DlgMessage.information(Messages.getString("wndAprobarLineaCreditoN3.information.SolicitudClienteCreditoAnulada"));
 					}
-//					
+//
 				}
 			});
 			item.setValue(lineaCreditoCliente);
 			listPendientes.appendChild(item);
 		}
 	}
-	
+
 	/**
 	 * cargar los clientes que estan con una solicitud pendiente
 	 */
 	private void cargarClientePendientes(){
 		String fechaInicio=null; String fechaFin=null; String estadoSolicitud=null; Long idCliente=null;
 		UsuarioAprobador usuarioAprobador=null; Boolean recu_Historia=false;
-	
+
 		List<LineaCreditoCliente>list=ServiceLocator.getLineaCreditoClienteManager().buscarSolicitudLineaCreditoN3(fechaInicio, fechaFin, estadoSolicitud, idCliente, usuarioAprobador, recu_Historia);
-		
+
 		UtilData.cargarGenericData(cmbCliente, true);
 		for (LineaCreditoCliente lineaCreditoCliente: list) {
 			Cliente cliente=lineaCreditoCliente.getSolicitudClienteCredito().getSolicitudCartera().getCliente();
@@ -354,7 +353,7 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 		}
 		cmbCliente.setSelectedIndex(0);
 	}
-	
+
 	/**
 	 * muestar o oculta datos de la silicitud
 	 * @param visible
@@ -362,7 +361,7 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 	private void visibleSolicitud(Boolean visible){
 		grbSolicitud.setVisible(visible);
 	}
-	
+
 	/**
 	 * Calcula el monto del sobregiro, solo es referencial no se guarda en la DB
 	 * solo se guarda el porcentaje.
@@ -376,8 +375,8 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 			Double creditosolicitado=Util.parseNumberFormat(lblCreditoSolicitado.getValue(),2);
 			montoSobregiro=creditosolicitado*(sobregiro/100);
 		}
-			
-		
+
+
 		lblMontoSobregiro.setValue("% |"+Util.toNumberFormat(montoSobregiro,2));
 //		if(dbxCreditoREconsiderar.getValue()!=null && lblSobregiro.getValue()!=null && lblSobregiro.getValue()>0){
 //			dbxMontoSobregiro.setValue(dbxCreditoREconsiderar.getValue()*(lblSobregiro.getValue()/100));
@@ -385,7 +384,7 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 //			dbxMontoSobregiro.setValue(0);
 //		}
 	}
-	
+
 	/**
 	 * Muesttra o oculata listado de pendientes
 	 * @param visible
@@ -395,7 +394,7 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 		btnBuscar.setVisible(visible);
 		grdAproBusqCliente.setVisible(visible);
 	}
-	
+
 	/**
 	 * Activa o desactiva controles de la solicitud
 	 * @param disabled
@@ -407,7 +406,7 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 		txtObservaciones.setReadonly(disabled);
 		dbxCreditoREconsiderar.setReadonly(true);
 	}
-	
+
 	/**
 	 * cancela operación
 	 */
@@ -419,7 +418,7 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 			tabHistorial.setSelected(true);
 		tabHistorial.setDisabled(false);
 	}
-	
+
 	/**
 	 * Cuando pulsa el button Aceptar.
 	 * @throws Exception
@@ -434,9 +433,9 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 				throw new MotivoDesapruebaNullException();
 			if(!(solicitudClienteCredito.getEstadoSolicitud().equals(Constantes.ESTADOSOL_ACTIVA) && solicitudClienteCredito.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO)))
 				throw new SolicitudClienteCreditoAnuladaException();
-			
+
 			/*Buscar cartera cliente, por el idSolicitudCartera.*/
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("cliente", solicitudClienteCredito.getSolicitudCartera().getCliente());
 			criteriosBusqueda.put("estadoCartera", Constantes.ESTADOSOL_ACTIVA);
 			List<CarteraCliente>list=ServiceLocator.getCarteraClienteManager().buscarPorX(criteriosBusqueda, null);
@@ -445,41 +444,41 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 				carteraCliente=list.get(0);
 			}else
 				throw new FuncionarioNullException();
-						
+
 			//Valiad si el usuario tiene el nivel requerido para la aprobacion
 			if(usuarioAprobador.getNivelAprobacion().intValue()!=Constantes.NIVEL_TRES){
 				DlgMessage.information(Messages.getString("wndAprobarCredito.information.noAccesoAprobar"));
 				return;
-			}	
-				
+			}
+
 			org.zkoss.zul.Messagebox.show(Messages.getString(rbAprueba.isChecked()?"wndAprobarLineaCredito.question.Aprobar": rbDesaprueba.isChecked()? "wndAprobarLineaCredito.question.Desaprobar": "wndAprobarCredito.question.devuelveSolicitudAFinanzas") , DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, org.zkoss.zul.Messagebox.QUESTION, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e) throws Exception {
 					if(e.getName().equals("onYes")){
-						Date fecha=Constantes.FORMAT_DATE_TIME_24H.parse(new MyTime().dateServer());					
+						Date fecha=Constantes.FORMAT_DATE_TIME_24H.parse(new MyTime().dateServer());
 						/*Inactiva el registro recuperado de la Solicitud de Credito*/
 //						solicitudClienteCredito.setEstadoRegistro(Constantes.VALUE_INACTIVO);
 //						UtilData.auditarRegistro(solicitudClienteCredito, true, usuarioAprobador.getUsuario(), Executions.getCurrent());
 //						ServiceLocator.getSolicitudClienteCreditoManger().actualizar(solicitudClienteCredito);
-						
+
 						/*Recalcula el saldo para el credito del cliente*/
 						Double sobregiro=.00; Double montoAprobado=.00;
 						if (!(lblSobregiro.getValue()==null))
 							sobregiro=Util.parseNumberFormat(lblSobregiro.getValue(),2);
 						if(sobregiro>0){
 							montoAprobado=Util.parseNumberFormat(lblCreditoSolicitado.getValue(),2)+(Util.parseNumberFormat(lblCreditoSolicitado.getValue(),2)*(sobregiro/100));
-						}else 
+						}else
 							montoAprobado=Util.parseNumberFormat(lblCreditoSolicitado.getValue(),2);
-						
+
 						Double saldo=montoAprobado;
 
 						if(chbEsAmpliacion.isChecked()){
 							/*Obtiene el nuevo saldo, cuando es una ampliacion*/
 							if(solicitudClienteCredito.getEsAmpliacion().equals(Constantes.SI))
 								saldo = ServiceLocator.getLineaCreditoClienteManager().saldo(montoAprobado, carteraCliente.getCliente().getId());
-							
+
 							/*Inactiva Linea de credito actual*/
-							TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+							TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 							criteriosBusqueda.put("carteraCliente", carteraCliente);
 							criteriosBusqueda.put("estadoLineaCredito", Constantes.ESTADOSOL_ACTIVA);
 							criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
@@ -492,14 +491,14 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 								ServiceLocator.getLineaCreditoClienteManager().actualizar(lineaCreditoCliente);
 							}
 						}
-						
+
 						/*Inserta una nuevo registro con la solicitud de credito*/
 						insertarSolcitudClienteCredito(solicitudClienteCredito);
-						
+
 						if(rbAprueba.isChecked())
 							insertarLineaCreditoAprobada(solicitudClienteCredito, carteraCliente,saldo);
-					
-						onClickCancelar();						
+
+						onClickCancelar();
 						listPendientes();
 					}
 				}
@@ -521,26 +520,26 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void insertarLineaCreditoAprobada(SolicitudClienteCredito solicitudClienteCredito, CarteraCliente carteraCliente, Double saldo) throws Exception{
 		/*Inserta el nuevo registro de la linea de credito, con la aprobacion o desaprobacion*/
 		long lDefault=Constantes.FORMAT_DATE_TIME_24H.parse(Constantes.FECHA_DEFAULT).getTime();
 		Date fDefault= new Date(lDefault);
 		Date fecha=Constantes.FORMAT_DATE_TIME_24H.parse(new MyTime().dateServer());
-		
+
 //		/*Recalcula el saldo para el credito del cliente*/
 //		Double sobregiro=.00; Double montoAprobado=.00;
 //		if (!(lblSobregiro.getValue()==null))
 //			sobregiro=Util.parseNumberFormat(lblSobregiro.getValue(),2);
 //		if(sobregiro>0){
 //			montoAprobado=Util.parseNumberFormat(lblCreditoSolicitado.getValue(),2)+(Util.parseNumberFormat(lblCreditoSolicitado.getValue(),2)/ sobregiro);
-//		}else 
+//		}else
 //			montoAprobado=Util.parseNumberFormat(lblCreditoSolicitado.getValue(),2);
-//		
+//
 //		Double saldo=montoAprobado;
 //		if(solicitudClienteCredito.getEsAmpliacion().equals(Constantes.SI))
-//			saldo = ServiceLocator.getLineaCreditoClienteManager().saldo(montoAprobado, carteraCliente.getCliente().getId());			
-		
+//			saldo = ServiceLocator.getLineaCreditoClienteManager().saldo(montoAprobado, carteraCliente.getCliente().getId());
+
 		lineaCreditoCliente=new LineaCreditoCliente();
 		lineaCreditoCliente.setCarteraCliente(carteraCliente);
 		lineaCreditoCliente.setTipoCobranza(solicitudClienteCredito.getTipoCobranza());
@@ -558,7 +557,7 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 		UtilData.auditarRegistro(lineaCreditoCliente,usuarioAprobador.getUsuario(), Executions.getCurrent());
 		ServiceLocator.getLineaCreditoClienteManager().guardar(lineaCreditoCliente);
 	}
-	
+
 	/**
 	 * Inserta Solicitud Cliente Credito
 	 * @param solicitudClientCredito : class
@@ -566,15 +565,15 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 	 */
 	private void insertarSolcitudClienteCredito(SolicitudClienteCredito solicitudClientCredito)throws Exception{
 		Date fecha=Constantes.FORMAT_DATE_TIME_24H.parse(new MyTime().dateServer());
-		
+
 		usuarioAprobador=ServiceLocator.getUsuarioAprobadorManager().buscarPorId(usuarioAprobador.getId().longValue());
-		
+
 		solicitudClienteCredito = new SolicitudClienteCredito();
 		solicitudClienteCredito .setUsuarioAprobador(usuarioAprobador);
 		solicitudClienteCredito .setSolicitudCartera(solicitudClientCredito.getSolicitudCartera());
 		solicitudClienteCredito .setTipoCobranza(solicitudClientCredito.getTipoCobranza());
 		solicitudClienteCredito .setNumeroControl(solicitudClientCredito.getNumeroControl());
-		
+
 		if(rbDevuelveFinanzas.isChecked()){//El UGA Devuelve la solicitud
 //			solicitudClienteCredito .setLineaCreditoSolicitada(dbxCreditoREconsiderar.getValue());
 			solicitudClienteCredito .setLineaCreditoSolicitada(lblCreditoSolicitado.getValue()!=null? Util.parseNumberFormat(lblCreditoSolicitado.getValue(),2):.00);
@@ -598,7 +597,7 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 			solicitudClienteCredito .setFechaAprobacion(fecha);
 			solicitudClienteCredito .setObservaciones(txtObservaciones.getText().trim().toUpperCase());
 		}
-		
+
 		solicitudClienteCredito .setSobregiro(lblSobregiro.getValue()!=null? Util.parseNumberFormat(lblSobregiro.getValue(),2):.00);
 		solicitudClienteCredito .setFechaSolicitud(solicitudClientCredito.getFechaSolicitud());
 		solicitudClienteCredito .setEsCanje(solicitudClientCredito.getEsCanje());
@@ -608,8 +607,8 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 		UtilData.auditarRegistro(solicitudClienteCredito ,usuarioAprobador.getUsuario(), Executions.getCurrent());
 		ServiceLocator.getSolicitudClienteCreditoManager().guardar(solicitudClienteCredito );
 	}
-	
-	
+
+
 	/**
 	 * Limpia controles de la solcitud
 	 */
@@ -637,7 +636,7 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 		txtMotivo.setText("");
 		txtObservaciones.setText("");
 	}
-	
+
 	/**
 	 * Historial de solicitudes
 	 */
@@ -649,14 +648,14 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 			estadoSolicitud=cmbEstadoSolicitud.getSelectedItem().getValue();
 		if(cmbClienteHist.getSelectedItem().getValue() instanceof Cliente)
 			idCliente=((Cliente)cmbClienteHist.getSelectedItem().getValue()).getId();
-		
+
 		List<LineaCreditoCliente>list=ServiceLocator.getLineaCreditoClienteManager().buscarSolicitudLineaCreditoN3(fechaInicio, fechaFin, estadoSolicitud, idCliente, usuarioAprobador, recu_Historia);
-				
+
 		Listitem item=null;
 		Listcell cell=null;
 		int x=0;
 		Util.limpiarListbox(listHistSolicitudes);
-		
+
 		for(LineaCreditoCliente lineaCreditoCliente: list){
 			SolicitudCartera solicitudCartera=lineaCreditoCliente.getSolicitudClienteCredito().getSolicitudCartera();
 			Usuario funcionario = solicitudCartera.getUsuario();
@@ -672,7 +671,7 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 			cell=new Listcell(Constantes.FORMAT_DATE.format(lineaCreditoCliente.getSolicitudClienteCredito().getFechaSolicitud()));
 			cell.setStyle("font-size:11px !important");
 			item.appendChild(cell);
-			
+
 			if(lineaCreditoCliente.getEstadoLineaCredito().equals(Constantes.ESTADOSOL_ACTIVA))
 				cell=new Listcell(Constantes.FORMAT_LONG.format(lineaCreditoCliente.getSolicitudClienteCredito().getFechaAprobacion()));
 			else if(lineaCreditoCliente.getEstadoLineaCredito().equals(Constantes.ESTADOSOL_ANULADA))
@@ -681,7 +680,7 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 				cell=new Listcell();
 			cell.setStyle("font-size:11px !important");
 			item.appendChild(cell);
-			
+
 			/*Validacion del estado aprobacion gerencia comercial*/
 			if(!(lineaCreditoCliente.getSolicitudClienteCredito().getEstadoSolicitudAprobadoXFinanzas()==null)){
 				if(lineaCreditoCliente.getEstadoLineaCredito().equals(Constantes.ESTADOSOL_ACTIVA))
@@ -693,19 +692,19 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 				else cell=new Listcell("No definido");
 			}else
 				cell=new Listcell("DEVUELTA");
-			
+
 			item.appendChild(cell);
-			
+
 			final Toolbarbutton button= new Toolbarbutton();
 //			cell=new Listcell();
 			button.setContext(cell.getLabel());
 //			button.setId(lineaCreditoCliente.getSolicitudClienteCredito().getId().toString());
 			button.setZindex(lineaCreditoCliente.getSolicitudClienteCredito().getId().intValue());
 			button.setStyle("color:blue; font-style:inherit; font-size: 8.5px !important");
-			if(ServiceLocator.getLineaCreditoClienteManager().validadSolicitudAprobadaN3(lineaCreditoCliente.getSolicitudClienteCredito().getId())==false)
+			if(!ServiceLocator.getLineaCreditoClienteManager().validadSolicitudAprobadaN3(lineaCreditoCliente.getSolicitudClienteCredito().getId()))
 				button.setLabel("Modificar");
 			else button.setLabel("Consultar");
-						
+
 			button.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 				@Override
 				public void onEvent(Event event) throws Exception {
@@ -713,13 +712,13 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 					solicitudClienteCredito= new SolicitudClienteCredito();
 					solicitudClienteCredito=ServiceLocator.getSolicitudClienteCreditoManager().buscarPorId(Long.valueOf(button.getZindex()));
 					showDetalleSolicitud(solicitudClienteCredito);
-					
+
 					btnAceptar.setVisible(true);
 					visibleSolicitud(true);
 					visibleLisPendientes(false);
 					tabHistorial.setDisabled(true);
 					tabPendientes.setSelected(true);
-					
+
 					if (!(button.getContext().equals("DEVUELTA"))){
 						if(solicitudClienteCredito.getEstadoSolicitud().equals(Constantes.ESTADOSOL_ACTIVA))
 							rbAprueba.setChecked(true);
@@ -729,8 +728,8 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 						dbxCreditoREconsiderar.setValue(solicitudClienteCredito.getLineaCreditoAprobada());
 						rbDevuelveFinanzas.setChecked(true);
 					}
-										
-					if(ServiceLocator.getLineaCreditoClienteManager().validadSolicitudAprobadaN3(solicitudClienteCredito.getId())==false){
+
+					if(!ServiceLocator.getLineaCreditoClienteManager().validadSolicitudAprobadaN3(solicitudClienteCredito.getId())){
 						rbDevuelveFinanzas.setChecked(true);
 						dbxCreditoREconsiderar.setReadonly(false);
 //						btnAceptar.setVisible(true);
@@ -748,7 +747,7 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 			cell=new Listcell();
 			cell.appendChild(button);
 			item.appendChild(cell);
-			
+
 			item.addEventListener(Events.ON_DOUBLE_CLICK,new EventListener<Event>() {
 				@Override
 				public void onEvent(Event event) throws Exception {
@@ -775,13 +774,13 @@ public class WndAprobarCreditoN3 extends WndBase implements Serializable {
 			listHistSolicitudes.appendChild(item);
 		}
 	}
-	
+
 //	private void desaprovarCredito(Long idLineaCreditoCliente){
 //		Messagebox.show(Messages.getString("wndAprobarCredito.question.confirmaDesaprobacion") , DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 //			@Override
 //			public void onEvent(Event e) throws Exception {
 //				if(e.getName().equals("onYes")){
-//					
+//
 //				}
 //			}
 //		});

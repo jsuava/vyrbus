@@ -10,11 +10,11 @@ public class TarjetaCredito extends GenericBean implements java.io.Serializable 
 	private Integer id;
 	private OperadorTarjetaCredito operadorTarjetaCredito;
 	private String denominacion;
-	
+
 	public TarjetaCredito() {
 		super();
 	}
-	
+
 	public TarjetaCredito(Integer id){
 		this.id=id;
 	}

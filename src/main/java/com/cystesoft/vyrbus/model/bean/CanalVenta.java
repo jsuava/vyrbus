@@ -12,7 +12,7 @@ public class CanalVenta extends GenericBean implements java.io.Serializable {
 	private String denominacion;
 	private String nombreCorto;
 	private String color;
-	
+
 	public CanalVenta() {
 		super();
 	}

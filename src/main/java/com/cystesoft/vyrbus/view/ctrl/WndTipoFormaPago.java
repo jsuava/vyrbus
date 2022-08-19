@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 12/06/2012
  */
@@ -46,9 +46,9 @@ public class WndTipoFormaPago extends WndOpcionesMantenimiento {
 	private Textbox txtDenominacion;
 	private Textbox txtNombreCorto;
 	private Combobox cboTipoIngresoLiquidacion;
-	
+
 	private TipoFormaPago oTipoFormaPago=null;
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
 
 	/* (non-Javadoc)
@@ -58,10 +58,10 @@ public class WndTipoFormaPago extends WndOpcionesMantenimiento {
 	public void onCreate() throws Exception {
 		UtilData.cargarDataCombo(cboFormaPago, FormaPago.class, false);
 		UtilData.cargarDataCombo(cboTipoIngresoLiquidacion, UtilData.DATA_TIPO_INGRESO_LIQUIDACION, false);
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IBase#initComponents()
 	 */
@@ -89,10 +89,10 @@ public class WndTipoFormaPago extends WndOpcionesMantenimiento {
 	@Override
 	public void onSearch() {
 		final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
-		
+
 		oWndFiltrar.addParameter("1. Forma de Pago", FormaPago.class);
 		oWndFiltrar.addParameter("2. Denominación", String.class);
-		oWndFiltrar.addParameter("3. Nombre corto (o sufijo)", String.class);	
+		oWndFiltrar.addParameter("3. Nombre corto (o sufijo)", String.class);
 
 		this.appendChild(oWndFiltrar);
 		oWndFiltrar.setMode("modal");
@@ -112,16 +112,16 @@ public class WndTipoFormaPago extends WndOpcionesMantenimiento {
 				if(nombreCorto.trim().equals("")){
 					criteriosBusqueda.remove("nombreCorto");
 				}else{criteriosBusqueda.put("nombreCorto", "%" + nombreCorto + "%");}
-				
+
 				if (formaPago == null){
 					criteriosBusqueda.remove("formaPago");
 				}else{
 					FormaPago oFormaPago = new FormaPago();
 					oFormaPago.setId(formaPago);
 					criteriosBusqueda.put("formaPago", oFormaPago);
-				}				
+				}
 				criteriosBusqueda.put("estadoRegistro", estadoRegistro);
-				
+
 				listarRegistros(ServiceLocator.getTipoFormaPagoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 			}
 		});
@@ -133,7 +133,7 @@ public class WndTipoFormaPago extends WndOpcionesMantenimiento {
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getTipoFormaPagoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getTipoFormaPagoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
 	}
 
@@ -177,10 +177,10 @@ public class WndTipoFormaPago extends WndOpcionesMantenimiento {
 				throw new NombreCortoNullException();
 			else if (!(cboTipoIngresoLiquidacion.getSelectedIndex() > 0 ))
 				throw new TipoIngresoLiquidacionNullException();
-			
+
 			if (action==ACTION_NEW)
 				oTipoFormaPago = new TipoFormaPago();
-			
+
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
 			oTipoFormaPago.setId(id);
 			if (cboFormaPago.getSelectedIndex() > -1) {
@@ -200,7 +200,7 @@ public class WndTipoFormaPago extends WndOpcionesMantenimiento {
 					ServiceLocator.getTipoFormaPagoManager().guardar(oTipoFormaPago);
 					textboxId.setText((new Long(oTipoFormaPago.getId()).toString()));
 					break;
-		
+
 				case ACTION_MODIFY:
 					UtilData.auditarRegistro(oTipoFormaPago, true, getUsuario(), Executions.getCurrent());
 					ServiceLocator.getTipoFormaPagoManager().actualizar(oTipoFormaPago);
@@ -211,7 +211,7 @@ public class WndTipoFormaPago extends WndOpcionesMantenimiento {
 			criteriosBusqueda.put("denominacion", oTipoFormaPago.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			listarRegistros(ServiceLocator.getTipoFormaPagoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-			
+
 		}catch (FormaPagoNullException fpnex){
 			DlgMessage.information(Messages.getString("WndTipoFormaPago.information.noSeleccionoFormaPago"),cboFormaPago);
 			throw new CancelaGrabacionException();
@@ -291,7 +291,7 @@ public class WndTipoFormaPago extends WndOpcionesMantenimiento {
 		switch (tab) {
 			case TAB_LIST:
 				break;
-	
+
 			case TAB_MAINTENANCE:
 				if (listboxLista.getSelectedIndex() > -1) {
 					this.mantenimientoRegistro(new Long((String) listboxLista.getSelectedItem().getValue()));
@@ -307,7 +307,7 @@ public class WndTipoFormaPago extends WndOpcionesMantenimiento {
 	public void onClose() {
 		closeTabWindow();
 	}
-	
+
 	private void mantenimientoRegistro(Long id) throws Exception {
 		oTipoFormaPago = ServiceLocator.getTipoFormaPagoManager().buscarPorId(id);
 		textboxId.setText(oTipoFormaPago.getId().toString());
@@ -318,30 +318,30 @@ public class WndTipoFormaPago extends WndOpcionesMantenimiento {
 	}
 
 	private void listarRegistros(ArrayList<TipoFormaPago> lstRegistros) throws Exception {
-		ArrayList<Object> lstTipoFormasPago = new ArrayList<Object>();
+		ArrayList<Object> lstTipoFormasPago = new ArrayList<>();
 
 		for(int r = 0; r < lstRegistros.size(); r ++) {
 			TipoFormaPago oTipoFormaPago = lstRegistros.get(r);
-			ArrayList<Object> lstFila = new ArrayList<Object>();
+			ArrayList<Object> lstFila = new ArrayList<>();
 			String[] tipoIngresoLiquidacion = new String[3];
-			
+
 			if (oTipoFormaPago.getFormaPago().getDenominacion()==null){
 				FormaPago formaPago = new FormaPago();
 				formaPago= ServiceLocator.getFormaPagoManager().buscarPorId(oTipoFormaPago.getFormaPago().getId().longValue());
 				oTipoFormaPago.setFormaPago(formaPago);
 			}
-						
+
 			lstFila.add(oTipoFormaPago.getId());
 			lstFila.add(r + 1);
 			lstFila.add(oTipoFormaPago.getFormaPago().getDenominacion());
 			lstFila.add(oTipoFormaPago.getDenominacion());
 			lstFila.add(oTipoFormaPago.getNombreCorto());
 
-			
+
 			tipoIngresoLiquidacion[0] = "Ingreso";
 			tipoIngresoLiquidacion[1] = "Engreso";
 			tipoIngresoLiquidacion[2] = "Ambos";
-			
+
 			lstFila.add(tipoIngresoLiquidacion[oTipoFormaPago.getTipoIngresoLiquidacion()]);
 
 			lstTipoFormasPago.add(lstFila);

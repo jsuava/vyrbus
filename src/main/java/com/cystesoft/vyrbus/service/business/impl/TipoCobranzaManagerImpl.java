@@ -13,13 +13,13 @@ import com.cystesoft.vyrbus.service.exceptions.DenominacionDuplicadaException;
 import com.cystesoft.vyrbus.service.util.Constantes;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 public class TipoCobranzaManagerImpl implements TipoCobranzaManager {
 	private TipoCobranzaDAO tipoCobranzaDAO;
-	
+
 	public TipoCobranzaDAO getTipoCobranzaDAO() {
 		return tipoCobranzaDAO;
 	}
@@ -27,7 +27,7 @@ public class TipoCobranzaManagerImpl implements TipoCobranzaManager {
 	public void setTipoCobranzaDAO(TipoCobranzaDAO tipoCobranzaDAO) {
 		this.tipoCobranzaDAO = tipoCobranzaDAO;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.TipoCobranzaManager#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
@@ -63,22 +63,22 @@ public class TipoCobranzaManagerImpl implements TipoCobranzaManager {
 	@Transactional
 	public void guardar(TipoCobranza tipoCobranza) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", tipoCobranza.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getTipoCobranzaDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la denominación*/
 			if(resultDenominacion.size()>0)
 				throw new DenominacionDuplicadaException();
-			
+
 			getTipoCobranzaDAO().guardar(tipoCobranza);
-			
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch (Exception ex) {
 			throw new Exception(ex);
 		}
-		
+
 	}
 
 	/*
@@ -89,26 +89,26 @@ public class TipoCobranzaManagerImpl implements TipoCobranzaManager {
 	@Transactional
 	public void actualizar(TipoCobranza tipoCobranza) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", tipoCobranza.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getTipoCobranzaDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la denominación*/
 			//Valida duplicidad del Nombre corto
-			for(int r = 0; r < resultDenominacion.size(); r ++) {
-				TipoCobranza otiTipoCobranza = (TipoCobranza) resultDenominacion.get(r);
+			for (Object element : resultDenominacion) {
+				TipoCobranza otiTipoCobranza = (TipoCobranza) element;
 					if (!(otiTipoCobranza.getId() == tipoCobranza.getId()))
 						throw new DenominacionDuplicadaException();
 				}
-			
+
 			getTipoCobranzaDAO().actualizar(tipoCobranza);
-			
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch (Exception ex) {
 			throw new Exception(ex);
 		}
-		
+
 	}
 
 	/*

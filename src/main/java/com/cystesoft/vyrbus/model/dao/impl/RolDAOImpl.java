@@ -8,14 +8,14 @@ import com.cystesoft.vyrbus.model.bean.Rol;
 import com.cystesoft.vyrbus.model.dao.RolDAO;
 
 /**
- * 
+ *
  * @author José Abanto
  *
  */
 @SuppressWarnings("unchecked")
 public class RolDAOImpl extends GenericDAOImpl implements RolDAO {
-	
-	
+
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.RolDAO#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
@@ -69,6 +69,6 @@ public class RolDAOImpl extends GenericDAOImpl implements RolDAO {
 	public void inactivar(Long id) {
 		super.inactivate(Rol.class, id);
 	}
-	
+
 
 }

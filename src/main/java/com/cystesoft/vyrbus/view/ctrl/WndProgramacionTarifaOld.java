@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 09/01/2017
  * Hora			: 10:34:02
@@ -18,7 +18,6 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.KeyEvent;
-import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
@@ -31,6 +30,7 @@ import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Window;
 
 import com.cystesoft.vyrbus.model.bean.CanalVenta;
@@ -56,9 +56,9 @@ import com.cystesoft.vyrbus.view.ui.WndSeleccionaItinerario;
  *
  */
 public class WndProgramacionTarifaOld extends WndBase{
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	@SuppressWarnings("unused")
@@ -72,7 +72,7 @@ public class WndProgramacionTarifaOld extends WndBase{
 	private Toolbarbutton btnCopiarTarifa;
 	private Toolbarbutton btnCancelar;
 	private Toolbarbutton btnGuardarTarifa;
-	
+
 	private String ATTRIBUTE_ORIGEN="1";
 	private String ATTRIBUTE_DESTINO="2";
 	private String ATTRIBUTE_TIPO_ASIENTO="3";
@@ -81,16 +81,16 @@ public class WndProgramacionTarifaOld extends WndBase{
 	private String ATTRIBUTE_PRECIO="6";
 	private String ATTRIBUTE_CANAL_VENTA="7";
 	private String ATTRIBUTE_ITINERARIO="8";
-	
-//	private String PATH_IMAGE_NUEVO_DISABLED="/resources/mp_nuevoDisabled.png"; 
+
+//	private String PATH_IMAGE_NUEVO_DISABLED="/resources/mp_nuevoDisabled.png";
 //	private String PATH_IMAGE_NUEVO_ENABLED="/resources/mp_nuevoEnabled.png";
-//	private String PATH_IMAGE_COPIAR_DISABLED="/resources/mp_copyDisabled.png"; 
+//	private String PATH_IMAGE_COPIAR_DISABLED="/resources/mp_copyDisabled.png";
 //	private String PATH_IMAGE_COPIAR_ENABLED="/resources/mp_copyEnabled.png";
-//	private String PATH_IMAGE_CANCELAR_DISABLED="/resources/mp_cancelarDisabled.png"; 
+//	private String PATH_IMAGE_CANCELAR_DISABLED="/resources/mp_cancelarDisabled.png";
 //	private String PATH_IMAGE_CANCELAR_ENABLED="/resources/mp_cancelarEnabled.png";
-//	private String PATH_IMAGE_GUARDAR_DISABLED="/resources/mp_guardarDisabled.png"; 
+//	private String PATH_IMAGE_GUARDAR_DISABLED="/resources/mp_guardarDisabled.png";
 //	private String PATH_IMAGE_GUARDAR_ENABLED="/resources/mp_guardarEnabled.png";
-	
+
 	List<TipoAsiento> tiposAsientos= new ArrayList<>();
 	List<DetalleButaca>lstDetalleButacas=null;
 	/* (non-Javadoc)
@@ -99,9 +99,9 @@ public class WndProgramacionTarifaOld extends WndBase{
 	@Override
 	public void onCreate() throws Exception {
 		UtilData.cargarDataCombo(cmbTipoServicio, Servicio.class, false);
-		
+
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
 	 */
@@ -118,16 +118,16 @@ public class WndProgramacionTarifaOld extends WndBase{
 		btnCancelar=(Toolbarbutton)this.getFellow("btnCancelar");
 		btnGuardarTarifa=(Toolbarbutton)this.getFellow("btnGuardarTarifa");
 	}
-	
+
 	/**
 	 * Agrega un nuevo item al Listbox
-	 * @param detalleButaca	: Instancia con la que se va a agregar el item (Obsinal este nuede ser null para agregar un item vacio) 
+	 * @param detalleButaca	: Instancia con la que se va a agregar el item (Obsinal este nuede ser null para agregar un item vacio)
 	 * @throws Exception
 	 */
 	private Listitem addNewItem(DetalleButaca detalleButaca)throws Exception{
 //		wndPRogramacionTarifa.setCtrlKeys("#F1");
 //		wndPRogramacionTarifa.addEventListener(Events.ON_CTRL_KEY, new EventListener<Event>() {
-		
+
 		Listitem item= new Listitem();
 		//Origen
 		Listcell cellOrigen= new Listcell(detalleButaca.getRuta()!=null && detalleButaca.getRuta().getLocalidadOrigen()!=null?detalleButaca.getRuta().getLocalidadOrigen().getDenominacion():"");
@@ -228,42 +228,42 @@ public class WndProgramacionTarifaOld extends WndBase{
 		imgAddItem.setStyle("cursor:pointer");
 		imgAddItem.setTooltiptext("Agregar nuevo ítem.");
 		hbox.appendChild(imgAddItem);
-		
+
 //		Image imgCopyAddNewItem= new Image("/resources/mp_copyEnabled.png");//Agrega item y copia
 //		imgCopyAddNewItem.setStyle("cursor:pointer");
 //		imgCopyAddNewItem.setTooltiptext("Copia y agregar un nuevo ítem.");
 //		hbox.appendChild(imgCopyAddNewItem);
-		
+
 		Image imgRemoveItem= new Image("/resources/mp_removeEnabled.png"); //Eliminar item
 		imgRemoveItem.setStyle("cursor:pointer");
 		imgRemoveItem.setTooltiptext("Eliminar ítem.");
 		hbox.appendChild(imgRemoveItem);
 		cell.appendChild(hbox);
 		item.appendChild(cell);
-		
+
 		item.setValue(detalleButaca);
 		ltbxMantoTarifario.appendChild(item);
-		
-		
+
+
 		//Event Origen
 		cellOrigen.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				try {
 					onEvent_control(event);
-					event.stopPropagation();	
+					event.stopPropagation();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
 				}
-			}	
+			}
 		});
 		cmbOrigen.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				try {
 					onEvent_control(event);
-					event.stopPropagation();	
+					event.stopPropagation();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
@@ -275,7 +275,7 @@ public class WndProgramacionTarifaOld extends WndBase{
 			public void onEvent(Event event) throws Exception {
 				try {
 					onEvent_control(event);
-					event.stopPropagation();	
+					event.stopPropagation();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
@@ -287,34 +287,34 @@ public class WndProgramacionTarifaOld extends WndBase{
 			public void onEvent(Event event) throws Exception {
 				try {
 					onEvent_control(event);
-					event.stopPropagation();	
+					event.stopPropagation();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
 				}
 			}
 		});
-		
-		
+
+
 		//Event Destino
 		cellDestino.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				try {
 					onEvent_control(event);
-					event.stopPropagation();	
+					event.stopPropagation();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
 				}
-			}	
+			}
 		});
 		cmbDestino.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				try {
 					onEvent_control(event);
-					event.stopPropagation();	
+					event.stopPropagation();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
@@ -326,7 +326,7 @@ public class WndProgramacionTarifaOld extends WndBase{
 			public void onEvent(Event event) throws Exception {
 				try {
 					onEvent_control(event);
-					event.stopPropagation();	
+					event.stopPropagation();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
@@ -338,33 +338,33 @@ public class WndProgramacionTarifaOld extends WndBase{
 			public void onEvent(Event event) throws Exception {
 				try {
 					onEvent_control(event);
-					event.stopPropagation();	
+					event.stopPropagation();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
 				}
 			}
 		});
-		
+
 		//Event Tipo Asiento
 		cellTipoAsiento.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				try {
 					onEvent_control(event);
-					event.stopPropagation();	
+					event.stopPropagation();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
 				}
-			}	
+			}
 		});
 		cmbTipoAsiento.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				try {
 					onEvent_control(event);
-					event.stopPropagation();	
+					event.stopPropagation();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
@@ -376,7 +376,7 @@ public class WndProgramacionTarifaOld extends WndBase{
 			public void onEvent(Event event) throws Exception {
 				try {
 					onEvent_control(event);
-					event.stopPropagation();	
+					event.stopPropagation();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
@@ -388,33 +388,33 @@ public class WndProgramacionTarifaOld extends WndBase{
 			public void onEvent(Event event) throws Exception {
 				try {
 					onEvent_control(event);
-					event.stopPropagation();	
+					event.stopPropagation();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
 				}
 			}
 		});
-		
+
 		//Event Asientos
 		cellAsientos.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				try {
 					onEvent_control(event);
-					event.stopPropagation();	
+					event.stopPropagation();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
 				}
-			}	
+			}
 		});
 		txtAsientos.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				try {
 					onEvent_control(event);
-					event.stopPropagation();	
+					event.stopPropagation();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
@@ -426,34 +426,34 @@ public class WndProgramacionTarifaOld extends WndBase{
 			public void onEvent(Event event) throws Exception {
 				try {
 					onEvent_control(event);
-					event.stopPropagation();	
+					event.stopPropagation();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
 				}
 			}
 		});
-		
-		
+
+
 		//Event Tipo Precio
 		cellTipoPrecio.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				try {
 					onEvent_control(event);
-					event.stopPropagation();	
+					event.stopPropagation();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
 				}
-			}	
+			}
 		});
 		cmbTipoPrecio.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				try {
 					onEvent_control(event);
-					event.stopPropagation();	
+					event.stopPropagation();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
@@ -465,7 +465,7 @@ public class WndProgramacionTarifaOld extends WndBase{
 			public void onEvent(Event event) throws Exception {
 				try {
 					onEvent_control(event);
-					event.stopPropagation();	
+					event.stopPropagation();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
@@ -477,33 +477,33 @@ public class WndProgramacionTarifaOld extends WndBase{
 			public void onEvent(Event event) throws Exception {
 				try {
 					onEvent_control(event);
-					event.stopPropagation();	
+					event.stopPropagation();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
 				}
 			}
 		});
-		
+
 		//Event Precio
 		cellPrecio.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				try {
 					onEvent_control(event);
-					event.stopPropagation();	
+					event.stopPropagation();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
 				}
-			}	
+			}
 		});
 		dbbxPrecio.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				try {
 					onEvent_control(event);
-					event.stopPropagation();	
+					event.stopPropagation();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
@@ -515,33 +515,33 @@ public class WndProgramacionTarifaOld extends WndBase{
 			public void onEvent(Event event) throws Exception {
 				try {
 					onEvent_control(event);
-					event.stopPropagation();	
+					event.stopPropagation();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
 				}
 			}
 		});
-		
+
 		//Event Canal Venta
 		cellCanalVenta.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				try {
 					onEvent_control(event);
-					event.stopPropagation();	
+					event.stopPropagation();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
 				}
-			}	
+			}
 		});
 		cmbCanalVenta.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				try {
 					onEvent_control(event);
-					event.stopPropagation();	
+					event.stopPropagation();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
@@ -553,7 +553,7 @@ public class WndProgramacionTarifaOld extends WndBase{
 			public void onEvent(Event event) throws Exception {
 				try {
 					onEvent_control(event);
-					event.stopPropagation();	
+					event.stopPropagation();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
@@ -565,26 +565,26 @@ public class WndProgramacionTarifaOld extends WndBase{
 			public void onEvent(Event event) throws Exception {
 				try {
 					onEvent_control(event);
-					event.stopPropagation();	
+					event.stopPropagation();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
 				}
 			}
 		});
-		
+
 		//Itinerario
 		cellItinerario.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				try {
 					onEvent_control(event);
-					event.stopPropagation();	
+					event.stopPropagation();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
 				}
-			}	
+			}
 		});
 		txtItinerario.setCtrlKeys("#F1#del#bak");
 		txtItinerario.addEventListener(Events.ON_CTRL_KEY, new EventListener<Event>() {
@@ -610,7 +610,7 @@ public class WndProgramacionTarifaOld extends WndBase{
 			public void onEvent(Event event) throws Exception {
 				try {
 					onEvent_control(event);
-					event.stopPropagation();	
+					event.stopPropagation();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
@@ -622,7 +622,7 @@ public class WndProgramacionTarifaOld extends WndBase{
 			public void onEvent(Event event) throws Exception {
 				try {
 					onEvent_control(event);
-					event.stopPropagation();	
+					event.stopPropagation();
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
@@ -630,54 +630,54 @@ public class WndProgramacionTarifaOld extends WndBase{
 			}
 		});
 
-		
+
 		//Agregar nuevo item
 		imgAddItem.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
-			public void onEvent(Event event) throws Exception {				
+			public void onEvent(Event event) throws Exception {
 				try {
 					onClick_addNewItem(event);
-					
+
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
 				}
 			}
 		});
-		
+
 		//Copia y agrega un nuevo item
 //		imgCopyAddNewItem.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 //			@Override
-//			public void onEvent(Event event) throws Exception {				
+//			public void onEvent(Event event) throws Exception {
 //				try {
 //					onClick_copyAddNewItem(event);
-//					
+//
 //				} catch (Exception e) {
 //					e.printStackTrace();
 //					DlgMessage.error(e.getMessage());
 //				}
 //			}
 //		});
-		
+
 		//Eliminar item
 		imgRemoveItem.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
-			public void onEvent(Event event) throws Exception {				
+			public void onEvent(Event event) throws Exception {
 				try {
 					onClick_removeItem(event);
-					
+
 				} catch (Exception e) {
 					e.printStackTrace();
 					DlgMessage.error(e.getMessage());
 				}
 			}
 		});
-		
+
 		return item;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param event
 	 * @throws Exception
 	 */
@@ -686,12 +686,12 @@ public class WndProgramacionTarifaOld extends WndBase{
 			Component component=((Listcell)event.getTarget()).getFirstChild();
 			enabledControl(component);
 		}else{
-			Component component=event.getTarget(); 
+			Component component=event.getTarget();
 			component.setVisible(false);
 			Listcell cell=(Listcell) component.getParent();
-			cell.setLabel("");			
+			cell.setLabel("");
 			DetalleButaca detalleButaca=((Listitem) cell.getParent()).getValue();
-			
+
 			if(component instanceof Combobox){
 				Combobox combobox=(Combobox) component;
 				combobox.setValue(combobox.getValue().trim().toUpperCase());
@@ -699,7 +699,7 @@ public class WndProgramacionTarifaOld extends WndBase{
 					if(combobox.getAttribute(ATTRIBUTE_ORIGEN)!=null){
 						 Ruta ruta=(detalleButaca.getRuta()!=null?detalleButaca.getRuta():new Ruta());
 						 ruta.setLocalidadOrigen((Localidad)combobox.getSelectedItem().getValue());
-						 detalleButaca.setRuta(ruta);						 
+						 detalleButaca.setRuta(ruta);
 					}else if(combobox.getAttribute(ATTRIBUTE_DESTINO)!=null){
 						Ruta ruta=(detalleButaca.getRuta()!=null?detalleButaca.getRuta():new Ruta());
 						 ruta.setLocalidadDestino((Localidad)combobox.getSelectedItem().getValue());
@@ -753,16 +753,16 @@ public class WndProgramacionTarifaOld extends WndBase{
 						detalleButaca.setRagoAsientos(null);
 					else if(textbox.getAttribute(ATTRIBUTE_ITINERARIO)!=null)
 						detalleButaca.setItinerario(null);
-				}				
+				}
 			}
-			
+
 			if(event.getName().equals("onOK")){
 				/*Habilita el siguiente control para la edicion del usuario*/
 				Listitem item=(Listitem) cell.getParent();
 				Listcell cellNext=(Listcell) item.getChildren().get(cell.getColumnIndex()+1);
 				Component componentNext=cellNext.getFirstChild();
 				enabledControl(componentNext);
-				
+
 				/*Pregunta al usuario si desea agregar una item*/
 //				if(component.getAttribute(ATTRIBUTE_CANAL_VENTA)!=null){
 				if(component.getAttribute(ATTRIBUTE_ITINERARIO)!=null){
@@ -771,9 +771,9 @@ public class WndProgramacionTarifaOld extends WndBase{
 						public void onEvent(Event e){
 							if(e.getName().equals("onYes")){
 								try {
-									
+
 									onClick_addNewItem(null);
-									
+
 								} catch (Exception e2) {
 									e2.printStackTrace();
 									DlgMessage.error(e2.getMessage());
@@ -792,7 +792,7 @@ public class WndProgramacionTarifaOld extends WndBase{
 	 */
 	private void enabledControl(Component component)throws Exception{
 		if(component!=null){
-			component.setVisible(true);			
+			component.setVisible(true);
 			((Listcell)component.getParent()).setLabel("");
 			if(component instanceof Combobox){
 				if(((Combobox)component).getItems().size()==2)
@@ -806,11 +806,11 @@ public class WndProgramacionTarifaOld extends WndBase{
 				((Textbox)component).setFocus(true);
 				((Textbox)component).select();
 			}
-		}		
+		}
 	}
 	/* ****FIN EVENTOS*******************************************************************/
-	
-	
+
+
 	/**
 	 * Limpia los controles
 	 */
@@ -821,11 +821,11 @@ public class WndProgramacionTarifaOld extends WndBase{
 		cmbTipoServicio.setSelectedIndex(0);
 	}
 	/**
-	 * 
+	 *
 	 */
 	public void onClick_btnNuevaTarifa(){
 		try {
-			divNuevaTarifa.setVisible(true);			
+			divNuevaTarifa.setVisible(true);
 			limpiarControles();
 			btnNuevaTarifa.setDisabled(true);
 			btnCopiarTarifa.setDisabled(true);
@@ -836,9 +836,9 @@ public class WndProgramacionTarifaOld extends WndBase{
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public void onClick_btnCopiarTarifa(){
 		divNuevaTarifa.setVisible(false);
@@ -847,9 +847,9 @@ public class WndProgramacionTarifaOld extends WndBase{
 		btnCancelar.setDisabled(false);
 		btnGuardarTarifa.setDisabled(false);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public void onClick_btnCancelar(){
 		try {
@@ -864,9 +864,9 @@ public class WndProgramacionTarifaOld extends WndBase{
 			DlgMessage.error(e.getMessage());
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public void onClick_btnGuardarTarifa(){
 		try {
@@ -879,7 +879,7 @@ public class WndProgramacionTarifaOld extends WndBase{
 			}
 			TreeMap<String, DetalleButaca> detalleButacas= new TreeMap<>();
 			lstDetalleButacas=new ArrayList<>();
-			
+
 			/*Validando el tarifario ingresado*/
 			for(Listitem item: ltbxMantoTarifario.getItems()){
 				List<Integer>asientos=new ArrayList<>();
@@ -928,7 +928,7 @@ public class WndProgramacionTarifaOld extends WndBase{
 						ltbxMantoTarifario.selectItem(item);
 						return;
 					}
-					
+
 					//Agrega los asientos ingresados al arraylist asientos
 					String[] rda=detalleButaca.getRagoAsientos().split(";");
 					for(String string:rda){
@@ -940,7 +940,7 @@ public class WndProgramacionTarifaOld extends WndBase{
 								if(Util.isNumeric(rango[1])){
 									int inicio=Integer.valueOf(rango[0]);
 									int fin=Integer.valueOf(rango[1]);
-									
+
 									for(int asiento=inicio; asiento<=fin;asiento++){
 										asientos.add(asiento);
 									}
@@ -962,7 +962,7 @@ public class WndProgramacionTarifaOld extends WndBase{
 								if(Util.isNumeric(asiento)){
 									Integer _asiento=Integer.valueOf(asiento);
 									//Valida que el asiento no exista
-									if(!(asientos.contains(_asiento))){										
+									if(!(asientos.contains(_asiento))){
 										asientos.add(_asiento);
 									}else{
 										DlgMessage.information("El Número de Asiento ("+_asiento.toString()+") esta duplicado. \n Fila "+index);
@@ -992,7 +992,7 @@ public class WndProgramacionTarifaOld extends WndBase{
 						}
 					}
 				}
-				
+
 				/*Validando que los asientos correspondan al tipo de asiento*/
 				TipoAsiento tipoAsiento=detalleButaca.getTipoAsiento();
 				for(Integer _asiento:asientos){
@@ -1002,7 +1002,7 @@ public class WndProgramacionTarifaOld extends WndBase{
 						return;
 					}
 				}
-				
+
 				/*Validar la existencia de la ruta seleccionada (origen - destino)*/
 				Localidad localidadOrigen=detalleButaca.getRuta().getLocalidadOrigen();
 				Localidad localidadDestino=detalleButaca.getRuta().getLocalidadDestino();
@@ -1016,25 +1016,25 @@ public class WndProgramacionTarifaOld extends WndBase{
 					ltbxMantoTarifario.selectItem(item);
 					return;
 				}
-				
-				/*Validando tarifas duplicadas*/				
+
+				/*Validando tarifas duplicadas*/
 				String key=detalleButaca.getRuta().getLocalidadOrigen().getDenominacion()+detalleButaca.getRuta().getLocalidadDestino().getDenominacion()+
 						detalleButaca.getTipoAsiento().getDenominacion()+detalleButaca.getRagoAsientos()+detalleButaca.getTipoPrecio().getDenominacion()+
 						(detalleButaca.getCanalVenta()!=null?detalleButaca.getCanalVenta().getDenominacion():"")+
 						(detalleButaca.getItinerario()!=null?detalleButaca.getItinerario().getId().toString():"");
-				
+
 				DetalleButaca detalleButacaDupl=detalleButacas.get(key);
 				if(detalleButacaDupl==null)
 					detalleButacas.put(key, detalleButaca);
 				else{
 					if(detalleButaca.getPrecio().doubleValue()!=detalleButacaDupl.getPrecio().doubleValue())
-						DlgMessage.information("Existe una tarifa duplicada con Precios diferentes, por favor reviserlo. \n Fila "+index);	
+						DlgMessage.information("Existe una tarifa duplicada con Precios diferentes, por favor reviserlo. \n Fila "+index);
 					else
-						DlgMessage.information("Existe una tarifa duplicada, por favor reviserlo. \n Fila "+index);	
+						DlgMessage.information("Existe una tarifa duplicada, por favor reviserlo. \n Fila "+index);
 					ltbxMantoTarifario.selectItem(item);
 					return;
 				}
-				
+
 				/*Agrega los asientos a la lista, para luego ser guardados en la base de datos*/
 				for(Integer asiento:asientos){
 					DetalleButaca oDetalleButaca=(DetalleButaca) detalleButaca.clone();
@@ -1044,9 +1044,9 @@ public class WndProgramacionTarifaOld extends WndBase{
 					oDetalleButaca.setMapaBus(mapaBus);
 					oDetalleButaca.setRuta(lstRuta.get(0));
 					lstDetalleButacas.add(oDetalleButaca);
-				}				
+				}
 			}
-			
+
 			Messagebox.show("Este proceso puede tardar varios minutos! \n ¿Realmete desea continuar?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e) throws Exception{
@@ -1073,18 +1073,18 @@ public class WndProgramacionTarifaOld extends WndBase{
 						e2.printStackTrace();
 						DlgMessage.error(e2.getMessage());
 					}
-					
+
 				}
-			});			
-			
+			});
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public void onChange_cmbTipoServicio(){
 		try {
@@ -1103,7 +1103,7 @@ public class WndProgramacionTarifaOld extends WndBase{
 			}
 			ltbxMantoTarifario.setVisible(false);
 			Util.limpiarListbox(ltbxMantoTarifario);
-			
+
 			if(cmbTipoServicio.getSelectedItem().getValue() instanceof Servicio){
 				/*Busca los tipos de asiento disponibles para el servicio seleccionado*/
 				tiposAsientos= new ArrayList<>();
@@ -1111,14 +1111,14 @@ public class WndProgramacionTarifaOld extends WndBase{
 				for(MapaBus mapaBus :result){
 //					if(mapaBus.getTipoAsiento()!=null){
 //						/*Valida si el tipo de asiento ya existe en la lista "tiposAsientos"*/
-//						TipoAsiento tipoAsientoDuplicate=null;						
+//						TipoAsiento tipoAsientoDuplicate=null;
 //						for(TipoAsiento tipoAsiento :tiposAsientos){
 //							if(tipoAsiento.getId().intValue()==mapaBus.getTipoAsiento().getId().intValue()){
 //								tipoAsientoDuplicate=tipoAsiento;
 //								break;
 //							}
 //						}
-//						
+//
 //						//Agrega si es que no existe
 //						if(tipoAsientoDuplicate==null){
 //							List<Integer> asientos= new ArrayList<>();
@@ -1131,21 +1131,21 @@ public class WndProgramacionTarifaOld extends WndBase{
 //						}
 //					}
 				}
-				
+
 				/*Agrega un nuevo item al listbox*/
 				ltbxMantoTarifario.setVisible(true);
 				onClick_addNewItem(null);
-				
-			}			
+
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.information(e.getMessage());
 		}
 	}
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * Agrega un nuevo item al listbox
 	 * @throws Exception
@@ -1153,7 +1153,7 @@ public class WndProgramacionTarifaOld extends WndBase{
 	private void onClick_addNewItem(Event event)throws Exception{
 		if(!(btnGuardarTarifa.isDisabled())){
 			Listitem itemNew= addNewItem(new DetalleButaca());
-			
+
 			for(Listitem item: ltbxMantoTarifario.getItems()){
 				/*Oculta la imagen para agregar un nuevo item, excepto del ultimo item*/
 				if(item.getIndex()!=ltbxMantoTarifario.getItems().size()-1){
@@ -1168,14 +1168,14 @@ public class WndProgramacionTarifaOld extends WndBase{
 					ltbxMantoTarifario.selectItem(item);
 				}
 			}
-			
+
 			/*Habilita el control para su edicion*/
 			Listcell cellNext=(Listcell) itemNew.getChildren().get(0);
 			Component componentNext=cellNext.getFirstChild();
 			enabledControl(componentNext);
 		}
 	}
-	
+
 //	/**
 //	 * Copia y agrega un nuevo item al listbox
 //	 * @param event
@@ -1184,7 +1184,7 @@ public class WndProgramacionTarifaOld extends WndBase{
 //	private void onClick_copyAddNewItem(Event event)throws Exception{
 //		DetalleButaca detalleButaca=((Listitem)event.getTarget().getParent().getParent().getParent()).getValue();
 //		Listitem itemNew= addNewItem(detalleButaca);
-//		
+//
 //		for(Listitem item: ltbxMantoTarifario.getItems()){
 //			/*Oculta la imagen para agregar un nuevo item, excepto del ultimo item*/
 //			if(item.getIndex()!=ltbxMantoTarifario.getItems().size()-1){
@@ -1199,13 +1199,13 @@ public class WndProgramacionTarifaOld extends WndBase{
 //				ltbxMantoTarifario.selectItem(item);
 //			}
 //		}
-//		
+//
 //		/*Habilita el control para su edicion*/
 //		Listcell cellNext=(Listcell) itemNew.getChildren().get(0);
 //		Component componentNext=cellNext.getFirstChild();
 //		enabledControl(componentNext);
 //	}
-	
+
 	/**
 	 * Elimina un item del listbx
 	 * @throws Exception
@@ -1214,7 +1214,7 @@ public class WndProgramacionTarifaOld extends WndBase{
 		if(!(btnGuardarTarifa.isDisabled())){
 			Listitem itemRemove=(Listitem) event.getTarget().getParent().getParent().getParent();
 			ltbxMantoTarifario.removeChild(itemRemove);
-			
+
 			/*Valida si ya no hay item*/
 			if(ltbxMantoTarifario.getItems().size()==0){
 				addNewItem(new DetalleButaca());
@@ -1222,7 +1222,7 @@ public class WndProgramacionTarifaOld extends WndBase{
 			}else{
 				Listitem item=ltbxMantoTarifario.getItemAtIndex(ltbxMantoTarifario.getItems().size()-1);
 				ltbxMantoTarifario.selectItem(item);
-				
+
 				/*Muestra imagen para agregar un nuevo item*/
 				for(Component component: item.getChildren()){
 					Component component2=component.getFirstChild();
@@ -1234,7 +1234,7 @@ public class WndProgramacionTarifaOld extends WndBase{
 			}
 		}
 	}
-	
+
 	private void enlazarItinerario(final Event eventText) throws Exception {
 		Listitem item= (Listitem) eventText.getTarget().getParent().getParent();
 		DetalleButaca detalleButaca=item.getValue();
@@ -1242,8 +1242,8 @@ public class WndProgramacionTarifaOld extends WndBase{
 			DlgMessage.information("Primero debe de ingresar el Origen y Destino.");
 			return;
 		}
-		
-		final WndSeleccionaItinerario oWndSeleccionaItinerario = new WndSeleccionaItinerario();		
+
+		final WndSeleccionaItinerario oWndSeleccionaItinerario = new WndSeleccionaItinerario();
 		boolean buscarVentanaParent = true;
 		Component oComponent = eventText.getTarget().getParent();
 		while(buscarVentanaParent){
@@ -1261,14 +1261,14 @@ public class WndProgramacionTarifaOld extends WndBase{
 		Util.seleccionarValorItemCombo(Localidad.class,oWndSeleccionaItinerario.cmbDestino,detalleButaca.getRuta().getLocalidadDestino().getId());
 		Util.seleccionarValorItemCombo(Servicio.class,oWndSeleccionaItinerario.cmbServicio,((Servicio)cmbTipoServicio.getSelectedItem().getValue()).getId());
 		oWndSeleccionaItinerario.dbFechaInicio.setValue(dtbxDesde.getValue());
-		oWndSeleccionaItinerario.dbFechaFin.setValue(dtbxDesde.getValue());		
-		
+		oWndSeleccionaItinerario.dbFechaFin.setValue(dtbxDesde.getValue());
+
 		oWndSeleccionaItinerario.cmbOrigen.setDisabled(true);
 		oWndSeleccionaItinerario.cmbDestino.setDisabled(true);
 		oWndSeleccionaItinerario.dbFechaInicio.setDisabled(true);
 		oWndSeleccionaItinerario.dbFechaFin.setDisabled(true);
 		oWndSeleccionaItinerario.cmbServicio.setDisabled(true);
-		
+
 		oWndSeleccionaItinerario.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {

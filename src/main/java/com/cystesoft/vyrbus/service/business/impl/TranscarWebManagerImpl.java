@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 2 may. 2022
  * Hora			: 22:46:06
@@ -11,7 +11,6 @@ package com.cystesoft.vyrbus.service.business.impl;
 import java.util.List;
 import java.util.TreeMap;
 
-import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.Liquidacion;
 import com.cystesoft.vyrbus.model.bean.Manifiesto;
 import com.cystesoft.vyrbus.model.bean.TranscarLiquidacionTurno;
@@ -21,7 +20,6 @@ import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.model.dao.TranscarWebDAO;
 import com.cystesoft.vyrbus.service.business.TranscarWebManager;
-import com.cystesoft.vyrbus.service.util.Encriptar;
 
 /**
  * @author abant
@@ -150,15 +148,15 @@ public class TranscarWebManagerImpl implements TranscarWebManager{
 		return getTranscarWebDAO().buscarLiquidacionTurno(usuarioId, agenciaId, fechaInicio, fechaFin);
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.service.business.TranscarWebManager#cerrarLiquidacion(java.lang.Integer, java.lang.Integer, java.lang.String, java.lang.Double, java.lang.Double)
 	 */
 	@Override
-	public void cerrarLiquidacion(Integer usuarioId, Integer agenciaId, String fechaLiquidacion, Double efectivoIngresado, Double efectivoLiquidado)throws Exception{			
+	public void cerrarLiquidacion(Integer usuarioId, Integer agenciaId, String fechaLiquidacion, Double efectivoIngresado, Double efectivoLiquidado)throws Exception{
 		// TODO Auto-generated method stub
 		getTranscarWebDAO().cerrarLiquidacion(usuarioId, agenciaId, fechaLiquidacion, efectivoIngresado, efectivoLiquidado);
-		
+
 	}
 
 	/* (non-Javadoc)

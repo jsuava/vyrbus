@@ -46,6 +46,16 @@
                 <comment>Descripcion que sustenta el gasto.</comment>
             </column>
         </property>
+                <property name="nroCtacte" type="java.lang.String">
+            <column name="C_CTACTE" length="30">
+                <comment>Numero de cuenta corriente donde se realizo el deposito.</comment>
+            </column>
+        </property>
+                <property name="horaDeposito" type="java.lang.String">
+            <column name="C_HORDEP" length="10">
+                <comment>Hora en que se realizo el deposito.</comment>
+            </column>
+        </property>
         <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
         <property name="estadoRegistro" type="java.lang.String">
             <column name="C_ESTREG" length="1" not-null="true">

@@ -14,23 +14,23 @@ import com.cystesoft.vyrbus.service.exceptions.AutorizadorDuplicadoException;
 import com.cystesoft.vyrbus.service.util.Constantes;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 public class AutorizadorCortesiaManagerImpl implements AutorizadorCortesiaManager {
-	
+
 	private AutorizadorCortesiaDAO autorizadorCortesiaDAO;
 	private AutorizadorMotivoCortesiaDAO autorizadorMotivoCortesiaDAO;
-	
+
 	public void setAutorizadorCortesiaDAO(AutorizadorCortesiaDAO  autorizadorCortesiaDAO){
 		this.autorizadorCortesiaDAO=autorizadorCortesiaDAO;
 	}
-	
+
 	public AutorizadorCortesiaDAO getAutorizadorCortesiaDAO(){
 		return this.autorizadorCortesiaDAO;
 	}
-	
+
 	/**
 	 * @return the autorizadorMotivoCortesiaDAO
 	 */
@@ -80,24 +80,24 @@ public class AutorizadorCortesiaManagerImpl implements AutorizadorCortesiaManage
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.AutorizadorCortesiaManajer#guardar(com.tepsa.sisvyr.model.bean.AutorizadorCortesia)
 	 */
-	
+
 	@Override
 	@Transactional()
 	public void guardar(AutorizadorCortesia autorizadorCortesia) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("personal", autorizadorCortesia.getPersonal());
 //			criteriosBusqueda.put("motivoCortesia", autorizadorCortesia.getMotivoCortesia());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resul = getAutorizadorCortesiaDAO().buscarPorX(criteriosBusqueda, null);
 			/* Valida duplicidad del personal y motovo cortesia */
 			if(resul.size()>0)
-				throw new AutorizadorDuplicadoException();  
-			getAutorizadorCortesiaDAO().guardar(autorizadorCortesia);			
+				throw new AutorizadorDuplicadoException();
+			getAutorizadorCortesiaDAO().guardar(autorizadorCortesia);
 		}catch (AutorizadorDuplicadoException aucex) {
 			throw new AutorizadorDuplicadoException();
 		}
-		
+
 	}
 
 	/*
@@ -119,10 +119,10 @@ public class AutorizadorCortesiaManagerImpl implements AutorizadorCortesiaManage
 //					if (!(autorizador.getId().equals(autorizadorCortesia.getId())))
 //						throw new AutorizadorDuplicadoException();
 //				}
-//		
+//
 			getAutorizadorCortesiaDAO().actualizar(autorizadorCortesia);
 			getAutorizadorMotivoCortesiaDAO().inactivar(autorizadorCortesia);
-			
+
 //			for(MotivoCortesia motivoCortesia : autorizadorCortesia.getListaMotivoCortesia()){
 //				AutorizadorMotivoCortesia autorizadorMotivo = new AutorizadorMotivoCortesia();
 //				autorizadorMotivo.setAutorizadorCortesia(autorizadorCortesia);
@@ -137,7 +137,7 @@ public class AutorizadorCortesiaManagerImpl implements AutorizadorCortesiaManage
 		}catch (Exception ex) {
 			throw new Exception();
 		}
-		
+
 	}
 
 	/*

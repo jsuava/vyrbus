@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for ResultParametro complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="ResultParametro">
  *   &lt;complexContent>
@@ -28,8 +28,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ResultParametro", propOrder = { "_return", "errores", "rutas",
@@ -49,7 +49,7 @@ public class ResultParametro {
 
 	/**
 	 * Gets the value of the return property.
-	 * 
+	 *
 	 */
 	public boolean isReturn() {
 		return _return;
@@ -57,7 +57,7 @@ public class ResultParametro {
 
 	/**
 	 * Sets the value of the return property.
-	 * 
+	 *
 	 */
 	public void setReturn(boolean value) {
 		this._return = value;
@@ -65,9 +65,9 @@ public class ResultParametro {
 
 	/**
 	 * Gets the value of the errores property.
-	 * 
+	 *
 	 * @return possible object is {@link ArrayOfErrores }
-	 * 
+	 *
 	 */
 	public ArrayOfErrores getErrores() {
 		return errores;
@@ -75,10 +75,10 @@ public class ResultParametro {
 
 	/**
 	 * Sets the value of the errores property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link ArrayOfErrores }
-	 * 
+	 *
 	 */
 	public void setErrores(ArrayOfErrores value) {
 		this.errores = value;
@@ -86,9 +86,9 @@ public class ResultParametro {
 
 	/**
 	 * Gets the value of the rutas property.
-	 * 
+	 *
 	 * @return possible object is {@link ArrayOfRuta }
-	 * 
+	 *
 	 */
 	public ArrayOfRuta getRutas() {
 		return rutas;
@@ -96,10 +96,10 @@ public class ResultParametro {
 
 	/**
 	 * Sets the value of the rutas property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link ArrayOfRuta }
-	 * 
+	 *
 	 */
 	public void setRutas(ArrayOfRuta value) {
 		this.rutas = value;
@@ -107,9 +107,9 @@ public class ResultParametro {
 
 	/**
 	 * Gets the value of the terminales property.
-	 * 
+	 *
 	 * @return possible object is {@link ArrayOfTerminal }
-	 * 
+	 *
 	 */
 	public ArrayOfTerminal getTerminales() {
 		return terminales;
@@ -117,10 +117,10 @@ public class ResultParametro {
 
 	/**
 	 * Sets the value of the terminales property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link ArrayOfTerminal }
-	 * 
+	 *
 	 */
 	public void setTerminales(ArrayOfTerminal value) {
 		this.terminales = value;
@@ -128,9 +128,9 @@ public class ResultParametro {
 
 	/**
 	 * Gets the value of the documentos property.
-	 * 
+	 *
 	 * @return possible object is {@link ArrayOfDocumento }
-	 * 
+	 *
 	 */
 	public ArrayOfDocumento getDocumentos() {
 		return documentos;
@@ -138,10 +138,10 @@ public class ResultParametro {
 
 	/**
 	 * Sets the value of the documentos property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link ArrayOfDocumento }
-	 * 
+	 *
 	 */
 	public void setDocumentos(ArrayOfDocumento value) {
 		this.documentos = value;

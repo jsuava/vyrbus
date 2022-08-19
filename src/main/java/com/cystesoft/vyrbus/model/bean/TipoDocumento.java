@@ -20,20 +20,20 @@ public class TipoDocumento  extends GenericBean implements Serializable {
     private String maskerade;
     private String nombreCorto;
     private Integer tipo;
-    
+
     public static final int PERSONALES = 0;
     public static final int CLIENTES = 1;
     public static final int BUS = 2;
-    
-     
+
+
     public TipoDocumento() {
- 		
+
  	}
-    
+
     public TipoDocumento(Integer id) {
  		this.id = id;
  	}
-     
+
 	public String getDenominacion() {
 		return denominacion;
 	}

@@ -9,7 +9,7 @@ package com.cystesoft.vyrbus.model.dao.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.List;	
+import java.util.List;
 import java.util.TreeMap;
 
 import com.cystesoft.vyrbus.model.bean.ControlAcceso;
@@ -42,14 +42,14 @@ public class UsuarioDAOImpl extends GenericDAOImpl implements UsuarioDAO {
 			log.info(hql);
 			result = getSession().createQuery(hql).setString(0, login).list();
 		}
-		
-		
+
+
 		Usuario usuario = new Usuario();
 		if(result == null || result.size() == 0){
 			usuario=null;
 		}else{
 			usuario=(Usuario) result.get(0);
-		}		
+		}
 		return usuario;
 	}
 
@@ -67,12 +67,12 @@ public class UsuarioDAOImpl extends GenericDAOImpl implements UsuarioDAO {
 		}else{
 			usuario=(Usuario) result.get(0);
 		}
-		
+
 		return usuario;
 	}
 
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.dao.UsuarioDAO#update(com.tepsa.sisvyr.domain.Usuario)
 	 */
@@ -133,7 +133,7 @@ public class UsuarioDAOImpl extends GenericDAOImpl implements UsuarioDAO {
 	@Override
 	public void actualizar(Usuario usuario) {
 		super.update(usuario);
-		
+
 	}
 
 	/*
@@ -144,7 +144,7 @@ public class UsuarioDAOImpl extends GenericDAOImpl implements UsuarioDAO {
 	public void activar(Long id) {
 		super.activate(Usuario.class, id);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.UsuarioDAO#buscarUsuarioLiquidacion(java.lang.String, java.lang.String, java.lang.Integer)
@@ -160,14 +160,14 @@ public class UsuarioDAOImpl extends GenericDAOImpl implements UsuarioDAO {
 						sql+="AND lq.d_fecliq BETWEEN to_date('"+fechaInicio+"', 'dd/mm/yyyy') AND to_date('"+fechaFinal+"','dd/mm/yyyy') ";
 					if(estadoLiquidacion!=null)
 						sql+="AND lq.n_estliq="+estadoLiquidacion+" ";
-							
+
 					sql+="ORDER BY u.c_apepat, u.c_apemat, u.c_nombre ";
-					
+
 		log.info(sql);
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<Usuario> ListResult = new ArrayList<Usuario>();
-		
+		List<Usuario> ListResult = new ArrayList<>();
+
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
 			Usuario usuario= new Usuario();
@@ -175,10 +175,10 @@ public class UsuarioDAOImpl extends GenericDAOImpl implements UsuarioDAO {
 			usuario.setApellidoPaterno(obj[2].toString());
 			usuario.setApellidoMaterno(obj[3]!=null?obj[3].toString():"");
 			usuario.setNombre(obj[4].toString());
-			
+
 			ListResult.add(usuario);
 		}
-		return ListResult; 
+		return ListResult;
 	}
 
 	/* (non-Javadoc)
@@ -202,13 +202,13 @@ public class UsuarioDAOImpl extends GenericDAOImpl implements UsuarioDAO {
 			log.info(hql);
 			result = getSession().createQuery(hql).setInteger(0,idUsuario).setString(1, codigo).setString(2, estado).list();
 		}
-		
-		ControlAcceso controlAcceso =  new ControlAcceso();		
+
+		ControlAcceso controlAcceso =  new ControlAcceso();
 		if(result == null || result.size() == 0){
 			controlAcceso=null;
 		}else{
 			controlAcceso=(ControlAcceso) result.get(0);
-		}	
+		}
 		return controlAcceso;
 	}
 }

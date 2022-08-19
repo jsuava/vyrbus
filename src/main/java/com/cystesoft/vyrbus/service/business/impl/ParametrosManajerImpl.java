@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 14/05/2013
  */
@@ -18,7 +18,7 @@ import com.cystesoft.vyrbus.service.business.ParametrosManager;
  *
  */
 public class ParametrosManajerImpl implements ParametrosManager{
-	
+
 	private ParametrosDAO parametrosDAO;
 
 	/**
@@ -51,7 +51,7 @@ public class ParametrosManajerImpl implements ParametrosManager{
 	public void guardar(Parametros parametros) throws Exception {
 		// TODO Auto-generated method stub
 		getParametrosDAO().guardar(parametros);
-		
+
 	}
 
 	/* (non-Javadoc)

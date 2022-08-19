@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 05/07/2016
  * Hora			: 15:14:55
@@ -86,7 +86,7 @@ public class ReimpresionAnticipadaManagerImpl implements ReimpresionAnticipadaMa
 		getReimpresionAnticipadaDAO().actualizar(reimpresionAnticipada);
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.ReimpresionAnticipadaManager#tieneAutorizacionReimpresion(java.lang.Integer, java.lang.Integer)
 	 */

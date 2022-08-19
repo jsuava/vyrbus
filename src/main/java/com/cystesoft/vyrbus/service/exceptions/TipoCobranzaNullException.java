@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 27 jun. 2021
  * Hora			: 16:42:10
@@ -18,7 +18,7 @@ public class TipoCobranzaNullException  extends Exception implements Serializabl
 	private static final long serialVersionUID = 1L;
 	private String message;
 	/**
-	 * 
+	 *
 	 */
 	public TipoCobranzaNullException() {
 		super();
@@ -27,6 +27,7 @@ public class TipoCobranzaNullException  extends Exception implements Serializabl
 	/**
 	 * @return the message
 	 */
+	@Override
 	public String getMessage() {
 		return message;
 	}
@@ -43,5 +44,5 @@ public class TipoCobranzaNullException  extends Exception implements Serializabl
 		super();
 		this.message = message;
 	}
-	
+
 }

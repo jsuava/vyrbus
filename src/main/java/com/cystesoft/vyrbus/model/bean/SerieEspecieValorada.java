@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 20/11/2013
  */
@@ -13,7 +13,7 @@ package com.cystesoft.vyrbus.model.bean;
  */
 public class SerieEspecieValorada extends GenericBean{
 	private static final long serialVersionUID = 1L;
-	
+
 	private TipoComprobante tipoComprobante;
 	private Agencia agencia;
 	private String numeroSerie;

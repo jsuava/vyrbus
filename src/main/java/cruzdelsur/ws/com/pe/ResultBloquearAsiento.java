@@ -9,11 +9,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for ResultBloquearAsiento complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="ResultBloquearAsiento">
  *   &lt;complexContent>
@@ -28,8 +28,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ResultBloquearAsiento", propOrder = { "codigoTransaccion",
@@ -46,10 +46,10 @@ public class ResultBloquearAsiento {
 
 	/**
 	 * Gets the value of the codigoTransaccion property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getCodigoTransaccion() {
 		return codigoTransaccion;
@@ -57,11 +57,11 @@ public class ResultBloquearAsiento {
 
 	/**
 	 * Sets the value of the codigoTransaccion property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setCodigoTransaccion(JAXBElement<String> value) {
 		this.codigoTransaccion = (value);
@@ -69,10 +69,10 @@ public class ResultBloquearAsiento {
 
 	/**
 	 * Gets the value of the error property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link Error }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<Error> getError() {
 		return error;
@@ -80,11 +80,11 @@ public class ResultBloquearAsiento {
 
 	/**
 	 * Sets the value of the error property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link Error }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setError(JAXBElement<Error> value) {
 		this.error = (value);
@@ -92,9 +92,9 @@ public class ResultBloquearAsiento {
 
 	/**
 	 * Gets the value of the isCorrect property.
-	 * 
+	 *
 	 * @return possible object is {@link Boolean }
-	 * 
+	 *
 	 */
 	public Boolean isIsCorrect() {
 		return isCorrect;
@@ -102,10 +102,10 @@ public class ResultBloquearAsiento {
 
 	/**
 	 * Sets the value of the isCorrect property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Boolean }
-	 * 
+	 *
 	 */
 	public void setIsCorrect(Boolean value) {
 		this.isCorrect = value;
@@ -113,10 +113,10 @@ public class ResultBloquearAsiento {
 
 	/**
 	 * Gets the value of the resultadoTransaccion property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getResultadoTransaccion() {
 		return resultadoTransaccion;
@@ -124,11 +124,11 @@ public class ResultBloquearAsiento {
 
 	/**
 	 * Sets the value of the resultadoTransaccion property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setResultadoTransaccion(JAXBElement<String> value) {
 		this.resultadoTransaccion = (value);

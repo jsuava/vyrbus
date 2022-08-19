@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 21/02/2017
  * Hora			: 10:27:54
@@ -33,7 +33,7 @@ public interface ComprobantesBloqueadosManager {
 	 * @throws Exception
 	 */
 	public int desbloquearComprobante(ComprobantesBloqueados comprobantesBloqueados)throws Exception;
-	
+
 	/**
 	 * Realiza el desbloqueo del comprobante por Usuario Hardware.
 	 * @param idUsuarioHardware	: Identificador del Usuario Hardware

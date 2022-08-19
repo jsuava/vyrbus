@@ -10,11 +10,11 @@ import com.cystesoft.vyrbus.model.bean.Reniec;
 /**
  * <p>
  * Java class for ResultIdentidad complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="ResultIdentidad">
  *   &lt;complexContent>
@@ -31,8 +31,8 @@ import com.cystesoft.vyrbus.model.bean.Reniec;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ResultIdentidad", propOrder = { "_return", "errores",
@@ -52,11 +52,11 @@ public class ResultIdentidad {
 	@XmlElement(name = "Materno")
 	protected String materno;
 
-	
+
 	private Reniec reniec;
 	/**
 	 * Gets the value of the return property.
-	 * 
+	 *
 	 */
 	public boolean isReturn() {
 		return _return;
@@ -64,7 +64,7 @@ public class ResultIdentidad {
 
 	/**
 	 * Sets the value of the return property.
-	 * 
+	 *
 	 */
 	public void setReturn(boolean value) {
 		this._return = value;
@@ -72,9 +72,9 @@ public class ResultIdentidad {
 
 	/**
 	 * Gets the value of the errores property.
-	 * 
+	 *
 	 * @return possible object is {@link Errores }
-	 * 
+	 *
 	 */
 	public Errores getErrores() {
 		return errores;
@@ -82,10 +82,10 @@ public class ResultIdentidad {
 
 	/**
 	 * Sets the value of the errores property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Errores }
-	 * 
+	 *
 	 */
 	public void setErrores(Errores value) {
 		this.errores = value;
@@ -93,9 +93,9 @@ public class ResultIdentidad {
 
 	/**
 	 * Gets the value of the nroDoc property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getNroDoc() {
 		return nroDoc;
@@ -103,10 +103,10 @@ public class ResultIdentidad {
 
 	/**
 	 * Sets the value of the nroDoc property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setNroDoc(String value) {
 		this.nroDoc = value;
@@ -114,9 +114,9 @@ public class ResultIdentidad {
 
 	/**
 	 * Gets the value of the nombre property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getNombre() {
 		return nombre;
@@ -124,10 +124,10 @@ public class ResultIdentidad {
 
 	/**
 	 * Sets the value of the nombre property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setNombre(String value) {
 		this.nombre = value;
@@ -135,9 +135,9 @@ public class ResultIdentidad {
 
 	/**
 	 * Gets the value of the paterno property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getPaterno() {
 		return paterno;
@@ -145,10 +145,10 @@ public class ResultIdentidad {
 
 	/**
 	 * Sets the value of the paterno property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setPaterno(String value) {
 		this.paterno = value;
@@ -156,9 +156,9 @@ public class ResultIdentidad {
 
 	/**
 	 * Gets the value of the materno property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getMaterno() {
 		return materno;
@@ -166,10 +166,10 @@ public class ResultIdentidad {
 
 	/**
 	 * Sets the value of the materno property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setMaterno(String value) {
 		this.materno = value;

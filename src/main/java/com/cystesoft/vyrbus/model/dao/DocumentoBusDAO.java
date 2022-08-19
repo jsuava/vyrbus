@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 27/08/2012
  */
@@ -19,7 +19,7 @@ import com.cystesoft.vyrbus.model.bean.DocumentoBus;
 public interface DocumentoBusDAO extends GenericDAO{
 	public ArrayList<DocumentoBus> buscarPorEstadoRegistro(String estado, String criterioOrden);
 	public ArrayList<DocumentoBus> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
-	
+
 	public DocumentoBus buscarPorId(Long id);
 	public void guardar(DocumentoBus documentoBus);
 	public void actualizar(DocumentoBus documentoBus);

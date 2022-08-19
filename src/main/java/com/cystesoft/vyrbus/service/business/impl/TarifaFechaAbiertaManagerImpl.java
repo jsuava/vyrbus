@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 03/04/2014
  */
@@ -20,7 +20,7 @@ import com.cystesoft.vyrbus.service.business.TarifaFechaAbiertaManager;
  *
  */
 public class TarifaFechaAbiertaManagerImpl implements TarifaFechaAbiertaManager {
-	
+
 	private TarifaFechaAbiertaDAO tarifaFechaAbiertaDAO;
 
 	/**
@@ -53,7 +53,7 @@ public class TarifaFechaAbiertaManagerImpl implements TarifaFechaAbiertaManager 
 		// TODO Auto-generated method stub
 		return getTarifaFechaAbiertaDAO().buscarTarifas(idOrigen,idDestino, idServicio);
 	}
-	
+
 	@Override
 	public List<TarifaFechaAbierta> listarTarifasFA(Integer idOrigen,Integer idDestino, Integer idServicio)throws Exception{
 		return getTarifaFechaAbiertaDAO().listarTarifasFA(idOrigen, idDestino, idServicio);
@@ -88,5 +88,5 @@ public class TarifaFechaAbiertaManagerImpl implements TarifaFechaAbiertaManager 
 		// TODO Auto-generated method stub
 		getTarifaFechaAbiertaDAO().inactivate(id);
 	}
-	
+
 }

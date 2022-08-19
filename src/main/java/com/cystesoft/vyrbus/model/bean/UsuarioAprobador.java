@@ -4,11 +4,11 @@ import java.io.Serializable;
 
 public class UsuarioAprobador extends GenericBean implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer id;
 	private Usuario usuario;
 	private Integer nivelAprobacion;
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -27,6 +27,6 @@ public class UsuarioAprobador extends GenericBean implements Serializable {
 	public void setNivelAprobacion(Integer nivelAprobacion) {
 		this.nivelAprobacion = nivelAprobacion;
 	}
-	
-	
+
+
 }

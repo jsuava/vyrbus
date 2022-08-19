@@ -3,6 +3,7 @@ package com.cystesoft.vyrbus.service.fe;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -11,11 +12,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for ArrayOfInformacionAdicional.TotalMonedaAdicional complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="ArrayOfInformacionAdicional.TotalMonedaAdicional">
  *   &lt;complexContent>
@@ -27,8 +28,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ArrayOfInformacionAdicional.TotalMonedaAdicional", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", propOrder = {
@@ -40,30 +41,30 @@ public class ArrayOfInformacionAdicionalTotalMonedaAdicional {
 
 	/**
 	 * Gets the value of the informacionAdicionalTotalMonedaAdicional property.
-	 * 
+	 *
 	 * <p>
 	 * This accessor method returns a reference to the live list, not a snapshot.
 	 * Therefore any modification you make to the returned list will be present
 	 * inside the JAXB object. This is why there is not a <CODE>set</CODE> method
 	 * for the informacionAdicionalTotalMonedaAdicional property.
-	 * 
+	 *
 	 * <p>
 	 * For example, to add a new item, do as follows:
-	 * 
+	 *
 	 * <pre>
 	 * getInformacionAdicionalTotalMonedaAdicional().add(newItem);
 	 * </pre>
-	 * 
-	 * 
+	 *
+	 *
 	 * <p>
 	 * Objects of the following type(s) are allowed in the list
 	 * {@link InformacionAdicionalTotalMonedaAdicional }
-	 * 
-	 * 
+	 *
+	 *
 	 */
 	public List<InformacionAdicionalTotalMonedaAdicional> getInformacionAdicionalTotalMonedaAdicional() {
 		if (informacionAdicionalTotalMonedaAdicional == null) {
-			informacionAdicionalTotalMonedaAdicional = new ArrayList<InformacionAdicionalTotalMonedaAdicional>();
+			informacionAdicionalTotalMonedaAdicional = new ArrayList<>();
 		}
 		return this.informacionAdicionalTotalMonedaAdicional;
 	}

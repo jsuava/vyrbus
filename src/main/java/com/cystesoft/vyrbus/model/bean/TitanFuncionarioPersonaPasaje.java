@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Aabnto
  * Fecha		: 31/07/2014
  */
@@ -122,7 +122,7 @@ public class TitanFuncionarioPersonaPasaje {
 	public void setFechaRegistro(Date fechaRegistro) {
 		this.fechaRegistro = fechaRegistro;
 	}
-	
+
 	/**
 	 * @return the comisionable
 	 */
@@ -171,5 +171,5 @@ public class TitanFuncionarioPersonaPasaje {
 	public void setFechaSuspencion(String fechaSuspencion) {
 		this.fechaSuspencion = fechaSuspencion;
 	}
-	
+
 }

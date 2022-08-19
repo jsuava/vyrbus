@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 11/07/2016
  * Hora			: 17:27:10
@@ -46,7 +46,7 @@ public interface TipoAsientoDAO extends GenericDAO{
 	 */
 	public void guardar(TipoAsiento tipoAsiento)throws Exception;
 	/**
-	 *Actualiza una instancia de un objeto 
+	 *Actualiza una instancia de un objeto
 	 * @param tipoAsiento
 	 */
 	public void actualizar(TipoAsiento tipoAsiento)throws Exception;

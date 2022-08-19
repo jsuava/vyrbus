@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 14 jul. 2021
  * Hora			: 11:37:14
@@ -15,7 +15,7 @@ package com.cystesoft.vyrbus.model.bean;
 public class Equipaje extends GenericBean implements java.io.Serializable{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Long id;
@@ -23,17 +23,17 @@ public class Equipaje extends GenericBean implements java.io.Serializable{
 	private Agencia agencia;
 	private Double peso;
 	private String observaciones;
-	
+
 	private UsuarioHardware usuarioHardware;
-	
+
 	public Equipaje() {
 		super();
 	}
-	
+
 	public Equipaje(Long id) {
 		this.id=id;
 	}
-	
+
 	/**
 	 * @return the id
 	 */
@@ -108,6 +108,6 @@ public class Equipaje extends GenericBean implements java.io.Serializable{
 	public void setObservaciones(String observaciones) {
 		this.observaciones = observaciones;
 	}
-	
+
 
 }

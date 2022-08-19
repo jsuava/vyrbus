@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 17/11/2014
  * Hora			: 14:16:57
@@ -40,18 +40,18 @@ import com.cystesoft.vyrbus.service.util.Util;
 @SuppressWarnings({"rawtypes"})
 public class XlsDetalleVentaSeguros extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
 		doProcess(request, response);
 	}
-	
+
 	protected void doProcess(HttpServletRequest request, HttpServletResponse response){
 		Listbox listbox = (Listbox)request.getSession().getAttribute("lbxVentaSeguros");
         String parcialPath = (String)request.getSession().getAttribute("parcialPath");
         response.setContentType("application/vnd.ms-excel");
         response.setHeader("Content-Disposition", "attachment; filename=DetalladoVentaSeguros.xls");
-        
+
         File template = new File(parcialPath);
         try {
         	POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(template));
@@ -79,9 +79,9 @@ public class XlsDetalleVentaSeguros extends HttpServlet {
                 rowh.createCell((short) 10).setCellValue(Double.valueOf(Util.toNumberFormat(afiliacion.getImportePagado(), 2)));
                 rowh.createCell((short) 11).setCellValue(new HSSFRichTextString(afiliacion.getAgencia()!=null?afiliacion.getAgencia().getNombreCorto():""));
                 rowh.createCell((short) 12).setCellValue(new HSSFRichTextString(afiliacion.getUsuario().toString()));
-                rowh.createCell((short) 13).setCellValue(new HSSFRichTextString(afiliacion.getFechaProcesoAfiliacion()!=null?Constantes.FORMAT_DATE.format(afiliacion.getFechaProcesoAfiliacion()):""));  
+                rowh.createCell((short) 13).setCellValue(new HSSFRichTextString(afiliacion.getFechaProcesoAfiliacion()!=null?Constantes.FORMAT_DATE.format(afiliacion.getFechaProcesoAfiliacion()):""));
             }
-            
+
             ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
 			wb.write(outByteStream);
 			byte [] outArray = outByteStream.toByteArray();
@@ -89,7 +89,7 @@ public class XlsDetalleVentaSeguros extends HttpServlet {
 			OutputStream outStream = response.getOutputStream();
 		    outStream.write(outArray);
 		    outStream.flush();
-		    
+
         } catch (Exception e) {
         	log("EXPORT XLS VENTA DE SEGUROS: "+e.toString());
             System.out.println(e.toString());
@@ -97,5 +97,5 @@ public class XlsDetalleVentaSeguros extends HttpServlet {
         }
 	}
 
-	
+
 }

@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for Tripulante complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="Tripulante">
  *   &lt;complexContent>
@@ -30,8 +30,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Tripulante", propOrder = { "seguridad", "tpoDocumento",
@@ -55,9 +55,9 @@ public class Tripulante {
 
 	/**
 	 * Gets the value of the seguridad property.
-	 * 
+	 *
 	 * @return possible object is {@link Seguridad }
-	 * 
+	 *
 	 */
 	public Seguridad getSeguridad() {
 		return seguridad;
@@ -65,10 +65,10 @@ public class Tripulante {
 
 	/**
 	 * Sets the value of the seguridad property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Seguridad }
-	 * 
+	 *
 	 */
 	public void setSeguridad(Seguridad value) {
 		this.seguridad = value;
@@ -76,9 +76,9 @@ public class Tripulante {
 
 	/**
 	 * Gets the value of the tpoDocumento property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getTpoDocumento() {
 		return tpoDocumento;
@@ -86,10 +86,10 @@ public class Tripulante {
 
 	/**
 	 * Sets the value of the tpoDocumento property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setTpoDocumento(String value) {
 		this.tpoDocumento = value;
@@ -97,9 +97,9 @@ public class Tripulante {
 
 	/**
 	 * Gets the value of the nroDocumento property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getNroDocumento() {
 		return nroDocumento;
@@ -107,10 +107,10 @@ public class Tripulante {
 
 	/**
 	 * Sets the value of the nroDocumento property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setNroDocumento(String value) {
 		this.nroDocumento = value;
@@ -118,9 +118,9 @@ public class Tripulante {
 
 	/**
 	 * Gets the value of the nombre property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getNombre() {
 		return nombre;
@@ -128,10 +128,10 @@ public class Tripulante {
 
 	/**
 	 * Sets the value of the nombre property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setNombre(String value) {
 		this.nombre = value;
@@ -139,9 +139,9 @@ public class Tripulante {
 
 	/**
 	 * Gets the value of the apellido property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getApellido() {
 		return apellido;
@@ -149,10 +149,10 @@ public class Tripulante {
 
 	/**
 	 * Sets the value of the apellido property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setApellido(String value) {
 		this.apellido = value;
@@ -160,9 +160,9 @@ public class Tripulante {
 
 	/**
 	 * Gets the value of the sexo property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getSexo() {
 		return sexo;
@@ -170,10 +170,10 @@ public class Tripulante {
 
 	/**
 	 * Sets the value of the sexo property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setSexo(String value) {
 		this.sexo = value;
@@ -181,9 +181,9 @@ public class Tripulante {
 
 	/**
 	 * Gets the value of the fecNac property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getFecNac() {
 		return fecNac;
@@ -191,10 +191,10 @@ public class Tripulante {
 
 	/**
 	 * Sets the value of the fecNac property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setFecNac(String value) {
 		this.fecNac = value;

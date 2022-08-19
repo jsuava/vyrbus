@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 27/06/2015
  * Hora			: 08:50:58
@@ -29,7 +29,7 @@ public class DestinatariosEmailsDAOImpl extends GenericDAOImpl implements Destin
 		// TODO Auto-generated method stub
 		String hql="FROM Windows w WHERE w.objeto='"+objeto+"' AND w.c_estreg='"+Constantes.VALUE_ACTIVO+"' ";
 		DestinatariosEmails windows=(DestinatariosEmails) getSession().createQuery(hql).uniqueResult();
-		
+
 		return windows;
 	}
 

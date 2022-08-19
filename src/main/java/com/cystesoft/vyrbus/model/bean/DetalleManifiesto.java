@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 09/11/2013
  */
@@ -15,12 +15,12 @@ import java.io.Serializable;
  */
 public class DetalleManifiesto extends GenericBean  implements Serializable{
 	private static final long serialVersionUID = 1L;
-	
+
 	private Manifiesto manifiesto;
 	private VentaPasaje ventaPasaje;
 	private Agencia agencia;
 	private DetalleManifiestoID detalleManifiestoID;
-	
+
 	/**
 	 * @return the manifiesto
 	 */
@@ -69,8 +69,8 @@ public class DetalleManifiesto extends GenericBean  implements Serializable{
 	public void setDetalleManifiestoID(DetalleManifiestoID detalleManifiestoID) {
 		this.detalleManifiestoID = detalleManifiestoID;
 	}
-	
-	
-	
+
+
+
 
 }

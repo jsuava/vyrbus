@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 06/09/2016
  * Hora			: 14:13:00
@@ -39,16 +39,16 @@ public class ObjectCiva {
     private Integer IdOrigen;
     private Integer IdDestino;
     private Integer IdServicio;
-    
+
     private Integer reservaID;
     private String reservaFechaExpirarion;
     private List<TreeMap<String, Object>> menus;
     private Double precioAsiento;
-    
-    
+
+
     private Listbox listAsientos;
 	private Button btnNextTabVenta;
-	
+
 	/**
 	 * @return the idBus
 	 */
@@ -349,5 +349,5 @@ public class ObjectCiva {
 	public void setBtnNextTabVenta(Button btnNextTabVenta) {
 		this.btnNextTabVenta = btnNextTabVenta;
 	}
-	
+
 }

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 14/05/2013
  */
@@ -23,9 +23,9 @@ public class ParametrosDAOImpl extends GenericDAOImpl implements ParametrosDAO {
 	public Parametros buscarPorEstadoRegistro(String estado) {
 		Class<?> oClass=Parametros.class;
 		String hql="FROM "+oClass.getSimpleName()+" WHERE estadoRegistro='"+estado+"'";
-		
+
 		log.info(hql);
-		
+
 		return (Parametros) getSession().createQuery(hql).uniqueResult();
 	}
 
@@ -46,5 +46,5 @@ public class ParametrosDAOImpl extends GenericDAOImpl implements ParametrosDAO {
 		super.update(parametros);
 	}
 
-	
+
 }

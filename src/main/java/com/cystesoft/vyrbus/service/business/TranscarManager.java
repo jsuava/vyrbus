@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 26 oct. 2021
  * Hora			: 10:58:04
@@ -31,7 +31,7 @@ public interface TranscarManager {
 	 * @throws Exception
 	 */
 	public List<TranscarRolUsuario> buscarRolesUsuario()throws Exception;
-	
+
 	/**
 	 * Realiza la busqueda de los roles asignados a un usuario
 	 * @param usuarioId	: Identificador del usuario
@@ -63,12 +63,12 @@ public interface TranscarManager {
 	/**
 	 * Realiza la apertura de la liquidacion de turno
 	 * @param liquidacionTurno	: instancia de la class
-	 * @return Si es correcto Null, lo contrario cuando ocurre un error 
+	 * @return Si es correcto Null, lo contrario cuando ocurre un error
 	 * @throws Exception
 	 */
 	public String aperturarLiquidacion(TranscarLiquidacionTurno liquidacionTurno)throws Exception;
 	/**
-	 * Realiza la busqueda del detalle de ventas 
+	 * Realiza la busqueda del detalle de ventas
 	 * @param usuarioId	: Identificador del usuario - Transcar
 	 * @param agenciaId	: Identificador de la agencia - Transcar
 	 * @param fechaInicial	: Fecha inicial de la busqueda
@@ -127,7 +127,7 @@ public interface TranscarManager {
 	 * @param fechaInicio	: Fecha inicio de la busqueda
 	 * @param fechaFin		: Fecha fin de la busqueda
 	 * @param codigoBus		: codigo del bus
-	 * @return	
+	 * @return
 	 * @throws Exception
 	 */
 	public TreeMap<String, Manifiesto> buscarLiquidacionBus(String fechaInicio, String fechaFin, String codigoBus)throws Exception;

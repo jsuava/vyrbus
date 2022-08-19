@@ -24,17 +24,17 @@ import com.cystesoft.vyrbus.service.util.UtilData;
 import com.cystesoft.vyrbus.view.ui.WndBase;
 
 /**
- * 
+ *
  * @author José Abanto.
  *
  */
 public class WndRptTarifario extends WndBase implements Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private Datebox dbxFechaInicial;
 	private Datebox dbxFechaFinal;
 	private Combobox cmbServicio;
@@ -42,8 +42,8 @@ public class WndRptTarifario extends WndBase implements Serializable {
 	private Combobox cmbRuta;
 	private Checkbox chbxTarifaCero;
 	private Listbox lstbxTarifario;
-	
-	
+
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
@@ -70,21 +70,21 @@ public class WndRptTarifario extends WndBase implements Serializable {
 		dbxFechaFinal.setValue(Constantes.FORMAT_DATE.parse(time.dateServer()));
 		UtilData.cargarDataCombo(cmbServicio, Servicio.class, true);
 		UtilData.cargarDataCombo(cmbLocalidad, Localidad.class, true);
-		
+
 		cmbServicio.setSelectedIndex(0);
 		cmbLocalidad.setSelectedIndex(0);
-		
+
 		cargarRutas();
 	}
-	
+
 	public void cargaPasajeros() throws Exception{
-		
+
 //		for(int i=0;i<10 ; i++){
 //			TreeMap<String, Object>criteriosBusqueda=new TreeMap<>();
 //			criteriosBusqueda.put("tipoDocumento",new TipoDocumento(Constantes.ID_TIPDOC_DNI));
 //			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 //			List<Pasajero> listPasajeros=ServiceLocator.getPasajeroManager().buscarPorX(criteriosBusqueda, null);
-//			
+//
 //			long coun=0;
 //			for(Pasajero pasajero:listPasajeros){
 //				coun++;
@@ -95,17 +95,17 @@ public class WndRptTarifario extends WndBase implements Serializable {
 //					if(resultIdentidad.isReturn()){
 //						datosPersonales=resultIdentidad.getPaterno().trim()+" "+resultIdentidad.getMaterno().trim()+", "+resultIdentidad.getNombre().trim();
 //					}
-//					
+//
 //					System.out.println(String.valueOf(coun)+" - "+Constantes.FORMAT_DATE_TIME_24H.format(new Date())+" - "+dni+" -  "+datosPersonales);
 //				}
 //			}
 //		}
-		
+
 		Util.limpiarListbox(lstbxTarifario);
-		
+
 		Integer idServicio= null, idLocalidad=null, idRuta=null;
 		String fechaInical=Constantes.FORMAT_DATE.format(dbxFechaInicial.getValue());
-		String fechaFinal=Constantes.FORMAT_DATE.format(dbxFechaFinal.getValue());	
+		String fechaFinal=Constantes.FORMAT_DATE.format(dbxFechaFinal.getValue());
 		if(cmbServicio.getSelectedItem().getValue() instanceof Servicio)
 			idServicio=((Servicio)cmbServicio.getSelectedItem().getValue()).getId();
 		if (cmbLocalidad.getSelectedItem().getValue() instanceof Localidad)
@@ -113,21 +113,21 @@ public class WndRptTarifario extends WndBase implements Serializable {
 		if(cmbRuta.getSelectedItem().getValue() instanceof Ruta)
 			idRuta=((Ruta)cmbRuta.getSelectedItem().getValue()).getId();
 		boolean incluirTarifaCero=chbxTarifaCero.isChecked();
-		
+
 		List<DetalleItinerario> lsDetalleItinerarios=ServiceLocator.getReportesManager().tarifario(fechaInical, fechaFinal, idServicio, idLocalidad,incluirTarifaCero,idRuta);
-		Integer i=0;
+		int i=0;
 		Long idItinrario=(long) 0;
 		if (lsDetalleItinerarios.size() > 0){
 			Listitem item = null;
 			Listcell cell = null;
-		
+
 			for (DetalleItinerario detalleItinerario : lsDetalleItinerarios){
 				i++;
 				Itinerario itinerario=detalleItinerario.getItinerario();
 				Ruta rutaTramo=detalleItinerario.getRuta();
 				item = new Listitem();
-				
-				cell= new Listcell(i.toString()); 
+
+				cell= new Listcell(Integer.toString(i));
 				item.appendChild(cell);
 				cell= new Listcell((!idItinrario.equals(itinerario.getId()))?itinerario.getRuta().getOrigen()+" - "+itinerario.getRuta().getDestino(): ""); //ruta del itinerario
 				item.appendChild(cell);
@@ -136,7 +136,7 @@ public class WndRptTarifario extends WndBase implements Serializable {
 				item.appendChild(cell);
 				cell= new Listcell((!idItinrario.equals(itinerario.getId()))?itinerario.getServicio().getDenominacion(): ""); //Partida itinerario
 				item.appendChild(cell);
-				cell= new Listcell(rutaTramo.getOrigen()+" - "+rutaTramo.getDestino()); 
+				cell= new Listcell(rutaTramo.getOrigen()+" - "+rutaTramo.getDestino());
 				item.appendChild(cell);
 				cell= new Listcell(Constantes.FORMAT_DATE.format(detalleItinerario.getFechaPartida())+"  "+detalleItinerario.getHoraPartida());
 				cell.setStyle("font-size: 11px !important");
@@ -144,38 +144,38 @@ public class WndRptTarifario extends WndBase implements Serializable {
 				cell= new Listcell(Util.toNumberFormat(detalleItinerario.getTarifa(),2));
 				cell.setStyle("font-size: 11px !important");
 				item.appendChild(cell);
-								
+
 				item.setValue(detalleItinerario);
-				lstbxTarifario.appendChild(item);	
-				
+				lstbxTarifario.appendChild(item);
+
 				idItinrario=itinerario.getId();
-			}	
+			}
 		}
 	}
-	
+
 	/**
 	 * Carga las rutas en funcion a la localidad seleccionada
 	 * @throws Exception
 	 */
 	public void cargarRutas()throws Exception{
 		Util.limpiarCombobox(cmbRuta);
-		
+
 		if(cmbLocalidad.getSelectedItem().getValue() instanceof Localidad){
 			//Busca rutas segun la localidad seleccionada
 			Integer idServicio= null, idLocalidad=null, idRuta=null;
 			String fechaInical=Constantes.FORMAT_DATE.format(dbxFechaInicial.getValue());
-			String fechaFinal=Constantes.FORMAT_DATE.format(dbxFechaFinal.getValue());	
+			String fechaFinal=Constantes.FORMAT_DATE.format(dbxFechaFinal.getValue());
 			if(cmbServicio.getSelectedItem().getValue() instanceof Servicio)
 				idServicio=((Servicio)cmbServicio.getSelectedItem().getValue()).getId();
 			if (cmbLocalidad.getSelectedItem().getValue() instanceof Localidad)
 				idLocalidad=((Localidad) cmbLocalidad.getSelectedItem().getValue()).getId();
 			boolean incluirTarifaCero=chbxTarifaCero.isChecked();
 			List<DetalleItinerario> lsDetalleItinerarios=ServiceLocator.getReportesManager().tarifario(fechaInical, fechaFinal, idServicio, idLocalidad,incluirTarifaCero,idRuta);
-			
+
 			UtilData.cargarGenericData(cmbRuta, true);
 			for(DetalleItinerario detalleItinerario:lsDetalleItinerarios){
 				Ruta ruta=detalleItinerario.getRuta();
-				
+
 				//Valida la existencia de la ruta, para evitar cargar rutas duplicadas
 				boolean existeRuta=false;
 				for(Comboitem comboitem:cmbRuta.getItems()){
@@ -187,7 +187,7 @@ public class WndRptTarifario extends WndBase implements Serializable {
 						}
 					}
 				}
-				
+
 				//Agrega la ruta si esta aún no fue agregada al combo
 				if (!(existeRuta)){
 					Comboitem comboitem=new Comboitem();
@@ -196,18 +196,18 @@ public class WndRptTarifario extends WndBase implements Serializable {
 					cmbRuta.appendChild(comboitem);
 				}
 			}
-			
+
 //			/*Carga las rutas asociadas a la localidad*/
 //			UtilData.cargarRutas(cmbRuta, true, ((Localidad)cmbLocalidad.getSelectedItem().getValue()).getId(),null);
 ////			UtilData.cargarGenericData(cmbRuta, true);
-//			
+//
 //			TreeMap<String, Object>criteriosBusqueda=new TreeMap<>();
 //			criteriosBusqueda.put("localidadDestino", (Localidad)cmbLocalidad.getSelectedItem().getValue());
 //			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-//			
+//
 //			List<String>criteriosOrden=new ArrayList<>();
 //			criteriosOrden.add("destino");
-//			
+//
 //			List<Ruta>reslt=ServiceLocator.getRutaManager().buscarPorX(criteriosBusqueda, criteriosOrden);
 //			for(Ruta ruta:reslt){
 //				Comboitem comboitem=new Comboitem();
@@ -219,9 +219,9 @@ public class WndRptTarifario extends WndBase implements Serializable {
 			/*Carga todas las rutas*/
 			UtilData.cargarDataCombo(cmbRuta, Ruta.class, true);
 		}
-			
+
 	}
-	
+
 	public void exportar(){
 		if(lstbxTarifario.getItems().size()>0)
 			Util.exportarExcel(lstbxTarifario, "HISTORICO TARIFARIO");

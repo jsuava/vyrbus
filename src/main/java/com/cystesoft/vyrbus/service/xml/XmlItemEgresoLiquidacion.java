@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 14 set. 2021
  * Hora			: 14:50:33
@@ -20,21 +20,21 @@ import javax.xml.bind.annotation.XmlType;
 public class XmlItemEgresoLiquidacion implements Serializable{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private String v1_numero;
 	private String v2_tipo;
 	private String v3_detalle;
 	private String v4_cantidad;
 	private String v5_monto;
-	
-	
+
+
 	public XmlItemEgresoLiquidacion() {
 		super();
 	}
-	
+
 	public XmlItemEgresoLiquidacion(String v1_numero, String v2_tipo, String v3_detalle, String v4_cantidad, String v5_monto) {
 		this.v1_numero = v1_numero;
 		this.v2_tipo = v2_tipo;
@@ -42,7 +42,7 @@ public class XmlItemEgresoLiquidacion implements Serializable{
 		this.v4_cantidad = v4_cantidad;
 		this.v5_monto = v5_monto;
 	}
-	
+
 	/**
 	 * @return the v1_numero
 	 */

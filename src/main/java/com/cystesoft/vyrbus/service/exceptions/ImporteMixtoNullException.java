@@ -20,17 +20,17 @@ public class ImporteMixtoNullException extends Exception implements Serializable
 	public static final int IMPORTE_MIXTO_NOT_SELECT_CARD = 3;
 	public static final int IMPORTE_MIXTO_NOT_SELECT_EFECTIVO = 4;
 	private Integer tipoError;
-	
+
 	public ImporteMixtoNullException(int tipoError) {
 		super();
 		this.tipoError = tipoError;
 	}
-	
+
 	public ImporteMixtoNullException() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	/**
 	 * @return the tipoError
 	 */

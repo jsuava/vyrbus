@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 07/08/2015
  * Hora			: 11:21:01
@@ -17,17 +17,17 @@ import java.util.Date;
 public class TipoCambio extends GenericBean{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 6426376828281202467L;
 	private Integer id;
 	private Date fecha;
 	private TipoMoneda tipoMoneda;
 	private Double tipoCambio;
-	
+
 	private Double equivalenteMonedaLocal; //No mapeado.
-	
-	
+
+
 	/**
 	 * @return the id
 	 */
@@ -88,8 +88,8 @@ public class TipoCambio extends GenericBean{
 	public void setEquivalenteMonedaLocal(Double equivalenteMonedaLocal) {
 		this.equivalenteMonedaLocal = equivalenteMonedaLocal;
 	}
-	
-	
-	
-	
+
+
+
+
 }

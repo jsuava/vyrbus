@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 23/05/2012
  */
@@ -25,6 +25,6 @@ public interface ConcesionarioDAO extends GenericDAO {
 	public void guardar(Concesionario concesionario);
 	public void actualizar(Concesionario concesionario);
 	public void inactivar(Long id);
-	
+
 	public List<Concesionario> buscarPorX(String campo, Object[] criterios, List<String> criteriosOrdenar, String estadoRegistro) throws Exception;
 }

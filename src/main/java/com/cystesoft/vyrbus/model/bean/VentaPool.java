@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 08/09/2016
  * Hora			: 11:47:09
@@ -17,7 +17,7 @@ import java.util.Date;
 public class VentaPool extends GenericBean{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private long id;
@@ -371,6 +371,6 @@ public class VentaPool extends GenericBean{
 	public void setLocalidadDestino(Localidad localidadDestino) {
 		this.localidadDestino = localidadDestino;
 	}
-	
-		
+
+
 }

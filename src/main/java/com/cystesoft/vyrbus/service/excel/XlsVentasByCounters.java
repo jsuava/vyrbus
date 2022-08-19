@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 18/06/2015
  * Hora			: 14:07:57
@@ -42,7 +42,7 @@ import com.cystesoft.vyrbus.service.util.Util;
  */
 public class XlsVentasByCounters extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
 		doProcess(request, response);
@@ -57,38 +57,37 @@ public class XlsVentasByCounters extends HttpServlet {
         Boolean contabilizar=(Boolean)request.getSession().getAttribute("contabilizar");
         response.setContentType("application/vnd.ms-excel");
         response.setHeader("Content-Disposition", "attachment; filename=ventasByCounter.xls");
-        
+
         File template = new File(parcialPath);
         try {
 //            Workbook workbook = Workbook.getWorkbook(template);
 //            WritableWorkbook w = Workbook.createWorkbook(response.getOutputStream(), workbook);
 //            WritableSheet s = w.getSheet(0);
-        	
+
         	POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(template));
 			HSSFWorkbook wb = new HSSFWorkbook(fs);
 			HSSFSheet sheet = wb.getSheetAt(0);
             HSSFRow rowh = null;
-            HSSFCell cellh = null; 
+            HSSFCell cellh = null;
             HSSFDataFormat format = wb.createDataFormat();
             HSSFCellStyle style = wb.createCellStyle();
             if(contabilizar)
             	style.setDataFormat(format.getFormat("#,##0"));
             else
             	style.setDataFormat(format.getFormat("#,##0.00"));
-        	
+
             List<Listitem> listItems = listbox.getItems();
             int i = 0;
-            
+
             rowh = sheet.createRow((short)3);
             cellh = rowh.createCell((short)4);
             cellh.setCellValue(desde);
             cellh = rowh.createCell((short)9);
             cellh.setCellValue(hasta);
-            
+
             int j = 4;
             j++;
-            for (Iterator<Listitem> it = listItems.iterator(); it.hasNext();) {
-                Listitem item = it.next();
+            for (Listitem item : listItems) {
                 j++;
                 i = 0;
                 for (Iterator<Component> it2 = item.getChildren().iterator(); it2.hasNext();) {
@@ -102,7 +101,7 @@ public class XlsVentasByCounters extends HttpServlet {
                     	if (Util.isDecimal(currentCell.getLabel())) {
                     		cellh = rowh.createCell((short)i);
                     		cellh.setCellStyle(style);
-	    					cellh.setCellValue(Double.valueOf(currentCell.getLabel()));	
+	    					cellh.setCellValue(Double.valueOf(currentCell.getLabel()));
                     	}else
                     		rowh.createCell((short) i).setCellValue(new HSSFRichTextString(currentCell.getLabel()));
                     }
@@ -117,7 +116,7 @@ public class XlsVentasByCounters extends HttpServlet {
 			OutputStream outStream = response.getOutputStream();
 		    outStream.write(outArray);
 		    outStream.flush();
-		    
+
         } catch (Exception e) {
         	log("Export Ventas por Counter: "+e.toString());
             System.out.println(e.toString());

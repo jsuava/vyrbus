@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 21/02/2017
  * Hora			: 10:27:20
@@ -34,7 +34,7 @@ public interface ComprobantesBloqueadosDAO {
 	 * @throws Exception
 	 */
 	public int desbloquearComprobante(ComprobantesBloqueados comprobantesBloqueados)throws Exception;
-	
+
 	/**
 	 * Realiza el desbloqueo del comprobante por Usuario Hardware.
 	 * @param idUsuarioHardware	: Identificador del Usuario Hardware
@@ -58,7 +58,7 @@ public interface ComprobantesBloqueadosDAO {
 //	 * @throws Exception
 //	 */
 //	public List<ComprobantesBloqueados> buscarAsientosBloqueados(Long idItinerario) throws Exception;
-	
+
 	/**
 	 * Busca por estado registro
 	 * @param estado	: estado a consultar
@@ -66,8 +66,8 @@ public interface ComprobantesBloqueadosDAO {
 	 * @return
 	 */
 	public ArrayList<ComprobantesBloqueados> buscarPorEstadoRegistro(String estado);
-	
-	
+
+
 //	/**
 //	 * Realiza el desbloqueo por usuario hardware y itinerario
 //	 * @param idUsuarioHardware	: Identificador del usuario hardware
@@ -76,7 +76,7 @@ public interface ComprobantesBloqueadosDAO {
 //	 * @throws Exception
 //	 */
 //	public int desbloquearAsientoByUsuarioHardwareAndItinerario(Integer idUsuarioHardware, Long idItinerario) throws Exception;
-	
+
 	/***
 	 * realiza el desbloque del comprobante por el identificador de la venta
 	 * @param idVentaPasaje			: Identificador de la venta

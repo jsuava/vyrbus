@@ -3,13 +3,13 @@ package com.cystesoft.vyrbus.model.bean;
 import java.io.Serializable;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 public class MotivoTemporadaAlta extends GenericBean implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer id;
 	private String nombreMotivo;
 	/**
@@ -36,8 +36,8 @@ public class MotivoTemporadaAlta extends GenericBean implements Serializable {
 	public void setNombreMotivo(String nombreMotivo) {
 		this.nombreMotivo = nombreMotivo;
 	}
-	
-	
-	
+
+
+
 
 }

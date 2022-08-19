@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 10/09/2013
  */
@@ -78,7 +78,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 	private Textbox txtPiso;
 	private Textbox txtAsientoSeleccionado;
     private Textbox txtPisoSeleccionado;
-    
+
 	private VentaPasaje ventaPasaje;
 	private DetalleItinerario detalleItinerario;
 	private UsuarioHardware usuarioHardware;
@@ -88,28 +88,28 @@ public class WndMapaBus extends WndBase implements Serializable {
 	private String key = "-1";
     private String previousKey = "-1";
     private String prefijoAsiento="";
-	
+
 	private Asiento asientoSeleccionado = null;
 	@SuppressWarnings("rawtypes")
 	private EventListener oEventListenerSelect;
-	
-	private static final String IMAGE_PRIMER_PISO = "resources/mapa/bus_primerPiso.png";
-	private static final String IMAGE_SEGUNDO_PISO = "resources/mapa/bus_segundoPiso.png";
+
+	private static final String IMAGE_PRIMER_PISO = "resources/mapa/bus_primerPisoHor.png";
+	private static final String IMAGE_SEGUNDO_PISO = "resources/mapa/bus_segundoPisoHor.png";
 	private static final int TIPO_ASIENTO = 0;
 	private static final int TIPO_MONITOR = 1;
 	private static final int TIPO_CAFETERIA = 2;
 //	private static final int PISO_DOS = 2;
-	
-	
+
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public WndMapaBus() throws Exception {
-		super();		
+		super();
 	}
-	
+
 	/**
 	 * @return the txtAsientoSeleccionado
 	 */
@@ -194,7 +194,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 	public void  setAsientoSeleccionado(Asiento asientoSeleccionado){
 		this.asientoSeleccionado=asientoSeleccionado;
 	}
-	
+
 	public Asiento getAsientoSeleccionado(){
 		return asientoSeleccionado;
 	}
@@ -207,7 +207,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 	public void onCreate() throws Exception {
 		usuarioHardware = getUsuarioHardware();
 		/*********************************************************************/
-		
+
 		crearEstructura(ventaPasaje);
 		if(getVentaPasaje().getNumeroAsiento()!=null && !selectAsiento){
 			txtAsiento.setText(getVentaPasaje().getNumeroAsiento().toString());
@@ -222,9 +222,9 @@ public class WndMapaBus extends WndBase implements Serializable {
 		this.setSizable(false);
 		this.setClosable(false);
 		this.setStyle("padding: 5px");
-		this.setWidth("452px");
+		this.setWidth("676px");
 		this.setVisible(true);
-		
+
 		try{
 			ventaPasaje = getVentaPasaje();
 			ventaPasaje.setServicio((Servicio)ServiceLocator.getHibernateSession().merge(ventaPasaje.getServicio()));
@@ -237,7 +237,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 
 	/**
 	 * Carga el Mapa
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@SuppressWarnings({"rawtypes", "unchecked"})
@@ -255,15 +255,15 @@ public class WndMapaBus extends WndBase implements Serializable {
 						DlgMessage.information(Messages.getString("WndPostergacion.information.noAsientoSeleccionado"));
 				}
 			}
-		};	
-		
+		};
+
 		/* ------------------ CONTENEDOR DE OBJETOS --------------------- */
 		divContenedorBus = new Div();
-		Hlayout hlayout = new Hlayout();
+		Vlayout hLayoutPrincipal = new Vlayout();
 		vbxEstructuraBus = new Vbox();
-		hlayout.appendChild(vbxEstructuraBus);
-		
-		Vlayout vlayout = new Vlayout();
+		hLayoutPrincipal.appendChild(vbxEstructuraBus);
+
+		Hlayout hlayout = new Hlayout();
 		Groupbox groupbox = new Groupbox();
 		groupbox.setMold("3d");
 		groupbox.setClosable(false);
@@ -271,6 +271,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 		caption.setStyle("color: #ffffff;");
 		groupbox.appendChild(caption);
 		Grid grid = new Grid();
+		grid.setWidth("341px");
 		Rows rows = new Rows();
 		Row row = new Row();
 		Hbox hbox = new Hbox();
@@ -284,7 +285,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 		image.setStyle("font-size:9px");
 		hbox2.appendChild(image);
 		hbox.appendChild(hbox2);
-		
+
 		hbox2 = new Hbox();
 		hbox2.setAlign("center");
 		hbox2.setWidth("100px");
@@ -292,7 +293,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 		label.setStyle("font-size:9px");
 		hbox2.appendChild(label);
 		hbox.appendChild(hbox2);
-		
+
 		hbox2 = new Hbox();
 		hbox2.setAlign("center");
 		hbox2.setWidth("26px");
@@ -300,7 +301,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 		image.setStyle("font-size:9px");
 		hbox2.appendChild(image);
 		hbox.appendChild(hbox2);
-		
+
 		hbox2 = new Hbox();
 		hbox2.setAlign("center");
 		hbox2.setWidth("100px");
@@ -308,10 +309,10 @@ public class WndMapaBus extends WndBase implements Serializable {
 		label.setStyle("font-size:9px");
 		hbox2.appendChild(label);
 		hbox.appendChild(hbox2);
-		
+
 		row.appendChild(hbox);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		hbox = new Hbox();
 		hbox.setWidth("260px");
@@ -324,7 +325,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 		image.setStyle("font-size:9px");
 		hbox2.appendChild(image);
 		hbox.appendChild(hbox2);
-		
+
 		hbox2 = new Hbox();
 		hbox2.setAlign("center");
 		hbox2.setWidth("100px");
@@ -332,7 +333,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 		label.setStyle("font-size:9px");
 		hbox2.appendChild(label);
 		hbox.appendChild(hbox2);
-		
+
 		hbox2 = new Hbox();
 		hbox2.setAlign("center");
 		hbox2.setWidth("26px");
@@ -340,7 +341,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 		image.setStyle("font-size:9px");
 		hbox2.appendChild(image);
 		hbox.appendChild(hbox2);
-		
+
 		hbox2 = new Hbox();
 		hbox2.setAlign("center");
 		hbox2.setWidth("100px");
@@ -348,10 +349,10 @@ public class WndMapaBus extends WndBase implements Serializable {
 		label.setStyle("font-size:9px");
 		hbox2.appendChild(label);
 		hbox.appendChild(hbox2);
-		
+
 		row.appendChild(hbox);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		hbox = new Hbox();
 		hbox.setWidth("260px");
@@ -364,7 +365,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 		image.setStyle("font-size:9px");
 		hbox2.appendChild(image);
 		hbox.appendChild(hbox2);
-		
+
 		hbox2 = new Hbox();
 		hbox2.setAlign("center");
 		hbox2.setWidth("100px");
@@ -372,7 +373,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 		label.setStyle("font-size:9px");
 		hbox2.appendChild(label);
 		hbox.appendChild(hbox2);
-		
+
 		hbox2 = new Hbox();
 		hbox2.setAlign("center");
 		hbox2.setWidth("26px");
@@ -380,7 +381,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 		image.setStyle("font-size:9px");
 		hbox2.appendChild(image);
 		hbox.appendChild(hbox2);
-		
+
 		hbox2 = new Hbox();
 		hbox2.setAlign("center");
 		hbox2.setWidth("100px");
@@ -388,10 +389,10 @@ public class WndMapaBus extends WndBase implements Serializable {
 		label.setStyle("font-size:9px");
 		hbox2.appendChild(label);
 		hbox.appendChild(hbox2);
-		
+
 		row.appendChild(hbox);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		hbox = new Hbox();
 		hbox.setWidth("260px");
@@ -404,7 +405,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 		image.setStyle("font-size:9px");
 		hbox2.appendChild(image);
 		hbox.appendChild(hbox2);
-		
+
 		hbox2 = new Hbox();
 		hbox2.setAlign("center");
 		hbox2.setWidth("100px");
@@ -412,7 +413,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 		label.setStyle("font-size:9px");
 		hbox2.appendChild(label);
 		hbox.appendChild(hbox2);
-		
+
 		hbox2 = new Hbox();
 		hbox2.setAlign("center");
 		hbox2.setWidth("26px");
@@ -420,7 +421,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 		image.setStyle("font-size:9px");
 		hbox2.appendChild(image);
 		hbox.appendChild(hbox2);
-		
+
 		hbox2 = new Hbox();
 		hbox2.setAlign("center");
 		hbox2.setWidth("100px");
@@ -428,10 +429,10 @@ public class WndMapaBus extends WndBase implements Serializable {
 		label.setStyle("font-size:9px");
 		hbox2.appendChild(label);
 		hbox.appendChild(hbox2);
-		
+
 		row.appendChild(hbox);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		hbox = new Hbox();
 		hbox.setWidth("260px");
@@ -444,7 +445,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 		image.setStyle("font-size:9px");
 		hbox2.appendChild(image);
 		hbox.appendChild(hbox2);
-		
+
 		hbox2 = new Hbox();
 		hbox2.setAlign("center");
 		hbox2.setWidth("100px");
@@ -452,7 +453,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 		label.setStyle("font-size:9px");
 		hbox2.appendChild(label);
 		hbox.appendChild(hbox2);
-		
+
 		hbox2 = new Hbox();
 		hbox2.setAlign("center");
 		hbox2.setWidth("26px");
@@ -460,7 +461,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 		image.setStyle("font-size:9px");
 		hbox2.appendChild(image);
 		hbox.appendChild(hbox2);
-		
+
 		hbox2 = new Hbox();
 		hbox2.setAlign("center");
 		hbox2.setWidth("100px");
@@ -468,16 +469,23 @@ public class WndMapaBus extends WndBase implements Serializable {
 		label.setStyle("font-size:9px");
 		hbox2.appendChild(label);
 		hbox.appendChild(hbox2);
-		
+
 		row.appendChild(hbox);
 		rows.appendChild(row);
 		grid.appendChild(rows);
 		groupbox.appendChild(grid);
-		vlayout.appendChild(groupbox);
-		
+		hlayout.appendChild(groupbox);
+
 		Separator separator = new Separator();
-		vlayout.appendChild(separator);
-		
+		hlayout.appendChild(separator);
+
+		Vlayout vlayout = new Vlayout();
+		groupbox = new Groupbox();
+		groupbox.setMold("3d");
+		groupbox.setClosable(false);
+		caption = new Caption("OCUPABILIDAD DEL SERVICIO");
+		caption.setStyle("color: #ffffff;");
+		groupbox.appendChild(caption);		
 		grdOcupabilidad = new Grid();
 		grdOcupabilidad.setWidth("292px");
 		grdOcupabilidad.setStyle("padding:0px");
@@ -497,8 +505,9 @@ public class WndMapaBus extends WndBase implements Serializable {
 		grdOcupabilidad.appendChild(columns);
 		rows = new Rows();
 		grdOcupabilidad.appendChild(rows);
-		vlayout.appendChild(grdOcupabilidad);
-		
+		groupbox.appendChild(grdOcupabilidad);
+		vlayout.appendChild(groupbox);
+
 		Hlayout hlayout1 = new Hlayout();
 		label = new Label("Asiento Seleccionado :");
 		hlayout1.appendChild(label);
@@ -513,7 +522,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 		txtPiso.setVisible(false);
 		hlayout1.appendChild(txtPiso);
 		vlayout.appendChild(hlayout1);
-		
+
 		grid = new Grid();
 		grid.setWidth("290px");
 		grid.setStyle("border:none");
@@ -550,77 +559,95 @@ public class WndMapaBus extends WndBase implements Serializable {
 		rows.appendChild(row);
 		grid.appendChild(rows);
 		vlayout.appendChild(grid);
-		
 		hlayout.appendChild(vlayout);
-		divContenedorBus.appendChild(hlayout);
-		
+
+		hLayoutPrincipal.appendChild(hlayout);
+		divContenedorBus.appendChild(hLayoutPrincipal);
+
 		oThisWindow.appendChild(divContenedorBus);
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	public void crearEstructura(VentaPasaje ventaPasaje){
 		try{
 			Servicio servicio = null;
-			List<MapaBus> lstMapaBus = ServiceLocator.getMapaBusManager().buscarMapaBus(ventaPasaje.getServicio().getId(), Constantes.VALUE_ACTIVO);
-			
-			Map<Coordenada, MapaBus> mapCoordenadas = new HashMap<Coordenada, MapaBus>();
+			List<MapaBus> lstMapaBus = ServiceLocator.getMapaBusManager().buscarMapaBusHorizontal(ventaPasaje.getServicio().getId(), Constantes.VALUE_ACTIVO);
+
+			Map<Coordenada, MapaBus> mapCoordenadas = new HashMap<>();
 			for(MapaBus mapaBus : lstMapaBus){
 				Coordenada coordenada = new Coordenada(mapaBus.getNumeroFila(), mapaBus.getNumeroColumna(), mapaBus.getNumeroPiso());
 				mapCoordenadas.put(coordenada, mapaBus);
 			}
-			
+
 			if(lstMapaBus.size()>0)
 				servicio = lstMapaBus.get(0).getServicio();
-			
+
 			int nPisos = servicio.getNumeroPisos();
 			int nFilas = servicio.getNumeroFilasPiso1();
 			int nColumnas = servicio.getNumeroColumnasPiso1();
 			prefijoAsiento = "imgAsientoPiso1_";
-			Integer numeroAsiento = 0;
-			
+			int numeroAsiento = 0;
+
 			inicializarEstructura();
-			
-			Image imagen = generarImagen(IMAGE_PRIMER_PISO, 154, 43);
-			
-			mapaAsientos = new HashMap<String, Asiento>();
-			
+
+//			Image imagen = generarImagen(IMAGE_PRIMER_PISO, 154, 43);
+			Image imagen = generarImagen(IMAGE_PRIMER_PISO, 43, 170);
+
+			mapaAsientos = new HashMap<>();
+			Hlayout ohlayout = new Hlayout();
+
+			/*	Recorremos la cantidad de pisos del servicio	*/
 			for(int i=0; i<nPisos; i++){
 				String idGrid = "grdPiso1";
+				String idTam = (nPisos == 2 ? "130px" : "500px");
+				/*	Si cambiamos al siguiente piso redefinimos los valores de las variables	*/
 				if(i==1){
 					nFilas = servicio.getNumeroFilasPiso2();
 					nColumnas = servicio.getNumeroColumnasPiso2();
 					prefijoAsiento = "imgAsientoPiso2_";
-					imagen = generarImagen(IMAGE_SEGUNDO_PISO, 154, 34);
 					idGrid = "grdPiso2";
+					idTam = "450px";
+//					imagen = generarImagen(IMAGE_SEGUNDO_PISO, 154, 34);
+					imagen = generarImagen(IMAGE_SEGUNDO_PISO, 34, 170);
 				}
+				ohlayout.appendChild(imagen);
+				/*	Creando la grilla contenedora de asientos	*/
 				Grid gridPiso = new Grid();
 				gridPiso.setId(idGrid);
 				gridPiso.setStyle("border:none;background:white");
-				gridPiso.setWidth("154px");
+				//gridPiso.setWidth("154px");
+				gridPiso.setWidth(idTam);
+				gridPiso.setHeight("170px");
 				Rows rows = new Rows();
 				Row row = new Row();
-				row.setSpans(String.valueOf(nColumnas));
-				row.appendChild(imagen);
-				row.setStyle("background:white; padding:0px");
-				rows.appendChild(row);
+//				row.setSpans(String.valueOf(nColumnas));
+//				row.appendChild(imagen);
+//				row.setStyle("background:white; padding:0px");
+//				rows.appendChild(row);
 				numeroAsiento = 0;
+				/*	Recorremos la cantidad de filas	*/
 				for(int j=0; j<nFilas; j++){
 					row = new Row();
+					/*	Recorremos la cantidad de columnas	*/
 					for(int k=0; k<nColumnas; k++){
 						Div oDiv = new Div();
 						oDiv.setWidth("28px");
 						oDiv.setHeight("28px");
 						oDiv.setStyle("padding:none");
-						
+
+						/*	Definimos la coordenada actual	*/
 						String coordenadaActual = j+"-"+k+"-"+i;
-						
+
+						/*	Iteramos el mapa de coordenadas creado al inicio y comparamos	*/
 						for(Coordenada coordenada : mapCoordenadas.keySet()){
 							if(coordenada.toString().equals(coordenadaActual)){
+								/*	Obtenemos el objeto y empezamos a setear las imagenes	*/
 								MapaBus objetoBus = mapCoordenadas.get(coordenada);
-								
-								HashMap<String, String> propiedades = new HashMap<String, String>();
+
+								HashMap<String, String> propiedades = new HashMap<>();
 								numeroAsiento++;
 								
+								/*	Verificamos que el objeto sea del tipo Asiento	*/
 								if(objetoBus.getTipoObjeto().intValue()==TIPO_ASIENTO){
 									Asiento asiento = new Asiento();
 									asiento.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
@@ -679,19 +706,20 @@ public class WndMapaBus extends WndBase implements Serializable {
 							}
 						}
 						row.appendChild(oDiv);
-						row.setStyle("padding-top:2px; padding-left:3px; padding-right:0px; border:normal !important; background:#99D9EA");// background:#eeeeee");
+						row.setStyle("padding-top:2px; padding-left:3px; padding-right:0px; border:normal !important; background:#EEEEEE");// background:#99D9EA");
 					}
 					rows.appendChild(row);
 				}
 				gridPiso.appendChild(rows);
-				vbxEstructuraBus.appendChild(gridPiso);
+				ohlayout.appendChild(gridPiso);
+				vbxEstructuraBus.appendChild(ohlayout);
 				onRefreshMapaAsientos(mapaAsientos, getDetalleItinerario());
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Inicializa(limpia los objetos existentes) el contenedor de los asientos.
 	 */
@@ -701,7 +729,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 			vbxEstructuraBus.removeChild(component);
 		}
 	}
-	
+
 	/**
 	 * Genera el objeto imagen para los pisos del bus
 	 * @param src		: Path de la imagen a mostrar.
@@ -716,7 +744,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 		imagen.setHeight(String.valueOf(height)+"px");
 		return imagen;
 	}
-	
+
 	/**
 	 * Evento utilizado cuando el usuario hace click en un asiento.
 	 * @param e				: Evento
@@ -728,7 +756,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 		Asiento asientoSeleccionado = (Asiento)e.getTarget();
 		previousKey = key;
 		key = asientoSeleccionado.getKey();
-		
+
 		/*	Elimina el asiento de la lista de asientos seleccionados y desbloquea el asiento*/
 		if(removerAsientoSeleccionado(previousKey, key)){
 			txtAsiento.setText("");
@@ -764,7 +792,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 				tmpOcupacionAsientos.setTmpOcupacionAsientosID(tmpOcupacionAsientosID);
 				txtAsiento.setText(asientoSeleccionado.getNumeroAsiento().toString());
 				txtPiso.setText(String.valueOf(asientoSeleccionado.getPiso()));
-				
+
 				int result = ServiceLocator.getTmpOcupacionAsientosManager().bloquearAsiento(tmpOcupacionAsientos);
 				if(result < 0){
 					DlgMessage.information(Messages.getString("WndVentaReserva.information.asientoBloqueado"));
@@ -773,16 +801,16 @@ public class WndMapaBus extends WndBase implements Serializable {
 				}else{
 					mapaAsientos.get(key).setSrc(Constantes.PATH_PARTIAL+"asientoBloqueado_"+asientoSeleccionado.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
 					mapaAsientos.get(key).setEstadoAsiento(Constantes.ASIENTO_BLOQUEADO);
-					
-//					//MAOE: La idea es que cada asiento seleccionado tenga su tarifa de acuerdo al nuevo modelo 
+
+//					//MAOE: La idea es que cada asiento seleccionado tenga su tarifa de acuerdo al nuevo modelo
 //					//Obtener la tarifa regular del asiento y almacenarlo en DetalleItinerario del asientoSeleccionado
 					asientoSeleccionado.setDetalleItinerario(ventaPasaje.getDetalleItinerario());
-					
+
 					List<TarifaRegular> lstTarifaRegular = ServiceLocator.getTarifaRegularManager().buscarTarifaPorServicio(
-							1, ventaPasaje.getServicio().getId(), 
+							1, ventaPasaje.getServicio().getId(),
 							ventaPasaje.getRuta().getId(),
 							Util.DatetoString(ventaPasaje.getFechaPartida(), Constantes.DATE_FORMAT),
-							ventaPasaje.getHoraPartida(), 
+							ventaPasaje.getHoraPartida(),
 							asientoSeleccionado.getPiso(),
 							asientoSeleccionado.getNumeroZona());
 //					if(lstTarifaRegular.size()>0)
@@ -791,11 +819,11 @@ public class WndMapaBus extends WndBase implements Serializable {
 //																			 :0.00);
 //					else
 //						asientoSeleccionado.getDetalleItinerario().setTarifa(0.00);
-					if(lstTarifaRegular.size()>0) 
+					if(lstTarifaRegular.size()>0)
 						asientoSeleccionado.getDetalleItinerario().setTarifa(lstTarifaRegular.get(0).getMonto()!=null?lstTarifaRegular.get(0).getMonto() :0.00);
-					else 
+					else
 						asientoSeleccionado.getDetalleItinerario().setTarifa(0.00);
-					
+
 					setAsientoSeleccionado(asientoSeleccionado);
 					/*	Esto es para desbloquear el asiento en caso seleccione otro asiento sin haber cerrado la ventana del mapa	*/
 					if(!previousKey.equals("-1") && !previousKey.equals(key)){
@@ -835,7 +863,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Realiza la eliminacion del asiento seleccionado y luego lo desbloquea.
 	 * @param seatSelected	: Asiento seleccionado.
@@ -844,11 +872,11 @@ public class WndMapaBus extends WndBase implements Serializable {
 	private boolean removerAsientoSeleccionado(String previusKey, String key){
 		try{
 			String[] buffer = key.split("-");	//Almacenamos en un array el asiento y el piso
-			if(previusKey.equals(key)){		
+			if(previusKey.equals(key)){
 				if(mapaAsientos.get(key).getEstadoAsiento().intValue()==Constantes.ASIENTO_BLOQUEADO){
 					mapaAsientos.get(key).setEstadoAsiento(Constantes.ASIENTO_DISPONIBLE);
 					mapaAsientos.get(key).setSrc(Constantes.ICON_DISPONIBLE+buffer[0]+Constantes.IMAGE_EXTENSION);
-					
+
 					TmpOcupacionAsientos tmpOcupacion = new TmpOcupacionAsientos();
 					tmpOcupacion.setRuta(ventaPasaje.getRuta());
 					tmpOcupacion.setItinerario(ventaPasaje.getItinerario());
@@ -857,14 +885,14 @@ public class WndMapaBus extends WndBase implements Serializable {
 					ServiceLocator.getTmpOcupacionAsientosManager().desbloquearAsiento(tmpOcupacion);
 					return true;
 				}else
-					return false;				
+					return false;
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Consulta si el asiento esta bloqueado.
 	 * @param key	: Clave a buscar en el mapa de asientos.
@@ -875,15 +903,15 @@ public class WndMapaBus extends WndBase implements Serializable {
 			return false;
 		return true;
 	}
-	
+
 	/**
 	 * Realiza el refresco del mapa del bus.
 	 * @throws Exception
 	 */
 	public void onRefreshMap() throws Exception{
-		onRefreshMapaAsientos(mapaAsientos, detalleItinerario);		
+		onRefreshMapaAsientos(mapaAsientos, detalleItinerario);
 	}
-	
+
 	/**
 	 * Realiza el refresco del mapa del bus.
 	 * @param mapa				: Mapa de asientos
@@ -894,11 +922,11 @@ public class WndMapaBus extends WndBase implements Serializable {
 		try{
 			/*Busca configuracion para la validacion de la venta adelantada - 09/02/2015 (jabanto)*/
 			VentaTramo ventaTramo=ServiceLocator.getVentaTramoManager().buscarPorItinerarioRuta(detalleItinerario.getItinerario(), detalleItinerario.getRuta());
-			
+
 			onCleanMap(mapaAsientos);
 			/*	Obtenemos el subconjunto que queremos buscar segun la ruta seleccioanda		*/
 			List<Integer> subConjuntoBuscar = obtenerSubconjunto(detalleItinerario.getItinerario().getListSecuenciaTramo(), detalleItinerario.getRuta().getLocalidadOrigen().getId(), detalleItinerario.getRuta().getLocalidadDestino().getId());
-			
+
 			int nOcupados = 0;
 			List<VentaPasaje> lstVentas = ServiceLocator.getVentaPasajesManager().buscarVentasForMapaBus(detalleItinerario.getItinerario().getId());
 			lstVentas = obtenerConjuntos(lstVentas, detalleItinerario.getItinerario().getListSecuenciaTramo());
@@ -950,8 +978,8 @@ public class WndMapaBus extends WndBase implements Serializable {
 					/*	Para identificar las prioridades del tramo para la venta	*/
 					if(venta.getRuta().getLocalidadDestino().getId()==detalleItinerario.getRuta().getLocalidadOrigen().getId()){
 						Asiento asiento = mapaAsientos.get(key);
-						asiento.setSrc(Constantes.ICON_SEMI_OCUPADO+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);								
-					}else 
+						asiento.setSrc(Constantes.ICON_SEMI_OCUPADO+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
+					}else
 						//Valida si la ruta esta configurada para la validacion de la venta adelantada - 09/02/2015 (jabanto)
 						if(ventaTramo!=null && ventaTramo.getDespuesHoraSalida().intValue()==Constantes.FALSE_VALUE){
 							//Valida si el destino de la ruta es igual al origen de la ruta vendida y si el asiento esta disponible  - 04/02/2015 (jabanto)
@@ -964,8 +992,8 @@ public class WndMapaBus extends WndBase implements Serializable {
 						}
 					}
 				}
-			}			
-			
+			}
+
 			/*	BUSCAMOS LOS ASIENTOS QUE ESTEN BLOQUEADOS PARA EL ITINERARIO SELECCIONADO	*/
 			List<TmpOcupacionAsientos> lstBloqueados = ServiceLocator.getTmpOcupacionAsientosManager().buscarAsientosBloqueados(detalleItinerario.getItinerario().getId());
 			lstBloqueados = obtenerConjuntos(lstBloqueados, detalleItinerario.getItinerario().getListSecuenciaTramo());
@@ -982,7 +1010,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 					}
 				}
 			}
-			
+
 			//Valida si la ruta esta configurada para la validacion de la venta adelantada - 09/02/2015 (jabanto)
 			if(ventaTramo!=null && ventaTramo.getDespuesHoraSalida().intValue()==Constantes.FALSE_VALUE){
 				for(Entry<?,?> e : mapaAsientos.entrySet()) {
@@ -997,14 +1025,14 @@ public class WndMapaBus extends WndBase implements Serializable {
 					}
 				}
 			}
-			
+
 			mostrarOcupabilidad(nOcupados, ventaPasaje.getServicio(), ventaPasaje.getRuta());
 		}catch(Exception ex){
 			ex.printStackTrace();
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Realiza la limpieza del mapa del bus
 	 */
@@ -1016,10 +1044,10 @@ public class WndMapaBus extends WndBase implements Serializable {
 			asiento.setTooltiptext("DISPONIBLE");
 		}
 	}
-	
+
 	private void mostrarOcupabilidad(Integer nOcupados, Servicio servicio, Ruta ruta){
 		grdOcupabilidad.getRows().detach();
-		Rows rows = new Rows();		
+		Rows rows = new Rows();
 		Row row = new Row();
 		Label label = new Label(ruta.toString());
 		row.appendChild(label);
@@ -1030,7 +1058,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 		rows.appendChild(row);
 		grdOcupabilidad.appendChild(rows);
 	}
-	
+
 	/**
 	 * Obtiene los subconjuntos de una lista de ventas, tmpOcupacion.
 	 * @param lista			: Lista de registros de los cuales queremos obtener los subconjuntos.
@@ -1056,16 +1084,16 @@ public class WndMapaBus extends WndBase implements Serializable {
 		}
 		return result;
 	}
-	
+
 	/**
-	 * Obtine los subconjuntos de un registro de venta, tmpocupacion o de la ruta que estamos buscando. 
+	 * Obtine los subconjuntos de un registro de venta, tmpocupacion o de la ruta que estamos buscando.
 	 * @param lstSecuencias	: Lista de secuencia segun el itinerario.
 	 * @param idOrigen		: Identificador del origen.
 	 * @param idDestino		: Identificador del destino.
 	 * @return
 	 */
 	private List<Integer> obtenerSubconjunto(List<SecuenciaTramo> lstSecuencias, Integer idOrigen, Integer idDestino){
-		List<Integer> lstSubconjunto = new ArrayList<Integer>();
+		List<Integer> lstSubconjunto = new ArrayList<>();
 		/*	Recorremos la secuencia de tramos del itinerario	*/
 		for(int j=0; j<lstSecuencias.size(); j++){
 			SecuenciaTramo secuencia = lstSecuencias.get(j);
@@ -1084,7 +1112,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 		}
 		return lstSubconjunto;
 	}
-	
+
 	@Override
 	public boolean addEventListener(String evtnm, EventListener<? extends Event> listener) {
 		boolean resultadoEvento = true;
@@ -1095,7 +1123,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 		}
 		return resultadoEvento;
 	}
-	
+
 //	public void onAceptar(){
 //		if(!txtAsiento.getText().trim().equals("")){
 //			txtAsientoSeleccionado.setText(txtAsiento.getText());

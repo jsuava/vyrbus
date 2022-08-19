@@ -25,7 +25,7 @@ import com.cystesoft.vyrbus.view.ui.WndFiltrarParametros;
 import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
@@ -38,20 +38,20 @@ public class WndTipoGasto extends WndOpcionesMantenimiento {
 	private Textbox txtMaskFormato;
 	private Radio rbGasto;
 	private Radio rbIngreso;
-	
+
 	private TipoGasto tipoGasto=null;
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
-	
-	
+
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IBase#onCreate()
 	 */
 	@Override
 	public void onCreate() throws Exception {
-		criteriosOrdenar = new ArrayList<String>();
-		criteriosOrdenar.add("denominacion");	
+		criteriosOrdenar = new ArrayList<>();
+		criteriosOrdenar.add("denominacion");
 		rbGasto.setChecked(true);
 	}
 
@@ -67,15 +67,15 @@ public class WndTipoGasto extends WndOpcionesMantenimiento {
 		rbGasto = (Radio)this.getFellow("rbGasto");
 		rbIngreso = (Radio)this.getFellow("rbIngreso");
 	}
-	
-	
+
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onNew()
 	 */
 	@Override
 	public void onNew() throws Exception {
-		
+
 		rbGasto.setChecked(true);
 	}
 
@@ -85,7 +85,7 @@ public class WndTipoGasto extends WndOpcionesMantenimiento {
 	 */
 	@Override
 	public void onSearch() throws Exception {
-		 criteriosBusqueda = new TreeMap<String, Object>();
+		 criteriosBusqueda = new TreeMap<>();
 		final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
 
 		oWndFiltrar.addParameter("Denominación", String.class);
@@ -104,7 +104,7 @@ public class WndTipoGasto extends WndOpcionesMantenimiento {
 				if(denominacion.trim().equals("")){
 					criteriosBusqueda.remove("denominacion");
 				}else{criteriosBusqueda.put("denominacion", "%" + denominacion + "%");}
-				
+
 				if (nombreCorto.trim().equals("")){
 					criteriosBusqueda.remove("nombreCorto");
 				}else{criteriosBusqueda.put("nombreCorto", nombreCorto);}
@@ -113,7 +113,7 @@ public class WndTipoGasto extends WndOpcionesMantenimiento {
 				listarRegistros(ServiceLocator.getTipoGastoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 			}
 		});
-		
+
 	}
 
 	/*
@@ -123,9 +123,9 @@ public class WndTipoGasto extends WndOpcionesMantenimiento {
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getTipoGastoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getTipoGastoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
-		
+
 	}
 
 	/*
@@ -137,7 +137,7 @@ public class WndTipoGasto extends WndOpcionesMantenimiento {
 		Long id = new Long(0);
 		id = new Long((String) listboxLista.getSelectedItem().getValue());
 		this.mantenimientoRegistro(id);
-		
+
 	}
 
 	/*
@@ -147,7 +147,7 @@ public class WndTipoGasto extends WndOpcionesMantenimiento {
 	@Override
 	public void onCancel(int action) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/*
@@ -159,37 +159,37 @@ public class WndTipoGasto extends WndOpcionesMantenimiento {
 		try{
 			if (txtDenominacion.getText().trim() == "" )
 				throw new DenominacionNullException();
-			
+
 			if (action==ACTION_NEW){
 				tipoGasto= new TipoGasto();
 				tipoGasto.setId(null);
 			}else{
 				tipoGasto.setId(new Integer(textboxId.getText()));
 			}
-			
+
 			tipoGasto.setDenominacion(txtDenominacion.getText().trim().toUpperCase());
 			tipoGasto.setNombreCorto(txtNombreCorto.getText().trim().toUpperCase());
 			tipoGasto.setMascara(txtMaskFormato.getText().trim().toUpperCase());
 			tipoGasto.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 			tipoGasto.setTipoOperacion(rbGasto.isChecked()?Constantes.FALSE_VALUE:Constantes.TRUE_VALUE);
-			
+
 			switch (action) {
 				case ACTION_NEW:
 					UtilData.auditarRegistro(tipoGasto, getUsuario(), Executions.getCurrent());
 					ServiceLocator.getTipoGastoManager().guardar(tipoGasto);
 					textboxId.setText(tipoGasto.getId().toString());
 					break;
-		
+
 				case ACTION_MODIFY:
 					UtilData.auditarRegistro(tipoGasto, true, getUsuario(), Executions.getCurrent());
 					ServiceLocator.getTipoGastoManager().actualizar(tipoGasto);
 					break;
 			}
 			/*Recupera el registro actualizado o el Nuevo*/
-			criteriosBusqueda = new TreeMap<String, Object>();
+			criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("id", tipoGasto.getId());
 			listarRegistros(ServiceLocator.getTipoGastoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-			
+
 		}catch (DenominacionNullException dnex){
 			DlgMessage.information(Messages.getString("Generales.information.noIngresoDenominacion"),txtDenominacion);
 			throw new CancelaGrabacionException();
@@ -203,8 +203,8 @@ public class WndTipoGasto extends WndOpcionesMantenimiento {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace(); throw new CancelaGrabacionException();
 		}
-		
-		
+
+
 	}
 
 	/*
@@ -226,7 +226,7 @@ public class WndTipoGasto extends WndOpcionesMantenimiento {
 		}
 
 		ServiceLocator.getTipoGastoManager().inactivar(id);
-		
+
 	}
 
 	/*
@@ -236,7 +236,7 @@ public class WndTipoGasto extends WndOpcionesMantenimiento {
 	@Override
 	public void onPrint(int tab) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/*
@@ -246,7 +246,7 @@ public class WndTipoGasto extends WndOpcionesMantenimiento {
 	@Override
 	public void onExport(int tab) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/*
@@ -256,7 +256,7 @@ public class WndTipoGasto extends WndOpcionesMantenimiento {
 	@Override
 	public void onHelp() throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/*
@@ -285,13 +285,13 @@ public class WndTipoGasto extends WndOpcionesMantenimiento {
 	public void onClose() {
 		closeTabWindow();
 	}
-	
+
 	private void listarRegistros(ArrayList<TipoGasto> lstRegistros) {
-		ArrayList<Object> lstTipoGasto = new ArrayList<Object>();
+		ArrayList<Object> lstTipoGasto = new ArrayList<>();
 
 		for(int r = 0; r < lstRegistros.size(); r ++) {
 			TipoGasto oTipoGasto = lstRegistros.get(r);
-			ArrayList<Object> lstFila = new ArrayList<Object>();
+			ArrayList<Object> lstFila = new ArrayList<>();
 
 			lstFila.add(oTipoGasto.getId());
 			lstFila.add(r + 1);
@@ -305,7 +305,7 @@ public class WndTipoGasto extends WndOpcionesMantenimiento {
 
 		Util.llenarListbox(listboxLista, lstTipoGasto, true);
 	}
-	
+
 	private void mantenimientoRegistro(Long id) throws Exception {
 		tipoGasto = new TipoGasto();
 		tipoGasto = ServiceLocator.getTipoGastoManager().buscarPorId(id);
@@ -319,5 +319,5 @@ public class WndTipoGasto extends WndOpcionesMantenimiento {
 		txtNombreCorto.setText(tipoGasto.getNombreCorto());
 		txtMaskFormato.setText(tipoGasto.getMascara());
 	}
-	
+
 }

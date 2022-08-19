@@ -14,16 +14,16 @@ import com.cystesoft.vyrbus.service.util.Constantes;
 
 public class ProgramacionServicioManagerImpl implements ProgramacionServicioManager {
 	private ProgramacionServicioDAO programacionServicioDAO;
-	
+
 	public ProgramacionServicioDAO getProgramacionServiciosDAO(){
 		return programacionServicioDAO;
 	}
-	
+
 	public void setProgramacionServicioDAO(ProgramacionServicioDAO programacionServicioDAO) {
 		this.programacionServicioDAO = programacionServicioDAO;
 	}
-	
-	
+
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.ProgramacionServicioManager#guardar(com.tepsa.sisvyr.model.bean.ProgramacionServicio)
@@ -33,15 +33,15 @@ public class ProgramacionServicioManagerImpl implements ProgramacionServicioMana
 	public int guardar(ProgramacionServicio programacionServicio)throws Exception {
 		int result = Constantes.FAILURE;
 		try{
-			TreeMap<String, Object>criteriosBusqueda=new TreeMap<String,Object>();
+			TreeMap<String, Object>criteriosBusqueda=new TreeMap<>();
 			criteriosBusqueda.put("itinerario", programacionServicio.getItinerario());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<ProgramacionServicio>lstProgramacion=getProgramacionServiciosDAO().buscarPorX(criteriosBusqueda, null);
 			if(lstProgramacion.size()>0)
 				throw new DuplicateSeatException();
-			
+
 			getProgramacionServiciosDAO().save(programacionServicio);
-			
+
 			result = Constantes.CORRECT;
 		}catch(Exception ex){
 			throw new Exception(ex);
@@ -57,13 +57,13 @@ public class ProgramacionServicioManagerImpl implements ProgramacionServicioMana
 	@Transactional
 	public void actualizar(ProgramacionServicio programacionServicio)throws Exception {
 		getProgramacionServiciosDAO().update(programacionServicio);
-		
+
 	}
 
 	@Override
 	@Transactional
 	public void inactivar(Long id) throws Exception {
-		getProgramacionServiciosDAO().inactivar(id);		
+		getProgramacionServiciosDAO().inactivar(id);
 	}
 
 	/*
@@ -97,7 +97,7 @@ public class ProgramacionServicioManagerImpl implements ProgramacionServicioMana
 	@Override
 	public void updateItinerarioBus(Long idItinerario, Long idBus) throws Exception {
 		getProgramacionServiciosDAO().updateItinerarioBus(idItinerario, idBus);
-		
+
 	}
 
 	/*
@@ -109,7 +109,7 @@ public class ProgramacionServicioManagerImpl implements ProgramacionServicioMana
 		return getProgramacionServiciosDAO().validaIngresoChoferTripulante(fecha, idPiloto, idCopiloto, idTripulante,horaPartida,idAgenciaPartida);
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.ProgramacionServicioManager#buscarProgracion(java.lang.Integer, java.lang.String, java.lang.String, java.lang.Boolean)
 	 */
@@ -126,6 +126,6 @@ public class ProgramacionServicioManagerImpl implements ProgramacionServicioMana
 		// TODO Auto-generated method stub
 		return getProgramacionServiciosDAO().buscarPorId(id);
 	}
-	
+
 
 }

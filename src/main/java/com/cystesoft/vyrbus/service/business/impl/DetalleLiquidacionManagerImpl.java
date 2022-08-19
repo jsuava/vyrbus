@@ -9,18 +9,18 @@ import com.cystesoft.vyrbus.model.dao.DetalleLiquidacionDAO;
 import com.cystesoft.vyrbus.service.business.DetalleLiquidacionManager;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 public class DetalleLiquidacionManagerImpl implements DetalleLiquidacionManager {
 	private DetalleLiquidacionDAO  detalleLiquidacionDAO;
-	
-	
+
+
 	public DetalleLiquidacionDAO getDetalleLiquidacionDAO (){
 		return detalleLiquidacionDAO;
 	}
-	
+
 	public void setDetalleLiquidacionDAO (DetalleLiquidacionDAO detalleLiquidacionDAO){
 		this.detalleLiquidacionDAO=detalleLiquidacionDAO;
 	}
@@ -52,7 +52,7 @@ public class DetalleLiquidacionManagerImpl implements DetalleLiquidacionManager 
 	@Override
 	public void delete(Long id) {
 		getDetalleLiquidacionDAO().delete(id);
-		
+
 	}
 
 	/*
@@ -71,7 +71,7 @@ public class DetalleLiquidacionManagerImpl implements DetalleLiquidacionManager 
 	@Override
 	public void actualizaIdLiquidacionVentasLiquidadas(Long idLiquidacion, String fechaLiquidacion, Integer idAgencia,Integer idUsuario) {
 		getDetalleLiquidacionDAO().actualizaIdLiquidacionVentasLiquidadas(idLiquidacion, fechaLiquidacion, idAgencia, idUsuario);
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -83,6 +83,6 @@ public class DetalleLiquidacionManagerImpl implements DetalleLiquidacionManager 
 		getDetalleLiquidacionDAO().deleteXidLiquidacion(idLiquidacion);
 	}
 
-	
+
 
 }

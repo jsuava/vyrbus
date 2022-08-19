@@ -4,7 +4,7 @@ import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.util.text.BasicTextEncryptor;
 
 public class Encriptar {
-	
+
 	public static void main(String[] args) {
 		String clave = decodifica("NLlcLPcHXTXiEXWNWO27Mg==","javalos");
 //		String codifica = codifica("mto2008","tepsa");
@@ -43,14 +43,14 @@ public class Encriptar {
 			textEncryptor.setPassword(key);
 			Text = textEncryptor.decrypt(password);
 //			ejemplo();
-			
+
 		}catch (Exception ex) {
 			ex.printStackTrace();
 //			throw new Exception(ex);
 		}
 		return Text;
 	}
-	
+
 	static public String decodificaByAlgorithm(String password, String key)throws Exception {
 		try {
 			StandardPBEStringEncryptor textEncryptor = new StandardPBEStringEncryptor();
@@ -62,7 +62,7 @@ public class Encriptar {
 			throw new Exception(ex);
 		}
 	}
-	
+
 	static public void ejemplo(){
 		String login = "javalos";
 		String pwd = "NLlcLPcHXTXiEXWNWO27Mg==";
@@ -73,6 +73,6 @@ public class Encriptar {
 			ex.printStackTrace();
 		}
 	}
-	
-	
+
+
 }

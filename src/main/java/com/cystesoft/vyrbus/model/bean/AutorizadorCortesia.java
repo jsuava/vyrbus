@@ -4,34 +4,34 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 public class AutorizadorCortesia extends GenericBean implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer id;
 	private Personal personal;
-	private MotivoCortesia motivoCortesia; 
+	private MotivoCortesia motivoCortesia;
 	private String password;
 	private List<MotivoCortesia> listaMotivoCortesia;
-	
-	
+
+
 	public void setId(Integer id){
 		this.id=id;
 	}
 	public Integer getId(){
 		return this.id;
 	}
-	
+
 	public void setPersonal(Personal personal){
 		this.personal=personal;
 	}
 	public Personal getPersonal(){
 		return this.personal;
 	}
-	
+
 	public void setMotivoCortesia(MotivoCortesia  motivoCortesia){
 		this.motivoCortesia=motivoCortesia;
 	}

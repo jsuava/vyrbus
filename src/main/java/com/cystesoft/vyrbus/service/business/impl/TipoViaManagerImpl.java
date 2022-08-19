@@ -26,7 +26,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class TipoViaManagerImpl implements TipoViaManager {
 	private TipoViaDAO tipoViaDAO;
-	
+
 	/**
 	 * @return the tipoViaDAO
 	 */
@@ -74,23 +74,23 @@ public class TipoViaManagerImpl implements TipoViaManager {
 	@Transactional
 	public void guardar(TipoVia tipoVia) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", tipoVia.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getTipoViaDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la denominación*/
 			if(resultDenominacion.size()>0)
 				throw new DenominacionDuplicadaException();
-			
+
 			criteriosBusqueda.remove("denominacion");
 			criteriosBusqueda.put("abreviatura", tipoVia.getAbreviatura());
 			List<?> resultNombreCorto = getTipoViaDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Nombre corto*/
 			if (resultNombreCorto.size()>0)
 				throw new NombreCortoDuplicadoException();
-			
+
 			getTipoViaDAO().guardar(tipoVia);
-			
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(NombreCortoDuplicadoException rdnex){
@@ -107,29 +107,29 @@ public class TipoViaManagerImpl implements TipoViaManager {
 	@Transactional
 	public void actualizar(TipoVia tipoVia) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", tipoVia.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getTipoViaDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la denominación*/
-			for(int r = 0; r < resultDenominacion.size(); r ++) {
-				TipoVia otipoVia = (TipoVia) resultDenominacion.get(r);
+			for (Object element : resultDenominacion) {
+				TipoVia otipoVia = (TipoVia) element;
 					if (!(otipoVia.getId() == tipoVia.getId()))
 						throw new DenominacionDuplicadaException();
 				}
-			
+
 			criteriosBusqueda.remove("denominacion");
 			criteriosBusqueda.put("abreviatura", tipoVia.getAbreviatura());
 			List<?> resultnombreCorto = getTipoViaDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Nombre corto*/
-			for(int r = 0; r < resultnombreCorto.size(); r ++) {
-				TipoVia otipovia= (TipoVia) resultnombreCorto.get(r);
+			for (Object element : resultnombreCorto) {
+				TipoVia otipovia= (TipoVia) element;
 					if (!(otipovia.getId() == tipoVia.getId()))
 						throw new NombreCortoDuplicadoException();
-				}		
-		
+				}
+
 			getTipoViaDAO().actualizar(tipoVia);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(NombreCortoDuplicadoException rdnex){

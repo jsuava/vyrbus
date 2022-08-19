@@ -26,7 +26,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class EspecieValoradaManagerImpl implements EspecieValoradaManager {
 	private EspecieValoradaDAO especieValoradaDAO;
-	
+
 	/**
 	 * @return the especieValoradaDAO
 	 */
@@ -75,7 +75,7 @@ public class EspecieValoradaManagerImpl implements EspecieValoradaManager {
 	public void guardar(EspecieValorada especieValorada) throws Exception {
 		getEspecieValoradaDAO().guardar(especieValorada);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.EspecieValoradaManager#actualizar(com.tepsa.sisvyr.model.bean.EspecieValorada)
 	 */
@@ -83,19 +83,19 @@ public class EspecieValoradaManagerImpl implements EspecieValoradaManager {
 	@Transactional
 	public void actualizar(EspecieValorada especieValorada) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("serie", especieValorada.getSerie());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-						
+
 			/*Valida duplicidad del numero se Seria(Solo es aplicable a registros activos)*/
 			if(especieValorada.getTipoComprobante().getId().equals(Constantes.ID_TIPCOM_RECIBO_CAJA))
 				criteriosBusqueda.put("agencia", especieValorada.getAgencia());
-			
+
 			List<?> result = ServiceLocator.getEspecieValoradaManager().buscarPorX(criteriosBusqueda, null);
-			
-			for(int r = 0; r < result.size(); r ++) {
+
+			for (Object element : result) {
 				EspecieValorada oespecieValorada= new EspecieValorada();
-				oespecieValorada=(EspecieValorada) result.get(r);
+				oespecieValorada=(EspecieValorada) element;
 				if(!(oespecieValorada.getId().equals(especieValorada.getId()))){
 					if(oespecieValorada.getTipoComprobante().getId().equals(Constantes.ID_TIPCOM_MANIFIESTO_PAX)){
 						throw new NumeroSerieDuplicadoException();
@@ -104,13 +104,13 @@ public class EspecieValoradaManagerImpl implements EspecieValoradaManager {
 					}
 				}
 			}
-			
+
 			getEspecieValoradaDAO().actualizar(especieValorada);
-			
+
 		}catch (NumeroSerieDuplicadoException nsdex) {
 			throw new NumeroSerieDuplicadoException();
 		}
-		
+
 	}
 
 	/* (non-Javadoc)

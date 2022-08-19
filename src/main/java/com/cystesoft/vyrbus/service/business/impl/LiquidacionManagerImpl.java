@@ -14,23 +14,23 @@ import com.cystesoft.vyrbus.service.mappers.ResumenComprobante;
 import com.cystesoft.vyrbus.view.tuentrada.LiquidacionTuentrada;
 
 /**
- * 
+ *
  * @author José Abanto
  *
  */
 public class LiquidacionManagerImpl implements LiquidacionManager {
 	private LiquidacionDAO liquidacionDAO;
-	
+
 	public LiquidacionDAO getLiquidacionDAO(){
 		return liquidacionDAO;
 	}
-	
-	
+
+
 	public void setLiquidacionDAO (LiquidacionDAO liquidacionDAO){
 		this.liquidacionDAO=liquidacionDAO;
 	}
-	
-	
+
+
 
 	/*
 	 * (non-Javadoc)
@@ -40,7 +40,7 @@ public class LiquidacionManagerImpl implements LiquidacionManager {
 	@Override
 	public void aperturarLiquidacion(Liquidacion liquidacion) {
 		getLiquidacionDAO().aperturarLiquidacion(liquidacion);
-		
+
 	}
 
 
@@ -61,7 +61,7 @@ public class LiquidacionManagerImpl implements LiquidacionManager {
 	public List<Liquidacion> buscarLiquidacion(String fechaInicial,String FechaFinal, Integer idAgencia, Integer idUsuario,Integer estadoLiquidacion) throws Exception {
 		return getLiquidacionDAO().buscarLiquidacion(fechaInicial, FechaFinal, idAgencia, idUsuario, estadoLiquidacion);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.LiquidacionManager#buscarUltimaLiquidacion(java.lang.Integer, java.lang.Integer, java.lang.Integer)
@@ -124,8 +124,8 @@ public class LiquidacionManagerImpl implements LiquidacionManager {
 	public Map<String, ResumenComprobante> buscarResumenComprobantes(String fechaLiquidacion, Integer idAgencia, Integer idUsuario) {
 		return getLiquidacionDAO().buscarResumenComprobantes(fechaLiquidacion, idAgencia, idUsuario);
 	}
-	
-	
+
+
 
 
 //	/* (non-Javadoc)

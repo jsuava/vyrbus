@@ -23,7 +23,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  *
  */
 public class CentroCostoManagerImpl implements CentroCostoManager {
-	private CentroCostoDAO centroCostoDAO;	
+	private CentroCostoDAO centroCostoDAO;
 
 	/**
 	 * @return the centroCostoDAO

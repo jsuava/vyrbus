@@ -47,7 +47,7 @@ import com.cystesoft.vyrbus.view.ui.WndIFrame;
 
 public class WndManifiestoMantenimiento extends WndBase{
 	private static final long serialVersionUID = 2468732545392804234L;
-	
+
 	private Datebox dbFechaInicio;
 	private Combobox cmbOrigen;
 	private Datebox dbFechaFin;
@@ -70,9 +70,9 @@ public class WndManifiestoMantenimiento extends WndBase{
 	private Button btnBuscar;
 	private Combobox cmbBus;
 	private Combobox cmbAgencia;
-	
+
 	private Iframe iFrame=new Iframe();
-	
+
 	@Override
 	public void initComponents() {
 		dbFechaInicio = (Datebox) this.getFellow("dbFechaInicio");
@@ -98,29 +98,29 @@ public class WndManifiestoMantenimiento extends WndBase{
 		cmbBus=(Combobox)this.getFellow("cmbBus");
 		cmbAgencia=(Combobox)this.getFellow("cmbAgencia");
 	}
-	
+
 	@Override
 	public void onCreate() throws Exception {
 		MyTime time = new MyTime();
-		
+
 		dbFechaInicio.setValue(Constantes.FORMAT_DATE.parse(time.dateServer()));
 		dbFechaFin.setValue(Constantes.FORMAT_DATE.parse(time.dateServer()));
-			
+
 		UtilData.cargarDataCombo(cmbOrigen, Localidad.class, true);
 		UtilData.cargarDataCombo(cmbDestino, Localidad.class, true);
 		UtilData.cargarDataCombo(cmbBus, Bus.class, true);
 		UtilData.cargarAgenciaXtipoAgencia(cmbAgencia, Constantes.ID_TIPAGE_TEPSA, true);
-				
+
 		/*Selecciona valores por defecto*/
 		Localidad localidad = new Localidad();
 		localidad.setId(getAgencia().getLocalidad().getId());
 		Util.seleccionarValorItemCombo(Localidad.class, cmbOrigen, localidad.getId());
 		cmbDestino.setSelectedIndex(0);
-		
+
 		/*Validacion por rol*/
-		List<Component>lstComponents=new ArrayList<Component>();
+		List<Component>lstComponents=new ArrayList<>();
 		lstComponents.add(cmbAgencia);
-		List<Rol>listRolesAcceeso=new ArrayList<Rol>();
+		List<Rol>listRolesAcceeso=new ArrayList<>();
 		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_SUPER_USUARIO));
 		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_LEGAL));
 		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_GERENCIA_COMERCIAL));
@@ -128,18 +128,18 @@ public class WndManifiestoMantenimiento extends WndBase{
 		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_ASISTENTE_ADMIN_COMERCIAL));
 		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_FLOTA));
 		accesoControlsByRol(lstComponents, listRolesAcceeso);
-		
+
 		if(cmbAgencia.isDisabled())
 			Util.seleccionarValorItemCombo(Agencia.class, cmbAgencia, getAgencia().getId());
 		else
 			cmbAgencia.setSelectedIndex(0);
-		
-		
+
+
 		/*Habilita/Desabilita segun la configuracion del rol del usuario*/
 		/*BUSCAR*/
 		btnBuscar.setDisabled(accesoConsultar()?false:true);
 	}
-	
+
 	/**
 	 * Anula Manifiesto
 	 */
@@ -155,10 +155,10 @@ public class WndManifiestoMantenimiento extends WndBase{
 			}
 		});
 	}
-	
+
 	/**
 	 * Busca Manifiesto
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void onSearchManifiesto() throws Exception{
 		String fechaInicial=Constantes.FORMAT_DATE.format(dbFechaInicio.getValue());
@@ -167,7 +167,7 @@ public class WndManifiestoMantenimiento extends WndBase{
 		Integer idDestino=null;
 		Integer idBus=null;
 		Integer idAgencia=null;
-		
+
 		if(cmbAgencia.getSelectedIndex()>0 && cmbAgencia.getSelectedItem().getValue() instanceof Agencia)
 			idAgencia=((Agencia)cmbAgencia.getSelectedItem().getValue()).getId();
 		if (cmbOrigen.getSelectedItem().getValue() instanceof Localidad)
@@ -176,12 +176,12 @@ public class WndManifiestoMantenimiento extends WndBase{
 			idDestino=((Localidad) cmbDestino.getSelectedItem().getValue()).getId();
 		if(cmbBus.getSelectedItem().getValue() instanceof Bus)
 			idBus=((Bus)cmbBus.getSelectedItem().getValue()).getId();
-		
-		clearLb();		
+
+		clearLb();
 		Util.limpiarListbox(listManifiestos);
 		loadManifiesto(ServiceLocator.getManifiestoManager().buscarManifiesto(fechaInicial, fechaFinal, idOrigen, idDestino,idBus,idAgencia));
 	}
-	
+
 	/**
 	 * Selecciona Manifiesto
 	 */
@@ -202,23 +202,23 @@ public class WndManifiestoMantenimiento extends WndBase{
 		lbCopilotoAux.setValue(manifiesto.getCopilotoAuxiliar()!=null?manifiesto.getCopilotoAuxiliar():"");
 		lbTripulante.setValue(manifiesto.getTripulante()!=null?manifiesto.getTripulante():"");
 	}
-	
+
 	/**
 	 * Selecciona de manera automatica la localida origen en base a la agencia seleccionada.
 	 * @throws Exception
 	 */
 	public void onChange_cmbAgencia()throws Exception{
 		Integer idLocalidadOrigen=getAgencia().getId();
-		
+
 		if(cmbAgencia.getSelectedIndex()>0 && cmbAgencia.getSelectedItem().getValue() instanceof Agencia)
 			idLocalidadOrigen=((Agencia)cmbAgencia.getSelectedItem().getValue()).getLocalidad().getId();
-		
+
 		Util.seleccionarValorItemCombo(Localidad.class, cmbOrigen, idLocalidadOrigen);
-		
+
 	}
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public void clearLb(){
 		lbManifiesto.setValue("");
@@ -235,60 +235,60 @@ public class WndManifiestoMantenimiento extends WndBase{
 		lbTripulante.setValue("");
 		lbFechaHoraAnulacion.setValue("");
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param lisManifiesto
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void loadManifiesto(List<Manifiesto> lisManifiesto) throws Exception{
 			Listitem item = null;
 			Listcell cell = null;
 			int x = 0;
-			
+
 			for (Manifiesto manifiesto : lisManifiesto){
 				x += +1;
 				item = new Listitem();
 				cell = new Listcell((String.valueOf(x)));
 				cell.setStyle("font-size:11px !important");
 				item.appendChild(cell); //Correlativo
-				
+
 				cell = new Listcell(manifiesto.getNumeroManifiesto());
 				if(manifiesto.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO))
 					cell.setStyle("font-size:11px !important");
 				else cell.setStyle("font-size:11px !important; color:red");
 				item.appendChild(cell); //Numero de Manifiesto
-				
+
 				cell = new Listcell(manifiesto.getCodigoBus());
 				if(manifiesto.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO))
 					cell.setStyle("font-size:11px !important");
 				else cell.setStyle("font-size:11px !important; color:red");
 				item.appendChild(cell); //Numero de Bus
-				
+
 				cell = new Listcell(manifiesto.getItinerario().getId().toString());
 				if(manifiesto.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO))
 					cell.setStyle("font-size:11px !important");
 				else cell.setStyle("font-size:11px !important; color:red");
 				item.appendChild(cell); //Itinerario
-				
+
 				cell = new Listcell(Constantes.FORMAT_DATE.format(manifiesto.getItinerario().getFechaPartida()));
 				if(manifiesto.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO))
 					cell.setStyle("font-size:11px !important");
 				else cell.setStyle("font-size:11px !important; color:red");
 				item.appendChild(cell); //Fecha Partida
-				
+
 				cell = new Listcell(manifiesto.getItinerario().getHoraPartida());
 				if(manifiesto.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO))
 					cell.setStyle("font-size:11px !important");
 				else cell.setStyle("font-size:11px !important; color:red");
 				item.appendChild(cell); //Hora Partida
-				
+
 				cell = new Listcell(manifiesto.getItinerario().getRuta().getLocalidadOrigen().getDenominacion());
 				if(manifiesto.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO))
 					cell.setStyle("font-size:11px !important");
 				else cell.setStyle("font-size:11px !important; color:red");
 				item.appendChild(cell); //origen
-				
+
 				cell = new Listcell(manifiesto.getItinerario().getRuta().getLocalidadDestino().getDenominacion());
 				if (!(manifiesto.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO)))
 					cell.setStyle("color:red");
@@ -300,26 +300,26 @@ public class WndManifiestoMantenimiento extends WndBase{
 					cell.setStyle("color:red");
 				}
 				item.appendChild(cell); //Estado del manifiesto
-				
+
 				Toolbarbutton btnAnular= new Toolbarbutton();
 				btnAnular.setDisabled(!manifiesto.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO));
-				
-				if(btnAnular.isDisabled()==false){
+
+				if(!btnAnular.isDisabled()){
 					Date fechaActual=Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date()));
 					Date fechaManifiesto=manifiesto.getItinerario().getFechaPartida();
 					if(fechaManifiesto.getTime()!=fechaActual.getTime())
 						btnAnular.setDisabled(true);
 				}
-								
+
 				/************************************************************************/
 				if(!(btnAnular.isDisabled())){
 					/*Da acceso a anular solamente al rol super Usuario.*/
-					List<Component> lstComponents=new ArrayList<Component>();
+					List<Component> lstComponents=new ArrayList<>();
 					lstComponents.add(btnAnular);
 					accesoControlsRolSuperUsuario(lstComponents);
 				}
 				/************************************************************************/
-				
+
 				btnAnular.setTooltiptext(manifiesto.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO)?"Anular manifiesto":"");
 				btnAnular.setImage("resources/mp_anular.png");
 				btnAnular.setId(manifiesto.getId().toString());
@@ -332,9 +332,9 @@ public class WndManifiestoMantenimiento extends WndBase{
 						onInactivateManifiesto(e.getTarget().getId());
 					}
 				});
-								
+
 				Toolbarbutton btnPrevio=new Toolbarbutton();
-//				btnPrevio.setDisabled(!manifiesto.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO)); 
+//				btnPrevio.setDisabled(!manifiesto.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO));
 				btnPrevio.setImage("resources/mp_pdf.png");
 				btnPrevio.setTooltiptext("Visualizar en formato pdf");
 //				btnPrevio.setTooltiptext(manifiesto.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO)?"Pre-visualizar Manifiesto":"");
@@ -349,7 +349,7 @@ public class WndManifiestoMantenimiento extends WndBase{
 						previoManifiesto(false,Long.valueOf(event.getTarget().getId()));
 					}
 				});
-				
+
 				Toolbarbutton btnImprimir=new Toolbarbutton();
 				btnImprimir.setDisabled(!manifiesto.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO));
 				btnImprimir.setImage("resources/mp_imprimir.png");
@@ -365,7 +365,7 @@ public class WndManifiestoMantenimiento extends WndBase{
 						previoManifiesto(true,Long.valueOf(event.getTarget().getId()));
 					}
 				});
-				
+
 //				Toolbarbutton btnExportar=new Toolbarbutton();
 //				btnExportar.setDisabled(!manifiesto.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO));
 //				btnExportar.setImage("resources/mp_excel.png");
@@ -385,25 +385,25 @@ public class WndManifiestoMantenimiento extends WndBase{
 				listManifiestos.appendChild(item);
 			}
 	}
-	
+
 //	/**
 //	 * Exporta el manifiesto ha excel
 //	 * @param idManifiesto
 //	 * @throws Exception
 //	 */
 //	public void exportar(Long idManifiesto)throws Exception{
-//		
+//
 //	}
-	
-	
+
+
 	/**
 	 * Pre-visualiza o imprime el manifiesto
 	 * @param imprimir : true impre manifiesto, false pre-visualiza el manifiesto.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void previoManifiesto(Boolean imprimir, Long idManifiesto) throws Exception{
 		iFrame.detach();
-		TreeMap<String, Object>criteriosBusqueda=new TreeMap<String, Object>();
+		TreeMap<String, Object>criteriosBusqueda=new TreeMap<>();
 		criteriosBusqueda.put("id", idManifiesto);
 		List<Manifiesto> lstResult= ServiceLocator.getManifiestoManager().buscarPorX(criteriosBusqueda, null);
 		Manifiesto manifiesto=lstResult.get(0);
@@ -411,14 +411,14 @@ public class WndManifiestoMantenimiento extends WndBase{
 		List<VentaPasaje> listPasajero=ServiceLocator.getManifiestoManager().consultaPasajeros(manifiesto.getItinerario().getId(),null);
 		Bus bus=ServiceLocator.getBusManager().buscarPorId(manifiesto.getBus().getId().longValue());
 		/*busca el numero de la tarjeta de habilitacion del bus*/
-		criteriosBusqueda=new TreeMap<String, Object>();
+		criteriosBusqueda=new TreeMap<>();
 		criteriosBusqueda.put("bus", bus);
 		criteriosBusqueda.put("tipoDocumento", new TipoDocumento(Constantes.ID_TIPDOC_TARJETA_CIRCULACION));
 		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 		List<DocumentoBus> lstDocBus=ServiceLocator.getDocumentoBusManager().buscarPorX(criteriosBusqueda, null);
 		DocumentoBus documentoBus=lstDocBus.get(0);
 		/*busca la programacion, para luego optener el piloto,copiloto y copilotoAux*/
-		criteriosBusqueda=new TreeMap<String, Object>();
+		criteriosBusqueda=new TreeMap<>();
 		criteriosBusqueda.put("itinerario", itinerario);
 		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 		List<ProgramacionServicio>lstProgramacion=ServiceLocator.getProgramacionServiciosManager().buscarPorX(criteriosBusqueda, null);
@@ -427,36 +427,36 @@ public class WndManifiestoMantenimiento extends WndBase{
 		Personal copiloto=programacionServicio.getCopiloto();
 		Personal copilotoAux=(programacionServicio.getCopilotoAuxiliar()!=null?programacionServicio.getCopilotoAuxiliar():null);
 		Personal tripulante=programacionServicio.getTripulante();
-		
+
 		/* Realiza tratamiento de los asientos*/
-		List<VentaPasaje>listPasajeros=new ArrayList<VentaPasaje>();
+		List<VentaPasaje>listPasajeros=new ArrayList<>();
 //		for(int x=0; x<itinerario.getServicio().getNumeroAsientosPiso1(); x++){
 		for(int x=0; x<(itinerario.getServicio().getNumeroAsientosPiso1()+(itinerario.getServicio().getNumeroAsientosPiso2()!=null?itinerario.getServicio().getNumeroAsientosPiso2():0)); x++){
 			Boolean asientoVendido=false;
 			VentaPasaje ventaPasaje=new VentaPasaje();
-			ventaPasaje.setNumeroAsiento(x+1);					
+			ventaPasaje.setNumeroAsiento(x+1);
 			for(VentaPasaje venta:listPasajero){
 				if(ventaPasaje.getNumeroAsiento().intValue()==venta.getNumeroAsiento().intValue()){
 					listPasajeros.add(venta);
 					asientoVendido=true;
 //					break;
-				}	
-			}		
-			if(asientoVendido==false)
+				}
+			}
+			if(!asientoVendido)
 				listPasajeros.add(ventaPasaje);
 		}
-		
-		
+
+
 		/*Busca la serie del manifiesto para obtener la agencia a quien le corresponde*/
 //		String numeroManifiesto=manifiesto.getNumeroManifiesto();
 //		criteriosBusqueda=new TreeMap<>();
 //		criteriosBusqueda.put("serie", numeroManifiesto.substring(0,numeroManifiesto.indexOf("-")));
 //		criteriosBusqueda.put("tipoComprobante", new TipoComprobante(Constantes.ID_TIPCOM_MANIFIESTO_PAX));
 //		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-		
+
 		/*Busca usuario que lo emitio*/
 		Usuario usuario=ServiceLocator.getUsuarioManager().buscarUsuarioPorLogin(manifiesto.getUsuarioInsercion(), null);
-		
+
 //		/*Busca agencia que la emitio*/
 //		String numeroManifiesto=manifiesto.getNumeroManifiesto();
 //		Integer serie=Integer.valueOf(numeroManifiesto.substring(0,numeroManifiesto.indexOf("-")));
@@ -465,11 +465,11 @@ public class WndManifiestoMantenimiento extends WndBase{
 //		criteriosBusqueda.put("tipoComprobante", new TipoComprobante(Constantes.ID_TIPCOM_MANIFIESTO_PAX));
 //		List<EspecieValorada> resultEspVal=ServiceLocator.getEspecieValoradaManager().buscarPorX(criteriosBusqueda, null);
 //		EspecieValorada especieValorada=resultEspVal.get(0);
-		
+
 		int totalAsientos= itinerario.getServicio().getNumeroAsientosPiso1();
 		if(itinerario.getServicio().getNumeroAsientosPiso2()!=null)
 			totalAsientos += itinerario.getServicio().getNumeroAsientosPiso2();
-		
+
 		Session session=getDesktop().getSession();
 		HttpSession httpSession=(HttpSession)session.getNativeSession();
 		httpSession.setAttribute("listPasajeros", listPasajeros);
@@ -502,8 +502,8 @@ public class WndManifiestoMantenimiento extends WndBase{
 		httpSession.setAttribute("totalAsientos", String.valueOf(totalAsientos));
 		httpSession.setAttribute("numeroAutoSunat", manifiesto.getAutorizacionSunat());
 		httpSession.setAttribute("totalPasajeros", String.valueOf(listPasajero.size()));
-		
-		
+
+
 //		httpSession.setAttribute("tipoAgencia", tipoAgencia);
 //		httpSession.setAttribute("usuario", cmbCounter.getSelectedItem().getLabel().toUpperCase());
 //		httpSession.setAttribute("agencia", cmbAgencia.getSelectedItem().getLabel().toUpperCase());
@@ -511,7 +511,7 @@ public class WndManifiestoMantenimiento extends WndBase{
 //		httpSession.setAttribute("fechaFinal", Constantes.FORMAT_DATE.format(dtbxFechaFin.getValue()));
 //		httpSession.setAttribute("comision", porComision);
 //		httpSession.setAttribute("igv", igv);
-						
+
 		final WndIFrame iFrame = new WndIFrame();
         iFrame.btnCerrar.setVisible(false);
         iFrame.oThisWindow.setTitle("MANIFIESTO DE PASAJEROS");
@@ -522,11 +522,11 @@ public class WndManifiestoMantenimiento extends WndBase{
 		iFrame.loadiframe();
 		this.appendChild(iFrame);
 		iFrame.setMode("modal");
-		
-		
+
+
 //		String src="";
 //		final WndIFrame iFrame = new WndIFrame();
-//		
+//
 //		TreeMap<String, Object>criteriosBusqueda=new TreeMap<String,Object>();
 //		criteriosBusqueda.put("id", idManifiesto);
 //		List<Manifiesto> lstManifiesto=ServiceLocator.getManifiestoManager().buscarPorX(criteriosBusqueda, null);
@@ -536,13 +536,13 @@ public class WndManifiestoMantenimiento extends WndBase{
 //			Itinerario itinerario=manifiesto.getItinerario();
 //			itinerario.setBus(bus);
 //			manifiesto.setItinerario(itinerario);
-//			
+//
 //			String ROTULO_SUNAT="SUNAT";
-//			
+//
 //			CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),true,ROTULO_SUNAT);
 //			src = Constantes.URL_FORMATOS_MANIFIESTOS +"MANPAX-"+ manifiesto.getItinerario().getId()+"-"+ROTULO_SUNAT+".txt";
 //			iFrame.setWidth("1115");
-//			
+//
 //			if(imprimir){
 //				Window win = (Window)Executions.createComponents("imprimir.zul", null, null);
 //				win.setAttribute("formato", WndImprimir.FORMAT_MANIFIESTO_PAX);
@@ -561,7 +561,7 @@ public class WndManifiestoMantenimiento extends WndBase{
 //			}
 //		}
 	}
-	
-	
+
+
 
 }

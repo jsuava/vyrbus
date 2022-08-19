@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 04/05/2012
  */
@@ -74,35 +74,35 @@ public class ClienteDAOImpl extends GenericDAOImpl implements ClienteDAO {
 	public void inactivar(Long id) {
 		super.inactivate(Cliente.class, id);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.ClienteDAO#cargaClientesSolicitud()
 	 */
 	@Override
 	public List<Cliente> cargaClientesSolicitud(){
-		
+
 		String sql="SELECT DISTINCT(s.cliente_id), c.c_numdoc, c.c_razsoc "+
 					"FROM vrtsolcar s "+
 					"INNER JOIN vrmcliente  c ON (c.cliente_id=s.cliente_id) " +
 					"ORDER BY c.c_razsoc ";
-		
+
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).list();
-		List<Cliente> listResul= new ArrayList<Cliente>();
+		List<Cliente> listResul= new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[])result.get(i);
 			Cliente cliente=new Cliente();
-			
+
 			cliente.setId(((BigDecimal)obj[0]).longValue());
 			cliente.setNumeroDocumento(obj[1].toString());
 			cliente.setRazonSocial(obj[2].toString());
-			
+
 			listResul.add(cliente);
 		}
-		
+
 		return listResul;
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -114,29 +114,29 @@ public class ClienteDAOImpl extends GenericDAOImpl implements ClienteDAO {
 		for(String valor : razonSocial){
 			criterio = (criterio.equals("")?"":(criterio+" & ")) + valor+"%";
 		}
-		
+
 //		String sql = "SELECT * FROM vrmcliente " +
 //				"WHERE CATSEARCH(c_razsoc,'"+criterio+"', null)>0 AND c_estreg='"+Constantes.VALUE_ACTIVO+"' AND ROWNUM<=1000 " +
 //						"ORDER BY c_razsoc";
-		
-		
+
+
 		String sql = "SELECT cliente_id, c_numdoc,c_razsoc,c_contacto FROM vrmcliente " +
 				"WHERE CATSEARCH(c_razsoc,'"+criterio+"', null)>0 AND c_estreg='"+Constantes.VALUE_ACTIVO+"' AND ROWNUM<=1000 " +
 						"ORDER BY c_razsoc";
-	
+
 		log.info(sql);
-		
+
 		List<?> result = getSession().createSQLQuery(sql).list();
-		ArrayList<Cliente> lstResult = new ArrayList<Cliente>();
-		for(int i=0; i<result.size(); i++){
-			Object[] obj = (Object[])result.get(i);
+		ArrayList<Cliente> lstResult = new ArrayList<>();
+		for (Object element : result) {
+			Object[] obj = (Object[])element;
 			Cliente cliente = new Cliente();
 			cliente.setId(((BigDecimal)obj[0]).longValue());
-			
+
 			cliente.setNumeroDocumento(obj[1].toString());
 			cliente.setRazonSocial(obj[2].toString());
 			cliente.setContacto(obj[3]==null?null:obj[3].toString());
-			
+
 //			cliente.setNumeroDocumento(obj[3].toString());
 //			cliente.setRazonSocial(obj[4].toString());
 //			cliente.setContacto(obj[9]==null?null:obj[9].toString());
@@ -144,7 +144,7 @@ public class ClienteDAOImpl extends GenericDAOImpl implements ClienteDAO {
 		}
 		return lstResult;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.ClienteDAO#buscarCliente_ServicioEspecial(java.lang.String)
@@ -153,26 +153,26 @@ public class ClienteDAOImpl extends GenericDAOImpl implements ClienteDAO {
 	public Cliente buscarCliente_ServicioEspecial(String Ruc){
 		String sql="SELECT c.cliente_id, c.c_razsoc, NVL(lsc.n_descbaja,0) as Descuento "+
 				   "FROM vrmcliente c "+
-					"LEFT OUTER JOIN (SELECT sc.n_descalta, sc.n_descbaja, cl.cliente_id FROM vrtcarcli cl "+ 
+					"LEFT OUTER JOIN (SELECT sc.n_descalta, sc.n_descbaja, cl.cliente_id FROM vrtcarcli cl "+
 					                 "INNER JOIN vrtsolcar sc ON (sc.solcar_id=cl.solcar_id) "+
 					                 "WHERE cl.c_estcar='"+Constantes.ESTADOSOL_ACTIVA+"' "+
 					                ")lsc ON (lsc.cliente_id=c.cliente_id)"+
 					"WHERE c.c_numdoc='"+Ruc+"' AND c_estReg='"+Constantes.VALUE_ACTIVO+"' ";
-		
+
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).list();
 		Cliente cliente=null;
-		for(int i=0; i<result.size(); i++){
-			Object[] obj = (Object[])result.get(i);
+		for (Object element : result) {
+			Object[] obj = (Object[])element;
 			cliente = new Cliente();
 			cliente.setId(((BigDecimal)obj[0]).longValue());
 			cliente.setRazonSocial(obj[1].toString());
 			cliente.setDescuento(((BigDecimal)obj[2]).doubleValue());
-			
+
 		}
 		return cliente;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.ClienteDAO#buscarClienteAgencia(java.lang.String)
@@ -186,12 +186,12 @@ public class ClienteDAOImpl extends GenericDAOImpl implements ClienteDAO {
 				"INNER JOIN vrtlincrecli lcc ON lcc.carcli_id=cc.carcli_id " +
 				"INNER JOIN vrmubigeo u ON u.ubigeo_id=c.ubigeo_id " +
 				"WHERE c.c_numdoc = '"+ruc+"'";
-		
+
 		log.info(sql);
 		List<?> result = getSession().createSQLQuery(sql).list();
-		ArrayList<Cliente> lstResult = new ArrayList<Cliente>();
-		for(int i=0; i<result.size(); i++){
-			Object[] obj = (Object[])result.get(i);
+		ArrayList<Cliente> lstResult = new ArrayList<>();
+		for (Object element : result) {
+			Object[] obj = (Object[])element;
 			Cliente cliente = new Cliente();
 			cliente.setId(((BigDecimal)obj[0]).longValue());
 			cliente.setRazonSocial(obj[1].toString());

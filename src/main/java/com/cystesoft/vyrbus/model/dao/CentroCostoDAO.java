@@ -25,7 +25,7 @@ public interface CentroCostoDAO extends GenericDAO {
 	 * @return
 	 */
 	public ArrayList<CentroCosto> buscarPorEstadoRegistro(String estado, String criterioOrden) throws Exception;
-	
+
 	/**
 	 * Busqueda por un array de criterios.
 	 * @param criteriosBusqueda: Array de criterios de busqueda.
@@ -33,26 +33,26 @@ public interface CentroCostoDAO extends GenericDAO {
 	 * @return : Array de Centros de Costo.
 	 */
 	public ArrayList<CentroCosto> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar) throws Exception;
-	
+
 	/**
 	 * Busqueda por Id del Centro de Costo.
 	 * @param id : Identificador del Centro de Costo.
 	 * @return Lista de Centro de Costo.
 	 */
 	public CentroCosto buscarPorId(Long id) throws Exception;
-	
+
 	/**
 	 * Guarda el Centro de Costo.
 	 * @param centroCosto : Objeto que se guardara.
 	 */
 	public void guardar(CentroCosto centroCosto) throws Exception;
-	
+
 	/**
 	 * Actualiza Tipo de Gasto.
 	 * @param centroCosto : Objeto que se actualizara.
 	 */
 	public void actualizar(CentroCosto centroCosto) throws Exception;
-	
+
 	/**
 	 * Inactivar
 	 * @param id : Identificador del Centro de Costo

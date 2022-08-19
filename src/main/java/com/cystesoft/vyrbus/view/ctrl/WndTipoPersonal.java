@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 02/05/2012
  */
@@ -37,9 +37,9 @@ import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
 public class WndTipoPersonal extends WndOpcionesMantenimiento {
 	private static final long serialVersionUID = -1721402526478904823L;
 	private Textbox txtDenominacion;
-	
+
 	private TipoPersonal oTipoPersonal = null;
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
 
 	/* (non-Javadoc)
@@ -47,10 +47,10 @@ public class WndTipoPersonal extends WndOpcionesMantenimiento {
 	 */
 	@Override
 	public void onCreate() throws Exception {
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IBase#initComponents()
 	 */
@@ -58,7 +58,7 @@ public class WndTipoPersonal extends WndOpcionesMantenimiento {
 	public void initComponents() {
 		txtDenominacion = (Textbox) getFellow("txtDenominacion");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onNew()
 	 */
@@ -100,7 +100,7 @@ public class WndTipoPersonal extends WndOpcionesMantenimiento {
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getTipoPersonalManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getTipoPersonalManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
 	}
 	/* (non-Javadoc)
@@ -134,10 +134,10 @@ public class WndTipoPersonal extends WndOpcionesMantenimiento {
 		try{
 			if (txtDenominacion.getText().trim().equals(""))
 				throw new DenominacionNullException();
-			
+
 			if (action==ACTION_NEW)
 				oTipoPersonal = new TipoPersonal();
-			
+
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
 
 			oTipoPersonal.setId(id);
@@ -161,7 +161,7 @@ public class WndTipoPersonal extends WndOpcionesMantenimiento {
 			criteriosBusqueda.put("denominacion", oTipoPersonal.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			listarRegistros(ServiceLocator.getTipoPersonalManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-			
+
 		}catch (DenominacionNullException dnex){
 			DlgMessage.information(Messages.getString("Generales.information.noIngresoDenominacion"),txtDenominacion);
 			throw new CancelaGrabacionException();
@@ -171,7 +171,7 @@ public class WndTipoPersonal extends WndOpcionesMantenimiento {
 		}catch (Exception ex){
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace(); throw new CancelaGrabacionException();
-		}				
+		}
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onDelete(int)
@@ -198,7 +198,7 @@ public class WndTipoPersonal extends WndOpcionesMantenimiento {
 	@Override
 	public void onPrint(int tab) {
 		// TODO Auto-generated method stub
-		
+
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onExport(int)
@@ -206,7 +206,7 @@ public class WndTipoPersonal extends WndOpcionesMantenimiento {
 	@Override
 	public void onExport(int tab) {
 		// TODO Auto-generated method stub
-		
+
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onHelp()
@@ -214,7 +214,7 @@ public class WndTipoPersonal extends WndOpcionesMantenimiento {
 	@Override
 	public void onHelp() {
 		// TODO Auto-generated method stub
-		
+
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onChangeTab(int)
@@ -224,7 +224,7 @@ public class WndTipoPersonal extends WndOpcionesMantenimiento {
 		switch (tab) {
 			case TAB_LIST:
 				break;
-	
+
 			case TAB_MAINTENANCE:
 				if (listboxLista.getSelectedIndex() > -1) {
 					this.mantenimientoRegistro(new Long((String) listboxLista.getSelectedItem().getValue()));
@@ -232,7 +232,7 @@ public class WndTipoPersonal extends WndOpcionesMantenimiento {
 				break;
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onClose()
 	 */
@@ -242,11 +242,11 @@ public class WndTipoPersonal extends WndOpcionesMantenimiento {
 	}
 
 	private void listarRegistros(ArrayList<TipoPersonal> lstRegistros) {
-		ArrayList<Object> lstTiposPersonal = new ArrayList<Object>();
+		ArrayList<Object> lstTiposPersonal = new ArrayList<>();
 
 		for(int r = 0; r < lstRegistros.size(); r ++) {
 			TipoPersonal oTipoPersonal = lstRegistros.get(r);
-			ArrayList<Object> lstFila = new ArrayList<Object>();
+			ArrayList<Object> lstFila = new ArrayList<>();
 
 			lstFila.add(oTipoPersonal.getId());
 			lstFila.add(r + 1);

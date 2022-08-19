@@ -27,7 +27,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class ServicioManagerImpl implements ServicioManager {
 	private ServicioDAO servicioDAO;
-	
+
 	/**
 	 * @return the servicioDAO
 	 */
@@ -72,23 +72,23 @@ public class ServicioManagerImpl implements ServicioManager {
 	@Transactional
 	public void guardar(Servicio servicio) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", servicio.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getServicioDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad de la denominación*/
 			if(resultDenominacion.size()>0)
 				throw new DenominacionDuplicadaException();
-			
+
 			criteriosBusqueda.remove("denominacion");
 			criteriosBusqueda.put("nombreCorto", servicio.getNombreCorto());
 			List<?> resultNombreCorto = getServicioDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Nombre corto*/
 			if (resultNombreCorto.size()>0)
 				throw new NombreCortoDuplicadoException();
-			
+
 			getServicioDAO().guardar(servicio);
-			
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(NombreCortoDuplicadoException rdnex){
@@ -104,30 +104,30 @@ public class ServicioManagerImpl implements ServicioManager {
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED)
 	public void actualizar(Servicio servicio) throws Exception {
-		try{		
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+		try{
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", servicio.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getServicioDAO().buscarPorX(criteriosBusqueda, null);
 			//Valida duplicidad de la denominación
-			for(int r = 0; r < resultDenominacion.size(); r ++) {
-				Servicio oservicio = (Servicio) resultDenominacion.get(r);
+			for (Object element : resultDenominacion) {
+				Servicio oservicio = (Servicio) element;
 					if (!(oservicio.getId() == servicio.getId()))
 						throw new DenominacionDuplicadaException();
 				}
-			
+
 			criteriosBusqueda.remove("denominacion");
 			criteriosBusqueda.put("nombreCorto", servicio.getNombreCorto());
 			List<?> resultNombreCorto = getServicioDAO().buscarPorX(criteriosBusqueda, null);
 			//Valida duplicidad del Nombre corto
-			for(int r = 0; r < resultNombreCorto.size(); r ++) {
-				Servicio oservicio = (Servicio) resultNombreCorto.get(r);
+			for (Object element : resultNombreCorto) {
+				Servicio oservicio = (Servicio) element;
 					if (!(oservicio.getId() == servicio.getId()))
 						throw new NombreCortoDuplicadoException();
 				}
-			
+
 			getServicioDAO().actualizar(servicio);
-			
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(NombreCortoDuplicadoException rdnex){
@@ -136,8 +136,8 @@ public class ServicioManagerImpl implements ServicioManager {
 			throw new Exception(ex);
 		}
 	}
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.ServicioManager#inactivar(java.lang.Long)
 	 */

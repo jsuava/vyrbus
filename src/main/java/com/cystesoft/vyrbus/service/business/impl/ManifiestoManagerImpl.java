@@ -18,15 +18,15 @@ import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 
 public class ManifiestoManagerImpl implements ManifiestoManager{
 	private ManifiestoDAO manifiestoDAO;
-	
+
 	public ManifiestoDAO getManifiestoDAO(){
 		return manifiestoDAO;
 	}
-	
+
 	public void setManifiestoDAO(ManifiestoDAO manifiestoDAO){
 		this.manifiestoDAO=manifiestoDAO;
 	}
-	
+
 
 	/*
 	 * (non-Javadoc)
@@ -82,17 +82,17 @@ public class ManifiestoManagerImpl implements ManifiestoManager{
 	public void guarda(Manifiesto manifiesto) throws Exception {
 		try{
 			//Valida duplicidad
-			TreeMap<String, Object>criteriosBusqueda=new TreeMap<String,Object>();
+			TreeMap<String, Object>criteriosBusqueda=new TreeMap<>();
 			criteriosBusqueda.put("numeroManifiesto", manifiesto.getNumeroManifiesto());
 			List<Manifiesto> lstManifiesto= ServiceLocator.getManifiestoManager().buscarPorX(criteriosBusqueda,null);
 			if(lstManifiesto.size()>0)
 				throw new ManifiestoDuplicateException();
-			
+
 			getManifiestoDAO().guarda(manifiesto);
 		}catch (ManifiestoDuplicateException md){
 			throw new ManifiestoDuplicateException();
 		}
-		
+
 	}
 
 	/*
@@ -130,7 +130,7 @@ public class ManifiestoManagerImpl implements ManifiestoManager{
 	@Override
 	public void inactivar(Long id) {
 		getManifiestoDAO().inactivar(id);
-		
+
 	}
 
 	/*
@@ -160,7 +160,7 @@ public class ManifiestoManagerImpl implements ManifiestoManager{
 		// TODO Auto-generated method stub
 		getManifiestoDAO().guarda(manifiesto);
 	}
-	
+
 	@Override
 	public List<Manifiesto> buscarDevolucionIsc(String fechaInicial, String fechaFinal, String per4949, String periodo)  {
 		return getManifiestoDAO().buscarDevolucionIsc(fechaInicial, fechaFinal, per4949, periodo);

@@ -53,24 +53,24 @@ import com.cystesoft.vyrbus.view.ui.DlgMessage;
 import com.cystesoft.vyrbus.view.ui.WndBase;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 public class WndAprobarLineaCreditoN2 extends WndBase {
 	private static final long serialVersionUID = 1L;
-	
+
 	/*Tabs*/
 	private Tab tabPendientes;
 	private Tab tabHistorial;
 	Boolean selectPendientes=false; //Tru(selecciona el tabHistorial solicitudes), (false)  pendientes.
-	
-	
+
+
 	private Button btnBuscar;
 	private Listbox listPendientes;
 	private Combobox cmbCliente;
 	private Grid grdAprobBusqCliente;
-	
+
 	/*Solicitud*/
 	private Label lblRuc;
 	private Label lblRazonSocial;
@@ -105,10 +105,10 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 	UsuarioAprobador usuarioAprobador=new UsuarioAprobador();
 	CarteraCliente carteraCliente=null;
 	SolicitudClienteCredito solicitudClienteCredito=null;
-	
+
 	/*Otras variables*/
 	int action=0;
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
@@ -153,9 +153,9 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 		listHistSolicitudes=(Listbox)this.getFellow("listHistSolicitudes");
 		btnBuscarSolApro=(Button)this.getFellow("btnBuscarSolApro");
 		cmbclienteHist=(Combobox)this.getFellow("cmbclienteHist");
-		
+
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
@@ -164,7 +164,7 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 	public void onCreate() throws Exception {
 		try{
 			usuarioAprobador=(UsuarioAprobador)getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO_APROBADOR);
-			
+
 			if(usuarioAprobador==null)
 				throw new UsuarioAprobadorNullException();
 
@@ -172,34 +172,34 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 			date=Constantes.FORMAT_DATE.parse(new MyTime().dateServer());
 
 			UtilData.cargarTipoCobranza(cmbTipoCombranza, false);
-			
+
 			visibleSolicitud(false);
 			listPendientes();
-			
+
 //			lblSobregiro.setLocale(Locale.US);
 			dbxCreditoAprobado.setLocale(Locale.US);
 //			lblCreditoSolicitado.setLocale(Locale.US);
 //			dbxMontoSobregiro.setLocale(Locale.US);
 //			lblCreditoAnterior.setLocale(Locale.US);
-			
+
 			dtxFechaInicio.setValue(date);
 			dtxFechaFinal.setValue(date);
 			UtilData.cargarEstadoSolicitudLC(cmbEstadoSolicitud, true);
 			cmbEstadoSolicitud.setSelectedIndex(1);
-					
+
 			cargarClientesSolicitudPendiente();
 			UtilData.cargarClientesSolicitud(cmbclienteHist, true);
-						
+
 			Util.disabledBtnBuscar(false, btnBuscar, accesoConsultar());
 			Util.disabledBtnBuscar(false, btnBuscarSolApro, accesoConsultar());
-			
+
 		}catch (UsuarioAprobadorNullException uanex){
 			DlgMessage.information(Messages.getString("wndApruebaCartera.infomation.UsuarioAprobadorNull"));
 			closeTabWindow();
 		}
-		
+
 	}
-	
+
 	/**
 	 * Lista pendienpes por aprobar LC.
 	 */
@@ -209,12 +209,12 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 		if(cmbCliente.getSelectedIndex()>0)
 			idCliente=((Cliente)cmbCliente.getSelectedItem().getValue()).getId();
 		List<LineaCreditoCliente>list=ServiceLocator.getLineaCreditoClienteManager().buscarSolicitudLineaCreditoN2(fechaInicio, fechaFin, estadoSolicitud, idCliente, usuarioAprobador, recu_Historia);
-				
+
 		Listitem item=null;
 		Listcell cell=null;
 		int x=0;
 		Util.limpiarListbox(listPendientes);
-		
+
 		for(LineaCreditoCliente lineaCreditoCliente: list){
 			SolicitudCartera solicitudCartera=lineaCreditoCliente.getSolicitudClienteCredito().getSolicitudCartera();
 			Usuario funcionario = solicitudCartera.getUsuario();
@@ -236,21 +236,21 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 			cell=new Listcell(Util.toNumberFormat(lineaCreditoCliente.getSolicitudClienteCredito().getLineaCreditoAprobada(), 2));
 			cell.setStyle("font-size:11px !important");
 			item.appendChild(cell);
-					
+
 			final Toolbarbutton button= new Toolbarbutton("VER SOLICITUD ");
 			button.setId(String.valueOf(x-1));
 			button.setStyle("color:blue; font-style:inherit; font-size:9px !important");
 			cell=new Listcell();
 			cell.appendChild(button);
 			item.appendChild(cell);
-			
+
 			button.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 				@Override
 				public void onEvent(Event event) throws Exception {
 					selectPendientes=true;
 					Listitem listitem=listPendientes.getItemAtIndex(Integer.valueOf(button.getId()));
 					onLoadDetalleSolicitud(((LineaCreditoCliente)listitem.getValue()).getSolicitudClienteCredito());
-			
+
 					visibleSolicitud(true);
 					visibleLisPendientes(false);
 					tabHistorial.setDisabled(true);
@@ -259,7 +259,7 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 //					Util.disabledBtnAceptar(false, btnAceptar, accesoGrabar());
 					Util.disabledBtnAceptar(usuarioAprobador.getNivelAprobacion().intValue()!=Constantes.NIVEL_DOS, btnAceptar, accesoGrabar());
 					disabledControlsSolciitud(btnAceptar.isDisabled());
-					
+
 					action=Constantes.ACTION_NEW;
 				}
 			});
@@ -267,16 +267,16 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 			listPendientes.appendChild(item);
 		}
 	}
-	
+
 	/**
 	 * Carga los clientes con solicitud pendiente por aprobar
 	 */
 	private void cargarClientesSolicitudPendiente(){
 		String fechaInicio=null; String fechaFin=null; String estadoSolicitud=null; Long idCliente=null;
 		Boolean recu_Historia=false;
-		
+
 		List<LineaCreditoCliente>list=ServiceLocator.getLineaCreditoClienteManager().buscarSolicitudLineaCreditoN2(fechaInicio, fechaFin, estadoSolicitud, idCliente, usuarioAprobador, recu_Historia);
-		
+
 		UtilData.cargarGenericData(cmbCliente, true);
 		for (LineaCreditoCliente lineaCreditoCliente: list) {
 			if(lineaCreditoCliente.getSolicitudClienteCredito().getSolicitudCartera().getCliente()!=null){
@@ -288,7 +288,7 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 			}
 		}
 	}
-	
+
 	/**
 	 * Activa o desactiva controles de la solicitud
 	 * @param disabled
@@ -302,23 +302,23 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 		chbModificarCredito.setDisabled(disabled);
 		cmbTipoCombranza.setDisabled(disabled);
 	}
-	
+
 	/**
 	 * Muestra detalle de la solicitud
 	 * @param solicitudClienteCredito : class
 	 */
 	private void onLoadDetalleSolicitud(SolicitudClienteCredito solicitudClienteCredito){
 		//rowCreditoAnterior.setVisible(false);
-		
+
 		this.solicitudClienteCredito=solicitudClienteCredito;
 		Cliente cliente=solicitudClienteCredito.getSolicitudCartera().getCliente();
 		Usuario funcionario=solicitudClienteCredito.getSolicitudCartera().getUsuario();
-		
+
 		lblRuc.setValue(cliente.getNumeroDocumento());
 		lblRazonSocial.setValue(cliente.getRazonSocial());
 		lblFechaSolicitud.setValue(Constantes.FORMAT_DATE.format(solicitudClienteCredito.getSolicitudCartera().getFechaSolicitud()));
 		lblFuncionario.setValue(funcionario.toString()); //.getApellidoPaterno()+" "+funcionario.getApellidoMaterno()+", "+funcionario.getNombre());
-		
+
 		if(action==Constantes.ACTION_NEW){
 			lblCreditoSolicitado.setValue(Util.toNumberFormat(solicitudClienteCredito.getLineaCreditoAprobada(),2));
 			dbxCreditoAprobado.setValue(solicitudClienteCredito.getLineaCreditoAprobada());
@@ -326,23 +326,23 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 			lblCreditoSolicitado.setValue(Util.toNumberFormat(solicitudClienteCredito.getLineaCreditoSolicitada(),2));
 			dbxCreditoAprobado.setValue(solicitudClienteCredito.getLineaCreditoAprobada());
 		}
-		
+
 		Util.seleccionarValorItemCombo(TipoCobranza.class, cmbTipoCombranza,solicitudClienteCredito.getTipoCobranza().getId());
-		
+
 		lblSobregiro.setValue(Util.toNumberFormat(solicitudClienteCredito.getSobregiro(),2));
 		onChangeSobregiro();
 		chbesCanje.setChecked(solicitudClienteCredito.getEsCanje().equals(Constantes.SI)? true: false);
 		chbEsAmpliacion.setChecked(solicitudClienteCredito.getEsAmpliacion().equals(Constantes.SI)? true: false);
 		lblCreditoAnterior.setValue("0.00");
-		
+
 		if(chbEsAmpliacion.isChecked()){
 			rowCreditoAnterior.setVisible(true);
 			LineaCreditoCliente  lineaCreditoCliente=ServiceLocator.getLineaCreditoClienteManager().lineaCreditoCliente(solicitudClienteCredito.getSolicitudCartera().getCliente().getId());
 			if(lineaCreditoCliente!=null)
 				lblCreditoAnterior.setValue(Util.toNumberFormat(lineaCreditoCliente.getLineaCreditoAprobada(), 2));
 		}
-		
-		if(selectPendientes==false){//Recupera observaciones de las sicitud aprobadas o desaprobadas por finanzas
+
+		if(!selectPendientes){//Recupera observaciones de las sicitud aprobadas o desaprobadas por finanzas
 			if(solicitudClienteCredito.getEstadoSolicitud().equals(Constantes.ESTADOSOL_ACTIVA))
 				txtObservaciones.setText(solicitudClienteCredito.getObservaciones());
 			else if(solicitudClienteCredito.getEstadoSolicitud().equals(Constantes.ESTADOSOL_ANULADA))
@@ -350,7 +350,7 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 			if(solicitudClienteCredito.getLineaCreditoSolicitada() != solicitudClienteCredito.getLineaCreditoAprobada())
 				chbModificarCredito.setChecked(true);
 		}
-		
+
 		/*valida si es una extencion de canje publicitario*/
 		if(chbesCanje.isChecked() && chbEsAmpliacion.isChecked()){
 			lblAmpliacion.setValue("EXTENSIÓN DE CANJE PUBLICITARIO");
@@ -358,7 +358,7 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 			lblAmpliacion.setValue("AMPLIACIÓN");
 		}
 	}
-	
+
 	/**
 	 * Muesttra o oculata listado de pendientes
 	 * @param visible
@@ -368,7 +368,7 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 		btnBuscar.setVisible(visible);
 		grdAprobBusqCliente.setVisible(visible);
 	}
-	
+
 	/**
 	 * muestar o oculta datos de la silicitud
 	 * @param visible
@@ -391,16 +391,16 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 			else
 				montoSobregiro=Util.parseNumberFormat(lblCreditoSolicitado.getValue(),2)*(sobregiro/100);
 		}
-			
+
 		lblMontoSobregiro.setValue("% |"+Util.toNumberFormat(montoSobregiro,2));
-		
+
 //		if(dbxCreditoAprobado.getValue()!=null && lblSobregiro.getValue()!=null && lblSobregiro.getValue()>0){
 //			dbxMontoSobregiro.setValue(dbxCreditoAprobado.getValue()*(lblSobregiro.getValue()/100));
 //		}else{
 //			dbxMontoSobregiro.setValue(0);
 //		}
 	}
-	
+
 	/**
 	 * cancela operación
 	 */
@@ -412,7 +412,7 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 			tabHistorial.setSelected(true);
 		tabHistorial.setDisabled(false);
 	}
-	
+
 	/**
 	 * Procesa aprobación o desaprobación.
 	 * @throws Exception
@@ -430,13 +430,13 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 			}
 			if(!(cmbTipoCombranza.getSelectedItem().getValue() instanceof TipoCobranza))
 				throw new FormaCobranzaNullException();
-			
-			
+
+
 			/*********************************************************************************/
 			/** SE ADOPTO LA FUNCIONALIDAD DEL NIVEL 3 - 27/11/2015*/
 			/*********************************************************************************/
 			/*Buscar cartera cliente, por el idSolicitudCartera.*/
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("cliente", solicitudClienteCredito.getSolicitudCartera().getCliente());
 			criteriosBusqueda.put("estadoCartera", Constantes.ESTADOSOL_ACTIVA);
 			List<CarteraCliente>list=ServiceLocator.getCarteraClienteManager().buscarPorX(criteriosBusqueda, null);
@@ -446,15 +446,15 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 			}else
 				throw new FuncionarioNullException();
 			/** FIN*******************************************************************************/
-			
-			
+
+
 			//Valiad si el usuario tiene el nivel requerido para la aprobacion
 			if(usuarioAprobador.getNivelAprobacion().intValue()!=Constantes.NIVEL_DOS){
 				DlgMessage.information(Messages.getString("wndAprobarCredito.information.noAccesoAprobar"));
 				return;
 			}
-				
-				
+
+
 			Messagebox.show(Messages.getString(rbAprueba.isChecked()?"wndAprobarLineaCredito.question.Aprobar": "wndAprobarLineaCredito.question.Desaprobar"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e) throws Exception {
@@ -465,33 +465,33 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 							solicitudClienteCredito = new SolicitudClienteCredito();
 							solicitudClienteCredito=ServiceLocator.getSolicitudClienteCreditoManager().buscarPorId(idSolicitudCredito);
 						 }
-  						
-  						
+
+
 						/*Inserta una nuevo registro con la solicitud cliente credito - Nivel 2*/
 						insertarSolicitudClienteCredito(solicitudClienteCredito,Constantes.NIVEL_DOS);
-												
-						
+
+
 						/*********************************************************************************/
 						/** SE ADOPTO LA FUNCIONALIDAD DEL NIVEL 3 - 27/11/2015*/
 						/*********************************************************************************/
-						Date fecha=Constantes.FORMAT_DATE_TIME_24H.parse(new MyTime().dateServer());					
+						Date fecha=Constantes.FORMAT_DATE_TIME_24H.parse(new MyTime().dateServer());
 						/*Recalcula el saldo para el credito del cliente*/
 						Double sobregiro=.00; Double montoAprobado=.00;
 						if (!(lblSobregiro.getValue()==null))
 							sobregiro=Util.parseNumberFormat(lblSobregiro.getValue(),2);
 						if(sobregiro>0){
 							montoAprobado=Util.parseNumberFormat(lblCreditoSolicitado.getValue(),2)+(Util.parseNumberFormat(lblCreditoSolicitado.getValue(),2)*(sobregiro/100));
-						}else 
+						}else
 							montoAprobado=Util.parseNumberFormat(lblCreditoSolicitado.getValue(),2);
-						
+
 						Double saldo=montoAprobado;
 						if(chbEsAmpliacion.isChecked()){
 							/*Obtiene el nuevo saldo, cuando es una ampliacion*/
 							if(solicitudClienteCredito.getEsAmpliacion().equals(Constantes.SI))
 								saldo = ServiceLocator.getLineaCreditoClienteManager().saldo(montoAprobado, carteraCliente.getCliente().getId());
-							
+
 							/*Inactiva Linea de credito actual*/
-							TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+							TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 							criteriosBusqueda.put("carteraCliente", carteraCliente);
 							criteriosBusqueda.put("estadoLineaCredito", Constantes.ESTADOSOL_ACTIVA);
 							criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
@@ -504,22 +504,22 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 								ServiceLocator.getLineaCreditoClienteManager().actualizar(lineaCreditoCliente);
 							}
 						}
-						
+
 						/*Inserta una nuevo registro con la solicitud cliente credito - Nivel 3*/
 						solicitudClienteCredito=insertarSolicitudClienteCredito(solicitudClienteCredito,Constantes.NIVEL_TRES);
-						
+
 						if(rbAprueba.isChecked())
 							insertarLineaCreditoAprobada(solicitudClienteCredito, carteraCliente,saldo);
 						/** FIN***********************************************************************************************/
-						
-						
+
+
 						onClickCancelar();
 						listPendientes();
 						listHistorial();
 					}
-				}				
+				}
 			});
-			
+
 //		}catch(CancelaGrabacionException cg){
 		}catch (FuncionarioNullException fnex){
 			DlgMessage.information(Messages.getString("wndAprobarLineaCreditoN3.information.ClienteSinFuncionario"));
@@ -536,13 +536,13 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void insertarLineaCreditoAprobada(SolicitudClienteCredito solicitudClienteCredito, CarteraCliente carteraCliente, Double saldo) throws Exception{
 		/*Inserta el nuevo registro de la linea de credito, con la aprobacion o desaprobacion*/
 		long lDefault=Constantes.FORMAT_DATE_TIME_24H.parse(Constantes.FECHA_DEFAULT).getTime();
 		Date fDefault= new Date(lDefault);
 		Date fecha=Constantes.FORMAT_DATE_TIME_24H.parse(new MyTime().dateServer());
-		
+
 		LineaCreditoCliente lineaCreditoCliente=new LineaCreditoCliente();
 		lineaCreditoCliente.setCarteraCliente(carteraCliente);
 		lineaCreditoCliente.setTipoCobranza(solicitudClienteCredito.getTipoCobranza());
@@ -570,7 +570,7 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 		Date fecha = new Date();
 		fecha=Constantes.FORMAT_DATE_TIME_24H.parse(new MyTime().dateServer());
 		usuarioAprobador=ServiceLocator.getUsuarioAprobadorManager().buscarPorId(usuarioAprobador.getId().longValue());
-		
+
 		SolicitudClienteCredito osolicitudClienteCredito =new SolicitudClienteCredito();
 		osolicitudClienteCredito.setUsuarioAprobador(usuarioAprobador);
 		osolicitudClienteCredito.setSolicitudCartera(solicitudClienteCredito.getSolicitudCartera());
@@ -599,10 +599,10 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 		}
 		UtilData.auditarRegistro(osolicitudClienteCredito,usuarioAprobador.getUsuario(), Executions.getCurrent());
 		ServiceLocator.getSolicitudClienteCreditoManager().guardar(osolicitudClienteCredito);
-		
+
 		return osolicitudClienteCredito;
 	}
-	
+
 	/**
 	 * Limpia controles de la solcitud
 	 */
@@ -625,8 +625,8 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 		txtObservaciones.setText("");
 		chbModificarCredito.setChecked(false);
 	}
-	
-	
+
+
 	/**
 	 * historial
 	 */
@@ -635,20 +635,20 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 			btnBuscarSolApro.setDisabled(true);
 			String fechaInicio=Constantes.FORMAT_DATE.format(dtxFechaInicio.getValue());
 			String fechaFin=Constantes.FORMAT_DATE.format(dtxFechaFinal.getValue());
-			String estadoSolicitud=""; Long idCliente=null; Boolean recu_Historia=true; 
+			String estadoSolicitud=""; Long idCliente=null; Boolean recu_Historia=true;
 			if(cmbEstadoSolicitud.getSelectedIndex()>0)
 				estadoSolicitud=cmbEstadoSolicitud.getSelectedItem().getValue();
 			if (cmbclienteHist.getSelectedItem().getValue() instanceof Cliente)
 				idCliente=((Cliente)cmbclienteHist.getSelectedItem().getValue()).getId();
-			
+
 			List<LineaCreditoCliente>list=ServiceLocator.getLineaCreditoClienteManager().buscarSolicitudLineaCreditoN2(fechaInicio, fechaFin, estadoSolicitud, idCliente, usuarioAprobador, recu_Historia);
-			
+
 			String estado="";
 			Listitem item=null;
 			Listcell cell=null;
 			int x=0;
 			Util.limpiarListbox(listHistSolicitudes);
-			
+
 			for(LineaCreditoCliente lineaCreditoCliente: list){
 				SolicitudCartera solicitudCartera=lineaCreditoCliente.getSolicitudClienteCredito().getSolicitudCartera();
 				Usuario funcionario = solicitudCartera.getUsuario();
@@ -658,7 +658,7 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 				cell=new Listcell(String.valueOf(x));
 				item.appendChild(cell);
 				cell=new Listcell(funcionario.getApellidoPaterno()+" "+funcionario.getApellidoMaterno()+", "+funcionario.getNombre());
-				item.appendChild(cell);	
+				item.appendChild(cell);
 				cell=new Listcell(cliente.getRazonSocial());
 				item.appendChild(cell);
 				cell=new Listcell(Constantes.FORMAT_DATE.format(solicitudCartera.getFechaSolicitud()));
@@ -674,26 +674,26 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 					cell=new Listcell("");
 				cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
-						
+
 				cell=new Listcell(estado);
 				item.appendChild(cell);
-				
+
 				final Toolbarbutton button= new Toolbarbutton();
 				button.setId(lineaCreditoCliente.getSolicitudClienteCredito().getId().toString());
 				button.setStyle("color:blue; font-style:inherit; font-size: 8.5px !important");
 //				if(lineaCreditoCliente.getSolicitudClienteCredito().getNivelAprobacion().equals(Constantes.NIVEL_DOS))
 //					button.setLabel("Modificar");
-//				else 
+//				else
 					button.setLabel("Consultar");
-				
+
 				button.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 					@Override
 					public void onEvent(Event event) throws Exception {
 						selectPendientes=false;
-						
+
 						SolicitudClienteCredito solicitudClienteCredito=ServiceLocator.getSolicitudClienteCreditoManager().buscarPorId(Long.valueOf(button.getId()));
 						onLoadDetalleSolicitud(solicitudClienteCredito);
-						
+
 						visibleSolicitud(true);
 						visibleLisPendientes(false);
 						tabHistorial.setDisabled(true);
@@ -706,7 +706,7 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 						}
 						tabPendientes.setSelected(true);
 						btnAceptar.setVisible(true);
-						
+
 						/*Valdiación para la edicion de la solicitud*/
 						if(((Toolbarbutton)event.getTarget()).getLabel().equals("Modificar")){
 //						if(solicitudClienteCredito.getNivelAprobacion().equals(Constantes.NIVEL_DOS) && solicitudClienteCredito.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO)){
@@ -723,22 +723,22 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 //							btnAceptar.setVisible(false);
 							Util.disabledBtnAceptar(true, btnAceptar, false);
 							dbxCreditoAprobado.setReadonly(true);
-						}				
+						}
 					}
 				});
 				cell=new Listcell();
 				cell.appendChild(button);
 				item.appendChild(cell);
-				
+
 				item.addEventListener(Events.ON_DOUBLE_CLICK,new EventListener<Event>() {
 					@Override
 					public void onEvent(Event event) throws Exception {
 						selectPendientes=false;
-						
+
 						Listitem listitem=listHistSolicitudes.getItemAtIndex(listHistSolicitudes.getSelectedIndex());
 						SolicitudClienteCredito solicitudClienteCredito=ServiceLocator.getSolicitudClienteCreditoManager().buscarPorId(((LineaCreditoCliente)listitem.getValue()).getSolicitudClienteCredito().getId());
 						onLoadDetalleSolicitud(solicitudClienteCredito);
-						
+
 						visibleSolicitud(true);
 						visibleLisPendientes(false);
 						tabHistorial.setDisabled(true);
@@ -750,13 +750,13 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 							rbDesaprueba.setChecked(true);
 						}
 						tabPendientes.setSelected(true);
-							
+
 						Util.disabledBtnAceptar(true, btnAceptar, false);
 						btnAceptar.setVisible(true);
 						disabledControlsSolciitud(true);
 					}
 				});
-				
+
 				item.setValue(lineaCreditoCliente);
 				listHistSolicitudes.appendChild(item);
 			}
@@ -766,7 +766,7 @@ public class WndAprobarLineaCreditoN2 extends WndBase {
 			DlgMessage.error(this.getClass().getName()+" "+e.getMessage());
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 }

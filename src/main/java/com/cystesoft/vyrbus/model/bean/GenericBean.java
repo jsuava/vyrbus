@@ -27,13 +27,13 @@ public class GenericBean implements Serializable  {
     private String ipModificacion;
     private String codigoUsuarioHardware;
 
-    
-    
+
+
     /**
 	 * @return the estadoRegistro
 	 */
-      
-	public String getEstadoRegistro() { 
+
+	public String getEstadoRegistro() {
 		return estadoRegistro;
 	}
 	/**
@@ -42,12 +42,12 @@ public class GenericBean implements Serializable  {
 	public void setEstadoRegistro(String estadoRegistro) {
 		this.estadoRegistro = estadoRegistro;
 	}
-	    
+
 	/**
 	 * @return the fechaInsercion
 	 */
 	public Date getFechaInsercion() {
-		
+
 		return fechaInsercion;
 	}
 	/**
@@ -56,12 +56,12 @@ public class GenericBean implements Serializable  {
 	public void setFechaInsercion(Date fechaInsercion) {
 		this.fechaInsercion = fechaInsercion;
 	}
-	
+
 	/**
 	 * @return the usuarioInsercion
 	 */
 	public String getUsuarioInsercion() {
-		
+
 		return usuarioInsercion;
 	}
 	/**
@@ -70,7 +70,7 @@ public class GenericBean implements Serializable  {
 	public void setUsuarioInsercion(String usuarioInsercion) {
 		this.usuarioInsercion = usuarioInsercion;
 	}
-	
+
 	/**
 	 * @return the ipInsercion
 	 */
@@ -83,7 +83,7 @@ public class GenericBean implements Serializable  {
 	public void setIpInsercion(String ipInsercion) {
 		this.ipInsercion = ipInsercion;
 	}
-	
+
 	/**
 	 * @return the fechaModificacion
 	 */
@@ -109,7 +109,7 @@ public class GenericBean implements Serializable  {
 	public void setUsuarioModificacion(String usuarioModificacion) {
 		this.usuarioModificacion = usuarioModificacion;
 	}
-	
+
 	/**
 	 * @return the ipModificacion
 	 */
@@ -122,23 +122,23 @@ public class GenericBean implements Serializable  {
 	public void setIpModificacion(String ipModificacion) {
 		this.ipModificacion = ipModificacion;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return the codigoUsuarioHardware
 	 */
 	public String getCodigoUsuarioHardware(){
 		return codigoUsuarioHardware;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param codigoUsuarioHardware the codigoUsuarioHardware to set
 	 */
 	public void setCodigoUsuarioHardware (String codigoUsuarioHardware){
 		this.codigoUsuarioHardware=codigoUsuarioHardware;
 	}
-	
-	
-	
+
+
+
 }

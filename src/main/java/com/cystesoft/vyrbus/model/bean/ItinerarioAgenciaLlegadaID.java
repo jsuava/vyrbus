@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 20/08/2012
  */
@@ -18,7 +18,7 @@ public class ItinerarioAgenciaLlegadaID extends GenericBean implements Serializa
 	private static final long serialVersionUID = 1L;
 	private Long idItinerario;
 	private Integer idAgencia;
-	
+
 	/**
 	 * @param idItinerario
 	 * @param idAgencia
@@ -30,7 +30,7 @@ public class ItinerarioAgenciaLlegadaID extends GenericBean implements Serializa
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public ItinerarioAgenciaLlegadaID() {
 		super();

@@ -4,6 +4,7 @@ package com.cystesoft.vyrbus.service.fe;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Logger;
+
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 import javax.xml.ws.WebEndpoint;
@@ -14,14 +15,14 @@ import javax.xml.ws.WebServiceClient;
  * Generated source version: 2.0
  * <p>
  * An example of how this class may be used:
- * 
+ *
  * <pre>
 * MEFEService service = new MEFEService();
 * IMEFEService portType = service.getBasicHttpBindingIMEFEService();
 * portType.setVenta(...);
  * </pre>
  * </p>
- * 
+ *
  */
 @WebServiceClient(name = "MEFEService", targetNamespace = "http://tempuri.org/", wsdlLocation = "http://192.168.50.5:8085/MEFEService.svc?wsdl")
 public class MEFEService extends Service {
@@ -52,7 +53,7 @@ public class MEFEService extends Service {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return returns IMEFEService
 	 */
 	@WebEndpoint(name = "BasicHttpBinding_IMEFEService")

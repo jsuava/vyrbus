@@ -30,7 +30,7 @@ import com.cystesoft.vyrbus.service.util.WSMTC;
  */
 public class PasajeroManagerImpl implements PasajeroManager {
 	private PasajeroDAO pasajeroDAO;
-	
+
 	/**
 	 * @return the pasajeroDAO
 	 */
@@ -80,7 +80,7 @@ public class PasajeroManagerImpl implements PasajeroManager {
 	@Transactional
 	public void guardar(Pasajero pasajero) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("tipoDocumento", pasajero.getTipoDocumento());
 			criteriosBusqueda.put("numeroDocumento", pasajero.getNumeroDocumento());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
@@ -88,16 +88,16 @@ public class PasajeroManagerImpl implements PasajeroManager {
 			/*Valida duplicidad del número de Documento del pasajero*/
 			if(result.size()>0)
 				throw new DocumentoPaxDuplicadoException();
-			
+
 			getPasajeroDAO().guardar(pasajero);
-			
-			
+
+
 			/*Cuando el tipo de documento del pasajero es diferente s los personales, envia una alerta*/
 			TipoDocumento tipoDocumento=ServiceLocator.getTipoDocumentoManager().buscarPorId(pasajero.getTipoDocumento().getId().longValue());
 			if(tipoDocumento.getTipo().intValue()!=Constantes.FALSE_VALUE){
 				enviarAlerta(pasajero,tipoDocumento, false);
 			}
-			
+
 		}catch(DocumentoPaxDuplicadoException dpdnex){
 			throw new DocumentoPaxDuplicadoException();
 		}catch(Exception ex){
@@ -112,27 +112,27 @@ public class PasajeroManagerImpl implements PasajeroManager {
 	@Transactional
 	public void actualizar(Pasajero pasajero) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("tipoDocumento", pasajero.getTipoDocumento());
 			criteriosBusqueda.put("numeroDocumento", pasajero.getNumeroDocumento());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resul = getPasajeroDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del número de Documento del pasajero*/
-			for(int r = 0; r < resul.size(); r ++) {
-				Pasajero opasajero= (Pasajero) resul.get(r);
+			for (Object element : resul) {
+				Pasajero opasajero= (Pasajero) element;
 				if (!(opasajero.getId().equals(pasajero.getId())))
 					throw new DocumentoPaxDuplicadoException();
 			}
-			
-		
+
+
 			getPasajeroDAO().actualizar(pasajero);
-		
+
 			/*Cuando el tipo de documento del pasajero es diferente s los personales, envia una alerta*/
 			TipoDocumento tipoDocumento=ServiceLocator.getTipoDocumentoManager().buscarPorId(pasajero.getTipoDocumento().getId().longValue());
 			if(tipoDocumento.getTipo().intValue()!=Constantes.FALSE_VALUE){
 				enviarAlerta(pasajero,tipoDocumento, true);
 			}
-			
+
 		}catch (DocumentoPaxDuplicadoException dpdex){
 			throw new DocumentoPaxDuplicadoException();
 		}catch(Exception ex){
@@ -156,8 +156,8 @@ public class PasajeroManagerImpl implements PasajeroManager {
 	public ArrayList<Pasajero> buscarPorFullTextIndex(String[] nombres) throws Exception{
 		return getPasajeroDAO().buscarPorFullTextIndex(nombres);
 	}
-	
-	
+
+
 	public static void enviarAlerta(Pasajero pasajero,TipoDocumento tipoDocumento, boolean update){
 		try {
 			String mensaje="Se ha "+(update?"actualizado":"registrado")+" el Siguiente Pasajero con un tipo de "+tipoDocumento.getDenominacion()+" ";
@@ -165,9 +165,9 @@ public class PasajeroManagerImpl implements PasajeroManager {
 			mensaje+="\n Número :"+pasajero.getNumeroDocumento();
 			mensaje+="\n Pasajero :"+pasajero.toString();
 			mensaje+="\n Usuario :"+pasajero.getUsuarioModificacion();
-			
+
 			String toAddress="jabanto@tepsa.com.pe";
-						
+
 			//Envia E-Mail
 			mensaje+="\n\n NOTA: [Este buzon es de envio automático, por favor no responda.]";
 			DestinatariosEmails window = new DestinatariosEmails();

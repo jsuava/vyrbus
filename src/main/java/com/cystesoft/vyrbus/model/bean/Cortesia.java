@@ -21,10 +21,10 @@ public class Cortesia extends GenericBean implements java.io.Serializable {
 	private Date fechaCaducidad;
 	private String personaAutoriza;
 	private Integer anioCumpleanios;
-	private Integer porcentaje;	
+	private Integer porcentaje;
 	private AutorizadorCortesia autorizadorCortesia;
 	private String detalleMotivoCortesia;
-	
+
 	private String numeroControl;		//No Mapeado
 
 	public Cortesia() {
@@ -197,8 +197,8 @@ public class Cortesia extends GenericBean implements java.io.Serializable {
 	 */
 	public void setPorcentaje(Integer porcentaje) {
 		this.porcentaje = porcentaje;
-	}	
-	
+	}
+
 	/**
 	 * @return then Autorizador cortesia.
 	 */
@@ -206,7 +206,7 @@ public class Cortesia extends GenericBean implements java.io.Serializable {
 		return this.autorizadorCortesia;
 	}
 	/**
-	 * 
+	 *
 	 * @param autorizadorCortesia the autorizadorCortesia to set
 	 */
 	public void setAutorizadorCortesia(AutorizadorCortesia  autorizadorCortesia){

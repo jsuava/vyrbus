@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 13/09/2012
  */
@@ -17,5 +17,5 @@ import java.io.Serializable;
 public class TerminalOrigenNullException extends Exception implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 }

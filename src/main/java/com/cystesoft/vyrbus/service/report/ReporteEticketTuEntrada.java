@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 19/08/2015
  * Hora			: 12:32:56
@@ -26,11 +26,11 @@ public class ReporteEticketTuEntrada implements JRDataSource {
 
 	private List<VentaPasaje> lstSales;
 	private int index=-1;
-	
+
 	public ReporteEticketTuEntrada(List<VentaPasaje> lstSales){
 		this.lstSales=lstSales;
 	}
-	
+
 
 	@Override
 	public Object getFieldValue(JRField field) throws JRException {
@@ -66,7 +66,7 @@ public class ReporteEticketTuEntrada implements JRDataSource {
 			value=(lstSales.get(index).getCliente()!=null?lstSales.get(index).getCliente().toString():"");
 		else if("rucEmpresa".equals(fieldName))
 			value=(lstSales.get(index).getCliente()!=null?lstSales.get(index).getCliente().getNumeroDocumento():"");
-		
+
 		return value;
 	}
 
@@ -76,6 +76,6 @@ public class ReporteEticketTuEntrada implements JRDataSource {
 		index++;
 		return (index<lstSales.size());
 	}
-	
+
 
 }

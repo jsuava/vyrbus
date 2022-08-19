@@ -4,25 +4,25 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 public class CarteraCliente extends GenericBean implements Serializable{
 	private static final long serialVersionUID = 1L;
-	
+
 	private Long id;
 	private Usuario usuario;
 	private Cliente cliente;
 	private SolicitudCartera solicitudCartera;
 	private double baseHistorica;
 	private Date fechaAsignacion;
-	private Date fechaSuspension; 
+	private Date fechaSuspension;
 	private String estadoCartera;
-	
+
 	private LineaCreditoCliente lineaCreditoCliente; //No mapeado
-	
-	
+
+
 	public Long getId() {
 		return id;
 	}
@@ -83,7 +83,7 @@ public class CarteraCliente extends GenericBean implements Serializable{
 	public void setLineaCreditoCliente(LineaCreditoCliente lineaCreditoCliente) {
 		this.lineaCreditoCliente = lineaCreditoCliente;
 	}
-	
-	
+
+
 
 }

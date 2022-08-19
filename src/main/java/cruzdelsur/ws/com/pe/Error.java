@@ -9,11 +9,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for Error complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="Error">
  *   &lt;complexContent>
@@ -26,8 +26,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Error", propOrder = { "code", "message" })
@@ -40,10 +40,10 @@ public class Error {
 
 	/**
 	 * Gets the value of the code property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getCode() {
 		return code;
@@ -51,11 +51,11 @@ public class Error {
 
 	/**
 	 * Sets the value of the code property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setCode(JAXBElement<String> value) {
 		this.code = (value);
@@ -63,10 +63,10 @@ public class Error {
 
 	/**
 	 * Gets the value of the message property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getMessage() {
 		return message;
@@ -74,11 +74,11 @@ public class Error {
 
 	/**
 	 * Sets the value of the message property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setMessage(JAXBElement<String> value) {
 		this.message = (value);

@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for ResultBiometrico complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="ResultBiometrico">
  *   &lt;complexContent>
@@ -26,8 +26,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ResultBiometrico", propOrder = { "_return", "errores",
@@ -43,7 +43,7 @@ public class ResultBiometrico {
 
 	/**
 	 * Gets the value of the return property.
-	 * 
+	 *
 	 */
 	public boolean isReturn() {
 		return _return;
@@ -51,7 +51,7 @@ public class ResultBiometrico {
 
 	/**
 	 * Sets the value of the return property.
-	 * 
+	 *
 	 */
 	public void setReturn(boolean value) {
 		this._return = value;
@@ -59,9 +59,9 @@ public class ResultBiometrico {
 
 	/**
 	 * Gets the value of the errores property.
-	 * 
+	 *
 	 * @return possible object is {@link Errores }
-	 * 
+	 *
 	 */
 	public Errores getErrores() {
 		return errores;
@@ -69,10 +69,10 @@ public class ResultBiometrico {
 
 	/**
 	 * Sets the value of the errores property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Errores }
-	 * 
+	 *
 	 */
 	public void setErrores(Errores value) {
 		this.errores = value;
@@ -80,7 +80,7 @@ public class ResultBiometrico {
 
 	/**
 	 * Gets the value of the exception property.
-	 * 
+	 *
 	 */
 	public boolean isException() {
 		return exception;
@@ -88,7 +88,7 @@ public class ResultBiometrico {
 
 	/**
 	 * Sets the value of the exception property.
-	 * 
+	 *
 	 */
 	public void setException(boolean value) {
 		this.exception = value;

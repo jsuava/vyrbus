@@ -7,7 +7,7 @@ package com.cystesoft.vyrbus.service.exceptions;
  */
 public class ClienteException extends Exception {
 	private static final long serialVersionUID = 1L;
-	
+
 	public static final int CLIENTE_NULL=1;
 	public static final int NO_EXISTE=2;
 	public static final int SOLICITUD_CARTERA=3;
@@ -16,11 +16,11 @@ public class ClienteException extends Exception {
 	public static final int NO_DIRECCION=6;
 
 	private Integer tipo;
-	
+
 	public ClienteException(){
 		super();
 	}
-	
+
 	public ClienteException(Integer tipo){
 		this.tipo=tipo;
 	}

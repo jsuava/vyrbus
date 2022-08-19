@@ -48,9 +48,9 @@ public class URLLabel extends Label implements Serializable {
 		Rectangle r;
 		super.paint(g);
 		r = g.getClipBounds();
-		g.drawLine(0, 
-				r.height - this.getFontMetrics(this.getFont()).getDescent(), 
-				this.getFontMetrics(this.getFont()).stringWidth(this.getText()), 
+		g.drawLine(0,
+				r.height - this.getFontMetrics(this.getFont()).getDescent(),
+				this.getFontMetrics(this.getFont()).stringWidth(this.getText()),
 				r.height - this.getFontMetrics(this.getFont()).getDescent());
 	}
 

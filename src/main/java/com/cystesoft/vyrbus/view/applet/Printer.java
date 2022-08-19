@@ -7,6 +7,11 @@
  */
 package com.cystesoft.vyrbus.view.applet;
 
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,15 +31,9 @@ import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.PrinterName;
 import javax.swing.JApplet;
-import javax.swing.JLabel;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.FlowLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 
 /**
@@ -55,13 +54,13 @@ public class Printer extends JApplet implements ActionListener {
 	 * This label contains the type format to printer
 	 */
 	private String formato;
-	
+
 	/**
 	 * This string contains the escape sequence to enable condensed mode
 	 */
 	private static final String ACTIVATE_CONDENSED = Character.toString((char) 15);
 //	private static final String FORWARD_PAGE = Character.toString((char) 12);
-    
+
 	/**
      * This label contain a message telling user the print was successful (Part 1)
      * */
@@ -71,24 +70,24 @@ public class Printer extends JApplet implements ActionListener {
      * This label contain a message telling user the print was successful (Part 2)
      * */
     private JLabel lblSuccessFullMesagePart2 = new JLabel("");
-    
+
     /**
      * This button allow the user try to print again the receipt (just in case the communication with the port failed)
      */
     private JButton btnImprimir = new JButton("Reintentar");
-    
-	
+
+
 	public Printer() {
-		
+
 	}
-	
+
 	@Override
 	public void init() {
 		super.init();
 		addContents();
 		retrieveParameters();
 		btnImprimir.addActionListener(this);
-		
+
 		/*	DESCOMENTAR LAS SIGUIENTES 16 LINEAS EN CASO SE QUIERA MOSTRAR EL DIALOGO DEL APPLET */
 		if(isPrinterConfigured()){
 			print(this.getUrlFile());
@@ -103,15 +102,15 @@ public class Printer extends JApplet implements ActionListener {
 			}
 		}else{
 			int valor = JOptionPane.showOptionDialog(this, "No se pudo encontrar una impresora configurada.\nPor " +
-					"favor primero configure la impresora predeterminada y luego pulse el boton Reintentar para continuar con la impresión.", 
-					"TEPSA :: VyR-Reintentar imprimir", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, 
+					"favor primero configure la impresora predeterminada y luego pulse el boton Reintentar para continuar con la impresión.",
+					"TEPSA :: VyR-Reintentar imprimir", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
 					new Object[]{"Reintentar", "Cerrar"}, "Reintentar");
 			if(valor==JOptionPane.YES_OPTION)
 				print(this.getUrlFile());
 		}
 		/*	FIN	*/
 	}
-	
+
 	/**
 	 * Valida que se tenga configurada la impresora.
 	 * @return Boolean
@@ -120,12 +119,12 @@ public class Printer extends JApplet implements ActionListener {
 		lblSuccessFullMesagePart1.setText("Se está comprobando la existencia de");
 		lblSuccessFullMesagePart2.setText("la impresora. Por favor espere...");
 		PrintService service = PrintServiceLookup.lookupDefaultPrintService();
-				
+
 		if(service==null){
 			/*	COMENTAR LAS SIGUIENTES 6 LINEAS SI SE DESEA MOSTRAR EL DIALOGO DEL APPLET	*/
 //			int valor = JOptionPane.showOptionDialog(this, "No se pudo encontrar una impresora configurada.\nPor " +
-//					"favor primero configure la impresora predeterminada y luego pulse el boton Reintentar para continuar con la impresión.", 
-//					"TEPSA :: VyR-Reintentar imprimir", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, 
+//					"favor primero configure la impresora predeterminada y luego pulse el boton Reintentar para continuar con la impresión.",
+//					"TEPSA :: VyR-Reintentar imprimir", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
 //					new Object[]{"Reintentar", "Cerrar"}, "Reintentar");
 //			if(valor==JOptionPane.YES_OPTION)
 //				print();
@@ -134,15 +133,15 @@ public class Printer extends JApplet implements ActionListener {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Realizamos la recepción de todos los parametros enviados al APPLET
 	 */
 	private void retrieveParameters(){
 		if(getParameter("namePrinter")!=null)
 			namePrinter=getParameter("namePrinter");
-		
-		
+
+
 		urlDocumento = getParameter("urlDocumento");
 		formato = getParameter("formato");
 		if(formato.equals("MANIFIESTO_PAX")){
@@ -152,7 +151,7 @@ public class Printer extends JApplet implements ActionListener {
 			urlDocumento1 = getParameter("urlDocumento1");
 		}
 	}
-	
+
 	/**
 	 * Agregamos los controles al contenedor de objetos.
 	 */
@@ -166,7 +165,7 @@ public class Printer extends JApplet implements ActionListener {
 		container.add(btnImprimir);
 		/*	FIN	*/
 	}
-	
+
 	/**
 	 * Evento click del boton.
 	 * @param e	: Evento.
@@ -176,21 +175,21 @@ public class Printer extends JApplet implements ActionListener {
 		if(e.getSource()==btnImprimir)
 			print(this.getUrlFile());
 	}
-	
+
 //	public void print(String urlFile){
 //		/*	COMENTA ESTAS 2 LINEAS SI SE DESEA MOSTRAR EL DIALOGO DEL APPLET	*/
 ////		if(!isPrinterConfigured())
 ////			return;
 //		/*	FIN	*/
-//		
+//
 ////		PrintService service = PrintServiceLookup.lookupDefaultPrintService();
-//		
+//
 //		AttributeSet aset=new HashAttributeSet();
 //		aset.add(new PrinterName("EPSON LX-300+ /II", null));
-//		
+//
 //		PrintService[] service = PrintServiceLookup.lookupPrintServices(null, null);
 //		service=PrintServiceLookup.lookupPrintServices(null, aset);
-//    	
+//
 //		PrintRequestAttributeSet atributos = new HashPrintRequestAttributeSet();
 //		DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
 ////		DocPrintJob pj = service.createPrintJob();
@@ -215,15 +214,15 @@ public class Printer extends JApplet implements ActionListener {
 //	        }
 //		}
 //	}
-	
 
-	
+
+
 	public void print(String urlFile){
 		/*	COMENTA ESTAS 2 LINEAS SI SE DESEA MOSTRAR EL DIALOGO DEL APPLET	*/
 //		if(!isPrinterConfigured())
 //			return;
 		/*	FIN	*/
-				
+
 		DocPrintJob pj = null;
 		/*Valida si se esta enviando el nombre de la impresora donde debe imprimir, caso contrario buscara una predeterninada*/
 		if(namePrinter==null){
@@ -234,19 +233,19 @@ public class Printer extends JApplet implements ActionListener {
 			/*By name Printer*/
 			AttributeSet aset=new HashAttributeSet();
 			aset.add(new PrinterName(namePrinter, null));
-			
+
 			PrintService[] service = PrintServiceLookup.lookupPrintServices(null, null);
 			service=PrintServiceLookup.lookupPrintServices(null, aset);
 			pj = service[0].createPrintJob();
 		}
-		
+
 		byte[] bytes;
 		bytes = this.getDataFile(urlFile);
-				
+
 		if(bytes!=null){
 			DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
 	        Doc doc = new SimpleDoc(bytes, flavor, null);
-	        try{	        	
+	        try{
 	        	PrintRequestAttributeSet atributos = new HashPrintRequestAttributeSet();
 	            pj.print(doc, atributos);
 	            String messagePart1 = "Se esta imprimiendo el documento enviado a la impresora...";
@@ -263,11 +262,11 @@ public class Printer extends JApplet implements ActionListener {
 	        }
 		}
 	}
-	
+
 	public String getUrlFile() {
         return urlDocumento;
     }
-	
+
 	/**
 	 * Obtenemos el contenido del archivo para realizar la impresion.
 	 * @param urlPath	: Ruta del archivo a leer.
@@ -282,29 +281,29 @@ public class Printer extends JApplet implements ActionListener {
         	URL url = new URL(urlPath);
         	InputStream is = url.openStream();
             BufferedReader di = new BufferedReader(new InputStreamReader(is));
-            
+
             do{
             	linea = di.readLine();
-            	
+
             	if(linea == null)
                     break;
                 else
                     contenido.append(linea + "\n");
-                
+
             }while(true);
 //            contenido.append(FORWARD_PAGE);
             datos = contenido.toString().getBytes();
-            
+
         }catch (IOException ex) {
-        	int valor = JOptionPane.showOptionDialog(this, "No se pudo encontrar el archivo.\n"+ex.getMessage()+"\n¿Desea volver a intentar la impresion del documento?", 
-					"TEPSA :: VyR-Reintentar imprimir", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, 
+        	int valor = JOptionPane.showOptionDialog(this, "No se pudo encontrar el archivo.\n"+ex.getMessage()+"\n¿Desea volver a intentar la impresion del documento?",
+					"TEPSA :: VyR-Reintentar imprimir", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
 					new Object[]{"Si", "No"}, "Reintentar");
 			if(valor==JOptionPane.YES_OPTION)
 				print(this.getUrlFile());
         }
         return datos;
     }
-	
+
 	/**
 	 * Muestra los mensajes de error.
 	 * @param errorMessage		: Texto a mostrar en el mensaje.
@@ -316,6 +315,6 @@ public class Printer extends JApplet implements ActionListener {
         lblSuccessFullMesagePart1.setText(messagePart1);
         lblSuccessFullMesagePart2.setText(messagePart2);
         if(showErrorMessage)
-            JOptionPane.showMessageDialog(this, errorMessage, "TEPSA VyR", JOptionPane.ERROR_MESSAGE);        
+            JOptionPane.showMessageDialog(this, errorMessage, "TEPSA VyR", JOptionPane.ERROR_MESSAGE);
     }
 }

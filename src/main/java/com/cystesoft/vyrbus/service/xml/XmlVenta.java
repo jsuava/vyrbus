@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 24/10/2016
  * Hora			: 15:21:41
@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType
 public class XmlVenta implements Serializable{
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Boolean v0_ExcesoEquipaje;
@@ -47,7 +47,7 @@ public class XmlVenta implements Serializable{
 	private String v992_CentroCosto;
 	private String v993_FechaEmision;
 	private String v994_AgenciaEmison;
-	private String v995_UsuarioEmision;	
+	private String v995_UsuarioEmision;
 	private String z_CodigoBarraSunat;
 	private String z_QR;
 //	private String v997_CodigoBarraEmbarque;
@@ -317,7 +317,7 @@ public class XmlVenta implements Serializable{
 	public void setV995_UsuarioEmision(String v995_UsuarioEmision) {
 		this.v995_UsuarioEmision = v995_UsuarioEmision;
 	}
-	
+
 	/**
 	 * @return the v0_ObserImport
 	 */
@@ -342,7 +342,7 @@ public class XmlVenta implements Serializable{
 	public void setZ_CodigoBarraSunat(String z_CodigoBarraSunat) {
 		this.z_CodigoBarraSunat = z_CodigoBarraSunat;
 	}
-	
+
 	/**
 	 * @return the z_ticket
 	 */
@@ -403,5 +403,5 @@ public class XmlVenta implements Serializable{
 	public void setZ_QR(String z_QR) {
 		this.z_QR = z_QR;
 	}
-	
+
 }

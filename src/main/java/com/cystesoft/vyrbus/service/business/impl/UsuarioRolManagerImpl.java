@@ -13,14 +13,14 @@ import com.cystesoft.vyrbus.service.business.UsuarioRolManager;
 import com.cystesoft.vyrbus.service.exceptions.UsuarioRolDuplicadoException;
 
 public class UsuarioRolManagerImpl  implements UsuarioRolManager{
-	
+
 	private UsuarioRolDAO usuarioRolDAO;
-	
-	
+
+
 	public UsuarioRolDAO getUsuarioRolDAO(){
 		return usuarioRolDAO;
 	}
-	
+
 	public void setUsuarioRolDAO(UsuarioRolDAO usuarioRolDAO){
 		this.usuarioRolDAO=usuarioRolDAO;
 	}
@@ -60,16 +60,16 @@ public class UsuarioRolManagerImpl  implements UsuarioRolManager{
 	@Transactional
 	public void guardar(UsuarioRol usuarioRol) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("rol", usuarioRol.getRol());
 			criteriosBusqueda.put("usuario", usuarioRol.getUsuario());
 			List<?> resultUsuarioRol = getUsuarioRolDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Usuario y el Rol*/
 			if(resultUsuarioRol.size()>0)
 				throw new UsuarioRolDuplicadoException();
-			
+
 			getUsuarioRolDAO().guardar(usuarioRol);
-			
+
 		}catch (UsuarioRolDuplicadoException urdex) {
 			throw new UsuarioRolDuplicadoException();
 		}
@@ -83,23 +83,23 @@ public class UsuarioRolManagerImpl  implements UsuarioRolManager{
 	@Transactional
 	public void actualizar(UsuarioRol usuarioRol) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("rol", usuarioRol.getRol());
 			criteriosBusqueda.put("usuario", usuarioRol.getUsuario());
 			List<?> resultUsuarioRol = getUsuarioRolDAO().buscarPorX(criteriosBusqueda, null);
 			/*Valida duplicidad del Usuario y el Rol*/
-			for(int r = 0; r < resultUsuarioRol.size(); r ++) {
-				UsuarioRol oUsuarioRol  = (UsuarioRol) resultUsuarioRol.get(r);
+			for (Object element : resultUsuarioRol) {
+				UsuarioRol oUsuarioRol  = (UsuarioRol) element;
 					if (!(oUsuarioRol.getRol().getId() == usuarioRol.getRol().getId()) && (oUsuarioRol.getUsuario().getId() == usuarioRol.getUsuario().getId()) )
 						throw new UsuarioRolDuplicadoException();
 				}
-			
+
 			getUsuarioRolDAO().actualizar(usuarioRol);
-			
+
 		}catch (UsuarioRolDuplicadoException urdex) {
 			throw new UsuarioRolDuplicadoException();
 		}
-		
+
 	}
 
 	/*
@@ -109,7 +109,7 @@ public class UsuarioRolManagerImpl  implements UsuarioRolManager{
 	@Override
 	@Transactional
 	public void activaInactiva(UsuarioRolID usuarioRolID, String estado) throws Exception {
-		getUsuarioRolDAO().activaInactiva(usuarioRolID, estado);	
+		getUsuarioRolDAO().activaInactiva(usuarioRolID, estado);
 	}
 
 	/* (non-Javadoc)
@@ -137,8 +137,8 @@ public class UsuarioRolManagerImpl  implements UsuarioRolManager{
 	public List<UsuarioRol> buscarPorX(String campo, Object[] criterios,List<String> criteriosOrdenar, String estadoRegistro)throws Exception {
 		return getUsuarioRolDAO().buscarPorX(campo, criterios, criteriosOrdenar, estadoRegistro);
 	}
-	
-	
+
+
 
 
 }

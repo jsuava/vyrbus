@@ -33,13 +33,13 @@ import com.cystesoft.vyrbus.view.ui.WndFiltrarParametros;
 import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
 
 /**
- * 
+ *
  * @author José Abanto
  *
  */
 public class WndOpcionMenu extends WndOpcionesMantenimiento {
 	private static final long serialVersionUID = -312924285889846936L;
-	
+
 	private Textbox txtDenominacion;
 	private Textbox txtNombreObjeto;
 	private Textbox txtUrl;
@@ -47,13 +47,13 @@ public class WndOpcionMenu extends WndOpcionesMantenimiento {
 	private Spinner spOrden;
 	private Checkbox ckbHabilitado;
 	private Checkbox ckbMenuPadre;
-	
+
 
 	private OpcionMenu opcionMenu = null;
-	
+
 	private TreeMap<String, Object> condicionBusqueda = null;
 	private List<String> criteriosOrdenar = null;
-	
+
 
 	/*
 	 * (non-Javadoc)
@@ -70,7 +70,7 @@ public class WndOpcionMenu extends WndOpcionesMantenimiento {
 		ckbMenuPadre = (Checkbox) this.getFellow("ckbMenuPadre");
 	}
 
-	
+
 
 	/*
 	 * (non-Javadoc)
@@ -78,14 +78,14 @@ public class WndOpcionMenu extends WndOpcionesMantenimiento {
 	 */
 	@Override
 	public void onCreate() throws Exception {
-		criteriosOrdenar = new ArrayList<String>();
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("opcionMenuPadre");
 		criteriosOrdenar.add("denominacion");
-		
+
 	    UtilData.cargarDataCombo(cmbOpcionMenuPadre,OpcionMenu.class, false);
 	}
-	
-	
+
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onNew()
@@ -105,14 +105,14 @@ public class WndOpcionMenu extends WndOpcionesMantenimiento {
 	public void onClose() {
 		closeTabWindow();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onSearch()
 	 */
 	@Override
 	public void onSearch() throws Exception {
-		condicionBusqueda = new TreeMap<String, Object>();
+		condicionBusqueda = new TreeMap<>();
 		final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
 
 		oWndFiltrar.addParameter("Denominación", OpcionMenu.class);
@@ -123,11 +123,11 @@ public class WndOpcionMenu extends WndOpcionesMantenimiento {
 
 			@Override
 			public void onEvent(Event event) throws Exception {
-								
+
 				if (oWndFiltrar.getParameterValue("Denominación") instanceof OpcionMenu){
 					OpcionMenu opcionMenu = new OpcionMenu();
 					opcionMenu.setId(((OpcionMenu) oWndFiltrar.getParameterValue("Denominación")).getId());
-					
+
 					listarOpcionMenul(ServiceLocator.getOpcionMenuManager().buscarMenus(opcionMenu.getId(),null));
 				}else{
 					String estadoRegistro = Constantes.VALUE_ACTIVO;
@@ -137,7 +137,7 @@ public class WndOpcionMenu extends WndOpcionesMantenimiento {
 				}
 			}
 		});
-		
+
 	}
 
 	/*
@@ -146,8 +146,8 @@ public class WndOpcionMenu extends WndOpcionesMantenimiento {
 	 */
 	@Override
 	public void onRefresh(int tab) throws Exception {
-	
-		
+
+
 	}
 
 	/*
@@ -160,7 +160,7 @@ public class WndOpcionMenu extends WndOpcionesMantenimiento {
 			UtilData.cargarDataCombo(cmbOpcionMenuPadre, OpcionMenu.class, false);
 			mantenimiento();
 		}
-		
+
 	}
 
 	/*
@@ -169,8 +169,8 @@ public class WndOpcionMenu extends WndOpcionesMantenimiento {
 	 */
 	@Override
 	public void onCancel(int action) throws Exception {
-	
-		
+
+
 	}
 
 	/*
@@ -192,14 +192,14 @@ public class WndOpcionMenu extends WndOpcionesMantenimiento {
 				else if (txtUrl.getText().trim().isEmpty())
 					throw new OpcionMenuUrlNullException();
 			}
-				
-				
-			
+
+
+
 			if (action==ACTION_NEW)
 				opcionMenu=new OpcionMenu();
 			else
 				opcionMenu.setId(new Integer(textboxId.getText()));
-					
+
 //			opcionMenu.setDenominacion(txtDenominacion.getText().trim().toUpperCase());
 			opcionMenu.setDenominacion(txtDenominacion.getText().trim());
 			opcionMenu.setNombreObjeto(txtNombreObjeto.getText().trim());
@@ -209,7 +209,7 @@ public class WndOpcionMenu extends WndOpcionesMantenimiento {
 				opcionMenuPadre.setId(((OpcionMenu) cmbOpcionMenuPadre.getSelectedItem().getValue()).getId());
 				opcionMenu.setOpcionMenuPadre(opcionMenuPadre);
 			}
-			
+
 			//opcionMenu.setOpcionMenuPadre(opcionMenuPadre);
 			opcionMenu.setOrdenOpcionMenu(spOrden.getValue().intValue());
 			if (ckbHabilitado.isChecked())
@@ -219,24 +219,24 @@ public class WndOpcionMenu extends WndOpcionesMantenimiento {
 				opcionMenu.setHabilitado(Constantes.FALSE_VALUE);
 //				opcionMenu.setHabilitado(Constantes.DESHABILITADO);
 			opcionMenu.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-			
+
 			switch (action) {
 				case ACTION_NEW:
 					UtilData.auditarRegistro(opcionMenu,getUsuario(), Executions.getCurrent());
 					ServiceLocator.getOpcionMenuManager().guardar(opcionMenu);
 					break;
-	
+
 				case ACTION_MODIFY:
 					UtilData.auditarRegistro(opcionMenu, true, getUsuario(), Executions.getCurrent());
 					ServiceLocator.getOpcionMenuManager().actualizar(opcionMenu);
 					break;
 			}
-			
-			condicionBusqueda = new TreeMap<String, Object>();
+
+			condicionBusqueda = new TreeMap<>();
 			condicionBusqueda.put("id", opcionMenu.getId());
 			listarOpcionMenul(ServiceLocator.getOpcionMenuManager().buscarMenus(null,opcionMenu.getId()));
 			//listarOpcionMenul(ServiceLocator.getOpcionMenuMenager().buscarPorX(condicionBusqueda, criteriosOrdenar));
-			
+
 		} catch (OpcionMenuUrlNullException omunex){
 			DlgMessage.information(Messages.getString("WndOpcionMenu.Information.NoUrl"),txtUrl);
 			throw new CancelaGrabacionException();
@@ -259,8 +259,8 @@ public class WndOpcionMenu extends WndOpcionesMantenimiento {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace(); throw new CancelaGrabacionException();
 		}
-	
-		
+
+
 	}
 
 	/*
@@ -276,8 +276,8 @@ public class WndOpcionMenu extends WndOpcionesMantenimiento {
 		else
 			//Anula menu hijo
 			ServiceLocator.getOpcionMenuManager().inactivar(((OpcionMenu) listitem.getValue()).getOpcionMenuPadre().getId().longValue());
-		
-		
+
+
 	}
 
 	/*
@@ -286,8 +286,8 @@ public class WndOpcionMenu extends WndOpcionesMantenimiento {
 	 */
 	@Override
 	public void onPrint(int tab) throws Exception {
-	
-		
+
+
 	}
 
 	/*
@@ -296,8 +296,8 @@ public class WndOpcionMenu extends WndOpcionesMantenimiento {
 	 */
 	@Override
 	public void onExport(int tab) throws Exception {
-	
-		
+
+
 	}
 
 	/*
@@ -306,8 +306,8 @@ public class WndOpcionMenu extends WndOpcionesMantenimiento {
 	 */
 	@Override
 	public void onHelp() throws Exception {
-	
-		
+
+
 	}
 
 	/*
@@ -321,20 +321,20 @@ public class WndOpcionMenu extends WndOpcionesMantenimiento {
 		}
 	}
 
-	
+
 	private void listarOpcionMenul(List<OpcionMenu> lstOpcionMenus){
 		Listitem item = null;
 		Listcell cell = null;
 		Util.limpiarListbox(listboxLista);
-		Integer x = 0;
-		
+		int x = 0;
+
 		/*Recupera los Menus padres asociados a los hijos*/
 		for(OpcionMenu oOpcionMenu : lstOpcionMenus){
 			if (oOpcionMenu.getOpcionMenuPadre()!=null){
-				item = new Listitem();			
+				item = new Listitem();
 				if (oOpcionMenu.getOpcionMenuPadre() !=null){
 					x += +1;
-					cell = new Listcell((x.toString()));
+					cell = new Listcell((Integer.toString(x)));
 					item.appendChild(cell); //Correlativo
 					cell = new Listcell(oOpcionMenu.getOpcionMenuPadre().getDenominacion());
 				}else{
@@ -358,11 +358,11 @@ public class WndOpcionMenu extends WndOpcionesMantenimiento {
 					cell = new Listcell(Constantes.LABEL_INACTIVO_DESCP);
 				item.appendChild(cell);
 				item.setValue(oOpcionMenu);
-				listboxLista.appendChild(item);					
+				listboxLista.appendChild(item);
 			}
 		}
-		
-		
+
+
 		/*Recupera menus sin asociar*/
 		Boolean existe = false;
 		for(OpcionMenu oOpcionMenu : lstOpcionMenus){
@@ -376,8 +376,8 @@ public class WndOpcionMenu extends WndOpcionesMantenimiento {
 						}
 					}
 				}
-				if (existe==false){
-					item = new Listitem();			
+				if (!existe){
+					item = new Listitem();
 					if (oOpcionMenu.getOpcionMenuPadre() !=null){
 						cell = new Listcell((""));
 						item.appendChild(cell); //Correlativo
@@ -405,31 +405,31 @@ public class WndOpcionMenu extends WndOpcionesMantenimiento {
 					item.setValue(oOpcionMenu);
 					listboxLista.appendChild(item);
 				}
-						
+
 			}
-		
+
 		}
-		
-		
-		
-		
+
+
+
+
 	}
-	
+
 	/**
 	 * Recupera datos para la edicion.
 	 * @throws Exception
 	 */
 	private void mantenimiento() throws Exception{
 		ckbMenuPadre.setDisabled(true);
-		
+
 		txtDenominacion.setText("");
 		txtNombreObjeto.setText("");
 		txtUrl.setText("");
-		
+
 		opcionMenu=new OpcionMenu();
 		Listitem listitem = listboxLista.getItemAtIndex(listboxLista.getSelectedIndex());
 		opcionMenu = ServiceLocator.getOpcionMenuManager().buscarPorId(((OpcionMenu) listitem.getValue()).getOpcionMenuPadre().getId().longValue());
-				
+
 		textboxId.setText(opcionMenu.getId().toString());
 		/*verifica si es un menu padre*/
 		if (opcionMenu.getNombreObjeto()==null){
@@ -449,7 +449,7 @@ public class WndOpcionMenu extends WndOpcionesMantenimiento {
 			txtNombreObjeto.setDisabled(false);
 			txtUrl.setDisabled(false);
 		}
-		
+
 		spOrden.setValue(opcionMenu.getOrdenOpcionMenu());
 //		if (opcionMenu.getHabilitado().equals(Constantes.HABILITADO))
 		if (opcionMenu.getHabilitado().equals(Constantes.TRUE_VALUE))
@@ -457,15 +457,14 @@ public class WndOpcionMenu extends WndOpcionesMantenimiento {
 		else
 			ckbHabilitado.setChecked(false);
 	}
-	
-	
-	public  void onCheckEsMenuPadre () throws Exception{	
+
+
+	public  void onCheckEsMenuPadre () throws Exception{
 		if (ckbMenuPadre.isChecked()){
 			ArrayList<OpcionMenu> lstOpcionMenu = ServiceLocator.getOpcionMenuManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
 			cmbOpcionMenuPadre.getItems().clear();
 			UtilData.cargarGenericData(cmbOpcionMenuPadre, false);
-			for (int l = 0; l < lstOpcionMenu.size(); l ++) {
-				OpcionMenu opcionMenu = lstOpcionMenu.get(l);
+			for (OpcionMenu opcionMenu : lstOpcionMenu) {
 				Comboitem oComboitem = new Comboitem();
 				oComboitem.setLabel(opcionMenu.getDenominacion());
 				oComboitem.setValue(opcionMenu);
@@ -484,11 +483,11 @@ public class WndOpcionMenu extends WndOpcionesMantenimiento {
 				txtUrl.setText(opcionMenu.getUrl());
 				Util.seleccionarValorItemCombo(OpcionMenu.class, cmbOpcionMenuPadre, opcionMenu.getOpcionMenuPadre().getId());
 			}
-			
+
 		}
-		
-		
+
+
 	}
-	
+
 
 }

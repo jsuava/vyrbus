@@ -1,7 +1,7 @@
 /**
  * Proyecto		: MANTYBUS
  * Sistema		: Sistema de Mantenimiento de Buses
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 21/09/2011
  */
@@ -27,7 +27,7 @@ public class SocketMessagingException extends Exception implements Serializable 
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	/**
 	 * @return the message
 	 */
@@ -41,5 +41,5 @@ public class SocketMessagingException extends Exception implements Serializable 
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
+
 }

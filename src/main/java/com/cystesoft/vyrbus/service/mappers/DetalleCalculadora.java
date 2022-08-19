@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 13/04/2013
  */
@@ -18,7 +18,7 @@ public class DetalleCalculadora implements Serializable, Cloneable {
 	private String denominacion;
 	private Double tarifa;
 	private Double descuento;
-	
+
 	/**
 	 * @return the denominacion
 	 */
@@ -31,7 +31,7 @@ public class DetalleCalculadora implements Serializable, Cloneable {
 	public void setDenominacion(String denominacion) {
 		this.denominacion = denominacion;
 	}
-	
+
 	/**
 	 * @return the tarifa
 	 */
@@ -44,7 +44,7 @@ public class DetalleCalculadora implements Serializable, Cloneable {
 	public void setTarifa(Double tarifa) {
 		this.tarifa = tarifa;
 	}
-	
+
 	/**
 	 * @return the descuento
 	 */

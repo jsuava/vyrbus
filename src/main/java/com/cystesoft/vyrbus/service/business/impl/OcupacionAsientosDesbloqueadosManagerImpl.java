@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 01/08/2013
  */
@@ -19,7 +19,7 @@ import com.cystesoft.vyrbus.service.business.OcupacionAsientosDesbloqueadosManag
  */
 public class OcupacionAsientosDesbloqueadosManagerImpl implements OcupacionAsientosDesbloqueadosManager {
 	private OcupacionAsientosDesbloqueadosDAO ocupacionAsientosDesbloqueadosDAO;
-	
+
 	/**
 	 * @return the ocupacionAsientosDesbloqueadosDAO
 	 */
@@ -35,8 +35,8 @@ public class OcupacionAsientosDesbloqueadosManagerImpl implements OcupacionAsien
 			OcupacionAsientosDesbloqueadosDAO ocupacionAsientosDesbloqueadosDAO) {
 		this.ocupacionAsientosDesbloqueadosDAO = ocupacionAsientosDesbloqueadosDAO;
 	}
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.OcupacionAsientosDesbloqueadosManager#guardar(com.tepsa.sisvyr.model.bean.OcupacionAsientosDesbloqueados)
 	 */
@@ -48,6 +48,6 @@ public class OcupacionAsientosDesbloqueadosManagerImpl implements OcupacionAsien
 	}
 
 
-	
+
 
 }

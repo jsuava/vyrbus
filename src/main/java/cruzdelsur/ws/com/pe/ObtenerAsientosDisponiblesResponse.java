@@ -10,11 +10,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -26,8 +26,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "obtenerAsientosDisponiblesResult" })
@@ -39,10 +39,10 @@ public class ObtenerAsientosDisponiblesResponse {
 
 	/**
 	 * Gets the value of the obtenerAsientosDisponiblesResult property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}
 	 *         {@link ArrayOfDistribucion }{@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<ArrayOfDistribucion> getObtenerAsientosDisponiblesResult() {
 		return obtenerAsientosDisponiblesResult;
@@ -50,11 +50,11 @@ public class ObtenerAsientosDisponiblesResponse {
 
 	/**
 	 * Sets the value of the obtenerAsientosDisponiblesResult property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}
 	 *            {@link ArrayOfDistribucion }{@code >}
-	 * 
+	 *
 	 */
 	public void setObtenerAsientosDisponiblesResult(
 			JAXBElement<ArrayOfDistribucion> value) {

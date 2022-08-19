@@ -13,7 +13,7 @@ public interface TipoMovimientoManager {
 	public void guardar(TipoMovimiento condicionVenta)throws Exception;
 	public void actualizar(TipoMovimiento condicionVenta)throws Exception;
 	public void inactivar(Long id)throws Exception;
-	
+
 	/**
 	 * Realiza la busqueda de lostipo de movimiento de acuerdo a lso criterios enviados
 	 * @param campo				: Campo que debera cumplir con los criterios enviados.

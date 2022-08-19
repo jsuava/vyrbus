@@ -10,11 +10,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for Nota complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="Nota">
  *   &lt;complexContent>
@@ -46,8 +46,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Nota", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", propOrder = {
@@ -95,9 +95,9 @@ public class Nota {
 
 	/**
 	 * Gets the value of the agenciaID property.
-	 * 
+	 *
 	 * @return possible object is {@link Long }
-	 * 
+	 *
 	 */
 	public Long getAgenciaID() {
 		return agenciaID;
@@ -105,9 +105,9 @@ public class Nota {
 
 	/**
 	 * Sets the value of the agenciaID property.
-	 * 
+	 *
 	 * @param value allowed object is {@link Long }
-	 * 
+	 *
 	 */
 	public void setAgenciaID(Long value) {
 		this.agenciaID = value;
@@ -115,10 +115,10 @@ public class Nota {
 
 	/**
 	 * Gets the value of the cliente property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link Cliente
 	 *         }{@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<Cliente> getCliente() {
 		return cliente;
@@ -126,21 +126,21 @@ public class Nota {
 
 	/**
 	 * Sets the value of the cliente property.
-	 * 
+	 *
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link Cliente
 	 *              }{@code >}
-	 * 
+	 *
 	 */
 	public void setCliente(JAXBElement<Cliente> value) {
-		this.cliente = ((JAXBElement<Cliente>) value);
+		this.cliente = (value);
 	}
 
 	/**
 	 * Gets the value of the codigoTipoNota property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getCodigoTipoNota() {
 		return codigoTipoNota;
@@ -148,21 +148,21 @@ public class Nota {
 
 	/**
 	 * Sets the value of the codigoTipoNota property.
-	 * 
+	 *
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 * 
+	 *
 	 */
 	public void setCodigoTipoNota(JAXBElement<String> value) {
-		this.codigoTipoNota = ((JAXBElement<String>) value);
+		this.codigoTipoNota = (value);
 	}
 
 	/**
 	 * Gets the value of the descripcionSustento property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getDescripcionSustento() {
 		return descripcionSustento;
@@ -170,21 +170,21 @@ public class Nota {
 
 	/**
 	 * Sets the value of the descripcionSustento property.
-	 * 
+	 *
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 * 
+	 *
 	 */
 	public void setDescripcionSustento(JAXBElement<String> value) {
-		this.descripcionSustento = ((JAXBElement<String>) value);
+		this.descripcionSustento = (value);
 	}
 
 	/**
 	 * Gets the value of the descripcionTipoNota property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getDescripcionTipoNota() {
 		return descripcionTipoNota;
@@ -192,21 +192,21 @@ public class Nota {
 
 	/**
 	 * Sets the value of the descripcionTipoNota property.
-	 * 
+	 *
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 * 
+	 *
 	 */
 	public void setDescripcionTipoNota(JAXBElement<String> value) {
-		this.descripcionTipoNota = ((JAXBElement<String>) value);
+		this.descripcionTipoNota = (value);
 	}
 
 	/**
 	 * Gets the value of the documentoReferencia property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement
 	 *         }{@code <}{@link DocumentoReferencia }{@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<DocumentoReferencia> getDocumentoReferencia() {
 		return documentoReferencia;
@@ -214,21 +214,21 @@ public class Nota {
 
 	/**
 	 * Sets the value of the documentoReferencia property.
-	 * 
+	 *
 	 * @param value allowed object is {@link JAXBElement
 	 *              }{@code <}{@link DocumentoReferencia }{@code >}
-	 * 
+	 *
 	 */
 	public void setDocumentoReferencia(JAXBElement<DocumentoReferencia> value) {
-		this.documentoReferencia = ((JAXBElement<DocumentoReferencia>) value);
+		this.documentoReferencia = (value);
 	}
 
 	/**
 	 * Gets the value of the fechaEmision property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getFechaEmision() {
 		return fechaEmision;
@@ -236,21 +236,21 @@ public class Nota {
 
 	/**
 	 * Sets the value of the fechaEmision property.
-	 * 
+	 *
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 * 
+	 *
 	 */
 	public void setFechaEmision(JAXBElement<String> value) {
-		this.fechaEmision = ((JAXBElement<String>) value);
+		this.fechaEmision = (value);
 	}
 
 	/**
 	 * Gets the value of the horaEmision property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getHoraEmision() {
 		return horaEmision;
@@ -258,20 +258,20 @@ public class Nota {
 
 	/**
 	 * Sets the value of the horaEmision property.
-	 * 
+	 *
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 * 
+	 *
 	 */
 	public void setHoraEmision(JAXBElement<String> value) {
-		this.horaEmision = ((JAXBElement<String>) value);
+		this.horaEmision = (value);
 	}
 
 	/**
 	 * Gets the value of the igv property.
-	 * 
+	 *
 	 * @return possible object is {@link Double }
-	 * 
+	 *
 	 */
 	public Double getIgv() {
 		return igv;
@@ -279,9 +279,9 @@ public class Nota {
 
 	/**
 	 * Sets the value of the igv property.
-	 * 
+	 *
 	 * @param value allowed object is {@link Double }
-	 * 
+	 *
 	 */
 	public void setIgv(Double value) {
 		this.igv = value;
@@ -289,10 +289,10 @@ public class Nota {
 
 	/**
 	 * Gets the value of the informacionAdicional property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement
 	 *         }{@code <}{@link InformacionAdicional }{@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<InformacionAdicional> getInformacionAdicional() {
 		return informacionAdicional;
@@ -300,21 +300,21 @@ public class Nota {
 
 	/**
 	 * Sets the value of the informacionAdicional property.
-	 * 
+	 *
 	 * @param value allowed object is {@link JAXBElement
 	 *              }{@code <}{@link InformacionAdicional }{@code >}
-	 * 
+	 *
 	 */
 	public void setInformacionAdicional(JAXBElement<InformacionAdicional> value) {
-		this.informacionAdicional = ((JAXBElement<InformacionAdicional>) value);
+		this.informacionAdicional = (value);
 	}
 
 	/**
 	 * Gets the value of the numeroCorrelativo property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getNumeroCorrelativo() {
 		return numeroCorrelativo;
@@ -322,21 +322,21 @@ public class Nota {
 
 	/**
 	 * Sets the value of the numeroCorrelativo property.
-	 * 
+	 *
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 * 
+	 *
 	 */
 	public void setNumeroCorrelativo(JAXBElement<String> value) {
-		this.numeroCorrelativo = ((JAXBElement<String>) value);
+		this.numeroCorrelativo = (value);
 	}
 
 	/**
 	 * Gets the value of the numeroSerie property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getNumeroSerie() {
 		return numeroSerie;
@@ -344,21 +344,21 @@ public class Nota {
 
 	/**
 	 * Sets the value of the numeroSerie property.
-	 * 
+	 *
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 * 
+	 *
 	 */
 	public void setNumeroSerie(JAXBElement<String> value) {
-		this.numeroSerie = ((JAXBElement<String>) value);
+		this.numeroSerie = (value);
 	}
 
 	/**
 	 * Gets the value of the rucEmpresa property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getRucEmpresa() {
 		return rucEmpresa;
@@ -366,20 +366,20 @@ public class Nota {
 
 	/**
 	 * Sets the value of the rucEmpresa property.
-	 * 
+	 *
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 * 
+	 *
 	 */
 	public void setRucEmpresa(JAXBElement<String> value) {
-		this.rucEmpresa = ((JAXBElement<String>) value);
+		this.rucEmpresa = (value);
 	}
 
 	/**
 	 * Gets the value of the subtotal property.
-	 * 
+	 *
 	 * @return possible object is {@link Double }
-	 * 
+	 *
 	 */
 	public Double getSubtotal() {
 		return subtotal;
@@ -387,9 +387,9 @@ public class Nota {
 
 	/**
 	 * Sets the value of the subtotal property.
-	 * 
+	 *
 	 * @param value allowed object is {@link Double }
-	 * 
+	 *
 	 */
 	public void setSubtotal(Double value) {
 		this.subtotal = value;
@@ -397,10 +397,10 @@ public class Nota {
 
 	/**
 	 * Gets the value of the tipoComprobanteID property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getTipoComprobanteID() {
 		return tipoComprobanteID;
@@ -408,20 +408,20 @@ public class Nota {
 
 	/**
 	 * Sets the value of the tipoComprobanteID property.
-	 * 
+	 *
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 * 
+	 *
 	 */
 	public void setTipoComprobanteID(JAXBElement<String> value) {
-		this.tipoComprobanteID = ((JAXBElement<String>) value);
+		this.tipoComprobanteID = (value);
 	}
 
 	/**
 	 * Gets the value of the tipoMonedaSoles property.
-	 * 
+	 *
 	 * @return possible object is {@link Boolean }
-	 * 
+	 *
 	 */
 	public Boolean isTipoMonedaSoles() {
 		return tipoMonedaSoles;
@@ -429,9 +429,9 @@ public class Nota {
 
 	/**
 	 * Sets the value of the tipoMonedaSoles property.
-	 * 
+	 *
 	 * @param value allowed object is {@link Boolean }
-	 * 
+	 *
 	 */
 	public void setTipoMonedaSoles(Boolean value) {
 		this.tipoMonedaSoles = value;
@@ -439,9 +439,9 @@ public class Nota {
 
 	/**
 	 * Gets the value of the tipoVenta property.
-	 * 
+	 *
 	 * @return possible object is {@link Integer }
-	 * 
+	 *
 	 */
 	public Integer getTipoVenta() {
 		return tipoVenta;
@@ -449,9 +449,9 @@ public class Nota {
 
 	/**
 	 * Sets the value of the tipoVenta property.
-	 * 
+	 *
 	 * @param value allowed object is {@link Integer }
-	 * 
+	 *
 	 */
 	public void setTipoVenta(Integer value) {
 		this.tipoVenta = value;
@@ -459,9 +459,9 @@ public class Nota {
 
 	/**
 	 * Gets the value of the total property.
-	 * 
+	 *
 	 * @return possible object is {@link Double }
-	 * 
+	 *
 	 */
 	public Double getTotal() {
 		return total;
@@ -469,9 +469,9 @@ public class Nota {
 
 	/**
 	 * Sets the value of the total property.
-	 * 
+	 *
 	 * @param value allowed object is {@link Double }
-	 * 
+	 *
 	 */
 	public void setTotal(Double value) {
 		this.total = value;
@@ -479,9 +479,9 @@ public class Nota {
 
 	/**
 	 * Gets the value of the usuarioID property.
-	 * 
+	 *
 	 * @return possible object is {@link Long }
-	 * 
+	 *
 	 */
 	public Long getUsuarioID() {
 		return usuarioID;
@@ -489,9 +489,9 @@ public class Nota {
 
 	/**
 	 * Sets the value of the usuarioID property.
-	 * 
+	 *
 	 * @param value allowed object is {@link Long }
-	 * 
+	 *
 	 */
 	public void setUsuarioID(Long value) {
 		this.usuarioID = value;
@@ -499,10 +499,10 @@ public class Nota {
 
 	/**
 	 * Gets the value of the usuarioInsercion property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getUsuarioInsercion() {
 		return usuarioInsercion;
@@ -510,21 +510,21 @@ public class Nota {
 
 	/**
 	 * Sets the value of the usuarioInsercion property.
-	 * 
+	 *
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 * 
+	 *
 	 */
 	public void setUsuarioInsercion(JAXBElement<String> value) {
-		this.usuarioInsercion = ((JAXBElement<String>) value);
+		this.usuarioInsercion = (value);
 	}
 
 	/**
 	 * Gets the value of the usuarioModificacion property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getUsuarioModificacion() {
 		return usuarioModificacion;
@@ -532,13 +532,13 @@ public class Nota {
 
 	/**
 	 * Sets the value of the usuarioModificacion property.
-	 * 
+	 *
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 * 
+	 *
 	 */
 	public void setUsuarioModificacion(JAXBElement<String> value) {
-		this.usuarioModificacion = ((JAXBElement<String>) value);
+		this.usuarioModificacion = (value);
 	}
 
 }

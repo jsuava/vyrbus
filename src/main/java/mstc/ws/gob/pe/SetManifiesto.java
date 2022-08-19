@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -24,8 +24,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "oManifiesto" })
@@ -36,9 +36,9 @@ public class SetManifiesto {
 
 	/**
 	 * Gets the value of the oManifiesto property.
-	 * 
+	 *
 	 * @return possible object is {@link Manifiesto }
-	 * 
+	 *
 	 */
 	public Manifiesto getOManifiesto() {
 		return oManifiesto;
@@ -46,10 +46,10 @@ public class SetManifiesto {
 
 	/**
 	 * Sets the value of the oManifiesto property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Manifiesto }
-	 * 
+	 *
 	 */
 	public void setOManifiesto(Manifiesto value) {
 		this.oManifiesto = value;

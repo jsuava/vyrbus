@@ -9,11 +9,11 @@ import com.cystesoft.vyrbus.service.business.TransbordoManager;
 
 public class TransbordoManagerImpl implements  TransbordoManager {
 	private TransbordoDAO transbordoDAO;
-	
+
 	public void setTransbordoDAO(TransbordoDAO transbordoDAO){
 		this.transbordoDAO=transbordoDAO;
 	}
-	
+
 	public TransbordoDAO getTransbordoPasajerosDAO(){
 		return transbordoDAO;
 	}
@@ -26,8 +26,8 @@ public class TransbordoManagerImpl implements  TransbordoManager {
 	@Transactional
 	public void guardar(Transbordo transbordo) throws Exception {
 		getTransbordoPasajerosDAO().guardar(transbordo);
-		
+
 	}
-	
-	
+
+
 }

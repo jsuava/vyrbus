@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 30/09/2014
  * Hora			: 15:45:08
@@ -20,6 +20,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.cystesoft.vyrbus.model.bean.VentaPasaje;
+import com.cystesoft.vyrbus.service.report.ReporteManifiesto;
+import com.cystesoft.vyrbus.service.util.Constantes;
+
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -27,10 +31,6 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
-
-import com.cystesoft.vyrbus.model.bean.VentaPasaje;
-import com.cystesoft.vyrbus.service.report.ReporteManifiesto;
-import com.cystesoft.vyrbus.service.util.Constantes;
 
 /**
  * @author JABANTO
@@ -54,12 +54,12 @@ public class ReporteManifiestoServlet extends HttpServlet {
 		super.destroy(); // Just puts "destroy" string in log
 		// Put your code here
 	}
-	
+
 	/**
 	 * The doGet method of the servlet. <br>
 	 *
 	 * This method is called when a form has its tag value method equals to get.
-	 * 
+	 *
 	 * @param request the request send by the client to the server
 	 * @param response the response send by the server to the client
 	 * @throws ServletException if an error occurred
@@ -67,15 +67,15 @@ public class ReporteManifiestoServlet extends HttpServlet {
 	 */
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		processRequest(request, response);	
+		processRequest(request, response);
 	}
 
-	
+
 	/**
 	 * The doPost method of the servlet. <br>
 	 *
 	 * This method is called when a form has its tag value method equals to post.
-	 * 
+	 *
 	 * @param request the request send by the client to the server
 	 * @param response the response send by the server to the client
 	 * @throws ServletException if an error occurred
@@ -83,7 +83,7 @@ public class ReporteManifiestoServlet extends HttpServlet {
 	 */
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		processRequest(request, response);	
+		processRequest(request, response);
 	}
 
 	/**
@@ -95,7 +95,7 @@ public class ReporteManifiestoServlet extends HttpServlet {
 	public void init() throws ServletException {
 		// Put your code here
 	}
-	
+
 	/**
 	 * @param request
 	 * @param response
@@ -108,10 +108,10 @@ public class ReporteManifiestoServlet extends HttpServlet {
 	    response.setHeader("Pragma", "no-cache");
 	    response.setDateHeader("Expires", 0);
 	    response.setContentType("application/pdf");
-	    
+
 	    ServletOutputStream out = response.getOutputStream();
-	    
-	    
+
+
 	    /*Recupera variables de sesión*/
 	    @SuppressWarnings("unchecked")
 		List<VentaPasaje>lstPasajeros=(List<VentaPasaje>)request.getSession().getAttribute("listPasajeros");
@@ -137,18 +137,18 @@ public class ReporteManifiestoServlet extends HttpServlet {
 	    String numeroAutoSunat=(String)request.getSession().getAttribute("numeroAutoSunat");
 	    String totalPasajeros=(String)request.getSession().getAttribute("totalPasajeros");
 	    String dniTripulante=(String)request.getSession().getAttribute("dniTripulante");
-	    
+
 	    try {
 	    	JasperReport reporte;
-	    	
+
 	    	//Version 5.1.0
 //	    	reporte = (JasperReport)JRLoader.loadObject(getServletContext().getRealPath("WEB-INF/jasper/ReporteManifiesto.jasper"));
-	    	
+
 	    	//Version 6.19.1
 	    	InputStream inputStream = getServletContext().getResourceAsStream("WEB-INF/jasper/ReporteManifiesto.jasper");
-	    	reporte = (JasperReport)JRLoader.loadObject(inputStream);	    	
-	    	
-	    	Map<String, Object> parameters = new HashMap<String, Object>();
+	    	reporte = (JasperReport)JRLoader.loadObject(inputStream);
+
+	    	Map<String, Object> parameters = new HashMap<>();
 			parameters.put("usuario",usuario);
 			parameters.put("agencia",agencia);
 			parameters.put("origen",origen);
@@ -176,14 +176,14 @@ public class ReporteManifiestoServlet extends HttpServlet {
 			parameters.put("telefonoCentral", Constantes.nro_telefono);
 			parameters.put("direccionOfCentral", Constantes.direccion_empresa);
 			parameters.put("centroComputo", Constantes.centro_computo);
-						
+
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, new ReporteManifiesto(lstPasajeros));
 			JRExporter jrExporter = new JRPdfExporter();
-			
+
 			jrExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
 			jrExporter.setParameter(JRExporterParameter.OUTPUT_STREAM, out);
 			jrExporter.exportReport();
-			
+
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

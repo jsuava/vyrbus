@@ -4,17 +4,17 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 
+ *
  * @author Jose Avalos
  *
  */
 public class AutorizadorMotivoCortesia extends GenericBean implements Serializable {
-	private static final long serialVersionUID = 1L;	
+	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private AutorizadorCortesia autorizadorCortesia;
 	private MotivoCortesia motivoCortesia;
 	private List<String> listMotivos;		//No mapeado;
-	
+
 	/**
 	 * @return the id
 	 */
@@ -27,7 +27,7 @@ public class AutorizadorMotivoCortesia extends GenericBean implements Serializab
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	/**
 	 * @return the autorizadorCortesia
 	 */
@@ -40,7 +40,7 @@ public class AutorizadorMotivoCortesia extends GenericBean implements Serializab
 	public void setAutorizadorCortesia(AutorizadorCortesia autorizadorCortesia) {
 		this.autorizadorCortesia = autorizadorCortesia;
 	}
-	
+
 	/**
 	 * @return the motivoCortesia
 	 */

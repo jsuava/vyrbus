@@ -17,7 +17,7 @@ public class LiquidacionOficina extends GenericBean implements java.io.Serializa
 
 	//no mapeado
 	private Usuario usuario;
-	
+
 	public LiquidacionOficina() {
 	}
 
@@ -85,7 +85,7 @@ public class LiquidacionOficina extends GenericBean implements java.io.Serializa
 	public void setFechaLiquidacion(Date fechaLiquidacion) {
 		this.fechaLiquidacion = fechaLiquidacion;
 	}
-	
+
 	public void setUsuario(Usuario  usuario){
 		this.usuario=usuario;
 	}

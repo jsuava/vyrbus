@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 04/05/2012
  */
@@ -48,12 +48,12 @@ public class PasajeroDAOImpl extends GenericDAOImpl implements PasajeroDAO {
 	@Override
 	public Pasajero buscarPorId(Long id) {
 //		Pasajero pasajero=(Pasajero) super.findById(Pasajero.class, id);
-//		
+//
 //		try{
 //			/**Valida datos del pax con los de la Reniec- 05/09/2013 - jabanto*/
 //			pasajero=ServiceLocator.getReniecManager().validarPaxConReniec(pasajero);
 //		}catch (Exception ex){}
-//		
+//
 		return (Pasajero) super.findById(Pasajero.class, id);
 	}
 
@@ -93,7 +93,7 @@ public class PasajeroDAOImpl extends GenericDAOImpl implements PasajeroDAO {
 		for(String valor : nombres){
 			criterio = (criterio.equals("")?"":(criterio+" & ")) + valor+"%";
 		}
-		
+
 		String sql = "SELECT p.pasajero_id, p.c_apepat, c_apemat, c_nombre, td.tipdoc_id, td.c_denominacion, p.c_numdoc, p.n_kilometros, " +
 				"sx.sexo_id, sx.c_denominacion, p.c_nomape, p.c_fecnac " +
 				"FROM vrmpasajero p " +
@@ -101,11 +101,11 @@ public class PasajeroDAOImpl extends GenericDAOImpl implements PasajeroDAO {
 				"INNER JOIN vrmsexo sx ON sx.sexo_id=p.sexo_id " +
 				"WHERE CATSEARCH(c_nomape, '"+criterio+"', null) > 0 AND p.c_estreg='"+Constantes.VALUE_ACTIVO+"' AND ROWNUM<=1000 ORDER BY p.c_nomape";
 		log.info(sql);
-		
-		List<?> result = getSession().createSQLQuery(sql).list(); 
-		ArrayList<Pasajero> lstResult = new ArrayList<Pasajero>();
-		for(int i=0; i<result.size(); i++){
-			Object[] obj = (Object[])result.get(i);
+
+		List<?> result = getSession().createSQLQuery(sql).list();
+		ArrayList<Pasajero> lstResult = new ArrayList<>();
+		for (Object element : result) {
+			Object[] obj = (Object[])element;
 			Pasajero pasajero = new Pasajero();
 			pasajero.setId(((BigDecimal)obj[0]).longValue());
 			pasajero.setApellidoPaterno(obj[1].toString());
@@ -127,5 +127,5 @@ public class PasajeroDAOImpl extends GenericDAOImpl implements PasajeroDAO {
 		}
 		return lstResult;
 	}
-	
+
 }

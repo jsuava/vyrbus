@@ -3,7 +3,7 @@ package com.cystesoft.vyrbus.service.exceptions;
 import java.io.Serializable;
 
 /**
- * 
+ *
  * @author José Abanto.
  *
  */

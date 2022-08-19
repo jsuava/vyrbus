@@ -7,12 +7,12 @@ import java.util.TreeMap;
 import com.cystesoft.vyrbus.model.bean.CarteraCliente;
 
 /**
- * 
+ *
  * @author JABANTO
  *
  */
 public interface CarteraClienteDAO extends GenericDAO {
-	
+
 	/**
 	 * Buscar Cartera de clientes por estado
 	 * @param estado		: Estado a consultar
@@ -20,7 +20,7 @@ public interface CarteraClienteDAO extends GenericDAO {
 	 * @return
 	 */
 	public ArrayList<CarteraCliente> buscarPorEstadoRegistro(String estado, String criterioOrden);
-	
+
 	/**
 	 * Buscar cartera de clientes a travez de un array de criterios.
 	 * @param criteriosBusqueda	: array de criterios para la busqueda.
@@ -33,22 +33,22 @@ public interface CarteraClienteDAO extends GenericDAO {
 	 * @param carteraCliente : Class carteraCliente
 	 */
 	public void guardar(CarteraCliente carteraCliente);
-	
+
 	/**
 	 * Actualiza cartera de Cliente
 	 * @param carteraCliente	: Class carteraCliente
 	 * @return
 	 */
 	public void actualizar (CarteraCliente  carteraCliente);
-	
+
 	/**
 	 * Incativa cartera de cliente
 	 * @param id : Identificador de la cartera de cliente
 	 */
 	public void inactivar(Long id);
-	
+
 	/**
-	 * Buscar clientes signados a una determinada cartera 
+	 * Buscar clientes signados a una determinada cartera
 	 * @param idFuncionario	: Identificador del Funcionario
 	 * @param idCliente		: Identificador del Cliente
 	 * @return

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 20/08/2015
  * Hora			: 15:54:59
@@ -25,16 +25,16 @@ import net.sf.jasperreports.engine.JRField;
 public class ReporteLiquidacionTuEntrada implements JRDataSource{
 	List<Liquidacion> lstLiquidacion;
 	private int index=-1;
-	
-	
+
+
 	public ReporteLiquidacionTuEntrada(){
 		super();
 	}
-	
+
 	public ReporteLiquidacionTuEntrada(List<Liquidacion> lstLiquidacion){
 		this.lstLiquidacion=lstLiquidacion;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.jasperreports.engine.JRDataSource#getFieldValue(net.sf.jasperreports.engine.JRField)
 	 */
@@ -64,12 +64,12 @@ public class ReporteLiquidacionTuEntrada implements JRDataSource{
 			value=Util.toNumberFormat(lstLiquidacion.get(index).getMontoContado()+lstLiquidacion.get(index).getMontoTarjetaVisa(),2);
 		else if("totalALiquidar".equals(fieldName))
 			value=Util.toNumberFormat(lstLiquidacion.get(index).getMontoContado(), 2);
-		
+
 		return value;
 	}
 
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see net.sf.jasperreports.engine.JRDataSource#next()
 	 */

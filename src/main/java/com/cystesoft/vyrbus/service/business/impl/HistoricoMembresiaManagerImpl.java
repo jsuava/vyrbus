@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 25/05/2013
  */
@@ -19,7 +19,7 @@ import com.cystesoft.vyrbus.service.business.HistoricoMembresiaManager;
  */
 public  class HistoricoMembresiaManagerImpl implements HistoricoMembresiaManager {
 	private HistoricoMembresiaDAO historicoMembresiaDAO;
-	
+
 	/**
 	 * @return the historicoMembresiaDAO
 	 */
@@ -36,7 +36,7 @@ public  class HistoricoMembresiaManagerImpl implements HistoricoMembresiaManager
 		this.historicoMembresiaDAO = historicoMembresiaDAO;
 	}
 
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.HistoricoMembresiaManager#guardar(com.tepsa.sisvyr.model.bean.HistoricoMembresia)
 	 */
@@ -49,5 +49,5 @@ public  class HistoricoMembresiaManagerImpl implements HistoricoMembresiaManager
 
 
 
-	
+
 }

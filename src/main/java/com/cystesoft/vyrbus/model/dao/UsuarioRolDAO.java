@@ -8,7 +8,7 @@ import com.cystesoft.vyrbus.model.bean.UsuarioRol;
 import com.cystesoft.vyrbus.model.bean.UsuarioRolID;
 
 /**
- * 
+ *
  * @author José Abanto
  *
  */
@@ -20,40 +20,40 @@ public interface UsuarioRolDAO extends GenericDAO {
 	 * @return
 	 */
 	public ArrayList<UsuarioRol> buscarPorEstadoRegistro(String estado, String criterioOrden);
-	
+
 	/**
 	 * Busqueda por un ArraLis de Parametros.
-	 * @param criteriosBusqueda : 
+	 * @param criteriosBusqueda :
 	 * @param criteriosOrdenar	: lista de criterios para el orden de los datos
 	 * @return
 	 */
 	public ArrayList<UsuarioRol> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
-	
+
 	/**
-	 * Busqueda por id 
+	 * Busqueda por id
 	 * @param id : identificador del Rol
 	 * @return
 	 */
 	public UsuarioRol buscarPorId(Long id);
-	
+
 	/**
-	 * Guarda 
-	 * @param rol 
+	 * Guarda
+	 * @param rol
 	 */
 	public void guardar(UsuarioRol usuarioRol);
-	
+
 	/***
 	 * Actualiza Usuario rol
-	 * @param usuarioRol : Class UsuarioRol 
+	 * @param usuarioRol : Class UsuarioRol
 	 */
 	public void actualizar(UsuarioRol usuarioRol);
-	
+
 	/**
 	 * Inactiva UsuarioRol
 	 * @param id
 	 */
 	public void activaInactiva(UsuarioRolID usuarioRolID, String estado);
-	
+
 	/**
 	 * Buscar por el Id del Usuario.
 	 * @param idRol : Identificador del Rol.
@@ -70,8 +70,8 @@ public interface UsuarioRolDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public UsuarioRol buscarXidUsuarioAndIdRol(Integer idUsuario, Integer idRol)throws Exception;
-	
-	
+
+
 	/**
 	 * Realiza la busqueda de los usuarios y rol de acuerdo a lso criterios enviados
 	 * @param campo				: Campo que debera cumplir con los criterios enviados.

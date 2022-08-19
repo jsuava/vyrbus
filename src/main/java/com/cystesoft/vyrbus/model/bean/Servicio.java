@@ -8,7 +8,7 @@ package com.cystesoft.vyrbus.model.bean;
  */
 public class Servicio extends GenericBean implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer id;
 	private String 	denominacion;
 	private String 	nombreCorto;
@@ -19,19 +19,19 @@ public class Servicio extends GenericBean implements java.io.Serializable {
 	private Integer numeroAsientosPiso2;
 	private Integer numeroFilasPiso2;
 	private Integer numeroColumnasPiso2;
-	
+
 	//no mapedo
 	private Integer numeroServicios;
 	private Integer totalAsientos;
-	
-	
+
+
 	public Servicio() {
 	}
-	
+
 	public Servicio(Integer id){
 		this.id=id;
 	}
-	
+
 	/**
 	 * @return Objeto id.
 	 */
@@ -44,7 +44,7 @@ public class Servicio extends GenericBean implements java.io.Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	/**
 	 * @return Objeto denominacion.
 	 */
@@ -57,7 +57,7 @@ public class Servicio extends GenericBean implements java.io.Serializable {
 	public void setDenominacion(String denominacion) {
 		this.denominacion = denominacion;
 	}
-	
+
 	/**
 	 * @return Objeto nombreCorto.
 	 */
@@ -160,14 +160,14 @@ public class Servicio extends GenericBean implements java.io.Serializable {
 	 */
 	public void setNumeroColumnasPiso2(Integer numeroColumnasPiso2) {
 		this.numeroColumnasPiso2 = numeroColumnasPiso2;
-	}	
-	
+	}
+
 	/**
 	 * @return the getNumeroServicios
 	 */
 	public Integer getNumeroServicios(){
 		return numeroServicios;
-	}	
+	}
 	/**
 	 * @param numeroServicios the numeroServicios to set
 	 */

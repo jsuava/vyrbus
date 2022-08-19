@@ -12,14 +12,14 @@ public class GastoBusDAOImpl extends GenericDAOImpl implements GastoBusDAO {
 	@Override
 	public void guardar(GastoBus gastoBus) {
 		super.save(gastoBus);
-		
+
 	}
 
-	
+
 	@Override
 	public void delete(Long idLiquidacionBus) {
 		String sql= "DELETE FROM vrtgasbus WHERE LiqBus_ID="+idLiquidacionBus;
-		
+
 		getSession().createSQLQuery(sql).executeUpdate();
 	}
 
@@ -29,7 +29,7 @@ public class GastoBusDAOImpl extends GenericDAOImpl implements GastoBusDAO {
 	public ArrayList<GastoBus> buscarPorX(TreeMap<String, Object> criteriosBusqueda,List<String> criteriosOrdenar) {
 		return (ArrayList<GastoBus>) super.findByX(GastoBus.class, criteriosBusqueda, criteriosOrdenar);
 	}
-	
-	
+
+
 
 }

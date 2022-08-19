@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 08/09/2016
  * Hora			: 14:27:05
@@ -107,10 +107,10 @@ public class VentaPoolManagerImpl implements VentaPoolManager{
 		ventaPool.setLocalidadOrigen(ventaPasaje.getRuta().getLocalidadOrigen());
 		ventaPool.setLocalidadDestino(ventaPasaje.getRuta().getLocalidadDestino());
 		UtilData.auditarRegistro(ventaPool, ventaPasaje.getUsuario(), Executions.getCurrent());
-		
-		
+
+
 		getVentaPoolDAO().guardar(ventaPool);
-		
+
 		return ventaPool;
 	}
 
@@ -130,7 +130,7 @@ public class VentaPoolManagerImpl implements VentaPoolManager{
 	@Override
 	public void inactivar(Long id) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/* (non-Javadoc)

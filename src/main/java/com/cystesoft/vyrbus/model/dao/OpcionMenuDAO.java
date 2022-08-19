@@ -7,7 +7,7 @@ import java.util.TreeMap;
 import com.cystesoft.vyrbus.model.bean.OpcionMenu;
 
 /**
- * 
+ *
  * @author José Abanto.
  *
  */
@@ -15,53 +15,53 @@ import com.cystesoft.vyrbus.model.bean.OpcionMenu;
 public interface OpcionMenuDAO extends GenericDAO {
 	/**
 	 * Busqueda por estado registro
-	 * @param estado		: estado 
+	 * @param estado		: estado
 	 * @param criterioOrden	: lista de criterios para el orden de los datos
 	 * @return
 	 */
 	public ArrayList<OpcionMenu> buscarPorEstadoRegistro(String estado, String criterioOrden);
-	
+
 	/**
 	 * Busqueda por un ArraLis de Parametros.
-	 * @param criteriosBusqueda : 
+	 * @param criteriosBusqueda :
 	 * @param criteriosOrdenar	: lista de criterios para el orden de los datos
 	 * @return
 	 */
 	public ArrayList<OpcionMenu> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
-	
+
 	/**
-	 * Busqueda por id 
+	 * Busqueda por id
 	 * @param id : identificador del ObcionMenu
 	 * @return
 	 */
 	public OpcionMenu buscarPorId(Long id);
-	
+
 	/**
-	 * Guarda 
+	 * Guarda
 	 * @param opcionMenu : Class
 	 */
 	public void guardar(OpcionMenu opcionMenu);
-	
+
 	/***
 	 * Actualiza Rol
-	 * @param opcionMenu : Class 
+	 * @param opcionMenu : Class
 	 */
 	public void actualizar(OpcionMenu opcionMenu);
-	
+
 	/**
 	 * Inactivar
-	 * @param id : identificador 
+	 * @param id : identificador
 	 */
 	public void inactivar(Long id);
-	
+
 	/**
 	 * cosnulta menus padres
 	 * @return
 	 */
 	public List<OpcionMenu> buscaMenusPadres();
-	
+
 	/**
-	 * 
+	 *
 	 * @param idMenu
 	 * @param idMenuPadre
 	 * @return

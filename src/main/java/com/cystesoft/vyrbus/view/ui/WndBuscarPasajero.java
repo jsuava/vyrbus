@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: Clase 
+ * Descripción	: Clase
  * Autor		: José Sullo Avalos
  * Fecha		: 09/09/2013
  */
@@ -12,9 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
-import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Caption;
 import org.zkoss.zul.Column;
@@ -63,28 +63,28 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 	public Row rowApeMat;
 	private Listbox lbxPasajeros;
 	private Button btnAceptar;
-	
+
 
 	public Label lblNombre= new Label("NOMBRE (*) :");
 	public Boolean buscaPax=true; //true indica que se realizará la busqueda del un pasajero, false la de un cliente
-	
+
 	@SuppressWarnings("rawtypes")
 	private EventListener oEventListenerSelect;
-	
+
 	private Long idPasajero;
 	private Pasajero pasajero;
-	
+
 	private Cliente cliente;
-	
-	
+
+
 	/**
-	 * 
+	 *
 	 */
 	public WndBuscarPasajero() {
 		super();
 		initComponents();
 	}
-	
+
 	/**
 	 * @return the idPasajero
 	 */
@@ -124,7 +124,7 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.zkoss.zk.ui.AbstractComponent#addEventListener(java.lang.String, org.zkoss.zk.ui.event.EventListener)
@@ -139,7 +139,7 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 		}
 		return resultadoEvento;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
 	 */
@@ -153,7 +153,7 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 //		this.setSizable(false);
 		this.setWidth("400px");
 		this.setVisible(true);
-		
+
 		EventListener<Event> selectEventListener = new EventListener<Event>(){
 			@Override
 			@SuppressWarnings("unchecked")
@@ -168,20 +168,20 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 							//Cuando se  trata de la buqueda de clientes
 							setCliente((Cliente)lbxPasajeros.getSelectedItem().getValue());
 						}
-						
+
 						oEventListenerSelect.onEvent(new Event(com.cystesoft.vyrbus.view.ui.Events.ON_SELECT));
 						oThisWindow.onClose();
 					}
 				}
 			}
 		};
-		
+
 		Groupbox groupbox = new Groupbox();
 		Caption caption = new Caption("Criterios de Busqueda");
 //		groupbox.setMold("3d");
 		groupbox.appendChild(caption);
 		groupbox.setClosable(false);
-		
+
 		Grid grid = new Grid();
 		Columns columns = new Columns();
 		Column column = new Column();
@@ -191,11 +191,11 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 		column.setWidth("68%");
 		columns.appendChild(column);
 		grid.appendChild(columns);
-		
+
 		Rows rows = new Rows();
 		Row row = new Row();
 		row.setSpans("2");
-		
+
 		Radiogroup radiogroup = new Radiogroup();
 		rdPorDocumento= new Radio("Número Documento");
 		rdPorDocumento.setSelected(true);
@@ -203,7 +203,7 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 			@Override
 			public void onEvent(Event e){
 				habilitarDocumento();
-				limpiar();				
+				limpiar();
 			}
 		});
 		radiogroup.appendChild(rdPorDocumento);
@@ -238,10 +238,10 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 		radiogroup.appendChild(button);
 		groupbox.appendChild(radiogroup);
 		row.appendChild(radiogroup);
-		
+
 		rows.appendChild(row);
 		grid.appendChild(rows);
-		
+
 		rowDocumento = new Row();
 		Label label = new Label("DOCUMENTO (*) :");
 		rowDocumento.appendChild(label);
@@ -258,7 +258,7 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 		txtDocumento.setWidth("120px");
 		rowDocumento.appendChild(txtDocumento);
 		rows.appendChild(rowDocumento);
-		
+
 		rowNombre = new Row();
 //		label = new Label("NOMBRE (*) :");
 //		rowNombre.appendChild(label);
@@ -276,7 +276,7 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 		txtNombre.setWidth("160px");
 		rowNombre.appendChild(txtNombre);
 		rows.appendChild(rowNombre);
-		
+
 		rowApePat = new Row();
 		label = new Label("APELLIDO PATERNO (*) :");
 		rowApePat.appendChild(label);
@@ -290,7 +290,7 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 		txtApePat.setWidth("160px");
 		rowApePat.appendChild(txtApePat);
 		rows.appendChild(rowApePat);
-		
+
 		rowApeMat = new Row();
 		label = new Label("APELLIDO MATERNO :");
 		rowApeMat.appendChild(label);
@@ -304,21 +304,21 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 		txtApeMat.setWidth("160px");
 		rowApeMat.appendChild(txtApeMat);
 		rows.appendChild(rowApeMat);
-		
+
 		grid.appendChild(rows);
 		groupbox.appendChild(grid);
 		this.appendChild(groupbox);
-		
+
 		grid = new Grid();
 		rows = new Rows();
 		row = new Row();
 //		row.setSpans("2");
 //		row.appendChild(radiogroup);
 //		rows.appendChild(row);
-		
+
 //		row = new Row();
-		
-		
+
+
 		row = new Row();
 		row.setSpans("2");
 		lbxPasajeros = new Listbox();
@@ -340,7 +340,7 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 		lbxPasajeros.appendChild(listhead);
 		row.appendChild(lbxPasajeros);
 		rows.appendChild(row);
-		
+
 		row = new Row();
 		Div div = new Div();
 		div.setAlign("center");
@@ -350,7 +350,7 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 		btnAceptar.setClass("btnCommandL");
 		div.appendChild(btnAceptar);
 		row.appendChild(div);
-		
+
 		div = new Div();
 		div.setAlign("center");
 		button = new Button("Cancelar");
@@ -366,12 +366,12 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 		div.appendChild(button);
 		row.appendChild(div);
 		rows.appendChild(row);
-		
+
 		grid.appendChild(rows);
 		oThisWindow.appendChild(grid);
-		
+
 		lbxPasajeros.addEventListener(Events.ON_DOUBLE_CLICK, selectEventListener);
-		btnAceptar.addEventListener(Events.ON_CLICK, selectEventListener);		
+		btnAceptar.addEventListener(Events.ON_CLICK, selectEventListener);
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
@@ -380,7 +380,7 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 	public void onCreate() throws Exception {
 		habilitarDocumento();
 	}
-	
+
 	private void habilitarDocumento(){
 		rowDocumento.setVisible(true);
 		rowNombre.setVisible(false);
@@ -388,7 +388,7 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 		rowApeMat.setVisible(false);
 		txtDocumento.setFocus(true);
 	}
-	
+
 	private void habilitarNombres(){
 		rowDocumento.setVisible(false);
 		rowNombre.setVisible(true);
@@ -397,9 +397,9 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 			rowApeMat.setVisible(true);
 		}
 		txtNombre.setFocus(true);
-		
+
 	}
-	
+
 	private void limpiar(){
 		txtDocumento.setText("");
 		txtNombre.setText("");
@@ -407,16 +407,16 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 		txtApeMat.setText("");
 		lbxPasajeros.getItems().clear();
 	}
-	
+
 	private void buscar(){
 		try{
 			ArrayList<Pasajero> lstPasajeros = null;
 			if(rdPorDocumento.isChecked()){
 				if(txtDocumento.getText().trim().equals(""))
 					throw new PasajeroException(PasajeroException.NUMERO_DOCUMENTO_NULL);
-				TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+				TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 				criteriosBusqueda.put("numeroDocumento", txtDocumento.getText().toUpperCase()+"%");
-				List<String> criteriosOrdenar = new ArrayList<String>();
+				List<String> criteriosOrdenar = new ArrayList<>();
 				criteriosOrdenar.add("apellidoPaterno");
 				criteriosOrdenar.add("apellidoMaterno");
 				criteriosOrdenar.add("nombre");
@@ -426,9 +426,9 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 					throw new PasajeroException(PasajeroException.NOMBRE_NULL);
 				else if(txtApePat.getText().trim().equals(""))
 					throw new PasajeroException(PasajeroException.APELLIDO_PATERNO_NULL);
-				
-				String nombres = txtApePat.getText().trim().toUpperCase() + 
-						(txtApeMat.getText().trim().equals("")?"":(" " + txtApeMat.getText().trim().toUpperCase())) + 
+
+				String nombres = txtApePat.getText().trim().toUpperCase() +
+						(txtApeMat.getText().trim().equals("")?"":(" " + txtApeMat.getText().trim().toUpperCase())) +
 						" " + txtNombre.getText().trim().toUpperCase();
 				String[] str1 = nombres.trim().split(" ");
 				lstPasajeros = ServiceLocator.getPasajeroManager().buscarPorFullTextIndex(str1);
@@ -445,22 +445,22 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Lista los resultados de la busqueda
 	 * @param lstRegistros	: Lista de resultados.
 	 * @throws Exception
 	 */
 	private void listarRegistrosPax(ArrayList<Pasajero> lstRegistros)throws Exception {
-		ArrayList<Object> lstPasajeros = new ArrayList<Object>();
+		ArrayList<Object> lstPasajeros = new ArrayList<>();
 //		grpbxListaPasajeros.setVisible(false);
-		
+
 		if(lstRegistros.size()>0){
 //			mantenimientoRegistroPax(lstRegistros.get(0).getId());
 //		}else if(lstRegistros.size()>1){
 			for (int r = 0; r < lstRegistros.size(); r++) {
 				Pasajero oPasajero = lstRegistros.get(r);
-				ArrayList<Object> lstFila = new ArrayList<Object>();
+				ArrayList<Object> lstFila = new ArrayList<>();
 				lstFila.add(oPasajero.getId());
 				lstFila.add(r + 1);
 //				lstFila.add(oPasajero.getTipoDocumento().getDenominacion());
@@ -477,10 +477,10 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 		}
 //		disabledControlsPax(true);
 	}
-	
-	
+
+
 	private void buscarCliente() throws Exception{
-		TreeMap<String, Object>criterisoBusqueda= new TreeMap<String, Object>();
+		TreeMap<String, Object>criterisoBusqueda= new TreeMap<>();
 //		if(rdPorDocumento.isChecked()){
 			if(rdPorDocumento.isChecked())
 				criterisoBusqueda.put("numeroDocumento", txtDocumento.getText().trim());
@@ -488,35 +488,35 @@ public class WndBuscarPasajero extends WndBase implements Serializable {
 				criterisoBusqueda.put("razonSocial", txtNombre.getText().trim().toUpperCase()+"%");
 			criterisoBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<Cliente> listCliente=ServiceLocator.getClienteManager().buscarPorX(criterisoBusqueda, null);
-			
+
 			Util.limpiarListbox(lbxPasajeros);
-			
+
 			int x=0;
 			for (Cliente cliente: listCliente){
 				x++;
-				
+
 				Listitem item= new Listitem();
 				Listcell cell=null;
-				
+
 				cell=new Listcell(String.valueOf(x));
 				cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
-				
+
 				cell=new Listcell(cliente.getNumeroDocumento());
 				cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
-				
+
 				cell=new Listcell(cliente.getRazonSocial());
 				item.appendChild(cell);
-				
+
 				item.setValue(cliente);
 				lbxPasajeros.appendChild(item);
-				
+
 			}
-			
+
 //		}
-		
+
 	}
 
-	
+
 }

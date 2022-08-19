@@ -38,13 +38,13 @@ public class WndImprimir extends WndBase {
 	private Double totalPagar=0.0;
 	private Textbox txtVuelto;
 //	private Button button;
-	
+
 	private String formato;
 	private String msg;
 	private String urlDocumento;
 	private String urlDocumento1;
 	private String urlDocumento2;
-		
+
 	public static final String FORMAT_BOLETO="BOLETO";
 	public static final String FORMAT_BOLETO_IDA_VUELTA="BOLETO_IDA_VUELTA";
 	public static final String FORMAT_LIQUIDACION_TURNO="LIQUIDACION_TURNO";
@@ -69,13 +69,13 @@ public class WndImprimir extends WndBase {
 			lblStatus.setValue(msg);
 			urlDocumento = (String)this.getAttribute("urlDocumento");
 			apltPrinter.setParam("urlDocumento", urlDocumento);
-			
+
 			/*Prueba*/
 //			apltPrinter.setParam("namePrinter", "EPSON LX-300+ /II");
-			
+
 			//Para identificar si se trata del Manifiesto de Pasajeros
 			apltPrinter.setParam("formato", formato);
-			
+
 			if(formato!=null && formato.equals(FORMAT_MANIFIESTO_PAX)){
 				urlDocumento1 = (String)this.getAttribute("urlDocumento1");
 				urlDocumento2 = (String)this.getAttribute("urlDocumento2");
@@ -85,10 +85,10 @@ public class WndImprimir extends WndBase {
 				urlDocumento1 = (String)this.getAttribute("urlDocumento1");
 				apltPrinter.setParam("urlDocumento1", urlDocumento1);
 			}
-			
+
 			if(nControl!=null)
 				lblNumeroControl.setValue(nControl);
-			
+
 			if(showCalculator!=null && showCalculator){
 //				grdApplet.setVisible(false);
 //				grdCalculadora.setWidth("280px");
@@ -100,13 +100,13 @@ public class WndImprimir extends WndBase {
 				column = new Column("Tarifa", null, "90px");
 				columns.appendChild(column);
 				grdCalculadora.appendChild(columns);
-				
+
 				Rows rows = new Rows();
 				Row row = null;
 				Label label = null;
 				Textbox textbox = null;
 				Double dsct = 0.0;
-				Double total = 0.0;
+				double total = 0.0;
 				for(DetalleCalculadora detalle : lstDetalleCalculadora){
 					row = new Row();
 					label = new Label(detalle.getDenominacion());
@@ -129,7 +129,7 @@ public class WndImprimir extends WndBase {
 				textbox.setDisabled(true);
 				row.appendChild(textbox);
 				rows.appendChild(row);
-				
+
 				totalPagar = total-dsct;
 				row = new Row();
 				label = new Label("TOTAL A PAGAR");
@@ -140,7 +140,7 @@ public class WndImprimir extends WndBase {
 				textbox.setDisabled(true);
 				row.appendChild(textbox);
 				rows.appendChild(row);
-				
+
 				row = new Row();
 				label = new Label("EFECTIVO");
 				row.appendChild(label);
@@ -158,7 +158,7 @@ public class WndImprimir extends WndBase {
 				});
 				row.appendChild(dblbxEfectivo);
 				rows.appendChild(row);
-				
+
 				row = new Row();
 				label = new Label("VUELTO");
 				row.appendChild(label);
@@ -167,7 +167,7 @@ public class WndImprimir extends WndBase {
 				txtVuelto.setWidth("40px");
 				row.appendChild(txtVuelto);
 				rows.appendChild(row);
-				
+
 //				row = new Row();
 //				row.setSpans("2");
 //				row.setAlign("center");
@@ -182,7 +182,7 @@ public class WndImprimir extends WndBase {
 //				button.setStyle("font-size:10px");
 //				row.appendChild(button);
 //				rows.appendChild(row);
-				
+
 				grdCalculadora.appendChild(rows);
 				this.appendChild(grdCalculadora);
 				dblbxEfectivo.setFocus(true);

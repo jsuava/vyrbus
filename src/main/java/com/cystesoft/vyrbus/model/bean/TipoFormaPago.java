@@ -13,12 +13,12 @@ public class TipoFormaPago extends GenericBean implements java.io.Serializable {
 	private String nombreCorto;
 	private Integer tipoIngresoLiquidacion;
 	private Integer esPromocion;
-	
+
 	public static final String TIPO_TARJETA = "TARJETA";
 	public static final String TIPO_TRANSFERENCIA = "TRANSFERENCIA";
 	public static final String TIPO_CREDITO = "CREDITO";
 	public static final Integer N_ESPROMOCION = 1;
-	
+
 	public TipoFormaPago() {
 		super();
 	}
@@ -26,12 +26,12 @@ public class TipoFormaPago extends GenericBean implements java.io.Serializable {
 	public TipoFormaPago(Integer id){
 		this.id=id;
 	}
-	
+
 	public TipoFormaPago(Integer id, String denuminacion){
 		this.id=id;
 		this.denominacion = denuminacion;
 	}
-	
+
 	/**
 	 * @return the id
 	 */

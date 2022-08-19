@@ -1,22 +1,20 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 01/04/2014
  */
 package com.cystesoft.vyrbus.model.dao.impl;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.TreeMap;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import com.cystesoft.vyrbus.model.dao.GenericDAO;
@@ -26,7 +24,7 @@ import com.cystesoft.vyrbus.model.dao.GenericDAO;
  *
  */
 public abstract class GenericDAOImpl extends HibernateDaoSupport implements GenericDAO {
-	
+
 protected final Logger log;
 
 	/**
@@ -84,7 +82,7 @@ protected final Logger log;
 		}
 	}
 
-	
+
 
 	/**
 	 * @author jM
@@ -128,7 +126,7 @@ protected final Logger log;
 			}
 		}
 		oCriteria.setMaxResults(1000);
-		return oCriteria.list();		
+		return oCriteria.list();
 	}
 	/*
 	 * (non-Javadoc)
@@ -146,8 +144,8 @@ protected final Logger log;
 		}
 		oCriteria.setMaxResults(1000);
 		return oCriteria.list();
-	}	
-	
+	}
+
 	/**
 	 * Obtiene la fecha y hora del servidor.
 	 * @return
@@ -156,13 +154,13 @@ protected final Logger log;
 		String sql="SELECT TO_CHAR(SYSDATE,'dd/mm/yyyy hh24:MI:ss') FROM DUAL";
 		List<?> result = getSession().createSQLQuery(sql).list();
 		String sdateServer=result.get(0).toString();
-		
+
 		return sdateServer;
 	}
-	
 
-	
-	
+
+
+
 //	/**
 //	 * Realiza la busqueda por los criterios pasados como parametros y los ordena.
 //	 * @param oClass				: Clase a la cualse le aplicara el criterio.
@@ -173,7 +171,7 @@ protected final Logger log;
 //	public List<?> findByX_Order(Class<?> oClass, TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar) {
 //		Criteria oCriteria = getSession().createCriteria(oClass);
 //		for(Entry<?,?> e : criteriosBusqueda.entrySet()) {
-//			if(e.getValue() instanceof String) 
+//			if(e.getValue() instanceof String)
 //				oCriteria.add(Restrictions.ilike((String) e.getKey(), e.getValue()));
 //			else
 //				oCriteria.add(Restrictions.like((String) e.getKey(), e.getValue()));
@@ -182,33 +180,33 @@ protected final Logger log;
 //			oCriteria.addOrder(Order.asc(ordenar));
 //		}
 //		return oCriteria.list();
-//	}	
-	
+//	}
+
 	public void deleted(Class<?> oClass, Long id){
 		StringBuilder hql = new StringBuilder();
-		
+
 		hql.append("DELETE " + oClass.getSimpleName() + " ");
 		hql.append("WHERE id = ?");
-		
+
 		getSession().createQuery(hql.toString()).setLong(0, id).executeUpdate();
 	}
-	
+
 	public void inactivate(Class<?> oClass, Long id) {
-		
-		
-		
+
+
+
 		StringBuilder hql = new StringBuilder();
-		
+
 		hql.append("UPDATE " +  oClass.getSimpleName() + " ");
 		hql.append("SET estadoRegistro = 'I' ");
 		hql.append("WHERE id = ?");
 
 		getSession().createQuery(hql.toString()).setLong(0, id).executeUpdate();
 	}
-	
+
 	public void activate(Class<?> oClass, Long id) {
 		StringBuilder hql = new StringBuilder();
-		
+
 		hql.append("UPDATE " +  oClass.getSimpleName() + " ");
 		hql.append("SET estadoRegistro = 'A' ");
 		hql.append("WHERE id = ?");

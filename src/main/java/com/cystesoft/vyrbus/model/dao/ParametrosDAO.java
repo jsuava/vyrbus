@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 14/05/2013
  */
@@ -21,19 +21,19 @@ public interface ParametrosDAO extends GenericDAO {
 	 * @return
 	 */
 	public Parametros buscarPorEstadoRegistro(String estado);
-	
+
 	/**
 	 * Guarda Parámetros
-	 * @param parametros	
+	 * @param parametros
 	 * @throws Exception
 	 */
 	public void guardar(Parametros parametros) throws Exception;
-	
+
 	/**
 	 * Actualizar parámetros
 	 * @param parametros
 	 * @throws Exception
 	 */
 	public void actualizar(Parametros parametros) throws Exception;
-	
+
 }

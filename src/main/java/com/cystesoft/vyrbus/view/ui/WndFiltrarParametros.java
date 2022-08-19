@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 26/04/2012
  */
@@ -13,9 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.TreeMap;
-
-
-
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
@@ -85,18 +82,18 @@ public class WndFiltrarParametros extends WndBase {
 	@SuppressWarnings("rawtypes")
 	private EventListener oEventListenerFilter;
 
-	private TreeMap<String, Object> lstParametros = new TreeMap<String, Object>();
-	private TreeMap<String, Object> lstParametrosValor = new TreeMap<String, Object>();
-	private TreeMap<String, Object> lstControles = new TreeMap<String, Object>();
-	
-	private ArrayList<Component> lstControless = new ArrayList<Component>();
-	private HashMap<String, Constraint> lstConstraints = new HashMap<String, Constraint>();
+	private TreeMap<String, Object> lstParametros = new TreeMap<>();
+	private TreeMap<String, Object> lstParametrosValor = new TreeMap<>();
+	private TreeMap<String, Object> lstControles = new TreeMap<>();
+
+	private ArrayList<Component> lstControless = new ArrayList<>();
+	private HashMap<String, Constraint> lstConstraints = new HashMap<>();
 	private InputElement inputElementEnfocable;
 	private List<Component>lstComponents = null;
 	//private Div divMantenimiento;
 	private int xc=0; //Para copiar el valor de la fecha inicio a la del final
-	
-	
+
+
 	private Grid oGrid = new Grid();
 	private Rows oRows = new Rows();
 //	private Row oRowSeparador = new Row();
@@ -128,7 +125,7 @@ public class WndFiltrarParametros extends WndBase {
 	 */
 	@Override
 	public void onCreate() {
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -146,41 +143,41 @@ public class WndFiltrarParametros extends WndBase {
 //		this.setWidth("460px");
 	}
 
-	public void generaControles() throws Exception {	
+	public void generaControles() throws Exception {
 		oButton.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@SuppressWarnings("unchecked")
 			@Override
 			public void onEvent(Event event) throws Exception {
 				Boolean bOrigen=false;
 				Boolean bDestino=false;
-				
+
 				/*RECUPERA LOS VALORES DE LOS COMBOBOX*/
 				for(int c = 0; c < lstControless.size(); c ++) {
 					Component oComponent = lstControless.get(c);
-					
+
 					/*Solo se cumple cuando la clase es utilizada mas de una vez. como es el caso de la Localidad*/
 					if (c==0)
 						bOrigen=true;
 					else
 						bOrigen=false;
-					
+
 					if (c==2)
 						bDestino=true;
 					else
 						bDestino=false;
-					
-					
+
+
 					if(oComponent instanceof Combobox) {
 						for (Entry<?,?> e : lstParametros.entrySet()) {
 							Class<?> oClass = (Class<?>) e.getValue();
-															
+
 //							lstParametrosValor.put(e.getKey().toString(), ((Object) ((Combobox) oComponent).getSelectedItem().getValue()));
-							
+
 							if (oClass.equals(TipoAgencia.class) &&  ((Combobox) oComponent).getSelectedItem().getValue() instanceof TipoAgencia){
 								/*BUSQUEDA POR TIPO AGENCIA*/
 								if (getParameterValue(e.getKey().toString()) == null )
 									lstParametrosValor.put(e.getKey().toString(), ((TipoAgencia) ((Combobox) oComponent).getSelectedItem().getValue()).getId());
-									break;						
+									break;
 							}else if (oClass.equals(Localidad.class)){
 								/*BUSQUEDA POR LOCALIDAD*/
 								if (e.getKey().toString().equals("1. Origen") && bOrigen==true){
@@ -262,48 +259,48 @@ public class WndFiltrarParametros extends WndBase {
 									break;
 							}else if (oClass.equals(CanalVenta.class) &&  ((Combobox) oComponent).getSelectedItem().getValue() instanceof CanalVenta){
 								/*BUSQUEDA POR CANAL DE VENTA*/
-								if (getParameterValue(e.getKey().toString()) == null)	
+								if (getParameterValue(e.getKey().toString()) == null)
 									lstParametrosValor.put(e.getKey().toString(), (((Combobox) oComponent).getSelectedItem().getValue()));
 									break;
 							}else if (oClass.equals(TipoFormaPago.class) &&  ((Combobox) oComponent).getSelectedItem().getValue() instanceof TipoFormaPago){
 								/*BUSQUEDA TIPO FORMA DE PAGO*/
-								if (getParameterValue(e.getKey().toString()) == null)	
+								if (getParameterValue(e.getKey().toString()) == null)
 									lstParametrosValor.put(e.getKey().toString(), (((Combobox) oComponent).getSelectedItem().getValue()));
 									break;
 							}else if (oClass.equals(MotivoCortesia.class) &&  ((Combobox) oComponent).getSelectedItem().getValue() instanceof MotivoCortesia){
 								/*BUSQUEDA MOTIVO DE CORTECIA*/
-								if (getParameterValue(e.getKey().toString()) == null)	
+								if (getParameterValue(e.getKey().toString()) == null)
 									lstParametrosValor.put(e.getKey().toString(), (((Combobox) oComponent).getSelectedItem().getValue()));
 									break;
 							}else if (oClass.equals(Rol.class) &&  ((Combobox) oComponent).getSelectedItem().getValue() instanceof Rol){
 								/*BUSQUEDA ROLES*/
-								if (getParameterValue(e.getKey().toString()) == null)	
+								if (getParameterValue(e.getKey().toString()) == null)
 									lstParametrosValor.put(e.getKey().toString(), (((Combobox) oComponent).getSelectedItem().getValue()));
 									break;
 							}else if (oClass.equals(Usuario.class) &&  ((Combobox) oComponent).getSelectedItem().getValue() instanceof Usuario){
 								/*BUSQUEDA USUARIOS*/
-								if (getParameterValue(e.getKey().toString()) == null)	
+								if (getParameterValue(e.getKey().toString()) == null)
 									lstParametrosValor.put(e.getKey().toString(), (((Combobox) oComponent).getSelectedItem().getValue()));
 									break;
 							}else if (oClass.equals(OpcionMenu.class) &&  ((Combobox) oComponent).getSelectedItem().getValue() instanceof OpcionMenu){
 								/*BUSQUEDA OPCION MENU */
-								if (getParameterValue(e.getKey().toString()) == null)	
+								if (getParameterValue(e.getKey().toString()) == null)
 									lstParametrosValor.put(e.getKey().toString(), (((Combobox) oComponent).getSelectedItem().getValue()));
 									break;
 							}else if (oClass.equals(TipoGasto.class) &&  ((Combobox) oComponent).getSelectedItem().getValue() instanceof TipoGasto){
 								/*BUSQUEDA X TIPO DE GASTO*/
-								if (getParameterValue(e.getKey().toString()) == null){	
+								if (getParameterValue(e.getKey().toString()) == null){
 									lstParametrosValor.put(e.getKey().toString(), (((Combobox) oComponent).getSelectedItem().getValue()));
 									break;}
 							}else if (oClass.equals(Personal.class) &&  ((Combobox) oComponent).getSelectedItem().getValue() instanceof Personal){
 								/*BUSQUEDA X PERSONAL*/
-								if (getParameterValue(e.getKey().toString()) == null){	
+								if (getParameterValue(e.getKey().toString()) == null){
 									lstParametrosValor.put(e.getKey().toString(), (((Combobox) oComponent).getSelectedItem().getValue()));
 									break;}
 							}
 							else if (oClass.equals(UsuarioAprobador.class)&&((Combobox) oComponent).getSelectedItem().getValue() instanceof UsuarioAprobador){
 								/*BUSQUEDA DE USUARIO APROBADORES*/
-								if (getParameterValue(e.getKey().toString()) == null){	
+								if (getParameterValue(e.getKey().toString()) == null){
 									lstParametrosValor.put(e.getKey().toString(), (((Combobox) oComponent).getSelectedItem().getValue()));
 									break;}
 							}else if(oClass.equals(AutorizadorCortesia.class) && ((Combobox) oComponent).getSelectedItem().getValue() instanceof AutorizadorCortesia){
@@ -319,17 +316,17 @@ public class WndFiltrarParametros extends WndBase {
 									break;
 								}
 							}
-								
+
 						}
 					}
 				}
-				
-				
+
+
 				/*RECUPERA LOS VALORES DE OTROS OBJETOS*/
 				for (Entry<?,?> e : lstControles.entrySet()) {
 					String key = (String) e.getKey();
 					Component oComponent =  (Component) e.getValue();
-					
+
 					if (oComponent instanceof Textbox) {
 						Textbox oTextbox = (Textbox) oComponent;
 
@@ -343,13 +340,13 @@ public class WndFiltrarParametros extends WndBase {
 					else if (oComponent instanceof Datebox) {
 						final Datebox oDatebox = (Datebox) oComponent;
 						oDatebox.setFormat("dd/MM/yyyy");
-											
+
 						lstParametrosValor.put(key, oDatebox.getValue());
 					}
 					else if (oComponent instanceof Checkbox) {
 						Checkbox oCheckbox = (Checkbox) oComponent
 								;
-						lstParametrosValor.put(key, oCheckbox.isChecked() ? 1 : 0);	
+						lstParametrosValor.put(key, oCheckbox.isChecked() ? 1 : 0);
 					}else if (oComponent instanceof Intbox){
 						Intbox oIntbox = (Intbox) oComponent;
 						lstParametrosValor.put(key, oIntbox.getValue());
@@ -363,35 +360,35 @@ public class WndFiltrarParametros extends WndBase {
 				oThisWindow.onClose();
 			}
 		});
-		
-	
+
+
 		int widthColLabel=0;
-			
+
 		for (Entry<?,?> e : this.lstParametros.entrySet()) {
 			Class<?> oClass = (Class<?>) e.getValue();
-			
-					
+
+
 			Separator separator= new Separator();
 			separator.setWidth("1px");
-			
+
 			String key = (String) e.getKey();
 			Row oRow = new Row();
-			
+
 			oRow.appendChild(separator);
-			
+
 			Label oLabel = new Label(key);
 			oLabel.setValue(oLabel.getValue().toUpperCase()+" :");
 			oRow.appendChild(oLabel);
-									
+
 			//Para calcular el ancho de la primera columna del oGrid
 			if(widthColLabel==0)
 				widthColLabel=oLabel.getValue().trim().length();
 			else if(widthColLabel<oLabel.getValue().trim().length())
 				widthColLabel=oLabel.getValue().trim().length();
-			
+
 			String widthControls="170px";
 			String widthControls2="160px";
-			
+
 			if(oClass.equals(String.class)) {
 				Textbox oTextbox = new Textbox();
 				oTextbox.setWidth(widthControls2);
@@ -414,23 +411,23 @@ public class WndFiltrarParametros extends WndBase {
 
 			}else if(oClass.equals(Datebox.class)) {
 				Datebox oDatebox= new Datebox();
-//				Calendar ocalendar= Calendar.getInstance();	
+//				Calendar ocalendar= Calendar.getInstance();
 				oDatebox.setFormat("dd/MM/yyyy");
 				oDatebox.setReadonly(true);
 				oDatebox.setValue(new Date());
 				oDatebox.setWidth(widthControls);
 				lstControles.put(key, oDatebox);
 				oRow.appendChild(oDatebox);
-				
+
 //				if(e.getKey().equals("3. Fecha Inicio")){
 				if(xc==0){
 					oDatebox.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 						@Override
 						public void onEvent(Event event) throws Exception {
-							
+
 							for (Entry<?,?> e : lstControles.entrySet()) {
 								Component oComponent =  (Component) e.getValue();
-																
+
 								if(oComponent instanceof Datebox){
 									Date fechaInio= ((Datebox)event.getTarget()).getValue();
 
@@ -457,7 +454,7 @@ public class WndFiltrarParametros extends WndBase {
 
 			}else if(oClass.equals(Boolean.class)) {
 				Checkbox oCheckbox = new Checkbox();
-				oCheckbox.setWidth(widthControls);	
+				oCheckbox.setWidth(widthControls);
 				lstControles.put(key, oCheckbox);
 				oRow.appendChild(oCheckbox);
 
@@ -469,7 +466,7 @@ public class WndFiltrarParametros extends WndBase {
 					UtilData.cargarAlternativos(oCombobox);
 				}else if (oClass.equals(TipoDocumento.class)){
 					/*Recupera los tipos de Documento diferente a los del bus*/
-					TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+					TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 					criteriosBusqueda.put("tipo", TipoDocumento.PERSONALES);
 					UtilData.cargarDataCombo(oCombobox, TipoDocumento.class, criteriosBusqueda, true);
 
@@ -486,7 +483,7 @@ public class WndFiltrarParametros extends WndBase {
 				}
 //				oCombobox.setReadonly(true);
 				oRow.appendChild(oCombobox);
-							
+
 			}
 
 			oRows.appendChild(oRow);
@@ -498,14 +495,14 @@ public class WndFiltrarParametros extends WndBase {
 
 		column.setWidth("10px");
 		columns.appendChild(column);
-		
+
 		column= new Column();
 		column.setWidth(String.valueOf(widthColLabel*7)+"px");
 		column.setAlign("right");
 		columns.appendChild(column);
-		
+
 		oGrid.appendChild(columns);
-			
+
 		oButton.setLabel("Filtrar");
 		oButton.setHeight("35px");
 		oButton.setImage("resources/mp_filtrar.png");
@@ -520,7 +517,7 @@ public class WndFiltrarParametros extends WndBase {
 //		oRows.appendChild(oRowBoton);
 		oGrid.appendChild(oRows);
 		this.appendChild(oGrid);
-		
+
 		/*Grid para el button filtrar*/
 		Grid gridBtn= new Grid();
 		Rows rows= new Rows();
@@ -532,27 +529,27 @@ public class WndFiltrarParametros extends WndBase {
 		column.setWidth(String.valueOf(widthColLabel*8)+"px");
 		columns.appendChild(column);
 		gridBtn.appendChild(columns);
-						
+
 		row.appendChild(new Separator());
 		row.appendChild(oButton);
-		
+
 		rows.appendChild(row);
 		gridBtn.appendChild(rows);
-		
+
 		Separator separator=new Separator();
 		separator.setHeight("1px");
 		this.appendChild(separator);
-		
+
 		this.appendChild(gridBtn);
-		
+
 		this.setWidth(String.valueOf(widthColLabel*23)+"px");
-		lstComponents = new ArrayList<Component>();
+		lstComponents = new ArrayList<>();
 		controles(this);
 		tabular();
-		
+
 //		this.setWidth("460px");
 	}
-	
+
 	/**
 	 * Obtenemos los controles que podran recibir el foco.
 	 * @param component
@@ -560,16 +557,16 @@ public class WndFiltrarParametros extends WndBase {
 	private void controles(Component component){
 		for(int i=0; i<component.getChildren().size();i++){
 			Component component1 = component.getChildren().get(i);
-			if(component1 instanceof Textbox || component1 instanceof Spinner || component1 instanceof Datebox || 
+			if(component1 instanceof Textbox || component1 instanceof Spinner || component1 instanceof Datebox ||
 					component1 instanceof Intbox || component1 instanceof Longbox || component1 instanceof Checkbox ||
 					component1 instanceof Combobox || component1 instanceof Button)
 				lstComponents.add(component1);
-				
+
 			if(component1.getChildren().size()>0 && !(component1 instanceof Columns))
 				controles(component1);
 		}
 	}
-	
+
 	/**
 	 * Asignamos el foco al componente cuando se presione la tecla enter.
 	 */
@@ -608,23 +605,23 @@ public class WndFiltrarParametros extends WndBase {
 //		@Override
 //		public void onEvent(Event event) throws Exception {
 //			if (!(event.getTarget() instanceof Combobox && ((Combobox) event.getTarget()).getSelectedIndex() < 0 )) {
-//				
+//
 //				if()
-//				
+//
 //				for (Entry<?,?> e : lstParametros.entrySet()) {
 //					Class<?> oClass = (Class<?>) e.getValue();
 //					String key = (String) e.getKey();
-//					
+//
 //					lstControles.put(key, Agencia.class);
-//					
-//					
+//
+//
 //				}
-//				
+//
 //			}
 //		}
 //	};
-	
-	
+
+
 	@Override
 	public boolean addEventListener(String evtnm, EventListener<? extends Event> listener) {
 		boolean resultadoEvento = true;
@@ -652,22 +649,22 @@ public class WndFiltrarParametros extends WndBase {
 
 		super.setMode(name);
 	}
-	
+
 	public void addParameter(String label, Class<?> returnValue) {
-			
+
 		this.lstParametros.put(label, returnValue);
 	}
 
 	public Object getParameterValue(String label) {
 		return this.lstParametrosValor.get(label);
 	}
-	
+
 	private void registrarControles(Component oComponent) {
 		if(oComponent instanceof InputElement || oComponent instanceof Checkbox
 				|| oComponent instanceof Radio || oComponent instanceof Button) {
-			
+
 			lstControless.add(oComponent);
-						
+
 			if(oComponent instanceof InputElement) {
 				InputElement oInputElement = (InputElement) oComponent;
 				lstConstraints.put(oComponent.getId(), oInputElement.getConstraint());
@@ -683,10 +680,10 @@ public class WndFiltrarParametros extends WndBase {
 			for(Component oComponentHijo: lstChildrens) {
 				registrarControles(oComponentHijo);
 			}
-					
+
 		}
 	}
 
-	
-	
+
+
 }

@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
- * Autor		: José 
+ * Descripción	:
+ * Autor		: José
  * Fecha		: 09/11/2013
  */
 package com.cystesoft.vyrbus.model.bean;
@@ -15,13 +15,13 @@ import java.io.Serializable;
  */
 public class DetalleManifiestoID implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Long idManifiesto;
 	private Long idVentaPasaje;
-		
+
 	public DetalleManifiestoID(){
 	}
-	
+
 	public DetalleManifiestoID(Long idManifiesto, Long idVentaPasajes){
 		super();
 		this.idManifiesto=idManifiesto;
@@ -58,8 +58,8 @@ public class DetalleManifiestoID implements Serializable {
 	public void setIdVentaPasaje(Long idVentaPasaje) {
 		this.idVentaPasaje = idVentaPasaje;
 	}
-	
-	
-	
+
+
+
 
 }

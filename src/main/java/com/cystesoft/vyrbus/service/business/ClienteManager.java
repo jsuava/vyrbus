@@ -13,7 +13,7 @@ public interface ClienteManager {
 	public void guardar(Cliente cliente)throws Exception;
 	public void actualizar(Cliente cliente)throws Exception;
 	public void inactivar(Long id)throws Exception;
-	
+
 	/**
 	 * Returna los clientes que realizaron la solicitud contado o credito
 	 * @return
@@ -26,11 +26,11 @@ public interface ClienteManager {
 	 * @throws Exception
 	 */
 	public ArrayList<Cliente> buscarPorRazonSocial(String[] razonSocial)throws Exception;
-	
+
 	/**
 	 * Realiza la busqueda del Cliente por el número de Ruc, en el Modulo de Servicios Espesiales
 	 * @param Ruc : Número de Ruc del Cliente.
-	 * @return 
+	 * @return
 	 * @throws Exception
 	 */
 	public Cliente buscarCliente_ServicioEspecial(String Ruc) throws Exception;

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 10/11/2014
  * Hora			: 14:28:17
@@ -20,7 +20,7 @@ import com.cystesoft.vyrbus.model.bean.VentaTramo;
  *
  */
 public interface VentaTramoDAO extends GenericDAO{
-	
+
 	/**
 	 * Busca por el identificador de la ruta.
 	 * @param idRuta	: Identificador de la ruta

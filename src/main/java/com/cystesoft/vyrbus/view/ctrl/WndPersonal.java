@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: jM
  * Fecha		: 06/06/2012
  */
@@ -65,7 +65,7 @@ import com.cystesoft.vyrbus.view.ui.WndSeleccionarUbigeo;
 public class WndPersonal extends WndOpcionesMantenimiento {
 
 	private static final long serialVersionUID = -291941257212836378L;
-	
+
 	private Window thisWindow = this;
 	private Textbox txtApellidoPaterno;
 	private Textbox txtApellidoMaterno;
@@ -91,9 +91,9 @@ public class WndPersonal extends WndOpcionesMantenimiento {
 	private Textbox txtCodigo;
 	private Textbox txtNumeroLicencia;
 	private Textbox txtCategoria;
-	
+
 	private Personal oPersonal = null;
-	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 	private List<String> criteriosOrdenar = null;
 
 	/* (non-Javadoc)
@@ -104,7 +104,7 @@ public class WndPersonal extends WndOpcionesMantenimiento {
 		UtilData.cargarDataCombo(cboSexo, Sexo.class, false);
 		UtilData.cargarDataCombo(cboNacionalidad, Nacionalidad.class, false);
 		UtilData.cargarDataCombo(cboEstadoCivil, EstadoCivil.class, false);
-		TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+		TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 		criteriosBusqueda.put("tipo", TipoDocumento.PERSONALES);
 		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 		UtilData.cargarDataCombo(cboTipoDocumento, TipoDocumento.class, criteriosBusqueda, false);
@@ -119,7 +119,7 @@ public class WndPersonal extends WndOpcionesMantenimiento {
 				oWndSeleccionarUbigeo.addEventListener(com.cystesoft.vyrbus.view.ui.Events.ON_SELECT, new EventListener<Event>() {
 					@Override
 					public void onEvent(Event event) throws Exception {
-						txtUbicacionGeografica.setText(oWndSeleccionarUbigeo.getUbicacionGeografica()); 
+						txtUbicacionGeografica.setText(oWndSeleccionarUbigeo.getUbicacionGeografica());
 						txtIdUbigeo.setText(oWndSeleccionarUbigeo.getIdUbigeo());
 					}
 				});
@@ -129,7 +129,7 @@ public class WndPersonal extends WndOpcionesMantenimiento {
 				oWndSeleccionarUbigeo.setVisible(true);
 			}
 		});
-		
+
 		cboTipoDocumento.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -142,14 +142,14 @@ public class WndPersonal extends WndOpcionesMantenimiento {
 				}
 			}
 		});
-	
-		
-		criteriosOrdenar = new ArrayList<String>();
+
+
+		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("apellidoPaterno");
 		criteriosOrdenar.add("apellidoMaterno");
 		criteriosOrdenar.add("nombre");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IBase#initComponents()
 	 */
@@ -203,7 +203,7 @@ public class WndPersonal extends WndOpcionesMantenimiento {
 	@Override
 	public void onSearch() throws Exception {
 		final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
-		
+
 		oWndFiltrar.addParameter("1. Tipo de Documento", TipoDocumento.class);
 		oWndFiltrar.addParameter("2. Número de Documento", String.class);
 		oWndFiltrar.addParameter("3. Apellido paterno", String.class);
@@ -229,11 +229,11 @@ public class WndPersonal extends WndOpcionesMantenimiento {
 					otipoDocumento.setId(tipoDocumento);
 					criteriosBusqueda.put("tipoDocumento", otipoDocumento);
 				}
-				
+
 				if (nroDocumento.trim().equals("")){
 					criteriosBusqueda.remove("nroDocumento");
 				}else{criteriosBusqueda.put("nroDocumento", nroDocumento);}
-				
+
 				if (apellidoPaterno.trim().equals("")) {
 					criteriosBusqueda.remove("apellidoPaterno");
 				}else{criteriosBusqueda.put("apellidoPaterno", "%" + apellidoPaterno + "%");}
@@ -261,7 +261,7 @@ public class WndPersonal extends WndOpcionesMantenimiento {
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		if (!criteriosBusqueda.isEmpty()) {
-			this.listarRegistros(ServiceLocator.getPersonalManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));					
+			this.listarRegistros(ServiceLocator.getPersonalManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 		}
 
 	}
@@ -322,43 +322,43 @@ public class WndPersonal extends WndOpcionesMantenimiento {
 				throw new TipoZonaNullException();
 			else if (txtNombreZona.getText().trim().equals(""))
 				throw new NombreZonaNullException();
-					
+
 			TipoDocumento oTipoDocumento = (TipoDocumento)cboTipoDocumento.getSelectedItem().getValue();
 			TipoPersonal oTipoPersonal = (TipoPersonal)cboTipoPersonal.getSelectedItem().getValue();
-			
+
 			/*Valida si el tipo de personal es piloto/copiloto o terramoza, y el tipo de documento es SN, obliga que seleccione uno válido - JABANTO 22/10/2014*/
-			if(oTipoDocumento.getId().intValue()==Constantes.ID_TIPDOC_SN && 
+			if(oTipoDocumento.getId().intValue()==Constantes.ID_TIPDOC_SN &&
 					(oTipoPersonal.getId().intValue()==Constantes.ID_TIPPER_PILOTO_COPILOTO || oTipoPersonal.getId().intValue()==Constantes.ID_TIPPER_TRIPULANTE)){
 				throw new TipoDocumentoNullException();
 			}
-			
+
 			/*Valida si el tipo de documento es DNI, por lo menos tenga 8 digitos - JABANTO 22/10/2014*/
 			if(oTipoDocumento.getId().intValue()==Constantes.ID_TIPDOC_DNI && txtNumeroDocumento.getText().trim().length()!=8){
 				DlgMessage.information(Messages.getString("WndPersonal.information.lenDniInvalid"),txtNumeroDocumento);
 				throw new CancelaGrabacionException();
 			}
-			
+
 			/*Valida si el tipo de personal es Pilo/copiloto, obliga a ingresar el numero de Licencia de conducir. - JABANTO 22/10/2014*/
 			if(oTipoPersonal.getId().intValue()==Constantes.ID_TIPPER_PILOTO_COPILOTO && txtNumeroLicencia.getText().trim().isEmpty()){
 				DlgMessage.information(Messages.getString("WndPersonal.information.noLicencia"),txtNumeroLicencia);
 				throw new CancelaGrabacionException();
 			}
-			
+
 			/*Valida la longitud de la licencia - JABANTO 22/10/2014*/
 			if(!(txtNumeroLicencia.getText().trim().isEmpty()) && txtNumeroLicencia.getText().trim().length()<7){
 				DlgMessage.information(Messages.getString("WndPersonal.information.licenicaInvalid"),txtNumeroLicencia);
 				throw new CancelaGrabacionException();
 			}
-			
+
 			if (action==ACTION_NEW)
 				oPersonal = new Personal();
-			
+
 			Long id = (textboxId.getText().equals("") ? 0 : new Long(textboxId.getText()));
 			Ubigeo oUbigeo = new Ubigeo();
 			Sexo oSexo = new Sexo();
 			Nacionalidad oNacionalidad = new Nacionalidad();
 			EstadoCivil oEstadoCivil = new EstadoCivil();
-			TipoVia oTipoVia = new TipoVia(); 
+			TipoVia oTipoVia = new TipoVia();
 			TipoZona oTipoZona = new TipoZona();
 
 			oUbigeo.setId(txtIdUbigeo.getText());
@@ -419,7 +419,7 @@ public class WndPersonal extends WndOpcionesMantenimiento {
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 
 			listarRegistros(ServiceLocator.getPersonalManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
-			
+
 		}catch (TipoPersonalNullException tpnex){
 			DlgMessage.information(Messages.getString("WndPersonal.information.TipoPerosnal"),cboTipoPersonal);
 			throw new CancelaGrabacionException();
@@ -550,12 +550,12 @@ public class WndPersonal extends WndOpcionesMantenimiento {
 	}
 
 	private void listarRegistros(ArrayList<Personal> lstRegistros) throws Exception {
-		ArrayList<Object> lstPersonales = new ArrayList<Object>();
+		ArrayList<Object> lstPersonales = new ArrayList<>();
 
 		for (int r = 0; r < lstRegistros.size(); r ++) {
 			Personal oPersonal = lstRegistros.get(r);
-			ArrayList<Object> lstFila = new ArrayList<Object>();
-			
+			ArrayList<Object> lstFila = new ArrayList<>();
+
 			lstFila.add(oPersonal.getId());
 			lstFila.add(r + 1);
 			lstFila.add(oPersonal.getTipoPersonal().getDenominacion());
@@ -576,13 +576,13 @@ public class WndPersonal extends WndOpcionesMantenimiento {
 
 	private void mantenimientoRegistro(Long id) throws Exception {
 		oPersonal = ServiceLocator.getPersonalManager().buscarPorId(id);
-		
+
 		textboxId.setText((new Long(oPersonal.getId())).toString());
 		Util.seleccionarValorItemCombo(TipoPersonal.class, cboTipoPersonal, oPersonal.getTipoPersonal().getId());
 		txtCodigo.setText(oPersonal.getCodigo());
 		txtNumeroLicencia.setText(oPersonal.getLicencia());
 		txtCategoria.setText(oPersonal.getCategoria());
-		
+
 		txtApellidoPaterno.setText(oPersonal.getApellidoPaterno());
 		txtApellidoMaterno.setText(oPersonal.getApellidoMaterno());
 		txtNombre.setText(oPersonal.getNombre());
@@ -594,7 +594,7 @@ public class WndPersonal extends WndOpcionesMantenimiento {
 		dbFechaNacimiento.setValue(oPersonal.getFechaNacimiento());
 		txtLugarNacimiento.setText(oPersonal.getLugarNacimiento());
 		txtDireccion.setText(oPersonal.getDireccion());
-		
+
 		Ubigeo oUbigeo  = oPersonal.getUbigeo();
 		String idUbigeo = new String();
 		String ubicacionCompleta = new String();
@@ -607,7 +607,7 @@ public class WndPersonal extends WndOpcionesMantenimiento {
 		txtUbicacionGeografica.setText(ubicacionCompleta);
 		txtTelefono.setText(oPersonal.getTelefono());
 		txtCorreoElectronico.setText(oPersonal.getEmail());
-		
+
 		Util.seleccionarValorItemCombo(TipoVia.class, cboTipoVia, oPersonal.getTipoVia().getId());
 		txtNombreVia.setText(oPersonal.getNombreVia());
 		Util.seleccionarValorItemCombo(TipoZona.class, cboTipoZona, oPersonal.getTipoZona().getId());

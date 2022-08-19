@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Fecha		: 27/06/2014
  */
 package com.cystesoft.vyrbus.view.ctrl;
@@ -19,8 +19,8 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zul.Datebox;
-import org.zkoss.zul.Label;
 import org.zkoss.zul.Filedownload;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
@@ -73,9 +73,9 @@ public class WndVSProcesarAfiliaciones extends WndBase {
 	private Label lblCantidadMovimientos;
 	private Label lblMonto;
 	private Label lblMoneda;
-	
+
 	final String NEWLINE = "\n";
-	
+
 	/*Variables*/
 	private static final int ID_TIPPRO_AFILIACION=1;
 	private static final int ID_MONEDA_SOLES=1;
@@ -83,13 +83,13 @@ public class WndVSProcesarAfiliaciones extends WndBase {
 	private static final int ID_PAIS_PERU=1;
 	private static final int ID_TIPREG_ASEGURADO=3;
 	private static final int CODIGO_ESTCIV_OTROS=6;
-	
+
 	private static final String COD_TIPPRO_AFILIACION="AF";
 	private static final String COD_MONEDA_SOLES="S";
 	private static final int CODIGO_TIPREG_DECLARACION=0;
 	private static final String CODIGO_PAIS_PERU="001";
 	private static final int CODIGO_TIPREG_ASEGURADO=2;
-	
+
 	private static final String LABEL_TIPPRO_AFILIACION="AFILIACION";
 	private static final String LABEL_MONEDA_SOLES="SOLES";
 
@@ -98,7 +98,7 @@ public class WndVSProcesarAfiliaciones extends WndBase {
 	private static final String GEN_AFI_CODIGO_PRODUCTO="TEPVIA";
 	private static final int GEN_AFI_NUMERO_POLIZA=2547069;
 	private static final String CODIGO_SUCURSAL="CODS";
-	
+
 	private static final int ID_CONTRATANTE_TEPSA=1;
 	/* variables que guardan la longitud de digitos o caracteres del encabezado*/
 	private static final int LONG_ENC_CODIGO_PATROCINADOR=6;
@@ -149,7 +149,7 @@ public class WndVSProcesarAfiliaciones extends WndBase {
 	private static final int LONG_GEN_TEFT_CELULAR=12;
 	private static final int LONG_GEN_ESTADO_CIVIL=1;
 	private static final int LONG_GEN_CERTIFICADO=10;
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.vs.view.ui.IBase#initComponents()
 	 */
@@ -174,19 +174,19 @@ public class WndVSProcesarAfiliaciones extends WndBase {
 		lblMonto=(Label)this.getFellow("lblMonto");
 		lblMoneda=(Label)this.getFellow("lblMoneda");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.vs.view.ui.WndBase#onCreate()
 	 */
 	@Override
 	public void onCreate() throws Exception {
 		Date fechaActual=new Date();
-		
+
 		dtbxBusuqedaFechaInico.setValue(new Date());
 		dtbxBusuqedaFechafin.setValue(new Date());
 		lblTipoDeclaracion.setValue(LABEL_TIPPRO_AFILIACION);
 		lblMoneda.setValue(LABEL_MONEDA_SOLES);
-		
+
 		lblCodigoPatrocinador.setValue(String.valueOf(GEN_AFI_CODIGO_PATROCINADOR));
 		lblNumeroRamo.setValue(String.valueOf(GEN_AFI_NUMERO_RAMO));
 		lblCodigoProducto.setValue(String.valueOf(GEN_AFI_CODIGO_PRODUCTO));
@@ -194,22 +194,22 @@ public class WndVSProcesarAfiliaciones extends WndBase {
 		lblNumeroPoliza.setValue(String.valueOf(GEN_AFI_NUMERO_POLIZA));
 		lblFechaInicio.setValue(Constantes.FORMAT_DATE.format(fechaActual));
 		lblFechaFin.setValue(Constantes.FORMAT_DATE.format(fechaActual));
-		
+
 		lblTipoDeclaracion.setValue(LABEL_TIPPRO_AFILIACION);
 	}
-	
+
 	public void buscarAfiliaciones() throws Exception{
 		Util.limpiarListbox(lsbxAfiliados);
-										
+
 		String fechaInicio=Constantes.FORMAT_DATE.format(dtbxBusuqedaFechaInico.getValue());
 		String fechaFin=Constantes.FORMAT_DATE.format(dtbxBusuqedaFechafin.getValue());
 		List<VSAfiliacion>lstAfiliacion=ServiceLocator.getVentaSeguroManager().buscarAfiliacionesByProceso(fechaInicio, fechaFin);
-		
+
 		Listitem item=null;
 		Listcell cell=null;
-			
+
 			for(VSAfiliacion afiliacion: lstAfiliacion){
-				
+
 				item=new Listitem();
 				cell=new Listcell("");
 				item.appendChild(cell);
@@ -228,20 +228,20 @@ public class WndVSProcesarAfiliaciones extends WndBase {
 				cell=new Listcell(Util.toNumberFormat(afiliacion.getImportePagado(),2));
 				cell.setStyle("font-size:11px !important;text-align: right;");
 				item.appendChild(cell);
-				
+
 				item.setValue(afiliacion);
 				lsbxAfiliados.appendChild(item);
-				
+
 				tbbGenerarArchivo.setDisabled(false);
 			}
-		
+
 			lblCantidadRegistro.setValue("0");
 			lblCantidadMovimientos.setValue("0");
 			lblMonto.setValue("0");
 	}
-	
+
 	public void generaArchivo() throws Exception{
-		try{			
+		try{
 			if(lsbxAfiliados.getSelectedItems().size()<=0)
 				throw new VSProcesaAfiliacionException(VSProcesaAfiliacionException.ASEGURADOS_NULL);
 			else if(lblNumeroPoliza.getValue().trim().isEmpty())
@@ -254,23 +254,23 @@ public class WndVSProcesarAfiliaciones extends WndBase {
 				throw new VSProcesaAfiliacionException(VSProcesaAfiliacionException.FECHA_FINAL_NULL);
 			else if (lblMoneda.getValue().isEmpty())
 				throw new VSProcesaAfiliacionException(VSProcesaAfiliacionException.MONEDA_NULL);
-			
-			
+
+
 			Messagebox.show(Messages.getString("WndVSProcesaAfiliacion.question.generarArchivo"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e) throws Exception {
 					if(e.getName().equals("onYes")){
 						final DateFormat FORMAT_DATE_TIME_S = new SimpleDateFormat ("ddMMyyhhmmss");
 						final DateFormat FORMAT_FECHA = new SimpleDateFormat ("yyyyMMdd");
-						
+
 						String fichero = Constantes.DIRECTORY_AFILIACIONES+"TEPVIA_AP_AF_"+FORMAT_DATE_TIME_S.format(new Date())+".txt";
 						File file = new File(fichero);
-						
+
 //						BufferedWriter bw = new BufferedWriter(new FileWriter(file));
 						BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),"8859_1"));
 						String linea = "";
 						String iDs="";
-						
+
 						VSTipoProceso tipoProcesoEncabezado=new VSTipoProceso(ID_TIPPRO_AFILIACION);
 						tipoProcesoEncabezado.setCodigo(COD_TIPPRO_AFILIACION);
 						VSMoneda vsMoneda=new VSMoneda(ID_MONEDA_SOLES);
@@ -290,7 +290,7 @@ public class WndVSProcesarAfiliaciones extends WndBase {
 						String ENCANTIDAD_MOVIMIENTOS=Util.generarCeros(LONG_ENC_CANTIDAD_MOVIMINETOS,lblCantidadMovimientos.getValue());
 						String ENMONTO=Util.generarCeros(LONG_ENC_MONTO,Util.quitarSeparador(Util.toNumberFormat(Double.valueOf(lblMonto.getValue()), 2)));
 						String ENTIPOMONEDA=Util.generarSpacios(LONG_ESTDEC_TIPO_MONEDA,vsMoneda.getCodigo(),true);
-						
+
 						//GUARDA ENCABEZADO db
 						VSEncabezadoAfiliacion encabezado= new VSEncabezadoAfiliacion();
 						encabezado.setCodigoPatrocinador(ENCODIGO_PATROCINADOR);
@@ -322,7 +322,7 @@ public class WndVSProcesarAfiliaciones extends WndBase {
 						linea+=ENMONTO;
 						linea+=ENTIPOMONEDA;
 						bw.write(linea+NEWLINE);
-																				
+
 						for(Listitem item: lsbxAfiliados.getSelectedItems()){
 							VSAfiliacion afiliacion=item.getValue();
 							if(iDs.length()==0)
@@ -341,8 +341,8 @@ public class WndVSProcesarAfiliaciones extends WndBase {
 							/**TIPO REGISTRO DE LA ASEGURADO*/
 							VSTipoRegistro tipoRegistroAsegurado= new VSTipoRegistro();
 							tipoRegistroAsegurado.setId(ID_TIPREG_ASEGURADO);
-							tipoRegistroAsegurado.setCodigo(CODIGO_TIPREG_ASEGURADO);	
-							
+							tipoRegistroAsegurado.setCodigo(CODIGO_TIPREG_ASEGURADO);
+
 							//VARIABLES ESTRUCTURA DE LA DECLARACION
 							String ESDETIPO_REGUSTRO=Util.generarSpacios(LONG_ESTDEC_TIPO_REGISTRO,tipoRegistroDeclarcion.getCodigo().toString(),true);
 							String ESDEFECHA_PROCESO=Util.generarSpacios(LONG_ENC_FECHA_PROCESO,FORMAT_FECHA.format(new Date()),true);
@@ -361,7 +361,7 @@ public class WndVSProcesarAfiliaciones extends WndBase {
 							String ESDEMOTIVO=Util.generarCeros(LONG_ESTDEC_MOTIVO,"");
 							String ESDENUMERO_CERTIFICADO=Util.generarCeros(LONG_GEN_CERTIFICADO,afiliacion.getNumeroCertificado());
 							String ESDETIPO_PROCESO=Util.generarSpacios(LONG_ENC_TIPO_DECLARACION,tipoProcesoEncabezado.getCodigo(),true);
-							String ESDEPAIS_DESTINO=Util.generarSpacios(LONG_ESTDEC_PAIS_DESTINO,paisDestino.getDocigo(),true); 
+							String ESDEPAIS_DESTINO=Util.generarSpacios(LONG_ESTDEC_PAIS_DESTINO,paisDestino.getDocigo(),true);
 							String ESDECIUDAD_DESTINO=Util.generarSpacios(LONG_ESTDEC_CIUDAD_DESTINO,afiliacion.getVsCiudad().getCodigo(),true);
 						    //VARIABLES ESTRUCTURA CONTRANTE
 							String ESCOTIPO_REGISTRO=Util.generarSpacios(LONG_ESTDEC_TIPO_REGISTRO,contratante.getVsTipoRegistro().getCodigo().toString(),true);
@@ -397,7 +397,7 @@ public class WndVSProcesarAfiliaciones extends WndBase {
 							}else{
 								ESASENUMERO_DOCUMENTO=Util.generarCeros(LONG_GEN_NUMERO_DOCUMENTO_IDENTIDAD,asegurado.getNumeroDocumento());
 							}
-							
+
 							String ESASEAPELLIDO_PATERNO=Util.generarSpacios(LONG_GEN_APELLIDO_PATERNO,asegurado.getApellidoPaterno(),true);
 							String ESASE_APELLIDO_MATERNO=Util.generarSpacios(LONG_GEN_APELLIDO_MATERNO,asegurado.getApellidoMaterno(),true);
 							String ESASENOMBRES=Util.generarSpacios(LONG_GEN_NOMBRES,asegurado.getNombres(),true);
@@ -410,9 +410,9 @@ public class WndVSProcesarAfiliaciones extends WndBase {
 							String ESASETELEFONO_DOMICILIO=Util.generarSpacios(LONG_GEN_TELF_DOMICILIO,asegurado.getTelefono(),true);
 							String ESASETELEFONO_CELULAR=Util.generarSpacios(LONG_GEN_TEFT_CELULAR,asegurado.getCelular(),true);
 							String ESASEESTADO_CIVIL=Util.generarCeros(LONG_GEN_ESTADO_CIVIL,asegurado.getVsEstadoCivil().getCodigo().toString());
-							String ESASEADICIONAL=Util.generarCeros(LONG_ESTASE_ADICIONAL,afiliacion.getAdicional()!=null?afiliacion.getAdicional().toString():""); 
+							String ESASEADICIONAL=Util.generarCeros(LONG_ESTASE_ADICIONAL,afiliacion.getAdicional()!=null?afiliacion.getAdicional().toString():"");
 							String ESASENUMERO_CERTIFICADO=Util.generarCeros(LONG_GEN_CERTIFICADO,afiliacion.getNumeroCertificado());
-							
+
 							//GUARDA LA ESTRUCTURA DE LA DECLARACION
 							VSEstructuraDeclaracion estructuraDeclaracion=new VSEstructuraDeclaracion();
 							estructuraDeclaracion.setVsEncabezadoAfiliacion(encabezado);
@@ -476,7 +476,7 @@ public class WndVSProcesarAfiliaciones extends WndBase {
 							estructuraAsegurado.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 							UtilData.auditarRegistro(estructuraAsegurado, getUsuario(), Executions.getCurrent());
 							ServiceLocator.getVentaSeguroManager().guardarEstructuraAsegurado(estructuraAsegurado);
-													
+
 							//GENERA ESTRUCTURAS EN EL ARCHIVO .TXT
 							//FILA ESTRUCTURA DE LA DECLARACION
 							linea=ESDETIPO_REGUSTRO;
@@ -496,7 +496,7 @@ public class WndVSProcesarAfiliaciones extends WndBase {
 							linea+=ESDEMOTIVO;
 							linea+=ESDENUMERO_CERTIFICADO;
 							linea+=ESDETIPO_PROCESO;
-							linea+=ESDEPAIS_DESTINO; 
+							linea+=ESDEPAIS_DESTINO;
 							linea+=ESDECIUDAD_DESTINO;
 							bw.write(linea+NEWLINE);
 							//FILA ESTRUCTURA CONTRANTE
@@ -539,24 +539,24 @@ public class WndVSProcesarAfiliaciones extends WndBase {
 							linea+=ESASETELEFONO_DOMICILIO;
 							linea+=ESASETELEFONO_CELULAR;
 							linea+=ESASEESTADO_CIVIL;
-							linea+=ESASEADICIONAL; 
+							linea+=ESASEADICIONAL;
 							linea+=ESASENUMERO_CERTIFICADO;
 							bw.write(linea+NEWLINE);
-							
+
 						}
 						bw.close();
-						
+
 						//Actualiza la fecha de proceso de las afiliaciones procesadas.
 						ServiceLocator.getVentaSeguroManager().actualizaFechaProcesoAfiliacion(iDs);
 						DlgMessage.information(Messages.getString("WndProcesaAfiliacion.information.procesoAfiliacionFin"));
 						tbbGenerarArchivo.setDisabled(true);
-						
-						//Descarga el archivo.				
+
+						//Descarga el archivo.
 						Filedownload.save(file, "application/txt");
 					}
 				}
 			});
-			
+
 		}catch(VSProcesaAfiliacionException pex){
 			if(pex.getTipo().intValue()==VSProcesaAfiliacionException.ASEGURADOS_NULL){
 				DlgMessage.information(Messages.getString("WndProcesaAfiliacion.information.noAsegurados"));
@@ -571,14 +571,14 @@ public class WndVSProcesarAfiliaciones extends WndBase {
 			}else if (pex.getTipo().intValue()==VSProcesaAfiliacionException.MONEDA_NULL){
 				DlgMessage.information(Messages.getString("WndProcesaAfiliacion.information.noMoneda"),lblMoneda);
 			}
-		
+
 		}
 	}
-	
+
 	public void onSelectListAsegurados(){
-		Integer cantRegProMovimiento=3;
+		int cantRegProMovimiento=3;
 		Double monto=.00;
-		lblCantidadRegistro.setValue(String.valueOf(lsbxAfiliados.getSelectedItems().size())); 
+		lblCantidadRegistro.setValue(String.valueOf(lsbxAfiliados.getSelectedItems().size()));
 		lblCantidadMovimientos.setValue(String.valueOf(lsbxAfiliados.getSelectedItems().size()*cantRegProMovimiento));
 		for(Listitem item: lsbxAfiliados.getSelectedItems()){
 			VSAfiliacion afiliacion=item.getValue();
@@ -586,6 +586,6 @@ public class WndVSProcesarAfiliaciones extends WndBase {
 		}
 		lblMonto.setValue(Util.toNumberFormat(monto,2));
 	}
-	
-	
+
+
 }

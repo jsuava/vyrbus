@@ -9,11 +9,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for Distribucion complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="Distribucion">
  *   &lt;complexContent>
@@ -47,8 +47,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Distribucion", propOrder = { "altoObjeto", "anchoObjeto",
@@ -91,9 +91,9 @@ public class Distribucion {
 
 	/**
 	 * Gets the value of the altoObjeto property.
-	 * 
+	 *
 	 * @return possible object is {@link Integer }
-	 * 
+	 *
 	 */
 	public Integer getAltoObjeto() {
 		return altoObjeto;
@@ -101,10 +101,10 @@ public class Distribucion {
 
 	/**
 	 * Sets the value of the altoObjeto property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Integer }
-	 * 
+	 *
 	 */
 	public void setAltoObjeto(Integer value) {
 		this.altoObjeto = value;
@@ -112,9 +112,9 @@ public class Distribucion {
 
 	/**
 	 * Gets the value of the anchoObjeto property.
-	 * 
+	 *
 	 * @return possible object is {@link Integer }
-	 * 
+	 *
 	 */
 	public Integer getAnchoObjeto() {
 		return anchoObjeto;
@@ -122,10 +122,10 @@ public class Distribucion {
 
 	/**
 	 * Sets the value of the anchoObjeto property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Integer }
-	 * 
+	 *
 	 */
 	public void setAnchoObjeto(Integer value) {
 		this.anchoObjeto = value;
@@ -133,10 +133,10 @@ public class Distribucion {
 
 	/**
 	 * Gets the value of the asiento property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getAsiento() {
 		return asiento;
@@ -144,11 +144,11 @@ public class Distribucion {
 
 	/**
 	 * Sets the value of the asiento property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setAsiento(JAXBElement<String> value) {
 		this.asiento = (value);
@@ -156,10 +156,10 @@ public class Distribucion {
 
 	/**
 	 * Gets the value of the descripcion property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getDescripcion() {
 		return descripcion;
@@ -167,11 +167,11 @@ public class Distribucion {
 
 	/**
 	 * Sets the value of the descripcion property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setDescripcion(JAXBElement<String> value) {
 		this.descripcion = (value);
@@ -179,9 +179,9 @@ public class Distribucion {
 
 	/**
 	 * Gets the value of the descuento property.
-	 * 
+	 *
 	 * @return possible object is {@link Double }
-	 * 
+	 *
 	 */
 	public Double getDescuento() {
 		return descuento;
@@ -189,10 +189,10 @@ public class Distribucion {
 
 	/**
 	 * Sets the value of the descuento property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Double }
-	 * 
+	 *
 	 */
 	public void setDescuento(Double value) {
 		this.descuento = value;
@@ -200,9 +200,9 @@ public class Distribucion {
 
 	/**
 	 * Gets the value of the descuentoInfante property.
-	 * 
+	 *
 	 * @return possible object is {@link Double }
-	 * 
+	 *
 	 */
 	public Double getDescuentoInfante() {
 		return descuentoInfante;
@@ -210,10 +210,10 @@ public class Distribucion {
 
 	/**
 	 * Sets the value of the descuentoInfante property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Double }
-	 * 
+	 *
 	 */
 	public void setDescuentoInfante(Double value) {
 		this.descuentoInfante = value;
@@ -221,9 +221,9 @@ public class Distribucion {
 
 	/**
 	 * Gets the value of the descuentonino property.
-	 * 
+	 *
 	 * @return possible object is {@link Double }
-	 * 
+	 *
 	 */
 	public Double getDescuentonino() {
 		return descuentonino;
@@ -231,10 +231,10 @@ public class Distribucion {
 
 	/**
 	 * Sets the value of the descuentonino property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Double }
-	 * 
+	 *
 	 */
 	public void setDescuentonino(Double value) {
 		this.descuentonino = value;
@@ -242,9 +242,9 @@ public class Distribucion {
 
 	/**
 	 * Gets the value of the disponible property.
-	 * 
+	 *
 	 * @return possible object is {@link Integer }
-	 * 
+	 *
 	 */
 	public Integer getDisponible() {
 		return disponible;
@@ -252,10 +252,10 @@ public class Distribucion {
 
 	/**
 	 * Sets the value of the disponible property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Integer }
-	 * 
+	 *
 	 */
 	public void setDisponible(Integer value) {
 		this.disponible = value;
@@ -263,10 +263,10 @@ public class Distribucion {
 
 	/**
 	 * Gets the value of the elemento property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getElemento() {
 		return elemento;
@@ -274,11 +274,11 @@ public class Distribucion {
 
 	/**
 	 * Sets the value of the elemento property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setElemento(JAXBElement<String> value) {
 		this.elemento = (value);
@@ -286,9 +286,9 @@ public class Distribucion {
 
 	/**
 	 * Gets the value of the igv property.
-	 * 
+	 *
 	 * @return possible object is {@link Double }
-	 * 
+	 *
 	 */
 	public Double getIgv() {
 		return igv;
@@ -296,10 +296,10 @@ public class Distribucion {
 
 	/**
 	 * Sets the value of the igv property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Double }
-	 * 
+	 *
 	 */
 	public void setIgv(Double value) {
 		this.igv = value;
@@ -307,9 +307,9 @@ public class Distribucion {
 
 	/**
 	 * Gets the value of the igvInfante property.
-	 * 
+	 *
 	 * @return possible object is {@link Double }
-	 * 
+	 *
 	 */
 	public Double getIgvInfante() {
 		return igvInfante;
@@ -317,10 +317,10 @@ public class Distribucion {
 
 	/**
 	 * Sets the value of the igvInfante property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Double }
-	 * 
+	 *
 	 */
 	public void setIgvInfante(Double value) {
 		this.igvInfante = value;
@@ -328,9 +328,9 @@ public class Distribucion {
 
 	/**
 	 * Gets the value of the igvNino property.
-	 * 
+	 *
 	 * @return possible object is {@link Double }
-	 * 
+	 *
 	 */
 	public Double getIgvNino() {
 		return igvNino;
@@ -338,10 +338,10 @@ public class Distribucion {
 
 	/**
 	 * Sets the value of the igvNino property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Double }
-	 * 
+	 *
 	 */
 	public void setIgvNino(Double value) {
 		this.igvNino = value;
@@ -349,10 +349,10 @@ public class Distribucion {
 
 	/**
 	 * Gets the value of the nivelPiso property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getNivelPiso() {
 		return nivelPiso;
@@ -360,11 +360,11 @@ public class Distribucion {
 
 	/**
 	 * Sets the value of the nivelPiso property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setNivelPiso(JAXBElement<String> value) {
 		this.nivelPiso = (value);
@@ -372,9 +372,9 @@ public class Distribucion {
 
 	/**
 	 * Gets the value of the tarifa property.
-	 * 
+	 *
 	 * @return possible object is {@link Double }
-	 * 
+	 *
 	 */
 	public Double getTarifa() {
 		return tarifa;
@@ -382,10 +382,10 @@ public class Distribucion {
 
 	/**
 	 * Sets the value of the tarifa property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Double }
-	 * 
+	 *
 	 */
 	public void setTarifa(Double value) {
 		this.tarifa = value;
@@ -393,10 +393,10 @@ public class Distribucion {
 
 	/**
 	 * Gets the value of the tarifaDescripcion property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getTarifaDescripcion() {
 		return tarifaDescripcion;
@@ -404,11 +404,11 @@ public class Distribucion {
 
 	/**
 	 * Sets the value of the tarifaDescripcion property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setTarifaDescripcion(JAXBElement<String> value) {
 		this.tarifaDescripcion = (value);
@@ -416,9 +416,9 @@ public class Distribucion {
 
 	/**
 	 * Gets the value of the tarifaInfante property.
-	 * 
+	 *
 	 * @return possible object is {@link Double }
-	 * 
+	 *
 	 */
 	public Double getTarifaInfante() {
 		return tarifaInfante;
@@ -426,10 +426,10 @@ public class Distribucion {
 
 	/**
 	 * Sets the value of the tarifaInfante property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Double }
-	 * 
+	 *
 	 */
 	public void setTarifaInfante(Double value) {
 		this.tarifaInfante = value;
@@ -437,9 +437,9 @@ public class Distribucion {
 
 	/**
 	 * Gets the value of the tarifaNino property.
-	 * 
+	 *
 	 * @return possible object is {@link Double }
-	 * 
+	 *
 	 */
 	public Double getTarifaNino() {
 		return tarifaNino;
@@ -447,10 +447,10 @@ public class Distribucion {
 
 	/**
 	 * Sets the value of the tarifaNino property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Double }
-	 * 
+	 *
 	 */
 	public void setTarifaNino(Double value) {
 		this.tarifaNino = value;
@@ -458,9 +458,9 @@ public class Distribucion {
 
 	/**
 	 * Gets the value of the tarifaTotalInfante property.
-	 * 
+	 *
 	 * @return possible object is {@link Double }
-	 * 
+	 *
 	 */
 	public Double getTarifaTotalInfante() {
 		return tarifaTotalInfante;
@@ -468,10 +468,10 @@ public class Distribucion {
 
 	/**
 	 * Sets the value of the tarifaTotalInfante property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Double }
-	 * 
+	 *
 	 */
 	public void setTarifaTotalInfante(Double value) {
 		this.tarifaTotalInfante = value;
@@ -479,9 +479,9 @@ public class Distribucion {
 
 	/**
 	 * Gets the value of the tarifaTotalNino property.
-	 * 
+	 *
 	 * @return possible object is {@link Double }
-	 * 
+	 *
 	 */
 	public Double getTarifaTotalNino() {
 		return tarifaTotalNino;
@@ -489,10 +489,10 @@ public class Distribucion {
 
 	/**
 	 * Sets the value of the tarifaTotalNino property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Double }
-	 * 
+	 *
 	 */
 	public void setTarifaTotalNino(Double value) {
 		this.tarifaTotalNino = value;
@@ -500,9 +500,9 @@ public class Distribucion {
 
 	/**
 	 * Gets the value of the tarifatotal property.
-	 * 
+	 *
 	 * @return possible object is {@link Double }
-	 * 
+	 *
 	 */
 	public Double getTarifatotal() {
 		return tarifatotal;
@@ -510,10 +510,10 @@ public class Distribucion {
 
 	/**
 	 * Sets the value of the tarifatotal property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Double }
-	 * 
+	 *
 	 */
 	public void setTarifatotal(Double value) {
 		this.tarifatotal = value;
@@ -521,10 +521,10 @@ public class Distribucion {
 
 	/**
 	 * Gets the value of the totalNivel property.
-	 * 
+	 *
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String }
 	 *         {@code >}
-	 * 
+	 *
 	 */
 	public JAXBElement<String> getTotalNivel() {
 		return totalNivel;
@@ -532,11 +532,11 @@ public class Distribucion {
 
 	/**
 	 * Sets the value of the totalNivel property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link JAXBElement }{@code <}{@link String }
 	 *            {@code >}
-	 * 
+	 *
 	 */
 	public void setTotalNivel(JAXBElement<String> value) {
 		this.totalNivel = (value);
@@ -544,9 +544,9 @@ public class Distribucion {
 
 	/**
 	 * Gets the value of the x1 property.
-	 * 
+	 *
 	 * @return possible object is {@link Integer }
-	 * 
+	 *
 	 */
 	public Integer getX1() {
 		return x1;
@@ -554,10 +554,10 @@ public class Distribucion {
 
 	/**
 	 * Sets the value of the x1 property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Integer }
-	 * 
+	 *
 	 */
 	public void setX1(Integer value) {
 		this.x1 = value;
@@ -565,9 +565,9 @@ public class Distribucion {
 
 	/**
 	 * Gets the value of the y1 property.
-	 * 
+	 *
 	 * @return possible object is {@link Integer }
-	 * 
+	 *
 	 */
 	public Integer getY1() {
 		return y1;
@@ -575,10 +575,10 @@ public class Distribucion {
 
 	/**
 	 * Sets the value of the y1 property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Integer }
-	 * 
+	 *
 	 */
 	public void setY1(Integer value) {
 		this.y1 = value;

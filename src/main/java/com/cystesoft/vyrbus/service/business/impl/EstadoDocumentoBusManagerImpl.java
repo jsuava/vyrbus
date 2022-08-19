@@ -25,7 +25,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class EstadoDocumentoBusManagerImpl implements EstadoDocumentoBusManager {
 	private EstadoDocumentoBusDAO estadoDocumentoBusDAO;
-	
+
 	/**
 	 * @return the estadoDocumentoBusDAO
 	 */
@@ -73,17 +73,17 @@ public class EstadoDocumentoBusManagerImpl implements EstadoDocumentoBusManager 
 	@Transactional
 	public void guardar(EstadoDocumentoBus estadoDocumentoBus) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", estadoDocumentoBus.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> result = getEstadoDocumentoBusDAO().buscarPorX(criteriosBusqueda, null);
-											
+
 			/*Valida duplicidad de la denominación*/
 			if(result.size()>0)
 				throw new DenominacionDuplicadaException();
-			
+
 			getEstadoDocumentoBusDAO().guardar(estadoDocumentoBus);
-			
+
 		}catch (DenominacionDuplicadaException ndex){
 			throw new DenominacionDuplicadaException();
 		}catch(Exception ex){
@@ -98,20 +98,20 @@ public class EstadoDocumentoBusManagerImpl implements EstadoDocumentoBusManager 
 	@Transactional
 	public void actualizar(EstadoDocumentoBus estadoDocumentoBus) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", estadoDocumentoBus.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> result = getEstadoDocumentoBusDAO().buscarPorX(criteriosBusqueda, null);
-					
+
 			/*Valida duplicidad de la denominacion*/
-			for(int r = 0; r < result.size(); r ++) {
-				EstadoDocumentoBus oEstadoDocumentoBus = (EstadoDocumentoBus) result.get(r);
+			for (Object element : result) {
+				EstadoDocumentoBus oEstadoDocumentoBus = (EstadoDocumentoBus) element;
 					if (!(oEstadoDocumentoBus.getId() == estadoDocumentoBus.getId()))
 						throw new DenominacionDuplicadaException();
 			}
-			
+
 			getEstadoDocumentoBusDAO().actualizar(estadoDocumentoBus);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(Exception ex){

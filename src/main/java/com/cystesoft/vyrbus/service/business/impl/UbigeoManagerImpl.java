@@ -23,7 +23,7 @@ import com.cystesoft.vyrbus.service.business.UbigeoManager;
  */
 public class UbigeoManagerImpl implements UbigeoManager {
 	private UbigeoDAO ubigeoDAO;
-	
+
 	/**
 	 * @return the ubigeoDAO
 	 */

@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 26 oct. 2021
  * Hora			: 10:58:36
@@ -28,8 +28,8 @@ import com.cystesoft.vyrbus.service.business.TranscarManager;
  */
 public class TranscarManagerImpl implements TranscarManager{
 	private TranscarDAO transcarDAO;
-	
-	
+
+
 	/**
 	 * @return the transcarDAO
 	 */
@@ -49,7 +49,7 @@ public class TranscarManagerImpl implements TranscarManager{
 	 */
 	@Override
 	public List<TranscarRolUsuario> buscarRolesUsuario() throws Exception {
-		// TODO Auto-generated method stub						
+		// TODO Auto-generated method stub
 		return getTranscarDAO().buscarRolesUsuario();
 	}
 
@@ -180,6 +180,6 @@ public class TranscarManagerImpl implements TranscarManager{
 		return getTranscarDAO().buscarLiquidacionCounter(fechaInicio, fechaFin, agenciaId, usuarioId);
 	}
 
-	
+
 
 }

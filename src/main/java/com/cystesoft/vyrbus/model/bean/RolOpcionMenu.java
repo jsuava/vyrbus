@@ -10,7 +10,7 @@ public class RolOpcionMenu extends GenericBean implements java.io.Serializable {
 	private RolOpcionMenuID rolOpcionMenuID;
 	private Rol rol;
 	private OpcionMenu opcionMenu;
-	
+
 	public RolOpcionMenu() {
 	}
 

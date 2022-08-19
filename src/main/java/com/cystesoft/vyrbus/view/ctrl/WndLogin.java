@@ -37,7 +37,6 @@ import com.cystesoft.vyrbus.model.bean.ControlAcceso;
 import com.cystesoft.vyrbus.model.bean.Liquidacion;
 import com.cystesoft.vyrbus.model.bean.Parametros;
 import com.cystesoft.vyrbus.model.bean.Rol;
-import com.cystesoft.vyrbus.model.bean.Session;
 import com.cystesoft.vyrbus.model.bean.TipoAgencia;
 import com.cystesoft.vyrbus.model.bean.TipoComprobante;
 import com.cystesoft.vyrbus.model.bean.Usuario;
@@ -69,7 +68,7 @@ import com.cystesoft.vyrbus.view.ui.WndBase;
  */
 public class WndLogin extends WndBase {
 	private static final long serialVersionUID = 2552336033225034075L;
-	
+
 	private Captcha cpaImagen;
 	private Textbox txtLogin;
 	private Textbox txtPassword;
@@ -84,25 +83,25 @@ public class WndLogin extends WndBase {
 	private Textbox txtCodigoAcceso;
 	private Textbox txtAccessCode;
 	private Label lblCopyRigth;
-	
+
 //	private String address = null;
-	
+
 	@Override
 	public void onCreate() {
 //		txtLogin.setText("abanto");
 //		txtPassword.setText("sisvyrdev");
 //		txtImagen.setText(cpaImagen.getValue());
-		
-		
+
+
 		//Begin custom 09-DIC-2013 TEPSA javalos CR#SISVYR002
 //		Boolean validate = (Boolean)getDesktop().getExecution().getSession().getAttribute("validatePath");
 //		if(validate==null)
 //			Executions.sendRedirect("invalidAccess.zul");
-//		
+//
 //		ServletRequest response = (ServletRequest)this.getDesktop().getExecution().getNativeRequest();
 //		address = response.getParameter("address");
 		//End custom 09-DIC-2013 TEPSA javalos CR#SISVYR002
-		
+
 		//Obtenemos el codigo generado
 		String cryptoMAC = (String)getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_DIR_MAC);
 		if(cryptoMAC != null) {
@@ -113,7 +112,7 @@ public class WndLogin extends WndBase {
 			txtPassword.setText(decoArray[2]);
 		}else
 			txtAccessCode.setText("");
-		
+
 		/*Busca Parametros*/
 		try{
 			Parametros parametros= ServiceLocator.getParametrosManager().buscarPorEstadoRegistro("A");
@@ -130,7 +129,7 @@ public class WndLogin extends WndBase {
 			DlgMessage.information(Messages.getString("Generales.information.errorCargarParametros"));
 			//Executions.sendRedirect("invalidAccess.zul");
 		}
-		
+
 		/*Descomentar solo para desarrollo - 09/01/2017 - jabanto*/
 		try {
 //			txtLogin.setText("javalos");
@@ -139,7 +138,7 @@ public class WndLogin extends WndBase {
 //			txtLogin.setText("moscco");
 //			txtPassword.setText("Ant@res1091");
 //			txtImagen.setText(cpaImagen.getValue());
-//			
+//
 //			onAccess();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -151,7 +150,7 @@ public class WndLogin extends WndBase {
 	public void initComponents() {
 		txtLogin = (Textbox)this.getFellow("txtLogin");
 		txtPassword = (Textbox)this.getFellow("txtPassword");
-		cpaImagen = (Captcha)this.getFellow("cpaImagen");		
+		cpaImagen = (Captcha)this.getFellow("cpaImagen");
 		txtImagen = (Textbox)this.getFellow("txtImagen");
 		cmbRol=(Combobox)this.getFellow("cmbRol");
 		divRol=(Div)this.getFellow("divRol");
@@ -165,13 +164,13 @@ public class WndLogin extends WndBase {
 		txtAccessCode=(Textbox)this.getFellow("txtAccessCode");
 	}
 
-	
+
 	public void onValidarAccess()throws Exception{
-		
+
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public void onAccess()throws Exception{
@@ -184,32 +183,32 @@ public class WndLogin extends WndBase {
 				throw new CaptchaNullException(CaptchaNullException.CODIGO_VACIO);
 			else if(!cpaImagen.getValue().toUpperCase().equals(txtImagen.getText().trim().toUpperCase()))
 				throw new CaptchaNullException(1);
-			
+
 //			/*	Validando que el CPU tenga permitido acceder al sistema	*/
 //			UsuarioHardware usuarioHardware = ServiceLocator.getUsuarioHardwareManager().buscarXCodigo(address);
 //			if(usuarioHardware.getId()==null)
 //				throw new UsuarioHardwareNullException();
-			
+
 			/*	Valida usuario y password sean correctos	*/
 			//Usuario usuario = new Usuario();
 			final Usuario usuario = ServiceLocator.getUsuarioManager().buscarUsuarioPorLoginPassword(txtLogin.getText().trim(), txtPassword.getText().trim(), Constantes.VALUE_ACTIVO);
 			if (usuario == null)
 				throw new UsuarioNullException();
-			
+
 			ControlAcceso controlAcceso = null;
 			if(usuario.getTipoSeguridad().intValue()==Constantes.VALIDAR_APPLET) {
 				if(txtAccessCode.getText().trim().equals(""))
 					throw new ControlAccesoException(ControlAccesoException.EMPTY_CODIGO);
-				
+
 				controlAcceso = ServiceLocator.getUsuarioManager().buscarCodigoAcceso(usuario.getId(), txtAccessCode.getText().trim(), Constantes.VALUE_ACTIVO);
-				if (controlAcceso == null) 
+				if (controlAcceso == null)
 					throw new ControlAccesoException(ControlAccesoException.EXPIRED_CODIGO);
 			}
-			
+
 //			txtLogin.setText("");
 //			txtPassword.setText("");
 //			txtAccessCode.setText("");
-			
+
 //			Session session =null;
 //			Boolean ejecutarApplet=false;
 //			/*Para el solicitar el codigo de acceso*/
@@ -222,7 +221,7 @@ public class WndLogin extends WndBase {
 //			}else if (!(chkOmitirCodigoAcceso.isChecked()) && txtCodigoAcceso.getText().trim().isEmpty()){
 //				DlgMessage.information(Messages.getString("WndLogin.information.noCodigoAcceso"),txtCodigoAcceso);
 //				return;
-//			}else if (!(chkOmitirCodigoAcceso.isChecked()) && !(txtCodigoAcceso.getText().trim().isEmpty())){ 
+//			}else if (!(chkOmitirCodigoAcceso.isChecked()) && !(txtCodigoAcceso.getText().trim().isEmpty())){
 //				TreeMap<String, Object>criteriosBusqueda = new TreeMap<>();
 //				criteriosBusqueda.put("codigoAutorizacion", txtCodigoAcceso.getText().trim().toUpperCase());
 //				criteriosBusqueda.put("estado", Constantes.TRUE_VALUE);
@@ -241,13 +240,13 @@ public class WndLogin extends WndBase {
 //					return;
 //				}
 //			}else if (chkOmitirCodigoAcceso.isChecked())
-//				ejecutarApplet=true;			
-			
-			
+//				ejecutarApplet=true;
+
+
 			/*	Valida si el usuario tiene o no un rol asignado.	*/
 			Rol rol = new Rol();
 			List<UsuarioRol> listUsuarioRol=null;
-			if(divRol.isVisible()==false){
+			if(!divRol.isVisible()){
 				listUsuarioRol = ServiceLocator.getUsuarioRolManager().buscarXIdUsuario(usuario.getId());
 				if (listUsuarioRol.size()==1){
 					rol = ServiceLocator.getRolManager().buscarPorId(new Long(listUsuarioRol.get(0).getUsuarioRolID().getIdRol()));
@@ -264,7 +263,7 @@ public class WndLogin extends WndBase {
 					cmbRol.setFocus(true);
 					cmbRol.select();
 					return;
-				}else 
+				}else
 					throw new UsuarioRolNullException();
 			}else{
 				if(cmbRol.getSelectedItem().getValue() instanceof Rol){
@@ -275,10 +274,10 @@ public class WndLogin extends WndBase {
 					return;
 				}
 			}
-			
+
 			/*	Recupera al usuario aprobador	*/
 			UsuarioAprobador usuarioAprobador= null;
-			TreeMap<String, Object> criterioBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criterioBusqueda = new TreeMap<>();
 			criterioBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			criterioBusqueda.put("usuario", usuario);
 			List<UsuarioAprobador> listUsuarioAprobador = ServiceLocator.getUsuarioAprobadorManager().buscarPorX(criterioBusqueda, null);
@@ -290,7 +289,7 @@ public class WndLogin extends WndBase {
 			this.getDesktop().getSession().setAttribute(Constantes.ATRIBUTO_USUARIO, usuario);
 			this.getDesktop().getSession().setAttribute(Constantes.ATRIBUTO_USUARIO_APROBADOR, usuarioAprobador);
 			this.getDesktop().getSession().setAttribute(Constantes.ATRIBUTO_ROL, rol);
-			
+
 //			###EDIT GEBIN 04/05/2016 - jabanto
 //			if(ejecutarApplet){
 //					Executions.sendRedirect("generateAddress.zul");
@@ -309,25 +308,25 @@ public class WndLogin extends WndBase {
 						throw new UsuarioHardwareNullException();
 					usuarioHardware = ServiceLocator.getUsuarioHardwareManager().buscarPorId(usuario.getUsuarioHardware().getId().longValue());
 				}
-				
-				
+
+
 				/****** RECUPERANDO DATOS DE ACUERDO AL USUARIO HARDWARE******/
 				/*	Recupera el Canal de Venta	*/
 				CanalVenta canalVenta = new CanalVenta();
 				canalVenta.setId(usuarioHardware.getCanalVenta().getId());
 				canalVenta.setDenominacion(usuarioHardware.getCanalVenta().getDenominacion());
-				
+
 				/*Valida si es canal web, para denegarle el acceso*/
 				if(canalVenta.getId().intValue()==Constantes.ID_CANVEN_WEB){
 					DlgMessage.information(Messages.getString("WndLogin.information.canalNoSession"));
 					return;
 				}
-				
+
 				/*	Recupera la Agencia	*/
 				Agencia agencia = usuarioHardware.getAgencia();
 				final TipoAgencia tipoAgencia = agencia.getTipoAgencia();
 				agencia.setTipoAgencia(tipoAgencia);
-				
+
 				/*	Recupera el Tipo de Comprobante	*/
 				Integer idTipoComprobante = null;
 				if(agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_TEPSA)
@@ -337,17 +336,17 @@ public class WndLogin extends WndBase {
 				else
 					idTipoComprobante = Constantes.ID_TIPCOM_VOUCHER_CORPORATIVO;
 				TipoComprobante tipoComprobante=ServiceLocator.getTipoComprobanteManager().buscarPorId(idTipoComprobante.longValue());
-				
+
 				this.getDesktop().getSession().setAttribute(Constantes.ATRIBUTO_USUARIO_HARDWARE, usuarioHardware);
 				this.getDesktop().getSession().setAttribute(Constantes.ATRIBUTO_CANAL_VENTA, canalVenta);
 				this.getDesktop().getSession().setAttribute(Constantes.ATRIBUTO_AGENCIA, agencia);
 				this.getDesktop().getSession().setAttribute(Constantes.ATRIBUTO_TIPO_COMPROBANTE, tipoComprobante);
 				//************************************************************************
-				
+
 				/*	Busca Liquidacion abierta del usuario	*/
 				Liquidacion liquidacion = new Liquidacion();
 				liquidacion=UtilData.estadoLiquidacionUsuario(usuario, agencia);
-				
+
 				/* Realiza el cierre y/o apertura de manera automatica para el caso de las agencias de viaje o corporativos - impl 31/03/2014 */
 				if(tipoAgencia.getId().intValue()!=Constantes.ID_TIPAGE_TEPSA){
 					Date fechaServer=Constantes.FORMAT_DATE.parse(new MyTime().dateServer());
@@ -355,7 +354,7 @@ public class WndLogin extends WndBase {
 						//Realiza el cierre
 						Double totalVentas=ServiceLocator.getVentaPasajesManager().buscarTotalVentas(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), agencia.getId(), usuario.getId());
 						UtilData.procesaCierreCaja(liquidacion, totalVentas,usuario, 0.0);
-												
+
 						//Apertura una nueva liquidacion
 						liquidacion=UtilData.aperturarLiquidacion(fechaServer,usuario,agencia);
 					}else if (liquidacion==null){
@@ -368,9 +367,9 @@ public class WndLogin extends WndBase {
 					this.getDesktop().getSession().setAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION,liquidacion.getFechaLiquidacion());
 
 				/*	Calcula el porcentaje de correlativos utilizados del manifiesto */
-				Integer porcentajeCorrelativoManifiesto = 0;
+				int porcentajeCorrelativoManifiesto = 0;
 				porcentajeCorrelativoManifiesto = (int) UtilData.porcentajeCorrelativoManifiesto(agencia);
-				
+
 				final Liquidacion liquidacion_f = liquidacion;
 				if (porcentajeCorrelativoManifiesto >=Constantes.ALERTAR_ENVIO_MANIFIESTOS){
 					/*Cuando el  correlativo del manifiesto es Mayor al 80 %*/
@@ -389,14 +388,14 @@ public class WndLogin extends WndBase {
 											}
 										}
 									});
-								}else 
-									//El Usuario NO Tiene liquidacion abierta o es una agencia de viajes o corporativo 
+								}else
+									//El Usuario NO Tiene liquidacion abierta o es una agencia de viajes o corporativo
 									Executions.sendRedirect("principal.zul");
 							}
-						}	
+						}
 					});
 				}else{//Cuando el uso del correlativo del manifiesto es menor al 80 %
-					
+
 					//El Usuario tiene liquidacion una abierta y es una agencia tepsa
 					if (liquidacion_f!=null && tipoAgencia.getId().intValue()==Constantes.ID_TIPAGE_TEPSA){
 						Messagebox.show("El sistema ha detectado una caja abierta, con fecha: " + Constantes.FORMAT_DATE.format(liquidacion_f.getFechaLiquidacion())+". "+
@@ -409,36 +408,36 @@ public class WndLogin extends WndBase {
 							}
 						});
 					}else
-						//El Usuario NO Tiene liquidacion abierta o es una agencia de viajes o corporativo 
+						//El Usuario NO Tiene liquidacion abierta o es una agencia de viajes o corporativo
 						Executions.sendRedirect("principal.zul");
 				}
 //			}
-			
+
 //			##END BEGIN 04/05/2016 - jabanto
 //			if(usuario.getTipoSeguridad().intValue()==Constantes.VALIDAR_APPLET){
 //				Executions.sendRedirect("generateAddress.zul");
 //			}else{
 //				if(usuario.getUsuarioHardware()==null)
 //					throw new UsuarioHardwareNullException();
-//				
+//
 //				UsuarioHardware usuarioHardware = ServiceLocator.getUsuarioHardwareManager().buscarPorId(usuario.getUsuarioHardware().getId().longValue());
 //				/****** RECUPERANDO DATOS DE ACUERDO AL USUARIO HARDWARE******/
 //				/*	Recupera el Canal de Venta	*/
 //				CanalVenta canalVenta = new CanalVenta();
 //				canalVenta.setId(usuarioHardware.getCanalVenta().getId());
 //				canalVenta.setDenominacion(usuarioHardware.getCanalVenta().getDenominacion());
-//				
+//
 //				/*Valida si es canal web, para denegarle el acceso*/
 //				if(canalVenta.getId().intValue()==Constantes.ID_CANVEN_WEB){
 //					DlgMessage.information(Messages.getString("WndLogin.information.canalNoSession"));
 //					return;
 //				}
-//				
+//
 //				/*	Recupera la Agencia	*/
 //				Agencia agencia = usuarioHardware.getAgencia();
 //				final TipoAgencia tipoAgencia = agencia.getTipoAgencia();
 //				agencia.setTipoAgencia(tipoAgencia);
-//				
+//
 //				/*	Recupera el Tipo de Comprobante	*/
 //				Integer idTipoComprobante = null;
 //				if(agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_TEPSA)
@@ -448,17 +447,17 @@ public class WndLogin extends WndBase {
 //				else
 //					idTipoComprobante = Constantes.ID_TIPCOM_VOUCHER_CORPORATIVO;
 //				TipoComprobante tipoComprobante=ServiceLocator.getTipoComprobanteManager().buscarPorId(idTipoComprobante.longValue());
-//				
+//
 //				this.getDesktop().getSession().setAttribute(Constantes.ATRIBUTO_USUARIO_HARDWARE, usuario.getUsuarioHardware());
 //				this.getDesktop().getSession().setAttribute(Constantes.ATRIBUTO_CANAL_VENTA, canalVenta);
 //				this.getDesktop().getSession().setAttribute(Constantes.ATRIBUTO_AGENCIA, agencia);
 //				this.getDesktop().getSession().setAttribute(Constantes.ATRIBUTO_TIPO_COMPROBANTE, tipoComprobante);
 //				//************************************************************************
-//				
+//
 //				/*	Busca Liquidacion abierta del usuario	*/
 //				Liquidacion liquidacion = new Liquidacion();
 //				liquidacion=UtilData.estadoLiquidacionUsuario(usuario, agencia);
-//				
+//
 //				/* Realiza el cierre y/o apertura de manera automatica para el caso de las agencias de viaje o corporativos - impl 31/03/2014 */
 //				if(tipoAgencia.getId().intValue()!=Constantes.ID_TIPAGE_TEPSA){
 //					Date fechaServer=Constantes.FORMAT_DATE.parse(new MyTime().dateServer());
@@ -466,7 +465,7 @@ public class WndLogin extends WndBase {
 //						//Realiza el cierre
 //						Double totalVentas=ServiceLocator.getVentaPasajesManager().buscarTotalVentas(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()), agencia.getId(), usuario.getId());
 //						UtilData.procesaCierreCaja(liquidacion, totalVentas,usuario);
-//												
+//
 //						//Apertura una nueva liquidacion
 //						liquidacion=UtilData.aperturarLiquidacion(fechaServer,usuario,agencia);
 //					}else if (liquidacion==null){
@@ -481,7 +480,7 @@ public class WndLogin extends WndBase {
 //				/*	Calcula el porcentaje de correlativos utilizados del manifiesto */
 //				Integer porcentajeCorrelativoManifiesto = 0;
 //				porcentajeCorrelativoManifiesto = (int) UtilData.porcentajeCorrelativoManifiesto(agencia);
-//				
+//
 //				final Liquidacion liquidacion_f = liquidacion;
 //				if (porcentajeCorrelativoManifiesto >=Constantes.ALERTAR_ENVIO_MANIFIESTOS){
 //					/*Cuando el  correlativo del manifiesto es Mayor al 80 %*/
@@ -500,14 +499,14 @@ public class WndLogin extends WndBase {
 //											}
 //										}
 //									});
-//								}else 
-//									//El Usuario NO Tiene liquidacion abierta o es una agencia de viajes o corporativo 
+//								}else
+//									//El Usuario NO Tiene liquidacion abierta o es una agencia de viajes o corporativo
 //									Executions.sendRedirect("principal.zul");
 //							}
-//						}	
+//						}
 //					});
 //				}else{//Cuando el uso del correlativo del manifiesto es menor al 80 %
-//					
+//
 //					//El Usuario tiene liquidacion una abierta y es una agencia tepsa
 //					if (liquidacion_f!=null && tipoAgencia.getId().intValue()==Constantes.ID_TIPAGE_TEPSA){
 //						Messagebox.show("El sistema ha detectado una caja abierta, con fecha: " + Constantes.FORMAT_DATE.format(liquidacion_f.getFechaLiquidacion())+". "+
@@ -520,11 +519,11 @@ public class WndLogin extends WndBase {
 //							}
 //						});
 //					}else
-//						//El Usuario NO Tiene liquidacion abierta o es una agencia de viajes o corporativo 
+//						//El Usuario NO Tiene liquidacion abierta o es una agencia de viajes o corporativo
 //						Executions.sendRedirect("principal.zul");
 //				}
 //			}
-			
+
 		} catch (UsuarioHardwareNullException uhnex){
 			Executions.sendRedirect("invalidAccess.zul");
 		} catch (UsuarioNullException unex){
@@ -548,7 +547,7 @@ public class WndLogin extends WndBase {
 			else if(cnex.getLevel().intValue()==1)
 				DlgMessage.information(Messages.getString("WndLogin.information.captchaNoEquals"),txtImagen);
 			txtImagen.setText("");
-			cpaImagen.randomValue();	
+			cpaImagen.randomValue();
 		}catch (ControlAccesoException lex){
 			if(lex.getTipo()==ControlAccesoException.EMPTY_CODIGO){
 				Executions.sendRedirect("invalidAccess.zul");
@@ -560,20 +559,20 @@ public class WndLogin extends WndBase {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 		}
 	}
-	
-	
+
+
 	public void onExit()throws Exception {
 		cpaImagen.randomValue();
 	}
-	
-	
+
+
 	public void txtLogin_onchange(){
 		txtPassword.setText("");
 		Util.limpiarCombobox(cmbRol);
 		divRol.setVisible(false);
 		spBtnIngresar.setHeight("14px");
 	}
-	
+
 	public void createCookie(){
 		HttpServletResponse response = (HttpServletResponse)Executions.getCurrent().getNativeResponse();
         Cookie userCookie = new Cookie("user", "xxx123");
@@ -583,5 +582,5 @@ public class WndLogin extends WndBase {
         System.out.println(cookies[0].getValue());
 	}
 
-	
+
 }

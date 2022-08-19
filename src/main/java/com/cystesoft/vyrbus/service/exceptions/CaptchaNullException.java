@@ -36,11 +36,11 @@ public class CaptchaNullException extends Exception implements Serializable {
 	public void setLevel(Integer level) {
 		this.level = level;
 	}
-	
+
 	/**
 	 * Constructor con parametros.
-	 * @param level   
-	 * <br>Donde level puede ser: 
+	 * @param level
+	 * <br>Donde level puede ser:
 	 * <b><br>0 : Nulidad
 	 * <br>1 : Desigualdad
 	 * <br>2 : Otro</b>
@@ -56,5 +56,5 @@ public class CaptchaNullException extends Exception implements Serializable {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+
 }

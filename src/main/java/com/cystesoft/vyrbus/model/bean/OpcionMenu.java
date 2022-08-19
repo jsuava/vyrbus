@@ -14,12 +14,12 @@ public class OpcionMenu extends GenericBean implements java.io.Serializable {
 	private String url;
 	private Integer ordenOpcionMenu;
 	private Integer habilitado;
-	
+
 	private Integer idPadre;
 	private String padre;
 	private Integer idHijo;
 	private String hijo;
-	
+
 	public OpcionMenu() {
 	}
 

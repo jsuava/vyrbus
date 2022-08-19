@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for Identidad complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="Identidad">
  *   &lt;complexContent>
@@ -26,8 +26,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Identidad", propOrder = { "seguridad", "nroEmp", "nroDoc" })
@@ -42,9 +42,9 @@ public class Identidad {
 
 	/**
 	 * Gets the value of the seguridad property.
-	 * 
+	 *
 	 * @return possible object is {@link Seguridad }
-	 * 
+	 *
 	 */
 	public Seguridad getSeguridad() {
 		return seguridad;
@@ -52,10 +52,10 @@ public class Identidad {
 
 	/**
 	 * Sets the value of the seguridad property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link Seguridad }
-	 * 
+	 *
 	 */
 	public void setSeguridad(Seguridad value) {
 		this.seguridad = value;
@@ -63,9 +63,9 @@ public class Identidad {
 
 	/**
 	 * Gets the value of the nroEmp property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getNroEmp() {
 		return nroEmp;
@@ -73,10 +73,10 @@ public class Identidad {
 
 	/**
 	 * Sets the value of the nroEmp property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setNroEmp(String value) {
 		this.nroEmp = value;
@@ -84,9 +84,9 @@ public class Identidad {
 
 	/**
 	 * Gets the value of the nroDoc property.
-	 * 
+	 *
 	 * @return possible object is {@link String }
-	 * 
+	 *
 	 */
 	public String getNroDoc() {
 		return nroDoc;
@@ -94,10 +94,10 @@ public class Identidad {
 
 	/**
 	 * Sets the value of the nroDoc property.
-	 * 
+	 *
 	 * @param value
 	 *            allowed object is {@link String }
-	 * 
+	 *
 	 */
 	public void setNroDoc(String value) {
 		this.nroDoc = value;

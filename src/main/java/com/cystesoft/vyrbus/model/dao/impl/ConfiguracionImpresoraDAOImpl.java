@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 21/05/2015
  * Hora			: 15:33:34
@@ -30,7 +30,7 @@ public class ConfiguracionImpresoraDAOImpl extends GenericDAOImpl implements Con
 		// TODO Auto-generated method stub
 		String hql="FROM ConfiguracionImpresora ci WHERE ci.estadoRegistro='"+Constantes.VALUE_ACTIVO+"' ";
 		ConfiguracionImpresora configuracionImpresora= (ConfiguracionImpresora) getSession().createQuery(hql).uniqueResult();
-		
+
 		return configuracionImpresora;
 	}
 
@@ -48,7 +48,7 @@ public class ConfiguracionImpresoraDAOImpl extends GenericDAOImpl implements Con
 	 */
 	@Override
 	public void actualizar(ConfiguracionImpresora configuracionImpresora)throws Exception {
-		super.update(configuracionImpresora);		
+		super.update(configuracionImpresora);
 	}
 
 	/* (non-Javadoc)

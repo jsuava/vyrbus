@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 29 ago. 2021
  * Hora			: 20:59:41
@@ -40,7 +40,7 @@ import com.cystesoft.vyrbus.view.ui.WndBase;
 public class WndRptGastosIngresos extends WndBase {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Datebox dtbxFechaDesde;
@@ -50,9 +50,9 @@ public class WndRptGastosIngresos extends WndBase {
 	private Listbox ltbxAgencias;
 	private Listbox ltbxUsuarios;
 	private Listbox ltbxDetalleGasto;
-	
+
 	private List<Gasto>resultBusqueda;
-	
+
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.view.ui.WndBase#onCreate()
 	 */
@@ -65,7 +65,7 @@ public class WndRptGastosIngresos extends WndBase {
 		ltbxDetalleGasto.setVisible(false);
 	}
 
-	
+
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.view.ui.WndBase#initComponents()
 	 */
@@ -73,7 +73,7 @@ public class WndRptGastosIngresos extends WndBase {
 	public void initComponents() {
 		// TODO Auto-generated method stub
 		super.initComponents();
-		
+
 		dtbxFechaDesde = (Datebox)this.getFellow("dtbxFechaDesde");
 		dtbxFechaHasta = (Datebox)this.getFellow("dtbxFechaHasta");
 		rdGastos = (Radio)this.getFellow("rdGastos");
@@ -81,7 +81,7 @@ public class WndRptGastosIngresos extends WndBase {
 		ltbxAgencias = (Listbox)this.getFellow("ltbxAgencias");
 		ltbxUsuarios = (Listbox)this.getFellow("ltbxUsuarios");
 		ltbxDetalleGasto = (Listbox)this.getFellow("ltbxDetalleGasto");
-		
+
 		rdGastos.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -102,17 +102,17 @@ public class WndRptGastosIngresos extends WndBase {
 		});
 		ltbxAgencias.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
 			@Override
-			public void onEvent(Event event) throws Exception {				
+			public void onEvent(Event event) throws Exception {
 				loadResumenByUsuario();
 			}
 		});
 		ltbxUsuarios.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
-				loadDetalleGastos();				
+				loadDetalleGastos();
 			}
 		});
-	}	
+	}
 
 	public void onSearch() {
 		try {
@@ -120,11 +120,11 @@ public class WndRptGastosIngresos extends WndBase {
 			Util.limpiarListbox(ltbxUsuarios);
 			Util.limpiarListbox(ltbxDetalleGasto);
 			ltbxDetalleGasto.setVisible(false);
-			
+
 			String fechaInicio = Constantes.FORMAT_DATE.format(dtbxFechaDesde.getValue());
 			String fechaFin = Constantes.FORMAT_DATE.format(dtbxFechaHasta.getValue());
 			int tipoOperacion = (rdIngresos.isChecked()?Constantes.TRUE_VALUE:Constantes.FALSE_VALUE);
-			
+
 			resultBusqueda = ServiceLocator.getGastoManager().buscarGastosIngresos(fechaInicio, fechaFin, tipoOperacion);
 			//Crea resumen por agencias
 			for(Gasto gasto: resultBusqueda) {
@@ -132,9 +132,9 @@ public class WndRptGastosIngresos extends WndBase {
 				for(Listitem _item: ltbxAgencias.getItems()) {
 					Agencia agencia= ((Gasto)_item.getValue()).getAgencia();
 					if(agencia.getId().intValue()==gasto.getAgencia().getId().intValue()) {
-						item = _item;						
+						item = _item;
 						break;
-					}			
+					}
 				}
 				if(item==null) {
 					item= new Listitem();
@@ -153,18 +153,18 @@ public class WndRptGastosIngresos extends WndBase {
 					Doublebox dbxMonto = (Doublebox) cell.getChildren().get(0);
 					dbxMonto.setValue(dbxMonto.getValue()+gasto.getMonto());
 					cell.setLabel(Util.toNumberFormat(dbxMonto.getValue(), 2));
-				}									
-			}						
-			
+				}
+			}
+
 			//Carga el resumento por usuario
 			loadResumenByUsuario();
-			
-			
+
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Crea el resumen por usuario
 	 * @throws Exception
@@ -173,20 +173,20 @@ public class WndRptGastosIngresos extends WndBase {
 		Util.limpiarListbox(ltbxUsuarios);
 		Util.limpiarListbox(ltbxDetalleGasto);
 		ltbxDetalleGasto.setVisible(false);
-		
+
 		for(Listitem itemAgencia : ltbxAgencias.getSelectedItems()) {
 			if(itemAgencia.getValue()!=null && itemAgencia.getValue() instanceof Gasto) {
 				Agencia agencia= ((Gasto)itemAgencia.getValue()).getAgencia();
-				
+
 				for(Gasto gasto: resultBusqueda) {
 					if(gasto.getAgencia().getId().intValue()==agencia.getId().intValue()) {
 						Listitem itemUsuario=null;
 						for(Listitem _item: ltbxUsuarios.getItems()) {
 							Usuario _usuario= ((Gasto)_item.getValue()).getUsuario();
 							if(_usuario.getId().intValue()==gasto.getUsuario().getId().intValue()) {
-								itemUsuario = _item;						
+								itemUsuario = _item;
 								break;
-							}			
+							}
 						}
 						if(itemUsuario==null) {
 							itemUsuario= new Listitem();
@@ -204,15 +204,15 @@ public class WndRptGastosIngresos extends WndBase {
 							Doublebox dbxMonto = (Doublebox) cell.getChildren().get(0);
 							dbxMonto.setValue(dbxMonto.getValue()+gasto.getMonto());
 							cell.setLabel(Util.toNumberFormat(dbxMonto.getValue(), 2));
-						}						
-					}					
-				}							
-			}			
+						}
+					}
+				}
+			}
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private void loadDetalleGastos() {
 		Util.limpiarListbox(ltbxDetalleGasto);
@@ -243,19 +243,19 @@ public class WndRptGastosIngresos extends WndBase {
 					cell.setStyle("font-size:11px !important;text-align:right");
 					item.appendChild(cell);
 					ltbxDetalleGasto.appendChild(item);
-				}	
+				}
 			}
 		}
-		
+
 	}
-	
+
 	public void btnExportar_OnClick(){
 		if(ltbxDetalleGasto.getItemCount()>0) {
 			Session session = getDesktop().getSession();
 			HttpSession httpSession = (HttpSession)session.getNativeSession();
 			httpSession.setAttribute("parcialPath",Constantes.DIRECTORY_EXCEL+"GastosOtrosIngresos.xls");
 			httpSession.setAttribute("lbxGastosOtrosIngresos", ltbxDetalleGasto);
-			Executions.sendRedirect("/exportXlsGastosOtrosIngresos.htm");	
-		}		
+			Executions.sendRedirect("/exportXlsGastosOtrosIngresos.htm");
+		}
 	}
 }

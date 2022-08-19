@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 05/07/2016
  * Hora			: 14:54:09
@@ -22,11 +22,11 @@ public interface ReimpresionAnticipadaDAO extends GenericDAO{
 	/**
 	 * Realiza la busqueda por su identificador
 	 * @param id : Identificador de la reimpresion antecipada
-	 * @return 
+	 * @return
 	 * @throws Exception
 	 */
 	public ReimpresionAnticipada buscarPorID(Long id) throws Exception;
-	
+
 	/**
 	 * Busqueda por estado registro
 	 * @param estado		:Estado del Registro.
@@ -34,7 +34,7 @@ public interface ReimpresionAnticipadaDAO extends GenericDAO{
 	 * @return
 	 */
 	public ArrayList<ReimpresionAnticipada> buscarPorEstadoRegistro(String estado, String criterioOrden) throws Exception;
-	
+
 	/**
 	 * Realiza la busqueda de la reimpresion anticipada, segun la lista de parametros que se envie
 	 * @param criteriosBusqueda : Criterios para la busqueda
@@ -47,18 +47,18 @@ public interface ReimpresionAnticipadaDAO extends GenericDAO{
 	 * @param reimpresionAnticipada : Objeto que se guardara.
 	 */
 	public void guardar(ReimpresionAnticipada reimpresionAnticipada) throws Exception;
-	
+
 	/**
 	 * Actualiza Tipo de Gasto.
 	 * @param reimpresionAnticipada : Objeto que se actualizara.
 	 */
 	public void actualizar(ReimpresionAnticipada reimpresionAnticipada) throws Exception;
-	
+
 	/**
-	 * realiza la busqueda de la autorizacion para realizar la impresion	
+	 * realiza la busqueda de la autorizacion para realizar la impresion
 	 * @param agenciaID : Identificador de la agencia de quien pertenece el voucher a reimprimir
-	 * @param canalVentaID : Identificaor del canal de venta de queien pertenece el voucher a reimprimir 
-	 * @return 
+	 * @param canalVentaID : Identificaor del canal de venta de queien pertenece el voucher a reimprimir
+	 * @return
 	 * @throws Exception
 	 */
 	public boolean tieneAutorizacionReimpresion(Integer agenciaID, Integer canalVentaID)throws Exception;

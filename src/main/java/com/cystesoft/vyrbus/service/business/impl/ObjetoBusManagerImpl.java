@@ -25,7 +25,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
  */
 public class ObjetoBusManagerImpl implements ObjetoBusManager {
 	private ObjetoBusDAO objetoBusDAO;
-	
+
 	/**
 	 * @return the objetoBusDAO
 	 */
@@ -73,17 +73,17 @@ public class ObjetoBusManagerImpl implements ObjetoBusManager {
 	@Transactional
 	public void guardar(ObjetoBus objetoBus) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", objetoBus.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> resultDenominacion = getObjetoBusDAO().buscarPorX(criteriosBusqueda, null);
-			
+
 			/*Valida duplicidad de la denominación*/
 			if(resultDenominacion.size()>0)
 				throw new DenominacionDuplicadaException();
-			
+
 			getObjetoBusDAO().guardar(objetoBus);
-			
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(Exception ex){
@@ -98,20 +98,20 @@ public class ObjetoBusManagerImpl implements ObjetoBusManager {
 	@Transactional
 	public void actualizar(ObjetoBus objetoBus) throws Exception {
 		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("denominacion", objetoBus.getDenominacion());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<?> result = getObjetoBusDAO().buscarPorX(criteriosBusqueda, null);
-			
+
 			/*Valida duplicidad de la denominacion*/
-			for(int r = 0; r < result.size(); r ++) {
-				ObjetoBus oobjetoBus = (ObjetoBus) result.get(r);
+			for (Object element : result) {
+				ObjetoBus oobjetoBus = (ObjetoBus) element;
 				if (!(oobjetoBus.getId() == objetoBus.getId()))
 					throw new DenominacionDuplicadaException();
 			}
-		
+
 			getObjetoBusDAO().actualizar(objetoBus);
-		
+
 		}catch (DenominacionDuplicadaException rsdex){
 			throw new DenominacionDuplicadaException();
 		}catch(Exception ex){

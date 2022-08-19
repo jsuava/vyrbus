@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Sullo Avalos
  * Fecha		: 14/05/2013
  */
@@ -55,8 +55,8 @@ public class AplicarPromocion{
 	private Integer idTarjetaCredito;
 	private Date fechaPartida;
 	private Boolean pasajeroFrecuente;
-	private Doublebox dblTarifa; 
-	private Doublebox dblDescuento; 
+	private Doublebox dblTarifa;
+	private Doublebox dblDescuento;
 	private Doublebox dblImporte;
 	private Doublebox dblRecargo;
 	private Label lblPromocion;
@@ -67,13 +67,13 @@ public class AplicarPromocion{
 	private Doublebox dblDescuentoOtraMoneda;
 	private Doublebox dblImporteOtraMoneda;
 	private String horaPartida; //12/12/2015 - jabanto
-	
+
 	public AplicarPromocion(Integer idRuta, Integer idServicio,
 			Integer idPuntoVenta, Integer idCanalVenta, String pasajeroNuevo,
 			String cantidadViajes, String asiento, Long idCliente,
 			Boolean idaVuelta, Integer idFormaPago, Integer idTipoFormaPago,
 			Integer idTarjetaCredito, Date fechaPartida,
-			Boolean pasajeroFrecuente, Doublebox dblTarifa, Doublebox dblDescuento, Doublebox dblImporte, 
+			Boolean pasajeroFrecuente, Doublebox dblTarifa, Doublebox dblDescuento, Doublebox dblImporte,
 			Doublebox dblRecargo, Label lblPromocion, Image imgQuitarPromocion, Textbox txtIdPromocion,
 			String horaPartida) {
 		super();
@@ -100,14 +100,14 @@ public class AplicarPromocion{
 		this.txtIdPromocion = txtIdPromocion;
 		this.horaPartida=horaPartida;
 	}
-	
-	
+
+
 	public AplicarPromocion(Integer idRuta, Integer idServicio,
 			Integer idPuntoVenta, Integer idCanalVenta, String pasajeroNuevo,
 			String cantidadViajes, String asiento, Long idCliente,
 			Boolean idaVuelta, Integer idFormaPago, Integer idTipoFormaPago,
 			Integer idTarjetaCredito, Date fechaPartida,
-			Boolean pasajeroFrecuente, Doublebox dblTarifa, Doublebox dblDescuento, Doublebox dblImporte, 
+			Boolean pasajeroFrecuente, Doublebox dblTarifa, Doublebox dblDescuento, Doublebox dblImporte,
 			Doublebox dblRecargo, Label lblPromocion, Image imgQuitarPromocion, Textbox txtIdPromocion,
 			Agencia agencia,Doublebox dblImporteOtraMoneda,Doublebox dblDescuentoOtraMoneda,
 			String horaPartida) {
@@ -139,7 +139,7 @@ public class AplicarPromocion{
 		this.dblDescuentoOtraMoneda=dblDescuentoOtraMoneda;
 		this.horaPartida=horaPartida;
 	}
-	
+
 	public AplicarPromocion() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -425,14 +425,14 @@ public class AplicarPromocion{
 	public Window loadPromociones(boolean paxfre, String idCliente, String fechaPartida){
 		try{
 			List<Promocion> lstPromociones = ServiceLocator.getPromocionManager().buscarPromocionesAplicables(paxfre, idCliente, Constantes.VALUE_ACTIVO, fechaPartida);
-			
+
 			/*	Verificando si la fecha de viaje esta considerado como Temporada Alta	*/
 			Date date=Constantes.FORMAT_DATE.parse(fechaPartida);
 			String dia=Constantes.FORMAT_DAY.format(date);
 			String mes=Constantes.FORMAT_MONTH.format(date);
-			String anio=Constantes.FORMAT_YEAR.format(date);				
+			String anio=Constantes.FORMAT_YEAR.format(date);
 			List<TemporadaAlta>lstTemAlta = ServiceLocator.getTemporadaAltaManager().buscarTemporadaAlta(anio, mes, dia);
-			
+
 			if(lstPromociones.size()>0){
 				final Window win = new Window("", "normal", true);
 				win.setHeight("300px");
@@ -452,7 +452,7 @@ public class AplicarPromocion{
 								rows.appendChild(row);
 							}
 							row = new Row();
-						}							
+						}
 						final Button button = new Button(promocion.getDenominacion());
 						button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 							@Override
@@ -504,7 +504,7 @@ public class AplicarPromocion{
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Realiza la validacion de la promocion y la aplica si cumple con los requisitos.
 	 * @param idPromocion	: Identificador de la promocion seleccionada.
@@ -516,12 +516,11 @@ public class AplicarPromocion{
 		try{
 			Promocion promocion = ServiceLocator.getPromocionManager().buscarPorId(Long.valueOf(idPromocion));
 			String[] aExpresion = promocion.getExpresion().split(";");
-			Map<String, List<String>> mapExpresionPromocion = new LinkedHashMap<String, List<String>>();
-			for(int i=0; i<aExpresion.length; i++){
-				String expresion = aExpresion[i];
+			Map<String, List<String>> mapExpresionPromocion = new LinkedHashMap<>();
+			for (String expresion : aExpresion) {
 				String key = expresion.substring(0, 4);
 				String[] aValue = expresion.substring(5).split(",");
-				List<String> value = new ArrayList<String>();
+				List<String> value = new ArrayList<>();
 				if(aValue.length==1){
 					if(!aValue[0].equals("*")){
 						value.add(aValue[0]);
@@ -532,61 +531,61 @@ public class AplicarPromocion{
 						value.add(sValue);
 					}
 					mapExpresionPromocion.put(key, value);
-				}				
+				}
 			}
-			
+
 //			DetalleItinerario detalle = getObjetoConfirmar().getDetalleItinerario();
-			Map<String, List<String>> mapExpresionVenta = new LinkedHashMap<String, List<String>>();
+			Map<String, List<String>> mapExpresionVenta = new LinkedHashMap<>();
 			/*	Enviando la Ruta	*/
-			List<String> value = new ArrayList<String>();
+			List<String> value = new ArrayList<>();
 			value.add(getIdRuta().toString());
 			mapExpresionVenta.put(Promocion.TOKEN_RUTA, value);
 			/*	Enviando el Servicio	*/
-			value = new ArrayList<String>();
+			value = new ArrayList<>();
 			value.add(getIdServicio().toString());
 			mapExpresionVenta.put(Promocion.TOKEN_SERVICIO, value);
 			/*	Enviando el Punto de Venta	*/
-			value = new ArrayList<String>();
+			value = new ArrayList<>();
 			value.add(getIdPuntoVenta().toString());
 			mapExpresionVenta.put(Promocion.TOKEN_PUNTO_VENTA, value);
 			/*	Enviando el Canal de Venta	*/
-			value = new ArrayList<String>();
+			value = new ArrayList<>();
 			value.add(getIdCanalVenta().toString());
 			mapExpresionVenta.put(Promocion.TOKEN_CANAL_VENTA, value);
-			
+
 			/*	Enviando si es Pasajero Nuevo	*/
-			
+
 			/*	Enviando la Cantidad de Viajes del Pasajero	*/
-			
+
 			/*	Enviando el Asiento	*/
-			value = new ArrayList<String>();
-			value.add(getAsiento());  
+			value = new ArrayList<>();
+			value.add(getAsiento());
 			mapExpresionVenta.put(Promocion.TOKEN_ASIENTO, value);
 			/*	Enviando el Cliente	*/
-			value = new ArrayList<String>();
+			value = new ArrayList<>();
 			value.add(getIdCliente()!=null?getIdCliente().toString():"*");
 			mapExpresionVenta.put(Promocion.TOKEN_CLIENTE, value);
 			/*	Enviando si es Ida y Vuelta	*/
-			value = new ArrayList<String>();
+			value = new ArrayList<>();
 			value.add(getIdaVuelta()?"S":"*");
 			mapExpresionVenta.put(Promocion.TOKEN_IDA_VUELTA, value);
 			/*	Enviando la Forma de Pago	*/
-			value = new ArrayList<String>();
+			value = new ArrayList<>();
 			value.add(getIdFormaPago().toString());
 			mapExpresionVenta.put(Promocion.TOKEN_FORMA_PAGO, value);
 			/*	Enviado el Tipo de Forma de Pago	*/
-			value = new ArrayList<String>();
+			value = new ArrayList<>();
 			value.add(getIdTipoFormaPago().toString());
 			mapExpresionVenta.put(Promocion.TOKEN_TIPO_FORMA_PAGO, value);
 			/*	Enviando la Tarjeta de Credito	*/
-			value = new ArrayList<String>();
+			value = new ArrayList<>();
 			if(getIdTarjetaCredito()!=null)
 				value.add(getIdTarjetaCredito().toString());
 			else
 				value.add("*");
 			mapExpresionVenta.put(Promocion.TOKEN_TARJETA_CREDITO, value);
 			/*	Enviando la Temporada	*/
-			value = new ArrayList<String>();
+			value = new ArrayList<>();
 			if(getFechaPartida()!=null){
 				String anio = Constantes.FORMAT_YEAR.format(getFechaPartida());
 				String mes = Constantes.FORMAT_MONTH.format(getFechaPartida());
@@ -600,22 +599,22 @@ public class AplicarPromocion{
 				value.add("*");
 			mapExpresionVenta.put(Promocion.TOKEN_TEMPORADA, value);
 			/*	Enviando si es PaxFre*/
-			value = new ArrayList<String>();
+			value = new ArrayList<>();
 			if(isPasajeroFrecuente())
 				value.add("S");
 			else
 				value.add("*");
 			mapExpresionVenta.put(Promocion.TOKEN_PAXFRE, value);
-			
+
 			/* Enviando de la hora de partida del servicio - 14/12/2015 - jabanto*/
-			value = new ArrayList<String>();
+			value = new ArrayList<>();
 			value.add(getHoraPartida().replaceAll(":", "."));
 			mapExpresionVenta.put(Promocion.TOKEN_HORA_PARTIDA, value);
-			
-			
-			
+
+
+
 			boolean aplicarPromocion = false;
-			
+
 			for(String key : mapExpresionPromocion.keySet()){
 				if(!mapExpresionVenta.containsKey(key)){
 //					if(promocion.getEsTarifa().intValue()==Constantes.FALSE_VALUE)
@@ -635,9 +634,9 @@ public class AplicarPromocion{
 							showMessage(key);
 						break;
 					}
-				}				
+				}
 			}
-			
+
 			if(aplicarPromocion){
 				/*	Si la promocion es la tarifa a considerar	*/
 				promocionAplicada = promocion;
@@ -654,8 +653,8 @@ public class AplicarPromocion{
 //							dsct = dblTarifa.getValue() - promocion.getPorImporte();
 //					}else
 //						dsct = (dblTarifa.getValue() * promocion.getValorDescuento())/100;
-					
-					
+
+
 					//08/08/2015 - jabanto
 //					if(pagoSoles==null){
 //					if(dblImporteOtraMoneda==null && dblDescuentoOtraMoneda==null){
@@ -673,7 +672,7 @@ public class AplicarPromocion{
 							(promocionAplicada.getTipoDescuento().equals(Promocion.PROMOCION_TIPO_DESCUENTO_VALUE_PORCENTAJE)
 									?(Util.toNumberFormat(promocionAplicada.getValorDescuento(),0)+"%"):("S/. "+Util.toNumberFormat(dblDescuento.getValue(), 2))));
 					imgQuitarPromocion.setVisible(true);
-						
+
 					/*Valida si es otra moneda*/
 					if(dblImporteOtraMoneda!=null && dblDescuentoOtraMoneda!=null){
 						/*Valida si es el la ida o el retorno*/
@@ -686,11 +685,11 @@ public class AplicarPromocion{
 //									dsct = pagoSoles.getTarifaRetorno() - promocion.getPorImporte();
 //							}else
 //								dsct = (pagoSoles.getTarifaRetorno() * promocion.getValorDescuento())/100;
-//							
+//
 //							Double importe=Util.calculoTotalPagar(pagoSoles.getTarifaRetorno(), dsct, .00);
 //							pagoSoles.setImportePagado(importe);
 //							pagoSoles.setDescuentoRetorno(pagoSoles.getTarifaRetorno()-pagoSoles.getImportePagado());
-//							
+//
 //						}else{
 							//Es ida
 //							if(promocion.getTipoDescuento().equals(Promocion.PROMOCION_TIPO_DESCUENTO_VALUE_FIJO)){
@@ -700,19 +699,19 @@ public class AplicarPromocion{
 //									dsct = pagoSoles.getTarifa() - promocion.getPorImporte();
 //							}else
 //								dsct = (pagoSoles.getTarifa() * promocion.getValorDescuento())/100;
-//							
+//
 //							Double importe=Util.calculoTotalPagar(pagoSoles.getTarifa(), dsct, .00);
 //							pagoSoles.setImportePagado(importe);
 //							pagoSoles.setDescuento(pagoSoles.getTarifa()-pagoSoles.getImportePagado());
 //						}
-						
+
 						/*Dedonda el descuento*/
 						TipoCambio tipoCambio=Util.getTipoCambioEquiMonedaLocal(agencia, dsct,true);
 						Double dsctOtraMoneda=(tipoCambio!=null?tipoCambio.getEquivalenteMonedaLocal():dsct);
-						
+
 						tipoCambio=Util.getTipoCambioEquiMonedaLocal(agencia, dblTarifa.getValue(),false);
 						Double tarifaOtraMoneda=(tipoCambio!=null?tipoCambio.getEquivalenteMonedaLocal():dblTarifa.getValue());
-						
+
 						dblImporteOtraMoneda.setValue(Util.calculoTotalPagar(tarifaOtraMoneda, dsctOtraMoneda, .00));
 						dblDescuentoOtraMoneda.setValue(tarifaOtraMoneda - dblImporteOtraMoneda.getValue());
 						dblDescuentoOtraMoneda.setTooltiptext("Aplicando la Promocion : "+promocionAplicada.getDenominacion());
@@ -720,12 +719,12 @@ public class AplicarPromocion{
 								(promocionAplicada.getTipoDescuento().equals(Promocion.PROMOCION_TIPO_DESCUENTO_VALUE_PORCENTAJE)
 										?(Util.toNumberFormat(promocionAplicada.getValorDescuento(),0)+"%"):(tipoCambio.getTipoMoneda().getSimboloMonetario()+" "+Util.toNumberFormat(dblDescuentoOtraMoneda.getValue(), 2))));
 						imgQuitarPromocion.setVisible(true);
-						
+
 					}
-					
-					
+
+
 				}
-			}			
+			}
 			System.out.println(mapExpresionPromocion.toString());
 			System.out.println(mapExpresionVenta.toString());
 		}catch(Exception ex){
@@ -734,7 +733,7 @@ public class AplicarPromocion{
 		}
 		return promocionAplicada;
 	}
-	
+
 	/**
 	 * Muestra el mensaje personalizado si la venta no cumple con algun criterio de la promocion.
 	 * @param key	: Token a comparar para mostrar el mensaje.
@@ -847,8 +846,8 @@ public class AplicarPromocion{
 	public void setHoraPartida(String horaPartida) {
 		this.horaPartida = horaPartida;
 	}
-	
-	
+
+
 //	/**
 //	 * Realiza la validacion de la promocion y la aplica si cumple con los requisitos.
 //	 * @param promocion : Objeto promocion
@@ -877,9 +876,9 @@ public class AplicarPromocion{
 //						value.add(sValue);
 //					}
 //					mapExpresionPromocion.put(key, value);
-//				}				
+//				}
 //			}
-//			
+//
 ////			DetalleItinerario detalle = getObjetoConfirmar().getDetalleItinerario();
 //			Map<String, List<String>> mapExpresionVenta = new LinkedHashMap<String, List<String>>();
 //			/*	Enviando la Ruta	*/
@@ -948,7 +947,7 @@ public class AplicarPromocion{
 //			else
 //				value.add("*");
 //			mapExpresionVenta.put(Promocion.TOKEN_PAXFRE, value);
-//			
+//
 //			boolean aplicarPromocion = false;
 //			for(String key : mapExpresionPromocion.keySet()){
 //				if(!mapExpresionVenta.containsKey(key)){
@@ -963,16 +962,16 @@ public class AplicarPromocion{
 //						aplicarPromocion = false;
 //						break;
 //					}
-//				}				
+//				}
 //			}
-//			
+//
 //			if(aplicarPromocion){
 //				/*Aplca descuento*/
 //				if(xDescuento){
-//					
+//
 //				}else{
-//					
-//					
+//
+//
 //				}
 //				Double dsct = 0.0;
 //				if(promocion.getTipoDescuento().equals(Promocion.PROMOCION_TIPO_DESCUENTO_VALUE_FIJO)){
@@ -982,22 +981,22 @@ public class AplicarPromocion{
 //						dsct = dblTarifa.getValue() - promocion.getPorImporte();
 //				}else
 //					dsct = (dblTarifa.getValue() * promocion.getValorDescuento())/100;
-//				
+//
 //				dblImporte.setValue(Util.calculoTotalPagar(dblTarifa.getValue(), dsct, .00));
 //				dblDescuento.setValue(dblTarifa.getValue()- dblImporte.getValue());
-//				
+//
 //				promocionAplicada = promocion;
 //				dblDescuento.setTooltiptext("Aplicando la Promocion : "+promocionAplicada.getDenominacion());
 //			}
-//			
+//
 ////			System.out.println(mapExpresionPromocion.toString());
 ////			System.out.println(mapExpresionVenta.toString());
-//			
-//			
+//
+//
 //		}catch(Exception ex){
 //			DlgMessage.information(this.getClass().getSimpleName()+" "+ex.getMessage());
 //		}
 //		return promocionAplicada;
 //	}
-//	
+//
 }

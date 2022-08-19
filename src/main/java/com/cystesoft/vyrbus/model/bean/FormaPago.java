@@ -11,18 +11,18 @@ public class FormaPago extends GenericBean implements java.io.Serializable {
 	private Integer id;
 	private String denominacion;
 	private Integer esPromocion;
-	
+
 	public static final Integer N_ESPROMOCION = 1;
-	
+
 	public FormaPago() {
 		super();
 	}
-	
-	
+
+
 	public FormaPago(Integer id){
 		this.id=id;
 	}
-	
+
 	public FormaPago(Integer id, String denominacion){
 		this.id=id;
 		this.denominacion = denominacion;

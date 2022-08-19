@@ -79,7 +79,7 @@ public abstract class ElementoBus extends Image {
 		this.tipo = tipo;
 		this.generateTooltiptext();
 	}
-	
+
 	/**
 	 * @return the propiedades
 	 */
@@ -100,7 +100,7 @@ public abstract class ElementoBus extends Image {
 		t.append("{Piso : " + (this.getPiso() + 1));
 		t.append(", Fila : " + (this.getFila() + 1));
 		t.append(", Columna : " + (this.getColumna() + 1));
-		
+
 		if(this.getPropiedades() != null){
 			for(Entry<String, String> e : this.getPropiedades().entrySet()){
 				t.append(", " + e.getKey() + " : " + e.getValue());
@@ -111,5 +111,5 @@ public abstract class ElementoBus extends Image {
 
 		this.setTooltiptext(t.toString());
 		this.smartUpdate("title", this.getTooltiptext());
-	}	
+	}
 }

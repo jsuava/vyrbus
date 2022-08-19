@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 30/12/2014
  * Hora			: 10:22:47
@@ -32,7 +32,7 @@ public class RangoSobregiroManagerImpl implements RangoSobregiroManager {
 	public void setRangoSobregiroDAO(RangoSobregiroDAO rangoSobregiroDAO) {
 		this.rangoSobregiroDAO = rangoSobregiroDAO;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.RangoSobregiroManager#buscarByLineaCredito(java.lang.Double)
 	 */
@@ -41,6 +41,6 @@ public class RangoSobregiroManagerImpl implements RangoSobregiroManager {
 		return getRangoSobregiroDAO().buscarByLineaCredito(lineaCredito);
 	}
 
-	
+
 
 }

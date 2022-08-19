@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 07/08/2015
  * Hora			: 12:32:22
@@ -75,15 +75,15 @@ public class TipoCambioManagerImpl implements TipoCambioManager{
 	@Transactional
 	@Override
 	public void guardar(TipoCambio tipoCambio)throws Exception {
-		TreeMap<String, Object>criteriosBusqueda=new TreeMap<String, Object>();
+		TreeMap<String, Object>criteriosBusqueda=new TreeMap<>();
 		criteriosBusqueda.put("fecha", tipoCambio.getFecha());
 		criteriosBusqueda.put("tipoMoneda", tipoCambio.getTipoMoneda());
 		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-		
+
 		List<TipoCambio>result=buscarPorX(criteriosBusqueda, null);
 		if(result.size()>0)
 			throw new DuplicateKeyException(Messages.getString("wndTipoCambio.information.duplicate"));
-		
+
 		/*Valida duplicidad del tipo de cambio*/
 		getTipoCambioDAO().guardar(tipoCambio);
 	}
@@ -95,19 +95,19 @@ public class TipoCambioManagerImpl implements TipoCambioManager{
 	@Override
 	public void actualizar(TipoCambio tipoCambio)throws Exception {
 		// TODO Auto-generated method stub
-		TreeMap<String, Object>criteriosBusqueda=new TreeMap<String, Object>();
+		TreeMap<String, Object>criteriosBusqueda=new TreeMap<>();
 		criteriosBusqueda.put("fecha", tipoCambio.getFecha());
 		criteriosBusqueda.put("tipoMoneda", tipoCambio.getTipoMoneda());
 		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-		
+
 		List<TipoCambio>result=buscarPorX(criteriosBusqueda, null);
 		for(TipoCambio tipoCambio2:result){
 			if(tipoCambio2.getId().intValue()!=tipoCambio.getId().intValue()){
 				throw new DuplicateKeyException(Messages.getString("wndTipoCambio.information.duplicate"));
 			}
 		}
-		
-		
+
+
 		/*Actualiza le Tipo de cambio*/
 		getTipoCambioDAO().actualizar(tipoCambio);
 	}
@@ -118,7 +118,7 @@ public class TipoCambioManagerImpl implements TipoCambioManager{
 	@Override
 	public TipoCambio buscarUltimoTipoCambio(Integer idTipoMoneda)throws Exception {
 		// TODO Auto-generated method stub
-		
+
 		return getTipoCambioDAO().buscarUltimoTipoCambio(idTipoMoneda);
 	}
 
@@ -130,5 +130,5 @@ public class TipoCambioManagerImpl implements TipoCambioManager{
 		// TODO Auto-generated method stub
 		return getTipoCambioDAO().buscarTiposCambio(fechaInicio, fechaFin, idTipoMoneda);
 	}
-	
+
 }

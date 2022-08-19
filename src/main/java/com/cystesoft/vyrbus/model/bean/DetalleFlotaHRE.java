@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: 
+ * Descripción	:
  * Autor		: José Abanto
  * Fecha		: 27/08/2014
  * Hora			: 11:22:47
@@ -16,20 +16,20 @@ import java.util.Date;
  */
 public class DetalleFlotaHRE extends GenericBean{
 	private static final long serialVersionUID = 1L;
-	
+
 	private Long id;
 	private HRE hre;
 	private String numeroDocumento;
 	private String mtcTipoDocumentoID;
 	private Personal personal;
-	private TipoPersonal tipoPersonal; 
+	private TipoPersonal tipoPersonal;
 	private Date fechaInicioConduccion;
 	private String horaInicioConduccion;
 	private Date fechaTerminoConcduccion;
 	private String horaTerminoConduccion;
-	
-	
-	
+
+
+
 	/**
 	 * @return the id
 	 */
@@ -138,7 +138,7 @@ public class DetalleFlotaHRE extends GenericBean{
 	public void setHoraTerminoConduccion(String horaTerminoConduccion) {
 		this.horaTerminoConduccion = horaTerminoConduccion;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see java.lang.Object#toString()
