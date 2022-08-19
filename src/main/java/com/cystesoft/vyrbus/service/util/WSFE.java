@@ -1026,7 +1026,7 @@ public class WSFE implements Serializable{
 						ventaPasaje.setFechaInsercion(new Date());
 					xmlVenta.setV993_FechaEmision(Constantes.FORMAT_DATE_TIME_24H.format(ventaPasaje.getFechaInsercion()));
 					xmlVenta.setV994_AgenciaEmison(ventaPasaje.getAgencia().getDenominacion());
-					xmlVenta.setV995_UsuarioEmision(ventaPasaje.getUsuario().toString());
+					xmlVenta.setV995_UsuarioEmision(ventaPasaje.getUsuario().getLogin());
 					xmlVenta.setZ_CodigoBarraSunat(cryptoBarcodeEmbarque);
 					xmlVenta.setZ_QR(cryptoBarcodeSunat);
 					//xmlVenta.setZ_CodigoBarraSunat(cryptoBarcodeSunat);

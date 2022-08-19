@@ -236,27 +236,30 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 					+ ",c_apemat="+(transcarUsuario.getApellidoMaterno()!=null? "'"+transcarUsuario.getApellidoMaterno()+"' ":"Null ")
 					+ ",c_nombre='"+transcarUsuario.getNombres()+"' "
 					+ ",c_email="+(transcarUsuario.getEmail()!=null? "'"+transcarUsuario.getEmail()+"' ":"Null ")
-					+ ",c_password='"+transcarUsuario.getPassword()+"' "
+					+ ",c_password='XENCRIPTAR "+transcarUsuario.getPassword()+"' "
 					+ ",audipmodi='"+transcarUsuario.getIpModificacion()+"' "
 					+ ",audusumod='"+transcarUsuario.getUsuarioModificacion()+"' "
 					+ ",c_estreg='"+transcarUsuario.getEstadoRegistro()+"' "
 				+ "WHERE usuario_id="+transcarUsuario.getId();
 			getJdbcTemplate().update(sql);
-			
-			//Elimina los roles asocuados al usario, para luego insertar los nuevos enviados
-			sql = "DELETE FROM tctusuario_rol ur WHERE ur.usuario_id="+transcarUsuario.getId();
-			getJdbcTemplate().update(sql);
+						
+			if(idsRoles!=null ) {
+				//Elimina los roles asocuados al usario, para luego insertar los nuevos enviados
+				sql = "DELETE FROM tctusuario_rol ur WHERE ur.usuario_id="+transcarUsuario.getId();
+				getJdbcTemplate().update(sql);
+			}			
 			
 			usuario_id = transcarUsuario.getId();
 		}		
 		
 		//Inserta los roles
-		String[] roles = idsRoles.split(",");
-		for(String rol_id: roles) {			
-			sql = "INSERT INTO tctusuario_rol (rol_id, usuario_id) VALUES ("+rol_id+", "+usuario_id+" )";
-			getJdbcTemplate().update(sql);	
-		}		
-		
+		if(idsRoles !=null) {
+			String[] roles = idsRoles.split(",");
+			for(String rol_id: roles) {			
+				sql = "INSERT INTO tctusuario_rol (rol_id, usuario_id) VALUES ("+rol_id+", "+usuario_id+" )";
+				getJdbcTemplate().update(sql);	
+			}		
+		}				
 	}
 
 //	/* (non-Javadoc)

@@ -1,16 +1,19 @@
 package com.cystesoft.vyrbus.view.ui;
 import java.io.Serializable;
 
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 
+import com.cystesoft.vyrbus.model.bean.TranscarUsuarioPersonal;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.service.exceptions.PasswordException;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.Messages;
+import com.cystesoft.vyrbus.service.util.UtilData;
 
 /**
  * 
@@ -70,8 +73,31 @@ public class WndCambiarPassword extends WndBase implements Serializable{
 			usuario.setPwdNormal(txtNuevoPassword.getText().trim());
 			ServiceLocator.getUsuarioManager().actualizar(usuario);
 			
+			UtilData.auditarRegistro(usuario, true, getUsuario(), Executions.getCurrent());
 			/*Actualiza el Password del usario en Transcar - jabanto - 07/05/2022*/
 			ServiceLocator.getTranscarWebManager().actualizarPasswordUsuarioByLogin(usuario.getLogin(), usuario.getPassword());
+			
+			
+			/*Actualia el usuario en el sistema de carga*/
+			try {
+				TranscarUsuarioPersonal transcarUsuarioPersonal = ServiceLocator.getTranscarWebManager().buscarUsuario(usuario.getLogin());
+				if(transcarUsuarioPersonal !=null) {
+					transcarUsuarioPersonal.setApellidoParterno(usuario.getApellidoPaterno());
+					transcarUsuarioPersonal.setApellidoMaterno(usuario.getApellidoMaterno()!=null?usuario.getApellidoMaterno():null);
+					transcarUsuarioPersonal.setNombres(usuario.getNombre());
+					transcarUsuarioPersonal.setEmail(usuario.getEmailInfo()!=null?usuario.getEmailInfo():null);
+					transcarUsuarioPersonal.setPassword(txtNuevoPassword.getText());
+					transcarUsuarioPersonal.setIpModificacion(usuario.getIpModificacion());
+					transcarUsuarioPersonal.setUsuarioModificacion(usuario.getUsuarioModificacion());
+					transcarUsuarioPersonal.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+					transcarUsuarioPersonal.setAgenciaId(getAgencia().getId());
+					
+					ServiceLocator.getTranscarWebManager().guardarUsuario(transcarUsuarioPersonal, null, false);					
+				}				
+			} catch (Exception e) {
+				e.printStackTrace();
+				DlgMessage.error(Messages.getString("wndCambioPasswordCarga.information.PasswordCambiado")+ " - " + e.getMessage());
+			}			
 			
 			Messagebox.show(Messages.getString("wndCambioPassword.information.PasswordCambiado"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_OK, Messagebox.INFORMATION, new EventListener<Event>() {
 				@Override

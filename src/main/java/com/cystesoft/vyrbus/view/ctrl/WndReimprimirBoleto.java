@@ -73,8 +73,8 @@ public class WndReimprimirBoleto extends WndBase {
 		try{
 						
 			/*Valida si el usuario tiene una liquidación aperturada*/
-			if(getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION)==null)
-				throw new LiquidacionNullException();
+//			if(getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION)==null)
+//				throw new LiquidacionNullException();
 			
 			super.onCreate();
 			

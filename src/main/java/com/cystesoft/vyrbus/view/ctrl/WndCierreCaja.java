@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TreeMap;
 
 import javax.security.auth.login.LoginException;
 
@@ -249,18 +250,23 @@ public class WndCierreCaja extends WndBase {
 //						boolean isReimprecion=liquidacion.getestadoLiquidacion().intValue()!=Constantes.TRUE_VALUE?true:false;
 //						CreateDocument.creaLiquidacion(liquidacion, liquidacion.getUsuario(), isReimprecion);
 //							preliminar(liquidacion);
-							String nameFile = CreateDocument.creaRptLiquidacionByEspecieValorada(liquidacion, true);
-							String src=Constantes.URL_FORMATOS_LIQUIDACION +Constantes.CLAVE_PAHT+ nameFile;
-							/*Carga el iframe*/
+						
+						//Busca las liquidaciones de CARGA
+						Liquidacion liquidacionCarga = UtilData.buscarLiquidacionCarga(liquidacion);
+						liquidacion.setLiquidacionCarga(liquidacionCarga);
+						//****
+						String nameFile = CreateDocument.creaRptLiquidacionByEspecieValorada(liquidacion, true);
+						String src=Constantes.URL_FORMATOS_LIQUIDACION +Constantes.CLAVE_PAHT+ nameFile;
+						/*Carga el iframe*/
 //							String src=Constantes.URL_FORMATOS_LIQUIDACION +Constantes.CLAVE_PAHT+ liquidacion.getId()+".txt";
-							final WndIFrame iFrame = new WndIFrame();
-							iFrame.setSrc(src);
-							iFrame.setWidth("810");
-							iFrame.setheight("600");
-							iFrame.loadiframe();
-							
-							appendChild(iFrame);
-							iFrame.setMode("modal");
+						final WndIFrame iFrame = new WndIFrame();
+						iFrame.setSrc(src);
+						iFrame.setWidth("810");
+						iFrame.setheight("600");
+						iFrame.loadiframe();
+						
+						appendChild(iFrame);
+						iFrame.setMode("modal");
 					}
 				}
 			});
@@ -1057,7 +1063,10 @@ public class WndCierreCaja extends WndBase {
 	 * @param liquidacion
 	 * @throws Exception 
 	 */
-	public void imprimirLiquidacion(Liquidacion liquidacion) throws Exception{		
+	public void imprimirLiquidacion(Liquidacion liquidacion) throws Exception{	
+		//Busca las liquidaciones de CARGA
+		Liquidacion liquidacionCarga = UtilData.buscarLiquidacionCarga(liquidacion);
+		liquidacion.setLiquidacionCarga(liquidacionCarga);
 		String nameFile = CreateDocument.creaRptLiquidacionByEspecieValorada(liquidacion, true);
 		File file = new File(Constantes.DIRECTORY_LIQUIDACION + Constantes.CLAVE_PAHT +nameFile);
 		Util.descargarArchivo(file);

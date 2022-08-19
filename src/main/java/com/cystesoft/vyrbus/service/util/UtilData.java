@@ -76,6 +76,7 @@ import com.cystesoft.vyrbus.model.bean.TipoPersonal;
 import com.cystesoft.vyrbus.model.bean.TipoPrecio;
 import com.cystesoft.vyrbus.model.bean.TipoVia;
 import com.cystesoft.vyrbus.model.bean.TipoZona;
+import com.cystesoft.vyrbus.model.bean.TranscarUsuarioPersonal;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.UsuarioAprobador;
 import com.cystesoft.vyrbus.model.bean.UsuarioHardware;
@@ -2839,6 +2840,33 @@ public class UtilData extends Window {
 	 */
 	public static Integer getAgencia_Idtranscarweb(Integer agencia_idvrybus)throws Exception{
 		return ServiceLocator.getAgenciaManager().buscarAgencia_Idtranscarweb(agencia_idvrybus);
+	}
+	
+	/**
+	 * Realiza la busqueda de la liquidacion de carga
+	 * @param liquidacionPasajes : Instancia de la liquidacion de pasajes
+	 * @return
+	 * @throws Exception
+	 */
+	public static Liquidacion buscarLiquidacionCarga(Liquidacion liquidacionPasajes)throws Exception{
+		Liquidacion liquidacionCarga = null;
+		try {
+			TranscarUsuarioPersonal transcarUsuario = ServiceLocator.getTranscarWebManager().buscarUsuario(liquidacionPasajes.getUsuario().getLogin());
+			if(transcarUsuario!=null) {
+				String fecha = Constantes.FORMAT_DATE.format(liquidacionPasajes.getFechaLiquidacion());
+				TreeMap<String, Liquidacion> resultCarga = ServiceLocator.getTranscarWebManager().buscarLiquidacionCounter(fecha, fecha, liquidacionPasajes.getAgencia().getId(), transcarUsuario.getId());
+				if(resultCarga !=null) {
+					String key = Constantes.FORMAT_DATE.format(liquidacionPasajes.getFechaLiquidacion());
+					key += liquidacionPasajes.getAgencia().getId().toString();
+					key += liquidacionPasajes.getUsuario().getLogin();
+					liquidacionCarga = resultCarga.get(key);
+				}								
+			}				
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
+		
+		return liquidacionCarga;
 	}
 }
 
