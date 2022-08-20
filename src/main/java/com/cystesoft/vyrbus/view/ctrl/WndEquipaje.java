@@ -448,7 +448,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 		}else if(itbxTotalKilos.getValue()==null || itbxTotalKilos.getValue()<=0 || itbxTotalKilos.getText().trim().isEmpty()) {
 			DlgMessage.information(Messages.getString("WndRecepcionEquipajes.kilos.null"), itbxTotalKilos);
 			return;
-		}else if(!dbxTotalPago.isDisabled() && (dbxTotalPago.getValue()==null || dbxTotalPago.getValue()<=Constantes.MONTO_MINIMO_EXCESO || dbxTotalPago.getText().trim().isEmpty())) {
+		}else if(!dbxTotalPago.isDisabled() && (dbxTotalPago.getValue()==null || dbxTotalPago.getValue()<Constantes.MONTO_MINIMO_EXCESO || dbxTotalPago.getText().trim().isEmpty())) {
 			DlgMessage.information(Messages.getString("WndRecepcionEquipajes.totalPago.null"), dbxTotalPago);
 			return;
 		}else if(rowExceso.isVisible()) {

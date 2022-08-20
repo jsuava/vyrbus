@@ -91,6 +91,7 @@
 				</row>
 			</rows>
 		</grid>
+		<label id="lblMensaje" value="" sclass="label-size12-bold-alert"/>
 	</groupbox>
 
 	</div>	
