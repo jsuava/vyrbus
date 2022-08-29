@@ -382,8 +382,11 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 			lbxVentas.getItems().clear();
 			grdTotales.setVisible(false);
 			for (Component element : lbxVentas.getChildren()) {
-				if(element instanceof Listfoot)
-					element.detach();
+				if(element instanceof Listfoot) {
+					if(element != null)
+						element.detach();
+						break;
+				}
 			}
 
 			total = 0.0;
@@ -861,7 +864,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 					cell = new Listcell(venta.getPasajero().getNumeroDocumento());
 					cell.setStyle(style);
 					item.appendChild(cell);
-					cell = new Listcell(venta.getPasajero().toString());
+					cell = new Listcell(isCarga == true ? venta.getPasajero().getNombresApellidos() : venta.getPasajero().toString());
 					cell.setStyle(style);
 					item.appendChild(cell);
 					cell = new Listcell(venta.getRuta().getOrigen()+"-"+venta.getRuta().getDestino());

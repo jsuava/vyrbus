@@ -2660,17 +2660,20 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		Listheader listheader= new Listheader();
 		listheader.setLabel("ITINERARIO");
 		listheader.setWidth("60px");
+		listheader.setStyle("color:#ffffff;");
 		listhead.appendChild(listheader);
 		//Ruta
 		listheader= new Listheader();
 		listheader.setLabel("RUTA");
 		listheader.setWidth("170px");
+		listheader.setStyle("color:#ffffff;");
 		listhead.appendChild(listheader);
 		//Fecha Partida
 		listheader= new Listheader();
 		listheader.setLabel("F.PARTIDA");
 		listheader.setTooltiptext("Fecha de Partida");
 		listheader.setWidth("70px");
+		listheader.setStyle("color:#ffffff;");
 		listhead.appendChild(listheader);
 		listbox.appendChild(listhead);
 		//Hora Partida
@@ -2678,18 +2681,21 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		listheader.setLabel("H.PARTIDA");
 		listheader.setTooltiptext("Hora de Partida");
 		listheader.setWidth("50px");
+		listheader.setStyle("color:#ffffff;");
 		listhead.appendChild(listheader);
 		listbox.appendChild(listhead);
 		//Pasajero
 		listheader= new Listheader();
 		listheader.setLabel("PASAJERO");
 		listheader.setWidth("195px");
+		listheader.setStyle("color:#ffffff;");
 		listhead.appendChild(listheader);
 		listbox.appendChild(listhead);
 		//Asiento
 		listheader= new Listheader();
 		listheader.setLabel("ASIENTO");
 		listheader.setWidth("45px");
+		listheader.setStyle("color:#ffffff;");
 		listheader.setAlign("center");
 		listhead.appendChild(listheader);
 		listbox.appendChild(listhead);
@@ -2697,6 +2703,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		listheader= new Listheader();
 		listheader.setLabel("TIPO");
 		listheader.setWidth("65px");
+		listheader.setStyle("color:#ffffff;");
 		listheader.setAlign("center");
 		listhead.appendChild(listheader);
 		listbox.appendChild(listhead);
@@ -2705,6 +2712,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		listheader.setLabel("N.CONTROL");
 		listheader.setWidth("115px");
 		listheader.setAlign("center");
+		listheader.setStyle("color:#ffffff;");
 		listhead.appendChild(listheader);
 		listbox.appendChild(listhead);
 
@@ -2745,7 +2753,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			item.setValue(ventaPasaje);
 			listbox.appendChild(item);
 		}
-		listbox.setHeight("286px");
+		listbox.setHeight("275px");
 		window.appendChild(listbox);
 
 
@@ -2754,19 +2762,21 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		hbox.setAlign("center");
 
 		label.setValue("Cantidad Registros : "+listbox.getItems().size());
-		label.setStyle("font-size:11px !important; color:red; font-weight: bold;");
+		label.setStyle("font-size:12px !important; color:red; font-weight: bold;");
 		hbox.appendChild(label);
 
 		Button btnCerrar= new Button();
 		btnCerrar.setImage("/resources/mp_cerrar.png");
+		btnCerrar.setSclass("btnCommandM");
 		btnCerrar.setLabel("Cerrar");
 
 		Button btnExportar= new Button();
 		btnExportar.setImage("/resources/mp_excel.png");
+		btnExportar.setSclass("btnCommandM");
 		btnExportar.setLabel("Exportar");
 
 		Separator separator= new Separator();
-		separator.setWidth("480px");
+		separator.setWidth("470px");
 		hbox.appendChild(separator);
 
 		hbox.appendChild(btnExportar);

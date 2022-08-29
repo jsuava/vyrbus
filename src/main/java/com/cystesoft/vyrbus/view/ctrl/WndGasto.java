@@ -67,7 +67,8 @@ public class WndGasto extends WndOpcionesMantenimiento {
 	private Datebox dbFecha;
 	private Radio rbGasto;
 	private Radio rbIngreso;
-	private Row filaDeposito; 
+	private Row filaDeposito;
+	private Label lblMensaje;
 
 //	private Agencia agencia = null;
 	private Gasto gasto=null;
@@ -76,7 +77,8 @@ public class WndGasto extends WndOpcionesMantenimiento {
 	private List<String> criteriosOrdenar = null;
 	private Window wndBusqueda = null;
 
-	Datebox dtbxFecha =new Datebox(new Date());
+	Datebox dtbxFechaIni =new Datebox(new Date());
+	Datebox dtbxFechaFin =new Datebox(new Date());
 	Combobox cmbTipoAgencia=new Combobox();
 	final Combobox cmbAgencia=new Combobox();
 	final Combobox cmbTGasto=new Combobox();
@@ -118,6 +120,7 @@ public class WndGasto extends WndOpcionesMantenimiento {
 		cmbBus=(Combobox)this.getFellow("cmbBus");
 		rbGasto = (Radio)this.getFellow("rbGasto");
 		rbIngreso = (Radio)this.getFellow("rbIngreso");
+		lblMensaje = (Label)this.getFellow("lblMensaje");
 
 		rbGasto.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
 			@Override
@@ -181,9 +184,12 @@ public class WndGasto extends WndOpcionesMantenimiento {
 		cmbTipoGasto.setSelectedIndex(0);
 		cmbBus.setSelectedIndex(0);
 		rbGasto.setChecked(true);
+		onCheck_tipoOperacion();
 		filaDeposito.setVisible(false);
+		lblMensaje.setValue("");
 
 		isClikSaved=false;
+		
 	}
 
 	/*
@@ -542,6 +548,7 @@ public class WndGasto extends WndOpcionesMantenimiento {
 	 */
 	private void mantenimientoGasto() throws Exception {
 		if(listboxLista.getSelectedIndex()>=0){
+			lblMensaje.setValue("");
 			gasto =  new Gasto();
 			Listitem listitem = listboxLista.getItemAtIndex(listboxLista.getSelectedIndex());
 			gasto=listitem.getValue();
@@ -579,7 +586,8 @@ public class WndGasto extends WndOpcionesMantenimiento {
 			if(gasto.getLiquidacion().getestadoLiquidacion().equals(Constantes.LIQUI_ESTA_CERRADO)){
 				btnGuardar.setDisabled(true);
 				habilitaControles(false);
-				DlgMessage.information(Messages.getString("WndGasto.Information.LiquidacionCerrada"));
+//				DlgMessage.information(Messages.getString("WndGasto.Information.LiquidacionCerrada"));
+				lblMensaje.setValue(Messages.getString("WndGasto.Information.LiquidacionCerrada"));
 			}
 
 		}
@@ -672,13 +680,23 @@ public class WndGasto extends WndOpcionesMantenimiento {
 
 		Rows rows=new Rows();
 		Row row=new Row();
-		label=new Label("FECHA :");
-		dtbxFecha.setWidth("130px");
-		dtbxFecha.setFormat("dd/MM/yyyy");
-		dtbxFecha.setReadonly(false);
-		dtbxFecha.setValue(new Date());
+		label=new Label("FECHA INI.:");
+		dtbxFechaIni.setWidth("130px");
+		dtbxFechaIni.setFormat("dd/MM/yyyy");
+		dtbxFechaIni.setReadonly(false);
+		dtbxFechaIni.setValue(new Date());
 		row.appendChild(label);
-		row.appendChild(dtbxFecha);
+		row.appendChild(dtbxFechaIni);
+		rows.appendChild(row);
+		
+		row=new Row();
+		label=new Label("FECHA FIN:");
+		dtbxFechaFin.setWidth("130px");
+		dtbxFechaFin.setFormat("dd/MM/yyyy");
+		dtbxFechaFin.setReadonly(false);
+		dtbxFechaFin.setValue(new Date());
+		row.appendChild(label);
+		row.appendChild(dtbxFechaFin);
 		rows.appendChild(row);
 
 		row=new Row();
@@ -740,7 +758,7 @@ public class WndGasto extends WndOpcionesMantenimiento {
 
 		Util.seleccionarValorItemCombo(TipoAgencia.class, cmbTipoAgencia, Constantes.ID_TIPAGE_TEPSA);
 		UtilData.cargarAgenciaXtipoAgencia(cmbAgencia, Constantes.ID_TIPAGE_TEPSA, true);
-		UtilData.cargarUsuariosLiquidacion(cmbUsuario, Constantes.FORMAT_DATE.format(dtbxFecha.getValue()), Constantes.FORMAT_DATE.format(dtbxFecha.getValue()), true, null);
+		UtilData.cargarUsuariosLiquidacion(cmbUsuario, Constantes.FORMAT_DATE.format(dtbxFechaIni.getValue()), Constantes.FORMAT_DATE.format(dtbxFechaFin.getValue()), true, null);
 		cmbUsuario.setSelectedIndex(0);
 
 		//Validacion de roles.
@@ -762,7 +780,15 @@ public class WndGasto extends WndOpcionesMantenimiento {
 
 
 		//Eventos onOK
-		dtbxFecha.addEventListener(Events.ON_OK,new EventListener<Event>() {
+		dtbxFechaIni.addEventListener(Events.ON_OK,new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				dtbxFechaFin.setFocus(true);
+				dtbxFechaFin.select();
+			}
+		});
+		dtbxFechaFin.addEventListener(Events.ON_OK,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				// TODO Auto-generated method stub
@@ -811,24 +837,26 @@ public class WndGasto extends WndOpcionesMantenimiento {
 		});
 
 		//Eventos Change
-		dtbxFecha.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+		dtbxFechaIni.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				// cargar usuarios
-				String fecha=Constantes.FORMAT_DATE.format(dtbxFecha.getValue());
+				String fechaIni=Constantes.FORMAT_DATE.format(dtbxFechaIni.getValue());
+				String fechaFin=Constantes.FORMAT_DATE.format(dtbxFechaFin.getValue());
 				Util.limpiarCombobox(cmbUsuario);
 				if(cmbAgencia.getSelectedIndex()>0){
 					Integer idAgencia=((Agencia)cmbAgencia.getSelectedItem().getValue()).getId();
-					UtilData.cargarUsuariosLiquidacion(cmbUsuario,fecha, fecha, true, idAgencia);
+					UtilData.cargarUsuariosLiquidacion(cmbUsuario,fechaIni, fechaFin, true, idAgencia);
 				}else
-					UtilData.cargarUsuariosLiquidacion(cmbUsuario,fecha, fecha, true, null);
+					UtilData.cargarUsuariosLiquidacion(cmbUsuario,fechaIni, fechaFin, true, null);
 			}
 		});
 		cmbTipoAgencia.addEventListener(Events.ON_CHANGE,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				// Carga las agencias asociadas al tipo se agencia seleccionada
-				String fecha=Constantes.FORMAT_DATE.format(dtbxFecha.getValue());
+				String fechaIni=Constantes.FORMAT_DATE.format(dtbxFechaIni.getValue());
+				String fechaFin=Constantes.FORMAT_DATE.format(dtbxFechaFin.getValue());
 				Util.limpiarCombobox(cmbAgencia);
 				if(cmbTipoAgencia.getSelectedItem().getValue() instanceof TipoAgencia){
 					Integer idTipoAgencia=((TipoAgencia)cmbTipoAgencia.getSelectedItem().getValue()).getId();
@@ -838,21 +866,22 @@ public class WndGasto extends WndOpcionesMantenimiento {
 				}
 				cmbAgencia.setSelectedIndex(0);
 				cmbUsuario.setSelectedIndex(0);
-				UtilData.cargarUsuariosLiquidacion(cmbUsuario,fecha, fecha, true, null);
+				UtilData.cargarUsuariosLiquidacion(cmbUsuario,fechaIni, fechaFin, true, null);
 			}
 		});
 		cmbAgencia.addEventListener(Events.ON_CHANGE,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				// Carga los Usuarios en base a la fecha y agencia Seleccionada.
-				String fecha=Constantes.FORMAT_DATE.format(dtbxFecha.getValue());
+				String fechaIni=Constantes.FORMAT_DATE.format(dtbxFechaIni.getValue());
+				String fechaFin=Constantes.FORMAT_DATE.format(dtbxFechaFin.getValue());
 				Util.limpiarCombobox(cmbUsuario);
 
 				if(cmbAgencia.getSelectedIndex()>0){
 					Integer idAgencia=((Agencia)cmbAgencia.getSelectedItem().getValue()).getId();
-					UtilData.cargarUsuariosLiquidacion(cmbUsuario,fecha, fecha, true, idAgencia);
+					UtilData.cargarUsuariosLiquidacion(cmbUsuario,fechaIni, fechaFin, true, idAgencia);
 				}else
-					UtilData.cargarUsuariosLiquidacion(cmbUsuario,fecha, fecha, true, null);
+					UtilData.cargarUsuariosLiquidacion(cmbUsuario,fechaIni, fechaFin, true, null);
 			}
 		});
 
@@ -872,7 +901,8 @@ public class WndGasto extends WndOpcionesMantenimiento {
 	}
 
 	private final void filtrar(){
-		String fecha=Constantes.FORMAT_DATE.format(dtbxFecha.getValue());
+		String fechaIni=Constantes.FORMAT_DATE.format(dtbxFechaIni.getValue());
+		String fechaFin=Constantes.FORMAT_DATE.format(dtbxFechaFin.getValue());
 		Integer idAgencia=null,idTipoGasto=null,idUsuario=null;
 		if(cmbAgencia.getSelectedIndex()>0)
 			idAgencia=((Agencia)cmbAgencia.getSelectedItem().getValue()).getId();
@@ -881,7 +911,7 @@ public class WndGasto extends WndOpcionesMantenimiento {
 		if(cmbUsuario.getSelectedIndex()>0)
 			idUsuario=((Usuario)cmbUsuario.getSelectedItem().getValue()).getId();
 
-		listarRegistros((ArrayList<Gasto>) ServiceLocator.getGastoManager().buscarGasto(fecha, idTipoGasto, idAgencia, idUsuario));
+		listarRegistros((ArrayList<Gasto>) ServiceLocator.getGastoManager().buscarGasto(fechaIni, fechaFin, idTipoGasto, idAgencia, idUsuario));
 	}
 
 }

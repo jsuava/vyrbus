@@ -137,7 +137,6 @@ public class RESTCiva implements Serializable{
 			for (int i = 0; i < jsonArray.length(); i++) {
 			    JSONObject jsonobject = jsonArray.getJSONObject(i);
 
-
 			    result.add(jsonobject.getString("dni"));
 			    result.add(jsonobject.getString("nombres"));
 			    result.add(jsonobject.getString("apellidoPaterno"));

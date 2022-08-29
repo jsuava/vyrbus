@@ -5,11 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.TreeMap;
 
 import javax.security.auth.login.LoginException;
 
-import org.hibernate.cfg.ImprovedNamingStrategy;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
@@ -64,7 +62,6 @@ import com.cystesoft.vyrbus.view.tuentrada.LiquidacionTuentrada;
 import com.cystesoft.vyrbus.view.ui.DlgMessage;
 import com.cystesoft.vyrbus.view.ui.WndBase;
 import com.cystesoft.vyrbus.view.ui.WndIFrame;
-import com.cystesoft.vyrbus.view.ui.WndImprimir;
 
 /**
  *
@@ -260,6 +257,7 @@ public class WndCierreCaja extends WndBase {
 						String src=Constantes.URL_FORMATOS_LIQUIDACION +Constantes.CLAVE_PAHT+ nameFile;
 						/*Carga el iframe*/
 //							String src=Constantes.URL_FORMATOS_LIQUIDACION +Constantes.CLAVE_PAHT+ liquidacion.getId()+".txt";
+
 						final WndIFrame iFrame = new WndIFrame();
 						iFrame.setSrc(src);
 						iFrame.setWidth("810");
