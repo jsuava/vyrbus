@@ -122,7 +122,7 @@ public class ReportesManagerImpl implements ReportesManager {
 	 * @see com.tepsa.sisvyr.service.business.ReportesManager#avancesBuses(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer, java.lang.Integer, java.lang.Integer)
 	 */
 	@Override
-	public RptAvanceBuses avancesBuses(String fechaInicio, String fechaFin,Integer idLocalidadOrigen, Integer idLocalidadDestino,Integer idServicio, Integer codigoBus) throws Exception {
+	public RptAvanceBuses avancesBuses(String fechaInicio, String fechaFin,Integer idLocalidadOrigen, Integer idLocalidadDestino,Integer idServicio, String codigoBus) throws Exception {
 		// TODO Auto-generated method stub
 		return getReportesDAO().avancesBuses(fechaInicio, fechaFin, idLocalidadOrigen, idLocalidadDestino, idServicio, codigoBus);
 	}

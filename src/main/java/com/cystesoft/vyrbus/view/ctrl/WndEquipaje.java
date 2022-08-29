@@ -579,6 +579,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 
 		//Si hay un exceso
 		if(pesoExceso>0) {
+			String strTmpObservaciones="";
 			VentaPasaje ventaPrincipal =listDetalleEquipaje.get(0).getVentaPasaje();
 			TipoFormaPago tipoFormaPago = (TipoFormaPago)cmbTipoPago.getSelectedItem().getValue();
 			VentaPasaje ventaExceso= new VentaPasaje();
@@ -606,7 +607,9 @@ public class WndEquipaje extends WndBase implements Serializable{
 			ventaExceso.setAgencia(getAgencia());
 			ventaExceso.setUsuario(getUsuario());
 			ventaExceso.setCanalVenta(canalVenta);
-			ventaExceso.setObservaciones(txtGlosa.getText().trim().toUpperCase());
+			//Se agrego esta variable para concatenar la Glosa y las Observaciones MAOE - 27/08/2022
+			strTmpObservaciones = txtGlosa.getText().trim().toUpperCase()+"\n[MALETAS:"+itbxNumeroMaletas.getText()+" PESO:"+itbxTotalKilos.getText()+"Kg]\n"+txtobservaciones.getText().trim().toUpperCase();
+			ventaExceso.setObservaciones(strTmpObservaciones);
 			ventaExceso.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 			ventaExceso.setUsuarioHardware(getUsuarioHardware());
 			ventaExceso.setSecuencial(0);
@@ -641,7 +644,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 						
 						if(listDetalleEquipaje.get(0).getVentaPasajeExceso()!=null) {
 							VentaPasaje ventaExceso= ServiceLocator.getVentaPasajesManager().buscarVentaById(listDetalleEquipaje.get(0).getVentaPasajeExceso().getId());
-							ventaExceso.setObservaciones(ventaExceso.getObservaciones()+" [MALETAS:"+itbxNumeroMaletas.getText()+" PESO:"+itbxTotalKilos.getText()+"Kg]");
+//							ventaExceso.setObservaciones(ventaExceso.getObservaciones()+"\n[MALETAS:"+itbxNumeroMaletas.getText()+" PESO:"+itbxTotalKilos.getText()+"Kg]");
 							/**Solo Boletas y facturas*/
 							if(ventaExceso.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA ||
 									ventaExceso.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_FACTURA){
@@ -849,11 +852,11 @@ public class WndEquipaje extends WndBase implements Serializable{
 		String _subGlosa = "";
 		for(Listitem item: ltbxBoletos.getItems()) {
 			VentaPasaje ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarPorId(((VentaPasaje)item.getValue()).getId());
-			_subGlosa = (_subGlosa.isEmpty()?ventaPasaje.getNumeroBoleto()+"-->"+ventaPasaje.getRuta().toString():", "+ventaPasaje.getNumeroBoleto()+"-->"+ventaPasaje.getRuta().toString());
-			_subGlosa += "-->ASIENTO:"+ventaPasaje.getNumeroAsiento().toString();
+			_subGlosa = (_subGlosa.isEmpty()?"COMP: "+ventaPasaje.getNumeroBoleto()+" \n"+ventaPasaje.getRuta().toString():", "+"COMP: "+ventaPasaje.getNumeroBoleto()+" \n"+ventaPasaje.getRuta().toString());
+			_subGlosa += "\nASIENTO:"+ventaPasaje.getNumeroAsiento().toString();
 			_subGlosa += "-->H.SALIDA:"+ventaPasaje.getHoraPartida();
 		}
-		txtGlosa.setText("EXCESO DE EQUIPAJES, COMP.N° " + _subGlosa);
+		txtGlosa.setText("EXCESO EQUIPAJES \n" + _subGlosa);
 	}
 
 	/**

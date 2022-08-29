@@ -3232,21 +3232,21 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			grid = new Grid();
 			columns = new Columns();
 			column = new Column();
-			column.setWidth("110px");
+			column.setWidth("90px");
 			column.setAlign("right");
 			columns.appendChild(column);
 
 			column = new Column();
-			column.setWidth("110px");
+			column.setWidth("80px");
 			columns.appendChild(column);
 
 			column = new Column();
-			column.setWidth("110px");
+			column.setWidth("100px");
 			column.setAlign("right");
 			columns.appendChild(column);
 
 			column = new Column();
-			column.setWidth("110px");
+			column.setWidth("100px");
 			columns.appendChild(column);
 
 			grid.appendChild(columns);
@@ -3268,6 +3268,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			row.appendChild(tmNuevoHorario);
 			Hbox hbox = new Hbox();
 			Button btnGrabar = new  Button("Guardar", "/resources/mp_guardarEnabled.png");
+			btnGrabar.setSclass("btnCommandM");
 			btnGrabar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e) {
@@ -3312,6 +3313,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			});
 			hbox.appendChild(btnGrabar);
 			Button btnCancelar = new  Button("Cancelar","/resources/mp_cancelarEnabled.png");
+			btnCancelar.setSclass("btnCommandM");
 			btnCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e) {
@@ -3599,8 +3601,9 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			div2.appendChild(separator);
 			Hlayout hLayout = new Hlayout();
 			Button btnGrabar = new  Button("Guardar", "/resources/mp_guardarEnabled.png");
-			btnGrabar.setHeight("35px");
-			btnGrabar.setWidth("75px");
+//			btnGrabar.setHeight("35px");
+//			btnGrabar.setWidth("75px");
+			btnGrabar.setSclass("btnCommandM");
 			btnGrabar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e) {
@@ -3656,8 +3659,9 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			hLayout.appendChild(btnGrabar);
 
 			Button btnCancelar = new  Button("Cancelar","/resources/mp_cancelarEnabled.png");
-			btnCancelar.setHeight("35px");
-			btnCancelar.setWidth("75px");
+//			btnCancelar.setHeight("35px");
+//			btnCancelar.setWidth("75px");
+			btnCancelar.setSclass("btnCommandM");
 			btnCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e) {

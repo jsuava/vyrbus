@@ -3324,9 +3324,9 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	@Override
 	public List<VentaPasaje> buscarBoletosAnuladosDetalladoByX(String fechaDesde, String fechaHasta, Integer id, Integer criterio) {
 		String sql = "SELECT vp.venpas_id, vp.venpas_idoriginal, vp.c_numboleto, vp.c_numbolant, vp.c_numcontrol, vp.n_secuencial, "
-				+ "p.c_apepat||' '||p.c_apemat||' '||p.c_nombre pasajero, tc.c_abreviatura TIPCOM, tm.c_abreviatura TIPMOV, cv.c_nomcor CANAL, "
+				+ "p.c_apepat||' '||p.c_apemat||' '||p.c_nombre pasajero, tc.c_denominacion TIPCOM, tm.c_abreviatura TIPMOV, cv.c_nomcor CANAL, "
 				+ "nvl(vp.n_numpiso, 0) PISO, nvl(vp.n_numasiento, 0) ASTO, vp.d_fecpar, vp.c_horpar, vp.n_tarifa, vp.n_imppagdif DIFAGRE, "
-				+ "vp.d_fecliq FECOPE, a.c_nomcor AGENCIA, u.c_apepat, u.c_apemat, u.c_nombre, vp.c_observaciones "
+				+ "vp.d_fecliq FECOPE, a.c_nomcor AGENCIA, u.c_apepat, u.c_apemat, u.c_nombre, vp.c_observaciones, vp.audfecmod "
 				+ "FROM vrtvenpas vp "
 				+ "INNER JOIN vrmruta r on (vp.ruta_id = r.ruta_id) "
 				+ "INNER JOIN vrmpasajero p on (vp.pasajero_id = p.pasajero_id) "
@@ -3385,6 +3385,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			usuario.setNombre(obj[20]==null?"":obj[20].toString());
 			ventaPasaje.setUsuario(usuario);
 			ventaPasaje.setObservaciones(obj[21]==null?"":obj[21].toString());
+			ventaPasaje.setFechaModificacion((Date)obj[22]);
 			lstResult.add(ventaPasaje);
 		}
 		return lstResult;
@@ -3448,7 +3449,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		}
 
 		sql = "SELECT vp.venpas_id, vp.venpas_idoriginal, vp.c_numboleto, vp.c_numbolant, vp.c_numcontrol, vp.n_secuencial, "
-			+ "p.c_apepat||' '||p.c_apemat||' '||p.c_nombre pasajero, tc.c_abreviatura TIPCOM, tm.c_abreviatura TIPMOV, cv.c_nomcor CANAL, "
+			+ "p.c_apepat||' '||p.c_apemat||' '||p.c_nombre pasajero, tc.c_abreviatura TIPCOM, tm.c_denominacion TIPMOV, cv.c_nomcor CANAL, "
 			+ "nvl(vp.n_numpiso, 0) PISO, nvl(vp.n_numasiento, 0) ASTO, vp.d_fecpar, vp.c_horpar, vp.n_tarifa, vp.n_imppagdif DIFAGRE, "
 			+ "vp.d_fecliq FECOPE, a.c_nomcor AGENCIA, u.c_apepat, u.c_apemat, u.c_nombre, vp.c_observaciones "
 			+ "FROM vrtvenpas vp "
