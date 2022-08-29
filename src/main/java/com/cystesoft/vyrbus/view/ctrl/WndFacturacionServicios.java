@@ -208,6 +208,8 @@ public class WndFacturacionServicios extends WndBase {
 	 */
 	public void onSearch() throws Exception {
 		try {
+			Util.limpiarListbox(listboxLista);
+			
 			String numComprobante = txtComprobante.getText().trim().isEmpty()?null:txtComprobante.getText().trim();
 			String fechaInicio = Util.DatetoString(dtbxDesde.getValue(), Constantes.DATE_FORMAT);
 			String fechaFin = Util.DatetoString(dtbxHasta.getValue(), Constantes.DATE_FORMAT);
@@ -228,8 +230,6 @@ public class WndFacturacionServicios extends WndBase {
 		Listitem item=null;
 		Listcell cell=null;
 		int x=1;
-
-		Util.limpiarListbox(listboxLista);
 
 		for(VentaPasaje ventaPasaje: arrayList){
 			item=new Listitem();
@@ -1280,6 +1280,7 @@ public class WndFacturacionServicios extends WndBase {
 			VentaPasaje envioVenta=ServiceLocator.getVentaPasajesManager().buscarVentaById(venta.getId());
 			lstVentasenviar.add(envioVenta);
 		}
+		
 		/*	COMENTADO PARA LANZAR EL ENTORNO DE PRUEBAS EN TRANSMAR	*/
 //		if(lstVentasenviar.size()>0)
 //			WSFE.sendVenta(lstVentasenviar, window, false, null);
@@ -1288,9 +1289,9 @@ public class WndFacturacionServicios extends WndBase {
 //		for(VentaPasaje notaCredito:ventasNotas.getListNotasCredito()){
 //			WSFE.sendNota(notaCredito);
 //		}
-
+		
 		DlgMessage.information("El Proceso de anulación termino correctamente");
-
+		onSearch();
 		window.onClose();
 	}
 
