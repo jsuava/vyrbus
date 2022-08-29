@@ -260,7 +260,6 @@ public class WndCierreCaja extends WndBase {
 						String src=Constantes.URL_FORMATOS_LIQUIDACION +Constantes.CLAVE_PAHT+ nameFile;
 						/*Carga el iframe*/
 //							String src=Constantes.URL_FORMATOS_LIQUIDACION +Constantes.CLAVE_PAHT+ liquidacion.getId()+".txt";
-<<<<<<< HEAD
 						final WndIFrame iFrame = new WndIFrame();
 						iFrame.setSrc(src);
 						iFrame.setWidth("810");
@@ -269,16 +268,6 @@ public class WndCierreCaja extends WndBase {
 						
 						appendChild(iFrame);
 						iFrame.setMode("modal");
-=======
-							final WndIFrame iFrame = new WndIFrame();
-							iFrame.setSrc(src);
-							iFrame.setWidth("810");
-							iFrame.setheight("600");
-							iFrame.loadiframe();
-
-							appendChild(iFrame);
-							iFrame.setMode("modal");
->>>>>>> d237d68d148b9ceccbf5532b2e25c7560eceafef
 					}
 				}
 			});

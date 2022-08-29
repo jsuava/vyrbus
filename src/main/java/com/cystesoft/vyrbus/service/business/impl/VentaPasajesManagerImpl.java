@@ -803,8 +803,8 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 
 				//Primero anula en el WSFE
 				//Comentado temporalmente por MAOE para pruebas sin Fact Electronica
-				//Result result=WSFE.anularComprobante(movimiento);
-				//if(result.isIsCorrect()){
+				Result result=WSFE.anularComprobante(movimiento);
+				if(result.isIsCorrect()){
 					getVentaPasajesDAO().update(movimiento);
 
 					/*Activa el comprobante asociado a la nota de credito o debito*/

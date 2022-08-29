@@ -3675,9 +3675,45 @@ public class CreateDocument implements Serializable {
 		/*Egresos de caja*/
 		Integer longitud_descripcionGasto = 68;
 		Double totalGasto = .00/*, totalOtrosIngresos = .00*/, totalGastosCaja = .00, totalCtaCte = .00;
+		int longitud_C;
+		String linea = "";
+		
+		//Valida si debe o no mostrar el detalle de otros ingresos
+		if(isCierreCaja) {
+			bw.write(NEWLINE);
+			
+			Double _totalOtrosIngreos = .00;
+			linea = tabular(3) + "OTROS INGRESOS";
+			if(bw !=null)
+				bw.write(linea + NEWLINE);
+			linea = tabular(3) + "====================";
+			if(bw !=null)
+				bw.write(linea + NEWLINE);
+			for(Gasto otrosIngresos: lstIngresos) {
+				String concepto = (otrosIngresos.getObservacion()!=null? otrosIngresos.getObservacion(): "");
+				longitud_C= concepto.length();
+				linea= tabular(3) + concepto + tabular(83-longitud_C);
+				
+				String importe = Util.toNumberFormat(otrosIngresos.getMonto(), 2);
+				longitud_C=importe.length();
+				linea += tabular(longImporte - longitud_C) + importe;
+				
+				_totalOtrosIngreos += otrosIngresos.getMonto();
+				if(bw !=null)
+					bw.write(linea + NEWLINE);
+			}
+			
+			if(bw !=null) 
+				creaRptLiquidacionByTotalByGroup(bw, longImporte, _totalOtrosIngreos);
+			
+			bw.write(NEWLINE);
+			bw.write(NEWLINE);
+		}
+		
+		
 		if(bw!=null)
 			bw.write(NEWLINE);
-		String linea=tabular(3)+"EGRESOS DE CAJA";
+		linea=tabular(3)+"EGRESOS DE CAJA";
 		if(bw!=null)
 			bw.write(linea+NEWLINE);
 		linea=tabular(3)+"====================";
@@ -3688,8 +3724,7 @@ public class CreateDocument implements Serializable {
 		int tipoOperacion_egreso = Constantes.FALSE_VALUE;
 //		int tipoOperacion_ingreso = Constantes.TRUE_VALUE;
 		int ctrolTipoGasto = -1;
-		int index = -1;
-		int longitud_C;
+		int index = -1;		
 		for(Gasto gasto: resultGasto) {
 			if(gasto.getTipoGasto().getTipoOperacion().intValue()==tipoOperacion_egreso) {
 				index++;
@@ -3873,34 +3908,7 @@ public class CreateDocument implements Serializable {
 				if(bw!=null)
 					creaRptLiquidacionByTotalByGroup(bw, longImporte, total);
 			}
-		}
-		
-		//Valida si debe o no mostrar el detalle de otros ingresos
-		if(isCierreCaja) {
-			Double _totalOtrosIngreos = .00;
-			linea = tabular(3) + "OTROS INGRESOS";
-			if(bw !=null)
-				bw.write(linea + NEWLINE);
-			linea = tabular(3) + "====================";
-			if(bw !=null)
-				bw.write(linea + NEWLINE);
-			for(Gasto otrosIngresos: lstIngresos) {
-				String concepto = (otrosIngresos.getObservacion()!=null? otrosIngresos.getObservacion(): "");
-				longitud_C= concepto.length();
-				linea= tabular(3) + concepto + tabular(83-longitud_C);
-				
-				String importe = Util.toNumberFormat(otrosIngresos.getMonto(), 2);
-				longitud_C=importe.length();
-				linea += tabular(longImporte - longitud_C) + importe;
-				
-				_totalOtrosIngreos += otrosIngresos.getMonto();
-				if(bw !=null)
-					bw.write(linea + NEWLINE);
-			}
-			
-			if(bw !=null) 
-				creaRptLiquidacionByTotalByGroup(bw, longImporte, _totalOtrosIngreos);
-		}
+		}		
 		
 		Double totalOtrosIngreos = .00;
 		for(Gasto otrosIngresos: lstIngresos) {
