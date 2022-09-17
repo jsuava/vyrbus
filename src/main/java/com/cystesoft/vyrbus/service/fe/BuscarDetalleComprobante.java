@@ -11,11 +11,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- *
+ * 
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- *
+ * 
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -31,8 +31,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "token", "tipoComprobante", "serie", "correlativo", "rucEmpresa" })
@@ -52,10 +52,10 @@ public class BuscarDetalleComprobante {
 
 	/**
 	 * Gets the value of the token property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<String> getToken() {
 		return token;
@@ -63,21 +63,21 @@ public class BuscarDetalleComprobante {
 
 	/**
 	 * Sets the value of the token property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setToken(JAXBElement<String> value) {
-		this.token = (value);
+		this.token = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the tipoComprobante property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<String> getTipoComprobante() {
 		return tipoComprobante;
@@ -85,21 +85,21 @@ public class BuscarDetalleComprobante {
 
 	/**
 	 * Sets the value of the tipoComprobante property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setTipoComprobante(JAXBElement<String> value) {
-		this.tipoComprobante = (value);
+		this.tipoComprobante = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the serie property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<String> getSerie() {
 		return serie;
@@ -107,21 +107,21 @@ public class BuscarDetalleComprobante {
 
 	/**
 	 * Sets the value of the serie property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setSerie(JAXBElement<String> value) {
-		this.serie = (value);
+		this.serie = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the correlativo property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<String> getCorrelativo() {
 		return correlativo;
@@ -129,21 +129,21 @@ public class BuscarDetalleComprobante {
 
 	/**
 	 * Sets the value of the correlativo property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setCorrelativo(JAXBElement<String> value) {
-		this.correlativo = (value);
+		this.correlativo = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the rucEmpresa property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<String> getRucEmpresa() {
 		return rucEmpresa;
@@ -151,13 +151,13 @@ public class BuscarDetalleComprobante {
 
 	/**
 	 * Sets the value of the rucEmpresa property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setRucEmpresa(JAXBElement<String> value) {
-		this.rucEmpresa = (value);
+		this.rucEmpresa = ((JAXBElement<String>) value);
 	}
 
 }

@@ -11,11 +11,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- *
+ * 
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- *
+ * 
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -27,8 +27,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "buscarDetalleComprobanteResult" })
@@ -40,10 +40,10 @@ public class BuscarDetalleComprobanteResponse {
 
 	/**
 	 * Gets the value of the buscarDetalleComprobanteResult property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link Result
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<Result> getBuscarDetalleComprobanteResult() {
 		return buscarDetalleComprobanteResult;
@@ -51,13 +51,13 @@ public class BuscarDetalleComprobanteResponse {
 
 	/**
 	 * Sets the value of the buscarDetalleComprobanteResult property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link Result
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setBuscarDetalleComprobanteResult(JAXBElement<Result> value) {
-		this.buscarDetalleComprobanteResult = (value);
+		this.buscarDetalleComprobanteResult = ((JAXBElement<Result>) value);
 	}
 
 }

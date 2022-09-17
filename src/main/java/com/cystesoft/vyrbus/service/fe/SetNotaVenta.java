@@ -11,11 +11,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- *
+ * 
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- *
+ * 
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -29,8 +29,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "token", "nota", "venta" })
@@ -46,10 +46,10 @@ public class SetNotaVenta {
 
 	/**
 	 * Gets the value of the token property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<String> getToken() {
 		return token;
@@ -57,21 +57,21 @@ public class SetNotaVenta {
 
 	/**
 	 * Sets the value of the token property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setToken(JAXBElement<String> value) {
-		this.token = (value);
+		this.token = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the nota property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link Nota
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<Nota> getNota() {
 		return nota;
@@ -79,21 +79,21 @@ public class SetNotaVenta {
 
 	/**
 	 * Sets the value of the nota property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link Nota
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setNota(JAXBElement<Nota> value) {
-		this.nota = (value);
+		this.nota = ((JAXBElement<Nota>) value);
 	}
 
 	/**
 	 * Gets the value of the venta property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link Venta
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<Venta> getVenta() {
 		return venta;
@@ -101,13 +101,13 @@ public class SetNotaVenta {
 
 	/**
 	 * Sets the value of the venta property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link Venta
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setVenta(JAXBElement<Venta> value) {
-		this.venta = (value);
+		this.venta = ((JAXBElement<Venta>) value);
 	}
 
 }

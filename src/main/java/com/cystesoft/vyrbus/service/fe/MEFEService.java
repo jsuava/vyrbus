@@ -4,7 +4,6 @@ package com.cystesoft.vyrbus.service.fe;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Logger;
-
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 import javax.xml.ws.WebEndpoint;
@@ -15,16 +14,16 @@ import javax.xml.ws.WebServiceClient;
  * Generated source version: 2.0
  * <p>
  * An example of how this class may be used:
- *
+ * 
  * <pre>
 * MEFEService service = new MEFEService();
 * IMEFEService portType = service.getBasicHttpBindingIMEFEService();
 * portType.setVenta(...);
  * </pre>
  * </p>
- *
+ * 
  */
-@WebServiceClient(name = "MEFEService", targetNamespace = "http://tempuri.org/", wsdlLocation = "http://192.168.50.5:8085/MEFEService.svc?wsdl")
+@WebServiceClient(name = "MEFEService", targetNamespace = "http://tempuri.org/", wsdlLocation = "http://119.8.148.239:8085/MEFEService.svc?wsdl")
 public class MEFEService extends Service {
 
 	private final static URL MEFESERVICE_WSDL_LOCATION;
@@ -35,10 +34,10 @@ public class MEFEService extends Service {
 		try {
 			URL baseUrl;
 			baseUrl = com.cystesoft.vyrbus.service.fe.MEFEService.class.getResource(".");
-			url = new URL(baseUrl, "http://192.168.50.5:8085/MEFEService.svc?wsdl");
+			url = new URL(baseUrl, "http://119.8.148.239:8085/MEFEService.svc?wsdl");
 		} catch (MalformedURLException e) {
 			logger.warning(
-					"Failed to create URL for the wsdl Location: 'http://192.168.50.5:8085/MEFEService.svc?wsdl', retrying as a local file");
+					"Failed to create URL for the wsdl Location: 'http://119.8.148.239:8085/MEFEService.svc?wsdl', retrying as a local file");
 			logger.warning(e.getMessage());
 		}
 		MEFESERVICE_WSDL_LOCATION = url;
@@ -53,7 +52,7 @@ public class MEFEService extends Service {
 	}
 
 	/**
-	 *
+	 * 
 	 * @return returns IMEFEService
 	 */
 	@WebEndpoint(name = "BasicHttpBinding_IMEFEService")

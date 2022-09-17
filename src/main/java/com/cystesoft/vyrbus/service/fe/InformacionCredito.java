@@ -2,7 +2,6 @@
 package com.cystesoft.vyrbus.service.fe;
 
 import java.math.BigDecimal;
-
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -13,11 +12,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for InformacionCredito complex type.
- *
+ * 
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- *
+ * 
  * <pre>
  * &lt;complexType name="InformacionCredito">
  *   &lt;complexContent>
@@ -31,8 +30,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "InformacionCredito", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", propOrder = {
@@ -48,10 +47,10 @@ public class InformacionCredito {
 
 	/**
 	 * Gets the value of the fechaVencimiento property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<String> getFechaVencimiento() {
 		return fechaVencimiento;
@@ -59,20 +58,20 @@ public class InformacionCredito {
 
 	/**
 	 * Sets the value of the fechaVencimiento property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setFechaVencimiento(JAXBElement<String> value) {
-		this.fechaVencimiento = (value);
+		this.fechaVencimiento = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the montoCuota property.
-	 *
+	 * 
 	 * @return possible object is {@link BigDecimal }
-	 *
+	 * 
 	 */
 	public BigDecimal getMontoCuota() {
 		return montoCuota;
@@ -80,9 +79,9 @@ public class InformacionCredito {
 
 	/**
 	 * Sets the value of the montoCuota property.
-	 *
+	 * 
 	 * @param value allowed object is {@link BigDecimal }
-	 *
+	 * 
 	 */
 	public void setMontoCuota(BigDecimal value) {
 		this.montoCuota = value;
@@ -90,10 +89,10 @@ public class InformacionCredito {
 
 	/**
 	 * Gets the value of the nroCuota property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<String> getNroCuota() {
 		return nroCuota;
@@ -101,13 +100,13 @@ public class InformacionCredito {
 
 	/**
 	 * Sets the value of the nroCuota property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setNroCuota(JAXBElement<String> value) {
-		this.nroCuota = (value);
+		this.nroCuota = ((JAXBElement<String>) value);
 	}
 
 }
