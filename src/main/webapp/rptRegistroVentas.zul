@@ -1,0 +1,66 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndRptRegistroVentas" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndRptRegistroVentas">
+	<groupbox mold="3d" closable="false">
+		<caption label="REGISTRO DE VENTAS" style="color: #ffffff;"/>
+		<grid>
+			<columns>
+				<column width="100px" align="right" />
+				<column width="150px" />
+				<column width="180px" align="right" />
+			</columns>
+			<rows>
+				<row>
+					<label value="FECHA INCIO :" />
+					<datebox id="dtbxFechaInicio"  format="dd/MM/yyyy" readonly="true"/>
+					<label value="COMPROBANTE :" visible="false"/>
+					<hbox>
+						<combobox id="cmbTipoComprobante" width="150px" visible="false"/>
+						<radiogroup>
+							<radio id="rdEncomiendas" label="Encomiendas" selected="true"/>
+							<separator width="10px" orient="vertical"/>
+							<radio id="rdPasajeros" label="Pasajeros"/>
+							<separator width="10px" orient="vertical"/>
+							<radio id="rdAmbos" label="Ambos"/>
+						</radiogroup>						
+					</hbox>
+				</row>
+				<row>
+					<label value="FECHA FIN :" />
+					<datebox id="dtbxFechaFin"  format="dd/MM/yyyy" readonly="true"/>
+					
+					
+					<separator width="155px" />				
+					<hbox>
+						<separator width="2px" />
+						<button label="Buscar" sclass="btnCommandM" image="/resources/mp_buscarEnabled.png" onClick="wndRptRegistroVentas.buscar()"/>
+						<button label="Cerrar" sclass="btnCommandM" image="/resources/mp_cerrar.png" onClick="wndRptRegistroVentas.closeTabWindow()" />
+						<button label="Exportar" sclass="btnCommandM" image="/resources/mp_excel.png"  onClick="wndRptRegistroVentas.exportarExcel()"/>
+					</hbox>
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+	<listbox id="lbxVentas" mold="paging" pageSize="20">
+		<listhead>
+			<listheader label="ID" width="50px" align="center" style="color: #ffffff;"/>
+			<listheader label="FECHA" align="center" width="80px" style="color: #ffffff;"/>
+			<listheader label="TD" align="center" width="50px" style="color: #ffffff;"/>
+			<listheader label="SERIE" align="center" width="50px" style="color: #ffffff;"/>
+			<listheader label="CORRELATIVO" align="center" width="80px" style="color: #ffffff;"/>
+			<listheader label="NRODOC" align="left" width="100px" style="color: #ffffff;"/>
+			<listheader label="RAZONSOCIAL" align="left" width="300px" style="color: #ffffff;"/>
+			<listheader label="EXONERADO" align="right" width="60px" style="color: #ffffff;"/>
+			<listheader label="V_VENTA" align="right" width="60px" style="color: #ffffff;"/>
+			<listheader label="IGV" align="right" width="60px" style="color: #ffffff;"/>
+			<listheader label="TOTAL" align="right" width="60px" style="color: #ffffff;"/>
+			<listheader label="DESTINO" width="180px" style="color: #ffffff;"/>
+			<listheader label="ASTO" width="50px" align="center" style="color: #ffffff;"/>
+			<listheader label="TIPCOM_ID" width="50px" style="color: #ffffff;" visible="false" />
+			<listheader label="TIPMOV_ID" width="50px" style="color: #ffffff;" visible="false" />
+			<listheader style="color: #ffffff;"/>
+		</listhead>
+	</listbox>
+	
+</window>
+</zk>
