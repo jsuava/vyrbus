@@ -11,11 +11,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- *
+ * 
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- *
+ * 
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -29,8 +29,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "token", "fechaEmisionComprobantes", "rucEmpresa" })
@@ -46,10 +46,10 @@ public class SetResumenes {
 
 	/**
 	 * Gets the value of the token property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<String> getToken() {
 		return token;
@@ -57,21 +57,21 @@ public class SetResumenes {
 
 	/**
 	 * Sets the value of the token property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setToken(JAXBElement<String> value) {
-		this.token = (value);
+		this.token = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the fechaEmisionComprobantes property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<String> getFechaEmisionComprobantes() {
 		return fechaEmisionComprobantes;
@@ -79,21 +79,21 @@ public class SetResumenes {
 
 	/**
 	 * Sets the value of the fechaEmisionComprobantes property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setFechaEmisionComprobantes(JAXBElement<String> value) {
-		this.fechaEmisionComprobantes = (value);
+		this.fechaEmisionComprobantes = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the rucEmpresa property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<String> getRucEmpresa() {
 		return rucEmpresa;
@@ -101,13 +101,13 @@ public class SetResumenes {
 
 	/**
 	 * Sets the value of the rucEmpresa property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setRucEmpresa(JAXBElement<String> value) {
-		this.rucEmpresa = (value);
+		this.rucEmpresa = ((JAXBElement<String>) value);
 	}
 
 }

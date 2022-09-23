@@ -11,11 +11,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- *
+ * 
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- *
+ * 
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -27,8 +27,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "setVentaResult" })
@@ -40,10 +40,10 @@ public class SetVentaResponse {
 
 	/**
 	 * Gets the value of the setVentaResult property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link Result
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<Result> getSetVentaResult() {
 		return setVentaResult;
@@ -51,13 +51,13 @@ public class SetVentaResponse {
 
 	/**
 	 * Sets the value of the setVentaResult property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link Result
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setSetVentaResult(JAXBElement<Result> value) {
-		this.setVentaResult = (value);
+		this.setVentaResult = ((JAXBElement<Result>) value);
 	}
 
 }

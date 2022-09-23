@@ -11,11 +11,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- *
+ * 
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- *
+ * 
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -27,8 +27,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "setResumenesResult" })
@@ -40,10 +40,10 @@ public class SetResumenesResponse {
 
 	/**
 	 * Gets the value of the setResumenesResult property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link Result
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<Result> getSetResumenesResult() {
 		return setResumenesResult;
@@ -51,13 +51,13 @@ public class SetResumenesResponse {
 
 	/**
 	 * Sets the value of the setResumenesResult property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link Result
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setSetResumenesResult(JAXBElement<Result> value) {
-		this.setResumenesResult = (value);
+		this.setResumenesResult = ((JAXBElement<Result>) value);
 	}
 
 }

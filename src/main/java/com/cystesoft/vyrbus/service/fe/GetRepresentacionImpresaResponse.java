@@ -11,11 +11,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- *
+ * 
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- *
+ * 
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -27,8 +27,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "getRepresentacionImpresaResult" })
@@ -40,10 +40,10 @@ public class GetRepresentacionImpresaResponse {
 
 	/**
 	 * Gets the value of the getRepresentacionImpresaResult property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link Result
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<Result> getGetRepresentacionImpresaResult() {
 		return getRepresentacionImpresaResult;
@@ -51,13 +51,13 @@ public class GetRepresentacionImpresaResponse {
 
 	/**
 	 * Sets the value of the getRepresentacionImpresaResult property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link Result
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setGetRepresentacionImpresaResult(JAXBElement<Result> value) {
-		this.getRepresentacionImpresaResult = (value);
+		this.getRepresentacionImpresaResult = ((JAXBElement<Result>) value);
 	}
 
 }

@@ -813,8 +813,8 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 //							movimiento.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_DEBITO){
 //					}
 
-				//}else
-					//throw new Exception("No se pudo realizar la anulación, por favor vuelva a intentarlo.");
+				}else
+					throw new Exception("No se pudo realizar la anulación, por favor vuelva a intentarlo. (F.E.)");
 			}else{
 				/*Este debe ser anulado, pero con una nota de credito*/
 				TipoNota tipoNota=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_ANULACION);
@@ -842,6 +842,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				}
 			}
 		}
+		
 
 //		result = Constantes.CORRECT;
 		return notaCredito;
