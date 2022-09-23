@@ -613,6 +613,17 @@ public interface VentaPasajesManager {
 	 * @throws Exception
 	 */
 	public List<VentasPiloto> buscarVentasPagoPilotos(String fInicio, String fFin) throws Exception;
+	
+	
+	/**
+	 * Busca las ventas para el Registro de Ventas
+	 * @param fInicio	: Fecha de inicio de busqueda
+	 * @param fFin		: Fecha fin de busqueda
+	 * @return
+	 * @throws Exception
+	 */
+	public List<VentasPiloto> buscarRegistroVentas(String fInicio, String fFin) throws Exception;
+	
 	/**
 	 * Busca las ventas para realizar la perdida de servicio
 	 * @param numeroDocumento	: Numero de Documento.

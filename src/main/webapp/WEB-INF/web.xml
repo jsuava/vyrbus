@@ -206,7 +206,19 @@
 	   <servlet-name>XlsVentasPagoPilotosServlet</servlet-name>
 	   <servlet-class>com.cystesoft.vyrbus.service.excel.XlsVentasPagoPilotos</servlet-class>
 	</servlet>
-
+	<servlet>
+	   <description>Servlet para el Registro de Ventas</description>
+	   <display-name>RegistroVentas</display-name>
+	   <servlet-name>XlsRegistroVentasServlet</servlet-name>
+	   <servlet-class>com.cystesoft.vyrbus.service.excel.XlsRegistroVentas</servlet-class>
+	</servlet>
+	<servlet>
+	   <description>Servlet para la Devolucion del ISC</description>
+	   <display-name>DevolucionIsc</display-name>
+	   <servlet-name>XlsDevolucionIscServlet</servlet-name>
+	   <servlet-class>com.cystesoft.vyrbus.service.excel.XlsDevolucionIsc</servlet-class>
+	</servlet>
+	
 	<servlet-mapping>
 		<servlet-name>dspLoader</servlet-name>
 		<url-pattern>*.dsp</url-pattern>
@@ -267,6 +279,14 @@
 		<servlet-name>XlsVentasPagoPilotosServlet</servlet-name>
 		<url-pattern>/exportXlsVentasPagoPilotos.htm</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>XlsRegistroVentasServlet</servlet-name>
+		<url-pattern>/exportXlsRegistroVentas.htm</url-pattern>
+	</servlet-mapping>	
+	<servlet-mapping>
+		<servlet-name>XlsDevolucionIscServlet</servlet-name>
+		<url-pattern>/exportXlsDevolucionIsc.htm</url-pattern>
+	</servlet-mapping>	
   <!--
   <security-constraint>
   	<display-name>SecuritySisvyr</display-name>

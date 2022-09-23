@@ -39,6 +39,7 @@ import com.cystesoft.vyrbus.model.bean.TranscarUsuarioPersonal;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.model.dao.TranscarWebDAO;
+import com.cystesoft.vyrbus.service.mappers.VentasPiloto;
 import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.Messages;
 import com.cystesoft.vyrbus.service.util.Util;
@@ -505,7 +506,7 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 					"		,(BoletoFinal::INTEGER - boletoInicial::INTEGER +1) - cantRegistros AS Cortes, tipoComprobanteId  " +
 					"FROM(   " +
 //					"	   Recupera todos menos las confirmaciones de fecha habierta de fecha habierta  " +
-					"		SELECT tc.tipcom_id tipoComprobanteId, tc.c_nomcor as TipoComprobante  " +
+					"		SELECT tc.tipcom_id tipoComprobanteId, tc.c_denominacion as TipoComprobante  " +
 //					"			  ,MIN(SUBSTR(vp.c_numcom ,0,4)) AS Serie    " +
 					"			  ,MIN(lpad( substr(vp.c_numcom, 1, (position('-' in vp.c_numcom )-1)), 4, '0' )) AS Serie" +
 //					"		      ,MIN(SUBSTR(vp.c_numcom,6, LENGTH(vp.c_numcom))) AS boletoInicial     " +
@@ -534,7 +535,7 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 			map = (Map<String, Object>)result.get(i);
 
 			Liquidacion liquidacion= new Liquidacion();
-//			liquidacion.setTipoComprobante(new TipoComprobante(((BigDecimal)map.get("TIPOCOMPROBANTEID")).intValue(), map.get("TIPOCOMPROBANTE").toString()));
+			liquidacion.setTipoComprobante(new TipoComprobante(((BigDecimal)map.get("TIPOCOMPROBANTEID")).intValue(), map.get("TIPOCOMPROBANTE").toString()));
 			liquidacion.setComprobante(map.get("TIPOCOMPROBANTE").toString());
 			liquidacion.setSerie(map.get("SERIE").toString());
 			liquidacion.setBoletoInicial(map.get("BOLETOINICIAL").toString());
@@ -824,4 +825,87 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 
 		return direccionMac;
 	}
+	
+	@Override
+	public List<VentasPiloto> buscarRegistroVentas(String fInicio, String fFin) throws Exception {
+
+		
+		String sql = "SELECT \r\n" + 
+				"				ec.d_fecven FECHA, \r\n" + 
+				"				CASE ec.tipcom_id  \r\n" + 
+				"					WHEN 1\r\n" + 
+				"					  THEN '03'\r\n" + 
+				"					WHEN 2\r\n" + 
+				"					  THEN '01' \r\n" + 
+				"					WHEN 3 \r\n" + 
+				"					  THEN '31'\r\n" + 
+				"				END TD,\r\n" + 
+				"				CASE ec.tipcom_id \r\n" + 
+				"				  WHEN 3 \r\n" + 
+				"					  THEN\r\n" + 
+				"						  lpad(substr(ec.c_numcom, 1, 3), 4, '0') \r\n" + 
+				"					  ELSE \r\n" + 
+				"						  substr(ec.c_numcom, 1, 4) \r\n" + 
+				"				END SERIE, \r\n" + 
+				"				CASE ec.tipcom_id \r\n" + 
+				"				  WHEN 3 \r\n" + 
+				"					  THEN\r\n" + 
+				"						  lpad(substr(ec.c_numcom, 6, 8), 8, '0') \r\n" + 
+				"					  ELSE \r\n" + 
+				"						  substr(ec.c_numcom, 6, 8) \r\n" + 
+				"				END  NUMERO,\r\n" + 
+				"				c.c_numdoc DNI, c.c_razsoc RAZON_SOCIAL, 0.00 EXONERADO, \r\n" + 
+				"				ec.n_subtotal V_VENTA, ec.n_impuesto IGV, ec.n_total TOTAL,\r\n" + 
+				"				agd.c_denominacion DESTINO, '' ASTO, ec.tipcom_id, '1' TIPMOV_ID \r\n" + 
+				"FROM \r\n" + 
+				"				tctenvcon ec \r\n" + 
+				"				INNER JOIN tcmcliente c ON (ec.cliente_id = c.cliente_id)\r\n" + 
+				"				INNER JOIN tcmagencia agd ON (ec.agencia_iddestino = agd.agencia_id)\r\n" + 
+				"WHERE\r\n" + 
+				"				ec.d_fecven between to_date('"+fInicio+"', 'dd/MM/yyyy') \r\n" + 
+				"				AND to_date('"+fFin+"', 'dd/MM/yyyy')\r\n" + 
+				"				AND ec.tipcom_id in (1, 2, 3)\r\n" + 
+				"ORDER BY \r\n" + 
+				"				ec.d_fecven, td,substr(ec.c_numcom, 1, 4), substr(ec.c_numcom, 6, 8)";
+		Log.info("buscarUsuariosByVenta - Transcar: " + sql);
+
+		List<?> result=getJdbcTemplate().queryForList(sql);
+
+		List<VentasPiloto> lstVentas = new ArrayList<>();
+		Map<String, Object> map = null;
+		
+		for(int i=0; i<result.size(); i++) {
+			map = (Map<String, Object>)result.get(i);
+			
+			VentasPiloto regVentas = new VentasPiloto();
+			regVentas.setFechaCompra((Date)map.get("FECHA"));
+			regVentas.setTipoDocumentoSunat(map.get("TD").toString());
+			regVentas.setSerie(map.get("SERIE").toString());
+			regVentas.setNumero(map.get("NUMERO").toString());
+			regVentas.setNumeroBoleto(map.get("SERIE").toString()+"-"+map.get("NUMERO").toString());
+			regVentas.setRuc("");
+			regVentas.setDni(map.get("DNI").toString());
+			regVentas.setNombres(map.get("RAZON_SOCIAL").toString());
+			regVentas.setExonerado(((BigDecimal)map.get("EXONERADO")).doubleValue());
+			regVentas.setVenta(((BigDecimal)map.get("V_VENTA")).doubleValue());
+			regVentas.setIgv(((BigDecimal)map.get("IGV")).doubleValue());
+			regVentas.setTotal(((BigDecimal)map.get("TOTAL")).doubleValue());
+			regVentas.setDestino(map.get("DESTINO").toString());
+			regVentas.setAsiento(map.get("ASTO").toString());
+			
+			TipoComprobante tipoComprobante = new TipoComprobante();
+			tipoComprobante.setId(((BigDecimal)map.get("TIPCOM_ID")).intValue());
+			regVentas.setTipoComprobante(tipoComprobante);
+			
+			TipoMovimiento tipoMovimiento = new TipoMovimiento();
+			tipoMovimiento.setId(Integer.parseInt(map.get("TIPMOV_ID").toString()) );
+			regVentas.setTipoMovimiento(tipoMovimiento);
+			
+			lstVentas.add(regVentas);
+		}
+		
+		return lstVentas;
+	}
+	
+	
 }

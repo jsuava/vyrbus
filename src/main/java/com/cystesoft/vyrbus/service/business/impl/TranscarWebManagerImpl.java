@@ -20,6 +20,7 @@ import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.model.dao.TranscarWebDAO;
 import com.cystesoft.vyrbus.service.business.TranscarWebManager;
+import com.cystesoft.vyrbus.service.mappers.VentasPiloto;
 
 /**
  * @author abant
@@ -186,5 +187,11 @@ public class TranscarWebManagerImpl implements TranscarWebManager{
 	public void actualizarPasswordUsuarioByLogin(String login, String passwordNew) throws Exception {
 		// TODO Auto-generated method stub
 		getTranscarWebDAO().actualizarPasswordUsuarioByLogin(login, passwordNew);
+	}
+	
+	
+	@Override
+	public List<VentasPiloto> buscarRegistroVentas(String fInicio, String fFin) throws Exception{
+		return getTranscarWebDAO().buscarRegistroVentas(fInicio, fFin);
 	}
 }

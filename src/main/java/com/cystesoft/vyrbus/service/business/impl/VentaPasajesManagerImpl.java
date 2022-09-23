@@ -797,14 +797,15 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 			Date dateStartLimit= new Date(movimiento.getFechaLiquidacion().getTime()+Constantes.MILISEGUNDOS_X_DIA);
 			long horasTrans= (new Date().getTime()-dateStartLimit.getTime())/Constantes.MILISEGUNDOS_X_HORA;
 
-			if(!forzarNotaCredito && (horasTrans<=horas_maximo || movimiento.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO ||
-					movimiento.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_DEBITO)){
+			if(!forzarNotaCredito && (horasTrans<=horas_maximo || 
+									  movimiento.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO ||
+									  movimiento.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_DEBITO)){
 				/*Realiza solamente la anulacion de la nota de credito o debito*/
 
 				//Primero anula en el WSFE
 				//Comentado temporalmente por MAOE para pruebas sin Fact Electronica
 				Result result=WSFE.anularComprobante(movimiento);
-				if(result.isIsCorrect()){
+				if(result.isIsCorrect()) //{
 					getVentaPasajesDAO().update(movimiento);
 
 					/*Activa el comprobante asociado a la nota de credito o debito*/
@@ -2493,6 +2494,12 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	public List<VentasPiloto> buscarVentasPagoPilotos(String fInicio, String fFin) throws Exception{
 		return getVentaPasajesDAO().buscarVentasPagoPilotos(fInicio, fFin);
 	}
+	
+	@Override
+	public List<VentasPiloto> buscarRegistroVentas(String fInicio, String fFin) throws Exception{
+		return getVentaPasajesDAO().buscarRegistroVentas(fInicio, fFin);
+	}
+	
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#buscarBoletosPerdidaServicio(java.lang.String, java.lang.String, java.lang.String)
 	 */

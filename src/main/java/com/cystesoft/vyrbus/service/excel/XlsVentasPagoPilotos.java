@@ -36,9 +36,19 @@ public class XlsVentasPagoPilotos extends HttpServlet {
 	protected void doProcess(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
 		@SuppressWarnings("unchecked")
 		List<VentasPiloto> lstVentas = (List<VentasPiloto>)request.getSession().getAttribute("lstVentas");
+		String desde = (String)request.getSession().getAttribute("desde");
+		String hasta = (String)request.getSession().getAttribute("hasta");
+		String usuario = (String)request.getSession().getAttribute("usuario");
+		String fechaEmision = (String)request.getSession().getAttribute("fechaEmision");
+		//16/09/2022 22:42:09
+		String cadenaFecha =fechaEmision.replace('/', '-');
+		cadenaFecha =cadenaFecha.replace(' ', '_');
+		cadenaFecha =cadenaFecha.replace(':', '_');
+		String fileName = "VentasPagoPilotos_"+cadenaFecha+".xls";
+
         String parcialPath = (String)request.getSession().getAttribute("parcialPath");
         response.setContentType("application/vnd.ms-excel");
-        response.setHeader("Content-Disposition", "attachment; filename=VentasPagoPilotos.xls");
+        response.setHeader("Content-Disposition", "attachment; filename="+fileName);
 
         File template = new File(parcialPath);
         try {
@@ -52,15 +62,32 @@ public class XlsVentasPagoPilotos extends HttpServlet {
             style.setDataFormat(format.getFormat("#,##0.00"));
             HSSFCellStyle styleFecha = wb.createCellStyle();
             styleFecha.setDataFormat(format.getFormat("dd/MM/yyyy"));
+            
+            //Escribir cabecera
+            //(3, 4) desde
+            rowh = sheet.createRow((short)3);
+			cellh = rowh.createCell((short)4);
+			cellh.setCellValue(new HSSFRichTextString(desde));
+            //(3, 12) usuario
+			cellh = rowh.createCell((short)12);
+			cellh.setCellValue(new HSSFRichTextString(usuario));
+            //(4, 4) hasta
+			rowh = sheet.createRow((short)4);
+			cellh = rowh.createCell((short)4);
+			cellh.setCellValue(new HSSFRichTextString(hasta));
+            //(4, 12) fechaEmision
+			cellh = rowh.createCell((short)12);
+			cellh.setCellValue(new HSSFRichTextString(fechaEmision));
 
-
-            int j = 0;
+            int j = 6;
+            int item=0;
             for (Iterator it = lstVentas.iterator(); it.hasNext();) {
                 VentasPiloto ventaPiloto = (VentasPiloto) it.next();
                 j++;
+                item++;
                 rowh = sheet.createRow((short)j);
                 cellh = rowh.createCell((short)0);
-				cellh.setCellValue(Integer.valueOf(j));
+				cellh.setCellValue(Integer.valueOf(item));
 
 				cellh = rowh.createCell((short)1);
 				cellh.setCellStyle(styleFecha);

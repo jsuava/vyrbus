@@ -160,10 +160,10 @@ public class Constantes {
 
 	//http://168.121.236.46:8080/
 
-//    public static final String SERVER_HOST = "localhost:8080";
+    public static final String SERVER_HOST = "localhost:8080";
 
 	//SERVER_HOST PRODUCCION TRANSMAR
-	public static final String SERVER_HOST = "119.8.145.122:8080";
+//	public static final String SERVER_HOST = "119.8.145.122:8080";
 //	public static final String SERVER_HOST = "190.119.140.203:8080";
 
 
@@ -461,8 +461,8 @@ public class Constantes {
 	/* Constantes que refiren el tipo de gasto*/
 	public static final int ID_TIPGAS_GASTOS_VARIOS=1;
 	public static final int ID_TIPGAS_PEAJES=2;
-	public static final int ID_TIPGAS_PAGO_GIROS=3;
-	public static final int ID_TIPGAS_CONDOCUMENTO=4;
+	public static final int ID_TIPGAS_PAGO_GIROS=3;  		//CAMBIO A PAGO DE COMISIONES A COMISIONISTA
+	public static final int ID_TIPGAS_CONDOCUMENTO=4;		//CAMBIO A PAGO CON YAPE
 	public static final int ID_TIPGAS_CTACTE=7;
 
 	/* Constantes que se refieren a las agencias	*/

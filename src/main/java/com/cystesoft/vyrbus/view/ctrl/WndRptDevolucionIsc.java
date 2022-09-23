@@ -28,6 +28,7 @@ import org.zkoss.zul.Radio;
 import org.zkoss.zul.Textbox;
 
 import com.cystesoft.vyrbus.model.bean.Manifiesto;
+import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.mappers.VentasPiloto;
 import com.cystesoft.vyrbus.service.util.Constantes;
@@ -55,6 +56,7 @@ public class WndRptDevolucionIsc extends WndBase {
 	private Radio rdVentas;
 
 	List<VentasPiloto> lstVentas = null;
+	List<Manifiesto> lstManifiestos=null;
 
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
@@ -125,9 +127,14 @@ public class WndRptDevolucionIsc extends WndBase {
 			periodo=txtPeriodo.getText().trim();
 
 		if(rdISC.isChecked()) {
-			lstVentas = null;
-			List<Manifiesto>lstManifiestos=ServiceLocator.getManifiestoManager().buscarDevolucionIsc(fechaInicio, fechaFin, per4949, periodo);
-			listarISC(lstManifiestos);
+			lstManifiestos = null;
+			lstManifiestos = ServiceLocator.getManifiestoManager().buscarDevolucionIsc(fechaInicio, fechaFin, per4949, periodo);
+			if(lstManifiestos.size()>0)
+				listarISC(lstManifiestos);
+			else{
+				DlgMessage.information("No se encontraron movimientos para los criterios ingresados.");
+				return;
+			}
 		}else {
 			lstVentas = ServiceLocator.getVentaPasajesManager().buscarVentasPagoPilotos(fechaInicio, fechaFin);
 			if(lstVentas.size()>0)
@@ -551,15 +558,21 @@ public class WndRptDevolucionIsc extends WndBase {
 
 
 	public void exportarExcel(){
-		if(rdISC.isChecked()) {
-			DlgMessage.information("Pendiente de implementacion");
-		}else {
-			Session session = getDesktop().getSession();
-			HttpSession httpSession = (HttpSession)session.getNativeSession();
-			httpSession.setAttribute("parcialPath",Constantes.DIRECTORY_EXCEL+"VentasPagoPilotos.xls");
+		Usuario usuario = getUsuario();
+		String fecha = Util.DatetoString(new Date(), Constantes.DATE_TIME_FORMAT);
+		
+		Session session = getDesktop().getSession();
+		HttpSession httpSession = (HttpSession)session.getNativeSession();
+		httpSession.setAttribute("parcialPath",Constantes.DIRECTORY_EXCEL+ (rdISC.isChecked() ? "DevolucionISC.xls" : "VentasPagoPilotos.xls" ));
+		if(rdISC.isChecked())
+			httpSession.setAttribute("lstManifiestos", lstManifiestos);
+		else
 			httpSession.setAttribute("lstVentas", lstVentas);
-			Executions.sendRedirect("/exportXlsVentasPagoPilotos.htm");
-		}
+		httpSession.setAttribute("desde", Constantes.FORMAT_DATE.format(dtbxFechaInicio.getValue()));
+		httpSession.setAttribute("hasta", Constantes.FORMAT_DATE.format(dtbxFechaFin.getValue()));
+		httpSession.setAttribute("usuario", usuario.getApellidoPaterno()+" "+usuario.getApellidoMaterno()+" "+usuario.getNombre());
+		httpSession.setAttribute("fechaEmision", fecha);
+		Executions.sendRedirect( rdISC.isChecked() ? "/exportXlsDevolucionIsc.htm" : "/exportXlsVentasPagoPilotos.htm" );			
 
 	}
 

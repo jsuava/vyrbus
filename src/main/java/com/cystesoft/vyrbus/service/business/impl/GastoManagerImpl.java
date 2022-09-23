@@ -92,6 +92,11 @@ public class GastoManagerImpl implements GastoManager {
 		return getGastoDAO().buscarGasto(fechaGasto, fechaFinGasto, idTipoGasto, idAgencia, idUsuario);
 	}
 
+	@Override
+	public List<Gasto> buscarGastoResumen(String fechaIniGasto, String fechaFinGasto, Integer idTipoGasto, Integer idAgencia, Integer idUsuario) {
+		// TODO Auto-generated method stub
+		return getGastoDAO().buscarGastoResumen(fechaIniGasto, fechaFinGasto, idTipoGasto, idAgencia, idUsuario);
+	}
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.service.business.GastoManager#obtenerGastosByLiquidacion(java.lang.String, java.lang.Integer, java.lang.Integer)
 	 */
