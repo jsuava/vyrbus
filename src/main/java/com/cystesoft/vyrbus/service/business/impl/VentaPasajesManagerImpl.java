@@ -812,8 +812,8 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 //					if(movimiento.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO ||
 //							movimiento.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_DEBITO){
 //					}
-
-				}else
+//				}
+			else
 					throw new Exception("No se pudo realizar la anulación, por favor vuelva a intentarlo. (F.E.)");
 			}else{
 				/*Este debe ser anulado, pero con una nota de credito*/
