@@ -3825,7 +3825,10 @@ public class CreateDocument implements Serializable {
 			
 			
 			/**EGRESOS*/
-			if((tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO) || (formaPago.getId().intValue() != Constantes.ID_FORPAG_CONTADO) || (tipoFormaPago.getId().intValue()!=Constantes.ID_TIPFORPAG_EFECTIVO)) {
+			if((tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO) || (formaPago.getId().intValue() != Constantes.ID_FORPAG_CONTADO) || 
+					(tipoFormaPago.getId().intValue()!=Constantes.ID_TIPFORPAG_EFECTIVO) ||
+			         ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_DEVOLUCION) {
+				
 				if(lstControlTipoFormaPago.size()==0 || lstControlTipoFormaPago.contains(ventaPasaje.getTipoFormaPago().getDenominacion())==false) {
 					if(lstControlTipoFormaPago.size()>0) {
 						
@@ -3920,6 +3923,8 @@ public class CreateDocument implements Serializable {
 			bw.write(NEWLINE);
 			bw.write(NEWLINE);
 		}		
+		
+		totalVentaPasajes += -totalDevoluciones;
 		
 		Integer longConceptop = 30;
 		Integer longImporteTotales = 15;

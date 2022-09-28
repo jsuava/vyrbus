@@ -86,7 +86,7 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 	 */
 	@Override
 	public List<Gasto> buscarGasto(String fechaGasto, Integer idTipoGasto, Integer idAgencia,Integer idUsuario) {
-		return buscarGasto(fechaGasto, idTipoGasto, idAgencia, idUsuario);
+		return buscarGasto(fechaGasto, fechaGasto, idTipoGasto, idAgencia, idUsuario);
 	}
 	
 	
