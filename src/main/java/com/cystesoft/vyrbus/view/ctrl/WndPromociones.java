@@ -1453,7 +1453,8 @@ public class WndPromociones extends WndBase {
 //			cell = new Listcell(dblbxDescuento.getText().trim().isEmpty()?"":dblbxDescuento.getText().trim());
 //			item.appendChild(cell);
 
-			promocion.setTipoDescuento(String.valueOf(cmbTipoDescuento.getSelectedItem().getValue()));
+//			promocion.setTipoDescuento(String.valueOf(cmbTipoDescuento.getSelectedItem().getValue()));
+			promocion.setTipoDescuento(cmbTipoDescuento.getSelectedItem().getValue());
 			cell = new Listcell(cmbTipoDescuento.getText());
 			item.appendChild(cell);
 

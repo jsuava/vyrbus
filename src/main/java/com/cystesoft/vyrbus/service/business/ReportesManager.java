@@ -125,7 +125,7 @@ public interface ReportesManager {
 	 * @return Objet RptAvanceBuses.
 	 * @throws Exception
 	 */
-	public RptAvanceBuses avancesBuses(String fechaInicio, String fechaFin, Integer idLocalidadOrigen, Integer idLocalidadDestino, Integer idServicio, Integer codigoBus )throws Exception;
+	public RptAvanceBuses avancesBuses(String fechaInicio, String fechaFin, Integer idLocalidadOrigen, Integer idLocalidadDestino, Integer idServicio, String codigoBus )throws Exception;
 
 }
 

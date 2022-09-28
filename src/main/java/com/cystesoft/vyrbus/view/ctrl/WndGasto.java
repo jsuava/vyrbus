@@ -5,7 +5,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpSession;
+
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -85,6 +88,13 @@ public class WndGasto extends WndOpcionesMantenimiento {
 	final Combobox cmbUsuario=new Combobox();
 
 	Boolean isClikSaved=false;
+	
+	String fechaDesde;
+	String fechaHasta;
+	Agencia objAgenciaConsulta = null;
+	TipoGasto objGastoConsulta = null;
+	Usuario objUsuarioConsulta = null;
+
 
 	/*
 	 * (non-Javadoc)
@@ -480,9 +490,58 @@ public class WndGasto extends WndOpcionesMantenimiento {
 	@Override
 	public void onExport(int tab) throws Exception {
 		if(listboxLista.getItems().size()>0){
-			Util.exportarExcel(listboxLista, "INGRESO DE GASTOS");
+//			Util.exportarExcel(listboxLista, "INGRESO DE GASTOS");
+			exportarExcel();
+			
 		}
 	}
+	
+	
+	public void exportarExcel(){
+		Usuario usuario = getUsuario();
+		String fecha = Util.DatetoString(new Date(), Constantes.DATE_TIME_FORMAT);
+		
+		ArrayList<Gasto> lstGastos=null;
+		Integer tipoGastoId = null;
+		Integer agenciaId = null;
+		Integer usuarioId = null;
+		String usuarioConsulta = "TODOS";
+		String agenciaConsulta = "TODOS";
+		String gastoConsulta = "TODOS";
+		
+		if(objGastoConsulta != null) {
+			tipoGastoId = objGastoConsulta.getId();
+			gastoConsulta = objGastoConsulta.toString();
+		}
+		
+		if(objAgenciaConsulta != null) {
+			agenciaId = objAgenciaConsulta.getId();
+			agenciaConsulta = objAgenciaConsulta.toString();
+		}
+		
+		if(objUsuarioConsulta != null) {
+			usuarioId = objUsuarioConsulta.getId();
+			usuarioConsulta = objUsuarioConsulta.toString();
+		}
+		
+		
+		lstGastos = (ArrayList<Gasto>) ServiceLocator.getGastoManager().buscarGasto(fechaDesde, fechaHasta, tipoGastoId, agenciaId, usuarioId);
+	
+		Session session = getDesktop().getSession();
+		HttpSession httpSession = (HttpSession)session.getNativeSession();
+		httpSession.setAttribute("parcialPath", Constantes.DIRECTORY_EXCEL+"GastosOtrosIngresos.xls");
+		httpSession.setAttribute("lstGastos", lstGastos);
+		httpSession.setAttribute("desde", fechaDesde);
+		httpSession.setAttribute("hasta", fechaHasta);
+		httpSession.setAttribute("usuarioReporte", usuario.getApellidoPaterno()+" "+usuario.getApellidoMaterno()+" "+usuario.getNombre());
+		httpSession.setAttribute("usuarioConsulta", usuarioConsulta);
+		httpSession.setAttribute("agenciaConsulta", agenciaConsulta);
+		httpSession.setAttribute("gastoConsulta", gastoConsulta);
+		httpSession.setAttribute("fechaEmision", fecha);
+		Executions.sendRedirect( "/exportXlsGastosOtrosIngresos.htm" );			
+
+	}
+	
 
 	/*
 	 * (non-Javadoc)
@@ -901,16 +960,34 @@ public class WndGasto extends WndOpcionesMantenimiento {
 	}
 
 	private final void filtrar(){
+
+		fechaDesde = "";
+		fechaHasta = "";
+		objAgenciaConsulta = null;
+		objGastoConsulta = null;
+		objUsuarioConsulta = null;
+
 		String fechaIni=Constantes.FORMAT_DATE.format(dtbxFechaIni.getValue());
 		String fechaFin=Constantes.FORMAT_DATE.format(dtbxFechaFin.getValue());
+		
 		Integer idAgencia=null,idTipoGasto=null,idUsuario=null;
-		if(cmbAgencia.getSelectedIndex()>0)
+		if(cmbAgencia.getSelectedIndex()>0) {
 			idAgencia=((Agencia)cmbAgencia.getSelectedItem().getValue()).getId();
-		if(cmbTGasto.getSelectedIndex()>0)
+			objAgenciaConsulta = ((Agencia)cmbAgencia.getSelectedItem().getValue());
+		}
+		if(cmbTGasto.getSelectedIndex()>0) {
 			idTipoGasto=((TipoGasto)cmbTGasto.getSelectedItem().getValue()).getId();
-		if(cmbUsuario.getSelectedIndex()>0)
+			objGastoConsulta = ((TipoGasto)cmbTGasto.getSelectedItem().getValue());
+		}
+		if(cmbUsuario.getSelectedIndex()>0) {
 			idUsuario=((Usuario)cmbUsuario.getSelectedItem().getValue()).getId();
+			objUsuarioConsulta = ((Usuario)cmbUsuario.getSelectedItem().getValue());
+		}
 
+		//Almacenando las fechas para la exportacion
+		fechaDesde = fechaIni;
+		fechaHasta = fechaFin;
+		
 		listarRegistros((ArrayList<Gasto>) ServiceLocator.getGastoManager().buscarGasto(fechaIni, fechaFin, idTipoGasto, idAgencia, idUsuario));
 	}
 

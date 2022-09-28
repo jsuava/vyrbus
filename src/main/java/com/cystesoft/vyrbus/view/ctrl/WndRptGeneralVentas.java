@@ -109,8 +109,6 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 		//Para la busqueda
 		UtilData.cargarDataCombo(cmbAgencias, Agencia.class,true);
 
-		//dtbxFecInicioBus.setConstraint("after "+fecha);
-		//dtbxFecFinBus.setConstraint("after "+fecha);
 		dtbxFecInicioBus.setValue(new Date());
 		dtbxFecFinBus.setValue(new Date());
 
@@ -123,15 +121,15 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 		listCabeceraRecordTotales.add("");
 
 		/*EVENTO ON_CHANGE DEL LA FECHA INICIO*/
-		dtbxFecInicioBus.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
-			@Override
-			public void onEvent(Event event) throws Exception {
-				String fecha = Util.DatetoString(dtbxFecInicioBus.getValue(), "yyyyMMdd");
-				dtbxFecFinBus.setConstraint("after "+fecha);
-				/*Asigna a fecha fin el valor de la fecha inicio*/
-				dtbxFecFinBus.setValue(dtbxFecInicioBus.getValue());
-			}
-		});
+//		dtbxFecInicioBus.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+//			@Override
+//			public void onEvent(Event event) throws Exception {
+//				String fecha = Util.DatetoString(dtbxFecInicioBus.getValue(), "yyyyMMdd");
+//				dtbxFecFinBus.setConstraint("after "+fecha);
+//				/*Asigna a fecha fin el valor de la fecha inicio*/
+//				dtbxFecFinBus.setValue(dtbxFecInicioBus.getValue());
+//			}
+//		});
 
 	}
 
@@ -640,27 +638,20 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 		lsbxVentas.appendChild(item);
 	}
 
+	/**
+	 * Exporta los resultados en formato .xls
+	 */
+	public void onClick_btnExportar(){
+		try {
 
+			if(lsbxVentas.getItemCount()>0)
+				Util.exportarExcel(lsbxVentas, "ReporteGralVentas_");
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		} catch (Exception e) {
+			e.printStackTrace();
+			DlgMessage.error(e.getMessage());
+		}
+	}
 
 
 

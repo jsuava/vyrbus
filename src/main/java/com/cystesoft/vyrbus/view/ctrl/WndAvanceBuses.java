@@ -90,7 +90,7 @@ public class WndAvanceBuses extends WndBase{
 			Integer idLocalidadOrigen=null;
 			Integer idLocalidadDestino=null;
 			Integer idServicio=null;
-			Integer codigoBus=null;
+			String codigoBus=null;
 
 			if(cmbLocalidadOrigen.getSelectedItem().getValue() instanceof Localidad)
 				idLocalidadOrigen=((Localidad)cmbLocalidadOrigen.getSelectedItem().getValue()).getId();
@@ -99,7 +99,7 @@ public class WndAvanceBuses extends WndBase{
 			if(cmbServicio.getSelectedItem().getValue() instanceof Servicio)
 				idServicio=((Servicio)cmbServicio.getSelectedItem().getValue()).getId();
 			if(cmbBus.getSelectedItem().getValue() instanceof Bus)
-				codigoBus=Integer.valueOf(((Bus)cmbBus.getSelectedItem().getValue()).getCodigo());
+				codigoBus=((Bus)cmbBus.getSelectedItem().getValue()).getCodigo();
 
 			lbxAvance.detach();
 			lbxAvance = new Listbox();

@@ -308,7 +308,7 @@ public class WndRptLiquidacionVentas extends WndBase{
 				transcarUsuarioPersonal.setLogin(liquidacionCarga.getUsuario().getLogin());
 			}
 
-			List<VentaPasaje> resultDetalleVentasCarga = ServiceLocator.getTranscarWebManager().buscarDetalleVentas(transcarUsuarioPersonal, liquidacionCarga.getAgencia().getId(), fechaInicial, fechaFinal);
+			List<VentaPasaje> resultDetalleVentasCarga = ServiceLocator.getTranscarWebManager().buscarDetalleVentas(transcarUsuarioPersonal, liquidacionCarga.getAgencia().getId(), fecha, fecha);
 			
 			for(VentaPasaje ventaCarga: resultDetalleVentasCarga) {
 				ventaCarga.setTipoConsulta(1); //Carga
@@ -328,7 +328,7 @@ public class WndRptLiquidacionVentas extends WndBase{
 		//Calcula el efectivo a liquidar
 		Double saldoEfectivo  = .00;
 		if(listDetalleVentas.size()>0) {
-			saldoEfectivo = CreateDocument.creaRptLiquidacionByEgresos(null, listDetalleVentas, resultGasto, lstIngresos, false, false);	
+			saldoEfectivo = CreateDocument.creaRptLiquidacionByEgresos(null, listDetalleVentas, resultGasto, null, lstIngresos, false, false);	
 		}		
 		
 		return saldoEfectivo;
@@ -342,6 +342,7 @@ public class WndRptLiquidacionVentas extends WndBase{
 	private void cargarListaLiquidaciones(List<Liquidacion> liquidaciones, TreeMap<String, Liquidacion> liquidacionesCarga)throws Exception{
 		
 		Double totalSaldoLiquidacion = .00;
+		Integer idAgencia=null;
 		for(Liquidacion liquidacion: liquidaciones) {
 			//Valida liquidacion de carga
 			String key = Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
@@ -349,6 +350,7 @@ public class WndRptLiquidacionVentas extends WndBase{
 			key += liquidacion.getUsuario().getLogin();
 			Liquidacion liquidacionCarga = liquidacionesCarga.get(key);	
 			liquidacion.setLiquidacionCarga(liquidacionCarga);
+			idAgencia = liquidacion.getAgencia().getId();
 			
 			Listitem item = new Listitem();
 			Listcell cell =new Listcell(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()));

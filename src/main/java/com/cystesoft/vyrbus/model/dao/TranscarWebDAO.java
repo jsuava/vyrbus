@@ -18,6 +18,7 @@ import com.cystesoft.vyrbus.model.bean.TranscarRolUsuario;
 import com.cystesoft.vyrbus.model.bean.TranscarUsuarioPersonal;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
+import com.cystesoft.vyrbus.service.mappers.VentasPiloto;
 
 /**
  * @author abant
@@ -147,5 +148,12 @@ public interface TranscarWebDAO {
 	 * @throws Exception
 	 */
 	public void actualizarPasswordUsuarioByLogin(String login, String passwordNew)throws Exception;
+	
+	/*
+	 * Recupera las ventas de Encomiendas para el Registro de Ventas
+	 * @param fechaInicio	: Fecha inicio de busqueda
+	 * @param fechaFin		: Fecha fin de busqueda
+	 */
+	public List<VentasPiloto> buscarRegistroVentas(String fInicio, String fFin) throws Exception;
 
 }

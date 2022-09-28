@@ -1,3 +1,11 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: José Abanto
+ * Fecha		: 16 set. 2022
+ * Hora			: 21:26:38
+ */
 package com.cystesoft.vyrbus.service.excel;
 
 import java.io.ByteArrayOutputStream;
@@ -22,12 +30,18 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
-import com.cystesoft.vyrbus.service.mappers.VentasPiloto;
+import com.cystesoft.vyrbus.model.bean.Manifiesto;
 
+
+/**
+ * @author Marco
+ *
+ */
 @SuppressWarnings({"rawtypes"})
-public class XlsVentasPagoPilotos extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+public class XlsDevolucionIsc extends HttpServlet{
 
+	private static final long serialVersionUID = 1L;
+	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
 		doProcess(request, response);
@@ -35,7 +49,7 @@ public class XlsVentasPagoPilotos extends HttpServlet {
 
 	protected void doProcess(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
 		@SuppressWarnings("unchecked")
-		List<VentasPiloto> lstVentas = (List<VentasPiloto>)request.getSession().getAttribute("lstVentas");
+		List<Manifiesto> lstManifiestos = (List<Manifiesto>)request.getSession().getAttribute("lstManifiestos");
 		String desde = (String)request.getSession().getAttribute("desde");
 		String hasta = (String)request.getSession().getAttribute("hasta");
 		String usuario = (String)request.getSession().getAttribute("usuario");
@@ -44,8 +58,8 @@ public class XlsVentasPagoPilotos extends HttpServlet {
 		String cadenaFecha =fechaEmision.replace('/', '-');
 		cadenaFecha =cadenaFecha.replace(' ', '_');
 		cadenaFecha =cadenaFecha.replace(':', '_');
-		String fileName = "VentasPagoPilotos_"+cadenaFecha+".xls";
-
+		String fileName = "DevolucionISC_"+cadenaFecha+".xls";
+		
         String parcialPath = (String)request.getSession().getAttribute("parcialPath");
         response.setContentType("application/vnd.ms-excel");
         response.setHeader("Content-Disposition", "attachment; filename="+fileName);
@@ -78,82 +92,70 @@ public class XlsVentasPagoPilotos extends HttpServlet {
             //(4, 12) fechaEmision
 			cellh = rowh.createCell((short)12);
 			cellh.setCellValue(new HSSFRichTextString(fechaEmision));
+			
+			String serie;
+			String numero;
 
             int j = 6;
-            int item=0;
-            for (Iterator it = lstVentas.iterator(); it.hasNext();) {
-                VentasPiloto ventaPiloto = (VentasPiloto) it.next();
+            int item = 0;
+            for (Iterator it = lstManifiestos.iterator(); it.hasNext();) {
+                Manifiesto manifiesto = (Manifiesto) it.next();
                 j++;
                 item++;
                 rowh = sheet.createRow((short)j);
                 cellh = rowh.createCell((short)0);
 				cellh.setCellValue(Integer.valueOf(item));
 
-				cellh = rowh.createCell((short)1);
-				cellh.setCellStyle(styleFecha);
-				cellh.setCellValue(ventaPiloto.getFechaCompra());
+                rowh = sheet.createRow((short)j);
+                cellh = rowh.createCell((short)1);
+				cellh.setCellValue(new HSSFRichTextString(manifiesto.getCodigoBus()));
 
 				cellh = rowh.createCell((short)2);
-				cellh.setCellValue(new HSSFRichTextString(ventaPiloto.getNumeroBoleto()));
+				cellh.setCellValue(new HSSFRichTextString(manifiesto.getRuc()));
 
 				cellh = rowh.createCell((short)3);
-				cellh.setCellValue(new HSSFRichTextString(ventaPiloto.getRuc()));
+				cellh.setCellValue(new HSSFRichTextString(manifiesto.getPer4949()));
 
 				cellh = rowh.createCell((short)4);
-				cellh.setCellValue(new HSSFRichTextString(ventaPiloto.getDni()));
-
+				cellh.setCellValue(new HSSFRichTextString(manifiesto.getPeriodo()));
+				
+				serie = manifiesto.getNumeroManifiesto().substring(0, 3);
+				numero = manifiesto.getNumeroManifiesto().substring(4);
+				
 				cellh = rowh.createCell((short)5);
-				cellh.setCellValue(new HSSFRichTextString(ventaPiloto.getNombres()));
+				cellh.setCellValue(new HSSFRichTextString(serie));
 
 				cellh = rowh.createCell((short)6);
-				cellh.setCellStyle(style);
-				cellh.setCellValue(ventaPiloto.getExonerado());
+				cellh.setCellValue(new HSSFRichTextString(numero));
 
 				cellh = rowh.createCell((short)7);
-				cellh.setCellStyle(style);
-				cellh.setCellValue(ventaPiloto.getVenta());
+				cellh.setCellValue(new HSSFRichTextString(manifiesto.getBus().getGrupoMantenimiento().getDenominacion()));
 
 				cellh = rowh.createCell((short)8);
-				cellh.setCellStyle(style);
-				cellh.setCellValue(ventaPiloto.getIgv());
+				cellh.setCellValue(new HSSFRichTextString(manifiesto.getPlaca()));
 
 				cellh = rowh.createCell((short)9);
-				cellh.setCellStyle(style);
-				cellh.setCellValue(ventaPiloto.getTotal());
+				cellh.setCellValue(new HSSFRichTextString(manifiesto.getCertificadoHabilitacion()));
 
 				cellh = rowh.createCell((short)10);
 				cellh.setCellStyle(styleFecha);
-				cellh.setCellValue(ventaPiloto.getFechaSalidaBus());
+				cellh.setCellValue(manifiesto.getItinerario().getFechaPartida());
 
 				cellh = rowh.createCell((short)11);
-				cellh.setCellValue(new HSSFRichTextString(ventaPiloto.getHoraVenta()));
-
+				cellh.setCellValue(new HSSFRichTextString(manifiesto.getPuntoPartidaDepartamento()));
+				
 				cellh = rowh.createCell((short)12);
-				cellh.setCellValue(new HSSFRichTextString(ventaPiloto.getOrigen()));
-
+				cellh.setCellValue(new HSSFRichTextString(manifiesto.getPuntoPartidaDistrito()));
+				
 				cellh = rowh.createCell((short)13);
-				cellh.setCellValue(new HSSFRichTextString(ventaPiloto.getDestino()));
-
+				cellh.setCellValue(new HSSFRichTextString(manifiesto.getPuntoLlegadaDepartamento()));
+				
 				cellh = rowh.createCell((short)14);
-				cellh.setCellValue(new HSSFRichTextString(ventaPiloto.getAsiento()));
+				cellh.setCellValue(new HSSFRichTextString(manifiesto.getPuntoLlegadaDistrito()));
 
 				cellh = rowh.createCell((short)15);
-				cellh.setCellValue(new HSSFRichTextString(ventaPiloto.getTipo()));
-
-				cellh = rowh.createCell((short)16);
-				cellh.setCellValue(new HSSFRichTextString(ventaPiloto.getHoraSalidaBus()));
-
-				cellh = rowh.createCell((short)17);
-				cellh.setCellValue(new HSSFRichTextString(ventaPiloto.getCodigo()));
-
-				cellh = rowh.createCell((short)18);
-				cellh.setCellValue(new HSSFRichTextString(ventaPiloto.getPiloto()));
-
-				cellh = rowh.createCell((short)19);
-				cellh.setCellValue(new HSSFRichTextString(ventaPiloto.getCopiloto()));
-
-				cellh = rowh.createCell((short)20);
-				cellh.setCellValue(new HSSFRichTextString(ventaPiloto.getTripulante()));
+				cellh.setCellStyle(style);
+				cellh.setCellValue(manifiesto.getImporte());
             }
 
             ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
@@ -165,9 +167,11 @@ public class XlsVentasPagoPilotos extends HttpServlet {
 		    outStream.flush();
 
         } catch (Exception e) {
-        	log("EXPORT XLS VENTA PAGO PILOTOS: "+e.toString());
+        	log("EXPORT XLS DEVOLUCION ISC: "+e.toString());
             System.out.println(e.toString());
             e.printStackTrace();
         }
 	}
+
+
 }

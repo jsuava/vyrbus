@@ -18,6 +18,7 @@ import com.cystesoft.vyrbus.model.bean.TranscarRolUsuario;
 import com.cystesoft.vyrbus.model.bean.TranscarUsuarioPersonal;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
+import com.cystesoft.vyrbus.service.mappers.VentasPiloto;
 
 /**
  * @author abant
@@ -147,4 +148,8 @@ public interface TranscarWebManager {
 	 * @throws Exception
 	 */
 	public void actualizarPasswordUsuarioByLogin(String login, String passwordNew)throws Exception;
+	
+	
+	
+	public List<VentasPiloto> buscarRegistroVentas(String fInicio, String fFin) throws Exception;
 }

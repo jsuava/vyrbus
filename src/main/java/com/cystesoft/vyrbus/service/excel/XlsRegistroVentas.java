@@ -1,3 +1,11 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: 
+ * Autor		: José Abanto
+ * Fecha		: 16 set. 2022
+ * Hora			: 15:22:46
+ */
 package com.cystesoft.vyrbus.service.excel;
 
 import java.io.ByteArrayOutputStream;
@@ -24,10 +32,15 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
 import com.cystesoft.vyrbus.service.mappers.VentasPiloto;
 
+/**
+ * @author Marco
+ *
+ */
 @SuppressWarnings({"rawtypes"})
-public class XlsVentasPagoPilotos extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+public class XlsRegistroVentas extends HttpServlet {
 
+	private static final long serialVersionUID = 1L;
+	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
 		doProcess(request, response);
@@ -36,16 +49,18 @@ public class XlsVentasPagoPilotos extends HttpServlet {
 	protected void doProcess(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
 		@SuppressWarnings("unchecked")
 		List<VentasPiloto> lstVentas = (List<VentasPiloto>)request.getSession().getAttribute("lstVentas");
+		String empresa = (String)request.getSession().getAttribute("empresa");
+		String ruc = (String)request.getSession().getAttribute("ruc");
 		String desde = (String)request.getSession().getAttribute("desde");
 		String hasta = (String)request.getSession().getAttribute("hasta");
-		String usuario = (String)request.getSession().getAttribute("usuario");
+		String rubro = (String)request.getSession().getAttribute("rubro");
 		String fechaEmision = (String)request.getSession().getAttribute("fechaEmision");
 		//16/09/2022 22:42:09
 		String cadenaFecha =fechaEmision.replace('/', '-');
 		cadenaFecha =cadenaFecha.replace(' ', '_');
 		cadenaFecha =cadenaFecha.replace(':', '_');
-		String fileName = "VentasPagoPilotos_"+cadenaFecha+".xls";
-
+		String fileName = "RegistroVentas_"+cadenaFecha+".xls";
+		
         String parcialPath = (String)request.getSession().getAttribute("parcialPath");
         response.setContentType("application/vnd.ms-excel");
         response.setHeader("Content-Disposition", "attachment; filename="+fileName);
@@ -64,96 +79,69 @@ public class XlsVentasPagoPilotos extends HttpServlet {
             styleFecha.setDataFormat(format.getFormat("dd/MM/yyyy"));
             
             //Escribir cabecera
-            //(3, 4) desde
+            //(3, 2) ruc
             rowh = sheet.createRow((short)3);
-			cellh = rowh.createCell((short)4);
-			cellh.setCellValue(new HSSFRichTextString(desde));
-            //(3, 12) usuario
-			cellh = rowh.createCell((short)12);
-			cellh.setCellValue(new HSSFRichTextString(usuario));
-            //(4, 4) hasta
+			cellh = rowh.createCell((short)2);
+			cellh.setCellValue(new HSSFRichTextString(ruc));
+            //(3, 7) empresa
+			cellh = rowh.createCell((short)7);
+			cellh.setCellValue(new HSSFRichTextString(empresa));
+            //(4, 2) desde
 			rowh = sheet.createRow((short)4);
-			cellh = rowh.createCell((short)4);
+			cellh = rowh.createCell((short)2);
+			cellh.setCellValue(new HSSFRichTextString(desde));
+            //(4, 7) hasta
+			cellh = rowh.createCell((short)7);
 			cellh.setCellValue(new HSSFRichTextString(hasta));
-            //(4, 12) fechaEmision
-			cellh = rowh.createCell((short)12);
-			cellh.setCellValue(new HSSFRichTextString(fechaEmision));
+            //(4, 10) rubro
+			cellh = rowh.createCell((short)10);
+			cellh.setCellValue(new HSSFRichTextString(rubro));
 
             int j = 6;
-            int item=0;
             for (Iterator it = lstVentas.iterator(); it.hasNext();) {
-                VentasPiloto ventaPiloto = (VentasPiloto) it.next();
+                VentasPiloto regVenta = (VentasPiloto) it.next();
                 j++;
-                item++;
                 rowh = sheet.createRow((short)j);
                 cellh = rowh.createCell((short)0);
-				cellh.setCellValue(Integer.valueOf(item));
+                cellh.setCellStyle(styleFecha);
+				cellh.setCellValue(regVenta.getFechaCompra());
 
 				cellh = rowh.createCell((short)1);
-				cellh.setCellStyle(styleFecha);
-				cellh.setCellValue(ventaPiloto.getFechaCompra());
+				cellh.setCellValue(new HSSFRichTextString(regVenta.getTipoDocumentoSunat()));
 
 				cellh = rowh.createCell((short)2);
-				cellh.setCellValue(new HSSFRichTextString(ventaPiloto.getNumeroBoleto()));
+				cellh.setCellValue(new HSSFRichTextString(regVenta.getSerie()));
 
 				cellh = rowh.createCell((short)3);
-				cellh.setCellValue(new HSSFRichTextString(ventaPiloto.getRuc()));
+				cellh.setCellValue(new HSSFRichTextString(regVenta.getNumero()));
 
 				cellh = rowh.createCell((short)4);
-				cellh.setCellValue(new HSSFRichTextString(ventaPiloto.getDni()));
+				cellh.setCellValue(new HSSFRichTextString(regVenta.getDni()));
 
 				cellh = rowh.createCell((short)5);
-				cellh.setCellValue(new HSSFRichTextString(ventaPiloto.getNombres()));
+				cellh.setCellValue(new HSSFRichTextString(regVenta.getNombres()));
 
 				cellh = rowh.createCell((short)6);
 				cellh.setCellStyle(style);
-				cellh.setCellValue(ventaPiloto.getExonerado());
+				cellh.setCellValue(regVenta.getExonerado());
 
 				cellh = rowh.createCell((short)7);
 				cellh.setCellStyle(style);
-				cellh.setCellValue(ventaPiloto.getVenta());
+				cellh.setCellValue(regVenta.getVenta());
 
 				cellh = rowh.createCell((short)8);
 				cellh.setCellStyle(style);
-				cellh.setCellValue(ventaPiloto.getIgv());
+				cellh.setCellValue(regVenta.getIgv());
 
 				cellh = rowh.createCell((short)9);
 				cellh.setCellStyle(style);
-				cellh.setCellValue(ventaPiloto.getTotal());
+				cellh.setCellValue(regVenta.getTotal());
 
 				cellh = rowh.createCell((short)10);
-				cellh.setCellStyle(styleFecha);
-				cellh.setCellValue(ventaPiloto.getFechaSalidaBus());
+				cellh.setCellValue(new HSSFRichTextString(regVenta.getDestino()));
 
 				cellh = rowh.createCell((short)11);
-				cellh.setCellValue(new HSSFRichTextString(ventaPiloto.getHoraVenta()));
-
-				cellh = rowh.createCell((short)12);
-				cellh.setCellValue(new HSSFRichTextString(ventaPiloto.getOrigen()));
-
-				cellh = rowh.createCell((short)13);
-				cellh.setCellValue(new HSSFRichTextString(ventaPiloto.getDestino()));
-
-				cellh = rowh.createCell((short)14);
-				cellh.setCellValue(new HSSFRichTextString(ventaPiloto.getAsiento()));
-
-				cellh = rowh.createCell((short)15);
-				cellh.setCellValue(new HSSFRichTextString(ventaPiloto.getTipo()));
-
-				cellh = rowh.createCell((short)16);
-				cellh.setCellValue(new HSSFRichTextString(ventaPiloto.getHoraSalidaBus()));
-
-				cellh = rowh.createCell((short)17);
-				cellh.setCellValue(new HSSFRichTextString(ventaPiloto.getCodigo()));
-
-				cellh = rowh.createCell((short)18);
-				cellh.setCellValue(new HSSFRichTextString(ventaPiloto.getPiloto()));
-
-				cellh = rowh.createCell((short)19);
-				cellh.setCellValue(new HSSFRichTextString(ventaPiloto.getCopiloto()));
-
-				cellh = rowh.createCell((short)20);
-				cellh.setCellValue(new HSSFRichTextString(ventaPiloto.getTripulante()));
+				cellh.setCellValue(new HSSFRichTextString(regVenta.getAsiento()));
             }
 
             ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
@@ -165,9 +153,10 @@ public class XlsVentasPagoPilotos extends HttpServlet {
 		    outStream.flush();
 
         } catch (Exception e) {
-        	log("EXPORT XLS VENTA PAGO PILOTOS: "+e.toString());
+        	log("EXPORT XLS REGISTRO DE VENTAS: "+e.toString());
             System.out.println(e.toString());
             e.printStackTrace();
         }
 	}
+
 }

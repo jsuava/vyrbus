@@ -37,7 +37,7 @@ public class MEFEService extends Service {
 			url = new URL(baseUrl, "http://119.8.148.239:8085/MEFEService.svc?wsdl");
 		} catch (MalformedURLException e) {
 			logger.warning(
-					"Failed to create URL for the wsdl Location: 'http://119.8.148.239:8085/MEFEService.svc?wsdl', retrying as a local file");
+					"Failed to create URL for the wsdl Location: 'http://192.168.0.211:8085/MEFEService.svc?wsdl', retrying as a local file");
 			logger.warning(e.getMessage());
 		}
 		MEFESERVICE_WSDL_LOCATION = url;

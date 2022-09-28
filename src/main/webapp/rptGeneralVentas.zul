@@ -18,7 +18,7 @@
  								<column width="70px" align="right" />
 								<column width="120px" align="left" />
 								<column width="70px" align="right" />
-								<column width="130px" align="left" />
+								<column width="130px" align="right" />
 								<column width="70px" align="right" />
 								<column width="120px" align="left" />
 								<column width="100px" align="right" />								
@@ -50,9 +50,9 @@
 											width="110px"   />
 									<label value="Fecha :" sclass="label-size11-bold"/>
 									<label id="lblFechaConsulta" value="23/05/2021" style="font-size:12px !important" />
-									<label id="lblHoraConsulta" value="10:25 a.m." style="font-size:12px !important"/>
+									<label id="lblHoraConsulta" value="10:25 a.m." style="font-size:12px !important" visible="false"/>
 								</row>
-								<row spans="4, 2, 1,1">
+								<row spans="2, 4, 1, 1">
 <!--								<hbox>
   									<separator/> -->											
 									<radiogroup>
@@ -67,14 +67,31 @@
 											style="font-size:12px !important" />
 									</radiogroup>
 <!--  								</hbox>  -->
-									
+									<hbox>
 									<button id="btnBuscar"  
 										autodisable="self"
 										image="/resources/mp_buscarEnabled.png" 
 										label="Buscar" 
 										onClick="wndRptGeneralVentas.buscar()" 
 										sclass="btnCommandM" 
-										 />									
+										 />	
+									<button id="btnExportar" 
+											label="Exportar" 
+											sclass="btnCommandM" 
+											autodisable="self" 
+											style="margin-left:10px" 
+											image="/resources/mp_excel.png" 
+											onClick="wndRptGeneralVentas.onClick_btnExportar()" />
+									<button id="btnActualizar" 
+											label="Act. Enc." 
+											sclass="btnCommandL" 
+											autodisable="self" 
+											style="margin-left:10px"
+											tooltiptext="Actualiza las ventas de Encomiendas de acuerdo a las fechas." 
+											image="/resources/mp_recargar16.png" 
+											onClick="wndRptGeneralVentas.onClick_btnExportar()" 
+											visible="false"/>											
+									</hbox>								
 									<label value="Usuario :" sclass="label-size11-bold" />
 									<label id="lblUsuarioConsulta" value="moscco" style="font-size:12px !important"/>								
 
@@ -95,7 +112,7 @@
 							<tabpanel>
 								<listbox id="lsbxVentas" height="320px"  class="z-listbox-header-bg"  mold="paging" pageSize="12">
 									<listhead class="z-listbox-header-bg" sizable="true">
-										<listheader label="OFICINA " id="lstheaOficina" sort="auto" align="left" width="200px" style="color: #ffffff;"/>
+										<listheader label="OFICINA " id="lstheaOficina" sort="auto" align="left" width="120px" style="color: #ffffff;"/>
 										<listheader label="FECHA" id="lstheaFecha" width="80px" sort="auto" style="color: #ffffff;"/>
 										<listheader label="BOLETAS" align="right" width="80px" style="color: #ffffff;"/>
 							 			<listheader label="CANT." align="right" width="60px" style="color: #ffffff;"/>

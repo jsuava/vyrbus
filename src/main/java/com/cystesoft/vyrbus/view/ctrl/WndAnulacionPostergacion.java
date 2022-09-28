@@ -363,6 +363,9 @@ public class WndAnulacionPostergacion extends WndBase {
 
 			cell = new Listcell(Constantes.FORMAT_DATE.format(ventaPasaje.getFechaLiquidacion()));
 			item.appendChild(cell);
+			
+			cell = new Listcell(rdgCriterios.getSelectedIndex()==0 ?Constantes.FORMAT_DATE_TIME_24H.format(ventaPasaje.getFechaModificacion()) : "");
+			item.appendChild(cell);
 
 			cell = new Listcell(ventaPasaje.getAgencia().getNombreCorto());
 			item.appendChild(cell);

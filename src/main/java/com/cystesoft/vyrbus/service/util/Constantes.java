@@ -461,8 +461,8 @@ public class Constantes {
 	/* Constantes que refiren el tipo de gasto*/
 	public static final int ID_TIPGAS_GASTOS_VARIOS=1;
 	public static final int ID_TIPGAS_PEAJES=2;
-	public static final int ID_TIPGAS_PAGO_GIROS=3;
-	public static final int ID_TIPGAS_CONDOCUMENTO=4;
+	public static final int ID_TIPGAS_PAGO_GIROS=3;  		//CAMBIO A PAGO DE COMISIONES A COMISIONISTA
+	public static final int ID_TIPGAS_CONDOCUMENTO=4;		//CAMBIO A PAGO CON YAPE
 	public static final int ID_TIPGAS_CTACTE=7;
 
 	/* Constantes que se refieren a las agencias	*/

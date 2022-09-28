@@ -11,6 +11,9 @@ package com.cystesoft.vyrbus.service.mappers;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.cystesoft.vyrbus.model.bean.TipoComprobante;
+import com.cystesoft.vyrbus.model.bean.TipoMovimiento;
+
 /**
  * @author Jose
  *
@@ -37,6 +40,46 @@ public class VentasPiloto implements Serializable {
 	private String piloto;
 	private String copiloto;
 	private String tripulante;
+	
+	//Se reutiliza este objeto para el registro de ventas y se agregan estos campos
+	private String tipoDocumentoSunat;
+	private String serie;
+	private String numero;
+	private TipoComprobante tipoComprobante;
+	private TipoMovimiento tipoMovimiento;
+	
+	
+	public String getTipoDocumentoSunat() {
+		return tipoDocumentoSunat;
+	}
+	public void setTipoDocumentoSunat(String tipoDocumentoSunat) {
+		this.tipoDocumentoSunat = tipoDocumentoSunat;
+	}
+	public String getSerie() {
+		return serie;
+	}
+	public void setSerie(String serie) {
+		this.serie = serie;
+	}
+	public String getNumero() {
+		return numero;
+	}
+	public void setNumero(String numero) {
+		this.numero = numero;
+	}
+	
+	public TipoComprobante getTipoComprobante() {
+		return tipoComprobante;
+	}
+	public void setTipoComprobante(TipoComprobante tipoComprobante) {
+		this.tipoComprobante = tipoComprobante;
+	}
+	public TipoMovimiento getTipoMovimiento() {
+		return tipoMovimiento;
+	}
+	public void setTipoMovimiento(TipoMovimiento tipoMovimiento) {
+		this.tipoMovimiento = tipoMovimiento;
+	}
 	/**
 	 * @return the fechaCompra
 	 */
