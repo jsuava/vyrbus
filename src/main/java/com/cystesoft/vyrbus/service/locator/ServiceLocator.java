@@ -389,6 +389,14 @@ public class ServiceLocator {
 	}
 
 	/**
+	 * Obtiene el bean de VentaPasajesHistorialManager, para realizar la comunicacion con la capa del modelo.
+	 * @return <b>VentaPasajesHistorialManager</b>
+	 */
+	public static VentaPasajesHistorialManager getVentaPasajesHistorialManager(){
+		return (VentaPasajesHistorialManager) SpringUtil.getBean("ventaPasajesHistorialManager", VentaPasajesHistorialManager.class);
+	}
+	
+	/**
 	 * Obtiene el bean de VentaPasajes, para realizar la comunicacion con la capa del modelo.
 	 * @return <b>VentaPasajesManager</b>
 	 */

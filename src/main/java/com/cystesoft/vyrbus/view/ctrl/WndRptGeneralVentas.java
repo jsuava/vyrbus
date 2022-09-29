@@ -726,17 +726,8 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 				resumenVentas.setAgencia(agencia);
 				
 //				Cambiar el tipo de comprobante de GRT de encomiendas por el utilizado en pasajes
-				TipoComprobante tipoComprobante = resumenVentas.getTipoComprobante();
-				if (resumenVentas.getTipoComprobante().getId() == IDTIPO_BOLETA_ENCOMIENDA) { 
-					tipoComprobante.setId(Constantes.ID_TIPCOM_BOLETA_VENTA);
-					resumenVentas.setTipoComprobante(tipoComprobante);
-				} else if(resumenVentas.getTipoComprobante().getId() == IDTIPO_FACTURA_ENCOMIENDA) {
-					tipoComprobante.setId(Constantes.ID_TIPCOM_FACTURA);
-					resumenVentas.setTipoComprobante(tipoComprobante);
-				} else if(resumenVentas.getTipoComprobante().getId() == IDTIPO_GRT_ENCOMIENDA) {
-					tipoComprobante.setId(Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA);
-					resumenVentas.setTipoComprobante(tipoComprobante);
-				}
+//				Ahora se trae en la consulta desde el PostgreSQl
+
 				lstEncomiendasCambiadas.add(resumenVentas);
 			}
 			

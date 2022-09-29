@@ -914,6 +914,15 @@ public class WndPostergacion extends WndBase implements Serializable {
 				chkCambioDireccionFiscal.setDisabled(disabledOpFacturas);
 				chkCambioFacturaBoleta.setDisabled(disabledOpFacturas);
 				chkCambioBoletaFactura.setDisabled(!disabledOpFacturas);
+				
+				Date fechaActua = Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date()));
+				if(fechaActua.getTime() > venta.getFechaPartida().getTime()) {
+					chkCambioRuc.setDisabled(true);
+					chkCambioRazonSocial.setDisabled(true);
+					chkCambioDireccionFiscal.setDisabled(true);
+					chkCambioFacturaBoleta.setDisabled(true);
+					chkCambioBoletaFactura.setDisabled(true);
+				}
 			}
 		}catch(PostergacionByTipoMovimientoNoPermitidoException ptmnpex){
 			if(ptmnpex.getTipoMovimiento().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA)
@@ -1641,14 +1650,20 @@ public class WndPostergacion extends WndBase implements Serializable {
 							/*##Begin 04/11/2016 - jabanto*/
 							VentaPasaje notaCredito = ServiceLocator.getVentaPasajesManager().postergarBoleto(postergacion,validaBloqueAsiento, gastoAdmin);
 							postergacion = ServiceLocator.getVentaPasajesManager().buscarVentaById(postergacion.getId());
+							
 							List<VentaPasaje>listVentaPasaje= new ArrayList<>();
-							/*Realiza el envio de la nota de credito y el nuevo comprobante*/
-							listVentaPasaje.add(postergacion);
+							
+							//Valida si debe o no enviar el comprobante a FE
+							if(postergacion.getFechaEnvioSFE()==null && (postergacion.getEnviadoSFE()==null || postergacion.getEnviadoSFE().equals(0)))
+								listVentaPasaje.add(postergacion);																						
+							
 							if(gastoAdmin!=null)
 								listVentaPasaje.add(gastoAdmin);
-
-							//Comentado temporalmente por MAOE
-							WSFE.sendVenta(listVentaPasaje, wndPostergacion, true, notaCredito);
+							
+							if(listVentaPasaje.size()>0)
+								WSFE.sendVenta(listVentaPasaje, wndPostergacion, true, notaCredito);
+							
+							
 							/*Realiza el envio del gasto administrativo*/
 
 							//End begin 04/11/2016 - jabanto
@@ -2415,8 +2430,16 @@ public class WndPostergacion extends WndBase implements Serializable {
 
 //		dblbxTarifa.setValue(detalleItinerario.getTarifa()<postergacion.getTarifa()?dblbxMontoAnterior.getValue():detalleItinerario.getTarifa());
 
-		//Calculando el saldo
-		dblbxSaldo.setValue(dblbxTarifa.getValue()-dblbxMontoAnterior.getValue()-dblbxDescuento.getValue());
+		
+		Double saldo = (dblbxTarifa.getValue()-dblbxMontoAnterior.getValue()-dblbxDescuento.getValue());
+		
+		//iguala a la tarifa si el monto pagado por el cliente es mayor a la tarifa actual - jabanto - 26/09/2022
+		if(saldo < 0 ) {
+			dblbxTarifa.setValue(dblbxMontoAnterior.getValue());
+			dblbxSaldo.setValue(.00);
+		}else
+			dblbxSaldo.setValue(saldo);
+		
 //		if(dblbxSaldo.getValue()<0)
 //			dblbxSaldo.setValue(0.00);
 

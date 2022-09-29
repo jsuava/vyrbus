@@ -340,6 +340,10 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		/*jabanto - 21/04/2022*/
 		tlbbtnGuardarPax.setVisible(false);
 		tlbbtnGuardarClient.setVisible(false);
+		
+		lblImporte.setVisible(false);
+		dblImporte.setVisible(false);
+		
 	}
 
 	/*
@@ -805,16 +809,26 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 
 		dblPagado.setValue(getObjetoConfirmar().getTarifa() + getObjetoConfirmar().getRecargo() - getObjetoConfirmar().getDescuento());
 //		dblImporte.setValue(dblTarifa.getValue() - dblDescuento.getValue() - dblPagado.getValue() + dblRecargo.getValue());
+		
+		//No recupera el descuento cuando es una confirmacion de fecha abierta
+		if(getObjetoConfirmar().getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA))
+			dblDescuento.setValue(.00);
+		
 		double saldo= dblTarifa.getValue() - dblDescuento.getValue() - dblPagado.getValue() + dblRecargo.getValue();
 
 		lblImporte.setValue(LABEL_IMPPAG_TO_TEPSA);
-		if(saldo>=0)
+		if(saldo>=0) {
 			dblImporte.setValue(saldo+dblRecargo.getValue());
-		else{
+			lblImporte.setVisible(true);
+			dblImporte.setVisible(true);
+		}else{
 			saldo=(saldo*-1); /*Lo convierte en un valor positivo*/
 			dblImporte.setValue(saldo+dblRecargo.getValue());
 			lblImporte.setValue(LABEL_IMPPAG_TO_PASAJERO);
 		}
+		
+		lblImporte.setVisible(lblImporte.getValue().equals(LABEL_IMPPAG_TO_TEPSA));
+		dblImporte.setVisible(lblImporte.getValue().equals(LABEL_IMPPAG_TO_TEPSA));
 
 		dblImporteEfectivo.setValue(0.0);
 		dblImporteTarjeta.setValue(0.0);
@@ -2784,7 +2798,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		try {
 
 			ventaPasaje = new VentaPasaje();
-
+			
 			if (detailItinerary == null)
 				throw new ItinerarioException(ItinerarioException.NO_SELECT);// ItinerarioNotSelectedException();
 			else if (!(cmbPtoEmbarque.getSelectedItem().getValue() instanceof ItinerarioAgenciaPartida))
@@ -2972,10 +2986,18 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			Date dateCaducidad=Constantes.FORMAT_LONG.parse(fechaCaducidad);
 			ventaPasaje.setFechaCaducidad(dateCaducidad);
 
-			if(lblImporte.getValue().equals(LABEL_IMPPAG_TO_TEPSA)){//Si el importe es a favor de tepsa
+			if(lblImporte.getValue().equals(LABEL_IMPPAG_TO_TEPSA) && dblImporte.getValue()!=null && dblImporte.getValue()>.00){//Si el importe es a favor de tepsa
 				ventaPasaje.setImportePagado(dblImporte.getValue()+dblPagado.getValue());
-			}else{
-				ventaPasaje.setImportePagado(dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue());
+			} else{
+				//Para no emitir un nuevo comprobante
+				if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_CONFIRMACION_FA) {
+					ventaPasaje.setId(getObjetoConfirmar().getId());
+					ventaPasaje.setTarifa(getObjetoConfirmar().getTarifa());
+					ventaPasaje.setDescuento(getObjetoConfirmar().getDescuento());
+					ventaPasaje.setImportePagado(getObjetoConfirmar().getImportePagado());	
+					ventaPasaje.setFormaPago(getObjetoConfirmar().getFormaPago());
+				}else					
+					ventaPasaje.setImportePagado(dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue());				
 			}
 
 //			ventaPasaje.setImportePagado(dblImporte.getValue()+dblPagado.getValue());
@@ -3018,7 +3040,13 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			ventaPasaje.setUsuarioHardware(getUsuarioHardware());
 			/*END 16/06/2021 - javalos - Correlativo by caja*/
 
-			UtilData.auditarRegistro(ventaPasaje, false, usuario, Executions.getCurrent());
+			final boolean isNewComprobante = (ventaPasaje.getId()==null);
+			
+			if(isNewComprobante)
+				UtilData.auditarRegistro(ventaPasaje, false, usuario, Executions.getCurrent());
+			else
+				UtilData.auditarRegistro(ventaPasaje, true, usuario, Executions.getCurrent());
+			
 			ventaPasaje.setUsuarioHardware(new UsuarioHardware(usuhar));
 
 			Messagebox.show(Messages.getString("WndVentaReserva.information.confirmacionGuardarVenta"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
@@ -3037,7 +3065,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 								}else{
 									//Confirmacion de F.A.
 									TipoNota tipoNotaCredito=null;
-									tipoNotaCredito=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CREDITO_DIFERENCIA_TARIFA_FA);
+//									tipoNotaCredito=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CREDITO_DIFERENCIA_TARIFA_FA);
 
 
 									/*Realiza la busqueda del tipo de nota de credito, por concepto de diferencia en tarifa*/
@@ -3052,63 +3080,66 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 								}
 //								ventaPasaje.setImportePagadoTarjeta(0.00);
 //								if (dblTarifa.getValue() - (dblPagado.getValue()+dblDescuento.getValue()) > 0.0) {
-								if (ventaPasaje.getImportePagado() > 0.00 || ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA
-																 || ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO) {
-									if (ventaPasaje.getTipoComprobante().getId().intValue() != Constantes.ID_TIPCOM_RECIBO_CAJA) {
-										Servicio servicio=ServiceLocator.getServicioManager().buscarPorId(ventaPasaje.getServicio().getId().longValue());
-										ventaPasaje.setServicio(servicio);
-										ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarPorId(ventaPasaje.getId());
-
-										/*Begin 25/10/2016 - jabanto*/
-										List<VentaPasaje>listVentaPasaje= new ArrayList<>();
-										listVentaPasaje.add(ventaPasaje);
-										WSFE.sendVenta(listVentaPasaje, wndConfirmacion, true, notaCredito);
-
-
+								if(isNewComprobante) {
+									if (ventaPasaje.getImportePagado() > 0.00 || ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA
+																	 || ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO) {
+										if (ventaPasaje.getTipoComprobante().getId().intValue() != Constantes.ID_TIPCOM_RECIBO_CAJA) {
+											Servicio servicio=ServiceLocator.getServicioManager().buscarPorId(ventaPasaje.getServicio().getId().longValue());
+											ventaPasaje.setServicio(servicio);
+											ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarPorId(ventaPasaje.getId());
+						
+											/*Begin 25/10/2016 - jabanto*/
+											List<VentaPasaje>listVentaPasaje= new ArrayList<>();
+											listVentaPasaje.add(ventaPasaje);
+											WSFE.sendVenta(listVentaPasaje, wndConfirmacion, true, notaCredito);
+						
+						
+											/*###End begin 25/10/2016 - jabanto*/
+						//					/*Implementacion para el nuevo formato 01/02/2016 - jabanto */
+						//					boolean formato=UtilData.getFormatoImprecion(getAgencia().getId(), getTipocomprobante().getId(), getUsuarioHardware().getId());
+						//					File file= CreateDocument.crearBoleto(ventaPasaje,formato);
+						//
+						//					if(getUsuarioHardware().getPrintApplet().intValue()==Constantes.TRUE_VALUE){
+						////						String fileBoleto = Constantes.URL_FORMATOS_BOLETOS+ ventaPasaje.getNumeroControl()+ ".txt";
+						//						String fileBoleto = Constantes.URL_FORMATOS_BOLETOS+Constantes.CLAVE_PAHT+ ventaPasaje.getNumeroControl()+ ".txt";
+						//						Window win = (Window) Executions.createComponents("imprimir.zul",null, null);
+						//						win.setAttribute("formato",WndImprimir.FORMAT_BOLETO);
+						//						win.setAttribute("msg", "Imprimiendo boleto de viaje "+ventaPasaje.getNumeroBoleto()+"...");
+						//						win.setAttribute("urlDocumento",fileBoleto);
+						//						win.doPopup();
+						//					}else{
+						//						//Descarga el archivo para la impresion
+						//						Util.descargarArchivo(file);
+						//					}
+						//
+										}
 										/*###End begin 25/10/2016 - jabanto*/
-//										/*Implementacion para el nuevo formato 01/02/2016 - jabanto */
-//										boolean formato=UtilData.getFormatoImprecion(getAgencia().getId(), getTipocomprobante().getId(), getUsuarioHardware().getId());
-//										File file= CreateDocument.crearBoleto(ventaPasaje,formato);
-//
-//										if(getUsuarioHardware().getPrintApplet().intValue()==Constantes.TRUE_VALUE){
-////											String fileBoleto = Constantes.URL_FORMATOS_BOLETOS+ ventaPasaje.getNumeroControl()+ ".txt";
-//											String fileBoleto = Constantes.URL_FORMATOS_BOLETOS+Constantes.CLAVE_PAHT+ ventaPasaje.getNumeroControl()+ ".txt";
-//											Window win = (Window) Executions.createComponents("imprimir.zul",null, null);
-//											win.setAttribute("formato",WndImprimir.FORMAT_BOLETO);
-//											win.setAttribute("msg", "Imprimiendo boleto de viaje "+ventaPasaje.getNumeroBoleto()+"...");
-//											win.setAttribute("urlDocumento",fileBoleto);
-//											win.doPopup();
-//										}else{
-//											//Descarga el archivo para la impresion
-//											Util.descargarArchivo(file);
-//										}
-//
+						//				else{
+						//					File file=CreateDocument.crearRecibCaja(ventaPasaje);
+						////					String fileRC = Constantes.URL_FORMATOS_RECIBO_CAJA+ventaPasaje.getNumeroControl()+".txt";
+						//					if(getUsuarioHardware().getPrintApplet().intValue()==Constantes.TRUE_VALUE){
+						//						String fileRC = Constantes.URL_FORMATOS_RECIBO_CAJA+Constantes.CLAVE_PAHT+ventaPasaje.getNumeroControl()+".txt";
+						//						Window win = (Window)Executions.createComponents("imprimir.zul", null, null);
+						//						win.setAttribute("formato", WndImprimir.FORMAT_RECIBO_CAJA);
+						//						win.setAttribute("msg", "Imprimiendo el Recibo de Caja "+ ventaPasaje.getNumeroBoleto()+"... ");
+						//						win.setAttribute("urlDocumento", fileRC);
+						////						if(lbxAsientos.getItems().size() == 1 && !cmbTipoOperacion.getSelectedItem().getValue().toString().equals(Constantes.TIPO_OPERACION_RESERVA)){
+						////							win.setAttribute("showCalculator", true);
+						////							win.setAttribute("detalleCalculadora", lstDetalleCalculadora.clone());
+						////						}else
+						////							win.setAttribute("showCalculator", false);
+						//						String msg = "La venta se registro correctamente, Número de Control : "+ventaPasaje.getNumeroControl();
+						//						win.setAttribute("numeroControl", msg);
+						//						win.doPopup();
+						//					}else{
+						//						/*Nueva implementacion- 20/12/2015*/
+						//						Util.descargarArchivo(file);
+						//						/* **********************************************/
+						//					}
+						//				}
 									}
-									/*###End begin 25/10/2016 - jabanto*/
-//									else{
-//										File file=CreateDocument.crearRecibCaja(ventaPasaje);
-////										String fileRC = Constantes.URL_FORMATOS_RECIBO_CAJA+ventaPasaje.getNumeroControl()+".txt";
-//										if(getUsuarioHardware().getPrintApplet().intValue()==Constantes.TRUE_VALUE){
-//											String fileRC = Constantes.URL_FORMATOS_RECIBO_CAJA+Constantes.CLAVE_PAHT+ventaPasaje.getNumeroControl()+".txt";
-//											Window win = (Window)Executions.createComponents("imprimir.zul", null, null);
-//											win.setAttribute("formato", WndImprimir.FORMAT_RECIBO_CAJA);
-//											win.setAttribute("msg", "Imprimiendo el Recibo de Caja "+ ventaPasaje.getNumeroBoleto()+"... ");
-//											win.setAttribute("urlDocumento", fileRC);
-////											if(lbxAsientos.getItems().size() == 1 && !cmbTipoOperacion.getSelectedItem().getValue().toString().equals(Constantes.TIPO_OPERACION_RESERVA)){
-////												win.setAttribute("showCalculator", true);
-////												win.setAttribute("detalleCalculadora", lstDetalleCalculadora.clone());
-////											}else
-////												win.setAttribute("showCalculator", false);
-//											String msg = "La venta se registro correctamente, Número de Control : "+ventaPasaje.getNumeroControl();
-//											win.setAttribute("numeroControl", msg);
-//											win.doPopup();
-//										}else{
-//											/*Nueva implementacion- 20/12/2015*/
-//											Util.descargarArchivo(file);
-//											/* **********************************************/
-//										}
-//									}
 								}
+								
 
 								/* Resta el saldo de LC del Cliente */
 								if (((FormaPago) cmbFormaPago.getSelectedItem().getValue()).getId().equals(Constantes.ID_FORPAG_CREDITO))
@@ -3577,9 +3608,13 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 					lblPromocion.setValue("Promoción : "+promocionTarifa.getDenominacion());
 				}
 
-				double saldo = dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue()-dblPagado.getValue();
-
-				lblImporte.setValue(LABEL_IMPPAG_TO_TEPSA);
+				//No recupera el descuento cuando es una confirmacion de fecha abierta
+				if(getObjetoConfirmar().getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA))
+					dblDescuento.setValue(.00);
+					
+				double saldo = dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue()-dblPagado.getValue();				
+				
+				lblImporte.setValue(LABEL_IMPPAG_TO_TEPSA);				
 				if(saldo>=0)
 					dblImporte.setValue(saldo+dblRecargo.getValue());
 				else{
@@ -3588,6 +3623,9 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 					lblImporte.setValue(LABEL_IMPPAG_TO_PASAJERO);
 				}
 
+				lblImporte.setVisible(lblImporte.getValue().equals(LABEL_IMPPAG_TO_TEPSA));
+				dblImporte.setVisible(lblImporte.getValue().equals(LABEL_IMPPAG_TO_TEPSA));
+				
 //				dblImporte.setValue(saldo<0.0?0.0:saldo);
 			}else{
 				double saldo = dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue()-dblPagado.getValue();
