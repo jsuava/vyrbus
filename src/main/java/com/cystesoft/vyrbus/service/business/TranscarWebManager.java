@@ -18,6 +18,7 @@ import com.cystesoft.vyrbus.model.bean.TranscarRolUsuario;
 import com.cystesoft.vyrbus.model.bean.TranscarUsuarioPersonal;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
+import com.cystesoft.vyrbus.service.mappers.ResumenVentas;
 import com.cystesoft.vyrbus.service.mappers.VentasPiloto;
 
 /**
@@ -152,4 +153,14 @@ public interface TranscarWebManager {
 	
 	
 	public List<VentasPiloto> buscarRegistroVentas(String fInicio, String fFin) throws Exception;
+	
+	/**
+	 * Busca los boletos postergados por Usuario o Agencia
+	 * @param fechaDesde	: Fecha de inicio de busqueda
+	 * @param fechaHasta	: Fecha fin de la busqueda
+	 * @return
+	 */
+	public List<ResumenVentas> buscarResumenVentas(String fechaDesde, String fechaHasta);
+	
+	
 }

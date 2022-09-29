@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 import org.hibernate.SQLQuery;
@@ -21,6 +22,7 @@ import com.cystesoft.vyrbus.model.bean.CanalVenta;
 import com.cystesoft.vyrbus.model.bean.CentroCosto;
 import com.cystesoft.vyrbus.model.bean.Cliente;
 import com.cystesoft.vyrbus.model.bean.Concesionario;
+import com.cystesoft.vyrbus.model.bean.EntidadEncomiendaPasajes;
 import com.cystesoft.vyrbus.model.bean.EstadoCivil;
 import com.cystesoft.vyrbus.model.bean.FormaPago;
 import com.cystesoft.vyrbus.model.bean.Itinerario;
@@ -4076,7 +4078,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 
 		List<?> result = getSession().createSQLQuery(sql).list();
 
-		List<Manifiesto> listMAnifiestos = new ArrayList<>();
+		List<Manifiesto> listManifiestos = new ArrayList<>();
 		for(int i = 0; i<result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
 
@@ -4098,10 +4100,46 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			manifiesto.setImporte(((BigDecimal)obj[5]).doubleValue());
 			manifiesto.setCantidadPasajeros(((BigDecimal)obj[8]).intValue());
 			
-			listMAnifiestos.add(manifiesto);
+			listManifiestos.add(manifiesto);
 		}
 
-		return listMAnifiestos;
+		return listManifiestos;
+	}
+	
+	@SuppressWarnings("null")
+	@Override
+	public Map<String, EntidadEncomiendaPasajes> buscarEquivalenciaEntidades(Integer tipoEntidad) throws Exception {
+		String sql = "select \r\n" + 
+				"       et.ent_idtranscar||'-'||et.tipent_idvyrtranscar clave, \r\n" +
+				"       et.ent_idvyr idvyr, et.ent_idtranscar idtranscar, et.tipent_idvyrtranscar  \r\n" + 
+				"from \r\n" + 
+				"       VRTENTVYR_TRANSCAR et \r\n" + 
+				"where  \r\n" + 
+				"       et.tipent_idvyrtranscar=NVL("+tipoEntidad+" , et.tipent_idvyrtranscar) \r\n" + 
+				"order by \r\n" + 
+				"      et.ent_idtranscar";
+		
+		log.info("buscarLiquidacionBus: "+sql);
+
+		List<?> result = getSession().createSQLQuery(sql).list();
+
+		EntidadEncomiendaPasajes objEntEncoPas = null;
+		TreeMap<String, EntidadEncomiendaPasajes> lstValores = new TreeMap<String, EntidadEncomiendaPasajes>();
+		String key = null;
+
+		for(int i = 0; i<result.size(); i++){
+			Object[] obj = (Object[]) result.get(i);
+
+			key = obj[0].toString();
+			objEntEncoPas = new EntidadEncomiendaPasajes();
+			objEntEncoPas.setIdAgenciaPasajes(((BigDecimal)obj[1]).intValue());
+			objEntEncoPas.setIdAgenciaPasajes(((BigDecimal)obj[2]).intValue());
+			objEntEncoPas.setIdAgenciaPasajes(((BigDecimal)obj[3]).intValue());
+			lstValores.put(key, objEntEncoPas);
+			
+		}
+		
+		return lstValores;
 	}
 }
 

@@ -89,8 +89,8 @@
 											style="margin-left:10px"
 											tooltiptext="Actualiza las ventas de Encomiendas de acuerdo a las fechas." 
 											image="/resources/mp_recargar16.png" 
-											onClick="wndRptGeneralVentas.onClick_btnExportar()" 
-											visible="false"/>											
+											onClick="wndRptGeneralVentas.actualizarEncomiendas()" 
+											visible="true"/>											
 									</hbox>								
 									<label value="Usuario :" sclass="label-size11-bold" />
 									<label id="lblUsuarioConsulta" value="moscco" style="font-size:12px !important"/>								

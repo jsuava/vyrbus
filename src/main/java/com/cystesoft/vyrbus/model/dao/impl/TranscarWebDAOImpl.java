@@ -22,6 +22,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.Bus;
+import com.cystesoft.vyrbus.model.bean.CanalVenta;
 import com.cystesoft.vyrbus.model.bean.FormaPago;
 import com.cystesoft.vyrbus.model.bean.Itinerario;
 import com.cystesoft.vyrbus.model.bean.Liquidacion;
@@ -39,6 +40,7 @@ import com.cystesoft.vyrbus.model.bean.TranscarUsuarioPersonal;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.model.dao.TranscarWebDAO;
+import com.cystesoft.vyrbus.service.mappers.ResumenVentas;
 import com.cystesoft.vyrbus.service.mappers.VentasPiloto;
 import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.Messages;
@@ -902,6 +904,81 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 			regVentas.setTipoMovimiento(tipoMovimiento);
 			
 			lstVentas.add(regVentas);
+		}
+		
+		return lstVentas;
+	}
+	
+	@Override
+	public List<ResumenVentas> buscarResumenVentas(String fechaDesde, String fechaHasta) {
+		String sql = "";
+
+		sql = "select \r\n" + 
+				"				2 RUBRO, 1 CANALID, 'COUNTER' CANAL, ec.agencia_idventa IDAGENCIA, \r\n" + 
+				"				a.c_denominacion AGENCIA,\r\n" + 
+				"				CASE ec.tipcom_id \r\n" + 
+				"				   WHEN 1 THEN 7 \r\n" + 
+				"					 WHEN 2 THEN 2 \r\n" + 
+				"					 WHEN 3 THEN 10 \r\n" + 
+				"			  END IDCOMP, \r\n" + 
+				"				CASE ec.tipcom_id \r\n" + 
+				"					 WHEN 3 THEN 'GUIA REMISION TRANSPORTISTA' \r\n" + 
+				"					 ELSE tc.c_denominacion \r\n" + 
+				"			  END  COMP,  \r\n" + 
+				"        COUNT(ec.tipcom_id) CANT,\r\n" + 
+				"        SUM(ec.n_total) TOT,\r\n" + 
+				"        ec.d_fecven FECVEN,\r\n" + 
+				"        to_char(ec.d_fecven, 'yyyy') anio,\r\n" + 
+				"        to_char(ec.d_fecven, 'mm') mes,\r\n" + 
+				"        to_char(ec.d_fecven, 'dd') dia\r\n" + 
+				"				--ec.*\r\n" + 
+				"from \r\n" + 
+				"				tctenvcon ec\r\n" + 
+				"				inner join tcmagencia a on (ec.agencia_idventa = a.agencia_id)\r\n" + 
+				"				inner join tcmtipcom tc on (ec.tipcom_id = tc.tipcom_id)\r\n" + 
+				"WHERE\r\n" + 
+				"				ec.d_fecven between to_date('"+fechaDesde+"', 'dd/mm/yyyy') and to_date('"+fechaHasta+"', 'dd/mm/yyyy')\r\n" + 
+				"GROUP BY\r\n" + 
+				"        ec.d_fecven, ec.agencia_idventa, a.c_denominacion, ec.tipcom_id, tc.c_denominacion\r\n" + 
+				"ORDER BY\r\n" + 
+				"        ec.d_fecven, a.c_denominacion, tc.c_denominacion;				\r\n"; 
+
+		Log.info("RESUMEN VENTAS DE ENCOMIENDAS: "+sql);
+
+		List<?> result=getJdbcTemplate().queryForList(sql);
+		
+		List<ResumenVentas> lstVentas = new ArrayList<>();
+		Map<String, Object> map = null;
+		
+		for(int i=0; i<result.size(); i++) {
+			map = (Map<String, Object>)result.get(i);
+			ResumenVentas resumenVentas = new ResumenVentas();
+			
+			resumenVentas.setRubro(((BigDecimal)map.get("RUBRO")).intValue());
+			
+			CanalVenta canalVenta = new CanalVenta();
+			canalVenta.setId(((BigDecimal)map.get("CANALID")).intValue());
+			canalVenta.setDenominacion(map.get("CANAL").toString());
+			resumenVentas.setCanalVenta(canalVenta);
+			
+			Agencia agencia = new Agencia();
+			agencia.setId(((BigDecimal)map.get("IDAGENCIA")).intValue());
+			agencia.setDenominacion(map.get("AGENCIA").toString());
+			resumenVentas.setAgencia(agencia);
+			
+			TipoComprobante tipoComprobante = new TipoComprobante();
+			tipoComprobante.setId(((BigDecimal)map.get("IDCOMP")).intValue());
+			tipoComprobante.setDenominacion(map.get("COMP").toString());
+			resumenVentas.setTipoComprobante(tipoComprobante);
+			
+			resumenVentas.setCantidad(((BigDecimal)map.get("CANT")).intValue());
+			resumenVentas.setTotal(((BigDecimal)map.get("TOTAL")).doubleValue());
+			resumenVentas.setFechaEmision((Date)map.get("FECVEN"));
+			resumenVentas.setAnio(map.get("ANIO").toString());
+			resumenVentas.setMes(map.get("MES").toString());
+			resumenVentas.setDia(map.get("DIA").toString());
+			
+			lstVentas.add(resumenVentas);
 		}
 		
 		return lstVentas;

@@ -20,6 +20,7 @@ import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.model.dao.TranscarWebDAO;
 import com.cystesoft.vyrbus.service.business.TranscarWebManager;
+import com.cystesoft.vyrbus.service.mappers.ResumenVentas;
 import com.cystesoft.vyrbus.service.mappers.VentasPiloto;
 
 /**
@@ -193,5 +194,14 @@ public class TranscarWebManagerImpl implements TranscarWebManager{
 	@Override
 	public List<VentasPiloto> buscarRegistroVentas(String fInicio, String fFin) throws Exception{
 		return getTranscarWebDAO().buscarRegistroVentas(fInicio, fFin);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.TranscarWebManager#buscarResumenVentas(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public List<ResumenVentas> buscarResumenVentas(String fechaDesde, String fechaHasta) {
+		// TODO Auto-generated method stub
+		return getTranscarWebDAO().buscarResumenVentas(fechaDesde, fechaHasta);
 	}
 }

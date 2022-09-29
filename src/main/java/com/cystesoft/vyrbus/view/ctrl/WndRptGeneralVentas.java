@@ -15,7 +15,10 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
+import org.eclipse.jdt.internal.compiler.impl.Constant;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -29,6 +32,8 @@ import org.zkoss.zul.Radio;
 import org.zkoss.zul.Tab;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
+import com.cystesoft.vyrbus.model.bean.EntidadEncomiendaPasajes;
+import com.cystesoft.vyrbus.model.bean.TipoComprobante;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.mappers.ResumenVentas;
@@ -67,7 +72,11 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 	private List<Double> listRecordTotales = new ArrayList<>();
 	private List<String> listCabeceraRecordTotales = new ArrayList<>();
 
-
+	private Integer TIPO_ENTIDAD_AGENCIA = 1;
+	private Integer IDTIPO_BOLETA_ENCOMIENDA = 1;
+	private Integer IDTIPO_FACTURA_ENCOMIENDA = 2;
+	private Integer IDTIPO_GRT_ENCOMIENDA = 3;
+	
 	Integer flag = 0;
 	Integer ambosPisos=0;
 
@@ -677,6 +686,68 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 	dtbxFecFinal.setValue(null);
 */
 
+	}
+	
+	public void actualizarEncomiendas() throws Exception {
+
+		String fechaDesde = Constantes.FORMAT_DATE.format(dtbxFecInicioBus.getValue());
+		String fechaHasta = Constantes.FORMAT_DATE.format(dtbxFecFinBus.getValue());
+		
+//		traer las equivalencias de agencias entre encomiendas y pasajes
+		Map<String, EntidadEncomiendaPasajes> mapEntidadEncomiendaPasaje = (TreeMap<String, EntidadEncomiendaPasajes>)ServiceLocator.getVentaPasajesManager().buscarEquivalenciaEntidades(1);
+		if (mapEntidadEncomiendaPasaje.size() == 0) {
+			
+			return;
+		}
+			
+
+		
+//		Obtener la ultima fecha transferida de las ventas
+		
+//		recuperar las ventas de encomiendas
+
+		List<ResumenVentas> lstEncomiendas = ServiceLocator.getTranscarWebManager().buscarResumenVentas(fechaDesde, fechaHasta);
+		if(lstEncomiendas.size() <= 0){
+			DlgMessage.information("No se encontró infotrmacion para la información brindada.");
+			dtbxFecFinBus.focus();
+			return;
+		}		
+		ArrayList<ResumenVentas> lstEncomiendasCambiadas = new ArrayList<ResumenVentas>();
+		
+//		cambiar los ids de agencia en la data de encomiendas por la del vyrbus
+		String key="";
+		EntidadEncomiendaPasajes entidadEncomiendaPasajes = null;
+		for (ResumenVentas resumenVentas : lstEncomiendas) {
+			key = resumenVentas.getAgencia().getId()+"-"+TIPO_ENTIDAD_AGENCIA;
+			entidadEncomiendaPasajes = mapEntidadEncomiendaPasaje.get(key); 
+			if(entidadEncomiendaPasajes != null) {
+				Agencia agencia = resumenVentas.getAgencia();
+				agencia.setId(entidadEncomiendaPasajes.getIdAgenciaPasajes());
+				resumenVentas.setAgencia(agencia);
+				
+//				Cambiar el tipo de comprobante de GRT de encomiendas por el utilizado en pasajes
+				TipoComprobante tipoComprobante = resumenVentas.getTipoComprobante();
+				if (resumenVentas.getTipoComprobante().getId() == IDTIPO_BOLETA_ENCOMIENDA) { 
+					tipoComprobante.setId(Constantes.ID_TIPCOM_BOLETA_VENTA);
+					resumenVentas.setTipoComprobante(tipoComprobante);
+				} else if(resumenVentas.getTipoComprobante().getId() == IDTIPO_FACTURA_ENCOMIENDA) {
+					tipoComprobante.setId(Constantes.ID_TIPCOM_FACTURA);
+					resumenVentas.setTipoComprobante(tipoComprobante);
+				} else if(resumenVentas.getTipoComprobante().getId() == IDTIPO_GRT_ENCOMIENDA) {
+					tipoComprobante.setId(Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA);
+					resumenVentas.setTipoComprobante(tipoComprobante);
+				}
+				lstEncomiendasCambiadas.add(resumenVentas);
+			}
+			
+		}
+		
+//		Insertar la nueva lista cambiada al resumen
+//		modificar la tabla resumen para que tenga un ID y trigger para la insercion/modificacion
+//		Hacer el mapa para el hibernate
+		
+		
+		
 	}
 
 }

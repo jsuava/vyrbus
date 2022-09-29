@@ -18,6 +18,7 @@ import com.cystesoft.vyrbus.model.bean.TranscarRolUsuario;
 import com.cystesoft.vyrbus.model.bean.TranscarUsuarioPersonal;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
+import com.cystesoft.vyrbus.service.mappers.ResumenVentas;
 import com.cystesoft.vyrbus.service.mappers.VentasPiloto;
 
 /**
@@ -155,5 +156,13 @@ public interface TranscarWebDAO {
 	 * @param fechaFin		: Fecha fin de busqueda
 	 */
 	public List<VentasPiloto> buscarRegistroVentas(String fInicio, String fFin) throws Exception;
+	
+	/*
+	 * Recupera las ventas de encomiendas desde la BD de TrabscarWeb en PostgreSQL hacia la tabla resumen del VYRBUS 
+	 * @param fechaDesde	: Fecha de inicio de la búsqueda
+	 * @param fechaHasta	: Fecha final de la búsqueda
+	 * 
+	 */
+	public List<ResumenVentas> buscarResumenVentas(String fechaDesde, String fechaHasta);
 
 }
