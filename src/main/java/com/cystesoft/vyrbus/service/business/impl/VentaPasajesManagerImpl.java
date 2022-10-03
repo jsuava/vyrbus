@@ -1104,6 +1104,8 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 					getControlEspecieValoradaDAO().update(controlEspecieValorada);
 					/*END 16/06/2021 - javalos - Correlativo by caja*/
 				}
+			}else {
+				copyHistoryVentaPasaje(ventaPasaje.getId());
 			}
 
 			/*	Guardando la instancia de la venta de pasajes	*/
@@ -1112,7 +1114,24 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				getVentaPasajesDAO().save(ventaPasaje);
 			else {
 				VentaPasaje ventaPasajeOrg = buscarPorId(ventaPasaje.getId());
-				ventaPasaje.setFechaInsercion(ventaPasajeOrg.getFechaInsercion()!=null?ventaPasajeOrg.getFechaInsercion():null);
+				ventaPasaje.setId(ventaPasajeOrg.getId());
+				ventaPasaje.setFechaInsercion(ventaPasajeOrg.getFechaInsercion()!=null?ventaPasajeOrg.getFechaInsercion():new Date());
+				ventaPasaje.setUsuarioInsercion(ventaPasajeOrg.getUsuarioInsercion());
+				ventaPasaje.setIpInsercion(ventaPasajeOrg.getIpInsercion());
+				ventaPasaje.setNumeroBoleto(ventaPasajeOrg.getNumeroBoleto());
+				ventaPasaje.setNumeroBoletoAnterior(ventaPasajeOrg.getNumeroBoletoAnterior()!=null?ventaPasajeOrg.getNumeroBoletoAnterior():null);
+				ventaPasaje.setNumeroControl(ventaPasajeOrg.getNumeroControl());
+				ventaPasaje.setFechaTransferencia(ventaPasajeOrg.getFechaTransferencia()!=null?ventaPasajeOrg.getFechaTransferencia():null);
+				ventaPasaje.setFechaEnvioSFE(ventaPasajeOrg.getFechaEnvioSFE()!=null?ventaPasajeOrg.getFechaEnvioSFE():null);
+				ventaPasaje.setEnviadoSFE(ventaPasajeOrg.getEnviadoSFE()!=null?ventaPasajeOrg.getEnviadoSFE():null);
+				ventaPasaje.setUsuario(ventaPasajeOrg.getUsuario());
+				ventaPasaje.setFechaLiquidacion(ventaPasajeOrg.getFechaLiquidacion());
+				ventaPasaje.setAgencia(ventaPasajeOrg.getAgencia());
+				ventaPasaje.setLiquidacion(ventaPasajeOrg.getLiquidacion()!=null?ventaPasajeOrg.getLiquidacion():null);
+				ventaPasaje.setFormaPago(ventaPasajeOrg.getFormaPago());
+				ventaPasaje.setTipoFormaPago(ventaPasajeOrg.getTipoFormaPago());
+				ventaPasaje.setTarjetaCredito(ventaPasajeOrg.getTarjetaCredito()!=null?ventaPasajeOrg.getTarjetaCredito():null);
+				
 				getVentaPasajesDAO().update(ventaPasaje);
 			}
 			/*Valida si debe generar un nuevo numero de control*/
@@ -1325,11 +1344,21 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				VentaPasaje oVentaPasaje = buscarVentaById(boletoOriginal.getId());
 				boletoPostergar.setId(oVentaPasaje.getId());
 				boletoPostergar.setFechaInsercion(oVentaPasaje.getFechaInsercion()!=null?oVentaPasaje.getFechaInsercion():new Date());
+				boletoPostergar.setUsuarioInsercion(oVentaPasaje.getUsuarioInsercion());
+				boletoPostergar.setIpInsercion(oVentaPasaje.getIpInsercion());
 				boletoPostergar.setNumeroBoleto(oVentaPasaje.getNumeroBoleto());
+				boletoPostergar.setNumeroBoletoAnterior(oVentaPasaje.getNumeroBoletoAnterior()!=null?oVentaPasaje.getNumeroBoletoAnterior():null);
 				boletoPostergar.setNumeroControl(oVentaPasaje.getNumeroControl());
 				boletoPostergar.setFechaTransferencia(oVentaPasaje.getFechaTransferencia()!=null?oVentaPasaje.getFechaTransferencia():null);
 				boletoPostergar.setFechaEnvioSFE(oVentaPasaje.getFechaEnvioSFE()!=null?oVentaPasaje.getFechaEnvioSFE():null);
 				boletoPostergar.setEnviadoSFE(oVentaPasaje.getEnviadoSFE()!=null?oVentaPasaje.getEnviadoSFE():null);
+				boletoPostergar.setUsuario(oVentaPasaje.getUsuario());
+				boletoPostergar.setFechaLiquidacion(oVentaPasaje.getFechaLiquidacion());
+				boletoPostergar.setAgencia(oVentaPasaje.getAgencia());
+				boletoPostergar.setLiquidacion(oVentaPasaje.getLiquidacion()!=null?oVentaPasaje.getLiquidacion():null);
+				boletoPostergar.setFormaPago(oVentaPasaje.getFormaPago());
+				boletoPostergar.setTipoFormaPago(oVentaPasaje.getTipoFormaPago());
+				boletoPostergar.setTarjetaCredito(oVentaPasaje.getTarjetaCredito()!=null?oVentaPasaje.getTarjetaCredito():null);
 				getVentaPasajesDAO().update(boletoPostergar);
 			}
 			
@@ -2648,6 +2677,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 		historial.setFechaCaducidad(ventaPasaje.getFechaCaducidad()!=null?ventaPasaje.getFechaCaducidad():null);
 		historial.setLiquidacion(ventaPasaje.getLiquidacion()!=null?ventaPasaje.getLiquidacion():null);
 		historial.setAgencia(ventaPasaje.getAgencia()!=null?ventaPasaje.getAgencia():null);
+		historial.setFechaLiquidacion(ventaPasaje.getFechaLiquidacion()!=null?ventaPasaje.getFechaLiquidacion():null);
 		historial.setUsuario(ventaPasaje.getUsuario()!=null?ventaPasaje.getUsuario():null);
 		historial.setCanalVenta(ventaPasaje.getCanalVenta()!=null?ventaPasaje.getCanalVenta():null);
 		historial.setNumeroOperacionBancaria(ventaPasaje.getNumeroOperacionBancaria()!=null?ventaPasaje.getNumeroOperacionBancaria():null);
