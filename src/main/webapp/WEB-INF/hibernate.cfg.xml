@@ -82,6 +82,7 @@
 		<mapping resource="com/cystesoft/vyrbus/model/maps/UsuarioRol.hbm.xml" />
 		<mapping resource="com/cystesoft/vyrbus/model/maps/VentaPasaje.hbm.xml" />
 		<mapping resource="com/cystesoft/vyrbus/model/maps/VentaPasajeHistorial.hbm.xml" />
+		<mapping resource="com/cystesoft/vyrbus/model/maps/HistoricoResumenVentas.hbm.xml" />
 		<mapping resource="com/cystesoft/vyrbus/model/maps/Rol.hbm.xml" />
 		<mapping resource="com/cystesoft/vyrbus/model/maps/Menu.hbm.xml" />
 		<mapping resource="com/cystesoft/vyrbus/model/maps/OpcionMenu.hbm.xml" />

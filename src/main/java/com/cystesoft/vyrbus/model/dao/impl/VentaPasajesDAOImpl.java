@@ -3528,31 +3528,31 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		String strQueryOrder="";
 
 		if(nroConsulta == 1){
-			strQuerySelect = "		v.cantidad, v.total, to_char(v.fecven, 'dd/mm/yyyy') FECVEN ";
+			strQuerySelect = "		v.n_cantidad, v.n_total, to_char(v.d_fecven, 'dd/mm/yyyy') FECVEN ";
 			strQueryAnd = "";
-			strQueryOrder = "	       v.fecven, v.agencia, v.comprobante";
+			strQueryOrder = "	       v.d_fecven, v.c_agencia, v.c_comprobante";
 		}
 		else if(nroConsulta == 2){
-			strQuerySelect = "		v.cantidad, v.total, to_char(v.fecven, 'dd/mm/yyyy') FECVEN ";
+			strQuerySelect = "		v.n_cantidad, v.n_total, to_char(v.d_fecven, 'dd/mm/yyyy') FECVEN ";
 			strQueryAnd = "		AND v.agencia_id = " + idAgencia + " ";
-			strQueryOrder = "	       v.fecven, v.comprobante";
+			strQueryOrder = "	       v.d_fecven, v.c_comprobante";
 		}
 		else{
-			strQuerySelect = "		sum(v.cantidad) cant, sum(v.total) total, v.mes  ";
+			strQuerySelect = "		sum(v.n_cantidad) cant, sum(v.n_total) total, v.c_mes  ";
 			strQueryAnd = "		AND v.agencia_id = " + idAgencia + " ";
 			strGroupBy = "GROUP BY "
-					+ "	v.mes, v.rubro, v.canven_id, v.canal, v.agencia_id, v.agencia, v.tipcom_id, v.comprobante";
-			strQueryOrder = "	       v.mes";
+					+ "	v.c_mes, v.n_rubro, v.canven_id, v.c_canal, v.agencia_id, v.c_agencia, v.tipcom_id, v.c_comprobante";
+			strQueryOrder = "	       v.c_mes";
 		}
 
 			sql = " SELECT "
-				+ "     v.rubro, v.canven_id, v.canal, v.agencia_id, v.agencia, v.tipcom_id, v.comprobante, "
+				+ "     v.n_rubro, v.canven_id, v.c_canal, v.agencia_id, v.c_agencia, v.tipcom_id, v.c_comprobante, "
 				+ strQuerySelect
 				+ "	FROM "
 				+ "	       vrmagencia a right join"
 				+ "	       vrhresven v  on (a.agencia_id = v.agencia_id)"
 				+ "	WHERE "
-				+ "	       v.fecven BETWEEN to_date('" + fechaDesde + "', 'dd/MM/yyyy') "
+				+ "	       v.d_fecven BETWEEN to_date('" + fechaDesde + "', 'dd/MM/yyyy') "
 				+ "	       AND to_date('" + fechaHasta + "', 'dd/MM/yyyy')"
 				+ strQueryAnd
 				+ strGroupBy
@@ -4133,8 +4133,8 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			key = obj[0].toString();
 			objEntEncoPas = new EntidadEncomiendaPasajes();
 			objEntEncoPas.setIdAgenciaPasajes(((BigDecimal)obj[1]).intValue());
-			objEntEncoPas.setIdAgenciaPasajes(((BigDecimal)obj[2]).intValue());
-			objEntEncoPas.setIdAgenciaPasajes(((BigDecimal)obj[3]).intValue());
+			objEntEncoPas.setIdAgenciaEncomienda(((BigDecimal)obj[2]).intValue());
+			objEntEncoPas.setIdTipoEntidad(((BigDecimal)obj[3]).intValue());
 			lstValores.put(key, objEntEncoPas);
 			
 		}

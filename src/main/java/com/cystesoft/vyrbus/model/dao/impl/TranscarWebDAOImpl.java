@@ -926,7 +926,7 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 				"					 ELSE tc.c_denominacion \r\n" + 
 				"			  END  COMP,  \r\n" + 
 				"        COUNT(ec.tipcom_id) CANT,\r\n" + 
-				"        SUM(ec.n_total) TOT,\r\n" + 
+				"        SUM(ec.n_total) TOTAL,\r\n" + 
 				"        ec.d_fecven FECVEN,\r\n" + 
 				"        to_char(ec.d_fecven, 'yyyy') anio,\r\n" + 
 				"        to_char(ec.d_fecven, 'mm') mes,\r\n" + 
@@ -949,15 +949,16 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 		
 		List<ResumenVentas> lstVentas = new ArrayList<>();
 		Map<String, Object> map = null;
+		Long cantidad;
 		
 		for(int i=0; i<result.size(); i++) {
 			map = (Map<String, Object>)result.get(i);
 			ResumenVentas resumenVentas = new ResumenVentas();
 			
-			resumenVentas.setRubro(((BigDecimal)map.get("RUBRO")).intValue());
+			resumenVentas.setRubro(((Integer)map.get("RUBRO")).intValue());
 			
 			CanalVenta canalVenta = new CanalVenta();
-			canalVenta.setId(((BigDecimal)map.get("CANALID")).intValue());
+			canalVenta.setId(((Integer)map.get("CANALID")).intValue());
 			canalVenta.setDenominacion(map.get("CANAL").toString());
 			resumenVentas.setCanalVenta(canalVenta);
 			
@@ -967,11 +968,11 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 			resumenVentas.setAgencia(agencia);
 			
 			TipoComprobante tipoComprobante = new TipoComprobante();
-			tipoComprobante.setId(((BigDecimal)map.get("IDCOMP")).intValue());
+			tipoComprobante.setId(((Integer)map.get("IDCOMP")).intValue());
 			tipoComprobante.setDenominacion(map.get("COMP").toString());
 			resumenVentas.setTipoComprobante(tipoComprobante);
-			
-			resumenVentas.setCantidad(((BigDecimal)map.get("CANT")).intValue());
+			cantidad = ((Long)map.get("CANT")).longValue();
+			resumenVentas.setCantidad( cantidad.intValue() );
 			resumenVentas.setTotal(((BigDecimal)map.get("TOTAL")).doubleValue());
 			resumenVentas.setFechaEmision((Date)map.get("FECVEN"));
 			resumenVentas.setAnio(map.get("ANIO").toString());
