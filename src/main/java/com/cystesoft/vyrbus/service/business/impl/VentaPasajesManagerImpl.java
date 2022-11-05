@@ -1359,6 +1359,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				boletoPostergar.setFormaPago(oVentaPasaje.getFormaPago());
 				boletoPostergar.setTipoFormaPago(oVentaPasaje.getTipoFormaPago());
 				boletoPostergar.setTarjetaCredito(oVentaPasaje.getTarjetaCredito()!=null?oVentaPasaje.getTarjetaCredito():null);
+				boletoPostergar.setCanalVenta(oVentaPasaje.getCanalVenta());
 				getVentaPasajesDAO().update(boletoPostergar);
 			}
 			
