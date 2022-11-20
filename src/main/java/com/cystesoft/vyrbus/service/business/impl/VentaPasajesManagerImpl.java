@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,7 @@ import com.cystesoft.vyrbus.model.bean.CanalVenta;
 import com.cystesoft.vyrbus.model.bean.Cliente;
 import com.cystesoft.vyrbus.model.bean.ControlEspecieValorada;
 import com.cystesoft.vyrbus.model.bean.DestinatariosEmails;
+import com.cystesoft.vyrbus.model.bean.EntidadEncomiendaPasajes;
 import com.cystesoft.vyrbus.model.bean.FormaPago;
 import com.cystesoft.vyrbus.model.bean.Itinerario;
 import com.cystesoft.vyrbus.model.bean.LineaCreditoCliente;
@@ -2623,6 +2625,16 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 		// TODO Auto-generated method stub
 		return getVentaPasajesDAO().buscarLiquidacionBus(fechaInicio, fechaFin, codigoBus);
 	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#buscarEquivalenciaEntidades(java.lang.Integer)
+	 */
+	@Override
+	public Map<String, EntidadEncomiendaPasajes> buscarEquivalenciaEntidades(Integer tipoEntidad) throws Exception {
+		// TODO Auto-generated method stub
+		return getVentaPasajesDAO().buscarEquivalenciaEntidades(tipoEntidad);
+	}
+	
 	/**
 	 * @return the ventaPasajesHistorialDAO
 	 */

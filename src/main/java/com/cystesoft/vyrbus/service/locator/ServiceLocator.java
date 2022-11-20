@@ -397,6 +397,14 @@ public class ServiceLocator {
 	}
 	
 	/**
+	 * Obtiene el bean de HistoricoResumenVentasManager, para realizar la comunicacion con la capa del modelo.
+	 * @return <b>HistoricoResumenVentasManager</b>
+	 */
+	public static HistoricoResumenVentasManager getHistoricoResumenVentasManager(){
+		return (HistoricoResumenVentasManager) SpringUtil.getBean("historicoResumenVentasManager", HistoricoResumenVentasManager.class);
+	}	
+	
+	/**
 	 * Obtiene el bean de VentaPasajes, para realizar la comunicacion con la capa del modelo.
 	 * @return <b>VentaPasajesManager</b>
 	 */

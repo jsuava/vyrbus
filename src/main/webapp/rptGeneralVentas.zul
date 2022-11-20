@@ -89,8 +89,8 @@
 											style="margin-left:10px"
 											tooltiptext="Actualiza las ventas de Encomiendas de acuerdo a las fechas." 
 											image="/resources/mp_recargar16.png" 
-											onClick="wndRptGeneralVentas.onClick_btnExportar()" 
-											visible="false"/>											
+											onClick="wndRptGeneralVentas.actualizarEncomiendas()" 
+											visible="true"/>											
 									</hbox>								
 									<label value="Usuario :" sclass="label-size11-bold" />
 									<label id="lblUsuarioConsulta" value="moscco" style="font-size:12px !important"/>								
@@ -114,19 +114,22 @@
 									<listhead class="z-listbox-header-bg" sizable="true">
 										<listheader label="OFICINA " id="lstheaOficina" sort="auto" align="left" width="120px" style="color: #ffffff;"/>
 										<listheader label="FECHA" id="lstheaFecha" width="80px" sort="auto" style="color: #ffffff;"/>
-										<listheader label="BOLETAS" align="right" width="80px" style="color: #ffffff;"/>
-							 			<listheader label="CANT." align="right" width="60px" style="color: #ffffff;"/>
-							 			<listheader label="FACTURAS" align="right" width="80px" style="color: #ffffff;"/>
-							 			<listheader label="CANT." align="right" width="60px" style="color: #ffffff;"/>
-							 			<listheader label="N. CRED." align="right" width="80px" style="color: #ffffff;"/>
-							 			<listheader label="CANT." align="right" width="60px" style="color: #ffffff;"/>
-							 			<listheader label="DEP. BANCO" align="right" width="100px" style="color: #ffffff;"/>
+										<listheader label="BOL. VIAJE" align="right" width="80px" style="color: #ffffff;"/>
+<!--  							 			<listheader label="CANT." align="right" width="60px" style="color: #ffffff;"/>   -->
+							 			<listheader label="FAC. VIAJE" align="right" width="80px" style="color: #ffffff;"/>
+<!--							 			<listheader label="CANT." align="right" width="60px" style="color: #ffffff;"/>    -->
+							 			<listheader label="N. CRED." align="right" width="50px" style="color: #ffffff;"/>
+										<listheader label="BOL. ENCOM." align="right" width="80px" style="color: #ffffff;"/>
+							 			<listheader label="FAC. ENCOM." align="right" width="80px" style="color: #ffffff;"/>
+							 			<listheader label="N. CRED." align="right" width="50px" style="color: #ffffff;"/>
+<!--							 			<listheader label="CANT." align="right" width="60px" style="color: #ffffff;"/>    -->
 							 			<listheader label="GRT(PCE)" align="right" width="80px" style="color: #ffffff;"/>
-							 			<listheader label="CANT." align="right" width="60px" style="color: #ffffff;"/>
-							 			<listheader label="VENTAS TRANSMAR" align="right" width="100px" style="color: #ffffff;"/>
-							 			<listheader label="CANAL WEB" align="right" width="80px" style="color: #ffffff;"/>
-							 			<listheader label="CANT." align="right" width="60px" style="color: #ffffff;"/>
-							 			<listheader label="VENTAS GRAL" align="right" width="100px" style="color: #ffffff;"/>
+<!--  							 			<listheader label="DEP. BANCO" align="right" width="100px" style="color: #ffffff;"/>   -->
+<!--							 			<listheader label="CANT." align="right" width="60px" style="color: #ffffff;"/>    -->
+							 			<listheader label="VENTAS TOTAL" align="right" width="100px" style="color: #ffffff;"/>
+<!--  							 			<listheader label="CANAL WEB" align="right" width="80px" style="color: #ffffff;"/>   -->
+<!--							 			<listheader label="CANT." align="right" width="60px" style="color: #ffffff;"/>    -->
+							 			<listheader label="VENTA CONTADO" align="right" width="100px" style="color: #ffffff;"/>
 									</listhead>
 								</listbox>
 							</tabpanel>

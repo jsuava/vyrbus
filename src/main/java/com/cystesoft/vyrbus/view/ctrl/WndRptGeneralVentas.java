@@ -15,7 +15,12 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
+import org.eclipse.jdt.internal.compiler.impl.Constant;
+import org.zkoss.zk.ui.Execution;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -29,6 +34,9 @@ import org.zkoss.zul.Radio;
 import org.zkoss.zul.Tab;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
+import com.cystesoft.vyrbus.model.bean.EntidadEncomiendaPasajes;
+import com.cystesoft.vyrbus.model.bean.HistoricoResumenVentas;
+import com.cystesoft.vyrbus.model.bean.TipoComprobante;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.mappers.ResumenVentas;
@@ -67,7 +75,11 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 	private List<Double> listRecordTotales = new ArrayList<>();
 	private List<String> listCabeceraRecordTotales = new ArrayList<>();
 
-
+	private Integer TIPO_ENTIDAD_AGENCIA = 1;
+	private Integer IDTIPO_BOLETA_ENCOMIENDA = 1;
+	private Integer IDTIPO_FACTURA_ENCOMIENDA = 2;
+	private Integer IDTIPO_GRT_ENCOMIENDA = 3;
+	
 	Integer flag = 0;
 	Integer ambosPisos=0;
 
@@ -225,34 +237,64 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 					listCabeceraRecord.set(1, resumen.getFechaVenta());
 					k++;
 				}
+				
 
 				//Canal counter
 				if(resumen.getCanalVenta().getId() == 1)
 				{
-					//Comprobante Boletas
-					if(resumen.getTipoComprobante().getId() == 7){
-						listRecord.set(0, resumen.getTotal());
-						listRecord.set(1, resumen.getCantidad().doubleValue());
+					//COMPROBANTES DE PASAJEROS
+					if(resumen.getRubro() == 1) {
+						//Comprobante Boletas
+						if(resumen.getTipoComprobante().getId() == 7){
+							listRecord.set(0, resumen.getTotal());
+							listRecord.set(1, resumen.getCantidad().doubleValue());
+						}
+						//Comprobantefacturas
+						else if(resumen.getTipoComprobante().getId() == 2)
+						{
+							listRecord.set(2, resumen.getTotal());
+							listRecord.set(3, resumen.getCantidad().doubleValue());
+						}
+						//Nota Credito
+						else if(resumen.getTipoComprobante().getId() == 8)
+						{
+							listRecord.set(4, resumen.getTotal());
+							listRecord.set(5, resumen.getCantidad().doubleValue());
+						}
+					//COMPROBANTES DE ENCOMIENDAS
+					}else {
+						//Comprobante Boletas
+						if(resumen.getTipoComprobante().getId() == 7){
+							listRecord.set(0, resumen.getTotal());
+							listRecord.set(1, resumen.getCantidad().doubleValue());
+						}
+						//Comprobantefacturas
+						else if(resumen.getTipoComprobante().getId() == 2)
+						{
+							listRecord.set(2, resumen.getTotal());
+							listRecord.set(3, resumen.getCantidad().doubleValue());
+						}
+						//Nota Credito
+						else if(resumen.getTipoComprobante().getId() == 8)
+						{
+							listRecord.set(4, resumen.getTotal());
+							listRecord.set(5, resumen.getCantidad().doubleValue());
+						}						
+						//GRT
+						else if(resumen.getTipoComprobante().getId() == 10)
+						{
+							listRecord.set(4, resumen.getTotal());
+							listRecord.set(5, resumen.getCantidad().doubleValue());
+						}
 					}
-					//Comprobantefacturas
-					else if(resumen.getTipoComprobante().getId() == 2)
-					{
-						listRecord.set(2, resumen.getTotal());
-						listRecord.set(3, resumen.getCantidad().doubleValue());
-					}
-					//Nota Credito
-					else if(resumen.getTipoComprobante().getId() == 8)
-					{
-						listRecord.set(4, resumen.getTotal());
-						listRecord.set(5, resumen.getCantidad().doubleValue());
-					}
+					
 				}
 				//Canal Web
-				else if(resumen.getCanalVenta().getId() == 2)
-				{
-					listRecord.set(10, resumen.getTotal());
-					listRecord.set(11, resumen.getCantidad().doubleValue());
-				}
+//				else if(resumen.getCanalVenta().getId() == 2)
+//				{
+//					listRecord.set(10, resumen.getTotal());
+//					listRecord.set(11, resumen.getCantidad().doubleValue());
+//				}
 
 				if(lstResumen.size()-i == 1)
 				{
@@ -677,6 +719,80 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 	dtbxFecFinal.setValue(null);
 */
 
+	}
+	
+	public void actualizarEncomiendas() throws Exception {
+
+		String fechaDesde = Constantes.FORMAT_DATE.format(dtbxFecInicioBus.getValue());
+		String fechaHasta = Constantes.FORMAT_DATE.format(dtbxFecFinBus.getValue());
+		
+//		traer las equivalencias de agencias entre encomiendas y pasajes
+		Map<String, EntidadEncomiendaPasajes> mapEntidadEncomiendaPasaje = (TreeMap<String, EntidadEncomiendaPasajes>)ServiceLocator.getVentaPasajesManager().buscarEquivalenciaEntidades(1);
+		if (mapEntidadEncomiendaPasaje.size() == 0) {
+			DlgMessage.information("No se encontró informacion Sobre equivalencias entre entidades.");
+			return;
+		}
+			
+		
+//		Obtener la ultima fecha transferida de las ventas
+		//select to_char(max(rv.d_fecven+1), 'dd/MM/yyyy') fechaventa from vrhresven rv where rv.n_rubro=2;
+		
+//		recuperar las ventas de encomiendas
+
+		List<ResumenVentas> lstEncomiendas = ServiceLocator.getTranscarWebManager().buscarResumenVentas(fechaDesde, fechaHasta);
+		if(lstEncomiendas.size() <= 0){
+			DlgMessage.information("No se encontró informacion para la información brindada.");
+			dtbxFecFinBus.focus();
+			return;
+		}		
+		ArrayList<ResumenVentas> lstEncomiendasCambiadas = new ArrayList<ResumenVentas>();
+		
+//		cambiar los ids de agencia en la data de encomiendas por la del vyrbus
+		String key="";
+		EntidadEncomiendaPasajes entidadEncomiendaPasajes = null;
+		for (ResumenVentas resumenVentas : lstEncomiendas) {
+			key = resumenVentas.getAgencia().getId()+"-"+TIPO_ENTIDAD_AGENCIA;
+			entidadEncomiendaPasajes = mapEntidadEncomiendaPasaje.get(key); 
+			if(entidadEncomiendaPasajes != null) {
+				Agencia agencia = resumenVentas.getAgencia();
+				agencia.setId(entidadEncomiendaPasajes.getIdAgenciaPasajes());
+				resumenVentas.setAgencia(agencia);
+				
+//				Cambiar el tipo de comprobante de GRT de encomiendas por el utilizado en pasajes
+//				Ahora se trae en la consulta desde el PostgreSQl
+
+				lstEncomiendasCambiadas.add(resumenVentas);
+			}
+			
+		}
+		
+//		Insertar la nueva lista cambiada al resumen
+		HistoricoResumenVentas hrv = null;
+		for (ResumenVentas resumenVentas : lstEncomiendasCambiadas) {
+			hrv = new HistoricoResumenVentas();
+			hrv.setRubro(resumenVentas.getRubro());
+			hrv.setIdCanalVenta(resumenVentas.getCanalVenta().getId());
+			hrv.setNombreCanal(resumenVentas.getCanalVenta().getDenominacion());
+			hrv.setIdAgencia(resumenVentas.getAgencia().getId());
+			hrv.setNombreAgencia(resumenVentas.getAgencia().getDenominacion());
+			hrv.setIdTipoComprobante(resumenVentas.getTipoComprobante().getId());
+			hrv.setComprobante(resumenVentas.getTipoComprobante().getDenominacion());
+			hrv.setCantidad(resumenVentas.getCantidad());
+			hrv.setTotal(resumenVentas.getTotal());
+			hrv.setFechaVenta(resumenVentas.getFechaEmision());
+			hrv.setAnio(resumenVentas.getAnio());
+			hrv.setMes(resumenVentas.getMes());
+			hrv.setDia(resumenVentas.getDia());
+			hrv.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+			UtilData.auditarRegistro(hrv, getUsuario(), Executions.getCurrent());
+			ServiceLocator.getHistoricoResumenVentasManager().guardar(hrv);
+			
+		}
+//		modificar la tabla resumen para que tenga un ID y trigger para la insercion/modificacion
+//		Hacer el mapa para el hibernate
+		
+		
+		
 	}
 
 }

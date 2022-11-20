@@ -144,10 +144,10 @@ public class WndRptLiquidacionVentas extends WndBase{
 		try {
 			Util.limpiarListbox(ltbxLiquidacionVentas);
 			
-			if(chbxPorRangoFechas.isChecked() && !(cmbAgencia.getSelectedItem().getValue() instanceof Agencia)) {
-				DlgMessage.information(Messages.getString("WndEspecieValorada.information.Agencia"), cmbAgencia);
-				return;
-			}
+//			if(chbxPorRangoFechas.isChecked() && !(cmbAgencia.getSelectedItem().getValue() instanceof Agencia)) {
+//				DlgMessage.information(Messages.getString("WndEspecieValorada.information.Agencia"), cmbAgencia);
+//				return;
+//			}
 			
 			
 			
@@ -343,10 +343,13 @@ public class WndRptLiquidacionVentas extends WndBase{
 		
 		Double totalSaldoLiquidacion = .00;
 		Integer idAgencia=null;
+		ArrayList<String> lstAgencias = new ArrayList<String>();
+		String keyBusqueda;
 		for(Liquidacion liquidacion: liquidaciones) {
 			//Valida liquidacion de carga
 			String key = Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
 			key += liquidacion.getAgencia().getId().toString();
+			keyBusqueda = key;
 			key += liquidacion.getUsuario().getLogin();
 			Liquidacion liquidacionCarga = liquidacionesCarga.get(key);	
 			liquidacion.setLiquidacionCarga(liquidacionCarga);
@@ -354,21 +357,40 @@ public class WndRptLiquidacionVentas extends WndBase{
 			
 			Listitem item = new Listitem();
 			Listcell cell =new Listcell(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()));
-			cell.setStyle("font-size:12px !important");
-			item.appendChild(cell);
-			cell =new Listcell(liquidacion.getAgencia().toString());
-			item.appendChild(cell);
-			cell =new Listcell(liquidacion.getUsuario().toString());
-			item.appendChild(cell);
-			cell =new Listcell(liquidacion.getUsuario().getLogin());
-			item.appendChild(cell);
-			
-			Double saldoLiquidacion = buscarEfectivoLiquidacion(liquidacion);
-			totalSaldoLiquidacion += saldoLiquidacion;
-			cell = new Listcell(Util.toNumberFormat(saldoLiquidacion, 2));
-			cell.setStyle("font-size:11px !important");
-			item.appendChild(cell);
-			
+			if(!lstAgencias.contains(keyBusqueda) && !chbxDetallePorUsuario.isChecked()) {
+				lstAgencias.add(keyBusqueda);
+
+				cell.setStyle("font-size:12px !important");
+				item.appendChild(cell);
+				cell =new Listcell(liquidacion.getAgencia().toString());
+				item.appendChild(cell);
+				cell =new Listcell(liquidacion.getUsuario().toString());
+				item.appendChild(cell);
+				cell =new Listcell(liquidacion.getUsuario().getLogin());
+				item.appendChild(cell);
+				
+				Double saldoLiquidacion = buscarEfectivoLiquidacion(liquidacion);
+				totalSaldoLiquidacion += saldoLiquidacion;
+				cell = new Listcell(Util.toNumberFormat(saldoLiquidacion, 2));
+				cell.setStyle("font-size:11px !important");
+				item.appendChild(cell);
+			}else if(chbxDetallePorUsuario.isChecked()){
+				cell.setStyle("font-size:12px !important");
+				item.appendChild(cell);
+				cell =new Listcell(liquidacion.getAgencia().toString());
+				item.appendChild(cell);
+				cell =new Listcell(liquidacion.getUsuario().toString());
+				item.appendChild(cell);
+				cell =new Listcell(liquidacion.getUsuario().getLogin());
+				item.appendChild(cell);
+				
+				Double saldoLiquidacion = buscarEfectivoLiquidacion(liquidacion);
+				totalSaldoLiquidacion += saldoLiquidacion;
+				cell = new Listcell(Util.toNumberFormat(saldoLiquidacion, 2));
+				cell.setStyle("font-size:11px !important");
+				item.appendChild(cell);
+			}
+				
 			if(chbxDetallePorUsuario.isChecked()) {
 				cell = new Listcell();
 				if (liquidacion.getestadoLiquidacion().equals(Constantes.LIQUI_ESTA_CERRADO)) {

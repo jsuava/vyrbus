@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 import org.hibernate.SQLQuery;
@@ -21,6 +22,7 @@ import com.cystesoft.vyrbus.model.bean.CanalVenta;
 import com.cystesoft.vyrbus.model.bean.CentroCosto;
 import com.cystesoft.vyrbus.model.bean.Cliente;
 import com.cystesoft.vyrbus.model.bean.Concesionario;
+import com.cystesoft.vyrbus.model.bean.EntidadEncomiendaPasajes;
 import com.cystesoft.vyrbus.model.bean.EstadoCivil;
 import com.cystesoft.vyrbus.model.bean.FormaPago;
 import com.cystesoft.vyrbus.model.bean.Itinerario;
@@ -3526,31 +3528,31 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		String strQueryOrder="";
 
 		if(nroConsulta == 1){
-			strQuerySelect = "		v.cantidad, v.total, to_char(v.fecven, 'dd/mm/yyyy') FECVEN ";
+			strQuerySelect = "		v.n_cantidad, v.n_total, to_char(v.d_fecven, 'dd/mm/yyyy') FECVEN ";
 			strQueryAnd = "";
-			strQueryOrder = "	       v.fecven, v.agencia, v.comprobante";
+			strQueryOrder = "	       v.d_fecven, v.c_agencia, v.c_comprobante";
 		}
 		else if(nroConsulta == 2){
-			strQuerySelect = "		v.cantidad, v.total, to_char(v.fecven, 'dd/mm/yyyy') FECVEN ";
+			strQuerySelect = "		v.n_cantidad, v.n_total, to_char(v.d_fecven, 'dd/mm/yyyy') FECVEN ";
 			strQueryAnd = "		AND v.agencia_id = " + idAgencia + " ";
-			strQueryOrder = "	       v.fecven, v.comprobante";
+			strQueryOrder = "	       v.d_fecven, v.c_comprobante";
 		}
 		else{
-			strQuerySelect = "		sum(v.cantidad) cant, sum(v.total) total, v.mes  ";
+			strQuerySelect = "		sum(v.n_cantidad) cant, sum(v.n_total) total, v.c_mes  ";
 			strQueryAnd = "		AND v.agencia_id = " + idAgencia + " ";
 			strGroupBy = "GROUP BY "
-					+ "	v.mes, v.rubro, v.canven_id, v.canal, v.agencia_id, v.agencia, v.tipcom_id, v.comprobante";
-			strQueryOrder = "	       v.mes";
+					+ "	v.c_mes, v.n_rubro, v.canven_id, v.c_canal, v.agencia_id, v.c_agencia, v.tipcom_id, v.c_comprobante";
+			strQueryOrder = "	       v.c_mes";
 		}
 
 			sql = " SELECT "
-				+ "     v.rubro, v.canven_id, v.canal, v.agencia_id, v.agencia, v.tipcom_id, v.comprobante, "
+				+ "     v.n_rubro, v.canven_id, v.c_canal, v.agencia_id, v.c_agencia, v.tipcom_id, v.c_comprobante, "
 				+ strQuerySelect
 				+ "	FROM "
 				+ "	       vrmagencia a right join"
 				+ "	       vrhresven v  on (a.agencia_id = v.agencia_id)"
 				+ "	WHERE "
-				+ "	       v.fecven BETWEEN to_date('" + fechaDesde + "', 'dd/MM/yyyy') "
+				+ "	       v.d_fecven BETWEEN to_date('" + fechaDesde + "', 'dd/MM/yyyy') "
 				+ "	       AND to_date('" + fechaHasta + "', 'dd/MM/yyyy')"
 				+ strQueryAnd
 				+ strGroupBy
@@ -4076,7 +4078,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 
 		List<?> result = getSession().createSQLQuery(sql).list();
 
-		List<Manifiesto> listMAnifiestos = new ArrayList<>();
+		List<Manifiesto> listManifiestos = new ArrayList<>();
 		for(int i = 0; i<result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
 
@@ -4098,10 +4100,46 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			manifiesto.setImporte(((BigDecimal)obj[5]).doubleValue());
 			manifiesto.setCantidadPasajeros(((BigDecimal)obj[8]).intValue());
 			
-			listMAnifiestos.add(manifiesto);
+			listManifiestos.add(manifiesto);
 		}
 
-		return listMAnifiestos;
+		return listManifiestos;
+	}
+	
+	@SuppressWarnings("null")
+	@Override
+	public Map<String, EntidadEncomiendaPasajes> buscarEquivalenciaEntidades(Integer tipoEntidad) throws Exception {
+		String sql = "select \r\n" + 
+				"       et.ent_idtranscar||'-'||et.tipent_idvyrtranscar clave, \r\n" +
+				"       et.ent_idvyr idvyr, et.ent_idtranscar idtranscar, et.tipent_idvyrtranscar  \r\n" + 
+				"from \r\n" + 
+				"       VRTENTVYR_TRANSCAR et \r\n" + 
+				"where  \r\n" + 
+				"       et.tipent_idvyrtranscar=NVL("+tipoEntidad+" , et.tipent_idvyrtranscar) \r\n" + 
+				"order by \r\n" + 
+				"      et.ent_idtranscar";
+		
+		log.info("buscarLiquidacionBus: "+sql);
+
+		List<?> result = getSession().createSQLQuery(sql).list();
+
+		EntidadEncomiendaPasajes objEntEncoPas = null;
+		TreeMap<String, EntidadEncomiendaPasajes> lstValores = new TreeMap<String, EntidadEncomiendaPasajes>();
+		String key = null;
+
+		for(int i = 0; i<result.size(); i++){
+			Object[] obj = (Object[]) result.get(i);
+
+			key = obj[0].toString();
+			objEntEncoPas = new EntidadEncomiendaPasajes();
+			objEntEncoPas.setIdAgenciaPasajes(((BigDecimal)obj[1]).intValue());
+			objEntEncoPas.setIdAgenciaEncomienda(((BigDecimal)obj[2]).intValue());
+			objEntEncoPas.setIdTipoEntidad(((BigDecimal)obj[3]).intValue());
+			lstValores.put(key, objEntEncoPas);
+			
+		}
+		
+		return lstValores;
 	}
 }
 
