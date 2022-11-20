@@ -235,6 +235,21 @@ public class WSFE implements Serializable{
 	 * @throws Exception
 	 */
 	public static Result sendVenta(List<VentaPasaje> listVentaPasaje, Window window, Boolean printTicket, VentaPasaje notaCredito, boolean isReemvioBySoporte)throws Exception{
+		return sendVenta(listVentaPasaje, window, printTicket, notaCredito, isReemvioBySoporte, null);
+	}
+	
+	/**
+	 * 
+	 * @param listVentaPasaje
+	 * @param window
+	 * @param printTicket
+	 * @param notaCredito
+	 * @param isReemvioBySoporte
+	 * @param listVentasSoloReimpresion
+	 * @return
+	 * @throws Exception
+	 */
+	public static Result sendVenta(List<VentaPasaje> listVentaPasaje, Window window, Boolean printTicket, VentaPasaje notaCredito, boolean isReemvioBySoporte, List<VentaPasaje> listVentasSoloReimpresion)throws Exception{
 		try {
 			List<VentaPasaje> ventasEnviadas= new ArrayList<>();
 			
@@ -300,6 +315,25 @@ public class WSFE implements Serializable{
 				}
 			}
 			
+			
+			//Ventas que solo seran reimprimidas
+			if(listVentasSoloReimpresion!=null) {
+				for(VentaPasaje ventaPasajeReimpresion: listVentasSoloReimpresion){
+					String serie=ventaPasajeReimpresion.getNumeroBoleto().split("-")[0];
+					String correlativo=ventaPasajeReimpresion.getNumeroBoleto().split("-")[1];
+					String tipoComprobante=(ventaPasajeReimpresion.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA?FE_TIPCOM_BOLETA:FE_TIPCOM_FACTURA);
+					Result resultReimpresion=getSoap().buscarDetalleComprobante(TOKEN, tipoComprobante, serie, correlativo, Constantes.RUC_TRANSMAR);						
+					
+					if(resultReimpresion.getBarcodeQR().getValue()!=null && resultReimpresion.getBarcodeEmbarque().getValue()!=null){
+						ventaPasajeReimpresion.setResult(resultReimpresion);
+						ventasEnviadas.add(ventaPasajeReimpresion);
+					}else{
+						/*Alertar */
+						sendMail("Metod reimprimirComprobante : "+ventaPasajeReimpresion.getNumeroBoleto()+" \n"+result.getMessage().getValue());
+					}	
+				}				
+			}
+			
 			/**Realiza la impresion del Ticket - 09/12/2016 - jabanto*/
 			if(printTicket && ventasEnviadas.size()>0){
 				/*Crea el objet xmlVentaPasaje, para crear el archivo xml para la impresion del Ticket*/
@@ -317,6 +351,7 @@ public class WSFE implements Serializable{
 			return null;
 		}
 	}
+	
 	
 	/**
 	 * Realiza la reimpresion del comprobante
@@ -656,15 +691,21 @@ public class WSFE implements Serializable{
 	 * @param window : Instacia de la venta de donde es invocado el metodo
 	 * @param result :
 	 */
-	private static void descargarFileXmlEquipaje(XmlEquipajes xmlEquipajes, Window window, boolean timerdownload){
+	private static byte[] descargarFileXmlEquipaje(XmlEquipajes xmlEquipajes, Window window, boolean timerdownload){
 		String nameFile="";
+		byte[] filePdfZip = null;
+		
 		try {
 			//Crea el archivo xml
 			nameFile="9B900E6PJ-";
+			//Determina el numero de copias del archivo de impresion
+			int copias = 1;
+			nameFile += String.valueOf(copias) + "-";
+			
 			String directorio="";			
 			nameFile+=xmlEquipajes.getEquipaje().get(0).getV1_numero();
 			directorio=Constantes.DIRECTORY_BOLETOS;			
-			
+						
 			String pZipFile=directorio+nameFile+".zip";
 			String pathSavedXml=directorio+nameFile;
 			
@@ -689,24 +730,38 @@ public class WSFE implements Serializable{
 			
 			/*Zipeamos el xml (Basicamente para reducir el tamanio)*/			
 			Util.Zippear(pathSavedXml, pZipFile,nameFile);
-			
 			final String _pZipFile=pZipFile;
 			
-			if(timerdownload) {
-				Timer _timer=new Timer(3000);
-				_timer.addEventListener(Events.ON_TIMER, new EventListener<Event>() {
-					@Override
-					public void onEvent(Event event) throws Exception {
-						/*Descarga el archivo .xml*/
-						Filedownload.save(new File(_pZipFile), "application/zip");
-					}
-				});
-				window.appendChild(_timer);
+			//************************************************************************************
+			//Consulta la version de impresión configurada para la agencia - jabanto 16/11/2022
+			Agencia agencia = (Agencia)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
+			if(UtilFlag.isFormatPrintDownload(agencia.getId())) {
+				String nameFileZip = nameFile + ".zip";
+				File file= new File(pZipFile);
+				byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
+								
+				filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_TICKET);
+				if(filePdfZip !=null)
+					Filedownload.save(filePdfZip, "multipart/form-data", nameFileZip);		
 			}else {
-				/*Descarga el archivo .xml*/
-				Filedownload.save(new File(_pZipFile), "application/zip");	
-			}			
+											
+				if(timerdownload) {
+					Timer _timer=new Timer(3000);
+					_timer.addEventListener(Events.ON_TIMER, new EventListener<Event>() {
+						@Override
+						public void onEvent(Event event) throws Exception {
+							/*Descarga el archivo .xml*/
+							Filedownload.save(new File(_pZipFile), "application/zip");
+						}
+					});
+					window.appendChild(_timer);
+				}else {
+					/*Descarga el archivo .xml*/
+					Filedownload.save(new File(_pZipFile), "application/zip");	
+				}				
+			}
 			
+														
 			/*Elimina el file.zip despues de 10 segundos*/			
 			Timer timer=new Timer(10000);
 			timer.addEventListener(Events.ON_TIMER, new EventListener<Event>() {
@@ -716,11 +771,14 @@ public class WSFE implements Serializable{
 				}
 			});
 			window.appendChild(timer);
+			
+			return filePdfZip;
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
 			/*Envia un e-mail con el error*/
 			sendMail("Metod descargarFileXml : "+nameFile+"\n " +e.getMessage());
+			return null;
 		}
 	}
 	
@@ -730,15 +788,23 @@ public class WSFE implements Serializable{
 	 * @param window : Instacia de la venta de donde es invocado el metodo
 	 * @param result :
 	 */
-	private static void descargarFileXml(XmlVentaPasaje xmlVentaPasaje, Window window){
+	private static byte[] descargarFileXml(XmlVentaPasaje xmlVentaPasaje, Window window){
 		String nameFile="";
+		byte[] filePdfZip = null;
+		
 		try {
+			int formatPrint = 0;
 			//Crea el archivo xml
 			nameFile="4C608A6BF-";
+			//Determina el numero de copias del archivo de impresion
+			int copias = 1;
+			nameFile += String.valueOf(copias) + "-";
+			
 			String directorio="";
 			if(xmlVentaPasaje.getVenta()!=null){
 				nameFile+=xmlVentaPasaje.getVenta().get(0).getV1_NumeroComprobante();
 				directorio=Constantes.DIRECTORY_BOLETOS;
+				formatPrint = Constantes.FORMATO_IMPRESION_TICKET;
 			}else if(xmlVentaPasaje.getLiqTuentrada()!=null){
 				DateFormat FORMAT_DATE_TIME_24H = new SimpleDateFormat ("yyyyMMdd HHmmss");
 				nameFile+="LIQ-TUENTRADA "+FORMAT_DATE_TIME_24H.format(new Date());
@@ -747,7 +813,8 @@ public class WSFE implements Serializable{
 				DateFormat FORMAT_DATE_TIME_24H = new SimpleDateFormat ("yyyyMMdd HHmmss");
 				nameFile+="LIQ-TURNO "+FORMAT_DATE_TIME_24H.format(new Date());
 				directorio=Constantes.DIRECTORY_LIQUIDACION;
-			}
+				formatPrint = Constantes.FORMATO_IMPRESION_TICKET;
+			}					
 			
 			String pZipFile=directorio+nameFile+".zip";
 			String pathSavedXml=directorio+nameFile;
@@ -773,9 +840,25 @@ public class WSFE implements Serializable{
 			
 			/*Zipeamos el xml (Basicamente para reducir el tamanio)*/			
 			Util.Zippear(pathSavedXml, pZipFile,nameFile);
-			
-			/*Descarga el archivo .xml*/
 			Filedownload.save(new File(pZipFile), "application/zip");
+			
+			//************************************************************************************
+			//Consulta la version de impresión configurada para la agencia - jabanto 16/11/2022
+			Agencia agencia = (Agencia)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
+			if(UtilFlag.isFormatPrintDownload(agencia.getId())) {
+				String nameFileZip = nameFile + ".zip";
+				File file= new File(pZipFile);
+				byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
+								
+				filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, formatPrint);
+				if(filePdfZip !=null)
+					Filedownload.save(filePdfZip, "multipart/form-data", nameFileZip);		
+			}else {
+				
+				/*Descarga el archivo .xml*/
+				Filedownload.save(new File(pZipFile), "application/zip");	
+			}
+			
 			
 			/*Elimina el file.zip despues de 10 segundos*/
 			final String _pZipFile=pZipFile;
@@ -787,11 +870,14 @@ public class WSFE implements Serializable{
 				}
 			});
 			window.appendChild(timer);
+			
+			return filePdfZip;
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
 			/*Envia un e-mail con el error*/
 			sendMail("Metod descargarFileXml : "+nameFile+"\n " +e.getMessage());
+			return null;
 		}
 	}
 	
@@ -809,7 +895,7 @@ public class WSFE implements Serializable{
 			String pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"Equipaje_TM.rpt";
 			Path path = Paths.get(pathRpt);
 			byte[] contenido = java.nio.file.Files.readAllBytes(path);
-			@SuppressWarnings("restriction")
+//			@SuppressWarnings("restriction")
 			String cryptoRptFormat=new BASE64Encoder().encode(contenido);
 			
 			for(int i = 0; i < 2; i++) { //Para duplicar la impresion de Ticket de equipaje - Para el equipaje y el Boleto

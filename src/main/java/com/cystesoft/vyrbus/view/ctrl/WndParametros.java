@@ -122,6 +122,30 @@ public class WndParametros extends WndBase {
 		itMaximoReservaAntesServicio.setValue(parametros.getTiempoMaximoPermiteReserva());
 		iCantidadViajesParaCortesia.setValue(parametros.getViajesAcumuladosPasajero());
 
+		
+		//Deshabilita los campos en los parámetros - jabanto - 17/11/2022
+		itTiempoExpiraReserva.setDisabled(true);
+		itTiempoAcumulaViajesParaPaxFree.setDisabled(true);
+		itViajesRequeridosIngresarPaxFre.setDisabled(true);
+		itTiempoBoletoValido.setDisabled(true);
+		itPuntosAcumulaPorVentaPaxFre.setDisabled(true);
+		itMontocobrarPostergacion.setDisabled(true);
+		itMontoCobrarReimpresion.setDisabled(false);
+		itMaximoPostergacionesBoleto.setDisabled(true);
+		itTiempoPuedeRealizarPostergacion.setDisabled(true);
+		itTiempoPaxCanjeBoletoCumpleanios.setDisabled(true);
+		itTiempoCaducanPuntosOptenidosPaxfree.setDisabled(true);
+		itAlertaEnvioEspecieValorada.setDisabled(true);
+		itAlertaSolicitaManifiestoPax.setDisabled(true);
+		itMaximoAsientosSeleccionados.setDisabled(true);
+
+		itMaximoDuplicidadComprobante.setDisabled(true);
+		itMontoPenalidadCambioNombre.setDisabled(false);
+		itMaximoBloqueoasiento.setDisabled(true);
+		itMaximoReservaAntesServicio.setDisabled(true);
+		iCantidadViajesParaCortesia.setDisabled(true);
+		
+		
 //		/*carga usuarios aprobadores*/
 //		cargarListaUsuarios(lbxUsuarioGerenciaComercialAprobador);//Generancia Comercial Aprobador (Genencia comercial)
 //		cargarListaUsuarios(lbxUsuarioComercialAprobador);//Asigancion de cartera (Jefe de Ventas)

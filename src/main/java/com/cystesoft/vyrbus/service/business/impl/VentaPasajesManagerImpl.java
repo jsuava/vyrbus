@@ -1235,10 +1235,10 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 					throw new TiempoExpiracionBloqueoException();
 			}
 
-
-
 			/**Clonamos el boleto original - 10/11/2016 - jabanto*/
 			VentaPasaje boletoOriginal = (VentaPasaje)boletoPostergar.getVentaPasaje().clone();
+			if(boletoOriginal.getCliente()!=null)
+				boletoOriginal.setCliente(ServiceLocator.getClienteManager().buscarPorId(boletoOriginal.getCliente().getId()));
 			
 			//Valida si debe o no emitir un nuevo comprobante - jabanto - 26/09/2022
 			boolean isNewComprobante = false;

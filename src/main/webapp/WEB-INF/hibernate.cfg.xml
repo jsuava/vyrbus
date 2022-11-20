@@ -139,6 +139,7 @@
 		<mapping resource="com/cystesoft/vyrbus/model/maps/Equipaje.hbm.xml" />
 		<mapping resource="com/cystesoft/vyrbus/model/maps/DetalleEquipaje.hbm.xml" />
 		<mapping resource="com/cystesoft/vyrbus/model/maps/ControlAcceso.hbm.xml" />
+		<mapping resource="com/cystesoft/vyrbus/model/maps/Flag.hbm.xml" />
 		
 <!-- 	VENTA DE SEGUROS -->
 		<mapping resource="com/cystesoft/vyrbus/model/maps/VSTipoDocumento.hbm.xml" />
