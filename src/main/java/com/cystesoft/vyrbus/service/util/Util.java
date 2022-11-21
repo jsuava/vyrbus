@@ -32,10 +32,17 @@ import java.util.Random;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+
 import org.apache.log4j.Logger;
+import org.zkoss.io.Files;
 import org.zkoss.util.media.Media;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
@@ -56,7 +63,9 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Spinner;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Timebox;
+import org.zkoss.zul.Timer;
 import org.zkoss.zul.Tree;
+import org.zkoss.zul.Window;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.AutorizadorCortesia;
@@ -109,6 +118,7 @@ import com.cystesoft.vyrbus.model.bean.VSTipoDocumento;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.mappers.SecuenciaTramo;
+import com.cystesoft.vyrbus.service.xml.XmlPrintLaser;
 import com.cystesoft.vyrbus.view.ui.DlgMessage;
 
 import pe.gob.mtc.wshr.ResultIdentidad;
@@ -2060,7 +2070,7 @@ public class Util {
 		// buffer
 		byte[] buffer = new byte[BUFFER_SIZE];
 		try {
-			FileOutputStream fos = new FileOutputStream(pZipFile);//("C:\\MyFile.zip");
+			FileOutputStream fos = new FileOutputStream(pZipFile);
     		ZipOutputStream zos = new ZipOutputStream(fos);
     		ZipEntry ze= new ZipEntry(nameFile);
     		zos.putNextEntry(ze);
@@ -2072,6 +2082,7 @@ public class Util {
     		in.close();
     		zos.closeEntry();
     		//remember close it
+    		    		
     		zos.close();
 		} catch (Exception e) {
 			throw e;
@@ -2107,4 +2118,63 @@ public class Util {
 		return Math.round(numero * Math.pow(10, numeroDecimales)) / Math.pow(10, numeroDecimales);
 	}
 
+	public static String createFileXmlToZipper(Object object, Window window)throws Exception{
+		final DateFormat FORMAT_DATE_TIME = new SimpleDateFormat ("ddMMyyyyHHmmss");
+		//Crea el archivo xml		
+		String pZipFile=null;
+		String directorio="";
+		String  nameFile="PRNTLSR-1-";
+		 if(object instanceof XmlPrintLaser){
+			 XmlPrintLaser xmlPrintLaser= (XmlPrintLaser)object;
+			 if(xmlPrintLaser.getXmlManifiesto()!=null){
+				nameFile += "MANIFIESTO-"+FORMAT_DATE_TIME.format(new Date());	
+				directorio=Constantes.DIRECTORY_MANIFIESTOS;					 
+			 }else if (xmlPrintLaser.getXmlCarpetaDespacho()!=null){
+				nameFile += "DESPACHO-"+FORMAT_DATE_TIME.format(new Date());	
+				directorio=Constantes.DIRECTORY_DESPACHOS;
+			 }else if (xmlPrintLaser.getXmlHRE()!=null){
+				nameFile += "HRE-"+FORMAT_DATE_TIME.format(new Date());	
+				directorio=Constantes.DIRECTORY_HRE;
+			 }
+		 }
+		if(!(directorio.trim().isEmpty())){
+			pZipFile=directorio+nameFile+".zip";
+			String pathSavedXml=directorio+nameFile;
+			//Creando un directorio con el nombre del archivo
+			final File directory=new File(pathSavedXml);
+			directory.mkdir();
+			pathSavedXml=directory.getAbsolutePath()+Util.separator+nameFile+".xml";
+			JAXBContext context = JAXBContext.newInstance(object.getClass());
+			Marshaller marshaller = context.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			/**Mostramos el documento XML generado por la salida estandar*/
+			FileOutputStream fos_sunat = new FileOutputStream(pathSavedXml);				
+			try {
+				/**guardamos el objeto serializado en un documento XML*/
+				marshaller.marshal(object, fos_sunat);
+				fos_sunat.close();
+			} catch (Exception e) {
+				fos_sunat.close();
+			}
+			
+			/*Zipeamos el xml (Basicamente para reducir el tamanio)*/					
+			Util.Zippear(pathSavedXml, pZipFile,nameFile);
+			
+			Files.deleteAll(new File(pZipFile.replace(".zip", "")));//Elimina la carpeta
+			/*Elimina el file.zip despues de 10 segundos*/
+			final String _pZipFile=pZipFile;
+			Timer timer=new Timer(10000);
+			timer.addEventListener(Events.ON_TIMER, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					Files.deleteAll(new File(_pZipFile));						
+				}
+			});
+			window.appendChild(timer);				
+		}
+		
+//		pZipFile += "#"+ nameFile;
+		
+		return pZipFile;
+	}
 }

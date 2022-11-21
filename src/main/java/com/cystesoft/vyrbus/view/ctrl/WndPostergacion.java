@@ -612,8 +612,9 @@ public class WndPostergacion extends WndBase implements Serializable {
 					//Si los itinerarios son iguales, el valor de la penalidad es cero
 					limpiarControlesPostergacion();
 				}
-				calcularPagos();
+//				calcularPagos();
 			}
+			calcularPagos();
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
@@ -635,8 +636,10 @@ public class WndPostergacion extends WndBase implements Serializable {
 					//Si los itinerarios son iguales, el valor de la penalidad es cero
 					limpiarControlesPostergacion();
 				}
-				calcularPagos();
+//				calcularPagos();
 			}
+			
+			calcularPagos();
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
@@ -1263,10 +1266,12 @@ public class WndPostergacion extends WndBase implements Serializable {
 				List<TipoFormaPago> lstTipoFormasPago = ServiceLocator.getTipoFormaPagoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
 				UtilData.cargarGenericData(cmbTipoFormaPago, false);
 				for(TipoFormaPago tipoFormaPago : lstTipoFormasPago){
-					Comboitem item = new Comboitem();
-					item.setLabel(tipoFormaPago.getDenominacion());
-					item.setValue(tipoFormaPago);
-					cmbTipoFormaPago.appendChild(item);
+					if(tipoFormaPago.getTipoIngresoLiquidacion().intValue()==Constantes.FALSE_VALUE) {
+						Comboitem item = new Comboitem();
+						item.setLabel(tipoFormaPago.getDenominacion());
+						item.setValue(tipoFormaPago);
+						cmbTipoFormaPago.appendChild(item);	
+					}					
 				}
 				cmbTipoFormaPago.setDisabled(false);
 
@@ -1529,7 +1534,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 
 			postergacion.setObservaciones(observaciones);
 			postergacion.setSecuencial(secuencial+1);
-			postergacion.setTarifa(dblbxTarifa.getValue());
+			postergacion.setTarifa(dblbxTarifa.getValue());	
 			postergacion.setRecargo(postergacion.getRecargo());
 			postergacion.setDescuento(dblbxDescuento.getValue());
 //			postergacion.setPenalidad(dblbxPenalidad.getValue());
@@ -1599,6 +1604,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 				gastoAdmin.setAgencia(getAgencia());
 				gastoAdmin.setUsuario(getUsuario());
 				gastoAdmin.setCanalVenta(getUsuarioHardware().getCanalVenta());
+				gastoAdmin.setUsuarioHardware(usuarioHardware);
 				gastoAdmin.setIdaRetorno(Constantes.FALSE_VALUE);
 				gastoAdmin.setEsFechaAbierta(Constantes.FALSE_VALUE);
 				gastoAdmin.setEstadoRegistro(Constantes.VALUE_ACTIVO);
@@ -2007,16 +2013,21 @@ public class WndPostergacion extends WndBase implements Serializable {
 				}
 			}else{//Si es fecha abierta
 //				tipoNotaCredito=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CAMBIO_NOMBRE_PASAJERO);
-				calcularPagos();
+				
+				//End Begin 17/11/2022 - jabanto - 
+//				calcularPagos();
+				
+				
 //				if(chkCambioNombre.isChecked())
 //					dblbxPenalidad.setValue(penalidad+Constantes.PENALIDAD_CAMBIO_NOMBRE);
 //				else if(penalidad>0)
 //					dblbxPenalidad.setValue(penalidad-Constantes.PENALIDAD_CAMBIO_NOMBRE);
 			}
-//
+//			calcularPagos();
 //			calcularTotaPago();
 //			validarPromocion();
 		}
+		calcularPagos();
 	}
 
 	private void resetCheck_despuesViaje(Checkbox chkException)throws Exception{
@@ -2145,9 +2156,11 @@ public class WndPostergacion extends WndBase implements Serializable {
 //			}
 
 //			calcularTotaPago();
-			calcularPagos();
+//			calcularPagos();
 //			validarPromocion();
 		}
+		
+		calcularPagos();
 	}
 	/**
 	 * @date 03/12/2013
@@ -2408,25 +2421,81 @@ public class WndPostergacion extends WndBase implements Serializable {
 			tipoNotaCredito=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_POSTERGACION);
 
 			validarPromocion();
-		}else{
-			dblbxDescuento.setValue(postergacion.getDescuento());
+		}else {
 			dblbxTarifa.setValue(postergacion.getTarifa());
-
-			if(chkFechaAbierta.isChecked())//Fecha abierta
-				tipoNotaCredito=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_POSTERGACION);
-			else if(chkCambioNombre.isChecked()) //Cambio de nombre
-				tipoNotaCredito=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CAMBIO_NOMBRE_PASAJERO);
-			else if (chkCambioRuc.isChecked()) //Cambio Boleta a Factura
-				tipoNotaCredito=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CAMBIO_RUC);
-			else if (chkCambioRazonSocial.isChecked()) //Cambio Boleta a Factura
-				tipoNotaCredito=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CAMBIO_RAZON_SOCIAL);
-			else if (chkCambioDireccionFiscal.isChecked()) //Cambio Boleta a Factura
-				tipoNotaCredito=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CAMBIO_DIRECCION_FISCAL);
-			else if (chkCambioBoletaFactura.isChecked()) //Cambio Boleta a Factura
-				tipoNotaCredito=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CAMBIO_BOLETA_FACTURA);
-			else if (chkCambioFacturaBoleta.isChecked()) //Cambio Boleta a Factura
-				tipoNotaCredito=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CAMBIO_FACTURA_BOLETA);
 		}
+		
+//		else{
+			dblbxDescuento.setValue(postergacion.getDescuento());
+			
+			
+			
+			boolean aplicoPenalidad = false;
+			Double valorPenalidad = 0.00;
+			
+			if(tipoNotaCredito!=null) {
+				if(tipoNotaCredito.getGastoAdminEfectivo()!=null || tipoNotaCredito.getGastoAdminTarjeta()!=null) {
+					valorPenalidad = (postergacion.getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA? tipoNotaCredito.getGastoAdminTarjeta():tipoNotaCredito.getGastoAdminEfectivo());
+					aplicoPenalidad = valorPenalidad > .00;
+				}
+			}			
+			
+			if(chkFechaAbierta.isChecked() && aplicoPenalidad == false) { //Fecha abierta
+				tipoNotaCredito=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_POSTERGACION);
+				if(tipoNotaCredito.getGastoAdminEfectivo()!=null || tipoNotaCredito.getGastoAdminTarjeta()!=null) {
+					valorPenalidad = (postergacion.getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA? tipoNotaCredito.getGastoAdminTarjeta():tipoNotaCredito.getGastoAdminEfectivo());
+					aplicoPenalidad = valorPenalidad > .00;
+				}
+			}
+				
+			if(chkCambioNombre.isChecked() && aplicoPenalidad == false) { //Cambio de nombre
+				tipoNotaCredito=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CAMBIO_NOMBRE_PASAJERO);
+				if(tipoNotaCredito.getGastoAdminEfectivo()!=null || tipoNotaCredito.getGastoAdminTarjeta()!=null) {
+					valorPenalidad = (postergacion.getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA? tipoNotaCredito.getGastoAdminTarjeta():tipoNotaCredito.getGastoAdminEfectivo());
+					aplicoPenalidad = valorPenalidad > .00;
+				}
+			}
+				
+			if (chkCambioRuc.isChecked() && aplicoPenalidad ==false) { //Cambio Boleta a Factura
+				tipoNotaCredito=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CAMBIO_RUC);
+				if(tipoNotaCredito.getGastoAdminEfectivo()!=null || tipoNotaCredito.getGastoAdminTarjeta()!=null) {
+					valorPenalidad = (postergacion.getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA? tipoNotaCredito.getGastoAdminTarjeta():tipoNotaCredito.getGastoAdminEfectivo());
+					aplicoPenalidad = valorPenalidad > .00;
+				}
+			}
+			
+			if (chkCambioRazonSocial.isChecked() && aplicoPenalidad == false) { //Cambio Boleta a Factura
+				tipoNotaCredito=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CAMBIO_RAZON_SOCIAL);
+				if(tipoNotaCredito.getGastoAdminEfectivo()!=null || tipoNotaCredito.getGastoAdminTarjeta()!=null) {
+					valorPenalidad = (postergacion.getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA? tipoNotaCredito.getGastoAdminTarjeta():tipoNotaCredito.getGastoAdminEfectivo());
+					aplicoPenalidad = valorPenalidad > .00;
+				}
+			}
+			
+			if (chkCambioDireccionFiscal.isChecked() && aplicoPenalidad == false) { //Cambio Boleta a Factura
+				tipoNotaCredito=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CAMBIO_DIRECCION_FISCAL);
+				if(tipoNotaCredito.getGastoAdminEfectivo()!=null || tipoNotaCredito.getGastoAdminTarjeta()!=null) {
+					valorPenalidad = (postergacion.getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA? tipoNotaCredito.getGastoAdminTarjeta():tipoNotaCredito.getGastoAdminEfectivo());
+					aplicoPenalidad = valorPenalidad > .00;
+				}
+			}
+				
+			if (chkCambioBoletaFactura.isChecked() && aplicoPenalidad == false) { //Cambio Boleta a Factura
+				tipoNotaCredito=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CAMBIO_BOLETA_FACTURA);
+				if(tipoNotaCredito.getGastoAdminEfectivo()!=null || tipoNotaCredito.getGastoAdminTarjeta()!=null) {
+					valorPenalidad = (postergacion.getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA? tipoNotaCredito.getGastoAdminTarjeta():tipoNotaCredito.getGastoAdminEfectivo());
+					aplicoPenalidad = valorPenalidad > .00;
+				}
+			}
+			
+			if (chkCambioFacturaBoleta.isChecked() && aplicoPenalidad == false) { //Cambio Boleta a Factura
+				tipoNotaCredito=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CAMBIO_FACTURA_BOLETA);
+				if(tipoNotaCredito.getGastoAdminEfectivo()!=null || tipoNotaCredito.getGastoAdminTarjeta()!=null) {
+					valorPenalidad = (postergacion.getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA? tipoNotaCredito.getGastoAdminTarjeta():tipoNotaCredito.getGastoAdminEfectivo());
+					aplicoPenalidad = valorPenalidad > .00;
+				}
+			}
+//		}
 
 //		dblbxTarifa.setValue(detalleItinerario.getTarifa()<postergacion.getTarifa()?dblbxMontoAnterior.getValue():detalleItinerario.getTarifa());
 
@@ -2439,34 +2508,16 @@ public class WndPostergacion extends WndBase implements Serializable {
 			dblbxSaldo.setValue(.00);
 		}else
 			dblbxSaldo.setValue(saldo);
+
+		//Calculando la penalidad, tomando en cuenta la forma de pago (efectivo, tarjeta) - 17//11/2016 - update 7/11/2022 - jabanto		
+		dblbxPenalidad.setValue(valorPenalidad);
 		
-//		if(dblbxSaldo.getValue()<0)
-//			dblbxSaldo.setValue(0.00);
-
-		/*End begin 17/11/2016 - jabanto*/
-		//Calculando la penalidad, tomando en cuenta la forma de pago (efectivo, tarjeta)
-//		if(cmbTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago){
-//			TipoFormaPago tipoFormaPago=cmbTipoFormaPago.getSelectedItem().getValue();
-//			if(tipoFormaPago.getId().intValue()==Constantes.ID_TIPFORPAG_EFECTIVO)
-//				dblbxPenalidad.setValue(tipoNotaCredito!=null?tipoNotaCredito.getGastoAdminEfectivo():.00);
-//			else
-//				dblbxPenalidad.setValue(tipoNotaCredito!=null?tipoNotaCredito.getGastoAdminTarjeta():.00);
-//		}else
+//		if(postergacion.getTipoFormaPago().getId().intValue()!=Constantes.ID_TIPFORPAG_TARJETA)
 //			dblbxPenalidad.setValue(tipoNotaCredito!=null?tipoNotaCredito.getGastoAdminEfectivo():.00);
-
-
-			//Calculando la penalidad, tomando en cuenta la forma de pago (efectivo, tarjeta) - 17//11/2016 - jabanto
-		if(postergacion.getTipoFormaPago().getId().intValue()!=Constantes.ID_TIPFORPAG_TARJETA)
-			dblbxPenalidad.setValue(tipoNotaCredito!=null?tipoNotaCredito.getGastoAdminEfectivo():.00);
-		else
-			dblbxPenalidad.setValue(tipoNotaCredito!=null?tipoNotaCredito.getGastoAdminTarjeta():.00);
-
-
-//		if(dblbxSaldo.getValue()>=0)
-//			dblbxImporteTotal.setValue(dblbxSaldo.getValue()+dblbxPenalidad.getValue());
 //		else
-//			dblbxImporteTotal.setValue(dblbxPenalidad.getValue());
+//			dblbxPenalidad.setValue(tipoNotaCredito!=null?tipoNotaCredito.getGastoAdminTarjeta():.00);
 
+		//
 
 		//Calculando el importe total a pagar
 		lblSaldo.setValue("SALDO : ");
@@ -2750,4 +2801,11 @@ public class WndPostergacion extends WndBase implements Serializable {
 
 		return window;
 	}
+	
+	private Double calcularPenalidad()throws Exception{
+		
+		
+		return .00;
+	}
+	
 }

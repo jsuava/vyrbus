@@ -271,6 +271,12 @@ public class Constantes {
 	 */
 	public static final String ID_UBIGEO_LIMA = "150101";
 
+	/**
+	 * Identificadores de los tipo de impresion del sistema
+	 */
+//	public static final int FORMATO_IMPRESION_MATRICIAL = 999;
+	public static final int FORMATO_IMPRESION_TICKET = 1;
+	public static final int FORMATO_IMPRESION_A4 = 2;
 
 	/* Crados para la integracion del l os web service de Cruz del sur y civa*/
 	public static final String RUC_CRUZ_DEL_SUR="20100227461";
@@ -476,6 +482,7 @@ public class Constantes {
 	public static final int ID_TIPNOTA_CAMBIO_DIRECCION_FISCAL=3;
 	public static final int ID_TIPNOTA_CREDITO_DEVOLUCION=6;
 	public static final int ID_TIPNOTA_POSTERGACION=7;
+	public static final int ID_TIPNOTA_DUPLICADO=8;
 	public static final int ID_TIPNOTA_CAMBIO_NOMBRE_PASAJERO=9;
 	public static final int ID_TIPNOTA_CAMBIO_BOLETA_FACTURA=10;
 	public static final int ID_TIPNOTA_CAMBIO_FACTURA_BOLETA=11;

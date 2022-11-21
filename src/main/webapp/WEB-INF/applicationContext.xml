@@ -441,7 +441,9 @@
    	<bean id="detalleEquipajeDAO" class="com.cystesoft.vyrbus.model.dao.impl.DetalleEquipajeDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	
+   	<bean id="flagDAO" class="com.cystesoft.vyrbus.model.dao.impl.FlagDAOImpl">
+   		<property name="sessionFactory" ref="sessionFactory" />
+   	</bean>
    	
 <!--    	VENTA DE SEGUROS -->
 	<bean id="ventaSeguroDAO" class="com.cystesoft.vyrbus.model.dao.impl.VentaSeguroDAOImpl">
@@ -851,7 +853,9 @@
 	   <property name="equipajeDAO" ref="equipajeDAO" />
 	   <property name="controlEspecieValoradaDAO" ref="controlEspecieValoradaDAO"/>
 	</bean>
-	
+	<bean id="flagManager" class="com.cystesoft.vyrbus.service.business.impl.FlagManagerImpl">
+	   <property name="flagDAO" ref="flagDAO"/>	   
+	</bean>
 <!-- 	VENTA DE SEGUROS -->
 	<bean id="ventaSeguroManager" class="com.cystesoft.vyrbus.service.business.impl.VentaSeguroManagerImpl">
 		<property name="ventaSeguroDAO" ref="ventaSeguroDAO" />

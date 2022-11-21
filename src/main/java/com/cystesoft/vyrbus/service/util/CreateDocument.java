@@ -3837,6 +3837,7 @@ public class CreateDocument implements Serializable {
 					bw.write(linea + NEWLINE);
 					totalEgresosVentas += totalNotaCredito;
 				}
+				
 				//Agrega egresos para las ventas crédito
 				if(totalCredito > 0) {
 					linea=tabular(3)+"VENTA CRÉDITO";

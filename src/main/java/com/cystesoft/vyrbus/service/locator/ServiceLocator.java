@@ -970,4 +970,12 @@ public class ServiceLocator {
 	public static TranscarWebManager getTranscarWebManager(){
 		return (TranscarWebManager) SpringUtil.getBean("transcarWebManager",TranscarWebManager.class);
 	}
+	
+	/**
+	 * Obtiene el bean de FlagManager, para realizar la comunicación con la capa modelo
+	 * @return <b>FlagManager</b>
+	 */
+	public static FlagManager getFlagManager(){
+		return (FlagManager) SpringUtil.getBean("flagManager",FlagManager.class);
+	}
 }

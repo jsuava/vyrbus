@@ -51,7 +51,7 @@
 					</hbox>
 				</row>
 				<row>
-					<label value="Monto a cobrar por una reimpresión" sclass="label-size11" />
+					<label value="Monto a cobrar por una duplicado (reimpresión)" sclass="label-size11" />
 					<hbox align="center">
 						<intbox id="itMontoCobrarReimpresion" maxlength="2" width="30px" style="text-align: right;" />
 						<label value="Soles" sclass="label-size11" />
