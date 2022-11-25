@@ -2417,8 +2417,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 					}
 				});
 				btnHora.setImage("/resources/mp_reloj.png");
-				btnHora.setTooltiptext("Cambiar la hora del Itinerario");
-				hbox.appendChild(btnHora);
+				btnHora.setTooltiptext("Cambiar la hora del Itinerario");				
 				Button btnDuplicar = new Button();
 				btnDuplicar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 					@Override
@@ -2428,14 +2427,73 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 					}
 				});
 				btnDuplicar.setImage("/resources/mp_clone.png");
-				btnDuplicar.setTooltiptext("Duplicar el Itinerario");
-				hbox.appendChild(btnDuplicar);
+				btnDuplicar.setTooltiptext("Duplicar el Itinerario");				
+				
+				Button btnDisableVenta = new Button();
+				if(detalleItinerario.getItinerario().getFechaPartida()!=null)	
+					btnDisableVenta.setDisabled(detalleItinerario.getItinerario().getFechaPartida().getTime()<Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date())).getTime());
+				
+				if(detalleItinerario.getItinerario().getTipoItinerario().getId().intValue()==Constantes.ID_TIPITI_REGULAR) {
+					btnDisableVenta.setTooltiptext("Deshabilitar para la venta");
+					btnDisableVenta.setImage(btnDisableVenta.isDisabled()?"/resources/mp_cancelarDisabled.png":"/resources/mp_cancelarEnabled.png");
+				}else {
+					btnDisableVenta.setTooltiptext("Habilitar para la venta");
+					btnDisableVenta.setImage(btnDisableVenta.isDisabled()?"resources/mp_acceptDisabled.png": "/resources/mp_acceptEnabled.png");
+				}
+				btnDisableVenta.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+					@Override
+					public void onEvent(Event e) throws Exception {
+						// TODO Auto-generated method stub
+						DetalleItinerario detalleItinerario = ((Listitem)e.getTarget().getParent().getParent().getParent()).getValue();
+						habilitaDeshabilitaItinerarioForVenta(detalleItinerario);
+					}
+				});
+				
+				hbox.appendChild(btnDisableVenta);
+				hbox.appendChild(btnHora);
+				hbox.appendChild(btnDuplicar);				
 				cell.appendChild(hbox);
 				item.appendChild(cell);
+				
 
 				item.setValue(detalleItinerario);
 				listboxLista.appendChild(item);
 			}
+		}
+	}
+	
+	/**
+	 * Habilita/deshabilita un tienerario para la visualización en la venta
+	 * @param detalleItinerario
+	 */
+	private void habilitaDeshabilitaItinerarioForVenta(DetalleItinerario detalleItinerario) {
+		try {
+			boolean disabledForVenta = false;
+			Itinerario itinerario = ServiceLocator.getItinerarioManager().buscarPorId(detalleItinerario.getItinerario().getId());			
+			if(itinerario.getTipoItinerario().getId().intValue()==Constantes.ID_TIPITI_REGULAR) {
+				itinerario.setTipoItinerario(new TipoItinerario(Constantes.ID_TIPITI_ESPECIAL));
+				disabledForVenta = true;
+			}else {
+				itinerario.setTipoItinerario(new TipoItinerario(Constantes.ID_TIPITI_REGULAR));
+			}
+			UtilData.auditarRegistro(itinerario, true, getUsuario(), Executions.getCurrent());
+			
+			if(detalleItinerario!=null && detalleItinerario.getItinerario()!=null) {
+				Messagebox.show(Messages.getString(disabledForVenta?"WndItinerario.Question.ConfirmaDesabledVenta":"WndItinerario.Question.ConfirmaEnabledVenta"),DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
+					@Override
+					public void onEvent(Event e) throws Exception {
+						if(e.getName().equals("onYes")){
+							ServiceLocator.getItinerarioManager().actualizar(itinerario);
+							
+							listarItinerarios(ServiceLocator.getItinerarioManager().buscarItinerariosMantenimiento(iItinerario, sOrigen,
+									sDestino, Constantes.FORMAT_DATE.format(fechaInicio), Constantes.FORMAT_DATE.format(fechaFinal),
+									sServicio,tipoDeItinerario, criterioOrden));
+						}
+					}
+				});								
+			}			
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
