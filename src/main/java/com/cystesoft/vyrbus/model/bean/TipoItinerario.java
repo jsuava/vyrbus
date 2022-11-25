@@ -14,7 +14,11 @@ public class TipoItinerario extends GenericBean implements java.io.Serializable 
 
 	public TipoItinerario() {
 	}
-
+	
+	public TipoItinerario(Integer id) {
+		this.id = id;
+	}
+	
 	public Integer getId() {
 		return this.id;
 	}
