@@ -335,8 +335,8 @@ public class Constantes {
 	/*Constantes que refieren al Servicio*/
 	public static final int ID_SERVICIO_TEPSASUITE=4;
 	public static final int ID_SERVICIO_TEPSACAMASUITE=5;
-	public static final int ID_SERVICIO_POOL_CRUZDELSUR=6;
-	public static final int ID_SERVICIO_POOL_EXCLUCIVA=7;
+	public static final int ID_SERVICIO_POOL_CRUZDELSUR=99;
+	public static final int ID_SERVICIO_POOL_EXCLUCIVA=98;
 
 
 	/*	Para saber si es una venta o reserva DB	*/

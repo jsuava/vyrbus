@@ -204,6 +204,13 @@ public class WndManifiesto extends WndBase {
 //					impresionesManifiesto(IMPRESION_LISTADO_PASAJEROS,false,"",null);
 //				}
 				
+				if(cmbImprimir.getSelectedItem().getValue().equals(IMPRESION_CARPETA_DESPACHO) || cmbImprimir.getSelectedItem().getValue().equals(IMPRESION_MANIFIESTO_PASAJEROS)) {
+					if(cmbPuntocontrol.getSelectedIndex()<=0) {
+						DlgMessage.information(Messages.getString("WndManifiesto.information.noSelectPuntoControl"), cmbPuntocontrol);
+						return;
+					}
+				}				
+				
 				if(cmbImprimir.getSelectedItem().getValue().equals(IMPRESION_CARPETA_DESPACHO)){
 					tipoImpresion(IMPRESION_CARPETA_DESPACHO);
 			

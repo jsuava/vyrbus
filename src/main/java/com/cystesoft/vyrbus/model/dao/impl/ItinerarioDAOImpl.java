@@ -305,6 +305,10 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 	 */
 	@Override
 	public List<Object> validateCapacity(Long idItinerario, Integer asiento, Integer piso) throws Exception {
+		
+		
+		
+		
 		String sql = "SELECT s.c_denominacion, s.n_numasipis1, s.n_numasipis2 " +
 				"FROM vrtitinerario i " +
 				"INNER JOIN vrmservicio s ON s.servicio_id=i.servicio_id " +
@@ -316,15 +320,17 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[])result.get(i);
 			if(piso==0){
-				if(Integer.valueOf(obj[1].toString())<asiento)
-					lstResult.add(true);
-				else
+				//Comentado hasta realizar un análisis en donde se determine si es o no necesaría esta validación - 26/11/2022 - jabanto
+//				if(Integer.valueOf(obj[1].toString())<asiento)
+//					lstResult.add(true);
+//				else
 					lstResult.add(false);
 				lstResult.add(obj[0].toString());
 			}else{
-				if((Integer.valueOf(obj[1].toString()) + Integer.valueOf(obj[2].toString()))<asiento)
-					lstResult.add(true);
-				else
+				//Comentado hasta realizar un análisis en donde se determine si es o no necesaría esta validación - 26/11/2022 - jabanto
+//				if((Integer.valueOf(obj[1].toString()) + Integer.valueOf(obj[2].toString()))<asiento)
+//					lstResult.add(true);
+//				else
 					lstResult.add(false);
 				lstResult.add(obj[0].toString());
 			}
