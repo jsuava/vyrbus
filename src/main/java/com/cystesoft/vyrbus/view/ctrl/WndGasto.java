@@ -329,19 +329,30 @@ public class WndGasto extends WndOpcionesMantenimiento {
 			if(liquidacion==null || liquidacion.getestadoLiquidacion().equals(Constantes.LIQUI_ESTA_CERRADO))
 				throw new LiquidacionNullException();
 
-			Double totalVentasEfectivo=ServiceLocator.getVentaPasajesManager().buscaTotalVentasEfectivo(getUsuario().getId(), getAgencia().getId(), Constantes.FORMAT_DATE.format(dbFecha.getValue()));
+			//Ventas en efectivo - vyrbus
+			Double totalVentasEfectivo_vyr = ServiceLocator.getVentaPasajesManager().buscaTotalVentasEfectivo(getUsuario().getId(), getAgencia().getId(), Constantes.FORMAT_DATE.format(dbFecha.getValue()));
+			
+			//Ventas en efectivo - transcar
+			Double totalVentasEfectivo_transcarweb = ServiceLocator.getTranscarWebManager().buscaTotalVentasEfectivo(getUsuario().getLogin(), getAgencia().getId(), Constantes.FORMAT_DATE.format(dbFecha.getValue()));
+			
+			//Total Gastos registrados
 			Double totalGastos=ServiceLocator.getGastoManager().BuscarTotalGastos(Constantes.FORMAT_DATE.format(dbFecha.getValue()), getUsuario().getId(), getAgencia().getId());
-
+			
+			
+			Double totalVentasEfectivo = .00;
+			totalVentasEfectivo += + totalVentasEfectivo_vyr;
+			totalVentasEfectivo += + totalVentasEfectivo_transcarweb;
+			
 			if(action==ACTION_NEW){
-				totalGastos+=+dbMonto.getValue();
+				totalGastos += + dbMonto.getValue();
 			}else{
-				totalGastos+=+dbMonto.getValue()-gasto.getMonto();
+				totalGastos += + (dbMonto.getValue() - gasto.getMonto());
 			}
 
 			if(isClikSaved)
 				return;
 
-			if(totalVentasEfectivo<totalGastos && rbGasto.isChecked())
+			if(totalVentasEfectivo < totalGastos && rbGasto.isChecked())
 				throw new GastosException(GastosException.MONTO_GASTO_MAYOR_VENTAS);
 
 			if (action==ACTION_NEW)

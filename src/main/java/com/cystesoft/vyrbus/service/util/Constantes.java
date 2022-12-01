@@ -438,6 +438,11 @@ public class Constantes {
 	public static final int ID_TIPCOM_GUIA_TRANSPORTISTA=10;
 	public static final int ID_TIPCOM_TICKET_EQUIPAJE=11;
 
+	/* Constantes que referencian a los identificadores de los tipos de documento en transcarweb */
+	public static final int TRANSCARWEB_ID_TIPCOM_PCE=3;
+	
+	
+	
 	/* Constantes que referencian a los Motivos de Cortesia*/
 	public static final int ID_MOTCOR_OTROS=14;
 

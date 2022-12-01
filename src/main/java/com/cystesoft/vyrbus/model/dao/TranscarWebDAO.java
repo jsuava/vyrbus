@@ -165,4 +165,13 @@ public interface TranscarWebDAO {
 	 */
 	public List<ResumenVentas> buscarResumenVentas(String fechaDesde, String fechaHasta);
 
+	/**
+	 * Busca el total de ventas en efectivo de un detarmido usuario, Esto es para validar el ingreso de gastos a la liquidacion.
+	 * @param idUsuario	: Identificador del usuario
+	 * @param idAgencia	: Identificador de la agencia
+	 * @param fecha		: Fecha de la venta.
+	 * @return Total ventas en efectivo
+	 * @throws Exception
+	 */
+	public Double buscaTotalVentasEfectivo(String loginUsuario,Integer idAgencia, String fecha) throws Exception;
 }

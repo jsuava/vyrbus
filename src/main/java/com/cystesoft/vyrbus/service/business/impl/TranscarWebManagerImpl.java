@@ -204,4 +204,13 @@ public class TranscarWebManagerImpl implements TranscarWebManager{
 		// TODO Auto-generated method stub
 		return getTranscarWebDAO().buscarResumenVentas(fechaDesde, fechaHasta);
 	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.TranscarWebManager#buscaTotalVentasEfectivo(java.lang.Integer, java.lang.Integer, java.lang.String)
+	 */
+	@Override
+	public Double buscaTotalVentasEfectivo(String loginUsuario, Integer idAgencia, String fecha) throws Exception {
+		// TODO Auto-generated method stub
+		return getTranscarWebDAO().buscaTotalVentasEfectivo(loginUsuario, idAgencia, fecha);
+	}
 }
