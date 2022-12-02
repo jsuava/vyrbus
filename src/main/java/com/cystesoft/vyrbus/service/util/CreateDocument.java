@@ -2539,7 +2539,7 @@ public class CreateDocument implements Serializable {
 	 * @param esManiesto : true(es Manifiesto), false(es linstado de pasajeros)
 	 * @return
 	 */
-	public static final File creaManifiesto_ListPax(Manifiesto manifiesto, Usuario usuario, Agencia agencia, Boolean esManiesto, String rotulo){
+	public static final File creaManifiesto_ListPax(Manifiesto manifiesto, Usuario usuario, Agencia agencia, Boolean esManiesto, String rotulo, Integer agenciaIdPArtida){
 		Itinerario itinerario= new Itinerario();
 		itinerario=ServiceLocator.getItinerarioManager().buscarPorId(manifiesto.getItinerario().getId());
 		WndManifiesto wndmanifiesto = new WndManifiesto();
@@ -2694,7 +2694,7 @@ public class CreateDocument implements Serializable {
 			creaEncabezadoManifiesto(bw);
 
 			//---> linea 13: Detalle pasajeros
-			List<VentaPasaje> list=ServiceLocator.getManifiestoManager().consultaPasajeros(itinerario.getId(),null);
+			List<VentaPasaje> list=ServiceLocator.getManifiestoManager().consultaPasajeros(itinerario.getId(), agenciaIdPArtida);
 
 			/*Crea detalle */
 			bw.write(linea+NEWLINE);

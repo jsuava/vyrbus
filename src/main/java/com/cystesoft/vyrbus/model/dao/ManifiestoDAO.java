@@ -52,7 +52,7 @@ public interface ManifiestoDAO  extends GenericDAO {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<VentaPasaje> consultaDetaPaxXRuta(Long idItinerario) throws Exception;
+	public List<VentaPasaje> consultaDetaPaxXRuta(Long idItinerario, Integer agenciaIdPartida) throws Exception;
 
 	/**
 	 * Consulta datos de autorizaci�n por la Sunat. (numero de autorizaci�n, serie y munero de manifiesto)

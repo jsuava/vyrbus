@@ -662,7 +662,7 @@ public class WndAvanceVentas extends WndBase implements Serializable{
 	}
 
 	public  void enlazarVerMapa(String idItinerario, String idRuta, Integer ocupados) throws Exception {
-		List<VentaPasaje> lisOpabilidad = ServiceLocator.getManifiestoManager().consultaDetaPaxXRuta(Long.valueOf(idItinerario));
+		List<VentaPasaje> lisOpabilidad = ServiceLocator.getManifiestoManager().consultaDetaPaxXRuta(Long.valueOf(idItinerario), null);
 
 		final WndVerMapaAvance oWndSeleccionaItinerario = new WndVerMapaAvance();
 		oWndSeleccionaItinerario.setIdItinerario(new Long (idItinerario));

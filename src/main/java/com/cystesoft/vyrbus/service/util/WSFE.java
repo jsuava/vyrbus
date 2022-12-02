@@ -507,7 +507,7 @@ public class WSFE implements Serializable{
 					totalEfectivo += _liquidacion.getImporte();
 					cantidadEfectivo ++;
 					
-					if(_liquidacion.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA) {
+					if(_liquidacion.getTipoComprobante().getId().intValue()==Constantes.TRANSCARWEB_ID_TIPCOM_PCE) {
 						totalCredito += _liquidacion.getImporte();
 						cantidadCredito ++;
 					}

@@ -204,6 +204,13 @@ public class WndManifiesto extends WndBase {
 //					impresionesManifiesto(IMPRESION_LISTADO_PASAJEROS,false,"",null);
 //				}
 				
+//				if(cmbImprimir.getSelectedItem().getValue().equals(IMPRESION_CARPETA_DESPACHO) || cmbImprimir.getSelectedItem().getValue().equals(IMPRESION_MANIFIESTO_PASAJEROS)) {
+//					if(cmbPuntocontrol.getSelectedIndex()<=0) {
+//						DlgMessage.information(Messages.getString("WndManifiesto.information.noSelectPuntoControl"), cmbPuntocontrol);
+//						return;
+//					}
+//				}				
+				
 				if(cmbImprimir.getSelectedItem().getValue().equals(IMPRESION_CARPETA_DESPACHO)){
 					tipoImpresion(IMPRESION_CARPETA_DESPACHO);
 			
@@ -389,8 +396,14 @@ public class WndManifiesto extends WndBase {
 	 * @throws Exception
 	 */
 	public void onRefresh() throws Exception{
-		if (!(txtItinerario.getText().trim().isEmpty()))
-			cargarManifiesto(new Long(txtItinerario.getText()), itinerario.getRuta().getOrigen(),itinerario.getRuta().getDestino());
+		if (!(txtItinerario.getText().trim().isEmpty())) {
+			Integer agenciaIdPartida = null;
+//			if(cmbPuntocontrol.getSelectedItem().getValue() instanceof Agencia)
+//				agenciaIdPartida = ((Agencia)cmbPuntocontrol.getSelectedItem().getValue()).getId();
+			
+			cargarManifiesto(new Long(txtItinerario.getText()), itinerario.getRuta().getOrigen(),itinerario.getRuta().getDestino(), agenciaIdPartida);
+		}
+			
 	}
 
 	/**
@@ -698,7 +711,7 @@ public class WndManifiesto extends WndBase {
 	 * Carga Manifiesto.
 	 * @throws Exception
 	 */
-	public void cargarManifiesto(Long idItinerario, String tramoOrigen, String tramoDestino) throws Exception{
+	public void cargarManifiesto(Long idItinerario, String tramoOrigen, String tramoDestino, Integer agenciaIdPartida) throws Exception{
 			limpiaItinerario();
 			Util.limpiarListbox(ListPasajeros);
 			Util.limpiarListbox(listDetaPaxRuta);
@@ -706,10 +719,10 @@ public class WndManifiesto extends WndBase {
 			/*datos del itinerario*/
 			cargarItinerario(idItinerario, tramoOrigen, tramoDestino);
 			/*lista de pasajeros*/
-			List<VentaPasaje>listaVentaPasajes=ServiceLocator.getManifiestoManager().consultaPasajeros(idItinerario,null);
+			List<VentaPasaje>listaVentaPasajes=ServiceLocator.getManifiestoManager().consultaPasajeros(idItinerario, agenciaIdPartida);
 			cargaPasajeros(listaVentaPasajes);
 			/*Detalle de pasajeros por ruta*/
-			lisOpabilidad=ServiceLocator.getManifiestoManager().consultaDetaPaxXRuta(idItinerario);
+			lisOpabilidad=ServiceLocator.getManifiestoManager().consultaDetaPaxXRuta(idItinerario, agenciaIdPartida);
 			cargaDetallePasajeroXRuta(lisOpabilidad);
 			/*Pasajeros por forma de Pago*/
 			cargarPasajerosByFormaPago(listaVentaPasajes);
@@ -792,11 +805,16 @@ public class WndManifiesto extends WndBase {
 						if(cmbPuntocontrol.getSelectedIndex()<0){
 							if(cmbPuntocontrol.getItems().size()>0)
 								cmbPuntocontrol.setSelectedIndex(0);
-						}
+						}						
+						
+						Integer agenciaIdPartida = null;
+						if(cmbPuntocontrol.getSelectedItem().getValue() instanceof Agencia)
+							agenciaIdPartida = ((Agencia)cmbPuntocontrol.getSelectedItem().getValue()).getId();
+						
 //							cmbPuntocontrol.setSelectedIndex(0);
 //						Util.seleccionarValorItemCombo(Agencia.class, cmbPuntocontrol,((Localidad) oWndSeleccionaItinerario.cmbOrigen.getSelectedItem().getValue()).getId());
 						/*Carga Manifiesto*/
-						cargarManifiesto(oWndSeleccionaItinerario.getIdItinerario(), oWndSeleccionaItinerario.getOrigen(), oWndSeleccionaItinerario.getItinerario().getRuta().getDestino());
+						cargarManifiesto(oWndSeleccionaItinerario.getIdItinerario(), oWndSeleccionaItinerario.getOrigen(), oWndSeleccionaItinerario.getItinerario().getRuta().getDestino(), agenciaIdPartida);
 					}
 				});
 			}
@@ -921,7 +939,13 @@ public class WndManifiesto extends WndBase {
 			itinerario.setAgenciaPartida(agencia);
 			if(isPrintLasert==false){
 				File file=CreateDocument.creaCarpetaDespacho(itinerario, getAgencia());
-				src = Constantes.URL_FORMATOS_DESPACHOS+Constantes.CLAVE_PAHT+"CARDES"+ itinerario.getId()+"-"+agencia.getId()+".txt";
+				String fileName = itinerario.getId().toString();
+				if(agencia !=null)
+					fileName += "-" + agencia.getId().toString();
+				fileName += ".txt";
+				
+				src = Constantes.URL_FORMATOS_DESPACHOS+Constantes.CLAVE_PAHT+"CARDES"+ fileName;
+//				src = Constantes.URL_FORMATOS_DESPACHOS+Constantes.CLAVE_PAHT+"CARDES"+ itinerario.getId()+"-"+agencia.getId()+".txt";
 				iFrame.setWidth("1035");
 				
 				if(esPrevio==false){//Descarga el archivo para la impresion				
@@ -998,9 +1022,10 @@ public class WndManifiesto extends WndBase {
 				manifiesto.setItinerario(itinerario);
 			}
 			
-			File fileSunat= CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),true,ROTULO_SUNAT);
-			final File fileTransp=CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),true,ROTULO_TRANSPORTISTA);
-			final File fileArchivo=CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),true,ROTULO_ARCHIVO);
+			
+			File fileSunat= CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),true,ROTULO_SUNAT, null);
+			final File fileTransp=CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),true,ROTULO_TRANSPORTISTA, null);
+			final File fileArchivo=CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),true,ROTULO_ARCHIVO, null);
 						
 			src = Constantes.URL_FORMATOS_MANIFIESTOS+Constantes.CLAVE_PAHT +"MANPAX"+ itinerario.getId()+"-"+ROTULO_SUNAT+".txt";
 			src1 = Constantes.URL_FORMATOS_MANIFIESTOS+Constantes.CLAVE_PAHT +"MANPAX"+ itinerario.getId()+"-"+ROTULO_TRANSPORTISTA+".txt";
@@ -1101,7 +1126,11 @@ public class WndManifiesto extends WndBase {
 				manifiesto.setItinerario(itinerario);
 			}
 			
-			File fileListaPax= CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),false,"");
+			Integer agenciaIdPartida = null;
+			if(cmbPuntocontrol.getSelectedItem().getValue() instanceof Agencia)
+				agenciaIdPartida = ((Agencia)cmbPuntocontrol.getSelectedItem().getValue()).getId();
+			
+			File fileListaPax= CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),false,"", agenciaIdPartida);
 			
 			src = Constantes.URL_FORMATOS_LISTADOS + Constantes.CLAVE_PAHT + "LSTPAX"+ itinerario.getId()+".txt";
 			iFrame.setWidth("1115");
@@ -1223,9 +1252,9 @@ public class WndManifiesto extends WndBase {
 				manifiesto.setItinerario(itinerario);
 			}
 
-			File fileSunat= CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),true,ROTULO_SUNAT);
-			final File fileTransp=CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),true,ROTULO_TRANSPORTISTA);
-			final File fileArchivo=CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),true,ROTULO_ARCHIVO);
+			File fileSunat= CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),true,ROTULO_SUNAT, null);
+			final File fileTransp=CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),true,ROTULO_TRANSPORTISTA, null);
+			final File fileArchivo=CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),true,ROTULO_ARCHIVO, null);
 
 //			src = Constantes.URL_FORMATOS_MANIFIESTOS +"MANPAX-"+ itinerario.getId()+"-"+ROTULO_SUNAT+".txt";
 //			src1 = Constantes.URL_FORMATOS_MANIFIESTOS +"MANPAX-"+ itinerario.getId()+"-"+ROTULO_TRANSPORTISTA+".txt";
@@ -1318,7 +1347,7 @@ public class WndManifiesto extends WndBase {
 				manifiesto.setItinerario(itinerario);
 			}
 
-			File fileListaPax= CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),false,"");
+			File fileListaPax= CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),false,"", null);
 
 //			src = Constantes.URL_FORMATOS_LISTADOS + "LSTPAX-"+ itinerario.getId()+".txt";
 			src = Constantes.URL_FORMATOS_LISTADOS + Constantes.CLAVE_PAHT + "LSTPAX"+ itinerario.getId()+".txt";
@@ -2268,28 +2297,37 @@ private XmlCarpetaDespacho generatedXmlCarpetaDespacho(Itinerario itinerario)thr
 				
 		List<MapaBus> resultMapaBus= ServiceLocator.getMapaBusManager().buscarMapaBus(itinerario.getServicio().getId(), Constantes.VALUE_ACTIVO);
 		XmlItemDetalleDespacho itemDetalleDespacho= new XmlItemDetalleDespacho();
-		int fila_old=0;		
-		for(MapaBus mapaBus : resultMapaBus){
-			if(mapaBus.getNumeroAsiento()!=null){
-				if(mapaBus.getNumeroFila().intValue()!=fila_old){
-					asientosFilas.add(itemDetalleDespacho);
-					itemDetalleDespacho= new XmlItemDetalleDespacho();					
-				}
-				if(mapaBus.getNumeroColumna().intValue()==0)
-					itemDetalleDespacho.setC1_asiento(mapaBus.getNumeroAsiento().toString());
-				else if(mapaBus.getNumeroColumna().intValue()==1)
-					itemDetalleDespacho.setC2_asiento(mapaBus.getNumeroAsiento().toString());
-				else if(mapaBus.getNumeroColumna().intValue()==3)
-					itemDetalleDespacho.setC3_asiento(mapaBus.getNumeroAsiento().toString());
-				else if(mapaBus.getNumeroColumna().intValue()==4)
-					itemDetalleDespacho.setC4_asiento(mapaBus.getNumeroAsiento().toString());					
-								
-				fila_old=mapaBus.getNumeroFila();				
+		
+		int fila_old=0;								
+		for(int piso=0; piso < itinerario.getServicio().getNumeroPisos(); piso++) {
+			for(MapaBus mapaBus : resultMapaBus){
+				if(mapaBus.getNumeroAsiento()!=null && mapaBus.getNumeroPiso()!=null && mapaBus.getNumeroPiso().intValue()==piso){
+					if(mapaBus.getNumeroFila().intValue()!=fila_old){
+						asientosFilas.add(itemDetalleDespacho);
+						itemDetalleDespacho= new XmlItemDetalleDespacho();					
+					}
+					if(mapaBus.getNumeroColumna().intValue()==0)
+						itemDetalleDespacho.setC1_asiento(mapaBus.getNumeroAsiento().toString());
+					else if(mapaBus.getNumeroColumna().intValue()==1)
+						itemDetalleDespacho.setC2_asiento(mapaBus.getNumeroAsiento().toString());
+					else if(mapaBus.getNumeroColumna().intValue()==3)
+						itemDetalleDespacho.setC3_asiento(mapaBus.getNumeroAsiento().toString());
+					else if(mapaBus.getNumeroColumna().intValue()==4)
+						itemDetalleDespacho.setC4_asiento(mapaBus.getNumeroAsiento().toString());					
+									
+					fila_old=mapaBus.getNumeroFila();				
+				}			
 			}			
 		}
+		
 		asientosFilas.add(itemDetalleDespacho);
 		
-		List<VentaPasaje> list=ServiceLocator.getManifiestoManager().consultaPasajeros(itinerario.getId(),itinerario.getAgenciaPartida().getId());		
+		
+		Integer agenciaIdPartida = null;
+		if(itinerario.getAgenciaPartida()!=null)
+			agenciaIdPartida = itinerario.getAgenciaPartida().getId();
+			
+		List<VentaPasaje> list=ServiceLocator.getManifiestoManager().consultaPasajeros(itinerario.getId(), agenciaIdPartida);		
 		List<XmlItemDetalleDespacho> listDetalleCarpeta= new ArrayList<>();
 		int totalFrecuentes=0;
 		String asientosFrecuentes="";
@@ -2382,11 +2420,15 @@ private XmlCarpetaDespacho generatedXmlCarpetaDespacho(Itinerario itinerario)thr
 			listDetalleCarpeta.add(xmlItemDetalleDespacho);
 		}
 		
+		Integer totalAsientos = itinerario.getServicio().getNumeroAsientosPiso1();
+		if(itinerario.getServicio().getNumeroAsientosPiso2()!=null)
+			totalAsientos += + itinerario.getServicio().getNumeroAsientosPiso2();
+		
 		XmlDetalleCarpetaDespacho xmlDetalleCarpetaDespacho= new XmlDetalleCarpetaDespacho();
 		xmlDetalleCarpetaDespacho.setXmlItemDetalleDespacho(listDetalleCarpeta);
 		xmlCarpetaDespacho.setXmlDetalleCarpetaDespacho(xmlDetalleCarpetaDespacho);
 		xmlCarpetaDespacho.setTotalPasajeros(list.size());
-		xmlCarpetaDespacho.setTotalAsientos(itinerario.getServicio().getNumeroAsientosPiso1());
+		xmlCarpetaDespacho.setTotalAsientos(totalAsientos);
 		xmlCarpetaDespacho.setTotalFrecuentes(totalFrecuentes);
 		if(!(asientosFrecuentes.isEmpty()))
 			xmlCarpetaDespacho.setAsientosFrecuentes("Asientos [" + asientosFrecuentes + "]");
@@ -2430,16 +2472,30 @@ private XmlCarpetaDespacho generatedXmlCarpetaDespacho(Itinerario itinerario)thr
 		
 		/*Detalle Manifiesto*/
 		List<XmlItemDetalleManifiesto> listItemDetalleManifiesto= new ArrayList<>();
-		List<VentaPasaje> listPasajeros=ServiceLocator.getManifiestoManager().consultaPasajeros(itinerario.getId(),null);
-		
+		List<VentaPasaje> listPasajeros=ServiceLocator.getManifiestoManager().consultaPasajeros(itinerario.getId(), null);
+				
 		int asientosServicio=itinerario.getServicio().getNumeroAsientosPiso1();
+		if(itinerario.getServicio().getNumeroAsientosPiso2()!=null)
+			asientosServicio += + itinerario.getServicio().getNumeroAsientosPiso2();
+		
 		for(int i=0;i<asientosServicio;i++){
-			Integer asiento=i+1;
+			Integer asiento=i+1;			
 			
-			String asientos[]=getAsientos_IdForGenManifiesto(listPasajeros, asiento, 0).split(";");
-			if(asientos[0].toString().length()>0){
-				for(int ar=0;ar<asientos.length;ar++){
-					long idForGenManifiesto=Long.valueOf(asientos[ar].split("-")[1]);
+			String asientos="";
+			for(VentaPasaje ventaPasaje: listPasajeros){
+				if(ventaPasaje.getNumeroAsiento().equals(asiento)){
+					if(asientos.length()==0)
+						asientos=ventaPasaje.getNumeroAsiento().toString()+"-"+ventaPasaje.getId().toString();
+					else
+						asientos+=";"+ventaPasaje.getNumeroAsiento().toString()+"-"+ventaPasaje.getId().toString();
+				}
+			}
+			
+			String arrayAsientos[] = asientos.split(";");
+//			String asientos[]=getAsientos_IdForGenManifiesto(listPasajeros, asiento, piso).split(";");
+			if(arrayAsientos[0].toString().length()>0){
+				for(int ar=0;ar<arrayAsientos.length;ar++){
+					long idForGenManifiesto=Long.valueOf(arrayAsientos[ar].split("-")[1]);
 					for(VentaPasaje ventaPasaje : listPasajeros){
 						if((ventaPasaje.getId().longValue())==idForGenManifiesto){							
 							XmlItemDetalleManifiesto xmlItemDetalleManifiesto=null;
@@ -2456,6 +2512,8 @@ private XmlCarpetaDespacho generatedXmlCarpetaDespacho(Itinerario itinerario)thr
 							xmlItemDetalleManifiesto.setFormaPago(ventaPasaje.getFormaPago().getDenominacion());
 							xmlItemDetalleManifiesto.setImporte(Util.toNumberFormat(ventaPasaje.getImportePagado(),2));							
 							listItemDetalleManifiesto.add(xmlItemDetalleManifiesto);
+							
+							break;
 						}					
 					}				
 				}			

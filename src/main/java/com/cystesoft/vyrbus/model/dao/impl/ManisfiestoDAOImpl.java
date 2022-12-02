@@ -341,7 +341,7 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 	}
 
 	@Override
-	public List<VentaPasaje> consultaDetaPaxXRuta(Long idItinerario)throws Exception {
+	public List<VentaPasaje> consultaDetaPaxXRuta(Long idItinerario, Integer agenciaIdPartida)throws Exception {
 		String sql="SELECT  lo.c_denominacion Origen, ld.c_denominacion Destino, count(v.venpas_id) CantPax,r.ruta_id, "+ //0-3
 						" lo.localidad_id idlocalorigen, ld.localidad_id idlocaldestino "+// 4-5
 					"FROM vrtvenpas v " +
@@ -351,7 +351,9 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 						"INNER JOIN vrmruta r ON (r.ruta_id=v.ruta_id) "+
 						"INNER JOIN vrmlocalidad lo ON (lo.localidad_id=r.localidad_idorigen) "+
 						"INNER JOIN vrmlocalidad ld ON (ld.localidad_id=r.localidad_iddestino) "+
-					"WHERE  v.itinerario_id="+idItinerario+ " And v.c_tiptra=1 And v.c_estreg='A' AND v.tipmov_id not in ("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+ Constantes.ID_TIPMOV_DEVOLUCION+","+ Constantes.ID_TIPMOV_ANULACION+") "+
+					"WHERE v.itinerario_id="+idItinerario+ " And v.c_tiptra=1 And v.c_estreg='A' "
+					+ "AND v.tipmov_id not in ("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+ Constantes.ID_TIPMOV_DEVOLUCION+","+ Constantes.ID_TIPMOV_ANULACION+") "
+					+ "AND v.Agencia_Idpartida=NVL("+agenciaIdPartida+",v.Agencia_Idpartida) " +
 					"GROUP BY lo.c_denominacion, ld.c_denominacion, v.d_fecpar /*, v.c_horpar*/,r.ruta_id, lo.localidad_id,ld.localidad_id  "+
 					"ORDER BY v.d_fecpar /*, v.c_horpar*/";
 

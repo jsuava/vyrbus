@@ -335,8 +335,8 @@ public class Constantes {
 	/*Constantes que refieren al Servicio*/
 	public static final int ID_SERVICIO_TEPSASUITE=4;
 	public static final int ID_SERVICIO_TEPSACAMASUITE=5;
-	public static final int ID_SERVICIO_POOL_CRUZDELSUR=6;
-	public static final int ID_SERVICIO_POOL_EXCLUCIVA=7;
+	public static final int ID_SERVICIO_POOL_CRUZDELSUR=99;
+	public static final int ID_SERVICIO_POOL_EXCLUCIVA=98;
 
 
 	/*	Para saber si es una venta o reserva DB	*/
@@ -438,6 +438,11 @@ public class Constantes {
 	public static final int ID_TIPCOM_GUIA_TRANSPORTISTA=10;
 	public static final int ID_TIPCOM_TICKET_EQUIPAJE=11;
 
+	/* Constantes que referencian a los identificadores de los tipos de documento en transcarweb */
+	public static final int TRANSCARWEB_ID_TIPCOM_PCE=3;
+	
+	
+	
 	/* Constantes que referencian a los Motivos de Cortesia*/
 	public static final int ID_MOTCOR_OTROS=14;
 

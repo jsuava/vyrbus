@@ -984,6 +984,44 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 		
 		return lstVentas;
 	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.TranscarWebDAO#buscaTotalVentasEfectivo(java.lang.Integer, java.lang.Integer, java.lang.String)
+	 */
+	@Override
+	public Double buscaTotalVentasEfectivo(String loginUsuario, Integer idAgencia, String fecha) throws Exception {
+		
+		Integer agencia_idtranscar = idAgencia;
+		if(agencia_idtranscar!=null) {
+			agencia_idtranscar = UtilData.getAgencia_Idtranscarweb(idAgencia);
+			//Valida que la agencia del vyrbus este asociada a la del transcar web
+			if(agencia_idtranscar==null) {
+				throw new Exception(Messages.getString("Generales.informacion.agenciaNoAsociadaTranscarweb"));
+			}
+		}
+		
+		//Busca el identificador del usuario en transcar web
+		Integer idUsuario = 0;
+		TranscarUsuarioPersonal usuarioPersonal = buscarUsuario(loginUsuario);
+		if(usuarioPersonal !=null)
+			idUsuario = usuarioPersonal.getId();
+		
+		//
+		String sql = "SELECT COALESCE(SUM(ev.n_total),0) AS totalVentaEfectivo, null " + 
+				"FROM tctenvcon ev " + 
+				"WHERE ev.forpag_id = "+ Constantes.ID_FORPAG_CONTADO +" AND ev.tippag_id = "+ Constantes.ID_TIPFORPAG_EFECTIVO + " " +
+				"  AND ev.c_estreg = '"+ Constantes.FALSE_VALUE +"' " + 
+				"  AND ev.d_fecanu IS NULL AND ev.usuario_idanula IS NULL " + 
+				"  AND ev.usuario_id =  "+ idUsuario +"  AND ev.agencia_idventa = "+ agencia_idtranscar +" AND ev.d_fecven = to_date('"+ fecha +"', 'dd/MM/yyyy') ";
+		
+		Log.info("buscaTotalVentasEfectivo: " + sql);
+				
+		List<?> result = getJdbcTemplate().queryForList(sql);
+		Map<String, Object> map = (Map<String, Object>)result.get(0);
+		Double total = ((BigDecimal) map.get("totalVentaEfectivo")).doubleValue();
+		
+		return total;
+	}
 	
 	
 }
