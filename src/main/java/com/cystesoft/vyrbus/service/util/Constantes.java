@@ -349,24 +349,31 @@ public class Constantes {
 	public static final String TIPO_OPERACION_PERDIDA_SERVICIO = "7";
 
 	/* Constantes que referencian al rol */
-	public static final int ID_ROL_ASISTENTE_ADMIN_COMERCIAL=17;
-	public static final int ID_ROL_GERENCIA_COMERCIAL=2;
-	public static final int ID_ROL_JEFE_VENTAS=3;
-	public static final int ID_ROL_FUNCIONARIO=4;
-	public static final int ID_ROL_ADMIN=5;
-	public static final int ID_ROL_FINANZAS=10;
+//	public static final int ID_ROL_ASISTENTE_ADMIN_COMERCIAL=17;
+//	public static final int ID_ROL_GERENCIA_COMERCIAL=2;
+//	public static final int ID_ROL_JEFE_VENTAS=3;
+	
+//	public static final int ID_ROL_ADMIN=5;
+//	public static final int ID_ROL_FINANZAS=10;
 	public static final int ID_ROL_SUPER_USUARIO=1;
-	public static final int ID_ROL_AGENCIA_VIAJES=15;
-	public static final int ID_ROL_CLIENTE_CORPORATIVO=16;
-	public static final int ID_ROL_REP_VENTAS=9;
-	public static final int ID_ROL_ADMIN_PUNTO_VENTA=8;
-	public static final int ID_ROL_ADMIN_COMERCIAL=6;
-	public static final int ID_ROL_FISCALIZACION=11;
-	public static final int ID_ROL_CREDITOS_COBRANZAS=12;
-	public static final int ID_ROL_MARKETING=7;
-	public static final int ID_ROL_LEGAL=25;
-	public static final int ID_ROL_GESTION_CORPORATIVA=19;
-	public static final int ID_ROL_FLOTA=20;
+	public static final int ID_ROL_ADMINISTRADOR=2;
+	public static final int ID_ROL_COUNTER=3;
+	public static final int ID_ROL_FLOTA=4;
+	public static final int ID_ROL_ADMIN=5;
+	
+	
+	public static final int ID_ROL_CLIENTE_CORPORATIVO=90;
+	public static final int ID_ROL_FUNCIONARIO=91;
+//	public static final int ID_ROL_REP_VENTAS=92;
+	public static final int ID_ROL_AGENCIA_VIAJES=93;
+//	public static final int ID_ROL_ADMIN_PUNTO_VENTA=8;
+//	public static final int ID_ROL_ADMIN_COMERCIAL=6;
+//	public static final int ID_ROL_FISCALIZACION=11;
+//	public static final int ID_ROL_CREDITOS_COBRANZAS=12;
+//	public static final int ID_ROL_MARKETING=7;
+//	public static final int ID_ROL_LEGAL=25;
+//	public static final int ID_ROL_GESTION_CORPORATIVA=19;
+//	public static final int ID_ROL_FLOTA=20;
 
 	/*Constantes que refieren a la Localidad*/
 	public static final int ID_LOC_LIMA=1;

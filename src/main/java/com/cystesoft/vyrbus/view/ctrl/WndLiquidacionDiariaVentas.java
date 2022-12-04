@@ -158,15 +158,26 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 
 		//RESTRICCION PARA EL ACCESO A LA SELECCION DE AGENCIAS.
 		if(getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO ||
-		   getRol().getId().intValue()==Constantes.ID_ROL_GERENCIA_COMERCIAL ||
-		   getRol().getId().intValue()==Constantes.ID_ROL_FISCALIZACION ||
-		   getRol().getId().intValue()==Constantes.ID_ROL_ADMIN_COMERCIAL ||
-		   getRol().getId().intValue()==Constantes.ID_ROL_ADMIN){
+		   getRol().getId().intValue()==Constantes.ID_ROL_ADMINISTRADOR ) {
+//		   getRol().getId().intValue()==Constantes.ID_ROL_FISCALIZACION
+//		   getRol().getId().intValue()==Constantes.ID_ROL_ADMIN_COMERCIAL ||
+//		   getRol().getId().intValue()==Constantes.ID_ROL_ADMIN){
 			cmbAgencia.setDisabled(false);
 		}else
 			cmbAgencia.setDisabled(true);
 
-
+		
+		//RESTRICCION PARA EL ACCESO A LA SELECCION DE AGENCIAS.
+		if(getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO ||
+//		   getRol().getId().intValue()==Constantes.ID_ROL_GERENCIA_COMERCIAL ||
+//		   getRol().getId().intValue()==Constantes.ID_ROL_FISCALIZACION ||
+//		   getRol().getId().intValue()==Constantes.ID_ROL_ADMIN_COMERCIAL ||
+		   getRol().getId().intValue()==Constantes.ID_ROL_ADMINISTRADOR
+		) {
+			cmbCounter.setDisabled(false);
+		}else
+			cmbCounter.setDisabled(true);
+		
 
 		btnExportar.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 			@Override
@@ -353,13 +364,13 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 						cmbitem.setValue(usuario);
 						cmbCounter.appendChild(cmbitem);
 					}
-					cmbCounter.setDisabled(false);
+//					cmbCounter.setDisabled(false);
 				}else
 					cmbCounter.setDisabled(true);
 			}
 
 			Util.seleccionarValorItemCombo(Usuario.class, cmbCounter, getUsuario().getId());
-			if(cmbCounter.getSelectedIndex()>0)
+			if(cmbCounter.getSelectedIndex()>1)
 				cmbCounter.setSelectedIndex(0);
 		}catch(Exception ex){
 			ex.printStackTrace();
@@ -499,7 +510,6 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	private void loadVentas(List<VentaPasaje> lstVentas, Boolean isCarga){
 		try{
 //			lbxVentas.getItems().clear();
@@ -770,12 +780,12 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 							});
 
 							/*Validacion de Roles*/
-							if((getRol().getId().intValue()==Constantes.ID_ROL_ADMIN_PUNTO_VENTA || getRol().getId().intValue()==Constantes.ID_ROL_REP_VENTAS)
+							if((getRol().getId().intValue()==Constantes.ID_ROL_ADMINISTRADOR || getRol().getId().intValue()==Constantes.ID_ROL_COUNTER)
 									&& venta.getLiquidacion()==null){
 								cell.appendChild(a);
 							}else if((getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO || 
-									  getRol().getId().intValue()==Constantes.ID_ROL_ADMIN ||
-									  getRol().getId().intValue()==Constantes.ID_ROL_FISCALIZACION) && 
+									  getRol().getId().intValue()==Constantes.ID_ROL_ADMINISTRADOR) &&
+//									  getRol().getId().intValue()==Constantes.ID_ROL_FISCALIZACION) && 
 									venta.getFechaLiquidacion().getTime()>Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date())).getTime()-(Constantes.MILISEGUNDOS_X_DIA*3)){
 								//Rol superusuario y como maximo 3 días con anterioridad
 								cell.appendChild(a);

@@ -142,7 +142,7 @@ public class WndTipoOperacion extends WndBase{
 						liquidacionTurnoCarga.setTranscarUsuarioPersonal(usuarioPersonal);
 						liquidacionTurnoCarga.setAgenciaId(getAgencia().getId());
 						UtilData.auditarRegistro(liquidacionTurnoCarga, getUsuario(), Executions.getCurrent());
-						String messageError = ServiceLocator.getTranscarWebManager().aperturarLiquidacion(liquidacionTurnoCarga);
+						String messageError = ServiceLocator.getTranscarWebManager().aperturarLiquidacion(liquidacionTurnoCarga, false);
 						if (messageError!=null) {
 							DlgMessage.information(messageError+" - TRANSCAR");
 							return;

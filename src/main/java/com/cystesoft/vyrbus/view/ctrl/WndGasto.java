@@ -831,16 +831,19 @@ public class WndGasto extends WndOpcionesMantenimiento {
 		UtilData.cargarUsuariosLiquidacion(cmbUsuario, Constantes.FORMAT_DATE.format(dtbxFechaIni.getValue()), Constantes.FORMAT_DATE.format(dtbxFechaFin.getValue()), true, null);
 		cmbUsuario.setSelectedIndex(0);
 
+		cmbUsuario.setDisabled(false);
 		//Validacion de roles.
-		if(getRol().getId().intValue()==Constantes.ID_ROL_ADMIN_PUNTO_VENTA || getRol().getId().intValue()==Constantes.ID_ROL_REP_VENTAS){
+		if(getRol().getId().intValue()==Constantes.ID_ROL_ADMINISTRADOR || getRol().getId().intValue()==Constantes.ID_ROL_COUNTER){
 			cmbTipoAgencia.setDisabled(true);
 			cmbAgencia.setDisabled(true);
 			Util.seleccionarValorItemCombo(Agencia.class, cmbAgencia, getAgencia().getId());
 
-			if(getRol().getId().intValue()==Constantes.ID_ROL_REP_VENTAS){
+			if(getRol().getId().intValue()==Constantes.ID_ROL_COUNTER){
 				Util.seleccionarValorItemCombo(Usuario.class, cmbUsuario, getUsuario().getId());
 				if(cmbUsuario.getSelectedIndex()<0)
 					cmbUsuario.setSelectedIndex(0);
+				
+				cmbUsuario.setDisabled(true);
 			}
 		}else{
 			cmbTipoAgencia.setDisabled(false);
@@ -848,6 +851,11 @@ public class WndGasto extends WndOpcionesMantenimiento {
 			cmbAgencia.setSelectedIndex(0);
 		}
 
+//		cmbUsuario.setDisabled(false);
+		//Valdiacion seleccion de usuario
+//		if(getRol().getId().intValue()==Constantes.ID_ROL_COUNTER)
+//			cmbUsuario.setDisabled(true);
+//		
 
 		//Eventos onOK
 		dtbxFechaIni.addEventListener(Events.ON_OK,new EventListener<Event>() {

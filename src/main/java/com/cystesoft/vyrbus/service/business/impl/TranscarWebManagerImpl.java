@@ -96,9 +96,9 @@ public class TranscarWebManagerImpl implements TranscarWebManager{
 	 * @see com.cystesoft.vyrbus.service.business.TranscarWebManager#aperturarLiquidacion(com.cystesoft.vyrbus.model.bean.TranscarLiquidacionTurno)
 	 */
 	@Override
-	public String aperturarLiquidacion(TranscarLiquidacionTurno liquidacionTurno) throws Exception {
+	public String aperturarLiquidacion(TranscarLiquidacionTurno liquidacionTurno, boolean isReapertura) throws Exception {
 		// TODO Auto-generated method stub
-		return getTranscarWebDAO().aperturarLiquidacion(liquidacionTurno);
+		return getTranscarWebDAO().aperturarLiquidacion(liquidacionTurno, isReapertura);
 	}
 
 	/* (non-Javadoc)
