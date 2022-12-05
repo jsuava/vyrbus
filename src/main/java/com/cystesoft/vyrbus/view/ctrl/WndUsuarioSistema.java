@@ -340,18 +340,19 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 //			Rol rol= ((Rol)cmbRol.getSelectedItem().getValue());
 
 			/* Valida que el usuario tenga el mail configurado  para las alertas que envíe el sistema */
-			for(Listitem item:lbxRoles.getSelectedItems()){
-				Rol rol=item.getValue();
-
-				if(rol.getId().intValue()==Constantes.ID_ROL_GERENCIA_COMERCIAL
-						|| rol.getId().intValue()==Constantes.ID_ROL_JEFE_VENTAS
-						|| rol.getId().intValue()==Constantes.ID_ROL_FINANZAS
-						|| rol.getId().intValue()==Constantes.ID_ROL_FUNCIONARIO){
-
-					if(txtEmail.getText().trim().isEmpty())
-						throw new EmailNullException(EmailNullException.EMAIL_PERSONAL);
-				}
-			}
+//			for(Listitem item:lbxRoles.getSelectedItems()){
+//				Rol rol=item.getValue();
+//
+//				if(rol.getId().intValue()==Constantes.ID_ROL_GERENCIA_COMERCIAL
+//						|| rol.getId().intValue()==Constantes.ID_ROL_JEFE_VENTAS
+//						|| rol.getId().intValue()==Constantes.ID_ROL_FINANZAS
+//						|| rol.getId().intValue()==Constantes.ID_ROL_FUNCIONARIO
+//				){
+//
+//					if(txtEmail.getText().trim().isEmpty())
+//						throw new EmailNullException(EmailNullException.EMAIL_PERSONAL);
+//				}
+//			}
 
 			boolean isNewUserCargo=true;
 			if(action==ACTION_NEW){

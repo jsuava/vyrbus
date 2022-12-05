@@ -300,7 +300,7 @@ public class WndSolicitudCartera extends WndBase implements Serializable {
 
 		if(cmbFuncionarioHistSoli.getSelectedIndex()==-1)
 			cmbFuncionarioHistSoli.setSelectedIndex(0);
-
+	
 		/*Aplica acceso segun rol*/
 		Util.disabledBtnBuscar(false,btnBuscaClienteCartera,accesoConsultar());
 		Util.disabledBtnExportar(false,btnExportar, accesoExportar());

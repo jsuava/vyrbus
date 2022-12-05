@@ -272,26 +272,39 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 	 * @see com.cystesoft.vyrbus.model.dao.TranscarWebDAO#aperturarLiquidacion(com.cystesoft.vyrbus.model.bean.TranscarLiquidacionTurno)
 	 */
 	@Override
-	public String aperturarLiquidacion(TranscarLiquidacionTurno liquidacionTurno) throws Exception {
-
+	public String aperturarLiquidacion(TranscarLiquidacionTurno liquidacionTurno, boolean isReapertura) throws Exception {
+		int isCorret = 0;
 		Integer agencia_idtranscar = UtilData.getAgencia_Idtranscarweb(liquidacionTurno.getAgenciaId());
 		//Valida que la agencia del vyrbus este asociada a la del transcar web
 		if(agencia_idtranscar==null) {
 			throw new Exception(Messages.getString("Generales.informacion.agenciaNoAsociadaTranscarweb"));
+		}		
+		
+		//Valida si es una reapertura
+		if(isReapertura) {
+			String sql =  "UPDATE tctliquidacion "
+					    + "   SET n_estliq="+ Constantes.TRUE_VALUE
+					    + "      ,n_totefeing=.00 "
+					    + "      ,n_totefeliq=.00 "
+					    + "WHERE agencia_id = "+ agencia_idtranscar +" "
+					    + "  AND usuario_id="+ liquidacionTurno.getTranscarUsuarioPersonal().getId() +" "
+					    + "  AND d_fecliq ='"+ Constantes.FORMAT_DATE.format(liquidacionTurno.getFechaApertura()) +"' ";
+			Log.info("Reapertura Liquidacion - Transcar: "+ sql);
+			isCorret = getJdbcTemplate().update(sql);
+		}else {
+			String sql = "INSERT INTO tctliquidacion " +
+					"		         (liquidacion_id, agencia_id, usuario_id, d_fecliq, n_totefeliq, n_totefeing, n_estliq, c_estreg) " +
+					"          VALUES " +
+					"				 (nextval('seq_tctliquidacion_id'), "
+									+ agencia_idtranscar + ", "
+									+ liquidacionTurno.getTranscarUsuarioPersonal().getId() + ", "
+									+ "'"+ Constantes.FORMAT_DATE.format(liquidacionTurno.getFechaApertura()) + "', "
+									+ "0.00, 0.00, 1, 'A' "
+									+ ") ";
+			Log.info("Apertura Liquidacion - Transcar: "+sql);
+			isCorret = getJdbcTemplate().update(sql);
 		}
-
-		String sql = "INSERT INTO tctliquidacion " +
-				"		         (liquidacion_id, agencia_id, usuario_id, d_fecliq, n_totefeliq, n_totefeing, n_estliq, c_estreg) " +
-				"          VALUES " +
-				"				 (nextval('seq_tctliquidacion_id'), "
-								+ agencia_idtranscar + ", "
-								+ liquidacionTurno.getTranscarUsuarioPersonal().getId() + ", "
-								+ "'"+ Constantes.FORMAT_DATE.format(liquidacionTurno.getFechaApertura()) + "', "
-								+ "0.00, 0.00, 1, 'A' "
-								+ ") ";
-		Log.info("Apertura Liquidacion - Transcar: "+sql);
-		int isCorret = getJdbcTemplate().update(sql);
-
+		
 		String messageError = null;
 		if(isCorret == Constantes.FALSE_VALUE)
 			messageError = "Ha ocurrido un error al aperturar la liquidación";
@@ -1010,7 +1023,7 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 		String sql = "SELECT COALESCE(SUM(ev.n_total),0) AS totalVentaEfectivo, null " + 
 				"FROM tctenvcon ev " + 
 				"WHERE ev.forpag_id = "+ Constantes.ID_FORPAG_CONTADO +" AND ev.tippag_id = "+ Constantes.ID_TIPFORPAG_EFECTIVO + " " +
-				"  AND ev.c_estreg = '"+ Constantes.FALSE_VALUE +"' " + 
+				"  AND ev.c_estreg = '"+ Constantes.VALUE_ACTIVO +"' " + 
 				"  AND ev.d_fecanu IS NULL AND ev.usuario_idanula IS NULL " + 
 				"  AND ev.usuario_id =  "+ idUsuario +"  AND ev.agencia_idventa = "+ agencia_idtranscar +" AND ev.d_fecven = to_date('"+ fecha +"', 'dd/MM/yyyy') ";
 		

@@ -152,28 +152,32 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 		btnNuevo.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
-				limpiarControles();
-				habilitaControles(true);
-				onNew();
-				if (!oTabLista.isDisabled())
-					oTabLista.setDisabled(true);
+				try {
+					limpiarControles();
+					habilitaControles(true);
+					onNew();
+					if (!oTabLista.isDisabled())
+						oTabLista.setDisabled(true);
 
-				oTabbox.setSelectedIndex(1);
-				tabUsuario = TAB_MAINTENANCE;
-				if (inputElementEnfocable != null)
-					inputElementEnfocable.setFocus(true);
+					oTabbox.setSelectedIndex(1);
+					tabUsuario = TAB_MAINTENANCE;
+					if (inputElementEnfocable != null)
+						inputElementEnfocable.setFocus(true);
 
-				accionUsuario = ACTION_NEW;
-				btnNuevo.setDisabled(true);
-				btnBuscar.setDisabled(true);
-				btnRefrescar.setDisabled(true);
-				btnModificar.setDisabled(true);
-				btnCancelar.setDisabled(false);
-				btnGuardar.setDisabled(accesoGrabar()?false:true);
-				btnEliminar.setDisabled(true);
-				btnImprimir.setDisabled(true);
-				btnExportar.setDisabled(true);
-				btnCerrar.setDisabled(true);
+					accionUsuario = ACTION_NEW;
+					btnNuevo.setDisabled(true);
+					btnBuscar.setDisabled(true);
+					btnRefrescar.setDisabled(true);
+					btnModificar.setDisabled(true);
+					btnCancelar.setDisabled(false);
+					btnGuardar.setDisabled(accesoGrabar()?false:true);
+					btnEliminar.setDisabled(true);
+					btnImprimir.setDisabled(true);
+					btnExportar.setDisabled(true);
+					btnCerrar.setDisabled(true);
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
 			}
 		});
 

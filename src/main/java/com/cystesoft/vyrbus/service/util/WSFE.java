@@ -691,6 +691,7 @@ public class WSFE implements Serializable{
 	 * @param window : Instacia de la venta de donde es invocado el metodo
 	 * @param result :
 	 */
+	@SuppressWarnings("restriction")
 	private static byte[] descargarFileXmlEquipaje(XmlEquipajes xmlEquipajes, Window window, boolean timerdownload){
 		String nameFile="";
 		byte[] filePdfZip = null;
@@ -740,9 +741,23 @@ public class WSFE implements Serializable{
 				File file= new File(pZipFile);
 				byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
 								
-				filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_TICKET);
+				filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_TICKET, false);
 				if(filePdfZip !=null)
-					Filedownload.save(filePdfZip, "multipart/form-data", nameFileZip);		
+					Filedownload.save(filePdfZip, "multipart/form-data", nameFileZip);	
+				
+			}else if(UtilFlag.isFormatPrintViewPdf(agencia.getId())) {
+				String nameFileZip = nameFile + ".zip";
+				File file= new File(pZipFile);
+				byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
+				filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_TICKET, true);
+				if(filePdfZip !=null) {
+					String urlViewPdf = UtilFlag.getUrlView_pdf();
+					if(urlViewPdf !=null) {
+						String crypto = new BASE64Encoder().encode(filePdfZip);
+						Executions.getCurrent().sendRedirect(urlViewPdf+"?vl="+crypto, "_blank");	
+					}					
+				}
+			
 			}else {
 											
 				if(timerdownload) {
@@ -788,6 +803,7 @@ public class WSFE implements Serializable{
 	 * @param window : Instacia de la venta de donde es invocado el metodo
 	 * @param result :
 	 */
+	@SuppressWarnings("restriction")
 	private static byte[] descargarFileXml(XmlVentaPasaje xmlVentaPasaje, Window window){
 		String nameFile="";
 		byte[] filePdfZip = null;
@@ -839,9 +855,8 @@ public class WSFE implements Serializable{
 			}
 			
 			/*Zipeamos el xml (Basicamente para reducir el tamanio)*/			
-			Util.Zippear(pathSavedXml, pZipFile,nameFile);
-			Filedownload.save(new File(pZipFile), "application/zip");
-			
+			Util.Zippear(pathSavedXml, pZipFile,nameFile);			
+
 			//************************************************************************************
 			//Consulta la version de impresión configurada para la agencia - jabanto 16/11/2022
 			Agencia agencia = (Agencia)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
@@ -850,13 +865,25 @@ public class WSFE implements Serializable{
 				File file= new File(pZipFile);
 				byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
 								
-				filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, formatPrint);
+				filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, formatPrint, false);
 				if(filePdfZip !=null)
-					Filedownload.save(filePdfZip, "multipart/form-data", nameFileZip);		
-			}else {
+					Filedownload.save(filePdfZip, "multipart/form-data", nameFileZip);
 				
+			}else if(UtilFlag.isFormatPrintViewPdf(agencia.getId())) {
+				String nameFileZip = nameFile + ".zip";
+				File file= new File(pZipFile);
+				byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
+				filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, formatPrint, true);
+				if(filePdfZip !=null) {
+					String urlViewPdf = UtilFlag.getUrlView_pdf();
+					if(urlViewPdf !=null) {
+						String crypto = new BASE64Encoder().encode(filePdfZip);
+						Executions.getCurrent().sendRedirect(urlViewPdf+"?vl="+crypto, "_blank");	
+					}					
+				}				
+			}else {				
 				/*Descarga el archivo .xml*/
-				Filedownload.save(new File(pZipFile), "application/zip");	
+				Filedownload.save(new File(pZipFile), "application/zip");
 			}
 			
 			

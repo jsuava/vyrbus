@@ -345,8 +345,8 @@ public class WndClienteCredito extends WndBase {
 			lstComponents.add(btnReduccionLc);
 //			lstComponents.add(btnHistorial);
 			List<Rol>listRolesAcceeso=new ArrayList<>();
-			listRolesAcceeso.add(new Rol(Constantes.ID_ROL_FINANZAS));
-			listRolesAcceeso.add(new Rol(Constantes.ID_ROL_CREDITOS_COBRANZAS));
+//			listRolesAcceeso.add(new Rol(Constantes.ID_ROL_FINANZAS));
+//			listRolesAcceeso.add(new Rol(Constantes.ID_ROL_CREDITOS_COBRANZAS));
 			listRolesAcceeso.add(new Rol(Constantes.ID_ROL_SUPER_USUARIO));
 			accesoControlsByRol(lstComponents, listRolesAcceeso,true);
 		}

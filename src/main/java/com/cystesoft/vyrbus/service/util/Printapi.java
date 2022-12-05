@@ -21,21 +21,31 @@ import sun.misc.BASE64Encoder;
  * @author abant
  *
  */
+@SuppressWarnings("restriction")
 public class Printapi {
 	
-	public static byte[] getPrintPdf(byte[] xmlZip, String fileName, int formatPrint) {
+	/**
+	 * 
+	 * @param xmlZip
+	 * @param fileName
+	 * @param formatPrint
+	 * @param isReturnPathPdf: True, si solamente retornara el ruta en donde la api almacenó los archivos creandos; False, retorna en un arreglo de bytes los achivos generados.
+	 * @return
+	 */
+	public static byte[] getPrintPdf(byte[] xmlZip, String fileName, int formatPrint, Boolean isReturnPathPdf) {
 		byte[] pdfFile = null;
 		try {
 			String URL_API = UtilFlag.getUrlApi_printapi();
 			if(URL_API !=null) {
-				String rubro = "1"; // Pasajes
+				String rubro = "1"; // Pasajes				
 				String contentBase64 = new BASE64Encoder().encode(xmlZip);
 				
 				HttpResponse<JsonNode> response = Unirest.post(URL_API)
 						.field("rubro", rubro)
 						.field("formatPrint", formatPrint)
 						.field("fileName", fileName)
-						.field("fileBase64", contentBase64)			  
+						.field("fileBase64", contentBase64)	
+						.field("returnPathPdf", isReturnPathPdf.toString())
 				  .asJson();
 								
 				if(response.getStatus() == 200) {				

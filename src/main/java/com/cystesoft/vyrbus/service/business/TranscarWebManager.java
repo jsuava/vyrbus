@@ -64,10 +64,11 @@ public interface TranscarWebManager {
 	/**
 	 * Realiza la apertura de la liquidacion de turno
 	 * @param liquidacionTurno	: instancia de la class
+	 * @param isReapertura		: True, cuando es una reapertura de caja; False, cuando es una apertura de caja
 	 * @return Si es correcto Null, lo contrario cuando ocurre un error
 	 * @throws Exception
 	 */
-	public String aperturarLiquidacion(TranscarLiquidacionTurno liquidacionTurno)throws Exception;
+	public String aperturarLiquidacion(TranscarLiquidacionTurno liquidacionTurno, boolean isReapertura)throws Exception;
 	/**
 	 * Realiza la busqueda del detalle de ventas
 	 * @param usuario	: Identificador del usuario - Transcar

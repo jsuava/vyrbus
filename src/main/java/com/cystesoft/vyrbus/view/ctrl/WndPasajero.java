@@ -354,9 +354,9 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 
 		List<Rol>listaRolesAcceso=new ArrayList<>();
 		listaRolesAcceso.add(new Rol(Constantes.ID_ROL_SUPER_USUARIO));
-		listaRolesAcceso.add(new Rol(Constantes.ID_ROL_ADMIN_COMERCIAL));
-		listaRolesAcceso.add(new Rol(Constantes.ID_ROL_GERENCIA_COMERCIAL));
-		listaRolesAcceso.add(new Rol(Constantes.ID_ROL_ASISTENTE_ADMIN_COMERCIAL));
+//		listaRolesAcceso.add(new Rol(Constantes.ID_ROL_ADMIN_COMERCIAL));
+//		listaRolesAcceso.add(new Rol(Constantes.ID_ROL_GERENCIA_COMERCIAL));
+//		listaRolesAcceso.add(new Rol(Constantes.ID_ROL_ASISTENTE_ADMIN_COMERCIAL));
 		accesoControlsByRol(lstComponents, listaRolesAcceso);
 
 	}

@@ -922,6 +922,7 @@ public class WndManifiesto extends WndBase {
 	 * @param esPrevio	: true(cuando es una vista preliminar), false(cuando se enviaro directamente la impresion a la impresora)
 	 * @throws Exception
 	 */
+	@SuppressWarnings("restriction")
 	public void impresionesManifiesto(Integer documento, Boolean esPrevio, Manifiesto manifiesto, boolean isPrintLasert) throws Exception{
 		
 		String src="";
@@ -985,9 +986,25 @@ public class WndManifiesto extends WndBase {
 					File file= new File(path_sunat);
 					byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
 									
-					byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4);
+					byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, false);
 					if(filePdfZip !=null)
-						Filedownload.save(filePdfZip, "multipart/form-data", nameFileZip);		
+						Filedownload.save(filePdfZip, "multipart/form-data", nameFileZip);
+					
+				}else if(UtilFlag.isFormatPrintViewPdf(oagencia.getId())) {
+					int len = path_sunat.length();
+					int pos = path_sunat.indexOf("PRNTLSR-");
+					String nameFileZip = path_sunat.substring(pos,len);
+					File file= new File(path_sunat);
+					byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
+										
+					byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, true);
+					if(filePdfZip !=null) {
+						String urlViewPdf = UtilFlag.getUrlView_pdf();
+						if(urlViewPdf !=null) {
+							String crypto = new BASE64Encoder().encode(filePdfZip);
+							Executions.getCurrent().sendRedirect(urlViewPdf+"?vl="+crypto, "_blank");	
+						}					
+					}								
 				}else {
 					/*Descarga el archivo .xml*/
 					Filedownload.save(new File(path_sunat), "application/zip");
@@ -1108,9 +1125,24 @@ public class WndManifiesto extends WndBase {
 						File file= new File(path_sunat);
 						byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
 										
-						byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4);
+						byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, false);
 						if(filePdfZip !=null)
 							Filedownload.save(filePdfZip, "multipart/form-data", nameFileZip);		
+					}else if(UtilFlag.isFormatPrintViewPdf(oagencia.getId())) {
+						int len = path_sunat.length();
+						int pos = path_sunat.indexOf("PRNTLSR-");
+						String nameFileZip = path_sunat.substring(pos,len);
+						File file= new File(path_sunat);
+						byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
+						int x = 0;
+						byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, true);
+						if(filePdfZip !=null) {
+							String urlViewPdf = UtilFlag.getUrlView_pdf();
+							if(urlViewPdf !=null) {
+								String crypto = new BASE64Encoder().encode(filePdfZip);
+								Executions.getCurrent().sendRedirect(urlViewPdf+"?vl="+crypto, "_blank");	
+							}					
+						}													
 					}else {
 						/*Descarga el archivo .xml*/
 						Filedownload.save(new File(path_sunat), "application/zip");
@@ -2332,46 +2364,55 @@ private XmlCarpetaDespacho generatedXmlCarpetaDespacho(Itinerario itinerario)thr
 		int totalFrecuentes=0;
 		String asientosFrecuentes="";
 		for(XmlItemDetalleDespacho xmlItemDetalleDespacho : asientosFilas){
-			
-			int asiento=Integer.valueOf(xmlItemDetalleDespacho.getC1_asiento());
-			for(VentaPasaje ventaPasaje : list){
-				if(ventaPasaje.getNumeroAsiento().intValue()==asiento){
-					xmlItemDetalleDespacho.setC1_documento(ventaPasaje.getPasajero().getNumeroDocumento());
-					xmlItemDetalleDespacho.setC1_embarque(ventaPasaje.getAgenciaPartida().getNombreCorto());
-					xmlItemDetalleDespacho.setC1_boleto(ventaPasaje.getNumeroBoleto());
-					xmlItemDetalleDespacho.setC1_edad(Util.calculaEdad(ventaPasaje.getPasajero().getFechaNacimiento()).toString());
-					xmlItemDetalleDespacho.setC1_ruta(ventaPasaje.getRuta().toString());
-					xmlItemDetalleDespacho.setC1_pasajero(ventaPasaje.getPasajero().toString());					
-					boolean isPaxfree=isPaxFee(list, (new Integer(asiento)), 0, 0);					
-					xmlItemDetalleDespacho.setC1_frecuente(isPaxfree?"#F":"");
-										
-					if(isPaxfree){
-						totalFrecuentes += 1;
-						asientosFrecuentes +=(asientosFrecuentes.length()==0?String.valueOf(asiento):", "+String.valueOf(asiento));
-					}
-					break;
-				}				
+			int asiento = 0;
+			if(xmlItemDetalleDespacho.getC1_asiento()!=null) {
+				asiento=Integer.valueOf(xmlItemDetalleDespacho.getC1_asiento());
+				for(VentaPasaje ventaPasaje : list){
+					if(ventaPasaje.getNumeroAsiento().intValue()==asiento){
+						xmlItemDetalleDespacho.setC1_documento(ventaPasaje.getPasajero().getNumeroDocumento());
+						xmlItemDetalleDespacho.setC1_embarque(ventaPasaje.getAgenciaPartida().getNombreCorto());
+						xmlItemDetalleDespacho.setC1_boleto(ventaPasaje.getNumeroBoleto());
+						xmlItemDetalleDespacho.setC1_edad(Util.calculaEdad(ventaPasaje.getPasajero().getFechaNacimiento()).toString());
+						xmlItemDetalleDespacho.setC1_ruta(ventaPasaje.getRuta().toString());
+						xmlItemDetalleDespacho.setC1_pasajero(ventaPasaje.getPasajero().toString());					
+						boolean isPaxfree=isPaxFee(list, (new Integer(asiento)), 0, 0);					
+						xmlItemDetalleDespacho.setC1_frecuente(isPaxfree?"#F":"");
+											
+						if(isPaxfree){
+							totalFrecuentes += 1;
+							asientosFrecuentes +=(asientosFrecuentes.length()==0?String.valueOf(asiento):", "+String.valueOf(asiento));
+						}
+						break;
+					}				
+				}	
+			}else {
+				xmlItemDetalleDespacho.setC1_asiento("");
 			}
 			
-			asiento=Integer.valueOf(xmlItemDetalleDespacho.getC2_asiento());
-			for(VentaPasaje ventaPasaje : list){
-				if(ventaPasaje.getNumeroAsiento().intValue()==asiento){
-					xmlItemDetalleDespacho.setC2_documento(ventaPasaje.getPasajero().getNumeroDocumento());
-					xmlItemDetalleDespacho.setC2_embarque(ventaPasaje.getAgenciaPartida().getNombreCorto());
-					xmlItemDetalleDespacho.setC2_boleto(ventaPasaje.getNumeroBoleto());
-					xmlItemDetalleDespacho.setC2_edad(Util.calculaEdad(ventaPasaje.getPasajero().getFechaNacimiento()).toString());
-					xmlItemDetalleDespacho.setC2_ruta(ventaPasaje.getRuta().toString());
-					xmlItemDetalleDespacho.setC2_pasajero(ventaPasaje.getPasajero().toString());
-					boolean isPaxfree=isPaxFee(list, (new Integer(asiento)), 0, 0);
-					xmlItemDetalleDespacho.setC2_frecuente(isPaxfree?"#F":"");
-					
-					if(isPaxfree){
-						totalFrecuentes += 1;
-						asientosFrecuentes +=(asientosFrecuentes.length()==0?String.valueOf(asiento):", "+String.valueOf(asiento));
-					}
-					break;
-				}				
+			if(xmlItemDetalleDespacho.getC2_asiento()!=null) {
+				asiento=Integer.valueOf(xmlItemDetalleDespacho.getC2_asiento());
+				for(VentaPasaje ventaPasaje : list){
+					if(ventaPasaje.getNumeroAsiento().intValue()==asiento){
+						xmlItemDetalleDespacho.setC2_documento(ventaPasaje.getPasajero().getNumeroDocumento());
+						xmlItemDetalleDespacho.setC2_embarque(ventaPasaje.getAgenciaPartida().getNombreCorto());
+						xmlItemDetalleDespacho.setC2_boleto(ventaPasaje.getNumeroBoleto());
+						xmlItemDetalleDespacho.setC2_edad(Util.calculaEdad(ventaPasaje.getPasajero().getFechaNacimiento()).toString());
+						xmlItemDetalleDespacho.setC2_ruta(ventaPasaje.getRuta().toString());
+						xmlItemDetalleDespacho.setC2_pasajero(ventaPasaje.getPasajero().toString());
+						boolean isPaxfree=isPaxFee(list, (new Integer(asiento)), 0, 0);
+						xmlItemDetalleDespacho.setC2_frecuente(isPaxfree?"#F":"");
+						
+						if(isPaxfree){
+							totalFrecuentes += 1;
+							asientosFrecuentes +=(asientosFrecuentes.length()==0?String.valueOf(asiento):", "+String.valueOf(asiento));
+						}
+						break;
+					}				
+				}
+			}else {
+				xmlItemDetalleDespacho.setC2_asiento("");
 			}
+			
 			
 			if(xmlItemDetalleDespacho.getC3_asiento()!=null){
 				asiento=Integer.valueOf(xmlItemDetalleDespacho.getC3_asiento());
@@ -2393,6 +2434,8 @@ private XmlCarpetaDespacho generatedXmlCarpetaDespacho(Itinerario itinerario)thr
 						break;
 					}				
 				}	
+			}else {
+				xmlItemDetalleDespacho.setC3_asiento("");
 			}
 			
 			if(xmlItemDetalleDespacho.getC4_asiento()!=null) {
@@ -2415,7 +2458,9 @@ private XmlCarpetaDespacho generatedXmlCarpetaDespacho(Itinerario itinerario)thr
 						break;
 					}				
 				}
-			}			
+			}else {
+				xmlItemDetalleDespacho.setC4_asiento("");
+			}
 			
 			listDetalleCarpeta.add(xmlItemDetalleDespacho);
 		}
