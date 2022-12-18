@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José Sullo Avalos
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Sullo Avalos
  * Fecha		: 05/07/2012
  */
 package com.cystesoft.vyrbus.model.dao;
@@ -20,7 +20,7 @@ import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 
 /**
  *
- * @author José Sullo Avalos
+ * @author Josï¿½ Sullo Avalos
  * @since JDK1.6
  */
 public interface ItinerarioDAO extends GenericDAO {
@@ -109,7 +109,7 @@ public interface ItinerarioDAO extends GenericDAO {
 	/**
 	 * Anula un Itinerario.
 	 * @param id		: identificador unico del Itinerario
-	 * @param idUsuario : Identificador del usuario que realiza la anulación
+	 * @param idUsuario : Identificador del usuario que realiza la anulaciï¿½n
 	 * @throws Exception
 	 */
 	public void inactivar(Long id,Integer idUsuario) throws Exception;
@@ -127,7 +127,7 @@ public interface ItinerarioDAO extends GenericDAO {
 	public String dateServer();
 
 	/**
-	 * Valida si el itinerario tiene ventas y si la capacidad del servicio seelccionado no sea menor a algún asiento ya vendido.
+	 * Valida si el itinerario tiene ventas y si la capacidad del servicio seelccionado no sea menor a algï¿½n asiento ya vendido.
 	 * @param idItinerario 		: Identificador del itinerario.
 	 * @param Servicio			: Class Servicio
 	 * @return
@@ -136,7 +136,7 @@ public interface ItinerarioDAO extends GenericDAO {
 	public boolean validaCapasidadServicioAsiento(Long idItinerario,Servicio servicio) throws Exception;
 
 	/**
-	 * Obtiene todos los itinerarios afectados en una actualozación por rango de fechas.
+	 * Obtiene todos los itinerarios afectados en una actualozaciï¿½n por rango de fechas.
 	 * @param fechaPartida		: Fecha de partida
 	 * @param idRuta			: Identificador de la Ruta.
 	 * @param secuenciaTramo	: Secuencia de la Ruta.
@@ -169,7 +169,7 @@ public interface ItinerarioDAO extends GenericDAO {
 			Integer idTipoItinerario, Integer idAgenciaPartida, Integer idAgenciaLlegada)throws Exception;
 
 	/**
-	 * Realiza la busqueda de las rutas para la actualización las tarifas
+	 * Realiza la busqueda de las rutas para la actualizaciï¿½n las tarifas
 	 * @param fechaInicio	: Fecha de iniciao de la busqueda.
 	 * @param fechaFin		: Fecha Final de la busqueda.
 	 * @param idServicio	: Identificador del servicio.
@@ -190,13 +190,13 @@ public interface ItinerarioDAO extends GenericDAO {
 	 * @param tarifaNueva	: Nueva tarifa con la que se va a actualizar.
 	 * @param horaPartida	: Hora de partida de la ruta.
 	 * @param fechaInicio	: Fecha Inicio para la actualizacion de la tarifa.
-	 * @param fechaFin		: Fecha Final para la actualización de la tarifa.
+	 * @param fechaFin		: Fecha Final para la actualizaciï¿½n de la tarifa.
 	 * @param idRuta		: Identificador de la Ruta.
 	 * @param idServicio	: Identificador del Servicio.
 	 * @param tarifaActual	: Tarifa actual de la ruta.
-	 * @param idItinerarioDetalle	: Identificador del detalle itinerario. Utilizado cuando la actualización es en DETALLE
-	 * @param usuarioMod	: usuario que realiza la actualización de la tarifa
-	 * @param ipMod			: IP del equipo de donde se esta asiendo la actualización de la tarifa
+	 * @param idItinerarioDetalle	: Identificador del detalle itinerario. Utilizado cuando la actualizaciï¿½n es en DETALLE
+	 * @param usuarioMod	: usuario que realiza la actualizaciï¿½n de la tarifa
+	 * @param ipMod			: IP del equipo de donde se esta asiendo la actualizaciï¿½n de la tarifa
 	 * @param tarifaLista	: Tarifa Lista y/o Referencial.
 	 * @throws Exception
 	 */
@@ -224,5 +224,14 @@ public interface ItinerarioDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public List<Itinerario>buscarItinerariosByVentaTramo(String fechaInicial, String fechaFinal,Integer rutaIdMayor, Integer rutaIdTramo,String horaPartidaTramo,String horaPartidaItinerario)throws Exception;
-
+	/**
+	 * Realiza la busqueda de un itinerario
+	 * @param idRuta		: Identificador de la ruta
+	 * @param idServicio	: Identificador del Servicio
+	 * @param fechaPartida	: Fecha de partida
+	 * @param horaPartida	: Hora de partida
+	 * @return
+	 * @throws Exception
+	 */
+	public Integer validarItinerario(Integer idRuta, Integer idServicio, String fechaPartida, String horaPartida) throws Exception;
 }

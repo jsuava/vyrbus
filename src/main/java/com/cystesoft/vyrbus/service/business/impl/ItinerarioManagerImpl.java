@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: Implementación de métodos que permiten el acceso al modelo.
- * Autor		: José Sullo Avalos
+ * Descripciï¿½n	: Implementaciï¿½n de mï¿½todos que permiten el acceso al modelo.
+ * Autor		: Josï¿½ Sullo Avalos
  * Fecha		: 28/09/2012
  */
 package com.cystesoft.vyrbus.service.business.impl;
@@ -388,5 +388,12 @@ public class ItinerarioManagerImpl implements ItinerarioManager {
 			throw new Exception();
 		}
 		return result;
+	}
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.ItinerarioManager#validarItinerario(java.lang.Integer, java.lang.Integer, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public Integer validarItinerario(Integer idRuta, Integer idServicio, String fechaPartida, String horaPartida) throws Exception {
+		return getItinerarioDAO().validarItinerario(idRuta, idServicio, fechaPartida, horaPartida);
 	}
 }

@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José Avalos
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Avalos
  * Fecha		: 11/09/2012
  */
 package com.cystesoft.vyrbus.view.ctrl;
@@ -90,7 +90,7 @@ import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
 
 /**
  *
- * @author José Avalos
+ * @author Josï¿½ Avalos
  * @since JDK1.6
  */
 
@@ -150,7 +150,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 	final String disabledEdit="/resources/mp_editarDisabled.png";
 	final String enabledEdit="/resources/mp_editarEnabled.png";
 
-	/*Variables utilizadas para consultar itinerarios afectados en la actualización.*/
+	/*Variables utilizadas para consultar itinerarios afectados en la actualizaciï¿½n.*/
 	String secuenciaTramo="";
 	String horaPartida="";
 	Integer idRuta=0;
@@ -678,7 +678,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 					fechaPartida.setTime(fechaPartida.getTime() + Constantes.MILISEGUNDOS_X_DIA );
 				}
 
-			}else{ //Cuando es solamente una Día
+			}else{ //Cuando es solamente una DÃ­a
 				Listbox lbxDetalleItinerario = new Listbox();
 				Calendar FechaLLegada = Calendar.getInstance();
 
@@ -793,10 +793,14 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			/*Agrega el tramo, para recuperarlo al momneto del guardado*/
 			agregarItinerario(odetalleItinerario, lbDetalleItinerario);
 		}
-		this.guardaItineratio(action,lbDetalleItinerario);
-		this.guardaItinerarioDetalle(action,lbDetalleItinerario);
-		this.guardaAgenciaPartida(action);
-		this.guardaAgenciaLlegada(action);
+		try {
+			this.guardaItineratio(action,lbDetalleItinerario);
+			this.guardaItinerarioDetalle(action,lbDetalleItinerario);
+			this.guardaAgenciaPartida(action);
+			this.guardaAgenciaLlegada(action);	
+		}catch(Exception ex) {
+			DlgMessage.information(ex.getMessage());
+		}		
 	}
 
 	/*
@@ -912,7 +916,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 
 //	/**
 //	 *
-//	 * @param comboBox	: Objeto donde se cargan los terminales destino, según la ruta seleccionada.
+//	 * @param comboBox	: Objeto donde se cargan los terminales destino, segï¿½n la ruta seleccionada.
 //	 * @throws Exception
 //	 */
 //	public void onchangeTerminalDestino(Combobox comboBox) throws Exception{
@@ -952,7 +956,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 	}
 
 	/**
-	 * 	Carga las rutas, según el Origen seleccionado.
+	 * 	Carga las rutas, segï¿½n el Origen seleccionado.
 	 * @throws Exception
 	 */
 	public  void onChangeRutas() throws Exception{
@@ -1004,11 +1008,11 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			Listitem itemvDetalleItinerario=null;
 			if (!esEdicionTramo){
 				if (lbxDetalleItinerario.getItems().size() > 0){
-					/*Cuando NO es una edición de un Tramo*/
+					/*Cuando NO es una ediciï¿½n de un Tramo*/
 					itemvDetalleItinerario = lbxDetalleItinerario.getItemAtIndex(lbxDetalleItinerario.getItems().size() -1);
 				}
 			}else{
-				/*Cuando es una edición de un Tramo*/
+				/*Cuando es una ediciï¿½n de un Tramo*/
 				itemvDetalleItinerario = lbxDetalleItinerario.getItemAtIndex(indexEdicionTramo -1);
 			}
 
@@ -1206,13 +1210,13 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 				Messagebox.show(Messages.getString("WndItinerario.information.TramosDuplicados")+
 						" Nro.Itinerario:" + detalleItinerario.getItinerario().getId()  +
 						", Fecha:" + Constantes.FORMAT_DATE.format(detalleItinerario.getFechaPartida()) +
-						",  Hora:"+ detalleItinerario.getHoraPartida()+". ¿Desa continuar?",DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
+						",  Hora:"+ detalleItinerario.getHoraPartida()+". ï¿½Desa continuar?",DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
 					@Override
 					public void onEvent(Event e) throws Exception {
 						if(e.getName().equals("onYes")){
 							/*Llena Tramos****/
 							agregarItinerario(fodeDetalleItinerario,lbxDetalleItinerario);
-							/*Valida si se trata de una edición de un Tramo*/
+							/*Valida si se trata de una ediciï¿½n de un Tramo*/
 							if (esEdicionTramo){
 								lbxDetalleItinerario.removeItemAt(indexEdicionTramo);
 								if (lbxDetalleItinerario.getItems().size()==1)
@@ -1232,9 +1236,9 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 //								oItinerarioAgenciaPartida.setHoraPartida(tbHoraPartida.getText());
 //								cargaListboxTerminalPartida(oItinerarioAgenciaPartida);
 //								HabilitaBotones_TerPartida(false);
-								/*Carga Fecha Inicio para la Programación*/
+								/*Carga Fecha Inicio para la Programaciï¿½n*/
 								dbFechaInicio.setText(dbFechaItinerario.getText());
-								/*Carga Fecha Fin para la Programación*/
+								/*Carga Fecha Fin para la Programaciï¿½n*/
 								dbFechafin.setText(dbFechaItinerario.getText());
 							}
 
@@ -1305,7 +1309,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 					/*Llena Tramos****/
 					odetalleItinerario.getRuta().setId(listarRegistros.get(0).getId());
 					agregarItinerario(odetalleItinerario,lbxDetalleItinerario);
-					/*Valida si se trata de una edición de un Tramo*/
+					/*Valida si se trata de una ediciï¿½n de un Tramo*/
 					if (esEdicionTramo){
 						lbxDetalleItinerario.removeItemAt(indexEdicionTramo);
 						if (lbxDetalleItinerario.getItems().size()==1)
@@ -1324,9 +1328,9 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 	//					oItinerarioAgenciaPartida.setAgencia(oagenciaPartida);
 	//					oItinerarioAgenciaPartida.setHoraPartida(tbHoraPartida.getText());
 	//					cargaListBoxTerminalPartida(oItinerarioAgenciaPartida);
-						/*Carga Fecha Inicio para la Programación*/
+						/*Carga Fecha Inicio para la Programaciï¿½n*/
 						dbFechaInicio.setText(dbFechaItinerario.getText());
-						/*Carga Fecha Fin para la Programación*/
+						/*Carga Fecha Fin para la Programaciï¿½n*/
 						dbFechafin.setText(dbFechaItinerario.getText());
 					}
 
@@ -1417,7 +1421,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 	/**
 	 * Agrega  al Detalle del Itinerario el itinerario creado.
 	 * @param odetalleItinerario		:	Clase DetalleItinerario
-	 * @param lisBoxDetalleItinerario	: ListBox al que se Agregará el Itinerario
+	 * @param lisBoxDetalleItinerario	: ListBox al que se Agregarï¿½ el Itinerario
 	 * @throws Exception
 	 */
 	public void agregarItinerario(DetalleItinerario odetalleItinerario, Listbox lisBoxDetalleItinerario) throws Exception{
@@ -1508,7 +1512,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 	}
 
 	/**
-	 * Confirmación para quitar un tramo
+	 * Confirmaciï¿½n para quitar un tramo
 	 * @param Index 	: El indice del tramo seleccionado.
 	 * @throws Exception
 	 */
@@ -1641,7 +1645,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 	}
 
 	/**
-	 * Para la edición del Tramo seleccionado
+	 * Para la ediciï¿½n del Tramo seleccionado
 	 * @throws Exception
 	 */
 	public void editarTramo() throws Exception{
@@ -1661,7 +1665,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 //				Util.seleccionarValorItemCombo(Agencia.class, cmbTermDestino, ((DetalleItinerario) itemDetalleItinerario.getValue()).getAgenciaLlegada().getId());			/*Selecciona le Terminal Destino*/
 
 				if (cmbTipoItinerario.getSelectedIndex()==0){
-					/*Solo para la edición del Itinerario, despues de que esta haya sido guardado*/
+					/*Solo para la ediciï¿½n del Itinerario, despues de que esta haya sido guardado*/
 					Util.seleccionarValorItemCombo(Servicio.class,cmbServicio, ((DetalleItinerario) itemDetalleItinerario.getValue()).getItinerario().getServicio().getId());/**Selecciona el Servico*/
 					Util.seleccionarValorItemCombo(TipoItinerario.class,cmbTipoItinerario, ((DetalleItinerario) itemDetalleItinerario.getValue()).getItinerario().getTipoItinerario().getId());/**Selecciona el Tipo de Itinerario*/
 				}
@@ -1763,10 +1767,10 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 
 //	/**
 // 	 * Agrea terminal de Partida o de Llegada. atravez del Boton "Add"
-// 	 * @param oClass			: Clase según el terminal a agregar. (ItinerarioAgenciaPartida o ItinerarioAgenciaLlegada)
-// 	 * @param listBoxTerminal	: ListBox en la que se cargará el terminal
-// 	 * @param cmbTerminal		: ComboBox de conde se agregará el terminal de Partida o Llegada.
-// 	 * @param tbHora			: TimeBox de donde se agregará el Hora de Partida o Llegada
+// 	 * @param oClass			: Clase segï¿½n el terminal a agregar. (ItinerarioAgenciaPartida o ItinerarioAgenciaLlegada)
+// 	 * @param listBoxTerminal	: ListBox en la que se cargarï¿½ el terminal
+// 	 * @param cmbTerminal		: ComboBox de conde se agregarï¿½ el terminal de Partida o Llegada.
+// 	 * @param tbHora			: TimeBox de donde se agregarï¿½ el Hora de Partida o Llegada
 // 	 * @throws Exception
 // 	 */
 // 	public void addTerminal(Class<?> oClass, Listbox listBoxTerminal, Combobox cmbTerminal, Timebox tbHora) throws Exception{
@@ -2060,7 +2064,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 	/**
 	 *
 	 * @param action					: action 0=Nuevo; 1=Modificar
-	 * @param listboxDetalleItinerario	: ListBox de donde se leerán los Itinerarios para grabar.
+	 * @param listboxDetalleItinerario	: ListBox de donde se leerï¿½n los Itinerarios para grabar.
 	 * @throws Exception
 	 */
 	public void guardaItineratio(int action, Listbox listboxDetalleItinerario) throws Exception{
@@ -2126,6 +2130,17 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		switch (action) {
 			case ACTION_NEW:
 				UtilData.auditarRegistro(oitinerario, getUsuario(), Executions.getCurrent());
+				Integer existe = ServiceLocator.getItinerarioManager().validarItinerario(oitinerario.getRuta().getId(), 
+						oitinerario.getServicio().getId(), Util.DatetoString(oitinerario.getFechaPartida(), Constantes.DATE_FORMAT),
+						oitinerario.getHoraPartida());
+				if(existe > 0) {
+					String message = "No se puede crear el Itinerario\n" + 
+							" Ruta:" + oitinerario.getRuta().toString() + "\n" + 
+							" Servicio: " + oitinerario.getServicio().getDenominacion() + "\n" + 
+							" Fecha Partida: " + Util.DatetoString(oitinerario.getFechaPartida(), Constantes.DATE_FORMAT) + "\n" + 
+							" Hora Salida: " + oitinerario.getHoraPartida();
+					throw new Exception(message);					
+				}
 				ServiceLocator.getItinerarioManager().guardar(oitinerario);
 				break;
 			case ACTION_MODIFY:
@@ -2362,7 +2377,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 	}
 
 	/**
-	 * Carga lista de itinerarios según la busqueda.
+	 * Carga lista de itinerarios segï¿½n la busqueda.
 	 *
 	 * @param lstItinerarios	: Lista de itinerarios recuperados en la busqueda
 	 * @throws Exception
@@ -2440,7 +2455,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 	}
 
 	/**
-	 * Recupera Datos del itinerario seleccionado para la edición
+	 * Recupera Datos del itinerario seleccionado para la ediciï¿½n
 	 *
 	 * @param id: identificador unico del itinerario.
 	 * @throws Exception
@@ -2474,7 +2489,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 
 			onChangeRutas();
 
-			/*Validación que evita la duplicidad de tramos, en el Detalle del Itinerario*/
+			/*Validaciï¿½n que evita la duplicidad de tramos, en el Detalle del Itinerario*/
 			for(DetalleItinerario detalleItinerario : lstItinerariosDetalle){
 				primerIndex += +1;
 				String origen = detalleItinerario.getRuta().getOrigen();
@@ -2612,7 +2627,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 	}
 
 	/**
-	 * Validación de itinerarios duplicados.
+	 * Validaciï¿½n de itinerarios duplicados.
 	 *
 	 * @throws Exception
 	 */
@@ -2700,7 +2715,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		listheader.setAlign("center");
 		listhead.appendChild(listheader);
 		listbox.appendChild(listhead);
-		//Número Boleto
+		//Nï¿½mero Boleto
 		listheader= new Listheader();
 		listheader.setLabel("N.CONTROL");
 		listheader.setWidth("115px");
@@ -3603,7 +3618,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 							throw new HoraPartidaNullException();
 
 
-						Messagebox.show("¿Esta seguro de continuar con la duplicacion del Itinerario?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+						Messagebox.show("ï¿½Esta seguro de continuar con la duplicacion del Itinerario?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 							@Override
 							public void onEvent(Event e) {
 								try {
