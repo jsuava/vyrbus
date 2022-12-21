@@ -667,7 +667,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 								lstVentaSendFE.add(ventaPasaje);
 							}
 							/*Realiza el envio*/
-							WSFE.sendVenta(lstVentaSendFE, wndServicioEspecial, true, null);
+							WSFE.sendVenta(lstVentaSendFE, wndServicioEspecial, true, null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 						}
 
 

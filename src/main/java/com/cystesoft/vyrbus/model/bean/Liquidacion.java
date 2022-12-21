@@ -58,6 +58,10 @@ public class Liquidacion extends GenericBean implements java.io.Serializable {
 	private double montoCreditosDolares;
 	private Integer cantidadContadoDolares;
 	private double montoContadoDolares;
+	private Integer cantidadTransferencias;
+	private double montoTransferencias;
+	private Integer cantidadYape;
+	private double montoYape;
 
 
 	//recibos de caja con tarjeta
@@ -897,6 +901,62 @@ public class Liquidacion extends GenericBean implements java.io.Serializable {
 	 */
 	public void setLiquidacionCarga(Liquidacion liquidacionCarga) {
 		this.liquidacionCarga = liquidacionCarga;
+	}
+
+	/**
+	 * @return the cantidadTransferencias
+	 */
+	public Integer getCantidadTransferencias() {
+		return cantidadTransferencias;
+	}
+
+	/**
+	 * @param cantidadTransferencias the cantidadTransferencias to set
+	 */
+	public void setCantidadTransferencias(Integer cantidadTransferencias) {
+		this.cantidadTransferencias = cantidadTransferencias;
+	}
+
+	/**
+	 * @return the cantidadYape
+	 */
+	public Integer getCantidadYape() {
+		return cantidadYape;
+	}
+
+	/**
+	 * @param cantidadYape the cantidadYape to set
+	 */
+	public void setCantidadYape(Integer cantidadYape) {
+		this.cantidadYape = cantidadYape;
+	}
+
+	/**
+	 * @return the montoYape
+	 */
+	public double getMontoYape() {
+		return montoYape;
+	}
+
+	/**
+	 * @param montoYape the montoYape to set
+	 */
+	public void setMontoYape(double montoYape) {
+		this.montoYape = montoYape;
+	}
+
+	/**
+	 * @return the montoTransferencias
+	 */
+	public double getMontoTransferencias() {
+		return montoTransferencias;
+	}
+
+	/**
+	 * @param montoTransferencias the montoTransferencias to set
+	 */
+	public void setMontoTransferencias(double montoTransferencias) {
+		this.montoTransferencias = montoTransferencias;
 	}
 
 }

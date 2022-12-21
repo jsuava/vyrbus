@@ -589,7 +589,7 @@ public class WndEstadoVentaReserva extends WndBase {
 						}else{
 							List<VentaPasaje>listVentaPasaje= new ArrayList<>();
 							listVentaPasaje.add(oveVentaPasaje);
-							result= WSFE.sendVenta(listVentaPasaje, wndEstadoVyR, false, null,true);
+							result= WSFE.sendVenta(listVentaPasaje, wndEstadoVyR, false, null,true, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 						}
 
 						if(result!=null){

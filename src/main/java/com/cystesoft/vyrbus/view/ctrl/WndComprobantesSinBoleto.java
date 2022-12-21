@@ -707,7 +707,7 @@ public class WndComprobantesSinBoleto extends WndBase {
 									/*##Begin 28/10/2016 -jabanto*/
 									List<VentaPasaje>listVentaPasaje= new ArrayList<>();
 									listVentaPasaje.add(boletoReimprimir);
-									WSFE.sendVenta(listVentaPasaje, wndComprobantesSinBoleto, true, null);
+									WSFE.sendVenta(listVentaPasaje, wndComprobantesSinBoleto, true, null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 
 									wndReimpresion.onClose();
 									buscarComprobantes();

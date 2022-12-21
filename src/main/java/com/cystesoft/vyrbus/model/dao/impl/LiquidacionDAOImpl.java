@@ -340,6 +340,8 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 		Integer cantidadCreditoDolares=0; double montoCreditoDolares = 0.0;
 
 		Integer cantidadPCE=0; double montoPCE=0.0;
+		Integer cantidadTransferencias=0; double montoTransferencias=0.0;
+		Integer cantidadYape=0; double montoYape=0.0;
 
 
 		for (Object element : result) {
@@ -379,7 +381,8 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 						cantidadPrepagado+=+cantidadOperacion;
 						montoPrepagado+=+importeOperacion;
 
-					}else if(tipoFormaPagoID==Constantes.ID_TIPFORPAG_EFECTIVO || tipoFormaPagoID==Constantes.ID_TIPFORPAG_TRANSFERENCIA){ //EFECTIVO
+//					}else if(tipoFormaPagoID==Constantes.ID_TIPFORPAG_EFECTIVO || tipoFormaPagoID==Constantes.ID_TIPFORPAG_TRANSFERENCIA){ //EFECTIVO
+					}else if(tipoFormaPagoID==Constantes.ID_TIPFORPAG_EFECTIVO){ //EFECTIVO
 						if(tipoTransaccion!=null && tipoTransaccion.equals(Constantes.TIPO_OPERACION_VENTA_POOL)){ //Valida si es venta pool
 							cantidadEfecPool+= +cantidadOperacion;
 							montoEfecPool+= +importeOperacion;
@@ -470,6 +473,12 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 					}else if(tipoFormaPagoID==Constantes.ID_TIPFORPAG_PCE) {
 						cantidadPCE+= +cantidadOperacion;
 						montoPCE+= +importeOperacion;
+					}else if(tipoFormaPagoID==Constantes.ID_TIPFORPAG_TRANSFERENCIA) {
+						cantidadTransferencias+= +cantidadOperacion;
+						montoTransferencias+= +importeOperacion;
+					}else if(tipoFormaPagoID==Constantes.ID_TIPFORPAG_YAPE) {
+						cantidadYape+= +cantidadOperacion;
+						montoYape+= +importeOperacion;
 					}
 				}else if (tipoComprobanteID.intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO){
 					cantidadNotasCredito+= +cantidadOperacion;
@@ -624,6 +633,10 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 		liquidacion.setMontoCreditosDolares(montoCreditoDolares);
 		liquidacion.setCantidadContadoDolares(cantidadContadoDolares);
 		liquidacion.setMontoContadoDolares(montoContadoDolares);
+		liquidacion.setCantidadTransferencias(cantidadTransferencias);
+		liquidacion.setMontoTransferencias(montoTransferencias);
+		liquidacion.setCantidadYape(cantidadYape);
+		liquidacion.setMontoYape(montoYape);
 
 		return liquidacion;
 	}

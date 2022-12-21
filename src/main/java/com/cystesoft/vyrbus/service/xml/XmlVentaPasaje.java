@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  */
 @XmlRootElement
-public class XmlVentaPasaje implements Serializable{
+public class XmlVentaPasaje implements Serializable, Cloneable{
 	/**
 	 *
 	 */

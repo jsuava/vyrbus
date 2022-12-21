@@ -1697,16 +1697,16 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 
 			sql = sql + " UNION ALL ";
 			//VENTAS
-			tipoVenta = "DECODE(tm.c_denominacion, 'FECHA ABIERTA', DECODE(tfp.c_denominacion, 'EFECTIVO', 'FA.(EF)', DECODE(tfp.c_denominacion, 'TRANSFERENCIA','FA.(TRA)', 'FA.(TC)')), " +
-					"DECODE(tm.c_denominacion, 'CONFIRMACION FA', DECODE(tfp.c_denominacion, 'EFECTIVO', 'CONF.FA.(EF)', DECODE(tfp.c_denominacion, 'TRANSFERENCIA', 'CONF.FA.(TRA)', 'CONF.FA.(TC)')), " +
-					"DECODE(tm.c_denominacion, 'REIMPRESION', DECODE(tfp.c_denominacion, 'EFECTIVO', 'REIMP.(EF)', 'REIMP.(TC)'), " +
-					"DECODE(tm.c_denominacion, 'POSTERGACION', DECODE(tfp.c_denominacion, 'EFECTIVO', 'POST.(EF)', 'POST.(TC)'), " +
-					"DECODE(tm.c_denominacion, 'POSTERGACION FA', DECODE(tfp.c_denominacion, 'EFECTIVO', 'POST.FA.(EF)', 'POST.FA.(TC)'), "+
-					"DECODE(tm.tipmov_id,"+Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS+", DECODE(tfp.c_denominacion, 'EFECTIVO', 'GAS.ADM(EFE)','GAS.ADM(TC)'),  " +
-					"DECODE(vp.tipmov_id,"+Constantes.ID_TIPMOV_GRT+", DECODE(tfp.c_denominacion, 'PCE', 'EQUIPAJE(PCE)', DECODE(tfp.c_denominacion, 'EFECTIVO', 'EQUIPAJE(EF)','EQUIPAJE(TC)')),  " +
-					"DECODE(vp.tipmov_id,"+Constantes.ID_TIPMOV_SERVICIO_ESPECIAL+", DECODE(tfp.c_denominacion, 'EFECTIVO', 'SERV.ESP(EF)', 'SER.ESP(CRE)'),  " +
+			tipoVenta = "DECODE(tm.c_denominacion, 'FECHA ABIERTA', DECODE(tfp.c_denominacion, 'EFECTIVO', 'FA.(EF)', DECODE(tfp.c_denominacion, 'TRANSFERENCIA','FA.(TRA)', DECODE(tfp.c_denominacion,'YAPE','FA(YAP)', 'FA.(TC)'))), " +
+					"DECODE(tm.c_denominacion, 'CONFIRMACION FA', DECODE(tfp.c_denominacion, 'EFECTIVO', 'CONF.FA.(EF)', DECODE(tfp.c_denominacion, 'TRANSFERENCIA', 'CONF.FA.(TRA)', DECODE(tfp.c_denominacion,'YAPE','CONF.FA.(YAP)', 'CONF.FA.(TC)') )), " +
+					"DECODE(tm.c_denominacion, 'REIMPRESION', DECODE(tfp.c_denominacion, 'EFECTIVO', 'REIMP.(EF)', DECODE(tfp.c_denominacion,'YAPE','REIMP.(YAP)', 'REIMP.(TC)') ), " +
+					"DECODE(tm.c_denominacion, 'POSTERGACION', DECODE(tfp.c_denominacion, 'EFECTIVO', 'POST.(EF)', DECODE(tfp.c_denominacion,'YAPE','POST.(YAP)', 'POST.(TC)') ), " +
+					"DECODE(tm.c_denominacion, 'POSTERGACION FA', DECODE(tfp.c_denominacion, 'EFECTIVO', 'POST.FA.(EF)', DECODE(tfp.c_denominacion,'YAPE','POST.FA.(YAP)', 'POST.FA.(TC)') ), "+
+					"DECODE(tm.tipmov_id,"+Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS+", DECODE(tfp.c_denominacion, 'EFECTIVO', 'GAS.ADM(EFE)', DECODE(tfp.c_denominacion,'YAPE','GAS.ADM.(YAP)', 'GAS.ADM.(TC)') ),  " +
+					"DECODE(vp.tipmov_id,"+Constantes.ID_TIPMOV_GRT+", DECODE(tfp.c_denominacion, 'PCE', 'EQUIPAJE(PCE)', DECODE(tfp.c_denominacion, 'EFECTIVO', 'EQUIPAJE(EF)', DECODE(tfp.c_denominacion,'YAPE','EQUIPAJE.(YAP)', 'EQUIPAJE.(TC)') )),  " +
+					"DECODE(vp.tipmov_id,"+Constantes.ID_TIPMOV_SERVICIO_ESPECIAL+", DECODE(tfp.c_denominacion, 'EFECTIVO', 'SERV.ESP(EF)', DECODE(tfp.c_denominacion,'YAPE','SERV.ESP.(YAP)', 'SERV.ESP.(TC)') ),  " +
 					"DECODE(vp.tipcom_id,"+Constantes.ID_TIPCOM_NOTA_CREDITO+", 'NOTA CREDITO',  " +
-					"DECODE(tm.c_denominacion, 'EFECTIVO', DECODE(tfp.c_denominacion, 'EFECTIVO', 'V.(EF)', DECODE(tfp.c_denominacion, 'TRANSFERENCIA', 'V.(TRA)', 'V.(TC)')"
+					"DECODE(tm.c_denominacion, 'EFECTIVO', DECODE(tfp.c_denominacion, 'EFECTIVO', 'V.(EF)', DECODE(tfp.c_denominacion, 'TRANSFERENCIA', 'V.(TRA)', DECODE(tfp.c_denominacion,'YAPE','V.(YAP)', 'V.(TC)') )"
 					+ "))))))))))) TIPOVENTA ";
 
 			sql = sql + "SELECT vp.venpas_id, vp.c_numcontrol NroControl, vp.c_numboleto NroBoleto, vp.c_numbolant NroBoletoRef, " +

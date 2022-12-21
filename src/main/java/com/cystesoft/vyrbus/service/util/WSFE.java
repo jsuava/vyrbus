@@ -225,8 +225,8 @@ public class WSFE implements Serializable{
 	 * @param ventaPasaje : Instancia del Object VentaPasaje
 	 * @throws Exception
 	 */
-	public static Result sendVenta(List<VentaPasaje> listVentaPasaje, Window window, Boolean printTicket, VentaPasaje notaCredito)throws Exception{
-		return sendVenta(listVentaPasaje, window, printTicket, notaCredito, false);
+	public static Result sendVenta(List<VentaPasaje> listVentaPasaje, Window window, Boolean printTicket, VentaPasaje notaCredito, Integer numPrintCopies)throws Exception{
+		return sendVenta(listVentaPasaje, window, printTicket, notaCredito, false, numPrintCopies);
 	}
 	
 	/**
@@ -234,8 +234,8 @@ public class WSFE implements Serializable{
 	 * @param ventaPasaje : Instancia del Object VentaPasaje
 	 * @throws Exception
 	 */
-	public static Result sendVenta(List<VentaPasaje> listVentaPasaje, Window window, Boolean printTicket, VentaPasaje notaCredito, boolean isReemvioBySoporte)throws Exception{
-		return sendVenta(listVentaPasaje, window, printTicket, notaCredito, isReemvioBySoporte, null);
+	public static Result sendVenta(List<VentaPasaje> listVentaPasaje, Window window, Boolean printTicket, VentaPasaje notaCredito, boolean isReemvioBySoporte, Integer numPrintCopies)throws Exception{
+		return sendVenta(listVentaPasaje, window, printTicket, notaCredito, isReemvioBySoporte, null, numPrintCopies);
 	}
 	
 	/**
@@ -249,7 +249,7 @@ public class WSFE implements Serializable{
 	 * @return
 	 * @throws Exception
 	 */
-	public static Result sendVenta(List<VentaPasaje> listVentaPasaje, Window window, Boolean printTicket, VentaPasaje notaCredito, boolean isReemvioBySoporte, List<VentaPasaje> listVentasSoloReimpresion)throws Exception{
+	public static Result sendVenta(List<VentaPasaje> listVentaPasaje, Window window, Boolean printTicket, VentaPasaje notaCredito, boolean isReemvioBySoporte, List<VentaPasaje> listVentasSoloReimpresion, Integer numPrintCopies)throws Exception{
 		try {
 			List<VentaPasaje> ventasEnviadas= new ArrayList<>();
 			
@@ -335,9 +335,9 @@ public class WSFE implements Serializable{
 			}
 			
 			/**Realiza la impresion del Ticket - 09/12/2016 - jabanto*/
-			if(printTicket && ventasEnviadas.size()>0){
+			if(printTicket && ventasEnviadas.size()>0 && numPrintCopies !=null){
 				/*Crea el objet xmlVentaPasaje, para crear el archivo xml para la impresion del Ticket*/
-				XmlVentaPasaje filexmlprint=createXmlVenta(ventasEnviadas, false);
+				XmlVentaPasaje filexmlprint=createXmlVenta(ventasEnviadas, false, numPrintCopies);
 				if(filexmlprint!=null)
 					descargarFileXml(filexmlprint, window);
 			}
@@ -358,7 +358,7 @@ public class WSFE implements Serializable{
 	 * @param ventaPasaje
 	 * @param window
 	 */
-	public static void reimprimirComprobante(List<VentaPasaje> listVentaPasaje, Window window){
+	public static void reimprimirComprobante(List<VentaPasaje> listVentaPasaje, Window window, int numCopias){
 		try {
 			List<VentaPasaje> ventasEnviadasSFE= new ArrayList<>();
 			
@@ -379,7 +379,7 @@ public class WSFE implements Serializable{
 			}
 			
 			/*Crea y descarga el Archivo xml para la impresion*/
-			XmlVentaPasaje fileXmlPrint=createXmlVenta(ventasEnviadasSFE, true);
+			XmlVentaPasaje fileXmlPrint=createXmlVenta(ventasEnviadasSFE, true, numCopias);
 			if(fileXmlPrint!=null)
 				descargarFileXml(fileXmlPrint, window);
 						
@@ -424,10 +424,10 @@ public class WSFE implements Serializable{
 	 * @param listVouchers	: Lista de vouchers a imprimir
 	 * @param window
 	 */
-	public static void printVouchers(List<VentaPasaje> listVouchers, Window window){
+	public static void printVouchers(List<VentaPasaje> listVouchers, Window window, int numCopias){
 		XmlVentaPasaje fileXmlPrint;
 		try {
-			fileXmlPrint = createXmlVenta(listVouchers, false);
+			fileXmlPrint = createXmlVenta(listVouchers, false, numCopias);
 			if(fileXmlPrint!=null)
 				descargarFileXml(fileXmlPrint, window);
 			
@@ -601,6 +601,11 @@ public class WSFE implements Serializable{
 			lstEgresos.add(new XmlItemEgresoLiquidacion("NOTA CREDITO", "", "", liquidacion2.getCantidadNotasCredito().toString(), String.valueOf(liquidacion2.getMontoNotasCredito())));
 			lstEgresos.add(new XmlItemEgresoLiquidacion("DEV. TARJETA", "", "", liquidacion2.getCantidadDevolucionTarjeta().toString(), String.valueOf(liquidacion2.getMontoDevolucionTarjeta())));
 			lstEgresos.add(new XmlItemEgresoLiquidacion("VENTA PCE", "", "", cantidadCredito.toString(), totalCredito.toString()));
+			if(liquidacion2.getCantidadTransferencias()!=null && liquidacion2.getCantidadTransferencias() > 0)
+				lstEgresos.add(new XmlItemEgresoLiquidacion("VENTA TRANS.", "", "", liquidacion2.getCantidadTransferencias().toString(), String.valueOf(liquidacion2.getMontoTransferencias())));
+			if(liquidacion2.getCantidadYape()!=null && liquidacion2.getCantidadYape() > 0)
+				lstEgresos.add(new XmlItemEgresoLiquidacion("VENTA YAPE", "", "", liquidacion2.getCantidadYape().toString(), String.valueOf(liquidacion2.getMontoYape())));
+				
 			xmlLiquidacion.setV91_detalleLiquidacionEgresos(new XmlDetalleLiquidacionEgresos(lstEgresos));
 			
 			/*Totaliza los Egresos*/
@@ -608,8 +613,10 @@ public class WSFE implements Serializable{
 			totalEgresos += + liquidacion2.getMontoCortesia();
 			totalEgresos += + totalCredito;
 			totalEgresos += + montoVentaTarjeta;
-			totalEgresos += +liquidacion2.getMontoNotasCredito();
-			totalEgresos += +liquidacion2.getMontoDevolucionTarjeta();
+			totalEgresos += + liquidacion2.getMontoNotasCredito();
+			totalEgresos += + liquidacion2.getMontoDevolucionTarjeta();
+			totalEgresos += + liquidacion2.getMontoTransferencias();
+			totalEgresos += + liquidacion2.getMontoYape();
 //			totalEgresos += +liquidacion2.getMontoPCE();
 			
 			totalEfectivo += - totalEgresos;
@@ -923,6 +930,7 @@ public class WSFE implements Serializable{
 			Path path = Paths.get(pathRpt);
 			byte[] contenido = java.nio.file.Files.readAllBytes(path);
 //			@SuppressWarnings("restriction")
+			@SuppressWarnings("restriction")
 			String cryptoRptFormat=new BASE64Encoder().encode(contenido);
 			
 			for(int i = 0; i < 2; i++) { //Para duplicar la impresion de Ticket de equipaje - Para el equipaje y el Boleto
@@ -950,6 +958,7 @@ public class WSFE implements Serializable{
 				xmlEquipajes.setEquipaje(listXmlEquipaje);
 			}			
 			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -966,7 +975,7 @@ public class WSFE implements Serializable{
 	 * @throws Exception
 	 */
 	@SuppressWarnings("restriction")
-	private static XmlVentaPasaje createXmlVenta(List<VentaPasaje> listVentaPasaje, boolean isReimpresion)throws Exception{
+	private static XmlVentaPasaje createXmlVenta(List<VentaPasaje> listVentaPasaje, boolean isReimpresion, int numPrintCopies)throws Exception{
 		try {
 			XmlVentaPasaje xmlVentaPasaje= null;
 			
@@ -1167,6 +1176,23 @@ public class WSFE implements Serializable{
 			if(listXmlVenta.size()>0){
 				xmlVentaPasaje= new XmlVentaPasaje();
 				xmlVentaPasaje.setVenta(listXmlVenta);
+			
+				
+				
+				//Aplica la cantidad de copias que debe imprimir del comprobante
+				int copiasAdicionales = (listVentaPasaje.size() * numPrintCopies)- listVentaPasaje.size();
+				
+				List<XmlVenta> listXmlCopyAdicional = new ArrayList<XmlVenta>();
+				for(int x = 0; x < copiasAdicionales; x++) {
+					for(XmlVenta xmlVenta: listXmlVenta) {
+						XmlVenta oXmlVenta = (XmlVenta) xmlVenta.clone();
+						listXmlCopyAdicional.add(oXmlVenta);
+					}
+				}
+				
+				for(XmlVenta xmlVenta: listXmlCopyAdicional) {
+					xmlVentaPasaje.getVenta().add(xmlVenta);
+				}
 				
 				/*Busca configuracion de impresion - POR AHORA SOLO HABILITADO PARA LA AGENCIA TU ENTRADA*/				
 				Agencia agencia=(Agencia)Executions.getCurrent().getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
@@ -1175,6 +1201,10 @@ public class WSFE implements Serializable{
 					xmlVentaPasaje.setConfigPrint(getXmlConfigPrint(usuarioHardware));
 				}
 			}
+			
+			
+			
+			
 				
 			return xmlVentaPasaje;
 		} catch (Exception e) {

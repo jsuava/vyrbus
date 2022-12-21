@@ -1284,7 +1284,7 @@ public class WndDevolucionBoleto extends WndBase {
 							gastoAdmin=ServiceLocator.getVentaPasajesManager().buscarVentaById(gastoAdmin.getId());
 							List<VentaPasaje>listVentaPasaje= new ArrayList<>();
 							listVentaPasaje.add(gastoAdmin);
-							WSFE.sendVenta(listVentaPasaje, wndDevolucionBoleto, true, notaCredito);
+							WSFE.sendVenta(listVentaPasaje, wndDevolucionBoleto, true, notaCredito, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 						}
 
 

@@ -821,7 +821,7 @@
 															<label value="TARJETA CREDITO :"/>
 															<combobox id="cmbTarjetaCredito" readonly="true" disabled="true"/>
 															<label value="NUMERO OPERACION :"/>
-															<textbox id="txtOperacionBancaria" mold="default" disabled="true" width="90px"/>															
+															<textbox id="txtOperacionBancaria" mold="default" disabled="true" width="90px" maxlength="15"/>															
 														</row>
 														<row>
 															<label value="DESCUENTO :"/>

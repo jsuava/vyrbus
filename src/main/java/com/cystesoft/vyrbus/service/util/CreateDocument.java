@@ -3675,7 +3675,7 @@ public class CreateDocument implements Serializable {
 		Double totalLiquidacion;
 		/*Egresos de caja*/
 		Integer longitud_descripcionGasto = 68;
-		Double totalGasto = .00, totalOtrosIngresos = .00, totalGastosCaja = .00, totalCtaCte = .00;
+		Double totalGasto = .00 /*, totalOtrosIngresos = .00*/, totalGastosCaja = .00, totalCtaCte = .00;
 		int longitud_C;
 		String linea = "";
 		
@@ -3720,11 +3720,11 @@ public class CreateDocument implements Serializable {
 			}		
 			
 			Double total = .00, totalVentaPasajes = .00, totalVentaCarga = .00, totalVentaTarjeta = .00;
-			int index = 0;
-			Double totalNotaCredito = .00, totalCredito = .00, totalCortesia = .00, totalDevoluciones = .00, totalVentasPce = .00;
+//			int index = 0;
+			Double totalVentasNotaCredito = .00, totalVentasCredito = .00, totalVentasCortesia = .00, totalVentasDevoluciones = .00, totalVentasPce = .00, totalVentasYape = .00, totalVentasTransferencias = .00;
 			List<String> lstControlTipoFormaPago = new ArrayList<String>();
 			for(VentaPasaje ventaPasaje: listDetalleVentas) {
-				index++;
+//				index++;
 				FormaPago formaPago = ventaPasaje.getFormaPago();
 				TipoFormaPago tipoFormaPago = ventaPasaje.getTipoFormaPago();
 				TipoComprobante tipoComprobante = ventaPasaje.getTipoComprobante();
@@ -3762,15 +3762,19 @@ public class CreateDocument implements Serializable {
 					total += ventaPasaje.getImportePagado();
 					
 					if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_DEVOLUCION)
-						totalDevoluciones += ventaPasaje.getImportePagado();
+						totalVentasDevoluciones += ventaPasaje.getImportePagado();
 					else if(ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA)
 						totalVentasPce += ventaPasaje.getImportePagado();
 					else if(ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_NOTA_CREDITO)
-						totalNotaCredito += ventaPasaje.getImportePagado();
+						totalVentasNotaCredito += ventaPasaje.getImportePagado();
 					else if(ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO)
-						totalCredito += ventaPasaje.getImportePagado();
+						totalVentasCredito += ventaPasaje.getImportePagado();
 					else if(ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA)
-						totalCortesia += ventaPasaje.getImportePagado();
+						totalVentasCortesia += ventaPasaje.getImportePagado();
+					else if(ventaPasaje.getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_TRANSFERENCIA)
+						totalVentasTransferencias += ventaPasaje.getImportePagado();
+					else if(ventaPasaje.getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_YAPE)
+						totalVentasYape += ventaPasaje.getImportePagado();
 					
 				}			
 			}
@@ -3798,7 +3802,8 @@ public class CreateDocument implements Serializable {
 				}
 			}
 			
-			if(totalVentaTarjeta > 0 || totalVentasPce > 0 || totalYape > 0 || totalDevoluciones > 0 || totalNotaCredito > 0 || totalCredito > 0 || totalCortesia > 0) {
+			if(totalVentaTarjeta > 0 || totalVentasPce > 0 || totalYape > 0 || totalVentasDevoluciones > 0 || totalVentasNotaCredito > 0 || totalVentasCredito > 0 || totalVentasCortesia > 0 ||
+					totalVentasTransferencias > 0 || totalVentasYape > 0) {
 				linea=tabular(3)+"EGRESOS EN VENTAS";
 				bw.write(linea + NEWLINE);
 				linea=tabular(3)+"--------------------";
@@ -3824,38 +3829,54 @@ public class CreateDocument implements Serializable {
 					totalEgresosVentas += totalYape;
 				}
 				//Agrega egresos para las devoluciones 
-				if(totalDevoluciones > 0) {
+				if(totalVentasDevoluciones > 0) {
 					linea=tabular(3)+"DEVOLUCIONES AUTOMÁTICAS";
-					linea+=tabular(45)+tabular(24-Util.toNumberFormat(totalDevoluciones, 2).length())+Util.toNumberFormat(totalDevoluciones, 2);
+					linea+=tabular(45)+tabular(24-Util.toNumberFormat(totalVentasDevoluciones, 2).length())+Util.toNumberFormat(totalVentasDevoluciones, 2);
 					bw.write(linea + NEWLINE);
-					totalEgresosVentas += totalDevoluciones;
+					totalEgresosVentas += totalVentasDevoluciones;
 				}
 				//Agrega egresos para las Notas de Crédito
-				if(totalNotaCredito > 0) {
+				if(totalVentasNotaCredito > 0) {
 					linea=tabular(3)+"NOTAS DE CRÉDITO";
-					linea+=tabular(45)+tabular(32-Util.toNumberFormat(totalNotaCredito, 2).length())+Util.toNumberFormat(totalNotaCredito, 2);
+					linea+=tabular(45)+tabular(32-Util.toNumberFormat(totalVentasNotaCredito, 2).length())+Util.toNumberFormat(totalVentasNotaCredito, 2);
 					bw.write(linea + NEWLINE);
-					totalEgresosVentas += totalNotaCredito;
+					totalEgresosVentas += totalVentasNotaCredito;
 				}
 				
 				//Agrega egresos para las ventas crédito
-				if(totalCredito > 0) {
+				if(totalVentasCredito > 0) {
 					linea=tabular(3)+"VENTA CRÉDITO";
-					linea+=tabular(45)+tabular(35-Util.toNumberFormat(totalNotaCredito, 2).length())+Util.toNumberFormat(totalCredito, 2);
+					linea+=tabular(45)+tabular(35-Util.toNumberFormat(totalVentasNotaCredito, 2).length())+Util.toNumberFormat(totalVentasCredito, 2);
 					bw.write(linea + NEWLINE);
-					totalEgresosVentas += totalCredito;
+					totalEgresosVentas += totalVentasCredito;
 				}
 				//Agrega egresos para las ventas x cortesia
-				if(totalCortesia > 0) {
+				if(totalVentasCortesia > 0) {
 					linea=tabular(3)+"CORTESÍAS";
-					linea+=tabular(45)+tabular(39-Util.toNumberFormat(totalCortesia, 2).length())+Util.toNumberFormat(totalCortesia, 2);
+					linea+=tabular(45)+tabular(39-Util.toNumberFormat(totalVentasCortesia, 2).length())+Util.toNumberFormat(totalVentasCortesia, 2);
 					bw.write(linea + NEWLINE);
-					totalEgresosVentas += totalCortesia;
+					totalEgresosVentas += totalVentasCortesia;
 				}
-				
+				//Agrega egresos para Transferencias
+				if(totalVentasTransferencias > 0) {
+					linea=tabular(3)+"TRANSFERENCIAS";
+					linea+=tabular(40)+tabular(39-Util.toNumberFormat(totalVentasTransferencias, 2).length())+Util.toNumberFormat(totalVentasTransferencias, 2);
+					bw.write(linea + NEWLINE);
+					totalEgresosVentas += totalVentasTransferencias;
+				}				
+				//Agrega egresos para Yape
+				if(totalVentasYape > 0) {
+					linea=tabular(3)+"YAPE";
+					linea+=tabular(50)+tabular(39-Util.toNumberFormat(totalVentasYape, 2).length())+Util.toNumberFormat(totalVentasYape, 2);
+					bw.write(linea + NEWLINE);
+					totalEgresosVentas += totalVentasYape;
+				}
+								
 				linea=tabular(85)+"--------------";
 				bw.write(linea+NEWLINE);
-				linea=tabular(76)+tabular(20-(Util.toNumberFormat(totalYape+totalVentaTarjeta+totalVentasPce, 2).length()))+Util.toNumberFormat(totalYape+totalVentaTarjeta+totalVentasPce, 2);
+				linea=tabular(76) + tabular(20 - (Util.toNumberFormat(totalEgresosVentas, 2).length())) + Util.toNumberFormat(totalEgresosVentas, 2);
+//				linea=tabular(76) + tabular(20 - (Util.toNumberFormat(totalYape + totalVentaTarjeta + totalVentasPce, 2).length())) + 
+//						                          Util.toNumberFormat(totalYape + totalVentaTarjeta + totalVentasPce, 2);
 				bw.write(linea+NEWLINE);
 			}
 			
@@ -3995,7 +4016,7 @@ public class CreateDocument implements Serializable {
 			
 			Double total = .00, totalVentaPasajes = .00, totalVentaCarga = .00, totalVentaTarjeta = .00;
 			index = 0;
-			Double totalNotaCredito = .00, totalCredito = .00, totalCortesia = .00, totalDevoluciones = .00, totalVentasPce = .00;
+			Double totalNotaCredito = .00, totalVentasCredito = .00, totalVentasCortesia = .00, totalVentasDevoluciones = .00, totalVentasPce = .00, totalVentasTransferencias = .00, totalVentasYape = .00;
 			List<String> lstControlTipoFormaPago = new ArrayList<String>();
 			for(VentaPasaje ventaPasaje: listDetalleVentas) {
 				index++;
@@ -4086,15 +4107,19 @@ public class CreateDocument implements Serializable {
 					total += ventaPasaje.getImportePagado();
 					
 					if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_DEVOLUCION)
-						totalDevoluciones += ventaPasaje.getImportePagado();
+						totalVentasDevoluciones += ventaPasaje.getImportePagado();
 					else if(ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA)
 						totalVentasPce += ventaPasaje.getImportePagado();
 					else if(ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_NOTA_CREDITO)
 						totalNotaCredito += ventaPasaje.getImportePagado();
 					else if(ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO)
-						totalCredito += ventaPasaje.getImportePagado();
+						totalVentasCredito += ventaPasaje.getImportePagado();
 					else if(ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA)
-						totalCortesia += ventaPasaje.getImportePagado();
+						totalVentasCortesia += ventaPasaje.getImportePagado();
+					else if(ventaPasaje.getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_TRANSFERENCIA)
+						totalVentasTransferencias += ventaPasaje.getImportePagado();
+					else if(ventaPasaje.getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_YAPE)
+						totalVentasYape += ventaPasaje.getImportePagado();
 					
 					if(bw!=null)
 						bw.write(linea+NEWLINE);					
@@ -4127,10 +4152,12 @@ public class CreateDocument implements Serializable {
 									 - totalGastosCaja
 									 - totalCtaCte
 									 - totalNotaCredito
-									 - totalCredito
-									 - totalCortesia
-									 - totalDevoluciones
-									 - totalVentasPce);
+									 - totalVentasCredito
+									 - totalVentasCortesia
+									 - totalVentasDevoluciones
+									 - totalVentasPce
+									 - totalVentasTransferencias
+									 - totalVentasYape);
 			
 			//N Concepto
 			String concepto="(+) TOTAL PASAJES";
@@ -4170,7 +4197,7 @@ public class CreateDocument implements Serializable {
 			longitud_C= concepto.length();
 			linea= tabular(30) + concepto + tabular(longConceptop-longitud_C);			
 			//IMPORTE/
-			importe= Util.toNumberFormat(totalCredito, 2);
+			importe= Util.toNumberFormat(totalVentasCredito, 2);
 			longitud_C=importe.length();
 			linea += tabular(longImporteTotales - longitud_C) + importe;
 			if(bw!=null)
@@ -4225,7 +4252,7 @@ public class CreateDocument implements Serializable {
 			longitud_C= concepto.length();
 			linea= tabular(30) + concepto + tabular(longConceptop-longitud_C);			
 			//IMPORTE/
-			importe= Util.toNumberFormat(totalDevoluciones, 2);
+			importe= Util.toNumberFormat(totalVentasDevoluciones, 2);
 			longitud_C=importe.length();
 			linea += tabular(longImporteTotales - longitud_C) + importe;
 			if(bw!=null)
@@ -4247,7 +4274,7 @@ public class CreateDocument implements Serializable {
 			longitud_C= concepto.length();
 			linea= tabular(30) + concepto + tabular(longConceptop-longitud_C);			
 			//IMPORTE/
-			importe= Util.toNumberFormat(totalCortesia, 2);
+			importe= Util.toNumberFormat(totalVentasCortesia, 2);
 			longitud_C=importe.length();
 			linea += tabular(longImporteTotales - longitud_C) + importe;
 			if(bw!=null)
@@ -4263,6 +4290,29 @@ public class CreateDocument implements Serializable {
 			linea += tabular(longImporteTotales - longitud_C) + importe;
 			if(bw!=null)
 				bw.write(linea+NEWLINE);
+			
+			//N Concepto
+			concepto="(-) TOTAL TRANSFERECIAS";
+			longitud_C= concepto.length();
+			linea= tabular(20) + concepto + tabular(longConceptop-longitud_C);			
+			//IMPORTE/
+			importe= Util.toNumberFormat(totalVentasTransferencias, 2);
+			longitud_C=importe.length();
+			linea += tabular(longImporteTotales - longitud_C) + importe;
+			if(bw!=null)
+				bw.write(linea+NEWLINE);
+			
+			//N Concepto
+			concepto="(-) TOTAL YAPE";
+			longitud_C= concepto.length();
+			linea= tabular(29) + concepto + tabular(longConceptop-longitud_C);			
+			//IMPORTE/
+			importe= Util.toNumberFormat(totalVentasYape, 2);
+			longitud_C=importe.length();
+			linea += tabular(longImporteTotales - longitud_C) + importe;
+			if(bw!=null)
+				bw.write(linea+NEWLINE);
+			
 			
 			linea = tabular(longConceptop)+"==============================================";
 			if(bw!=null)
@@ -5450,7 +5500,8 @@ public class CreateDocument implements Serializable {
 				else if(ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO)
 					ventaPasaje.getTipoFormaPago().setDenominacion("CREDITO");		
 				else if(ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA)
-					ventaPasaje.getTipoFormaPago().setDenominacion("CORTESIA");
+					ventaPasaje.getTipoFormaPago().setDenominacion("CORTESIA");				
+				
 				listDetalleVentas.add(ventaPasaje);
 			}			
 			

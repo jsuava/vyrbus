@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlType;
  *
  */
 @XmlType
-public class XmlVenta implements Serializable{
+public class XmlVenta implements Serializable, Cloneable{
 	/**
 	 *
 	 */
@@ -403,5 +403,13 @@ public class XmlVenta implements Serializable{
 	public void setZ_QR(String z_QR) {
 		this.z_QR = z_QR;
 	}
-
+	
+	/**
+	 * 
+	 */
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		// TODO Auto-generated method stub
+		return super.clone();
+	}
 }

@@ -1667,7 +1667,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 								listVentaPasaje.add(gastoAdmin);
 							
 							if(listVentaPasaje.size()>0)
-								WSFE.sendVenta(listVentaPasaje, wndPostergacion, true, notaCredito);
+								WSFE.sendVenta(listVentaPasaje, wndPostergacion, true, notaCredito, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 							
 							
 							/*Realiza el envio del gasto administrativo*/
