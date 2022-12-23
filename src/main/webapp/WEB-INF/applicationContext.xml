@@ -227,6 +227,12 @@
 	<bean id="ventaPasajesDAO" class="com.cystesoft.vyrbus.model.dao.impl.VentaPasajesDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
+	<bean id="ventaPasajesHistorialDAO" class="com.cystesoft.vyrbus.model.dao.impl.VentaPasajesHistorialDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="historicoResumenVentasDAO" class="com.cystesoft.vyrbus.model.dao.impl.HistoricoResumenVentasDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>	
 	<bean id="programacionServicioDAO" class="com.cystesoft.vyrbus.model.dao.impl.ProgramacionServicioDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
@@ -435,7 +441,9 @@
    	<bean id="detalleEquipajeDAO" class="com.cystesoft.vyrbus.model.dao.impl.DetalleEquipajeDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	
+   	<bean id="flagDAO" class="com.cystesoft.vyrbus.model.dao.impl.FlagDAOImpl">
+   		<property name="sessionFactory" ref="sessionFactory" />
+   	</bean>
    	
 <!--    	VENTA DE SEGUROS -->
 	<bean id="ventaSeguroDAO" class="com.cystesoft.vyrbus.model.dao.impl.VentaSeguroDAOImpl">
@@ -614,6 +622,7 @@
 	</bean>
 	<bean id="ventaPasajesManager" class="com.cystesoft.vyrbus.service.business.impl.VentaPasajesManagerImpl">
 		<property name="ventaPasajesDAO" ref="ventaPasajesDAO"/>
+		<property name="ventaPasajesHistorialDAO" ref="ventaPasajesHistorialDAO"/>
 		<property name="controlEspecieValoradaDAO" ref="controlEspecieValoradaDAO" />
 		<property name="itinerarioDAO" ref="itinerarioDAO"/>
 		<property name="tmpOcupacionAsientosDAO" ref="tmpOcupacionAsientosDAO" />
@@ -622,6 +631,12 @@
 		<property name="titanDAO" ref="titanDAO" />
 		<property name="especieValoradaDAO" ref="especieValoradaDAO" />
 		<property name="lineaCreditoClienteDAO" ref="lineaCreditoClienteDAO" />
+	</bean>
+	<bean id="ventaPasajesHistorialManager" class="com.cystesoft.vyrbus.service.business.impl.VentaPasajesHistorialManagerImpl">
+		<property name="ventaPasajesHistorialDAO" ref="ventaPasajesHistorialDAO"/>		
+	</bean>
+	<bean id="historicoResumenVentasManager" class="com.cystesoft.vyrbus.service.business.impl.HistoricoResumenVentasManagerImpl">
+		<property name="historicoResumenVentasDAO" ref="historicoResumenVentasDAO"/>		
 	</bean>
 	<bean id="programacionServicioManager" class="com.cystesoft.vyrbus.service.business.impl.ProgramacionServicioManagerImpl">
 		<property name="programacionServicioDAO" ref="programacionServicioDAO"/>
@@ -838,7 +853,9 @@
 	   <property name="equipajeDAO" ref="equipajeDAO" />
 	   <property name="controlEspecieValoradaDAO" ref="controlEspecieValoradaDAO"/>
 	</bean>
-	
+	<bean id="flagManager" class="com.cystesoft.vyrbus.service.business.impl.FlagManagerImpl">
+	   <property name="flagDAO" ref="flagDAO"/>	   
+	</bean>
 <!-- 	VENTA DE SEGUROS -->
 	<bean id="ventaSeguroManager" class="com.cystesoft.vyrbus.service.business.impl.VentaSeguroManagerImpl">
 		<property name="ventaSeguroDAO" ref="ventaSeguroDAO" />

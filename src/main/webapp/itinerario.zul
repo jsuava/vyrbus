@@ -5,17 +5,17 @@
 		<listbox id="listboxLista" rows="15" >
 			<listhead sizable="true">
 				<listheader label="#" width="30px" />
-					<listheader label="ITNERARIO" sort="auto" align="center" width="70px" style="color: #ffffff;"/>
-					<listheader label="ORIGEN" sort="auto" align="left"   width="125px" style="color: #ffffff;"/>
-					<listheader label="DESTINO" sort="auto" align="left"  width="135px" style="color: #ffffff;"/>
-					<listheader label="SERVICIO" sort="auto" align="left" width="140px" style="color: #ffffff;"/>
+					<listheader label="ITNERARIO" sort="auto" align="center" width="60px" style="color: #ffffff;"/>
+					<listheader label="ORIGEN" sort="auto" align="left"   width="120px" style="color: #ffffff;"/>
+					<listheader label="DESTINO" sort="auto" align="left"  width="120px" style="color: #ffffff;"/>
+					<listheader label="SERVICIO" sort="auto" align="left" width="120px" style="color: #ffffff;"/>
 					<listheader label="FECHA PARTIDA" sort="auto" align="center" width="100px" style="color: #ffffff;"/>
 					<listheader label="HORA PARTIDA" sort="auto" align="center" width="95px" style="color: #ffffff;"/>
 					<listheader label="FECHA LLEGADA" sort="auto" align="center" width="100px" style="color: #ffffff;"/>
 					<listheader label="HORA LLEGADA" sort="auto" align="center" width="95px" style="color: #ffffff;"/>
 					<listheader label="TERMINAL PARTIDA" sort="auto" align="left" style="color: #ffffff;"/>
 					<listheader label="TERMINAL LLEGADA" sort="auto" align="left" style="color: #ffffff;"/>
-					<listheader label="PROCESOS" align="center" width="70px" style="color: #ffffff;"/>
+					<listheader label="PROCESOS" align="center" width="120px" style="color: #ffffff;"/>
 			</listhead>
 		</listbox>	
 	</div>

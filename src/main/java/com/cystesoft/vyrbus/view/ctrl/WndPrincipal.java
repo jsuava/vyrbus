@@ -433,6 +433,7 @@ public class WndPrincipal extends WndBase {
 					menuitem = new Menuitem(opcionMenu.getDenominacion());
 					menuitem.setId(opcionMenu.getNombreObjeto());
 					menuitem.addEventListener(Events.ON_CLICK, addEventListener(opcionMenu));
+					menuitem.setImage("resources/mp_aceptarEnabled.png");
 					menupopup_N2.appendChild(menuitem);
 					menu_N2.appendChild(menupopup_N2);
 					menupopup_N1.appendChild(menu_N2);

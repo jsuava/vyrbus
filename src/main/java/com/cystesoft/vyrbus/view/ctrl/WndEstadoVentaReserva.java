@@ -233,6 +233,7 @@ public class WndEstadoVentaReserva extends WndBase {
 												  					 idDestino,
 												  					 tipoMovimiento);
 				Util.limpiarListbox(lstbxListaMovimientos);
+				Util.limpiarListbox(lstbxHistorial);
 				int x=-1;
 
 				for(VentaPasaje ventaPasaje: lstVenta){
@@ -346,6 +347,7 @@ public class WndEstadoVentaReserva extends WndBase {
 		String styleAnulado_9px="font-size:9px !important; color:red";
 
 		Util.limpiarListbox(lstbxHistorial);
+		Util.limpiarListbox(lstbxListaMovimientos);
 		int x=-1;
 
 		for(VentaPasaje ventaPasaje: lstHistorial){
@@ -547,8 +549,8 @@ public class WndEstadoVentaReserva extends WndBase {
 		/*========================================================================================*/
 		Menuitem menuitem=new Menuitem("Enviar Comprobante S.F.E.","/resources/mp_acceptEnabled.png");
 		menuitem.setDisabled(true);
-		if((ventaPasaje.getEnviadoSFE()==null || ventaPasaje.getEnviadoSFE().intValue()==Constantes.FAILURE) &&
-				(getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO || getRol().getId().intValue()==Constantes.ID_ROL_FISCALIZACION))
+		if((ventaPasaje.getEnviadoSFE()==null || ventaPasaje.getEnviadoSFE().intValue()==Constantes.FAILURE)) // &&
+//				(getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO || getRol().getId().intValue()==Constantes.ID_ROL_ADMIN))
 			menuitem.setDisabled(false);
 		menuitem.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override

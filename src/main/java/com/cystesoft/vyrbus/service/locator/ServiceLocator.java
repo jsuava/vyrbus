@@ -389,6 +389,22 @@ public class ServiceLocator {
 	}
 
 	/**
+	 * Obtiene el bean de VentaPasajesHistorialManager, para realizar la comunicacion con la capa del modelo.
+	 * @return <b>VentaPasajesHistorialManager</b>
+	 */
+	public static VentaPasajesHistorialManager getVentaPasajesHistorialManager(){
+		return (VentaPasajesHistorialManager) SpringUtil.getBean("ventaPasajesHistorialManager", VentaPasajesHistorialManager.class);
+	}
+	
+	/**
+	 * Obtiene el bean de HistoricoResumenVentasManager, para realizar la comunicacion con la capa del modelo.
+	 * @return <b>HistoricoResumenVentasManager</b>
+	 */
+	public static HistoricoResumenVentasManager getHistoricoResumenVentasManager(){
+		return (HistoricoResumenVentasManager) SpringUtil.getBean("historicoResumenVentasManager", HistoricoResumenVentasManager.class);
+	}	
+	
+	/**
 	 * Obtiene el bean de VentaPasajes, para realizar la comunicacion con la capa del modelo.
 	 * @return <b>VentaPasajesManager</b>
 	 */
@@ -953,5 +969,13 @@ public class ServiceLocator {
 	 */
 	public static TranscarWebManager getTranscarWebManager(){
 		return (TranscarWebManager) SpringUtil.getBean("transcarWebManager",TranscarWebManager.class);
+	}
+	
+	/**
+	 * Obtiene el bean de FlagManager, para realizar la comunicación con la capa modelo
+	 * @return <b>FlagManager</b>
+	 */
+	public static FlagManager getFlagManager(){
+		return (FlagManager) SpringUtil.getBean("flagManager",FlagManager.class);
 	}
 }

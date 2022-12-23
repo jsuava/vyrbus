@@ -20,6 +20,8 @@ import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.model.dao.TranscarWebDAO;
 import com.cystesoft.vyrbus.service.business.TranscarWebManager;
+import com.cystesoft.vyrbus.service.mappers.ResumenVentas;
+import com.cystesoft.vyrbus.service.mappers.VentasPiloto;
 
 /**
  * @author abant
@@ -94,9 +96,9 @@ public class TranscarWebManagerImpl implements TranscarWebManager{
 	 * @see com.cystesoft.vyrbus.service.business.TranscarWebManager#aperturarLiquidacion(com.cystesoft.vyrbus.model.bean.TranscarLiquidacionTurno)
 	 */
 	@Override
-	public String aperturarLiquidacion(TranscarLiquidacionTurno liquidacionTurno) throws Exception {
+	public String aperturarLiquidacion(TranscarLiquidacionTurno liquidacionTurno, boolean isReapertura) throws Exception {
 		// TODO Auto-generated method stub
-		return getTranscarWebDAO().aperturarLiquidacion(liquidacionTurno);
+		return getTranscarWebDAO().aperturarLiquidacion(liquidacionTurno, isReapertura);
 	}
 
 	/* (non-Javadoc)
@@ -186,5 +188,29 @@ public class TranscarWebManagerImpl implements TranscarWebManager{
 	public void actualizarPasswordUsuarioByLogin(String login, String passwordNew) throws Exception {
 		// TODO Auto-generated method stub
 		getTranscarWebDAO().actualizarPasswordUsuarioByLogin(login, passwordNew);
+	}
+	
+	
+	@Override
+	public List<VentasPiloto> buscarRegistroVentas(String fInicio, String fFin) throws Exception{
+		return getTranscarWebDAO().buscarRegistroVentas(fInicio, fFin);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.TranscarWebManager#buscarResumenVentas(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public List<ResumenVentas> buscarResumenVentas(String fechaDesde, String fechaHasta) {
+		// TODO Auto-generated method stub
+		return getTranscarWebDAO().buscarResumenVentas(fechaDesde, fechaHasta);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.TranscarWebManager#buscaTotalVentasEfectivo(java.lang.Integer, java.lang.Integer, java.lang.String)
+	 */
+	@Override
+	public Double buscaTotalVentasEfectivo(String loginUsuario, Integer idAgencia, String fecha) throws Exception {
+		// TODO Auto-generated method stub
+		return getTranscarWebDAO().buscaTotalVentasEfectivo(loginUsuario, idAgencia, fecha);
 	}
 }

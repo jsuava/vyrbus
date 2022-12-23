@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: Clase que centraliza las Constantes que se usa en todo el sistema.
- * Autor		: José Sullo Avalos
+ * Descripciï¿½n	: Clase que centraliza las Constantes que se usa en todo el sistema.
+ * Autor		: Josï¿½ Sullo Avalos
  * Fecha		: 08/04/2012
  */
 package com.cystesoft.vyrbus.service.util;
@@ -18,29 +18,29 @@ import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
 
 /**
  * Clase que centraliza las Constantes que se usa en todo el sistema.
- * @author José Sullo Avalos
+ * @author Josï¿½ Sullo Avalos
  * @since JDK1.6
  */
 public class Constantes {
 	/**
 	 * Vension actual del Sistema
 	 */
-	public static final String SYSTEM_VERSION = "Versión 3.2.0";
-
+	public static final String SYSTEM_VERSION = "Versiï¿½n 3.2.4";
+		
 	/**
-	 * Constante para la Acción Nuevo
+	 * Constante para la Acciï¿½n Nuevo
 	 * @see WndOpcionesMantenimiento#onCancel(int)
 	 * @see WndOpcionesMantenimiento#onSave(int)
 	 */
 	public static final int ACTION_NEW = 0;
 	/**
-	 * Constante para la Acción Modificar
+	 * Constante para la Acciï¿½n Modificar
 	 * @see WndOpcionesMantenimiento#onCancel(int)
 	 * @see WndOpcionesMantenimiento#onSave(int)
 	 */
 	public static final int ACTION_MODIFY =  1;
 	/**
-	 * Constante para la Acción Consultar
+	 * Constante para la Acciï¿½n Consultar
 	 * @see WndOpcionesMantenimiento#onCancel(int)
 	 * @see WndOpcionesMantenimiento#onSave(int)
 	 */
@@ -155,15 +155,14 @@ public class Constantes {
 	public static final String CLAVE_PAHT="TPSPSJS-";
 	/*	Path para la creacion de los documentos Boleto, Manifiesto	*/
 	public static final String SERVER_PROTOCOL = Executions.getCurrent().getScheme();
-	public static final String SERVER_HOST = Executions.getCurrent().getHeader("host");
+//	public static final String SERVER_HOST = Executions.getCurrent().getHeader("host");
 //	public static final String SERVER_HOST = "ventas.tepsa.com.pe/";
 
 	//http://168.121.236.46:8080/
 
-    //public static final String SERVER_HOST = "localhost:8080";
+	public static final String SERVER_HOST = "localhost:8080";
 
 	//SERVER_HOST PRODUCCION TRANSMAR
-
 //	public static final String SERVER_HOST = "119.8.145.122:8080";
 //	public static final String SERVER_HOST = "190.119.140.203:8080";
 
@@ -207,7 +206,7 @@ public class Constantes {
 	public static final int PISO_UNO=0;
 	public static final int PISO_DOS=1;
 
-	/*Constante dias del anio expresado en días*/
+	/*Constante dias del anio expresado en dï¿½as*/
 	public static final int DIAS_DEL_ANIO=365;
 
 	/* Constantes que indican el Tipo de convenio con el cliente*/
@@ -272,6 +271,12 @@ public class Constantes {
 	 */
 	public static final String ID_UBIGEO_LIMA = "150101";
 
+	/**
+	 * Identificadores de los tipo de impresion del sistema
+	 */
+//	public static final int FORMATO_IMPRESION_MATRICIAL = 999;
+	public static final int FORMATO_IMPRESION_TICKET = 1;
+	public static final int FORMATO_IMPRESION_A4 = 2;
 
 	/* Crados para la integracion del l os web service de Cruz del sur y civa*/
 	public static final String RUC_CRUZ_DEL_SUR="20100227461";
@@ -330,8 +335,8 @@ public class Constantes {
 	/*Constantes que refieren al Servicio*/
 	public static final int ID_SERVICIO_TEPSASUITE=4;
 	public static final int ID_SERVICIO_TEPSACAMASUITE=5;
-	public static final int ID_SERVICIO_POOL_CRUZDELSUR=6;
-	public static final int ID_SERVICIO_POOL_EXCLUCIVA=7;
+	public static final int ID_SERVICIO_POOL_CRUZDELSUR=99;
+	public static final int ID_SERVICIO_POOL_EXCLUCIVA=98;
 
 
 	/*	Para saber si es una venta o reserva DB	*/
@@ -344,23 +349,31 @@ public class Constantes {
 	public static final String TIPO_OPERACION_PERDIDA_SERVICIO = "7";
 
 	/* Constantes que referencian al rol */
-	public static final int ID_ROL_ASISTENTE_ADMIN_COMERCIAL=17;
-	public static final int ID_ROL_GERENCIA_COMERCIAL=2;
-	public static final int ID_ROL_JEFE_VENTAS=3;
-	public static final int ID_ROL_FUNCIONARIO=4;
-	public static final int ID_ROL_FINANZAS=5;
+//	public static final int ID_ROL_ASISTENTE_ADMIN_COMERCIAL=17;
+//	public static final int ID_ROL_GERENCIA_COMERCIAL=2;
+//	public static final int ID_ROL_JEFE_VENTAS=3;
+	
+//	public static final int ID_ROL_ADMIN=5;
+//	public static final int ID_ROL_FINANZAS=10;
 	public static final int ID_ROL_SUPER_USUARIO=1;
-	public static final int ID_ROL_AGENCIA_VIAJES=15;
-	public static final int ID_ROL_CLIENTE_CORPORATIVO=16;
-	public static final int ID_ROL_REP_VENTAS=9;
-	public static final int ID_ROL_ADMIN_PUNTO_VENTA=8;
-	public static final int ID_ROL_ADMIN_COMERCIAL=6;
-	public static final int ID_ROL_FISCALIZACION=11;
-	public static final int ID_ROL_CREDITOS_COBRANZAS=12;
-	public static final int ID_ROL_MARKETING=7;
-	public static final int ID_ROL_LEGAL=25;
-	public static final int ID_ROL_GESTION_CORPORATIVA=19;
-	public static final int ID_ROL_FLOTA=20;
+	public static final int ID_ROL_ADMINISTRADOR=2;
+	public static final int ID_ROL_COUNTER=3;
+	public static final int ID_ROL_FLOTA=4;
+	public static final int ID_ROL_ADMIN=5;
+	
+	
+	public static final int ID_ROL_CLIENTE_CORPORATIVO=90;
+	public static final int ID_ROL_FUNCIONARIO=91;
+//	public static final int ID_ROL_REP_VENTAS=92;
+	public static final int ID_ROL_AGENCIA_VIAJES=93;
+//	public static final int ID_ROL_ADMIN_PUNTO_VENTA=8;
+//	public static final int ID_ROL_ADMIN_COMERCIAL=6;
+//	public static final int ID_ROL_FISCALIZACION=11;
+//	public static final int ID_ROL_CREDITOS_COBRANZAS=12;
+//	public static final int ID_ROL_MARKETING=7;
+//	public static final int ID_ROL_LEGAL=25;
+//	public static final int ID_ROL_GESTION_CORPORATIVA=19;
+//	public static final int ID_ROL_FLOTA=20;
 
 	/*Constantes que refieren a la Localidad*/
 	public static final int ID_LOC_LIMA=1;
@@ -432,6 +445,11 @@ public class Constantes {
 	public static final int ID_TIPCOM_GUIA_TRANSPORTISTA=10;
 	public static final int ID_TIPCOM_TICKET_EQUIPAJE=11;
 
+	/* Constantes que referencian a los identificadores de los tipos de documento en transcarweb */
+	public static final int TRANSCARWEB_ID_TIPCOM_PCE=3;
+	
+	
+	
 	/* Constantes que referencian a los Motivos de Cortesia*/
 	public static final int ID_MOTCOR_OTROS=14;
 
@@ -461,8 +479,8 @@ public class Constantes {
 	/* Constantes que refiren el tipo de gasto*/
 	public static final int ID_TIPGAS_GASTOS_VARIOS=1;
 	public static final int ID_TIPGAS_PEAJES=2;
-	public static final int ID_TIPGAS_PAGO_GIROS=3;
-	public static final int ID_TIPGAS_CONDOCUMENTO=4;
+	public static final int ID_TIPGAS_PAGO_GIROS=3;  		//CAMBIO A PAGO DE COMISIONES A COMISIONISTA
+	public static final int ID_TIPGAS_CONDOCUMENTO=4;		//CAMBIO A PAGO CON YAPE
 	public static final int ID_TIPGAS_CTACTE=7;
 
 	/* Constantes que se refieren a las agencias	*/
@@ -476,6 +494,7 @@ public class Constantes {
 	public static final int ID_TIPNOTA_CAMBIO_DIRECCION_FISCAL=3;
 	public static final int ID_TIPNOTA_CREDITO_DEVOLUCION=6;
 	public static final int ID_TIPNOTA_POSTERGACION=7;
+	public static final int ID_TIPNOTA_DUPLICADO=8;
 	public static final int ID_TIPNOTA_CAMBIO_NOMBRE_PASAJERO=9;
 	public static final int ID_TIPNOTA_CAMBIO_BOLETA_FACTURA=10;
 	public static final int ID_TIPNOTA_CAMBIO_FACTURA_BOLETA=11;
@@ -487,7 +506,7 @@ public class Constantes {
 	 *********************************************************************************************************************************************/
 	/**
 	 * Tiempo extra en que se puede realizar el despacho de pasajeros, despues de la hora de embarque establesida por el itinerario. Expresados en minulos por defecto 30 minutos
-	 * Ejemplo si la hora de embarque del itinerario es a las: 12:00, se puede hacer hastas las 12:30 como máximo
+	 * Ejemplo si la hora de embarque del itinerario es a las: 12:00, se puede hacer hastas las 12:30 como mï¿½ximo
 	 */
 	public static final int TIEMPO_EXTRA_CIERRE_DESPACHO_PASAJEROS=30;
 
@@ -529,7 +548,7 @@ public class Constantes {
 	public static final int TIEMPO_EXPIRA_RESERVA = (((Parametros)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_PARAMETROS)).getTiempoExpiraReserva());
 //	public static final int TIEMPO_EXPIRA_RESERVA = 6;
 	/**
-	 * Tiempo limite para poder aceptar la postergación del boleto.
+	 * Tiempo limite para poder aceptar la postergaciï¿½n del boleto.
 	 */
 	public static final int TIEMPO_LIMITE_POSTERGACION = (((Parametros)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_PARAMETROS)).getTiempoPostergacion());
 //	public static final int TIEMPO_LIMITE_POSTERGACION = 6;
@@ -545,7 +564,7 @@ public class Constantes {
 //	public static final int PUNTOS_GANADOS_X_PAXFREE = 5;
 	/**
 	 * Tiempo en el que un pasajero frecuente puede realizar el canje de su boleto de cortesia por cumpleanios, pudiendo ser n meses antes o n meses despues de
-     * la fecha de su cumpleaños. Por defecto es 60 dias
+     * la fecha de su cumpleaï¿½os. Por defecto es 60 dias
 	 */
 	public static final Integer RANGO_CANJE_CUMPLEANIOS= (((Parametros)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_PARAMETROS)).getRangoCanjeCumpleanios());
 //	public static final Integer RANGO_CANJE_CUMPLEANIOS=60;
@@ -555,7 +574,7 @@ public class Constantes {
 	public static final int DIAS_CADUCAN_PUNTOS=(((Parametros)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_PARAMETROS)).getTiempoCaducidadPuntos());
 //	public static final int DIAS_CADUCAN_PUNTOS=365;
 	/**
-	 * Indica el porcentaje para la alerta a abastecimientos para el envío de especies valoradas a la Agencia.
+	 * Indica el porcentaje para la alerta a abastecimientos para el envï¿½o de especies valoradas a la Agencia.
 	 */
 	public static final double ALERTAR_ENVIO_ESPECIES_VALORADAS=(((Parametros)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_PARAMETROS)).getAlertarEnvioEspecieValorda());
 //	public static final double ALERTAR_ENVIO_ESPECIES_VALORADAS=85.0;
@@ -602,7 +621,7 @@ public class Constantes {
 	 */
 	public static final int NUMERO_VIAJES_ACUMULADOS = (((Parametros)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_PARAMETROS)).getViajesAcumuladosPasajero());
 	/**
-	 * IP del proxy que utilizara el sistema para establecer la conexión con el WS del MTC.
+	 * IP del proxy que utilizara el sistema para establecer la conexiï¿½n con el WS del MTC.
 	 */
 	public static final String PROXY= (((Parametros)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_PARAMETROS)).getProxy()!=null?((Parametros)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_PARAMETROS)).getProxy():null);
 
@@ -612,7 +631,7 @@ public class Constantes {
 	/* PARAMETROS WEBSERVICE MTC*/
 	/*=========================================================================================================*/
 	/**
-	 * Número de Ruc de la Empresa
+	 * Nï¿½mero de Ruc de la Empresa
 	 */
 	public static final String empresa="TRANSMAR EXPRESS SAC";
 	public static final String direccion_empresa="AV. NICOLAS ARRIOLA NRO. 197";

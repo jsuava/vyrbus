@@ -81,6 +81,8 @@
 		<mapping resource="com/cystesoft/vyrbus/model/maps/UsuarioHardware.hbm.xml" />
 		<mapping resource="com/cystesoft/vyrbus/model/maps/UsuarioRol.hbm.xml" />
 		<mapping resource="com/cystesoft/vyrbus/model/maps/VentaPasaje.hbm.xml" />
+		<mapping resource="com/cystesoft/vyrbus/model/maps/VentaPasajeHistorial.hbm.xml" />
+		<mapping resource="com/cystesoft/vyrbus/model/maps/HistoricoResumenVentas.hbm.xml" />
 		<mapping resource="com/cystesoft/vyrbus/model/maps/Rol.hbm.xml" />
 		<mapping resource="com/cystesoft/vyrbus/model/maps/Menu.hbm.xml" />
 		<mapping resource="com/cystesoft/vyrbus/model/maps/OpcionMenu.hbm.xml" />
@@ -138,6 +140,7 @@
 		<mapping resource="com/cystesoft/vyrbus/model/maps/Equipaje.hbm.xml" />
 		<mapping resource="com/cystesoft/vyrbus/model/maps/DetalleEquipaje.hbm.xml" />
 		<mapping resource="com/cystesoft/vyrbus/model/maps/ControlAcceso.hbm.xml" />
+		<mapping resource="com/cystesoft/vyrbus/model/maps/Flag.hbm.xml" />
 		
 <!-- 	VENTA DE SEGUROS -->
 		<mapping resource="com/cystesoft/vyrbus/model/maps/VSTipoDocumento.hbm.xml" />

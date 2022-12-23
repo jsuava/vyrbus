@@ -60,8 +60,8 @@ public class ManifiestoManagerImpl implements ManifiestoManager{
 	 * @see com.tepsa.sisvyr.service.business.ManifiestoManager#consultaDetaPaxXRuta(java.lang.Long)
 	 */
 	@Override
-	public List<VentaPasaje> consultaDetaPaxXRuta(Long idItinerario)throws Exception {
-		return getManifiestoDAO().consultaDetaPaxXRuta(idItinerario);
+	public List<VentaPasaje> consultaDetaPaxXRuta(Long idItinerario, Integer agenciaIdPartida)throws Exception {
+		return getManifiestoDAO().consultaDetaPaxXRuta(idItinerario, agenciaIdPartida);
 	}
 
 	/*

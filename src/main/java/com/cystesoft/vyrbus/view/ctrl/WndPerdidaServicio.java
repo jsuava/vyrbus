@@ -202,9 +202,11 @@ public class WndPerdidaServicio extends WndBase {
 			else if(ventaPerdidaServicio.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_PERDIDA_SERVICIO))
 				throw new PerdidaServicioException(Integer.valueOf(Constantes.TIPO_OPERACION_PERDIDA_SERVICIO));
 
-			if (ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(Long.valueOf(idVenta)))
-				throw new ManifiestoImpresoException();
-
+			//Debe permitir colocarlo como perdida de servicio aunque este manifestado pues esta operacion se realizara
+			//Despues de emitir el manifiesto de pasajeros  MAOE 11/08/2022
+//			if (ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(Long.valueOf(idVenta)))
+//				throw new ManifiestoImpresoException();
+			
 			createVentanaPerdidaServicio(ventaPerdidaServicio);
 
 			return true;
@@ -313,7 +315,10 @@ public class WndPerdidaServicio extends WndBase {
 		label = new Label("IMPORTE :");
 		row.appendChild(label);
 		dblImporte= new Doublebox();
-		dblImporte.setValue(ventaOriginal.getTarifa()+ventaOriginal.getRecargo()-ventaOriginal.getDescuento());
+		//Ya no se utiliza la formula para determinar el importe pagado, se utiliza el campo n_impag directamente
+		//MAOE 11/08/2022
+//		dblImporte.setValue(ventaOriginal.getTarifa()+ventaOriginal.getRecargo()-ventaOriginal.getDescuento());
+		dblImporte.setValue(ventaOriginal.getImportePagado());
 		dblImporte.setStyle("align:right;font-size:11px !important");
 		dblImporte.setReadonly(true);
 		dblImporte.setWidth("80px");

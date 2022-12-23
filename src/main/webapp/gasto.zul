@@ -5,9 +5,11 @@
 		<listbox id="listboxLista" rows="15">
 			<listhead sizable="true">
 				<listheader label="#" width="50px" style="color: #ffffff;"/>
+				<listheader label="FECHA" width="100px" sort="auto" style="color: #ffffff;"/>
 				<listheader label="AGENCIA" width="150px" sort="auto" style="color: #ffffff;"/>
 				<listheader label="USUARIO" width="100px" sort="auto" style="color: #ffffff;"/>
 				<listheader label="TIPO GASTO" width="150px" sort="auto" style="color: #ffffff;"/>
+				<listheader label="COMP./OPER." width="100px" sort="auto" style="color: #ffffff;"/>
 				<listheader label="MONTO" width="90px" sort="auto" style="color: #ffffff;" />
 				<listheader label="TIPO" width="90px" sort="auto" style="color: #ffffff;" />
 				<listheader label="OBSERVACIONES" sort="auto" style="color: #ffffff;"/>
@@ -17,9 +19,9 @@
 	<div id="divMantenimiento" >
 	<groupbox mold="3d" closable="false" width="700px" >
 		<caption label="DATOS DEL GASTO" style="color: #ffffff;"/>
-		<grid>
+		<grid id="grdMantenimiento">
 			<columns>
-				<column width="130px" align="right" />
+				<column width="150px" align="right" />
 				<column width="250px"/>
 				<column width="120px" align="right"/>
 <!-- 				<column width="250px"/> -->
@@ -42,10 +44,23 @@
 					<combobox id="cmbTipoGasto" 
 							readonly="true" 
 							onSelect="wndGasto.onSelectTipoGasto()" 
-							onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNroDocumento)" />
+							onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNroCtacte)" />
 				</row>
+				<row visible="false" id="filaDeposito">
+					<label value="NRO. CTA. CTE. :"/>
+					<textbox id="txtNroCtacte" 
+							maxlength="30" 
+							style="font-size: 11px !important" 
+							onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtHoraDeposito)"/>				
+					<label value="HORA DEP.: :" />
+					<textbox id="txtHoraDeposito" 
+							maxlength="10" 
+							style="text-align: left;" 
+							width="130px" 
+							onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNroDocumento)" />
+				</row>				
 				<row>
-					<label value="NRO. DOCUMENTO :"/>
+					<label value="NRO. COMPROBANTE/OPER. :"/>
 					<textbox id="txtNroDocumento" 
 							maxlength="20" 
 							style="font-size: 11px !important" 
@@ -76,6 +91,7 @@
 				</row>
 			</rows>
 		</grid>
+		<label id="lblMensaje" value="" sclass="label-size12-bold-alert"/>
 	</groupbox>
 
 	</div>	

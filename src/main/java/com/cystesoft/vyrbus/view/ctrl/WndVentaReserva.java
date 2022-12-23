@@ -571,6 +571,7 @@ public class WndVentaReserva extends WndBase {
 			}
 			onSelectDefaultFormaPago();
 			onSelectDefaultTipoComprobante();
+			onBuscarItinerarios();
 //			Util.loadAnios(cmbAnio);
 //			Util.loadMeses(cmbMes);
 
@@ -3757,13 +3758,13 @@ public class WndVentaReserva extends WndBase {
 
 //				Reniec reniec= ServiceLocator.getReniecManager().buscarPax(numerodocumento);
 				if(dni!=null){
-				Reniec reniec = new Reniec();
-				reniec.setNumeroDocumento(dni.get(0));
-				reniec.setNombres(dni.get(1));
-				reniec.setApellidoPaterno(dni.get(2));
-				reniec.setApellidoMaterno(dni.get(3));
-				ntbxEdad.setValue(30);
-				dtbxFechaNacimiento.setValue(Constantes.FORMAT_DATE.parse(calcularFechaNacimiento()));
+					Reniec reniec = new Reniec();
+					reniec.setNumeroDocumento(dni.get(0));
+					reniec.setNombres(dni.get(1));
+					reniec.setApellidoPaterno(dni.get(2));
+					reniec.setApellidoMaterno(dni.get(3));
+					ntbxEdad.setValue(30);
+					dtbxFechaNacimiento.setValue(Constantes.FORMAT_DATE.parse(calcularFechaNacimiento()));
 
 
 //				if(reniec!=null){
@@ -5051,11 +5052,13 @@ public class WndVentaReserva extends WndBase {
 				criteriosOrdenar.add("denominacion");
 				List<TarjetaCredito> lstTarjetaCredito = ServiceLocator.getTarjetaCreditoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
 				UtilData.cargarGenericData(cmbTarjetaCredito, false);
-				for(TarjetaCredito tarjetaCredito : lstTarjetaCredito){
-					Comboitem item = new Comboitem();
-					item.setLabel(tarjetaCredito.getDenominacion());
-					item.setValue(tarjetaCredito);
-					cmbTarjetaCredito.appendChild(item);
+ 				for(TarjetaCredito tarjetaCredito : lstTarjetaCredito){
+					if(tarjetaCredito.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO)) {
+						Comboitem item = new Comboitem();
+						item.setLabel(tarjetaCredito.getDenominacion());
+						item.setValue(tarjetaCredito);
+						cmbTarjetaCredito.appendChild(item);
+					}
 				}
 				cmbTarjetaCredito.setDisabled(false);
 			}
@@ -6380,6 +6383,7 @@ public class WndVentaReserva extends WndBase {
 							onCleanPagos();
 							onCleanPartialListAsientosSeleccionados();
 							onCleanInformacionVenta();
+							onBuscarItinerarios();
 							tabPasajero.setSelected(true);
 						}
 					}
@@ -6591,6 +6595,7 @@ public class WndVentaReserva extends WndBase {
 							onCleanPagos();
 							onCleanPartialListAsientosSeleccionados();
 							onCleanInformacionVenta();
+							onBuscarItinerarios();
 							tabPasajero.setSelected(true);
 						}
 					}
@@ -6746,6 +6751,15 @@ public class WndVentaReserva extends WndBase {
 		Util.limpiarCombobox(cmbAlimen2);
 		Util.limpiarCombobox(cmbAlimen3);
 		Util.limpiarCombobox(cmbAlimen4);
+		cmbTipoOperacion.setSelectedIndex(0);
+		try {
+			Date fechaActual= Constantes.FORMAT_DATE.parse(new MyTime().dateServer());
+			cldrFechaPartida.setValue(fechaActual);
+		}
+		catch(Exception ex){
+			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
+			log.error(ex);
+		}
 	}
 
 	/**

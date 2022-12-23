@@ -706,7 +706,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 							}
 						}
 						row.appendChild(oDiv);
-						row.setStyle("padding-top:2px; padding-left:3px; padding-right:0px; border:normal !important; background:#99D9EA");// background:#eeeeee");
+						row.setStyle("padding-top:2px; padding-left:3px; padding-right:0px; border:normal !important; background:#EEEEEE");// background:#99D9EA");
 					}
 					rows.appendChild(row);
 				}

@@ -10,11 +10,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for DocumentCDR complex type.
- *
+ * 
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- *
+ * 
  * <pre>
  * &lt;complexType name="DocumentCDR">
  *   &lt;complexContent>
@@ -30,8 +30,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "DocumentCDR", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", propOrder = {
@@ -49,10 +49,10 @@ public class DocumentCDR {
 
 	/**
 	 * Gets the value of the id property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<String> getId() {
 		return id;
@@ -60,20 +60,20 @@ public class DocumentCDR {
 
 	/**
 	 * Sets the value of the id property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setId(JAXBElement<String> value) {
-		this.id = (value);
+		this.id = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the idEnvioDato property.
-	 *
+	 * 
 	 * @return possible object is {@link Long }
-	 *
+	 * 
 	 */
 	public Long getIdEnvioDato() {
 		return idEnvioDato;
@@ -81,9 +81,9 @@ public class DocumentCDR {
 
 	/**
 	 * Sets the value of the idEnvioDato property.
-	 *
+	 * 
 	 * @param value allowed object is {@link Long }
-	 *
+	 * 
 	 */
 	public void setIdEnvioDato(Long value) {
 		this.idEnvioDato = value;
@@ -91,9 +91,9 @@ public class DocumentCDR {
 
 	/**
 	 * Gets the value of the isResumen property.
-	 *
+	 * 
 	 * @return possible object is {@link Boolean }
-	 *
+	 * 
 	 */
 	public Boolean isIsResumen() {
 		return isResumen;
@@ -101,9 +101,9 @@ public class DocumentCDR {
 
 	/**
 	 * Sets the value of the isResumen property.
-	 *
+	 * 
 	 * @param value allowed object is {@link Boolean }
-	 *
+	 * 
 	 */
 	public void setIsResumen(Boolean value) {
 		this.isResumen = value;
@@ -111,10 +111,10 @@ public class DocumentCDR {
 
 	/**
 	 * Gets the value of the rucEmpresa property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<String> getRucEmpresa() {
 		return rucEmpresa;
@@ -122,21 +122,21 @@ public class DocumentCDR {
 
 	/**
 	 * Sets the value of the rucEmpresa property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setRucEmpresa(JAXBElement<String> value) {
-		this.rucEmpresa = (value);
+		this.rucEmpresa = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the ticket property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<String> getTicket() {
 		return ticket;
@@ -144,13 +144,13 @@ public class DocumentCDR {
 
 	/**
 	 * Sets the value of the ticket property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setTicket(JAXBElement<String> value) {
-		this.ticket = (value);
+		this.ticket = ((JAXBElement<String>) value);
 	}
 
 }

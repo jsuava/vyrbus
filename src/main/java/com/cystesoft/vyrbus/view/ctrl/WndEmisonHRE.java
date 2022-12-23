@@ -180,9 +180,9 @@ public class WndEmisonHRE extends WndBase {
 		/*Valida si es rol SUPER USUARIO*/
 		List<Rol>listRolesAcceeso=new ArrayList<>();
 		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_SUPER_USUARIO));
-		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_ADMIN_COMERCIAL));
-		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_ASISTENTE_ADMIN_COMERCIAL));
-		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_GERENCIA_COMERCIAL));
+		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_ADMIN));
+//		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_ASISTENTE_ADMIN_COMERCIAL));
+//		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_GERENCIA_COMERCIAL));
 		/*Componentes a validar*/
 		List<Component>lstComponents=new ArrayList<>();
 		lstComponents.add(cmbAgencia);
@@ -394,9 +394,10 @@ public class WndEmisonHRE extends WndBase {
 
 						/*Anulacion de la hoja de ruta*/
 						/*Valida disponibilidad de la anulacion de la hre.*/
-						if(   (getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO || getRol().getId().intValue()==Constantes.ID_ROL_ADMIN_PUNTO_VENTA ||
-							   getRol().getId().intValue()==Constantes.ID_ROL_ADMIN_COMERCIAL || getRol().getId().intValue()==Constantes.ID_ROL_ASISTENTE_ADMIN_COMERCIAL ||
-							   getRol().getId().intValue()==Constantes.ID_ROL_GERENCIA_COMERCIAL)
+						if(   (getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO || getRol().getId().intValue()==Constantes.ID_ROL_ADMINISTRADOR ||
+							   getRol().getId().intValue()==Constantes.ID_ROL_ADMIN //|| getRol().getId().intValue()==Constantes.ID_ROL_ASISTENTE_ADMIN_COMERCIAL ||
+//							   getRol().getId().intValue()==Constantes.ID_ROL_GERENCIA_COMERCIAL
+							   )
 						   &&
 							   programacion.getItinerario().getFechaPartida().getTime()==Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date())).getTime()){
 
@@ -408,7 +409,7 @@ public class WndEmisonHRE extends WndBase {
 							hbox.appendChild(btnAnularHre);
 
 							/*Si es rol ADIM.PUNTO VENTA, valida que sea la agencia en donde se emitio la hre*/
-							if(getRol().getId().intValue()==Constantes.ID_ROL_ADMIN_PUNTO_VENTA &&
+							if(getRol().getId().intValue()==Constantes.ID_ROL_ADMINISTRADOR &&
 									programacion.getHojaRuta().getAgenciaSalida().getId().intValue()!=getAgencia().getId().intValue()){
 								btnAnularHre.setDisabled(true);
 								btnAnularHre.setImage("/resources/mp_anulacionDisabled.png");

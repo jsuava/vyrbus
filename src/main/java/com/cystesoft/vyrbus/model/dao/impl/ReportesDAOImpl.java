@@ -1818,7 +1818,7 @@ public class ReportesDAOImpl extends GenericDAOImpl implements ReportesDAO {
 	 * @see com.tepsa.sisvyr.model.dao.ReportesDAO#avancesBuses(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer, java.lang.Integer, java.lang.Integer)
 	 */
 	@Override
-	public RptAvanceBuses avancesBuses(String fechaInicio, String fechaFin,Integer idLocalidadOrigen, Integer idLocalidadDestino,Integer idServicio, Integer codigoBus) throws Exception {
+	public RptAvanceBuses avancesBuses(String fechaInicio, String fechaFin,Integer idLocalidadOrigen, Integer idLocalidadDestino,Integer idServicio, String codigoBus) throws Exception {
 
 		/*Busqueda para armar el encabezado*/
 		String sql="SELECT '' item ,to_char(i.d_Fecpar,'dd/MM/yyyy') partida "
@@ -1831,7 +1831,7 @@ public class ReportesDAOImpl extends GenericDAOImpl implements ReportesDAO {
 			       + "AND r.localidad_iddestino=NVL("+idLocalidadDestino+",r.localidad_iddestino) "
 			       + "AND s.servicio_id=NVL("+idServicio+",s.servicio_id) ";
 		if(codigoBus!=null)
-	        sql+="AND b.c_codigo=NVL("+codigoBus+",b.c_codigo) ";
+	        sql+="AND b.c_codigo=NVL('"+codigoBus+"',b.c_codigo) ";
        sql+="AND i.n_esanulado=0 AND i.c_estreg='A' "
 	     + "GROUP BY i.d_Fecpar "
 	     + "ORDER BY i.d_Fecpar";
@@ -1858,7 +1858,7 @@ public class ReportesDAOImpl extends GenericDAOImpl implements ReportesDAO {
 	        + "AND r.localidad_iddestino=NVL("+idLocalidadDestino+",r.localidad_iddestino) "
 	        + "AND s.servicio_id=NVL("+idServicio+",s.servicio_id) ";
 		if(codigoBus!=null)
-	        sql+="AND b.c_codigo=NVL("+codigoBus+",b.c_codigo) ";
+	        sql+="AND b.c_codigo=NVL('"+codigoBus+"', b.c_codigo) ";
 	    sql+="AND i.n_esanulado=0 AND i.c_estreg='A' "
 	    	+ "ORDER BY DECODE(r.localidad_idorigen,13,0,DECODE(r.localidad_iddestino,13,1,2)) "
 	          + ",i.c_horpar||i.d_fecpar, r.c_origen||'-'||r.c_destino";

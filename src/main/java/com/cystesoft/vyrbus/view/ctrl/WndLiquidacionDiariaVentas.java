@@ -158,14 +158,26 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 
 		//RESTRICCION PARA EL ACCESO A LA SELECCION DE AGENCIAS.
 		if(getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO ||
-				getRol().getId().intValue()==Constantes.ID_ROL_GERENCIA_COMERCIAL ||
-						getRol().getId().intValue()==Constantes.ID_ROL_FISCALIZACION ||
-								getRol().getId().intValue()==Constantes.ID_ROL_ADMIN_COMERCIAL){
+		   getRol().getId().intValue()==Constantes.ID_ROL_ADMINISTRADOR ) {
+//		   getRol().getId().intValue()==Constantes.ID_ROL_FISCALIZACION
+//		   getRol().getId().intValue()==Constantes.ID_ROL_ADMIN_COMERCIAL ||
+//		   getRol().getId().intValue()==Constantes.ID_ROL_ADMIN){
 			cmbAgencia.setDisabled(false);
 		}else
 			cmbAgencia.setDisabled(true);
 
-
+		
+		//RESTRICCION PARA EL ACCESO A LA SELECCION DE AGENCIAS.
+		if(getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO ||
+//		   getRol().getId().intValue()==Constantes.ID_ROL_GERENCIA_COMERCIAL ||
+//		   getRol().getId().intValue()==Constantes.ID_ROL_FISCALIZACION ||
+//		   getRol().getId().intValue()==Constantes.ID_ROL_ADMIN_COMERCIAL ||
+		   getRol().getId().intValue()==Constantes.ID_ROL_ADMINISTRADOR
+		) {
+			cmbCounter.setDisabled(false);
+		}else
+			cmbCounter.setDisabled(true);
+		
 
 		btnExportar.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 			@Override
@@ -352,13 +364,13 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 						cmbitem.setValue(usuario);
 						cmbCounter.appendChild(cmbitem);
 					}
-					cmbCounter.setDisabled(false);
+//					cmbCounter.setDisabled(false);
 				}else
 					cmbCounter.setDisabled(true);
 			}
 
 			Util.seleccionarValorItemCombo(Usuario.class, cmbCounter, getUsuario().getId());
-			if(cmbCounter.getSelectedIndex()>0)
+			if(cmbCounter.getSelectedIndex()>1)
 				cmbCounter.setSelectedIndex(0);
 		}catch(Exception ex){
 			ex.printStackTrace();
@@ -381,8 +393,11 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 			lbxVentas.getItems().clear();
 			grdTotales.setVisible(false);
 			for (Component element : lbxVentas.getChildren()) {
-				if(element instanceof Listfoot)
-					element.detach();
+				if(element instanceof Listfoot) {
+					if(element != null)
+						element.detach();
+						break;
+				}
 			}
 
 			total = 0.0;
@@ -495,7 +510,6 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	private void loadVentas(List<VentaPasaje> lstVentas, Boolean isCarga){
 		try{
 //			lbxVentas.getItems().clear();
@@ -766,10 +780,12 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 							});
 
 							/*Validacion de Roles*/
-							if((getRol().getId().intValue()==Constantes.ID_ROL_ADMIN_PUNTO_VENTA || getRol().getId().intValue()==Constantes.ID_ROL_REP_VENTAS)
+							if((getRol().getId().intValue()==Constantes.ID_ROL_ADMINISTRADOR || getRol().getId().intValue()==Constantes.ID_ROL_COUNTER)
 									&& venta.getLiquidacion()==null){
 								cell.appendChild(a);
-							}else if(getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO &&
+							}else if((getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO || 
+									  getRol().getId().intValue()==Constantes.ID_ROL_ADMINISTRADOR) &&
+//									  getRol().getId().intValue()==Constantes.ID_ROL_FISCALIZACION) && 
 									venta.getFechaLiquidacion().getTime()>Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date())).getTime()-(Constantes.MILISEGUNDOS_X_DIA*3)){
 								//Rol superusuario y como maximo 3 días con anterioridad
 								cell.appendChild(a);
@@ -803,6 +819,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 					cell.setStyle(style);
 					item.appendChild(cell);
 					cell = new Listcell(Util.toNumberFormat(venta.getAcuenta(), 2));
+//					cell = new Listcell(Util.toNumberFormat(venta.getDescuento(), 2));
 					cell.setStyle(style);
 					item.appendChild(cell);
 					cell = new Listcell(Util.toNumberFormat(venta.getPenalidad(), 2));
@@ -811,7 +828,8 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 					cell = new Listcell(Util.toNumberFormat(venta.getImportePagado(), 2));
 					cell.setStyle(style);
 					item.appendChild(cell);
-					cell = new Listcell(venta.getUsuario().getApellidoPaterno()+" "+venta.getUsuario().getNombre());
+//					cell = new Listcell(venta.getUsuario().getApellidoPaterno()+" "+venta.getUsuario().getNombre());
+					cell = new Listcell(venta.getUsuario().getLogin());
 					cell.setStyle(style);
 					item.appendChild(cell);
 					cell = new Listcell(Util.DatetoString(venta.getFechaInsercion(), Constantes.DATE_TIME_FORMAT));
@@ -847,11 +865,22 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 					btnAnular.setImage("resources/mp_anular.png");
 					btnAnular.setClass("btnImage");
 //					btnAnular.setStyle("cursor:pointer");
-					btnAnular.setTooltiptext("Haga click aqui si desea anular el Boleto");
+					btnAnular.setTooltiptext("Haga click aqui si desea anular el Comprobante");
 					hlayout.appendChild(btnAnular);
 					cell.appendChild(hlayout);
 					item.appendChild(cell);
-
+					
+					//Datos adicionales sobre el pasajero y ruta MAOE 18/08/2022
+					cell = new Listcell(venta.getPasajero().getNumeroDocumento());
+					cell.setStyle(style);
+					item.appendChild(cell);
+					cell = new Listcell(isCarga == true ? venta.getPasajero().getNombresApellidos() : venta.getPasajero().toString());
+					cell.setStyle(style);
+					item.appendChild(cell);
+					cell = new Listcell(venta.getRuta().getOrigen()+"-"+venta.getRuta().getDestino());
+					cell.setStyle(style);
+					item.appendChild(cell);
+					
 					/*Muestra las devoluciones de un boleto de viaje o recivo de caja - 15/12/2016 - jabanto*/
 					if(venta.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_DEVOLUCION &&
 							(venta.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE || venta.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_RECIBO_CAJA)){

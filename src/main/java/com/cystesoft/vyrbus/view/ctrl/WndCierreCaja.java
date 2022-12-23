@@ -8,7 +8,6 @@ import java.util.Locale;
 
 import javax.security.auth.login.LoginException;
 
-import org.hibernate.cfg.ImprovedNamingStrategy;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
@@ -46,6 +45,7 @@ import org.zkoss.zul.Window;
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.Liquidacion;
 import com.cystesoft.vyrbus.model.bean.Rol;
+import com.cystesoft.vyrbus.model.bean.TranscarLiquidacionTurno;
 import com.cystesoft.vyrbus.model.bean.TranscarUsuarioPersonal;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
@@ -63,7 +63,6 @@ import com.cystesoft.vyrbus.view.tuentrada.LiquidacionTuentrada;
 import com.cystesoft.vyrbus.view.ui.DlgMessage;
 import com.cystesoft.vyrbus.view.ui.WndBase;
 import com.cystesoft.vyrbus.view.ui.WndIFrame;
-import com.cystesoft.vyrbus.view.ui.WndImprimir;
 
 /**
  *
@@ -138,13 +137,15 @@ public class WndCierreCaja extends WndBase {
 			components.add(cmbAgencia);
 			List<Rol>rolAcceso=new ArrayList<>();
 			rolAcceso.add(new Rol(Constantes.ID_ROL_SUPER_USUARIO));
-			rolAcceso.add(new Rol(Constantes.ID_ROL_FISCALIZACION));
+//			rolAcceso.add(new Rol(Constantes.ID_ROL_FISCALIZACION));
+//			rolAcceso.add(new Rol(Constantes.ID_ROL_ADMINISTRADOR));
 			accesoControlsByRol(components, rolAcceso);
 
 			//roles que tiene acceso al control cmbusuario
 			components=new ArrayList<>();
 			components.add(cmbUsuario);
-			rolAcceso.add(new Rol(Constantes.ID_ROL_ADMIN_PUNTO_VENTA));
+			rolAcceso.add(new Rol(Constantes.ID_ROL_ADMINISTRADOR));
+			rolAcceso.add(new Rol(Constantes.ID_ROL_SUPER_USUARIO));
 			accesoControlsByRol(components, rolAcceso);
 
 
@@ -249,18 +250,24 @@ public class WndCierreCaja extends WndBase {
 //						boolean isReimprecion=liquidacion.getestadoLiquidacion().intValue()!=Constantes.TRUE_VALUE?true:false;
 //						CreateDocument.creaLiquidacion(liquidacion, liquidacion.getUsuario(), isReimprecion);
 //							preliminar(liquidacion);
-							String nameFile = CreateDocument.creaRptLiquidacionByEspecieValorada(liquidacion, true);
-							String src=Constantes.URL_FORMATOS_LIQUIDACION +Constantes.CLAVE_PAHT+ nameFile;
-							/*Carga el iframe*/
+						
+						//Busca las liquidaciones de CARGA
+						Liquidacion liquidacionCarga = UtilData.buscarLiquidacionCarga(liquidacion);
+						liquidacion.setLiquidacionCarga(liquidacionCarga);
+						//****
+						String nameFile = CreateDocument.creaRptLiquidacionByEspecieValorada(liquidacion, true);
+						String src=Constantes.URL_FORMATOS_LIQUIDACION +Constantes.CLAVE_PAHT+ nameFile;
+						/*Carga el iframe*/
 //							String src=Constantes.URL_FORMATOS_LIQUIDACION +Constantes.CLAVE_PAHT+ liquidacion.getId()+".txt";
-							final WndIFrame iFrame = new WndIFrame();
-							iFrame.setSrc(src);
-							iFrame.setWidth("810");
-							iFrame.setheight("600");
-							iFrame.loadiframe();
 
-							appendChild(iFrame);
-							iFrame.setMode("modal");
+						final WndIFrame iFrame = new WndIFrame();
+						iFrame.setSrc(src);
+						iFrame.setWidth("810");
+						iFrame.setheight("600");
+						iFrame.loadiframe();
+						
+						appendChild(iFrame);
+						iFrame.setMode("modal");
 					}
 				}
 			});
@@ -318,7 +325,7 @@ public class WndCierreCaja extends WndBase {
 			toolbarbutton.setAutodisable("self");
 			toolbarbutton.setDisabled(true);
 			/*Valida si es rol admin. punto venta y la fecha de la liquidacion es la misma al dia actual*/
-			if( (getRol().getId().intValue()==Constantes.ID_ROL_ADMIN_PUNTO_VENTA || getRol().getId().intValue()==Constantes.ID_ROL_ADMIN_COMERCIAL)
+			if( (getRol().getId().intValue()==Constantes.ID_ROL_ADMINISTRADOR)
 					&& Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()).equals(Constantes.FORMAT_DATE.format(new Date()))){
 				toolbarbutton.setDisabled(false);
 			}else if (getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO)
@@ -334,8 +341,27 @@ public class WndCierreCaja extends WndBase {
 						public void onEvent(Event e) throws Exception {
 							if(e.getName().equals("onYes")){
 								try {
+									/*********************************************************************************************/
+									//Primero apertura la liquidacion de carga
+									TranscarLiquidacionTurno liquidacionTurnoCarga= new TranscarLiquidacionTurno();
+									liquidacionTurnoCarga.setFechaApertura(liquidacion.getFechaLiquidacion());
+									TranscarUsuarioPersonal usuarioPersonal = ServiceLocator.getTranscarWebManager().buscarUsuario(liquidacion.getUsuario().getLogin());
+									if(usuarioPersonal==null) {
+										DlgMessage.information("No se puede reaperturar la liqudiación de Carga, debido a que el usuario "+getUsuario().getLogin()+" no existe en el sistema de carga.");
+										return;
+									}
+
+									liquidacionTurnoCarga.setTranscarUsuarioPersonal(usuarioPersonal);
+									liquidacionTurnoCarga.setAgenciaId(liquidacion.getAgencia().getId());
+									UtilData.auditarRegistro(liquidacionTurnoCarga, true, getUsuario(), Executions.getCurrent());
+									String messageError = ServiceLocator.getTranscarWebManager().aperturarLiquidacion(liquidacionTurnoCarga, true);
+									if (messageError!=null) {
+										DlgMessage.information(messageError+" - TRANSCAR");
+										return;
+									}
+									
 //									openWindowSolicitaPassword(liquidacion);
-									//Reapertura la liquidacion
+									//Reapertura la liquidacion - vyrbus
 									Liquidacion oliquidacion=ServiceLocator.getLiquidacionManager().buscarPorId(liquidacion.getId().longValue());
 									oliquidacion.setEstadoLiquidacion(Constantes.TRUE_VALUE);
 									UtilData.auditarRegistro(oliquidacion, true, getUsuario(), Executions.getCurrent());
@@ -1057,7 +1083,10 @@ public class WndCierreCaja extends WndBase {
 	 * @param liquidacion
 	 * @throws Exception
 	 */
-	public void imprimirLiquidacion(Liquidacion liquidacion) throws Exception{		
+	public void imprimirLiquidacion(Liquidacion liquidacion) throws Exception{	
+		//Busca las liquidaciones de CARGA
+		Liquidacion liquidacionCarga = UtilData.buscarLiquidacionCarga(liquidacion);
+		liquidacion.setLiquidacionCarga(liquidacionCarga);
 		String nameFile = CreateDocument.creaRptLiquidacionByEspecieValorada(liquidacion, true);
 		File file = new File(Constantes.DIRECTORY_LIQUIDACION + Constantes.CLAVE_PAHT +nameFile);
 		Util.descargarArchivo(file);

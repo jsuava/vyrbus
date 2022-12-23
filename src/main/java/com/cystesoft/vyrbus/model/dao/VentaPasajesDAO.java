@@ -9,9 +9,11 @@ package com.cystesoft.vyrbus.model.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
+import com.cystesoft.vyrbus.model.bean.EntidadEncomiendaPasajes;
 import com.cystesoft.vyrbus.model.bean.Itinerario;
 import com.cystesoft.vyrbus.model.bean.Manifiesto;
 import com.cystesoft.vyrbus.model.bean.Ruta;
@@ -513,6 +515,15 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public List<VentasPiloto> buscarVentasPagoPilotos(String fInicio, String fFin) throws Exception;
+	
+	/**
+	 * Busca las ventas para el Registro de Ventas
+	 * @param fInicio	: Fecha de inicio de busqueda
+	 * @param fFin		: Fecha fin de busqueda
+	 * @return
+	 * @throws Exception
+	 */
+	public List<VentasPiloto> buscarRegistroVentas(String fInicio, String fFin) throws Exception;
 	/**
 	 * Busca las ventas para realizar la perdida de servicio
 	 * @param numeroDocumento	: Numero de Documento.
@@ -537,4 +548,10 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public List<Manifiesto> buscarLiquidacionBus(String fechaInicio, String fechaFin, String codigoBus)throws Exception;
+	/**
+	 * @param tipoEntidad : Tipo de entidad, Agencia, Localidad, Servicio
+	 * @return
+	 * @throws Exception
+	 */
+	public Map<String, EntidadEncomiendaPasajes> buscarEquivalenciaEntidades(Integer tipoEntidad) throws Exception;
 }

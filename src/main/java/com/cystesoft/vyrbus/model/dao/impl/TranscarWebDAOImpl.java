@@ -22,6 +22,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.Bus;
+import com.cystesoft.vyrbus.model.bean.CanalVenta;
 import com.cystesoft.vyrbus.model.bean.FormaPago;
 import com.cystesoft.vyrbus.model.bean.Itinerario;
 import com.cystesoft.vyrbus.model.bean.Liquidacion;
@@ -39,6 +40,8 @@ import com.cystesoft.vyrbus.model.bean.TranscarUsuarioPersonal;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.model.dao.TranscarWebDAO;
+import com.cystesoft.vyrbus.service.mappers.ResumenVentas;
+import com.cystesoft.vyrbus.service.mappers.VentasPiloto;
 import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.Messages;
 import com.cystesoft.vyrbus.service.util.Util;
@@ -230,26 +233,29 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 					+ ",c_apemat="+(transcarUsuario.getApellidoMaterno()!=null? "'"+transcarUsuario.getApellidoMaterno()+"' ":"Null ")
 					+ ",c_nombre='"+transcarUsuario.getNombres()+"' "
 					+ ",c_email="+(transcarUsuario.getEmail()!=null? "'"+transcarUsuario.getEmail()+"' ":"Null ")
-					+ ",c_password='"+transcarUsuario.getPassword()+"' "
+					+ ",c_password='XENCRIPTAR "+transcarUsuario.getPassword()+"' "
 					+ ",audipmodi='"+transcarUsuario.getIpModificacion()+"' "
 					+ ",audusumod='"+transcarUsuario.getUsuarioModificacion()+"' "
 					+ ",c_estreg='"+transcarUsuario.getEstadoRegistro()+"' "
 				+ "WHERE usuario_id="+transcarUsuario.getId();
 			getJdbcTemplate().update(sql);
-
-			//Elimina los roles asocuados al usario, para luego insertar los nuevos enviados
-			sql = "DELETE FROM tctusuario_rol ur WHERE ur.usuario_id="+transcarUsuario.getId();
-			getJdbcTemplate().update(sql);
-
-			usuario_id = transcarUsuario.getId();
+						
+			if(idsRoles!=null ) {
+				//Elimina los roles asocuados al usario, para luego insertar los nuevos enviados
+				sql = "DELETE FROM tctusuario_rol ur WHERE ur.usuario_id="+transcarUsuario.getId();
+				getJdbcTemplate().update(sql);
+			}			
 		}
 
 		//Inserta los roles
-		String[] roles = idsRoles.split(",");
-		for(String rol_id: roles) {
-			sql = "INSERT INTO tctusuario_rol (rol_id, usuario_id) VALUES ("+rol_id+", "+usuario_id+" )";
-			getJdbcTemplate().update(sql);
-		}
+
+		if(idsRoles !=null) {
+			String[] roles = idsRoles.split(",");
+			for(String rol_id: roles) {			
+				sql = "INSERT INTO tctusuario_rol (rol_id, usuario_id) VALUES ("+rol_id+", "+usuario_id+" )";
+				getJdbcTemplate().update(sql);	
+			}		
+		}				
 
 	}
 
@@ -266,26 +272,39 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 	 * @see com.cystesoft.vyrbus.model.dao.TranscarWebDAO#aperturarLiquidacion(com.cystesoft.vyrbus.model.bean.TranscarLiquidacionTurno)
 	 */
 	@Override
-	public String aperturarLiquidacion(TranscarLiquidacionTurno liquidacionTurno) throws Exception {
-
+	public String aperturarLiquidacion(TranscarLiquidacionTurno liquidacionTurno, boolean isReapertura) throws Exception {
+		int isCorret = 0;
 		Integer agencia_idtranscar = UtilData.getAgencia_Idtranscarweb(liquidacionTurno.getAgenciaId());
 		//Valida que la agencia del vyrbus este asociada a la del transcar web
 		if(agencia_idtranscar==null) {
 			throw new Exception(Messages.getString("Generales.informacion.agenciaNoAsociadaTranscarweb"));
+		}		
+		
+		//Valida si es una reapertura
+		if(isReapertura) {
+			String sql =  "UPDATE tctliquidacion "
+					    + "   SET n_estliq="+ Constantes.TRUE_VALUE
+					    + "      ,n_totefeing=.00 "
+					    + "      ,n_totefeliq=.00 "
+					    + "WHERE agencia_id = "+ agencia_idtranscar +" "
+					    + "  AND usuario_id="+ liquidacionTurno.getTranscarUsuarioPersonal().getId() +" "
+					    + "  AND d_fecliq ='"+ Constantes.FORMAT_DATE.format(liquidacionTurno.getFechaApertura()) +"' ";
+			Log.info("Reapertura Liquidacion - Transcar: "+ sql);
+			isCorret = getJdbcTemplate().update(sql);
+		}else {
+			String sql = "INSERT INTO tctliquidacion " +
+					"		         (liquidacion_id, agencia_id, usuario_id, d_fecliq, n_totefeliq, n_totefeing, n_estliq, c_estreg) " +
+					"          VALUES " +
+					"				 (nextval('seq_tctliquidacion_id'), "
+									+ agencia_idtranscar + ", "
+									+ liquidacionTurno.getTranscarUsuarioPersonal().getId() + ", "
+									+ "'"+ Constantes.FORMAT_DATE.format(liquidacionTurno.getFechaApertura()) + "', "
+									+ "0.00, 0.00, 1, 'A' "
+									+ ") ";
+			Log.info("Apertura Liquidacion - Transcar: "+sql);
+			isCorret = getJdbcTemplate().update(sql);
 		}
-
-		String sql = "INSERT INTO tctliquidacion " +
-				"		         (liquidacion_id, agencia_id, usuario_id, d_fecliq, n_totefeliq, n_totefeing, n_estliq, c_estreg) " +
-				"          VALUES " +
-				"				 (nextval('seq_tctliquidacion_id'), "
-								+ agencia_idtranscar + ", "
-								+ liquidacionTurno.getTranscarUsuarioPersonal().getId() + ", "
-								+ "'"+ Constantes.FORMAT_DATE.format(liquidacionTurno.getFechaApertura()) + "', "
-								+ "0.00, 0.00, 1, 'A' "
-								+ ") ";
-		Log.info("Apertura Liquidacion - Transcar: "+sql);
-		int isCorret = getJdbcTemplate().update(sql);
-
+		
 		String messageError = null;
 		if(isCorret == Constantes.FALSE_VALUE)
 			messageError = "Ha ocurrido un error al aperturar la liquidación";
@@ -322,9 +341,9 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 				"	INNER JOIN tcmcliente cl ON (cl.cliente_id=ec.cliente_id) " +
 				"	INNER JOIN tcmruta rt ON (rt.ruta_id=ec.ruta_id) " +
 				"   LEFT JOIN tctdetpag dp ON (ec.envcon_id = dp.envcon_id)" +
-				"WHERE ec.d_fecven BETWEEN '"+fechaInicial+"' AND '"+fechaFinal+"' " +
-				"  AND ec.agencia_idventa = COALESCE("+agencia_idtranscar+", ec.agencia_idventa) " +
-				"  AND ec.usuario_id = COALESCE("+usuario_id+", ec.usuario_id) " +
+				"WHERE ec.d_fecven BETWEEN to_date('"+fechaInicial+"', 'dd/MM/yyyy') AND to_date('"+fechaFinal+"', 'dd/MM/yyyy') " + 
+				"  AND ec.agencia_idventa = COALESCE("+agencia_idtranscar+", ec.agencia_idventa) " + 
+				"  AND ec.usuario_id = COALESCE("+usuario_id+", ec.usuario_id) " + 
 				"  AND ec.c_estreg = 'A'";
 
 
@@ -453,13 +472,13 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 				throw new Exception(Messages.getString("Generales.informacion.agenciaNoAsociadaTranscarweb"));
 			}
 		}
-
-		String sql = "SELECT ec.usuario_id, u.c_apepat, u.c_apemat, u.c_nombre, u.c_login " +
-				"FROM tctenvcon ec " +
-				"  INNER JOIN tcmusuario u ON (u.usuario_id=ec.usuario_id) " +
-				"WHERE ec.d_fecven BETWEEN '"+fechaInicio+"' AND '"+fechaFin+"' " +
-				"  AND ec.agencia_idventa = COALESCE("+agencia_idtranscar+", ec.agencia_idventa) " +
-				"	AND ec.c_estreg = 'A' " +
+		
+		String sql = "SELECT ec.usuario_id, u.c_apepat, u.c_apemat, u.c_nombre, u.c_login " + 
+				"FROM tctenvcon ec " + 
+				"  INNER JOIN tcmusuario u ON (u.usuario_id=ec.usuario_id) " + 
+				"WHERE ec.d_fecven BETWEEN to_date('"+fechaInicio+"', 'dd/MM/yyyy') AND to_date('"+fechaFin+"', 'dd/MM/yyyy') " + 
+				"  AND ec.agencia_idventa = COALESCE("+agencia_idtranscar+", ec.agencia_idventa) " + 
+				"	AND ec.c_estreg = 'A' " + 
 				"GROUP BY ec.usuario_id, u.c_apepat, u.c_apemat, u.c_nombre, u.c_login";
 		Log.info("buscarUsuariosByVenta - Transcar: " + sql);
 
@@ -502,24 +521,24 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 					"		,(BoletoFinal::INTEGER - boletoInicial::INTEGER +1) - cantRegistros AS Cortes, tipoComprobanteId  " +
 					"FROM(   " +
 //					"	   Recupera todos menos las confirmaciones de fecha habierta de fecha habierta  " +
-					"		SELECT tc.tipcom_id tipoComprobanteId, tc.c_nomcor as TipoComprobante  " +
+					"		SELECT tc.tipcom_id tipoComprobanteId, tc.c_denominacion as TipoComprobante  " +
 //					"			  ,MIN(SUBSTR(vp.c_numcom ,0,4)) AS Serie    " +
 					"			  ,MIN(lpad( substr(vp.c_numcom, 1, (position('-' in vp.c_numcom )-1)), 4, '0' )) AS Serie" +
 //					"		      ,MIN(SUBSTR(vp.c_numcom,6, LENGTH(vp.c_numcom))) AS boletoInicial     " +
 					"			  ,MIN(lpad( substr(vp.c_numcom, (position('-' in vp.c_numcom )+1), (length(vp.c_numcom) - position('-' in vp.c_numcom ))), 8, '0' )) AS BoletoInicial" +
 //					"		      ,MAX(SUBSTR(vp.c_numcom,6, LENGTH(vp.c_numcom)))  AS BoletoFinal  " +
 					"			  ,MAX(lpad( substr(vp.c_numcom, (position('-' in vp.c_numcom )+1), (length(vp.c_numcom) - position('-' in vp.c_numcom ))), 8, '0' )) AS BoletoFinal" +
-					"		      ,COUNT(DISTINCT(nb.c_numcom)) AS cantRegistros  " +
-					"			  ,SUM(vp.n_total) importe  " +
-					"		FROM tctenvcon vp     " +
-					"		   INNER JOIN tcmtipcom tc ON (tc.tipcom_id=vp.tipcom_id)  " +
-					"		   INNER JOIN (SELECT c_numcom FROM tctenvcon GROUP BY c_numcom)nb ON (nb.c_numcom=vp.c_numcom)   " +
-					"		WHERE vp.d_fecven BETWEEN '"+fechaInicio+"' and '"+fechaFin+"'  " +
-					"		  AND vp.agencia_idventa = COALESCE("+agencia_idtranscar+", vp.agencia_idventa)   " +
-					"		  AND vp.usuario_id= COALESCE("+usuarioId+", vp.usuario_id)  " +
-					"		  AND vp.c_estreg = 'A'  " +
-					"		  AND vp.d_fecanu IS NULL AND vp.usuario_idanula IS NULL  " +
-					"		GROUP BY tc.tipcom_id, tc.c_denominacion, tc.tipcom_id " +
+					"		      ,COUNT(DISTINCT(nb.c_numcom)) AS cantRegistros  " + 
+					"			  ,SUM(vp.n_total) importe  " + 
+					"		FROM tctenvcon vp     " + 
+					"		   INNER JOIN tcmtipcom tc ON (tc.tipcom_id=vp.tipcom_id)  " + 
+					"		   INNER JOIN (SELECT c_numcom FROM tctenvcon GROUP BY c_numcom)nb ON (nb.c_numcom=vp.c_numcom)   " + 
+					"		WHERE vp.d_fecven BETWEEN to_date('"+fechaInicio+"', 'dd/MM/yyyy') and to_date('"+fechaFin+"', 'dd/MM/yyyy')  " + 
+					"		  AND vp.agencia_idventa = COALESCE("+agencia_idtranscar+", vp.agencia_idventa)   " + 
+					"		  AND vp.usuario_id= COALESCE("+usuarioId+", vp.usuario_id)  " + 
+					"		  AND vp.c_estreg = 'A'  " + 
+					"		  AND vp.d_fecanu IS NULL AND vp.usuario_idanula IS NULL  " + 
+					"		GROUP BY tc.tipcom_id, tc.c_denominacion, tc.tipcom_id " + 
 					")esv";
 
 		Log.info("BuscarLiquidacionTurnoResumenEspval:" + sql);
@@ -531,7 +550,7 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 			map = (Map<String, Object>)result.get(i);
 
 			Liquidacion liquidacion= new Liquidacion();
-//			liquidacion.setTipoComprobante(new TipoComprobante(((BigDecimal)map.get("TIPOCOMPROBANTEID")).intValue(), map.get("TIPOCOMPROBANTE").toString()));
+			liquidacion.setTipoComprobante(new TipoComprobante(((BigDecimal)map.get("TIPOCOMPROBANTEID")).intValue(), map.get("TIPOCOMPROBANTE").toString()));
 			liquidacion.setComprobante(map.get("TIPOCOMPROBANTE").toString());
 			liquidacion.setSerie(map.get("SERIE").toString());
 			liquidacion.setBoletoInicial(map.get("BOLETOINICIAL").toString());
@@ -625,10 +644,10 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 
 		String sql = "Select lq.liquidacion_id "
 				+ "From tctliquidacion lq "
-				+ "where lq.usuario_id =" + usuarioId +
-				"    AND lq.agencia_id =" + agencia_idtranscar +
-				"	 AND lq.d_fecliq ='"+ fechaLiquidacion + "' " +
-				"	 AND lq.n_estliq =" + Constantes.TRUE_VALUE +
+				+ "where lq.usuario_id =" + usuarioId + 
+				"    AND lq.agencia_id =" + agencia_idtranscar + 
+				"	 AND lq.d_fecliq =to_date('"+ fechaLiquidacion + "', 'dd/MM/yyyy') " +  
+				"	 AND lq.n_estliq =" + Constantes.TRUE_VALUE + 
 				"	 AND lq.c_estreg = 'A'";
 		Log.info("Obteniendo el identificador de la liquidacion - transcar:" + sql);
 		long liquidacion_id = jdbcTemplate.queryForLong(sql);
@@ -646,7 +665,7 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 			sql ="UPDATE tctenvcon SET liquidacion_id="+liquidacion_id+" "+
 				 "WHERE envcon_id in ( SELECT ec.envcon_id "+
 		                             " FROM tctenvcon ec "+
-		                             " WHERE ec.d_fecven = '"+fechaLiquidacion+"' "+
+		                             " WHERE ec.d_fecven = to_date('"+fechaLiquidacion+"', 'dd/MM/yyyy') "+
 		                             "   AND ec.agencia_idventa="+agencia_idtranscar+" AND ec.usuario_id="+usuarioId+"  "+
 		                             "   AND ec.c_estreg = 'A') ";
 			getJdbcTemplate().update(sql);
@@ -660,19 +679,19 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 	 */
 	@Override
 	public TreeMap<String, Manifiesto> buscarLiquidacionBus(String fechaInicio, String fechaFin, String codigoBus)throws Exception {
-
-		String sql = "SELECT gt.d_fecsal fecha_salida, ut.c_numuni bus_codigo, ut.c_placa bus_placa, pt.c_apepat piloto_apePat " +
-				"      ,pt.c_apemat piloto_apeMat, pt.c_nombre piloto_nombres, SUM(ec.n_total) total_soles " +
-				"FROM tctguitra gt " +
-				"  INNER JOIN tctdetguitra dgt ON (dgt.guitra_id=gt.guitra_id) " +
-				"	INNER JOIN tcmunitra ut ON (ut.unitra_id=gt.unitra_id) " +
-				"	INNER JOIN tcmpiloto pt ON (pt.piloto_id=gt.piloto_id) " +
-				"	INNER JOIN tctenvcon ec ON (ec.envcon_id=dgt.envio_id AND dgt.tipcom_id IN (2,1,3)) " +
-				"WHERE gt.d_fecsal BETWEEN '01/01/2022' AND '30/04/2022' " +
-				"  AND gt.c_estreg = 'A' " +
-				"	AND dgt.c_estreg = 'A' " +
-				"	AND gt.c_numunitra = COALESCE(null, gt.c_numunitra) " +
-				"GROUP BY gt.d_fecsal, ut.c_numuni, ut.c_placa, pt.c_apepat, pt.c_apemat, pt.c_nombre " +
+		
+		String sql = "SELECT gt.d_fecsal fecha_salida, ut.c_numuni bus_codigo, ut.c_placa bus_placa, pt.c_apepat piloto_apePat " + 
+				"      ,pt.c_apemat piloto_apeMat, pt.c_nombre piloto_nombres, SUM(ec.n_total) total_soles " + 
+				"FROM tctguitra gt " + 
+				"  INNER JOIN tctdetguitra dgt ON (dgt.guitra_id=gt.guitra_id) " + 
+				"	INNER JOIN tcmunitra ut ON (ut.unitra_id=gt.unitra_id) " + 
+				"	INNER JOIN tcmpiloto pt ON (pt.piloto_id=gt.piloto_id) " + 
+				"	INNER JOIN tctenvcon ec ON (ec.envcon_id=dgt.envio_id AND dgt.tipcom_id IN (2,1,3)) " + 
+				"WHERE gt.d_fecsal BETWEEN to_date('"+fechaInicio+"', 'dd/MM/yyyy') AND to_date('"+fechaFin+"', 'dd/MM/yyyy') " + 
+				"  AND gt.c_estreg = 'A' " + 
+				"	AND dgt.c_estreg = 'A' " + 
+				"	AND gt.c_numunitra = COALESCE(null, gt.c_numunitra) " + 
+				"GROUP BY gt.d_fecsal, ut.c_numuni, ut.c_placa, pt.c_apepat, pt.c_apemat, pt.c_nombre " + 
 				"ORDER BY gt.d_fecsal, ut.c_numuni, ut.c_placa, pt.c_apepat, pt.c_apemat, pt.c_nombre";
 
 		Log.info("BuscarLiquidacionBus - Transcar: " + sql);
@@ -722,14 +741,14 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 				throw new Exception(Messages.getString("Generales.informacion.agenciaNoAsociadaTranscarweb"));
 			}
 		}
-
-		String sql = "SELECT to_char(lq.d_fecliq,'dd/MM/yyyy') fecha, lq.usuario_id ,up.c_login, ag.agencia_id, COALESCE(lq.n_totefeing,0) entre_soles " +
-					"	    ,0.00 entre_dola, lq.n_estliq cerrado, lq.audfecmod fecha_cierre " +
-					"FROM tctliquidacion lq " +
-					"	INNER JOIN tcmusuario up ON (up.usuario_id=lq.usuario_id) " +
-					"	INNER JOIN tcmagencia ag ON (ag.agencia_id=lq.agencia_id) " +
-					"WHERE lq.d_fecliq  BETWEEN '"+fechaInicio+"' AND '"+fechaFin+"' " +
-					"	AND ag.agencia_id = COALESCE("+agencia_idtranscar+", lq.agencia_id) " +
+		
+		String sql = "SELECT to_char(lq.d_fecliq,'dd/MM/yyyy') fecha, lq.usuario_id ,up.c_login, ag.agencia_id, COALESCE(lq.n_totefeing,0) entre_soles " + 
+					"	    ,0.00 entre_dola, lq.n_estliq cerrado, lq.audfecmod fecha_cierre " + 
+					"FROM tctliquidacion lq " + 
+					"	INNER JOIN tcmusuario up ON (up.usuario_id=lq.usuario_id) " + 
+					"	INNER JOIN tcmagencia ag ON (ag.agencia_id=lq.agencia_id) " + 
+					"WHERE lq.d_fecliq  BETWEEN to_date('"+fechaInicio+"', 'dd/MM/yyyy') AND to_date('"+fechaFin+"', 'dd/MM/yyyy') " + 
+					"	AND ag.agencia_id = COALESCE("+agencia_idtranscar+", lq.agencia_id) " + 
 					"	AND lq.c_estreg = 'A'";
 	 	List<?> result = jdbcTemplate.queryForList(sql);
 
@@ -821,4 +840,201 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 
 		return direccionMac;
 	}
+	
+	@Override
+	public List<VentasPiloto> buscarRegistroVentas(String fInicio, String fFin) throws Exception {
+
+		
+		String sql = "SELECT \r\n" + 
+				"				ec.d_fecven FECHA, \r\n" + 
+				"				CASE ec.tipcom_id  \r\n" + 
+				"					WHEN 1\r\n" + 
+				"					  THEN '03'\r\n" + 
+				"					WHEN 2\r\n" + 
+				"					  THEN '01' \r\n" + 
+				"					WHEN 3 \r\n" + 
+				"					  THEN '31'\r\n" + 
+				"				END TD,\r\n" + 
+				"				CASE ec.tipcom_id \r\n" + 
+				"				  WHEN 3 \r\n" + 
+				"					  THEN\r\n" + 
+				"						  lpad(substr(ec.c_numcom, 1, 3), 4, '0') \r\n" + 
+				"					  ELSE \r\n" + 
+				"						  substr(ec.c_numcom, 1, 4) \r\n" + 
+				"				END SERIE, \r\n" + 
+				"				CASE ec.tipcom_id \r\n" + 
+				"				  WHEN 3 \r\n" + 
+				"					  THEN\r\n" + 
+				"						  lpad(substr(ec.c_numcom, 6, 8), 8, '0') \r\n" + 
+				"					  ELSE \r\n" + 
+				"						  substr(ec.c_numcom, 6, 8) \r\n" + 
+				"				END  NUMERO,\r\n" + 
+				"				c.c_numdoc DNI, c.c_razsoc RAZON_SOCIAL, 0.00 EXONERADO, \r\n" + 
+				"				ec.n_subtotal V_VENTA, ec.n_impuesto IGV, ec.n_total TOTAL,\r\n" + 
+				"				agd.c_denominacion DESTINO, '' ASTO, ec.tipcom_id, '1' TIPMOV_ID \r\n" + 
+				"FROM \r\n" + 
+				"				tctenvcon ec \r\n" + 
+				"				INNER JOIN tcmcliente c ON (ec.cliente_id = c.cliente_id)\r\n" + 
+				"				INNER JOIN tcmagencia agd ON (ec.agencia_iddestino = agd.agencia_id)\r\n" + 
+				"WHERE\r\n" + 
+				"				ec.d_fecven between to_date('"+fInicio+"', 'dd/MM/yyyy') \r\n" + 
+				"				AND to_date('"+fFin+"', 'dd/MM/yyyy')\r\n" + 
+				"				AND ec.tipcom_id in (1, 2, 3)\r\n" + 
+				"ORDER BY \r\n" + 
+				"				ec.d_fecven, td,substr(ec.c_numcom, 1, 4), substr(ec.c_numcom, 6, 8)";
+		Log.info("buscarUsuariosByVenta - Transcar: " + sql);
+
+		List<?> result=getJdbcTemplate().queryForList(sql);
+
+		List<VentasPiloto> lstVentas = new ArrayList<>();
+		Map<String, Object> map = null;
+		
+		for(int i=0; i<result.size(); i++) {
+			map = (Map<String, Object>)result.get(i);
+			
+			VentasPiloto regVentas = new VentasPiloto();
+			regVentas.setFechaCompra((Date)map.get("FECHA"));
+			regVentas.setTipoDocumentoSunat(map.get("TD").toString());
+			regVentas.setSerie(map.get("SERIE").toString());
+			regVentas.setNumero(map.get("NUMERO").toString());
+			regVentas.setNumeroBoleto(map.get("SERIE").toString()+"-"+map.get("NUMERO").toString());
+			regVentas.setRuc("");
+			regVentas.setDni(map.get("DNI").toString());
+			regVentas.setNombres(map.get("RAZON_SOCIAL").toString());
+			regVentas.setExonerado(((BigDecimal)map.get("EXONERADO")).doubleValue());
+			regVentas.setVenta(((BigDecimal)map.get("V_VENTA")).doubleValue());
+			regVentas.setIgv(((BigDecimal)map.get("IGV")).doubleValue());
+			regVentas.setTotal(((BigDecimal)map.get("TOTAL")).doubleValue());
+			regVentas.setDestino(map.get("DESTINO").toString());
+			regVentas.setAsiento(map.get("ASTO").toString());
+			
+			TipoComprobante tipoComprobante = new TipoComprobante();
+			tipoComprobante.setId(((BigDecimal)map.get("TIPCOM_ID")).intValue());
+			regVentas.setTipoComprobante(tipoComprobante);
+			
+			TipoMovimiento tipoMovimiento = new TipoMovimiento();
+			tipoMovimiento.setId(Integer.parseInt(map.get("TIPMOV_ID").toString()) );
+			regVentas.setTipoMovimiento(tipoMovimiento);
+			
+			lstVentas.add(regVentas);
+		}
+		
+		return lstVentas;
+	}
+	
+	@Override
+	public List<ResumenVentas> buscarResumenVentas(String fechaDesde, String fechaHasta) {
+		String sql = "";
+
+		sql = "select \r\n" + 
+				"				2 RUBRO, 1 CANALID, 'COUNTER' CANAL, ec.agencia_idventa IDAGENCIA, \r\n" + 
+				"				a.c_denominacion AGENCIA,\r\n" + 
+				"				CASE ec.tipcom_id \r\n" + 
+				"				   WHEN 1 THEN 7 \r\n" + 
+				"					 WHEN 2 THEN 2 \r\n" + 
+				"					 WHEN 3 THEN 10 \r\n" + 
+				"			  END IDCOMP, \r\n" + 
+				"				CASE ec.tipcom_id \r\n" + 
+				"					 WHEN 3 THEN 'GUIA REMISION TRANSPORTISTA' \r\n" + 
+				"					 ELSE tc.c_denominacion \r\n" + 
+				"			  END  COMP,  \r\n" + 
+				"        COUNT(ec.tipcom_id) CANT,\r\n" + 
+				"        SUM(ec.n_total) TOTAL,\r\n" + 
+				"        ec.d_fecven FECVEN,\r\n" + 
+				"        to_char(ec.d_fecven, 'yyyy') anio,\r\n" + 
+				"        to_char(ec.d_fecven, 'mm') mes,\r\n" + 
+				"        to_char(ec.d_fecven, 'dd') dia\r\n" + 
+				"				--ec.*\r\n" + 
+				"from \r\n" + 
+				"				tctenvcon ec\r\n" + 
+				"				inner join tcmagencia a on (ec.agencia_idventa = a.agencia_id)\r\n" + 
+				"				inner join tcmtipcom tc on (ec.tipcom_id = tc.tipcom_id)\r\n" + 
+				"WHERE\r\n" + 
+				"				ec.d_fecven between to_date('"+fechaDesde+"', 'dd/mm/yyyy') and to_date('"+fechaHasta+"', 'dd/mm/yyyy')\r\n" + 
+				"GROUP BY\r\n" + 
+				"        ec.d_fecven, ec.agencia_idventa, a.c_denominacion, ec.tipcom_id, tc.c_denominacion\r\n" + 
+				"ORDER BY\r\n" + 
+				"        ec.d_fecven, a.c_denominacion, tc.c_denominacion;				\r\n"; 
+
+		Log.info("RESUMEN VENTAS DE ENCOMIENDAS: "+sql);
+
+		List<?> result=getJdbcTemplate().queryForList(sql);
+		
+		List<ResumenVentas> lstVentas = new ArrayList<>();
+		Map<String, Object> map = null;
+		Long cantidad;
+		
+		for(int i=0; i<result.size(); i++) {
+			map = (Map<String, Object>)result.get(i);
+			ResumenVentas resumenVentas = new ResumenVentas();
+			
+			resumenVentas.setRubro(((Integer)map.get("RUBRO")).intValue());
+			
+			CanalVenta canalVenta = new CanalVenta();
+			canalVenta.setId(((Integer)map.get("CANALID")).intValue());
+			canalVenta.setDenominacion(map.get("CANAL").toString());
+			resumenVentas.setCanalVenta(canalVenta);
+			
+			Agencia agencia = new Agencia();
+			agencia.setId(((BigDecimal)map.get("IDAGENCIA")).intValue());
+			agencia.setDenominacion(map.get("AGENCIA").toString());
+			resumenVentas.setAgencia(agencia);
+			
+			TipoComprobante tipoComprobante = new TipoComprobante();
+			tipoComprobante.setId(((Integer)map.get("IDCOMP")).intValue());
+			tipoComprobante.setDenominacion(map.get("COMP").toString());
+			resumenVentas.setTipoComprobante(tipoComprobante);
+			cantidad = ((Long)map.get("CANT")).longValue();
+			resumenVentas.setCantidad( cantidad.intValue() );
+			resumenVentas.setTotal(((BigDecimal)map.get("TOTAL")).doubleValue());
+			resumenVentas.setFechaEmision((Date)map.get("FECVEN"));
+			resumenVentas.setAnio(map.get("ANIO").toString());
+			resumenVentas.setMes(map.get("MES").toString());
+			resumenVentas.setDia(map.get("DIA").toString());
+			
+			lstVentas.add(resumenVentas);
+		}
+		
+		return lstVentas;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.TranscarWebDAO#buscaTotalVentasEfectivo(java.lang.Integer, java.lang.Integer, java.lang.String)
+	 */
+	@Override
+	public Double buscaTotalVentasEfectivo(String loginUsuario, Integer idAgencia, String fecha) throws Exception {
+		
+		Integer agencia_idtranscar = idAgencia;
+		if(agencia_idtranscar!=null) {
+			agencia_idtranscar = UtilData.getAgencia_Idtranscarweb(idAgencia);
+			//Valida que la agencia del vyrbus este asociada a la del transcar web
+			if(agencia_idtranscar==null) {
+				throw new Exception(Messages.getString("Generales.informacion.agenciaNoAsociadaTranscarweb"));
+			}
+		}
+		
+		//Busca el identificador del usuario en transcar web
+		Integer idUsuario = 0;
+		TranscarUsuarioPersonal usuarioPersonal = buscarUsuario(loginUsuario);
+		if(usuarioPersonal !=null)
+			idUsuario = usuarioPersonal.getId();
+		
+		//
+		String sql = "SELECT COALESCE(SUM(ev.n_total),0) AS totalVentaEfectivo, null " + 
+				"FROM tctenvcon ev " + 
+				"WHERE ev.forpag_id = "+ Constantes.ID_FORPAG_CONTADO +" AND ev.tippag_id = "+ Constantes.ID_TIPFORPAG_EFECTIVO + " " +
+				"  AND ev.c_estreg = '"+ Constantes.VALUE_ACTIVO +"' " + 
+				"  AND ev.d_fecanu IS NULL AND ev.usuario_idanula IS NULL " + 
+				"  AND ev.usuario_id =  "+ idUsuario +"  AND ev.agencia_idventa = "+ agencia_idtranscar +" AND ev.d_fecven = to_date('"+ fecha +"', 'dd/MM/yyyy') ";
+		
+		Log.info("buscaTotalVentasEfectivo: " + sql);
+				
+		List<?> result = getJdbcTemplate().queryForList(sql);
+		Map<String, Object> map = (Map<String, Object>)result.get(0);
+		Double total = ((BigDecimal) map.get("totalVentaEfectivo")).doubleValue();
+		
+		return total;
+	}
+	
+	
 }

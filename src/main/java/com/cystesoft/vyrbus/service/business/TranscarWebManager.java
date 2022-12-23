@@ -18,6 +18,8 @@ import com.cystesoft.vyrbus.model.bean.TranscarRolUsuario;
 import com.cystesoft.vyrbus.model.bean.TranscarUsuarioPersonal;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
+import com.cystesoft.vyrbus.service.mappers.ResumenVentas;
+import com.cystesoft.vyrbus.service.mappers.VentasPiloto;
 
 /**
  * @author abant
@@ -62,10 +64,11 @@ public interface TranscarWebManager {
 	/**
 	 * Realiza la apertura de la liquidacion de turno
 	 * @param liquidacionTurno	: instancia de la class
+	 * @param isReapertura		: True, cuando es una reapertura de caja; False, cuando es una apertura de caja
 	 * @return Si es correcto Null, lo contrario cuando ocurre un error
 	 * @throws Exception
 	 */
-	public String aperturarLiquidacion(TranscarLiquidacionTurno liquidacionTurno)throws Exception;
+	public String aperturarLiquidacion(TranscarLiquidacionTurno liquidacionTurno, boolean isReapertura)throws Exception;
 	/**
 	 * Realiza la busqueda del detalle de ventas
 	 * @param usuario	: Identificador del usuario - Transcar
@@ -147,4 +150,26 @@ public interface TranscarWebManager {
 	 * @throws Exception
 	 */
 	public void actualizarPasswordUsuarioByLogin(String login, String passwordNew)throws Exception;
+	
+	
+	
+	public List<VentasPiloto> buscarRegistroVentas(String fInicio, String fFin) throws Exception;
+	
+	/**
+	 * Busca los boletos postergados por Usuario o Agencia
+	 * @param fechaDesde	: Fecha de inicio de busqueda
+	 * @param fechaHasta	: Fecha fin de la busqueda
+	 * @return
+	 */
+	public List<ResumenVentas> buscarResumenVentas(String fechaDesde, String fechaHasta);
+	
+	/**
+	 * Busca el total de ventas en efectivo de un detarmido usuario, Esto es para validar el ingreso de gastos a la liquidacion.
+	 * @param idUsuario	: Identificador del usuario
+	 * @param idAgencia	: Identificador de la agencia
+	 * @param fecha		: Fecha de la venta.
+	 * @return Total ventas en efectivo
+	 * @throws Exception
+	 */
+	public Double buscaTotalVentasEfectivo(String loginUsuario, Integer idAgencia, String fecha) throws Exception;
 }

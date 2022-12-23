@@ -113,6 +113,7 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 					"dlq.audfecins as fechaInsercion, dlq.audusuins as UsuarioInsercion, dlq.audipinse as IpInsercion, "+//14-16
 					"g.audfecins as GfechaInsercion, g.audusuins as GUsuarioInsercion, g.audipinse as GIpInsercion, "+//17-19
 					"lq.n_estliq, a.c_nomcor as nombreCorto, nvl(tg.n_tipope,0) tipope, tg.c_nomcor nomCarGasto "+//20-23
+					", g.c_ctacte ctacte, g.c_hordep hordep  "+ //24-25
 			"FROM vrtgasto g "+
 				"INNER JOIN vrtdetliq dlq ON (dlq.gasto_id=g.gasto_id) "+
 				"INNER JOIN vrtliquidacion lq ON (lq.liquidacion_id=dlq.liquidacion_id) "+
@@ -123,7 +124,7 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 				 "AND g.tipgas_id=NVL("+idTipoGasto+",g.tipgas_id) " +
 				 "AND lq.usuario_id=NVL("+idUsuario+",lq.usuario_id) " +
 				 "AND lq.c_estreg='A' AND g.c_estreg='A' " +
-		    "ORDER BY nvl(tg.n_tipope,0), tg.c_denominacion ";
+		    "ORDER BY nvl(tg.n_tipope,0), lq.d_fecliq, a.c_denominacion, tg.c_denominacion ";
 //			"WHERE lq.d_fecliq = to_date('"+fechaGasto+"', 'dd/MM/yyyy') AND lq.c_estreg='A' AND g.c_estreg='A' "+ criterios;
 					//"AND lq.agencia_id=1 AND g.c_estreg='A' AND lq.c_estreg='A' ";
 
@@ -181,6 +182,70 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 				gasto.setUsuarioInsercion(obj[18].toString());
 			if (obj[19] !=null)
 				gasto.setIpInsercion(obj[19].toString());
+			//Se añadieron dos campos adicionales para el gasto
+			gasto.setNroCtacte(obj[24] != null ? obj[24].toString() : "");
+			gasto.setHoraDeposito(obj[25] != null ? obj[25].toString() : "");
+			
+			gasto.setAgencia(agencia);
+			gasto.setLiquidacion(liquidacion);
+			gasto.setTipoGasto(tipoGasto);
+			gasto.setDetalleLiquidacion(detalleLiquidacion);
+
+			ListResult.add(gasto);
+		}
+		return ListResult;
+	}
+	
+	@Override
+	public List<Gasto> buscarGastoResumen(String fechaIniGasto, String fechaFinGasto, Integer idTipoGasto, Integer idAgencia,Integer idUsuario) {
+		String sql="SELECT \r\n" + 
+				"         a.agencia_id,a.c_denominacion as Agencia,lq.c_nomusu as usuario, \r\n" + 
+				"         lq.d_fecliq as FechaLquidacion, tg.tipgas_id, tg.c_denominacion NombreGasto,\r\n" + 
+				"         tg.c_nomcor nomCorGasto, count(tg.tipgas_id) cantidad, sum(g.n_monto) importe \r\n" + 
+				"FROM \r\n" + 
+				"         vrtgasto g \r\n" + 
+				"         INNER JOIN vrtdetliq dlq ON (dlq.gasto_id=g.gasto_id) \r\n" + 
+				"         INNER JOIN vrtliquidacion lq ON (lq.liquidacion_id=dlq.liquidacion_id) \r\n" + 
+				"         INNER JOIN vrmtipgas tg ON (tg.tipgas_id=g.tipgas_id) \r\n" + 
+				"         INNER JOIN vrmagencia a ON (a.agencia_id=lq.agencia_id) \r\n" + 
+				"WHERE \r\n" + 
+				"         lq.d_fecliq between to_date('"+fechaIniGasto+"','dd/MM/yyyy') \r\n" + 
+				"         and to_date('"+fechaFinGasto+"','dd/MM/yyyy') AND lq.agencia_id=NVL("+idAgencia+",lq.agencia_id) \r\n" + 
+				"         AND g.tipgas_id=NVL("+idTipoGasto+",g.tipgas_id) AND lq.usuario_id=NVL("+idUsuario+",lq.usuario_id) \r\n" + 
+				"         AND lq.c_estreg='A' AND g.c_estreg='A' \r\n" + 
+				"         AND tg.n_Tipope=0 \r\n" + 
+				"GROUP BY \r\n" + 
+				"         a.agencia_id, a.c_denominacion,lq.c_nomusu, \r\n" + 
+				"         lq.d_fecliq, tg.tipgas_id, tg.c_denominacion,\r\n" + 
+				"         tg.c_nomcor  ";
+
+		log.info(sql);
+
+		List<?> result = getSession().createSQLQuery(sql).list();
+		List<Gasto> ListResult = new ArrayList<>();
+		for(int i=0; i<result.size(); i++){
+			Object[] obj = (Object[]) result.get(i);
+
+			Agencia agencia = new Agencia();
+			agencia.setId(((BigDecimal)obj[0]).intValue());
+			agencia.setDenominacion(obj[1].toString());
+
+			Liquidacion liquidacion= new Liquidacion();
+			liquidacion.setNombreUsuario(obj[2].toString());
+			liquidacion.setFechaLiquidacion(((Date) obj[3]));
+
+			DetalleLiquidacion detalleLiquidacion = new DetalleLiquidacion();
+
+			TipoGasto tipoGasto=new TipoGasto();
+			tipoGasto.setId(((BigDecimal)obj[4]).intValue());
+			tipoGasto.setDenominacion(obj[5].toString());
+//			tipoGasto.setTipoOperacion(((BigDecimal)obj[22]).intValue());
+			tipoGasto.setNombreCorto(obj[6]!=null?obj[6].toString():"");
+
+			Gasto gasto = new Gasto();
+//			gasto.setId(((BigDecimal) obj[0]).intValue());
+			gasto.setCantidad(((BigDecimal)obj[7]).intValue());
+			gasto.setMonto( ((BigDecimal)obj[8]).doubleValue() );
 
 			gasto.setAgencia(agencia);
 			gasto.setLiquidacion(liquidacion);
@@ -192,7 +257,7 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 		return ListResult;
 	}
 	
-	
+		
 	@Override
 	public List<Gasto> buscarGastoLiqOficina(String fechaLiquidacion,String usuario) {
 		String sql="SELECT g.gasto_id, tg.tipgas_id, g.c_numdoc, g.n_monto, g.c_nompil, g.c_codbus, g.c_consignado, g.c_observacion, "+
@@ -251,7 +316,8 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 					"FROM vrtgasto g  "+
 					"INNER JOIN vrtdetliq dlq ON (dlq.gasto_id=g.gasto_id) "+
 					"INNER JOIN vrtliquidacion lq ON (lq.liquidacion_id=dlq.liquidacion_id) "+
-					"WHERE lq.agencia_id="+idAgencia+" AND lq.usuario_id="+idUsuario+" AND to_char(lq.d_fecliq,'dd/mm/yyyy')='"+fecha+"' ";
+					"WHERE  lq.agencia_id="+idAgencia+" AND lq.usuario_id="+idUsuario+" AND to_char(lq.d_fecliq,'dd/mm/yyyy')='"+fecha+"' "+
+					"		AND g.tipgas_id not in (17)";
 //					"WHERE lq.agencia_id="+idAgencia+" AND lq.usuario_id="+idUsuario+" AND to_char(lq.d_fecliq,'dd/mm/yyyy')=to_date('"+fecha+"','"+Constantes.DATE_FORMAT+"') ";
 
 		log.info(sql);

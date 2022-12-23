@@ -2432,8 +2432,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 					}
 				});
 				btnHora.setImage("/resources/mp_reloj.png");
-				btnHora.setTooltiptext("Cambiar la hora del Itinerario");
-				hbox.appendChild(btnHora);
+				btnHora.setTooltiptext("Cambiar la hora del Itinerario");				
 				Button btnDuplicar = new Button();
 				btnDuplicar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 					@Override
@@ -2443,14 +2442,73 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 					}
 				});
 				btnDuplicar.setImage("/resources/mp_clone.png");
-				btnDuplicar.setTooltiptext("Duplicar el Itinerario");
-				hbox.appendChild(btnDuplicar);
+				btnDuplicar.setTooltiptext("Duplicar el Itinerario");				
+				
+				Button btnDisableVenta = new Button();
+				if(detalleItinerario.getItinerario().getFechaPartida()!=null)	
+					btnDisableVenta.setDisabled(detalleItinerario.getItinerario().getFechaPartida().getTime()<Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date())).getTime());
+				
+				if(detalleItinerario.getItinerario().getTipoItinerario().getId().intValue()==Constantes.ID_TIPITI_REGULAR) {
+					btnDisableVenta.setTooltiptext("Deshabilitar para la venta");
+					btnDisableVenta.setImage(btnDisableVenta.isDisabled()?"/resources/mp_cancelarDisabled.png":"/resources/mp_cancelarEnabled.png");
+				}else {
+					btnDisableVenta.setTooltiptext("Habilitar para la venta");
+					btnDisableVenta.setImage(btnDisableVenta.isDisabled()?"resources/mp_acceptDisabled.png": "/resources/mp_acceptEnabled.png");
+				}
+				btnDisableVenta.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+					@Override
+					public void onEvent(Event e) throws Exception {
+						// TODO Auto-generated method stub
+						DetalleItinerario detalleItinerario = ((Listitem)e.getTarget().getParent().getParent().getParent()).getValue();
+						habilitaDeshabilitaItinerarioForVenta(detalleItinerario);
+					}
+				});
+				
+				hbox.appendChild(btnDisableVenta);
+				hbox.appendChild(btnHora);
+				hbox.appendChild(btnDuplicar);				
 				cell.appendChild(hbox);
 				item.appendChild(cell);
+				
 
 				item.setValue(detalleItinerario);
 				listboxLista.appendChild(item);
 			}
+		}
+	}
+	
+	/**
+	 * Habilita/deshabilita un tienerario para la visualización en la venta
+	 * @param detalleItinerario
+	 */
+	private void habilitaDeshabilitaItinerarioForVenta(DetalleItinerario detalleItinerario) {
+		try {
+			boolean disabledForVenta = false;
+			Itinerario itinerario = ServiceLocator.getItinerarioManager().buscarPorId(detalleItinerario.getItinerario().getId());			
+			if(itinerario.getTipoItinerario().getId().intValue()==Constantes.ID_TIPITI_REGULAR) {
+				itinerario.setTipoItinerario(new TipoItinerario(Constantes.ID_TIPITI_ESPECIAL));
+				disabledForVenta = true;
+			}else {
+				itinerario.setTipoItinerario(new TipoItinerario(Constantes.ID_TIPITI_REGULAR));
+			}
+			UtilData.auditarRegistro(itinerario, true, getUsuario(), Executions.getCurrent());
+			
+			if(detalleItinerario!=null && detalleItinerario.getItinerario()!=null) {
+				Messagebox.show(Messages.getString(disabledForVenta?"WndItinerario.Question.ConfirmaDesabledVenta":"WndItinerario.Question.ConfirmaEnabledVenta"),DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
+					@Override
+					public void onEvent(Event e) throws Exception {
+						if(e.getName().equals("onYes")){
+							ServiceLocator.getItinerarioManager().actualizar(itinerario);
+							
+							listarItinerarios(ServiceLocator.getItinerarioManager().buscarItinerariosMantenimiento(iItinerario, sOrigen,
+									sDestino, Constantes.FORMAT_DATE.format(fechaInicio), Constantes.FORMAT_DATE.format(fechaFinal),
+									sServicio,tipoDeItinerario, criterioOrden));
+						}
+					}
+				});								
+			}			
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -2675,17 +2733,20 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		Listheader listheader= new Listheader();
 		listheader.setLabel("ITINERARIO");
 		listheader.setWidth("60px");
+		listheader.setStyle("color:#ffffff;");
 		listhead.appendChild(listheader);
 		//Ruta
 		listheader= new Listheader();
 		listheader.setLabel("RUTA");
 		listheader.setWidth("170px");
+		listheader.setStyle("color:#ffffff;");
 		listhead.appendChild(listheader);
 		//Fecha Partida
 		listheader= new Listheader();
 		listheader.setLabel("F.PARTIDA");
 		listheader.setTooltiptext("Fecha de Partida");
 		listheader.setWidth("70px");
+		listheader.setStyle("color:#ffffff;");
 		listhead.appendChild(listheader);
 		listbox.appendChild(listhead);
 		//Hora Partida
@@ -2693,18 +2754,21 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		listheader.setLabel("H.PARTIDA");
 		listheader.setTooltiptext("Hora de Partida");
 		listheader.setWidth("50px");
+		listheader.setStyle("color:#ffffff;");
 		listhead.appendChild(listheader);
 		listbox.appendChild(listhead);
 		//Pasajero
 		listheader= new Listheader();
 		listheader.setLabel("PASAJERO");
 		listheader.setWidth("195px");
+		listheader.setStyle("color:#ffffff;");
 		listhead.appendChild(listheader);
 		listbox.appendChild(listhead);
 		//Asiento
 		listheader= new Listheader();
 		listheader.setLabel("ASIENTO");
 		listheader.setWidth("45px");
+		listheader.setStyle("color:#ffffff;");
 		listheader.setAlign("center");
 		listhead.appendChild(listheader);
 		listbox.appendChild(listhead);
@@ -2712,6 +2776,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		listheader= new Listheader();
 		listheader.setLabel("TIPO");
 		listheader.setWidth("65px");
+		listheader.setStyle("color:#ffffff;");
 		listheader.setAlign("center");
 		listhead.appendChild(listheader);
 		listbox.appendChild(listhead);
@@ -2720,6 +2785,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		listheader.setLabel("N.CONTROL");
 		listheader.setWidth("115px");
 		listheader.setAlign("center");
+		listheader.setStyle("color:#ffffff;");
 		listhead.appendChild(listheader);
 		listbox.appendChild(listhead);
 
@@ -2760,7 +2826,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			item.setValue(ventaPasaje);
 			listbox.appendChild(item);
 		}
-		listbox.setHeight("286px");
+		listbox.setHeight("275px");
 		window.appendChild(listbox);
 
 
@@ -2769,19 +2835,21 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 		hbox.setAlign("center");
 
 		label.setValue("Cantidad Registros : "+listbox.getItems().size());
-		label.setStyle("font-size:11px !important; color:red; font-weight: bold;");
+		label.setStyle("font-size:12px !important; color:red; font-weight: bold;");
 		hbox.appendChild(label);
 
 		Button btnCerrar= new Button();
 		btnCerrar.setImage("/resources/mp_cerrar.png");
+		btnCerrar.setSclass("btnCommandM");
 		btnCerrar.setLabel("Cerrar");
 
 		Button btnExportar= new Button();
 		btnExportar.setImage("/resources/mp_excel.png");
+		btnExportar.setSclass("btnCommandM");
 		btnExportar.setLabel("Exportar");
 
 		Separator separator= new Separator();
-		separator.setWidth("480px");
+		separator.setWidth("470px");
 		hbox.appendChild(separator);
 
 		hbox.appendChild(btnExportar);
@@ -3237,21 +3305,21 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			grid = new Grid();
 			columns = new Columns();
 			column = new Column();
-			column.setWidth("110px");
+			column.setWidth("90px");
 			column.setAlign("right");
 			columns.appendChild(column);
 
 			column = new Column();
-			column.setWidth("110px");
+			column.setWidth("80px");
 			columns.appendChild(column);
 
 			column = new Column();
-			column.setWidth("110px");
+			column.setWidth("100px");
 			column.setAlign("right");
 			columns.appendChild(column);
 
 			column = new Column();
-			column.setWidth("110px");
+			column.setWidth("100px");
 			columns.appendChild(column);
 
 			grid.appendChild(columns);
@@ -3273,6 +3341,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			row.appendChild(tmNuevoHorario);
 			Hbox hbox = new Hbox();
 			Button btnGrabar = new  Button("Guardar", "/resources/mp_guardarEnabled.png");
+			btnGrabar.setSclass("btnCommandM");
 			btnGrabar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e) {
@@ -3317,6 +3386,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			});
 			hbox.appendChild(btnGrabar);
 			Button btnCancelar = new  Button("Cancelar","/resources/mp_cancelarEnabled.png");
+			btnCancelar.setSclass("btnCommandM");
 			btnCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e) {
@@ -3604,8 +3674,9 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			div2.appendChild(separator);
 			Hlayout hLayout = new Hlayout();
 			Button btnGrabar = new  Button("Guardar", "/resources/mp_guardarEnabled.png");
-			btnGrabar.setHeight("35px");
-			btnGrabar.setWidth("75px");
+//			btnGrabar.setHeight("35px");
+//			btnGrabar.setWidth("75px");
+			btnGrabar.setSclass("btnCommandM");
 			btnGrabar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e) {
@@ -3661,8 +3732,9 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 			hLayout.appendChild(btnGrabar);
 
 			Button btnCancelar = new  Button("Cancelar","/resources/mp_cancelarEnabled.png");
-			btnCancelar.setHeight("35px");
-			btnCancelar.setWidth("75px");
+//			btnCancelar.setHeight("35px");
+//			btnCancelar.setWidth("75px");
+			btnCancelar.setSclass("btnCommandM");
 			btnCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e) {

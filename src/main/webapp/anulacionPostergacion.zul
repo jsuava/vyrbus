@@ -106,6 +106,7 @@
 							<listheader label="TARIFA" width="60px" style="color: #ffffff;"/>
 							<listheader label="ADICIONAL" width="60px" style="color: #ffffff;"/>
 							<listheader label="F. VENTA" width="60px" style="color: #ffffff;"/>
+							<listheader label="F. ANULACION" width="60px" style="color: #ffffff;"/>
 							<listheader label="AGE. VENTA" width="120px" style="color: #ffffff;"/>
 							<listheader label="USUARIO VENTA" width="230px"  style="color: #ffffff;"/>
 							<listheader label="OBSERVACIONES" width="200px"  style="color: #ffffff;"/>

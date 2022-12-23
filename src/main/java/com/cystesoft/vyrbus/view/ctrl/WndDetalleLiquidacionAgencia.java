@@ -153,8 +153,8 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 
 		List<Rol>lstRoles=new ArrayList<>();
 		lstRoles.add(new Rol(Constantes.ID_ROL_SUPER_USUARIO));
-		lstRoles.add(new Rol(Constantes.ID_ROL_CREDITOS_COBRANZAS));
-		lstRoles.add(new Rol(Constantes.ID_ROL_FINANZAS));
+		lstRoles.add(new Rol(Constantes.ID_ROL_ADMIN));
+//		lstRoles.add(new Rol(Constantes.ID_ROL_FINANZAS));
 		accesoControlsByRol(lstControles, lstRoles, true);
 
 		if(!(cmbEstado.isVisible())){

@@ -10,11 +10,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for InformacionAdicional.PropiedadAdicional complex type.
- *
+ * 
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- *
+ * 
  * <pre>
  * &lt;complexType name="InformacionAdicional.PropiedadAdicional">
  *   &lt;complexContent>
@@ -28,8 +28,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "InformacionAdicional.PropiedadAdicional", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", propOrder = {
@@ -45,10 +45,10 @@ public class InformacionAdicionalPropiedadAdicional {
 
 	/**
 	 * Gets the value of the codigo property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<String> getCodigo() {
 		return codigo;
@@ -56,21 +56,21 @@ public class InformacionAdicionalPropiedadAdicional {
 
 	/**
 	 * Sets the value of the codigo property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setCodigo(JAXBElement<String> value) {
-		this.codigo = (value);
+		this.codigo = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the nombre property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<String> getNombre() {
 		return nombre;
@@ -78,21 +78,21 @@ public class InformacionAdicionalPropiedadAdicional {
 
 	/**
 	 * Sets the value of the nombre property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setNombre(JAXBElement<String> value) {
-		this.nombre = (value);
+		this.nombre = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the value property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<String> getValue() {
 		return value;
@@ -100,13 +100,13 @@ public class InformacionAdicionalPropiedadAdicional {
 
 	/**
 	 * Sets the value of the value property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setValue(JAXBElement<String> value) {
-		this.value = (value);
+		this.value = ((JAXBElement<String>) value);
 	}
 
 }

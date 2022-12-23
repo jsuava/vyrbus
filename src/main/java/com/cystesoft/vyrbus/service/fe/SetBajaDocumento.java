@@ -11,11 +11,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- *
+ * 
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- *
+ * 
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -28,8 +28,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "token", "documentoBaja" })
@@ -43,10 +43,10 @@ public class SetBajaDocumento {
 
 	/**
 	 * Gets the value of the token property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<String> getToken() {
 		return token;
@@ -54,21 +54,21 @@ public class SetBajaDocumento {
 
 	/**
 	 * Sets the value of the token property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setToken(JAXBElement<String> value) {
-		this.token = (value);
+		this.token = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the documentoBaja property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link DocumentoBaja
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<DocumentoBaja> getDocumentoBaja() {
 		return documentoBaja;
@@ -76,13 +76,13 @@ public class SetBajaDocumento {
 
 	/**
 	 * Sets the value of the documentoBaja property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement
 	 *              }{@code <}{@link DocumentoBaja }{@code >}
-	 *
+	 * 
 	 */
 	public void setDocumentoBaja(JAXBElement<DocumentoBaja> value) {
-		this.documentoBaja = (value);
+		this.documentoBaja = ((JAXBElement<DocumentoBaja>) value);
 	}
 
 }

@@ -119,8 +119,8 @@ public class VentaPoolDAOImpl extends GenericDAOImpl implements VentaPoolDAO {
 					   + ",vp.c_estreg, vp.c_ruta, venpool_id, vp.c_numcomope, tc.opetarcre_id  "
 			     + "FROM VRTVENPOOL vP "
 			     	+ "INNER JOIN VRMPASAJERO p ON (p.pasajero_id=vp.pasajero_id) "
-			     	+ "LEFT JOIN VRMTARCRE tc ON (tc.tarcre_id=vp.tarcre_id) "
-			     + "WHERE vp.d_Fecliq BETWEEN '"+fechaInicio+"' and '"+fechaFin+"' "
+			     	+ "LEFT JOIN VRMTARCRE tc ON (tc.tarcre_id=vp.tarcre_id) " 
+			     + "WHERE vp.d_Fecliq BETWEEN to_date('"+fechaInicio+"', 'dd/MM/yyyy') and to_date('"+fechaFin+"', 'dd/MM/yyyy') "
 			       + "AND vp.agencia_id=NVL("+agenciaId+", vp.agencia_id) "
 			       + "AND vp.usuario_id=NVL("+usuarioId+", vp.usuario_id) "
 			     + "ORDER BY  vp.c_numboltepsa";

@@ -251,10 +251,9 @@
 																<row style="background: #eeeeee">
 																	<vlayout >
 																		<checkbox id="chkFechaAbierta" label="Fecha Abierta" style="color:blue"/>
-																		<checkbox id="chkCambioDestino" label="Cambio de destino" disabled="true" 
-																			style="color:blue"/>
-																		<checkbox id="chkCambioServicio" label="Cambio de Servicio" disabled="true" 
-																			style="color:blue"/>
+																		<checkbox id="chkCambioFecha" label="Cambio de Fecha" disabled="true" style="color:blue"/>
+																		<checkbox id="chkCambioDestino" label="Cambio de Destino" disabled="true" style="color:blue"/>
+																		<checkbox id="chkCambioServicio" label="Cambio de Servicio" disabled="true" style="color:blue"/>
 																		<checkbox id="chkCambioNombre" label="Cambio de Nombre" style="color:blue"/>
 																	</vlayout>
 																</row>

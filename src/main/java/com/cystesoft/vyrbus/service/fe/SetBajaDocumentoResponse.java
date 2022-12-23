@@ -11,11 +11,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- *
+ * 
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- *
+ * 
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -27,8 +27,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "setBajaDocumentoResult" })
@@ -40,10 +40,10 @@ public class SetBajaDocumentoResponse {
 
 	/**
 	 * Gets the value of the setBajaDocumentoResult property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link Result
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<Result> getSetBajaDocumentoResult() {
 		return setBajaDocumentoResult;
@@ -51,13 +51,13 @@ public class SetBajaDocumentoResponse {
 
 	/**
 	 * Sets the value of the setBajaDocumentoResult property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link Result
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setSetBajaDocumentoResult(JAXBElement<Result> value) {
-		this.setBajaDocumentoResult = (value);
+		this.setBajaDocumentoResult = ((JAXBElement<Result>) value);
 	}
 
 }

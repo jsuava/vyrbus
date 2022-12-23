@@ -30,6 +30,7 @@
 							<combobox id="cmbImprimir" readonly="true" width="160px" onChange="wndManifiesto.validaImpresionManifiesto()" />
 							<button id="cmdPrevio" image="/resources/mp_preliminar.png" sclass="btnImage" tooltiptext="Vista Preliminar" />
 							<button id="cmdImprimir" image="/resources/mp_imprimir.png" sclass="btnImage" tooltiptext="Imprimir" />
+							<button id="cmdReImprimir" image="/resources/mp_reimprimir.png" sclass="btnImage" tooltiptext="Re-Imprimir" />
 						</row>
 					</rows>
 				</grid>
@@ -88,7 +89,7 @@
 								<listbox  rows="7" id="ListPasajeros" height="190px"  width="835px" droppable="true">
 									<listhead>
 										<listheader label="ASNTO" width="40px" style="color: #ffffff;"/>
-										<listheader label="N° CONTROL" width="95px" style="color: #ffffff;"/>	
+										<listheader label="N° CONTROL" width="95px" style="color: #ffffff;" visible="false"/>	
 										<listheader label="N°COMPROBANTE" width="95px" style="color: #ffffff;"/>
 										<listheader label="PASAJERO" width="200px" style="color: #ffffff;"/>
 										<listheader label="EDAD" width="40px" style="color: #ffffff;"/>

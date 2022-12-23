@@ -11,11 +11,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- *
+ * 
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- *
+ * 
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -32,8 +32,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "token", "isPasajes", "tipoComprobante", "serie", "correlativo", "strRucEmpresa" })
@@ -54,10 +54,10 @@ public class GetRepresentacionImpresa {
 
 	/**
 	 * Gets the value of the token property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<String> getToken() {
 		return token;
@@ -65,20 +65,20 @@ public class GetRepresentacionImpresa {
 
 	/**
 	 * Sets the value of the token property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setToken(JAXBElement<String> value) {
-		this.token = (value);
+		this.token = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the isPasajes property.
-	 *
+	 * 
 	 * @return possible object is {@link Boolean }
-	 *
+	 * 
 	 */
 	public Boolean isIsPasajes() {
 		return isPasajes;
@@ -86,9 +86,9 @@ public class GetRepresentacionImpresa {
 
 	/**
 	 * Sets the value of the isPasajes property.
-	 *
+	 * 
 	 * @param value allowed object is {@link Boolean }
-	 *
+	 * 
 	 */
 	public void setIsPasajes(Boolean value) {
 		this.isPasajes = value;
@@ -96,10 +96,10 @@ public class GetRepresentacionImpresa {
 
 	/**
 	 * Gets the value of the tipoComprobante property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<String> getTipoComprobante() {
 		return tipoComprobante;
@@ -107,21 +107,21 @@ public class GetRepresentacionImpresa {
 
 	/**
 	 * Sets the value of the tipoComprobante property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setTipoComprobante(JAXBElement<String> value) {
-		this.tipoComprobante = (value);
+		this.tipoComprobante = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the serie property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<String> getSerie() {
 		return serie;
@@ -129,21 +129,21 @@ public class GetRepresentacionImpresa {
 
 	/**
 	 * Sets the value of the serie property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setSerie(JAXBElement<String> value) {
-		this.serie = (value);
+		this.serie = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the correlativo property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<String> getCorrelativo() {
 		return correlativo;
@@ -151,21 +151,21 @@ public class GetRepresentacionImpresa {
 
 	/**
 	 * Sets the value of the correlativo property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setCorrelativo(JAXBElement<String> value) {
-		this.correlativo = (value);
+		this.correlativo = ((JAXBElement<String>) value);
 	}
 
 	/**
 	 * Gets the value of the strRucEmpresa property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<String> getStrRucEmpresa() {
 		return strRucEmpresa;
@@ -173,13 +173,13 @@ public class GetRepresentacionImpresa {
 
 	/**
 	 * Sets the value of the strRucEmpresa property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setStrRucEmpresa(JAXBElement<String> value) {
-		this.strRucEmpresa = (value);
+		this.strRucEmpresa = ((JAXBElement<String>) value);
 	}
 
 }

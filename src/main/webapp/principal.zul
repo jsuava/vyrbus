@@ -1,4 +1,4 @@
-<?page title="Sistema de Ventas" contentType="text/html;charset=UTF-8"?>
+<?page title="Vyrbus" contentType="text/html;charset=UTF-8"?>
 <?link rel="shortcut icon" href="resources/favicon_1.ico" ?>
 <zk>
 <!--  <style src="css/zk-admin-bootstrap-theme.css"></style>  -->

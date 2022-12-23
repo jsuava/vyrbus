@@ -10,11 +10,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for InformacionAdicional complex type.
- *
+ * 
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- *
+ * 
  * <pre>
  * &lt;complexType name="InformacionAdicional">
  *   &lt;complexContent>
@@ -27,8 +27,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "InformacionAdicional", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", propOrder = {
@@ -42,11 +42,11 @@ public class InformacionAdicional {
 
 	/**
 	 * Gets the value of the propiedadesAdicionales property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement
 	 *         }{@code <}{@link ArrayOfInformacionAdicionalPropiedadAdicional
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<ArrayOfInformacionAdicionalPropiedadAdicional> getPropiedadesAdicionales() {
 		return propiedadesAdicionales;
@@ -54,23 +54,23 @@ public class InformacionAdicional {
 
 	/**
 	 * Sets the value of the propiedadesAdicionales property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement
 	 *              }{@code <}{@link ArrayOfInformacionAdicionalPropiedadAdicional
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setPropiedadesAdicionales(JAXBElement<ArrayOfInformacionAdicionalPropiedadAdicional> value) {
-		this.propiedadesAdicionales = (value);
+		this.propiedadesAdicionales = ((JAXBElement<ArrayOfInformacionAdicionalPropiedadAdicional>) value);
 	}
 
 	/**
 	 * Gets the value of the totalesMonedaAdicional property.
-	 *
+	 * 
 	 * @return possible object is {@link JAXBElement
 	 *         }{@code <}{@link ArrayOfInformacionAdicionalTotalMonedaAdicional
 	 *         }{@code >}
-	 *
+	 * 
 	 */
 	public JAXBElement<ArrayOfInformacionAdicionalTotalMonedaAdicional> getTotalesMonedaAdicional() {
 		return totalesMonedaAdicional;
@@ -78,14 +78,14 @@ public class InformacionAdicional {
 
 	/**
 	 * Sets the value of the totalesMonedaAdicional property.
-	 *
+	 * 
 	 * @param value allowed object is {@link JAXBElement
 	 *              }{@code <}{@link ArrayOfInformacionAdicionalTotalMonedaAdicional
 	 *              }{@code >}
-	 *
+	 * 
 	 */
 	public void setTotalesMonedaAdicional(JAXBElement<ArrayOfInformacionAdicionalTotalMonedaAdicional> value) {
-		this.totalesMonedaAdicional = (value);
+		this.totalesMonedaAdicional = ((JAXBElement<ArrayOfInformacionAdicionalTotalMonedaAdicional>) value);
 	}
 
 }

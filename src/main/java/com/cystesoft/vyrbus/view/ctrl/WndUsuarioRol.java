@@ -188,18 +188,18 @@ public class WndUsuarioRol extends WndOpcionesMantenimiento {
 			Usuario usuario =  cmbUsuario.getSelectedItem().getValue();
 
 			/* Valida que el usuario tenga el mail configurado  para las alertas que envíe el sistema */
-			if(rol.getId().intValue()==Constantes.ID_ROL_GERENCIA_COMERCIAL
-					|| rol.getId().intValue()==Constantes.ID_ROL_JEFE_VENTAS
-					|| rol.getId().intValue()==Constantes.ID_ROL_FINANZAS
-					|| rol.getId().intValue()==Constantes.ID_ROL_FUNCIONARIO){
-				if(usuario.getPersonal()==null)
-					throw new EmailNullException();
-				else {
-					Personal personal= ServiceLocator.getPersonalManager().buscarPorId(usuario.getPersonal().getId());
-					if(personal.getEmail().isEmpty())
-						throw new EmailNullException();
-				}
-			}
+//			if(rol.getId().intValue()==Constantes.ID_ROL_GERENCIA_COMERCIAL
+//					|| rol.getId().intValue()==Constantes.ID_ROL_JEFE_VENTAS
+//					|| rol.getId().intValue()==Constantes.ID_ROL_FINANZAS
+//					|| rol.getId().intValue()==Constantes.ID_ROL_FUNCIONARIO){
+//				if(usuario.getPersonal()==null)
+//					throw new EmailNullException();
+//				else {
+//					Personal personal= ServiceLocator.getPersonalManager().buscarPorId(usuario.getPersonal().getId());
+//					if(personal.getEmail().isEmpty())
+//						throw new EmailNullException();
+//				}
+//			}
 
 			if (action==ACTION_NEW){
 				usuarioRol= null;

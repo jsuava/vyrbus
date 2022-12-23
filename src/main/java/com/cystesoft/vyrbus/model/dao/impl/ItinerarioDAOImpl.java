@@ -305,6 +305,10 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 	 */
 	@Override
 	public List<Object> validateCapacity(Long idItinerario, Integer asiento, Integer piso) throws Exception {
+		
+		
+		
+		
 		String sql = "SELECT s.c_denominacion, s.n_numasipis1, s.n_numasipis2 " +
 				"FROM vrtitinerario i " +
 				"INNER JOIN vrmservicio s ON s.servicio_id=i.servicio_id " +
@@ -316,15 +320,17 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[])result.get(i);
 			if(piso==0){
-				if(Integer.valueOf(obj[1].toString())<asiento)
-					lstResult.add(true);
-				else
+				//Comentado hasta realizar un análisis en donde se determine si es o no necesaría esta validación - 26/11/2022 - jabanto
+//				if(Integer.valueOf(obj[1].toString())<asiento)
+//					lstResult.add(true);
+//				else
 					lstResult.add(false);
 				lstResult.add(obj[0].toString());
 			}else{
-				if((Integer.valueOf(obj[1].toString()) + Integer.valueOf(obj[2].toString()))<asiento)
-					lstResult.add(true);
-				else
+				//Comentado hasta realizar un análisis en donde se determine si es o no necesaría esta validación - 26/11/2022 - jabanto
+//				if((Integer.valueOf(obj[1].toString()) + Integer.valueOf(obj[2].toString()))<asiento)
+//					lstResult.add(true);
+//				else
 					lstResult.add(false);
 				lstResult.add(obj[0].toString());
 			}
@@ -372,7 +378,7 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 					"di.detiti_id, ao.c_denominacion ageOrigen, ad.c_denominacion ageDestino, " +
 					"s.n_numAsiPis1, s.n_numAsiPis2, s.n_numfilpis2, i.d_fecreapar, r.n_horvia, " +
 					"rm.localidad_idOrigen as idOrigenMayor, rm.localidad_idDestino  as odDestinoMayor, di.c_estreg, " +
-					"di.audfecins, di.audusuins, di.audipinse  " + //34-35
+					"di.audfecins, di.audusuins, di.audipinse, i.d_fecpar fechaItinerario  " + //34-35
 			"FROM vrtitinerario i " +
 			"INNER JOIN vrtdetiti di ON di.itinerario_id=i.itinerario_id " +
 			"LEFT JOIN vrmbus b ON b.bus_id=i.bus_id " +
@@ -460,8 +466,7 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 				detalleItinerario.setFechaLlegada((Date)obj[12]);
 				detalleItinerario.setHoraLlegada(obj[13].toString());
 				detalleItinerario.setTarifa(((BigDecimal)obj[14]).doubleValue());
-				detalleItinerario.setRuta(ruta);
-				detalleItinerario.setItinerario(itinerario);
+				detalleItinerario.setRuta(ruta);				
 				servicio.setNumeroPisos(((BigDecimal)obj[15]).intValue());
 				servicio.setNumeroAsientosPiso1(((BigDecimal)obj[16]).intValue());
 				servicio.setNumeroFilasPiso1(((BigDecimal)obj[17]).intValue());
@@ -472,7 +477,10 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 				detalleItinerario.setFechaInsercion((Date)obj[37]);
 				detalleItinerario.setUsuarioInsercion(obj[38].toString());
 				detalleItinerario.setIpInsercion(obj[39].toString());
-
+				itinerario.setFechaPartida(obj[40]!=null?(Date)obj[40]:null);
+				
+				
+				detalleItinerario.setItinerario(itinerario);
 				lstResult.add(detalleItinerario);
 			}
 

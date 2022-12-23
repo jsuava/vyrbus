@@ -9,6 +9,7 @@
 package com.cystesoft.vyrbus.service.mappers;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.CanalVenta;
@@ -29,6 +30,7 @@ public class ResumenVentas implements Serializable{
 	private Integer cantidad;
 	private Double total;
 	private String fechaVenta;
+	private Date fechaEmision;
 	private String anio;
 	private String mes;
 	private String dia;
@@ -116,6 +118,13 @@ public class ResumenVentas implements Serializable{
 	 */
 	public void setFechaVenta(String fechaVenta) {
 		this.fechaVenta = fechaVenta;
+	}
+	
+	public Date getFechaEmision() {
+		return fechaEmision;
+	}
+	public void setFechaEmision(Date fechaEmision) {
+		this.fechaEmision = fechaEmision;
 	}
 	/**
 	 * @return the anio
