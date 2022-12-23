@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlType;
  *
  */
 @XmlType
-public class XmlEquipaje implements Serializable{
+public class XmlEquipaje implements Serializable, Cloneable{
 
 	/**
 	 *

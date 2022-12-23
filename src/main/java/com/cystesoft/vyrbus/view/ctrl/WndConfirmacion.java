@@ -3091,7 +3091,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 											/*Begin 25/10/2016 - jabanto*/
 											List<VentaPasaje>listVentaPasaje= new ArrayList<>();
 											listVentaPasaje.add(ventaPasaje);
-											WSFE.sendVenta(listVentaPasaje, wndConfirmacion, true, notaCredito);
+											WSFE.sendVenta(listVentaPasaje, wndConfirmacion, true, notaCredito, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 						
 						
 											/*###End begin 25/10/2016 - jabanto*/

@@ -662,7 +662,7 @@ public class WndAnulacionDocumentos extends WndBase{
 			lstVentasenviar.add(envioVenta);
 		}
 		if(lstVentasenviar.size()>0)
-			WSFE.sendVenta(lstVentasenviar, window, false, null);
+			WSFE.sendVenta(lstVentasenviar, window, false, null, null);
 
 		/*Realiza el envio de las notas de credito generadas al Servidor F.E.*/
 		for(VentaPasaje notaCredito:ventasNotas.getListNotasCredito()){

@@ -983,7 +983,7 @@ public class WndDetalleLiquidacionAgencia extends WndBase {
 			}
 
 
-			WSFE.reimprimirComprobante(listVentas, wndDetLiqAg);
+			WSFE.reimprimirComprobante(listVentas, wndDetLiqAg, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 
 		} catch (Exception e) {
 			e.printStackTrace();

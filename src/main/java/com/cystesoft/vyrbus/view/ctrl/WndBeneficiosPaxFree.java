@@ -719,7 +719,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 			List<VentaPasaje> listVentaPasaje= new ArrayList<>();
 			VentaPasaje oventaPasaje=ServiceLocator.getVentaPasajesManager().buscarVentaById(ventaPasaje.getId());
 			listVentaPasaje.add(oventaPasaje);
-			WSFE.sendVenta(listVentaPasaje, wndCortesia, true, null);
+			WSFE.sendVenta(listVentaPasaje, wndCortesia, true, null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 
 			/*##End Begin 27/10/2016 - jabanto*/
 			/*Implementacion para el nueno formato 01/02/2016 - jabanto */

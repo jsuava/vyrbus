@@ -404,7 +404,7 @@ public class WndFacturacionServicios extends WndBase {
 								listVentaPasajes.add(servicioEspecial);
 								//Aqui se envia el comprobante al servidor de Facturación Electrónica
 								/*Comentado para lanzar a pruebas Transmar*/
-								WSFE.sendVenta(listVentaPasajes, wndFacturacionServicios, printComprobante, null);
+								WSFE.sendVenta(listVentaPasajes, wndFacturacionServicios, printComprobante, null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 							}
 
 							if(result == Constantes.CORRECT) {

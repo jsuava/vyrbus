@@ -119,10 +119,10 @@
 			<row style="background:#e0e0e0">
 				<label value="VENTAS PCE :" style="font-size:12px !important;color:#4285F4;font-weight:bold;"/>
 				<label id="lblRecibos" value="" style="font-size:12px !important;color:#00695c;font-weight:bold;"/>
-				<label/>
-				<label/>
-				<label/>
-				<label/>
+				<label value="VENTAS TRANS. :" style="font-size:12px !important;color:#4285F4;font-weight:bold;"/>
+				<label id="lblVentasTransferencia" value="" style="font-size:12px !important;color:#00695c;font-weight:bold;"/>
+				<label value="VENTAS YAPE :" style="font-size:12px !important;color:#4285F4;font-weight:bold;"/>
+				<label id="lblVentasYape" value="" style="font-size:12px !important;color:#00695c;font-weight:bold;"/>
 				<label value="PREPAGADO :" style="font-size:12px !important;color:#4285F4;font-weight:bold;"/>
 				<label id="lblPrepagado" value="" style="font-size:12px !important;color:#00695c;font-weight:bold;"/>				
 			</row>

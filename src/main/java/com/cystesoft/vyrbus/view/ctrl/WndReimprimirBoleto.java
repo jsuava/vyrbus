@@ -511,7 +511,7 @@ public class WndReimprimirBoleto extends WndBase {
 									if(penalidadXduplicado.getGastoAdminEfectivo()==null || penalidadXduplicado.getGastoAdminEfectivo() ==.00) {
 										List<VentaPasaje>listVentas= new ArrayList<>();
 										listVentas.add(ventaOriginal);
-										WSFE.reimprimirComprobante(listVentas, wndReimpresion);										
+										WSFE.reimprimirComprobante(listVentas, wndReimpresion, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);										
 									}else {
 										//Si, cobra
 										VentaPasaje gastoAdmin= new VentaPasaje();
@@ -571,7 +571,7 @@ public class WndReimprimirBoleto extends WndBase {
 										List<VentaPasaje>listVentasSoloReimpresion= new ArrayList<>();
 										listVentasSoloReimpresion.add(ventaOriginal);
 										
-										WSFE.sendVenta(listGastoAdmin, wndReimpresion, true, null, false, listVentasSoloReimpresion);
+										WSFE.sendVenta(listGastoAdmin, wndReimpresion, true, null, false, listVentasSoloReimpresion, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 									}
 									
 									win.onClose();

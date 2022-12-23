@@ -656,7 +656,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 
 								//Aqui se envia el comprobante al servidor de Facturación Electrónica
 								//Comentado temporalmente por jabanto
-								WSFE.sendVenta(listVentaPasajes, wndEquipaje, true, null);
+								WSFE.sendVenta(listVentaPasajes, wndEquipaje, true, null, Constantes.NUMERO_COPIAS_COMPROBANTE_EXCESO);
 								
 //								timerdownloadFileEquipaje = true;
 							}

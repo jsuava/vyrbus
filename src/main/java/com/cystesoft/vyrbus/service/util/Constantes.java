@@ -247,6 +247,10 @@ public class Constantes {
 	public static final String NO="N";
 	public static final String SI="S";
 
+	/*Numero de copias de impresiones*/
+	public static final int NUMERO_COPIAS_COMPROBANTE_EXCESO = 2;
+	public static final int NUMERO_COPIAS_COMPROBANTE_PASAJES = 1;
+	
 	/*Constante que indica la fecha de suspencion O cadicidad del convenio*/
 	public static final String FECHA_DEFAULT="31/12/2029 23:59:59";
 
@@ -412,6 +416,7 @@ public class Constantes {
 	public static final int ID_TIPFORPAG_CORTESIA=8;
 	public static final int ID_TIPFORPAG_ORDEN_TRABAJO=9;
 	public static final int ID_TIPFORPAG_PCE=13;
+	public static final int ID_TIPFORPAG_YAPE=14;
 //	public static final int ID_TIPFORPAG_PASE_VACACIONAL=10;
 
 	/*	Constantes que referencian a las formas de pago	*/

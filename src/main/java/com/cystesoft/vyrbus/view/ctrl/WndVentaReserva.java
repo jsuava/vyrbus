@@ -5005,6 +5005,7 @@ public class WndVentaReserva extends WndBase {
 		cmbTarjetaCredito.getItems().clear();
 		cmbTarjetaCredito.setText("");
 		cmbTarjetaCredito.setDisabled(true);
+		txtOperacionBancaria.setText("");
 
 		quitarPromocion();
 		/* recupera la promocion del pasajero si es paxfri */
@@ -5016,14 +5017,17 @@ public class WndVentaReserva extends WndBase {
 
 
 		if(cmbTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago){
+			TipoFormaPago tipoFormaPago = (TipoFormaPago)cmbTipoFormaPago.getSelectedItem().getValue();
 			/*	Si es tarjeta cargamos los operadores de tarjeta de credito	*/
 			/*	Aqui realizamos una jugada para el caso de TU ENTRADA y agencias de viaje para que ingresen la tarjeta de credito	*/
-			if(cmbTipoFormaPago.getText().equals("TARJETA") || cmbTipoFormaPago.getText().equals("CREDITO")){
+//			if(cmbTipoFormaPago.getText().equals("TARJETA") || cmbTipoFormaPago.getText().equals("CREDITO")){
+			if(tipoFormaPago.getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA || tipoFormaPago.getId().intValue()==Constantes.ID_TIPFORPAG_CREDITO){
 				cmbOperadorTarjetaCredito.getItems().clear();
 				UtilData.cargarDataCombo(cmbOperadorTarjetaCredito, OperadorTarjetaCredito.class, false);
 				cmbOperadorTarjetaCredito.setDisabled(false);
 				txtOperacionBancaria.setDisabled(false);
-			}else if(cmbTipoFormaPago.getText().equals("TRANSFERENCIA"))	//Si es una transferecnia bancaria
+//			}else if(cmbTipoFormaPago.getText().equals("TRANSFERENCIA"))	//Si es una transferecnia bancaria
+			}else if(tipoFormaPago.getId().intValue()==Constantes.ID_TIPFORPAG_TRANSFERENCIA || tipoFormaPago.getId().intValue()==Constantes.ID_TIPFORPAG_YAPE)
 				txtOperacionBancaria.setDisabled(false);
 			else{
 				txtOperacionBancaria.setDisabled(true);
@@ -5351,7 +5355,7 @@ public class WndVentaReserva extends WndBase {
 										listVentaPasaje.add(ventaPasaje);
 
 										//Comentado temporalmente por MAOE para pruebasc con Transmar
-										WSFE.sendVenta(listVentaPasaje, wndVentaReserva, true,null);
+										WSFE.sendVenta(listVentaPasaje, wndVentaReserva, true,null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 
 										//Limpia los controles
 										onCleanControlsPax();
@@ -5383,7 +5387,7 @@ public class WndVentaReserva extends WndBase {
 										/**Envia el comprobante a sunat*/
 										List<VentaPasaje>listVentaPasaje= new ArrayList<>();
 										listVentaPasaje.add(ventaPasaje);
-										WSFE.sendVenta(listVentaPasaje, wndVentaReserva, true,null);
+										WSFE.sendVenta(listVentaPasaje, wndVentaReserva, true,null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 
 										//Limpia los controles
 										onCleanControlsPax();
@@ -5761,8 +5765,9 @@ public class WndVentaReserva extends WndBase {
 					throw new TarjetaCreditoNullException();
 				else if(txtOperacionBancaria.getText().trim().equals(""))
 					throw new NumeroOperacionTarjetaNullException();
-			}else if(cmbTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago && cmbTipoFormaPago.getText().equals(TipoFormaPago.TIPO_TRANSFERENCIA)){
-				if(txtOperacionBancaria.getText().trim().equals(""))
+			}
+//			if(cmbTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago && cmbTipoFormaPago.getText().equals(TipoFormaPago.TIPO_TRANSFERENCIA)){
+			if(txtOperacionBancaria.isDisabled()==false && txtOperacionBancaria.getText().trim().isEmpty()) {
 					throw new NumeroOperacionTarjetaNullException();
 			}else if(oPasajero.getIndeseable().intValue()==Constantes.TRUE_VALUE)
 				throw new PasajeroIndeseableException();
@@ -5770,7 +5775,8 @@ public class WndVentaReserva extends WndBase {
 					&& cmbTipoFormaPago.getText().equals(TipoFormaPago.TIPO_CREDITO)){
 				if((cmbOperadorTarjetaCredito.getItems().size()>0 && cmbOperadorTarjetaCredito.getSelectedItem().getValue() instanceof OperadorTarjetaCredito) && !(cmbTarjetaCredito.getSelectedItem().getValue() instanceof TarjetaCredito))
 					throw new TarjetaCreditoNullException();
-			}else if(dblTarifa.getValue()<=0.0)
+			}
+			if(dblTarifa.getValue()<=0.0)
 				throw new VentaReservaException(VentaReservaException.TARIFA_IDA_CERO);
 			else if(rdVentaIdaVuelta.isChecked() && dblTarifaRetorno.getValue()<=0.0)
 				throw new VentaReservaException(VentaReservaException.TARIFA_RETORNO_CERO);
@@ -6283,7 +6289,7 @@ public class WndVentaReserva extends WndBase {
 
 										//Aqui se envia el comprobante al servidor de Facturación Electrónica
 										//Comentado temporalmente por MAOE
-										WSFE.sendVenta(listVentaPasajes,wndVentaReserva,printComprobante,null);
+										WSFE.sendVenta(listVentaPasajes,wndVentaReserva,printComprobante,null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 									}
 
 
@@ -6317,7 +6323,7 @@ public class WndVentaReserva extends WndBase {
 									if(ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES){
 										List<VentaPasaje> listVentaPasajes= new ArrayList<>();
 										listVentaPasajes.add(ventaPasaje);
-										WSFE.printVouchers(listVentaPasajes,wndVentaReserva);
+										WSFE.printVouchers(listVentaPasajes,wndVentaReserva, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 									}
 
 									/*End begin 19/01/2017 - jabanto*/
@@ -6461,7 +6467,7 @@ public class WndVentaReserva extends WndBase {
 									ventasIdaRetorno.add(ventaPasajeRETORNO);
 
 									//Comentado temporalmente por MAOE
-									WSFE.sendVenta(ventasIdaRetorno, wndVentaReserva, true,null);
+									WSFE.sendVenta(ventasIdaRetorno, wndVentaReserva, true,null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 
 									/*End Begin 24/10/2016 - jabanto*/
 //									/*Implementacion para el nueno formato 01/02/2016 - jabanto */
@@ -6512,7 +6518,7 @@ public class WndVentaReserva extends WndBase {
 									List<VentaPasaje> ventasIdaRetorno= new ArrayList<>();
 									ventasIdaRetorno.add(ventaPasajeIDA);
 									ventasIdaRetorno.add(ventaPasajeRETORNO);
-									WSFE.printVouchers(ventasIdaRetorno, wndVentaReserva);
+									WSFE.printVouchers(ventasIdaRetorno, wndVentaReserva, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 
 
 									/*End begin 19/01/2017 - jabanto*/
@@ -6693,6 +6699,7 @@ public class WndVentaReserva extends WndBase {
 		imgQuitarPromocion.setVisible(false);
 //		pagoSoles=null;
 		tipoCambio=null;
+		txtOperacionBancaria.setDisabled(true);
 	}
 
 	/**

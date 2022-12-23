@@ -101,6 +101,8 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 	private Radio rubroPasajes;
 	private Radio rubroCarga;
 	private Radio rubroAmbos;
+	private Label lblVentasTransferencia;
+	private Label lblVentasYape;
 
 //	private Window wndLiquidacionDiariaVentas;
 //	private Window wndDuplicar = null;
@@ -124,6 +126,8 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 	private Double totalPrepagado = 0.0;
 //	Double totalRecibos = 0.0;
 	private Double totalEfectivo = 0.0;
+	private Double totalTransferencia = 0.0;
+	private Double totalYape = 0.0;
 	private Double totalTarjeta = 0.0;
 	private Double totalNotasCredito=0.0;
 	private Double totalEquipajePCE = 0.0;
@@ -251,8 +255,8 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 		rubroPasajes = (Radio)this.getFellow("rubroPasajes");
 		rubroCarga = (Radio)this.getFellow("rubroCarga");
 		rubroAmbos = (Radio)this.getFellow("rubroAmbos");
-
-
+		lblVentasTransferencia = (Label)this.getFellow("lblVentasTransferencia");
+		lblVentasYape = (Label)this.getFellow("lblVentasYape");
 	}
 
 	private void clearTotals()throws Exception{
@@ -266,6 +270,8 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 		lblCredito.setValue("0.00");
 		lblCreditoDolares.setValue("0.00");
 		lblPrepagado.setValue("0.00");
+		lblVentasTransferencia.setValue("0.00");
+		lblVentasYape.setValue("0.00");
 	}
 
 	private void onCheck_rubroAmbos() {
@@ -412,7 +418,9 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 			totalDolares =0.0;
 			totalEfectivoDolares = 0.0;
 			totalCreditoDolares = 0.0;
-
+			totalTransferencia = .00;
+			totalYape = .00;
+			
 			Integer idAgencia = null;
 			Integer idUsuario = null;
 			Integer criterio = 0;
@@ -479,8 +487,15 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 
 			/*Calcula el total a liquidar*/
 			if(cmbTipoMovimiento.getSelectedIndex()==0){
-				double totalVentas=totalEfectivo+totalTarjeta+totalCortesia+totalPrepagado+totalCredito+totalEquipajePCE;
-				total=totalVentas-(totalDevolucion+totalCortesia+totalCredito+totalPrepagado+totalTarjeta+totalNotasCredito);
+				double totalVentas = totalEfectivo 
+						           + totalTarjeta
+						           + totalCortesia
+						           + totalPrepagado
+						           + totalCredito
+						           + totalEquipajePCE
+						           + totalTransferencia
+						           + totalYape;
+				total=totalVentas - (totalDevolucion + totalCortesia + totalCredito + totalPrepagado + totalTarjeta + totalNotasCredito + totalTransferencia + totalYape);
 				total = totalVentas;
 				totalDolares = totalEfectivoDolares + totalCreditoDolares;
 			}
@@ -562,14 +577,14 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 
 						if(venta.getTipoTransaccion().equals("V.(EF)") || venta.getTipoTransaccion().equals("RC.(EF)")
 								|| venta.getTipoTransaccion().equals("CONF.FA.(EF)")
-								|| venta.getTipoTransaccion().equals("CONF.FA.(TRA)")
+//								|| venta.getTipoTransaccion().equals("CONF.FA.(TRA)")
 								|| venta.getTipoTransaccion().equals("FA.(EF)")
-								|| venta.getTipoTransaccion().equals("FA.(TRA)")
+//								|| venta.getTipoTransaccion().equals("FA.(TRA)")
 								|| venta.getTipoTransaccion().equals("POST.(EF)")
 								|| venta.getTipoTransaccion().equals("POST.FA.(EF)")
 								|| venta.getTipoTransaccion().equals("REIMP.(EF)")
-								|| venta.getTipoTransaccion().equals("V.(TRA)")
-								|| venta.getTipoTransaccion().equals("RC.(TRA)")
+//								|| venta.getTipoTransaccion().equals("V.(TRA)")
+//								|| venta.getTipoTransaccion().equals("RC.(TRA)")
 								|| venta.getTipoTransaccion().equals("GAS.ADM(EFE)")
 //								|| venta.getTipoTransaccion().equals("NOTA CREDITO")
 								|| venta.getTipoTransaccion().equals("NOTA DEBITO")
@@ -584,21 +599,53 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 //							style = "color:blue !important; font-weight:bold";
 						}
 
-						if(venta.getTipoTransaccion().equals("NOTA CREDITO")){
+						if(venta.getTipoTransaccion().equals("NOTA CREDITO")
+						   || venta.getTipoTransaccion().equals("CONF.FA.(YAP)")
+						   || venta.getTipoTransaccion().equals("FA.(YAP)")
+						  ){
 							totalNotasCredito+= + venta.getImportePagado();
 //							total+= - venta.getImportePagado();
 						}
 
+						if(venta.getTipoTransaccion().equals("V.(TRA)")
+								|| venta.getTipoTransaccion().equals("CONF.FA.(TRA)")
+								|| venta.getTipoTransaccion().equals("FA.(TRA)")
+								|| venta.getTipoTransaccion().equals("POST.(TRA)")
+								|| venta.getTipoTransaccion().equals("POST.FA.(TRA)")
+								|| venta.getTipoTransaccion().equals("REIMP.(TRA)")
+								|| venta.getTipoTransaccion().equals("GAS.ADM(TRA)")
+								|| venta.getTipoTransaccion().equals("EQUIPAJE(TRA)")
+								|| venta.getTipoTransaccion().equals("SERV.ESP(TRA)")
+						  )
+						{
+							totalTransferencia+= + venta.getImportePagado();
+						}
+						
+						if(venta.getTipoTransaccion().equals("V.(YAP)")
+								|| venta.getTipoTransaccion().equals("CONF.FA.(YAP)")
+								|| venta.getTipoTransaccion().equals("FA.(YAP)")
+								|| venta.getTipoTransaccion().equals("POST.(YAP)")
+								|| venta.getTipoTransaccion().equals("POST.FA.(YAP)")
+								|| venta.getTipoTransaccion().equals("REIMP.(YAP)")
+								|| venta.getTipoTransaccion().equals("GAS.ADM(YAP)")
+								|| venta.getTipoTransaccion().equals("EQUIPAJE(YAP)")
+								|| venta.getTipoTransaccion().equals("SERV.ESP(YAP)")
+						  )
+						{
+							totalYape+= + venta.getImportePagado();
+						}
+						
+						
 						if(venta.getTipoTransaccion().equals("V.(EF)")
 								|| venta.getTipoTransaccion().equals("CONF.FA.(EF)")
 								|| venta.getTipoTransaccion().equals("FA.(EF)")
 								|| venta.getTipoTransaccion().equals("POST.(EF)")
 								|| venta.getTipoTransaccion().equals("POST.FA.(EF)")
 								|| venta.getTipoTransaccion().equals("REIMP.(EF)")
-								|| venta.getTipoTransaccion().equals("V.(TRA)")
+//								|| venta.getTipoTransaccion().equals("V.(TRA)")
 								|| venta.getTipoTransaccion().equals("GAS.ADM(EFE)")
-								|| venta.getTipoTransaccion().equals("CONF.FA.(TRA)")
-								|| venta.getTipoTransaccion().equals("FA.(TRA)")
+//								|| venta.getTipoTransaccion().equals("CONF.FA.(TRA)")
+//								|| venta.getTipoTransaccion().equals("FA.(TRA)")
 								|| venta.getTipoTransaccion().equals("EQUIPAJE(EF)")
 								|| venta.getTipoTransaccion().equals("SERV.ESP(EF)")
 						  )
@@ -1012,6 +1059,11 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 //					dblbxNotaCredito.setWidth("57px");
 //					dblbxNotaCredito.setLocale(Locale.US);
 //					vlayout.appendChild(dblbxNotaCredito);
+					
+					lblVentasTransferencia.setValue(Util.toNumberFormat(totalTransferencia,2));
+					
+					lblVentasYape.setValue(Util.toNumberFormat(totalYape,2));
+					
 
 					lblEfectivoDolares.setValue(Util.toNumberFormat(totalEfectivoDolares, 2));
 					lblCreditoDolares.setValue(Util.toNumberFormat(totalCreditoDolares, 2));
