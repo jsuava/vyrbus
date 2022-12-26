@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: Clase para controlar la impresion al puerto serial
- * Autor		: José Avalos Sullo
+ * Descripciï¿½n	: Clase para controlar la impresion al puerto serial
+ * Autor		: Josï¿½ Avalos Sullo
  * Fecha		: 09/06/2014
  */
 package com.cystesoft.vyrbus.view.tuentrada;
@@ -37,7 +37,7 @@ import javax.swing.JOptionPane;
 
 /**
 
- * @author José Avalos
+ * @author Josï¿½ Avalos
 
  * @version 1.0
 
@@ -120,7 +120,7 @@ public class PortPrinter extends JApplet implements ActionListener, Serializable
     /**
      * This enumeration contains all ports available in S.O.
      * */
-    private static Enumeration <CommPortIdentifier> portList;
+//    private static Enumeration <CommPortIdentifier> portList;
 
     /**
      * This list of String contains all ports availables
@@ -130,7 +130,7 @@ public class PortPrinter extends JApplet implements ActionListener, Serializable
     /**
      * This variable contains the portId
      */
-    private static CommPortIdentifier portId;
+//    private static CommPortIdentifier portId;
 
     /**
      * This variable contains the message to be printed
@@ -143,7 +143,7 @@ public class PortPrinter extends JApplet implements ActionListener, Serializable
     /**
      * This variable contains the serial port where the message is going to be write
      * */
-    private static SerialPort serialPort;
+//    private static SerialPort serialPort;
 
 
     /**
@@ -184,7 +184,7 @@ public class PortPrinter extends JApplet implements ActionListener, Serializable
         if (isEnvironmentConfigurated())
             print(false);
         else{
-            String messagePart1="Los archivos de configuración no existen";
+            String messagePart1="Los archivos de configuraciï¿½n no existen";
             String messagePart2="Haga click en el enlace para instalarlos";
             showErrorMessage("", messagePart1, messagePart2, false);
             this.remove(retryButton);
@@ -204,7 +204,7 @@ public class PortPrinter extends JApplet implements ActionListener, Serializable
      * @return none
      * */
     private void retrieveComPorts(){
-        portList = enumerateSerialPorts();
+//        portList = enumerateSerialPorts();
     }
 
     /**
@@ -235,56 +235,56 @@ public class PortPrinter extends JApplet implements ActionListener, Serializable
 
     private int convertDataBits(int fileDataBits){
         int dataBits =0;
-        switch(fileDataBits){
-        case 5:
-            dataBits = SerialPort.DATABITS_5;
-            break;
-        case 6:
-            dataBits = SerialPort.DATABITS_6;
-            break;
-        case 7:
-            dataBits = SerialPort.DATABITS_7;
-            break;
-        case 8:
-            dataBits = SerialPort.DATABITS_8;
-            break;
-        default:
-            dataBits = SerialPort.DATABITS_5;
-        }
+//        switch(fileDataBits){
+//        case 5:
+//            dataBits = SerialPort.DATABITS_5;
+//            break;
+//        case 6:
+//            dataBits = SerialPort.DATABITS_6;
+//            break;
+//        case 7:
+//            dataBits = SerialPort.DATABITS_7;
+//            break;
+//        case 8:
+//            dataBits = SerialPort.DATABITS_8;
+//            break;
+//        default:
+//            dataBits = SerialPort.DATABITS_5;
+//        }
         return dataBits;
     }
 
     private int converParityOptions(String parityOptions){
         int parityOption = 0;
-        if(parityOptions.equals("Par")){
-            parityOption=SerialPort.PARITY_EVEN;
-        }
-        else if(parityOptions.equals("Impar")){
-            parityOption=SerialPort.PARITY_ODD;
-        }
-        else if(parityOptions.equals("Marca")){
-            parityOption=SerialPort.PARITY_MARK;
-        }
-        else if(parityOptions.equals("Espacio")){
-            parityOption=SerialPort.PARITY_SPACE;
-        }
-        else if(parityOptions.equals("Sin paridad")){
-            parityOption=SerialPort.PARITY_NONE;
-        }
+//        if(parityOptions.equals("Par")){
+//            parityOption=SerialPort.PARITY_EVEN;
+//        }
+//        else if(parityOptions.equals("Impar")){
+//            parityOption=SerialPort.PARITY_ODD;
+//        }
+//        else if(parityOptions.equals("Marca")){
+//            parityOption=SerialPort.PARITY_MARK;
+//        }
+//        else if(parityOptions.equals("Espacio")){
+//            parityOption=SerialPort.PARITY_SPACE;
+//        }
+//        else if(parityOptions.equals("Sin paridad")){
+//            parityOption=SerialPort.PARITY_NONE;
+//        }
         return parityOption;
     }
 
     private int converStopBits(String parityOptions){
         int parityOption = 0;
-        if(parityOptions.equals("1")){
-            parityOption=SerialPort.STOPBITS_1;
-        }
-        else if(parityOptions.equals("1.5")){
-            parityOption=SerialPort.STOPBITS_1_5;
-        }
-        else if(parityOptions.equals("2")){
-            parityOption=SerialPort.STOPBITS_2;
-        }
+//        if(parityOptions.equals("1")){
+//            parityOption=SerialPort.STOPBITS_1;
+//        }
+//        else if(parityOptions.equals("1.5")){
+//            parityOption=SerialPort.STOPBITS_1_5;
+//        }
+//        else if(parityOptions.equals("2")){
+//            parityOption=SerialPort.STOPBITS_2;
+//        }
         return parityOption;
     }
     /**
@@ -293,18 +293,18 @@ public class PortPrinter extends JApplet implements ActionListener, Serializable
      * @throws UnsupportedCommOperationException
      * @throws IOException
      * */
-    private void openConnection() throws PortInUseException, UnsupportedCommOperationException, IOException{
-        serialPort = (SerialPort)portId.open("PrintToComPort", 2000);
-        int bitsPerSecond = portConfiguration.getCurrentBitsPerSecond();
-        int dataBits = convertDataBits(portConfiguration.getCurrentDataBits());
-        int parityOption = converParityOptions(portConfiguration.getCurrentParity());
-        int stopBits = converStopBits(portConfiguration.getCurrentStopBits());
-        serialPort.setSerialPortParams(bitsPerSecond,
-                dataBits,
-                stopBits,
-                parityOption);
-        outputStream = serialPort.getOutputStream();
-    }
+//    private void openConnection() throws PortInUseException, UnsupportedCommOperationException, IOException{
+//        serialPort = (SerialPort)portId.open("PrintToComPort", 2000);
+//        int bitsPerSecond = portConfiguration.getCurrentBitsPerSecond();
+//        int dataBits = convertDataBits(portConfiguration.getCurrentDataBits());
+//        int parityOption = converParityOptions(portConfiguration.getCurrentParity());
+//        int stopBits = converStopBits(portConfiguration.getCurrentStopBits());
+//        serialPort.setSerialPortParams(bitsPerSecond,
+//                dataBits,
+//                stopBits,
+//                parityOption);
+//        outputStream = serialPort.getOutputStream();
+//    }
 
     /**
      * This method write the message in the outputStream configured with the COM port configured.
@@ -322,7 +322,7 @@ public class PortPrinter extends JApplet implements ActionListener, Serializable
      * This method close the COM port connection.
      * */
     private void closeConnection(){
-        serialPort.close();
+//        serialPort.close();
     }
 
     /**
@@ -335,38 +335,38 @@ public class PortPrinter extends JApplet implements ActionListener, Serializable
                     JAVA_HOME) + File.separator + BIN_FOLDER + File.separator +CONFIGURATION_FILE_NAME;
             portConfiguration.readFromDataFile(filePath);
             if(portConfiguration.hasValidInformation()){
-                while(portList.hasMoreElements()){
-                    portId = (CommPortIdentifier) portList.nextElement();
-                    if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
-                        if (portId.getName().equals(portConfiguration.getCurrentPort())) {
-                            openConnection();
-                            writeOnPrinter();
-                            closeConnection();
-                            showSuccessFullResult(portConfiguration.getCurrentPort());
-                            return;
-                        }
-                    }
-                }
+//                while(portList.hasMoreElements()){
+//                    portId = (CommPortIdentifier) portList.nextElement();
+//                    if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+//                        if (portId.getName().equals(portConfiguration.getCurrentPort())) {
+//                            openConnection();
+//                            writeOnPrinter();
+//                            closeConnection();
+//                            showSuccessFullResult(portConfiguration.getCurrentPort());
+//                            return;
+//                        }
+//                    }
+//                }
                 //In case something is wrong
-                String messagePart1="No se puede imprimir el ticket. La impresora no está lista.";
+                String messagePart1="No se puede imprimir el ticket. La impresora no estï¿½ lista.";
                 String messagePart2="Presione el boton Reintentar";
                 showErrorMessage("No se puede conectar con el puerto "+portConfiguration.getCurrentPort(),messagePart1,messagePart2,showErrorMessage);
             }
             else{
-                String messagePart1="La configuración de la impresora es incorrecta!";
-                String messagePart2="Ejecute el programa de configuración.";
-                showErrorMessage("No existe configuración",messagePart1,messagePart2,showErrorMessage);
+                String messagePart1="La configuraciï¿½n de la impresora es incorrecta!";
+                String messagePart2="Ejecute el programa de configuraciï¿½n.";
+                showErrorMessage("No existe configuraciï¿½n",messagePart1,messagePart2,showErrorMessage);
                 this.remove(retryButton);
             }
-        }
-        catch(PortInUseException piuex){
-        	piuex.printStackTrace();
+//        }
+//        catch(PortInUseException piuex){
+//        	piuex.printStackTrace();
         }catch(Exception e){
             e.printStackTrace();
             JOptionPane.showMessageDialog(this,"[Error] "+e.getMessage());
             String messagePart1="No se pudo imprimir el ticket!";
-            String messagePart2="Ejecute el programa de configuración.";
-            showErrorMessage("Ocurrió un error "+portConfiguration.getCurrentPort(),messagePart1,messagePart2,showErrorMessage);
+            String messagePart2="Ejecute el programa de configuraciï¿½n.";
+            showErrorMessage("Ocurriï¿½ un error "+portConfiguration.getCurrentPort(),messagePart1,messagePart2,showErrorMessage);
         }
     }
 
@@ -382,7 +382,7 @@ public class PortPrinter extends JApplet implements ActionListener, Serializable
     }
 
     private void showSuccessFullResult(String configuredPort){
-        successFullMesagePart1.setText( "Se imprimió el documento correctamente ["+configuredPort+"]");
+        successFullMesagePart1.setText( "Se imprimiï¿½ el documento correctamente ["+configuredPort+"]");
         successFullMesagePart2.setText( "Cierre esta ventana para continuar");
         this.remove(retryButton);
     }
@@ -392,34 +392,34 @@ public class PortPrinter extends JApplet implements ActionListener, Serializable
      * This method return the enumeration of the PORTS available in the PC. First refresh the javax.comm.properties
      * loading it again to give the user the opportunity of reconnect the device
      * */
-    private static Enumeration<CommPortIdentifier> enumerateSerialPorts()
-    {
-        //doesn't read or write global variables. Completely self contained.
-        Enumeration <CommPortIdentifier> portList;
-        try
-        {
-            Field masterIdList_Field = CommPortIdentifier.
-            class.getDeclaredField(MASTER_ID_LIST);
-            masterIdList_Field.setAccessible(true);
-            masterIdList_Field.set(	null, null);
-            String temp_string = System.getProperty(
-                    JAVA_HOME) + File.separator + LIB_FOLDER + File.separator + JAVA_COM_PROPERTIES_FILE;
-            Method loadDriver_Method = CommPortIdentifier.
-            class.getDeclaredMethod(LOAD_DRIVER_METHOD, new Class[] {String.class});
-            loadDriver_Method.setAccessible(true); //unprotect it
-            loadDriver_Method.invoke(null, new Object[] {temp_string});
-        }
-        catch(Exception e)
-        {
-            System.out.println(e); //***** add logger
-        }
-        portList = CommPortIdentifier.getPortIdentifiers();
-        return portList;
-    }
+//    private static Enumeration<CommPortIdentifier> enumerateSerialPorts()
+//    {
+//        //doesn't read or write global variables. Completely self contained.
+//        Enumeration <CommPortIdentifier> portList;
+//        try
+//        {
+//            Field masterIdList_Field = CommPortIdentifier.
+//            class.getDeclaredField(MASTER_ID_LIST);
+//            masterIdList_Field.setAccessible(true);
+//            masterIdList_Field.set(	null, null);
+//            String temp_string = System.getProperty(
+//                    JAVA_HOME) + File.separator + LIB_FOLDER + File.separator + JAVA_COM_PROPERTIES_FILE;
+//            Method loadDriver_Method = CommPortIdentifier.
+//            class.getDeclaredMethod(LOAD_DRIVER_METHOD, new Class[] {String.class});
+//            loadDriver_Method.setAccessible(true); //unprotect it
+//            loadDriver_Method.invoke(null, new Object[] {temp_string});
+//        }
+//        catch(Exception e)
+//        {
+//            System.out.println(e); //***** add logger
+//        }
+//        portList = CommPortIdentifier.getPortIdentifiers();
+//        return portList;
+//    }
 
     private boolean isEnvironmentConfigurated(){
-        successFullMesagePart1.setText("Se está comprobando la configuración");
-        successFullMesagePart2.setText("de impresión. Por favor espere...");
+        successFullMesagePart1.setText("Se estï¿½ comprobando la configuraciï¿½n");
+        successFullMesagePart2.setText("de impresiï¿½n. Por favor espere...");
         String path = System.getProperty(
                 JAVA_HOME) + File.separator + LIB_FOLDER + File.separator;
         File java_comm_properties = new File(path+ JAVA_COM_PROPERTIES_FILE);

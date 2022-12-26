@@ -665,7 +665,7 @@ public class WndGasto extends WndOpcionesMantenimiento {
 	}
 
 	/**
-	 * Realiza la busqueda de la liquidación del usuario
+	 * Realiza la busqueda de la liquidaciï¿½n del usuario
 	 * @return
 	 * @throws Exception
 	 */
@@ -734,7 +734,7 @@ public class WndGasto extends WndOpcionesMantenimiento {
 		Caption caption = null;
 		final Window window = new Window("", "normal", true);
 		window.setWidth("400px");
-		caption = new Caption("PARAMETROS DE BÚSQUEDA");
+		caption = new Caption("PARAMETROS DE BUSQUEDA");
 		window.appendChild(caption);
 
 		Label label=null;
@@ -828,7 +828,8 @@ public class WndGasto extends WndOpcionesMantenimiento {
 
 		Util.seleccionarValorItemCombo(TipoAgencia.class, cmbTipoAgencia, Constantes.ID_TIPAGE_TEPSA);
 		UtilData.cargarAgenciaXtipoAgencia(cmbAgencia, Constantes.ID_TIPAGE_TEPSA, true);
-		UtilData.cargarUsuariosLiquidacion(cmbUsuario, Constantes.FORMAT_DATE.format(dtbxFechaIni.getValue()), Constantes.FORMAT_DATE.format(dtbxFechaFin.getValue()), true, null);
+		Util.seleccionarValorItemCombo(Agencia.class, cmbAgencia, getAgencia().getId());
+		UtilData.cargarUsuariosLiquidacion(cmbUsuario, Constantes.FORMAT_DATE.format(dtbxFechaIni.getValue()), Constantes.FORMAT_DATE.format(dtbxFechaFin.getValue()), true, getAgencia().getId());
 		cmbUsuario.setSelectedIndex(0);
 
 		cmbUsuario.setDisabled(false);
@@ -848,7 +849,7 @@ public class WndGasto extends WndOpcionesMantenimiento {
 		}else{
 			cmbTipoAgencia.setDisabled(false);
 			cmbAgencia.setDisabled(false);
-			cmbAgencia.setSelectedIndex(0);
+			//cmbAgencia.setSelectedIndex(0);
 		}
 
 //		cmbUsuario.setDisabled(false);

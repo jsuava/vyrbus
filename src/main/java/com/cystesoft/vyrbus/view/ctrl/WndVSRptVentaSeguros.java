@@ -335,15 +335,15 @@ public class WndVSRptVentaSeguros extends WndBase {
 		/*Controla el acceso al control agencias*/
 		List<Rol>listRolesAcceeso=new ArrayList<>();
 		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_SUPER_USUARIO));
-		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_FISCALIZACION));
-		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_GERENCIA_COMERCIAL));
-		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_MARKETING));
+//		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_FISCALIZACION));
+//		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_GERENCIA_COMERCIAL));
+//		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_MARKETING));
 		List<Component>listComponet=new ArrayList<>();
 		listComponet.add(cmbAgencias);
 		accesoControlsByRol(listComponet,listRolesAcceeso );
 
 		/*Controla el acceso al control usuarios*/
-		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_ADMIN_PUNTO_VENTA));
+//		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_ADMIN_PUNTO_VENTA));
 		listComponet=new ArrayList<>();
 		listComponet.add(cmbUsuario);
 		accesoControlsByRol(listComponet,listRolesAcceeso );

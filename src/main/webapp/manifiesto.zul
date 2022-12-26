@@ -30,6 +30,7 @@
 							<combobox id="cmbImprimir" readonly="true" width="160px" onChange="wndManifiesto.validaImpresionManifiesto()" />
 							<button id="cmdPrevio" image="/resources/mp_preliminar.png" sclass="btnImage" tooltiptext="Vista Preliminar" />
 							<button id="cmdImprimir" image="/resources/mp_imprimir.png" sclass="btnImage" tooltiptext="Imprimir" />
+							<button id="cmdReImprimir" image="/resources/mp_reimprimir.png" sclass="btnImage" tooltiptext="Re-Imprimir" />
 						</row>
 					</rows>
 				</grid>

@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: Clase para configurar los parametros del puerto serial en el cliente.
- * Autor		: José Avalos Sullo
+ * Descripciï¿½n	: Clase para configurar los parametros del puerto serial en el cliente.
+ * Autor		: Josï¿½ Avalos Sullo
  * Fecha		: 09/06/2014
  */
 package com.cystesoft.vyrbus.view.tuentrada;
@@ -41,7 +41,7 @@ import javax.swing.JPanel;
 
 /**
  * description
- * @author José Avalos
+ * @author Josï¿½ Avalos
  * @version 1.0
  */
 @SuppressWarnings({"unchecked","rawtypes"})
@@ -137,7 +137,7 @@ public class PortConfiguration extends JPanel implements ActionListener, Seriali
     /**
      * This variable is the main frame where the visual components are
      **/
-    private static JFrame frame = new JFrame("Configuración de puerto");
+    private static JFrame frame = new JFrame("Configuraciï¿½n de puerto");
 
     private String currentPort = null;
     private String currentBitsPerSecond = null;
@@ -207,7 +207,7 @@ public class PortConfiguration extends JPanel implements ActionListener, Seriali
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridwidth=2;
-        lbStatus.setBorder(BorderFactory.createTitledBorder("Configuración actual"));
+        lbStatus.setBorder(BorderFactory.createTitledBorder("Configuraciï¿½n actual"));
         add(lbStatus, gbc);
 
         JPanel panel = new JPanel();
@@ -360,7 +360,7 @@ public class PortConfiguration extends JPanel implements ActionListener, Seriali
 
     private void showCurrentConfiguration(){
         if(currentPort==null)
-            lbStatus.setText("No existe la configuración");
+            lbStatus.setText("No existe la configuraciï¿½n");
         else{
             lbStatus.setText("Puerto: "+currentPort);
             cmbPortsAvailables.setSelectedItem(currentPort);
@@ -388,13 +388,13 @@ public class PortConfiguration extends JPanel implements ActionListener, Seriali
 	private String []getPortsAsStrings(){
         List<String> lstPortsAsList = new ArrayList<>();
         String [] strPortAsList = new String[]{};
-        Enumeration portList = enumerateSerialPorts();
-        while(portList.hasMoreElements()){
-			CommPortIdentifier portId = (CommPortIdentifier) portList.nextElement();
-            if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
-                lstPortsAsList.add(portId.getName());
-            }
-        }
+//        Enumeration portList = enumerateSerialPorts();
+//        while(portList.hasMoreElements()){
+//			CommPortIdentifier portId = (CommPortIdentifier) portList.nextElement();
+//            if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+//                lstPortsAsList.add(portId.getName());
+//            }
+//        }
         strPortAsList = lstPortsAsList.toArray(strPortAsList);
         return strPortAsList;
     }
@@ -403,30 +403,30 @@ public class PortConfiguration extends JPanel implements ActionListener, Seriali
      * This method return the enumeration of the PORTS available in the PC. First refresh the javax.comm.properties
      * loading it again to give the user the opportunity of reconnect the device
      * */
-	private static Enumeration<CommPortIdentifier> enumerateSerialPorts()
-    {
-        //doesn't read or write global variables. Completely self contained.
-        Enumeration <CommPortIdentifier> portList;
-        try
-        {
-            Field masterIdList_Field = CommPortIdentifier.
-            class.getDeclaredField(MASTER_ID_LIST);
-            masterIdList_Field.setAccessible(true);
-            masterIdList_Field.set( null, null);
-            String temp_string = System.getProperty(
-                    JAVA_HOME) + File.separator + LIB_FOLDER + File.separator + JAVA_COM_PROPERTIES_FILE;
-            Method loadDriver_Method = CommPortIdentifier.
-            class.getDeclaredMethod(LOAD_DRIVER_METHOD, new Class[] {String.class});
-            loadDriver_Method.setAccessible(true); //unprotect it
-            loadDriver_Method.invoke(null, new Object[] {temp_string});
-        }
-        catch(Exception e)
-        {
-            System.out.println(e); //***** add logger
-        }
-        portList = CommPortIdentifier.getPortIdentifiers();
-        return portList;
-    }
+//	private static Enumeration<CommPortIdentifier> enumerateSerialPorts()
+//    {
+//        //doesn't read or write global variables. Completely self contained.
+//        Enumeration <CommPortIdentifier> portList;
+//        try
+//        {
+//            Field masterIdList_Field = CommPortIdentifier.
+//            class.getDeclaredField(MASTER_ID_LIST);
+//            masterIdList_Field.setAccessible(true);
+//            masterIdList_Field.set( null, null);
+//            String temp_string = System.getProperty(
+//                    JAVA_HOME) + File.separator + LIB_FOLDER + File.separator + JAVA_COM_PROPERTIES_FILE;
+//            Method loadDriver_Method = CommPortIdentifier.
+//            class.getDeclaredMethod(LOAD_DRIVER_METHOD, new Class[] {String.class});
+//            loadDriver_Method.setAccessible(true); //unprotect it
+//            loadDriver_Method.invoke(null, new Object[] {temp_string});
+//        }
+//        catch(Exception e)
+//        {
+//            System.out.println(e); //***** add logger
+//        }
+//        portList = CommPortIdentifier.getPortIdentifiers();
+//        return portList;
+//    }
 
     /**
      * This method write the selected configuration
@@ -459,7 +459,7 @@ public class PortConfiguration extends JPanel implements ActionListener, Seriali
     {
         if(e.getSource()==acceptButton){
             if( writeConfiguration()){
-                JOptionPane.showMessageDialog(this,"Se configuró correctamente ["+cmbPortsAvailables.getSelectedItem().toString()+"]");
+                JOptionPane.showMessageDialog(this,"Se configurï¿½ correctamente ["+cmbPortsAvailables.getSelectedItem().toString()+"]");
                 frame.setVisible(false);
                 frame.dispose();
             }
