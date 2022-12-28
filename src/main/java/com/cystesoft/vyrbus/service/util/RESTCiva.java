@@ -78,7 +78,8 @@ public class RESTCiva implements Serializable{
 	private static String API_KEY="/apikey/a526cc6013c9db58092a77bcf2a96cc462936e16";
 	private static String URI_DNI="https://dniruc.apisperu.com/api/v1/dni/";
 	private static String URI_RUC="https://dniruc.apisperu.com/api/v1/ruc/";
-	private static String TOKEN_DOCIDE="?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im9zY2NvZW1AZ21haWwuY29tIn0.W8wDh8URSCh8lbT-z_cQSQ_yQwMIA_QV00TejXvBIHg";
+	//Este TOKEN es el mismo que el utilizado para Antezana, ya que tiene adquirido la consulta ilimitada  
+	private static String TOKEN_DOCIDE="?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImFudGV6YW5hcGkuY2FyZ29AZ21haWwuY29tIn0.kIWSUt-C-7Xm7nOijsXqjmSEkmaGHrGhGnayLEiMjz0";
 
 	private static Integer ID_SERVICIO_EXCLUCIVA=4;
 	private static Integer ID_SERVICIO_SUPERCIVA=6;
