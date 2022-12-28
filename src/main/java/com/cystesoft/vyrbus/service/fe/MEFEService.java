@@ -34,6 +34,7 @@ public class MEFEService extends Service {
 		try {
 			URL baseUrl;
 			baseUrl = com.cystesoft.vyrbus.service.fe.MEFEService.class.getResource(".");
+			
 			url = new URL(baseUrl, "http://192.168.0.211:8085/MEFEService.svc?wsdl");
 		} catch (MalformedURLException e) {
 			logger.warning(

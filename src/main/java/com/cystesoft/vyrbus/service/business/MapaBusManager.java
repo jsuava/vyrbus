@@ -1,6 +1,8 @@
 package com.cystesoft.vyrbus.service.business;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 import com.cystesoft.vyrbus.model.bean.MapaBus;
 
@@ -34,4 +36,6 @@ public interface MapaBusManager {
 	 * @throws Exception
 	 */
 	public List<MapaBus> buscarMapaBusHorizontal(Integer idServicio, String estado)throws Exception;
+	
+	public ArrayList<MapaBus> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar)throws Exception;
 }

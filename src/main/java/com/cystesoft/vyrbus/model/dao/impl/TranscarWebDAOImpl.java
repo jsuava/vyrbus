@@ -56,6 +56,7 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 
 	private JdbcTemplate jdbcTemplate;
 	private int ID_TIPPAG_EFECTIVO = 1;
+	private int ID_TIPPAG_YAPE = 3;
 //	private int ID_TIPPAG_TARJETA = 2;
 	private int ID_FORPAG_CONTADO = 1;
 	private int ID_FORPAG_CREDITO = 2;
@@ -392,6 +393,10 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 					ventaCarga.setTipoTransaccion("V.(EF)");
 					ventaCarga.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CONTADO, "CONTADO"));
 					ventaCarga.setTipoFormaPago(new TipoFormaPago(Constantes.ID_TIPFORPAG_EFECTIVO, "EFECTIVO"));
+				}else if(tipoPagoId == ID_TIPPAG_YAPE) {
+					ventaCarga.setTipoTransaccion("V.(YAP)");
+					ventaCarga.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CONTADO, "CONTADO"));
+					ventaCarga.setTipoFormaPago(new TipoFormaPago(Constantes.ID_TIPFORPAG_YAPE, "YAPE"));
 				}else {// if(tipoPagoId==ID_TIPPAG_TARJETA) {
 					ventaCarga.setTipoTransaccion("V.(TC)");
 					ventaCarga.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CONTADO, "CONTADO"));
@@ -572,8 +577,8 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 
 		List<VentaPasaje> result = buscarDetalleVentas(new TranscarUsuarioPersonal(usuarioId), agenciaId, fechaInicio, fechaFin);
 
-		Integer cantidadEfectivo=0, cantidadTarjetaVisa=0, cantidadTarjetaMastercard=0, cantidadNotaCredito=0, cantidadPce=0;
-        Double efectivo=.00, tarjetaVisa=.00, tarjetaMastercard=.00, notaCredito=.00, pce=.00;
+		Integer cantidadEfectivo=0, cantidadTarjetaVisa=0, cantidadTarjetaMastercard=0, cantidadNotaCredito=0, cantidadPce=0, cantidadYape=0;
+        Double efectivo=.00, tarjetaVisa=.00, tarjetaMastercard=.00, notaCredito=.00, pce=.00, yape=.00;
 
 		for(VentaPasaje ventaPasaje: result) {
 
@@ -594,6 +599,9 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 					}else if(tipoPagoId==Constantes.ID_TIPFORPAG_TARJETA && operadorTarjetaId==Constantes.ID_OPETARCRE_MSTERCARD){
 						cantidadTarjetaMastercard ++;
 						tarjetaMastercard += totalCosto;
+					}else if(tipoPagoId == ID_TIPPAG_YAPE) {
+						cantidadYape ++;
+						yape += totalCosto;
 					}
 				}else if(tipoComprobanteId==Constantes.ID_TIPCOM_NOTA_CREDITO){
 					cantidadNotaCredito ++;
@@ -621,6 +629,8 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
         liquidacion.setCantidadCortesia(0);
         liquidacion.setMontoCreditos(.00);
         liquidacion.setCantidadCreditos(0);
+        liquidacion.setCantidadYape(cantidadYape);
+        liquidacion.setMontoYape(yape);
 
 		return liquidacion;
 	}

@@ -7,7 +7,9 @@
  */
 package com.cystesoft.vyrbus.service.business.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -92,5 +94,15 @@ public class MapaBusManagerImpl implements MapaBusManager {
 	public List<MapaBus> buscarMapaBusHorizontal(Integer idServicio, String estado) throws Exception {
 		return getMapaBusDAO().buscarMapaBusHorizontal(idServicio, estado);
 	}
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.MapaBusManager#buscarPorX(java.util.TreeMap, java.util.List)
+	 */
+	@Override
+	public ArrayList<MapaBus> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return getMapaBusDAO().buscarPorX(criteriosBusqueda, criteriosOrdenar);
+	}
+	
 
 }
