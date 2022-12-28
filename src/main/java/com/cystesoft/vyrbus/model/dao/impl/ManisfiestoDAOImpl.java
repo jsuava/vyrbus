@@ -450,7 +450,7 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 		String sql ="SELECT m.c_codbus bus,m.c_numman numeroManifiesto, m.audfecins fechaHora,m.c_piloto piloto, "+ //0-3
 						"u.c_apepat UPApePaterno, u.c_apemat UPApeMaterno, u.c_nombre UPnombre, "+ //4-6
 						"m.itinerario_Id,  "+ //7-7
-						"m.c_numautsunat "+ //8-8
+						"m.c_numautsunat, m.manifiesto_id "+ //8-8
 					"FROM vrtmanifiesto m "+
 					"INNER JOIN vrmusuario u ON (u.c_login=m.audusuins) "+
 					"WHERE m.itinerario_id="+ idItinerario +" AND m.c_estreg='A'";
@@ -475,7 +475,7 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			manifiesto.setAutorizacionSunat(obj[8].toString());
 			manifiesto.setUsuarioInsercion(usuario);
 			manifiesto.setItinerario(itinerario);
-
+			manifiesto.setId(((BigDecimal)obj[9]).longValue());
 		}
 
 

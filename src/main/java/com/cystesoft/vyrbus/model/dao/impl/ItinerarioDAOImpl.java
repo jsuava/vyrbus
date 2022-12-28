@@ -1,8 +1,8 @@
 /**
  * Proyecto		: VYRBUS
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José Avalos Sullo
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Avalos Sullo
  * Fecha		: 05/07/2012
  */
 package com.cystesoft.vyrbus.model.dao.impl;
@@ -36,7 +36,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.UtilData;
 /**
  *
- * @author José Sullo Avalos
+ * @author Josï¿½ Sullo Avalos
  * @since JDK1.6
  */
 @SuppressWarnings("unchecked")
@@ -948,5 +948,17 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 
 
 		return listItinerarios;
+	}
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.ItinerarioDAO#validarItinerario(java.lang.Integer, java.lang.Integer, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public Integer validarItinerario(Integer idRuta, Integer idServicio, String fechaPartida, String horaPartida) throws Exception {
+		String sql = "SELECT * FROM vrtitinerario WHERE ruta_idMayor = " + idRuta + " AND servicio_id = " + idServicio + 
+				" AND to_char(d_fecpar, 'dd/mm/yyyy') = '" + fechaPartida + "' AND c_horpar = '" + horaPartida + "'";
+		
+		log.info(sql);
+		List<?>result = getSession().createSQLQuery(sql).list();
+		return result.size();
 	}
 }
