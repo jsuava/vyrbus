@@ -10,6 +10,7 @@ package com.cystesoft.vyrbus.model.dao.impl;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 import com.cystesoft.vyrbus.model.bean.MapaBus;
 import com.cystesoft.vyrbus.model.bean.Servicio;
@@ -187,5 +188,16 @@ public class MapaBusDAOImpl extends GenericDAOImpl implements MapaBusDAO {
 			log.error(ex);
 			throw new Exception(ex);
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.MapaBusDAO#buscarPorX(java.util.TreeMap, java.util.List)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ArrayList<MapaBus> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return (ArrayList<MapaBus>) super.findByX(MapaBus.class, criteriosBusqueda, criteriosOrdenar);
 	}
 }

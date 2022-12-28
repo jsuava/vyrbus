@@ -49,9 +49,11 @@ import com.cystesoft.vyrbus.model.bean.FormaPago;
 import com.cystesoft.vyrbus.model.bean.Itinerario;
 import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartida;
 import com.cystesoft.vyrbus.model.bean.Localidad;
+import com.cystesoft.vyrbus.model.bean.MapaBus;
 import com.cystesoft.vyrbus.model.bean.OperadorTarjetaCredito;
 import com.cystesoft.vyrbus.model.bean.PasajeroFrecuente;
 import com.cystesoft.vyrbus.model.bean.Promocion;
+import com.cystesoft.vyrbus.model.bean.TarifaRegular;
 import com.cystesoft.vyrbus.model.bean.TarjetaCredito;
 import com.cystesoft.vyrbus.model.bean.TipoComprobante;
 import com.cystesoft.vyrbus.model.bean.TipoFormaPago;
@@ -1540,9 +1542,9 @@ public class WndPostergacion extends WndBase implements Serializable {
 //			postergacion.setPenalidad(dblbxPenalidad.getValue());
 			postergacion.setPenalidad(0.0);
 			postergacion.setAcuenta(0.0);
-//			postergacion.setImportePagado(dblbxImporteTotal.getValue());
+			postergacion.setImportePagado(dblbxImporteTotal.getValue() - dblbxPenalidad.getValue());
 //			postergacion.setImportePagado(dblbxMontoAnterior.getValue()+dblbxSaldo.getValue()); //El nuevo Comprobante sera por el monto que pago el pax mas el saldo
-			postergacion.setImportePagado(dblbxTarifa.getValue()-dblbxDescuento.getValue());
+//			postergacion.setImportePagado(dblbxTarifa.getValue()-dblbxDescuento.getValue());
 			postergacion.setImportePagadoEfectivo(dblbxImporteEfectivo.getValue());
 			postergacion.setImportePagadoTarjeta(dblbxImporteTarjeta.getValue());
 			postergacion.setTipoTransaccion(Constantes.TIPO_OPERACION_VENTA);
@@ -2001,7 +2003,8 @@ public class WndPostergacion extends WndBase implements Serializable {
 					copiarDatosVenta();
 				}else if(!chkCambioNombre.isChecked() && txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText()) && txtNumeroAsientoActual.getText().equals(txtNumeroAsientoPostergado.getText())) {
 					//Si los itinerarios son iguales, el valor de la penalidad es cero
-//					dblbxPenalidad.setValue(0);
+//					dblbxPenalidad.setValue(0);														
+					
 					calcularPagos();
 					limpiarControlesPostergacion();
 //				}else if (chkCambioNombre.isChecked() && !(txtItinerarioActual.getText().equals(txtItinerarioPostergado.getText()))){
@@ -2027,6 +2030,31 @@ public class WndPostergacion extends WndBase implements Serializable {
 //			calcularTotaPago();
 //			validarPromocion();
 		}
+		
+		if(chkCambioNombre.isChecked()) {
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			criteriosBusqueda.put("servicio", postergacion.getServicio());
+			criteriosBusqueda.put("numeroPiso", postergacion.getNumeroPiso());
+			criteriosBusqueda.put("numeroAsiento", postergacion.getNumeroAsiento());
+			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+			List<MapaBus>resultMapaBus = ServiceLocator.getMapaBusManager().buscarPorX(criteriosBusqueda, null);
+			if(resultMapaBus.size()>0) {
+				List<TarifaRegular> lstTarifaRegular = ServiceLocator.getTarifaRegularManager().buscarTarifaPorServicio(
+						Constantes.ID_CANVEN_COUNTER, postergacion.getServicio().getId(),
+						postergacion.getRuta().getId(),
+						Util.DatetoString(postergacion.getFechaPartida(), Constantes.DATE_FORMAT),
+						postergacion.getHoraPartida(),
+						postergacion.getNumeroPiso(),
+						resultMapaBus.get(0).getNumeroZona());
+				
+				Double tarifa = (lstTarifaRegular.get(0).getMonto()!=null?lstTarifaRegular.get(0).getMonto() :0.00);
+				if(tarifa > 0 && dblbxMontoAnterior.getValue() < tarifa) 
+					postergacion.setTarifa(tarifa);
+				else 
+					postergacion.setTarifa(dblbxMontoAnterior.getValue());
+			}
+		}
+		
 		calcularPagos();
 	}
 

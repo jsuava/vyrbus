@@ -371,13 +371,16 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 						cmbCounter.appendChild(cmbitem);
 					}
 //					cmbCounter.setDisabled(false);
-				}else
-					cmbCounter.setDisabled(true);
+				}
+//				else
+//					cmbCounter.setDisabled(true);
 			}
 
 			Util.seleccionarValorItemCombo(Usuario.class, cmbCounter, getUsuario().getId());
-			if(cmbCounter.getSelectedIndex()>1)
+			if(cmbCounter.getSelectedIndex() < 0 && cmbCounter.getItemCount() > 2)
 				cmbCounter.setSelectedIndex(0);
+			else if(cmbCounter.getSelectedIndex() < 0 && cmbCounter.getItemCount() == 2)
+				cmbCounter.setSelectedIndex(1);
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}

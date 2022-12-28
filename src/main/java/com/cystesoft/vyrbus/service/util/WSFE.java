@@ -585,7 +585,9 @@ public class WSFE implements Serializable{
 				liquidacion2.setMontoNotasCredito(liquidacion2.getMontoNotasCredito() + liquidacion2Cargo.getMontoNotasCredito());
 				liquidacion2.setCantidadNotasCredito(liquidacion2.getCantidadNotasCredito() + liquidacion2Cargo.getCantidadNotasCredito());
 				liquidacion2.setMontoPCE(liquidacion2.getMontoPCE() + liquidacion2Cargo.getMontoPCE());
-				liquidacion2.setCantidadPCE(liquidacion2.getCantidadPCE() + liquidacion2Cargo.getCantidadPCE());				
+				liquidacion2.setCantidadPCE(liquidacion2.getCantidadPCE() + liquidacion2Cargo.getCantidadPCE());
+				liquidacion2.setMontoYape(liquidacion2.getMontoYape() + liquidacion2Cargo.getMontoYape());
+				liquidacion2.setCantidadYape(liquidacion2.getCantidadYape() + liquidacion2Cargo.getCantidadYape());
 			}
 			
 			Integer cantidadVentaTarjeta=liquidacion2.getCantidadTarjetaVisa()+liquidacion2.getCantidadTarjetaMasterCard()+
