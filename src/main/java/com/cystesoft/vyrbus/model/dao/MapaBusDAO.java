@@ -7,7 +7,9 @@
  */
 package com.cystesoft.vyrbus.model.dao;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 import com.cystesoft.vyrbus.model.bean.MapaBus;
 
@@ -46,4 +48,6 @@ public interface MapaBusDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public int deleteMapaBus(Integer idServicio)throws Exception;
+	
+	public ArrayList<MapaBus> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar)throws Exception;
 }
