@@ -1245,9 +1245,10 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 			//Valida si debe o no emitir un nuevo comprobante - jabanto - 26/09/2022
 			boolean isNewComprobante = false;
 			boolean isCambioComprobante = false;
-			if(boletoOriginal.getImportePagado().doubleValue() < boletoPostergar.getImportePagado().doubleValue()){
+//			if(boletoOriginal.getImportePagado().doubleValue() < boletoPostergar.getImportePagado().doubleValue()){
+			if(boletoPostergar.getImportePagado()>0){
 				isNewComprobante = true;
-				Double direfenciaImporte = (boletoPostergar.getImportePagado() - boletoOriginal.getImportePagado());
+				Double direfenciaImporte = boletoPostergar.getImportePagado(); //(boletoPostergar.getImportePagado() - boletoOriginal.getImportePagado());
 				boletoPostergar.setImportePagado(direfenciaImporte);
 			}else if (boletoOriginal.getTipoComprobante().getId().intValue() != boletoPostergar.getTipoComprobante().getId().intValue() || // cuando es un cambio de comprobante
 					 (boletoOriginal.getCliente()!=null && boletoPostergar.getCliente()!=null && boletoOriginal.getCliente().getId().longValue()!=boletoPostergar.getCliente().getId()) || // Cambio de ruc
@@ -1362,6 +1363,10 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				boletoPostergar.setTipoFormaPago(oVentaPasaje.getTipoFormaPago());
 				boletoPostergar.setTarjetaCredito(oVentaPasaje.getTarjetaCredito()!=null?oVentaPasaje.getTarjetaCredito():null);
 				boletoPostergar.setCanalVenta(oVentaPasaje.getCanalVenta());
+				boletoPostergar.setTarifa(oVentaPasaje.getTarifa());
+				boletoPostergar.setImportePagado(oVentaPasaje.getImportePagado());
+				boletoPostergar.setDescuento(oVentaPasaje.getDescuento());
+				
 				getVentaPasajesDAO().update(boletoPostergar);
 			}
 			
