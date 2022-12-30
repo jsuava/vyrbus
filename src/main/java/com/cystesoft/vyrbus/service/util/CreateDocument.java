@@ -2895,16 +2895,16 @@ public class CreateDocument implements Serializable {
 	private static final void creaEncabezadoManifiesto(BufferedWriter bw) throws Exception{
 		String linea = "";
 		//---> linea 11: encabezado del detalle de pasajeros(Ato - N.Boleto - Nombre - Edad - TipoDoc. - Nr.Docum. - Destino - PtoEmbarque - Importe)
-		linea="| Ato";
-		linea+="| N.Boleto      ";
-		linea+="| Nombre"+tabular(27);
-		linea+="|Edad";
-		linea+="|T.Doc";
-		linea+="|Nr.Documento";
-		linea+="| Destino       ";
-		linea+="| Pto Embarque  ";
+		linea="| ATO";
+		linea+="| COMPROBANTE   ";
+		linea+="| NOMBRE"+tabular(27);
+		linea+="|EDAD";
+		linea+="|T.DOC";
+		linea+="|NR.DOCUMENTO";
+		linea+="| DESTINO       ";
+		linea+="| PTO EMBARQUE  ";
 		linea+="|  F.P.   ";
-		linea+="|  Importe  |";
+		linea+="|  IMPORTE  |";
 		bw.write(linea+NEWLINE);
 	}
 
@@ -3018,7 +3018,9 @@ public class CreateDocument implements Serializable {
 							longitud_C=documentoPax.length();
 							linea+=documentoPax+tabular(longDocumentoPax-longitud_C)+"| ";
 							/*DESTINO*/
-							String odestino=ventaPasaje.getRuta().getDestino();
+//							String odestino=ventaPasaje.getRuta().getDestino();
+							//MAOE 29/12/2022: Se cambio el destino por la Agencia destino
+							String odestino=ventaPasaje.getAgenciaLlegada().getDenominacion();
 							destino=odestino.toUpperCase().substring(0,1)+odestino.toLowerCase().substring(1,odestino.length());
 							if(destino.length()>longDestino)
 								destino=destino.substring(0,longDestino);

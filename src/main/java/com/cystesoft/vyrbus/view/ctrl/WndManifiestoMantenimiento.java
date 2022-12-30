@@ -307,8 +307,10 @@ public class WndManifiestoMantenimiento extends WndBase{
 				if(!btnAnular.isDisabled()){
 					Date fechaActual=Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date()));
 					Date fechaManifiesto=manifiesto.getItinerario().getFechaPartida();
-					if(fechaManifiesto.getTime()!=fechaActual.getTime())
-						btnAnular.setDisabled(true);
+					if(fechaManifiesto.getTime()!=fechaActual.getTime()) {
+						if( fechaManifiesto.getTime()<fechaActual.getTime())
+							btnAnular.setDisabled(true);
+					}
 				}
 
 				/************************************************************************/

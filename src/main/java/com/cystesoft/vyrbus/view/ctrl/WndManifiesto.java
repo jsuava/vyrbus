@@ -550,7 +550,8 @@ public class WndManifiesto extends WndBase {
 				item.appendChild(cell);
 				cell = new Listcell(ventaPasaje.getRuta().getOrigen()); //Origen
 				item.appendChild(cell);
-				cell = new Listcell(ventaPasaje.getRuta().getDestino()); //Destino
+//				cell = new Listcell(ventaPasaje.getRuta().getDestino()); //Destino
+				cell = new Listcell(ventaPasaje.getAgenciaLlegada().getDenominacion()); //Destino
 				item.appendChild(cell);
 				cell = new Listcell(Util.toNumberFormat(ventaPasaje.getImportePagado(), 2)); //Importe
 				cell.setStyle("font-size:11px !important");
@@ -2571,7 +2572,8 @@ public class WndManifiesto extends WndBase {
 							xmlItemDetalleManifiesto.setEdad(Util.calculaEdad(ventaPasaje.getPasajero().getFechaNacimiento()).toString());
 							xmlItemDetalleManifiesto.setTipoDocumento(ventaPasaje.getPasajero().getTipoDocumento().getNombreCorto());
 							xmlItemDetalleManifiesto.setNumeroDocumento(ventaPasaje.getPasajero().getNumeroDocumento());
-							xmlItemDetalleManifiesto.setDestino(ventaPasaje.getRuta().getDestino());
+//							xmlItemDetalleManifiesto.setDestino(ventaPasaje.getRuta().getDestino());
+							xmlItemDetalleManifiesto.setDestino(ventaPasaje.getAgenciaLlegada().getDenominacion());
 							xmlItemDetalleManifiesto.setPuntoEmbarque(ventaPasaje.getAgenciaPartida().getDenominacion());
 							xmlItemDetalleManifiesto.setFormaPago(ventaPasaje.getFormaPago().getDenominacion());
 							xmlItemDetalleManifiesto.setImporte(Util.toNumberFormat(ventaPasaje.getImportePagado(),2));							
