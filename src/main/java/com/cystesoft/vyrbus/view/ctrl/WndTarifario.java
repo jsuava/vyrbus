@@ -931,11 +931,19 @@ public class WndTarifario extends WndBase implements Serializable {
 					cmbPiso.focus();
 					return;
 				}else if(cmbPiso.getSelectedIndex()==1 && dlbxTarifaP1.getValue()==0){
-					DlgMessage.information("Debe de ingresar el Piso del bus al cual se le creara la Tarifa.");
-					cmbPiso.focus();
+					DlgMessage.information("Debe de ingresar un monto para crear la Tarifa.");
+					dlbxTarifaP1.focus();
+					return;
+				}else if(cmbPiso.getSelectedIndex()==1 && dlbxTarifaP1.getValue()>0 && dlbxTarifaP1.getValue()<Constantes.TARIFA_MINIMA){
+					DlgMessage.information("El monto mínimo para crear una tarifa es de "+ Constantes.TARIFA_MINIMA);
+					dlbxTarifaP1.focus();
 					return;
 				}else if(cmbPiso.getSelectedIndex()==2 && dlbxTarifaP2.getValue()==0 && oServicio.getNumeroPisos()==2){
 					DlgMessage.information("Debe de ingresar el monto de la Tarifa del piso 2.");
+					dlbxTarifaP2.focus();
+					return;
+				}else if(cmbPiso.getSelectedIndex()==2 && dlbxTarifaP2.getValue()>0 && dlbxTarifaP2.getValue()<Constantes.TARIFA_MINIMA && oServicio.getNumeroPisos()==2){
+					DlgMessage.information("El monto mínimo para crear una tarifa es de "+ Constantes.TARIFA_MINIMA);
 					cmbPiso.focus();
 					return;
 				}else if(cmbZona.getSelectedIndex()==0){
@@ -958,7 +966,27 @@ public class WndTarifario extends WndBase implements Serializable {
 					DlgMessage.information("Debe de ingresar el monto de la Tarifa del piso 2.");
 					dlbxTarifaP2.focus();
 					return;
+				}else if(dlbxTarifaP2.getValue()>0 && dlbxTarifaP2.getValue()<Constantes.TARIFA_MINIMA && oServicio.getNumeroPisos()>2){
+					DlgMessage.information("El monto mínimo para crear una tarifa es de "+ Constantes.TARIFA_MINIMA);
+					dlbxTarifaP2.focus();
+					return;
 				}else{
+					
+					//Si selecicono ambos pisos para actualizar marcamos el mensaje
+					//MAOE 30/12/2022 Para validar el monto de tarifa minimo
+					if(cmbPiso.getSelectedIndex()==0 && (dlbxTarifaP1.getValue()>0 && dlbxTarifaP2.getValue()>0)){
+						if(dlbxTarifaP1.getValue()>0 && dlbxTarifaP1.getValue()<Constantes.TARIFA_MINIMA) {
+							DlgMessage.information("El monto mínimo para crear una tarifa es de "+ Constantes.TARIFA_MINIMA);
+							dlbxTarifaP1.focus();
+							return;
+						}else if(dlbxTarifaP2.getValue()>0 && dlbxTarifaP2.getValue()<Constantes.TARIFA_MINIMA){
+							DlgMessage.information("El monto mínimo para crear una tarifa es de "+ Constantes.TARIFA_MINIMA);
+							dlbxTarifaP2.focus();
+							return;
+						}else
+							ambosPisos=1;
+					}
+
 
 					idCanal = ((CanalVenta)cmbCanal.getSelectedItem().getValue()).getId();
 					idServicio = ((Servicio)cmbServicio.getSelectedItem().getValue()).getId();
@@ -994,10 +1022,10 @@ public class WndTarifario extends WndBase implements Serializable {
 					Integer cantidadTarifas = Integer.valueOf(cantidades[0]);
 					Integer cantidadServicios = Integer.valueOf(cantidades[1]);
 
-					//Si selecicono ambos pisos para actualizar marcamos el mensaje
-					if(cmbPiso.getSelectedIndex()==0 && (dlbxTarifaP1.getValue()>0 && dlbxTarifaP2.getValue()>0)){
-						ambosPisos=1;
-					}
+//					//Si selecicono ambos pisos para actualizar marcamos el mensaje
+//					if(cmbPiso.getSelectedIndex()==0 && (dlbxTarifaP1.getValue()>0 && dlbxTarifaP2.getValue()>0)){
+//						ambosPisos=1;
+//					}
 
 
 
@@ -1385,7 +1413,6 @@ public class WndTarifario extends WndBase implements Serializable {
 												ServiceLocator.getTarifaRegularManager().guardar(tarifaRegular);
 											}
 
-
 										}
 
 									}
@@ -1423,6 +1450,10 @@ public class WndTarifario extends WndBase implements Serializable {
 					return;
 				}else if(dlbxTarifaFa.getValue() == 0){
 					DlgMessage.information("Debe de ingresar el monto de la Tarifa de Fecha Abierta");
+					dlbxTarifaFa.focus();
+					return;
+				}else if(dlbxTarifaFa.getValue() > 0 && dlbxTarifaFa.getValue() < Constantes.TARIFA_MINIMA){
+					DlgMessage.information("El monto minimo para crear una tarifa es de " + Constantes.TARIFA_MINIMA);
 					dlbxTarifaFa.focus();
 					return;
 				}
