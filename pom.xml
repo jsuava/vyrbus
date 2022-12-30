@@ -138,11 +138,13 @@
 	  		<artifactId>ojdbc6</artifactId>
 	  		<version>11.1.0.7.0</version>
 	  	</dependency>
+
 <!-- 	  	<dependency> -->
 <!-- 	  		<groupId>com.oracle</groupId> -->
 <!-- 	  		<artifactId>ojdbc8</artifactId> -->
 <!-- 	  		<version>21.1.0.0</version> -->
 <!-- 	  	</dependency> -->
+
 		<!-- PostgreSQL -->
 		<dependency>
 		    <groupId>org.postgresql</groupId>

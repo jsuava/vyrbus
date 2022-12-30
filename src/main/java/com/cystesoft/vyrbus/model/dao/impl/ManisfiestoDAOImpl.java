@@ -199,7 +199,7 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 							"td.c_Denominacion TipDocto, v.venpas_id, "+ //13-14
 							"ap.c_nomcor as NombreCorto, v.n_numpiso, tc.tipcom_id, tc.c_Denominacion," + //15-18
 							"p.pasajero_id, fp.forpag_id, fp.c_denominacion formaPago,cv.c_nomcor canalVenta, c.c_razsoc clienteCredito, av.c_nomcor agenciaVenta, "+// 19-24
-							"r.ruta_id, td.c_nomcor nomCorTipoDocumento "+//25-26
+							"r.ruta_id, td.c_nomcor nomCorTipoDocumento, ad.c_denominacion agDestino "+//25-27
 					"FROM vrtvenpas v "+
 						"INNER JOIN (SELECT MAX(venpas_id)venpas_id, c_numcontrol " +
 									"FROM vrtvenpas WHERE itinerario_id="+idItinerario+" GROUP BY c_numcontrol) max_venta " +
@@ -208,6 +208,7 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 						"INNER JOIN vrmruta r ON (r.ruta_id=v.ruta_id)" +
 						"INNER JOIN vrmtipcom tc ON (tc.tipcom_id=v.tipcom_id) "+
 						"INNER JOIN vrmagencia ap ON (ap.agencia_id=v.agencia_idpartida) "+
+						"INNER JOIN vrmagencia ad ON (ad.agencia_id=v.agencia_idllegada) "+
 						"INNER JOIN vrmtipdoc td ON (td.tipdoc_id=p.tipdoc_id) "+
 						"INNER JOIN vrmforpag fp ON (fp.forpag_id=v.forpag_id) "+
 						"INNER JOIN vrmcanven cv ON (cv.canven_id=v.canven_id) "+
@@ -251,6 +252,9 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			Agencia agenciaPartida = new Agencia();
 			agenciaPartida.setDenominacion(obj[11].toString());
 			agenciaPartida.setNombreCorto(obj[15].toString());
+			
+			Agencia agenciaDestino = new Agencia();
+			agenciaDestino.setDenominacion(obj[27].toString());
 
 			TipoComprobante tipoComprobante=new TipoComprobante();
 			tipoComprobante.setId(((BigDecimal)obj[17]).intValue());
@@ -282,6 +286,7 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			ventaPasaje.setRuta(ruta);
 			ventaPasaje.setPreferenciaAlimentaria(preferenciaAlimentaria);
 			ventaPasaje.setAgenciaPartida(agenciaPartida);
+			ventaPasaje.setAgenciaLlegada(agenciaDestino);
 			ventaPasaje.setNumeroPiso(((BigDecimal)obj[16]).intValue());
 			ventaPasaje.setTipoComprobante(tipoComprobante);
 			ventaPasaje.setFormaPago(formaPago);

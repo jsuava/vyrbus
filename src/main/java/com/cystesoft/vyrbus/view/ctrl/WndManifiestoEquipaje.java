@@ -269,9 +269,13 @@ public class WndManifiestoEquipaje extends WndBase implements Serializable{
 			item.appendChild(cell);
 			cell = new Listcell(detalleEquipaje.getVentaPasaje()!=null?detalleEquipaje.getVentaPasaje().getPasajero().toString():"");
 			item.appendChild(cell);
-			cell = new Listcell(detalleEquipaje.getTicket());
+			cell = new Listcell(detalleEquipaje.getEquipaje().getObservaciones());
 			cell.setStyle("font-size:11px");
 			item.appendChild(cell);
+			cell = new Listcell(Util.toNumberFormat(detalleEquipaje.getVentaPasaje().getImportePagado(), 2) );
+			cell.setStyle("font-size:11px");
+			item.appendChild(cell);
+			
 
 			item.setValue(detalleEquipaje);
 			ltbxManifiestoEquipajes.appendChild(item);

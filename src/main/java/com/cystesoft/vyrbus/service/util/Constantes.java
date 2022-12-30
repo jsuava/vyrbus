@@ -25,7 +25,7 @@ public class Constantes {
 	/**
 	 * Vension actual del Sistema
 	 */
-	public static final String SYSTEM_VERSION = "Versiï¿½n 3.2.4";
+	public static final String SYSTEM_VERSION = "Versión 3.2.5";
 		
 	/**
 	 * Constante para la Acciï¿½n Nuevo
@@ -104,7 +104,7 @@ public class Constantes {
 	public static final int TRUE_VALUE = 1;
 	public static final int FALSE_VALUE = 0;
 	/*	Para las fecha en null	*/
-	public static final Date FECHA_NULL= Util.StringtoDate("01/01/1950", DATE_FORMAT);
+	public static final Date FECHA_NULL= Util.StringtoDate("01/01/1960", DATE_FORMAT);
 	/*	Para el Applet	*/
 	public static final int VALIDAR_APPLET = 1;
 	/* Guarda el valor del IGV actual */
@@ -155,17 +155,13 @@ public class Constantes {
 	public static final String CLAVE_PAHT="TPSPSJS-";
 	/*	Path para la creacion de los documentos Boleto, Manifiesto	*/
 	public static final String SERVER_PROTOCOL = Executions.getCurrent().getScheme();
-	public static final String SERVER_HOST = Executions.getCurrent().getHeader("host");
+//	public static final String SERVER_HOST = Executions.getCurrent().getHeader("host");
 //	public static final String SERVER_HOST = "ventas.tepsa.com.pe/";
-
-	//http://168.121.236.46:8080/
 
 //	public static final String SERVER_HOST = "localhost:8080";
 
 	//SERVER_HOST PRODUCCION TRANSMAR
-//	public static final String SERVER_HOST = "119.8.145.122:8080";
-//	public static final String SERVER_HOST = "190.119.140.203:8080";
-
+	public static final String SERVER_HOST = "119.8.145.122:8080";
 
 	public static final String SERVER_CONTEXT = Executions.getCurrent().getContextPath();
 	public static final String URL_FORMATOS = SERVER_PROTOCOL+"://"+SERVER_HOST+SERVER_CONTEXT+"/formatos/";
