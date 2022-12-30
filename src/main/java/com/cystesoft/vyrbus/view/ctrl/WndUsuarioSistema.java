@@ -35,6 +35,7 @@ import com.cystesoft.vyrbus.service.exceptions.LoginNullException;
 import com.cystesoft.vyrbus.service.exceptions.NoRemoverRegistroDelListBox;
 import com.cystesoft.vyrbus.service.exceptions.NombresNullException;
 import com.cystesoft.vyrbus.service.exceptions.PasswordException;
+import com.cystesoft.vyrbus.service.exceptions.RolCargaNullException;
 import com.cystesoft.vyrbus.service.exceptions.RolNullException;
 import com.cystesoft.vyrbus.service.exceptions.SelectIndexNullException;
 import com.cystesoft.vyrbus.service.exceptions.UsuarioLoginDuplicadoException;
@@ -50,7 +51,7 @@ import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
 
 /**
  *
- * @author José Abanto.
+ * @author Josï¿½ Abanto.
  *
  */
 public class WndUsuarioSistema extends WndOpcionesMantenimiento {
@@ -320,14 +321,12 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 			else if (txtLogin.getText().trim().equals(txtPassword.getText().trim()))
 				throw new PasswordException(PasswordException.PASSWORD_IGUAL_LOGIN);
 			else if (lbxRolesCarga.getSelectedItems().size()==0) {
-				tabRoles.setSelectedIndex(1);
-				DlgMessage.information(Messages.getString("WndUsuarioRol.information.noSelectRolCarga"));
-				throw new CancelaGrabacionException();
+				throw new RolCargaNullException();				
 			}
 
 //			Rol rol= ((Rol)cmbRol.getSelectedItem().getValue());
 //
-//			/* Valida que el usuario tenga el mail configurado  para las alertas que envíe el sistema */
+//			/* Valida que el usuario tenga el mail configurado  para las alertas que envï¿½e el sistema */
 //			if(rol.getId().intValue()==Constantes.ID_ROL_GERENCIA_COMERCIAL
 //					|| rol.getId().intValue()==Constantes.ID_ROL_JEFE_VENTAS
 //					|| rol.getId().intValue()==Constantes.ID_ROL_FINANZAS
@@ -339,7 +338,7 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 
 //			Rol rol= ((Rol)cmbRol.getSelectedItem().getValue());
 
-			/* Valida que el usuario tenga el mail configurado  para las alertas que envíe el sistema */
+			/* Valida que el usuario tenga el mail configurado  para las alertas que envï¿½e el sistema */
 //			for(Listitem item:lbxRoles.getSelectedItems()){
 //				Rol rol=item.getValue();
 //
@@ -473,7 +472,7 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 
 
 
-			/* Realiza la asociación del rol con el usuario*/
+			/* Realiza la asociaciï¿½n del rol con el usuario*/
 //			if (action==ACTION_NEW){
 //				usuarioRol= new UsuarioRol();
 //				usuarioRol.setRol(rol);
@@ -545,7 +544,7 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 				DlgMessage.information(Messages.getString("WndUsuarioSistema.information.noIngresoPasswordConfirmacion"),txtConfirmaPassword);
 				throw new CancelaGrabacionException();
 			}else if(cp.getTipo().intValue()==PasswordException.PASSWORD_IGUAL_LOGIN){
-				DlgMessage.information("La contraseña no puede ser igual al login.", txtPassword);
+				DlgMessage.information("La contraseï¿½a no puede ser igual al login.", txtPassword);
 				throw new CancelaGrabacionException();
 			}
 		}catch(UsuarioLoginDuplicadoException uldex){
@@ -555,6 +554,10 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 		}catch(AgenciaNullException anex){
 			DlgMessage.information(Messages.getString("WndUsuarioSistema.information.noSeleccionoAgencia"));
 			cmbAgencia.setFocus(true);
+			throw new CancelaGrabacionException();
+		}catch(RolCargaNullException rcnex) {
+			DlgMessage.information(Messages.getString("WndUsuarioRol.information.noSelectRolCarga"));
+			tabRoles.setSelectedIndex(1);			
 			throw new CancelaGrabacionException();
 		}catch (Exception ex) {
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
@@ -879,17 +882,17 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 			btnEliminar.setLabel("Desactivar");
 			btnEliminar.setImage("resources/toolbar/mp_toolbarEliminar.png");
 			btnEliminar.setTooltiptext("Desactivar el Usuario seleccionado");
-			questionDelete="¿Desea desactivar al Usuario: " + ((Usuario)lItemUsuario.getValue()).getLogin();
+			questionDelete="ï¿½Desea desactivar al Usuario: " + ((Usuario)lItemUsuario.getValue()).getLogin();
 		}else{
 			btnEliminar.setLabel("Reactivar");
 			btnEliminar.setImage("/resources/toolbar/mp_toolbarAceptarEnabled.png");
 			btnEliminar.setTooltiptext("Reactivar el Usuario seleccionado");
-			questionDelete="¿Desea reactivar al Usuario: " + ((Usuario)lItemUsuario.getValue()).getLogin();
+			questionDelete="ï¿½Desea reactivar al Usuario: " + ((Usuario)lItemUsuario.getValue()).getLogin();
 		}
 	}
 
 	/**
-	 * Realiza la asociación entre el usuario y los roles.
+	 * Realiza la asociaciï¿½n entre el usuario y los roles.
 	 * @param usuario	: Objeto Usuario
 	 * @param action	: accion a realizar; nuevo o actualizacion.
 	 * @throws Exception

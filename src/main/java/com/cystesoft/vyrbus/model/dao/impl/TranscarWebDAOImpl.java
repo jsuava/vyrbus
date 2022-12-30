@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José Abanto
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Abanto
  * Fecha		: 2 may. 2022
  * Hora			: 22:44:11
  */
@@ -175,9 +175,10 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 
 		String sql = null;
 
-		Integer usuario_id = null;
+		
 		//Cuando es un usuario nuevo
 		if(transcarUsuario.getId()==null) {
+			Integer usuario_id = null;
 			//Genera el identificador para el UsuarioHardware
 			sql = "select nextval('seq_tcmusuhard_id') usuhard_id ";
 			Integer usuarioHardware_id = getJdbcTemplate().queryForInt(sql);
@@ -228,7 +229,7 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 			getJdbcTemplate().update(sql);
 		}else {
 
-			//Cuando es una modificación
+			//Cuando es una modificacion
 			sql = "UPDATE tcmusuario SET "
 					+ " c_apepat='"+transcarUsuario.getApellidoParterno()+"' "
 					+ ",c_apemat="+(transcarUsuario.getApellidoMaterno()!=null? "'"+transcarUsuario.getApellidoMaterno()+"' ":"Null ")
@@ -253,7 +254,7 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 		if(idsRoles !=null) {
 			String[] roles = idsRoles.split(",");
 			for(String rol_id: roles) {			
-				sql = "INSERT INTO tctusuario_rol (rol_id, usuario_id) VALUES ("+rol_id+", "+usuario_id+" )";
+				sql = "INSERT INTO tctusuario_rol (rol_id, usuario_id) VALUES ("+rol_id+", "+transcarUsuario.getId()+" )";
 				getJdbcTemplate().update(sql);	
 			}		
 		}				
@@ -308,7 +309,7 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 		
 		String messageError = null;
 		if(isCorret == Constantes.FALSE_VALUE)
-			messageError = "Ha ocurrido un error al aperturar la liquidación";
+			messageError = "Ha ocurrido un error al aperturar la liquidaciï¿½n";
 
 		return messageError;
 	}
