@@ -16,6 +16,38 @@ import com.cystesoft.vyrbus.service.locator.ServiceLocator;
  *
  */
 public class UtilFlag {
+	final static int FLAG_IDURL_PRINTAPI_PDF = 1;	
+	final static int FLAG_IDFORM_PRINT_DOWNLOAD = 2;
+	final static int FLAG_IDFORM_PRINT_VIEWPDF = 3;
+	final static int FLAG_IDURL_VIEW_PDF = 4;
+	final static int FLAG_IDFORM_PRINT_VIEWPDF_MAN = 5;
+	final static int FLAG_IDFORM_PRINT_VIEWPDF_CARDES = 6;
+	
+	/**
+	 * Formato de impresion desde un nuevo navegador, para la impreson de los manifiestos
+	 * @param agenciaId : Identificador de la agencia
+	 * @return True, si la configuración esta activa: False, lo contrario.
+	 * @throws Exception
+	 */
+	public static boolean isFormatPrintViewPdfManifiesto(Integer agenciaId)throws Exception{
+				
+		boolean estado = getConfigFlagById_paramAgencia(FLAG_IDFORM_PRINT_VIEWPDF_MAN, agenciaId);		
+		
+		return estado;
+	}
+	
+	/**
+	 * Formato de impresion desde un nuevo navegador, para la carpeta de despachos
+	 * @param agenciaId : Identificador de la agencia
+	 * @return True, si la configuración esta activa: False, lo contrario.
+	 * @throws Exception
+	 */
+	public static boolean isFormatPrintViewPdfCarpetaDespacho(Integer agenciaId)throws Exception{
+				
+		boolean estado = getConfigFlagById_paramAgencia(FLAG_IDFORM_PRINT_VIEWPDF_CARDES, agenciaId);		
+		
+		return estado;
+	}
 	
 	/**
 	 * Formato de impresion desde un nuevo navegador 
@@ -24,9 +56,8 @@ public class UtilFlag {
 	 * @throws Exception
 	 */
 	public static boolean isFormatPrintViewPdf(Integer agenciaId)throws Exception{
-		final int FLAG_IDFORMAT_PRINT_VIEWPDF = 3;
-		
-		boolean estado = getConfigFlagById_paramAgencia(FLAG_IDFORMAT_PRINT_VIEWPDF, agenciaId);		
+				
+		boolean estado = getConfigFlagById_paramAgencia(FLAG_IDFORM_PRINT_VIEWPDF, agenciaId);		
 		
 		return estado;
 	}
@@ -38,9 +69,8 @@ public class UtilFlag {
 	 * @throws Exception
 	 */
 	public static boolean isFormatPrintDownload(Integer agenciaId)throws Exception {
-		final int FLAG_IDFORMAT_PRINT_DOWNLOAD = 2;
-		
-		boolean estado = getConfigFlagById_paramAgencia(FLAG_IDFORMAT_PRINT_DOWNLOAD, agenciaId);
+				
+		boolean estado = getConfigFlagById_paramAgencia(FLAG_IDFORM_PRINT_DOWNLOAD, agenciaId);
 				
 		return estado;
 	}
@@ -79,11 +109,9 @@ public class UtilFlag {
 	 * @return Url de la API
 	 * @throws Exception
 	 */
-	public static String getUrlApi_printapi()throws Exception{
-		final long FLAG_ID = 1;
+	public static String getUrlApi_printapi()throws Exception{		
 		String url = null;
-		
-		Flag flag = ServiceLocator.getFlagManager().buscarPorId(FLAG_ID);
+		Flag flag = ServiceLocator.getFlagManager().buscarPorId((long)FLAG_IDURL_PRINTAPI_PDF);
 		if(flag !=null && flag.getLlave()!=null && flag.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO))
 			url = flag.getLlave();
 		
@@ -96,10 +124,10 @@ public class UtilFlag {
 	 * @throws Exception
 	 */
 	public static String getUrlView_pdf()throws Exception{
-		final long FLAG_ID = 4;
+		
 		String url = null;
 		
-		Flag flag = ServiceLocator.getFlagManager().buscarPorId(FLAG_ID);
+		Flag flag = ServiceLocator.getFlagManager().buscarPorId((long)FLAG_IDURL_VIEW_PDF);
 		if(flag !=null && flag.getLlave()!=null && flag.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO))
 			url = flag.getLlave();
 		
