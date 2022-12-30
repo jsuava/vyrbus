@@ -5805,11 +5805,12 @@ public class WndVentaReserva extends WndBase {
 //			}
 
 			//validacion para cuando es un boleto de viaje - 13/03/2017 - jabanto
-			if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE){
-				if(txtNumeroBoleto.getText().trim().indexOf("-")!=3){
-					throw new Exception("El formato del Número de Boleto no es válido");
-				}
-			}
+			//##Comentodo 29/12/2022 - jabanto - se habilitó para el ingreso de la venta adelantada.
+//			if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE){
+//				if(txtNumeroBoleto.getText().trim().indexOf("-")!=3){
+//					throw new Exception("El formato del Número de Boleto no es válido");
+//				}
+//			}
 
 			ventaPasaje = new VentaPasaje();
 
@@ -5851,7 +5852,7 @@ public class WndVentaReserva extends WndBase {
 				TarjetaCredito tarjetaCredito = (TarjetaCredito)cmbTarjetaCredito.getSelectedItem().getValue();
 				ventaPasaje.setTarjetaCredito(tarjetaCredito);
 			}
-			ventaPasaje.setNumeroBoleto(txtNumeroBoleto.getText().equals("")?null:txtNumeroBoleto.getText());
+			ventaPasaje.setNumeroBoleto(txtNumeroBoleto.getText().equals("")?null:txtNumeroBoleto.getText().trim().toUpperCase());
 			/*	Realizar si no es Fecha Abierta	*/
 			if(!rdVentaFechaAbierta.isSelected()){
 				if(agencia.getTipoAgencia().getId().intValue()!=Constantes.ID_TIPAGE_TEPSA)

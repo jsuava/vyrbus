@@ -163,7 +163,6 @@ public class Constantes {
 	//SERVER_HOST PRODUCCION TRANSMAR
 //	public static final String SERVER_HOST = "119.8.145.122:8080";
 
-
 	public static final String SERVER_CONTEXT = Executions.getCurrent().getContextPath();
 	public static final String URL_FORMATOS = SERVER_PROTOCOL+"://"+SERVER_HOST+SERVER_CONTEXT+"/formatos/";
 	public static final String URL_FORMATOS_BOLETOS = URL_FORMATOS+"boletos/";

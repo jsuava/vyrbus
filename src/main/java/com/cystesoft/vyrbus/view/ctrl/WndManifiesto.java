@@ -989,9 +989,26 @@ public class WndManifiesto extends WndBase {
 				
 				
 				//************************************************************************************
-				//Consulta la version de impresiï¿½n configurada para la agencia - jabanto 16/11/2022
+				//Consulta la version de impresión configurada para la agencia - jabanto 16/11/2022
 				Agencia oagencia = (Agencia)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
-				if(UtilFlag.isFormatPrintDownload(oagencia.getId())) {
+				
+				if(UtilFlag.isFormatPrintViewPdfCarpetaDespacho(oagencia.getId())) {
+					int len = path_sunat.length();
+					int pos = path_sunat.indexOf("PRNTLSR-");
+					String nameFileZip = path_sunat.substring(pos,len);
+					File file= new File(path_sunat);
+					byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
+										
+					byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, true);
+					if(filePdfZip !=null) {
+						String urlViewPdf = UtilFlag.getUrlView_pdf();
+						if(urlViewPdf !=null) {
+							String crypto = new BASE64Encoder().encode(filePdfZip);
+							Executions.getCurrent().sendRedirect(urlViewPdf+"?vl="+crypto, "_blank");	
+						}					
+					}		
+					
+				}else if(UtilFlag.isFormatPrintDownload(oagencia.getId())) {
 					int len = path_sunat.length();
 					int pos = path_sunat.indexOf("PRNTLSR-");
 					String nameFileZip = path_sunat.substring(pos,len);
@@ -1016,7 +1033,8 @@ public class WndManifiesto extends WndBase {
 							String crypto = new BASE64Encoder().encode(filePdfZip);
 							Executions.getCurrent().sendRedirect(urlViewPdf+"?vl="+crypto, "_blank");	
 						}					
-					}								
+					}	
+					
 				}else {
 					/*Descarga el archivo .xml*/
 					Filedownload.save(new File(path_sunat), "application/zip");
@@ -1130,7 +1148,24 @@ public class WndManifiesto extends WndBase {
 					//************************************************************************************
 					//Consulta la version de impresiï¿½n configurada para la agencia - jabanto 16/11/2022
 					Agencia oagencia = (Agencia)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
-					if(UtilFlag.isFormatPrintDownload(oagencia.getId())) {
+					
+					if(UtilFlag.isFormatPrintViewPdfManifiesto(oagencia.getId())) {
+						int len = path_sunat.length();
+						int pos = path_sunat.indexOf("PRNTLSR-");
+						String nameFileZip = path_sunat.substring(pos,len);
+						File file= new File(path_sunat);
+						byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
+						int x = 0;
+						byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, true);
+						if(filePdfZip !=null) {
+							String urlViewPdf = UtilFlag.getUrlView_pdf();
+							if(urlViewPdf !=null) {
+								String crypto = new BASE64Encoder().encode(filePdfZip);
+								Executions.getCurrent().sendRedirect(urlViewPdf+"?vl="+crypto, "_blank");	
+							}					
+						}
+						
+					}else if(UtilFlag.isFormatPrintDownload(oagencia.getId())) {
 						int len = path_sunat.length();
 						int pos = path_sunat.indexOf("PRNTLSR-");
 						String nameFileZip = path_sunat.substring(pos,len);
@@ -1139,7 +1174,8 @@ public class WndManifiesto extends WndBase {
 										
 						byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, false);
 						if(filePdfZip !=null)
-							Filedownload.save(filePdfZip, "multipart/form-data", nameFileZip);		
+							Filedownload.save(filePdfZip, "multipart/form-data", nameFileZip);
+						
 					}else if(UtilFlag.isFormatPrintViewPdf(oagencia.getId())) {
 						int len = path_sunat.length();
 						int pos = path_sunat.indexOf("PRNTLSR-");
@@ -2169,12 +2205,12 @@ public class WndManifiesto extends WndBase {
 		Row row = new Row();
 		Radiogroup radiogroup = new Radiogroup();
 		radiogroup.setOrient("vertical");
-		final Radio rdPrintLasert = new Radio("ImpresiÃ³n Laser");
+		final Radio rdPrintLasert = new Radio("Impresión Laser");
 //		rdPrintLasert.setDisabled(configuracionImpresora==null);
 		radiogroup.appendChild(rdPrintLasert);
 		Separator separator = new Separator("horizontal");
 		radiogroup.appendChild(separator);
-		final Radio rdPrintMatricial = new Radio("ImpresiÃ³n Matricial");
+		final Radio rdPrintMatricial = new Radio("Impresión Matricial");
 		rdPrintMatricial.setChecked(rdPrintLasert.isDisabled());
 		radiogroup.appendChild(rdPrintMatricial);
 		separator = new Separator("horizontal");
