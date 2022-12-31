@@ -2374,153 +2374,190 @@ public class CreateDocument implements Serializable {
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),"UTF-8"));
 			String linea = "";
 
-
-
 			//---> line 1:	TITULO DEL REPORTE
 			String title="";
+			String salida="";
 			title=("MANIFIESTO DE EQUIPAJES");
-			linea = tabular(54)+title;
+			linea = tabular(29)+title;
 			bw.write(linea + NEWLINE);
+			
 			//---> line 2:
-			linea = Constantes.empresa;
-			String ruc= Constantes.ruc;
-			linea +=tabular(89)+"RUC: "+ruc;
-			bw.write(linea+NEWLINE);
-			//---> line 3:
-			String ofPrincipal = Constantes.direccion_empresa;
-			String centraTelf = Constantes.nro_telefono;
-			linea="Of.Principal: "+ofPrincipal+tabular(10)+"Central Telf.: "+centraTelf+tabular(23);
-			linea+="Nro.Manif.: "+numeroManifiesto;
-			bw.write(linea+NEWLINE);
-			//---> line 5:(Agencia - Nro.Itinerario - Bus)
+			linea = "EMPRESA  : " + Constantes.empresa;
+			linea+=tabular(39-Constantes.empresa.length())+"NRO. MANIF.: "+numeroManifiesto;
+			bw.write(linea + NEWLINE);
+			
+			//---> line 3:(Agencia - Fecha)
 			String agenciA=equipaje.getAgencia().getDenominacion();
 			longitud_C=agenciA.length();
-			String bus="";
-			if(!(itinerario.getBus()==null))
-				bus=itinerario.getBus().getCodigo();
-			linea="Agencia   : "+agenciA+tabular(44-longitud_C);
-			longitud_C=itinerario.getId().toString().length();
-			linea+="Nro.Itin.: "+itinerario.getId()+tabular(38-longitud_C);
-			linea+="Bus : "+bus;
-			bw.write(linea+NEWLINE);
-			//---> line 6:(Origen - Destino - Placa)
-			String origen=itinerario.getRuta().getOrigen();
+			linea="SUCURSAL : "+agenciA+tabular(44-longitud_C);
+			salida=Constantes.FORMAT_DATE.format(itinerario.getFechaPartida())+" "+itinerario.getHoraPartida();
+			linea+="FECHA : "+salida;
+			bw.write(linea + NEWLINE);
+			
+			//Line 4: DESTINO, AG. DESTINO
 			String destino=itinerario.getRuta().getDestino();
-			String placa="";
-			if(!(itinerario.getBus()==null))
-				placa=itinerario.getBus().getNumeroPlaca();
-			longitud_C=origen.length();
-			linea="Origen    : "+origen+tabular(44-longitud_C); longitud_C=destino.length();
-			linea+="Destino  : "+destino+tabular(36-longitud_C);
-			linea+="Placa : "+placa;
-			bw.write(linea+NEWLINE);
-
-			//---> linea 7:(Chofer1 -  Licencia - Nro. Tarj. Habilit.)
-			String Chofer=""; String licencia=""; String TarjHabilit="";
+			longitud_C=destino.length();
+			linea="DESTINO  : "+destino+tabular(38-longitud_C);
+			linea+="AG. DESTINO : ";
+			bw.write(linea+NEWLINE);			
+			
+			//---> linea 5:(PILOTO -  Licencia )
+			String Chofer=""; String licencia=""; //String TarjHabilit="";
+			String strPiloto="";
 			if(!(itinerario.getBus()==null)){
 				Personal piloto = new Personal();
 				piloto=itinerario.getBus().getProgramacionServicio().getPiloto();
 				Chofer=piloto.toString(); //.getApellidoPaterno()+" "+piloto.getApellidoMaterno()+", "+piloto.getNombre();
+				strPiloto=Chofer;
 				if(piloto.getLicencia() != null)
 					licencia=piloto.getLicencia();
-				if(!(itinerario.getBus().getDocumentoBus()==null))
-					TarjHabilit=itinerario.getBus().getDocumentoBus().getNumeroDocumento();
+//				if(!(itinerario.getBus().getDocumentoBus()==null))
+//					TarjHabilit=itinerario.getBus().getDocumentoBus().getNumeroDocumento();
 
 				longitud_C=Chofer.length();
-				linea="Chofer 1  : "+Chofer+tabular(44-longitud_C); longitud_C=licencia.length();
-				linea+="Licencia : "+licencia+tabular(23-longitud_C);
-				linea+="Nro. Tarj. Habilit.: "+TarjHabilit;
+				linea="PILOTO   : "+Chofer+tabular(41-longitud_C); 
+				linea+="LICENCIA : "+licencia;
+//				linea+="Nro. Tarj. Habilit.: "+TarjHabilit;
 				bw.write(linea+NEWLINE);
-				//---> linea 8:(Chofer2 -  Licencia - Marca)
-				String marca="";
+				//---> linea 6:(COPILOTO -  Licencia )
+//				String marca="";
 				if(!(itinerario.getBus()==null)){
 					Personal copiloto = new Personal();
 					copiloto=itinerario.getBus().getProgramacionServicio().getCopiloto();
 					Chofer=copiloto.toString(); //.getApellidoPaterno()+" "+copiloto.getApellidoMaterno()+", "+copiloto.getNombre();
 					if(copiloto.getLicencia() != null)
 						licencia=copiloto.getLicencia();
-					if(!(itinerario.getBus().getGrupoMantenimiento().getDenominacion()==null))
-						marca=itinerario.getBus().getGrupoMantenimiento().getDenominacion();
+//					if(!(itinerario.getBus().getGrupoMantenimiento().getDenominacion()==null))
+//						marca=itinerario.getBus().getGrupoMantenimiento().getDenominacion();
 				}
 				longitud_C=Chofer.length();
-				linea="Chofer 2  : "+Chofer+tabular(44-longitud_C); longitud_C=licencia.length();
-				linea+="Licencia : "+licencia+tabular(36-longitud_C);
-				linea+="Marca : "+marca;
+				linea="COPILOTO : "+Chofer+tabular(41-longitud_C); 
+				linea+="LICENCIA : "+licencia;
+//				linea+="Marca : "+marca;
 				bw.write(linea+NEWLINE);
 				//---> linea 8:(Chofer3 -  Licencia )
-				Chofer="";licencia="";String servicio="";
-				if(!(itinerario.getBus()==null) && itinerario.getBus().getProgramacionServicio().getCopilotoAuxiliar()!=null){
-					Personal copilotoAux = new Personal();
-					copilotoAux=itinerario.getBus().getProgramacionServicio().getCopilotoAuxiliar();
-					Chofer=copilotoAux.toString();
-					if(copilotoAux.getLicencia() != null)
-						licencia=copilotoAux.getLicencia();
-				}
-				servicio=itinerario.getServicio().getDenominacion();
-				longitud_C=Chofer.length();
-				linea="Chofer 3  : "+Chofer+tabular(44-longitud_C); longitud_C=licencia.length();
-				linea+="Licencia : "+licencia+tabular(33-longitud_C);
-				linea+="Servicio : "+servicio;
-
-				bw.write(linea+NEWLINE);
+//				Chofer="";licencia="";
+//				if(!(itinerario.getBus()==null) && itinerario.getBus().getProgramacionServicio().getCopilotoAuxiliar()!=null){
+//					Personal copilotoAux = new Personal();
+//					copilotoAux=itinerario.getBus().getProgramacionServicio().getCopilotoAuxiliar();
+//					Chofer=copilotoAux.toString();
+//					if(copilotoAux.getLicencia() != null)
+//						licencia=copilotoAux.getLicencia();
+//				}
+//				servicio=itinerario.getServicio().getDenominacion();
+//				longitud_C=Chofer.length();
+//				linea="Chofer 3  : "+Chofer+tabular(44-longitud_C); longitud_C=licencia.length();
+//				linea+="Licencia : "+licencia+tabular(33-longitud_C);
+				
 				//---> linea 9:(Terramoza -  Salida - Servicio)
-				String tripulante=""; String salida=""; String dniTerramoza="";
+				String tripulante=""; //String dniTerramoza="";
+				String servicio="";
+				servicio=itinerario.getServicio().getDenominacion();
 				//Se agrego la condicion en el if porque la tripulante ya no es obligatorio, por MAOE 27/06/2021
 				if(!(itinerario.getBus()==null) && itinerario.getBus().getProgramacionServicio().getTripulante()!=null ){
 					Personal terramoza = new Personal();
 					terramoza=itinerario.getBus().getProgramacionServicio().getTripulante();
 					tripulante=terramoza.toString();//.getApellidoPaterno()+" "+terramoza.getApellidoMaterno()+", "+terramoza.getNombre();
-					dniTerramoza=terramoza.getNroDocumento()!=null?terramoza.getNroDocumento():"";
+//					dniTerramoza=terramoza.getNroDocumento()!=null?terramoza.getNroDocumento():"";
 				}
-				salida=Constantes.FORMAT_DATE.format(itinerario.getFechaPartida())+" "+itinerario.getHoraPartida();
-
 				longitud_C=tripulante.length();
-				linea="Terramoza : "+tripulante+tabular(49-longitud_C); longitud_C=dniTerramoza.length();
-				linea+="DNI : "+dniTerramoza+tabular(35-longitud_C);
-				linea+="Salida : "+salida;
-
+				linea="TRIPULANTE : "+tripulante+tabular(39-longitud_C);
+				linea+="SERVICIO : "+servicio;
 				bw.write(linea+NEWLINE);
-			}
 
-			int longAsiento = 6;
-			int longNroComprobante = 15;
-			int longPasajero = 82;
-			int longTikect = 16;
+//				longitud_C=dniTerramoza.length();
+//				linea+="DNI : "+dniTerramoza+tabular(35-longitud_C);
+//				linea+="Salida : "+salida;
+
+//				bw.write(linea+NEWLINE);
+			}
+			
+			
+			String bus="";
+			if(!(itinerario.getBus()==null))
+				bus=itinerario.getBus().getCodigo();
+			
+			longitud_C=itinerario.getId().toString().length();
+//			linea+="Nro.Itin.: "+itinerario.getId()+tabular(38-longitud_C);
+			linea="BUS      : "+bus+tabular(44-longitud_C);
+//			bw.write(linea+NEWLINE);
+			//---> line 5:(Origen - Destino - Placa)
+//			String origen=itinerario.getRuta().getOrigen();
+			
+			String placa="";
+			if(!(itinerario.getBus()==null))
+				placa=itinerario.getBus().getNumeroPlaca();
+//			longitud_C=origen.length();
+//			linea="Origen    : "+origen+tabular(44-longitud_C); longitud_C=destino.length();
+//			linea+="DESTINO : "+destino+tabular(36-longitud_C);
+			linea+="PLACA : "+placa;
+			bw.write(linea+NEWLINE);
+
+			int longAsiento = 3;
+			int longNroComprobante = 13;
+			int longPasajero = 23;
+			int longTikect = 26;
+			int longImporte= 9;
+			Double totalManifiesto=0.0;
+			int cantCeros;
 
 			/*Crea Encabezado*/
-			bw.write(NEWLINE);
-			bw.write(NEWLINE);
-			linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
+//			bw.write(NEWLINE);
+//			bw.write(NEWLINE);
+			linea="+------------------------------------------------------------------------------+";
 			bw.write(linea+NEWLINE);
-			linea = "| ASIENTO ";
-			linea += "|  COMPROBANTE   ";
-			linea += "| PASAJERO" + tabular(74);
-			linea += "|        TICKET        |";
+			linea = "|ATO";
+			linea += "| COMPROBANTE ";
+			linea += "| PASAJERO" + tabular(14);
+			linea += "| DETALLE" + tabular(18);
+			linea += "|  TOTAL  |" ;
 			bw.write(linea+NEWLINE);
-			linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
+			linea="+------------------------------------------------------------------------------+";
 			bw.write(linea+NEWLINE);
 			for(DetalleEquipaje detalleEquipaje: listDetalleEquipajes){
 				/*ASIENTO*/
 				String asiento=(detalleEquipaje.getVentaPasaje()!=null?detalleEquipaje.getVentaPasaje().getNumeroAsiento().toString():"");
 				asiento = (asiento.length()==1?"0"+asiento:asiento);
 				longitud_C=asiento.length();
-				linea="|   "+asiento+tabular(longAsiento-longitud_C);
-				/*BOLETO*/
+				linea="|"+asiento+tabular(longAsiento-longitud_C);
+				/*COMPROBANTE*/
 				String numeroComprobante=(detalleEquipaje.getVentaPasaje()!=null?detalleEquipaje.getVentaPasaje().getNumeroBoleto():"");
 				longitud_C=numeroComprobante.length();
-				linea+="| "+numeroComprobante+tabular(longNroComprobante-longitud_C)+"| ";
+				linea+=" "+numeroComprobante+tabular(longNroComprobante-longitud_C);
 				/*PASAJERO*/
 				String pasajero=(detalleEquipaje.getVentaPasaje()!=null?detalleEquipaje.getVentaPasaje().getPasajero().toString():"");
+				pasajero = (pasajero.length()>23 ? pasajero.substring(0, longPasajero) : pasajero);
 				longitud_C=pasajero.length();
-				linea+=pasajero+tabular(longPasajero-longitud_C)+"| ";
-				/*TICKET*/
-				String ticket=detalleEquipaje.getTicket();
+				linea+=" "+pasajero+tabular(longPasajero-longitud_C);
+				/*OBSERVACIONES*/
+				String ticket=detalleEquipaje.getEquipaje().getObservaciones();
+				ticket = (ticket.length()>26 ? ticket.substring(0, longTikect) : ticket);
 				longitud_C=ticket.length();
-				linea+= tabular(5)+ ticket+tabular(longTikect-longitud_C)+"| ";
+				linea+= tabular(1)+ ticket+tabular(longTikect-longitud_C);
+				/*IMPORTE*/
+				String importe= Util.toNumberFormat(detalleEquipaje.getVentaPasaje().getImportePagado(), 2);
+				totalManifiesto += detalleEquipaje.getVentaPasaje().getImportePagado();
+				longitud_C=importe.length();
+				cantCeros = longImporte-longitud_C;
+				linea+= tabular(cantCeros)+ importe+" | ";				
 
 				bw.write(linea+NEWLINE);
 			}
-			linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
+			linea="+------------------------------------------------------------------------------+";
+			bw.write(linea+NEWLINE);
+			linea=tabular(60)+"TOTAL    ";
+			longitud_C=Util.toNumberFormat(totalManifiesto, 2).length();
+			cantCeros = 10-longitud_C;
+			linea+=tabular(cantCeros)+Util.toNumberFormat(totalManifiesto, 2);
+			bw.write(linea+NEWLINE);
+			linea="";
+			bw.write(linea+NEWLINE);
+			bw.write(linea+NEWLINE);
+			linea=tabular(10)+"____________________________"+tabular(10)+"____________________________";
+			bw.write(linea+NEWLINE);
+			linea=tabular(12)+"  RECIBI CONFORME(PILOTO)   "+tabular(10)+" ENTREGUE CONFORME(USUARIO)";
+			bw.write(linea+NEWLINE);
+			linea=tabular(12)+strPiloto+tabular(10);
 			bw.write(linea+NEWLINE);
 
 			bw.close();
@@ -2858,16 +2895,16 @@ public class CreateDocument implements Serializable {
 	private static final void creaEncabezadoManifiesto(BufferedWriter bw) throws Exception{
 		String linea = "";
 		//---> linea 11: encabezado del detalle de pasajeros(Ato - N.Boleto - Nombre - Edad - TipoDoc. - Nr.Docum. - Destino - PtoEmbarque - Importe)
-		linea="| Ato";
-		linea+="| N.Boleto      ";
-		linea+="| Nombre"+tabular(27);
-		linea+="|Edad";
-		linea+="|T.Doc";
-		linea+="|Nr.Documento";
-		linea+="| Destino       ";
-		linea+="| Pto Embarque  ";
+		linea="| ATO";
+		linea+="| COMPROBANTE   ";
+		linea+="| NOMBRE"+tabular(27);
+		linea+="|EDAD";
+		linea+="|T.DOC";
+		linea+="|NR.DOCUMENTO";
+		linea+="| DESTINO       ";
+		linea+="| PTO EMBARQUE  ";
 		linea+="|  F.P.   ";
-		linea+="|  Importe  |";
+		linea+="|  IMPORTE  |";
 		bw.write(linea+NEWLINE);
 	}
 
@@ -2981,7 +3018,9 @@ public class CreateDocument implements Serializable {
 							longitud_C=documentoPax.length();
 							linea+=documentoPax+tabular(longDocumentoPax-longitud_C)+"| ";
 							/*DESTINO*/
-							String odestino=ventaPasaje.getRuta().getDestino();
+//							String odestino=ventaPasaje.getRuta().getDestino();
+							//MAOE 29/12/2022: Se cambio el destino por la Agencia destino
+							String odestino=ventaPasaje.getAgenciaLlegada().getDenominacion();
 							destino=odestino.toUpperCase().substring(0,1)+odestino.toLowerCase().substring(1,odestino.length());
 							if(destino.length()>longDestino)
 								destino=destino.substring(0,longDestino);

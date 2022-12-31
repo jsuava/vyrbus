@@ -25,7 +25,7 @@ public class Constantes {
 	/**
 	 * Vension actual del Sistema
 	 */
-	public static final String SYSTEM_VERSION = "Versiï¿½n 3.2.4";
+	public static final String SYSTEM_VERSION = "Versión 3.2.5";
 		
 	/**
 	 * Constante para la Acciï¿½n Nuevo
@@ -104,11 +104,12 @@ public class Constantes {
 	public static final int TRUE_VALUE = 1;
 	public static final int FALSE_VALUE = 0;
 	/*	Para las fecha en null	*/
-	public static final Date FECHA_NULL= Util.StringtoDate("01/01/1950", DATE_FORMAT);
+	public static final Date FECHA_NULL= Util.StringtoDate("01/01/1960", DATE_FORMAT);
 	/*	Para el Applet	*/
 	public static final int VALIDAR_APPLET = 1;
 	/* Guarda el valor del IGV actual */
 	public static final double IGV=18;
+	public static final double TARIFA_MINIMA=40;
 
 	/*	Para los tipos de venta	*/
 	public static final int TIPO_VENTA_NORMAL = 1;
