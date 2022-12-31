@@ -175,10 +175,10 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 
 		String sql = null;
 
-		
+		Integer usuario_id = null;
 		//Cuando es un usuario nuevo
 		if(transcarUsuario.getId()==null) {
-			Integer usuario_id = null;
+			
 			//Genera el identificador para el UsuarioHardware
 			sql = "select nextval('seq_tcmusuhard_id') usuhard_id ";
 			Integer usuarioHardware_id = getJdbcTemplate().queryForInt(sql);
@@ -246,7 +246,8 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 				//Elimina los roles asocuados al usario, para luego insertar los nuevos enviados
 				sql = "DELETE FROM tctusuario_rol ur WHERE ur.usuario_id="+transcarUsuario.getId();
 				getJdbcTemplate().update(sql);
-			}			
+			}
+			usuario_id = transcarUsuario.getId();
 		}
 
 		//Inserta los roles
@@ -254,7 +255,7 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 		if(idsRoles !=null) {
 			String[] roles = idsRoles.split(",");
 			for(String rol_id: roles) {			
-				sql = "INSERT INTO tctusuario_rol (rol_id, usuario_id) VALUES ("+rol_id+", "+transcarUsuario.getId()+" )";
+				sql = "INSERT INTO tctusuario_rol (rol_id, usuario_id) VALUES ("+rol_id+", "+usuario_id+" )";
 				getJdbcTemplate().update(sql);	
 			}		
 		}				
