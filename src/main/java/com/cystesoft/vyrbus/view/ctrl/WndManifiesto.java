@@ -989,7 +989,7 @@ public class WndManifiesto extends WndBase {
 				
 				
 				//************************************************************************************
-				//Consulta la version de impresión configurada para la agencia - jabanto 16/11/2022
+				//Consulta la version de impresiï¿½n configurada para la agencia - jabanto 16/11/2022
 				Agencia oagencia = (Agencia)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
 				
 				if(UtilFlag.isFormatPrintViewPdfCarpetaDespacho(oagencia.getId())) {
@@ -1318,7 +1318,7 @@ public class WndManifiesto extends WndBase {
 			if(manifiesto==null){
 				//Valida si el manifiesto ya fue impreso
 				manifiesto=validaManifiestoImpreso(itinerario.getId());
-				if(manifiesto==null){//Si el manifiesto aï¿½n no a sido impreso
+				if(manifiesto==null){//Si el manifiesto aÃºn no a sido impreso
 					loadCorrelativosManifiesto();
 					manifiesto=new Manifiesto();
 					if(especieValoradaSunat !=null){
@@ -2205,12 +2205,12 @@ public class WndManifiesto extends WndBase {
 		Row row = new Row();
 		Radiogroup radiogroup = new Radiogroup();
 		radiogroup.setOrient("vertical");
-		final Radio rdPrintLasert = new Radio("Impresión Laser");
+		final Radio rdPrintLasert = new Radio("Impresiï¿½n Laser");
 //		rdPrintLasert.setDisabled(configuracionImpresora==null);
 		radiogroup.appendChild(rdPrintLasert);
 		Separator separator = new Separator("horizontal");
 		radiogroup.appendChild(separator);
-		final Radio rdPrintMatricial = new Radio("Impresión Matricial");
+		final Radio rdPrintMatricial = new Radio("Impresiï¿½n Matricial");
 		rdPrintMatricial.setChecked(rdPrintLasert.isDisabled());
 		radiogroup.appendChild(rdPrintMatricial);
 		separator = new Separator("horizontal");
