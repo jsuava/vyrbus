@@ -22,6 +22,20 @@ public class UtilFlag {
 	final static int FLAG_IDURL_VIEW_PDF = 4;
 	final static int FLAG_IDFORM_PRINT_VIEWPDF_MAN = 5;
 	final static int FLAG_IDFORM_PRINT_VIEWPDF_CARDES = 6;
+	final static int FLAG_IDACTIVA_IMPPAG_VENTAREMOTA = 7;
+	
+	/**
+	 * Activa o desactiva el control del importe a pagar para ventas remotas.
+	 * @param agenciaId : Identificador de la agencia
+	 * @return True, si la configuración esta activa: False, lo contrario.
+	 * @throws Exception
+	 */
+	public static boolean isActivaImportePagarVentaRemota(Integer agenciaId)throws Exception{
+				
+		boolean estado = getConfigFlagById_paramAgencia(FLAG_IDACTIVA_IMPPAG_VENTAREMOTA, agenciaId);		
+		
+		return estado;
+	}
 	
 	/**
 	 * Formato de impresion desde un nuevo navegador, para la impreson de los manifiestos
