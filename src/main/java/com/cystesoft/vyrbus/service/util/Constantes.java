@@ -109,6 +109,7 @@ public class Constantes {
 	public static final int VALIDAR_APPLET = 1;
 	/* Guarda el valor del IGV actual */
 	public static final double IGV=18;
+	public static final double TARIFA_MINIMA=40;
 
 	/*	Para los tipos de venta	*/
 	public static final int TIPO_VENTA_NORMAL = 1;
