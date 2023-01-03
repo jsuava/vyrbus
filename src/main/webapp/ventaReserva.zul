@@ -854,7 +854,7 @@
 														<row>
 															<label value="IMPORTE :"/>
 															<hlayout>
-																<doublebox id="dblImporte" width="66px" format="###,##0.00" readonly="true"/>
+																<doublebox id="dblImporte" width="66px" onFocus="dblImporte.select()" format="###,##0.00" readonly="true"/>
 																<doublebox id="dblImporteOtraMoneda" width="66px" format="###,##0.00" readonly="true" visible="false"/>
 																<checkbox id="chkPagoMixto" label="Pago Mixto" onClick="wndVentaReserva.habilitarPagoMixto()"/>
 															</hlayout>

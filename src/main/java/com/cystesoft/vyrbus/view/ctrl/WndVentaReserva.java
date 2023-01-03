@@ -176,6 +176,7 @@ import com.cystesoft.vyrbus.service.util.MyTime;
 import com.cystesoft.vyrbus.service.util.RESTCiva;
 import com.cystesoft.vyrbus.service.util.Util;
 import com.cystesoft.vyrbus.service.util.UtilData;
+import com.cystesoft.vyrbus.service.util.UtilFlag;
 import com.cystesoft.vyrbus.service.util.WSCruzdelsur;
 import com.cystesoft.vyrbus.service.util.WSFE;
 import com.cystesoft.vyrbus.view.ui.DlgMessage;
@@ -2072,10 +2073,14 @@ public class WndVentaReserva extends WndBase {
 //					lbxAsientos.setSelectedIndex(0);
 //					lbxAsientos_onSelect();
 //				}
+				
+				//Valida si es una venta remota y si debe o no permitir la edicion del importa a pagar - 02/01/2023 - jabanto
+				dblImporte.setReadonly(true);
+				if(chkVentaRemota.isChecked() && UtilFlag.isActivaImportePagarVentaRemota(getAgencia().getId()))
+					dblImporte.setReadonly(false);
+				
 				onCancelPax();
 				txtDocumentoPax.setFocus(true);
-
-
 
 //				/*Valida debe combertir la tarifa a otra moneda diferente a soles*/
 //				pagoSoles=null;
@@ -5114,6 +5119,10 @@ public class WndVentaReserva extends WndBase {
 //
 
 			}
+			if(dblImporte.getValue()==null || dblImporte.getValue()<=.00) {
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.importePagadoCero"), dblImporte);
+				return;
+			}
 
 			lstVentasVoucher.clear();
 
@@ -5201,7 +5210,8 @@ public class WndVentaReserva extends WndBase {
 						DlgMessage.information(Messages.getString("WndVentaReserva.information.noNumeroOperacionBancaria"), txtOperacionBancaria);
 						return;
 					}
-				}else if(oPasajero.getIndeseable().intValue()==Constantes.TRUE_VALUE){
+				}
+				if(oPasajero.getIndeseable().intValue()==Constantes.TRUE_VALUE){
 					DlgMessage.information(Messages.getString("WndVentaReserva.information.pasajeroIndeseable"));
 					return;
 				}else if(cmbTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago
@@ -5211,13 +5221,17 @@ public class WndVentaReserva extends WndBase {
 						DlgMessage.information(Messages.getString("WndVentaReserva.information.noOperadorTarjetaCredito"), cmbOperadorTarjetaCredito);
 						return;
 					}
-				}else if(dblTarifa.getValue()<=0.0){
+				}
+				if(dblTarifa.getValue()<=0.0){
 					DlgMessage.information(Messages.getString("WndVentaReserva.information.noTieneTarifaIda"));
 					return;
 				}
 				else if (oCliente!=null && (oCliente.getDireccion()==null || oCliente.getDireccion().trim().isEmpty())){
 					tabCliente.setSelected(true);
 					DlgMessage.information(Messages.getString("WndVentaReserva.information.noDireccionCliente"),txtDireccionCliente);
+				}else if(dblImporte.getValue()==null || dblImporte.getValue()<=.00) {
+					DlgMessage.information(Messages.getString("WndVentaReserva.information.importePagadoCero"), dblImporte);
+					return;
 				}
 
 				Messagebox.show(Messages.getString("WndVentaReserva.information.confirmacionGuardarVenta"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
@@ -5883,7 +5897,12 @@ public class WndVentaReserva extends WndBase {
 			ventaPasaje.setTarifa(dblTarifa.getValue());
 			ventaPasaje.setRecargo(dblRecargo.getValue());
 			ventaPasaje.setDescuento(dblDescuento.getValue());
-			ventaPasaje.setImportePagado(dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue());
+//			ventaPasaje.setImportePagado(dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue());
+			Double importePagado = dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue();
+			ventaPasaje.setImportePagado(dblImporte.getValue());
+			if(importePagado != ventaPasaje.getImportePagado()) {
+				ventaPasaje.setObservaciones("IMPORTE A PAGAR EDITADO POR EL USUARIO, ORIGINAL("+importePagado+")");
+			}
 
 			/*19/08/2015 - jabanto*/
 			/*Si la agencia tiene configurado otra moneda diferente a las Soles*/
@@ -5941,7 +5960,10 @@ public class WndVentaReserva extends WndBase {
 			ventaPasaje.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 			ventaPasaje.setLiquidacion(null);
 			ventaPasaje.setPromocion(txtIdPromocion.getText().trim().isEmpty()?null:new Promocion(Long.valueOf(txtIdPromocion.getText().trim())));
-			ventaPasaje.setObservaciones(txtObservacionesIda.getText().trim().isEmpty()?null:txtObservacionesIda.getText().trim().toUpperCase());
+			if(ventaPasaje.getObservaciones()==null)
+				ventaPasaje.setObservaciones(txtObservacionesIda.getText().trim().isEmpty()?null:txtObservacionesIda.getText().trim().toUpperCase());
+			else if(!(txtObservacionesIda.getText().trim().isEmpty()))
+				ventaPasaje.setObservaciones(txtObservacionesIda.getText().trim().toUpperCase());
 
 			if(agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_CORPORATIVO
 					&& cmbCentroCosto.getItems().size()>0
@@ -6701,6 +6723,7 @@ public class WndVentaReserva extends WndBase {
 //		pagoSoles=null;
 		tipoCambio=null;
 		txtOperacionBancaria.setDisabled(true);
+		dblImporte.setReadonly(true);
 	}
 
 	/**
