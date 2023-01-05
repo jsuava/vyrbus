@@ -8,6 +8,7 @@
  */
 package com.cystesoft.vyrbus.service.xml;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -17,12 +18,12 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  */
 @XmlRootElement
-public class XmlPrintLaser {
+public class XmlPrintLaser implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private XmlConfigPrint a_configPrint;
+	private XmlConfigPrint configPrint;
 	private List<XmlManifiesto> xmlManifiesto;	
 	private XmlCarpetaDespacho xmlCarpetaDespacho;
 	private XmlHRE xmlHRE;
@@ -33,14 +34,14 @@ public class XmlPrintLaser {
 	 * @return the a_configPrint
 	 */
 	public XmlConfigPrint getA_configPrint() {
-		return a_configPrint;
+		return configPrint;
 	}
 
 	/**
 	 * @param a_configPrint the a_configPrint to set
 	 */
 	public void setA_configPrint(XmlConfigPrint a_configPrint) {
-		this.a_configPrint = a_configPrint;
+		this.configPrint = a_configPrint;
 	}
 
 	/**

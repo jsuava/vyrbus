@@ -2798,7 +2798,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		try {
 
 			ventaPasaje = new VentaPasaje();
-			
+
 			if (detailItinerary == null)
 				throw new ItinerarioException(ItinerarioException.NO_SELECT);// ItinerarioNotSelectedException();
 			else if (!(cmbPtoEmbarque.getSelectedItem().getValue() instanceof ItinerarioAgenciaPartida))
@@ -2987,7 +2987,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			ventaPasaje.setFechaCaducidad(dateCaducidad);
 
 			if(lblImporte.getValue().equals(LABEL_IMPPAG_TO_TEPSA) && dblImporte.getValue()!=null && dblImporte.getValue()>.00){//Si el importe es a favor de tepsa
-				ventaPasaje.setImportePagado(dblImporte.getValue()+dblPagado.getValue());
+				ventaPasaje.setImportePagado(dblImporte.getValue());
 			} else{
 				//Para no emitir un nuevo comprobante
 				if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_CONFIRMACION_FA) {

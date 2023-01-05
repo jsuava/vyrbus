@@ -236,7 +236,8 @@ public class WndPostergacion extends WndBase implements Serializable {
 			UtilData.cargarDataCombo(cmbFormaPago, FormaPago.class, false);
 
 			String fecha = Util.DatetoString(new Date(), "yyyyMMdd");
-			dtbxFechaPartida.setConstraint("after "+fecha);
+			dtbxFechaPartida.setConstraint("after "+fecha);					
+			
 			txtNumeroControl.setFocus(true);
 		}catch (LiquidacionNullException lnullex){
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noLiquidacion"));
@@ -402,22 +403,23 @@ public class WndPostergacion extends WndBase implements Serializable {
 
 					Date dateSys=Constantes.FORMAT_LONG.parse(ServiceLocator.getVentaPasajesManager().getDateSystem());
 
+					chkCambioNombre.setDisabled(true); //A solicitud de margariat queda permanentemente deshabilitado
 					/*Realiza la validacion para determinar si se puede o no postergar - 08/11/2016 - jabanto*/
 					if(isCorporativo || postergacion.getSecuencial().intValue() >= Constantes.MAXIMO_POSTERGACIONES){
 						chkFechaAbierta.setDisabled(true);
-						chkCambioNombre.setDisabled(true);
+//						chkCambioNombre.setDisabled(true);
 						imgBuscarItinerario.setVisible(false);
 					}
 					if(Util.comparaFechas(postergacion.getFechaCaducidad(), dateSys, Util.OPER_MENOR)){
 						chkFechaAbierta.setDisabled(true);
-						chkCambioNombre.setDisabled(true);
+//						chkCambioNombre.setDisabled(true);
 						imgBuscarItinerario.setVisible(false);
 					}
 //					Date fechaPartida=Constantes.FORMAT_LONG.parse(Constantes.FORMAT_DATE.format(postergacion.getFechaPartida())+" "+postergacion.getHoraPartida());
 //					if(ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(postergacion.getId()) || fechaPartida.getTime() <= dateSys.getTime()){
 					if(ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(postergacion.getId())){
 						chkFechaAbierta.setDisabled(true);
-						chkCambioNombre.setDisabled(true);
+//						chkCambioNombre.setDisabled(true);
 						imgBuscarItinerario.setVisible(false);
 					}
 
