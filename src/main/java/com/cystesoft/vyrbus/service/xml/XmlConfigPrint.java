@@ -30,6 +30,7 @@ public class XmlConfigPrint implements Serializable{
 	private String v5_BistDatos;
 	private String v6_Paridad;
 	private String v7_BistParada;
+	private String v8_NumeroCopias;
 	/**
 	 * @return the v1_EsTuentrada
 	 */
@@ -113,5 +114,17 @@ public class XmlConfigPrint implements Serializable{
 	 */
 	public void setV7_BistParada(String v7_BistParada) {
 		this.v7_BistParada = v7_BistParada;
+	}
+	/**
+	 * @return the v8_NumeroCopias
+	 */
+	public String getV8_NumeroCopias() {
+		return v8_NumeroCopias;
+	}
+	/**
+	 * @param v8_NumeroCopias the v8_NumeroCopias to set
+	 */
+	public void setV8_NumeroCopias(String v8_NumeroCopias) {
+		this.v8_NumeroCopias = v8_NumeroCopias;
 	}
 }

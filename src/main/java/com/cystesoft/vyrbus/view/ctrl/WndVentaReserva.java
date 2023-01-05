@@ -2074,10 +2074,8 @@ public class WndVentaReserva extends WndBase {
 //					lbxAsientos_onSelect();
 //				}
 				
-				//Valida si es una venta remota y si debe o no permitir la edicion del importa a pagar - 02/01/2023 - jabanto
-				dblImporte.setReadonly(true);
-				if(chkVentaRemota.isChecked() && UtilFlag.isActivaImportePagarVentaRemota(getAgencia().getId()))
-					dblImporte.setReadonly(false);
+				
+				
 				
 				onCancelPax();
 				txtDocumentoPax.setFocus(true);
@@ -2856,7 +2854,12 @@ public class WndVentaReserva extends WndBase {
 
 			/*Valida debe convertir la tarifa a otra moneda diferente a soles*/
 			validarOtraMoneda();
-
+			
+			//Valida si es una venta remota y si debe o no permitir la edicion del importa a pagar - 02/01/2023 - jabanto
+			dblImporte.setReadonly(true);
+			if(chkVentaRemota.isChecked() && UtilFlag.isActivaImportePagarVentaRemota(getAgencia().getId()))
+				dblImporte.setReadonly(false);
+			
 		}else if (lbxAsientos.getSelectedItem().getValue() instanceof AsientoPool){
 			UtilData.cargarGenericData(cmbAlimentacion, false);
 			AsientoPool asientoPool=lbxAsientos.getSelectedItem().getValue();
@@ -3079,6 +3082,11 @@ public class WndVentaReserva extends WndBase {
 
 			/*Valida debe combertir la tarifa a otra moneda diferente a soles*/
 			validarOtraMoneda();
+			
+			//Valida si es una venta remota y si debe o no permitir la edicion del importa a pagar - 02/01/2023 - jabanto
+			dblImporte.setReadonly(true);
+			if(chkVentaRemota.isChecked() && UtilFlag.isActivaImportePagarVentaRemota(getAgencia().getId()))
+				dblImporte.setReadonly(false);
 //			}
 		}
 	}
@@ -5119,7 +5127,7 @@ public class WndVentaReserva extends WndBase {
 //
 
 			}
-			if(dblImporte.getValue()==null || dblImporte.getValue()<=.00) {
+			if(!(cmbTipoOperacion.getSelectedItem().getValue().equals(Constantes.TIPO_OPERACION_RESERVA)) && (dblImporte.getValue()==null || dblImporte.getValue()<=.00)) {
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.importePagadoCero"), dblImporte);
 				return;
 			}
@@ -5229,7 +5237,7 @@ public class WndVentaReserva extends WndBase {
 				else if (oCliente!=null && (oCliente.getDireccion()==null || oCliente.getDireccion().trim().isEmpty())){
 					tabCliente.setSelected(true);
 					DlgMessage.information(Messages.getString("WndVentaReserva.information.noDireccionCliente"),txtDireccionCliente);
-				}else if(dblImporte.getValue()==null || dblImporte.getValue()<=.00) {
+				}else if(!(cmbTipoOperacion.getSelectedItem().getValue().equals(Constantes.TIPO_OPERACION_RESERVA)) && (dblImporte.getValue()==null || dblImporte.getValue()<=.00)) {
 					DlgMessage.information(Messages.getString("WndVentaReserva.information.importePagadoCero"), dblImporte);
 					return;
 				}
