@@ -71,6 +71,7 @@ public class CreateDocument implements Serializable {
 	private static final String NEWLINE = "\n";
 
 	private static Double totalManifiesto;
+	public static Integer lineaTotal = 0;
 
 	public static final File crearRecibCaja(VentaPasaje ventaPasaje){
 //		String fichero = Constantes.DIRECTORY_RECIBO_CAJA +ventaPasaje.getNumeroControl()+".txt";
@@ -2584,6 +2585,7 @@ public class CreateDocument implements Serializable {
 		WndManifiesto wndmanifiesto = new WndManifiesto();
 		Integer longitud_C=0;
 		String fichero="";
+		lineaTotal = 0;
 		totalManifiesto=0.00;
 		if(esManiesto){
 //			fichero = Constantes.DIRECTORY_MANIFIESTOS + "MANPAX-"+itinerario.getId()+"-"+rotulo+".txt";
@@ -2736,12 +2738,17 @@ public class CreateDocument implements Serializable {
 			linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
 			bw.write(linea+NEWLINE);
 			creaEncabezadoManifiesto(bw);
+			
 
 			//---> linea 13: Detalle pasajeros
 			List<VentaPasaje> list=ServiceLocator.getManifiestoManager().consultaPasajeros(itinerario.getId(), agenciaIdPArtida);
 
 			/*Crea detalle */
 			bw.write(linea+NEWLINE);
+			
+			
+			lineaTotal = 12;
+					
 			//BEGIN 02/01/23 CASUISTICA PARA EL PRESIDENCIAL VIP TRANSMAR
 			Integer piso=0;
 			if(itinerario.getServicio().getId()==Constantes.ID_SERVICIO_VIP_PRESIDENCIAL) {
@@ -2791,6 +2798,7 @@ public class CreateDocument implements Serializable {
 			//---> linea final del detalle: line
 			linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
 			bw.write(linea+NEWLINE);
+			lineaTotal++;
 			//---> total asientos - total pasajeros - archivo
 			/*
 			 * 12/07/2020
@@ -2824,7 +2832,13 @@ public class CreateDocument implements Serializable {
 //					numeroAseintos+=itinerario.getServicio().getNumeroAsientosPiso2();
 //			}
 
-
+			if(lineaTotal == 62) {//Asientos 49
+				for(int i=0; i<6;i++){
+					bw.write(NEWLINE);
+				}
+			}else if(lineaTotal == 67) { //Asientos 54
+				bw.write(NEWLINE);
+			}
 
 //			longitud_C=itinerario.getServicio().getNumeroAsientosPiso1().toString().length();
 			longitud_C=Integer.toString(numeroAseintos).length();
@@ -2870,7 +2884,7 @@ public class CreateDocument implements Serializable {
 				linea="......................................................................................................................................";
 				bw.write(linea+NEWLINE);
 				linea="......................................................................................................................................";
-				bw.write(linea+NEWLINE);
+				bw.write(linea+NEWLINE);				
 			}else
 				bw.write(NEWLINE);
 
@@ -2878,22 +2892,54 @@ public class CreateDocument implements Serializable {
 			/*calcula el salto de pagina segun el tipo de servicio*/
 //			if(esManiesto){
 			switch (numeroAseintos) {
+			case 32: // Si el servicio es de 32 Asientos
+				//Inserta 14 Saltos de linea
+				for(int i=0; i<18;i++){
+					bw.write(NEWLINE);
+				}
+				break;
 			case 36: // Si el servicio es de 36 Asientos
 				//Inserta 10 Saltos de linea
 				for(int i=0; i<10;i++){
 					bw.write(NEWLINE);
 				}
 				break;
-			case 40: // Si el servicio es de 40 Asientos
-				//Inserta 10 Saltos de linea
-				for(int i=0; i<6;i++){
+//			case 40: // Si el servicio es de 40 Asientos
+//				//Inserta 6 Saltos de linea
+//				for(int i=0; i<6;i++){
+//					bw.write(NEWLINE);
+//				}
+//				break;
+			case 43: // Si el servicio es de 43 Asientos
+				//Inserta 8 Saltos de linea
+				for(int i=0; i<3;i++){
 					bw.write(NEWLINE);
 				}
 				break;
 			case 44: // Si el Servicio es de 44 Asientos
+				//Inserta 2 Saltos de linea
 				bw.write(NEWLINE);
 				bw.write(NEWLINE);
-				break;
+				break;				
+			case 49: // Si el Servicio es de 49 Asientos
+			case 54:
+				//Inserta 59 Saltos de linea
+				for(int i=0; i<59;i++){
+					bw.write(NEWLINE);
+				}
+				break;			
+			case 58: // Si el Servicio es de 49 Asientos
+				//Inserta 56 Saltos de linea
+				for(int i=0; i<56;i++){
+					bw.write(NEWLINE);
+				}
+				break;			
+			case 70: // Si el Servicio es de 49 Asientos
+				//Inserta 44 Saltos de linea
+				for(int i=0; i<44;i++){
+					bw.write(NEWLINE);
+				}
+				break;			
 			default:
 				break;
 			}
@@ -3004,6 +3050,7 @@ public class CreateDocument implements Serializable {
 
 //			Busca los asientos en un servicio - Solo deberia haber mas de un registro con el mismo asiento cuando se vende por concepto de prioridad venta (case asiento 28 Lima - Ica aseinto 28 Ica - Arequipa)
 			String asientos[]=wndmanifiesto.getAsientos_venpasId(list, asiento, piso).split(";");
+			
 			if(asientos[0].toString().length()>0){
 				for (String element : asientos) {
 					long idVenta=Long.valueOf(element.split("-")[1]);
@@ -3095,6 +3142,7 @@ public class CreateDocument implements Serializable {
 				linea+=tabular(longImporte)+"     |"; //Importe
 				bw.write(linea+NEWLINE);
 			}
+			lineaTotal++;
 		}
 
 	}
