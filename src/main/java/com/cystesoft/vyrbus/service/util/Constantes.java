@@ -357,7 +357,7 @@ public class Constantes {
 //	public static final int ID_ROL_JEFE_VENTAS=3;
 	
 //	public static final int ID_ROL_ADMIN=5;
-//	public static final int ID_ROL_FINANZAS=10;
+	public static final int ID_ROL_FINANZAS=6;
 	public static final int ID_ROL_SUPER_USUARIO=1;
 	public static final int ID_ROL_ADMINISTRADOR=2;
 	public static final int ID_ROL_COUNTER=3;
