@@ -71,6 +71,7 @@ public class CreateDocument implements Serializable {
 	private static final String NEWLINE = "\n";
 
 	private static Double totalManifiesto;
+	public static Integer lineaTotal = 0;
 
 	public static final File crearRecibCaja(VentaPasaje ventaPasaje){
 //		String fichero = Constantes.DIRECTORY_RECIBO_CAJA +ventaPasaje.getNumeroControl()+".txt";
@@ -1924,7 +1925,7 @@ public class CreateDocument implements Serializable {
 			if(piso==1){
 				nFilas = servicio.getNumeroFilasPiso2();
 				nColumnas = servicio.getNumeroColumnasPiso2();
-				bw.write(NEWLINE);
+//				bw.write(NEWLINE);
 
 				linea="PISO 2.";
 				bw.write(linea+NEWLINE);
@@ -2167,8 +2168,8 @@ public class CreateDocument implements Serializable {
 
 			//---> line 1:	TITULO DEL REPORTE
 			String title="CARPETA DE DESPACHO";
-			linea = tabular(52)+title;
-			bw.write(linea + NEWLINE);
+//			linea = tabular(52)+title;
+//			bw.write(linea + NEWLINE);
 
 			/* QUITADO POR LA IMPLEMENTACION DE TRANSMAR	*/
 //			//---> line 2: salto de linea
@@ -2178,20 +2179,20 @@ public class CreateDocument implements Serializable {
 			//---> line 2: salto de linea
 			linea = Constantes.empresa;
 			String ruc = Constantes.ruc;
-			linea += tabular(81)+"RUC : "+ruc;
+			linea += tabular(31)+title+tabular(31)+"RUC : "+ruc;
 			bw.write(linea+NEWLINE);
 
 			/*	AGREGADO A SOLICITUD DE TRANSMAR*/
 			//---> line 3:(Agencia - Nro.Itinerario - Bus)
-			String agenciA=agencia.getDenominacion();
+			String agenciA=agencia.getDenominacion().toUpperCase();
 			longitud_C=agenciA.length();
 			String bus="";
 			if(!(itinerario.getBus()==null))
-				bus=itinerario.getBus().getCodigo();
-			linea="Agencia   : "+agenciA+tabular(44-longitud_C);
+				bus=itinerario.getBus().getCodigo().toUpperCase();
+			linea="AGENCIA   : "+agenciA+tabular(44-longitud_C);
 			longitud_C=itinerario.getId().toString().length();
-			linea+="Nro.Itin.: "+itinerario.getId()+tabular(34-longitud_C);
-			linea+="Bus : "+bus;
+			linea+="NRO.ITIN.: "+itinerario.getId()+tabular(34-longitud_C);
+			linea+="BUS : "+bus;
 			bw.write(linea+NEWLINE);
 
 			/* QUITADO POR LA IMPLEMENTACION DE TRANSMAR	*/
@@ -2216,9 +2217,9 @@ public class CreateDocument implements Serializable {
 			if(!(itinerario.getBus()==null))
 				placa=itinerario.getBus().getNumeroPlaca();
 			longitud_C=origen.length();
-			linea="Origen    : "+origen+tabular(44-longitud_C); longitud_C=destino.length();
-			linea+="Destino  : "+destino+tabular(32-longitud_C);
-			linea+="Placa : "+placa;
+			linea="ORIGEN    : "+origen+tabular(44-longitud_C); longitud_C=destino.length();
+			linea+="DESTINO  : "+destino+tabular(32-longitud_C);
+			linea+="PLACA : "+placa;
 			bw.write(linea+NEWLINE);
 
 			/* QUITADO POR LA IMPLEMENTACION DE TRANSMAR	*/
@@ -2249,9 +2250,9 @@ public class CreateDocument implements Serializable {
 					TarjHabilit=itinerario.getBus().getDocumentoBus().getNumeroDocumento();
 			}
 			longitud_C=Chofer.length();
-			linea="Chofer 1  : "+Chofer+tabular(44-longitud_C); longitud_C=licencia.length();
-			linea+="Licencia : "+licencia+tabular(19-longitud_C);
-			linea+="Nro. Tarj. Habilit.: "+TarjHabilit;
+			linea="PILOTO    : "+Chofer+tabular(44-longitud_C); longitud_C=licencia.length();
+			linea+="LICENCIA : "+licencia+tabular(24-longitud_C);
+			linea+="CERT. HABILIT.: "+TarjHabilit;
 			bw.write(linea+NEWLINE);
 
 //			//---> line 6: Salto de linea:
@@ -2269,9 +2270,9 @@ public class CreateDocument implements Serializable {
 					marca=itinerario.getBus().getGrupoMantenimiento().getDenominacion();
 			}
 			longitud_C=Chofer.length();
-			linea="Chofer 2  : "+Chofer+tabular(44-longitud_C); longitud_C=licencia.length();
-			linea+="Licencia : "+licencia+tabular(32-longitud_C);
-			linea+="Marca : "+marca;
+			linea="COPILOTO  : "+Chofer+tabular(44-longitud_C); longitud_C=licencia.length();
+			linea+="LICENCIA : "+licencia+tabular(32-longitud_C);
+			linea+="MARCA : "+marca;
 			bw.write(linea+NEWLINE);
 			//---> linea 8:(Chofer3 -  Licencia )
 			Chofer="";licencia="";String servicio="";
@@ -2283,11 +2284,11 @@ public class CreateDocument implements Serializable {
 					licencia=copilotoAux.getLicencia();
 			}
 			servicio=itinerario.getServicio().getDenominacion();
-			longitud_C=Chofer.length();
-			linea="Chofer 3  : "+Chofer+tabular(44-longitud_C); longitud_C=licencia.length();
-			linea+="Licencia : "+licencia+tabular(29-longitud_C);
-			linea+="Servicio : "+servicio;
-			bw.write(linea+NEWLINE);
+//			longitud_C=Chofer.length();
+//			linea="Chofer 3  : "+Chofer+tabular(44-longitud_C); longitud_C=licencia.length();
+//			linea+="Licencia : "+licencia+tabular(29-longitud_C);
+//			linea+="SERVICIO : "+servicio;
+//			bw.write(linea+NEWLINE);
 
 			//---> linea 9:(Terramoza -  Salida - Servicio)
 			String tripulante=""; String salida=""; String dniTerramoza="";
@@ -2301,9 +2302,11 @@ public class CreateDocument implements Serializable {
 			salida=Constantes.FORMAT_DATE.format(itinerario.getFechaPartida())+" "+itinerario.getHoraPartida();
 
 			longitud_C=tripulante.length();
-			linea="Terramoza : "+tripulante+tabular(49-longitud_C); longitud_C=dniTerramoza.length();
-			linea+="DNI : "+dniTerramoza+tabular(31-longitud_C);
-			linea+="Salida : "+salida;
+			linea="TRIPULANTE: "+tripulante+tabular(44-longitud_C); 
+//			longitud_C=dniTerramoza.length();
+//			linea+="DNI : "+dniTerramoza+tabular(31-longitud_C);
+			linea+="SERVICIO : "+servicio+tabular(23-longitud_C);
+			linea+="SALIDA : "+salida;
 			bw.write(linea+NEWLINE);
 
 			if(itinerario.getServicio().getNumeroPisos()==2){
@@ -2582,6 +2585,7 @@ public class CreateDocument implements Serializable {
 		WndManifiesto wndmanifiesto = new WndManifiesto();
 		Integer longitud_C=0;
 		String fichero="";
+		lineaTotal = 0;
 		totalManifiesto=0.00;
 		if(esManiesto){
 //			fichero = Constantes.DIRECTORY_MANIFIESTOS + "MANPAX-"+itinerario.getId()+"-"+rotulo+".txt";
@@ -2600,10 +2604,11 @@ public class CreateDocument implements Serializable {
 
 			//---> line 1:	TITULO DEL REPORTE
 			String title="";
+			String strDocumento="MANIFIESTO DE PASAJEROS";
 //			if(esManiesto==true){			
 			title= (esManiesto?"NUMERO DE MANIFIESTO":"LISTADO DE PASAJEROS");
 			linea = Constantes.empresa;
-			linea += tabular(90)+title;
+			linea += tabular(33)+strDocumento+tabular(33)+title;
 			bw.write(linea + NEWLINE);
 			//---> line 2:
 //			linea = Constantes.empresa;
@@ -2617,7 +2622,8 @@ public class CreateDocument implements Serializable {
 			bw.write(linea+NEWLINE); 
 			linea = "CORREO       : " + Constantes.correo_empresa  + (esManiesto? tabular(68) + "+------------------------+" : "");
 			bw.write(linea+NEWLINE);
-			bw.write(NEWLINE);
+			
+//			bw.write(NEWLINE);
 			
 //			if(esManiesto==true)
 //			   linea+="Nro.Manif.: "+manifiesto.getNumeroManifiesto();
@@ -2686,20 +2692,21 @@ public class CreateDocument implements Serializable {
 				bw.write(linea+NEWLINE);
 				//---> linea 8:(Chofer3 -  Licencia )
 				Chofer="";licencia="";String servicio="";
-				if(!(itinerario.getBus()==null) && itinerario.getBus().getProgramacionServicio().getCopilotoAuxiliar()!=null){
-					Personal copilotoAux = new Personal();
-					copilotoAux=itinerario.getBus().getProgramacionServicio().getCopilotoAuxiliar();
-					Chofer=copilotoAux.toString();
-					if(copilotoAux.getLicencia() != null)
-						licencia=copilotoAux.getLicencia();
-				}
-				servicio=itinerario.getServicio().getDenominacion();
-				longitud_C=Chofer.length();
-				linea="CHOFER 3  : "+Chofer+tabular(44-longitud_C); longitud_C=licencia.length();
-				linea+="LICENCIA : "+licencia+tabular(33-longitud_C);
-				linea+="SERVICIO : "+servicio;
 				
-				bw.write(linea+NEWLINE);
+//				if(!(itinerario.getBus()==null) && itinerario.getBus().getProgramacionServicio().getCopilotoAuxiliar()!=null){
+//					Personal copilotoAux = new Personal();
+//					copilotoAux=itinerario.getBus().getProgramacionServicio().getCopilotoAuxiliar();
+//					Chofer=copilotoAux.toString();
+//					if(copilotoAux.getLicencia() != null)
+//						licencia=copilotoAux.getLicencia();
+//				}
+//				servicio=itinerario.getServicio().getDenominacion();
+//				longitud_C=Chofer.length();
+//				linea="CHOFER 3  : "+Chofer+tabular(44-longitud_C); longitud_C=licencia.length();
+//				linea+="LICENCIA : "+licencia+tabular(33-longitud_C);
+//				linea+="SERVICIO : "+servicio;
+//				bw.write(linea+NEWLINE);
+				servicio=itinerario.getServicio().getDenominacion();
 				//---> linea 9:(Terramoza -  Salida - Servicio)
 				String tripulante=""; String salida=""; String dniTerramoza="";
 				//Se agrego la condicion en el if porque la tripulante ya no es obligatorio, por MAOE 27/06/2021
@@ -2712,29 +2719,36 @@ public class CreateDocument implements Serializable {
 				salida=Constantes.FORMAT_DATE.format(itinerario.getFechaPartida())+" "+itinerario.getHoraPartida();
 
 				longitud_C=tripulante.length();
-				linea="TRIPULATE : "+tripulante+tabular(49-longitud_C); longitud_C=dniTerramoza.length();
+				linea="TRIPULANTE: "+tripulante+tabular(44-longitud_C); 
+//				longitud_C=dniTerramoza.length();
 //				linea+="DNI : "+dniTerramoza+tabular(35-longitud_C);
-				linea+= tabular(41) + "SALIDA : "+salida;
+				linea+="SERVICIO : "+servicio;
+				linea+= tabular(27) + "SALIDA : "+salida;
 				
 				bw.write(linea+NEWLINE);
 			}
 
-//			//---> linea 10: line
-			if(itinerario.getServicio().getNumeroPisos()==2){
-				linea="PISO 1.";
-				bw.write(linea+NEWLINE);
-			}
+//			//---> linea 10: line  MAOE: SE COMENTO EL IMPRIMIR PISO
+//			if(itinerario.getServicio().getNumeroPisos()==2){
+//				linea="PISO 1.";
+//				bw.write(linea+NEWLINE);
+//			}
 
 			/*Crea Encabezado piso 1*/
 			linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
 			bw.write(linea+NEWLINE);
 			creaEncabezadoManifiesto(bw);
+			
 
 			//---> linea 13: Detalle pasajeros
 			List<VentaPasaje> list=ServiceLocator.getManifiestoManager().consultaPasajeros(itinerario.getId(), agenciaIdPArtida);
 
 			/*Crea detalle */
 			bw.write(linea+NEWLINE);
+			
+			
+			lineaTotal = 12;
+					
 			//BEGIN 02/01/23 CASUISTICA PARA EL PRESIDENCIAL VIP TRANSMAR
 			Integer piso=0;
 			if(itinerario.getServicio().getId()==Constantes.ID_SERVICIO_VIP_PRESIDENCIAL) {
@@ -2784,6 +2798,7 @@ public class CreateDocument implements Serializable {
 			//---> linea final del detalle: line
 			linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
 			bw.write(linea+NEWLINE);
+			lineaTotal++;
 			//---> total asientos - total pasajeros - archivo
 			/*
 			 * 12/07/2020
@@ -2817,7 +2832,13 @@ public class CreateDocument implements Serializable {
 //					numeroAseintos+=itinerario.getServicio().getNumeroAsientosPiso2();
 //			}
 
-
+			if(lineaTotal == 62) {//Asientos 49
+				for(int i=0; i<6;i++){
+					bw.write(NEWLINE);
+				}
+			}else if(lineaTotal == 67) { //Asientos 54
+				bw.write(NEWLINE);
+			}
 
 //			longitud_C=itinerario.getServicio().getNumeroAsientosPiso1().toString().length();
 			longitud_C=Integer.toString(numeroAseintos).length();
@@ -2863,7 +2884,7 @@ public class CreateDocument implements Serializable {
 				linea="......................................................................................................................................";
 				bw.write(linea+NEWLINE);
 				linea="......................................................................................................................................";
-				bw.write(linea+NEWLINE);
+				bw.write(linea+NEWLINE);				
 			}else
 				bw.write(NEWLINE);
 
@@ -2871,22 +2892,54 @@ public class CreateDocument implements Serializable {
 			/*calcula el salto de pagina segun el tipo de servicio*/
 //			if(esManiesto){
 			switch (numeroAseintos) {
+			case 32: // Si el servicio es de 32 Asientos
+				//Inserta 14 Saltos de linea
+				for(int i=0; i<18;i++){
+					bw.write(NEWLINE);
+				}
+				break;
 			case 36: // Si el servicio es de 36 Asientos
 				//Inserta 10 Saltos de linea
 				for(int i=0; i<10;i++){
 					bw.write(NEWLINE);
 				}
 				break;
-			case 40: // Si el servicio es de 40 Asientos
-				//Inserta 10 Saltos de linea
-				for(int i=0; i<6;i++){
+//			case 40: // Si el servicio es de 40 Asientos
+//				//Inserta 6 Saltos de linea
+//				for(int i=0; i<6;i++){
+//					bw.write(NEWLINE);
+//				}
+//				break;
+			case 43: // Si el servicio es de 43 Asientos
+				//Inserta 8 Saltos de linea
+				for(int i=0; i<3;i++){
 					bw.write(NEWLINE);
 				}
 				break;
 			case 44: // Si el Servicio es de 44 Asientos
+				//Inserta 2 Saltos de linea
 				bw.write(NEWLINE);
 				bw.write(NEWLINE);
-				break;
+				break;				
+			case 49: // Si el Servicio es de 49 Asientos
+			case 54:
+				//Inserta 59 Saltos de linea
+				for(int i=0; i<59;i++){
+					bw.write(NEWLINE);
+				}
+				break;			
+			case 58: // Si el Servicio es de 49 Asientos
+				//Inserta 56 Saltos de linea
+				for(int i=0; i<56;i++){
+					bw.write(NEWLINE);
+				}
+				break;			
+			case 70: // Si el Servicio es de 49 Asientos
+				//Inserta 44 Saltos de linea
+				for(int i=0; i<44;i++){
+					bw.write(NEWLINE);
+				}
+				break;			
 			default:
 				break;
 			}
@@ -2997,6 +3050,7 @@ public class CreateDocument implements Serializable {
 
 //			Busca los asientos en un servicio - Solo deberia haber mas de un registro con el mismo asiento cuando se vende por concepto de prioridad venta (case asiento 28 Lima - Ica aseinto 28 Ica - Arequipa)
 			String asientos[]=wndmanifiesto.getAsientos_venpasId(list, asiento, piso).split(";");
+			
 			if(asientos[0].toString().length()>0){
 				for (String element : asientos) {
 					long idVenta=Long.valueOf(element.split("-")[1]);
@@ -3088,6 +3142,7 @@ public class CreateDocument implements Serializable {
 				linea+=tabular(longImporte)+"     |"; //Importe
 				bw.write(linea+NEWLINE);
 			}
+			lineaTotal++;
 		}
 
 	}
@@ -3438,7 +3493,7 @@ public class CreateDocument implements Serializable {
 			linea = tabular(base+50)+"REPORTE VENTA DE SEGUROS";
 			bw.write(linea + NEWLINE);
 			bw.write(NEWLINE);
-			linea = tabular(base)+"AGENCIA : "+agencia+tabular(58)+"FECHA / HORA IMPRESI�N : "+Constantes.FORMAT_DATE_TIME_24H.format(new Date());
+			linea = tabular(base)+"AGENCIA : "+agencia+tabular(58)+"FECHA / HORA IMPRESION : "+Constantes.FORMAT_DATE_TIME_24H.format(new Date());
 			bw.write(linea + NEWLINE);
 			linea = tabular(base)+"USUARIO : "+usuario;
 			bw.write(linea + NEWLINE);
@@ -3887,14 +3942,14 @@ public class CreateDocument implements Serializable {
 				}
 				//Agrega egresos para las devoluciones 
 				if(totalVentasDevoluciones > 0) {
-					linea=tabular(3)+"DEVOLUCIONES AUTOM�TICAS";
+					linea=tabular(3)+"DEVOLUCIONES AUTOMATICAS";
 					linea+=tabular(45)+tabular(24-Util.toNumberFormat(totalVentasDevoluciones, 2).length())+Util.toNumberFormat(totalVentasDevoluciones, 2);
 					bw.write(linea + NEWLINE);
 					totalEgresosVentas += totalVentasDevoluciones;
 				}
 				//Agrega egresos para las Notas de Cr�dito
 				if(totalVentasNotaCredito > 0) {
-					linea=tabular(3)+"NOTAS DE CR�DITO";
+					linea=tabular(3)+"NOTAS DE CREDITO";
 					linea+=tabular(45)+tabular(32-Util.toNumberFormat(totalVentasNotaCredito, 2).length())+Util.toNumberFormat(totalVentasNotaCredito, 2);
 					bw.write(linea + NEWLINE);
 					totalEgresosVentas += totalVentasNotaCredito;
@@ -3902,14 +3957,14 @@ public class CreateDocument implements Serializable {
 				
 				//Agrega egresos para las ventas cr�dito
 				if(totalVentasCredito > 0) {
-					linea=tabular(3)+"VENTA CR�DITO";
+					linea=tabular(3)+"VENTA CREDITO";
 					linea+=tabular(45)+tabular(35-Util.toNumberFormat(totalVentasNotaCredito, 2).length())+Util.toNumberFormat(totalVentasCredito, 2);
 					bw.write(linea + NEWLINE);
 					totalEgresosVentas += totalVentasCredito;
 				}
 				//Agrega egresos para las ventas x cortesia
 				if(totalVentasCortesia > 0) {
-					linea=tabular(3)+"CORTES�AS";
+					linea=tabular(3)+"CORTESIAS";
 					linea+=tabular(45)+tabular(39-Util.toNumberFormat(totalVentasCortesia, 2).length())+Util.toNumberFormat(totalVentasCortesia, 2);
 					bw.write(linea + NEWLINE);
 					totalEgresosVentas += totalVentasCortesia;

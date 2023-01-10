@@ -161,9 +161,12 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 		onLoadTipoMovimiento();
 
 		//RESTRICCION PARA EL ACCESO A LA SELECCION DE AGENCIAS.
+		//MAOE 07/01/2023: ESTOS ROLES TIENEN ACCESO A ESTOS CONTROLES
 		if(getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO ||
+		   getRol().getId().intValue()==Constantes.ID_ROL_FINANZAS ||
+		   getRol().getId().intValue()==Constantes.ID_ROL_ADMIN ||
 		   getRol().getId().intValue()==Constantes.ID_ROL_ADMINISTRADOR ) {
-//		   getRol().getId().intValue()==Constantes.ID_ROL_FISCALIZACION
+		   
 //		   getRol().getId().intValue()==Constantes.ID_ROL_ADMIN_COMERCIAL ||
 //		   getRol().getId().intValue()==Constantes.ID_ROL_ADMIN){
 			cmbAgencia.setDisabled(false);
@@ -176,7 +179,9 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 //		   getRol().getId().intValue()==Constantes.ID_ROL_GERENCIA_COMERCIAL ||
 //		   getRol().getId().intValue()==Constantes.ID_ROL_FISCALIZACION ||
 //		   getRol().getId().intValue()==Constantes.ID_ROL_ADMIN_COMERCIAL ||
-		   getRol().getId().intValue()==Constantes.ID_ROL_ADMINISTRADOR
+		   getRol().getId().intValue()==Constantes.ID_ROL_ADMINISTRADOR ||
+		   getRol().getId().intValue()==Constantes.ID_ROL_FINANZAS ||
+		   getRol().getId().intValue()==Constantes.ID_ROL_ADMIN 
 		) {
 			cmbCounter.setDisabled(false);
 		}else

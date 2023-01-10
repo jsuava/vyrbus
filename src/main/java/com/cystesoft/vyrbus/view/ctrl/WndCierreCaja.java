@@ -137,8 +137,8 @@ public class WndCierreCaja extends WndBase {
 			components.add(cmbAgencia);
 			List<Rol>rolAcceso=new ArrayList<>();
 			rolAcceso.add(new Rol(Constantes.ID_ROL_SUPER_USUARIO));
-//			rolAcceso.add(new Rol(Constantes.ID_ROL_FISCALIZACION));
-//			rolAcceso.add(new Rol(Constantes.ID_ROL_ADMINISTRADOR));
+			rolAcceso.add(new Rol(Constantes.ID_ROL_ADMIN));
+			rolAcceso.add(new Rol(Constantes.ID_ROL_FINANZAS));
 			accesoControlsByRol(components, rolAcceso);
 
 			//roles que tiene acceso al control cmbusuario
@@ -146,6 +146,8 @@ public class WndCierreCaja extends WndBase {
 			components.add(cmbUsuario);
 			rolAcceso.add(new Rol(Constantes.ID_ROL_ADMINISTRADOR));
 			rolAcceso.add(new Rol(Constantes.ID_ROL_SUPER_USUARIO));
+			rolAcceso.add(new Rol(Constantes.ID_ROL_ADMIN));
+			rolAcceso.add(new Rol(Constantes.ID_ROL_FINANZAS));			
 			accesoControlsByRol(components, rolAcceso);
 
 
