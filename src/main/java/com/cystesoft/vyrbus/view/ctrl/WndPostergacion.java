@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: Clase que se encarga de realizar la postergación de una Venta.
- * Autor		: José Sullo Avalos
+ * Descripciï¿½n	: Clase que se encarga de realizar la postergaciï¿½n de una Venta.
+ * Autor		: Josï¿½ Sullo Avalos
  * Fecha		: 11/01/2013
  */
 package com.cystesoft.vyrbus.view.ctrl;
@@ -51,6 +51,7 @@ import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartida;
 import com.cystesoft.vyrbus.model.bean.Localidad;
 import com.cystesoft.vyrbus.model.bean.MapaBus;
 import com.cystesoft.vyrbus.model.bean.OperadorTarjetaCredito;
+import com.cystesoft.vyrbus.model.bean.Parametros;
 import com.cystesoft.vyrbus.model.bean.PasajeroFrecuente;
 import com.cystesoft.vyrbus.model.bean.Promocion;
 import com.cystesoft.vyrbus.model.bean.TarifaRegular;
@@ -213,7 +214,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 	@Override
 	public void onCreate() throws Exception {
 		try{
-			/*Valida si el usuario tiene una liquidación aperturada*/
+			/*Valida si el usuario tiene una liquidaciï¿½n aperturada*/
 			if(getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION)==null)
 				throw new LiquidacionNullException();
 
@@ -378,8 +379,12 @@ public class WndPostergacion extends WndBase implements Serializable {
 					if(ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(postergacion.getId()))
 						throw new ManifiestoImpresoException();
 					
+					//Obteniendo los parametros en tiempo real para manejar la postergacion
+					Parametros parametros= ServiceLocator.getParametrosManager().buscarPorEstadoRegistro("A");					
+					
 					String fechaPartida = Util.DatetoString(venta.getFechaPartida(),Constantes.DATE_FORMAT)+" "+venta.getHoraPartida()+":00";
-					Long limite = Util.StringtoDate(fechaPartida, Constantes.DATE_TIME_FORMAT).getTime()-(Constantes.MILISEGUNDOS_X_HORA * Constantes.TIEMPO_LIMITE_POSTERGACION);
+					//Long limite = Util.StringtoDate(fechaPartida, Constantes.DATE_TIME_FORMAT).getTime()-(Constantes.MILISEGUNDOS_X_HORA * Constantes.TIEMPO_LIMITE_POSTERGACION);
+					Long limite = Util.StringtoDate(fechaPartida, Constantes.DATE_TIME_FORMAT).getTime()-(Constantes.MILISEGUNDOS_X_HORA * parametros.getTiempoPostergacion());
 					@SuppressWarnings("unused")
 					String fechaLimitePostergar = Util.DatetoString(new Date(limite), Constantes.DATE_TIME_FORMAT);
 					if(Util.comparaFechasWithTime(ServiceLocator.getVentaPasajesManager().getDateSystem(), fechaLimitePostergar, Util.OPER_MAYOR))
@@ -534,7 +539,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 			public void onEvent(Event e) throws Exception{
 				final WndBuscarPasajero oWndBuscarPasajero = new WndBuscarPasajero();
 				wndPostergacion.appendChild(oWndBuscarPasajero);
-				oWndBuscarPasajero.oThisWindow.setTitle("Búsqueda de Pasajeros");
+				oWndBuscarPasajero.oThisWindow.setTitle("Bï¿½squeda de Pasajeros");
 				oWndBuscarPasajero.setMode(MODAL);
 				oWndBuscarPasajero.onCreate();
 				oWndBuscarPasajero.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
@@ -542,7 +547,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 					public void onEvent(Event e){
 						txtPasajeroPostergado.setText(oWndBuscarPasajero.getPasajero().toString());
 						postergacion.setPasajero(oWndBuscarPasajero.getPasajero());
-//						aplicarPromocion(); //Segun lo combersado el 03/12/2013 con Marco y Jose Avalos) para cambio de nombre no aplica promoción
+//						aplicarPromocion(); //Segun lo combersado el 03/12/2013 con Marco y Jose Avalos) para cambio de nombre no aplica promociï¿½n
 
 						chkCambioNombre.setDisabled(chkCambioNombre.isChecked());
 					}
@@ -555,12 +560,12 @@ public class WndPostergacion extends WndBase implements Serializable {
 			public void onEvent(Event event) throws Exception {
 				final WndBuscarPasajero oWndBuscarPasajero = new WndBuscarPasajero();
 				wndPostergacion.appendChild(oWndBuscarPasajero);
-				oWndBuscarPasajero.oThisWindow.setTitle("Búsqueda de Clientes");
+				oWndBuscarPasajero.oThisWindow.setTitle("Bï¿½squeda de Clientes");
 				oWndBuscarPasajero.oThisWindow.setWidth("420px");
 				oWndBuscarPasajero.setMode(MODAL);
 				oWndBuscarPasajero.onCreate();
 				oWndBuscarPasajero.buscaPax=false;
-				oWndBuscarPasajero.rdPorNombres.setLabel("Razón Social");
+				oWndBuscarPasajero.rdPorNombres.setLabel("Razï¿½n Social");
 				oWndBuscarPasajero.rowApePat.setVisible(false);
 				oWndBuscarPasajero.rowApeMat.setVisible(false);
 				oWndBuscarPasajero.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
@@ -970,9 +975,9 @@ public class WndPostergacion extends WndBase implements Serializable {
 		}
 	}
 	/**
-	 * Permite enlazar los controles a la ventana de selección de Itinerario
+	 * Permite enlazar los controles a la ventana de selecciï¿½n de Itinerario
 	 * @param textboxItinerario :en este Textbox se devolvera el Id del itinerario seleccionado.
-	 * @param button :ha este Button se le adjuntara un listener con la llamada a la ventana de selección de itinerario
+	 * @param button :ha este Button se le adjuntara un listener con la llamada a la ventana de selecciï¿½n de itinerario
 	 * @see WndItinerario:
 	 */
 	public void enlazarItinerario(final Image image) {
@@ -1310,7 +1315,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 	}
 
 	/**
-	 * Realiza una validación del Tipo de Forma de Pago, para habilitar o deshabilitar algunos controles.
+	 * Realiza una validaciï¿½n del Tipo de Forma de Pago, para habilitar o deshabilitar algunos controles.
 	 * @throws Exception
 	 */
 	public void onValidateTipoFormaPago() throws Exception{
@@ -1524,14 +1529,14 @@ public class WndPostergacion extends WndBase implements Serializable {
 			if(chkCambioFacturaBoleta.isChecked())
 				observaciones+=(observaciones.length()>0?";CAMBIO DE FACTURA A BOLETA":"CAMBIO DE FACTURA A BOLETA");
 			/*##End Begin 04/11/2016 - jabanto*/
-			//Coloca como observaciones una glosa si es un cambio de nombre o razón social
+			//Coloca como observaciones una glosa si es un cambio de nombre o razï¿½n social
 //			if(chkCambioNombre.isChecked())
 //				postergacion.setObservaciones("CAMBIO DE NOMBRE");
 //			if(rdCambioRuc.isChecked()){
 //				if(postergacion.getObservaciones()==null)
-//					postergacion.setObservaciones("CAMBIO DE DE RAZÓN SOCIAL");
+//					postergacion.setObservaciones("CAMBIO DE DE RAZï¿½N SOCIAL");
 //				else{
-//					String observacion=postergacion.getObservaciones()+"; "+"CAMBIO DE DE RAZÓN SOCIAL";
+//					String observacion=postergacion.getObservaciones()+"; "+"CAMBIO DE DE RAZï¿½N SOCIAL";
 //					postergacion.setObservaciones(observacion);
 //				}
 //			}
@@ -1880,7 +1885,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 	}
 
 	/**
-	 * 	Crea un objeto AplicarPromocion pasando parámetros al constructor
+	 * 	Crea un objeto AplicarPromocion pasando parï¿½metros al constructor
 	 */
 	private AplicarPromocion createObjectAplicarPromocion(){
 		AplicarPromocion aplicarPromocion = null;

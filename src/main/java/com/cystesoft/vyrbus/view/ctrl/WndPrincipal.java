@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
+ * Descripciï¿½n	:
  * Autor		: jM
  * Fecha		: 20/04/2012
  */
@@ -92,7 +92,7 @@ public class WndPrincipal extends WndBase {
 //			@SuppressWarnings("unchecked")
 //			List<String> prints=(List<String>) getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_IMPRESORAS_EQUIPO);
 //			if(prints!=null){
-//				mostrarVentana("Configurar Impresión", "configPrinters.zul");
+//				mostrarVentana("Configurar Impresiï¿½n", "configPrinters.zul");
 //				executeApplePrint=true;
 //			}
 //			ServletRequest response = (ServletRequest)this.getDesktop().getExecution().getNativeRequest();
@@ -191,7 +191,7 @@ public class WndPrincipal extends WndBase {
 				final Window win = new Window("", "normal", false);
 				win.setHeight("210px");
 				win.setWidth("260px");
-				Caption caption = new Caption("Cambio de contraseña", "resources/mp_changePassword.png");
+				Caption caption = new Caption("Cambio de contraseï¿½a", "resources/mp_changePassword.png");
 				win.appendChild(caption);
 				Grid grid = new Grid();
 				Columns columns = new Columns();
@@ -206,7 +206,7 @@ public class WndPrincipal extends WndBase {
 				Row row = new Row();
 				Div div = new Div();
 				div.setAlign("center");
-				Label label = new Label("Es sistema ha detectado que es necesario que cambie su contraseña.");
+				Label label = new Label("Es sistema ha detectado que es necesario que cambie su contraseï¿½a.");
 				label.setStyle("font-size:12px !important; color:red; font-weight:bold");
 				div.appendChild(label);
 				row.appendChild(div);
@@ -227,7 +227,7 @@ public class WndPrincipal extends WndBase {
 				rows.appendChild(row);
 
 				row = new Row();
-				label = new Label("Contraseña actual :");
+				label = new Label("Contraseï¿½a actual :");
 				label.setStyle("font-weight:bold; font-size:10px !important;");
 				row.appendChild(label);
 				final Textbox txtPasswordActual = new Textbox();
@@ -239,7 +239,7 @@ public class WndPrincipal extends WndBase {
 				rows.appendChild(row);
 
 				row = new Row();
-				label = new Label("Nueva contraseña :");
+				label = new Label("Nueva contraseï¿½a :");
 				label.setStyle("font-weight:bold; font-size:10px !important;");
 				row.appendChild(label);
 				final Textbox txtPasswordNuevo = new Textbox();
@@ -251,7 +251,7 @@ public class WndPrincipal extends WndBase {
 				rows.appendChild(row);
 
 				row = new Row();
-				label = new Label("Confirmar contraseña :");
+				label = new Label("Confirmar contraseï¿½a :");
 				label.setStyle("font-weight:bold; font-size:10px !important;");
 				row.appendChild(label);
 				final Textbox txtConfirmPassword = new Textbox();
@@ -289,15 +289,15 @@ public class WndPrincipal extends WndBase {
 							win.onClose();
 						}catch(PasswordException pex){
 							if(pex.getTipo().intValue()==PasswordException.PASSWORD_ACTUAL_NULL){
-								DlgMessage.information("Debe de ingresar la contraseña actual", txtPasswordActual);
+								DlgMessage.information("Debe de ingresar la contraseï¿½a actual", txtPasswordActual);
 							}else if(pex.getTipo().intValue()==PasswordException.PASSWORD_NUEVO_NULL){
-								DlgMessage.information("Debe de ingresar la nueva contraseña", txtPasswordNuevo);
+								DlgMessage.information("Debe de ingresar la nueva contraseï¿½a", txtPasswordNuevo);
 							}else if(pex.getTipo().intValue()==PasswordException.PASSWORD_CONFIRMATION_NULL){
-								DlgMessage.information("Vuelva a escribir la nueva contraseña", txtConfirmPassword);
+								DlgMessage.information("Vuelva a escribir la nueva contraseï¿½a", txtConfirmPassword);
 							}else if(pex.getTipo().intValue()==PasswordException.PASSWORD_DIFERENTES){
-								DlgMessage.information("Las contraseñas son diferentes vuelva a escribir la nueva contraseña.", txtConfirmPassword);
+								DlgMessage.information("Las contraseï¿½as son diferentes vuelva a escribir la nueva contraseï¿½a.", txtConfirmPassword);
 							}else if(pex.getTipo().intValue()==PasswordException.PASSWORD_IGUAL_LOGIN)
-								DlgMessage.information("La contraseña no puede ser igual al nombre de usuario.", txtPasswordNuevo);
+								DlgMessage.information("La contraseï¿½a no puede ser igual al nombre de usuario.", txtPasswordNuevo);
 						}catch(Exception ex){
 							DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 						}
@@ -500,7 +500,7 @@ public class WndPrincipal extends WndBase {
 	}
 
 	public void cerrarSesion(){
-		Messagebox.show("¿Desea Salir del Sistema?", Messages.getString("System.title"), Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
+		Messagebox.show("Â¿Desea Salir del Sistema?", Messages.getString("System.title"), Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
 				new EventListener<Event>() {
 
 					@Override

@@ -25,7 +25,7 @@ public class Constantes {
 	/**
 	 * Vension actual del Sistema
 	 */
-	public static final String SYSTEM_VERSION = "Versión 3.2.6";
+	public static final String SYSTEM_VERSION = "Versiï¿½n 3.2.6";
 		
 	/**
 	 * Constante para la Acciï¿½n Nuevo
@@ -159,11 +159,11 @@ public class Constantes {
 //	public static final String SERVER_HOST = Executions.getCurrent().getHeader("host");
 //	public static final String SERVER_HOST = "ventas.tepsa.com.pe/";
 
-	public static final String SERVER_HOST = "localhost:8080";
+	//public static final String SERVER_HOST = "localhost:8080";
 //	public static final String SERVER_HOST = "190.119.140.203:8080";
 
 	//SERVER_HOST PRODUCCION TRANSMAR
-//	public static final String SERVER_HOST = "119.8.145.122:8080";
+	public static final String SERVER_HOST = "119.8.145.122:8080";
 
 	public static final String SERVER_CONTEXT = Executions.getCurrent().getContextPath();
 	public static final String URL_FORMATOS = SERVER_PROTOCOL+"://"+SERVER_HOST+SERVER_CONTEXT+"/formatos/";
