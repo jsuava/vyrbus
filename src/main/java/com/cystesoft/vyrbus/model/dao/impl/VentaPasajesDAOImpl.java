@@ -1206,19 +1206,32 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		/*Calcula la fecha de caducidad del boleto - 13/12/2016 - jabanto*/
 		String fechaCaducidad=Constantes.FORMAT_DATE.format(itinerario.getFechaPartida())+" "+itinerario.getHoraPartida();
 		Date dateCaducidad=Constantes.FORMAT_LONG.parse(fechaCaducidad);
+		//Obtiene el numero del piso del asiento a transbordar.
+		String sql = "SELECT mp.N_NUMPIS, mp.MAPABUS_ID  "
+				   + "FROM VRTMAPABUS mp "
+				   + "WHERE mp.SERVICIO_ID = "+ itinerario.getServicio().getId() +" "
+				   + "AND mp.N_NUMASI = "+ numeroAsiento +" AND mp.C_ESTREG = '"+ Constantes.VALUE_ACTIVO +"' ";
+		log.info(sql);
+		List<?> result = getSession().createSQLQuery(sql).list();
+		int numeroPiso = 0;
+		for(int i=0; i<result.size(); i++){		
+			Object[] obj = (Object[]) result.get(i);
+			numeroPiso = ((BigDecimal)obj[0]).intValue();		
+		}
+		
 
-
-		String sql="UPDATE vrtvenpas v SET v.n_numasiento="+numeroAsiento+", v.itinerario_id="+itinerario.getId()+", " +
-						  "v.servicio_id="+itinerario.getServicio().getId()+", "+
-				     	  "v.d_fecpar=to_date('"+Constantes.FORMAT_DATE.format(itinerario.getFechaPartida())+"','dd/MM/yyyy'), v.c_horpar='"+itinerario.getHoraPartida()+"', " +
-				     	  "v.d_feclle=to_date('"+Constantes.FORMAT_DATE.format(itinerario.getFechaLlegada())+"','dd/MM/yyyy'), v.c_horlle='"+itinerario.getHoraLlegada()+"', "+
-				     	  "v.d_feccad=to_date('"+Constantes.FORMAT_LONG.format(dateCaducidad)+ "','dd/MM/yyyy HH24:mi') "+
+		sql="UPDATE vrtvenpas v SET v.n_numasiento="+numeroAsiento+", v.itinerario_id="+itinerario.getId()+", " +
+				  "v.servicio_id="+itinerario.getServicio().getId()+", "+
+		     	  "v.d_fecpar=to_date('"+Constantes.FORMAT_DATE.format(itinerario.getFechaPartida())+"','dd/MM/yyyy'), v.c_horpar='"+itinerario.getHoraPartida()+"', " +
+		     	  "v.d_feclle=to_date('"+Constantes.FORMAT_DATE.format(itinerario.getFechaLlegada())+"','dd/MM/yyyy'), v.c_horlle='"+itinerario.getHoraLlegada()+"', "+
+		     	  "v.d_feccad=to_date('"+Constantes.FORMAT_LONG.format(dateCaducidad)+ "','dd/MM/yyyy HH24:mi'), "+
+		     	  "v.N_NUMPISO= "+ numeroPiso +" "+
 //							  "v.agencia_idpartida="+itinerario.getAgenciaPartida().getId()+", v.agencia_idllegada="+itinerario.getAgenciaLlegada().getId()+" " +
 //							  "v.agencia_idpartida="+ventaPasaje.getAgenciaPartida().getId()+", v.agencia_idllegada="+ventaPasaje.getAgenciaLlegada().getId()+" " +
-		 	        "WHERE v.venpas_id="+idVentaPasaje;
+ 	        "WHERE v.venpas_id="+idVentaPasaje;
 //						"WHERE v.itinerario_id="+ventaPasaje.getItinerario().getId()+" AND v.n_numasiento="+ventaPasaje.getNumeroAsiento()+ " ";
-								//"AND v.tipmov_id NOT IN ("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_ANULACION+")  ";
-					    //"WHERE v.venpas_id="+idVentaPasaje;
+						//"AND v.tipmov_id NOT IN ("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_ANULACION+")  ";
+			    //"WHERE v.venpas_id="+idVentaPasaje;
 
 			log.info(sql);
 			getSession().createSQLQuery(sql).executeUpdate();
