@@ -53,7 +53,7 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 				"r.c_destino destino, adr.agencia_id idAgeDestinoRuta, adr.c_nomcor agllegadaNomCor, adr.c_denominacion agLlegadaRuta, " +
 				"di.d_feclle, di.c_horlle, di.n_tarifa, s.n_numpis, s.n_numasipis1, s.n_numfilpis1, s.n_numcolpis1, s.n_numasipis2, " +
 				"s.n_numfilpis2, s.n_numcolpis2, i.d_fecreapar, ti.tipiti_id  " +
-				",rm.ruta_id, lpool.poolloc_id "+ // 33-34
+				",rm.ruta_id, lpool.poolloc_id, b.c_numplaca "+ // 33-35
 				"FROM vrtitinerario i " +
 					"INNER JOIN vrtdetiti di ON di.itinerario_id=i.itinerario_id " +
 					"LEFT JOIN vrmbus b ON b.bus_id=i.bus_id " +
@@ -99,6 +99,7 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 				Bus bus = new Bus();
 				bus.setId(((BigDecimal)obj[4]).intValue());
 				bus.setCodigo(obj[5].toString());
+				bus.setNumeroPlaca(obj[35].toString());
 				itinerario.setBus(bus);
 			}
 			Servicio servicio = new Servicio();
