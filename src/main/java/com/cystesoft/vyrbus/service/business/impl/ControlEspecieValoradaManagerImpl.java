@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: Implementación de métodos que permiten el acceso al modelo.
- * Autor		: José Sullo Avalos
+ * Descripciï¿½n	: Implementaciï¿½n de mï¿½todos que permiten el acceso al modelo.
+ * Autor		: Josï¿½ Sullo Avalos
  * Fecha		: 28/09/2012
  */
 package com.cystesoft.vyrbus.service.business.impl;
@@ -145,8 +145,24 @@ public class ControlEspecieValoradaManagerImpl implements ControlEspecieValorada
 	@Override
 	@Transactional
 	public int actualizar(ControlEspecieValorada controlEspecieValorada) throws Exception {
+		TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
+		criteriosBusqueda.put("tipoComprobante", controlEspecieValorada.getTipoComprobante());
+		criteriosBusqueda.put("usuarioHardware", controlEspecieValorada.getUsuarioHardware());
+		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+		List<?> result = getControlEspecieValoradaDAO().buscarPorX(criteriosBusqueda, null);
+		
 		/*actualiza el control especie valorada*/
 		getControlEspecieValoradaDAO().actualizar(controlEspecieValorada);
+		
+		ControlEspecieValorada controlEspecieValoradaFirst = null;
+		if(result.size() > 0) {
+			controlEspecieValoradaFirst = (ControlEspecieValorada)result.get(0);
+			/*eliminamos el secuenciador*/
+			getControlEspecieValoradaDAO().eliminarSecuenciador(controlEspecieValoradaFirst.getSecuenciador());			
+		}
+		
+		/*creamos el secuenciador*/
+		getControlEspecieValoradaDAO().generarSecuenciador(controlEspecieValorada.getSecuenciador(), controlEspecieValorada.getCorrelativoActual());
 
 		/*Inserta los correlativos para para la validacion*/
 //		guardarValidacionEspecieValorada(controlEspecieValorada);

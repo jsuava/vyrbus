@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José Sullo Avalos
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Sullo Avalos
  * Fecha		: 17/09/2012
  */
 package com.cystesoft.vyrbus.model.dao.impl;
@@ -27,7 +27,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
 
 /**
  *
- * @author José Sullo Avalos
+ * @author Josï¿½ Sullo Avalos
  * @since JDK1.6
  */
 @SuppressWarnings("unchecked")
@@ -258,6 +258,17 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 	public void generarSecuenciador(String nameSequence, Long inicio) {
 		String sql = "CREATE SEQUENCE "+nameSequence+ " START WITH "+inicio+" INCREMENT BY 1 NOMINVALUE NOMAXVALUE NOCACHE ORDER";
 
+		log.info(sql);
+
+		getSession().createSQLQuery(sql).executeUpdate();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.ControlEspecieValoradaDAO#eliminarSecuenciador(java.lang.String)
+	 */
+	@Override
+	public void eliminarSecuenciador(String nameSequence) {
+		String sql = "DROP SEQUENCE "+nameSequence;
 		log.info(sql);
 
 		getSession().createSQLQuery(sql).executeUpdate();
