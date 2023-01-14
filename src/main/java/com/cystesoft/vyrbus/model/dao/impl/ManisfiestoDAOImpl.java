@@ -199,7 +199,7 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 							"td.c_Denominacion TipDocto, v.venpas_id, "+ //13-14
 							"ap.c_nomcor as NombreCorto, v.n_numpiso, tc.tipcom_id, tc.c_Denominacion," + //15-18
 							"p.pasajero_id, fp.forpag_id, fp.c_denominacion formaPago,cv.c_nomcor canalVenta, c.c_razsoc clienteCredito, av.c_nomcor agenciaVenta, "+// 19-24
-							"r.ruta_id, td.c_nomcor nomCorTipoDocumento, ad.c_denominacion agDestino "+//25-27
+							"r.ruta_id, td.c_nomcor nomCorTipoDocumento, ad.c_denominacion agDestino, p.c_telefono "+//25-28
 					"FROM vrtvenpas v "+
 						"INNER JOIN (SELECT MAX(venpas_id)venpas_id, c_numcontrol " +
 									"FROM vrtvenpas WHERE itinerario_id="+idItinerario+" GROUP BY c_numcontrol) max_venta " +
@@ -234,6 +234,7 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			pasajero.setId(((BigDecimal)obj[19]).longValue());
 			pasajero.setApellidoPaterno(obj[2].toString());
 			pasajero.setApellidoMaterno(obj[3]!=null?obj[3].toString():"");
+			pasajero.setTelefono(obj[28]!=null?obj[28].toString():"");
 			pasajero.setNombre(obj[4].toString());
 			if (obj[5] !=null)
 				pasajero.setFechaNacimiento(obj[5].toString());

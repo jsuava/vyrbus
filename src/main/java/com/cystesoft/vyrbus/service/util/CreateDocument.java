@@ -2734,10 +2734,13 @@ public class CreateDocument implements Serializable {
 //				bw.write(linea+NEWLINE);
 //			}
 
+			if(esManiesto)
 			/*Crea Encabezado piso 1*/
-			linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
+				linea="+-------------------------------------------------------------------------------------------------------------------------------------+";
+			else
+				linea="+--------------------------------------------------------------------------------------------------------------------------------------+";
 			bw.write(linea+NEWLINE);
-			creaEncabezadoManifiesto(bw);
+			creaEncabezadoManifiesto(bw, esManiesto);
 			
 
 			//---> linea 13: Detalle pasajeros
@@ -2753,10 +2756,10 @@ public class CreateDocument implements Serializable {
 			Integer piso=0;
 			if(itinerario.getServicio().getId()==Constantes.ID_SERVICIO_VIP_PRESIDENCIAL) {
 				piso = 1;
-				creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso2(), wndmanifiesto, list, bw, piso, 0, itinerario.getServicio());
+				creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso2(), wndmanifiesto, list, bw, piso, 0, itinerario.getServicio(), esManiesto);
 			}else { 
 				piso = 0;
-				creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso1(), wndmanifiesto, list, bw, piso, 0, itinerario.getServicio());
+				creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso1(), wndmanifiesto, list, bw, piso, 0, itinerario.getServicio(), esManiesto);
 			}
 				
 			//Bengin 09/11/2021 - Jabanto - Muestra los pasajeros de ambos pisos en una sola lista (Solicitud de transmar)
@@ -2765,10 +2768,10 @@ public class CreateDocument implements Serializable {
 			if(itinerario.getServicio().getNumeroPisos()==2){
 				if(itinerario.getServicio().getId()==Constantes.ID_SERVICIO_VIP_PRESIDENCIAL) {
 					piso--;
-					creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso1()+itinerario.getServicio().getNumeroAsientosPiso2(), wndmanifiesto, list, bw,piso, itinerario.getServicio().getNumeroAsientosPiso2(),itinerario.getServicio());
+					creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso1()+itinerario.getServicio().getNumeroAsientosPiso2(), wndmanifiesto, list, bw,piso, itinerario.getServicio().getNumeroAsientosPiso2(),itinerario.getServicio(), esManiesto);
 				}else {
 					piso++;
-					creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso2()+itinerario.getServicio().getNumeroAsientosPiso1(), wndmanifiesto, list, bw,piso, itinerario.getServicio().getNumeroAsientosPiso1(),itinerario.getServicio());
+					creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso2()+itinerario.getServicio().getNumeroAsientosPiso1(), wndmanifiesto, list, bw,piso, itinerario.getServicio().getNumeroAsientosPiso1(),itinerario.getServicio(), esManiesto);
 				}				
 			}
 
@@ -2959,7 +2962,7 @@ public class CreateDocument implements Serializable {
 	 * @param bw
 	 * @throws Exception
 	 */
-	private static final void creaEncabezadoManifiesto(BufferedWriter bw) throws Exception{
+	private static final void creaEncabezadoManifiesto(BufferedWriter bw, Boolean esManifiesto) throws Exception{
 		String linea = "";
 		//---> linea 11: encabezado del detalle de pasajeros(Ato - N.Boleto - Nombre - Edad - TipoDoc. - Nr.Docum. - Destino - PtoEmbarque - Importe)
 		linea="| ATO";
@@ -2970,7 +2973,10 @@ public class CreateDocument implements Serializable {
 		linea+="|NR.DOCUMENTO";
 		linea+="| DESTINO       ";
 		linea+="| PTO EMBARQUE  ";
-		linea+="|  F.P.   ";
+		if(esManifiesto)
+			linea+="|  F.P.   ";
+		else
+			linea+="| TELEFONO ";
 		linea+="|  IMPORTE  |";
 		bw.write(linea+NEWLINE);
 	}
@@ -3006,7 +3012,7 @@ public class CreateDocument implements Serializable {
 	 * SE AGREGO UN PARAMETRO PARA LA IMPRESION DEL MANIFIESTO EN BUSES QUE NO SE REINICIA LA NUMERACION EN EL SEGUNDO PISO.
 	 * @throws Exception
 	 */
-	private static final void creaDetalleManifiesto(Integer numeroAsientos,WndManifiesto wndmanifiesto, List<VentaPasaje> list, BufferedWriter bw, Integer piso, Integer numeroAsientosPiso1, Servicio servicio) throws Exception{
+	private static final void creaDetalleManifiesto(Integer numeroAsientos,WndManifiesto wndmanifiesto, List<VentaPasaje> list, BufferedWriter bw, Integer piso, Integer numeroAsientosPiso1, Servicio servicio, Boolean esManifiesto) throws Exception{
 		Integer longitud_C=0;
 		/*
 		 *
@@ -3044,6 +3050,7 @@ public class CreateDocument implements Serializable {
 			Integer longFormaPago=8;
 			Integer longImporte=6;
 			Integer longitud_pax=33;
+			Integer longTelefono=9;
 
 			Integer asiento=i+1;
 			String linea="";
@@ -3104,12 +3111,20 @@ public class CreateDocument implements Serializable {
 								ptoEmbarque=ptoEmbarque.substring(0,longPtoEmbarque);
 							longitud_C=ptoEmbarque.length();
 							linea+=ptoEmbarque.toUpperCase()+tabular(longPtoEmbarque-longitud_C)+"| ";
-							/*FORMA PAGO*/
-							formaPago=(ventaPasaje.getFormaPago().getId().intValue()!=Constantes.ID_FORPAG_CORTESIA?"CONTADO":ventaPasaje.getFormaPago().getDenominacion());
-							if(formaPago.length()>longFormaPago)
-								formaPago=formaPago.substring(0,longFormaPago);
-							longitud_C=formaPago.length();
-							linea+=formaPago.toUpperCase()+tabular(longFormaPago-longitud_C)+"| ";
+							if(esManifiesto) {
+								/*FORMA PAGO*/
+								formaPago=(ventaPasaje.getFormaPago().getId().intValue()!=Constantes.ID_FORPAG_CORTESIA?"CONTADO":ventaPasaje.getFormaPago().getDenominacion());
+								if(formaPago.length()>longFormaPago)
+									formaPago=formaPago.substring(0,longFormaPago);
+								longitud_C=formaPago.length();
+								linea+=formaPago.toUpperCase()+tabular(longFormaPago-longitud_C)+"| ";								
+							}else {
+								String telefono = ventaPasaje.getPasajero().getTelefono();
+								if(telefono.length()>longTelefono)
+									telefono = telefono.substring(0, longTelefono);
+								longitud_C=telefono.length();
+								linea+=telefono+tabular(longTelefono-longitud_C)+"| ";
+							}
 							/*IMPORTE*/
 							String simbolo="";
 							totalManifiesto += ventaPasaje.getImportePagado();
@@ -3138,7 +3153,10 @@ public class CreateDocument implements Serializable {
 				linea+=documentoPax+tabular(longDocumentoPax)+"| ";//numero documento
 				linea+=destino.toUpperCase()+tabular(longDestino)+"| ";//Destino
 				linea+=ptoEmbarque.toUpperCase()+tabular(longPtoEmbarque)+"| ";//Punto de embarque
-				linea+=tabular(longFormaPago)+"|"; //Forma pago
+				if(esManifiesto)
+					linea+=tabular(longFormaPago)+"|"; //Forma pago
+				else
+					linea+=tabular(longTelefono)+"|"; //Forma pago
 				linea+=tabular(longImporte)+"     |"; //Importe
 				bw.write(linea+NEWLINE);
 			}

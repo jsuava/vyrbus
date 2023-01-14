@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: Implementación de metodos relacionados con la Venta de Pasajes.
- * Autor		: José Sullo Avalos
+ * Descripciï¿½n	: Implementaciï¿½n de metodos relacionados con la Venta de Pasajes.
+ * Autor		: Josï¿½ Sullo Avalos
  * Fecha		: 09/07/2012
  */
 package com.cystesoft.vyrbus.model.dao.impl;
@@ -61,7 +61,7 @@ import com.cystesoft.vyrbus.service.util.Util;
 
 /**
  *
- * @author José Sullo Avalos
+ * @author Josï¿½ Sullo Avalos
  * @since JDK1.6
  */
 @SuppressWarnings("unchecked")
@@ -78,7 +78,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				"			 vp.c_tiptra, i.ruta_idmayor, rm.localidad_idorigen, rm.localidad_iddestino, vp.n_numpiso, i.c_sectra, i.itinerario_id, " +
 				"			 p.c_numdoc, p.c_fecnac, vp.c_numcontrol, vp.canven_id, vp.d_fecpar, vp.c_horpar, " +
 				"			 ap.c_nomcor as nombreCorto, p.tipdoc_id tipoDocPax, vp.forpag_id, vp.tipforpag_id, vp.c_rucclicre, vp.n_imppag, " +//34
-				"			 vp.tipmov_id, av.c_denominacion AGVENTA, u.c_login USUARIO, al.c_denominacion AGLLEGADA, vp.audfecins FECVENTA "+
+				"			 vp.tipmov_id, av.c_denominacion AGVENTA, u.c_login USUARIO, al.c_denominacion AGLLEGADA, vp.audfecins FECVENTA, p.c_telefono "+
 				"FROM vrtvenpas vp " +
 				"	  INNER JOIN (SELECT MAX(venpas_id)venpas_id, c_numcontrol " +
 				"				  FROM vrtvenpas WHERE itinerario_id="+idItinerario+" GROUP BY c_numcontrol) max_venta " +
@@ -123,6 +123,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			pasajero.setNumeroDocumento(obj[22]==null?"":obj[22].toString());
 			pasajero.setFechaNacimiento(obj[23]==null?"":obj[23].toString());
 			pasajero.setNombre(obj[10].toString());
+			pasajero.setTelefono(obj[39]==null?"":obj[39].toString());
 			Sexo sexo = new Sexo();
 			sexo.setId(((BigDecimal)obj[11]).intValue());
 			sexo.setDenominacion(obj[12].toString());
@@ -1132,7 +1133,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#contarViajesValidos(java.lang.Long, java.lang.String, java.lang.String)
-	 * Implementación para Transmar
+	 * Implementaciï¿½n para Transmar
 	 */
 	@Override
 	public int contarViajesValidos(Long idPasajero, String fechaInicial, String fechaFinal)throws Exception{

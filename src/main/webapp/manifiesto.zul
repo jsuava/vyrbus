@@ -95,6 +95,7 @@
 										<listheader label="EDAD" width="40px" style="color: #ffffff;"/>
 										<listheader label="TIP.DOC" width="65px" style="color: #ffffff;"/>
 										<listheader label="N°DOCUMENTO" width="75px" style="color: #ffffff;"/>
+										<listheader label="TELEFONO" width="75px" style="color: #ffffff;"/>
 										<listheader label="ORIGEN" width="75px" style="color: #ffffff;"/>
 										<listheader label="DESTINO" width="75px" style="color: #ffffff;"/>
 										<listheader label="IMPORTE" width="50px" style="color: #ffffff;"/>

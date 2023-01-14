@@ -53,7 +53,7 @@ import com.cystesoft.vyrbus.service.util.UtilData;
 
 /**
  *
- * @author José Abanto
+ * @author Josï¿½ Abanto
  *
  */
 @SuppressWarnings("rawtypes")
@@ -218,7 +218,7 @@ public class WndVerMapaBus extends WndBase {
 		if (detalleItinerario.getItinerario().getBus().getId() != null)
 			bus = ServiceLocator.getBusManager().buscarPorId(detalleItinerario.getItinerario().getBus().getId().longValue());
 
-		label = createLabel("N° BUS", null, null);
+		label = createLabel("NÂ° BUS", null, null);
 		row = new Row();
 		row.appendChild(label);
 		label = createLabel(bus==null?":":": "  + bus.getCodigo(), styleBlue11f, null);
@@ -529,7 +529,7 @@ public class WndVerMapaBus extends WndBase {
 		rows.appendChild(row);
 
 
-		/*Validacion del numero de pisos del bus para la aliniación.*/
+		/*Validacion del numero de pisos del bus para la aliniaciï¿½n.*/
 //		if (detalleItinerario.getItinerario().getServicio().getNumeroPisos().equals(PISO_DOS)){
 //			grdBotones.setHeight("140px");
 //			Separator separator = new Separator("vertical");
@@ -907,7 +907,7 @@ public class WndVerMapaBus extends WndBase {
 	}
 
 	/**
-//	 * Obtiene la separación de los asientos en el mapa.
+//	 * Obtiene la separaciï¿½n de los asientos en el mapa.
 //	 * @param servicio: Tipo de servicio, CAMA, PRE-40, PRE, SUITE
 //	 * @return
 //	 */
@@ -973,7 +973,8 @@ public class WndVerMapaBus extends WndBase {
 												   "Ag. Desembarque: "+venta.getAgenciaLlegada().getDenominacion().toString()+"\n"+
 												   "Ag. Venta: "+venta.getAgencia().getDenominacion().toString()+"\n"+
 												   "Usuario Venta: "+venta.getUsuario().getLogin().toString()+"\n"+
-												   "Fecha Venta: "+ Util.DatetoString(venta.getFechaInsercion(), Constantes.DATE_TIME_FORMAT)
+												   "Fecha Venta: "+ Util.DatetoString(venta.getFechaInsercion(), Constantes.DATE_TIME_FORMAT)+"\n"+
+												   "Telefono: "+venta.getPasajero().getTelefono()
 									);
 							break;
 						}

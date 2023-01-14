@@ -89,7 +89,7 @@ import sun.misc.BASE64Encoder;
 
 /**
  *
- * @author José Abanto.
+ * @author Josï¿½ Abanto.
  */
 public class WndManifiesto extends WndBase {
 	private static final long serialVersionUID = -3533022967415262311L;
@@ -248,7 +248,7 @@ public class WndManifiesto extends WndBase {
 		cargarTipoImpresionManifiesto();
 //		//recupera la agencia asociada al usuario hardware
 //		lstUsuarioHardware= UtilData.agenciaUsuarioHardware(UtilData.getCodigoUsuarioHardware());
-		/*recupera datos autorizados por la sunat para la emisión del manifiesto.*/
+		/*recupera datos autorizados por la sunat para la emisiï¿½n del manifiesto.*/
 		loadCorrelativosManifiesto();
 
 		cmdImprimir.setDisabled(true);
@@ -268,7 +268,7 @@ public class WndManifiesto extends WndBase {
 	public void GrabaManifiesto(final boolean isPrintLaser) throws Exception{
 		ArrayList<VentaPasaje>listCompPendientesXImprimir = new ArrayList<>();
 		try{
-			/*recupera datos autorizados por la sunat para la emisión del manifiesto.*/
+			/*recupera datos autorizados por la sunat para la emisiï¿½n del manifiesto.*/
 			loadCorrelativosManifiesto();
 			/*Correlativos para el Manifiesto Agotados*/
 			if (porcentajeCorrelativoManifiesto>=100)
@@ -423,11 +423,11 @@ public class WndManifiesto extends WndBase {
 	}
 
 	/**
-	 * Recupera datos autorizados por la sunat para la emisión del manifiesto.
+	 * Recupera datos autorizados por la sunat para la emisiï¿½n del manifiesto.
 	 * @throws Exception
 	 */
 	private void loadCorrelativosManifiesto() throws Exception{
-//		/*recupera datos autorizado por la Sunat, según la agencia*/
+//		/*recupera datos autorizado por la Sunat, segï¿½n la agencia*/
 //		//especieValoradaSunat = new EspecieValorada();
 //		if (lstUsuarioHardware.size() >0){
 //			Agencia agencia =  new Agencia();
@@ -523,13 +523,13 @@ public class WndManifiesto extends WndBase {
 			for (VentaPasaje ventaPasaje : lsVentaPasajest){
 				item = new Listitem();
 
-				cell= new Listcell(ventaPasaje.getNumeroAsiento().toString()); //Número de Asiento
+				cell= new Listcell(ventaPasaje.getNumeroAsiento().toString()); //Numero de Asiento
 				cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
-				cell= new Listcell("T"+ventaPasaje.getNumeroControl().toString().substring(4)); //Número de control
+				cell= new Listcell("T"+ventaPasaje.getNumeroControl().toString().substring(4)); //Numero de control
 				cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
-				cell = new Listcell(ventaPasaje.getNumeroBoleto()); // Número de Boleto
+				cell = new Listcell(ventaPasaje.getNumeroBoleto()); // Numero de Boleto
 				cell.setTooltiptext(ventaPasaje.getTipoComprobante().getDenominacion());
 				cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
@@ -545,7 +545,10 @@ public class WndManifiesto extends WndBase {
 				item.appendChild(cell);
 				cell = new Listcell(ventaPasaje.getPasajero().getTipoDocumento().getDenominacion()); //Tipo Docuemnto
 				item.appendChild(cell);
-				cell = new Listcell(ventaPasaje.getPasajero().getNumeroDocumento()); //Número Documento
+				cell = new Listcell(ventaPasaje.getPasajero().getNumeroDocumento()); //Numero Documento
+				cell.setStyle("font-size:11px !important");
+				item.appendChild(cell);
+				cell = new Listcell(ventaPasaje.getPasajero().getTelefono());	//Telefono
 				cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
 				cell = new Listcell(ventaPasaje.getRuta().getOrigen()); //Origen
@@ -781,9 +784,9 @@ public class WndManifiesto extends WndBase {
 	}
 
 	/**
-	 * Permite enlazar los controles a la ventana de selección de Itinerario
+	 * Permite enlazar los controles a la ventana de selecciï¿½n de Itinerario
 	 * @param textboxItinerario :en este Textbox se devolvera el Id del itinerario seleccionado.
-	 * @param button :ha este Button se le adjuntara un listener con la llamada a la ventana de selección de itinerario
+	 * @param button :ha este Button se le adjuntara un listener con la llamada a la ventana de selecciï¿½n de itinerario
 	 * @see WndItinerario:
 	 */
 	public  void enlazarItinerario(final Button button) {
@@ -866,7 +869,7 @@ public class WndManifiesto extends WndBase {
 				cmdImprimir.setDisabled(true);
 				cmdPrevio.setDisabled(true);}
 		}else{
-			/*Habili/Desabilita según la configuracion del rol del usuario*/
+			/*Habili/Desabilita segï¿½n la configuracion del rol del usuario*/
 			/*IMPRIMIR*/
 			cmdImprimir.setDisabled(accesoImprimir()?false:true);
 
@@ -989,7 +992,7 @@ public class WndManifiesto extends WndBase {
 				
 				
 				//************************************************************************************
-				//Consulta la version de impresión configurada para la agencia - jabanto 16/11/2022
+				//Consulta la version de impresiï¿½n configurada para la agencia - jabanto 16/11/2022
 				Agencia oagencia = (Agencia)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
 				
 				if(UtilFlag.isFormatPrintViewPdfCarpetaDespacho(oagencia.getId())) {
@@ -1146,7 +1149,7 @@ public class WndManifiesto extends WndBase {
 					
 										
 					//************************************************************************************
-					//Consulta la version de impresión configurada para la agencia - jabanto 16/11/2022
+					//Consulta la version de impresiï¿½n configurada para la agencia - jabanto 16/11/2022
 					Agencia oagencia = (Agencia)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
 					
 					if(UtilFlag.isFormatPrintViewPdfManifiesto(oagencia.getId())) {
@@ -1853,7 +1856,7 @@ public class WndManifiesto extends WndBase {
 		final String simboloNull="-----";
 
 		/*Etiqueta Agencia venta*/
-		label= new Label("Agencia creación :");
+		label= new Label("Agencia creaciï¿½n :");
 		label.setStyle("font-size:11px !important");
 		row.appendChild(label);
 		/*Valor Agencia venta*/
@@ -1873,7 +1876,7 @@ public class WndManifiesto extends WndBase {
 
 		/*Etiqueta Usuario venta*/
 		row= new Row();
-		label= new Label("Usuario creación :");
+		label= new Label("Usuario creaciï¿½n :");
 		label.setStyle("font-size:11px !important");
 		row.appendChild(label);
 		/*Valor Usuario venta*/
@@ -1893,7 +1896,7 @@ public class WndManifiesto extends WndBase {
 
 		/*Fecha/Hora Creacion*/
 		row=new Row();row.setSpans("1,4");
-		label= new Label("Fecha/Hora creación :");
+		label= new Label("Fecha/Hora creaciï¿½n :");
 		label.setStyle("font-size:11px !important");
 		row.appendChild(label);
 		rows.appendChild(row);
@@ -1915,7 +1918,7 @@ public class WndManifiesto extends WndBase {
 
 		/*Usuario Modificacion*/
 		row=new Row();
-		label= new Label("Usuario Modificación :");
+		label= new Label("Usuario Modificaciï¿½n :");
 		label.setStyle("font-size:11px !important");
 		row.appendChild(label);
 		rows.appendChild(row);
@@ -1924,7 +1927,7 @@ public class WndManifiesto extends WndBase {
 		row.appendChild(lblUsuarioModificacion);
 
 		/*Fecha y hora Modificacion*/
-		label= new Label("Fecha/Hora Modificación :");
+		label= new Label("Fecha/Hora Modificaciï¿½n :");
 		label.setStyle("font-size:11px !important");
 		row.appendChild(label);
 		rows.appendChild(row);
@@ -1946,7 +1949,7 @@ public class WndManifiesto extends WndBase {
 				lblAgenciaRemota.setValue(simboloNull);
 				lblUsuarioRmoto.setValue(simboloNull);
 
-				// Valida que el número del asiento ingrasado no se mayor a la capasidad del bus.
+				// Valida que el nï¿½mero del asiento ingrasado no se mayor a la capasidad del bus.
 
 
 				if(!(txtItinerario.getText().trim().isEmpty())){
@@ -2205,12 +2208,12 @@ public class WndManifiesto extends WndBase {
 		Row row = new Row();
 		Radiogroup radiogroup = new Radiogroup();
 		radiogroup.setOrient("vertical");
-		final Radio rdPrintLasert = new Radio("Impresión Laser");
+		final Radio rdPrintLasert = new Radio("Impresiï¿½n Laser");
 //		rdPrintLasert.setDisabled(configuracionImpresora==null);
 		radiogroup.appendChild(rdPrintLasert);
 		Separator separator = new Separator("horizontal");
 		radiogroup.appendChild(separator);
-		final Radio rdPrintMatricial = new Radio("Impresión Matricial");
+		final Radio rdPrintMatricial = new Radio("Impresiï¿½n Matricial");
 		rdPrintMatricial.setChecked(rdPrintLasert.isDisabled());
 		radiogroup.appendChild(rdPrintMatricial);
 		separator = new Separator("horizontal");
@@ -2323,7 +2326,7 @@ public class WndManifiesto extends WndBase {
 			public void onEvent(Event e){
 				try {
 					if(rdPrintMatricial.isChecked()==false && rdPrintLasert.isChecked()==false){
-						DlgMessage.information("Debe seleccionar el Tipo de Impresión.");
+						DlgMessage.information("Debe seleccionar el Tipo de Impresiï¿½n.");
 						return;
 					}else if (!(cmbAgencia.getSelectedItem().getValue() instanceof Agencia)){
 						DlgMessage.information("Debe de seleccionar la Agencia con la cual va a emitir el Manifiesto");
