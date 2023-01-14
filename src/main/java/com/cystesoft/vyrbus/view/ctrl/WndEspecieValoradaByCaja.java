@@ -362,6 +362,7 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 			cmbTipoComprobante.setDisabled(true);
 			cmbUsuarioHardware.setDisabled(true);
 			cmbAgencia.setDisabled(true);
+			txtSerie.setDisabled(true);
 		}
 	}
 

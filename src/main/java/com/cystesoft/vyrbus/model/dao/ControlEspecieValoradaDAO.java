@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José Sullo Avalos
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Sullo Avalos
  * Fecha		: 17/09/2012
  */
 package com.cystesoft.vyrbus.model.dao;
@@ -16,7 +16,7 @@ import com.cystesoft.vyrbus.model.bean.ControlEspecieValoradaID;
 
 /**
  *
- * @author José Sullo Avalos
+ * @author Josï¿½ Sullo Avalos
  * @since JDK1.6
  */
 public interface ControlEspecieValoradaDAO extends GenericDAO {
@@ -29,7 +29,7 @@ public interface ControlEspecieValoradaDAO extends GenericDAO {
 	 */
 	public ArrayList<ControlEspecieValorada> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar)throws Exception;
 	/**
-	 * Realiza la inserción del objeto enviado como parametro.
+	 * Realiza la inserciï¿½n del objeto enviado como parametro.
 	 * @param controlEspecieValorada	: Objeto a insertar.
 	 * @return -1 Fallo, 1 Correcto
 	 */
@@ -50,7 +50,7 @@ public interface ControlEspecieValoradaDAO extends GenericDAO {
 	 */
 	public ControlEspecieValorada buscarUltimoCorrelativoEspecieValorada(Integer idTipCom, Integer idUsuHar, String serie)throws Exception;
 	/**
-	 * Realiza la actualización del correlativo de la especie valorada.
+	 * Realiza la actualizaciï¿½n del correlativo de la especie valorada.
 	 * @param idTipCom		: Identificador del tipo de comprobante.
 	 * @param idUsuHar		: Identificador del usuario Hardware.
 	 * @param serie			: Serie de la especie valorada.
@@ -78,9 +78,9 @@ public interface ControlEspecieValoradaDAO extends GenericDAO {
 	public List<ControlEspecieValorada> buscarEspecieValoradas(Integer idAgencia, Integer idTipoComprobante, Integer idUsuarioHarware) throws Exception;
 
 	/**
-	 * Valida que el numero rango de correlativo ingresado no haga intersección con algún otro rango ingresado por otro usuario
+	 * Valida que el numero rango de correlativo ingresado no haga intersecciï¿½n con algï¿½n otro rango ingresado por otro usuario
 	 * @param idUsuarioHardware	: Identificador del Usuario Hardware.
-	 * @param serie				: Número de Serie.
+	 * @param serie				: Nï¿½mero de Serie.
 	 * @param inicial			: Correlativo Inicial.
 	 * @param Final				: Correlativo Final
 	 * @return
@@ -100,6 +100,11 @@ public interface ControlEspecieValoradaDAO extends GenericDAO {
 	 * @param inicio
 	 */
 	public void generarSecuenciador(String nameSequence, Long inicio);
+	/**
+	 * Elimina el secuenciador
+	 * @param nameSequence	: Nombre del secuenciador
+	 */
+	public void eliminarSecuenciador(String nameSequence);
 	/**
 	 * Realiza la ejecucion del secuenciador, que hace la funcion del correlativo
 	 * @param controlEspecieValorada	: Instancia de la clase ControlEspeciaValorada.

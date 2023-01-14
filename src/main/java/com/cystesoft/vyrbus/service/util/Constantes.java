@@ -41,7 +41,7 @@ public class Constantes {
 	 */
 	public static final int ACTION_MODIFY =  1;
 	/**
-	 * Constante para la Acci�n Consultar
+	 * Constante para la Accion Consultar
 	 * @see WndOpcionesMantenimiento#onCancel(int)
 	 * @see WndOpcionesMantenimiento#onSave(int)
 	 */
