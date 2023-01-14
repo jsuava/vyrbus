@@ -25,7 +25,8 @@ public class Constantes {
 	/**
 	 * Vension actual del Sistema
 	 */
-	public static final String SYSTEM_VERSION = "Versión 3.2.7";
+
+	public static final String SYSTEM_VERSION = "Versi�n 3.2.8";
 		
 	/**
 	 * Constante para la Acci�n Nuevo
@@ -161,7 +162,6 @@ public class Constantes {
 
 //	public static final String SERVER_HOST = "localhost:8080";
 	
-	//SERVER_HOST PRODUCCION TRANSMAR
 	public static final String SERVER_HOST = "119.8.145.122:8080";
 
 	public static final String SERVER_CONTEXT = Executions.getCurrent().getContextPath();
