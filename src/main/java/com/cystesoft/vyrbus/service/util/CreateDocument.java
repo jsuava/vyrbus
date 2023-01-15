@@ -2608,7 +2608,10 @@ public class CreateDocument implements Serializable {
 //			if(esManiesto==true){			
 			title= (esManiesto?"NUMERO DE MANIFIESTO":"LISTADO DE PASAJEROS");
 			linea = Constantes.empresa;
-			linea += tabular(33)+strDocumento+tabular(33)+title;
+			if(esManiesto)
+				linea += tabular(33)+strDocumento+tabular(33)+title;
+			else				
+				linea += tabular(33)+title;
 			bw.write(linea + NEWLINE);
 			//---> line 2:
 //			linea = Constantes.empresa;
@@ -2724,6 +2727,12 @@ public class CreateDocument implements Serializable {
 //				linea+="DNI : "+dniTerramoza+tabular(35-longitud_C);
 				linea+="SERVICIO : "+servicio;
 				linea+= tabular(27) + "SALIDA : "+salida;
+				
+				bw.write(linea+NEWLINE);
+			}else {
+				longitud_C = itinerario.getServicio().getDenominacion().length();
+				linea="SERVICIO  : "+itinerario.getServicio().getDenominacion()+tabular(44-longitud_C);
+				linea+= "SALIDA : "+Constantes.FORMAT_DATE.format(itinerario.getFechaPartida())+" "+itinerario.getHoraPartida();
 				
 				bw.write(linea+NEWLINE);
 			}
