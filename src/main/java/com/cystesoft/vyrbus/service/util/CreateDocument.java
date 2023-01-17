@@ -2604,9 +2604,9 @@ public class CreateDocument implements Serializable {
 
 			//---> line 1:	TITULO DEL REPORTE
 			String title="";
-			String strDocumento="MANIFIESTO DE PASAJEROS";
+			String strDocumento=(esManiesto?"MANIFIESTO DE PASAJEROS":"INFORMACION DE PASAJEROS");
 //			if(esManiesto==true){			
-			title= (esManiesto?"NUMERO DE MANIFIESTO":"LISTADO DE PASAJEROS");
+			title= (esManiesto?"NUMERO DE MANIFIESTO":"LISTADO");
 			linea = Constantes.empresa;
 			linea += tabular(33)+strDocumento+tabular(33)+title;
 			bw.write(linea + NEWLINE);

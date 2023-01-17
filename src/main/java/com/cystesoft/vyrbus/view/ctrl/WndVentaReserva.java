@@ -1449,16 +1449,16 @@ public class WndVentaReserva extends WndBase {
 //							cell.setStyle("font-size:9px !important");
 //							item.appendChild(cell);
 							cell = new Listcell(detalleItinerario.getAgenciaPartida().getNombreCorto());
-							cell.setStyle("font-size:9px !important");
+							cell.setStyle("font-size:10px !important");
 							item.appendChild(cell);
 							cell = new Listcell(detalleItinerario.getItinerario().getServicio().getDenominacion());
-							cell.setStyle("font-size:9px !important");
+							cell.setStyle("font-size:10px !important");
 							item.appendChild(cell);
 							cell = new Listcell(detalleItinerario.getRuta().toString());
-							cell.setStyle("font-size:9px !important");
+							cell.setStyle("font-size:10px !important");
 							item.appendChild(cell);
 							cell = new Listcell(detalleItinerario.getHoraPartida());
-							cell.setStyle("font-size:11px !important");
+							cell.setStyle("font-size:12px !important");
 							cell.setTooltiptext("Hora de Partida");
 							item.appendChild(cell);
 
@@ -1487,8 +1487,14 @@ public class WndVentaReserva extends WndBase {
 
 								//Listcell cellTarifaStandar = new Listcell(Util.toNumberFormat(detalleItinerario.getTarifa(), 2));
 								Listcell cellTarifaStandar = new Listcell(strTarifas);
-								cellTarifaStandar.setStyle("font-size:11px !important");
+								cellTarifaStandar.setStyle("font-size:12px !important");
 								cellTarifaStandar.setTooltiptext("Tarifa Estandar");
+								//PLaca del bus
+//								cell = new Listcell(detalleItinerario.getItinerario().getBus()==null ? "" : detalleItinerario.getItinerario().getBus().getNumeroPlaca());
+//								cell.setStyle("font-size:12px !important");
+//								cell.setTooltiptext("Placa del Bus");
+//								item.appendChild(cell);
+
 
 								//Tarifa suite, en soles
 								//Comentado por MAOE
