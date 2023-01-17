@@ -35,11 +35,7 @@
 								<combobox id="cmbTipoOperacion" width="100px" readonly="true" onChange="wndVentaReserva.onSelectTipoOperacion()"/>
 								<hlayout>
 									<checkbox id="chkVentaRemota" label="Remota" onClick="wndVentaReserva.onSelectTipoVenta()"/>
-									<checkbox id="chkBoletoPrepagado" 
-											label="Prepagado" 
-											onClick="wndVentaReserva.onSelectTipoVenta()" 
-											visible="false" 
-											disabled="true"/>
+									<checkbox id="chkBoletoPrepagado" label="Prepagado" onClick="wndVentaReserva.onSelectTipoVenta()" visible="false" disabled="true"/>
 								</hlayout>
 								<cell rowspan="3" style="background:white; padding:0px">
 									<groupbox id="grpVentaRemota" closable="false" mold="3d" width="400px" visible="false">
@@ -61,29 +57,17 @@
 													<label value="COMPROBANTE :" sclass="label-size9-bold"/>
 													<radiogroup>
 														<hlayout>
-															<radio id="rdPrepagadoRemoto" 
-																	label="PREPAGADO" 
-																	style="font-size:9px !important;font-weight: bold;color:blue;"/>
+															<radio id="rdPrepagadoRemoto" label="PREPAGADO" style="font-size:9px !important;font-weight: bold;color:blue;"/>
 															<separator/>
-															<radio id="rdBoletoRemoto" 
-																	label="BOLETO VIAJE" 
-																	style="font-size:9px !important;font-weight: bold;color:blue"/>
+															<radio id="rdBoletoRemoto" label="BOLETO VIAJE" style="font-size:9px !important;font-weight: bold;color:blue"/>
 															<separator/>
-															<radio id="rdElectronicoRemoto" 
-																	label="ELECTRONICO" 
-																	style="font-size:9px !important;font-weight: bold;color:blue" 
-																	disabled="true"/>
+															<radio id="rdElectronicoRemoto" label="ELECTRONICO" style="font-size:9px !important;font-weight: bold;color:blue" disabled="true"/>
 														</hlayout>
 													</radiogroup>
 												</row>
  												<row visible="false">
  													<label value="COMPROBANTE :" sclass="label-size9-bold"/>
- 													<bandbox id="bndbxUsuarioHardware" 
- 															mold="rounded" 
- 															autodrop="true" 
- 															width="270px" 
- 															disabled="true" 
- 															style="font-size:9px">
+ 													<bandbox id="bndbxUsuarioHardware" mold="rounded" autodrop="true" width="270px" disabled="true" style="font-size:9px">
  														<bandpopup>
  															<listbox id="lbxUsuarioHardware" width="261px">
  																<listhead>
@@ -122,8 +106,7 @@
 											<label value="ORIGEN :" sclass="label-size11"/>
 											<combobox id="cmbOrigen" autodrop="true" width="160px" onOK="cmbDestino.setFocus(true)"/>
 											<cell rowspan="2">
-												<button id="btnBuscarItinerario" sclass="btnCommandM" autodisable="self" label="Buscar" image="/resources/mp_buscarEnabled.png"  
-														onClick="wndVentaReserva.onBuscarItinerarios()"/>
+												<button id="btnBuscarItinerario" sclass="btnCommandM" autodisable="self" label="Buscar" image="/resources/mp_buscarEnabled.png" onClick="wndVentaReserva.onBuscarItinerarios()"/>
 											</cell>											
 										</row>
 										<row style="background:#e0e0e0; border:none;">
@@ -158,28 +141,19 @@
 											<listheader label="SERVICIO" width="110px" style="color: #ffffff;"/>
 											<listheader label="RUTA" width="120px" style="color: #ffffff;"/>
 											<listheader label="HR.PD." width="40px" align="center" style="color: #ffffff;"/>
-											<listheader label="S/.ESTANDAR" width="100px" align="right" tooltiptext="Tarifa Estandar" style="color: #ffffff;"/>
-<!--  											<listheader label="S/.SUITE" width="60px" align="right" tooltiptext="Tarifa Suite"/>   -->
+											<listheader label="S/.ESTANDAR" width="90px" align="right" tooltiptext="Tarifa Estandar" style="color: #ffffff;"/>
+	  										<listheader label="BUS" width="50px" align="center" tooltiptext="Placa Bus" style="color: #ffffff;"/>  
+	  										<listheader label="MAPA" width="60px" align="center" tooltiptext="Mapa Bus" style="color: #ffffff;"/>
 											<listheader id="listheaderOtraTarifa" label="$ TARIFA " align="right" style="color: #ffffff;"/>
 										</listhead>
 									</listbox>
 								</vlayout>
 								<cell rowspan="2" align="left" valign="bottom">
 									<vlayout>
-										<button id="btnNextTabAsientos" 
-												sclass="btnCommandL"  
-												autodisable="self" 
-												label="Siguiente" 
-												image="resources/mp_next.png" 
-												disabled="true"  
-												onClick="wndVentaReserva.next()"/>
+										<button id="btnNextTabAsientos" sclass="btnCommandL" autodisable="self" label="Siguiente" image="resources/mp_next.png" disabled="true" onClick="wndVentaReserva.next()"/>
 										<label value=""/>
 										<label value=""/>
-										<button label="Cerrar" 
-												sclass="btnCommandL" 
-												autodisable="self"  
-												image="resources/mp_cerrarEnabled.png" 
-												onClick="wndVentaReserva.closeTabWindow()" />
+										<button label="Cerrar" sclass="btnCommandL" autodisable="self" image="resources/mp_cerrarEnabled.png" onClick="wndVentaReserva.closeTabWindow()" />
 										<label value=""/>
 										<label value=""/>												
 									</vlayout>
@@ -199,6 +173,8 @@
 											<listheader label="RUTA" width="120px" style="color: #ffffff;"/>
 											<listheader label="HR.PD." width="40px" align="center" style="color: #ffffff;"/>
 											<listheader label="S/.ESTANDAR"  align="right" tooltiptext="Tarifa Estandar en Soles" style="color: #ffffff;"/>
+											<listheader label="BUS" width="50px" align="center" tooltiptext="Placa Bus" style="color: #ffffff;"/>  
+	  										<listheader label="MAPA" width="60px" align="center" tooltiptext="Mapa Bus" style="color: #ffffff;"/>
 <!-- 											<listheader label="S/.SUITE" width="60px" align="right" tooltiptext="Tarifa Suite en Soles" style="color: #ffffff;"/>  -->
 											<listheader id="listheaderOtraTarifaRetorno" label="$ TARIFA " width="60px" align="right" style="color: #ffffff;"/>
 <!-- 											<listheader label="UNIMON" width="45px" align="center" tooltiptext="Unidad monetaria"/> -->
