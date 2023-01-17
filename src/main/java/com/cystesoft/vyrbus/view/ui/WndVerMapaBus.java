@@ -296,6 +296,8 @@ public class WndVerMapaBus extends WndBase {
 		row = new Row();
 		label = new Label("OCUPADOS");
 		row.appendChild(label);
+		if(getCantOcupados()==0)
+			setCantOcupados(lstVentas.size());
 		label = new Label(": " + getCantOcupados());
 		label.setStyle("font-size:11px !important");
 		row.appendChild(label);
