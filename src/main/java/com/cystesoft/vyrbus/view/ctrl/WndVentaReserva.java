@@ -5906,11 +5906,11 @@ public class WndVentaReserva extends WndBase {
 			ventaPasaje.setRecargo(dblRecargo.getValue());
 			ventaPasaje.setDescuento(dblDescuento.getValue());
 //			ventaPasaje.setImportePagado(dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue());
-			Double importePagado = dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue();
+//			Double importePagado = dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue();
 			ventaPasaje.setImportePagado(dblImporte.getValue());
-			if(importePagado != ventaPasaje.getImportePagado()) {
-				ventaPasaje.setObservaciones("IMPORTE A PAGAR EDITADO POR EL USUARIO, ORIGINAL("+importePagado+")");
-			}
+//			if(importePagado != ventaPasaje.getImportePagado()) {
+//				ventaPasaje.setObservaciones("IMPORTE A PAGAR EDITADO POR EL USUARIO, ORIGINAL("+importePagado+")");
+//			}
 
 			/*19/08/2015 - jabanto*/
 			/*Si la agencia tiene configurado otra moneda diferente a las Soles*/

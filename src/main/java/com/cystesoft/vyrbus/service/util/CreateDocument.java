@@ -3954,7 +3954,7 @@ public class CreateDocument implements Serializable {
 				//Agregar egresos de venta yape ingresada como gasto, venta ingresada como transferencia
 				if(totalYape > 0) {
 					linea=tabular(3)+nombreYape;
-					linea+=tabular(45)+tabular(35-Util.toNumberFormat(totalYape, 2).length())+Util.toNumberFormat(totalYape, 2);
+					linea+=tabular(58-nombreYape.length())+tabular(35-Util.toNumberFormat(totalYape, 2).length())+Util.toNumberFormat(totalYape, 2);
 					bw.write(linea + NEWLINE);
 					totalEgresosVentas += totalYape;
 				}

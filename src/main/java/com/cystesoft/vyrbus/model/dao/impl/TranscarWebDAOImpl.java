@@ -601,7 +601,8 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 					}else if(tipoPagoId==Constantes.ID_TIPFORPAG_TARJETA && operadorTarjetaId==Constantes.ID_OPETARCRE_MSTERCARD){
 						cantidadTarjetaMastercard ++;
 						tarjetaMastercard += totalCosto;
-					}else if(tipoPagoId == ID_TIPPAG_YAPE) {
+//					}else if(tipoPagoId == ID_TIPPAG_YAPE) {
+					}else if(tipoPagoId == Constantes.ID_TIPFORPAG_YAPE) {
 						cantidadYape ++;
 						yape += totalCosto;
 					}
