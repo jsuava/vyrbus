@@ -112,6 +112,14 @@
 										constraint="/.+@.+\.[a-z]+/: Por favor ingrese una dirección de e-mail valida, para enviar la informacion de acceso."/>
 							</row>
 							<row>
+								<label value="TIPO SEGURIDAD (*) :"/>
+								<combobox id="cmbTipoSeguridad" readonly="true" onChange="wndUsuariosistema.onSelect_cmbTipoSeguridad()"/>
+							</row>
+							<row>
+								<label value="USUARIO HARDWARE :"/>
+								<combobox id="cmbUsuarioHardware" readonly="true" />
+							</row>
+							<row>
 								<label value="USUARIO ACTIVO ? :"/>
 								<hlayout>
 									<radiogroup>
@@ -125,9 +133,9 @@
 								<button label="Reiniciar Password" sclass="btnCommandM" onClick="wndUsuariosistema.reiniciarPWD()" visible="false"/>
 								<separator/><separator/>
 							</row>
-							<row>
-								<separator height="38px" /><separator/>
-							</row>
+<!-- 							<row> -->
+<!-- 								<separator height="1px" /><separator/> -->
+<!-- 							</row> -->
 						</rows>
 					</grid>
 					<vbox align="center">

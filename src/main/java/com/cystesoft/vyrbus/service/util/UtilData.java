@@ -2793,6 +2793,16 @@ public class UtilData extends Window {
 	}
 	
 	/**
+	 * Obtiene el identificador de la entidad agencia de la bd vyrbus
+	 * @param agencia_idtranscarweb : Identificador de la agencia del transcarweb
+	 * @return identificar de la agencia_id del vyrbus
+	 * @throws Exception
+	 */
+	public static Integer getAgencia_Idvyrbus(Integer agencia_idtranscarweb)throws Exception{
+		return ServiceLocator.getAgenciaManager().buscarAgencia_Idtranscarweb(agencia_idtranscarweb);
+	}
+	
+	/**
 	 * Realiza la busqueda de la liquidacion de carga
 	 * @param liquidacionPasajes : Instancia de la liquidacion de pasajes
 	 * @return
@@ -2806,8 +2816,10 @@ public class UtilData extends Window {
 				String fecha = Constantes.FORMAT_DATE.format(liquidacionPasajes.getFechaLiquidacion());
 				TreeMap<String, Liquidacion> resultCarga = ServiceLocator.getTranscarWebManager().buscarLiquidacionCounter(fecha, fecha, liquidacionPasajes.getAgencia().getId(), transcarUsuario.getId());
 				if(resultCarga !=null) {
+					Integer agencia_idtranscar = UtilData.getAgencia_Idtranscarweb(liquidacionPasajes.getAgencia().getId());
 					String key = Constantes.FORMAT_DATE.format(liquidacionPasajes.getFechaLiquidacion());
-					key += liquidacionPasajes.getAgencia().getId().toString();
+//					key += liquidacionPasajes.getAgencia().getId().toString();
+					key += (agencia_idtranscar!=null?agencia_idtranscar.toString(): "");
 					key += liquidacionPasajes.getUsuario().getLogin();
 					liquidacionCarga = resultCarga.get(key);
 				}								
@@ -2817,6 +2829,19 @@ public class UtilData extends Window {
 		}	
 		
 		return liquidacionCarga;
+	}
+	
+	public static void cargarTipoSeguridadUsuario(Combobox combobox, Boolean todos)throws Exception{
+		
+		cargarGenericData(combobox, todos);
+		Comboitem comboitem = new Comboitem("USAR AUTENTICADOR");
+		comboitem.setValue(Constantes.TRUE_VALUE);
+		combobox.appendChild(comboitem);
+		comboitem = new Comboitem("SIN AUTENTICADOR");
+		comboitem.setValue(Constantes.FALSE_VALUE);
+		combobox.appendChild(comboitem);
+		
+		combobox.setSelectedIndex(0);
 	}
 }
 

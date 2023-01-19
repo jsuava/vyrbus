@@ -38,6 +38,7 @@ import com.cystesoft.vyrbus.model.bean.TranscarLiquidacionTurno;
 import com.cystesoft.vyrbus.model.bean.TranscarRolUsuario;
 import com.cystesoft.vyrbus.model.bean.TranscarUsuarioPersonal;
 import com.cystesoft.vyrbus.model.bean.Usuario;
+import com.cystesoft.vyrbus.model.bean.UsuarioHardware;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.model.dao.TranscarWebDAO;
 import com.cystesoft.vyrbus.service.mappers.ResumenVentas;
@@ -169,47 +170,62 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 		Integer agencia_idtranscar = UtilData.getAgencia_Idtranscarweb(transcarUsuario.getAgenciaId());
 
 		//Valida que la agencia del vyrbus este asociada a la del transcar web
-		if(agencia_idtranscar==null) {
-			throw new Exception(Messages.getString("Generales.informacion.agenciaNoAsociadaTranscarweb"));
-		}
+		if(agencia_idtranscar==null)
+			throw new Exception(Messages.getString("Generales.informacion.agenciaNoAsociadaTranscarweb"));		
 
 		String sql = null;
-
 		Integer usuario_id = null;
+		UsuarioHardware usuarioHardware = (transcarUsuario.getUsuarioHardware()!=null?transcarUsuario.getUsuarioHardware():null);
+//		Integer usuarioHardware_id = null;
+//		
+//		if(usuarioHardware !=null) {
+//			String direccionMac = (usuarioHardware!=null? usuarioHardware.getDireccionMAC():getDireccionMacDinamica());
+//			String codigo = Util.generarCodigo(direccionMac);
+//			
+//			sql = "select uh.usuhard_id, uh.c_dirmac, uh.c_codigo, uh.c_descripcion, uh.agencia_id  \r\n" + 
+//					 "from tcmusuhard uh \r\n" + 
+//					 "where uh.c_dirmac ='"+ direccionMac +"' and uh.c_estreg = 'A' ";	
+//			List<?> result=getJdbcTemplate().queryForList(sql);
+//			if(result.size()>0) {
+//				Map<String, Object> map = (Map<String, Object>)result.get(0);
+//				usuarioHardware_id = ((BigDecimal)map.get("USUHARD_ID")).intValue();
+//			}else {
+//				//Genera el identificador para el UsuarioHardware
+//				sql = "select nextval('seq_tcmusuhard_id') usuhard_id ";
+//				usuarioHardware_id = getJdbcTemplate().queryForInt(sql);
+//				String descripcionPc = (usuarioHardware!=null?usuarioHardware.getDescripcion():"PC-"+transcarUsuario.getLogin().toUpperCase());
+//				
+//				//Realiza el insert del usuario hardware
+//				sql = "INSERT INTO tcmusuhard "
+//						+ "VALUES ( "
+//						+ " " + usuarioHardware_id + " "
+//						+ "," + agencia_idtranscar + " "
+//						+ ",'"+ codigo +"' "
+//						+ ",'"+ direccionMac + "' "
+////						+ ",'PC-"+ transcarUsuario.getLogin().toUpperCase() + "' "
+//						+ ",'"+ descripcionPc + "' "
+//						+ ",'A' "
+//						+ ",current_timestamp "
+//						+ ",'"+ transcarUsuario.getUsuarioInsercion() + "' "
+//						+ ",'"+ transcarUsuario.getIpInsercion() + "' "
+//						+ ",current_timestamp "
+//						+ ",'"+ transcarUsuario.getUsuarioInsercion() + "' "
+//						+ ",'"+ transcarUsuario.getIpInsercion() + "' "
+//						+ ") ";
+//				getJdbcTemplate().update(sql);				
+//			}			
+//		}
+		
+
 		//Cuando es un usuario nuevo
-		if(transcarUsuario.getId()==null) {
-			
-			//Genera el identificador para el UsuarioHardware
-			sql = "select nextval('seq_tcmusuhard_id') usuhard_id ";
-			Integer usuarioHardware_id = getJdbcTemplate().queryForInt(sql);
-			String direccionMac = getDireccionMacDinamica();
-			String codigo = Util.generarCodigo(direccionMac);
-
-			//Realiza el insert del usuario hardware
-			sql = "INSERT INTO tcmusuhard "
-					+ "VALUES ( "
-					+ " " + usuarioHardware_id + " "
-					+ "," + agencia_idtranscar + " "
-					+ ",'"+ codigo +"' "
-					+ ",'"+ direccionMac + "' "
-					+ ",'PC-"+ transcarUsuario.getLogin().toUpperCase() + "' "
-					+ ",'A' "
-					+ ",current_timestamp "
-					+ ",'"+ transcarUsuario.getUsuarioInsercion() + "' "
-					+ ",'"+ transcarUsuario.getIpInsercion() + "' "
-					+ ",current_timestamp "
-					+ ",'"+ transcarUsuario.getUsuarioInsercion() + "' "
-					+ ",'"+ transcarUsuario.getIpInsercion() + "' "
-					+ ") ";
-			getJdbcTemplate().update(sql);
-
-
+		if(transcarUsuario.getId()==null) {			
 			//Genera el identificador para el usuario
 			sql = "select nextval('seq_tcmusuario_id') usuario_id ";
 			usuario_id= getJdbcTemplate().queryForInt(sql);
 
 			//Inserta el usuario
-			sql = "INSERT INTO tcmusuario (usuario_id, agencia_id, c_apepat, c_apemat, c_nombre, c_email, c_login, c_password, audipinse, audipmodi, audusuins, audusumod, usuhard_id, n_tipseg ) " +
+			sql = "INSERT INTO tcmusuario (usuario_id, agencia_id, c_apepat, c_apemat, c_nombre, c_email, c_login "
+					                  + ", c_password, audipinse, audipmodi, audusuins, audusumod, n_tipseg ) " +
 					"VALUES ( "
 					+ usuario_id +", "
 					+ agencia_idtranscar + ","
@@ -223,11 +239,14 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 					+ "'"+transcarUsuario.getIpModificacion()+ "', "
 					+ "'"+transcarUsuario.getUsuarioInsercion()+ "', "
 					+ "'"+transcarUsuario.getUsuarioModificacion()+ "', "
-					+ ""+usuarioHardware_id+ ", "
-					+ ""+Constantes.FALSE_VALUE+ " "
+//					+ ""+usuarioHardware_id+ ", "
+					+ ""+(transcarUsuario.getTipoSeguridad()!=null?transcarUsuario.getTipoSeguridad():Constantes.FALSE_VALUE)+ " "
 					+ ")";
 			getJdbcTemplate().update(sql);
 		}else {
+			if(usuarioHardware!=null) {
+				
+			}
 
 			//Cuando es una modificacion
 			sql = "UPDATE tcmusuario SET "
@@ -239,6 +258,8 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 					+ ",audipmodi='"+transcarUsuario.getIpModificacion()+"' "
 					+ ",audusumod='"+transcarUsuario.getUsuarioModificacion()+"' "
 					+ ",c_estreg='"+transcarUsuario.getEstadoRegistro()+"' "
+					+ ",n_tipseg='"+ (transcarUsuario.getTipoSeguridad()!=null?transcarUsuario.getTipoSeguridad():Constantes.FALSE_VALUE) +"' "
+//					+ ",usuhard_id="+usuarioHardware_id +" "
 				+ "WHERE usuario_id="+transcarUsuario.getId();
 			getJdbcTemplate().update(sql);
 						
@@ -601,7 +622,8 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 					}else if(tipoPagoId==Constantes.ID_TIPFORPAG_TARJETA && operadorTarjetaId==Constantes.ID_OPETARCRE_MSTERCARD){
 						cantidadTarjetaMastercard ++;
 						tarjetaMastercard += totalCosto;
-					}else if(tipoPagoId == ID_TIPPAG_YAPE) {
+//					}else if(tipoPagoId == ID_TIPPAG_YAPE) {
+					}else if(tipoPagoId == Constantes.ID_TIPFORPAG_YAPE) {
 						cantidadYape ++;
 						yape += totalCosto;
 					}
@@ -783,9 +805,13 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 			if(liquidacion.getestadoLiquidacion().intValue() == Constantes.FALSE_VALUE)
 				liquidacion.setFechaModificacion(map.get("FECHA_CIERRE")!=null?(Date)map.get("FECHA_CIERRE"):null);
 
-			//Key
+//			Integer agencia_byrbus = agenciaId;
+//			if(agencia_byrbus == null) 
+//				agencia_byrbus = UtilData.getAgencia_Idvyrbus(liquidacion.getAgencia().getId());			
+			//Key			
 			String key = Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
 			key += liquidacion.getAgencia().getId().toString();
+//			key += (agencia_byrbus!=null?agencia_byrbus:"");
 			key += liquidacion.getUsuario().getLogin();
 
 			resultLiquidacion.put(key, liquidacion);
