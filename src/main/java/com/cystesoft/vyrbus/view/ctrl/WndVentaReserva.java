@@ -1619,7 +1619,7 @@ public class WndVentaReserva extends WndBase {
 							}
 							
 							cell = new Listcell(detalleItinerario.getItinerario().getBus()!=null?detalleItinerario.getItinerario().getBus().getNumeroPlaca():"");
-							cell.setStyle("font-size:9px !important");
+							cell.setStyle("font-size:10px !important");
 							item.appendChild(cell);
 							
 							cell = new Listcell();

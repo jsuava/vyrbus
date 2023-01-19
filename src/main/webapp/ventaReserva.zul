@@ -140,20 +140,13 @@
 										onSelect="wndVentaReserva.onSelectItinerario(com.cystesoft.vyrbus.service.util.Constantes.SERVICIO_IDA)">
 										<listhead>
 											<listheader id="listheaderOperadoPor" label="OPERADO POR" width="80px" align="left" visible="false" style="color: #ffffff;"/>
-											<listheader label="EMBARQUE" width="90px" style="color: #ffffff;"/>
+											<listheader label="EMBARQUE" width="80px" style="color: #ffffff;"/>
 											<listheader label="SERVICIO" width="110px" style="color: #ffffff;"/>
 											<listheader label="RUTA" width="120px" style="color: #ffffff;"/>
-<<<<<<< HEAD
-											<listheader label="HR.PD." width="50px" align="center" style="color: #ffffff;"/>
-											<listheader label="S/.ESTANDAR" width="100px" align="right" tooltiptext="Tarifa Estandar" style="color: #ffffff;"/>
-											
-<!--  											<listheader label="S/.SUITE" width="60px" align="right" tooltiptext="Tarifa Suite"/>   -->
-=======
-											<listheader label="HR.PD." width="40px" align="center" style="color: #ffffff;"/>
+											<listheader label="HR.PD." width="45px" align="center" style="color: #ffffff;"/>
 											<listheader label="S/.ESTANDAR" width="90px" align="right" tooltiptext="Tarifa Estandar" style="color: #ffffff;"/>
-	  										<listheader label="BUS" width="50px" align="center" tooltiptext="Placa Bus" style="color: #ffffff;"/>  
+	  										<listheader label="BUS" width="55px" align="center" tooltiptext="Placa Bus" style="color: #ffffff;"/>  
 	  										<listheader label="MAPA" width="60px" align="center" tooltiptext="Mapa Bus" style="color: #ffffff;"/>
->>>>>>> 1ee4e33add5da355f5e6140557112caebcbcaaed
 											<listheader id="listheaderOtraTarifa" label="$ TARIFA " align="right" style="color: #ffffff;"/>
 
 										</listhead>
