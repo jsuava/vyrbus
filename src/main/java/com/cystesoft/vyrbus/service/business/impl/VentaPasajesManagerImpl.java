@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: Implementación de métodos que permiten el acceso al modelo.
- * Autor		: José Sullo Avalos
+ * Descripciï¿½n	: Implementaciï¿½n de mï¿½todos que permiten el acceso al modelo.
+ * Autor		: Josï¿½ Sullo Avalos
  * Fecha		: 28/09/2012
  */
 package com.cystesoft.vyrbus.service.business.impl;
@@ -269,7 +269,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 					throw new TiempoExpiracionBloqueoException();
 			}
 
-			/*	Si la operación a realizar es una venta generar boleto.	*/
+			/*	Si la operaciï¿½n a realizar es una venta generar boleto.	*/
 			/* Valida si no es un servicio especial*/
 			if(!(ventaPasaje.getServicioEspecialFactura())){
 
@@ -287,7 +287,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 						ventaPasaje.setNumeroBoleto(controlEspecieValorada.toString());
 					}
 					/*	Validando que el numero del comprobante no exista en la DB 	*/
-					if(!(ventaPasaje.getServicioEspecialFactura())){ //Solo se omite esta validación en el caso de los servicios especiales con Factura.
+					if(!(ventaPasaje.getServicioEspecialFactura())){ //Solo se omite esta validaciï¿½n en el caso de los servicios especiales con Factura.
 						if(isBoletoDuplicado(ventaPasaje.getNumeroBoleto(), ventaPasaje.getTipoComprobante().getId()))
 							throw new NumeroBoletoDuplicadoException();
 					}
@@ -340,7 +340,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				getTmpOcupacionAsientosDAO().desbloquearAsiento(tmp);
 			}
 
-			/*	Si se trata de un PAXFREE y es una Venta -- no entra cuando es una emisión de cortesia por puntos o cumpleaños desde el modulo "beneficios paxfree"	*/
+			/*	Si se trata de un PAXFREE y es una Venta -- no entra cuando es una emisiï¿½n de cortesia por puntos o cumpleaï¿½os desde el modulo "beneficios paxfree"	*/
 			if(ventaPasaje.getPasajero().isPaxFree() && ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA)){
 				PasajeroFrecuente paxfree = getPasajeroFrecuenteDAO().buscarPaxFree(ventaPasaje.getPasajero().getId(), Constantes.TRUE_VALUE);
 				Ruta ruta = getRutaDAO().buscarPorId(new Long(ventaPasaje.getRuta().getId()));
@@ -384,7 +384,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				}
 			}
 
-			/* Valida si el DNI del pasajero es o no valido según validacion previa con el reniec  02/06/2015*/
+			/* Valida si el DNI del pasajero es o no valido segï¿½n validacion previa con el reniec  02/06/2015*/
 			Util.validarValidacionDNIReniec(ventaPasaje);
 
 			result = Constantes.CORRECT;
@@ -462,7 +462,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 //					ventaPasaje.setNumeroBoleto(serie+"-"+correla.substring(correla.length()-8));
 //				}
 
-				/*	Si la operación a realizar es una venta generar boleto.*/
+				/*	Si la operaciï¿½n a realizar es una venta generar boleto.*/
 				if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA)){
 					/**Begin 21/10/2016 - jabanto**/
 					/*Vuelve a realizar la busqueda del correlativo y lo actualiza, a exception de los boletos, ya que no son necesarios pues son manuales*/
@@ -479,7 +479,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 						/*END 14/06/2021 - javalos - Correlativo by caja*/
 					}
 					/*	Validando que el boleto no exista en la DB 	*/
-					if(!(ventaPasaje.getServicioEspecialFactura())){ //Solo se omite esta validación en el caso de los servicios especiales con Factura.
+					if(!(ventaPasaje.getServicioEspecialFactura())){ //Solo se omite esta validaciï¿½n en el caso de los servicios especiales con Factura.
 						if(isBoletoDuplicado(ventaPasaje.getNumeroBoleto(), ventaPasaje.getTipoComprobante().getId()))
 							throw new NumeroBoletoDuplicadoException();
 					}
@@ -500,7 +500,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 //					String serie = ventaPasaje.getNumeroBoleto().substring(0, position);
 //					Long correlativo = Long.valueOf(ventaPasaje.getNumeroBoleto().substring(position+1))+1;
 
-					/* Valida el tipo de comprobante para en función a ello actualizar el correlativo - 14/10/2013-jabanto */
+					/* Valida el tipo de comprobante para en funciï¿½n a ello actualizar el correlativo - 14/10/2013-jabanto */
 //					if(ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE)
 //						/* Actualizando el correlativo en Control Especie Valorada*/
 //						getControlEspecieValoradaDAO().actualizarCorrelativoEspecieValorada(ventaPasaje.getTipoComprobante().getId(), ventaPasaje.getUsuarioHardware().getId(), serie, correlativo);
@@ -581,7 +581,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 					}
 				}
 
-				/* Valida si el DNI del pasajero es o no valido según validacion previa con el reniec  02/06/2015*/
+				/* Valida si el DNI del pasajero es o no valido segï¿½n validacion previa con el reniec  02/06/2015*/
 				Util.validarValidacionDNIReniec(ventaPasaje);
 			}
 
@@ -819,7 +819,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 //					}
 //				}
 			else
-					throw new Exception("No se pudo realizar la anulación, por favor vuelva a intentarlo. (F.E.)");
+					throw new Exception("No se pudo realizar la anulaciï¿½n, por favor vuelva a intentarlo. (F.E.)");
 			}else{
 				/*Este debe ser anulado, pero con una nota de credito*/
 				TipoNota tipoNota=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_ANULACION);
@@ -914,7 +914,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 //			getVentaPasajesDAO().update(movimiento);
 //		}
 
-		//Cuando es una anulación de una ida y vuelta.
+		//Cuando es una anulaciï¿½n de una ida y vuelta.
 //		if(lstVentaPasajes.size()>0){
 //			for(VentaPasaje ventaAnular : lstVentaPasajes){
 //				movimiento = ventaAnular;
@@ -968,7 +968,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 //	}
 
 	/**
-	 * Realiza la anulación de los puntos asociados a una venta.
+	 * Realiza la anulaciï¿½n de los puntos asociados a una venta.
 	 * @param movimiento	: Objeto VentaPasaje
 	 * @throws Exception
 	 */
@@ -1064,7 +1064,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				
 				
 				
-				/*Genera una devolución del boleto original - jabanto - 26/09/2022 */				
+				/*Genera una devoluciï¿½n del boleto original - jabanto - 26/09/2022 */				
 				VentaPasaje ventaOriginal = getVentaPasajesDAO().buscarPorId(ventaPasaje.getVentaPasaje().getId());
 				VentaPasaje ventaDevolucion = (VentaPasaje)ventaOriginal.clone();
 				ventaDevolucion.setId(null);
@@ -1418,7 +1418,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 			if(boletoPostergar.getFechaPartida()!=null)
 				borrarAsientoTmpOcupacion(boletoPostergar);
 
-			/* Valida si el DNI del pasajero es o no valido según validacion previa con el reniec  02/06/2015*/
+			/* Valida si el DNI del pasajero es o no valido segï¿½n validacion previa con el reniec  02/06/2015*/
 			Util.validarValidacionDNIReniec(boletoPostergar);
 
 //			result = Constantes.CORRECT;
@@ -1486,7 +1486,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 		}
 
 
-		/*	Realizando la anulación del boleto despues de la reimpresion	*/
+		/*	Realizando la anulaciï¿½n del boleto despues de la reimpresion	*/
 		getVentaPasajesDAO().save(ventaOriginal);
 
 		/*	Guardando la instancia de la venta de pasajes	*/
@@ -1592,11 +1592,19 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				 * */
 				emitirNota=false;
 			}
+			
+			/*===========================================================*/
+			/*	javalos - 18-01-2023*/
+			/***********************************************/
+			/*		PARA TRANSMAR NO DEBE EMITIR NC	*/
+			/***********************************************/
+			emitirNota = false;
+			/***********************************************/
 
 			if(emitirNota){
 				notaCredito=generarNotaCredito(venta.getVentaPasaje(), venta.getTipoNota(),false, false);
 				if(notaCredito==null)
-					throw new Exception("Ha ocurrido un error al emitir la Nota de Crédito...");
+					throw new Exception("Ha ocurrido un error al emitir la Nota de Crï¿½dito...");
 			}
 		}
 
@@ -1917,8 +1925,8 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 					getTitanDAO().actualizaLiquidacionTurnoPasajeByIdLiquidacion(liquidacionTurnoPasaje);
 				}else{
 					//No se ha encontrado la transferencia de la liquidacion
-					throw new Exception("No se ha encontrado la transferencia de la Liquidación, \n" +
-										"por lo que no se pudo hacer el recalculo en los totales de Boletos Crédito en la liquidación de turno en TITAN. ");
+					throw new Exception("No se ha encontrado la transferencia de la Liquidaciï¿½n, \n" +
+										"por lo que no se pudo hacer el recalculo en los totales de Boletos Crï¿½dito en la liquidaciï¿½n de turno en TITAN. ");
 				}
 
 
@@ -1942,24 +1950,24 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 					getTitanDAO().anularDevolverBoletoVentaPasaje(titanVentaPasaje.getId(),true);//Anula el boleto - TITAN
 				}else{
 					//El boleto esta como transferido en el Sisvyr, sin embargo este no a sido encontrado en TITAN.
-					throw new Exception("El Boleto esta como transferido en el Sisvyr, sin embargo éste no ha sido encontrado en TITAN");
+					throw new Exception("El Boleto esta como transferido en el Sisvyr, sin embargo ï¿½ste no ha sido encontrado en TITAN");
 				}
 
 				/******* VALIDA SI EL BOLETO ESTA O NO TRANSFERIDO AL OFISIS */
 				if(titanVentaPasaje.getFechaTransferencia()!=null){
 					//Envia correo
 					try{
-						String title="Anulación Boleto Crédito";
+						String title="Anulaciï¿½n Boleto Crï¿½dito";
 						String toAddress="sistemas@tepsa.com.pe";
-//								String mensaje="Se ha realizado la anulación del Siguiente Boleto, el cual ya ha sido transferidos al OFISIS.\n\n";
-						String mensaje="Se ha realizado la anulación del Siguiente Boleto, el cual ya fue transferido al OFISIS.\n\n";
+//								String mensaje="Se ha realizado la anulaciï¿½n del Siguiente Boleto, el cual ya ha sido transferidos al OFISIS.\n\n";
+						String mensaje="Se ha realizado la anulaciï¿½n del Siguiente Boleto, el cual ya fue transferido al OFISIS.\n\n";
 
 						mensaje+="Nro. Boleto   : "+boleto.getNumeroBoleto()+"\n";
-						mensaje+="Fecha Emisión : "+Constantes.FORMAT_DATE.format(boleto.getFechaLiquidacion())+"\n";
+						mensaje+="Fecha Emisiï¿½n : "+Constantes.FORMAT_DATE.format(boleto.getFechaLiquidacion())+"\n";
 						mensaje+="Fecha Transferencia : "+Constantes.FORMAT_DATE.format(titanVentaPasaje.getFechaTransferencia())+"\n";
 
 						mensaje+="\n\n";
-						mensaje+="NOTA: [Este buzon es de envio automático, por favor no responda.]";
+						mensaje+="NOTA: [Este buzon es de envio automï¿½tico, por favor no responda.]";
 						DestinatariosEmails window = new DestinatariosEmails();
 						window.setEmails("TO:"+toAddress);
 						Sendmail.enviaEmail(mensaje,title, window);
@@ -2033,7 +2041,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 		VentaPasaje ventaOriginal= ServiceLocator.getVentaPasajesManager().buscarPorId(ventaAplica.getId());//.getVentaOriginal());
 
 		if(anularMovimiento){
-			/*Primero realizando la anulación de la Boleta o Factura*/
+			/*Primero realizando la anulaciÃ³n de la Boleta o Factura*/
 			VentaPasaje ventaAnulacion = (VentaPasaje)ventaOriginal.clone();
 			ventaAnulacion.setId(null);
 			ventaAnulacion.setFechaLiquidacion(fechaLiquidacion);
@@ -2350,7 +2358,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 							UtilData.auditarRegistro(anulacion, true,(Usuario)Executions.getCurrent().getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO), Executions.getCurrent());
 							getVentaPasajesDAO().update(anulacion);
 						}else
-							throw new Exception("No se puedo continuar con la anulación, el comprobante N° "+ventaPasaje.getNumeroBoleto()+" No existe en el S.F.E.");
+							throw new Exception("No se puedo continuar con la anulaciï¿½n, el comprobante Nï¿½ "+ventaPasaje.getNumeroBoleto()+" No existe en el S.F.E.");
 					}else
 						aplicarNotaCredito=true;
 					break;
@@ -2543,7 +2551,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 							UtilData.auditarRegistro(anulacion, true,(Usuario)Executions.getCurrent().getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO), Executions.getCurrent());
 							getVentaPasajesDAO().update(anulacion);
 						}else
-							throw new Exception("No se puedo continuar con la anulación, el comprobante N° "+ventaPasaje.getNumeroBoleto()+" No existe en el S.F.E.");
+							throw new Exception("No se puedo continuar con la anulaciï¿½n, el comprobante Nï¿½ "+ventaPasaje.getNumeroBoleto()+" No existe en el S.F.E.");
 					}else
 						aplicarNotaCredito=true;
 					break;

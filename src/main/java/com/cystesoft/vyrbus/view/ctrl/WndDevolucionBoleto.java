@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José Sullo Avalos
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Sullo Avalos
  * Fecha		: 08/02/2013
  */
 package com.cystesoft.vyrbus.view.ctrl;
@@ -54,6 +54,7 @@ import com.cystesoft.vyrbus.model.bean.UsuarioHardware;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.service.exceptions.DevolucionByTipoAgenciaNoPermitidoException;
 import com.cystesoft.vyrbus.service.exceptions.DevolucionByTipoMovimientoNoPermitidoException;
+import com.cystesoft.vyrbus.service.exceptions.EspecieValoradaNotAvailableException;
 import com.cystesoft.vyrbus.service.exceptions.FechaCaducidadNullException;
 import com.cystesoft.vyrbus.service.exceptions.LiquidacionNullException;
 import com.cystesoft.vyrbus.service.exceptions.ManifiestoImpresoException;
@@ -129,7 +130,7 @@ public class WndDevolucionBoleto extends WndBase {
 	@Override
 	public void onCreate() throws Exception {
 		try{
-			/*Valida si el usuario tiene una liquidación aperturada*/
+			/*Valida si el usuario tiene una liquidaciï¿½n aperturada*/
 			if(getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION)==null)
 				throw new LiquidacionNullException();
 
@@ -237,7 +238,7 @@ public class WndDevolucionBoleto extends WndBase {
 	}
 
 	/**
-	 * Realiza la validacón para ver si al boleto se le puede aplicar este proceso.
+	 * Realiza la validacï¿½n para ver si al boleto se le puede aplicar este proceso.
 	 * @param idVenta	: Identificador de la venta.
 	 */
 	private boolean validateDevolucion(String idVenta, boolean createVentanaDevolucion){
@@ -327,7 +328,7 @@ public class WndDevolucionBoleto extends WndBase {
 	}
 
 //	/**
-//	 * Realiza la creación de la Ventana para la confirmación de la devolución.
+//	 * Realiza la creaciï¿½n de la Ventana para la confirmaciï¿½n de la devoluciï¿½n.
 //	 * @param ventaOriginal	: Boleto que se desea devolver.
 //	 * @return
 //	 */
@@ -348,7 +349,7 @@ public class WndDevolucionBoleto extends WndBase {
 //
 //		caption = new Caption("DEVOLUCION DE BOLETO", "resources/menu/menu_reimprimir.png");
 //		win.appendChild(caption);
-//		label = new Label("Se va a realizar la Devolución del Comprobante con los siguientes datos :");
+//		label = new Label("Se va a realizar la Devoluciï¿½n del Comprobante con los siguientes datos :");
 //		label.setStyle("font-size:12px !important");
 //		win.appendChild(label);
 //
@@ -356,7 +357,7 @@ public class WndDevolucionBoleto extends WndBase {
 //
 //		groupbox = new Groupbox();
 //		groupbox.setClosable(false);
-//		caption = new Caption("Información del Comprobante a devolver");
+//		caption = new Caption("Informaciï¿½n del Comprobante a devolver");
 //		groupbox.appendChild(caption);
 //
 //		/*	Columna 1	*/
@@ -462,7 +463,7 @@ public class WndDevolucionBoleto extends WndBase {
 //		/* ***************************************** */
 //		groupbox = new Groupbox();
 //		groupbox.setClosable(false);
-//		caption = new Caption("Información de la Devolución");
+//		caption = new Caption("Informaciï¿½n de la Devoluciï¿½n");
 //		groupbox.appendChild(caption);
 //
 //		grid = new Grid();
@@ -654,7 +655,7 @@ public class WndDevolucionBoleto extends WndBase {
 //	}
 
 	/**
-	 * Realiza la creación de la Ventana para la confirmación de la devolución.
+	 * Realiza la creaciï¿½n de la Ventana para la confirmaciï¿½n de la devoluciï¿½n.
 	 * @param ventaOriginal	: Boleto que se desea devolver.
 	 * @return
 	 */
@@ -678,7 +679,7 @@ public class WndDevolucionBoleto extends WndBase {
 
 		caption = new Caption("DEVOLUCION DE BOLETO", "resources/menu/menu_reimprimir.png");
 		win.appendChild(caption);
-		label = new Label("Se va a realizar la Devolución del Comprobante con los siguientes datos :");
+		label = new Label("Se va a realizar la Devoluciï¿½n del Comprobante con los siguientes datos :");
 		label.setStyle("font-size:12px !important");
 		win.appendChild(label);
 
@@ -874,7 +875,7 @@ public class WndDevolucionBoleto extends WndBase {
 		onloadTiposComprobante(cmbTipoComprobante);
 		row.appendChild(cmbTipoComprobante);
 
-		lblNumeroComprobante = new Label("N° COMPROBANTE:");
+		lblNumeroComprobante = new Label("NÂ° COMPROBANTE:");
 		lblNumeroComprobante.setStyle("color:blue");
 		row.appendChild(lblNumeroComprobante);
 		txtNuevoComprobante= new Textbox();
@@ -1103,6 +1104,12 @@ public class WndDevolucionBoleto extends WndBase {
 //				/*Nuevamente valida la devolucion*/
 				if(!(validateDevolucion(ventaOriginal.getId().toString(), false)))
 					return;
+				
+				if(cmbResponsable.getSelectedIndex()== Constantes.TRUE_VALUE && (tipoNotaCredito.getGastoAdminEfectivo()==0 || tipoNotaCredito.getGastoAdminTarjeta()==0)) {
+					DlgMessage.information("No se puede continuar porque no hay importe para generar el Gasto Administrativo");
+					return;
+				}
+					
 
 				try {
 
@@ -1273,7 +1280,7 @@ public class WndDevolucionBoleto extends WndBase {
 							gastoAdmin.setIdaRetorno(Constantes.FALSE_VALUE);
 							gastoAdmin.setEsFechaAbierta(Constantes.FALSE_VALUE);
 							gastoAdmin.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-							gastoAdmin.setObservaciones("POR DEVOLUCION DEL COMPROBANTE N°: "+boletoDevolver.getNumeroBoleto());
+							gastoAdmin.setObservaciones("POR DEVOLUCION DEL COMPROBANTE Nï¿½: "+boletoDevolver.getNumeroBoleto());
 							UtilData.auditarRegistro(gastoAdmin, getUsuario(), Executions.getCurrent());
 
 							Double igv=gastoAdmin.getImportePagado()- Double.valueOf(Util.toNumberFormat(gastoAdmin.getImportePagado()/((Constantes.IGV/100)+1),2));
@@ -1379,8 +1386,18 @@ public class WndDevolucionBoleto extends WndBase {
 		/*BEGIN 15/06/2021 - javalos - Correlativo by caja*/
 //		EspecieValorada especieValorada=UtilData.buscarEspecieValorada(tipoComprobanteID, getAgencia(), false);
 //		return especieValorada.toString();
-		ControlEspecieValorada controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(tipoComprobanteID, getAgencia(), false, getUsuarioHardware(), null);
-		return controlEspecieValorada.toString();
+		String result = "";
+		try {
+			ControlEspecieValorada controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(tipoComprobanteID, getAgencia(), false, getUsuarioHardware(), null);
+			if(controlEspecieValorada == null)
+				throw new EspecieValoradaNotAvailableException();
+			result = controlEspecieValorada.toString();
+		}catch(EspecieValoradaNotAvailableException evnaex) {
+			DlgMessage.information("No tiene Especies Valoradas configuradas en su equipo");
+		}catch(Exception ex) {
+			DlgMessage.information(ex.getMessage());
+		} 
+		return result;
 		/*END 15/06/2021 - javalos - Correlativo by caja*/
 	}
 
