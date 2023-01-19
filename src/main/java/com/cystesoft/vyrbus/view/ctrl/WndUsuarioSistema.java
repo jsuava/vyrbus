@@ -25,6 +25,7 @@ import com.cystesoft.vyrbus.model.bean.Rol;
 import com.cystesoft.vyrbus.model.bean.TranscarRolUsuario;
 import com.cystesoft.vyrbus.model.bean.TranscarUsuarioPersonal;
 import com.cystesoft.vyrbus.model.bean.Usuario;
+import com.cystesoft.vyrbus.model.bean.UsuarioHardware;
 import com.cystesoft.vyrbus.model.bean.UsuarioRol;
 import com.cystesoft.vyrbus.model.bean.UsuarioRolID;
 import com.cystesoft.vyrbus.service.exceptions.AgenciaNullException;
@@ -88,6 +89,8 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 	private Label lblRolesSeleccionadosCarga;
 	private Checkbox chbxIngresaComprobanteOtraAgencia;
 	private Checkbox chbxAutorizaEntregaSinVerificarUsuario;
+	private Combobox cmbTipoSeguridad;
+	private Combobox cmbUsuarioHardware;
 
 	private Usuario usuarioSistema=null;
 	private TranscarUsuarioPersonal transcarUsuarioPersonal= null;
@@ -130,6 +133,9 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 		lblRolesSeleccionadosCarga = (Label)this.getFellow("lblRolesSeleccionadosCarga");
 		chbxIngresaComprobanteOtraAgencia = (Checkbox)this.getFellow("chbxIngresaComprobanteOtraAgencia");
 		chbxAutorizaEntregaSinVerificarUsuario = (Checkbox)this.getFellow("chbxAutorizaEntregaSinVerificarUsuario");
+		cmbTipoSeguridad = (Combobox)this.getFellow("cmbTipoSeguridad");
+		cmbUsuarioHardware = (Combobox)this.getFellow("cmbUsuarioHardware");
+		
 	}
 
 	/*
@@ -143,6 +149,8 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 		cmbPersonal.appendChild(cboItem);
 		UtilData.cargarDataCombo(cmbPersonal, Personal.class, false);
 //		UtilData.cargarDataCombo(cmbRol, Rol.class, false);
+		UtilData.cargarTipoSeguridadUsuario(cmbTipoSeguridad, false);
+		UtilData.cargarUsuarioHasrdware(cmbUsuarioHardware, false, null);
 		cargarRoles();
 		cargarRolesCarga();
 		disabledLbxRoels(true);
@@ -171,6 +179,8 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 		lbxRolesCarga.setDisabled(false);
 		cmbPersonal.setSelectedIndex(0);
 		cmbAgencia.setSelectedIndex(0);
+		cmbTipoSeguridad.setSelectedIndex(0);
+		cmbUsuarioHardware.setSelectedIndex(0);
 //		cmbRol.setSelectedIndex(0);
 		quitaSelecLbxRoles();
 		rdSi.setSelected(true);
@@ -322,7 +332,14 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 				throw new PasswordException(PasswordException.PASSWORD_IGUAL_LOGIN);
 			else if (lbxRolesCarga.getSelectedItems().size()==0) {
 				throw new RolCargaNullException();				
+			}else if (cmbTipoSeguridad.getSelectedIndex()<=0) {
+				DlgMessage.information(Messages.getString("WndUsuarioRol.information.noSelectTipoSeguridad"), cmbTipoSeguridad);
+				throw new CancelaGrabacionException();
+			}else if(((Integer)cmbTipoSeguridad.getSelectedItem().getValue()).intValue()==Constantes.FALSE_VALUE && !(cmbUsuarioHardware.getSelectedItem().getValue() instanceof UsuarioHardware)) {
+				DlgMessage.information(Messages.getString("WndUsuarioRol.information.noSelectUsuarioHardware"));
+				throw new CancelaGrabacionException();
 			}
+				
 
 //			Rol rol= ((Rol)cmbRol.getSelectedItem().getValue());
 //
@@ -396,7 +413,6 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 				transcarUsuarioPersonal.setEstadoRegistro(Constantes.VALUE_INACTIVO);
 			}
 
-
 			//instancia para la creacion/actualizacion del usuario en Pasajes
 			usuarioSistema.setApellidoPaterno(txtApellidoPaterno.getText().trim().toUpperCase());
 			usuarioSistema.setApellidoMaterno(txtApellidoMaterno.getText().trim().toUpperCase());
@@ -406,7 +422,12 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 			usuarioSistema.setPwdNormal(txtPassword.getText());
 			usuarioSistema.setEstadoRegistro(estadoRegistro);
 			usuarioSistema.setEmailInfo(txtEmailInfo.getText().trim());
-			usuarioSistema.setTipoSeguridad(usuarioSistema.getTipoSeguridad()==null?Constantes.TRUE_VALUE:usuarioSistema.getTipoSeguridad());
+//			usuarioSistema.setTipoSeguridad(usuarioSistema.getTipoSeguridad()==null?Constantes.TRUE_VALUE:usuarioSistema.getTipoSeguridad());
+			usuarioSistema.setTipoSeguridad((int)cmbTipoSeguridad.getSelectedItem().getValue());
+			if(cmbUsuarioHardware.getSelectedItem().getValue() instanceof UsuarioHardware)
+				usuarioSistema.setUsuarioHardware(cmbUsuarioHardware.getSelectedItem().getValue());
+			else
+				usuarioSistema.setUsuarioHardware(null);
 			usuarioSistema.setEmailInfo(txtEmailInfo.getText().trim());
 
 			//instancia para la creacion/actualizacion del usuario en Carga
@@ -429,6 +450,9 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 			transcarUsuarioPersonal.setLogin(usuarioSistema.getLogin());
 			transcarUsuarioPersonal.setPassword(txtPassword.getText());
 			transcarUsuarioPersonal.setEmail(usuarioSistema.getEmailInfo());
+			transcarUsuarioPersonal.setTipoSeguridad((int)cmbTipoSeguridad.getSelectedItem().getValue());
+			if(cmbUsuarioHardware.getSelectedItem().getValue() instanceof UsuarioHardware)
+				transcarUsuarioPersonal.setUsuarioHardware(cmbUsuarioHardware.getSelectedItem().getValue());
 
 //			transcarUsuarioPersonal.setSexoId(1);
 //			transcarUsuarioPersonal.setPermiteVentaOtrasAgencias(chbxIngresaComprobanteOtraAgencia.isChecked()?Constantes.TRUE_VALUE:Constantes.FALSE_VALUE);
@@ -443,24 +467,20 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 					idsRolesUsuarioCarga = ","+rolUsuario.getId().toString();
 			}
 
-
+			transcarUsuarioPersonal.setUsuarioInsercion(usuarioSistema.getUsuarioInsercion());
+			transcarUsuarioPersonal.setUsuarioModificacion(usuarioSistema.getUsuarioModificacion());
+			transcarUsuarioPersonal.setIpInsercion(usuarioSistema.getIpInsercion());
+			transcarUsuarioPersonal.setIpModificacion(usuarioSistema.getIpModificacion());
+			
 			switch (action) {
 				case ACTION_NEW:
 					UtilData.auditarRegistro(usuarioSistema,getUsuario(), Executions.getCurrent());
 					ServiceLocator.getUsuarioManager().guardar(usuarioSistema);
-					textboxId.setText(usuarioSistema.getId().toString());
-
-					transcarUsuarioPersonal.setUsuarioInsercion(usuarioSistema.getUsuarioInsercion());
-					transcarUsuarioPersonal.setUsuarioModificacion(usuarioSistema.getUsuarioModificacion());
-					transcarUsuarioPersonal.setIpInsercion(usuarioSistema.getIpInsercion());
-					transcarUsuarioPersonal.setIpModificacion(usuarioSistema.getIpModificacion());
+					textboxId.setText(usuarioSistema.getId().toString());					
 					break;
 				case ACTION_MODIFY:
 					UtilData.auditarRegistro(usuarioSistema, true, getUsuario(), Executions.getCurrent());
 					ServiceLocator.getUsuarioManager().actualizar(usuarioSistema);
-
-					transcarUsuarioPersonal.setUsuarioModificacion(usuarioSistema.getUsuarioModificacion());
-					transcarUsuarioPersonal.setIpModificacion(usuarioSistema.getIpModificacion());
 					break;
 			}
 
@@ -560,7 +580,8 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 			tabRoles.setSelectedIndex(1);			
 			throw new CancelaGrabacionException();
 		}catch (Exception ex) {
-			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
+			if(ex.getMessage()!=null)
+				DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 			ex.printStackTrace(); throw new CancelaGrabacionException();
 		}
 	}
@@ -715,6 +736,22 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 		}
 	}
 
+	public void onSelect_cmbTipoSeguridad() {
+		try {
+			cmbUsuarioHardware.setSelectedIndex(0);
+			cmbUsuarioHardware.setDisabled(true);
+			if(cmbTipoSeguridad.getSelectedIndex() > 0) {
+				Integer tipoSeguridad = cmbTipoSeguridad.getSelectedItem().getValue();
+				if(tipoSeguridad.intValue()==Constantes.FALSE_VALUE)
+					cmbUsuarioHardware.setDisabled(false);				
+			}
+			
+			
+		} catch (Exception ex) {
+			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
+			ex.printStackTrace();
+		}
+	}
 	/**
 	 * Recupera datos del usuario para la edicion o consulta.
 	 * @param id
@@ -778,6 +815,12 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 		txtLogin.setValue(usuarioSistema.getLogin());
 		txtPassword.setText(usuarioSistema.getPwdNormal());
 		txtConfirmaPassword.setValue(usuarioSistema.getPwdNormal());
+		Util.seleccionarValorItemCombobox(cmbTipoSeguridad, usuarioSistema.getTipoSeguridad());
+		if(usuarioSistema.getUsuarioHardware()!=null)
+			Util.seleccionarValorItemCombo(UsuarioHardware.class, cmbUsuarioHardware, usuarioSistema.getUsuarioHardware().getId());
+		else
+			cmbUsuarioHardware.setSelectedIndex(0);
+		cmbUsuarioHardware.setDisabled(usuarioSistema.getTipoSeguridad().intValue()==Constantes.TRUE_VALUE);
 
 		if (usuarioSistema.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO))
 			rdSi.setSelected(true);

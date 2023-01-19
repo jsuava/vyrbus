@@ -200,5 +200,13 @@ public class AgenciaManagerImpl implements AgenciaManager {
 		// TODO Auto-generated method stub
 		return getAgenciaDAO().buscarAgencia_Idtranscarweb(agencia_idvrybus);
 	}
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.AgenciaManager#buscarAgencia_Idvyrbus(java.lang.Integer)
+	 */
+	@Override
+	public Integer buscarAgencia_Idvyrbus(Integer agencia_idtranscarweb) throws Exception {
+		// TODO Auto-generated method stub
+		return getAgenciaDAO().buscarAgencia_Idvyrbus(agencia_idtranscarweb);
+	}
 
 }

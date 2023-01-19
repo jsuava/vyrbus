@@ -308,7 +308,8 @@ public class WndRptLiquidacionVentas extends WndBase{
 				transcarUsuarioPersonal.setLogin(liquidacionCarga.getUsuario().getLogin());
 			}
 
-			List<VentaPasaje> resultDetalleVentasCarga = ServiceLocator.getTranscarWebManager().buscarDetalleVentas(transcarUsuarioPersonal, liquidacionCarga.getAgencia().getId(), fecha, fecha);
+//			List<VentaPasaje> resultDetalleVentasCarga = ServiceLocator.getTranscarWebManager().buscarDetalleVentas(transcarUsuarioPersonal, liquidacionCarga.getAgencia().getId(), fecha, fecha);
+			List<VentaPasaje> resultDetalleVentasCarga = ServiceLocator.getTranscarWebManager().buscarDetalleVentas(transcarUsuarioPersonal, liquidacion.getAgencia().getId(), fecha, fecha);
 			
 			for(VentaPasaje ventaCarga: resultDetalleVentasCarga) {
 				ventaCarga.setTipoConsulta(1); //Carga
@@ -342,18 +343,20 @@ public class WndRptLiquidacionVentas extends WndBase{
 	private void cargarListaLiquidaciones(List<Liquidacion> liquidaciones, TreeMap<String, Liquidacion> liquidacionesCarga)throws Exception{
 		
 		Double totalSaldoLiquidacion = .00;
-		Integer idAgencia=null;
+//		Integer idAgencia=null;
 		ArrayList<String> lstAgencias = new ArrayList<String>();
 		String keyBusqueda;
 		for(Liquidacion liquidacion: liquidaciones) {
 			//Valida liquidacion de carga
+			Integer agencia_idtranscar = UtilData.getAgencia_Idtranscarweb(liquidacion.getAgencia().getId());
 			String key = Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
-			key += liquidacion.getAgencia().getId().toString();
+//			key += liquidacion.getAgencia().getId().toString();
+			key += (agencia_idtranscar!=null?agencia_idtranscar.toString():"");
 			keyBusqueda = key;
 			key += liquidacion.getUsuario().getLogin();
 			Liquidacion liquidacionCarga = liquidacionesCarga.get(key);	
 			liquidacion.setLiquidacionCarga(liquidacionCarga);
-			idAgencia = liquidacion.getAgencia().getId();
+//			idAgencia = liquidacion.getAgencia().getId();
 			
 			Listitem item = new Listitem();
 			Listcell cell =new Listcell(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()));

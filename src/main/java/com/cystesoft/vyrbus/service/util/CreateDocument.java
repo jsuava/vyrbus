@@ -4433,7 +4433,7 @@ public class CreateDocument implements Serializable {
 			//N Concepto
 			concepto="(-) TOTAL TRANSFERECIAS";
 			longitud_C= concepto.length();
-			linea= tabular(20) + concepto + tabular(longConceptop-longitud_C);			
+			linea= tabular(isCierreCaja?20:30) + concepto + tabular(longConceptop-longitud_C);			
 			//IMPORTE/
 			importe= Util.toNumberFormat(totalVentasTransferencias, 2);
 			longitud_C=importe.length();
@@ -4444,7 +4444,7 @@ public class CreateDocument implements Serializable {
 			//N Concepto
 			concepto="(-) TOTAL YAPE";
 			longitud_C= concepto.length();
-			linea= tabular(29) + concepto + tabular(longConceptop-longitud_C);			
+			linea= tabular(isCierreCaja?29:30) + concepto + tabular(longConceptop-longitud_C);			
 			//IMPORTE/
 			importe= Util.toNumberFormat(totalVentasYape, 2);
 			longitud_C=importe.length();
@@ -5408,7 +5408,8 @@ public class CreateDocument implements Serializable {
 				TranscarUsuarioPersonal transcarUsuarioPersonal = new TranscarUsuarioPersonal();
 				transcarUsuarioPersonal.setId(liquidacionCarga.getUsuario().getId());
 				transcarUsuarioPersonal.setLogin(liquidacionCarga.getUsuario().getLogin());
-				List<VentaPasaje> resultDetalleVentasCarga = ServiceLocator.getTranscarWebManager().buscarDetalleVentas(transcarUsuarioPersonal, liquidacionCarga.getAgencia().getId(), fecha, fecha);
+//				List<VentaPasaje> resultDetalleVentasCarga = ServiceLocator.getTranscarWebManager().buscarDetalleVentas(transcarUsuarioPersonal, liquidacionCarga.getAgencia().getId(), fecha, fecha);
+				List<VentaPasaje> resultDetalleVentasCarga = ServiceLocator.getTranscarWebManager().buscarDetalleVentas(transcarUsuarioPersonal, liquidacion.getAgencia().getId(), fecha, fecha);
 				
 				for(VentaPasaje ventaCarga: resultDetalleVentasCarga) {
 					ventaCarga.setTipoConsulta(1); //Carga
@@ -5649,7 +5650,8 @@ public class CreateDocument implements Serializable {
 				TranscarUsuarioPersonal transcarUsuarioPersonal = new TranscarUsuarioPersonal();
 				transcarUsuarioPersonal.setId(liquidacionCarga.getUsuario().getId());
 				transcarUsuarioPersonal.setLogin(liquidacionCarga.getUsuario().getLogin());
-				List<VentaPasaje> resultDetalleVentasCarga = ServiceLocator.getTranscarWebManager().buscarDetalleVentas(transcarUsuarioPersonal, liquidacionCarga.getAgencia().getId(), fechaLiquidacion, fechaLiquidacion);
+//				List<VentaPasaje> resultDetalleVentasCarga = ServiceLocator.getTranscarWebManager().buscarDetalleVentas(transcarUsuarioPersonal, liquidacionCarga.getAgencia().getId(), fechaLiquidacion, fechaLiquidacion);
+				List<VentaPasaje> resultDetalleVentasCarga = ServiceLocator.getTranscarWebManager().buscarDetalleVentas(transcarUsuarioPersonal, liquidacion.getAgencia().getId(), fechaLiquidacion, fechaLiquidacion);
 				
 				for(VentaPasaje ventaCarga: resultDetalleVentasCarga) {
 					ventaCarga.setTipoConsulta(1); //Carga
@@ -5724,7 +5726,8 @@ public class CreateDocument implements Serializable {
 			if(liquidacionCarga!=null) {
 				bw.write(NEWLINE);
 				
-				List<Liquidacion> listLiquidacionCarga = ServiceLocator.getTranscarWebManager().buscarLiquidacionTurnoResumenEspVal(liquidacionCarga.getUsuario().getId(), liquidacionCarga.getAgencia().getId(), fechaLiquidacion, fechaLiquidacion);
+//				List<Liquidacion> listLiquidacionCarga = ServiceLocator.getTranscarWebManager().buscarLiquidacionTurnoResumenEspVal(liquidacionCarga.getUsuario().getId(), liquidacionCarga.getAgencia().getId(), fechaLiquidacion, fechaLiquidacion);
+				List<Liquidacion> listLiquidacionCarga = ServiceLocator.getTranscarWebManager().buscarLiquidacionTurnoResumenEspVal(liquidacionCarga.getUsuario().getId(), liquidacion.getAgencia().getId(), fechaLiquidacion, fechaLiquidacion);
 
 				if(listLiquidacionCarga.size()>0) {
 					linea=tabular(3)+"VENTA DE ENCOMIENDAS";
@@ -5987,7 +5990,8 @@ public class CreateDocument implements Serializable {
 					TranscarUsuarioPersonal transcarUsuarioPersonal = new TranscarUsuarioPersonal();
 					transcarUsuarioPersonal.setId(liquidacionCarga.getUsuario().getId());
 					transcarUsuarioPersonal.setLogin(liquidacionCarga.getUsuario().getLogin());
-					List<VentaPasaje> resultDetalleVentasCarga = ServiceLocator.getTranscarWebManager().buscarDetalleVentas(transcarUsuarioPersonal, liquidacionCarga.getAgencia().getId(), fechaLiquidacion, fechaLiquidacion);
+//					List<VentaPasaje> resultDetalleVentasCarga = ServiceLocator.getTranscarWebManager().buscarDetalleVentas(transcarUsuarioPersonal, liquidacionCarga.getAgencia().getId(), fechaLiquidacion, fechaLiquidacion);
+					List<VentaPasaje> resultDetalleVentasCarga = ServiceLocator.getTranscarWebManager().buscarDetalleVentas(transcarUsuarioPersonal, liquidacionPasaje.getAgencia().getId(), fechaLiquidacion, fechaLiquidacion);
 
 					//Consulta los gastos
 //					List<Gasto> resultGasto = ServiceLocator.getGastoManager().buscarGasto(fechaLiquidacion, null, agenciaId, usuarioId);
