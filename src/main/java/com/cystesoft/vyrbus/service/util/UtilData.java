@@ -2799,7 +2799,7 @@ public class UtilData extends Window {
 	 * @throws Exception
 	 */
 	public static Integer getAgencia_Idvyrbus(Integer agencia_idtranscarweb)throws Exception{
-		return ServiceLocator.getAgenciaManager().buscarAgencia_Idtranscarweb(agencia_idtranscarweb);
+		return ServiceLocator.getAgenciaManager().buscarAgencia_Idvyrbus(agencia_idtranscarweb);
 	}
 	
 	/**
