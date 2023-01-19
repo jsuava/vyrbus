@@ -38,6 +38,8 @@ public class TranscarUsuarioPersonal extends GenericBean implements Serializable
 	private Integer estadoCivil = 1; // Solo para completar
 	private Integer permiteVentaOtrasAgencias;
 	private Integer autorizaEntregaSinVerificarUsuario;
+	private Integer tipoSeguridad;	
+	private UsuarioHardware usuarioHardware;
 
 	public TranscarUsuarioPersonal() {
 		super();
@@ -256,6 +258,34 @@ public class TranscarUsuarioPersonal extends GenericBean implements Serializable
 	 */
 	public void setAutorizaEntregaSinVerificarUsuario(Integer autorizaEntregaSinVerificarUsuario) {
 		this.autorizaEntregaSinVerificarUsuario = autorizaEntregaSinVerificarUsuario;
+	}
+
+	/**
+	 * @return the tipoSeguridad
+	 */
+	public Integer getTipoSeguridad() {
+		return tipoSeguridad;
+	}
+
+	/**
+	 * @param tipoSeguridad the tipoSeguridad to set
+	 */
+	public void setTipoSeguridad(Integer tipoSeguridad) {
+		this.tipoSeguridad = tipoSeguridad;
+	}
+
+	/**
+	 * @return the usuarioHardware
+	 */
+	public UsuarioHardware getUsuarioHardware() {
+		return usuarioHardware;
+	}
+
+	/**
+	 * @param usuarioHardware the usuarioHardware to set
+	 */
+	public void setUsuarioHardware(UsuarioHardware usuarioHardware) {
+		this.usuarioHardware = usuarioHardware;
 	}
 
 }

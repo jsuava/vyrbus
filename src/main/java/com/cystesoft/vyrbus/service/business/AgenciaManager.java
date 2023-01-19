@@ -56,4 +56,11 @@ public interface AgenciaManager {
 	 * @throws Exception
 	 */
 	public Integer buscarAgencia_Idtranscarweb(Integer agencia_idvrybus)throws Exception;
+	/**
+	 * Obtiene el identificador de la entidad agencia de la bd vyrbus
+	 * @param agencia_idtranscarweb : Identificador de la agencia del transcarweb
+	 * @return identificar de la agencia_id del vyrbus
+	 * @throws Exception
+	 */
+	public Integer buscarAgencia_Idvyrbus(Integer agencia_idtranscarweb)throws Exception;
 }

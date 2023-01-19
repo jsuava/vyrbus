@@ -183,4 +183,24 @@ public class AgenciaDAOImpl extends GenericDAOImpl implements AgenciaDAO {
 
 		return agencia_idtranscarweb;
 	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.AgenciaDAO#buscarAgencia_Idvyrbus(java.lang.Integer)
+	 */
+	@Override
+	public Integer buscarAgencia_Idvyrbus(Integer agencia_idtranscarweb) throws Exception {
+		String sql ="SELECT  et.ent_idtranscar agencia_idtranscarweb, et.ent_idvyr " +
+				"FROM VRTENTVYR_TRANSCAR et " +
+				"WHERE et.agencia_idtranscarweb="+agencia_idtranscarweb+" AND et.tipent_idvyrtranscar = 1 AND et.c_estreg='A' ";
+
+		List<?> result = getSession().createSQLQuery(sql).list();
+
+		Integer agencia_idbyrbus = null;
+		for (Object element : result) {
+			Object[] obj = (Object[])element;
+			agencia_idbyrbus = ((BigDecimal)obj[1]).intValue();
+		}
+
+		return agencia_idbyrbus;
+	}
 }
