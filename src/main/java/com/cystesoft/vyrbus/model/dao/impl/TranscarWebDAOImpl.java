@@ -368,7 +368,8 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 				"WHERE ec.d_fecven BETWEEN to_date('"+fechaInicial+"', 'dd/MM/yyyy') AND to_date('"+fechaFinal+"', 'dd/MM/yyyy') " + 
 				"  AND ec.agencia_idventa = COALESCE("+agencia_idtranscar+", ec.agencia_idventa) " + 
 				"  AND ec.usuario_id = COALESCE("+usuario_id+", ec.usuario_id) " + 
-				"  AND ec.c_estreg = 'A'";
+				"  AND ec.c_estreg = 'A' "
+			 +  "ORDER BY av.c_denominacion, ec.tipcom_id, ec.c_numcom  ";
 
 
 		Log.info("buscarDetalleVentas - Transcar: "+sql);

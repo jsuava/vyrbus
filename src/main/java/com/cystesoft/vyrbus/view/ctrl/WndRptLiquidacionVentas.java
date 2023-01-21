@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -32,6 +33,7 @@ import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.Gasto;
 import com.cystesoft.vyrbus.model.bean.Liquidacion;
 import com.cystesoft.vyrbus.model.bean.TranscarUsuarioPersonal;
+import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.util.Constantes;
@@ -271,32 +273,37 @@ public class WndRptLiquidacionVentas extends WndBase{
 	}
 	
 	private Double buscarEfectivoLiquidacion(Liquidacion liquidacion)throws Exception{
-		Integer usuarioId = (chbxDetallePorUsuario.isChecked()?liquidacion.getUsuario().getId():null);
+		List<VentaPasaje> listDetalleVentas = new ArrayList<VentaPasaje>();	
+		List<Gasto> resultGasto = new ArrayList<Gasto>();
+		List<Gasto> lstIngresos = new ArrayList<Gasto>();
 		String fecha = Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
 		
-		//Gastos - Pasajes
-		List<Gasto> resultGasto = ServiceLocator.getGastoManager().buscarGasto(fecha, fecha, null, liquidacion.getAgencia().getId(), usuarioId);
-		//Ventas Pasajes
-		List<VentaPasaje> resultDetalleVentasPasaje = ServiceLocator.getVentaPasajesManager().buscarDetalladoVentas(liquidacion.getAgencia().getId(), usuarioId, fecha, fecha, -1);
-		//Otros ingresos		
-		List<Gasto> lstIngresos =  ServiceLocator.getGastoManager().obtenerGastosByLiquidacion(fecha, liquidacion.getAgencia().getId(), usuarioId, Constantes.TRUE_VALUE, false);
-
-	
-		List<VentaPasaje> listDetalleVentas = new ArrayList<VentaPasaje>();			
-		for(VentaPasaje ventaPasaje: resultDetalleVentasPasaje) {
-			ventaPasaje.setTipoConsulta(0); //Pasajes
-			if(ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO)
-				ventaPasaje.getTipoFormaPago().setDenominacion("NOTA DE CREDITO");
-			else if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_DEVOLUCION)
-				ventaPasaje.getTipoFormaPago().setDenominacion("DEVOLUCION");
-			else if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION)
-				ventaPasaje.getTipoFormaPago().setDenominacion("ANULACION");
-			else if(ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO)
-				ventaPasaje.getTipoFormaPago().setDenominacion("CREDITO");		
-			else if(ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA)
-				ventaPasaje.getTipoFormaPago().setDenominacion("CORTESIA");
-			listDetalleVentas.add(ventaPasaje);
+		if(liquidacion!=null && liquidacion.getId()!=null) {
+			Integer usuarioId = (chbxDetallePorUsuario.isChecked()?liquidacion.getUsuario().getId():null);
+						
+			//Gastos - Pasajes
+			resultGasto = ServiceLocator.getGastoManager().buscarGasto(fecha, fecha, null, liquidacion.getAgencia().getId(), usuarioId);
+			//Ventas Pasajes
+			List<VentaPasaje> resultDetalleVentasPasaje = ServiceLocator.getVentaPasajesManager().buscarDetalladoVentas(liquidacion.getAgencia().getId(), usuarioId, fecha, fecha, -1);
+			//Otros ingresos		
+			lstIngresos =  ServiceLocator.getGastoManager().obtenerGastosByLiquidacion(fecha, liquidacion.getAgencia().getId(), usuarioId, Constantes.TRUE_VALUE, false);	
+					
+			for(VentaPasaje ventaPasaje: resultDetalleVentasPasaje) {
+				ventaPasaje.setTipoConsulta(0); //Pasajes
+				if(ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO)
+					ventaPasaje.getTipoFormaPago().setDenominacion("NOTA DE CREDITO");
+				else if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_DEVOLUCION)
+					ventaPasaje.getTipoFormaPago().setDenominacion("DEVOLUCION");
+				else if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION)
+					ventaPasaje.getTipoFormaPago().setDenominacion("ANULACION");
+				else if(ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO)
+					ventaPasaje.getTipoFormaPago().setDenominacion("CREDITO");		
+				else if(ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA)
+					ventaPasaje.getTipoFormaPago().setDenominacion("CORTESIA");
+				listDetalleVentas.add(ventaPasaje);
+			}
 		}
+		
 		
 		//Ventas Carga
 		Liquidacion liquidacionCarga = (liquidacion.getLiquidacionCarga()!=null?liquidacion.getLiquidacionCarga():null);
@@ -337,26 +344,53 @@ public class WndRptLiquidacionVentas extends WndBase{
 	
 	/**
 	 * Carga el listado de liquidaciones
-	 * @param liquidaciones : Listado de liquidaciones a cargar
+	 * @param liquidacionesVyr : Listado de liquidaciones a cargar
 	 * @throws Exception
 	 */
-	private void cargarListaLiquidaciones(List<Liquidacion> liquidaciones, TreeMap<String, Liquidacion> liquidacionesCarga)throws Exception{
+	private void cargarListaLiquidaciones(List<Liquidacion> liquidacionesVyr, TreeMap<String, Liquidacion> liquidacionesTranscar)throws Exception{
 		
 		Double totalSaldoLiquidacion = .00;
-//		Integer idAgencia=null;
 		ArrayList<String> lstAgencias = new ArrayList<String>();
+		
+		//Cuando no existe liquidacion en pasajes pero si en transcar		
+		for(Entry<String,Liquidacion> liquidacionTranscar : liquidacionesTranscar.entrySet()) {		
+			boolean createLiqPasajes = true;
+			for(Liquidacion liquidacion: liquidacionesVyr) {
+				Integer agencia_idtranscar = UtilData.getAgencia_Idtranscarweb(liquidacion.getAgencia().getId());
+				String key_vyr = Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
+				key_vyr += (agencia_idtranscar!=null?agencia_idtranscar.toString():"");
+				key_vyr += liquidacion.getUsuario().getLogin();				
+				
+				if(key_vyr.equals(liquidacionTranscar.getKey())) {
+					liquidacion.setLiquidacionCarga(liquidacionTranscar.getValue());
+					createLiqPasajes = false;
+					break;
+				}
+			}
+			
+			//Crea una liquidacion ficticia para pasajes, cuando un usuario tiene una liquidacion en carga y no en pasajes.
+			if(createLiqPasajes) {
+				Liquidacion _liquidacionTranscar = liquidacionTranscar.getValue();
+				Long agencia_idvyr = UtilData.getAgencia_Idvyrbus(_liquidacionTranscar.getAgencia().getId()).longValue();
+				Agencia agenciavyr = ServiceLocator.getAgenciaManager().buscarPorId(agencia_idvyr);
+				Usuario usuariovyr = ServiceLocator.getUsuarioManager().buscarUsuarioPorLogin(_liquidacionTranscar.getUsuario().getLogin(), null);
+				Liquidacion _liquidacionVyr = new Liquidacion();
+				_liquidacionVyr.setAgencia(agenciavyr);
+				_liquidacionVyr.setFechaLiquidacion(_liquidacionTranscar.getFechaLiquidacion());
+				_liquidacionVyr.setLiquidacionCarga(liquidacionTranscar.getValue());
+				_liquidacionVyr.setUsuario(usuariovyr);
+				liquidacionesVyr.add(_liquidacionVyr);
+			}
+			
+		}
+
 		String keyBusqueda;
-		for(Liquidacion liquidacion: liquidaciones) {
+		for(Liquidacion liquidacion: liquidacionesVyr) {
 			//Valida liquidacion de carga
 			Integer agencia_idtranscar = UtilData.getAgencia_Idtranscarweb(liquidacion.getAgencia().getId());
-			String key = Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
-//			key += liquidacion.getAgencia().getId().toString();
-			key += (agencia_idtranscar!=null?agencia_idtranscar.toString():"");
-			keyBusqueda = key;
-			key += liquidacion.getUsuario().getLogin();
-			Liquidacion liquidacionCarga = liquidacionesCarga.get(key);	
-			liquidacion.setLiquidacionCarga(liquidacionCarga);
-//			idAgencia = liquidacion.getAgencia().getId();
+			keyBusqueda = Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
+			keyBusqueda += (agencia_idtranscar!=null?agencia_idtranscar.toString():"");
+			Liquidacion liquidacionCarga = (liquidacion.getLiquidacionCarga()!=null?liquidacion.getLiquidacionCarga():null);
 			
 			Listitem item = new Listitem();
 			Listcell cell =new Listcell(Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()));
@@ -396,8 +430,11 @@ public class WndRptLiquidacionVentas extends WndBase{
 				
 			if(chbxDetallePorUsuario.isChecked()) {
 				cell = new Listcell();
-				if (liquidacion.getestadoLiquidacion().equals(Constantes.LIQUI_ESTA_CERRADO)) {
-					cell = new Listcell(Constantes.LIQUI_ESTA_CERRADO_LABEL); // +" - "+ Constantes.FORMAT_LONG.format(liquidacion.getFechaModificacion()));
+				if(liquidacion.getestadoLiquidacion()==null) {
+					cell = new Listcell("-------------");
+					cell.setTooltiptext("No se encontró liquidación en Pasajes");
+				}else if (liquidacion.getestadoLiquidacion().equals(Constantes.LIQUI_ESTA_CERRADO)) {
+					cell = new Listcell(Constantes.LIQUI_ESTA_CERRADO_LABEL);
 					cell.setStyle("font-size:11px !important");
 				}else
 					cell = new Listcell(Constantes.LIQUI_ESTA_ABIERTO_LABEL);
@@ -408,13 +445,13 @@ public class WndRptLiquidacionVentas extends WndBase{
 				cell = new Listcell();
 				if(liquidacionCarga!=null) {
 					if (liquidacionCarga.getestadoLiquidacion().equals(Constantes.LIQUI_ESTA_CERRADO)) {
-						cell = new Listcell(Constantes.LIQUI_ESTA_CERRADO_LABEL); // +" - "+ Constantes.FORMAT_LONG.format(liquidacion.getFechaModificacion()));
+						cell = new Listcell(Constantes.LIQUI_ESTA_CERRADO_LABEL);
 						cell.setStyle("font-size:11px !important");
 					}else
 						cell = new Listcell(Constantes.LIQUI_ESTA_ABIERTO_LABEL);
 				}else {
 					cell = new Listcell("-------------");
-					cell.setTooltiptext("No se encontró liquidación de Carga");
+					cell.setTooltiptext("No se encontró liquidación en Carga");
 				}
 				
 				item.appendChild(cell);
