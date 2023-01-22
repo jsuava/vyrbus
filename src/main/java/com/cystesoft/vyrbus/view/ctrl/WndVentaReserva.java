@@ -586,7 +586,7 @@ public class WndVentaReserva extends WndBase {
 				listheaderOtraTarifa.setVisible(false);
 				listheaderOtraTarifaRetorno.setVisible(false);
 //				columnItinerarios.setWidth("371px");
-				columnItinerarios.setWidth("578px");
+				columnItinerarios.setWidth("613px");
 			}
 
 
@@ -1618,8 +1618,8 @@ public class WndVentaReserva extends WndBase {
 								item.appendChild(cell);
 							}
 							
-							cell = new Listcell(detalleItinerario.getItinerario().getBus()!=null?detalleItinerario.getItinerario().getBus().getNumeroPlaca():"");
-							cell.setStyle("font-size:10px !important");
+							cell = new Listcell(detalleItinerario.getItinerario().getBus()!=null?detalleItinerario.getItinerario().getBus().getCodigo()+" / "+detalleItinerario.getItinerario().getBus().getNumeroPlaca():"");
+							cell.setStyle("font-size:9px !important");
 							item.appendChild(cell);
 							
 							cell = new Listcell();
@@ -1812,7 +1812,7 @@ public class WndVentaReserva extends WndBase {
 				columnItinerarios.setWidth("566px");
 			}else{
 				if(!(listheaderOperadoPor.isVisible())){
-					columnItinerarios.setWidth("578px");
+					columnItinerarios.setWidth("613px");
 				}else{
 					columnItinerarios.setWidth("622px");
 					listheaderOperadoPor.setWidth("115px");

@@ -66,6 +66,7 @@ import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.service.exceptions.CapacityExceedsException;
 import com.cystesoft.vyrbus.service.exceptions.CriteriosBusquedaIncompletosException;
 import com.cystesoft.vyrbus.service.exceptions.DuplicateSeatException;
+import com.cystesoft.vyrbus.service.exceptions.EspecieValoradaNotAvailableException;
 import com.cystesoft.vyrbus.service.exceptions.FechaCaducidadNullException;
 import com.cystesoft.vyrbus.service.exceptions.FechaViajeNoValidaException;
 import com.cystesoft.vyrbus.service.exceptions.FormaPagoNullException;
@@ -955,23 +956,29 @@ public class WndPostergacion extends WndBase implements Serializable {
 	 * @throws Exception
 	 */
 	private void onLoadEspecieValorada(Textbox txtBoleto, Combobox comboTipoComprobante) throws Exception{
-		/*BEGIN 15/06/2021 - javalos - Correlativo by caja*/
-		EspecieValorada especieValorada=null;
-		ControlEspecieValorada controlEspecieValorada = null;
-		/*END 15/06/2021 - javalos - Correlativo by caja*/
-		if(agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_TEPSA){
+		try {
 			/*BEGIN 15/06/2021 - javalos - Correlativo by caja*/
-//			especieValorada=UtilData.buscarEspecieValorada(((TipoComprobante)comboTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(),false);
-//			txtBoleto.setValue(especieValorada.toString());
-			controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(((TipoComprobante)comboTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(), false, getUsuarioHardware(), null);
-			txtBoleto.setValue(controlEspecieValorada.toString());
+			EspecieValorada especieValorada=null;
+			ControlEspecieValorada controlEspecieValorada = null;
 			/*END 15/06/2021 - javalos - Correlativo by caja*/
-		}else if(agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_VIAJES){
-			especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES, agencia,false);
-			txtBoleto.setValue(especieValorada.toString());
-		}else{
-			especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_VOUCHER_CORPORATIVO, agencia,false);
-			txtBoleto.setValue(especieValorada.toString());
+			if(agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_TEPSA){
+				/*BEGIN 15/06/2021 - javalos - Correlativo by caja*/
+	//			especieValorada=UtilData.buscarEspecieValorada(((TipoComprobante)comboTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(),false);
+	//			txtBoleto.setValue(especieValorada.toString());
+				controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(((TipoComprobante)comboTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(), false, getUsuarioHardware(), null);
+				txtBoleto.setValue(controlEspecieValorada.toString());
+				/*END 15/06/2021 - javalos - Correlativo by caja*/
+			}else if(agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_VIAJES){
+				especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES, agencia,false);
+				txtBoleto.setValue(especieValorada.toString());
+			}else{
+				especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_VOUCHER_CORPORATIVO, agencia,false);
+				txtBoleto.setValue(especieValorada.toString());
+			}
+		}catch(EspecieValoradaNotAvailableException evnaex) {
+			DlgMessage.information(Messages.getString("WndControlEspecieValorada.Information.ControlEspecieValoradaNull"));			
+		}catch(Exception ex) {
+			DlgMessage.error(ex.getMessage());
 		}
 	}
 	/**
