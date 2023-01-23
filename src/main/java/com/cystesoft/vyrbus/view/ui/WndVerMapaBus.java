@@ -218,7 +218,7 @@ public class WndVerMapaBus extends WndBase {
 		if (detalleItinerario.getItinerario().getBus().getId() != null)
 			bus = ServiceLocator.getBusManager().buscarPorId(detalleItinerario.getItinerario().getBus().getId().longValue());
 
-		label = createLabel("N° BUS", null, null);
+		label = createLabel("No BUS", null, null);
 		row = new Row();
 		row.appendChild(label);
 		label = createLabel(bus==null?":":": "  + bus.getCodigo(), styleBlue11f, null);

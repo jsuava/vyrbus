@@ -145,12 +145,8 @@
 											<listheader label="RUTA" width="120px" style="color: #ffffff;"/>
 											<listheader label="HR.PD." width="45px" align="center" style="color: #ffffff;"/>
 											<listheader label="S/.ESTANDAR" width="90px" align="right" tooltiptext="Tarifa Estandar" style="color: #ffffff;"/>
-<<<<<<< HEAD
-	  										<listheader label="BUS" width="55px" align="center" tooltiptext="Placa Bus" style="color: #ffffff;"/>  
-=======
-	  										<listheader label="BUS" width="85px" align="center" tooltiptext="Placa Bus" style="color: #ffffff;"/>  
->>>>>>> 579390c2460b76490f9aaa35123b0b119a1a0660
-	  										<listheader label="MAPA" width="60px" align="center" tooltiptext="Mapa Bus" style="color: #ffffff;"/>
+	  										<listheader label="BUS" width="90px" align="center" tooltiptext="Placa Bus" style="color: #ffffff;"/>  
+	  										<listheader label="MAPA" width="55px" align="center" tooltiptext="Mapa Bus" style="color: #ffffff;"/>
 											<listheader id="listheaderOtraTarifa" label="$ TARIFA " align="right" style="color: #ffffff;"/>
 
 										</listhead>
