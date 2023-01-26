@@ -1072,7 +1072,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				ventaDevolucion.setAgencia(ventaPasaje.getAgencia());
 				ventaDevolucion.setUsuario(ventaPasaje.getUsuario());
 				ventaDevolucion.setCanalVenta(ventaOriginal.getCanalVenta());
-				ventaDevolucion.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_DEVOLUCION));
+				ventaDevolucion.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_ANULACION_SISTEMA));
 				ventaDevolucion.setObservaciones(ventaPasaje.getVentaPasaje().getObservaciones()!=null?ventaPasaje.getVentaPasaje().getObservaciones():null);
 				UtilData.auditarRegistro(ventaDevolucion, ventaPasaje.getUsuario(), Executions.getCurrent());
 				getVentaPasajesDAO().save(ventaDevolucion);
