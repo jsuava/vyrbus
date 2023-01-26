@@ -500,7 +500,7 @@ public class WndPrincipal extends WndBase {
 	}
 
 	public void cerrarSesion(){
-		Messagebox.show("Â¿Desea Salir del Sistema?", Messages.getString("System.title"), Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
+		Messagebox.show("¿Desea Salir del Sistema?", Messages.getString("System.title"), Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
 				new EventListener<Event>() {
 
 					@Override
