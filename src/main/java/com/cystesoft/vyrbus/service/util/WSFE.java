@@ -1493,7 +1493,7 @@ public class WSFE implements Serializable{
 		/*la Descripcion del Detalle*/
 		String descripcionPrincipal="";
 		if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA_ESPECIAL)) {
-			descripcionPrincipal= descripMovi+(ventaPasaje.getObservaciones()!=null?" - "+ventaPasaje.getObservaciones():"");
+			descripcionPrincipal= (ventaPasaje.getObservaciones()!=null?" - "+ventaPasaje.getObservaciones():"");
 		}else if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_EXCESO)) {
 			descripcionPrincipal = ventaPasaje.getObservaciones();
 		}else if(ventaPasaje.getTipoMovimiento().getId().intValue()!=Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS){
@@ -1696,11 +1696,16 @@ public class WSFE implements Serializable{
 	
 	
 	
-	private static String getMontoLetras(Double importe)throws Exception{
+	private static String getMontoLetras(Double importe/*, boolean tipoMoneda*/)throws Exception{
 		/*Monto en letras*/
 		String strImportePagado = Util.toNumberFormat(importe, 2);
 		int indice = strImportePagado.lastIndexOf(".");
 		ConvertirNumeroString num = new ConvertirNumeroString();
+//		String strEnLetras = num.convertirLetras(importe.intValue()).toUpperCase()+" CON " + strImportePagado.substring(indice+1);
+//		if(tipoMoneda==true)
+//			strEnLetras += "/100 SOLES";
+//		else
+//			strEnLetras += "/100 DOLARES";
 		String strEnLetras = num.convertirLetras(importe.intValue()).toUpperCase()+" CON " + strImportePagado.substring(indice+1) + "/100 SOLES";
 		
 		return strEnLetras;
