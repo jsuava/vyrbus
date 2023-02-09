@@ -74,7 +74,7 @@
 			<listheader label="IMPORTE" align="right" width="65px" style="color: #ffffff;"/>
 			<listheader label="USU. VENTA" width="90px" style="color: #ffffff;" />
 			<listheader label="FECHA VENTA" width="120px" sort="auto" style="color: #ffffff;"/>
-			<listheader label="ACCION" width="80px" align="center" style="color: #ffffff;" />
+			<listheader label="ACCION" width="90px" align="center" style="color: #ffffff;" />
 			<listheader label="DOC. IDE." width="100px" align="center" style="color: #ffffff;" />
 			<listheader label="PASAJERO" width="250px" align="left" style="color: #ffffff;" />
 			<listheader label="RUTA" width="150px" align="left" style="color: #ffffff;" />

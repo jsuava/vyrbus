@@ -1,13 +1,15 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José Sullo Avalos
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Sullo Avalos
  * Fecha		: 02/01/2013
  */
 package com.cystesoft.vyrbus.view.ctrl;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,6 +19,7 @@ import java.util.TreeMap;
 
 import javax.servlet.http.HttpSession;
 
+import org.zkoss.util.media.AMedia;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Session;
@@ -37,6 +40,7 @@ import org.zkoss.zul.Grid;
 import org.zkoss.zul.Groupbox;
 import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Hlayout;
+import org.zkoss.zul.Iframe;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
@@ -55,6 +59,7 @@ import org.zkoss.zul.Window;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.OperadorTarjetaCredito;
+import com.cystesoft.vyrbus.model.bean.Rol;
 import com.cystesoft.vyrbus.model.bean.TarjetaCredito;
 import com.cystesoft.vyrbus.model.bean.TipoFormaPago;
 import com.cystesoft.vyrbus.model.bean.TipoMovimiento;
@@ -103,6 +108,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 	private Radio rubroAmbos;
 	private Label lblVentasTransferencia;
 	private Label lblVentasYape;
+	private Window wndLiquidacionDiariaVentas;
 
 //	private Window wndLiquidacionDiariaVentas;
 //	private Window wndDuplicar = null;
@@ -137,6 +143,8 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 	private Listfoot listfoot;
 	private Listfooter listfooter;
 
+	private Window wndViewModal = null;
+	
 	private static String[] tipoMovimiento = {Constantes.COMBO_LABEL_TODOS, "ANULADOS",
 											"DEVOLUCIONES", "CORTESIAS", "CREDITO", //"EQUIPAJES (PCE)",
 											"PREPAGADOS", "RECIBOS DE CAJA", "TARJETA MASTERCARD", "TARJETA VISA", "VENTAS"};
@@ -192,7 +200,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 			@Override
 			public void onEvent(Event event) throws Exception {
 				// TODO Auto-generated method stub
-				//Util.exportarExcel(lbxVentas, "Liquidación diaria de ventas");
+				//Util.exportarExcel(lbxVentas, "Liquidaciï¿½n diaria de ventas");
 				if(lbxVentas.getItems().size()>0){
 					Session session = getDesktop().getSession();
 					HttpSession httpSession = (HttpSession)session.getNativeSession();
@@ -262,6 +270,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 		rubroAmbos = (Radio)this.getFellow("rubroAmbos");
 		lblVentasTransferencia = (Label)this.getFellow("lblVentasTransferencia");
 		lblVentasYape = (Label)this.getFellow("lblVentasYape");
+		wndLiquidacionDiariaVentas = (Window)this.getFellow("wndLiquidacionDiariaVentas");
 	}
 
 	private void clearTotals()throws Exception{
@@ -296,7 +305,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 			clearTotals();
 
 
-			//Ya no es necesario - se fucionó las agencias del vyrbus con transcarweb
+			//Ya no es necesario - se fucionï¿½ las agencias del vyrbus con transcarweb
 //			List<Agencia> result = ServiceLocator.getTranscarManager().buscarAgencias();
 //			UtilData.cargarGenericData(cmbAgencia, true);
 //			for(Agencia agencia: result) {
@@ -533,7 +542,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 		}
 	}
 
-	private void loadVentas(List<VentaPasaje> lstVentas, Boolean isCarga){
+	private void loadVentas(List<VentaPasaje> lstVentas, final Boolean isCarga){
 		try{
 //			lbxVentas.getItems().clear();
 //			grdTotales.setVisible(false);
@@ -842,7 +851,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 									  getRol().getId().intValue()==Constantes.ID_ROL_ADMINISTRADOR) &&
 //									  getRol().getId().intValue()==Constantes.ID_ROL_FISCALIZACION) && 
 									venta.getFechaLiquidacion().getTime()>Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date())).getTime()-(Constantes.MILISEGUNDOS_X_DIA*3)){
-								//Rol superusuario y como maximo 3 días con anterioridad
+								//Rol superusuario y como maximo 3 dï¿½as con anterioridad
 								cell.appendChild(a);
 							}else{
 								cell.setLabel(venta.getNumeroBoleto());
@@ -922,6 +931,36 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 //					btnAnular.setStyle("cursor:pointer");
 					btnAnular.setTooltiptext("Haga click aqui si desea anular el Comprobante");
 					hlayout.appendChild(btnAnular);
+					cell.appendChild(hlayout);
+					item.appendChild(cell);
+					
+					
+					Button btnPrevioPdf = new Button();
+					//roles que tiene acceso al control cmbagencia
+					List<Component>components=new ArrayList<>();
+					components.add(btnPrevioPdf);
+					List<Rol>rolAcceso=new ArrayList<>();
+					rolAcceso.add(new Rol(Constantes.ID_ROL_SUPER_USUARIO));					
+					rolAcceso.add(new Rol(Constantes.ID_ROL_FINANZAS));
+					rolAcceso.add(new Rol(Constantes.ID_ROL_FISCALIZACION));
+					accesoControlsByRol(components, rolAcceso);
+					
+					btnPrevioPdf.setImage("resources/mp_pdf.png");
+					btnPrevioPdf.setClass("btnImage");
+					btnPrevioPdf.setTooltiptext("Visualizar en formato pdf");
+					if(!btnPrevioPdf.isDisabled()) {
+						btnPrevioPdf.setAttribute(VentaPasaje.class.getName(), venta);
+						btnPrevioPdf.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+							@Override
+							public void onEvent(Event e) throws Exception{
+								VentaPasaje oventa = (VentaPasaje) e.getTarget().getAttribute(VentaPasaje.class.getName());
+								showWindowPrevioPDF(isCarga, oventa);
+							}
+						});
+					}else {
+						btnPrevioPdf.setVisible(false);
+					}
+					hlayout.appendChild(btnPrevioPdf);
 					cell.appendChild(hlayout);
 					item.appendChild(cell);
 					
@@ -1369,10 +1408,10 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 				return;
 			}
 
-			//Validación para la anulación de un Reecibo de caja
+			//Validaciï¿½n para la anulaciï¿½n de un Reecibo de caja
 			if (ventaOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_RECIBO_CAJA){
 				VentaPasaje ultimoRegistro=ServiceLocator.getVentaPasajesManager().buscarUltimoRegistro(ventaOriginal.getVentaOriginal());
-				//Valida si RC esta reimpreso y no esta anulado para continuar con la anulación.
+				//Valida si RC esta reimpreso y no esta anulado para continuar con la anulaciï¿½n.
 				if (ultimoRegistro.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_RECIBO_CAJA &&
 						ultimoRegistro.getTipoMovimiento().getId().intValue()!=Constantes.ID_TIPMOV_ANULACION){
 					DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.RCReimpreso"));
@@ -1395,7 +1434,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 				DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.fechaPasada"));
 			else if(ventaOriginal.getLiquidacion()==null){
 //					if(ventaOriginal.getIdentificadorIdaRetorno()!=null){
-//						Messagebox.show("Esta a punto de anular un boleto ida y vuelta, este proceso conlleva la anulación de los 2 boletos, desea continuar?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+//						Messagebox.show("Esta a punto de anular un boleto ida y vuelta, este proceso conlleva la anulaciï¿½n de los 2 boletos, desea continuar?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 //							public void onEvent(Event e){
 //								if(e.getName().equals(Messagebox.ON_YES)){
 //									wndAnular = createVentanaAnulacion(ventaOriginal);
@@ -1508,7 +1547,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 
 		row=new Row();
 		row.setSpans("1,4");
-		label = new Label("MOTIVO ANULACIÓN (*) :");
+		label = new Label("MOTIVO ANULACIï¿½N (*) :");
 		row.appendChild(label);
 		final Textbox txtMotivoAnulacion = new Textbox();
 		txtMotivoAnulacion.setWidth("314px");
@@ -1656,7 +1695,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 				iFrame.setWidth("1080");
 				iFrame.setheight("600");
 				iFrame.loadiframe();
-				iFrame.oThisWindow.setTitle("::: PREVIO - DETALLE LIQUIDACIÓN DE VENTAS :::");
+				iFrame.oThisWindow.setTitle("::: PREVIO - DETALLE LIQUIDACIï¿½N DE VENTAS :::");
 				iFrame.oThisWindow.setClosable(true);
 				iFrame.btnCerrar.setVisible(false);
 				this.appendChild(iFrame);
@@ -1897,7 +1936,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 		row.appendChild(cmbTarjetaCredito);
 		rows.appendChild(row);
 		label =  new Label();
-		label.setValue("NRO OPERACIÓN :");
+		label.setValue("NRO OPERACIï¿½N :");
 		row.appendChild(label);
 		final Textbox txtNumeroOperacion=new Textbox();
 		txtNumeroOperacion.setWidth("105px");
@@ -2141,5 +2180,35 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 			cmbTarjetaCredito.appendChild(item);
 		}
 		cmbTarjetaCredito.setDisabled(false);
+	}
+	
+	private void showWindowPrevioPDF(boolean isCarga, VentaPasaje ventaPasaje) throws Exception{
+		wndViewModal = createWindowViewPrevioPDF(isCarga, ventaPasaje);
+		wndLiquidacionDiariaVentas.appendChild(wndViewModal);
+		wndViewModal.setMode("modal");		
+	}
+	
+	private Window createWindowViewPrevioPDF(boolean isCarga, VentaPasaje ventaPasaje) throws Exception{
+		byte[] comprobantePrevio = null;
+//		if(isCarga) {
+//			
+//		}else
+		comprobantePrevio = WSFE.representacionImpresa(ventaPasaje);
+		
+		final Window window = new Window(".", "normal", true);
+		window.setWidth("770px");	
+		window.setHeight("700px");
+		
+		String numeroComprobante = ventaPasaje.getNumeroBoleto();
+		InputStream inputStream = new ByteArrayInputStream(comprobantePrevio);
+		AMedia amedia = new AMedia(numeroComprobante + ".pdf", "pdf","application/pdf", inputStream);
+		
+		Iframe iframe = new Iframe();
+		iframe.setStyle("width:100%; height:100%;");
+		iframe.setScrolling("none");		
+		iframe.setContent(amedia);
+		window.appendChild(iframe);
+				
+		return window;
 	}
 }
