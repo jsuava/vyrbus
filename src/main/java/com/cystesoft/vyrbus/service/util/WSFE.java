@@ -352,6 +352,31 @@ public class WSFE implements Serializable{
 		}
 	}
 	
+	/*
+	 * Busca la representacio impresa del comprobante
+	 * @param ventaCarga
+	 * @throws Exception
+	 */
+	public static byte[] representacionImpresa(VentaPasaje ventaPasaje) throws Exception {
+		
+		String serie=ventaPasaje.getNumeroBoleto().split("-")[0];
+		String correlativo=ventaPasaje.getNumeroBoleto().split("-")[1];
+		String tipoComprobante= null; //(ventaCarga.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA?FE_TIPCOM_BOLETA:FE_TIPCOM_FACTURA);
+		if(ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA)
+			tipoComprobante = FE_TIPCOM_BOLETA;
+		else if(ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_FACTURA)
+			tipoComprobante = FE_TIPCOM_FACTURA;
+		else if(ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO)
+			tipoComprobante = FE_TIPCOM_NOTA_CREDITO;
+		else 
+			tipoComprobante = FE_TIPCOM_NOTA_DEBITO;
+		
+		Result result= getSoap().getRepresentacionImpresa(TOKEN, false, tipoComprobante, serie, correlativo, Constantes.ruc);
+		if(result.isIsCorrect() && result.getPdf().getValue()!=null) {
+			return result.getPdf().getValue();			
+		}else
+			return null;
+	}
 	
 	/**
 	 * Realiza la reimpresion del comprobante
@@ -743,7 +768,7 @@ public class WSFE implements Serializable{
 			final String _pZipFile=pZipFile;
 			
 			//************************************************************************************
-			//Consulta la version de impresión configurada para la agencia - jabanto 16/11/2022
+			//Consulta la version de impresiï¿½n configurada para la agencia - jabanto 16/11/2022
 			Agencia agencia = (Agencia)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
 			if(UtilFlag.isFormatPrintDownload(agencia.getId())) {
 				String nameFileZip = nameFile + ".zip";
@@ -867,7 +892,7 @@ public class WSFE implements Serializable{
 			Util.Zippear(pathSavedXml, pZipFile,nameFile);			
 
 			//************************************************************************************
-			//Consulta la version de impresión configurada para la agencia - jabanto 16/11/2022
+			//Consulta la version de impresiï¿½n configurada para la agencia - jabanto 16/11/2022
 			Agencia agencia = (Agencia)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
 			if(UtilFlag.isFormatPrintDownload(agencia.getId())) {
 				String nameFileZip = nameFile + ".zip";
