@@ -2208,12 +2208,12 @@ public class WndManifiesto extends WndBase {
 		Row row = new Row();
 		Radiogroup radiogroup = new Radiogroup();
 		radiogroup.setOrient("vertical");
-		final Radio rdPrintLasert = new Radio("ImpresiÃ³n Laser");
+		final Radio rdPrintLasert = new Radio("Impresión Laser");
 //		rdPrintLasert.setDisabled(configuracionImpresora==null);
 		radiogroup.appendChild(rdPrintLasert);
 		Separator separator = new Separator("horizontal");
 		radiogroup.appendChild(separator);
-		final Radio rdPrintMatricial = new Radio("ImpresiÃ³n Matricial");
+		final Radio rdPrintMatricial = new Radio("Impresión Matricial");
 		rdPrintMatricial.setChecked(rdPrintLasert.isDisabled());
 		radiogroup.appendChild(rdPrintMatricial);
 		separator = new Separator("horizontal");
@@ -2326,7 +2326,7 @@ public class WndManifiesto extends WndBase {
 			public void onEvent(Event e){
 				try {
 					if(rdPrintMatricial.isChecked()==false && rdPrintLasert.isChecked()==false){
-						DlgMessage.information("Debe seleccionar el Tipo de ImpresiÃ³n.");
+						DlgMessage.information("Debe seleccionar el Tipo de Impresión.");
 						return;
 					}else if (!(cmbAgencia.getSelectedItem().getValue() instanceof Agencia)){
 						DlgMessage.information("Debe de seleccionar la Agencia con la cual va a emitir el Manifiesto");

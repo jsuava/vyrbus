@@ -3548,15 +3548,15 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		}
 		else if(nroConsulta == 2){
 			strQuerySelect = "		v.n_cantidad, v.n_total, to_char(v.d_fecven, 'dd/mm/yyyy') FECVEN ";
-			strQueryAnd = "		AND v.agencia_id = " + idAgencia + " ";
-			strQueryOrder = "	       v.d_fecven, v.c_comprobante";
+			strQueryAnd = "		AND v.agencia_id = NVL(" + (idAgencia==0 ? null : idAgencia) +  ", v.agencia_id) ";
+			strQueryOrder = "	       v.d_fecven, v.c_agencia,  v.n_rubro, v.c_comprobante ";
 		}
 		else{
 			strQuerySelect = "		sum(v.n_cantidad) cant, sum(v.n_total) total, v.c_mes  ";
-			strQueryAnd = "		AND v.agencia_id = " + idAgencia + " ";
+			strQueryAnd = "		AND v.agencia_id = NVL(" + (idAgencia==0 ? null : idAgencia) + ", v.agencia_id) ";
 			strGroupBy = "GROUP BY "
 					+ "	v.c_mes, v.n_rubro, v.canven_id, v.c_canal, v.agencia_id, v.c_agencia, v.tipcom_id, v.c_comprobante";
-			strQueryOrder = "	       v.c_mes";
+			strQueryOrder = "	       v.c_mes, v.c_agencia, v.n_rubro, v.c_comprobante ";
 		}
 
 			sql = " SELECT "
@@ -3817,7 +3817,8 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	public List<VentaPasaje> buscarFacturasServicioEspecial (String numComprobante, String fDesde, String fHasta) throws Exception{
 		String sql = "SELECT * FROM vrtvenpas vp "
 				+ "INNER JOIN (SELECT MAX(venpas_id) venpas_id, c_numcontrol FROM vrtvenpas WHERE c_tiptra IN (5) GROUP BY c_numcontrol) max_id "
-				+ "ON max_id.venpas_id=vp.venpas_id WHERE c_estreg='A' AND tipmov_id= "+Constantes.ID_TIPMOV_SERVICIO_ESPECIAL;
+				+ "ON max_id.venpas_id=vp.venpas_id WHERE c_estreg='A' AND c_tiptra=5 ";
+//				+ "ON max_id.venpas_id=vp.venpas_id WHERE c_estreg='A' AND tipmov_id= "+Constantes.ID_TIPMOV_SERVICIO_ESPECIAL;
 
 		if(numComprobante != null)
 				sql = sql + " AND c_numboleto = '" + numComprobante + "' ";

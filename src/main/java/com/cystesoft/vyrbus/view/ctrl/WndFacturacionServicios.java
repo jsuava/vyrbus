@@ -59,6 +59,7 @@ import com.cystesoft.vyrbus.model.bean.TipoComprobante;
 import com.cystesoft.vyrbus.model.bean.TipoFormaPago;
 import com.cystesoft.vyrbus.model.bean.TipoMoneda;
 import com.cystesoft.vyrbus.model.bean.TipoMovimiento;
+import com.cystesoft.vyrbus.model.bean.Ubigeo;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.service.exceptions.ClienteException;
 import com.cystesoft.vyrbus.service.exceptions.DenominacionNullException;
@@ -229,50 +230,72 @@ public class WndFacturacionServicios extends WndBase {
 
 		Listitem item=null;
 		Listcell cell=null;
+		String strMoneda="";
+		String style="";
+		Double nIgv;
 		int x=1;
 
 		for(VentaPasaje ventaPasaje: arrayList){
+			
+			if(ventaPasaje.getTipoMovimiento().getId().equals(Constantes.ID_TIPMOV_ANULACION)) {
+				style = "color:red !important; font-weight:bold";
+				nIgv = 0.00;
+			}else {
+				style="font-size:11px !important";
+				nIgv = ventaPasaje.getIgv();
+			}
 			item=new Listitem();
 			cell=new Listcell(String.valueOf(x++));
 			item.appendChild(cell);
 
 			cell=new Listcell(ventaPasaje.getTipoComprobante().getDenominacion());
+			cell.setStyle(style);
 			item.appendChild(cell);
 
 			cell=new Listcell(ventaPasaje.getNumeroBoleto());
+			cell.setStyle(style);
 			item.appendChild(cell);
 
 			cell=new Listcell(Util.DatetoString(ventaPasaje.getFechaLiquidacion(), Constantes.DATE_FORMAT));
+			cell.setStyle(style);
 			item.appendChild(cell);
 
 			if(ventaPasaje.getCliente()!=null)
 				cell=new Listcell(ventaPasaje.getCliente().getNumeroDocumento());
 			else
 				cell=new Listcell(ventaPasaje.getPasajero().getNumeroDocumento());
-			cell.setStyle("font-size:11px !important");
+			cell.setStyle(style);
 			item.appendChild(cell);
 
 			if(ventaPasaje.getCliente()!=null)
 				cell=new Listcell(ventaPasaje.getCliente().getRazonSocial());
 			else
 				cell=new Listcell(ventaPasaje.getPasajero().getNombresApellidos());
-			cell.setStyle("font-size:11px !important");
+			cell.setStyle(style);
 			item.appendChild(cell);
 
 			cell=new Listcell(ventaPasaje.getFormaPago().getDenominacion());
-			cell.setStyle("font-size:11px !important");
+			cell.setStyle(style);
 			item.appendChild(cell);
 
+			if(ventaPasaje.getTipoMoneda()!=null)
+				strMoneda = ( ventaPasaje.getTipoMoneda().getId() == Constantes.ID_TIPMON_SOLES ? "SOLES" : "DOLARES");
+			else
+				strMoneda="SOLES";
+			cell=new Listcell(strMoneda);
+			cell.setStyle(style);
+			item.appendChild(cell);
+			
 			cell=new Listcell(Util.toNumberFormat(ventaPasaje.getTarifa()/1.18, 2));
-			cell.setStyle("font-size:11px !important");
+			cell.setStyle(style);
 			item.appendChild(cell);
 
-			cell=new Listcell(Util.toNumberFormat(ventaPasaje.getIgv(), 2));
-			cell.setStyle("font-size:11px !important");
+			cell=new Listcell(Util.toNumberFormat(nIgv, 2));
+			cell.setStyle(style);
 			item.appendChild(cell);
 
 			cell=new Listcell(Util.toNumberFormat(ventaPasaje.getImportePagado(), 2));
-			cell.setStyle("font-size:11px !important");
+			cell.setStyle(style);
 			item.appendChild(cell);
 			cell = new Listcell();
 			Image imgAnular = new Image();
@@ -306,9 +329,10 @@ public class WndFacturacionServicios extends WndBase {
 	 */
 	public void onSave(final Window win) throws Exception {
 		try {
-			if(txtIdCliente.getText().trim().equals(""))
+			/*if(txtIdCliente.getText().trim().equals(""))
 				throw new ClienteException();
-			else if(txtCliente.getText().trim().equals(""))
+			else*/ 
+			if(txtCliente.getText().trim().equals(""))
 				throw new RazonSocialNullException();
 			else if(txtDireccion.getText().trim().equals(""))
 				throw new DireccionFacturacionNullException();
@@ -337,7 +361,35 @@ public class WndFacturacionServicios extends WndBase {
 							servicioEspecial.setItinerario(new Itinerario(new Long(1)));
 							servicioEspecial.setRuta(new Ruta(1));
 							if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId() == Constantes.ID_TIPCOM_FACTURA) {
-								servicioEspecial.setCliente(new Cliente(Long.valueOf(txtIdCliente.getText())));
+								//Validar si el cliente es nuevo o ya esta en la BD
+								//Si es nuevo primero lo guardamos
+								if(txtIdCliente.getText().trim().equals("")) {
+									Cliente oCliente = new Cliente();
+									Ubigeo oUbigeo = new Ubigeo();
+									//No sera obligatorio para Transmar  MAOE - 02/08/2022
+									oUbigeo.setId(getAgencia().getUbigeo().getId());
+
+									oCliente.setNumeroDocumento(txtDocumento.getValue().toString());
+									oCliente.setRazonSocial(txtCliente.getText().toUpperCase());
+//									oCliente.setContacto(txtContactoCliente.getText().toUpperCase());
+									oCliente.setDireccion(txtDireccion.getText().toUpperCase());
+//									oCliente.setTelefonoFijo(txtTelefonoClienteOne.getText().toUpperCase());
+//									oCliente.setTelefonoFijo2(txtTelefonoClienteTwo.getText().toUpperCase());
+//									oCliente.setEmail(txtEmailCliente.getText());
+//									oCliente.setRubro(txtRubro.getText().trim().toUpperCase());
+									oCliente.setCantidadTrabajadores(0);
+									oCliente.setUbigeo(oUbigeo);
+									oCliente.setAgencia(getAgencia());
+									oCliente.setKilometros(0.00);
+									UtilData.auditarRegistro(oCliente, false, getUsuario(), Executions.getCurrent());
+									oCliente.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+
+									//Guarda el cliente
+									ServiceLocator.getClienteManager().guardar(oCliente);
+									
+									servicioEspecial.setCliente(oCliente);
+								}else
+									servicioEspecial.setCliente(new Cliente(Long.valueOf(txtIdCliente.getText())));
 								servicioEspecial.setPasajero(new Pasajero(Long.valueOf(1)));
 							}else {
 								servicioEspecial.setCliente(null);
@@ -420,8 +472,8 @@ public class WndFacturacionServicios extends WndBase {
 				}
 			});
 
-		}catch(ClienteException cex) {
-			DlgMessage.information("Debe de indicar el Cliente al que se emitira el documento", txtDocumento);
+//		}catch(ClienteException cex) {
+//			DlgMessage.information("Debe de indicar el Cliente al que se emitira el documento", txtDocumento);
 		}catch(RazonSocialNullException rsex) {
 			DlgMessage.information("El cliente no existe");
 		}catch(DireccionFacturacionNullException dfex) {
@@ -734,7 +786,7 @@ public class WndFacturacionServicios extends WndBase {
 				txtGlosa.setFocus(true);
 			}
 		});
-		dbxTipoCambio.setFormat("#0.00");
+		dbxTipoCambio.setFormat("#0.000");
 		dbxTipoCambio.setDisabled(true);
 		dbxTipoCambio.setLocale(Locale.US);
 		row.appendChild(dbxTipoCambio);
@@ -1037,7 +1089,7 @@ public class WndFacturacionServicios extends WndBase {
 			cmbFormaPago.setFocus(true);
 			txtIdCliente.setText(cliente.getId().toString());
 		}else{
-			DlgMessage.information(Messages.getString("WndFacturacionServicios.information.noClienteEncontrado"));
+//			DlgMessage.information(Messages.getString("WndFacturacionServicios.information.noClienteEncontrado"));
 			String nroRuc = txtDocumento.getValue();
 			onCleanControls();
 			txtDocumento.setValue(nroRuc);

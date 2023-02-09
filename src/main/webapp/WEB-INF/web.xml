@@ -218,6 +218,12 @@
 	   <servlet-name>XlsDevolucionIscServlet</servlet-name>
 	   <servlet-class>com.cystesoft.vyrbus.service.excel.XlsDevolucionIsc</servlet-class>
 	</servlet>
+	<servlet>
+	   <description>Servlet para el Reporte General de Ventas</description>
+	   <display-name>ReporteGeneralVentas</display-name>
+	   <servlet-name>XlsReporteGeneralVentasServlet</servlet-name>
+	   <servlet-class>com.cystesoft.vyrbus.service.excel.XlsReporteGeneralVentas</servlet-class>
+	</servlet>
 	
 	<servlet-mapping>
 		<servlet-name>dspLoader</servlet-name>
@@ -286,6 +292,10 @@
 	<servlet-mapping>
 		<servlet-name>XlsDevolucionIscServlet</servlet-name>
 		<url-pattern>/exportXlsDevolucionIsc.htm</url-pattern>
+	</servlet-mapping>	
+	<servlet-mapping>
+		<servlet-name>XlsReporteGeneralVentasServlet</servlet-name>
+		<url-pattern>/exportXlsReporteGeneralVentas.htm</url-pattern>
 	</servlet-mapping>	
   <!--
   <security-constraint>
