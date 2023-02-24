@@ -6,7 +6,7 @@
 <!-- 		<caption label="INFORMACIÓN DE LA VENTA" /> -->
 		<grid>
 			<columns>
-				<column width="100px" align="right"/>
+				<column width="105px" align="right"/>
 				<column width="150px" />
 				<column width="110px" align="right"/>
 			</columns>
@@ -69,6 +69,12 @@
 					<label id="lblFechaEmision" style="font-size:11px !important; color:blue"/>
 					<label value="USUARIO EMISION :" />
 					<label id="lblUsuarioEmision" style="font-size:11px !important; color:blue"/>
+				</row>
+				<row id="rowAnulacion" visible="false">
+					<label value="FECHA ANULACIÓN :" />
+					<label id="lblFechaAnulacion" style="font-size:11px !important; color:red"/>
+					<label value="USUARIO ANULACIÓN :" />
+					<label id="lblUsuarioAnulacion" style="font-size:11px !important; color:red"/>					
 				</row>
 			</rows>
 		</grid>	

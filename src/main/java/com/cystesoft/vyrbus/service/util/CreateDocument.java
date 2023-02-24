@@ -5692,7 +5692,8 @@ public class CreateDocument implements Serializable {
 					linea += tabular(21-resumen.getComprobante().length())+strSerie;
 					
 					for(Liquidacion especieValorada: list) {
-						if(especieValorada.getTipoComprobante().getId().intValue()==resumen.getIdTipoComprobante().intValue()) {
+						if(especieValorada.getTipoComprobante().getId().intValue()==resumen.getIdTipoComprobante().intValue() &&
+								especieValorada.getSerie().equals(strSerie)) {
 							desde = especieValorada.getBoletoInicial();
 							hasta = especieValorada.getboletoFinal();
 							break;

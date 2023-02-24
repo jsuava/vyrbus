@@ -1650,6 +1650,8 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 		ventaOriginal.setImportePagadoEquibalente(ventaOriginal.getImportePagadoEquibalente()!=null?.00:null);
 		ventaOriginal.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_ANULACION));
 		ventaOriginal.setObservaciones(motivo);
+		ventaOriginal.setFechaAnulacion(new Date());
+		ventaOriginal.setUsuarioAnulacion(getUsuario());
 		UtilData.auditarRegistro(ventaOriginal, true, usuario, Executions.getCurrent());
 		VentaPasaje notaCredito= ServiceLocator.getVentaPasajesManager().anularMovimiento(ventaOriginal,false);
 		if(notaCredito!=null){
