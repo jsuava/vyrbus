@@ -331,7 +331,16 @@
             	<comment>Monto igv</comment>
             </column>
         </property>
-        
+        <property name="fechaAnulacion" type="java.util.Date">
+            <column name="D_FECANU" length="7">
+                <comment>Fecha en la que en la se realiza la anulación del comprobante</comment>
+            </column>
+        </property>
+        <many-to-one name="usuarioAnulacion" class="com.cystesoft.vyrbus.model.bean.Usuario" fetch="select">
+        	<column name="USUARIO_IDANU" precision="5" scale="0">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+            </column>
+        </many-to-one>
         
         <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
         <property name="estadoRegistro" type="java.lang.String">

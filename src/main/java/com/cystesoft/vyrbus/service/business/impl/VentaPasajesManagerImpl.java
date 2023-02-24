@@ -303,6 +303,19 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				}else
 					ventaPasaje.setNumeroBoleto(null);
 			}
+			
+			//Valida si es una confirmación de una reserva - jabanto - 23/02/2023
+			if(ventaPasaje.getVentaPasaje()!=null && ventaPasaje.getVentaPasaje().getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA)) {
+				//Anula la reserva
+				VentaPasaje ventaReserva = getVentaPasajesDAO().buscarPorId(ventaPasaje.getVentaPasaje().getId());
+				ventaReserva.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_ANULACION_SISTEMA));
+				ventaReserva.setFechaAnulacion(new Date());
+				ventaReserva.setUsuarioAnulacion(ventaPasaje.getUsuario());
+				ventaReserva.setUsuarioModificacion(ventaPasaje.getUsuarioModificacion());
+				ventaPasaje.setIpModificacion(ventaPasaje.getIpModificacion());
+				getVentaPasajesDAO().update(ventaReserva);
+			}
+			
 
 			/*	Guardando la instancia de la venta de pasajes	*/
 			getVentaPasajesDAO().save(ventaPasaje);

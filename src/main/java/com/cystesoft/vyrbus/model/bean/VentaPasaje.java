@@ -77,6 +77,8 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	private Date fechaEnvioSFE;
 	private Double importePagadoByDiferencia;
 	private TipoCobranza tipoCobranza;
+	private Date fechaAnulacion;
+	private Usuario usuarioAnulacion;
 
 	private UsuarioHardware usuarioHardware;
 	private List<Integer> subConjunto;
@@ -108,11 +110,11 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	private String operadoPor;
 
 	/**
-	 * Usuario que realiza la Operación Remota
+	 * Usuario que realiza la Operaciï¿½n Remota
 	 */
 	private Usuario usuarioRemoto;
 	/**
-	 * Usuario Hardware desde donde se realiza la Operación Remota
+	 * Usuario Hardware desde donde se realiza la Operaciï¿½n Remota
 	 */
 	private UsuarioHardware usuarioHardwareRemoto;
 	private Boolean esRemoto;
@@ -1044,7 +1046,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 		this.horaDesembarque = horaDesembarque;
 	}
 	/**
-	 * @return Usuario que realiza la Operación Remota
+	 * @return Usuario que realiza la Operaciï¿½n Remota
 	 */
 	public Usuario getUsuarioRemoto() {
 		return usuarioRemoto;
@@ -1056,7 +1058,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 		this.usuarioRemoto = usuarioRemoto;
 	}
 	/**
-	 * @return Usuario Hardware desde donde se realiza la Operación Remota
+	 * @return Usuario Hardware desde donde se realiza la Operaciï¿½n Remota
 	 */
 	public UsuarioHardware getUsuarioHardwareRemoto() {
 		return usuarioHardwareRemoto;
@@ -1359,6 +1361,34 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	 */
 	public void setTipoCobranza(TipoCobranza tipoCobranza) {
 		this.tipoCobranza = tipoCobranza;
+	}
+
+	/**
+	 * @return the fechaAnulacion
+	 */
+	public Date getFechaAnulacion() {
+		return fechaAnulacion;
+	}
+
+	/**
+	 * @param fechaAnulacion the fechaAnulacion to set
+	 */
+	public void setFechaAnulacion(Date fechaAnulacion) {
+		this.fechaAnulacion = fechaAnulacion;
+	}
+
+	/**
+	 * @return the usuarioAnulacion
+	 */
+	public Usuario getUsuarioAnulacion() {
+		return usuarioAnulacion;
+	}
+
+	/**
+	 * @param usuarioAnulacion the usuarioAnulacion to set
+	 */
+	public void setUsuarioAnulacion(Usuario usuarioAnulacion) {
+		this.usuarioAnulacion = usuarioAnulacion;
 	}
 
 	//No mapeados
