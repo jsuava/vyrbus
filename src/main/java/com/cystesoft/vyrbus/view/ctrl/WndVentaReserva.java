@@ -4464,8 +4464,8 @@ public class WndVentaReserva extends WndBase {
 //			Reniec reniec = new Reniec();
 				txtDocumentoCliente.setValue(ruc.get(0));
 				txtRazonSocial.setValue(ruc.get(1));
-				Agencia agencia01 = getAgencia(); 
-				UsuarioHardware usuario01 = getUsuarioHardware();
+//				Agencia agencia01 = getAgencia(); 
+//				UsuarioHardware usuario01 = getUsuarioHardware();
 				txtDireccionCliente.setValue(ruc.get(2));
 
 			}else{
@@ -4473,7 +4473,7 @@ public class WndVentaReserva extends WndBase {
 
 				onCleanControlsClient();
 				//recupera valores ingresado por el usuario
-				txtDocumentoPax.setText(numeroDocumento);
+				txtDocumentoCliente.setText(numeroDocumento);
 
 //					if(getAgencia().getTipoAgencia().getId().intValue()!=Constantes.ID_TIPAGE_TEPSA){
 //						Ubigeo oUbigeo = new Ubigeo();
