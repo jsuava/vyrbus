@@ -4453,6 +4453,8 @@ public class WndVentaReserva extends WndBase {
 //			Reniec reniec = new Reniec();
 				txtDocumentoCliente.setValue(ruc.get(0));
 				txtRazonSocial.setValue(ruc.get(1));
+				Agencia agencia01 = getAgencia(); 
+				UsuarioHardware usuario01 = getUsuarioHardware();
 				txtDireccionCliente.setValue(ruc.get(2));
 
 			}else{

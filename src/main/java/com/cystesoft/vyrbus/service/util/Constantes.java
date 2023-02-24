@@ -26,7 +26,7 @@ public class Constantes {
 	 * Vension actual del Sistema
 	 */
 
-	public static final String SYSTEM_VERSION = "VersiÃ³n 3.3.3";
+	public static final String SYSTEM_VERSION = "Versión 3.3.4";
 		
 	/**
 	 * Constante para la Acciï¿½n Nuevo
@@ -105,7 +105,7 @@ public class Constantes {
 	public static final int TRUE_VALUE = 1;
 	public static final int FALSE_VALUE = 0;
 	/*	Para las fecha en null	*/
-	public static final Date FECHA_NULL= Util.StringtoDate("01/01/1960", DATE_FORMAT);
+	public static final Date FECHA_NULL= Util.StringtoDate("01/01/1970", DATE_FORMAT);
 	/*	Para el Applet	*/
 	public static final int VALIDAR_APPLET = 1;
 	/* Guarda el valor del IGV actual */
@@ -160,9 +160,9 @@ public class Constantes {
 //	public static final String SERVER_HOST = Executions.getCurrent().getHeader("host");
 //	public static final String SERVER_HOST = "ventas.tepsa.com.pe/";
 
-//	public static final String SERVER_HOST = "localhost:8080";
+	public static final String SERVER_HOST = "localhost:8080";
 	
-	public static final String SERVER_HOST = "119.8.145.122:8080";
+//	public static final String SERVER_HOST = "119.8.145.122:8080";
 
 	public static final String SERVER_CONTEXT = Executions.getCurrent().getContextPath();
 	public static final String URL_FORMATOS = SERVER_PROTOCOL+"://"+SERVER_HOST+SERVER_CONTEXT+"/formatos/";
@@ -363,6 +363,7 @@ public class Constantes {
 	public static final int ID_ROL_ADMIN=5;
 	public static final int ID_ROL_FINANZAS=6;
 	public static final int ID_ROL_FISCALIZACION=7;
+	public static final int ID_ROL_COUNTER_WSP=8;
 	
 	
 	public static final int ID_ROL_CLIENTE_CORPORATIVO=90;
