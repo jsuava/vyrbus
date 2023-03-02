@@ -970,6 +970,7 @@ public class WndVerMapaBus extends WndBase {
 								asiento.setEstadoAsiento(Constantes.ASIENTO_RESERVADO);
 							}
 							asiento.setTooltiptext("Pasajero: "+venta.getPasajero().toString()+"\n"+
+												   "Comprobante: "+venta.getNumeroBoleto()+"\n"+
 												   "Ruta: "+venta.getRuta().toString()+"\n"+
 												   "Ag. Embarque: " +venta.getAgenciaPartida().getNombreCorto().toString()+"\n"+
 												   "Ag. Desembarque: "+venta.getAgenciaLlegada().getDenominacion().toString()+"\n"+

@@ -3794,29 +3794,26 @@ public class WndVentaReserva extends WndBase {
 				}
 			}else{
 				/*Consulta BD reniec local*/
-				List<String> dni = RESTCiva.getDatosDni(numerodocumento);
+//				List<String> dni = RESTCiva.getDatosDni(numerodocumento);
 
 //				Reniec reniec= ServiceLocator.getReniecManager().buscarPax(numerodocumento);
-				if(dni!=null){
-					Reniec reniec = new Reniec();
-					reniec.setNumeroDocumento(dni.get(0));
-					reniec.setNombres(dni.get(1));
-					reniec.setApellidoPaterno(dni.get(2));
-					reniec.setApellidoMaterno(dni.get(3));
-					ntbxEdad.setValue(30);
-					dtbxFechaNacimiento.setValue(Constantes.FORMAT_DATE.parse(calcularFechaNacimiento()));
-
-
-//				if(reniec!=null){
-					Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, Constantes.ID_TIPDOC_DNI);
-					txtApePat.setText(reniec.getApellidoPaterno());
-					txtApeMat.setText(reniec.getApellidoMaterno());
-					txtNombres.setText(reniec.getNombres());
-//					mostrarFechaNacimiento(reniec.getFechaNacimiento());
-//					if(dtbxFechaNacimiento.getValue()!=null)
-//						calcularEdad(Constantes.FORMAT_DATE.format(dtbxFechaNacimiento.getValue()));
-//					Util.seleccionarValorItemCombo(Sexo.class, cmbSexo, Integer.valueOf(reniec.getSexo()));
-				}else{
+//				if(dni!=null){
+//					Reniec reniec = new Reniec();
+//					reniec.setNumeroDocumento(dni.get(0));
+//					reniec.setNombres(dni.get(1));
+//					reniec.setApellidoPaterno(dni.get(2));
+//					reniec.setApellidoMaterno(dni.get(3));
+//					ntbxEdad.setValue(30);
+//					dtbxFechaNacimiento.setValue(Constantes.FORMAT_DATE.parse(calcularFechaNacimiento()));
+//
+//
+//					Util.seleccionarValorItemCombo(TipoDocumento.class, cmbTipoDocumento, Constantes.ID_TIPDOC_DNI);
+//					txtApePat.setText(reniec.getApellidoPaterno());
+//					txtApeMat.setText(reniec.getApellidoMaterno());
+//					txtNombres.setText(reniec.getNombres());
+//
+//				}else{
+					
 					String numeroDocumento=txtDocumentoPax.getText().trim();
 					Integer idTipoDocumento= null;
 					if(cmbTipoDocumento.getSelectedItem().getValue() instanceof TipoDocumento)
@@ -3847,7 +3844,7 @@ public class WndVentaReserva extends WndBase {
 							ex.printStackTrace();
 						}
 					}
-				}
+//				}
 			}
 		}
 	}
@@ -4457,18 +4454,18 @@ public class WndVentaReserva extends WndBase {
 			String nroDocumento=txtDocumentoCliente.getText().trim();
 
 			//Consulta RUC EN sunat
-			List<String> ruc = RESTCiva.getDatosRuc(nroDocumento);
-
-
-			if(ruc!=null){
-//			Reniec reniec = new Reniec();
-				txtDocumentoCliente.setValue(ruc.get(0));
-				txtRazonSocial.setValue(ruc.get(1));
-//				Agencia agencia01 = getAgencia(); 
-//				UsuarioHardware usuario01 = getUsuarioHardware();
-				txtDireccionCliente.setValue(ruc.get(2));
-
-			}else{
+//			List<String> ruc = RESTCiva.getDatosRuc(nroDocumento);
+//
+//
+//			if(ruc!=null){
+//
+//				txtDocumentoCliente.setValue(ruc.get(0));
+//				txtRazonSocial.setValue(ruc.get(1));
+//
+//				txtDireccionCliente.setValue(ruc.get(2));
+//
+//			}else{
+				
 				String numeroDocumento=txtDocumentoCliente.getText().trim();
 
 				onCleanControlsClient();
@@ -4493,7 +4490,7 @@ public class WndVentaReserva extends WndBase {
 //							ex.printStackTrace();
 //						}
 
-				}
+//				}
 			}
 	}
 
