@@ -4471,7 +4471,7 @@ public class WndVentaReserva extends WndBase {
 
 				onCleanControlsClient();
 				//recupera valores ingresado por el usuario
-				txtDocumentoPax.setText(numeroDocumento);
+				txtDocumentoCliente.setText(numeroDocumento);
 
 //					if(getAgencia().getTipoAgencia().getId().intValue()!=Constantes.ID_TIPAGE_TEPSA){
 //						Ubigeo oUbigeo = new Ubigeo();

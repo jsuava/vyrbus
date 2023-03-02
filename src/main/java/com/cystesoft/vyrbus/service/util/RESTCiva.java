@@ -105,7 +105,8 @@ public class RESTCiva implements Serializable{
 	}
 
 	private static HttpResponse<JsonNode> getPOST_REST_DNI(String dni, String parametros)throws Exception{
-//		Unirest.setProxy(new HttpHost("192.168.50.1", 8080));
+		
+		Unirest.setTimeouts(60000, 30000);
 		HttpResponse<JsonNode> response = Unirest.get(URI_DNI+parametros+TOKEN_DOCIDE)
 //				  .header("cache-control", "no-cache")
 //				  .header("postman-token", "dca64e95-c3bb-93a4-e90f-a1530e577510")
@@ -117,8 +118,9 @@ public class RESTCiva implements Serializable{
 	}
 
 	private static HttpResponse<JsonNode> getPOST_REST_RUC(String ruc, String parametros)throws Exception{
-//		Unirest.setProxy(new HttpHost("192.168.50.1", 8080));
 		System.out.println(URI_RUC+parametros+TOKEN_DOCIDE);
+		
+		Unirest.setTimeouts(60000, 30000);
 		HttpResponse<JsonNode> response = Unirest.get(URI_RUC+parametros+TOKEN_DOCIDE)
 //				  .header("cache-control", "no-cache")
 //				  .header("postman-token", "dca64e95-c3bb-93a4-e90f-a1530e577510")
@@ -131,19 +133,23 @@ public class RESTCiva implements Serializable{
 
 	public static List<String> getDatosDni(String dni)throws Exception{
 		try{
-		List<String>result = new ArrayList<>();
-		HttpResponse<JsonNode> response=getPOST_REST_DNI(null,  dni);
-		if(response.getStatus()==200 /*&& response.getBody().isArray()*/){//OK
-			JSONArray jsonArray=response.getBody().getArray();
-			for (int i = 0; i < jsonArray.length(); i++) {
-			    JSONObject jsonobject = jsonArray.getJSONObject(i);
+		List<String>result = null;
+		
+		if(UtilFlag.searchDniReniec()) {
+			result = new ArrayList<>();
+			HttpResponse<JsonNode> response=getPOST_REST_DNI(null,  dni);
+			if(response.getStatus()==200 /*&& response.getBody().isArray()*/){//OK
+				JSONArray jsonArray=response.getBody().getArray();
+				for (int i = 0; i < jsonArray.length(); i++) {
+				    JSONObject jsonobject = jsonArray.getJSONObject(i);
 
-			    result.add(jsonobject.getString("dni"));
-			    result.add(jsonobject.getString("nombres"));
-			    result.add(jsonobject.getString("apellidoPaterno"));
-			    result.add(jsonobject.getString("apellidoMaterno"));
-//			    result.add(String.valueOf(jsonobject.getInt("codVerifica")));
+				    result.add(jsonobject.getString("dni"));
+				    result.add(jsonobject.getString("nombres"));
+				    result.add(jsonobject.getString("apellidoPaterno"));
+				    result.add(jsonobject.getString("apellidoMaterno"));
+//				    result.add(String.valueOf(jsonobject.getInt("codVerifica")));
 
+				}
 			}
 		}
 
@@ -159,17 +165,21 @@ public class RESTCiva implements Serializable{
 
 	public static List<String> getDatosRuc(String ruc)throws Exception{
 		try{
-		List<String>result = new ArrayList<>();
-		HttpResponse<JsonNode> response=getPOST_REST_RUC(null,  ruc);
-		if(response.getStatus()==200 /*&& response.getBody().isArray()*/){//OK
-			JSONArray jsonArray=response.getBody().getArray();
-			for (int i = 0; i < jsonArray.length(); i++) {
-			    JSONObject jsonobject = jsonArray.getJSONObject(i);
+		List<String>result = null;
+		
+		if(UtilFlag.searchRucSunat()) {
+			result = new ArrayList<>();
+			HttpResponse<JsonNode> response=getPOST_REST_RUC(null,  ruc);
+			if(response.getStatus()==200 /*&& response.getBody().isArray()*/){//OK
+				JSONArray jsonArray=response.getBody().getArray();
+				for (int i = 0; i < jsonArray.length(); i++) {
+				    JSONObject jsonobject = jsonArray.getJSONObject(i);
 
-			    result.add(jsonobject.getString("ruc"));
-			    result.add(jsonobject.getString("razonSocial"));
-			    result.add(jsonobject.getString("direccion"));
-			}
+				    result.add(jsonobject.getString("ruc"));
+				    result.add(jsonobject.getString("razonSocial"));
+				    result.add(jsonobject.getString("direccion"));
+				}
+			}	
 		}
 
 		return result;
