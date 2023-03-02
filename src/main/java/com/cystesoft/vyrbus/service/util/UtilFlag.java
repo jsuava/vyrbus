@@ -23,7 +23,33 @@ public class UtilFlag {
 	final static int FLAG_IDFORM_PRINT_VIEWPDF_MAN = 5;
 	final static int FLAG_IDFORM_PRINT_VIEWPDF_CARDES = 6;
 	final static int FLAG_IDACTIVA_IMPPAG_VENTAREMOTA = 7;
+	final static int FLAG_IDSEARCH_DNI_RENIEC = 8;
+	final static int FLAG_IDSEARCH_RUC_SUNAT = 9;
 	
+	final static String LLAVE_ENABLED = "S";
+	
+	/**
+	 * Valida si debe o no buscar el DNI en un servicio externo
+	 * @return
+	 * @throws Exception
+	 */
+	public static boolean searchDniReniec() throws Exception{
+		boolean estado = getConfigFlagById(FLAG_IDSEARCH_DNI_RENIEC);
+		
+		return estado;
+	}
+	
+	/**
+	 * Valida si debe o no buscar el RUC en un servicio externo
+	 * @return
+	 * @throws Exception
+	 */
+	public static boolean searchRucSunat() throws Exception{
+		boolean estado = getConfigFlagById(FLAG_IDSEARCH_RUC_SUNAT);
+		
+		return estado;
+	}
+
 	/**
 	 * Activa o desactiva el control del importe a pagar para ventas remotas.
 	 * @param agenciaId : Identificador de la agencia
@@ -117,6 +143,23 @@ public class UtilFlag {
 		return estado;
 	}
 	
+	/**
+	 * Realiza la busqueda del Flag por su identificador
+	 * @param flag_Id: Identificador unico del flag
+	 * @return True, si está habilitado; False, lo contrario
+	 * @throws Exception
+	 */
+	private static boolean getConfigFlagById(Integer flag_Id)throws Exception{
+		boolean estado = false;
+
+		Flag flag = ServiceLocator.getFlagManager().buscarPorId(flag_Id.longValue());
+		if(flag !=null && flag.getLlave()!=null && flag.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO)) {
+			if(flag.getLlave().equals(LLAVE_ENABLED))
+				estado = true;		
+		}
+		
+		return estado;
+	}
 	
 	/**
 	 * Url de la api, que genera los archivos en fomarto PDF para la impresion
