@@ -629,11 +629,15 @@ public class WndAnulacionDocumentos extends WndBase{
 		if(ventaPasaje!=null){
 			VentaPasaje anulacion= ServiceLocator.getVentaPasajesManager().buscarVentaById(ventaPasaje.getId());
 			anulacion.setObservaciones(txtMotivoAnulacion.getText().trim().toUpperCase());
+			anulacion.setFechaAnulacion(new Date());
+			anulacion.setUsuarioAnulacion(getUsuario());
 			lstVentas.add(anulacion);
 		}else{
 			for(Listitem item:ltbxAnulacionComprobantes.getSelectedItems()){
 				VentaPasaje anulacion= ServiceLocator.getVentaPasajesManager().buscarVentaById(((VentaPasaje)item.getValue()).getId());
 				anulacion.setObservaciones(txtMotivoAnulacion.getText().trim().toUpperCase());
+				anulacion.setFechaAnulacion(new Date());
+				anulacion.setUsuarioAnulacion(getUsuario());
 				lstVentas.add(anulacion);
 			}
 		}
