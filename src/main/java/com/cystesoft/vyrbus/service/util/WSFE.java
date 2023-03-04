@@ -352,6 +352,31 @@ public class WSFE implements Serializable{
 		}
 	}
 	
+	/*
+	 * Busca la representacio impresa del comprobante
+	 * @param ventaCarga
+	 * @throws Exception
+	 */
+	public static byte[] representacionImpresa(VentaPasaje ventaPasaje) throws Exception {
+		
+		String serie=ventaPasaje.getNumeroBoleto().split("-")[0];
+		String correlativo=ventaPasaje.getNumeroBoleto().split("-")[1];
+		String tipoComprobante= null; //(ventaCarga.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA?FE_TIPCOM_BOLETA:FE_TIPCOM_FACTURA);
+		if(ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA)
+			tipoComprobante = FE_TIPCOM_BOLETA;
+		else if(ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_FACTURA)
+			tipoComprobante = FE_TIPCOM_FACTURA;
+		else if(ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO)
+			tipoComprobante = FE_TIPCOM_NOTA_CREDITO;
+		else 
+			tipoComprobante = FE_TIPCOM_NOTA_DEBITO;
+		
+		Result result= getSoap().getRepresentacionImpresa(TOKEN, false, tipoComprobante, serie, correlativo, Constantes.ruc);
+		if(result.isIsCorrect() && result.getPdf().getValue()!=null) {
+			return result.getPdf().getValue();			
+		}else
+			return null;
+	}
 	
 	/**
 	 * Realiza la reimpresion del comprobante
@@ -743,7 +768,7 @@ public class WSFE implements Serializable{
 			final String _pZipFile=pZipFile;
 			
 			//************************************************************************************
-			//Consulta la version de impresión configurada para la agencia - jabanto 16/11/2022
+			//Consulta la version de impresiï¿½n configurada para la agencia - jabanto 16/11/2022
 			Agencia agencia = (Agencia)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
 			if(UtilFlag.isFormatPrintDownload(agencia.getId())) {
 				String nameFileZip = nameFile + ".zip";
@@ -867,7 +892,7 @@ public class WSFE implements Serializable{
 			Util.Zippear(pathSavedXml, pZipFile,nameFile);			
 
 			//************************************************************************************
-			//Consulta la version de impresión configurada para la agencia - jabanto 16/11/2022
+			//Consulta la version de impresiï¿½n configurada para la agencia - jabanto 16/11/2022
 			Agencia agencia = (Agencia)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
 			if(UtilFlag.isFormatPrintDownload(agencia.getId())) {
 				String nameFileZip = nameFile + ".zip";
@@ -989,6 +1014,8 @@ public class WSFE implements Serializable{
 					String cryptoBarcodeEmbarque=null;
 					String cryptoBarcodeSunat=null;
 					String cryptoRptFormat=null;
+					//Valida el tipo de moneda - 25/01/2023 jabanto
+					boolean isMonedaSoles = (ventaPasaje.getTipoMoneda()!=null && ventaPasaje.getTipoMoneda().getId().intValue()==DOLARES? false: true);
 					if(tipoComprobanteId!=Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES){
 						Result resultVenta=ventaPasaje.getResult();
 						if(resultVenta.getBarcodeEmbarque().getValue()!=null)
@@ -1096,7 +1123,7 @@ public class WSFE implements Serializable{
 							xmlVenta.setV98_Igv("0.00");
 						}
 						xmlVenta.setV990_ImporteTotal(Util.toNumberFormat(ventaPasaje.getImportePagado(),2));
-						xmlVenta.setV991_ImporteTotalLetras(getMontoLetras(ventaPasaje.getImportePagado()));
+						xmlVenta.setV991_ImporteTotalLetras(getMontoLetras(ventaPasaje.getImportePagado(), isMonedaSoles));
 					}
 					if(ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CONTADO && ventaPasaje.getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA){
 						OperadorTarjetaCredito operadorTarjetaCredito=ServiceLocator.getOperadorTarjetaCreditoManager().buscarPorId(ventaPasaje.getTarjetaCredito().getOperadorTarjetaCredito().getId().longValue());
@@ -1426,7 +1453,7 @@ public class WSFE implements Serializable{
 				InformacionAdicionalPropiedadAdicional propiedadAdicional= new InformacionAdicionalPropiedadAdicional();
 				propiedadAdicional.setCodigo(new JAXBElement<String>(new QName(NAMESPACE,"codigo"), String.class, "1000")); //Segun catalogo 15 (monto en letras)
 				propiedadAdicional.setNombre(new JAXBElement<String>(new QName(NAMESPACE,"nombre"), String.class, "MONTO EN LETRAS"));
-				propiedadAdicional.setValue(new JAXBElement<String>(new QName(NAMESPACE,"value"), String.class, getMontoLetras(venta.getMontoTotal())));
+				propiedadAdicional.setValue(new JAXBElement<String>(new QName(NAMESPACE,"value"), String.class, getMontoLetras(venta.getMontoTotal(), venta.isTipoMonedaSoles())));
 				arrayPropiedadAdicional.getInformacionAdicionalPropiedadAdicional().add(propiedadAdicional);
 			}else{
 				InformacionAdicionalPropiedadAdicional propiedadAdicional= new InformacionAdicionalPropiedadAdicional();
@@ -1478,11 +1505,14 @@ public class WSFE implements Serializable{
 	 * @return
 	 */
 	private static DetalleVenta createDetalleVenta(VentaPasaje ventaPasaje, boolean isCortesia){
-		String descripMovi="";
-		if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_EFECTIVO)		
-			descripMovi="VTA. PASAJE:";
-		else
-			descripMovi=ventaPasaje.getTipoMovimiento().getDenominacion().trim();
+		String descripMovi = "";
+		if(!(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA_ESPECIAL))) {
+			if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_EFECTIVO)		
+				descripMovi = "VTA. PASAJE:";
+			else
+				descripMovi = ventaPasaje.getTipoMovimiento().getDenominacion().trim();
+		}
+		
 		String pasajero=ventaPasaje.getPasajero().toString().trim();
 		if(pasajero.length()>30)
 			pasajero=pasajero.substring(0, 30);
@@ -1493,7 +1523,7 @@ public class WSFE implements Serializable{
 		/*la Descripcion del Detalle*/
 		String descripcionPrincipal="";
 		if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA_ESPECIAL)) {
-			descripcionPrincipal= descripMovi+(ventaPasaje.getObservaciones()!=null?" - "+ventaPasaje.getObservaciones():"");
+			descripcionPrincipal= descripMovi+(ventaPasaje.getObservaciones()!=null?ventaPasaje.getObservaciones():"");
 		}else if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_EXCESO)) {
 			descripcionPrincipal = ventaPasaje.getObservaciones();
 		}else if(ventaPasaje.getTipoMovimiento().getId().intValue()!=Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS){
@@ -1563,7 +1593,8 @@ public class WSFE implements Serializable{
 	private static Nota createNota(VentaPasaje notaCredito, boolean isReembioSoporte){
 		try {
 			
-			
+			//Valida el tipo de moneda - 25/01/2023 jabanto
+			boolean isMonedaSoles = (notaCredito.getTipoMoneda()!=null && notaCredito.getTipoMoneda().getId().intValue()==DOLARES? false: true);
 			
 			/*Datos del cliente/pasajero*/
 			String cliente_tipoDocumentoID=null;
@@ -1675,7 +1706,7 @@ public class WSFE implements Serializable{
 			InformacionAdicionalPropiedadAdicional propiedadAdicional= new InformacionAdicionalPropiedadAdicional();
 			propiedadAdicional.setCodigo(new JAXBElement<String>(new QName(NAMESPACE,"codigo"), String.class, "1000")); //Segun catalogo 15 (monto en letras)
 			propiedadAdicional.setNombre(new JAXBElement<String>(new QName(NAMESPACE,"nombre"), String.class, "MONTO EN LETRAS"));
-			propiedadAdicional.setValue(new JAXBElement<String>(new QName(NAMESPACE,"value"), String.class, getMontoLetras(nota.getTotal())));
+			propiedadAdicional.setValue(new JAXBElement<String>(new QName(NAMESPACE,"value"), String.class, getMontoLetras(nota.getTotal(), isMonedaSoles)));
 			arrayPropiedadAdicional.getInformacionAdicionalPropiedadAdicional().add(propiedadAdicional);			
 			
 			InformacionAdicional informacionAdicional= new InformacionAdicional();
@@ -1696,12 +1727,13 @@ public class WSFE implements Serializable{
 	
 	
 	
-	private static String getMontoLetras(Double importe)throws Exception{
+	private static String getMontoLetras(Double importe, boolean isSoles)throws Exception{
 		/*Monto en letras*/
 		String strImportePagado = Util.toNumberFormat(importe, 2);
 		int indice = strImportePagado.lastIndexOf(".");
 		ConvertirNumeroString num = new ConvertirNumeroString();
-		String strEnLetras = num.convertirLetras(importe.intValue()).toUpperCase()+" CON " + strImportePagado.substring(indice+1) + "/100 SOLES";
+		String strEnLetras = num.convertirLetras(importe.intValue()).toUpperCase()+" CON " + strImportePagado.substring(indice+1) + "/100 ";
+		strEnLetras += (isSoles?"SOLES":"DOLARES AMERICANOS");
 		
 		return strEnLetras;
 	}

@@ -303,6 +303,19 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				}else
 					ventaPasaje.setNumeroBoleto(null);
 			}
+			
+			//Valida si es una confirmación de una reserva - jabanto - 23/02/2023
+			if(ventaPasaje.getVentaPasaje()!=null && ventaPasaje.getVentaPasaje().getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA)) {
+				//Anula la reserva
+				VentaPasaje ventaReserva = getVentaPasajesDAO().buscarPorId(ventaPasaje.getVentaPasaje().getId());
+				ventaReserva.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_ANULACION_SISTEMA));
+				ventaReserva.setFechaAnulacion(new Date());
+				ventaReserva.setUsuarioAnulacion(ventaPasaje.getUsuario());
+				ventaReserva.setUsuarioModificacion(ventaPasaje.getUsuarioModificacion());
+				ventaPasaje.setIpModificacion(ventaPasaje.getIpModificacion());
+				getVentaPasajesDAO().update(ventaReserva);
+			}
+			
 
 			/*	Guardando la instancia de la venta de pasajes	*/
 			getVentaPasajesDAO().save(ventaPasaje);
@@ -1072,7 +1085,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				ventaDevolucion.setAgencia(ventaPasaje.getAgencia());
 				ventaDevolucion.setUsuario(ventaPasaje.getUsuario());
 				ventaDevolucion.setCanalVenta(ventaOriginal.getCanalVenta());
-				ventaDevolucion.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_DEVOLUCION));
+				ventaDevolucion.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_ANULACION_SISTEMA));
 				ventaDevolucion.setObservaciones(ventaPasaje.getVentaPasaje().getObservaciones()!=null?ventaPasaje.getVentaPasaje().getObservaciones():null);
 				UtilData.auditarRegistro(ventaDevolucion, ventaPasaje.getUsuario(), Executions.getCurrent());
 				getVentaPasajesDAO().save(ventaDevolucion);
@@ -1275,7 +1288,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 					boletoOriginal.setImportePagadoTarjeta(0.0);
 					boletoOriginal.setUsuario(boletoPostergar.getUsuario());
 					boletoOriginal.setAgencia(boletoPostergar.getAgencia());
-					boletoOriginal.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_DEVOLUCION));
+					boletoOriginal.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_ANULACION_SISTEMA));
 					boletoOriginal.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 					boletoOriginal.setObservaciones("==>DEV. X SISTEMA - X EDICION VENTA "+(isCambioComprobante?"- - CAMBIO TIPO COMPROBANTE ":"")+"<===");
 					boletoOriginal.setFechaLiquidacion(boletoPostergar.getFechaLiquidacion());

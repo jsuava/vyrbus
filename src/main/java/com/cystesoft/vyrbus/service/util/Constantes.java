@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripci�n	: Clase que centraliza las Constantes que se usa en todo el sistema.
- * Autor		: Jos� Sullo Avalos
+ * Descripcion	: Clase que centraliza las Constantes que se usa en todo el sistema.
+ * Autor		: Jose Avalos
  * Fecha		: 08/04/2012
  */
 package com.cystesoft.vyrbus.service.util;
@@ -18,7 +18,7 @@ import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
 
 /**
  * Clase que centraliza las Constantes que se usa en todo el sistema.
- * @author Jos� Sullo Avalos
+ * @author Jose Avalos
  * @since JDK1.6
  */
 public class Constantes {
@@ -26,7 +26,7 @@ public class Constantes {
 	 * Vension actual del Sistema
 	 */
 
-	public static final String SYSTEM_VERSION = "Versión 3.2.8";
+	public static final String SYSTEM_VERSION = "Versión 3.3.3";
 		
 	/**
 	 * Constante para la Acci�n Nuevo
@@ -356,12 +356,13 @@ public class Constantes {
 //	public static final int ID_ROL_JEFE_VENTAS=3;
 	
 //	public static final int ID_ROL_ADMIN=5;
-	public static final int ID_ROL_FINANZAS=6;
 	public static final int ID_ROL_SUPER_USUARIO=1;
 	public static final int ID_ROL_ADMINISTRADOR=2;
 	public static final int ID_ROL_COUNTER=3;
 	public static final int ID_ROL_FLOTA=4;
 	public static final int ID_ROL_ADMIN=5;
+	public static final int ID_ROL_FINANZAS=6;
+	public static final int ID_ROL_FISCALIZACION=7;
 	
 	
 	public static final int ID_ROL_CLIENTE_CORPORATIVO=90;

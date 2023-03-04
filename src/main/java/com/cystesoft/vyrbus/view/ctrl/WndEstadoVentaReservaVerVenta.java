@@ -6,6 +6,7 @@ import java.util.TreeMap;
 
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.Row;
 import org.zkoss.zul.Tab;
 //import org.zkoss.zul.Window;
 
@@ -50,6 +51,9 @@ public class WndEstadoVentaReservaVerVenta extends WndBase {
 	private Label lblObservaciones;
 	private Label lblFechaEmision;
 	private Label lblUsuarioEmision;
+	private Row rowAnulacion;
+	private Label lblFechaAnulacion;
+	private Label lblUsuarioAnulacion;
 	/*PASAJERO*/
 	private Label lblPaxTipoDocumento;
 	private Label lblPaxNroDocumento;
@@ -153,6 +157,9 @@ public class WndEstadoVentaReservaVerVenta extends WndBase {
 		lblObservaciones=(Label)this.getFellow("lblObservaciones");
 		lblFechaEmision=(Label)this.getFellow("lblFechaEmision");
 		lblUsuarioEmision=(Label)this.getFellow("lblUsuarioEmision");
+		rowAnulacion=(Row)this.getFellow("rowAnulacion");
+		lblFechaAnulacion=(Label)this.getFellow("lblFechaAnulacion");
+		lblUsuarioAnulacion=(Label)this.getFellow("lblUsuarioAnulacion");
 		/*PASAJERO*/
 		lblPaxTipoDocumento=(Label)this.getFellow("lblPaxTipoDocumento");
 		lblPaxNroDocumento=(Label)this.getFellow("lblPaxNroDocumento");
@@ -215,6 +222,7 @@ public class WndEstadoVentaReservaVerVenta extends WndBase {
 	 */
 	@Override
 	public void onCreate() throws Exception {
+		rowAnulacion.setVisible(false);
 		// TODO Auto-generated method stub
 		String tipoOperacion=getVentaPasaje().getTipoTransaccion();
 		ventaPasaje=ServiceLocator.getVentaPasajesManager().buscarPorId(getVentaPasaje().getId());
@@ -256,6 +264,11 @@ public class WndEstadoVentaReservaVerVenta extends WndBase {
 		lblFechaEmision.setValue(ventaPasaje.getFechaInsercion()!=null?Constantes.FORMAT_LONG.format(ventaPasaje.getFechaInsercion()):"");
 		lblUsuarioEmision.setValue(ventaPasaje.getUsuario()!=null?ventaPasaje.getUsuario().toString()+" - "+ventaPasaje.getAgencia().getNombreCorto():"");
 		lblObservaciones.setValue(ventaPasaje.getObservaciones());
+		if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION) {
+			rowAnulacion.setVisible(true);
+			lblFechaAnulacion.setValue(ventaPasaje.getFechaAnulacion()!=null?Constantes.FORMAT_DATE_TIME_24H.format(ventaPasaje.getFechaAnulacion()):"--");
+			lblUsuarioAnulacion.setValue(ventaPasaje.getUsuarioAnulacion()!=null?ventaPasaje.getUsuarioAnulacion().toString():"--");
+		}
 		/*PASAJERO*/
 		Pasajero pasajero=ventaPasaje.getPasajero();
 		lblPaxTipoDocumento.setValue(pasajero.getTipoDocumento().getDenominacion());
@@ -306,7 +319,7 @@ public class WndEstadoVentaReservaVerVenta extends WndBase {
 		if(ventaPasaje.getPromocion()!=null){
 			Promocion promocion=ventaPasaje.getPromocion();
 			String tipoDescuento=promocion.getTipoDescuento().equals("P")?" %":" S/";
-			String descPromocion="PROMOCIÓN: "+promocion.getDenominacion()+" <=======> BENEFICIO : "+Util.toNumberFormat(Double.valueOf(promocion.getValorDescuento()),2)+tipoDescuento;
+			String descPromocion="PROMOCIï¿½N: "+promocion.getDenominacion()+" <=======> BENEFICIO : "+Util.toNumberFormat(Double.valueOf(promocion.getValorDescuento()),2)+tipoDescuento;
 			lblDescPromocion.setValue(descPromocion);
 
 		}
@@ -358,7 +371,7 @@ public class WndEstadoVentaReservaVerVenta extends WndBase {
 				lblDocRefFechaEmision.setValue(Constantes.FORMAT_DATE.format(notaCredito.getFechaLiquidacion()));
 				lblDocRefMotivo.setValue(notaCredito.getObservaciones());
 				lblDocRefAgenciaUsuario.setValue(notaCredito.getAgencia().toString() + " - " + notaCredito.getUsuario().toString() );
-				tbDoctReferencia.setLabel("Nota de Crédito");
+				tbDoctReferencia.setLabel("Nota de Crï¿½dito");
 				tbDoctReferencia.setVisible(true);
 			}
 		}else if(ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO){

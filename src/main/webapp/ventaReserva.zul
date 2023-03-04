@@ -123,7 +123,7 @@
 					<grid style="background:white">					
 						<columns>
 							<column width="246px" />
-							<column id="columnItinerarios" align="left"/>
+							<column id="columnItinerarios" align="left" />
 							<column/>
 						</columns>
 						<rows>
@@ -134,17 +134,21 @@
 								</vlayout>
 								<vlayout>
 									<label value="SERVICIO DE PARTIDA" sclass="label-size11"/>
-									<listbox id="lbxItinerariosIda" mold="paging" pageSize="4" onSelect="wndVentaReserva.onSelectItinerario(com.cystesoft.vyrbus.service.util.Constantes.SERVICIO_IDA)">
+									<listbox id="lbxItinerariosIda" 
+										mold="paging" 
+										pageSize="4"
+										onSelect="wndVentaReserva.onSelectItinerario(com.cystesoft.vyrbus.service.util.Constantes.SERVICIO_IDA)">
 										<listhead>
 											<listheader id="listheaderOperadoPor" label="OPERADO POR" width="80px" align="left" visible="false" style="color: #ffffff;"/>
-											<listheader label="PTO. EMBARQUE" width="100px" style="color: #ffffff;"/>
+											<listheader label="EMBARQUE" width="80px" style="color: #ffffff;"/>
 											<listheader label="SERVICIO" width="110px" style="color: #ffffff;"/>
 											<listheader label="RUTA" width="120px" style="color: #ffffff;"/>
-											<listheader label="HR.PD." width="40px" align="center" style="color: #ffffff;"/>
+											<listheader label="HR.PD." width="45px" align="center" style="color: #ffffff;"/>
 											<listheader label="S/.ESTANDAR" width="90px" align="right" tooltiptext="Tarifa Estandar" style="color: #ffffff;"/>
-	  										<listheader label="BUS" width="85px" align="center" tooltiptext="Placa Bus" style="color: #ffffff;"/>  
-	  										<listheader label="MAPA" width="60px" align="center" tooltiptext="Mapa Bus" style="color: #ffffff;"/>
+	  										<listheader label="BUS" width="90px" align="center" tooltiptext="Placa Bus" style="color: #ffffff;"/>  
+	  										<listheader label="MAPA" width="55px" align="center" tooltiptext="Mapa Bus" style="color: #ffffff;"/>
 											<listheader id="listheaderOtraTarifa" label="$ TARIFA " align="right" style="color: #ffffff;"/>
+
 										</listhead>
 									</listbox>
 								</vlayout>

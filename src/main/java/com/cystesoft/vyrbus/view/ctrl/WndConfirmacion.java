@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: Clase que se utilizara para la confirmación de Reservas y para las Fechas Abiertas.
- * Autor		: José Avalos Sullo
+ * Descripciï¿½n	: Clase que se utilizara para la confirmaciï¿½n de Reservas y para las Fechas Abiertas.
+ * Autor		: Josï¿½ Avalos Sullo
  * Fecha		: 08/11/2012
  */
 package com.cystesoft.vyrbus.view.ctrl;
@@ -682,7 +682,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	}
 
 	/**
-	 * Carga la información de la reserva para la confirmación.
+	 * Carga la informaciï¿½n de la reserva para la confirmaciï¿½n.
 	 */
 	private void loadInformacion() {
 		try {
@@ -1069,18 +1069,18 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 						if(objetoConfirmar.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA)){
 							/*Cuando la reserva este registrada con la version anterior a la electronica*/
 							Util.seleccionarValorItemCombo(TipoComprobante.class, cmbTipoComprobante, Constantes.ID_TIPCOM_BOLETA_VENTA);
-							lblBoleto.setValue("N° BOLETA :");
+							lblBoleto.setValue("Nï¿½ BOLETA :");
 							break;
 						}else{
 							cmbTipoComprobante.setSelectedItem(comboitem);
-							lblBoleto.setValue("N° BOLETO :");
+							lblBoleto.setValue("Nï¿½ BOLETO :");
 						}
 					}if(((TipoComprobante) comboitem.getValue()).getId().intValue() == Constantes.ID_TIPCOM_FACTURA &&  oCliente!=null){
 						cmbTipoComprobante.setSelectedItem(comboitem);
-						lblBoleto.setValue("N° FACTURA :");
+						lblBoleto.setValue("Nï¿½ FACTURA :");
 					}else if(((TipoComprobante) comboitem.getValue()).getId().intValue() == Constantes.ID_TIPCOM_BOLETA_VENTA && oCliente==null){
 						cmbTipoComprobante.setSelectedItem(comboitem);
-						lblBoleto.setValue("N° BOLETA :");
+						lblBoleto.setValue("Nï¿½ BOLETA :");
 					}
 
 				}
@@ -1117,7 +1117,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 							Util.seleccionarValorItemCombo(TipoFormaPago.class, cmbTipoFormaPago, objetoConfirmar.getTipoFormaPago().getId());
 							cmbTipoFormaPago.setDisabled(true);
 
-	//						//realiza el descuento según el porcentaje de descuento que contenga la cortesia
+	//						//realiza el descuento segï¿½n el porcentaje de descuento que contenga la cortesia
 	//
 	//						if(cortesia!=null){
 	//							Double tarifa=Double.valueOf(lblTarifa.getValue());
@@ -1888,7 +1888,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 										imgQuitarPromocion.setVisible(true);
 										oPasajero.setDescuentoAutoByPaxFree(true);
 									}else if(promocionTarifa!=null)
-										lblPromocion.setValue("Promoción : "+promocionTarifa.getDenominacion());
+										lblPromocion.setValue("Promociï¿½n : "+promocionTarifa.getDenominacion());
 
 								}else if(lstPromocion.size()>1)
 									DlgMessage.information(Messages.getString("WndVentaPasajes.information.muchasPromocionesPaxFre"));
@@ -2438,7 +2438,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 						}
 						imgQuitarPromocion.setVisible(true);
 					}else if(promocionTarifa!=null)
-						lblPromocion.setValue("Promoción : "+promocionTarifa.getDenominacion());
+						lblPromocion.setValue("Promociï¿½n : "+promocionTarifa.getDenominacion());
 
 				}
 				Double importe=(dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue())-dblPagado.getValue();
@@ -2479,7 +2479,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 						dblImporte.setValue(importe);
 
 				}else if(promocionTarifa!=null)
-					lblPromocion.setValue("Promoción : "+promocionTarifa.getDenominacion());
+					lblPromocion.setValue("Promociï¿½n : "+promocionTarifa.getDenominacion());
 
 				/*21/10/2016 - jabanto*/
 				onSelectDefaultTipoComprobante();
@@ -2525,10 +2525,10 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 
 			/*Validando que los datos del cliente no incluyan comillas simples - 14/12/2016 - jabanto */
 			if(txtRazonSocial.getText().trim().indexOf("'")>=0){
-				DlgMessage.information(Messages.getString("WndVentaReserva.information.noComillaSimple")+", revice la Razón Social del Cliente.",txtRazonSocial);
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noComillaSimple")+", revice la Razï¿½n Social del Cliente.",txtRazonSocial);
 				return false;
 			}else if(txtDireccionCliente.getText().trim().indexOf("'")>=0){
-				DlgMessage.information(Messages.getString("WndVentaReserva.information.noComillaSimple")+", revice la Dirección del Cliente.",txtDireccionCliente);
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noComillaSimple")+", revice la Direcciï¿½n del Cliente.",txtDireccionCliente);
 				return false;
 			}
 
@@ -2730,7 +2730,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	}
 
 	/**
-	 * Realiza una validación del Tipo de Forma de Pago, para habilitar o
+	 * Realiza una validaciï¿½n del Tipo de Forma de Pago, para habilitar o
 	 * deshabilitar algunos controles.
 	 *
 	 * @throws Exception
@@ -3128,7 +3128,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 						////							win.setAttribute("detalleCalculadora", lstDetalleCalculadora.clone());
 						////						}else
 						////							win.setAttribute("showCalculator", false);
-						//						String msg = "La venta se registro correctamente, Número de Control : "+ventaPasaje.getNumeroControl();
+						//						String msg = "La venta se registro correctamente, Nï¿½mero de Control : "+ventaPasaje.getNumeroControl();
 						//						win.setAttribute("numeroControl", msg);
 						//						win.doPopup();
 						//					}else{
@@ -3376,7 +3376,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	}
 
 	/**
-	 * 	Crea un objeto AplicarPromocion pasando parámetros al constructor
+	 * 	Crea un objeto AplicarPromocion pasando parï¿½metros al constructor
 	 */
 	private AplicarPromocion createObjectAplicarPromocion(){
 		AplicarPromocion aplicarPromocion = null;
@@ -3605,7 +3605,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				imgQuitarPromocion.setVisible(false);
 				if(promocionTarifa!=null && promocionTarifa.getEsAcumulable().intValue()==Constantes.FALSE_VALUE){
 					dblDescuento.setValue(.00);
-					lblPromocion.setValue("Promoción : "+promocionTarifa.getDenominacion());
+					lblPromocion.setValue("Promociï¿½n : "+promocionTarifa.getDenominacion());
 				}
 
 				//No recupera el descuento cuando es una confirmacion de fecha abierta
@@ -3640,7 +3640,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				imgPromocion.setVisible(true);
 				if(promocionTarifa!=null && promocionTarifa.getEsAcumulable().intValue()==Constantes.FALSE_VALUE){
 					dblDescuento.setValue(.00);
-					lblPromocion.setValue("Promoción : "+promocionTarifa.getDenominacion());
+					lblPromocion.setValue("Promociï¿½n : "+promocionTarifa.getDenominacion());
 					imgPromocion.setVisible(false);
 					imgQuitarPromocion.setVisible(false);
 					saldo = dblTarifa.getValue()+dblRecargo.getValue()-dblDescuento.getValue()-dblPagado.getValue();

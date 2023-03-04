@@ -18,12 +18,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.servlet.http.HttpSession;
+
 import org.eclipse.jdt.internal.compiler.impl.Constant;
+import org.springframework.jdbc.object.RdbmsOperation;
 import org.zkoss.zk.ui.Execution;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Label;
@@ -60,6 +65,7 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 	private Datebox dtbxFecInicioBus;
 	private Datebox dtbxFecFinBus;
 	private Combobox cmbAgencias;
+	private Button btnActualizar;
 
 	private Listbox lsbxVentas;
 //	private Listbox lsbxTarifaFA;
@@ -82,6 +88,7 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 	
 	Integer flag = 0;
 	Integer ambosPisos=0;
+	Integer mesIni, mesFin;
 
 	@Override
 	public void initComponents() {
@@ -97,7 +104,7 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 		rdFecha = (Radio)this.getFellow("rdFecha");
 		rdMes = (Radio)this.getFellow("rdMes");
 		rdAnual = (Radio)this.getFellow("rdAnual");
-
+		btnActualizar = (Button)this.getFellow("btnActualizar");
 
 		lblHoraConsulta = (Label)this.getFellow("lblHoraConsulta");
 		lblFechaConsulta = (Label)this.getFellow("lblFechaConsulta");
@@ -131,6 +138,10 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 		}
 		listCabeceraRecordTotales.add("");
 		listCabeceraRecordTotales.add("");
+		
+		if(getRol().getId().intValue()!=Constantes.ID_ROL_SUPER_USUARIO) {
+			btnActualizar.setVisible(false);
+		}
 
 		/*EVENTO ON_CHANGE DEL LA FECHA INICIO*/
 //		dtbxFecInicioBus.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
@@ -156,7 +167,7 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 		if(cmbAgencias.getSelectedItem().getValue() instanceof Agencia)
 			idAgencia=((Agencia)cmbAgencias.getSelectedItem().getValue()).getId();
 
-		if(idAgencia > 0){
+		if(idAgencia >= 0){
 			if(rdMes.isChecked()){
 				tipoConsulta=3;
 				//Reacomodando las fechas
@@ -166,6 +177,7 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 				dia = fechaHasta.substring(0, 2);
 				fechaDesde = "01" + fechaDesde.substring(2);
 				LocalDate fecInicial = LocalDate.of(Integer.parseInt(anio), Integer.parseInt(mes), Integer.parseInt(dia));
+				mesIni = Integer.parseInt(mes);
 				LocalDate fechaFinal = fecInicial.withDayOfMonth(fecInicial.lengthOfMonth());
 				// Getting system timezone
 				ZoneId systemTimeZone = ZoneId.systemDefault();
@@ -174,7 +186,7 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 				ZonedDateTime zonedDateTime = fechaFinal.atStartOfDay(systemTimeZone);
 				Date utilDate = Date.from(zonedDateTime.toInstant());
 				fechaHasta = Constantes.FORMAT_DATE.format(utilDate);
-
+				mesFin = Integer.parseInt(fechaHasta.substring(3, 5));
 			}
 			else
 				tipoConsulta=2;
@@ -203,7 +215,7 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 		}
 	}
 
-
+	//Resumen de ventas para un rango de fechas
 	public void ensamblarResumenVentas(List<ResumenVentas> lstResumen) {
 
 		List<Double> listRecord = new ArrayList<>();
@@ -217,77 +229,60 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 
 		ResumenVentas resumen0 = lstResumen.get(i);
 
-		for(j=0; j<13; j++){
+		for(j=0; j<9; j++){
 			listRecord.add(0.0);
 		}
 		listCabeceraRecord.add("");
 		listCabeceraRecord.add("");
 		k=0;
 
-		for(i = 0; i<lstResumen.size(); i++)
-		{
+		for(i = 0; i<lstResumen.size(); i++) {
 			ResumenVentas resumen = lstResumen.get(i);
 
 			if( resumen0.getFechaVenta().equals(resumen.getFechaVenta())
-			    && resumen0.getAgencia().getId().equals(resumen.getAgencia().getId()) )
-			{
+				&& resumen0.getAgencia().getId().equals(resumen.getAgencia().getId()) )	{
 				//Agencia
 				if(k==0){
 					listCabeceraRecord.set(0, resumen.getAgencia().getDenominacion());
 					listCabeceraRecord.set(1, resumen.getFechaVenta());
 					k++;
 				}
-				
 
 				//Canal counter
-				if(resumen.getCanalVenta().getId() == 1)
-				{
+				if(resumen.getCanalVenta().getId() == 1){
 					//COMPROBANTES DE PASAJEROS
 					if(resumen.getRubro() == 1) {
 						//Comprobante Boletas
 						if(resumen.getTipoComprobante().getId() == 7){
 							listRecord.set(0, resumen.getTotal());
-							listRecord.set(1, resumen.getCantidad().doubleValue());
 						}
 						//Comprobantefacturas
-						else if(resumen.getTipoComprobante().getId() == 2)
-						{
-							listRecord.set(2, resumen.getTotal());
-							listRecord.set(3, resumen.getCantidad().doubleValue());
+						else if(resumen.getTipoComprobante().getId() == 2){
+							listRecord.set(1, resumen.getTotal());
 						}
 						//Nota Credito
-						else if(resumen.getTipoComprobante().getId() == 8)
-						{
-							listRecord.set(4, resumen.getTotal());
-							listRecord.set(5, resumen.getCantidad().doubleValue());
+						else if(resumen.getTipoComprobante().getId() == 8){
+							listRecord.set(2, resumen.getTotal());
 						}
 					//COMPROBANTES DE ENCOMIENDAS
 					}else {
 						//Comprobante Boletas
 						if(resumen.getTipoComprobante().getId() == 7){
-							listRecord.set(0, resumen.getTotal());
-							listRecord.set(1, resumen.getCantidad().doubleValue());
+							listRecord.set(3, resumen.getTotal());
 						}
 						//Comprobantefacturas
-						else if(resumen.getTipoComprobante().getId() == 2)
-						{
-							listRecord.set(2, resumen.getTotal());
-							listRecord.set(3, resumen.getCantidad().doubleValue());
+						else if(resumen.getTipoComprobante().getId() == 2){
+							listRecord.set(4, resumen.getTotal());
 						}
 						//Nota Credito
-						else if(resumen.getTipoComprobante().getId() == 8)
-						{
-							listRecord.set(4, resumen.getTotal());
-							listRecord.set(5, resumen.getCantidad().doubleValue());
+						else if(resumen.getTipoComprobante().getId() == 8){
+							listRecord.set(5, resumen.getTotal());
 						}						
 						//GRT
-						else if(resumen.getTipoComprobante().getId() == 10)
-						{
-							listRecord.set(4, resumen.getTotal());
-							listRecord.set(5, resumen.getCantidad().doubleValue());
+						else if(resumen.getTipoComprobante().getId() == 10){
+							listRecord.set(6, resumen.getTotal());
 						}
 					}
-					
 				}
 				//Canal Web
 //				else if(resumen.getCanalVenta().getId() == 2)
@@ -296,35 +291,33 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 //					listRecord.set(11, resumen.getCantidad().doubleValue());
 //				}
 
-				if(lstResumen.size()-i == 1)
-				{
+				if(lstResumen.size()-i == 1){
 					listarResumenVentas(listRecord, listCabeceraRecord);
 					listarTotalesResumenVentas(listRecord);
 				}
 			}
-			else
-			{
+			else{
 				//reiniciamos la iteracion
 				resumen0=null;
 				resumen0 = lstResumen.get(i);
 				i--;
 				k=0;
-
+				
 				listarResumenVentas(listRecord, listCabeceraRecord);
 
 				//Limpiar los Arrays
-				for(j=0; j<13; j++){
+				for(j=0; j<9; j++){
 					listRecord.set(j, 0.0);
 				}
 				listCabeceraRecord.set(0, "");
 				listCabeceraRecord.set(1, "");
 
-			}
-
-		}
+			}//Fin de la misma oficina y fecha
+		}//Fin del for
 
 	}
-
+	
+	//Resumen de ventas por mes
 	public void ensamblarResumenVentasByMonth(List<ResumenVentas> lstResumen){
 
 		List<Double> listRecord = new ArrayList<>();
@@ -339,19 +332,18 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 		//for(ResumenVentas resumen : lstResumen) {
 		ResumenVentas resumen0 = lstResumen.get(i);
 
-		for(j=0; j<13; j++){
+		for(j=0; j<9; j++){
 			listRecord.add(0.0);
 		}
 		listCabeceraRecord.add("");
 		listCabeceraRecord.add("");
 		k=0;
 
-		for(i = 0; i<lstResumen.size(); i++)
-		{
+		for(i = 0; i<lstResumen.size(); i++){
 			ResumenVentas resumen = lstResumen.get(i);
 
-			if( resumen0.getMes().equals(resumen.getMes()) )
-			{
+			if( resumen0.getMes().equals(resumen.getMes()) 
+				&& resumen0.getAgencia().getId().equals(resumen.getAgencia().getId())){
 				//Agencia
 				if(k==0){
 					listCabeceraRecord.set(0, resumen.getAgencia().getDenominacion());
@@ -360,35 +352,49 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 				}
 
 				//Canal counter
-				if(resumen.getCanalVenta().getId() == 1)
-				{
-					//Comprobante Boletas
-					if(resumen.getTipoComprobante().getId() == 7){
-						listRecord.set(0, resumen.getTotal());
-						listRecord.set(1, resumen.getCantidad().doubleValue());
+				if(resumen.getCanalVenta().getId() == 1){
+					
+					if(resumen.getRubro()==1) {
+						//Comprobante Boletas PASAJES
+						if(resumen.getTipoComprobante().getId() == 7){
+							listRecord.set(0, resumen.getTotal());
+						}
+						//Comprobante facturas PASAJES
+						else if(resumen.getTipoComprobante().getId() == 2){
+							listRecord.set(1, resumen.getTotal());
+						}
+						//Nota Credito PASAJES
+						else if(resumen.getTipoComprobante().getId() == 8){
+							listRecord.set(2, resumen.getTotal());
+						}
 					}
-					//Comprobantefacturas
-					else if(resumen.getTipoComprobante().getId() == 2)
-					{
-						listRecord.set(2, resumen.getTotal());
-						listRecord.set(3, resumen.getCantidad().doubleValue());
+					else {
+						//Comprobante Boletas ENCOMIENDAS
+						if(resumen.getTipoComprobante().getId() == 7){
+							listRecord.set(3, resumen.getTotal());
+						}
+						//Comprobante facturas ENCOMIENDAS
+						else if(resumen.getTipoComprobante().getId() == 2){
+							listRecord.set(4, resumen.getTotal());
+						}
+						//Nota Credito ENCOMIENDAS
+						else if(resumen.getTipoComprobante().getId() == 8){
+							listRecord.set(5, resumen.getTotal());
+						}
+						//GRT
+						else if(resumen.getTipoComprobante().getId() == 10){
+							listRecord.set(6, resumen.getTotal());
+						}
 					}
-					//Nota Credito
-					else if(resumen.getTipoComprobante().getId() == 8)
-					{
-						listRecord.set(4, resumen.getTotal());
-						listRecord.set(5, resumen.getCantidad().doubleValue());
-					}
+					
 				}
 				//Canal Web
-				else if(resumen.getCanalVenta().getId() == 2)
-				{
-					listRecord.set(10, resumen.getTotal());
-					listRecord.set(11, resumen.getCantidad().doubleValue());
-				}
+//				else if(resumen.getCanalVenta().getId() == 2){
+//					listRecord.set(10, resumen.getTotal());
+//					listRecord.set(11, resumen.getCantidad().doubleValue());
+//				}
 
-				if(lstResumen.size()-i == 1)
-				{
+				if(lstResumen.size()-i == 1){
 					listarResumenVentas(listRecord, listCabeceraRecord);
 					listarTotalesResumenVentas(listRecord);
 				}
@@ -404,7 +410,7 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 				listarResumenVentas(listRecord, listCabeceraRecord);
 
 				//Limpiar los Arrays
-				for(j=0; j<13; j++){
+				for(j=0; j<9; j++){
 					listRecord.set(j, 0.0);
 				}
 				listCabeceraRecord.set(0, "");
@@ -412,7 +418,7 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 
 			}
 
-		}
+		}//Fin del for
 	}
 
 	public void listarTotalesResumenVentas(List<Double> listRecord){
@@ -435,118 +441,48 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 
 		cell = new Listcell("");
 		item.appendChild(cell);
-
-		//Total Boletas
-		if(listRecordTotales.get(0)==0){
-			cell = new Listcell("0.00");
-			cell.setStyle(styleDeposito);
-			item.appendChild(cell);
-			//Cantidad boletas
-			cell = new Listcell("0");
-			cell.setStyle(styleDeposito);
-			item.appendChild(cell);
-		}else{
-			cell = new Listcell(listRecordTotales.get(0).toString());
-			cell.setStyle(styleDeposito);
-			item.appendChild(cell);
-			//Cantidad boletas
-			temp=listRecordTotales.get(1).intValue();
-			cell = new Listcell(temp.toString());
-			cell.setStyle(styleDeposito);
-			item.appendChild(cell);
-		}
-		//Total facturas
-		if(listRecordTotales.get(2)==0){
-			cell = new Listcell("0.00");
-			cell.setStyle(styleDeposito);
-			item.appendChild(cell);
-			//Cantidad boletas
-			cell = new Listcell("0");
-			cell.setStyle(styleDeposito);
-			item.appendChild(cell);
-		}else{
-			cell = new Listcell(listRecordTotales.get(2).toString());
-			cell.setStyle(styleDeposito);
-			item.appendChild(cell);
-			//Cantidad facturas
-			temp=listRecordTotales.get(2).intValue();
-			cell = new Listcell(temp.toString());
-			cell.setStyle(styleDeposito);
-			item.appendChild(cell);
-		}
-		//Total Notas credito
-		if(listRecordTotales.get(4)==0){
-			cell = new Listcell("0.00");
-			cell.setStyle(styleDeposito);
-			item.appendChild(cell);
-			//Cantidad boletas
-			cell = new Listcell("0");
-			cell.setStyle(styleDeposito);
-			item.appendChild(cell);
-		}else{
-			cell = new Listcell(listRecordTotales.get(4).toString());
-			cell.setStyle(styleDeposito);
-			item.appendChild(cell);
-			//Cantidad NOtas credito
-			temp=listRecordTotales.get(5).intValue();
-			cell = new Listcell(temp.toString());
-			cell.setStyle(styleDeposito);
-			item.appendChild(cell);
-		}
-		//Total deposito
-		cell = new Listcell(listRecordTotales.get(6).toString());
+		
+		//Total Boletas PASAJES
+		cell = (listRecordTotales.get(0)==0 ? new Listcell("0.00") : new Listcell(Util.toNumberFormat(listRecordTotales.get(0), 2)));
 		cell.setStyle(styleDeposito);
 		item.appendChild(cell);
-		//Total GRT
-		if(listRecordTotales.get(7)==0){
-			cell = new Listcell("0.00");
-			cell.setStyle(styleDeposito);
-			item.appendChild(cell);
-			//Cantidad boletas
-			cell = new Listcell("0");
-			cell.setStyle(styleDeposito);
-			item.appendChild(cell);
-		}else{
-			cell = new Listcell(listRecordTotales.get(7).toString());
-			cell.setStyle(styleDeposito);
-			item.appendChild(cell);
-			//Cantidad GRT
-			temp=listRecordTotales.get(8).intValue();
-			cell = new Listcell(temp.toString());
-			cell.setStyle(styleDeposito);
-			item.appendChild(cell);
-		}
-		//Total Transmar
-		cell = new Listcell(listRecordTotales.get(9).toString());
-		cell.setStyle(styleEmpresa);
+		//Total facturas PASAJES
+		cell = (listRecordTotales.get(1)==1 ? new Listcell("0.00") : new Listcell(Util.toNumberFormat(listRecordTotales.get(1), 2)));
+		cell.setStyle(styleDeposito);
 		item.appendChild(cell);
-		//Total Web
-		if(listRecordTotales.get(10)==0){
-			cell = new Listcell("0.00");
-			cell.setStyle(styleDeposito);
-			item.appendChild(cell);
-			//Cantidad boletas
-			cell = new Listcell("0");
-			cell.setStyle(styleDeposito);
-			item.appendChild(cell);
-		}else{
-			cell = new Listcell(listRecordTotales.get(10).toString());
-			cell.setStyle(styleDeposito);
-			item.appendChild(cell);
-			//Cantidad web
-			temp=listRecordTotales.get(11).intValue();
-			cell = new Listcell(temp.toString());
-			cell.setStyle(styleDeposito);
-			item.appendChild(cell);
-		}
-		//Total General
-		cell = new Listcell(listRecordTotales.get(12).toString());
-		cell.setStyle(styleGeneral);
+		//TOTAL NC PASAJES
+		cell = (listRecordTotales.get(2)==0 ? new Listcell("0.00") : new Listcell(Util.toNumberFormat(listRecordTotales.get(2), 2)));
+		cell.setStyle(styleDeposito);
 		item.appendChild(cell);
+		//TOTAL BOLETAS ENCOMIENDAS
+		cell = (listRecordTotales.get(3)==0 ? new Listcell("0.00") : new Listcell(Util.toNumberFormat(listRecordTotales.get(3), 2)));
+		cell.setStyle(styleDeposito);
+		item.appendChild(cell);
+		//TOTAL FACTURAS ENCOMIENDAS
+		cell = (listRecordTotales.get(4)==0 ? new Listcell("0.00") : new Listcell(Util.toNumberFormat(listRecordTotales.get(4), 2)));
+		cell.setStyle(styleDeposito);
+		item.appendChild(cell);
+		//TOTAL NC ENCOMIENDAS
+		cell = (listRecordTotales.get(5)==0 ? new Listcell("0.00") : new Listcell(Util.toNumberFormat(listRecordTotales.get(5), 2)));
+		cell.setStyle(styleDeposito);
+		item.appendChild(cell);
+		//TOTAL GRT
+		cell = (listRecordTotales.get(6)==0 ? new Listcell("0.00") : new Listcell(Util.toNumberFormat(listRecordTotales.get(6), 2)));
+		cell.setStyle(styleDeposito);
+		item.appendChild(cell);
+		//VENTA TOTAL
+		cell = (listRecordTotales.get(7)==0 ? new Listcell("0.00") : new Listcell(Util.toNumberFormat(listRecordTotales.get(7), 2)));
+		cell.setStyle(styleDeposito);
+		item.appendChild(cell);
+
+		item.appendChild(cell);
+		//VENTA CONTADO
+		cell = (listRecordTotales.get(8)==0 ? new Listcell("0.00") : new Listcell(Util.toNumberFormat(listRecordTotales.get(8), 2)));
+		cell.setStyle(styleDeposito);
+		item.appendChild(cell);		
+		
 
 		lsbxVentas.appendChild(item);
-
-
 	}
 
 	public void listarResumenVentas(List<Double> listRecord, List<String> listCabeceraRecord){
@@ -555,9 +491,11 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 		Listcell cell = null;
 
 		//Calculamos los totales
-		listRecord.set(6, listRecord.get(0)+listRecord.get(2)-listRecord.get(4));
-		listRecord.set(9, listRecord.get(6)+listRecord.get(7));
-		listRecord.set(12, listRecord.get(9)+listRecord.get(10));
+		//Venta Total
+		listRecord.set(7, listRecord.get(0)+listRecord.get(1)-listRecord.get(2)+listRecord.get(3)+listRecord.get(4)-listRecord.get(5)+listRecord.get(6));
+		//Venta Contado
+		listRecord.set(8, listRecord.get(0)+listRecord.get(1)-listRecord.get(2)+listRecord.get(3)+listRecord.get(4)-listRecord.get(5));
+//		listRecord.set(12, listRecord.get(9)+listRecord.get(10));
 
 		listRecordTotales.set(0, listRecordTotales.get(0)+listRecord.get(0));
 		listRecordTotales.set(1, listRecordTotales.get(1)+listRecord.get(1));
@@ -568,11 +506,6 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 		listRecordTotales.set(6, listRecordTotales.get(6)+listRecord.get(6));
 		listRecordTotales.set(7, listRecordTotales.get(7)+listRecord.get(7));
 		listRecordTotales.set(8, listRecordTotales.get(8)+listRecord.get(8));
-		listRecordTotales.set(9, listRecordTotales.get(9)+listRecord.get(9));
-		listRecordTotales.set(10, listRecordTotales.get(10)+listRecord.get(10));
-		listRecordTotales.set(11, listRecordTotales.get(11)+listRecord.get(11));
-		listRecordTotales.set(12, listRecordTotales.get(12)+listRecord.get(12));
-
 
 		String styleDeposito = "font-size:11px !important; text-align: right; font-weight: bold;color:black";
 		String styleEmpresa = "font-size:11px !important; text-align: right; font-weight: bold;color:red";
@@ -589,113 +522,39 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 		cell = new Listcell(listCabeceraRecord.get(1));
 		item.appendChild(cell);
 
-		//Total Boletas
-		if(listRecord.get(0)==0){
-			cell = new Listcell("0.00");
-			item.appendChild(cell);
-			//Cantidad boletas
-			cell = new Listcell("0");
-			item.appendChild(cell);
-		}else{
-			cell = new Listcell(listRecord.get(0).toString());
-			item.appendChild(cell);
-			//Cantidad boletas
-			temp = listRecord.get(1).intValue();
-			cell = new Listcell(temp.toString());
-			item.appendChild(cell);
-		}
-		//Total facturas
-		if(listRecord.get(2)==0){
-			cell = new Listcell("0.00");
-			item.appendChild(cell);
-			//Cantidad boletas
-			cell = new Listcell("0");
-			item.appendChild(cell);
-		}else{
-			cell = new Listcell(listRecord.get(2).toString());
-			item.appendChild(cell);
-			//Cantidad facturas
-			temp = listRecord.get(3).intValue();
-			cell = new Listcell(temp.toString());
-			item.appendChild(cell);
-		}
-		//Total Notas credito
-		if(listRecord.get(4)==0){
-			cell = new Listcell("0.00");
-			item.appendChild(cell);
-			//Cantidad boletas
-			cell = new Listcell("0");
-			item.appendChild(cell);
-		}else{
-			cell = new Listcell(listRecord.get(4).toString());
-			item.appendChild(cell);
-			//Cantidad NOtas credito
-			temp = listRecord.get(5).intValue();
-			cell = new Listcell(temp.toString());
-			item.appendChild(cell);
-		}
-		//Total deposito
-		cell = new Listcell(listRecord.get(6).toString());
-		cell.setStyle(styleDeposito);
+		//Total Boletas PASAJES
+		cell = (listRecord.get(0)==0 ? new Listcell("0.00") : new Listcell(Util.toNumberFormat(listRecord.get(0), 2)));
 		item.appendChild(cell);
-		//Total GRT
-		if(listRecord.get(7)==0){
-			cell = new Listcell("0.00");
-			item.appendChild(cell);
-			//Cantidad boletas
-			cell = new Listcell("0");
-			item.appendChild(cell);
-		}else{
-			cell = new Listcell(listRecord.get(7).toString());
-			item.appendChild(cell);
-			//Cantidad GRT
-			temp = listRecord.get(8).intValue();
-			cell = new Listcell(temp.toString());
-			item.appendChild(cell);
-		}
-		//Total Transmar
-		cell = new Listcell(listRecord.get(9).toString());
-		cell.setStyle(styleEmpresa);
+		//Total facturas PASAJES
+		cell = (listRecord.get(1)==1 ? new Listcell("0.00") : new Listcell(Util.toNumberFormat(listRecord.get(1), 2)));
 		item.appendChild(cell);
-		//Total Web
-		if(listRecord.get(10)==0){
-			cell = new Listcell("0.00");
-			item.appendChild(cell);
-			//Cantidad boletas
-			cell = new Listcell("0");
-			item.appendChild(cell);
-		}else{
-			cell = new Listcell(listRecord.get(10).toString());
-			item.appendChild(cell);
-			//Cantidad web
-			temp = listRecord.get(11).intValue();
-			cell = new Listcell(temp.toString());
-			item.appendChild(cell);
-		}
-		//Total General
-		cell = new Listcell(listRecord.get(12).toString());
+		//TOTAL NC PASAJES
+		cell = (listRecord.get(2)==0 ? new Listcell("0.00") : new Listcell(Util.toNumberFormat(listRecord.get(2), 2)));
+		item.appendChild(cell);
+		//TOTAL BOLETAS ENCOMIENDAS
+		cell = (listRecord.get(3)==0 ? new Listcell("0.00") : new Listcell(Util.toNumberFormat(listRecord.get(3), 2)));
+		item.appendChild(cell);
+		//TOTAL FACTURAS ENCOMIENDAS
+		cell = (listRecord.get(4)==0 ? new Listcell("0.00") : new Listcell(Util.toNumberFormat(listRecord.get(4), 2)));
+		item.appendChild(cell);
+		//TOTAL NC ENCOMIENDAS
+		cell = (listRecord.get(5)==0 ? new Listcell("0.00") : new Listcell(Util.toNumberFormat(listRecord.get(5), 2)));
+		item.appendChild(cell);
+		//TOTAL GRT
+		cell = (listRecord.get(6)==0 ? new Listcell("0.00") : new Listcell(Util.toNumberFormat(listRecord.get(6), 2)));
+		item.appendChild(cell);
+		//VENTA TOTAL
+		cell = (listRecord.get(7)==0 ? new Listcell("0.00") : new Listcell(Util.toNumberFormat(listRecord.get(7), 2)));
 		cell.setStyle(styleGeneral);
+		item.appendChild(cell);
+
+		item.appendChild(cell);
+		//VENTA CONTADO
+		cell = (listRecord.get(8)==0 ? new Listcell("0.00") : new Listcell(Util.toNumberFormat(listRecord.get(8), 2)));
 		item.appendChild(cell);
 
 		lsbxVentas.appendChild(item);
 	}
-
-	/**
-	 * Exporta los resultados en formato .xls
-	 */
-	public void onClick_btnExportar(){
-		try {
-
-			if(lsbxVentas.getItemCount()>0)
-				Util.exportarExcel(lsbxVentas, "ReporteGralVentas_");
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			DlgMessage.error(e.getMessage());
-		}
-	}
-
-
 
 	public void limpiarArrays(){
 
@@ -794,5 +653,49 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 		
 		
 	}
+	
+	/**
+	 * Exporta los resultados en formato .xls
+	 */
+	public void onClick_btnExportar(){
+		Session session = getDesktop().getSession();
+		String fecha = Util.DatetoString(new Date(), Constantes.DATE_TIME_FORMAT);
+		Integer idAgencia=0;
+		Agencia agencia=new Agencia();
+		
+		if(cmbAgencias.getSelectedItem().getValue() instanceof Agencia) {
+			agencia=((Agencia)cmbAgencias.getSelectedItem().getValue());
+			idAgencia = agencia.getId();
+		}
+		
+		HttpSession httpSession = (HttpSession)session.getNativeSession();
+		httpSession.setAttribute("parcialPath",Constantes.DIRECTORY_EXCEL+"ReporteGeneralVentas.xls");
+		httpSession.setAttribute("lbxVentas", lsbxVentas);
+		httpSession.setAttribute("oficina", (idAgencia==0 ? "TODOS" : agencia.getDenominacion()));
+		if(rdFecha.isChecked()) {
+			httpSession.setAttribute("desde", Constantes.FORMAT_DATE.format(dtbxFecInicioBus.getValue()));
+			httpSession.setAttribute("hasta", Constantes.FORMAT_DATE.format(dtbxFecFinBus.getValue()));
+		}
+		else if(rdMes.isChecked()) {
+			httpSession.setAttribute("desde", arMeses[mesIni]);
+			httpSession.setAttribute("hasta", arMeses[mesFin]);			
+		}
+		
+		httpSession.setAttribute("fechaEmision", fecha);
+//		httpSession.setAttribute("rubro", (rdEncomiendas.isChecked() ? "ENCOMIENDAS" : rdPasajeros.isChecked() ?  "PASAJEROS" : "PASAJEROS / ENCOMIENDAS" ));
+		Executions.sendRedirect("/exportXlsReporteGeneralVentas.htm");		
+		
+		
+//		try {
+//
+//			if(lsbxVentas.getItemCount()>0)
+//				Util.exportarExcel(lsbxVentas, "ReporteGralVentas_");
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			DlgMessage.error(e.getMessage());
+//		}
+	}
+	
 
 }
