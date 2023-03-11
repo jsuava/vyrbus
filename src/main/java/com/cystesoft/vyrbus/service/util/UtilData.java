@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
+ * Descripciï¿½n	:
  * Autor		: jM
  * Fecha		: 05/06/2012
  */
@@ -137,7 +137,7 @@ public class UtilData extends Window {
 
 	/**
 	 * Permite registrar las propiedades de auditoria del Pojo
-	 * este método debe ser usado para los registros nuevos.
+	 * este mï¿½todo debe ser usado para los registros nuevos.
 	 * @param genericBean
 	 * @param usuario
 	 * @throws Exception
@@ -150,7 +150,7 @@ public class UtilData extends Window {
 
 	/**
 	 * Permite rgistrar las propiedades de auditoria del Pojo
-	 * este método puede ser usado tanto para los registros nuevos o actualizados.
+	 * este mï¿½todo puede ser usado tanto para los registros nuevos o actualizados.
 	 * @param genericBean
 	 * @param actualizacion <b>false</b> = registro nuevo o <b>true</b> = registro actualizado
 	 * @throws Exception
@@ -194,16 +194,16 @@ public class UtilData extends Window {
 
 //
 //	/**
-//	 * Permite enlazar los controles a la ventana de selección de ubigeo
+//	 * Permite enlazar los controles a la ventana de selecciï¿½n de ubigeo
 //	 * @param textboxId en este Textbox se devolvera el Id del ubigeo seleccionado
-//	 * @param textboxUbicacionGeografica en este Textbox se devolvera la ubicación geografica (Departamento / Provincia / Distrito) seleccionada
-//	 * @param button ha este Button se le adjuntara un listener con la llamada a la ventana de selección de ubigeo
+//	 * @param textboxUbicacionGeografica en este Textbox se devolvera la ubicaciï¿½n geografica (Departamento / Provincia / Distrito) seleccionada
+//	 * @param button ha este Button se le adjuntara un listener con la llamada a la ventana de selecciï¿½n de ubigeo
 //	 * @see WndSeleccionarUbigeo
 //	 */
 //	public static void enlazarUbigeo(final Textbox textboxId, final Textbox textboxUbicacionGeografica, final Button button) {
 //		enlazarUbigeo(textboxId, textboxUbicacionGeografica, button, null);
 //		if(button!=null){
-//			button.setTooltiptext("Seleccionar ubicación geográfica");
+//			button.setTooltiptext("Seleccionar ubicaciï¿½n geogrï¿½fica");
 //			button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 //				@Override
 //				public void onEvent(Event event) throws Exception {
@@ -232,7 +232,7 @@ public class UtilData extends Window {
 //				}
 //			});
 //		}else{
-//			textboxUbicacionGeografica.setTooltiptext("Escriba la ubicación geográfica y luego pulse enter para realizar la búsqueda.");
+//			textboxUbicacionGeografica.setTooltiptext("Escriba la ubicaciï¿½n geogrï¿½fica y luego pulse enter para realizar la bï¿½squeda.");
 //			textboxUbicacionGeografica.addEventListener(Events.ON_OK, new EventListener<Event>() {
 //				@Override
 //				public void onEvent(Event event) throws Exception {
@@ -264,15 +264,15 @@ public class UtilData extends Window {
 //	}
 
 	/**
-	 * Permite enlazar los controles a la ventana de selección de ubigeo
+	 * Permite enlazar los controles a la ventana de selecciï¿½n de ubigeo
 	 * @param textboxId en este Textbox se devolvera el Id del ubigeo seleccionado
-	 * @param textboxUbicacionGeografica en este Textbox se devolvera la ubicación geografica (Departamento / Provincia / Distrito) seleccionada
-	 * @param button ha este Button se le adjuntara un listener con la llamada a la ventana de selección de ubigeo
+	 * @param textboxUbicacionGeografica en este Textbox se devolvera la ubicaciï¿½n geografica (Departamento / Provincia / Distrito) seleccionada
+	 * @param button ha este Button se le adjuntara un listener con la llamada a la ventana de selecciï¿½n de ubigeo
 	 * @see WndSeleccionarUbigeo
 	 */
 	public static void enlazarUbigeo(final Textbox textboxId, final Textbox textboxUbicacionGeografica, final Button button, final Object receiveFocus) {
 		if(button!=null){
-			button.setTooltiptext("Seleccionar ubicación geográfica");
+			button.setTooltiptext("Seleccionar ubicaciï¿½n geogrï¿½fica");
 			button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event event) throws Exception {
@@ -300,7 +300,7 @@ public class UtilData extends Window {
 				}
 			});
 		}else{
-			textboxUbicacionGeografica.setTooltiptext("Escriba la ubicación geográfica y luego pulse enter para realizar la búsqueda.");
+			textboxUbicacionGeografica.setTooltiptext("Escriba la ubicaciï¿½n geogrï¿½fica y luego pulse enter para realizar la bï¿½squeda.");
 			textboxUbicacionGeografica.addEventListener(Events.ON_OK, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event event) throws Exception {
@@ -346,8 +346,8 @@ public class UtilData extends Window {
 	}
 
 	/**
-	 * Permite enlazar los controles a la ventana de selección de Itinerario
-	 * @param button ha este Button se le adjuntara un listener con la llamada a la ventana de selección de itinerario
+	 * Permite enlazar los controles a la ventana de selecciï¿½n de Itinerario
+	 * @param button ha este Button se le adjuntara un listener con la llamada a la ventana de selecciï¿½n de itinerario
 	 * @see WndItinerario
 	 */
 	public static void enlazarItinerario(final Button button) {
@@ -1315,7 +1315,7 @@ public class UtilData extends Window {
 
 
 	/**
-	 * Realiza la asignación del primer elemento al Combobox enviado como parametro.
+	 * Realiza la asignaciï¿½n del primer elemento al Combobox enviado como parametro.
 	 * @param combo		: Objeto al cual se le asignara el Comboitem.
 	 * @param criterio	: Indica si el primer item sera la opcion TODOS (TRUE) o SELECCIONE (FALSE).
 	 */
@@ -1331,7 +1331,7 @@ public class UtilData extends Window {
 	}
 
 	/**
-	 * Recupera las rutas, según la localidad seleccionada .
+	 * Recupera las rutas, segï¿½n la localidad seleccionada .
 	 * @param combo		: Objeto al cual se le asignara el Comboitem.
 	 * @param id		: Indica el ID de la Localidad.
 	 * @param puntos	: si es null, carga todas la rutas que correcsponden al parametro "id",
@@ -1690,7 +1690,7 @@ public class UtilData extends Window {
 	 * Carga usuarios, basados en las liquidaciones.
 	 * @param combobox :Combobox
 	 * @param idAgencia	:Identificador de la agencia
-	 * @param estaLoquidacion	: estado de la liquidación
+	 * @param estaLoquidacion	: estado de la liquidaciï¿½n
 	 * @throws Exception
 	 */
 	public static void cargarUsuariosLiquidacion(Combobox combobox,Integer idAgencia, Integer estaLoquidacion,Boolean todos) throws Exception{
@@ -1948,7 +1948,7 @@ public class UtilData extends Window {
 
 	/**
 	 * Carga autorizadores de las cortesias
-	 * @param combobox	: objeto que contendrá la data
+	 * @param combobox	: objeto que contendrï¿½ la data
 	 * @param todos		: (true)TODOS, (false)SELECCIONE
 	 * @throws Exception
 	 */
@@ -2141,6 +2141,22 @@ public class UtilData extends Window {
 
 		return liquidacion;
 	}
+	
+	/**
+	 * Verifica si el usuario tiene o no una liquidacion abierta
+	 * @param usuario
+	 * @param agencia
+	 * @return : true (el usuario tiene una liquidacion abierta); fale(el usuario no tiene ninguna liquidacion abierta)
+	 */
+	public static Liquidacion buscarLiquidacionByUsuario(Integer idAgencia, Integer idUsuario, Integer estadoLiquidacion, String fecha) throws Exception{
+		Liquidacion liquidacion = null;
+		try {
+			liquidacion= ServiceLocator.getLiquidacionManager().buscarLiquidacionByUsuario(idAgencia, idUsuario, estadoLiquidacion, fecha);			
+		}catch (Exception ex) {
+			throw new Exception(ex.getMessage());
+		}
+		return liquidacion;
+	}
 
 
 //	/**
@@ -2302,7 +2318,7 @@ public class UtilData extends Window {
 
 	/**
 	 * Carga los tipos de convenio con el cliente
-	 * @param combobox 	: objeto donde se cargarán los resultados
+	 * @param combobox 	: objeto donde se cargarï¿½n los resultados
 	 * @param todos		: (True)muesta en el index 0 TODOS, (false) muestra en index 0 SELECCIONE
 	 */
 	public static void cargarTipoConvenio(Combobox combobox, Boolean todos){
@@ -2320,7 +2336,7 @@ public class UtilData extends Window {
 
 	/**
 	 * Carga estos de la solicitud
-	 * @param combobox 	: objeto donde se cargarán los resultados
+	 * @param combobox 	: objeto donde se cargarï¿½n los resultados
 	 * @param todos		: (True)muesta en el index 0 TODOS, (false) muestra en index 0 SELECCIONE
 	 */
 	public static void cargarEstadoSolicitud(Combobox combobox, Boolean todos){
@@ -2359,7 +2375,7 @@ public class UtilData extends Window {
 
 //	/**
 //	 * Carga el tipo de Cliente
-//	 * @param combobox 	: objeto donde se cargarán los resultados
+//	 * @param combobox 	: objeto donde se cargarï¿½n los resultados
 //	 * @param todos		: (True)muesta en el index 0 TODOS, (false) muestra en index 0 SELECCIONE
 //	 */
 //	public static void cargarTipoCliente(Combobox combobox, Boolean todos){
@@ -2376,7 +2392,7 @@ public class UtilData extends Window {
 //	}
 	/**
 	 * Carga el Origen del Cliente
-	 * @param Combobox 	: objeto donde se cargarán los resultados
+	 * @param Combobox 	: objeto donde se cargarï¿½n los resultados
 	 * @param todos		: (True)muesta en el index 0 TODOS, (false) muestra en index 0 SELECCIONE
 	 */
 	public static void cargarOrigenCliente(Combobox Combobox, Boolean todos){
@@ -2394,7 +2410,7 @@ public class UtilData extends Window {
 
 
 	/**
-	 * Realiza la liberación de asientos bloqueados por el usuarioHardware.
+	 * Realiza la liberaciï¿½n de asientos bloqueados por el usuarioHardware.
 	 * @param usuarioHardware	: Usuario hardware del cual se desea borrar los asientos seleccionados.
 	 */
 	public static void liberarAsientos(Integer idUsuarioHardware){
@@ -2482,7 +2498,7 @@ public class UtilData extends Window {
 	 * @throws Exception
 	 */
 	public static void procesaCierreCaja(Liquidacion liquidacion, Double monto,Usuario usuario, Double montoDolares) throws Exception{
-		/*Actualiza liquidación*/
+		/*Actualiza liquidaciï¿½n*/
 		liquidacion.setMontoIngresado(monto!=null? monto: .00);
 		liquidacion.setEstadoLiquidacion(Constantes.LIQUI_ESTA_CERRADO);
 		liquidacion.setEstadoRegistro(Constantes.VALUE_ACTIVO);

@@ -1,7 +1,7 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:n="client">
 <window id="wndManifiesto" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndManifiesto">
-<panel id="panel" title="::: DESPACHO DE BUSES :::" framable="true" width="860px" border="normal" closable="true" onClose="wndManifiesto.closeTabWindow()">
+<panel id="panel" title="::: DESPACHO DE BUSES :::" framable="true" width="910px" border="normal" closable="true" onClose="wndManifiesto.closeTabWindow()">
         <panelchildren>
 				<grid style="background: ">
 					<columns>
@@ -31,6 +31,7 @@
 							<button id="cmdPrevio" image="/resources/mp_preliminar.png" sclass="btnImage" tooltiptext="Vista Preliminar" />
 							<button id="cmdImprimir" image="/resources/mp_imprimir.png" sclass="btnImage" tooltiptext="Imprimir" />
 							<button id="cmdReImprimir" image="/resources/mp_reimprimir.png" sclass="btnImage" tooltiptext="Re-Imprimir" />
+							<button id="btnPostergar" image="/resources/mp_postergarFA.png" sclass="btnImage" tooltiptext="Postegar a Fecha Abierta" visible="false"/>
 						</row>
 					</rows>
 				</grid>
@@ -86,7 +87,7 @@
 						<row>
 							<groupbox closable="false" >
 							<caption label="Lista de Pasajeros"/>
-								<listbox  rows="7" id="ListPasajeros" height="190px"  width="835px" droppable="true">
+								<listbox  rows="7" id="ListPasajeros" height="190px"  width="875px" droppable="true">
 									<listhead>
 										<listheader label="ASNTO" width="40px" style="color: #ffffff;"/>
 										<listheader label="N° CONTROL" width="95px" style="color: #ffffff;" visible="false"/>	

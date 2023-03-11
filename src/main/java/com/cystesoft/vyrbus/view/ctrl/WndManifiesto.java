@@ -114,6 +114,7 @@ public class WndManifiesto extends WndBase {
 	private Button cmdImprimir;
 	private Button cmdReImprimir;
 	private Button cmdPrevio;
+	private Button btnPostergar;
 
 	private Toolbarbutton tbbVerMapa;
 	private Toolbarbutton tbbVerPax;
@@ -124,6 +125,7 @@ public class WndManifiesto extends WndBase {
 	private Window wndVerPasajero = null;
 	private Window wndVerDetalle = null;
 	private Window wndModImprit;
+	private Window wndMotivoPostergacion = null;
 	
 	private Itinerario itinerario=null;
 	private Integer porcentajeCorrelativoManifiesto=0;
@@ -169,6 +171,7 @@ public class WndManifiesto extends WndBase {
 		cmdPrevio=(Button)this.getFellow("cmdPrevio");
 		cmdImprimir=(Button)this.getFellow("cmdImprimir");
 		cmdReImprimir=(Button)this.getFellow("cmdReImprimir");
+		btnPostergar=(Button)this.getFellow("btnPostergar");
 		tbbVerMapa=(Toolbarbutton)this.getFellow("tbbVerMapa");
 		tbbVerPax=(Toolbarbutton)this.getFellow("tbbVerPax");
 
@@ -238,6 +241,12 @@ public class WndManifiesto extends WndBase {
 					reimprimir = true;
 					tipoImpresion(IMPRESION_MANIFIESTO_PASAJEROS);	
 				}
+			}
+		});
+		
+		btnPostergar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			public void onEvent(Event event) throws Exception {
+				postergarFA();
 			}
 		});
 	}
@@ -2208,12 +2217,12 @@ public class WndManifiesto extends WndBase {
 		Row row = new Row();
 		Radiogroup radiogroup = new Radiogroup();
 		radiogroup.setOrient("vertical");
-		final Radio rdPrintLasert = new Radio("Impresión Laser");
+		final Radio rdPrintLasert = new Radio("Impresiï¿½n Laser");
 //		rdPrintLasert.setDisabled(configuracionImpresora==null);
 		radiogroup.appendChild(rdPrintLasert);
 		Separator separator = new Separator("horizontal");
 		radiogroup.appendChild(separator);
-		final Radio rdPrintMatricial = new Radio("Impresión Matricial");
+		final Radio rdPrintMatricial = new Radio("Impresiï¿½n Matricial");
 		rdPrintMatricial.setChecked(rdPrintLasert.isDisabled());
 		radiogroup.appendChild(rdPrintMatricial);
 		separator = new Separator("horizontal");
@@ -2326,7 +2335,7 @@ public class WndManifiesto extends WndBase {
 			public void onEvent(Event e){
 				try {
 					if(rdPrintMatricial.isChecked()==false && rdPrintLasert.isChecked()==false){
-						DlgMessage.information("Debe seleccionar el Tipo de Impresión.");
+						DlgMessage.information("Debe seleccionar el Tipo de Impresiï¿½n.");
 						return;
 					}else if (!(cmbAgencia.getSelectedItem().getValue() instanceof Agencia)){
 						DlgMessage.information("Debe de seleccionar la Agencia con la cual va a emitir el Manifiesto");
@@ -2718,5 +2727,107 @@ public class WndManifiesto extends WndBase {
 		}catch(Exception ex) {
 			
 		}
+	}
+	
+	public void postergarFA() {
+		try {
+			if(ListPasajeros.getItemCount() == 0) {
+				DlgMessage.information("No hay boletos para postergar");
+				return;
+			}				
+				
+			Messagebox.show("Realmente desea postergar todos los boletos a Fecha Abierta?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+				public void onEvent(Event e){
+					if(e.getName().equals("onYes")) {
+						createWindowMotivoPostergacion();						
+					}else {
+						System.out.println("No");
+					}
+				}
+			});	
+		}catch(Exception ex) {
+			
+		}
+		
+	}
+	
+	private void createWindowMotivoPostergacion() {
+
+		final Window window = new Window("Motivo Postergacion", "normal", true);
+		window.setPosition("center");
+		window.setWidth("420px");
+
+		Grid grid = new Grid();
+		Rows rows= new Rows();
+		Row row = new Row();
+		
+		Columns columns= new Columns();
+		/*Column-01*/
+		Column column= new Column();
+		//column.setWidth("110px");
+		columns.appendChild(column);
+		column= new Column();
+		columns.appendChild(column);
+		grid.appendChild(columns);
+		
+		Label label = new Label("Motivo :");
+		row.appendChild(label);
+		row.setSpans("2");
+		rows.appendChild(row);
+		
+		row = new Row();
+		row.setSpans("2");
+		Textbox txtMotivo = new Textbox();
+		txtMotivo.setWidth("386px");
+		txtMotivo.setHeight("40px");
+		txtMotivo.setMultiline(true);
+		row.appendChild(txtMotivo);
+		rows.appendChild(row);
+		
+		row = new Row();
+		Button btnPostergar = new Button("Postegar");
+		btnPostergar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			public void onEvent (Event e) {
+				postergarServicio(txtMotivo.getText());
+			}
+		});
+		btnPostergar.setImage("/resources/mp_postergarFA.png");
+		row.appendChild(btnPostergar);
+		
+		Button btnCancelar = new Button("Cancelar");
+		btnCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			public void onEvent (Event e) {
+				onClose();
+			}
+		});
+		btnCancelar.setImage("/resources/mp_cerrar.png");
+		row.appendChild(btnCancelar);
+		
+		rows.appendChild(row);
+		
+		
+		grid.appendChild(rows);
+		window.appendChild(grid);
+		
+		this.appendChild(window);
+		window.setMode("modal");
+	}
+	
+	private void postergarServicio(String motivo) {
+		try {			
+			List<VentaPasaje> lstVentas = new ArrayList<>();
+			for(Listitem item : ListPasajeros.getItems()) {
+				VentaPasaje venta = item.getValue();
+				lstVentas.add(venta);
+				System.out.println(venta.getId());
+			}
+			Integer result = ServiceLocator.getVentaPasajesManager().postergarFAMasivo(lstVentas, motivo, getUsuario().getLogin());
+			if(result == 1) {
+				DlgMessage.information("Todos los boletos del Servicio fueron postergados a Fecha Abierta satisfactoriamente!!!");
+			}
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		
 	}
 }

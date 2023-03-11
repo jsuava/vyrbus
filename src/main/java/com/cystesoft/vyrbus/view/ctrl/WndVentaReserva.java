@@ -80,6 +80,7 @@ import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaLlegada;
 import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartida;
 import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartidaID;
 import com.cystesoft.vyrbus.model.bean.LineaCreditoCliente;
+import com.cystesoft.vyrbus.model.bean.Liquidacion;
 import com.cystesoft.vyrbus.model.bean.Localidad;
 import com.cystesoft.vyrbus.model.bean.MapaBus;
 import com.cystesoft.vyrbus.model.bean.Menu;
@@ -5119,6 +5120,11 @@ public class WndVentaReserva extends WndBase {
 		try{
 			/*Valida si el usuario tiene una liquidaci�n aperturada - 22/07/2021 - jabanto*/
 			if(cmbTipoOperacion.getSelectedIndex()==0 && getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION)==null)
+				throw new LiquidacionNullException();
+			/* Se valida que el usuario tenga liquidacion aperturada no solo por fecha*/
+			String fecha = Constantes.FORMAT_DATE.format(fechaLiquidacion);
+			Liquidacion liquidacion = UtilData.buscarLiquidacionByUsuario(getAgencia().getId(), getUsuario().getId(), Constantes.LIQUI_ESTA_ABIERTO, fecha);
+			if(liquidacion == null)
 				throw new LiquidacionNullException();
 
 			//Valida que, la fecha de la liquidaci�n sea igual a la actual - 22/07/2021 - jabanto

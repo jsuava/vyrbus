@@ -123,4 +123,5 @@ public interface ManifiestoManager {
 	 *
 	 */
 	public List<Manifiesto> buscarDevolucionIsc(String fechaInicial, String fechaFinal, String per4949, String periodo);
+	
 }
