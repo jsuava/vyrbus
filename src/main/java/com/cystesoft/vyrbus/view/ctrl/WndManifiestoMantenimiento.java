@@ -123,8 +123,8 @@ public class WndManifiestoMantenimiento extends WndBase{
 		List<Rol>listRolesAcceeso=new ArrayList<>();
 		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_SUPER_USUARIO));
 		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_ADMIN));
-//		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_GERENCIA_COMERCIAL));
-//		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_ADMIN_COMERCIAL));
+		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_FINANZAS));
+		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_FISCALIZACION));
 //		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_ASISTENTE_ADMIN_COMERCIAL));
 		listRolesAcceeso.add(new Rol(Constantes.ID_ROL_FLOTA));
 		accesoControlsByRol(lstComponents, listRolesAcceeso);
