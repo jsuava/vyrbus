@@ -11,7 +11,7 @@ import com.cystesoft.vyrbus.view.tuentrada.LiquidacionTuentrada;
 
 /**
  *
- * @author José Abanto
+ * @author Josï¿½ Abanto
  *
  */
 public interface LiquidacionManager {
@@ -84,7 +84,7 @@ public interface LiquidacionManager {
 	 */
 	public Liquidacion buscarRptLiquidacionTurno(String fechaLiquidacion, Integer idAgencia, Integer idUsuario);
 	/**
-	 * Busca los boletos vendidos por Tuentrada y devuelve la estructura necesaria para mostrar la información.
+	 * Busca los boletos vendidos por Tuentrada y devuelve la estructura necesaria para mostrar la informaciï¿½n.
 	 * @param idAgencia			: Identificador de la agencia.
 	 * @param idUsuario			: Identificador del usuario.
 	 * @param fechaliquidacion	: Fecha de la liquidacion.
@@ -99,8 +99,18 @@ public interface LiquidacionManager {
 	 * @return
 	 */
 	public Map<String, ResumenComprobante> buscarResumenComprobantes(String fechaLiquidacion, Integer idAgencia, Integer idUsuario);
+	/**
+	 * Busca la liquidacion por usuario
+	 * @param idAgencia			: Identificador de agencia
+	 * @param idUsuario			: Identificador de usuario
+	 * @param estadoLiquidacion	: Estado de liquidacion
+	 * @param fecha				: Fecha de la liquidacion
+	 * @return
+	 * @throws Exception
+	 */
+	public Liquidacion buscarLiquidacionByUsuario(Integer idAgencia, Integer idUsuario, Integer estadoLiquidacion, String fecha ) throws Exception;
 //	/**
-//	 * Reapertura una liquidación
+//	 * Reapertura una liquidaciï¿½n
 //	 * @param idliquidacion	: Identificador de la liquidacion.
 //	 * @throws Exception
 //	 */

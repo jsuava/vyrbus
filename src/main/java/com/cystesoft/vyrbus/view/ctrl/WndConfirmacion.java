@@ -49,6 +49,7 @@ import com.cystesoft.vyrbus.model.bean.FormaPago;
 import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaLlegada;
 import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartida;
 import com.cystesoft.vyrbus.model.bean.LineaCreditoCliente;
+import com.cystesoft.vyrbus.model.bean.Liquidacion;
 import com.cystesoft.vyrbus.model.bean.Nacionalidad;
 import com.cystesoft.vyrbus.model.bean.OperadorTarjetaCredito;
 import com.cystesoft.vyrbus.model.bean.Pasajero;
@@ -78,6 +79,7 @@ import com.cystesoft.vyrbus.service.exceptions.EmailNullException;
 import com.cystesoft.vyrbus.service.exceptions.FormaPagoNullException;
 import com.cystesoft.vyrbus.service.exceptions.ImporteMixtoNullException;
 import com.cystesoft.vyrbus.service.exceptions.ItinerarioException;
+import com.cystesoft.vyrbus.service.exceptions.LiquidacionNullException;
 import com.cystesoft.vyrbus.service.exceptions.MailIncorectoException;
 import com.cystesoft.vyrbus.service.exceptions.NacionalidadException;
 import com.cystesoft.vyrbus.service.exceptions.NombresNullException;
@@ -2798,6 +2800,15 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 		try {
 
 			ventaPasaje = new VentaPasaje();
+			
+			/*Valida si el usuario tiene una liquidacion aperturada */
+			if(getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION)==null)
+				throw new LiquidacionNullException();
+			/* Se valida que el usuario tenga liquidacion aperturada no solo por fecha*/
+			String fecha = Constantes.FORMAT_DATE.format(fechaLiquidacion);
+			Liquidacion liquidacion = UtilData.buscarLiquidacionByUsuario(getAgencia().getId(), getUsuario().getId(), Constantes.LIQUI_ESTA_ABIERTO, fecha);
+			if(liquidacion == null)
+				throw new LiquidacionNullException();
 
 			if (detailItinerary == null)
 				throw new ItinerarioException(ItinerarioException.NO_SELECT);// ItinerarioNotSelectedException();
@@ -3172,6 +3183,8 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 					}
 				}
 			});
+		}catch(LiquidacionNullException lnex){
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noLiquidacion"));
 		}catch (ItinerarioException iex){
 			if(iex.getTipo().intValue()==ItinerarioException.NO_SELECT)
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noAsientoSeleccionado"));

@@ -79,7 +79,7 @@ public interface VentaPasajesManager {
 	 * @param idOrigen		: Identificador del origen.
 	 * @param idDestino		: Identificador del Destino.
 	 * @param pasajero		: Nombres del pasajero.
-	 * @param numeroControl	: Número de control de la Venta Fecha Abierta.
+	 * @param numeroControl	: Nï¿½mero de control de la Venta Fecha Abierta.
 	 * @param numeroBoleto	: Numero de boleto de la Venta a Fecha Abierta..
 	 * @return Lista de reservas
 	 * @throws Exception
@@ -108,22 +108,22 @@ public interface VentaPasajesManager {
 	 */
 	public List<VentaPasaje> buscarDetalladoVentas(String idAgencia, String idUsuario, String idTipoMovimiento, String fechaInicio, String fechaFin, String estado)throws Exception;
 	/**
-	 * Realiza la duplicación de un boleto en el mismo turno.
+	 * Realiza la duplicaciï¿½n de un boleto en el mismo turno.
 	 * @param ventaOriginal		: Objeto que se anulara para poder duplicar la venta.
-	 * @param ventaDuplicado	: Objeto que representa la duplicación de la venta
+	 * @param ventaDuplicado	: Objeto que representa la duplicaciï¿½n de la venta
 	 * @return -1=Fallo, 1=Exito.
 	 * @throws Exception
 	 */
 	public int duplicarBoleto(VentaPasaje ventaOriginal, VentaPasaje ventaDuplicado)throws Exception;
 	/**
-	 * Realiza la anulación del movimiento venta o reserva en el mismo turno, no se genera nuevo registro.
+	 * Realiza la anulaciï¿½n del movimiento venta o reserva en el mismo turno, no se genera nuevo registro.
 	 * @param movimiento	: Movimiento que se desea anular
 	 * @return -1=Fallo, 1=Exito.
 	 * @throws Exception
 	 */
 	public VentaPasaje anularMovimiento(VentaPasaje movimiento, boolean forzarNotaCredito)throws Exception;
 	/**
-	 * Realiza la confirmación de un Boleto Fecha Abierta.
+	 * Realiza la confirmaciï¿½n de un Boleto Fecha Abierta.
 	 * @param ventaPasaje	: Boleto que se desea confirmar.
 	 * @return	: -1=Fallo, 1=Exito.
 	 * @throws Exception
@@ -151,7 +151,7 @@ public interface VentaPasajesManager {
 	public VentaPasaje postergarBoleto(VentaPasaje boletoPostergar,Boolean validaBloqueo, VentaPasaje gastoAdministrativo)throws Exception;
 	/**
 	 * Realiza la reimpresion de un boleto por perdida o deterioro
-	 * @param ventaOriginal		: Venta original sin ninguna modificación mas que el Tipo de Movimiento.
+	 * @param ventaOriginal		: Venta original sin ninguna modificaciï¿½n mas que el Tipo de Movimiento.
 	 * @param ventaReimprimir	: Venta que se desea reimprimir.
 	 * @return -1=Fallo, 1=Exito.
 	 * @throws Exception
@@ -167,7 +167,7 @@ public interface VentaPasajesManager {
 	 */
 	public List<VentaPasaje> buscarBoletosDevolucion(String numeroDocumento, String numeroControl, String numeroBoleto)throws Exception;
 	/**
-	 * Realiza la devolución del comprobante
+	 * Realiza la devoluciï¿½n del comprobante
 	 * @param venta: venta que se desea devolver.
 	 * @return  nota de credito
 	 * @throws Exception
@@ -240,8 +240,8 @@ public interface VentaPasajesManager {
 	public VentaPasaje buscarPorId(Long id);
 	/**
 	 * Realiza el transborde del pasajero
-	 * @param numeroAsiento : Número de asiento
-	 * @param idVentaPasaje : Identificador de la venta en donde se realizará el Update
+	 * @param numeroAsiento : Nï¿½mero de asiento
+	 * @param idVentaPasaje : Identificador de la venta en donde se realizarï¿½ el Update
 	 * @param itinerario	: Identificador del Itinerario el cual sera actualizado en la Venta
 	 * @throws Exception
 	 */
@@ -261,9 +261,9 @@ public interface VentaPasajesManager {
 	 * Valida Ocupabilidad de todos los asientos ha a generar las ventas del servicio especial.
 	 * @param idItinerario	: Identificador del Itinerario
 	 * @param idRuta		: Identificador de la ruta
-	 * @param numeroAsientos: Números de asientos a validar
+	 * @param numeroAsientos: Nï¿½meros de asientos a validar
 	 * @param numeroPiso	: Piso de los asientos a validar
-	 * @return	Números de Asientos ocupados.
+	 * @return	Nï¿½meros de Asientos ocupados.
 	 * @throws Exception
 	 */
 	public List<VentaPasaje> validaOcupabilidad(Long idItinerario, Integer idRuta, String numeroAsientos, Integer numeroPiso ) throws Exception;
@@ -344,25 +344,25 @@ public interface VentaPasajesManager {
 	public List<VentaPasaje> buscarDetalleVentasAgencia(String fechaInicio, String fechaFin,String rucClienteCredito, Long idUsuario, String orden,Boolean incluirAnulados, boolean isSoles, String estadoBoletos, Integer centroCostoID,boolean byFechaReimpresion) throws Exception;
 
 	/**
-	 *Obtiene el ultimo registro de la venta, para la validación en las anulaciones
+	 *Obtiene el ultimo registro de la venta, para la validaciï¿½n en las anulaciones
 	 * @param idVentaOriginal: Identificador de l aventa original
 	 * @return
 	 */
 	public VentaPasaje buscarUltimoRegistro(Long idVentaOriginal);
 
 	/**
-	 * Busca vaucher para la anulación.
-	 * @param numVoucher		: Número del Voucher.
-	 * @param numcontrol		: Número de control del Voucher.
+	 * Busca vaucher para la anulaciï¿½n.
+	 * @param numVoucher		: Nï¿½mero del Voucher.
+	 * @param numcontrol		: Nï¿½mero de control del Voucher.
 	 * @param idTipoComprobante : Identificador del tipo de comprobante.
-	 * @param rucCliente 		: Númerod e ruc del Cliente
+	 * @param rucCliente 		: Nï¿½merod e ruc del Cliente
 	 * @param fechaPartida 		: fecha de partida
 	 * @param horaPartida 		: Hora de partida del servicio
-	 * @param boleto			: Número de boleto.
+	 * @param boleto			: Nï¿½mero de boleto.
 	 */
 	public List<VentaPasaje> buscarVoucherForAnulacion(Integer idTipoComprobante,String numVoucher, String numcontrol,String rucCliente,String fechaPartida,String horaPartida,String boleto);
 	/**
-	 * Realiza la anulación de la reserva.
+	 * Realiza la anulaciï¿½n de la reserva.
 	 * @param reserva	: objeto a anular.
 	 * @return -1 error, 1=Exito.
 	 */
@@ -378,8 +378,8 @@ public interface VentaPasajesManager {
 	 * @param busqPax			: Parametros a busacar del Pasajero.
 	 * @param fechaPartida		: Fecha de partida.
 	 * @param idUsuario			: Identificador del usuario que registro la Venta o Reserva.
-	 * @param numeroControl		: Número de Control.
-	 * @param numeroBoleto		: Número de Boleto
+	 * @param numeroControl		: Nï¿½mero de Control.
+	 * @param numeroBoleto		: Nï¿½mero de Boleto
 	 * @param idOrigen			: Identificador del Origen.
 	 * @param idDestino			: Identificador del Destino.
 	 * @param tipoMovimiento	: Tipode movimiento; (venta, reserva o fecha abirta)
@@ -425,13 +425,13 @@ public interface VentaPasajesManager {
 	public List<VentaPasaje> buscarVentasByPasajero(Long idPasajero)throws Exception;
 	/**
 	 * Busca datos del boleto a liberar del manifiesto de pasajeros.
-	 * @param numeroboleto	: Número de Boleto a buscar.
+	 * @param numeroboleto	: Nï¿½mero de Boleto a buscar.
 	 * @return	datos del boleto
 	 * @throws Exception
 	 */
 	public List<VentaPasaje> buscarBoletoLiberarManifiesto(String numeroboleto)throws Exception;
 	/**
-	 * Realiza la anulación del boleto Crédito.
+	 * Realiza la anulaciï¿½n del boleto Crï¿½dito.
 	 * @param boleto	: Objeto venta, a anular
 	 * @throws Exception
 	 */
@@ -439,7 +439,7 @@ public interface VentaPasajesManager {
 
 	/**
 	 * Busca el boleto para la venta del seguro.
-	 * @param numeroBoleto	: Número del Boleto
+	 * @param numeroBoleto	: Nï¿½mero del Boleto
 	 * @return
 	 * @throws Exception
 	 */
@@ -656,4 +656,12 @@ public interface VentaPasajesManager {
 	 * @throws Exception
 	 */
 	public Map<String, EntidadEncomiendaPasajes> buscarEquivalenciaEntidades(Integer tipoEntidad) throws Exception;
+
+	/**
+	 * Realiza la postergacion Masiva de ventas a Fecha abierta
+	 * @param lstVentas	: Lista de ventas a postergar.
+	 * @param motivo	: Motivo de la postergacion.
+	 * @param usuario 	: Usuario que realiza la postergacion.
+	 */
+	public Integer postergarFAMasivo(List<VentaPasaje> lstVentas, String motivo, String usuario) throws Exception;
 }

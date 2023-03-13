@@ -18,7 +18,7 @@ import com.cystesoft.vyrbus.view.tuentrada.LiquidacionTuentrada;
 
 /**
  *
- * @author José Abanto
+ * @author Josï¿½ Abanto
  *
  */
 @SuppressWarnings("unchecked")
@@ -774,5 +774,63 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 			}
 		}
 		return map;
+    }
+    
+    public Liquidacion buscarLiquidacionByUsuario(Integer idAgencia, Integer idUsuario, Integer estadoLiquidacion, String fecha ) throws Exception {
+    	String sql = "SELECT l.liquidacion_id, l.n_anio, l.agencia_id, l.usuario_id, l.n_estliq, "
+    			+ "l.c_nomusu as NombreUsuario, " //0-5
+    			+ "a.c_nomcor as NombreAgencia, " //6-6"
+    			+ "u.c_apepat as ApPaterno, u.c_apemat as ApMarterno, u.c_nombre as Nombres, " //7-9
+    			+ "l.d_fecliq as FechaLiquidacion, l.audfecmod as FechaMod, " //10-11
+    			+ "l.audfecins as FechaInsercion, l.audipinse as ipinsercion, l.audusuins as usuarioInsercion, " //12-14
+    			+ "l.n_moning, l.n_moningdol, a.c_codigo "  //15-17
+    			+ "FROM vrtliquidacion l "
+    			+ "INNER JOIN vrmagencia a ON (a.agencia_id=l.agencia_id) "
+    			+ "INNER JOIN vrmusuario u ON (u.usuario_id=l.usuario_id) "
+    			+ "WHERE l.agencia_id="+idAgencia + " AND l.usuario_id = " + idUsuario + " AND l.n_estliq = " + estadoLiquidacion + " "  
+    			+ "AND l.c_estreg = '" + Constantes.VALUE_ACTIVO + "' AND to_date(to_char(l.d_fecliq,'dd/MM/yyyy'),'dd/MM/yyyy') = to_date('" + fecha + "', 'dd/MM/yyyy')";
+    	
+    	log.info(sql);
+		List<?> result = getSession().createSQLQuery(sql).list();
+		Liquidacion liquidacion = null;
+		for(int i=0; i<result.size(); i++){
+			Object[] obj = (Object[]) result.get(i);
+
+			Agencia agencia = new Agencia();
+			agencia.setId(((BigDecimal) obj[2]).intValue());
+			agencia.setDenominacion(obj[6].toString());
+			agencia.setCodigo(obj[17]!=null?obj[17].toString():null);
+
+			Usuario usuario = new Usuario();
+			usuario.setId(((BigDecimal) obj[3]).intValue());
+			usuario.setLogin(obj[5].toString());
+			usuario.setApellidoPaterno(obj[7].toString());
+			if (obj[8] !=null)
+				usuario.setApellidoMaterno(obj[8].toString());
+			usuario.setNombre(obj[9].toString());
+
+			liquidacion = new Liquidacion();
+			liquidacion.setId(((BigDecimal) obj[0]).intValue());
+			liquidacion.setAnio(((BigDecimal)obj[1]).intValue());
+			liquidacion.setNombreUsuario(obj[5].toString());
+			liquidacion.setEstadoLiquidacion(((BigDecimal) obj[4]).intValue());
+			liquidacion.setFechaLiquidacion(((Date)obj[10]));
+			if (obj[11] !=null)
+				liquidacion.setFechaModificacion(((Date)obj[11]));
+			if (obj[12] !=null)
+				liquidacion.setFechaInsercion(((Date)obj[12]));
+			if (obj[13] !=null)
+				liquidacion.setIpInsercion(obj[13].toString());
+			if (obj[14] !=null)
+				liquidacion.setUsuarioInsercion(obj[14].toString());
+			if (obj[15] !=null)
+				liquidacion.setMontoIngresado(((BigDecimal) obj[15]).doubleValue());
+
+			liquidacion.setMontoIngresadoDolares(((BigDecimal) obj[16]).doubleValue());
+			liquidacion.setUsuario(usuario);
+			liquidacion.setAgencia(agencia);
+		}
+
+		return liquidacion;
     }
 }

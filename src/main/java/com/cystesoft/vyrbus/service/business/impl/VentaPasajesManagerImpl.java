@@ -2745,6 +2745,38 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 		getVentaPasajesHistorialDAO().guardar(historial);
 		
 	}
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#postergarFAMasivo(java.util.List)
+	 */
+	@Override
+	public Integer postergarFAMasivo(List<VentaPasaje> lstVentas, String motivo, String usuario) throws Exception {
+		try {
+			int result = 0;
+			for(VentaPasaje venta : lstVentas) {
+				VentaPasaje ventaPostergar = getVentaPasajesDAO().buscarPorId(venta.getId());
+				copyHistoryVentaPasaje(ventaPostergar.getId());
+				ventaPostergar.setVentaPasaje(ventaPostergar);
+				ventaPostergar.setItinerario(new Itinerario(new Long(1)));
+				ventaPostergar.setTipoMovimiento(new TipoMovimiento(9));
+				ventaPostergar.setNumeroAsiento(null);
+				ventaPostergar.setNumeroPiso(null);
+				ventaPostergar.setAgenciaPartida(null);
+				ventaPostergar.setFechaPartida(null);
+				ventaPostergar.setHoraPartida(null);
+				ventaPostergar.setAgenciaLlegada(null);
+				ventaPostergar.setFechaLlegada(null);
+				ventaPostergar.setHoraLllegada(null);
+				ventaPostergar.setEsFechaAbierta(1);
+				ventaPostergar.setObservaciones(motivo);
+				ventaPostergar.setUsuarioModificacion(usuario);
+				getVentaPasajesDAO().update(ventaPostergar);
+			}
+			result = 1;
+			return result;
+		}catch (Exception ex) {
+			throw new Exception();
+		}
+	}
 
 //	private String generarBoleto(String numBoleto, Integer idTipoComprobante, Integer idUsuarioHW) throws Exception{
 //		int position = numBoleto.indexOf("-");
