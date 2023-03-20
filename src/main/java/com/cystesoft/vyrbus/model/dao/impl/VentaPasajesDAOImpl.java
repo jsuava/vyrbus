@@ -926,6 +926,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		List<?> result = getSession().createSQLQuery(sql).addEntity("VP",VentaPasaje.class).list();
 
 		return (List<VentaPasaje>)result;
+
 	}
 
 	/*

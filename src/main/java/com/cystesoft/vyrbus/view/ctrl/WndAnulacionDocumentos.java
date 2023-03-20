@@ -274,7 +274,8 @@ public class WndAnulacionDocumentos extends WndBase{
 		List<VentaPasaje> lstVentaPasaje = ServiceLocator.getVentaPasajesManager().buscarBoletosDevolucion(null, null, txtNumeroComprobante.getText().trim().toUpperCase());
 		if(lstVentaPasaje.size()>0){
 			/*Busca por el ultimo movimiento agrupado por numero de control*/
-			List<VentaPasaje> lstResult= ServiceLocator.getVentaPasajesManager().buscarBoletosDevolucion(null, lstVentaPasaje.get(0).getNumeroControl(), null);
+			String nroControl = lstVentaPasaje.get(0).getNumeroControl();
+			List<VentaPasaje> lstResult= ServiceLocator.getVentaPasajesManager().buscarBoletosDevolucion(null, nroControl, null);
 			/*Busca por el identificador del ultmio movimiento, el registro a validar*/
 			final VentaPasaje ventaAnular=ServiceLocator.getVentaPasajesManager().buscarVentaById(lstResult.get(0).getId());
 			if(ventaAnular.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA)
