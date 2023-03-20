@@ -3168,7 +3168,6 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 							}catch(NumeroBoletoDuplicadoException nbdex){
 								DlgMessage.information(Messages.getString("WndVentaReserva.information.numeroBoletoVendido"));
 							}
-
 						}
 					}catch (CapacityExceedsException ceex) {
 						DlgMessage.information(Messages.getString("WndVentaReserva.information.changeCapacidad"));

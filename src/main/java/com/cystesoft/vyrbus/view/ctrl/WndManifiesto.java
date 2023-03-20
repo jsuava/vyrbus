@@ -2789,6 +2789,7 @@ public class WndManifiesto extends WndBase {
 		btnPostergar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			public void onEvent (Event e) {
 				postergarServicio(txtMotivo.getText());
+				onClose();
 			}
 		});
 		btnPostergar.setImage("/resources/mp_postergarFA.png");
@@ -2826,7 +2827,7 @@ public class WndManifiesto extends WndBase {
 				DlgMessage.information("Todos los boletos del Servicio fueron postergados a Fecha Abierta satisfactoriamente!!!");
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		
 	}
