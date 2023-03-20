@@ -2749,6 +2749,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#postergarFAMasivo(java.util.List)
 	 */
 	@Override
+	@Transactional
 	public Integer postergarFAMasivo(List<VentaPasaje> lstVentas, String motivo, String usuario) throws Exception {
 		try {
 			int result = 0;
@@ -2774,7 +2775,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 			result = 1;
 			return result;
 		}catch (Exception ex) {
-			throw new Exception();
+			throw new Exception(ex.getMessage());
 		}
 	}
 
