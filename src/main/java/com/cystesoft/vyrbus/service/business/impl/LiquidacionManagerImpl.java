@@ -15,7 +15,7 @@ import com.cystesoft.vyrbus.view.tuentrada.LiquidacionTuentrada;
 
 /**
  *
- * @author José Abanto
+ * @author Josï¿½ Abanto
  *
  */
 public class LiquidacionManagerImpl implements LiquidacionManager {
@@ -123,6 +123,15 @@ public class LiquidacionManagerImpl implements LiquidacionManager {
 	@Override
 	public Map<String, ResumenComprobante> buscarResumenComprobantes(String fechaLiquidacion, Integer idAgencia, Integer idUsuario) {
 		return getLiquidacionDAO().buscarResumenComprobantes(fechaLiquidacion, idAgencia, idUsuario);
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.LiquidacionManager#buscarLiquidacionByUsuario(java.lang.Integer, java.lang.Integer, java.lang.Integer, java.lang.String)
+	 */
+	@Override
+	public Liquidacion buscarLiquidacionByUsuario(Integer idAgencia, Integer idUsuario, Integer estadoLiquidacion, String fecha) throws Exception {
+		return getLiquidacionDAO().buscarLiquidacionByUsuario(idAgencia, idUsuario, estadoLiquidacion, fecha);
 	}
 
 

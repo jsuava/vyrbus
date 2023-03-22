@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripci�n	: Clase que centraliza las Constantes que se usa en todo el sistema.
- * Autor		: Jos� Sullo Avalos
+ * Descripcion	: Clase que centraliza las Constantes que se usa en todo el sistema.
+ * Autor		: Jose Avalos
  * Fecha		: 08/04/2012
  */
 package com.cystesoft.vyrbus.service.util;
@@ -18,7 +18,7 @@ import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
 
 /**
  * Clase que centraliza las Constantes que se usa en todo el sistema.
- * @author Jos� Sullo Avalos
+ * @author Jose Avalos
  * @since JDK1.6
  */
 public class Constantes {
@@ -160,9 +160,9 @@ public class Constantes {
 //	public static final String SERVER_HOST = Executions.getCurrent().getHeader("host");
 //	public static final String SERVER_HOST = "ventas.tepsa.com.pe/";
 
-//	public static final String SERVER_HOST = "localhost:8080";
+	public static final String SERVER_HOST = "localhost:8080";
 	
-	public static final String SERVER_HOST = "119.8.145.122:8080";
+//	public static final String SERVER_HOST = "119.8.145.122:8080";
 
 	public static final String SERVER_CONTEXT = Executions.getCurrent().getContextPath();
 	public static final String URL_FORMATOS = SERVER_PROTOCOL+"://"+SERVER_HOST+SERVER_CONTEXT+"/formatos/";

@@ -26,7 +26,7 @@ import com.cystesoft.vyrbus.view.ui.WndBase;
 
 /**
  *
- * @author José Abanto
+ * @author Josï¿½ Abanto
  *
  */
 public class WndTipoOperacion extends WndBase{
@@ -78,13 +78,13 @@ public class WndTipoOperacion extends WndBase{
 		if(oliquidacion!=null){
 			btnMostrarCalendario.setDisabled(true);
 			lblInformativo1.setValue("El sistema ha detectado que tiene una apertura de caja con fecha: " + Constantes.FORMAT_DATE.format(oliquidacion.getFechaLiquidacion())+". " +
-					"Si realmente necesita aperturar caja primero deberá realizar el Cierre de Caja.");
+					"Si realmente necesita aperturar caja primero debera realizar el Cierre de Caja.");
 			lblInformativo2.setValue(Messages.getString("Generales.information.liquidacionAbierta"));
 			btnCerrar.setVisible(true);
 		}else{
 			btnMostrarCalendario.setDisabled(false);
-			lblInformativo1.setValue("Verifique bien la fecha de apertura de la liquidación, ya que esta fecha se utilizara para todos los movimientos que realize.");
-			lblInformativo2.setValue("Si no va realizar ninguna operación que implique ingreso o egreso de dinero no aperture caja.");
+			lblInformativo1.setValue("Verifique bien la fecha de apertura de la liquidaciÃ³n, ya que esta fecha se utilizara para todos los movimientos que realize.");
+			lblInformativo2.setValue("Si no va realizar ninguna operaciÃ³n que implique ingreso o egreso de dinero no aperture caja.");
 			btnCerrar.setVisible(false);
 		}
 
@@ -102,13 +102,13 @@ public class WndTipoOperacion extends WndBase{
 							String fLiquidacion=Constantes.FORMAT_DATE.format(oLiquidacion.getFechaLiquidacion());
 							String fLiquidacionApertura=Constantes.FORMAT_DATE.format(dtbxFechaLiquidacion.getValue());
 							if(fLiquidacion.equals(fLiquidacionApertura) && oLiquidacion.getAgencia().getId().intValue()==getAgencia().getId().intValue() ){
-								DlgMessage.information("Ya cuenta con una liquidación en esta Agencia. \n No es posible abrir más de " +
-														"una liquidación en la misma Agencia en el mismo día.");
+								DlgMessage.information("Ya cuenta con una liquidaciÃ³n en esta Agencia. \n No es posible abrir mÃ¡s de " +
+														"una liquidaciÃ³n en la misma Agencia en el mismo dÃ­a.");
 								return;
 							}
 						}
 
-						//Valida que la fecha de la liquidación no se a mayor a la actual
+						//Valida que la fecha de la liquidaciï¿½n no se a mayor a la actual
 						Date fechaActual=new Date();
 						fechaActual.setHours(0);
 						fechaActual.setMinutes(0);
@@ -118,7 +118,7 @@ public class WndTipoOperacion extends WndBase{
 						fechaLiquidacion.setMinutes(0);
 						fechaLiquidacion.setSeconds(0);
 						if(fechaLiquidacion.getTime()>fechaActual.getTime()){
-							DlgMessage.information("No es posible aperturar una liquidación con una fecha mayor a la actual.");
+							DlgMessage.information("No es posible aperturar una liquidaciÃ³n con una fecha mayor a la actual.");
 							return;
 						}
 
@@ -130,13 +130,13 @@ public class WndTipoOperacion extends WndBase{
 						liquidacionTurnoCarga.setFechaApertura(fechaLiquidacion);
 						TranscarUsuarioPersonal usuarioPersonal = ServiceLocator.getTranscarWebManager().buscarUsuario(getUsuario().getLogin());
 						if(usuarioPersonal==null) {
-							DlgMessage.information("No se puede aperturar la liqudiación de Carga, debido a que el usuario "+getUsuario().getLogin()+" no existe en el sistema de carga.");
+							DlgMessage.information("No se puede aperturar la liqudiaciÃ³n de Carga, debido a que el usuario "+getUsuario().getLogin()+" no existe en el sistema de carga.");
 							return;
 						}
 
 //						Integer agenciaId = ServiceLocator.getTranscarWebManager().buscarIdAgenciaByCodigoAgenciaPasajes(getAgencia().getId().toString());
 //						if(agenciaId ==null) {
-//							DlgMessage.information("No se puede aperturar la liqudiación de Carga, debido a que la agencia "+getAgencia().getDenominacion()+" no existe en el sistema de carga.");
+//							DlgMessage.information("No se puede aperturar la liqudiaciï¿½n de Carga, debido a que la agencia "+getAgencia().getDenominacion()+" no existe en el sistema de carga.");
 //							return;
 //						}
 						liquidacionTurnoCarga.setTranscarUsuarioPersonal(usuarioPersonal);

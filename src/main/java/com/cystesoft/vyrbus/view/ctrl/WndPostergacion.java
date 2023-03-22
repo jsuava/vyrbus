@@ -48,6 +48,7 @@ import com.cystesoft.vyrbus.model.bean.EspecieValorada;
 import com.cystesoft.vyrbus.model.bean.FormaPago;
 import com.cystesoft.vyrbus.model.bean.Itinerario;
 import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartida;
+import com.cystesoft.vyrbus.model.bean.Liquidacion;
 import com.cystesoft.vyrbus.model.bean.Localidad;
 import com.cystesoft.vyrbus.model.bean.MapaBus;
 import com.cystesoft.vyrbus.model.bean.OperadorTarjetaCredito;
@@ -215,11 +216,19 @@ public class WndPostergacion extends WndBase implements Serializable {
 	@Override
 	public void onCreate() throws Exception {
 		try{
+			super.onCreate();
+			fechaLiquidacion = (Date)this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION);
+
 			/*Valida si el usuario tiene una liquidaci�n aperturada*/
 			if(getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION)==null)
 				throw new LiquidacionNullException();
+			
+			/* Se valida que el usuario tenga liquidacion aperturada no solo por fecha*/
+			String fechaLiq = Constantes.FORMAT_DATE.format(fechaLiquidacion);
+			Liquidacion liquidacion = UtilData.buscarLiquidacionByUsuario(getAgencia().getId(), getUsuario().getId(), Constantes.LIQUI_ESTA_ABIERTO, fechaLiq);
+			if(liquidacion == null)
+				throw new LiquidacionNullException();
 
-			super.onCreate();
 			UtilData.cargarDataCombo(cmbOrigen, Localidad.class, false);
 			UtilData.cargarDataCombo(cmbDestino, Localidad.class, false);
 //			tipoComprobante = (TipoComprobante)this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_TIPO_COMPROBANTE);

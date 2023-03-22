@@ -165,6 +165,4 @@ public class ManifiestoManagerImpl implements ManifiestoManager{
 	public List<Manifiesto> buscarDevolucionIsc(String fechaInicial, String fechaFinal, String per4949, String periodo)  {
 		return getManifiestoDAO().buscarDevolucionIsc(fechaInicial, fechaFinal, per4949, periodo);
 	}
-
-
 }

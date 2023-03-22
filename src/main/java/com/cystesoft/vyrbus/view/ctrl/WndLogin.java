@@ -46,6 +46,7 @@ import com.cystesoft.vyrbus.model.bean.UsuarioRol;
 import com.cystesoft.vyrbus.service.exceptions.CaptchaNullException;
 import com.cystesoft.vyrbus.service.exceptions.ControlAccesoException;
 import com.cystesoft.vyrbus.service.exceptions.LoginNullException;
+import com.cystesoft.vyrbus.service.exceptions.LoginRedirectException;
 import com.cystesoft.vyrbus.service.exceptions.PasswordException;
 import com.cystesoft.vyrbus.service.exceptions.UsuarioHardwareNullException;
 import com.cystesoft.vyrbus.service.exceptions.UsuarioNullException;
@@ -194,6 +195,11 @@ public class WndLogin extends WndBase {
 			final Usuario usuario = ServiceLocator.getUsuarioManager().buscarUsuarioPorLoginPassword(txtLogin.getText().trim(), txtPassword.getText().trim(), Constantes.VALUE_ACTIVO);
 			if (usuario == null)
 				throw new UsuarioNullException();
+			
+			Usuario userLogueado = (Usuario)this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO);
+			if(userLogueado != null && usuario.getId()!= userLogueado.getId()) {
+				throw new LoginRedirectException(userLogueado.getLogin());				
+			}
 
 			ControlAcceso controlAcceso = null;
 			if(usuario.getTipoSeguridad().intValue()==Constantes.VALIDAR_APPLET) {
@@ -554,6 +560,15 @@ public class WndLogin extends WndBase {
 			}else{
 				DlgMessage.information("El codigo de acceso no existe o no es valido.", txtAccessCode);
 			}
+		}catch(LoginRedirectException lrex) {
+			Messagebox.show("Ya hay un usuario logueado en el Sistema, si desea ingresar al Sistema abra otro NAVEGADOR o cierre la sesion del usuario "+lrex.getMensaje().toUpperCase(), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_OK, Messagebox.QUESTION, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event e){
+					if(e.getName().equals("onOK")){
+						Executions.sendRedirect("login.zul");
+					}
+				}
+			});			
 		}catch(Exception ex){
 			ex.printStackTrace();
 			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
