@@ -422,7 +422,7 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 					ventaCarga.setTipoTransaccion("V.(YAP)");
 					ventaCarga.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CONTADO, "CONTADO"));
 					ventaCarga.setTipoFormaPago(new TipoFormaPago(Constantes.ID_TIPFORPAG_YAPE, "YAPE"));
-				}else if(tipoPagoId == ID_TIPPAG_TRANSFERENCIA){
+				}else if(tipoPagoId == ID_TIPPAG_TRANSFERENCIA){					
 					ventaCarga.setTipoTransaccion("V.(TRA)");
 					ventaCarga.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CONTADO, "CONTADO"));
 					ventaCarga.setTipoFormaPago(new TipoFormaPago(Constantes.ID_TIPFORPAG_TRANSFERENCIA, "TRANSFERENCIA"));
