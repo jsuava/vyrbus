@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: Clase que manejara los metodos relacionados con el acceso al sistema.
- * Autor		: José Sullo Avalos
+ * Descripciï¿½n	: Clase que manejara los metodos relacionados con el acceso al sistema.
+ * Autor		: Josï¿½ Sullo Avalos
  * Fecha		: 09/04/2012
  */
 package com.cystesoft.vyrbus.view.ctrl;
@@ -527,9 +527,9 @@ public class WndLogin extends WndBase {
 		} catch (UsuarioHardwareNullException uhnex){
 			Executions.sendRedirect("invalidAccess.zul");
 		} catch (UsuarioNullException unex){
-			DlgMessage.information("Nombre de usuario o contraseña incorrectos");
+			DlgMessage.information("Nombre de usuario o contraseï¿½a incorrectos");
 		}catch (LoginException lex){
-			DlgMessage.information("Nombre de usuario o contraseña incorrectos");
+			DlgMessage.information("Nombre de usuario o contraseï¿½a incorrectos");
 		}catch (UsuarioRolNullException urne){
 			DlgMessage.information(Messages.getString("WndLogin.information.usuarioSinRol"));
 		}catch(LoginNullException lnex){
@@ -539,7 +539,7 @@ public class WndLogin extends WndBase {
 				DlgMessage.information(Messages.getString("WndLogin.information.password"));
 				txtPassword.setFocus(true);
 			}else if(cp.getTipo()==PasswordException.PASSWORD_INCOREC){
-				DlgMessage.information("Nombre de usuario o contraseña incorrectos");
+				DlgMessage.information("Nombre de usuario o contraseï¿½a incorrectos");
 			}
 		}catch(CaptchaNullException cnex){
 			if(cnex.getLevel().intValue()==0)
