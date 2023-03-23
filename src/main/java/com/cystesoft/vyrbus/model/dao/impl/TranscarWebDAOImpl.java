@@ -58,6 +58,7 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 	private JdbcTemplate jdbcTemplate;
 	private int ID_TIPPAG_EFECTIVO = 1;
 	private int ID_TIPPAG_YAPE = 3;
+	private int ID_TIPPAG_TRANSFERENCIA = 4;
 //	private int ID_TIPPAG_TARJETA = 2;
 	private int ID_FORPAG_CONTADO = 1;
 	private int ID_FORPAG_CREDITO = 2;
@@ -421,6 +422,10 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 					ventaCarga.setTipoTransaccion("V.(YAP)");
 					ventaCarga.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CONTADO, "CONTADO"));
 					ventaCarga.setTipoFormaPago(new TipoFormaPago(Constantes.ID_TIPFORPAG_YAPE, "YAPE"));
+				}else if(tipoPagoId == ID_TIPPAG_TRANSFERENCIA){					
+					ventaCarga.setTipoTransaccion("V.(TRA)");
+					ventaCarga.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CONTADO, "CONTADO"));
+					ventaCarga.setTipoFormaPago(new TipoFormaPago(Constantes.ID_TIPFORPAG_TRANSFERENCIA, "TRANSFERENCIA"));
 				}else {// if(tipoPagoId==ID_TIPPAG_TARJETA) {
 					ventaCarga.setTipoTransaccion("V.(TC)");
 					ventaCarga.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CONTADO, "CONTADO"));
