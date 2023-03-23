@@ -23,11 +23,7 @@ import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
 
 /**
  * Clase que centraliza las Constantes que se usa en todo el sistema.
-<<<<<<< HEAD
- * @author José Sullo Avalos
-=======
  * @author Jose Avalos
->>>>>>> 0766780c1964b82a8491cee81ab816d3a1f43dc2
  * @since JDK1.6
  */
 public class Constantes {

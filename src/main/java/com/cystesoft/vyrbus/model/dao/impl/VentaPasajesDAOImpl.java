@@ -682,6 +682,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 						"vp.estadoRegistro IN('"+Constantes.VALUE_ACTIVO+"','"+estado+"') "
 					  + "AND vp.tipoComprobante.id IN ("+Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES+","+Constantes.ID_TIPCOM_VOUCHER_CORPORATIVO+") "
 					  + "AND vp.tipoMovimiento.id NOT IN ("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+")" +
+					    "AND vp.c_tiptra <> 2" + 
 					"ORDER BY u.apellidoPaterno, u.apellidoMaterno, u.nombre";
 		}else{
 			hql = "SELECT DISTINCT(vp.usuario.id), u.apellidoPaterno, u.apellidoMaterno, u.nombre, u.login " +
