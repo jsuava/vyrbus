@@ -2820,7 +2820,7 @@ public class WndManifiesto extends WndBase {
 			for(Listitem item : ListPasajeros.getItems()) {
 				VentaPasaje venta = item.getValue();
 				lstVentas.add(venta);
-				System.out.println(venta.getId());
+				//System.out.println(venta.getId());
 			}
 			Integer result = ServiceLocator.getVentaPasajesManager().postergarFAMasivo(lstVentas, motivo, getUsuario().getLogin());
 			if(result == 1) {
