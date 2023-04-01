@@ -3344,14 +3344,16 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		String sql = "SELECT vp.venpas_id, vp.venpas_idoriginal, vp.c_numboleto, vp.c_numbolant, vp.c_numcontrol, vp.n_secuencial, "
 				+ "p.c_apepat||' '||p.c_apemat||' '||p.c_nombre pasajero, tc.c_denominacion TIPCOM, tm.c_abreviatura TIPMOV, cv.c_nomcor CANAL, "
 				+ "nvl(vp.n_numpiso, 0) PISO, nvl(vp.n_numasiento, 0) ASTO, vp.d_fecpar, vp.c_horpar, vp.n_tarifa, vp.n_imppagdif DIFAGRE, "
-				+ "vp.d_fecliq FECOPE, a.c_nomcor AGENCIA, u.c_apepat, u.c_apemat, u.c_nombre, vp.c_observaciones, vp.audfecmod "
+				+ "vp.d_fecliq FECOPE, a.c_nomcor AGENCIA,uv.c_apepat APEPATVEN, uv.c_apemat APEMATVEN, uv.c_nombre NOMVEN, vp.c_observaciones, vp.d_fecanu,"
+				+ "ua.c_apepat APEPATANU, ua.c_apemat APEMATANU, ua.c_nombre  NOMBREANU "
 				+ "FROM vrtvenpas vp "
 				+ "INNER JOIN vrmruta r on (vp.ruta_id = r.ruta_id) "
 				+ "INNER JOIN vrmpasajero p on (vp.pasajero_id = p.pasajero_id) "
 				+ "INNER JOIN vrmtipcom tc on (vp.tipcom_id = tc.tipcom_id) "
 				+ "INNER JOIN vrmtipmov tm on (vp.tipmov_id = tm.tipmov_id) "
 				+ "INNER JOIN vrmagencia a on (vp.agencia_id = a.agencia_id) "
-				+ "INNER JOIN vrmusuario u on (vp.usuario_id = u.usuario_id) "
+				+ "INNER JOIN vrmusuario uv on (vp.usuario_id = uv.usuario_id) "
+				+ "INNER JOIN vrmusuario ua on (vp.usuario_idanu = ua.usuario_id)  "
 				+ "INNER JOIN vrmcanven cv on (vp.canven_id = cv.canven_id) "
 				+ "WHERE vp.d_fecliq between to_date('"+fechaDesde+"', 'dd/mm/yyyy') AND to_date('"+fechaHasta+"', 'dd/mm/yyyy') AND "
 				+ "vp.c_tiptra=1 AND vp.tipmov_id in (13) AND vp.tipcom_id in (2,7) ";
@@ -3397,13 +3399,20 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			Agencia agencia = new Agencia();
 			agencia.setNombreCorto(obj[17].toString());
 			ventaPasaje.setAgencia(agencia);
+			//USuario Venta
 			Usuario usuario = new Usuario();
 			usuario.setApellidoPaterno(obj[18]==null?"":obj[18].toString());
 			usuario.setApellidoMaterno(obj[19]==null?"":obj[19].toString());
 			usuario.setNombre(obj[20]==null?"":obj[20].toString());
 			ventaPasaje.setUsuario(usuario);
 			ventaPasaje.setObservaciones(obj[21]==null?"":obj[21].toString());
-			ventaPasaje.setFechaModificacion((Date)obj[22]);
+			ventaPasaje.setFechaAnulacion((Date)obj[22]);
+			//Usuario Anulacion. MAOE 31/03/2023
+			Usuario usuarioAnulacion = new Usuario();
+			usuarioAnulacion.setApellidoPaterno(obj[23]==null?"":obj[23].toString());
+			usuarioAnulacion.setApellidoMaterno(obj[24]==null?"":obj[24].toString());
+			usuarioAnulacion.setNombre(obj[25]==null?"":obj[25].toString());
+			ventaPasaje.setUsuarioAnulacion(usuarioAnulacion);
 			lstResult.add(ventaPasaje);
 		}
 		return lstResult;

@@ -361,18 +361,26 @@ public class WndAnulacionPostergacion extends WndBase {
 			cell = new Listcell(ventaPasaje.getImportePagadoByDiferencia().toString());
 			item.appendChild(cell);
 
+			//Fecha Venta
 			cell = new Listcell(Constantes.FORMAT_DATE.format(ventaPasaje.getFechaLiquidacion()));
 			item.appendChild(cell);
 			
-			cell = new Listcell(rdgCriterios.getSelectedIndex()==0 ?Constantes.FORMAT_DATE_TIME_24H.format(ventaPasaje.getFechaModificacion()) : "");
-			item.appendChild(cell);
-
-			cell = new Listcell(ventaPasaje.getAgencia().getNombreCorto());
-			item.appendChild(cell);
-
+			//USuario Venta
 			cell = new Listcell(ventaPasaje.getUsuario().getApellidoPaterno()
-								+" " + ventaPasaje.getUsuario().getApellidoMaterno()
-								+" " + ventaPasaje.getUsuario().getNombre());
+					+" " + ventaPasaje.getUsuario().getApellidoMaterno()
+					+" " + ventaPasaje.getUsuario().getNombre());
+			item.appendChild(cell);
+			
+			//Fecha Anulacion, Lee la fecha de anulacion,  MAOE 31/03/2023
+			cell = new Listcell(rdgCriterios.getSelectedIndex()==0 ?Constantes.FORMAT_DATE_TIME_24H.format(ventaPasaje.getFechaAnulacion()) : "");
+			item.appendChild(cell);
+			//Usuario Anulacion, lee el usuario anulacion. MAOE 31/03/2023
+			cell = new Listcell(ventaPasaje.getUsuarioAnulacion().getApellidoPaterno()
+					+" " + ventaPasaje.getUsuarioAnulacion().getApellidoMaterno()
+					+" " + ventaPasaje.getUsuarioAnulacion().getNombre());
+			item.appendChild(cell);
+			
+			cell = new Listcell(ventaPasaje.getAgencia().getNombreCorto());
 			item.appendChild(cell);
 
 			cell = new Listcell(ventaPasaje.getObservaciones());
@@ -394,7 +402,7 @@ public class WndAnulacionPostergacion extends WndBase {
 		if(lbxDetallado.getItemCount()>0) {
 			Session session = getDesktop().getSession();
 			HttpSession httpSession = (HttpSession)session.getNativeSession();
-			httpSession.setAttribute("parcialPath",Constantes.DIRECTORY_EXCEL+"GastosOtrosIngresos.xls");
+			httpSession.setAttribute("parcialPath",Constantes.DIRECTORY_EXCEL+"AnulacionesPostergaciones.xls");
 			httpSession.setAttribute("lbxAnulacionesPostergaciones", lbxDetallado);
 			Executions.sendRedirect("/exportXlsAnulacionesPostergaciones.htm");
 		}
