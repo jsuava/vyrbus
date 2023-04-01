@@ -2544,8 +2544,10 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		if(tipoMovimiento!=null){
 			if(tipoMovimiento.intValue()==Integer.valueOf(Constantes.TIPO_OPERACION_VENTA) || tipoMovimiento.intValue()==Integer.valueOf(Constantes.TIPO_OPERACION_RESERVA) || tipoMovimiento.intValue()==Integer.valueOf(Constantes.TIPO_OPERACION_VARIOS))
 				sql+="AND vp.c_tiptra="+tipoMovimiento+" ";
-			else//Busca ventas a fecha aviaerta
+			else if(tipoMovimiento == Constantes.ID_TIPMOV_FECHA_ABIERTA)//Busca ventas a fecha aviaerta
 				sql+="AND vp.c_tiptra="+Constantes.TIPO_OPERACION_VENTA+" AND vp.tipmov_id="+Constantes.ID_TIPMOV_FECHA_ABIERTA+" AND  vp.n_esfecabi=1";
+			else
+				sql+="AND vp.c_tiptra="+Constantes.TIPO_OPERACION_VENTA+" AND vp.tipmov_id="+Constantes.ID_TIPMOV_POSTERGACION_FA+" AND  vp.n_esfecabi=1";
 		}
 
 		//Por fecha de partida
@@ -3072,7 +3074,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					   + "WHERE vp.d_fecliq BETWEEN to_date('"+fechaInicial+"', 'dd/MM/yyyy') AND to_date('"+fechaFinal+"', 'dd/MM/yyyy') AND ag.tipage_id=1 "
 					   	 + "AND vp.tipmov_id "+queryTiposMov+" "
 					   	 + "AND vp.tipcom_id IN ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_RECIBO_CAJA+","+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_FACTURA+") "
-					   	 + "AND vp.c_tiptra='"+Constantes.TIPO_OPERACION_VENTA+"' "
+					   	 + "AND vp.c_tiptra IN ("+Constantes.TIPO_OPERACION_VENTA+", "+Constantes.TIPO_OPERACION_VENTA_ESPECIAL+", "+Constantes.TIPO_OPERACION_EXCESO+", "+Constantes.TIPO_OPERACION_PERDIDA_SERVICIO+") "
 					   	 + "AND ag.agencia_id=NVL("+idAgencia+",ag.agencia_id) "
 					   	 + "AND vp.forpag_id=NVL("+idFormaPago+",vp.forpag_id) "
 					   	 + "AND vp.usuario_id=NVL("+idUsuario+",vp.usuario_id) "
@@ -3087,7 +3089,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					   + "WHERE vp.d_fecliq BETWEEN to_date('"+fechaInicial+"', 'dd/MM/yyyy') AND to_date('"+fechaFinal+"', 'dd/MM/yyyy') AND ag.tipage_id=1 "
 					     + "AND vp.tipmov_id "+queryTiposMov+" "
 					     + "AND vp.tipcom_id IN ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_RECIBO_CAJA+","+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_FACTURA+") "
-					     + "AND vp.c_tiptra='"+Constantes.TIPO_OPERACION_VENTA+"' "
+					   	 + "AND vp.c_tiptra IN ("+Constantes.TIPO_OPERACION_VENTA+", "+Constantes.TIPO_OPERACION_VENTA_ESPECIAL+", "+Constantes.TIPO_OPERACION_EXCESO+", "+Constantes.TIPO_OPERACION_PERDIDA_SERVICIO+") "
 					     + "AND ag.agencia_id=NVL("+idAgencia+",ag.agencia_id) "
 					     + "AND vp.forpag_id=NVL("+idFormaPago+",vp.forpag_id) "
 					     + "AND vp.usuario_id=NVL("+idUsuario+",vp.usuario_id) "
@@ -3102,7 +3104,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					   + "WHERE vp.d_fecliq BETWEEN to_date('"+fechaInicial+"', 'dd/MM/yyyy') AND to_date('"+fechaFinal+"', 'dd/MM/yyyy') AND ag.tipage_id=1 "
 					   	 + "AND vp.tipmov_id "+queryTiposMov+" "
 					     + "AND vp.tipcom_id IN ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_RECIBO_CAJA+","+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_FACTURA+") "
-					     + "AND vp.c_tiptra='"+Constantes.TIPO_OPERACION_VENTA+"' "
+					   	 + "AND vp.c_tiptra IN ("+Constantes.TIPO_OPERACION_VENTA+", "+Constantes.TIPO_OPERACION_VENTA_ESPECIAL+", "+Constantes.TIPO_OPERACION_EXCESO+", "+Constantes.TIPO_OPERACION_PERDIDA_SERVICIO+") "
 					     + "AND ag.agencia_id=NVL("+idAgencia+",ag.agencia_id) "
 					     + "AND vp.forpag_id=NVL("+idFormaPago+",vp.forpag_id) "
 					     + "AND vp.usuario_id=NVL("+idUsuario+",vp.usuario_id) "
@@ -3974,9 +3976,9 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				"      CASE vp.tipcom_id WHEN 2 then c.c_numdoc WHEN 7 THEN p.c_numdoc END DNI, \r\n" + 
 				"      CASE vp.tipcom_id WHEN 2 then c.c_razsoc WHEN 7 THEN p.c_nomape END RAZON_SOCIAL, \r\n" + 
 				"      0.00 EXONERADO, \r\n" + 
-				"      CASE vp.c_tiptra WHEN '5' THEN vp.n_imppag else vp.n_imppag-vp.n_igv END V_VENTA, \r\n" + 
+				"      CASE vp.c_tiptra WHEN '5' THEN vp.n_imppag-vp.n_igv else vp.n_imppag END V_VENTA, \r\n" + 
 				"      vp.n_igv IGV, \r\n" + 
-				"      CASE vp.c_tiptra WHEN '5' THEN vp.n_imppag+vp.n_igv else vp.n_imppag END TOTAL, \r\n" + 
+				"      vp.n_imppag TOTAL, \r\n" + 
 				"      r.c_destino DESTINO, to_char(vp.n_numpiso+1, '9')||'-'||trim(to_char(vp.n_numasiento, '99')) ASTO, \r\n" + 
 				"      vp.tipcom_id, vp.tipmov_id \r\n" + 
 				"from \r\n" + 

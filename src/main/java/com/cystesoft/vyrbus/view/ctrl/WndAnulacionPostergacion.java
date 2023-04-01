@@ -309,6 +309,7 @@ public class WndAnulacionPostergacion extends WndBase {
 			}
 		}
 
+		String strUsuarioAnulacion;
 
 		for(VentaPasaje ventaPasaje : lstDetVentas) {
 			item = new Listitem();
@@ -349,7 +350,7 @@ public class WndAnulacionPostergacion extends WndBase {
 			cell = new Listcell(ventaPasaje.getNumeroAsiento().toString());
 			item.appendChild(cell);
 
-			cell = new Listcell(Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida()));
+			cell = new Listcell( ventaPasaje.getFechaPartida()==null ? "01/01/1900" : Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida()) );
 			item.appendChild(cell);
 
 			cell = new Listcell(ventaPasaje.getHoraPartida());
@@ -375,9 +376,14 @@ public class WndAnulacionPostergacion extends WndBase {
 			cell = new Listcell(rdgCriterios.getSelectedIndex()==0 ?Constantes.FORMAT_DATE_TIME_24H.format(ventaPasaje.getFechaAnulacion()) : "");
 			item.appendChild(cell);
 			//Usuario Anulacion, lee el usuario anulacion. MAOE 31/03/2023
-			cell = new Listcell(ventaPasaje.getUsuarioAnulacion().getApellidoPaterno()
-					+" " + ventaPasaje.getUsuarioAnulacion().getApellidoMaterno()
-					+" " + ventaPasaje.getUsuarioAnulacion().getNombre());
+			if(rdgCriterios.getSelectedIndex()==0) {
+				strUsuarioAnulacion = ventaPasaje.getUsuarioAnulacion().getApellidoPaterno()
+						+" " + ventaPasaje.getUsuarioAnulacion().getApellidoMaterno()
+						+" " + ventaPasaje.getUsuarioAnulacion().getNombre();
+			}
+			else
+				strUsuarioAnulacion="";
+			cell = new Listcell(strUsuarioAnulacion);
 			item.appendChild(cell);
 			
 			cell = new Listcell(ventaPasaje.getAgencia().getNombreCorto());

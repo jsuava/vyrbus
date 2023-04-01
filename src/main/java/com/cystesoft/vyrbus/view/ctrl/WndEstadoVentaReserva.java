@@ -908,12 +908,14 @@ public class WndEstadoVentaReserva extends WndBase {
 		comboitem_0.setLabel("TODOS");
 		comboitem_venta.setLabel("VENTA");
 		comboitem_reserva.setLabel("RESERVA");
-		comboitem_fechaAbi.setLabel("FECHA ABIRTA");
+		comboitem_fechaAbi.setLabel("FECHA ABIERTA");
+		comboitem_fechaAbi.setLabel("POSTERGACION FA");
 
 		comboitem_0.setValue(0);
 		comboitem_venta.setValue(Constantes.TIPO_OPERACION_VENTA);
 		comboitem_reserva.setValue(Constantes.TIPO_OPERACION_RESERVA);
 		comboitem_fechaAbi.setValue(String.valueOf(Constantes.ID_TIPMOV_FECHA_ABIERTA));
+		comboitem_fechaAbi.setValue(String.valueOf(Constantes.ID_TIPMOV_POSTERGACION_FA));
 
 		combobox.appendChild(comboitem_0);
 		combobox.appendChild(comboitem_venta);
