@@ -2327,6 +2327,8 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 						if(result.isIsCorrect()){
 							VentaPasaje anulacion=buscarPorId(ventaPasaje.getId());
 							anulacion.setObservaciones(ventaPasaje.getObservaciones());
+							anulacion.setFechaAnulacion(ventaPasaje.getFechaAnulacion()!=null?ventaPasaje.getFechaAnulacion(): new Date());
+							anulacion.setUsuarioAnulacion(ventaPasaje.getUsuarioAnulacion()!=null?ventaPasaje.getUsuarioAnulacion():null);
 							if(anulacion.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO && ventaPasaje.getVentaPasaje()!=null){
 								/*Busca el Voucher y el registro de anulacion del Voucher*/
 								TreeMap<String, Object>criteriosBusqueda= new TreeMap<>();
