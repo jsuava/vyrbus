@@ -458,7 +458,7 @@ public class WndAnulacionDocumentos extends WndBase{
 		row.setSpans("2");
 		Div div= new Div();
 		div.setAlign("left");
-		Label lblinfo= new Label("Datos de la Liquidaci�n a qui�n se asignaran los comprobantes que se tengan que generar");
+		Label lblinfo= new Label("Datos de la Liquidación a quién se asignaran los comprobantes que se tengan que generar");
 		lblinfo.setStyle("color:blue;font-size:12px !important;text-transform:none;");
 		div.appendChild(lblinfo);
 		row.appendChild(div);

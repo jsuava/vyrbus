@@ -916,7 +916,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				"INNER JOIN vrmruta r ON r.ruta_id={VP}.ruta_id " +
 				"INNER JOIN vrmagencia a ON a.agencia_id={VP}.agencia_id " +
 				"INNER JOIN vrmpasajero p ON p.pasajero_id={VP}.pasajero_id " +
-				"WHERE {VP}.c_tiptra in('"+Constantes.TIPO_OPERACION_VENTA+"','"+Constantes.TIPO_OPERACION_VENTA_POOL+"','"+Constantes.TIPO_OPERACION_PERDIDA_SERVICIO+"') AND {VP}.c_estreg='"+Constantes.VALUE_ACTIVO+"' "
+				"WHERE {VP}.c_tiptra in('"+Constantes.TIPO_OPERACION_VENTA+"','"+Constantes.TIPO_OPERACION_VENTA_POOL+"','"+Constantes.TIPO_OPERACION_PERDIDA_SERVICIO+"','"+Constantes.TIPO_OPERACION_VENTA_ESPECIAL+"') AND {VP}.c_estreg='"+Constantes.VALUE_ACTIVO+"' "
 			  + "AND {VP}.tipcom_id IN ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_BOLETA_VENTA+", "+Constantes.ID_TIPCOM_FACTURA+")" ;
 
 		sql = sql + criterio;
