@@ -1,8 +1,13 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
+<<<<<<< HEAD
+ * Descripción	: Clase que centraliza las Constantes que se usa en todo el sistema.
+ * Autor		: José Sullo Avalos
+=======
  * Descripcion	: Clase que centraliza las Constantes que se usa en todo el sistema.
  * Autor		: Jose Avalos
+>>>>>>> 0766780c1964b82a8491cee81ab816d3a1f43dc2
  * Fecha		: 08/04/2012
  */
 package com.cystesoft.vyrbus.service.util;
@@ -26,16 +31,16 @@ public class Constantes {
 	 * Vension actual del Sistema
 	 */
 
-	public static final String SYSTEM_VERSION = "VersiÃ³n 3.3.3";
+	public static final String SYSTEM_VERSION = "Versión 3.3.7";
 		
 	/**
-	 * Constante para la Acciï¿½n Nuevo
+	 * Constante para la Acción Nuevo
 	 * @see WndOpcionesMantenimiento#onCancel(int)
 	 * @see WndOpcionesMantenimiento#onSave(int)
 	 */
 	public static final int ACTION_NEW = 0;
 	/**
-	 * Constante para la Acciï¿½n Modificar
+	 * Constante para la Acción Modificar
 	 * @see WndOpcionesMantenimiento#onCancel(int)
 	 * @see WndOpcionesMantenimiento#onSave(int)
 	 */
@@ -105,7 +110,7 @@ public class Constantes {
 	public static final int TRUE_VALUE = 1;
 	public static final int FALSE_VALUE = 0;
 	/*	Para las fecha en null	*/
-	public static final Date FECHA_NULL= Util.StringtoDate("01/01/1960", DATE_FORMAT);
+	public static final Date FECHA_NULL= Util.StringtoDate("01/01/1970", DATE_FORMAT);
 	/*	Para el Applet	*/
 	public static final int VALIDAR_APPLET = 1;
 	/* Guarda el valor del IGV actual */
@@ -160,9 +165,11 @@ public class Constantes {
 //	public static final String SERVER_HOST = Executions.getCurrent().getHeader("host");
 //	public static final String SERVER_HOST = "ventas.tepsa.com.pe/";
 
-	public static final String SERVER_HOST = "localhost:8080";
+//	public static final String SERVER_HOST = "localhost:8080";
+	//Demo Wars
+//	public static final String SERVER_HOST = "170.0.233.155:8080";
 	
-//	public static final String SERVER_HOST = "119.8.145.122:8080";
+	public static final String SERVER_HOST = "119.8.145.122:8080";
 
 	public static final String SERVER_CONTEXT = Executions.getCurrent().getContextPath();
 	public static final String URL_FORMATOS = SERVER_PROTOCOL+"://"+SERVER_HOST+SERVER_CONTEXT+"/formatos/";
@@ -203,7 +210,7 @@ public class Constantes {
 	public static final int PISO_UNO=0;
 	public static final int PISO_DOS=1;
 
-	/*Constante dias del anio expresado en dï¿½as*/
+	/*Constante dias del anio expresado en días*/
 	public static final int DIAS_DEL_ANIO=365;
 
 	/* Constantes que indican el Tipo de convenio con el cliente*/
@@ -363,6 +370,7 @@ public class Constantes {
 	public static final int ID_ROL_ADMIN=5;
 	public static final int ID_ROL_FINANZAS=6;
 	public static final int ID_ROL_FISCALIZACION=7;
+	public static final int ID_ROL_COUNTER_WSP=8;
 	
 	
 	public static final int ID_ROL_CLIENTE_CORPORATIVO=90;
@@ -510,7 +518,7 @@ public class Constantes {
 	 *********************************************************************************************************************************************/
 	/**
 	 * Tiempo extra en que se puede realizar el despacho de pasajeros, despues de la hora de embarque establesida por el itinerario. Expresados en minulos por defecto 30 minutos
-	 * Ejemplo si la hora de embarque del itinerario es a las: 12:00, se puede hacer hastas las 12:30 como mï¿½ximo
+	 * Ejemplo si la hora de embarque del itinerario es a las: 12:00, se puede hacer hastas las 12:30 como máximo
 	 */
 	public static final int TIEMPO_EXTRA_CIERRE_DESPACHO_PASAJEROS=30;
 
@@ -552,7 +560,7 @@ public class Constantes {
 	public static final int TIEMPO_EXPIRA_RESERVA = (((Parametros)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_PARAMETROS)).getTiempoExpiraReserva());
 //	public static final int TIEMPO_EXPIRA_RESERVA = 6;
 	/**
-	 * Tiempo limite para poder aceptar la postergaciï¿½n del boleto.
+	 * Tiempo limite para poder aceptar la postergación del boleto.
 	 */
 	public static final int TIEMPO_LIMITE_POSTERGACION = (((Parametros)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_PARAMETROS)).getTiempoPostergacion());
 //	public static final int TIEMPO_LIMITE_POSTERGACION = 6;
@@ -568,7 +576,7 @@ public class Constantes {
 //	public static final int PUNTOS_GANADOS_X_PAXFREE = 5;
 	/**
 	 * Tiempo en el que un pasajero frecuente puede realizar el canje de su boleto de cortesia por cumpleanios, pudiendo ser n meses antes o n meses despues de
-     * la fecha de su cumpleaï¿½os. Por defecto es 60 dias
+     * la fecha de su cumpleaños. Por defecto es 60 dias
 	 */
 	public static final Integer RANGO_CANJE_CUMPLEANIOS= (((Parametros)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_PARAMETROS)).getRangoCanjeCumpleanios());
 //	public static final Integer RANGO_CANJE_CUMPLEANIOS=60;
@@ -578,7 +586,7 @@ public class Constantes {
 	public static final int DIAS_CADUCAN_PUNTOS=(((Parametros)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_PARAMETROS)).getTiempoCaducidadPuntos());
 //	public static final int DIAS_CADUCAN_PUNTOS=365;
 	/**
-	 * Indica el porcentaje para la alerta a abastecimientos para el envï¿½o de especies valoradas a la Agencia.
+	 * Indica el porcentaje para la alerta a abastecimientos para el envío de especies valoradas a la Agencia.
 	 */
 	public static final double ALERTAR_ENVIO_ESPECIES_VALORADAS=(((Parametros)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_PARAMETROS)).getAlertarEnvioEspecieValorda());
 //	public static final double ALERTAR_ENVIO_ESPECIES_VALORADAS=85.0;
@@ -625,7 +633,7 @@ public class Constantes {
 	 */
 	public static final int NUMERO_VIAJES_ACUMULADOS = (((Parametros)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_PARAMETROS)).getViajesAcumuladosPasajero());
 	/**
-	 * IP del proxy que utilizara el sistema para establecer la conexiï¿½n con el WS del MTC.
+	 * IP del proxy que utilizara el sistema para establecer la conexión con el WS del MTC.
 	 */
 	public static final String PROXY= (((Parametros)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_PARAMETROS)).getProxy()!=null?((Parametros)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_PARAMETROS)).getProxy():null);
 
@@ -635,7 +643,7 @@ public class Constantes {
 	/* PARAMETROS WEBSERVICE MTC*/
 	/*=========================================================================================================*/
 	/**
-	 * Nï¿½mero de Ruc de la Empresa
+	 * Número de Ruc de la Empresa
 	 */
 	public static final String empresa="TRANSMAR EXPRESS SAC";
 	public static final String direccion_empresa="AV. NICOLAS ARRIOLA NRO. 197";

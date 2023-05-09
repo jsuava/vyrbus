@@ -177,9 +177,11 @@ public class RESTCiva implements Serializable{
 
 				    result.add(jsonobject.getString("ruc"));
 				    result.add(jsonobject.getString("razonSocial"));
-				    result.add(jsonobject.getString("direccion"));
+				    result.add( ruc.substring(0, 1).contentEquals("2")? jsonobject.getString("direccion") : "");
 				}
-			}	
+
+			}
+
 		}
 
 		return result;

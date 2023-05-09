@@ -92,23 +92,24 @@
 							<listheader label="ID" width="30px" style="color: #ffffff;"/>
 							<listheader label="IDORI" width="175px" style="color: #ffffff;" visible="false"/>
 							<listheader label="COMPROBANTE" width="100px" sort="auto" style="color: #ffffff;"/>
-							<listheader label="COMP. ANT." width="100px" sort="auto" style="color: #ffffff;"/>
+							<listheader label="COMP. ANT." width="60px" sort="auto" style="color: #ffffff;"/>
 							<listheader label="NUMCONTROL" width="100px" style="color: #ffffff;" visible="false"/>
-							<listheader label="N. POST." width="40px" style="color: #ffffff;" />
+							<listheader label="N.POS." width="40px" style="color: #ffffff;" />
 							<listheader label="PASAJERO" width="200px" style="color: #ffffff;"/>
 							<listheader label="TIP. COMP." width="80px" style="color: #ffffff;"/>
-							<listheader label="TIP. MOV." width="80px" style="color: #ffffff;"/>
-							<listheader label="CANAL" width="80px" style="color: #ffffff;"/>
-							<listheader label="PISO" width="40px" style="color: #ffffff;"/>
-							<listheader label="ASIENTO" width="40px" style="color: #ffffff;"/>
-							<listheader label="F. PARTIDA" width="60px" style="color: #ffffff;"/>
-							<listheader label="H. PARTIDA" width="60px" style="color: #ffffff;"/>
-							<listheader label="TARIFA" width="60px" style="color: #ffffff;"/>
-							<listheader label="ADICIONAL" width="60px" style="color: #ffffff;"/>
-							<listheader label="F. VENTA" width="60px" style="color: #ffffff;"/>
-							<listheader label="F. ANULACION" width="60px" style="color: #ffffff;"/>
-							<listheader label="AGE. VENTA" width="120px" style="color: #ffffff;"/>
+							<listheader label="TIP. MOV." width="60px" style="color: #ffffff;"/>
+							<listheader label="CANAL" width="60px" style="color: #ffffff;"/>
+							<listheader label="PISO" width="30px" style="color: #ffffff;"/>
+							<listheader label="ASI." width="30px" style="color: #ffffff;"/>
+							<listheader label="F. PARTIDA" width="70px" style="color: #ffffff;"/>
+							<listheader label="H. PART" width="40px" style="color: #ffffff;"/>
+							<listheader label="TARIFA" width="50px" style="color: #ffffff;"/>
+							<listheader label="ADICIONAL" width="40px" style="color: #ffffff;"/>
+							<listheader label="F. VENTA" width="70px" style="color: #ffffff;"/>
 							<listheader label="USUARIO VENTA" width="230px"  style="color: #ffffff;"/>
+							<listheader label="F. ANULACION" width="100px" style="color: #ffffff;"/>
+							<listheader label="USUARIO ANULACION" width="230px"  style="color: #ffffff;"/>
+							<listheader label="AGE. VENTA" width="120px" style="color: #ffffff;"/>
 							<listheader label="OBSERVACIONES" width="200px"  style="color: #ffffff;"/>
 						</listhead>
 					</listbox>

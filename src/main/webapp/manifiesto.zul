@@ -31,7 +31,7 @@
 							<button id="cmdPrevio" image="/resources/mp_preliminar.png" sclass="btnImage" tooltiptext="Vista Preliminar" />
 							<button id="cmdImprimir" image="/resources/mp_imprimir.png" sclass="btnImage" tooltiptext="Imprimir" />
 							<button id="cmdReImprimir" image="/resources/mp_reimprimir.png" sclass="btnImage" tooltiptext="Re-Imprimir" />
-							<button id="btnPostergar" image="/resources/mp_postergarFA.png" sclass="btnImage" tooltiptext="Postegar a Fecha Abierta" />
+							<button id="btnPostergar" image="/resources/mp_postergarFA.png" sclass="btnImage" tooltiptext="Postegar a Fecha Abierta" visible="false"/>
 						</row>
 					</rows>
 				</grid>
