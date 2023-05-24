@@ -300,6 +300,13 @@ public class WndManifiestoMantenimiento extends WndBase{
 					cell.setStyle("color:red");
 				}
 				item.appendChild(cell); //Estado del manifiesto
+				
+				if(manifiesto.getFechaInsercion()!= null) {
+					cell = new Listcell(Constantes.FORMAT_TIME.format(manifiesto.getFechaInsercion()));
+					if (!(manifiesto.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO)))
+						cell.setStyle("color:red");
+				}
+				item.appendChild(cell); //Hora de emision
 
 				Toolbarbutton btnAnular= new Toolbarbutton();
 				btnAnular.setDisabled(!manifiesto.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO));
@@ -447,6 +454,11 @@ public class WndManifiestoMantenimiento extends WndBase{
 			if(!asientoVendido)
 				listPasajeros.add(ventaPasaje);
 		}
+		
+		Double importeTotal = 0.0;
+		for(VentaPasaje vp : listPasajeros) {
+			importeTotal = vp.getImportePagado() != null? importeTotal + vp.getImportePagado(): importeTotal;
+		}
 
 
 		/*Busca la serie del manifiesto para obtener la agencia a quien le corresponde*/
@@ -504,6 +516,8 @@ public class WndManifiestoMantenimiento extends WndBase{
 		httpSession.setAttribute("totalAsientos", String.valueOf(totalAsientos));
 		httpSession.setAttribute("numeroAutoSunat", manifiesto.getAutorizacionSunat());
 		httpSession.setAttribute("totalPasajeros", String.valueOf(listPasajero.size()));
+		httpSession.setAttribute("horaEmision", Constantes.FORMAT_TIME.format(manifiesto.getFechaInsercion()));
+		httpSession.setAttribute("importeTotal", Util.toNumberFormat(importeTotal, 2));
 
 
 //		httpSession.setAttribute("tipoAgencia", tipoAgencia);

@@ -2407,10 +2407,12 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				List<Cliente> lstCliente= ServiceLocator.getClienteManager().buscarClienteAgencia(ventaPasaje.getRucClienteCredito());
 				if(lstCliente.size()>0){
 					LineaCreditoCliente lineaCreditoCliente= getLineaCreditoClienteDAO().buscarPorId(lstCliente.get(0).getLineaCreditoCliente().getId());
-					Double saldo=lineaCreditoCliente.getSaldo();
-					saldo+=+importePagado;
-					lineaCreditoCliente.setSaldo(saldo);
-					getLineaCreditoClienteDAO().update(lineaCreditoCliente);
+					if(lineaCreditoCliente!=null) {
+						Double saldo=lineaCreditoCliente.getSaldo();
+						saldo+=+importePagado;
+						lineaCreditoCliente.setSaldo(saldo);
+						getLineaCreditoClienteDAO().update(lineaCreditoCliente);	
+					}
 				}
 			}
 

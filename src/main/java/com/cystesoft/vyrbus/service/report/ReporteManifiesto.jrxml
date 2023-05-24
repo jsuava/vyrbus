@@ -35,6 +35,10 @@
 	<parameter name="telefonoCentral" class="java.lang.String"/>
 	<parameter name="direccionOfCentral" class="java.lang.String"/>
 	<parameter name="centroComputo" class="java.lang.String"/>
+	<parameter name="horaEmision" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{horaEmision}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="importeTotal" class="java.lang.String"/>
 	<field name="asiento" class="java.lang.Integer"/>
 	<field name="boleto" class="java.lang.String"/>
 	<field name="nombrePasajero" class="java.lang.String"/>
@@ -746,6 +750,30 @@
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
+			<staticText>
+				<reportElement key="" style="Style_Arial" x="388" y="89" width="73" height="11" uuid="bb016d4b-eabe-48ff-99e3-591a261f8858">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="local_mesure_unity" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[HORA EMISION :]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="Style_Arial" x="463" y="90" width="91" height="11" uuid="fbfd4ba6-7f14-41d6-a4f5-291e05ccc691">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$P{horaEmision}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
@@ -1469,6 +1497,7 @@
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{importeTotal}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText" style="Style_Arial" x="0" y="70" width="60" height="11" uuid="b1a47393-43ae-4604-9528-318967b8bb16">

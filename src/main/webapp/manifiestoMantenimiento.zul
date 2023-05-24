@@ -53,10 +53,11 @@
 					<listheader label="BUS" width="40px" align="center" style="color: #ffffff;"/>	
 					<listheader label="ITINERARIO" width="70px" style="color: #ffffff;"/>
 					<listheader label="FECHA PARTIDA" width="80px" align="center" style="color: #ffffff;"/>
-					<listheader label="HORA PARTIDA" width="90px" align="center" style="color: #ffffff;"/>
+					<listheader label="HORA PARTIDA" width="70px" align="center" style="color: #ffffff;"/>
 					<listheader label="ORIGEN" width="100px" style="color: #ffffff;"/>
 					<listheader label="DESTINO" width="100px" style="color: #ffffff;"/>
-					<listheader label="ESTADO" width="70px" style="color: #ffffff;"/>
+					<listheader label="ESTADO" width="60px" style="color: #ffffff;" align="center"/>
+					<listheader label="H.EMISION" width="70px" style="color: #ffffff;"/>
 					<listheader />
 				</listhead>
 			</listbox>
