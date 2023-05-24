@@ -856,8 +856,8 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					"INNER JOIN vrmpasajero p ON p.pasajero_id=vp.pasajero_id " +
 					"INNER JOIN vrmruta r ON r.ruta_id=vp.ruta_id " +
 					"INNER JOIN vrmtipmov tm ON tm.tipmov_id=vp.tipmov_id " +
-				"WHERE vp.d_fecpar=to_date('"+fechaPartida+"', '"+Constantes.DATE_FORMAT+"') "
-				 + "AND vp.c_tiptra in ('"+Constantes.TIPO_OPERACION_VENTA+"','"+Constantes.TIPO_OPERACION_VENTA_POOL+"','"+Constantes.TIPO_OPERACION_PERDIDA_SERVICIO+"') " +
+				"WHERE vp.d_fecpar = to_date('"+fechaPartida+"', '"+Constantes.DATE_FORMAT+"') "
+				 + " AND vp.c_tiptra in ('"+Constantes.TIPO_OPERACION_VENTA+"','"+Constantes.TIPO_OPERACION_VENTA_POOL+"','"+Constantes.TIPO_OPERACION_PERDIDA_SERVICIO+"') " +
 //				   "AND vp.tipcom_id="+Constantes.ID_TIPCOM_BOLETO_VIAJE+" "
 				   "AND vp.tipcom_id IN ("+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_FACTURA+") "
 				 + "AND vp.tipmov_id NOT IN("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_ANULACION+") ";

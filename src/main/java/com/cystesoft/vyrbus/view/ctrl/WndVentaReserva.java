@@ -5943,7 +5943,10 @@ public class WndVentaReserva extends WndBase {
 //			if(importePagado != ventaPasaje.getImportePagado()) {
 //				ventaPasaje.setObservaciones("IMPORTE A PAGAR EDITADO POR EL USUARIO, ORIGINAL("+importePagado+")");
 //			}
-
+			
+			//Se asigna para obtener la fecha del itinerario y mostrarlo en el ticket
+			//MAOE 23/05/2023
+//			ventaPasaje.setDetalleItinerario(detalleItinerario);
 			/*19/08/2015 - jabanto*/
 			/*Si la agencia tiene configurado otra moneda diferente a las Soles*/
 			if(tipoMonedaAgencia!=null && tipoMonedaAgencia.getId().intValue()!=Constantes.ID_TIPMON_SOLES){
