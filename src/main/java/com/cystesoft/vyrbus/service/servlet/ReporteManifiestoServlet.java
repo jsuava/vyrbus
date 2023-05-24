@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José Abanto
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Abanto
  * Fecha		: 30/09/2014
  * Hora			: 15:45:08
  */
@@ -112,7 +112,7 @@ public class ReporteManifiestoServlet extends HttpServlet {
 	    ServletOutputStream out = response.getOutputStream();
 
 
-	    /*Recupera variables de sesión*/
+	    /*Recupera variables de sesiï¿½n*/
 	    @SuppressWarnings("unchecked")
 		List<VentaPasaje>lstPasajeros=(List<VentaPasaje>)request.getSession().getAttribute("listPasajeros");
 	    String numeroManifiesto=(String)request.getSession().getAttribute("numeroManifiesto");
@@ -137,6 +137,8 @@ public class ReporteManifiestoServlet extends HttpServlet {
 	    String numeroAutoSunat=(String)request.getSession().getAttribute("numeroAutoSunat");
 	    String totalPasajeros=(String)request.getSession().getAttribute("totalPasajeros");
 	    String dniTripulante=(String)request.getSession().getAttribute("dniTripulante");
+	    String horaEmision=(String)request.getSession().getAttribute("horaEmision");
+	    String importeTotal=(String)request.getSession().getAttribute("importeTotal");
 
 	    try {
 	    	JasperReport reporte;
@@ -176,6 +178,8 @@ public class ReporteManifiestoServlet extends HttpServlet {
 			parameters.put("telefonoCentral", Constantes.nro_telefono);
 			parameters.put("direccionOfCentral", Constantes.direccion_empresa);
 			parameters.put("centroComputo", Constantes.centro_computo);
+			parameters.put("horaEmision",horaEmision);
+			parameters.put("importeTotal",importeTotal);
 
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, new ReporteManifiesto(lstPasajeros));
 			JRExporter jrExporter = new JRPdfExporter();
