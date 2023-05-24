@@ -457,7 +457,7 @@ public class WndManifiestoMantenimiento extends WndBase{
 		
 		Double importeTotal = 0.0;
 		for(VentaPasaje vp : listPasajeros) {
-			importeTotal = importeTotal + vp.getImportePagado();
+			importeTotal = vp.getImportePagado() != null? importeTotal + vp.getImportePagado(): importeTotal;
 		}
 
 
