@@ -1095,7 +1095,8 @@ public class WSFE implements Serializable{
 						
 					}
 					xmlVenta.setV6_FechaPartida(ventaPasaje.getFechaPartida()!=null?Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida()):null);
-					xmlVenta.setV7_HoraPartida(getHoraRealEmbarque(ventaPasaje));
+//					xmlVenta.setV7_HoraPartida(getHoraRealEmbarque(ventaPasaje));
+					xmlVenta.setV7_HoraPartida(ventaPasaje.getHoraPartida());
 					xmlVenta.setV8_Asiento(ventaPasaje.getNumeroAsiento()!=null?ventaPasaje.getNumeroAsiento().toString():null);
 					xmlVenta.setV90_Piso(ventaPasaje.getNumeroPiso()!=null?ventaPasaje.getNumeroPiso().intValue()<=0?"1":String.valueOf(ventaPasaje.getNumeroPiso()+1):null);		
 					xmlVenta.setV91_Pasajero(xmlPasajero);
@@ -1544,7 +1545,7 @@ public class WSFE implements Serializable{
 					 "[RUTA:"+ventaPasaje.getRuta().toString().trim()+"]\n"+
 					 "[SERV:"+servicio+"]\n"+
 					 "[ASIENTO:"+(ventaPasaje.getNumeroAsiento()!=null?ventaPasaje.getNumeroAsiento():"")+"-"+(ventaPasaje.getNumeroPiso()!=null?(ventaPasaje.getNumeroPiso().intValue()<=0?1:ventaPasaje.getNumeroPiso()):"")+"]\n"+
-					 "[FECHA:"+(ventaPasaje.getFechaPartida()!=null?Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida()):"")+"] [HORA:"+strHoraPartida+"]";
+					 "[FECHA:"+(ventaPasaje.getFechaPartida()!=null?Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida()):"")+"] [H. EMB:"+strHoraPartida+"]";
 //					 "[FECHA:"+(ventaPasaje.getFechaPartida()!=null?Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida()):"")+"] [HORA:"+(ventaPasaje.getHoraPartida()!=null?ventaPasaje.getHoraPartida().trim():"")+"]";
 			
 		}else{
