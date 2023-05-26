@@ -31,7 +31,7 @@ public class Constantes {
 	 * Vension actual del Sistema
 	 */
 
-	public static final String SYSTEM_VERSION = "Versión 3.3.7";
+	public static final String SYSTEM_VERSION = "Versión 3.3.8";
 		
 	/**
 	 * Constante para la Acción Nuevo
@@ -165,11 +165,11 @@ public class Constantes {
 //	public static final String SERVER_HOST = Executions.getCurrent().getHeader("host");
 //	public static final String SERVER_HOST = "ventas.tepsa.com.pe/";
 
-	public static final String SERVER_HOST = "localhost:8080";
+//	public static final String SERVER_HOST = "localhost:8080";
 	//Demo Wars
 //	public static final String SERVER_HOST = "170.0.233.155:8080";
 	
-//	public static final String SERVER_HOST = "119.8.145.122:8080";
+	public static final String SERVER_HOST = "119.8.145.122:8080";
 
 	public static final String SERVER_CONTEXT = Executions.getCurrent().getContextPath();
 	public static final String URL_FORMATOS = SERVER_PROTOCOL+"://"+SERVER_HOST+SERVER_CONTEXT+"/formatos/";

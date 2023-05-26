@@ -1923,7 +1923,7 @@ public class WndVentaReserva extends WndBase {
 				/*	Si es una venta remota	*/
 				if(chkVentaRemota.isChecked()){
 					if(rdVentaIdaVuelta.isChecked() && !rdElectronicoRemoto.isChecked()){
-						DlgMessage.information("No es posible realizar una venta remota de Ida y Vuelta, cuando los comprobantes a emitir no son Electrï¿½nicos.");
+						DlgMessage.information("No es posible realizar una venta remota de Ida y Vuelta, cuando los comprobantes a emitir no son Electrónicos.");
 						return;
 					}
 
@@ -3194,7 +3194,7 @@ public class WndVentaReserva extends WndBase {
 
 					if(promocionTarifa.getEsAcumulable().intValue()!=Constantes.TRUE_VALUE)
 						imgPromocion.setVisible(false);
-					lblPromocion.setValue("Promociï¿½n : "+promocionTarifa.getDenominacion());
+					lblPromocion.setValue("Promoción : "+promocionTarifa.getDenominacion());
 				}
 			}
 
@@ -4107,7 +4107,7 @@ public class WndVentaReserva extends WndBase {
 					dblDescuento.setTooltiptext("");
 
 					if(promocionTarifa!=null)
-						lblPromocion.setValue("Promociï¿½n : "+promocionTarifa.getDenominacion());
+						lblPromocion.setValue("Promoción : "+promocionTarifa.getDenominacion());
 					else{
 						lblPromocion.setValue("");
 						//Recupera el descuento automatico del Cliente, si es que este tiene
@@ -4811,10 +4811,10 @@ public class WndVentaReserva extends WndBase {
 
 			/*Validando que los datos del cliente no incluyan comillas simples - jabanto */
 			if(txtRazonSocial.getText().trim().indexOf("'")>=0){
-				DlgMessage.information(Messages.getString("WndVentaReserva.information.noComillaSimple")+", revice la Razï¿½n Social del Cliente.",txtRazonSocial);
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noComillaSimple")+", revice la Razón Social del Cliente.",txtRazonSocial);
 				return false;
 			}else if(txtDireccionCliente.getText().trim().indexOf("'")>=0){
-				DlgMessage.information(Messages.getString("WndVentaReserva.information.noComillaSimple")+", revice la Direcciï¿½n del Cliente.",txtDireccionCliente);
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noComillaSimple")+", revice la Dirección del Cliente.",txtDireccionCliente);
 				return false;
 			}
 
@@ -5205,7 +5205,7 @@ public class WndVentaReserva extends WndBase {
 						DlgMessage.information("Debe seleccionar "+lblAlimen3.getValue(), cmbAlimen3);
 						return;
 					}else if (txtTelefono.getText().trim().isEmpty() || txtTelefono.getText().trim().length()<=5){
-						DlgMessage.information("Debe ingresar el Nï¿½mero de Telï¿½fono y/o este no es vï¿½lido", txtTelefono);
+						DlgMessage.information("Debe ingresar el Número de Teléfono y/o este no es válido", txtTelefono);
 						return;
 					}
 				}

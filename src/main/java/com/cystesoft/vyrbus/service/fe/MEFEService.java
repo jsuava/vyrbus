@@ -23,7 +23,7 @@ import javax.xml.ws.WebServiceClient;
  * </p>
  * 
  */
-@WebServiceClient(name = "MEFEService", targetNamespace = "http://tempuri.org/", wsdlLocation = "http://119.8.148.239:8085/MEFEService.svc?wsdl")
+@WebServiceClient(name = "MEFEService", targetNamespace = "http://tempuri.org/", wsdlLocation = "http://192.168.0.211:8085/MEFEService.svc?wsdl")
 public class MEFEService extends Service {
 
 	private final static URL MEFESERVICE_WSDL_LOCATION;
@@ -35,7 +35,7 @@ public class MEFEService extends Service {
 			URL baseUrl;
 			baseUrl = com.cystesoft.vyrbus.service.fe.MEFEService.class.getResource(".");
 			
-			url = new URL(baseUrl, "http://119.8.148.239:8085/MEFEService.svc?wsdl");
+			url = new URL(baseUrl, "http://192.168.0.211:8085/MEFEService.svc?wsdl");
 		} catch (MalformedURLException e) {
 			logger.warning(
 					"Failed to create URL for the wsdl Location: 'http://192.168.0.211_119.8.148.239:8085/MEFEService.svc?wsdl', retrying as a local file");
