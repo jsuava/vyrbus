@@ -503,7 +503,8 @@
 													<label id="lblTotalPagarPreliminar" value="TOTAL A PAGAR S/." style="color:blue; font-size:14px; font-weight:bold" visible="false"/>
 												</row>
 												<row style="background:white">
-													<button label="Grabar" 
+													<button id= "btnGuardar"
+															label="Grabar" 
 															sclass="btnCommandL" 
 															autodisable="self" 
 															image="resources/mp_guardarEnabled.png"  
@@ -594,12 +595,12 @@
 																<textbox id="txtNombres" width="140px" maxlength="30"/>													
 															</row>
 															<row spans="1,3" style="background:#F7F7F7">
-																<label value="DIRECCIÓN :"/>
-																<textbox id="txtDireccionPax" width="75%" onOK="txtTelefono.setFocus(true)" maxlength="100"/>
+																<label value="DIRECCIÓN :" visible="false"/>
+																<textbox id="txtDireccionPax" visible="false" width="75%" onOK="txtTelefono.setFocus(true)" maxlength="100"/>
 															</row>
 															<row style="background:#F7F7F7">
 																<label value="TELÉFONO (*):"/>
-																<textbox id="txtTelefono" onOK="btnUbigeoPax.setFocus(true)" maxlength="30" width="140px"/>
+																<textbox id="txtTelefono" onOK="txtEmailPax.setFocus(true)" maxlength="30" width="140px"/>
 																<label value="UBIGEO (*) :" visible="false" />
 																<hbox align="center" visible="false" >
 																	<textbox id="txtUbigeoPax" width="170px" onOK="txtEmailPax.setFocus(true)"/>
@@ -610,11 +611,11 @@
 															<row style="background:#F7F7F7">
 																<label id="lblEmail" value="EMAIL :"/>
 																<hlayout>
-																	<textbox id="txtEmailPax" style="text-transform:none !important" onOK="dtbxFechaNacimiento.setFocus(true);" maxlength="50" width="140px"/>
+																	<textbox id="txtEmailPax" style="text-transform:none !important" onOK="cmbSexo.setFocus(true);" maxlength="50" width="140px"/>
 																	<checkbox id="chbxNoTieneMail" label="No Tiene" checked="false" />
 																</hlayout> 																
-																<label value="FEC. NACIMIENTO"/>
-																<datebox id="dtbxFechaNacimiento" format="dd/MM/yyyy" buttonVisible="false" width="120px" constraint="no future: No puede ingresar una fecha mayor a la de hoy." ></datebox>
+																<label value="FEC. NACIMIENTO" visible="false"/>
+																<datebox id="dtbxFechaNacimiento" visible="false" format="dd/MM/yyyy" buttonVisible="false" width="120px" constraint="no future: No puede ingresar una fecha mayor a la de hoy." ></datebox>
 <!--  																<hlayout valign="middle"> -->
 <!--  																	<combobox id="cmbAnio" width="50px" autodrop="true" placeholder="1920" onOK="cmbMes.setFocus(true)" buttonVisible="false"/> -->
 <!--  																	<label value="MES :"/> -->
@@ -627,7 +628,7 @@
 																<label value="SEXO (*) :"/>
 																<combobox id="cmbSexo" readonly="true" onOK="ntbxEdad.setFocus(true)"/>
 																<label value="EDAD (*) :"/>
-																<intbox id="ntbxEdad" width="20px" style="font-size:9px"/>
+																<intbox id="ntbxEdad" onOK="if(cmbNacionalidad.isVisible()) cmbNacionalidad.setFocus(true); else btnGuardar.setFocus(true);" width="20px" style="font-size:9px"/>
 															</row>
 															<row id="rowNacionalidad" visible="false">
 																<label value="NACIONALIDAD (*) :"/>

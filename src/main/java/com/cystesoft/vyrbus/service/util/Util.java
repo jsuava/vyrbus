@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: Clase que centraliza las funciones utilitarias que se usa en todo el sistema.
- * Autor		: José Sullo Avalos
+ * Descripciï¿½n	: Clase que centraliza las funciones utilitarias que se usa en todo el sistema.
+ * Autor		: Josï¿½ Sullo Avalos
  * Fecha		: 08/04/2012
  */
 package com.cystesoft.vyrbus.service.util;
@@ -125,7 +125,7 @@ import pe.gob.mtc.wshr.ResultIdentidad;
 
 /**
  * Clase que centraliza las funciones utilitarias que se usa en todo el sistema.
- * @author José Sullo Avalos
+ * @author Josï¿½ Sullo Avalos
  * @since JDK1.6
  */
 public class Util {
@@ -267,7 +267,7 @@ public class Util {
 	}
 
 	/**
-	 * Permite seleccionar un Item del Combobox según el valor
+	 * Permite seleccionar un Item del Combobox segï¿½n el valor
 	 * @param combobox
 	 * @param valorItem
 	 */
@@ -583,7 +583,7 @@ public class Util {
 	/**
 	 * convierte un double a String con la cantidad de decimales especificados
 	 * @param currency		: Valor double a convertir
-	 * @param numDecimales	: Número de decimales
+	 * @param numDecimales	: Nï¿½mero de decimales
 	 * @return String
 	 */
 	public static String toNumberFormat(double currency, int numDecimales){
@@ -611,7 +611,7 @@ public class Util {
 	/**
 	 * convierte un double a String con la cantidad de decimales especificados
 	 * @param currency		: Valor double a convertir
-	 * @param numDecimales	: Número de decimales
+	 * @param numDecimales	: Nï¿½mero de decimales
 	 * @return String
 	 */
 	public static String toNumberFormatNotMiles(double currency, int numDecimales){
@@ -638,7 +638,7 @@ public class Util {
 
 	/**
 	 * Convierte del sistema decimal a hexadecimal
-	 * @param valor	: Número a convertir
+	 * @param valor	: Nï¿½mero a convertir
 	 * @return Hexadecimal
 	 */
 	public static String decimalToHexadecimal(long valor){
@@ -770,7 +770,7 @@ public class Util {
 	 * Compara si un objeto es mayor.
 	 * @param min		: Dato que deseamos comparar.
 	 * @param sus		: Datos contra el cual se comparara.
-	 * @param operador	: Tipo de operador para realizar la comparación.
+	 * @param operador	: Tipo de operador para realizar la comparaciï¿½n.
 	 * @return true o false
 	 */
 	public static boolean comparaFechas(Object min, Object sus, int operador) {
@@ -857,7 +857,7 @@ public class Util {
 	 * Compara si un objeto es mayor.
 	 * @param min		: Dato que deseamos comparar.
 	 * @param sus		: Datos contra el cual se comparara.
-	 * @param operador	: Tipo de operador mara realiza rla comparación.
+	 * @param operador	: Tipo de operador mara realiza rla comparaciï¿½n.
 	 * @return true o false
 	 */
 	public static boolean comparaFechasWithTime(Object min, Object sus, int operador) {
@@ -925,7 +925,7 @@ public class Util {
 	}
 
 	/**
-	 * @return el primer día del mes.
+	 * @return el primer dï¿½a del mes.
 	 * @throws ParseException
 	 */
 	@SuppressWarnings("static-access")
@@ -946,8 +946,8 @@ public class Util {
 
 	/**
 	 * calcula el porcentaje de un numero
-	 * @param numeroCalculo : número del cual se calcula el porcentaje
-	 * @param valorCalculo  : número al que se le aplica el porcentaje
+	 * @param numeroCalculo : nï¿½mero del cual se calcula el porcentaje
+	 * @param valorCalculo  : nï¿½mero al que se le aplica el porcentaje
 	 * @return porcentaje
 	 */
 	public static double calculaPorcentaje(Double numeroCalculo, double numeroAplicaPorcentaje){
@@ -1083,7 +1083,7 @@ public class Util {
 
 	/**
 	 * Activa o desactiva el button Guarbar cliente (Nuevo)
-	 * @param activar : (true)se activara el button, (false) se desactivará el button
+	 * @param activar : (true)se activara el button, (false) se desactivarï¿½ el button
 	 */
 	public static void disabledBtnCancelar(boolean disabled,Button btnCancelar){
 		if(!(disabled)){
@@ -1098,7 +1098,7 @@ public class Util {
 
 	/**
 	 * Activa o desactiva el button Guarbar cliente (Nuevo)
-	 * @param activar : (true)se activara el button, (false) se desactivará el button
+	 * @param activar : (true)se activara el button, (false) se desactivarï¿½ el button
 	 */
 	public static void disabledBtnGuardar(boolean disabled,Button btnGuardar,Boolean accesoGuardar){
 		if(!(disabled) && accesoGuardar){
@@ -1118,7 +1118,7 @@ public class Util {
 
 	/**
 	 * Activa o desactiva el button Nuevo cliente (Nuevo)
-	 * @param activar : (true)se activara el button, (false) se desactivará el button
+	 * @param activar : (true)se activara el button, (false) se desactivarï¿½ el button
 	 */
 	public static void disabledBtnNuevo(boolean disabled,Button btnNuevo,Boolean accesoNuevo){
 		if(!(disabled) && accesoNuevo){
@@ -1137,8 +1137,8 @@ public class Util {
 
 	/**
 	 * Activa o desactiva el button editar cliente (Editar)
-	 * @param activar : (true)se activara el button, (false) se desactivará el button
-	 * @param button  : button al que se activa e inactivará.
+	 * @param activar : (true)se activara el button, (false) se desactivarï¿½ el button
+	 * @param button  : button al que se activa e inactivarï¿½.
 	 */
 	public static void disabledBtnEditar(boolean disabled, Button btnEditar,Boolean accesoModificar){
 		if(!(disabled) && accesoModificar){
@@ -1156,7 +1156,7 @@ public class Util {
 	}
 
 	/**
-	 * Activa o desactiva el botón Buscar
+	 * Activa o desactiva el botï¿½n Buscar
 	 * @param activar
 	 */
 	public static void disabledBtnBuscar(boolean disabled,Button btnBuscar,Boolean accesoConsultar){
@@ -1174,7 +1174,7 @@ public class Util {
 	}
 
 	/**
-	 * Activa o desactiva el botón Exportar
+	 * Activa o desactiva el botï¿½n Exportar
 	 * @param activar
 	 */
 	public static void disabledBtnExportar(boolean disabled,Button btnExportar, Boolean accesoExportar){
@@ -1254,7 +1254,7 @@ public class Util {
 		return saveFile(media, path);
 	}
 
-	//Obtiene la ruta de la aplicación Web actual
+	//Obtiene la ruta de la aplicaciï¿½n Web actual
 	public static String getPath(){
 		return Executions.getCurrent().getDesktop().getWebApp().getRealPath(separator);
 	}
@@ -1305,6 +1305,20 @@ public class Util {
     public static boolean isNumeric(String cadena){
 	    try {
 	    	Integer.parseInt(cadena);
+	    	return true;
+	    } catch (NumberFormatException nfe){
+	    	return false;
+	    }
+    }
+    
+    /**
+	 * Metodo que permite validar una cadena si es numerico.
+	 * @param cadena: Cadena a evaluar
+	 * @return (true) si es un numerico, (false) lo contrario250
+	 */
+    public static boolean isNumericLong(String cadena){
+	    try {
+	    	Long.parseLong(cadena);
 	    	return true;
 	    } catch (NumberFormatException nfe){
 	    	return false;
@@ -1439,7 +1453,7 @@ public class Util {
 
     /**
      * coloca el foco en el control que se envie como parametros
-     * @param oComponent: objeto al cual se pasará el foco.
+     * @param oComponent: objeto al cual se pasarï¿½ el foco.
      */
     public static void setFocus(Component oComponent){
     	if (oComponent instanceof Textbox) {
@@ -1542,7 +1556,7 @@ public class Util {
 	}
 
 	/**
-	 * Metodo que genera la contraseña de manera aleatoria.
+	 * Metodo que genera la contraseï¿½a de manera aleatoria.
 	 */
 	public static final String generarPassword(){
 		int lengthPassword = 8;
@@ -1610,7 +1624,7 @@ public class Util {
 	        case 2:  // Febrero
 	            if ( ((anio%100 == 0) && (anio%400 == 0)) ||
 	                    ((anio%100 != 0) && (anio%  4 == 0))   )
-	                diasMes = 29;  // Año Bisiesto
+	                diasMes = 29;  // Aï¿½o Bisiesto
 	            else
 	                diasMes = 28;
 	            break;
@@ -1781,7 +1795,7 @@ public class Util {
 	 */
 	public static String validarCaracteresEspeciales(String cadena){
 		//Estos caracteres especiales fueron enviados por la positiva, ya que no son aceptados por el sistema Affinity.
-		String caracteresSpeciales=".;´;/;µ;ƒ;Š;š;†;‡;±;ˆ;‰;˜;¶;Þ;Ø;Ÿ;°;*;!;%;&;=;?;¡;¿;|;+;{;};[;];_;<;>;^;@;¢;£;¥;¦;§;¨;©;ª;«;¬;®;¯;Ì;Ë;Ê;È;Ç;Æ;Å;Ä;Ã;Â;À;¾;½;¼;»;º;Î;Ï;Ð;€;™;„;¤;Ž;‹;œ;Œ;—;“;ä;·;ª;…;‘;”;–;;\\;";
+		String caracteresSpeciales=".;ï¿½;/;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;*;!;%;&;=;?;ï¿½;ï¿½;|;+;{;};[;];_;<;>;^;@;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;ï¿½;;\\;";
 		String caracteresInvalidos="";
 		String arrayCaracteres[] =caracteresSpeciales.split(";");
 
@@ -1839,7 +1853,7 @@ public class Util {
 
 	/**
 	 * Valida y retorna los datos del pasajero obtenidos desde wsmtc, ademas del objeto Reniec. Siempre y cuando esta validacion este activa, segun parametro confirurable
-	 * @param numeroDni 	: número de DNI
+	 * @param numeroDni 	: nï¿½mero de DNI
 	 * @param searchDBReniecLocal : true si debe completar el resultado con los de nuestra base de datos de la reniec.
 	 * @return ResultIdentidad
 	 * @throws Exception
@@ -1868,17 +1882,17 @@ public class Util {
 //
 //					/*Envia alerta informado la reactivacion de estos parametros*/
 //					/*Envia alerta informando*/
-//					String mensaje="Se han reactivado las siguientes validaciones y envío de Alertas.: \n";
-//					mensaje+="* Validación con el Método getIdentidad. \n";
-//					mensaje+="* Envío de alertas al registrar una venta a un Pasajero con DNI no valido.";
+//					String mensaje="Se han reactivado las siguientes validaciones y envï¿½o de Alertas.: \n";
+//					mensaje+="* Validaciï¿½n con el Mï¿½todo getIdentidad. \n";
+//					mensaje+="* Envï¿½o de alertas al registrar una venta a un Pasajero con DNI no valido.";
 //
 //					DestinatariosEmails window = new DestinatariosEmails();
 //					String toAddress="moscco@tepsa.com.pe,jabanto@tepsa.com.pe";
 //					window.setEmails("TO:"+toAddress);
 //
 //					//Envia E-Mail
-//					mensaje+="\n\n NOTA: [Este buzon es de envio automático, por favor no responda.]";
-//					Sendmail.enviaEmail(mensaje,"Reactivación automática de Validaciones y envío de alertas", window);
+//					mensaje+="\n\n NOTA: [Este buzon es de envio automï¿½tico, por favor no responda.]";
+//					Sendmail.enviaEmail(mensaje,"Reactivaciï¿½n automï¿½tica de Validaciones y envï¿½o de alertas", window);
 //				}
 //			}
 
@@ -1904,7 +1918,7 @@ public class Util {
 	}
 
 	/**
-	 * Valida si el DNI del pasajero es o no valido según validacion previa con el reniec mediante el metodo getIdentidad, para determinar el envio de la alerta
+	 * Valida si el DNI del pasajero es o no valido segï¿½n validacion previa con el reniec mediante el metodo getIdentidad, para determinar el envio de la alerta
 	 * @param ventaPasaje : Instancia del objeto VentaPasajes
 	 * @throws Exception
 	 */
@@ -1946,7 +1960,7 @@ public class Util {
 				}
 
 				mensaje+="Boleto     :"+(ventaPasaje.getNumeroBoleto()!=null?ventaPasaje.getNumeroBoleto():"")+"\n";
-				mensaje+="N° Control :"+ventaPasaje.getNumeroControl()+"\n";
+				mensaje+="Nï¿½ Control :"+ventaPasaje.getNumeroControl()+"\n";
 				mensaje+="Agencia    :"+ventaPasaje.getAgencia().toString()+"\n";
 				mensaje+="Usuario    : "+ventaPasaje.getUsuario().toString()+"\n";
 
@@ -1954,7 +1968,7 @@ public class Util {
 //				String ccAddress="jabanto@tepsa.com.pe";
 
 				//Envia E-Mail
-				mensaje+="\n\n NOTA: [Este buzon es de envio automático, por favor no responda.]";
+				mensaje+="\n\n NOTA: [Este buzon es de envio automï¿½tico, por favor no responda.]";
 				DestinatariosEmails window = new DestinatariosEmails();
 //				window.setEmails("TO:"+toAddress+";CC:"+ccAddress);
 				window.setEmails("TO:"+toAddress);
@@ -1967,8 +1981,8 @@ public class Util {
 	}
 
 	/**
-	 * Establece el icono de la imagen, según el estado de la validacion del pasajero con la reniec.
-	 * @param estadoValidacion : 0=DNI, segun reniec no es válido, 1=DNI, segun reniec es correcto.
+	 * Establece el icono de la imagen, segï¿½n el estado de la validacion del pasajero con la reniec.
+	 * @param estadoValidacion : 0=DNI, segun reniec no es vï¿½lido, 1=DNI, segun reniec es correcto.
 	 * @param imageValidacionDNI : Objeto image donde se debe mostrar el icono.
 	 */
 	public static void imagenValidacionDNIReniec(Integer estadoValidacion, Image imageValidacionDNI){

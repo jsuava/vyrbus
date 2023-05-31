@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José Abanto
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Abanto
  * Fecha		: 20/08/2012
  */
 package com.cystesoft.vyrbus.view.ctrl;
@@ -283,7 +283,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 		oWndFiltrar.addParameter("1. Apellido Paterno", String.class);
 		oWndFiltrar.addParameter("2. Apellido Materno", String.class);
 		oWndFiltrar.addParameter("3. Nombres", String.class);
-		oWndFiltrar.addParameter("4. Nº de Documento", String.class);
+		oWndFiltrar.addParameter("4. Nï¿½ de Documento", String.class);
 		this.appendChild(oWndFiltrar);
 		oWndFiltrar.setMode("modal");
 		oWndFiltrar.addEventListener(com.cystesoft.vyrbus.view.ui.Events.ON_FILTER, new EventListener<Event>() {
@@ -292,7 +292,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 			public void onEvent(Event event) throws Exception {
 				condicionBusqueda= new TreeMap<>();
 
-				String numeroIdentificacion = (String) oWndFiltrar.getParameterValue("4. Nº de Documento");
+				String numeroIdentificacion = (String) oWndFiltrar.getParameterValue("4. Nï¿½ de Documento");
 				String apellidoPaterno = (String) oWndFiltrar.getParameterValue("1. Apellido Paterno");
 				String apellidoMaterno = (String) oWndFiltrar.getParameterValue("2. Apellido Materno");
 				String nombre = (String) oWndFiltrar.getParameterValue("3. Nombres");
@@ -354,7 +354,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 
 		List<Rol>listaRolesAcceso=new ArrayList<>();
 		listaRolesAcceso.add(new Rol(Constantes.ID_ROL_SUPER_USUARIO));
-//		listaRolesAcceso.add(new Rol(Constantes.ID_ROL_ADMIN_COMERCIAL));
+		listaRolesAcceso.add(new Rol(Constantes.ID_ROL_ADMINISTRADOR));
 //		listaRolesAcceso.add(new Rol(Constantes.ID_ROL_GERENCIA_COMERCIAL));
 //		listaRolesAcceso.add(new Rol(Constantes.ID_ROL_ASISTENTE_ADMIN_COMERCIAL));
 		accesoControlsByRol(lstComponents, listaRolesAcceso);
@@ -614,7 +614,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 			tbPasajero.setSelectedIndex(0);
 			throw new CancelaGrabacionException();
 		}catch(TelefonoNullException tnex){
-			DlgMessage.information(Messages.getString("Debe ingresar un Número de Teléfono del Pasajero Frecuente."),txtTelefono);
+			DlgMessage.information(Messages.getString("Debe ingresar un Nï¿½mero de Telï¿½fono del Pasajero Frecuente."),txtTelefono);
 			tbPasajero.setSelectedIndex(0);
 			throw new CancelaGrabacionException();
 		}catch(TarjetaDuplicadaException tdex){
@@ -850,7 +850,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 	}
 
 	/**
-	 * Para la edición del pasajero
+	 * Para la ediciï¿½n del pasajero
 	 * @param id : Identificacor del Pasajero.
 	 * @throws Exception
 	 */
@@ -1137,22 +1137,22 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 		if(lblFechaActivacion.getValue()!=null && (!lblFechaActivacion.getValue().isEmpty())){
 			if(pasajero.getPasajeroFrecuente()!=null){
 				if(pasajero.getPasajeroFrecuente().getEstado().intValue()==Constantes.TRUE_VALUE){
-					lbViajesAcumulados.setValue("Viajes acumulados en los últimos "+Constantes.TIEMPO_PASAR_PAXFREE / 30+" meses (del "
+					lbViajesAcumulados.setValue("Viajes acumulados en los ï¿½ltimos "+Constantes.TIEMPO_PASAR_PAXFREE / 30+" meses (del "
 							+ Util.DatetoString(Constantes.FORMAT_DATE_TIME_24H.parse(lblFechaActivacion.getValue()), Constantes.DATE_FORMAT) +" al "
 							+ Util.DatetoString(Constantes.FORMAT_DATE_TIME_24H.parse(lblFechaCaducidad.getValue()), Constantes.DATE_FORMAT)+" )");
 				}else{
-					lbViajesAcumulados.setValue("Viajes acumulados en los últimos "+Constantes.TIEMPO_PASAR_PAXFREE / 30+" meses (del "
+					lbViajesAcumulados.setValue("Viajes acumulados en los ï¿½ltimos "+Constantes.TIEMPO_PASAR_PAXFREE / 30+" meses (del "
 							+ Util.DatetoString(Constantes.FORMAT_DATE_TIME_24H.parse(lblFechaSuspension.getValue()), Constantes.DATE_FORMAT) +" al "
 							+ (fechaFinal.length()>=10?fechaFinal.substring(0,10):fechaFinal)+" )");
 				}
 			}
 		}else{
-			lbViajesAcumulados.setValue("Viajes acumulados en los últimos "+Constantes.TIEMPO_PASAR_PAXFREE / 30+" meses");
+			lbViajesAcumulados.setValue("Viajes acumulados en los ï¿½ltimos "+Constantes.TIEMPO_PASAR_PAXFREE / 30+" meses");
 		}
 
 
 		lbtotalViajes.setValue("Total viajes ==========> "+String.valueOf(list.size()));
-		lbtotalViajesValidos.setValue("Total viajes válidos ====> "+Integer.toString(viajesValidos));
+		lbtotalViajesValidos.setValue("Total viajes vï¿½lidos ====> "+Integer.toString(viajesValidos));
 	}
 
 	/**
@@ -1290,19 +1290,19 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 	public void enviarMail(boolean isActivo, PasajeroFrecuente pasajeroFrecuente) throws Exception{
 //		String asunto="";
 //		if(isActivo)
-//			asunto="Activación de pasajero frecuente";
-//		else asunto="Inactivación de Pasajero Frecuente";
+//			asunto="Activaciï¿½n de pasajero frecuente";
+//		else asunto="Inactivaciï¿½n de Pasajero Frecuente";
 //
 //		String mensaje="[Nota: este mensaje ha sido generado automaticamente, no responda por favor]\n\n";
 //		mensaje+=tabular(7)+pasajeroFrecuente.getPasajero().getTipoDocumento().getDenominacion()+" :"+pasajeroFrecuente.getPasajero().getNumeroDocumento()+"\n";
 //		mensaje+=tabular(2)+"Pasajero :"+pasajeroFrecuente.getPasajero().getNombresApellidos()+"\n";
 //		if(isActivo){
-//			mensaje+=tabular(2)+"Fecha activación :"+Constantes.FORMAT_LONGSS.format(pasajeroFrecuente.getFechaActivacion())+"\n";
+//			mensaje+=tabular(2)+"Fecha activaciï¿½n :"+Constantes.FORMAT_LONGSS.format(pasajeroFrecuente.getFechaActivacion())+"\n";
 //			mensaje+=tabular(2)+"Fecha caducidad :"+Constantes.FORMAT_LONGSS.format(pasajeroFrecuente.getFechaCaducidad())+"\n";
-//			mensaje+=tabular(2)+"Fecha reactivación :"+new MyTime().dateServer()+"\n";
+//			mensaje+=tabular(2)+"Fecha reactivaciï¿½n :"+new MyTime().dateServer()+"\n";
 //			mensaje+=tabular(2)+"Cantidad viajes  :"+listPasajesAcumulados.getItems().size()+"\n";
 //		}else
-//			mensaje+=tabular(2)+"Fecha inactivación :"+new MyTime().dateServer()+"\n";
+//			mensaje+=tabular(2)+"Fecha inactivaciï¿½n :"+new MyTime().dateServer()+"\n";
 //		mensaje+=tabular(3)+"Usuario :"+getUsuario().getNombre()+" "+getUsuario().getApellidoPaterno();
 //
 //		DestinatariosEmails emails= new DestinatariosEmails();
