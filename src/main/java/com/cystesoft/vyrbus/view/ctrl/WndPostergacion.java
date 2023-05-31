@@ -209,6 +209,8 @@ public class WndPostergacion extends WndBase implements Serializable {
 	private VentaPasaje gastoAdmin=null;
 	private final String LABEL_IMPPAG_TO_TEPSA="IMPORTE TOTAL PAGAR";
 	private final String LABEL_IMPPAG_TO_PASAJERO="IMPORTE TOTAL A DEVOLVER";
+	
+	boolean boletoManifestado = false;
 
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
@@ -386,8 +388,6 @@ public class WndPostergacion extends WndBase implements Serializable {
 						throw new LimiteSecuencialException();
 					if(Util.comparaFechas(postergacion.getFechaCaducidad(), new Date(), Util.OPER_MENOR))
 						throw new FechaCaducidadNullException();
-					if(ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(postergacion.getId()))
-						throw new ManifiestoImpresoException();
 					
 					//Obteniendo los parametros en tiempo real para manejar la postergacion
 					Parametros parametros= ServiceLocator.getParametrosManager().buscarPorEstadoRegistro("A");					
@@ -399,6 +399,12 @@ public class WndPostergacion extends WndBase implements Serializable {
 					String fechaLimitePostergar = Util.DatetoString(new Date(limite), Constantes.DATE_TIME_FORMAT);
 					if(Util.comparaFechasWithTime(ServiceLocator.getVentaPasajesManager().getDateSystem(), fechaLimitePostergar, Util.OPER_MAYOR))
 						throw new PostergacionByFechaLimitePostergarException();
+					
+					boletoManifestado = ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(postergacion.getId());
+//					if(ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(postergacion.getId())) {
+//						throw new ManifiestoImpresoException();
+//					}
+					
 
 					isCorporativo=false;
 					/* Valida si es corporativo - 30/12/2016 - jabanto*/
@@ -418,23 +424,26 @@ public class WndPostergacion extends WndBase implements Serializable {
 
 					Date dateSys=Constantes.FORMAT_LONG.parse(ServiceLocator.getVentaPasajesManager().getDateSystem());
 
-					chkCambioNombre.setDisabled(true); //A solicitud de margariat queda permanentemente deshabilitado
+					//chkCambioNombre.setDisabled(true); //A solicitud de margariat queda permanentemente deshabilitado
 					/*Realiza la validacion para determinar si se puede o no postergar - 08/11/2016 - jabanto*/
 					if(isCorporativo || postergacion.getSecuencial().intValue() >= Constantes.MAXIMO_POSTERGACIONES){
 						chkFechaAbierta.setDisabled(true);
-//						chkCambioNombre.setDisabled(true);
+						//#javalos 06-05-23 se habilita el cambio de nombre
+						chkCambioNombre.setDisabled(true);
 						imgBuscarItinerario.setVisible(false);
 					}
 					if(Util.comparaFechas(postergacion.getFechaCaducidad(), dateSys, Util.OPER_MENOR)){
 						chkFechaAbierta.setDisabled(true);
-//						chkCambioNombre.setDisabled(true);
+						//#javalos 06-05-23 se habilita el cambio de nombre
+						chkCambioNombre.setDisabled(true);
 						imgBuscarItinerario.setVisible(false);
 					}
 //					Date fechaPartida=Constantes.FORMAT_LONG.parse(Constantes.FORMAT_DATE.format(postergacion.getFechaPartida())+" "+postergacion.getHoraPartida());
 //					if(ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(postergacion.getId()) || fechaPartida.getTime() <= dateSys.getTime()){
 					if(ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(postergacion.getId())){
 						chkFechaAbierta.setDisabled(true);
-//						chkCambioNombre.setDisabled(true);
+						//#javalos 06-05-23 se habilita el cambio de nombre
+						chkCambioNombre.setDisabled(true);
 						imgBuscarItinerario.setVisible(false);
 					}
 
@@ -549,7 +558,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 			public void onEvent(Event e) throws Exception{
 				final WndBuscarPasajero oWndBuscarPasajero = new WndBuscarPasajero();
 				wndPostergacion.appendChild(oWndBuscarPasajero);
-				oWndBuscarPasajero.oThisWindow.setTitle("B�squeda de Pasajeros");
+				oWndBuscarPasajero.oThisWindow.setTitle("Busqueda de Pasajeros");
 				oWndBuscarPasajero.setMode(MODAL);
 				oWndBuscarPasajero.onCreate();
 				oWndBuscarPasajero.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
@@ -1677,6 +1686,11 @@ public class WndPostergacion extends WndBase implements Serializable {
 							/*##End Begin 07/11/2016 - jabanto*/
 //							int result = ServiceLocator.getVentaPasajesManager().postergarBoleto(postergacion,validaBloqueAsiento);
 //							postergacion = ServiceLocator.getVentaPasajesManager().buscarVentaById(postergacion.getId());
+							
+							//Quitamos el boleto del manifiesto
+							if(boletoManifestado) {
+								ServiceLocator.getDetalleManifiestoManager().quitarManifiesto(postergacion.getVentaPasaje().getId());
+							}
 
 							/*##Begin 04/11/2016 - jabanto*/
 							VentaPasaje notaCredito = ServiceLocator.getVentaPasajesManager().postergarBoleto(postergacion,validaBloqueAsiento, gastoAdmin);
@@ -1726,6 +1740,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 								chkFechaAbierta.setChecked(false);
 //								chkFechaAbierta_onCheck();
 								habilitarPagoMixto();
+								boletoManifestado = false;
 //							}
 						}
 					}catch(CapacityExceedsException ceex){
@@ -2555,13 +2570,24 @@ public class WndPostergacion extends WndBase implements Serializable {
 		
 		//iguala a la tarifa si el monto pagado por el cliente es mayor a la tarifa actual - jabanto - 26/09/2022
 		if(saldo < 0 ) {
+			Double diferencia = dblbxMontoAnterior.getValue() - dblbxTarifa.getValue() - dblbxDescuento.getValue();
 			dblbxTarifa.setValue(dblbxMontoAnterior.getValue());
 			dblbxSaldo.setValue(.00);
-		}else
+			
+			if(chkCambioNombre.isChecked()) {
+//				if(diferencia <= valorPenalidad)
+//					dblbxPenalidad.setValue(valorPenalidad - diferencia);
+//				else
+//					dblbxPenalidad.setValue(0.0);
+				dblbxPenalidad.setValue(valorPenalidad);
+			}
+		}else {
 			dblbxSaldo.setValue(saldo);
+			dblbxPenalidad.setValue(valorPenalidad);
+		}
 
 		//Calculando la penalidad, tomando en cuenta la forma de pago (efectivo, tarjeta) - 17//11/2016 - update 7/11/2022 - jabanto		
-		dblbxPenalidad.setValue(valorPenalidad);
+//		dblbxPenalidad.setValue(valorPenalidad);
 		
 //		if(postergacion.getTipoFormaPago().getId().intValue()!=Constantes.ID_TIPFORPAG_TARJETA)
 //			dblbxPenalidad.setValue(tipoNotaCredito!=null?tipoNotaCredito.getGastoAdminEfectivo():.00);

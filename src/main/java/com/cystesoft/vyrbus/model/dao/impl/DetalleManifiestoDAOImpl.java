@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José Sullo Avalos
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Sullo Avalos
  * Fecha		: 09/11/2013
  */
 package com.cystesoft.vyrbus.model.dao.impl;
@@ -83,10 +83,10 @@ public class DetalleManifiestoDAOImpl extends GenericDAOImpl implements DetalleM
 					      ",a.agencia_id AS agencia_idAEmbarcar " + //14 - Representa el idAgencia donde se debe embarcar el pasajero.
 					      ",a.c_nomcor "+  // 15
 					      ",dm.manifiesto_id "+ //16
-					      ",ae.agencia_id AS agencia_idEmbarcado "+ //17 - Representa el idAgencia donde realizó el embarque
-					      ",dm.audfecmod as FechaDesp "+ //18 - Representa la fecha y hora en que se realizó el despacho
+					      ",ae.agencia_id AS agencia_idEmbarcado "+ //17 - Representa el idAgencia donde realizï¿½ el embarque
+					      ",dm.audfecmod as FechaDesp "+ //18 - Representa la fecha y hora en que se realizï¿½ el despacho
 					      ",dm.audusumod as usuarioDespacho "+ //19  - Representa el usuario que realizo el despacho.
-					      ",ae.c_nomcor AS agencia_NombreEmbarcado "+ //20 - Representa el nombre corto de la agencia donde realizó el embarque
+					      ",ae.c_nomcor AS agencia_NombreEmbarcado "+ //20 - Representa el nombre corto de la agencia donde realizï¿½ el embarque
 					"FROM VRTDETMAN dm "+
 					   "INNER JOIN VRTVENPAS vp ON (vp.venpas_id=dm.venpas_id) "+
 					   "INNER JOIN VRTMANIFIESTO m ON (m.manifiesto_id=dm.manifiesto_id) "+
@@ -200,6 +200,16 @@ public class DetalleManifiestoDAOImpl extends GenericDAOImpl implements DetalleM
 		if(result.size()==0)
 			return false;
 		else return true;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.DetalleManifiestoDAO#quitarManifiesto(java.lang.Long)
+	 */
+	@Override
+	public void quitarManifiesto(Long idVenta) throws Exception {
+		String sql = "UPDATE vrtdetman set c_estreg = 'I' WHERE venpas_id="+idVenta;
+		log.info(sql);
+		getSession().createSQLQuery(sql).executeUpdate();
 	}
 
 

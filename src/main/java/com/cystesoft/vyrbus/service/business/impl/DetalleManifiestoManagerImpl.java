@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½
  * Fecha		: 09/11/2013
  */
 package com.cystesoft.vyrbus.service.business.impl;
@@ -93,6 +93,14 @@ public class DetalleManifiestoManagerImpl implements DetalleManifiestoManager {
 	public Boolean validarVentaManifiesto(Long idVenta) throws Exception {
 		// TODO Auto-generated method stub
 		return getDetalleManifiestoDAO().validarVentaManifiesto(idVenta);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.DetalleManifiestoManager#quitarManifiesto(java.lang.Long)
+	 */
+	@Override
+	public void quitarManifiesto(Long idVenta) throws Exception {
+		getDetalleManifiestoDAO().quitarManifiesto(idVenta);
 	}
 
 
