@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½
  * Fecha		: 09/11/2013
  */
 package com.cystesoft.vyrbus.model.dao;
@@ -62,5 +62,11 @@ public interface DetalleManifiestoDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public Boolean validarVentaManifiesto(Long idVenta)throws Exception;
+	/**
+	 * Quita el boleto del manifiesto
+	 * @param idVenta: Identificador de la venta.
+	 * @throws Exception
+	 */
+	public void quitarManifiesto(Long idVenta)throws Exception;
 
 }

@@ -4190,7 +4190,10 @@ public class WndVentaReserva extends WndBase {
 //				throw new UbigeoNullException();
 			else if (txtTelefono.getText().trim().equals(""))
 				throw new TelefonoNullException();
-			else if (!(cmbSexo.getSelectedItem().getValue() instanceof Sexo))
+			else if (!(Util.isNumericLong(txtTelefono.getText().trim()))) {
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noTelefono.NoValid"), txtTelefono);
+				return false;
+			}else if (!(cmbSexo.getSelectedItem().getValue() instanceof Sexo))
 				throw new SexoNullException();
 			else if (ntbxEdad.getValue()==null) {
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noIngresoEdad"), ntbxEdad);
@@ -5530,16 +5533,21 @@ public class WndVentaReserva extends WndBase {
 //					throw new PasajeroNoSavedExeption();
 
 			//Valida los datos del Pasajero - 19/04/2022 - jabanto
-			else if(!tlbbtnCancelarPax.isDisabled()){
-				// Crea o actualiza el pasajero
-				boolean isCorrect =  onSavePax();
-				if(!isCorrect)
-					return;
-			}
+//			else if(!tlbbtnCancelarPax.isDisabled()){
+//				// Crea o actualiza el pasajero
+//				boolean isCorrect =  onSavePax();
+//				if(!isCorrect)
+//					return;
+//			}
+			
+			
+			boolean isCorrect =  onSavePax();
+			if(!isCorrect)
+				return;
 
 			//Valida los datos del Cliente - 20/04/2022
 			if(!tlbbtnCancelarClient.isDisabled()) {
-				boolean isCorrect = onSaveClient();
+				isCorrect = onSaveClient();
 				if(!isCorrect)
 					return;
 			}
@@ -5788,16 +5796,16 @@ public class WndVentaReserva extends WndBase {
 			}
 
 			//Valida los datos del Pasajero - 19/04/2022 - jabanto
-			if(!tlbbtnCancelarPax.isDisabled()){
+//			if(!tlbbtnCancelarPax.isDisabled()){
 				// Crea o actualiza el pasajero
 				boolean isCorrect =  onSavePax();
 				if(!isCorrect)
 					return null;
-			}
+//			}
 
 			//Valida los datos del Cliente - 20/04/2022
 			if(!tlbbtnCancelarClient.isDisabled()) {
-				boolean isCorrect = onSaveClient();
+				isCorrect = onSaveClient();
 				if(!isCorrect)
 					return null;
 			}
