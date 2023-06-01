@@ -1574,7 +1574,10 @@ public class WndPostergacion extends WndBase implements Serializable {
 //			postergacion.setPenalidad(dblbxPenalidad.getValue());
 			postergacion.setPenalidad(0.0);
 			postergacion.setAcuenta(0.0);
-			postergacion.setImportePagado(dblbxImporteTotal.getValue() - dblbxPenalidad.getValue());
+			//BEGIN javalos-30/05/2023 Se comenta para Transmar la penalidad del cambio de nombre es parte del boleto no Gasto
+//			postergacion.setImportePagado(dblbxImporteTotal.getValue() - dblbxPenalidad.getValue());
+			postergacion.setImportePagado(dblbxImporteTotal.getValue());
+			//END javalos
 //			postergacion.setImportePagado(dblbxMontoAnterior.getValue()+dblbxSaldo.getValue()); //El nuevo Comprobante sera por el monto que pago el pax mas el saldo
 //			postergacion.setImportePagado(dblbxTarifa.getValue()-dblbxDescuento.getValue());
 			postergacion.setImportePagadoEfectivo(dblbxImporteEfectivo.getValue());
@@ -1600,67 +1603,67 @@ public class WndPostergacion extends WndBase implements Serializable {
 				postergacion.setImportePagadoByDiferencia(0.00);
 			UtilData.auditarRegistro(postergacion,getUsuario(), Executions.getCurrent());
 
-
+			//BEGIN javalos-30/05/2023 Comentado para Transmar que no usa los gastos admiistrativos 
 			/*Instancia el gasto administrativo*/
-			VentaPasaje venta=(VentaPasaje)lbxVentas.getSelectedItem().getValue();
-			gastoAdmin=null;
-			if(dblbxPenalidad.getValue()>.00){
-				gastoAdmin= new VentaPasaje();
-				gastoAdmin.setVentaOriginal(venta.getVentaOriginal());
-				gastoAdmin.setVentaPasaje(venta);
-				gastoAdmin.setItinerario(new Itinerario((long)1));
-				gastoAdmin.setRuta(venta.getRuta());
-				gastoAdmin.setCliente(postergacion.getCliente()!=null?postergacion.getCliente():null);
-				gastoAdmin.setPasajero(postergacion.getPasajero());
-				gastoAdmin.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CONTADO));
-				gastoAdmin.setServicio(venta.getServicio());
-				gastoAdmin.setTipoComprobante((TipoComprobante)cmbtipoComprobantePostergado.getSelectedItem().getValue());
-				gastoAdmin.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS));
-				gastoAdmin.setTipoFormaPago((TipoFormaPago)cmbTipoFormaPago.getSelectedItem().getValue());
-				if(gastoAdmin.getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA)
-					gastoAdmin.setTarjetaCredito((TarjetaCredito)cmbTarjetaCredito.getSelectedItem().getValue());
-				gastoAdmin.setNumeroBoleto(txtNumeroBoletoPostergado.getText().trim());
-				gastoAdmin.setNumeroBoletoAnterior(venta.getNumeroBoleto());
-				gastoAdmin.setSecuencial(Constantes.FALSE_VALUE);
-				gastoAdmin.setTarifa(dblbxPenalidad.getValue());
-				gastoAdmin.setRecargo(0.00);
-				gastoAdmin.setDescuento(0.00);
-				gastoAdmin.setPenalidad(0.00);
-				gastoAdmin.setAcuenta(0.00);
-				gastoAdmin.setImportePagadoByDiferencia(0.00);
-				gastoAdmin.setImportePagado(dblbxPenalidad.getValue());
-				gastoAdmin.setImportePagadoEfectivo(0.00);
-				gastoAdmin.setImportePagadoTarjeta(0.00);
-				gastoAdmin.setTipoTransaccion(Constantes.TIPO_OPERACION_VARIOS);
-				gastoAdmin.setFechaCaducidad(new Date());
-				gastoAdmin.setNumeroControl("-");
-				gastoAdmin.setFechaLiquidacion(fechaLiquidacion);
-				gastoAdmin.setAgencia(getAgencia());
-				gastoAdmin.setUsuario(getUsuario());
-				gastoAdmin.setCanalVenta(getUsuarioHardware().getCanalVenta());
-				gastoAdmin.setUsuarioHardware(usuarioHardware);
-				gastoAdmin.setIdaRetorno(Constantes.FALSE_VALUE);
-				gastoAdmin.setEsFechaAbierta(Constantes.FALSE_VALUE);
-				gastoAdmin.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-				gastoAdmin.setObservaciones(observaciones);
-				/*Calcula el igv del gasto administrativo*/
-				Double igv=gastoAdmin.getImportePagado()- Double.valueOf(Util.toNumberFormat(gastoAdmin.getImportePagado()/((Constantes.IGV/100)+1),2));
-				gastoAdmin.setIgv(igv);
-				UtilData.auditarRegistro(gastoAdmin, getUsuario(), Executions.getCurrent());
-
-				if(chkCambioRazonSocial.isChecked()){
-					Cliente cliente=postergacion.getCliente();
-					cliente.setRazonSocial(txtClientePostergado.getText().trim().toUpperCase());
-					postergacion.setCliente(cliente);
-					gastoAdmin.setCliente(cliente);
-				}else if (chkCambioDireccionFiscal.isChecked()){
-					Cliente cliente=ServiceLocator.getClienteManager().buscarPorId(postergacion.getCliente().getId());
-					cliente.setDireccion(txtClienteDireccion.getText().trim().toUpperCase());
-					postergacion.setCliente(cliente);
-					gastoAdmin.setCliente(cliente);
-				}
-			}
-
+//			VentaPasaje venta=(VentaPasaje)lbxVentas.getSelectedItem().getValue();
+//			gastoAdmin=null;
+//			if(dblbxPenalidad.getValue()>.00){
+//				gastoAdmin= new VentaPasaje();
+//				gastoAdmin.setVentaOriginal(venta.getVentaOriginal());
+//				gastoAdmin.setVentaPasaje(venta);
+//				gastoAdmin.setItinerario(new Itinerario((long)1));
+//				gastoAdmin.setRuta(venta.getRuta());
+//				gastoAdmin.setCliente(postergacion.getCliente()!=null?postergacion.getCliente():null);
+//				gastoAdmin.setPasajero(postergacion.getPasajero());
+//				gastoAdmin.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CONTADO));
+//				gastoAdmin.setServicio(venta.getServicio());
+//				gastoAdmin.setTipoComprobante((TipoComprobante)cmbtipoComprobantePostergado.getSelectedItem().getValue());
+//				gastoAdmin.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS));
+//				gastoAdmin.setTipoFormaPago((TipoFormaPago)cmbTipoFormaPago.getSelectedItem().getValue());
+//				if(gastoAdmin.getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA)
+//					gastoAdmin.setTarjetaCredito((TarjetaCredito)cmbTarjetaCredito.getSelectedItem().getValue());
+//				gastoAdmin.setNumeroBoleto(txtNumeroBoletoPostergado.getText().trim());
+//				gastoAdmin.setNumeroBoletoAnterior(venta.getNumeroBoleto());
+//				gastoAdmin.setSecuencial(Constantes.FALSE_VALUE);
+//				gastoAdmin.setTarifa(dblbxPenalidad.getValue());
+//				gastoAdmin.setRecargo(0.00);
+//				gastoAdmin.setDescuento(0.00);
+//				gastoAdmin.setPenalidad(0.00);
+//				gastoAdmin.setAcuenta(0.00);
+//				gastoAdmin.setImportePagadoByDiferencia(0.00);
+//				gastoAdmin.setImportePagado(dblbxPenalidad.getValue());
+//				gastoAdmin.setImportePagadoEfectivo(0.00);
+//				gastoAdmin.setImportePagadoTarjeta(0.00);
+//				gastoAdmin.setTipoTransaccion(Constantes.TIPO_OPERACION_VARIOS);
+//				gastoAdmin.setFechaCaducidad(new Date());
+//				gastoAdmin.setNumeroControl("-");
+//				gastoAdmin.setFechaLiquidacion(fechaLiquidacion);
+//				gastoAdmin.setAgencia(getAgencia());
+//				gastoAdmin.setUsuario(getUsuario());
+//				gastoAdmin.setCanalVenta(getUsuarioHardware().getCanalVenta());
+//				gastoAdmin.setUsuarioHardware(usuarioHardware);
+//				gastoAdmin.setIdaRetorno(Constantes.FALSE_VALUE);
+//				gastoAdmin.setEsFechaAbierta(Constantes.FALSE_VALUE);
+//				gastoAdmin.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+//				gastoAdmin.setObservaciones(observaciones);
+//				/*Calcula el igv del gasto administrativo*/
+//				Double igv=gastoAdmin.getImportePagado()- Double.valueOf(Util.toNumberFormat(gastoAdmin.getImportePagado()/((Constantes.IGV/100)+1),2));
+//				gastoAdmin.setIgv(igv);
+//				UtilData.auditarRegistro(gastoAdmin, getUsuario(), Executions.getCurrent());
+//
+//				if(chkCambioRazonSocial.isChecked()){
+//					Cliente cliente=postergacion.getCliente();
+//					cliente.setRazonSocial(txtClientePostergado.getText().trim().toUpperCase());
+//					postergacion.setCliente(cliente);
+//					gastoAdmin.setCliente(cliente);
+//				}else if (chkCambioDireccionFiscal.isChecked()){
+//					Cliente cliente=ServiceLocator.getClienteManager().buscarPorId(postergacion.getCliente().getId());
+//					cliente.setDireccion(txtClienteDireccion.getText().trim().toUpperCase());
+//					postergacion.setCliente(cliente);
+//					gastoAdmin.setCliente(cliente);
+//				}
+//			}
+			//END javalos-30/05/2023
 
 			Messagebox.show(Messages.getString("WndPostergacion.information.confirmacionPostergacion"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 				@Override

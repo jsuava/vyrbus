@@ -1383,14 +1383,16 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				getVentaPasajesDAO().update(boletoPostergar);
 			}
 			
+			//BEGIN javalos Comentado para Transmar no usan los gastos administrativos.
 			/*	Generando el gasto administrativo*/
-			if(gastoAdministrativo!=null){
-				int result=generarGastoAdministrativo(gastoAdministrativo,true);
-				if(result==Constantes.FAILURE)
-					throw new Exception(Messages.getString("Generales.information.noGenerateGastoAdministrativo"));
-			}
+//			if(gastoAdministrativo!=null){
+//				int result=generarGastoAdministrativo(gastoAdministrativo,true);
+//				if(result==Constantes.FAILURE)
+//					throw new Exception(Messages.getString("Generales.information.noGenerateGastoAdministrativo"));
+//			}
+			//END javalos
 
-			/*Actualiza los datos del cliente pos si estos hayan sido cambiados 08/11/2016 - jabanto*/
+			/*Actualiza los datos del cliente por si estos hayan sido cambiados 08/11/2016 - jabanto*/
 			if(boletoPostergar.getCliente()!=null){
 				Cliente cliente=boletoPostergar.getCliente();
 				Cliente clienteOriginal=ServiceLocator.getClienteManager().buscarPorId(boletoPostergar.getCliente().getId());
