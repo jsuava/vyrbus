@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
+ * Descripciï¿½n	:
  * Autor		: Marco Antonio Oscco
  * Fecha		: 28/05/2013
  */
@@ -212,7 +212,7 @@ public class WndTarifario extends WndBase implements Serializable {
 		dlbxTarifaFa.setLocale(Locale.US);
 
 		//Para la Edicion o adicion de tarifas
-		UtilData.cargarDataCombo(cmbCanal, CanalVenta.class,true);
+		UtilData.cargarDataCombo(cmbCanal, CanalVenta.class,false);
 		UtilData.cargarDataCombo(cmbServicio, Servicio.class,true);
 		UtilData.cargarDataCombo(cmbOrigen, Localidad.class,true);
 		UtilData.cargarDataCombo(cmbDestino, Localidad.class,true);
@@ -226,6 +226,21 @@ public class WndTarifario extends WndBase implements Serializable {
 		onLoadZona();
 		inicializarControles(true);
 
+		if(getRol().getId().intValue()==Constantes.ID_ROL_ADMINISTRADOR) {
+			for(Comboitem comboitem: cmbCanal.getItems()) {
+				if(comboitem.getValue()!=null && comboitem.getValue() instanceof CanalVenta && ((CanalVenta)comboitem.getValue()).getId().intValue()!=Constantes.ID_CANVEN_COUNTER) {
+					cmbCanal.getItemAtIndex(comboitem.getIndex()).setVisible(false);
+				}
+			}
+		}else if(!(getRol().getId().intValue()==Constantes.ID_ROL_ADMIN || getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO)) {
+			for(Comboitem comboitem: cmbCanal.getItems()) {
+				if(comboitem.getValue()!=null && comboitem.getValue() instanceof CanalVenta) {
+					cmbCanal.getItemAtIndex(comboitem.getIndex()).setVisible(false);
+				}
+			}
+		}
+		
+		
 
 //		dlbxTarifaLista.setLocale(Locale.US);
 //		rbIncrementoTarifa.setDisabled(getRol().getId().intValue()==Constantes.ID_ROL_MARKETING);
@@ -318,9 +333,10 @@ public class WndTarifario extends WndBase implements Serializable {
 
 				//Canal de venta
 				String strCanalVenta = ((TarifaRegular) itemTarifa.getValue()).getTarifa().getCanalVenta().getDenominacion();
-				if(strCanalVenta != Constantes.SIN_TARIFA)
-					Util.seleccionarValorItemCombo(CanalVenta.class, cmbCanal,
-							((TarifaRegular) itemTarifa.getValue()).getTarifa().getCanalVenta().getId());
+				if(strCanalVenta != Constantes.SIN_TARIFA) {
+					Util.seleccionarValorItemCombo(CanalVenta.class, cmbCanal, ((TarifaRegular) itemTarifa.getValue()).getTarifa().getCanalVenta().getId());					
+				}else if(cmbCanal.getItems().size()>0 && cmbCanal.getSelectedIndex() < 0)
+						cmbCanal.setSelectedIndex(0);
 
 				//Servicio
 				Util.seleccionarValorItemCombo(Servicio.class, cmbServicio,
@@ -588,19 +604,19 @@ public class WndTarifario extends WndBase implements Serializable {
 	 */
 	public void onClick_btnNuevaTarifa(){
 		try {
-				limpiarControlesProgramacion();
+			limpiarControlesProgramacion();
 
-				btnNuevaTarifa.setDisabled(true);
-				btnCopiarTarifa.setDisabled(true);
-				btnCancelar.setDisabled(false);
-				btnGuardarTarifa.setDisabled(false);
+			btnNuevaTarifa.setDisabled(true);
+			btnCopiarTarifa.setDisabled(true);
+			btnCancelar.setDisabled(false);
+			btnGuardarTarifa.setDisabled(false);
 
-				if(!chkTarifaFA.isChecked())
-					inicializarControles(false);
-				else{
-					chkTarifaAbierta.setChecked(true);
-					onSelectTarifaFechaAbierta();
-				}
+			if(!chkTarifaFA.isChecked())
+				inicializarControles(false);
+			else{
+				chkTarifaAbierta.setChecked(true);
+				onSelectTarifaFechaAbierta();
+			}
 
 		} catch (Exception e) {
 			DlgMessage.information(e.getMessage());
@@ -615,6 +631,26 @@ public class WndTarifario extends WndBase implements Serializable {
 		try{
 			if(!chkTarifaFA.isChecked()){
 				if(lsbxRutas.getItemCount()>0){
+					CanalVenta canalVenta = null;
+					try {
+						canalVenta = ((TarifaRegular)lsbxRutas.getSelectedItem().getValue()).getTarifa().getCanalVenta();
+					} catch (Exception e) {}
+					
+					//Valida el perfil del usuario para la edicion de una tarifa.
+					if(canalVenta !=null){
+						for(Comboitem comboitemCanal: cmbCanal.getItems()) {
+							if(comboitemCanal.getValue()!=null && comboitemCanal.getValue() instanceof CanalVenta) {
+								if(((CanalVenta)comboitemCanal.getValue()).getId().intValue()==canalVenta.getId().intValue() && comboitemCanal.isVisible()==false){
+									DlgMessage.information(Messages.getString("wndTarifa.information.noPerfilEdicicon"));			
+									return;
+								}
+							}
+						}
+					}else {
+						DlgMessage.information(Messages.getString("wndTarifa.information.noPerfilEdicicon"));			
+						return;
+					}
+					
 					limpiarControlesProgramacion();
 					btnNuevaTarifa.setDisabled(true);
 					btnCopiarTarifa.setDisabled(true);
@@ -674,7 +710,7 @@ public class WndTarifario extends WndBase implements Serializable {
 
 
 	/**
-	 *  Realiza la busqueda de las rutas para la actualización las tarifas
+	 *  Realiza la busqueda de las rutas para la actualizaciï¿½n las tarifas
 	 * @throws Exception
 	 */
 	public void buscar() throws Exception{
@@ -935,7 +971,7 @@ public class WndTarifario extends WndBase implements Serializable {
 					dlbxTarifaP1.focus();
 					return;
 				}else if(cmbPiso.getSelectedIndex()==1 && dlbxTarifaP1.getValue()>0 && dlbxTarifaP1.getValue()<Constantes.TARIFA_MINIMA){
-					DlgMessage.information("El monto mínimo para crear una tarifa es de "+ Constantes.TARIFA_MINIMA);
+					DlgMessage.information("El monto mï¿½nimo para crear una tarifa es de "+ Constantes.TARIFA_MINIMA);
 					dlbxTarifaP1.focus();
 					return;
 				}else if(cmbPiso.getSelectedIndex()==2 && dlbxTarifaP2.getValue()==0 && oServicio.getNumeroPisos()==2){
@@ -943,7 +979,7 @@ public class WndTarifario extends WndBase implements Serializable {
 					dlbxTarifaP2.focus();
 					return;
 				}else if(cmbPiso.getSelectedIndex()==2 && dlbxTarifaP2.getValue()>0 && dlbxTarifaP2.getValue()<Constantes.TARIFA_MINIMA && oServicio.getNumeroPisos()==2){
-					DlgMessage.information("El monto mínimo para crear una tarifa es de "+ Constantes.TARIFA_MINIMA);
+					DlgMessage.information("El monto mï¿½nimo para crear una tarifa es de "+ Constantes.TARIFA_MINIMA);
 					cmbPiso.focus();
 					return;
 				}else if(cmbZona.getSelectedIndex()==0){
@@ -967,7 +1003,7 @@ public class WndTarifario extends WndBase implements Serializable {
 					dlbxTarifaP2.focus();
 					return;
 				}else if(dlbxTarifaP2.getValue()>0 && dlbxTarifaP2.getValue()<Constantes.TARIFA_MINIMA && oServicio.getNumeroPisos()>2){
-					DlgMessage.information("El monto mínimo para crear una tarifa es de "+ Constantes.TARIFA_MINIMA);
+					DlgMessage.information("El monto mï¿½nimo para crear una tarifa es de "+ Constantes.TARIFA_MINIMA);
 					dlbxTarifaP2.focus();
 					return;
 				}else{
@@ -976,11 +1012,11 @@ public class WndTarifario extends WndBase implements Serializable {
 					//MAOE 30/12/2022 Para validar el monto de tarifa minimo
 					if(cmbPiso.getSelectedIndex()==0 && (dlbxTarifaP1.getValue()>0 && dlbxTarifaP2.getValue()>0)){
 						if(dlbxTarifaP1.getValue()>0 && dlbxTarifaP1.getValue()<Constantes.TARIFA_MINIMA) {
-							DlgMessage.information("El monto mínimo para crear una tarifa es de "+ Constantes.TARIFA_MINIMA);
+							DlgMessage.information("El monto mï¿½nimo para crear una tarifa es de "+ Constantes.TARIFA_MINIMA);
 							dlbxTarifaP1.focus();
 							return;
 						}else if(dlbxTarifaP2.getValue()>0 && dlbxTarifaP2.getValue()<Constantes.TARIFA_MINIMA){
-							DlgMessage.information("El monto mínimo para crear una tarifa es de "+ Constantes.TARIFA_MINIMA);
+							DlgMessage.information("El monto mï¿½nimo para crear una tarifa es de "+ Constantes.TARIFA_MINIMA);
 							dlbxTarifaP2.focus();
 							return;
 						}else
@@ -1041,13 +1077,13 @@ public class WndTarifario extends WndBase implements Serializable {
 						strMensaje="";
 
 					if(cantidadTarifas == 0 && cantidadServicios > 0){
-						strMensaje += "Se va a iniciar el proceso de creacion de tarifas.\nEste proceso puede tardar varios minutos! \n ¿Realmente desea continuar?";
+						strMensaje += "Se va a iniciar el proceso de creacion de tarifas.\nEste proceso puede tardar varios minutos! \n ï¿½Realmente desea continuar?";
 					}else if(cantidadTarifas > 0 && cantidadServicios == 0){
 						flag=1;
-						strMensaje += "No se encontraron Servicios para las fechas y destinos indicadas. \nRealmente desea crear las tarifas según la configuración ingresada?";
+						strMensaje += "No se encontraron Servicios para las fechas y destinos indicadas. \nRealmente desea crear las tarifas segï¿½n la configuraciï¿½n ingresada?";
 					}else if(cantidadTarifas > 0 && cantidadServicios > 0){
 						flag=2;
-						strMensaje += "Se encontraron " + cantidades[0] + " de Tarifas, este proceso reemplazara estas tarifas! \n ¿Realmente desea continuar?";
+						strMensaje += "Se encontraron " + cantidades[0] + " de Tarifas, este proceso reemplazara estas tarifas! \n ï¿½Realmente desea continuar?";
 					}
 
 
@@ -1257,7 +1293,7 @@ public class WndTarifario extends WndBase implements Serializable {
 											}
 
 										}
-									//Cuando es solamente una Día
+									//Cuando es solamente una Dï¿½a
 									}else{
 										Integer pisoElegido;
 										if(ambosPisos == 1)
@@ -1475,7 +1511,7 @@ public class WndTarifario extends WndBase implements Serializable {
 					 *Valor 1: Hay tarifas pero no hay servicios programados
 					 *Valor 2: Hay tarifas y servicios y se reemplazaran las tarifas
 					 */
-					String strMensaje = "Se va a registrar la tarifa de Fecha Abierta para el Servicio "+ strServicio +" \nen la ruta "+ strOrigen + " - " + strDestino + ".\n ¿Realmente desea continuar?";
+					String strMensaje = "Se va a registrar la tarifa de Fecha Abierta para el Servicio "+ strServicio +" \nen la ruta "+ strOrigen + " - " + strDestino + ".\n ï¿½Realmente desea continuar?";
 //
 //
 					Messagebox.show(strMensaje, DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
