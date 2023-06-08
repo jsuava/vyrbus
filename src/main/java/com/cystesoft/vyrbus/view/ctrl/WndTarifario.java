@@ -637,7 +637,7 @@ public class WndTarifario extends WndBase implements Serializable {
 					} catch (Exception e) {}
 					
 					//Valida el perfil del usuario para la edicion de una tarifa.
-					if(canalVenta !=null){
+					if(canalVenta !=null && canalVenta.getId()!=null){
 						for(Comboitem comboitemCanal: cmbCanal.getItems()) {
 							if(comboitemCanal.getValue()!=null && comboitemCanal.getValue() instanceof CanalVenta) {
 								if(((CanalVenta)comboitemCanal.getValue()).getId().intValue()==canalVenta.getId().intValue() && comboitemCanal.isVisible()==false){
@@ -646,10 +646,11 @@ public class WndTarifario extends WndBase implements Serializable {
 								}
 							}
 						}
-					}else {
-						DlgMessage.information(Messages.getString("wndTarifa.information.noPerfilEdicicon"));			
-						return;
 					}
+//					else {
+//						DlgMessage.information(Messages.getString("wndTarifa.information.noPerfilEdicicon"));			
+//						return;
+//					}
 					
 					limpiarControlesProgramacion();
 					btnNuevaTarifa.setDisabled(true);
