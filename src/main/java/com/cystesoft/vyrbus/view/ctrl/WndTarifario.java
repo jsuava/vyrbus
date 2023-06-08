@@ -634,6 +634,7 @@ public class WndTarifario extends WndBase implements Serializable {
 					CanalVenta canalVenta = null;
 					try {
 						canalVenta = ((TarifaRegular)lsbxRutas.getSelectedItem().getValue()).getTarifa().getCanalVenta();
+						
 					} catch (Exception e) {}
 					
 					//Valida el perfil del usuario para la edicion de una tarifa.

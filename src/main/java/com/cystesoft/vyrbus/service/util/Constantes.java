@@ -31,7 +31,7 @@ public class Constantes {
 	 * Vension actual del Sistema
 	 */
 
-	public static final String SYSTEM_VERSION = "Versión 3.3.8";
+	public static final String SYSTEM_VERSION = "Versión 3.3.9";
 		
 	/**
 	 * Constante para la Acción Nuevo
@@ -115,7 +115,7 @@ public class Constantes {
 	public static final int VALIDAR_APPLET = 1;
 	/* Guarda el valor del IGV actual */
 	public static final double IGV=18;
-	public static final double TARIFA_MINIMA=40;
+	public static final double TARIFA_MINIMA=35;
 
 	/*	Para los tipos de venta	*/
 	public static final int TIPO_VENTA_NORMAL = 1;
@@ -165,11 +165,11 @@ public class Constantes {
 //	public static final String SERVER_HOST = Executions.getCurrent().getHeader("host");
 //	public static final String SERVER_HOST = "ventas.tepsa.com.pe/";
 
-	public static final String SERVER_HOST = "localhost:8080";
+//	public static final String SERVER_HOST = "localhost:8080";
 	//Demo Wars
 //	public static final String SERVER_HOST = "170.0.233.155:8080";
 	
-//	public static final String SERVER_HOST = "119.8.145.122:8080";
+	public static final String SERVER_HOST = "119.8.145.122:8080";
 
 	public static final String SERVER_CONTEXT = Executions.getCurrent().getContextPath();
 	public static final String URL_FORMATOS = SERVER_PROTOCOL+"://"+SERVER_HOST+SERVER_CONTEXT+"/formatos/";
