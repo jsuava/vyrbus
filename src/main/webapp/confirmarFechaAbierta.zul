@@ -56,10 +56,12 @@
 				<listbox id="lbxVentasFechaAbierta" width="100%" mold="paging" pageSize="8" >
 					<listhead>
 						<listheader label="VENTA_ID" width="5%" style="color: #ffffff;"/>
-						<!-- <listheader label="ITINERARIO" width="7%"/> -->
+						<!-- <listheader label="ITINERARIO" width="5%"/> -->
 						<listheader label="FORMA PAGO" width="7%" style="color: #ffffff;"/>
 						<listheader label="TIPO PAGO" width="7%" style="color: #ffffff;"/>
 						<listheader label="RUTA" width="13%" style="color: #ffffff;"/>
+						<listheader label="COMPROBANTE" width="8%" style="color: #ffffff;"/>
+						<listheader label="DOC.IDE." width="6%" style="color: #ffffff;"/>
 						<listheader label="PASAJERO" width="21%" style="color: #ffffff;"/>
 						<listheader label="CLIENTE" width="21%" style="color: #ffffff;"/>
 						<listheader label="NRO CONTROL" width="8%" style="color: #ffffff;"/>

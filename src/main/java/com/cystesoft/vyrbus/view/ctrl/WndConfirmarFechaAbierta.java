@@ -176,6 +176,10 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 					item.appendChild(cell);
 					cell = new Listcell(ventaPasaje.getRuta().toString());
 					item.appendChild(cell);
+					cell = new Listcell(ventaPasaje.getNumeroBoleto().toString());
+					item.appendChild(cell);
+					cell = new Listcell(ventaPasaje.getPasajero().getNumeroDocumento().toString());					
+					item.appendChild(cell);
 					cell = new Listcell(ventaPasaje.getPasajero().toString());
 					item.appendChild(cell);
 					cell = new Listcell(ventaPasaje.getCliente()==null?"":ventaPasaje.getCliente().toString());

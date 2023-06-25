@@ -51,13 +51,15 @@
 						<listhead>
 							<listheader id="listHeaderCheck" width="3%" visible="false" style="color: #ffffff;"/>
 							<listheader label="VENTA_ID" width="5%" style="color: #ffffff;"/>
-							<listheader label="ITINERARIO" width="7%" style="color: #ffffff;"/>
+							<listheader label="ITINERARIO" width="5%" style="color: #ffffff;"/>
+							<listheader label="SERVICIO" width="13%" style="color: #ffffff;"/>
 							<listheader label="RUTA" width="13%" style="color: #ffffff;"/>
 							<listheader label="PASAJERO" width="20%" style="color: #ffffff;"/>
 							<listheader label="CLIENTE" width="19%" style="color: #ffffff;"/>
 							<listheader label="ASIENTO" width="5%" style="color: #ffffff;"/>
 							<listheader label="NRO CONTROL" width="8%" style="color: #ffffff;"/>
 							<listheader label="F.PARTIDA" width="7%" style="color: #ffffff;"/>
+							<listheader label="HOR.PART." width="7%" style="color: #ffffff;"/>
 							<listheader label="IMPORTE" width="5%" style="color: #ffffff;"/>
 							<listheader label="ALIMENTACION" width="7%" style="color: #ffffff;"/>
 							<listheader label="ANULAR" width="4%" align="center" style="color: #ffffff;"/>

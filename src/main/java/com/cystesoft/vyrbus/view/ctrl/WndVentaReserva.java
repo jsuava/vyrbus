@@ -6367,6 +6367,7 @@ public class WndVentaReserva extends WndBase {
 
 										//Aqui se envia el comprobante al servidor de Facturaci�n Electr�nica
 										//Comentado temporalmente por MAOE
+										//23/06/2023
 										WSFE.sendVenta(listVentaPasajes,wndVentaReserva,printComprobante,null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 									}
 
@@ -6545,6 +6546,7 @@ public class WndVentaReserva extends WndBase {
 									ventasIdaRetorno.add(ventaPasajeRETORNO);
 
 									//Comentado temporalmente por MAOE
+									//23/06/2023
 									WSFE.sendVenta(ventasIdaRetorno, wndVentaReserva, true,null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 
 									/*End Begin 24/10/2016 - jabanto*/

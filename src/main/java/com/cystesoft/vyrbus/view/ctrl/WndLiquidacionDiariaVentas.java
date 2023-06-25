@@ -458,6 +458,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 				loadVentas(lstVentas, false);
 
 				//Carga
+				//MAOE 23/06/2023
 				Integer idAgencia_transcar = null;
 				if(cmbAgencia.getSelectedItem().getValue() instanceof Agencia)
 					idAgencia_transcar = ((Agencia)cmbAgencia.getSelectedItem().getValue()).getId();
@@ -467,6 +468,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 				}
 				lstVentas  =ServiceLocator.getTranscarWebManager().buscarDetalleVentas(usuarioPersonal, idAgencia_transcar, fechaInicio, fechaFin);
 				loadVentas(lstVentas, true);
+				
 			}else if(rubroPasajes.isChecked()) {
 				List<VentaPasaje> lstVentas = ServiceLocator.getVentaPasajesManager().buscarDetalladoVentas(idAgencia, idUsuario, fechaInicio, fechaFin, criterio);
 				loadVentas(lstVentas, false);
