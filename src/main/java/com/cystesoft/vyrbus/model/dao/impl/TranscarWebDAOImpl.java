@@ -899,7 +899,7 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 				"					WHEN 3 \r\n" + 
 				"					  THEN '31'\r\n" + 
 				"				END TD,\r\n" + 
-				"				CASE ec.tipcom_id \r\n" + 
+				"				CASE length(substr(ec.c_numcom, 1, position('-' in ec.c_numcom)-1)) \r\n" + 
 				"				  WHEN 3 \r\n" + 
 				"					  THEN\r\n" + 
 				"						  lpad(substr(ec.c_numcom, 1, 3), 4, '0') \r\n" + 

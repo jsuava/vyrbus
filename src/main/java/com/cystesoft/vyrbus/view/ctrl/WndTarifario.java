@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripciï¿½n	:
+ * Descripción	:
  * Autor		: Marco Antonio Oscco
  * Fecha		: 28/05/2013
  */
@@ -712,7 +712,7 @@ public class WndTarifario extends WndBase implements Serializable {
 
 
 	/**
-	 *  Realiza la busqueda de las rutas para la actualizaciï¿½n las tarifas
+	 *  Realiza la busqueda de las rutas para la actualización las tarifas
 	 * @throws Exception
 	 */
 	public void buscar() throws Exception{
@@ -973,7 +973,7 @@ public class WndTarifario extends WndBase implements Serializable {
 					dlbxTarifaP1.focus();
 					return;
 				}else if(cmbPiso.getSelectedIndex()==1 && dlbxTarifaP1.getValue()>0 && dlbxTarifaP1.getValue()<Constantes.TARIFA_MINIMA){
-					DlgMessage.information("El monto mï¿½nimo para crear una tarifa es de "+ Constantes.TARIFA_MINIMA);
+					DlgMessage.information("El monto mínimo para crear una tarifa es de "+ Constantes.TARIFA_MINIMA);
 					dlbxTarifaP1.focus();
 					return;
 				}else if(cmbPiso.getSelectedIndex()==2 && dlbxTarifaP2.getValue()==0 && oServicio.getNumeroPisos()==2){
@@ -981,7 +981,7 @@ public class WndTarifario extends WndBase implements Serializable {
 					dlbxTarifaP2.focus();
 					return;
 				}else if(cmbPiso.getSelectedIndex()==2 && dlbxTarifaP2.getValue()>0 && dlbxTarifaP2.getValue()<Constantes.TARIFA_MINIMA && oServicio.getNumeroPisos()==2){
-					DlgMessage.information("El monto mï¿½nimo para crear una tarifa es de "+ Constantes.TARIFA_MINIMA);
+					DlgMessage.information("El monto mínimo para crear una tarifa es de "+ Constantes.TARIFA_MINIMA);
 					cmbPiso.focus();
 					return;
 				}else if(cmbZona.getSelectedIndex()==0){
@@ -1005,7 +1005,7 @@ public class WndTarifario extends WndBase implements Serializable {
 					dlbxTarifaP2.focus();
 					return;
 				}else if(dlbxTarifaP2.getValue()>0 && dlbxTarifaP2.getValue()<Constantes.TARIFA_MINIMA && oServicio.getNumeroPisos()>2){
-					DlgMessage.information("El monto mï¿½nimo para crear una tarifa es de "+ Constantes.TARIFA_MINIMA);
+					DlgMessage.information("El monto mínimo para crear una tarifa es de "+ Constantes.TARIFA_MINIMA);
 					dlbxTarifaP2.focus();
 					return;
 				}else{
@@ -1014,11 +1014,11 @@ public class WndTarifario extends WndBase implements Serializable {
 					//MAOE 30/12/2022 Para validar el monto de tarifa minimo
 					if(cmbPiso.getSelectedIndex()==0 && (dlbxTarifaP1.getValue()>0 && dlbxTarifaP2.getValue()>0)){
 						if(dlbxTarifaP1.getValue()>0 && dlbxTarifaP1.getValue()<Constantes.TARIFA_MINIMA) {
-							DlgMessage.information("El monto mï¿½nimo para crear una tarifa es de "+ Constantes.TARIFA_MINIMA);
+							DlgMessage.information("El monto mínimo para crear una tarifa es de "+ Constantes.TARIFA_MINIMA);
 							dlbxTarifaP1.focus();
 							return;
 						}else if(dlbxTarifaP2.getValue()>0 && dlbxTarifaP2.getValue()<Constantes.TARIFA_MINIMA){
-							DlgMessage.information("El monto mï¿½nimo para crear una tarifa es de "+ Constantes.TARIFA_MINIMA);
+							DlgMessage.information("El monto mínimo para crear una tarifa es de "+ Constantes.TARIFA_MINIMA);
 							dlbxTarifaP2.focus();
 							return;
 						}else
@@ -1079,13 +1079,13 @@ public class WndTarifario extends WndBase implements Serializable {
 						strMensaje="";
 
 					if(cantidadTarifas == 0 && cantidadServicios > 0){
-						strMensaje += "Se va a iniciar el proceso de creacion de tarifas.\nEste proceso puede tardar varios minutos! \n ï¿½Realmente desea continuar?";
+						strMensaje += "Se va a iniciar el proceso de creacion de tarifas.\nEste proceso puede tardar varios minutos! \n ¿Realmente desea continuar?";
 					}else if(cantidadTarifas > 0 && cantidadServicios == 0){
 						flag=1;
-						strMensaje += "No se encontraron Servicios para las fechas y destinos indicadas. \nRealmente desea crear las tarifas segï¿½n la configuraciï¿½n ingresada?";
+						strMensaje += "No se encontraron Servicios para las fechas y destinos indicadas. \nRealmente desea crear las tarifas según la configuración ingresada?";
 					}else if(cantidadTarifas > 0 && cantidadServicios > 0){
 						flag=2;
-						strMensaje += "Se encontraron " + cantidades[0] + " de Tarifas, este proceso reemplazara estas tarifas! \n ï¿½Realmente desea continuar?";
+						strMensaje += "Se encontraron " + cantidades[0] + " de Tarifas, este proceso reemplazara estas tarifas! \n ¿Realmente desea continuar?";
 					}
 
 
@@ -1295,7 +1295,7 @@ public class WndTarifario extends WndBase implements Serializable {
 											}
 
 										}
-									//Cuando es solamente una Dï¿½a
+									//Cuando es solamente una Día
 									}else{
 										Integer pisoElegido;
 										if(ambosPisos == 1)
@@ -1513,7 +1513,7 @@ public class WndTarifario extends WndBase implements Serializable {
 					 *Valor 1: Hay tarifas pero no hay servicios programados
 					 *Valor 2: Hay tarifas y servicios y se reemplazaran las tarifas
 					 */
-					String strMensaje = "Se va a registrar la tarifa de Fecha Abierta para el Servicio "+ strServicio +" \nen la ruta "+ strOrigen + " - " + strDestino + ".\n ï¿½Realmente desea continuar?";
+					String strMensaje = "Se va a registrar la tarifa de Fecha Abierta para el Servicio "+ strServicio +" \nen la ruta "+ strOrigen + " - " + strDestino + ".\n ¿Realmente desea continuar?";
 //
 //
 					Messagebox.show(strMensaje, DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
