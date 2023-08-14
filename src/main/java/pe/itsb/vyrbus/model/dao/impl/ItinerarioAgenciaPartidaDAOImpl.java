@@ -1,0 +1,76 @@
+package pe.itsb.vyrbus.model.dao.impl;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.TreeMap;
+
+import pe.itsb.vyrbus.model.bean.Agencia;
+import pe.itsb.vyrbus.model.bean.Itinerario;
+import pe.itsb.vyrbus.model.bean.ItinerarioAgenciaPartida;
+import pe.itsb.vyrbus.model.bean.Localidad;
+import pe.itsb.vyrbus.model.dao.ItinerarioAgenciaPartidaDAO;
+import pe.itsb.vyrbus.service.util.Constantes;
+
+@SuppressWarnings("unchecked")
+public class ItinerarioAgenciaPartidaDAOImpl extends GenericDAOImpl implements ItinerarioAgenciaPartidaDAO {
+
+	@Override
+	public ArrayList<ItinerarioAgenciaPartida> buscarPorX(TreeMap<String, Object> criteriosBusqueda,List<String> criteriosOrdenar) {
+		return (ArrayList<ItinerarioAgenciaPartida>) super.findByX(ItinerarioAgenciaPartida.class, criteriosBusqueda, criteriosOrdenar);
+	}
+
+	@Override
+	public ItinerarioAgenciaPartida buscarPorId(Long id) {
+		return (ItinerarioAgenciaPartida) super.findById(ItinerarioAgenciaPartida.class, id);
+	}
+
+
+	@Override
+	public void delete(Long idItinerario, Integer idLocalidad) throws Exception {
+		String sql="DELETE FROM vrtitiagepar WHERE vrtitiagepar.itinerario_id=" + idItinerario + " AND vrtitiagepar.localidad_id=" + idLocalidad;
+		getSession().createSQLQuery(sql).executeUpdate();
+	}
+	/*
+	 * (non-Javadoc)
+	 * @see pe.itsb.vyrbus.model.dao.ItinerarioAgenciaPartidaDAO#buscarAgenciasPartida(java.lang.Long, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public List<ItinerarioAgenciaPartida> buscarAgenciasPartida(Long idItinerario, String estado, String strLocalidad)throws Exception{
+		String sql = "SELECT iap.itinerario_id, iap.agencia_id, a.c_denominacion, iap.c_horpar, a.c_nomcor, l.localidad_id, l.c_denominacion, "
+				+ "iap.c_estreg, iap.audfecins, iap.audusuins, iap.audipinse " +
+				"FROM vrtitiagepar iap " +
+				"INNER JOIN vrmagencia a ON a.agencia_id=iap.agencia_id " +
+				"INNER JOIN vrmlocalidad l ON l.localidad_id=iap.localidad_id " +
+				"WHERE iap.itinerario_id="+idItinerario+" AND iap.c_estreg IN ('"+Constantes.VALUE_ACTIVO+"','"+estado+"') ";
+
+		if(strLocalidad != null)
+			sql = sql + " AND iap.localidad_id IN("+strLocalidad+")";
+
+		List<?> result = getSession().createSQLQuery(sql).list();
+		List<ItinerarioAgenciaPartida> lstResult = new ArrayList<>();
+		for(int i=0; i<result.size(); i++){
+			Object[] obj = (Object[])result.get(i);
+			ItinerarioAgenciaPartida itAgePartida = new ItinerarioAgenciaPartida();
+			Itinerario itinerario =  new Itinerario(((BigDecimal)obj[0]).longValue());
+			itAgePartida.setItinerario(itinerario);
+			Agencia agencia = new Agencia(((BigDecimal)obj[1]).intValue());
+			agencia.setDenominacion(obj[2].toString());
+			agencia.setNombreCorto(obj[4]==null?null:obj[4].toString());
+			itAgePartida.setAgencia(agencia);
+			itAgePartida.setHoraPartida(obj[3].toString());
+			Localidad localidad = new Localidad();
+			localidad.setId(((BigDecimal)obj[5]).intValue());
+			localidad.setDenominacion(obj[6].toString());
+			itAgePartida.setLocalidad(localidad);
+			itAgePartida.setEstadoRegistro(obj[7].toString());
+			itAgePartida.setFechaInsercion((Date)obj[8]);
+			itAgePartida.setUsuarioInsercion(obj[9].toString());
+			itAgePartida.setIpInsercion(obj[10].toString());
+			lstResult.add(itAgePartida);
+		}
+		return lstResult;
+	}
+
+}

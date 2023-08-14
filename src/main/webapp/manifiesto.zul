@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:n="client">
-<window id="wndManifiesto" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndManifiesto">
+<window id="wndManifiesto" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndManifiesto">
 <panel id="panel" title="::: DESPACHO DE BUSES :::" framable="true" width="910px" border="normal" closable="true" onClose="wndManifiesto.closeTabWindow()">
         <panelchildren>
 				<grid style="background: ">

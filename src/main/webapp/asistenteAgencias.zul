@@ -1,6 +1,6 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndAsistenteAgencias" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndAsistenteAgencias">
+<window id="wndAsistenteAgencias" border="none" use="pe.itsb.vyrbus.view.ctrl.WndAsistenteAgencias">
 	<tabbox>
 		<tabs>
 			<tab id="tabCliente" label="Información del Cliente"/>
@@ -124,9 +124,9 @@
 										maxlength="3" 
 										width="30px" 
 										style="text-align: right;" 
-										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbTipoComision)"/>
+										onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbTipoComision)"/>
 								<label value="TIPO (*) :" />
-								<combobox id="cmbTipoComision" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(ckbIncluyeIgv)" />
+								<combobox id="cmbTipoComision" readonly="true" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(ckbIncluyeIgv)" />
 								<checkbox id="ckbIncluyeIgv" label="INCLUYE IGV " style="cursor:pointer; font-size:9px"/>
 							</row>
 						</rows>
@@ -351,13 +351,13 @@
 								<combobox id="cmbAgencia" 
 										readonly="true" 
 										width="200px" 
-										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbUsuarioHardware)" 
+										onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbUsuarioHardware)" 
 										disabled="true"/>
 								<label value="USUARIO HARDWARE :"/>
 								<combobox id="cmbUsuarioHardware" 
 										readonly="true" 
 										width="200px" 
-										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtApellidoPaterno)" 
+										onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtApellidoPaterno)" 
 										disabled="true"/>						
 							</row>
 							<row>
@@ -365,13 +365,13 @@
 								<textbox id="txtApellidoPaterno" 
 										width="190px" 
 										maxlength="20" 
-										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtApellidoMaterno)" 
+										onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtApellidoMaterno)" 
 										disabled="true"/>
 								<label value="APELLIDO MATERNO :"/>
 								<textbox id="txtApellidoMaterno" 
 										width="190px" 
 										maxlength="20" 
-										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNombres)" 
+										onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtNombres)" 
 										disabled="true"/>
 							</row>
 							<row>
@@ -379,13 +379,13 @@
 								<textbox id="txtNombres"  
 										width="190px" 
 										maxlength="30" 
-										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbEstadoUsuario)" 
+										onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbEstadoUsuario)" 
 										disabled="true"/>
 								<label value="ESTADO :"/>
 								<combobox id="cmbEstadoUsuario"  
 										readonly="true" 
 										onChange="wndAsistenteAgencias.cmbUsuario_onChange()" 
-										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtLogin)"/>
+										onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtLogin)"/>
 							</row>					
 						</rows>
 					</grid>
@@ -405,13 +405,13 @@
 										width="190px" 
 										maxlength="16" 
 										style="text-transform:lowercase; font-size:12px !important" 
-										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbRol)" 
+										onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbRol)" 
 										disabled="true"/>
 								<label value="ROL (*) :" />
 								<combobox id="cmbRol" 
 										width="210px" 
 										readonly="true" 
-										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtPassword)" 
+										onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtPassword)" 
 										disabled="true"/>
 							</row>
 							<row>

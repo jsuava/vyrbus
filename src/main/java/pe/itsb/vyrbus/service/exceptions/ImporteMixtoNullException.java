@@ -1,0 +1,46 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: Objeto que controla la excepcion ocacionada por los Importes Mixtos.
+ * Autor		: José Avalos
+ * Fecha		: 02/04/2013
+ */
+package pe.itsb.vyrbus.service.exceptions;
+
+import java.io.Serializable;
+
+/**
+ * @author Jose
+ *
+ */
+public class ImporteMixtoNullException extends Exception implements Serializable {
+	private static final long serialVersionUID = 1L;
+	public static final int IMPORTE_MIXTO_CERO = 1;
+	public static final int IMPORTE_MIXTO_NOT_EQUALS = 2;
+	public static final int IMPORTE_MIXTO_NOT_SELECT_CARD = 3;
+	public static final int IMPORTE_MIXTO_NOT_SELECT_EFECTIVO = 4;
+	private Integer tipoError;
+
+	public ImporteMixtoNullException(int tipoError) {
+		super();
+		this.tipoError = tipoError;
+	}
+
+	public ImporteMixtoNullException() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @return the tipoError
+	 */
+	public Integer getTipoError() {
+		return tipoError;
+	}
+	/**
+	 * @param tipoError the tipoError to set
+	 */
+	public void setTipoError(Integer tipoError) {
+		this.tipoError = tipoError;
+	}
+}

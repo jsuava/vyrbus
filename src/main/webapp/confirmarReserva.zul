@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndConfirmarReserva" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndConfirmarReserva" style="overflow:auto">
+<window id="wndConfirmarReserva" border="none" use="pe.itsb.vyrbus.view.ctrl.WndConfirmarReserva" style="overflow:auto">
 	<vlayout>
 		<tabbox mold="accordion-lite">
 			<tabs>

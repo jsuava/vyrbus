@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window title="" use="com.cystesoft.vyrbus.view.ctrl.WndNumeroFlota">
+<window title="" use="pe.itsb.vyrbus.view.ctrl.WndNumeroFlota">
 <div id="divLista">
 	<listbox id="listboxLista">
 		<listhead sizable="true">

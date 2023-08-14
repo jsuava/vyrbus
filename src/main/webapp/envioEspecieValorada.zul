@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndEnvio"  title="" border="normal" use="com.cystesoft.vyrbus.view.ctrl.WndEnvioEspecieValorada" width="760px">
+<window id="wndEnvio"  title="" border="normal" use="pe.itsb.vyrbus.view.ctrl.WndEnvioEspecieValorada" width="760px">
  <caption label="REGISTRO DEL ENVIO DE ESPECIES VALORADAS" /> 
 	<tabbox>
 		<tabs>

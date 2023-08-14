@@ -1,6 +1,6 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:h="http://www.w3.org/1999/xhtml" xmlns:zk="http://www.zkoss.org/2005/zk">
-<window id="wndLiquidacionTuentrada" border="normal" width="430px" closable="true" use="com.cystesoft.vyrbus.view.tuentrada.WndLiquidacionTuentrada">
+<window id="wndLiquidacionTuentrada" border="normal" width="430px" closable="true" use="pe.itsb.vyrbus.view.tuentrada.WndLiquidacionTuentrada">
 	<style>
 		.z-label, .z-button, .z-listbox{
 			font-size:9px;

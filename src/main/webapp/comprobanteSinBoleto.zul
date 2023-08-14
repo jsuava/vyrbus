@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndComprobantesSinBoleto" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndComprobantesSinBoleto" contentStyle="overflow:auto" >
+<window id="wndComprobantesSinBoleto" border="none" use="pe.itsb.vyrbus.view.ctrl.WndComprobantesSinBoleto" contentStyle="overflow:auto" >
 	<tabbox mold="accordion-lite">
 		<tabs width="100%">
 			<tab id="tabListado" label="RELACION DE COMPROBANTES SIN BOLETO"/>

@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndTarjetaCredito">
+<window title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndTarjetaCredito">
 <div id="divLista">
 	<listbox id="listboxLista">
 		<listhead sizable="true">
@@ -26,7 +26,7 @@
 						<label value="OPERADOR TARJETA DE CRÉEDITO (*) :" />
 						<textbox id="textboxId"/>					
 					</div>
-					<combobox id="cboOperadorTarjetaCredito" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtDenominacion)"/>
+					<combobox id="cboOperadorTarjetaCredito" readonly="true" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtDenominacion)"/>
 					<label value="DENOMINACIÓN (*) :" />
 					<textbox id="txtDenominacion" maxlength="25" />
 				</row>

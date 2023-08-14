@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndMapaBus" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndCreacionMapaBus">
+<window id="wndMapaBus" border="none" use="pe.itsb.vyrbus.view.ctrl.WndCreacionMapaBus">
 	<div id="divLista">
 		<listbox id="listboxLista">
 			<listhead sizable="true">

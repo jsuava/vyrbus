@@ -1,0 +1,130 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	:
+ * Autor		: José Abanto
+ * Fecha		: 21/02/2017
+ * Hora			: 10:08:50
+ */
+package pe.itsb.vyrbus.model.bean;
+
+import java.io.Serializable;
+import java.util.Date;
+
+/**
+ * @author Jose Abanto
+ *
+ */
+public class ComprobantesBloqueados extends GenericBean implements Serializable{
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
+	private ComprobantesBloqueadosID comprobanteBloqueadoID;
+	private VentaPasaje ventaPasaje;
+	private UsuarioHardware usuarioHardware;
+	private Usuario usuario;
+	private TipoComprobante tipoComprobante;
+	private String numeroComprobante;
+	private Integer modulo;
+	private Date fechaExpiracionBloqueo;
+	/**
+	 * @return the comprobanteBloqueadoID
+	 */
+	public ComprobantesBloqueadosID getComprobanteBloqueadoID() {
+		return comprobanteBloqueadoID;
+	}
+	/**
+	 * @param comprobanteBloqueadoID the comprobanteBloqueadoID to set
+	 */
+	public void setComprobanteBloqueadoID(ComprobantesBloqueadosID comprobanteBloqueadoID) {
+		this.comprobanteBloqueadoID = comprobanteBloqueadoID;
+	}
+	/**
+	 * @return the usuarioHardware
+	 */
+	public UsuarioHardware getUsuarioHardware() {
+		return usuarioHardware;
+	}
+	/**
+	 * @param usuarioHardware the usuarioHardware to set
+	 */
+	public void setUsuarioHardware(UsuarioHardware usuarioHardware) {
+		this.usuarioHardware = usuarioHardware;
+	}
+	/**
+	 * @return the usuario
+	 */
+	public Usuario getUsuario() {
+		return usuario;
+	}
+	/**
+	 * @param usuario the usuario to set
+	 */
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+	/**
+	 * @return the tipoComprobante
+	 */
+	public TipoComprobante getTipoComprobante() {
+		return tipoComprobante;
+	}
+	/**
+	 * @param tipoComprobante the tipoComprobante to set
+	 */
+	public void setTipoComprobante(TipoComprobante tipoComprobante) {
+		this.tipoComprobante = tipoComprobante;
+	}
+	/**
+	 * @return the numeroComprobante
+	 */
+	public String getNumeroComprobante() {
+		return numeroComprobante;
+	}
+	/**
+	 * @param numeroComprobante the numeroComprobante to set
+	 */
+	public void setNumeroComprobante(String numeroComprobante) {
+		this.numeroComprobante = numeroComprobante;
+	}
+	/**
+	 * @return the modulo
+	 */
+	public Integer getModulo() {
+		return modulo;
+	}
+	/**
+	 * @param modulo the modulo to set
+	 */
+	public void setModulo(Integer modulo) {
+		this.modulo = modulo;
+	}
+	/**
+	 * @return the fechaExpiracionBloqueo
+	 */
+	public Date getFechaExpiracionBloqueo() {
+		return fechaExpiracionBloqueo;
+	}
+	/**
+	 * @param fechaExpiracionBloqueo the fechaExpiracionBloqueo to set
+	 */
+	public void setFechaExpiracionBloqueo(Date fechaExpiracionBloqueo) {
+		this.fechaExpiracionBloqueo = fechaExpiracionBloqueo;
+	}
+	/**
+	 * @return the ventaPasaje
+	 */
+	public VentaPasaje getVentaPasaje() {
+		return ventaPasaje;
+	}
+	/**
+	 * @param ventaPasaje the ventaPasaje to set
+	 */
+	public void setVentaPasaje(VentaPasaje ventaPasaje) {
+		this.ventaPasaje = ventaPasaje;
+	}
+
+
+}

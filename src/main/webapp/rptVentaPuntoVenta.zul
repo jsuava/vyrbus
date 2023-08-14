@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndRptVentaPuntoVenta" title="" use="com.cystesoft.vyrbus.view.ctrl.WndRptVentaPuntoVenta" border="none">
+<window id="wndRptVentaPuntoVenta" title="" use="pe.itsb.vyrbus.view.ctrl.WndRptVentaPuntoVenta" border="none">
 	<groupbox mold="3d" closable="false">
 		<caption label="VENTAS POR PUNTO DE VENTA Y USUARIOS" style="color: #ffffff;"/>
 		<grid style="border:none">

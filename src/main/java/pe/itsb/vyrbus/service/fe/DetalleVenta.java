@@ -1,0 +1,339 @@
+
+package pe.itsb.vyrbus.service.fe;
+
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlType;
+
+/**
+ * <p>
+ * Java class for DetalleVenta complex type.
+ *
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
+ *
+ * <pre>
+ * &lt;complexType name="DetalleVenta">
+ *   &lt;complexContent>
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       &lt;sequence>
+ *         &lt;element name="bultos" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
+ *         &lt;element name="cantidad" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/>
+ *         &lt;element name="codigoAfectacionIgv" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="codigoProducto" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="codigoTipoPrecio" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="descripcion" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="igv" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/>
+ *         &lt;element name="item" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
+ *         &lt;element name="porcentajeIgv" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/>
+ *         &lt;element name="tarifa" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/>
+ *         &lt;element name="total" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/>
+ *         &lt;element name="unidadMedida" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="valorUnitario" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/>
+ *       &lt;/sequence>
+ *     &lt;/restriction>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
+ * </pre>
+ *
+ *
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "DetalleVenta", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", propOrder = {
+		"bultos", "cantidad", "codigoAfectacionIgv", "codigoProducto", "codigoTipoPrecio", "descripcion", "igv", "item",
+		"porcentajeIgv", "tarifa", "total", "unidadMedida", "valorUnitario" })
+public class DetalleVenta {
+
+	protected Integer bultos;
+	protected Double cantidad;
+	@XmlElementRef(name = "codigoAfectacionIgv", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", type = JAXBElement.class)
+	protected JAXBElement<String> codigoAfectacionIgv;
+	@XmlElementRef(name = "codigoProducto", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", type = JAXBElement.class)
+	protected JAXBElement<String> codigoProducto;
+	@XmlElementRef(name = "codigoTipoPrecio", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", type = JAXBElement.class)
+	protected JAXBElement<String> codigoTipoPrecio;
+	@XmlElementRef(name = "descripcion", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", type = JAXBElement.class)
+	protected JAXBElement<String> descripcion;
+	protected Double igv;
+	protected Integer item;
+	protected Double porcentajeIgv;
+	protected Double tarifa;
+	protected Double total;
+	@XmlElementRef(name = "unidadMedida", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", type = JAXBElement.class)
+	protected JAXBElement<String> unidadMedida;
+	protected Double valorUnitario;
+
+	/**
+	 * Gets the value of the bultos property.
+	 *
+	 * @return possible object is {@link Integer }
+	 *
+	 */
+	public Integer getBultos() {
+		return bultos;
+	}
+
+	/**
+	 * Sets the value of the bultos property.
+	 *
+	 * @param value allowed object is {@link Integer }
+	 *
+	 */
+	public void setBultos(Integer value) {
+		this.bultos = value;
+	}
+
+	/**
+	 * Gets the value of the cantidad property.
+	 *
+	 * @return possible object is {@link Double }
+	 *
+	 */
+	public Double getCantidad() {
+		return cantidad;
+	}
+
+	/**
+	 * Sets the value of the cantidad property.
+	 *
+	 * @param value allowed object is {@link Double }
+	 *
+	 */
+	public void setCantidad(Double value) {
+		this.cantidad = value;
+	}
+
+	/**
+	 * Gets the value of the codigoAfectacionIgv property.
+	 *
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String
+	 *         }{@code >}
+	 *
+	 */
+	public JAXBElement<String> getCodigoAfectacionIgv() {
+		return codigoAfectacionIgv;
+	}
+
+	/**
+	 * Sets the value of the codigoAfectacionIgv property.
+	 *
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
+	 *
+	 */
+	public void setCodigoAfectacionIgv(JAXBElement<String> value) {
+		this.codigoAfectacionIgv = (value);
+	}
+
+	/**
+	 * Gets the value of the codigoProducto property.
+	 *
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String
+	 *         }{@code >}
+	 *
+	 */
+	public JAXBElement<String> getCodigoProducto() {
+		return codigoProducto;
+	}
+
+	/**
+	 * Sets the value of the codigoProducto property.
+	 *
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
+	 *
+	 */
+	public void setCodigoProducto(JAXBElement<String> value) {
+		this.codigoProducto = (value);
+	}
+
+	/**
+	 * Gets the value of the codigoTipoPrecio property.
+	 *
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String
+	 *         }{@code >}
+	 *
+	 */
+	public JAXBElement<String> getCodigoTipoPrecio() {
+		return codigoTipoPrecio;
+	}
+
+	/**
+	 * Sets the value of the codigoTipoPrecio property.
+	 *
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
+	 *
+	 */
+	public void setCodigoTipoPrecio(JAXBElement<String> value) {
+		this.codigoTipoPrecio = (value);
+	}
+
+	/**
+	 * Gets the value of the descripcion property.
+	 *
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String
+	 *         }{@code >}
+	 *
+	 */
+	public JAXBElement<String> getDescripcion() {
+		return descripcion;
+	}
+
+	/**
+	 * Sets the value of the descripcion property.
+	 *
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
+	 *
+	 */
+	public void setDescripcion(JAXBElement<String> value) {
+		this.descripcion = (value);
+	}
+
+	/**
+	 * Gets the value of the igv property.
+	 *
+	 * @return possible object is {@link Double }
+	 *
+	 */
+	public Double getIgv() {
+		return igv;
+	}
+
+	/**
+	 * Sets the value of the igv property.
+	 *
+	 * @param value allowed object is {@link Double }
+	 *
+	 */
+	public void setIgv(Double value) {
+		this.igv = value;
+	}
+
+	/**
+	 * Gets the value of the item property.
+	 *
+	 * @return possible object is {@link Integer }
+	 *
+	 */
+	public Integer getItem() {
+		return item;
+	}
+
+	/**
+	 * Sets the value of the item property.
+	 *
+	 * @param value allowed object is {@link Integer }
+	 *
+	 */
+	public void setItem(Integer value) {
+		this.item = value;
+	}
+
+	/**
+	 * Gets the value of the porcentajeIgv property.
+	 *
+	 * @return possible object is {@link Double }
+	 *
+	 */
+	public Double getPorcentajeIgv() {
+		return porcentajeIgv;
+	}
+
+	/**
+	 * Sets the value of the porcentajeIgv property.
+	 *
+	 * @param value allowed object is {@link Double }
+	 *
+	 */
+	public void setPorcentajeIgv(Double value) {
+		this.porcentajeIgv = value;
+	}
+
+	/**
+	 * Gets the value of the tarifa property.
+	 *
+	 * @return possible object is {@link Double }
+	 *
+	 */
+	public Double getTarifa() {
+		return tarifa;
+	}
+
+	/**
+	 * Sets the value of the tarifa property.
+	 *
+	 * @param value allowed object is {@link Double }
+	 *
+	 */
+	public void setTarifa(Double value) {
+		this.tarifa = value;
+	}
+
+	/**
+	 * Gets the value of the total property.
+	 *
+	 * @return possible object is {@link Double }
+	 *
+	 */
+	public Double getTotal() {
+		return total;
+	}
+
+	/**
+	 * Sets the value of the total property.
+	 *
+	 * @param value allowed object is {@link Double }
+	 *
+	 */
+	public void setTotal(Double value) {
+		this.total = value;
+	}
+
+	/**
+	 * Gets the value of the unidadMedida property.
+	 *
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String
+	 *         }{@code >}
+	 *
+	 */
+	public JAXBElement<String> getUnidadMedida() {
+		return unidadMedida;
+	}
+
+	/**
+	 * Sets the value of the unidadMedida property.
+	 *
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
+	 *
+	 */
+	public void setUnidadMedida(JAXBElement<String> value) {
+		this.unidadMedida = (value);
+	}
+
+	/**
+	 * Gets the value of the valorUnitario property.
+	 *
+	 * @return possible object is {@link Double }
+	 *
+	 */
+	public Double getValorUnitario() {
+		return valorUnitario;
+	}
+
+	/**
+	 * Sets the value of the valorUnitario property.
+	 *
+	 * @param value allowed object is {@link Double }
+	 *
+	 */
+	public void setValorUnitario(Double value) {
+		this.valorUnitario = value;
+	}
+
+}

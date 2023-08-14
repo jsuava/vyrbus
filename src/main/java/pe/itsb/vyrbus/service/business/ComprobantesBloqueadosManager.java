@@ -1,0 +1,73 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	:
+ * Autor		: José Abanto
+ * Fecha		: 21/02/2017
+ * Hora			: 10:27:54
+ */
+package pe.itsb.vyrbus.service.business;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import pe.itsb.vyrbus.model.bean.ComprobantesBloqueados;
+
+/**
+ * @author Jose Abanto
+ *
+ */
+public interface ComprobantesBloqueadosManager {
+	/**
+	 * Realiza el bloqueo del comprobante
+	 * @param tmpOcupacion	: Objeto para realiza el insert;
+	 * @return 1=Exitoso, -1=Fallo
+	 * @throws Exception
+	 */
+	public int bloquearComprobante(ComprobantesBloqueados ComprobantesBloqueados)throws Exception;
+	/**
+	 * Realiza el desbloqueo del comprobante
+	 * @param tmpOcupacion	: Objeto a desbloquear.
+	 * @return 1=Exitoso, -1=Fallo
+	 * @throws Exception
+	 */
+	public int desbloquearComprobante(ComprobantesBloqueados comprobantesBloqueados)throws Exception;
+
+	/**
+	 * Realiza el desbloqueo del comprobante por Usuario Hardware.
+	 * @param idUsuarioHardware	: Identificador del Usuario Hardware
+	 * @return 1=Exitoso, -1=Fallo.
+	 * @throws Exception
+	 */
+	public int desbloquearComprobanteByUsuarioHardware(Integer idUsuarioHardware)throws Exception;
+	/**
+	 * Busca por estado registro
+	 * @param estado	: estado a consultar
+	 * @param criterioOrden: criterios para el ordenamiento de los datos
+	 * @return
+	 */
+	public ArrayList<ComprobantesBloqueados> buscarPorEstadoRegistro(String estado);
+
+	/***
+	 * realiza el desbloque del comprobante por el identificador de la venta
+	 * @param idVentaPasaje			: Identificador de la venta
+	 * @return
+	 * @throws Exception
+	 */
+	public int desbloquearComprobante(Long idVentaPasaje) throws Exception;
+	/**
+	 * Realiza la busqueda de los asientos bloqueados
+	 * @param criteriosBusqueda	: criterios para la busqueda de la informacion.
+	 * @param criteriosOrdenar	: Criterios para el ordenamiento de los datos
+	 * @return Lista de ocurrencias.
+	 */
+	public ArrayList<ComprobantesBloqueados> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar)throws Exception;
+	/**
+	 * Realiza la busqueda por su identificador
+	 * @param ventaPasajeId	: Identificador de la entidad
+	 * @return
+	 * @throws Exception
+	 */
+	public ComprobantesBloqueados buscarPorId(Long ventaPasajeId)throws Exception;
+}

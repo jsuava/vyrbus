@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndDevolucionBoleto" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndDevolucionBoleto">
+<window id="wndDevolucionBoleto" border="none" use="pe.itsb.vyrbus.view.ctrl.WndDevolucionBoleto">
 	
 	<tabbox mold="accordion-lite">
 		<tabs>

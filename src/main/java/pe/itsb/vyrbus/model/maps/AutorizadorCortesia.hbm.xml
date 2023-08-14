@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	 <class name="pe.itsb.vyrbus.model.bean.AutorizadorCortesia" schema="VYRBUSME" table="VRTAUTCOR">
+		  <comment>Entidad que almacena los autorisadores de las cortesias</comment>
+		  <id name="id" type="java.lang.Integer">
+		   <column name="AUTCOR_ID" precision="5" scale="0"/>
+		   <generator class="sequence">
+		    <param name="sequence">SEQ_VRTAUTCOR_ID</param>
+		   </generator>
+		  </id>
+		  
+		  <many-to-one name="personal" class="pe.itsb.vyrbus.model.bean.Personal" fetch="select">
+		   <column name="PERSONAL_ID" precision="10" scale="0">
+		      <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+		   </column>
+		  </many-to-one>
+		  <many-to-one name="motivoCortesia" class="pe.itsb.vyrbus.model.bean.MotivoCortesia" fetch="select">
+		   <column name="MOTCOR_ID" precision="5" scale="0">
+		      <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+		   </column>
+		  </many-to-one>
+		  <property name="password" type="java.lang.String">
+            <column name="C_PASSWORD" length="20" >
+                <comment>Contrasenia solicitada en caso de ser necesario para las cortesias propiamente dichas.</comment>
+            </column>
+          </property>
+		  
+		  <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+		  <property generated="never" lazy="false" name="estadoRegistro" type="java.lang.String">
+		   <column length="1" name="C_ESTREG" not-null="true">
+		    <comment>Estado de registro A(Activo), I(Inactivo).</comment>
+		   </column>
+		  </property>
+		  <property generated="never" lazy="false" name="fechaInsercion" type="java.util.Date">
+		   <column length="7" name="AUDFECINS">
+		    <comment>Fecha de insercion/modificacion.</comment>
+		   </column>
+		  </property>
+		  <property generated="never" lazy="false" name="usuarioInsercion" type="java.lang.String">
+		   <column length="30" name="AUDUSUINS">
+		    <comment>Usuario de insercion/modificacion.</comment>
+		   </column>
+		  </property>
+		  <property generated="never" lazy="false" name="ipInsercion" type="java.lang.String">
+		   <column length="15" name="AUDIPINSE">
+		    <comment>IP de insercion/modificacion.</comment>
+		   </column>
+		  </property>
+		  <property generated="never" lazy="false" name="fechaModificacion" type="java.util.Date">
+		   <column length="7" name="AUDFECMOD">
+		    <comment>Fecha de insercion/modificacion.</comment>
+		   </column>
+		  </property>
+		  <property generated="never" lazy="false" name="usuarioModificacion" type="java.lang.String">
+		   <column length="30" name="AUDUSUMOD">
+		    <comment>Usuario de insercion/modificacion.</comment>
+		   </column>
+		  </property>
+		  <property generated="never" lazy="false" name="ipModificacion" type="java.lang.String">
+		   <column length="15" name="AUDIPMODI">
+		    <comment>IP de insercion/modificacion.</comment>
+		   </column>
+		  </property>
+		 
+		  <!-- 		END CAMPOS DE AUDITORIA	 	-->
+	 </class>
+</hibernate-mapping>

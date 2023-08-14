@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndApruebaCartera"  border="none" use="com.cystesoft.vyrbus.view.ctrl.WndApruebaCarteraN1" width="850px">
+<window id="wndApruebaCartera"  border="none" use="pe.itsb.vyrbus.view.ctrl.WndApruebaCarteraN1" width="850px">
 <panel title="::: APROBACIÓN CARTERA Y/O CRÉDITO :::" framable="true"  border="normal" closable="true" onClose="wndApruebaCartera.closeTabWindow()">
 	<panelchildren>
 	

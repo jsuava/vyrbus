@@ -1,6 +1,6 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndRptTransbordo" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndRptTransbordos">
+<window id="wndRptTransbordo" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndRptTransbordos">
 	<groupbox mold="3d" closable="false">
 		<caption label="REPORTE DE PASAJEROS TRANSBORDADOS" style="color: #ffffff;"/>
 		<grid>

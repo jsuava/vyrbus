@@ -1,6 +1,6 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndAbout" width="320px" border="none" use="com.cystesoft.vyrbus.view.ctrl.About">
+<window id="wndAbout" width="320px" border="none" use="pe.itsb.vyrbus.view.ctrl.About">
 	<!-- <style>
 		div.z-grid.body-window, tr.z-row td.z-row-inner{
      	background-color:#8DA7C0;

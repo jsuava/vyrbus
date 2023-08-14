@@ -1,6 +1,6 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:n="client">
-<window title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndMotivocortesia">
+<window title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndMotivocortesia">
 	<div id="divLista">
 			<listbox id="listboxLista">
 				<listhead sizable="true">

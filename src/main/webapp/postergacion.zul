@@ -1,6 +1,6 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndPostergacion" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndPostergacion">
+<window id="wndPostergacion" border="none" use="pe.itsb.vyrbus.view.ctrl.WndPostergacion">
 	<tabbox mold="accordion-lite">
 		<tabs>
 			<tab id="tabBusqueda" label="CRITERIOS DE BUSQUEDA"/>

@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="pe.itsb.vyrbus.model.bean.HistoricoMembresia" table="VRTHISMEM" schema="VYRBUSME">
+        <comment>Entidad que sirve para registrar las actualizaciones de la membresia del pasajero frecuente.</comment>
+        <id name="id" type="java.lang.Long">
+            <column name="HISMEM_ID" precision="10" scale="0" />
+            <generator class="sequence">
+                <param name="sequence">SEQ_VRTHISMEM_ID</param>
+            </generator>
+        </id>
+        <many-to-one name="pasajeroFrecuente" class="pe.itsb.vyrbus.model.bean.PasajeroFrecuente" fetch="select">
+            <column name="PAXFRE_ID" precision="10" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 10.</comment>
+            </column>
+        </many-to-one>
+        <property name="fechaActivacionAnterior" type="java.util.Date">
+            <column name="D_FECACTANT" length="7" >
+                <comment>Fecha de activacion anterior</comment>
+            </column>
+        </property>
+        <property name="fechaCaducidadAnterior" type="java.util.Date">
+            <column name="D_FECCADANT" length="7">
+                <comment>Fecha de caducidad anterior</comment>
+            </column>
+        </property>
+        <property name="fechaSuspensionAnterior" type="java.util.Date">
+            <column name="D_FECSUSANT" length="7">
+                <comment>Fecha de suspension anterior</comment>
+            </column>
+        </property>
+        <property name="nuevaFechaActivacion" type="java.util.Date">
+            <column name="D_NUEFECACT" length="7">
+                <comment>Nueva fecha de Activacion</comment>
+            </column>
+        </property>
+        <property name="nuevaFechaCaducidad" type="java.util.Date">
+             <column name="D_NUEFECCAD" length="7">
+                <comment>Nueva fecha de Caducidad</comment>
+             </column>
+         </property>
+        
+        <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+        <property name="estadoRegistro" type="java.lang.String">
+            <column name="C_ESTREG" length="1" not-null="true">
+                <comment>Estado de registro A(Activo), I(Inactivo).</comment>
+            </column>
+        </property>
+        <property name="fechaInsercion" type="java.util.Date">
+            <column name="AUDFECINS" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioInsercion" type="java.lang.String">
+            <column name="AUDUSUINS" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipInsercion" type="java.lang.String">
+            <column name="AUDIPINSE" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="fechaModificacion" type="java.util.Date">
+            <column name="AUDFECMOD" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioModificacion" type="java.lang.String">
+            <column name="AUDUSUMOD" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipModificacion" type="java.lang.String">
+            <column name="AUDIPMODI" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <!-- 		END CAMPOS DE AUDITORIA	 	-->
+    </class>
+   
+</hibernate-mapping>

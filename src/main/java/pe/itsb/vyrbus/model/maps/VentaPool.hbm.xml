@@ -1,0 +1,168 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+
+	<class name="pe.itsb.vyrbus.model.bean.VentaPool" schema="VYRBUSME" table="VRTVENPOOL">
+		<comment>Entidad que almacena las ventas del pool Ilo</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="VENPOOL_ID" precision="10" scale="0"/>
+			<generator class="sequence">
+				<param name="sequence">SEQ_VRTVENPOOL_ID</param>
+			</generator>
+		</id>
+		<property name="operador" type="java.lang.String">
+			<column name="C_OPE" length="100"   >
+			</column>
+		</property> 
+		<property name="numeroBoletoTepsa" type="java.lang.String">
+			<column name="C_NUMBOLTEPSA" length="15"   >
+			</column>
+		</property> 
+		<property name="numeroComprobanteOperador" type="java.lang.String">
+			<column name="C_NUMCOMOPE" length="15"   >
+			</column>
+		</property> 
+		<property name="codigoTransaccionOperador" type="java.lang.String">
+			<column name="C_CODTRAOPE" length="150"   >
+			</column>
+		</property> 
+		<property name="fechaPartida" type="java.util.Date">
+			<column name="D_FECPAR" length="7"   >
+			</column>
+		</property>  
+		<property name="horaPartida" type="java.lang.String">
+			<column name="C_HORPAR" length="15"   >
+			</column>
+		</property>
+		<property name="fechaLlegada" type="java.util.Date">
+			<column name="D_FECLLE" length="7"   >
+			</column>
+		</property>  
+		<property name="horaLlegada" type="java.lang.String">
+			<column name="C_HORLLE" length="15"   >
+			</column>
+		</property>
+		<property name="puntoEmbaruqe" type="java.lang.String">
+			<column name="C_PTOEMB" length="50">
+			</column>
+		</property>
+		<property name="ruta" type="java.lang.String">
+			<column name="C_RUTA" length="150">
+			</column>
+		</property>
+		<property name="servicio" type="java.lang.String">
+			<column name="C_SERVICIO" length="50">
+			</column>
+		</property>
+		<property name="tarifa" type="java.lang.Double">
+			<column name="N_TARIFA" precision="10" scale="2"  >
+			</column>
+		</property>
+		<property name="descuento" type="java.lang.Double">
+			<column name="N_DES" precision="10" scale="2"  >
+			</column>
+		</property>
+		<property name="importePagado" type="java.lang.Double">
+			<column name="N_IMPPAG" precision="10" scale="2"  >
+			</column>
+		</property>
+		<property name="numeroAsiento" type="java.lang.String">
+			<column name="C_ASIENTO" length="2">
+			</column>
+		</property>
+		<property name="piso" type="java.lang.Integer">
+			<column name="N_PISO" precision="1" scale="0"  >
+			</column>
+		</property>
+		<many-to-one name="pasajero" class="pe.itsb.vyrbus.model.bean.Pasajero" fetch="select">
+			<column name="PASAJERO_ID" precision="10"  >
+				<comment>Identificador unico de la entidad, tamanio de la clave primaria 5</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="cliente" class="pe.itsb.vyrbus.model.bean.Cliente" fetch="select">
+			<column name="CLIENTE_ID" precision="10"  >
+				<comment>Identificador unico de la entidad, tamanio de la clave primaria 10</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="formaPago" class="pe.itsb.vyrbus.model.bean.FormaPago" fetch="select">
+			<column name="FORPAG_ID" precision="2"  >
+				<comment>Identificador unico de la entidad, tamanio de la clave primaria 2</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="tarjetaCredito" class="pe.itsb.vyrbus.model.bean.TarjetaCredito" fetch="select">
+			<column name="TARCRE_ID" precision="2"  >
+				<comment>Identificador unico de la entidad, tamanio de la clave primaria 2</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="agencia" class="pe.itsb.vyrbus.model.bean.Agencia" fetch="select">
+			<column name="AGENCIA_ID" precision="5"  >
+				<comment>Identificador unico de la entidad, tamanio de la clave primaria 5</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="usuario" class="pe.itsb.vyrbus.model.bean.Usuario" fetch="select">
+			<column name="USUARIO_ID" precision="5"  >
+				<comment>Identificador unico de la entidad, tamanio de la clave primaria 5</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="liquidacion" class="pe.itsb.vyrbus.model.bean.Liquidacion" fetch="select">
+			<column name="LIQUIDACION_ID" precision="7"  >
+				<comment>Identificador unico de la entidad, tamanio de la clave primaria 7</comment>
+			</column>
+		</many-to-one>
+		<property name="fechaLiquidacion" type="java.util.Date">
+			<column name="D_FECLIQ" length="7"   >
+			</column>
+		</property> 
+		<many-to-one name="localidadOrigen" class="pe.itsb.vyrbus.model.bean.Localidad" fetch="select">
+			<column name="LOCALIDAD_IDORIGEN" precision="5"  >
+				<comment>Identificador unico de la entidad, tamanio de la clave primaria 5</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="localidadDestino" class="pe.itsb.vyrbus.model.bean.Localidad" fetch="select">
+			<column name="LOCALIDAD_IDDESTINO" precision="5"  >
+				<comment>Identificador unico de la entidad, tamanio de la clave primaria 5</comment>
+			</column>
+		</many-to-one>
+ 
+  		<!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+        <property name="estadoRegistro" type="java.lang.String">
+            <column name="C_ESTREG" length="1" not-null="true">
+                <comment>Estado de registro A(Activo), I(Inactivo).</comment>
+            </column>
+        </property>
+        <property name="fechaInsercion" type="java.util.Date">
+            <column name="AUDFECINS" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioInsercion" type="java.lang.String">
+            <column name="AUDUSUINS" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipInsercion" type="java.lang.String">
+            <column name="AUDIPINSE" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="fechaModificacion" type="java.util.Date">
+            <column name="AUDFECMOD" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioModificacion" type="java.lang.String">
+            <column name="AUDUSUMOD" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipModificacion" type="java.lang.String">
+            <column name="AUDIPMODI" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <!-- 		END CAMPOS DE AUDITORIA	 	-->
+	</class> 
+
+</hibernate-mapping>

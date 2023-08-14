@@ -7,7 +7,7 @@
 	font-family: Arial;
 }
 </style>
-<window id="wndAnulBolCre" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndAnulacionBoletoCredito">
+<window id="wndAnulBolCre" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndAnulacionBoletoCredito">
 	<groupbox>
 		<grid style="border:none">
 			<columns>

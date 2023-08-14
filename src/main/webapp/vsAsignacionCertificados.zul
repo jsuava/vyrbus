@@ -1,6 +1,6 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndvsAsignacionCertificados" title="" border="none" height="100%" use="com.cystesoft.vyrbus.view.ctrl.WndVSAsignacionCertificados">
+<window id="wndvsAsignacionCertificados" title="" border="none" height="100%" use="pe.itsb.vyrbus.view.ctrl.WndVSAsignacionCertificados">
 	<div id="divLista">
 		<listbox id="listboxLista">
 			<listhead sizable="true">

@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndOperadorTarjetaCredito">
+<window title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndOperadorTarjetaCredito">
 <div id="divLista">
 	<listbox id="listboxLista">
 		<listhead sizable="true">

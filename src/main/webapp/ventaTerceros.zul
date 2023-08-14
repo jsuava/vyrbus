@@ -5,7 +5,7 @@
 		background: red important;
 	}
 </style>
-<window id="wndVentaTerceros" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndVentaTerceros">
+<window id="wndVentaTerceros" border="none" use="pe.itsb.vyrbus.view.ctrl.WndVentaTerceros">
 	<tabbox>
 		<tabs>
 			<tab id="tabItinerario" label="Selección de Itinerario" onClick="wndVentaTerceros.selectedTabItinerario()"/>
@@ -102,7 +102,7 @@
 									<listbox id="lbxItinerariosIda" 
 											mold="paging" 
 											pageSize="4" 
-											onSelect="wndVentaTerceros.onSelectItinerario(com.cystesoft.vyrbus.service.util.Constantes.SERVICIO_IDA)"
+											onSelect="wndVentaTerceros.onSelectItinerario(pe.itsb.vyrbus.service.util.Constantes.SERVICIO_IDA)"
 											width="450px">
 										<listhead>
 											<listheader label="SERVICIO" width="120px" style="color: #ffffff;"/>

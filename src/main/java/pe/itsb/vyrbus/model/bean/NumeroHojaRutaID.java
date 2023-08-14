@@ -1,0 +1,52 @@
+/**
+ * Proyecto		: VYRBUS
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	:
+ * Autor		: Marco Oscco
+ * Fecha		: 27/08/2014
+ * Hora			: 11:38:05
+ */
+package pe.itsb.vyrbus.model.bean;
+
+import java.io.Serializable;
+
+/**
+ * @author JABANTO
+ *
+ */
+public class NumeroHojaRutaID implements Serializable{
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
+	private String idNumeroHojaRuta;
+
+
+	public NumeroHojaRutaID(){
+		super();
+	}
+
+	public NumeroHojaRutaID(String idNumeroHojaRuta){
+		super();
+		this.setIdNumeroHojaRuta(idNumeroHojaRuta);
+	}
+
+	/**
+	 * @return the idNumeroHojaRuta
+	 */
+	public String getIdNumeroHojaRuta() {
+		return idNumeroHojaRuta;
+	}
+
+	/**
+	 * @param idNumeroHojaRuta the idNumeroHojaRuta to set
+	 */
+	public void setIdNumeroHojaRuta(String idNumeroHojaRuta) {
+		this.idNumeroHojaRuta = idNumeroHojaRuta;
+	}
+
+
+
+
+
+}

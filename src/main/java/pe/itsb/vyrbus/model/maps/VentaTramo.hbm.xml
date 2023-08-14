@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 04/05/2012 12:43:35 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="pe.itsb.vyrbus.model.bean.VentaTramo" table="VRTVENTRA" schema="VYRBUSME">
+        <comment>Entidada que almacena todos los clientes del sistema de pasajes.</comment>
+        <id name="id" type="java.lang.Long">
+            <column name="VENTRA_ID" precision="10" scale="0" />
+            <generator class="sequence">
+                <param name="sequence">SEQ_VRTVENTRA_ID</param>
+            </generator>
+        </id>
+         <many-to-one name="itinerario" class="pe.itsb.vyrbus.model.bean.Itinerario">
+        	<column name="ITINERARIO_ID" precision="18" scale="0">
+        		<comment>Itinerario</comment>
+        	</column>
+        </many-to-one>
+        <many-to-one name="ruta" class="pe.itsb.vyrbus.model.bean.Ruta">
+        	<column name="RUTA_ID" precision="10" scale="0" not-null="true">
+        		<comment>Ruta a la que se le autoriza la venta del tramo</comment>
+        	</column>
+        </many-to-one>
+        <property name="despuesHoraSalida" type="java.lang.Integer">
+            <column name="N_DESHORSAL" precision="1" scale="0" not-null="true">
+                <comment>Indica si es despues o antes de la hora de salida del Servicio. (1=Despues; 0=Antes).</comment>
+            </column>
+        </property>
+        <property name="tiempo" type="java.lang.Integer">
+            <column name="N_TIEMPO" precision="6" scale="0" not-null="true" >
+            	<comment>Tiempo desde y/o hasta que la venta debe estar disponible, una vez cumplida la hora de salida del Servicio desde el punto inicial.</comment>
+            </column>
+        </property>
+        <property name="fechaInicio" type="java.util.Date">
+            <column name="D_FECINI" length="7" >
+                <comment>Fecha en que inicia </comment>
+            </column>
+        </property>
+        <property name="fechaFin" type="java.util.Date">
+            <column name="D_FECFIN" length="7" >
+                <comment>Fecha en que Finaliza  </comment>
+            </column>
+        </property>
+        
+        <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+        <property name="estadoRegistro" type="java.lang.String">
+            <column name="C_ESTREG" length="1" >
+                <comment>Estado de registro A(Activo), I(Inactivo).</comment>
+            </column>
+        </property>
+        <property name="fechaInsercion" type="java.util.Date">
+            <column name="AUDFECINS" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioInsercion" type="java.lang.String">
+            <column name="AUDUSUINS" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipInsercion" type="java.lang.String">
+            <column name="AUDIPINSE" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="fechaModificacion" type="java.util.Date">
+            <column name="AUDFECMOD" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioModificacion" type="java.lang.String">
+            <column name="AUDUSUMOD" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipModificacion" type="java.lang.String">
+            <column name="AUDIPMODI" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <!-- 		END CAMPOS DE AUDITORIA	 	-->
+    </class>
+</hibernate-mapping>

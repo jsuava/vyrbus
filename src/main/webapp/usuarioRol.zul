@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:n="clien">
-<window id="wndUsuarioRol" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndUsuarioRol" >
+<window id="wndUsuarioRol" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndUsuarioRol" >
 	<div id="divLista">
 		<listbox id="listboxLista" rows="16"  onSelect="wndUsuarioRol.onchangeListBox()">
 			<listhead sizable="true">

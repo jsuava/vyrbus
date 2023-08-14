@@ -1,0 +1,83 @@
+package pe.itsb.vyrbus.service.business;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import pe.itsb.vyrbus.model.bean.SolicitudCartera;
+import pe.itsb.vyrbus.model.bean.UsuarioAprobador;
+
+/**
+ *
+ * @author JABANTO
+ *
+ */
+public interface SolicitudCarteraManager {
+	/**
+	 * Buscar solicitud de cartera a travez de un array de criterios.
+	 * @param criteriosBusqueda	: array de criterios para la busqueda.
+	 * @param criteriosOrdenar	: arrey de criterios para el ordenamiento de datos
+	 * @return
+	 */
+	public ArrayList<SolicitudCartera> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
+
+	/**
+	 * Buscar solciitud carteda por ID
+	 * @param id : Identificador unico de la solicitudadCartera
+	 * @return
+	 */
+	public SolicitudCartera buscarPorId(Long id);
+
+	/**
+	 * Calcula la Base Historica de un Cliente
+	 * @param idCliente : Identificador del Cliente
+	 * @return Base historica de un cliente
+	 */
+	public Double baseHistoricaCliente(Long idCliente)throws Exception;
+
+	/**
+	 * Guarda solicitud cartera.
+	 * @param solicitudCartera	: Class
+	 * @throws Exception
+	 */
+	public void guardar(SolicitudCartera solicitudCartera) throws Exception;
+
+	/**
+	 * Actualiza solicitud cartera
+	 * @param solicitudCartera : Class
+	 * @throws Exception
+	 */
+	public void actualizar(SolicitudCartera solicitudCartera) throws Exception;
+
+	/**
+	 * Aprueba la solicitud:
+	 * @param idSolicitudCartera: Identificador unico de la solicitudCartera
+	 * @param usuarioAprobador	: Class usuario Aprobador
+	 * @throws Exception
+	 */
+	public void aprobarSolicitud(Long idSolicitudCartera, UsuarioAprobador usuarioAprobador) throws Exception;
+
+	/**
+	 * Anula solcitud de cartera
+	 * @param idSolicitudCartera: Identificador del a solicitud cartera.
+	 * @param usuarioAprobador	: Class usuario Aprobador
+	 * @throws Exception
+	 */
+	public void anulaSolicitud(Integer idSolicitudCartera, UsuarioAprobador usuarioAprobador) throws Exception;
+
+	/**
+	 * Buscar Solictudes de Cartera y/o credito (Invocado desde el formulario Aprobacion de cartera y/o credito)
+	 * @param fechaInicio		: Fecha Inicio de la busqueda
+	 * @param fechaFin			: Fecha Final de la busqueda
+	 * @param estadoSolicitud	: estado del la solicitud
+	 * @param idFuncionario		: Opcional, Identificador del Funcionario
+	 * @param UsuarioAprobador	: Class usuario Aprobador
+	 * @param idCliente			: Opcional, Identificador del Cliente
+	 * @param recu_Historia		: (true) Indica la recuperación la recuperación de las solicitudes aprobadas o desaprobadas.
+	 * 							  (false) Indica la recuperacion de las solicitudes pendientes por aprobar.
+	 * @return
+	 */
+	public List<SolicitudCartera> BuscarSolicitudes(String fechaInicio, String fechaFin, String estadoSolicitud, Long idFuncionario,
+			UsuarioAprobador usuarioAprobador,Long idCliente, Boolean recu_Historia);
+
+}

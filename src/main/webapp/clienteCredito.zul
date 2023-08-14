@@ -1,7 +1,7 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
 
-<window id="wndClientesCredito" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndClienteCredito" width="940px">
+<window id="wndClientesCredito" border="none" use="pe.itsb.vyrbus.view.ctrl.WndClienteCredito" width="940px">
 <panel id="panel" title="::: ESTADO DE CUENTA DE CLIENTES CON CRÉDITO :::" framable="true" width="auto" border="normal" closable="true" onClose="wndClientesCredito.closeTabWindow()">
 	<panelchildren>
 		<grid id="grClientesCredito">

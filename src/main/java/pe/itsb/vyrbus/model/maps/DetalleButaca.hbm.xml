@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="pe.itsb.vyrbus.model.bean.DetalleButaca" table="VRTDETBUT" schema="VYRBUSME">
+        <comment>Entidad que detalla el precio y sus variantes respecto a otros factores de las butacas.</comment>
+        <id name="id" type="java.lang.Long">
+            <column name="DETBUT_ID" precision="18" scale="0" />
+            <generator class="sequence">
+                <param name="sequence">SEQ_VRTDETBUT_ID</param>
+            </generator>
+        </id>
+        <many-to-one name="detalleButacaRef" class="pe.itsb.vyrbus.model.bean.DetalleButaca" fetch="select">
+            <column name="DETBUT_IDREF" precision="18" scale="0">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 18.</comment>
+            </column>
+        </many-to-one>
+        <property name="detalleButacaOriginal" type="java.lang.Long">
+            <column name="DETBUT_IDORIGINAL" precision="18" scale="0">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 18.</comment>
+            </column>
+        </property>
+        <many-to-one name="mapaBus" class="pe.itsb.vyrbus.model.bean.MapaBus" fetch="select">
+            <column name="MAPBUS_ID" precision="3" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 18.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="canalVenta" class="pe.itsb.vyrbus.model.bean.CanalVenta" fetch="select">
+            <column name="CANVEN_ID" precision="5" scale="0">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="ruta" class="pe.itsb.vyrbus.model.bean.Ruta" fetch="select">
+            <column name="RUTA_ID" precision="5" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="tipoPrecio" class="pe.itsb.vyrbus.model.bean.TipoPrecio" fetch="select">
+            <column name="TIPOPRECIO_ID" precision="5" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="itinerario" class="pe.itsb.vyrbus.model.bean.Itinerario" fetch="select">
+            <column name="ITINERARIO_ID" precision="18" scale="0" >
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 18.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="agencia" class="pe.itsb.vyrbus.model.bean.Agencia" fetch="select">
+            <column name="AGENCIA_ID" precision="5" scale="0" >
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="usuario" class="pe.itsb.vyrbus.model.bean.Usuario" fetch="select">
+            <column name="USUARIO_ID" precision="5" scale="0" >
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+            </column>
+        </many-to-one>
+        <property name="precio" type="java.lang.Double">
+            <column name="N_PRECIO" precision="10" scale="2" not-null="true">
+                <comment>Precio ofertado por la butaca</comment>
+            </column>
+        </property>        
+        <property name="precioMinimo" type="java.lang.Double">
+            <column name="N_PRECIO_MIN" precision="10" scale="2" not-null="true">
+                <comment>Precio minimo negociable</comment>
+            </column>
+        </property>
+        <property name="precioMaximo" type="java.lang.Double">
+            <column name="N_PRECIO_MAX" precision="10" scale="2" not-null="true">
+                <comment>Precio maximo negociable</comment>
+            </column>
+        </property>
+        <property name="fecha" type="java.util.Date">
+            <column name="D_FEC" length="7" not-null="true">
+                <comment>Fecha para la que es valida la tarifa</comment>
+            </column>
+        </property>
+        
+        
+        <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+        <property name="estadoRegistro" type="java.lang.String">
+            <column name="C_ESTREG" length="1" not-null="true">
+                <comment>Estado de registro A(Activo), I(Inactivo).</comment>
+            </column>
+        </property>
+        <property name="fechaInsercion" type="java.util.Date">
+            <column name="AUDFECINS" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioInsercion" type="java.lang.String">
+            <column name="AUDUSUINS" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipInsercion" type="java.lang.String">
+            <column name="AUDIPINSE" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="fechaModificacion" type="java.util.Date">
+            <column name="AUDFECMOD" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioModificacion" type="java.lang.String">
+            <column name="AUDUSUMOD" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipModificacion" type="java.lang.String">
+            <column name="AUDIPMODI" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <!-- 		END CAMPOS DE AUDITORIA	 	-->
+    </class>
+</hibernate-mapping>

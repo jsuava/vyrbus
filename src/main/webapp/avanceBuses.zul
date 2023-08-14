@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndAvance" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndAvanceBuses">
+<window id="wndAvance" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndAvanceBuses">
 	<grid>
 		<columns>
 			<column width="60px" align="right" />

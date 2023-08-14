@@ -1,6 +1,6 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndAvanceVentas" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndAvanceVentas">
+<window id="wndAvanceVentas" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndAvanceVentas">
 	<div>
 		<grid>
 			<columns>

@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndServicioEspecial"  use="com.cystesoft.vyrbus.view.ctrl.WndServicioEspecial" title="SERVICIOS ESPECIALES"  border="normal" width="820px" >
+<window id="wndServicioEspecial"  use="pe.itsb.vyrbus.view.ctrl.WndServicioEspecial" title="SERVICIOS ESPECIALES"  border="normal" width="820px" >
 	<hbox>
 		<grid   width="488px" height="128px">
 			<columns>
@@ -164,11 +164,11 @@
 				disabled="true">
 			<attribute name="onUpload"><![CDATA[
 			      org.zkoss.util.media.Media media = event.getMedia();
-			      if(com.cystesoft.vyrbus.service.util.Util.uploadFile(media)){
-			    	  	com.cystesoft.vyrbus.service.util.Util.limpiarListbox(listPasajeros);
+			      if(pe.itsb.vyrbus.service.util.Util.uploadFile(media)){
+			    	  	pe.itsb.vyrbus.service.util.Util.limpiarListbox(listPasajeros);
 				       	wndServicioEspecial.openFileExel(media);
 			      }else
-				      	com.cystesoft.vyrbus.view.ui.DlgMessage.information("Ha Ocurrido un Error al subir el Archivo al Servidor. Intentedo nuevamente");  
+				      	pe.itsb.vyrbus.view.ui.DlgMessage.information("Ha Ocurrido un Error al subir el Archivo al Servidor. Intentedo nuevamente");  
 			]]></attribute>
 		</button>
 		<button id="btnGuardarVentas" 

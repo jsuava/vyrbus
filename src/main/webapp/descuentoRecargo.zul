@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window title="" border="none" height="100%" use="com.cystesoft.vyrbus.view.ctrl.WndDescuentoRecargo">
+<window title="" border="none" height="100%" use="pe.itsb.vyrbus.view.ctrl.WndDescuentoRecargo">
 <div id="divLista">
 	<listbox id="listboxLista">
 		<listhead sizable="true">
@@ -27,9 +27,9 @@
 						<label value="DENOMINACIÓN (*) :" />
 						<textbox id="textboxId" />
 					</div>
-					<textbox id="txtDenominacion" maxlength="30" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(dbMonto)" />
+					<textbox id="txtDenominacion" maxlength="30" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(dbMonto)" />
 					<label value="MONTO (*) :" />
-					<doublebox id="dbMonto" format="#,##0.00" width="120px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(chkMarcarPorcentaje)"/>
+					<doublebox id="dbMonto" format="#,##0.00" width="120px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(chkMarcarPorcentaje)"/>
 				</row>
 				<row spans="1,3">
  					<label value="MARCAR COMO PORCENTAJE :" sclass="label-size11"/>

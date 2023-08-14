@@ -2,7 +2,7 @@
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
 <?link rel="shortcut icon" href="resources/favicon_1.ico" ?>
 <zk>
-	<!--<window title="Hello World!!" border="normal" width="500px" apply="com.cystesoft.vyrbus.DemoWindowComposer">
+	<!--<window title="Hello World!!" border="normal" width="500px" apply="pe.itsb.vyrbus.DemoWindowComposer">
 		<label value="Esto es una prueba con ZK CE 6.0.0"/>
 	</window>-->
 <!-- 	<window border="none" onCreate='Executions.sendRedirect("prueba.zul")'></window> -->

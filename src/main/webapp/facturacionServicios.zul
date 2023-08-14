@@ -1,6 +1,6 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndFacturacionServicios" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndFacturacionServicios">
+<window id="wndFacturacionServicios" border="none" use="pe.itsb.vyrbus.view.ctrl.WndFacturacionServicios">
 	<groupbox mold="3d" width="1110px">
 		<caption label="CRITERIOS DE BUSQUEDA" style="color: #ffffff;" />
 		<grid style="border:none">

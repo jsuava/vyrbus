@@ -1,0 +1,376 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	:
+ * Autor		: José Abanto
+ * Fecha		: 08/09/2016
+ * Hora			: 11:47:09
+ */
+package pe.itsb.vyrbus.model.bean;
+
+import java.util.Date;
+
+/**
+ * @author jabanto
+ *
+ */
+public class VentaPool extends GenericBean{
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
+	private long id;
+	private String operador;
+	private String numeroBoletoTepsa;
+	private String numeroComprobanteOperador;
+	private String codigoTransaccionOperador;
+	private Date fechaPartida;
+	private String horaPartida;
+	private Date fechaLlegada;
+	private String horaLlegada;
+	private String puntoEmbaruqe;
+	private String ruta;
+	private String servicio;
+	private Double tarifa;
+	private Double descuento;
+	private Double importePagado;
+	private String numeroAsiento;
+	private Integer piso;
+	private Pasajero pasajero;
+	private Cliente cliente;
+	private FormaPago formaPago;
+	private TarjetaCredito tarjetaCredito;
+	private Agencia agencia;
+	private Usuario usuario;
+	private Liquidacion liquidacion;
+	private Date fechaLiquidacion;
+	private Localidad localidadOrigen;
+	private Localidad localidadDestino;
+	/**
+	 * @return the id
+	 */
+	public long getId() {
+		return id;
+	}
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(long id) {
+		this.id = id;
+	}
+	/**
+	 * @return the operador
+	 */
+	public String getOperador() {
+		return operador;
+	}
+	/**
+	 * @param operador the operador to set
+	 */
+	public void setOperador(String operador) {
+		this.operador = operador;
+	}
+	/**
+	 * @return the numeroBoletoTepsa
+	 */
+	public String getNumeroBoletoTepsa() {
+		return numeroBoletoTepsa;
+	}
+	/**
+	 * @param numeroBoletoTepsa the numeroBoletoTepsa to set
+	 */
+	public void setNumeroBoletoTepsa(String numeroBoletoTepsa) {
+		this.numeroBoletoTepsa = numeroBoletoTepsa;
+	}
+	/**
+	 * @return the numeroComprobanteOperador
+	 */
+	public String getNumeroComprobanteOperador() {
+		return numeroComprobanteOperador;
+	}
+	/**
+	 * @param numeroComprobanteOperador the numeroComprobanteOperador to set
+	 */
+	public void setNumeroComprobanteOperador(String numeroComprobanteOperador) {
+		this.numeroComprobanteOperador = numeroComprobanteOperador;
+	}
+	/**
+	 * @return the codigoTransaccionOperador
+	 */
+	public String getCodigoTransaccionOperador() {
+		return codigoTransaccionOperador;
+	}
+	/**
+	 * @param codigoTransaccionOperador the codigoTransaccionOperador to set
+	 */
+	public void setCodigoTransaccionOperador(String codigoTransaccionOperador) {
+		this.codigoTransaccionOperador = codigoTransaccionOperador;
+	}
+	/**
+	 * @return the fechaPartida
+	 */
+	public Date getFechaPartida() {
+		return fechaPartida;
+	}
+	/**
+	 * @param fechaPartida the fechaPartida to set
+	 */
+	public void setFechaPartida(Date fechaPartida) {
+		this.fechaPartida = fechaPartida;
+	}
+	/**
+	 * @return the horaPartida
+	 */
+	public String getHoraPartida() {
+		return horaPartida;
+	}
+	/**
+	 * @param horaPartida the horaPartida to set
+	 */
+	public void setHoraPartida(String horaPartida) {
+		this.horaPartida = horaPartida;
+	}
+	/**
+	 * @return the fechaLlegada
+	 */
+	public Date getFechaLlegada() {
+		return fechaLlegada;
+	}
+	/**
+	 * @param fechaLlegada the fechaLlegada to set
+	 */
+	public void setFechaLlegada(Date fechaLlegada) {
+		this.fechaLlegada = fechaLlegada;
+	}
+	/**
+	 * @return the horaLlegada
+	 */
+	public String getHoraLlegada() {
+		return horaLlegada;
+	}
+	/**
+	 * @param horaLlegada the horaLlegada to set
+	 */
+	public void setHoraLlegada(String horaLlegada) {
+		this.horaLlegada = horaLlegada;
+	}
+	/**
+	 * @return the puntoEmbaruqe
+	 */
+	public String getPuntoEmbaruqe() {
+		return puntoEmbaruqe;
+	}
+	/**
+	 * @param puntoEmbaruqe the puntoEmbaruqe to set
+	 */
+	public void setPuntoEmbaruqe(String puntoEmbaruqe) {
+		this.puntoEmbaruqe = puntoEmbaruqe;
+	}
+	/**
+	 * @return the ruta
+	 */
+	public String getRuta() {
+		return ruta;
+	}
+	/**
+	 * @param ruta the ruta to set
+	 */
+	public void setRuta(String ruta) {
+		this.ruta = ruta;
+	}
+	/**
+	 * @return the servicio
+	 */
+	public String getServicio() {
+		return servicio;
+	}
+	/**
+	 * @param servicio the servicio to set
+	 */
+	public void setServicio(String servicio) {
+		this.servicio = servicio;
+	}
+	/**
+	 * @return the tarifa
+	 */
+	public Double getTarifa() {
+		return tarifa;
+	}
+	/**
+	 * @param tarifa the tarifa to set
+	 */
+	public void setTarifa(Double tarifa) {
+		this.tarifa = tarifa;
+	}
+	/**
+	 * @return the descuento
+	 */
+	public Double getDescuento() {
+		return descuento;
+	}
+	/**
+	 * @param descuento the descuento to set
+	 */
+	public void setDescuento(Double descuento) {
+		this.descuento = descuento;
+	}
+	/**
+	 * @return the importePagado
+	 */
+	public Double getImportePagado() {
+		return importePagado;
+	}
+	/**
+	 * @param importePagado the importePagado to set
+	 */
+	public void setImportePagado(Double importePagado) {
+		this.importePagado = importePagado;
+	}
+	/**
+	 * @return the numeroAsiento
+	 */
+	public String getNumeroAsiento() {
+		return numeroAsiento;
+	}
+	/**
+	 * @param numeroAsiento the numeroAsiento to set
+	 */
+	public void setNumeroAsiento(String numeroAsiento) {
+		this.numeroAsiento = numeroAsiento;
+	}
+	/**
+	 * @return the piso
+	 */
+	public Integer getPiso() {
+		return piso;
+	}
+	/**
+	 * @param piso the piso to set
+	 */
+	public void setPiso(Integer piso) {
+		this.piso = piso;
+	}
+	/**
+	 * @return the pasajero
+	 */
+	public Pasajero getPasajero() {
+		return pasajero;
+	}
+	/**
+	 * @param pasajero the pasajero to set
+	 */
+	public void setPasajero(Pasajero pasajero) {
+		this.pasajero = pasajero;
+	}
+	/**
+	 * @return the cliente
+	 */
+	public Cliente getCliente() {
+		return cliente;
+	}
+	/**
+	 * @param cliente the cliente to set
+	 */
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+	/**
+	 * @return the formaPago
+	 */
+	public FormaPago getFormaPago() {
+		return formaPago;
+	}
+	/**
+	 * @param formaPago the formaPago to set
+	 */
+	public void setFormaPago(FormaPago formaPago) {
+		this.formaPago = formaPago;
+	}
+	/**
+	 * @return the tarjetaCredito
+	 */
+	public TarjetaCredito getTarjetaCredito() {
+		return tarjetaCredito;
+	}
+	/**
+	 * @param tarjetaCredito the tarjetaCredito to set
+	 */
+	public void setTarjetaCredito(TarjetaCredito tarjetaCredito) {
+		this.tarjetaCredito = tarjetaCredito;
+	}
+	/**
+	 * @return the agencia
+	 */
+	public Agencia getAgencia() {
+		return agencia;
+	}
+	/**
+	 * @param agencia the agencia to set
+	 */
+	public void setAgencia(Agencia agencia) {
+		this.agencia = agencia;
+	}
+	/**
+	 * @return the usuario
+	 */
+	public Usuario getUsuario() {
+		return usuario;
+	}
+	/**
+	 * @param usuario the usuario to set
+	 */
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+	/**
+	 * @return the liquidacion
+	 */
+	public Liquidacion getLiquidacion() {
+		return liquidacion;
+	}
+	/**
+	 * @param liquidacion the liquidacion to set
+	 */
+	public void setLiquidacion(Liquidacion liquidacion) {
+		this.liquidacion = liquidacion;
+	}
+	/**
+	 * @return the fechaLiquidacion
+	 */
+	public Date getFechaLiquidacion() {
+		return fechaLiquidacion;
+	}
+	/**
+	 * @param fechaLiquidacion the fechaLiquidacion to set
+	 */
+	public void setFechaLiquidacion(Date fechaLiquidacion) {
+		this.fechaLiquidacion = fechaLiquidacion;
+	}
+	/**
+	 * @return the localidadOrigen
+	 */
+	public Localidad getLocalidadOrigen() {
+		return localidadOrigen;
+	}
+	/**
+	 * @param localidadOrigen the localidadOrigen to set
+	 */
+	public void setLocalidadOrigen(Localidad localidadOrigen) {
+		this.localidadOrigen = localidadOrigen;
+	}
+	/**
+	 * @return the localidadDestino
+	 */
+	public Localidad getLocalidadDestino() {
+		return localidadDestino;
+	}
+	/**
+	 * @param localidadDestino the localidadDestino to set
+	 */
+	public void setLocalidadDestino(Localidad localidadDestino) {
+		this.localidadDestino = localidadDestino;
+	}
+
+
+}

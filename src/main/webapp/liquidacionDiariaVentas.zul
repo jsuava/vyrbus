@@ -13,7 +13,7 @@
 		box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 	} 
 </style>
-<window id="wndLiquidacionDiariaVentas" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndLiquidacionDiariaVentas">
+<window id="wndLiquidacionDiariaVentas" border="none" use="pe.itsb.vyrbus.view.ctrl.WndLiquidacionDiariaVentas">
 	<grid>
 		<columns>
 			<column align="right" width="80px"/>
@@ -27,9 +27,9 @@
 		<rows>
 			<row spans="1,1,1,1,2,1">
 				<label value="FECHA INICIO :"/>
-				<datebox id="dtbxFechaInicio" format="dd/MM/yyyy" onChange="wndLiquidacionDiariaVentas.onValidateFecha()" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(dtbxFechaFin)"/>
+				<datebox id="dtbxFechaInicio" format="dd/MM/yyyy" onChange="wndLiquidacionDiariaVentas.onValidateFecha()" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(dtbxFechaFin)"/>
 				<label value="FECHA FIN :"/>
-				<datebox id="dtbxFechaFin" format="dd/MM/yyyy" onChange="wndLiquidacionDiariaVentas.onValidateFecha()" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbAgencia)"/>
+				<datebox id="dtbxFechaFin" format="dd/MM/yyyy" onChange="wndLiquidacionDiariaVentas.onValidateFecha()" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbAgencia)"/>
 				<div style="text-align:left">
 					<radiogroup>
 						<radio id="rubroPasajes" label="PASAJES"/>

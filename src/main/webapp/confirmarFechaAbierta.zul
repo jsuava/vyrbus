@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=ISO-8859-1"?>
 <zk>
-<window id="wndConfirmarFechaAbierta" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndConfirmarFechaAbierta" style="overflow:auto">
+<window id="wndConfirmarFechaAbierta" border="none" use="pe.itsb.vyrbus.view.ctrl.WndConfirmarFechaAbierta" style="overflow:auto">
 	<tabbox mold="accordion-lite">
 		<tabs>
 			<tab id="tabBusqueda" label="CRITERIOS DE BUSQUEDA"/>

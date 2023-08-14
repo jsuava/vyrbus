@@ -1,0 +1,25 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	:
+ * Autor		: José Avalos
+ * Fecha		: 14/09/2012
+ */
+package pe.itsb.vyrbus.service.util;
+
+import java.util.Calendar;
+
+import pe.itsb.vyrbus.service.locator.ServiceLocator;
+
+public class MyTime {
+	Calendar Hora = Calendar.getInstance();
+
+	public String dateServer(){
+		return ServiceLocator.getItinerarioManager().dateServer();
+	}
+
+
+	public static String dateTimeServer(){
+		return ServiceLocator.getItinerarioManager().dateServer();
+	}
+}

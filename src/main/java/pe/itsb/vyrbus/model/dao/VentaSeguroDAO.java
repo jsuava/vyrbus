@@ -1,0 +1,284 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripciï¿½n	:
+ * Fecha		: 25/06/2014
+ */
+package pe.itsb.vyrbus.model.dao;
+
+import java.util.List;
+
+import pe.itsb.vyrbus.model.bean.Agencia;
+import pe.itsb.vyrbus.model.bean.Usuario;
+import pe.itsb.vyrbus.model.bean.VSAfiliacion;
+import pe.itsb.vyrbus.model.bean.VSAsegurado;
+import pe.itsb.vyrbus.model.bean.VSAsignacionCertificados;
+import pe.itsb.vyrbus.model.bean.VSCiudad;
+import pe.itsb.vyrbus.model.bean.VSContratante;
+import pe.itsb.vyrbus.model.bean.VSEncabezadoAfiliacion;
+import pe.itsb.vyrbus.model.bean.VSEstadoCivil;
+import pe.itsb.vyrbus.model.bean.VSEstructuraAsegurado;
+import pe.itsb.vyrbus.model.bean.VSEstructuraContratante;
+import pe.itsb.vyrbus.model.bean.VSEstructuraDeclaracion;
+import pe.itsb.vyrbus.model.bean.VSLiquidacion;
+import pe.itsb.vyrbus.model.bean.VSSexo;
+import pe.itsb.vyrbus.model.bean.VSTipoDocumento;
+import pe.itsb.vyrbus.model.bean.VSTipoProceso;
+
+/**
+ * @author JABANTO
+ *
+ */
+public interface VentaSeguroDAO extends GenericDAO{
+
+	/*TRANSACCIONES REFERIDAS AL TIPO DE DOCUMENTO*/
+	/**
+	 * Busca el tipo de documento.
+	 * @param estado	: Estdo
+	 * @return lista de Tipos de documentos
+	 * @throws Exception
+	 */
+	public List<VSTipoDocumento> buscarTipoDocumentoPorEstado(String estado)throws Exception;
+
+
+	/*TRANSACCIONES REFERIDAS SEXO DEL ASEGURADO*/
+	/**
+	 * Busca Sexos del Asegurado
+	 * @param estado	: Estado
+	 * @return Lista sexos
+	 * @throws Exception
+	 */
+	public List<VSSexo> buscarSexoPorEstado(String estado)throws Exception;
+
+
+	/*TRANSACCIONES REFERIDAS ESTADO CIVIL */
+	/**
+	 * Busca los estado Civil
+	 * @param estado : Estado
+	 * @return lista de estados Civil
+	 * @throws Exception
+	 */
+	public List<VSEstadoCivil>buscarEstadoCivilPorEstado(String estado)throws Exception;
+
+
+	/*TRANSACCIONES REFERIDAS A LAS CIUDADES */
+	/**
+	 * Busca las ciudades destino
+	 * @param estado	: Estado
+	 * @return lista de ciudades.
+	 * @throws Exception
+	 */
+	public List<VSCiudad>buscarCiudadesPorEstado(String estado)throws Exception;
+
+
+	/*TRANSACCIONES REFERIDAS AL ASEGURADO */
+	/**
+	 * Busca el asegurado por su tipo y numero de documento.
+	 * @param idTipoDocumento	: Identificadoe del tipo de documento.
+	 * @param numeroDocumento	: Nï¿½mero de documento.
+	 * @return Asegurado.
+	 * @throws Exception
+	 */
+	public VSAsegurado buscarAseguradoByDocumento(Integer idTipoDocumento, String numeroDocumento)throws Exception;
+	/**
+	 * Acualiza datos del asegurado
+	 * @param asegurado	:
+	 * @throws Exception
+	 */
+	public void actualizarAsegurado(VSAsegurado asegurado)throws Exception;
+	/**
+	 * Guarda el asegurado.
+	 * @param asegurado
+	 * @throws Exception
+	 */
+	public void guardarAsegurado(VSAsegurado asegurado)throws Exception;
+
+
+	/*TRANSACCIONES REFERIDAS A LA LIQUIDACION*/
+	/**
+	 * Busca la liquidacion para la venta de seguros.
+	 * @param idUsuario			: Identificador del usuario
+	 * @param fechaLiquidacion	: Fecha ha la que corresponde la liquidacion.
+	 * @param estado			: Estado de la liquidacion. 1 Habierta; 0 Cerrada.
+	 * @return
+	 * @throws Exception
+	 */
+	public VSLiquidacion buscarLiquidacion(Integer idUsuario,Integer idAgencia,String fechaLiquidacion, Integer estado)throws Exception;
+	/**
+	 * Realiza la apertura de la liquidacion
+	 * @param vsLiquidacion	: Nueva instalcia del objeto Liquidacion
+	 * @throws Exception
+	 */
+	public void aperturarLiquidacion(VSLiquidacion vsLiquidacion)throws Exception;
+	/**
+	 * Realiza el Cierre de la liquidacion
+	 * @param vsLiquidacion : Objeto Liquidacion
+	 * @throws Exception
+	 */
+	public void cerrarLiquidacion(VSLiquidacion vsLiquidacion)throws Exception;
+	/**
+	 * Busca el total de ventas a liquidar.
+	 * @param idLiquidacion	: Identificador de la liquidacion
+	 * @return VSLiquidacion
+	 * @throws Exception
+	 */
+	public VSLiquidacion buscarLiquidacionVentas (Integer idLiquidacion)throws Exception;
+
+
+	/*TRANSACCIONES REFERIDAS A LA AFILIACION*/
+	/**
+	 * Guarda una nueva instancia de la afiliacion
+	 * @param vsAfiliacion	:
+	 * @throws Exception
+	 */
+	public void guardarAfiliacion(VSAfiliacion vsAfiliacion)throws Exception;
+	/**
+	 * Valida la existencia del Boleto en la Afiliaciï¿½n.
+	 * @param numeroBoleto : Nï¿½mero de boleto a validar
+	 * @return Tru si el boleto ya existe, false lo contrario.
+	 * @throws Exception
+	 */
+	public Boolean validarBoletoAfiliacion(String numeroBoleto)throws Exception;
+	/**
+	 * Valida la existencia del nï¿½mero de certificado.
+	 * @param numeroCertificado	: Nï¿½mero de Certificado ha Validar
+	 * @return true, si el certificado existe; false, lo contrario.
+	 * @throws Exception
+	 */
+	public Boolean validarCertificadoAfiliacion(String numeroCertificado)throws Exception;
+	/**
+	 * Busca las afiliaciones a procesar
+	 * @param fechaInicio	: Fecha de inicio.
+	 * @param fechaFin		: Fecha fin.
+	 * @return	lista de Afiliaciones a procesar
+	 * @throws Exception
+	 */
+	public List<VSAfiliacion>buscarAfiliacionesByProceso(String fechaInicio, String fechaFin)throws Exception;
+	/**
+	 * Actualiza las afiliaciones con la fecha de proceso
+	 * @throws Exception
+	 */
+	public void actualizaFechaProcesoAfiliacion(String Ids)throws Exception;
+	/**
+	 * Busca las afiliaciones emitidas, segï¿½n los parametros enviados desde la consulta.
+	 * @param fechaInicio	: Fecha de inicio de la busqueda.
+	 * @param fechaFin		: Fecha fin de la busqueda.
+	 * @param tipoPasajero	: Tipo de pasajero (S=Frecuente, N=No frecuente)
+	 * @param numDoctoPax	: Nï¿½mero de documento del pasajero.
+	 * @param idUsuario		: Identificador del usuario.
+	 * @param idAgencia		: Identificador de la Agencia
+	 * @param boleto		: Nï¿½mero de Boleto.
+	 * @return	Lisa de afiliaciones.
+	 * @throws Exception
+	 */
+	public List<VSAfiliacion>buscarAfiliacionesByConsulta(String fechaInicio, String fechaFin,String tipoPasajero,String numDoctoPax,Integer idUsuario, Integer idAgencia,String boleto)throws Exception;
+	/**
+	 * Busca las agencias que han realizado afiliaciones, segï¿½n el rango de fechas.
+	 * @param fechaInicio	: Fecha incio de la busqueda
+	 * @param fechaFin		: Fecha fin de la busqyeda.
+	 * @return	Lista de agencias.
+	 * @throws Exception
+	 */
+	public List<Agencia>buscarAgenciasAfiliacionesByConsulta(String fechaInicio, String fechaFin)throws Exception;
+	/**
+	 * Busca los usuarios que han realizado las afiliaciones, segï¿½n el rango de fechas y la agencia que se haya seleccionado.
+	 * @param fechaInicio
+	 * @param fechaFin
+	 * @param idAgencia
+	 * @return
+	 * @throws Exception
+	 */
+	public List<Usuario>buscarUsuariosAfiliacionesByConsulta(String fechaInicio, String fechaFin, Integer idAgencia)throws Exception;
+	/**
+	 * Anula el certificado.
+	 * @param numeroCertificado : Número de Certificado.
+	 * @throws Exception
+	 */
+	public void anularCertificado(String numeroCertificado)throws Exception;
+
+
+	/*TRANSACCIONES REFERIDAS AL TIPO DE PROCESO*/
+	/**
+	 * Busca los tipos de proceso por su estado
+	 * @param estado	: Estado por que se desea buscar.
+	 * @return Lista de tipos de procesos.
+	 * @throws Exception
+	 */
+	public List<VSTipoProceso>buscarTipoProcesoPorEstado(String estado)throws Exception;
+
+
+	/*TRANSACCIONES REFERIDAS AL CONTRATANTE*/
+	/**
+	 * Busca el contratante
+	 * @param id	: Identificador del contratante
+	 * @return Contratante
+	 * @throws Exception
+	 */
+	public VSContratante buscarContratantePorID(Integer id)throws Exception;
+
+
+	/*TRANSACCIONES REFERIDAS AL ENCABESADO DE LA AFILIACON*/
+	/**
+	 * Guarada en El encabezado de la afiliaiï¿½n
+	 * @param vsEncabezadoAfiliacion : Nueva instancia del EncabezadoAfiliacion
+	 * @throws Exception
+	 */
+	public void guardarEncabezadoAfiliacion(VSEncabezadoAfiliacion vsEncabezadoAfiliacion)throws Exception;
+
+
+	/*TRANSACCIONES REFERIDAS A LA ESTRUCTURA DE LA DECLARACION*/
+	/**
+	 * Guarda la estruictura de la declaracion
+	 * @param vsEstructuraDeclaracion : nueva instancia de la estructuraDeclaracion
+	 * @throws Exception
+	 */
+	public void guardarEstructuraDeclaracion(VSEstructuraDeclaracion vsEstructuraDeclaracion)throws Exception;
+
+
+	/*TRANSACCIONES REFERIDAS A LA ESTRUCTURA DEL CONTRANTE*/
+	/**
+	 * Guarda la estructura del contratante
+	 * @param vsEstructuraContratante : Nueva instancia de la estructuracontratante
+	 * @throws Exception
+	 */
+	public void guardarEstructuraContrantante(VSEstructuraContratante vsEstructuraContratante)throws Exception;
+
+
+	/*TRANSACCIONES REFERIDAS A LA ESTRUCTURA DEL ASEGURADO*/
+	/**
+	 * Gurada la estructura del asegurado
+	 * @param vsEstructuraAsegurado : Nueva instancia de la estrcuturaAsegurado.
+	 * @throws Exception
+	 */
+	public void guardarEstructuraAsegurado(VSEstructuraAsegurado vsEstructuraAsegurado) throws Exception;
+
+
+	/*TRANSACCIONES REFERIDAS A LA ASIGNACION DE CERTIFICADOS*/
+	/**
+	 * Busca la asignacion de certificados por el identificador de la agencia
+	 * @param idAgencia	: Identificado de la agencia.
+	 * @return	AsignacionAgencia.
+	 * @throws Exception
+	 */
+	public VSAsignacionCertificados buscarAsignacionCertificadosPorIdAgencia(Integer idAgencia)throws Exception;
+	/**
+	 * busca la asigancion de certificados, segï¿½n criterios enviados
+	 * @param idAgencia	: Opsional, identificador de la agencia.
+	 * @return Lista de certificados asignados
+	 * @throws Exception
+	 */
+	public List<VSAsignacionCertificados>buscarAsignacionCertificados(Integer idAgencia)throws Exception;
+	/**
+	 * Inactiva el registro de la asignacion de Certificados
+	 * @param idAsignacionCertificado : Identificador de la AsigancionCertificados.
+	 * @throws Exception
+	 */
+	public void inactivarAsignacionCertificado(Integer id)throws Exception;
+	/**
+	 * Valida la existencia del correlativo.
+	 * @param correlativo : nÃºmero de correlativo a evaluar
+	 * @throws Exception
+	 */
+	public VSAsignacionCertificados ValidarAsignacionCertificado(Long correlativo)throws Exception;
+
+}

@@ -1,0 +1,28 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	:
+ * Autor		: José Abanto
+ * Fecha		: 13/09/2012
+ */
+package pe.itsb.vyrbus.service.exceptions;
+
+import java.io.Serializable;
+
+/**
+ *
+ * @author José Abanto
+ * @since JDK1.6
+ */
+public class RutaNullException extends Exception implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	public RutaNullException() {
+		super();
+	}
+
+	public RutaNullException(String message) {
+		super(message);
+	}
+
+}

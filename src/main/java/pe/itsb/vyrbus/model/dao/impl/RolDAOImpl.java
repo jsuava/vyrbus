@@ -1,0 +1,74 @@
+package pe.itsb.vyrbus.model.dao.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import pe.itsb.vyrbus.model.bean.Rol;
+import pe.itsb.vyrbus.model.dao.RolDAO;
+
+/**
+ *
+ * @author José Abanto
+ *
+ */
+@SuppressWarnings("unchecked")
+public class RolDAOImpl extends GenericDAOImpl implements RolDAO {
+
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.RolDAO#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public ArrayList<Rol> buscarPorEstadoRegistro(String estado,String criterioOrden) {
+		return (ArrayList<Rol>) super.findByEstadoRegistro(Rol.class, estado, criterioOrden);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.RolDAO#buscarPorX(java.util.TreeMap, java.util.List)
+	 */
+	@Override
+	public ArrayList<Rol> buscarPorX(TreeMap<String, Object> criteriosBusqueda,List<String> criteriosOrdenar) {
+		return (ArrayList<Rol>) super.findByX(Rol.class,criteriosBusqueda, criteriosOrdenar);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.RolDAO#buscarPorId(java.lang.Long)
+	 */
+	@Override
+	public Rol buscarPorId(Long id) {
+		return (Rol) super.findById(Rol.class, id);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.RolDAO#guardar(com.tepsa.sisvyr.model.bean.Rol)
+	 */
+	@Override
+	public void guardar(Rol rol) {
+		super.save(rol);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.RolDAO#actualizar(com.tepsa.sisvyr.model.bean.Rol)
+	 */
+	@Override
+	public void actualizar(Rol rol) {
+		super.update(rol);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.RolDAO#inactivar(java.lang.Long)
+	 */
+	@Override
+	public void inactivar(Long id) {
+		super.inactivate(Rol.class, id);
+	}
+
+
+}

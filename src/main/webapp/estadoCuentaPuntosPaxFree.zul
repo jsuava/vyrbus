@@ -1,6 +1,6 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndestadoCuenta" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndEstadoCuentaPuntosPaxFree">
+<window id="wndestadoCuenta" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndEstadoCuentaPuntosPaxFree">
 
 
 <grid>

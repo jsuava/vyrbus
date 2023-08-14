@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndVsVenta" title="" border=""  use="com.cystesoft.vyrbus.view.ctrl.WndVSRptVentaSeguros" >
+<window id="wndVsVenta" title="" border=""  use="pe.itsb.vyrbus.view.ctrl.WndVSRptVentaSeguros" >
 	<groupbox closable="false" mold="3d" >
 		<caption label="PARAMETROS DE BUSQUEDA" />
 		<grid>

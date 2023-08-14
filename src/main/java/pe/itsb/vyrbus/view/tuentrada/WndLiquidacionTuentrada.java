@@ -1,0 +1,184 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	:
+ * Autor		: José Avalos Sullo
+ * Fecha		: 09/06/2014
+ */
+package pe.itsb.vyrbus.view.tuentrada;
+
+import java.util.List;
+
+import org.zkoss.zk.ui.SuspendNotAllowedException;
+import org.zkoss.zul.Label;
+import org.zkoss.zul.Window;
+
+import pe.itsb.vyrbus.model.bean.Usuario;
+import pe.itsb.vyrbus.service.util.Util;
+import pe.itsb.vyrbus.service.util.WSFE;
+import pe.itsb.vyrbus.view.ui.WndBase;
+
+/**
+ *
+ * @author Jose
+ *
+ */
+public class WndLiquidacionTuentrada extends WndBase {
+	private static final long serialVersionUID = 1L;
+	private Label lblPtoVenta;
+	private Label lblUsuario;
+	private Label lblCantidadContado;
+	private Label lblMontoContado;
+	private Label lblCantidadTarjeta;
+	private Label lblMontoTarjeta;
+	private Label lblCantidad;
+	private Label lblTotal;
+	private Label lblEfectivo;
+	private Label lblLogin;
+	private Label lblFecha;
+	private List<LiquidacionTuentrada> lstLiquidacion;
+	private Window wndLiquidacionTuentrada;
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public void onCreate(){
+		lstLiquidacion = (List<LiquidacionTuentrada>)this.getAttribute("lstLiquidacion");
+		showLiquidacion();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
+	 */
+	@Override
+	public void initComponents(){
+		lblPtoVenta = (Label)this.getFellow("lblPtoVenta");
+		lblUsuario = (Label)this.getFellow("lblUsuario");
+		lblCantidadContado = (Label)this.getFellow("lblCanCon");
+		lblMontoContado = (Label)this.getFellow("lblMonCon");
+		lblCantidadTarjeta = (Label)this.getFellow("lblCanTar");
+		lblMontoTarjeta = (Label)this.getFellow("lblMonTar");
+		lblCantidad = (Label)this.getFellow("lblCantidad");
+		lblTotal = (Label)this.getFellow("lblTotal");
+		lblEfectivo = (Label)this.getFellow("lblEfectivo");
+		lblLogin = (Label)this.getFellow("lblLogin");
+		lblFecha = (Label)this.getFellow("lblFecha");
+		wndLiquidacionTuentrada=(Window)this.getFellow("wndLiquidacionTuentrada");
+	}
+
+	private void showLiquidacion(){
+		lblPtoVenta.setValue("TUENTRADA");
+		lblUsuario.setValue(((Usuario)this.getAttribute("usuario")).toString());
+		lblCantidadContado.setValue("0");
+		lblMontoContado.setValue("0.00");
+		lblCantidadTarjeta.setValue("0");
+		lblMontoTarjeta.setValue("0.00");
+		lblCantidad.setValue("0");
+		lblTotal.setValue("0.00");
+		int cantidad = 0;
+		double total = 0.0;
+		if(lstLiquidacion!=null){
+			for (LiquidacionTuentrada liquidacionTuentrada : lstLiquidacion) {
+				if(liquidacionTuentrada.getTipo().equals("CONTADO")){
+					lblCantidadContado.setValue(liquidacionTuentrada.getCantidad().toString());
+					lblMontoContado.setValue(Util.toNumberFormat(liquidacionTuentrada.getMonto(), 2));
+					lblEfectivo.setValue(Util.toNumberFormat(liquidacionTuentrada.getMonto(), 2));
+				}else{
+					lblCantidadTarjeta.setValue(liquidacionTuentrada.getCantidad().toString());
+					lblMontoTarjeta.setValue(Util.toNumberFormat(liquidacionTuentrada.getMonto(), 2));
+				}
+				cantidad = cantidad + liquidacionTuentrada.getCantidad();
+				total = total + liquidacionTuentrada.getMonto();
+			}
+			lblCantidad.setValue(String.valueOf(cantidad));
+			lblTotal.setValue(Util.toNumberFormat(total, 2));
+		}
+		lblLogin.setValue((String)this.getAttribute("login"));
+		lblFecha.setValue((String)this.getAttribute("fechaLiquidacion"));
+	}
+
+//	/**
+//	 * jabanto - 22/08/2015
+//	 */
+//	public void crearLiquidacion(){
+//        try {
+//        	Liquidacion liquidacion=new Liquidacion();
+//        	liquidacion.setAgencia(getAgencia());
+//        	liquidacion.setFechaLiquidacion(Constantes.FORMAT_DATE.parse((String)this.getAttribute("fechaLiquidacion")));
+//        	Usuario usuario=new Usuario();
+//        	usuario.setNombre((String)this.getAttribute("usuario"));
+//        	liquidacion.setUsuario(usuario);
+//        	liquidacion.setNombreUsuario((String)this.getAttribute("login"));
+//        	liquidacion.setCantidadContado(Integer.valueOf(lblCantidadContado.getValue()));
+//        	liquidacion.setCantidadTarjetaVisa(Integer.valueOf(lblCantidadTarjeta.getValue()));
+//        	liquidacion.setMontoContado(Util.parseNumberFormat(lblMontoContado.getValue(), 2));
+//        	liquidacion.setMontoTarjetaVisa(Util.parseNumberFormat(lblMontoTarjeta.getValue(), 2));
+//
+//        	List<Liquidacion>lstLiquidacion=new ArrayList<Liquidacion>();
+//        	lstLiquidacion.add(liquidacion);
+//
+//        	Session session = getDesktop().getSession();
+//    	    HttpSession httpSession = (HttpSession)session.getNativeSession();
+//    	    httpSession.setAttribute("lstLiquidacion", lstLiquidacion);
+//
+//    	    final WndIFrame iFrame = new WndIFrame();
+//    	    iFrame.btnCerrar.setVisible(false);
+//    	    iFrame.oThisWindow.setTitle("LIQUIDACION");
+//    	    iFrame.oThisWindow.setClosable(true);
+//    		iFrame.setSrc("liquidacionTuentradaPrint.zul");
+//    		iFrame.setWidth("550");
+//    		iFrame.setWidth("450");
+//    		iFrame.loadiframe();
+//    		this.appendChild(iFrame);
+//    		iFrame.setMode("modal");
+//    		iFrame.setVisible(false);
+//
+//    		Messagebox.show("La liquidación fue creada correctamente.", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_OK, Messagebox.INFORMATION, new EventListener<Event>() {
+//    			@Override
+//    			public void onEvent(Event e){
+//    				onClose();
+//    			}
+//    		});
+//
+//        }catch (SuspendNotAllowedException e) {
+//            e.printStackTrace();
+//        }catch (Exception ex) {
+//			ex.printStackTrace();
+//		}
+//	}
+
+
+	public void crearLiquidacion(){
+        try {
+        	/*Begin 20/01/2017 - jabanto*/
+        	@SuppressWarnings("unchecked")
+			List<LiquidacionTuentrada>listLiquidacion=(List<LiquidacionTuentrada>) this.getAttribute("lstLiquidacion");
+        	String fechaLiquidacion=(String) this.getAttribute("fechaLiquidacion");
+        	Usuario usuario=(Usuario)this.getAttribute("usuario");
+        	WSFE.printLiquidacionTuentrada(listLiquidacion, usuario, fechaLiquidacion, wndLiquidacionTuentrada);
+
+
+        	/*End Begin 20/01/2017 - jabanto */
+//        	  Window win = (Window)Executions.createComponents("ticketTuentrada.zul", this, null);
+//            win.setAttribute("formato", WndTicketTuentrada.FORMAT_LIQUIDACION_TURNO);
+//            win.setAttribute("usuario", (String)this.getAttribute("usuario"));
+//            win.setAttribute("login", (String)this.getAttribute("login"));
+//            win.setAttribute("cantidadContado", Integer.valueOf(lblCantidadContado.getValue()));
+//            win.setAttribute("montoContado", Util.parseNumberFormat(lblMontoContado.getValue(), 2));
+//            win.setAttribute("cantidadTarjeta", Integer.valueOf(lblCantidadTarjeta.getValue()));
+//            win.setAttribute("montoTarjeta", Util.parseNumberFormat(lblMontoTarjeta.getValue(), 2));
+//            win.setAttribute("fechaLiquidacion", (String)this.getAttribute("fechaLiquidacion"));
+//            win.setAttribute("fecha", Util.DatetoString(new Date(), Constantes.DATE_FORMAT));
+//            win.doModal();
+        }catch (SuspendNotAllowedException e) {
+            e.printStackTrace();
+        }catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+      //End custom 06-OCT-2010 TEPSA lloaiza CR#VyRWeb003
+	}
+}

@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="pe.itsb.vyrbus.model.bean.MapaBus" table="VRTMAPABUS" schema="VYRBUSME">
+        <comment>Entidad que almacena la informacion con la distribucion de los asientos, banio, y otros objetos que formen parte del mapa del bus.</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="MAPABUS_ID" precision="3" scale="0" />
+            <generator class="sequence">
+                <param name="sequence">SEQ_VRTMAPABUS_ID</param>
+            </generator>
+        </id>
+        <!-- <many-to-one name="objetoBus" class="pe.itsb.vyrbus.model.bean.ObjetoBus" fetch="select">
+            <column name="OBJBUS_ID" precision="2" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 2.</comment>
+            </column>
+        </many-to-one> -->
+        <many-to-one name="servicio" class="pe.itsb.vyrbus.model.bean.Servicio" fetch="select">
+            <column name="SERVICIO_ID" precision="2" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 2.</comment>
+            </column>
+        </many-to-one>
+        <property name="pathImagen" type="java.lang.String">
+        	<column name="C_PATHIMG" length="100" not-null="true">
+        		<comment>Identifica la ruta donde se ubica la imagen del objeto.</comment>
+        	</column>
+        </property>
+        <property name="tipoObjeto" type="java.lang.Integer">
+        	<column name="N_TIPOBJ" precision="1" scale="0" not-null="true">
+        		<comment>Identifica si es un objeto GENERICO (0) o ASIENTO (1).</comment>
+        	</column>
+        </property>
+        <property name="numeroAsiento" type="java.lang.Integer">
+        	<column name="N_NUMASI" precision="2" scale="0">
+        		<comment>Identifica el numero del asiento para los Objetos del tipo ASIENTO.</comment>
+        	</column>
+        </property>
+        <property name="numeroFila" type="java.lang.Integer">
+            <column name="N_NUMFIL" precision="2" scale="0" not-null="true">
+                <comment>Indica la fila dentro del mapa.</comment>
+            </column>
+        </property>
+        <property name="numeroColumna" type="java.lang.Integer">
+            <column name="N_NUMCOL" precision="2" scale="0" not-null="true">
+                <comment>Indica la columna dentro del mapa.</comment>
+            </column>
+        </property>
+        <property name="numeroPiso" type="java.lang.Integer">
+            <column name="N_NUMPIS" precision="2" scale="0" not-null="true">
+                <comment>Indica el piso al que pertenece el objeto.</comment>
+            </column>
+        </property>
+        <property name="numeroZona" type="java.lang.Integer">
+        	<column name="N_ZONBUS" precision="2" scale="0">
+        		<comment>Indica la zona a la que pertenece el asiento en el Piso del Bus.</comment>
+        	</column>
+        </property>        
+<!--          <many-to-one name="tipoAsiento" class="pe.itsb.vyrbus.model.bean.TipoAsiento" fetch="select">
+            <column name="TIPASI_ID" precision="2" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 2.</comment>
+            </column>
+        </many-to-one>  -->
+        <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+        <property name="estadoRegistro" type="java.lang.String">
+            <column name="C_ESTREG" length="1" not-null="true">
+                <comment>Estado de registro A(Activo), I(Inactivo).</comment>
+            </column>
+        </property>
+        <property name="fechaInsercion" type="java.util.Date">
+            <column name="AUDFECINS" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioInsercion" type="java.lang.String">
+            <column name="AUDUSUINS" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipInsercion" type="java.lang.String">
+            <column name="AUDIPINSE" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="fechaModificacion" type="java.util.Date">
+            <column name="AUDFECMOD" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioModificacion" type="java.lang.String">
+            <column name="AUDUSUMOD" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipModificacion" type="java.lang.String">
+            <column name="AUDIPMODI" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <!-- 		END CAMPOS DE AUDITORIA	 	-->
+    </class>
+</hibernate-mapping>

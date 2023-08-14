@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndReimprimirBoleto" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndReimprimirBoleto">
+<window id="wndReimprimirBoleto" border="none" use="pe.itsb.vyrbus.view.ctrl.WndReimprimirBoleto">
 	<tabbox mold="accordion-lite">
 		<tabs>
 			<tab id="tabBusqueda" label="CRITERIOS DE BUSQUEDA"/>

@@ -1,0 +1,60 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: Clase para manejar los errores ocasionados por el captcha.
+ * Autor		: José Avalos
+ * Fecha		: 09/04/2012
+ */
+package pe.itsb.vyrbus.service.exceptions;
+
+import java.io.Serializable;
+
+/**
+ * Clase para manejar los errores ocasionados por el captcha.
+ * @author José Avalos
+ * @since JDK1.6
+ */
+public class CaptchaNullException extends Exception implements Serializable {
+	private static final long serialVersionUID = 1L;
+	/**
+	 * Variable para controlar el tipo de error a mostrar.
+	 * <b><br>0 : Nulidad
+	 * <br>1 : Desigualdad
+	 * <br>2 : Otro</b>
+	 */
+	private Integer level=0;
+	public final static Integer CODIGO_VACIO=0;
+	/**
+	 * @return Objeto level.
+	 */
+	public Integer getLevel() {
+		return level;
+	}
+	/**
+	 * @param level	: Setea el objeto level.
+	 */
+	public void setLevel(Integer level) {
+		this.level = level;
+	}
+
+	/**
+	 * Constructor con parametros.
+	 * @param level
+	 * <br>Donde level puede ser:
+	 * <b><br>0 : Nulidad
+	 * <br>1 : Desigualdad
+	 * <br>2 : Otro</b>
+	 */
+	public CaptchaNullException(Integer level) {
+		super();
+		this.level = level;
+	}
+	/**
+	 * Constructor
+	 */
+	public CaptchaNullException() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+}

@@ -1,6 +1,6 @@
-<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+	<?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:n="client">
-<window id="wndItinerario" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndItinerario" >
+<window id="wndItinerario" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndItinerario" >
 	<div 	id="divLista"> 
 		<listbox id="listboxLista" rows="15" >
 			<listhead sizable="true">
@@ -15,6 +15,7 @@
 					<listheader label="HORA LLEGADA" sort="auto" align="center" width="95px" style="color: #ffffff;"/>
 					<listheader label="TERMINAL PARTIDA" sort="auto" align="left" style="color: #ffffff;"/>
 					<listheader label="TERMINAL LLEGADA" sort="auto" align="left" style="color: #ffffff;"/>
+					<listheader label="EMPRESA" sort="auto" align="left" style="color: #ffffff;"/>
 					<listheader label="PROCESOS" align="center" width="120px" style="color: #ffffff;"/>
 			</listhead>
 		</listbox>	
@@ -29,40 +30,51 @@
 					<columns>
 						<column width="110px;" align="right" /> 
 						<column width="170px;" />
-						<column width="85px;" align="right"/> 
+						<column width="100px;" align="right"/> 
+						<column width="170px;" />
+						<column width="95px;" align="right"/>
 					</columns>
 					<rows>
 						<row>
+							
+						</row>
+						<row>
+							<label value="EMPRESA :" />
+							<combobox id="cmbEmpresa" readonly="true" width="140px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbTipoItinerario)"></combobox>
 							<div>
 								<label value="TIPO ITINERARIO :" />
 								<textbox id="textboxId" />
 							</div>
-							<combobox id="cmbTipoItinerario" readonly="true" width="100px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbServicio)" /> 
+							<combobox id="cmbTipoItinerario" readonly="true" width="100px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbServicio)" /> 
 							<label value="TIPO SERVICIO :" />
-							<combobox id="cmbServicio" readonly="true" width="220px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbOrigen)" />	
+							<combobox id="cmbServicio" readonly="true" width="120px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbOrigen)" />	
 						</row>		
 						<row>
 							<label value="ORIGEN :" />
-							<combobox id="cmbOrigen" readonly="true" width="100px" onChange="wndItinerario.onChangeRutas()" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbRuta)" />
+							<combobox id="cmbOrigen" readonly="true" width="100px" onChange="wndItinerario.onChangeRutas()" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbRuta)" />
 							<label value="RUTA :" />
-							<combobox id="cmbRuta" readonly="true" onChange="wndItinerario.onChangeTerminalDestino(lbxTerminalDestino)" width="220px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(dbFechaItinerario)"/>
+							<combobox id="cmbRuta" readonly="true" onChange="wndItinerario.onChangeTerminalDestino(lbxTerminalDestino)" width="140px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(dbFechaItinerario)"/>
+							<label/>
+							<label/>
 						</row>
 						<row>		
 							<label value="FECHA ITINERARIO :" />
-							<datebox id="dbFechaItinerario" format="dd/MM/yyyy" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(tbHoraPartida)" />
+							<datebox id="dbFechaItinerario" format="dd/MM/yyyy" readonly="true" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(tbHoraPartida)" />
 							<label value="HORA PARTIDA :" />
-							<timebox id="tbHoraPartida"  width="60px" format="HH:mm" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(bbxTerminalOrigen)"/>
+							<timebox id="tbHoraPartida"  width="60px" format="HH:mm" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(bbxTerminalOrigen)"/>
+							<label/>
+							<label/>
 						</row>
 						<!-- <row>
 							<label value="TER. ORIGEN :" />
-							<combobox id="cmbTermOrigen" readonly="true"  width="120px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbTermDestino)" />
+							<combobox id="cmbTermOrigen" readonly="true"  width="120px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbTermDestino)" />
 							<label value="TER. DESTINO :"/>
 							<hbox align="center">
-								<combobox id="cmbTermDestino" readonly="true"  width="132px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmdAgregarTramo)" />
+								<combobox id="cmbTermDestino" readonly="true"  width="132px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmdAgregarTramo)" />
 								<button id="cmdAgregarTramo" image="/resources/mp_addEnabled.png" label="Agregar" onClick="wndItinerario.agregarTramo()" sclass="btnCommandM" tooltiptext="Agregar Tramo" />
 							</hbox>			
 						</row> -->
-						<row>
+						<row spans="1,1,1,3">
 							<label value="TER. ORIGEN :" />
 							<bandbox id="bbxTerminalOrigen" mold="rounded" width="140px" placeholder="SELECCIONE">
 								<bandpopup>
@@ -79,7 +91,7 @@
 								</bandpopup>
 							</bandbox>
 							<label value="TER. DESTINO :"/>
-							<hbox align="center">
+							<hbox align="center" >
 								<bandbox id="bbxTerminalDestino" mold="rounded" width="140px" placeholder="SELECCIONE">
 									<bandpopup>
 										<listbox id="lbxTerminalDestino" width="207px" multiple="true" checkmark="true">
@@ -175,17 +187,17 @@
 				  		<hbox align="center">
 				  			<label value="TER.PARTIDA:"/>
 				  			<combobox id="cmbTerminalPartida"   
-				  					onSelect="if(cmbTerminalPartida.getSelectedItem().getValue() instanceof com.cystesoft.vyrbus.model.bean.Agencia)
-				  								com.cystesoft.vyrbus.service.util.Util.disabledBtnAgregar(false,cmdAddTerPartida,true);
+				  					onSelect="if(cmbTerminalPartida.getSelectedItem().getValue() instanceof pe.itsb.vyrbus.model.bean.Agencia)
+				  								pe.itsb.vyrbus.service.util.Util.disabledBtnAgregar(false,cmdAddTerPartida,true);
 				  							  else
-				  						  		com.cystesoft.vyrbus.service.util.Util.disabledBtnAgregar(true,cmdAddTerPartida,true); " 
-				  					onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(tbterHoraPartida)" 
+				  						  		pe.itsb.vyrbus.service.util.Util.disabledBtnAgregar(true,cmdAddTerPartida,true); " 
+				  					onOK="pe.itsb.vyrbus.service.util.Util.setFocus(tbterHoraPartida)" 
 				  					readonly="true" 
 				  					width="100px"  />
 				  			
 				  			<label value="HORA PARTIDA:" />
-				  			<timebox id="tbterHoraPartida" format="HH:mm" width="56px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmdAddTerPartida)" />
-					  		<button id="cmdAddTerPartida" image="/resources/mp_addEnabled.png" onClick="wndItinerario.addTerminal(com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartida.class, lbxTerminalPartida, cmbTerminalPartida, tbterHoraPartida)" 
+				  			<timebox id="tbterHoraPartida" format="HH:mm" width="56px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmdAddTerPartida)" />
+					  		<button id="cmdAddTerPartida" image="/resources/mp_addEnabled.png" onClick="wndItinerario.addTerminal(pe.itsb.vyrbus.model.bean.ItinerarioAgenciaPartida.class, lbxTerminalPartida, cmbTerminalPartida, tbterHoraPartida)" 
 									sclass="btnImage" tooltiptext="Agregar Terminal Partida" />
 				  		</hbox>
 				  	</row>
@@ -214,15 +226,15 @@
 				  		<hbox align="center">
 				  			<label value="TER.LLEGADA:" />
 				  			<combobox id="cmbTerminalLlegada" width="95px" readonly="true" 
-				  					onSelect="if(cmbTerminalLlegada.getSelectedItem().getValue() instanceof com.cystesoft.vyrbus.model.bean.Agencia)
-				  								com.cystesoft.vyrbus.service.util.Util.disabledBtnAgregar(false,cmdAddTerLlegada,true);
+				  					onSelect="if(cmbTerminalLlegada.getSelectedItem().getValue() instanceof pe.itsb.vyrbus.model.bean.Agencia)
+				  								pe.itsb.vyrbus.service.util.Util.disabledBtnAgregar(false,cmdAddTerLlegada,true);
 				  					  		 else
-				  						  		com.cystesoft.vyrbus.service.util.Util.disabledBtnAgregar(true,cmdAddTerLlegada,true); " 
-				  					onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(tbterHoraLlegada)"/>
+				  						  		pe.itsb.vyrbus.service.util.Util.disabledBtnAgregar(true,cmdAddTerLlegada,true); " 
+				  					onOK="pe.itsb.vyrbus.service.util.Util.setFocus(tbterHoraLlegada)"/>
 				  			<label value="HORA LLEGADA:" />
-				  			<timebox id="tbterHoraLlegada" format="HH:mm" width="56px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmdAddTerLlegada)"/>
+				  			<timebox id="tbterHoraLlegada" format="HH:mm" width="56px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmdAddTerLlegada)"/>
 				  			<button id="cmdAddTerLlegada" image="/resources/mp_addEnabled.png" 
-									onClick="wndItinerario.addTerminal(com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaLlegada.class, lbxTerminalLlegada, cmbTerminalLlegada, tbterHoraLlegada)" 
+									onClick="wndItinerario.addTerminal(pe.itsb.vyrbus.model.bean.ItinerarioAgenciaLlegada.class, lbxTerminalLlegada, cmbTerminalLlegada, tbterHoraLlegada)" 
 									sclass="btnImage" tooltiptext="Agregar Terminal Llegada" />
 				  		</hbox>
 				  	</row>

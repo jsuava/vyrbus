@@ -1,6 +1,6 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:w="client">
-<window id="wndDetLiqAg" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndDetalleLiquidacionAgencia" width="100%" >
+<window id="wndDetLiqAg" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndDetalleLiquidacionAgencia" width="100%" >
 <!-- <panel id="panel" title="::: DETALLE DE VENTAS:::" framable="true" border="normal" closable="true" onClose="wndDetLiqAg.closeTabWindow()"> -->
 <!--     <panelchildren> -->
     

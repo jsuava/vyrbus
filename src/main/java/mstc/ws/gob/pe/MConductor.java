@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-import com.cystesoft.vyrbus.model.bean.Personal;
+import pe.itsb.vyrbus.model.bean.Personal;
 
 /**
  * <p>

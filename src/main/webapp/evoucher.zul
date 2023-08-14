@@ -5,7 +5,7 @@
 		closable="true" 
 		height="590px" 
 		onClose="EVoucher.onClose()" 
-		use="com.cystesoft.vyrbus.view.ctrl.WndEVoucher"  
+		use="pe.itsb.vyrbus.view.ctrl.WndEVoucher"  
 		width="640px" >
 	<caption label="E-Voucher"/>
 </window>

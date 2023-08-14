@@ -1,6 +1,6 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndAprobarCredito"  border="none" use="com.cystesoft.vyrbus.view.ctrl.WndAprobarLineaCreditoN2" width="810px">
+<window id="wndAprobarCredito"  border="none" use="pe.itsb.vyrbus.view.ctrl.WndAprobarLineaCreditoN2" width="810px">
 <panel title="::: APROBACIÓN LINEA DE CRÉDITO - FINANZAS :::" framable="true" width="805px" border="normal" closable="true" onClose="wndAprobarCredito.closeTabWindow()">
 	<panelchildren>
 	

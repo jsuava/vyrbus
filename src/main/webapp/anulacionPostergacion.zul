@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndAnulacionPostergacion" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndAnulacionPostergacion" width="1024px">
+<window id="wndAnulacionPostergacion" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndAnulacionPostergacion" width="1024px">
 <panel border="normal" closable="true"  
 		id="panel" title="::: CONSULTA ANULACIONES Y POSTERGACIONES :::" 
 		framable="true" onClose="wndAnulacionPostergacion.closeTabWindow()">

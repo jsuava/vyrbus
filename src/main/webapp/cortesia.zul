@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk  xmlns:n="clien">
-<window id="wndCortesia" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndCortesia" >
+<window id="wndCortesia" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndCortesia" >
 	<div id="divLista">
 		<listbox id="listboxLista" onSelect="wndCortesia.onSelectList()">
 			<listhead sizable="true">
@@ -112,38 +112,38 @@
 					<row>
 						<label value="TIPO DOCUMENTO (*) :" />
 						<div>
-							<combobox id="cmbDocumentoIdentificacion" readonly="true"  onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNumeroDocumento)" 
+							<combobox id="cmbDocumentoIdentificacion" readonly="true"  onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtNumeroDocumento)" 
 							onChange='txtApellidoMaterno.setDisabled(false);txtApellidoPaterno.setDisabled(false);txtNombre.setDisabled(false);imgValidacionDNI.setSrc("");txtNumeroDocumento.setText("");txtNumeroDocumento.setFocus(true);' />
 						</div>
 						<label value="Nº DOCUMENTO (*) :" />
 						<div>
 							<hbox align="center">
-								<textbox id="txtNumeroDocumento" onChange="wndCortesia.verificarPaxReniec()" maxlength="15" width="170px" style="font-size:11px !important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtApellidoPaterno)" />
+								<textbox id="txtNumeroDocumento" onChange="wndCortesia.verificarPaxReniec()" maxlength="15" width="170px" style="font-size:11px !important" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtApellidoPaterno)" />
 								<image id="imgValidacionDNI" height="13px" style="cursor:pointer" />
 							</hbox>
 						</div>
 					</row>
 					<row>
 						<label value="APELLIDO PATERNO (*) :" />
-						<textbox id="txtApellidoPaterno" maxlength="20" width="170px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtApellidoMaterno)" /> 
+						<textbox id="txtApellidoPaterno" maxlength="20" width="170px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtApellidoMaterno)" /> 
 						<label value="APELLIDO PATERNO :" />
-						<textbox id="txtApellidoMaterno" maxlength="20" width="170px"  onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNombre)"/>
+						<textbox id="txtApellidoMaterno" maxlength="20" width="170px"  onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtNombre)"/>
 					</row>
 					<row>
 						<label value="NOMBRES (*) :" />
-						<textbox id="txtNombre" maxlength="30" width="170px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(dbfechaNacimiento)" />
+						<textbox id="txtNombre" maxlength="30" width="170px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(dbfechaNacimiento)" />
 						<label value="FECHA NACIMIENTO :" />
-						<datebox id="dbfechaNacimiento" format="dd/MM/yyyy"  maxlength="10" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbSexo)" />
+						<datebox id="dbfechaNacimiento" format="dd/MM/yyyy"  maxlength="10" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbSexo)" />
 					</row>
 					<row>
 						<label value="SEXO (*) :" />
-						<combobox id="cmbSexo" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbEstadoCivil)" />
+						<combobox id="cmbSexo" readonly="true" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbEstadoCivil)" />
 						<label value="ESTADO CIVIL :" />
-						<combobox id="cmbEstadoCivil" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtDireccion)"/>
+						<combobox id="cmbEstadoCivil" readonly="true" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtDireccion)"/>
 					</row>
 					<row>
 						<label value="DIRECCIÓN :" />
-						<textbox id="txtDireccion" width="170px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(btnUbicacionGeografica)"/>
+						<textbox id="txtDireccion" width="170px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(btnUbicacionGeografica)"/>
 						<label value="UBICACIÓN GEOGRÁFICA (*) :" />
 						<hlayout>
 							<textbox id="txtIdUbigeo" visible="false" readonly="true" />
@@ -155,10 +155,10 @@
 					</row>
 					<row>
 						<label value="TELÉFONO :" />
-						<textbox id="txtTelefono" width="170px" style="font-size:11px !important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtCorreoElectronico)"/>
+						<textbox id="txtTelefono" width="170px" style="font-size:11px !important" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtCorreoElectronico)"/>
 						<label value="CORREO ELECTRÓNICO :" />
 						<textbox id="txtCorreoElectronico" maxlength="40"  style="text-transform:lowercase; font-size:12px !important" 
-							onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(btnGuardar)"/>
+							onOK="pe.itsb.vyrbus.service.util.Util.setFocus(btnGuardar)"/>
 					</row>
 					<row>
 						<separator />

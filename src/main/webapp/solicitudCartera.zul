@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window  id="wndsolicitud" title="" border="none" width="900px"  use="com.cystesoft.vyrbus.view.ctrl.WndSolicitudCartera">
+<window  id="wndsolicitud" title="" border="none" width="900px"  use="pe.itsb.vyrbus.view.ctrl.WndSolicitudCartera">
 <panel id="panel" title="::: SOLICITUD Y/O CARTERA DE CLIENTES:::" framable="true" border="normal" closable="true" onClose="wndsolicitud.closeTabWindow()">
     <panelchildren>
     	<tabbox>

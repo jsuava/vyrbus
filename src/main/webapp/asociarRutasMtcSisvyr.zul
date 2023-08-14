@@ -1,6 +1,6 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndAsociarRutasMtcSisvyr" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndAsociarRutasMtcSisvyr">
+<window id="wndAsociarRutasMtcSisvyr" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndAsociarRutasMtcSisvyr">
 	<panel id="panel" title="::: RUTAS DEL MTC ASOCIADAS A LAS DEL SISVYR:::" framable="true" width="805px" border="normal" closable="true" onClose="wndAsociarRutasMtcSisvyr.closeTabWindow()">
         <panelchildren>
         	<vbox>

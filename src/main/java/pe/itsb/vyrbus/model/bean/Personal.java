@@ -1,0 +1,222 @@
+package pe.itsb.vyrbus.model.bean;
+
+// Generated 22/12/2009 05:34:14 PM by Hibernate Tools 3.2.4.GA
+
+import java.io.Serializable;
+import java.util.Date;
+
+public class Personal extends GenericBean implements Serializable {
+	private static final long serialVersionUID = 1L;
+	private Long id;
+	private TipoPersonal tipoPersonal;
+	private TipoDocumento tipoDocumento;
+	private Ubigeo ubigeo;
+	private String codigo;
+	private String nroDocumento;
+	private String nombre;
+	private String apellidoPaterno;
+	private String apellidoMaterno;
+	private Date fechaNacimiento;
+	private String lugarNacimiento;
+	private EstadoCivil estadoCivil;
+	private Sexo sexo;
+	private Nacionalidad nacionalidad;
+	private String telefono;
+	private String email;
+	private String licencia;
+	private String categoria;
+	private TipoVia tipoVia;
+	private String nombreVia;
+	private TipoZona tipoZona;
+	private String nombreZona;
+	private String direccion;
+
+	private Integer tipoConductor; //No mapeado
+
+	public Personal() {
+	}
+
+	public Personal(Long id) {
+		this.id = id;
+	}
+
+	public Long getId() {
+		return this.id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public TipoPersonal getTipoPersonal() {
+		return this.tipoPersonal;
+	}
+	public void setTipoPersonal(TipoPersonal tipoPersonal) {
+		this.tipoPersonal = tipoPersonal;
+	}
+
+	public TipoDocumento getTipoDocumento() {
+		return this.tipoDocumento;
+	}
+	public void setTipoDocumento(TipoDocumento tipoDocumento) {
+		this.tipoDocumento = tipoDocumento;
+	}
+
+	public Ubigeo getUbigeo() {
+		return ubigeo;
+	}
+	public void setUbigeo(Ubigeo ubigeo) {
+		this.ubigeo = ubigeo;
+	}
+
+	public String getCodigo() {
+		return this.codigo;
+	}
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+
+	public String getNroDocumento() {
+		return this.nroDocumento;
+	}
+	public void setNroDocumento(String nroDocumento) {
+		this.nroDocumento = nroDocumento;
+	}
+
+	public String getNombre() {
+		return this.nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getApellidoPaterno() {
+		return this.apellidoPaterno;
+	}
+	public void setApellidoPaterno(String apellidoPaterno) {
+		this.apellidoPaterno = apellidoPaterno;
+	}
+
+	public String getApellidoMaterno() {
+		return this.apellidoMaterno;
+	}
+	public void setApellidoMaterno(String apellidoMaterno) {
+		this.apellidoMaterno = apellidoMaterno;
+	}
+
+	public Date getFechaNacimiento() {
+		return this.fechaNacimiento;
+	}
+	public void setFechaNacimiento(Date fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
+	}
+
+	public String getLugarNacimiento() {
+		return this.lugarNacimiento;
+	}
+	public void setLugarNacimiento(String lugarNacimiento) {
+		this.lugarNacimiento = lugarNacimiento;
+	}
+
+	public EstadoCivil getEstadoCivil() {
+		return this.estadoCivil;
+	}
+	public void setEstadoCivil(EstadoCivil estadoCivil) {
+		this.estadoCivil = estadoCivil;
+	}
+
+	public Sexo getSexo() {
+		return this.sexo;
+	}
+	public void setSexo(Sexo sexo) {
+		this.sexo = sexo;
+	}
+
+	public String getNombreZona() {
+		return this.nombreZona;
+	}
+	public void setNombreZona(String nombreZona) {
+		this.nombreZona = nombreZona;
+	}
+
+	public Nacionalidad getNacionalidad() {
+		return this.nacionalidad;
+	}
+	public void setNacionalidad(Nacionalidad nacionalidad) {
+		this.nacionalidad = nacionalidad;
+	}
+
+	public String getTelefono() {
+		return this.telefono;
+	}
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+
+	public String getEmail() {
+		return this.email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getLicencia() {
+		return this.licencia;
+	}
+	public void setLicencia(String licencia) {
+		this.licencia = licencia;
+	}
+
+	public String getCategoria() {
+		return this.categoria;
+	}
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
+	}
+
+	public TipoVia getTipoVia() {
+		return this.tipoVia;
+	}
+	public void setTipoVia(TipoVia tipoVia) {
+		this.tipoVia = tipoVia;
+	}
+
+	public String getNombreVia() {
+		return this.nombreVia;
+	}
+	public void setNombreVia(String nombreVia) {
+		this.nombreVia = nombreVia;
+	}
+
+	public TipoZona getTipoZona() {
+		return this.tipoZona;
+	}
+	public void setTipoZona(TipoZona tipoZona) {
+		this.tipoZona = tipoZona;
+	}
+
+	public String getDireccion() {
+		return this.direccion;
+	}
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
+	@Override
+	public String toString(){
+		return apellidoPaterno + (apellidoMaterno==null?"":" " + apellidoMaterno) + ", " + nombre;
+	}
+
+	/**
+	 * @return the tipoConductor
+	 */
+	public Integer getTipoConductor() {
+		return tipoConductor;
+	}
+
+	/**
+	 * @param tipoConductor the tipoConductor to set
+	 */
+	public void setTipoConductor(Integer tipoConductor) {
+		this.tipoConductor = tipoConductor;
+	}
+}

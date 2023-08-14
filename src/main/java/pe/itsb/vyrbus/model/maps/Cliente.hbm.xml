@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 04/05/2012 12:43:35 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="pe.itsb.vyrbus.model.bean.Cliente" table="VRMCLIENTE" schema="VYRBUSME">
+        <comment>Entidada que almacena todos los clientes del sistema de pasajes.</comment>
+        <id name="id" type="java.lang.Long">
+            <column name="CLIENTE_ID" precision="10" scale="0" />
+            <generator class="sequence">
+                <param name="sequence">SEQ_VRMCLIENTE_ID</param>
+            </generator>
+        </id>
+        <many-to-one name="agencia" class="pe.itsb.vyrbus.model.bean.Agencia">
+        	<column name="AGENCIA_ID" precision="5" scale="0" not-null="true">
+        		<comment>Agencia que realiza el registro del cliente</comment>
+        	</column>
+        </many-to-one>
+        <property name="numeroDocumento" type="java.lang.String">
+            <column name="C_NUMDOC" length="15" not-null="true">
+                <comment>Numero de documento del cliente.</comment>
+            </column>
+        </property>
+        <property name="razonSocial" type="java.lang.String">
+            <column name="C_RAZSOC" length="100" not-null="true" >
+            	<comment>Nombre de la razon social.</comment>
+            </column>
+        </property>
+        <property name="rubro" type="java.lang.String">
+        	<column name="C_RUBRO" length="80">
+        		<comment>Rubro al que se dedica la empresa</comment>
+        	</column>
+        </property>
+        <property name="cantidadTrabajadores" type="java.lang.Integer">
+        	<column name="N_CANTRAB" precision="7" scale="0" not-null="true">
+        		<comment>Cantidad de trabajadores.</comment>
+        	</column>
+        </property>
+        <property name="direccion" type="java.lang.String">
+            <column name="C_DIRECCION" length="100" >
+            	<comment>Direccion del cliente.</comment>
+            </column>
+        </property>
+        <property name="contacto" type="java.lang.String">
+            <column name="C_CONTACTO" length="50">
+                <comment>Nombre de la persona de contacto.</comment>
+            </column>
+        </property>
+        <property name="telefonoFijo" type="java.lang.String">
+            <column name="C_TELFIJO1" length="10">
+                <comment>Numero de telefono fijo.</comment>
+            </column>
+        </property>
+        <property name="telefonoFijo2" type="java.lang.String">
+            <column name="C_TELFIJO2" length="10">
+                <comment>Numero de telefono fijo.</comment>
+            </column>
+        </property>
+        <property name="email" type="java.lang.String">
+            <column name="C_EMAIL" length="70">
+                <comment>Correo electronico del contacto.</comment>
+            </column>
+        </property>
+        <property name="kilometros" type="java.lang.Double">
+            <column name="N_KILOMETROS" precision="12" scale="2" not-null="true">
+                <comment>Numero de kilometros de viaje acumulados.</comment>
+            </column>
+        </property>
+        <many-to-one name="ubigeo" class="pe.itsb.vyrbus.model.bean.Ubigeo">
+            <column name="UBIGEO_ID" length="6" not-null="true">
+                <comment>Identificador unico de la entidad, representa al ubigeo</comment>
+            </column>
+        </many-to-one>
+         <property name="origen" type="java.lang.String">
+            <column name="C_ORIGEN" length="1" >
+                <comment>L. Lima, P: Provincia</comment>
+            </column>
+        </property>
+        <property name="direccionFacturacion" type="java.lang.String">
+            <column name="C_DIRFAC" length="150" >
+                <comment>Direccion de facturaion del cliente</comment>
+            </column>
+        </property>
+         <property name="contactoFinaciero" type="java.lang.String">
+            <column name="C_CONFIN" length="100" >
+                <comment>Nombre del contacto financiero</comment>
+            </column>
+        </property>
+        <property name="movil1" type="java.lang.String">
+            <column name="C_MOVIL1" length="15" >
+                <comment>Nombre del contacto financiero</comment>
+            </column>
+        </property>
+        <property name="movil2" type="java.lang.String">
+            <column name="C_MOVIL2" length="15" >
+                <comment>Nombre del contacto financiero</comment>
+            </column>
+        </property>
+        
+        
+        <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+        <property name="estadoRegistro" type="java.lang.String">
+            <column name="C_ESTREG" length="1" not-null="true">
+                <comment>Estado de registro A(Activo), I(Inactivo).</comment>
+            </column>
+        </property>
+        <property name="fechaInsercion" type="java.util.Date">
+            <column name="AUDFECINS" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioInsercion" type="java.lang.String">
+            <column name="AUDUSUINS" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipInsercion" type="java.lang.String">
+            <column name="AUDIPINSE" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="fechaModificacion" type="java.util.Date">
+            <column name="AUDFECMOD" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioModificacion" type="java.lang.String">
+            <column name="AUDUSUMOD" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipModificacion" type="java.lang.String">
+            <column name="AUDIPMODI" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <!-- 		END CAMPOS DE AUDITORIA	 	-->
+    </class>
+</hibernate-mapping>

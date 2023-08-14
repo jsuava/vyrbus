@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndGastosAdministrativos" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndGastosAdministrativos">
+<window id="wndGastosAdministrativos" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndGastosAdministrativos">
 	<groupbox closable="false" mold="3d" width="600px">
 		<caption label="CANJE PCE / COBROS ADMINISTRATIVOS" style="color: #ffffff;"/>
 		<groupbox closable="false" mold="3d">

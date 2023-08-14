@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:n="client">
-<window  id="wndControlEspecieValorada" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndControlEspecieValorada">
+<window  id="wndControlEspecieValorada" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndControlEspecieValorada">
 	<div id="divLista">
 		<listbox id="listboxLista">
 			<listhead sizable="true">
@@ -33,32 +33,32 @@
 					</div>
 					<combobox id="cmbAgencia" 
 							onSelect="wndControlEspecieValorada.cargarEspecieValorada();wndControlEspecieValorada.cargaCoprobantesAutorizados(cmbAgencia,cmbTipoComprobante,true); 
-									com.cystesoft.vyrbus.service.util.UtilData.cargarUsuarioHasrdware(cmbUsuarioHardware, false, ((com.cystesoft.vyrbus.model.bean.Agencia)cmbAgencia.getSelectedItem().getValue()))" 
+									pe.itsb.vyrbus.service.util.UtilData.cargarUsuarioHasrdware(cmbUsuarioHardware, false, ((pe.itsb.vyrbus.model.bean.Agencia)cmbAgencia.getSelectedItem().getValue()))" 
 							readonly="true"
-							onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbTipoComprobante)" 
+							onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbTipoComprobante)" 
 							width="170px" />
 					<separator/>
 					<separator/>
 				</row>
 				<row>
 					<label value="TIPO DE COMPROBANTE (*) :"  />
-					<combobox id="cmbTipoComprobante" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbUsuarioHardware)" width="170px"/>
+					<combobox id="cmbTipoComprobante" readonly="true" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbUsuarioHardware)" width="170px"/>
 					<label value="USUARIO HARDWARE (*) :"/>
-					<combobox id="cmbUsuarioHardware" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtSerie)" width="170px"/>
+					<combobox id="cmbUsuarioHardware" readonly="true" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtSerie)" width="170px"/>
 				</row>
 				<row>
 					<label value="SERIE (*) :" />
-					<textbox id="txtSerie" maxlength="4" width="160px" style="font-size:11px !important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(itCorrelativoInicio)"/>
+					<textbox id="txtSerie" maxlength="4" width="160px" style="font-size:11px !important" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(itCorrelativoInicio)"/>
 					<label value="CORRELATIVO INICIAL (*) :" />
 					<longbox id="itCorrelativoInicio" 
 							maxlength="10" 
 							width="162px" 
 							onChange="itCorrelativoActual.setValue(itCorrelativoInicio.getValue())"  
-							onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(itCorrelativoFin)" />
+							onOK="pe.itsb.vyrbus.service.util.Util.setFocus(itCorrelativoFin)" />
 				</row>
 				<row>
 					<label value="CORRELATIVO FINAL (*) :" />
-					<longbox id="itCorrelativoFin" maxlength="10" width="161px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(itCorrelativoActual)"/>
+					<longbox id="itCorrelativoFin" maxlength="10" width="161px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(itCorrelativoActual)"/>
 					<label value="CORRELATIVO ACTUAL (*) :" />
 					<longbox id="itCorrelativoActual" maxlength="10" width="162px" />
 				</row>

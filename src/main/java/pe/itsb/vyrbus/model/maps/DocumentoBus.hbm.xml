@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="pe.itsb.vyrbus.model.bean.DocumentoBus" table="VRTDOCBUS" schema="VYRBUSME">
+        <comment>Entidad que almacena los documentos de los buses.</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="DOCBUS_ID" precision="7" scale="0" />
+            <generator class="sequence">
+                <param name="sequence">SEQ_VRTDOCBUS_ID</param>
+            </generator>
+        </id>
+        <many-to-one name="estadoDocumentoBus" class="pe.itsb.vyrbus.model.bean.EstadoDocumentoBus" fetch="select">
+            <column name="ESTDOCBUS_ID" precision="2" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 2.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="bus" class="pe.itsb.vyrbus.model.bean.Bus" fetch="select">
+            <column name="BUS_ID" precision="7" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 7.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="tipoDocumento" class="pe.itsb.vyrbus.model.bean.TipoDocumento" fetch="select">
+        	<column name="TIPDOC_ID" precision="2" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 2.</comment>
+            </column>
+        </many-to-one>
+       <property name="numeroDocumento" type="java.lang.String">
+            <column name="C_NUMDOCBUS" length="14" not-null="true">
+                <comment>Numero del documento.</comment>
+            </column>
+        </property>
+        <property name="fechaExpedicion" type="java.lang.String">
+            <column name="C_FECEXP" length="10" not-null="true">
+                <comment>Fecha en la que se expide el documento.</comment>
+            </column>
+        </property>
+        <property name="fechaVencimiento" type="java.lang.String">
+            <column name="C_FECVEN" length="10" not-null="true">
+                <comment>Fecha de vencimiento del documento</comment>
+            </column>
+        </property>
+        <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+        <property name="estadoRegistro" type="java.lang.String">
+            <column name="C_ESTREG" length="1" not-null="true">
+                <comment>Estado de registro A(Activo), I(Inactivo).</comment>
+            </column>
+        </property>
+        <property name="fechaInsercion" type="java.util.Date">
+            <column name="AUDFECINS" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioInsercion" type="java.lang.String">
+            <column name="AUDUSUINS" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipInsercion" type="java.lang.String">
+            <column name="AUDIPINSE" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="fechaModificacion" type="java.util.Date">
+            <column name="AUDFECMOD" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioModificacion" type="java.lang.String">
+            <column name="AUDUSUMOD" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipModificacion" type="java.lang.String">
+            <column name="AUDIPMODI" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <!-- 		END CAMPOS DE AUDITORIA	 	-->
+    </class>
+</hibernate-mapping>

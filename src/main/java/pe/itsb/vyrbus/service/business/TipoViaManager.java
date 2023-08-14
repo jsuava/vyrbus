@@ -1,0 +1,16 @@
+package pe.itsb.vyrbus.service.business;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import pe.itsb.vyrbus.model.bean.TipoVia;
+
+public interface TipoViaManager {
+	public ArrayList<TipoVia> buscarPorEstadoRegistro(String estado, String criterioOrden)throws Exception;
+	public ArrayList<TipoVia> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar)throws Exception;
+	public TipoVia buscarPorId(Long id)throws Exception;
+	public void guardar(TipoVia tipoVia)throws Exception;
+	public void actualizar(TipoVia tipoVia)throws Exception;
+	public void inactivar(Long id)throws Exception;
+}

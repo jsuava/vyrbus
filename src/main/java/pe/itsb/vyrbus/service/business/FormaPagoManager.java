@@ -1,0 +1,16 @@
+package pe.itsb.vyrbus.service.business;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import pe.itsb.vyrbus.model.bean.FormaPago;
+
+public interface FormaPagoManager {
+	public ArrayList<FormaPago> buscarPorEstadoRegistro(String estado, String criterioOrden)throws Exception;
+	public ArrayList<FormaPago> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar)throws Exception;
+	public FormaPago buscarPorId(Long id)throws Exception;
+	public void guardar(FormaPago formaPago)throws Exception;
+	public void actualizar(FormaPago formaPago)throws Exception;
+	public void inactivar(Long id)throws Exception;
+}

@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndTipoAgencia" title="" border="none" height="100%" use="com.cystesoft.vyrbus.view.ctrl.WndTipoAgencia">
+<window id="wndTipoAgencia" title="" border="none" height="100%" use="pe.itsb.vyrbus.view.ctrl.WndTipoAgencia">
 <div id="divLista">
 	<listbox id="listboxLista">
 		<listhead sizable="true">

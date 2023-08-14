@@ -1,0 +1,392 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripci�n	:
+ * Fecha		: 16/07/2014
+ */
+package pe.itsb.vyrbus.view.ctrl;
+
+import java.io.Serializable;
+import java.util.List;
+
+import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Button;
+import org.zkoss.zul.Caption;
+import org.zkoss.zul.Column;
+import org.zkoss.zul.Columns;
+import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Div;
+import org.zkoss.zul.Grid;
+import org.zkoss.zul.Label;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Longbox;
+import org.zkoss.zul.Row;
+import org.zkoss.zul.Rows;
+import org.zkoss.zul.Window;
+
+import pe.itsb.vyrbus.model.bean.Agencia;
+import pe.itsb.vyrbus.model.bean.VSAsignacionCertificados;
+import pe.itsb.vyrbus.service.exceptions.AgenciaNullException;
+import pe.itsb.vyrbus.service.exceptions.CancelaGrabacionException;
+import pe.itsb.vyrbus.service.exceptions.CorrelativoException;
+import pe.itsb.vyrbus.service.locator.ServiceLocator;
+import pe.itsb.vyrbus.service.util.Constantes;
+import pe.itsb.vyrbus.service.util.Messages;
+import pe.itsb.vyrbus.service.util.Util;
+import pe.itsb.vyrbus.service.util.UtilData;
+import pe.itsb.vyrbus.view.ui.DlgMessage;
+import pe.itsb.vyrbus.view.ui.WndOpcionesMantenimiento;
+
+/**
+ * @author JABANTO
+ *
+ */
+public class WndVSAsignacionCertificados extends WndOpcionesMantenimiento implements Serializable{
+	private static final long serialVersionUID = 1L;
+	private Combobox cmbAgencia;
+	private Longbox lbxCorrelativoInicial;
+	private Longbox lbxCorrelativoFinal;
+	private Listbox listboxLista;
+
+	private Combobox cmbAgenciaBusqueda;
+	private VSAsignacionCertificados vsAsignacionCertificados;
+	private Agencia agencia;
+
+	private Window wndBusqueda = null;
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
+	 */
+	@Override
+	public void initComponents() {
+		cmbAgencia=(Combobox)this.getFellow("cmbAgencia");
+		lbxCorrelativoInicial=(Longbox)this.getFellow("lbxCorrelativoInicial");
+		lbxCorrelativoFinal=(Longbox)this.getFellow("lbxCorrelativoFinal");
+		listboxLista=(Listbox)this.getFellow("listboxLista");
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
+	 */
+	@Override
+	public void onCreate() throws Exception {
+		// TODO Auto-generated method stub
+		UtilData.cargarAgenciaXtipoAgencia(cmbAgencia, Constantes.ID_TIPAGE_TEPSA, true);
+		cmbAgencia.setSelectedIndex(0);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onNew()
+	 */
+	@Override
+	public void onNew() throws Exception {
+		// TODO Auto-generated method stub
+		cmbAgencia.setSelectedIndex(0);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onSearch()
+	 */
+	@Override
+	public void onSearch() throws Exception {
+		ventanaBusqueda();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onRefresh(int)
+	 */
+	@Override
+	public void onRefresh(int tab) throws Exception {
+		// TODO Auto-generated method stub
+		ejecutaBusqueda(agencia);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onModify(int)
+	 */
+	@Override
+	public void onModify(int tab) throws Exception {
+		// TODO Auto-generated method stub
+		mantenimiento();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onCancel(int)
+	 */
+	@Override
+	public void onCancel(int action) throws Exception {
+		// TODO Auto-generated method stub
+
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onSave(int)
+	 */
+	@Override
+	public void onSave(int action) throws Exception {
+		try{
+			if (!(cmbAgencia.getSelectedItem().getValue() instanceof Agencia))
+				throw new AgenciaNullException();
+			else if (lbxCorrelativoInicial.getText().trim().isEmpty())
+				throw new CorrelativoException(CorrelativoException.INICIAL_NULL);
+			else if (lbxCorrelativoFinal.getText().trim().isEmpty())
+				throw new CorrelativoException(CorrelativoException.FINAL_NULL);
+			else if (lbxCorrelativoInicial.getValue().longValue()>lbxCorrelativoFinal.getValue().longValue())
+				throw new CorrelativoException(CorrelativoException.CORRELATIVO_FINAL_MENOR_DB);
+
+			Agencia oAgencia=cmbAgencia.getSelectedItem().getValue();
+
+			//Valida que el correlativo inicial no este dentro del algun rando asignado ha otra agencia.
+			VSAsignacionCertificados rangoCertificados=ServiceLocator.getVentaSeguroManager().ValidarAsignacionCertificado(lbxCorrelativoInicial.getValue());
+			if(rangoCertificados!=null && rangoCertificados.getAgenciaID().intValue()!=oAgencia.getId().intValue()){
+				Agencia agenciaCer=ServiceLocator.getAgenciaManager().buscarPorId(rangoCertificados.getAgenciaID().longValue());
+				DlgMessage.information(Messages.getString("WndVsAsignacionCertificados.information.correlativoInicialUtilizado")+" "+agenciaCer.getDenominacion(),lbxCorrelativoInicial);
+				throw new CancelaGrabacionException();
+			}
+			//Valida que el correlativo final no este dentro del algun rando asignado ha otra agencia.
+			rangoCertificados=ServiceLocator.getVentaSeguroManager().ValidarAsignacionCertificado(lbxCorrelativoInicial.getValue());
+			if(rangoCertificados!=null && rangoCertificados.getAgenciaID().intValue()!=oAgencia.getId().intValue()){
+				Agencia agenciaCer=ServiceLocator.getAgenciaManager().buscarPorId(rangoCertificados.getAgenciaID().longValue());
+				DlgMessage.information(Messages.getString("WndVsAsignacionCertificados.information.correlativoFinalUtilizado")+" "+agenciaCer.getDenominacion(),lbxCorrelativoInicial);
+				throw new CancelaGrabacionException();
+			}
+
+			//Inactiva el registro anterior si es que la agencia ya tenga una ***Comentado 06/09/2014
+//			VSAsignacionCertificados  asignacionCertificados=ServiceLocator.getVentaSeguroManager().buscarAsignacionCertificadosPorIdAgencia(oAgencia.getId());
+//			if(asignacionCertificados!=null){
+//				UtilData.auditarRegistro(asignacionCertificados, true, getUsuario(), Executions.getCurrent());
+//				asignacionCertificados.setEstadoRegistro(Constantes.VALUE_INACTIVO);
+//				ServiceLocator.getVentaSeguroManager().actualizarAsignacionCertificados(asignacionCertificados);
+//			}
+
+			vsAsignacionCertificados=new VSAsignacionCertificados();
+			vsAsignacionCertificados.setAgenciaID(oAgencia.getId());
+			vsAsignacionCertificados.setCorrelativoInicial(lbxCorrelativoInicial.getValue());
+			vsAsignacionCertificados.setCorrelativoFinal(lbxCorrelativoFinal.getValue());
+			vsAsignacionCertificados.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+			UtilData.auditarRegistro(vsAsignacionCertificados, getUsuario(), Executions.getCurrent());
+			ServiceLocator.getVentaSeguroManager().guardarAsignacionCertificados(vsAsignacionCertificados);
+
+			ejecutaBusqueda(oAgencia);
+		}catch (CancelaGrabacionException cex){
+			throw new CancelaGrabacionException();
+		}catch (AgenciaNullException agex) {
+			DlgMessage.information(Messages.getString("WndVsAsignacionCertificados.information.noAgencia"),cmbAgencia);
+			throw new CancelaGrabacionException();
+		}catch (CorrelativoException crex) {
+			if(crex.getTipo().intValue()==CorrelativoException.INICIAL_NULL)
+				DlgMessage.information(Messages.getString("WndVsAsignacionCertificados.information.noCorrelativoInicial"),lbxCorrelativoInicial);
+			else if (crex.getTipo().intValue()==CorrelativoException.FINAL_NULL)
+				DlgMessage.information(Messages.getString("WndVsAsignacionCertificados.information.noCorrelativoFinal"),lbxCorrelativoFinal);
+			else if (crex.getTipo().intValue()==CorrelativoException.CORRELATIVO_FINAL_MENOR_DB)
+				DlgMessage.information(Messages.getString("WndVsAsignacionCertificados.information.correlativoInicialMayorFinal"),lbxCorrelativoInicial);
+			throw new CancelaGrabacionException();
+		}catch(Exception ex){
+			ex.printStackTrace();
+			DlgMessage.error(ex.getMessage());
+			throw new CancelaGrabacionException();
+		}
+
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onDelete(int)
+	 */
+	@Override
+	public void onDelete(int tab) throws Exception {
+		// TODO Auto-generated method stub
+		if(listboxLista.getSelectedItem().getValue() instanceof VSAsignacionCertificados){
+//			Messagebox.show(Messages.getString("Generales.question.inactivate"),DlgMessage.NOMBREAPLICACION,DlgMessage.BTN_YESNO,Messagebox.QUESTION, new EventListener<Event>() {
+//				@Override
+//				public void onEvent(Event arg0) throws Exception {
+//					if(arg0.getName().equals("onYes")){
+						VSAsignacionCertificados asignacionCertificados=listboxLista.getSelectedItem().getValue();
+						ServiceLocator.getVentaSeguroManager().inactivarAsignacionCertificado(asignacionCertificados.getId());
+
+//					}
+//				}
+//			});
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onPrint(int)
+	 */
+	@Override
+	public void onPrint(int tab) throws Exception {
+		// TODO Auto-generated method stub
+
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onExport(int)
+	 */
+	@Override
+	public void onExport(int tab) throws Exception {
+		// TODO Auto-generated method stub
+
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onHelp()
+	 */
+	@Override
+	public void onHelp() throws Exception {
+		// TODO Auto-generated method stub
+
+	}
+
+	/* (non-Javadoc)
+	 * @see org.zkoss.zul.Window#onClose()
+	 */
+	@Override
+	public void onClose() {
+		// TODO Auto-generated method stub
+		closeTabWindow();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.view.ui.IOpcionesMantenimiento#onChangeTab(int)
+	 */
+	@Override
+	public void onChangeTab(int tab) throws Exception {
+		switch (tab) {
+		case TAB_LIST:
+			break;
+		case TAB_MAINTENANCE:
+			if (listboxLista.getSelectedIndex() > -1) {
+				mantenimiento();
+			}
+			break;
+	}
+	}
+
+	/**
+	 * Lista los certificados asignados a las agencias.
+	 * @param lstRegsitros : lista de certificados asignados a las agencias a cargar en la lista.
+	 * @throws Exception
+	 */
+	private void listarRegistros(List<VSAsignacionCertificados> lstRegsitros)throws Exception{
+		Util.limpiarListbox(listboxLista);
+
+		int x=0;
+		for(VSAsignacionCertificados asignacionCertificados: lstRegsitros){
+			x++;
+			Listitem item=new Listitem();
+			Agencia agencia=ServiceLocator.getAgenciaManager().buscarPorId(asignacionCertificados.getAgenciaID().longValue());
+			Listcell cell=new Listcell(String.valueOf(x));
+			item.appendChild(cell);
+			cell=new Listcell(agencia.getNombreCorto());
+			item.appendChild(cell);
+			cell=new Listcell(asignacionCertificados.getCorrelativoInicial().toString());
+			cell.setStyle("font-size:11px !important");
+			item.appendChild(cell);
+			cell=new Listcell(asignacionCertificados.getCorrelativoFinal().toString());
+			cell.setStyle("font-size:11px !important");
+			item.appendChild(cell);
+
+			item.setValue(asignacionCertificados);
+			listboxLista.appendChild(item);
+		}
+	}
+
+
+	private void mantenimiento(){
+		if(listboxLista.getSelectedItem().getValue() instanceof VSAsignacionCertificados){
+			vsAsignacionCertificados=listboxLista.getSelectedItem().getValue();
+			Util.seleccionarValorItemCombo(Agencia.class, cmbAgencia, vsAsignacionCertificados.getAgenciaID());
+			lbxCorrelativoInicial.setValue(vsAsignacionCertificados.getCorrelativoInicial());
+			lbxCorrelativoFinal.setValue(vsAsignacionCertificados.getCorrelativoFinal());
+		}
+	}
+
+	private void ventanaBusqueda() throws Exception{
+		wndBusqueda = createWindowsBusqueda();
+		this.appendChild(wndBusqueda);
+		wndBusqueda.setMode("modal");
+	}
+
+	@SuppressWarnings("deprecation")
+	private Window createWindowsBusqueda() throws Exception{
+		Caption caption = null;
+		final Window window = new Window("", "normal", true);
+		window.setWidth("400px");
+		caption = new Caption("PARAMETROS DE BÚSQUEDA");
+		window.appendChild(caption);
+		cmbAgenciaBusqueda=new Combobox();
+		cmbAgenciaBusqueda.setReadonly(true);
+		Label label=null;
+
+		Grid grid=new Grid();
+		Columns columns=new Columns();
+		Column column=new Column();
+		column.setWidth("100px");
+		column.setAlign("right");
+		columns.appendChild(column);
+		columns.appendChild(new Column());
+		grid.appendChild(columns);
+
+		Rows rows=new Rows();
+		Row row=new Row();
+		label=new Label("AGENCIA :");
+		cmbAgenciaBusqueda.setWidth("220px");
+		row.appendChild(label);
+		row.appendChild(cmbAgenciaBusqueda);
+		rows.appendChild(row);
+
+		grid.appendChild(rows);
+		window.appendChild(grid);
+
+
+		final Button btnFiltrar=new Button("Filtrar");
+		btnFiltrar.setImage("/resources/mp_filtrar.png");
+
+		Grid grid2=new Grid();
+		row =new Row();
+		rows=new Rows();
+		Div div=new Div();
+		div.setAlign("center");
+		div.appendChild(btnFiltrar);
+		row.appendChild(div);
+		rows.appendChild(row);
+		grid2.appendChild(rows);
+		window.appendChild(grid2);
+
+		//******
+		Util.limpiarCombobox(cmbAgenciaBusqueda);
+		UtilData.cargarAgenciaXtipoAgencia(cmbAgenciaBusqueda, Constantes.ID_TIPAGE_TEPSA, true);
+		cmbAgenciaBusqueda.setSelectedIndex(0);
+
+		btnFiltrar.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				agencia=null;
+				if(cmbAgenciaBusqueda.getSelectedItem().getValue() instanceof Agencia){
+					agencia=new Agencia();
+					agencia=cmbAgenciaBusqueda.getSelectedItem().getValue();
+					ejecutaBusqueda(agencia);
+				}else
+					ejecutaBusqueda(null);
+				window.onClose();
+			}
+		});
+
+		return window;
+
+	}
+
+	private void ejecutaBusqueda(Agencia agencia) throws Exception{
+		if(agencia!=null){
+			listarRegistros(ServiceLocator.getVentaSeguroManager().buscarAsignacionCertificados(agencia.getId()));
+		}else
+			listarRegistros(ServiceLocator.getVentaSeguroManager().buscarAsignacionCertificados());
+	}
+
+}

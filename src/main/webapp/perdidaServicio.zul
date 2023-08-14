@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndPerdidaServicio" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndPerdidaServicio">
+<window id="wndPerdidaServicio" border="none" use="pe.itsb.vyrbus.view.ctrl.WndPerdidaServicio">
 	
 	<tabbox mold="accordion-lite">
 		<tabs>

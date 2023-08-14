@@ -1,0 +1,156 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	: Implementación de métodos que permiten el acceso al modelo.
+ * Autor		: José Avalos
+ * Fecha		: 28/09/2012
+ */
+package pe.itsb.vyrbus.service.business.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import pe.itsb.vyrbus.model.bean.EspecieValorada;
+import pe.itsb.vyrbus.model.dao.EspecieValoradaDAO;
+import pe.itsb.vyrbus.service.business.EspecieValoradaManager;
+import pe.itsb.vyrbus.service.exceptions.NumeroSerieDuplicadoException;
+import pe.itsb.vyrbus.service.locator.ServiceLocator;
+import pe.itsb.vyrbus.service.util.Constantes;
+
+/**
+ * @author Jose
+ *
+ */
+public class EspecieValoradaManagerImpl implements EspecieValoradaManager {
+	private EspecieValoradaDAO especieValoradaDAO;
+
+	/**
+	 * @return the especieValoradaDAO
+	 */
+	public EspecieValoradaDAO getEspecieValoradaDAO() {
+		return especieValoradaDAO;
+	}
+	/**
+	 * @param especieValoradaDAO the especieValoradaDAO to set
+	 */
+	public void setEspecieValoradaDAO(EspecieValoradaDAO especieValoradaDAO) {
+		this.especieValoradaDAO = especieValoradaDAO;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.EspecieValoradaManager#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
+	 */
+	@Override
+	@Transactional(readOnly=true)
+	public ArrayList<EspecieValorada> buscarPorEstadoRegistro(String estado, String criterioOrden) throws Exception {
+		return getEspecieValoradaDAO().buscarPorEstadoRegistro(estado, criterioOrden);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.EspecieValoradaManager#buscarPorX(java.util.TreeMap, java.util.List)
+	 */
+	@Override
+	@Transactional(readOnly=true)
+	public ArrayList<EspecieValorada> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar) throws Exception {
+		return getEspecieValoradaDAO().buscarPorX(criteriosBusqueda, criteriosOrdenar);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.EspecieValoradaManager#buscarPorId(java.lang.Long)
+	 */
+	@Override
+	@Transactional(readOnly=true)
+	public EspecieValorada buscarPorId(Long id) throws Exception {
+		return getEspecieValoradaDAO().buscarPorId(id);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.EspecieValoradaManager#guardar(com.tepsa.sisvyr.model.bean.EspecieValorada)
+	 */
+	@Override
+	@Transactional
+	public void guardar(EspecieValorada especieValorada) throws Exception {
+		getEspecieValoradaDAO().guardar(especieValorada);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.EspecieValoradaManager#actualizar(com.tepsa.sisvyr.model.bean.EspecieValorada)
+	 */
+	@Override
+	@Transactional
+	public void actualizar(EspecieValorada especieValorada) throws Exception {
+		try{
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
+			criteriosBusqueda.put("serie", especieValorada.getSerie());
+			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+
+			/*Valida duplicidad del numero se Seria(Solo es aplicable a registros activos)*/
+			if(especieValorada.getTipoComprobante().getId().equals(Constantes.ID_TIPCOM_RECIBO_CAJA))
+				criteriosBusqueda.put("agencia", especieValorada.getAgencia());
+
+			List<?> result = ServiceLocator.getEspecieValoradaManager().buscarPorX(criteriosBusqueda, null);
+
+			for (Object element : result) {
+				EspecieValorada oespecieValorada= new EspecieValorada();
+				oespecieValorada=(EspecieValorada) element;
+				if(!(oespecieValorada.getId().equals(especieValorada.getId()))){
+					if(oespecieValorada.getTipoComprobante().getId().equals(Constantes.ID_TIPCOM_MANIFIESTO_PAX)){
+						throw new NumeroSerieDuplicadoException();
+					}else if(oespecieValorada.getTipoComprobante().getId().equals(especieValorada.getTipoComprobante().getId())){
+						throw new NumeroSerieDuplicadoException();
+					}
+				}
+			}
+
+			getEspecieValoradaDAO().actualizar(especieValorada);
+
+		}catch (NumeroSerieDuplicadoException nsdex) {
+			throw new NumeroSerieDuplicadoException();
+		}
+
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.EspecieValoradaManager#inactivar(java.lang.Long)
+	 */
+	@Override
+	@Transactional
+	public void inactivar(Long id) throws Exception {getEspecieValoradaDAO().inactivar(id);
+	}
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.EspecieValoradaManager#buscarUltimaSerie(java.lang.Integer)
+	 */
+	@Override
+	public String buscarUltimaSerieUtilAge(Integer idTipoComprobante) {
+		// TODO Auto-generated method stub
+		return getEspecieValoradaDAO().buscarUltimaSerieUtilAge(idTipoComprobante);
+	}
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.EspecieValoradaManager#actualizarCorrelativoEspecieValorada(java.lang.Integer, java.lang.Integer, java.lang.String, long)
+	 */
+	@Override
+	public void actualizarCorrelativoEspecieValorada(Integer idTipCom,Integer idAgencia, String serie, long correlativo) throws Exception {
+		// TODO Auto-generated method stub
+		getEspecieValoradaDAO().actualizarCorrelativoEspecieValorada(idTipCom, idAgencia, serie, correlativo);
+	}
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.EspecieValoradaManager#buscarUltimaEspecieRegistrada(java.lang.Integer, java.lang.Integer, java.lang.String)
+	 */
+	@Override
+	public EspecieValorada buscarUltimaEspecieRegistrada(Integer idTipoComprobante, String numeroSerie, Integer idAgencia) throws Exception {
+		// TODO Auto-generated method stub
+		return getEspecieValoradaDAO().buscarUltimaEspecieRegistrada(idTipoComprobante, numeroSerie,idAgencia);
+	}
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.EspecieValoradaManager#ejcutarSeqCorrelativo(com.tepsa.sisvyr.model.bean.EspecieValorada)
+	 */
+	@Override
+	public EspecieValorada ejecutarSeqCorrelativo(EspecieValorada especieValorada)throws Exception {
+		// TODO Auto-generated method stub
+		return getEspecieValoradaDAO().ejecutarSeqCorrelativo(especieValorada);
+	}
+
+}

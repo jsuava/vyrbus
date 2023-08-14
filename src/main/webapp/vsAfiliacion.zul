@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndAfiliacion" title="" border="none" width="680px" use="com.cystesoft.vyrbus.view.ctrl.WndVSAfiliacion">
+<window id="wndAfiliacion" title="" border="none" width="680px" use="pe.itsb.vyrbus.view.ctrl.WndVSAfiliacion">
 <panel  framable="true">
 	<panelchildren>
 	<tabbox  >

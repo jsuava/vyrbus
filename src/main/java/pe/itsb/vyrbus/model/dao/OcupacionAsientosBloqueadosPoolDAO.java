@@ -1,0 +1,58 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	:
+ * Autor		: José Abanto
+ * Fecha		: 08/09/2016
+ * Hora			: 14:28:30
+ */
+package pe.itsb.vyrbus.model.dao;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import pe.itsb.vyrbus.model.bean.OcupacionAsientosBloqueadosPool;
+
+
+/**
+ * @author jabanto
+ *
+ */
+public interface OcupacionAsientosBloqueadosPoolDAO extends GenericDAO{
+	/**
+	 *
+	 * @param estado
+	 * @param criterioOrden
+	 * @return
+	 */
+	public ArrayList<OcupacionAsientosBloqueadosPool> buscarPorEstadoRegistro(String estado, String criterioOrden);
+	/**
+	 *
+	 * @param criteriosBusqueda
+	 * @param criteriosOrdenar
+	 * @return
+	 */
+	public ArrayList<OcupacionAsientosBloqueadosPool> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
+	/**
+	 *
+	 * @param id
+	 * @return
+	 */
+	public OcupacionAsientosBloqueadosPool buscarPorId(Long id);
+	/**
+	 *
+	 * @param ocupacionAsientosBloqueadosPool
+	 */
+	public void guardar(OcupacionAsientosBloqueadosPool ocupacionAsientosBloqueadosPool);
+	/**
+	 *
+	 * @param ocupacionAsientosBloqueadosPool
+	 */
+	public void actualizar(OcupacionAsientosBloqueadosPool ocupacionAsientosBloqueadosPool);
+	/**
+	 *
+	 * @param id
+	 */
+	public void delete(String codeTransaction);
+}

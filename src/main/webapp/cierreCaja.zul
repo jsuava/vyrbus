@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndCierreCaja" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndCierreCaja">
+<window id="wndCierreCaja" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndCierreCaja">
 <panel id="panel" title="::: CIERRE DE CAJA :::" framable="true" width="830px" border="normal" closable="true" onClose="wndCierreCaja.closeTabWindow()">
      <panelchildren>
 <!--      	<caption label="CIERRE DE CAJA" /> -->

@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndConfigPrinter" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndConfPrinter">
+<window id="wndConfigPrinter" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndConfPrinter">
 		<grid>
 			<columns>
 				<column align="right" width="120px" />

@@ -1,6 +1,6 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndGasto" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndGasto" >
+<window id="wndGasto" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndGasto" >
 	<div 	id="divLista">
 		<listbox id="listboxLista" rows="15">
 			<listhead sizable="true">
@@ -39,53 +39,53 @@
 						<label value="FECHA LIQUIDACION (*) :" />	
 						<textbox id="textboxId" />
 					</div>
-					<datebox id="dbFecha" format="dd/MM/yyyy" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbTipoGasto)" />
+					<datebox id="dbFecha" format="dd/MM/yyyy" readonly="true" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbTipoGasto)" />
 					<label value="TIPO DE GASTO (*) :" />
 					<combobox id="cmbTipoGasto" 
 							readonly="true" 
 							onSelect="wndGasto.onSelectTipoGasto()" 
-							onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNroCtacte)" />
+							onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtNroCtacte)" />
 				</row>
 				<row visible="false" id="filaDeposito">
 					<label value="NRO. CTA. CTE. :"/>
 					<textbox id="txtNroCtacte" 
 							maxlength="30" 
 							style="font-size: 11px !important" 
-							onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtHoraDeposito)"/>				
+							onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtHoraDeposito)"/>				
 					<label value="HORA DEP.: :" />
 					<textbox id="txtHoraDeposito" 
 							maxlength="10" 
 							style="text-align: left;" 
 							width="130px" 
-							onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNroDocumento)" />
+							onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtNroDocumento)" />
 				</row>				
 				<row>
 					<label value="NRO. COMPROBANTE/OPER. :"/>
 					<textbox id="txtNroDocumento" 
 							maxlength="20" 
 							style="font-size: 11px !important" 
-							onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(dbMonto)"/>				
+							onOK="pe.itsb.vyrbus.service.util.Util.setFocus(dbMonto)"/>				
 					<label value="MONTO (*) :" />
 					<doublebox id="dbMonto" 
 							format="##0.00" 
 							style="text-align: left;" 
 							width="130px" 
-							onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNombrePiloto)" />
+							onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtNombrePiloto)" />
 				</row>
 				<row>
 					<label value="NOMBRE DEL PILOTO :" />
-					<textbox id="txtNombrePiloto" maxlength="30" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbBus)" />
+					<textbox id="txtNombrePiloto" maxlength="30" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbBus)" />
 					<label value="BUS :" />
-<!-- 					<textbox id="txtBus" visible="false" maxlength="5" width="130px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtConsignado)"/> -->
+<!-- 					<textbox id="txtBus" visible="false" maxlength="5" width="130px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtConsignado)"/> -->
 					<combobox id="cmbBus" 
 							width="135px" 
 							readonly="true" 
 							style="font-size: 12px !important" 
-							onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtConsignado)" />
+							onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtConsignado)" />
 				</row>
 				<row>
 					<label value="CONSIGNADO :" />
-					<textbox id="txtConsignado"   maxlength="30"  onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtObservacion)" />
+					<textbox id="txtConsignado"   maxlength="30"  onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtObservacion)" />
 					<label value="OBSERVACIONES :" />
 					<textbox id="txtObservacion" rows="2" width="170px" maxlength="200" />
 				</row>

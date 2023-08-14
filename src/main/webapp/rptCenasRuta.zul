@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndRptCenasRutas"  border="none" use="com.cystesoft.vyrbus.view.ctrl.WndRptCenasRuta">
+<window id="wndRptCenasRutas"  border="none" use="pe.itsb.vyrbus.view.ctrl.WndRptCenasRuta">
 	<grid>
 		<columns>
 			<column width="90px" />

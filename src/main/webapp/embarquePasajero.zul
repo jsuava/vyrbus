@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndEmbarquePasajero" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndEmbarquePasajero">
+<window id="wndEmbarquePasajero" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndEmbarquePasajero">
 	<grid >
 		<columns>
 			<column width="70px" align="right" />

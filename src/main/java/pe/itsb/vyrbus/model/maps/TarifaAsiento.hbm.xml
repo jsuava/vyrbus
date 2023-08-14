@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 04/05/2012 12:43:35 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="pe.itsb.vyrbus.model.bean.TarifaAsiento" table="VRTTARASI" schema="VYRBUSME">
+        <comment>Entidad que almacena la tarifa a considerar a determinados clientes.</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="TARASI_ID" precision="10" scale="0" />
+            <generator class="sequence">
+                <param name="sequence">SEQ_VRTTARASI_ID</param>
+            </generator>
+        </id>
+        <many-to-one name="cliente" class="pe.itsb.vyrbus.model.bean.Tarifa">
+        	<column name="TARIFA_ID" precision="10" scale="0" not-null="true">
+        		<comment>Identificador unico de la entidad, tamanio de la clave primaria 10.</comment>
+        	</column>
+        </many-to-one>
+        <many-to-one name="itinerario" class="pe.itsb.vyrbus.model.bean.Itinerario">
+        	<column name="ITINERARIO_ID" precision="18" scale="0" not-null="false">
+        		<comment>Identificador unico de la entidad, tamanio de la clave primaria 18.</comment>
+        	</column>
+        </many-to-one>
+        <property name="numeroAsiento" type="java.lang.Integer">
+            <column name="N_NUMASI" precision="2" scale="0">
+                <comment>Numero de asiento al que se le asignara una tarifa.</comment>
+            </column>
+        </property>
+        <property name="monto" type="java.util.Double">
+            <column name="N_MONTO" precision="7" scale="2">
+                <comment>Precio de la tarifa.</comment>
+            </column>
+        </property>        
+        <property name="dias" type="java.lang.String">
+            <column name="C_DIAS" length="30">
+                <comment>Dias en que no seran validos los precios: 1 domingo, 2 lunes, etc..</comment>
+            </column>
+        </property>
+        <property name="horaPartida" type="java.util.String">
+            <column name="C_HORPAR" length="10">
+                <comment>Hora de los servicios a los que se aplica la tarifa.</comment>
+            </column>
+        </property>        
+        <property name="fechaActivacion" type="java.util.Date">
+            <column name="D_FECACT" length="7">
+                <comment>fecha de activacion de la tarifa.</comment>
+            </column>
+        </property>
+        <property name="fechaCaducidad" type="java.util.Date">
+            <column name="D_FECCAD" length="7">
+                <comment>Fecha de caducidad de la tarifa.</comment>
+            </column>
+        </property>
+        <property name="fechaSuspension" type="java.util.Date">
+            <column name="D_FECSUS" length="7">
+                <comment>Fecha de suspension de la tarifa.</comment>
+            </column>
+        </property>
+        
+        <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+        <property name="estadoRegistro" type="java.lang.String">
+            <column name="C_ESTREG" length="1" not-null="true">
+                <comment>Estado de registro A(Activo), I(Inactivo).</comment>
+            </column>
+        </property>
+        <property name="fechaInsercion" type="java.util.Date">
+            <column name="AUDFECINS" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioInsercion" type="java.lang.String">
+            <column name="AUDUSUINS" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipInsercion" type="java.lang.String">
+            <column name="AUDIPINSE" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="fechaModificacion" type="java.util.Date">
+            <column name="AUDFECMOD" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioModificacion" type="java.lang.String">
+            <column name="AUDUSUMOD" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipModificacion" type="java.lang.String">
+            <column name="AUDIPMODI" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <!-- 		END CAMPOS DE AUDITORIA	 	-->
+    </class>
+</hibernate-mapping>

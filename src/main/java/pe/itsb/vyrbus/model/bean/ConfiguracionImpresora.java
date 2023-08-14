@@ -1,0 +1,129 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	:
+ * Autor		: José Abanto
+ * Fecha		: 21/05/2015
+ * Hora			: 15:15:50
+ */
+package pe.itsb.vyrbus.model.bean;
+
+/**
+ * @author Jose
+ *
+ */
+public class ConfiguracionImpresora extends GenericBean{
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
+	private Integer id;
+	private UsuarioHardware usuarioHardware;
+	private String impresora;
+	private String puerto;
+	private Long bistPorSegundo;
+	private Long bistDatos;
+	private Integer paridad;
+	private Integer bistParada;
+
+	/**
+	 * @return the id
+	 */
+	public Integer getId() {
+		return id;
+	}
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	/**
+	 * @return the usuarioHardware
+	 */
+	public UsuarioHardware getUsuarioHardware() {
+		return usuarioHardware;
+	}
+	/**
+	 * @param usuarioHardware the usuarioHardware to set
+	 */
+	public void setUsuarioHardware(UsuarioHardware usuarioHardware) {
+		this.usuarioHardware = usuarioHardware;
+	}
+	/**
+	 * @return the impresora
+	 */
+	public String getImpresora() {
+		return impresora;
+	}
+	/**
+	 * @param impresora the impresora to set
+	 */
+	public void setImpresora(String impresora) {
+		this.impresora = impresora;
+	}
+	/**
+	 * @return the puerto
+	 */
+	public String getPuerto() {
+		return puerto;
+	}
+	/**
+	 * @param puerto the puerto to set
+	 */
+	public void setPuerto(String puerto) {
+		this.puerto = puerto;
+	}
+	/**
+	 * @return the bistPorSegundo
+	 */
+	public Long getBistPorSegundo() {
+		return bistPorSegundo;
+	}
+	/**
+	 * @param bistPorSegundo the bistPorSegundo to set
+	 */
+	public void setBistPorSegundo(Long bistPorSegundo) {
+		this.bistPorSegundo = bistPorSegundo;
+	}
+	/**
+	 * @return the bistDatos
+	 */
+	public Long getBistDatos() {
+		return bistDatos;
+	}
+	/**
+	 * @param bistDatos the bistDatos to set
+	 */
+	public void setBistDatos(Long bistDatos) {
+		this.bistDatos = bistDatos;
+	}
+	/**
+	 * @return the paridad
+	 */
+	public Integer getParidad() {
+		return paridad;
+	}
+	/**
+	 * @param paridad the paridad to set
+	 */
+	public void setParidad(Integer paridad) {
+		this.paridad = paridad;
+	}
+	/**
+	 * @return the bistParada
+	 */
+	public Integer getBistParada() {
+		return bistParada;
+	}
+	/**
+	 * @param bistParada the bistParada to set
+	 */
+	public void setBistParada(Integer bistParada) {
+		this.bistParada = bistParada;
+	}
+
+
+
+}

@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndRptHREEmitidas" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndRptHREEmitidas">
+<window id="wndRptHREEmitidas" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndRptHREEmitidas">
 	<groupbox mold="3d" closable="false">
 		<caption label="CONSULTA DE LAS HRE EMITIDAS"/>
 		

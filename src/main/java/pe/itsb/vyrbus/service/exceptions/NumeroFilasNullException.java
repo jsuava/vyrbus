@@ -1,0 +1,47 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	:
+ * Autor		: José Avalos
+ * Fecha		: 31/08/2012
+ */
+package pe.itsb.vyrbus.service.exceptions;
+
+import java.io.Serializable;
+
+/**
+ *
+ * @author JABANTO
+ * @since JDK1.6
+ */
+public class NumeroFilasNullException extends Exception implements Serializable{
+	private static final long serialVersionUID = 1L;
+	private Integer numeroPiso;
+	/**
+	 *
+	 */
+	public NumeroFilasNullException() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	/**
+	 * @param numeroPiso
+	 */
+	public NumeroFilasNullException(Integer numeroPiso) {
+		super();
+		this.numeroPiso = numeroPiso;
+	}
+
+	/**
+	 * @return the numeroPiso
+	 */
+	public Integer getNumeroPiso() {
+		return numeroPiso;
+	}
+	/**
+	 * @param numeroPiso the numeroPiso to set
+	 */
+	public void setNumeroPiso(Integer numeroPiso) {
+		this.numeroPiso = numeroPiso;
+	}
+}

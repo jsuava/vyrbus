@@ -19,7 +19,7 @@
 <!--         color:  #EFE9CE; -->
 <!--         } -->
 <!-- </style> -->
-<window id="wndPRogramacionTarifa" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndProgramacionTarifaOld">
+<window id="wndPRogramacionTarifa" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndProgramacionTarifaOld">
 	<tabbox>
 		<tabs>
 			<tab id="tabBusqueda" label="Búsqueda"/>

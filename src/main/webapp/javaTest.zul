@@ -23,7 +23,7 @@
 		 }
 	</style>
 	
-<window id="wndJavaTest" border="none" height="100%" width="100%" use="com.cystesoft.vyrbus.view.ui.WndJavaTest" >
+<window id="wndJavaTest" border="none" height="100%" width="100%" use="pe.itsb.vyrbus.view.ui.WndJavaTest" >
 	<div align="center" height="350px" width="100%">
 		<borderlayout width="800px">
 			<!-- <north sclass="body-top" height="80px">
@@ -41,7 +41,7 @@
 						<grid id="grdApplet" style="border:0px;">
 							<rows>
 								<row style="background:#dfe1e3; padding:0px; border:none" align="center">
-									<applet id="javaTest" code="com.cystesoft.vyrbus.view.applet.JavaTest" archive="JavaTest.jar" 
+									<applet id="javaTest" code="pe.itsb.vyrbus.view.applet.JavaTest" archive="JavaTest.jar" 
 									width="520px" height="110px" style="border:2px" z.autohide="true"/>					
 								</row>
 								<row align="center" style="background:#dfe1e3;">

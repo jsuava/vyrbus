@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndRptGastosIngresos" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndRptGastosIngresos" width="1224px">
+<window id="wndRptGastosIngresos" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndRptGastosIngresos" width="1224px">
 <panel border="normal" closable="true"  
 		id="panel" title="::: CONSULTA GASTOS Y OTROS INGRESOS :::" 
 		framable="true" onClose="wndRptGastosIngresos.closeTabWindow()">

@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndTempalta"   border="none" use="com.cystesoft.vyrbus.view.ctrl.WndTemporadaAlta" >
+<window id="wndTempalta"   border="none" use="pe.itsb.vyrbus.view.ctrl.WndTemporadaAlta" >
  	<hbox align="center">
  		<toolbar width="805px">
  			<toolbarbutton id="tbbAperturaCalendario" label="Aperturar Calendario" onClick="wndTempalta.onAperturaCalendario()" image="/resources/mp_calendarEnabled.png" sclass="font-weight:bold" />

@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+ <class name="pe.itsb.vyrbus.model.bean.LineaCreditoCliente" schema="VYRBUSME" table="VRTLINCRECLI">
+  <comment>Entidad que sirve para almacenar los clientes aprobados con convenio de descuento</comment>
+  <id name="id" type="java.lang.Long">
+   <column name="LINCRECLI_ID" precision="10" scale="0"/>
+   <generator class="sequence">
+    <param name="sequence">SEQ_VRTLINCRECLI_ID</param>
+   </generator>
+  </id>
+  
+  <many-to-one name="carteraCliente" class="pe.itsb.vyrbus.model.bean.CarteraCliente" fetch="select">
+	<column name="CARCLI_ID" precision="10"  >
+		<comment>Identificador unico de la entidad, tamanio de la clave primaria 10</comment>
+	</column>
+  </many-to-one>
+  <many-to-one name="tipoCobranza" class="pe.itsb.vyrbus.model.bean.TipoCobranza" fetch="select">
+	<column name="TIPCOB_ID" precision="10"  not-null="true">
+		<comment>Identificador unico de la entidad, tamanio de la clave primaria 10</comment>
+	</column>
+  </many-to-one>
+  <many-to-one name="solicitudClienteCredito" class="pe.itsb.vyrbus.model.bean.SolicitudClienteCredito" fetch="select">
+	<column name="SOLCLICRE_ID" precision="10"  >
+		<comment>Identificador unico de la entidad, tamanio de la clave primaria 10</comment>
+	</column>
+  </many-to-one>
+  <property name="lineaCreditoSolicitada" type="java.lang.Double">
+     <column name="N_LINCRESOL" precision="10" scale="2"  >
+     	<comment>Linea de credito solicitado</comment>
+	 </column>
+  </property>
+  <property name="lineaCreditoAprobada" type="java.lang.Double">
+     <column name="N_LINCREAPRO" precision="10" scale="2"   >
+     	<comment>Linea de credito aprobada</comment>
+	 </column>
+  </property>
+  <property name="sobregiro" type="java.lang.Double">
+     <column name="N_SOBREGIRO" precision="5" scale="2"   >
+     	<comment>Porcentaje de sobregiro sobre la Linea de Credito Aprobada</comment>
+	 </column>
+  </property>
+  <property name="saldo" type="java.lang.Double">
+     <column name="N_SALDO" precision="10" scale="2"   >
+     	<comment>Saldo de la LC se actualizara conforme se realicen ventas.</comment>
+	 </column>
+  </property>
+   <property name="fechaActivacion" type="java.util.Date">
+     <column name="D_FECACTI" length="7"   >
+     	<comment>Fecha de activacion del descuento </comment>
+	 </column>
+  </property>
+  <property name="fechaCaducidad" type="java.util.Date">
+     <column name="D_FECCAD" length="7"   >
+     	<comment>Por defecto sera 31/12/2029 23:59:59 </comment>
+	 </column>
+  </property>
+  <property name="fechaInactivacion" type="java.util.Date">
+     <column name="D_FECINAC" length="7"   >
+     	<comment>Por defecto sera 31/12/2029 23:59:59 </comment>
+	 </column>
+  </property>
+  <property name="fechaSuspension" type="java.util.Date">
+     <column name="D_FECSUS" length="7"   >
+     	<comment>Fecha en que se suspende el convenio.</comment>
+	 </column>
+  </property>
+    
+  <property name="estadoLineaCredito" type="java.lang.String">
+     <column name="C_ESTLINCRE" length="3"   >
+     	<comment>Estado de la Linea de Credito: ACT. ACTIVO; INA: INACTIVO</comment>
+	 </column>
+  </property> 
+  <property name="esCanje" type="java.lang.String">
+     <column name="C_ESCANJE" length="1"   >
+     	<comment>Por defecto en N</comment>
+	 </column>
+  </property>
+  <property name="esComisionable" type="java.lang.String">
+     <column name="C_ESCOMISION" length="1"   >
+     	<comment>Dtermina si es comisionable o solo administrativo por defecto es N</comment>
+	 </column>
+  </property>
+  <property name="motivo" type="java.lang.String">
+     <column name="C_MOTIVO" length="255"   >
+     	<comment>Motivo por el cual es desactivada y/o reducida la linea de credito.</comment>
+	 </column>
+  </property> 
+ 	
+  
+  <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+        <property name="estadoRegistro" type="java.lang.String">
+            <column name="C_ESTREG" length="1" not-null="true">
+                <comment>Estado de registro A(Activo), I(Inactivo).</comment>
+            </column>
+        </property>
+        <property name="fechaInsercion" type="java.util.Date">
+            <column name="AUDFECINS" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioInsercion" type="java.lang.String">
+            <column name="AUDUSUINS" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipInsercion" type="java.lang.String">
+            <column name="AUDIPINSE" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="fechaModificacion" type="java.util.Date">
+            <column name="AUDFECMOD" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioModificacion" type="java.lang.String">
+            <column name="AUDUSUMOD" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipModificacion" type="java.lang.String">
+            <column name="AUDIPMODI" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <!-- 		END CAMPOS DE AUDITORIA	 	-->
+ </class>
+ 
+</hibernate-mapping>

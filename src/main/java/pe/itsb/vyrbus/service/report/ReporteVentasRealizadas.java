@@ -1,0 +1,81 @@
+package pe.itsb.vyrbus.service.report;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRField;
+import pe.itsb.vyrbus.model.bean.VentaPasaje;
+import pe.itsb.vyrbus.service.util.Constantes;
+import pe.itsb.vyrbus.service.util.Util;
+
+public class ReporteVentasRealizadas implements JRDataSource {
+	private int index = -1;
+	private List<VentaPasaje> lstTickets=new LinkedList<>();
+
+	public ReporteVentasRealizadas(List<VentaPasaje> lstVentas){
+		lstTickets = lstVentas;
+	}
+
+	@Override
+	public Object getFieldValue(JRField field) throws JRException {
+		Object value = null;
+		if("transaccion".equals(field.getName()))
+			value = lstTickets.get(index).getTipoMovimiento().getDenominacion();
+		else if("control".equals(field.getName()))
+			value = lstTickets.get(index).getNumeroControl();
+		else if("boleto".equals(field.getName()))
+//			value = lstTickets.get(index).getNumeroBoleto();
+			value = lstTickets.get(index).getNumeroBoletoAnterior();
+		else if("bol.ref".equals(field.getName()))
+//			value = lstTickets.get(index).getNumeroBoletoAnterior();
+			value = lstTickets.get(index).getNumeroBoleto();
+		else if("bruto".equals(field.getName())){
+			if(lstTickets.get(index).getTipoMoneda()!=null && lstTickets.get(index).getTipoMoneda().getId().intValue()!=Constantes.ID_TIPMON_SOLES)
+				value = (lstTickets.get(index).getTarifaEquibalente()!=null?Util.parseNumberFormat(lstTickets.get(index).getTarifaEquibalente().toString(), 2):.00);
+			else
+				value = Util.parseNumberFormat(lstTickets.get(index).getTarifa().toString(), 2);
+		}else if("descuento".equals(field.getName())){
+			if(lstTickets.get(index).getTipoMoneda()!=null && lstTickets.get(index).getTipoMoneda().getId().intValue()!=Constantes.ID_TIPMON_SOLES)
+				value = (lstTickets.get(index).getDescuentoEquibalente()!=null?Util.parseNumberFormat(lstTickets.get(index).getDescuentoEquibalente().toString(), 2):0.00);
+			else
+				value = Util.parseNumberFormat(lstTickets.get(index).getDescuento().toString(), 2);
+		}else if("neto".equals(field.getName())){
+			if(lstTickets.get(index).getTipoMoneda()!=null && lstTickets.get(index).getTipoMoneda().getId().intValue()!=Constantes.ID_TIPMON_SOLES)
+				value = (lstTickets.get(index).getImportePagadoEquibalente()!=null?Util.parseNumberFormat(lstTickets.get(index).getImportePagadoEquibalente().toString(), 2):0.00);
+			else
+				value = Util.parseNumberFormat(lstTickets.get(index).getImportePagado().toString(), 2);
+		}else if("tarjeta".equals(field.getName()))
+			value = lstTickets.get(index).getFormaPago().getDenominacion();
+		else if("usuario".equals(field.getName()))
+			value = lstTickets.get(index).getAgencia().getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_CORPORATIVO?lstTickets.get(index).getUsuario().getLogin():lstTickets.get(index).getUsuario().toString().toUpperCase();
+		else if("fecVenta".equals(field.getName()))
+			value = Util.DatetoString(lstTickets.get(index).getFechaInsercion(), Constantes.DATE_FORMAT);
+		else if("ccosto".equals(field.getName()))
+			value = lstTickets.get(index).getCentroCosto().getDenominacion()==null?"":lstTickets.get(index).getCentroCosto().getDenominacion().trim();
+		else if("codccosto".equals(field.getName()))
+			value = lstTickets.get(index).getCentroCosto().getCodigo()==null?"":lstTickets.get(index).getCentroCosto().getCodigo().trim();
+		else if("pasajero".equals(field.getName()))
+			value = lstTickets.get(index).getPasajero().toString();
+		else if ("comision".equals(field.getName()))
+			value=(double)lstTickets.get(index).getAgencia().getConcesionario().getComision()/100;
+//		else if ("lblComision".equals(field.getName()))
+//			value="COMISION "+lstTickets.get(index).getAgencia().getConcesionario().getComision()+"% :";
+		else if ("lblIgv".equals(field.getName()))
+			value="IGV "+(int)Constantes.IGV+"% :";
+		else if ("incluyeIgv".equals(field.getName()))
+			value=lstTickets.get(index).getAgencia().getConcesionario().getIncluyeIgv();
+		else if("tipoComision".equals(field.getName()))
+			value=lstTickets.get(index).getAgencia().getConcesionario().getTipoComision();
+		else if("igv".equals(field.getName()))
+			value=Constantes.IGV;
+		return value;
+	}
+
+	@Override
+	public boolean next() throws JRException {
+		index++;
+		return (index<lstTickets.size());
+	}
+}

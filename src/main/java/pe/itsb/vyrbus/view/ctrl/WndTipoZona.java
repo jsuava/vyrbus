@@ -1,0 +1,294 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	:
+ * Autor		: jM
+ * Fecha		: 30/04/2012
+ */
+package pe.itsb.vyrbus.view.ctrl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zul.Textbox;
+
+import pe.itsb.vyrbus.model.bean.TipoZona;
+import pe.itsb.vyrbus.service.exceptions.CancelaGrabacionException;
+import pe.itsb.vyrbus.service.exceptions.DenominacionDuplicadaException;
+import pe.itsb.vyrbus.service.exceptions.DenominacionNullException;
+import pe.itsb.vyrbus.service.exceptions.NombreCortoDuplicadoException;
+import pe.itsb.vyrbus.service.exceptions.NombreCortoNullException;
+import pe.itsb.vyrbus.service.locator.ServiceLocator;
+import pe.itsb.vyrbus.service.util.Constantes;
+import pe.itsb.vyrbus.service.util.Messages;
+import pe.itsb.vyrbus.service.util.Util;
+import pe.itsb.vyrbus.service.util.UtilData;
+import pe.itsb.vyrbus.view.ui.DlgMessage;
+import pe.itsb.vyrbus.view.ui.WndFiltrarParametros;
+import pe.itsb.vyrbus.view.ui.WndOpcionesMantenimiento;
+
+/**
+ *
+ * @author jM
+ * @since JDK1.6
+ */
+public class WndTipoZona extends WndOpcionesMantenimiento {
+
+	private static final long serialVersionUID = 1998913859947825458L;
+
+	private Textbox txtDenominacion;
+	private Textbox txtNombreCorto;
+
+	private TipoZona oTipoZona=null;
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
+	private List<String> criteriosOrdenar = null;
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.IBase#onCreate()
+	 */
+	@Override
+	public void onCreate() {
+		criteriosOrdenar = new ArrayList<>();
+		criteriosOrdenar.add("denominacion");
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.IBase#initComponents()
+	 */
+	@Override
+	public void initComponents() {
+		txtDenominacion = (Textbox) getFellow("txtDenominacion");
+		txtNombreCorto = (Textbox) getFellow("txtNombreCorto");
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onNew()
+	 */
+	@Override
+	public void onNew() {
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onSearch()
+	 */
+	@Override
+	public void onSearch() {
+		final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
+
+		oWndFiltrar.addParameter("Denominación", String.class);
+		oWndFiltrar.addParameter("Nombre Cordo (o abreviatura)", String.class);
+
+		this.appendChild(oWndFiltrar);
+		oWndFiltrar.setMode("modal");
+		oWndFiltrar.addEventListener(pe.itsb.vyrbus.view.ui.Events.ON_FILTER, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				String denominacion = (String) oWndFiltrar.getParameterValue("Denominación");
+				String abreviatura = (String) oWndFiltrar.getParameterValue("Nombre Cordo (o abreviatura)");
+				String estadoRegistro = Constantes.VALUE_ACTIVO;
+
+				if(denominacion.trim().equals("")){
+					criteriosBusqueda.remove("denominacion");
+				}else{criteriosBusqueda.put("denominacion", "%" + denominacion + "%");}
+
+				if(abreviatura.trim().equals("")){
+					criteriosBusqueda.remove("abreviatura");
+				}else{criteriosBusqueda.put("abreviatura", "%" + abreviatura + "%");}
+
+				criteriosBusqueda.put("estadoRegistro", estadoRegistro);
+				listarRegistros(ServiceLocator.getTipoZonaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
+			}
+		});
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onRefresh(int)
+	 */
+	@Override
+	public void onRefresh(int tab) throws Exception {
+		if (!criteriosBusqueda.isEmpty()) {
+			this.listarRegistros(ServiceLocator.getTipoZonaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onModify()
+	 */
+	@Override
+	public void onModify(int tab) throws Exception {
+		Long id = new Long(0);
+		id = new Long((String) listboxLista.getSelectedItem().getValue());
+		this.mantenimientoRegistro(id);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onCancel(int)
+	 */
+	@Override
+	public void onCancel(int action) throws Exception {
+		switch (action) {
+			case ACTION_NEW:
+				break;
+
+			case ACTION_MODIFY:
+				this.mantenimientoRegistro(new Long(textboxId.getText()));
+				break;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onSave(int)
+	 */
+	@Override
+	public void onSave(int action) throws Exception {
+		try {
+			if (txtDenominacion.getText().trim().equals(""))
+				throw new DenominacionNullException();
+			else if (txtNombreCorto.getText().trim().equals(""))
+				throw new NombreCortoNullException();
+
+			if (action==ACTION_NEW)
+				oTipoZona = new TipoZona();
+
+			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
+			oTipoZona.setId(id);
+			oTipoZona.setDenominacion(txtDenominacion.getText().trim().toUpperCase());
+			oTipoZona.setAbreviatura(txtNombreCorto.getText().trim().toUpperCase());
+			oTipoZona.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+
+			switch (action) {
+				case ACTION_NEW:
+					UtilData.auditarRegistro(oTipoZona, getUsuario(), Executions.getCurrent());
+					ServiceLocator.getTipoZonaManager().guardar(oTipoZona);
+					textboxId.setText(oTipoZona.getId().toString());
+					break;
+
+				case ACTION_MODIFY:
+					UtilData.auditarRegistro(oTipoZona, true, getUsuario(), Executions.getCurrent());
+					ServiceLocator.getTipoZonaManager().actualizar(oTipoZona);
+					break;
+			}
+			/*RECUPERA LA ZONA ACTUALIZADA O NUEVA*/
+			criteriosBusqueda.remove("denominacion");criteriosBusqueda.remove("abreviatura");
+			criteriosBusqueda.put("denominacion", oTipoZona.getDenominacion());
+			criteriosBusqueda.put("abreviatura", oTipoZona.getAbreviatura());
+			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+			listarRegistros(ServiceLocator.getTipoZonaManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
+
+		}catch (DenominacionNullException dnex){
+			DlgMessage.information(Messages.getString("Generales.information.noIngresoDenominacion"),txtDenominacion);
+			throw new CancelaGrabacionException();
+		}catch (NombreCortoNullException ncnex){
+			DlgMessage.information(Messages.getString("Generales.information.noIngresoNombreCorto"),txtNombreCorto);
+			throw new CancelaGrabacionException();
+		}catch (DenominacionDuplicadaException ddex){
+			DlgMessage.information(Messages.getString("Generales.information.denominacionDuplicada"),txtDenominacion);
+			throw new CancelaGrabacionException();
+		}catch (NombreCortoDuplicadoException ncdex){
+			DlgMessage.information(Messages.getString("Generales.information.nombreCortoDuplicado"),txtNombreCorto);
+			throw new CancelaGrabacionException();
+		}catch(Exception ex){
+			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
+			ex.printStackTrace(); throw new CancelaGrabacionException();
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onDelete()
+	 */
+	@Override
+	public void onDelete(int tab) throws Exception {
+		Long id = (long) 0;
+
+		switch (tab) {
+			case TAB_LIST:
+				id = new Long((String) listboxLista.getSelectedItem().getValue());
+				break;
+
+			case TAB_MAINTENANCE:
+				id = new Long(textboxId.getText());
+				break;
+		}
+
+		ServiceLocator.getTipoZonaManager().inactivar(id);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onPrint()
+	 */
+	@Override
+	public void onPrint(int tab) {
+		// TODO Auto-generated method stub
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onExport()
+	 */
+	@Override
+	public void onExport(int tab) {
+		// TODO Auto-generated method stub
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onHelp()
+	 */
+	@Override
+	public void onHelp() {
+		// TODO Auto-generated method stub
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onChangeTab(int)
+	 */
+	@Override
+	public void onChangeTab(int tab) throws Exception {
+		switch (tab) {
+			case TAB_LIST:
+				break;
+
+			case TAB_MAINTENANCE:
+				if (listboxLista.getSelectedIndex() > -1) {
+					this.mantenimientoRegistro(new Long((String) listboxLista.getSelectedItem().getValue()));
+				}
+				break;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onClose()
+	 */
+	@Override
+	public void onClose() {
+		closeTabWindow();
+	}
+
+	private void listarRegistros(ArrayList<TipoZona> lstRegistros) {
+		ArrayList<Object> lstTipoZonas = new ArrayList<>();
+
+		for(int r = 0; r < lstRegistros.size(); r ++) {
+			TipoZona oTipoZona = lstRegistros.get(r);
+			ArrayList<Object> lstFila = new ArrayList<>();
+
+			lstFila.add(oTipoZona.getId());
+			lstFila.add(r + 1);
+			lstFila.add(oTipoZona.getDenominacion());
+			lstFila.add(oTipoZona.getAbreviatura());
+
+			lstTipoZonas.add(lstFila);
+		}
+
+		Util.llenarListbox(listboxLista, lstTipoZonas, true);
+	}
+
+	private void mantenimientoRegistro(Long id) throws Exception {
+		oTipoZona = ServiceLocator.getTipoZonaManager().buscarPorId(id);
+
+		textboxId.setText(oTipoZona.getId().toString());
+		txtDenominacion.setText(oTipoZona.getDenominacion());
+		txtNombreCorto.setText(oTipoZona.getAbreviatura());
+	}
+}

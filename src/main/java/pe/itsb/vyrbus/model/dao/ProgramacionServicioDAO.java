@@ -1,0 +1,97 @@
+package pe.itsb.vyrbus.model.dao;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import pe.itsb.vyrbus.model.bean.ProgramacionServicio;
+
+public interface ProgramacionServicioDAO extends GenericDAO {
+
+	/**
+	 *
+	 * @param itinerario : indentificador del Itinerario.
+	 * @return
+	 * @throws Exception
+	 */
+	public List<ProgramacionServicio> buscarProgramacion(Long itinerario)throws Exception;
+
+	/**
+	 *
+	 * @param criteriosBusqueda
+	 * @param criteriosOrdenar
+	 * @return
+	 */
+	public ArrayList<ProgramacionServicio> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar);
+
+	/**
+	 *
+	 * @param idItinerario
+	 * @param origen
+	 * @param destino
+	 * @param fechaInicio
+	 * @param fechaFinal
+	 * @param Servicio
+	 * @param itinerariosProgramados: true Programados; false No Programados.
+	 * @return
+	 * @throws Exception
+	 */
+	public List<ProgramacionServicio> buscarItinerariosProgramados(Long idItinerario, String origen, String destino, String fechaInicio, String fechaFinal,
+			String Servicio, Boolean itinerariosProgramados)throws Exception;
+
+	/**
+	 * Verifica si el Bus ya fue programado en la fecha indicada
+	 * @param fechaPartida	: Fecha del a consular la programacion del bus.
+	 * @param idBus			: identificador del Bus.
+	 * @param horaPartida 	: Hora de partida
+	 * @return
+	 * @throws Exception
+	 */
+	public List<ProgramacionServicio> validacionBusesProgramados (String fechaPartida,String horaPartida, Integer idBus,Integer idAgeciaPartida) throws Exception;
+
+	/**
+	 * Anula Programación
+	 * @param id  : indentificador de la Programación
+	 * @throws Exception
+	 */
+	public void inactivar(Long id)throws Exception;
+
+	/**
+	 * Actualiza el bus en el itinerario.
+	 * @param idItinerario : identificador del itinerario
+	 * @param idBus		   : identificador del Bus.
+	 * @throws Exception
+	 */
+	public void updateItinerarioBus(Long idItinerario, Long idBus) throws Exception;
+
+
+	/**
+	 * Valida que el piloto, copiloto o tripulante no este asociado a otro servicio en la misma fecha
+	 * @param fecha			: Fecha de la Programación
+	 * @param idPiloto		: Identificador del piloto.
+	 * @param idCopiloto	: Identificador del Cipiloto
+	 * @param idTripulante	: Identificador del Tripulante
+	 * @return
+	 * @throws Exception
+	 */
+	public ProgramacionServicio validaIngresoChoferTripulante(String fecha, Long idPiloto, Long idCopiloto, Long idTripulante,String horaPartida, Integer idAgenciaPartida) throws Exception;
+
+	/**
+	 * Busca programacion para generar la hoja de ruta electronica (HRE)
+	 * @param idAgencia	: Idenificador de la Agencia que va a generar la HRE
+	 * @param fecha		: Fecha a la que corresponde
+	 * @param codigoBus	: Código del bus.
+	 * @param isSalida	: Indica si es Salida o Llegada(True=Salida, False=LLegada)
+	 * @return Lista servicios programados.
+	 * @throws Exception
+	 */
+	public List<ProgramacionServicio>buscarProgracion(Integer idAgencia, String fecha, String codigoBus,Boolean isSalida)throws Exception;
+	/**
+	 * Busca la programacion por su Id
+	 * @param id	: Identificador de la programacion.
+	 * @return
+	 * @throws Exception
+	 */
+	public ProgramacionServicio buscarPorId(Long id)throws Exception;
+
+}

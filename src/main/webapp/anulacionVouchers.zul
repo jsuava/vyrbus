@@ -1,6 +1,6 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndAnulaVouches" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndAnulacionVouchers">
+<window id="wndAnulaVouches" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndAnulacionVouchers">
 	<groupbox>
 		<grid style="border:none">
 			<columns>

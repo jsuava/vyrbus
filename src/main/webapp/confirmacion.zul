@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndConfirmacion" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndConfirmacion" objetoConfirmar="${arg.objetoConfirmar}" style="overflow:auto">
+<window id="wndConfirmacion" border="none" use="pe.itsb.vyrbus.view.ctrl.WndConfirmacion" objetoConfirmar="${arg.objetoConfirmar}" style="overflow:auto">
 	<div id="divConfirmacion" style="overflow:auto">
 		<hlayout>			
 			<vlayout>

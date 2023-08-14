@@ -1,6 +1,6 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndReasignar" title="REASIGNACION DE CARTERAS" border="normal" use="com.cystesoft.vyrbus.view.ctrl.WndReasignarCartera" width="783px">
+<window id="wndReasignar" title="REASIGNACION DE CARTERAS" border="normal" use="pe.itsb.vyrbus.view.ctrl.WndReasignarCartera" width="783px">
 				
 	<hlayout  style="paddingtop:5px" >
 		<groupbox width="360px"  closable="false" mold="3d" >

@@ -1,16 +1,16 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndEmisionHRE" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndEmisonHRE" width="830px" >
+<window id="wndEmisionHRE" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndEmisonHRE" width="830px" >
 <panel id="panel" title="::: EMISION HOJA DE RUTA ELECTRÓNICA (HRE) Y MANIFIESTO ELECTRÓNICO (ME) :::" framable="true" border="normal" closable="true" onClose="wndEmisionHRE.closeTabWindow()">
 	<panelchildren>
 		<hbox align="center">
 			<radiogroup >
 				<hbox> <radio id="rdSalida" label="Salida" style="color:blue;font-weight: bold" 
-							  onCheck='com.cystesoft.vyrbus.service.util.Util.limpiarListbox(lstbxSalidas);lblNorServicios.setValue("0");lblServicioAsociadosHRE.setValue("0");
+							  onCheck='pe.itsb.vyrbus.service.util.Util.limpiarListbox(lstbxSalidas);lblNorServicios.setValue("0");lblServicioAsociadosHRE.setValue("0");
 							  lblServicioFinalizadosHRE.setValue("0");lblManifiestosEmitidos.setValue("0")' />
 				</hbox>
 				<radio id="rdLlegada" label="Llegada" style="color:blue;font-weight: bold" 
-				        onCheck='com.cystesoft.vyrbus.service.util.Util.limpiarListbox(lstbxSalidas);lblNorServicios.setValue("0");lblServicioAsociadosHRE.setValue("0");
+				        onCheck='pe.itsb.vyrbus.service.util.Util.limpiarListbox(lstbxSalidas);lblNorServicios.setValue("0");lblServicioAsociadosHRE.setValue("0");
 							  lblServicioFinalizadosHRE.setValue("0");lblManifiestosEmitidos.setValue("0")'/>
 			</radiogroup> 
 			<div width="65px" align="right">

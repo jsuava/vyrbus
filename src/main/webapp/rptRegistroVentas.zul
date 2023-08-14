@@ -1,6 +1,6 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndRptRegistroVentas" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndRptRegistroVentas">
+<window id="wndRptRegistroVentas" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndRptRegistroVentas">
 	<groupbox mold="3d" closable="false">
 		<caption label="REGISTRO DE VENTAS" style="color: #ffffff;"/>
 		<grid>

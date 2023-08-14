@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndMapa" use="com.cystesoft.vyrbus.view.ctrl.WndMapa" ventaPasaje="${arg.ventaPasaje}" detalleItinerario="${arg.detalleItinerario}" txtAsientoSeleccionado="${arg.txtAsientoSeleccionado}" txtPisoSeleccionado="${arg.txtPisoSeleccionado}" selectAsiento="${arg.selectAsiento}" dblbxTarifa="${arg.dblbxTarifa}">
+<window id="wndMapa" use="pe.itsb.vyrbus.view.ctrl.WndMapa" ventaPasaje="${arg.ventaPasaje}" detalleItinerario="${arg.detalleItinerario}" txtAsientoSeleccionado="${arg.txtAsientoSeleccionado}" txtPisoSeleccionado="${arg.txtPisoSeleccionado}" selectAsiento="${arg.selectAsiento}" dblbxTarifa="${arg.dblbxTarifa}">
 	<div id="divContenedorBus">
 		<hlayout>
 			<vbox id="vbxEstructuraBus"/>

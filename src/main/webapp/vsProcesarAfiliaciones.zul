@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndProAfiliacion" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndVSProcesarAfiliaciones" width="750px">
+<window id="wndProAfiliacion" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndVSProcesarAfiliaciones" width="750px">
 <panel  framable="true"  border="normal" >
 	<panelchildren>
 	<groupbox closable="false" mold="3d">
@@ -14,9 +14,9 @@
 					<row>
 						<hbox align="center">
 							<label value="FECHA INICIO :" />
-							<datebox id="dtbxBusuqedaFechaInico" onChange="lblFechaInicio.setValue(com.cystesoft.vyrbus.service.util.Constantes.FORMAT_DATE.format(dtbxBusuqedaFechaInico.getValue())); dtbxBusuqedaFechafin.setValue(dtbxBusuqedaFechaInico.getValue());lblFechaFin.setValue(com.cystesoft.vyrbus.service.util.Constantes.FORMAT_DATE.format(dtbxBusuqedaFechaInico.getValue()));" readonly="true" format="dd/MM/yyyy" width="120px"/><separator width="20px"/>
+							<datebox id="dtbxBusuqedaFechaInico" onChange="lblFechaInicio.setValue(pe.itsb.vyrbus.service.util.Constantes.FORMAT_DATE.format(dtbxBusuqedaFechaInico.getValue())); dtbxBusuqedaFechafin.setValue(dtbxBusuqedaFechaInico.getValue());lblFechaFin.setValue(pe.itsb.vyrbus.service.util.Constantes.FORMAT_DATE.format(dtbxBusuqedaFechaInico.getValue()));" readonly="true" format="dd/MM/yyyy" width="120px"/><separator width="20px"/>
 							<label value="FECHA FIN :" />
-							<datebox id="dtbxBusuqedaFechafin" onChange="lblFechaFin.setValue(com.cystesoft.vyrbus.service.util.Constantes.FORMAT_DATE.format(dtbxBusuqedaFechafin.getValue()))" readonly="true" format="dd/MM/yyyy" width="120px"/><separator width="10px"/>
+							<datebox id="dtbxBusuqedaFechafin" onChange="lblFechaFin.setValue(pe.itsb.vyrbus.service.util.Constantes.FORMAT_DATE.format(dtbxBusuqedaFechafin.getValue()))" readonly="true" format="dd/MM/yyyy" width="120px"/><separator width="10px"/>
 							<image id="imgBuscar" onClick="wndProAfiliacion.buscarAfiliaciones()" src="/resources/mp_buscarEnabled.png"  tooltiptext="Haga click para realizar la búsqueda" style="cursor:pointer"/>
 						</hbox>
 					</row>

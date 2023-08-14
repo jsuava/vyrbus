@@ -1,0 +1,492 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	:
+ * Autor		: jM
+ * Fecha		: 30/04/2012
+ */
+package pe.itsb.vyrbus.view.ctrl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.TreeMap;
+
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Button;
+import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Doublebox;
+import org.zkoss.zul.Image;
+import org.zkoss.zul.Intbox;
+import org.zkoss.zul.Textbox;
+
+import pe.itsb.vyrbus.model.bean.Agencia;
+import pe.itsb.vyrbus.model.bean.Cliente;
+import pe.itsb.vyrbus.model.bean.Ubigeo;
+import pe.itsb.vyrbus.service.exceptions.AgenciaNullException;
+import pe.itsb.vyrbus.service.exceptions.CancelaGrabacionException;
+import pe.itsb.vyrbus.service.exceptions.CantidadTrabajadoresNullException;
+import pe.itsb.vyrbus.service.exceptions.MailIncorectoException;
+import pe.itsb.vyrbus.service.exceptions.NumeroDocumentoIncorrectoException;
+import pe.itsb.vyrbus.service.exceptions.NumeroDocumentoNullException;
+import pe.itsb.vyrbus.service.exceptions.RazonSocialDuplicadoException;
+import pe.itsb.vyrbus.service.exceptions.RazonSocialNullException;
+import pe.itsb.vyrbus.service.exceptions.RucDuplicadoException;
+import pe.itsb.vyrbus.service.exceptions.UbigeoNullException;
+import pe.itsb.vyrbus.service.locator.ServiceLocator;
+import pe.itsb.vyrbus.service.util.Constantes;
+import pe.itsb.vyrbus.service.util.Messages;
+import pe.itsb.vyrbus.service.util.RESTCiva;
+import pe.itsb.vyrbus.service.util.Util;
+import pe.itsb.vyrbus.service.util.UtilData;
+import pe.itsb.vyrbus.view.ui.DlgMessage;
+import pe.itsb.vyrbus.view.ui.WndFiltrarParametros;
+import pe.itsb.vyrbus.view.ui.WndOpcionesMantenimiento;
+
+/**
+ *
+ * @author jM
+ * @since JDK1.6
+ */
+public class WndCliente extends WndOpcionesMantenimiento {
+
+	private static final long serialVersionUID = 1998913859947825458L;
+
+	private Textbox txtRazonSocial;
+	private Textbox txtNumeroDocumento;
+	private Textbox txtDireccion;
+	private Textbox txtIdUbigeo;
+	private Textbox txtUbicacionGeografica;
+	private Button btnUbicacionGeografica;
+	private Textbox txtContacto;
+	private Textbox txtTelefono;
+	private Textbox txtTelefono2;
+	private Textbox txtCorreoElectronico;
+	private Doublebox dbNumeroKilometros;
+	private Combobox cmbAgencia;
+	private Textbox txtRubro;
+	private Intbox ibxCantidadTrabajadores;
+	private Image imgBuscarClienteSunat;
+
+	private Cliente oCliente = null;
+	private String imgEnabledBusq="resources/mp_buscarEnabled.png";
+
+	private TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
+	private List<String> criteriosOrdenar = null;
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.IBase#onCreate()
+	 */
+	@Override
+	public void onCreate() throws Exception {
+		UtilData.enlazarUbigeo(txtIdUbigeo, txtUbicacionGeografica, btnUbicacionGeografica,null);
+		criteriosOrdenar = new ArrayList<>();
+		criteriosOrdenar.add("razonSocial");
+		UtilData.cargarDataCombo(cmbAgencia, Agencia.class, false);
+
+		dbNumeroKilometros.setLocale(Locale.US);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.IBase#initComponents()
+	 */
+	@Override
+	public void initComponents() {
+		txtRazonSocial = (Textbox) getFellow("txtRazonSocial");
+		txtNumeroDocumento = (Textbox) getFellow("txtNumeroDocumento");
+		txtDireccion = (Textbox) getFellow("txtDireccion");
+		txtIdUbigeo = (Textbox) getFellow("txtIdUbigeo");
+		txtUbicacionGeografica = (Textbox) getFellow("txtUbicacionGeografica");
+		btnUbicacionGeografica = (Button) getFellow("btnUbicacionGeografica");
+		txtContacto = (Textbox) getFellow("txtContacto");
+		txtTelefono = (Textbox) getFellow("txtTelefono");
+		txtTelefono2 = (Textbox) getFellow("txtTelefono2");
+		txtCorreoElectronico = (Textbox) getFellow("txtCorreoElectronico");
+		dbNumeroKilometros = (Doublebox) getFellow("dbNumeroKilometros");
+		cmbAgencia = (Combobox) this.getFellow("cmbAgencia");
+		txtRubro=(Textbox)this.getFellow("txtRubro");
+		ibxCantidadTrabajadores=(Intbox)this.getFellow("ibxCantidadTrabajadores");
+		imgBuscarClienteSunat=(Image)this.getFellow("imgBuscarClienteSunat");
+
+		imgBuscarClienteSunat.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event e) throws Exception{
+				if(imgBuscarClienteSunat.getSrc().equals(imgEnabledBusq))
+					onBuscarCienteSunat();
+				}
+		});
+
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.IOpcionesMantenimiento#onNew()
+	 */
+	@Override
+	public void onNew() {
+		Util.seleccionarValorItemCombo(Agencia.class, cmbAgencia, getAgencia().getId());
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.IOpcionesMantenimiento#onSearch()
+	 */
+	@Override
+	public void onSearch() {
+		final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
+
+		oWndFiltrar.addParameter("1. Razón Social", String.class);
+		oWndFiltrar.addParameter("2. Nº de Ruc", String.class);
+		oWndFiltrar.addParameter("3. Nombre del Contacto", String.class);
+
+		this.appendChild(oWndFiltrar);
+		oWndFiltrar.setMode("modal");
+		oWndFiltrar.addEventListener(pe.itsb.vyrbus.view.ui.Events.ON_FILTER, new EventListener<Event>() {
+
+			@Override
+			public void onEvent(Event event) throws Exception {
+				String razonSocial = (String) oWndFiltrar.getParameterValue("1. Razón Social");
+				String nRuc = (String) oWndFiltrar.getParameterValue("2. Nº de Ruc");
+				String contacto = (String) oWndFiltrar.getParameterValue("3. Nombre del Contacto");
+				String estadoRegistro = Constantes.VALUE_ACTIVO;
+
+				if (razonSocial.trim().equals("")) {
+					criteriosBusqueda.remove("razonSocial");
+				}else {criteriosBusqueda.put("razonSocial", "%" + razonSocial + "%");}
+
+				if (nRuc.trim().equals("")) {
+					criteriosBusqueda.remove("numeroDocumento");
+				}else {criteriosBusqueda.put("numeroDocumento", "%" + nRuc + "%");}
+
+				if (contacto.trim().equals("")) {
+					criteriosBusqueda.remove("contacto");
+				}else {criteriosBusqueda.put("contacto", "%" + contacto + "%");}
+
+				criteriosBusqueda.put("estadoRegistro", estadoRegistro);
+
+				listarRegistros(ServiceLocator.getClienteManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
+			}
+		});
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onRefresh(int)
+	 */
+	@Override
+	public void onRefresh(int tab) throws Exception {
+		if (!criteriosBusqueda.isEmpty()) {
+			this.listarRegistros(ServiceLocator.getClienteManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.IOpcionesMantenimiento#onModify()
+	 */
+	@Override
+	public void onModify(int tab) throws Exception {
+		Long id = new Long(0);
+		id = new Long((String) listboxLista.getSelectedItem().getValue());
+		this.mantenimientoRegistro(id);
+
+		/*Aplica acceso a los siguientes controles */
+		List<Component>lstComponents=new ArrayList<>();
+		lstComponents.add(txtNumeroDocumento);
+		lstComponents.add(txtRazonSocial);
+		accesoControlsRolSuperUsuario(lstComponents);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.IOpcionesMantenimiento#onCancel(int)
+	 */
+	@Override
+	public void onCancel(int action) throws Exception {
+		switch (action) {
+			case ACTION_NEW:
+				break;
+
+			case ACTION_MODIFY:
+				this.mantenimientoRegistro(new Long(textboxId.getText()));
+				break;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.IOpcionesMantenimiento#onSave(int)
+	 */
+	@Override
+	public void onSave(int action) throws Exception {
+		try {
+			if (txtNumeroDocumento.getText().trim().equals(""))
+				throw new NumeroDocumentoNullException();
+			else if (!(Util.validarRUC(txtNumeroDocumento.getValue().toString().trim())))
+				throw new NumeroDocumentoIncorrectoException();
+			else if (txtRazonSocial.getText().trim().equals(""))
+				throw new RazonSocialNullException();
+			else if (txtUbicacionGeografica.getText().trim().equals(""))
+				throw new UbigeoNullException();
+			else if (!(cmbAgencia.getSelectedItem().getValue() instanceof Agencia))
+				throw new AgenciaNullException();
+			else if (ibxCantidadTrabajadores.getText().trim().isEmpty() || ibxCantidadTrabajadores.getValue().intValue()<=0)
+				throw new CantidadTrabajadoresNullException();
+			else if (!(txtCorreoElectronico.getText().trim().isEmpty())){
+				if (!UtilData.validateEmail(txtCorreoElectronico.getText().trim()))
+					throw new MailIncorectoException();
+			}else if (txtRazonSocial.getText().trim().length()<=5){
+					DlgMessage.information(Messages.getString("WndVentaReserva.information.razonSocialIncorrect"), txtRazonSocial);
+					return;
+			}else if (txtDireccion.getText().trim().isEmpty()){
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noDireccionCliente"), txtDireccion);
+				return;
+			}else if (txtDireccion.getText().trim().length()<10){
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.direccionIncorrect"), txtDireccion);
+				return;
+			}
+
+			/*Validando que los datos del cliente no incluyan comillas simples - jabanto */
+			if(txtRazonSocial.getText().trim().indexOf("'")>=0){
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noComillaSimple")+", revice la Razón Social del Cliente.",txtRazonSocial);
+				return;
+			}else if(txtDireccion.getText().trim().indexOf("'")>=0){
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noComillaSimple")+", revice la Dirección del Cliente.",txtDireccion);
+				return;
+			}
+
+			if (action==ACTION_NEW)
+				oCliente = new Cliente();
+
+			Long id = (textboxId.getText().equals("") ? 0 : new Long(textboxId.getText()));
+			Ubigeo oUbigeo = new Ubigeo();
+			Agencia oAgencia = new Agencia();
+
+			oUbigeo.setId(txtIdUbigeo.getText());
+			oAgencia.setId(((Agencia) cmbAgencia.getSelectedItem().getValue()).getId());
+			oAgencia.setDenominacion(((Agencia) cmbAgencia.getSelectedItem().getValue()).getDenominacion());
+
+			oCliente.setId(id);
+			oCliente.setRazonSocial(txtRazonSocial.getText().trim().toUpperCase());
+			oCliente.setNumeroDocumento(txtNumeroDocumento.getText());
+			oCliente.setDireccion(txtDireccion.getText().trim().toUpperCase());
+			oCliente.setUbigeo(oUbigeo);
+			oCliente.setContacto(txtContacto.getText().trim().toUpperCase());
+			oCliente.setTelefonoFijo(txtTelefono.getText());
+			oCliente.setTelefonoFijo2(txtTelefono2.getText());
+			oCliente.setEmail(txtCorreoElectronico.getText());
+			oCliente.setKilometros(dbNumeroKilometros.getText().equals("") ? 0: new Double(dbNumeroKilometros.getValue()));
+			oCliente.setAgencia(oAgencia);
+			oCliente.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+			oCliente.setRubro(txtRubro.getText().trim().toUpperCase());
+			oCliente.setCantidadTrabajadores(ibxCantidadTrabajadores.getValue());
+
+			switch (action) {
+				case ACTION_NEW:
+					UtilData.auditarRegistro(oCliente,getUsuario(), Executions.getCurrent());
+					ServiceLocator.getClienteManager().guardar(oCliente);
+					textboxId.setText((new Long(oCliente.getId()).toString()));
+					break;
+
+				case ACTION_MODIFY:
+					UtilData.auditarRegistro(oCliente, true, getUsuario(), Executions.getCurrent());
+					ServiceLocator.getClienteManager().actualizar(oCliente);
+					break;
+			}
+
+			/*RECUERA EL REGISTRO ACTUALIZADO O EL NUEVO*/
+			criteriosBusqueda.remove("razonSocial");
+			criteriosBusqueda.remove("numeroDocumento");
+			criteriosBusqueda.remove("contacto");
+			criteriosBusqueda.put("razonSocial", oCliente.getRazonSocial());
+			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+			listarRegistros(ServiceLocator.getClienteManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
+
+
+		}catch (CantidadTrabajadoresNullException ctnex){
+			DlgMessage.information(Messages.getString("WndCliente.information.CantidadTrabajadoresNull"),ibxCantidadTrabajadores);
+			throw new CancelaGrabacionException();
+		}catch (NumeroDocumentoIncorrectoException ndiex){
+			DlgMessage.information(Messages.getString("wndSolicitudCartera.information.incorrecRuc"),txtNumeroDocumento);
+			throw new CancelaGrabacionException();
+		}catch (MailIncorectoException mie){
+			DlgMessage.information(Messages.getString("Generales.information.mailIncorrecto"),txtCorreoElectronico);
+			throw new CancelaGrabacionException();
+		}catch (NumeroDocumentoNullException ndnex){
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noDocumentoCliente"),txtNumeroDocumento);
+			throw new CancelaGrabacionException();
+		}catch (RazonSocialNullException rsnex){
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noRazonSocial"),txtRazonSocial);
+			throw new CancelaGrabacionException();
+		}catch (UbigeoNullException ugnex){
+			DlgMessage.information(Messages.getString("WndAgencia.information.Ubigeo"),btnUbicacionGeografica);
+			throw new CancelaGrabacionException();
+		}catch (RucDuplicadoException rdex){
+			DlgMessage.information(Messages.getString("WndCliente.information.RucDuplicado"),txtNumeroDocumento);
+			throw new CancelaGrabacionException();
+		}catch (RazonSocialDuplicadoException rsdex){
+			DlgMessage.information(Messages.getString("WndCliente.information.RazonSocialDuplicado"),txtRazonSocial);
+			throw new CancelaGrabacionException();
+		}catch (AgenciaNullException anex){
+			DlgMessage.information(Messages.getString("WndCliente.information.NoAgencia"),cmbAgencia);
+			throw new CancelaGrabacionException();
+		}catch (Exception ex){
+			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
+			ex.printStackTrace(); throw new CancelaGrabacionException();
+		}
+
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.IOpcionesMantenimiento#onDelete()
+	 */
+	@Override
+	public void onDelete(int tab) throws Exception {
+		Long id = (long) 0;
+
+		switch (tab) {
+			case TAB_LIST:
+				id = new Long((String) listboxLista.getSelectedItem().getValue());
+				break;
+
+			case TAB_MAINTENANCE:
+				id = new Long(textboxId.getText());
+				break;
+		}
+
+		ServiceLocator.getClienteManager().inactivar(id);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.IOpcionesMantenimiento#onPrint()
+	 */
+	@Override
+	public void onPrint(int tab) {
+		// TODO Auto-generated method stub
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.IOpcionesMantenimiento#onExport()
+	 */
+	@Override
+	public void onExport(int tab) {
+		// TODO Auto-generated method stub
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.IOpcionesMantenimiento#onHelp()
+	 */
+	@Override
+	public void onHelp() {
+		// TODO Auto-generated method stub
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.IOpcionesMantenimiento#onChangeTab(int)
+	 */
+	@Override
+	public void onChangeTab(int tab) throws Exception {
+		switch (tab) {
+			case TAB_LIST:
+				break;
+
+			case TAB_MAINTENANCE:
+				if (listboxLista.getSelectedIndex() > -1) {
+					this.mantenimientoRegistro(new Long((String) listboxLista.getSelectedItem().getValue()));
+				}
+				break;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.window.ui.IOpcionesMantenimiento#onClose()
+	 */
+	@Override
+	public void onClose() {
+		closeTabWindow();
+	}
+
+
+	private void listarRegistros(ArrayList<Cliente> lstRegistros) {
+		ArrayList<Object> lstClientes = new ArrayList<>();
+
+		for(int r = 0; r < lstRegistros.size(); r ++) {
+			Cliente oCliente = lstRegistros.get(r);
+			ArrayList<Object> lstFila = new ArrayList<>();
+
+			lstFila.add(oCliente.getId());
+			lstFila.add(r + 1);
+			lstFila.add(oCliente.getNumeroDocumento());
+			lstFila.add(oCliente.getRazonSocial());
+			lstFila.add(oCliente.getContacto());
+			lstFila.add(oCliente.getTelefonoFijo());
+			lstFila.add(oCliente.getTelefonoFijo2());
+			lstFila.add(oCliente.getEmail());
+			lstFila.add(oCliente.getAgencia().getDenominacion());
+
+			lstClientes.add(lstFila);
+		}
+
+		Util.llenarListbox(listboxLista, lstClientes, true);
+	}
+
+
+	private void mantenimientoRegistro(Long id) throws Exception {
+		oCliente = ServiceLocator.getClienteManager().buscarPorId(id);
+		Ubigeo oUbigeo = oCliente.getUbigeo();
+		Agencia oAgencia = oCliente.getAgencia();
+
+		String idUbigeo = new String();
+		String ubicacionCompleta = new String();
+
+		if (oUbigeo != null) {
+			idUbigeo = oUbigeo.getId();
+			ubicacionCompleta = ServiceLocator.getUbigeoManager().ubicacionGeografica(oUbigeo);
+		}
+		if (oAgencia !=null){
+			Util.seleccionarValorItemCombo(Agencia.class, cmbAgencia, oAgencia.getId());
+		}
+
+		textboxId.setText((new Long(oCliente.getId())).toString());
+		txtRazonSocial.setText(oCliente.getRazonSocial());
+		txtNumeroDocumento.setText(oCliente.getNumeroDocumento());
+		txtDireccion.setText(oCliente.getDireccion());
+		txtIdUbigeo.setText(idUbigeo);
+		txtUbicacionGeografica.setText(ubicacionCompleta);
+		txtContacto.setText(oCliente.getContacto());
+		txtTelefono.setText(oCliente.getTelefonoFijo());
+		txtTelefono2.setText(oCliente.getTelefonoFijo2());
+		txtCorreoElectronico.setText(oCliente.getEmail());
+		dbNumeroKilometros.setValue(oCliente.getKilometros());
+		txtRubro.setText(oCliente.getRubro());
+		ibxCantidadTrabajadores.setText(oCliente.getCantidadTrabajadores().toString());
+	}
+
+	public void onBuscarCienteSunat() throws Exception{
+		if(!txtNumeroDocumento.getText().trim().isEmpty()){
+
+				String nroDocumento=txtNumeroDocumento.getText().trim();
+
+				//Consulta RUC EN sunat
+				List<String> ruc = RESTCiva.getDatosRuc(nroDocumento);
+
+
+				if(ruc!=null){
+//				Reniec reniec = new Reniec();
+					txtNumeroDocumento.setValue(ruc.get(0));
+					txtRazonSocial.setValue(ruc.get(1));
+					txtDireccion.setValue(ruc.get(2));
+
+					Util.setFocus(btnUbicacionGeografica);
+
+				}else{
+					String numeroDocumento=txtNumeroDocumento.getText().trim();
+
+					//onCleanControlsClient();
+
+					//recupera valores ingresado por el usuario
+					txtNumeroDocumento.setText(numeroDocumento);
+				}
+		}
+	}
+
+
+}

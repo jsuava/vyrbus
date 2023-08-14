@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndLiberaBoletoManifiesto" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndLiberaBoletoManifiesto">
+<window id="wndLiberaBoletoManifiesto" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndLiberaBoletoManifiesto">
 	
 	<grid>
 		<columns>

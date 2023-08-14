@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="pe.itsb.vyrbus.model.bean.HistoricoResumenVentas" table="VRHRESVEN" schema="VYRBUSME">
+        <comment>Entidad que almacena el historico para el Reporte General de Ventas</comment>
+        <id name="id" type="java.lang.Long">
+            <column name="VRHRESVEN_ID" precision="10" scale="0" />
+            <generator class="sequence">
+                <param name="sequence">SEQ_VRHRESVEN_ID</param>
+            </generator>
+        </id>
+		<property name="rubro" type="java.lang.Integer">
+            <column name="N_RUBRO" precision="1" scale="0" not-null="true">
+                <comment>Rubro, 1: Pasajeros, 2: Encomiendas</comment>
+            </column>
+        </property>
+        <property name="idCanalVenta" type="java.lang.Integer">
+            <column name="CANVEN_ID" length="2" not-null="true">
+                <comment>ID del canal de venta para el reporte.</comment>
+            </column>
+        </property>
+        <property name="nombreCanal" type="java.lang.String">
+            <column name="C_CANAL" length="25" not-null="true">
+                <comment>Nombre del canal de venta.</comment>
+            </column>
+        </property>
+        <property name="idAgencia" type="java.lang.Integer">
+            <column name="AGENCIA_ID" precision="5" scale="0" not-null="true">
+                <comment>Id de la agencia venta.</comment>
+            </column>
+        </property>
+        <property name="nombreAgencia" type="java.lang.String">
+            <column name="C_AGENCIA" length="60" not-null="true">
+                <comment>Nombre de la agencia venta.</comment>
+            </column>
+        </property>
+        <property name="idTipoComprobante" type="java.lang.Integer">
+            <column name="TIPCOM_ID" precision="2" scale="0" not-null="true">
+                <comment>Id del comprobante de la venta.</comment>
+            </column>
+        </property>
+        <property name="comprobante" type="java.lang.String">
+            <column name="C_COMPROBANTE" length="25" not-null="true">
+                <comment>Nombre del comprobante.</comment>
+            </column>
+        </property>
+        <property name="cantidad" type="java.lang.Integer">
+            <column name="N_CANTIDAD" precision="5" scale="0" not-null="true">
+                <comment>Cantidad de las ventas.</comment>
+            </column>
+        </property>
+        <property name="total" type="java.lang.Double">
+            <column name="N_TOTAL" precision="10" scale="2" not-null="true">
+                <comment>Total de las ventas</comment>
+            </column>
+        </property>
+        <property name="fechaVenta" type="java.util.Date">
+            <column name="D_FECVEN" length="7" not-null="true">
+                <comment>Fecha de la venta</comment>
+            </column>
+        </property>
+        <property name="anio" type="java.lang.String">
+            <column name="C_ANIO" length="4" not-null="true">
+                <comment>Anio de la fecha de venta</comment>
+            </column>
+        </property>
+        <property name="mes" type="java.lang.String">
+            <column name="C_MES" length="2" not-null="true">
+                <comment>Mes d ela fecha de venta</comment>
+            </column>
+        </property>
+        <property name="dia" type="java.lang.String">
+            <column name="C_DIA" length="2" not-null="true">
+                <comment>Día de la fecha de Venta</comment>
+            </column>
+        </property>
+        
+        <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+        <property name="estadoRegistro" type="java.lang.String">
+            <column name="C_ESTREG" length="1" not-null="true">
+                <comment>Estado de registro A(Activo), I(Inactivo).</comment>
+            </column>
+        </property>
+        <property name="fechaInsercion" type="java.util.Date">
+            <column name="AUDFECINS" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioInsercion" type="java.lang.String">
+            <column name="AUDUSUINS" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipInsercion" type="java.lang.String">
+            <column name="AUDIPINSE" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="fechaModificacion" type="java.util.Date">
+            <column name="AUDFECMOD" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioModificacion" type="java.lang.String">
+            <column name="AUDUSUMOD" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipModificacion" type="java.lang.String">
+            <column name="AUDIPMODI" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <!-- 		END CAMPOS DE AUDITORIA	 	-->
+    </class>
+</hibernate-mapping>

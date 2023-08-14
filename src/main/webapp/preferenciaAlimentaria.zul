@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndPreferenciaAlimentaria">
+<window title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndPreferenciaAlimentaria">
 <div id="divLista">
 	<listbox id="listboxLista">
 		<listhead sizable="true">

@@ -1,6 +1,6 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndBus" >
+<window title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndBus" >
 <div 	id="divLista">
 		<listbox id="listboxLista" rows="15">
 			<listhead sizable="true">

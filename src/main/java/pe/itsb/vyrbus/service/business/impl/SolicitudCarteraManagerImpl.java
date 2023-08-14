@@ -1,0 +1,108 @@
+package pe.itsb.vyrbus.service.business.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import pe.itsb.vyrbus.model.bean.SolicitudCartera;
+import pe.itsb.vyrbus.model.bean.UsuarioAprobador;
+import pe.itsb.vyrbus.model.dao.SolicitudCarteraDAO;
+import pe.itsb.vyrbus.service.business.SolicitudCarteraManager;
+
+public class SolicitudCarteraManagerImpl implements SolicitudCarteraManager {
+
+	public SolicitudCarteraDAO solicitudCarteraDAO;
+
+	/**
+	 *
+	 * @param carteraFuncionarioDAO
+	 */
+	public void setSolicitudCarteraDAO(SolicitudCarteraDAO carteraFuncionarioDAO){
+		this.solicitudCarteraDAO=carteraFuncionarioDAO;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public SolicitudCarteraDAO getSolicitudCartera(){
+		return this.solicitudCarteraDAO;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.SolicitudAsignarClienteCarteraFuncionarioManajer#baseHistoricaCliente(java.lang.Long)
+	 */
+	@Override
+	public Double baseHistoricaCliente(Long idCliente) throws Exception {
+		return solicitudCarteraDAO.baseHistoricaCliente(idCliente);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.SolicitudCarteraManajer#buscarPorX(java.util.TreeMap, java.util.List)
+	 */
+	@Override
+	public ArrayList<SolicitudCartera> buscarPorX(TreeMap<String, Object> criteriosBusqueda,List<String> criteriosOrdenar) {
+		return getSolicitudCartera().buscarPorX(criteriosBusqueda, criteriosOrdenar);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.SolicitudCarteraManajer#buscarPorId(java.lang.Long)
+	 */
+	@Override
+	public SolicitudCartera buscarPorId(Long id) {
+		return getSolicitudCartera().buscarPorId(id);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.SolicitudCarteraManajer#guardar(com.tepsa.sisvyr.model.bean.SolicitudCartera)
+	 */
+	@Override
+	@Transactional
+	public void guardar(SolicitudCartera solicitudCartera) throws Exception {
+		getSolicitudCartera().guardar(solicitudCartera);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.SolicitudCarteraManajer#aprobarSolicitud(java.lang.Long, com.tepsa.sisvyr.model.bean.UsuarioAprobador)
+	 */
+	@Override
+	public void aprobarSolicitud(Long idSolicitudCartera,UsuarioAprobador usuarioAprobador) throws Exception {
+		getSolicitudCartera().aprobarSolicitud(idSolicitudCartera, usuarioAprobador);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.SolicitudCarteraManajer#anulaSolicitud(java.lang.Integer, com.tepsa.sisvyr.model.bean.UsuarioAprobador)
+	 */
+	@Override
+	public void anulaSolicitud(Integer idSolicitudCartera,UsuarioAprobador usuarioAprobador) throws Exception {
+		getSolicitudCartera().anulaSolicitud(idSolicitudCartera, usuarioAprobador);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.SolicitudCarteraManajer#actualizar(com.tepsa.sisvyr.model.bean.SolicitudCartera)
+	 */
+	@Override
+	@Transactional
+	public void actualizar(SolicitudCartera solicitudCartera) throws Exception {
+		getSolicitudCartera().actualizar(solicitudCartera);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.SolicitudCarteraManajer#BuscarSolicitudes(java.lang.String, java.lang.String, java.lang.String, java.lang.Long, com.tepsa.sisvyr.model.bean.UsuarioAprobador, java.lang.Boolean)
+	 */
+	@Override
+	public List<SolicitudCartera> BuscarSolicitudes(String fechaInicio,String fechaFin, String estadoSolicitud, Long idFuncionario,UsuarioAprobador usuarioAprobador,Long idCliente, Boolean recu_Historia) {
+		return getSolicitudCartera().BuscarSolicitudes(fechaInicio, fechaFin, estadoSolicitud, idFuncionario, usuarioAprobador,idCliente, recu_Historia);
+	}
+
+}

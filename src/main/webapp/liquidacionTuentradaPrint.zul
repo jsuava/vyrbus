@@ -4,7 +4,7 @@
 		width="640px" 
 		height="590px" 
 		border="normal" 
-		use="com.cystesoft.vyrbus.view.ctrl.WndLiquidacionTuentradaPrint" 
+		use="pe.itsb.vyrbus.view.ctrl.WndLiquidacionTuentradaPrint" 
 		closable="true" 
 		onClose="liquidacionTuentrada.onClose()">
 	<caption label="E-Voucher"/>

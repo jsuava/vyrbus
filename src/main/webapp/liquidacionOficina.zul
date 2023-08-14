@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndLiquidacionOficina" title="LIQUIDACIÓN DE OFICINA" border="normal" width="650px" use="com.cystesoft.vyrbus.view.ctrl.WndLiquidacionOficina">
+<window id="wndLiquidacionOficina" title="LIQUIDACIÓN DE OFICINA" border="normal" width="650px" use="pe.itsb.vyrbus.view.ctrl.WndLiquidacionOficina">
 	<grid>
 		<columns>
 			<column width="60px" align="right"/>

@@ -1,6 +1,6 @@
 <?page title="Programaci�n de Servicios" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:n="client">
-<window id="wndProgramacionServicios" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndProgramacionServicios" >
+<window id="wndProgramacionServicios" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndProgramacionServicios" >
 	<grid width="800px">
 		<columns>
 			<column  width="465px" />
@@ -23,24 +23,24 @@
 								<label value="ITINERARIO :" />
 								<textbox id="textboxId" visible="false"  />
 							</div>
-							<intbox id="ibItinerario"  width="75px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbServicio)"/>
+							<intbox id="ibItinerario"  width="75px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbServicio)"/>
 							
 							<label value="TIPO SERVICIO :" />
-							<combobox id="cmbServicio" width="130px" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbOrigen)" />	
+							<combobox id="cmbServicio" width="130px" readonly="true" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbOrigen)" />	
 							</row>
 							<row>
 								<label value="ORIGEN :" />
-								<combobox id="cmbOrigen" width="140px" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(dbFechaPartida)"/>
+								<combobox id="cmbOrigen" width="140px" readonly="true" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(dbFechaPartida)"/>
 								
 								<label value="FECHA PARTIDA :" />
-								<datebox   id="dbFechaPartida" format="dd/MM/yyyy" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbDestino)"/>
+								<datebox   id="dbFechaPartida" format="dd/MM/yyyy" readonly="true" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbDestino)"/>
 							</row>
 							<row>
 								<label value="DESTINO :" />
-								<combobox id="cmbDestino"  width="140px" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(dbFechaLlegada)"/>
+								<combobox id="cmbDestino"  width="140px" readonly="true" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(dbFechaLlegada)"/>
 								
 								<label value="FECHA LLEGADA:" />
-								<datebox   id="dbFechaLlegada" format="dd/MM/yyyy" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmdBuscar)"/>
+								<datebox   id="dbFechaLlegada" format="dd/MM/yyyy" readonly="true" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmdBuscar)"/>
 							</row>
 						</rows>
 					</grid>	
@@ -139,19 +139,19 @@
 							</row>
 							<row>
 								<label value="PILOTO :" />
-								<combobox id="cmbPiloto" mold="rounded" width="215px"  onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbCopiloto)" />
+								<combobox id="cmbPiloto" mold="rounded" width="215px"  onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbCopiloto)" />
 							</row>
 							<row>
 								<label value="COPILOTO :" />
-								<combobox id="cmbCopiloto" mold="rounded" width="215px"  onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbTripulante)"/>
+								<combobox id="cmbCopiloto" mold="rounded" width="215px"  onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbTripulante)"/>
 							</row>
 							<row>
 								<label value="COPILOTO AUX:" />
-								<combobox id="cmbCopilotoAuxiliar" mold="rounded" width="215px"  onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbTripulante)"/>
+								<combobox id="cmbCopilotoAuxiliar" mold="rounded" width="215px"  onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbTripulante)"/>
 							</row>
 							<row>
 								<label value="TRIPULANTE :" />
-								<combobox id="cmbTripulante" mold="rounded" width="215px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbbus)"/>
+								<combobox id="cmbTripulante" mold="rounded" width="215px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbbus)"/>
 							</row>
 						</rows>
 					</grid>			

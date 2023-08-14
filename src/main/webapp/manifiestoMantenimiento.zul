@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:n="client">
-<window id="wndManifiestoMantenimiento" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndManifiestoMantenimiento">
+<window id="wndManifiestoMantenimiento" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndManifiestoMantenimiento">
 <panel id="panel" title="::: HISTORIAL DE MANIFIESTOS :::" style="font-size:9px !important" framable="true" width="805px" closable="true" onClose="wndManifiestoMantenimiento.closeTabWindow()">
  	<panelchildren>
 <!-- 		<div > -->

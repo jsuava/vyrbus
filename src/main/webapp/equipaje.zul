@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndEquipaje" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndEquipaje" width="680px">
+<window id="wndEquipaje" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndEquipaje" width="680px">
 	<groupbox closable="false" mold="3d">
 		<caption label="INFORMACIÓN BOLETOS" style="color: #ffffff;" />
 		<grid style="border:none">

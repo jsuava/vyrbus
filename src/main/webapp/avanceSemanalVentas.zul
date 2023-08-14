@@ -1,6 +1,6 @@
 <?page title="Avance Semanal de Ventas" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndAvanceSemanalVentas" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndAvanceSemanalVentas" >
+<window id="wndAvanceSemanalVentas" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndAvanceSemanalVentas" >
 	<div>  
 <!-- 	width="658px" -->
 		<grid>

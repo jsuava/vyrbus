@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndRptVtaPromo" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndRptVentaPromocion" width="980px">
+<window id="wndRptVtaPromo" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndRptVentaPromocion" width="980px">
 	<hbox>
 		<vbox>
 			<listbox id="lstVentasPromocion" rows="6" width="555px" multiple="true" checkmark="true">

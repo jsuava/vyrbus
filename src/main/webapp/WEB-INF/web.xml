@@ -133,96 +133,96 @@
 	   <description>Servlet para el e-voucher</description>
 	   <display-name>E-voucher</display-name>
 	   <servlet-name>EticketServlet</servlet-name>
-	   <servlet-class>com.cystesoft.vyrbus.service.servlet.EticketServlet</servlet-class>
+	   <servlet-class>pe.itsb.vyrbus.service.servlet.EticketServlet</servlet-class>
 	</servlet>
 	<servlet>
 	   <description>Servlet para el e-voucher de tu entrada</description>
 	   <display-name>E-voucherTuEntrada</display-name>
 	   <servlet-name>EticketTuEntradaServlet</servlet-name>
-	   <servlet-class>com.cystesoft.vyrbus.service.servlet.EticketTuEntradaServlet</servlet-class>
+	   <servlet-class>pe.itsb.vyrbus.service.servlet.EticketTuEntradaServlet</servlet-class>
 	</servlet>
 	<servlet>
 	   <description>Servlet para la liquidacion de tu entrada</description>
 	   <display-name>LiquidacionTuEntrada</display-name>
 	   <servlet-name>LiquidacionTuEntradaServlet</servlet-name>
-	   <servlet-class>com.cystesoft.vyrbus.service.servlet.LiquidacionTuEntradaServlet</servlet-class>
+	   <servlet-class>pe.itsb.vyrbus.service.servlet.LiquidacionTuEntradaServlet</servlet-class>
 	</servlet>
 	<servlet>
 	   <description>Servlet para las ventas corporativas</description>
 	   <display-name>VentasCorporativas</display-name>
 	   <servlet-name>DetalladoVentasServlet</servlet-name>
-	   <servlet-class>com.cystesoft.vyrbus.service.servlet.DetalladoVentasServlet</servlet-class>
+	   <servlet-class>pe.itsb.vyrbus.service.servlet.DetalladoVentasServlet</servlet-class>
 	</servlet>
 	<servlet>
 	   <description>Servlet para el reporte el historial de manifiestos</description>
 	   <display-name>ReporteManifiesto</display-name>
 	   <servlet-name>ReporteManifiestoServlet</servlet-name>
-	   <servlet-class>com.cystesoft.vyrbus.service.servlet.ReporteManifiestoServlet</servlet-class>
+	   <servlet-class>pe.itsb.vyrbus.service.servlet.ReporteManifiestoServlet</servlet-class>
 	</servlet>
 	
 	<servlet>
 		<description>Servleft para los gastos y otros ingresos en XLS</description>
 		<servlet-name>XlsGastosOtrosIngresos</servlet-name>
-		<servlet-class>com.cystesoft.vyrbus.service.excel.XlsGastosOtrosIngresos</servlet-class>
+		<servlet-class>pe.itsb.vyrbus.service.excel.XlsGastosOtrosIngresos</servlet-class>
 	</servlet>
 	<servlet>
 		<description>Servleft para las anulaciones y postergaciones en XLS</description>
 		<servlet-name>XlsAnulacionesPostergaciones</servlet-name>
-		<servlet-class>com.cystesoft.vyrbus.service.excel.XlsAnulacionesPostergaciones</servlet-class>
+		<servlet-class>pe.itsb.vyrbus.service.excel.XlsAnulacionesPostergaciones</servlet-class>
 	</servlet>
 	<servlet>
 		<description>Servleft para el avance semanal en XLS</description>
 		<servlet-name>XlsAvanceSemanal</servlet-name>
-		<servlet-class>com.cystesoft.vyrbus.service.excel.XlsAvanceSemanal</servlet-class>
+		<servlet-class>pe.itsb.vyrbus.service.excel.XlsAvanceSemanal</servlet-class>
 	</servlet>
 	<servlet>
 		<description>Servleft para el avance semanal por rutas en XLS</description>
 		<servlet-name>XlsAvanceSemanalXRutas</servlet-name>
-		<servlet-class>com.cystesoft.vyrbus.service.excel.XlsAvanceSemanalXRutas</servlet-class>
+		<servlet-class>pe.itsb.vyrbus.service.excel.XlsAvanceSemanalXRutas</servlet-class>
 	</servlet>
 	<servlet>
 	    <description>Servleft para el Estado de Cuenta</description>
 	    <servlet-name>exportEstadosCuenta</servlet-name>
-	    <servlet-class>com.cystesoft.vyrbus.service.excel.XlsEstadosCuenta</servlet-class>
+	    <servlet-class>pe.itsb.vyrbus.service.excel.XlsEstadosCuenta</servlet-class>
 	</servlet>
 	<servlet>
 		<description>Servleft para la liquidacion diaria de ventas</description>
 		<servlet-name>XlsLiquidacionDiariaVentas</servlet-name>
-		<servlet-class>com.cystesoft.vyrbus.service.excel.XlsLiquidacionDiariaVentas</servlet-class>
+		<servlet-class>pe.itsb.vyrbus.service.excel.XlsLiquidacionDiariaVentas</servlet-class>
 	</servlet>
 	<servlet>
 		<description>Servleft para el detallado de la venta de seguros</description>
 		<servlet-name>XlsDetalleVentaSeguros</servlet-name>
-		<servlet-class>com.cystesoft.vyrbus.service.excel.XlsDetalleVentaSeguros</servlet-class>
+		<servlet-class>pe.itsb.vyrbus.service.excel.XlsDetalleVentaSeguros</servlet-class>
 	</servlet>
 	<servlet>
 		<description>Servleft para exportar las ventas por counter</description>
 		<servlet-name>XlsVentasByCounters</servlet-name>
-		<servlet-class>com.cystesoft.vyrbus.service.excel.XlsVentasByCounters</servlet-class>
+		<servlet-class>pe.itsb.vyrbus.service.excel.XlsVentasByCounters</servlet-class>
 	</servlet>
 	<servlet>
 	   <description>Servlet para las Ventas del Pago a Pilotos</description>
 	   <display-name>VentasPagoPilotos</display-name>
 	   <servlet-name>XlsVentasPagoPilotosServlet</servlet-name>
-	   <servlet-class>com.cystesoft.vyrbus.service.excel.XlsVentasPagoPilotos</servlet-class>
+	   <servlet-class>pe.itsb.vyrbus.service.excel.XlsVentasPagoPilotos</servlet-class>
 	</servlet>
 	<servlet>
 	   <description>Servlet para el Registro de Ventas</description>
 	   <display-name>RegistroVentas</display-name>
 	   <servlet-name>XlsRegistroVentasServlet</servlet-name>
-	   <servlet-class>com.cystesoft.vyrbus.service.excel.XlsRegistroVentas</servlet-class>
+	   <servlet-class>pe.itsb.vyrbus.service.excel.XlsRegistroVentas</servlet-class>
 	</servlet>
 	<servlet>
 	   <description>Servlet para la Devolucion del ISC</description>
 	   <display-name>DevolucionIsc</display-name>
 	   <servlet-name>XlsDevolucionIscServlet</servlet-name>
-	   <servlet-class>com.cystesoft.vyrbus.service.excel.XlsDevolucionIsc</servlet-class>
+	   <servlet-class>pe.itsb.vyrbus.service.excel.XlsDevolucionIsc</servlet-class>
 	</servlet>
 	<servlet>
 	   <description>Servlet para el Reporte General de Ventas</description>
 	   <display-name>ReporteGeneralVentas</display-name>
 	   <servlet-name>XlsReporteGeneralVentasServlet</servlet-name>
-	   <servlet-class>com.cystesoft.vyrbus.service.excel.XlsReporteGeneralVentas</servlet-class>
+	   <servlet-class>pe.itsb.vyrbus.service.excel.XlsReporteGeneralVentas</servlet-class>
 	</servlet>
 	
 	<servlet-mapping>

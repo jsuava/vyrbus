@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk  xmlns:n="clien">
-<window id="wndCortesia" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndBeneficiosPaxFree" >
+<window id="wndCortesia" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndBeneficiosPaxFree" >
 	<div id="divLista">
 		<listbox id="listboxLista">
 			<listhead sizable="true">
@@ -137,7 +137,7 @@
 							<bandpopup>
 								<listbox id="lstServicios" 
 										width="260px" 
-										onSelect="wndCortesia.onSelectServicio((com.cystesoft.vyrbus.model.bean.DetalleItinerario)lstServicios.getSelectedItem().getValue())" >
+										onSelect="wndCortesia.onSelectServicio((pe.itsb.vyrbus.model.bean.DetalleItinerario)lstServicios.getSelectedItem().getValue())" >
 									<listhead>
 										<listheader label="SERVICIO" width="180px" style="color: #ffffff;"/>
 										<listheader label="HORA PARTIDA" width="80px" style="color: #ffffff;"/>

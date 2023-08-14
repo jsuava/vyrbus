@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:n="clien">
-<window id="wndOpcionMenu" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndOpcionMenu" >
+<window id="wndOpcionMenu" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndOpcionMenu" >
 	<div id="divLista">
 		<listbox id="listboxLista" rows="16"  onSelect="">
 			<listhead sizable="true">
@@ -37,19 +37,19 @@
 						</div>
 						
 						<label value="MUENU PADRE :"    />
-						<combobox id="cmbOpcionMenuPadre" readonly="true"  width="225px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtDenominacion)"/>
+						<combobox id="cmbOpcionMenuPadre" readonly="true"  width="225px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtDenominacion)"/>
 					</row>
 					<row>
 						<label value="DENOMINACIÓN :" />
-						<textbox id="txtDenominacion" maxlength="30" style="text-transform:none;font-size:12px!important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNombreObjeto)"/>
+						<textbox id="txtDenominacion" maxlength="30" style="text-transform:none;font-size:12px!important" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtNombreObjeto)"/>
 						<label value="NOMBRE OBJETO :" />
-						<textbox id="txtNombreObjeto"   maxlength="30" style="text-transform:none; font-size:12px!important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtUrl)"/>
+						<textbox id="txtNombreObjeto"   maxlength="30" style="text-transform:none; font-size:12px!important" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtUrl)"/>
 					</row>
 					<row>
 						<label value="URL :" />
-						<textbox id="txtUrl"   maxlength="100" style="text-transform:none; font-size:12px!important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(spOrden)" />			
+						<textbox id="txtUrl"   maxlength="100" style="text-transform:none; font-size:12px!important" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(spOrden)" />			
 						<label value="ORDEN OPCIÓN MENU :"    />
-						<spinner  id="spOrden" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(ckbHabilitado)" />					
+						<spinner  id="spOrden" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(ckbHabilitado)" />					
 					</row>
 					<row>
 						<separator></separator>

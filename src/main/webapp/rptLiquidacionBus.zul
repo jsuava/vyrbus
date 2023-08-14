@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndRptLiquidaconBus" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndRptLiquidacionBus">
+<window id="wndRptLiquidaconBus" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndRptLiquidacionBus">
 	<grid>
 		<columns>
 			<column width="110px" align="right" />

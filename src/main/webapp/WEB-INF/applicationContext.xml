@@ -92,535 +92,538 @@
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 	
 	<!-- inject relative DAO and Service beans -->
-	<bean id="agenciaDAO" class="com.cystesoft.vyrbus.model.dao.impl.AgenciaDAOImpl">
+	<bean id="agenciaDAO" class="pe.itsb.vyrbus.model.dao.impl.AgenciaDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="busDAO" class="com.cystesoft.vyrbus.model.dao.impl.BusDAOImpl">
+	<bean id="busDAO" class="pe.itsb.vyrbus.model.dao.impl.BusDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="canalVentaDAO" class="com.cystesoft.vyrbus.model.dao.impl.CanalVentaDAOImpl">
+	<bean id="canalVentaDAO" class="pe.itsb.vyrbus.model.dao.impl.CanalVentaDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="clienteDAO" class="com.cystesoft.vyrbus.model.dao.impl.ClienteDAOImpl">
+	<bean id="clienteDAO" class="pe.itsb.vyrbus.model.dao.impl.ClienteDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="concesionarioDAO" class="com.cystesoft.vyrbus.model.dao.impl.ConcesionarioDAOImpl">
+	<bean id="concesionarioDAO" class="pe.itsb.vyrbus.model.dao.impl.ConcesionarioDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="tipoMovimientoDAO" class="com.cystesoft.vyrbus.model.dao.impl.TipoMovimientoDAOImpl">
+	<bean id="tipoMovimientoDAO" class="pe.itsb.vyrbus.model.dao.impl.TipoMovimientoDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="controlEspecieValoradaDAO" class="com.cystesoft.vyrbus.model.dao.impl.ControlEspecieValoradaDAOImpl">
+	<bean id="controlEspecieValoradaDAO" class="pe.itsb.vyrbus.model.dao.impl.ControlEspecieValoradaDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="descuentoRecargoDAO" class="com.cystesoft.vyrbus.model.dao.impl.DescuentoRecargoDAOImpl">
+	<bean id="descuentoRecargoDAO" class="pe.itsb.vyrbus.model.dao.impl.DescuentoRecargoDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="documentoBusDAO" class="com.cystesoft.vyrbus.model.dao.impl.DocumentoBusDAOImpl">
+	<bean id="documentoBusDAO" class="pe.itsb.vyrbus.model.dao.impl.DocumentoBusDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="especieValoradaDAO" class="com.cystesoft.vyrbus.model.dao.impl.EspecieValoradaDAOImpl">
+	<bean id="especieValoradaDAO" class="pe.itsb.vyrbus.model.dao.impl.EspecieValoradaDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="estadoBusDAO" class="com.cystesoft.vyrbus.model.dao.impl.EstadoBusDAOImpl">
+	<bean id="estadoBusDAO" class="pe.itsb.vyrbus.model.dao.impl.EstadoBusDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="estadoCivilDAO" class="com.cystesoft.vyrbus.model.dao.impl.EstadoCivilDAOImpl">
+	<bean id="estadoCivilDAO" class="pe.itsb.vyrbus.model.dao.impl.EstadoCivilDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="estadoDocumentoBusDAO" class="com.cystesoft.vyrbus.model.dao.impl.EstadoDocumentoBusDAOImpl">
+	<bean id="estadoDocumentoBusDAO" class="pe.itsb.vyrbus.model.dao.impl.EstadoDocumentoBusDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="formaPagoDAO" class="com.cystesoft.vyrbus.model.dao.impl.FormaPagoDAOImpl">
+	<bean id="formaPagoDAO" class="pe.itsb.vyrbus.model.dao.impl.FormaPagoDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="grupoMantenimientoDAO" class="com.cystesoft.vyrbus.model.dao.impl.GrupoMantenimientoDAOImpl">
+	<bean id="grupoMantenimientoDAO" class="pe.itsb.vyrbus.model.dao.impl.GrupoMantenimientoDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="itinerarioAgenciaPartidaDAO" class="com.cystesoft.vyrbus.model.dao.impl.ItinerarioAgenciaPartidaDAOImpl">
+	<bean id="itinerarioAgenciaPartidaDAO" class="pe.itsb.vyrbus.model.dao.impl.ItinerarioAgenciaPartidaDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="itinerarioAgenciaLlegadaDAO" class="com.cystesoft.vyrbus.model.dao.impl.ItinerarioAgenciaLlegadaDAOImpl">
+	<bean id="itinerarioAgenciaLlegadaDAO" class="pe.itsb.vyrbus.model.dao.impl.ItinerarioAgenciaLlegadaDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="itinerarioDAO" class="com.cystesoft.vyrbus.model.dao.impl.ItinerarioDAOImpl">
+	<bean id="itinerarioDAO" class="pe.itsb.vyrbus.model.dao.impl.ItinerarioDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="detalleItinerarioDAO" class="com.cystesoft.vyrbus.model.dao.impl.DetalleItinerarioDAOImpl">
+	<bean id="detalleItinerarioDAO" class="pe.itsb.vyrbus.model.dao.impl.DetalleItinerarioDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="localidadDAO" class="com.cystesoft.vyrbus.model.dao.impl.LocalidadDAOImpl">
+	<bean id="localidadDAO" class="pe.itsb.vyrbus.model.dao.impl.LocalidadDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="mapaBusDAO" class="com.cystesoft.vyrbus.model.dao.impl.MapaBusDAOImpl">
+	<bean id="mapaBusDAO" class="pe.itsb.vyrbus.model.dao.impl.MapaBusDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="nacionalidadDAO" class="com.cystesoft.vyrbus.model.dao.impl.NacionalidadDAOImpl">
+	<bean id="nacionalidadDAO" class="pe.itsb.vyrbus.model.dao.impl.NacionalidadDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="numeroFlotaDAO" class="com.cystesoft.vyrbus.model.dao.impl.NumeroFlotaDAOImpl">
+	<bean id="numeroFlotaDAO" class="pe.itsb.vyrbus.model.dao.impl.NumeroFlotaDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="objetoBusDAO" class="com.cystesoft.vyrbus.model.dao.impl.ObjetoBusDAOImpl">
+	<bean id="objetoBusDAO" class="pe.itsb.vyrbus.model.dao.impl.ObjetoBusDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="operadorTarjetaCreditoDAO" class="com.cystesoft.vyrbus.model.dao.impl.OperadorTarjetaCreditoDAOImpl">
+	<bean id="operadorTarjetaCreditoDAO" class="pe.itsb.vyrbus.model.dao.impl.OperadorTarjetaCreditoDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="pasajeroDAO" class="com.cystesoft.vyrbus.model.dao.impl.PasajeroDAOImpl">
+	<bean id="pasajeroDAO" class="pe.itsb.vyrbus.model.dao.impl.PasajeroDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="pasajeroFrecuenteDAO" class="com.cystesoft.vyrbus.model.dao.impl.PasajeroFrecuenteDAOImpl">
+	<bean id="pasajeroFrecuenteDAO" class="pe.itsb.vyrbus.model.dao.impl.PasajeroFrecuenteDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="personalDAO" class="com.cystesoft.vyrbus.model.dao.impl.PersonalDAOImpl">
+	<bean id="personalDAO" class="pe.itsb.vyrbus.model.dao.impl.PersonalDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="preferenciaAlimentariaDAO" class="com.cystesoft.vyrbus.model.dao.impl.PreferenciaAlimentariaDAOImpl">
+	<bean id="preferenciaAlimentariaDAO" class="pe.itsb.vyrbus.model.dao.impl.PreferenciaAlimentariaDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="rutaDAO" class="com.cystesoft.vyrbus.model.dao.impl.RutaDAOImpl">
+	<bean id="rutaDAO" class="pe.itsb.vyrbus.model.dao.impl.RutaDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="servicioDAO" class="com.cystesoft.vyrbus.model.dao.impl.ServicioDAOImpl">
+	<bean id="servicioDAO" class="pe.itsb.vyrbus.model.dao.impl.ServicioDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="sexoDAO" class="com.cystesoft.vyrbus.model.dao.impl.SexoDAOImpl">
+	<bean id="sexoDAO" class="pe.itsb.vyrbus.model.dao.impl.SexoDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="tarjetaCreditoDAO" class="com.cystesoft.vyrbus.model.dao.impl.TarjetaCreditoDAOImpl">
+	<bean id="tarjetaCreditoDAO" class="pe.itsb.vyrbus.model.dao.impl.TarjetaCreditoDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="tipoAgenciaDAO" class="com.cystesoft.vyrbus.model.dao.impl.TipoAgenciaDAOImpl">
+	<bean id="tipoAgenciaDAO" class="pe.itsb.vyrbus.model.dao.impl.TipoAgenciaDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="tipoComprobanteDAO" class="com.cystesoft.vyrbus.model.dao.impl.TipoComprobanteDAOImpl">
+	<bean id="tipoComprobanteDAO" class="pe.itsb.vyrbus.model.dao.impl.TipoComprobanteDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="tipoDocumentoDAO" class="com.cystesoft.vyrbus.model.dao.impl.TipoDocumentoDAOImpl">
+	<bean id="tipoDocumentoDAO" class="pe.itsb.vyrbus.model.dao.impl.TipoDocumentoDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="tipoFlotaDAO" class="com.cystesoft.vyrbus.model.dao.impl.TipoFlotaDAOImpl">
+	<bean id="tipoFlotaDAO" class="pe.itsb.vyrbus.model.dao.impl.TipoFlotaDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="tipoFormaPagoDAO" class="com.cystesoft.vyrbus.model.dao.impl.TipoFormaPagoDAOImpl">
+	<bean id="tipoFormaPagoDAO" class="pe.itsb.vyrbus.model.dao.impl.TipoFormaPagoDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="tipoItinerarioDAO" class="com.cystesoft.vyrbus.model.dao.impl.TipoItinerarioDAOImpl">
+	<bean id="tipoItinerarioDAO" class="pe.itsb.vyrbus.model.dao.impl.TipoItinerarioDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="tipoPersonalDAO" class="com.cystesoft.vyrbus.model.dao.impl.TipoPersonalDAOImpl">
+	<bean id="tipoPersonalDAO" class="pe.itsb.vyrbus.model.dao.impl.TipoPersonalDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="tipoViaDAO" class="com.cystesoft.vyrbus.model.dao.impl.TipoViaDAOImpl">
+	<bean id="tipoViaDAO" class="pe.itsb.vyrbus.model.dao.impl.TipoViaDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="tipoZonaDAO" class="com.cystesoft.vyrbus.model.dao.impl.TipoZonaDAOImpl">
+	<bean id="tipoZonaDAO" class="pe.itsb.vyrbus.model.dao.impl.TipoZonaDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="ubigeoDAO" class="com.cystesoft.vyrbus.model.dao.impl.UbigeoDAOImpl">
+	<bean id="ubigeoDAO" class="pe.itsb.vyrbus.model.dao.impl.UbigeoDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="usuarioDAO" class="com.cystesoft.vyrbus.model.dao.impl.UsuarioDAOImpl">
+	<bean id="usuarioDAO" class="pe.itsb.vyrbus.model.dao.impl.UsuarioDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="ventaPasajesDAO" class="com.cystesoft.vyrbus.model.dao.impl.VentaPasajesDAOImpl">
+	<bean id="ventaPasajesDAO" class="pe.itsb.vyrbus.model.dao.impl.VentaPasajesDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="ventaPasajesHistorialDAO" class="com.cystesoft.vyrbus.model.dao.impl.VentaPasajesHistorialDAOImpl">
+	<bean id="ventaPasajesHistorialDAO" class="pe.itsb.vyrbus.model.dao.impl.VentaPasajesHistorialDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="historicoResumenVentasDAO" class="com.cystesoft.vyrbus.model.dao.impl.HistoricoResumenVentasDAOImpl">
+	<bean id="historicoResumenVentasDAO" class="pe.itsb.vyrbus.model.dao.impl.HistoricoResumenVentasDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>	
-	<bean id="programacionServicioDAO" class="com.cystesoft.vyrbus.model.dao.impl.ProgramacionServicioDAOImpl">
+	<bean id="programacionServicioDAO" class="pe.itsb.vyrbus.model.dao.impl.ProgramacionServicioDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="usuarioHardwareDAO" class="com.cystesoft.vyrbus.model.dao.impl.UsuarioHardwareDAOImpl">
+	<bean id="usuarioHardwareDAO" class="pe.itsb.vyrbus.model.dao.impl.UsuarioHardwareDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="tipoGastoDAO" class="com.cystesoft.vyrbus.model.dao.impl.TipoGastoDAOImpl">
+	<bean id="tipoGastoDAO" class="pe.itsb.vyrbus.model.dao.impl.TipoGastoDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="cortesiaDAO" class="com.cystesoft.vyrbus.model.dao.impl.CortesiaDAOImpl">
+	<bean id="cortesiaDAO" class="pe.itsb.vyrbus.model.dao.impl.CortesiaDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="motivocortesiaDAO" class="com.cystesoft.vyrbus.model.dao.impl.MotivocortesiaDAOImpl">
+	<bean id="motivocortesiaDAO" class="pe.itsb.vyrbus.model.dao.impl.MotivocortesiaDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="manifiestoDAO" class="com.cystesoft.vyrbus.model.dao.impl.ManisfiestoDAOImpl">
+	<bean id="manifiestoDAO" class="pe.itsb.vyrbus.model.dao.impl.ManisfiestoDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="tmpOcupacionAsientosDAO" class="com.cystesoft.vyrbus.model.dao.impl.TmpOcupacionAsientosDAOImpl">
+	<bean id="tmpOcupacionAsientosDAO" class="pe.itsb.vyrbus.model.dao.impl.TmpOcupacionAsientosDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="rolDAO" class="com.cystesoft.vyrbus.model.dao.impl.RolDAOImpl">
+	<bean id="rolDAO" class="pe.itsb.vyrbus.model.dao.impl.RolDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="UsuarioRolDAO" class="com.cystesoft.vyrbus.model.dao.impl.UsuarioRolDAOImpl">
+	<bean id="UsuarioRolDAO" class="pe.itsb.vyrbus.model.dao.impl.UsuarioRolDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="opcionMenuDAO" class="com.cystesoft.vyrbus.model.dao.impl.OpcionMenuDAOImpl">
+	<bean id="opcionMenuDAO" class="pe.itsb.vyrbus.model.dao.impl.OpcionMenuDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="rolOpcionMenuDAO" class="com.cystesoft.vyrbus.service.business.impl.RolOpcionMenuDAOImpl">
+	<bean id="rolOpcionMenuDAO" class="pe.itsb.vyrbus.service.business.impl.RolOpcionMenuDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="gastoDAO" class="com.cystesoft.vyrbus.model.dao.impl.GastoDAOImpl">
+	<bean id="gastoDAO" class="pe.itsb.vyrbus.model.dao.impl.GastoDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="liquidacionBusDAO" class="com.cystesoft.vyrbus.model.dao.impl.LiquidacionBusDAOImpl">
+	<bean id="liquidacionBusDAO" class="pe.itsb.vyrbus.model.dao.impl.LiquidacionBusDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="gastoBusDAO" class="com.cystesoft.vyrbus.model.dao.impl.GastoBusDAOImpl">
+	<bean id="gastoBusDAO" class="pe.itsb.vyrbus.model.dao.impl.GastoBusDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="liquidacionDAO" class="com.cystesoft.vyrbus.model.dao.impl.LiquidacionDAOImpl">
+	<bean id="liquidacionDAO" class="pe.itsb.vyrbus.model.dao.impl.LiquidacionDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="detalleLiquidacionDAO" class="com.cystesoft.vyrbus.model.dao.impl.DetalleLiquidacionDAOImpl">
+	<bean id="detalleLiquidacionDAO" class="pe.itsb.vyrbus.model.dao.impl.DetalleLiquidacionDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="liquidacionOficinaDAO" class="com.cystesoft.vyrbus.model.dao.impl.LiquidacionOficinaDAOImpl">
+	<bean id="liquidacionOficinaDAO" class="pe.itsb.vyrbus.model.dao.impl.LiquidacionOficinaDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="transbordoDAO" class="com.cystesoft.vyrbus.model.dao.impl.TransbordoDAOImpl">
+	<bean id="transbordoDAO" class="pe.itsb.vyrbus.model.dao.impl.TransbordoDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="reportesDAO" class="com.cystesoft.vyrbus.model.dao.impl.ReportesDAOImpl">
+	<bean id="reportesDAO" class="pe.itsb.vyrbus.model.dao.impl.ReportesDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="autorizadorCortesiaDAO" class="com.cystesoft.vyrbus.model.dao.impl.AutorizadorCortesiaDAOImpl">
+	<bean id="autorizadorCortesiaDAO" class="pe.itsb.vyrbus.model.dao.impl.AutorizadorCortesiaDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="solicitudCarteraDAO" class="com.cystesoft.vyrbus.model.dao.impl.SolicitudCarteraDAOImpl">
+	<bean id="solicitudCarteraDAO" class="pe.itsb.vyrbus.model.dao.impl.SolicitudCarteraDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="solicitudClienteCreditoDAO" class="com.cystesoft.vyrbus.model.dao.impl.SolicitudClienteCreditoDAOImpl">
+	<bean id="solicitudClienteCreditoDAO" class="pe.itsb.vyrbus.model.dao.impl.SolicitudClienteCreditoDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="tipoCobranzaDAO" class="com.cystesoft.vyrbus.model.dao.impl.TipoCobranzaDAOImpl">
+	<bean id="tipoCobranzaDAO" class="pe.itsb.vyrbus.model.dao.impl.TipoCobranzaDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="carteraClienteDAO" class="com.cystesoft.vyrbus.model.dao.impl.CarteraClienteDAOImpl">
+	<bean id="carteraClienteDAO" class="pe.itsb.vyrbus.model.dao.impl.CarteraClienteDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="usuarioArobadorDAO" class="com.cystesoft.vyrbus.model.dao.impl.UsuarioAprobadorDAOImpl">
+	<bean id="usuarioArobadorDAO" class="pe.itsb.vyrbus.model.dao.impl.UsuarioAprobadorDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="lineaContadoClienteDAO" class="com.cystesoft.vyrbus.model.dao.impl.LineaContadoClienteDAOImpl">
+	<bean id="lineaContadoClienteDAO" class="pe.itsb.vyrbus.model.dao.impl.LineaContadoClienteDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="lineaCreditoClienteDAO" class="com.cystesoft.vyrbus.model.dao.impl.LineaCreditoClienteDAOImpl">
+	<bean id="lineaCreditoClienteDAO" class="pe.itsb.vyrbus.model.dao.impl.LineaCreditoClienteDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="motivoTemporadaAltaDAO" class="com.cystesoft.vyrbus.model.dao.impl.MotivoTemporadaAltaDAOImpl">
+	<bean id="motivoTemporadaAltaDAO" class="pe.itsb.vyrbus.model.dao.impl.MotivoTemporadaAltaDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="temporadaAltaDAO" class="com.cystesoft.vyrbus.model.dao.impl.TemporadaAltaDAOImpl">
+	<bean id="temporadaAltaDAO" class="pe.itsb.vyrbus.model.dao.impl.TemporadaAltaDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 <!-- 	<bean id="detalleManifiestoDA" class="com.tepsa.sisvyr.model.dao.impl.DetalleManifiestoDAOImpl"> -->
 <!-- 		<property name="sessionFactory" ref="sessionFactory"/> -->
 <!-- 	</bean> -->
 
-	<bean id="promocionDAO" class="com.cystesoft.vyrbus.model.dao.impl.PromocionDAOImpl">
+	<bean id="promocionDAO" class="pe.itsb.vyrbus.model.dao.impl.PromocionDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="puntosPasajeroFrecuenteDAO" class="com.cystesoft.vyrbus.model.dao.impl.PuntosPasajeroFrecuenteDAOImpl">
+	<bean id="puntosPasajeroFrecuenteDAO" class="pe.itsb.vyrbus.model.dao.impl.PuntosPasajeroFrecuenteDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="parametrosDAO" class="com.cystesoft.vyrbus.model.dao.impl.ParametrosDAOImpl">
+	<bean id="parametrosDAO" class="pe.itsb.vyrbus.model.dao.impl.ParametrosDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-  	<bean id="historicoMembresiaDAO" class="com.cystesoft.vyrbus.model.dao.impl.HistoricoMembresiaDAOImpl">
+  	<bean id="historicoMembresiaDAO" class="pe.itsb.vyrbus.model.dao.impl.HistoricoMembresiaDAOImpl">
   		<property name="sessionFactory" ref="sessionFactory" />
   	</bean>
-	<bean id="ocupacionAsientosDesbloqueadosDAO" class="com.cystesoft.vyrbus.model.dao.impl.OcupacionAsientosDesbloqueadosDAOImpl">
+	<bean id="ocupacionAsientosDesbloqueadosDAO" class="pe.itsb.vyrbus.model.dao.impl.OcupacionAsientosDesbloqueadosDAOImpl">
   		<property name="sessionFactory" ref="sessionFactory" />
   	</bean>
-  	<bean id="reniecDAO" class="com.cystesoft.vyrbus.model.dao.impl.ReniecDAOImpl">
+  	<bean id="reniecDAO" class="pe.itsb.vyrbus.model.dao.impl.ReniecDAOImpl">
   		<property name="sessionFactory" ref="sessionFactory" />
   	</bean>
-  	<bean id="historicoControlEspecieValoradaDAO" class="com.cystesoft.vyrbus.model.dao.impl.HistoricoControlEspecieValoradaDAOImpl">
+  	<bean id="historicoControlEspecieValoradaDAO" class="pe.itsb.vyrbus.model.dao.impl.HistoricoControlEspecieValoradaDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="centroCostoDAO" class="com.cystesoft.vyrbus.model.dao.impl.CentroCostoDAOImpl">
+   	<bean id="centroCostoDAO" class="pe.itsb.vyrbus.model.dao.impl.CentroCostoDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="terminosVentaDAO" class="com.cystesoft.vyrbus.model.dao.impl.TerminosVentaDAOImpl">
+   	<bean id="terminosVentaDAO" class="pe.itsb.vyrbus.model.dao.impl.TerminosVentaDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-	<bean id="detalleManifiestoDAO" class="com.cystesoft.vyrbus.model.dao.impl.DetalleManifiestoDAOImpl">
+	<bean id="detalleManifiestoDAO" class="pe.itsb.vyrbus.model.dao.impl.DetalleManifiestoDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>	
-	<bean id="serieEspecieValoradaDAO" class="com.cystesoft.vyrbus.model.dao.impl.SerieEspecieValoradaDAOImpl">
+	<bean id="serieEspecieValoradaDAO" class="pe.itsb.vyrbus.model.dao.impl.SerieEspecieValoradaDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="autorizadorMotivoCortesiaDAO" class="com.cystesoft.vyrbus.model.dao.impl.AutorizadorMotivoCortesiaDAOImpl">
+   	<bean id="autorizadorMotivoCortesiaDAO" class="pe.itsb.vyrbus.model.dao.impl.AutorizadorMotivoCortesiaDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-   	<bean id="tarifaFechaAbiertaDAO" class="com.cystesoft.vyrbus.model.dao.impl.TarifaFechaAbiertaDAOImpl">
+   	<bean id="tarifaFechaAbiertaDAO" class="pe.itsb.vyrbus.model.dao.impl.TarifaFechaAbiertaDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="ventaTramoDAO" class="com.cystesoft.vyrbus.model.dao.impl.VentaTramoDAOImpl">
+   	<bean id="ventaTramoDAO" class="pe.itsb.vyrbus.model.dao.impl.VentaTramoDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="rangoSobregiroDAO" class="com.cystesoft.vyrbus.model.dao.impl.RangoSobregiroDAOImpl">
+   	<bean id="rangoSobregiroDAO" class="pe.itsb.vyrbus.model.dao.impl.RangoSobregiroDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="configuracionImpresoraDAO" class="com.cystesoft.vyrbus.model.dao.impl.ConfiguracionImpresoraDAOImpl">
+   	<bean id="configuracionImpresoraDAO" class="pe.itsb.vyrbus.model.dao.impl.ConfiguracionImpresoraDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="destinatariosEmailsDAO" class="com.cystesoft.vyrbus.model.dao.impl.DestinatariosEmailsDAOImpl">
+   	<bean id="destinatariosEmailsDAO" class="pe.itsb.vyrbus.model.dao.impl.DestinatariosEmailsDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	   	<bean id="tipoCentroCostoDAO" class="com.cystesoft.vyrbus.model.dao.impl.TipoCentroCostoDAOImpl">
+   	   	<bean id="tipoCentroCostoDAO" class="pe.itsb.vyrbus.model.dao.impl.TipoCentroCostoDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="tipoMonedaDAO" class="com.cystesoft.vyrbus.model.dao.impl.TipoMonedaDAOImpl">
+   	<bean id="tipoMonedaDAO" class="pe.itsb.vyrbus.model.dao.impl.TipoMonedaDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="tipoCambioDAO" class="com.cystesoft.vyrbus.model.dao.impl.TipoCambioDAOImpl">
+   	<bean id="tipoCambioDAO" class="pe.itsb.vyrbus.model.dao.impl.TipoCambioDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="sessionDAO" class="com.cystesoft.vyrbus.model.dao.impl.SessionDAOImpl">
+   	<bean id="sessionDAO" class="pe.itsb.vyrbus.model.dao.impl.SessionDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="reimpresionAnticipadaDAO" class="com.cystesoft.vyrbus.model.dao.impl.ReimpresionAnticipadaDAOImpl">
+   	<bean id="reimpresionAnticipadaDAO" class="pe.itsb.vyrbus.model.dao.impl.ReimpresionAnticipadaDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="tarifaDAO" class="com.cystesoft.vyrbus.model.dao.impl.TarifaDAOImpl">
+   	<bean id="tarifaDAO" class="pe.itsb.vyrbus.model.dao.impl.TarifaDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>   	
-   	<bean id="tarifaRegularDAO" class="com.cystesoft.vyrbus.model.dao.impl.TarifaRegularDAOImpl">
+   	<bean id="tarifaRegularDAO" class="pe.itsb.vyrbus.model.dao.impl.TarifaRegularDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>   	
-   	<bean id="tarifaRegularAudDAO" class="com.cystesoft.vyrbus.model.dao.impl.TarifaRegularAudDAOImpl">
+   	<bean id="tarifaRegularAudDAO" class="pe.itsb.vyrbus.model.dao.impl.TarifaRegularAudDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="tarifaClienteDAO" class="com.cystesoft.vyrbus.model.dao.impl.TarifaClienteDAOImpl">
+   	<bean id="tarifaClienteDAO" class="pe.itsb.vyrbus.model.dao.impl.TarifaClienteDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="tarifaClienteDetalleDAO" class="com.cystesoft.vyrbus.model.dao.impl.TarifaClienteDetalleDAOImpl">
+   	<bean id="tarifaClienteDetalleDAO" class="pe.itsb.vyrbus.model.dao.impl.TarifaClienteDetalleDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="tipoAsientoDAO" class="com.cystesoft.vyrbus.model.dao.impl.TipoAsientoDAOImpl">
+   	<bean id="tipoAsientoDAO" class="pe.itsb.vyrbus.model.dao.impl.TipoAsientoDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="poolLocalidadDAO" class="com.cystesoft.vyrbus.model.dao.impl.PoolLocalidadDAOImpl">
+   	<bean id="poolLocalidadDAO" class="pe.itsb.vyrbus.model.dao.impl.PoolLocalidadDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="ventaPoolDAO" class="com.cystesoft.vyrbus.model.dao.impl.VentaPoolDAOImpl">
+   	<bean id="ventaPoolDAO" class="pe.itsb.vyrbus.model.dao.impl.VentaPoolDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="ocupacionAsientosBloqueadosPoolDAO" class="com.cystesoft.vyrbus.model.dao.impl.OcupacionAsientosBloqueadosPoolDAOImpl">
+   	<bean id="ocupacionAsientosBloqueadosPoolDAO" class="pe.itsb.vyrbus.model.dao.impl.OcupacionAsientosBloqueadosPoolDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="tipoNotaDAO" class="com.cystesoft.vyrbus.model.dao.impl.TipoNotaDAOImpl">
+   	<bean id="tipoNotaDAO" class="pe.itsb.vyrbus.model.dao.impl.TipoNotaDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="embarquePasajeroDAO" class="com.cystesoft.vyrbus.model.dao.impl.EmbarquePasajeroDAOImpl">
+   	<bean id="embarquePasajeroDAO" class="pe.itsb.vyrbus.model.dao.impl.EmbarquePasajeroDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="detalleEmbarquePasajeroDAO" class="com.cystesoft.vyrbus.model.dao.impl.DetalleEmbarquePasajeroDAOImpl">
+   	<bean id="detalleEmbarquePasajeroDAO" class="pe.itsb.vyrbus.model.dao.impl.DetalleEmbarquePasajeroDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="tipoPrecioDAO" class="com.cystesoft.vyrbus.model.dao.impl.TipoPrecioDAOImpl">
+   	<bean id="tipoPrecioDAO" class="pe.itsb.vyrbus.model.dao.impl.TipoPrecioDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="detalleButacaDAO" class="com.cystesoft.vyrbus.model.dao.impl.DetalleButacaDAOImpl">
+   	<bean id="detalleButacaDAO" class="pe.itsb.vyrbus.model.dao.impl.DetalleButacaDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="comprobantesBloqueadosDAO" class="com.cystesoft.vyrbus.model.dao.impl.ComprobantesBloqueadosDAOImpl">
+   	<bean id="comprobantesBloqueadosDAO" class="pe.itsb.vyrbus.model.dao.impl.ComprobantesBloqueadosDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="equipajeDAO" class="com.cystesoft.vyrbus.model.dao.impl.EquipajeDAOImpl">
+   	<bean id="equipajeDAO" class="pe.itsb.vyrbus.model.dao.impl.EquipajeDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="detalleEquipajeDAO" class="com.cystesoft.vyrbus.model.dao.impl.DetalleEquipajeDAOImpl">
+   	<bean id="detalleEquipajeDAO" class="pe.itsb.vyrbus.model.dao.impl.DetalleEquipajeDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="flagDAO" class="com.cystesoft.vyrbus.model.dao.impl.FlagDAOImpl">
+   	<bean id="flagDAO" class="pe.itsb.vyrbus.model.dao.impl.FlagDAOImpl">
+   		<property name="sessionFactory" ref="sessionFactory" />
+   	</bean>
+   	<bean id="empresaDAO" class="pe.itsb.vyrbus.model.dao.impl.EmpresaDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
    	
 <!--    	VENTA DE SEGUROS -->
-	<bean id="ventaSeguroDAO" class="com.cystesoft.vyrbus.model.dao.impl.VentaSeguroDAOImpl">
+	<bean id="ventaSeguroDAO" class="pe.itsb.vyrbus.model.dao.impl.VentaSeguroDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>		
    	
 <!--    		TITAN -->
-<!-- 	<bean id="titanDAO" class="com.cystesoft.vyrbus.model.dao.impl.TitanDAOImpl"> -->
+<!-- 	<bean id="titanDAO" class="pe.itsb.vyrbus.model.dao.impl.TitanDAOImpl"> -->
 <!--    		<property name="jdbcTemplate"> -->
 <!--     		<ref bean="jdbcTemplateTitan"/> -->
 <!--     	</property> -->
 <!--    	</bean>		 -->
 	
-	<bean id="transcarWebDAO" class="com.cystesoft.vyrbus.model.dao.impl.TranscarWebDAOImpl">
+	<bean id="transcarWebDAO" class="pe.itsb.vyrbus.model.dao.impl.TranscarWebDAOImpl">
    		<property name="jdbcTemplate">
     		<ref bean="jdbcTemplateTranscarWeb"/>
     	</property>
    	</bean>
 	
 <!--    	HOJA DE RUTA ELECTRONICA -->
-	<bean id="mtcRutaDao" class="com.cystesoft.vyrbus.model.dao.impl.MTCRutaDAOImpl">
+	<bean id="mtcRutaDao" class="pe.itsb.vyrbus.model.dao.impl.MTCRutaDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="mtcDireccionTerminalDAO" class="com.cystesoft.vyrbus.model.dao.impl.MTCDireccionTerminalDAOImpl">
+   	<bean id="mtcDireccionTerminalDAO" class="pe.itsb.vyrbus.model.dao.impl.MTCDireccionTerminalDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="mtcDetalleRutaDAO" class="com.cystesoft.vyrbus.model.dao.impl.MTCDetalleRutaDAOImpl">
+   	<bean id="mtcDetalleRutaDAO" class="pe.itsb.vyrbus.model.dao.impl.MTCDetalleRutaDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="hreDao" class="com.cystesoft.vyrbus.model.dao.impl.HREDAOImpl">
+   	<bean id="hreDao" class="pe.itsb.vyrbus.model.dao.impl.HREDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="detalleFlotaHREDAO" class="com.cystesoft.vyrbus.model.dao.impl.DetalleFlotaHREDAOImpl">
+   	<bean id="detalleFlotaHREDAO" class="pe.itsb.vyrbus.model.dao.impl.DetalleFlotaHREDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
-   	<bean id="ventaServicioEspecialDAO" class="com.cystesoft.vyrbus.model.dao.impl.VentaServicioEspecialDAOImpl">
+   	<bean id="ventaServicioEspecialDAO" class="pe.itsb.vyrbus.model.dao.impl.VentaServicioEspecialDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
    	
 	
 	<!-- 	PARA LOS CONTROLADORES DE LAS DIFERENTES VENTANAS	 -->
-	<bean id="agenciaManager" class="com.cystesoft.vyrbus.service.business.impl.AgenciaManagerImpl">
+	<bean id="agenciaManager" class="pe.itsb.vyrbus.service.business.impl.AgenciaManagerImpl">
 		<property name="agenciaDAO" ref="agenciaDAO"/>
 	</bean>
-	<bean id="busManager" class="com.cystesoft.vyrbus.service.business.impl.BusManagerImpl">
+	<bean id="busManager" class="pe.itsb.vyrbus.service.business.impl.BusManagerImpl">
 		<property name="busDAO" ref="busDAO"/>
 	</bean>
-	<bean id="canalVentaManager" class="com.cystesoft.vyrbus.service.business.impl.CanalVentaManagerImpl">
+	<bean id="canalVentaManager" class="pe.itsb.vyrbus.service.business.impl.CanalVentaManagerImpl">
 		<property name="canalVentaDAO" ref="canalVentaDAO"/>
 	</bean>
-	<bean id="clienteManager" class="com.cystesoft.vyrbus.service.business.impl.ClienteManagerImpl">
+	<bean id="clienteManager" class="pe.itsb.vyrbus.service.business.impl.ClienteManagerImpl">
 		<property name="clienteDAO" ref="clienteDAO"/>
 	</bean>
-	<bean id="concesionarioManager" class="com.cystesoft.vyrbus.service.business.impl.ConcesionarioManagerImpl">
+	<bean id="concesionarioManager" class="pe.itsb.vyrbus.service.business.impl.ConcesionarioManagerImpl">
 		<property name="concesionarioDAO" ref="concesionarioDAO"/>
 	</bean>
-	<bean id="tipoMovimientoManager" class="com.cystesoft.vyrbus.service.business.impl.TipoMovimientoManagerImpl">
+	<bean id="tipoMovimientoManager" class="pe.itsb.vyrbus.service.business.impl.TipoMovimientoManagerImpl">
 		<property name="tipoMovimientoDAO" ref="tipoMovimientoDAO"/>
 	</bean>
-	<bean id="controlEspecieValoradaManager" class="com.cystesoft.vyrbus.service.business.impl.ControlEspecieValoradaManagerImpl">
+	<bean id="controlEspecieValoradaManager" class="pe.itsb.vyrbus.service.business.impl.ControlEspecieValoradaManagerImpl">
 		<property name="controlEspecieValoradaDAO" ref="controlEspecieValoradaDAO"/>
 	</bean>
-	<bean id="descuentoRecargoManager" class="com.cystesoft.vyrbus.service.business.impl.DescuentoRecargoManagerImpl">
+	<bean id="descuentoRecargoManager" class="pe.itsb.vyrbus.service.business.impl.DescuentoRecargoManagerImpl">
 		<property name="descuentoRecargoDAO" ref="descuentoRecargoDAO"/>
 	</bean>
-	<bean id="documentoBusManager" class="com.cystesoft.vyrbus.service.business.impl.DocumentoBusManagerImpl">
+	<bean id="documentoBusManager" class="pe.itsb.vyrbus.service.business.impl.DocumentoBusManagerImpl">
 		<property name="documentoBusDAO" ref="documentoBusDAO"/>
 	</bean>
-	<bean id="especieValoradaManager" class="com.cystesoft.vyrbus.service.business.impl.EspecieValoradaManagerImpl">
+	<bean id="especieValoradaManager" class="pe.itsb.vyrbus.service.business.impl.EspecieValoradaManagerImpl">
 		<property name="especieValoradaDAO" ref="especieValoradaDAO"/>
 	</bean>
-	<bean id="estadoBusManager" class="com.cystesoft.vyrbus.service.business.impl.EstadoBusManagerImpl">
+	<bean id="estadoBusManager" class="pe.itsb.vyrbus.service.business.impl.EstadoBusManagerImpl">
 		<property name="estadoBusDAO" ref="estadoBusDAO"/>
 	</bean>
-	<bean id="estadoCivilManager" class="com.cystesoft.vyrbus.service.business.impl.EstadoCivilManagerImpl">
+	<bean id="estadoCivilManager" class="pe.itsb.vyrbus.service.business.impl.EstadoCivilManagerImpl">
 		<property name="estadoCivilDAO" ref="estadoCivilDAO"/>
 	</bean>
-	<bean id="estadoDocumentoBusManager" class="com.cystesoft.vyrbus.service.business.impl.EstadoDocumentoBusManagerImpl">
+	<bean id="estadoDocumentoBusManager" class="pe.itsb.vyrbus.service.business.impl.EstadoDocumentoBusManagerImpl">
 		<property name="estadoDocumentoBusDAO" ref="estadoDocumentoBusDAO"/>
 	</bean>
-	<bean id="formaPagoManager" class="com.cystesoft.vyrbus.service.business.impl.FormaPagoManagerImpl">
+	<bean id="formaPagoManager" class="pe.itsb.vyrbus.service.business.impl.FormaPagoManagerImpl">
 		<property name="formaPagoDAO" ref="formaPagoDAO"/>
 	</bean>
-	<bean id="grupoMantenimientoManager" class="com.cystesoft.vyrbus.service.business.impl.GrupoMantenimientoManagerImpl">
+	<bean id="grupoMantenimientoManager" class="pe.itsb.vyrbus.service.business.impl.GrupoMantenimientoManagerImpl">
 		<property name="grupoMantenimientoDAO" ref="grupoMantenimientoDAO"/>
 	</bean>
-	<bean id="itinerarioAgenciaPartidaManager" class="com.cystesoft.vyrbus.service.business.impl.ItinerarioAgenciaPartidaManagerImpl">
+	<bean id="itinerarioAgenciaPartidaManager" class="pe.itsb.vyrbus.service.business.impl.ItinerarioAgenciaPartidaManagerImpl">
 		<property name="itinerarioAgenciaPartidaDAO" ref="itinerarioAgenciaPartidaDAO"/>
 	</bean>
-	<bean id="itinerarioAgenciaLlegadaManager" class="com.cystesoft.vyrbus.service.business.impl.ItinerarioAgenciaLlegadaManagerImpl">
+	<bean id="itinerarioAgenciaLlegadaManager" class="pe.itsb.vyrbus.service.business.impl.ItinerarioAgenciaLlegadaManagerImpl">
 		<property name="itinerarioAgenciaLlegadaDAO" ref="itinerarioAgenciaLlegadaDAO"/>
 	</bean>
-	<bean id="itinerarioManager" class="com.cystesoft.vyrbus.service.business.impl.ItinerarioManagerImpl">
+	<bean id="itinerarioManager" class="pe.itsb.vyrbus.service.business.impl.ItinerarioManagerImpl">
 		<property name="itinerarioDAO" ref="itinerarioDAO"/>
 		<property name="itinerarioAgenciaPartidaDAO" ref="itinerarioAgenciaPartidaDAO"/>
 		<property name="itinerarioAgenciaLlegadaDAO" ref="itinerarioAgenciaLlegadaDAO"/>
 	</bean>
-	<bean id="detalleItinerarioManager" class="com.cystesoft.vyrbus.service.business.impl.DetalleItinerarioManagerImpl">
+	<bean id="detalleItinerarioManager" class="pe.itsb.vyrbus.service.business.impl.DetalleItinerarioManagerImpl">
 		<property name="detalleItinerarioDAO" ref="detalleItinerarioDAO" />
 	</bean>
-	<bean id="localidadManager" class="com.cystesoft.vyrbus.service.business.impl.LocalidadManagerImpl">
+	<bean id="localidadManager" class="pe.itsb.vyrbus.service.business.impl.LocalidadManagerImpl">
 		<property name="localidadDAO" ref="localidadDAO"/>
 	</bean>
-	<bean id="mapaBusManager" class="com.cystesoft.vyrbus.service.business.impl.MapaBusManagerImpl">
+	<bean id="mapaBusManager" class="pe.itsb.vyrbus.service.business.impl.MapaBusManagerImpl">
 		<property name="mapaBusDAO" ref="mapaBusDAO"/>
 		<property name="ventaPasajesDAO" ref="ventaPasajesDAO" />
 	</bean>
-	<bean id="nacionalidadManager" class="com.cystesoft.vyrbus.service.business.impl.NacionalidadManagerImpl">
+	<bean id="nacionalidadManager" class="pe.itsb.vyrbus.service.business.impl.NacionalidadManagerImpl">
 		<property name="nacionalidadDAO" ref="nacionalidadDAO"/>
 	</bean>
-	<bean id="numeroFlotaManager" class="com.cystesoft.vyrbus.service.business.impl.NumeroFlotaManagerImpl">
+	<bean id="numeroFlotaManager" class="pe.itsb.vyrbus.service.business.impl.NumeroFlotaManagerImpl">
 		<property name="numeroFlotaDAO" ref="numeroFlotaDAO"/>
 	</bean>
-	<bean id="objetoBusManager" class="com.cystesoft.vyrbus.service.business.impl.ObjetoBusManagerImpl">
+	<bean id="objetoBusManager" class="pe.itsb.vyrbus.service.business.impl.ObjetoBusManagerImpl">
 		<property name="objetoBusDAO" ref="objetoBusDAO"/>
 	</bean>
-	<bean id="operadorTarjetaCreditoManager" class="com.cystesoft.vyrbus.service.business.impl.OperadorTarjetaCreditoManagerImpl">
+	<bean id="operadorTarjetaCreditoManager" class="pe.itsb.vyrbus.service.business.impl.OperadorTarjetaCreditoManagerImpl">
 		<property name="operadorTarjetaCreditoDAO" ref="operadorTarjetaCreditoDAO"/>
 	</bean>
-	<bean id="pasajeroFrecuenteManager" class="com.cystesoft.vyrbus.service.business.impl.PasajeroFrecuenteManagerImpl">
+	<bean id="pasajeroFrecuenteManager" class="pe.itsb.vyrbus.service.business.impl.PasajeroFrecuenteManagerImpl">
 		<property name="pasajeroFrecuenteDAO" ref="pasajeroFrecuenteDAO"/>
 	</bean>
-	<bean id="pasajeroManager" class="com.cystesoft.vyrbus.service.business.impl.PasajeroManagerImpl">
+	<bean id="pasajeroManager" class="pe.itsb.vyrbus.service.business.impl.PasajeroManagerImpl">
 		<property name="pasajeroDAO" ref="pasajeroDAO"/>
 	</bean>
-	<bean id="personalManager" class="com.cystesoft.vyrbus.service.business.impl.PersonalManagerImpl">
+	<bean id="personalManager" class="pe.itsb.vyrbus.service.business.impl.PersonalManagerImpl">
 		<property name="personalDAO" ref="personalDAO"/>
 	</bean>
-	<bean id="preferenciaAlimentariaManager" class="com.cystesoft.vyrbus.service.business.impl.PreferenciaAlimentariaManagerImpl">
+	<bean id="preferenciaAlimentariaManager" class="pe.itsb.vyrbus.service.business.impl.PreferenciaAlimentariaManagerImpl">
 		<property name="preferenciaAlimentariaDAO" ref="preferenciaAlimentariaDAO"/>
 	</bean>
-	<bean id="rutaManager" class="com.cystesoft.vyrbus.service.business.impl.RutaManagerImpl">
+	<bean id="rutaManager" class="pe.itsb.vyrbus.service.business.impl.RutaManagerImpl">
 		<property name="rutaDAO" ref="rutaDAO"/>
 	</bean>
-	<bean id="servicioManager" class="com.cystesoft.vyrbus.service.business.impl.ServicioManagerImpl">
+	<bean id="servicioManager" class="pe.itsb.vyrbus.service.business.impl.ServicioManagerImpl">
 		<property name="servicioDAO" ref="servicioDAO"/>
 	</bean>
-	<bean id="sexoManager" class="com.cystesoft.vyrbus.service.business.impl.SexoManagerImpl">
+	<bean id="sexoManager" class="pe.itsb.vyrbus.service.business.impl.SexoManagerImpl">
 		<property name="sexoDAO" ref="sexoDAO"/>
 	</bean>
-	<bean id="tarjetaCreditoManager" class="com.cystesoft.vyrbus.service.business.impl.TarjetaCreditoManagerImpl">
+	<bean id="tarjetaCreditoManager" class="pe.itsb.vyrbus.service.business.impl.TarjetaCreditoManagerImpl">
 		<property name="tarjetaCreditoDAO" ref="tarjetaCreditoDAO"/>
 	</bean>
-	<bean id="tipoAgenciaManager" class="com.cystesoft.vyrbus.service.business.impl.TipoAgenciaManagerImpl">
+	<bean id="tipoAgenciaManager" class="pe.itsb.vyrbus.service.business.impl.TipoAgenciaManagerImpl">
 		<property name="tipoAgenciaDAO" ref="tipoAgenciaDAO"/>
 	</bean>
-	<bean id="tipoComprobanteManager" class="com.cystesoft.vyrbus.service.business.impl.TipoComprobanteManagerImpl">
+	<bean id="tipoComprobanteManager" class="pe.itsb.vyrbus.service.business.impl.TipoComprobanteManagerImpl">
 		<property name="tipoComprobanteDAO" ref="tipoComprobanteDAO"/>
 	</bean>
-	<bean id="tipoDocumentoManager" class="com.cystesoft.vyrbus.service.business.impl.TipoDocumentoManagerImpl">
+	<bean id="tipoDocumentoManager" class="pe.itsb.vyrbus.service.business.impl.TipoDocumentoManagerImpl">
 		<property name="tipoDocumentoDAO" ref="tipoDocumentoDAO"/>
 	</bean>
-	<bean id="tipoFlotaManager" class="com.cystesoft.vyrbus.service.business.impl.TipoFlotaManagerImpl">
+	<bean id="tipoFlotaManager" class="pe.itsb.vyrbus.service.business.impl.TipoFlotaManagerImpl">
 		<property name="tipoFlotaDAO" ref="tipoFlotaDAO"/>
 	</bean>
-	<bean id="tipoFormaPagoManager" class="com.cystesoft.vyrbus.service.business.impl.TipoFormaPagoManagerImpl">
+	<bean id="tipoFormaPagoManager" class="pe.itsb.vyrbus.service.business.impl.TipoFormaPagoManagerImpl">
 		<property name="tipoFormaPagoDAO" ref="tipoFormaPagoDAO"/>
 	</bean>
-	<bean id="tipoItinerarioManager" class="com.cystesoft.vyrbus.service.business.impl.TipoItinerarioManagerImpl">
+	<bean id="tipoItinerarioManager" class="pe.itsb.vyrbus.service.business.impl.TipoItinerarioManagerImpl">
 		<property name="tipoItinerarioDAO" ref="tipoItinerarioDAO"/>
 	</bean>
-	<bean id="tipoPersonalManager" class="com.cystesoft.vyrbus.service.business.impl.TipoPersonalManagerImpl">
+	<bean id="tipoPersonalManager" class="pe.itsb.vyrbus.service.business.impl.TipoPersonalManagerImpl">
 		<property name="tipoPersonalDAO" ref="tipoPersonalDAO"/>
 	</bean>
-	<bean id="tipoViaManager" class="com.cystesoft.vyrbus.service.business.impl.TipoViaManagerImpl">
+	<bean id="tipoViaManager" class="pe.itsb.vyrbus.service.business.impl.TipoViaManagerImpl">
 		<property name="tipoViaDAO" ref="tipoViaDAO"/>
 	</bean>
-	<bean id="tipoZonaManager" class="com.cystesoft.vyrbus.service.business.impl.TipoZonaManagerImpl">
+	<bean id="tipoZonaManager" class="pe.itsb.vyrbus.service.business.impl.TipoZonaManagerImpl">
 		<property name="tipoZonaDAO" ref="tipoZonaDAO"/>
 	</bean>
-	<bean id="ubigeoManager" class="com.cystesoft.vyrbus.service.business.impl.UbigeoManagerImpl">
+	<bean id="ubigeoManager" class="pe.itsb.vyrbus.service.business.impl.UbigeoManagerImpl">
 		<property name="ubigeoDAO" ref="ubigeoDAO"/>
 	</bean>
-	<bean id="usuarioManager" class="com.cystesoft.vyrbus.service.business.impl.UsuarioManagerImpl">
+	<bean id="usuarioManager" class="pe.itsb.vyrbus.service.business.impl.UsuarioManagerImpl">
 		<property name="usuarioDAO" ref="usuarioDAO"/>
 	</bean>
-	<bean id="ventaPasajesManager" class="com.cystesoft.vyrbus.service.business.impl.VentaPasajesManagerImpl">
+	<bean id="ventaPasajesManager" class="pe.itsb.vyrbus.service.business.impl.VentaPasajesManagerImpl">
 		<property name="ventaPasajesDAO" ref="ventaPasajesDAO"/>
 		<property name="ventaPasajesHistorialDAO" ref="ventaPasajesHistorialDAO"/>
 		<property name="controlEspecieValoradaDAO" ref="controlEspecieValoradaDAO" />
@@ -632,262 +635,265 @@
 		<property name="especieValoradaDAO" ref="especieValoradaDAO" />
 		<property name="lineaCreditoClienteDAO" ref="lineaCreditoClienteDAO" />
 	</bean>
-	<bean id="ventaPasajesHistorialManager" class="com.cystesoft.vyrbus.service.business.impl.VentaPasajesHistorialManagerImpl">
+	<bean id="ventaPasajesHistorialManager" class="pe.itsb.vyrbus.service.business.impl.VentaPasajesHistorialManagerImpl">
 		<property name="ventaPasajesHistorialDAO" ref="ventaPasajesHistorialDAO"/>		
 	</bean>
-	<bean id="historicoResumenVentasManager" class="com.cystesoft.vyrbus.service.business.impl.HistoricoResumenVentasManagerImpl">
+	<bean id="historicoResumenVentasManager" class="pe.itsb.vyrbus.service.business.impl.HistoricoResumenVentasManagerImpl">
 		<property name="historicoResumenVentasDAO" ref="historicoResumenVentasDAO"/>		
 	</bean>
-	<bean id="programacionServicioManager" class="com.cystesoft.vyrbus.service.business.impl.ProgramacionServicioManagerImpl">
+	<bean id="programacionServicioManager" class="pe.itsb.vyrbus.service.business.impl.ProgramacionServicioManagerImpl">
 		<property name="programacionServicioDAO" ref="programacionServicioDAO"/>
 	</bean>
-	<bean id="usuarioHardwareManager" class="com.cystesoft.vyrbus.service.business.impl.UsuarioHardwareManagerImpl">
+	<bean id="usuarioHardwareManager" class="pe.itsb.vyrbus.service.business.impl.UsuarioHardwareManagerImpl">
 		<property name="usuarioHardwareDAO" ref="usuarioHardwareDAO"/>
 		<property name="agenciaDAO" ref="agenciaDAO"/>
 <!-- 		<property name="titanDAO" ref="titanDAO"/> -->
 	</bean>
-	<bean id="tipoGastoManager" class="com.cystesoft.vyrbus.service.business.impl.TipoGastoManagerImpl">
+	<bean id="tipoGastoManager" class="pe.itsb.vyrbus.service.business.impl.TipoGastoManagerImpl">
 		<property name="tipoGastoDAO" ref="tipoGastoDAO"/>
 	</bean>
-	<bean id="cortesiaManager" class="com.cystesoft.vyrbus.service.business.impl.CortesiaManagerImpl">
+	<bean id="cortesiaManager" class="pe.itsb.vyrbus.service.business.impl.CortesiaManagerImpl">
 		<property name="cortesiaDAO" ref="cortesiaDAO"/>
 	</bean>
-	<bean id="motivoCortesiaManager" class="com.cystesoft.vyrbus.service.business.impl.MotivoCortesiaManagerImpl">
+	<bean id="motivoCortesiaManager" class="pe.itsb.vyrbus.service.business.impl.MotivoCortesiaManagerImpl">
 		<property name="motivocortesiaDAO" ref="motivocortesiaDAO"/>
 	</bean>
-	<bean id="manifiestoManager" class="com.cystesoft.vyrbus.service.business.impl.ManifiestoManagerImpl">
+	<bean id="manifiestoManager" class="pe.itsb.vyrbus.service.business.impl.ManifiestoManagerImpl">
 		<property name="manifiestoDAO" ref="manifiestoDAO"/>
 	</bean>
-	<bean id="tmpOcupacionAsientosManager" class="com.cystesoft.vyrbus.service.business.impl.TmpOcupacionAsientosManagerImpl">
+	<bean id="tmpOcupacionAsientosManager" class="pe.itsb.vyrbus.service.business.impl.TmpOcupacionAsientosManagerImpl">
 		<property name="tmpOcupacionAsientosDAO" ref="tmpOcupacionAsientosDAO" />
 		<property name="ventaPasajesDAO" ref="ventaPasajesDAO" />
 	</bean>
-	<bean id="rolManager" class="com.cystesoft.vyrbus.service.business.impl.RolManagerImpl">
+	<bean id="rolManager" class="pe.itsb.vyrbus.service.business.impl.RolManagerImpl">
 		<property name="rolDAO" ref="rolDAO"/>
 	</bean>
-	<bean id="usuarioRolManager" class="com.cystesoft.vyrbus.service.business.impl.UsuarioRolManagerImpl">
+	<bean id="usuarioRolManager" class="pe.itsb.vyrbus.service.business.impl.UsuarioRolManagerImpl">
 		<property name="usuarioRolDAO" ref="UsuarioRolDAO"/>
 	</bean>
 
-	<bean id="opcionMenuManager" class="com.cystesoft.vyrbus.service.business.impl.OpcionMenuManagerImpl">
+	<bean id="opcionMenuManager" class="pe.itsb.vyrbus.service.business.impl.OpcionMenuManagerImpl">
 		<property name="opcionMenuDAO" ref="opcionMenuDAO"/>
 	</bean>
-	<bean id="rolOpcionMenuManager" class="com.cystesoft.vyrbus.service.business.impl.RolOpcionMenuManagerImpl">
+	<bean id="rolOpcionMenuManager" class="pe.itsb.vyrbus.service.business.impl.RolOpcionMenuManagerImpl">
 		<property name="rolOpcionMenuDAO" ref="rolOpcionMenuDAO"/>
 	</bean>
-	<bean id="gastoManager" class="com.cystesoft.vyrbus.service.business.impl.GastoManagerImpl">
+	<bean id="gastoManager" class="pe.itsb.vyrbus.service.business.impl.GastoManagerImpl">
 		<property name="gastoDAO" ref="gastoDAO"/>
 	</bean>
-	<bean id="liquidacionBusManager" class="com.cystesoft.vyrbus.service.business.impl.LiquidacionBusManagerImpl">
+	<bean id="liquidacionBusManager" class="pe.itsb.vyrbus.service.business.impl.LiquidacionBusManagerImpl">
 		<property name="liquidacionBusDAO" ref="liquidacionBusDAO"/>
 	</bean>
-	<bean id="gastoBusManager" class="com.cystesoft.vyrbus.service.business.impl.GastoBusManagerImpl">
+	<bean id="gastoBusManager" class="pe.itsb.vyrbus.service.business.impl.GastoBusManagerImpl">
 		<property name="gastoBusDAO" ref="gastoBusDAO"/>
 	</bean>
-	<bean id="liquidacionManager" class="com.cystesoft.vyrbus.service.business.impl.LiquidacionManagerImpl">
+	<bean id="liquidacionManager" class="pe.itsb.vyrbus.service.business.impl.LiquidacionManagerImpl">
 		<property name="liquidacionDAO" ref="liquidacionDAO"/>
 	</bean> 
-	<bean id="detalleLiquidacionManager" class="com.cystesoft.vyrbus.service.business.impl.DetalleLiquidacionManagerImpl">
+	<bean id="detalleLiquidacionManager" class="pe.itsb.vyrbus.service.business.impl.DetalleLiquidacionManagerImpl">
 		<property name="detalleLiquidacionDAO" ref="detalleLiquidacionDAO"/>
 	</bean>
-	<bean id="liquidacionOficinaManager" class="com.cystesoft.vyrbus.service.business.impl.LiquidacionOficinaManagerImpl">
+	<bean id="liquidacionOficinaManager" class="pe.itsb.vyrbus.service.business.impl.LiquidacionOficinaManagerImpl">
 		<property name="liquidacionOficinaDAO" ref="liquidacionOficinaDAO"/>
 	</bean> 
-	<bean id="transbordoManager" class="com.cystesoft.vyrbus.service.business.impl.TransbordoManagerImpl">
+	<bean id="transbordoManager" class="pe.itsb.vyrbus.service.business.impl.TransbordoManagerImpl">
 		<property name="transbordoDAO" ref="transbordoDAO"/>
 	</bean> 
-	<bean id="reportesManager" class="com.cystesoft.vyrbus.service.business.impl.ReportesManagerImpl">
+	<bean id="reportesManager" class="pe.itsb.vyrbus.service.business.impl.ReportesManagerImpl">
 		<property name="reportesDAO" ref="reportesDAO"/>
 	</bean> 
-	<bean id="autorizadorCortesiaManager" class="com.cystesoft.vyrbus.service.business.impl.AutorizadorCortesiaManagerImpl" >
+	<bean id="autorizadorCortesiaManager" class="pe.itsb.vyrbus.service.business.impl.AutorizadorCortesiaManagerImpl" >
 		<property name="autorizadorCortesiaDAO" ref="autorizadorCortesiaDAO" />
 		<property name="autorizadorMotivoCortesiaDAO" ref="autorizadorMotivoCortesiaDAO" />
 	</bean> 
-	<bean id="solicitudCarteraManager" class="com.cystesoft.vyrbus.service.business.impl.SolicitudCarteraManagerImpl" >
+	<bean id="solicitudCarteraManager" class="pe.itsb.vyrbus.service.business.impl.SolicitudCarteraManagerImpl" >
 		<property name="solicitudCarteraDAO" ref="solicitudCarteraDAO" />
 	</bean>
-	<bean id="solicitudClienteCreditoManager" class="com.cystesoft.vyrbus.service.business.impl.SolicitudClienteCreditoMangerImpl">
+	<bean id="solicitudClienteCreditoManager" class="pe.itsb.vyrbus.service.business.impl.SolicitudClienteCreditoMangerImpl">
 		<property name="solicitudClienteCreditoDAO" ref="solicitudClienteCreditoDAO" />
 	</bean>
-	<bean id="tipoCobranzaManager" class="com.cystesoft.vyrbus.service.business.impl.TipoCobranzaManagerImpl">
+	<bean id="tipoCobranzaManager" class="pe.itsb.vyrbus.service.business.impl.TipoCobranzaManagerImpl">
 		<property name="tipoCobranzaDAO" ref="tipoCobranzaDAO" />
 	</bean>
-	<bean id="carteraClienteManager" class="com.cystesoft.vyrbus.service.business.impl.CarteraClienteManagerImpl" >
+	<bean id="carteraClienteManager" class="pe.itsb.vyrbus.service.business.impl.CarteraClienteManagerImpl" >
 		<property name="carteraClienteDAO" ref="carteraClienteDAO" />
 	</bean>
-	<bean id="usuarioAprobadorManager" class="com.cystesoft.vyrbus.service.business.impl.UsuarioAprobadorManagerImpl" >
+	<bean id="usuarioAprobadorManager" class="pe.itsb.vyrbus.service.business.impl.UsuarioAprobadorManagerImpl" >
 		<property name="usuarioArobadorDAO" ref="usuarioArobadorDAO" />
 	</bean>        
-	<bean id="lineaContadoClienteManager" class="com.cystesoft.vyrbus.service.business.impl.LineaContadoClienteManagerImpl" >
+	<bean id="lineaContadoClienteManager" class="pe.itsb.vyrbus.service.business.impl.LineaContadoClienteManagerImpl" >
 		<property name="lineaContadoClienteDAO" ref="lineaContadoClienteDAO" />
 	</bean>
-	<bean id="lineaCreditoClienteManager" class="com.cystesoft.vyrbus.service.business.impl.LineaCreditoClienteManagerImpl" >
+	<bean id="lineaCreditoClienteManager" class="pe.itsb.vyrbus.service.business.impl.LineaCreditoClienteManagerImpl" >
 		<property name="lineaCreditoClienteDAO" ref="lineaCreditoClienteDAO" />
 	</bean>
-	<bean id="motivoTemporadaAltaManager" class="com.cystesoft.vyrbus.service.business.impl.MotivoTemporadaAltaManagerImpl">
+	<bean id="motivoTemporadaAltaManager" class="pe.itsb.vyrbus.service.business.impl.MotivoTemporadaAltaManagerImpl">
 		<property name="motivoTemporadaAltaDAO" ref="motivoTemporadaAltaDAO" />
 	</bean>
-	<bean id="temporadaAltaManager" class="com.cystesoft.vyrbus.service.business.impl.TemporadaAltaManagerImpl">
+	<bean id="temporadaAltaManager" class="pe.itsb.vyrbus.service.business.impl.TemporadaAltaManagerImpl">
 		<property name="temporadaAltaDAO" ref="temporadaAltaDAO"/>
 	</bean>        
-	<bean id="promocionManager" class="com.cystesoft.vyrbus.service.business.impl.PromocionManagerImpl">
+	<bean id="promocionManager" class="pe.itsb.vyrbus.service.business.impl.PromocionManagerImpl">
 		<property name="promocionDAO" ref="promocionDAO" />
 	</bean>
-	<bean id="puntosPasajeroFrecuenteManager" class="com.cystesoft.vyrbus.service.business.impl.PuntosPasajeroFrecuenteManagerImpl">
+	<bean id="puntosPasajeroFrecuenteManager" class="pe.itsb.vyrbus.service.business.impl.PuntosPasajeroFrecuenteManagerImpl">
 		<property name="puntosPasajeroFrecuenteDAO" ref="puntosPasajeroFrecuenteDAO" />
 	</bean>
-	<bean id="parametrosManager" class="com.cystesoft.vyrbus.service.business.impl.ParametrosManajerImpl">
+	<bean id="parametrosManager" class="pe.itsb.vyrbus.service.business.impl.ParametrosManajerImpl">
 		<property name="parametrosDAO" ref="parametrosDAO" />
 	</bean>
- 	<bean id="historicoMembresiaManager" class="com.cystesoft.vyrbus.service.business.impl.HistoricoMembresiaManagerImpl">
+ 	<bean id="historicoMembresiaManager" class="pe.itsb.vyrbus.service.business.impl.HistoricoMembresiaManagerImpl">
  		<property name="historicoMembresiaDAO" ref="historicoMembresiaDAO" />
  	</bean>
- 	<bean id="ocupacionAsientosDesbloqueadosManager" class="com.cystesoft.vyrbus.service.business.impl.OcupacionAsientosDesbloqueadosManagerImpl">
+ 	<bean id="ocupacionAsientosDesbloqueadosManager" class="pe.itsb.vyrbus.service.business.impl.OcupacionAsientosDesbloqueadosManagerImpl">
  		<property name="ocupacionAsientosDesbloqueadosDAO" ref="ocupacionAsientosDesbloqueadosDAO" />
  	</bean>
- 	<bean id="reniecManager" class="com.cystesoft.vyrbus.service.business.impl.ReniecManagerImpl">
+ 	<bean id="reniecManager" class="pe.itsb.vyrbus.service.business.impl.ReniecManagerImpl">
  		<property name="reniecDAO" ref="reniecDAO" />
  	</bean>
-   	<bean id="historicoControlEspecieValoradaManager" class="com.cystesoft.vyrbus.service.business.impl.HistoricoControlEspecieValoradaManagerImpl">
+   	<bean id="historicoControlEspecieValoradaManager" class="pe.itsb.vyrbus.service.business.impl.HistoricoControlEspecieValoradaManagerImpl">
    		<property name="historicoControlEspecieValoradaDAO" ref="historicoControlEspecieValoradaDAO" />
    	</bean>
- 	<bean id="centroCostoManager" class="com.cystesoft.vyrbus.service.business.impl.CentroCostoManagerImpl">
+ 	<bean id="centroCostoManager" class="pe.itsb.vyrbus.service.business.impl.CentroCostoManagerImpl">
  		<property name="centroCostoDAO" ref="centroCostoDAO" />
  	</bean>
- 	<bean id="terminosVentaManager" class="com.cystesoft.vyrbus.service.business.impl.TerminosVentaManagerImpl">
+ 	<bean id="terminosVentaManager" class="pe.itsb.vyrbus.service.business.impl.TerminosVentaManagerImpl">
 		<property name="terminosVentaDAO" ref="terminosVentaDAO" />
 	</bean>
-	<bean id="detalleManifiestoManager" class="com.cystesoft.vyrbus.service.business.impl.DetalleManifiestoManagerImpl">
+	<bean id="detalleManifiestoManager" class="pe.itsb.vyrbus.service.business.impl.DetalleManifiestoManagerImpl">
 		<property name="detalleManifiestoDAO" ref="detalleManifiestoDAO" />
 	</bean>
-	<bean id="serieEspecieValoradaManager" class="com.cystesoft.vyrbus.service.business.impl.SerieEspecieValoradaManagerImpl">
+	<bean id="serieEspecieValoradaManager" class="pe.itsb.vyrbus.service.business.impl.SerieEspecieValoradaManagerImpl">
 		<property name="serieEspecieValoradaDAO" ref="serieEspecieValoradaDAO" />
 	</bean>
-	<bean id="autorizadorMotivoCortesiaManager" class="com.cystesoft.vyrbus.service.business.impl.AutorizadorMotivoCortesiaManagerImpl">
+	<bean id="autorizadorMotivoCortesiaManager" class="pe.itsb.vyrbus.service.business.impl.AutorizadorMotivoCortesiaManagerImpl">
 		<property name="autorizadorMotivoCortesiaDAO" ref="autorizadorMotivoCortesiaDAO" />		
 	</bean>
-	<bean id="tarifaFechaAbiertaManager" class="com.cystesoft.vyrbus.service.business.impl.TarifaFechaAbiertaManagerImpl">
+	<bean id="tarifaFechaAbiertaManager" class="pe.itsb.vyrbus.service.business.impl.TarifaFechaAbiertaManagerImpl">
 		<property name="tarifaFechaAbiertaDAO" ref="tarifaFechaAbiertaDAO" />
 	</bean>
-	<bean id="ventaTramoManager" class="com.cystesoft.vyrbus.service.business.impl.VentaTramoManagerImpl">
+	<bean id="ventaTramoManager" class="pe.itsb.vyrbus.service.business.impl.VentaTramoManagerImpl">
 		<property name="ventaTramoDAO" ref="ventaTramoDAO" />
 	</bean>
-	<bean id="rangoSobregiroManager" class="com.cystesoft.vyrbus.service.business.impl.RangoSobregiroManagerImpl">
+	<bean id="rangoSobregiroManager" class="pe.itsb.vyrbus.service.business.impl.RangoSobregiroManagerImpl">
 		<property name="rangoSobregiroDAO" ref="rangoSobregiroDAO" />
 	</bean>
-	<bean id="configuracionImpresoraManager" class="com.cystesoft.vyrbus.service.business.impl.ConfiguracionImpresoraManagerImpl">
+	<bean id="configuracionImpresoraManager" class="pe.itsb.vyrbus.service.business.impl.ConfiguracionImpresoraManagerImpl">
 		<property name="configuracionImpresoraDAO" ref="configuracionImpresoraDAO" />
 	</bean>
-	<bean id="destinatariosEmailsManager" class="com.cystesoft.vyrbus.service.business.impl.DestinatariosEmailsManagerImpl">
+	<bean id="destinatariosEmailsManager" class="pe.itsb.vyrbus.service.business.impl.DestinatariosEmailsManagerImpl">
 		<property name="destinatariosEmailsDAO" ref="destinatariosEmailsDAO" />
 	</bean>
-	<bean id="tipoCentroCostoManager" class="com.cystesoft.vyrbus.service.business.impl.TipoCentroCostoManagerImpl">
+	<bean id="tipoCentroCostoManager" class="pe.itsb.vyrbus.service.business.impl.TipoCentroCostoManagerImpl">
 		<property name="tipoCentroCostoDAO" ref="tipoCentroCostoDAO" />
 	</bean>
-	<bean id="tipoMonedaManager" class="com.cystesoft.vyrbus.service.business.impl.TipoMonedaManagerImpl">
+	<bean id="tipoMonedaManager" class="pe.itsb.vyrbus.service.business.impl.TipoMonedaManagerImpl">
 		<property name="tipoMonedaDAO" ref="tipoMonedaDAO" />
 	</bean>
-	<bean id="tipoCambioManager" class="com.cystesoft.vyrbus.service.business.impl.TipoCambioManagerImpl">
+	<bean id="tipoCambioManager" class="pe.itsb.vyrbus.service.business.impl.TipoCambioManagerImpl">
 		<property name="tipoCambioDAO" ref="tipoCambioDAO" />
 	</bean>
-	<bean id="sessionManager" class="com.cystesoft.vyrbus.service.business.impl.SessionManagerImpl">
+	<bean id="sessionManager" class="pe.itsb.vyrbus.service.business.impl.SessionManagerImpl">
 		<property name="sessionDAO" ref="sessionDAO" />
 	</bean>
-	<bean id="reimpresionAnticipadaManager" class="com.cystesoft.vyrbus.service.business.impl.ReimpresionAnticipadaManagerImpl">
+	<bean id="reimpresionAnticipadaManager" class="pe.itsb.vyrbus.service.business.impl.ReimpresionAnticipadaManagerImpl">
 		<property name="reimpresionAnticipadaDAO" ref="reimpresionAnticipadaDAO" />
 	</bean>
-	<bean id="tarifaManager" class="com.cystesoft.vyrbus.service.business.impl.TarifaManagerImpl">
+	<bean id="tarifaManager" class="pe.itsb.vyrbus.service.business.impl.TarifaManagerImpl">
 		<property name="tarifaDAO" ref="tarifaDAO" />
 	</bean>
-	<bean id="tarifaRegularManager" class="com.cystesoft.vyrbus.service.business.impl.TarifaRegularManagerImpl">
+	<bean id="tarifaRegularManager" class="pe.itsb.vyrbus.service.business.impl.TarifaRegularManagerImpl">
 		<property name="tarifaRegularDAO" ref="tarifaRegularDAO" />
 	</bean>
-	<bean id="tarifaRegularAudManager" class="com.cystesoft.vyrbus.service.business.impl.TarifaRegularAudManagerImpl">
+	<bean id="tarifaRegularAudManager" class="pe.itsb.vyrbus.service.business.impl.TarifaRegularAudManagerImpl">
 		<property name="tarifaRegularAudDAO" ref="tarifaRegularAudDAO" />
 	</bean>
-	<bean id="tarifaClienteManager" class="com.cystesoft.vyrbus.service.business.impl.TarifaClienteManagerImpl">
+	<bean id="tarifaClienteManager" class="pe.itsb.vyrbus.service.business.impl.TarifaClienteManagerImpl">
 		<property name="tarifaClienteDAO" ref="tarifaClienteDAO" />
 	</bean>
-	<bean id="ifaRegularifaClienteDetalleManager" class="com.cystesoft.vyrbus.service.business.impl.TarifaClienteDetalleManagerImpl">
+	<bean id="ifaRegularifaClienteDetalleManager" class="pe.itsb.vyrbus.service.business.impl.TarifaClienteDetalleManagerImpl">
 		<property name="tarifaClienteDetalleDAO" ref="tarifaClienteDetalleDAO" />
 	</bean>
-	<bean id="tipoAsientoManager" class="com.cystesoft.vyrbus.service.business.impl.TipoAsientoManagerImpl">
+	<bean id="tipoAsientoManager" class="pe.itsb.vyrbus.service.business.impl.TipoAsientoManagerImpl">
 		<property name="tipoAsientoDAO" ref="tipoAsientoDAO" />
 	</bean>
-	<bean id="poolLocalidadManager" class="com.cystesoft.vyrbus.service.business.impl.PoolLocalidadManagerImpl">
+	<bean id="poolLocalidadManager" class="pe.itsb.vyrbus.service.business.impl.PoolLocalidadManagerImpl">
 		<property name="poolLocalidadDAO" ref="poolLocalidadDAO" />
 	</bean>
-	<bean id="ventaPoolManager" class="com.cystesoft.vyrbus.service.business.impl.VentaPoolManagerImpl">
+	<bean id="ventaPoolManager" class="pe.itsb.vyrbus.service.business.impl.VentaPoolManagerImpl">
 		<property name="ventaPoolDAO" ref="ventaPoolDAO" />
 	</bean>
-	<bean id="ocupacionAsientosBloqueadosPoolManager" class="com.cystesoft.vyrbus.service.business.impl.OcupacionAsientosBloqueadosPoolManagerImpl">
+	<bean id="ocupacionAsientosBloqueadosPoolManager" class="pe.itsb.vyrbus.service.business.impl.OcupacionAsientosBloqueadosPoolManagerImpl">
 		<property name="ocupacionAsientosBloqueadosPoolDAO" ref="ocupacionAsientosBloqueadosPoolDAO" />
 	</bean>
-	<bean id="tipoNotaManager" class="com.cystesoft.vyrbus.service.business.impl.TipoNotaManagerImpl">
+	<bean id="tipoNotaManager" class="pe.itsb.vyrbus.service.business.impl.TipoNotaManagerImpl">
 		<property name="tipoNotaDAO" ref="tipoNotaDAO" />
 	</bean>
-	<bean id="embarquePasajeroManager" class="com.cystesoft.vyrbus.service.business.impl.EmbarquePasajeroManagerImpl">
+	<bean id="embarquePasajeroManager" class="pe.itsb.vyrbus.service.business.impl.EmbarquePasajeroManagerImpl">
 		<property name="embarquePasajeroDAO" ref="embarquePasajeroDAO"/>
 	</bean>
-	<bean id="detalleEmbarquePasajeroManager" class="com.cystesoft.vyrbus.service.business.impl.DetalleEmbarquePasajeroManagerImpl">
+	<bean id="detalleEmbarquePasajeroManager" class="pe.itsb.vyrbus.service.business.impl.DetalleEmbarquePasajeroManagerImpl">
 	   <property name="detalleEmbarquePasajeroDAO" ref="detalleEmbarquePasajeroDAO"/>
 	</bean>
-	<bean id="tipoPrecioManager" class="com.cystesoft.vyrbus.service.business.impl.TipoPrecioManagerImpl">
+	<bean id="tipoPrecioManager" class="pe.itsb.vyrbus.service.business.impl.TipoPrecioManagerImpl">
 		<property name="tipoPrecioDAO" ref="tipoPrecioDAO" />
 	</bean>
-	<bean id="detalleButacaManager" class="com.cystesoft.vyrbus.service.business.impl.DetalleButacaManagerImpl">
+	<bean id="detalleButacaManager" class="pe.itsb.vyrbus.service.business.impl.DetalleButacaManagerImpl">
 	   <property name="detalleButacaDAO" ref="detalleButacaDAO"/>
 	</bean>
-	<bean id="comprobantesBloqueadosManager" class="com.cystesoft.vyrbus.service.business.impl.ComprobantesBloqueadosManagerImpl">
+	<bean id="comprobantesBloqueadosManager" class="pe.itsb.vyrbus.service.business.impl.ComprobantesBloqueadosManagerImpl">
 	   <property name="comprobantesBloqueadosDAO" ref="comprobantesBloqueadosDAO"/>
 	</bean>
-	<bean id="ventaServicioEspecialManager" class="com.cystesoft.vyrbus.service.business.impl.VentaServicioEspecialManagerImpl">
+	<bean id="ventaServicioEspecialManager" class="pe.itsb.vyrbus.service.business.impl.VentaServicioEspecialManagerImpl">
 	   <property name="ventaServicioEspecialDAO" ref="ventaServicioEspecialDAO"/>
 	   <property name="controlEspecieValoradaDAO" ref="controlEspecieValoradaDAO"></property>
 	</bean>
-	<bean id="equipajeManager" class="com.cystesoft.vyrbus.service.business.impl.EquipajeManagerImpl">
+	<bean id="equipajeManager" class="pe.itsb.vyrbus.service.business.impl.EquipajeManagerImpl">
 	   <property name="equipajeDAO" ref="equipajeDAO"/>
 	</bean>
-	<bean id="detalleEquipajeManager" class="com.cystesoft.vyrbus.service.business.impl.DetalleEquipajeManagerImpl">
+	<bean id="detalleEquipajeManager" class="pe.itsb.vyrbus.service.business.impl.DetalleEquipajeManagerImpl">
 	   <property name="detalleEquipajeDAO" ref="detalleEquipajeDAO"/>
 	   <property name="equipajeDAO" ref="equipajeDAO" />
 	   <property name="controlEspecieValoradaDAO" ref="controlEspecieValoradaDAO"/>
 	</bean>
-	<bean id="flagManager" class="com.cystesoft.vyrbus.service.business.impl.FlagManagerImpl">
+	<bean id="flagManager" class="pe.itsb.vyrbus.service.business.impl.FlagManagerImpl">
 	   <property name="flagDAO" ref="flagDAO"/>	   
 	</bean>
+	<bean id="empresaManager" class="pe.itsb.vyrbus.service.business.impl.EmpresaManagerImpl">
+		<property name="empresaDAO" ref="empresaDAO" />
+	</bean>
 <!-- 	VENTA DE SEGUROS -->
-	<bean id="ventaSeguroManager" class="com.cystesoft.vyrbus.service.business.impl.VentaSeguroManagerImpl">
+	<bean id="ventaSeguroManager" class="pe.itsb.vyrbus.service.business.impl.VentaSeguroManagerImpl">
 		<property name="ventaSeguroDAO" ref="ventaSeguroDAO" />
 	</bean>
 	
 	<!-- 	TITAN -->
-<!-- 	<bean id="titanManager" class="com.cystesoft.vyrbus.service.business.impl.TitanManagerImpl"> -->
+<!-- 	<bean id="titanManager" class="pe.itsb.vyrbus.service.business.impl.TitanManagerImpl"> -->
 <!-- 		<property name="titanDAO" ref="titanDAO" /> -->
 <!-- 	</bean> -->
 	
-<!-- 	<bean id="transcarManager" class="com.cystesoft.vyrbus.service.business.impl.TranscarManagerImpl"> -->
+<!-- 	<bean id="transcarManager" class="pe.itsb.vyrbus.service.business.impl.TranscarManagerImpl"> -->
 <!-- 		<property name="transcarDAO" ref="transcarDAO" /> -->
 <!-- 	</bean> -->
 	
-	<bean id="transcarWebManager" class="com.cystesoft.vyrbus.service.business.impl.TranscarWebManagerImpl">
+	<bean id="transcarWebManager" class="pe.itsb.vyrbus.service.business.impl.TranscarWebManagerImpl">
 		<property name="transcarWebDAO" ref="transcarWebDAO" />
 	</bean>
 	
 <!-- 	HOJA DE RUTA ELECTRONICA -->
-	<bean id="mtcRutaManager" class="com.cystesoft.vyrbus.service.business.impl.MTCRutaManagerImpl">
+	<bean id="mtcRutaManager" class="pe.itsb.vyrbus.service.business.impl.MTCRutaManagerImpl">
 		<property name="mtcRutaDAO" ref="mtcRutaDao" />
 	</bean>
-	<bean id="mtcDireccionTerminalManager" class="com.cystesoft.vyrbus.service.business.impl.MTCDireccionTerminalManagerImpl">
+	<bean id="mtcDireccionTerminalManager" class="pe.itsb.vyrbus.service.business.impl.MTCDireccionTerminalManagerImpl">
 		<property name="mtcDireccionTerminalDAO" ref="mtcDireccionTerminalDAO" />
 	</bean>
-	<bean id="mtcDetalleRutaManager" class="com.cystesoft.vyrbus.service.business.impl.MTCDetalleRutaManagerImpl">
+	<bean id="mtcDetalleRutaManager" class="pe.itsb.vyrbus.service.business.impl.MTCDetalleRutaManagerImpl">
 		<property name="mtcDetalleRutaDAO" ref="mtcDetalleRutaDAO" />
 	</bean>
-	<bean id="hreManager" class="com.cystesoft.vyrbus.service.business.impl.HREManagerImpl">
+	<bean id="hreManager" class="pe.itsb.vyrbus.service.business.impl.HREManagerImpl">
 		<property name="hreDao" ref="hreDao" />
 	</bean>
-	<bean id="detalleFlotaHREManager" class="com.cystesoft.vyrbus.service.business.impl.DetalleFlotaHREManagerImpl">
+	<bean id="detalleFlotaHREManager" class="pe.itsb.vyrbus.service.business.impl.DetalleFlotaHREManagerImpl">
 		<property name="detalleFlotaHREDAO" ref="detalleFlotaHREDAO" />
 	</bean>
 

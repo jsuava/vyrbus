@@ -1,0 +1,192 @@
+package pe.itsb.vyrbus.model.dao.impl;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.TreeMap;
+
+import pe.itsb.vyrbus.model.bean.CarteraCliente;
+import pe.itsb.vyrbus.model.bean.Cliente;
+import pe.itsb.vyrbus.model.bean.LineaCreditoCliente;
+import pe.itsb.vyrbus.model.bean.SolicitudCartera;
+import pe.itsb.vyrbus.model.bean.TipoCobranza;
+import pe.itsb.vyrbus.model.bean.Usuario;
+import pe.itsb.vyrbus.model.dao.CarteraClienteDAO;
+import pe.itsb.vyrbus.service.util.Constantes;
+
+/**
+ *
+ * @author JABANTO
+ *
+ */
+@SuppressWarnings("unchecked")
+public class CarteraClienteDAOImpl extends GenericDAOImpl implements CarteraClienteDAO {
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.CarteraClienteDAO#buscarPorEstadoRegistro(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public ArrayList<CarteraCliente> buscarPorEstadoRegistro(String estado,String criterioOrden) {
+		return (ArrayList<CarteraCliente>) super.findByEstadoRegistro(CarteraCliente.class, estado, criterioOrden);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.CarteraClienteDAO#buscarPorX(java.util.TreeMap, java.util.List)
+	 */
+	@Override
+	public ArrayList<CarteraCliente> buscarPorX(TreeMap<String, Object> criteriosBusqueda,List<String> criteriosOrdenar) {
+		return (ArrayList<CarteraCliente>) super.findByX(CarteraCliente.class, criteriosBusqueda, criteriosOrdenar);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.CarteraClienteDAO#guardar(com.tepsa.sisvyr.model.bean.CarteraCliente)
+	 */
+	@Override
+	public void guardar(CarteraCliente carteraCliente) {
+		super.save(carteraCliente);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.CarteraClienteDAO#inactivar(java.lang.Long)
+	 */
+	@Override
+	public void inactivar(Long id) {
+		super.inactivate(CarteraCliente.class, id);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.CarteraClienteDAO#buscarClientesCartera(java.lang.Integer, java.lang.Long)
+	 */
+	@Override
+	public List<CarteraCliente> buscarClientesCartera(Integer idFuncionario, Long idCliente){
+		String cons="";
+		if(idFuncionario!=null)
+			cons=" AND cc.usuario_id="+idFuncionario;
+		if(idCliente!=null)
+			cons+=" AND cc.cliente_id="+idCliente;
+
+//		String sql=" SELECT cliente_id, c_numdoc, c_razsoc, carcli_id, d_fecasigna, tipo, Estado, usuario_id, c_nombre, c_apepat," +
+//				   "c_apemat, idTipoCombranza, n_bashisto, c_Escomisio " +
+//				   "FROM (" +
+//						"SELECT DISTINCT(c.cliente_id)as cliente_id , c.c_numdoc, c.c_razsoc,cc.carcli_id, cc.d_fecasigna, "+
+//						         "'"+Constantes.TIPCON_CONTADO_DESC+"'  AS tipo, "+
+//						         "lcn.c_estlincon AS Estado, "+
+//						         "u.usuario_id, u.c_nombre, u.c_apepat, u.c_apemat, null as idTipoCombranza, sc.n_bashisto, " +
+//						         "lcn.c_Escomisio   "+
+//						  "FROM vrmcliente c "+
+//						  "INNER JOIN vrtcarcli cc ON (cc.cliente_id=c.cliente_id) "+
+//						  "INNER JOIN vrmusuario u ON (u.usuario_id=cc.usuario_id) "+
+//						  "INNER JOIN vrtlinconcli lcn ON (lcn.carcli_id=cc.carcli_id) " +
+//						  "INNER JOIN vrtsolcar sc ON (sc.solcar_id=cc.solcar_id)  "+
+//						  "WHERE cc.c_estcar='"+Constantes.ESTADOSOL_ACTIVA+"' AND lcn.c_estreg='"+Constantes.VALUE_ACTIVO+"'  "+cons+ " "+
+//						"UNION ALL "+
+		String sql=	"SELECT DISTINCT(c.cliente_id) cliente_id, c.c_numdoc, c.c_razsoc, cc.carcli_id, cc.d_fecasigna, "+
+					         "'"+Constantes.TIPCON_CREDITO_DESC+"' AS tipo, "+
+					         "lcc.c_Estlincre AS Estado,  "+
+					         "u.usuario_id, u.c_nombre, u.c_apepat, u.c_apemat, lcc.tipcob_id as idTipoCombranza, sc.n_bashisto," +
+					         "lcc.c_escomision, lcc.n_lincreapro, lcc.n_sobregiro, lcc.n_saldo, lcc.c_escanje, scr.c_escanje esCanje   "+    //18
+					  "FROM vrmcliente c "+
+					  "INNER JOIN vrtcarcli cc ON (cc.cliente_id=c.cliente_id) "+
+					  "INNER JOIN vrmusuario u ON (u.usuario_id=cc.usuario_id) "+
+					  "LEFT JOIN (SELECT * FROM vrtlincrecli lcc WHERE lcc.c_estreg='"+Constantes.VALUE_ACTIVO+"') lcc ON (lcc.carcli_id=cc.carcli_id)  " +
+					  "INNER JOIN vrtsolcar sc ON (sc.solcar_id=cc.solcar_id)	" +
+					  "INNER JOIN vrtsolclicre scr ON (scr.solcar_id=sc.solcar_id) "+
+					  "WHERE cc.c_estcar='"+Constantes.ESTADOSOL_ACTIVA+"' AND scr.tipcob_id IS NOT NULL AND scr.n_lincresol>0 "+cons+ " "+
+					  "ORDER BY c_nombre, c_razsoc ";
+//					  ")consul " +
+//					  " ORDER BY c_nombre, c_razsoc";
+
+		log.info(sql);
+
+		List<?> result = getSession().createSQLQuery(sql).list();
+		List<CarteraCliente> lstResult = new ArrayList<>();
+
+		for(int i=0; i<result.size(); i++){
+			Object[] obj = (Object[])result.get(i);
+
+			Cliente cliente=new Cliente();
+			CarteraCliente carteraCliente=new CarteraCliente();
+			Usuario funcionario=new Usuario();
+			TipoCobranza tipoCobranza=new TipoCobranza();
+			SolicitudCartera solicitudCartera=new SolicitudCartera();
+
+			solicitudCartera.setBaseHistorica(((BigDecimal)obj[12]).doubleValue());
+			if(obj[13]!=null)
+				solicitudCartera.setEsComisionable(obj[13].toString());
+			else solicitudCartera.setEsComisionable("");
+
+
+			if(obj[11]!=null)
+				tipoCobranza.setId(((BigDecimal)obj[11]).intValue());
+
+			cliente.setId(((BigDecimal)obj[0]).longValue());
+			cliente.setNumeroDocumento(obj[1].toString());
+			cliente.setRazonSocial(obj[2].toString());
+			cliente.setTipo(obj[5].toString());
+
+			/*Valida si es un Credito o un credito por canje publicitario*/
+			if(obj[18]!=null && obj[18].toString().equals(Constantes.SI))
+				cliente.setTipo("CANJE");
+
+			if(obj[6]!=null){
+				if (obj[6].toString().equals(Constantes.ESTADOSOL_ACTIVA))
+					cliente.setEstadoRegistro(Constantes.LABEL_ESTADOSOL_ACTIVA_DESC);
+				else cliente.setEstadoRegistro(Constantes.LABEL_ESTADOSOL_INACTIVA_DESC);
+
+				LineaCreditoCliente lineaCreditoCliente=new LineaCreditoCliente();
+				lineaCreditoCliente.setLineaCreditoAprobada(((BigDecimal)obj[14]).doubleValue());
+				lineaCreditoCliente.setSobregiro(((BigDecimal)obj[15]).doubleValue());
+				lineaCreditoCliente.setSaldo(((BigDecimal)obj[16]).doubleValue());
+				lineaCreditoCliente.setEsCanje(obj[17].toString());
+				carteraCliente.setLineaCreditoCliente(lineaCreditoCliente);
+			}else cliente.setEstadoRegistro("POR APROB");
+
+			cliente.setTipoCobranza(tipoCobranza);
+
+			funcionario.setId(((BigDecimal)obj[7]).intValue());
+			funcionario.setNombre(obj[8].toString());
+			funcionario.setApellidoPaterno(obj[9].toString());
+			funcionario.setApellidoMaterno(obj[10]!=null? obj[10].toString(): "");
+
+			carteraCliente.setId(((BigDecimal)obj[3]).longValue());
+			carteraCliente.setFechaAsignacion((Date)obj[4]);
+			carteraCliente.setUsuario(funcionario);
+			carteraCliente.setCliente(cliente);
+			carteraCliente.setSolicitudCartera(solicitudCartera);
+
+			lstResult.add(carteraCliente);
+		}
+
+
+
+
+
+		return lstResult;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.CarteraClienteDAO#actualizar(com.tepsa.sisvyr.model.bean.CarteraCliente)
+	 */
+	@Override
+	public void actualizar(CarteraCliente carteraCliente) {
+		super.update(carteraCliente);
+
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.CarteraClienteDAO#buscarPorId(java.lang.Long)
+	 */
+	@Override
+	public CarteraCliente buscarPorId(Long id) throws Exception {
+		// TODO Auto-generated method stub
+		return (CarteraCliente) super.findById(CarteraCliente.class, id);
+	}
+
+}

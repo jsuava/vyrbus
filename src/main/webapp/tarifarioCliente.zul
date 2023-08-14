@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndTarifarioCliente" title="" use="com.cystesoft.vyrbus.view.ctrl.WndTarifarioCliente" width="800px">
+<window id="wndTarifarioCliente" title="" use="pe.itsb.vyrbus.view.ctrl.WndTarifarioCliente" width="800px">
 	<groupbox mold="3d" closable="false">
 		<caption label="BUSCAR CLIENTE" style="color: #ffffff;"/>
 		<vbox align="center">

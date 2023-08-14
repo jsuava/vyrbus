@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="pe.itsb.vyrbus.model.bean.Flag" table="VRMFLAG" schema="VYRBUSME">        
+        <id name="id" type="java.lang.Integer">
+            <column name="FLAG_ID" precision="5" scale="0" />
+            <generator class="sequence">
+                <param name="sequence">SEQ_VRMFLAG_ID</param>
+            </generator>
+        </id>        
+        <property name="codigo" type="java.lang.String">
+            <column name="C_CODIGO" length="20">
+                <comment>Codigo del flag</comment>
+            </column>
+        </property>
+        <property name="llave" type="java.lang.String">
+            <column name="C_LLAVE" length="500">
+                <comment>LLave del flag</comment>
+            </column>
+        </property>
+        <property name="descripcionCorta" type="java.lang.String">
+            <column name="C_DESCOR" length="100">
+                <comment>Descripcion corta del flag.</comment>
+            </column>
+        </property>
+        <property name="descripcionLarga" type="java.lang.String">
+            <column name="C_DESLAR" length="300">
+                <comment>Descripcion larga del flag.</comment>
+            </column>
+        </property>
+        <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+        <property name="estadoRegistro" type="java.lang.String">
+            <column name="C_ESTREG" length="1" not-null="true">
+                <comment>Estado de registro A(Activo), I(Inactivo).</comment>
+            </column>
+        </property>
+        <property name="fechaInsercion" type="java.util.Date">
+            <column name="AUDFECINS" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioInsercion" type="java.lang.String">
+            <column name="AUDUSUINS" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipInsercion" type="java.lang.String">
+            <column name="AUDIPINSE" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="fechaModificacion" type="java.util.Date">
+            <column name="AUDFECMOD" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioModificacion" type="java.lang.String">
+            <column name="AUDUSUMOD" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipModificacion" type="java.lang.String">
+            <column name="AUDIPMODI" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <!-- 		END CAMPOS DE AUDITORIA	 	-->
+    </class>
+</hibernate-mapping>

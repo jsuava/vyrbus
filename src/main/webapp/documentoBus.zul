@@ -1,6 +1,6 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndDocumentoBus">
+<window title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndDocumentoBus">
 	
 <div id="divLista">
 	<listbox id="listboxLista">
@@ -30,19 +30,19 @@
 						<label value="TIPO DOCUMENTO :" />
 						<textbox id="textboxId" />
 					</div>
-					<combobox id="cboTipoDocumento" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cboBus)" />
+					<combobox id="cboTipoDocumento" readonly="true" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cboBus)" />
 					<label value="BUS :" />
-					<combobox id="cboBus" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cboEstadoDocumento)" />
+					<combobox id="cboBus" readonly="true" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cboEstadoDocumento)" />
 				</row>
 				<row>
 					<label value="ESTADO DOCUMENTO :" />
-					<combobox id="cboEstadoDocumento" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtnumeroDocumento)" />
+					<combobox id="cboEstadoDocumento" readonly="true" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtnumeroDocumento)" />
 					<label value="NÚMERO DOCUMENTO :" />
-					<textbox id="txtnumeroDocumento"  maxlength="14" style="font-size:11px !important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(dbfechaExpedicion)"/>
+					<textbox id="txtnumeroDocumento"  maxlength="14" style="font-size:11px !important" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(dbfechaExpedicion)"/>
 				</row>
 				<row>
 					<label value="FECHA EXPRIRACIÓN :" />
-					<datebox id="dbfechaExpedicion"  format="dd/MM/yyyy" width="130px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(dbfechaVencimiento)" />
+					<datebox id="dbfechaExpedicion"  format="dd/MM/yyyy" width="130px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(dbfechaVencimiento)" />
 					<label value="FECHA VENCIMIENTO :" />
 					<datebox id="dbfechaVencimiento"   format="dd/MM/yyyy" />
 				</row>

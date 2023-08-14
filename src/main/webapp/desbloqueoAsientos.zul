@@ -1,6 +1,6 @@
 <?page title="Desbloqueo de Asientos" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndDesbloqueoAsientos" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndDesbloqueoAsientos" width="930px">
+<window id="wndDesbloqueoAsientos" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndDesbloqueoAsientos" width="930px">
 	<panel id="panel" title="::: DESBLOQUEO DE ASIENTOS :::" framable="true" width="auto" border="normal" closable="true" onClose="wndDesbloqueoAsientos.closeTabWindow()">
         <panelchildren>
 		<!-- 	<groupbox closable="false" mold="3d"> -->

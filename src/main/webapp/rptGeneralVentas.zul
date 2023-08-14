@@ -1,6 +1,6 @@
 <?page title="Reporte General de Ventas" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndRptGeneralVentas" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndRptGeneralVentas" width="920px">
+<window id="wndRptGeneralVentas" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndRptGeneralVentas" width="920px">
 <panel id="panel" title="::: Reporte General de Ventas :::" framable="true" border="normal" closable="true" onClose="wndRptGeneralVentas.closeTabWindow()">
 	<panelchildren>
 		<separator/>
@@ -30,7 +30,7 @@
 								<row>
 									<label value="Desde :" sclass="label-size11-bold"/>
 									<datebox id="dtbxFecInicioBus" 
-											onChange="com.cystesoft.vyrbus.service.util.Util.limpiarListbox(lsbxVentas)" 
+											onChange="pe.itsb.vyrbus.service.util.Util.limpiarListbox(lsbxVentas)" 
 											readonly="true"   
 											style="font-size:11px" 
 											format="dd/MM/yyyy" 
@@ -45,7 +45,7 @@
 											width="100px"  />
 									<label value="Oficina :" sclass="label-size11-bold"/>
 									<combobox id="cmbAgencias"
-											onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(rdFecha)" 
+											onOK="pe.itsb.vyrbus.service.util.Util.setFocus(rdFecha)" 
 											readonly="true" 
 											width="110px"   />
 									<label value="Fecha :" sclass="label-size11-bold"/>

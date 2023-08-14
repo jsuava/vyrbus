@@ -1,10 +1,11 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndRuta">
+<window title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndRuta">
 <div id="divLista">
 	<listbox id="listboxLista" mold="paging" pageSize="17">
 		<listhead sizable="true">
 			<listheader label="#" width="50px" style="color: #ffffff;"/>
+			<listheader label="EMPRESA" sort="auto" style="color: #ffffff;"/>
 			<listheader label="LOCALIDAD ORIGEN" sort="auto" style="color: #ffffff;"/>
 			<listheader label="LOCALIDAD DESTINO" sort="auto" style="color: #ffffff;"/>
 			<listheader label="KILOMETROS" sort="auto" style="color: #ffffff;"/>
@@ -17,9 +18,9 @@
 		<caption label="DATOS" style="color: #ffffff;"/>
 		<grid>
 			<columns>
-				<column width="120px" align="right"/>
+				<column width="130px" align="right"/>
 				<column width="180px" />
-				<column width="120px" align="right"/>
+				<column width="130px" align="right"/>
 			</columns>
 			<rows>
 				<row>
@@ -29,20 +30,21 @@
 					</div>
 					<combobox id="cboLocalidadOrigen" readonly="true" onOK="cboLocalidadDestino.setFocus(true); cboLocalidadDestino.select()"/>
 					<label value="LOCALIDAD DESTINO (*) :" />
-					<combobox id="cboLocalidadDestino" readonly="true" onOK="dbKilometros.setFocus(true); dbKilometros.select()" />
+					<combobox id="cboLocalidadDestino" readonly="true" onOK="cmbEmpresa.setFocus(true); cmbEmpresa.select()" />
 				</row>
 				<row>
+					<label value="EMPRESA (*) :" />
+					<combobox id="cmbEmpresa" readonly="true" onOK="dbKilometros.setFocus(true); dbKilometros.select()"></combobox>
 					<label value="KILOMETROS (*) :" />
 					<doublebox id="dbKilometros" format="##0.00" width="120px" onOK="spHorasViaje.setFocus(true); spHorasViaje.select()" />
-					<label value="HORAS DE VIAJE (*) :" />
-					<doublebox id="spHorasViaje" format="##0.00" width="120px" onOK="itPuntaje.setFocus(true)"/>
+					
 				</row>
 				<row>
+					<label value="HORAS DE VIAJE (*) :" />
+					<doublebox id="spHorasViaje" format="##0.00" width="120px" onOK="itPuntaje.setFocus(true)"/>
 					<label value="PUNTAJE (*) :" />
 					<doublebox id="itPuntaje" maxlength="3" format="##0" width="120px"  />
 <!-- 					<timebox id="tbxHorasViaje" format="HH:mm" /> -->
-					<separator></separator>
-					<separator></separator>
 				</row>
 			</rows>
 		</grid>

@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndPromociones" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndPromociones">
+<window id="wndPromociones" border="none" use="pe.itsb.vyrbus.view.ctrl.WndPromociones">
 	<groupbox mold="3d" closable="false">
 		<caption label="CRITERIOS PARA LA PROMOCION" style="color: #ffffff;"/>
 		<toolbarbutton id="tlbrbtnNuevo" label="Nuevo" image="resources/toolbar/mp_toolbarNuevo.png"/>

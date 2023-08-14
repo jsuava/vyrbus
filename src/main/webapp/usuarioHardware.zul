@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:n="client">
-<window id="wndUsuarioHardware" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndUsuarioHardware">
+<window id="wndUsuarioHardware" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndUsuarioHardware">
 	<div id="divLista">
 		<listbox id="listboxLista">
 			<listhead sizable="true">
@@ -29,23 +29,23 @@
 					<label value="CANAL VENTA :"/>
 					<div>
 						<textbox id="textboxId"/>
-						<combobox id="cmbCanalVenta" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbAgencia)"/>
+						<combobox id="cmbCanalVenta" readonly="true" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbAgencia)"/>
 					</div>
 					<label value="AGENCIA :"/>
-					<combobox id="cmbAgencia" readonly="false" width="200px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtDireccionIP)"/>
+					<combobox id="cmbAgencia" readonly="false" width="200px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtDireccionIP)"/>
 				</row>
 				<row>
 					<label value="DIRECCION IP :" />
-					<textbox id="txtDireccionIP" maxlength="15" width="130px" style="font-size:11px !important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbTipoIP)"/>
+					<textbox id="txtDireccionIP" maxlength="15" width="130px" style="font-size:11px !important" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbTipoIP)"/>
 					<label value="TIPO IP :"/>
-					<combobox id="cmbTipoIP" readonly="true" width="100px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtDireccionMAC)"/>
+					<combobox id="cmbTipoIP" readonly="true" width="100px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtDireccionMAC)"/>
 				</row>
 				<row>
 					<label value="DIRECCION MAC :"/>
-					<textbox id="txtDireccionMAC" maxlength="17" width="130px" style="font-size:11px !important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtCodigo)"/>
+					<textbox id="txtDireccionMAC" maxlength="17" width="130px" style="font-size:11px !important" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtCodigo)"/>
 					<label value="CODIGO :"/>
 					<hlayout>
-						<textbox id="txtCodigo" maxlength="100" readonly="true" width="335px" style="text-transform:none !important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtDescripcion)"/>
+						<textbox id="txtCodigo" maxlength="100" readonly="true" width="335px" style="text-transform:none !important" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtDescripcion)"/>
 						<image src="resources/mp_generar.png" 
 								onClick="wndUsuarioHardware.generarCodigo(txtDireccionMAC.getText())" 
 								tooltiptext="Haga click aqui para generar el codigo."/>

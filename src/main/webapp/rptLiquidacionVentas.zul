@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndRptLiquidacionVenta" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndRptLiquidacionVentas">
+<window id="wndRptLiquidacionVenta" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndRptLiquidacionVentas">
 	<grid>
 		<columns>
 			<column width="90px" align="right" />

@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndTransbordoPasajeros" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndTransbordo">
+<window id="wndTransbordoPasajeros" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndTransbordo">
 	<panel id="panel"  framable="true" width="805px" border="none"  onClose="wndTransbordoPasajeros.closeTabWindow()">
         <panelchildren>
         	<div>

@@ -1,6 +1,6 @@
 <?page title="Programacion de Tarifas" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:n="client">
-<window id="wndProgramacionTarifa" title="Programacion de Tarifas" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndProgramacionTarifa" >
+<window id="wndProgramacionTarifa" title="Programacion de Tarifas" border="none" use="pe.itsb.vyrbus.view.ctrl.WndProgramacionTarifa" >
 	<div 	id="divLista"> 
 		<listbox id="listboxLista" rows="15" >
 			<listhead sizable="true">
@@ -36,21 +36,21 @@
 								<label value="CANAL :" />
 								<textbox id="textboxId" />
 							</div>
-							<combobox id="cmbCanal" readonly="true" width="100px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbServicio)" /> 
+							<combobox id="cmbCanal" readonly="true" width="100px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbServicio)" /> 
 							<label value="TIPO SERVICIO :" />
-							<combobox id="cmbServicio" readonly="true" width="220px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbOrigen)" />	
+							<combobox id="cmbServicio" readonly="true" width="220px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbOrigen)" />	
 						</row>		
 						<row>
 							<label value="ORIGEN :" />
-							<combobox id="cmbOrigen" readonly="true" width="100px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbDestino)" />
+							<combobox id="cmbOrigen" readonly="true" width="100px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbDestino)" />
 							<label value="DESTINO :" />
-							<combobox id="cmbDestino" readonly="true"  width="120px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(dbFechaPartida)"/>
+							<combobox id="cmbDestino" readonly="true"  width="120px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(dbFechaPartida)"/>
 						</row>
 						<row>		
 							<label value="FECHA INICIO :" />
-							<datebox id="dbFechaPartida" format="dd/MM/yyyy" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(tbHoraPartida)" />
+							<datebox id="dbFechaPartida" format="dd/MM/yyyy" readonly="true" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(tbHoraPartida)" />
 							<label value="HORA PARTIDA :" />
-							<timebox id="tbHoraPartida"  width="90px" format="HH:mm" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbTermOrigen)"/>
+							<timebox id="tbHoraPartida"  width="90px" format="HH:mm" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbTermOrigen)"/>
 						</row>
 						<row>
 			

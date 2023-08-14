@@ -1,6 +1,6 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndRptDevolucionIsc" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndRptDevolucionIsc">
+<window id="wndRptDevolucionIsc" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndRptDevolucionIsc">
 	<groupbox mold="3d" closable="false">
 		<caption label="REPORTE DE VENTAS Y PARA DEVOLUCION DEL ISC" style="color: #ffffff;"/>
 		<grid>

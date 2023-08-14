@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndParametros" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndParametros"  width="845px" >
+<window id="wndParametros" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndParametros"  width="845px" >
 	<groupbox mold="3d" closable="false">
 	<caption label="PARÁMETROS DEL SISTEMA" style="color: #ffffff;"/>
 		<grid>

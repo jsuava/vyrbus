@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndPasajero" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndPasajero">
+<window id="wndPasajero" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndPasajero">
 
 <div id="divLista">
 	<listbox id="listboxLista" mold="paging" pageSize="15" >
@@ -41,7 +41,7 @@
 									<textbox id="textboxId"/>
 									<combobox id="cboDocumentoIdentificacion" 
 											readonly="true" 
-											onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNumeroIdentificacion)"/>
+											onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtNumeroIdentificacion)"/>
 								</div>
 								<label value="Nº DOCUMENTO :"/>
 								<div>
@@ -51,32 +51,32 @@
 												width="185px" 
 												maxlength="15"  
 												style="font-size:11px !important" 
-												onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtApellidoPaterno)" />
+												onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtApellidoPaterno)" />
 										<image id="imgValidacionDNI" height="12px"/>
 									</hbox>
 								</div>
 							</row>
 							<row>
 								<label value="APELLIDO PATERNO (*) :" />
-								<textbox id="txtApellidoPaterno" maxlength="30" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtApellidoMaterno)" /> 
+								<textbox id="txtApellidoPaterno" maxlength="30" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtApellidoMaterno)" /> 
 								<label value="APELLIDO MATERNO :" />
-								<textbox id="txtApellidoMaterno" maxlength="30" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNombre)" />
+								<textbox id="txtApellidoMaterno" maxlength="30" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtNombre)" />
 							</row>
 							<row>
 								<label value="NOMBRES (*) :" />
-								<textbox id="txtNombre" maxlength="30" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(dbfechaNacimiento)" />
+								<textbox id="txtNombre" maxlength="30" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(dbfechaNacimiento)" />
 								<label value="FECHA NACIMIENTO (*) :" />
 								<datebox id="dbfechaNacimiento" 
 										format="dd/MM/yyyy" 
 										constraint="no empty"  
 										maxlength="10" 
-										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cboSexo)"/>
+										onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cboSexo)"/>
 							</row>
 							<row>
 								<label value="SEXO (*) :" />
-								<combobox id="cboSexo" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cboEstadoCivil)"/>
+								<combobox id="cboSexo" readonly="true" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cboEstadoCivil)"/>
 								<label value="ESTADO CIVIL :" />
-								<combobox id="cboEstadoCivil" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtDireccion)"/>
+								<combobox id="cboEstadoCivil" readonly="true" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtDireccion)"/>
 							</row>
 							<row>
 								<label value="DIRECCIÓN :" />
@@ -84,7 +84,7 @@
 										rows="2" 
 										height="27px" 
 										maxlength="100" 
-										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(btnUbicacionGeografica)"/>
+										onOK="pe.itsb.vyrbus.service.util.Util.setFocus(btnUbicacionGeografica)"/>
 								<label value="UBICACIÓN GEOGRÁFICA (Dep. / Prov. / Dist.) (*)" />
 								<hlayout>
 									<textbox id="txtIdUbigeo" visible="false" readonly="true" />
@@ -97,16 +97,16 @@
 								<textbox id="txtTelefono"  
 										style="font-size:11px !important" 
 										maxlength="30" 
-										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtCorreoElectronico)"/>
+										onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtCorreoElectronico)"/>
 								<label value="CORREO ELECTRÓNICO :" />
 								<textbox id="txtCorreoElectronico" 
 										maxlength="70"  
 										style="text-transform:lowercase; font-size:12px !important" 
-										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtMotivoNoGrata)"/>
+										onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtMotivoNoGrata)"/>
 							</row>
 <!-- 							<row> -->
 <!-- 								<label value="AGENCIA REGISTRO(*):" /> -->
-<!-- 								<combobox id="cmbAgencia"  readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(chkPersonaNoGrata)"/> -->
+<!-- 								<combobox id="cmbAgencia"  readonly="true" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(chkPersonaNoGrata)"/> -->
 <!-- 								<separator></separator> -->
 <!-- 								<separator></separator> -->
 <!-- 							</row> -->

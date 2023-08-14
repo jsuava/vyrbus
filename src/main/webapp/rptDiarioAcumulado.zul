@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndDiarioAcumulado" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndRptDiarioAcumulado">
+<window id="wndDiarioAcumulado" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndRptDiarioAcumulado">
 	<grid>
 		<columns>
 			<column width="80px" />

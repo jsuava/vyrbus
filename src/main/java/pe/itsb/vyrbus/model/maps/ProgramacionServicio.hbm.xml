@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="pe.itsb.vyrbus.model.bean.ProgramacionServicio" table="VRTPROSER" schema="VYRBUSME">
+        <comment>Entidad donde se almacenan los distintos cambios que puede sufrir una servicio (cambio de piloto, copiloto, bus, tripulante)</comment>
+        <id name="id" type="java.lang.Long">
+            <column name="PROSER_ID" precision="10" scale="0" />
+            <generator class="sequence">
+                <param name="sequence">SEQ_VRTPROSER_ID</param>
+            </generator>
+        </id>
+        <many-to-one name="itinerario" class="pe.itsb.vyrbus.model.bean.Itinerario" fetch="select">
+            <column name="ITINERARIO_ID" precision="18" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 18.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="bus" class="pe.itsb.vyrbus.model.bean.Bus" fetch="select">
+            <column name="BUS_ID" precision="7" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 7.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="piloto" class="pe.itsb.vyrbus.model.bean.Personal">
+            <column name="PERSONAL_IDPILOTO" precision="10" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 10.</comment>
+            </column>
+       </many-to-one>
+        <many-to-one name="copiloto" class="pe.itsb.vyrbus.model.bean.Personal">
+            <column name="PERSONAL_IDCOPILOTO" precision="10" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 10.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="copilotoAuxiliar" class="pe.itsb.vyrbus.model.bean.Personal">
+            <column name="PERSONAL_IDCOPILOTOAUX" precision="10" scale="0" >
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 10.</comment>
+            </column>
+        </many-to-one>
+        <!-- Se retiro la obligatoriedad de la Tripulante  por tema de PANDEMIA -->
+        <many-to-one name="tripulante" class="pe.itsb.vyrbus.model.bean.Personal">
+            <column name="PERSONAL_IDTERRAMOZA" precision="10" scale="0" >
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 10.</comment>
+            </column>
+        </many-to-one>
+        <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+        <property name="estadoRegistro" type="java.lang.String">
+            <column name="C_ESTREG" length="1" not-null="true">
+                <comment>Estado de registro A(Activo), I(Inactivo).</comment>
+            </column>
+        </property>
+        <property name="fechaInsercion" type="java.util.Date">
+            <column name="AUDFECINS" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioInsercion" type="java.lang.String">
+            <column name="AUDUSUINS" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipInsercion" type="java.lang.String">
+            <column name="AUDIPINSE" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="fechaModificacion" type="java.util.Date">
+            <column name="AUDFECMOD" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioModificacion" type="java.lang.String">
+            <column name="AUDUSUMOD" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipModificacion" type="java.lang.String">
+            <column name="AUDIPMODI" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <!-- 		END CAMPOS DE AUDITORIA	 	-->
+    </class>
+</hibernate-mapping>

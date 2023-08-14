@@ -1,6 +1,6 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndAprobarCredito" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndAprobarCreditoN3" width="875px">
+<window id="wndAprobarCredito" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndAprobarCreditoN3" width="875px">
 <panel title="::: APROBACIÓN CRÉDITO - GERENCIA COMERCIAL :::" framable="true"  border="normal" closable="true" onClose="wndAprobarCredito.closeTabWindow()">
 	<panelchildren>
 	<tabbox>

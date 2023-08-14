@@ -75,7 +75,7 @@
 </style> 
 	<div align="center">
 		<separator height="100px"/>
-			<window id="wndLogin"  border="none"  width="400px" height="550px" use="com.cystesoft.vyrbus.view.ctrl.WndLogin">
+			<window id="wndLogin"  border="none"  width="400px" height="550px" use="pe.itsb.vyrbus.view.ctrl.WndLogin">
 				<div id="container" sclass="container" style="background:#e0e0e0">
 		            <div id="cabecera" sclass="cabecera_login" align="center">
 		                <label value="Bienvenido a VYRBUS" style="color:white;font-size:25px" ></label>

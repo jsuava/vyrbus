@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window title="" use="com.cystesoft.vyrbus.view.ctrl.WndCliente">
+<window title="" use="pe.itsb.vyrbus.view.ctrl.WndCliente">
 <div id="divLista">
 	<listbox id="listboxLista" >
 		<listhead sizable="true">
@@ -35,14 +35,14 @@
 						<textbox id="txtNumeroDocumento" 
 							maxlength="11" 
 							style="font-size:11px !important" 
-							onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtRazonSocial)" />
+							onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtRazonSocial)" />
 				    	<image id="imgBuscarClienteSunat" 
 								src="resources/mp_buscarEnabled.png" 
 								style="cursor:pointer" 
 								tooltiptext="Haga click aqui para buscar el RUC desde SUNAT"/>
 					</hbox>				
 					<label value="RAZÓN SOCIAL (*) :" />
-					<textbox id="txtRazonSocial" maxlength="100" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtDireccion)" />
+					<textbox id="txtRazonSocial" maxlength="100" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtDireccion)" />
 				</row>
 				<row>
 					<label value="DIRECCIÓN :" />
@@ -50,7 +50,7 @@
 							rows="2" 
 							maxlength="100" 
 							height="27px" 
-							onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(btnUbicacionGeografica)" />
+							onOK="pe.itsb.vyrbus.service.util.Util.setFocus(btnUbicacionGeografica)" />
 					<label value="UBICACIÓN GEOGRÁFICA (Dep. / Prov. / Dist.) (*) :" />
 					<hbox align="center">
 						<textbox id="txtIdUbigeo" readonly="true" visible="false" />
@@ -60,24 +60,24 @@
 				</row>
 				<row>
 					<label value="NOMB. DEL CONTACTO :" />
-					<textbox id="txtContacto" maxlength="50" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtTelefono)" />
+					<textbox id="txtContacto" maxlength="50" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtTelefono)" />
 					<label value="Nº TELÉFONO FIJO" />
 					<textbox id="txtTelefono"  
 							maxlength="10" 
 							style="font-size:11px !important" 
-							onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtTelefono2)"/>
+							onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtTelefono2)"/>
 				</row>
 				<row>
 					<label value="Nº TELÉFONO MOVIL :" />
 					<textbox id="txtTelefono2" 
 							maxlength="10" 
 							style="font-size:11px !important" 
-							onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtCorreoElectronico)"/>
+							onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtCorreoElectronico)"/>
 					<label value="CORREO ELECTRÓNICO" />
 					<textbox id="txtCorreoElectronico" 
 							maxlength="70" 
 							style="text-transform:lowercase; font-size:12px !important" 
-							onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(dbNumeroKilometros)"/>
+							onOK="pe.itsb.vyrbus.service.util.Util.setFocus(dbNumeroKilometros)"/>
 				</row>
 				<row>
 					<label value="Nº KILÓMETRO (*) :" />
@@ -86,16 +86,16 @@
 							format="#,##0.00"  
 							width="120px" 
 							style="text-align:left;" 
-							onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbAgencia)"/>
+							onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbAgencia)"/>
 					<label value="AGENCIA REGISTRO (*) :" />
-					<combobox id="cmbAgencia" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtRubro)"/>
+					<combobox id="cmbAgencia" readonly="true" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtRubro)"/>
 				</row>
 				<row>
 					<label value="RUBRO :" />
 					<textbox id="txtRubro"  
 							maxlength="80" 
 							style="font-size:11px !important" 
-							onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(ibxCantidadTrabajadores)"/>
+							onOK="pe.itsb.vyrbus.service.util.Util.setFocus(ibxCantidadTrabajadores)"/>
 					<label value="TRABAJADORES (*) :" />
 					<intbox id="ibxCantidadTrabajadores" 
 							maxlength="7" 

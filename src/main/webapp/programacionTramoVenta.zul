@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndActivacionTramoVenta" title="" border="none" width="800px" use="com.cystesoft.vyrbus.view.ctrl.WndProgramacionTramoVenta" >
+<window id="wndActivacionTramoVenta" title="" border="none" width="800px" use="pe.itsb.vyrbus.view.ctrl.WndProgramacionTramoVenta" >
 <panel id="panel" title="::: PROGRAMACIóN DE TRAMOS PARA LA VENTA :::" framable="true"  border="normal" closable="true" onClose="wndActivacionTramoVenta.closeTabWindow()">
 	<panelchildren>
 		<tabbox>

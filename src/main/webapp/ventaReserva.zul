@@ -11,7 +11,7 @@
     	jq("@datebox > input ").mask("99/99/9999");
     });*/
 </script>
-<window id="wndVentaReserva" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndVentaReserva" >
+<window id="wndVentaReserva" border="none" use="pe.itsb.vyrbus.view.ctrl.WndVentaReserva" >
 	<tabbox>
 		<tabs>
 			<tab id="tabItinerario" label="Selección de Itinerario" onClick="wndVentaReserva.selectedTabItinerario()"/>
@@ -103,6 +103,11 @@
 									</columns>
 									<rows>
 										<row style="background:#e0e0e0; border:none;">
+											<label value="EMPRESA :" sclass="label-size11"/>
+											<combobox id="cmbEmpresa" autodrop="true" width="160px" onOK="cmbOrigen.setFocus(true)"/>
+											<label/>											
+										</row>
+										<row style="background:#e0e0e0; border:none;">
 											<label value="ORIGEN :" sclass="label-size11"/>
 											<combobox id="cmbOrigen" autodrop="true" width="160px" onOK="cmbDestino.setFocus(true)"/>
 											<cell rowspan="2">
@@ -137,7 +142,7 @@
 									<listbox id="lbxItinerariosIda" 
 										mold="paging" 
 										pageSize="4"
-										onSelect="wndVentaReserva.onSelectItinerario(com.cystesoft.vyrbus.service.util.Constantes.SERVICIO_IDA)">
+										onSelect="wndVentaReserva.onSelectItinerario(pe.itsb.vyrbus.service.util.Constantes.SERVICIO_IDA)">
 										<listhead>
 											<listheader id="listheaderOperadoPor" label="OPERADO POR" width="80px" align="left" visible="false" style="color: #ffffff;"/>
 											<listheader label="EMBARQUE" width="80px" style="color: #ffffff;"/>
@@ -170,7 +175,7 @@
 								</vlayout>
 								<vlayout>
 									<label value="SERVICIO DE RETORNO" sclass="label-size11"/>
-									<listbox id="lbxItinerariosRetorno" mold="paging" pageSize="4" onSelect="wndVentaReserva.onSelectItinerario(com.cystesoft.vyrbus.service.util.Constantes.SERVICIO_RETORNO)">
+									<listbox id="lbxItinerariosRetorno" mold="paging" pageSize="4" onSelect="wndVentaReserva.onSelectItinerario(pe.itsb.vyrbus.service.util.Constantes.SERVICIO_RETORNO)">
 										<listhead>
 											<listheader label="PTO. EMBARQUE" width="100px" style="color: #ffffff;"/>
 											<listheader label="SERVICIO" width="110px" style="color: #ffffff;"/>

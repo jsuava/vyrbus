@@ -1,0 +1,1280 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	:
+ * Autor		: José Abanto
+ * Fecha		: 09/01/2017
+ * Hora			: 10:34:02
+ */
+package pe.itsb.vyrbus.view.ctrl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.TreeMap;
+
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.event.KeyEvent;
+import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Comboitem;
+import org.zkoss.zul.Datebox;
+import org.zkoss.zul.Div;
+import org.zkoss.zul.Doublebox;
+import org.zkoss.zul.Hbox;
+import org.zkoss.zul.Image;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Toolbarbutton;
+import org.zkoss.zul.Window;
+
+import pe.itsb.vyrbus.model.bean.CanalVenta;
+import pe.itsb.vyrbus.model.bean.DetalleButaca;
+import pe.itsb.vyrbus.model.bean.Itinerario;
+import pe.itsb.vyrbus.model.bean.Localidad;
+import pe.itsb.vyrbus.model.bean.MapaBus;
+import pe.itsb.vyrbus.model.bean.Ruta;
+import pe.itsb.vyrbus.model.bean.Servicio;
+import pe.itsb.vyrbus.model.bean.TipoAsiento;
+import pe.itsb.vyrbus.model.bean.TipoPrecio;
+import pe.itsb.vyrbus.service.locator.ServiceLocator;
+import pe.itsb.vyrbus.service.util.Constantes;
+import pe.itsb.vyrbus.service.util.Messages;
+import pe.itsb.vyrbus.service.util.Util;
+import pe.itsb.vyrbus.service.util.UtilData;
+import pe.itsb.vyrbus.view.ui.DlgMessage;
+import pe.itsb.vyrbus.view.ui.WndBase;
+import pe.itsb.vyrbus.view.ui.WndSeleccionaItinerario;
+
+/**
+ * @author Jose Abanto
+ *
+ */
+public class WndProgramacionTarifaOld extends WndBase{
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
+	@SuppressWarnings("unused")
+	private Window wndPRogramacionTarifa;
+	private Div divNuevaTarifa;
+	private Datebox dtbxDesde;
+	private Datebox dtbxHasta;
+	private Combobox cmbTipoServicio;
+	private Listbox ltbxMantoTarifario;
+	private Toolbarbutton btnNuevaTarifa;
+	private Toolbarbutton btnCopiarTarifa;
+	private Toolbarbutton btnCancelar;
+	private Toolbarbutton btnGuardarTarifa;
+
+	private String ATTRIBUTE_ORIGEN="1";
+	private String ATTRIBUTE_DESTINO="2";
+	private String ATTRIBUTE_TIPO_ASIENTO="3";
+	private String ATTRIBUTE_ASIENTOS="4";
+	private String ATTRIBUTE_TIPO_PRECIO="5";
+	private String ATTRIBUTE_PRECIO="6";
+	private String ATTRIBUTE_CANAL_VENTA="7";
+	private String ATTRIBUTE_ITINERARIO="8";
+
+//	private String PATH_IMAGE_NUEVO_DISABLED="/resources/mp_nuevoDisabled.png";
+//	private String PATH_IMAGE_NUEVO_ENABLED="/resources/mp_nuevoEnabled.png";
+//	private String PATH_IMAGE_COPIAR_DISABLED="/resources/mp_copyDisabled.png";
+//	private String PATH_IMAGE_COPIAR_ENABLED="/resources/mp_copyEnabled.png";
+//	private String PATH_IMAGE_CANCELAR_DISABLED="/resources/mp_cancelarDisabled.png";
+//	private String PATH_IMAGE_CANCELAR_ENABLED="/resources/mp_cancelarEnabled.png";
+//	private String PATH_IMAGE_GUARDAR_DISABLED="/resources/mp_guardarDisabled.png";
+//	private String PATH_IMAGE_GUARDAR_ENABLED="/resources/mp_guardarEnabled.png";
+
+	List<TipoAsiento> tiposAsientos= new ArrayList<>();
+	List<DetalleButaca>lstDetalleButacas=null;
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
+	 */
+	@Override
+	public void onCreate() throws Exception {
+		UtilData.cargarDataCombo(cmbTipoServicio, Servicio.class, false);
+
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.view.ui.WndBase#initComponents()
+	 */
+	@Override
+	public void initComponents() {
+		divNuevaTarifa=(Div)this.getFellow("divNuevaTarifa");
+		wndPRogramacionTarifa=(Window)this.getFellow("wndPRogramacionTarifa");
+		dtbxDesde=(Datebox)this.getFellow("dtbxDesde");
+		dtbxHasta=(Datebox)this.getFellow("dtbxHasta");
+		cmbTipoServicio=(Combobox)this.getFellow("cmbTipoServicio");
+		ltbxMantoTarifario=(Listbox)this.getFellow("ltbxMantoTarifario");
+		btnNuevaTarifa=(Toolbarbutton)this.getFellow("btnNuevaTarifa");
+		btnCopiarTarifa=(Toolbarbutton)this.getFellow("btnCopiarTarifa");
+		btnCancelar=(Toolbarbutton)this.getFellow("btnCancelar");
+		btnGuardarTarifa=(Toolbarbutton)this.getFellow("btnGuardarTarifa");
+	}
+
+	/**
+	 * Agrega un nuevo item al Listbox
+	 * @param detalleButaca	: Instancia con la que se va a agregar el item (Obsinal este nuede ser null para agregar un item vacio)
+	 * @throws Exception
+	 */
+	private Listitem addNewItem(DetalleButaca detalleButaca)throws Exception{
+//		wndPRogramacionTarifa.setCtrlKeys("#F1");
+//		wndPRogramacionTarifa.addEventListener(Events.ON_CTRL_KEY, new EventListener<Event>() {
+
+		Listitem item= new Listitem();
+		//Origen
+		Listcell cellOrigen= new Listcell(detalleButaca.getRuta()!=null && detalleButaca.getRuta().getLocalidadOrigen()!=null?detalleButaca.getRuta().getLocalidadOrigen().getDenominacion():"");
+		cellOrigen.setStyle("text-align: left;");
+		Combobox cmbOrigen= new Combobox();
+		cmbOrigen.setVisible(false);
+		cmbOrigen.setAutocomplete(true);
+		cmbOrigen.setWidth("100%");
+		cmbOrigen.setAttribute(ATTRIBUTE_ORIGEN, ATTRIBUTE_ORIGEN);
+		UtilData.cargarDataCombo(cmbOrigen, Localidad.class, false);
+		if(detalleButaca.getRuta()!=null && detalleButaca.getRuta().getLocalidadOrigen()!=null)
+			Util.seleccionarValorItemCombo(Localidad.class, cmbOrigen, detalleButaca.getRuta().getLocalidadOrigen().getId());
+		cellOrigen.appendChild(cmbOrigen);
+		item.appendChild(cellOrigen);
+		//Destino
+		Listcell cellDestino= new Listcell(detalleButaca.getRuta()!=null && detalleButaca.getRuta().getLocalidadDestino()!=null?detalleButaca.getRuta().getLocalidadDestino().getDenominacion():"");
+		cellDestino.setStyle("text-align: left;");
+		Combobox cmbDestino= new Combobox();
+		cmbDestino.setVisible(false);
+		cmbDestino.setWidth("100%");
+		cmbDestino.setAttribute(ATTRIBUTE_DESTINO, ATTRIBUTE_DESTINO);
+		UtilData.cargarDataCombo(cmbDestino, Localidad.class, false);
+		cellDestino.appendChild(cmbDestino);
+		item.appendChild(cellDestino);
+		//Tipo Asiento
+		Listcell cellTipoAsiento= new Listcell(detalleButaca.getTipoAsiento()!=null?detalleButaca.getTipoAsiento().getDenominacion():"");
+		cellTipoAsiento.setStyle("text-align: left;");
+		Combobox cmbTipoAsiento= new Combobox();
+		cmbTipoAsiento.setVisible(false);
+		cmbTipoAsiento.setWidth("100%");
+		cmbTipoAsiento.setAttribute(ATTRIBUTE_TIPO_ASIENTO, ATTRIBUTE_TIPO_ASIENTO);
+		UtilData.cargarGenericData(cmbTipoAsiento,false);
+		for(TipoAsiento tipoAsiento:tiposAsientos){
+			Comboitem comboitem= new Comboitem(tipoAsiento.getDenominacion());
+			comboitem.setValue(tipoAsiento);
+			cmbTipoAsiento.appendChild(comboitem);
+		}
+		cmbTipoAsiento.setSelectedIndex(0);
+		cellTipoAsiento.appendChild(cmbTipoAsiento);
+		item.appendChild(cellTipoAsiento);
+		//Asintos
+		Listcell cellAsientos= new Listcell(detalleButaca.getRagoAsientos()!=null?detalleButaca.getRagoAsientos():"");
+		cellAsientos.setStyle("font-size:12px !important;text-align: left;");
+		Textbox txtAsientos= new Textbox();
+		txtAsientos.setVisible(false);
+		txtAsientos.setWidth("92%");
+		txtAsientos.setAttribute(ATTRIBUTE_ASIENTOS, ATTRIBUTE_ASIENTOS);
+		txtAsientos.setStyle("font-size:12px !important");
+		cellAsientos.appendChild(txtAsientos);
+		item.appendChild(cellAsientos);
+		//Tipo Precio
+		Listcell cellTipoPrecio= new Listcell(detalleButaca.getTipoPrecio()!=null?detalleButaca.getTipoPrecio().getDenominacion():"");
+		cellTipoPrecio.setStyle("text-align: left;");
+		Combobox cmbTipoPrecio= new Combobox();
+		cmbTipoPrecio.setVisible(false);
+		cmbTipoPrecio.setWidth("100%");
+		cmbTipoPrecio.setAttribute(ATTRIBUTE_TIPO_PRECIO, ATTRIBUTE_TIPO_PRECIO);
+		UtilData.cargarTipoPrecio(cmbTipoPrecio,false);
+		cellTipoPrecio.appendChild(cmbTipoPrecio);
+		item.appendChild(cellTipoPrecio);
+		//Precio
+		Listcell cellPrecio= new Listcell(detalleButaca.getPrecio()!=null?Util.toNumberFormat(detalleButaca.getPrecio(),2):"");
+		cellPrecio.setStyle("font-size:12px !important;text-align: right;");
+		Doublebox dbbxPrecio= new Doublebox();
+		dbbxPrecio.setVisible(false);
+		dbbxPrecio.setWidth("94%");
+		dbbxPrecio.setFormat("#,###.00");
+		dbbxPrecio.setLocale(Locale.US);
+		dbbxPrecio.setAttribute(ATTRIBUTE_PRECIO, ATTRIBUTE_PRECIO);
+		cellPrecio.appendChild(dbbxPrecio);
+		item.appendChild(cellPrecio);
+		//Canal de Venta
+		Listcell cellCanalVenta= new Listcell(detalleButaca.getCanalVenta()!=null?detalleButaca.getCanalVenta().getDenominacion():"");
+		cellCanalVenta.setStyle("text-align: left;");
+		Combobox cmbCanalVenta= new Combobox();
+		cmbCanalVenta.setVisible(false);
+		cmbCanalVenta.setWidth("100%");
+		cmbCanalVenta.setAttribute(ATTRIBUTE_CANAL_VENTA, ATTRIBUTE_CANAL_VENTA);
+		UtilData.cargarDataCombo(cmbCanalVenta, CanalVenta.class, true);
+		cellCanalVenta.appendChild(cmbCanalVenta);
+		item.appendChild(cellCanalVenta);
+		//Itienerario
+		Listcell cellItinerario= new Listcell();
+		cellItinerario.setStyle("font-size:12px !important;text-align: left;");
+		Textbox txtItinerario= new Textbox();
+		txtItinerario.setTooltiptext("Pulse F1 para seleccionar el Itinerario \n Pulse la tecla Supr o Del para borrar el contenido");
+		txtItinerario.setWidth("85%");
+		txtItinerario.setReadonly(true);
+		txtItinerario.setVisible(false);
+		txtItinerario.setAttribute(ATTRIBUTE_ITINERARIO, ATTRIBUTE_ITINERARIO);
+		cellItinerario.appendChild(txtItinerario);
+		item.appendChild(cellItinerario);
+		//Utilidades
+		Listcell cell= new Listcell();
+		Hbox hbox= new Hbox();
+		hbox.setAlign("center");
+		Image imgAddItem= new Image("/resources/mp_addEnabled.png"); //Agregar item
+		imgAddItem.setStyle("cursor:pointer");
+		imgAddItem.setTooltiptext("Agregar nuevo ítem.");
+		hbox.appendChild(imgAddItem);
+
+//		Image imgCopyAddNewItem= new Image("/resources/mp_copyEnabled.png");//Agrega item y copia
+//		imgCopyAddNewItem.setStyle("cursor:pointer");
+//		imgCopyAddNewItem.setTooltiptext("Copia y agregar un nuevo ítem.");
+//		hbox.appendChild(imgCopyAddNewItem);
+
+		Image imgRemoveItem= new Image("/resources/mp_removeEnabled.png"); //Eliminar item
+		imgRemoveItem.setStyle("cursor:pointer");
+		imgRemoveItem.setTooltiptext("Eliminar ítem.");
+		hbox.appendChild(imgRemoveItem);
+		cell.appendChild(hbox);
+		item.appendChild(cell);
+
+		item.setValue(detalleButaca);
+		ltbxMantoTarifario.appendChild(item);
+
+
+		//Event Origen
+		cellOrigen.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onEvent_control(event);
+					event.stopPropagation();
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+		cmbOrigen.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onEvent_control(event);
+					event.stopPropagation();
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+		cmbOrigen.addEventListener(Events.ON_BLUR, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onEvent_control(event);
+					event.stopPropagation();
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+		cmbOrigen.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onEvent_control(event);
+					event.stopPropagation();
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+
+
+		//Event Destino
+		cellDestino.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onEvent_control(event);
+					event.stopPropagation();
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+		cmbDestino.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onEvent_control(event);
+					event.stopPropagation();
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+		cmbDestino.addEventListener(Events.ON_BLUR, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onEvent_control(event);
+					event.stopPropagation();
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+		cmbDestino.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onEvent_control(event);
+					event.stopPropagation();
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+
+		//Event Tipo Asiento
+		cellTipoAsiento.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onEvent_control(event);
+					event.stopPropagation();
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+		cmbTipoAsiento.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onEvent_control(event);
+					event.stopPropagation();
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+		cmbTipoAsiento.addEventListener(Events.ON_BLUR, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onEvent_control(event);
+					event.stopPropagation();
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+		cmbTipoAsiento.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onEvent_control(event);
+					event.stopPropagation();
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+
+		//Event Asientos
+		cellAsientos.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onEvent_control(event);
+					event.stopPropagation();
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+		txtAsientos.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onEvent_control(event);
+					event.stopPropagation();
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+		txtAsientos.addEventListener(Events.ON_BLUR, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onEvent_control(event);
+					event.stopPropagation();
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+
+
+		//Event Tipo Precio
+		cellTipoPrecio.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onEvent_control(event);
+					event.stopPropagation();
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+		cmbTipoPrecio.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onEvent_control(event);
+					event.stopPropagation();
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+		cmbTipoPrecio.addEventListener(Events.ON_BLUR, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onEvent_control(event);
+					event.stopPropagation();
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+		cmbTipoPrecio.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onEvent_control(event);
+					event.stopPropagation();
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+
+		//Event Precio
+		cellPrecio.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onEvent_control(event);
+					event.stopPropagation();
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+		dbbxPrecio.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onEvent_control(event);
+					event.stopPropagation();
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+		dbbxPrecio.addEventListener(Events.ON_BLUR, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onEvent_control(event);
+					event.stopPropagation();
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+
+		//Event Canal Venta
+		cellCanalVenta.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onEvent_control(event);
+					event.stopPropagation();
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+		cmbCanalVenta.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onEvent_control(event);
+					event.stopPropagation();
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+		cmbCanalVenta.addEventListener(Events.ON_BLUR, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onEvent_control(event);
+					event.stopPropagation();
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+		cmbCanalVenta.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onEvent_control(event);
+					event.stopPropagation();
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+
+		//Itinerario
+		cellItinerario.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onEvent_control(event);
+					event.stopPropagation();
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+		txtItinerario.setCtrlKeys("#F1#del#bak");
+		txtItinerario.addEventListener(Events.ON_CTRL_KEY, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					int keyCode = ((KeyEvent) event).getKeyCode();
+					if(keyCode==112)//Si es F1
+						enlazarItinerario(event);
+					else{
+						((Textbox)event.getTarget()).setText("");
+						onEvent_control(event);
+					}
+					event.stopPropagation();
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+		txtItinerario.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onEvent_control(event);
+					event.stopPropagation();
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+		txtItinerario.addEventListener(Events.ON_BLUR, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onEvent_control(event);
+					event.stopPropagation();
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+
+
+		//Agregar nuevo item
+		imgAddItem.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onClick_addNewItem(event);
+
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+
+		//Copia y agrega un nuevo item
+//		imgCopyAddNewItem.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+//			@Override
+//			public void onEvent(Event event) throws Exception {
+//				try {
+//					onClick_copyAddNewItem(event);
+//
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//					DlgMessage.error(e.getMessage());
+//				}
+//			}
+//		});
+
+		//Eliminar item
+		imgRemoveItem.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				try {
+					onClick_removeItem(event);
+
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+
+		return item;
+	}
+
+	/**
+	 *
+	 * @param event
+	 * @throws Exception
+	 */
+	private void onEvent_control(Event event)throws Exception{
+		if(event.getTarget() instanceof Listcell){
+			Component component=((Listcell)event.getTarget()).getFirstChild();
+			enabledControl(component);
+		}else{
+			Component component=event.getTarget();
+			component.setVisible(false);
+			Listcell cell=(Listcell) component.getParent();
+			cell.setLabel("");
+			DetalleButaca detalleButaca=((Listitem) cell.getParent()).getValue();
+
+			if(component instanceof Combobox){
+				Combobox combobox=(Combobox) component;
+				combobox.setValue(combobox.getValue().trim().toUpperCase());
+				if(combobox.getSelectedIndex()>0){
+					if(combobox.getAttribute(ATTRIBUTE_ORIGEN)!=null){
+						 Ruta ruta=(detalleButaca.getRuta()!=null?detalleButaca.getRuta():new Ruta());
+						 ruta.setLocalidadOrigen((Localidad)combobox.getSelectedItem().getValue());
+						 detalleButaca.setRuta(ruta);
+					}else if(combobox.getAttribute(ATTRIBUTE_DESTINO)!=null){
+						Ruta ruta=(detalleButaca.getRuta()!=null?detalleButaca.getRuta():new Ruta());
+						 ruta.setLocalidadDestino((Localidad)combobox.getSelectedItem().getValue());
+						 detalleButaca.setRuta(ruta);
+					}else if(combobox.getAttribute(ATTRIBUTE_TIPO_ASIENTO)!=null){
+						detalleButaca.setTipoAsiento((TipoAsiento)combobox.getSelectedItem().getValue());
+					}else if(combobox.getAttribute(ATTRIBUTE_TIPO_PRECIO)!=null){
+						detalleButaca.setTipoPrecio((TipoPrecio)combobox.getSelectedItem().getValue());
+					}else if(combobox.getAttribute(ATTRIBUTE_CANAL_VENTA)!=null){
+						detalleButaca.setCanalVenta((CanalVenta)combobox.getSelectedItem().getValue());
+					}
+					cell.setLabel(combobox.getValue());
+				}else{
+					if(combobox.getAttribute(ATTRIBUTE_ORIGEN)!=null){
+						 Ruta ruta=(detalleButaca.getRuta()!=null?detalleButaca.getRuta():new Ruta());
+						 ruta.setLocalidadOrigen(null);
+						 detalleButaca.setRuta(ruta);
+					}else if(combobox.getAttribute(ATTRIBUTE_DESTINO)!=null){
+						Ruta ruta=(detalleButaca.getRuta()!=null?detalleButaca.getRuta():new Ruta());
+						 ruta.setLocalidadDestino(null);
+						 detalleButaca.setRuta(ruta);
+					}else if(combobox.getAttribute(ATTRIBUTE_TIPO_ASIENTO)!=null){
+						detalleButaca.setTipoAsiento(null);
+					}else if(combobox.getAttribute(ATTRIBUTE_TIPO_PRECIO)!=null){
+						detalleButaca.setTipoPrecio(null);
+					}else if(combobox.getAttribute(ATTRIBUTE_CANAL_VENTA)!=null){
+						detalleButaca.setCanalVenta(null);
+						cell.setLabel(combobox.getText().trim());
+					}
+				}
+			}else if (component instanceof Doublebox){
+				Doublebox doublebox=(Doublebox) component;
+				if(doublebox.getValue()!=null){
+					if(doublebox.getAttribute(ATTRIBUTE_PRECIO)!=null)
+						detalleButaca.setPrecio(doublebox.getValue());
+					cell.setLabel(Util.toNumberFormat(doublebox.getValue(), 2));
+				}else{
+					if(doublebox.getAttribute(ATTRIBUTE_PRECIO)!=null)
+						detalleButaca.setPrecio(0.00);
+				}
+			}else if (component instanceof Textbox){
+				Textbox textbox=(Textbox)component;
+				if(!(textbox.getText().isEmpty())){
+					if(textbox.getAttribute(ATTRIBUTE_ASIENTOS)!=null)
+						detalleButaca.setRagoAsientos(textbox.getText());
+					else if(textbox.getAttribute(ATTRIBUTE_ITINERARIO)!=null)
+						detalleButaca.setItinerario(new Itinerario(Long.valueOf(textbox.getText())));
+					cell.setLabel(textbox.getText());
+				}else{
+					if(textbox.getAttribute(ATTRIBUTE_ASIENTOS)!=null)
+						detalleButaca.setRagoAsientos(null);
+					else if(textbox.getAttribute(ATTRIBUTE_ITINERARIO)!=null)
+						detalleButaca.setItinerario(null);
+				}
+			}
+
+			if(event.getName().equals("onOK")){
+				/*Habilita el siguiente control para la edicion del usuario*/
+				Listitem item=(Listitem) cell.getParent();
+				Listcell cellNext=(Listcell) item.getChildren().get(cell.getColumnIndex()+1);
+				Component componentNext=cellNext.getFirstChild();
+				enabledControl(componentNext);
+
+				/*Pregunta al usuario si desea agregar una item*/
+//				if(component.getAttribute(ATTRIBUTE_CANAL_VENTA)!=null){
+				if(component.getAttribute(ATTRIBUTE_ITINERARIO)!=null){
+					Messagebox.show("¿Desea agregar un nuevo ítem?.", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_YES, new EventListener<Event>() {
+						@Override
+						public void onEvent(Event e){
+							if(e.getName().equals("onYes")){
+								try {
+
+									onClick_addNewItem(null);
+
+								} catch (Exception e2) {
+									e2.printStackTrace();
+									DlgMessage.error(e2.getMessage());
+								}
+							}
+						}
+					});
+				}
+			}
+		}
+	}
+	/**
+	 * Habilita el control para la edicion en el listbox
+	 * @param component
+	 * @throws Exception
+	 */
+	private void enabledControl(Component component)throws Exception{
+		if(component!=null){
+			component.setVisible(true);
+			((Listcell)component.getParent()).setLabel("");
+			if(component instanceof Combobox){
+				if(((Combobox)component).getItems().size()==2)
+					((Combobox)component).setSelectedIndex(1);
+				((Combobox)component).setFocus(true);
+				((Combobox)component).select();
+			}else if(component instanceof Doublebox){
+				((Doublebox)component).setFocus(true);
+				((Doublebox)component).select();
+			}else if (component instanceof Textbox){
+				((Textbox)component).setFocus(true);
+				((Textbox)component).select();
+			}
+		}
+	}
+	/* ****FIN EVENTOS*******************************************************************/
+
+
+	/**
+	 * Limpia los controles
+	 */
+	private void limpiarControles(){
+		Util.limpiarListbox(ltbxMantoTarifario);
+		dtbxDesde.setValue(null);
+		dtbxHasta.setValue(null);
+		cmbTipoServicio.setSelectedIndex(0);
+	}
+	/**
+	 *
+	 */
+	public void onClick_btnNuevaTarifa(){
+		try {
+			divNuevaTarifa.setVisible(true);
+			limpiarControles();
+			btnNuevaTarifa.setDisabled(true);
+			btnCopiarTarifa.setDisabled(true);
+			btnCancelar.setDisabled(false);
+			btnGuardarTarifa.setDisabled(false);
+		} catch (Exception e) {
+			DlgMessage.information(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 *
+	 */
+	public void onClick_btnCopiarTarifa(){
+		divNuevaTarifa.setVisible(false);
+		btnNuevaTarifa.setDisabled(true);
+		btnCopiarTarifa.setDisabled(true);
+		btnCancelar.setDisabled(false);
+		btnGuardarTarifa.setDisabled(false);
+	}
+
+	/**
+	 *
+	 */
+	public void onClick_btnCancelar(){
+		try {
+			limpiarControles();
+			divNuevaTarifa.setVisible(false);
+			btnNuevaTarifa.setDisabled(false);
+			btnCopiarTarifa.setDisabled(false);
+			btnCancelar.setDisabled(true);
+			btnGuardarTarifa.setDisabled(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			DlgMessage.error(e.getMessage());
+		}
+	}
+
+	/**
+	 *
+	 */
+	public void onClick_btnGuardarTarifa(){
+		try {
+			if (dtbxDesde.getValue().getTime()>dtbxHasta.getValue().getTime()){
+				DlgMessage.information(Messages.getString("wndProgramacionTarifa.information.fechaDesdeMayor"), dtbxHasta);
+				return;
+			}else if (ltbxMantoTarifario.getItemCount()==0){
+				DlgMessage.information(Messages.getString("wndProgramacionTarifa.information.noTarifaSaved"));
+				return;
+			}
+			TreeMap<String, DetalleButaca> detalleButacas= new TreeMap<>();
+			lstDetalleButacas=new ArrayList<>();
+
+			/*Validando el tarifario ingresado*/
+			for(Listitem item: ltbxMantoTarifario.getItems()){
+				List<Integer>asientos=new ArrayList<>();
+				int index=item.getIndex()+1;
+				DetalleButaca detalleButaca=item.getValue();
+				if(detalleButaca.getRuta()==null){
+					DlgMessage.information("Debe de ingresar el Origen y Destino. \n Fila "+index);
+					ltbxMantoTarifario.selectItem(item);
+					return;
+				}else if(detalleButaca.getRuta().getLocalidadOrigen()==null){
+					DlgMessage.information("Debe de ingresar el Orgen. \n Fila "+index);
+					ltbxMantoTarifario.selectItem(item);
+					return;
+				}else if(detalleButaca.getRuta().getLocalidadDestino()==null){
+					DlgMessage.information("Debe de ingresar el Destino. \n Fila "+index);
+					ltbxMantoTarifario.selectItem(item);
+					return;
+				}else if(detalleButaca.getTipoAsiento()==null){
+					DlgMessage.information("Debe de ingresar el tipo de Asiento. \n Fila "+index);
+					ltbxMantoTarifario.selectItem(item);
+					return;
+				}else if(detalleButaca.getRagoAsientos()==null){
+					DlgMessage.information("Debe de ingresar los asientos para los cuales desea crear la tarifa. \n Fila "+index);
+					ltbxMantoTarifario.selectItem(item);
+					return;
+				}else if(detalleButaca.getTipoPrecio()==null){
+					DlgMessage.information("Debe de ingresar el Tipo de Asiento. \n Fila "+index);
+					ltbxMantoTarifario.selectItem(item);
+					return;
+				}else if(detalleButaca.getPrecio()==null || detalleButaca.getPrecio()<=0){
+					DlgMessage.information("Debe de ingresar el precio. \n Fila "+index);
+					ltbxMantoTarifario.selectItem(item);
+					return;
+				}else if(detalleButaca.getItinerario()!=null){
+					//Valida si la tarifa tiene itinerario. No permite crear tarifa masiva(rango de fechas) con un itinerario
+					if(dtbxDesde.getValue().getTime()!=dtbxHasta.getValue().getTime()){
+						DlgMessage.information("No de puede crear una Tarifa con el mismo Itinerario para un rango de fechas. \n Fila "+index);
+						ltbxMantoTarifario.selectItem(item);
+						return;
+					}
+				}else{
+					//Valida caracteres especiales en el campo asientos
+					String caracteresInvalidos=Util.validarCaracteresEspeciales(detalleButaca.getRagoAsientos());
+					if(!(caracteresInvalidos.trim().isEmpty())){
+						DlgMessage.information("Los siguientes caracteres ingresados en el campo Asientos no son válidos ("+caracteresInvalidos+") \n Fila "+index);
+						ltbxMantoTarifario.selectItem(item);
+						return;
+					}
+
+					//Agrega los asientos ingresados al arraylist asientos
+					String[] rda=detalleButaca.getRagoAsientos().split(";");
+					for(String string:rda){
+						//Si es rango
+						if(string.indexOf("-")>0){
+							/** Rango de asientos************************/
+							String[] rango=string.split("-");
+							if(Util.isNumeric(rango[0])){
+								if(Util.isNumeric(rango[1])){
+									int inicio=Integer.valueOf(rango[0]);
+									int fin=Integer.valueOf(rango[1]);
+
+									for(int asiento=inicio; asiento<=fin;asiento++){
+										asientos.add(asiento);
+									}
+								}else{
+									DlgMessage.information("Los siguientes caracteres ingresados en el campo Asientos no son válidos ("+rango[1]+") \n Fila "+index);
+									ltbxMantoTarifario.selectItem(item);
+									return;
+								}
+							}else{
+								DlgMessage.information("Los siguientes caracteres ingresados en el campo Asientos no son válidos ("+rango[0]+") \n Fila "+index);
+								ltbxMantoTarifario.selectItem(item);
+								return;
+							}
+						}else if(string.indexOf(",")>0){
+							/** Asientos selectivos************************/
+							String[] selectivos=string.split(",");
+							for(String asiento:selectivos){
+								//Valida que el asiento sea numerico
+								if(Util.isNumeric(asiento)){
+									Integer _asiento=Integer.valueOf(asiento);
+									//Valida que el asiento no exista
+									if(!(asientos.contains(_asiento))){
+										asientos.add(_asiento);
+									}else{
+										DlgMessage.information("El Número de Asiento ("+_asiento.toString()+") esta duplicado. \n Fila "+index);
+										ltbxMantoTarifario.selectItem(item);
+										return;
+									}
+								}else{
+									DlgMessage.information("Los siguientes caracteres ingresados en el campo Asientos no son válidos ("+asiento+") \n Fila "+index);
+									ltbxMantoTarifario.selectItem(item);
+									return;
+								}
+							}
+						}else if(Util.isNumeric(string)){ //Valida que el asiento sea numerico
+							//Valida que el asiento no exista
+							Integer _asiento=Integer.valueOf(string);
+							if(!(asientos.contains(_asiento)))
+								asientos.add(_asiento);
+							else{
+								DlgMessage.information("El Número de Asiento ("+_asiento.toString()+") esta duplicado. \n Fila "+index);
+								ltbxMantoTarifario.selectItem(item);
+								return;
+							}
+						}else{
+							DlgMessage.information("Los siguientes caracteres ingresados en el campo Asientos no son válidos ("+string+") \n Fila "+index);
+							ltbxMantoTarifario.selectItem(item);
+							return;
+						}
+					}
+				}
+
+				/*Validando que los asientos correspondan al tipo de asiento*/
+				TipoAsiento tipoAsiento=detalleButaca.getTipoAsiento();
+				for(Integer _asiento:asientos){
+					if(!(tipoAsiento.getAsientos().contains(_asiento))){
+						DlgMessage.information("El Número de Asiento ("+_asiento+") no es "+tipoAsiento.getDenominacion()+"\n Fila "+index);
+						ltbxMantoTarifario.selectItem(item);
+						return;
+					}
+				}
+
+				/*Validar la existencia de la ruta seleccionada (origen - destino)*/
+				Localidad localidadOrigen=detalleButaca.getRuta().getLocalidadOrigen();
+				Localidad localidadDestino=detalleButaca.getRuta().getLocalidadDestino();
+				TreeMap<String, Object>criteriosBusqueda= new TreeMap<>();
+				criteriosBusqueda.put("localidadOrigen", localidadOrigen);
+				criteriosBusqueda.put("localidadDestino", localidadDestino);
+				criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+				List<Ruta> lstRuta= ServiceLocator.getRutaManager().buscarPorX(criteriosBusqueda, null);
+				if(lstRuta.size()==0){
+					DlgMessage.information("La Ruta "+localidadOrigen.getDenominacion()+"-"+localidadDestino.getDenominacion()+" no existe en el Sistema. \n Fila "+index);
+					ltbxMantoTarifario.selectItem(item);
+					return;
+				}
+
+				/*Validando tarifas duplicadas*/
+				String key=detalleButaca.getRuta().getLocalidadOrigen().getDenominacion()+detalleButaca.getRuta().getLocalidadDestino().getDenominacion()+
+						detalleButaca.getTipoAsiento().getDenominacion()+detalleButaca.getRagoAsientos()+detalleButaca.getTipoPrecio().getDenominacion()+
+						(detalleButaca.getCanalVenta()!=null?detalleButaca.getCanalVenta().getDenominacion():"")+
+						(detalleButaca.getItinerario()!=null?detalleButaca.getItinerario().getId().toString():"");
+
+				DetalleButaca detalleButacaDupl=detalleButacas.get(key);
+				if(detalleButacaDupl==null)
+					detalleButacas.put(key, detalleButaca);
+				else{
+					if(detalleButaca.getPrecio().doubleValue()!=detalleButacaDupl.getPrecio().doubleValue())
+						DlgMessage.information("Existe una tarifa duplicada con Precios diferentes, por favor reviserlo. \n Fila "+index);
+					else
+						DlgMessage.information("Existe una tarifa duplicada, por favor reviserlo. \n Fila "+index);
+					ltbxMantoTarifario.selectItem(item);
+					return;
+				}
+
+				/*Agrega los asientos a la lista, para luego ser guardados en la base de datos*/
+				for(Integer asiento:asientos){
+					DetalleButaca oDetalleButaca=(DetalleButaca) detalleButaca.clone();
+					MapaBus mapaBus=new MapaBus();
+					mapaBus.setNumeroAsiento(asiento);
+//					mapaBus.setTipoAsiento(oDetalleButaca.getTipoAsiento());
+					oDetalleButaca.setMapaBus(mapaBus);
+					oDetalleButaca.setRuta(lstRuta.get(0));
+					lstDetalleButacas.add(oDetalleButaca);
+				}
+			}
+
+			Messagebox.show("Este proceso puede tardar varios minutos! \n ¿Realmete desea continuar?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event e) throws Exception{
+					try{
+						if(e.getName().equals("onYes")){
+							/*Guarda la tarifa*/
+							String fechaInicio=Constantes.FORMAT_DATE.format(dtbxDesde.getValue());
+							String fechaFinal=Constantes.FORMAT_DATE.format(dtbxHasta.getValue());
+							Integer servicioId=((Servicio)cmbTipoServicio.getSelectedItem().getValue()).getId();
+							int isCorrect=ServiceLocator.getDetalleButacaManager().guardar(lstDetalleButacas,fechaInicio , fechaFinal, servicioId, getUsuario());
+							if(isCorrect==Constantes.CORRECT){
+								btnGuardarTarifa.setDisabled(true);
+								btnCancelar.setDisabled(true);
+								btnNuevaTarifa.setDisabled(false);
+								btnCopiarTarifa.setDisabled(false);
+								Util.limpiarListbox(ltbxMantoTarifario);
+								limpiarControles();
+								divNuevaTarifa.setVisible(false);
+								DlgMessage.information(Messages.getString("Generales.information.exitoGuardar"));
+							}else
+								DlgMessage.information(Messages.getString("Generales.information.errorGuardar"));
+						}
+					} catch (Exception e2) {
+						e2.printStackTrace();
+						DlgMessage.error(e2.getMessage());
+					}
+
+				}
+			});
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			DlgMessage.error(e.getMessage());
+		}
+	}
+
+	/**
+	 *
+	 */
+	public void onChange_cmbTipoServicio(){
+		try {
+			if(dtbxDesde.getValue()==null){
+				cmbTipoServicio.setSelectedIndex(0);
+				DlgMessage.information(Messages.getString("wndProgramacionTarifa.information.noFechaDesde"), dtbxDesde);
+				return;
+			}else if(dtbxHasta.getValue()==null){
+				cmbTipoServicio.setSelectedIndex(0);
+				DlgMessage.information(Messages.getString("wndProgramacionTarifa.information.noFechaHasta"), dtbxHasta);
+				return;
+			}else if (dtbxDesde.getValue().getTime()>dtbxHasta.getValue().getTime()){
+				cmbTipoServicio.setSelectedIndex(0);
+				DlgMessage.information(Messages.getString("wndProgramacionTarifa.information.fechaDesdeMayor"), dtbxHasta);
+				return;
+			}
+			ltbxMantoTarifario.setVisible(false);
+			Util.limpiarListbox(ltbxMantoTarifario);
+
+			if(cmbTipoServicio.getSelectedItem().getValue() instanceof Servicio){
+				/*Busca los tipos de asiento disponibles para el servicio seleccionado*/
+				tiposAsientos= new ArrayList<>();
+				List<MapaBus> result= ServiceLocator.getMapaBusManager().buscarMapaBus(((Servicio)cmbTipoServicio.getSelectedItem().getValue()).getId(), Constantes.VALUE_ACTIVO);
+				for(MapaBus mapaBus :result){
+//					if(mapaBus.getTipoAsiento()!=null){
+//						/*Valida si el tipo de asiento ya existe en la lista "tiposAsientos"*/
+//						TipoAsiento tipoAsientoDuplicate=null;
+//						for(TipoAsiento tipoAsiento :tiposAsientos){
+//							if(tipoAsiento.getId().intValue()==mapaBus.getTipoAsiento().getId().intValue()){
+//								tipoAsientoDuplicate=tipoAsiento;
+//								break;
+//							}
+//						}
+//
+//						//Agrega si es que no existe
+//						if(tipoAsientoDuplicate==null){
+//							List<Integer> asientos= new ArrayList<>();
+//							asientos.add(mapaBus.getNumeroAsiento());
+//							mapaBus.getTipoAsiento().setAsientos(asientos);
+//							tiposAsientos.add(mapaBus.getTipoAsiento());
+//						}else{
+//							//Agrega el numero de asiento al tipo se asiento existente
+//							tipoAsientoDuplicate.getAsientos().add(mapaBus.getNumeroAsiento());
+//						}
+//					}
+				}
+
+				/*Agrega un nuevo item al listbox*/
+				ltbxMantoTarifario.setVisible(true);
+				onClick_addNewItem(null);
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			DlgMessage.information(e.getMessage());
+		}
+	}
+
+
+
+
+	/**
+	 * Agrega un nuevo item al listbox
+	 * @throws Exception
+	 */
+	private void onClick_addNewItem(Event event)throws Exception{
+		if(!(btnGuardarTarifa.isDisabled())){
+			Listitem itemNew= addNewItem(new DetalleButaca());
+
+			for(Listitem item: ltbxMantoTarifario.getItems()){
+				/*Oculta la imagen para agregar un nuevo item, excepto del ultimo item*/
+				if(item.getIndex()!=ltbxMantoTarifario.getItems().size()-1){
+					for(Component component: item.getChildren()){
+						Component component2=component.getFirstChild();
+						if(component2 instanceof Hbox){
+							Image image=(Image) component2.getFirstChild();
+							image.setVisible(false);
+						}
+					}
+				}else{
+					ltbxMantoTarifario.selectItem(item);
+				}
+			}
+
+			/*Habilita el control para su edicion*/
+			Listcell cellNext=(Listcell) itemNew.getChildren().get(0);
+			Component componentNext=cellNext.getFirstChild();
+			enabledControl(componentNext);
+		}
+	}
+
+//	/**
+//	 * Copia y agrega un nuevo item al listbox
+//	 * @param event
+//	 * @throws Exception
+//	 */
+//	private void onClick_copyAddNewItem(Event event)throws Exception{
+//		DetalleButaca detalleButaca=((Listitem)event.getTarget().getParent().getParent().getParent()).getValue();
+//		Listitem itemNew= addNewItem(detalleButaca);
+//
+//		for(Listitem item: ltbxMantoTarifario.getItems()){
+//			/*Oculta la imagen para agregar un nuevo item, excepto del ultimo item*/
+//			if(item.getIndex()!=ltbxMantoTarifario.getItems().size()-1){
+//				for(Component component: item.getChildren()){
+//					Component component2=component.getFirstChild();
+//					if(component2 instanceof Hbox){
+//						Image image=(Image) component2.getFirstChild();
+//						image.setVisible(false);
+//					}
+//				}
+//			}else{
+//				ltbxMantoTarifario.selectItem(item);
+//			}
+//		}
+//
+//		/*Habilita el control para su edicion*/
+//		Listcell cellNext=(Listcell) itemNew.getChildren().get(0);
+//		Component componentNext=cellNext.getFirstChild();
+//		enabledControl(componentNext);
+//	}
+
+	/**
+	 * Elimina un item del listbx
+	 * @throws Exception
+	 */
+	private void onClick_removeItem(Event event)throws Exception{
+		if(!(btnGuardarTarifa.isDisabled())){
+			Listitem itemRemove=(Listitem) event.getTarget().getParent().getParent().getParent();
+			ltbxMantoTarifario.removeChild(itemRemove);
+
+			/*Valida si ya no hay item*/
+			if(ltbxMantoTarifario.getItems().size()==0){
+				addNewItem(new DetalleButaca());
+				ltbxMantoTarifario.setSelectedItem(ltbxMantoTarifario.getItems().get(0));
+			}else{
+				Listitem item=ltbxMantoTarifario.getItemAtIndex(ltbxMantoTarifario.getItems().size()-1);
+				ltbxMantoTarifario.selectItem(item);
+
+				/*Muestra imagen para agregar un nuevo item*/
+				for(Component component: item.getChildren()){
+					Component component2=component.getFirstChild();
+					if(component2 instanceof Hbox){
+						Image image=(Image) component2.getFirstChild();
+						image.setVisible(true);
+					}
+				}
+			}
+		}
+	}
+
+	private void enlazarItinerario(final Event eventText) throws Exception {
+		Listitem item= (Listitem) eventText.getTarget().getParent().getParent();
+		DetalleButaca detalleButaca=item.getValue();
+		if(!(detalleButaca.getRuta()!=null && detalleButaca.getRuta().getLocalidadOrigen()!=null && detalleButaca.getRuta().getLocalidadDestino()!=null)){
+			DlgMessage.information("Primero debe de ingresar el Origen y Destino.");
+			return;
+		}
+
+		final WndSeleccionaItinerario oWndSeleccionaItinerario = new WndSeleccionaItinerario();
+		boolean buscarVentanaParent = true;
+		Component oComponent = eventText.getTarget().getParent();
+		while(buscarVentanaParent){
+			 if(oComponent instanceof Window) {
+				 oComponent.appendChild(oWndSeleccionaItinerario);
+				 buscarVentanaParent = false;
+			 }else{
+			 	oComponent = oComponent.getParent();
+			 }
+		}
+		oWndSeleccionaItinerario.onCreate();
+		oWndSeleccionaItinerario.setMode("modal");
+		oWndSeleccionaItinerario.setVisible(true);
+		Util.seleccionarValorItemCombo(Localidad.class,oWndSeleccionaItinerario.cmbOrigen,detalleButaca.getRuta().getLocalidadOrigen().getId());
+		Util.seleccionarValorItemCombo(Localidad.class,oWndSeleccionaItinerario.cmbDestino,detalleButaca.getRuta().getLocalidadDestino().getId());
+		Util.seleccionarValorItemCombo(Servicio.class,oWndSeleccionaItinerario.cmbServicio,((Servicio)cmbTipoServicio.getSelectedItem().getValue()).getId());
+		oWndSeleccionaItinerario.dbFechaInicio.setValue(dtbxDesde.getValue());
+		oWndSeleccionaItinerario.dbFechaFin.setValue(dtbxDesde.getValue());
+
+		oWndSeleccionaItinerario.cmbOrigen.setDisabled(true);
+		oWndSeleccionaItinerario.cmbDestino.setDisabled(true);
+		oWndSeleccionaItinerario.dbFechaInicio.setDisabled(true);
+		oWndSeleccionaItinerario.dbFechaFin.setDisabled(true);
+		oWndSeleccionaItinerario.cmbServicio.setDisabled(true);
+
+		oWndSeleccionaItinerario.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				((Textbox)eventText.getTarget()).setText(oWndSeleccionaItinerario.getIdItinerario().toString());
+				onEvent_control(eventText);
+			}
+		});
+	}
+}

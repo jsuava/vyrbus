@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndAutorizadorCortesia" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndAutorizadorCortesia">
+<window id="wndAutorizadorCortesia" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndAutorizadorCortesia">
 	<div id="divLista">
 		<listbox id="listboxLista" >
 			<listhead sizable="true">
@@ -24,17 +24,17 @@
 						<textbox id="textboxId" visible="false" />
 						<label value="PERSONA QUE AUTORIZA (*) :" />
 					</div>
-					<combobox id="cmbPersonal" readonly="false" width="225px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbMotivoCortesia)" />
+					<combobox id="cmbPersonal" readonly="false" width="225px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbMotivoCortesia)" />
 					<label value="MOTIVO DE LA CORTESIA (*) :" />
-					<combobox id="cmbMotivoCortesia" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtPassword)" />
+					<combobox id="cmbMotivoCortesia" readonly="true" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtPassword)" />
 				</row>
 				<row  spans="1,3">
 					<label id="lblPasswordActual" value="PASSWORD ACTUAL :" />
-					<textbox id="txtPasswordActual" type="password" width="100px" maxlength="20" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtPassword)" />
+					<textbox id="txtPasswordActual" type="password" width="100px" maxlength="20" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtPassword)" />
 				</row>
 				<row>
 					<label id="lblPassword" value="PASSWORD (*) :" />
-					<textbox id="txtPassword" type="password" width="100px"  maxlength="20" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtConfirmarPassword)" />
+					<textbox id="txtPassword" type="password" width="100px"  maxlength="20" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtConfirmarPassword)" />
 					
 					<label value="CONFIRMAR PASSWORD (*) :" />
 					<textbox id="txtConfirmarPassword" type="password" width="100px" maxlength="20" />

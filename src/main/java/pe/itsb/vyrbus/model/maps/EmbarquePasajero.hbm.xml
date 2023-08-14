@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="pe.itsb.vyrbus.model.bean.EmbarquePasajero" table="VRTEMBPAS" schema="VYRBUSME">
+        <comment>Entidad que almacena el detalle de los pasajeros embarcados</comment>
+        <id name="id" type="java.lang.Long">
+            <column name="EMBPAS_ID" precision="18" scale="0" />
+            <generator class="sequence">
+                <param name="sequence">SEQ_VRTEMBPAS_ID</param>
+            </generator>
+        </id>
+        <many-to-one name="itinerario" class="pe.itsb.vyrbus.model.bean.Itinerario" fetch="select">
+            <column name="ITINERARIO_ID" precision="18" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 18</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="agencia" class="pe.itsb.vyrbus.model.bean.Agencia" fetch="select" insert="true" update="true">
+            <column name="AGENCIA_ID" precision="5" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+            </column>
+        </many-to-one>        
+        <property name="fechaApertura" type="java.util.Date">
+            <column name="D_FECAPE" length="7" not-null="true">
+                <comment>Fecha de apertura del embarque</comment>
+            </column>
+        </property>
+        <property name="horaApertura" type="java.lang.String">
+            <column name="C_HORAPE" length="10" not-null="true">
+                <comment>Hora de apertura del embarque</comment>
+            </column>
+        </property>
+        <property name="fechaCierre" type="java.util.Date">
+            <column name="D_FECCIE" length="7" >
+                <comment>Fecha de cierre del embarque</comment>
+            </column>
+        </property>
+        <property name="horaCierre" type="java.lang.String">
+            <column name="C_HORCIE" length="10">
+                <comment>Hora de cierre del embarque</comment>
+            </column>
+        </property>
+        <property name="estadoEmbarque" type="java.lang.Integer">
+            <column name="N_ESTEMB" not-null="true">
+                <comment>Estado del embarque de pasajeros, 1=Abierto; 0=Cerrado.</comment>
+            </column>
+        </property>
+        <property name="cantidadPasajerosEmbarcados" type="java.lang.Integer">
+            <column name="N_CANPASEMB">
+                <comment>Cantidad de pasajeros embarcados.</comment>
+            </column>
+        </property>
+
+        <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+        <property name="estadoRegistro" type="java.lang.String">
+            <column name="C_ESTREG" length="1" not-null="true">
+                <comment>Estado de registro A(Activo), I(Inactivo).</comment>
+            </column>
+        </property>
+        <property name="fechaInsercion" type="java.util.Date">
+            <column name="AUDFECINS" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioInsercion" type="java.lang.String">
+            <column name="AUDUSUINS" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipInsercion" type="java.lang.String">
+            <column name="AUDIPINSE" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="fechaModificacion" type="java.util.Date">
+            <column name="AUDFECMOD" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioModificacion" type="java.lang.String">
+            <column name="AUDUSUMOD" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipModificacion" type="java.lang.String">
+            <column name="AUDIPMODI" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <!-- 		END CAMPOS DE AUDITORIA	 	-->
+    </class>
+</hibernate-mapping>

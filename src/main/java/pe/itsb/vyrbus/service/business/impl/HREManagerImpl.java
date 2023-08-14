@@ -1,0 +1,97 @@
+/**
+ * Proyecto		: SISVYR
+ * Sistema		: Sistema de Ventas y Reservas
+ * Descripción	:
+ * Autor		: José Abanto
+ * Fecha		: 27/08/2014
+ * Hora			: 12:04:42
+ */
+package pe.itsb.vyrbus.service.business.impl;
+
+import java.util.List;
+import java.util.TreeMap;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import pe.itsb.vyrbus.model.bean.HRE;
+import pe.itsb.vyrbus.model.dao.HREDAO;
+import pe.itsb.vyrbus.service.business.HREManager;
+
+/**
+ * @author JABANTO
+ *
+ */
+public class HREManagerImpl implements HREManager{
+	private HREDAO hreDao;
+
+	/**
+	 * @return the hredao
+	 */
+	public HREDAO getHreDao() {
+		return hreDao;
+	}
+	/**
+	 * @param hredao the hredao to set
+	 */
+	public void setHreDao(HREDAO hreDao) {
+		this.hreDao = hreDao;
+	}
+
+
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.HREManager#guardar(com.tepsa.sisvyr.model.bean.HRE)
+	 */
+	@Override
+	@Transactional
+	public void guardar(HRE hre) throws Exception {
+		// TODO Auto-generated method stub
+		getHreDao().guardar(hre);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.HREManager#actualizar(com.tepsa.sisvyr.model.bean.HRE)
+	 */
+	@Override
+	@Transactional
+	public void actualizar(HRE hre) throws Exception {
+		// TODO Auto-generated method stub
+		getHreDao().actualizar(hre);
+	}
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.HREManager#buscarPorId(java.lang.String)
+	 */
+	@Override
+	public HRE buscarPorId(String nroHojaRuta) throws Exception {
+		// TODO Auto-generated method stub
+		return getHreDao().buscarPorId(nroHojaRuta);
+	}
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.HREManager#buscarHREEmitida(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer)
+	 */
+	@Override
+	public List<HRE> buscarHREEmitida(String fechaInicial, String fechaFinal,Integer idOrigen, Integer idDestino) throws Exception {
+		// TODO Auto-generated method stub
+		return getHreDao().buscarHREEmitida(fechaInicial, fechaFinal, idOrigen, idDestino);
+	}
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.HREManager#buscarHREEmitida(java.lang.Long)
+	 */
+	@Override
+	public HRE buscarHREEmitida(Long idItinerario)throws Exception {
+		// TODO Auto-generated method stub
+		return getHreDao().buscarHREEmitida(idItinerario);
+	}
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.HREManager#buscarByItinerario(java.util.TreeMap, java.util.List)
+	 */
+	@Override
+	public List<HRE> buscarPorX(TreeMap<String, Object> criteriosBusqueda,List<String> criteriosOrden) throws Exception {
+		// TODO Auto-generated method stub
+		return getHreDao().buscarPorX(criteriosBusqueda, criteriosOrden);
+	}
+
+
+
+}

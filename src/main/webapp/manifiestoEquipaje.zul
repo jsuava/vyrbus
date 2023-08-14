@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndManifiestoEquipaje" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndManifiestoEquipaje">
+<window id="wndManifiestoEquipaje" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndManifiestoEquipaje">
 	<panel id="panel" title="::: MANIFIESTO DE EQUIPAJES :::" framable="true" width="860px" border="normal" closable="true">
         <panelchildren>
 				<grid style="background: ">

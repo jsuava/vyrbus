@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndOperacionesRemotas" use="com.cystesoft.vyrbus.view.ctrl.WndOperacionesRemotas" title="" border="none">
+<window id="wndOperacionesRemotas" use="pe.itsb.vyrbus.view.ctrl.WndOperacionesRemotas" title="" border="none">
 	<groupbox mold="3d" closable="false">
 		<caption label="PARAMETROS DE BÚSQUEDA" style="color: #ffffff;"/>
 		<grid>

@@ -1,6 +1,6 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:n="client">
-	<window  title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndTipoItinerario">
+	<window  title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndTipoItinerario">
 		<div id="divLista">
 			<listbox id="listboxLista">
 				<listhead sizable="true">
@@ -25,7 +25,7 @@
 						<label value="DENOMINACIÓN (*) :"  />
 						<div>
 							<textbox id="textboxId"/>
-							<textbox id="txtDenominacion"  maxlength="30" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNombreCorto)" />
+							<textbox id="txtDenominacion"  maxlength="30" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtNombreCorto)" />
 						</div>
 						<label value="NOMBRE CORTO (*) :" />
 						<textbox id="txtNombreCorto"  maxlength="15"/>

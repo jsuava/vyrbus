@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndEstadoVyR" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndEstadoVentaReserva">
+<window id="wndEstadoVyR" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndEstadoVentaReserva">
 	<groupbox mold="3d" closable="false">
 		<caption label="PARÁMETROS DE BÚSQUEDA" style="color: #ffffff;"/>
 		<grid>
@@ -21,13 +21,13 @@
 										onChange="wndEstadoVyR.onLoadUsuarios(cmbUsuario)"  
 										focus="true" 
 										format="dd/MM/yyyy" 
-										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(dtbxFechaFinVenta)" /><space width="15px" />
+										onOK="pe.itsb.vyrbus.service.util.Util.setFocus(dtbxFechaFinVenta)" /><space width="15px" />
 								<label value="FIN :" />
 								<datebox id="dtbxFechaFinVenta" 
 										width="105px" 
 										onChange="wndEstadoVyR.onLoadUsuarios(cmbUsuario)"  
 										format="dd/MM/yyyy" 
-										onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(rdByDocumento)"/>
+										onOK="pe.itsb.vyrbus.service.util.Util.setFocus(rdByDocumento)"/>
 							</groupbox>
 							
 <!-- 						BUSQUEDA POR PASAJERO -->
@@ -37,16 +37,16 @@
 									<radio id="rdByDocumento" 
 											checked="true" 
 											label="Nro. Documento" 
-											onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(rdByNombres)"/>
+											onOK="pe.itsb.vyrbus.service.util.Util.setFocus(rdByNombres)"/>
 									<radio id="rdByNombres" 
 											label="Nombres y/o Apellidos" 
-											onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtBusquedaPasajero)" />
+											onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtBusquedaPasajero)" />
 								</radiogroup>
 								<vbox><separator height="1px"/><hbox align="center">
 									<space width="2px" /> 
 									<textbox id="txtBusquedaPasajero" 
 												width="240px" 
-												onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(rdByRuc)" />
+												onOK="pe.itsb.vyrbus.service.util.Util.setFocus(rdByRuc)" />
 									<button label="..." sclass="btnImage" onClick="wndEstadoVyR.buscarPasajero()"/>
 								</hbox></vbox>
 							</groupbox>	
@@ -58,15 +58,15 @@
 									<radio id="rdByRuc" 
 											checked="true" 
 											label="Nro. Ruc" 
-											onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(rdByRazonSocial)" /><space width="35px"/>
+											onOK="pe.itsb.vyrbus.service.util.Util.setFocus(rdByRazonSocial)" /><space width="35px"/>
 									<radio id="rdByRazonSocial" 
 											label="Razón Social" 
-											onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtBusquedaCliente)" />
+											onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtBusquedaCliente)" />
 								</radiogroup>
 								<vbox><separator height="1px"/> <hbox align="center">
 										<space width="2px" /> 
 										<textbox id="txtBusquedaCliente" 
-												onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(dtbxFechaPartida)" 
+												onOK="pe.itsb.vyrbus.service.util.Util.setFocus(dtbxFechaPartida)" 
 												width="240px" />
 										<button label="..." sclass="btnImage" onClick="wndEstadoVyR.buscarCliente()"/>
 								</hbox></vbox>
@@ -81,29 +81,29 @@
 							<rows>
 								<row>
 									<label value="FECHA PARTIDA :" />
-									<datebox id="dtbxFechaPartida" format="dd/MM/yyyy" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbUsuario)" />
+									<datebox id="dtbxFechaPartida" format="dd/MM/yyyy" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbUsuario)" />
 								</row>
 								<row>
 									<label value="USUARIO :" />
-									<combobox id="cmbUsuario" readonly="true" width="160px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbTipomovimiento)"/>									
+									<combobox id="cmbUsuario" readonly="true" width="160px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbTipomovimiento)"/>									
 								</row>
 								<row>
 									<label value="TIPO MOVIMIENTO :" />
-									<combobox id="cmbTipomovimiento" readonly="true" width="160px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbOrigen)" />
+									<combobox id="cmbTipomovimiento" readonly="true" width="160px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbOrigen)" />
 								</row>
 								<row>
 									<label value="ORIGEN :" />
-									<combobox id="cmbOrigen" readonly="true" width="160px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbDestino)" />
+									<combobox id="cmbOrigen" readonly="true" width="160px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbDestino)" />
 								</row>
 								<row>
 									<label value="DESTINO :" />
-									<combobox id="cmbDestino" readonly="true" width="160px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNumeroControl)" />
+									<combobox id="cmbDestino" readonly="true" width="160px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtNumeroControl)" />
 								</row>
 								<row>
 									<label value="NRO. CONTROL :" />
 									<textbox id="txtNumeroControl" 
 											 maxlength="20"
-											 onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNumeroBoleto)" 
+											 onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtNumeroBoleto)" 
 											 style="font-size:11px !important" 
 											 width="150px"  />
 									

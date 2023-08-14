@@ -1,6 +1,6 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndTipoOperacion" border="none" width="450px" height="350px" use="com.cystesoft.vyrbus.view.ctrl.WndTipoOperacion">
+<window id="wndTipoOperacion" border="none" width="450px" height="350px" use="pe.itsb.vyrbus.view.ctrl.WndTipoOperacion">
 	<groupbox closable="false" mold="3d" >
 		<caption label="APERTURAR CAJA" style="color: #ffffff;"/>
 		<vlayout>

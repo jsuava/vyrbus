@@ -20,7 +20,7 @@
         }
     </style>
     <script src="/js/pwd_str.js" ></script>
-	<window id="wndUsuariosistema" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndUsuarioSistema" >
+	<window id="wndUsuariosistema" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndUsuarioSistema" >
 		<div id="divLista">
 			<listbox id="listboxLista" onSelect="wndUsuariosistema.onchangeListBox()">
 				<listhead sizable="true">
@@ -46,26 +46,26 @@
 						<label value="PERSONAL EMPRESA :"/>
 						<div>
 							<textbox id="textboxId" />
-							<combobox id="cmbPersonal" readonly="false"  width="225px"  onChanging="wndUsuariosistema.onChangePersonal()" onChange="wndUsuariosistema.onChangePersonal()" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cmbAgencia)"/>
+							<combobox id="cmbPersonal" readonly="false"  width="225px"  onChanging="wndUsuariosistema.onChangePersonal()" onChange="wndUsuariosistema.onChangePersonal()" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbAgencia)"/>
 						</div>
 						<label id="lblAgencia" value="AGENCIA :"/>
-						<combobox id="cmbAgencia" readonly="true" width="200px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtApellidoPaterno)"/>
+						<combobox id="cmbAgencia" readonly="true" width="200px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtApellidoPaterno)"/>
 					</row>
 					<row>
 						<label value="APELLIDO PATERNO (*) :"/>
-						<textbox id="txtApellidoPaterno"  maxlength="20" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtApellidoMaterno)"/>
+						<textbox id="txtApellidoPaterno"  maxlength="20" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtApellidoMaterno)"/>
 						<label value="APELLIDO MATERNO :"/>
-						<textbox id="txtApellidoMaterno" maxlength="20" width="180px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNombres)" />
+						<textbox id="txtApellidoMaterno" maxlength="20" width="180px" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtNombres)" />
 					</row>
 					<row>
 						<label value="NOMBRES (*) :"/>
-						<textbox id="txtNombres" maxlength="30" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtEmail)"/>
+						<textbox id="txtNombres" maxlength="30" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtEmail)"/>
 						<label value="CODIGO :"/>
 						<textbox id="txtCodigo" maxlength="5" width="180px" />
 					</row>
 					<row spans="1,3">
 						<label value="E-MAIL :"/>
-						<textbox id="txtEmail" maxlength="70" style="text-transform:lowercase; font-size:12px !important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtLogin)" />
+						<textbox id="txtEmail" maxlength="70" style="text-transform:lowercase; font-size:12px !important" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtLogin)" />
 					</row>
 				</rows>
 			</grid>
@@ -83,13 +83,13 @@
 						<rows>
 							<row>
 								<label value="USUARIO (*) :"/>
-								<textbox id="txtLogin" maxlength="20" style="text-transform:lowercase; font-size:12px !important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtPassword)"/>
+								<textbox id="txtLogin" maxlength="20" style="text-transform:lowercase; font-size:12px !important" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtPassword)"/>
 															
 							</row>
 							<row >
 								<label value="PASSWORD (*) :"/>
 								<hlayout>
-									<textbox  id="txtPassword" maxlength="128" type="password" c:onChanging="meterUpdate(event)" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtConfirmaPassword)" />
+									<textbox  id="txtPassword" maxlength="128" type="password" c:onChanging="meterUpdate(event)" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtConfirmaPassword)" />
  									<image id="imgGeneratePassword" onClick="wndUsuariosistema.generarPassword()" src="resources/mp_pwdautom.png" style="cursor:pointer" tooltiptext="Haga click aqui para generar la contraseña aleatoriamente" visible="false"/>
  									<image id="imgShowPassword" onClick="wndUsuariosistema.mostrarPassword()" src="resources/mp_showPassword.png" style="cursor:pointer" tooltiptext="Haga click aqui para mostrar el Password" visible="false" />  
 									<vbox>
@@ -102,7 +102,7 @@
 							</row>
 							<row>
 								<label value="CONFIRMAR PASSWORD (*) :"/>
-								<textbox id="txtConfirmaPassword" maxlength="40" type="password" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(rdSi)"/>
+								<textbox id="txtConfirmaPassword" maxlength="40" type="password" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(rdSi)"/>
 							</row>
 							<row>
 								<label value="E-MAIL (*) :"/>
@@ -191,7 +191,7 @@
 				</hbox>
 				
 <!-- 				<label value="ROL (*) :" /> -->
-<!-- 							<combobox id="cmbRol" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtPassword)" /> -->
+<!-- 							<combobox id="cmbRol" readonly="true" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(txtPassword)" /> -->
 			</groupbox>
 		</div>
 	</window>

@@ -1,9 +1,9 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <?link rel="shortcut icon" href="resources/favicon.ico" ?>
 <zk>
-<window border="none" use="com.cystesoft.vyrbus.view.ctrl.WndGenerateAddress">
+<window border="none" use="pe.itsb.vyrbus.view.ctrl.WndGenerateAddress">
 	<div align="center">
-		<applet id="address" archive="address.jar" code="com.cystesoft.vyrbus.view.applet.MacAddress" width="200px" height="100px" style="border:1px"/>
+		<applet id="address" archive="address.jar" code="pe.itsb.vyrbus.view.applet.MacAddress" width="200px" height="100px" style="border:1px"/>
 	</div>	
 </window>
 </zk>
