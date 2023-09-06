@@ -2763,7 +2763,8 @@ public class CreateDocument implements Serializable {
 					
 			//BEGIN 02/01/23 CASUISTICA PARA EL PRESIDENCIAL VIP TRANSMAR
 			Integer piso=0;
-			if(itinerario.getServicio().getId()==Constantes.ID_SERVICIO_VIP_PRESIDENCIAL) {
+			if(itinerario.getServicio().getId()==Constantes.ID_SERVICIO_VIP_PRESIDENCIAL 
+				|| itinerario.getServicio().getId()==Constantes.ID_SERVICIO_VIP_ESTANDAR) {
 				piso = 1;
 				creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso2(), wndmanifiesto, list, bw, piso, 0, itinerario.getServicio(), esManiesto);
 			}else { 
@@ -2775,7 +2776,8 @@ public class CreateDocument implements Serializable {
 			//creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso1(), wndmanifiesto, list, bw, piso, 0);
 			/*Cuando el es de dos pisos*/
 			if(itinerario.getServicio().getNumeroPisos()==2){
-				if(itinerario.getServicio().getId()==Constantes.ID_SERVICIO_VIP_PRESIDENCIAL) {
+				if(itinerario.getServicio().getId()==Constantes.ID_SERVICIO_VIP_PRESIDENCIAL
+					|| itinerario.getServicio().getId()==Constantes.ID_SERVICIO_VIP_ESTANDAR) {
 					piso--;
 					creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso1()+itinerario.getServicio().getNumeroAsientosPiso2(), wndmanifiesto, list, bw,piso, itinerario.getServicio().getNumeroAsientosPiso2(),itinerario.getServicio(), esManiesto);
 				}else {
@@ -3030,7 +3032,8 @@ public class CreateDocument implements Serializable {
 		int nroAsientos=0;
 		
 		if(piso == Constantes.PISO_UNO){
-			if(servicio.getId()==Constantes.ID_SERVICIO_VIP_PRESIDENCIAL)
+			if(servicio.getId()==Constantes.ID_SERVICIO_VIP_PRESIDENCIAL 
+				|| servicio.getId()==Constantes.ID_SERVICIO_VIP_ESTANDAR )
 				nroAsientos = numeroAsientosPiso1;
 			else
 				nroAsientos = 0;

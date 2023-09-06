@@ -31,7 +31,7 @@ public class Constantes {
 	 * Vension actual del Sistema
 	 */
 
-	public static final String SYSTEM_VERSION = "Versión 3.4.0";
+	public static final String SYSTEM_VERSION = "Versión 3.4.4";
 		
 	/**
 	 * Constante para la Acción Nuevo
@@ -346,7 +346,7 @@ public class Constantes {
 	public static final int ID_SERVICIO_POOL_CRUZDELSUR=99;
 	public static final int ID_SERVICIO_POOL_EXCLUCIVA=98;
 	public static final int ID_SERVICIO_VIP_PRESIDENCIAL=6;
-
+	public static final int ID_SERVICIO_VIP_ESTANDAR=7;
 
 	/*	Para saber si es una venta o reserva DB	*/
 	public static final String TIPO_OPERACION_VENTA = "1";

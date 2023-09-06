@@ -96,6 +96,7 @@ public class WndRptRegistroVentas extends WndBase  {
 		Util.limpiarListbox(lbxVentas);
 
 		String fechaInicio=null, fechaFin=null;
+		lstVentas = null;
 
 		if(dtbxFechaInicio.getValue()!=null)
 			fechaInicio=Constantes.FORMAT_DATE.format(dtbxFechaInicio.getValue());
@@ -103,9 +104,9 @@ public class WndRptRegistroVentas extends WndBase  {
 			fechaFin=Constantes.FORMAT_DATE.format(dtbxFechaFin.getValue());
 
 		if(rdEncomiendas.isChecked()) {
-			lstVentas = null;
+			
 			lstVentas = ServiceLocator.getTranscarWebManager().buscarRegistroVentas(fechaInicio, fechaFin);
-			listarVentas(lstVentas);
+//			listarVentas(lstVentas);
 			if(lstVentas.size()>0)
 				listarVentas(lstVentas);
 			else {

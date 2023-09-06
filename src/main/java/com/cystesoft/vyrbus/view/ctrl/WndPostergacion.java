@@ -392,7 +392,10 @@ public class WndPostergacion extends WndBase implements Serializable {
 					//Obteniendo los parametros en tiempo real para manejar la postergacion
 					Parametros parametros= ServiceLocator.getParametrosManager().buscarPorEstadoRegistro("A");					
 					
-					String fechaPartida = Util.DatetoString(venta.getFechaPartida(),Constantes.DATE_FORMAT)+" "+venta.getHoraPartida()+":00";
+//					String fechaPartida = Util.DatetoString(venta.getFechaPartida(),Constantes.DATE_FORMAT)+" "+venta.getHoraPartida()+":00";
+					String fechaPartida = Util.DatetoString(venta.getFechaPartida(),Constantes.DATE_FORMAT)+" "+
+											UtilData.obtenerHoraEmbarque(venta.getItinerario().getId(), venta.getAgenciaPartida().getId())+":00"; 
+					
 					//Long limite = Util.StringtoDate(fechaPartida, Constantes.DATE_TIME_FORMAT).getTime()-(Constantes.MILISEGUNDOS_X_HORA * Constantes.TIEMPO_LIMITE_POSTERGACION);
 					Long limite = Util.StringtoDate(fechaPartida, Constantes.DATE_TIME_FORMAT).getTime()-(Constantes.MILISEGUNDOS_X_MINUTO * parametros.getTiempoPostergacion());
 					@SuppressWarnings("unused")
@@ -441,10 +444,10 @@ public class WndPostergacion extends WndBase implements Serializable {
 //					Date fechaPartida=Constantes.FORMAT_LONG.parse(Constantes.FORMAT_DATE.format(postergacion.getFechaPartida())+" "+postergacion.getHoraPartida());
 //					if(ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(postergacion.getId()) || fechaPartida.getTime() <= dateSys.getTime()){
 					if(ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(postergacion.getId())){
-						chkFechaAbierta.setDisabled(true);
+						chkFechaAbierta.setDisabled(false);
 						//#javalos 06-05-23 se habilita el cambio de nombre
-						chkCambioNombre.setDisabled(true);
-						imgBuscarItinerario.setVisible(false);
+						chkCambioNombre.setDisabled(false);
+						imgBuscarItinerario.setVisible(true);
 					}
 
 				}catch(PostergacionByTipoMovimientoNoPermitidoException ptmnpex){

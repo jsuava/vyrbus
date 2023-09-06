@@ -1545,7 +1545,8 @@ public class WSFE implements Serializable{
 					 "[RUTA:"+ventaPasaje.getRuta().toString().trim()+"]\n"+
 					 "[SERV:"+servicio+"]\n"+
 					 "[ASIENTO:"+(ventaPasaje.getNumeroAsiento()!=null?ventaPasaje.getNumeroAsiento():"")+"-"+(ventaPasaje.getNumeroPiso()!=null?(ventaPasaje.getNumeroPiso().intValue()<=0?1:ventaPasaje.getNumeroPiso()):"")+"]\n"+
-					 "[FECHA:"+(ventaPasaje.getFechaPartida()!=null?Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida()):"")+"] [H. EMB:"+strHoraPartida+"]";
+					 "[FECHA:"+(ventaPasaje.getFechaPartida()!=null?Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida()):"")+"] [H. EMB:"+strHoraPartida+"]\n"+
+					 "[EMBARQUE:"+ (ventaPasaje.getAgenciaPartida()!=null?ventaPasaje.getAgenciaPartida().getDenominacion():"") +"]\n";
 //					 "[FECHA:"+(ventaPasaje.getFechaPartida()!=null?Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida()):"")+"] [HORA:"+(ventaPasaje.getHoraPartida()!=null?ventaPasaje.getHoraPartida().trim():"")+"]";
 			
 		}else{
