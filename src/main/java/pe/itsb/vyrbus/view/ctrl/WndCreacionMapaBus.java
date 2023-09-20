@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripci髇	:
+ * Descripci锟絥	:
  * Autor		: jM
  * Fecha		: 21/06/2012
  */
@@ -21,6 +21,7 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Groupbox;
@@ -36,11 +37,13 @@ import org.zkoss.zul.Tabbox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Vbox;
 
+import pe.itsb.vyrbus.model.bean.Empresa;
 import pe.itsb.vyrbus.model.bean.MapaBus;
 import pe.itsb.vyrbus.model.bean.Servicio;
 import pe.itsb.vyrbus.service.exceptions.CancelaGrabacionException;
 import pe.itsb.vyrbus.service.exceptions.DenominacionDuplicadaException;
 import pe.itsb.vyrbus.service.exceptions.DenominacionNullException;
+import pe.itsb.vyrbus.service.exceptions.EmpresaException;
 import pe.itsb.vyrbus.service.exceptions.MapaBusNotUpdateException;
 import pe.itsb.vyrbus.service.exceptions.NombreCortoDuplicadoException;
 import pe.itsb.vyrbus.service.exceptions.NombreCortoNullException;
@@ -93,6 +96,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 	private Button btnCancelar;
 	private Tabbox tbMantenimiento;
 	private Tab tabEstructura;
+	private Combobox cmbEmpresa;
 
 	private String prefijoAsiento="";
 	private String sufijoAsiento="";
@@ -128,6 +132,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 	public void onCreate() throws Exception {
 		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
+		UtilData.cargarDataCombo(cmbEmpresa, Empresa.class, false);
 
 		chkBusDosPisos.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
 
@@ -176,6 +181,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 		tbMantenimiento = (Tabbox) getFellow("tbMantenimiento");
 		btnGuardarEstructura = (Button) getFellow("btnGuardarEstructura");
 		btnCancelar = (Button)this.getFellow("btnCancelar");
+		cmbEmpresa = (Combobox)this.getFellow("cmbEmpresa");
 	}
 
 	/* (non-Javadoc)
@@ -183,6 +189,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 	 */
 	@Override
 	public void onNew() {
+		cmbEmpresa.setSelectedIndex(0);
 		habilitarSegundoPiso(false);
 //		tbMantenimiento.setSelectedIndex(0);
 //		habilitarSegundoPiso(false);
@@ -195,9 +202,10 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 	public void onSearch() {
 		final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
 
-		oWndFiltrar.addParameter("DENOMINACION :", String.class);
-		oWndFiltrar.addParameter("CODIGO :", String.class);
-		oWndFiltrar.addParameter("NOMBRE CORTO :", String.class);
+		oWndFiltrar.addParameter("1. Empresa", Empresa.class);
+		oWndFiltrar.addParameter("2. Denominaci贸n", String.class);
+		oWndFiltrar.addParameter("3. C贸digo", String.class);
+		oWndFiltrar.addParameter("4. Nombre corto", String.class);
 
 		this.appendChild(oWndFiltrar);
 		oWndFiltrar.setMode("modal");
@@ -205,11 +213,18 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 
 			@Override
 			public void onEvent(Event event) throws Exception {
-				String denominacion = (String) oWndFiltrar.getParameterValue("DENOMINACION :");
-				String codigo = (String) oWndFiltrar.getParameterValue("CODIGO :");
-				String nombreCorto = (String) oWndFiltrar.getParameterValue("NOMBRE CORTO :");
+				Empresa empresa = (Empresa)oWndFiltrar.getParameterValue("1. Empresa");
+				String denominacion = (String) oWndFiltrar.getParameterValue("2. Denominaci贸n");
+				String codigo = (String) oWndFiltrar.getParameterValue("3. C贸digo");
+				String nombreCorto = (String) oWndFiltrar.getParameterValue("4. Nombre corto");
 				String estadoRegistro = Constantes.VALUE_ACTIVO;
 
+				if(empresa == null)
+					criteriosBusqueda.remove("empresa");
+				else {
+					criteriosBusqueda.put("empresa", empresa);
+				}
+				
 				if (denominacion.trim().equals("")) {
 					criteriosBusqueda.remove("denominacion");
 				}else {criteriosBusqueda.put("denominacion", "%" + denominacion + "%");}
@@ -237,6 +252,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 			ArrayList<Object> lstFila = new ArrayList<>();
 			lstFila.add(oServicio.getId());
 			lstFila.add(r + 1);
+			lstFila.add(oServicio.getEmpresa().getRazonSocial());
 			lstFila.add(oServicio.getDenominacion());
 			lstFila.add(oServicio.getNombreCorto());
 			lstFila.add(oServicio.getNumeroPisos());
@@ -304,13 +320,14 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 	}
 
 	/**
-	 * Realiza la asignaci髇 de informaci髇 a los controles.
+	 * Realiza la asignaci锟絥 de informaci锟絥 a los controles.
 	 * @param id	: Identificador del registro a modificar
 	 */
 	private void mantenimientoRegistro(Long id) {
 		try{
 			oServicio = ServiceLocator.getServicioManager().buscarPorId(id);
 
+			Util.seleccionarValorItemCombo(Empresa.class, cmbEmpresa, oServicio.getEmpresa().getId());
 			textboxId.setText(oServicio.getId().toString());
 			txtDenominacion.setText(oServicio.getDenominacion());
 			txtNombreCorto.setText(oServicio.getNombreCorto());
@@ -356,7 +373,9 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 	@Override
 	public void onSave(int action) throws Exception {
 		try{
-			if (txtDenominacion.getText().trim().equals(""))
+			if (!(cmbEmpresa.getSelectedItem().getValue() instanceof Empresa))
+				throw new EmpresaException();
+			else if (txtDenominacion.getText().trim().equals(""))
 				throw new DenominacionNullException();
 			else if (txtNombreCorto.getText().trim().equals(""))
 				throw new NombreCortoNullException();
@@ -378,9 +397,14 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 			if(action==ACTION_NEW)
 				oServicio = new Servicio();
 
+			Empresa oEmpresa = new Empresa();
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
 
 			oServicio.setId(id);
+			oEmpresa.setId(((Empresa)cmbEmpresa.getSelectedItem().getValue()).getId());
+			oEmpresa.setRazonSocial(cmbEmpresa.getText());
+			oEmpresa.setNombreCorto(((Empresa)cmbEmpresa.getSelectedItem().getValue()).getNombreCorto());
+			oServicio.setEmpresa(oEmpresa);
 			oServicio.setDenominacion(txtDenominacion.getText().toUpperCase());
 			oServicio.setNombreCorto(txtNombreCorto.getText().toUpperCase());
 			oServicio.setNumeroPisos(chkBusDosPisos.isChecked()?2:1);
@@ -411,6 +435,9 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			this.listarRegistros(ServiceLocator.getServicioManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 
+		}catch(EmpresaException eex) {
+			DlgMessage.information(Messages.getString("WndRuta.information.Empresa"),cmbEmpresa);
+			throw new CancelaGrabacionException();
 		}catch (DenominacionNullException dnex){
 			DlgMessage.information(Messages.getString("Generales.information.noIngresoDenominacion"));
 			throw new CancelaGrabacionException();
@@ -529,7 +556,11 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 			deshabilitarToolbar(true);
 			servicio = ServiceLocator.getServicioManager().buscarPorId(Long.valueOf(idServicio));
 			int nPisos = servicio.getNumeroPisos();
-			int nAsientos = servicio.getNumeroAsientosPiso1() + servicio.getNumeroAsientosPiso2();
+			int nAsientos = 0;
+			if(nPisos == 1)
+				nAsientos = servicio.getNumeroAsientosPiso1();
+			else
+				nAsientos = servicio.getNumeroAsientosPiso1() + servicio.getNumeroAsientosPiso2();
 			int nFilas = servicio.getNumeroFilasPiso1();
 			int nColumnas = servicio.getNumeroColumnasPiso1();
 			prefijoAsiento = "imgAsientoPiso1_";
@@ -931,7 +962,7 @@ public class WndCreacionMapaBus extends WndOpcionesMantenimiento {
 	}
 
 	/**
-	 * Permite la grabaci髇 del Mapa del Bus.
+	 * Permite la grabaci锟絥 del Mapa del Bus.
 	 */
 	public void grabarEstructura(){
 		try{

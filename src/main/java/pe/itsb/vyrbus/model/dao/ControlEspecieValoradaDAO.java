@@ -69,18 +69,19 @@ public interface ControlEspecieValoradaDAO extends GenericDAO {
 
 	/**
 	 * busca Control especies valoradas
-	 * @param idAgencia			: Obsional, Identificador de la agencia
-	 * @param idTipoComprobante	: Obsional, Identificador del Tipo de comprobante
-	 * @param idUsuarioHarware	: Obsional, Identificador del Usuario Hardware
+	 * @param idAgencia			: Opcional, Identificador de la agencia
+	 * @param idTipoComprobante	: Opcional, Identificador del Tipo de comprobante
+	 * @param idUsuarioHarware	: Opcional, Identificador del Usuario Hardware
+	 * @param idEmpresa			: Opcional, identificador de la empresa.
 	 * @return
 	 * @throws Exception
 	 */
-	public List<ControlEspecieValorada> buscarEspecieValoradas(Integer idAgencia, Integer idTipoComprobante, Integer idUsuarioHarware) throws Exception;
+	public List<ControlEspecieValorada> buscarEspecieValoradas(Integer idAgencia, Integer idTipoComprobante, Integer idUsuarioHarware, Integer idEmpresa) throws Exception;
 
 	/**
 	 * Valida que el numero rango de correlativo ingresado no haga intersecci�n con alg�n otro rango ingresado por otro usuario
 	 * @param idUsuarioHardware	: Identificador del Usuario Hardware.
-	 * @param serie				: N�mero de Serie.
+	 * @param serie				: Número de Serie.
 	 * @param inicial			: Correlativo Inicial.
 	 * @param Final				: Correlativo Final
 	 * @return

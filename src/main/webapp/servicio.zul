@@ -5,6 +5,7 @@
 	<listbox id="listboxLista">
 		<listhead sizable="true">
 			<listheader label="#" width="50px" style="color: #ffffff;"/>
+			<listheader label="EMPRESA" sort="auto" style="color: #ffffff;"/>
 			<listheader label="DENOMINACIÓN" sort="auto" style="color: #ffffff;"/>
 			<listheader label="NOMBRE CORTO (o sufijo)" sort="auto" style="color: #ffffff;"/>
 			<listheader label="PISOS" sort="auto" style="color: #ffffff;"/>
@@ -26,6 +27,11 @@
 								<column width="180px"/>
 							</columns>
 							<rows>
+								<row spans="1,2,1">
+									<label value="EMPRESA (*) :" />
+									<combobox id="cmbEmpresa" readonly="true" width="237px" onOK="txtDenominacion.setFocus(true); txtDenominacion.select()"></combobox>
+									<label/>
+								</row>
 								<row>
 									<label value="DENOMINACION :" />
 									<div>

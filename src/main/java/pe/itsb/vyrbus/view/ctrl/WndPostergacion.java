@@ -44,6 +44,7 @@ import pe.itsb.vyrbus.model.bean.CanalVenta;
 import pe.itsb.vyrbus.model.bean.Cliente;
 import pe.itsb.vyrbus.model.bean.ControlEspecieValorada;
 import pe.itsb.vyrbus.model.bean.DetalleItinerario;
+import pe.itsb.vyrbus.model.bean.Empresa;
 import pe.itsb.vyrbus.model.bean.EspecieValorada;
 import pe.itsb.vyrbus.model.bean.FormaPago;
 import pe.itsb.vyrbus.model.bean.Itinerario;
@@ -150,6 +151,11 @@ public class WndPostergacion extends WndBase implements Serializable {
 	private Textbox txtServicioPostergado;
 	private Textbox txtSalidaPostergado;
 	private Textbox txtIdPromocion;
+	private Textbox txtIdEmpresaActual;
+	private Textbox txtIdEmpresaNueva;
+	private Label lblEmpresaActual;
+	private Label lblEmpresaNueva;
+	
 	private Image imgBuscarItinerario;
 	private Image imgSeleccionarAsiento;
 	private Image imgQuitarPromocion;
@@ -345,6 +351,11 @@ public class WndPostergacion extends WndBase implements Serializable {
 		cmbOperadorTarjetaCredito = (Combobox)this.getFellow("cmbOperadorTarjetaCredito");
 		cmbTarjetaCredito = (Combobox)this.getFellow("cmbTarjetaCredito");
 		lblPromocion = (Label)this.getFellow("lblPromocion");
+		
+		lblEmpresaActual = (Label)this.getFellow("lblEmpresaActual");
+		lblEmpresaNueva = (Label)this.getFellow("lblEmpresaNueva");
+		txtIdEmpresaActual = (Textbox)this.getFellow("txtIdEmpresaActual");
+		txtIdEmpresaNueva = (Textbox)this.getFellow("txtIdEmpresaNueva");
 
 
 
@@ -681,7 +692,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 			/*cambia el tipo de comprobante*/
 			onSelectDefaultTipoComprobante(cmbTipoComprobante);
 			onSelectDefaultTipoComprobante(cmbtipoComprobantePostergado);
-			onLoadEspecieValorada(txtNumeroBoletoPostergado, cmbtipoComprobantePostergado);
+			onLoadEspecieValorada(txtNumeroBoletoPostergado, cmbtipoComprobantePostergado,1);
 
 			if(!(chkCambioNombre.isChecked())){
 //				Double penalidad=dblbxPenalidad.getValue()!=null?dblbxPenalidad.getValue():0;
@@ -718,7 +729,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 			/*cambia el tipo de comprobante*/
 			onSelectDefaultTipoComprobante(cmbTipoComprobante);
 			onSelectDefaultTipoComprobante(cmbtipoComprobantePostergado);
-			onLoadEspecieValorada(txtNumeroBoletoPostergado, cmbtipoComprobantePostergado);
+			onLoadEspecieValorada(txtNumeroBoletoPostergado, cmbtipoComprobantePostergado,1);
 
 			if(!(chkCambioNombre.isChecked())){
 				if(!(chkFechaAbierta.isChecked())){//Si no es fecha Abierta
@@ -896,6 +907,8 @@ public class WndPostergacion extends WndBase implements Serializable {
 
 			if(venta!=null){
 				venta = ServiceLocator.getVentaPasajesManager().buscarVentaById(venta.getId());
+				lblEmpresaActual.setValue(venta.getEmpresa().getRazonSocial());
+				txtIdEmpresaActual.setValue(venta.getEmpresa().getId().toString());
 				txtNumeroControlActual.setText(venta.getNumeroControl());
 				txtItinerarioActual.setText(venta.getItinerario().getId().toString());
 				txtNumeroAsientoActual.setText(venta.getNumeroAsiento().toString());
@@ -929,7 +942,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 //				String boleto =especieValorada.toString();
 //				txtNumeroBoletoPostergado.setText(boleto);
 
-				onLoadEspecieValorada(txtNumeroBoletoPostergado, cmbtipoComprobantePostergado);
+				onLoadEspecieValorada(txtNumeroBoletoPostergado, cmbtipoComprobantePostergado, venta.getEmpresa().getId());
 
 				dblbxMontoAnterior.setValue(venta.getTarifa()+venta.getRecargo()-venta.getDescuento());
 				txtIdPromocion.setText(venta.getPromocion()==null?"":venta.getPromocion().getId().toString());
@@ -973,7 +986,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 	 * Realiza la busqueda del correlativo para el boleto a emitir.
 	 * @throws Exception
 	 */
-	private void onLoadEspecieValorada(Textbox txtBoleto, Combobox comboTipoComprobante) throws Exception{
+	private void onLoadEspecieValorada(Textbox txtBoleto, Combobox comboTipoComprobante, Integer idEmpresa) throws Exception{
 		try {
 			/*BEGIN 15/06/2021 - javalos - Correlativo by caja*/
 			EspecieValorada especieValorada=null;
@@ -983,7 +996,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 				/*BEGIN 15/06/2021 - javalos - Correlativo by caja*/
 	//			especieValorada=UtilData.buscarEspecieValorada(((TipoComprobante)comboTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(),false);
 	//			txtBoleto.setValue(especieValorada.toString());
-				controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(((TipoComprobante)comboTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(), false, getUsuarioHardware(), null);
+				controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(((TipoComprobante)comboTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(), false, getUsuarioHardware(), null, idEmpresa);
 				txtBoleto.setValue(controlEspecieValorada.toString());
 				/*END 15/06/2021 - javalos - Correlativo by caja*/
 			}else if(agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_VIAJES){
@@ -1015,6 +1028,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 				oWndSeleccionarItinerario.setMode(MODAL);
 				oWndSeleccionarItinerario.setOrigen(txtOrigenActual.getText().trim());
 				oWndSeleccionarItinerario.setDestino(txtDestinoActual.getText().trim());
+				oWndSeleccionarItinerario.setIdEmpresa(txtIdEmpresaActual.getText());
 				oWndSeleccionarItinerario.asignarValores();
 				oWndSeleccionarItinerario.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
 					@Override
@@ -1048,6 +1062,8 @@ public class WndPostergacion extends WndBase implements Serializable {
 
 			promocionAplicada = null;
 			detalleItinerario = ServiceLocator.getDetalleItinerarioManager().buscarPorId(idDetalleItinerario);
+			lblEmpresaNueva.setValue(detalleItinerario.getItinerario().getEmpresa().getRazonSocial());
+			txtIdEmpresaNueva.setValue(detalleItinerario.getItinerario().getEmpresa().getId().toString());
 			if(detalleItinerario.getItinerario().getFechaRealPartida()==null){
 				/*	Seteando el objeto postergacion con los nuevos datos para la venta	*/
 				postergacion.setItinerario(detalleItinerario.getItinerario());
@@ -1065,6 +1081,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 				txtServicioPostergado.setText(detalleItinerario.getItinerario().getServicio().getDenominacion());
 				txtSalidaPostergado.setText(Util.DatetoString(detalleItinerario.getFechaPartida(), Constantes.DATE_FORMAT));
 				onLoadPuntoEmbarque(detalleItinerario);
+				onLoadEspecieValorada(txtNumeroBoletoPostergado, cmbtipoComprobantePostergado, Integer.valueOf(txtIdEmpresaNueva.getValue()));
 //				dblbxTarifa.setValue(detalleItinerario.getTarifa()<postergacion.getTarifa()?postergacion.getTarifa():detalleItinerario.getTarifa());
 //				if(postergacion.getCliente()!=null){
 //					LineaContadoCliente lineaContadoCliente=ServiceLocator.getLineaContadoClienteManager().validaDescuentoCliente(postergacion.getCliente().getId());
@@ -1590,6 +1607,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 			postergacion.setNumeroControl("-----");
 			postergacion.setLiquidacion(null);
 			postergacion.setFechaTransferencia(null);
+			postergacion.setEmpresa(new Empresa(Integer.valueOf(txtIdEmpresaNueva.getValue())));
 			if(!isCorporativo){
 				postergacion.setRucClienteCredito(null); // a solicitud de maroc - 28/09/2015
 				postergacion.setEstadoDocumento(Constantes.ESTADO_DOCUMENTO_PAGADO);

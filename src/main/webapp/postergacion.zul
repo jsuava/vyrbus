@@ -71,7 +71,7 @@
 			<tabpanel>
 				<grid id="grdPostergacion" style="border:none" visible="false">
 				<columns>
-					<column width="25%" />
+					<column width="27%" />
 					<column />
 				</columns>
 					<rows>
@@ -92,7 +92,11 @@
 										</row>
 										<row spans="1,3">
 											<label value="ITINERARIO :"/>
-											<textbox id="txtItinerarioActual" width="60px" readonly="true" style="text-align:center"/>
+											<hlayout>
+												<textbox id="txtItinerarioActual" width="60px" readonly="true" style="text-align:center"/>
+												<label id="lblEmpresaActual" width="80%" value="---" style="font-size:10px !important;font-weight: bold;color:red"/>
+												<textbox id="txtIdEmpresaActual" readonly="true" width="20px" visible="false" />
+											</hlayout>
 										</row>
 										<row spans="1,3">
 											<label value="N° ASIENTO :"/>
@@ -124,7 +128,7 @@
 										</row>
 										<row spans="1,3">
 											<label value="SALIDA :"/>
-											<textbox id="txtSalidaActual" width="80px" readonly="true"/>
+											<textbox id="txtSalidaActual" width="90px" readonly="true"/>
 										</row>
 										<row spans="1,3" visible="false">
 											<label value="HORA EMB. :"/>
@@ -146,16 +150,16 @@
 									<caption label="NUEVOS DATOS DE LA VENTA" style="color: #ffffff;"/>
  									<grid style="border:none;background: #eeeeee">
  										<columns>
- 											<column width="370px" />
+ 											<column width="390px" />
  											<column/>
 										</columns>
  										<rows>
  											<row style="background: #eeeeee">
 												<grid style="border:none;">
 													<columns>
-														<column align="right" width="80px"/>
+														<column align="right" width="90px"/>
 														<column width="112px"/>
-														<column align="right" width="53px"/>
+														<column align="right" width="63px"/>
 														<column/>
 													</columns>
 													<rows>
@@ -163,18 +167,17 @@
 															<label value="ITINERARIO :"/>
 															<hlayout>
 																<textbox id="txtItinerarioPostergado" width="50px" readonly="true"/>
-																<image id="imgBuscarItinerario" src="resources/mp_buscarEnabled.png" 
-																	style="cursor:pointer" tooltiptext="Seleccionar itinerario"/>
+																<image id="imgBuscarItinerario" src="resources/mp_buscarEnabled.png" style="cursor:pointer" tooltiptext="Seleccionar itinerario"/>																	
 															</hlayout>
 														</row>
 														<row spans="1,3" style="background: #eeeeee">
 																<label value="N° ASIENTO :"/>
 															<hlayout>
-																<textbox id="txtNumeroAsientoPostergado" width="25px" readonly="true" 
-																	style="text-align:center"/>
-																<image id="imgSeleccionarAsiento" src="resources/mp_buscarEnabled.png" 
-																	style="cursor:pointer" visible="false" tooltiptext="Seleccionar asiento"/>
+																<textbox id="txtNumeroAsientoPostergado" width="25px" readonly="true" style="text-align:center"/>
+																<image id="imgSeleccionarAsiento" src="resources/mp_buscarEnabled.png" style="cursor:pointer" visible="false" tooltiptext="Seleccionar asiento"/>
 																<textbox id="txtNumeroPisoPostergado" visible="false"/>
+																<label id="lblEmpresaNueva" width="80%" value="---" style="font-size:10px !important;font-weight: bold;color:red"/>
+																<textbox id="txtIdEmpresaNueva" readonly="true" width="20px" visible="false" />
 															</hlayout>
 														</row>
 														<row style="background: #eeeeee">
@@ -308,14 +311,8 @@
 											<combobox id="cmbTipoComprobante" readonly="true" visible="false"/>
 											<cell rowspan="9" style="background:#e0e0e0; border: none;" valign="center">
 												<vlayout style="background:#e0e0e0">
-													<button label="Cancelar" 
-															sclass="btnCommandL" 
-															image="/resources/mp_cancelarEnabled.png" 
-															onClick="wndPostergacion.cancelar()"/>
-													<button label="Guardar" 
-															sclass="btnCommandL" 
-															image="/resources/mp_guardarEnabled.png" 
-															onClick="wndPostergacion.guardar()"/>
+													<button label="Cancelar" sclass="btnCommandL" image="/resources/mp_cancelarEnabled.png" onClick="wndPostergacion.cancelar()"/>
+													<button label="Guardar" sclass="btnCommandL" image="/resources/mp_guardarEnabled.png" onClick="wndPostergacion.guardar()"/>
 												</vlayout>													
 											</cell>
 										</row>

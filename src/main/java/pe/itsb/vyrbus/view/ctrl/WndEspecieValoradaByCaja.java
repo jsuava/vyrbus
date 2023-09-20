@@ -25,12 +25,14 @@ import org.zkoss.zul.Window;
 import pe.itsb.vyrbus.model.bean.Agencia;
 import pe.itsb.vyrbus.model.bean.ControlEspecieValorada;
 import pe.itsb.vyrbus.model.bean.ControlEspecieValoradaID;
+import pe.itsb.vyrbus.model.bean.Empresa;
 import pe.itsb.vyrbus.model.bean.TipoComprobante;
 import pe.itsb.vyrbus.model.bean.Usuario;
 import pe.itsb.vyrbus.model.bean.UsuarioHardware;
 import pe.itsb.vyrbus.service.exceptions.AgenciaNullException;
 import pe.itsb.vyrbus.service.exceptions.CancelaGrabacionException;
 import pe.itsb.vyrbus.service.exceptions.CorrelativoException;
+import pe.itsb.vyrbus.service.exceptions.EmpresaException;
 import pe.itsb.vyrbus.service.exceptions.NumeroSerieNoRegistradaException;
 import pe.itsb.vyrbus.service.exceptions.NumeroSerieNullException;
 import pe.itsb.vyrbus.service.exceptions.RangoEspecieValoradaRegistradaException;
@@ -57,12 +59,14 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 	private Textbox	txtSerie;
 	private Combobox cmbAgencia;
 	private Longbox lgbxCorrelativoInicio;
+	private Combobox cmbEmpresa;
 
 	private ControlEspecieValorada controlEspecieValorada = null;
 	private Window wndSearch = null;
 
 
 	/*Variables para la busqueda*/
+	private Integer idEmpresa=null;
 	private Integer idAgencia=null;
 	private Integer idTipoComprobante=null;
 	private Integer idUsuarioHardware=null;
@@ -72,6 +76,7 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 
 		/*carga solamente las tepsa*/
 		UtilData.cargarAgenciaXtipoAgencia(cmbAgencia, Constantes.ID_TIPAGE_TEPSA, false);
+		UtilData.cargarDataCombo(cmbEmpresa, Empresa.class, false);
 
 		/**Solo se habilita este control para el rol Superusuario*/
 		cmbAgencia.setDisabled(Constantes.ID_ROL_SUPER_USUARIO!=getRol().getId().intValue());
@@ -80,7 +85,7 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 		//Carga por default las especies valoradas registradas en la agencia, asociadas al usuario hardware.
 		idAgencia=getAgencia().getId();
 		idUsuarioHardware=getUsuarioHardware().getId();
-		listarRegistros(ServiceLocator.getControlEspecieValoradaManager().buscarEspecieValoradas(idAgencia, idTipoComprobante, idUsuarioHardware));
+		listarRegistros(ServiceLocator.getControlEspecieValoradaManager().buscarEspecieValoradas(idAgencia, idTipoComprobante, idUsuarioHardware, null));
 	}
 
 	@Override
@@ -89,6 +94,7 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 		cmbUsuarioHardware = (Combobox) this.getFellow("cmbUsuarioHardware");
 		txtSerie = (Textbox) this.getFellow("txtSerie");
 		cmbAgencia=(Combobox)getFellow("cmbAgencia");
+		cmbEmpresa=(Combobox)getFellow("cmbEmpresa");
 		lgbxCorrelativoInicio = (Longbox)getFellow("lgbxCorrelativoInicio");
 	}
 
@@ -100,6 +106,7 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 		else
 			Util.seleccionarValorItemCombo(Agencia.class, cmbAgencia, usuario.getAgencia().getId());
 
+		cmbEmpresa.setSelectedIndex(0);
 		cmbTipoComprobante.getItems().clear();
 		cmbUsuarioHardware.getItems().clear();
 		UtilData.cargarGenericData(cmbUsuarioHardware, false);
@@ -140,7 +147,7 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 	@Override
 	public void onRefresh(int tab) throws Exception {
 		Util.limpiarListbox(listboxLista);
-		listarRegistros(ServiceLocator.getControlEspecieValoradaManager().buscarEspecieValoradas(idAgencia, idTipoComprobante,idUsuarioHardware));
+		listarRegistros(ServiceLocator.getControlEspecieValoradaManager().buscarEspecieValoradas(idAgencia, idTipoComprobante,idUsuarioHardware, idEmpresa));
 	}
 
 	@Override
@@ -158,7 +165,9 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 	public void onSave(int action) throws Exception {
 		String msn="";
 		try{
-			if (!(cmbAgencia.getSelectedItem().getValue() instanceof Agencia))
+			if (!(cmbEmpresa.getSelectedItem().getValue() instanceof Empresa))
+				throw new EmpresaException();
+			else if (!(cmbAgencia.getSelectedItem().getValue() instanceof Agencia))
 				throw new AgenciaNullException();
 			else if (!(cmbUsuarioHardware.getSelectedItem().getValue() instanceof UsuarioHardware))
 				throw new UsuarioHardwareNullException();
@@ -171,20 +180,24 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 
 			String correlativo = "";
 			if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId()==Constantes.ID_TIPCOM_BOLETA_VENTA)
-				correlativo = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+"BOL"+txtSerie.getText().trim().toUpperCase();
+				correlativo = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+((Empresa)cmbEmpresa.getSelectedItem().getValue()).getSigla()+"BOL"+txtSerie.getText().trim().toUpperCase();
 			else if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId()==Constantes.ID_TIPCOM_FACTURA)
-				correlativo = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+"FAC"+txtSerie.getText().trim().toUpperCase();
+				correlativo = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+((Empresa)cmbEmpresa.getSelectedItem().getValue()).getSigla()+"FAC"+txtSerie.getText().trim().toUpperCase();
 			else if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId()==Constantes.ID_TIPCOM_NOTA_CREDITO)
-				correlativo = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+"NC";
+				correlativo = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+((Empresa)cmbEmpresa.getSelectedItem().getValue()).getSigla()+"NC";
 			else if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId()==Constantes.ID_TIPCOM_NOTA_DEBITO)
-				correlativo = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+"ND";
+				correlativo = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+((Empresa)cmbEmpresa.getSelectedItem().getValue()).getSigla()+"ND";
 			else if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId()==Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA)
-				correlativo = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+"GRT"+txtSerie.getText().trim().toUpperCase();
+				correlativo = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+((Empresa)cmbEmpresa.getSelectedItem().getValue()).getSigla()+"GRT"+txtSerie.getText().trim().toUpperCase();
 			else if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId()==Constantes.ID_TIPCOM_TICKET_EQUIPAJE)
-				correlativo = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+"TKQ"+txtSerie.getText().trim().toUpperCase();
+				correlativo = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+((Empresa)cmbEmpresa.getSelectedItem().getValue()).getSigla()+"TKQ"+txtSerie.getText().trim().toUpperCase();
 
 			if (action==ACTION_NEW)
 				controlEspecieValorada= new ControlEspecieValorada();
+			
+			Empresa empresa = new Empresa();
+			empresa.setId(((Empresa)cmbEmpresa.getSelectedItem().getValue()).getId());
+			empresa.setRazonSocial(((Empresa)cmbEmpresa.getSelectedItem().getValue()).getRazonSocial());			
 
 			TipoComprobante tipoComprobante = new TipoComprobante();
 			tipoComprobante.setId(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId());
@@ -198,9 +211,10 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 			controlEspecieValoradaID.setIdTipoComprobante(tipoComprobante.getId());
 			controlEspecieValoradaID.setIdUsuarioHardware(usuarioHardware.getId());
 			controlEspecieValoradaID.setStrSerie(txtSerie.getText().toUpperCase().trim().toString());
+			controlEspecieValoradaID.setIdEmpresa(empresa.getId());
 
 			controlEspecieValorada.setAgencia(usuarioHardware.getAgencia());
-
+			controlEspecieValorada.setEmpresa(empresa);
 			controlEspecieValorada.setControlEspecieValoradaID(controlEspecieValoradaID);
 			controlEspecieValorada.setTipoComprobante(tipoComprobante);
 			controlEspecieValorada.setUsuarioHardware(usuarioHardware);
@@ -226,10 +240,14 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 			idAgencia=((Agencia)cmbAgencia.getSelectedItem().getValue()).getId();
 			idTipoComprobante=controlEspecieValoradaID.getIdTipoComprobante();
 			idUsuarioHardware=controlEspecieValoradaID.getIdUsuarioHardware();
+			idEmpresa = controlEspecieValoradaID.getIdEmpresa();
 			Util.limpiarListbox(listboxLista);
-			listarRegistros(ServiceLocator.getControlEspecieValoradaManager().buscarEspecieValoradas(idAgencia, idTipoComprobante,idUsuarioHardware));
+			listarRegistros(ServiceLocator.getControlEspecieValoradaManager().buscarEspecieValoradas(idAgencia, idTipoComprobante,idUsuarioHardware, idEmpresa));
 
 
+		}catch(EmpresaException eex) {
+			DlgMessage.information(Messages.getString("WndControlEspecieValorada.Information.empresa")+msn);
+			throw new CancelaGrabacionException();
 		}catch (RangoEspecieValoradaRegistradaException revyrex){
 			DlgMessage.information(Messages.getString("WndControlEspecieValorada.Information.evUYaRegistradas")+msn);
 			throw new CancelaGrabacionException();
@@ -320,6 +338,8 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 				x += +1;
 				cell = new Listcell((Integer.toString(x)));
 				item.appendChild(cell); //Correlativo
+				cell = new Listcell(controlEspecieValorada.getEmpresa().getRazonSocial());
+				item.appendChild(cell);
 				cell = new Listcell(controlEspecieValorada.getTipoComprobante().getDenominacion());
 				item.appendChild(cell);
 				cell = new Listcell(controlEspecieValorada.getUsuarioHardware().getDescripcion());
@@ -381,11 +401,21 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 		columns.appendChild(column);
 		grid.appendChild(columns);
 
-		Label label = new Label("Agencia");
+		Label label = new Label("Empresa");
+		label.setSclass("label-size11");
+		final Combobox cmbEmpresaSearch = new Combobox();
+		cmbEmpresaSearch.setWidth("200px");
+		cmbEmpresaSearch.setReadonly(true);
+		row.appendChild(label);
+		row.appendChild(cmbEmpresaSearch);
+		rows.appendChild(row);
+		
+		label = new Label("Agencia");
 		label.setSclass("label-size11");
 		final Combobox cmbAgencia= new Combobox();
 		cmbAgencia.setWidth("200px");
 		cmbAgencia.setReadonly(true);
+		row = new Row(); 
 		row.appendChild(label);
 		row.appendChild(cmbAgencia);
 		rows.appendChild(row);
@@ -425,6 +455,7 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 
 		/*Carga solamente la agencias tepsa*/
 		UtilData.cargarAgenciaXtipoAgencia(cmbAgencia, Constantes.ID_TIPAGE_TEPSA,true);
+		UtilData.cargarDataCombo(cmbEmpresaSearch, Empresa.class, false);
 
 		if(cmbAgencia.getSelectedItem()==null)
 			cmbAgencia.setSelectedIndex(0);
@@ -457,8 +488,10 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
-				idTipoComprobante=null;idAgencia=null; idUsuarioHardware=null;
+				idTipoComprobante=null;idAgencia=null; idUsuarioHardware=null; idEmpresa=null;
 
+				if(cmbEmpresaSearch.getSelectedItem().getValue() instanceof Empresa)
+					idEmpresa = ((Empresa)cmbEmpresaSearch.getSelectedItem().getValue()).getId();
 				if(cmbAgencia.getSelectedItem().getValue() instanceof Agencia)
 					idAgencia = ((Agencia)cmbAgencia.getSelectedItem().getValue()).getId();
 				if(cmbUsuarioHardarware.getSelectedItem().getValue() instanceof UsuarioHardware)
@@ -467,7 +500,7 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 					idTipoComprobante=((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId();
 
 				Util.limpiarListbox(listboxLista);
-				listarRegistros(ServiceLocator.getControlEspecieValoradaManager().buscarEspecieValoradas(idAgencia, idTipoComprobante, idUsuarioHardware));
+				listarRegistros(ServiceLocator.getControlEspecieValoradaManager().buscarEspecieValoradas(idAgencia, idTipoComprobante, idUsuarioHardware, idEmpresa));
 				window.onClose();
 			}
 

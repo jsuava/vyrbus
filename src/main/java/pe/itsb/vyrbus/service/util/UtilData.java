@@ -2739,9 +2739,9 @@ public class UtilData extends Window {
 	 * @return true, si debe utilizar el formato grande, false si el normal.
 	 * @throws Exception
 	 */
-	public static boolean getFormatoImprecion(Integer idAgencia,Integer idTipoComprobante,Integer idUsuarioHarware) throws Exception{
+	public static boolean getFormatoImpresion(Integer idAgencia,Integer idTipoComprobante,Integer idUsuarioHarware, Integer idEmpresa) throws Exception{
 
-		List<ControlEspecieValorada> lstCtrlEspecieValorada=ServiceLocator.getControlEspecieValoradaManager().buscarEspecieValoradas(idAgencia, idTipoComprobante, idUsuarioHarware);
+		List<ControlEspecieValorada> lstCtrlEspecieValorada=ServiceLocator.getControlEspecieValoradaManager().buscarEspecieValoradas(idAgencia, idTipoComprobante, idUsuarioHarware, idEmpresa);
 		boolean formato=lstCtrlEspecieValorada.get(0).getFormato().intValue()==Constantes.TRUE_VALUE;
 
 		return formato;
@@ -2776,10 +2776,11 @@ public class UtilData extends Window {
 	 * @return Numero de boleto.
 	 * @throws Exception
 	 */
-	public static ControlEspecieValorada buscarEspecieValoradaByCaja (Integer tipoComprobante, Agencia agencia, Boolean ejecutarSeqByCorrelativo, UsuarioHardware usuarioHardware, Integer aplicarA) throws Exception{
+	public static ControlEspecieValorada buscarEspecieValoradaByCaja (Integer tipoComprobante, Agencia agencia, Boolean ejecutarSeqByCorrelativo, UsuarioHardware usuarioHardware, Integer aplicarA, Integer idEmpresa) throws Exception{
 		ControlEspecieValorada oControlEspecieValorada=null;
 		try{
 			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
+			criteriosBusqueda.put("empresa",new Empresa(idEmpresa));
 			criteriosBusqueda.put("tipoComprobante",new TipoComprobante(tipoComprobante));
 			criteriosBusqueda.put("agencia",agencia );
 			criteriosBusqueda.put("usuarioHardware", usuarioHardware);

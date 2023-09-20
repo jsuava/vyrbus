@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripci髇	:
+ * Descripci锟絥	:
  * Autor		: jM
  * Fecha		: 30/04/2012
  */
@@ -15,14 +15,17 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Groupbox;
 import org.zkoss.zul.Spinner;
 import org.zkoss.zul.Textbox;
 
+import pe.itsb.vyrbus.model.bean.Empresa;
 import pe.itsb.vyrbus.model.bean.Servicio;
 import pe.itsb.vyrbus.service.exceptions.CancelaGrabacionException;
 import pe.itsb.vyrbus.service.exceptions.DenominacionDuplicadaException;
 import pe.itsb.vyrbus.service.exceptions.DenominacionNullException;
+import pe.itsb.vyrbus.service.exceptions.EmpresaException;
 import pe.itsb.vyrbus.service.exceptions.NombreCortoDuplicadoException;
 import pe.itsb.vyrbus.service.exceptions.NombreCortoNullException;
 import pe.itsb.vyrbus.service.exceptions.NumeroAsientoNullException;
@@ -66,6 +69,7 @@ public class WndServicio extends WndOpcionesMantenimiento {
 	private Spinner spFilas2;
 	private Spinner spColumnas2;
 	private Groupbox grpSegundoPiso;
+	private Combobox cmbEmpresa;
 
 
 	private Servicio oServicio = null;
@@ -80,6 +84,7 @@ public class WndServicio extends WndOpcionesMantenimiento {
 	public void onCreate() throws Exception {
 		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("denominacion");
+		UtilData.cargarDataCombo(cmbEmpresa, Empresa.class, false);
 	}
 
 	/* (non-Javadoc)
@@ -107,6 +112,7 @@ public class WndServicio extends WndOpcionesMantenimiento {
 		spFilas2 = (Spinner) getFellow("spFilas2");
 		spColumnas2 = (Spinner) getFellow("spColumnas2");
 		grpSegundoPiso = (Groupbox)this.getFellow("grpSegundoPiso");
+		cmbEmpresa = (Combobox)this.getFellow("cmbEmpresa");
 
 	}
 
@@ -115,6 +121,7 @@ public class WndServicio extends WndOpcionesMantenimiento {
 	 */
 	@Override
 	public void onNew() {
+		cmbEmpresa.setSelectedIndex(0);
 		habilitarSegundoPiso(false);
 	}
 
@@ -125,9 +132,10 @@ public class WndServicio extends WndOpcionesMantenimiento {
 	public void onSearch() throws Exception {
 		final WndFiltrarParametros oWndFiltrar = new WndFiltrarParametros();
 
-		oWndFiltrar.addParameter("Denominaci髇", String.class);
-		oWndFiltrar.addParameter("C骴igo", String.class);
-		oWndFiltrar.addParameter("Nombre corto", String.class);
+		oWndFiltrar.addParameter("1. Empresa", Empresa.class);
+		oWndFiltrar.addParameter("2. Denominaci贸n", String.class);
+		oWndFiltrar.addParameter("3. C贸digo", String.class);
+		oWndFiltrar.addParameter("4. Nombre corto", String.class);
 
 		this.appendChild(oWndFiltrar);
 		oWndFiltrar.setMode("modal");
@@ -135,14 +143,23 @@ public class WndServicio extends WndOpcionesMantenimiento {
 
 			@Override
 			public void onEvent(Event event) throws Exception {
-				String denominacion = (String) oWndFiltrar.getParameterValue("Denominaci髇");
-				String codigo = (String) oWndFiltrar.getParameterValue("C骴igo");
-				String nombreCorto = (String) oWndFiltrar.getParameterValue("Nombre corto");
+				Empresa empresa = (Empresa)oWndFiltrar.getParameterValue("1. Empresa");
+				String denominacion = (String) oWndFiltrar.getParameterValue("2. Denominaci贸n");
+				String codigo = (String) oWndFiltrar.getParameterValue("3. C贸digo");
+				String nombreCorto = (String) oWndFiltrar.getParameterValue("4. Nombre corto");
 				String estadoRegistro = Constantes.VALUE_ACTIVO;
 
+				if(empresa == null)
+					criteriosBusqueda.remove("empresa");
+				else {
+					criteriosBusqueda.put("empresa", empresa);
+				}
+				
 				if (denominacion.trim().equals("")) {
 					criteriosBusqueda.remove("denominacion");
-				}else {criteriosBusqueda.put("denominacion", "%" + denominacion + "%");}
+				}else {
+					criteriosBusqueda.put("denominacion", "%" + denominacion + "%");
+				}
 
 				if (codigo.trim().equals("")) {
 					criteriosBusqueda.remove("codigo");
@@ -201,7 +218,9 @@ public class WndServicio extends WndOpcionesMantenimiento {
 	@Override
 	public void onSave(int action) throws Exception{
 		try{
-			if (txtDenominacion.getText().trim().equals(""))
+			if (!(cmbEmpresa.getSelectedItem().getValue() instanceof Empresa))
+				throw new EmpresaException();
+			else if (txtDenominacion.getText().trim().equals(""))
 				throw new DenominacionNullException();
 			else if (txtNombreCorto.getText().trim().equals(""))
 				throw new NombreCortoNullException();
@@ -222,6 +241,8 @@ public class WndServicio extends WndOpcionesMantenimiento {
 
 			if(action==ACTION_NEW)
 				oServicio = new Servicio();
+			
+			Empresa oEmpresa = new Empresa();
 
 			Integer id = (textboxId.getText().equals("") ? 0 : new Integer(textboxId.getText()));
 			/*
@@ -239,6 +260,10 @@ public class WndServicio extends WndOpcionesMantenimiento {
 			}
 			*/
 			oServicio.setId(id);
+			oEmpresa.setId(((Empresa)cmbEmpresa.getSelectedItem().getValue()).getId());
+			oEmpresa.setRazonSocial(cmbEmpresa.getText());
+			oEmpresa.setNombreCorto(((Empresa)cmbEmpresa.getSelectedItem().getValue()).getNombreCorto());
+			oServicio.setEmpresa(oEmpresa);
 			oServicio.setDenominacion(txtDenominacion.getText().toUpperCase());
 			oServicio.setNombreCorto(txtNombreCorto.getText().toUpperCase());
 			oServicio.setNumeroPisos(chkBusDosPisos.isChecked()?2:1);
@@ -277,6 +302,9 @@ public class WndServicio extends WndOpcionesMantenimiento {
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			this.listarRegistros(ServiceLocator.getServicioManager().buscarPorX(criteriosBusqueda, criteriosOrdenar));
 
+		}catch(EmpresaException eex) {
+			DlgMessage.information(Messages.getString("WndRuta.information.Empresa"),cmbEmpresa);
+			throw new CancelaGrabacionException();
 		}catch (DenominacionNullException dnex){
 			DlgMessage.information(Messages.getString("Generales.information.noIngresoDenominacion"),txtDenominacion);
 			throw new CancelaGrabacionException();
@@ -393,6 +421,7 @@ public class WndServicio extends WndOpcionesMantenimiento {
 
 			lstFila.add(oServicio.getId());
 			lstFila.add(r + 1);
+			lstFila.add(oServicio.getEmpresa().getRazonSocial());
 			lstFila.add(oServicio.getDenominacion());
 			lstFila.add(oServicio.getNombreCorto());
 			lstFila.add(oServicio.getNumeroPisos());
@@ -410,7 +439,7 @@ public class WndServicio extends WndOpcionesMantenimiento {
 		oServicio = ServiceLocator.getServicioManager().buscarPorId(id);
 		//Servicio outilData = ServiceDelegate.instance().servicio_buscarPorId(id);
 
-
+		Util.seleccionarValorItemCombo(Empresa.class, cmbEmpresa, oServicio.getEmpresa().getId());
 		textboxId.setText(oServicio.getId().toString());
 		txtDenominacion.setText(oServicio.getDenominacion());
 		txtNombreCorto.setText(oServicio.getNombreCorto());

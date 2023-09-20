@@ -389,6 +389,8 @@ public class WndVentaReserva extends WndBase {
 	private Label lblAlimen4;
 	private Combobox cmbAlimen4;
 	private Checkbox chbxNoTieneMail;
+	private Textbox txtIdEmpresaIda;
+	private Textbox txtIdEmpresaRetorno;
 
 	private Window wndVentaReserva;
 
@@ -833,6 +835,8 @@ public class WndVentaReserva extends WndBase {
 		cmbAlimen4=(Combobox)this.getFellow("cmbAlimen4");
 
 		wndVentaReserva=(Window)this.getFellow("wndVentaReserva");
+		txtIdEmpresaIda = (Textbox)this.getFellow("txtIdEmpresaIda");
+		txtIdEmpresaRetorno = (Textbox)this.getFellow("txtIdEmpresaRetorno");
 
 
 		txtNumeroBoleto.addEventListener(Events.ON_BLUR, new EventListener<Event>() {
@@ -847,7 +851,11 @@ public class WndVentaReserva extends WndBase {
 		imgRefreshBoleto.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e) throws Exception{
-				onLoadEspecieValorada(txtNumeroBoleto);
+				if(rdVentaIdaVuelta.isSelected())
+					onLoadEspecieValorada(txtNumeroBoleto, ((DetalleItinerario)lbxAsientosIdaRetorno.getSelectedItem().getValue()).getItinerario().getEmpresa().getId());
+				else
+					onLoadEspecieValorada(txtNumeroBoleto, ((DetalleItinerario)lbxAsientos.getSelectedItem().getValue()).getItinerario().getEmpresa().getId());
+
 			}
 		});
 
@@ -1227,7 +1235,7 @@ public class WndVentaReserva extends WndBase {
 	/**
 	 * Realiza la busqueda del correlativo para el boleto a emitir.
 	 */
-	private void onLoadEspecieValorada(Textbox txtBoleto)throws Exception{
+	private void onLoadEspecieValorada(Textbox txtBoleto, Integer idEmpresa)throws Exception{
 		EspecieValorada especieValorada=null;
 		ControlEspecieValorada controlEspecieValorada = null;
 		if(agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_TEPSA){
@@ -1241,7 +1249,7 @@ public class WndVentaReserva extends WndBase {
 					/*BEGIN 16/06/2021 - javalos - Correlativo by caja*/
 //					especieValorada=UtilData.buscarEspecieValorada(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId(), agencia, false);
 //					txtBoleto.setValue(especieValorada.toString());
-					controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId(), agencia, false, getUsuarioHardware(), null);
+					controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId(), agencia, false, getUsuarioHardware(), null, idEmpresa);
 					txtBoleto.setValue(controlEspecieValorada.toString());
 					/*END 16/06/2021 - javalos - Correlativo by caja*/
 				}
@@ -1251,14 +1259,14 @@ public class WndVentaReserva extends WndBase {
 					/*BEGIN 16/06/2021 - javalos - Correlativo by caja*/
 //					especieValorada=UtilData.buscarEspecieValorada(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId(), (Agencia)cmbAgenciaRemota.getSelectedItem().getValue(), false);
 //					txtBoleto.setValue(especieValorada.toString());
-					controlEspecieValorada=UtilData.buscarEspecieValoradaByCaja(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId(), (Agencia)cmbAgenciaRemota.getSelectedItem().getValue(), false, getUsuarioHardware(), null);
+					controlEspecieValorada=UtilData.buscarEspecieValoradaByCaja(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId(), (Agencia)cmbAgenciaRemota.getSelectedItem().getValue(), false, getUsuarioHardware(), null, idEmpresa);
 					txtBoleto.setValue(controlEspecieValorada.toString());
 					/*END 16/06/2021 - javalos - Correlativo by caja*/
 				}else if(rdBoletoRemoto.isChecked())
 					txtBoleto.setValue("");
 			}else{
 //				txtBoleto.setValue(UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_BOLETO_VIAJE, usuhar));
-				controlEspecieValorada=UtilData.buscarEspecieValoradaByCaja(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(), false, getUsuarioHardware(), null);
+				controlEspecieValorada=UtilData.buscarEspecieValoradaByCaja(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(), false, getUsuarioHardware(), null, idEmpresa);
 				txtBoleto.setValue(controlEspecieValorada.toString());
 			}
 		}else if(agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_VIAJES){
@@ -2222,7 +2230,7 @@ public class WndVentaReserva extends WndBase {
 			lbxAsientosIdaRetorno.setVisible(false);
 
 			onSelectDefaultTipoComprobante();
-			onLoadEspecieValorada(txtNumeroBoleto);
+			onLoadEspecieValorada(txtNumeroBoleto, detalleItinerarioFechaAbierta.getItinerario().getEmpresa().getId());
 
 		}catch (AgenciaNullException anex){
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noAgenciaRemota"), cmbAgenciaRemota);
@@ -2863,7 +2871,7 @@ public class WndVentaReserva extends WndBase {
 			onLoadPuntoEmbarque(detailItinerary, cmbPtoEmbarque);
 			onLoadPuntoDesembarque(detailItinerary, cmbPtoDesembarque);
 			if(!cmbTipoOperacion.getSelectedItem().getValue().equals(Constantes.TIPO_OPERACION_RESERVA)){
-				onLoadEspecieValorada(txtNumeroBoleto);
+				onLoadEspecieValorada(txtNumeroBoleto, detailItinerary.getItinerario().getEmpresa().getId());
 
 				/*Implementado 08/08/2015 - jabanto*/
 //				TipoCambio tipoCambio=Util.getTipoCambioEquiMonedaLocal(getAgencia(), detailItinerary.getTarifa());
@@ -2895,175 +2903,175 @@ public class WndVentaReserva extends WndBase {
 			if(chkVentaRemota.isChecked() && UtilFlag.isActivaImportePagarVentaRemota(getAgencia().getId()))
 				dblImporte.setReadonly(false);
 
-		}else if (lbxAsientos.getSelectedItem().getValue() instanceof AsientoPool){
-			UtilData.cargarGenericData(cmbAlimentacion, false);
-			AsientoPool asientoPool=lbxAsientos.getSelectedItem().getValue();
-			/*===========================================================*/
-			/*Si es una venta en el servicio de Cruz del Sur*/
-			/*===========================================================*/
-			if(asientoPool.getObjectCruzdelsur()!=null){
-				cmbAlimentacion.setDisabled(true);
-				Horario horario=asientoPool.getObjectCruzdelsur().getHorario();
-				String[] yruta=asientoPool.getObjectCruzdelsur().getHorario().getRuta().getValue().split("-");
-				lblOrigen.setValue(yruta[0].toUpperCase());
-				lblDestino.setValue(yruta[1].toUpperCase());
-				/*Cargando los puntos de embarque*/
-				UtilData.cargarGenericData(cmbPtoEmbarque, false);
-				Comboitem comboitem= new Comboitem(horario.getAgenciaEmbarque1().getValue());
-				comboitem.setValue(horario.getAgenciaEmbarqueLlave1().getValue());
-				cmbPtoEmbarque.appendChild(comboitem);
-				if(horario.getAgenciaEmbarque2().getValue()!=null){
-					comboitem= new Comboitem(horario.getAgenciaEmbarque2().getValue());
-					comboitem.setValue(horario.getAgenciaEmbarqueLlave2().getValue());
-					cmbPtoEmbarque.appendChild(comboitem);
-					cmbPtoEmbarque.setSelectedIndex(0);
-				}else
-					cmbPtoEmbarque.setSelectedIndex(1);
-				/*Cargando los puntos de desembarque*/
-				UtilData.cargarGenericData(cmbPtoDesembarque, false);
-				comboitem= new Comboitem(horario.getAgenciaDesembarque1().getValue());
-				comboitem.setValue(horario.getAgenciaDesembarqueLlave1().getValue());
-				cmbPtoDesembarque.appendChild(comboitem);
-				if(horario.getAgenciaDesembarque2().getValue()!=null){
-					comboitem= new Comboitem(horario.getAgenciaDesembarque2().getValue());
-					comboitem.setValue(horario.getAgenciaDesembarqueLlave2().getValue());
-					cmbPtoDesembarque.appendChild(comboitem);
-					cmbPtoDesembarque.setSelectedIndex(0);
-				}else
-					cmbPtoDesembarque.setSelectedIndex(1);
-				/*Cargar Alimnentacion*/
-				if(horario.getMenus()!=null && horario.getMenus().getValue()!=null){
-					for(Generic generic:horario.getMenus().getValue().getGeneric()){
-						if(!(lblAlimen1.isVisible())){
-							lblAlimen1.setValue(generic.getValue().getValue().toUpperCase());
-							UtilData.cargarGenericData(cmbAlimen1, false);
-							for(Generic oGeneric :generic.getListGeneric().getValue().getGeneric()){
-								comboitem= new Comboitem(oGeneric.getValue().getValue());
-								Generic generic2= new Generic();
-								generic2.setKey(new JAXBElement<>(new QName(WSCruzdelsur.NAMESPACE,"key"), String.class,generic.getKey().getValue()));//El identificador del tipo de alimentacion
-								generic2.setValue(new JAXBElement<>(new QName(WSCruzdelsur.NAMESPACE,"value"), String.class,oGeneric.getKey().getValue())); //El identificador del la alimentacacion
-								comboitem.setValue(generic2);
-								cmbAlimen1.appendChild(comboitem);
-							}
-							lblAlimen1.setVisible(true);
-							cmbAlimen1.setVisible(true);
-						}else if(!(lblAlimen2.isVisible())){
-							lblAlimen2.setValue(generic.getValue().getValue().toUpperCase());
-							UtilData.cargarGenericData(cmbAlimen2, false);
-							for(Generic oGeneric :generic.getListGeneric().getValue().getGeneric()){
-								comboitem= new Comboitem(oGeneric.getValue().getValue());
-								Generic generic2= new Generic();
-								generic2.setKey(new JAXBElement<>(new QName(WSCruzdelsur.NAMESPACE,"key"), String.class,generic.getKey().getValue()));//El identificador del tipo de alimentacion
-								generic2.setValue(new JAXBElement<>(new QName(WSCruzdelsur.NAMESPACE,"value"), String.class,oGeneric.getKey().getValue())); //El identificador del la alimentacacion
-								comboitem.setValue(generic2);
-								cmbAlimen2.appendChild(comboitem);
-							}
-							lblAlimen2.setVisible(true);
-							cmbAlimen2.setVisible(true);
-						}else if(!(lblAlimen3.isVisible())){
-							lblAlimen3.setValue(generic.getValue().getValue().toUpperCase());
-							UtilData.cargarGenericData(cmbAlimen3, false);
-							for(Generic oGeneric :generic.getListGeneric().getValue().getGeneric()){
-								comboitem= new Comboitem(oGeneric.getValue().getValue());
-								Generic generic2= new Generic();
-								generic2.setKey(new JAXBElement<>(new QName(WSCruzdelsur.NAMESPACE,"key"), String.class,generic.getKey().getValue()));//El identificador del tipo de alimentacion
-								generic2.setValue(new JAXBElement<>(new QName(WSCruzdelsur.NAMESPACE,"value"), String.class,oGeneric.getKey().getValue())); //El identificador del la alimentacacion
-								comboitem.setValue(generic2);
-								cmbAlimen3.appendChild(comboitem);
-							}
-							lblAlimen3.setVisible(true);
-							cmbAlimen3.setVisible(true);
-						}else if(!(lblAlimen4.isVisible())){
-							lblAlimen4.setValue(generic.getValue().getValue().toUpperCase());
-							UtilData.cargarGenericData(cmbAlimen4, false);
-							for(Generic oGeneric :generic.getListGeneric().getValue().getGeneric()){
-								comboitem= new Comboitem(oGeneric.getValue().getValue());
-								Generic generic2= new Generic();
-								generic2.setKey(new JAXBElement<>(new QName(WSCruzdelsur.NAMESPACE,"key"), String.class,generic.getKey().getValue()));//El identificador del tipo de alimentacion
-								generic2.setValue(new JAXBElement<>(new QName(WSCruzdelsur.NAMESPACE,"value"), String.class,oGeneric.getKey().getValue())); //El identificador del la alimentacacion
-								comboitem.setValue(generic2);
-								cmbAlimen4.appendChild(comboitem);
-							}
-							lblAlimen4.setVisible(true);
-							cmbAlimen4.setVisible(true);
-						}
-					}
-				}
-				/*Otros datos de la venta*/
-				String fechaEmbarque=horario.getFechaHoraEmbarque1().getValue().split(" ")[0];
-				String horaPartida=horario.getFechaHoraEmbarque1().getValue().split(" ")[1];
-				String fechaDesembarque=horario.getFechaHoraDesembarque1().getValue().split(" ")[0];
-				String horaLlegada=horario.getFechaHoraDesembarque1().getValue().split(" ")[1];
-				lblFechaPartida.setValue(fechaEmbarque);
-				lblFechaLlegada.setValue(fechaDesembarque);
-				lblHoraPartida.setValue(horaPartida);
-				lblHoraLlegada.setValue(horaLlegada);
-				String piso=(asientoPool.getNivelAsiento().intValue()==1?"[PISO1]":"[PSIO2]");
-				lblNroAsiento.setValue(asientoPool.getNumeroAsiento()+" "+piso);
-				lblTarifa.setValue(Util.toNumberFormat(asientoPool.getTarifa(), 2));
-				onLoadEspecieValorada(txtNumeroBoleto);
-				txtObservacionesIda.setDisabled(true);
-				dblTarifa.setValue(asientoPool.getTarifa());
-				dblDescuento.setValue(.00);
-				dblRecargo.setValue(.00);
-				dblImporte.setValue(asientoPool.getTarifa());
-			}else if(asientoPool.getObjectCiva()!=null){
-				/*===========================================================*/
-				/*Si es una venta en el servicio de Civa/Excluciva*/
-				/*===========================================================*/
-				ObjectCiva objectCiva=asientoPool.getObjectCiva();
-//				String[] yruta=objectCiva.getRutaBus().split("-");
-				String[] yruta=objectCiva.getRutaRecorrido().split("-");
-				lblOrigen.setValue(yruta[0].toUpperCase());
-				lblDestino.setValue(yruta[1].toUpperCase());
-				/*Cargando los puntos de embarque*/
-				UtilData.cargarGenericData(cmbPtoEmbarque, false);
-				Comboitem comboitem= new Comboitem(objectCiva.getDireccionEmbarque().toUpperCase());
-				comboitem.setValue(objectCiva.getDireccionEmbarque().toUpperCase());
-				cmbPtoEmbarque.appendChild(comboitem);
-				cmbPtoEmbarque.setSelectedIndex(1);
-				/*Cargando los puntos de desembarque*/
-				UtilData.cargarGenericData(cmbPtoDesembarque, false);
-				comboitem= new Comboitem(objectCiva.getDireccionDesembarque().toUpperCase());
-				comboitem.setValue(objectCiva.getDireccionDesembarque().toUpperCase());
-				cmbPtoDesembarque.appendChild(comboitem);
-				cmbPtoDesembarque.setSelectedIndex(1);
-				/*Cargar Alimnentacion*/
-				if(objectCiva.getMenus()!=null){
-					for(TreeMap<String, Object> menu : objectCiva.getMenus()){
-						Menu omenu = (Menu) menu.get("Menu");
-						comboitem= new Comboitem(omenu.getDenominacion());
-						comboitem.setValue(omenu);
-						cmbAlimentacion.appendChild(comboitem);
-					}
-				}
+//		}else if (lbxAsientos.getSelectedItem().getValue() instanceof AsientoPool){
+//			UtilData.cargarGenericData(cmbAlimentacion, false);
+//			AsientoPool asientoPool=lbxAsientos.getSelectedItem().getValue();
+//			/*===========================================================*/
+//			/*Si es una venta en el servicio de Cruz del Sur*/
+//			/*===========================================================*/
+//			if(asientoPool.getObjectCruzdelsur()!=null){
+//				cmbAlimentacion.setDisabled(true);
+//				Horario horario=asientoPool.getObjectCruzdelsur().getHorario();
+//				String[] yruta=asientoPool.getObjectCruzdelsur().getHorario().getRuta().getValue().split("-");
+//				lblOrigen.setValue(yruta[0].toUpperCase());
+//				lblDestino.setValue(yruta[1].toUpperCase());
+//				/*Cargando los puntos de embarque*/
+//				UtilData.cargarGenericData(cmbPtoEmbarque, false);
+//				Comboitem comboitem= new Comboitem(horario.getAgenciaEmbarque1().getValue());
+//				comboitem.setValue(horario.getAgenciaEmbarqueLlave1().getValue());
+//				cmbPtoEmbarque.appendChild(comboitem);
+//				if(horario.getAgenciaEmbarque2().getValue()!=null){
+//					comboitem= new Comboitem(horario.getAgenciaEmbarque2().getValue());
+//					comboitem.setValue(horario.getAgenciaEmbarqueLlave2().getValue());
+//					cmbPtoEmbarque.appendChild(comboitem);
+//					cmbPtoEmbarque.setSelectedIndex(0);
+//				}else
+//					cmbPtoEmbarque.setSelectedIndex(1);
+//				/*Cargando los puntos de desembarque*/
+//				UtilData.cargarGenericData(cmbPtoDesembarque, false);
+//				comboitem= new Comboitem(horario.getAgenciaDesembarque1().getValue());
+//				comboitem.setValue(horario.getAgenciaDesembarqueLlave1().getValue());
+//				cmbPtoDesembarque.appendChild(comboitem);
+//				if(horario.getAgenciaDesembarque2().getValue()!=null){
+//					comboitem= new Comboitem(horario.getAgenciaDesembarque2().getValue());
+//					comboitem.setValue(horario.getAgenciaDesembarqueLlave2().getValue());
+//					cmbPtoDesembarque.appendChild(comboitem);
+//					cmbPtoDesembarque.setSelectedIndex(0);
+//				}else
+//					cmbPtoDesembarque.setSelectedIndex(1);
+//				/*Cargar Alimnentacion*/
 //				if(horario.getMenus()!=null && horario.getMenus().getValue()!=null){
 //					for(Generic generic:horario.getMenus().getValue().getGeneric()){
-//						comboitem= new Comboitem(generic.getValue().getValue());
-//						comboitem.setValue(generic);
+//						if(!(lblAlimen1.isVisible())){
+//							lblAlimen1.setValue(generic.getValue().getValue().toUpperCase());
+//							UtilData.cargarGenericData(cmbAlimen1, false);
+//							for(Generic oGeneric :generic.getListGeneric().getValue().getGeneric()){
+//								comboitem= new Comboitem(oGeneric.getValue().getValue());
+//								Generic generic2= new Generic();
+//								generic2.setKey(new JAXBElement<>(new QName(WSCruzdelsur.NAMESPACE,"key"), String.class,generic.getKey().getValue()));//El identificador del tipo de alimentacion
+//								generic2.setValue(new JAXBElement<>(new QName(WSCruzdelsur.NAMESPACE,"value"), String.class,oGeneric.getKey().getValue())); //El identificador del la alimentacacion
+//								comboitem.setValue(generic2);
+//								cmbAlimen1.appendChild(comboitem);
+//							}
+//							lblAlimen1.setVisible(true);
+//							cmbAlimen1.setVisible(true);
+//						}else if(!(lblAlimen2.isVisible())){
+//							lblAlimen2.setValue(generic.getValue().getValue().toUpperCase());
+//							UtilData.cargarGenericData(cmbAlimen2, false);
+//							for(Generic oGeneric :generic.getListGeneric().getValue().getGeneric()){
+//								comboitem= new Comboitem(oGeneric.getValue().getValue());
+//								Generic generic2= new Generic();
+//								generic2.setKey(new JAXBElement<>(new QName(WSCruzdelsur.NAMESPACE,"key"), String.class,generic.getKey().getValue()));//El identificador del tipo de alimentacion
+//								generic2.setValue(new JAXBElement<>(new QName(WSCruzdelsur.NAMESPACE,"value"), String.class,oGeneric.getKey().getValue())); //El identificador del la alimentacacion
+//								comboitem.setValue(generic2);
+//								cmbAlimen2.appendChild(comboitem);
+//							}
+//							lblAlimen2.setVisible(true);
+//							cmbAlimen2.setVisible(true);
+//						}else if(!(lblAlimen3.isVisible())){
+//							lblAlimen3.setValue(generic.getValue().getValue().toUpperCase());
+//							UtilData.cargarGenericData(cmbAlimen3, false);
+//							for(Generic oGeneric :generic.getListGeneric().getValue().getGeneric()){
+//								comboitem= new Comboitem(oGeneric.getValue().getValue());
+//								Generic generic2= new Generic();
+//								generic2.setKey(new JAXBElement<>(new QName(WSCruzdelsur.NAMESPACE,"key"), String.class,generic.getKey().getValue()));//El identificador del tipo de alimentacion
+//								generic2.setValue(new JAXBElement<>(new QName(WSCruzdelsur.NAMESPACE,"value"), String.class,oGeneric.getKey().getValue())); //El identificador del la alimentacacion
+//								comboitem.setValue(generic2);
+//								cmbAlimen3.appendChild(comboitem);
+//							}
+//							lblAlimen3.setVisible(true);
+//							cmbAlimen3.setVisible(true);
+//						}else if(!(lblAlimen4.isVisible())){
+//							lblAlimen4.setValue(generic.getValue().getValue().toUpperCase());
+//							UtilData.cargarGenericData(cmbAlimen4, false);
+//							for(Generic oGeneric :generic.getListGeneric().getValue().getGeneric()){
+//								comboitem= new Comboitem(oGeneric.getValue().getValue());
+//								Generic generic2= new Generic();
+//								generic2.setKey(new JAXBElement<>(new QName(WSCruzdelsur.NAMESPACE,"key"), String.class,generic.getKey().getValue()));//El identificador del tipo de alimentacion
+//								generic2.setValue(new JAXBElement<>(new QName(WSCruzdelsur.NAMESPACE,"value"), String.class,oGeneric.getKey().getValue())); //El identificador del la alimentacacion
+//								comboitem.setValue(generic2);
+//								cmbAlimen4.appendChild(comboitem);
+//							}
+//							lblAlimen4.setVisible(true);
+//							cmbAlimen4.setVisible(true);
+//						}
+//					}
+//				}
+//				/*Otros datos de la venta*/
+//				String fechaEmbarque=horario.getFechaHoraEmbarque1().getValue().split(" ")[0];
+//				String horaPartida=horario.getFechaHoraEmbarque1().getValue().split(" ")[1];
+//				String fechaDesembarque=horario.getFechaHoraDesembarque1().getValue().split(" ")[0];
+//				String horaLlegada=horario.getFechaHoraDesembarque1().getValue().split(" ")[1];
+//				lblFechaPartida.setValue(fechaEmbarque);
+//				lblFechaLlegada.setValue(fechaDesembarque);
+//				lblHoraPartida.setValue(horaPartida);
+//				lblHoraLlegada.setValue(horaLlegada);
+//				String piso=(asientoPool.getNivelAsiento().intValue()==1?"[PISO1]":"[PSIO2]");
+//				lblNroAsiento.setValue(asientoPool.getNumeroAsiento()+" "+piso);
+//				lblTarifa.setValue(Util.toNumberFormat(asientoPool.getTarifa(), 2));
+//				onLoadEspecieValorada(txtNumeroBoleto);
+//				txtObservacionesIda.setDisabled(true);
+//				dblTarifa.setValue(asientoPool.getTarifa());
+//				dblDescuento.setValue(.00);
+//				dblRecargo.setValue(.00);
+//				dblImporte.setValue(asientoPool.getTarifa());
+//			}else if(asientoPool.getObjectCiva()!=null){
+//				/*===========================================================*/
+//				/*Si es una venta en el servicio de Civa/Excluciva*/
+//				/*===========================================================*/
+//				ObjectCiva objectCiva=asientoPool.getObjectCiva();
+////				String[] yruta=objectCiva.getRutaBus().split("-");
+//				String[] yruta=objectCiva.getRutaRecorrido().split("-");
+//				lblOrigen.setValue(yruta[0].toUpperCase());
+//				lblDestino.setValue(yruta[1].toUpperCase());
+//				/*Cargando los puntos de embarque*/
+//				UtilData.cargarGenericData(cmbPtoEmbarque, false);
+//				Comboitem comboitem= new Comboitem(objectCiva.getDireccionEmbarque().toUpperCase());
+//				comboitem.setValue(objectCiva.getDireccionEmbarque().toUpperCase());
+//				cmbPtoEmbarque.appendChild(comboitem);
+//				cmbPtoEmbarque.setSelectedIndex(1);
+//				/*Cargando los puntos de desembarque*/
+//				UtilData.cargarGenericData(cmbPtoDesembarque, false);
+//				comboitem= new Comboitem(objectCiva.getDireccionDesembarque().toUpperCase());
+//				comboitem.setValue(objectCiva.getDireccionDesembarque().toUpperCase());
+//				cmbPtoDesembarque.appendChild(comboitem);
+//				cmbPtoDesembarque.setSelectedIndex(1);
+//				/*Cargar Alimnentacion*/
+//				if(objectCiva.getMenus()!=null){
+//					for(TreeMap<String, Object> menu : objectCiva.getMenus()){
+//						Menu omenu = (Menu) menu.get("Menu");
+//						comboitem= new Comboitem(omenu.getDenominacion());
+//						comboitem.setValue(omenu);
 //						cmbAlimentacion.appendChild(comboitem);
 //					}
 //				}
-				/*Otros datos de la venta*/
-				String fechaEmbarque=objectCiva.getFechaSalidaBus();
-				String horaPartida=objectCiva.getHoraEmbarque();
-				String fechaDesembarque=objectCiva.getFechaLlegadaBus();
-				String horaLlegada=objectCiva.getHoraDesembarque();
-				lblFechaPartida.setValue(fechaEmbarque);
-				lblFechaLlegada.setValue(fechaDesembarque);
-				lblHoraPartida.setValue(horaPartida);
-				lblHoraLlegada.setValue(horaLlegada);
-				String piso=(asientoPool.getNivelAsiento().intValue()==1?"[PISO1]":"[PSIO2]");
-				lblNroAsiento.setValue(asientoPool.getNumeroAsiento()+" "+piso);
-				lblTarifa.setValue(Util.toNumberFormat(asientoPool.getTarifa(), 2));
-				onLoadEspecieValorada(txtNumeroBoleto);
-				txtObservacionesIda.setDisabled(true);
-				dblTarifa.setValue(asientoPool.getTarifa());
-				dblDescuento.setValue(.00);
-				dblRecargo.setValue(.00);
-				dblImporte.setValue(asientoPool.getTarifa());
-
-			}
+////				if(horario.getMenus()!=null && horario.getMenus().getValue()!=null){
+////					for(Generic generic:horario.getMenus().getValue().getGeneric()){
+////						comboitem= new Comboitem(generic.getValue().getValue());
+////						comboitem.setValue(generic);
+////						cmbAlimentacion.appendChild(comboitem);
+////					}
+////				}
+//				/*Otros datos de la venta*/
+//				String fechaEmbarque=objectCiva.getFechaSalidaBus();
+//				String horaPartida=objectCiva.getHoraEmbarque();
+//				String fechaDesembarque=objectCiva.getFechaLlegadaBus();
+//				String horaLlegada=objectCiva.getHoraDesembarque();
+//				lblFechaPartida.setValue(fechaEmbarque);
+//				lblFechaLlegada.setValue(fechaDesembarque);
+//				lblHoraPartida.setValue(horaPartida);
+//				lblHoraLlegada.setValue(horaLlegada);
+//				String piso=(asientoPool.getNivelAsiento().intValue()==1?"[PISO1]":"[PSIO2]");
+//				lblNroAsiento.setValue(asientoPool.getNumeroAsiento()+" "+piso);
+//				lblTarifa.setValue(Util.toNumberFormat(asientoPool.getTarifa(), 2));
+//				onLoadEspecieValorada(txtNumeroBoleto);
+//				txtObservacionesIda.setDisabled(true);
+//				dblTarifa.setValue(asientoPool.getTarifa());
+//				dblDescuento.setValue(.00);
+//				dblRecargo.setValue(.00);
+//				dblImporte.setValue(asientoPool.getTarifa());
+//
+//			}
 		}
 	}
 
@@ -3086,7 +3094,7 @@ public class WndVentaReserva extends WndBase {
 			onLoadPuntoDesembarque(detailItinerary, cmbPtoDesembarque);
 
 			if(!cmbTipoOperacion.getSelectedItem().getValue().equals(Constantes.TIPO_OPERACION_RESERVA)){
-				onLoadEspecieValorada(txtNumeroBoleto);
+				onLoadEspecieValorada(txtNumeroBoleto, detailItinerary.getItinerario().getEmpresa().getId());
 
 				/*08/08/2015 - jabanto*/
 //				TipoCambio tipoCambio=Util.getTipoCambioEquiMonedaLocal(getAgencia(), detailItinerary.getTarifa());
@@ -3259,6 +3267,8 @@ public class WndVentaReserva extends WndBase {
 	private void onLoadDatosVentaIda(DetalleItinerario detalleItinerario){
 		lblOrigen.setValue(detalleItinerario.getRuta().getOrigen());
 		lblDestino.setValue(detalleItinerario.getRuta().getDestino());
+		txtIdEmpresaIda.setValue(detalleItinerario.getItinerario().getEmpresa().getId().toString());
+		
 		//Si no es Fecha Abierta
 		if(!rdVentaFechaAbierta.isSelected()){
 			lblFechaPartida.setValue(Util.DatetoString(detalleItinerario.getFechaPartida(), Constantes.DATE_FORMAT));
@@ -3273,6 +3283,7 @@ public class WndVentaReserva extends WndBase {
 	 * @param detalleItinerario	: Itinerario seleccionado.
 	 */
 	private void onLoadDatosVentaRetorno(DetalleItinerario detalleItinerario){
+		txtIdEmpresaRetorno.setValue(detalleItinerario.getItinerario().getEmpresa().getId().toString());
 		lblOrigenRetorno.setValue(detalleItinerario.getRuta().getOrigen());
 		lblDestinoRetorno.setValue(detalleItinerario.getRuta().getDestino());
 		lblFechaPartidaRetorno.setValue(Util.DatetoString(detalleItinerario.getFechaPartida(), Constantes.DATE_FORMAT));
@@ -4573,7 +4584,10 @@ public class WndVentaReserva extends WndBase {
 
 		/*21/10/2016 - jabanto*/
 		onSelectDefaultTipoComprobante();
-		onLoadEspecieValorada(txtNumeroBoleto);
+		if(rdVentaIdaVuelta.isSelected())
+			onLoadEspecieValorada(txtNumeroBoleto, Integer.valueOf(txtIdEmpresaIda.getValue()));
+		else
+ 			onLoadEspecieValorada(txtNumeroBoleto, Integer.valueOf(txtIdEmpresaIda.getValue()));
 
 
 
@@ -4680,7 +4694,11 @@ public class WndVentaReserva extends WndBase {
 
 			/*21/10/2016 - jabanto*/
 			onSelectDefaultTipoComprobante();
-			onLoadEspecieValorada(txtNumeroBoleto);
+			if(rdVentaIdaVuelta.isSelected())
+				onLoadEspecieValorada(txtNumeroBoleto, ((DetalleItinerario)lbxAsientosIdaRetorno.getSelectedItem().getValue()).getItinerario().getEmpresa().getId());
+			else
+				onLoadEspecieValorada(txtNumeroBoleto, ((DetalleItinerario)lbxAsientos.getSelectedItem().getValue()).getItinerario().getEmpresa().getId());
+
 
 
 			Ubigeo oUbigeo = oCliente.getUbigeo();
@@ -4886,7 +4904,11 @@ public class WndVentaReserva extends WndBase {
 
 			/*21/10/2016 - jabanto*/
 			onSelectDefaultTipoComprobante();
-			onLoadEspecieValorada(txtNumeroBoleto);
+			if(rdVentaIdaVuelta.isSelected())
+				onLoadEspecieValorada(txtNumeroBoleto, ((DetalleItinerario)lbxAsientosIdaRetorno.getSelectedItem().getValue()).getItinerario().getEmpresa().getId());
+			else
+				onLoadEspecieValorada(txtNumeroBoleto, ((DetalleItinerario)lbxAsientos.getSelectedItem().getValue()).getItinerario().getEmpresa().getId());
+
 
 
 //			String msg = "";
@@ -4962,7 +4984,11 @@ public class WndVentaReserva extends WndBase {
 
 						/*21/10/2016 - jabanto*/
 						onSelectDefaultTipoComprobante();
-						onLoadEspecieValorada(txtNumeroBoleto);
+						if(rdVentaIdaVuelta.isSelected())
+							onLoadEspecieValorada(txtNumeroBoleto, ((DetalleItinerario)lbxAsientosIdaRetorno.getSelectedItem().getValue()).getItinerario().getEmpresa().getId());
+						else
+							onLoadEspecieValorada(txtNumeroBoleto, ((DetalleItinerario)lbxAsientos.getSelectedItem().getValue()).getItinerario().getEmpresa().getId());
+
 					}
 				} catch (RucDuplicadoException rdex) {
 					DlgMessage.information(Messages.getString("WndCliente.information.RucDuplicado"), txtDocumentoCliente);
@@ -5385,89 +5411,89 @@ public class WndVentaReserva extends WndBase {
 //								ventaPasaje=ServiceLocator.getVentaPasajesManager().buscarVentaById(ventaPasaje.getId());
 
 								//Valida si es Cruz del Sur
-								if(asientoPool.getObjectCruzdelsur()!=null){
-									/*Impacta la venta en nuestra base de datos*/
-									ServiceLocator.getVentaPasajesManager().guardarVenta(ventaPasaje, false, true, false,true);
-									ventaPasaje=ServiceLocator.getVentaPasajesManager().buscarVentaById(ventaPasaje.getId());
-
-									String llaveEmbarque=cmbPtoEmbarque.getSelectedItem().getValue().toString();
-									String llaveDesembarque=cmbPtoDesembarque.getSelectedItem().getValue().toString();
-									String codigoTransaccion=((AsientoPool)lbxAsientos.getSelectedItem().getValue()).getResultBloquearAsiento().getCodigoTransaccion().getValue();
-									//Envia la venta
-									List<Generic> listMenus= new ArrayList<>();
-									if(cmbAlimen1.isVisible()){
-										Generic generic=cmbAlimen1.getSelectedItem().getValue();
-										listMenus.add(generic);
-									}
-									if(cmbAlimen2.isVisible()){
-										Generic generic=cmbAlimen2.getSelectedItem().getValue();
-										listMenus.add(generic);
-									}
-									if(cmbAlimen3.isVisible()){
-										Generic generic=cmbAlimen3.getSelectedItem().getValue();
-										listMenus.add(generic);
-									}
-									if(cmbAlimen4.isVisible()){
-										Generic generic=cmbAlimen4.getSelectedItem().getValue();
-										listMenus.add(generic);
-									}
-									ResultVenta resultVenta = WSCruzdelsur.enviarVenta(codigoTransaccion, llaveEmbarque, llaveDesembarque, oPasajero, listMenus,ventaPasaje.getNumeroBoleto());
-									if(resultVenta.isIsCorrect()){
-										/**Actualiza el numero de boleto generado por Cruz del sru**/
-										ventaPasaje.setNumeroBoletoAnterior(resultVenta.getNumeroBoleto().getValue());
-										VentaPasaje ventaPasajeUp=ServiceLocator.getVentaPasajesManager().buscarPorId(ventaPasaje.getId());
-										ventaPasajeUp.setNumeroBoletoAnterior(resultVenta.getNumeroBoleto().getValue());
-										ServiceLocator.getVentaPasajesManager().actualizar(ventaPasajeUp);
-
-										List<VentaPasaje>listVentaPasaje= new ArrayList<>();
-										listVentaPasaje.add(ventaPasaje);
-
-										//Comentado temporalmente por MAOE para pruebasc con Transmar
-										WSFE.sendVenta(listVentaPasaje, wndVentaReserva, true,null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
-
-										//Limpia los controles
-										onCleanControlsPax();
-										onCleanControlsClient();
-										onCleanPagos();
-										onCleanPartialListAsientosSeleccionados();
-										onCleanInformacionVenta();
-										tabPasajero.setSelected(true);
-									}else{
-										DlgMessage.information(resultVenta.getError().getValue().getMessage().getValue());
-									}
-								}else if (asientoPool.getObjectCiva()!=null){
-									//si es Civa
-									String idMenu=((Menu)cmbAlimentacion.getSelectedItem().getValue()).getId().toString();
-									String boletoEnviado=ventaPasaje.getNumeroBoleto();
-									String numeroPedido=RESTCiva.enviarVenta(ventaPasaje.getPasajero(), oCliente, asientoPool.getObjectCiva().getReservaID().longValue(),idMenu,boletoEnviado);
-									if(numeroPedido!=null){
-										/**Impacta la venta en nuestra base de datos*/
-										ventaPasaje.setNumeroBoletoAnterior(numeroPedido);
-										ServiceLocator.getVentaPasajesManager().guardarVenta(ventaPasaje, false, true, false,true);
-										ventaPasaje=ServiceLocator.getVentaPasajesManager().buscarVentaById(ventaPasaje.getId());
-
-										/**Valida si el numero de boleto enviado ha cambiado*/
-										if(!(boletoEnviado.equals(ventaPasaje.getNumeroBoleto()))){
-											String nuevoNumeroComprobante=ventaPasaje.getNumeroBoleto();
-											RESTCiva.actualizarNumeroComprobante(numeroPedido, boletoEnviado, nuevoNumeroComprobante);
-										}
-
-										/**Envia el comprobante a sunat*/
-										List<VentaPasaje>listVentaPasaje= new ArrayList<>();
-										listVentaPasaje.add(ventaPasaje);
-										WSFE.sendVenta(listVentaPasaje, wndVentaReserva, true,null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
-
-										//Limpia los controles
-										onCleanControlsPax();
-										onCleanControlsClient();
-										onCleanPagos();
-										onCleanPartialListAsientosSeleccionados();
-										onCleanInformacionVenta();
-										tabPasajero.setSelected(true);
-									}else{
-										DlgMessage.information("No se pudo realizar la venta, por favor vuelva a intentar");
-									}
-								}
+//								if(asientoPool.getObjectCruzdelsur()!=null){
+//									/*Impacta la venta en nuestra base de datos*/
+//									ServiceLocator.getVentaPasajesManager().guardarVenta(ventaPasaje, false, true, false,true);
+//									ventaPasaje=ServiceLocator.getVentaPasajesManager().buscarVentaById(ventaPasaje.getId());
+//
+//									String llaveEmbarque=cmbPtoEmbarque.getSelectedItem().getValue().toString();
+//									String llaveDesembarque=cmbPtoDesembarque.getSelectedItem().getValue().toString();
+//									String codigoTransaccion=((AsientoPool)lbxAsientos.getSelectedItem().getValue()).getResultBloquearAsiento().getCodigoTransaccion().getValue();
+//									//Envia la venta
+//									List<Generic> listMenus= new ArrayList<>();
+//									if(cmbAlimen1.isVisible()){
+//										Generic generic=cmbAlimen1.getSelectedItem().getValue();
+//										listMenus.add(generic);
+//									}
+//									if(cmbAlimen2.isVisible()){
+//										Generic generic=cmbAlimen2.getSelectedItem().getValue();
+//										listMenus.add(generic);
+//									}
+//									if(cmbAlimen3.isVisible()){
+//										Generic generic=cmbAlimen3.getSelectedItem().getValue();
+//										listMenus.add(generic);
+//									}
+//									if(cmbAlimen4.isVisible()){
+//										Generic generic=cmbAlimen4.getSelectedItem().getValue();
+//										listMenus.add(generic);
+//									}
+//									ResultVenta resultVenta = WSCruzdelsur.enviarVenta(codigoTransaccion, llaveEmbarque, llaveDesembarque, oPasajero, listMenus,ventaPasaje.getNumeroBoleto());
+//									if(resultVenta.isIsCorrect()){
+//										/**Actualiza el numero de boleto generado por Cruz del sru**/
+//										ventaPasaje.setNumeroBoletoAnterior(resultVenta.getNumeroBoleto().getValue());
+//										VentaPasaje ventaPasajeUp=ServiceLocator.getVentaPasajesManager().buscarPorId(ventaPasaje.getId());
+//										ventaPasajeUp.setNumeroBoletoAnterior(resultVenta.getNumeroBoleto().getValue());
+//										ServiceLocator.getVentaPasajesManager().actualizar(ventaPasajeUp);
+//
+//										List<VentaPasaje>listVentaPasaje= new ArrayList<>();
+//										listVentaPasaje.add(ventaPasaje);
+//
+//										//Comentado temporalmente por MAOE para pruebasc con Transmar
+//										WSFE.sendVenta(listVentaPasaje, wndVentaReserva, true,null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
+//
+//										//Limpia los controles
+//										onCleanControlsPax();
+//										onCleanControlsClient();
+//										onCleanPagos();
+//										onCleanPartialListAsientosSeleccionados();
+//										onCleanInformacionVenta();
+//										tabPasajero.setSelected(true);
+//									}else{
+//										DlgMessage.information(resultVenta.getError().getValue().getMessage().getValue());
+//									}
+//								}else if (asientoPool.getObjectCiva()!=null){
+//									//si es Civa
+//									String idMenu=((Menu)cmbAlimentacion.getSelectedItem().getValue()).getId().toString();
+//									String boletoEnviado=ventaPasaje.getNumeroBoleto();
+//									String numeroPedido=RESTCiva.enviarVenta(ventaPasaje.getPasajero(), oCliente, asientoPool.getObjectCiva().getReservaID().longValue(),idMenu,boletoEnviado);
+//									if(numeroPedido!=null){
+//										/**Impacta la venta en nuestra base de datos*/
+//										ventaPasaje.setNumeroBoletoAnterior(numeroPedido);
+//										ServiceLocator.getVentaPasajesManager().guardarVenta(ventaPasaje, false, true, false,true);
+//										ventaPasaje=ServiceLocator.getVentaPasajesManager().buscarVentaById(ventaPasaje.getId());
+//
+//										/**Valida si el numero de boleto enviado ha cambiado*/
+//										if(!(boletoEnviado.equals(ventaPasaje.getNumeroBoleto()))){
+//											String nuevoNumeroComprobante=ventaPasaje.getNumeroBoleto();
+//											RESTCiva.actualizarNumeroComprobante(numeroPedido, boletoEnviado, nuevoNumeroComprobante);
+//										}
+//
+//										/**Envia el comprobante a sunat*/
+//										List<VentaPasaje>listVentaPasaje= new ArrayList<>();
+//										listVentaPasaje.add(ventaPasaje);
+//										WSFE.sendVenta(listVentaPasaje, wndVentaReserva, true,null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
+//
+//										//Limpia los controles
+//										onCleanControlsPax();
+//										onCleanControlsClient();
+//										onCleanPagos();
+//										onCleanPartialListAsientosSeleccionados();
+//										onCleanInformacionVenta();
+//										tabPasajero.setSelected(true);
+//									}else{
+//										DlgMessage.information("No se pudo realizar la venta, por favor vuelva a intentar");
+//									}
+//								}
 							}
 						}catch(Exception ex ){
 							ex.printStackTrace();
@@ -5910,6 +5936,7 @@ public class WndVentaReserva extends WndBase {
 			}
 //			ventaPasaje.setEstadoDocumento(Constantes.ESTADO_DOCUMENTO_PAGADO);
 			ventaPasaje.setItinerario(detalleItinerario.getItinerario());
+			ventaPasaje.setEmpresa(detalleItinerario.getItinerario().getEmpresa());
 			ventaPasaje.setRuta(detalleItinerario.getRuta());
 			ventaPasaje.setCliente(oCliente);
 			ventaPasaje.setPasajero(oPasajero);

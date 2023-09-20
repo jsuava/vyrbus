@@ -370,7 +370,10 @@
 													<rows>
 														<row>
 															<label value="ORIGEN :"/>
-															<label id="lblOrigen" sclass="label-size11-bold-blue"/>
+															<hbox>
+																<label id="lblOrigen" sclass="label-size11-bold-blue"/>
+																<textbox id="txtIdEmpresaIda" visible="false"></textbox>
+															</hbox>
 															<label value="DESTINO :"/>
 															<label id="lblDestino" sclass="label-size11-bold-blue"/>
 														</row>
@@ -443,7 +446,10 @@
 													<rows>
 														<row>
 															<label value="ORIGEN :"/>
-															<label id="lblOrigenRetorno" sclass="label-size11-bold-blue"/>
+															<hbox>
+																<label id="lblOrigenRetorno" sclass="label-size11-bold-blue"/>
+																<textbox id="txtIdEmpresaRetorno" visible="false" />
+															</hbox>
 															<label value="DESTINO :"/>
 															<label id="lblDestinoRetorno" sclass="label-size11-bold-blue"/>
 														</row>

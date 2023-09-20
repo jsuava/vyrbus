@@ -62,6 +62,7 @@ public class ControlEspecieValoradaManagerImpl implements ControlEspecieValorada
 					controlEspecieValorada.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_DEBITO) {
 
 				TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
+				criteriosBusqueda.put("empresa", controlEspecieValorada.getEmpresa());
 				criteriosBusqueda.put("tipoComprobante", controlEspecieValorada.getTipoComprobante());
 				criteriosBusqueda.put("usuarioHardware", controlEspecieValorada.getUsuarioHardware());
 				List<?> result = getControlEspecieValoradaDAO().buscarPorX(criteriosBusqueda, null);
@@ -97,6 +98,7 @@ public class ControlEspecieValoradaManagerImpl implements ControlEspecieValorada
 				return Constantes.CORRECT;
 			}else {
 				TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
+				criteriosBusqueda.put("empresa", controlEspecieValorada.getEmpresa());
 				criteriosBusqueda.put("tipoComprobante", controlEspecieValorada.getTipoComprobante());
 				criteriosBusqueda.put("usuarioHardware", controlEspecieValorada.getUsuarioHardware());
 				//criteriosBusqueda.put("estadoRegistro", Constantes.ACTIVO);
@@ -107,6 +109,7 @@ public class ControlEspecieValoradaManagerImpl implements ControlEspecieValorada
 					throw new CorrelativoException(CorrelativoException.DUPLICADO); //ControlEspecieValoradaDuplicidadException();
 
 				criteriosBusqueda = new TreeMap<>();
+				criteriosBusqueda.put("empresa", controlEspecieValorada.getEmpresa());
 				criteriosBusqueda.put("serie", controlEspecieValorada.getSerie());
 				criteriosBusqueda.put("tipoComprobante", controlEspecieValorada.getTipoComprobante());
 				result = getControlEspecieValoradaDAO().buscarPorX(criteriosBusqueda, null);
@@ -178,11 +181,11 @@ public class ControlEspecieValoradaManagerImpl implements ControlEspecieValorada
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.tepsa.sisvyr.service.business.ControlEspecieValoradaManager#buscarEspecieValoradas(java.lang.Integer, java.lang.Integer)
+	 * @see pe.itsb.vyrbus.service.business.ControlEspecieValoradaManager#buscarEspecieValoradas(java.lang.Integer, java.lang.Integer, java.lang.Integer, java.lang.Integer)
 	 */
 	@Override
-	public List<ControlEspecieValorada> buscarEspecieValoradas(Integer idAgencia, Integer idTipoComprobante, Integer idUsuarioHardware) throws Exception {
-		return getControlEspecieValoradaDAO().buscarEspecieValoradas(idAgencia, idTipoComprobante,idUsuarioHardware);
+	public List<ControlEspecieValorada> buscarEspecieValoradas(Integer idAgencia, Integer idTipoComprobante, Integer idUsuarioHardware, Integer idEmpresa) throws Exception {
+		return getControlEspecieValoradaDAO().buscarEspecieValoradas(idAgencia, idTipoComprobante,idUsuarioHardware, idEmpresa);
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.ControlEspecieValoradaManager#validaEVOtrasCajas(java.lang.Integer, java.lang.String, java.lang.String, java.lang.String)

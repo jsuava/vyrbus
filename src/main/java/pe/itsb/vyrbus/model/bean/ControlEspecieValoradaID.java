@@ -9,6 +9,7 @@ public class ControlEspecieValoradaID implements java.io.Serializable, Cloneable
 	private static final long serialVersionUID = 1L;
 	private Integer idTipoComprobante;
 	private Integer idUsuarioHardware;
+	private Integer idEmpresa;
 	private String strSerie;
 
 	public ControlEspecieValoradaID() {
@@ -59,6 +60,18 @@ public class ControlEspecieValoradaID implements java.io.Serializable, Cloneable
 	 */
 	public void setStrSerie(String strSerie) {
 		this.strSerie = strSerie;
+	}
+	/**
+	 * @return the idEmpresa
+	 */
+	public Integer getIdEmpresa() {
+		return idEmpresa;
+	}
+	/**
+	 * @param idEmpresa the idEmpresa to set
+	 */
+	public void setIdEmpresa(Integer idEmpresa) {
+		this.idEmpresa = idEmpresa;
 	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#clone()

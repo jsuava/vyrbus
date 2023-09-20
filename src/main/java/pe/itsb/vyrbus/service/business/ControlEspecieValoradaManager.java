@@ -17,7 +17,7 @@ public interface ControlEspecieValoradaManager {
 	 */
 	public ArrayList<ControlEspecieValorada> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar)throws Exception;
 	/**
-	 * Realiza la inserción del objeto enviado como parametro.
+	 * Realiza la inserciï¿½n del objeto enviado como parametro.
 	 * @param controlEspecieValorada	: Objeto a insertar.
 	 * @return -1 Fallo, 1 Correcto
 	 */
@@ -38,18 +38,19 @@ public interface ControlEspecieValoradaManager {
 
 	/**
 	 * busca Control especies valoradas
-	 * @param idAgencia			: Obsional, Identificador de la agencia
-	 * @param idTipoComprobante	: Obsional, Identificador del Tipo de comprobante
-	 * @param idUsuarioHarware	: Obsional, Identificador del Usuario Hardware
+	 * @param idAgencia			: Opcional, Identificador de la agencia
+	 * @param idTipoComprobante	: Opcional, Identificador del Tipo de comprobante
+	 * @param idUsuarioHarware	: Opcional, Identificador del Usuario Hardware
+	 * @param idEmpresa			: Opcional, identificador de la empresa
 	 * @return
 	 * @throws Exception
 	 */
-	public List<ControlEspecieValorada> buscarEspecieValoradas(Integer idAgencia, Integer idTipoComprobante, Integer idUsuarioHarware) throws Exception;
+	public List<ControlEspecieValorada> buscarEspecieValoradas(Integer idAgencia, Integer idTipoComprobante, Integer idUsuarioHarware, Integer idEmpresa) throws Exception;
 
 	/**
-	 * Valida que el numero rango de correlativo ingresado no haga intersección con algún otro rango ingresado por otro usuario
+	 * Valida que el numero rango de correlativo ingresado no haga intersecciï¿½n con algï¿½n otro rango ingresado por otro usuario
 	 * @param idUsuarioHardware	: Identificador Usuario Hardware.
-	 * @param serie				: Número de Serie.
+	 * @param serie				: NÃºmero de Serie.
 	 * @param inicial			: Correlativo Inicial.
 	 * @param Final				: Correlativo Final
 	 * @return

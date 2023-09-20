@@ -5,6 +5,7 @@
 		<listbox id="listboxLista">
 			<listhead sizable="true">
 				<listheader width="35px" label="#" style="color: #ffffff;"/>
+				<listheader label="EMPRESA" width="200px" sort="auto" style="color: #ffffff;"/>
 				<listheader label="TIPO COMPROBANTE" width="200px" sort="auto" style="color: #ffffff;"/>
 				<listheader label="USUARIO HARDWARE" width="280px" sort="auto" style="color: #ffffff;"/>
 				<listheader label="Nº DE SERIE" width="100px" sort="auto" style="color: #ffffff;"/>
@@ -24,6 +25,11 @@
 				<column width="150px" align="right"/>
 			</columns>
 			<rows>
+				<row spans="1,2,1">
+					<label value="EMPRESA (*) :" />
+					<combobox id="cmbEmpresa" readonly="true" onOK="pe.itsb.vyrbus.service.util.Util.setFocus(cmbAgencia)"></combobox>
+					<label/>
+				</row>
 				<row>
 					<div>
 						<label value="AGENCIA (*) :" />

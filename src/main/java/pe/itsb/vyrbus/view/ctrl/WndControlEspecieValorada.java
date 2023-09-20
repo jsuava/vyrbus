@@ -221,7 +221,7 @@ public class WndControlEspecieValorada extends WndOpcionesMantenimiento {
 			if( (itCorrelativoInicio.intValue() < ((EspecieValorada) listitem.getValue()).getCorrelativoInicial()) || (itCorrelativoFin.intValue() > ((EspecieValorada) listitem.getValue()).getCorrelativoFinal()))
 				throw new CorrelativoException(CorrelativoException.FUERA_RANGO);
 
-			/*Valida Que el rango de correlativo ingresado no haga intersección con algún otro rango ingresado por otro usuario*/
+			/*Valida Que el rango de correlativo ingresado no haga intersecciï¿½n con algï¿½n otro rango ingresado por otro usuario*/
 			List<ControlEspecieValorada> lstResul=ServiceLocator.getControlEspecieValoradaManager().validaEVOtrasCajas(((UsuarioHardware)cmbUsuarioHardware.getSelectedItem().getValue()).getId(),txtSerie.getText().trim(),
 												   itCorrelativoInicio.getValue().toString(), itCorrelativoFin.getValue().toString());
 			for(ControlEspecieValorada especieValorada: lstResul){

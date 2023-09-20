@@ -71,6 +71,7 @@ public class WndSeleccionaItinerario extends WndBase implements Serializable{
 	private String origen;
 	private String destino;
 	private Long idDetalleItinerario;
+	private String idEmpresa; 
 
 	private Itinerario itinerario;
 	private DetalleItinerario detalleItinerario;
@@ -166,6 +167,7 @@ public class WndSeleccionaItinerario extends WndBase implements Serializable{
 		label.setValue("Empresa");
 		label.setSclass("label-size11-bold");
 		row.appendChild(label);
+		cmbEmpresa.setWidth("300px");
 		row.appendChild(cmbEmpresa);
 		
 		rows.appendChild(row);
@@ -504,6 +506,20 @@ public class WndSeleccionaItinerario extends WndBase implements Serializable{
 		this.detalleItinerario = detalleItinerario;
 	}
 
+	/**
+	 * @return the idEmpresa
+	 */
+	public String getIdEmpresa() {
+		return idEmpresa;
+	}
+
+	/**
+	 * @param idEmpresa the idEmpresa to set
+	 */
+	public void setIdEmpresa(String idEmpresa) {
+		this.idEmpresa = idEmpresa;
+	}
+
 	private void ListaItinerarios(List<DetalleItinerario> lstItinerarios){
 		Util.limpiarListbox(lisItinerarios);
 		if(lstItinerarios.size()>0){
@@ -565,6 +581,14 @@ public class WndSeleccionaItinerario extends WndBase implements Serializable{
 		}
 		String fecha = Util.DatetoString(new Date(), "yyyyMMdd");
 		dbFechaInicio.setConstraint("after "+fecha);
+		
+		if(!getIdEmpresa().equals("")) {
+			for(Comboitem item : cmbEmpresa.getItems()){
+				if(item.getValue() instanceof Empresa && ((Empresa)item.getValue()).getId() == Integer.valueOf(getIdEmpresa()))
+					cmbEmpresa.setSelectedItem(item);
+			}
+			cmbEmpresa.setDisabled(true);
+		}
 //		cmbOrigen.setDisabled(true);
 //		cmbDestino.setDisabled(true);
 	}

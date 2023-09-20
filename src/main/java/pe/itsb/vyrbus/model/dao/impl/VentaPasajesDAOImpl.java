@@ -22,6 +22,7 @@ import pe.itsb.vyrbus.model.bean.CanalVenta;
 import pe.itsb.vyrbus.model.bean.CentroCosto;
 import pe.itsb.vyrbus.model.bean.Cliente;
 import pe.itsb.vyrbus.model.bean.Concesionario;
+import pe.itsb.vyrbus.model.bean.Empresa;
 import pe.itsb.vyrbus.model.bean.EntidadEncomiendaPasajes;
 import pe.itsb.vyrbus.model.bean.EstadoCivil;
 import pe.itsb.vyrbus.model.bean.FormaPago;
@@ -402,7 +403,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 							"cc.cencos_id, cc.c_codigo, cc.c_denominacion, " +
 							"vp.c_estdoc, tm.tipmon_id, tm.c_unimon, tm.c_simmon, vp.n_imppagequ,ao.c_nomcor nombreCortoAgenciaPartida, vp.N_TARIFAEQU,vp.N_DESEQU,vp.N_TIPCAM, "+//92
 							"td.c_nomcor, u.c_apepat usuApPaterno, u.c_apemat usuApMaterno, u.c_nombre usuaNombre, vp.n_igv, c.c_direccion direccionCliente, " //98
-						  + "ad.c_nomcor nombreCortoAgenciaLlegada, vp.n_esfe, vp.d_esfe, vp.tipcob_id  "+ //99-102
+						  + "ad.c_nomcor nombreCortoAgenciaLlegada, vp.n_esfe, vp.d_esfe, vp.tipcob_id, vp.empresa_id, e.c_numdoc, e.c_razsoc empresa  "+ //99-102
 					"FROM vrtvenpas vp " +
 						"INNER JOIN vrtitinerario i ON i.itinerario_id=vp.itinerario_id " +
 						"INNER JOIN vrmruta r ON r.ruta_id=vp.ruta_id " +
@@ -424,6 +425,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 						"LEFT JOIN vrmagencia ad ON ad.agencia_id=vp.agencia_idllegada " +
 						"LEFT JOIN vrmcencos cc ON (cc.cencos_id=vp.cencos_id) " +
 						"LEFT JOIN vrmtipmon tm ON (tm.tipmon_id=vp.tipmon_id) "+
+						"INNER JOIN vrmempresa e ON e.empresa_id = vp.empresa_id "+
 					"WHERE vp.venpas_id="+idVenta;
 
 		log.info(sql);
@@ -607,6 +609,11 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			tipoCobranza.setId(((BigDecimal)obj[102]).intValue());
 			ventaPasaje.setTipoCobranza(tipoCobranza);
 		}
+		Empresa empresa = new Empresa();
+		empresa.setId(((BigDecimal)obj[103]).intValue());
+		empresa.setNumeroDocumento(obj[104].toString());
+		empresa.setRazonSocial(obj[105].toString());
+		ventaPasaje.setEmpresa(empresa);
 
 
 		return ventaPasaje;

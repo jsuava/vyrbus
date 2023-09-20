@@ -182,7 +182,7 @@ public class WndCierreCaja extends WndBase {
 
 
 	/**
-	 * Busca Liquidaci�n, seg�n los parametros seleccionados.
+	 * Busca Liquidación, según los parametros seleccionados.
 	 * @throws Exception
 	 */
 	public void buscarLiquidacion() throws Exception{

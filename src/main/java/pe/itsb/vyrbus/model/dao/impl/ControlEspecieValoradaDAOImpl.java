@@ -17,6 +17,7 @@ import pe.itsb.vyrbus.model.bean.Agencia;
 import pe.itsb.vyrbus.model.bean.CanalVenta;
 import pe.itsb.vyrbus.model.bean.ControlEspecieValorada;
 import pe.itsb.vyrbus.model.bean.ControlEspecieValoradaID;
+import pe.itsb.vyrbus.model.bean.Empresa;
 import pe.itsb.vyrbus.model.bean.HistoricoControlEspecieValorada;
 import pe.itsb.vyrbus.model.bean.HistoricoControlEspecieValoradaID;
 import pe.itsb.vyrbus.model.bean.TipoComprobante;
@@ -27,7 +28,7 @@ import pe.itsb.vyrbus.service.util.Constantes;
 
 /**
  *
- * @author Jos� Avalos
+ * @author José Avalos
  * @since JDK1.6
  */
 @SuppressWarnings("unchecked")
@@ -136,20 +137,23 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.tepsa.sisvyr.model.dao.ControlEspecieValoradaDAO#buscarEspecieValoradas(java.lang.Integer, java.lang.Integer)
+	 * @see pe.itsb.vyrbus.model.dao.ControlEspecieValoradaDAO#buscarEspecieValoradas(java.lang.Integer, java.lang.Integer, java.lang.Integer, java.lang.Integer)
 	 */
 	@Override
-	public List<ControlEspecieValorada> buscarEspecieValoradas(Integer idAgencia, Integer idTipoComprobante, Integer idUsuarioHarware){
+	public List<ControlEspecieValorada> buscarEspecieValoradas(Integer idAgencia, Integer idTipoComprobante, Integer idUsuarioHarware, Integer idEmpresa){
 		String sql="SELECT TC.TIPCOM_ID,TC.C_DENOMINACION, UH.USUHARD_ID,UH.C_DESCRIPCION, CEV.C_SERIE, CEV.N_CORINI, "+ //0-5
 					       "CEV.N_CORFIN, CEV.N_CORACTUAL, A.AGENCIA_ID, A.C_NOMCOR" +//6-9
-					       ", CEV.AUDFECINS, CEV.AUDUSUINS, CEV.AUDIPINSE, UH.CANVEN_ID, CEV.N_FORMATO, CEV.C_CORSEQ "+ //10-14
+					       ", CEV.AUDFECINS, CEV.AUDUSUINS, CEV.AUDIPINSE, UH.CANVEN_ID, CEV.N_FORMATO, CEV.C_CORSEQ, " + //10-15 
+					       "E.EMPRESA_ID, E.C_RAZSOC, E.C_NOMCOR, E.C_NUMDOC "+ //16-19
 					"FROM VRTCTRLESPVAL CEV "+
 					"INNER JOIN VRTUSUHARD UH ON (UH.USUHARD_ID=CEV.USUHARD_ID) "+
-					"INNER JOIN VRMAGENCIA A ON (A.AGENCIA_ID=UH.AGENCIA_ID) "+
+					"INNER JOIN VRMAGENCIA A ON (A.AGENCIA_ID=UH.AGENCIA_ID) " +
 					"INNER JOIN VRMTIPCOM TC ON (TC.TIPCOM_ID=CEV.TIPCOM_ID) " +
-					"WHERE CEV.C_ESTREG='A' " +
-						"AND A.TIPAGE_ID="+Constantes.ID_TIPAGE_TEPSA+" "; //Solo recupera los de TIPO AGENCIA TEPSA, mas no agencias de viaje, corporativos, ect.
+					"INNER JOIN VRMEMPRESA E ON (E.EMPRESA_ID=CEV.EMPRESA_ID) "+
+					"WHERE CEV.C_ESTREG='A' AND A.TIPAGE_ID="+Constantes.ID_TIPAGE_TEPSA+" "; //Solo recupera los de TIPO AGENCIA TEPSA, mas no agencias de viaje, corporativos, ect.
 
+		if(idEmpresa!=null)
+			sql+=" AND CEV.EMPRESA_ID="+idEmpresa;
 		if(idAgencia!=null)
 			sql+=" AND A.AGENCIA_ID="+idAgencia;
 		if(idTipoComprobante!=null)
@@ -170,6 +174,7 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 			UsuarioHardware usuarioHardware= new UsuarioHardware();
 			Agencia agencia= new Agencia();
 			TipoComprobante tipoComprobante=new TipoComprobante();
+			Empresa empresa = new Empresa();			
 
 			CanalVenta canalVenta=new CanalVenta();
 			canalVenta.setId(((BigDecimal)obj[13]).intValue());
@@ -188,6 +193,11 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 			usuarioHardware.setCanalVenta(canalVenta);
 			controlEspecieValoradaID.setIdTipoComprobante(tipoComprobante.getId());
 			controlEspecieValoradaID.setIdUsuarioHardware(usuarioHardware.getId());
+			empresa.setId(((BigDecimal)obj[16]).intValue());
+			empresa.setRazonSocial(obj[17].toString());
+			empresa.setNombreCorto(obj[18]==null?"":obj[18].toString());
+			empresa.setNumeroDocumento(obj[19].toString());
+			controlEspecieValorada.setEmpresa(empresa);
 
 			controlEspecieValorada.setControlEspecieValoradaID(controlEspecieValoradaID);
 			controlEspecieValorada.setTipoComprobante(tipoComprobante);
