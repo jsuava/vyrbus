@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.TreeMap;
 
 import pe.itsb.vyrbus.model.bean.Cortesia;
+import pe.itsb.vyrbus.model.bean.Empresa;
 import pe.itsb.vyrbus.model.bean.MotivoCortesia;
 import pe.itsb.vyrbus.model.bean.Pasajero;
 import pe.itsb.vyrbus.model.bean.Ruta;
@@ -111,7 +112,7 @@ public class CortesiaDAOImpl extends GenericDAOImpl implements CortesiaDAO{
 		String Sql="SELECT c.cortesia_Id, c.motcor_id, tfp.tipforpag_id, r.ruta_id, c.d_fecini, c.d_feccad, c.c_peraut, c.n_porcentaje, c.c_estreg, " +
 					       "tfp.c_denominacion as tipoformaPafo, mc.c_denominacion as motivoCortecia, r.c_origen as Origen, r.c_destino as Destino, " +
 					       "p.c_apepat, p.c_apemat,p.c_nombre, vp.c_numcontrol, vp.venpas_id, p.pasajero_id, c.audfecins, " +
-					       "r.n_Puntaje, vpc.c_numboleto " +
+					       "r.n_Puntaje, vpc.c_numboleto, e.empresa_id, e.c_nomcor " +
 			       "FROM vrtcortesia c "+
 				       "INNER JOIN vrtvenpas vp on vp.venpas_id=c.venpas_id " +
 				       "INNER JOIN vrmtipforpag tfp on tfp.tipforpag_id=c.tipforpag_id " +
@@ -119,6 +120,7 @@ public class CortesiaDAOImpl extends GenericDAOImpl implements CortesiaDAO{
 				       "LEFT JOIN vrmmotcor mc on mc.motcor_id=c.motcor_id " +
 				       "INNER JOIN vrmpasajero p on p.pasajero_id=c.pasajero_id " +
 				       "LEFT JOIN vrtvenpas vpc ON vpc.venpas_idref=c.venpas_id " +
+				       "INNER JOIN vrmempresa e ON e.empresa_id = vp.empresa_id " +
 			       "WHERE c.d_fecini=to_date('"+FechaInico+"','dd/mm/yyyy') "+ Where + " AND c.c_estreg='"+Constantes.VALUE_ACTIVO+"' " +
 			       		"AND vp.c_tiptra="+Constantes.TIPO_VENTA_FECHAABIERTA+ " "+
 			       "ORDER BY p.c_apepat,tfp.c_denominacion ";
@@ -158,6 +160,10 @@ public class CortesiaDAOImpl extends GenericDAOImpl implements CortesiaDAO{
 			ventaPasaje.setNumeroControl(obj[16].toString());
 			ventaPasaje.setId(((BigDecimal)obj[17]).longValue());
 			ventaPasaje.setNumeroBoleto(obj[21]==null?"":obj[21].toString());
+			Empresa empresa = new Empresa();
+			empresa.setId(((BigDecimal)obj[22]).intValue());
+			empresa.setNombreCorto(obj[23].toString());
+			ventaPasaje.setEmpresa(empresa);
 
 			oCortesia.setId(((BigDecimal)obj[0]).longValue());
 			oCortesia.setTipoFormaPago(tipoFormaPago);

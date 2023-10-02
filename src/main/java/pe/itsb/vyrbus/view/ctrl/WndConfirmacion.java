@@ -173,6 +173,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	private Textbox txtIdPromocion;
 	private Textbox txtRubro;
 	private Textbox txtObservaciones;
+	private Textbox txtIdEmpresa;
 	private Datebox dtbxFechaNacimiento;
 	private Listbox lbxPasajeros;
 	private Listbox lbxClientes;
@@ -206,6 +207,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	private Label lblBoleto;
 	private Label lblNuevoBoleto;
 	private Label lblImporte;
+	private Label lblEmpresa;
 	private Groupbox grpbxListaPasajeros;
 	private Groupbox grpbxListaClientes;
 	private Doublebox dblTarifa;
@@ -356,6 +358,8 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	public void initComponents() {
 		wndConfirmacion = (Window) this.getFellow("wndConfirmacion");
 		/* TAB INFORMACION DE LA VENTA */
+		lblEmpresa = (Label) this.getFellow("lblEmpresa");
+		txtIdEmpresa = (Textbox) this.getFellow("txtIdEmpresa");
 		lblOrigen = (Label) this.getFellow("lblOrigen");
 		lblDestino = (Label) this.getFellow("lblDestino");
 		lblFechaPartida = (Label) this.getFellow("lblFechaPartida");
@@ -683,7 +687,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	}
 
 	/**
-	 * Carga la informaci�n de la reserva para la confirmaci�n.
+	 * Carga la información de la reserva para la confirmación.
 	 */
 	private void loadInformacion() {
 		try {
@@ -710,12 +714,10 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 						piso,
 						zona);
 				if(lstTarifaRegular.size()>0)
-					detailItinerary.setTarifa(lstTarifaRegular.get(0).getMonto()!=null
-																		 ?lstTarifaRegular.get(0).getMonto()
-																		 :0.00);
+					detailItinerary.setTarifa(lstTarifaRegular.get(0).getMonto()!=null ? lstTarifaRegular.get(0).getMonto() : 0.00);
 				else
 					detailItinerary.setTarifa(0.00);
-
+				
 				onLoadDatosVenta(detailItinerary);
 				txtNumeroAsiento.setText(getObjetoConfirmar().getNumeroAsiento() == null ? "" : (getObjetoConfirmar().getNumeroAsiento()==0?"":getObjetoConfirmar().getNumeroAsiento().toString()));
 				txtNumeroPiso.setText(getObjetoConfirmar().getNumeroPiso() == null ? "": getObjetoConfirmar().getNumeroPiso().toString());
@@ -840,6 +842,8 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	 * @param detalleItinerario	: Itinerario seleccionado.
 	 */
 	private void onLoadDatosVenta(DetalleItinerario detalleItinerario) {
+		lblEmpresa.setValue(detailItinerary.getItinerario().getEmpresa().getRazonSocial());
+		txtIdEmpresa.setText(detailItinerary.getItinerario().getEmpresa().getId().toString());
 		lblOrigen.setValue(detalleItinerario.getRuta().getOrigen());
 		lblDestino.setValue(detalleItinerario.getRuta().getDestino());
 
@@ -1012,12 +1016,12 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				if(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE)
 					/*BEGIN 16/06/2021 - javalos - Correlativo by caja*/
 //					especieValorada=UtilData.buscarEspecieValorada(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(), false);
-					controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(), false, getUsuarioHardware(), null);
+					controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(), false, getUsuarioHardware(), null, Integer.valueOf(txtIdEmpresa.getText()));
 					/*END 16/06/2021 - javalos - Correlativo by caja*/
 				else
 					/*BEGIN 16/06/2021 - javalos - Correlativo by caja*/
 //					especieValorada = UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_BOLETA_VENTA, getAgencia(), false);
-					controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(Constantes.ID_TIPCOM_BOLETA_VENTA, getAgencia(), false, getUsuarioHardware(), null);
+					controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(Constantes.ID_TIPCOM_BOLETA_VENTA, getAgencia(), false, getUsuarioHardware(), null, Integer.valueOf(txtIdEmpresa.getText()));
 					/*END 16/06/2021 - javalos - Correlativo by caja*/
 
 				/*BEGIN 16/06/2021 - javalos - Correlativo by caja*/
@@ -1039,9 +1043,9 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //					especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_BOLETA_VENTA, getAgencia(), false);
 //				txtNumeroBoleto.setValue(especieValorada.toString());
 				if(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE)
-					controlEspecieValorada=UtilData.buscarEspecieValoradaByCaja(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(), false, getUsuarioHardware(), null);
+					controlEspecieValorada=UtilData.buscarEspecieValoradaByCaja(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(), false, getUsuarioHardware(), null, Integer.valueOf(txtIdEmpresa.getText()));
 				else
-					controlEspecieValorada=UtilData.buscarEspecieValoradaByCaja(Constantes.ID_TIPCOM_BOLETA_VENTA, getAgencia(), false, getUsuarioHardware(), null);
+					controlEspecieValorada=UtilData.buscarEspecieValoradaByCaja(Constantes.ID_TIPCOM_BOLETA_VENTA, getAgencia(), false, getUsuarioHardware(), null, Integer.valueOf(txtIdEmpresa.getText()));
 				txtNumeroBoleto.setValue(controlEspecieValorada.toString());
 				/*END 16/06/2021 - javalos - Correlativo by caja*/
 
@@ -1070,18 +1074,18 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 						if(objetoConfirmar.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA)){
 							/*Cuando la reserva este registrada con la version anterior a la electronica*/
 							Util.seleccionarValorItemCombo(TipoComprobante.class, cmbTipoComprobante, Constantes.ID_TIPCOM_BOLETA_VENTA);
-							lblBoleto.setValue("N� BOLETA :");
+							lblBoleto.setValue("N° BOLETA :");
 							break;
 						}else{
 							cmbTipoComprobante.setSelectedItem(comboitem);
-							lblBoleto.setValue("N� BOLETO :");
+							lblBoleto.setValue("N° BOLETO :");
 						}
 					}if(((TipoComprobante) comboitem.getValue()).getId().intValue() == Constantes.ID_TIPCOM_FACTURA &&  oCliente!=null){
 						cmbTipoComprobante.setSelectedItem(comboitem);
-						lblBoleto.setValue("N� FACTURA :");
+						lblBoleto.setValue("N° FACTURA :");
 					}else if(((TipoComprobante) comboitem.getValue()).getId().intValue() == Constantes.ID_TIPCOM_BOLETA_VENTA && oCliente==null){
 						cmbTipoComprobante.setSelectedItem(comboitem);
-						lblBoleto.setValue("N� BOLETA :");
+						lblBoleto.setValue("N° BOLETA :");
 					}
 
 				}
@@ -2934,6 +2938,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			}
 
 			ventaPasaje.setItinerario(detalleItinerario.getItinerario());
+			ventaPasaje.setEmpresa(detalleItinerario.getItinerario().getEmpresa());			
 			ventaPasaje.setRuta(detalleItinerario.getRuta());
 			ventaPasaje.setCliente(oCliente);
 			ventaPasaje.setPasajero(oPasajero);

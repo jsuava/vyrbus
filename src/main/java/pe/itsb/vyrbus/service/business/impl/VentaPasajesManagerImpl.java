@@ -2112,6 +2112,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 		notaCredito.setTipoNota(tipoNota);
 		notaCredito.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 		notaCredito.setRucClienteCredito(ventaOriginal.getRucClienteCredito()!=null?ventaOriginal.getRucClienteCredito():null);
+		notaCredito.setEmpresa(ventaOriginal.getEmpresa());
 		UtilData.auditarRegistro(notaCredito, usuario, Executions.getCurrent());
 
 		//Recuperando el correlativo
@@ -2508,7 +2509,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	@Override
 	@Transactional
 	public int guardarServicioEspecial(VentaPasaje ventaPasaje) throws Exception {
-		ControlEspecieValorada controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(ventaPasaje.getTipoComprobante().getId(), ventaPasaje.getAgencia(), true, ventaPasaje.getUsuarioHardware(), null, ventaPasaje.getItinerario().getEmpresa().getId());
+		ControlEspecieValorada controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(ventaPasaje.getTipoComprobante().getId(), ventaPasaje.getAgencia(), true, ventaPasaje.getUsuarioHardware(), null, ventaPasaje.getEmpresa().getId());
 		ventaPasaje.setNumeroBoleto(controlEspecieValorada.toString());
 
 		int result = Constantes.FAILURE;
@@ -2572,7 +2573,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 							UtilData.auditarRegistro(anulacion, true,(Usuario)Executions.getCurrent().getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO), Executions.getCurrent());
 							getVentaPasajesDAO().update(anulacion);
 						}else
-							throw new Exception("No se puedo continuar con la anulaci�n, el comprobante N� "+ventaPasaje.getNumeroBoleto()+" No existe en el S.F.E.");
+							throw new Exception("No se puedo continuar con la anulación, el comprobante N° "+ventaPasaje.getNumeroBoleto()+" No existe en el S.F.E.");
 					}else
 						aplicarNotaCredito=true;
 					break;

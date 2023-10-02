@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José Abanto
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Abanto
  * Fecha		: 21/11/2016
  * Hora			: 10:40:18
  */
@@ -31,6 +31,7 @@ import org.zkoss.zul.Textbox;
 
 import pe.itsb.vyrbus.model.bean.Cliente;
 import pe.itsb.vyrbus.model.bean.ControlEspecieValorada;
+import pe.itsb.vyrbus.model.bean.Empresa;
 import pe.itsb.vyrbus.model.bean.FormaPago;
 import pe.itsb.vyrbus.model.bean.Itinerario;
 import pe.itsb.vyrbus.model.bean.OperadorTarjetaCredito;
@@ -71,6 +72,9 @@ public class WndGastosAdministrativos extends WndBase{
 	private Textbox txtImportePagado;
 	private Textbox txtFormaPago;
 	private Textbox txtTipoMovimiento;
+	private Combobox cmbEmpresaSearch;
+	private Textbox txtEmpresa;
+	private Textbox txtIdEmpresa;
 
 	private Combobox cmbTipoComprobante;
 	private Textbox txtComprobante;
@@ -134,6 +138,10 @@ public class WndGastosAdministrativos extends WndBase{
 		btnGuardar=(Button)this.getFellow("btnGuardar");
 		rdModoManual=(Radio)this.getFellow("rdModoManual");
 		rdModoElectronico=(Radio)this.getFellow("rdModoElectronico");
+		cmbEmpresaSearch = (Combobox)this.getFellow("cmbEmpresaSearch");
+		txtEmpresa = (Textbox)this.getFellow("txtEmpresa");
+		txtIdEmpresa = (Textbox)this.getFellow("txtIdEmpresa");
+		
 
 		rdCanjePce.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
 			@Override
@@ -344,7 +352,7 @@ public class WndGastosAdministrativos extends WndBase{
 			@Override
 			public void onEvent(Event event) throws Exception {
 				try {
-					/*Valida si es un ingreso manual y que el numero de correlativo sea válido*/
+					/*Valida si es un ingreso manual y que el numero de correlativo sea vï¿½lido*/
 					if(rdModoManual.isChecked() && !(txtComprobante.getText().trim().isEmpty())){
 						String[] yc=txtComprobante.getText().trim().split("-");
 						if(yc.length==2 && Util.isNumeric(yc[0].toString()) && Util.isNumeric(yc[1].toString()) && yc[0].toString().length()==3)
@@ -371,6 +379,24 @@ public class WndGastosAdministrativos extends WndBase{
 				}
 			}
 		});
+		
+		cmbEmpresaSearch.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			public void onEvent(Event event) {
+				try {
+					clearControlsInfoComprobanteAplica();
+					clearControlGastosAdmin();
+					txtMotivo.setReadonly(true);
+					gbxGastosAdmin.setOpen(false);
+					if(cmbEmpresaSearch.getSelectedItem().getValue() instanceof Empresa) {
+						txtEmpresa.setText(((Empresa)cmbEmpresaSearch.getSelectedItem().getValue()).getNombreCorto());
+						txtIdEmpresa.setText(((Empresa)cmbEmpresaSearch.getSelectedItem().getValue()).getId().toString());
+					}
+				}catch(Exception ex) {
+					ex.printStackTrace();
+					DlgMessage.error(ex.getMessage());
+				}
+			}
+		});
 	}
 
 	/* (non-Javadoc)
@@ -382,7 +408,7 @@ public class WndGastosAdministrativos extends WndBase{
 			// TODO Auto-generated method stub
 			super.onCreate();
 
-			/*Valida si el usuario tiene una liquidación aperturada*/
+			/*Valida si el usuario tiene una liquidaciÃ³n aperturada*/
 			if(getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION)==null)
 				throw new LiquidacionNullException();
 
@@ -393,6 +419,7 @@ public class WndGastosAdministrativos extends WndBase{
 			onLoadTipoComprobantes(cmbTipoComprobante);
 //			onLoadTipoComprobantes(cmbTipoComprobanteAplica);
 			UtilData.cargarDataCombo(cmbOperador, OperadorTarjetaCredito.class, false);
+			UtilData.cargarDataCombo(cmbEmpresaSearch, Empresa.class, false);
 			dblImportePagado.setLocale(Locale.US);
 
 			/*Carga las formas de pago*/
@@ -425,10 +452,11 @@ public class WndGastosAdministrativos extends WndBase{
 		Util.limpiarCombobox(cmbTipoComprobanteAplica);
 		if(rdCanjePce.isChecked()) {
 			onLoadTipoComprobanteCanjePCE();
-			txtComprobanteAplica.setFocus(true);
+			//txtComprobanteAplica.setFocus(true);
 		}else {
 			onLoadTipoComprobantes(cmbTipoComprobanteAplica);
 		}
+		cmbEmpresaSearch.setFocus(true);
 	}
 
 	/**
@@ -468,6 +496,8 @@ public class WndGastosAdministrativos extends WndBase{
 		cmbTarjetaCredito.setDisabled(true);
 		dblImportePagado.setValue(0.00);
 		txtMotivo.setText("");
+		txtEmpresa.setText("");
+		txtIdEmpresa.setText("");
 	}
 
 	/**
@@ -482,7 +512,10 @@ public class WndGastosAdministrativos extends WndBase{
 		txtMotivo.setReadonly(true);
 		gbxGastosAdmin.setOpen(false);
 
-		if(!(cmbTipoComprobanteAplica.getSelectedItem().getValue() instanceof TipoComprobante)){
+		if(!(cmbEmpresaSearch.getSelectedItem().getValue() instanceof Empresa)) {
+			DlgMessage.information(Messages.getString("wndGastosAdministrativos.information.noEmpresaSelect"),cmbEmpresaSearch);
+			return;
+		}else if(!(cmbTipoComprobanteAplica.getSelectedItem().getValue() instanceof TipoComprobante)){
 			DlgMessage.information(Messages.getString("wndGastosAdministrativos.information.noTipoComprobanteApplica"),cmbTipoComprobanteAplica);
 			return;
 		}else if (txtComprobanteAplica.getText().trim().isEmpty()){
@@ -491,6 +524,7 @@ public class WndGastosAdministrativos extends WndBase{
 		}
 
 		TreeMap<String, Object>criteriosBusqueda= new TreeMap<>();
+		criteriosBusqueda.put("empresa", cmbEmpresaSearch.getSelectedItem().getValue());
 		criteriosBusqueda.put("numeroBoleto", txtComprobanteAplica.getText().trim().toUpperCase());
 		criteriosBusqueda.put("tipoComprobante", cmbTipoComprobanteAplica.getSelectedItem().getValue());
 		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
@@ -635,7 +669,7 @@ public class WndGastosAdministrativos extends WndBase{
 //				EspecieValorada especieValorada= UtilData.buscarEspecieValorada(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(), false);
 //				if(especieValorada!=null)
 //					txtComprobante.setText(especieValorada.toString());
-				ControlEspecieValorada controlEspecieValorada= UtilData.buscarEspecieValoradaByCaja(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(), false, getUsuarioHardware(), null);
+				ControlEspecieValorada controlEspecieValorada= UtilData.buscarEspecieValoradaByCaja(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(), false, getUsuarioHardware(), null, Integer.valueOf(txtIdEmpresa.getText()));
 				if(controlEspecieValorada!=null)
 					txtComprobante.setText(controlEspecieValorada.toString());
 				/*BEGIN 16/06/2021 - javalos - Correlativo by caja*/
@@ -712,7 +746,7 @@ public class WndGastosAdministrativos extends WndBase{
 				return;
 			}
 
-			/*Valida si es un ingreso manual y que el numero de correlativo sea válido*/
+			/*Valida si es un ingreso manual y que el numero de correlativo sea vï¿½lido*/
 			if(rdModoManual.isChecked() && !(txtComprobante.getText().trim().isEmpty())){
 				String[] yc=txtComprobante.getText().trim().split("-");
 				if(yc.length!=2){

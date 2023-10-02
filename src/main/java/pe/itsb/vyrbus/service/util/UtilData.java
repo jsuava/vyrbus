@@ -1467,7 +1467,7 @@ public class UtilData extends Window {
 			cargarGenericData(combobox, todos);
 			for (Empresa empresa : lstTiposMoneda) {
 				Comboitem oComboitem = new Comboitem();
-				oComboitem.setLabel(empresa.getRazonSocial());
+				oComboitem.setLabel(empresa.getNombreCorto());
 				oComboitem.setValue(empresa);
 				combobox.appendChild(oComboitem);
 			}

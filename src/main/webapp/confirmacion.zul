@@ -15,6 +15,11 @@
 								<column align="left"/>
 							</columns>
 							<rows>
+								<row spans="1,2,1">
+									<label value="EMPRESA :"/>
+									<label id="lblEmpresa" sclass="label-size11" style="color:blue"/>
+									<textbox id="txtIdEmpresa" width="20px" visible="false" />
+								</row>
 								<row>
 									<label value="ORIGEN :"/>
 									<label id="lblOrigen" sclass="label-size11" style="color:blue"/>
@@ -59,13 +64,13 @@
 <!-- 									<label id="lblTarifa" sclass="label-size11" style="color:blue"/> -->
 <!-- 								</row> -->
 								<row>
-									<label id="lblBoleto" value="N° BOLETO :" style="color:blue; font-weight:bold; font-size:13px !important"/>
+									<label id="lblBoleto" value="N° BOLETO :" style="color:blue; font-weight:bold; font-size:12px !important"/>
 									<textbox id="txtNumeroBoleto" width="100px" readonly="true" style="text-align:center; color:blue; font-weight:bold; font-size:13px !important"/>
 									<label value="ALIMENTACION :"/>
 									<combobox id="cmbAlimentacion" readonly="true" autodrop="true" width="110px"/>
 								</row>
 								<row id="rowNuevoBoleto" spans="1,3">
-									<label id="lblNuevoBoleto" value="NUEVO BOLETO :" style="color:blue; font-weight:bold; font-size:13px !important"/>
+									<label id="lblNuevoBoleto" value="NUEVO BOLETO :" style="color:blue; font-weight:bold; font-size:12px !important"/>
 									<textbox id="txtNuevoBoleto" width="100px" readonly="true" style="text-align:center; color:blue; font-weight:bold; font-size:13px !important" />
 								</row>
 								<row spans="1,3">
@@ -83,17 +88,10 @@
 							</columns>
 							<rows>
 								<row style="background:gris">
-									<button label="Grabar" 
-											sclass="btnCommandL" 
-											image="resources/mp_guardarEnabled.png" 
-											autodisable = "self" 
-											onClick="wndConfirmacion.onGuardarVenta()"/>									
+									<button label="Grabar" sclass="btnCommandL" image="resources/mp_guardarEnabled.png" autodisable = "self" onClick="wndConfirmacion.onGuardarVenta()"/>									
 								</row>
 								<row style="background:gris">
-									<button label="Cancelar" 
-											sclass="btnCommandL" 
-											image="resources/mp_cancelarEnabled.png"  
-											onClick="wndConfirmacion.liberarAsientos(); wndConfirmacion.onClose()"/>
+									<button label="Cancelar" sclass="btnCommandL" image="resources/mp_cancelarEnabled.png" onClick="wndConfirmacion.liberarAsientos(); wndConfirmacion.onClose()"/>
 								</row>
 							</rows>
 						</grid>

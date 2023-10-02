@@ -1467,6 +1467,7 @@ public class WndVentaReserva extends WndBase {
 						listheaderOperadoPor.setVisible(false);
 						if(detalleItinerario.getItinerario().getTipoItinerario().getId().equals(Constantes.ID_TIPITI_REGULAR)){
 							item = new Listitem();
+							
 							if(detalleItinerario.getItinerario().getOperadoPor()==null)
 								item.setImage("/resources/mp_tepsa.png");
 							else if(detalleItinerario.getItinerario().getOperadoPor().equals(Constantes.OPERADO_POR_CRUZ_DEL_SUR))
@@ -1476,6 +1477,13 @@ public class WndVentaReserva extends WndBase {
 //							cell = new Listcell(detalleItinerario.getItinerario().getOperadoPor()==null?"TEPSA":detalleItinerario.getItinerario().getOperadoPor());
 //							cell.setStyle("font-size:9px !important");
 //							item.appendChild(cell);
+							cell = new Listcell();
+							String logo = detalleItinerario.getItinerario().getEmpresa().getLogo();
+							Image imgEmpresa = new Image("resources/"+logo);
+							imgEmpresa.setTooltiptext("Empresa operadora");
+							cell.appendChild(imgEmpresa);
+							item.appendChild(cell);
+							
 							cell = new Listcell(detalleItinerario.getAgenciaPartida().getNombreCorto());
 							cell.setStyle("font-size:10px !important");
 							item.appendChild(cell);
@@ -2042,9 +2050,11 @@ public class WndVentaReserva extends WndBase {
 						tabAsientos.setSelected(true);
 						if(detalleItinerarioIda.getItinerario().getOperadoPor()==null) { //Tepsa
 							crearEstructura(detalleItinerarioIda.getItinerario().getServicio().getId(), grpbxMapaIda, false, detalleItinerarioIda, mapaAsientosIda, grdOcupabilidadIda);
+							txtIdEmpresaIda.setValue(detalleItinerarioIda.getItinerario().getEmpresa().getId().toString());
 							/*	Si se trata de un ida y vuelta	*/
 							if(rdVentaIdaVuelta.isSelected()){
 								crearEstructura(detalleItinerarioRetorno.getItinerario().getServicio().getId(), grpbxMapaRetorno, true, detalleItinerarioRetorno, mapaAsientosRetorno, grdOcupabilidadRetorno);
+								txtIdEmpresaRetorno.setValue(detalleItinerarioRetorno.getItinerario().getEmpresa().getId().toString());
 							}
 						}else{
 							//Operado por otra empresa
@@ -3302,6 +3312,7 @@ public class WndVentaReserva extends WndBase {
 	 */
 	private void onLoadDatosVentaFechaAbierta(DetalleItinerario detalleItinerario) throws Exception{
 		lblOrigen.setValue(detalleItinerario.getRuta().getOrigen());
+		txtIdEmpresaIda.setValue(detalleItinerario.getItinerario().getEmpresa().getId().toString());
 		lblDestino.setValue(detalleItinerario.getRuta().getDestino());
 		onLoadPagos(detalleItinerario);
 	}
@@ -5671,6 +5682,7 @@ public class WndVentaReserva extends WndBase {
 				reserva.setImportePagadoEfectivo(0.0);
 				reserva.setImportePagadoTarjeta(0.0);
 				reserva.setTipoTransaccion(cmbTipoOperacion.getSelectedItem().getValue().toString());
+				reserva.setEmpresa(detalleItinerario.getItinerario().getEmpresa());
 //				reserva.setFechaCaducidad(new Date(new Date().getTime()+(Constantes.TIEMPO_CADUCA_BOLETO*Constantes.MILISEGUNDOS_X_DIA)));
 				if(chkVentaRemota.isChecked()){
 					reserva.setAgencia((Agencia)cmbAgenciaRemota.getSelectedItem().getValue());

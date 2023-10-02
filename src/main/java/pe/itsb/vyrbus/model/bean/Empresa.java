@@ -26,6 +26,7 @@ public class Empresa extends GenericBean implements java.io.Serializable {
 	private String numeroDocumento;
 	private String repLegal;
 	private String sigla;
+	private String logo;
 
 	public Empresa() {
 		super();
@@ -139,6 +140,22 @@ public class Empresa extends GenericBean implements java.io.Serializable {
 	 */
 	public void setSigla(String sigla) {
 		this.sigla = sigla;
+	}
+
+
+	/**
+	 * @return the logo
+	 */
+	public String getLogo() {
+		return logo;
+	}
+
+
+	/**
+	 * @param logo the logo to set
+	 */
+	public void setLogo(String logo) {
+		this.logo = logo;
 	}
 
 

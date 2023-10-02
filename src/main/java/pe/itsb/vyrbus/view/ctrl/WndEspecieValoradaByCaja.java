@@ -125,8 +125,8 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 
 		//Por defecto selecciona el usuario harware donde se ingresa al sistema.
 		Util.seleccionarValorItemCombo(UsuarioHardware.class, cmbUsuarioHardware, getUsuarioHardware().getId());
-		if(!(cmbUsuarioHardware.getSelectedItem().getValue() instanceof UsuarioHardware))
-			cmbUsuarioHardware.setSelectedIndex(0);
+//		if(!(cmbUsuarioHardware.getSelectedItem().getValue() instanceof UsuarioHardware))
+//			cmbUsuarioHardware.setSelectedIndex(0);
 
 		/**Habilita controles para el rol super usuario*/
 		cmbAgencia.setDisabled( !(getRol().getId().equals(Constantes.ID_ROL_SUPER_USUARIO)));

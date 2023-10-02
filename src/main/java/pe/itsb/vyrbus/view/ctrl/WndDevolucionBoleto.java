@@ -28,6 +28,7 @@ import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Groupbox;
 import org.zkoss.zul.Hbox;
+import org.zkoss.zul.Hlayout;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
@@ -44,6 +45,7 @@ import org.zkoss.zul.Window;
 import pe.itsb.vyrbus.model.bean.Agencia;
 import pe.itsb.vyrbus.model.bean.Cliente;
 import pe.itsb.vyrbus.model.bean.ControlEspecieValorada;
+import pe.itsb.vyrbus.model.bean.Empresa;
 import pe.itsb.vyrbus.model.bean.FormaPago;
 import pe.itsb.vyrbus.model.bean.Itinerario;
 import pe.itsb.vyrbus.model.bean.TipoComprobante;
@@ -80,6 +82,7 @@ public class WndDevolucionBoleto extends WndBase {
 	private Textbox txtNumeroControl;
 	private Textbox txtNumeroBoleto;
 	private Textbox txtMotivo;
+	private Textbox txtIdEmpresa;
 	private Listbox lbxVentas;
 	private Window wndDevolucionBoleto;
 	private Window wndDevolucion;
@@ -238,7 +241,7 @@ public class WndDevolucionBoleto extends WndBase {
 	}
 
 	/**
-	 * Realiza la validac�n para ver si al boleto se le puede aplicar este proceso.
+	 * Realiza la validación para ver si al boleto se le puede aplicar este proceso.
 	 * @param idVenta	: Identificador de la venta.
 	 */
 	private boolean validateDevolucion(String idVenta, boolean createVentanaDevolucion){
@@ -655,7 +658,7 @@ public class WndDevolucionBoleto extends WndBase {
 //	}
 
 	/**
-	 * Realiza la creaci�n de la Ventana para la confirmaci�n de la devoluci�n.
+	 * Realiza la creación de la Ventana para la confirmación de la devolución.
 	 * @param ventaOriginal	: Boleto que se desea devolver.
 	 * @return
 	 */
@@ -675,11 +678,11 @@ public class WndDevolucionBoleto extends WndBase {
 		Textbox text = null;
 
 		final Window win = new Window("", "normal", true);
-		win.setWidth("500px");
+		win.setWidth("530px");
 
 		caption = new Caption("DEVOLUCION DE BOLETO", "resources/menu/menu_reimprimir.png");
 		win.appendChild(caption);
-		label = new Label("Se va a realizar la Devoluci�n del Comprobante con los siguientes datos :");
+		label = new Label("Se va a realizar la Devolución del Comprobante con los siguientes datos :");
 		label.setStyle("font-size:12px !important");
 		win.appendChild(label);
 
@@ -708,6 +711,25 @@ public class WndDevolucionBoleto extends WndBase {
 		columns.appendChild(column);
 
 		grid.appendChild(columns);
+		
+		row = new Row();
+		row.setSpans("1,2,1");
+		label = new Label("EMPRESA :");
+		row.appendChild(label);
+		Hlayout hlayout = new Hlayout();
+		text = new Textbox(ventaOriginal.getEmpresa().getRazonSocial());
+		text.setStyle("font-size:11px !important");
+		text.setReadonly(true);
+		text.setWidth("210px");
+		hlayout.appendChild(text);
+		txtIdEmpresa = new Textbox(ventaOriginal.getEmpresa().getId().toString());
+		txtIdEmpresa.setWidth("15");
+		txtIdEmpresa.setVisible(false);
+		hlayout.appendChild(txtIdEmpresa);
+		row.appendChild(hlayout);
+		label = new Label();
+		row.appendChild(label);
+		rows.appendChild(row);
 
 		row = new Row();
 		if(ventaOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE)
@@ -821,7 +843,7 @@ public class WndDevolucionBoleto extends WndBase {
 		/*	Columna 1	*/
 		column = new Column();
 		column.setAlign("right");
-		column.setWidth("100px");
+		column.setWidth("110px");
 		columns.appendChild(column);
 		/* Columna 2*/
 		column = new Column();
@@ -1230,6 +1252,7 @@ public class WndDevolucionBoleto extends WndBase {
 						boletoDevolver.setFechaLiquidacion(fechaLiquidacion);
 						boletoDevolver.setLiquidacion(null);
 						boletoDevolver.setFechaTransferencia(null);
+						boletoDevolver.setEmpresa(new Empresa(Integer.valueOf(txtIdEmpresa.getText())));
 						if(ventaOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA ||
 								ventaOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_FACTURA)
 							boletoDevolver.setTipoNota(tipoNota);
@@ -1280,7 +1303,8 @@ public class WndDevolucionBoleto extends WndBase {
 							gastoAdmin.setIdaRetorno(Constantes.FALSE_VALUE);
 							gastoAdmin.setEsFechaAbierta(Constantes.FALSE_VALUE);
 							gastoAdmin.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-							gastoAdmin.setObservaciones("POR DEVOLUCION DEL COMPROBANTE N�: "+boletoDevolver.getNumeroBoleto());
+							gastoAdmin.setObservaciones("POR DEVOLUCION DEL COMPROBANTE N°: "+boletoDevolver.getNumeroBoleto());
+							gastoAdmin.setEmpresa(new Empresa(Integer.valueOf(txtIdEmpresa.getText())));
 							UtilData.auditarRegistro(gastoAdmin, getUsuario(), Executions.getCurrent());
 
 							Double igv=gastoAdmin.getImportePagado()- Double.valueOf(Util.toNumberFormat(gastoAdmin.getImportePagado()/((Constantes.IGV/100)+1),2));
@@ -1388,7 +1412,7 @@ public class WndDevolucionBoleto extends WndBase {
 //		return especieValorada.toString();
 		String result = "";
 		try {
-			ControlEspecieValorada controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(tipoComprobanteID, getAgencia(), false, getUsuarioHardware(), null);
+			ControlEspecieValorada controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(tipoComprobanteID, getAgencia(), false, getUsuarioHardware(), null, Integer.valueOf(txtIdEmpresa.getText()));
 			if(controlEspecieValorada == null)
 				throw new EspecieValoradaNotAvailableException();
 			result = controlEspecieValorada.toString();

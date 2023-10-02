@@ -7,6 +7,7 @@
 				<listheader label="#" width="35px" style="color: #ffffff;"/>
 				<listheader label="PASAJERO" width="200px"  sort="auto" style="color: #ffffff;"/>
 				<listheader label="TIPO FORMA PAGO" width="120px" sort="auto" style="color: #ffffff;"/>
+				<listheader label="EMPRESA" width="120px" sort="auto" style="color: #ffffff;"/>
 				<listheader label="RUTA" width="180px" sort="auto" style="color: #ffffff;"/>
 				<listheader label="FECHA INICIO" width="80px" sort="auto" align="center" style="color: #ffffff;"/>
 				<listheader label="FECHA CADUCIDAD" width="100px" sort="auto"  align="center" style="color: #ffffff;"/>
@@ -35,27 +36,11 @@
 						<hbox align="center">
 							<label value="BUSCAR :"/>
  							<textbox id="txtBuscarPax" style="font-size:12px !important" onOK="wndCortesia.buscarPasajero()"/> 
-							<button id="btnBuscarPax" 
-									autodisable="self" 
-									tooltiptext="Buscar Pasajero"
-									sclass="btnCommandL" 
-									image="/resources/mp_buscarEnabled.png" 
-									onClick="wndCortesia.buscarPasajero()"/>
+							<button id="btnBuscarPax" autodisable="self" tooltiptext="Buscar Pasajero" sclass="btnCommandL" width="30px" image="/resources/mp_buscarEnabled.png" onClick="wndCortesia.buscarPasajero()"/>
 						</hbox>	
 						<div align="right">
-							<button id="btnNuevoPax" 
-									sclass="btnCommandM" 
-									label="Nuevo" 
-									image="/resources/mp_nuevoEnabled.png" 
-									onClick="wndCortesia.onNewEdit(wndCortesia.ACTION_NEW)" 
-									tooltiptext="Nuevo Pasajero."/>
-							<button id="btnEditarPax" 
-									sclass="btnCommandM" 
-									label="Editar" 
-									image="/resources/mp_editarDisabled.png" 
-									disabled="true" 
-									onClick="wndCortesia.onNewEdit(wndCortesia.ACTION_MODIFY)" 
-									tooltiptext="Editar Pasajero."/>
+							<button id="btnNuevoPax" sclass="btnCommandM" label="Nuevo" image="/resources/mp_nuevoEnabled.png" onClick="wndCortesia.onNewEdit(wndCortesia.ACTION_NEW)" tooltiptext="Nuevo Pasajero."/>
+							<button id="btnEditarPax" sclass="btnCommandM" label="Editar" image="/resources/mp_editarDisabled.png" disabled="true" onClick="wndCortesia.onNewEdit(wndCortesia.ACTION_MODIFY)" tooltiptext="Editar Pasajero."/>
 						</div>				
 					</row>
 				</rows>
@@ -163,20 +148,9 @@
 					<row>
 						<separator />
 						<div align="right">
-							<button id="btnCancelar" 
-									sclass="btnCommandL" 
-									label="Cancelar" 
-									image="/resources/mp_cancelarEnabled.png" 
-									onClick="wndCortesia.onClousePax()" 
-									tooltiptext="Cancelar operación"/> 
+							<button id="btnCancelar" sclass="btnCommandL" label="Cancelar" image="/resources/mp_cancelarEnabled.png" onClick="wndCortesia.onClousePax()" tooltiptext="Cancelar operación"/> 
 						</div>
-						<button id="btnGuardar" 
-									sclass="btnCommandL" 
-									label="Guardar" 
-									autodisable="self" 
-									onClick="wndCortesia.onSavePax()" 
-									image="/resources/mp_guardarEnabled.png" 
-									tooltiptext="Guarda Pasajero" />
+						<button id="btnGuardar" sclass="btnCommandL" label="Guardar" autodisable="self" onClick="wndCortesia.onSavePax()" image="/resources/mp_guardarEnabled.png" tooltiptext="Guarda Pasajero" />
 						<separator />
 					</row>
 				</rows>
@@ -193,10 +167,16 @@
 				</columns>
 				<rows>
 					<row>
+						<label value="EMPRESA :"></label>
+						<combobox id="cmbEmpresa" readonly="true" onOK="cmbCiudadOrigen.setFocus(true); cmbCiudadOrigen.select()"></combobox>
+						<image id="imgEmpresa" />
+						<label/>
+					</row>
+					<row>
 						<label value="CIUDAD ORIGEN :" />
 						<combobox id="cmbCiudadOrigen"   readonly="true" onChange="wndCortesia.onChangeRutas()" onOK="cmbRuta.setFocus(true);cmbRuta.select() " />
-							<label value="RUTA :" />
-							<combobox id="cmbRuta"   readonly="true" onOK="cmbTipoFormaPago.setFocus(true); cmbTipoFormaPago.select()" />
+						<label value="RUTA :" />
+						<combobox id="cmbRuta"   readonly="true" onOK="cmbTipoFormaPago.setFocus(true); cmbTipoFormaPago.select()" />
 					</row>
 					<row>
 						<!-- <label value="FECHA INICIO :" />

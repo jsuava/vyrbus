@@ -403,7 +403,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 							"cc.cencos_id, cc.c_codigo, cc.c_denominacion, " +
 							"vp.c_estdoc, tm.tipmon_id, tm.c_unimon, tm.c_simmon, vp.n_imppagequ,ao.c_nomcor nombreCortoAgenciaPartida, vp.N_TARIFAEQU,vp.N_DESEQU,vp.N_TIPCAM, "+//92
 							"td.c_nomcor, u.c_apepat usuApPaterno, u.c_apemat usuApMaterno, u.c_nombre usuaNombre, vp.n_igv, c.c_direccion direccionCliente, " //98
-						  + "ad.c_nomcor nombreCortoAgenciaLlegada, vp.n_esfe, vp.d_esfe, vp.tipcob_id, vp.empresa_id, e.c_numdoc, e.c_razsoc empresa  "+ //99-102
+						  + "ad.c_nomcor nombreCortoAgenciaLlegada, vp.n_esfe, vp.d_esfe, vp.tipcob_id, vp.empresa_id, e.c_numdoc, e.c_razsoc empresa, e.c_nomcor AS empcor "+ //99-102
 					"FROM vrtvenpas vp " +
 						"INNER JOIN vrtitinerario i ON i.itinerario_id=vp.itinerario_id " +
 						"INNER JOIN vrmruta r ON r.ruta_id=vp.ruta_id " +
@@ -613,6 +613,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		empresa.setId(((BigDecimal)obj[103]).intValue());
 		empresa.setNumeroDocumento(obj[104].toString());
 		empresa.setRazonSocial(obj[105].toString());
+		empresa.setNombreCorto(obj[106].toString());
 		ventaPasaje.setEmpresa(empresa);
 
 
@@ -661,6 +662,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				"INNER JOIN vrmruta r ON r.ruta_id={VP}.ruta_id " +
 				"INNER JOIN vrmagencia a ON a.agencia_id={VP}.agencia_id " +
 				"INNER JOIN vrmpasajero p ON p.pasajero_id={VP}.pasajero_id " +
+				"INNER JOIN vrmempresa e ON e.empresa_id={VP}.empresa_id " +
 				"WHERE {VP}.d_fecpar is null AND {VP}.c_estreg='"+Constantes.VALUE_ACTIVO+
 				"' AND {VP}.tipmov_id NOT IN ("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+
 				Constantes.ID_TIPMOV_ANULACION+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_SERVICIO_ESPECIAL+")  "

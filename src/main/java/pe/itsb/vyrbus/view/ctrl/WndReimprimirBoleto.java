@@ -215,7 +215,7 @@ public class WndReimprimirBoleto extends WndBase {
 //				throw new ManifiestoImpresoException();
 
 			/*###End Begin 17/11/2022 - jabanto*/
-			ControlEspecieValorada controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(ventaOriginal.getTipoComprobante().getId(), getAgencia(), false, usuarioHardware, null);
+			ControlEspecieValorada controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(ventaOriginal.getTipoComprobante().getId(), getAgencia(), false, usuarioHardware, null, ventaOriginal.getEmpresa().getId());
 			final String boleto = (controlEspecieValorada!=null?controlEspecieValorada.toString():"-");
 			wndReimpresion = createVentanaReimpresion(ventaOriginal, boleto);
 			this.appendChild(wndReimpresion);
@@ -285,7 +285,7 @@ public class WndReimprimirBoleto extends WndBase {
 
 		groupbox = new Groupbox();
 		groupbox.setClosable(false);
-		caption = new Caption("Informaci�n del comprobante");
+		caption = new Caption("Información del comprobante");
 		groupbox.appendChild(caption);
 
 		/*	Columna 1	*/
@@ -305,6 +305,20 @@ public class WndReimprimirBoleto extends WndBase {
 
 		grid.appendChild(columns);
 
+		row = new Row();
+		row.setSpans("1,2,1");
+		label = new Label("EMPRESA :");
+		row.appendChild(label);
+		final Textbox txtEmpresa = new Textbox(ventaOriginal.getEmpresa().getNombreCorto());
+		txtEmpresa.setReadonly(true);
+		txtEmpresa.setWidth("120px");
+		row.appendChild(txtEmpresa);
+		final Textbox txtIdEmpresa = new Textbox(ventaOriginal.getEmpresa().getId().toString());
+		txtIdEmpresa.setWidth("30px");
+		txtIdEmpresa.setVisible(false);
+		row.appendChild(txtIdEmpresa);
+		rows.appendChild(row);
+		
 		row = new Row();
 		label = new Label(ventaOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA?"NUEVA BOLETA :":"NUEVA FACTURA :");
 		row.appendChild(label);

@@ -44,8 +44,11 @@
         <property name="sigla" type="java.lang.String">
             <column name="c_sigla" length="5">                
             </column>
-        </property>              
-                                                                    
+        </property>
+        <property name="logo" type="java.lang.String">
+            <column name="c_logo" length="20">                
+            </column>
+        </property>                                                 
         
         <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
         <property name="estadoRegistro" type="java.lang.String">

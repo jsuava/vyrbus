@@ -74,9 +74,9 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 	public Toolbarbutton btnImprimir = new Toolbarbutton();
 	public Toolbarbutton btnExportar = new Toolbarbutton();
 	public Toolbarbutton btnAyuda = new Toolbarbutton();
-	public String questionDelete="¿Desea eliminar el registro Seleccionado ";
-	public String questionInsert="¿Desea guardar el registro?";
-	public String questionUpdate="¿Desea actualizar el registro?";
+	public String questionDelete="ï¿½Desea eliminar el registro Seleccionado ";
+	public String questionInsert="ï¿½Desea guardar el registro?";
+	public String questionUpdate="ï¿½Desea actualizar el registro?";
 
 	public Toolbarbutton btnCerrar = new Toolbarbutton();
 	private Space oSpace = new Space();
@@ -121,7 +121,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 		this.setHeight("100%");
 		this.appendChild(oBorderlayout);
 
-		/*Habili/Desabilita según la configuracion del rol del usuario*/
+		/*Habili/Desabilita segï¿½n la configuracion del rol del usuario*/
 		/*NUEVO*/
 		btnNuevo.setDisabled(accesoNuevo()?false:true);
 		/*BUSCAR*/
@@ -175,8 +175,8 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 					btnImprimir.setDisabled(true);
 					btnExportar.setDisabled(true);
 					btnCerrar.setDisabled(true);
-				} catch (Exception e) {
-					// TODO: handle exception
+				} catch (Exception ex) {
+					ex.printStackTrace();
 				}
 			}
 		});
@@ -212,7 +212,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 				btnModificar.setDisabled(true);
 				btnEliminar.setDisabled(true);
 
-				/*Habili/Desabilita según la configuracion del rol del usuario*/
+				/*Habili/Desabilita segï¿½n la configuracion del rol del usuario*/
 				/*IMPRIMIR*/
 				if (accesoImprimir()){
 					btnImprimir.setDisabled(listboxLista.getItemCount() < 1);
@@ -243,7 +243,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 
 		btnCancelar.setAutodisable("self");
 		btnCancelar.setLabel("Cancelar");
-		btnCancelar.setTooltiptext("Cancelar la edición del registro");
+		btnCancelar.setTooltiptext("Cancelar la ediciï¿½n del registro");
 		btnCancelar.setImage("resources/toolbar/mp_toolbarCancelar.png");
 		btnCancelar.setDisabled(true);
 		btnCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
@@ -258,7 +258,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 				habilitaControles(false);
 				btnModificar.setTooltiptext("Modificar el registro actual");
 
-				/*Habili/Desabilita según la configuracion del rol del usuario*/
+				/*Habili/Desabilita segï¿½n la configuracion del rol del usuario*/
 				/*NEUVO*/
 				btnNuevo.setDisabled(accesoNuevo()?false:true);
 				/*BUSCAR*/
@@ -336,7 +336,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 									oTabLista.setDisabled(false);
 									habilitaControles(false);
 
-									/*Habili/Desabilita según la configuracion del rol del usuario*/
+									/*Habili/Desabilita segï¿½n la configuracion del rol del usuario*/
 									/*NUEVO*/
 									btnNuevo.setDisabled(accesoNuevo()?false:true);
 									/*BUSCAR*/
@@ -395,7 +395,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 										limpiarControles();
 										habilitaControles(false);
 
-										/*Habilita/Desabilita según la configuracion del rol del usuario*/
+										/*Habilita/Desabilita segï¿½n la configuracion del rol del usuario*/
 										/*NUEVO*/
 										btnNuevo.setDisabled(accesoNuevo()?false:true);
 										/*BUSCAR*/
@@ -490,7 +490,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 	}
 
 	/**
-	 * Genera los tabs en los que se mostrara la información.
+	 * Genera los tabs en los que se mostrara la informaciï¿½n.
 	 */
 	private void generaTabsMantenimeinto(){
 		oTabLista.setLabel("Lista");
@@ -536,7 +536,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 			@Override
 			public void onEvent(Event event) throws Exception {
 				if (tabUsuario != TAB_LIST) {
-					/*	Realiza el llenado de los controles con los datos del registro seleccionado para su edición	*/
+					/*	Realiza el llenado de los controles con los datos del registro seleccionado para su ediciï¿½n	*/
 					onChangeTab(TAB_LIST);
 
 					tabUsuario = TAB_LIST;
@@ -544,7 +544,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 					btnModificar.setTooltiptext("Modificar el registro seleccionado");
 					btnEliminar.setTooltiptext("Eliminar el registro seleccionado");
 
-					/*Habili/Desabilita según la configuracion del rol del usuario*/
+					/*Habili/Desabilita segï¿½n la configuracion del rol del usuario*/
 					/*MODIFICAR*/
 					if (accesoModificar())
 						btnModificar.setDisabled(!(listboxLista.getSelectedIndex() > -1));
@@ -587,7 +587,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 					btnModificar.setTooltiptext("Modificar el registro actual");
 					btnEliminar.setTooltiptext("Eliminar el registro actual");
 
-					/*Habili/Desabilita según la configuracion del rol del usuario*/
+					/*Habili/Desabilita segï¿½n la configuracion del rol del usuario*/
 					/*MODIFICAR*/
 					if (accesoModificar())
 						btnModificar.setDisabled(!(id > 0));
@@ -633,7 +633,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 			public void onEvent(Event event) throws Exception {
 				btnRefrescar.setDisabled(false);//TODO optimizar la habilitacion del boton refrescar despues de realizar una busqueda
 
-				/*Habili/Desabilita según la configuracion del rol del usuario*/
+				/*Habili/Desabilita segï¿½n la configuracion del rol del usuario*/
 				/*MODIFICAR*/
 				btnModificar.setDisabled(accesoModificar()?false:true);
 				/*ELIMINAR*/
@@ -786,7 +786,7 @@ public abstract class WndOpcionesMantenimiento extends WndBase implements IOpcio
 	}
 
 	/**
-	 * Método para cerrar la ventana, incluyendo el Tab que lo contenga
+	 * Mï¿½todo para cerrar la ventana, incluyendo el Tab que lo contenga
 	 */
 	@Override
 	public void closeTabWindow () {

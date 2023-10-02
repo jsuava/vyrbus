@@ -54,7 +54,7 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 				"r.c_destino destino, adr.agencia_id idAgeDestinoRuta, adr.c_nomcor agllegadaNomCor, adr.c_denominacion agLlegadaRuta, " +
 				"di.d_feclle, di.c_horlle, di.n_tarifa, s.n_numpis, s.n_numasipis1, s.n_numfilpis1, s.n_numcolpis1, s.n_numasipis2, " +
 				"s.n_numfilpis2, s.n_numcolpis2, i.d_fecreapar, ti.tipiti_id  " +
-				",rm.ruta_id, lpool.poolloc_id, b.c_numplaca, e.empresa_id, e.c_razsoc, e.c_nomcor, e.c_numdoc "+ // 33-38
+				",rm.ruta_id, lpool.poolloc_id, b.c_numplaca, e.empresa_id, e.c_razsoc, e.c_nomcor, e.c_numdoc, e.c_logo "+ // 33-38
 				"FROM vrtitinerario i " +
 					"INNER JOIN vrtdetiti di ON di.itinerario_id=i.itinerario_id " +
 					"LEFT JOIN vrmbus b ON b.bus_id=i.bus_id " +
@@ -149,6 +149,7 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 			empresa.setRazonSocial(obj[37].toString());
 			empresa.setNombreCorto(obj[38].toString());
 			empresa.setNumeroDocumento(obj[39].toString());
+			empresa.setLogo(obj[40].toString());
 			itinerario.setEmpresa(empresa);
 
 			if(obj[34]!=null){
@@ -168,7 +169,8 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 	public List<DetalleItinerario> buscarItinerariosFechaAbierta(String fechaPartida, String origen, String destino) throws Exception {
 		String sql = "SELECT DISTINCT(s.c_denominacion), s.servicio_id, r.ruta_id, r.c_origen origen, lo.localidad_id idOrigen, ao.agencia_id idAgePartida, " +
 				"ao.c_nomcor agPartida, di.d_fecpar, r.c_destino destino, ld.localidad_id idDestino, ad.agencia_id idAgeDestino, ad.c_nomcor agDestino, " +
-				"di.n_tarifa, s.n_numpis, s.n_numasipis1, s.n_numfilpis1, s.n_numcolpis1, s.n_numasipis2, s.n_numfilpis2, s.n_numcolpis2 " +
+				"di.n_tarifa, s.n_numpis, s.n_numasipis1, s.n_numfilpis1, s.n_numcolpis1, s.n_numasipis2, s.n_numfilpis2, " +
+				"s.n_numcolpis2, e.empresa_id, e.c_numdoc, e.c_razsoc, e.c_nomcor, e.c_logo " +
 				"FROM vrtitinerario i " +
 				"INNER JOIN vrtdetiti di ON di.itinerario_id=i.itinerario_id " +
 				"INNER JOIN vrmservicio s ON s.servicio_id=i.servicio_id " +
@@ -177,6 +179,7 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 				"INNER JOIN vrmagencia ad ON ad.agencia_id=di.agencia_idllegada " +
 				"INNER JOIN vrmlocalidad lo ON lo.localidad_id=r.localidad_idOrigen " +
 				"INNER JOIN vrmlocalidad ld ON ld.localidad_id=r.localidad_idDestino " +
+				"INNER JOIN vrmempresa e ON e.empresa_id = i.empresa_id " +
 				"WHERE di.d_fecpar=to_date('"+fechaPartida+"','dd/mm/yyyy') AND r.c_origen LIKE '"+origen+"%' AND r.c_destino LIKE '"+destino+"%' " +
 						"AND n_esanulado=0 " +
 				"ORDER BY s.c_denominacion ";
@@ -220,6 +223,13 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 			servicio.setNumeroAsientosPiso2(obj[17]==null?null:((BigDecimal)obj[17]).intValue());
 			servicio.setNumeroFilasPiso2(obj[18]==null?null:((BigDecimal)obj[18]).intValue());
 			servicio.setNumeroColumnasPiso2(obj[19]==null?null:((BigDecimal)obj[19]).intValue());
+			Empresa empresa = new Empresa();
+			empresa.setId(((BigDecimal)obj[20]).intValue());
+			empresa.setNumeroDocumento(obj[21].toString());
+			empresa.setRazonSocial(obj[22].toString());
+			empresa.setNombreCorto(obj[23].toString());
+			empresa.setLogo(obj[24].toString());
+			itinerario.setEmpresa(empresa);
 			lstResult.add(detalleItinerario);
 		}
 		return lstResult;
@@ -391,7 +401,7 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 					"di.detiti_id, ao.c_denominacion ageOrigen, ad.c_denominacion ageDestino, " +
 					"s.n_numAsiPis1, s.n_numAsiPis2, s.n_numfilpis2, i.d_fecreapar, r.n_horvia, " +
 					"rm.localidad_idOrigen as idOrigenMayor, rm.localidad_idDestino  as odDestinoMayor, di.c_estreg, " +
-					"di.audfecins, di.audusuins, di.audipinse, i.d_fecpar fechaItinerario, e.empresa_id, e.c_numdoc, e.c_razsoc, e.c_nomcor " + //34-43
+					"di.audfecins, di.audusuins, di.audipinse, i.d_fecpar fechaItinerario, e.empresa_id, e.c_numdoc, e.c_razsoc, e.c_nomcor, e.c_logo " + //34-44
 			"FROM vrtitinerario i " +
 			"INNER JOIN vrtdetiti di ON di.itinerario_id=i.itinerario_id " +
 			"LEFT JOIN vrmbus b ON b.bus_id=i.bus_id " +
@@ -499,6 +509,7 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 				empresa.setNumeroDocumento(obj[42].toString());
 				empresa.setRazonSocial(obj[43].toString());
 				empresa.setNombreCorto(obj[44].toString());
+				empresa.setLogo(obj[45].toString());
 				itinerario.setEmpresa(empresa);
 
 				detalleItinerario.setItinerario(itinerario);

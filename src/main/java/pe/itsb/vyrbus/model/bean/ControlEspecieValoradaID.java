@@ -18,11 +18,12 @@ public class ControlEspecieValoradaID implements java.io.Serializable, Cloneable
 	 * @param idTipoComprobante
 	 * @param idUsuarioHardware
 	 */
-	public ControlEspecieValoradaID(Integer idTipoComprobante, Integer idUsuarioHardware, String strSerie) {
+	public ControlEspecieValoradaID(Integer idTipoComprobante, Integer idUsuarioHardware, String strSerie, Integer idEmpresa) {
 		super();
 		this.idTipoComprobante = idTipoComprobante;
 		this.idUsuarioHardware = idUsuarioHardware;
 		this.strSerie = strSerie;
+		this.idEmpresa = idEmpresa;
 	}
 	/**
 	 * @return Objeto idTipoComprobante.

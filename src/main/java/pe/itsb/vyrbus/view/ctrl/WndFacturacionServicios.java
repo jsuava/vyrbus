@@ -48,6 +48,7 @@ import org.zkoss.zul.Window;
 import pe.itsb.vyrbus.model.bean.CanalVenta;
 import pe.itsb.vyrbus.model.bean.Cliente;
 import pe.itsb.vyrbus.model.bean.ControlEspecieValorada;
+import pe.itsb.vyrbus.model.bean.Empresa;
 import pe.itsb.vyrbus.model.bean.FormaPago;
 import pe.itsb.vyrbus.model.bean.Itinerario;
 import pe.itsb.vyrbus.model.bean.Liquidacion;
@@ -93,6 +94,7 @@ public class WndFacturacionServicios extends WndBase {
 	private Combobox cmbFormaPago;
 	private Combobox cmbTipoCobranza;
 	private Combobox cmbTipoMoneda;
+	private Combobox cmbEmpresa;
 	private Textbox txtNumeroComprobante;
 	private Textbox txtDocumento;
 	private Textbox txtCliente;
@@ -300,7 +302,7 @@ public class WndFacturacionServicios extends WndBase {
 			Image imgAnular = new Image();
 			imgAnular.setId(ventaPasaje.getId().toString());
 			imgAnular.setSrc("/resources/mp_anular.png");
-			imgAnular.setTooltiptext("Anular documento electr�nico");
+			imgAnular.setTooltiptext("Anular documento electrónico");
 			imgAnular.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e) {
@@ -350,7 +352,7 @@ public class WndFacturacionServicios extends WndBase {
 			else if(txtGlosa.getText().trim().equals(""))
 				throw new DenominacionNullException();
 
-			Messagebox.show("Se va registrar la Venta, �Desea continuar?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+			Messagebox.show("Se va registrar la Venta, ¿Desea continuar?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e) {
 					try {
@@ -432,6 +434,7 @@ public class WndFacturacionServicios extends WndBase {
 							servicioEspecial.setImportePagadoTarjeta(0.0);
 							servicioEspecial.setEsFechaAbierta(0);
 							servicioEspecial.setNumeroControl("T00000");
+							servicioEspecial.setEmpresa(cmbEmpresa.getSelectedItem().getValue());
 
 							if(((TipoMoneda)cmbTipoMoneda.getSelectedItem().getValue()).getId()!=Constantes.ID_TIPMON_SOLES) {
 								servicioEspecial.setTipoMoneda((TipoMoneda)cmbTipoMoneda.getSelectedItem().getValue());
@@ -608,6 +611,32 @@ public class WndFacturacionServicios extends WndBase {
 		Rows rows = new Rows();
 
 		row = new Row();
+		row.setSpans("1,3,1,1");
+		label = new Label("EMPRESA :");
+		row.appendChild(label);
+		
+		cmbEmpresa = new Combobox();
+		cmbEmpresa.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			public void onEvent(Event e) {
+				cmbTipoComprobante.setFocus(true);
+			}
+		});
+		cmbEmpresa.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			public void onEvent(Event e) {
+				onLoadEspecieValorada();
+			}
+		});
+		cmbEmpresa.setWidth("200px");
+		row.appendChild(cmbEmpresa);
+		
+		label = new Label();
+		row.appendChild(label);
+
+		label = new Label();
+		row.appendChild(label);		
+		rows.appendChild(row);
+		
+		row = new Row();
 		label = new Label("TIPO COMPROBANTE :");
 		row.appendChild(label);
 
@@ -628,7 +657,7 @@ public class WndFacturacionServicios extends WndBase {
 		label = new Label();
 		row.appendChild(label);
 
-		label = new Label("N� COMPROBANTE :");
+		label = new Label("N° COMPROBANTE :");
 		label.setStyle("color:blue; font-weight: bold;");
 		row.appendChild(label);
 
@@ -944,8 +973,9 @@ public class WndFacturacionServicios extends WndBase {
 		UtilData.cargarTipoComprobanteSunat(cmbTipoComprobante, false);
 		UtilData.cargarDataCombo(cmbTipoCobranza, TipoCobranza.class, false);
 		UtilData.cargarTipoMoneda(cmbTipoMoneda, false);
+		UtilData.cargarEmpresa(cmbEmpresa, false);
 		cmbTipoComprobante.setSelectedIndex(2);
-		onLoadEspecieValorada();
+		//onLoadEspecieValorada();
 
 		cmbTipoComprobante.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
@@ -1030,8 +1060,14 @@ public class WndFacturacionServicios extends WndBase {
 	private void onLoadEspecieValorada() {
 		try {
 			ControlEspecieValorada controlEspecieValorada = null;
-			controlEspecieValorada=UtilData.buscarEspecieValoradaByCaja(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(), false, getUsuarioHardware(), null);
-			txtNumeroComprobante.setValue(controlEspecieValorada.toString());
+			
+			if(cmbEmpresa.getSelectedItem().getValue() instanceof Empresa) {
+				Integer idEmpresa = ((Empresa)cmbEmpresa.getSelectedItem().getValue()).getId();
+				controlEspecieValorada=UtilData.buscarEspecieValoradaByCaja(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId(), getAgencia(), false, getUsuarioHardware(), null, idEmpresa);
+				txtNumeroComprobante.setValue(controlEspecieValorada.toString());
+			}else {
+				txtNumeroComprobante.setValue("");
+			}			
 		}catch(EspecieValoradaNotAvailableException evex) {
 			DlgMessage.information(Messages.getString("UtilData.information.noAsignacionEspecieValorada"));
 		}catch (Exception ex) {
@@ -1182,6 +1218,19 @@ public class WndFacturacionServicios extends WndBase {
 
 		grid.appendChild(columns);
 
+		row = new Row();
+		row.setSpans("1,2,1");
+		label = new Label("EMPRESA :");
+		row.appendChild(label);
+		text = new Textbox(ventaOriginal.getEmpresa().getNombreCorto());
+		text.setReadonly(true);
+		text.setWidth("160px");
+		text.setStyle("font-size:11px !important");
+		row.appendChild(text);
+		label = new Label();
+		row.appendChild(label);
+		rows.appendChild(row);
+		
 		row = new Row();
 		label = new Label("NUMERO COMPROBANTE :");
 		row.appendChild(label);
@@ -1341,7 +1390,7 @@ public class WndFacturacionServicios extends WndBase {
 //			WSFE.sendNota(notaCredito);
 //		}
 
-		DlgMessage.information("El Proceso de anulaci�n termino correctamente");
+		DlgMessage.information("El Proceso de anulación termino correctamente");
 		onSearch();
 		window.onClose();
 	}
@@ -1411,6 +1460,23 @@ public class WndFacturacionServicios extends WndBase {
 		grid.appendChild(columns);
 
 		Rows rows = new Rows();
+		
+		row = new Row();
+		row.setSpans("1,3,1,1");
+		label = new Label("EMPRESA :");
+		row.appendChild(label);
+		
+		label = new Label();
+		label.setValue(venta.getEmpresa().getNombreCorto());
+		label.setStyle(style);
+		row.appendChild(label);
+		
+		label = new Label();
+		row.appendChild(label);
+
+		label = new Label();
+		row.appendChild(label);
+		rows.appendChild(row);
 
 		row = new Row();
 		label = new Label("TIPO COMPROBANTE :");
@@ -1427,7 +1493,7 @@ public class WndFacturacionServicios extends WndBase {
 		label = new Label();
 		row.appendChild(label);
 
-		label = new Label("N� COMPROBANTE :");
+		label = new Label("N° COMPROBANTE :");
 		row.appendChild(label);
 
 		label = new Label();

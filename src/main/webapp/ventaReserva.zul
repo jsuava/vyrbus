@@ -139,18 +139,16 @@
 								</vlayout>
 								<vlayout>
 									<label value="SERVICIO DE PARTIDA" sclass="label-size11"/>
-									<listbox id="lbxItinerariosIda" 
-										mold="paging" 
-										pageSize="4"
-										onSelect="wndVentaReserva.onSelectItinerario(pe.itsb.vyrbus.service.util.Constantes.SERVICIO_IDA)">
+									<listbox id="lbxItinerariosIda" mold="paging" pageSize="4" onSelect="wndVentaReserva.onSelectItinerario(pe.itsb.vyrbus.service.util.Constantes.SERVICIO_IDA)">
 										<listhead>
 											<listheader id="listheaderOperadoPor" label="OPERADO POR" width="80px" align="left" visible="false" style="color: #ffffff;"/>
+											<listheader label="EMPRESA" width="60px" style="color: #ffffff;"/>
 											<listheader label="EMBARQUE" width="80px" style="color: #ffffff;"/>
-											<listheader label="SERVICIO" width="110px" style="color: #ffffff;"/>
+											<listheader label="SERVICIO" width="105px" style="color: #ffffff;"/>
 											<listheader label="RUTA" width="120px" style="color: #ffffff;"/>
 											<listheader label="HR.PD." width="45px" align="center" style="color: #ffffff;"/>
-											<listheader label="S/.ESTANDAR" width="90px" align="right" tooltiptext="Tarifa Estandar" style="color: #ffffff;"/>
-	  										<listheader label="BUS" width="90px" align="center" tooltiptext="Placa Bus" style="color: #ffffff;"/>  
+											<listheader label="S/.ESTANDAR" width="80px" align="right" tooltiptext="Tarifa Estandar" style="color: #ffffff;"/>
+	  										<listheader label="BUS" width="60px" align="center" tooltiptext="Placa Bus" style="color: #ffffff;"/>  
 	  										<listheader label="MAPA" width="55px" align="center" tooltiptext="Mapa Bus" style="color: #ffffff;"/>
 											<listheader id="listheaderOtraTarifa" label="$ TARIFA " align="right" style="color: #ffffff;"/>
 
@@ -200,18 +198,8 @@
 									</listhead>
 								</listbox>
 								<cell align="right" valign="bottom" style="background:white">
-									<button id="btnNextFechaAbierta" 
-											sclass="btnCommandL" 
-											autodisable="self" 
-											label="Siguiente" 
-											image="resources/mp_next.png" 
-											disabled="true"  
-											onClick="wndVentaReserva.onNextFechaAbierta()"/>
-									<button label="Cerrar" 
-											sclass="btnCommandL" 
-											autodisable="self" 
-											image="resources/mp_cerrarEnabled.png" 
-											onClick="wndVentaReserva.closeTabWindow()" />
+									<button id="btnNextFechaAbierta" sclass="btnCommandL" autodisable="self" label="Siguiente" image="resources/mp_next.png" disabled="true" onClick="wndVentaReserva.onNextFechaAbierta()"/>
+									<button label="Cerrar" sclass="btnCommandL" autodisable="self" image="resources/mp_cerrarEnabled.png" onClick="wndVentaReserva.closeTabWindow()" />
 								</cell>								
 							</row>
 						</rows>

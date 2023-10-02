@@ -43,6 +43,7 @@ import pe.itsb.vyrbus.model.bean.AutorizadorCortesia;
 import pe.itsb.vyrbus.model.bean.CanalVenta;
 import pe.itsb.vyrbus.model.bean.Cliente;
 import pe.itsb.vyrbus.model.bean.Cortesia;
+import pe.itsb.vyrbus.model.bean.Empresa;
 import pe.itsb.vyrbus.model.bean.EstadoCivil;
 import pe.itsb.vyrbus.model.bean.FormaPago;
 import pe.itsb.vyrbus.model.bean.Itinerario;
@@ -65,6 +66,7 @@ import pe.itsb.vyrbus.service.exceptions.ApellidoPaternoNullException;
 import pe.itsb.vyrbus.service.exceptions.AutorizadorNullException;
 import pe.itsb.vyrbus.service.exceptions.CancelaGrabacionException;
 import pe.itsb.vyrbus.service.exceptions.DocumentoPaxDuplicadoException;
+import pe.itsb.vyrbus.service.exceptions.EmpresaException;
 import pe.itsb.vyrbus.service.exceptions.FechaCaducidadNullException;
 import pe.itsb.vyrbus.service.exceptions.MailIncorectoException;
 import pe.itsb.vyrbus.service.exceptions.MotivoCorteciaNullException;
@@ -114,6 +116,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 	private Textbox txtidPasajero;
 	private Label lbPasajero;
 //	private Datebox dbxFechaViaje;
+	private Combobox cmbEmpresa;
 	private Combobox cmbCiudadOrigen;
 	private Label lbNumeroDocumento;
 	private Image imgValidacionDNISearch;
@@ -130,6 +133,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 	private Row rowCanje;
 	private Label lblCliente;
 	private Button btnBuscarCliente;
+	private Image imgEmpresa;
 
 	/* Declara controles Mantenimiento de Pasajeros */
 	private Groupbox gbxMantPasajero;
@@ -186,6 +190,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 		txtidPasajero = (Textbox) this.getFellow("txtidPasajero");
 		lbPasajero = (Label) this.getFellow("lbPasajero");
 //		dbxFechaViaje = (Datebox) this.getFellow("dbxFechaViaje");
+		cmbEmpresa = (Combobox) this.getFellow("cmbEmpresa");
 		cmbCiudadOrigen = (Combobox) this.getFellow("cmbCiudadOrigen");
 		lbNumeroDocumento = (Label) this.getFellow("lbNumeroDocumento");
 		imgValidacionDNISearch=(Image)this.getFellow("imgValidacionDNISearch");
@@ -202,6 +207,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 		rowCanje = (Row)this.getFellow("rowCanje");
 		lblCliente = (Label)this.getFellow("lblCliente");
 		btnBuscarCliente=(Button)this.getFellow("btnBuscarCliente");
+		imgEmpresa = (Image)this.getFellow("imgEmpresa");
 
 		/* Inicia controles Mantenimiento de Pasajeros */
 		gbxMantPasajero = (Groupbox) this.getFellow("gbxMantPasajero");
@@ -240,6 +246,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 		UtilData.cargarGenericData(cmbRuta, false);
 		UtilData.cargarDataCombo(cmbAutorizadorCortesia,AutorizadorCortesia.class, false);
 		UtilData.enlazarUbigeo(txtIdUbigeo, txtUbicacionGeografica,btnUbicacionGeografica,null);
+		UtilData.cargarDataCombo(cmbEmpresa, Empresa.class, false);
 		cargarTipoFormaPago();
 
 		/* Carga combo para el Mantenimiento de Pasajeros */
@@ -249,6 +256,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 		UtilData.cargarDataCombo(cmbDocumentoIdentificacion,TipoDocumento.class, criteriosBusqueda, false);
 		UtilData.cargarDataCombo(cmbSexo, Sexo.class, false);
 		UtilData.cargarDataCombo(cmbEstadoCivil, EstadoCivil.class, false);
+		cmbEmpresa.setSelectedIndex(0);
 		cmbDocumentoIdentificacion.setSelectedIndex(0);
 		cmbSexo.setSelectedIndex(0);
 		cmbEstadoCivil.setSelectedIndex(0);
@@ -295,6 +303,22 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 				}
 			}
 		});
+		
+		cmbEmpresa.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			public void onEvent(Event e) {
+				try {
+					if(cmbEmpresa.getSelectedItem().getValue() instanceof Empresa) {
+						String logo = ((Empresa)cmbEmpresa.getSelectedItem().getValue()).getLogo();
+						imgEmpresa.setSrc("resources/"+logo);
+					}else
+						imgEmpresa.setSrc("");
+					onChangeRutas();
+				}catch (Exception ex) {
+					DlgMessage.error(this.getClass().getName() + " " + ex.getMessage());
+					ex.printStackTrace();
+				}
+			}
+		});
 	}
 
 	/*
@@ -310,11 +334,14 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 		Util.limpiarCombobox(cmbRuta);
 		Util.limpiarCombobox(cmbAutorizadorCortesia);
 		Util.limpiarCombobox(cmbTipoFormaPago);
+		Util.limpiarCombobox(cmbEmpresa);
 		UtilData.cargarGenericData(cmbMotivoCortesia, false);
 		UtilData.cargarDataCombo(cmbCiudadOrigen, Localidad.class, false);
+		UtilData.cargarDataCombo(cmbEmpresa, Empresa.class, false);
 		UtilData.cargarGenericData(cmbRuta, false);
 		UtilData.cargarDataCombo(cmbAutorizadorCortesia,AutorizadorCortesia.class, false);
 		cargarTipoFormaPago();
+		cmbEmpresa.setSelectedIndex(0);
 		cmbMotivoCortesia.setSelectedIndex(0);
 		cmbCiudadOrigen.setSelectedIndex(0);
 		cmbRuta.setSelectedIndex(0);
@@ -438,6 +465,8 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 		try {
 			if (pasajero == null)
 				throw new PasajeroException();
+			else if(!(cmbEmpresa.getSelectedItem().getValue()instanceof Empresa))
+				throw new EmpresaException();
 			else if (!(cmbRuta.getSelectedItem().getValue() instanceof Ruta))
 				throw new RutaNullException();
 //			else if (dbFechaInicio.getText().isEmpty())
@@ -471,7 +500,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 				@Override
 				public void onEvent(Event e) throws Exception {
 					if(e.getName().equals("onYes")){
-						//valida si el usuario autorizador tiene configurado la confirmaci�n mediante password.
+						//valida si el usuario autorizador tiene configurado la confirmación mediante password.
 						if(cmbAutorizadorCortesia.getSelectedItem().getValue() instanceof AutorizadorCortesia){
 							AutorizadorCortesia autoriCort= cmbAutorizadorCortesia.getSelectedItem().getValue();
 							if(autoriCort.getPassword()!=null)
@@ -520,6 +549,9 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 			else if(!TIENE_CANJE)
 				DlgMessage.information(Messages.getString("WndCortesia.information.clienteSinCanje"), txtRuc);
 			throw new CancelaGrabacionException();
+		}catch(EmpresaException eex) {
+			DlgMessage.information(Messages.getString("WndCortesia.information.noSeleccionoEmpresa"),cmbEmpresa);
+			throw new CancelaGrabacionException();
 		}catch (Exception ex) {
 			DlgMessage.error(this.getClass().getName() + " " + ex.getMessage());
 			ex.printStackTrace();
@@ -535,6 +567,9 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 		cortesia = new Cortesia();
 		Ruta ruta = new Ruta();
 		ruta = cmbRuta.getSelectedItem().getValue();
+		
+		Empresa empresa = new Empresa();
+		empresa = cmbEmpresa.getSelectedItem().getValue();
 
 		/* Realiza la Reserva a fecha abierta */
 		VentaPasaje ventaPasaje = new VentaPasaje();
@@ -588,6 +623,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 //		ventaPasaje.setFechaLiquidacion(fechaLiquidacion);
 		ventaPasaje.setFechaLiquidacion(Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date())));
 		ventaPasaje.setEsRemoto(false);
+		ventaPasaje.setEmpresa(empresa);
 		if(TIENE_CANJE){
 			ventaPasaje.setCliente(oCliente);
 			ventaPasaje.setRucClienteCredito(oCliente.getNumeroDocumento());
@@ -722,17 +758,22 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 	}
 
 	/**
-	 * Carga Rutas, seg�n la Ciudad Origen.
+	 * Carga Rutas, según la Ciudad Origen.
 	 *
 	 * @throws Exception
 	 */
 	public void onChangeRutas() throws Exception {
+		if(!(cmbEmpresa.getSelectedItem().getValue() instanceof Empresa)) {
+			DlgMessage.information(Messages.getString("WndCortesia.information.noSeleccionoEmpresa"));
+			return;
+		}
+		
 		cmbRuta.getItems().clear();
 		if (cmbCiudadOrigen.getSelectedItem().getValue() instanceof Localidad) {
 			Integer Origen = ((Localidad) cmbCiudadOrigen.getSelectedItem().getValue()).getId();
 //			String puntos =lbPuntosPax.getValue().substring(lbPuntosPax.getValue().indexOf(":")+1,lbPuntosPax.getValue().toString().trim().length());
 
-			UtilData.cargarRutas(cmbRuta, false, Origen,null,true);
+			UtilData.cargarRutas(cmbRuta, false, Origen,null,((Empresa)cmbEmpresa.getSelectedItem().getValue()).getId());
 		} else
 			UtilData.cargarGenericData(cmbRuta, false);
 		cmbRuta.setSelectedIndex(0);
@@ -1049,7 +1090,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 	}
 
 	/**
-	 * Carga cortecias emitidas, seg�n el resultado de la busqueda.
+	 * Carga cortecias emitidas, según el resultado de la busqueda.
 	 *
 	 * @param lstCortecia
 	 *            : Array con las cortecias a mostrar en el Listbox
@@ -1066,6 +1107,8 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 			cell = new Listcell(cortesia.getPasajero().toString());
 			item.appendChild(cell);
 			cell = new Listcell(cortesia.getTipoFormaPago().getDenominacion());
+			item.appendChild(cell);
+			cell = new Listcell(cortesia.getVentaPasaje().getEmpresa().getNombreCorto());
 			item.appendChild(cell);
 			cell = new Listcell(cortesia.getRuta().getOrigen() + " / "+ cortesia.getRuta().getDestino());
 			item.appendChild(cell);
@@ -1134,6 +1177,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 			textboxId.setText(cortesia.getId().toString());
 			txtidPasajero.setText(cortesia.getPasajero().getId().toString());
 			Util.seleccionarValorItemCombo(Localidad.class, cmbCiudadOrigen,cortesia.getRuta().getLocalidadOrigen().getId());
+			Util.seleccionarValorItemCombo(Empresa.class, cmbEmpresa, cortesia.getVentaPasaje().getEmpresa().getId());
 			onChangeRutas();
 			Util.seleccionarValorItemCombo(Ruta.class, cmbRuta, cortesia.getRuta().getId());
 //			dbFechaInicio.setValue(cortesia.getFechaInicio());

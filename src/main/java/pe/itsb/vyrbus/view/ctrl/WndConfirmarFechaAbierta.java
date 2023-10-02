@@ -25,6 +25,7 @@ import org.zkoss.zul.Tab;
 import org.zkoss.zul.Textbox;
 
 import pe.itsb.vyrbus.model.bean.DetalleItinerario;
+import pe.itsb.vyrbus.model.bean.Empresa;
 import pe.itsb.vyrbus.model.bean.Localidad;
 import pe.itsb.vyrbus.model.bean.TarifaRegular;
 import pe.itsb.vyrbus.model.bean.VentaPasaje;
@@ -48,6 +49,7 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 
 	private Listbox lbxVentasFechaAbierta;
 	private Include incConfirmacion;
+	private Combobox cmbEmpresa;
 	private Combobox cmbOrigen;
 	private Combobox cmbDestino;
 	private Combobox cmbOrigenItinerario;
@@ -83,6 +85,7 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 			UtilData.cargarDataCombo(cmbDestino, Localidad.class, false);
 			UtilData.cargarDataCombo(cmbOrigenItinerario, Localidad.class, false);
 			UtilData.cargarDataCombo(cmbDestinoItinerario, Localidad.class, false);
+			UtilData.cargarDataCombo(cmbEmpresa, Empresa.class, true);
 			txtNumeroControl.setFocus(true);
 		}catch (LiquidacionNullException lnullex){
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noLiquidacion"));
@@ -98,6 +101,7 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 	public void initComponents() {
 		lbxVentasFechaAbierta = (Listbox)this.getFellow("lbxVentasFechaAbierta");
 		incConfirmacion = (Include)this.getFellow("incConfirmacion");
+		cmbEmpresa = (Combobox)this.getFellow("cmbEmpresa");
 		cmbOrigen = (Combobox)this.getFellow("cmbOrigen");
 		cmbDestino = (Combobox)this.getFellow("cmbDestino");
 		cmbOrigenItinerario = (Combobox)this.getFellow("cmbOrigenItinerario");
@@ -292,6 +296,14 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 				break;
 			}
 		}
+		
+		for(int i=1; i<cmbEmpresa.getItemCount(); i++){
+			Empresa empresa = cmbEmpresa.getItems().get(i).getValue();
+			if(empresa.getId().intValue()==fechaAbierta.getEmpresa().getId().intValue()){
+				cmbEmpresa.setSelectedIndex(i);
+				break;
+			}
+		}
 	}
 
 	/**
@@ -306,10 +318,11 @@ public class WndConfirmarFechaAbierta extends WndBase implements EventListener<E
 			String fechaPartida = Util.DatetoString(cldrFechaPartida.getValue(), Constantes.DATE_FORMAT);
 			String origen = cmbOrigenItinerario.getText();
 			String destino = "";
+			String idEmpresa = ((Empresa)cmbEmpresa.getSelectedItem().getValue()).getId().toString();
 			if(cmbDestinoItinerario.getSelectedItem().getValue() instanceof Localidad)
 				destino = cmbDestinoItinerario.getText();
 
-			List<DetalleItinerario> lstItinerarios = ServiceLocator.getItinerarioManager().buscarItinerarios(fechaPartida, origen, destino);
+			List<DetalleItinerario> lstItinerarios = ServiceLocator.getItinerarioManager().buscarItinerarios(fechaPartida, origen, destino, idEmpresa);
 			if(lstItinerarios.size()>0){
 				Listitem item = null;
 				Listcell cell = null;

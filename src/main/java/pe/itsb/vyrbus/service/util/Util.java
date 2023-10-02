@@ -431,7 +431,7 @@ public class Util {
 					combobox.setSelectedIndex(i);
 					break;
 				}
-			}else if (oClass.equals(MotivoCortesia.class)){ /****MOTIVO CORTECIA****/
+			}else if (oClass.equals(MotivoCortesia.class)){ /****MOTIVO CORTESIA****/
 				if (oComboitem.getValue()!=null && ((MotivoCortesia) oComboitem.getValue()).getId().equals(valorItem)) {
 					combobox.setSelectedIndex(i);
 					break;
