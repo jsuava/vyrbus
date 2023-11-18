@@ -54,7 +54,8 @@ public class ReporteManifiesto implements JRDataSource{
 		}else if ("numeroDocumento".equals(fieldName))
 			value = (listPasajeros.get(index).getPasajero()!=null?(listPasajeros.get(index).getPasajero().getNumeroDocumento()!=null?listPasajeros.get(index).getPasajero().getNumeroDocumento():""):"");
 		else if ("destino".equals(fieldName))
-			value = (listPasajeros.get(index).getRuta()!=null?listPasajeros.get(index).getRuta().getDestino():"");
+			value = (listPasajeros.get(index).getRuta()!=null?listPasajeros.get(index).getAgenciaLlegada().getDenominacion():"");
+//		value = (listPasajeros.get(index).getRuta()!=null?listPasajeros.get(index).getRuta().getDestino():"");
 		else if ("ptoEmbarque".equals(fieldName))
 			value = (listPasajeros.get(index).getAgenciaPartida()!=null?listPasajeros.get(index).getAgenciaPartida().getNombreCorto():"");
 		else if ("importe".equals(fieldName))

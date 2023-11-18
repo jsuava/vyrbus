@@ -1,4 +1,4 @@
-<?page title="Vyrbus" contentType="text/html;charset=UTF-8"?>
+<?page title="VYRBUS" contentType="text/html;charset=UTF-8"?>
 <?link rel="shortcut icon" href="resources/favicon_1.ico" ?>
 <zk>
 <!--  <style src="css/zk-admin-bootstrap-theme.css"></style>  -->
@@ -17,7 +17,7 @@
 				</columns>
 				<rows>
 					<row style="border:none; background:#4285F4" height="40px" >
-						<image src="/resources/mp_isotipo.png" height="35px" style="border-radius: 10px;"/>
+						<image src="/resources/mp_logoTransmar.png" height="35px" style="border-radius: 10px;"/>
 						<label/>
 <!--  						<label value="Sistema de Ventas y Reservas" style="color: white; " height="24px" />  -->
 						<image src="/resources/titulo_principal.png" height="28px" />

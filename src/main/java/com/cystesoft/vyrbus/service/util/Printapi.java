@@ -36,6 +36,7 @@ public class Printapi {
 		byte[] pdfFile = null;
 		try {
 			String URL_API = UtilFlag.getUrlApi_printapi();
+//			String URL_API = "http://119.8.148.239/api/GenerarPdf";
 			if(URL_API !=null) {
 				String rubro = "1"; // Pasajes				
 				String contentBase64 = new BASE64Encoder().encode(xmlZip);
