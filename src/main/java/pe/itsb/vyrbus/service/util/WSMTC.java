@@ -607,18 +607,18 @@ public class WSMTC {
 			ServiceLocator.getParametrosManager().actualizar(parametros);
 
 			/*Envia alerta informando*/
-			String mensaje="Se han desactivado las siguientes validaciones y env�o de Alertas, debido a que no hay respuesta del m�todo getIdentidad: \n";
-			mensaje+="* Validaci�n con el M�todo getIdentidad. \n";
-			mensaje+="* Env�o de alertas al registrar una venta a un Pasajero con DNI no valido. \n\n";
+			String mensaje="Se han desactivado las siguientes validaciones y envío de Alertas, debido a que no hay respuesta del método getIdentidad: \n";
+			mensaje+="* Validación con el Método getIdentidad. \n";
+			mensaje+="* Envío de alertas al registrar una venta a un Pasajero con DNI no valido. \n\n";
 //			mensaje+="La reactivaci�n se realizar� de forma autom�tica, apenas se obtenga respuesta de este M�todo.\n";
-			mensaje+="La reactivaci�n se deber� realizar de forma manual.\n";
+			mensaje+="La reactivación se deberá realizar de forma manual.\n";
 			mensaje+="Message Exception : "+messageException+"\n";
 			DestinatariosEmails window = new DestinatariosEmails();
 			String toAddress="jabanto@tepsa.com.pe";
 			window.setEmails("TO:"+toAddress);
 
 			//Envia E-Mail
-			mensaje+="\n\n NOTA: [Este buzon es de envio autom�tico, por favor no responda.]";
+			mensaje+="\n\n NOTA: [Este buzon es de envio automático, por favor no responda.]";
 			Sendmail.enviaEmail(mensaje,"Desactivaci�n autom�tica de Validaciones y env�o de alertas", window);
 		}
 	}

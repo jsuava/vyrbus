@@ -502,29 +502,13 @@
 													<label id="lblTotalPagarPreliminar" value="TOTAL A PAGAR S/." style="color:blue; font-size:14px; font-weight:bold" visible="false"/>
 												</row>
 												<row style="background:white">
-													<button id= "btnGuardar"
-															label="Grabar" 
-															sclass="btnCommandL" 
-															autodisable="self" 
-															image="resources/mp_guardarEnabled.png"  
-															onClick="wndVentaReserva.onGuardarVentaReserva()"  
-															tooltiptext="Realiza el guardado de la Venta."/>									
+													<button id= "btnGuardar" label="Grabar" sclass="btnCommandL" autodisable="self" image="resources/mp_guardarEnabled.png" onClick="wndVentaReserva.onGuardarVentaReserva()" tooltiptext="Realiza el guardado de la Venta."/>									
 												</row>
 												<row style="background:white">
-													<button label="Cancelar" 
-															sclass="btnCommandL" 
-															autodisable="self" 
-															image="resources/mp_cancelarEnabled.png"  
-															onClick="wndVentaReserva.selectedTabItinerario(); tabItinerario.setSelected(true)" 
-															tooltiptext="Borra todo el proceso y regresa a la pestaña de Selección de itinerario."/>
+													<button label="Cancelar" sclass="btnCommandL" autodisable="self" image="resources/mp_cancelarEnabled.png" onClick="wndVentaReserva.selectedTabItinerario(); tabItinerario.setSelected(true)" tooltiptext="Borra todo el proceso y regresa a la pestaña de Selección de itinerario."/>
 												</row>
 												<row style="background:white">
-													<button label="Cerrar" 
-															sclass="btnCommandL" 
-															autodisable="self" 
-															image="resources/mp_cerrarEnabled.png"  
-															onClick="wndVentaReserva.liberarAsientos(); wndVentaReserva.closeTabWindow()" 
-															tooltiptext="cierra la ventana de la Venta"/>
+													<button label="Cerrar" sclass="btnCommandL" autodisable="self" image="resources/mp_cerrarEnabled.png" onClick="wndVentaReserva.liberarAsientos(); wndVentaReserva.closeTabWindow()" tooltiptext="cierra la ventana de la Venta"/>
 												</row>
 											</rows>
 										</grid>
@@ -554,13 +538,13 @@
 												</groupbox>
 												<groupbox mold="3d" closable="false">
 												<caption label="INFORMACIÓN DEL PASAJERO" style="color: #ffffff;"/>
-													<toolbar>
+													<!-- <toolbar>
 														<toolbarbutton id="tlbbtnNuevoPax" label="Nuevo" image="resources/toolbar/mp_toolbarNuevo.png" onClick="wndVentaReserva.onNewPax()"/>
 														<toolbarbutton id="tlbbtnModificarPax" label="Modificar" image="resources/toolbar/mp_toolbarModificar.png" onClick="wndVentaReserva.onModifyPax()" disabled="true"/>
 														<toolbarbutton id="tlbbtnLimpiarPax" label="Limpiar" image="resources/toolbar/mp_toolbarLimpiar.png" onClick="wndVentaReserva.onCleanControlsPax()"/>
 														<toolbarbutton id="tlbbtnCancelarPax" label="Cancelar" image="resources/toolbar/mp_toolbarCancelar.png" onClick="wndVentaReserva.onCancelPax()" disabled="true"/>
 														<toolbarbutton id="tlbbtnGuardarPax" autodisable = "self" label="Guardar" image="resources/toolbar/mp_toolbarGuardar.png" onClick="wndVentaReserva.onSavePax()" disabled="true"/>
-													</toolbar>
+													</toolbar>-->
 													<grid >
 														<columns>
 															<column width="15%" align="right"/>
@@ -570,12 +554,19 @@
 															<column width="15%"/>
 														</columns>
 														<rows>
+															<row sclass="background-gris" spans="1,4">
+																<label value="BUSCAR PASAJERO :" style="color: blue; font-weight:bold"/>
+																<hlayout>
+																	<textbox id="txtSearchPax" placeholder="POR DOCUMENTO, APELLIDOS Y/O NOMBRE" width="142px" onOK="wndVentaReserva.validarPax()"></textbox>
+																	<image src="resources/mp_limpiar.png" onClick="wndVentaReserva.onCleanControlsPax()" tooltiptext="Limpiar los controles"></image>																
+																</hlayout>
+															</row>
 															<row sclass="background-gris">
-																<label value="TIPO DOCUMENTO (*) :"/>
+																<label value="TIPO DOCUMENTO (*) :" style="font-weight:bold"/>
 																<combobox id="cmbTipoDocumento" readonly="true" onOK="txtDocumentoPax.setFocus(true)" onChange="wndVentaReserva.habilitarNacionalidad()"/>
-																<label value="NUMERO DOCUMENTO (*) :" style="color:blue; font-weight:bold" />
+																<label value="NUMERO DOCUMENTO (*) :" style="font-weight:bold" />
 																<hbox align="center">
-																	<textbox id="txtDocumentoPax" width="120px" onChange="wndVentaReserva.verificarPaxReniec()" maxlength="15"/>
+																	<textbox id="txtDocumentoPax" width="120px" maxlength="15"/>
 																	<image id="imgValidacionDNI" height="13px" style="cursor:pointer" />
 																</hbox>
 																
@@ -584,13 +575,13 @@
 																</cell>
 															</row>
 															<row sclass="background-gris">
-																<label value="APELLIDO PATERNO (*) :" style="color:blue; font-weight:bold"/>
+																<label value="APELLIDO PATERNO (*) :" style="font-weight:bold"/>
 																<textbox id="txtApePat" width="140px" maxlength="30"/>
 																<label value="APELLIDO MATERNO :" style="font-weight:bold" maxlength="30"/>
 																<textbox id="txtApeMat" width="120px" maxlength="30" />
 															</row>
 															<row style="background:#F7F7F7" spans="1,3">
-																<label value="NOMBRES (*) :" style="color:blue; font-weight:bold" maxlength="30"/>
+																<label value="NOMBRES (*) :" style="font-weight:bold" maxlength="30"/>
 																<textbox id="txtNombres" width="140px" maxlength="30"/>													
 															</row>
 															<row spans="1,3" style="background:#F7F7F7">
@@ -699,13 +690,14 @@
 												</hlayout>
 												<groupbox mold="3d">
 													<caption label="INFORMACIÓN DEL CLIENTE" style="color: #ffffff;"/>
-													<toolbar>
+													<!-- <toolbar>
 														<toolbarbutton id="tlbbtnNuevoClient" label="Nuevo" image="resources/toolbar/mp_toolbarNuevo.png" onClick="wndVentaReserva.onNewClient()"/>
 														<toolbarbutton id="tlbbtnModificarClient" label="Modificar" image="resources/toolbar/mp_toolbarModificar.png" onClick="wndVentaReserva.onModifyClient()" disabled="true"/>
 														<toolbarbutton id="tlbbtnLimpiarClient" label="Limpiar" image="resources/toolbar/mp_toolbarLimpiar.png" onClick="wndVentaReserva.onCleanControlsClient()"/>
 														<toolbarbutton id="tlbbtnCancelarClient" label="Cancelar" image="resources/toolbar/mp_toolbarCancelar.png" onClick="wndVentaReserva.onCancelClient()" disabled="true"/>
 														<toolbarbutton id="tlbbtnGuardarClient" autodisable = "self" label="Guardar" image="resources/toolbar/mp_toolbarGuardar.png" onClick="wndVentaReserva.onSaveClient()" disabled="true"/>
 													</toolbar>
+													 -->
 													<grid sclass="grid-no-border">
 														<columns>
 															<column width="15%" align="right"/>
@@ -713,14 +705,21 @@
 															<column width="15%" align="right"/>
 															<column width="35%"/>											
 														</columns>
-														<rows>
+														<rows>															
+															<row sclass="background-gris" spans="1,4">
+																<label value="BUSCAR CLIENTE :" style="color: blue; font-weight:bold"/>
+																<hlayout>
+																	<textbox id="txtSearchClient" placeholder="POR DOCUMENTO, RAZON SOCIAL" width="142px" onOK="wndVentaReserva.validarClient()"></textbox>
+																	<image src="resources/mp_limpiar.png" onClick="wndVentaReserva.onCleanControlsClient()" tooltiptext="Limpiar los controles"></image>																
+																</hlayout>
+															</row>
 															<row spans="1,1,2">
-																<label value="RUC (*) :" style="color:blue; font-weight:bold"/>
+																<label value="RUC (*) :" style="font-weight:bold"/>
 																<textbox id="txtDocumentoCliente" width="120px" maxlength="11"/>
 																<label id="lblDescuento" value="CLIENTE CREDITO / DESCUENTO CORPORATIVO" sclass="label-size12-bold-alert"/>
 															</row>
 															<row>
-																<label value="RAZON SOCIAL (*) :" style="color:blue; font-weight:bold" maxlength="100"/>
+																<label value="RAZON SOCIAL (*) :" style="font-weight:bold" maxlength="100"/>
 																<textbox id="txtRazonSocial" width="90%"/>													
 																<label value="CONTACTO :"/>
 																<textbox id="txtContactoCliente" onOK="txtDireccionCliente.setFocus(true)" maxlength="50"/>
