@@ -5,7 +5,7 @@
  xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" id="WebApp_1627864417219"> 
 
 	<description><![CDATA[My ZK Application]]></description>
-	<display-name>vyrbus</display-name>
+	<display-name>transmar_vyrbus</display-name>
 
 	<!-- spring -->
 	<listener>

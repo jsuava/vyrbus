@@ -102,6 +102,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	private List<VentaPasaje> lstVentaXRuta;
 	private List<VentaPasaje> lstPasajeros;
 	private Result result;
+	private DetalleEmbarquePasajero detalleEmbarquePasajero;
 
 	private Double importeDescuentos;
 	private Double importeReal;
@@ -1389,6 +1390,14 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	 */
 	public void setUsuarioAnulacion(Usuario usuarioAnulacion) {
 		this.usuarioAnulacion = usuarioAnulacion;
+	}
+
+	public DetalleEmbarquePasajero getDetalleEmbarquePasajero() {
+		return detalleEmbarquePasajero;
+	}
+
+	public void setDetalleEmbarquePasajero(DetalleEmbarquePasajero detalleEmbarquePasajero) {
+		this.detalleEmbarquePasajero = detalleEmbarquePasajero;
 	}
 
 	//No mapeados

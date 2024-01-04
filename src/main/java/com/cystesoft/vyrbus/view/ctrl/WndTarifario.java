@@ -647,10 +647,6 @@ public class WndTarifario extends WndBase implements Serializable {
 							}
 						}
 					}
-//					else {
-//						DlgMessage.information(Messages.getString("wndTarifa.information.noPerfilEdicicon"));			
-//						return;
-//					}
 					
 					limpiarControlesProgramacion();
 					btnNuevaTarifa.setDisabled(true);

@@ -34,6 +34,11 @@ public class TipoDocumento  extends GenericBean implements Serializable {
  		this.id = id;
  	}
 
+    public TipoDocumento(Integer id, String denominacion) {
+ 		this.id = id;
+ 		this.denominacion = denominacion;
+ 	}
+    
 	public String getDenominacion() {
 		return denominacion;
 	}

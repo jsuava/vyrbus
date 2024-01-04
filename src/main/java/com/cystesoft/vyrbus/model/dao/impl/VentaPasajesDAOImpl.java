@@ -78,13 +78,15 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				"			 vp.c_tiptra, i.ruta_idmayor, rm.localidad_idorigen, rm.localidad_iddestino, vp.n_numpiso, i.c_sectra, i.itinerario_id, " +
 				"			 p.c_numdoc, p.c_fecnac, vp.c_numcontrol, vp.canven_id, vp.d_fecpar, vp.c_horpar, " +
 				"			 ap.c_nomcor as nombreCorto, p.tipdoc_id tipoDocPax, vp.forpag_id, vp.tipforpag_id, vp.c_rucclicre, vp.n_imppag, " +//34
-				"			 vp.tipmov_id, av.c_denominacion AGVENTA, u.c_login USUARIO, al.c_denominacion AGLLEGADA, vp.audfecins FECVENTA, p.c_telefono "+
+				"			 vp.tipmov_id, av.c_denominacion AGVENTA, u.c_login USUARIO, al.c_denominacion AGLLEGADA, vp.audfecins FECVENTA, p.c_telefono, "+
+				"            ap.agencia_id as agencia_idpartida, td.c_denominacion pax_tipoDocumento  "+ //41
 				"FROM vrtvenpas vp " +
 				"	  INNER JOIN (SELECT MAX(venpas_id)venpas_id, c_numcontrol " +
 				"				  FROM vrtvenpas WHERE itinerario_id="+idItinerario+" GROUP BY c_numcontrol) max_venta " +
 				"				  ON max_venta.venpas_id=vp.venpas_id " +
 				"	  INNER JOIN vrmruta r ON r.ruta_id=vp.ruta_id " +
 				"	  INNER JOIN vrmpasajero p ON p.pasajero_id=vp.pasajero_id " +
+				"	  INNER JOIN vrmtipdoc td ON td.tipdoc_id=p.tipdoc_id " +
 				"	  INNER JOIN vrmsexo s ON s.sexo_id=p.sexo_id " +
 				"	  INNER JOIN vrtitinerario i ON i.itinerario_id=vp.itinerario_id " +
 				"	  INNER JOIN vrmruta rm ON rm.ruta_id=i.ruta_idmayor " +
@@ -119,7 +121,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			pasajero.setId(((BigDecimal)obj[7]).longValue());
 			pasajero.setApellidoPaterno(obj[8]==null?"":obj[8].toString());
 			pasajero.setApellidoMaterno(obj[9]==null?"":obj[9].toString());
-			pasajero.setTipoDocumento(new TipoDocumento(((BigDecimal)obj[29]).intValue()));
+			pasajero.setTipoDocumento(new TipoDocumento(((BigDecimal)obj[29]).intValue(), obj[41].toString()));
 			pasajero.setNumeroDocumento(obj[22]==null?"":obj[22].toString());
 			pasajero.setFechaNacimiento(obj[23]==null?"":obj[23].toString());
 			pasajero.setNombre(obj[10].toString());
@@ -149,7 +151,8 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			ventaPasaje.setHoraPartida(obj[27].toString());
 
 			Agencia agenciaPartida=new Agencia();
-			agenciaPartida.setNombreCorto(obj[28]!=null?obj[28].toString():"");
+			agenciaPartida.setId(((BigDecimal)obj[40]).intValue());
+			agenciaPartida.setNombreCorto(obj[28]!=null?obj[28].toString():"");			
 			ventaPasaje.setAgenciaPartida(agenciaPartida);
 
 			FormaPago formaPago = new FormaPago();
