@@ -62,6 +62,16 @@ public class WndRptTransbordos extends WndBase {
 		 txtNumeroBoleto=(Textbox)this.getFellow("txtNumeroBoleto");
 		 txtPasajero=(Textbox)this.getFellow("txtPasajero");
 		 lstTransbordos=(Listbox)this.getFellow("lstTransbordos");
+		 
+			//Autocompleta el numero de Boleto
+		txtNumeroBoleto.addEventListener(Events.ON_CHANGE,new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				if(txtNumeroBoleto.getText().trim().length()>0)
+					txtNumeroBoleto.setText(Util.autocompleNumberBoleto(txtNumeroBoleto.getText()));
+			}
+
+		});		 
 
 	}
 
@@ -98,7 +108,7 @@ public class WndRptTransbordos extends WndBase {
 		if(cmbDestino.getSelectedItem().getValue() instanceof Localidad)
 			destino=((Localidad)cmbDestino.getSelectedItem().getValue()).getDenominacion();
 		if(!(txtNumeroBoleto.getText().trim().isEmpty()))
-			boleto=txtNumeroBoleto.getText().trim();
+			boleto=txtNumeroBoleto.getText().trim().toUpperCase();
 		if(pasajero!=null)
 			idPasajero=pasajero.getId();
 

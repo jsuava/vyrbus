@@ -308,7 +308,7 @@ public class TarifaRegularDAOImpl extends GenericDAOImpl implements TarifaRegula
 			"r.localidad_idorigen=NVL("+ origenID + ",r.localidad_idorigen) AND " +
 			"r.localidad_iddestino=NVL("+ destinoID +",r.localidad_iddestino) AND " +
 			"tr.d_fectar BETWEEN TO_DATE('"+ fechaInicio +"','dd/mm/yyyy') AND TO_DATE('"+ fechaFin +"','dd/mm/yyyy')"  +
-			strHorPar2 +
+			strHorPar2 + " AND tr.c_estreg='A' " +
 //			"AND t.n_pisbus=1
 //			"and t.canven_id=2
 			") Tar " +

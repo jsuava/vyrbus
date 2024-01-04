@@ -101,7 +101,7 @@ public class XlsRegistroVentas extends HttpServlet {
             for (Iterator it = lstVentas.iterator(); it.hasNext();) {
                 VentasPiloto regVenta = (VentasPiloto) it.next();
                 j++;
-                rowh = sheet.createRow((short)j);
+                rowh = sheet.createRow(j);
                 cellh = rowh.createCell((short)0);
                 cellh.setCellStyle(styleFecha);
 				cellh.setCellValue(regVenta.getFechaCompra());

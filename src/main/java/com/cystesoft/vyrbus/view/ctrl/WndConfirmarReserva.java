@@ -204,6 +204,8 @@ public class WndConfirmarReserva extends WndBase {
 					item.appendChild(cell);
 					cell = new Listcell(ventaPasaje.getItinerario().getId().toString());
 					item.appendChild(cell);
+					cell = new Listcell(ventaPasaje.getServicio().getDenominacion());
+					item.appendChild(cell);
 					cell = new Listcell(ventaPasaje.getRuta().toString());
 					item.appendChild(cell);
 					cell = new Listcell(ventaPasaje.getPasajero().toString());
@@ -215,6 +217,8 @@ public class WndConfirmarReserva extends WndBase {
 					cell = new Listcell(ventaPasaje.getNumeroControl());
 					item.appendChild(cell);
 					cell = new Listcell(Util.DatetoString(ventaPasaje.getFechaPartida(), Constantes.DATE_FORMAT));
+					item.appendChild(cell);
+					cell = new Listcell(ventaPasaje.getHoraPartida());
 					item.appendChild(cell);
 					cell = new Listcell(ventaPasaje.getImportePagado().toString());
 					item.appendChild(cell);

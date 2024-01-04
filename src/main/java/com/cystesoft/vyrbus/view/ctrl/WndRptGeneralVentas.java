@@ -285,11 +285,24 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 					}
 				}
 				//Canal Web
-//				else if(resumen.getCanalVenta().getId() == 2)
-//				{
-//					listRecord.set(10, resumen.getTotal());
-//					listRecord.set(11, resumen.getCantidad().doubleValue());
-//				}
+				else if(resumen.getCanalVenta().getId() == 2)
+				{
+					if(resumen.getRubro() == 1) {
+						//Comprobante Boletas
+						if(resumen.getTipoComprobante().getId() == 7){
+							listRecord.set(0, resumen.getTotal());
+						}
+						//Comprobantefacturas
+						else if(resumen.getTipoComprobante().getId() == 2){
+							listRecord.set(1, resumen.getTotal());
+						}
+						//Nota Credito
+						else if(resumen.getTipoComprobante().getId() == 8){
+							listRecord.set(2, resumen.getTotal());
+						}
+					//COMPROBANTES DE ENCOMIENDAS
+					}
+				}
 
 				if(lstResumen.size()-i == 1){
 					listarResumenVentas(listRecord, listCabeceraRecord);
@@ -389,10 +402,22 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 					
 				}
 				//Canal Web
-//				else if(resumen.getCanalVenta().getId() == 2){
-//					listRecord.set(10, resumen.getTotal());
-//					listRecord.set(11, resumen.getCantidad().doubleValue());
-//				}
+				else if(resumen.getCanalVenta().getId() == 2){
+					if(resumen.getRubro()==1) {
+						//Comprobante Boletas PASAJES
+						if(resumen.getTipoComprobante().getId() == 7){
+							listRecord.set(0, resumen.getTotal());
+						}
+						//Comprobante facturas PASAJES
+						else if(resumen.getTipoComprobante().getId() == 2){
+							listRecord.set(1, resumen.getTotal());
+						}
+						//Nota Credito PASAJES
+						else if(resumen.getTipoComprobante().getId() == 8){
+							listRecord.set(2, resumen.getTotal());
+						}
+					}
+				}
 
 				if(lstResumen.size()-i == 1){
 					listarResumenVentas(listRecord, listCabeceraRecord);

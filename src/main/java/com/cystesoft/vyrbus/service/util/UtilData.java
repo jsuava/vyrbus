@@ -42,6 +42,8 @@ import com.cystesoft.vyrbus.model.bean.FormaPago;
 import com.cystesoft.vyrbus.model.bean.GenericBean;
 import com.cystesoft.vyrbus.model.bean.GrupoMantenimiento;
 import com.cystesoft.vyrbus.model.bean.Itinerario;
+import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartida;
+import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartidaID;
 import com.cystesoft.vyrbus.model.bean.LineaCreditoCliente;
 import com.cystesoft.vyrbus.model.bean.Liquidacion;
 import com.cystesoft.vyrbus.model.bean.Localidad;
@@ -2858,6 +2860,26 @@ public class UtilData extends Window {
 		combobox.appendChild(comboitem);
 		
 		combobox.setSelectedIndex(0);
+	}
+	
+	public static String obtenerHoraEmbarque(Long idItinerario, Integer idAgencia){
+		String result = null;
+		try{
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			ItinerarioAgenciaPartidaID itinerarioAgenciaPartidaID = new ItinerarioAgenciaPartidaID();
+			itinerarioAgenciaPartidaID.setIdItinerario(idItinerario);
+			itinerarioAgenciaPartidaID.setIdAgencia(idAgencia);
+			criteriosBusqueda.put("itinerarioAgenciaPartidaID", itinerarioAgenciaPartidaID);
+			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+			List<ItinerarioAgenciaPartida> lstItinerarioAgenciaPartida = ServiceLocator.getItinerarioAgenciaPartidaManager().buscarPorX(criteriosBusqueda, null);
+			if(lstItinerarioAgenciaPartida.size()>0)
+				result = lstItinerarioAgenciaPartida.get(0).getHoraPartida();
+			else
+				result = null;
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		return result;
 	}
 }
 

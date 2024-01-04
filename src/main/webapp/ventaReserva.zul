@@ -371,9 +371,9 @@
 														</row>
 														<row>
 															<label value="PTO. EMBARQUE :"/>
-															<combobox id="cmbPtoEmbarque" width="115px" onChange="wndVentaReserva.onSelectPtoEmbarque(true)"/>
+															<combobox id="cmbPtoEmbarque" width="115px" onChange="wndVentaReserva.onSelectPtoEmbarque(true)" readonly="true"/>
 															<label value="AG. LLEGADA :"/>
-															<combobox id="cmbPtoDesembarque" width="130px" onChange="wndVentaReserva.onSelectPtoDesembarque(true)"/>
+															<combobox id="cmbPtoDesembarque" width="130px" onChange="wndVentaReserva.onSelectPtoDesembarque(true)" readonly="true"/>
 														</row>
 														<row>
 															<label value="FECHA PARTIDA :"/>
@@ -444,9 +444,9 @@
 														</row>
 														<row>
 															<label value="PTO. EMBARQUE :"/>
-															<combobox id="cmbPtoEmbarqueRetorno" width="115px" onChange="wndVentaReserva.onSelectPtoEmbarque(false)"/>
+															<combobox id="cmbPtoEmbarqueRetorno" width="115px" onChange="wndVentaReserva.onSelectPtoEmbarque(false)" readonly="true"/>
 															<label value="AG. LLEGADA :"/>
-															<combobox id="cmbPtoDesembarqueRetorno" width="130px" onChange="wndVentaReserva.onSelectPtoDesembarque(false)"/>
+															<combobox id="cmbPtoDesembarqueRetorno" width="130px" onChange="wndVentaReserva.onSelectPtoDesembarque(false)" readonly="true"/>
 														</row>
 														<row>
 															<label value="FECHA PARTIDA :"/>

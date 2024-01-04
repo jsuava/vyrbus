@@ -13,6 +13,8 @@ import org.zkoss.zul.Tab;
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.Cliente;
 import com.cystesoft.vyrbus.model.bean.Cortesia;
+import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartida;
+import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartidaID;
 import com.cystesoft.vyrbus.model.bean.Pasajero;
 import com.cystesoft.vyrbus.model.bean.Promocion;
 import com.cystesoft.vyrbus.model.bean.TipoComprobante;
@@ -20,6 +22,7 @@ import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.Util;
+import com.cystesoft.vyrbus.service.util.UtilData;
 import com.cystesoft.vyrbus.view.ui.WndBase;
 
 
@@ -41,6 +44,7 @@ public class WndEstadoVentaReservaVerVenta extends WndBase {
 	private Label lblFechaPartida;
 	private Label lblFechaLlegada;
 	private Label lblHoraPartida;
+	private Label lblHoraEmbarque;
 	private Label lblHoraLlegada;
 	private Label lblNroAsiento;
 	private Label lblLabelTarifa;
@@ -147,6 +151,7 @@ public class WndEstadoVentaReservaVerVenta extends WndBase {
 		lblFechaPartida=(Label)this.getFellow("lblFechaPartida");
 		lblFechaLlegada=(Label)this.getFellow("lblFechaLlegada");
 		lblHoraPartida=(Label)this.getFellow("lblHoraPartida");
+		lblHoraEmbarque=(Label)this.getFellow("lblHoraEmbarque");
 		lblHoraLlegada=(Label)this.getFellow("lblHoraLlegada");
 		lblNroAsiento=(Label)this.getFellow("lblNroAsiento");
 		lblLabelTarifa=(Label)this.getFellow("lblLabelTarifa");
@@ -241,6 +246,7 @@ public class WndEstadoVentaReservaVerVenta extends WndBase {
 		lblOrigen.setValue(ventaPasaje.getRuta()!=null?ventaPasaje.getRuta().getOrigen():"");
 		lblDestino.setValue(ventaPasaje.getRuta()!=null?ventaPasaje.getRuta().getDestino():"");
 		lblPtoEmbarque.setValue(ventaPasaje.getAgenciaPartida()!=null?ventaPasaje.getAgenciaPartida().getNombreCorto():"");
+		lblHoraEmbarque.setValue(ventaPasaje.getAgenciaPartida()!=null? UtilData.obtenerHoraEmbarque(ventaPasaje.getItinerario().getId(), ventaPasaje.getAgenciaPartida().getId()):"");
 		lblPtoLlegada.setValue(ventaPasaje.getAgenciaLlegada()!=null?ventaPasaje.getAgenciaLlegada().getNombreCorto():"");
 		lblFechaPartida.setValue(ventaPasaje.getItinerario().getId().intValue()!=1?Constantes.FORMAT_DATE.format(ventaPasaje.getItinerario().getFechaPartida()):"");
 		lblFechaLlegada.setValue(ventaPasaje.getItinerario().getId().intValue()!=1?Constantes.FORMAT_DATE.format(ventaPasaje.getItinerario().getFechaLlegada()):"");
@@ -386,4 +392,24 @@ public class WndEstadoVentaReservaVerVenta extends WndBase {
 			tbDoctReferencia.setVisible(true);
 		}
 	}
+	
+	/*private String obtenerHoraEmbarque(Long idItinerario, Integer idAgencia){
+		String result = null;
+		try{
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			ItinerarioAgenciaPartidaID itinerarioAgenciaPartidaID = new ItinerarioAgenciaPartidaID();
+			itinerarioAgenciaPartidaID.setIdItinerario(idItinerario);
+			itinerarioAgenciaPartidaID.setIdAgencia(idAgencia);
+			criteriosBusqueda.put("itinerarioAgenciaPartidaID", itinerarioAgenciaPartidaID);
+			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+			List<ItinerarioAgenciaPartida> lstItinerarioAgenciaPartida = ServiceLocator.getItinerarioAgenciaPartidaManager().buscarPorX(criteriosBusqueda, null);
+			if(lstItinerarioAgenciaPartida.size()>0)
+				result = lstItinerarioAgenciaPartida.get(0).getHoraPartida();
+			else
+				result = null;
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		return result;
+	}*/
 }

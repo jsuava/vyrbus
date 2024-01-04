@@ -254,6 +254,7 @@ public class WndCierreCaja extends WndBase {
 //							preliminar(liquidacion);
 						
 						//Busca las liquidaciones de CARGA
+						//23/06/2023
 						Liquidacion liquidacionCarga = UtilData.buscarLiquidacionCarga(liquidacion);
 						liquidacion.setLiquidacionCarga(liquidacionCarga);
 						//****

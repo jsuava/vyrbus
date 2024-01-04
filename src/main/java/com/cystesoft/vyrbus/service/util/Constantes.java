@@ -30,8 +30,7 @@ public class Constantes {
 	/**
 	 * Vension actual del Sistema
 	 */
-
-	public static final String SYSTEM_VERSION = "Versi�n 3.3.8";
+	public static final String SYSTEM_VERSION = "Versión 3.4.5";
 		
 	/**
 	 * Constante para la Acci�n Nuevo
@@ -117,7 +116,7 @@ public class Constantes {
 	public static final int VALIDAR_APPLET = 1;
 	/* Guarda el valor del IGV actual */
 	public static final double IGV=18;
-	public static final double TARIFA_MINIMA=40;
+	public static final double TARIFA_MINIMA=10;
 
 	/*	Para los tipos de venta	*/
 	public static final int TIPO_VENTA_NORMAL = 1;
@@ -169,7 +168,7 @@ public class Constantes {
 
 //	public static final String SERVER_HOST = "localhost:8080";
 	//Demo Wars
-//	public static final String SERVER_HOST = "170.0.233.155:8080";
+//	public static final String SERVER_HOST = "170.0.233.156:8080";
 	
 	public static final String SERVER_HOST = "119.8.145.122:8080";
 
@@ -348,7 +347,7 @@ public class Constantes {
 	public static final int ID_SERVICIO_POOL_CRUZDELSUR=99;
 	public static final int ID_SERVICIO_POOL_EXCLUCIVA=98;
 	public static final int ID_SERVICIO_VIP_PRESIDENCIAL=6;
-
+	public static final int ID_SERVICIO_VIP_ESTANDAR=7;
 
 	/*	Para saber si es una venta o reserva DB	*/
 	public static final String TIPO_OPERACION_VENTA = "1";

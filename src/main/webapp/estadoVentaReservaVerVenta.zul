@@ -34,13 +34,19 @@
 					<label id="lblPtoLlegada" style="font-size:11px !important; color:blue"/>
 				</row>
 				<row>
+					<label value="HORA EMBARQUE :" />
+					<label id="lblHoraEmbarque" style="font-size:11px !important; color:blue"/>
+					<label value="" />
+					<label value="" />
+				</row>				
+				<row>
 					<label value="FECHA PARTIDA :" />
 					<label id="lblFechaPartida" style="font-size:11px !important; color:blue"/>
 					<label value="FECHA LLEGADA :" />
 					<label id="lblFechaLlegada" style="font-size:11px !important; color:blue"/>
 				</row>
 				<row>
-					<label value="HORA PARTIDA :" />
+					<label value="HORA SERVICIO :" />
 					<label id="lblHoraPartida" style="font-size:11px !important; color:blue"/>
 					<label value="HORA LLEGADA :" />
 					<label id="lblHoraLlegada" style="font-size:11px !important; color:blue"/>

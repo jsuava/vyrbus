@@ -822,6 +822,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 
 				//Primero anula en el WSFE
 				//Comentado temporalmente por MAOE para pruebas sin Fact Electronica
+				//MAOE 23/06/2023
 				Result result=WSFE.anularComprobante(movimiento);
 				if(result.isIsCorrect()) //{
 					getVentaPasajesDAO().update(movimiento);
@@ -831,8 +832,10 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 //							movimiento.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_DEBITO){
 //					}
 //				}
-			else
-					throw new Exception("No se pudo realizar la anulaciï¿½n, por favor vuelva a intentarlo. (F.E.)");
+			
+			//MAOE 23/06/2023
+				else
+					throw new Exception("No se pudo realizar la anulación, por favor vuelva a intentarlo. (F.E.)");
 			}else{
 				/*Este debe ser anulado, pero con una nota de credito*/
 				TipoNota tipoNota=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_ANULACION);
