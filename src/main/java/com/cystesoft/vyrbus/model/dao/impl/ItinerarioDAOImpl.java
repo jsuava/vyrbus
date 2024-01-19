@@ -321,14 +321,14 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[])result.get(i);
 			if(piso==0){
-				//Comentado hasta realizar un análisis en donde se determine si es o no necesaría esta validación - 26/11/2022 - jabanto
+				//Comentado hasta realizar un anï¿½lisis en donde se determine si es o no necesarï¿½a esta validaciï¿½n - 26/11/2022 - jabanto
 //				if(Integer.valueOf(obj[1].toString())<asiento)
 //					lstResult.add(true);
 //				else
 					lstResult.add(false);
 				lstResult.add(obj[0].toString());
 			}else{
-				//Comentado hasta realizar un análisis en donde se determine si es o no necesaría esta validación - 26/11/2022 - jabanto
+				//Comentado hasta realizar un anï¿½lisis en donde se determine si es o no necesarï¿½a esta validaciï¿½n - 26/11/2022 - jabanto
 //				if((Integer.valueOf(obj[1].toString()) + Integer.valueOf(obj[2].toString()))<asiento)
 //					lstResult.add(true);
 //				else
@@ -349,17 +349,17 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 		 else
 			 origen="'"+origen+"'";
 
-		if(destino.isEmpty())
+		if(destino==null || destino.isEmpty())
 			destino=null;
 		else
 			destino="'"+destino+"'";
 
-		if(Servicio.isEmpty())
+		if(Servicio==null || Servicio.isEmpty())
 			Servicio=null;
 		else
 			Servicio="'"+Servicio+"'";
 
-		if(tipoDeItinerario.isEmpty())
+		if(tipoDeItinerario==null || tipoDeItinerario.isEmpty())
 			tipoDeItinerario=null;
 		else
 			tipoDeItinerario="'"+tipoDeItinerario+"'";

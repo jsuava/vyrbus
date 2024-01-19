@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripci�n	:
- * Autor		: Jos� Abanto
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Abanto
  * Fecha		: 28/11/2016
  * Hora			: 09:15:14
  */
@@ -26,6 +26,7 @@ public class DetalleEmbarquePasajero extends GenericBean{
 	private String nombres;
 	private String apellidosNombres;
 	private String barcode;
+	private Integer modalidadEmbarque;
 	/**
 	 * @return the id
 	 */
@@ -121,6 +122,12 @@ public class DetalleEmbarquePasajero extends GenericBean{
 	 */
 	public void setBarcode(String barcode) {
 		this.barcode = barcode;
+	}
+	public Integer getModalidadEmbarque() {
+		return modalidadEmbarque;
+	}
+	public void setModalidadEmbarque(Integer modalidadEmbarque) {
+		this.modalidadEmbarque = modalidadEmbarque;
 	}
 
 }

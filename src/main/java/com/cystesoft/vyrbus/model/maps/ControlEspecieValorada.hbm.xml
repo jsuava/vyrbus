@@ -15,7 +15,7 @@
             <key-property name="strSerie" type="java.lang.String" column="C_SERIE" length="4"/>
         </composite-id>
         <many-to-one name="usuarioHardware" class="com.cystesoft.vyrbus.model.bean.UsuarioHardware" update="false" insert="false" fetch="select">
-            <column name="USUHARD_ID" precision="5" scale="0" not-null="true">
+            <column name="USUHARD_ID" precision="5" scale="0" >
                 <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
             </column>
         </many-to-one>
