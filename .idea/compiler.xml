@@ -9,8 +9,5 @@
         <module name="vyrbus" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="vyrbus" target="8" />
-    </bytecodeTargetLevel>
   </component>
 </project>
