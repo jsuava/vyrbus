@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José Abanto
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Abanto
  * Fecha		: 14 jul. 2021
  * Hora			: 12:18:25
  */
@@ -131,7 +131,7 @@ public class DetalleEquipajeManagerImpl implements DetalleEquipajeManager{
 	 */
 	@Override
 	@Transactional
-	public void guardar(List<DetalleEquipaje> listDetalleEquipaje, Equipaje equipaje) throws Exception {
+	public void guardar(List<DetalleEquipaje> listDetalleEquipaje, Equipaje equipaje, boolean ejecutarSeqByCorrelativo) throws Exception {
 		// TODO Auto-generated method stub
 
 		//Guardar el equipaje
@@ -157,7 +157,7 @@ public class DetalleEquipajeManagerImpl implements DetalleEquipajeManager{
 //			controlEspecieValorada.setCorrelativoActual(correlativo);
 //			getControlEspecieValoradaDAO().update(controlEspecieValorada);
 
-			ServiceLocator.getVentaPasajesManager().guardarVenta(ventaExceso, false, true, false, false);
+			ServiceLocator.getVentaPasajesManager().guardarVenta(ventaExceso, false, true, false, false, ejecutarSeqByCorrelativo);
 		}
 
 		//Guarda el detalle del equipaje

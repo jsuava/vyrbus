@@ -1474,7 +1474,9 @@ public class WndPostergacion extends WndBase implements Serializable {
 				if(dblbxImporteTotal.getValue().doubleValue()!=(dblbxImporteEfectivo.getValue().doubleValue()+dblbxImporteTarjeta.getValue().doubleValue()))
 					throw new ImporteMixtoNullException(ImporteMixtoNullException.IMPORTE_MIXTO_NOT_EQUALS);
 			}
-
+			
+			final Long postergacion_id = (postergacion.getId()!=null?postergacion.getId(): null);
+			
 			FormaPago formaPago = (FormaPago)cmbFormaPago.getSelectedItem().getValue();
 			postergacion.setFormaPago(formaPago);
 			TipoComprobante tipoComprobante = (TipoComprobante)cmbtipoComprobantePostergado.getSelectedItem().getValue();
@@ -1487,7 +1489,6 @@ public class WndPostergacion extends WndBase implements Serializable {
 			}else
 				postergacion.setTarjetaCredito(null);
 
-//			postergacion.setId(null);
 			postergacion.setTipoNota(tipoNotaCredito);
 			postergacion.setNumeroBoleto(txtNumeroBoletoPostergado.getText().equals("")?null:txtNumeroBoletoPostergado.getText());
 			if(chkFechaAbierta.isChecked()){
@@ -1699,7 +1700,21 @@ public class WndPostergacion extends WndBase implements Serializable {
 							}
 
 							/*##Begin 04/11/2016 - jabanto*/
-							VentaPasaje notaCredito = ServiceLocator.getVentaPasajesManager().postergarBoleto(postergacion,validaBloqueAsiento, gastoAdmin);
+							VentaPasaje notaCredito = ServiceLocator.getVentaPasajesManager().postergarBoleto(postergacion,validaBloqueAsiento, gastoAdmin, false);
+																					
+							//Actualiza el correlativo - jabanto - 22/01/2024
+							if(postergacion_id.longValue()!=postergacion.getId().longValue()) //solamente si se generó un nuevo comprobante
+								ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(postergacion, true);
+							
+							//Actualiza el correlativo del gasto administrativo
+							if(gastoAdmin!=null)
+								ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(gastoAdmin, true);
+							
+							//Actualiza el correlativo - jabanto - 22/01/2024
+							if(notaCredito !=null)
+								ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);	
+														
+							
 							postergacion = ServiceLocator.getVentaPasajesManager().buscarVentaById(postergacion.getId());
 							
 							List<VentaPasaje>listVentaPasaje= new ArrayList<>();

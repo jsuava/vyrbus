@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: Clase que administra los comprobantes que no tienen boleto.
- * Autor		: José Avalos Sullo
+ * Descripciï¿½n	: Clase que administra los comprobantes que no tienen boleto.
+ * Autor		: Josï¿½ Avalos Sullo
  * Fecha		: 11/02/2013
  */
 package com.cystesoft.vyrbus.view.ctrl;
@@ -359,7 +359,7 @@ public class WndComprobantesSinBoleto extends WndBase {
 
 		groupbox = new Groupbox();
 		groupbox.setClosable(false);
-		caption = new Caption("Información del Servicio");
+		caption = new Caption("Informaciï¿½n del Servicio");
 		groupbox.appendChild(caption);
 
 		/*	Columna 1	*/
@@ -417,7 +417,7 @@ public class WndComprobantesSinBoleto extends WndBase {
 		text.setReadonly(true);
 		text.setWidth("100px");
 		row.appendChild(text);
-		label = new Label("N° ASIENTO");
+		label = new Label("Nï¿½ ASIENTO");
 		row.appendChild(label);
 		text = new Textbox(ventaOriginal.getNumeroAsiento().toString());
 		text.setReadonly(true);
@@ -432,7 +432,7 @@ public class WndComprobantesSinBoleto extends WndBase {
 		/* ***************************************** */
 		groupbox = new Groupbox();
 		groupbox.setClosable(false);
-		caption = new Caption("Informacion del Comprobante Electrónico");
+		caption = new Caption("Informacion del Comprobante Electrï¿½nico");
 		groupbox.appendChild(caption);
 
 		grid = new Grid();
@@ -492,16 +492,16 @@ public class WndComprobantesSinBoleto extends WndBase {
 
 		row = new Row();
 		if(ventaOriginal.getCliente()!=null)
-			label = new Label("NUEVA N° FACTURA :");
+			label = new Label("NUEVA Nï¿½ FACTURA :");
 		else
-			label = new Label("NUEVA N° BOLETA :");
+			label = new Label("NUEVA Nï¿½ BOLETA :");
 		label.setStyle("color:blue");
 		row.appendChild(label);
 		text = new Textbox(boleto);
 		text.setReadonly(true);
 		text.setWidth("100px");
 		row.appendChild(text);
-		label = new Label("N° BOLETO ANTERIOR :");
+		label = new Label("Nï¿½ BOLETO ANTERIOR :");
 		row.appendChild(label);
 		text = new Textbox(ventaOriginal.getNumeroBoleto().toString());
 		text.setReadonly(true);
@@ -577,7 +577,7 @@ public class WndComprobantesSinBoleto extends WndBase {
 			@Override
 			public void onEvent(Event e) throws Exception {
 				//Implementado 05/08/2014 - jabanto
-				/* Valida que el RC o Voucher aún no haya sido Reimpreso.*/
+				/* Valida que el RC o Voucher aï¿½n no haya sido Reimpreso.*/
 				VentaPasaje ultimoRegistro=ServiceLocator.getVentaPasajesManager().buscarUltimoRegistro(ventaOriginal.getId());
 				if(ultimoRegistro!=null){
 					if(ultimoRegistro.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE ||
@@ -607,7 +607,7 @@ public class WndComprobantesSinBoleto extends WndBase {
 						try{
 							if(e.getName().equals("onYes")){
 								//Implementado 03/06/2015 - jabanto
-								/* Vuelve a Validar que el RC o Voucher aún no haya sido Reimpreso.*/
+								/* Vuelve a Validar que el RC o Voucher aï¿½n no haya sido Reimpreso.*/
 								VentaPasaje ultimoRegistro=ServiceLocator.getVentaPasajesManager().buscarUltimoRegistro(ventaOriginal.getId());
 								if(ultimoRegistro!=null){
 									if(ultimoRegistro.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE ||
@@ -680,7 +680,11 @@ public class WndComprobantesSinBoleto extends WndBase {
 									boletoReimprimir.setEstadoDocumento(Constantes.ESTADO_DOCUMENTO_PAGADO);
 
 								UtilData.auditarRegistro(boletoReimprimir, getUsuario(), Executions.getCurrent());
-								int result = ServiceLocator.getVentaPasajesManager().reimprimirBoleto(ventaOriginal, boletoReimprimir);
+								int result = ServiceLocator.getVentaPasajesManager().reimprimirBoleto(ventaOriginal, boletoReimprimir, false);
+								
+								//Actualiza el correlativo - jabanto - 22/01/2024
+								ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(boletoReimprimir, true);
+								
 								if(result==Constantes.CORRECT){
 									boletoReimprimir = ServiceLocator.getVentaPasajesManager().buscarVentaById(boletoReimprimir.getId());
 
@@ -717,7 +721,7 @@ public class WndComprobantesSinBoleto extends WndBase {
 							}
 						}catch(NumeroBoletoDuplicadoException nbdex){
 							DlgMessage.information(Messages.getString("WndComprobantesSinBoleto.information.numeroBoletoVendido"));
-							WSFE.sendMail("El número de boleto ya fue vendido, por favor consulte el Número de Boleto nuevamente. \n VENPAS_ID:"+ventaOriginal.getId(), "Metod: createVentanaReimpresion");
+							WSFE.sendMail("El nï¿½mero de boleto ya fue vendido, por favor consulte el Nï¿½mero de Boleto nuevamente. \n VENPAS_ID:"+ventaOriginal.getId(), "Metod: createVentanaReimpresion");
 						}catch(Exception ex){
 							ex.printStackTrace();
 							DlgMessage.information(this.getClass().getSimpleName()+" "+ex.getMessage());

@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José Abanto
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Abanto
  * Fecha		: 21/11/2016
  * Hora			: 10:40:18
  */
@@ -28,6 +28,7 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Radio;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Window;
 
 import com.cystesoft.vyrbus.model.bean.Cliente;
 import com.cystesoft.vyrbus.model.bean.ControlEspecieValorada;
@@ -46,6 +47,7 @@ import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.Messages;
 import com.cystesoft.vyrbus.service.util.Util;
 import com.cystesoft.vyrbus.service.util.UtilData;
+import com.cystesoft.vyrbus.service.util.WSFE;
 import com.cystesoft.vyrbus.view.ui.DlgMessage;
 import com.cystesoft.vyrbus.view.ui.WndBase;
 
@@ -87,7 +89,7 @@ public class WndGastosAdministrativos extends WndBase{
 	private Textbox txtMotivo;
 	private Image imgBuscarCliente;
 	private Groupbox gbxGastosAdmin;
-//	private Window wndGastosAdministrativos;
+	private Window wndGastosAdministrativos;
 	private Button btnGuardar;
 	private Radio rdModoManual;
 	private Radio rdModoElectronico;
@@ -130,7 +132,7 @@ public class WndGastosAdministrativos extends WndBase{
 		imgBuscarComprobanteAplica=(Image)this.getFellow("imgBuscarComprobanteAplica");
 		txtTipoMovimiento=(Textbox)this.getFellow("txtTipoMovimiento");
 		gbxGastosAdmin=(Groupbox)this.getFellow("gbxGastosAdmin");
-//		wndGastosAdministrativos=(Window)this.getFellow("wndGastosAdministrativos");
+		wndGastosAdministrativos=(Window)this.getFellow("wndGastosAdministrativos");
 		btnGuardar=(Button)this.getFellow("btnGuardar");
 		rdModoManual=(Radio)this.getFellow("rdModoManual");
 		rdModoElectronico=(Radio)this.getFellow("rdModoElectronico");
@@ -344,7 +346,7 @@ public class WndGastosAdministrativos extends WndBase{
 			@Override
 			public void onEvent(Event event) throws Exception {
 				try {
-					/*Valida si es un ingreso manual y que el numero de correlativo sea válido*/
+					/*Valida si es un ingreso manual y que el numero de correlativo sea vï¿½lido*/
 					if(rdModoManual.isChecked() && !(txtComprobante.getText().trim().isEmpty())){
 						String[] yc=txtComprobante.getText().trim().split("-");
 						if(yc.length==2 && Util.isNumeric(yc[0].toString()) && Util.isNumeric(yc[1].toString()) && yc[0].toString().length()==3)
@@ -382,7 +384,7 @@ public class WndGastosAdministrativos extends WndBase{
 			// TODO Auto-generated method stub
 			super.onCreate();
 
-			/*Valida si el usuario tiene una liquidación aperturada*/
+			/*Valida si el usuario tiene una liquidaciï¿½n aperturada*/
 			if(getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION)==null)
 				throw new LiquidacionNullException();
 
@@ -712,7 +714,7 @@ public class WndGastosAdministrativos extends WndBase{
 				return;
 			}
 
-			/*Valida si es un ingreso manual y que el numero de correlativo sea válido*/
+			/*Valida si es un ingreso manual y que el numero de correlativo sea vï¿½lido*/
 			if(rdModoManual.isChecked() && !(txtComprobante.getText().trim().isEmpty())){
 				String[] yc=txtComprobante.getText().trim().split("-");
 				if(yc.length!=2){
@@ -789,17 +791,21 @@ public class WndGastosAdministrativos extends WndBase{
 					if(e.getName().equals(Messagebox.ON_YES)){
 
 						Boolean generarCorrelativo=rdModoElectronico.isChecked();
-						int result=ServiceLocator.getVentaPasajesManager().generarGastoAdministrativo(gastoAdmin, generarCorrelativo);
+						int result=ServiceLocator.getVentaPasajesManager().generarGastoAdministrativo(gastoAdmin, generarCorrelativo, false);
 						/*Confirma la operacion*/
-						if(result==Constantes.CORRECT){
+						if(result==Constantes.CORRECT){														
 							/*Solo si es electronico*/
 							if(rdModoElectronico.isChecked()){
+								
+								//Actualiza el correlativo - 22/01/2024 - jabanto
+								ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(gastoAdmin, true);
+								
 								gastoAdmin=ServiceLocator.getVentaPasajesManager().buscarVentaById(gastoAdmin.getId());
 								txtComprobante.setText(gastoAdmin.getNumeroBoleto());//actualiza por si haya cambiado
 
 								List<VentaPasaje>listVentaPasaje= new ArrayList<>();
 								listVentaPasaje.add(gastoAdmin);
-//								WSFE.sendVenta(listVentaPasaje, wndGastosAdministrativos, true, null);
+								WSFE.sendVenta(listVentaPasaje, wndGastosAdministrativos, true, null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);								
 							}
 
 							disableControls(true);

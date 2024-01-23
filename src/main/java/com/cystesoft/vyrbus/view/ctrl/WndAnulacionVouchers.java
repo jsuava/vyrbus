@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½
  * Fecha		: 18/10/2013
  */
 package com.cystesoft.vyrbus.view.ctrl;
@@ -275,7 +275,7 @@ public class WndAnulacionVouchers extends WndBase{
 		ventaPasaje.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_ANULACION));
 		UtilData.auditarRegistro(ventaPasaje, true, getUsuario(), Executions.getCurrent());
 //		int result = ServiceLocator.getVentaPasajesManager().anularMovimiento(ventaPasaje);
-		ServiceLocator.getVentaPasajesManager().anularMovimiento(ventaPasaje,false);
+		ServiceLocator.getVentaPasajesManager().anularMovimiento(ventaPasaje,false, true);
 
 		/*Actualiza el Saldo de la linea de credito - ##19/12/2014 - jabanto*/
 		ServiceLocator.getLineaCreditoClienteManager().actualizarSaldo(importePagado, ventaPasaje.getRucClienteCredito(), getUsuario(), UtilData.ipLocal(Executions.getCurrent()), true);

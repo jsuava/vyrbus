@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
+ * Descripciï¿½n	:
  * Fecha		: 24/06/2014
  */
 package com.cystesoft.vyrbus.view.ctrl;
@@ -117,7 +117,7 @@ public class WndVSAfiliacion extends WndBase {
 	private String imageDisabled="/resources/mp_buscarDisabled.png";
 	private String labelPaxFree="PAXFREE";
 	private List<VSCiudad>listCiudades=new ArrayList<>();
-	private Integer VIGENCIA_SEGURO=10; //Expresado en días
+	private Integer VIGENCIA_SEGURO=10; //Expresado en dï¿½as
 	private Double COSTO_X_SEGURO_PAXFREE=0.00;
 	private Double COSTO_X_SEGURO=2.00;
 	private Integer ID_TIPREG_ASEGURADO=3;
@@ -242,7 +242,7 @@ public class WndVSAfiliacion extends WndBase {
 			}else{
 				//Valida si la liquidacion encontrada este abierta.
 				if(vsLiquidacion.getEstadoLiquidacion().intValue()==Constantes.FALSE_VALUE){
-					DlgMessage.information("La liquidación de fecha "+Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion())+" para la venta de seguros ya fue Cerrada. ");
+					DlgMessage.information("La liquidaciï¿½n de fecha "+Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion())+" para la venta de seguros ya fue Cerrada. ");
 					closeTabWindow();
 					return;
 				}
@@ -291,10 +291,10 @@ public class WndVSAfiliacion extends WndBase {
 			ventaPasaje=ServiceLocator.getVentaPasajesManager().buscarBoletoByAsegurado(txtNumeroBoleto.getText().trim());
 			if(ventaPasaje!=null){
 
-				/*Valida que la fecha de emision del boleto corresponda al mismo día (Solo permite)*/
+				/*Valida que la fecha de emision del boleto corresponda al mismo dï¿½a (Solo permite)*/
 				Date fechaActual=Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date()));
 				if(ventaPasaje.getFechaPartida().getTime()<fechaActual.getTime()){
-					DlgMessage.information("No puede registrar una Afiliación cuya fecha de viaje sea menor a la de hoy (Fecha viaje "+Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida())+")" );
+					DlgMessage.information("No puede registrar una Afiliaciï¿½n cuya fecha de viaje sea menor a la de hoy (Fecha viaje "+Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida())+")" );
 					return;
 				}
 
@@ -743,25 +743,25 @@ public class WndVSAfiliacion extends WndBase {
 		String chrTelefono=Util.validarCaracteresEspeciales(txtTelefonoDomicilio.getText().trim());
 		String chrCelular=Util.validarCaracteresEspeciales(txtTelefonoCelular.getText().trim());
 		if(chrApePaterno.length()>0){
-			DlgMessage.information(Messages.getString("Se ha encontrado caracteres no válidos en el Campo Apellido Parteno del Asegurado:")+"( "+chrApePaterno+" ). Se debe corregir para continuar.",txtApellidoPaterno);
+			DlgMessage.information(Messages.getString("Se ha encontrado caracteres no vï¿½lidos en el Campo Apellido Parteno del Asegurado:")+"( "+chrApePaterno+" ). Se debe corregir para continuar.",txtApellidoPaterno);
 			return true;
 		}else if (chrApeMaterno.length()>0){
-			DlgMessage.information(Messages.getString("Se ha encontrado caracteres no válidos en el Campo Apellido Materno del Asegurado:")+"( "+chrApeMaterno+" ). Se debe corregir para continuar.",txtApellidoMaterno);
+			DlgMessage.information(Messages.getString("Se ha encontrado caracteres no vï¿½lidos en el Campo Apellido Materno del Asegurado:")+"( "+chrApeMaterno+" ). Se debe corregir para continuar.",txtApellidoMaterno);
 			return true;
 		}else if (chrNombres.length()>0){
-			DlgMessage.information(Messages.getString("Se ha encontrado caracteres no válidos en el Campo Nombres del Asegurado:")+"( "+chrNombres+" ). Se debe corregir para continuar.",txtNombres);
+			DlgMessage.information(Messages.getString("Se ha encontrado caracteres no vï¿½lidos en el Campo Nombres del Asegurado:")+"( "+chrNombres+" ). Se debe corregir para continuar.",txtNombres);
 			return true;
 		}else if (chrDireccion.length()>0){
-			DlgMessage.information(Messages.getString("Se ha encontrado caracteres no válidos en el Campo Dirección del Asegurado:")+"( "+chrDireccion+" ). Se debe corregir para continuar.",txtDireccion);
+			DlgMessage.information(Messages.getString("Se ha encontrado caracteres no vï¿½lidos en el Campo Direcciï¿½n del Asegurado:")+"( "+chrDireccion+" ). Se debe corregir para continuar.",txtDireccion);
 			return true;
 		}else if (chrNumDocumento.length()>0){
-			DlgMessage.information(Messages.getString("Se ha encontrado caracteres no válidos en el Campo Número de Documento del Asegurado:")+"( "+chrNumDocumento+" ). Se debe corregir para continuar.",txtNumeroDucumento);
+			DlgMessage.information(Messages.getString("Se ha encontrado caracteres no vï¿½lidos en el Campo Nï¿½mero de Documento del Asegurado:")+"( "+chrNumDocumento+" ). Se debe corregir para continuar.",txtNumeroDucumento);
 			return true;
 		}else if (chrTelefono.length()>0){
-			DlgMessage.information(Messages.getString("Se ha encontrado caracteres no válidos en el Campo Teléfono Domicilio del Asegurado:")+"( "+chrTelefono+" ). Se debe corregir para continuar.",txtTelefonoDomicilio);
+			DlgMessage.information(Messages.getString("Se ha encontrado caracteres no vï¿½lidos en el Campo Telï¿½fono Domicilio del Asegurado:")+"( "+chrTelefono+" ). Se debe corregir para continuar.",txtTelefonoDomicilio);
 			return true;
 		}else if (chrCelular.length()>0){
-			DlgMessage.information(Messages.getString("Se ha encontrado caracteres no válidos en el Campo Teléfono Celular del Asegurado:")+"( "+chrCelular+" ). Se debe corregir para continuar.",txtTelefonoCelular);
+			DlgMessage.information(Messages.getString("Se ha encontrado caracteres no vï¿½lidos en el Campo Telï¿½fono Celular del Asegurado:")+"( "+chrCelular+" ). Se debe corregir para continuar.",txtTelefonoCelular);
 			return true;
 		}
 
@@ -970,20 +970,20 @@ public class WndVSAfiliacion extends WndBase {
 						@Override
 						public void onEvent(Event e) throws Exception {
 							if(e.getName().equals("onYes")){
-								Messagebox.show("Se va a realizar la afiliación del Seguro asociado al Boleto "+lblBoleto.getValue()+". \n ¿Realmente desea guardar?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+								Messagebox.show("Se va a realizar la afiliaciï¿½n del Seguro asociado al Boleto "+lblBoleto.getValue()+". \n ï¿½Realmente desea guardar?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 									@Override
 									public void onEvent(Event e) throws Exception {
 										if(e.getName().equals("onYes")){
 											try{
 												/*Valida si el asegurado esta o no registrado, si no esta lo registra.*/
 												if(vsAsegurado.getId()==null){
-													/*Guarda el asegurado si este aún no esta registrado*/
+													/*Guarda el asegurado si este aï¿½n no esta registrado*/
 													guardarAsegurado(false);
 												}
 												if(vsAsegurado.getId()==null)//Para controlar por si al momento de guardar el asegurado se produce alguna excepcion.
 													throw new Exception(Messages.getString("WndVSAfiliacion.information.ErrorSaveAsegurado"));
 
-												/*Guarda la Afiliación*/
+												/*Guarda la Afiliaciï¿½n*/
 												ServiceLocator.getVentaSeguroManager().guardarAfiliacion(afiliacion);
 												disabledBtnGuardar(true, tbbAfiliacionGrabar, accesoGrabar());
 												disabledBtnCancelar(true, tbbAfiliacionCancelar);
@@ -1024,13 +1024,13 @@ public class WndVSAfiliacion extends WndBase {
 								try{
 									/*Valida si el asegurado esta o no registrado, si no esta lo registra.*/
 									if(vsAsegurado.getId()==null){
-										/*Guarda el asegurado si este aún no esta registrado*/
+										/*Guarda el asegurado si este aï¿½n no esta registrado*/
 										guardarAsegurado(false);
 									}
 									if(vsAsegurado.getId()==null)//Para controlar por si al momento de guardar el asegurado se produce alguna excepcion.
 										throw new Exception(Messages.getString("WndVSAfiliacion.information.ErrorSaveAsegurado"));
 
-									/*Guarda la Afiliación*/
+									/*Guarda la Afiliaciï¿½n*/
 									ServiceLocator.getVentaSeguroManager().guardarAfiliacion(afiliacion);
 									disabledBtnGuardar(true, tbbAfiliacionGrabar, accesoGrabar());
 									disabledBtnCancelar(true, tbbAfiliacionCancelar);
@@ -1130,7 +1130,7 @@ public class WndVSAfiliacion extends WndBase {
 	private void disabledImageBuscar(String src){
 		if(src.equals(imageEnabled)){
 			imgBuscar.setSrc(imageEnabled);
-			imgBuscar.setTooltiptext("Haga click para realizar la búsqueda");
+			imgBuscar.setTooltiptext("Haga click para realizar la bï¿½squeda");
 			imgBuscar.setStyle("cursor:pointer");
 		}else{
 			imgBuscar.setSrc(imageDisabled);
@@ -1140,8 +1140,8 @@ public class WndVSAfiliacion extends WndBase {
 	}
 	/**
 	 * Activa o desactiva el button editar cliente (Editar)
-	 * @param activar : (true)se activara el button, (false) se desactivará el button
-	 * @param button  : button al que se activa e inactivará.
+	 * @param activar : (true)se activara el button, (false) se desactivarï¿½ el button
+	 * @param button  : button al que se activa e inactivarï¿½.
 	 */
 	public static void disabledBtnEditar(boolean disabled, Button btnEditar,Boolean accesoModificar){
 		if(!(disabled) && accesoModificar){
@@ -1159,7 +1159,7 @@ public class WndVSAfiliacion extends WndBase {
 	}
 	/**
 	 * Activa o desactiva el button Guarbar cliente (Nuevo)
-	 * @param activar : (true)se activara el button, (false) se desactivará el button
+	 * @param activar : (true)se activara el button, (false) se desactivarï¿½ el button
 	 */
 	public static void disabledBtnCancelar(boolean disabled,Button btnCancelar){
 		if(!(disabled)){
@@ -1173,7 +1173,7 @@ public class WndVSAfiliacion extends WndBase {
 	}
 	/**
 	 * Activa o desactiva el button Guarbar cliente (Nuevo)
-	 * @param activar : (true)se activara el button, (false) se desactivará el button
+	 * @param activar : (true)se activara el button, (false) se desactivarï¿½ el button
 	 */
 	public static void disabledBtnGuardar(boolean disabled,Button btnGuardar,Boolean accesoGuardar){
 		if(!(disabled) && accesoGuardar){
@@ -1331,7 +1331,7 @@ public class WndVSAfiliacion extends WndBase {
 										ventaOriginal1.setImportePagado(0.0);
 										ventaOriginal1.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_ANULACION));
 										UtilData.auditarRegistro(ventaOriginal1, true, getUsuario(), Executions.getCurrent());
-										ServiceLocator.getVentaPasajesManager().anularMovimiento(ventaOriginal1,false);
+										ServiceLocator.getVentaPasajesManager().anularMovimiento(ventaOriginal1,false, true);
 
 										/*Limapia los controles*/
 										limpiarControlesAnulacion(true);

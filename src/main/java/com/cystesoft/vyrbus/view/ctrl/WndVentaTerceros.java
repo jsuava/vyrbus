@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: Clase que administra todo lo relacionado a la venta de pasajes.
- * Autor		: José Avalos Sullo
+ * Descripciï¿½n	: Clase que administra todo lo relacionado a la venta de pasajes.
+ * Autor		: Josï¿½ Avalos Sullo
  * Fecha		: 25/06/2012
  */
 package com.cystesoft.vyrbus.view.ctrl;
@@ -151,7 +151,7 @@ import com.cystesoft.vyrbus.view.ui.WndBase;
 
 /**
  *
- * @author José Avalos Sullo
+ * @author Josï¿½ Avalos Sullo
  * @since JDK1.6
  */
 public class WndVentaTerceros extends WndBase {
@@ -310,7 +310,7 @@ public class WndVentaTerceros extends WndBase {
 	@Override
 	public void onCreate() throws Exception {
 		try{
-//			/*Valida si el usuario tiene una liquidación aperturada*/
+//			/*Valida si el usuario tiene una liquidaciï¿½n aperturada*/
 //			if(getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION)==null)
 //				throw new LiquidacionNullException();
 //
@@ -319,7 +319,7 @@ public class WndVentaTerceros extends WndBase {
 			dblImporte.setReadonly(true);
 			dblTarifa.setReadonly(true);
 
-			/*	Realizamos la carga de información a los controles combobox	*/
+			/*	Realizamos la carga de informaciï¿½n a los controles combobox	*/
 			UtilData.cargarDataCombo(cmbOrigen, Localidad.class, false );
 			UtilData.cargarDataCombo(cmbDestino, Localidad.class, true);
 			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
@@ -897,7 +897,7 @@ public class WndVentaTerceros extends WndBase {
 	public void next() throws Exception{
 		try{
 			if(tabItinerario.isSelected()){
-				/*Valida si el usuario tiene una liquidación aperturada*/
+				/*Valida si el usuario tiene una liquidaciï¿½n aperturada*/
 //				if(cmbTipoOperacion.getSelectedIndex()==0 && getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION)==null)
 //					throw new LiquidacionNullException();
 
@@ -957,7 +957,7 @@ public class WndVentaTerceros extends WndBase {
 				tabVenta.setDisabled(false);
 				tabVenta.setSelected(true);
 				lbxAsientos.setVisible(true);
-				tabInformacionVentaIda.setLabel("INFORMACIÓN DE LA VENTA");
+				tabInformacionVentaIda.setLabel("INFORMACIï¿½N DE LA VENTA");
 				lbxAsientos.setSelectedIndex(0);
 				lbxAsientos_onSelect();
 				txtDocumentoPax.setFocus(true);
@@ -2598,7 +2598,7 @@ public class WndVentaTerceros extends WndBase {
 	}
 
 	/**
-	 * Realiza una validación del Tipo de Forma de Pago, para habilitar o deshabilitar algunos controles.
+	 * Realiza una validaciï¿½n del Tipo de Forma de Pago, para habilitar o deshabilitar algunos controles.
 	 * @throws Exception
 	 */
 	public void onValidateTipoFormaPago() throws Exception{
@@ -2915,7 +2915,10 @@ public class WndVentaTerceros extends WndBase {
 			public void onEvent(Event e){
 				try{
 					if(e.getName().equals("onYes")){
-						int result = ServiceLocator.getVentaPasajesManager().guardarVenta(ventaPasaje, false, true, true,true);
+						int result = ServiceLocator.getVentaPasajesManager().guardarVenta(ventaPasaje, false, true, true,true, false);
+						
+						//Actualiza el correlativo - jabanto - 22/01/2024
+						ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(ventaPasaje, true);
 
 						/*Resta el saldo de LC del Cliente*/
 						if(((FormaPago)cmbFormaPago.getSelectedItem().getValue()).getId().equals(Constantes.ID_FORPAG_CREDITO))
@@ -3050,7 +3053,7 @@ public class WndVentaTerceros extends WndBase {
 	}
 
 	/**
-	 * Permite liberar los asientos cuando se cambia de pestaña dentro de la venta
+	 * Permite liberar los asientos cuando se cambia de pestaï¿½a dentro de la venta
 	 */
 	public void liberarAsientos(){
 		try{

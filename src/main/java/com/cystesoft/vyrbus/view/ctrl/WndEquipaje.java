@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José Abanto
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Abanto
  * Fecha		: 18 jul. 2021
  * Hora			: 21:19:46
  */
@@ -427,12 +427,12 @@ public class WndEquipaje extends WndBase implements Serializable{
 	 * @throws Exception
 	 */
 	private void onClick_btnGuardar()throws Exception{
-		/*Valida si el usuario tiene una liquidación aperturada*/
+		/*Valida si el usuario tiene una liquidaciï¿½n aperturada*/
 		if(getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION)==null) {
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noLiquidacion"));
 			return;
 		}
-		//Valida que, la fecha de la liquidación sea igual a la actual - 22/07/2021 - jabanto
+		//Valida que, la fecha de la liquidaciï¿½n sea igual a la actual - 22/07/2021 - jabanto
 		String fechaActual=Constantes.FORMAT_DATE.format(new Date());
 		String s_fechaLiquidacion=(fechaLiquidacion!=null?Constantes.FORMAT_DATE.format(fechaLiquidacion):"");
 		if(!(fechaActual.equals(s_fechaLiquidacion))) {
@@ -638,7 +638,9 @@ public class WndEquipaje extends WndBase implements Serializable{
 				try {
 					if(e.getName().equals("onYes")){
 
-						ServiceLocator.getDetalleEquipajeManager().guardar(listDetalleEquipaje, equipaje);
+						ServiceLocator.getDetalleEquipajeManager().guardar(listDetalleEquipaje, equipaje, true);
+						
+						
 						
 //						boolean timerdownloadFileEquipaje = false;
 						
@@ -654,7 +656,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 								List<VentaPasaje> listVentaPasajes= new ArrayList<>();
 								listVentaPasajes.add(ventaExceso);
 
-								//Aqui se envia el comprobante al servidor de Facturación Electrónica
+								//Aqui se envia el comprobante al servidor de Facturaciï¿½n Electrï¿½nica
 								//Comentado temporalmente por jabanto
 								WSFE.sendVenta(listVentaPasajes, wndEquipaje, true, null, Constantes.NUMERO_COPIAS_COMPROBANTE_EXCESO);
 								

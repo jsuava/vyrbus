@@ -3072,7 +3072,10 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 									boolean validarBloqueo = false;
 									if(getObjetoConfirmar().getNumeroAsiento()!=null && getObjetoConfirmar().getNumeroAsiento().intValue()!=ventaPasaje.getNumeroAsiento().intValue())
 										validarBloqueo = true;
-									result = ServiceLocator.getVentaPasajesManager().guardarVenta(ventaPasaje,false, false, validarBloqueo,true);
+									result = ServiceLocator.getVentaPasajesManager().guardarVenta(ventaPasaje,false, false, validarBloqueo,true, false);
+									
+									//Actualiza el correlativo - jabanto - 22/01/2024
+									ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(ventaPasaje, true);
 								}else{
 									//Confirmacion de F.A.
 									TipoNota tipoNotaCredito=null;
@@ -3086,7 +3089,15 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //										ventaPasaje.setEnviadoSFE(objetoConfirmar.getEnviadoSFE()!=null?objetoConfirmar.getEnviadoSFE():null);
 //										ventaPasaje.setFechaEnvioSFE(objetoConfirmar.getFechaEnvioSFE()!=null?objetoConfirmar.getFechaEnvioSFE():null);
 //									}
-									notaCredito = ServiceLocator.getVentaPasajesManager().confirmarFechaAbierta(ventaPasaje,tipoNotaCredito);
+									notaCredito = ServiceLocator.getVentaPasajesManager().confirmarFechaAbierta(ventaPasaje, tipoNotaCredito, false);
+									
+									//Actualiza el correlativo - jabanto - 22/01/2024
+									ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(ventaPasaje, true);
+									
+									//Actualiza el correlativo - jabanto - 22/01/2024
+									if(notaCredito !=null)
+										ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);
+									
 									result = Constantes.CORRECT;
 								}
 //								ventaPasaje.setImportePagadoTarjeta(0.00);

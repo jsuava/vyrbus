@@ -293,7 +293,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 					}
 				}
 
-				/*Valida la duplicidad del Númeo de Asiento en el archivo excel*/
+				/*Valida la duplicidad del Nï¿½meo de Asiento en el archivo excel*/
 				Double numeroAseinto=Double.valueOf(row.getCell(colNumAsiento).toString().trim());
 				if(listAsientos.size()>0){
 					for(Pasajero pasajeroV: listAsientos){
@@ -365,13 +365,13 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 			DlgMessage.information(Messages.getString("wndServicioEspecial.information.SexoNoExiste")+" "+mensag+", no esta registrado en el Sistema.");
 		}catch (NumeroDocumentoIncorrectoException ndiex){
 			Util.limpiarListbox(listPasajeros);
-			DlgMessage.information(Messages.getString("wndServicioEspecial.information.FormatoNumeroDocumentoInvalido")+" "+mensag+", no es válido.");
+			DlgMessage.information(Messages.getString("wndServicioEspecial.information.FormatoNumeroDocumentoInvalido")+" "+mensag+", no es vï¿½lido.");
 		}catch (NumeroAsientoDuplicadoException nadex){
 			Util.limpiarListbox(listPasajeros);
 			DlgMessage.information(Messages.getString("wndServicioEspecial.information.AsientoDuplicado"));
 		}catch (Exception e) {
 			Util.limpiarListbox(listPasajeros);
-			DlgMessage.information("Los datos ingresados en el archivo Excel no tienen el Formato correcto o hay columnas necesarias que están vacías. (Fila "+i+")");
+			DlgMessage.information("Los datos ingresados en el archivo Excel no tienen el Formato correcto o hay columnas necesarias que estï¿½n vacï¿½as. (Fila "+i+")");
 			e.printStackTrace();
 		}
 	}
@@ -426,8 +426,8 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 	}
 
 	/**
-	 * Permite enlazar los controles a la ventana de selección de Itinerario
-	 * @param button :ha este Button se le adjuntara un listener con la llamada a la ventana de selección de itinerario
+	 * Permite enlazar los controles a la ventana de selecciï¿½n de Itinerario
+	 * @param button :ha este Button se le adjuntara un listener con la llamada a la ventana de selecciï¿½n de itinerario
 	 * @see WndItinerario:
 	 */
 	public  void enlazarItinerario(final Button button) {
@@ -530,7 +530,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 			if(rdFacturaEspecial.isChecked()){
 				String fechaFactura=ServiceLocator.getTitanManager().buscarFechaFacturaEspecial(txtSerieFactura.getText().trim().toUpperCase(), txtNumeroFactura.getText().trim().toUpperCase(),txtRuc.getText().trim());
 				if(fechaFactura==null){
-					DlgMessage.information("El Número de Factura que ha ingresado no esta registrada o no le pertenece al Cliente.");
+					DlgMessage.information("El Nï¿½mero de Factura que ha ingresado no esta registrada o no le pertenece al Cliente.");
 					return;
 				}
 				fechaLiquidacion=Constantes.FORMAT_DATE.parse(fechaFactura);
@@ -624,7 +624,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 							ventaPasaje.setEsRemoto(false);
 							UtilData.auditarRegistro(ventaPasaje, false, getUsuario(), Executions.getCurrent());
 							ventaPasaje.setUsuarioHardware(getUsuarioHardware());
-							ServiceLocator.getVentaPasajesManager().guardarVenta(ventaPasaje, false, true, false, true);
+							ServiceLocator.getVentaPasajesManager().guardarVenta(ventaPasaje, false, true, false, true, true);
 
 
 							/** 28/12/2016 - jabanto */
@@ -681,7 +681,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 		}catch (FechaNacimientoNullxception fnnex){
 			DlgMessage.information(Messages.getString("wndServicioEspecial.information.nullFechaNacimiento")+message);
 		}catch (NumeroBoletoDuplicadoException nbdex){
-			DlgMessage.information(Messages.getString("De los Boletos que va ha utilizar, "+message+" están utilizados"),txtInicio);
+			DlgMessage.information(Messages.getString("De los Boletos que va ha utilizar, "+message+" estï¿½n utilizados"),txtInicio);
 		}catch (ClienteException cl){
 			if(cl.getTipo().intValue()==ClienteException.CLIENTE_NULL){
 				DlgMessage.information(Messages.getString("wndServicioEspecial.information.nullCliente"),txtRuc);
@@ -789,12 +789,12 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 					numeroAsientosPiso2=detalleItinerario.getItinerario().getServicio().getNumeroAsientosPiso2();
 				if(pasajero.getNumeroPiso().equals(Constantes.PISO_UNO+1)){
 					if(pasajero.getNumeroAsiento()>numeroAsientosPiso1){
-						message="El Número de Asiento "+pasajero.getNumeroAsiento()+" del Pasajero "+ pasajero.getNombresApellidos()+" es mayor a la Capasidad del Piso del Bus.";
+						message="El Nï¿½mero de Asiento "+pasajero.getNumeroAsiento()+" del Pasajero "+ pasajero.getNombresApellidos()+" es mayor a la Capasidad del Piso del Bus.";
 						throw new NumeroAsientoFueraRangoException();
 					}
 				}else if (pasajero.getNumeroPiso().equals(Constantes.PISO_DOS+1)){
 					if(pasajero.getNumeroAsiento()>numeroAsientosPiso2){
-						message="El Número de Asiento "+pasajero.getNumeroAsiento()+" del Pasajero "+ pasajero.getNombresApellidos()+" es mayor a la Capasidad del Piso del Bus.";
+						message="El Nï¿½mero de Asiento "+pasajero.getNumeroAsiento()+" del Pasajero "+ pasajero.getNombresApellidos()+" es mayor a la Capasidad del Piso del Bus.";
 						throw new NumeroAsientoFueraRangoException();
 					}
 				}
@@ -853,8 +853,8 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 
 
 	/**
-	 * Valida Los boletos a generar no estén registrados en el sistema
-	 * @param boletoInicial : Boleto con el se iniciará la inpresión.
+	 * Valida Los boletos a generar no estï¿½n registrados en el sistema
+	 * @param boletoInicial : Boleto con el se iniciarï¿½ la inpresiï¿½n.
 	 * @return
 	 * @throws Exception
 	 */
@@ -1071,7 +1071,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 
 
 //	/**
-//	 * Genera el siguiente número de Boleto.
+//	 * Genera el siguiente nï¿½mero de Boleto.
 //	 * @param numeroBoleto
 //	 * @return
 //	 */
@@ -1117,7 +1117,7 @@ public class WndServicioEspecial extends WndBase implements Serializable{
 
 	/**
 	 * Realiza la busqueda del Cliente
-	 * @param Ruc	: Número de Ruc del Cliente a buscar
+	 * @param Ruc	: Nï¿½mero de Ruc del Cliente a buscar
 	 * @throws Exception
 	 */
 	public void buscarCliente(String Ruc) throws Exception{

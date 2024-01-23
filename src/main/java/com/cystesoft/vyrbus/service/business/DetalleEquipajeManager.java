@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José Abanto
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Abanto
  * Fecha		: 14 jul. 2021
  * Hora			: 12:06:12
  */
@@ -56,7 +56,7 @@ public interface DetalleEquipajeManager {
 	 * @param equipaje
 	 * @throws Exception
 	 */
-	public void guardar(List<DetalleEquipaje> listDetalleEquipaje, Equipaje equipaje)throws Exception;
+	public void guardar(List<DetalleEquipaje> listDetalleEquipaje, Equipaje equipaje, boolean ejecutarSeqByCorrelativo)throws Exception;
 	/**
 	 * Realiza la busqueda del manifiesto de pasajeros
 	 * @param itinerarioId : Identificador del Itinerario.

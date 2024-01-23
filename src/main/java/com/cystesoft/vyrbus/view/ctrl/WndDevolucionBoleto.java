@@ -1238,9 +1238,15 @@ public class WndDevolucionBoleto extends WndBase {
 
 						/*Valida si es por parte de tepsa*/
 						if((int)cmbResponsable.getSelectedItem().getValue()==Constantes.TRUE_VALUE){
-							VentaPasaje notaCredito=ServiceLocator.getVentaPasajesManager().devolucionBoleto(boletoDevolver, null);
-							if(notaCredito!=null)
+							VentaPasaje notaCredito=ServiceLocator.getVentaPasajesManager().devolucionBoleto(boletoDevolver, null, false);
+							if(notaCredito!=null) {
+								
+								//Actualiza el correlativo - jabanto - 22/01/2024
+								ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);
+								
 								WSFE.sendNota(notaCredito);
+							}
+								
 						}else{
 							/*Emitir el gasto administrativo*/
 							VentaPasaje gastoAdmin= new VentaPasaje();
@@ -1286,7 +1292,16 @@ public class WndDevolucionBoleto extends WndBase {
 							Double igv=gastoAdmin.getImportePagado()- Double.valueOf(Util.toNumberFormat(gastoAdmin.getImportePagado()/((Constantes.IGV/100)+1),2));
 							gastoAdmin.setIgv(igv);
 
-							VentaPasaje notaCredito = ServiceLocator.getVentaPasajesManager().devolucionBoleto(boletoDevolver, gastoAdmin);
+							VentaPasaje notaCredito = ServiceLocator.getVentaPasajesManager().devolucionBoleto(boletoDevolver, gastoAdmin, false);
+							
+							//Actualiza el correlativo - jabanto - 22/01/2024
+							if(notaCredito !=null)
+								ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);
+							
+							//Actualiza el correlativo - jabanto - 22/01/2024
+							ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(gastoAdmin, true);
+							
+							
 
 							gastoAdmin=ServiceLocator.getVentaPasajesManager().buscarVentaById(gastoAdmin.getId());
 							List<VentaPasaje>listVentaPasaje= new ArrayList<>();

@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José Sullo Avalos
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Sullo Avalos
  * Fecha		: 02/01/2013
  */
 package com.cystesoft.vyrbus.view.ctrl;
@@ -200,7 +200,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 			@Override
 			public void onEvent(Event event) throws Exception {
 				// TODO Auto-generated method stub
-				//Util.exportarExcel(lbxVentas, "Liquidación diaria de ventas");
+				//Util.exportarExcel(lbxVentas, "Liquidaciï¿½n diaria de ventas");
 				if(lbxVentas.getItems().size()>0){
 					Session session = getDesktop().getSession();
 					HttpSession httpSession = (HttpSession)session.getNativeSession();
@@ -305,7 +305,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 			clearTotals();
 
 
-			//Ya no es necesario - se fucionó las agencias del vyrbus con transcarweb
+			//Ya no es necesario - se fucionï¿½ las agencias del vyrbus con transcarweb
 //			List<Agencia> result = ServiceLocator.getTranscarManager().buscarAgencias();
 //			UtilData.cargarGenericData(cmbAgencia, true);
 //			for(Agencia agencia: result) {
@@ -853,7 +853,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 									  getRol().getId().intValue()==Constantes.ID_ROL_ADMINISTRADOR) &&
 //									  getRol().getId().intValue()==Constantes.ID_ROL_FISCALIZACION) && 
 									venta.getFechaLiquidacion().getTime()>Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date())).getTime()-(Constantes.MILISEGUNDOS_X_DIA*3)){
-								//Rol superusuario y como maximo 3 días con anterioridad
+								//Rol superusuario y como maximo 3 dï¿½as con anterioridad
 								cell.appendChild(a);
 							}else{
 								cell.setLabel(venta.getNumeroBoleto());
@@ -1411,10 +1411,10 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 				return;
 			}
 
-			//Validación para la anulación de un Reecibo de caja
+			//Validaciï¿½n para la anulaciï¿½n de un Reecibo de caja
 			if (ventaOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_RECIBO_CAJA){
 				VentaPasaje ultimoRegistro=ServiceLocator.getVentaPasajesManager().buscarUltimoRegistro(ventaOriginal.getVentaOriginal());
-				//Valida si RC esta reimpreso y no esta anulado para continuar con la anulación.
+				//Valida si RC esta reimpreso y no esta anulado para continuar con la anulaciï¿½n.
 				if (ultimoRegistro.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_RECIBO_CAJA &&
 						ultimoRegistro.getTipoMovimiento().getId().intValue()!=Constantes.ID_TIPMOV_ANULACION){
 					DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.RCReimpreso"));
@@ -1437,7 +1437,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 				DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.fechaPasada"));
 			else if(ventaOriginal.getLiquidacion()==null){
 //					if(ventaOriginal.getIdentificadorIdaRetorno()!=null){
-//						Messagebox.show("Esta a punto de anular un boleto ida y vuelta, este proceso conlleva la anulación de los 2 boletos, desea continuar?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+//						Messagebox.show("Esta a punto de anular un boleto ida y vuelta, este proceso conlleva la anulaciï¿½n de los 2 boletos, desea continuar?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 //							public void onEvent(Event e){
 //								if(e.getName().equals(Messagebox.ON_YES)){
 //									wndAnular = createVentanaAnulacion(ventaOriginal);
@@ -1656,8 +1656,11 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 		ventaOriginal.setFechaAnulacion(new Date());
 		ventaOriginal.setUsuarioAnulacion(getUsuario());
 		UtilData.auditarRegistro(ventaOriginal, true, usuario, Executions.getCurrent());
-		VentaPasaje notaCredito= ServiceLocator.getVentaPasajesManager().anularMovimiento(ventaOriginal,false);
+		VentaPasaje notaCredito= ServiceLocator.getVentaPasajesManager().anularMovimiento(ventaOriginal,false, false);
 		if(notaCredito!=null){
+			//Actualiza el correlativo - 22/01/2024 - jabanto
+			ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);
+			
 			WSFE.sendNota(notaCredito);
 		}
 		result=Constantes.CORRECT;
