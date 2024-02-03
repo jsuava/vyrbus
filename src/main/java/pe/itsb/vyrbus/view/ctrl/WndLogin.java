@@ -133,12 +133,16 @@ public class WndLogin extends WndBase {
 
 		/*Descomentar solo para desarrollo - 09/01/2017 - jabanto*/
 		try {
-			txtLogin.setText("javalos");
-			txtPassword.setText("aqpPerseo79");
-			txtImagen.setText(cpaImagen.getValue());
+//			txtLogin.setText("javalos");
+//			txtPassword.setText("aqpPerseo79");
+//			txtImagen.setText(cpaImagen.getValue());
 //			txtLogin.setText("moscco");
 //			txtPassword.setText("Ant@res1091");
 //			txtImagen.setText(cpaImagen.getValue());
+			
+			txtLogin.setText("abanto");
+			txtPassword.setText("123");
+			txtImagen.setText(cpaImagen.getValue());
 //
 //			onAccess();
 		} catch (Exception e) {

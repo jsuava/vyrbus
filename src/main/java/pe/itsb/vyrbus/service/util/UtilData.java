@@ -1164,12 +1164,13 @@ public class UtilData extends Window {
 		}
 	}
 
-	private static void cargarTipoDocumento(Combobox combobox, TreeMap<String, Object> parametros, boolean todos) {
+	private static void cargarTipoDocumento(Combobox combobox, TreeMap<String, Object> parametros, Boolean todos) {
 		try{
 			ArrayList<String> criteriosOrdenar = new ArrayList<>();
 			criteriosOrdenar.add("denominacion");
 			ArrayList<TipoDocumento> lstTiposDocumento = ServiceLocator.getTipoDocumentoManager().buscarPorX(parametros, criteriosOrdenar);
-			cargarGenericData(combobox, todos);
+			if(todos!=null)
+				cargarGenericData(combobox, todos);
 			for (TipoDocumento oTipoDocumento : lstTiposDocumento) {
 				Comboitem oComboitem = new Comboitem();
 

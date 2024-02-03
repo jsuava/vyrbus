@@ -1921,7 +1921,7 @@ public class WndVentaReserva extends WndBase {
 				   getAgencia().getId().intValue()==Constantes.ID_AGENCIA_SUPERMERCADOS_PERUANOS){
 					ConfiguracionImpresora configuracionImpresora= UtilData.getConfiguracionImpresora(getUsuarioHardware().getId());
 					if(configuracionImpresora==null){
-						DlgMessage.information("No puede continuar debido a que no tiene configurada la impresi�n.");
+						DlgMessage.information("No puede continuar debido a que no tiene configurada la impresión.");
 						return;
 					}
 				}
@@ -6904,7 +6904,7 @@ public class WndVentaReserva extends WndBase {
 	}
 
 	/**
-	 * Permite liberar los asientos cuando se cambia de pesta�a dentro de la venta
+	 * Permite liberar todos los asientos asientos bloqueados 
 	 */
 	public void liberarAsientos(){
 		try{

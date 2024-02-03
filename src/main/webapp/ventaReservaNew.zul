@@ -1,0 +1,461 @@
+<?page title="Ventas y Reservas" contentType="text/html;charset=UTF-8"?>
+<zk  xmlns:c="client">
+<style>
+    .maxHeightLsbxBusqServicio .z-listbox-body {
+	  height: 46vh;
+      overflow: auto;
+    }   
+   </style>
+<window id="wndVentaReservaNew" title="" border="none" width="970px" use="pe.itsb.vyrbus.view.ctrl.WndVentaReservaNew">
+	<div id="divPaso_1">	
+		<groupbox mold="3d" closable="false" style="overflow:auto">
+			<caption label="RUTA" style="color: #ffffff;"/>
+			<grid style="border:none">
+				<columns>
+					<column width="335px"/>
+					<column width="10px" align="center"/> 
+					<column width="240px"/>					
+					<column width="240px"/>
+					<column width="130px" align="center"/>
+					<column/>			
+				</columns>
+				<rows>
+					<row spans="6">
+						<listbox id="ltbxBusqComprobantesPax">
+							<listhead>
+								<listheader width="70px" label="TIPO" style="color: #ffffff;"/>
+								<listheader width="70px" label="FECHA" align="center" style="color: #ffffff;"/>
+								<listheader width="90px" label="COMPROBANTE" align="center" style="color: #ffffff;"/>
+								<listheader width="250px" label="PASAJERO" style="color: #ffffff;"/>
+								<listheader width="130px" label="RUTA" style="color: #ffffff;"/>
+								<listheader width="90px" label="FECHA VIAJE" align="center" tooltiptext="Fecha de Viaje" style="color: #ffffff;"/>
+								<listheader width="110px" label="FECHA CADUCIDAD" align="center" tooltiptext="Fecha/Hora caducidad" style="color: #ffffff;"/>
+								<listheader width="100px"/>
+								<listheader/>
+							</listhead>
+						</listbox>
+					</row>
+					<row>
+						<hbox align="center">
+							<vbox align="center">
+								<textbox id="txtBusqBy" width="175px" placeholder="DNI PASAJERO / N° COMPROBANTE" />
+								<grid width="180px">
+									<columns><column/></columns>
+									<auxhead >
+										<auxheader label="TIPO OPERACIÓN"/>
+									</auxhead>
+									<rows>
+										<row style="padding: 10px">
+											<radiogroup> 
+												<radio id="rdBusqIda" label="IDA" checked="true" />
+												<separator orient="vertical" width="15px"/>
+												<radio id="rdBusqIdaVuelta" label="IDA Y VUELTA" />
+											</radiogroup>		
+										</row>
+									</rows>
+								</grid>								
+								<separator height="10px"/>
+								<combobox id="cmbBusqOrigen" placeholder="ORIGEN" width="99%"  autocomplete="true" autodrop="true"/>						
+							</vbox>
+							<separator/>
+							<listbox id="ltbxBusqDestinos" height="140px" width="140px"/>							
+						</hbox>	
+						<separator orient="vertical" />					
+						<vbox>
+							<label value="FECHA DE IDA" sclass="label-size11" />
+							<calendar id="clrBusqIda"/>
+						</vbox>
+						<vbox id="vboxCalendarVuelta">
+							<label value="FECHA DE VUELTA" sclass="label-size11" />
+							<calendar id="clrBusqIdaVuelta"/>
+						</vbox>
+						<vbox align="center">
+							<button id="btnBuscar" sclass="btnCommandM" width="120px" height="32px" autodisable="self" label="Buscar" image="/resources/mp_buscarEnabled.png" />
+							<separator/>
+							<button id="btnBusqCancelar" sclass="btnCommandM" width="120px" height="32px" autodisable="self" label="Cancelar" image="resources/mp_cancelarEnabled.png" />
+						</vbox>
+						<separator/>
+					</row>
+				</rows>
+			</grid>
+		</groupbox>
+		<tabbox>
+			<tabs>
+				<tab id="tabBusqIda" label="Servicio de Ida"/>
+				<tab id="tabBusqVuelta" label="Servicio de vuelta"/>
+			</tabs>
+			<tabpanels>
+				<tabpanel>
+					<div style="background:#4285F4;margin-left:2px;padding:4px;">
+						<label value="SELECCIONA EL VIAJE DE IDA :::: " style="color: #ffffff;"/>
+						<label id="lblBusqInfoViajeIda" sclass="label-size11-bold" style="font-size:13px !important;color: #ffffff;" />
+					</div>
+					<listbox id="ltbxBusqIda" sclass="maxHeightLsbxBusqServicio">
+						<listhead>
+							<listheader label="EMPRESA" width="170px" style="color: #ffffff;"/>
+							<listheader label="RUTA" width="140px" style="color: #ffffff;"/>
+							<listheader label="EMBARQUE" width="120px" style="color: #ffffff;"/>
+							<listheader label="H.SALIDA" width="60px" align="center" style="color: #ffffff;"/>
+							<listheader label="SERVICIO" width="120px" style="color: #ffffff;"/>														
+							<listheader label="TARIFA" width="90px" align="center" style="color: #ffffff;"/>
+							<listheader label="DISP." width="50px" align="center" tooltiptext="Asientos disponibles" style="color: #ffffff;"/>
+							<listheader label="BUS" width="100px" align="center" style="color: #ffffff;"/>
+							<listheader width="100px"/>
+							<listheader/>
+						</listhead>					
+					</listbox>
+				</tabpanel>
+				<tabpanel>
+					<div style="background:#4285F4;margin-left:2px;padding:4px;">
+						<label value="SELECCIONA EL VIAJE DE VUELTA :::: " style="color: #ffffff;"/>
+						<label id="lblBusqInfoViajeVuelta" sclass="label-size11-bold" style="font-size:13px !important;color: #ffffff;" />
+					</div>
+					<listbox id="ltbxBusqVuelta" sclass="maxHeightLsbxBusqServicio">
+						<listhead>
+							<listheader label="EMPRESA" width="170px" style="color: #ffffff;"/>
+							<listheader label="RUTA" width="140px" style="color: #ffffff;"/>
+							<listheader label="EMBARQUE" width="120px" style="color: #ffffff;"/>
+							<listheader label="H.SALIDA" width="60px" align="center" style="color: #ffffff;"/>
+							<listheader label="SERVICIO" width="120px" style="color: #ffffff;"/>														
+							<listheader label="TARIFA" width="90px" align="center" style="color: #ffffff;"/>
+							<listheader label="DISP." width="50px" align="center" tooltiptext="Asientos disponibles" style="color: #ffffff;"/>
+							<listheader label="BUS" width="100px" align="center" style="color: #ffffff;"/>
+							<listheader width="100px"/>
+							<listheader/>
+						</listhead>					
+					</listbox>
+				</tabpanel>
+			</tabpanels>
+		</tabbox>
+	</div>
+	<div id="divPaso_2" >
+		<grid>
+			<columns>
+				<column/>
+			</columns>
+			<rows>
+				<row>
+					<vbox>
+						<hbox>
+							<tabbox width="710px">
+								<tabs>
+									<tab id="tabVtaIdaMapa" label="Bus de Ida"/>
+									<tab id="tabVtaVueltaMapa" label="Bus de Vuelta"/>			
+								</tabs>			
+								<tabpanels>
+									<tabpanel>
+										<groupbox id="gpbxVtaIdaMapa" closable="false" mold="3d" width="100%" height="210px">
+											<caption label="SELECCIÓN DE ASIENTO(S) DE IDA" style="color: #ffffff;"/>
+											
+										</groupbox>										
+									</tabpanel>
+									<tabpanel>
+										<groupbox id="gpbxVtaVueltaMapa" closable="false" mold="3d" width="100%" height="210px">
+											<caption label="SELECCIÓN DE ASIENTO(S) DE VUELTA" style="color: #ffffff;"/>
+										
+										</groupbox>
+									</tabpanel>
+								</tabpanels>	
+							</tabbox>
+							<vbox>
+								<grid width="250px" height="140px" style="margin-top:22px">
+									<columns><column align="center"/></columns>
+									<rows>	
+										<row><separator height="10px"/></row>					
+										<row>
+											<vbox align="center">
+												<label id="lblVtaTipoComprobante" sclass="label-size11-bold" style="font-size:14px !important"/>
+												<label id="lblVtaNumeroComprobante" sclass="label-size11-bold" style="font-size:14px !important"/>
+												<label id="lblVtaInfoTipoOperacion" sclass="label-size12-bold-alert" style="font-size:16px !important;"/>
+											</vbox>
+										</row>
+										<row><separator height="25px"/></row>
+										<row><separator/></row>
+										<row><separator/></row>
+									</rows>
+								</grid>
+								<grid width="250px">
+									<columns><column align="center"/></columns>
+									<rows>
+										<row>
+											<hbox align="center">
+												<button id="btnVtaProgramarServicios" width="60px" height="32px" autodisable="self" tooltiptext="Programar Servicio" image="/resources/mp_buscarEnabled.png" />
+												<button id="btnVtaManifiestoPasajetos" width="60px" height="32px" autodisable="self" tooltiptext="Manifiesto de Pasajeros" image="/resources/mp_buscarEnabled.png" />
+												<button id="btnVtaCarpetaDespacho" width="60px" height="32px" autodisable="self" tooltiptext="Carpeta de Despacho" image="/resources/mp_buscarEnabled.png" />
+												<button id="btnVtaContribucionByAgencia" width="60px" height="32px" autodisable="self" tooltiptext="Contribución de las Agencias en la Venta de este servicio" image="/resources/mp_buscarEnabled.png" />																
+											</hbox>
+										</row>
+										<row>
+											<hbox>
+												<button id="btnVtaReimpresion" width="60px" height="32px" autodisable="self" tooltiptext="Reimpresión de Comprobante de Venta" image="/resources/mp_buscarEnabled.png" />
+												<button id="btnVtaPostergar"  width="60px" height="32px" autodisable="self" tooltiptext="Postergar" image="/resources/mp_buscarEnabled.png" />
+												<button id="btnVtaAnular"  width="60px" height="32px" autodisable="self" tooltiptext="Anular Venta/Reserva" image="/resources/mp_buscarEnabled.png" />
+												<button id="btnVtaLeyendaAsientos" width="60px" height="32px" autodisable="self" tooltiptext="Leyenda de Asientos" image="/resources/mp_buscarEnabled.png" />
+											</hbox>
+										</row>					
+									</rows>
+								</grid>			
+							</vbox>					
+						</hbox>
+						<grid>
+							<rows>
+								<row>
+									<radiogroup>
+										<radio id="rdVtaVenta" label="Venta" style="padding:10px;font-weight:bold;"/>
+										<radio id="rdVtaReserva" label="Reserva" style="padding:10px;font-weight:bold"/>
+										<radio id="rdVtaPostergacion" label="Postergación" style="padding:10px;font-weight:bold"/>
+										<radio id="rdVtaPostergacionFA" label="Postergación F.A." style="padding:10px;font-weight:bold"/>
+										<radio id="rdVtaCambioNombre" label="Cambio de Nombre" style="padding:10px;font-weight:bold"/>							
+									</radiogroup>
+								</row>
+							</rows>			
+						</grid>
+						<separator height="3px"/>
+						<hbox>
+							<vbox>
+								<grid id="gridVtaInfoViajeIda">
+									<columns>
+										<column label="INFORMACIÓN DEL VIAJE DE IDA" style="padding:40x;background:#4285F4;color:#FFFFFF"/>
+									</columns>
+									<rows>
+										<row>
+											<grid style="border:none">
+												<columns>
+													<column width="40px"/>
+													<column width="200px"/>
+													<column width="70px"/>
+													<column/>
+												</columns>
+												<rows>
+													<row>
+														<label value="DEST :"/>
+														<label id="lblVtaIdaDestino_fecha" sclass="label-size11-bold" style="font-size:12px !important" tooltiptext="Destino del Viaje de Ida"/>
+														<label value="EMBARQUE :"/>
+														<hbox align="center">
+															<combobox id="cmbVtaIdaEmbarque_hora" readonly="true" width="99%" tooltiptext="Punto de Embarque del viaje de Ida" placeholder="EMBARQUE" style="font-size:10px !important;font-weight: bold;"/>										
+															<separator width="30px"/>
+															<label value="DESC :"/>
+															<combobox id="cmbVtaIdaDesembarque_hora" readonly="true" width="160px" tooltiptext="Punto de Desembarque del viaje de Ida" placeholder="DESEMBARQUE" style="font-size:10px !important;font-weight: bold;"/>
+															<separator width="15px"/>
+															<label value="ASIENTO :"/>
+															<label id="lblVtaIdaAsiento" sclass="label-size11-bold" style="font-size:18px !important" />
+															<separator width="15px"/>
+															<label value="TARIFA :"/>
+															<label id="lblVtaIdaTarifa" sclass="label-size11-bold" style="font-size:18px !important" />
+														</hbox>
+													</row>
+												</rows>
+											</grid>
+										</row>			
+									</rows>
+								</grid>
+								<grid id="gridVtaInfoViajeVuelta">
+									<columns>
+										<column label="INFORMACIÓN DEL VIAJE DE VIELTA" style="background:#4285F4;color:#FFFFFF" visible="true"/>
+									</columns>
+									<rows>
+										<row>
+											<grid style="border:none">
+												<columns>
+													<column width="40px"/>
+													<column width="200px"/>
+													<column width="70px"/>
+													<column/>
+												</columns>
+												<rows>
+													<row>
+														<label value="DEST :"/>
+														<label id="lblVtaVueltaDestino_fecha" sclass="label-size11-bold" style="font-size:12px !important" tooltiptext="Destino del Viaje de Ida"/>
+														<label value="EMBARQUE :"/>
+														<hbox align="center">
+															<combobox id="cmbVtaVueltaEmbarque_hora" readonly="true" width="99%" tooltiptext="Punto de Embarque del viaje de Ida" placeholder="EMBARQUE" sclass="label-size11-bold" style="font-size:10px !important;font-weight: bold;"/>										
+															<hbox align="center">
+																<separator width="30px"/>
+																<label value="DESC :"/>
+																<combobox id="cmbVtaVueltaDesembarque_hora" readonly="true" width="160px" tooltiptext="Punto de Desembarque del viaje de Ida" placeholder="DESEMBARQUE" style="font-size:10px !important;font-weight: bold;"/>
+																<separator width="15px"/>
+																<label value="ASIENTO :"/>
+																<label id="lblVtaVueltaAsiento" sclass="label-size11-bold" style="font-size:18px !important" />
+																<separator width="15px"/>
+																<label value="TARIFA :"/>
+																<label id="lblVtaVueltaTarifa" sclass="label-size11-bold" style="font-size:18px !important" />				
+															</hbox>
+														</hbox>
+													</row>
+												</rows>
+											</grid>
+										</row>			
+									</rows>
+								</grid>
+							</vbox>
+						</hbox>
+						<separator height="3px"/>
+						<hbox>
+							<grid width="220px">
+								<columns></columns>
+								<auxhead>
+									<auxheader label="ASIENTOS SELECCIONADOS" style="padding:3px !important"/>
+								</auxhead>
+								<rows>
+									<row>
+										<listbox id="ltbxVtaAsientosSeleccionados" width="99%" height="152px">
+											<listhead>
+												<listheader label="RUTA" style="color: #ffffff;"/>
+												<listheader label="ASIENTO" width="55px" align="center" style="color: #ffffff;"/>
+											</listhead>											
+										</listbox>					
+									</row>			
+								</rows>
+							</grid>
+							<tabbox width="460px" >
+								<tabs>
+									<tab label="Datos del Pasajero" />
+									<tab label="Datos del Infante" />
+								</tabs>
+								<tabpanels>
+									<tabpanel>
+										<grid width="100%" style="border:none;">
+											<columns>
+												<column width="250px" />
+												<column/>
+											</columns>						
+											<rows>
+												<row>
+													<combobox id="cmbVtaPaxTipoDocumento" readonly="true" width="97%" placeholder="TIPO DOCUMENTO"/>
+													<textbox id="txtVtaPaxNumeroDocumento" width="97%" maxlength="15" placeholder="NÚMERO DOCUMENTO"/>
+												</row>
+												<row spans="2">
+													<textbox id="txtVtaPaxNombres" width="98%" placeholder="NOMBRES"/>
+												</row>
+												<row>
+													<textbox id="txtVtaPaxApePaterno" width="93%" placeholder="APELLIDO PATERNO"/>
+													<textbox id="txtVtaPaxApeMaterno" width="97%" placeholder="APELLIDO MATERNO"/>
+												</row>
+												<row>
+													<hbox>
+														<radiogroup>
+															<radio id="rdVtaPaxFemenino" label="FEMENINO" style="font-size:11px !important"/>
+															<separator orient="vertical" width="10px"/>
+															<radio id="rdVtaPaxMasculino" label="MASCULINO" style="font-size:11px !important"/>
+															<separator orient="vertical" width="10px"/>
+															<intbox id="itbxVtaPaxEdad" width="45px"  placeholder="EDAD"/>
+														</radiogroup>											
+													</hbox>		
+													<hbox>
+														<textbox id="txtVtaPaxTelefono" width="70px" placeholder="TELÉFONO"/>
+														<textbox id="txtVtaPaxCorreo" width="93%" placeholder="CORREO ELECTRÓNICO"/>
+													</hbox>											
+												</row>
+												<row spans="2">
+													<div style="background:#929697" height="1px"/>
+												</row>
+												<row spans="2">
+													<hbox align="center">
+														<checkbox id="chbxVtaFactura" checked="false" label="FACTURA" style="font-size:10px !important"/>
+														<separator width="20px" />
+														<textbox id="txtVtaFacRuc" width="80px" placeholder="RUC"/>
+														<textbox id="txtVtaFacRazonSocial" width="248px" placeholder="RAZÓN SOCIAL"/>
+													</hbox>									
+												</row>
+												<row spans="2">
+													<textbox id="txtVtaFacDireccion" width="98%" placeholder="DIRECCIÓN"/>
+												</row>
+											</rows>
+										</grid>
+									</tabpanel>
+									<tabpanel>
+										<grid style="border:none;">
+											<columns>
+												<column width="200px" />
+												<column/>																	
+											</columns>
+											<rows>
+												<row>
+													<combobox id="cmbVtaInfTipoDocumento" readonly="true" width="97%" placeholder="TIPO DE DOCUMENTO"/>									
+													<textbox id="txtVtaInfNumeroDocumento" width="97%" maxlength="15" placeholder="NÚMERO DOCUMENTO" />
+												</row>
+												<row spans="2">							
+													<textbox id="txtVtaInfNombres" width="98%" placeholder="NOMBRES" />	
+												</row>
+												<row>
+													<textbox id="txtVtaInfApePat" width="93%" placeholder="APELLIDO PATERNO"/>
+													<textbox id="txtVtaInfApeMat" width="97%" placeholder="APELLIDO MATERNO"/>
+												</row>
+												
+												<row>									
+													<combobox id="cmbVtaInfParentes" readonly="true" width="97%" placeholder="PARENTESCO"/>				
+													<textbox id="txtVtaInfParentescoInfoOtro" visible="true" width="97%" placeholder="DESCRIPCIÓN DEL PARENTESCO"/>
+												</row>
+												<row>
+													<combobox id="cmbVtaDocumentoAutoInf" readonly="true" width="97%" placeholder="DOCUMENTO AUTORIZACIÓN"/>
+													<textbox id="txtVtaDocumentoAutoInfOtro" visible="true" width="97%" placeholder="DESCRIPCIÓN DEL DOCUMENTO QUE AUTORIZA"/>
+												</row>																		
+												<row>
+												   <hbox>
+														<radiogroup>
+															<radio id="rdVtaInfFemenino" label="FEMENINO" style="font-size:11px !important"/>
+															<separator orient="vertical" width="20px"/>
+															<radio id="rdVtaInfMasculino" label="MASCULINO" style="font-size:11px !important"/>
+														</radiogroup>																						
+													</hbox>			
+													<intbox id="itbxVtaInfEdad" width="60px"  placeholder="EDAD"/>																				 
+												</row>																									
+											</rows>
+										</grid>
+									</tabpanel>
+								</tabpanels>
+							</tabbox>
+							<grid width="273px" >
+								<columns>
+									<column label="DATOS DEL PAGO"/>
+								</columns>				
+								<rows>
+									<row>
+										<grid style="border:none;">
+											<columns>
+												<column/>
+												<column/>
+											</columns>
+											<rows>
+												<row spans="2">
+													<hbox align="center">
+														<label value="TOTAL A PAGAR" sclass="label-size12-bold-alert"/>
+														<separator width="8px"/>
+														<doublebox id="dbxVtaTotalPagar" readonly="true" width="145px" format="#,##0.00" sclass="label-size12-bold-alert" style="font-size:22px !important;text-align:center"/>
+													</hbox>
+													
+												</row>
+												<row>
+													<combobox id="cmbVtaTipoFormaPago" readonly="true" width="93%" placeholder="MEDIO DE PAGO"/>
+													<combobox id="cmbVtaOperadorTarjeta" readonly="true" width="100%" placeholder="OPERADOR TARJETA"/>								
+												</row>
+												<row>
+													<combobox id="cmbVtaTarjeta" readonly="true" width="93%" placeholder="TARJETA "/>
+													<textbox id="txtVtaNumeroOperacion" width="93%" placeholder="NÚMERO OPERACIÓN" />
+												</row>
+												<row spans="2">		
+													<hbox align="center">
+														<label value="AUTORIZA:"/>
+														<combobox id="cmbVtaAutorizaDescuento" width="100px" readonly="true" placeholder="AUTORIZA"/>
+														<separator width="10px"/>																		
+														<label value="COD:"/>
+														<textbox id="txtVtaAutorizaDescuentoCodigo" width="50px" placeholder="CÓDIGO"/>
+													</hbox>																		
+												</row>
+												<row style="padding:6px">
+													<button id="btnVtaGuardar" label="Grabar" sclass="btnCommandL" autodisable="self" image="resources/mp_guardarEnabled.png"/>
+													<button id="btnVtaCancelar" label="Cancelar" sclass="btnCommandL" autodisable="self" image="resources/mp_cancelarEnabled.png"/>
+												</row>
+											</rows>
+										</grid>
+									</row>			
+								</rows>
+							</grid>
+						</hbox>
+					</vbox>
+				</row>
+			</rows>
+		</grid>
+	</div>
+</window>
+</zk>
