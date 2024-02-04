@@ -71,8 +71,8 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 //					"LEFT JOIN VRTPOOLLOC lpool ON (lpool.localidad_iddestino=r.localidad_iddestino AND lpool.c_ruc='20502324927' AND lpool.c_estreg='A') " + //Para validar si el destino pertenece al pool
 					"LEFT JOIN VRTPOOLLOC lpool ON (lpool.localidad_iddestino=r.localidad_iddestino AND lpool.c_ruc='20502324927' AND lpool.c_estreg='A' AND lpool.ruta_idmayor=i.ruta_idmayor) " + //Para validar si el destino pertenece al pool
 					"INNER JOIN vrmempresa e ON e.empresa_id = i.empresa_id " +
-				"WHERE di.d_fecpar=to_date('"+fechaPartida+"','dd/mm/yyyy') AND r.c_origen LIKE '"+origen+"%' AND r.c_destino LIKE '"+destino+"%' AND " +
-					"n_esanulado=0 AND e.c_numdoc LIKE '" + empresaRUC + "%' " +
+				"WHERE di.d_fecpar=to_date('"+fechaPartida+"','dd/mm/yyyy') AND r.c_origen LIKE '"+origen+"%' AND r.c_destino LIKE '"+destino+"%' " +
+					"AND n_esanulado=0 AND e.c_numdoc LIKE '" + empresaRUC + "%' " +
 				"ORDER BY di.d_fecpar, to_date(di.c_horpar,'HH24:MI'), s.c_denominacion, di.d_feclle, to_date(di.c_horlle,'HH24:MI')";
 
 		List<?> result = getSession().createSQLQuery(sql).list();
