@@ -287,17 +287,19 @@ public class WndPrincipal extends WndBase {
 							ServiceLocator.getUsuarioManager().actualizar(user);
 
 							win.onClose();
+							
+							cargarVentaInicio();
 						}catch(PasswordException pex){
 							if(pex.getTipo().intValue()==PasswordException.PASSWORD_ACTUAL_NULL){
-								DlgMessage.information("Debe de ingresar la contraseï¿½a actual", txtPasswordActual);
+								DlgMessage.information("Debe de ingresar la contraseña actual", txtPasswordActual);
 							}else if(pex.getTipo().intValue()==PasswordException.PASSWORD_NUEVO_NULL){
-								DlgMessage.information("Debe de ingresar la nueva contraseï¿½a", txtPasswordNuevo);
+								DlgMessage.information("Debe de ingresar la nueva contraseña", txtPasswordNuevo);
 							}else if(pex.getTipo().intValue()==PasswordException.PASSWORD_CONFIRMATION_NULL){
-								DlgMessage.information("Vuelva a escribir la nueva contraseï¿½a", txtConfirmPassword);
+								DlgMessage.information("Vuelva a escribir la nueva contraseña", txtConfirmPassword);
 							}else if(pex.getTipo().intValue()==PasswordException.PASSWORD_DIFERENTES){
-								DlgMessage.information("Las contraseï¿½as son diferentes vuelva a escribir la nueva contraseï¿½a.", txtConfirmPassword);
+								DlgMessage.information("Las contraseñas son diferentes vuelva a escribir la nueva contraseña.", txtConfirmPassword);
 							}else if(pex.getTipo().intValue()==PasswordException.PASSWORD_IGUAL_LOGIN)
-								DlgMessage.information("La contraseï¿½a no puede ser igual al nombre de usuario.", txtPasswordNuevo);
+								DlgMessage.information("La contraseña no puede ser igual al nombre de usuario.", txtPasswordNuevo);
 						}catch(Exception ex){
 							DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
 						}
@@ -312,12 +314,19 @@ public class WndPrincipal extends WndBase {
 				this.appendChild(win);
 				txtPasswordActual.setFocus(true);
 				win.doModal();
-			}
+			}else
+				cargarVentaInicio();
+			
 
 	}catch (EspecieValoradaNotAvailableException env){
 		DlgMessage.information(Messages.getString("UtilData.information.notAvailableEspecieValorada"));
 	}
 }
+	
+	private void cargarVentaInicio()throws Exception {
+		if(getRol().getId().intValue()==Constantes.ID_ROL_COUNTER || getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO)
+			mostrarVentana("Realizar Ventas y Reservas", "ventaReserva.zul");
+	}
 
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.window.ui.IBase#initComponents()
