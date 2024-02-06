@@ -970,35 +970,75 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 	public List<ResumenVentas> buscarResumenVentas(String fechaDesde, String fechaHasta) {
 		String sql = "";
 
-		sql = "select \r\n" + 
-				"				2 RUBRO, 1 CANALID, 'COUNTER' CANAL, ec.agencia_idventa IDAGENCIA, \r\n" + 
-				"				a.c_denominacion AGENCIA,\r\n" + 
-				"				CASE ec.tipcom_id \r\n" + 
-				"				   WHEN 1 THEN 7 \r\n" + 
-				"					 WHEN 2 THEN 2 \r\n" + 
-				"					 WHEN 3 THEN 10 \r\n" + 
-				"			  END IDCOMP, \r\n" + 
-				"				CASE ec.tipcom_id \r\n" + 
-				"					 WHEN 3 THEN 'GUIA REMISION TRANSPORTISTA' \r\n" + 
-				"					 ELSE tc.c_denominacion \r\n" + 
-				"			  END  COMP,  \r\n" + 
-				"        COUNT(ec.tipcom_id) CANT,\r\n" + 
-				"        SUM(ec.n_total) TOTAL,\r\n" + 
-				"        ec.d_fecven FECVEN,\r\n" + 
-				"        to_char(ec.d_fecven, 'yyyy') anio,\r\n" + 
-				"        to_char(ec.d_fecven, 'mm') mes,\r\n" + 
-				"        to_char(ec.d_fecven, 'dd') dia\r\n" + 
-				"				--ec.*\r\n" + 
-				"from \r\n" + 
-				"				tctenvcon ec\r\n" + 
-				"				inner join tcmagencia a on (ec.agencia_idventa = a.agencia_id)\r\n" + 
-				"				inner join tcmtipcom tc on (ec.tipcom_id = tc.tipcom_id)\r\n" + 
+		sql = "SELECT \r\n" + 
+				"			2 RUBRO, 1 CANALID, 'COUNTER' CANAL,\r\n" + 
+				"			ec.agencia_idventa IDAGENCIA,\r\n" + 
+				"			agv.c_denominacion AGENCIA,\r\n" + 
+				"			CASE ec.tipcom_id \r\n" + 
+				"					WHEN 1 THEN 7 \r\n" + 
+				"					WHEN 2 THEN 2 \r\n" + 
+				"					WHEN 3 THEN 10 \r\n" + 
+				"			END IDCOMP,\r\n" + 
+				"			CASE ec.tipcom_id \r\n" + 
+				"					WHEN 3 THEN 'GUIA REMISION TRANSPORTISTA' \r\n" + 
+				"					ELSE tc.c_denominacion \r\n" + 
+				"			END COMP,\r\n" + 
+				"			count(ec.c_numcom) CANT,\r\n" + 
+				"			sum(ec.n_total) TOTAL,\r\n" + 
+				"			ec.d_fecven FECVEN,  \r\n" + 
+				"			to_char(ec.d_fecven, 'yyyy') anio,\r\n" + 
+				"			to_char(ec.d_fecven, 'mm') mes,\r\n" + 
+				"			to_char(ec.d_fecven, 'dd') dia \r\n" + 
+				"FROM \r\n" + 
+				"			tctenvcon ec  \r\n" + 
+				"			INNER JOIN tcmagencia agv ON (ec.agencia_idventa = agv.agencia_id) \r\n" + 
+				"			inner join tcmtipcom tc on (ec.tipcom_id = tc.tipcom_id)\r\n" + 
 				"WHERE\r\n" + 
-				"				ec.d_fecven between to_date('"+fechaDesde+"', 'dd/mm/yyyy') and to_date('"+fechaHasta+"', 'dd/mm/yyyy')\r\n" + 
-				"GROUP BY\r\n" + 
-				"        ec.d_fecven, ec.agencia_idventa, a.c_denominacion, ec.tipcom_id, tc.c_denominacion\r\n" + 
-				"ORDER BY\r\n" + 
-				"        ec.d_fecven, a.c_denominacion, tc.c_denominacion;				\r\n"; 
+				"			ec.d_fecven between to_date('" + fechaDesde + "', 'dd/MM/yyyy')  \r\n" + 
+				"			AND to_date('" + fechaHasta + "', 'dd/MM/yyyy')\r\n" + 
+				"			AND ec.tipcom_id in (1, 2, 3)\r\n" + 
+				"group by \r\n" + 
+				"			ec.d_fecven,\r\n" + 
+				"			ec.agencia_idventa,\r\n" + 
+				"			agv.c_denominacion,\r\n" + 
+				"			ec.tipcom_id,\r\n" + 
+				"			tc.c_denominacion\r\n" + 
+				"ORDER BY \r\n" + 
+				"			ec.d_fecven,\r\n" + 
+				"			ec.agencia_idventa,\r\n" + 
+				"			agv.c_denominacion,\r\n" + 
+				"			ec.tipcom_id,\r\n" + 
+				"			tc.c_denominacion;";
+//		sql = "select \r\n" + 
+//				"				2 RUBRO, 1 CANALID, 'COUNTER' CANAL, ec.agencia_idventa IDAGENCIA, \r\n" + 
+//				"				a.c_denominacion AGENCIA,\r\n" + 
+//				"				CASE ec.tipcom_id \r\n" + 
+//				"				   WHEN 1 THEN 7 \r\n" + 
+//				"					 WHEN 2 THEN 2 \r\n" + 
+//				"					 WHEN 3 THEN 10 \r\n" + 
+//				"			  END IDCOMP, \r\n" + 
+//				"				CASE ec.tipcom_id \r\n" + 
+//				"					 WHEN 3 THEN 'GUIA REMISION TRANSPORTISTA' \r\n" + 
+//				"					 ELSE tc.c_denominacion \r\n" + 
+//				"			  END  COMP,  \r\n" + 
+//				"        COUNT(ec.tipcom_id) CANT,\r\n" + 
+//				"        SUM(ec.n_total) TOTAL,\r\n" + 
+//				"        ec.d_fecven FECVEN,\r\n" + 
+//				"        to_char(ec.d_fecven, 'yyyy') anio,\r\n" + 
+//				"        to_char(ec.d_fecven, 'mm') mes,\r\n" + 
+//				"        to_char(ec.d_fecven, 'dd') dia\r\n" + 
+//				"				--ec.*\r\n" + 
+//				"from \r\n" + 
+//				"				tctenvcon ec\r\n" + 
+//				"				inner join tcmagencia a on (ec.agencia_idventa = a.agencia_id)\r\n" + 
+//				"				inner join tcmtipcom tc on (ec.tipcom_id = tc.tipcom_id)\r\n" + 
+//				"WHERE\r\n" + 
+//				"				ec.d_fecven between to_date('"+fechaDesde+"', 'dd/mm/yyyy') and to_date('"+fechaHasta+"', 'dd/mm/yyyy')\r\n" + 
+//				"GROUP BY\r\n" + 
+//				"        ec.d_fecven, ec.agencia_idventa, a.c_denominacion, ec.tipcom_id, tc.c_denominacion\r\n" + 
+//				"ORDER BY\r\n" + 
+//				"        ec.d_fecven, a.c_denominacion, tc.c_denominacion;				\r\n"; 
+				
 
 		Log.info("RESUMEN VENTAS DE ENCOMIENDAS: "+sql);
 
