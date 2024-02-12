@@ -684,7 +684,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 	}
 
 	/**
-	 * Carga la informaci�n de la reserva para la confirmaci�n.
+	 * Carga la informacion de la reserva para la confirmacion.
 	 */
 	private void loadInformacion() {
 		try {
@@ -3113,6 +3113,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 											/*Begin 25/10/2016 - jabanto*/
 											List<VentaPasaje>listVentaPasaje= new ArrayList<>();
 											listVentaPasaje.add(ventaPasaje);
+											//Comentado por MAOE 05/02/2024
 											WSFE.sendVenta(listVentaPasaje, wndConfirmacion, true, notaCredito, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 						
 						

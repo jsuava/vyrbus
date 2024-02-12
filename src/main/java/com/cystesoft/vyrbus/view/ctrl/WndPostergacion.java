@@ -1726,7 +1726,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 							if(gastoAdmin!=null)
 								listVentaPasaje.add(gastoAdmin);
 							
-							//MAOE 23/06/2023
+							//MAOE 05/02/2024
 							if(listVentaPasaje.size()>0)
 								WSFE.sendVenta(listVentaPasaje, wndPostergacion, true, notaCredito, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 							

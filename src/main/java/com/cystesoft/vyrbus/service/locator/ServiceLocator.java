@@ -943,6 +943,11 @@ public class ServiceLocator {
 	public static TarifaRegularAudManager getTarifaRegularAudManager(){
 		return (TarifaRegularAudManager) SpringUtil.getBean("tarifaRegularAudManager", TarifaRegularAudManager.class);
 	}
+	
+/*	public static TarifaRegularAudManager getTarifaRegularAudManager(){
+		return (TarifaRegularAudManager) SpringUtil.getBean("tarifaRegularAudManager", TarifaRegularAudManager.class);
+	}
+	*/
 
 	public static VentaServicioEspecialManager getVentaServicioEspecialManager() {
 		return (VentaServicioEspecialManager) SpringUtil.getBean("ventaServicioEspecialManager", VentaServicioEspecialManager.class);

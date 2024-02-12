@@ -128,7 +128,7 @@ public class WndTipoOperacion extends WndBase{
 						TranscarLiquidacionTurno liquidacionTurnoCarga= new TranscarLiquidacionTurno();
 						liquidacionTurnoCarga.setOperacion(1);
 						liquidacionTurnoCarga.setFechaApertura(fechaLiquidacion);
-						//MAOE 23/06/2023
+						//MAOE 05/02/2024
 						TranscarUsuarioPersonal usuarioPersonal = ServiceLocator.getTranscarWebManager().buscarUsuario(getUsuario().getLogin());
 						if(usuarioPersonal==null) {
 							DlgMessage.information("No se puede aperturar la liqudiaciï¿½n de Carga, debido a que el usuario "+getUsuario().getLogin()+" no existe en el sistema de carga.");
@@ -137,11 +137,11 @@ public class WndTipoOperacion extends WndBase{
 
 //						Integer agenciaId = ServiceLocator.getTranscarWebManager().buscarIdAgenciaByCodigoAgenciaPasajes(getAgencia().getId().toString());
 //						if(agenciaId ==null) {
-//							DlgMessage.information("No se puede aperturar la liqudiaciï¿½n de Carga, debido a que la agencia "+getAgencia().getDenominacion()+" no existe en el sistema de carga.");
+//							DlgMessage.information("No se puede aperturar la liqudiación de Carga, debido a que la agencia "+getAgencia().getDenominacion()+" no existe en el sistema de carga.");
 //							return;
 //						}
 						
-						//MAOE 23/06/2023
+						//MAOE 05/02/2024
 						liquidacionTurnoCarga.setTranscarUsuarioPersonal(usuarioPersonal);
 						liquidacionTurnoCarga.setAgenciaId(getAgencia().getId());
 						UtilData.auditarRegistro(liquidacionTurnoCarga, getUsuario(), Executions.getCurrent());

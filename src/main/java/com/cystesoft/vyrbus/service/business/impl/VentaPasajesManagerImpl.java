@@ -269,7 +269,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 					throw new TiempoExpiracionBloqueoException();
 			}
 
-			/*	Si la operaciï¿½n a realizar es una venta generar boleto.	*/
+			/*	Si la operación a realizar es una venta generar boleto.	*/
 			/* Valida si no es un servicio especial*/
 			if(!(ventaPasaje.getServicioEspecialFactura())){
 				if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA) ||
@@ -286,7 +286,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 						ventaPasaje.setNumeroBoleto(controlEspecieValorada.toString());
 					}
 					/*	Validando que el numero del comprobante no exista en la DB 	*/
-					if(!(ventaPasaje.getServicioEspecialFactura())){ //Solo se omite esta validaciï¿½n en el caso de los servicios especiales con Factura.
+					if(!(ventaPasaje.getServicioEspecialFactura())){ //Solo se omite esta validación en el caso de los servicios especiales con Factura.
 						if(isBoletoDuplicado(ventaPasaje.getNumeroBoleto(), ventaPasaje.getTipoComprobante().getId()))
 							throw new NumeroBoletoDuplicadoException();
 					}
@@ -303,7 +303,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 					ventaPasaje.setNumeroBoleto(null);
 			}
 			
-			//Valida si es una confirmaciÃ³n de una reserva - jabanto - 23/02/2023
+			//Valida si es una confirmación de una reserva - jabanto - 23/02/2023
 			if(ventaPasaje.getVentaPasaje()!=null && ventaPasaje.getVentaPasaje().getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA)) {
 				//Anula la reserva
 				VentaPasaje ventaReserva = getVentaPasajesDAO().buscarPorId(ventaPasaje.getVentaPasaje().getId());
@@ -352,7 +352,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				getTmpOcupacionAsientosDAO().desbloquearAsiento(tmp);
 			}
 
-			/*	Si se trata de un PAXFREE y es una Venta -- no entra cuando es una emisiï¿½n de cortesia por puntos o cumpleaï¿½os desde el modulo "beneficios paxfree"	*/
+			/*	Si se trata de un PAXFREE y es una Venta -- no entra cuando es una emisión de cortesia por puntos o cumpleaños desde el modulo "beneficios paxfree"	*/
 			if(ventaPasaje.getPasajero().isPaxFree() && ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA)){
 				PasajeroFrecuente paxfree = getPasajeroFrecuenteDAO().buscarPaxFree(ventaPasaje.getPasajero().getId(), Constantes.TRUE_VALUE);
 				Ruta ruta = getRutaDAO().buscarPorId(new Long(ventaPasaje.getRuta().getId()));
@@ -396,7 +396,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				}
 			}
 
-			/* Valida si el DNI del pasajero es o no valido segï¿½n validacion previa con el reniec  02/06/2015*/
+			/* Valida si el DNI del pasajero es o no valido según validacion previa con el reniec  02/06/2015*/
 			Util.validarValidacionDNIReniec(ventaPasaje);
 
 			result = Constantes.CORRECT;
@@ -822,20 +822,22 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 
 				//Primero anula en el WSFE
 				//Comentado temporalmente por MAOE para pruebas sin Fact Electronica
-				//MAOE 23/06/2023
+				//MAOE 05/02/2024
 				Result result=WSFE.anularComprobante(movimiento);
-				if(result.isIsCorrect()) //{
+				if(result.isIsCorrect()) {
 					getVentaPasajesDAO().update(movimiento);
+				
+					//Insertar el tracking de anulacion
 
 					/*Activa el comprobante asociado a la nota de credito o debito*/
 //					if(movimiento.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO ||
 //							movimiento.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_DEBITO){
 //					}
-//				}
+				}
 			
-			//MAOE 23/06/2023
+			//MAOE 05/02/2024
 				else
-					throw new Exception("No se pudo realizar la anulaciï¿½n, por favor vuelva a intentarlo. (F.E.)");
+					throw new Exception("No se pudo realizar la anulacion, por favor vuelva a intentarlo. (F.E.)");
 			}else{
 				/*Este debe ser anulado, pero con una nota de credito*/
 				TipoNota tipoNota=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_ANULACION);
