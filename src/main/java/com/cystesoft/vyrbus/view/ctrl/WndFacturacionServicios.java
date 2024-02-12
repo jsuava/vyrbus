@@ -1,8 +1,8 @@
 /**
  * Proyecto		: VYRBUS
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José Avalos
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Avalos
  * Fecha		: 24 jun. 2021
  * Hora			: 20:41:09
  */
@@ -301,7 +301,7 @@ public class WndFacturacionServicios extends WndBase {
 			Image imgAnular = new Image();
 			imgAnular.setId(ventaPasaje.getId().toString());
 			imgAnular.setSrc("/resources/mp_anular.png");
-			imgAnular.setTooltiptext("Anular documento electrónico");
+			imgAnular.setTooltiptext("Anular documento electrï¿½nico");
 			imgAnular.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e) {
@@ -351,7 +351,7 @@ public class WndFacturacionServicios extends WndBase {
 			else if(txtGlosa.getText().trim().equals(""))
 				throw new DenominacionNullException();
 
-			Messagebox.show("Se va registrar la Venta, ¿Desea continuar?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+			Messagebox.show("Se va registrar la Venta, ï¿½Desea continuar?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e) {
 					try {
@@ -444,8 +444,11 @@ public class WndFacturacionServicios extends WndBase {
 							servicioEspecial.setUsuarioHardware(getUsuarioHardware());
 							servicioEspecial.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 
-							int result = ServiceLocator.getVentaPasajesManager().guardarServicioEspecial(servicioEspecial);
+							int result = ServiceLocator.getVentaPasajesManager().guardarServicioEspecial(servicioEspecial, false);
 
+							//Actualiza el correlativo - 22/01/2024 - jabanto
+							ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(servicioEspecial, true);
+							
 							servicioEspecial = ServiceLocator.getVentaPasajesManager().buscarVentaById(servicioEspecial.getId());
 
 							if(servicioEspecial.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA ||
@@ -454,7 +457,7 @@ public class WndFacturacionServicios extends WndBase {
 
 								List<VentaPasaje> listVentaPasajes= new ArrayList<>();
 								listVentaPasajes.add(servicioEspecial);
-								//Aqui se envia el comprobante al servidor de Facturación Electrónica
+								//Aqui se envia el comprobante al servidor de Facturaciï¿½n Electrï¿½nica
 								/*Comentado para lanzar a pruebas Transmar*/
 								WSFE.sendVenta(listVentaPasajes, wndFacturacionServicios, printComprobante, null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 							}
@@ -629,7 +632,7 @@ public class WndFacturacionServicios extends WndBase {
 		label = new Label();
 		row.appendChild(label);
 
-		label = new Label("N° COMPROBANTE :");
+		label = new Label("Nï¿½ COMPROBANTE :");
 		label.setStyle("color:blue; font-weight: bold;");
 		row.appendChild(label);
 
@@ -1230,7 +1233,7 @@ public class WndFacturacionServicios extends WndBase {
 
 		row=new Row();
 		row.setSpans("1,4");
-		label = new Label("MOTIVO ANULACIÓN (*) :");
+		label = new Label("MOTIVO ANULACIï¿½N (*) :");
 		row.appendChild(label);
 		final Textbox txtMotivoAnulacion = new Textbox();
 		txtMotivoAnulacion.setWidth("314px");
@@ -1325,12 +1328,23 @@ public class WndFacturacionServicios extends WndBase {
 
 		liquidacion = UtilData.estadoLiquidacionUsuario(getUsuario(), getAgencia());
 
-		VentasNotas ventasNotas= ServiceLocator.getVentaPasajesManager().procesarAnulacionServicioEspecial(lstVentas, tipoAnulacion, anularMovimiento, this.liquidacion);
+		VentasNotas ventasNotas= ServiceLocator.getVentaPasajesManager().procesarAnulacionServicioEspecial(lstVentas, tipoAnulacion, anularMovimiento, this.liquidacion, false);
 		/*Realiza el envio de las nuevas ventas generadas al Servidor F.E.*/
 		List<VentaPasaje> lstVentasenviar= new ArrayList<>();
 		for(VentaPasaje venta:ventasNotas.getListVentas()){
+			
+			//Actualiza correlativo - jabanto - 22/01/2024
+			ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(venta, true);			
+			
 			VentaPasaje envioVenta=ServiceLocator.getVentaPasajesManager().buscarVentaById(venta.getId());
 			lstVentasenviar.add(envioVenta);
+		}
+		
+		if(ventasNotas.getListNotasCredito()!=null) {
+			for(VentaPasaje notaCredito: ventasNotas.getListNotasCredito()) {
+				//Actualiza correlativo - jabanto - 22/01/2024
+				ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);				
+			}			
 		}
 		
 		/*	COMENTADO PARA LANZAR EL ENTORNO DE PRUEBAS EN TRANSMAR	*/
@@ -1342,7 +1356,7 @@ public class WndFacturacionServicios extends WndBase {
 //			WSFE.sendNota(notaCredito);
 //		}
 		
-		DlgMessage.information("El Proceso de anulación termino correctamente");
+		DlgMessage.information("El Proceso de anulaciï¿½n termino correctamente");
 		onSearch();
 		window.onClose();
 	}
@@ -1428,7 +1442,7 @@ public class WndFacturacionServicios extends WndBase {
 		label = new Label();
 		row.appendChild(label);
 
-		label = new Label("N° COMPROBANTE :");
+		label = new Label("Nï¿½ COMPROBANTE :");
 		row.appendChild(label);
 
 		label = new Label();

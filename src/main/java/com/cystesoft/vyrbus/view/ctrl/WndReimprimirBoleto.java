@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: Clase que controla la venta para realizar la reimpresion de boletos.
- * Autor		: José Sullo Avalos
+ * Descripciï¿½n	: Clase que controla la venta para realizar la reimpresion de boletos.
+ * Autor		: Josï¿½ Sullo Avalos
  * Fecha		: 07/02/2013
  */
 package com.cystesoft.vyrbus.view.ctrl;
@@ -104,7 +104,7 @@ public class WndReimprimirBoleto extends WndBase {
 	public void onCreate() throws Exception {
 		try{
 
-			/*Valida si el usuario tiene una liquidación aperturada*/			
+			/*Valida si el usuario tiene una liquidaciï¿½n aperturada*/			
 			if(getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION)==null)
 				throw new LiquidacionNullException();
 			
@@ -288,7 +288,7 @@ public class WndReimprimirBoleto extends WndBase {
 
 		groupbox = new Groupbox();
 		groupbox.setClosable(false);
-		caption = new Caption("Información del comprobante");
+		caption = new Caption("Informaciï¿½n del comprobante");
 		groupbox.appendChild(caption);
 
 		/*	Columna 1	*/
@@ -558,16 +558,19 @@ public class WndReimprimirBoleto extends WndBase {
 										UtilData.auditarRegistro(gastoAdmin, getUsuario(), Executions.getCurrent());
 										
 										//Guarda el gasto admin
-										ServiceLocator.getVentaPasajesManager().generarGastoAdministrativo(gastoAdmin, true);
+										ServiceLocator.getVentaPasajesManager().generarGastoAdministrativo(gastoAdmin, true, false);
+										
+										//Actualiza el correlativo - jabanto - 22/01/2024
+										ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(gastoAdmin, true);	
 										
 										//Consulta el gasto admin guardado
 										VentaPasaje gastoAdminGenerado = ServiceLocator.getVentaPasajesManager().buscarVentaById(gastoAdmin.getId());
 										
-										//Gasto administrativo que será enviado a sunat
+										//Gasto administrativo que serï¿½ enviado a sunat
 										List<VentaPasaje>listGastoAdmin= new ArrayList<>();
 										listGastoAdmin.add(gastoAdminGenerado);
 										
-										//Venta que será reimpresa
+										//Venta que serï¿½ reimpresa
 										List<VentaPasaje>listVentasSoloReimpresion= new ArrayList<>();
 										listVentasSoloReimpresion.add(ventaOriginal);
 										
@@ -700,7 +703,7 @@ public class WndReimprimirBoleto extends WndBase {
 	}
 
 	/**
-	 * Realiza una validación del Tipo de Forma de Pago, para habilitar o deshabilitar algunos controles.
+	 * Realiza una validaciï¿½n del Tipo de Forma de Pago, para habilitar o deshabilitar algunos controles.
 	 * @throws Exception
 	 */
 	public void onValidateTipoFormaPago(){

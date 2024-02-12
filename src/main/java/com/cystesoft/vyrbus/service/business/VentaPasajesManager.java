@@ -29,7 +29,7 @@ public interface VentaPasajesManager {
 	 * @return -1=Fallo, 1=Exito
 	 * @throws Exception
 	 */
-	public int guardarVenta(VentaPasaje ventaPasaje, boolean isFechaAbierta, boolean generaControl, boolean validaBloqueo, boolean validarDuplicidadAsiento)throws Exception;
+	public int guardarVenta(VentaPasaje ventaPasaje, boolean isFechaAbierta, boolean generaControl, boolean validaBloqueo, boolean validarDuplicidadAsiento, boolean ejecutarSeqByCorrelativo)throws Exception;
 	/**
 	 * Guarda la operacion de la venta.
 	 * @param lstVentas			: Objeto que contiene la venta de ida y retorno.
@@ -37,7 +37,7 @@ public interface VentaPasajesManager {
 	 * @return -1=Fallo, 1=Exito
 	 * @throws Exception
 	 */
-	public int guardarVentaIdaVuelta(List<VentaPasaje> lstVentas, boolean generaControl) throws Exception;
+	public int guardarVentaIdaVuelta(List<VentaPasaje> lstVentas, boolean generaControl, boolean ejecutarSeqByCorrelativo) throws Exception;
 	/**
 	 * Realiza la busqueda de las ventas para el armado del mapa del bus.
 	 * @param idItinerario	: Identificador del itinerario.
@@ -122,14 +122,14 @@ public interface VentaPasajesManager {
 	 * @return -1=Fallo, 1=Exito.
 	 * @throws Exception
 	 */
-	public VentaPasaje anularMovimiento(VentaPasaje movimiento, boolean forzarNotaCredito)throws Exception;
+	public VentaPasaje anularMovimiento(VentaPasaje movimiento, boolean forzarNotaCredito, boolean ejecutarSeqByCorrelativo)throws Exception;
 	/**
 	 * Realiza la confirmaci�n de un Boleto Fecha Abierta.
 	 * @param ventaPasaje	: Boleto que se desea confirmar.
 	 * @return	: -1=Fallo, 1=Exito.
 	 * @throws Exception
 	 */
-	public VentaPasaje confirmarFechaAbierta(VentaPasaje ventaPasaje, TipoNota tipoNotaCredito )throws Exception;
+	public VentaPasaje confirmarFechaAbierta(VentaPasaje ventaPasaje, TipoNota tipoNotaCredito, boolean ejecutarSeqByCorrelativo )throws Exception;
 	/**
 	 * Realiza la busqueda de las ventas.
 	 * @param idOrigen			: Identificador del Origen.
@@ -149,7 +149,7 @@ public interface VentaPasajesManager {
 	 * @return nota de credito
 	 * @throws Exception
 	 */
-	public VentaPasaje postergarBoleto(VentaPasaje boletoPostergar,Boolean validaBloqueo, VentaPasaje gastoAdministrativo)throws Exception;
+	public VentaPasaje postergarBoleto(VentaPasaje boletoPostergar,Boolean validaBloqueo, VentaPasaje gastoAdministrativo, boolean ejecutarSeqByCorrelativo)throws Exception;
 	/**
 	 * Realiza la reimpresion de un boleto por perdida o deterioro
 	 * @param ventaOriginal		: Venta original sin ninguna modificaci�n mas que el Tipo de Movimiento.
@@ -157,7 +157,7 @@ public interface VentaPasajesManager {
 	 * @return -1=Fallo, 1=Exito.
 	 * @throws Exception
 	 */
-	public int reimprimirBoleto(VentaPasaje ventaOriginal, VentaPasaje ventaReimprimir)throws Exception;
+	public int reimprimirBoleto(VentaPasaje ventaOriginal, VentaPasaje ventaReimprimir, boolean ejecutarSeqByCorrelativo)throws Exception;
 	/**
 	 * Busca las ventas para realizar la devolucion
 	 * @param numeroDocumento	: Numero de Documento.
@@ -173,7 +173,7 @@ public interface VentaPasajesManager {
 	 * @return  nota de credito
 	 * @throws Exception
 	 */
-	public VentaPasaje devolucionBoleto(VentaPasaje venta, VentaPasaje gastoAdministrativo)throws Exception;
+	public VentaPasaje devolucionBoleto(VentaPasaje venta, VentaPasaje gastoAdministrativo, boolean ejecutarSeqByCorrelativo)throws Exception;
 
 	/**
 	 * Busca el avance semanal de las ventas.
@@ -479,7 +479,7 @@ public interface VentaPasajesManager {
 	 * @return notaCredito generada
 	 * @throws Exception
 	 */
-	public VentaPasaje generarNotaCredito(VentaPasaje ventaAplica, TipoNota tipoNota,boolean anularMovimiento,boolean copyCanalOriginal)throws Exception;
+	public VentaPasaje generarNotaCredito(VentaPasaje ventaAplica, TipoNota tipoNota,boolean anularMovimiento,boolean copyCanalOriginal, boolean ejecutarSeqByCorrelativo)throws Exception;
 	/**
 	 * Genera una nota de credito a un determinado comprobante
 	 * @param ventaAplica : Instancia de la venta a quien se va aplicar la nota de credito
@@ -490,7 +490,7 @@ public interface VentaPasajesManager {
 	 * @return NotaCredito generada
 	 * @throws Exception
 	 */
-	public VentaPasaje generarNotaCredito(VentaPasaje ventaAplica, TipoNota tipoNota,boolean anularMovimiento,boolean copyCanalOriginal, Liquidacion liquidacion)throws Exception;
+	public VentaPasaje generarNotaCredito(VentaPasaje ventaAplica, TipoNota tipoNota,boolean anularMovimiento,boolean copyCanalOriginal, Liquidacion liquidacion, boolean ejecutarSeqByCorrelativo)throws Exception;
 	/**
 	 *
 	 * @param gastoAdministrativo
@@ -498,7 +498,7 @@ public interface VentaPasajesManager {
 	 * @return
 	 * @throws Exception
 	 */
-	public int generarGastoAdministrativo(VentaPasaje gastoAdministrativo, Boolean generarCorrelativo)throws Exception;
+	public int generarGastoAdministrativo(VentaPasaje gastoAdministrativo, Boolean generarCorrelativo, boolean ejecutarSeqByCorrelativo)throws Exception;
 //	/**
 //	 * Proceso masivo que aplica notas de credito a un lista de ventas, con la posibilidad de generar un nuevo comprobante de venta
 //	 * @param listVentas	: Lista de ventas a las cuales se le debe aplicar las notas de credito
@@ -517,7 +517,7 @@ public interface VentaPasajesManager {
 	 * @return Class con la ventas y notas de credito generadas
 	 * @throws Exception
 	 */
-	public VentasNotas procesarAnulacionBy(List<VentaPasaje> lstVentas, int tipoAnulacion, boolean anularMovimiento, Liquidacion liquidacion)throws Exception;
+	public VentasNotas procesarAnulacionBy(List<VentaPasaje> lstVentas, int tipoAnulacion, boolean anularMovimiento, Liquidacion liquidacion, boolean ejecutarSeqByCorrelativo)throws Exception;
 	/**
 	 * Realiza la busqueda del avance de ventas
 	 * @param idOrigen		: Origen de los Itinerarios
@@ -588,7 +588,7 @@ public interface VentaPasajesManager {
 	 * @return
 	 * @throws Exception
 	 */
-	public int guardarServicioEspecial(VentaPasaje ventaPasaje) throws Exception;
+	public int guardarServicioEspecial(VentaPasaje ventaPasaje, boolean ejecutarSeqByCorrelativo) throws Exception;
 	/**
 	 * Procesa las anulaciones de los Servicios de traslado de personal
 	 * @param lstVentas			: Lista de ventas que se desea anular
@@ -598,7 +598,7 @@ public interface VentaPasajesManager {
 	 * @return
 	 * @throws Exception
 	 */
-	public VentasNotas procesarAnulacionServicioEspecial(List<VentaPasaje> lstVentas,int tipoAnulacion, boolean anularMovimiento, Liquidacion liquidacion) throws Exception;
+	public VentasNotas procesarAnulacionServicioEspecial(List<VentaPasaje> lstVentas,int tipoAnulacion, boolean anularMovimiento, Liquidacion liquidacion, boolean ejecutarSeqByCorrelativo) throws Exception;
 	/**
 	 * Busca los comprobantes emitidos por Servicos Especiales
 	 * @param numComprobante	: Numero del comprobante
@@ -666,6 +666,7 @@ public interface VentaPasajesManager {
 	 */
 	public Integer postergarFAMasivo(List<VentaPasaje> lstVentas, String motivo, String usuario) throws Exception;
 	/**
+<<<<<<< HEAD
 	 * Realiza la busqueda de las transacciones de Venta Web
 	 * @param fInicio
 	 * @param fFin
@@ -681,4 +682,13 @@ public interface VentaPasajesManager {
 	 * @return
 	 */
 	public List<VentaPasaje> buscarVentasByNumeroOrden(String numorden);
+=======
+	 * Realiza la actualización del correlativo al comprobante de venta
+	 * @param VentaPasaje: Instancia del comprobante que se va a actualizar.
+	 * @return Indca si la actualización fue o no exitosa.
+	 * @param ejecutarSeqByCorrelativo : Indica si debe  no ejecutar el sequenciador para generar el correlativo
+	 * @throws Exception
+	 */
+	public Object actualizarCorrelativoComprobante(Object object, Boolean ejecutarSeqByCorrelativo) throws Exception;
+>>>>>>> 4e466e2c2ec8b24349f4f7745256760b8c94e57f
 }

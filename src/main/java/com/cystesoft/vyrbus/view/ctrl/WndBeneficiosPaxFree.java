@@ -492,13 +492,13 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 
 			List<PuntosPasajeroFrecuente>lstPuntaje=null;
 
-			// Si la forma de pago es por Cumpleaños.
+			// Si la forma de pago es por Cumpleaï¿½os.
 			if (tipoFormaPago.getId().equals(Constantes.ID_TIPFORPAG_CUMPLEANIOS)) {
 
 				if (!(validadFechaCumpleanios(null)))
 					throw new RangoCanjeCumpleaniosException();
 
-				// Valida si el pasajero tiene algún boleto cajeado por cumpleanios en el anio ingresado.
+				// Valida si el pasajero tiene algï¿½n boleto cajeado por cumpleanios en el anio ingresado.
 				Integer anio = itAnioCortesia.getValue();
 				for (int x = 0; x < listViajesPax.getItems().size(); x++) {
 					Listitem listitem = listViajesPax.getItemAtIndex(x);
@@ -712,8 +712,10 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 			ventaPasaje.setEsRemoto(false);
 
 			UtilData.auditarRegistro(ventaPasaje, false, getUsuario(),Executions.getCurrent());
-			ServiceLocator.getVentaPasajesManager().guardarVenta(ventaPasaje, false, true, true,true);
-
+			ServiceLocator.getVentaPasajesManager().guardarVenta(ventaPasaje, false, true, true,true, false);
+			
+			//Actualiza el correlativo - jabanto - 22/01/2024
+			ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(ventaPasaje, true);
 
 			/*Begin 27/10/2016 - jabanto*/
 			List<VentaPasaje> listVentaPasaje= new ArrayList<>();
@@ -993,7 +995,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 	}
 
 	/**
-	 * Carga Rutas, según la Ciudad Origen.
+	 * Carga Rutas, segï¿½n la Ciudad Origen.
 	 *
 	 * @throws Exception
 	 */
@@ -1046,7 +1048,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 				if (tipoFormaPago.getId().equals(Constantes.ID_TIPFORPAG_CUMPLEANIOS)) {
 					ArrayList<Cortesia> lstCortesia = ServiceLocator.getCortesiaManager().buscarBoletosPaxFreXTipoFormaPago(pasajero.getId(), tipoFormaPago.getId());
 					gbxViajesPax.setVisible(true);
-					cpViajesPax.setLabel("Historial de viajes por cumpleaños.");
+					cpViajesPax.setLabel("Historial de viajes por cumpleaï¿½os.");
 					cpViajesPax.setStyle("color:red ");
 					lbCantViajesPax.setValue(String.valueOf(lstCortesia.size()));
 					lbCantViajesPax.setStyle("color:red");
@@ -1087,7 +1089,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 
 
 	/**
-	 * Realiza la busqueda, según los parametros elejidos por el usuario.
+	 * Realiza la busqueda, segï¿½n los parametros elejidos por el usuario.
 	 */
 	public void buscarPasajero() {
 		try {
@@ -1220,7 +1222,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 			//lbFechaNacimiento.setValue(pasajero.getFechaNacimiento()!=null?Constantes.FORMAT_DATE.format(pasajero.getFechaNacimiento()):"");
 			lbUbigeo.setValue(ServiceLocator.getUbigeoManager().ubicacionGeografica(pasajero.getUbigeo()));
 			lbFechaNacimiento.setValue(pasajero.getFechaNacimiento() != null ? pasajero.getFechaNacimiento() : "");
-			/* Validación PAXFREE */
+			/* Validaciï¿½n PAXFREE */
 			if (pasajero.getPasajeroFrecuente() != null)
 				if (pasajero.getPasajeroFrecuente().getEstado().equals(Constantes.TRUE_VALUE)){
 
@@ -1252,7 +1254,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 	}
 
 	/**
-	 * Carga cortecias emitidas, según el resultado de la busqueda.
+	 * Carga cortecias emitidas, segï¿½n el resultado de la busqueda.
 	 *
 	 * @param lstCortecia
 	 *            : Array con las cortecias a mostrar en el Listbox
@@ -1466,7 +1468,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 	}
 
 	/**
-	 * Activa o desactiva el botón Buscar pasajero
+	 * Activa o desactiva el botï¿½n Buscar pasajero
 	 *
 	 * @param activar
 	 */
@@ -1522,7 +1524,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 		itAnioCortesia.setText("");
 	}
 	/**
-	 * Carga los tipos de pago que guardan relación con la forma de fago cortesia.
+	 * Carga los tipos de pago que guardan relaciï¿½n con la forma de fago cortesia.
 	 * @throws Exception
 	 */
 	private void cargarTipoFormaPago() throws Exception{
@@ -1558,14 +1560,14 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 	 */
 	@SuppressWarnings("deprecation")
 	private boolean validadFechaCumpleanios(Date fechaViaje) throws Exception{
-		/*Valida que este dentro del periodo permitido(segun parametro configurable). Ejemplo 2 meses antes o despues del cumpleaños */
+		/*Valida que este dentro del periodo permitido(segun parametro configurable). Ejemplo 2 meses antes o despues del cumpleaï¿½os */
 		long rangoPermitido = (Constantes.MILISEGUNDOS_X_DIA * Constantes.RANGO_CANJE_CUMPLEANIOS);
 		Date fCumpleanios = new Date();
 		fCumpleanios = Constantes.FORMAT_DATE.parse(pasajero.getFechaNacimiento());
 		fCumpleanios.setYear(Constantes.FORMAT_YEAR.parse(itAnioCortesia.getValue().toString()).getYear());
 		Date fActual = (Constantes.FORMAT_DATE.parse(new MyTime().dateServer()));
 
-		// El canje es despues de la fecha de cumpleaños.
+		// El canje es despues de la fecha de cumpleaï¿½os.
 		if (fCumpleanios.getTime() > fActual.getTime()) {
 			long rangoActual = fCumpleanios.getTime()- fActual.getTime();
 			if (rangoActual > rangoPermitido)
@@ -1578,7 +1580,7 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 					return false;
 			}
 
-		} else {//El canje es antes de la fecha de cumpleaños.
+		} else {//El canje es antes de la fecha de cumpleaï¿½os.
 			long rangoActual = fActual.getTime()-fCumpleanios.getTime();
 			if (rangoActual > rangoPermitido)
 				return false;
@@ -1795,12 +1797,12 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 		}else{
 			imgRefreshBoleto.setSrc(imgEnabledRefresh);
 			imgRefreshBoleto.setStyle("cursor:pointer");
-			imgRefreshBoleto.setTooltiptext("Haga click aqui para refrescar el Número de Boleto.");
+			imgRefreshBoleto.setTooltiptext("Haga click aqui para refrescar el Nï¿½mero de Boleto.");
 		}
 	}
 
 	/**
-	 * Permite liberar los asientos cuando se cambia de pestaña dentro de la venta
+	 * Permite liberar los asientos cuando se cambia de pestaï¿½a dentro de la venta
 	 */
 	public void liberarAsientos(){
 		try{

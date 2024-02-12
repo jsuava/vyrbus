@@ -472,7 +472,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 				@Override
 				public void onEvent(Event e) throws Exception {
 					if(e.getName().equals("onYes")){
-						//valida si el usuario autorizador tiene configurado la confirmación mediante password.
+						//valida si el usuario autorizador tiene configurado la confirmaciï¿½n mediante password.
 						if(cmbAutorizadorCortesia.getSelectedItem().getValue() instanceof AutorizadorCortesia){
 							AutorizadorCortesia autoriCort= cmbAutorizadorCortesia.getSelectedItem().getValue();
 							if(autoriCort.getPassword()!=null)
@@ -595,7 +595,10 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 		}
 
 		UtilData.auditarRegistro(ventaPasaje, false, getUsuario(),Executions.getCurrent());
-		ServiceLocator.getVentaPasajesManager().guardarVenta(ventaPasaje, true, true, false, true);
+		ServiceLocator.getVentaPasajesManager().guardarVenta(ventaPasaje, true, true, false, true, false);
+		
+		//Actualiza el correlativo - jabanto - 22/01/2024
+		ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(ventaPasaje, true);
 
 		/* Guarda la cortesia */
 		cortesia.setTipoFormaPago(tipoFormaPago);
@@ -675,7 +678,12 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 				UtilData.auditarRegistro(movimiento, true, getUsuario(), Executions.getCurrent());
 				tipoMovimiento.setId(Constantes.ID_TIPMOV_ANULACION_SISTEMA);
 				movimiento.setTipoMovimiento(tipoMovimiento);
-				ServiceLocator.getVentaPasajesManager().anularMovimiento(movimiento,false);
+				VentaPasaje notaCredito = ServiceLocator.getVentaPasajesManager().anularMovimiento(movimiento,false, false);
+				
+				if(notaCredito!=null) {
+					//Actualiza el correlativo - jabanto - 22/01/2024
+					ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);
+				}
 
 				limpiaControlesPasajero();
 			} else {
@@ -723,7 +731,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 	}
 
 	/**
-	 * Carga Rutas, según la Ciudad Origen.
+	 * Carga Rutas, segï¿½n la Ciudad Origen.
 	 *
 	 * @throws Exception
 	 */
@@ -779,7 +787,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 
 
 	/**
-	 * Realiza la busqueda, según los parametros elejidos por el usuario.
+	 * Realiza la busqueda, segï¿½n los parametros elejidos por el usuario.
 	 */
 	public void buscarPasajero() {
 		try {
@@ -1050,7 +1058,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 	}
 
 	/**
-	 * Carga cortecias emitidas, según el resultado de la busqueda.
+	 * Carga cortecias emitidas, segï¿½n el resultado de la busqueda.
 	 *
 	 * @param lstCortecia
 	 *            : Array con las cortecias a mostrar en el Listbox
@@ -1296,7 +1304,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 	 * MANTENIMIENTO DEL PASAJERO
 	 */
 	/**
-	 * Pasajero Nuevo o edisión del mismo.
+	 * Pasajero Nuevo o edisiï¿½n del mismo.
 	 *
 	 * @throws Exception
 	 */
@@ -1305,7 +1313,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 			if (action == ACTION_NEW) {// Pax Nuevo.
 				clearControsMantPax();
 				Util.seleccionarValorItemCombo(TipoDocumento.class, cmbDocumentoIdentificacion, Constantes.ID_TIPDOC_DNI);
-			} else {// Edición del Pax.
+			} else {// Ediciï¿½n del Pax.
 				if (pasajero == null)
 					throw new PasajeroException();
 				Util.seleccionarValorItemCombo(TipoDocumento.class,cmbDocumentoIdentificacion, pasajero.getTipoDocumento().getId());
@@ -1487,7 +1495,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 	}
 
 	/**
-	 * Activa o Inactiva el botón Nuevo pasajero
+	 * Activa o Inactiva el botï¿½n Nuevo pasajero
 	 *
 	 * @param activar
 	 */
@@ -1508,7 +1516,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 	}
 
 	/**
-	 * Activa o inactiva el botón Editar Pasajero.
+	 * Activa o inactiva el botï¿½n Editar Pasajero.
 	 *
 	 * @param activar
 	 */
@@ -1530,7 +1538,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 	}
 
 	/**
-	 * Activa o desactiva el botón Buscar pasajero
+	 * Activa o desactiva el botï¿½n Buscar pasajero
 	 *
 	 * @param activar
 	 */
@@ -1583,7 +1591,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 	}
 
 	/**
-	 * Carga los tipos de pago que guardan relación con la forma de fago cortesia.
+	 * Carga los tipos de pago que guardan relaciï¿½n con la forma de fago cortesia.
 	 * @throws Exception
 	 */
 	private void cargarTipoFormaPago() throws Exception{
@@ -1651,7 +1659,7 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 
 		Div div= new Div();
 		div.setAlign("center");
-		Label label= new Label("Debe de ingresar el Password de autorización para la emisión de la Cortersia");
+		Label label= new Label("Debe de ingresar el Password de autorizaciï¿½n para la emisiï¿½n de la Cortersia");
 		label.setSclass("label-size11-bold");
 		div.appendChild(label);
 		row=new Row();

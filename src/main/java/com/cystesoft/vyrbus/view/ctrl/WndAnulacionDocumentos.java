@@ -660,16 +660,26 @@ public class WndAnulacionDocumentos extends WndBase{
 				anularMovimiento=ckbxGeneraMovimientoSistema.isChecked();
 		}
 
-		VentasNotas ventasNotas= ServiceLocator.getVentaPasajesManager().procesarAnulacionBy(lstVentas, tipoAnulacion, anularMovimiento, this.liquidacion);
+		VentasNotas ventasNotas= ServiceLocator.getVentaPasajesManager().procesarAnulacionBy(lstVentas, tipoAnulacion, anularMovimiento, this.liquidacion, false);
 		/*Realiza el envio de las nuevas ventas generadas al Servidor F.E.*/
 		List<VentaPasaje> lstVentasenviar= new ArrayList<>();
 		for(VentaPasaje venta:ventasNotas.getListVentas()){
+			
+			//Actualiza el correlativo - jabanto - 22/01/2024
+			ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(venta, true);
+			
 			VentaPasaje envioVenta=ServiceLocator.getVentaPasajesManager().buscarVentaById(venta.getId());
 			lstVentasenviar.add(envioVenta);
 		}
+		
+		//Actualiza el correlativo de las NC - jabanto - 22/01/2024
+		for(VentaPasaje notaCredito:ventasNotas.getListNotasCredito()){
+			ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);
+		}
+		
 		if(lstVentasenviar.size()>0)
-			WSFE.sendVenta(lstVentasenviar, window, false, null, null);
-
+			WSFE.sendVenta(lstVentasenviar, window, false, null, null);		
+		
 		/*Realiza el envio de las notas de credito generadas al Servidor F.E.*/
 		for(VentaPasaje notaCredito:ventasNotas.getListNotasCredito()){
 			WSFE.sendNota(notaCredito);

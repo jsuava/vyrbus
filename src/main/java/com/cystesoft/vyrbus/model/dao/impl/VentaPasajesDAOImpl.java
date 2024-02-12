@@ -3584,7 +3584,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				+ "	       vrhresven v  on (a.agencia_id = v.agencia_id)"
 				+ "	WHERE "
 				+ "	       v.d_fecven BETWEEN to_date('" + fechaDesde + "', 'dd/MM/yyyy') "
-				+ "	       AND to_date('" + fechaHasta + "', 'dd/MM/yyyy')"
+				+ "	       AND to_date('" + fechaHasta + "', 'dd/MM/yyyy') and v.c_estreg='A' "
 				+ strQueryAnd
 				+ strGroupBy
 				//	       --Comentar agencia para la primera consulta
