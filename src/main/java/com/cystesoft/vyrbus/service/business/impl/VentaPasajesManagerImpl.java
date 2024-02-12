@@ -38,6 +38,7 @@ import com.cystesoft.vyrbus.model.bean.TipoNota;
 import com.cystesoft.vyrbus.model.bean.TitanLiquidacionTurnoPasaje;
 import com.cystesoft.vyrbus.model.bean.TitanVentaPasaje;
 import com.cystesoft.vyrbus.model.bean.TmpOcupacionAsientos;
+import com.cystesoft.vyrbus.model.bean.TransactionOpenpay;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.UsuarioHardware;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
@@ -835,7 +836,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 			
 			//MAOE 23/06/2023
 				else
-					throw new Exception("No se pudo realizar la anulación, por favor vuelva a intentarlo. (F.E.)");
+					throw new Exception("No se pudo realizar la anulaciï¿½n, por favor vuelva a intentarlo. (F.E.)");
 			}else{
 				/*Este debe ser anulado, pero con una nota de credito*/
 				TipoNota tipoNota=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_ANULACION);
@@ -2786,6 +2787,20 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 		}catch (Exception ex) {
 			throw new Exception(ex.getMessage());
 		}
+	}
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#buscarVentaWeb(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public List<TransactionOpenpay> buscarVentaWeb(String fInicio, String fFin, String estado, String contacto)throws Exception {
+		return getVentaPasajesDAO().buscarVentaWeb(fInicio, fFin, estado, contacto);
+	}
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#buscarVentasByNumeroOrden(java.lang.String)
+	 */
+	@Override
+	public List<VentaPasaje> buscarVentasByNumeroOrden(String numorden) {
+		return getVentaPasajesDAO().buscarVentasByNumeroOrden(numorden);
 	}
 
 //	private String generarBoleto(String numBoleto, Integer idTipoComprobante, Integer idUsuarioHW) throws Exception{

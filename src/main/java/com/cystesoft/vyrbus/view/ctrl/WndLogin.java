@@ -134,7 +134,7 @@ public class WndLogin extends WndBase {
 		/*Descomentar solo para desarrollo - 09/01/2017 - jabanto*/
 		try {
 //			txtLogin.setText("javalos");
-//			txtPassword.setText("tepsac");
+//			txtPassword.setText("");
 //			txtImagen.setText(cpaImagen.getValue());
 //			txtLogin.setText("moscco");
 //			txtPassword.setText("Ant@res1091");

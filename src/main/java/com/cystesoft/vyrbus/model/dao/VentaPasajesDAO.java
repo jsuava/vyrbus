@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas.
- * Descripción	: Declaración de los metodos relacionados con la Venta de Pasajes.
- * Autor		: José Sullo Avalos
+ * Descripciï¿½n	: Declaraciï¿½n de los metodos relacionados con la Venta de Pasajes.
+ * Autor		: Josï¿½ Sullo Avalos
  * Fecha		: 05/07/2012
  */
 package com.cystesoft.vyrbus.model.dao;
@@ -17,6 +17,7 @@ import com.cystesoft.vyrbus.model.bean.EntidadEncomiendaPasajes;
 import com.cystesoft.vyrbus.model.bean.Itinerario;
 import com.cystesoft.vyrbus.model.bean.Manifiesto;
 import com.cystesoft.vyrbus.model.bean.Ruta;
+import com.cystesoft.vyrbus.model.bean.TransactionOpenpay;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.service.mappers.ResumenAnulacionPostergacion;
@@ -25,7 +26,7 @@ import com.cystesoft.vyrbus.service.mappers.VentasPiloto;
 
 /**
  *
- * @author José Sullo Avalos
+ * @author Josï¿½ Sullo Avalos
  * @since JDK1.6
  */
 public interface VentaPasajesDAO extends GenericDAO {
@@ -44,7 +45,7 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 */
 	public VentaPasaje buscarVentasByIdVenta(Long idVenta)throws Exception;
 	/**
-	 * Realiza la validación de que el asiento no haya sido utilizado antes de la venta.
+	 * Realiza la validaciï¿½n de que el asiento no haya sido utilizado antes de la venta.
 	 * @param itinerario	: Objeto itinerario.
 	 * @param ruta			: Objeto ruta.
 	 * @param asiento		: Numero del asiento.
@@ -88,7 +89,7 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @param idOrigen		: Identificador del origen.
 	 * @param idDestino		: Identificador del Destino.
 	 * @param pasajero		: Nombres del pasajero.
-	 * @param numeroControl	: Número de control de la Venta Fecha Abierta.
+	 * @param numeroControl	: Nï¿½mero de control de la Venta Fecha Abierta.
 	 * @param numeroBoleto	: Numero de boleto de la Venta a Fecha Abierta..
 	 * @return Lista de reservas
 	 * @throws Exception
@@ -179,8 +180,8 @@ public interface VentaPasajesDAO extends GenericDAO {
 	public VentaPasaje buscarPorId(Long id);
 	/**
 	 * Realiza el transbordo del pasajero
-	 * @param numeroAsiento : Número de asiento
-	 * @param idVentaPasaje : Identificador de la venta en donde se realizará el Update
+	 * @param numeroAsiento : Nï¿½mero de asiento
+	 * @param idVentaPasaje : Identificador de la venta en donde se realizarï¿½ el Update
 	 * @param itinerario	: Identificador del Itinerario el cual sera actualizado en la Venta
 	 * @throws Exception
 	 */
@@ -229,9 +230,9 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * Valida Ocupabilidad de todos los asientos ha a generar las ventas del servicio especial.
 	 * @param idItinerario	: Identificador del Itinerario
 	 * @param idRuta		: Identificador de la ruta
-	 * @param numeroAsientos: Números de asientos a validar
+	 * @param numeroAsientos: Nï¿½meros de asientos a validar
 	 * @param numeroPiso	: Piso de los asientos a validar
-	 * @return	Números de Asientos ocupados.
+	 * @return	Nï¿½meros de Asientos ocupados.
 	 * @throws Exception
 	 */
 	public List<VentaPasaje> validaOcupabilidad(Long idItinerario, Integer idRuta, String numeroAsientos, Integer numeroPiso ) throws Exception;
@@ -319,7 +320,7 @@ public interface VentaPasajesDAO extends GenericDAO {
 	public List<VentaPasaje> buscarDetalleVentasAgencia(String fechaInicio, String fechaFin,String  rucClienteCredito, Long idUsuario, String orden, Boolean incluirAnulados,boolean isSoles, String estadoBoletos, Integer centroCostoID, boolean byFechaReimpresion) throws Exception;
 
 	/**
-	 * Obtiene el ultimo registro de la venta, para la validación en las anulaciones
+	 * Obtiene el ultimo registro de la venta, para la validaciï¿½n en las anulaciones
 	 * @param idVentaOriginal: Identificador de l aventa original
 	 * @return
 	 */
@@ -332,14 +333,14 @@ public interface VentaPasajesDAO extends GenericDAO {
 	public void activarReciboCaja(Long idVentaOriginal);
 
 	/**
-	 * Busca vaucher para la anulación.
-	 * @param numVoucher		: Número del Voucher.
-	 * @param numcontrol		: Número de control del Voucher.
+	 * Busca vaucher para la anulaciï¿½n.
+	 * @param numVoucher		: Nï¿½mero del Voucher.
+	 * @param numcontrol		: Nï¿½mero de control del Voucher.
 	 * @param idTipoComprobante : Identificador del tipo de comprobante.
-	 * @param rucCliente 		: Númerod e ruc del Cliente
+	 * @param rucCliente 		: Nï¿½merod e ruc del Cliente
 	 * @param fechaPartida 		: Fecha de partida
 	 * @param horaPartida 		: Hora de partida del servicio
-	 * @param boleto			: Número de boleto
+	 * @param boleto			: Nï¿½mero de boleto
 	 */
 	public List<VentaPasaje> buscarVoucherForAnulacion(Integer idTipoComprobante,String numVoucher, String numcontrol,String rucCliente,String fechaPartida,String horaPartida,String boleto);
 
@@ -353,8 +354,8 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @param busqPax			: Parametros a busacar del Pasajero.
 	 * @param fechaPartida		: Fecha de partida.
 	 * @param idUsuario			: Identificador del usuario que registro la Venta o Reserva.
-	 * @param numeroControl		: Número de Control.
-	 * @param numeroBoleto		: Número de Boleto
+	 * @param numeroControl		: Nï¿½mero de Control.
+	 * @param numeroBoleto		: Nï¿½mero de Boleto
 	 * @param idOrigen			: Identificador del Origen.
 	 * @param idDestino			: Identificador del Destino.
 	 * @param tipoMovimiento	: Tipode movimiento; (venta, reserva o fecha abirta)
@@ -392,7 +393,7 @@ public interface VentaPasajesDAO extends GenericDAO {
 	public List<VentaPasaje> buscarVentasByPasajero(Long idPasajero);
 	/**
 	 * Busca datos del boleto a liberar del manifiesto de pasajeros.
-	 * @param numeroboleto	: Número de Boleto a buscar.
+	 * @param numeroboleto	: Nï¿½mero de Boleto a buscar.
 	 * @return	datos del boleto
 	 * @throws Exception
 	 */
@@ -401,7 +402,7 @@ public interface VentaPasajesDAO extends GenericDAO {
 
 	/**
 	 * Busca el boleto para la venta del seguro.
-	 * @param numeroBoleto	: Número del Boleto
+	 * @param numeroBoleto	: Nï¿½mero del Boleto
 	 * @return
 	 * @throws Exception
 	 */
@@ -554,4 +555,21 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public Map<String, EntidadEncomiendaPasajes> buscarEquivalenciaEntidades(Integer tipoEntidad) throws Exception;
+	/**
+	 * Realiza la busqueda de las transacciones de Venta Web
+	 * @param fInicio
+	 * @param fFin
+	 * @param estado
+	 * @param contacto
+	 * @return
+	 * @throws Exception
+	 */
+	public List<TransactionOpenpay> buscarVentaWeb(String fInicio, String fFin, String estado, String contacto)throws Exception;
+	
+	/**
+	 * Busca las ventas por numero de orden
+	 * @param numorden: Numero de orden generada.
+	 * @return
+	 */
+	public List<VentaPasaje> buscarVentasByNumeroOrden(String numorden);
 }

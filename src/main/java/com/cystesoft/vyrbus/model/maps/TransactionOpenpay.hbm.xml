@@ -1,0 +1,192 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="com.cystesoft.vyrbus.model.bean.TransactionOpenpay" table="VRTTRANSACTION" schema="VYRBUSTMR">
+		<comment>Entidad que almacena las transcacciones Openpay</comment>
+		<id name="id" type="java.lang.Long">
+			<column name="TRANSACTION_ID" precision="10" scale="0" />
+			<generator class="sequence">
+				<param name="sequence">SEQ_TRANSACTION_ID</param>
+			</generator>
+		</id>
+		<property name="codeTransaction" type="java.lang.String">
+			<column name="C_CODE_TRANSACTION" length="40" not-null="true">
+				<comment>Codigo de la transaccion</comment>
+			</column>
+		</property>
+		<property name="authorization" type="java.lang.String">
+			<column name="C_AUTHORIZATION" length="20" not-null="false">
+				<comment>Autorizacion Openpay</comment>
+			</column>
+		</property>
+		<property name="operationType" type="java.lang.String">
+			<column name="C_OPERATION_TYPE" length="3" not-null="true">
+				<comment>Tipo de operacion</comment>
+			</column>
+		</property>
+		<property name="transactionType" type="java.lang.String">
+			<column name="C_TRANSACTION_TYPE" length="30" not-null="true">
+				<comment>Tipo de Transaccion</comment>
+			</column>
+		</property>
+		<property name="status" type="java.lang.String">
+			<column name="C_STATUS" length="20" not-null="true">
+				<comment>Status de la transaccion</comment>
+			</column>
+		</property>
+		<property name="description" type="java.lang.String">
+			<column name="C_DESCRIPTION" length="100" not-null="true">
+				<comment>Descripcion</comment>
+			</column>
+		</property>
+		<property name="errorMessage" type="java.lang.String">
+			<column name="C_ERROR_MESSAGE" length="100" not-null="true">
+				<comment>Mensaje de error</comment>
+			</column>
+		</property>
+		<property name="errorCode" type="java.lang.Integer">
+			<column name="C_ERROR_CODE" precision="5" scale="0" not-null="false">
+				<comment>Codigo del error</comment>
+			</column>
+		</property>
+		<property name="orderID" type="java.lang.String">
+			<column name="C_ORDER_ID" length="10" not-null="true">
+				<comment>ID de la orden</comment>
+			</column>
+		</property>
+		<property name="cardType" type="java.lang.String">
+			<column name="C_CARD_TYPE" length="20" not-null="false">
+				<comment>Tipo de tarjeta utilizada en la compra</comment>
+			</column>
+		</property>
+		<property name="cardBrand" type="java.lang.String">
+			<column name="C_CARD_BRAND" length="20" not-null="false">
+				<comment>Marca de la tarjeta (Visa, Mastercard)</comment>
+			</column>
+		</property>
+		<property name="cardNumber" type="java.lang.String">
+			<column name="C_CARD_NUMBER" length="16" not-null="false">
+				<comment>Numero de la tarjeta</comment>
+			</column>
+		</property>
+		<property name="cardHolderName" type="java.lang.String">
+			<column name="C_CARD_HOLDER_NAME" length="50" not-null="false">
+				<comment>Nombre del titular de la tarjeta</comment>
+			</column>
+		</property>
+		<property name="cardExpirationYear" type="java.lang.String">
+			<column name="C_CARD_EXPIRATION_YEAR" length="2" not-null="false">
+				<comment>Anio de expiracion de la tarjeta</comment>
+			</column>
+		</property>
+		<property name="cardExpirationMonth" type="java.lang.String">
+			<column name="C_CARD_EXPIRATION_MONTH" length="2" not-null="false">
+				<comment>Mes de expiracion de la tarjeta</comment>
+			</column>
+		</property>
+		<property name="cardBankName" type="java.lang.String">
+			<column name="C_CARD_BANK_NAME" length="60" not-null="false">
+				<comment>Nombre del banco emisor de la tarjeta</comment>
+			</column>
+		</property>
+		<property name="cardBankCode" type="java.lang.String">
+			<column name="C_CARD_BANK_CODE" length="3" not-null="false">
+				<comment>Codigo de seguridad de la tarjeta</comment>
+			</column>
+		</property>
+		<property name="amount" type="java.lang.Integer">
+			<column name="N_AMOUNT" length="8" scale="2" not-null="true">
+				<comment>Importe pagado</comment>
+			</column>
+		</property>
+		<property name="currency" type="java.lang.String">
+			<column name="C_CURRENCY" length="5" not-null="true">
+				<comment>Tipo de moneda</comment>
+			</column>
+		</property>
+		<property name="customerName" type="java.lang.String">
+			<column name="C_CUSTOMER_NAME" length="50" not-null="true">
+				<comment>Nombre del Cliente</comment>
+			</column>
+		</property>
+		<property name="customerLastName" type="java.lang.String">
+			<column name="C_CUSTOMER_LAST_NAME" length="50" not-null="true">
+				<comment>Apellidos del Cliente</comment>
+			</column>
+		</property>
+		<property name="customerEmail" type="java.lang.String">
+			<column name="C_CUSTOMER_EMAIL" length="40" not-null="false">
+				<comment>Correo electronico del cliente</comment>
+			</column>
+		</property>
+		<property name="customerPhoneNumber" type="java.lang.String">
+			<column name="C_CUSTOMER_PHONE_NUMBER" length="20" not-null="false">
+				<comment>Numero de telefono del cliente</comment>
+			</column>
+		</property>
+		<property name="paymentMethodType" type="java.lang.String">
+			<column name="C_PAYMENT_METHOD_TYPE" length="20" not-null="false">
+				<comment>Tipo de metodo de pago</comment>
+			</column>
+		</property>
+		<property name="paymentMethodReference" type="java.lang.String">
+			<column name="C_PAYMENT_METHOD_REFERENCE" length="50" not-null="false">
+				<comment>Referencia al metodo de pago</comment>
+			</column>
+		</property>
+		<property name="paymentMethodBarcodeURL" type="java.lang.String">
+			<column name="C_PAYMENT_METHOD_BARCODE_URL" length="200" not-null="false">
+				<comment>URL del codigo de barras para el pago</comment>
+			</column>
+		</property>
+		<property name="creationDate" type="java.util.Date">
+			<column name="D_CREATION_DATE" length="7" not-null="true">
+				<comment>Fecha de creacion</comment>
+			</column>
+		</property>
+		<property name="method" type="java.lang.String">
+			<column name="C_METHOD" length="20" not-null="true">
+				<comment>Metodo de pago</comment>
+			</column>
+		</property>
+        <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+        <property name="estadoRegistro" type="java.lang.String">
+            <column name="C_ESTREG" length="1" not-null="true">
+                <comment>Estado de registro A(Activo), I(Inactivo).</comment>
+            </column>
+        </property>
+        <property name="fechaInsercion" type="java.util.Date">
+            <column name="AUDFECINS" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioInsercion" type="java.lang.String">
+            <column name="AUDUSUINS" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipInsercion" type="java.lang.String">
+            <column name="AUDIPINSE" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="fechaModificacion" type="java.util.Date">
+            <column name="AUDFECMOD" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioModificacion" type="java.lang.String">
+            <column name="AUDUSUMOD" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipModificacion" type="java.lang.String">
+            <column name="AUDIPMODI" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <!-- 		END CAMPOS DE AUDITORIA	 	-->
+	</class>
+</hibernate-mapping>

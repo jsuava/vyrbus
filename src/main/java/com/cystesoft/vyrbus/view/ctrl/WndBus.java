@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José Sullo Avalos
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Sullo Avalos
  * Fecha		: 01/08/2012
  */
 package com.cystesoft.vyrbus.view.ctrl;
@@ -16,6 +16,7 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
@@ -50,7 +51,7 @@ import com.cystesoft.vyrbus.view.ui.WndFiltrarParametros;
 import com.cystesoft.vyrbus.view.ui.WndOpcionesMantenimiento;
 /**
  *
- * @author José Abanto
+ * @author Josï¿½ Abanto
  * @since JDK1.6
  */
 public class WndBus  extends WndOpcionesMantenimiento {
@@ -72,6 +73,14 @@ public class WndBus  extends WndOpcionesMantenimiento {
 	private Textbox  	txtcapacidad;
 	private Textbox  	txtanioFabricacion;
 	private Combobox 	cbonumeroFlota;
+	
+	private Textbox textboxId2;
+	private Combobox cboTipoDocumento;
+	private Combobox cboBus;
+	private Combobox cboEstadoDocumento;
+	private Textbox txtnumeroDocumento;
+	private Datebox dbfechaExpedicion;
+	private Datebox dbfechaVencimiento;
 
 	private Bus oBus = null;
 
@@ -113,6 +122,13 @@ public class WndBus  extends WndOpcionesMantenimiento {
 		txtanioFabricacion = (Textbox) getFellow("txtanioFabricacion");
 		cbonumeroFlota = (Combobox) getFellow("cbonumeroFlota");
 		cbonumeroFlota	 = (Combobox) getFellow("cbonumeroFlota");
+		
+		cboTipoDocumento = (Combobox) getFellow("cboTipoDocumento");
+		//cboBus = (Combobox) getFellow("cboBus");
+		cboEstadoDocumento = (Combobox) getFellow("cboEstadoDocumento");
+		txtnumeroDocumento = (Textbox) getFellow("txtNumeroDocumento");
+		dbfechaExpedicion = (Datebox) getFellow("dbFechaExpedicion");
+		dbfechaVencimiento = (Datebox) getFellow("dbFechaVencimiento");
 	}
 
 	@Override
@@ -129,8 +145,8 @@ public class WndBus  extends WndOpcionesMantenimiento {
 
 		oWndFiltrar.addParameter("1. Tipo de Flota", TipoFlota.class);
 		oWndFiltrar.addParameter("2. Servicio", Servicio.class);
-		oWndFiltrar.addParameter("3. Número de Flota", NumeroFlota.class);
-		oWndFiltrar.addParameter("4. Número de Bus", String.class);
+		oWndFiltrar.addParameter("3. Nï¿½mero de Flota", NumeroFlota.class);
+		oWndFiltrar.addParameter("4. Nï¿½mero de Bus", String.class);
 
 
 		this.appendChild(oWndFiltrar);
@@ -141,8 +157,8 @@ public class WndBus  extends WndOpcionesMantenimiento {
 			public void onEvent(Event event) throws Exception {
 				Integer tipoFlota = (Integer) oWndFiltrar.getParameterValue("1. Tipo de Flota");
 				Servicio oservicio = (Servicio) oWndFiltrar.getParameterValue("2. Servicio");
-				Integer numeroFlota = (Integer) oWndFiltrar.getParameterValue("3. Número de Flota");
-				String codigo = oWndFiltrar.getParameterValue("4. Número de Bus").toString();
+				Integer numeroFlota = (Integer) oWndFiltrar.getParameterValue("3. Nï¿½mero de Flota");
+				String codigo = oWndFiltrar.getParameterValue("4. Nï¿½mero de Bus").toString();
 				String estadoRegistro = Constantes.VALUE_ACTIVO;
 
 				if (tipoFlota == null || tipoFlota == 0){
