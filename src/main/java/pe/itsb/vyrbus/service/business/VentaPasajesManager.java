@@ -37,6 +37,15 @@ public interface VentaPasajesManager {
 	 * @throws Exception
 	 */
 	public int guardarVentaIdaVuelta(List<VentaPasaje> lstVentas, boolean generaControl) throws Exception;
+	
+	/**
+	 * 
+	 * @param lstVentas
+	 * @return
+	 * @throws Exception
+	 */
+	public int guardarVenta(List<VentaPasaje> lstVentas) throws Exception;
+	
 	/**
 	 * Realiza la busqueda de las ventas para el armado del mapa del bus.
 	 * @param idItinerario	: Identificador del itinerario.

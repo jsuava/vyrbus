@@ -28,8 +28,8 @@ public interface ClienteManager {
 	public ArrayList<Cliente> buscarPorRazonSocial(String[] razonSocial)throws Exception;
 
 	/**
-	 * Realiza la busqueda del Cliente por el número de Ruc, en el Modulo de Servicios Espesiales
-	 * @param Ruc : Número de Ruc del Cliente.
+	 * Realiza la busqueda del Cliente por el nï¿½mero de Ruc, en el Modulo de Servicios Espesiales
+	 * @param Ruc : Nï¿½mero de Ruc del Cliente.
 	 * @return
 	 * @throws Exception
 	 */
@@ -40,4 +40,11 @@ public interface ClienteManager {
 	 * @return Cliente
 	 */
 	public List<Cliente> buscarClienteAgencia(String ruc)throws Exception;
+	/**
+	 * Realiza la busqueda del cliente por el Numero de Ruc
+	 * @param ruc: Numero de RUC
+	 * @return
+	 * @throws Exception
+	 */
+	public Cliente buscarPorRuc(String ruc)throws Exception;
 }

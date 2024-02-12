@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	: Implementacion de metodos que permiten el acceso al modelo.
- * Autor		: José Avalos
+ * Descripciï¿½n	: Implementacion de metodos que permiten el acceso al modelo.
+ * Autor		: Josï¿½ Avalos
  * Fecha		: 27/09/2012
  */
 package pe.itsb.vyrbus.service.business.impl;
@@ -122,7 +122,7 @@ public class ClienteManagerImpl implements ClienteManager {
 			criteriosBusqueda.remove("numeroDocumento");
 			criteriosBusqueda.put("razonSocial", cliente.getRazonSocial());
 			List<?> resultRS = getClienteDAO().buscarPorX(criteriosBusqueda, null);
-			/*Valida duplicidad de la Razón Social*/
+			/*Valida duplicidad de la Razï¿½n Social*/
 			for (Object element : resultRS) {
 				Cliente ocliente = (Cliente) element;
 				if (!(ocliente.getId().equals(cliente.getId())))
@@ -175,5 +175,21 @@ public class ClienteManagerImpl implements ClienteManager {
 	@Override
 	public List<Cliente> buscarClienteAgencia(String ruc)throws Exception{
 		return getClienteDAO().buscarClienteAgencia(ruc);
+	}
+	/* (non-Javadoc)
+	 * @see pe.itsb.vyrbus.service.business.ClienteManager#buscarPorRuc(java.lang.String)
+	 */
+	@Override
+	public Cliente buscarPorRuc(String ruc) throws Exception {
+		// TODO Auto-generated method stub
+		
+		TreeMap<String, Object>criteriosBusqueda = new TreeMap<String, Object>();
+		criteriosBusqueda.put("numeroDocumento", ruc);
+		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+		List<Cliente> result = buscarPorX(criteriosBusqueda, null);
+		if(result.size()>0)
+			return result.get(0);
+		else
+			return null;
 	}
 }

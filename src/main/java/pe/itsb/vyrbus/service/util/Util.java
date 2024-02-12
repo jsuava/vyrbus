@@ -22,6 +22,8 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -1310,7 +1312,12 @@ public class Util {
 	    	Integer.parseInt(cadena);
 	    	return true;
 	    } catch (NumberFormatException nfe){
-	    	return false;
+	    	 try {
+	 	    	Long.parseLong(cadena);
+	 	    	return true;
+	 	    } catch (NumberFormatException nfe1){
+	 	    	return false;
+	 	    }
 	    }
     }
 
@@ -2194,4 +2201,26 @@ public class Util {
 
 		return pZipFile;
 	}
+	
+	
+	public static void dropdownCombobox(Event event)throws Exception{
+		try {
+			event.stopPropagation();
+			
+			if(!((Combobox)event.getTarget()).isOpen())
+				((Combobox)event.getTarget()).open();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+	}
+	
+	/**
+	 * Método para convertir LocalDateTime a Date
+	 * @param localDateTime
+	 * @return
+	 */
+    public static Date convertirLocalDateTimeToDate(LocalDateTime localDateTime) {
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+    }
 }

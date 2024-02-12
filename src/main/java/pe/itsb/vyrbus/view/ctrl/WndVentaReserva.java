@@ -5178,7 +5178,7 @@ public class WndVentaReserva extends WndBase {
 						DlgMessage.information("Debe seleccionar "+lblAlimen3.getValue(), cmbAlimen3);
 						return;
 					}else if (txtTelefono.getText().trim().isEmpty() || txtTelefono.getText().trim().length()<=5){
-						DlgMessage.information("Debe ingresar el N�mero de Tel�fono y/o este no es v�lido", txtTelefono);
+						DlgMessage.information("Debe ingresar el Número de Teléfono y/o este no es válido", txtTelefono);
 						return;
 					}
 				}
