@@ -1220,7 +1220,7 @@ public class WndOperacionesRemotas extends WndBase {
 									/*Buscando el tipo de nota de credito a aplicar*/
 									if(boletoDevolver.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA ||
 											boletoDevolver.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_FACTURA){
-										TipoNota tipoNota=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CREDITO_DEVOLUCION);
+										TipoNota tipoNota=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_DEVOLUCION);
 										boletoDevolver.setTipoNota(tipoNota);
 									}
 

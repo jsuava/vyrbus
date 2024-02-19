@@ -45,6 +45,7 @@ import com.cystesoft.vyrbus.model.bean.TipoDocumento;
 import com.cystesoft.vyrbus.model.bean.TipoFormaPago;
 import com.cystesoft.vyrbus.model.bean.TipoMoneda;
 import com.cystesoft.vyrbus.model.bean.TipoMovimiento;
+import com.cystesoft.vyrbus.model.bean.TransactionOpenpay;
 import com.cystesoft.vyrbus.model.bean.Ubigeo;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
@@ -61,7 +62,7 @@ import com.cystesoft.vyrbus.service.util.Util;
 
 /**
  *
- * @author Jos� Sullo Avalos
+ * @author José Avalos
  * @since JDK1.6
  */
 @SuppressWarnings("unchecked")
@@ -4171,6 +4172,81 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		}
 		
 		return lstValores;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.VentaPasajesDAO#buscarVentaWeb(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public List<TransactionOpenpay> buscarVentaWeb(String fInicio, String fFin, String estado, String contacto)throws Exception {
+		String sql = "SELECT codigo, estado, descripcion, error, contacto, telefono, importe, orden "
+				+ "FROM ("
+				+ "SELECT T.C_CODE_TRANSACTION AS codigo, T.C_STATUS AS estado, C_DESCRIPTION AS descripcion , C_ERROR_MESSAGE AS error, "
+				+ "C_CUSTOMER_NAME || ' ' || C_CUSTOMER_LAST_NAME AS contacto, C_CUSTOMER_PHONE_NUMBER telefono, N_AMOUNT importe, C_ORDER_ID orden "
+				+ "FROM VRTTRANSACTION T "
+				+ "WHERE D_CREATION_DATE BETWEEN to_date('"+fInicio+"', 'dd/MM/yyyy') AND to_date('" + fFin +"', 'dd/MM/yyyy')) T0 "
+				+ "WHERE estado LIKE '%" + estado + "%' AND contacto LIKE '%" + contacto + "%'";
+		
+		List<?> result = getSession().createSQLQuery(sql).list();
+
+		List<TransactionOpenpay> lstTransaction = new ArrayList<>();
+		for(int i = 0; i<result.size(); i++){
+			Object[] obj = (Object[]) result.get(i);
+
+			TransactionOpenpay transactionOpenpay = new TransactionOpenpay();
+			transactionOpenpay.setCodeTransaction(obj[0]==null?"":obj[0].toString());
+			transactionOpenpay.setStatus(obj[1]==null?"":obj[1].toString());
+			transactionOpenpay.setDescription(obj[2]==null?"":obj[2].toString());
+			transactionOpenpay.setError_message(obj[3]==null?"":obj[3].toString());
+			transactionOpenpay.setContacto(obj[4]==null?"":obj[4].toString());
+			transactionOpenpay.setCustomer_phone_number(obj[5]==null?"":obj[5].toString());
+			transactionOpenpay.setAmount(obj[6]==null?0:((BigDecimal)obj[6]).doubleValue());
+			transactionOpenpay.setOrder_id(obj[7]==null?"":obj[7].toString());
+			
+			lstTransaction.add(transactionOpenpay);			
+		}
+		return lstTransaction;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.VentaPasajesDAO#buscarVentasByNumeroOrden(java.lang.String)
+	 */
+	@Override
+	public List<VentaPasaje> buscarVentasByNumeroOrden(String numorden) {
+		String sql = "SELECT p.c_numdoc, p.c_nomape, r.c_origen, r.c_destino, s.c_denominacion AS servicio, vp.d_fecpar, vp.c_horpar,"
+				+ "vp.c_numboleto, vp.n_numasiento, vp.n_imppag, vp.c_telopc "
+				+ "FROM vrtvenpas vp "
+				+ "INNER JOIN VRMRUTA r ON r.ruta_id = vp.ruta_id "
+				+ "INNER JOIN VRMPASAJERO p ON p.pasajero_id = vp.pasajero_id "
+				+ "INNER JOIN VRMSERVICIO s ON s.servicio_id = vp.servicio_id "
+				+ "WHERE vp.venpas_id IN (SELECT MAX(venpas_id) FROM VRTVENPAS WHERE C_ORDER_ID = '" + numorden + "' GROUP BY pasajero_id)";
+		
+		List<?> result = getSession().createSQLQuery(sql).list();
+
+		List<VentaPasaje> lstVentas = new ArrayList<>();
+		for(int i = 0; i<result.size(); i++){
+			Object[] obj = (Object[]) result.get(i);
+			VentaPasaje ventaPasaje = new VentaPasaje();
+			Pasajero pasajero = new Pasajero();
+			pasajero.setNumeroDocumento(obj[0].toString());
+			pasajero.setNombresApellidos(obj[1].toString());
+			ventaPasaje.setPasajero(pasajero);
+			Ruta ruta = new Ruta();
+			ruta.setOrigen(obj[2].toString());
+			ruta.setDestino(obj[3].toString());
+			ventaPasaje.setRuta(ruta);
+			Servicio servicio = new Servicio();
+			servicio.setDenominacion(obj[4].toString());
+			ventaPasaje.setServicio(servicio);
+			ventaPasaje.setFechaPartida((Date)obj[5]);
+			ventaPasaje.setHoraPartida(obj[6].toString());
+			ventaPasaje.setNumeroBoleto(obj[7]==null?"":obj[7].toString());
+			ventaPasaje.setNumeroAsiento(((BigDecimal)obj[8]).intValue());
+			ventaPasaje.setImportePagado(((BigDecimal)obj[9]).doubleValue());
+			
+			lstVentas.add(ventaPasaje);			
+		}
+		return lstVentas;
 	}
 }
 

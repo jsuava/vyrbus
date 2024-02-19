@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripci�n	: Implementaci�n de m�todos que permiten el acceso al modelo.
- * Autor		: Jos� Sullo Avalos
+ * Descripción	: Implementación de métodos que permiten el acceso al modelo.
+ * Autor		: José Avalos
  * Fecha		: 28/09/2012
  */
 package com.cystesoft.vyrbus.service.business.impl;
@@ -38,6 +38,7 @@ import com.cystesoft.vyrbus.model.bean.TipoNota;
 import com.cystesoft.vyrbus.model.bean.TitanLiquidacionTurnoPasaje;
 import com.cystesoft.vyrbus.model.bean.TitanVentaPasaje;
 import com.cystesoft.vyrbus.model.bean.TmpOcupacionAsientos;
+import com.cystesoft.vyrbus.model.bean.TransactionOpenpay;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.UsuarioHardware;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
@@ -2790,6 +2791,21 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 		}
 	}
 	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#buscarVentaWeb(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public List<TransactionOpenpay> buscarVentaWeb(String fInicio, String fFin, String estado, String contacto)throws Exception {
+		return getVentaPasajesDAO().buscarVentaWeb(fInicio, fFin, estado, contacto);
+	}
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#buscarVentasByNumeroOrden(java.lang.String)
+	 */
+	@Override
+	public List<VentaPasaje> buscarVentasByNumeroOrden(String numorden) {
+		return getVentaPasajesDAO().buscarVentasByNumeroOrden(numorden);
+	}
+
+	/*
 	 * @see com.cystesoft.vyrbus.service.business.VentaPasajesManager#actualizarCorrelativoComprobante(java.lang.Object, java.lang.Boolean)
 	 */
 	@Transactional
@@ -2833,9 +2849,6 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 					ventaPasaje.setNumeroBoleto(null);
 			}
 		}
-		
-		
-		
 		return null;
 	}
 

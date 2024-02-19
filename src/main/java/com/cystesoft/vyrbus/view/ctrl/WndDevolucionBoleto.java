@@ -661,7 +661,7 @@ public class WndDevolucionBoleto extends WndBase {
 	 */
 	@SuppressWarnings("deprecation")
 	private void createVentanaDevolucion(final VentaPasaje ventaOriginal)throws Exception{
-		final TipoNota tipoNotaCredito = ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CREDITO_DEVOLUCION);
+		final TipoNota tipoNotaCredito = ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_DEVOLUCION);
 
 
 		Caption caption = null;
