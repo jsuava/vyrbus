@@ -505,14 +505,15 @@ public class Constantes {
 	public static final int ID_TIPNOTA_CAMBIO_RUC=1;
 	public static final int ID_TIPNOTA_CAMBIO_RAZON_SOCIAL=2;
 	public static final int ID_TIPNOTA_CAMBIO_DIRECCION_FISCAL=3;
-	public static final int ID_TIPNOTA_CREDITO_DEVOLUCION=6;
+	public static final int ID_TIPNOTA_DEVOLUCION=6;
 	public static final int ID_TIPNOTA_POSTERGACION=7;
 	public static final int ID_TIPNOTA_DUPLICADO=8;
-	public static final int ID_TIPNOTA_CAMBIO_NOMBRE_PASAJERO=9;
+	public static final int ID_TIPNOTA_CAMBIO_NOMBRE=9;
 	public static final int ID_TIPNOTA_CAMBIO_BOLETA_FACTURA=10;
 	public static final int ID_TIPNOTA_CAMBIO_FACTURA_BOLETA=11;
-	public static final int ID_TIPNOTA_CREDITO_DIFERENCIA_TARIFA_FA=12;
+	public static final int ID_TIPNOTA_CONFIRMACION_FA=12;
 	public static final int ID_TIPNOTA_ANULACION=13;
+	public static final int ID_TIPNOTA_POSTERGACION_FA=14;
 
 	/*	******************************************************************************************************************************************
 	 * CONSTANTES QUE GUARDAN RELACION CON LA TABLA PARAMETROS Y DEBEN CARGARSE DINAMICAMENTE

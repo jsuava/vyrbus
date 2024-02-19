@@ -27,6 +27,10 @@ public class UtilFlag {
 	final static int FLAG_IDSEARCH_RUC_SUNAT = 9;
 	
 	final static String LLAVE_ENABLED = "S";
+	final static String LLAVE_DISABLED = "N";
+	
+	
+	
 	
 	/**
 	 * Valida si debe o no buscar el DNI en un servicio externo

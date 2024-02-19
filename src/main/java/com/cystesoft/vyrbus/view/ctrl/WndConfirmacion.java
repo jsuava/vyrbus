@@ -2933,7 +2933,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 				if(dblImporte.getValue().doubleValue()!=(dblImporteEfectivo.getValue().doubleValue()+dblImporteTarjeta.getValue().doubleValue()))
 					throw new ImporteMixtoNullException(ImporteMixtoNullException.IMPORTE_MIXTO_NOT_EQUALS);
 			}
-
+			
 			ventaPasaje.setItinerario(detalleItinerario.getItinerario());
 			ventaPasaje.setRuta(detalleItinerario.getRuta());
 			ventaPasaje.setCliente(oCliente);

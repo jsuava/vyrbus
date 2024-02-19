@@ -532,7 +532,7 @@ public class WndGastosAdministrativos extends WndBase{
 			dblImportePagado.setValue(ventaOriginal.getImportePagado());
 			txtMotivo.setText(ventaOriginal.getObservaciones()!=null?ventaOriginal.getObservaciones():"");
 		}else {
-			TipoNota tipoNota=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CREDITO_DEVOLUCION);
+			TipoNota tipoNota=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_DEVOLUCION);
 			if(ventaOriginal.getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA)
 				dblImportePagado.setValue(tipoNota.getGastoAdminTarjeta());
 			else

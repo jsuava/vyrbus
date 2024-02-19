@@ -1703,7 +1703,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 							VentaPasaje notaCredito = ServiceLocator.getVentaPasajesManager().postergarBoleto(postergacion,validaBloqueAsiento, gastoAdmin, false);
 																					
 							//Actualiza el correlativo - jabanto - 22/01/2024
-							if(postergacion_id.longValue()!=postergacion.getId().longValue()) //solamente si se generÃ³ un nuevo comprobante
+							if(postergacion_id.longValue()!=postergacion.getId().longValue()) //solamente si se generó un nuevo comprobante
 								ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(postergacion, true);
 							
 							//Actualiza el correlativo del gasto administrativo
@@ -2537,7 +2537,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 			}
 				
 			if(chkCambioNombre.isChecked() && aplicoPenalidad == false) { //Cambio de nombre
-				tipoNotaCredito=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CAMBIO_NOMBRE_PASAJERO);
+				tipoNotaCredito=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CAMBIO_NOMBRE);
 				if(tipoNotaCredito.getGastoAdminEfectivo()!=null || tipoNotaCredito.getGastoAdminTarjeta()!=null) {
 					valorPenalidad = (postergacion.getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA? tipoNotaCredito.getGastoAdminTarjeta():tipoNotaCredito.getGastoAdminEfectivo());
 					aplicoPenalidad = valorPenalidad > .00;
