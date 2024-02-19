@@ -11,6 +11,7 @@ import com.cystesoft.vyrbus.model.bean.Itinerario;
 import com.cystesoft.vyrbus.model.bean.Liquidacion;
 import com.cystesoft.vyrbus.model.bean.Manifiesto;
 import com.cystesoft.vyrbus.model.bean.TipoNota;
+import com.cystesoft.vyrbus.model.bean.TransactionOpenpay;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.service.mappers.ResumenAnulacionPostergacion;
@@ -665,6 +666,23 @@ public interface VentaPasajesManager {
 	 */
 	public Integer postergarFAMasivo(List<VentaPasaje> lstVentas, String motivo, String usuario) throws Exception;
 	/**
+<<<<<<< HEAD
+	 * Realiza la busqueda de las transacciones de Venta Web
+	 * @param fInicio
+	 * @param fFin
+	 * @param estado
+	 * @param contacto
+	 * @return
+	 * @throws Exception
+	 */
+	public List<TransactionOpenpay> buscarVentaWeb(String fInicio, String fFin, String estado, String contacto)throws Exception;
+	/**
+	 * Busca las ventas por numero de orden
+	 * @param numorden: Numero de orden generada.
+	 * @return
+	 */
+	public List<VentaPasaje> buscarVentasByNumeroOrden(String numorden);
+=======
 	 * Realiza la actualización del correlativo al comprobante de venta
 	 * @param VentaPasaje: Instancia del comprobante que se va a actualizar.
 	 * @return Indca si la actualización fue o no exitosa.
@@ -672,4 +690,5 @@ public interface VentaPasajesManager {
 	 * @throws Exception
 	 */
 	public Object actualizarCorrelativoComprobante(Object object, Boolean ejecutarSeqByCorrelativo) throws Exception;
+>>>>>>> 4e466e2c2ec8b24349f4f7745256760b8c94e57f
 }

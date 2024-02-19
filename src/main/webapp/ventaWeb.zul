@@ -1,0 +1,58 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndConsultaVentaWeb" title="" border="none" use="com.cystesoft.vyrbus.view.ctrl.WndConsultaVentaWeb">
+	<groupbox mold="3d" width="1110px">
+		<caption label="CRITERIOS DE BUSQUEDA" style="color: #ffffff;" />
+		<grid style="border:none">
+			<columns>
+				<column width="130px" align="right"/>
+				<column width="160px"/>
+				<column width="120px" align="right"/>
+				<column width="200px"/>
+				<column/>
+			</columns>
+			<rows>
+				<row>
+					<label value="CLIENTE :"/>
+					<textbox id="txtCliente" width="150px"/>
+					<label value="ESTADO :"/>
+					<combobox id="cmbEstado">
+						<comboitem label="TODOS" value=""></comboitem>
+						<comboitem label="COMPLETADO" value="completed"></comboitem>
+						<comboitem label="FALLIDO" value="failed"></comboitem>
+						<comboitem label="PENDIENTE" value="charge_pending"></comboitem>
+					</combobox>
+					<hlayout>
+						<button label="Buscar" image="resources/mp_buscarEnabled.png" sclass="btnCommandM" onClick="wndConsultaVentaWeb.onSearch()"/>
+						<button label="Cerrar" image="resources/mp_cerrarEnabled.png" sclass="btnCommandM" onClick="wndConsultaVentaWeb.onClose()"/>
+					</hlayout>					
+				</row>
+				<row>
+					<label value="DESDE :"/>
+					<datebox id="dtbxDesde" format="dd/MM/yyyy"/>
+					<label value="HASTA :"/>
+					<datebox id="dtbxHasta" format="dd/MM/yyyy"/>
+					<label/>
+				</row>
+			</rows>
+		</grid>
+		<separator/>
+		<div id="divLista">
+			<listbox id="listboxLista" rows="15" width="1110px" mold="paging" pageSize="15">
+				<listhead sizable="true">
+					<listheader label="#" width="30px" style="color: #ffffff;" align="center"/>
+					<listheader label="CODIGO" width="120px" style="color: #ffffff;"/>
+					<listheader label="STATUS" width="120px" style="color: #ffffff;" align="center"/>
+					<listheader label="DESCRIPCION" width="180px" style="color: #ffffff;" align="center"/>
+					<listheader label="ERROR" width="140px" style="color: #ffffff;"/>
+					<!-- <listheader label="RUC / DNI" width="100px" style="color: #ffffff;" align="center"/> -->
+					<listheader label="CONTACTO" width="240px" style="color: #ffffff;"/>
+					<listheader label="TELEFONO" width="90px" style="color: #ffffff;"/>
+					<listheader label="SUBTOTAL" width="70px" style="color: #ffffff;" align="right"/>
+					<listheader label="PASAJERO" width="90px" style="color: #ffffff;" align="right"/>
+				</listhead>
+			</listbox>
+		</div>
+	</groupbox>
+</window>
+</zk>

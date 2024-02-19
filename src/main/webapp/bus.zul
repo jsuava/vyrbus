@@ -50,7 +50,7 @@
 					<doublebox id="dbkmRecoridoXDia" format="##0.00" width="130px"  style="text-align: left;" onOK="dbkmAcumuladoOdoMetro.setFocus(true)" />
 				</row>
 				<row>
-					<label value="KM. ACUMULADO ODOMETRO (*) :" />
+					<label value="KM. ACUM ODOMETRO (*) :" />
 					<doublebox id="dbkmAcumuladoOdoMetro" format="##0.00" width="130px"  style="text-align: left;" onOK="dbkilAcumuladoEstandar.setFocus(true)"/>
 					<label value="KM. ACUMULADO ESTIMADO :" />
 					<doublebox id="dbkilAcumuladoEstandar" format="##0.00" width="130px"  style="text-align: left;" onOK="txtnumeroPlaca.setFocus(true)"/>
@@ -78,9 +78,59 @@
 					<textbox id="txtanioFabricacion"  maxlength="4" width="130px" style="font-size:11px !important"/>
 					<separator></separator><separator></separator>
 				</row>
+				<row spans="4">
+					<groupbox mold="3d" closable="false">
+						<caption label="DOCUMENTOS DEL BUS" style="color: #ffffff;"></caption>
+						<grid>
+							<columns>
+								<column width="130px" align="right"/>
+								<column width="180px" />
+								<column width="125px" align="right"/>
+							</columns>
+							<rows>
+								<row>
+									<div>
+										<label value="TIPO DOCUMENTO :" />
+										<textbox id="textboxId2"  visible="false"/>
+									</div>
+									<combobox id="cboTipoDocumento" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cboEstadoDocumento)" />
+									<!-- <label value="BUS :" />
+									<combobox id="cboBus" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(cboEstadoDocumento)" />
+									 -->
+									<label value="ESTADO DOCUMENTO :" />
+									<combobox id="cboEstadoDocumento" readonly="true" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(txtNumeroDocumento)" />									
+								</row>
+								<row>
+									<label value="NÚMERO DOCUMENTO :" />
+									<textbox id="txtNumeroDocumento"  maxlength="14" style="font-size:11px !important" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(dbFechaExpedicion)"/>
+									<label value="FECHA EXPEDICIÓN :" />
+									<datebox id="dbFechaExpedicion"  format="dd/MM/yyyy" width="130px" onOK="com.cystesoft.vyrbus.service.util.Util.setFocus(dbFechaVencimiento)" />									
+								</row>
+								<row>
+									<label value="FECHA VENCIMIENTO :" />
+									<datebox id="dbFechaVencimiento"   format="dd/MM/yyyy" />
+									<label />
+									<button label="Guardar Documento" sclass="btnCommandL" image="/resources/mp_guardarEnabled.png"></button>
+								</row>
+							</rows>
+						</grid>
+					</groupbox>
+				</row>
 			</rows>
 		</grid>
 	</groupbox>
+	
+	<listbox id="lbxDocumentos">
+		<listhead sizable="true">
+			<listheader label="#" width="50px" style="color: #ffffff;"/>
+			<listheader label="TIPO DOCUMENTO" sort="auto" style="color: #ffffff;"/>
+			<listheader label="BUS" sort="auto" style="color: #ffffff;"/>
+			<listheader label="ESTADO DOCUMENTO BUS" sort="auto" style="color: #ffffff;"/>
+			<listheader label="NUMERO DOCUMENTO" sort="auto" style="color: #ffffff;"/>
+			<listheader label="FECHA EXPEDICION" sort="auto" style="color: #ffffff;"/>
+			<listheader label="FECHA VENCIMIENTO" sort="auto" style="color: #ffffff;"/>
+		</listhead>
+	</listbox>
 
 </div>
 </window>
