@@ -823,22 +823,21 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 
 				//Primero anula en el WSFE
 				//Comentado temporalmente por MAOE para pruebas sin Fact Electronica
-				//MAOE 05/02/2024
-				Result result=WSFE.anularComprobante(movimiento);
-				if(result.isIsCorrect()) {
+				//MAOE 19/02/2024
+//				Result result=WSFE.anularComprobante(movimiento);
+//				if(result.isIsCorrect()) {
 					getVentaPasajesDAO().update(movimiento);
 				
-					//Insertar el tracking de anulacion
-
 					/*Activa el comprobante asociado a la nota de credito o debito*/
 //					if(movimiento.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO ||
 //							movimiento.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_DEBITO){
 //					}
-				}
+				
+//				}
 			
-			//MAOE 05/02/2024
-				else
-					throw new Exception("No se pudo realizar la anulacion, por favor vuelva a intentarlo. (F.E.)");
+			//MAOE 19/02/2024
+//				else
+//					throw new Exception("No se pudo realizar la anulacion, por favor vuelva a intentarlo. (F.E.)");
 			}else{
 				/*Este debe ser anulado, pero con una nota de credito*/
 				TipoNota tipoNota=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_ANULACION);
@@ -2380,6 +2379,9 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 							anulacion.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_ANULACION));
 							UtilData.auditarRegistro(anulacion, true,(Usuario)Executions.getCurrent().getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO), Executions.getCurrent());
 							getVentaPasajesDAO().update(anulacion);
+							
+							//Agregar tracking del comprobante
+							
 						}else
 							throw new Exception("No se puedo continuar con la anulaci�n, el comprobante N� "+ventaPasaje.getNumeroBoleto()+" No existe en el S.F.E.");
 					}else

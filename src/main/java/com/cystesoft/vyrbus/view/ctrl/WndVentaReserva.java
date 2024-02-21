@@ -27,6 +27,7 @@ import javax.xml.namespace.QName;
 import org.hibernate.event.EventListeners;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Execution;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.WrongValueException;
@@ -84,6 +85,7 @@ import com.cystesoft.vyrbus.model.bean.Liquidacion;
 import com.cystesoft.vyrbus.model.bean.Localidad;
 import com.cystesoft.vyrbus.model.bean.MapaBus;
 import com.cystesoft.vyrbus.model.bean.Menu;
+import com.cystesoft.vyrbus.model.bean.MovimientoPasajes;
 import com.cystesoft.vyrbus.model.bean.Nacionalidad;
 import com.cystesoft.vyrbus.model.bean.ObjectCiva;
 import com.cystesoft.vyrbus.model.bean.OperadorTarjetaCredito;
@@ -6369,7 +6371,22 @@ public class WndVentaReserva extends WndBase {
 //							if(!chkVentaRemota.isChecked()){
 //								if(!chkBoletoPrepagado.isChecked()){
 								ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarVentaById(ventaPasaje.getId());
+								
 								//Insertar el track de venta
+								MovimientoPasajes trackingIda= new MovimientoPasajes();
+								trackingIda.setVentaPasaje(ventaPasaje);
+								trackingIda.setOperacion("VENTA");
+								trackingIda.setFechaOperacion( Util.DatetoString(new Date(), "dd/MM/yyyy") );
+								trackingIda.setRuta( ventaPasaje.getRuta().getOrigen()+"-"+ventaPasaje.getRuta().getDestino() );
+								trackingIda.setFechaEmbarque( Util.DatetoString(ventaPasaje.getFechaPartida(), "dd/MM/yyyy") );
+								trackingIda.setHoraEmbarque( UtilData.obtenerHoraEmbarque( ventaPasaje.getItinerario().getId(), ventaPasaje.getAgenciaPartida().getId()) );
+								trackingIda.setNumeroPiso(ventaPasaje.getNumeroPiso());
+								trackingIda.setNumeroAsiento(ventaPasaje.getNumeroAsiento());
+								trackingIda.setImportePagado(ventaPasaje.getImportePagado());
+								trackingIda.setMedioPago(ventaPasaje.getTipoFormaPago().getDenominacion());
+								trackingIda.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+								UtilData.auditarRegistro(trackingIda, getUsuario(), Executions.getCurrent());
+								ServiceLocator.getMovimientoPasajesManager().guardar(trackingIda);								
 								
 								if(getAgencia().getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_TEPSA){
 									/**Solo Boletas y facturas*/
@@ -6384,7 +6401,7 @@ public class WndVentaReserva extends WndBase {
 										//Aqui se envia el comprobante al servidor de Facturación Electrónica
 										//Comentado temporalmente por MAOE, venta de ida
 										//05/02/2024
-										WSFE.sendVenta(listVentaPasajes,wndVentaReserva,printComprobante,null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
+//										WSFE.sendVenta(listVentaPasajes,wndVentaReserva,printComprobante,null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 									}
 
 
@@ -6564,7 +6581,37 @@ public class WndVentaReserva extends WndBase {
 									VentaPasaje ventaPasajeIDA=ServiceLocator.getVentaPasajesManager().buscarVentaById(lstVentas.get(0).getId());
 									VentaPasaje ventaPasajeRETORNO=ServiceLocator.getVentaPasajesManager().buscarVentaById(lstVentas.get(1).getId());
 									
-									//Guardar el trackin de venta
+									//Guardar el tracking de venta 19/02/2024
+									MovimientoPasajes trackingIda = new MovimientoPasajes();
+									MovimientoPasajes trackingRet = new MovimientoPasajes();
+									
+									trackingIda.setVentaPasaje(ventaPasajeIDA);
+									trackingIda.setOperacion("VENTA");
+									trackingIda.setFechaOperacion(Util.DatetoString(new Date(), "dd/MM/yyyy"));
+									trackingIda.setRuta(ventaPasajeIDA.getRuta().getOrigen()+"-"+ventaPasajeIDA.getRuta().getDestino());
+									trackingIda.setFechaEmbarque(Util.DatetoString(ventaPasajeIDA.getFechaPartida(), "dd/MM/yyyy"));
+									trackingIda.setHoraEmbarque( UtilData.obtenerHoraEmbarque( ventaPasajeIDA.getItinerario().getId(), ventaPasajeIDA.getAgenciaPartida().getId()));
+									trackingIda.setNumeroPiso(ventaPasajeIDA.getNumeroPiso());
+									trackingIda.setNumeroAsiento(ventaPasajeIDA.getNumeroAsiento());
+									trackingIda.setImportePagado(ventaPasajeIDA.getImportePagado());
+									trackingIda.setMedioPago(ventaPasajeIDA.getTipoFormaPago().getDenominacion());
+									trackingIda.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+									UtilData.auditarRegistro(trackingIda, getUsuario(), Executions.getCurrent());
+									ServiceLocator.getMovimientoPasajesManager().guardar(trackingIda);
+									
+									trackingRet.setVentaPasaje(ventaPasajeRETORNO);
+									trackingRet.setOperacion("VENTA");
+									trackingRet.setFechaOperacion(Util.DatetoString(new Date(), "dd/MM/yyyy"));
+									trackingRet.setRuta(ventaPasajeRETORNO.getRuta().getOrigen()+"-"+ventaPasajeRETORNO.getRuta().getDestino());
+									trackingRet.setFechaEmbarque(Util.DatetoString(ventaPasajeRETORNO.getFechaPartida(), "dd/MM/yyyy"));
+									trackingRet.setHoraEmbarque( UtilData.obtenerHoraEmbarque( ventaPasajeRETORNO.getItinerario().getId(), ventaPasajeRETORNO.getAgenciaPartida().getId()));
+									trackingRet.setNumeroPiso(ventaPasajeRETORNO.getNumeroPiso());
+									trackingRet.setNumeroAsiento(ventaPasajeRETORNO.getNumeroAsiento());
+									trackingRet.setImportePagado(ventaPasajeRETORNO.getImportePagado());
+									trackingRet.setMedioPago(ventaPasajeRETORNO.getTipoFormaPago().getDenominacion());
+									trackingRet.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+									UtilData.auditarRegistro(trackingRet, getUsuario(), Executions.getCurrent());
+									ServiceLocator.getMovimientoPasajesManager().guardar(trackingRet);
 
 									/*Begin 24/10/2016 - jabanto*/
 									List<VentaPasaje> ventasIdaRetorno= new ArrayList<>();
@@ -6572,8 +6619,8 @@ public class WndVentaReserva extends WndBase {
 									ventasIdaRetorno.add(ventaPasajeRETORNO);
 
 									//Comentado temporalmente por MAOE
-									//05/02/2024
-									WSFE.sendVenta(ventasIdaRetorno, wndVentaReserva, true,null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
+									//19/02/2024
+//									WSFE.sendVenta(ventasIdaRetorno, wndVentaReserva, true,null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 
 									/*End Begin 24/10/2016 - jabanto*/
 //									/*Implementacion para el nueno formato 01/02/2016 - jabanto */

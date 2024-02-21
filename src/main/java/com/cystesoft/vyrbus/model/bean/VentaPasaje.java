@@ -111,11 +111,11 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	private String operadoPor;
 
 	/**
-	 * Usuario que realiza la Operaci�n Remota
+	 * Usuario que realiza la Operacion Remota
 	 */
 	private Usuario usuarioRemoto;
 	/**
-	 * Usuario Hardware desde donde se realiza la Operaci�n Remota
+	 * Usuario Hardware desde donde se realiza la Operacion Remota
 	 */
 	private UsuarioHardware usuarioHardwareRemoto;
 	private Boolean esRemoto;

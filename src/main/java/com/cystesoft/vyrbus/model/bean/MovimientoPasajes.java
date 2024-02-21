@@ -14,10 +14,12 @@ import java.util.Date;
  * @author Marco
  *
  */
-public class MovimientoPasajes {
+public class MovimientoPasajes extends GenericBean implements java.io.Serializable {
 	
-	  private Long id;
-	  private Long idVentaPasaje;
+	private static final long serialVersionUID = 1L;
+	
+	private Long id;
+	  private VentaPasaje ventaPasaje;
 	  private String operacion;
 	  private String fechaOperacion;
 	  private String ruta;
@@ -34,11 +36,11 @@ public class MovimientoPasajes {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public Long getIdVentaPasaje() {
-		return idVentaPasaje;
+	public VentaPasaje getVentaPasaje() {
+		return ventaPasaje;
 	}
-	public void setIdVentaPasaje(Long idVentaPasaje) {
-		this.idVentaPasaje = idVentaPasaje;
+	public void setVentaPasaje(VentaPasaje ventaPasaje) {
+		this.ventaPasaje = ventaPasaje;
 	}
 	public String getOperacion() {
 		return operacion;

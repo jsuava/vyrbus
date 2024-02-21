@@ -58,6 +58,7 @@ import org.zkoss.zul.Vlayout;
 import org.zkoss.zul.Window;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
+import com.cystesoft.vyrbus.model.bean.MovimientoPasajes;
 import com.cystesoft.vyrbus.model.bean.OperadorTarjetaCredito;
 import com.cystesoft.vyrbus.model.bean.Rol;
 import com.cystesoft.vyrbus.model.bean.TarjetaCredito;
@@ -1641,6 +1642,22 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 				RESTCiva.anularBoleto(ventaOriginal.getNumeroBoleto());
 			}
 		}
+		
+		//Cargar información tracking 19/02/2024
+		MovimientoPasajes trackingIda = new MovimientoPasajes();
+		trackingIda.setVentaPasaje(ventaOriginal);
+		trackingIda.setOperacion("ANULACION REGULAR");
+		trackingIda.setFechaOperacion(Util.DatetoString(new Date(), "dd/MM/yyyy"));
+		trackingIda.setRuta(ventaOriginal.getRuta().getOrigen()+"-"+ventaOriginal.getRuta().getDestino());
+		trackingIda.setFechaEmbarque(Util.DatetoString(ventaOriginal.getFechaPartida(), "dd/MM/yyyy"));
+		trackingIda.setHoraEmbarque(UtilData.obtenerHoraEmbarque( ventaOriginal.getItinerario().getId(), ventaOriginal.getAgenciaPartida().getId()));
+		trackingIda.setNumeroPiso(ventaOriginal.getNumeroPiso());
+		trackingIda.setNumeroAsiento(ventaOriginal.getNumeroAsiento());
+		trackingIda.setImportePagado(ventaOriginal.getImportePagado());
+		trackingIda.setMedioPago(ventaOriginal.getTipoFormaPago().getDenominacion());
+		trackingIda.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+		UtilData.auditarRegistro(trackingIda, getUsuario(), Executions.getCurrent());
+		
 
 		ventaOriginal.setTarifa(0.0);
 		ventaOriginal.setRecargo(0.0);
@@ -1660,11 +1677,14 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 		if(notaCredito!=null){
 			//Actualiza el correlativo - 22/01/2024 - jabanto
 			ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);
-			//Coemntado por MAOE 05/02/2024
-			WSFE.sendNota(notaCredito);
+			//Comentado por MAOE 05/02/2024
+//			WSFE.sendNota(notaCredito);
 		}
+		
 		result=Constantes.CORRECT;
 		if(result==Constantes.CORRECT){
+			//Insertar el tracking de anulacion
+			ServiceLocator.getMovimientoPasajesManager().guardar(trackingIda);
 			DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.exitoAnulacion"));
 			wndAnular.onClose();
 			onBuscarVentas();

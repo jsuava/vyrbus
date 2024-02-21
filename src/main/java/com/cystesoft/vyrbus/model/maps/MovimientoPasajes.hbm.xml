@@ -11,14 +11,14 @@
      	<param name="sequence">SEQ_VRTMOVPAS_ID</param>
      </generator>
   </id>
-  <many-to-one class="com.cystesoft.vyrbus.model.bean.VentaPasaje"
-   fetch="select" insert="false" name="ventaPasaje" update="false">
-   	 <column name="VENPAS_ID" not-null="true" precision="18" scale="0">
-     	<comment>Identificador unico de la entidad, tamanio de la clave primaria 18.</comment>
+  
+  <many-to-one name="ventaPasaje" class="com.cystesoft.vyrbus.model.bean.VentaPasaje">
+     <column name="VENPAS_ID" precision="18" scale="0" not-null="true">
+        <comment>Identificador unico de la entidad, tamanio de la clave primaria 18.</comment>
      </column>
-  </many-to-one>
+  </many-to-one>  
 
-  <property name="OPERACION" type="java.lang.String">
+  <property name="operacion" type="java.lang.String">
      <column name="C_DESOPE" length="100">
          <comment>Descripcion de la operacion.</comment>
      </column>

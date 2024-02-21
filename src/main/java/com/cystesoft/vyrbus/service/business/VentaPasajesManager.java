@@ -666,7 +666,6 @@ public interface VentaPasajesManager {
 	 */
 	public Integer postergarFAMasivo(List<VentaPasaje> lstVentas, String motivo, String usuario) throws Exception;
 	/**
-<<<<<<< HEAD
 	 * Realiza la busqueda de las transacciones de Venta Web
 	 * @param fInicio
 	 * @param fFin
@@ -682,13 +681,13 @@ public interface VentaPasajesManager {
 	 * @return
 	 */
 	public List<VentaPasaje> buscarVentasByNumeroOrden(String numorden);
-=======
-	 * Realiza la actualización del correlativo al comprobante de venta
+	/*
+	 * Realiza la actualizacion del correlativo al comprobante de venta
 	 * @param VentaPasaje: Instancia del comprobante que se va a actualizar.
-	 * @return Indca si la actualización fue o no exitosa.
+	 * @return Indca si la actualizacion fue o no exitosa.
 	 * @param ejecutarSeqByCorrelativo : Indica si debe  no ejecutar el sequenciador para generar el correlativo
 	 * @throws Exception
 	 */
 	public Object actualizarCorrelativoComprobante(Object object, Boolean ejecutarSeqByCorrelativo) throws Exception;
->>>>>>> 4e466e2c2ec8b24349f4f7745256760b8c94e57f
+
 }

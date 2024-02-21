@@ -459,7 +459,7 @@ public class WndAnulacionDocumentos extends WndBase{
 		row.setSpans("2");
 		Div div= new Div();
 		div.setAlign("left");
-		Label lblinfo= new Label("Datos de la LiquidaciÃ³n a quiÃ©n se asignaran los comprobantes que se tengan que generar");
+		Label lblinfo= new Label("Datos de la Liquidacion a quien se asignaran los comprobantes que se tengan que generar");
 		lblinfo.setStyle("color:blue;font-size:12px !important;text-transform:none;");
 		div.appendChild(lblinfo);
 		row.appendChild(div);
@@ -514,7 +514,7 @@ public class WndAnulacionDocumentos extends WndBase{
 
 		div= new Div();
 		div.setAlign("center");
-		btnProcesarAnulacion= new Button("Procesar Anulaciï¿½n","/resources/mp_anular.png");
+		btnProcesarAnulacion= new Button("Procesar Anulación","/resources/mp_anular.png");
 		btnProcesarAnulacion.setClass("btn-vyrbus");
 		btnProcesarAnulacion.setAutodisable("self");
 		div.appendChild(btnProcesarAnulacion);
@@ -559,13 +559,13 @@ public class WndAnulacionDocumentos extends WndBase{
 						DlgMessage.information("Debe de seleccionar el usuario",cmbUsuarioLiq);
 						return;
 					}else if(txtMotivoAnulacion.getText().trim().isEmpty()){
-						DlgMessage.information("Debe de ingresar el Motivo de la anulaciï¿½n.",txtMotivoAnulacion);
+						DlgMessage.information("Debe de ingresar el Motivo de la anulación.",txtMotivoAnulacion);
 						return;
 					}else if (txtMotivoAnulacion.getText().trim().length()<5){
-						DlgMessage.information("El Motivo que ha ingresado no es vï¿½lido.",txtMotivoAnulacion);
+						DlgMessage.information("El Motivo que ha ingresado no es válido.",txtMotivoAnulacion);
 						return;
 					}
-					Messagebox.show("Este proceso puede tardar varios minutos. \n ï¿½Realmente desea continual con la Anulaciï¿½n de los Comprobantes Seleccionados?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
+					Messagebox.show("Este proceso puede tardar varios minutos. \n ¿Realmente desea continual con la Anulación de los Comprobantes Seleccionados?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
 						@Override
 						public void onEvent(Event e){
 							try {
