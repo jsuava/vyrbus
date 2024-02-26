@@ -1582,7 +1582,6 @@ public class WndPostergacion extends WndBase implements Serializable {
 //					postergacion.setObservaciones(observacion);
 //				}
 //			}
-
 			postergacion.setObservaciones(observaciones);
 			postergacion.setSecuencial(secuencial+1);
 			postergacion.setTarifa(dblbxTarifa.getValue());

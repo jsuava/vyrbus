@@ -7,10 +7,13 @@ import java.util.TreeMap;
 import org.springframework.transaction.annotation.Transactional;
 
 import pe.itsb.vyrbus.model.bean.Agencia;
+import pe.itsb.vyrbus.model.bean.DetalleManifiesto;
+import pe.itsb.vyrbus.model.bean.DetalleManifiestoID;
 import pe.itsb.vyrbus.model.bean.EspecieValorada;
 import pe.itsb.vyrbus.model.bean.Itinerario;
 import pe.itsb.vyrbus.model.bean.Manifiesto;
 import pe.itsb.vyrbus.model.bean.VentaPasaje;
+import pe.itsb.vyrbus.model.dao.DetalleManifiestoDAO;
 import pe.itsb.vyrbus.model.dao.ManifiestoDAO;
 import pe.itsb.vyrbus.service.business.ManifiestoManager;
 import pe.itsb.vyrbus.service.exceptions.ManifiestoDuplicateException;
@@ -18,6 +21,7 @@ import pe.itsb.vyrbus.service.locator.ServiceLocator;
 
 public class ManifiestoManagerImpl implements ManifiestoManager{
 	private ManifiestoDAO manifiestoDAO;
+	private DetalleManifiestoDAO detalleManifiestoDAO;
 
 	public ManifiestoDAO getManifiestoDAO(){
 		return manifiestoDAO;
@@ -26,7 +30,20 @@ public class ManifiestoManagerImpl implements ManifiestoManager{
 	public void setManifiestoDAO(ManifiestoDAO manifiestoDAO){
 		this.manifiestoDAO=manifiestoDAO;
 	}
+	
+	/**
+	 * @return the detalleManifiestoDAO
+	 */
+	public DetalleManifiestoDAO getDetalleManifiestoDAO() {
+		return detalleManifiestoDAO;
+	}
 
+	/**
+	 * @param detalleManifiestoDAO the detalleManifiestoDAO to set
+	 */
+	public void setDetalleManifiestoDAO(DetalleManifiestoDAO detalleManifiestoDAO) {
+		this.detalleManifiestoDAO = detalleManifiestoDAO;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -69,8 +86,8 @@ public class ManifiestoManagerImpl implements ManifiestoManager{
 	 * @see com.tepsa.sisvyr.service.business.ManifiestoManager#consultaAutorizacionSunat(java.lang.Integer)
 	 */
 	@Override
-	public EspecieValorada consultaAutorizacionSunat(Integer idAgencia)throws Exception {
-		return getManifiestoDAO().consultaAutorizacionSunat(idAgencia);
+	public EspecieValorada consultaAutorizacionSunat(Integer idAgencia, Integer idEmpresa)throws Exception {
+		return getManifiestoDAO().consultaAutorizacionSunat(idAgencia, idEmpresa);
 	}
 
 	/*
@@ -89,6 +106,19 @@ public class ManifiestoManagerImpl implements ManifiestoManager{
 				throw new ManifiestoDuplicateException();
 
 			getManifiestoDAO().guarda(manifiesto);
+			
+			//Guarda el detalle del manifiesto - jabanto - 21/02/2024
+			if(manifiesto.getListDetalleManifiesto()!=null) {
+				for(DetalleManifiesto detalleManifiesto: manifiesto.getListDetalleManifiesto()) {
+					DetalleManifiestoID detalleManifiestoID= new DetalleManifiestoID();
+					detalleManifiestoID.setIdManifiesto(manifiesto.getId());
+					detalleManifiestoID.setIdVentaPasaje(detalleManifiesto.getVentaPasaje().getId());					
+					detalleManifiesto.setDetalleManifiestoID(detalleManifiestoID);
+					
+					getDetalleManifiestoDAO().guradar(detalleManifiesto);
+				}				
+			}
+			
 		}catch (ManifiestoDuplicateException md){
 			throw new ManifiestoDuplicateException();
 		}

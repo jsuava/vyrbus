@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -44,6 +45,7 @@ import pe.itsb.vyrbus.model.bean.DetalleEquipaje;
 import pe.itsb.vyrbus.model.bean.Equipaje;
 import pe.itsb.vyrbus.model.bean.EspecieValorada;
 import pe.itsb.vyrbus.model.bean.FormaPago;
+import pe.itsb.vyrbus.model.bean.Itinerario;
 import pe.itsb.vyrbus.model.bean.OperadorTarjetaCredito;
 import pe.itsb.vyrbus.model.bean.TarjetaCredito;
 import pe.itsb.vyrbus.model.bean.TipoComprobante;
@@ -51,6 +53,7 @@ import pe.itsb.vyrbus.model.bean.TipoFormaPago;
 import pe.itsb.vyrbus.model.bean.TipoMovimiento;
 import pe.itsb.vyrbus.model.bean.Ubigeo;
 import pe.itsb.vyrbus.model.bean.VentaPasaje;
+import pe.itsb.vyrbus.service.exceptions.EspecieValoradaNotAvailableException;
 import pe.itsb.vyrbus.service.locator.ServiceLocator;
 import pe.itsb.vyrbus.service.util.Constantes;
 import pe.itsb.vyrbus.service.util.Messages;
@@ -109,7 +112,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 	private Equipaje equipaje=null;
 	private CanalVenta canalVenta = null;
 	private Cliente cliente=null;
-//	private Itinerario itinerario;
+	private Itinerario itinerario;
 
 	/* (non-Javadoc)
 	 * @see pe.itsb.vyrbus.view.ui.WndBase#initComponents()
@@ -240,7 +243,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 			List<TipoComprobante> resultTipoComprobante = ServiceLocator.getTipoComprobanteManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
 			for(TipoComprobante tipoComprobante: resultTipoComprobante) {
 				if(tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA || tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_FACTURA ||
-						tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA) {
+						tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_GUIA) {
 					Comboitem comboitem= new Comboitem(tipoComprobante.getDenominacion());
 					comboitem.setValue(tipoComprobante);
 					cmbTipoComprobante.appendChild(comboitem);
@@ -323,6 +326,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 				}
 
 				addItemBoleto(ventaPasaje);
+				itinerario = ServiceLocator.getItinerarioManager().buscarPorId(ventaPasaje.getItinerario().getId());
 				lblKilosLibres.setValue(String.valueOf(KG_X_BOLETO_LIBRES * ltbxBoletos.getItemCount()));
 				if(ltbxBoletos.getItemCount()==1) {
 					lblFechaPartida.setValue(Constantes.FORMAT_DATE.format(dtbxFechaPartida.getValue()));
@@ -576,6 +580,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 				}
 			}
 		}
+		
 
 		//Si hay un exceso
 		if(pesoExceso>0) {
@@ -592,7 +597,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 			ventaExceso.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CONTADO));
 			ventaExceso.setServicio(ventaPrincipal.getServicio());
 			ventaExceso.setTipoComprobante((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue());
-			ventaExceso.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_GRT));
+			ventaExceso.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_EFECTIVO));
 			ventaExceso.setTipoFormaPago(tipoFormaPago);
 			ventaExceso.setNumeroBoleto(txtNumeroComprobante.getText().trim().toUpperCase());
 			ventaExceso.setNumeroBoletoAnterior(ventaPrincipal.getNumeroBoleto());
@@ -625,6 +630,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 			ventaExceso.setAgenciaPartida(getAgencia());
 			ventaExceso.setAgenciaLlegada(ventaPrincipal.getAgenciaLlegada());
 			ventaExceso.setTarjetaCredito(cmbOperadorTarjeta.getSelectedIndex()<0?null:((TarjetaCredito)cmbTarjetaCredito.getSelectedItem().getValue()));
+			ventaExceso.setEmpresa(ventaPrincipal.getEmpresa());
 			Double igv=ventaExceso.getImportePagado()- Double.valueOf(Util.toNumberFormat(ventaExceso.getImportePagado()/((Constantes.IGV/100)+1),2));
 			ventaExceso.setIgv(igv);
 			UtilData.auditarRegistro(ventaExceso, getUsuario(), Executions.getCurrent());
@@ -659,7 +665,8 @@ public class WndEquipaje extends WndBase implements Serializable{
 								WSFE.sendVenta(listVentaPasajes, wndEquipaje, true, null, Constantes.NUMERO_COPIAS_COMPROBANTE_EXCESO);
 
 //								timerdownloadFileEquipaje = true;
-							}
+							}else if(ventaExceso.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_GUIA)	
+								WSFE.reimprimirComprobante(Arrays.asList(ventaExceso), wndEquipaje, Constantes.NUMERO_COPIAS_COMPROBANTE_EXCESO, false);							
 						}
 
 						//Envia impresion del Ticket de Equipaje
@@ -882,19 +889,29 @@ public class WndEquipaje extends WndBase implements Serializable{
 	 */
 	private String onLoadEspecieValorada(TipoComprobante tipoComprobante)throws Exception{
 		String numeroComprobante = "";
-		EspecieValorada especieValorada=null;
-		ControlEspecieValorada controlEspecieValorada = null;
-		if(getAgencia().getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_TEPSA){
-			controlEspecieValorada=UtilData.buscarEspecieValoradaByCaja(tipoComprobante.getId(), getAgencia(), false, getUsuarioHardware(), null);
-			numeroComprobante = controlEspecieValorada.toString();
-		}else if(getAgencia().getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_VIAJES){
-			especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES, getAgencia(),false);
-			numeroComprobante= especieValorada.toString();
-		}else{
-			especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_VOUCHER_CORPORATIVO, getAgencia(),false);
-			numeroComprobante= especieValorada.toString();
-		}
+		
+		try {
+			EspecieValorada especieValorada=null;
+			ControlEspecieValorada controlEspecieValorada = null;
+			if(getAgencia().getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_TEPSA){
+				controlEspecieValorada=UtilData.buscarEspecieValoradaByCaja(tipoComprobante.getId(), getAgencia(), false, getUsuarioHardware(), null, itinerario.getEmpresa().getId());
+				numeroComprobante = controlEspecieValorada.toString();
+			}else if(getAgencia().getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_VIAJES){
+				especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES, getAgencia(),false);
+				numeroComprobante= especieValorada.toString();
+			}else{
+				especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_VOUCHER_CORPORATIVO, getAgencia(),false);
+				numeroComprobante= especieValorada.toString();
+			}
 
+			
+			
+		} catch (EspecieValoradaNotAvailableException ex) {
+			// TODO: handle exception
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noNumeroBoleto"));
+			log.error(Messages.getString("WndVentaReserva.information.noNumeroBoleto"));
+		}
+		
 		return numeroComprobante;
 	}
 

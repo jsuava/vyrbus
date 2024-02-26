@@ -255,8 +255,8 @@ public class WndCierreCaja extends WndBase {
 
 						//Busca las liquidaciones de CARGA
 						//23/06/2023
-						Liquidacion liquidacionCarga = UtilData.buscarLiquidacionCarga(liquidacion);
-						liquidacion.setLiquidacionCarga(liquidacionCarga);
+//						Liquidacion liquidacionCarga = UtilData.buscarLiquidacionCarga(liquidacion);
+//						liquidacion.setLiquidacionCarga(liquidacionCarga);
 						//****
 						String nameFile = CreateDocument.creaRptLiquidacionByEspecieValorada(liquidacion, true);
 						String src=Constantes.URL_FORMATOS_LIQUIDACION +Constantes.CLAVE_PAHT+ nameFile;

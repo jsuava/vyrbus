@@ -669,7 +669,8 @@ public class Util {
 	 */
 	public static String autocompleNumberBoleto(String numeroBoleto){
 		String boleto="0000000";
-		int longdig=7;
+//		int longdig=7;
+		int longdig=8;
 		if(numeroBoleto.toUpperCase().indexOf("B")>=0 || numeroBoleto.toUpperCase().indexOf("F")>=0){
 			boleto="00000000";
 			longdig=8;

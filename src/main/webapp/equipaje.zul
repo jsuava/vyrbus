@@ -83,7 +83,9 @@
 			</columns>
 			<rows>
 				<row spans="6">
-					<textbox id="txtNumeroComprobante" readonly="true" width="80px" style="color:#4285F4; font-weight:bold; background-color: transparent; border:none; font-size:12px !important"/>
+					<div style="text-align:center">
+						<textbox id="txtNumeroComprobante" readonly="true" style="color:#4285F4; font-weight:bold; background-color: transparent; border:none; font-size:13px !important"/>
+					</div>					
 				</row>
 				<row>
 					<label value="SERVICIO : " />
@@ -126,7 +128,7 @@
 				</row>
 				<row spans="6">
 					<div style="text-align:left">
-						<textbox id="txtGlosa" rows="3" readonly="true" placeholder="GLOSA" width="630px" maxlength="255"/>
+						<textbox id="txtGlosa" rows="4" readonly="true" placeholder="GLOSA" width="630px" maxlength="255"/>
 					</div>
 				</row>
 				<row spans="6">

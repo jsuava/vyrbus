@@ -225,8 +225,8 @@ public class WndRptRegistroVentas extends WndBase  {
 		HttpSession httpSession = (HttpSession)session.getNativeSession();
 		httpSession.setAttribute("parcialPath",Constantes.DIRECTORY_EXCEL+"RegistroVentas.xls");
 		httpSession.setAttribute("lstVentas", lstVentas);
-		httpSession.setAttribute("empresa", Constantes.empresa);
-		httpSession.setAttribute("ruc", Constantes.ruc);
+		httpSession.setAttribute("empresa", ""); //Constantes.empresa);
+		httpSession.setAttribute("ruc", ""); //Constantes.ruc);
 		httpSession.setAttribute("desde", Constantes.FORMAT_DATE.format(dtbxFechaInicio.getValue()));
 		httpSession.setAttribute("hasta", Constantes.FORMAT_DATE.format(dtbxFechaFin.getValue()));
 		httpSession.setAttribute("fechaEmision", fecha);

@@ -27,6 +27,7 @@ public class Empresa extends GenericBean implements java.io.Serializable {
 	private String repLegal;
 	private String sigla;
 	private String logo;
+	private String correo;
 
 	public Empresa() {
 		super();
@@ -166,5 +167,21 @@ public class Empresa extends GenericBean implements java.io.Serializable {
 	public String toString() {
 		// TODO Auto-generated method stub
 		return this.razonSocial;
+	}
+
+
+	/**
+	 * @return the correo
+	 */
+	public String getCorreo() {
+		return correo;
+	}
+
+
+	/**
+	 * @param correo the correo to set
+	 */
+	public void setCorreo(String correo) {
+		this.correo = correo;
 	}
 }

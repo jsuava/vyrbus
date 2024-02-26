@@ -46,10 +46,13 @@
             </column>
         </property>
         <property name="logo" type="java.lang.String">
-            <column name="c_logo" length="20">                
+            <column name="c_logo" length="50">                
             </column>
         </property>                                                 
-        
+        <property name="correo" type="java.lang.String">
+            <column name="c_correo" length="100">                
+            </column>
+        </property>    
         <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
         <property name="estadoRegistro" type="java.lang.String">
             <column name="C_ESTREG" length="1" not-null="true">

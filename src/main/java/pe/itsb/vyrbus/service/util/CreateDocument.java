@@ -33,6 +33,7 @@ import pe.itsb.vyrbus.model.bean.Agencia;
 import pe.itsb.vyrbus.model.bean.CentroCosto;
 import pe.itsb.vyrbus.model.bean.DetalleEquipaje;
 import pe.itsb.vyrbus.model.bean.DetalleFlotaHRE;
+import pe.itsb.vyrbus.model.bean.Empresa;
 import pe.itsb.vyrbus.model.bean.Equipaje;
 import pe.itsb.vyrbus.model.bean.FormaPago;
 import pe.itsb.vyrbus.model.bean.Gasto;
@@ -2177,9 +2178,11 @@ public class CreateDocument implements Serializable {
 
 			/*	AGREGADO A SOLICITUD DE TRANSMAR*/
 			//---> line 2: salto de linea
-			linea = Constantes.empresa;
-			String ruc = Constantes.ruc;
-			linea += tabular(31)+title+tabular(31)+"RUC : "+ruc;
+			String nombreEmpresa = itinerario.getEmpresa().getRazonSocial();
+			String rucEmpresa = itinerario.getEmpresa().getNumeroDocumento();
+			linea = nombreEmpresa;
+			String ruc = rucEmpresa;
+			linea += tabular(51-nombreEmpresa.length())+title+tabular(31)+"RUC : "+ruc;
 			bw.write(linea+NEWLINE);
 
 			/*	AGREGADO A SOLICITUD DE TRANSMAR*/
@@ -2306,7 +2309,7 @@ public class CreateDocument implements Serializable {
 //			longitud_C=dniTerramoza.length();
 //			linea+="DNI : "+dniTerramoza+tabular(31-longitud_C);
 			linea+="SERVICIO : "+servicio+tabular(23-longitud_C);
-			linea+="SALIDA : "+salida;
+			linea+= tabular(31-servicio.length())+ "SALIDA : "+salida;
 			bw.write(linea+NEWLINE);
 
 			if(itinerario.getServicio().getNumeroPisos()==2){
@@ -2385,8 +2388,9 @@ public class CreateDocument implements Serializable {
 			bw.write(linea + NEWLINE);
 
 			//---> line 2:
-			linea = "EMPRESA  : " + Constantes.empresa;
-			linea+=tabular(39-Constantes.empresa.length())+"NRO. MANIF.: "+numeroManifiesto;
+			String nombreEmpresa = itinerario.getEmpresa().getRazonSocial();
+			linea = "EMPRESA  : " + nombreEmpresa;
+			linea+=tabular(39-nombreEmpresa.length())+"NRO. MANIF.: "+numeroManifiesto;
 			bw.write(linea + NEWLINE);
 
 			//---> line 3:(Agencia - Fecha)
@@ -2580,8 +2584,10 @@ public class CreateDocument implements Serializable {
 	 * @return
 	 */
 	public static final File creaManifiesto_ListPax(Manifiesto manifiesto, Usuario usuario, Agencia agencia, Boolean esManiesto, String rotulo, Integer agenciaIdPArtida){
-		Itinerario itinerario= new Itinerario();
-		itinerario=ServiceLocator.getItinerarioManager().buscarPorId(manifiesto.getItinerario().getId());
+		Itinerario itinerario= ServiceLocator.getItinerarioManager().buscarPorId(manifiesto.getItinerario().getId());
+		if(manifiesto.getItinerario().getBus()!=null && manifiesto.getItinerario().getBus().getProgramacionServicio()!=null) {
+			itinerario.setBus(manifiesto.getItinerario().getBus());
+		}
 		WndManifiesto wndmanifiesto = new WndManifiesto();
 		Integer longitud_C=0;
 		String fichero="";
@@ -2607,23 +2613,26 @@ public class CreateDocument implements Serializable {
 			String strDocumento=(esManiesto?"MANIFIESTO DE PASAJEROS":"INFORMACION DE PASAJEROS");
 //			if(esManiesto==true){
 			title= (esManiesto?"NUMERO DE MANIFIESTO":"LISTADO");
-			linea = Constantes.empresa;
+			String nombreEmpresa = itinerario.getEmpresa().getRazonSocial(); 
+			linea = nombreEmpresa;
 			if(esManiesto)
-				linea += tabular(33)+strDocumento+tabular(33)+title;
+				linea += tabular(54-nombreEmpresa.length())+strDocumento+tabular(33)+title;
 			else
 				linea += tabular(33)+title;
 			bw.write(linea + NEWLINE);
 			//---> line 2:
 //			linea = Constantes.empresa;
-			String ruc= Constantes.ruc;
-			linea = tabular(2) + "RUC " + ruc + (esManiesto? tabular(90) + "+------------------------+":"");
+			String ruc= itinerario.getEmpresa().getNumeroDocumento();
+			linea = "RUC " + ruc + (esManiesto? tabular(92) + "+------------------------+":"");
 			bw.write(linea+NEWLINE);
 			//---> line 3:
-			String ofPrincipal = Constantes.direccion_empresa + (esManiesto? tabular(64) + "|" + tabular(7) + manifiesto.getNumeroManifiesto() + tabular(6) + "|" : "");
+			String direccionEmpresa = (itinerario.getEmpresa().getDireccion()!=null?itinerario.getEmpresa().getDireccion():"");
+			String ofPrincipal = direccionEmpresa + (esManiesto? tabular(93-direccionEmpresa.length()) + "|" + tabular(7) + manifiesto.getNumeroManifiesto() + tabular(6) + "|" : "");
 //			String centraTelf = Constantes.nro_telefono;
-			linea = "OF. PRINCIPAL: "+ofPrincipal;
+			linea = "OF.PRINCIPAL: "+ofPrincipal;
 			bw.write(linea+NEWLINE);
-			linea = "CORREO       : " + Constantes.correo_empresa  + (esManiesto? tabular(68) + "+------------------------+" : "");
+			String correoEmpresa = (itinerario.getEmpresa().getCorreo()!=null?itinerario.getEmpresa().getCorreo():"");
+			linea = "CORREO    : " + correoEmpresa  + (esManiesto? tabular(95-correoEmpresa.length()) + "+------------------------+" : "");
 			bw.write(linea+NEWLINE);
 
 //			bw.write(NEWLINE);
@@ -2876,8 +2885,9 @@ public class CreateDocument implements Serializable {
 				linea+="..................";
 				bw.write(linea+NEWLINE);
 				//--->
-				linea="EMPRESA"+tabular(25);
-				linea+=Constantes.empresa+tabular(13);
+				linea="EMPRESA"+tabular(27);
+				String nombreCortoEmpresa = itinerario.getEmpresa().getNombreCorto();
+				linea+= nombreCortoEmpresa +tabular(30-nombreCortoEmpresa.length());
 				linea+="Conductor (1)"+tabular(15);
 				linea+="Conductor (2)"+tabular(14);
 				linea+="Conductor (3)";
@@ -3176,11 +3186,17 @@ public class CreateDocument implements Serializable {
 
 
 	public static final File creaDetalleLiquidacion(List<VentaPasaje> lstVentas,String nameFile, String local, String usuario, String rangoFechas, Double totalEfectivo, Double totalDolares){
-
+		
+		Empresa empresa = null;
+		if(lstVentas.size()>0) {
+			VentaPasaje ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarPorId(lstVentas.get(0).getId()); 
+			empresa = ventaPasaje.getEmpresa();
+		}
+			
 //		String fichero = Constantes.DIRECTORY_DETALLE_LIQUIDACION +nameFile;
 		String fichero = Constantes.DIRECTORY_DETALLE_LIQUIDACION +Constantes.CLAVE_PAHT +nameFile;
-		String empresa = Constantes.empresa+tabular(85)+"RUC :"+Constantes.ruc;
-		String ofiCentral=Constantes.direccion_empresa;
+		String sEmpresa = empresa.getNombreCorto()+tabular(85)+"RUC :"+empresa.getNumeroDocumento();
+		String ofiCentral= empresa.getDireccion();
 		String title="LIQUIDACION VENTA DE PASAJES";
 		String encabezado="|NRO |";
 		encabezado+="TRANSACCION|";
@@ -3205,7 +3221,7 @@ public class CreateDocument implements Serializable {
 		try{
 			BufferedWriter bw = new BufferedWriter(new FileWriter(file));
 			String linea = "";
-			linea = tabular(lineBase)+empresa;
+			linea = tabular(lineBase)+sEmpresa;
 			bw.write(linea + NEWLINE);
 
 			linea=tabular(lineBase)+ofiCentral;
@@ -3515,7 +3531,7 @@ public class CreateDocument implements Serializable {
 			String columnas="|   FECHA    |   BOLETO    |            PASAJERO                           | TIPPAX | IMPORTE |            USUARIO             |";
 
 
-			linea = tabular(base)+Constantes.empresa+tabular(85)+"RUC : "+Constantes.ruc;
+			linea = ""; //tabular(base)+Constantes.empresa+tabular(85)+"RUC : "+Constantes.ruc;
 			bw.write(linea + NEWLINE);
 			linea = tabular(base+50)+"REPORTE VENTA DE SEGUROS";
 			bw.write(linea + NEWLINE);
@@ -3625,7 +3641,7 @@ public class CreateDocument implements Serializable {
 			bw.write(tabular(115) + Constantes.FORMAT_DATE_TIME_24H.format(new Date())+ NEWLINE);
 			//
 			bw.write(tabular(base)+interliniado+NEWLINE);
-			String label="RAZON SOCIAL       : "+Constantes.empresa;
+			String label="RAZON SOCIAL       : "+ hre.getEmpresa().getRazonSocial();
 			linea = tabular(base)+label;
 			linea+=tabular(60)+"Nro. HRE :"+hre.getNumeroHojaRutaID().getIdNumeroHojaRuta(); //programacion.getHojaRuta().toString();
 			bw.write(linea+NEWLINE);
@@ -3860,7 +3876,7 @@ public class CreateDocument implements Serializable {
 
 			Double total = .00, totalVentaPasajes = .00, totalVentaCarga = .00, totalVentaTarjeta = .00;
 //			int index = 0;
-			Double totalVentasNotaCredito = .00, totalVentasCredito = .00, totalVentasCortesia = .00, totalVentasDevoluciones = .00, totalVentasPce = .00, totalVentasYape = .00, totalVentasTransferencias = .00;
+			Double totalVentasNotaCredito = .00, totalVentasCredito = .00, totalVentasCortesia = .00, totalVentasDevoluciones = .00, totalVentasPce = .00, totalVentasYape = .00, totalVentasTransferencias = .00, totalVentasGuia = .00;
 			List<String> lstControlTipoFormaPago = new ArrayList<>();
 			for(VentaPasaje ventaPasaje: listDetalleVentas) {
 //				index++;
@@ -3872,6 +3888,7 @@ public class CreateDocument implements Serializable {
 				if((ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_FACTURA ||
 						ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_BOLETA_VENTA ||
 						ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA ||
+								ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_GUIA ||
 						ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_NOTA_CREDITO) && ventaPasaje.getTipoMovimiento().getId().intValue()!=Constantes.ID_TIPMOV_DEVOLUCION
 						) {
 
@@ -3903,7 +3920,7 @@ public class CreateDocument implements Serializable {
 					if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_DEVOLUCION)
 						totalVentasDevoluciones += ventaPasaje.getImportePagado();
 					else if(ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA)
-						totalVentasPce += ventaPasaje.getImportePagado();
+						totalVentasPce += ventaPasaje.getImportePagado();					
 					else if(ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_NOTA_CREDITO)
 						totalVentasNotaCredito += ventaPasaje.getImportePagado();
 					else if(ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CREDITO)
@@ -3913,7 +3930,8 @@ public class CreateDocument implements Serializable {
 					else if(ventaPasaje.getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_TRANSFERENCIA)
 						totalVentasTransferencias += ventaPasaje.getImportePagado();
 					else if(ventaPasaje.getTipoFormaPago().getId().intValue()==Constantes.ID_TIPFORPAG_YAPE)
-						totalVentasYape += ventaPasaje.getImportePagado();
+						totalVentasYape += ventaPasaje.getImportePagado();					
+					
 
 				}
 			}
@@ -5352,11 +5370,17 @@ public class CreateDocument implements Serializable {
 		Integer longObsOtroIngreso = 83;
 
 		try{
+			Integer agenciaId = liquidacion.getAgencia().getId();
+			Integer usuarioId = liquidacion.getUsuario().getId();
+			String fecha = Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
+			//Ventas Pasajes
+			List<VentaPasaje> resultDetalleVentasPasaje = ServiceLocator.getVentaPasajesManager().buscarDetalladoVentas(agenciaId, usuarioId, fecha, fecha, -1);
+			
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),"UTF-8"));
 			String linea = "";
 
 			//---> line 1:	TITULO DEL REPORTE
-			linea = tabular(3) +"EMPRESA " + tabular(9)+ ": " + Constantes.empresa;
+			linea = tabular(3) +"EMPRESA " + tabular(9)+ ": "; //Constantes.empresa;
 			bw.write(linea + NEWLINE);
 
 			//---> line 2: 	OFICINA Y FECHA LIQUIDACION
@@ -5380,14 +5404,9 @@ public class CreateDocument implements Serializable {
 			linea=tabular(3)+"==================================================================================================";
 			bw.write(linea+NEWLINE);
 
-			Integer agenciaId = liquidacion.getAgencia().getId();
-			Integer usuarioId = liquidacion.getUsuario().getId();
-			String fecha = Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
+			
 
 			List<VentaPasaje> listDetalleVentas = new ArrayList<>();
-
-			//Ventas Pasajes
-			List<VentaPasaje> resultDetalleVentasPasaje = ServiceLocator.getVentaPasajesManager().buscarDetalladoVentas(agenciaId, usuarioId, fecha, fecha, -1);
 			for(VentaPasaje ventaPasaje: resultDetalleVentasPasaje) {
 				ventaPasaje.setTipoConsulta(0); //Pasajes
 				if(ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO)
@@ -5604,7 +5623,7 @@ public class CreateDocument implements Serializable {
 			String linea = "";
 
 			//---> line 1:	TITULO DEL REPORTE
-			linea = tabular(3) +"EMPRESA " + tabular(9)+ ": " + Constantes.empresa;
+			linea = tabular(3) +"EMPRESA " + tabular(9)+ ": "; // + Constantes.empresa;
 			bw.write(linea + NEWLINE);
 
 			//---> line 2: 	OFICINA Y FECHA LIQUIDACION
@@ -5688,7 +5707,8 @@ public class CreateDocument implements Serializable {
 					linea=tabular(3)+resumen.getComprobante().toString();
 
 					/*Serie*/
-					strSerie = resumen.getIdTipoComprobante()!=Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA?resumen.getSerie():" "+resumen.getSerie().substring(0, 3);
+//					strSerie = resumen.getIdTipoComprobante()!=Constantes.ID_TIPCOM_GUIA?resumen.getSerie():" "+resumen.getSerie().substring(0, 3);
+					strSerie = resumen.getSerie();
 					linea += tabular(21-resumen.getComprobante().length())+strSerie;
 
 					for(Liquidacion especieValorada: list) {
@@ -5848,7 +5868,7 @@ public class CreateDocument implements Serializable {
 			String linea = "";
 
 			//---> line 1:	TITULO DEL REPORTE
-			linea = tabular(3) +"EMPRESA " + tabular(9)+ ": " + Constantes.empresa;
+			linea = tabular(3) +"EMPRESA " + tabular(9)+ ": "; // + Constantes.empresa;
 			bw.write(linea + NEWLINE);
 
 			//---> line 2: 	OFICINA Y FECHA LIQUIDACION

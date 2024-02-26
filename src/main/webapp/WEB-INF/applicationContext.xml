@@ -662,6 +662,7 @@
 	</bean>
 	<bean id="manifiestoManager" class="pe.itsb.vyrbus.service.business.impl.ManifiestoManagerImpl">
 		<property name="manifiestoDAO" ref="manifiestoDAO"/>
+		<property name="detalleManifiestoDAO" ref="detalleManifiestoDAO" />
 	</bean>
 	<bean id="tmpOcupacionAsientosManager" class="pe.itsb.vyrbus.service.business.impl.TmpOcupacionAsientosManagerImpl">
 		<property name="tmpOcupacionAsientosDAO" ref="tmpOcupacionAsientosDAO" />

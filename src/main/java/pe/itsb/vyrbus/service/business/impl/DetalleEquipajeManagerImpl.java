@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José Abanto
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Abanto
  * Fecha		: 14 jul. 2021
  * Hora			: 12:18:25
  */
@@ -166,7 +166,7 @@ public class DetalleEquipajeManagerImpl implements DetalleEquipajeManager{
 			_detalleEquipaje.setEquipaje(equipaje);
 			//Obtenemos el correlativo actualizado para los tickets
 //			ControlEspecieValorada controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(Constantes.ID_TIPCOM_TICKET_EQUIPAJE, ventaExceso.getAgencia(), true, ventaExceso.getUsuarioHardware(), null);
-			ControlEspecieValorada controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(Constantes.ID_TIPCOM_TICKET_EQUIPAJE, equipaje.getAgencia(), true, equipaje.getUsuarioHardware(), null);
+			ControlEspecieValorada controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(Constantes.ID_TIPCOM_TICKET_EQUIPAJE, equipaje.getAgencia(), true, equipaje.getUsuarioHardware(), null, ventaExceso.getEmpresa().getId());
 			_detalleEquipaje.setTicket(controlEspecieValorada.toString());
 			//Actualizamos el correlativo
 			int position = _detalleEquipaje.getTicket().indexOf("-");

@@ -1672,6 +1672,237 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 		}
 	}
 
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.tepsa.sisvyr.service.business.VentaPasajesManager#postergarBoleto(com.tepsa.sisvyr.model.bean.VentaPasaje)
+	 */
+	@Override
+	@Transactional
+	public List<VentaPasaje> postergarBoleto(List<VentaPasaje> boletosPostergar,Boolean validaBloqueo)throws Exception{
+		try{
+			
+			List<VentaPasaje> listNotasCredito = new ArrayList<VentaPasaje>();
+			for(VentaPasaje boletoPostergar: boletosPostergar) {
+				
+				if(boletoPostergar.getFechaPartida()!=null && validaBloqueo){
+					/*	Validando que no se haya cambiado el tipo de Bus durante la venta	*/
+					boolean excedeCapacidad = false;
+					List<Object> lstCapacidad = getItinerarioDAO().validateCapacity(boletoPostergar.getItinerario().getId(), boletoPostergar.getNumeroAsiento(), boletoPostergar.getNumeroPiso());
+					if(lstCapacidad.size()>0){
+						excedeCapacidad = (Boolean)lstCapacidad.get(0);
+						if(excedeCapacidad)
+							throw new CapacityExceedsException((String)lstCapacidad.get(1));
+					}
+
+					/*	Validando que el asiento no haya sido utilizado antes de la venta	*/
+					Long ocupabilidad = getVentaPasajesDAO().validateSeat(boletoPostergar.getItinerario(), boletoPostergar.getRuta(), boletoPostergar.getNumeroAsiento(), boletoPostergar.getNumeroPiso());
+					if(ocupabilidad.longValue()>0){
+						if(boletoPostergar.getVentaPasaje()!=null && boletoPostergar.getVentaPasaje().getId().longValue()!=ocupabilidad.longValue())
+							throw new DuplicateSeatException();
+						else if(boletoPostergar.getVentaPasaje()==null)
+							throw new DuplicateSeatException();
+					}
+				}
+
+				if(validaBloqueo &&  boletoPostergar.getNumeroAsiento()!=null){
+					/*	Validando que no haya expirado el tiempo del bloqueo	*/
+					TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
+					criteriosBusqueda.put("itinerario.id", boletoPostergar.getItinerario().getId());
+					criteriosBusqueda.put("ruta.id", boletoPostergar.getRuta().getId());
+					criteriosBusqueda.put("usuarioHardware.id", boletoPostergar.getUsuarioHardware().getId());
+					criteriosBusqueda.put("usuario.id", boletoPostergar.getUsuario().getId());
+					criteriosBusqueda.put("numeroAsiento", boletoPostergar.getNumeroAsiento());
+					criteriosBusqueda.put("numeroPiso", boletoPostergar.getNumeroPiso());
+					criteriosBusqueda.put("fechaPartida", Util.DatetoString(boletoPostergar.getFechaPartida(), Constantes.DATE_FORMAT));
+					criteriosBusqueda.put("horaPartida", boletoPostergar.getHoraPartida());
+					List<TmpOcupacionAsientos> lstTMP = getTmpOcupacionAsientosDAO().buscarPorX(criteriosBusqueda, null);
+					if(lstTMP.size()==0)
+						throw new TiempoExpiracionBloqueoException();
+				}
+
+				/**Clonamos el boleto original - 10/11/2016 - jabanto*/
+				VentaPasaje boletoOriginal = (VentaPasaje)boletoPostergar.getVentaPasaje().clone();
+				if(boletoOriginal.getCliente()!=null)
+					boletoOriginal.setCliente(ServiceLocator.getClienteManager().buscarPorId(boletoOriginal.getCliente().getId()));
+
+				//Valida si debe o no emitir un nuevo comprobante - jabanto - 26/09/2022
+				boolean isNewComprobante = false;
+				boolean isCambioComprobante = false;
+				if(boletoPostergar.getImportePagado()>0){
+					isNewComprobante = true;
+					Double direfenciaImporte = boletoPostergar.getImportePagado(); //(boletoPostergar.getImportePagado() - boletoOriginal.getImportePagado());
+					boletoPostergar.setImportePagado(direfenciaImporte);
+				}else if (boletoOriginal.getTipoComprobante().getId().intValue() != boletoPostergar.getTipoComprobante().getId().intValue() || // cuando es un cambio de comprobante
+						 (boletoOriginal.getCliente()!=null && boletoPostergar.getCliente()!=null && boletoOriginal.getCliente().getId().longValue()!=boletoPostergar.getCliente().getId()) || // Cambio de ruc
+						 (boletoOriginal.getCliente()!=null && boletoPostergar.getCliente()!=null && !(boletoOriginal.getCliente().getRazonSocial().equals(boletoPostergar.getCliente().getRazonSocial()))) || // Cambio de razon social
+						 (boletoOriginal.getCliente()!=null && boletoPostergar.getCliente()!=null && !(boletoOriginal.getCliente().getDireccion().equals(boletoPostergar.getCliente().getDireccion()))) ) // Cambio de direccion fiscal
+				{
+					//Cuando es cambio de tipo de comprobante y/o cambio de datos del cliente(si es factura)
+					isNewComprobante = true;
+					isCambioComprobante = true;
+				}
+				
+				
+				boolean emitirNotaCredito=false;
+				if(isNewComprobante) {
+					boletoOriginal.setId(null);
+					int canalVanetaId=boletoOriginal.getCanalVenta().getId();
+
+					/*Realiza una devolucion si es una Boleto de Viaje o si este fue emitido por un canal de Agencia de Viajes o Web - 15/12/2016 - jabanto*/
+					if(boletoOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE
+							|| canalVanetaId==Constantes.ID_CANVEN_AGENCIA_VIAJES
+							|| canalVanetaId==Constantes.ID_CANVEN_WEB
+							|| isCambioComprobante ){
+						boletoOriginal.setPenalidad(0.00);
+						boletoOriginal.setImportePagadoEfectivo(0.0);
+						boletoOriginal.setImportePagadoTarjeta(0.0);
+						boletoOriginal.setUsuario(boletoPostergar.getUsuario());
+						boletoOriginal.setAgencia(boletoPostergar.getAgencia());
+						boletoOriginal.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_ANULACION_SISTEMA));
+						boletoOriginal.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+						boletoOriginal.setObservaciones("==>DEV. X SISTEMA - X EDICION VENTA "+(isCambioComprobante?"- - CAMBIO TIPO COMPROBANTE ":"")+"<===");
+						boletoOriginal.setFechaLiquidacion(boletoPostergar.getFechaLiquidacion());
+						boletoOriginal.setUsuarioInsercion(boletoPostergar.getUsuarioInsercion());
+						boletoOriginal.setIpInsercion(boletoPostergar.getIpInsercion());
+						boletoOriginal.setUsuarioModificacion(boletoPostergar.getUsuarioModificacion());
+						boletoOriginal.setIpModificacion(boletoPostergar.getIpModificacion());
+						boletoOriginal.setLiquidacion(null);
+						boletoOriginal.setFechaTransferencia(null);
+					}else{
+						boletoOriginal.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_ANULACION_SISTEMA));
+						boletoOriginal.setUsuario(boletoPostergar.getUsuario());
+						boletoOriginal.setUsuarioInsercion(boletoPostergar.getUsuarioInsercion());
+						boletoOriginal.setIpInsercion(boletoPostergar.getIpInsercion());
+						boletoOriginal.setUsuarioModificacion(boletoPostergar.getUsuarioModificacion());
+						boletoOriginal.setIpModificacion(boletoPostergar.getIpModificacion());
+
+//						emitirNotaCredito=true;
+					}
+					/* Anulando/devuleve el movimiento anterior	*/
+					getVentaPasajesDAO().save(boletoOriginal);
+				}
+
+				/*Generando la Nota de credito si el boleto original no es boleto de viaje - 04/11/2016 - jabanto*/
+				VentaPasaje notaCredito=null;
+				if(emitirNotaCredito)
+					notaCredito = generarNotaCredito(boletoPostergar.getVentaPasaje(), boletoPostergar.getTipoNota(), false, false);
+
+				/*BEGIN 15/06/2021 - javalos - Correlativo by caja*/
+				ControlEspecieValorada controlEspecieValorada = null;
+				/*END 15/06/2021 - javalos - Correlativo by caja*/
+				if(boletoPostergar.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE && isNewComprobante){
+					/*BEGIN 15/06/2021 - javalos - Correlativo by caja*/
+					controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(boletoPostergar.getTipoComprobante().getId(), boletoPostergar.getAgencia(), true, boletoPostergar.getUsuarioHardware(), null, boletoPostergar.getItinerario().getEmpresa().getId());
+					boletoPostergar.setNumeroBoleto(controlEspecieValorada.toString());
+					/*END 15/06/2021 - javalos - Correlativo by caja*/
+
+					/*	Validando que el boleto no exista en la DB	*/
+					if(isBoletoDuplicado(boletoPostergar.getNumeroBoleto(), boletoPostergar.getTipoComprobante().getId()))
+						throw new NumeroBoletoDuplicadoException();
+					/*Actualiza el correlativo 04/11/2016 - jabanto*/
+					if(boletoPostergar.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE){
+						int position = boletoPostergar.getNumeroBoleto().indexOf("-");
+						Long correlativo = Long.valueOf(boletoPostergar.getNumeroBoleto().substring(position+1))+1;
+						/*BEGIN 15/06/2021 - javalos - Correlativo by caja*/
+						controlEspecieValorada.setCorrelativoActual(correlativo);
+						getControlEspecieValoradaDAO().update(controlEspecieValorada);
+						/*END 15/06/2021 - javalos - Correlativo by caja*/
+					}
+				}
+
+				//Guarda el pasajero si es que este es nuevo
+				if(boletoPostergar.getPasajero().getId()==null)
+					getPasajeroDAO().guardar(boletoPostergar.getPasajero());
+				
+				/*	Generando el nuevo boleto	*/
+				boletoPostergar.setTipoNota(null);
+				if(isNewComprobante) {
+					getVentaPasajesDAO().save(boletoPostergar);
+				}else {
+					//Realiza una copia del registro al historial
+					copyHistoryVentaPasaje(boletoOriginal.getId());
+
+					//Solamente actualiza los cambios realizados
+					VentaPasaje oVentaPasaje = buscarVentaById(boletoOriginal.getId());
+					boletoPostergar.setId(oVentaPasaje.getId());
+					boletoPostergar.setFechaInsercion(oVentaPasaje.getFechaInsercion()!=null?oVentaPasaje.getFechaInsercion():new Date());
+					boletoPostergar.setUsuarioInsercion(oVentaPasaje.getUsuarioInsercion());
+					boletoPostergar.setIpInsercion(oVentaPasaje.getIpInsercion());
+					boletoPostergar.setNumeroBoleto(oVentaPasaje.getNumeroBoleto());
+					boletoPostergar.setNumeroBoletoAnterior(oVentaPasaje.getNumeroBoletoAnterior()!=null?oVentaPasaje.getNumeroBoletoAnterior():null);
+					boletoPostergar.setNumeroControl(oVentaPasaje.getNumeroControl());
+					boletoPostergar.setFechaTransferencia(oVentaPasaje.getFechaTransferencia()!=null?oVentaPasaje.getFechaTransferencia():null);
+					boletoPostergar.setFechaEnvioSFE(oVentaPasaje.getFechaEnvioSFE()!=null?oVentaPasaje.getFechaEnvioSFE():null);
+					boletoPostergar.setEnviadoSFE(oVentaPasaje.getEnviadoSFE()!=null?oVentaPasaje.getEnviadoSFE():null);
+					boletoPostergar.setUsuario(oVentaPasaje.getUsuario());
+					boletoPostergar.setFechaLiquidacion(oVentaPasaje.getFechaLiquidacion());
+					boletoPostergar.setAgencia(oVentaPasaje.getAgencia());
+					boletoPostergar.setLiquidacion(oVentaPasaje.getLiquidacion()!=null?oVentaPasaje.getLiquidacion():null);
+					boletoPostergar.setFormaPago(oVentaPasaje.getFormaPago());
+					boletoPostergar.setTipoFormaPago(oVentaPasaje.getTipoFormaPago());
+					boletoPostergar.setTarjetaCredito(oVentaPasaje.getTarjetaCredito()!=null?oVentaPasaje.getTarjetaCredito():null);
+					boletoPostergar.setCanalVenta(oVentaPasaje.getCanalVenta());
+					boletoPostergar.setTarifa(oVentaPasaje.getTarifa());
+					boletoPostergar.setImportePagado(oVentaPasaje.getImportePagado());
+					boletoPostergar.setDescuento(oVentaPasaje.getDescuento());
+
+					getVentaPasajesDAO().update(boletoPostergar);
+				}
+
+				/*Actualiza los datos del cliente por si estos hayan sido cambiados 08/11/2016 - jabanto*/
+				if(boletoPostergar.getCliente()!=null){
+					Cliente cliente=boletoPostergar.getCliente();
+					Cliente clienteOriginal=ServiceLocator.getClienteManager().buscarPorId(boletoPostergar.getCliente().getId());
+					boolean updateCliente=false;
+					if(!(cliente.getRazonSocial().equals(clienteOriginal.getRazonSocial()))){
+						updateCliente=true;
+					}else if (cliente.getDireccion()==null && clienteOriginal.getDireccion()!=null){
+						updateCliente=true;
+					}else if (cliente.getDireccion()!=null && !(cliente.getDireccion().equals(clienteOriginal.getDireccion()))){
+						updateCliente=true;
+					}
+					if(updateCliente){
+						UtilData.auditarRegistro(cliente, true, boletoPostergar.getUsuario(), Executions.getCurrent());
+						ServiceLocator.getClienteManager().actualizar(cliente);
+					}
+				}
+
+				/* actualiza el campo VENPAS_IDREF del registro original con el Id del nuevo boleto generado 12/12/2013-jabanto*/
+				if(isNewComprobante) {
+					boletoPostergar.getVentaPasaje().setVentaPasaje(boletoPostergar);
+					getVentaPasajesDAO().update(boletoPostergar.getVentaPasaje());
+
+					/*	Generando el numero de control	*/
+					String nControl = Util.generateControlNumber(Util.decimalToHexadecimal(boletoPostergar.getId()));
+					boletoPostergar.setNumeroControl(nControl);
+					/*	Actualizando el numero de control a la venta realizada	*/
+					boletoPostergar.setFechaInsercion(Util.StringtoDate(getVentaPasajesDAO().getDateSystem(), Constantes.DATE_TIME_FORMAT));
+					getVentaPasajesDAO().update(boletoPostergar);
+				}
+
+				if(boletoPostergar.getFechaPartida()!=null)
+					borrarAsientoTmpOcupacion(boletoPostergar);
+				
+				
+				if(notaCredito!=null)
+					listNotasCredito.add(notaCredito);
+			}
+
+			return listNotasCredito;
+		}catch(CapacityExceedsException ceex){
+			throw new CapacityExceedsException();
+		}catch(DuplicateSeatException dsex){
+			throw new Exception(dsex);
+		}catch(NumeroBoletoDuplicadoException nbdex){
+			throw new NumeroBoletoDuplicadoException();
+		}catch(TiempoExpiracionBloqueoException tebex){
+			throw new TiempoExpiracionBloqueoException();
+		}catch(Exception ex){
+			ex.printStackTrace();
+			throw new Exception(ex);
+		}
+	}
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaPasajesManager#reimprimirBoleto(com.tepsa.sisvyr.model.bean.VentaPasaje, com.tepsa.sisvyr.model.bean.VentaPasaje)
@@ -1817,10 +2048,11 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 
 			boolean emitirNota=true;
 			/*Valida si el Comprobante ha sido emitido por los operadores POOL - 14/11/2016 - jabanto*/
-			if(venta.getRucClienteCredito()!=null && (venta.getRucClienteCredito().equals(Constantes.RUC_CRUZ_DEL_SUR) ||
-													  venta.getRucClienteCredito().equals(Constantes.RUC_CIVA))){
-				emitirNota=false;
-			}else if (venta.getCanalVenta().getId().intValue()==Constantes.ID_CANVEN_AGENCIA_VIAJES || venta.getCanalVenta().getId().intValue()==Constantes.ID_CANVEN_WEB){
+//			if(venta.getRucClienteCredito()!=null && (venta.getRucClienteCredito().equals(Constantes.RUC_CRUZ_DEL_SUR) ||
+//													  venta.getRucClienteCredito().equals(Constantes.RUC_CIVA))){
+//				emitirNota=false;
+//			}else 
+			if (venta.getCanalVenta().getId().intValue()==Constantes.ID_CANVEN_AGENCIA_VIAJES || venta.getCanalVenta().getId().intValue()==Constantes.ID_CANVEN_WEB){
 				/*Cuando el canal por el cual se emitio el comprobante es agencia de viaje o web, no emite nota de credito
 				 * Basicamente por el tema de la cobranza, pues estos comprobantes siempre se deben cobrar. - 15/12/2016 - jabanto
 				 * */

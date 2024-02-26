@@ -258,7 +258,7 @@ public class WndManifiesto extends WndBase {
 //		//recupera la agencia asociada al usuario hardware
 //		lstUsuarioHardware= UtilData.agenciaUsuarioHardware(UtilData.getCodigoUsuarioHardware());
 		/*recupera datos autorizados por la sunat para la emisi�n del manifiesto.*/
-		loadCorrelativosManifiesto();
+//		loadCorrelativosManifiesto();
 
 		cmdImprimir.setDisabled(true);
 		cmdPrevio.setDisabled(true);
@@ -441,9 +441,9 @@ public class WndManifiesto extends WndBase {
 //		if (lstUsuarioHardware.size() >0){
 //			Agencia agencia =  new Agencia();
 //			agencia.setId(lstUsuarioHardware.get(0).getAgencia().getId());
-			especieValoradaSunat =  ServiceLocator.getManifiestoManager().consultaAutorizacionSunat(getAgencia().getId());
+			especieValoradaSunat =  ServiceLocator.getManifiestoManager().consultaAutorizacionSunat(getAgencia().getId(), itinerario.getEmpresa().getId());
 			/*Calcula el porcenaje de correlativos utilizados de los manifiestos*/
-			porcentajeCorrelativoManifiesto = (int) UtilData.porcentajeCorrelativoManifiesto(getAgencia());
+			porcentajeCorrelativoManifiesto = (int) UtilData.porcentajeCorrelativoManifiesto(getAgencia(), itinerario.getEmpresa());
 //		}
 	}
 
@@ -865,9 +865,10 @@ public class WndManifiesto extends WndBase {
 	/**
 	 * Valida si la agencia esta autorizada para la impresion de manifiestos
 	 */
-	public void validaImpresionManifiesto(){
+	public void validaImpresionManifiesto()throws Exception{
 		if (cmbImprimir.getSelectedItem().getValue().equals(IMPRESION_MANIFIESTO_PASAJEROS)){
-			if (!(especieValoradaSunat.getAutorizacionSunat() ==null && especieValoradaSunat.getSerie() ==null && especieValoradaSunat.getCorrelativoActual() == null )){
+			loadCorrelativosManifiesto();
+			if (especieValoradaSunat!=null && !(especieValoradaSunat.getAutorizacionSunat() ==null && especieValoradaSunat.getSerie() ==null && especieValoradaSunat.getCorrelativoActual() == null )){
 				/*Habili/Desabilita segun la configuracion del rol del usuario*/
 				/*IMPRIMIR*/
 				cmdImprimir.setDisabled(accesoImprimir()?false:true);

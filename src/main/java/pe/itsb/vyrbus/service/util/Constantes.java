@@ -31,7 +31,7 @@ public class Constantes {
 	 * Vension actual del Sistema
 	 */
 
-	public static final String SYSTEM_VERSION = "Versi�n 3.4.0";
+	public static final String SYSTEM_VERSION = "Versión 3.4.0";
 
 	/**
 	 * Constante para la Acci�n Nuevo
@@ -165,11 +165,11 @@ public class Constantes {
 //	public static final String SERVER_HOST = Executions.getCurrent().getHeader("host");
 //	public static final String SERVER_HOST = "ventas.tepsa.com.pe/";
 
-//	public static final String SERVER_HOST = "localhost:8080";
+	public static final String SERVER_HOST = "localhost:8080";
 	//Demo Wars
 //	public static final String SERVER_HOST = "170.0.233.156:8080";
 
-	public static final String SERVER_HOST = "119.8.145.122:8080";
+//	public static final String SERVER_HOST = "119.8.145.122:8080";
 
 	public static final String SERVER_CONTEXT = Executions.getCurrent().getContextPath();
 	public static final String URL_FORMATOS = SERVER_PROTOCOL+"://"+SERVER_HOST+SERVER_CONTEXT+"/formatos/";
@@ -204,7 +204,20 @@ public class Constantes {
 	public static final String DIRECTORY_HRE=Util.getPath()+Util.separator+"formatos"+Util.separator+"hre"+Util.separator;
 	public static final String DIRECTORY_FORMAT_TICKET=Util.getPath()+Util.separator+"formatos"+Util.separator+"formatTicket"+Util.separator;
 
-
+	/* Nombre de los formatos de impresión */
+	public static final String FORMAT_PRINT_BOLETA_EXCESO = "Boleta_exceso.rpt";
+	public static final String FORMAT_PRINT_BOLETA_GA = "Boleta_GA.rpt";
+	public static final String FORMAT_PRINT_BOLETA = "Boleta.rpt";	
+	public static final String FORMAT_PRINT_CARPETA_DESPACHO = "CarpetaDespacho.rpt";
+	public static final String FORMAT_PRINT_EQUIPAJE = "Equipaje.rpt";
+	public static final String FORMAT_PRINT_FACTURA_EXCESO = "Factura_exceso.rpt";
+	public static final String FORMAT_PRINT_FACTURA_GA = "Factura_GA.rpt";
+	public static final String FORMAT_PRINT_FACTURA = "Factura.rpt";
+	public static final String FORMAT_PRINT_GUIA_EXCESO = "Guia_exceso.rpt";	
+	public static final String FORMAT_PRINT_HOJA_RUTA = "HojaRuta.rpt";
+	public static final String FORMAT_PRINT_LIQUIDACION = "Liquidacion.rpt";
+	public static final String FORMAT_PRINT_MANIFIESTO = "Manifiesto.rpt";
+	
 
 	/* Constantes que indican el piso del bus*/
 	public static final int PISO_UNO=0;
@@ -287,12 +300,12 @@ public class Constantes {
 	public static final int FORMATO_IMPRESION_A4 = 2;
 
 	/* Crados para la integracion del l os web service de Cruz del sur y civa*/
-	public static final String RUC_CRUZ_DEL_SUR="20100227461";
-	public static final String RUC_CIVA="20102427891";
-	public static final String RUC_TEPSA="20502324927";
-	public static final String RUC_TRANSMAR="20501622819";
-	public static final String OPERADO_POR_CRUZ_DEL_SUR="CRUZ DEL SUR";
-	public static final String OPERADO_CIVA="EXCLUCIVA";
+//	public static final String RUC_CRUZ_DEL_SUR="20100227461";
+//	public static final String RUC_CIVA="20102427891";
+//	public static final String RUC_TEPSA="20502324927";
+//	public static final String RUC_TRANSMAR="20501622819";
+//	public static final String OPERADO_POR_CRUZ_DEL_SUR="CRUZ DEL SUR";
+//	public static final String OPERADO_CIVA="EXCLUCIVA";
 
 	/**/
 	public static final Double MONTO_MINIMO_EXCESO = 5.0;
@@ -456,6 +469,7 @@ public class Constantes {
 	public static final int ID_TIPCOM_NOTA_DEBITO=9;
 	public static final int ID_TIPCOM_GUIA_TRANSPORTISTA=10;
 	public static final int ID_TIPCOM_TICKET_EQUIPAJE=11;
+	public static final int ID_TIPCOM_GUIA=13;
 
 	/* Constantes que referencian a los identificadores de los tipos de documento en transcarweb */
 	public static final int TRANSCARWEB_ID_TIPCOM_PCE=3;
@@ -645,12 +659,12 @@ public class Constantes {
 	/**
 	 * N�mero de Ruc de la Empresa
 	 */
-	public static final String empresa="TRANSMAR EXPRESS SAC";
-	public static final String direccion_empresa="AV. NICOLAS ARRIOLA NRO. 197";
-	public static final String centro_computo = "TRANSMAR";
-	public static final String correo_empresa="transmar@transmar.com.pe";
-	public static final String nro_telefono="(01)265 0190";
-	public static final String ruc="20501622819";
+//	public static final String empresa="TRANSMAR EXPRESS SAC";
+//	public static final String direccion_empresa="AV. NICOLAS ARRIOLA NRO. 197";
+//	public static final String centro_computo = "TRANSMAR";
+//	public static final String correo_empresa="transmar@transmar.com.pe";
+//	public static final String nro_telefono="(01)265 0190";
+//	public static final String ruc="20501622819";
 	public static final String usuario="059979";
 	public static final String clave="xKIx5z";
 	public static final String partida="000530PNR";

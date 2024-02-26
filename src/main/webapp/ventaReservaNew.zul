@@ -205,7 +205,7 @@
 									<radiogroup>
 										<radio id="rdVtaVenta" label="VENTA" style="padding:10px;font-weight:bold;"/>
 										<radio id="rdVtaReserva" label="RESERVA" style="padding:10px;font-weight:bold"/>
-										<radio id="rdVtaPostergacion" label="POSTERGACION" style="padding:10px;font-weight:bold"/>
+<!-- 										<radio id="rdVtaPostergacion" label="POSTERGACION" style="padding:10px;font-weight:bold"/> -->
 										<radio id="rdVtaPostergacionFA" label="POSTERGACION F.A." style="padding:10px;font-weight:bold"/>
 										<radio id="rdVtaCambioNombre" label="CAMBIO DE NOMBRE" style="padding:10px;font-weight:bold"/>							
 									</radiogroup>

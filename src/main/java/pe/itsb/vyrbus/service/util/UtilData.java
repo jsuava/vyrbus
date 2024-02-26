@@ -2085,9 +2085,9 @@ public class UtilData extends Window {
 	 * @return : porcentaje utilizado
 	 * @throws Exception
 	 */
-	public static Integer porcentajeCorrelativoManifiesto(Agencia agencia) throws Exception{
+	public static Integer porcentajeCorrelativoManifiesto(Agencia agencia, Empresa empresa) throws Exception{
 		Integer porcentajeUtilizado=0;
-		EspecieValorada especieValoradaSunat  =  ServiceLocator.getManifiestoManager().consultaAutorizacionSunat(agencia.getId());
+		EspecieValorada especieValoradaSunat  =  ServiceLocator.getManifiestoManager().consultaAutorizacionSunat(agencia.getId(), empresa.getId());
 		if (especieValoradaSunat.getCorrelativoActual() !=null && especieValoradaSunat.getCorrelativoFinal() !=null){
 //			Long correlativoActual = especieValoradaSunat.getCorrelativoActual();
 //			Long correlativoFinal = especieValoradaSunat.getCorrelativoFinal();
