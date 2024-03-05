@@ -634,6 +634,8 @@
 <!-- 		<property name="titanDAO" ref="titanDAO" /> -->
 		<property name="especieValoradaDAO" ref="especieValoradaDAO" />
 		<property name="lineaCreditoClienteDAO" ref="lineaCreditoClienteDAO" />
+		<property name="pasajeroDAO" ref="pasajeroDAO" />
+		<property name="clienteDAO" ref="clienteDAO" />
 	</bean>
 	<bean id="ventaPasajesHistorialManager" class="pe.itsb.vyrbus.service.business.impl.VentaPasajesHistorialManagerImpl">
 		<property name="ventaPasajesHistorialDAO" ref="ventaPasajesHistorialDAO"/>		
@@ -660,6 +662,7 @@
 	</bean>
 	<bean id="manifiestoManager" class="pe.itsb.vyrbus.service.business.impl.ManifiestoManagerImpl">
 		<property name="manifiestoDAO" ref="manifiestoDAO"/>
+		<property name="detalleManifiestoDAO" ref="detalleManifiestoDAO" />
 	</bean>
 	<bean id="tmpOcupacionAsientosManager" class="pe.itsb.vyrbus.service.business.impl.TmpOcupacionAsientosManagerImpl">
 		<property name="tmpOcupacionAsientosDAO" ref="tmpOcupacionAsientosDAO" />

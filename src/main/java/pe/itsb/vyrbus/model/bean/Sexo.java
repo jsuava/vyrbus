@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SYSVYR
  * Sistema		: Sistema de Mantenimiento de Buses
- * Descripción	:
- * Autor		: José Sullo Avalos
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Sullo Avalos
  * Fecha		: 31/10/2010
  */
 package pe.itsb.vyrbus.model.bean;
@@ -20,6 +20,14 @@ public class Sexo extends GenericBean implements Serializable {
 	private Integer id;
 	private String denominacion;
 
+	public Sexo() {
+		super();
+	}
+	
+	public Sexo(Integer id) {
+		this.id = id;
+	}
+	
 	public Integer getId() {
 		return id;
 	}
@@ -33,4 +41,6 @@ public class Sexo extends GenericBean implements Serializable {
 	public void setDenominacion(String denominacion) {
 		this.denominacion = denominacion;
 	}
+	
+	
 }

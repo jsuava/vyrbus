@@ -78,8 +78,10 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				"			 p.pasajero_id, p.c_apepat, p.c_apemat, p.c_nombre, s.sexo_id, s.c_denominacion, vp.c_numboleto, vp.n_numasiento, " +
 				"			 vp.c_tiptra, i.ruta_idmayor, rm.localidad_idorigen, rm.localidad_iddestino, vp.n_numpiso, i.c_sectra, i.itinerario_id, " +
 				"			 p.c_numdoc, p.c_fecnac, vp.c_numcontrol, vp.canven_id, vp.d_fecpar, vp.c_horpar, " +
-				"			 ap.c_nomcor as nombreCorto, p.tipdoc_id tipoDocPax, vp.forpag_id, vp.tipforpag_id, vp.c_rucclicre, vp.n_imppag, " +//34
-				"			 vp.tipmov_id, av.c_denominacion AGVENTA, u.c_login USUARIO, al.c_denominacion AGLLEGADA, vp.audfecins FECVENTA, p.c_telefono "+
+				"			 ap.c_nomcor as nombreCorto, p.tipdoc_id tipoDocPax, vp.forpag_id, vp.tipforpag_id, vp.c_rucclicre, vp.n_imppag, " +
+				"			 vp.tipmov_id, av.c_denominacion AGVENTA, u.c_login USUARIO, al.c_denominacion AGLLEGADA, vp.audfecins FECVENTA, p.c_telefono, "+ 
+				"            ap.agencia_id agencia_idpartida, al.agencia_id agencia_idllegada, tc.tipcom_id, tc.c_denominacion tipoComprobante,  "+ //43
+				"            vp.c_tiptra, cl.cliente_id, cl.c_numdoc ruc_cliente, cl.c_razsoc, cl.c_direccion, vp.usuario_id "+ //49
 				"FROM vrtvenpas vp " +
 				"	  INNER JOIN (SELECT MAX(venpas_id)venpas_id, c_numcontrol " +
 				"				  FROM vrtvenpas WHERE itinerario_id="+idItinerario+" GROUP BY c_numcontrol) max_venta " +
@@ -93,6 +95,8 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				"     INNER JOIN vrmagencia al ON (vp.agencia_idllegada = al.agencia_id) "+
 			    "     INNER JOIN vrmagencia av ON (vp.agencia_id = av.agencia_id) "+
 			    "     INNER JOIN vrmusuario u ON (vp.usuario_id = u.usuario_id) "+
+			    "     INNER JOIN vrmtipcom tc ON (tc.tipcom_id=vp.tipcom_id)   "+
+			    "     LEFT JOIN vrmcliente cl ON (cl.cliente_id=vp.cliente_id)  "+
 //				"INNER JOIN vrmtipmov tm ON tm.tipmov_id=vp.tipmov_id " +
 				"WHERE vp.itinerario_id="+idItinerario+" "+
 			    "AND vp.tipmov_id not in("+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+","+Constantes.ID_TIPMOV_ANULACION+") "+
@@ -150,6 +154,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			ventaPasaje.setHoraPartida(obj[27].toString());
 
 			Agencia agenciaPartida=new Agencia();
+			agenciaPartida.setId(obj[40]!=null?((BigDecimal)obj[40]).intValue():null);
 			agenciaPartida.setNombreCorto(obj[28]!=null?obj[28].toString():"");
 			ventaPasaje.setAgenciaPartida(agenciaPartida);
 
@@ -165,6 +170,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			ventaPasaje.setImportePagado(obj[33]==null?null:((BigDecimal)obj[33]).doubleValue());
 
 			Agencia agenciaLlegada = new Agencia();
+			agenciaLlegada.setId(obj[41]!=null?((BigDecimal)obj[41]).intValue():null);
 			agenciaLlegada.setDenominacion(obj[37]==null?null:obj[37].toString());
 			ventaPasaje.setAgenciaLlegada(agenciaLlegada);
 
@@ -174,9 +180,20 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 
 			Usuario usuarioVenta = new Usuario();
 			usuarioVenta.setLogin(obj[36]==null?null:obj[36].toString());
+			usuarioVenta.setId(((BigDecimal)obj[49]).intValue());
 			ventaPasaje.setUsuario(usuarioVenta);
-
 			ventaPasaje.setFechaInsercion(obj[38]==null?null:(Date)obj[38]);
+			ventaPasaje.setTipoComprobante(new TipoComprobante(((BigDecimal)obj[42]).intValue(), obj[43].toString()));
+			ventaPasaje.setTipoTransaccion(obj[44].toString());
+
+			if(obj[45]!=null) {
+				Cliente cliente = new Cliente();
+				cliente.setId(((BigDecimal)obj[45]).longValue());
+				cliente.setNumeroDocumento(obj[46].toString());
+				cliente.setRazonSocial(obj[47].toString());
+				cliente.setDireccion(obj[48]!=null?obj[48].toString():null);
+				ventaPasaje.setCliente(cliente);
+			}
 
 //			TipoMovimiento tipoMovimiento = new TipoMovimiento();
 //			tipoMovimiento.setId(((BigDecimal)obj[34]).intValue());
@@ -1757,7 +1774,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					"INNER JOIN vrmtipcom tcp ON (tcp.tipcom_id=vp.tipcom_id) "+
 					"WHERE vp.agencia_id="+idAgencia+" AND vp.usuario_id=NVL("+idUsuario+",vp.usuario_id) AND vp.d_fecliq BETWEEN to_date('"+fechaInicial+"','dd/mm/yyyy') AND " +
    						  "to_date('"+fechaFinal+"','dd/mm/yyyy') AND vp.forpag_id=1 "
-   						+ "AND vp.tipcom_id in ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_FACTURA+","+Constantes.ID_TIPCOM_NOTA_CREDITO+","+Constantes.ID_TIPCOM_NOTA_DEBITO+","+Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA+") "
+   						+ "AND vp.tipcom_id in ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_FACTURA+","+Constantes.ID_TIPCOM_NOTA_CREDITO+","+Constantes.ID_TIPCOM_NOTA_DEBITO+","+Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA+","+Constantes.ID_TIPCOM_GUIA+") "
 						+ "AND vp.n_tarifa>0 AND vp.tipmov_id NOT IN (4,5,6,10,11,12,13)) "; // +
 //   					"ORDER BY venpas_id ";
 //					"ORDER BY NroBoleto ";

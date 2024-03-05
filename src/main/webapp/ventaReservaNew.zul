@@ -158,7 +158,7 @@
 								</tabpanels>	
 							</tabbox>
 							<vbox>
-								<grid width="250px" height="140px" style="margin-top:22px">
+								<grid width="250px" height="138px" style="margin-top:22px">
 									<columns><column align="center"/></columns>
 									<rows>	
 										<row><separator height="10px"/></row>					
@@ -169,9 +169,10 @@
 												<label id="lblVtaInfoTipoOperacion" sclass="label-size12-bold-alert" style="font-size:16px !important;"/>
 											</vbox>
 										</row>
-										<row><separator height="25px"/></row>
 										<row><separator/></row>
 										<row><separator/></row>
+										<row><separator/></row>
+										<row><separator height="11px"/></row>
 									</rows>
 								</grid>
 								<grid width="250px">
@@ -179,18 +180,19 @@
 									<rows>
 										<row>
 											<hbox align="center">
-												<button id="btnVtaProgramarServicios" width="60px" height="32px" autodisable="self" tooltiptext="Programar Servicio" image="/resources/mp_buscarEnabled.png" />
-												<button id="btnVtaManifiestoPasajetos" width="60px" height="32px" autodisable="self" tooltiptext="Manifiesto de Pasajeros" image="/resources/mp_buscarEnabled.png" />
-												<button id="btnVtaCarpetaDespacho" width="60px" height="32px" autodisable="self" tooltiptext="Carpeta de Despacho" image="/resources/mp_buscarEnabled.png" />
-												<button id="btnVtaContribucionByAgencia" width="60px" height="32px" autodisable="self" tooltiptext="Contribución de las Agencias en la Venta de este servicio" image="/resources/mp_buscarEnabled.png" />																
+												<button id="btnVtaActualizarMapa" width="45px" height="32px" image="resources/buttons/mp_refresh_02.png" autodisable="self" tooltiptext="Actualizar Mapa" />
+												<button id="btnVtaProgramarServicios" width="45px" height="32px" image="resources/buttons/mp_bus-clock.png" autodisable="self" tooltiptext="Programar Bus" />
+												<button id="btnVtaManifiestoPasajetos" width="45px" height="32px" image="resources/buttons/mp_manifiesto-pax.png" autodisable="self" tooltiptext="Manifiesto de Pasajeros" />
+												<button id="btnVtaCarpetaDespacho" width="45px" height="32px" image="resources/buttons/mp_carpeta-despacho.png" autodisable="self" tooltiptext="Carpeta de Despacho" />
+												<button id="btnVtaContribucionByAgencia" width="45px" height="32px" autodisable="self" tooltiptext="Contribución de las Agencias en la Venta de este servicio"/>																
 											</hbox>
 										</row>
 										<row>
 											<hbox>
-												<button id="btnVtaReimpresion" width="60px" height="32px" autodisable="self" tooltiptext="Reimpresión de Comprobante de Venta" image="/resources/mp_buscarEnabled.png" />
-												<button id="btnVtaPostergar"  width="60px" height="32px" autodisable="self" tooltiptext="Postergar" image="/resources/mp_buscarEnabled.png" />
-												<button id="btnVtaAnular"  width="60px" height="32px" autodisable="self" tooltiptext="Anular Venta/Reserva" image="/resources/mp_buscarEnabled.png" />
-												<button id="btnVtaLeyendaAsientos" width="60px" height="32px" autodisable="self" tooltiptext="Leyenda de Asientos" image="/resources/mp_buscarEnabled.png" />
+												<button id="btnVtaReimpresion" width="45px" height="32px" image="resources/buttons/mp_print-termico.png" autodisable="self" tooltiptext="Reimprimir"/>
+												<button id="btnVtaPostergar"  width="45px" height="32px" image="resources/buttons/mp_postergacion.png" autodisable="self" tooltiptext="Postergar"/>
+												<button id="btnVtaAnular"  width="45px" height="32px" image="resources/buttons/mp_anular.png" autodisable="self" tooltiptext="Anular Venta/Reserva"/>
+												<button id="btnVtaLeyendaAsientos" width="45px" height="32px" autodisable="self" tooltiptext="Leyenda de Asientos"/>
 											</hbox>
 										</row>					
 									</rows>
@@ -201,11 +203,11 @@
 							<rows>
 								<row>
 									<radiogroup>
-										<radio id="rdVtaVenta" label="Venta" style="padding:10px;font-weight:bold;"/>
-										<radio id="rdVtaReserva" label="Reserva" style="padding:10px;font-weight:bold"/>
-										<radio id="rdVtaPostergacion" label="Postergación" style="padding:10px;font-weight:bold"/>
-										<radio id="rdVtaPostergacionFA" label="Postergación F.A." style="padding:10px;font-weight:bold"/>
-										<radio id="rdVtaCambioNombre" label="Cambio de Nombre" style="padding:10px;font-weight:bold"/>							
+										<radio id="rdVtaVenta" label="VENTA" style="padding:10px;font-weight:bold;"/>
+										<radio id="rdVtaReserva" label="RESERVA" style="padding:10px;font-weight:bold"/>
+<!-- 										<radio id="rdVtaPostergacion" label="POSTERGACION" style="padding:10px;font-weight:bold"/> -->
+										<radio id="rdVtaPostergacionFA" label="POSTERGACION F.A." style="padding:10px;font-weight:bold"/>
+										<radio id="rdVtaCambioNombre" label="CAMBIO DE NOMBRE" style="padding:10px;font-weight:bold"/>							
 									</radiogroup>
 								</row>
 							</rows>			
@@ -221,27 +223,27 @@
 										<row>
 											<grid style="border:none">
 												<columns>
-													<column width="40px"/>
-													<column width="200px"/>
+<!-- 													<column width="40px"/> -->
+													<column width="240px"/>
 													<column width="70px"/>
 													<column/>
 												</columns>
 												<rows>
 													<row>
-														<label value="DEST :"/>
-														<label id="lblVtaIdaDestino_fecha" sclass="label-size11-bold" style="font-size:12px !important" tooltiptext="Destino del Viaje de Ida"/>
+<!-- 														<label value="DEST :"/> -->
+														<label id="lblVtaIdaDestino_fecha" sclass="label-size11-bold" style="font-size:14px !important;color:red" tooltiptext="Destino del Viaje de Ida"/>
 														<label value="EMBARQUE :"/>
 														<hbox align="center">
-															<combobox id="cmbVtaIdaEmbarque_hora" readonly="true" width="99%" tooltiptext="Punto de Embarque del viaje de Ida" placeholder="EMBARQUE" style="font-size:10px !important;font-weight: bold;"/>										
+															<combobox id="cmbVtaIdaEmbarque_hora" onFocus="self.select();"  onOK="cmbVtaIdaDesembarque_hora.setFocus(true);" readonly="true" width="99%" tooltiptext="Punto de Embarque del viaje de Ida" placeholder="EMBARQUE" style="font-size:10px !important;font-weight: bold;"/>										
 															<separator width="30px"/>
-															<label value="DESC :"/>
-															<combobox id="cmbVtaIdaDesembarque_hora" readonly="true" width="160px" tooltiptext="Punto de Desembarque del viaje de Ida" placeholder="DESEMBARQUE" style="font-size:10px !important;font-weight: bold;"/>
+															<label value="DESEMB. :"/>
+															<combobox id="cmbVtaIdaDesembarque_hora" onFocus="self.select();" onOK="if(gridVtaInfoViajeVuelta.isVisible()){ cmbVtaVueltaEmbarque_hora.setFocus(true);} else txtVtaPaxBusqueda.setFocus(true);" readonly="true" width="160px" tooltiptext="Punto de Desembarque del viaje de Ida" placeholder="DESEMBARQUE" style="font-size:10px !important;font-weight: bold;"/>
 															<separator width="15px"/>
 															<label value="ASIENTO :"/>
 															<label id="lblVtaIdaAsiento" sclass="label-size11-bold" style="font-size:18px !important" />
 															<separator width="15px"/>
 															<label value="TARIFA :"/>
-															<label id="lblVtaIdaTarifa" sclass="label-size11-bold" style="font-size:18px !important" />
+															<doublebox id="dbxVtaIdaTarifa" readonly="true" width="70px" sclass="label-size11-bold" format="#,##0.00" style="font-size:18px !important" />
 														</hbox>
 													</row>
 												</rows>
@@ -251,34 +253,34 @@
 								</grid>
 								<grid id="gridVtaInfoViajeVuelta">
 									<columns>
-										<column label="INFORMACIÓN DEL VIAJE DE VIELTA" style="background:#4285F4;color:#FFFFFF" visible="true"/>
+										<column label="INFORMACIÓN DEL VIAJE DE VUELTA" style="background:#4285F4;color:#FFFFFF" visible="true"/>
 									</columns>
 									<rows>
 										<row>
 											<grid style="border:none">
 												<columns>
-													<column width="40px"/>
-													<column width="200px"/>
+<!-- 													<column width="40px"/> -->
+													<column width="240px"/>
 													<column width="70px"/>
 													<column/>
 												</columns>
 												<rows>
 													<row>
-														<label value="DEST :"/>
-														<label id="lblVtaVueltaDestino_fecha" sclass="label-size11-bold" style="font-size:12px !important" tooltiptext="Destino del Viaje de Ida"/>
+<!-- 														<label value="DEST :"/> -->
+														<label id="lblVtaVueltaDestino_fecha" sclass="label-size11-bold" style="font-size:14px !important;color:red" tooltiptext="Destino del Viaje de Ida"/>
 														<label value="EMBARQUE :"/>
 														<hbox align="center">
-															<combobox id="cmbVtaVueltaEmbarque_hora" readonly="true" width="99%" tooltiptext="Punto de Embarque del viaje de Ida" placeholder="EMBARQUE" sclass="label-size11-bold" style="font-size:10px !important;font-weight: bold;"/>										
+															<combobox id="cmbVtaVueltaEmbarque_hora" onFocus="self.select();" onOK="cmbVtaVueltaDesembarque_hora.setFocus(true);"  readonly="true" width="99%" tooltiptext="Punto de Embarque del viaje de Ida" placeholder="EMBARQUE" sclass="label-size11-bold" style="font-size:10px !important;font-weight: bold;"/>										
 															<hbox align="center">
 																<separator width="30px"/>
-																<label value="DESC :"/>
-																<combobox id="cmbVtaVueltaDesembarque_hora" readonly="true" width="160px" tooltiptext="Punto de Desembarque del viaje de Ida" placeholder="DESEMBARQUE" style="font-size:10px !important;font-weight: bold;"/>
+																<label value="DESEMB. :"/>
+																<combobox id="cmbVtaVueltaDesembarque_hora" onFocus="self.select();" onOK="txtVtaPaxBusqueda.setFocus(true);" readonly="true" width="160px" tooltiptext="Punto de Desembarque del viaje de Ida" placeholder="DESEMBARQUE" style="font-size:10px !important;font-weight: bold;"/>
 																<separator width="15px"/>
 																<label value="ASIENTO :"/>
 																<label id="lblVtaVueltaAsiento" sclass="label-size11-bold" style="font-size:18px !important" />
 																<separator width="15px"/>
 																<label value="TARIFA :"/>
-																<label id="lblVtaVueltaTarifa" sclass="label-size11-bold" style="font-size:18px !important" />				
+																<doublebox id="dbxVtaVueltaTarifa" readonly="true" width="70px" sclass="label-size11-bold" format="#,##0.00" style="font-size:18px !important" />				
 															</hbox>
 														</hbox>
 													</row>
@@ -310,7 +312,7 @@
 							<tabbox width="460px" >
 								<tabs>
 									<tab label="Datos del Pasajero" />
-									<tab label="Datos del Infante" />
+									<tab label="Datos del Infante" disabled="true"/>
 								</tabs>
 								<tabpanels>
 									<tabpanel>
@@ -320,30 +322,39 @@
 												<column/>
 											</columns>						
 											<rows>
-												<row>
-													<combobox id="cmbVtaPaxTipoDocumento" readonly="true" width="97%" placeholder="TIPO DOCUMENTO"/>
-													<textbox id="txtVtaPaxNumeroDocumento" width="97%" maxlength="15" placeholder="NÚMERO DOCUMENTO"/>
+												<row spans="2">
+													<hbox align="center">
+														<label value="BUSCAR PASAJERO : " style="color:blue" />
+														<textbox id="txtVtaPaxBusqueda" onFocus="self.select();" width="328px" placeholder="POR DOCUMENTO, APELLIDOS Y/O NOMBRES/RAZÓN SOCIAL"/>
+													</hbox>													
 												</row>
 												<row spans="2">
-													<textbox id="txtVtaPaxNombres" width="98%" placeholder="NOMBRES"/>
+													<div style="background:#929697" height="1px"/>
 												</row>
 												<row>
-													<textbox id="txtVtaPaxApePaterno" width="93%" placeholder="APELLIDO PATERNO"/>
-													<textbox id="txtVtaPaxApeMaterno" width="97%" placeholder="APELLIDO MATERNO"/>
+													<hbox align="center">
+														<combobox id="cmbVtaPaxTipoDocumento" onFocus="self.select();" onOK="txtVtaPaxNumeroDocumento.setFocus(true);" readonly="true" width="70%" placeholder="TIPO DOCUMENTO"/>
+														<textbox id="txtVtaPaxNumeroDocumento" onFocus="self.select();" onOK="txtVtaPaxNombres.setFocus(true);" width="97%" maxlength="15" placeholder="NÚMERO DOCUMENTO"/>
+													</hbox>
+													<textbox id="txtVtaPaxNombres" onFocus="self.select();" onOK="txtVtaPaxApePaterno.setFocus(true);" width="96%" placeholder="NOMBRES"/>
+												</row>
+												<row>
+													<textbox id="txtVtaPaxApePaterno" onFocus="self.select();" onOK="txtVtaPaxApeMaterno.setFocus(true);" width="93%" placeholder="APELLIDO PATERNO"/>
+													<textbox id="txtVtaPaxApeMaterno" onFocus="self.select();" onOK="rdVtaPaxFemenino.setFocus(true)" width="96%" placeholder="APELLIDO MATERNO"/>
 												</row>
 												<row>
 													<hbox>
 														<radiogroup>
-															<radio id="rdVtaPaxFemenino" label="FEMENINO" style="font-size:11px !important"/>
+															<radio id="rdVtaPaxFemenino" onOK="if(rdVtaPaxFemenino.isChecked()) itbxVtaPaxEdad.setFocus(true); else rdVtaPaxMasculino.setFocus(true);" label="FEMENINO" style="font-size:11px !important"/>
 															<separator orient="vertical" width="10px"/>
-															<radio id="rdVtaPaxMasculino" label="MASCULINO" style="font-size:11px !important"/>
+															<radio id="rdVtaPaxMasculino" onOK="itbxVtaPaxEdad.setFocus(true);" label="MASCULINO" style="font-size:11px !important"/>
 															<separator orient="vertical" width="10px"/>
-															<intbox id="itbxVtaPaxEdad" width="45px"  placeholder="EDAD"/>
+															<intbox id="itbxVtaPaxEdad" onFocus="self.select();" onOK="txtVtaPaxTelefono.setFocus(true);" width="40px"  placeholder="EDAD"/>
 														</radiogroup>											
 													</hbox>		
 													<hbox>
-														<textbox id="txtVtaPaxTelefono" width="70px" placeholder="TELÉFONO"/>
-														<textbox id="txtVtaPaxCorreo" width="93%" placeholder="CORREO ELECTRÓNICO"/>
+														<textbox id="txtVtaPaxTelefono" onFocus="self.select();" onOK="txtVtaPaxCorreo.setFocus(true);" width="70px" placeholder="TELÉFONO"/>
+														<textbox id="txtVtaPaxCorreo" onFocus="self.select();" onOK="chbxVtaFactura.setFocus(true);" width="94%" placeholder="CORREO"/>
 													</hbox>											
 												</row>
 												<row spans="2">
@@ -351,14 +362,14 @@
 												</row>
 												<row spans="2">
 													<hbox align="center">
-														<checkbox id="chbxVtaFactura" checked="false" label="FACTURA" style="font-size:10px !important"/>
+														<checkbox id="chbxVtaFactura" onOK="if(chbxVtaFactura.isChecked()) txtVtaFacRuc.setFocus(true); else if(cmbVtaTipoFormaPago.getSelectedIndex()>=0) btnVtaGuardar.setFocus(true); else cmbVtaTipoFormaPago.setFocus(true);" checked="false" label="FACTURA" style="font-size:10px !important"/>
 														<separator width="20px" />
-														<textbox id="txtVtaFacRuc" width="80px" placeholder="RUC"/>
-														<textbox id="txtVtaFacRazonSocial" width="248px" placeholder="RAZÓN SOCIAL"/>
+														<textbox id="txtVtaFacRuc" onFocus="self.select();" onOK="txtVtaFacRazonSocial.setFocus(true);" width="80px" placeholder="RUC"/>
+														<textbox id="txtVtaFacRazonSocial" onFocus="self.select();" onOK="txtVtaFacDireccion.setFocus(true);" width="248px" placeholder="RAZÓN SOCIAL"/>
 													</hbox>									
 												</row>
 												<row spans="2">
-													<textbox id="txtVtaFacDireccion" width="98%" placeholder="DIRECCIÓN"/>
+													<textbox id="txtVtaFacDireccion" onFocus="self.select();" onOK="if(cmbVtaTipoFormaPago.getSelectedIndex()>=0) btnVtaGuardar.setFocus(true); else cmbVtaTipoFormaPago.setFocus(true);" width="98%" placeholder="DIRECCIÓN"/>
 												</row>
 											</rows>
 										</grid>
@@ -371,86 +382,139 @@
 											</columns>
 											<rows>
 												<row>
-													<combobox id="cmbVtaInfTipoDocumento" readonly="true" width="97%" placeholder="TIPO DE DOCUMENTO"/>									
-													<textbox id="txtVtaInfNumeroDocumento" width="97%" maxlength="15" placeholder="NÚMERO DOCUMENTO" />
+													<combobox id="cmbVtaInfTipoDocumento" onFocus="self.select();" onOK="txtVtaInfNumeroDocumento.setFocus(true);" readonly="true" width="97%" placeholder="TIPO DE DOCUMENTO"/>									
+													<textbox id="txtVtaInfNumeroDocumento" onFocus="self.select();" onOK="txtVtaInfNombres.setFocus(true);" width="97%" maxlength="15" placeholder="NÚMERO DOCUMENTO" />
 												</row>
 												<row spans="2">							
-													<textbox id="txtVtaInfNombres" width="98%" placeholder="NOMBRES" />	
+													<textbox id="txtVtaInfNombres" onFocus="self.select();" onOK="txtVtaInfApePat.setFocus(true);" width="98%" placeholder="NOMBRES" />	
 												</row>
 												<row>
-													<textbox id="txtVtaInfApePat" width="93%" placeholder="APELLIDO PATERNO"/>
-													<textbox id="txtVtaInfApeMat" width="97%" placeholder="APELLIDO MATERNO"/>
+													<textbox id="txtVtaInfApePat" onFocus="self.select();" onOK="txtVtaInfApeMat.setFocus(true);" width="93%" placeholder="APELLIDO PATERNO"/>
+													<textbox id="txtVtaInfApeMat" onFocus="self.select();" onOK="cmbVtaInfParentes.setFocus(true);" width="97%" placeholder="APELLIDO MATERNO"/>
 												</row>
 												
 												<row>									
-													<combobox id="cmbVtaInfParentes" readonly="true" width="97%" placeholder="PARENTESCO"/>				
-													<textbox id="txtVtaInfParentescoInfoOtro" visible="true" width="97%" placeholder="DESCRIPCIÓN DEL PARENTESCO"/>
+													<combobox id="cmbVtaInfParentes" onFocus="self.select();" onOK="if(!txtVtaInfParentescoInfoOtro.isDisabled()) txtVtaInfParentescoInfoOtro.setFocus(true); else if(!cmbVtaDocumentoAutoInf.isDisabled()) cmbVtaDocumentoAutoInf.setFocus(true); else rdVtaInfFemenino.setFocus(true);" readonly="true" width="97%" placeholder="PARENTESCO"/>				
+													<textbox id="txtVtaInfParentescoInfoOtro" onFocus="self.select();" visible="true" width="97%" placeholder="DESCRIPCIÓN DEL PARENTESCO"/>
 												</row>
 												<row>
-													<combobox id="cmbVtaDocumentoAutoInf" readonly="true" width="97%" placeholder="DOCUMENTO AUTORIZACIÓN"/>
-													<textbox id="txtVtaDocumentoAutoInfOtro" visible="true" width="97%" placeholder="DESCRIPCIÓN DEL DOCUMENTO QUE AUTORIZA"/>
+													<combobox id="cmbVtaDocumentoAutoInf" onFocus="self.select();" onOK="if(!txtVtaDocumentoAutoInfOtro.isDisabled()) txtVtaDocumentoAutoInfOtro.setFocus(true); else rdVtaInfFemenino.setFocus(true);" readonly="true" width="97%" placeholder="DOCUMENTO AUTORIZACIÓN"/>
+													<textbox id="txtVtaDocumentoAutoInfOtro" onFocus="self.select();" onOK="rdVtaInfFemenino.setFocus(true);" visible="true" width="97%" placeholder="DESCRIPCIÓN DEL DOCUMENTO QUE AUTORIZA"/>
 												</row>																		
 												<row>
 												   <hbox>
 														<radiogroup>
-															<radio id="rdVtaInfFemenino" label="FEMENINO" style="font-size:11px !important"/>
+															<radio id="rdVtaInfFemenino"  onOK="if(rdVtaInfFemenino.isChecked()) itbxVtaInfEdad.setFocus(true); else rdVtaInfMasculino.setFocus(true);" label="FEMENINO" style="font-size:11px !important"/>
 															<separator orient="vertical" width="20px"/>
-															<radio id="rdVtaInfMasculino" label="MASCULINO" style="font-size:11px !important"/>
+															<radio id="rdVtaInfMasculino" onOK="itbxVtaInfEdad.setFocus(true);" label="MASCULINO" style="font-size:11px !important"/>
 														</radiogroup>																						
 													</hbox>			
-													<intbox id="itbxVtaInfEdad" width="60px"  placeholder="EDAD"/>																				 
+													<intbox id="itbxVtaInfEdad" onOK="if(cmbVtaTipoFormaPago.getSelectedIndex()>=0) btnVtaGuardar.setFocus(true); else cmbVtaTipoFormaPago.setFocus(true);" width="60px"  placeholder="EDAD"/>																				 
 												</row>																									
 											</rows>
 										</grid>
 									</tabpanel>
 								</tabpanels>
 							</tabbox>
-							<grid width="273px" >
-								<columns>
-									<column label="DATOS DEL PAGO"/>
-								</columns>				
-								<rows>
-									<row>
-										<grid style="border:none;">
-											<columns>
-												<column/>
-												<column/>
-											</columns>
-											<rows>
-												<row spans="2">
-													<hbox align="center">
-														<label value="TOTAL A PAGAR" sclass="label-size12-bold-alert"/>
-														<separator width="8px"/>
-														<doublebox id="dbxVtaTotalPagar" readonly="true" width="145px" format="#,##0.00" sclass="label-size12-bold-alert" style="font-size:22px !important;text-align:center"/>
-													</hbox>
-													
-												</row>
-												<row>
-													<combobox id="cmbVtaTipoFormaPago" readonly="true" width="93%" placeholder="MEDIO DE PAGO"/>
-													<combobox id="cmbVtaOperadorTarjeta" readonly="true" width="100%" placeholder="OPERADOR TARJETA"/>								
-												</row>
-												<row>
-													<combobox id="cmbVtaTarjeta" readonly="true" width="93%" placeholder="TARJETA "/>
-													<textbox id="txtVtaNumeroOperacion" width="93%" placeholder="NÚMERO OPERACIÓN" />
-												</row>
-												<row spans="2">		
-													<hbox align="center">
-														<label value="AUTORIZA:"/>
-														<combobox id="cmbVtaAutorizaDescuento" width="100px" readonly="true" placeholder="AUTORIZA"/>
-														<separator width="10px"/>																		
-														<label value="COD:"/>
-														<textbox id="txtVtaAutorizaDescuentoCodigo" width="50px" placeholder="CÓDIGO"/>
-													</hbox>																		
-												</row>
-												<row style="padding:6px">
-													<button id="btnVtaGuardar" label="Grabar" sclass="btnCommandL" autodisable="self" image="resources/mp_guardarEnabled.png"/>
-													<button id="btnVtaCancelar" label="Cancelar" sclass="btnCommandL" autodisable="self" image="resources/mp_cancelarEnabled.png"/>
-												</row>
-											</rows>
-										</grid>
-									</row>			
-								</rows>
-							</grid>
+							<vbox align="center">
+								<grid id="gridVtaDatosPago">
+									<columns>
+										<column label="DATOS DEL PAGO"/>
+									</columns>				
+									<rows>
+										<row>
+											<grid style="border:none;">
+												<columns>
+													<column/>
+													<column/>
+												</columns>
+												<rows>
+													<row spans="2">
+														<hbox align="center">
+															<label value="TOTAL A PAGAR" sclass="label-size12-bold-alert"/>
+															<separator width="8px"/>
+															<doublebox id="dbxVtaTotalPagar" readonly="true" width="145px" format="#,##0.00" sclass="label-size12-bold-alert" style="font-size:22px !important;text-align:center"/>
+														</hbox>
+														
+													</row>
+													<row>
+														<combobox id="cmbVtaTipoFormaPago" onFocus="self.select();" onOK="if(!cmbVtaOperadorTarjeta.isDisabled()){ cmbVtaOperadorTarjeta.setFocus(true); cmbVtaOperadorTarjeta.open();}else if(!txtVtaNumeroOperacion.isDisabled()) txtVtaNumeroOperacion.setFocus(true); else btnVtaGuardar.setFocus(true);" readonly="true" width="93%" placeholder="MEDIO DE PAGO"/>
+														<combobox id="cmbVtaOperadorTarjeta" onOK="cmbVtaTarjeta.setFocus(true); cmbVtaTarjeta.open();" readonly="true" width="100%" placeholder="OPERADOR TARJETA"/>								
+													</row>
+													<row>
+														<combobox id="cmbVtaTarjeta" onFocus="self.select();" onOK="txtVtaNumeroOperacion.setFocus(true);"  readonly="true" width="93%" placeholder="TARJETA "/>
+														<textbox id="txtVtaNumeroOperacion" onFocus="self.select();" onOK="btnVtaGuardar.setFocus(true);" width="93%" placeholder="NÚMERO OPERACIÓN" />
+													</row>
+													<row spans="2">		
+														<hbox align="center">
+															<label value="AUTORIZA:"/>
+															<combobox id="cmbVtaAutorizaDescuento" onFocus="self.select();" width="100px" readonly="true" placeholder="AUTORIZA"/>
+															<separator width="10px"/>																		
+															<label value="COD:"/>
+															<textbox id="txtVtaAutorizaDescuentoCodigo" onFocus="self.select();" width="50px" placeholder="CÓDIGO"/>
+														</hbox>																		
+													</row>
+												</rows>
+											</grid>
+										</row>			
+									</rows>
+								</grid>
+								<grid id="gridVtaIdaDatosReserva" visible="false">
+									<columns>
+										<column id="clmnVtaIdaDatosReserva" label="DATOS DE LA RESERVA"/>
+									</columns>
+									<rows>
+										<row>
+											<hbox align="center">
+												<label value="TIEMPO RESERVA" />
+												<separator width="15px"/>
+												<intbox id="itbxVtaIdaTiempoReserva" width="70px" maxlength="3" onFocus="self.select();" />
+												<label value="(minutos)" />
+											</hbox>											
+										</row>
+										<row>
+											<hbox align="center">
+												<label value="RESERVA EXPIRA" />
+												<separator width="15px"/>
+												<datebox id="dtbxVtaIdaExpiraReserva" width="120px" onFocus="self.select();" format="dd/MM/yyyy HH:mm" style="font-size:12px !important" />
+											</hbox>											
+										</row>
+										<row>
+											<separator id="sptrVtaIdaDatosReserva" />
+										</row>										
+									</rows>								
+								</grid>
+								<grid id="gridVtaVueltaDatosReserva" visible="false">
+									<columns>
+										<column label="DATOS DE LA RESERVA PARA LA VUELTA"/>
+									</columns>
+									<rows>
+										<row>
+											<hbox align="center">
+												<label value="TIEMPO RESERVA" />
+												<separator width="25px"/>
+												<intbox id="itbxVtaVueltaTiempoReserva" width="70px" maxlength="3" onFocus="self.select();" />
+												<label value="(minutos)" />
+											</hbox>											
+										</row>
+										<row>
+											<hbox align="center">
+												<label value="RESERVA EXPIRA" />
+												<separator/>
+												<datebox id="dtbxVtaVueltaExpiraReserva" width="120px" onFocus="self.select();" format="dd/MM/yyyy HH:mm" style="font-size:12px !important" />
+											</hbox>											
+										</row>										
+									</rows>								
+								</grid>
+								<grid>
+									<rows>
+										<row style="padding:6px">
+											<button id="btnVtaGuardar" label="Grabar" sclass="btnCommandL" autodisable="self" image="resources/mp_guardarEnabled.png"/>
+											<button id="btnVtaCancelar" label="Ir al Inicio" sclass="btnCommandL" autodisable="self" image="resources/mp_previous.png"/>
+										</row>								
+									</rows>							
+								</grid>
+							</vbox>
 						</hbox>
 					</vbox>
 				</row>

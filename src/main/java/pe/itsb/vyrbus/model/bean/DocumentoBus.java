@@ -17,6 +17,11 @@ public class DocumentoBus extends GenericBean implements java.io.Serializable {
 	private String fechaVencimiento;
 
 	public DocumentoBus() {
+		super();
+	}
+	
+	public DocumentoBus(Integer id) {
+		this.id = id;
 	}
 
 	/**

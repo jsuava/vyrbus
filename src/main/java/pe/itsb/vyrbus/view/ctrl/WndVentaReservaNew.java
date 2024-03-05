@@ -8,6 +8,16 @@
  */
 package pe.itsb.vyrbus.view.ctrl;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,54 +33,87 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Calendar;
 import org.zkoss.zul.Caption;
 import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Column;
+import org.zkoss.zul.Columns;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
+import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Doublebox;
+import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Groupbox;
+import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Hlayout;
+import org.zkoss.zul.Iframe;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listhead;
+import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Radio;
+import org.zkoss.zul.Radiogroup;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
+import org.zkoss.zul.Separator;
 import org.zkoss.zul.Tab;
 import org.zkoss.zul.Textbox;
-import org.zkoss.zul.Toolbarbutton;
+import org.zkoss.zul.Timer;
 import org.zkoss.zul.Vbox;
 import org.zkoss.zul.Window;
 
+import pe.itsb.vyrbus.model.bean.Agencia;
+import pe.itsb.vyrbus.model.bean.Bus;
+import pe.itsb.vyrbus.model.bean.CanalVenta;
+import pe.itsb.vyrbus.model.bean.Cliente;
+import pe.itsb.vyrbus.model.bean.ControlEspecieValorada;
 import pe.itsb.vyrbus.model.bean.DetalleItinerario;
+import pe.itsb.vyrbus.model.bean.DetalleManifiesto;
+import pe.itsb.vyrbus.model.bean.DocumentoBus;
+import pe.itsb.vyrbus.model.bean.Empresa;
+import pe.itsb.vyrbus.model.bean.EspecieValorada;
 import pe.itsb.vyrbus.model.bean.FormaPago;
+import pe.itsb.vyrbus.model.bean.HRE;
+import pe.itsb.vyrbus.model.bean.Itinerario;
 import pe.itsb.vyrbus.model.bean.ItinerarioAgenciaLlegada;
 import pe.itsb.vyrbus.model.bean.ItinerarioAgenciaPartida;
 import pe.itsb.vyrbus.model.bean.Localidad;
+import pe.itsb.vyrbus.model.bean.Manifiesto;
 import pe.itsb.vyrbus.model.bean.MapaBus;
 import pe.itsb.vyrbus.model.bean.OperadorTarjetaCredito;
+import pe.itsb.vyrbus.model.bean.Pasajero;
+import pe.itsb.vyrbus.model.bean.Personal;
+import pe.itsb.vyrbus.model.bean.PreferenciaAlimentaria;
+import pe.itsb.vyrbus.model.bean.ProgramacionServicio;
 import pe.itsb.vyrbus.model.bean.Servicio;
+import pe.itsb.vyrbus.model.bean.Sexo;
 import pe.itsb.vyrbus.model.bean.TarifaRegular;
 import pe.itsb.vyrbus.model.bean.TarjetaCredito;
+import pe.itsb.vyrbus.model.bean.TipoComprobante;
 import pe.itsb.vyrbus.model.bean.TipoDocumento;
 import pe.itsb.vyrbus.model.bean.TipoFormaPago;
+import pe.itsb.vyrbus.model.bean.TipoMovimiento;
+import pe.itsb.vyrbus.model.bean.TipoNota;
 import pe.itsb.vyrbus.model.bean.TmpOcupacionAsientos;
 import pe.itsb.vyrbus.model.bean.TmpOcupacionAsientosID;
-import pe.itsb.vyrbus.model.bean.Usuario;
-import pe.itsb.vyrbus.model.bean.UsuarioHardware;
+import pe.itsb.vyrbus.model.bean.Ubigeo;
 import pe.itsb.vyrbus.model.bean.VentaPasaje;
 import pe.itsb.vyrbus.model.bean.VentaTramo;
+import pe.itsb.vyrbus.service.exceptions.CapacityExceedsException;
 import pe.itsb.vyrbus.service.exceptions.DuplicateSeatException;
-import pe.itsb.vyrbus.service.exceptions.SaldoInsuficienteException;
+import pe.itsb.vyrbus.service.exceptions.EspecieValoradaNotAvailableException;
+import pe.itsb.vyrbus.service.exceptions.ItinerarioException;
+import pe.itsb.vyrbus.service.exceptions.ManifiestoDuplicateException;
+import pe.itsb.vyrbus.service.exceptions.NumeroBoletoDuplicadoException;
+import pe.itsb.vyrbus.service.exceptions.TiempoExpiracionBloqueoException;
 import pe.itsb.vyrbus.service.locator.ServiceLocator;
 import pe.itsb.vyrbus.service.mappers.Asiento;
 import pe.itsb.vyrbus.service.mappers.Cafeteria;
@@ -78,16 +121,27 @@ import pe.itsb.vyrbus.service.mappers.Coordenada;
 import pe.itsb.vyrbus.service.mappers.Monitor;
 import pe.itsb.vyrbus.service.mappers.SecuenciaTramo;
 import pe.itsb.vyrbus.service.mappers.ServiciosHigienicos;
-import pe.itsb.vyrbus.service.util.AsientoPool;
+import pe.itsb.vyrbus.service.mappers.VentaIdaRetorno;
 import pe.itsb.vyrbus.service.util.Constantes;
+import pe.itsb.vyrbus.service.util.CreateDocument;
 import pe.itsb.vyrbus.service.util.Messages;
 import pe.itsb.vyrbus.service.util.MyTime;
+import pe.itsb.vyrbus.service.util.Printapi;
 import pe.itsb.vyrbus.service.util.RESTCiva;
 import pe.itsb.vyrbus.service.util.Util;
 import pe.itsb.vyrbus.service.util.UtilData;
-import pe.itsb.vyrbus.service.util.WSCruzdelsur;
+import pe.itsb.vyrbus.service.util.UtilFlag;
+import pe.itsb.vyrbus.service.util.WSFE;
+import pe.itsb.vyrbus.service.xml.XmlCarpetaDespacho;
+import pe.itsb.vyrbus.service.xml.XmlDetalleCarpetaDespacho;
+import pe.itsb.vyrbus.service.xml.XmlDetalleManifiesto;
+import pe.itsb.vyrbus.service.xml.XmlItemDetalleDespacho;
+import pe.itsb.vyrbus.service.xml.XmlItemDetalleManifiesto;
+import pe.itsb.vyrbus.service.xml.XmlManifiesto;
+import pe.itsb.vyrbus.service.xml.XmlPrintLaser;
 import pe.itsb.vyrbus.view.ui.DlgMessage;
 import pe.itsb.vyrbus.view.ui.WndBase;
+import sun.misc.BASE64Encoder;
 
 /**
  * @author abant
@@ -128,6 +182,7 @@ public class WndVentaReservaNew  extends WndBase {
 	private Label lblVtaTipoComprobante;
 	private Label lblVtaNumeroComprobante;
 	private Label lblVtaInfoTipoOperacion;
+	private Button btnVtaActualizarMapa;
 	private Button btnVtaProgramarServicios;
 	private Button btnVtaManifiestoPasajetos;
 	private Button btnVtaCarpetaDespacho;
@@ -138,22 +193,23 @@ public class WndVentaReservaNew  extends WndBase {
 	private Button btnVtaLeyendaAsientos;
 	private Radio rdVtaVenta;
 	private Radio rdVtaReserva;
-	private Radio rdVtaPostergacion;
+//	private Radio rdVtaPostergacion;
 	private Radio rdVtaPostergacionFA;
 	private Radio rdVtaCambioNombre;
-	private Grid gridVtaInfoViajeIda;
+//	private Grid gridVtaInfoViajeIda;
 	private Label lblVtaIdaDestino_fecha;
 	private Combobox cmbVtaIdaEmbarque_hora;
 	private Combobox cmbVtaIdaDesembarque_hora;
 	private Label lblVtaIdaAsiento;
-	private Label lblVtaIdaTarifa;
+	private Doublebox dbxVtaIdaTarifa;
 	private Grid gridVtaInfoViajeVuelta;
 	private Label lblVtaVueltaDestino_fecha;
 	private Combobox cmbVtaVueltaEmbarque_hora;
 	private Combobox cmbVtaVueltaDesembarque_hora;
 	private Label lblVtaVueltaAsiento;
-	private Label lblVtaVueltaTarifa;
+	private Doublebox dbxVtaVueltaTarifa;
 	private Listbox ltbxVtaAsientosSeleccionados;
+	private Textbox txtVtaPaxBusqueda;
 	private Combobox cmbVtaPaxTipoDocumento;
 	private Textbox txtVtaPaxNumeroDocumento;
 	private Textbox txtVtaPaxNombres;
@@ -180,6 +236,7 @@ public class WndVentaReservaNew  extends WndBase {
 	private Radio rdVtaInfFemenino;
 	private Radio rdVtaInfMasculino;
 	private Intbox itbxVtaInfEdad;
+	private Grid gridVtaDatosPago;
 	private Doublebox dbxVtaTotalPagar;
 	private Combobox cmbVtaTipoFormaPago;
 	private Combobox cmbVtaOperadorTarjeta;
@@ -187,24 +244,93 @@ public class WndVentaReservaNew  extends WndBase {
 	private Textbox txtVtaNumeroOperacion;
 	private Combobox cmbVtaAutorizaDescuento;
 	private Textbox txtVtaAutorizaDescuentoCodigo;
+	private Grid gridVtaIdaDatosReserva;
+	private Intbox itbxVtaIdaTiempoReserva;
+	private Datebox dtbxVtaIdaExpiraReserva;
+	private Column clmnVtaIdaDatosReserva;
+	private Grid gridVtaVueltaDatosReserva;
+	private Intbox itbxVtaVueltaTiempoReserva;
+	private Datebox dtbxVtaVueltaExpiraReserva;
+	private Separator sptrVtaIdaDatosReserva;
 	private Button btnVtaGuardar;
 	private Button btnVtaCancelar;
 	
-	
-	private static final String IMAGE_PRIMER_PISO = "resources/mapa/bus_primerPisoHor.png";
-	private static final String IMAGE_SEGUNDO_PISO = "resources/mapa/bus_segundoPisoHor.png";
-	private static final int TIPO_ASIENTO = 0;
-	private static final int TIPO_MONITOR = 1;
-	private static final int TIPO_CAFETERIA = 2;
-
-	private int action = Constantes.FAILURE;
-	private int actionc = Constantes.FAILURE;
+	private String IMAGE_PRIMER_PISO = "resources/mapa/bus_primerPisoHor.png";
+	private String IMAGE_SEGUNDO_PISO = "resources/mapa/bus_segundoPisoHor.png";
+	private int TIPO_ASIENTO = 0;
+	private int TIPO_MONITOR = 1;
+	private int TIPO_CAFETERIA = 2;
+	private Window wndModal = null;
+	private Listbox ltbxResultBusqueda = null;
+	private Date fechaLiquidacion = null;
 	private String prefijoAsiento="";
 	private String key = "-1";
 	private Map<String, Asiento> mapaAsientosIda = null;
-	private Map<String, Asiento> mapaAsientosRetorno = null;
+	private Map<String, Asiento> mapaAsientosRetorno = null;	
+	private Timer timerRefreshMapa = null;
+	
 	private DetalleItinerario detalleItinerarioIda = null;
 	private DetalleItinerario detalleItinerarioVuelta = null;
+	private Pasajero pasajero = null;
+	private Cliente cliente = null;
+	private CanalVenta canalVenta = null;
+	private VentaPasaje ventaPasaje = null;
+	
+	//Controles para la postergacion
+	private Combobox cmbPostEmpresa;
+	private Combobox cmbPostOrigen;
+	private Combobox cmbPostDestino;
+	private Datebox dtbxPostFecha;
+	private Listbox ltbxPostItienerarios;
+	private Groupbox gpbxPostMapa;
+	private Listbox ltbxPostAsientoSeleccionado;
+	private Label lblPostRuta_fecha;
+	private Combobox cmbPostEmbarque_hora;
+	private Combobox cmbPostDesembarque_hora;
+	private Label lblPostAsiento;
+	private Doublebox dbxPostTarifa;
+	private Doublebox dbxPostMontoAnterior;
+	private Doublebox dbxPostPenalidad;
+	private Doublebox dbxPostTotalPagar;
+	private Combobox cmbPostTipoFormaPago;
+	private Combobox cmbPostOperadorTarjeta;
+	private Combobox cmbPostTarjeta;
+	private Textbox txtPostNumeroOperacion;
+	private Hbox hboxPost_1;
+	private Hbox hboxPost_2;
+	private DetalleItinerario postDetalleItinerario = null;
+	private Map<String, Asiento> postMapaAsientos = null;
+	private boolean boletoManifestado = false;
+	
+	//Controles para la Programacion de Bus
+	private Combobox cmbPbBus;
+	private Combobox cmbPbPiloto;
+	private Combobox cmbPbCopiloto;
+	private Combobox cmbPbCopilotoAuxiliar;
+	private Combobox cmbPbTripulante;
+	private ProgramacionServicio programacionServicio;
+	private Button btnPbEditar;
+	private Button btnPbGuardar;
+	private Button btnPbAnular;	
+	private Button btnPbCerrar;
+	private int TIPO_PERSONAL_PILOTO = 1;
+	private int TIPO_PERSONAL_COPILOTO = 2;
+	private int TIPO_PERSONAL_TRIPULANTE = 3;
+	
+	//Controles para el Manifiesto de Pasajeros
+	private Button btnManPaxGuardar;
+	private Button btnManPaxAnular;
+	private Radio rdManPaxPrintLaser;
+	private Radio rdManPaxPrintMatricial;		
+	private Button btnManPaxPrint;
+	private String ROTULO_SUNAT="SUNAT";
+	private String ROTULO_TRANSPORTISTA="TRANSPORTISTA";
+	private String ROTULO_ARCHIVO="ARCHIVO";
+	
+	//Controles para la Carpeta de Despacho
+	private Combobox cmbCardesPuntoControl;
+	
+	private Iframe iframe;
 	
 	/* (non-Javadoc)
 	 * @see pe.itsb.vyrbus.view.ui.WndBase#onCreate()
@@ -252,10 +378,15 @@ public class WndVentaReservaNew  extends WndBase {
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			UtilData.cargarDataCombo(cmbVtaInfTipoDocumento, TipoDocumento.class, criteriosBusqueda, null);
 			//Tipo de pago
-			loadTipoFormaPago(new FormaPago(Constantes.ID_FORPAG_CONTADO));
+			loadTipoFormaPago(new FormaPago(Constantes.ID_FORPAG_CONTADO), cmbVtaTipoFormaPago);
 			
+			dbxVtaIdaTarifa.setLocale(Locale.US);
+			dbxVtaVueltaTarifa.setLocale(Locale.US);
 			dbxVtaTotalPagar.setLocale(Locale.US);
-			
+						
+			canalVenta = (CanalVenta)this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_CANAL_VENTA);
+			fechaLiquidacion = (Date)this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION);
+									
 			cleanBusquedaItienrarios();
 			enabledControlsVueltaBusqItienrario();
 			enabledControlsVueltaVenta();
@@ -305,6 +436,7 @@ public class WndVentaReservaNew  extends WndBase {
 			lblVtaTipoComprobante = (Label)this.getFellow("lblVtaTipoComprobante");
 			lblVtaNumeroComprobante = (Label)this.getFellow("lblVtaNumeroComprobante");
 			lblVtaInfoTipoOperacion = (Label)this.getFellow("lblVtaInfoTipoOperacion");
+			btnVtaActualizarMapa = (Button)this.getFellow("btnVtaActualizarMapa");
 			btnVtaProgramarServicios = (Button)this.getFellow("btnVtaProgramarServicios");
 			btnVtaManifiestoPasajetos = (Button)this.getFellow("btnVtaManifiestoPasajetos");
 			btnVtaCarpetaDespacho = (Button)this.getFellow("btnVtaCarpetaDespacho");
@@ -315,22 +447,23 @@ public class WndVentaReservaNew  extends WndBase {
 			btnVtaLeyendaAsientos = (Button)this.getFellow("btnVtaLeyendaAsientos");
 			rdVtaVenta = (Radio)this.getFellow("rdVtaVenta");
 			rdVtaReserva = (Radio)this.getFellow("rdVtaReserva");
-			rdVtaPostergacion = (Radio)this.getFellow("rdVtaPostergacion");
+//			rdVtaPostergacion = (Radio)this.getFellow("rdVtaPostergacion");
 			rdVtaPostergacionFA = (Radio)this.getFellow("rdVtaPostergacionFA");
 			rdVtaCambioNombre = (Radio)this.getFellow("rdVtaCambioNombre");
-			gridVtaInfoViajeIda = (Grid)this.getFellow("gridVtaInfoViajeIda");
+//			gridVtaInfoViajeIda = (Grid)this.getFellow("gridVtaInfoViajeIda");
 			lblVtaIdaDestino_fecha = (Label)this.getFellow("lblVtaIdaDestino_fecha");
 			cmbVtaIdaEmbarque_hora = (Combobox)this.getFellow("cmbVtaIdaEmbarque_hora");
 			cmbVtaIdaDesembarque_hora = (Combobox)this.getFellow("cmbVtaIdaDesembarque_hora");
 			lblVtaIdaAsiento = (Label)this.getFellow("lblVtaIdaAsiento");
-			lblVtaIdaTarifa = (Label)this.getFellow("lblVtaIdaTarifa");
+			dbxVtaIdaTarifa = (Doublebox)this.getFellow("dbxVtaIdaTarifa");
 			gridVtaInfoViajeVuelta = (Grid)this.getFellow("gridVtaInfoViajeVuelta");
 			lblVtaVueltaDestino_fecha = (Label)this.getFellow("lblVtaVueltaDestino_fecha");
 			cmbVtaVueltaEmbarque_hora = (Combobox)this.getFellow("cmbVtaVueltaEmbarque_hora");
 			cmbVtaVueltaDesembarque_hora = (Combobox)this.getFellow("cmbVtaVueltaDesembarque_hora");
 			lblVtaVueltaAsiento = (Label)this.getFellow("lblVtaVueltaAsiento");
-			lblVtaVueltaTarifa = (Label)this.getFellow("lblVtaVueltaTarifa");
+			dbxVtaVueltaTarifa = (Doublebox)this.getFellow("dbxVtaVueltaTarifa");
 			ltbxVtaAsientosSeleccionados = (Listbox)this.getFellow("ltbxVtaAsientosSeleccionados");
+			txtVtaPaxBusqueda = (Textbox)this.getFellow("txtVtaPaxBusqueda");
 			cmbVtaPaxTipoDocumento = (Combobox)this.getFellow("cmbVtaPaxTipoDocumento");
 			txtVtaPaxNumeroDocumento = (Textbox)this.getFellow("txtVtaPaxNumeroDocumento");
 			txtVtaPaxNombres = (Textbox)this.getFellow("txtVtaPaxNombres");
@@ -357,6 +490,7 @@ public class WndVentaReservaNew  extends WndBase {
 			rdVtaInfFemenino = (Radio)this.getFellow("rdVtaInfFemenino");
 			rdVtaInfMasculino = (Radio)this.getFellow("rdVtaInfMasculino");
 			itbxVtaInfEdad = (Intbox)this.getFellow("itbxVtaInfEdad");
+			gridVtaDatosPago = (Grid)this.getFellow("gridVtaDatosPago");
 			dbxVtaTotalPagar = (Doublebox)this.getFellow("dbxVtaTotalPagar");
 			cmbVtaTipoFormaPago = (Combobox)this.getFellow("cmbVtaTipoFormaPago");
 			cmbVtaOperadorTarjeta = (Combobox)this.getFellow("cmbVtaOperadorTarjeta");
@@ -364,6 +498,14 @@ public class WndVentaReservaNew  extends WndBase {
 			txtVtaNumeroOperacion = (Textbox)this.getFellow("txtVtaNumeroOperacion");
 			cmbVtaAutorizaDescuento = (Combobox)this.getFellow("cmbVtaAutorizaDescuento");
 			txtVtaAutorizaDescuentoCodigo = (Textbox)this.getFellow("txtVtaAutorizaDescuentoCodigo");
+			gridVtaIdaDatosReserva = (Grid)this.getFellow("gridVtaIdaDatosReserva");
+			itbxVtaIdaTiempoReserva = (Intbox)this.getFellow("itbxVtaIdaTiempoReserva");
+			dtbxVtaIdaExpiraReserva = (Datebox)this.getFellow("dtbxVtaIdaExpiraReserva");
+			clmnVtaIdaDatosReserva = (Column)this.getFellow("clmnVtaIdaDatosReserva");
+			gridVtaVueltaDatosReserva = (Grid)this.getFellow("gridVtaVueltaDatosReserva");
+			itbxVtaVueltaTiempoReserva = (Intbox)this.getFellow("itbxVtaVueltaTiempoReserva");
+			dtbxVtaVueltaExpiraReserva = (Datebox)this.getFellow("dtbxVtaVueltaExpiraReserva");
+			sptrVtaIdaDatosReserva = (Separator)this.getFellow("sptrVtaIdaDatosReserva");
 			btnVtaGuardar = (Button)this.getFellow("btnVtaGuardar");
 			btnVtaCancelar = (Button)this.getFellow("btnVtaCancelar");
 			
@@ -476,15 +618,105 @@ public class WndVentaReservaNew  extends WndBase {
 			
 			
 			
-			
-			
+			cmbVtaIdaEmbarque_hora.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					// TODO Auto-generated method stub
+					try {
+						
+						onChange_cmbVtaIdaEmbarque_hora();						
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
+			cmbVtaVueltaEmbarque_hora.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					// TODO Auto-generated method stub
+					try {
+						
+						onChange_cmbVtaVueltaEmbarque_hora();						
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
+			rdVtaVenta.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					try {
+						
+						onCheck_rdVtaVenta(event);						
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
+			rdVtaReserva.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					try {
+						
+						onCheck_rdVtaReserva(event);						
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
+			rdVtaPostergacionFA.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					try {
+						
+						onCheck_rdVtaPostergacionFA(event);						
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
+			rdVtaCambioNombre.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					try {
+						
+						onCheck_rdVtaCambioNombre(event);						
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
 			ltbxVtaAsientosSeleccionados.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event event) throws Exception {
 					// TODO Auto-generated method stub
 					try {
 					
-						onSelect_ltbxVtaAsientosSeleccionados();						
+						onSelect_ltbxVtaAsientosSeleccionados(event);						
 						
 					} catch (Exception ex) {
 						ex.printStackTrace();
@@ -500,6 +732,82 @@ public class WndVentaReservaNew  extends WndBase {
 					try {
 						
 						onChange_cmbVtaPaxTipoDocumento();
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
+			txtVtaPaxBusqueda.addEventListener(Events.ON_OK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					try {
+					
+//						buscarPasajero(((Textbox)event.getTarget()).getText().trim().toUpperCase(),event);
+						ltbxVtaAsientosSeleccionados.setFocus(true);
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});		
+			txtVtaPaxBusqueda.addEventListener(Events.ON_BLUR, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					try {
+					
+						buscarPasajero(((Textbox)event.getTarget()).getText().trim().toUpperCase(), event);
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});		
+			chbxVtaFactura.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					try {
+						
+						onCheck_chbxVtaFactura();
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
+			txtVtaFacRuc.addEventListener(Events.ON_OK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					try {
+						if(((Textbox)event.getTarget()).isReadonly()==false)
+							buscarCliente(((Textbox)event.getTarget()).getText().trim().toUpperCase());
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
+			txtVtaFacRuc.addEventListener(Events.ON_BLUR, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					try {
+						if(((Textbox)event.getTarget()).isReadonly()==false)
+							buscarCliente(((Textbox)event.getTarget()).getText().trim().toUpperCase());
 						
 					} catch (Exception ex) {
 						ex.printStackTrace();
@@ -538,6 +846,184 @@ public class WndVentaReservaNew  extends WndBase {
 					}
 				}
 			});
+			itbxVtaIdaTiempoReserva.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					try {
+						
+						onChange_itbxVtaIdaTiempoReserva();
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
+			itbxVtaIdaTiempoReserva.addEventListener(Events.ON_OK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					if(!dtbxVtaIdaExpiraReserva.isDisabled())
+						dtbxVtaIdaExpiraReserva.setFocus(true);
+					else if(gridVtaVueltaDatosReserva.isVisible() && !itbxVtaVueltaTiempoReserva.isDisabled())
+						itbxVtaVueltaTiempoReserva.setFocus(true);
+					else if(gridVtaVueltaDatosReserva.isVisible() && !dtbxVtaVueltaExpiraReserva.isDisabled())
+						dtbxVtaVueltaExpiraReserva.setFocus(true);
+					else 
+						btnVtaGuardar.setFocus(true);
+				}
+			});
+			dtbxVtaIdaExpiraReserva.addEventListener(Events.ON_OK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					if(gridVtaVueltaDatosReserva.isVisible() && !itbxVtaVueltaTiempoReserva.isDisabled())
+						itbxVtaVueltaTiempoReserva.setFocus(true);
+					else if(gridVtaVueltaDatosReserva.isVisible() && !dtbxVtaVueltaExpiraReserva.isDisabled())
+						dtbxVtaVueltaExpiraReserva.setFocus(true);
+					else 
+						btnVtaGuardar.setFocus(true);
+				}
+			});
+			itbxVtaVueltaTiempoReserva.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					try {
+						
+						onChange_itbxVtaVueltaTiempoReserva();
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
+			itbxVtaVueltaTiempoReserva.addEventListener(Events.ON_OK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					if(!dtbxVtaVueltaExpiraReserva.isDisabled())
+						dtbxVtaVueltaExpiraReserva.setFocus(true);					
+					else 
+						btnVtaGuardar.setFocus(true);
+				}
+			});
+			dtbxVtaVueltaExpiraReserva.addEventListener(Events.ON_OK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub 
+					btnVtaGuardar.setFocus(true);
+				}
+			});
+			btnVtaActualizarMapa.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					try {
+						
+						onClick_btnVtaActualizarMapa();
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
+			btnVtaReimpresion.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					try {
+						
+						onClick_btnVtaReimprimir();
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
+			btnVtaPostergar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					try {
+						
+						onClick_btnVtaPostergar();
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
+			btnVtaProgramarServicios.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					try {
+						
+						onClick_btnVtaProgramarServicios();
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
+			btnVtaManifiestoPasajetos.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					try {
+						
+						onClick_btnVtaManifiestoPasajeros();
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
+			btnVtaCarpetaDespacho.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					try {
+						
+						onClick_btnVtaCarpetaDespacho();;
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
+			btnVtaAnular.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					try {
+						
+						onClick_btnVtaAnular();
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
 			btnVtaCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event event) throws Exception {
@@ -553,7 +1039,21 @@ public class WndVentaReservaNew  extends WndBase {
 					}
 				}
 			});
-			
+			btnVtaGuardar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					try {
+						
+						onClick_btnVtaGuargar();;
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			log.error(ex);
@@ -609,7 +1109,11 @@ public class WndVentaReservaNew  extends WndBase {
 	 */
 	private void onChange_clBusqIda(Event event)throws Exception{
 		Date fechaActual = Constantes.FORMAT_DATE.parse(new MyTime().dateServer());
-		if(clrBusqIda.getValue().getTime() < fechaActual.getTime()) {		
+//		rdBusqIdaVuelta.setDisabled(false);
+		if(clrBusqIda.getValue().getTime() < fechaActual.getTime()) {	
+//			rdBusqIdaVuelta.setDisabled(true);
+//			rdBusqIda.setChecked(true);
+//			onCheck_rdBusqIda();
 			clrBusqIda.setValue(fechaActual);
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.FechaViajeNoValida"));
 			return;
@@ -796,6 +1300,7 @@ public class WndVentaReservaNew  extends WndBase {
 			
 			cell = new Listcell();
 			Button btnSeleccionar = new Button("Seleccionar");
+			btnSeleccionar.setAutodisable("self");
 			btnSeleccionar.setAttribute(Listitem.class.getName(), item);
 			btnSeleccionar.setHeight("20px");
 			btnSeleccionar.setAutag("self");
@@ -808,7 +1313,7 @@ public class WndVentaReservaNew  extends WndBase {
 					// TODO Auto-generated method stub					
 					try {						
 						
-						onClick_btnSeleccionarItinerario(event);
+						onClick_btnSeleccionItinerario(event);
 						
 					} catch (Exception ex) {
 						ex.printStackTrace();
@@ -824,7 +1329,7 @@ public class WndVentaReservaNew  extends WndBase {
 					// TODO Auto-generated method stub
 					try {
 						
-						onClick_btnSeleccionarItinerario(event);
+						onClick_btnSeleccionItinerario(event);
 						
 					} catch (Exception ex) {
 						ex.printStackTrace();
@@ -841,8 +1346,6 @@ public class WndVentaReservaNew  extends WndBase {
 	
 	@SuppressWarnings("unchecked")
 	private Integer getCantidadAsientosdisponibles(DetalleItinerario detalleItinerario)throws Exception{
-				
-		
 		Servicio servicio = null;
 		/*	Busca el mapa del bus de acuerdo al servicio	*/
 		List<MapaBus> lstMapaBus = ServiceLocator.getMapaBusManager().buscarMapaBusHorizontal(detalleItinerario.getItinerario().getServicio().getId(), Constantes.VALUE_ACTIVO);
@@ -861,18 +1364,15 @@ public class WndVentaReservaNew  extends WndBase {
 		int nPisos = servicio.getNumeroPisos();
 		int nFilas = servicio.getNumeroFilasPiso1();
 		int nColumnas = servicio.getNumeroColumnasPiso1();
-//		int numeroAsiento = 0;
 		Map<String, Asiento> mapaAsientos = new HashMap<>();
-//		Hlayout ohlayout = new Hlayout();
-
 
 		/*	Recorremos la cantidad de pisos del servicio	*/
 		for(int i = 0; i < nPisos; i++){
 			/*	Si cambiamos al siguiente piso redefinimos los valores de las variables	*/
-			if(i == 1){
+			if(i==1) {
 				nFilas = servicio.getNumeroFilasPiso2();
 				nColumnas = servicio.getNumeroColumnasPiso2();
-//				numeroAsiento = 0;
+			}
 				/*	Recorremos la cantidad de filas	*/
 				for(int j=0; j<nFilas; j++){
 					/*	Recorremos la cantidad de columnas	*/
@@ -885,29 +1385,14 @@ public class WndVentaReservaNew  extends WndBase {
 							if(coordenada.toString().equals(coordenadaActual)){
 								/*	Obtenemos el objeto y empezamos a setear las imagenes	*/
 								MapaBus objetoBus = mapCoordenadas.get(coordenada);
-	
-								HashMap<String, String> propiedades = new HashMap<>();
-//								numeroAsiento++;
-	
 								/*	Verificamos que el objeto sea del tipo Asiento	*/
 								if(objetoBus.getTipoObjeto().intValue()==TIPO_ASIENTO){
 									Asiento asiento = new Asiento();
-	//								propiedades.put("ocupante", "pasajero");
 									asiento.setId(prefijoAsiento + objetoBus.getNumeroAsiento());
-//									asiento.setOcupante(Asiento.OCUPANTE_PASAJERO);
-//									asiento.setEstadoAsiento(Constantes.ASIENTO_DISPONIBLE);
-//									asiento.setFila(j);
-//									asiento.setColumna(k);
 									asiento.setPiso(i);
 									asiento.setNumeroAsiento(objetoBus.getNumeroAsiento());
 									asiento.setSrc(objetoBus.getPathImagen());
-//									asiento.setNumeroZona(objetoBus.getNumeroZona());
-//									asiento.setPropiedades(propiedades);
-//									asiento.setDraggable("true");
-//									asiento.setDetalleItinerario(detalleItinerario);
 									asiento.setKey();
-//									asiento.setStyle("cursor:pointer");
-//									oDiv.appendChild(asiento);
 									/*	Agregando los asientos a un Hashmap*/
 									mapaAsientos.put(asiento.getKey(), asiento);
 								}
@@ -916,10 +1401,9 @@ public class WndVentaReservaNew  extends WndBase {
 						}					
 					}
 				}		
-			}
+//			}
 		}
-		
-		
+				
 		onCleanMap(mapaAsientos);
 		/*Busca configuracion para la validacion de la venta adelantada*/
 		VentaTramo ventaTramo=ServiceLocator.getVentaTramoManager().buscarPorItinerarioRuta(detalleItinerario.getItinerario(), detalleItinerario.getRuta());
@@ -1008,7 +1492,8 @@ public class WndVentaReservaNew  extends WndBase {
 	 * 
 	 * @throws Exception
 	 */
-	private void onClick_btnSeleccionarItinerario(Event event)throws Exception{
+	@SuppressWarnings("deprecation")
+	private void onClick_btnSeleccionItinerario(Event event)throws Exception{
 		cleanDatosVenta();
 		enabledControlsVueltaVenta();
 		
@@ -1064,7 +1549,7 @@ public class WndVentaReservaNew  extends WndBase {
 					public void onEvent(Event e){
 						try {
 							if(e.getName().equals("onYes"))
-								onClick_btnSeleccionarItinerarioConfirm(event);
+								onClick_btnSeleccionItinerarioConfirm(event);
 							
 						} catch (Exception e2) {
 							e2.printStackTrace();
@@ -1075,7 +1560,7 @@ public class WndVentaReservaNew  extends WndBase {
 					
 				});
 			}else
-				onClick_btnSeleccionarItinerarioConfirm(event);
+				onClick_btnSeleccionItinerarioConfirm(event);
 		}
 	}
 	
@@ -1084,32 +1569,136 @@ public class WndVentaReservaNew  extends WndBase {
 	 * @param event
 	 * @throws Exception
 	 */
-	private void onClick_btnSeleccionarItinerarioConfirm(Event event)throws Exception{
+	private void onClick_btnSeleccionItinerarioConfirm(Event event)throws Exception{
 		detalleItinerarioIda = ltbxBusqIda.getSelectedItem().getValue();
-		crearEstructura(detalleItinerarioIda.getItinerario().getServicio().getId(), gpbxVtaIdaMapa, false, detalleItinerarioIda, mapaAsientosIda, null);
-//		txtIdEmpresaIda.setValue(detalleItinerarioIda.getItinerario().getEmpresa().getId().toString());
+		crearEstructura(detalleItinerarioIda.getItinerario().getServicio().getId(), gpbxVtaIdaMapa, false, detalleItinerarioIda, mapaAsientosIda, null, false);
 		/*	Si se trata de un ida y vuelta	*/
 		if(rdBusqIdaVuelta.isChecked()){
 			detalleItinerarioVuelta = ltbxBusqVuelta.getSelectedItem().getValue();
-			crearEstructura(detalleItinerarioVuelta.getItinerario().getServicio().getId(), gpbxVtaVueltaMapa, true, detalleItinerarioVuelta, mapaAsientosRetorno, null);
-//			txtIdEmpresaRetorno.setValue(detalleItinerarioRetorno.getItinerario().getEmpresa().getId().toString());
+			crearEstructura(detalleItinerarioVuelta.getItinerario().getServicio().getId(), gpbxVtaVueltaMapa, true, detalleItinerarioVuelta, mapaAsientosRetorno, null, false);
 		}
 		
-		lblVtaIdaDestino_fecha.setValue(detalleItinerarioIda.getRuta().getDestino() +" - "+ Constantes.FORMAT_DATE.format(detalleItinerarioIda.getFechaPartida()));
+		lblVtaIdaDestino_fecha.setValue(detalleItinerarioIda.getRuta().toString() +" - "+ Constantes.FORMAT_DATE.format(detalleItinerarioIda.getFechaPartida()));
 		loadPuntoEmbarque(detalleItinerarioIda, cmbVtaIdaEmbarque_hora);
 		loadPuntoDesembarque(detalleItinerarioIda, cmbVtaIdaDesembarque_hora);
-		lblVtaIdaAsiento.setValue("-");
-		lblVtaIdaTarifa.setValue("-");
-		if(detalleItinerarioVuelta!=null) {
-			lblVtaVueltaDestino_fecha.setValue(detalleItinerarioVuelta.getRuta().getDestino() +" - "+ Constantes.FORMAT_DATE.format(detalleItinerarioVuelta.getFechaPartida()));
-			loadPuntoEmbarque(detalleItinerarioVuelta, cmbVtaVueltaEmbarque_hora);
-			loadPuntoDesembarque(detalleItinerarioVuelta, cmbVtaVueltaDesembarque_hora);			
-			lblVtaVueltaAsiento.setValue("-");
-			lblVtaVueltaTarifa.setValue("-");
+		if(cmbVtaIdaEmbarque_hora.getItemCount()==2)
+			cmbVtaIdaEmbarque_hora.setSelectedIndex(1);
+		else if(cmbVtaIdaEmbarque_hora.getSelectedIndex()==0) {
+			//Selecciona por defecto el embarque la agencia desde donde se esta vendiento el Pasaje
+			seleccionarPuntoEmbarque(cmbVtaIdaEmbarque_hora, getAgencia());
 		}
+			
+		if(cmbVtaIdaDesembarque_hora.getItemCount()==2)
+			cmbVtaIdaDesembarque_hora.setSelectedIndex(1);
+		lblVtaIdaAsiento.setValue("-");
+		dbxVtaIdaTarifa.setValue(.00);
+		if(detalleItinerarioVuelta!=null) {
+			lblVtaVueltaDestino_fecha.setValue(detalleItinerarioVuelta.getRuta().toString() +" - "+ Constantes.FORMAT_DATE.format(detalleItinerarioVuelta.getFechaPartida()));
+			loadPuntoEmbarque(detalleItinerarioVuelta, cmbVtaVueltaEmbarque_hora);
+			loadPuntoDesembarque(detalleItinerarioVuelta, cmbVtaVueltaDesembarque_hora);
+			if(cmbVtaVueltaEmbarque_hora.getItemCount()==2)
+				cmbVtaVueltaEmbarque_hora.setSelectedIndex(1);
+			if(cmbVtaVueltaDesembarque_hora.getItemCount()==2)
+				cmbVtaVueltaDesembarque_hora.setSelectedIndex(1);			
+			lblVtaVueltaAsiento.setValue("-");
+			dbxVtaVueltaTarifa.setValue(.00);
+		}
+				
+		resertOperacionAsiento();		
+		btnVtaActualizarMapa.setDisabled(false);
 		
+		tabVtaIdaMapa.setSelected(true);
 		divPaso_1.setVisible(false);
 		divPaso_2.setVisible(true);
+		
+		btnVtaProgramarServicios.setDisabled(rdBusqIdaVuelta.isChecked());
+		btnVtaManifiestoPasajetos.setDisabled(rdBusqIdaVuelta.isChecked());
+		btnVtaCarpetaDespacho.setDisabled(rdBusqIdaVuelta.isChecked());
+		
+		//**********************************************
+		autoRefreshMapaBus();
+		//**********************************************
+	}
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	private void onChange_cmbVtaIdaEmbarque_hora()throws Exception{
+		if(rdVtaReserva.isChecked()) {
+			dtbxVtaIdaExpiraReserva.setValue(null);
+			if(cmbVtaIdaEmbarque_hora.getSelectedItem().getValue() instanceof ItinerarioAgenciaPartida) {
+				Integer tiempoReserva = (itbxVtaIdaTiempoReserva.getValue()!=null && itbxVtaIdaTiempoReserva.getValue()>0? itbxVtaIdaTiempoReserva.getValue():null);
+				boolean isCorrect = calcularFechaExpiraReserva(true, tiempoReserva);
+				if(!isCorrect)
+					itbxVtaIdaTiempoReserva.setFocus(true);
+			}			
+		}
+	}
+	
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	private void onChange_cmbVtaVueltaEmbarque_hora()throws Exception{
+		if(rdVtaReserva.isChecked()) {
+			dtbxVtaVueltaExpiraReserva.setValue(null);
+			if(cmbVtaVueltaEmbarque_hora.getSelectedItem().getValue() instanceof ItinerarioAgenciaPartida) {
+				Integer tiempoReserva = (itbxVtaVueltaTiempoReserva.getValue()!=null && itbxVtaVueltaTiempoReserva.getValue()>0? itbxVtaVueltaTiempoReserva.getValue():null);
+				boolean isCorrect = calcularFechaExpiraReserva(false, tiempoReserva);
+				if(!isCorrect)
+					itbxVtaVueltaTiempoReserva.setFocus(true);
+			}			
+		}
+	}
+	
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	private void onChange_itbxVtaIdaTiempoReserva()throws Exception{		
+		dtbxVtaIdaExpiraReserva.setValue(null);
+		if(!(cmbVtaIdaEmbarque_hora.getSelectedItem().getValue() instanceof ItinerarioAgenciaPartida)) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noAgenciaPartidaSeleccionada"), cmbVtaIdaEmbarque_hora);
+			itbxVtaIdaTiempoReserva.setValue(null);
+			return;
+		}
+		
+		Integer tiempoReserva = (itbxVtaIdaTiempoReserva.getValue()!=null && itbxVtaIdaTiempoReserva.getValue()>0? itbxVtaIdaTiempoReserva.getValue():null);
+		if(tiempoReserva!=null) {			
+			if(!validarTiempoPermitidoReserva(true, tiempoReserva))
+				return;
+			if(!calcularFechaExpiraReserva(true, tiempoReserva)) {
+				itbxVtaIdaTiempoReserva.setValue(null);
+				itbxVtaIdaTiempoReserva.setFocus(true);				
+			}
+		}
+	}
+	
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	private void onChange_itbxVtaVueltaTiempoReserva()throws Exception{
+		dtbxVtaVueltaExpiraReserva.setValue(null);
+		if(!(cmbVtaVueltaEmbarque_hora.getSelectedItem().getValue() instanceof ItinerarioAgenciaPartida)) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noAgenciaPartidaSeleccionada"), cmbVtaVueltaEmbarque_hora);
+			itbxVtaVueltaTiempoReserva.setValue(null);
+			return;
+		}
+		
+		Integer tiempoReserva = (itbxVtaVueltaTiempoReserva.getValue()!=null && itbxVtaVueltaTiempoReserva.getValue()>0? itbxVtaVueltaTiempoReserva.getValue():null);
+		if(tiempoReserva!=null) {
+			if(!validarTiempoPermitidoReserva(false, tiempoReserva))
+				return;
+			if(!calcularFechaExpiraReserva(true, tiempoReserva)) {
+				itbxVtaVueltaTiempoReserva.setValue(null);
+				itbxVtaVueltaTiempoReserva.setFocus(true);
+			}
+		}
 	}
 	
 	
@@ -1125,6 +1714,69 @@ public class WndVentaReservaNew  extends WndBase {
 			txtVtaPaxNumeroDocumento.setMaxlength(8);		
 	}
 	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	private void onCheck_rdVtaVenta(Event event)throws Exception{
+		habilitaOpcionVenta(true);
+		habilitaOpcionReserva(false);
+		cleanDatosPago();
+		lblVtaInfoTipoOperacion.setValue(rdVtaVenta.getLabel());
+		loadEspecieValoradaByVenta(true);
+
+		if(event!=null)
+			focusCursorByTipoOperacion(event);
+	}
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	private void onCheck_rdVtaReserva(Event event)throws Exception{
+		habilitaOpcionReserva(true);
+		habilitaOpcionVenta(false);
+		cleanDatosInfoComprobante();
+		cleanDatosPago();
+		lblVtaInfoTipoOperacion.setValue(((Radio)event.getTarget()).getLabel());
+		
+		if(event!=null)
+			focusCursorByTipoOperacion(event);
+	}
+	
+	/**
+	 * 
+	 * @param event
+	 * @throws Exception
+	 */
+	private void onCheck_rdVtaPostergacionFA(Event event)throws Exception{
+		cleanDatosPago();
+		cleanDatosInfoComprobante();
+		onSelect_ltbxVtaAsientosSeleccionados(event);
+		loadDatosPostergacionFA();
+	}
+	
+	/**
+	 * 
+	 * @param event
+	 * @throws Exception
+	 */
+	private void onCheck_rdVtaCambioNombre(Event event)throws Exception{
+		cleanDatosPago();
+		cleanDatosInfoComprobante();
+		onSelect_ltbxVtaAsientosSeleccionados(event);
+		loadDatosCambioNombre();
+	}
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	private void onCheck_chbxVtaFactura()throws Exception{
+		enabledControlsFactura(chbxVtaFactura.isChecked());
+		loadEspecieValoradaByVenta(true);
+	}
+	
 	/*
 	 * 
 	 */
@@ -1137,18 +1789,21 @@ public class WndVentaReservaNew  extends WndBase {
 		cmbVtaTarjeta.setDisabled(true);
 		txtVtaNumeroOperacion.setText("");
 
-		if(cmbVtaTipoFormaPago.getSelectedItem().getValue() instanceof TipoFormaPago){
+		if(cmbVtaTipoFormaPago.getSelectedIndex()>=0){
 			TipoFormaPago tipoFormaPago = (TipoFormaPago)cmbVtaTipoFormaPago.getSelectedItem().getValue();
 			if(tipoFormaPago.getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA || tipoFormaPago.getId().intValue()==Constantes.ID_TIPFORPAG_CREDITO){
 				cmbVtaOperadorTarjeta.getItems().clear();
 				UtilData.cargarDataCombo(cmbVtaOperadorTarjeta, OperadorTarjetaCredito.class, false);
 				cmbVtaOperadorTarjeta.setDisabled(false);
 				txtVtaNumeroOperacion.setDisabled(false);
-			}else if(tipoFormaPago.getId().intValue()==Constantes.ID_TIPFORPAG_TRANSFERENCIA || tipoFormaPago.getId().intValue()==Constantes.ID_TIPFORPAG_YAPE)
+//				cmbVtaOperadorTarjeta.setFocus(true);
+			}else if(tipoFormaPago.getId().intValue()==Constantes.ID_TIPFORPAG_TRANSFERENCIA || tipoFormaPago.getId().intValue()==Constantes.ID_TIPFORPAG_YAPE) {
 				txtVtaNumeroOperacion.setDisabled(false);
-			else{
+//				txtVtaNumeroOperacion.setFocus(true);
+			}else{
 				txtVtaNumeroOperacion.setDisabled(true);
 				cmbVtaOperadorTarjeta.setDisabled(true);
+//				btnVtaGuardar.setFocus(true);
 			}
 		}else{
 			txtVtaNumeroOperacion.setDisabled(true);
@@ -1189,43 +1844,1121 @@ public class WndVentaReservaNew  extends WndBase {
 	 * 
 	 * @throws Exception
 	 */
-	private void onSelect_ltbxVtaAsientosSeleccionados()throws Exception{
+	private void onSelect_ltbxVtaAsientosSeleccionados(Event event)throws Exception{
+		boolean isIdaVuelta = rdBusqIdaVuelta.isChecked();
+		cleanDatosInfoComprobante();
 		lblVtaIdaAsiento.setValue("-");
-		lblVtaIdaTarifa.setValue("-");
+		dbxVtaIdaTarifa.setValue(.00);
 		lblVtaVueltaAsiento.setValue("-");
-		lblVtaVueltaTarifa.setValue("-");
+		dbxVtaVueltaTarifa.setValue(.00);
+		cleanDatosPasajero(true);
+		cleanDatosInfante();
+		cleanDatosPago();
+		if(ltbxVtaAsientosSeleccionados.getItemCount()==0)
+			resertOperacionAsiento();			
+		cleanDatosViaje();
+		disabled_btnGuardar(btnVtaGuardar, true);
+		disabledAllButtonsOptinsByAsiento();
 		
 		if(ltbxVtaAsientosSeleccionados.getItemCount()>0 && ltbxVtaAsientosSeleccionados.getSelectedCount() ==0)
 			ltbxVtaAsientosSeleccionados.setSelectedIndex(0);
 		
-		if(ltbxVtaAsientosSeleccionados.getSelectedCount()>0) {			
-			DetalleItinerario detalleItinerario = ltbxVtaAsientosSeleccionados.getSelectedItem().getValue();
-			if(detalleItinerario.getEsIda()) {
-				lblVtaIdaAsiento.setValue(detalleItinerario.getAsiento());
-				lblVtaIdaTarifa.setValue(Util.toNumberFormat(detalleItinerario.getTarifa(), 2));				
-			}else {
-				lblVtaVueltaAsiento.setValue(detalleItinerario.getAsiento());
-				lblVtaVueltaTarifa.setValue(Util.toNumberFormat(detalleItinerario.getTarifa(), 2));
-			}			
-		}		
+		if(ltbxVtaAsientosSeleccionados.getSelectedCount()>0) {
+			VentaIdaRetorno venta = ltbxVtaAsientosSeleccionados.getSelectedItem().getValue();
+			DetalleItinerario detalleItinerarioIda = (venta.getDetalleItinerarioIDA()!=null?venta.getDetalleItinerarioIDA():null);
+			DetalleItinerario detalleItinerarioVuelta = (venta.getDetalleItinerarioRETORNO()!=null?venta.getDetalleItinerarioRETORNO():null);
+			if(detalleItinerarioIda!=null) {
+				lblVtaIdaDestino_fecha.setValue(detalleItinerarioIda.getRuta().toString() +" - "+ Constantes.FORMAT_DATE.format(detalleItinerarioIda.getFechaPartida()));
+				lblVtaIdaAsiento.setValue(detalleItinerarioIda.getAsiento());
+				dbxVtaIdaTarifa.setValue(detalleItinerarioIda.getTarifa());
+				
+				habilitaOperacionAsiento(detalleItinerarioIda.getObjAsiento());
+			}
+			
+			if(detalleItinerarioVuelta!=null) {		
+				lblVtaVueltaDestino_fecha.setValue(detalleItinerarioVuelta.getRuta().toString() +" - "+ Constantes.FORMAT_DATE.format(detalleItinerarioVuelta.getFechaPartida()));
+				lblVtaVueltaAsiento.setValue(detalleItinerarioVuelta.getAsiento());
+				dbxVtaVueltaTarifa.setValue(detalleItinerarioVuelta.getTarifa());
+			}
+			
+			if(isIdaVuelta && detalleItinerarioIda!=null && detalleItinerarioVuelta!=null && detalleItinerarioIda.getObjAsiento().getEstadoAsiento().intValue()==Constantes.ASIENTO_BLOQUEADO)
+				disabled_btnGuardar(btnVtaGuardar, false);
+			else if(!isIdaVuelta && detalleItinerarioIda!=null && detalleItinerarioIda.getObjAsiento().getEstadoAsiento().intValue()==Constantes.ASIENTO_BLOQUEADO)
+				disabled_btnGuardar(btnVtaGuardar, false);
+			
+			Util.seleccionarValorItemCombo(TipoDocumento.class, cmbVtaPaxTipoDocumento, Constantes.ID_TIPDOC_DNI);
+			Util.seleccionarValorItemCombo(TipoDocumento.class, cmbVtaInfTipoDocumento, Constantes.ID_TIPDOC_DNI);
+			focusCursorByTipoOperacion(null);
+		}
+		
+		calcularTotalPago();
+		
+		if(rdVtaPostergacionFA.isChecked())
+			loadDatosPostergacionFA();
+		else if(rdVtaCambioNombre.isChecked())
+			loadDatosCambioNombre();				
 	}
+	
+	
+	/**
+	 * Habilita/deshabilita las operaciones permitidas para con el asiento
+	 * @param asiento
+	 * @throws Exception
+	 */
+	private void habilitaOperacionAsiento(Asiento asiento)throws Exception{
+		cleanDatosInfoComprobante();
+		int estadoAsiento = asiento.getEstadoAsiento();
+		
+		//Cuando el asiento es bloqueado por el usuario actual
+		if(estadoAsiento==Constantes.ASIENTO_BLOQUEADO || estadoAsiento==Constantes.ASIENTO_RESERVADO) {								
+			if(!rdVtaVenta.isChecked() && !rdVtaReserva.isChecked()) {
+				rdVtaVenta.setChecked(true);
+				onCheck_rdVtaVenta(null);
+			}			
+			rdVtaVenta.setDisabled(false);
+			if(estadoAsiento==Constantes.ASIENTO_BLOQUEADO)
+				rdVtaReserva.setDisabled(false);
+			else if(estadoAsiento==Constantes.ASIENTO_RESERVADO && rdVtaVenta.isChecked())
+				lblVtaInfoTipoOperacion.setValue("CONFIRMACIÓN DE RESERVA");			
+			disabledControlsViaje(false);
+			disabledControlsPasajero(false);
+			disabledControlsCliente(false);
+			disabledControlsPago(false);
+			disabled_btnGuardar(btnVtaGuardar, false);
+		}
+		
+		if(asiento.getVentaPasaje()!=null) {
+			loadDatosinfoComprobante(asiento.getVentaPasaje());
+			loadDatosViaje(true, asiento.getVentaPasaje());
+			loadDatosPasajero(asiento.getVentaPasaje().getPasajero());
+			if(asiento.getVentaPasaje().getCliente()!=null) {
+				chbxVtaFactura.setChecked(true);
+				onCheck_chbxVtaFactura();
+				loadDatosCliente(asiento.getVentaPasaje().getCliente());
+			}
+			
+			Date fechaActual = Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date()));
+			Date fechaPartida = asiento.getVentaPasaje().getFechaPartida();
+			
+			//Habilita la reimpresión
+			if(estadoAsiento==Constantes.ASIENTO_VENDIDO && fechaPartida.getTime() >= fechaActual.getTime())
+				btnVtaReimpresion.setDisabled(false);
+			
+			//Habilita la anulación
+			if((estadoAsiento==Constantes.ASIENTO_VENDIDO || estadoAsiento==Constantes.ASIENTO_RESERVADO) && getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO)
+				btnVtaAnular.setDisabled(false); //Super Usuario
+			else if(estadoAsiento==Constantes.ASIENTO_RESERVADO && asiento.getVentaPasaje().getUsuario().getId().intValue()==getUsuario().getId().intValue())
+				btnVtaAnular.setDisabled(false); //Solamente para el usuario que realizó la reserva
+			
+			//habilita otras opciones disponibles para el asiento
+			if(estadoAsiento==Constantes.ASIENTO_VENDIDO) {
+				habilitarOpcionPostergacion(asiento.getVentaPasaje());
+				habilitarOpcionPostergacionFA(asiento.getVentaPasaje());
+				habilitarOpcionCambioNombre(asiento.getVentaPasaje());
+			}
+		}
+	}
+	
+	/**
+	 * Habilita/deshabilita la Operacion Venta
+	 * @param enabled
+	 * @throws Exception
+	 */
+	private void habilitaOpcionVenta(boolean enabled)throws Exception{		
+		gridVtaDatosPago.setVisible(enabled);
+		
+	}
+	
+	/**
+	 * Habilita/deshabilita la operación reserva
+	 * @param enabled
+	 * @throws Exception
+	 */
+	private void habilitaOpcionReserva(boolean enabled)throws Exception{
+		boolean isVtaIdaVuelta = rdBusqIdaVuelta.isChecked();
+		sptrVtaIdaDatosReserva.setHeight(null);
+		itbxVtaIdaTiempoReserva.setValue(null);
+		itbxVtaVueltaTiempoReserva.setValue(null);
+		gridVtaIdaDatosReserva.setVisible(enabled);
+		clmnVtaIdaDatosReserva.setValign(isVtaIdaVuelta?"DATOS DE LA RESERVA DE IDA":"DATOS DE LA RESERVA");
+		gridVtaVueltaDatosReserva.setVisible(isVtaIdaVuelta && enabled);
+		if(!gridVtaVueltaDatosReserva.isVisible())
+			sptrVtaIdaDatosReserva.setHeight("65px");
+		
+		//Reserva de IDA
+		if(gridVtaIdaDatosReserva.isVisible())
+			calcularFechaExpiraReserva(true, null);		
+		//Reserva de VUELTA
+		if(gridVtaVueltaDatosReserva.isVisible())
+			calcularFechaExpiraReserva(false, null);		
+	}
+	
+	
+	/**
+	 * Calcula la fecha de expiracion de una reserva, por defecto 
+	 * @param isIda
+	 * @throws Exception 
+	 */
+	private boolean calcularFechaExpiraReserva(boolean isIda, Integer minutosReserva) throws Exception {
+		boolean isCorrect = false;
+		boolean isMinutosAsignadosByDefault = false;
+		if(minutosReserva==null) {
+			//**************************************************
+			minutosReserva = 60; //Por defecto asigna 60 minutos, luego llevar este valor a un parametro configurable
+			//**************************************************
+			isMinutosAsignadosByDefault = true;
+		}
+		DateFormat FORMAT_DATE = new SimpleDateFormat ("yyyyMMdd");
+		if(isIda) {
+			dtbxVtaIdaExpiraReserva.setValue(null);
+			if(!dtbxVtaIdaExpiraReserva.isDisabled() && cmbVtaIdaEmbarque_hora.getSelectedItem().getValue() instanceof ItinerarioAgenciaPartida) {
+				dtbxVtaIdaExpiraReserva.setConstraint("between "+ FORMAT_DATE.format(detalleItinerarioIda.getFechaPartida()) +" and "+ FORMAT_DATE.format(new Date()));
+
+				String horaPartida = ((ItinerarioAgenciaPartida)cmbVtaIdaEmbarque_hora.getSelectedItem().getValue()).getHoraPartida();				
+				String fechaPartida = Constantes.FORMAT_DATE.format(detalleItinerarioIda.getFechaPartida());
+				String sfechaHoraPartida = fechaPartida+" "+horaPartida;
+//				
+			 	Date fechaHoraPartida = Util.convertirLocalDateTimeToDate(convertirStringToLocalDateTime(sfechaHoraPartida));
+				Date fechaHoraReserva = getFechaHoraDefaultReserva(minutosReserva);
+				
+//				if(fechaHoraReserva.getTime()<=fechaHoraPartida.getTime()) {
+//					dtbxVtaIdaExpiraReserva.setValue(fechaHoraReserva);
+//					isCorrect = true;
+//				}else if(minutosReservaAsignadosByDefault) {
+//					dtbxVtaIdaExpiraReserva.setValue(fechaHoraPartida);
+//					isCorrect = true;
+//				}else
+//					DlgMessage.information(minutosReserva +" minutos excede la hora de salida del servicio.");
+				
+				
+				boolean excedeSalida = isFechaExpiraReservaExcedeSalida(isIda, fechaHoraReserva);
+				if(!excedeSalida) {
+					dtbxVtaIdaExpiraReserva.setValue(fechaHoraReserva);
+					isCorrect = true;
+				}else if(isMinutosAsignadosByDefault) {
+					dtbxVtaIdaExpiraReserva.setValue(fechaHoraPartida);
+					isCorrect = true;
+				}else
+					DlgMessage.information(minutosReserva +" minutos excede la hora de salida del servicio.");				
+				
+			}
+		}else {
+			dtbxVtaVueltaExpiraReserva.setValue(null);
+			if(!dtbxVtaVueltaExpiraReserva.isDisabled() && cmbVtaVueltaEmbarque_hora.getSelectedItem().getValue() instanceof ItinerarioAgenciaPartida) {
+				dtbxVtaVueltaExpiraReserva.setConstraint("between "+ FORMAT_DATE.format(detalleItinerarioVuelta.getFechaPartida()) +" and "+ FORMAT_DATE.format(new Date()));
+
+				String horaPartida = ((ItinerarioAgenciaPartida)cmbVtaVueltaEmbarque_hora.getSelectedItem().getValue()).getHoraPartida();
+				String fechaPartida = Constantes.FORMAT_DATE.format(detalleItinerarioVuelta.getFechaPartida());
+				String sfechaHoraPartida = fechaPartida+" "+horaPartida;
+				
+				Date fechaHoraPartida = Util.convertirLocalDateTimeToDate(convertirStringToLocalDateTime(sfechaHoraPartida));
+				Date fechaHoraReserva = getFechaHoraDefaultReserva(minutosReserva);
+				
+//				if(fechaHoraReserva.getTime()<=fechaHoraPartida.getTime()) {
+//					dtbxVtaVueltaExpiraReserva.setValue(fechaHoraReserva);
+//					isCorrect = true;
+//				}else if(minutosReservaAsignadosByDefault) {
+//					dtbxVtaVueltaExpiraReserva.setValue(fechaHoraPartida);
+//					isCorrect = true;
+//				}else
+//					DlgMessage.information(minutosReserva +" minutos excede la hora de salida del servicio.");
+				
+				
+				boolean excedeSalida = isFechaExpiraReservaExcedeSalida(isIda, fechaHoraReserva);
+				if(!excedeSalida) {
+					dtbxVtaVueltaExpiraReserva.setValue(fechaHoraReserva);
+					isCorrect = true;
+				}else if(isMinutosAsignadosByDefault) {
+					dtbxVtaVueltaExpiraReserva.setValue(fechaHoraPartida);
+					isCorrect = true;
+				}else
+					DlgMessage.information(minutosReserva +" minutos excede la hora de salida del servicio.");	
+			}			
+		}
+		
+		return isCorrect;
+	}
+	
+	
+	private boolean isFechaExpiraReservaExcedeSalida(boolean isIda, Date fechaHoraExpiraReserva)throws Exception{
+		Combobox _cmbEmbarque = null;
+		DetalleItinerario _detalleItinerario = null; 
+		if(isIda) {
+			_cmbEmbarque = cmbVtaIdaEmbarque_hora;
+			_detalleItinerario = detalleItinerarioIda;
+		}else {
+			_cmbEmbarque = cmbVtaVueltaEmbarque_hora;
+			_detalleItinerario = detalleItinerarioVuelta;
+		}
+			
+		String horaPartida = ((ItinerarioAgenciaPartida)_cmbEmbarque.getSelectedItem().getValue()).getHoraPartida();				
+		String fechaPartida = Constantes.FORMAT_DATE.format(_detalleItinerario.getFechaPartida());
+		String sfechaHoraPartida = fechaPartida+" "+horaPartida;
+		
+		boolean excedeSalida = false;
+		
+		Date fechaHoraPartida = Util.convertirLocalDateTimeToDate(convertirStringToLocalDateTime(sfechaHoraPartida));
+		if(fechaHoraExpiraReserva.getTime() > fechaHoraPartida.getTime())
+			excedeSalida = true;
+		
+		return excedeSalida;
+	}
+	
+	/**
+	 * 
+	 * @param minutosSumar
+	 * @return
+	 * @throws Exception
+	 */
+	private Date getFechaHoraDefaultReserva(int minutosSumar)throws Exception{		
+		String fechaHoraActual = Constantes.FORMAT_LONG.format(new Date());
+		
+		LocalDateTime fechaHora = convertirStringToLocalDateTime(fechaHoraActual);
+		LocalDateTime ltFechaHoraReserva = fechaHora.plusMinutes(minutosSumar);		
+		Date fechaHoraReserva = Util.convertirLocalDateTimeToDate(ltFechaHoraReserva);
+		
+		return fechaHoraReserva;
+	}
+	
+	/**
+	 * 
+	 * @param fecha
+	 * @param hora
+	 * @return
+	 * @throws Exception
+	 */
+	private LocalDateTime convertirStringToLocalDateTime(String fechaHora)throws Exception{
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+		LocalDateTime ltfechaHora = LocalDateTime.parse(fechaHora, formatter);
+				
+		return ltfechaHora;
+	}
+	
+	/**
+	 * Actualiza el o los Mapas
+	 * @throws Exception
+	 */
+	private void onClick_btnVtaActualizarMapa()throws Exception{
+		onRefreshMap();			
+	}
+	
+	/**
+	 * Reimprime uno o mas comprobantes
+	 * @throws Exception
+	 */
+	private void onClick_btnVtaReimprimir()throws Exception{
+		if(ltbxVtaAsientosSeleccionados.getItemCount()==0) {
+			DlgMessage.information(Messages.getString("WndVentaReservaNew.information.reimpresion.noSelectAsiento"));
+			return;
+		}
+		
+		List<VentaPasaje> listVentasReimpresion = new ArrayList<VentaPasaje>();
+		for(Listitem item: ltbxVtaAsientosSeleccionados.getItems()) {
+			if(item.getValue()!=null && item.getValue() instanceof VentaIdaRetorno) {
+				VentaIdaRetorno venta = item.getValue();
+				if(venta.getDetalleItinerarioIDA()!=null)
+					listVentasReimpresion.add(venta.getDetalleItinerarioIDA().getObjAsiento().getVentaPasaje());
+				if(venta.getDetalleItinerarioRETORNO()!=null)
+					listVentasReimpresion.add(venta.getDetalleItinerarioRETORNO().getObjAsiento().getVentaPasaje());				
+			}
+		}
+		
+		Messagebox.show(Messages.getString("WndVentaReservaNew.question.reimpresion"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event e){
+				try{
+					if(e.getName().equals("onYes")){
+						
+						WSFE.reimprimirComprobante(listVentasReimpresion, wndVentaReservaNew, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
+					}
+				}catch(Exception ex) {
+					ex.printStackTrace();
+					log.error(ex);
+					DlgMessage.error(ex.getMessage());
+				}
+			}
+		});
+		
+	}
+	
+	/**
+	 * Anula una venta/reserva
+	 * @throws Exception
+	 */
+	private void onClick_btnVtaAnular()throws Exception{
+		try{
+			if(ltbxVtaAsientosSeleccionados.getItemCount()==0) {
+				DlgMessage.information(Messages.getString("WndVentaReservaNew.information.noSelectAsiento"));
+				return;
+			}
+			
+			List<Listitem> listVenta = new ArrayList<Listitem>();
+			if(((VentaIdaRetorno)ltbxVtaAsientosSeleccionados.getSelectedItem().getValue()).getDetalleItinerarioIDA().getObjAsiento().getVentaPasaje()
+					.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA)) {
+				//Cuando es una reserva, la anulación es de todos los asientos seleccionados.
+				
+				ltbxVtaAsientosSeleccionados.getItems().forEach(item -> listVenta.add(item));
+			}else {
+				//Cuando es una venta, la anulación es uno a uno.
+				listVenta.add(ltbxVtaAsientosSeleccionados.getSelectedItem());
+			}
+			
+			//Valida si la anualación es de Reservas
+			if( ((VentaIdaRetorno)listVenta.get(0).getValue()).getDetalleItinerarioIDA().getObjAsiento().getVentaPasaje()
+					.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA)) {
+				//Anulación de Reservas
+				Messagebox.show(Messages.getString("WndConfirmarReserva.information.confirmaAnularReserva"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+					@Override
+					public void onEvent(Event e){
+						if(e.getName().equals("onYes")){
+							try {
+								
+								for(Listitem item: listVenta) {
+									VentaPasaje ventaPasajeAsiento = ((VentaIdaRetorno)item.getValue()).getDetalleItinerarioIDA().getObjAsiento().getVentaPasaje();
+									VentaPasaje reserva = ServiceLocator.getVentaPasajesManager().buscarVentaById(Long.valueOf(ventaPasajeAsiento.getId()));
+									reserva.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_ANULACION));
+									UtilData.auditarRegistro(reserva, true, getUsuario(), Executions.getCurrent());
+									ServiceLocator.getVentaPasajesManager().anularReserva(reserva);									
+								}
+								
+								txtVtaPaxBusqueda.setText("");
+								Util.limpiarListbox(ltbxVtaAsientosSeleccionados);
+								cleanDatosInfoComprobante();								
+								onSelect_ltbxVtaAsientosSeleccionados(null);														
+								onRefreshMap();
+								disabledControlsViaje(true);
+								disabledControlsPasajero(true);
+								disabledControlsCliente(true);
+								disabledControlsPago(true);
+								disabledAllButtonsOptinsByAsiento();
+								DlgMessage.information(Messages.getString("WndConfirmarReserva.information.reservaAnulada"));
+								
+							}catch(Exception ex){
+								DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
+								log.error(ex);
+							}
+						}						
+					}
+				});
+			}else {
+				//Anulación de Ventas
+				for(Listitem item: listVenta) {
+					VentaPasaje ventaPasajeAsiento = ((VentaIdaRetorno)item.getValue()).getDetalleItinerarioIDA().getObjAsiento().getVentaPasaje();
+									
+					VentaPasaje ventaOriginal = ServiceLocator.getVentaPasajesManager().buscarVentaById(Long.valueOf(ventaPasajeAsiento.getId()));
+					VentaPasaje ultimoMoviento = ServiceLocator.getVentaPasajesManager().buscarUltimoRegistro(ventaOriginal.getVentaOriginal());
+
+					/*Valida si el boleto tiene movimientos superiores al que se esta anulando*/
+					if(ultimoMoviento.getId().longValue()!=ventaOriginal.getId().longValue()){
+						DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.noAnulacion"));
+						return;
+					}else if(ventaOriginal.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION)
+						DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.boletoAnulado"));
+					else if (ventaOriginal.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_DEVOLUCION)
+						DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.boletoDevuelto"));
+					else if(ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(ventaOriginal.getId())) {
+						DlgMessage.information(Messages.getString("Generales.information.manifiestoImpreso"));
+						return;
+					}
+
+					if (getRol().getId().intValue()!=Constantes.ID_ROL_SUPER_USUARIO && !(ventaOriginal.getUsuario().getId().equals(getUsuario().getId())))
+						DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.otroUsuario"));
+					else if(getRol().getId().intValue()!=Constantes.ID_ROL_SUPER_USUARIO &&
+							!(Constantes.FORMAT_DATE.format(ventaOriginal.getFechaInsercion()).equals(Constantes.FORMAT_DATE.format(new Date()))))
+						DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.fechaPasada"));
+					else if(ventaOriginal.getLiquidacion()==null){
+							wndModal = createWindowAnulacion(ventaOriginal);
+							this.appendChild(wndModal);
+							wndModal.setMode("modal");
+					}else
+						DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.boletoLiquidado"));
+					
+				}
+			}
+
+		}catch(Exception ex){
+			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
+			log.error(ex);
+		}
+	}
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	private void onClick_btnVtaPostergar()throws Exception{
+		VentaIdaRetorno venta = ltbxVtaAsientosSeleccionados.getSelectedItem().getValue();
+		VentaPasaje ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarPorId(venta.getDetalleItinerarioIDA().getObjAsiento().getVentaPasaje().getId());
+		boletoManifestado = ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(ventaPasaje.getId());
+		TipoNota penalidad = ServiceLocator.getTipoNotaManager().buscarPorId(Long.valueOf(Constantes.ID_TIPNOTA_POSTERGACION));
+		Double montoPenalidad = .00;
+		if(penalidad!=null && penalidad.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO))
+			montoPenalidad = penalidad.getGastoAdminEfectivo();
+			
+		wndModal = createWindowPostergacion(ventaPasaje, montoPenalidad);
+		this.appendChild(wndModal);
+		wndModal.setMode("modal");
+		
+	}
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	private void onClick_btnVtaProgramarServicios()throws Exception{		
+		Itinerario itinerario = ServiceLocator.getItinerarioManager().buscarPorId(detalleItinerarioIda.getItinerario().getId());
+		TreeMap<String, Object>criteriosBusqueda = new TreeMap<String, Object>();
+		criteriosBusqueda.put("itinerario", itinerario);
+		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);		
+		List<ProgramacionServicio> listProgramacion = ServiceLocator.getProgramacionServiciosManager().buscarPorX(criteriosBusqueda, null);
+		programacionServicio = null;
+		if(listProgramacion.size()>0)
+			programacionServicio = listProgramacion.get(0);
+		
+		//busca el manifiesto
+		Manifiesto manifiesto = ServiceLocator.getManifiestoManager().consultaMinifiestImpreso(itinerario.getId());
+		
+		wndModal = createWindowProgramacionBus(itinerario, manifiesto);
+		this.appendChild(wndModal);
+		wndModal.setMode("modal");
+		
+		if(manifiesto!=null)
+			DlgMessage.information("El Manifiesto ya está emitido, no podrá realizar cambios en la Programación.");
+	}
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	private void onClick_btnVtaManifiestoPasajeros()throws Exception{
+		programacionServicio = null;
+		Itinerario itinerario = ServiceLocator.getItinerarioManager().buscarPorId(detalleItinerarioIda.getItinerario().getId());
+		
+		//Busca la programcion
+		TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+		criteriosBusqueda.put("itinerario", itinerario);
+		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);		
+		List<ProgramacionServicio> listProgramacion = ServiceLocator.getProgramacionServiciosManager().buscarPorX(criteriosBusqueda, null);		
+		if(listProgramacion.size()>0) {
+			programacionServicio = listProgramacion.get(0);
+			
+			//Busca el TUC del bus
+			criteriosBusqueda = new TreeMap<String, Object>();
+			criteriosBusqueda.put("bus", programacionServicio.getBus());
+			criteriosBusqueda.put("tipoDocumento", new TipoDocumento(Constantes.ID_TIPDOC_TARJETA_CIRCULACION));
+			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+			List<DocumentoBus> listdoctBus = ServiceLocator.getDocumentoBusManager().buscarPorX(criteriosBusqueda, null);
+			for(DocumentoBus _documentoBus: listdoctBus) {
+				Date fechaActual = Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date()));
+				Date fechaVenceDoctBus = Constantes.FORMAT_DATE.parse(_documentoBus.getFechaVencimiento());
+				if(fechaVenceDoctBus.getTime()>=fechaActual.getTime())
+					itinerario.getBus().setDocumentoBus(_documentoBus);;				
+			}			
+		}
+		
+		//Busca el manifiesto
+	 	Manifiesto manifiesto = ServiceLocator.getManifiestoManager().consultaMinifiestImpreso(itinerario.getId());
+	 	if(manifiesto!=null)
+	 		manifiesto = ServiceLocator.getManifiestoManager().buscarPorId(manifiesto.getId());
+	 	
+	 	//Busca el correlativo para el manifiesto
+	 	EspecieValorada especieValoradaSunat =  ServiceLocator.getManifiestoManager().consultaAutorizacionSunat(getAgencia().getId(), itinerario.getEmpresa().getId());	 	
+	 	
+	 	//
+		wndModal = createWindowManifiesto_carpetaDespacho(true, itinerario, programacionServicio, manifiesto, especieValoradaSunat);
+		this.appendChild(wndModal);
+		wndModal.setMode("modal");		
+		
+		//
+		if(especieValoradaSunat==null)
+			DlgMessage.information(Messages.getString("WndManifiesto.information.noCorrelativoManifiesto"));
+	}
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	private void onClick_btnVtaCarpetaDespacho()throws Exception{
+		programacionServicio = null;
+		Itinerario itinerario = ServiceLocator.getItinerarioManager().buscarPorId(detalleItinerarioIda.getItinerario().getId());
+		//Busca la programcion
+		TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+		criteriosBusqueda.put("itinerario", itinerario);
+		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);		
+		List<ProgramacionServicio> listProgramacion = ServiceLocator.getProgramacionServiciosManager().buscarPorX(criteriosBusqueda, null);		
+		if(listProgramacion.size()>0) {
+			programacionServicio = listProgramacion.get(0);
+			itinerario.getBus().setProgramacionServicio(programacionServicio);	
+		}
+		
+		wndModal = createWindowManifiesto_carpetaDespacho(false, itinerario, null, null, null);
+		this.appendChild(wndModal);
+		wndModal.setMode("modal");		
+		
+		
+	}
+	
 	
 	
 	/**
 	 * 
 	 * @throws Exception
 	 */
-	private void onClick_btnVtaCancelar()throws Exception{		
+	private void onClick_btnVtaCancelar()throws Exception{
+		if(timerRefreshMapa!=null)
+			timerRefreshMapa.stop();
+		
+		liberarAsientos(ltbxVtaAsientosSeleccionados);
 		cleanDatosVenta();
 		divPaso_2.setVisible(false);
-		divPaso_1.setVisible(true);
-		
-		liberarAsientos();
-		
-		//Actualiza los resultados de la busqueda
-//		onClick_btnBuscar();
+		divPaso_1.setVisible(true);		
+		tabBusqIda.setSelected(true);
+		onClick_btnBuscar();
 	}
 	
+	
+	private void onClick_btnVtaGuargar()throws Exception{		
+//		if(!rdVtaVenta.isChecked() && !rdVtaReserva.isChecked() && !rdVtaPostergacion.isChecked() && !rdVtaPostergacionFA.isChecked() && !rdVtaCambioNombre.isChecked()) {
+		if(!rdVtaVenta.isChecked() && !rdVtaReserva.isChecked() && !rdVtaPostergacionFA.isChecked() && !rdVtaCambioNombre.isChecked()) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noTipoOperacion"));
+			return;
+		}
+		
+		boolean isIdaVuelta = rdBusqIdaVuelta.isChecked();
+		boolean isReserva = rdVtaReserva.isChecked();
+		boolean isVenta = rdVtaVenta.isChecked();
+		boolean isPostergacionFA = rdVtaPostergacionFA.isChecked();
+		boolean isCambioNombre = rdVtaCambioNombre.isChecked();
+		
+		boolean emiteComprobantePago = (gridVtaDatosPago.isVisible() && dbxVtaTotalPagar.getValue()!=null && dbxVtaTotalPagar.getValue()>.00);
+		
+		//Valida Especie Valorada: Cuando es una ida y vuelta y las empresas del itinerario de ida y del retorno son diferenctes
+		if(emiteComprobantePago && isIdaVuelta 
+				&& detalleItinerarioIda.getItinerario().getEmpresa().getId().intValue()!=detalleItinerarioVuelta.getItinerario().getEmpresa().getId().intValue()) {
+			//Primero valida la especie valorada del retorno
+			ControlEspecieValorada controlEspecieValorada = loadEspecieValoradaByVenta(false);
+			if(controlEspecieValorada ==null)
+				return;
+		}
+		if(emiteComprobantePago) {
+			//Valida especie valorada de Ida
+			ControlEspecieValorada controlEspecieValorada = loadEspecieValoradaByVenta(true);
+			if(controlEspecieValorada ==null)
+				return;
+		}
+						
+		//si es una venta ida y vuelta, valida que se hayan seleccionado la misma cantidad de asientos tanto de ida como de vuelta
+		if(isIdaVuelta) {
+			for(Listitem item: ltbxVtaAsientosSeleccionados.getItems()) {
+				VentaIdaRetorno ventaIdaRetorno = item.getValue();
+				if(ventaIdaRetorno.getDetalleItinerarioIDA()==null || ventaIdaRetorno.getDetalleItinerarioRETORNO()==null) {
+					DlgMessage.information(Messages.getString("WndVentaReserva.information.noEqualsSeatSelections"));
+					return;
+				}
+			}
+		}
+		//Valida la tarifa
+		for(Listitem item: ltbxVtaAsientosSeleccionados.getItems()) {
+			VentaIdaRetorno ventaIdaRetorno = item.getValue();
+			if(ventaIdaRetorno.getDetalleItinerarioIDA().getTarifa()==null || ventaIdaRetorno.getDetalleItinerarioIDA().getTarifa()==.00) {
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noTarifaItinerarioAsientoIda").replace("@asiento", ventaIdaRetorno.getDetalleItinerarioIDA().getAsiento()));
+				return;
+			}else if(isIdaVuelta && (ventaIdaRetorno.getDetalleItinerarioRETORNO().getTarifa()==null || ventaIdaRetorno.getDetalleItinerarioRETORNO().getTarifa()==.00)) {
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noTarifaItinerarioAsientoRetorno").replace("@asiento", ventaIdaRetorno.getDetalleItinerarioIDA().getAsiento()));
+				return;
+			}
+		}
+		
+		
+		if(ltbxVtaAsientosSeleccionados.getSelectedCount()==0) { //Valida que se haya seleccionado el asiento
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noAsientoSeleccionado"));
+			return;
+		}else if(!(cmbVtaIdaEmbarque_hora.getSelectedItem().getValue() instanceof ItinerarioAgenciaPartida)) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noAgenciaPartidaSeleccionada"), cmbVtaIdaEmbarque_hora);
+			return;
+		}else if(!(cmbVtaIdaDesembarque_hora.getSelectedItem().getValue() instanceof ItinerarioAgenciaLlegada)) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noAgenciallegadaSeleccionada"), cmbVtaIdaDesembarque_hora);
+			return;
+		}else if(isIdaVuelta && !(cmbVtaVueltaEmbarque_hora.getSelectedItem().getValue() instanceof ItinerarioAgenciaPartida)) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noSeleccionoAgenciaPartidaRetorno"), cmbVtaVueltaEmbarque_hora);
+			return;
+		}else if(isIdaVuelta && !(cmbVtaVueltaDesembarque_hora.getSelectedItem().getValue() instanceof ItinerarioAgenciaLlegada)) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noSeleccionoAgenciaLlegadaRetorno"), cmbVtaVueltaDesembarque_hora);
+			return;
+		}
+		//Valida los datos del pasajero
+		if(cmbVtaPaxTipoDocumento.getSelectedIndex()<0) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noSelectionTipoDocumento"), cmbVtaPaxTipoDocumento);
+			return;
+		}else if(txtVtaPaxNumeroDocumento.getText().trim().isEmpty()) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noDocumentoPax"), txtVtaPaxNumeroDocumento);
+			return;
+		}else if(((TipoDocumento)cmbVtaPaxTipoDocumento.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPDOC_DNI &&
+				txtVtaPaxNumeroDocumento.getText().trim().length()!=8) {			
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noValidDocumentPax"), txtVtaPaxNumeroDocumento);
+			return;
+		}else if(txtVtaPaxNombres.getText().trim().isEmpty()) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noNombres"), txtVtaPaxNombres);
+			return;
+		}else if(txtVtaPaxApePaterno.getText().trim().isEmpty()) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noApellidoPaterno"), txtVtaPaxApePaterno);
+			return;
+		}else if(!rdVtaPaxFemenino.isChecked() && !rdVtaPaxMasculino.isChecked()) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noGenero"));
+			return;
+		}else if(itbxVtaPaxEdad.getValue()==null || itbxVtaPaxEdad.getValue().intValue()<=0) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noEdadPax"), itbxVtaPaxEdad);
+			return;
+		}else if(txtVtaPaxTelefono.getText().trim().isEmpty()) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noTelefono"), txtVtaPaxTelefono);
+			return;
+		}else if(txtVtaPaxTelefono.getText().trim().length()<6 || txtVtaPaxTelefono.getText().trim().length()>11) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noTelefono.NoValid"), txtVtaPaxTelefono);
+			return;
+		}else if(!txtVtaPaxCorreo.getText().trim().isEmpty() && !UtilData.validateEmail(txtVtaPaxCorreo.getText())) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.ingreseCorreoValido"), txtVtaPaxCorreo);
+			return;
+		}
+		
+		//Valida datos de la factura,
+		if(chbxVtaFactura.isChecked()) {
+			if(txtVtaFacRuc.getText().trim().isEmpty()) {
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noDocumentoCliente"), txtVtaFacRuc);
+				return;
+			}else if(!Util.validarRUC(txtVtaFacRuc.getText().trim())) {
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.DocumentoClienteNoValido"), txtVtaFacRuc);
+				return;
+			}else if(txtVtaFacRazonSocial.getText().trim().isEmpty()) {
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noRazonSocial"), txtVtaFacRazonSocial);
+				return;
+			}else if(txtVtaFacDireccion.getText().trim().isEmpty()) {
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noDireccionCliente"), txtVtaFacDireccion);
+				return;
+			}else if(txtVtaFacDireccion.getText().trim().length()<5) {
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.direccionIncorrect"), txtVtaFacDireccion);
+				return;
+			}
+		}
+		
+		//Valida los datos del pago
+		if(emiteComprobantePago) {
+			if(cmbVtaTipoFormaPago.getSelectedIndex()<0) {
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noMedioPago"), cmbVtaTipoFormaPago);
+				return;
+			}else if(!cmbVtaOperadorTarjeta.isDisabled() && cmbVtaOperadorTarjeta.getSelectedIndex()<0) {
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noOperadorTarjetaCredito"), cmbVtaOperadorTarjeta);
+				return;
+			}else if(!cmbVtaTarjeta.isDisabled() && cmbVtaTarjeta.getSelectedIndex()<0) {
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noTarjetaCredito"), cmbVtaTarjeta);
+				return;
+			}else if(!txtVtaNumeroOperacion.isDisabled() && txtVtaNumeroOperacion.getText().trim().isEmpty()) {
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noNumeroOperacionBancaria"), txtVtaNumeroOperacion);
+				return;
+			}
+		}else if(isReserva) {
+			if(dtbxVtaIdaExpiraReserva.getValue()==null && dtbxVtaIdaExpiraReserva.isDisabled()) {
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noTiempoReserva"), itbxVtaIdaTiempoReserva);
+				return;
+			}else if(dtbxVtaIdaExpiraReserva.getValue()==null && !dtbxVtaIdaExpiraReserva.isDisabled()) {
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noFechaExpiraReserva"), dtbxVtaIdaExpiraReserva);
+				return;
+			}else if(isIdaVuelta && dtbxVtaVueltaExpiraReserva.getValue()==null && dtbxVtaVueltaExpiraReserva.isDisabled()) {
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noTiempoReserva"), itbxVtaVueltaTiempoReserva);
+				return;
+			}else if(isIdaVuelta && dtbxVtaVueltaExpiraReserva.getValue()==null && !dtbxVtaVueltaExpiraReserva.isDisabled()) {
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noFechaExpiraReserva"), dtbxVtaVueltaExpiraReserva);
+				return;
+			} 
+			
+			//Valida el tiempo límite permitido 
+			if(!validarTiempoPermitidoReserva(true, null))
+				return;
+			
+			//Valida que no exceda la hora de salida del servicio			
+			Date fechaHoraReserva = dtbxVtaIdaExpiraReserva.getValue();			
+			boolean isMayorHoraSalida = isFechaExpiraReservaExcedeSalida(true, fechaHoraReserva);
+			if(isMayorHoraSalida) {
+				DlgMessage.information(Messages.getString("WndVentaReservaNew.information.fechaExpiraReservaMayorSalida"), dtbxVtaIdaExpiraReserva);
+				return;
+			}
+			if(isIdaVuelta) {
+				//Valida el tiempo límite permitido 
+				if(!validarTiempoPermitidoReserva(false, null))
+					return;
+				
+				fechaHoraReserva = dtbxVtaVueltaExpiraReserva.getValue();			
+				isMayorHoraSalida = isFechaExpiraReservaExcedeSalida(true, fechaHoraReserva);
+				if(isMayorHoraSalida) {
+					DlgMessage.information(Messages.getString("WndVentaReservaNew.information.fechaExpiraReservaMayorSalida"), dtbxVtaVueltaExpiraReserva);
+					return;
+				}				
+			}
+		}
+		
+		//Valida liquidacion
+		if(emiteComprobantePago) {
+			if(fechaLiquidacion==null) {
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noLiquidacion"));
+				return;
+			}
+			String fechaActual = Constantes.FORMAT_DATE.format(new Date());
+			String vfechaLiquidacion = Constantes.FORMAT_DATE.format(fechaLiquidacion);		
+			if(!fechaActual.equals(vfechaLiquidacion)) {
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.fechaLiquidacionDiferente"));
+				return;
+			}	
+		}
+		
+
+		//Seate los dados del Pasajero
+		if(pasajero ==null)
+			pasajero = new Pasajero();
+		
+		TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+		criteriosBusqueda.put("tipoDocumento", cmbVtaPaxTipoDocumento.getSelectedItem().getValue());
+		criteriosBusqueda.put("numeroDocumento", txtVtaPaxNumeroDocumento.getText().trim().toUpperCase());
+		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+		List<Pasajero> resultPasajero = ServiceLocator.getPasajeroManager().buscarPorX(criteriosBusqueda, null);
+		if(resultPasajero.size()>0)
+			pasajero = resultPasajero.get(0);
+		else
+			pasajero.setId(null);
+		
+		pasajero.setTipoDocumento(cmbVtaPaxTipoDocumento.getSelectedItem().getValue());
+		pasajero.setNumeroDocumento(txtVtaPaxNumeroDocumento.getText().trim().toUpperCase());
+		pasajero.setNombre(txtVtaPaxNombres.getText().trim().toUpperCase());
+		pasajero.setApellidoPaterno(txtVtaPaxApePaterno.getText().trim().toUpperCase());
+		pasajero.setApellidoMaterno(!txtVtaPaxApeMaterno.getText().trim().isEmpty()? txtVtaPaxApeMaterno.getText().trim().toUpperCase(): null);
+		pasajero.setNombresApellidos(pasajero.getNombre()+" "+pasajero.getApellidoPaterno()+(pasajero.getApellidoMaterno()!=null?" "+ pasajero.getApellidoMaterno():""));
+		pasajero.setSexo(rdVtaPaxFemenino.isChecked()?new Sexo(Constantes.ID_SEXO_FEMENINO):new Sexo(Constantes.ID_SEXO_MASCULINO));
+		pasajero.setFechaNacimiento(getFechaNacimiento(itbxVtaPaxEdad.getValue()));
+		pasajero.setTelefono(!txtVtaPaxTelefono.getText().trim().isEmpty()?txtVtaPaxTelefono.getText().trim():null);
+		if(pasajero.getUbigeo() ==null)
+			pasajero.setUbigeo(new Ubigeo(Constantes.ID_UBIGEO_LIMA));
+		if(pasajero.getEmail()==null && !txtVtaPaxCorreo.getText().trim().isEmpty()) {
+			pasajero.setFechaTieneEmail(new Date());
+			pasajero.setUsuarioTieneEmail(getUsuario());
+			pasajero.setAgenciaTieneEmail(getAgencia());
+		}
+		pasajero.setEmail(!txtVtaPaxCorreo.getText().trim().isEmpty()?txtVtaPaxCorreo.getText().trim().toLowerCase():null);		
+		pasajero.setTieneEmail(pasajero.getEmail()==null?Constantes.FALSE_VALUE:Constantes.TRUE_VALUE);
+		if(pasajero.getAgencia()==null)
+			pasajero.setAgencia(getAgencia());
+		if(pasajero.getKilometros()==null)
+			pasajero.setKilometros(.00);
+		if(pasajero.getIndeseable()==null)
+			pasajero.setIndeseable(Constantes.FALSE_VALUE);
+		
+		pasajero.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+		if(pasajero.getId()==null)
+			UtilData.auditarRegistro(pasajero, getUsuario(), Executions.getCurrent());
+		else
+			UtilData.auditarRegistro(pasajero, true, getUsuario(), Executions.getCurrent());
+		
+		
+		//Seata los datos del Cliente
+		if(chbxVtaFactura.isChecked()) {			
+			cliente = ServiceLocator.getClienteManager().buscarPorRuc(txtVtaFacRuc.getText().trim().toUpperCase());
+			if(cliente == null)
+				cliente = new Cliente();
+			cliente.setNumeroDocumento(txtVtaFacRuc.getText().trim());
+			cliente.setRazonSocial(txtVtaFacRazonSocial.getText().trim().toUpperCase());
+			cliente.setDireccion(txtVtaFacDireccion.getText().trim().toUpperCase());
+			if(cliente.getAgencia()==null)
+				cliente.setAgencia(getAgencia());
+			if(cliente.getUbigeo()==null)
+				cliente.setUbigeo(new Ubigeo(Constantes.ID_UBIGEO_LIMA));
+			if(cliente.getCantidadTrabajadores()==null)
+				cliente.setCantidadTrabajadores(0);
+			if(cliente.getKilometros()==null)
+				cliente.setKilometros(.00);
+			cliente.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+			if(cliente.getId()==null)
+				UtilData.auditarRegistro(cliente, getUsuario(), Executions.getCurrent());
+			else
+				UtilData.auditarRegistro(cliente, true, getUsuario(), Executions.getCurrent());
+		}
+				
+		List<DetalleItinerario> listDetalleItienrario = new ArrayList<DetalleItinerario>();
+		if(isReserva || isPostergacionFA)
+			//Agrega todos los asientos seleccionados (se guardaran todos los asientos para el mismo pasajero)
+			for(Listitem item: ltbxVtaAsientosSeleccionados.getItems()) {
+				VentaIdaRetorno ventaIdaRetorno = item.getValue();
+				listDetalleItienrario.add(ventaIdaRetorno.getDetalleItinerarioIDA());
+				if(ventaIdaRetorno.getDetalleItinerarioRETORNO()!=null)
+					listDetalleItienrario.add(ventaIdaRetorno.getDetalleItinerarioRETORNO());				
+			}
+		else {
+			VentaIdaRetorno ventaIdaRetorno = ltbxVtaAsientosSeleccionados.getSelectedItem().getValue();
+			listDetalleItienrario.add(ventaIdaRetorno.getDetalleItinerarioIDA());
+			if(ventaIdaRetorno.getDetalleItinerarioRETORNO()!=null)
+				listDetalleItienrario.add(ventaIdaRetorno.getDetalleItinerarioRETORNO());	
+		}
+		
+		String messageConfirmationUser = "";
+		List<VentaPasaje> listVentas = new ArrayList<VentaPasaje>();
+		//*****************************************************************************************
+		//*****************************************************************************************	
+		if(isVenta || isReserva) {
+			for(DetalleItinerario detalleItinerario: listDetalleItienrario) {
+				ItinerarioAgenciaPartida itinerarioAgenciaPartida = null;
+				ItinerarioAgenciaLlegada itinerarioAgenciaLlegada = null;
+				
+				VentaPasaje ventaPasajeRef = null;
+				if(detalleItinerario.getObjAsiento().getVentaPasaje()!=null)
+					ventaPasajeRef = detalleItinerario.getObjAsiento().getVentaPasaje();
+				ventaPasaje = new VentaPasaje();			
+				
+				if(detalleItinerario.getEsIda()) {
+					itinerarioAgenciaPartida = cmbVtaIdaEmbarque_hora.getSelectedItem().getValue();
+					itinerarioAgenciaLlegada = cmbVtaIdaDesembarque_hora.getSelectedItem().getValue();
+				}else {
+					itinerarioAgenciaPartida = cmbVtaVueltaEmbarque_hora.getSelectedItem().getValue();
+					itinerarioAgenciaLlegada = cmbVtaVueltaDesembarque_hora.getSelectedItem().getValue();
+				}
+				
+				if(isReserva) {
+					ventaPasaje.setFechaLiquidacion(new Date());
+					ventaPasaje.setImportePagado(.00);
+					ventaPasaje.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_RESERVA));
+					ventaPasaje.setTipoTransaccion(Constantes.TIPO_OPERACION_RESERVA);
+					if(detalleItinerario.getEsIda())
+						ventaPasaje.setFechaExpiracionReserva(dtbxVtaIdaExpiraReserva.getValue());
+					else
+						ventaPasaje.setFechaExpiracionReserva(dtbxVtaVueltaExpiraReserva.getValue());
+				}else {
+					//Cuando es una confimación de reserva, valida que esta aún este disponible.
+					if(ventaPasajeRef!=null && ventaPasajeRef.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA)) {
+						VentaPasaje reserva = ServiceLocator.getVentaPasajesManager().buscarPorId(ventaPasajeRef.getId());
+						int tipoMovimientoId = reserva.getTipoMovimiento().getId();
+						if(tipoMovimientoId==Constantes.ID_TIPMOV_ANULACION_SISTEMA || tipoMovimientoId==Constantes.ID_TIPMOV_ANULACION) {
+							DlgMessage.information(Messages.getString("WndVentaReservaNew.information.fechaExpiraReservaMayorSalida"));
+							onRefreshMap();
+							return;
+						}
+					}
+					
+					ventaPasaje.setFechaLiquidacion(fechaLiquidacion);
+					ventaPasaje.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_EFECTIVO));
+					ventaPasaje.setTipoTransaccion(Constantes.TIPO_OPERACION_VENTA);
+					if(detalleItinerario.getEsIda())
+						ventaPasaje.setImportePagado(dbxVtaIdaTarifa.getValue());
+					else
+						ventaPasaje.setImportePagado(dbxVtaVueltaTarifa.getValue());
+				}
+				ventaPasaje.setVentaOriginal(ventaPasajeRef!=null?ventaPasajeRef.getId():null);
+				ventaPasaje.setVentaPasaje(ventaPasajeRef);
+				ventaPasaje.setEsFechaAbierta(Constantes.FALSE_VALUE);
+				ventaPasaje.setIdaRetorno(isIdaVuelta?Constantes.TRUE_VALUE:Constantes.FALSE_VALUE);
+				ventaPasaje.setItinerario(detalleItinerario.getItinerario());			
+				ventaPasaje.setEmpresa(detalleItinerario.getItinerario().getEmpresa());
+				ventaPasaje.setRuta(detalleItinerario.getRuta());
+				ventaPasaje.setPasajero(pasajero);
+				ventaPasaje.setCliente(cliente);
+				ventaPasaje.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CONTADO)); //almenos por ahora siempre será contado
+				ventaPasaje.setServicio(detalleItinerario.getItinerario().getServicio());
+				ventaPasaje.setTipoComprobante(new TipoComprobante(cliente!=null?Constantes.ID_TIPCOM_FACTURA:Constantes.ID_TIPCOM_BOLETA_VENTA));
+				ventaPasaje.setTipoFormaPago(cmbVtaTipoFormaPago.getSelectedIndex()>=0?cmbVtaTipoFormaPago.getSelectedItem().getValue():null);
+				if(cmbVtaTarjeta.getSelectedIndex()>=0 && cmbVtaTarjeta.getSelectedItem().getValue() instanceof TarjetaCredito)
+					ventaPasaje.setTarjetaCredito(cmbVtaTarjeta.getSelectedItem().getValue());
+				ventaPasaje.setNumeroOperacionBancaria(txtVtaNumeroOperacion.getText().equals("")?null:txtVtaNumeroOperacion.getText());
+				ventaPasaje.setNumeroBoleto(!lblVtaNumeroComprobante.getValue().trim().isEmpty()? lblVtaNumeroComprobante.getValue().trim().toUpperCase():null);
+//				else if(rdVtaPostergacion.isChecked())
+//					ventaPasaje.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_POSTERGACION));
+//				else if(rdVtaPostergacionFA.isChecked())
+//					ventaPasaje.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_POSTERGACION_FA));
+//				else if(rdVtaCambioNombre.isChecked())
+//					ventaPasaje.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_EFECTIVO));
+				ventaPasaje.setNumeroAsiento(Integer.valueOf(detalleItinerario.getAsiento()));
+				ventaPasaje.setNumeroPiso(Integer.valueOf(detalleItinerario.getPiso()));
+				ventaPasaje.setAgenciaPartida(itinerarioAgenciaPartida.getAgencia());
+				ventaPasaje.setFechaPartida(detalleItinerario.getFechaPartida());
+				ventaPasaje.setHoraPartida(detalleItinerario.getHoraPartida());
+				ventaPasaje.setHoraEmbarque(itinerarioAgenciaPartida.getHoraPartida());
+				ventaPasaje.setAgenciaLlegada(itinerarioAgenciaLlegada.getAgencia());
+				ventaPasaje.setFechaLlegada(detalleItinerario.getFechaLlegada());
+				ventaPasaje.setHoraLllegada(detalleItinerario.getHoraLlegada());
+				ventaPasaje.setHoraDesembarque(itinerarioAgenciaLlegada.getHoraLlegada());
+				ventaPasaje.setPreferenciaAlimentaria(new PreferenciaAlimentaria(Constantes.ID_PREALIM_MENU_DEL_DIA)); //Volor por defecto
+				//*******************************************
+				ventaPasaje.setSecuencial(0);
+				//*******************************************
+				ventaPasaje.setTarifa(detalleItinerario.getTarifa());
+				ventaPasaje.setRecargo(.00);
+				ventaPasaje.setDescuento(.00);
+				ventaPasaje.setPenalidad(.00);
+				ventaPasaje.setAcuenta(.00);
+				ventaPasaje.setImportePagadoByDiferencia(.00);
+				ventaPasaje.setImportePagadoEfectivo(.00);
+				ventaPasaje.setImportePagadoTarjeta(.00);
+				String fechaCaducidad=Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida())+ " "+ventaPasaje.getHoraPartida();
+				Date dateCaducidad=Constantes.FORMAT_LONG.parse(fechaCaducidad);
+				ventaPasaje.setFechaCaducidad(dateCaducidad);
+				ventaPasaje.setAgencia(getAgencia());
+				ventaPasaje.setUsuario(getUsuario());
+				ventaPasaje.setCanalVenta(canalVenta);
+				ventaPasaje.setUsuarioHardware(getUsuarioHardware());
+				ventaPasaje.setEsRemoto(false);			
+				ventaPasaje.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+				ventaPasaje.setLiquidacion(null);
+				ventaPasaje.setEstadoDocumento(Constantes.ESTADO_DOCUMENTO_PAGADO);
+				ventaPasaje.setNumeroControl("T00000");
+				UtilData.auditarRegistro(ventaPasaje, false, getUsuario(), Executions.getCurrent());
+
+				listVentas.add(ventaPasaje);
+			}
+			if(isVenta)
+				messageConfirmationUser = "WndVentaReserva.information.confirmacionGuardarVenta";
+			else
+				messageConfirmationUser = "WndVentaReserva.information.confirmacionGuardarReserva";
+		}else if(isPostergacionFA){	
+			Double importePagar = .00;
+			if(emiteComprobantePago) {
+				Double totalPago = dbxVtaTotalPagar.getValue();
+				importePagar = (totalPago / listDetalleItienrario.size());
+			}
+			
+			for(DetalleItinerario detalleItinerario: listDetalleItienrario) {
+				Long ventaPasajeId = detalleItinerario.getObjAsiento().getVentaPasaje().getId();
+				VentaPasaje ventaPasajero = ServiceLocator.getVentaPasajesManager().buscarPorId(ventaPasajeId);
+				VentaPasaje postergacionFA = (VentaPasaje) ventaPasajero.clone();
+				postergacionFA.setItinerario(ServiceLocator.getItinerarioManager().buscarPorId(postergacionFA.getItinerario().getId()));
+				postergacionFA.setVentaPasaje(ventaPasajero);
+				postergacionFA.setEnviadoSFE(null);
+				postergacionFA.setFechaEnvioSFE(null);
+				postergacionFA.setNumeroAsiento(null);
+				postergacionFA.setFechaPartida(null);
+				postergacionFA.setHoraPartida(null);
+				postergacionFA.setFechaLlegada(null);
+				postergacionFA.setHoraLllegada(null);
+				postergacionFA.setAgenciaPartida(null);
+				postergacionFA.setAgenciaLlegada(null);
+				postergacionFA.setNumeroPiso(null);
+				postergacionFA.setEsFechaAbierta(Constantes.TRUE_VALUE);
+				postergacionFA.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_POSTERGACION_FA));
+				postergacionFA.setFechaCaducidad(new Date(new Date().getTime()+(Constantes.TIEMPO_CADUCA_BOLETO*Constantes.MILISEGUNDOS_X_DIA)));
+				postergacionFA.setImportePagado(importePagar);
+				postergacionFA.setUsuarioHardware(getUsuarioHardware());				
+				postergacionFA.setObservaciones(postergacionFA.getObservaciones()!=null?postergacionFA.getObservaciones()+";"+"POSTERGACION F.A.":"POSTERGACION F.A.");
+				UtilData.auditarRegistro(postergacionFA, true, getUsuario(), Executions.getCurrent());
+				listVentas.add(postergacionFA);
+			}
+			messageConfirmationUser = "WndVentaReserva.question.postergacionFA";
+		}else if(isCambioNombre) {
+			Double importePagar = .00;
+			if(emiteComprobantePago) {
+				Double totalPago = dbxVtaTotalPagar.getValue();
+				importePagar = (totalPago / listDetalleItienrario.size());
+			}
+			
+			for(DetalleItinerario detalleItinerario: listDetalleItienrario) {
+				Long ventaPasajeId =  detalleItinerario.getObjAsiento().getVentaPasaje().getId();
+				VentaPasaje ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarPorId(ventaPasajeId);
+				VentaPasaje ventaPasajeCambioNombre = (VentaPasaje) ventaPasaje.clone(); 
+				ventaPasajeCambioNombre.setVentaPasaje(ventaPasaje);
+				ventaPasajeCambioNombre.setItinerario(detalleItinerario.getItinerario());
+				ventaPasajeCambioNombre.setRuta(detalleItinerario.getRuta());
+				ventaPasajeCambioNombre.setImportePagado(importePagar);
+				ventaPasajeCambioNombre.setPasajero(pasajero);
+				ventaPasajeCambioNombre.setUsuarioHardware(getUsuarioHardware());
+				ventaPasajeCambioNombre.setObservaciones(ventaPasajeCambioNombre.getObservaciones()!=null?ventaPasajeCambioNombre.getObservaciones()+";"+"CAMBIO DE NOMBRE":"CAMBIO DE NOMBRE");				
+				UtilData.auditarRegistro(ventaPasajeCambioNombre, true, getUsuario(), Executions.getCurrent());
+				listVentas.add(ventaPasajeCambioNombre);
+			}
+			messageConfirmationUser = "WndVentaReserva.question.cambioNombre";
+		}
+		Messagebox.show(Messages.getString(messageConfirmationUser), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event e) throws Exception{
+				try {
+					if(e.getName().equals("onYes")){
+						if(isVenta || isReserva) {
+							ServiceLocator.getVentaPasajesManager().guardarVenta(listVentas);						
+							ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarVentaById(ventaPasaje.getId());
+							if(isVenta){
+								/*Realiza el envio del boleto y realiza la impresion*/
+								boolean printComprobante = true;
+
+								List<VentaPasaje> listVentaPasajes= new ArrayList<>();
+								listVentaPasajes.add(ventaPasaje);
+									
+								//Aqui se envia el comprobante al servidor de Facturación Electrónica
+								WSFE.sendVenta(listVentaPasajes, wndVentaReservaNew, printComprobante, null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
+							
+								ltbxVtaAsientosSeleccionados.removeItemAt(ltbxVtaAsientosSeleccionados.getSelectedIndex());
+								if(ltbxVtaAsientosSeleccionados.getItemCount()>0)
+									DlgMessage.information(Messages.getString("WndVentaReserva.information.exitoGuardarVenta"),txtVtaPaxBusqueda);
+								else
+									DlgMessage.information(Messages.getString("WndVentaReserva.information.exitoGuardarVenta"));
+							}else if(isReserva) {
+								Util.limpiarListbox(ltbxVtaAsientosSeleccionados);
+								cleanDatosReserva();
+								DlgMessage.information(Messages.getString("WndVentaReserva.information.exitoGuardarReserva"));
+								habilitaOpcionReserva(false);
+								habilitaOpcionVenta(true);
+							}
+						}else if(isPostergacionFA || isCambioNombre) {
+							List<VentaPasaje> listNotasCredito = ServiceLocator.getVentaPasajesManager().postergarBoleto(listVentas,false);							
+							if(emiteComprobantePago) {
+								//Envio los comprobantes a FE
+								List<VentaPasaje> listVentasEnvioFE = new ArrayList<VentaPasaje>();
+								for(VentaPasaje ventaPasaje: listVentas) {
+									VentaPasaje postergacionFA = ServiceLocator.getVentaPasajesManager().buscarVentaById(ventaPasaje.getId());
+									listVentasEnvioFE.add(postergacionFA);
+								}
+								WSFE.sendVenta(listVentasEnvioFE, wndVentaReservaNew, true, null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
+							}
+							
+							//Envia las NC a sunat
+							for(VentaPasaje notaCredito: listNotasCredito) {								
+								WSFE.sendNota(notaCredito);
+							}
+							
+							if(isPostergacionFA) {
+								Util.limpiarListbox(ltbxVtaAsientosSeleccionados);
+								DlgMessage.information(Messages.getString("WndVentaReserva.information.exitoPostergacionFA"));
+							}else {
+								ltbxVtaAsientosSeleccionados.removeItemAt(ltbxVtaAsientosSeleccionados.getSelectedIndex());
+								if(ltbxVtaAsientosSeleccionados.getItemCount()>0)
+									DlgMessage.information(Messages.getString("WndVentaReserva.information.exitoCambioNombre"),txtVtaPaxBusqueda);
+								else
+									DlgMessage.information(Messages.getString("WndVentaReserva.information.exitoCambioNombre"));
+							}
+						}
+						Double totalPago = (dbxVtaTotalPagar.getValue()!=null && dbxVtaTotalPagar.getValue()>0?dbxVtaTotalPagar.getValue():.00);						
+						cleanDatosInfoComprobante();
+						txtVtaPaxBusqueda.setText("");																					
+						disabledControlsViaje(true);
+						disabledControlsPasajero(true);
+						disabledControlsCliente(true);
+						disabledControlsPago(true);
+						onSelect_ltbxVtaAsientosSeleccionados(e);
+						onRefreshMap();
+						
+						if(ltbxVtaAsientosSeleccionados.getItemCount()>0 && gridVtaDatosPago.isVisible()) 
+							dbxVtaTotalPagar.setValue(totalPago);
+					}
+				}catch(CapacityExceedsException ceex){
+					DlgMessage.information(Messages.getString("WndVentaReserva.information.changeCapacidad"));
+				}catch(DuplicateSeatException dsex){
+					DlgMessage.information(Messages.getString("WndVentaReserva.information.asientoVendido"));
+				}catch(NumeroBoletoDuplicadoException nbdex){
+					DlgMessage.information(Messages.getString("WndVentaReserva.information.numeroBoletoVendido"));
+				}catch(TiempoExpiracionBloqueoException tebex){
+					DlgMessage.information(Messages.getString("WndVentaReserva.information.expiroTiempoBloqueoAsiento"));
+				}catch(Exception ex){
+					DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
+					ex.printStackTrace();
+					log.error(ex);
+				}
+			}				
+		});
+		
+		
+		
+		
+		
+	}
 	
 	
 	/**
@@ -1307,11 +3040,11 @@ public class WndVentaReservaNew  extends WndBase {
 	}
 	
 	/**
-	 * 
+	 * Limpia todos los datos de la venta
 	 * @throws Exception
 	 */
 	private void cleanDatosVenta()throws Exception{
-		
+		programacionServicio = null;
 		detalleItinerarioIda = null;
 		detalleItinerarioVuelta = null;
 		mapaAsientosIda = null;
@@ -1319,48 +3052,98 @@ public class WndVentaReservaNew  extends WndBase {
 		
 		tabVtaVueltaMapa.setDisabled(true);
 		
-		lblVtaTipoComprobante.setValue(" ");
-		lblVtaNumeroComprobante.setValue(" ");
-		lblVtaInfoTipoOperacion.setValue(" ");
+		txtVtaPaxBusqueda.setText("");
 		
-		btnVtaProgramarServicios.setDisabled(true);
-		btnVtaManifiestoPasajetos.setDisabled(true);
-		btnVtaCarpetaDespacho.setDisabled(true);
-		btnVtaContribucionByAgencia.setDisabled(true);
-		btnVtaReimpresion.setDisabled(true);
-		btnVtaPostergar.setDisabled(true);
-		btnVtaAnular.setDisabled(true);
+		btnVtaActualizarMapa.setDisabled(true);
 		btnVtaLeyendaAsientos.setDisabled(true);
 		
-		rdVtaVenta.setChecked(false);
-		rdVtaReserva.setChecked(false);
-		rdVtaPostergacion.setChecked(false);
-		rdVtaPostergacionFA.setChecked(false);
-		rdVtaCambioNombre.setChecked(false);
+		disabledAllButtonsOptinsByAsiento();		
 		
-		lblVtaIdaDestino_fecha.setValue("");
-		Util.limpiarCombobox(cmbVtaIdaEmbarque_hora);
-		Util.limpiarCombobox(cmbVtaIdaDesembarque_hora);
-		lblVtaIdaAsiento.setValue("");
-		lblVtaIdaTarifa.setValue("");
-		
-		gridVtaInfoViajeVuelta.setVisible(false);
-		lblVtaVueltaDestino_fecha.setValue("");
-		Util.limpiarCombobox(cmbVtaVueltaEmbarque_hora);
-		Util.limpiarCombobox(cmbVtaVueltaDesembarque_hora);
-		lblVtaVueltaAsiento.setValue("");
-		lblVtaVueltaTarifa.setValue("");		
-		
+		gridVtaInfoViajeVuelta.setVisible(false);		
+		chbxVtaFactura.setChecked(false);
 		Util.limpiarListbox(ltbxVtaAsientosSeleccionados);
 		
+		lblVtaIdaDestino_fecha.setValue("");
+		lblVtaVueltaDestino_fecha.setValue("");		
+		
+		cleanDatosInfoComprobante();
+		resertOperacionAsiento();		
+		cleanDatosInfoviaje(true, true);		
+		cleanDatosInfoviaje(false, true);				
 		cleanDatosPasajero(true);
 		enabledControlsFactura(false);
 		cleanDatosInfante();
 		cleanDatosPago();
 		
+		
+		habilitaOpcionReserva(false);
+		habilitaOpcionVenta(true);
+		
+		disabledControlsViaje(true);
+		disabledControlsPasajero(true);
+		disabledControlsCliente(true);
+		disabledControlsPago(true);
+		
+		disabled_btnGuardar(btnVtaGuardar, true);
 	}
 	
-	private void cleanDatosPasajero(boolean cleanDatosFactura)throws Exception{		
+	/**
+	 * Limpia los datos con la información del Vieje
+	 * @param isIda: (True) Es el viaje de Ida, (False) es el Vieaje de Vuelta
+	 * @param cleanPuntoEmbarque: (True) para limpiar los controles de embarque y deseambarque; (False) solamente resetea la selección del embarque y deseambarque. 
+	 * @throws Exception
+	 */
+	private void cleanDatosInfoviaje(boolean isIda, boolean cleanPuntoEmbarque)throws Exception{
+		
+		if(isIda) {			
+			if(cleanPuntoEmbarque) {
+				Util.limpiarCombobox(cmbVtaIdaEmbarque_hora);
+				Util.limpiarCombobox(cmbVtaIdaDesembarque_hora);
+			}else {			
+				cmbVtaIdaEmbarque_hora.setSelectedIndex(0);
+				if(cmbVtaIdaEmbarque_hora.getItemCount()==2)
+					cmbVtaIdaEmbarque_hora.setSelectedIndex(1);
+				else if(cmbVtaIdaEmbarque_hora.getItemCount()>2)
+					seleccionarPuntoEmbarque(cmbVtaIdaEmbarque_hora, getAgencia());				
+				if(cmbVtaIdaEmbarque_hora.getSelectedIndex()<0)
+					cmbVtaIdaEmbarque_hora.setSelectedIndex(0);
+					
+				
+				if(cmbVtaIdaDesembarque_hora.getItemCount()==2)
+					cmbVtaIdaDesembarque_hora.setSelectedIndex(1);
+				else
+					cmbVtaIdaDesembarque_hora.setSelectedIndex(0);
+			}			
+			lblVtaIdaAsiento.setValue("");
+			dbxVtaIdaTarifa.setValue(.00);
+		}else {			
+			if(cleanPuntoEmbarque) {				
+				Util.limpiarCombobox(cmbVtaVueltaEmbarque_hora);
+				Util.limpiarCombobox(cmbVtaVueltaDesembarque_hora);
+			}else {
+				if(cmbVtaVueltaEmbarque_hora.getItemCount()==2)
+					cmbVtaVueltaEmbarque_hora.setSelectedIndex(1);
+				else
+					cmbVtaVueltaEmbarque_hora.setSelectedIndex(0);
+				
+				
+				if(cmbVtaVueltaDesembarque_hora.getItemCount()==2)
+					cmbVtaVueltaDesembarque_hora.setSelectedIndex(1);
+				else
+					cmbVtaVueltaDesembarque_hora.setSelectedIndex(0);
+			}			
+			lblVtaVueltaAsiento.setValue("");
+			dbxVtaVueltaTarifa.setValue(.00);
+		}
+	}
+	
+	/**
+	 * Limpia los controles del pasajero
+	 * @param cleanDatosFactura: Indica si debe o no resetar los datos para la factura
+	 * @throws Exception
+	 */
+	private void cleanDatosPasajero(boolean cleanDatosFactura)throws Exception{
+		pasajero = null;
 		cmbVtaPaxTipoDocumento.setSelectedIndex(-1);
 		txtVtaPaxNumeroDocumento.setText("");
 		txtVtaPaxNombres.setText("");
@@ -1373,13 +3156,17 @@ public class WndVentaReservaNew  extends WndBase {
 		txtVtaPaxCorreo.setText("");
 		if(cleanDatosFactura) {
 			chbxVtaFactura.setChecked(false);
-			txtVtaFacRuc.setText("");
-			txtVtaFacRazonSocial.setText("");
-			txtVtaFacDireccion.setText("");
+			enabledControlsFactura(false);
 		}				
 	}
 	
+	/**
+	 * Habilita/Deshabilita los controles para la Factura
+	 * @param enabled: (True) Habilita, (Flase) Deshabilita
+	 * @throws Exception
+	 */
 	private void enabledControlsFactura(boolean enabled)throws Exception{
+		cliente = null;
 		txtVtaFacRuc.setText("");
 		txtVtaFacRazonSocial.setText("");
 		txtVtaFacDireccion.setText("");
@@ -1387,9 +3174,14 @@ public class WndVentaReservaNew  extends WndBase {
 		txtVtaFacRuc.setVisible(enabled);
 		txtVtaFacRazonSocial.setVisible(enabled);
 		txtVtaFacDireccion.setVisible(enabled);
-		
+		if(!txtVtaFacRuc.isReadonly())
+			txtVtaFacRuc.setFocus(enabled);
 	}
 	
+	/**
+	 * Limpia los datos del Infante
+	 * @throws Exception
+	 */
 	private void cleanDatosInfante()throws Exception{
 		cmbVtaInfTipoDocumento.setSelectedIndex(-1);
 		txtVtaInfNumeroDocumento.setText("");
@@ -1406,18 +3198,52 @@ public class WndVentaReservaNew  extends WndBase {
 		
 	}
 	
+	/**
+	 * Limpia los datos del Pago
+	 * @throws Exception
+	 */
 	private void cleanDatosPago()throws Exception{
-		
-		dbxVtaTotalPagar.setValue(null);
-		cmbVtaTipoFormaPago.setSelectedIndex(-1);
-		cmbVtaOperadorTarjeta.setSelectedIndex(-1);
-		Util.limpiarCombobox(cmbVtaTarjeta);
-		txtVtaNumeroOperacion.setText("");
-		cmbVtaAutorizaDescuento.setSelectedIndex(-1);
-		txtVtaAutorizaDescuentoCodigo.setText("");
-		
-		
+		if(ltbxVtaAsientosSeleccionados.getItemCount()==0) {
+			dbxVtaTotalPagar.setValue(null);
+			cmbVtaTipoFormaPago.setSelectedIndex(-1);
+			cmbVtaOperadorTarjeta.setSelectedIndex(-1);
+			Util.limpiarCombobox(cmbVtaTarjeta);
+			cmbVtaTarjeta.setText("");
+			txtVtaNumeroOperacion.setText("");
+			cmbVtaAutorizaDescuento.setSelectedIndex(-1);
+			txtVtaAutorizaDescuentoCodigo.setText("");
+			
+			cmbVtaOperadorTarjeta.setDisabled(true);
+			cmbVtaTarjeta.setDisabled(true);
+			txtVtaNumeroOperacion.setDisabled(true);
+			cmbVtaAutorizaDescuento.setDisabled(true);
+			txtVtaAutorizaDescuentoCodigo.setDisabled(true);
+		}
 	}
+	
+	/**
+	 * Limpia los datos que muestran información del comprobante
+	 * @throws Exception
+	 */
+	private void cleanDatosInfoComprobante()throws Exception{
+		lblVtaTipoComprobante.setValue("-");
+		lblVtaNumeroComprobante.setValue("-");
+//		lblVtaInfoTipoOperacion.setValue("-");
+//		
+//		if(rdVtaVenta.isChecked())
+//			lblVtaInfoTipoOperacion.setValue(rdVtaVenta.getLabel());
+//		else if(rdVtaReserva.isChecked())
+//			lblVtaInfoTipoOperacion.setValue(rdVtaReserva.getLabel());
+//		else if(rdVtaPostergacion.isChecked())
+//			lblVtaInfoTipoOperacion.setValue(rdVtaPostergacion.getLabel());
+//		else if(rdVtaPostergacionFA.isChecked())
+//			lblVtaInfoTipoOperacion.setValue(rdVtaPostergacionFA.getLabel());
+//		else if(rdVtaCambioNombre.isChecked())
+//			lblVtaInfoTipoOperacion.setValue(rdVtaCambioNombre.getLabel());
+	}
+	
+	
+	
 	
 	/**
 	 * Crea la estructura que va a contener el Mapa del Bus.
@@ -1430,7 +3256,7 @@ public class WndVentaReservaNew  extends WndBase {
 	 */
 //	@SuppressWarnings("deprecation")
 	private void crearEstructura(Integer idServicio, Groupbox grpbxParent, boolean esRetorno,
-								 DetalleItinerario detalleItinerario, Map<String, Asiento> mapaAsientos, Grid gridOcupabilidad){
+								 DetalleItinerario detalleItinerario, Map<String, Asiento> mapaAsientos, Grid gridOcupabilidad, boolean isMapaPostergacion){
 		try{
 			Servicio servicio = null;
 			/*	Busca el mapa del bus de acuerdo al servicio	*/
@@ -1528,9 +3354,12 @@ public class WndVentaReservaNew  extends WndBase {
 										@Override
 										public void onEvent(Event e){
 											Component component = e.getTarget().getParent().getParent().getParent().getParent();
-											if(component.getId().equals("grdIdaPiso1") || component.getId().equals("grdIdaPiso2"))
-												onClickAsiento(e, detalleItinerarioIda, mapaAsientosIda, true);
-											else
+											if(component.getId().equals("grdIdaPiso1") || component.getId().equals("grdIdaPiso2")) {
+												if(isMapaPostergacion)
+													onClickAsientoMapPost(e, postDetalleItinerario, postMapaAsientos);
+												else
+													onClickAsiento(e, detalleItinerarioIda, mapaAsientosIda, true);													
+											}else
 												onClickAsiento(e, detalleItinerarioVuelta, mapaAsientosRetorno, false);
 										}
 									});
@@ -1596,8 +3425,12 @@ public class WndVentaReservaNew  extends WndBase {
 				onRefreshMapaAsientos(mapaAsientos, detalleItinerario, gridOcupabilidad);
 				if(esRetorno)
 					mapaAsientosRetorno = mapaAsientos;
-				else
-					mapaAsientosIda = mapaAsientos;
+				else {
+					if(isMapaPostergacion)
+						postMapaAsientos = mapaAsientos;
+					else
+						mapaAsientosIda = mapaAsientos;
+				}
 			}
 			grpbxParent.appendChild(ohlayout);
 		}catch(Exception ex){
@@ -1648,7 +3481,7 @@ public class WndVentaReservaNew  extends WndBase {
 			/*	Obtenemos el subconjunto que queremos buscar segun la ruta seleccioanda		*/
 			List<Integer> subConjuntoBuscar = obtenerSubconjunto(detalleItinerario.getItinerario().getListSecuenciaTramo(), detalleItinerario.getRuta().getLocalidadOrigen().getId(),detalleItinerario.getRuta().getLocalidadDestino().getId());
 
-			int nOcupados = 0;
+//			int nOcupados = 0;
 			List<VentaPasaje> lstVentas = ServiceLocator.getVentaPasajesManager().buscarVentasForMapaBus(detalleItinerario.getItinerario().getId());
 			lstVentas = obtenerConjuntos(lstVentas, detalleItinerario.getItinerario().getListSecuenciaTramo());
 			if(lstVentas.size()>0){
@@ -1683,7 +3516,7 @@ public class WndVentaReservaNew  extends WndBase {
 							}
 							asiento.setTooltiptext(venta.getRuta().getOrigen()+"-"+venta.getRuta().getDestino());
 							asiento.setVentaPasaje(venta);
-							nOcupados++;
+//							nOcupados++;
 							break;
 						}
 					}
@@ -1716,7 +3549,7 @@ public class WndVentaReservaNew  extends WndBase {
 							Asiento asiento = mapaAsientos.get(bloqueado.getKey());
 							asiento.setSrc(Constantes.ICON_BLOQUEADO+bloqueado.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
 							asiento.setEstadoAsiento(Constantes.ASIENTO_BLOQUEADO);
-							nOcupados++;
+//							nOcupados++;
 							break;
 						}
 					}
@@ -1734,7 +3567,7 @@ public class WndVentaReservaNew  extends WndBase {
 						asiento.setSrc(Constantes.ICON_RESERVADO_AGENTE+asiento.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
 						asiento.setEstadoAsiento(Constantes.ASIENTO_BLOQUEADO);
 						asiento.setTooltiptext("OCUPADO");
-						nOcupados++;
+//						nOcupados++;
 					}
 				}
 			}
@@ -1748,13 +3581,142 @@ public class WndVentaReservaNew  extends WndBase {
 	}
 	
 	/**
-	 * 
-	 * @param asiento
+	 * Resetea todas las operaciones para con los asientos (rdVtaVenta, rdVtaReserva, rdVtaPostergacion, rdVtaPostergacion, rdVtaPostergacionFA y rdVtaCambioNombre)
+	 */
+	private void resertOperacionAsiento() {
+		rdVtaVenta.setChecked(false);
+		rdVtaReserva.setChecked(false);
+//		rdVtaPostergacion.setChecked(false);
+		rdVtaPostergacionFA.setChecked(false);
+		rdVtaCambioNombre.setChecked(false);
+		
+		rdVtaVenta.setDisabled(true);
+		rdVtaReserva.setDisabled(true);
+//		rdVtaPostergacion.setDisabled(true);
+		rdVtaPostergacionFA.setDisabled(true);
+		rdVtaCambioNombre.setDisabled(true);
+		lblVtaInfoTipoOperacion.setValue("-");
+		
+	}
+	
+	
+	/**
+	 * Deshabilita todos los Botones con opciones por asiento
 	 * @throws Exception
 	 */
-	private void validarOperacionAsiento(Asiento asiento)throws Exception{
+	private void disabledAllButtonsOptinsByAsiento()throws Exception{
+		btnVtaContribucionByAgencia.setDisabled(true);
+		btnVtaReimpresion.setDisabled(true);
+		btnVtaPostergar.setDisabled(true);
+		btnVtaAnular.setDisabled(true);
+	}
+	
+	/**
+	 * Habiliat/Deshabilita los controles de la información del viaje
+	 * @param disabled: (True) deshabilita controles; (false)Habilita controles
+	 * @throws Exception
+	 */
+	private void disabledControlsViaje(boolean disabled)throws Exception{
+		cmbVtaIdaEmbarque_hora.setDisabled(disabled);
+		cmbVtaIdaDesembarque_hora.setDisabled(disabled);
+		dbxVtaIdaTarifa.setDisabled(disabled);
+		if(gridVtaInfoViajeVuelta.isVisible()) {
+			cmbVtaVueltaEmbarque_hora.setDisabled(disabled);
+			cmbVtaVueltaDesembarque_hora.setDisabled(disabled);
+			dbxVtaVueltaTarifa.setDisabled(disabled);
+		}
+	}
+	
+	/**
+	 * Habilita/Deshabilita los controles del Pasajero
+	 * @param disabled: (True) deshabilita controles; (false)Habilita controles
+	 * @throws Exception
+	 */
+	private void disabledControlsPasajero(boolean disabled)throws Exception{
+		txtVtaPaxBusqueda.setReadonly(disabled);
+		cmbVtaPaxTipoDocumento.setDisabled(disabled);
+		txtVtaPaxNumeroDocumento.setReadonly(disabled);
+		txtVtaPaxNombres.setReadonly(disabled);
+		txtVtaPaxApePaterno.setReadonly(disabled);
+		txtVtaPaxApeMaterno.setReadonly(disabled);
+		rdVtaPaxFemenino.setDisabled(disabled);
+		rdVtaPaxMasculino.setDisabled(disabled);
+		itbxVtaPaxEdad.setReadonly(disabled);
+		txtVtaPaxTelefono.setReadonly(disabled);
+		txtVtaPaxCorreo.setReadonly(disabled);
+//		chbxVtaFactura.setDisabled(disabled);
+//		txtVtaFacRuc.setReadonly(disabled);
+//		txtVtaFacRazonSocial.setReadonly(disabled);
+//		txtVtaFacDireccion.setReadonly(disabled);
+	}
+	
+	/**
+	 * Habilita/Deshabilita los controles del Cliente
+	 * @param disabled: (True) deshabilita controles; (false) Habilita controles
+	 * @throws Exception
+	 */
+	private void disabledControlsCliente(boolean disabled)throws Exception{
+		chbxVtaFactura.setDisabled(disabled);
+		txtVtaFacRuc.setReadonly(disabled);
+		txtVtaFacRazonSocial.setReadonly(disabled);
+		txtVtaFacDireccion.setReadonly(disabled);
+	}
+	
+	/**
+	 * Habilita/Deshabilita los controles del Pago
+	 * @param disabled: (True) deshabilita controles; (false)Habilita controles
+	 * @throws Exception
+	 */
+	private void disabledControlsPago(boolean disabled)throws Exception{
+		cmbVtaTipoFormaPago.setDisabled(disabled);
+		cmbVtaAutorizaDescuento.setDisabled(disabled);
+		txtVtaAutorizaDescuentoCodigo.setDisabled(disabled);
+	}
+	
+	
+	/**
+	 * Limpia los datos del Vieja
+	 * @throws Exception
+	 */
+	private void cleanDatosViaje()throws Exception{
+		//cuando aun hay asientos aseleccionados ya no resetea los puntos de embarque y desembarque, 
+		//con el fin de agilizar
+		if(ltbxVtaAsientosSeleccionados.getItemCount()==0) {
+			if(cmbVtaIdaEmbarque_hora.getItemCount()==2)
+				cmbVtaIdaEmbarque_hora.setSelectedIndex(1);
+			else
+				cmbVtaIdaEmbarque_hora.setSelectedIndex(0);
+			if(cmbVtaIdaDesembarque_hora.getItemCount()==2)
+				cmbVtaIdaDesembarque_hora.setSelectedIndex(1);
+			else
+				cmbVtaIdaDesembarque_hora.setSelectedIndex(0);
+			
+			if(gridVtaInfoViajeVuelta.isVisible()) {
+				if(cmbVtaVueltaEmbarque_hora.getItemCount()==2)
+					cmbVtaVueltaEmbarque_hora.setSelectedIndex(1);
+				else
+					cmbVtaVueltaEmbarque_hora.setSelectedIndex(0);
+				if(cmbVtaVueltaDesembarque_hora.getItemCount()==2)
+					cmbVtaVueltaDesembarque_hora.setSelectedIndex(1);
+				else
+					cmbVtaVueltaDesembarque_hora.setSelectedIndex(0);
+			}	
+		}				
+	}
+	
+	
+	/**
+	 * Limapia los datos de la Reserva
+	 * @throws Exception
+	 */
+	private void cleanDatosReserva()throws Exception{		
+		itbxVtaIdaTiempoReserva.setValue(null);
+		dtbxVtaIdaExpiraReserva.setValue(null);
 		
-		
+		if(gridVtaVueltaDatosReserva.isVisible()) {
+			itbxVtaVueltaTiempoReserva.setValue(null);
+			dtbxVtaVueltaExpiraReserva.setValue(null);	
+		}		
 	}
 	
 	/**
@@ -1765,22 +3727,68 @@ public class WndVentaReservaNew  extends WndBase {
 	 * @param esIda			: Indica si es Ida o retorno.
 	 */
 	private void onClickAsiento(Event e, DetalleItinerario detalleItinerario, Map<String, Asiento> mapaAsientos, boolean esIda){
-		Asiento asientoSeleccionado = (Asiento)e.getTarget();
-		key = asientoSeleccionado.getKey();
-
 		try{
+			txtVtaPaxBusqueda.setText("");
+			disabled_btnGuardar(btnVtaGuardar, true);
+			resertOperacionAsiento();
+			cleanDatosInfoviaje(true, false);
+			if(gridVtaInfoViajeVuelta.isVisible())
+				cleanDatosInfoviaje(false, false);
+			disabledControlsViaje(true);
+			disabledControlsPasajero(true);
+			disabledControlsCliente(true);
+			disabledControlsPago(true);
+			disabledAllButtonsOptinsByAsiento();
+			
+			Asiento asientoSeleccionado = (Asiento)e.getTarget();
+			key = asientoSeleccionado.getKey();			
+			
+			
 			/*	Elimina el asiento de la lista de asientos seleccionados y desbloquea el asiento*/
-			if(removerAsientoSeleccionado(key, mapaAsientos, asientoSeleccionado.getDetalleItinerario())) {
-				onSelect_ltbxVtaAsientosSeleccionados();
-				calcularTotalPago();
+			if(removerAsientoSeleccionado(key, mapaAsientos, asientoSeleccionado.getDetalleItinerario(),ltbxVtaAsientosSeleccionados)) {
+				onSelect_ltbxVtaAsientosSeleccionados(e);
 				return;
 			}
-
+			
 			/*	validamos la cantidad maxima de asientos seleccionados	*/
 			if(ltbxVtaAsientosSeleccionados.getItemCount()<=Constantes.MAX_SEAT_SELECTED){
 				/*	Si el asiento se encuentra bloqueado mostrar mensaje de no disponibilidad	*/
-				if(consultaAsientoBloqueado(key, mapaAsientos)){
-					DlgMessage.information(Messages.getString("WndVentaReserva.information.asientoNoDisponible"));
+				if(consultaAsientoBloqueado(key, mapaAsientos)){					
+					if(rdBusqIdaVuelta.isChecked() || asientoSeleccionado.getEstadoAsiento().intValue()==Constantes.ASIENTO_BLOQUEADO)
+						DlgMessage.information(Messages.getString("WndVentaReserva.information.asientoNoDisponible"));
+					else {
+						//Las operaciones con asientos no disponibles, solamente están disponibles para el tipo de operación SOLO IDA
+						//Obtener la tarifa regular del asiento y almacenarlo en DetalleItinerario del asientoSeleccionado
+						List<TarifaRegular> lstTarifaRegular = buscarTarifa(
+								asientoSeleccionado.getDetalleItinerario().getItinerario().getServicio().getId(),
+								asientoSeleccionado.getDetalleItinerario().getRuta().getId(),
+								Util.DatetoString(asientoSeleccionado.getDetalleItinerario().getFechaPartida(), Constantes.DATE_FORMAT),
+								asientoSeleccionado.getDetalleItinerario().getHoraPartida(),
+								asientoSeleccionado.getPiso(),
+								asientoSeleccionado.getNumeroZona());
+						if(lstTarifaRegular.size()>0) {
+							Double montoTarifa = .00;
+							for(TarifaRegular tarifaRegular: lstTarifaRegular) {
+								if(tarifaRegular.getTarifa()!=null && tarifaRegular.getTarifa().getPisoBus().intValue()==asientoSeleccionado.getPiso()) {
+									montoTarifa = (tarifaRegular.getMonto()!=null?tarifaRegular.getMonto():.00);
+									break;
+								}										
+							}															
+							asientoSeleccionado.getDetalleItinerario().setTarifa(montoTarifa);
+						}else
+							asientoSeleccionado.getDetalleItinerario().setTarifa(0.00);
+						
+						
+						DetalleItinerario detalle = (DetalleItinerario)asientoSeleccionado.getDetalleItinerario().clone();
+						detalle.setAsiento(asientoSeleccionado.getNumeroAsiento().toString());
+						detalle.setPiso(String.valueOf(asientoSeleccionado.getPiso()));
+						detalle.setZona(String.valueOf(asientoSeleccionado.getNumeroZona()));
+						detalle.setObjAsiento(asientoSeleccionado);
+						detalle.setEsIda(esIda);
+						
+						//Agerga a la lista de asientos seleccionaddos
+						addListAsientoSeleccionado(detalle);
+					}
 					key="-1";
 				}else{
 					/*	Insertamos el asiento a la tmpOcupacionAsientos	*/
@@ -1817,19 +3825,26 @@ public class WndVentaReservaNew  extends WndBase {
 						mapaAsientos.get(key).setSrc(Constantes.PATH_PARTIAL+"asientoBloqueado_"+asientoSeleccionado.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
 						mapaAsientos.get(key).setEstadoAsiento(Constantes.ASIENTO_BLOQUEADO);
 
- 						Listitem listitemAsientos = new Listitem();
-						Listcell cell = new Listcell(asientoSeleccionado.getDetalleItinerario().getRuta().toString());
-						listitemAsientos.appendChild(cell);
-						cell = new Listcell(asientoSeleccionado.getNumeroAsiento().toString());
-						listitemAsientos.appendChild(cell);
+// 						Listitem listitemAsientos = new Listitem();
+//						Listcell cell = new Listcell(asientoSeleccionado.getDetalleItinerario().getRuta().toString());
+//						listitemAsientos.appendChild(cell);
+//						cell = new Listcell(asientoSeleccionado.getNumeroAsiento().toString());
+//						listitemAsientos.appendChild(cell);
 						asientoSeleccionado.getDetalleItinerario().setAsiento(asientoSeleccionado.getNumeroAsiento().toString());
 						asientoSeleccionado.getDetalleItinerario().setPiso(String.valueOf(asientoSeleccionado.getPiso()));
 						asientoSeleccionado.getDetalleItinerario().setZona(String.valueOf(asientoSeleccionado.getNumeroZona()));
 
 						//MAOE: La idea es que cada asiento seleccionado tenga su tarifa de acuerdo al nuevo modelo
 						//Obtener la tarifa regular del asiento y almacenarlo en DetalleItinerario del asientoSeleccionado
-						List<TarifaRegular> lstTarifaRegular = ServiceLocator.getTarifaRegularManager().buscarTarifaPorServicio(
-								1, asientoSeleccionado.getDetalleItinerario().getItinerario().getServicio().getId(),
+//						List<TarifaRegular> lstTarifaRegular = ServiceLocator.getTarifaRegularManager().buscarTarifaPorServicio(
+//								1, asientoSeleccionado.getDetalleItinerario().getItinerario().getServicio().getId(),
+//								asientoSeleccionado.getDetalleItinerario().getRuta().getId(),
+//								Util.DatetoString(asientoSeleccionado.getDetalleItinerario().getFechaPartida(), Constantes.DATE_FORMAT),
+//								asientoSeleccionado.getDetalleItinerario().getHoraPartida(),
+//								asientoSeleccionado.getPiso(),
+//								asientoSeleccionado.getNumeroZona());
+						List<TarifaRegular> lstTarifaRegular = buscarTarifa(
+								asientoSeleccionado.getDetalleItinerario().getItinerario().getServicio().getId(),
 								asientoSeleccionado.getDetalleItinerario().getRuta().getId(),
 								Util.DatetoString(asientoSeleccionado.getDetalleItinerario().getFechaPartida(), Constantes.DATE_FORMAT),
 								asientoSeleccionado.getDetalleItinerario().getHoraPartida(),
@@ -1851,15 +3866,19 @@ public class WndVentaReservaNew  extends WndBase {
 						asientoSeleccionado.getDetalleItinerario().setEsIda(esIda);
 						/*============================================================*/
 						DetalleItinerario detalle = (DetalleItinerario)asientoSeleccionado.getDetalleItinerario().clone();
-						listitemAsientos.setValue(detalle);
-						ltbxVtaAsientosSeleccionados.appendChild(listitemAsientos);
+						detalle.setObjAsiento(asientoSeleccionado);
+//						listitemAsientos.setValue(detalle);
+//						ltbxVtaAsientosSeleccionados.appendChild(listitemAsientos);
 						
-						if(ltbxVtaAsientosSeleccionados.getSelectedCount()==0) {
-							ltbxVtaAsientosSeleccionados.setSelectedIndex(0);
-							onSelect_ltbxVtaAsientosSeleccionados();
-						}
+						//Agerga a la lista de asientos seleccionaddos
+						addListAsientoSeleccionado(detalle);
 						
-						calcularTotalPago();
+//						if(ltbxVtaAsientosSeleccionados.getSelectedCount()==0) {
+//							ltbxVtaAsientosSeleccionados.setSelectedIndex(0);
+//							onSelect_ltbxVtaAsientosSeleccionados();
+//						}
+						
+//						operacionAsiento(asientoSeleccionado);
 					}
 				}
 			}
@@ -1875,30 +3894,162 @@ public class WndVentaReservaNew  extends WndBase {
 		}
 	}
 	
+	
+	/**
+	 * Busca la tarifa
+	 * @param servicioId
+	 * @param rutaId
+	 * @param fechaPartida
+	 * @param horaPartida
+	 * @param piso
+	 * @param numeroZona
+	 * @return
+	 * @throws Exception
+	 */
+	private List<TarifaRegular> buscarTarifa(Integer servicioId, Integer rutaId, String fechaPartida, String horaPartida, Integer piso, Integer numeroZona)throws Exception{
+		
+		List<TarifaRegular> lstTarifaRegular = ServiceLocator.getTarifaRegularManager().buscarTarifaPorServicio(
+				Constantes.ID_CANVEN_COUNTER, servicioId, rutaId, fechaPartida, horaPartida, piso, numeroZona);
+		
+		
+		return lstTarifaRegular;
+	}
+	
+	/**
+	 * 
+	 * @param detlleItinerario
+	 * @throws Exception
+	 */
+	private void addListAsientoSeleccionado(DetalleItinerario detalleItinerario)throws Exception{
+		int estadoAsientoSelect = detalleItinerario.getObjAsiento().getEstadoAsiento();
+
+		//Valida que, el estado del asiento seleccionado sea igual a los ya seleccionados
+		for(Listitem item: ltbxVtaAsientosSeleccionados.getItems()) {
+			VentaIdaRetorno venta = item.getValue();
+			Asiento asiento = null;
+			if(venta.getDetalleItinerarioIDA()!=null)
+				asiento = venta.getDetalleItinerarioIDA().getObjAsiento();
+			else if(venta.getDetalleItinerarioRETORNO()!=null)
+				asiento = venta.getDetalleItinerarioRETORNO().getObjAsiento();
+			
+			if(asiento!=null) {
+				int estadoAsientoList = asiento.getEstadoAsiento();				
+				if(estadoAsientoList !=estadoAsientoSelect) {
+					if(estadoAsientoList==Constantes.ASIENTO_BLOQUEADO) {
+						liberarAsientos(ltbxVtaAsientosSeleccionados);
+						onRefreshMap();
+					}
+					Util.limpiarListbox(ltbxVtaAsientosSeleccionados);
+					break;
+				}				
+			}		
+		}
+		
+		boolean isItemUpdated = false;
+		if(ltbxVtaAsientosSeleccionados.getItemCount()>0) {
+			for(Listitem _item: ltbxVtaAsientosSeleccionados.getItems()) {
+				VentaIdaRetorno venta = _item.getValue();
+				if(venta.getDetalleItinerarioIDA()!=null && venta.getDetalleItinerarioRETORNO()==null && !detalleItinerario.getEsIda()) {
+					venta.setDetalleItinerarioRETORNO(detalleItinerario);					
+					String nameRuta = venta.getDetalleItinerarioIDA().getRuta().toString();
+					nameRuta += " - "+ detalleItinerario.getRuta().getDestino();
+					
+					String numeroAsiento = venta.getDetalleItinerarioIDA().getAsiento();
+					numeroAsiento += " - "+ detalleItinerario.getAsiento();
+					
+					((Listcell) _item.getFirstChild()).setLabel(nameRuta);
+					((Listcell) _item.getLastChild()).setLabel(numeroAsiento);
+					
+					isItemUpdated = true;
+					break;
+				}else if(venta.getDetalleItinerarioRETORNO()!=null && venta.getDetalleItinerarioIDA()==null && detalleItinerario.getEsIda()) {
+					venta.setDetalleItinerarioIDA(detalleItinerario);					
+					String nameRuta = detalleItinerario.getRuta().toString();
+					nameRuta += " - "+ venta.getDetalleItinerarioRETORNO().getRuta().getDestino();
+					
+					String numeroAsiento = detalleItinerario.getAsiento();
+					numeroAsiento += " - "+ venta.getDetalleItinerarioRETORNO().getAsiento();
+					
+					((Listcell) _item.getFirstChild()).setLabel(nameRuta);
+					((Listcell) _item.getLastChild()).setLabel(numeroAsiento);
+					
+					isItemUpdated = true;
+					break;
+				}
+			}
+		}		
+		
+		if(!isItemUpdated) {
+			VentaIdaRetorno venta = new VentaIdaRetorno();
+			if(detalleItinerario.getEsIda())
+				venta.setDetalleItinerarioIDA(detalleItinerario);
+			else
+				venta.setDetalleItinerarioRETORNO(detalleItinerario);
+			Listitem listitemAsientos = new Listitem();
+			Listcell cell = new Listcell(detalleItinerario.getRuta().toString());
+			listitemAsientos.appendChild(cell);
+			cell = new Listcell(detalleItinerario.getAsiento());
+			listitemAsientos.appendChild(cell);
+			listitemAsientos.setValue(venta);
+			ltbxVtaAsientosSeleccionados.appendChild(listitemAsientos);
+		}
+		
+//		if(ltbxVtaAsientosSeleccionados.getSelectedCount()==0) {
+		if(ltbxVtaAsientosSeleccionados.getItemCount()>0) {
+			ltbxVtaAsientosSeleccionados.setSelectedIndex(0);
+			onSelect_ltbxVtaAsientosSeleccionados(null);
+		}
+		
+		calcularTotalPago();
+	}
+	
 	/**
 	 * Realiza la eliminacion del asiento seleccionado y luego lo desbloquea.
 	 * @param seatSelected	: Asiento seleccionado.
 	 * @return True si el asiento existe en la lista de asientos seleccionados.
 	 */
-	private boolean removerAsientoSeleccionado(String key, Map<String, Asiento> mapaAsientos, DetalleItinerario detalleItinerario){
+	private boolean removerAsientoSeleccionado(String key, Map<String, Asiento> mapaAsientos, DetalleItinerario detalleItinerario, Listbox ltbxAsientosSeleccionados){
 		try{
+			Long itinerarioId = detalleItinerario.getItinerario().getId();
+			
 			String[] buffer = key.split("-");	//Almacenamos en un array el asiento y el piso
-			List<Listitem> items = ltbxVtaAsientosSeleccionados.getItems();
+			List<Listitem> items = ltbxAsientosSeleccionados.getItems();
 			for(int i=0; i<items.size(); i++){
 				Listitem listitem = items.get(i);
-				if(((DetalleItinerario)listitem.getValue()).getItinerario().getId().intValue()==detalleItinerario.getItinerario().getId().intValue()
-						&& ((DetalleItinerario)listitem.getValue()).getAsiento().equals(buffer[0])
-						&& ((DetalleItinerario)listitem.getValue()).getPiso().equals(buffer[1])){
-					ltbxVtaAsientosSeleccionados.removeItemAt(i);
+				VentaIdaRetorno venta = listitem.getValue();
+				boolean desbloquearAsiento = false;
+				
+				if(venta.getDetalleItinerarioIDA()!=null && venta.getDetalleItinerarioIDA().getItinerario().getId().longValue()==itinerarioId 
+						&& venta.getDetalleItinerarioIDA().getAsiento().equals(buffer[0]) && venta.getDetalleItinerarioIDA().getPiso().equals(buffer[1])) {					
+					
+					venta.setDetalleItinerarioIDA(null);
+					if(venta.getDetalleItinerarioIDA()==null && venta.getDetalleItinerarioRETORNO()==null)
+						ltbxAsientosSeleccionados.removeItemAt(i);
+					else if(venta.getDetalleItinerarioRETORNO()!=null) {
+						((Listcell)listitem.getFirstChild()).setLabel(venta.getDetalleItinerarioRETORNO().getRuta().toString());
+						((Listcell)listitem.getLastChild()).setLabel(venta.getDetalleItinerarioRETORNO().getAsiento());
+					}
+					
+					desbloquearAsiento = true;
+				}else if(venta.getDetalleItinerarioRETORNO()!=null && venta.getDetalleItinerarioRETORNO().getItinerario().getId().longValue()==itinerarioId 
+						&& venta.getDetalleItinerarioRETORNO().getAsiento().equals(buffer[0]) && venta.getDetalleItinerarioRETORNO().getPiso().equals(buffer[1])) {
+					
+					venta.setDetalleItinerarioRETORNO(null);
+					if(venta.getDetalleItinerarioRETORNO()==null && venta.getDetalleItinerarioIDA()==null)
+						ltbxAsientosSeleccionados.removeItemAt(i);
+					else if(venta.getDetalleItinerarioIDA()!=null) {
+						((Listcell)listitem.getFirstChild()).setLabel(venta.getDetalleItinerarioIDA().getRuta().toString());
+						((Listcell)listitem.getLastChild()).setLabel(venta.getDetalleItinerarioIDA().getAsiento());
+					}
+					
+					desbloquearAsiento = true;					
+				}
+								
+				if(desbloquearAsiento) {					
 					if(mapaAsientos.get(key).getEstadoAsiento().intValue()==Constantes.ASIENTO_BLOQUEADO){
 						mapaAsientos.get(key).setEstadoAsiento(Constantes.ASIENTO_DISPONIBLE);
 						mapaAsientos.get(key).setSrc(Constantes.ICON_DISPONIBLE+buffer[0]+Constantes.IMAGE_EXTENSION);
 					}
-					/*	Habilita o deshablita el boton para pasar a la siguiente pestana	*/
-//					if(lbxVtaAsientosSeleccionados.getItems().size()==0)
-//						btnNextTabVenta.setDisabled(true);
-//					else
-//						btnNextTabVenta.setDisabled(false);
 
 					/*	Desbloqueamos el asiento	*/
 					TmpOcupacionAsientos tmpOcupacion = new TmpOcupacionAsientos();
@@ -1941,17 +4092,8 @@ public class WndVentaReservaNew  extends WndBase {
 	/**
 	 * Carga los tipos de Forma de pago.
 	 */
-	public void loadTipoFormaPago(FormaPago formaPago){
+	public void loadTipoFormaPago(FormaPago formaPago, Combobox cmbTipoFormaPago){
 		try{			
-			/*Implementado 15-03-2013 - jabanto*/
-			cmbVtaOperadorTarjeta.getItems().clear();
-			cmbVtaTarjeta.getItems().clear();			
-			cmbVtaOperadorTarjeta.setText(null);
-			cmbVtaTarjeta.setText(null);
-			cmbVtaOperadorTarjeta.setDisabled(true);
-			cmbVtaTarjeta.setDisabled(true);
-			txtVtaNumeroOperacion.setDisabled(true);
-			
 			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("formaPago.id", formaPago.getId());
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
@@ -1962,11 +4104,11 @@ public class WndVentaReservaNew  extends WndBase {
 				Comboitem item = new Comboitem();
 				item.setLabel(tipoFormaPago.getDenominacion());
 				item.setValue(tipoFormaPago);
-				cmbVtaTipoFormaPago.appendChild(item);
+				cmbTipoFormaPago.appendChild(item);
 			}
 
 			if(formaPago.getId().equals(Constantes.ID_FORPAG_CONTADO))
-				Util.seleccionarValorItemCombo(TipoFormaPago.class, cmbVtaTipoFormaPago, Constantes.ID_TIPFORPAG_EFECTIVO);				
+				Util.seleccionarValorItemCombo(TipoFormaPago.class, cmbTipoFormaPago, Constantes.ID_TIPFORPAG_EFECTIVO);				
 			
 		}catch(Exception ex){
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
@@ -2044,10 +4186,10 @@ public class WndVentaReservaNew  extends WndBase {
 	/**
 	 * Permite liberar todos los asientos asientos bloqueados 
 	 */
-	private void liberarAsientos(){
+	private void liberarAsientos(Listbox ltbxAsientosSeleccionados){
 		try{			
 			ServiceLocator.getTmpOcupacionAsientosManager().desbloquearAsientoByUsuarioHardware(getUsuarioHardware().getId());			
-			ltbxVtaAsientosSeleccionados.getItems().clear();
+			ltbxAsientosSeleccionados.getItems().clear();
 		}catch(Exception ex){
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
 			log.error(ex);
@@ -2061,17 +4203,3662 @@ public class WndVentaReservaNew  extends WndBase {
 	 */
 	private void calcularTotalPago()throws Exception{
 		Double totalPago = .00;
-		for(Listitem item: ltbxVtaAsientosSeleccionados.getItems()) {
-			DetalleItinerario detalleItinerario = item.getValue();
-			totalPago += (detalleItinerario.getTarifa()!=null?detalleItinerario.getTarifa():.00);			
+		if(rdVtaVenta.isSelected()) {
+			for(Listitem item: ltbxVtaAsientosSeleccionados.getItems()) {
+				VentaIdaRetorno venta = item.getValue();
+				if(venta.getDetalleItinerarioIDA()!=null)
+					totalPago += (venta.getDetalleItinerarioIDA().getTarifa()!=null?venta.getDetalleItinerarioIDA().getTarifa():.00);			
+				if(venta.getDetalleItinerarioRETORNO()!=null)
+					totalPago += (venta.getDetalleItinerarioRETORNO().getTarifa()!=null?venta.getDetalleItinerarioRETORNO().getTarifa():.00);
+			}	
 		}		
-		
 		dbxVtaTotalPagar.setValue(totalPago);
+	}
+	
+	/**
+	 * Realiza la búsqueda del pasajero
+	 */
+	private void buscarPasajero(String patron, Event event)throws Exception {
+		try {				
+			if(patron.length() > 5) {
+				cleanDatosPasajero(false);
+				TreeMap<String, Object> criterioBusqueda = new TreeMap<>();
+				ArrayList<Pasajero> listPasajeros = null;
+				
+				if(Util.isNumeric(patron)) {
+					criterioBusqueda.put("numeroDocumento", patron.toUpperCase()+"%");
+					List<String> criteriosOrdenar = new ArrayList<>();
+					criteriosOrdenar.add("apellidoPaterno");
+					criteriosOrdenar.add("apellidoMaterno");
+					criteriosOrdenar.add("nombre");
+					listPasajeros = ServiceLocator.getPasajeroManager().buscarPorX(criterioBusqueda, criteriosOrdenar);
+				}else {
+					String nombres = patron.trim().toUpperCase();
+					String[] str1 = nombres.trim().split(" ");
+					listPasajeros = ServiceLocator.getPasajeroManager().buscarPorFullTextIndex(str1);
+				}
+				
+				if(listPasajeros != null && listPasajeros.size()>0) {
+					if(listPasajeros.size()==1)
+						loadDatosPasajero(listPasajeros.get(0));
+					else {
+						List<Object> _listPasajeros = new ArrayList<Object>();			
+						listPasajeros.forEach(pasajero -> _listPasajeros.add(pasajero));						
+						showWindowListPasajero(_listPasajeros);
+					}
+				}else {					
+					if(Util.isNumeric(patron)) {
+						List<String> dni = RESTCiva.getDatosDni(patron);
+						if(dni!=null){							
+							Pasajero pasajero = new Pasajero();
+							pasajero.setTipoDocumento(new TipoDocumento(Constantes.ID_TIPDOC_DNI));
+							pasajero.setNumeroDocumento(dni.get(0));
+							pasajero.setNombre(dni.get(1));
+							pasajero.setApellidoPaterno(dni.get(2));
+							pasajero.setApellidoMaterno(dni.get(3)!=null?dni.get(3):null);
+							pasajero.setValidadoReniec(Constantes.TRUE_VALUE);
+							loadDatosPasajero(pasajero);
+						}else {
+							Util.seleccionarValorItemCombo(TipoDocumento.class, cmbVtaPaxTipoDocumento, Constantes.ID_TIPDOC_DNI);
+							txtVtaPaxNumeroDocumento.setText(patron);
+							txtVtaPaxNombres.setFocus(true);
+						}
+					}
+				}
+			}else
+				Util.seleccionarValorItemCombo(TipoDocumento.class, cmbVtaPaxTipoDocumento, Constantes.ID_TIPDOC_DNI);
+		}catch(Exception ex){
+			ex.printStackTrace();
+			log.error(ex);
+			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
+		}
+	}
+	
+	/**
+	 * Carga los datos de la informacion del viaje
+	 * @param isIda: (true) viaje de Ida, (false) viaje de vuelta
+	 * @param ventaPasaje
+	 * @throws Exception
+	 */
+	private void loadDatosViaje(boolean isIda, VentaPasaje ventaPasaje)throws Exception{		
+		if(isIda) {
+			seleccionarPuntoEmbarque(cmbVtaIdaEmbarque_hora, ventaPasaje.getAgenciaPartida());
+			seleccionarPuntoDesembarque(cmbVtaIdaDesembarque_hora, ventaPasaje.getAgenciaLlegada());
+			lblVtaIdaAsiento.setValue(ventaPasaje.getNumeroAsiento().toString());
+			if(!ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA))
+			    dbxVtaIdaTarifa.setValue(ventaPasaje.getImportePagado());	
+		}else {
+			seleccionarPuntoEmbarque(cmbVtaVueltaEmbarque_hora, ventaPasaje.getAgenciaPartida());
+			seleccionarPuntoDesembarque(cmbVtaVueltaDesembarque_hora, ventaPasaje.getAgenciaLlegada());
+			lblVtaVueltaAsiento.setValue(ventaPasaje.getNumeroAsiento().toString());
+			if(!ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA))
+				dbxVtaVueltaTarifa.setValue(ventaPasaje.getImportePagado());
+		}
+	}
+	
+	/**
+	 * Carga los datos del tipo y numero del comprobante
+	 * @param ventaPasaje
+	 * @throws Exception
+	 */
+	private void loadDatosinfoComprobante(VentaPasaje ventaPasaje)throws Exception{
+		if(!ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA)) {
+			lblVtaTipoComprobante.setValue(ventaPasaje.getTipoComprobante().getDenominacion());
+			lblVtaNumeroComprobante.setValue(ventaPasaje.getNumeroBoleto());
+		}		
+	}
+	
+	/**
+	 * Carga los datos del pasajero
+	 * @param pasajero: Instancia de la clase pasajero
+	 * @throws Exception
+	 */
+	private void loadDatosPasajero(Pasajero pasajero)throws Exception{
+		cleanDatosPasajero(false);
+		//
+		Util.seleccionarValorItemCombo(TipoDocumento.class, cmbVtaPaxTipoDocumento, pasajero.getTipoDocumento().getId());
+		txtVtaPaxNumeroDocumento.setText(pasajero.getNumeroDocumento());
+		txtVtaPaxNombres.setText(pasajero.getNombre());
+		txtVtaPaxApePaterno.setText(pasajero.getApellidoPaterno());
+		txtVtaPaxApeMaterno.setText(pasajero.getApellidoMaterno()!=null?pasajero.getApellidoMaterno():"");
+		if(pasajero.getSexo()!=null) {
+			rdVtaPaxFemenino.setChecked(pasajero.getSexo().getId().intValue()==Constantes.ID_SEXO_FEMENINO);
+			rdVtaPaxMasculino.setChecked(pasajero.getSexo().getId().intValue()==Constantes.ID_SEXO_MASCULINO);	
+		}		
+		itbxVtaPaxEdad.setValue(pasajero.getFechaNacimiento()!=null?getEdad(pasajero.getFechaNacimiento()):null);
+		txtVtaPaxTelefono.setText(pasajero.getTelefono()!=null? pasajero.getTelefono():"");
+		txtVtaPaxCorreo.setText(pasajero.getEmail()!=null?pasajero.getEmail():"");
+		
+		this.pasajero = pasajero;
+		
+		if(pasajero.getId()==null)
+			rdVtaPaxFemenino.setFocus(true);
+		else if(txtVtaFacRuc.isVisible() && !txtVtaFacRuc.isReadonly() && txtVtaFacRuc.getText().trim().isEmpty())
+			txtVtaFacRuc.setFocus(true);
+		else if(gridVtaDatosPago.isVisible() && cmbVtaTipoFormaPago.getSelectedIndex()<0 && !cmbVtaTipoFormaPago.isDisabled()) {
+			cmbVtaTipoFormaPago.setFocus(true);
+//			cmbVtaTipoFormaPago.open();
+		}else if(gridVtaIdaDatosReserva.isVisible()) {			
+			if(!itbxVtaIdaTiempoReserva.isDisabled()) {
+				itbxVtaIdaTiempoReserva.setFocus(true);
+				itbxVtaIdaTiempoReserva.select();
+			}else if(!dtbxVtaIdaExpiraReserva.isDisabled())
+				dtbxVtaIdaExpiraReserva.setFocus(true);
+		}else
+			btnVtaGuardar.setFocus(true);
+	}
+	
+	private void buscarCliente(String patron)throws Exception {
+		try {
+			cliente = null;
+			txtVtaFacRazonSocial.setText("");
+			txtVtaFacDireccion.setText("");
+			
+			TreeMap<String, Object> criterioBusqueda = new TreeMap<>();
+			ArrayList<Cliente> lstClientes = null;
+			if(patron.length() > 5) {
+				if(Util.isNumericLong(patron)) {
+					criterioBusqueda.put("numeroDocumento", patron.toUpperCase()+"%");
+					List<String> criteriosOrdenar = new ArrayList<>();
+					criteriosOrdenar.add("razonSocial");
+					criteriosOrdenar.add("numeroDocumento");
+					lstClientes = ServiceLocator.getClienteManager().buscarPorX(criterioBusqueda, criteriosOrdenar);
+				}else {
+					String razon = patron.trim().toUpperCase();
+					String[] str1 = razon.trim().split(" ");
+					lstClientes = ServiceLocator.getClienteManager().buscarPorRazonSocial(str1);
+				}
+				if(lstClientes != null && lstClientes.size()>0) {
+					if(lstClientes.size()==1)
+						loadDatosCliente(lstClientes.get(0));
+					else {
+						List<Object> _listClientes = new ArrayList<Object>();			
+						lstClientes.forEach(pasajero -> _listClientes.add(pasajero));						
+						showWindowListPasajero(_listClientes);
+					}
+				}else {
+					
+					if(Util.isNumericLong(patron)) {
+						List<String> ruc = RESTCiva.getDatosRuc(patron);
+						if(ruc!=null){
+							Cliente cliente = new Cliente();
+							cliente.setNumeroDocumento(ruc.get(0));
+							cliente.setRazonSocial(ruc.get(1));
+							cliente.setDireccion(ruc.get(2)!=null?ruc.get(2):null);
+							loadDatosCliente(cliente);
+						}else {							
+							txtVtaFacRuc.setText(patron);		
+							txtVtaFacRazonSocial.setFocus(true);
+						}
+					}
+				}
+			}
+		}catch(Exception ex){
+			ex.printStackTrace();
+			log.error(ex);
+			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
+		}
+	}
+	
+	/**
+	 * Carga los datos del cliente
+	 * @param cliente: isntancia de la class cliente
+	 * @throws Exception
+	 */
+	private void loadDatosCliente(Cliente cliente)throws Exception{
+		txtVtaFacRuc.setText(cliente.getNumeroDocumento());
+		txtVtaFacRazonSocial.setText(cliente.getRazonSocial());
+		txtVtaFacDireccion.setText(cliente.getDireccion()!=null?cliente.getDireccion():"");
+				
+		this.cliente = cliente;
+		
+		chbxVtaFactura.setChecked(true);
+		if(txtVtaFacDireccion.getText().trim().isEmpty())
+			txtVtaFacDireccion.setFocus(true);
+		else if(gridVtaDatosPago.isVisible() && !cmbVtaTipoFormaPago.isDisabled() && cmbVtaTipoFormaPago.getSelectedIndex()<0 && !cmbVtaTipoFormaPago.isDisabled()) {
+			cmbVtaTipoFormaPago.setFocus(true);
+//			cmbVtaTipoFormaPago.open();
+		}else if(gridVtaIdaDatosReserva.isVisible()) {
+			if(!itbxVtaIdaTiempoReserva.isDisabled()) {
+				itbxVtaIdaTiempoReserva.setFocus(true);
+				itbxVtaIdaTiempoReserva.select();
+			}else if(!dtbxVtaIdaExpiraReserva.isDisabled())
+				dtbxVtaIdaExpiraReserva.setFocus(true);
+		}else
+			btnVtaGuardar.setFocus(true);
+	}
+	
+	/**
+	 * Carga los datos necesarios para la Postergación a Fecha Abierta
+	 * @throws Exception
+	 */
+	private void loadDatosPostergacionFA()throws Exception{
+		disabledAllButtonsOptinsByAsiento();
+		lblVtaInfoTipoOperacion.setValue(rdVtaPostergacionFA.getLabel());
+		disabledControlsPasajero(true);
+		disabledControlsCliente(true);
+		disabled_btnGuardar(btnVtaGuardar, false);
+	}
+	
+	/**
+	 * Carga los datos necesarios para el Cambio de Nombre
+	 * @throws Exception
+	 */
+	private void loadDatosCambioNombre()throws Exception{
+		
+		disabledAllButtonsOptinsByAsiento();
+		lblVtaInfoTipoOperacion.setValue(rdVtaCambioNombre.getLabel());
+		
+		TipoNota tipoNota = ServiceLocator.getTipoNotaManager().buscarPorId(Long.valueOf(Constantes.ID_TIPNOTA_CAMBIO_NOMBRE_PASAJERO));
+		if(tipoNota!=null && tipoNota.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO)) {
+			Double penalidad = tipoNota.getGastoAdminEfectivo();
+			int countItem = ltbxVtaAsientosSeleccionados.getItemCount();
+			Double totalPago = (penalidad * countItem);
+			dbxVtaTotalPagar.setValue(totalPago);			
+		}
+		if(dbxVtaTotalPagar.getValue() >.00)
+			disabledControlsPago(false);
+		disabledControlsPasajero(false);
+		cleanDatosPasajero(false);
+		disabled_btnGuardar(btnVtaGuardar, false);
+		txtVtaPaxBusqueda.setFocus(true);
+		
+	}
+	
+	/**
+	 * Muestra la lista de pasajeros en una ventana modal
+	 * @param listPasajero: Instancia con la lista de pasajeros
+	 * @throws Exception
+	 */
+	private void showWindowListPasajero(List<Object> listResultados)throws Exception{		
+		wndModal = createWindowListPasajero(listResultados);
+		wndVentaReservaNew.appendChild(wndModal);
+		wndModal.setMode("modal");
+		if(ltbxResultBusqueda.getItemCount()>0)
+			ltbxResultBusqueda.setSelectedIndex(0);
+	}
+	
+	
+	/**
+	 * Crea una venta para mostrar la lista de pasajeros
+	 * @param listPasajero: Instancia con la lista de pasajeros
+	 * @throws Exception
+	 */
+	@SuppressWarnings("deprecation")
+	private Window createWindowListPasajero(List<Object> listResultados)throws Exception{
+		try {
+			final Window window = new Window("Lista de registros", "normal", true);
+			window.setWidth("750px");			
+			
+			Grid grid = new Grid();
+			Columns columns = new Columns();
+			columns.appendChild(new Column(null, null, "100%"));
+			grid.appendChild(columns);
+			Rows rows = new Rows();
+			Row row = new Row();
+			
+			ltbxResultBusqueda = new Listbox();
+			ltbxResultBusqueda.setHeight("350px");
+			Listhead listhead = new Listhead();
+			listhead.appendChild(new Listheader("TIPO DOCUMENTO", null, "120px"));
+			listhead.appendChild(new Listheader("NRO DOCUMENTO", null, "160px"));
+			listhead.appendChild(new Listheader("NOMBRES/RAZÓN SOCIAL"));
+			ltbxResultBusqueda.appendChild(listhead);
+			
+			for(Object object: listResultados) {
+				Pasajero pasajero = null;
+				Cliente cliente = null;
+				
+				if(object instanceof Pasajero)
+					pasajero = (Pasajero) object;					
+				else if(object instanceof Cliente)
+					cliente = (Cliente) object;
+					
+				if(pasajero !=null || cliente !=null) {
+					Listitem item = new Listitem();
+					Listcell cell = new Listcell(pasajero!=null?pasajero.getTipoDocumento().getDenominacion():"RUC");
+					item.appendChild(cell);
+					cell = new Listcell(pasajero!=null?pasajero.getNumeroDocumento():cliente.getNumeroDocumento());
+					cell.setStyle("font-size:12px !important");
+					item.appendChild(cell);
+					cell = new Listcell(pasajero!=null?pasajero.toString():cliente.toString());
+					item.appendChild(cell);					
+					item.setValue(object);
+					ltbxResultBusqueda.appendChild(item);
+				}				
+			}
+			
+			row.appendChild(ltbxResultBusqueda);
+			rows.appendChild(row);			
+			grid.appendChild(rows);
+			window.appendChild(grid);
+			
+			grid = new Grid();
+			columns = new Columns();
+			Column column = new Column();
+			column.setAlign("right");
+			columns.appendChild(column);
+			grid.appendChild(columns);
+			rows = new Rows();
+			row = new Row();
+			Hbox hbox = new Hbox();
+			hbox.setAlign("center");
+			Button btnCancelar = new Button();
+			btnCancelar.setLabel("Cancelar");
+			btnCancelar.setSclass("btnCommandL");
+			btnCancelar.setSrc("resources/mp_cerrar.png");
+			hbox.appendChild(btnCancelar);
+			
+			Button btnAceptar = new Button();
+			btnAceptar.setLabel("Aceptar");
+			btnAceptar.setSrc("resources/mp_aceptarEnabled.png");
+			btnAceptar.setStyle("margin-left:15px");
+			btnAceptar.setSclass("btnCommandL");
+			hbox.appendChild(btnAceptar);
+			
+			row.appendChild(hbox);
+			rows.appendChild(row);
+			grid.appendChild(rows);
+			window.appendChild(grid);
+			
+			ltbxResultBusqueda.addEventListener(Events.ON_OK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					try {
+						Object object = ltbxResultBusqueda.getSelectedItem().getValue();
+						if(object instanceof Pasajero)
+							loadDatosPasajero((Pasajero)object);
+						else if(object instanceof Cliente)
+							loadDatosCliente((Cliente)object);
+						
+						window.onClose();
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
+					}
+				}
+			});
+			
+			btnAceptar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					try {
+						if(ltbxResultBusqueda.getSelectedCount()==0) {
+							DlgMessage.information(Messages.getString("WndVentaReserva.information.noSelectRegistro"), ltbxResultBusqueda);
+							return;
+						}
+						
+						Object object = ltbxResultBusqueda.getSelectedItem().getValue();
+						if(object instanceof Pasajero)
+							loadDatosPasajero((Pasajero)object);
+						else if(object instanceof Cliente)
+							loadDatosCliente((Cliente)object);
+						
+						window.onClose();
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
+					}
+				}
+			});
+			
+			btnCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					try {
+						
+						window.onClose();
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
+					}
+				}
+			});
+			
+			return window;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			log.error(e);
+			return null;
+		}
+	}
+	
+	/**
+	 * Calcula la edad, a partir de la fecha
+	 * @param fechaNacimiento
+	 * @return
+	 */
+	private Integer getEdad(String fechaNacimiento){
+		Integer edad = null;
+		if(fechaNacimiento != null){
+			String anio = fechaNacimiento.substring(fechaNacimiento.length()-4);
+			String year = Util.DatetoString(new Date(), "yyyy");
+			edad = Integer.valueOf(year)-Integer.valueOf(anio);
+		}
+		
+		return edad;
+	}
+	
+	/**
+	 * Calcula la fecha de nacimiento a partir de la edad
+	 * @param edad: Edad
+	 * @return
+	 * @throws Exception
+	 */
+	private String getFechaNacimiento(int edad)throws Exception{
+		String fechaNacimiento = null;
+		
+		String month = Util.DatetoString(new Date(), "MM");
+		String day = Util.DatetoString(new Date(), "dd");
+		String year = Util.DatetoString(new Date(), "yyyy");
+		Integer yearNacimiento = Integer.valueOf(year) - edad;
+		
+		fechaNacimiento = day+"/"+month+"/"+yearNacimiento;
+		
+		return fechaNacimiento;
+	}
+	
+	/**
+	 * Carga la especie valodarada para la venta
+	 * @throws Exception
+	 */
+	private ControlEspecieValorada loadEspecieValoradaByVenta(boolean isIda)throws Exception{
+		ControlEspecieValorada controlEspecieValorada = null;
+		int empresa_id = (isIda? detalleItinerarioIda.getItinerario().getEmpresa().getId(): detalleItinerarioVuelta.getItinerario().getEmpresa().getId());
+		if(chbxVtaFactura.isChecked())
+			controlEspecieValorada = loadEspecieValorada(new TipoComprobante(Constantes.ID_TIPCOM_FACTURA), empresa_id);
+		else
+			controlEspecieValorada = loadEspecieValorada(new TipoComprobante(Constantes.ID_TIPCOM_BOLETA_VENTA), empresa_id);
+		
+		return controlEspecieValorada;
+	}
+	
+	/**
+	 * Realiza la busqueda del correlativo para el boleto a emitir.
+	 */
+	private ControlEspecieValorada loadEspecieValorada(TipoComprobante tipoComprobante, Integer idEmpresa)throws Exception{
+		try {
+			cleanDatosInfoComprobante();
+			
+			ControlEspecieValorada controlEspecieValorada = null;
+			controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(tipoComprobante.getId(), getAgencia(), false, getUsuarioHardware(), null, idEmpresa);				
+			if(controlEspecieValorada !=null) {
+				lblVtaTipoComprobante.setValue(controlEspecieValorada.getTipoComprobante().getDenominacion());
+				lblVtaNumeroComprobante.setValue(controlEspecieValorada.toString());
+			}			
+			
+			return controlEspecieValorada;
+		} catch (EspecieValoradaNotAvailableException nev) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noNumeroBoleto"));
+			log.error(Messages.getString("WndVentaReserva.information.noNumeroBoleto"));
+			return null;
+		}catch(Exception ex){
+			ex.printStackTrace();
+			log.error(ex);
+			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
+			return null;
+		}
+	}
+	
+	/**
+	 * Analisa a que control se enviará el foco del curso, según el control en donde se ha producido el evento
+	 * @throws Exception
+	 */
+	private void focusCursorByTipoOperacion(Event event)throws Exception{
+//		if(event!=null) {
+//			if(event.getTarget().getId().equals(rdVtaVenta.getId()) || event.getTarget().getId().equals(rdVtaReserva.getId())) {
+				if(!cmbVtaIdaEmbarque_hora.isDisabled() && cmbVtaIdaEmbarque_hora.getSelectedIndex()==0) {
+					cmbVtaIdaEmbarque_hora.setFocus(true);
+//					cmbVtaIdaEmbarque_hora.open();
+				}else if(!cmbVtaIdaDesembarque_hora.isDisabled() && cmbVtaIdaDesembarque_hora.getSelectedIndex()==0) {
+					cmbVtaIdaDesembarque_hora.setFocus(true);
+//					cmbVtaIdaDesembarque_hora.open();
+				}else if(gridVtaInfoViajeVuelta.isVisible() && !cmbVtaVueltaEmbarque_hora.isDisabled() && cmbVtaVueltaEmbarque_hora.getSelectedIndex()==0) {
+					cmbVtaVueltaEmbarque_hora.setFocus(true);
+//					cmbVtaVueltaEmbarque_hora.open();
+				}else if(gridVtaInfoViajeVuelta.isVisible() && !cmbVtaVueltaDesembarque_hora.isDisabled() && cmbVtaVueltaDesembarque_hora.getSelectedIndex()==0) {
+					cmbVtaVueltaDesembarque_hora.setFocus(true);
+//					cmbVtaVueltaDesembarque_hora.open();					
+				}else if(event!=null && event.getTarget().getId().equals(rdVtaVenta.getId())) {				
+					if(!txtVtaPaxNumeroDocumento.isDisabled() && txtVtaPaxNumeroDocumento.getText().trim().isEmpty()) {
+						txtVtaPaxBusqueda.setFocus(true);
+					}else if(!cmbVtaTipoFormaPago.isDisabled() && cmbVtaTipoFormaPago.getSelectedIndex()<0 && !cmbVtaTipoFormaPago.isDisabled()) {
+						cmbVtaTipoFormaPago.setFocus(true);
+//						cmbVtaTipoFormaPago.open();
+					}else
+						btnVtaGuardar.setFocus(true);
+				}else if(event!=null && event.getTarget().getId().equals(rdVtaReserva.getId())) {
+					if(txtVtaPaxNumeroDocumento.getText().trim().isEmpty())
+						txtVtaPaxBusqueda.setFocus(true);
+					else if(!itbxVtaIdaTiempoReserva.isDisabled()) {
+						itbxVtaIdaTiempoReserva.setFocus(true);
+						itbxVtaIdaTiempoReserva.select();
+					}
+				}
+//			}
+//		}
+	}
+	
+	/**
+	 * 
+	 * @param isIda
+	 * @param tiempoReserva
+	 * @return
+	 * @throws Exception
+	 */
+	private boolean validarTiempoPermitidoReserva(boolean isIda, Integer tiempoReserva)throws Exception{
+		int tiempoMaximoPermitido = 0;
+		
+		if(tiempoReserva==null) {
+			String horaPartida = null;
+			String fechaPartida = null;
+			Date fechaHoraReserva = null;
+			if(isIda) {
+				horaPartida = ((ItinerarioAgenciaPartida)cmbVtaIdaEmbarque_hora.getSelectedItem().getValue()).getHoraPartida();				
+				fechaPartida = Constantes.FORMAT_DATE.format(detalleItinerarioIda.getFechaPartida());			
+				fechaHoraReserva = dtbxVtaIdaExpiraReserva.getValue();
+			}else {
+				horaPartida = ((ItinerarioAgenciaPartida)cmbVtaVueltaEmbarque_hora.getSelectedItem().getValue()).getHoraPartida();				
+				fechaPartida = Constantes.FORMAT_DATE.format(detalleItinerarioVuelta.getFechaPartida());			
+				fechaHoraReserva = dtbxVtaVueltaExpiraReserva.getValue();
+			}			
+			
+			String sfechaHoraPartida = fechaPartida+" "+horaPartida;
+			Date fechaHoraPartida = Util.convertirLocalDateTimeToDate(convertirStringToLocalDateTime(sfechaHoraPartida));			
+			tiempoReserva = (int) (fechaHoraPartida.getTime() - fechaHoraReserva.getTime());
+		}
+				
+		if(tiempoMaximoPermitido >0 && tiempoReserva > tiempoMaximoPermitido) {
+			Intbox intboxTiempo = (isIda?itbxVtaIdaTiempoReserva:itbxVtaVueltaTiempoReserva);
+			intboxTiempo.setValue(null);
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.tiempoReservaExcede").replace("@tiempo", String.valueOf(tiempoMaximoPermitido)), intboxTiempo);
+			return false;
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * Habilita la Opción de Postergación 
+	 * @throws Exception
+	 */
+	private void habilitarOpcionPostergacion(VentaPasaje ventaPasajeEdicion)throws Exception{
+		Integer minutos = UtilFlag.getTiempoPostergacion();
+		if(minutos !=null) {
+			boolean permiteEdicion = validarEdicionAsiento(ventaPasajeEdicion, minutos);
+			if(permiteEdicion)
+				btnVtaPostergar.setDisabled(false);			
+		}		
+	}
+
+	/**
+	 * Habilita la Opción de Postergación F.A. 
+	 * @throws Exception
+	 */
+	private void habilitarOpcionPostergacionFA(VentaPasaje ventaPasajeEdicion)throws Exception{
+		Integer minutos = UtilFlag.getTiempoPostergacionFA();
+		if(minutos !=null) {
+			boolean permiteEdicion = validarEdicionAsiento(ventaPasajeEdicion, minutos);
+			if(permiteEdicion)
+					rdVtaPostergacionFA.setDisabled(false);
+		}		
+	}
+	
+	/**
+	 * Habilita la Opción Cambio de Nombre 
+	 * @throws Exception
+	 */
+	private void habilitarOpcionCambioNombre(VentaPasaje ventaPasajeEdicion)throws Exception{
+		Integer minutos = UtilFlag.getTiempoCambioNombre();
+		if(minutos !=null) {
+			boolean permiteEdicion = validarEdicionAsiento(ventaPasajeEdicion, minutos);
+			if(permiteEdicion)
+				rdVtaCambioNombre.setDisabled(false);
+		}		
+	}
+	
+	/**
+	 * Valida si el asiento puede ser editado
+	 * @param ventaPasajeEdicion: Instancia a la cual se va ha validar
+	 * @param minutosEdicion: Representa el tiempo en minutos antes de la salida del servicio, en que el asiento puede podría ser modificado.
+	 * @throws Exception
+	 */
+	private boolean validarEdicionAsiento(VentaPasaje ventaPasajeEdicion, int minutosEdicion)throws Exception{
+		boolean permiteEdicion = false;
+		
+		if(ventaPasajeEdicion.getFechaPartida()!=null && ventaPasajeEdicion.getHoraPartida()!=null) {
+			String fechaPartida = Constantes.FORMAT_DATE.format(ventaPasajeEdicion.getFechaPartida());
+			String horaPartida = ventaPasajeEdicion.getHoraPartida();
+			Date fechaHoraPartida = Util.convertirLocalDateTimeToDate(convertirStringToLocalDateTime(fechaPartida+" "+horaPartida));				
+			Date fechaHoraPostergacion = Util.convertirLocalDateTimeToDate(LocalDateTime.now().plusMinutes(minutosEdicion));
+			
+			if(fechaHoraPartida.getTime() > fechaHoraPostergacion.getTime())
+				permiteEdicion = true;
+		}
+		
+		return permiteEdicion;
+	}
+	
+	/**
+	 * Selecciona el punto de embarque
+	 * @param isIda
+	 * @param agencia
+	 * @throws Exception
+	 */
+	private void seleccionarPuntoEmbarque(Combobox comboboxEmbarque, Agencia agencia)throws Exception{		
+		for(Comboitem comboitem: comboboxEmbarque.getItems()) {
+			if(comboitem.getValue()!=null && comboitem.getValue() instanceof ItinerarioAgenciaPartida) {
+				ItinerarioAgenciaPartida itiAgePartida = comboitem.getValue();
+				if(itiAgePartida.getAgencia().getId().intValue()==agencia.getId().intValue()) {
+					comboboxEmbarque.setSelectedItem(comboitem);
+					break;
+				}
+			}				
+		}
+	}
+	
+	/**
+	 * Selecciona el punto de embarque
+	 * @param isIda
+	 * @param agencia
+	 * @throws Exception
+	 */
+	private void seleccionarPuntoDesembarque(Combobox comboboxDesembarque, Agencia agencia)throws Exception{
+		for(Comboitem comboitem: comboboxDesembarque.getItems()) {
+			if(comboitem.getValue()!=null && comboitem.getValue() instanceof ItinerarioAgenciaLlegada) {
+				ItinerarioAgenciaLlegada itiAgePartida = comboitem.getValue();
+				if(itiAgePartida.getAgencia().getId().intValue()==agencia.getId().intValue()) {
+					comboboxDesembarque.setSelectedItem(comboitem);
+					break;
+				}
+			}				
+		}
+	}
+	
+	/***
+	 * Crea una venta para la anulación de una venta
+	 * @param ventaOriginal
+	 * @return
+	 */
+	@SuppressWarnings("deprecation")
+	private Window createWindowAnulacion(final VentaPasaje ventaOriginal){
+		Caption caption = null;
+		Groupbox groupbox = null;
+		Grid grid = new Grid();
+		Columns columns = new Columns();
+		Column column = null;
+		Rows rows = new Rows();
+		Row row = null;
+		Label label = null;
+		Textbox text = null;
+
+		final Window win = new Window("", "normal", true);
+		win.setWidth("500px");
+
+		caption = new Caption("ANULACION DE BOLETO", "resources/mp_anular.png");
+		win.appendChild(caption);
+		label = new Label("Se va a realizar la Anulacion del Boleto con los siguientes datos :");
+		label.setStyle("font-size:12px !important");
+		win.appendChild(label);
+
+		win.appendChild(new Separator("horizontal"));
+
+		groupbox = new Groupbox();
+		groupbox.setClosable(false);
+		caption = new Caption("Datos del Boleto");
+		groupbox.appendChild(caption);
+
+		/*	Columna 1	*/
+		column = new Column();
+		column.setAlign("right");
+		columns.appendChild(column);
+		/*	Columna 2	*/
+		column = new Column();
+		columns.appendChild(column);
+		/*	Columna 3	*/
+		column = new Column();
+		column.setAlign("right");
+		columns.appendChild(column);
+		/*	Columna 4	*/
+		column = new Column();
+		columns.appendChild(column);
+
+		grid.appendChild(columns);
+
+		row = new Row();
+		label = new Label("NUMERO BOLETO :");
+		row.appendChild(label);
+		text = new Textbox(ventaOriginal.getNumeroBoleto());
+		text.setReadonly(true);
+		text.setWidth("80px");
+		text.setStyle("font-size:11px !important");
+		row.appendChild(text);
+		label = new Label("FECHA VIAJE :");
+		row.appendChild(label);
+		text = new Textbox(ventaOriginal.getFechaPartida()==null?"":Util.DatetoString(ventaOriginal.getFechaPartida(), Constantes.DATE_FORMAT));
+		text.setReadonly(true);
+		text.setWidth("80px");
+		text.setStyle("font-size:11px !important");
+		row.appendChild(text);
+		rows.appendChild(row);
+
+		row = new Row();
+		row.setSpans("1,3");
+		label = new Label("PASAJERO :");
+		row.appendChild(label);
+		text = new Textbox(ventaOriginal.getPasajero().toString());
+		text.setReadonly(true);
+		text.setWidth("314px");
+		text.setStyle("font-size:11px !important");
+		row.appendChild(text);
+		rows.appendChild(row);
+
+		row = new Row();
+		label = new Label("RUTA :");
+		row.appendChild(label);
+		text = new Textbox(ventaOriginal.getRuta().getOrigen()+" - " + ventaOriginal.getRuta().getDestino());
+		text.setReadonly(true);
+		text.setWidth("100px");
+		row.appendChild(text);
+		label = new Label("IMPORTE :");
+		row.appendChild(label);
+		text = new Textbox(Util.toNumberFormat(ventaOriginal.getImportePagado(), 2));
+		text.setReadonly(true);
+		text.setWidth("80px");
+		text.setStyle("font-size:11px !important");
+		row.appendChild(text);
+		rows.appendChild(row);
+
+		row=new Row();
+		row.setSpans("1,4");
+		label = new Label("MOTIVO ANULACION (*) :");
+		row.appendChild(label);
+		final Textbox txtMotivoAnulacion = new Textbox();
+		txtMotivoAnulacion.setWidth("314px");
+		txtMotivoAnulacion.setMultiline(true);
+		txtMotivoAnulacion.setRows(3);
+		txtMotivoAnulacion.setMaxlength(255);
+		txtMotivoAnulacion.setStyle("font-size:11px !important");
+		row.appendChild(txtMotivoAnulacion);
+		rows.appendChild(row);
+
+
+		grid.appendChild(rows);
+		groupbox.appendChild(grid);
+		win.appendChild(groupbox);
+
+		grid = new Grid();
+		columns = new Columns();
+		column = new Column();
+		column.setAlign("center");
+		columns.appendChild(column);
+		column = new Column();
+		column.setAlign("center");
+		columns.appendChild(column);
+		grid.appendChild(columns);
+		rows = new Rows();
+		row = new Row();
+
+		Button button = new Button("Continuar", "resources/mp_anular.png");
+		button.setClass("btnCommandM");
+		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event e){
+				if(txtMotivoAnulacion.getText().trim().isEmpty()){
+					DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.noMotivoAnulacion"),txtMotivoAnulacion);
+					return;
+				}
+				Messagebox.show(Messages.getString("WndLiquidacionDiariaVentas.information.confirmarAnulacion"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+					@Override
+					public void onEvent(Event e){
+						try{
+							if(e.getName().equals("onYes")){
+								confirmaAnulacion(ventaOriginal, wndModal,txtMotivoAnulacion.getText().trim().toUpperCase());
+							}
+						}catch(Exception ex){
+							ex.printStackTrace();
+							DlgMessage.information(this.getClass().getSimpleName()+" "+ex.getMessage());
+						}
+					}
+				});
+			}
+		});
+		button.setHeight("28px");
+		button.setWidth("100px");
+		row.appendChild(button);
+		button = new Button("Cancelar", "resources/mp_cancelarEnabled.png");
+		button.setClass("btnCommandM");
+		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event e){
+				win.onClose();
+			}
+		});
+		button.setHeight("28px");
+		button.setWidth("100px");
+		button.setFocus(true);
+		row.appendChild(button);
+
+		rows.appendChild(row);
+
+		grid.appendChild(rows);
+		win.appendChild(grid);
+		return win;
+	}
+	
+	/**
+	 * Confirma la anulación de la venta
+	 * @param ventaOriginal
+	 * @param wndAnular
+	 * @param motivo
+	 * @throws Exception
+	 */
+	private void confirmaAnulacion(VentaPasaje ventaOriginal, Window wndAnular, String motivo)throws Exception{
+		int result=Constantes.FAILURE;
+
+		ventaOriginal.setTarifa(0.0);
+		ventaOriginal.setRecargo(0.0);
+		ventaOriginal.setDescuento(0.0);
+		ventaOriginal.setImportePagado(0.0);
+		ventaOriginal.setAcuenta(0.0);
+		ventaOriginal.setImportePagado(0.0);
+		ventaOriginal.setTarifaEquibalente(ventaOriginal.getTarifaEquibalente()!=null?.00:null);
+		ventaOriginal.setDescuentoEquibalente(ventaOriginal.getDescuentoEquibalente()!=null?.00:null);
+		ventaOriginal.setImportePagadoEquibalente(ventaOriginal.getImportePagadoEquibalente()!=null?.00:null);
+		ventaOriginal.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_ANULACION));
+		ventaOriginal.setObservaciones(motivo);
+		ventaOriginal.setFechaAnulacion(new Date());
+		ventaOriginal.setUsuarioAnulacion(getUsuario());
+		UtilData.auditarRegistro(ventaOriginal, true, getUsuario(), Executions.getCurrent());
+		VentaPasaje notaCredito= ServiceLocator.getVentaPasajesManager().anularMovimiento(ventaOriginal,false);
+		if(notaCredito!=null){
+			WSFE.sendNota(notaCredito);
+		}
+		result=Constantes.CORRECT;
+		if(result==Constantes.CORRECT){
+			DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.exitoAnulacion"));
+			wndAnular.onClose();
+		
+			
+			txtVtaPaxBusqueda.setText("");
+			ltbxVtaAsientosSeleccionados.removeItemAt(ltbxVtaAsientosSeleccionados.getSelectedItem().getIndex());
+			cleanDatosInfoComprobante();								
+			onSelect_ltbxVtaAsientosSeleccionados(null);														
+			onRefreshMap();
+			disabledControlsViaje(true);
+			disabledControlsPasajero(true);
+			disabledControlsCliente(true);
+			disabledControlsPago(true);
+			if(ltbxVtaAsientosSeleccionados.getItemCount()==0)
+				disabledAllButtonsOptinsByAsiento();
+		}
+	}
+	
+
+	@SuppressWarnings("deprecation")
+	private Window createWindowPostergacion(final VentaPasaje ventaOriginal, Double montoPenalidad)throws Exception{
+		ltbxPostAsientoSeleccionado = new Listbox();
+		
+		final Window win = new Window("", "normal", true);
+		win.setWidth("950px");
+
+		Caption caption = new Caption("POSTERGACIÓN", "resources/buttons/mp_postergacion.png");
+		win.appendChild(caption);
+		
+		Hbox hbox = new Hbox();
+		
+		Grid grid = new Grid();
+		grid.setWidth("170px");
+		Columns columns = new Columns();
+		columns.appendChild(new Column(null, null, "50px"));
+		columns.appendChild(new Column());
+		grid.appendChild(columns);
+		Rows rows = new Rows();
+		Row row =new Row();
+		row.appendChild(new Label("EMPRESA"));
+		cmbPostEmpresa = new Combobox();
+		cmbPostEmpresa.setDisabled(true);
+		cmbPostEmpresa.setWidth("100%");
+		row.appendChild(cmbPostEmpresa);
+		rows.appendChild(row);
+		row =new Row();
+		row.appendChild(new Label("ORIGEN"));
+		cmbPostOrigen = new Combobox();
+		cmbPostOrigen.setReadonly(true);
+		cmbPostOrigen.setWidth("100%");		
+		row.appendChild(cmbPostOrigen);
+		rows.appendChild(row);
+		row = new Row();
+		row.appendChild(new Label("DESTINO"));
+		cmbPostDestino = new Combobox();
+		cmbPostDestino.setReadonly(true);
+		cmbPostDestino.setWidth("100%");		
+		row.appendChild(cmbPostDestino);
+		rows.appendChild(row);
+		row = new Row();
+		row.appendChild(new Label("FECHA"));
+		dtbxPostFecha = new Datebox(new Date(new Date().getTime()+Constantes.MILISEGUNDOS_X_DIA));
+		dtbxPostFecha.setConstraint("no past");
+		dtbxPostFecha.setFormat("dd/MM/yyyy");
+		dtbxPostFecha.setReadonly(true);
+		dtbxPostFecha.setWidth("100%");
+		row.appendChild(dtbxPostFecha);
+		rows.appendChild(row);
+		
+		row = new Row();
+		row.setSpans("2");
+		Button btnBuscar = new Button("Buscar");
+		btnBuscar.setWidth("120px");
+		btnBuscar.setHeight("34px");
+		btnBuscar.setImage("/resources/mp_buscarEnabled.png");
+		btnBuscar.setStyle("margin-left:15px;");
+		btnBuscar.setSclass("btnCommandM");
+		row.appendChild(btnBuscar);
+		rows.appendChild(row);
+		grid.appendChild(rows);
+		
+		ltbxPostItienerarios = new Listbox();
+		ltbxPostItienerarios.setHeight("147px");
+		Listhead listhead = new Listhead();
+		listhead.appendChild(new Listheader("EMPRESA", null, "130px"));
+		listhead.appendChild(new Listheader("RUTA", null, "140px"));
+		listhead.appendChild(new Listheader("EMBARQUE", null, "120px"));
+		listhead.appendChild(new Listheader("H.SALIDA", null, "60px"));
+		listhead.appendChild(new Listheader("SERVICIO", null, "100px"));
+		listhead.appendChild(new Listheader("TARIFA", null, "90px"));
+		listhead.appendChild(new Listheader(null, null, "90px"));
+		ltbxPostItienerarios.appendChild(listhead);
+		
+		hbox.appendChild(grid);
+		hbox.appendChild(ltbxPostItienerarios);
+		
+		win.appendChild(hbox);
+		
+		
+		hboxPost_1 = new Hbox();
+		hboxPost_1.setStyle("margin-top:2px");
+		hboxPost_1.setVisible(false);
+		gpbxPostMapa = new Groupbox();
+		gpbxPostMapa.setClosable(false);
+		gpbxPostMapa.setMold("3d");
+		gpbxPostMapa.setWidth("710px");
+		gpbxPostMapa.setHeight("206px");
+		caption = new Caption("MAPA DE ASIENTOS");
+		caption.setStyle("color: #ffffff;");
+		gpbxPostMapa.appendChild(caption);
+		
+		Groupbox gpbxPostInfoViaje = new Groupbox();		
+		gpbxPostInfoViaje.setMold("3d");
+		gpbxPostInfoViaje.setClosable(false);
+		gpbxPostInfoViaje.setWidth("220px");
+		caption = new Caption("DATOS DE LA POSTERGACIÓN");
+		caption.setStyle("color: #ffffff;");
+		gpbxPostInfoViaje.appendChild(caption);
+		grid = new Grid();
+		grid.setStyle("border:none");
+		columns = new Columns();
+		columns.appendChild(new Column(null, null, "65px"));
+		columns.appendChild(new Column());
+		grid.appendChild(columns);
+		rows = new Rows();
+		row = new Row();
+		row.setSpans("2");
+		Div div = new Div();
+		div.setStyle("text-align:center");
+		lblPostRuta_fecha = new Label("-");
+		lblPostRuta_fecha.setSclass("label-size11-bold");
+		lblPostRuta_fecha.setStyle("color:red");
+		div.appendChild(lblPostRuta_fecha);
+		row.appendChild(div);		
+		rows.appendChild(row);
+		row = new Row();
+		row.appendChild(new Label("EMBARQUE "));
+		cmbPostEmbarque_hora = new Combobox();
+		cmbPostEmbarque_hora.setReadonly(true);
+		cmbPostEmbarque_hora.setWidth("140px");
+		row.appendChild(cmbPostEmbarque_hora);		
+		rows.appendChild(row);
+		row = new Row();
+		row.appendChild(new Label("DESEMBAR "));
+		cmbPostDesembarque_hora = new Combobox();
+		cmbPostDesembarque_hora.setReadonly(true);
+		cmbPostDesembarque_hora.setWidth("140px");
+		row.appendChild(cmbPostDesembarque_hora);		
+		rows.appendChild(row);
+		row = new Row();
+		row.appendChild(new Label("N° ASIENTO "));
+		lblPostAsiento = new Label("-");
+		lblPostAsiento.setSclass("label-size11-bold");
+		lblPostAsiento.setStyle("font-size:15px !important;color:blue");
+		row.appendChild(lblPostAsiento);
+		rows.appendChild(row);
+		row = new Row();
+		row.appendChild(new Label("TARIFA "));
+		dbxPostTarifa = new Doublebox(.00);
+		dbxPostTarifa.setSclass("label-size11-bold");
+		dbxPostTarifa.setStyle("font-size:12px !important;");
+		dbxPostTarifa.setFormat("#,##0.00");
+		dbxPostTarifa.setLocale(Locale.US);
+		dbxPostTarifa.setWidth("50%");
+		dbxPostTarifa.setReadonly(true);
+		row.appendChild(dbxPostTarifa);
+		rows.appendChild(row);
+		row = new Row();
+		row.appendChild(new Label("MONTO ANTERIOR "));
+		dbxPostMontoAnterior = new Doublebox(ventaOriginal.getImportePagado());
+		dbxPostMontoAnterior.setSclass("label-size11-bold");
+		dbxPostMontoAnterior.setStyle("font-size:12px !important;");
+		dbxPostMontoAnterior.setFormat("#,##0.00");
+		dbxPostMontoAnterior.setWidth("50%");
+		dbxPostMontoAnterior.setReadonly(true);
+		dbxPostMontoAnterior.setLocale(Locale.US);
+		row.appendChild(dbxPostMontoAnterior);
+		rows.appendChild(row);
+		row = new Row();
+		row.appendChild(new Label("PENALIDAD "));
+		dbxPostPenalidad = new Doublebox(montoPenalidad);
+		dbxPostPenalidad.setSclass("label-size11-bold");
+		dbxPostPenalidad.setStyle("font-size:12px !important;");
+		dbxPostPenalidad.setFormat("#,##0.00");
+		dbxPostPenalidad.setWidth("50%");
+		dbxPostPenalidad.setLocale(Locale.US);
+		dbxPostPenalidad.setReadonly(true);
+		row.appendChild(dbxPostPenalidad);
+		rows.appendChild(row);
+		grid.appendChild(rows);		
+		gpbxPostInfoViaje.appendChild(grid);
+		
+		hboxPost_1.appendChild(gpbxPostMapa);
+		hboxPost_1.appendChild(gpbxPostInfoViaje);
+		win.appendChild(hboxPost_1);
+		
+		hboxPost_2 = new Hbox();
+		hboxPost_2.setStyle("margin-top:2px");
+		hboxPost_2.setVisible(false);
+		Groupbox gpbxPostInfoComprobante = new Groupbox();
+		gpbxPostInfoComprobante.setMold("3d");
+		gpbxPostInfoComprobante.setWidth("630px");
+		caption = new Caption("DATOS DEL COMPROBANTE A POSTERGAR");
+		caption.setStyle("color: #ffffff;");
+		gpbxPostInfoComprobante.appendChild(caption);
+		grid = new Grid();
+		grid.setStyle("border:none");
+		columns = new Columns();
+		Column column = new Column(null, null, "110px");
+		column.setAlign("right");
+		columns.appendChild(column);
+		columns.appendChild(new Column(null, null, "150px"));
+		column = new Column(null, null, "110px");
+		column.setAlign("right");
+		columns.appendChild(column);
+		columns.appendChild(new Column());
+		grid.appendChild(columns);
+		rows = new Rows();
+		row = new Row();
+		row.setSpans("1,3");
+		row.appendChild(new Label("EMPRESA :"));	
+		Label label = new Label(ventaOriginal.getEmpresa().getNombreCorto());
+		label.setSclass("label-size11-bold");
+		label.setStyle("color:red");
+		row.appendChild(label);		
+		rows.appendChild(row);
+		row = new Row();
+		row.appendChild(new Label("N° COMPROBANTE :"));
+		label = new Label(ventaOriginal.getNumeroBoleto());
+		label.setStyle("font-size:12px !important");
+		row.appendChild(label);
+		row.appendChild(new Label("RUTA :"));
+		row.appendChild(new Label(ventaOriginal.getRuta().toString()));		
+		rows.appendChild(row);		
+		row = new Row();
+		row.appendChild(new Label("FECHA/HORA VIAJE :"));
+		label = new Label(Constantes.FORMAT_DATE.format(ventaOriginal.getFechaPartida()) +" "+ventaOriginal.getHoraPartida());
+		label.setStyle("font-size:12px !important");
+		row.appendChild(label);
+		row.appendChild(new Label("PTO. EMBARQUE :"));
+		row.appendChild(new Label(ventaOriginal.getAgenciaPartida().getDenominacion()));		
+		rows.appendChild(row);
+		row = new Row();
+		row.appendChild(new Label("N° ASIENTO :"));
+		label = new Label(ventaOriginal.getNumeroAsiento().toString());
+		label.setStyle("font-size:12px !important");
+		row.appendChild(label);
+		row.appendChild(new Label("IMPORTE PAGADO :"));
+		label = new Label(Util.toNumberFormat(ventaOriginal.getImportePagado(), 2));
+		label.setStyle("font-size:12px !important");
+		row.appendChild(label);
+		rows.appendChild(row);		
+		row = new Row();
+		row.setSpans("1,3");
+		row.appendChild(new Label("PASAJERO :"));
+		row.appendChild(new Label(ventaOriginal.getPasajero().toString()));
+		rows.appendChild(row);
+		row = new Row();
+		row.setSpans("4");
+		Separator separator = new Separator();
+		separator.setHeight("25px");
+		row.appendChild(separator);
+		rows.appendChild(row);
+		grid.appendChild(rows);
+		gpbxPostInfoComprobante.appendChild(grid);
+		hboxPost_2.appendChild(gpbxPostInfoComprobante);
+		
+		Groupbox gpbxPostInfoPago = new Groupbox();
+		gpbxPostInfoPago.setMold("3d");
+		gpbxPostInfoPago.setWidth("301px");
+		caption = new Caption("DATOS DEL PAGO");
+		caption.setStyle("color: #ffffff;");
+		gpbxPostInfoPago.appendChild(caption);
+		grid = new Grid();
+		grid.setStyle("border:none");
+		columns = new Columns();
+		columns.appendChild(new Column());
+		columns.appendChild(new Column());
+		grid.appendChild(columns);
+		rows = new Rows();
+		row = new Row();
+		row.setSpans("2");
+		hbox = new Hbox();
+		hbox.setAlign("center");
+		label = new Label("TOTAL A PAGAR");
+		label.setSclass("label-size11-bold");
+		label.setStyle("color:blue");
+		dbxPostTotalPagar = new Doublebox(.00);
+		dbxPostTotalPagar.setStyle("font-size:15px !important;text-align:center;margin-left:54px");
+		dbxPostTotalPagar.setSclass("label-size12-bold-alert");
+		dbxPostTotalPagar.setFormat("#,##0.00");
+		dbxPostTotalPagar.setWidth("120px");
+		dbxPostTotalPagar.setLocale(Locale.US);
+		dbxPostTotalPagar.setReadonly(true);
+		hbox.appendChild(label);
+		hbox.appendChild(dbxPostTotalPagar);
+		row.appendChild(hbox);
+		rows.appendChild(row);
+		row = new Row();
+		cmbPostTipoFormaPago = new Combobox();
+		cmbPostTipoFormaPago.setReadonly(true);
+		cmbPostTipoFormaPago.setPlaceholder("MEDIO DE PAGO");
+		cmbPostTipoFormaPago.setWidth("120px");
+		cmbPostTipoFormaPago.setDisabled(true);
+		row.appendChild(cmbPostTipoFormaPago);
+		cmbPostOperadorTarjeta = new Combobox();
+		cmbPostOperadorTarjeta.setReadonly(true);
+		cmbPostOperadorTarjeta.setWidth("130px");
+		cmbPostOperadorTarjeta.setPlaceholder("OPERADOR TARJETA");
+		cmbPostOperadorTarjeta.setDisabled(true);
+		row.appendChild(cmbPostOperadorTarjeta);
+		rows.appendChild(row);	
+		row = new Row();
+		cmbPostTarjeta = new Combobox();
+		cmbPostTarjeta.setReadonly(true);
+		cmbPostTarjeta.setPlaceholder("TARJETA");
+		cmbPostTarjeta.setWidth("120px");
+		cmbPostTarjeta.setDisabled(true);
+		row.appendChild(cmbPostTarjeta);
+		txtPostNumeroOperacion = new Textbox();
+		txtPostNumeroOperacion.setPlaceholder("NUMERO OPERACIÓN");
+		txtPostNumeroOperacion.setWidth("120px");
+		txtPostNumeroOperacion.setDisabled(true);
+		row.appendChild(txtPostNumeroOperacion);
+		rows.appendChild(row);
+		grid.appendChild(rows);		
+		gpbxPostInfoPago.appendChild(grid);
+		
+		grid = new Grid();
+		columns = new Columns();
+		column = new Column();
+		column.setAlign("center");
+		columns.appendChild(column);
+		column = new Column();
+		column.setAlign("center");
+		columns.appendChild(column);
+		grid.appendChild(columns);
+		rows = new Rows();
+		row = new Row();
+		Button btnPostGuardar = new Button("Postergar");
+		btnPostGuardar.setImage("resources/mp_guardarEnabled.png");
+		btnPostGuardar.setSclass("btnCommandL");
+		Button btnPostCancelar = new Button("Cancelar");
+		btnPostCancelar.setImage("resources/mp_cancelarEnabled.png");
+		btnPostCancelar.setSclass("btnCommandL");
+		row.appendChild(btnPostGuardar);
+		row.appendChild(btnPostCancelar);
+		rows.appendChild(row);
+		grid.appendChild(rows);
+		Vbox vbox = new Vbox();
+		vbox.setAlign("center");
+		
+				
+		vbox.appendChild(gpbxPostInfoPago);
+		vbox.appendChild(grid);
+		hboxPost_2.appendChild(vbox);		
+		win.appendChild(hboxPost_2);
+		
+		UtilData.cargarEmpresa(cmbPostEmpresa, false);
+		UtilData.cargarDataCombo(cmbPostOrigen, Localidad.class, false);
+		UtilData.cargarDataCombo(cmbPostDestino, Localidad.class, false);
+		Util.seleccionarValorItemCombo(Empresa.class, cmbPostEmpresa, ventaOriginal.getEmpresa().getId());
+		Util.seleccionarValorItemCombo(Localidad.class, cmbPostOrigen, ventaOriginal.getRuta().getLocalidadOrigen().getId());
+		Util.seleccionarValorItemCombo(Localidad.class, cmbPostDestino, ventaOriginal.getRuta().getLocalidadDestino().getId());
+		loadTipoFormaPago(new FormaPago(Constantes.ID_FORPAG_CONTADO), cmbPostTipoFormaPago);
+		cleanDatosPagoPost();
+		
+		//Carlos itinerarios por defecto
+//		onClick_btnBusarItinerarioByPost(ventaOriginal);
+		
+		cmbPostOrigen.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				cleanBusquedaItinerariosPost();
+			}
+		});
+		cmbPostDestino.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				cleanBusquedaItinerariosPost();
+			}
+		});
+		dtbxPostFecha.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				cleanBusquedaItinerariosPost();
+			}
+		});
+		btnBuscar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				try {
+					onClick_btnBusarItinerarioByPost(ventaOriginal);
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+		cmbPostTipoFormaPago.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				try {
+					cmbPostOperadorTarjeta.getItems().clear();
+					cmbPostOperadorTarjeta.setSelectedIndex(-1);
+					cmbPostOperadorTarjeta.setDisabled(true);
+					cmbPostTarjeta.getItems().clear();
+					cmbPostTarjeta.setText("");
+					cmbPostTarjeta.setDisabled(true);
+					txtPostNumeroOperacion.setText("");
+
+					if(cmbPostTipoFormaPago.getSelectedIndex()>=0){
+						TipoFormaPago tipoFormaPago = (TipoFormaPago)cmbPostTipoFormaPago.getSelectedItem().getValue();
+						if(tipoFormaPago.getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA || tipoFormaPago.getId().intValue()==Constantes.ID_TIPFORPAG_CREDITO){
+							cmbPostOperadorTarjeta.getItems().clear();
+							UtilData.cargarDataCombo(cmbPostOperadorTarjeta, OperadorTarjetaCredito.class, false);
+							cmbPostOperadorTarjeta.setDisabled(false);
+							txtPostNumeroOperacion.setDisabled(false);
+//							cmbPostOperadorTarjeta.setFocus(true);
+						}else if(tipoFormaPago.getId().intValue()==Constantes.ID_TIPFORPAG_TRANSFERENCIA || tipoFormaPago.getId().intValue()==Constantes.ID_TIPFORPAG_YAPE) {
+							txtPostNumeroOperacion.setDisabled(false);
+//							txtVtaNumeroOperacion.setFocus(true);
+						}else{
+							txtPostNumeroOperacion.setDisabled(true);
+							cmbPostOperadorTarjeta.setDisabled(true);
+//							btnVtaGuardar.setFocus(true);
+						}
+					}else{
+						txtPostNumeroOperacion.setDisabled(true);
+						cmbPostOperadorTarjeta.setDisabled(true);
+					}
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+					log.error(e);
+				}
+			}
+		});
+		cmbPostOperadorTarjeta.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				try {
+					cmbPostTarjeta.getItems().clear();
+					cmbPostTarjeta.setText("");
+					cmbPostTarjeta.setDisabled(true);
+
+					if(cmbPostOperadorTarjeta.getSelectedItem().getValue() instanceof OperadorTarjetaCredito){
+						OperadorTarjetaCredito operadorTarjetaCredito = cmbPostOperadorTarjeta.getSelectedItem().getValue();
+						TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
+						criteriosBusqueda.put("operadorTarjetaCredito.id", operadorTarjetaCredito.getId());
+						List<String> criteriosOrdenar = new ArrayList<>();
+						criteriosOrdenar.add("denominacion");
+						List<TarjetaCredito> lstTarjetaCredito = ServiceLocator.getTarjetaCreditoManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
+						UtilData.cargarGenericData(cmbPostTarjeta, false);
+						for(TarjetaCredito tarjetaCredito : lstTarjetaCredito){
+							if(tarjetaCredito.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO)) {
+								Comboitem item = new Comboitem();
+								item.setLabel(tarjetaCredito.getDenominacion());
+								item.setValue(tarjetaCredito);
+								cmbPostTarjeta.appendChild(item);
+							}
+						}
+						cmbPostTarjeta.setDisabled(false);
+					}
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+					log.error(e);
+				}
+			}
+		});
+		cmbPostTipoFormaPago.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				if(!cmbPostOperadorTarjeta.isDisabled())
+					cmbPostOperadorTarjeta.setFocus(true);
+				else if(!txtPostNumeroOperacion.isDisabled())
+					txtPostNumeroOperacion.setFocus(true);
+				else
+					btnPostGuardar.setFocus(true);
+			}
+		});
+		cmbPostOperadorTarjeta.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				cmbPostTarjeta.setFocus(true);
+			}
+		});
+		cmbPostTarjeta.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				txtPostNumeroOperacion.setFocus(true);
+			}
+		});
+		txtPostNumeroOperacion.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				btnPostGuardar.setFocus(true);
+			}
+		});
+		btnPostCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				try {
+					win.onClose();
+					liberarAsientos(ltbxPostAsientoSeleccionado);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		btnPostGuardar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				try {
+					
+					onClick_btnPostergar(ventaOriginal);
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+					DlgMessage.error(e.getMessage());
+				}
+			}
+		});
+		win.addEventListener(Events.ON_CLOSE, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				try {
+					liberarAsientos(ltbxPostAsientoSeleccionado);
+					
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		return win;
+	}
+	
+	
+	/**
+	 * 
+	 * @param ventaOriginal
+	 * @throws Exception
+	 */
+	private void onClick_btnPostergar(VentaPasaje ventaOriginal)throws Exception{
+		if(ltbxPostAsientoSeleccionado.getItemCount()==0) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noAsientoSeleccionado"));
+			return;
+		}else if(dbxPostTarifa.getValue()==null || dbxPostTarifa.getValue()<=.00) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noTarifaItinerario"));
+			return;			
+		}else if(!(cmbPostEmbarque_hora.getSelectedItem().getValue() instanceof ItinerarioAgenciaPartida)) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noAgenciaPartidaSeleccionada"), cmbPostEmbarque_hora);
+			return;
+		}else if(!(cmbPostDesembarque_hora.getSelectedItem().getValue() instanceof ItinerarioAgenciaLlegada)) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noAgenciallegadaSeleccionada"), cmbPostDesembarque_hora);
+			return;
+		}
+		boolean emitirComprobante = (dbxPostTotalPagar.getValue()>.00);
+		
+		if(emitirComprobante) {
+			ControlEspecieValorada controlEspecieValorada = loadEspecieValoradaByVenta(true);
+			if(controlEspecieValorada ==null)
+				return;
+			
+			if(cmbPostTipoFormaPago.getSelectedIndex()<0) {
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noMedioPago"), cmbPostTipoFormaPago);
+				return;
+			}else if(!cmbPostOperadorTarjeta.isDisabled() && cmbPostOperadorTarjeta.getSelectedIndex()<0) {
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noOperadorTarjetaCredito"), cmbPostOperadorTarjeta);
+				return;
+			}else if(!cmbPostTarjeta.isDisabled() && cmbPostTarjeta.getSelectedIndex()<0) {
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noTarjetaCredito"), cmbPostTarjeta);
+				return;
+			}else if(!txtPostNumeroOperacion.isDisabled() && txtPostNumeroOperacion.getText().trim().isEmpty()) {
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noNumeroOperacionBancaria"), txtPostNumeroOperacion);
+				return;
+			}	
+			
+			//Valida liquidacion
+			if(fechaLiquidacion==null) {
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noLiquidacion"));
+				return;
+			}
+			String fechaActual = Constantes.FORMAT_DATE.format(new Date());
+			String vfechaLiquidacion = Constantes.FORMAT_DATE.format(fechaLiquidacion);		
+			if(!fechaActual.equals(vfechaLiquidacion)) {
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.fechaLiquidacionDiferente"));
+				return;
+			}			
+		}
+				
+		VentaIdaRetorno venta = ltbxPostAsientoSeleccionado.getItems().get(0).getValue();
+		DetalleItinerario detalleItinerario = venta.getDetalleItinerarioIDA();
+		
+		VentaPasaje postergacion = (VentaPasaje)ventaOriginal.clone();
+		postergacion.setId(null);
+		postergacion.setVentaPasaje(ventaOriginal);
+		if(emitirComprobante) {
+			postergacion.setTipoFormaPago(cmbPostTipoFormaPago.getSelectedItem().getValue());
+			if(cmbPostTarjeta.getSelectedIndex()>=0)
+				postergacion.setTarjetaCredito(cmbPostTarjeta.getSelectedItem().getValue());
+			if(!txtPostNumeroOperacion.getText().trim().isEmpty())
+				postergacion.setNumeroOperacionBancaria(txtPostNumeroOperacion.getText().trim().toUpperCase());
+		}
+		postergacion.setItinerario(detalleItinerario.getItinerario());
+		postergacion.setRuta(detalleItinerario.getRuta());
+		postergacion.setServicio(detalleItinerario.getItinerario().getServicio());
+		postergacion.setNumeroAsiento(Integer.valueOf(lblPostAsiento.getValue()));
+		postergacion.setNumeroPiso(Integer.valueOf(detalleItinerario.getPiso()));
+		postergacion.setFechaPartida(detalleItinerario.getFechaPartida());
+		postergacion.setHoraPartida(detalleItinerario.getHoraPartida());
+		postergacion.setFechaLlegada(detalleItinerario.getFechaLlegada());
+		postergacion.setHoraLllegada(detalleItinerario.getHoraLlegada());
+		postergacion.setAgenciaPartida(((ItinerarioAgenciaPartida)cmbPostEmbarque_hora.getSelectedItem().getValue()).getAgencia());
+		postergacion.setAgenciaLlegada(((ItinerarioAgenciaLlegada)cmbPostDesembarque_hora.getSelectedItem().getValue()).getAgencia());
+		postergacion.setEsFechaAbierta(Constantes.FALSE_VALUE);
+		String fechaCaducidad=Constantes.FORMAT_DATE.format(postergacion.getFechaPartida())+" "+postergacion.getHoraPartida();
+		Date dateCaducidad=Constantes.FORMAT_LONG.parse(fechaCaducidad);
+		postergacion.setFechaCaducidad(dateCaducidad);
+		postergacion.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_POSTERGACION));
+		postergacion.setObservaciones(postergacion.getObservaciones()==null?"POSTERGACIÓN":postergacion.getObservaciones()+";"+"POSTERGACIÓN");
+		postergacion.setSecuencial(postergacion.getSecuencial()+1);
+		postergacion.setTarifa(dbxPostTarifa.getValue());
+		postergacion.setPenalidad(dbxPostPenalidad.getValue());
+		postergacion.setImportePagado(dbxPostTotalPagar.getValue());
+		postergacion.setTipoTransaccion(Constantes.TIPO_OPERACION_VENTA);
+		postergacion.setFechaLiquidacion(fechaLiquidacion);
+		postergacion.setAgencia(getAgencia());
+		postergacion.setUsuario(getUsuario());
+		postergacion.setCanalVenta(canalVenta);
+		postergacion.setLiquidacion(null);
+		postergacion.setFechaTransferencia(null);
+		postergacion.setEmpresa(detalleItinerario.getItinerario().getEmpresa());
+		postergacion.setRucClienteCredito(null);
+		postergacion.setEstadoDocumento(Constantes.ESTADO_DOCUMENTO_PAGADO);
+		postergacion.setUsuarioHardware(getUsuarioHardware());
+		postergacion.setNumeroBoletoAnterior(ventaOriginal.getNumeroBoleto());
+		postergacion.setEnviadoSFE(null);
+		postergacion.setFechaEnvioSFE(null);
+		UtilData.auditarRegistro(postergacion,getUsuario(), Executions.getCurrent());
+		
+		Messagebox.show(Messages.getString("WndPostergacion.information.confirmacionPostergacion"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event e){
+				try {
+					if(e.getName().equals("onYes")){
+						//Quitamos el boleto del manifiesto
+						if(boletoManifestado)
+							ServiceLocator.getDetalleManifiestoManager().quitarManifiesto(postergacion.getVentaPasaje().getId());
+
+						List<VentaPasaje> listVentas = new ArrayList<VentaPasaje>();
+						listVentas.add(postergacion);
+						List<VentaPasaje> listNotasCredito = ServiceLocator.getVentaPasajesManager().postergarBoleto(listVentas, true);
+						
+						//Valida si debe o no enviar el comprobante a FE
+						if(emitirComprobante) {
+							List<VentaPasaje> listVentasEnvioFE = new ArrayList<VentaPasaje>();
+							for(VentaPasaje _ventaPasaje: listVentas) {
+								VentaPasaje _postergacion = ServiceLocator.getVentaPasajesManager().buscarVentaById(_ventaPasaje.getId());
+								listVentasEnvioFE.add(_postergacion);
+							}
+							WSFE.sendVenta(listVentasEnvioFE, wndVentaReservaNew, true, null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
+						}
+										
+						//Envia las NC a sunat
+						for(VentaPasaje notaCredito: listNotasCredito) {								
+							WSFE.sendNota(notaCredito);
+						}
+						
+						DlgMessage.information(Messages.getString("WndVentaReserva.information.exitoPostergacion"));
+						
+						ltbxVtaAsientosSeleccionados.removeItemAt(ltbxVtaAsientosSeleccionados.getSelectedItem().getIndex());
+						boletoManifestado = false;
+						cleanDatosInfoComprobante();
+						txtVtaPaxBusqueda.setText("");																					
+						disabledControlsViaje(true);
+						disabledControlsPasajero(true);
+						disabledControlsCliente(true);
+						disabledControlsPago(true);
+						onSelect_ltbxVtaAsientosSeleccionados(e);
+						onRefreshMap();
+						wndModal.onClose();
+					}
+				}catch(CapacityExceedsException ceex){
+					DlgMessage.information(Messages.getString("WndVentaReserva.information.changeCapacidad"));
+				}catch(DuplicateSeatException dsex){
+					DlgMessage.information(Messages.getString("WndVentaReserva.information.asientoVendido"));
+				}catch(NumeroBoletoDuplicadoException nbdex){
+					DlgMessage.information(Messages.getString("WndVentaReserva.information.numeroBoletoVendido"));
+				}catch(TiempoExpiracionBloqueoException tebex){
+					DlgMessage.information(Messages.getString("WndVentaReserva.information.expiroTiempoBloqueoAsiento"));
+				}catch(Exception ex){
+					ex.printStackTrace();
+					DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
+				}
+			}
+		});
 		
 		
 	}
 	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	private void onClick_btnBusarItinerarioByPost(VentaPasaje ventaPasaje)throws Exception{
+		Util.limpiarListbox(ltbxPostItienerarios);
+		
+		if(!(cmbPostOrigen.getSelectedItem().getValue() instanceof Localidad)) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noOrigenSeleccionado"), cmbPostOrigen);
+			return;
+		}
+		else if(!(cmbPostDestino.getSelectedItem().getValue() instanceof Localidad)) {
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.noDestinoSeleccionado"), cmbPostDestino);
+			return;
+		}
+		
+		String rucEmpresa = ((Empresa)cmbPostEmpresa.getSelectedItem().getValue()).getNumeroDocumento();
+		String origen = (((Localidad)cmbPostOrigen.getSelectedItem().getValue()).getDenominacion());
+		String destino = (((Localidad)cmbPostDestino.getSelectedItem().getValue()).getDenominacion());
+		String fechaIda = Constantes.FORMAT_DATE.format(dtbxPostFecha.getValue());
+		
+		
+		//Busca itinerarios para la Ida
+		List<DetalleItinerario> lstItinerarios = ServiceLocator.getItinerarioManager().buscarItinerarios(fechaIda, origen, destino, rucEmpresa);
+		
+		//Carga itinerarios de Ida
+//		loadItienrariosBusqueda(lstItinerariosIda, true, fechaIda);
+				
+		for(DetalleItinerario detalleItinerario : lstItinerarios){
+			Listitem item = new Listitem();
+			Listcell cell =  new Listcell(detalleItinerario.getItinerario().getEmpresa().getNombreCorto()); 
+			item.appendChild(cell);
+			cell = new Listcell(detalleItinerario.getRuta().toString());
+			item.appendChild(cell);
+			cell = new Listcell(detalleItinerario.getAgenciaPartida().getNombreCorto());
+			item.appendChild(cell);
+			cell = new Listcell(detalleItinerario.getHoraPartida());
+			cell.setStyle("font-size:11px !important");
+			cell.setTooltiptext("Hora de Partida");
+			item.appendChild(cell);
+			cell = new Listcell(detalleItinerario.getItinerario().getServicio().getDenominacion());
+			item.appendChild(cell);			
+			/*Tarifa Estandar*/
+			List<TarifaRegular> lstTarifaRegular = ServiceLocator.getTarifaRegularManager().buscarTarifaPorServicio(1,
+					detalleItinerario.getItinerario().getServicio().getId(),
+					detalleItinerario.getRuta().getId(), fechaIda,
+					detalleItinerario.getHoraPartida(), null, null);
+			String strTarifas="";
+			if(lstTarifaRegular.size()>0){
+				for(TarifaRegular tarifa: lstTarifaRegular){
+					strTarifas += tarifa.getMonto().toString();
+					if(lstTarifaRegular.size()>1)
+						strTarifas += " / ";
+				}
+				if(lstTarifaRegular.size()>1)
+					strTarifas = strTarifas.substring(0, strTarifas.length()-3);
+			}
+			else
+				strTarifas="0.00";
+			detalleItinerario.setTarifa(Double.valueOf(strTarifas.substring(0, 2)));
+			Listcell cellTarifaStandar = new Listcell(strTarifas);
+			cellTarifaStandar.setStyle("font-size:13px !important;");		
+			item.appendChild(cellTarifaStandar);
+			
+			cell = new Listcell();
+			Button btnSeleccionar = new Button("Seleccionar");
+			btnSeleccionar.setAutodisable("self");
+			btnSeleccionar.setAttribute(Listitem.class.getName(), item);
+			btnSeleccionar.setHeight("20px");
+			btnSeleccionar.setAutag("self");
+			cell.appendChild(btnSeleccionar);
+			item.appendChild(cell);
+			
+			item.setValue(detalleItinerario);
+			
+			btnSeleccionar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub					
+					try {						
+						onClick_btnSeleccionItinerarioPost(event, gpbxPostMapa, ventaPasaje);
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
+			item.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					try {
+						onClick_btnSeleccionItinerarioPost(event, gpbxPostMapa, ventaPasaje);
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
+			
+			ltbxPostItienerarios.appendChild(item);
+		}
+	}
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	private void onClick_btnSeleccionItinerarioPost(Event event, Groupbox gpbxMapa, VentaPasaje ventaPasaje)throws Exception{
+		
+		Listitem item = null;
+		if(event.getTarget() instanceof Listitem)
+			item = (Listitem)event.getTarget();
+		else if(event.getTarget() instanceof Button)
+			item = (Listitem) ((Button)event.getTarget()).getParent().getParent();
+		
+		if(item!=null) {
+			liberarAsientos(ltbxPostAsientoSeleccionado);
+			
+			Listbox listboxSelect = ((Listbox)item.getParent());
+			listboxSelect.setSelectedItem(item);
+			postDetalleItinerario = item.getValue();
+			lblPostRuta_fecha.setValue(postDetalleItinerario.getRuta().toString()+" - "+Constantes.FORMAT_DATE.format(postDetalleItinerario.getFechaPartida()));
+			loadPuntoEmbarque(postDetalleItinerario, cmbPostEmbarque_hora);
+			loadPuntoDesembarque(postDetalleItinerario, cmbPostDesembarque_hora);
+			seleccionarPuntoEmbarque(cmbPostEmbarque_hora, ventaPasaje.getAgenciaPartida());
+			seleccionarPuntoDesembarque(cmbPostDesembarque_hora, ventaPasaje.getAgenciaLlegada());
+			lblPostAsiento.setValue("-");
+			dbxPostTarifa.setValue(.00);
+			crearEstructura(postDetalleItinerario.getItinerario().getServicio().getId(), gpbxMapa, false, postDetalleItinerario, postMapaAsientos, null, true);
+			hboxPost_1.setVisible(true);
+			hboxPost_2.setVisible(true);
+		}
+	}
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	private void cleanBusquedaItinerariosPost()throws Exception{
+		Util.limpiarListbox(ltbxPostItienerarios);
+		Util.limpiarCombobox(cmbPostEmbarque_hora);
+		Util.limpiarCombobox(cmbPostDesembarque_hora);
+		lblPostRuta_fecha.setValue("-");
+		lblPostAsiento.setValue("-");
+		dbxPostTarifa.setValue(.00);
+		inicializarEstructura(gpbxPostMapa);
+		hboxPost_1.setVisible(false);
+		hboxPost_2.setVisible(false);
+	}
+	
+	/**
+	 * Limpia los datos del Pago
+	 * @throws Exception
+	 */
+	private void cleanDatosPagoPost()throws Exception{
+		dbxPostTotalPagar.setValue(.00);
+		cmbPostTipoFormaPago.setSelectedIndex(-1);
+		cmbPostOperadorTarjeta.setSelectedIndex(-1);
+		Util.limpiarCombobox(cmbPostTarjeta);
+		cmbPostTarjeta.setText("");
+		txtPostNumeroOperacion.setText("");
+		
+		cmbPostOperadorTarjeta.setDisabled(true);
+		cmbPostTarjeta.setDisabled(true);
+		txtPostNumeroOperacion.setDisabled(true);
+	}
 	
 	
+	/**
+	 * Calcula el monto total a pagar en la postergación
+	 * @throws Exception
+	 */
+	private void calcularTotalPagoPost()throws Exception{
+		Double tarifaActual = (dbxPostTarifa.getValue()!=null?dbxPostTarifa.getValue():.00);
+		Double montoAnterior = (dbxPostMontoAnterior.getValue()!=null?dbxPostMontoAnterior.getValue():.00);
+		Double penalidad = (dbxPostPenalidad.getValue()!=null?dbxPostPenalidad.getValue():.00);
+		
+		Double totalPagar = .00;
+		
+		if(tarifaActual >.00) {
+			totalPagar = penalidad;			
+			if(tarifaActual > montoAnterior)
+				totalPagar += (tarifaActual - montoAnterior);
+		}
+		
+		dbxPostTotalPagar.setValue(totalPagar);
+		cmbPostTipoFormaPago.setDisabled(totalPagar==0);
+	}
 	
+	
+	/**
+	 * Evento utilizado cuando el usuario hace click en un asiento.
+	 * @param e				: Evento
+	 * @param mapaAsientos	: Mapa de asientos.
+	 * @param ventaPasaje	: Itinerario seleccionado.
+	 * @param esIda			: Indica si es Ida o retorno.
+	 */
+	private void onClickAsientoMapPost(Event e, DetalleItinerario detalleItinerario, Map<String, Asiento> mapaAsientos){
+		try{
+			lblPostAsiento.setValue("-");
+			dbxPostTarifa.setValue(.00);
+			dbxPostTotalPagar.setValue(.00);
+			cmbPostTipoFormaPago.setDisabled(true);
+			cleanDatosPagoPost();
+			Asiento asientoSeleccionado = (Asiento)e.getTarget();
+			key = asientoSeleccionado.getKey();						
+			
+			/*============================================================*/
+			//Para evitar la seleccion de mas de un asiento
+			boolean liberarAsientos = true;
+			for(Listitem item: ltbxPostAsientoSeleccionado.getItems()) {
+				VentaIdaRetorno venta = item.getValue();
+				Asiento _asiento = venta.getDetalleItinerarioIDA().getObjAsiento();
+				if(_asiento.getKey().equals(key)) {
+					liberarAsientos = false;
+					break;
+				}
+			}
+			if(liberarAsientos) {
+				liberarAsientos(ltbxPostAsientoSeleccionado);
+				onRefreshMapaAsientos(postMapaAsientos, postDetalleItinerario, null);
+			}						
+			/*============================================================*/
+			
+			
+			/*	Elimina el asiento de la lista de asientos seleccionados y desbloquea el asiento*/
+			if(removerAsientoSeleccionado(key, mapaAsientos, asientoSeleccionado.getDetalleItinerario(), ltbxPostAsientoSeleccionado)) {
+				return;
+			}
+			
+			/*	validamos la cantidad maxima de asientos seleccionados	*/
+//			if(ltbxVtaAsientosSeleccionados.getItemCount()<=Constantes.MAX_SEAT_SELECTED){
+				/*	Si el asiento se encuentra bloqueado mostrar mensaje de no disponibilidad	*/
+				if(consultaAsientoBloqueado(key, mapaAsientos)){					
+					DlgMessage.information(Messages.getString("WndVentaReserva.information.asientoNoDisponible"));
+					key="-1";
+				}else{
+					/*	Insertamos el asiento a la tmpOcupacionAsientos	*/
+					TmpOcupacionAsientos tmpOcupacionAsientos = new TmpOcupacionAsientos();
+					tmpOcupacionAsientos.setUsuarioHardware(getUsuarioHardware());
+					tmpOcupacionAsientos.setUsuario(getUsuario());
+
+					tmpOcupacionAsientos.setRuta(detalleItinerario.getRuta());
+					tmpOcupacionAsientos.setItinerario(detalleItinerario.getItinerario());
+					tmpOcupacionAsientos.setNumeroAsiento(asientoSeleccionado.getNumeroAsiento());
+					tmpOcupacionAsientos.setNumeroPiso(asientoSeleccionado.getPiso());
+					tmpOcupacionAsientos.setFechaPartida(Util.DatetoString(detalleItinerario.getFechaPartida(), Constantes.DATE_FORMAT));
+					tmpOcupacionAsientos.setHoraPartida(detalleItinerario.getHoraPartida());
+					tmpOcupacionAsientos.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+					UtilData.auditarRegistro(tmpOcupacionAsientos, false, getUsuario(), Executions.getCurrent());
+					TmpOcupacionAsientosID tmpOcupacionAsientosID = new TmpOcupacionAsientosID();
+					tmpOcupacionAsientosID.setIdUsuarioHardware(tmpOcupacionAsientos.getUsuarioHardware().getId());
+					tmpOcupacionAsientosID.setIdUsuario(tmpOcupacionAsientos.getUsuario().getId());
+					tmpOcupacionAsientosID.setIdRuta(tmpOcupacionAsientos.getRuta().getId());
+					tmpOcupacionAsientosID.setIdItinerario(tmpOcupacionAsientos.getItinerario().getId());
+					tmpOcupacionAsientosID.setNumeroAsiento(tmpOcupacionAsientos.getNumeroAsiento());
+					tmpOcupacionAsientos.setTmpOcupacionAsientosID(tmpOcupacionAsientosID);
+
+					int result = ServiceLocator.getTmpOcupacionAsientosManager().bloquearAsiento(tmpOcupacionAsientos);
+					/*	En caso el bloqueo de asiento no haya tenido exito	*/
+					if(result < 0){
+						DlgMessage.information(Messages.getString("WndVentaReserva.information.asientoBloqueado"));
+						onRefreshMapaAsientos(postMapaAsientos, asientoSeleccionado.getDetalleItinerario(), null);
+						return;
+					}else{	/*	Agregamos el asiento a la lista de seleccionados	*/
+						mapaAsientos.get(key).setSrc(Constantes.PATH_PARTIAL+"asientoBloqueado_"+asientoSeleccionado.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
+						mapaAsientos.get(key).setEstadoAsiento(Constantes.ASIENTO_BLOQUEADO);
+
+						asientoSeleccionado.getDetalleItinerario().setAsiento(asientoSeleccionado.getNumeroAsiento().toString());
+						asientoSeleccionado.getDetalleItinerario().setPiso(String.valueOf(asientoSeleccionado.getPiso()));
+						asientoSeleccionado.getDetalleItinerario().setZona(String.valueOf(asientoSeleccionado.getNumeroZona()));
+
+						List<TarifaRegular> lstTarifaRegular = buscarTarifa(
+								asientoSeleccionado.getDetalleItinerario().getItinerario().getServicio().getId(),
+								asientoSeleccionado.getDetalleItinerario().getRuta().getId(),
+								Util.DatetoString(asientoSeleccionado.getDetalleItinerario().getFechaPartida(), Constantes.DATE_FORMAT),
+								asientoSeleccionado.getDetalleItinerario().getHoraPartida(),
+								asientoSeleccionado.getPiso(),
+								asientoSeleccionado.getNumeroZona());
+						if(lstTarifaRegular.size()>0) {
+							Double montoTarifa = .00;
+							for(TarifaRegular tarifaRegular: lstTarifaRegular) {
+								if(tarifaRegular.getTarifa()!=null && tarifaRegular.getTarifa().getPisoBus().intValue()==asientoSeleccionado.getPiso()) {
+									montoTarifa = (tarifaRegular.getMonto()!=null?tarifaRegular.getMonto():.00);
+									break;
+								}										
+							}															
+							asientoSeleccionado.getDetalleItinerario().setTarifa(montoTarifa);
+						}else
+							asientoSeleccionado.getDetalleItinerario().setTarifa(0.00);
+
+						/*============================================================*/
+						asientoSeleccionado.getDetalleItinerario().setEsIda(true);
+						/*============================================================*/						
+						Listitem listitemAsientos = new Listitem();
+						Listcell cell = new Listcell(asientoSeleccionado.getDetalleItinerario().getRuta().toString());
+						listitemAsientos.appendChild(cell);
+						cell = new Listcell(asientoSeleccionado.getNumeroAsiento().toString());
+						listitemAsientos.appendChild(cell);
+						DetalleItinerario detalle = (DetalleItinerario)asientoSeleccionado.getDetalleItinerario().clone();
+						detalle.setObjAsiento(asientoSeleccionado);
+						VentaIdaRetorno venta = new VentaIdaRetorno();
+						venta.setDetalleItinerarioIDA(detalle);
+						listitemAsientos.setValue(venta);
+						ltbxPostAsientoSeleccionado.appendChild(listitemAsientos);
+						lblPostAsiento.setValue(asientoSeleccionado.getNumeroAsiento().toString());
+						dbxPostTarifa.setValue(detalle.getTarifa());
+						calcularTotalPagoPost();
+						if(!cmbPostTipoFormaPago.isDisabled()) {
+							cmbPostTipoFormaPago.open();
+							cmbPostTipoFormaPago.setFocus(true);							
+						}	
+					}
+				}
+//			}
+		}catch(DuplicateSeatException dsex){
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.asientoVendido"));
+			onRefreshMap();
+		}catch(DataIntegrityViolationException divex){
+			DlgMessage.information(Messages.getString("WndVentaReserva.information.asientoBloqueado"));
+		}catch(Exception ex){
+			ex.printStackTrace();
+			log.error(ex);
+			DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
+		}
+	}
+	
+	
+	@SuppressWarnings("deprecation")
+	private Window createWindowProgramacionBus(Itinerario itinerario, Manifiesto manifiesto)throws Exception{
+		
+		final Window win = new Window("", "normal", true);
+		win.setWidth("600px");
+
+		Caption caption = new Caption("PROGRAMACIÓN DE BUS", "resources/buttons/mp_bus-clock.png");
+		win.appendChild(caption);
+		
+		Groupbox groupbox = new Groupbox();
+		groupbox.setClosable(false);
+		groupbox.setMold("3d");
+		caption = new Caption("DATOS DEL ITINERARIO");
+		caption.setStyle("color: #ffffff;");
+		groupbox.appendChild(caption);
+		Grid grid = new Grid();
+		grid.setStyle("border:none");
+		Columns columns = new Columns();
+		Column column = new Column(null, null, "100px");
+		column.setAlign("right");
+		columns.appendChild(column);
+		columns.appendChild(new Column(null, null, "180px"));
+		column = new Column(null, null, "110px");
+		column.setAlign("right");
+		columns.appendChild(column);
+		columns.appendChild(new Column());
+		Rows rows = new Rows();
+		Row row = new Row();
+		row.setSpans("1,3");
+		row.appendChild(new Label("EMPRESA :"));
+		Label label = new Label(itinerario.getEmpresa().getNombreCorto());
+		label.setSclass("label-alert");
+		row.appendChild(label);
+		rows.appendChild(row);
+		row = new Row();
+		row.appendChild(new Label("ITINERARIO :"));
+		label = new Label(itinerario.getId().toString());
+		label.setSclass("label-size11-bold");
+		row.appendChild(label);
+		row.appendChild(new Label("TIPO SERVICIO :"));
+		label = new Label(itinerario.getServicio().getDenominacion());
+		label.setSclass("label-size11-bold");
+		row.appendChild(label);
+		rows.appendChild(row);
+		row = new Row();
+		row.appendChild(new Label("ORIGEN INICIAL :"));
+		label = new Label(itinerario.getRuta().getOrigen());
+		label.setSclass("label-size11-bold");
+		row.appendChild(label);
+		row.appendChild(new Label("DESTINO FINAL :"));
+		label = new Label(itinerario.getRuta().getDestino());
+		label.setSclass("label-size11-bold");
+		row.appendChild(label);
+		rows.appendChild(row);
+		row = new Row();
+		row.appendChild(new Label("AGENCIA PARTIDA :"));
+		label = new Label(itinerario.getAgenciaPartida().getDenominacion());
+		label.setSclass("label-size11-bold");
+		row.appendChild(label);
+		row.appendChild(new Label("AGENCIA LLEGADA :"));
+		label = new Label(itinerario.getAgenciaLlegada().getDenominacion());
+		label.setSclass("label-size11-bold");
+		row.appendChild(label);
+		rows.appendChild(row);
+		row = new Row();		
+		row.appendChild(new Label("FECHA/HORA PARTIDA :"));
+		label = new Label(Constantes.FORMAT_DATE.format(itinerario.getFechaPartida())+" "+itinerario.getHoraPartida());
+		label.setSclass("label-size11-bold");
+		label.setStyle("font-size:13px !important");
+		row.appendChild(label);
+		row.appendChild(new Label("FECHA/HORA LLEGADA :"));
+		label = new Label(Constantes.FORMAT_DATE.format(itinerario.getFechaLlegada())+" "+itinerario.getHoraLlegada());
+		label.setSclass("label-size11-bold");
+		label.setStyle("font-size:13px !important");
+		row.appendChild(label);
+		rows.appendChild(row);
+		grid.appendChild(rows);
+		grid.appendChild(columns);		
+		groupbox.appendChild(grid);		
+		win.appendChild(groupbox);
+		
+		groupbox = new Groupbox();
+		groupbox.setStyle("margin-top:2px");
+		groupbox.setClosable(false);
+		groupbox.setMold("3d");
+		caption = new Caption("DATOS DE LA PROGRAMACIÓN");
+		caption.setStyle("color: #ffffff;");
+		groupbox.appendChild(caption);
+		grid = new Grid();
+		grid.setStyle("border:none");
+		columns = new Columns();
+		column = new Column(null, null, "100px");
+		column.setAlign("right");
+		columns.appendChild(column);
+		columns.appendChild(new Column());
+		grid.appendChild(columns);
+		rows = new Rows();
+		row = new Row();
+		row.appendChild(new Label("BUS :"));
+		cmbPbBus = new Combobox();
+		cmbPbBus.setMold("rounded");
+		cmbPbBus.setWidth("60%");
+		row.appendChild(cmbPbBus);
+		rows.appendChild(row);
+		row = new Row();
+		row.appendChild(new Label("PILOTO :"));
+		cmbPbPiloto = new Combobox();
+		cmbPbPiloto.setMold("rounded");
+		cmbPbPiloto.setWidth("90%");
+		row.appendChild(cmbPbPiloto);
+		rows.appendChild(row);
+		row = new Row();
+		row.appendChild(new Label("COPILOTO :"));
+		cmbPbCopiloto = new Combobox();
+		cmbPbCopiloto.setMold("rounded");
+		cmbPbCopiloto.setWidth("90%");
+		row.appendChild(cmbPbCopiloto);
+		rows.appendChild(row);
+		row = new Row();
+		row.appendChild(new Label("COPILOTO AUX :"));
+		cmbPbCopilotoAuxiliar = new Combobox();
+		cmbPbCopilotoAuxiliar.setMold("rounded");
+		cmbPbCopilotoAuxiliar.setWidth("90%");
+		row.appendChild(cmbPbCopilotoAuxiliar);
+		rows.appendChild(row);
+		row = new Row();
+		row.appendChild(new Label("TRIPULANTE :"));
+		cmbPbTripulante = new Combobox();
+		cmbPbTripulante.setMold("rounded");
+		cmbPbTripulante.setWidth("90%");
+		row.appendChild(cmbPbTripulante);
+		rows.appendChild(row);
+		grid.appendChild(rows);
+		groupbox.appendChild(grid);
+		win.appendChild(groupbox);
+		
+		grid = new Grid();
+		grid.setStyle("margin-top:3px");
+		columns = new Columns();
+		column = new Column();
+		column.setAlign("center");
+		columns.appendChild(column);
+		rows = new Rows();
+		row = new Row();
+		Div div = new Div();
+		div.setStyle("text-align:center;");
+		btnPbEditar = new Button("Editar");
+		btnPbEditar.setAutodisable("self");
+		disabled_btnModificar(btnPbEditar, (programacionServicio==null || manifiesto!=null));		
+		btnPbGuardar = new Button("Guardar");
+		btnPbGuardar.setAutodisable("self");
+		disabled_btnGuardar(btnPbGuardar, programacionServicio!=null);
+		btnPbAnular = new Button("Anular");		
+		btnPbAnular.setAutodisable("self");
+		disabled_btnAnular(btnPbAnular, (programacionServicio==null || manifiesto!=null));
+		validarEdicionPb(itinerario);
+		btnPbCerrar = new Button("Cerrar");
+		btnPbCerrar.setImage("resources/mp_cerrar.png");		
+		btnPbCerrar.setSclass("btnCommandL");
+		btnPbCerrar.setAutodisable("self");
+		div.appendChild(btnPbEditar);
+		div.appendChild(new Separator("vertical"));
+		div.appendChild(btnPbGuardar);
+		div.appendChild(new Separator("vertical"));
+		div.appendChild(btnPbAnular);
+		div.appendChild(new Separator("vertical"));
+		div.appendChild(btnPbCerrar);
+		row.appendChild(div);
+		rows.appendChild(row);
+		grid.appendChild(rows);
+		win.appendChild(grid);
+		
+		loadBusesPb(cmbPbBus, itinerario.getEmpresa());
+		UtilData.cargarPersonalXtipo(cmbPbPiloto, null, Constantes.ID_TIPPER_PILOTO_COPILOTO);
+		UtilData.cargarPersonalXtipo(cmbPbCopiloto, null, Constantes.ID_TIPPER_PILOTO_COPILOTO);
+		UtilData.cargarPersonalXtipo(cmbPbCopilotoAuxiliar, null, Constantes.ID_TIPPER_PILOTO_COPILOTO);
+		UtilData.cargarPersonalXtipo(cmbPbTripulante, null, Constantes.ID_TIPPER_TRIPULANTE);
+		
+		if(programacionServicio!=null) {
+			Util.seleccionarValorItemCombo(Bus.class, cmbPbBus, programacionServicio.getBus().getId());
+			Util.seleccionarValorItemCombo(Personal.class, cmbPbPiloto, programacionServicio.getPiloto().getId());
+			if(programacionServicio.getCopiloto()!=null)
+				Util.seleccionarValorItemCombo(Personal.class, cmbPbCopiloto, programacionServicio.getCopiloto().getId());
+			if(programacionServicio.getCopilotoAuxiliar()!=null)
+				Util.seleccionarValorItemCombo(Personal.class, cmbPbCopilotoAuxiliar, programacionServicio.getCopilotoAuxiliar().getId());
+			if(programacionServicio.getTripulante()!=null)
+				Util.seleccionarValorItemCombo(Personal.class, cmbPbTripulante, programacionServicio.getTripulante().getId());
+		}	
+		
+		disabledControlsPb(programacionServicio!=null);
+		
+		cmbPbBus.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				try {
+					
+					onChange_cmbPbBus(itinerario);
+					
+				} catch (Exception ex) {
+					ex.printStackTrace();
+					log.error(ex);
+					DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
+				}
+			}
+		});
+		cmbPbPiloto.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				try {
+					
+					onChange_cmbPbPiloto(itinerario);
+					
+				} catch (Exception ex) {
+					ex.printStackTrace();
+					log.error(ex);
+					DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
+				}
+			}
+		});
+		cmbPbCopiloto.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				try {
+					
+					onChange_cmbPbCopiloto(itinerario);
+					
+				} catch (Exception ex) {
+					ex.printStackTrace();
+					log.error(ex);
+					DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
+				}
+			}
+		});
+		cmbPbTripulante.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				try {
+					
+					onChange_cmbPbTripulante(itinerario);
+					
+				} catch (Exception ex) {
+					ex.printStackTrace();
+					log.error(ex);
+					DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
+				}
+			}
+		});
+		cmbPbBus.addEventListener(Events.ON_FOCUS, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				((Combobox)event.getTarget()).select();
+			}
+		});
+		cmbPbPiloto.addEventListener(Events.ON_FOCUS, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				((Combobox)event.getTarget()).select();
+			}
+		});
+		cmbPbCopiloto.addEventListener(Events.ON_FOCUS, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				((Combobox)event.getTarget()).select();
+			}
+		});
+		cmbPbCopilotoAuxiliar.addEventListener(Events.ON_FOCUS, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				((Combobox)event.getTarget()).select();
+			}
+		});
+		cmbPbTripulante.addEventListener(Events.ON_FOCUS, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				((Combobox)event.getTarget()).select();
+			}
+		});
+		btnPbEditar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				try {
+					
+					disabledControlsPb(false);		
+					cmbPbBus.setFocus(true);
+					disabled_btnModificar(btnPbEditar, true);
+					disabled_btnGuardar(btnPbGuardar, false);
+					disabled_btnAnular(btnPbAnular, true);
+					btnPbCerrar.setLabel("Cancelar");
+				} catch (Exception ex) {
+					ex.printStackTrace();
+					log.error(ex);
+					DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
+				}
+			}
+		});
+		btnPbGuardar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				try {
+					
+					onClick_btnPbGuardar(itinerario);
+					
+				} catch (Exception ex) {
+					ex.printStackTrace();
+					log.error(ex);
+					DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
+				}
+			}
+		});
+		btnPbAnular.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				try {
+					
+					onClick_btnPbAnular();					
+					
+				} catch (Exception ex) {
+					ex.printStackTrace();
+					log.error(ex);
+					DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
+				}
+			}
+		});
+		btnPbCerrar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				if(!btnPbGuardar.isDisabled() && programacionServicio!=null && programacionServicio.getId()!=null) {
+					disabled_btnModificar(btnPbEditar, false);
+					disabled_btnGuardar(btnPbGuardar, true);
+					disabled_btnAnular(btnPbAnular, false);
+					validarEdicionPb(itinerario);
+					btnPbCerrar.setLabel("Cerrar");
+					disabledControlsPb(true);
+				}else
+					win.onClose();
+			}
+		});
+		
+		return win;
+	}
+	
+	
+	/**
+	 * 
+	 * @param programacionServicio
+	 * @throws Exception
+	 */
+	private void onClick_btnPbGuardar(Itinerario itinerario)throws Exception{
+		if(cmbPbBus.getSelectedIndex()<0) {
+			DlgMessage.information(Messages.getString("WndProgramacionServicios.Information.SeleccioneBus"), cmbPbBus);
+			return;
+		}else if(cmbPbPiloto.getSelectedIndex()<0) {
+			DlgMessage.information(Messages.getString("WndProgramacionServicios.Information.SeleccionePilo"), cmbPbPiloto);
+			return;
+		}else if(cmbPbCopiloto.getSelectedIndex()<0) {
+			DlgMessage.information(Messages.getString("WndProgramacionServicios.Information.SeleccionCopiloto"), cmbPbCopiloto);
+			return;
+		}else if(cmbPbPiloto.getSelectedItem().getValue().equals(cmbPbCopiloto.getSelectedItem().getValue())) {
+			DlgMessage.information(Messages.getString("WndProgramacionServicios.Information.PilotosIguales"),cmbPbPiloto);
+			return;
+		}
+		
+		boolean isEdicion = (programacionServicio!=null && programacionServicio.getId()!=null);
+		if(programacionServicio ==null)
+			programacionServicio = new ProgramacionServicio();
+		
+		programacionServicio.setItinerario(itinerario);
+		programacionServicio.setBus(cmbPbBus.getSelectedItem().getValue());
+		programacionServicio.setPiloto(cmbPbPiloto.getSelectedItem().getValue());
+		programacionServicio.setCopiloto(cmbPbCopiloto.getSelectedItem().getValue());
+		programacionServicio.setCopilotoAuxiliar(null);
+		if(cmbPbCopilotoAuxiliar.getSelectedIndex()>=0)
+			programacionServicio.setCopilotoAuxiliar(cmbPbCopilotoAuxiliar.getSelectedItem().getValue());
+		if(cmbPbTripulante.getSelectedIndex()>=0)
+			programacionServicio.setTripulante(cmbPbTripulante.getSelectedItem().getValue());
+		programacionServicio.setEstadoRegistro(Constantes.VALUE_ACTIVO);							
+		
+		Messagebox.show(Messages.getString("Generales.query.guardar"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event e) throws Exception {
+				if(e.getName().equals("onYes")){
+					try{
+						String messageConfirmation = "";
+						if(!isEdicion) {
+							UtilData.auditarRegistro(programacionServicio, getUsuario(), Executions.getCurrent());
+							ServiceLocator.getProgramacionServiciosManager().guardar(programacionServicio);
+							messageConfirmation = "WndProgramacionServicios.Information.GuardoCorrectamente";													
+						}else {
+							UtilData.auditarRegistro(programacionServicio, true, getUsuario(), Executions.getCurrent());
+							ServiceLocator.getProgramacionServiciosManager().actualizar(programacionServicio);							
+							messageConfirmation = "WndProgramacionServicios.Information.ActualizadoCorrectamente";
+						}
+						
+						//Actualiza el itinerario con el identificacion del bus.
+						ServiceLocator.getProgramacionServiciosManager().updateItinerarioBus(itinerario.getId(), programacionServicio.getBus().getId().longValue());
+						
+						disabledControlsPb(true);
+						disabled_btnModificar(btnPbEditar, false);
+						disabled_btnGuardar(btnPbGuardar, true);
+						disabled_btnAnular(btnPbAnular, false);	
+						validarEdicionPb(itinerario);
+						btnPbCerrar.setLabel("Cerrar");
+						DlgMessage.information(Messages.getString(messageConfirmation), btnPbCerrar);
+						
+					}catch(DuplicateSeatException  ds){
+						DlgMessage.information(Messages.getString("WndProgramacionServicios.Information.duplicate"));
+					}catch (ItinerarioException inex){
+						if(inex.getTipo().intValue()==ItinerarioException.ITINERARIO_NULL)
+							DlgMessage.information(Messages.getString("WndProgramacionServicios.Information.SeleccioneItinerario"));
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName()+" "+ex.getMessage());
+					}
+				}
+			}
+		});
+	}
+	
+	/**
+	 * Anula Programaci�n.
+	 * @throws Exception
+	 */
+	private void onClick_btnPbAnular() throws Exception{
+		/*Valida si el servicio ya tiene manifiesto*/
+		TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
+		criteriosBusqueda.put("bus", programacionServicio.getBus());
+		criteriosBusqueda.put("itinerario", programacionServicio.getItinerario());
+		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+		List<Manifiesto>listManifiesto=ServiceLocator.getManifiestoManager().buscarPorX(criteriosBusqueda, null);
+		if(listManifiesto.size()>0) {
+			DlgMessage.information(Messages.getString("WndProgramacionServicios.Information.EliminacionNoPermitida"));
+			return;
+		}
+		
+		/*Valida si el servicio ya esta asociado a una hre*/
+		HRE hre= ServiceLocator.getHREManager().buscarHREEmitida(programacionServicio.getItinerario().getId());
+		if(hre!=null){
+			DlgMessage.information(Messages.getString("WndProgramacionServicios.Information.deleteServicioHRE"));
+			return;
+		}
+
+		Messagebox.show(Messages.getString("WndProgramacionServicios.question.AnularProgramacion"),DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event e) throws Exception {
+				if(e.getName().equals("onYes")){
+					programacionServicio.setEstadoRegistro(Constantes.VALUE_INACTIVO);
+					UtilData.auditarRegistro(programacionServicio,true, getUsuario(), Executions.getCurrent());
+					ServiceLocator.getProgramacionServiciosManager().actualizar(programacionServicio);
+					programacionServicio = null;
+					disabledControlsPb(false);
+					cleanDatosPb();
+					disabled_btnModificar(btnPbEditar, true);
+					disabled_btnGuardar(btnPbGuardar, false);
+					disabled_btnAnular(btnPbAnular, true);
+					cmbPbBus.setFocus(true);
+				}
+			}
+		});
+	}
+	
+	/**
+	 * 
+	 * @param itinerario
+	 * @throws Exception
+	 */
+	private void onChange_cmbPbBus (Itinerario itinerario)throws Exception{
+		if(cmbPbBus.getSelectedIndex()>=0) {
+			Bus bus = cmbPbBus.getSelectedItem().getValue();
+			String fechaPartidad= Constantes.FORMAT_DATE.format(itinerario.getFechaPartida());
+			String horaPartida=itinerario.getHoraPartida();
+			List<ProgramacionServicio> list = ServiceLocator.getProgramacionServiciosManager().validacionBusesProgramados(fechaPartidad,horaPartida,bus.getId(),itinerario.getAgenciaPartida().getId());
+			if(list.size()>0) {
+				ProgramacionServicio _programacionServicio = list.get(0);
+				if(this.programacionServicio!=null && this.programacionServicio.getId().longValue()!=_programacionServicio.getId().intValue()) {
+					Messagebox.show("El Bus seleccionado ya está Programado para esta fecha. "+
+							"	Itinerario:" +  _programacionServicio.getItinerario().getId() +
+							"	Ruta:" + _programacionServicio.getItinerario().getRuta().getOrigen() + " - " + _programacionServicio.getItinerario().getRuta().getDestino() +
+							". 	¿Desea continuar?",
+						DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+						@Override
+						public void onEvent(Event e) throws Exception {
+							if(!e.getName().equals("onYes")){
+								cmbPbBus.setText("");
+								cmbPbBus.setSelectedIndex(-1);
+							}
+						}
+					});
+				}
+			}
+		}		
+	}
+	
+	/**
+	 * 
+	 * @param itinerario
+	 * @throws Exception
+	 */
+	private void onChange_cmbPbPiloto (Itinerario itinerario)throws Exception{	
+		if(cmbPbPiloto.getSelectedIndex()>=0) {
+			Personal piloto = cmbPbPiloto.getSelectedItem().getValue();
+			ProgramacionServicio programacion =  validarPbPilotoTripulante(TIPO_PERSONAL_PILOTO, piloto.getId().intValue(), itinerario);
+			if(programacion!=null) {
+				Messagebox.show("El Piloto seleccionado se encuentra programado en el Servicio: " +
+								programacion.getItinerario().getRuta().getOrigen() +" - "+programacion.getItinerario().getRuta().getDestino() +
+								",  Hora Partida:"+programacion.getItinerario().getHoraPartida()+", Bus:"+programacion.getBus().getCodigo() +
+								".\n ¿Desea continuar?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+					@Override
+					public void onEvent(Event e) throws Exception {
+						if(!e.getName().equals("onYes")){
+							cmbPbPiloto.setText("");
+							cmbPbPiloto.setSelectedIndex(-1);
+						}
+					}
+				});
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @param itinerario
+	 * @throws Exception
+	 */
+	private void onChange_cmbPbCopiloto (Itinerario itinerario)throws Exception{	
+		if(cmbPbCopiloto.getSelectedIndex()>=0) {
+			Personal piloto = cmbPbCopiloto.getSelectedItem().getValue();
+			ProgramacionServicio programacion =  validarPbPilotoTripulante(TIPO_PERSONAL_COPILOTO, piloto.getId().intValue(), itinerario);
+			if(programacion!=null) {
+				Messagebox.show("El Copiloto seleccionado se encuentra programado en el Servicio: " +
+								programacion.getItinerario().getRuta().getOrigen() +" - "+programacion.getItinerario().getRuta().getDestino() +
+								",  Hora Partida:"+programacion.getItinerario().getHoraPartida()+", Bus:"+programacion.getBus().getCodigo() +
+								".\n ¿Desea continuar?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+					@Override
+					public void onEvent(Event e) throws Exception {
+						if(!e.getName().equals("onYes")){
+							cmbPbCopiloto.setText("");
+							cmbPbCopiloto.setSelectedIndex(-1);
+						}
+					}
+				});
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @param itinerario
+	 * @throws Exception
+	 */
+	private void onChange_cmbPbTripulante (Itinerario itinerario)throws Exception{	
+		if(cmbPbTripulante.getSelectedIndex()>=0) {
+			Personal piloto = cmbPbTripulante.getSelectedItem().getValue();
+			ProgramacionServicio programacion =  validarPbPilotoTripulante(TIPO_PERSONAL_PILOTO, piloto.getId().intValue(), itinerario);
+			if(programacion!=null) {
+				Messagebox.show("El Tripulante seleccionado se encuentra programado en el Servicio: " +
+								programacion.getItinerario().getRuta().getOrigen() +" - "+programacion.getItinerario().getRuta().getDestino() +
+								",  Hora Partida:"+programacion.getItinerario().getHoraPartida()+", Bus:"+programacion.getBus().getCodigo() +
+								".\n ¿Desea continuar?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+					@Override
+					public void onEvent(Event e) throws Exception {
+						if(!e.getName().equals("onYes")){
+							cmbPbTripulante.setText("");
+							cmbPbTripulante.setSelectedIndex(-1);
+						}
+					}
+				});
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @param idTipoPersonal
+	 * @param idPersonal
+	 * @param itinerario
+	 * @return
+	 * @throws Exception
+	 */
+	private ProgramacionServicio validarPbPilotoTripulante(int idTipoPersonal, int idPersonal, Itinerario itinerario)throws Exception{
+						
+		String fechaPartida=Constantes.FORMAT_DATE.format(itinerario.getFechaPartida());
+		Long idPiloto = null, idCopiloto = null, idTripulante = null;
+		if(idTipoPersonal==TIPO_PERSONAL_PILOTO)
+			idPiloto = (long)idPersonal;
+		else if(idTipoPersonal==TIPO_PERSONAL_COPILOTO)
+			idCopiloto = (long)idPersonal;
+		else if(idTipoPersonal==TIPO_PERSONAL_TRIPULANTE)
+			idTripulante = (long)idPersonal;
+		
+		ProgramacionServicio programacion=ServiceLocator.getProgramacionServiciosManager().validaIngresoChoferTripulante(fechaPartida, idPiloto, idCopiloto, idTripulante,itinerario.getHoraPartida(),itinerario.getAgenciaPartida().getId());
+		if(programacion!=null) {
+			if(programacionServicio!=null && programacionServicio.getId().longValue()!=programacion.getId().longValue())
+				return programacion;
+		}
+			
+		return null;	
+	}
+	
+	/**
+	 * Valida la edición del la Programación de Bus
+	 * @param itinerario
+	 * @throws Exception
+	 */
+	private void validarEdicionPb(Itinerario itinerario)throws Exception{		
+		if(!btnPbAnular.isDisabled() && programacionServicio!=null && programacionServicio.getId()!=null) {
+			Date fechaPartida = itinerario.getFechaPartida();
+			Date fechaActual = Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date()));
+			if(fechaPartida.getTime()<fechaActual.getTime())
+				btnPbEditar.setDisabled(true);
+		}
+	}
+	
+	
+	/**
+	 * Carga listado de buses para la Programación de Buses.
+	 * @param cmbBus
+	 * @param empresa
+	 * @throws Exception
+	 */
+	private void loadBusesPb(Combobox cmbBus, Empresa empresa)throws Exception{		
+		TreeMap<String, Object>criteriosBusqueda = new TreeMap<String, Object>();
+		criteriosBusqueda.put("empresa", empresa);
+		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);			
+		List<String> criteriosOrden = new ArrayList<String>();
+		criteriosOrden.add("codigo");
+		
+		List<Bus>listBuses = ServiceLocator.getBusManager().buscarPorX(criteriosBusqueda, criteriosOrden);
+		for(Bus bus: listBuses) {
+			String descripcion = "";
+			descripcion = bus.getCodigo();
+			descripcion += "  PLACA: "+ bus.getNumeroPlaca();
+			descripcion += "  CAP: "+ bus.getCapacidad();
+			Comboitem comboitem = new Comboitem(descripcion);
+			comboitem.setValue(bus);
+			cmbBus.appendChild(comboitem);
+		}		
+	}
+	
+	
+	/**
+	 * Habilita/Deshabilita los controles para la Programción del Bus
+	 * @param disabled
+	 * @throws Exception
+	 */
+	private void disabledControlsPb(boolean disabled)throws Exception{		
+		cmbPbBus.setDisabled(disabled);
+		cmbPbPiloto.setDisabled(disabled);
+		cmbPbCopiloto.setDisabled(disabled);
+		cmbPbCopilotoAuxiliar.setDisabled(disabled);
+		cmbPbTripulante.setDisabled(disabled);	
+	}
+	
+	/**
+	 * Limpia los datos de la programación de Bus
+	 * @throws Exception
+	 */
+	private void cleanDatosPb()throws Exception{		
+		cmbPbBus.setSelectedIndex(-1);
+		cmbPbPiloto.setSelectedIndex(-1);
+		cmbPbCopiloto.setSelectedIndex(-1);
+		cmbPbCopilotoAuxiliar.setSelectedIndex(-1);
+		cmbPbTripulante.setSelectedIndex(-1);
+		cmbPbBus.setText("");
+		cmbPbPiloto.setText("");
+		cmbPbCopiloto.setText("");
+		cmbPbCopilotoAuxiliar.setText("");
+		cmbPbTripulante.setText("");
+	}
+	
+	@SuppressWarnings("deprecation")
+	private Window createWindowManifiesto_carpetaDespacho(boolean isManifiesto ,Itinerario itinerario, ProgramacionServicio programacionServicio, Manifiesto manifiesto, EspecieValorada especieValoradaSunat)throws Exception{
+		
+		final Window win = new Window("", "normal", true);
+		win.setWidth("1030px");
+		
+		String titleWin = "MANIFIESTO DE PASAJEROS";
+		String imageTitleWin = "resources/buttons/mp_manifiesto-pax.png";
+		if(isManifiesto) {
+			if(manifiesto == null)
+				titleWin += "::VISTA PRELIMINAR";
+			else
+				titleWin += "::EMITIDO";	
+		}else {
+			titleWin = "CARPETA DE DESPACHO";
+			imageTitleWin = "resources/buttons/mp_carpeta-despacho.png";
+		}
+		
+		
+		Caption caption = new Caption(titleWin, imageTitleWin);
+		win.appendChild(caption);
+		
+		Grid grid = new Grid();
+		grid.setStyle("border:none");
+		Columns columns = new Columns();
+		columns.appendChild(new Column(null, null, "600px"));
+		columns.appendChild(new Column());
+		grid.appendChild(columns);
+		Rows rows= new Rows();
+		Row row = new Row();
+		row.setSpans("2");
+		iframe = new Iframe();
+		iframe.setWidth("99.70%");
+		iframe.setStyle("height:85vh;overflow:auto;border: 1px solid gray");
+		row.appendChild(iframe);
+		rows.appendChild(row);
+		row = new Row();
+		Hbox hbox = new Hbox();
+		hbox.setAlign("center");
+		btnManPaxGuardar = new Button("Emitir");
+		btnManPaxGuardar.setTooltiptext("Emitir Manifiesto");
+		btnManPaxGuardar.setAutodisable("self");
+		btnManPaxGuardar.setVisible(false);
+		disabled_btnGuardar(btnManPaxGuardar, (programacionServicio==null || manifiesto!=null || especieValoradaSunat==null));
+		validarEmisionManPax(itinerario);
+		btnManPaxAnular = new Button("Anular");
+		btnManPaxAnular.setTooltiptext("Anular Manifiesto");
+		btnManPaxAnular.setAutodisable("self");
+		btnManPaxAnular.setVisible(false);
+		disabled_btnAnular(btnManPaxAnular, manifiesto==null);
+		validarAnulacionManPax(itinerario);
+		Label lblPuntocontrol = new Label("PUNTO CONTROL");
+		lblPuntocontrol.setStyle("margin-left:10px");
+		cmbCardesPuntoControl = new Combobox();
+		cmbCardesPuntoControl.setReadonly(true);
+		cmbCardesPuntoControl.setWidth("130px");
+		cmbCardesPuntoControl.setStyle("margin-left:5px");
+		hbox.appendChild(lblPuntocontrol);
+		hbox.appendChild(cmbCardesPuntoControl);		
+		hbox.appendChild(btnManPaxGuardar);
+		hbox.appendChild(new Separator("vertical"));
+		hbox.appendChild(btnManPaxAnular);
+		row.appendChild(hbox);
+		Radiogroup radiogroup = new Radiogroup();
+		rdManPaxPrintLaser = new Radio("Impresión Láser");
+		rdManPaxPrintMatricial = new Radio("Impresión Matricial");
+		radiogroup.appendChild(rdManPaxPrintLaser);
+		radiogroup.appendChild(new Separator("vertical"));
+		radiogroup.appendChild(rdManPaxPrintMatricial);		
+		btnManPaxPrint = new Button("Imprimir");
+		btnManPaxPrint.setAutodisable("self");
+		disabled_btnImprimir(btnManPaxPrint, false);
+		hbox = new Hbox();
+		hbox.setAlign("center");
+		hbox.appendChild(radiogroup);
+		hbox.appendChild(new Separator("vertical"));
+		hbox.appendChild(btnManPaxPrint);
+		row.appendChild(hbox);
+		rows.appendChild(row);
+		grid.appendChild(rows);
+		win.appendChild(grid);
+	
+		if(isManifiesto) {
+			lblPuntocontrol.setVisible(false);
+			cmbCardesPuntoControl.setVisible(false);
+			disabled_btnImprimir(btnManPaxPrint, manifiesto==null);
+			rdManPaxPrintLaser.setDisabled(btnManPaxPrint.isDisabled());
+			rdManPaxPrintMatricial.setDisabled(btnManPaxPrint.isDisabled());
+			btnManPaxAnular.setVisible(true);
+			btnManPaxGuardar.setVisible(true);			
+			
+			if(programacionServicio!=null) {
+				Bus bus = itinerario.getBus();
+				bus.setProgramacionServicio(programacionServicio);
+				itinerario.setBus(bus);
+			}
+			
+			//Carga el previo del manifiesto de pasajeros
+			loadPrevioManPax(manifiesto, itinerario, especieValoradaSunat);
+		}else {
+			lblPuntocontrol.setVisible(true);
+			cmbCardesPuntoControl.setVisible(true);
+			loadPuntoControlCarDes(cmbCardesPuntoControl, itinerario.getId());
+			loadPrevioCarDes(itinerario, cmbCardesPuntoControl);
+		}
+		
+		
+		if(!rdManPaxPrintMatricial.isDisabled())
+			rdManPaxPrintMatricial.setChecked(true);
+		
+		cmbCardesPuntoControl.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				// TODO Auto-generated method stub
+				try {
+					
+					loadPrevioCarDes(itinerario, cmbCardesPuntoControl);
+					
+				} catch (Exception ex) {
+					// TODO: handle exception
+					ex.printStackTrace();
+					log.error(ex);
+					DlgMessage.error(ex.getMessage());
+				}
+			}
+		});
+		btnManPaxGuardar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				try {
+					
+					onClick_btnManPaxGuardar(itinerario, programacionServicio);
+					
+				} catch (Exception ex) {
+					// TODO: handle exception
+					ex.printStackTrace();
+					log.error(ex);
+					DlgMessage.error(ex.getMessage());
+				}
+			}
+		});
+		btnManPaxAnular.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				try {
+					
+					onClick_btnManPaxAnular(manifiesto, itinerario);					
+					
+				} catch (Exception ex) {
+					// TODO: handle exception
+					ex.printStackTrace();
+					log.error(ex);
+					DlgMessage.error(ex.getMessage());
+				}
+			}
+		});
+		btnManPaxPrint.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				// TODO Auto-generated method stub
+				try {					
+					if(isManifiesto) {
+						manifiesto.setItinerario(itinerario);
+						onClick_btnManPaxPrint(manifiesto ,rdManPaxPrintMatricial.isChecked());
+					}else
+						onClick_btnCarDesPrint(itinerario, rdManPaxPrintMatricial.isChecked(), cmbCardesPuntoControl);
+						
+				} catch (Exception ex) {
+					// TODO: handle exception
+					ex.printStackTrace();
+					log.error(ex);
+					DlgMessage.error(ex.getMessage());
+				}
+			}
+		});
+		
+		return win;
+	}
+	
+	/**
+	 * 
+	 * @param itinerario
+	 * @param programacionServicio
+	 * @throws Exception
+	 */
+	private void onClick_btnManPaxGuardar(Itinerario itinerario, ProgramacionServicio programacionServicio)throws Exception{
+		EspecieValorada especieValoradaSunat =  ServiceLocator.getManifiestoManager().consultaAutorizacionSunat(getAgencia().getId(), itinerario.getEmpresa().getId());
+		if(especieValoradaSunat==null) {
+			DlgMessage.information(Messages.getString("WndManifiesto.information.noCorrelativoManifiesto"));
+			return;
+		}else if(especieValoradaSunat.getAutorizacionSunat()==null || especieValoradaSunat.getAutorizacionSunat().trim().isEmpty()) {
+			DlgMessage.information(Messages.getString("WndManifiesto.information.noCodigoAutorizacionSunat"));
+			return;
+		}
+		int porcentajeCorrelativoManifiesto = (int) UtilData.porcentajeCorrelativoManifiesto(getAgencia(), itinerario.getEmpresa());/*Calcula el porcenaje de correlativos utilizados de los manifiestos*/
+		if (porcentajeCorrelativoManifiesto>=100) {
+			DlgMessage.information(Messages.getString("WndManifiesto.information.correlativosAgotados"));
+			return;
+		}else if (itinerario.getBus() ==null) {
+			DlgMessage.information(Messages.getString("WndManifiesto.information.servicioNoProgramado"));
+			return;
+		}else if (itinerario.getBus().getDocumentoBus() ==null) { //Valida el TUC del Bus			
+			DlgMessage.information("El Bus "+ itinerario.getBus().getCodigo()+ " "+Messages.getString("WndManifiesto.information.noTieneCertificadoHabilitacionBus"));
+			return;
+		}			
+		/*Valida si el manifiesto ya está emitido*/
+		Manifiesto manifiestoEmitido = ServiceLocator.getManifiestoManager().consultaMinifiestImpreso(itinerario.getId());
+		if (manifiestoEmitido!=null){
+			String message = "El Bus "+ manifiestoEmitido.getCodigoBus() + " esta asociado al manifiesto ";
+			message += manifiestoEmitido.getNumeroManifiesto()+ " del día "+ Constantes.FORMAT_DATE.format(manifiestoEmitido.getFechaInsercion());
+			message += " a la(s) "+ Constantes.FORMAT_TIME.format(manifiestoEmitido.getFechaInsercion())+ " horas";
+			message += " conducido por "+manifiestoEmitido.getPiloto()+ " manifestado por ";
+			message += manifiestoEmitido.getUsuarioInsercion()+"."+ " No puede imprimir otro manifiesto.";				
+			DlgMessage.information(message);
+			return;
+		}			
+		/*Alerta al usuario si el correlativo del manifiesto es mayor o igual al 80%*/
+		if (porcentajeCorrelativoManifiesto >=Constantes.ALERTAR_ENVIO_MANIFIESTOS)
+			DlgMessage.information(Messages.getString("WndManifiesto.information.utilizacionCorrelativosManifiesto")+ " " +porcentajeCorrelativoManifiesto + " %");
+				
+		DocumentoBus documentoBus = new DocumentoBus();
+		documentoBus.setNumeroDocumento(itinerario.getBus().getDocumentoBus().getNumeroDocumento());
+		Bus bus = new Bus();
+		bus.setId(itinerario.getBus().getId());
+		bus.setCodigo(itinerario.getBus().getCodigo());
+		bus.setNumeroPlaca(itinerario.getBus().getNumeroPlaca());
+		bus.setDocumentoBus(documentoBus);
+		Manifiesto manifiesto = new Manifiesto();
+		manifiesto.setItinerario(itinerario);
+		manifiesto.setBus(bus);
+		manifiesto.setCodigoBus(bus.getCodigo());
+		manifiesto.setNumeroManifiesto(especieValoradaSunat.toString());
+		manifiesto.setAutorizacionSunat(especieValoradaSunat.getAutorizacionSunat());
+		manifiesto.setPiloto(programacionServicio.getPiloto().toString());
+		manifiesto.setCopiloto(programacionServicio.getCopiloto().toString());
+		if(programacionServicio.getCopilotoAuxiliar()!=null)
+			manifiesto.setCopilotoAuxiliar(programacionServicio.getCopilotoAuxiliar().toString());
+		if(programacionServicio.getTripulante() != null)
+			manifiesto.setTripulante(programacionServicio.getTripulante().toString());									
+		manifiesto.setCertificadoHabilitacion(bus.getDocumentoBus().getNumeroDocumento());
+		manifiesto.setPlaca(bus.getNumeroPlaca().toString());
+		manifiesto.setAgencia(getAgencia());
+		manifiesto.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+		UtilData.auditarRegistro(manifiesto, getUsuario(), Executions.getCurrent());
+		
+		Integer agenciaIdPartida = null;
+		List<VentaPasaje>listVentaPasajes=ServiceLocator.getManifiestoManager().consultaPasajeros(itinerario.getId(), agenciaIdPartida);
+		List<DetalleManifiesto> listDetalleManifiesto = new ArrayList<DetalleManifiesto>();
+		for(VentaPasaje ventaPasaje : listVentaPasajes) {
+			DetalleManifiesto detalleManifiesto=new DetalleManifiesto();
+			detalleManifiesto.setVentaPasaje(ventaPasaje);
+			detalleManifiesto.setAgencia(getAgencia());
+			detalleManifiesto.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+			UtilData.auditarRegistro(detalleManifiesto, getUsuario(), Executions.getCurrent());
+			listDetalleManifiesto.add(detalleManifiesto);
+		}
+		manifiesto.setListDetalleManifiesto(listDetalleManifiesto);
+		
+		Messagebox.show(Messages.getString("WndManifiesto.question.confirmarImpresion"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event e) throws Exception {
+				if(e.getName().equals("onYes")){
+					try{
+						ServiceLocator.getManifiestoManager().guarda(manifiesto);
+						
+						/*Actualiza correlativo manifiesto*/
+						UtilData.auditarRegistro(especieValoradaSunat, true, getUsuario(), Executions.getCurrent());
+						ServiceLocator.getManifiestoManager().updateCorrelativo(especieValoradaSunat, manifiesto);
+						
+						disabled_btnGuardar(btnManPaxGuardar, true);
+						disabled_btnAnular(btnManPaxAnular, false);
+						disabled_btnImprimir(btnManPaxPrint, false);
+						rdManPaxPrintLaser.setDisabled(false);
+						rdManPaxPrintMatricial.setDisabled(false);
+						rdManPaxPrintMatricial.setChecked(true);
+						
+						DlgMessage.information(Messages.getString("WndManifiesto.information.exitoEmisionManifiesto").replace("@manifiesto", manifiesto.getNumeroManifiesto()));
+					}catch(ManifiestoDuplicateException md){
+						DlgMessage.information(Messages.getString("WndManifiesto.information.DuplicateManifiesto"));
+					}
+				}
+			}
+		});
+	}
+	
+	/**
+	 * 
+	 * @param manifiesto
+	 * @throws Exception
+	 */
+	private void onClick_btnManPaxAnular(Manifiesto manifiesto, Itinerario itinerario)throws Exception{
+		
+		Messagebox.show("¿Realmente desea anular el Manifiesto?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event e) throws Exception {
+				if(e.getName().equals("onYes")){
+					Manifiesto _manifiesto = ServiceLocator.getManifiestoManager().buscarPorId(manifiesto.getId());
+					_manifiesto.setEstadoRegistro(Constantes.VALUE_INACTIVO);
+					UtilData.auditarRegistro(_manifiesto, true, getUsuario(), Executions.getCurrent());
+					ServiceLocator.getManifiestoManager().actualizar(_manifiesto);
+					
+					wndModal.onClose();
+					onClick_btnVtaManifiestoPasajeros();					
+				}
+			}
+		});
+	}
+	
+	/**
+	 * Realiza la impresion del manifiesto de pasajeros
+	 * @param isPrintMatricial
+	 * @throws Exception
+	 */
+	private void onClick_btnManPaxPrint(Manifiesto manifiesto, boolean isPrintMatricial)throws Exception{
+		File fileSunat= CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),true,ROTULO_SUNAT, null);
+		final File fileTransp=CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),true,ROTULO_TRANSPORTISTA, null);
+		final File fileArchivo=CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),true,ROTULO_ARCHIVO, null);
+
+		File fileDestino=new File(fileSunat.getPath().replaceAll(".txt", "")+"COMP.txt");
+		FileInputStream inputSunat= new FileInputStream(fileSunat);
+		FileInputStream inputTransp= new FileInputStream(fileTransp);
+		FileInputStream inputArchivo= new FileInputStream(fileArchivo);
+
+		OutputStream Salida = new FileOutputStream(fileDestino);
+		
+		//Valida el tipo de impresion
+		if(isPrintMatricial){
+			byte[] buffer = new byte[1024];
+            int tamanio;
+            //lee el fichero sunat a copiar cada 1MB
+            while ((tamanio = inputSunat.read(buffer)) > 0) {                
+            	Salida.write(buffer, 0, tamanio);//Escribe el MB en el fichero destino
+            }
+            inputSunat.close();
+
+            //lee el fichero transportista a copiar cada 1MB
+            while ((tamanio = inputTransp.read(buffer)) > 0) {                
+            	Salida.write(buffer, 0, tamanio);//Escribe el MB en el fichero destino
+            }
+             inputTransp.close();
+
+           //lee el fichero Archivo a copiar cada 1MB
+             while ((tamanio = inputArchivo.read(buffer)) > 0) {                 
+            	 Salida.write(buffer, 0, tamanio);//Escribe el MB en el fichero destino
+             }
+             inputArchivo.close();
+
+             Salida.close();
+             Util.descargarArchivo(fileDestino);
+		}else{
+			//Impresion lasser
+			XmlManifiesto xmlManifiesto_sunat = createXmlPrintLaserManPax(manifiesto, ROTULO_SUNAT);
+			XmlManifiesto xmlManifiesto_trans = createXmlPrintLaserManPax(manifiesto, ROTULO_TRANSPORTISTA);
+			XmlManifiesto xmlManifiesto_archivo= createXmlPrintLaserManPax(manifiesto, ROTULO_ARCHIVO);
+
+			List<XmlManifiesto> listXmlManifiesto=new ArrayList<>();
+			listXmlManifiesto.add(xmlManifiesto_sunat);
+			listXmlManifiesto.add(xmlManifiesto_trans);
+			listXmlManifiesto.add(xmlManifiesto_archivo);
+
+			//.RPT
+			String pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"Manifiesto.rpt";
+			Path path = Paths.get(pathRpt);
+			byte[] contenido = java.nio.file.Files.readAllBytes(path);
+			String cryptoRptFormat=new BASE64Encoder().encode(contenido);
+
+			XmlPrintLaser xmlPrintLaser= new XmlPrintLaser();
+			xmlPrintLaser.setZ_rpt(cryptoRptFormat);
+			xmlPrintLaser.setXmlManifiesto(listXmlManifiesto);
+
+			/*Zippea crea y zippea el archivo xml*/
+			String path_sunat=Util.createFileXmlToZipper(xmlPrintLaser, wndModal);
+
+
+			//************************************************************************************
+			//Consulta la version de impresi�n configurada para la agencia - jabanto 16/11/2022
+			Agencia oagencia = (Agencia)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
+
+			if(UtilFlag.isFormatPrintViewPdfManifiesto(oagencia.getId())) {
+				int len = path_sunat.length();
+				int pos = path_sunat.indexOf("PRNTLSR-");
+				String nameFileZip = path_sunat.substring(pos,len);
+				File file= new File(path_sunat);
+				byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
+//				int x = 0;
+				byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, true);
+				if(filePdfZip !=null) {
+					String urlViewPdf = UtilFlag.getUrlView_pdf();
+					if(urlViewPdf !=null) {
+						String crypto = new BASE64Encoder().encode(filePdfZip);
+						Executions.getCurrent().sendRedirect(urlViewPdf+"?vl="+crypto, "_blank");
+					}
+				}
+
+			}else if(UtilFlag.isFormatPrintDownload(oagencia.getId())) {
+				int len = path_sunat.length();
+				int pos = path_sunat.indexOf("PRNTLSR-");
+				String nameFileZip = path_sunat.substring(pos,len);
+				File file= new File(path_sunat);
+				byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
+
+				byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, false);
+				if(filePdfZip !=null)
+					Filedownload.save(filePdfZip, "multipart/form-data", nameFileZip);
+
+			}else if(UtilFlag.isFormatPrintViewPdf(oagencia.getId())) {
+				int len = path_sunat.length();
+				int pos = path_sunat.indexOf("PRNTLSR-");
+				String nameFileZip = path_sunat.substring(pos,len);
+				File file= new File(path_sunat);
+				byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
+//				int x = 0;
+				byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, true);
+				if(filePdfZip !=null) {
+					String urlViewPdf = UtilFlag.getUrlView_pdf();
+					if(urlViewPdf !=null) {
+						String crypto = new BASE64Encoder().encode(filePdfZip);
+						Executions.getCurrent().sendRedirect(urlViewPdf+"?vl="+crypto, "_blank");
+					}
+				}
+			}else {
+				/*Descarga el archivo .xml*/
+				Filedownload.save(new File(path_sunat), "application/zip");
+			}
+		}
+	}
+	
+	/**
+	 * Realiza la impresion del manifiesto de pasajeros
+	 * @param isPrintMatricial
+	 * @throws Exception
+	 */
+	private void onClick_btnCarDesPrint(Itinerario itinerario, boolean isPrintMatricial, Combobox cmbPuntoControl)throws Exception{
+		Itinerario _itinerario = (Itinerario)itinerario.clone();		
+		Agencia agenciaPuntoControl= null;
+		if(cmbPuntoControl.getSelectedItem().getValue() instanceof Agencia)
+			agenciaPuntoControl=(Agencia)cmbPuntoControl.getSelectedItem().getValue();
+		_itinerario.setAgenciaPartida(agenciaPuntoControl);
+		
+		if(isPrintMatricial){
+			File file=CreateDocument.creaCarpetaDespacho(_itinerario, getAgencia());
+//			String fileName = _itinerario.getId().toString();
+//			if(_itinerario.getAgenciaPartida() !=null)
+//				fileName += "-" + _itinerario.getAgenciaPartida().getId().toString();
+//			fileName += ".txt";			
+			Util.descargarArchivo(file);
+		}else{
+			 XmlCarpetaDespacho xmlCarpetaDespacho= createXmlPrintLaserCarDes(_itinerario);
+
+			//.RPT
+			String pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"CarpetaDespacho.rpt";
+			Path path = Paths.get(pathRpt);
+			byte[] contenido = java.nio.file.Files.readAllBytes(path);
+			String cryptoRptFormat=new BASE64Encoder().encode(contenido);
+
+			XmlPrintLaser xmlPrintLaser= new XmlPrintLaser();
+//			xmlPrintLaser.setA_configPrint(xmlConfigPrint);
+			xmlPrintLaser.setZ_rpt(cryptoRptFormat);
+			xmlPrintLaser.setXmlCarpetaDespacho(xmlCarpetaDespacho);
+
+			/*Zippea crea y zip el archivo xml*/
+			String path_sunat=Util.createFileXmlToZipper(xmlPrintLaser, wndModal);
+
+
+			//************************************************************************************
+			//Consulta la version de impresi�n configurada para la agencia - jabanto 16/11/2022
+			Agencia oagencia = (Agencia)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
+
+			if(UtilFlag.isFormatPrintViewPdfCarpetaDespacho(oagencia.getId())) {
+				int len = path_sunat.length();
+				int pos = path_sunat.indexOf("PRNTLSR-");
+				String nameFileZip = path_sunat.substring(pos,len);
+				File file= new File(path_sunat);
+				byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
+
+				byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, true);
+				if(filePdfZip !=null) {
+					String urlViewPdf = UtilFlag.getUrlView_pdf();
+					if(urlViewPdf !=null) {
+						String crypto = new BASE64Encoder().encode(filePdfZip);
+						Executions.getCurrent().sendRedirect(urlViewPdf+"?vl="+crypto, "_blank");
+					}
+				}
+
+			}else if(UtilFlag.isFormatPrintDownload(oagencia.getId())) {
+				int len = path_sunat.length();
+				int pos = path_sunat.indexOf("PRNTLSR-");
+				String nameFileZip = path_sunat.substring(pos,len);
+				File file= new File(path_sunat);
+				byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
+
+				byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, false);
+				if(filePdfZip !=null)
+					Filedownload.save(filePdfZip, "multipart/form-data", nameFileZip);
+
+			}else if(UtilFlag.isFormatPrintViewPdf(oagencia.getId())) {
+				int len = path_sunat.length();
+				int pos = path_sunat.indexOf("PRNTLSR-");
+				String nameFileZip = path_sunat.substring(pos,len);
+				File file= new File(path_sunat);
+				byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
+
+				byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, true);
+				if(filePdfZip !=null) {
+					String urlViewPdf = UtilFlag.getUrlView_pdf();
+					if(urlViewPdf !=null) {
+						String crypto = new BASE64Encoder().encode(filePdfZip);
+						Executions.getCurrent().sendRedirect(urlViewPdf+"?vl="+crypto, "_blank");
+					}
+				}
+
+			}else {
+				/*Descarga el archivo .xml*/
+				Filedownload.save(new File(path_sunat), "application/zip");
+			}
+
+		}
+		
+	}
+	
+	/**
+	 * Crea el XML para la impresion del manifiesto 
+	 * @param manifiesto
+	 * @param rotulo
+	 * @return
+	 * @throws Exception
+	 */
+	private XmlManifiesto createXmlPrintLaserManPax(Manifiesto manifiesto, String rotulo)throws Exception{
+		Itinerario itinerario=ServiceLocator.getItinerarioManager().buscarPorId(manifiesto.getItinerario().getId());
+		XmlManifiesto xmlManifiesto=new XmlManifiesto();
+		xmlManifiesto.setNumeroManifiesto(manifiesto.getNumeroManifiesto());
+		xmlManifiesto.setUsuario(getUsuario().toString());
+		xmlManifiesto.setAgencia(getAgencia().toString());
+		xmlManifiesto.setItinerario(itinerario.getId().toString());
+		xmlManifiesto.setServicio(itinerario.getServicio().getDenominacion());
+		xmlManifiesto.setBus(itinerario.getBus().getCodigo());
+		xmlManifiesto.setOrigen(itinerario.getRuta().getOrigen());
+		xmlManifiesto.setDestino(itinerario.getRuta().getDestino());
+		xmlManifiesto.setPlaca(itinerario.getBus().getNumeroPlaca());
+		xmlManifiesto.setTarjetaHabilitacion(itinerario.getBus().getDocumentoBus().getNumeroDocumento());
+//		xmlManifiesto.setMarca(itinerario.getBus().getGrupoMantenimiento().getDenominacion());
+		xmlManifiesto.setPiloto(itinerario.getBus().getProgramacionServicio().getPiloto().toString());
+		xmlManifiesto.setPilotoLicencia(itinerario.getBus().getProgramacionServicio().getPiloto().getLicencia());
+		xmlManifiesto.setCopiloto(itinerario.getBus().getProgramacionServicio().getCopiloto().toString());
+		xmlManifiesto.setCopilotoLicencia(itinerario.getBus().getProgramacionServicio().getCopiloto().getLicencia());
+		if(itinerario.getBus().getProgramacionServicio().getCopilotoAuxiliar()!=null){
+			xmlManifiesto.setCopilotoAuxiliar(itinerario.getBus().getProgramacionServicio().getCopilotoAuxiliar().toString());
+			xmlManifiesto.setCopilotoAuxiliarLicencia(itinerario.getBus().getProgramacionServicio().getCopilotoAuxiliar().getLicencia());
+		}
+		if(itinerario.getBus().getProgramacionServicio().getTripulante()!=null){
+			xmlManifiesto.setTripulante(itinerario.getBus().getProgramacionServicio().getTripulante().toString());
+			xmlManifiesto.setTripulanteDni(itinerario.getBus().getProgramacionServicio().getTripulante().getNroDocumento());
+		}else{
+			xmlManifiesto.setTripulante("");
+			xmlManifiesto.setTripulanteDni("");
+		}
+
+		xmlManifiesto.setAutorizacionSunat(manifiesto.getAutorizacionSunat());
+		xmlManifiesto.setRotulo(rotulo);
+		xmlManifiesto.setSalida(Constantes.FORMAT_DATE.format(manifiesto.getItinerario().getFechaPartida())+" "+manifiesto.getItinerario().getHoraPartida());
+
+		/*Detalle Manifiesto*/
+		List<XmlItemDetalleManifiesto> listItemDetalleManifiesto= new ArrayList<>();
+		List<VentaPasaje> listPasajeros=ServiceLocator.getManifiestoManager().consultaPasajeros(itinerario.getId(), null);
+
+		int asientosServicio=itinerario.getServicio().getNumeroAsientosPiso1();
+		if(itinerario.getServicio().getNumeroAsientosPiso2()!=null)
+			asientosServicio += + itinerario.getServicio().getNumeroAsientosPiso2();
+
+		for(int i=0;i<asientosServicio;i++){
+			Integer asiento=i+1;
+
+			String asientos="";
+			for(VentaPasaje ventaPasaje: listPasajeros){
+				if(ventaPasaje.getNumeroAsiento().equals(asiento)){
+					if(asientos.length()==0)
+						asientos=ventaPasaje.getNumeroAsiento().toString()+"-"+ventaPasaje.getId().toString();
+					else
+						asientos+=";"+ventaPasaje.getNumeroAsiento().toString()+"-"+ventaPasaje.getId().toString();
+				}
+			}
+
+			String arrayAsientos[] = asientos.split(";");
+//			String asientos[]=getAsientos_IdForGenManifiesto(listPasajeros, asiento, piso).split(";");
+			if(arrayAsientos[0].toString().length()>0){
+				for (String element : arrayAsientos) {
+					long idForGenManifiesto=Long.valueOf(element.split("-")[1]);
+					for(VentaPasaje ventaPasaje : listPasajeros){
+						if((ventaPasaje.getId().longValue())==idForGenManifiesto){
+							XmlItemDetalleManifiesto xmlItemDetalleManifiesto=null;
+
+							xmlItemDetalleManifiesto= new XmlItemDetalleManifiesto();
+							xmlItemDetalleManifiesto.setAsiento(ventaPasaje.getNumeroAsiento());
+							xmlItemDetalleManifiesto.setBoleto(ventaPasaje.getNumeroBoleto());
+							xmlItemDetalleManifiesto.setPasajero(ventaPasaje.getPasajero().toString());
+							xmlItemDetalleManifiesto.setEdad(Util.calculaEdad(ventaPasaje.getPasajero().getFechaNacimiento()).toString());
+							xmlItemDetalleManifiesto.setTipoDocumento(ventaPasaje.getPasajero().getTipoDocumento().getNombreCorto());
+							xmlItemDetalleManifiesto.setNumeroDocumento(ventaPasaje.getPasajero().getNumeroDocumento());
+//							xmlItemDetalleManifiesto.setDestino(ventaPasaje.getRuta().getDestino());
+							xmlItemDetalleManifiesto.setDestino(ventaPasaje.getAgenciaLlegada().getDenominacion());
+							xmlItemDetalleManifiesto.setPuntoEmbarque(ventaPasaje.getAgenciaPartida().getDenominacion());
+							xmlItemDetalleManifiesto.setFormaPago(ventaPasaje.getFormaPago().getDenominacion());
+							xmlItemDetalleManifiesto.setImporte(Util.toNumberFormat(ventaPasaje.getImportePagado(),2));
+							listItemDetalleManifiesto.add(xmlItemDetalleManifiesto);
+
+							break;
+						}
+					}
+				}
+			}else{
+				XmlItemDetalleManifiesto xmlItemDetalleManifiesto= new XmlItemDetalleManifiesto();
+				xmlItemDetalleManifiesto.setAsiento(asiento);
+				listItemDetalleManifiesto.add(xmlItemDetalleManifiesto);
+			}
+		}
+
+		XmlDetalleManifiesto xmlDetalleManifiesto= new XmlDetalleManifiesto();
+		xmlDetalleManifiesto.setXmlItemDetalleManifiesto(listItemDetalleManifiesto);
+		xmlManifiesto.setDetalleManifiesto(xmlDetalleManifiesto);
+
+		Integer numeroAseintos=0;
+		for(int x=0; x<itinerario.getServicio().getNumeroPisos(); x++){
+			if(x==0)
+				numeroAseintos=itinerario.getServicio().getNumeroAsientosPiso1();
+			else if(x==1)
+				numeroAseintos+=itinerario.getServicio().getNumeroAsientosPiso2();
+		}
+
+		xmlManifiesto.setTotalAsientos(numeroAseintos);
+		xmlManifiesto.setTotalPasajeros(listPasajeros.size());
+
+		return xmlManifiesto;
+	}
+	
+	/**
+	 * Crea el XML para la impresion de la Carpeta de Despacho
+	 * @param itinerario
+	 * @return
+	 * @throws Exception
+	 */
+	private XmlCarpetaDespacho createXmlPrintLaserCarDes(Itinerario itinerario)throws Exception{
+
+		XmlCarpetaDespacho xmlCarpetaDespacho= new XmlCarpetaDespacho();
+		xmlCarpetaDespacho.setSericio(itinerario.getServicio().getDenominacion());
+		xmlCarpetaDespacho.setOrigen(itinerario.getRuta().getOrigen());
+		xmlCarpetaDespacho.setDestino(itinerario.getRuta().getDestino());
+		xmlCarpetaDespacho.setFechaHoraSalida(Constantes.FORMAT_DATE.format(itinerario.getFechaPartida())+" "+itinerario.getHoraPartida());
+
+		List<XmlItemDetalleDespacho>asientosFilas= new ArrayList<>();
+
+		List<MapaBus> resultMapaBus= ServiceLocator.getMapaBusManager().buscarMapaBus(itinerario.getServicio().getId(), Constantes.VALUE_ACTIVO);
+		XmlItemDetalleDespacho itemDetalleDespacho= new XmlItemDetalleDespacho();
+
+		int fila_old=0;
+		for(int piso=0; piso < itinerario.getServicio().getNumeroPisos(); piso++) {
+			for(MapaBus mapaBus : resultMapaBus){
+				if(mapaBus.getNumeroAsiento()!=null && mapaBus.getNumeroPiso()!=null && mapaBus.getNumeroPiso().intValue()==piso){
+					if(mapaBus.getNumeroFila().intValue()!=fila_old){
+						asientosFilas.add(itemDetalleDespacho);
+						itemDetalleDespacho= new XmlItemDetalleDespacho();
+					}
+					if(mapaBus.getNumeroColumna().intValue()==0)
+						itemDetalleDespacho.setC1_asiento(mapaBus.getNumeroAsiento().toString());
+					else if(mapaBus.getNumeroColumna().intValue()==1)
+						itemDetalleDespacho.setC2_asiento(mapaBus.getNumeroAsiento().toString());
+					else if(mapaBus.getNumeroColumna().intValue()==3)
+						itemDetalleDespacho.setC3_asiento(mapaBus.getNumeroAsiento().toString());
+					else if(mapaBus.getNumeroColumna().intValue()==4)
+						itemDetalleDespacho.setC4_asiento(mapaBus.getNumeroAsiento().toString());
+
+					fila_old=mapaBus.getNumeroFila();
+				}
+			}
+		}
+
+		asientosFilas.add(itemDetalleDespacho);
+
+
+		Integer agenciaIdPartida = null;
+		if(itinerario.getAgenciaPartida()!=null)
+			agenciaIdPartida = itinerario.getAgenciaPartida().getId();
+
+		List<VentaPasaje> list=ServiceLocator.getManifiestoManager().consultaPasajeros(itinerario.getId(), agenciaIdPartida);
+		List<XmlItemDetalleDespacho> listDetalleCarpeta= new ArrayList<>();
+		int totalFrecuentes=0;
+		String asientosFrecuentes="";
+		for(XmlItemDetalleDespacho xmlItemDetalleDespacho : asientosFilas){
+			int asiento = 0;
+			if(xmlItemDetalleDespacho.getC1_asiento()!=null) {
+				asiento=Integer.valueOf(xmlItemDetalleDespacho.getC1_asiento());
+				for(VentaPasaje ventaPasaje : list){
+					if(ventaPasaje.getNumeroAsiento().intValue()==asiento){
+						xmlItemDetalleDespacho.setC1_documento(ventaPasaje.getPasajero().getNumeroDocumento());
+						xmlItemDetalleDespacho.setC1_embarque(ventaPasaje.getAgenciaPartida().getNombreCorto());
+						xmlItemDetalleDespacho.setC1_boleto(ventaPasaje.getNumeroBoleto());
+						xmlItemDetalleDespacho.setC1_edad(Util.calculaEdad(ventaPasaje.getPasajero().getFechaNacimiento()).toString());
+						xmlItemDetalleDespacho.setC1_ruta(ventaPasaje.getRuta().toString());
+						xmlItemDetalleDespacho.setC1_pasajero(ventaPasaje.getPasajero().toString());
+						boolean isPaxfree= false; //isPaxFee(list, (new Integer(asiento)), 0, 0);
+						xmlItemDetalleDespacho.setC1_frecuente(isPaxfree?"#F":"");
+
+						if(isPaxfree){
+							totalFrecuentes += 1;
+							asientosFrecuentes +=(asientosFrecuentes.length()==0?String.valueOf(asiento):", "+String.valueOf(asiento));
+						}
+						break;
+					}
+				}
+			}else {
+				xmlItemDetalleDespacho.setC1_asiento("");
+			}
+
+			if(xmlItemDetalleDespacho.getC2_asiento()!=null) {
+				asiento=Integer.valueOf(xmlItemDetalleDespacho.getC2_asiento());
+				for(VentaPasaje ventaPasaje : list){
+					if(ventaPasaje.getNumeroAsiento().intValue()==asiento){
+						xmlItemDetalleDespacho.setC2_documento(ventaPasaje.getPasajero().getNumeroDocumento());
+						xmlItemDetalleDespacho.setC2_embarque(ventaPasaje.getAgenciaPartida().getNombreCorto());
+						xmlItemDetalleDespacho.setC2_boleto(ventaPasaje.getNumeroBoleto());
+						xmlItemDetalleDespacho.setC2_edad(Util.calculaEdad(ventaPasaje.getPasajero().getFechaNacimiento()).toString());
+						xmlItemDetalleDespacho.setC2_ruta(ventaPasaje.getRuta().toString());
+						xmlItemDetalleDespacho.setC2_pasajero(ventaPasaje.getPasajero().toString());
+						boolean isPaxfree= false; //isPaxFee(list, (new Integer(asiento)), 0, 0);
+						xmlItemDetalleDespacho.setC2_frecuente(isPaxfree?"#F":"");
+
+						if(isPaxfree){
+							totalFrecuentes += 1;
+							asientosFrecuentes +=(asientosFrecuentes.length()==0?String.valueOf(asiento):", "+String.valueOf(asiento));
+						}
+						break;
+					}
+				}
+			}else {
+				xmlItemDetalleDespacho.setC2_asiento("");
+			}
+
+
+			if(xmlItemDetalleDespacho.getC3_asiento()!=null){
+				asiento=Integer.valueOf(xmlItemDetalleDespacho.getC3_asiento());
+				for(VentaPasaje ventaPasaje : list){
+					if(ventaPasaje.getNumeroAsiento().intValue()==asiento){
+						xmlItemDetalleDespacho.setC3_documento(ventaPasaje.getPasajero().getNumeroDocumento());
+						xmlItemDetalleDespacho.setC3_embarque(ventaPasaje.getAgenciaPartida().getNombreCorto());
+						xmlItemDetalleDespacho.setC3_boleto(ventaPasaje.getNumeroBoleto());
+						xmlItemDetalleDespacho.setC3_edad(Util.calculaEdad(ventaPasaje.getPasajero().getFechaNacimiento()).toString());
+						xmlItemDetalleDespacho.setC3_ruta(ventaPasaje.getRuta().toString());
+						xmlItemDetalleDespacho.setC3_pasajero(ventaPasaje.getPasajero().toString());
+						boolean isPaxfree= false; //isPaxFee(list, (new Integer(asiento)), 0, 0);
+						xmlItemDetalleDespacho.setC3_frecuente(isPaxfree?"#F":"");
+
+						if(isPaxfree){
+							totalFrecuentes += 1;
+							asientosFrecuentes +=(asientosFrecuentes.length()==0?String.valueOf(asiento):", "+String.valueOf(asiento));
+						}
+						break;
+					}
+				}
+			}else {
+				xmlItemDetalleDespacho.setC3_asiento("");
+			}
+
+			if(xmlItemDetalleDespacho.getC4_asiento()!=null) {
+				asiento=Integer.valueOf(xmlItemDetalleDespacho.getC4_asiento());
+				for(VentaPasaje ventaPasaje : list){
+					if(ventaPasaje.getNumeroAsiento().intValue()==asiento){
+						xmlItemDetalleDespacho.setC4_documento(ventaPasaje.getPasajero().getNumeroDocumento());
+						xmlItemDetalleDespacho.setC4_embarque(ventaPasaje.getAgenciaPartida().getNombreCorto());
+						xmlItemDetalleDespacho.setC4_boleto(ventaPasaje.getNumeroBoleto());
+						xmlItemDetalleDespacho.setC4_edad(Util.calculaEdad(ventaPasaje.getPasajero().getFechaNacimiento()).toString());
+						xmlItemDetalleDespacho.setC4_ruta(ventaPasaje.getRuta().toString());
+						xmlItemDetalleDespacho.setC4_pasajero(ventaPasaje.getPasajero().toString());
+						boolean isPaxfree= false; //isPaxFee(list, (new Integer(asiento)), 0, 0);
+						xmlItemDetalleDespacho.setC4_frecuente(isPaxfree?"#F":"");
+
+						if(isPaxfree){
+							totalFrecuentes += 1;
+							asientosFrecuentes +=(asientosFrecuentes.length()==0?String.valueOf(asiento):", "+String.valueOf(asiento));
+						}
+						break;
+					}
+				}
+			}else {
+				xmlItemDetalleDespacho.setC4_asiento("");
+			}
+
+			listDetalleCarpeta.add(xmlItemDetalleDespacho);
+		}
+
+		Integer totalAsientos = itinerario.getServicio().getNumeroAsientosPiso1();
+		if(itinerario.getServicio().getNumeroAsientosPiso2()!=null)
+			totalAsientos += + itinerario.getServicio().getNumeroAsientosPiso2();
+
+		XmlDetalleCarpetaDespacho xmlDetalleCarpetaDespacho= new XmlDetalleCarpetaDespacho();
+		xmlDetalleCarpetaDespacho.setXmlItemDetalleDespacho(listDetalleCarpeta);
+		xmlCarpetaDespacho.setXmlDetalleCarpetaDespacho(xmlDetalleCarpetaDespacho);
+		xmlCarpetaDespacho.setTotalPasajeros(list.size());
+		xmlCarpetaDespacho.setTotalAsientos(totalAsientos);
+		xmlCarpetaDespacho.setTotalFrecuentes(totalFrecuentes);
+		if(!(asientosFrecuentes.isEmpty()))
+			xmlCarpetaDespacho.setAsientosFrecuentes("Asientos [" + asientosFrecuentes + "]");
+
+		return xmlCarpetaDespacho;
+	}
+	
+	/**
+	 * Carga la vista previa del manifiesto de pasajeros
+	 * @param manifiesto
+	 * @param itinerario
+	 * @param especieValoradaSunat
+	 * @throws Exception
+	 */
+	private void loadPrevioManPax(Manifiesto manifiesto, Itinerario itinerario, EspecieValorada especieValoradaSunat)throws Exception{
+		String numeroManifiesto = "-----------", autorizacionSunat = "";
+		if(manifiesto ==null) {						
+			if(especieValoradaSunat!=null && especieValoradaSunat.getSerie()!=null && especieValoradaSunat.getCorrelativoActual()!=null) {
+				numeroManifiesto = especieValoradaSunat.toString();
+				
+				if(especieValoradaSunat.getAutorizacionSunat()!=null && !especieValoradaSunat.getAutorizacionSunat().trim().isEmpty())
+					autorizacionSunat = especieValoradaSunat.getAutorizacionSunat();
+			}
+			manifiesto = new Manifiesto();
+			manifiesto.setNumeroManifiesto(numeroManifiesto);
+			manifiesto.setAutorizacionSunat(autorizacionSunat);
+			manifiesto.setItinerario(itinerario);
+		}
+		
+		CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(), true, ROTULO_SUNAT, null);
+		String src = Constantes.URL_FORMATOS_MANIFIESTOS + Constantes.CLAVE_PAHT + "MANPAX" + itinerario.getId() + "-" + ROTULO_SUNAT + ".txt";
+		iframe.setSrc(src);
+	}
+	
+	/**
+	 * Carga la vista previa del manifiesto de pasajeros
+	 * @param manifiesto
+	 * @param itinerario
+	 * @param especieValoradaSunat
+	 * @throws Exception
+	 */
+	private void loadPrevioCarDes(Itinerario itinerario, Combobox cmbCmbPuntoControl)throws Exception{
+		
+		Agencia agenciaPuntocontrol = null;
+		if(cmbCmbPuntoControl.getSelectedItem().getValue() instanceof Agencia)
+			agenciaPuntocontrol = cmbCmbPuntoControl.getSelectedItem().getValue();
+		
+		Itinerario _itinerario = (Itinerario)itinerario.clone();
+		_itinerario.setAgenciaPartida(agenciaPuntocontrol);
+		
+		CreateDocument.creaCarpetaDespacho(_itinerario, getAgencia());		
+		String fileName = _itinerario.getId().toString();
+		if(_itinerario.getAgenciaPartida() != null)
+			fileName += "-" + _itinerario.getAgenciaPartida().getId().toString();
+		fileName += ".txt";
+
+		String src = Constantes.URL_FORMATOS_DESPACHOS+Constantes.CLAVE_PAHT+"CARDES"+ fileName;
+		iframe.setSrc(src);
+	}
+	
+	/**
+	 * Valida la está permitida la nulación del Manifiesto de Pasajeros
+	 * @param itinerario
+	 * @throws Exception
+	 */
+	private void validarAnulacionManPax(Itinerario itinerario)throws Exception{
+		String fechaActual = Constantes.FORMAT_DATE.format(new Date());
+		String fechaPartida = Constantes.FORMAT_DATE.format(itinerario.getFechaPartida());
+		if(!fechaActual.equals(fechaPartida))
+			disabled_btnAnular(btnManPaxAnular, true);
+		
+	}
+	
+	/**
+	 * Valida la está permitida la nulación del Manifiesto de Pasajeros
+	 * @param itinerario
+	 * @throws Exception
+	 */
+	private void validarEmisionManPax(Itinerario itinerario)throws Exception{
+		String fechaActual = Constantes.FORMAT_DATE.format(new Date());
+		String fechaPartida = Constantes.FORMAT_DATE.format(itinerario.getFechaPartida());
+		if(!fechaActual.equals(fechaPartida))
+			disabled_btnGuardar(btnManPaxGuardar, true);
+		
+	}
+	
+	/**
+	 * carga puntos de Control, según el itinerario
+	 * @param idItinerario : identificador del itinerario.
+	 * @throws Exception
+	 */
+	private void loadPuntoControlCarDes(Combobox cmbPuntoControl, Long idItinerario) throws Exception{
+		ArrayList<Agencia> lsta= (ArrayList<Agencia>) ServiceLocator.getManifiestoManager().consultaPtoControl(idItinerario);
+		cmbPuntoControl.getItems().clear();
+		UtilData.cargarGenericData(cmbPuntoControl, true);
+		for (Agencia agencia : lsta) {
+			Comboitem oComboitem = new Comboitem();
+			oComboitem.setLabel(agencia.getNombreCorto());
+			oComboitem.setValue(agencia);
+			cmbPuntoControl.appendChild(oComboitem);
+		}
+		Util.seleccionarValorItemCombo(Agencia.class, cmbPuntoControl, getAgencia().getId());
+		if(cmbPuntoControl.getSelectedIndex()<0)
+			cmbPuntoControl.setSelectedIndex(0);
+	}
+	
+	/**
+	 * Habilita/Deshabilita el Button Modificar o Editar
+	 * @param disabled
+	 * @throws Exception
+	 */
+	private void disabled_btnModificar(Button btnModificar, boolean disabled)throws Exception{
+		btnModificar.setDisabled(disabled);
+		if(disabled) {
+			btnModificar.setSclass("");
+			btnModificar.setWidth("120px");
+			btnModificar.setHeight("30px");
+			btnModificar.setImage("resources/mp_editarDisabled.png");	
+		}else {
+			btnModificar.setSclass("btnCommandL");
+			btnModificar.setImage("resources/mp_editarEnabled.png");	
+		}
+	}
+	
+	/**
+	 * Habilita/Deshabilita el Button Guardar
+	 * @param disabled
+	 * @throws Exception
+	 */
+	private void disabled_btnGuardar(Button btnGuardar, boolean disabled)throws Exception{
+		
+		btnGuardar.setDisabled(disabled);
+		if(disabled) {
+			btnGuardar.setSclass("");
+			btnGuardar.setHeight("30px");
+			btnGuardar.setImage("resources/mp_guardarDisabled.png");
+			btnGuardar.setStyle("width:120px !important");
+		}else {
+			btnGuardar.setSclass("btnCommandL");
+			btnGuardar.setImage("resources/mp_guardarEnabled.png");
+		}		
+	}
+	
+	/**
+	 * Habilita/Deshabilita el Button Guardar
+	 * @param disabled
+	 * @throws Exception
+	 */
+	private void disabled_btnAnular(Button btnAnular, boolean disabled)throws Exception{
+		
+		btnAnular.setDisabled(disabled);
+		if(disabled) {
+			btnAnular.setSclass("");
+			btnAnular.setWidth("120px");
+			btnAnular.setHeight("30px");
+			btnAnular.setImage("resources/mp_anulacionDisabled.png");	
+		}else {
+			btnAnular.setSclass("btnCommandL");
+			btnAnular.setImage("resources/mp_anular.png");	
+		}		
+	}
+	
+	/**
+	 * Habilita/Deshabilita el Button Guardar
+	 * @param disabled
+	 * @throws Exception
+	 */
+	private void disabled_btnImprimir(Button btnImprimir, boolean disabled)throws Exception{
+		
+		btnImprimir.setDisabled(disabled);
+		if(disabled) {
+			btnImprimir.setSclass("");
+			btnImprimir.setWidth("120px");
+			btnImprimir.setHeight("30px");
+			btnImprimir.setImage("resources/mp_imprimir.png");	
+		}else {
+			btnImprimir.setSclass("btnCommandL");
+			btnImprimir.setImage("resources/mp_imprimir.png");	
+		}		
+	}
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	private void autoRefreshMapaBus()throws Exception{
+		try {
+
+//			Date fechaActual = Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date()));
+//			Date fechaSalida = detalleItinerarioIda.getFechaPartida();
+			
+			//Valida la ejecución de l atarea
+//			if(fechaSalida.getTime() >= fechaActual.getTime()) {
+//				int minutos = 5; //Cada cuantos minutos se va a ejecutar
+//				int ltime = (int) (Constantes.MILISEGUNDOS_X_MINUTO * minutos);
+//		        timerRefreshMapa=new Timer(ltime);
+//		        timerRefreshMapa.setRepeats(true);
+//		        timerRefreshMapa.start();
+//				timerRefreshMapa.addEventListener(Events.ON_TIMER, new EventListener<Event>() {
+//					@Override
+//					public void onEvent(Event event) throws Exception {
+//						try {
+//							if(divPaso_2.isVisible()) {
+//								//Actualiza el Mapa
+//					        	onRefreshMap();
+//					            // Coloca aquí el código que deseas ejecutar
+//					        	String _message = Constantes.FORMAT_DATE_TIME_24H.format(new Date());
+//					        		   _message += " Ejecución de proceso automático que actualiza el Mapa del bus, cada "+ String.valueOf(minutos) +" minuto(s)...";
+//					            System.out.println(_message);
+//					            log.info("autoRefreshMapaBus "+ _message);
+//							}else {
+//								timerRefreshMapa.stop();
+//					            // Coloca aquí el código que deseas ejecutar
+//								String _message = Constantes.FORMAT_DATE_TIME_24H.format(new Date());
+//								       _message +=  " Finalizando Proceso automático...";
+//					            System.out.println(_message);
+//					            log.info("autoRefreshMapaBus "+ _message);
+//							}
+//						} catch (Exception e) {
+//							e.printStackTrace();
+//							log.info(e);
+//							if(timerRefreshMapa !=null) {
+//								timerRefreshMapa.stop();
+//								String _message = Constantes.FORMAT_DATE_TIME_24H.format(new Date());
+//									   _message += " Ocurrió un error, se ha detenido el la tarea. Error:"+ e.getMessage();
+//								System.out.println(_message);
+//								log.error(_message);
+//							}
+//						}
+//					}
+//				});			
+//				wndVentaReservaNew.appendChild(timerRefreshMapa);
+//			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			if(timerRefreshMapa !=null) {
+				timerRefreshMapa.stop();
+				String _message = Constantes.FORMAT_DATE_TIME_24H.format(new Date());
+				   _message += " Ocurrió un error, se ha detenido el la tarea. Error:"+ e.getMessage();
+			System.out.println(_message);
+			log.error(_message);
+			}
+		}
+	}
 }

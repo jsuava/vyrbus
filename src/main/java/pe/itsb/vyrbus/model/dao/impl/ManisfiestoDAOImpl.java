@@ -11,6 +11,7 @@ import pe.itsb.vyrbus.model.bean.Bus;
 import pe.itsb.vyrbus.model.bean.CanalVenta;
 import pe.itsb.vyrbus.model.bean.Cliente;
 import pe.itsb.vyrbus.model.bean.DocumentoBus;
+import pe.itsb.vyrbus.model.bean.Empresa;
 import pe.itsb.vyrbus.model.bean.EspecieValorada;
 import pe.itsb.vyrbus.model.bean.FormaPago;
 import pe.itsb.vyrbus.model.bean.GrupoMantenimiento;
@@ -62,7 +63,7 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 						"s.c_denominacion as servicio, "+//25
 						"pcx.personal_id CPXID, pcx.c_apepat CPXAP, pcx.c_apemat CPXAM, pcx.c_nombre CPXN, pcx.c_numdoc CPXND, pcx.tipdoc_id PCXTD, " + //26-31
 						"pp.c_numdoc PPND, pp.tipdoc_id PPTD, pc.c_numdoc PCND, pc.tipdoc_id PCTD, pt.c_numdoc PTND, pt.tipdoc_id PTTD,pcx.c_licencia PCXLC  "+ //32-38
-						",i.itinerario_id "+ //39
+						",i.itinerario_id, i.empresa_id "+ //40
 					"FROM vrtdetiti di "+
 						"INNER JOIN vrtitinerario i ON (i.itinerario_id=di.itinerario_id) " +
 						"INNER JOIN VRMSERVICIO s ON (s.servicio_id=i.servicio_id) "+
@@ -179,6 +180,7 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			itinerario.setServicio(servicio);
 			itinerario.setTipoItinerario(tipoItinerario);
 			itinerario.setRuta(ruta);
+			itinerario.setEmpresa(new Empresa(((BigDecimal)obj[40]).intValue()));
 		}
 
 
@@ -398,7 +400,7 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 	 * @see com.tepsa.sisvyr.model.dao.ManifiestoDAO#consultaAutorizacionSunat(java.lang.Integer)
 	 */
 	@Override
-	public EspecieValorada consultaAutorizacionSunat(Integer idAgencia)throws Exception {
+	public EspecieValorada consultaAutorizacionSunat(Integer idAgencia, Integer idEmpresa)throws Exception {
 		/*Comentado 27/11/2014 - jabanto*/
 //		String sql= "SELECT ev.n_serie, ev.n_coract, ev.c_autsunat, ev.espval_id, "+ //0-3
 //					"ev.n_corfin "+ //4-4
@@ -411,12 +413,14 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 				"ev.n_corfin, ev.n_corini "+ //4-5
 				"FROM vrmespval ev "+
 				"WHERE ev.agencia_id="+ idAgencia+ " AND ev.n_coract < ev.n_corfin AND ev.tipcom_id="+Constantes.ID_TIPCOM_MANIFIESTO_PAX+"  "+
+				"  AND ev.empresa_id="+ idEmpresa + " AND ev.c_estreg='A' "+
 				"ORDER BY ev.n_corini ";
 
 		List<?> result = getSession().createSQLQuery(sql).list();
-		EspecieValorada especieValorada = new EspecieValorada();
+		EspecieValorada especieValorada = null;
 
 		if(result.size()>=1){
+			especieValorada = new EspecieValorada();
 			/*Prevalece el primer registro, por si recupere mas de uno*/
 			Object[] obj = (Object[]) result.get(0);
 
@@ -512,7 +516,7 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 
 		//si los correlativos estan agotados, busca si la agencia tiene registrado otro registro con correlativos disponibles
 		if(especieValorada2.getCorrelativoActual().longValue()==especieValorada2.getCorrelativoFinal().longValue()){
-			EspecieValorada newEspecieValorada=consultaAutorizacionSunat(especieValorada2.getAgencia().getId());
+			EspecieValorada newEspecieValorada=consultaAutorizacionSunat(especieValorada2.getAgencia().getId(), especieValorada2.getEmpresa().getId());
 			if(newEspecieValorada.getId()!=null){
 				//busca la buena especie valorada por su id para habilitarla
 				EspecieValorada habilitarEspecieValorada=(EspecieValorada)super.findById(EspecieValorada.class, newEspecieValorada.getId().longValue());
@@ -683,7 +687,8 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 
 		String sql ="SELECT VTP.IDITINERARIO "+
 			       ",MAN.NROBUS "+
-			       ",'" + Constantes.ruc + "' AS RUC "+
+//			       ",'" + Constantes.ruc + "' AS RUC "+
+				  ",'" + " " + "' AS RUC "+
 			       ",'" + per4949 + "' AS PER4949 "+
 			       ",'" + periodo + "' AS PERIODO "+
 			       ",SUBSTR(MAN.NroManifiesto,0, 3) CSERIEF "+

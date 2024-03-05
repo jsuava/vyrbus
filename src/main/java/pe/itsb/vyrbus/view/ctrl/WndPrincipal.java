@@ -287,6 +287,8 @@ public class WndPrincipal extends WndBase {
 							ServiceLocator.getUsuarioManager().actualizar(user);
 
 							win.onClose();
+							
+							cargarVentaInicio();
 						}catch(PasswordException pex){
 							if(pex.getTipo().intValue()==PasswordException.PASSWORD_ACTUAL_NULL){
 								DlgMessage.information("Debe de ingresar la contraseï¿½a actual", txtPasswordActual);
@@ -312,7 +314,8 @@ public class WndPrincipal extends WndBase {
 				this.appendChild(win);
 				txtPasswordActual.setFocus(true);
 				win.doModal();
-			}
+			}else
+				cargarVentaInicio();
 
 	}catch (EspecieValoradaNotAvailableException env){
 		DlgMessage.information(Messages.getString("UtilData.information.notAvailableEspecieValorada"));
@@ -332,6 +335,11 @@ public class WndPrincipal extends WndBase {
 		lblPC=(Label)this.getFellow("lblPC");
 	}
 
+	private void cargarVentaInicio()throws Exception {
+		if(getRol().getId().intValue()==Constantes.ID_ROL_COUNTER || getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO)
+			mostrarVentana("Ventas & Reservas", "ventaReservaNew.zul");
+	}
+	
 	public void configuraAccesos(Usuario usuario) throws Exception{
 //		Rol rol = new Rol();
 //		rol= UtilData.getRol(usuario);
@@ -500,7 +508,7 @@ public class WndPrincipal extends WndBase {
 	}
 
 	public void cerrarSesion(){
-		Messagebox.show("¿Desea Salir del Sistema?", Messages.getString("System.title"), Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
+		Messagebox.show("ï¿½Desea Salir del Sistema?", Messages.getString("System.title"), Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
 				new EventListener<Event>() {
 
 					@Override

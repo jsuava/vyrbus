@@ -60,7 +60,7 @@ public interface ManifiestoDAO  extends GenericDAO {
 	 * @return numero autorizacion de la sunat.
 	 * @throws Exception
 	 */
-	public EspecieValorada consultaAutorizacionSunat(Integer idAgencia) throws Exception;
+	public EspecieValorada consultaAutorizacionSunat(Integer idAgencia, Integer idEmpresa) throws Exception;
 
 	/**
 	 * Guarda Manifiesto

@@ -37,6 +37,15 @@ public interface VentaPasajesManager {
 	 * @throws Exception
 	 */
 	public int guardarVentaIdaVuelta(List<VentaPasaje> lstVentas, boolean generaControl) throws Exception;
+	
+	/**
+	 * 
+	 * @param lstVentas
+	 * @return
+	 * @throws Exception
+	 */
+	public int guardarVenta(List<VentaPasaje> lstVentas) throws Exception;
+	
 	/**
 	 * Realiza la busqueda de las ventas para el armado del mapa del bus.
 	 * @param idItinerario	: Identificador del itinerario.
@@ -149,6 +158,14 @@ public interface VentaPasajesManager {
 	 * @throws Exception
 	 */
 	public VentaPasaje postergarBoleto(VentaPasaje boletoPostergar,Boolean validaBloqueo, VentaPasaje gastoAdministrativo)throws Exception;
+	/**
+	 * Realiza el guardado de la postergacion de uno o varios comprobantes
+	 * @param boletosPostergar
+	 * @param validaBloqueo
+	 * @return
+	 * @throws Exception
+	 */
+	public List<VentaPasaje> postergarBoleto(List<VentaPasaje> boletosPostergar,Boolean validaBloqueo)throws Exception;
 	/**
 	 * Realiza la reimpresion de un boleto por perdida o deterioro
 	 * @param ventaOriginal		: Venta original sin ninguna modificaci�n mas que el Tipo de Movimiento.

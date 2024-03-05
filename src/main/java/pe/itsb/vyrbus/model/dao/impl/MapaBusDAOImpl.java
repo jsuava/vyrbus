@@ -173,6 +173,8 @@ public class MapaBusDAOImpl extends GenericDAOImpl implements MapaBusDAO {
                     //servicio.setNumeroColumnasPiso1(((BigDecimal)obj[6]).intValue());
                     mapaBus.setNumeroFila(((BigDecimal)obj[6]).intValue()-(1+ ((BigDecimal)obj[14]).intValue()));
                     mapaBus.setNumeroColumna(((BigDecimal)obj[13]).intValue());
+//					mapaBus.setNumeroFila(((BigDecimal)obj[5]).intValue()-(1+ ((BigDecimal)obj[14]).intValue()));
+//                    mapaBus.setNumeroColumna(((BigDecimal)obj[6]).intValue());
                 }
                 if ( ((BigDecimal)obj[15]).intValue() == 1 ){
                     mapaBus.setNumeroFila(((BigDecimal)obj[9]).intValue()-(1+((BigDecimal)obj[14]).intValue()));

@@ -35,6 +35,13 @@
 <!-- </library-property> -->
 	
 
+	<zk>
+	    <desktop-config>
+	        <server-push>
+	            <enabled>true</enabled>
+	        </server-push>
+	    </desktop-config>
+	</zk>
 	
 	<!-- <desktop-config>
 		<theme-provider-class>com.twg.wls.ui.themes.ThemeProvider</theme-provider-class>

@@ -1411,7 +1411,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 				return;
 			}
 
-			//Validaci�n para la anulaci�n de un Reecibo de caja
+			//Validación para la anulación de un Reecibo de caja
 			if (ventaOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_RECIBO_CAJA){
 				VentaPasaje ultimoRegistro=ServiceLocator.getVentaPasajesManager().buscarUltimoRegistro(ventaOriginal.getVentaOriginal());
 				//Valida si RC esta reimpreso y no esta anulado para continuar con la anulaci�n.

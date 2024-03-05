@@ -8,6 +8,7 @@
  */
 package pe.itsb.vyrbus.service.util;
 
+
 import pe.itsb.vyrbus.model.bean.Flag;
 import pe.itsb.vyrbus.service.locator.ServiceLocator;
 
@@ -25,9 +26,63 @@ public class UtilFlag {
 	final static int FLAG_IDACTIVA_IMPPAG_VENTAREMOTA = 7;
 	final static int FLAG_IDSEARCH_DNI_RENIEC = 8;
 	final static int FLAG_IDSEARCH_RUC_SUNAT = 9;
+	final static int FLAG_IDTIEMPO_POSTERGACION = 10;
+	final static int FLAG_IDTIEMPO_POSTERGACION_FA = 11;
+	final static int FLAG_IDTIEMPO_CAMBIO_NOMBRE = 12;
 
 	final static String LLAVE_ENABLED = "S";
+	final static String LLAVE_DISABLED = "N";
 
+	
+	/**
+	 * Obtiene el tiempo, expresado en minutos para la postergación, antes de la salida
+	 * @return
+	 * @throws Exception
+	 */
+	public static Integer getTiempoCambioNombre()throws Exception{
+		Integer tiempo = null;
+		
+		Flag flag = getFlag(FLAG_IDTIEMPO_CAMBIO_NOMBRE);
+		if(flag !=null && !flag.getLlave().equals(LLAVE_DISABLED))
+			tiempo = Integer.valueOf(flag.getLlave());
+		
+		
+		return tiempo;
+		
+	}
+	
+	/**
+	 * Obtiene el tiempo expresado en minutos para la postergación F.A., antes de la salida
+	 * @return
+	 * @throws Exception
+	 */
+	public static Integer getTiempoPostergacionFA()throws Exception{
+		Integer tiempo = null;
+		
+		Flag flag = getFlag(FLAG_IDTIEMPO_POSTERGACION_FA);
+		if(flag !=null && !flag.getLlave().equals(LLAVE_DISABLED))
+			tiempo = Integer.valueOf(flag.getLlave());
+		
+		
+		return tiempo;
+		
+	}
+	
+	/**
+	 * Obtiene el tiempo, expresado en minutos para la postergación, antes de la salida
+	 * @return
+	 * @throws Exception
+	 */
+	public static Integer getTiempoPostergacion()throws Exception{
+		Integer tiempo = null;
+		
+		Flag flag = getFlag(FLAG_IDTIEMPO_POSTERGACION);
+		if(flag !=null && !flag.getLlave().equals(LLAVE_DISABLED))
+			tiempo = Integer.valueOf(flag.getLlave());
+		
+		
+		return tiempo;
+	}
 	/**
 	 * Valida si debe o no buscar el DNI en un servicio externo
 	 * @return
@@ -159,6 +214,21 @@ public class UtilFlag {
 		}
 
 		return estado;
+	}
+	
+	/**
+	 * Realiza la busqueda del flag por su identificador
+	 * @param flag_Id: Identiticador del flag
+	 * @return
+	 * @throws Exception
+	 */
+	private static Flag getFlag(Integer flag_Id)throws Exception{
+
+		Flag flag = ServiceLocator.getFlagManager().buscarPorId(flag_Id.longValue());
+		if(flag!=null && flag.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO))
+			return flag;
+		
+		return null;
 	}
 
 	/**

@@ -40,6 +40,7 @@ import pe.itsb.vyrbus.model.bean.Agencia;
 import pe.itsb.vyrbus.model.bean.ConfiguracionImpresora;
 import pe.itsb.vyrbus.model.bean.DestinatariosEmails;
 import pe.itsb.vyrbus.model.bean.DetalleEquipaje;
+import pe.itsb.vyrbus.model.bean.Empresa;
 import pe.itsb.vyrbus.model.bean.Gasto;
 import pe.itsb.vyrbus.model.bean.ItinerarioAgenciaPartida;
 import pe.itsb.vyrbus.model.bean.ItinerarioAgenciaPartidaID;
@@ -165,7 +166,7 @@ public class WSFE implements Serializable{
 
 		DocumentoBaja documentoBaja= new DocumentoBaja();
 		documentoBaja.setAgenciaID(ventaAnular.getAgencia().getId().longValue());
-		documentoBaja.setRucEmpresa(new JAXBElement<>(new QName(NAMESPACE,"rucEmpresa"), String.class, Constantes.RUC_TRANSMAR));
+		documentoBaja.setRucEmpresa(new JAXBElement<>(new QName(NAMESPACE,"rucEmpresa"), String.class, ventaAnular.getEmpresa().getNumeroDocumento()));
 		documentoBaja.setDescripcionMotivo(new JAXBElement<>(new QName(NAMESPACE,"descripcionMotivo"), String.class, ventaAnular.getObservaciones()));
 		documentoBaja.setFechaEmision(new JAXBElement<>(new QName(NAMESPACE,"fechaEmision"), String.class, FORMAT_DATE.format(ventaAnular.getFechaLiquidacion())));
 		documentoBaja.setNumeroCorrelativo(new JAXBElement<>(new QName(NAMESPACE,"numeroCorrelativo"), String.class, correlativo));
@@ -291,7 +292,7 @@ public class WSFE implements Serializable{
 					notaCredito=null;
 				}else{
 					/*Envia la venta a nuestro ws*/
-					result= getSoap().setVenta(TOKEN, oventa); //comentado temporalmento - 09/09/2021 - jabanto
+//					result= getSoap().setVenta(TOKEN, oventa); //comentado temporalmento - 09/09/2021 - jabanto
 				}
 
 				/*Agrega a la lista para la impresion - 06/12/2016 - jabanto*/
@@ -321,7 +322,7 @@ public class WSFE implements Serializable{
 					String serie=ventaPasajeReimpresion.getNumeroBoleto().split("-")[0];
 					String correlativo=ventaPasajeReimpresion.getNumeroBoleto().split("-")[1];
 					String tipoComprobante=(ventaPasajeReimpresion.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA?FE_TIPCOM_BOLETA:FE_TIPCOM_FACTURA);
-					Result resultReimpresion=getSoap().buscarDetalleComprobante(TOKEN, tipoComprobante, serie, correlativo, Constantes.RUC_TRANSMAR);
+					Result resultReimpresion=getSoap().buscarDetalleComprobante(TOKEN, tipoComprobante, serie, correlativo, ventaPasajeReimpresion.getEmpresa().getNumeroDocumento());
 
 					if(resultReimpresion.getBarcodeQR().getValue()!=null && resultReimpresion.getBarcodeEmbarque().getValue()!=null){
 						ventaPasajeReimpresion.setResult(resultReimpresion);
@@ -344,7 +345,7 @@ public class WSFE implements Serializable{
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
-			DlgMessage.error(e.getMessage());
+//			DlgMessage.error(e.getMessage());
 			/*Envia un e-mail con el error*/
 			sendMail("Metod sendVenta : "+e.getMessage());
 			return null;
@@ -370,7 +371,7 @@ public class WSFE implements Serializable{
 		else
 			tipoComprobante = FE_TIPCOM_NOTA_DEBITO;
 
-		Result result= getSoap().getRepresentacionImpresa(TOKEN, false, tipoComprobante, serie, correlativo, Constantes.ruc);
+		Result result= getSoap().getRepresentacionImpresa(TOKEN, false, tipoComprobante, serie, correlativo, ventaPasaje.getEmpresa().getNumeroDocumento());
 		if(result.isIsCorrect() && result.getPdf().getValue()!=null) {
 			return result.getPdf().getValue();
 		}else
@@ -383,27 +384,40 @@ public class WSFE implements Serializable{
 	 * @param window
 	 */
 	public static void reimprimirComprobante(List<VentaPasaje> listVentaPasaje, Window window, int numCopias){
+		reimprimirComprobante(listVentaPasaje, window, numCopias, true);
+		
+	}
+	/**
+	 * Realiza la reimpresion del comprobante
+	 * @param ventaPasaje
+	 * @param window
+	 */
+	public static void reimprimirComprobante(List<VentaPasaje> listVentaPasaje, Window window, int numCopias, boolean isReimpresion){
 		try {
 			List<VentaPasaje> ventasEnviadasSFE= new ArrayList<>();
 
 			/*Busca el comprobante en el Servorde de F.E*/
 			for(VentaPasaje ventaPasaje: listVentaPasaje){
+				int tipoComprobanteId = ventaPasaje.getTipoComprobante().getId();
 				String serie=ventaPasaje.getNumeroBoleto().split("-")[0];
 				String correlativo=ventaPasaje.getNumeroBoleto().split("-")[1];
-				String tipoComprobante=(ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA?FE_TIPCOM_BOLETA:FE_TIPCOM_FACTURA);
-				Result result=getSoap().buscarDetalleComprobante(TOKEN, tipoComprobante, serie, correlativo, Constantes.RUC_TRANSMAR);
+				if(tipoComprobanteId==Constantes.ID_TIPCOM_BOLETA_VENTA || tipoComprobanteId==Constantes.ID_TIPCOM_FACTURA) {
+					String tipoComprobante=(tipoComprobanteId==Constantes.ID_TIPCOM_BOLETA_VENTA?FE_TIPCOM_BOLETA:FE_TIPCOM_FACTURA);				
+					Result result=getSoap().buscarDetalleComprobante(TOKEN, tipoComprobante, serie, correlativo, ventaPasaje.getEmpresa().getNumeroDocumento());
 
-				if(result.getBarcodeQR().getValue()!=null && result.getBarcodeEmbarque().getValue()!=null){
-					ventaPasaje.setResult(result);
+					if(result.getBarcodeQR().getValue()!=null && result.getBarcodeEmbarque().getValue()!=null){
+						ventaPasaje.setResult(result);
+						ventasEnviadasSFE.add(ventaPasaje);
+					}else{
+						/*Alertar */
+						sendMail("Metod reimprimirComprobante : "+ventaPasaje.getNumeroBoleto()+" \n"+result.getMessage().getValue());
+					}
+				}else
 					ventasEnviadasSFE.add(ventaPasaje);
-				}else{
-					/*Alertar */
-					sendMail("Metod reimprimirComprobante : "+ventaPasaje.getNumeroBoleto()+" \n"+result.getMessage().getValue());
-				}
 			}
 
 			/*Crea y descarga el Archivo xml para la impresion*/
-			XmlVentaPasaje fileXmlPrint=createXmlVenta(ventasEnviadasSFE, true, numCopias);
+			XmlVentaPasaje fileXmlPrint=createXmlVenta(ventasEnviadasSFE, isReimpresion, numCopias);
 			if(fileXmlPrint!=null)
 				descargarFileXml(fileXmlPrint, window);
 
@@ -724,7 +738,7 @@ public class WSFE implements Serializable{
 	 * @param window : Instacia de la venta de donde es invocado el metodo
 	 * @param result :
 	 */
-	@SuppressWarnings("restriction")
+//	@SuppressWarnings("restriction")
 	private static byte[] descargarFileXmlEquipaje(XmlEquipajes xmlEquipajes, Window window, boolean timerdownload){
 		String nameFile="";
 		byte[] filePdfZip = null;
@@ -836,7 +850,7 @@ public class WSFE implements Serializable{
 	 * @param window : Instacia de la venta de donde es invocado el metodo
 	 * @param result :
 	 */
-	@SuppressWarnings("restriction")
+//	@SuppressWarnings("restriction")
 	private static byte[] descargarFileXml(XmlVentaPasaje xmlVentaPasaje, Window window){
 		String nameFile="";
 		byte[] filePdfZip = null;
@@ -955,8 +969,6 @@ public class WSFE implements Serializable{
 			String pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"Equipaje_TM.rpt";
 			Path path = Paths.get(pathRpt);
 			byte[] contenido = java.nio.file.Files.readAllBytes(path);
-//			@SuppressWarnings("restriction")
-			@SuppressWarnings("restriction")
 			String cryptoRptFormat=new BASE64Encoder().encode(contenido);
 
 			for(int i = 0; i < 2; i++) { //Para duplicar la impresion de Ticket de equipaje - Para el equipaje y el Boleto
@@ -991,6 +1003,30 @@ public class WSFE implements Serializable{
 		return xmlEquipajes;
 	}
 
+	/**
+	 * Busca el Path del archivo con el formato de impresion
+	 * @param rucEmpresa: Ruc de la empresa
+	 * @param nameFormatPrint: Nombre del Archivo 
+	 * @return Full Path
+	 * @throws Exception
+	 */
+	private static String getPathFormatPrintByEmpresa(String rucEmpresa, String nameFile)throws Exception{
+		File directoryFormatTicket = new File(Constantes.DIRECTORY_FORMAT_TICKET);
+		if(directoryFormatTicket.exists()) {
+			File[] listFiles = directoryFormatTicket.listFiles();
+			for(File file: listFiles) {
+				if(file.isDirectory() && file.getName().split("\\_").length==2 && file.getName().split("\\_")[0].equals(rucEmpresa)) {
+					File[] listFilesFormat = file.listFiles();
+					for(File fileFormat: listFilesFormat) {
+						if(fileFormat.getName().equals(nameFile)) 
+							return fileFormat.getPath();						
+					}
+				}
+			}
+		}
+		
+		return null;
+	}
 
 	/**
 	 * Crea el objeto XmlVentaPasajes para la creacion del xml para la impresion
@@ -1000,7 +1036,7 @@ public class WSFE implements Serializable{
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings("restriction")
+//	@SuppressWarnings("restriction")
 	private static XmlVentaPasaje createXmlVenta(List<VentaPasaje> listVentaPasaje, boolean isReimpresion, int numPrintCopies)throws Exception{
 		try {
 			XmlVentaPasaje xmlVentaPasaje= null;
@@ -1008,7 +1044,8 @@ public class WSFE implements Serializable{
 			List<XmlVenta> listXmlVenta= new ArrayList<>();
 			for(VentaPasaje ventaPasaje: listVentaPasaje){
 				int tipoComprobanteId=ventaPasaje.getTipoComprobante().getId();
-				if(tipoComprobanteId==Constantes.ID_TIPCOM_BOLETA_VENTA || tipoComprobanteId==Constantes.ID_TIPCOM_FACTURA || tipoComprobanteId==Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES){
+				if(tipoComprobanteId==Constantes.ID_TIPCOM_BOLETA_VENTA || tipoComprobanteId==Constantes.ID_TIPCOM_FACTURA || 
+						tipoComprobanteId==Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES || tipoComprobanteId==Constantes.ID_TIPCOM_GUIA){
 					/*Valida el tipo de comprobante*/
 					String cryptoBarcodeEmbarque=null;
 					String cryptoBarcodeSunat=null;
@@ -1016,41 +1053,67 @@ public class WSFE implements Serializable{
 					//Valida el tipo de moneda - 25/01/2023 jabanto
 					boolean isMonedaSoles = (ventaPasaje.getTipoMoneda()!=null && ventaPasaje.getTipoMoneda().getId().intValue()==DOLARES? false: true);
 					if(tipoComprobanteId!=Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES){
-						Result resultVenta=ventaPasaje.getResult();
-						if(resultVenta.getBarcodeEmbarque().getValue()!=null)
+						Result resultVenta=(ventaPasaje.getResult()!=null?ventaPasaje.getResult():null);
+						if(resultVenta!=null && resultVenta.getBarcodeEmbarque().getValue()!=null)
 							cryptoBarcodeEmbarque=new BASE64Encoder().encode(resultVenta.getBarcodeEmbarque().getValue());
 						//Encripta el los bytes del codigo de barras - Sunat;
 
-						if(resultVenta.getBarcodeQR().getValue()!=null) {
+						if(resultVenta!=null && resultVenta.getBarcodeQR().getValue()!=null) {
 //							Result resultVenta=ventaPasaje.getResult();
 							cryptoBarcodeSunat=new BASE64Encoder().encode(resultVenta.getBarcodeQR().getValue());
 						}
 
 						//Encripta en bytes del .rpt;
 						String pathRpt=null;
-						if(tipoComprobanteId==Constantes.ID_TIPCOM_BOLETA_VENTA){
-							if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_EXCESO)) {
-								pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"Boleta_exceso.rpt";
-							}else {
+//						if(tipoComprobanteId==Constantes.ID_TIPCOM_BOLETA_VENTA){
+//							if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_EXCESO)) {
+//								pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"Boleta_exceso.rpt";
+//							}else {
+//								if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS)
+//									pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"GABoleta_TM.rpt";
+//								else
+//									pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"Boleta_TM.rpt";
+//							}
+//						}else{
+//							if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_EXCESO)) {
+//								pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"Factura_exceso.rpt";
+//							}else {
+//								if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS)
+//									pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"GAFactura_TM.rpt";
+//								else
+//									pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"Factura_TM.rpt";
+//							}
+//						}
+						if(tipoComprobanteId == Constantes.ID_TIPCOM_BOLETA_VENTA){
+							if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_EXCESO))
+								pathRpt= getPathFormatPrintByEmpresa(ventaPasaje.getEmpresa().getNumeroDocumento(), Constantes.FORMAT_PRINT_BOLETA_EXCESO);
+							else {
 								if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS)
-									pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"GABoleta_TM.rpt";
+									pathRpt= getPathFormatPrintByEmpresa(ventaPasaje.getEmpresa().getNumeroDocumento(), Constantes.FORMAT_PRINT_BOLETA_GA);
 								else
-									pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"Boleta_TM.rpt";
+									pathRpt= getPathFormatPrintByEmpresa(ventaPasaje.getEmpresa().getNumeroDocumento(), Constantes.FORMAT_PRINT_BOLETA);
 							}
-						}else{
-							if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_EXCESO)) {
-								pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"Factura_exceso.rpt";
-							}else {
+						}else if(tipoComprobanteId == Constantes.ID_TIPCOM_FACTURA){
+							if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_EXCESO))
+								pathRpt= getPathFormatPrintByEmpresa(ventaPasaje.getEmpresa().getNumeroDocumento(), Constantes.FORMAT_PRINT_FACTURA_EXCESO);
+							else {
 								if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS)
-									pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"GAFactura_TM.rpt";
+									pathRpt= getPathFormatPrintByEmpresa(ventaPasaje.getEmpresa().getNumeroDocumento(), Constantes.FORMAT_PRINT_FACTURA_GA);
 								else
-									pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"Factura_TM.rpt";
+									pathRpt= getPathFormatPrintByEmpresa(ventaPasaje.getEmpresa().getNumeroDocumento(), Constantes.FORMAT_PRINT_FACTURA);
 							}
+						}else if(tipoComprobanteId==Constantes.ID_TIPCOM_GUIA) {
+							if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_EXCESO))
+								pathRpt= getPathFormatPrintByEmpresa(ventaPasaje.getEmpresa().getNumeroDocumento(), Constantes.FORMAT_PRINT_GUIA_EXCESO);
 						}
-
+						
+						if(pathRpt ==null)
+							new Exception("No se pudo realizar la impresión, debido a que no se ha encontrado el formato de impresión para el tipo de comprobante emitido");
+						
 						Path path = Paths.get(pathRpt);
 						byte[] contenido = java.nio.file.Files.readAllBytes(path);
 						cryptoRptFormat=new BASE64Encoder().encode(contenido);
+						
 					}
 
 
@@ -1159,7 +1222,7 @@ public class WSFE implements Serializable{
 
 					//jabanto - 11/08/2022
 					if(isReimpresion) {
-						String reimpresion = (xmlVenta.getV0_ObserImport()!=null? xmlVenta.getV0_ObserImport() + " - REIMPRESIN" : "REIMPRESIN" );
+						String reimpresion = (xmlVenta.getV0_ObserImport()!=null? xmlVenta.getV0_ObserImport() + " - REIMPRESIÓN" : "REIMPRESIÓN" );
 						xmlVenta.setV0_ObserImport(reimpresion);
 					}
 
@@ -1314,7 +1377,7 @@ public class WSFE implements Serializable{
 			cliente.setDireccion(new JAXBElement<>(new QName(NAMESPACE,"direccion"), String.class, cliente_direccion));
 
 			Venta venta= new Venta();
-			venta.setRucEmpresa(new JAXBElement<>(new QName(NAMESPACE, "rucEmpresa"), String.class, Constantes.RUC_TRANSMAR));
+			venta.setRucEmpresa(new JAXBElement<>(new QName(NAMESPACE, "rucEmpresa"), String.class, ventaPasaje.getEmpresa().getNumeroDocumento()));
 			venta.setTipoComprobanteID(new JAXBElement<>(new QName(NAMESPACE,"tipoComprobanteID"), String.class, tipoComprobanteID));
 			venta.setNumeroSerie(new JAXBElement<>(new QName(NAMESPACE,"numeroSerie"), String.class, serie));
 			venta.setNumeroCorrelativo(new JAXBElement<>(new QName(NAMESPACE,"numeroCorrelativo"), String.class, autoCompletCorrelativo(correlativo)));
@@ -1656,7 +1719,7 @@ public class WSFE implements Serializable{
 
 			/*Instancia la nota*/
 			Nota nota=new Nota();
-			nota.setRucEmpresa(new JAXBElement<>(new QName(NAMESPACE, "rucEmpresa"), String.class, Constantes.RUC_TRANSMAR));
+			nota.setRucEmpresa(new JAXBElement<>(new QName(NAMESPACE, "rucEmpresa"), String.class, notaCredito.getEmpresa().getNumeroDocumento()));
 			nota.setCliente(new JAXBElement<>(new QName(NAMESPACE,"cliente"), Cliente.class, cliente));
 			nota.setDocumentoReferencia(new JAXBElement<>(new QName(NAMESPACE, "documentoReferencia"), DocumentoReferencia.class,documentoReferencia));
 			nota.setNumeroSerie(new JAXBElement<>(new QName(NAMESPACE, "numeroSerie"), String.class,notaCredito.getNumeroBoleto().split("-")[0]));

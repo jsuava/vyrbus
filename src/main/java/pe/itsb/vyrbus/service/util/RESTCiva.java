@@ -158,7 +158,7 @@ public class RESTCiva implements Serializable{
 		}catch(Exception e){
 			e.printStackTrace();
 //			DlgMessage.error("Error al consultar dni \n"+e.getMessage());
-			DlgMessage.error("Error al consultar DNI: o pertenece a un menor de edad o no existe.");
+//			DlgMessage.error("Error al consultar DNI: o pertenece a un menor de edad o no existe.");
 //			return new ArrayList<>();
 			return null;
 		}

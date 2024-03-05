@@ -377,34 +377,35 @@ public class WndLogin extends WndBase {
 					this.getDesktop().getSession().setAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION,liquidacion.getFechaLiquidacion());
 
 				/*	Calcula el porcentaje de correlativos utilizados del manifiesto */
-				int porcentajeCorrelativoManifiesto = 0;
-				porcentajeCorrelativoManifiesto = UtilData.porcentajeCorrelativoManifiesto(agencia);
+				//Se contó temporalmente dado que por ahora no hay forma de identificar la empresa desde esta parte - 21/02/2024 - jabanto
+//				int porcentajeCorrelativoManifiesto = 0;
+//				porcentajeCorrelativoManifiesto = UtilData.porcentajeCorrelativoManifiesto(agencia);
 
 				final Liquidacion liquidacion_f = liquidacion;
-				if (porcentajeCorrelativoManifiesto >=Constantes.ALERTAR_ENVIO_MANIFIESTOS){
-					/*Cuando el  correlativo del manifiesto es Mayor al 80 %*/
-					Messagebox.show(Messages.getString("WndManifiesto.information.utilizacionCorrelativosManifiesto")+" "+porcentajeCorrelativoManifiesto+" %", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_OK, Messagebox.INFORMATION, new EventListener<Event>() {
-						@Override
-						public void onEvent(Event e) throws Exception {
-							if(e.getName().equals("onOK") || e.getName().equals("onClose")){
-								//El Usuario tiene una liquidacion abierta y es una agencia tepsa
-								if (liquidacion_f!=null && tipoAgencia.getId().intValue()==Constantes.ID_TIPAGE_TEPSA){
-									Messagebox.show("El sistema ha detectado una caja abierta, con fecha: " + Constantes.FORMAT_DATE.format(liquidacion_f.getFechaLiquidacion())+". "+
-											Messages.getString("Generales.information.liquidacionAbierta"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_OK, Messagebox.INFORMATION, new EventListener<Event>() {
-										@Override
-										public void onEvent(Event e) throws Exception {
-											if(e.getName().equals("onOK") || e.getName().equals("onClose")){
-												Executions.sendRedirect("principal.zul");
-											}
-										}
-									});
-								}else
-									//El Usuario NO Tiene liquidacion abierta o es una agencia de viajes o corporativo
-									Executions.sendRedirect("principal.zul");
-							}
-						}
-					});
-				}else{//Cuando el uso del correlativo del manifiesto es menor al 80 %
+//				if (porcentajeCorrelativoManifiesto >=Constantes.ALERTAR_ENVIO_MANIFIESTOS){
+//					/*Cuando el  correlativo del manifiesto es Mayor al 80 %*/
+//					Messagebox.show(Messages.getString("WndManifiesto.information.utilizacionCorrelativosManifiesto")+" "+porcentajeCorrelativoManifiesto+" %", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_OK, Messagebox.INFORMATION, new EventListener<Event>() {
+//						@Override
+//						public void onEvent(Event e) throws Exception {
+//							if(e.getName().equals("onOK") || e.getName().equals("onClose")){
+//								//El Usuario tiene una liquidacion abierta y es una agencia tepsa
+//								if (liquidacion_f!=null && tipoAgencia.getId().intValue()==Constantes.ID_TIPAGE_TEPSA){
+//									Messagebox.show("El sistema ha detectado una caja abierta, con fecha: " + Constantes.FORMAT_DATE.format(liquidacion_f.getFechaLiquidacion())+". "+
+//											Messages.getString("Generales.information.liquidacionAbierta"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_OK, Messagebox.INFORMATION, new EventListener<Event>() {
+//										@Override
+//										public void onEvent(Event e) throws Exception {
+//											if(e.getName().equals("onOK") || e.getName().equals("onClose")){
+//												Executions.sendRedirect("principal.zul");
+//											}
+//										}
+//									});
+//								}else
+//									//El Usuario NO Tiene liquidacion abierta o es una agencia de viajes o corporativo
+//									Executions.sendRedirect("principal.zul");
+//							}
+//						}
+//					});
+//				}else{//Cuando el uso del correlativo del manifiesto es menor al 80 %
 
 					//El Usuario tiene liquidacion una abierta y es una agencia tepsa
 					if (liquidacion_f!=null && tipoAgencia.getId().intValue()==Constantes.ID_TIPAGE_TEPSA){
@@ -420,7 +421,7 @@ public class WndLogin extends WndBase {
 					}else
 						//El Usuario NO Tiene liquidacion abierta o es una agencia de viajes o corporativo
 						Executions.sendRedirect("principal.zul");
-				}
+//				}
 //			}
 
 //			##END BEGIN 04/05/2016 - jabanto

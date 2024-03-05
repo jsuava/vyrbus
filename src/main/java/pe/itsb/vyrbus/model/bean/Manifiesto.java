@@ -3,6 +3,7 @@ package pe.itsb.vyrbus.model.bean;
 // Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -25,6 +26,9 @@ public class Manifiesto extends GenericBean implements java.io.Serializable {
 	private Integer mee;
 	private Agencia agencia;
 
+	//No mapeados
+	private List<DetalleManifiesto> listDetalleManifiesto;
+	
 	//Variables para la devolucion del ISC
 	private String ruc;
 	private String per4949;
@@ -375,6 +379,20 @@ public class Manifiesto extends GenericBean implements java.io.Serializable {
 	 */
 	public void setImporte2(Double importe2) {
 		this.importe2 = importe2;
+	}
+
+	/**
+	 * @return the listDetalleManifiesto
+	 */
+	public List<DetalleManifiesto> getListDetalleManifiesto() {
+		return listDetalleManifiesto;
+	}
+
+	/**
+	 * @param listDetalleManifiesto the listDetalleManifiesto to set
+	 */
+	public void setListDetalleManifiesto(List<DetalleManifiesto> listDetalleManifiesto) {
+		this.listDetalleManifiesto = listDetalleManifiesto;
 	}
 
 

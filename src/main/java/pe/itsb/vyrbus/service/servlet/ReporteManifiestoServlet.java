@@ -172,11 +172,16 @@ public class ReporteManifiestoServlet extends HttpServlet {
 			parameters.put("numeroAutoSunat",numeroAutoSunat);
 			parameters.put("totalPasajeros",totalPasajeros);
 			parameters.put("dniTripulante",dniTripulante);
-			parameters.put("razonSocial", Constantes.empresa);
-			parameters.put("ruc", Constantes.ruc);
-			parameters.put("telefonoCentral", Constantes.nro_telefono);
-			parameters.put("direccionOfCentral", Constantes.direccion_empresa);
-			parameters.put("centroComputo", Constantes.centro_computo);
+//			parameters.put("razonSocial", Constantes.empresa);
+			parameters.put("razonSocial", "");
+//			parameters.put("ruc", Constantes.ruc);
+			parameters.put("ruc", "");
+//			parameters.put("telefonoCentral", Constantes.nro_telefono);
+			parameters.put("telefonoCentral", "");
+//			parameters.put("direccionOfCentral", Constantes.direccion_empresa);
+			parameters.put("direccionOfCentral", "");
+//			parameters.put("centroComputo", Constantes.centro_computo);
+			parameters.put("centroComputo", "");
 			parameters.put("horaEmision",horaEmision);
 			parameters.put("importeTotal",importeTotal);
 

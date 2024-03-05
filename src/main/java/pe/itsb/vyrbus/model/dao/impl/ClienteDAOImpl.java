@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
+ * Descripciï¿½n	:
  * Autor		: jM
  * Fecha		: 04/05/2012
  */
@@ -120,7 +120,7 @@ public class ClienteDAOImpl extends GenericDAOImpl implements ClienteDAO {
 //						"ORDER BY c_razsoc";
 
 
-		String sql = "SELECT cliente_id, c_numdoc,c_razsoc,c_contacto FROM vrmcliente " +
+		String sql = "SELECT cliente_id, c_numdoc,c_razsoc,c_contacto, C_DIRECCION FROM vrmcliente " +
 				"WHERE CATSEARCH(c_razsoc,'"+criterio+"', null)>0 AND c_estreg='"+Constantes.VALUE_ACTIVO+"' AND ROWNUM<=1000 " +
 						"ORDER BY c_razsoc";
 
@@ -136,6 +136,7 @@ public class ClienteDAOImpl extends GenericDAOImpl implements ClienteDAO {
 			cliente.setNumeroDocumento(obj[1].toString());
 			cliente.setRazonSocial(obj[2].toString());
 			cliente.setContacto(obj[3]==null?null:obj[3].toString());
+			cliente.setDireccion(obj[4]==null?null:obj[4].toString());
 
 //			cliente.setNumeroDocumento(obj[3].toString());
 //			cliente.setRazonSocial(obj[4].toString());
@@ -216,4 +217,31 @@ public class ClienteDAOImpl extends GenericDAOImpl implements ClienteDAO {
 		}
 		return lstResult;
 	}
+
+//	/* (non-Javadoc)
+//	 * @see pe.itsb.vyrbus.model.dao.ClienteDAO#buscarPorRuc(java.lang.String)
+//	 */
+//	@Override
+//	public Cliente buscarPorRuc(String ruc) throws Exception {
+//		// TODO Auto-generated method stub
+//		String sql = "SELECT cliente_id, c_numdoc,c_razsoc,c_contacto, C_DIRECCION, AGENCIA_ID, UBIGEO_ID, N_CANTRAB,  "
+//				   + "FROM vrmcliente " +
+//				     "WHERE c_numdoc = '"+ ruc +"'  AND c_estreg='"+Constantes.VALUE_ACTIVO+"' ";				
+//
+//		log.info("buscarPorRuc"+ sql);
+//
+//		List<?> result = getSession().createSQLQuery(sql).list();
+//		Cliente cliente = null;
+//		for (Object element : result) {
+//			Object[] obj = (Object[])element;
+//			cliente = new Cliente();
+//			cliente.setId(((BigDecimal)obj[0]).longValue());
+//			cliente.setNumeroDocumento(obj[1].toString());
+//			cliente.setRazonSocial(obj[2].toString());
+//			cliente.setContacto(obj[3]==null?null:obj[3].toString());
+//			cliente.setDireccion(obj[4]==null?null:obj[4].toString());
+//			cliente.
+//		}
+//		return cliente;
+//	}
 }
