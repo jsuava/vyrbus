@@ -705,10 +705,10 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 							if(venta.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE || venta.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_RECIBO_CAJA){
 								if(venta.getRucClienteCredito()!=null){
 									/*No toma en cuenta las emitidas por operadores del Pool - 15/12/2016 - jabanto*/
-									if(!(venta.getRucClienteCredito().equals(Constantes.RUC_CIVA)) || !(venta.getRucClienteCredito().equals(Constantes.RUC_CRUZ_DEL_SUR))){
+//									if(!(venta.getRucClienteCredito().equals(Constantes.RUC_CIVA)) || !(venta.getRucClienteCredito().equals(Constantes.RUC_CRUZ_DEL_SUR))){
 										total = total - venta.getImportePagado();
 										totalDevolucion = totalDevolucion + venta.getImportePagado();
-									}
+//									}
 								}else{
 									total = total - venta.getImportePagado();
 									totalDevolucion = totalDevolucion + venta.getImportePagado();
@@ -717,13 +717,13 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 								/*Facturas y Boletas*/
 								if(venta.getRucClienteCredito()!=null){
 									/*No toma en cuenta las emitidas por operadores del Pool - 15/12/2016 - jabanto*/
-									if(!(venta.getRucClienteCredito().equals(Constantes.RUC_CIVA)) || !(venta.getRucClienteCredito().equals(Constantes.RUC_CRUZ_DEL_SUR))){
+//									if(!(venta.getRucClienteCredito().equals(Constantes.RUC_CIVA)) || !(venta.getRucClienteCredito().equals(Constantes.RUC_CRUZ_DEL_SUR))){
 										/*Valida si es una devolucion de una canal Agencia de Viajes o Web*/
 										if(venta.getCanalVenta().getId().intValue()==Constantes.ID_CANVEN_AGENCIA_VIAJES || venta.getCanalVenta().getId().intValue()==Constantes.ID_CANVEN_WEB){
 											total = total - venta.getImportePagado();
 											totalDevolucion = totalDevolucion + venta.getImportePagado();
 										}
-									}
+//									}
 								}else{
 									/*Valida si es una devolucion de una canal Agencia de Viajes o Web*/
 									if(venta.getCanalVenta().getId().intValue()==Constantes.ID_CANVEN_AGENCIA_VIAJES || venta.getCanalVenta().getId().intValue()==Constantes.ID_CANVEN_WEB){
@@ -757,7 +757,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 							if(venta.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE || venta.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_RECIBO_CAJA){
 								if(venta.getRucClienteCredito()!=null){
 									/*No toma en cuenta las emitidas por operadores del Pool - 15/12/2016 - jabanto*/
-									if(!(venta.getRucClienteCredito().equals(Constantes.RUC_CIVA)) || !(venta.getRucClienteCredito().equals(Constantes.RUC_CRUZ_DEL_SUR)))
+//									if(!(venta.getRucClienteCredito().equals(Constantes.RUC_CIVA)) || !(venta.getRucClienteCredito().equals(Constantes.RUC_CRUZ_DEL_SUR)))
 										total = total + venta.getImportePagado();
 								}else
 									total = total + venta.getImportePagado();
@@ -765,11 +765,11 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 								/*Bolestas y Facturas*/
 								if(venta.getRucClienteCredito()!=null){
 									/*No toma en cuenta las emitidas por operadores del Pool - 15/12/2016 - jabanto*/
-									if(!(venta.getRucClienteCredito().equals(Constantes.RUC_CIVA)) || !(venta.getRucClienteCredito().equals(Constantes.RUC_CRUZ_DEL_SUR))){
+//									if(!(venta.getRucClienteCredito().equals(Constantes.RUC_CIVA)) || !(venta.getRucClienteCredito().equals(Constantes.RUC_CRUZ_DEL_SUR))){
 										/*Valida si es una devolucion de una canal Agencia de Viajes o Web*/
 										if(venta.getCanalVenta().getId().intValue()==Constantes.ID_CANVEN_AGENCIA_VIAJES || venta.getCanalVenta().getId().intValue()==Constantes.ID_CANVEN_WEB)
 											total = total + venta.getImportePagado();
-									}
+//									}
 								}else{
 									/*Valida si es una devolucion de una canal Agencia de Viajes o Web*/
 									if(venta.getCanalVenta().getId().intValue()==Constantes.ID_CANVEN_AGENCIA_VIAJES || venta.getCanalVenta().getId().intValue()==Constantes.ID_CANVEN_WEB)

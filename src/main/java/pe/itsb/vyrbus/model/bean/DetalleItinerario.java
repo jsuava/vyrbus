@@ -32,6 +32,7 @@ public class DetalleItinerario extends GenericBean implements Serializable, Clon
 	private Boolean esIda;							//No mapeado
 	private TarifaFechaAbierta tarifaFechaAbierta; 	//No mapeado
 	private Asiento objAsiento;						//No mapeado
+	private ItinerarioAgenciaPartida puntoEmbarque; //No mapeado
 
 	private Double tarifaSegundoPiso; 				//No Mapeado (Tarifa del Segundo piso - para el caso del Pul "cruz del sur y/o civa")
 	private ObjectCruzdelsur objectCruzdelsur;  	//No Mapeado
@@ -357,6 +358,20 @@ public class DetalleItinerario extends GenericBean implements Serializable, Clon
 	 */
 	public void setObjAsiento(Asiento objAsiento) {
 		this.objAsiento = objAsiento;
+	}
+
+	/**
+	 * @return the puntoEmbarque
+	 */
+	public ItinerarioAgenciaPartida getPuntoEmbarque() {
+		return puntoEmbarque;
+	}
+
+	/**
+	 * @param puntoEmbarque the puntoEmbarque to set
+	 */
+	public void setPuntoEmbarque(ItinerarioAgenciaPartida puntoEmbarque) {
+		this.puntoEmbarque = puntoEmbarque;
 	}
 
 	

@@ -447,6 +447,12 @@
    	<bean id="empresaDAO" class="pe.itsb.vyrbus.model.dao.impl.EmpresaDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
+   	<bean id="autorizadorDescuentoDAO" class="pe.itsb.vyrbus.model.dao.impl.AutorizadorDescuentoDAOImpl">
+   		<property name="sessionFactory" ref="sessionFactory" />
+   	</bean>
+   	<bean id="descuentoDAO" class="pe.itsb.vyrbus.model.dao.impl.DescuentoDAOImpl">
+   		<property name="sessionFactory" ref="sessionFactory" />
+   	</bean>
    	
 <!--    	VENTA DE SEGUROS -->
 	<bean id="ventaSeguroDAO" class="pe.itsb.vyrbus.model.dao.impl.VentaSeguroDAOImpl">
@@ -865,6 +871,13 @@
 	<bean id="empresaManager" class="pe.itsb.vyrbus.service.business.impl.EmpresaManagerImpl">
 		<property name="empresaDAO" ref="empresaDAO" />
 	</bean>
+	<bean id="autorizadorDescuentoManager" class="pe.itsb.vyrbus.service.business.impl.AutorizadorDescuentoManagerImpl">
+		<property name="autorizadorDescuentoDAO" ref="autorizadorDescuentoDAO" />
+	</bean>
+	<bean id="descuentoManager" class="pe.itsb.vyrbus.service.business.impl.DescuentoManagerImpl">
+		<property name="descuentoDAO" ref="descuentoDAO" />
+	</bean>
+	
 <!-- 	VENTA DE SEGUROS -->
 	<bean id="ventaSeguroManager" class="pe.itsb.vyrbus.service.business.impl.VentaSeguroManagerImpl">
 		<property name="ventaSeguroDAO" ref="ventaSeguroDAO" />
@@ -899,5 +912,6 @@
 	<bean id="detalleFlotaHREManager" class="pe.itsb.vyrbus.service.business.impl.DetalleFlotaHREManagerImpl">
 		<property name="detalleFlotaHREDAO" ref="detalleFlotaHREDAO" />
 	</bean>
+	
 
 </beans>

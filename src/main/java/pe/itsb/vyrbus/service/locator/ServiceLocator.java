@@ -978,11 +978,28 @@ public class ServiceLocator {
 	public static FlagManager getFlagManager(){
 		return (FlagManager) SpringUtil.getBean("flagManager",FlagManager.class);
 	}
+	
 	/**
 	 * Obtiene el bean de EmpresaManager, para realizar la comunicación con la capa modelo
 	 * @return <b>FlagManager</b>
 	 */
 	public static EmpresaManager getEmpresaManager(){
 		return (EmpresaManager) SpringUtil.getBean("empresaManager",EmpresaManager.class);
+	}
+	
+	/**
+	 * Obtiene el bean de AutorizadorDescuentoManager, para realizar la comunicación con la capa modelo
+	 * @return <b>AutorizadorDescuento</b>
+	 */
+	public static AutorizadorDescuentoManager getAutorizadorDescuentoManager(){
+		return (AutorizadorDescuentoManager) SpringUtil.getBean("autorizadorDescuentoManager",AutorizadorDescuentoManager.class);
+	}
+	
+	/**
+	 * Obtiene el bean de DescuentoManager, para realizar la comunicación con la capa modelo
+	 * @return <b>Descuento</b>
+	 */
+	public static DescuentoManager getDescuentoManager(){
+		return (DescuentoManager) SpringUtil.getBean("descuentoManager",DescuentoManager.class);
 	}
 }

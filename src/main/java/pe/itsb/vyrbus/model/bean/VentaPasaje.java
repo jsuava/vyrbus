@@ -80,6 +80,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	private TipoCobranza tipoCobranza;
 	private Date fechaAnulacion;
 	private Usuario usuarioAnulacion;
+	private String codigoDescuento;
 
 	private UsuarioHardware usuarioHardware;
 	private List<Integer> subConjunto;
@@ -1404,6 +1405,20 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	 */
 	public void setUsuarioAnulacion(Usuario usuarioAnulacion) {
 		this.usuarioAnulacion = usuarioAnulacion;
+	}
+
+	/**
+	 * @return the codigoDescuento
+	 */
+	public String getCodigoDescuento() {
+		return codigoDescuento;
+	}
+
+	/**
+	 * @param codigoDescuento the codigoDescuento to set
+	 */
+	public void setCodigoDescuento(String codigoDescuento) {
+		this.codigoDescuento = codigoDescuento;
 	}
 
 	//No mapeados

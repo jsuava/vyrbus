@@ -87,14 +87,14 @@
 			<tabpanels>
 				<tabpanel>
 					<div style="background:#4285F4;margin-left:2px;padding:4px;">
-						<label value="SELECCIONA EL VIAJE DE IDA :::: " style="color: #ffffff;"/>
-						<label id="lblBusqInfoViajeIda" sclass="label-size11-bold" style="font-size:13px !important;color: #ffffff;" />
+						<label id="lblBusqTitleSelectViajeIda" value="SELECCIÓN DEL VIAJE :::: " style="color: #ffffff;"/>
+						<label id="lblBusqInfoViajeIda" sclass="label-size11-bold" style="font-size:14px !important;color: #ffffff;" />
 					</div>
 					<listbox id="ltbxBusqIda" sclass="maxHeightLsbxBusqServicio">
 						<listhead>
 							<listheader label="EMPRESA" width="170px" style="color: #ffffff;"/>
 							<listheader label="RUTA" width="140px" style="color: #ffffff;"/>
-							<listheader label="EMBARQUE" width="120px" style="color: #ffffff;"/>
+							<listheader label="PTO. EMBARQUE" width="120px" style="color: #ffffff;" tooltiptext="Punto de Embarque"/>
 							<listheader label="H.SALIDA" width="60px" align="center" style="color: #ffffff;"/>
 							<listheader label="SERVICIO" width="120px" style="color: #ffffff;"/>														
 							<listheader label="TARIFA" width="90px" align="center" style="color: #ffffff;"/>
@@ -107,14 +107,14 @@
 				</tabpanel>
 				<tabpanel>
 					<div style="background:#4285F4;margin-left:2px;padding:4px;">
-						<label value="SELECCIONA EL VIAJE DE VUELTA :::: " style="color: #ffffff;"/>
-						<label id="lblBusqInfoViajeVuelta" sclass="label-size11-bold" style="font-size:13px !important;color: #ffffff;" />
+						<label value="SELECCIÓN DEL VIAJE DE VUELTA :::: " style="color: #ffffff;"/>
+						<label id="lblBusqInfoViajeVuelta" sclass="label-size11-bold" style="font-size:14px !important;color: #ffffff;;" />
 					</div>
 					<listbox id="ltbxBusqVuelta" sclass="maxHeightLsbxBusqServicio">
 						<listhead>
 							<listheader label="EMPRESA" width="170px" style="color: #ffffff;"/>
 							<listheader label="RUTA" width="140px" style="color: #ffffff;"/>
-							<listheader label="EMBARQUE" width="120px" style="color: #ffffff;"/>
+							<listheader label="PTO. EMBARQUE" width="120px" style="color: #ffffff;" tooltiptext="Punto de Embarque"/>
 							<listheader label="H.SALIDA" width="60px" align="center" style="color: #ffffff;"/>
 							<listheader label="SERVICIO" width="120px" style="color: #ffffff;"/>														
 							<listheader label="TARIFA" width="90px" align="center" style="color: #ffffff;"/>
@@ -171,8 +171,9 @@
 										</row>
 										<row><separator/></row>
 										<row><separator/></row>
-										<row><separator/></row>
-										<row><separator height="11px"/></row>
+										<row>
+											<checkbox id="chbxVtaUpdateMapAuto" label="Actualizar Mapa automáticamente" />
+										</row>
 									</rows>
 								</grid>
 								<grid width="250px">
@@ -240,7 +241,7 @@
 															<combobox id="cmbVtaIdaDesembarque_hora" onFocus="self.select();" onOK="if(gridVtaInfoViajeVuelta.isVisible()){ cmbVtaVueltaEmbarque_hora.setFocus(true);} else txtVtaPaxBusqueda.setFocus(true);" readonly="true" width="160px" tooltiptext="Punto de Desembarque del viaje de Ida" placeholder="DESEMBARQUE" style="font-size:10px !important;font-weight: bold;"/>
 															<separator width="15px"/>
 															<label value="ASIENTO :"/>
-															<label id="lblVtaIdaAsiento" sclass="label-size11-bold" style="font-size:18px !important" />
+															<label id="lblVtaIdaAsiento" sclass="label-size11-bold" style="font-size:18px !important;color:black" />
 															<separator width="15px"/>
 															<label value="TARIFA :"/>
 															<doublebox id="dbxVtaIdaTarifa" readonly="true" width="70px" sclass="label-size11-bold" format="#,##0.00" style="font-size:18px !important" />
@@ -277,7 +278,7 @@
 																<combobox id="cmbVtaVueltaDesembarque_hora" onFocus="self.select();" onOK="txtVtaPaxBusqueda.setFocus(true);" readonly="true" width="160px" tooltiptext="Punto de Desembarque del viaje de Ida" placeholder="DESEMBARQUE" style="font-size:10px !important;font-weight: bold;"/>
 																<separator width="15px"/>
 																<label value="ASIENTO :"/>
-																<label id="lblVtaVueltaAsiento" sclass="label-size11-bold" style="font-size:18px !important" />
+																<label id="lblVtaVueltaAsiento" sclass="label-size11-bold" style="font-size:18px !important;color:black" />
 																<separator width="15px"/>
 																<label value="TARIFA :"/>
 																<doublebox id="dbxVtaVueltaTarifa" readonly="true" width="70px" sclass="label-size11-bold" format="#,##0.00" style="font-size:18px !important" />				
@@ -448,10 +449,10 @@
 													<row spans="2">		
 														<hbox align="center">
 															<label value="AUTORIZA:"/>
-															<combobox id="cmbVtaAutorizaDescuento" onFocus="self.select();" width="100px" readonly="true" placeholder="AUTORIZA"/>
+															<combobox id="cmbVtaAutorizaDescuento" onOK="txtVtaAutorizaDescuentoCodigo.setFocus(true);" onFocus="self.select();" width="100px" readonly="true" placeholder="AUTORIZA"/>
 															<separator width="10px"/>																		
 															<label value="COD:"/>
-															<textbox id="txtVtaAutorizaDescuentoCodigo" onFocus="self.select();" width="50px" placeholder="CÓDIGO"/>
+															<textbox id="txtVtaAutorizaDescuentoCodigo" onOK="btnVtaGuardar.setFocus(true);" onFocus="self.select();" width="50px" placeholder="CÓDIGO"/>
 														</hbox>																		
 													</row>
 												</rows>

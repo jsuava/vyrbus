@@ -776,7 +776,7 @@ public class Util {
 	 * Compara si un objeto es mayor.
 	 * @param min		: Dato que deseamos comparar.
 	 * @param sus		: Datos contra el cual se comparara.
-	 * @param operador	: Tipo de operador para realizar la comparaci�n.
+	 * @param operador	: Tipo de operador para realizar la comparación.
 	 * @return true o false
 	 */
 	public static boolean comparaFechas(Object min, Object sus, int operador) {

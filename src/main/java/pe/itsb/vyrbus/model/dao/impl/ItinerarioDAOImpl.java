@@ -55,6 +55,8 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 				"di.d_feclle, di.c_horlle, di.n_tarifa, s.n_numpis, s.n_numasipis1, s.n_numfilpis1, s.n_numcolpis1, s.n_numasipis2, " +
 				"s.n_numfilpis2, s.n_numcolpis2, i.d_fecreapar, ti.tipiti_id  " +
 				",rm.ruta_id, lpool.poolloc_id, b.c_numplaca, e.empresa_id, e.c_razsoc, e.c_nomcor, e.c_numdoc, e.c_logo "+ // 33-38
+				",app.agencia_id agencia_idPtoEmbarque, app.c_nomcor agencia_nomcortPtoEmbarque, app.c_denominacion agencia_denominacionPtoEmbarque, iap.c_horpar horaPartida_PtoEmbarque  "+ //41 - 44
+				",app.localidad_id  agencia_localidadPtoEmbarque  "+ // 45
 				"FROM vrtitinerario i " +
 					"INNER JOIN vrtdetiti di ON di.itinerario_id=i.itinerario_id " +
 					"LEFT JOIN vrmbus b ON b.bus_id=i.bus_id " +
@@ -71,9 +73,11 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 //					"LEFT JOIN VRTPOOLLOC lpool ON (lpool.localidad_iddestino=r.localidad_iddestino AND lpool.c_ruc='20502324927' AND lpool.c_estreg='A') " + //Para validar si el destino pertenece al pool
 					"LEFT JOIN VRTPOOLLOC lpool ON (lpool.localidad_iddestino=r.localidad_iddestino AND lpool.c_ruc='20502324927' AND lpool.c_estreg='A' AND lpool.ruta_idmayor=i.ruta_idmayor) " + //Para validar si el destino pertenece al pool
 					"INNER JOIN vrmempresa e ON e.empresa_id = i.empresa_id " +
+					"INNER JOIN VRTITIAGEPAR iap ON (iap.itinerario_id = i.itinerario_id) "+
+					"INNER JOIN VRMAGENCIA app ON (app.agencia_id=iap.agencia_id) " +
 				"WHERE di.d_fecpar=to_date('"+fechaPartida+"','dd/mm/yyyy') AND r.c_origen LIKE '"+origen+"%' AND r.c_destino LIKE '"+destino+"%' " +
 					"AND n_esanulado=0 AND e.c_numdoc LIKE '" + empresaRUC + "%' " +
-				"ORDER BY di.d_fecpar, to_date(di.c_horpar,'HH24:MI'), s.c_denominacion, di.d_feclle, to_date(di.c_horlle,'HH24:MI')";
+				"ORDER BY di.d_fecpar, to_date(iap.c_horpar,'HH24:MI'), s.c_denominacion, di.d_feclle, to_date(di.c_horlle,'HH24:MI')";
 
 		List<?> result = getSession().createSQLQuery(sql).list();
 		List<DetalleItinerario> lstResult = new ArrayList<>();
@@ -125,6 +129,16 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 			detalleItinerario.setFechaPartida((Date)obj[15]);
 			detalleItinerario.setHoraPartida(obj[16].toString());
 			ruta.setDestino(obj[17].toString());
+			
+			Agencia agenciaPuntoEmbarque = new Agencia(((BigDecimal)obj[41]).intValue());
+			agenciaPuntoEmbarque.setNombreCorto(obj[42]!=null?obj[42].toString():null);
+			agenciaPuntoEmbarque.setDenominacion(obj[43].toString());
+			agenciaPuntoEmbarque.setLocalidad(new Localidad(((BigDecimal)obj[45]).intValue()));
+			ItinerarioAgenciaPartida puntoEmbarque = new ItinerarioAgenciaPartida();
+			puntoEmbarque.setAgencia(agenciaPuntoEmbarque);
+			puntoEmbarque.setHoraPartida(obj[44].toString());
+			detalleItinerario.setPuntoEmbarque(puntoEmbarque);
+			
 //			ruta.setValidarPrioridadVenta(obj[34]!=null?((BigDecimal)obj[34]).intValue():null);
 			Agencia agenciaLlegadaRuta = new Agencia();
 			agenciaLlegadaRuta.setId(((BigDecimal)obj[18]).intValue());

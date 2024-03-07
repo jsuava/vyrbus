@@ -1475,10 +1475,10 @@ public class WndVentaReserva extends WndBase {
 							
 							if(detalleItinerario.getItinerario().getOperadoPor()==null)
 								item.setImage("/resources/mp_tepsa.png");
-							else if(detalleItinerario.getItinerario().getOperadoPor().equals(Constantes.OPERADO_POR_CRUZ_DEL_SUR))
-								item.setImage("/resources/mp_cruzdelsur.png");
-							else if (detalleItinerario.getItinerario().getOperadoPor().equals(Constantes.OPERADO_CIVA))
-								item.setImage("/resources/mp_excluciva.png");
+//							else if(detalleItinerario.getItinerario().getOperadoPor().equals(Constantes.OPERADO_POR_CRUZ_DEL_SUR))
+//								item.setImage("/resources/mp_cruzdelsur.png");
+//							else if (detalleItinerario.getItinerario().getOperadoPor().equals(Constantes.OPERADO_CIVA))
+//								item.setImage("/resources/mp_excluciva.png");
 //							cell = new Listcell(detalleItinerario.getItinerario().getOperadoPor()==null?"TEPSA":detalleItinerario.getItinerario().getOperadoPor());
 //							cell.setStyle("font-size:9px !important");
 //							item.appendChild(cell);
@@ -2018,33 +2018,33 @@ public class WndVentaReserva extends WndBase {
 											}
 										}else{
 											//Operado por otra empresa
-											if(detalleItinerarioIda.getItinerario().getOperadoPor().equals(Constantes.OPERADO_POR_CRUZ_DEL_SUR)){
-												detalleItinerarioIda.getObjectCruzdelsur().setListAsientos(lbxAsientos);
-												detalleItinerarioIda.getObjectCruzdelsur().setBtnNextTabVenta(btnNextTabVenta);
-												WSCruzdelsur.crearEstructura(grpbxMapaIda,
-																			 detalleItinerarioIda,
-																			 grdOcupabilidadIda,
-																			 getAgencia(),
-																			 getUsuario());
-												detailItinerary=detalleItinerarioIda;
-												divLogOperadorPor1.setVisible(true);
-												divLogOperadorPor2.setVisible(true);
-												imgLogoOperadorPor1.setSrc("/resources/logos/mp_logoCruzdelsur.png");
-												imgLogoOperadorPor2.setSrc("/resources/logos/mp_logoCruzdelsur.png");
-											}else if (detalleItinerarioIda.getItinerario().getOperadoPor().equals(Constantes.OPERADO_CIVA)){
-												detalleItinerarioIda.getObjectCiva().setListAsientos(lbxAsientos);
-												detalleItinerarioIda.getObjectCiva().setBtnNextTabVenta(btnNextTabVenta);
-												RESTCiva.crearEstructura(grpbxMapaIda,
-																		 detalleItinerarioIda,
-																		 grdOcupabilidadIda,
-																		 getAgencia(),
-																		 getUsuario());
-												detailItinerary=detalleItinerarioIda;
-												divLogOperadorPor1.setVisible(true);
-												divLogOperadorPor2.setVisible(true);
-												imgLogoOperadorPor1.setSrc("/resources/logos/mp_logoExcluciva.png");
-												imgLogoOperadorPor2.setSrc("/resources/logos/mp_logoExcluciva.png");
-											}
+//											if(detalleItinerarioIda.getItinerario().getOperadoPor().equals(Constantes.OPERADO_POR_CRUZ_DEL_SUR)){
+//												detalleItinerarioIda.getObjectCruzdelsur().setListAsientos(lbxAsientos);
+//												detalleItinerarioIda.getObjectCruzdelsur().setBtnNextTabVenta(btnNextTabVenta);
+//												WSCruzdelsur.crearEstructura(grpbxMapaIda,
+//																			 detalleItinerarioIda,
+//																			 grdOcupabilidadIda,
+//																			 getAgencia(),
+//																			 getUsuario());
+//												detailItinerary=detalleItinerarioIda;
+//												divLogOperadorPor1.setVisible(true);
+//												divLogOperadorPor2.setVisible(true);
+//												imgLogoOperadorPor1.setSrc("/resources/logos/mp_logoCruzdelsur.png");
+//												imgLogoOperadorPor2.setSrc("/resources/logos/mp_logoCruzdelsur.png");
+//											}else if (detalleItinerarioIda.getItinerario().getOperadoPor().equals(Constantes.OPERADO_CIVA)){
+//												detalleItinerarioIda.getObjectCiva().setListAsientos(lbxAsientos);
+//												detalleItinerarioIda.getObjectCiva().setBtnNextTabVenta(btnNextTabVenta);
+//												RESTCiva.crearEstructura(grpbxMapaIda,
+//																		 detalleItinerarioIda,
+//																		 grdOcupabilidadIda,
+//																		 getAgencia(),
+//																		 getUsuario());
+//												detailItinerary=detalleItinerarioIda;
+//												divLogOperadorPor1.setVisible(true);
+//												divLogOperadorPor2.setVisible(true);
+//												imgLogoOperadorPor1.setSrc("/resources/logos/mp_logoExcluciva.png");
+//												imgLogoOperadorPor2.setSrc("/resources/logos/mp_logoExcluciva.png");
+//											}
 										}
 									}
 								}catch(Exception ex){}
@@ -2063,25 +2063,25 @@ public class WndVentaReserva extends WndBase {
 							}
 						}else{
 							//Operado por otra empresa
-							if(detalleItinerarioIda.getItinerario().getOperadoPor().equals(Constantes.OPERADO_POR_CRUZ_DEL_SUR)){
-								detalleItinerarioIda.getObjectCruzdelsur().setListAsientos(lbxAsientos);
-								detalleItinerarioIda.getObjectCruzdelsur().setBtnNextTabVenta(btnNextTabVenta);
-								WSCruzdelsur.crearEstructura(grpbxMapaIda, detalleItinerarioIda, grdOcupabilidadIda,getAgencia(),getUsuario());
-								detailItinerary=detalleItinerarioIda;
-								divLogOperadorPor1.setVisible(true);
-								divLogOperadorPor2.setVisible(true);
-								imgLogoOperadorPor1.setSrc("/resources/logos/mp_logoCruzdelsur.png");
-								imgLogoOperadorPor2.setSrc("/resources/logos/mp_logoCruzdelsur.png");
-							}else if (detalleItinerarioIda.getItinerario().getOperadoPor().equals(Constantes.OPERADO_CIVA)){
-								detalleItinerarioIda.getObjectCiva().setListAsientos(lbxAsientos);
-								detalleItinerarioIda.getObjectCiva().setBtnNextTabVenta(btnNextTabVenta);
-								RESTCiva.crearEstructura(grpbxMapaIda, detalleItinerarioIda, grdOcupabilidadIda,getAgencia(),getUsuario());
-								detailItinerary=detalleItinerarioIda;
-								divLogOperadorPor1.setVisible(true);
-								divLogOperadorPor2.setVisible(true);
-								imgLogoOperadorPor1.setSrc("/resources/logos/mp_logoExcluciva.png");
-								imgLogoOperadorPor2.setSrc("/resources/logos/mp_logoExcluciva.png");
-							}
+//							if(detalleItinerarioIda.getItinerario().getOperadoPor().equals(Constantes.OPERADO_POR_CRUZ_DEL_SUR)){
+//								detalleItinerarioIda.getObjectCruzdelsur().setListAsientos(lbxAsientos);
+//								detalleItinerarioIda.getObjectCruzdelsur().setBtnNextTabVenta(btnNextTabVenta);
+//								WSCruzdelsur.crearEstructura(grpbxMapaIda, detalleItinerarioIda, grdOcupabilidadIda,getAgencia(),getUsuario());
+//								detailItinerary=detalleItinerarioIda;
+//								divLogOperadorPor1.setVisible(true);
+//								divLogOperadorPor2.setVisible(true);
+//								imgLogoOperadorPor1.setSrc("/resources/logos/mp_logoCruzdelsur.png");
+//								imgLogoOperadorPor2.setSrc("/resources/logos/mp_logoCruzdelsur.png");
+//							}else if (detalleItinerarioIda.getItinerario().getOperadoPor().equals(Constantes.OPERADO_CIVA)){
+//								detalleItinerarioIda.getObjectCiva().setListAsientos(lbxAsientos);
+//								detalleItinerarioIda.getObjectCiva().setBtnNextTabVenta(btnNextTabVenta);
+//								RESTCiva.crearEstructura(grpbxMapaIda, detalleItinerarioIda, grdOcupabilidadIda,getAgencia(),getUsuario());
+//								detailItinerary=detalleItinerarioIda;
+//								divLogOperadorPor1.setVisible(true);
+//								divLogOperadorPor2.setVisible(true);
+//								imgLogoOperadorPor1.setSrc("/resources/logos/mp_logoExcluciva.png");
+//								imgLogoOperadorPor2.setSrc("/resources/logos/mp_logoExcluciva.png");
+//							}
 						}
 
 					}
@@ -5337,11 +5337,11 @@ public class WndVentaReserva extends WndBase {
 								ventaPasaje.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 								ventaPasaje.setEstadoDocumento("PAG");
 								ventaPasaje.setTipoTransaccion(Constantes.TIPO_OPERACION_VENTA_POOL);//SOLO POOL ES CUATRO
-								String observaciones="OPERADO:"+(asientoPool.getObjectCruzdelsur()!=null?Constantes.OPERADO_POR_CRUZ_DEL_SUR:Constantes.OPERADO_CIVA)+";"
-											       + "SERVICIO:"+detalleItinerarioIda.getItinerario().getServicio()+";"
-												   + "PTOEMB:"+cmbPtoEmbarque.getText().trim().toUpperCase()+";"
-												   + "PTODES:"+cmbPtoDesembarque.getText().trim().toUpperCase()+";";
-								ventaPasaje.setObservaciones(observaciones);
+//								String observaciones="OPERADO:"+(asientoPool.getObjectCruzdelsur()!=null?Constantes.OPERADO_POR_CRUZ_DEL_SUR:Constantes.OPERADO_CIVA)+";"
+//											       + "SERVICIO:"+detalleItinerarioIda.getItinerario().getServicio()+";"
+//												   + "PTOEMB:"+cmbPtoEmbarque.getText().trim().toUpperCase()+";"
+//												   + "PTODES:"+cmbPtoDesembarque.getText().trim().toUpperCase()+";";
+//								ventaPasaje.setObservaciones(observaciones);
 								UtilData.auditarRegistro(ventaPasaje, getUsuario(), Executions.getCurrent());
 
 //								ServiceLocator.getVentaPasajesManager().guardarVenta(ventaPasaje, false, true, false);

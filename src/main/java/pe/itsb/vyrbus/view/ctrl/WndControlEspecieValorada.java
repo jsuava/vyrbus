@@ -101,7 +101,7 @@ public class WndControlEspecieValorada extends WndOpcionesMantenimiento {
 		//Carga por default las especies valoradas registradas en la agencia, asociadas al usuario hardware.
 		idAgencia=getAgencia().getId();
 		idUsuarioHardware=getUsuarioHardware().getId();
-		listarRegistros(ServiceLocator.getControlEspecieValoradaManager().buscarEspecieValoradas(idAgencia, idTipoComprobante, idUsuarioHardware));
+		listarRegistros(ServiceLocator.getControlEspecieValoradaManager().buscarEspecieValoradas(idAgencia, idTipoComprobante, idUsuarioHardware, null));
 	}
 
 	@Override
@@ -162,7 +162,7 @@ public class WndControlEspecieValorada extends WndOpcionesMantenimiento {
 	@Override
 	public void onRefresh(int tab) throws Exception {
 			Util.limpiarListbox(listboxLista);
-		    listarRegistros(ServiceLocator.getControlEspecieValoradaManager().buscarEspecieValoradas(idAgencia, idTipoComprobante,idUsuarioHardware));
+		    listarRegistros(ServiceLocator.getControlEspecieValoradaManager().buscarEspecieValoradas(idAgencia, idTipoComprobante,idUsuarioHardware, null));
 	}
 
 	@Override
@@ -276,7 +276,7 @@ public class WndControlEspecieValorada extends WndOpcionesMantenimiento {
 			idTipoComprobante=controlEspecieValoradaID.getIdTipoComprobante();
 			idUsuarioHardware=controlEspecieValoradaID.getIdUsuarioHardware();
 			Util.limpiarListbox(listboxLista);
-			listarRegistros(ServiceLocator.getControlEspecieValoradaManager().buscarEspecieValoradas(idAgencia, idTipoComprobante,idUsuarioHardware));
+			listarRegistros(ServiceLocator.getControlEspecieValoradaManager().buscarEspecieValoradas(idAgencia, idTipoComprobante,idUsuarioHardware, null));
 
 
 		}catch (RangoEspecieValoradaRegistradaException revyrex){
@@ -646,7 +646,7 @@ public class WndControlEspecieValorada extends WndOpcionesMantenimiento {
 					idTipoComprobante=((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId();
 
 				Util.limpiarListbox(listboxLista);
-				listarRegistros(ServiceLocator.getControlEspecieValoradaManager().buscarEspecieValoradas(idAgencia, idTipoComprobante, idUsuarioHardware));
+				listarRegistros(ServiceLocator.getControlEspecieValoradaManager().buscarEspecieValoradas(idAgencia, idTipoComprobante, idUsuarioHardware, null));
 				window.onClose();
 			}
 
