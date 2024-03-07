@@ -237,17 +237,17 @@ public class RESTCiva implements Serializable{
 				if(integracionDestino.size()>0){
 					/*Obtiene los identificadores de los origenes*/
 					for(PoolLocalidad localidadIntegracion: poolLocalidad){
-						if(localidadIntegracion.getRuc().equals(Constantes.RUC_CIVA)){
+//						if(localidadIntegracion.getRuc().equals(Constantes.RUC_CIVA)){
 							origenId=localidadIntegracion.getLocalidadDestinoPoolID();
 							break;
-						}
+//						}
 					}
 					/*Obtiene los identificadores de los destinos*/
 					for(PoolLocalidad localidadIntegracion: integracionDestino){
-						if(localidadIntegracion.getRuc().equals(Constantes.RUC_CIVA)){
+//						if(localidadIntegracion.getRuc().equals(Constantes.RUC_CIVA)){
 							localidadDestinoPool=localidadIntegracion;
 							break;
-						}
+//						}
 					}
 				}
 			}
@@ -324,7 +324,7 @@ public class RESTCiva implements Serializable{
 						servicio.setDenominacion(objectCiva.getTipoServicio());
 						Itinerario itinerario= new Itinerario();
 						itinerario.setServicio(servicio);
-						itinerario.setOperadoPor(Constantes.OPERADO_CIVA);
+//						itinerario.setOperadoPor(Constantes.OPERADO_CIVA);
 						TipoItinerario tipoItinerario= new TipoItinerario();
 						tipoItinerario.setId(Constantes.ID_TIPITI_REGULAR);
 						itinerario.setTipoItinerario(tipoItinerario);
@@ -709,7 +709,7 @@ public class RESTCiva implements Serializable{
 		bloqueadosPool.setCodigoTransaccion(asiento.getObjectCiva().getReservaID().toString());
 		bloqueadosPool.setFechaPartida(Constantes.FORMAT_DATE.parse(asiento.getObjectCiva().getFechaSalidaBus()));
 		bloqueadosPool.setHoraPartida(asiento.getObjectCiva().getHoraEmbarque());
-		bloqueadosPool.setOperacion(Constantes.OPERADO_CIVA);
+//		bloqueadosPool.setOperacion(Constantes.OPERADO_CIVA);
 		bloqueadosPool.setNumeroAsiento(asiento.getNumeroAsiento());
 		bloqueadosPool.setPiso(asiento.getNivelAsiento());
 		bloqueadosPool.setRuta(asiento.getObjectCiva().getRutaBus().toUpperCase());

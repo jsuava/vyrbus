@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José Abanto
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Abanto
  * Fecha		: 27 jun. 2021
  * Hora			: 22:51:23
  */
@@ -88,7 +88,7 @@ public class VentaServicioEspecialManagerImpl implements VentaServicioEspecialMa
 	@Override
 	@Transactional
 	public int guardar(VentaServicioEspecial ventaServicioEspecial) throws Exception {
-		ControlEspecieValorada controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(ventaServicioEspecial.getTipoComprobante().getId(), ventaServicioEspecial.getAgencia(), true, ventaServicioEspecial.getUsuarioHardware(), null);
+		ControlEspecieValorada controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(ventaServicioEspecial.getTipoComprobante().getId(), ventaServicioEspecial.getAgencia(), true, ventaServicioEspecial.getUsuarioHardware(), null, null);
 		ventaServicioEspecial.setNumeroComprobante(controlEspecieValorada.toString());
 
 		int result = Constantes.FAILURE;

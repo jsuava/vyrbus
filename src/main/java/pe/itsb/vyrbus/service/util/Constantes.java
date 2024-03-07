@@ -91,6 +91,11 @@ public class Constantes {
 	public static final String VENDIDO = "VENDIDO";
 	public static final String RESERVADO = "RESERVADO";
 	public static final String BLOQUEADO = "BLOQUEADO";
+	
+	/*Variables para cargar los tipos de descuento*/
+	public static final String TIPO_DESCUENTO_TARIFA = "DT";
+	public static final String TIPO_DESCUENTO_SOLES = "DS";
+	public static final String TIPO_DESCUENTO_PORCENTAJE = "DP";
 
 	/*	Para la ruta de las imagenes	*/
 	public static final String PATH_PARTIAL="/resources/asientos/";

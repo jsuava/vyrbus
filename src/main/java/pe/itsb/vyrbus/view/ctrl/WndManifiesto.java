@@ -2336,7 +2336,7 @@ public class WndManifiesto extends WndBase {
 			public void onEvent(Event e){
 				try {
 					if(!rdPrintMatricial.isChecked() && !rdPrintLasert.isChecked()){
-						DlgMessage.information("Debe seleccionar el Tipo de Impresi�n.");
+						DlgMessage.information("Debe seleccionar el Tipo de Impresión.");
 						return;
 					}else if (!(cmbAgencia.getSelectedItem().getValue() instanceof Agencia)){
 						DlgMessage.information("Debe de seleccionar la Agencia con la cual va a emitir el Manifiesto");

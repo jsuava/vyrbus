@@ -559,10 +559,10 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 
 					if(rucClienteCredito!=null){
 						/*No considera las devoluciones de boletos de viaje emitidos por operados del POOL - jabanto 14/12/2016*/
-						if(!(rucClienteCredito.equals(Constantes.RUC_CIVA)) && !(rucClienteCredito.equals(Constantes.RUC_CRUZ_DEL_SUR))){
+//						if(!(rucClienteCredito.equals(Constantes.RUC_CIVA)) && !(rucClienteCredito.equals(Constantes.RUC_CRUZ_DEL_SUR))){
 							cantidadDev += +cantidadOperacion;
 							montoDev += +importeOperacion;
-						}
+//						}
 					}else{
 						/*Otras devoluciones de boletos de viaje*/
 						cantidadDev += +cantidadOperacion;
@@ -573,13 +573,13 @@ public  class LiquidacionDAOImpl extends GenericDAOImpl implements LiquidacionDA
 					int canalVentaId=((BigDecimal)obj[12]).intValue();
 					if(rucClienteCredito!=null){
 						/*No considera las devoluciones emitidas por operadores del POOL - jabanto 14/12/2016*/
-						if(!(rucClienteCredito.equals(Constantes.RUC_CIVA)) && !(rucClienteCredito.equals(Constantes.RUC_CRUZ_DEL_SUR))){
+//						if(!(rucClienteCredito.equals(Constantes.RUC_CIVA)) && !(rucClienteCredito.equals(Constantes.RUC_CRUZ_DEL_SUR))){
 							/*Valida si es una devolucion de una canal Agencia de Viajes o Web*/
 							if(canalVentaId==Constantes.ID_CANVEN_AGENCIA_VIAJES || canalVentaId==Constantes.ID_CANVEN_WEB){
 								cantidadDev += +cantidadOperacion;
 								montoDev += +importeOperacion;
 							}
-						}
+//						}
 					}else{
 						/*Valida si es una devolucion de una canal Agencia de Viajes o Web*/
 						if(canalVentaId==Constantes.ID_CANVEN_AGENCIA_VIAJES || canalVentaId==Constantes.ID_CANVEN_WEB){

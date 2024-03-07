@@ -113,17 +113,17 @@ public class WSCruzdelsur implements Serializable{
 				if(integracionDestino.size()>0){
 					/*Obtiene los identificadores de los origenes*/
 					for(PoolLocalidad localidadIntegracion: integracionOrigen){
-						if(localidadIntegracion.getRuc().equals(Constantes.RUC_CRUZ_DEL_SUR)){
+//						if(localidadIntegracion.getRuc().equals(Constantes.RUC_CRUZ_DEL_SUR)){
 							localidadEmbarque=localidadIntegracion.getLocalidadDestinoPoolID();
 							break;
-						}
+//						}
 					}
 					/*Obtiene los identificadores de los destinos*/
 					for(PoolLocalidad localidadIntegracion: integracionDestino){
-						if(localidadIntegracion.getRuc().equals(Constantes.RUC_CRUZ_DEL_SUR)){
+//						if(localidadIntegracion.getRuc().equals(Constantes.RUC_CRUZ_DEL_SUR)){
 							localidadDesembarque=localidadIntegracion.getLocalidadDestinoPoolID();
 							break;
-						}
+//						}
 					}
 				}
 			}
@@ -144,7 +144,7 @@ public class WSCruzdelsur implements Serializable{
 					servicio.setDenominacion(horario.getServicio().getValue().toUpperCase());
 					Itinerario itinerario= new Itinerario();
 					itinerario.setServicio(servicio);
-					itinerario.setOperadoPor(Constantes.OPERADO_POR_CRUZ_DEL_SUR);
+//					itinerario.setOperadoPor(Constantes.OPERADO_POR_CRUZ_DEL_SUR);
 					TipoItinerario tipoItinerario= new TipoItinerario();
 					tipoItinerario.setId(Constantes.ID_TIPITI_REGULAR);
 					itinerario.setTipoItinerario(tipoItinerario);
@@ -506,7 +506,7 @@ public class WSCruzdelsur implements Serializable{
 		bloqueadosPool.setCodigoTransaccion(asiento.getResultBloquearAsiento().getCodigoTransaccion().getValue());
 		bloqueadosPool.setFechaPartida(Constantes.FORMAT_DATE.parse(asiento.getObjectCruzdelsur().getHorario().getFechaHoraEmbarque1().getValue().split(" ")[0].trim()));
 		bloqueadosPool.setHoraPartida(asiento.getObjectCruzdelsur().getHorario().getFechaHoraEmbarque1().getValue().split(" ")[1].trim());
-		bloqueadosPool.setOperacion(Constantes.OPERADO_POR_CRUZ_DEL_SUR);
+//		bloqueadosPool.setOperacion(Constantes.OPERADO_POR_CRUZ_DEL_SUR);
 		bloqueadosPool.setNumeroAsiento(asiento.getNumeroAsiento());
 		bloqueadosPool.setPiso(asiento.getNivelAsiento());
 		bloqueadosPool.setRuta(asiento.getObjectCruzdelsur().getHorario().getRuta().getValue().toUpperCase());

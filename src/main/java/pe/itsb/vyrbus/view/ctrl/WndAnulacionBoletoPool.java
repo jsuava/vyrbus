@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José Abanto
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Abanto
  * Fecha		: 04/10/2016
  * Hora			: 11:21:05
  */
@@ -125,10 +125,10 @@ public class WndAnulacionBoletoPool extends WndBase{
 				total+=ventaPool.getImportePagado();
 				String style=ventaPool.getEstadoRegistro().equals(Constantes.VALUE_INACTIVO)?"color:red;":"";
 				Listitem item= new Listitem();
-				if(ventaPool.getOperador().equals(Constantes.OPERADO_POR_CRUZ_DEL_SUR))
-					item.setImage("/resources/mp_cruzdelsur.png");
-				else if (ventaPool.getOperador().equals(Constantes.OPERADO_CIVA))
-					item.setImage("/resources/mp_excluciva.png");
+//				if(ventaPool.getOperador().equals(Constantes.OPERADO_POR_CRUZ_DEL_SUR))
+//					item.setImage("/resources/mp_cruzdelsur.png");
+//				else if (ventaPool.getOperador().equals(Constantes.OPERADO_CIVA))
+//					item.setImage("/resources/mp_excluciva.png");
 				Listcell cell= new Listcell(ventaPool.getNumeroBoletoTepsa());
 				cell.setStyle(styleFont11+style);
 				item.appendChild(cell);
@@ -208,23 +208,23 @@ public class WndAnulacionBoletoPool extends WndBase{
 	 * @throws Exception
 	 */
 	private void anularBoleto(VentaPool ventaPool)throws Exception{
-		if(ventaPool.getOperador().equals(Constantes.OPERADO_POR_CRUZ_DEL_SUR)){
-			WSCruzdelsur.anularBoleto(ventaPool.getNumeroComprobanteOperador());
-			VentaPool oVentaPool=ServiceLocator.getVentaPoolManager().buscarPorId(ventaPool.getId());
-			/*realiza la anulacion en nuestra Base de datos*/
-			oVentaPool.setEstadoRegistro(Constantes.VALUE_INACTIVO);
-			oVentaPool.setImportePagado(.00);
-			UtilData.auditarRegistro(oVentaPool, true, getUsuario(), Executions.getCurrent());
-			ServiceLocator.getVentaPoolManager().actualizar(oVentaPool);
-		}else if (ventaPool.getOperador().equals(Constantes.OPERADO_CIVA)){
-			RESTCiva.anularBoleto(ventaPool.getNumeroBoletoTepsa());
-			/*realiza la anulacion en nuestra Base de datos*/
-			VentaPool oVentaPool=ServiceLocator.getVentaPoolManager().buscarPorId(ventaPool.getId());
-			oVentaPool.setImportePagado(.00);
-			oVentaPool.setEstadoRegistro(Constantes.VALUE_INACTIVO);
-			UtilData.auditarRegistro(oVentaPool, true, getUsuario(), Executions.getCurrent());
-			ServiceLocator.getVentaPoolManager().actualizar(oVentaPool);
-		}
+//		if(ventaPool.getOperador().equals(Constantes.OPERADO_POR_CRUZ_DEL_SUR)){
+//			WSCruzdelsur.anularBoleto(ventaPool.getNumeroComprobanteOperador());
+//			VentaPool oVentaPool=ServiceLocator.getVentaPoolManager().buscarPorId(ventaPool.getId());
+//			/*realiza la anulacion en nuestra Base de datos*/
+//			oVentaPool.setEstadoRegistro(Constantes.VALUE_INACTIVO);
+//			oVentaPool.setImportePagado(.00);
+//			UtilData.auditarRegistro(oVentaPool, true, getUsuario(), Executions.getCurrent());
+//			ServiceLocator.getVentaPoolManager().actualizar(oVentaPool);
+//		}else if (ventaPool.getOperador().equals(Constantes.OPERADO_CIVA)){
+//			RESTCiva.anularBoleto(ventaPool.getNumeroBoletoTepsa());
+//			/*realiza la anulacion en nuestra Base de datos*/
+//			VentaPool oVentaPool=ServiceLocator.getVentaPoolManager().buscarPorId(ventaPool.getId());
+//			oVentaPool.setImportePagado(.00);
+//			oVentaPool.setEstadoRegistro(Constantes.VALUE_INACTIVO);
+//			UtilData.auditarRegistro(oVentaPool, true, getUsuario(), Executions.getCurrent());
+//			ServiceLocator.getVentaPoolManager().actualizar(oVentaPool);
+//		}
 	}
 
 	public void onValidateFecha(){

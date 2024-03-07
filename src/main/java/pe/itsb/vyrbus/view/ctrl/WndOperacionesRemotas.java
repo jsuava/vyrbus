@@ -121,7 +121,7 @@ public class WndOperacionesRemotas extends WndBase {
 //	private Combobox cmbTipoFormaPago;
 //	private Combobox cmbTarjetaCredito;
 
-	//Postergación
+	//Postergaciï¿½n
 	private Window wndPostergacion;
 	private Textbox txtPosSituActuRuta;
 	private Textbox txtPosSituActuItinerario;
@@ -146,7 +146,7 @@ public class WndOperacionesRemotas extends WndBase {
 	private DetalleItinerario detalleItinerario;
 	private int secuencial=0;
 
-	//Reimpresión
+	//Reimpresiï¿½n
 //	private Window wndReimpresion;
 	private Combobox cmbTipoComprobante;
 	private Combobox cmbFormaPago;
@@ -267,7 +267,7 @@ public class WndOperacionesRemotas extends WndBase {
 			//DEVOLVER
 			Toolbarbutton btnDevolver = new Toolbarbutton();
 			btnDevolver.setImage("resources/menu/menu_devolucion.png");
-			btnDevolver.setTooltiptext("Devolución Remota");
+			btnDevolver.setTooltiptext("Devoluciï¿½n Remota");
 			btnDevolver.setId(ventaPasaje.getId().toString());
 			cell=new Listcell();
 			cell.appendChild(btnDevolver);
@@ -299,7 +299,7 @@ public class WndOperacionesRemotas extends WndBase {
 			Toolbarbutton btnPostergar = new Toolbarbutton();
 			btnPostergar.setDisabled(true);
 			btnPostergar.setImage("resources/menu/menu_confirmarFechaAbierta.png");
-			btnPostergar.setTooltiptext("Postergación remota");
+			btnPostergar.setTooltiptext("Postergaciï¿½n remota");
 			cell.appendChild(btnPostergar);
 			btnPostergar.setId(ventaPasaje.getId().toString());
 			btnPostergar.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
@@ -362,7 +362,7 @@ public class WndOperacionesRemotas extends WndBase {
 //			//REIMPRESION
 //			Toolbarbutton btnReimprimir = new Toolbarbutton();
 //			btnReimprimir.setImage("resources/menu/menu_reimprimir.png");
-//			btnReimprimir.setTooltiptext("Reimpresión remota");
+//			btnReimprimir.setTooltiptext("Reimpresiï¿½n remota");
 //			cell.appendChild(btnReimprimir);
 //			btnReimprimir.setId(ventaPasaje.getId().toString());
 //			btnReimprimir.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
@@ -430,7 +430,7 @@ public class WndOperacionesRemotas extends WndBase {
 //
 //		groupbox = new Groupbox();
 //		groupbox.setClosable(false);
-//		caption = new Caption("Información del Boleto");
+//		caption = new Caption("Informaciï¿½n del Boleto");
 //		caption.setStyle("color:#C03131");
 //		groupbox.appendChild(caption);
 //
@@ -512,7 +512,7 @@ public class WndOperacionesRemotas extends WndBase {
 //		/* ***************************************** */
 //		groupbox = new Groupbox();
 //		groupbox.setClosable(false);
-//		caption = new Caption("Información de la Devolución");
+//		caption = new Caption("Informaciï¿½n de la Devoluciï¿½n");
 //		caption.setStyle("color:#C03131");
 //		groupbox.appendChild(caption);
 //		groupbox.appendChild(caption);
@@ -548,7 +548,7 @@ public class WndOperacionesRemotas extends WndBase {
 //		/*  REMOTA*************************/
 //		Groupbox groupRemoto=new Groupbox();
 //		groupRemoto.setClosable(false);
-//		caption = new Caption("Información de la Agencia remota");
+//		caption = new Caption("Informaciï¿½n de la Agencia remota");
 //		caption.setStyle("color:#C03131");
 //		groupRemoto.appendChild(caption);
 //		Grid gridRemoto=new Grid();
@@ -616,7 +616,7 @@ public class WndOperacionesRemotas extends WndBase {
 //		rows=new Rows();
 //		row=new Row();
 //
-//		final Checkbox chbxExtempo=new Checkbox("Devolución Extemporánea");
+//		final Checkbox chbxExtempo=new Checkbox("Devoluciï¿½n Extemporï¿½nea");
 //		row.appendChild(chbxExtempo);
 //		rows.appendChild(row);
 //
@@ -911,7 +911,7 @@ public class WndOperacionesRemotas extends WndBase {
 
 		caption = new Caption("DEVOLUCION DE BOLETO", "resources/menu/menu_reimprimir.png");
 		win.appendChild(caption);
-		label = new Label("Se va a realizar la Devolución del Comprobante con los siguientes datos :");
+		label = new Label("Se va a realizar la Devoluciï¿½n del Comprobante con los siguientes datos :");
 		label.setStyle("font-size:12px !important");
 		win.appendChild(label);
 
@@ -919,7 +919,7 @@ public class WndOperacionesRemotas extends WndBase {
 
 		groupbox = new Groupbox();
 		groupbox.setClosable(false);
-		caption = new Caption("Información del Comprobante a devolver");
+		caption = new Caption("Informaciï¿½n del Comprobante a devolver");
 		caption.setStyle("font-size:12px !important;color:black;font-weight: bold");
 		groupbox.appendChild(caption);
 
@@ -1029,7 +1029,7 @@ public class WndOperacionesRemotas extends WndBase {
 		/**INFORMACION REMOTA*/
 		groupbox = new Groupbox();
 		groupbox.setClosable(false);
-		caption = new Caption("Información Remota");
+		caption = new Caption("Informaciï¿½n Remota");
 		caption.setStyle("font-size:12px !important;color:blue;font-weight: bold");
 		groupbox.appendChild(caption);
 
@@ -1085,7 +1085,7 @@ public class WndOperacionesRemotas extends WndBase {
 
 		groupbox = new Groupbox();
 		groupbox.setClosable(false);
-		caption = new Caption("Información de la Devolución");
+		caption = new Caption("Informaciï¿½n de la Devoluciï¿½n");
 		caption.setStyle("font-size:12px !important;color:black;font-weight: bold");
 		groupbox.appendChild(caption);
 
@@ -1289,11 +1289,11 @@ public class WndOperacionesRemotas extends WndBase {
 
 		final Window win = new Window("", "normal", false);
 		win.setWidth("700px");
-		caption = new Caption("POSTERGACIÓN", "resources/mp_calendarEnabled.png");
+		caption = new Caption("POSTERGACIï¿½N", "resources/mp_calendarEnabled.png");
 		win.appendChild(caption);
 
 		groupbox.setClosable(false);
-		caption = new Caption("Situación Actual");
+		caption = new Caption("Situaciï¿½n Actual");
 		caption.setStyle("color:#C03131");
 		groupbox.appendChild(caption);
 
@@ -1570,7 +1570,7 @@ public class WndOperacionesRemotas extends WndBase {
 		grid=new Grid();
 		grid.setStyle("border:none");
 		groupbox.setClosable(false);
-		caption = new Caption("Información del Pago");
+		caption = new Caption("Informaciï¿½n del Pago");
 		caption.setStyle("color:#C03131");
 		groupbox.appendChild(caption);
 
@@ -1740,7 +1740,7 @@ public class WndOperacionesRemotas extends WndBase {
 		rows=new Rows();
 		grid=new Grid();
 		groupbox.setClosable(false);
-		caption = new Caption("Información de la Agencia Remota");
+		caption = new Caption("Informaciï¿½n de la Agencia Remota");
 		caption.setStyle("color:#C03131");
 		groupbox.appendChild(caption);
 
@@ -2039,14 +2039,14 @@ public class WndOperacionesRemotas extends WndBase {
 //						}
 					}
 
-					//Coloca como observaciones una glosa y es que es un cambio de nombtre o razón social
+					//Coloca como observaciones una glosa y es que es un cambio de nombtre o razï¿½n social
 //					if(chkCambioNombre.isChecked())
 //						postergacion.setObservaciones("CAMBIO DE NOMBRE");
 //					if(chkCambioRazonsocial.isChecked()){
 //						if(postergacion.getObservaciones()==null)
-//							postergacion.setObservaciones("CAMBIO DE DE RAZÓN SOCIAL");
+//							postergacion.setObservaciones("CAMBIO DE DE RAZï¿½N SOCIAL");
 //						else{
-//							String observacion=postergacion.getObservaciones()+";"+"CAMBIO DE DE RAZÓN SOCIAL";
+//							String observacion=postergacion.getObservaciones()+";"+"CAMBIO DE DE RAZï¿½N SOCIAL";
 //							postergacion.setObservaciones(observacion);
 //						}
 //					}
@@ -2236,7 +2236,7 @@ public class WndOperacionesRemotas extends WndBase {
 //
 //		groupbox = new Groupbox();
 //		groupbox.setClosable(false);
-//		caption = new Caption("Información del Boleto");
+//		caption = new Caption("Informaciï¿½n del Boleto");
 //		caption.setStyle("color:#C03131");
 //		groupbox.appendChild(caption);
 //
@@ -2713,9 +2713,9 @@ public class WndOperacionesRemotas extends WndBase {
 	}
 
 	/**
-	 * Permite enlazar los controles a la ventana de selección de Itinerario
+	 * Permite enlazar los controles a la ventana de selecciï¿½n de Itinerario
 	 * @param textboxItinerario :en este Textbox se devolvera el Id del itinerario seleccionado.
-	 * @param button :ha este Button se le adjuntara un listener con la llamada a la ventana de selección de itinerario
+	 * @param button :ha este Button se le adjuntara un listener con la llamada a la ventana de selecciï¿½n de itinerario
 	 * @see WndItinerario:
 	 */
 	private void enlazarItinerario(final Image image) {
@@ -2891,7 +2891,7 @@ public class WndOperacionesRemotas extends WndBase {
 
 					for(UsuarioHardware usuarioHardware: lstUsuHard){
 						Listitem listitem = new Listitem();
-						List<ControlEspecieValorada>lstCtrol=ServiceLocator.getControlEspecieValoradaManager().buscarEspecieValoradas(agencia.getId(),Constantes.ID_TIPCOM_BOLETO_VIAJE, usuarioHardware.getId());
+						List<ControlEspecieValorada>lstCtrol=ServiceLocator.getControlEspecieValoradaManager().buscarEspecieValoradas(agencia.getId(),Constantes.ID_TIPCOM_BOLETO_VIAJE, usuarioHardware.getId(), null);
 						if(lstCtrol.size()==1){
 							ControlEspecieValorada controlEspecieValorada=lstCtrol.get(0);
 
@@ -3013,7 +3013,7 @@ public class WndOperacionesRemotas extends WndBase {
 	}
 
 	/**
-	 * Realiza una validación del Tipo de Forma de Pago, para habilitar o deshabilitar algunos controles.
+	 * Realiza una validaciï¿½n del Tipo de Forma de Pago, para habilitar o deshabilitar algunos controles.
 	 * @throws Exception
 	 */
 	public void onValidateTipoFormaPago(Combobox cmbTipoFormaPago, Combobox cmbOperadorTarjetaCredito, Combobox cmbTarjetaCredito){
