@@ -71,8 +71,10 @@
 						</vbox>
 						<vbox align="center">
 							<button id="btnBuscar" sclass="btnCommandM" width="120px" height="32px" autodisable="self" label="Buscar" image="/resources/mp_buscarEnabled.png" />
-							<separator/>
+							<separator height="1px"/>
 							<button id="btnBusqCancelar" sclass="btnCommandM" width="120px" height="32px" autodisable="self" label="Cancelar" image="resources/mp_cancelarEnabled.png" />
+							<separator height="1px"/>
+							<button id="btnBusqCerrar" onClick="wndVentaReservaNew.closeTabWindow();" sclass="btnCommandM" width="120px" height="32px" autodisable="self" label="Cerrar" image="resources/mp_cerrar.png" />
 						</vbox>
 						<separator/>
 					</row>
@@ -92,14 +94,14 @@
 					</div>
 					<listbox id="ltbxBusqIda" sclass="maxHeightLsbxBusqServicio">
 						<listhead>
-							<listheader label="EMPRESA" width="170px" style="color: #ffffff;"/>
+							<listheader label="EMPRESA" width="165px" style="color: #ffffff;"/>
 							<listheader label="RUTA" width="140px" style="color: #ffffff;"/>
 							<listheader label="PTO. EMBARQUE" width="120px" style="color: #ffffff;" tooltiptext="Punto de Embarque"/>
 							<listheader label="H.SALIDA" width="60px" align="center" style="color: #ffffff;"/>
 							<listheader label="SERVICIO" width="120px" style="color: #ffffff;"/>														
 							<listheader label="TARIFA" width="90px" align="center" style="color: #ffffff;"/>
-							<listheader label="DISP." width="50px" align="center" tooltiptext="Asientos disponibles" style="color: #ffffff;"/>
-							<listheader label="BUS" width="100px" align="center" style="color: #ffffff;"/>
+							<listheader label="DISP." width="45px" align="center" tooltiptext="Asientos disponibles" style="color: #ffffff;"/>
+							<listheader label="BUS" width="96px" align="center" style="color: #ffffff;"/>
 							<listheader width="100px"/>
 							<listheader/>
 						</listhead>					
@@ -112,14 +114,14 @@
 					</div>
 					<listbox id="ltbxBusqVuelta" sclass="maxHeightLsbxBusqServicio">
 						<listhead>
-							<listheader label="EMPRESA" width="170px" style="color: #ffffff;"/>
+							<listheader label="EMPRESA" width="165px" style="color: #ffffff;"/>
 							<listheader label="RUTA" width="140px" style="color: #ffffff;"/>
 							<listheader label="PTO. EMBARQUE" width="120px" style="color: #ffffff;" tooltiptext="Punto de Embarque"/>
 							<listheader label="H.SALIDA" width="60px" align="center" style="color: #ffffff;"/>
 							<listheader label="SERVICIO" width="120px" style="color: #ffffff;"/>														
 							<listheader label="TARIFA" width="90px" align="center" style="color: #ffffff;"/>
-							<listheader label="DISP." width="50px" align="center" tooltiptext="Asientos disponibles" style="color: #ffffff;"/>
-							<listheader label="BUS" width="100px" align="center" style="color: #ffffff;"/>
+							<listheader label="DISP." width="45px" align="center" tooltiptext="Asientos disponibles" style="color: #ffffff;"/>
+							<listheader label="BUS" width="96px" align="center" style="color: #ffffff;"/>
 							<listheader width="100px"/>
 							<listheader/>
 						</listhead>					
@@ -144,21 +146,19 @@
 								</tabs>			
 								<tabpanels>
 									<tabpanel>
-										<groupbox id="gpbxVtaIdaMapa" closable="false" mold="3d" width="100%" height="210px">
-											<caption label="SELECCIÓN DE ASIENTO(S) DE IDA" style="color: #ffffff;"/>
-											
+										<groupbox id="gpbxVtaIdaMapa" closable="false" mold="3d" width="100%" height="200px">
+											<caption id="capVtaIdaMapa" style="color: #ffffff;"/>											
 										</groupbox>										
 									</tabpanel>
 									<tabpanel>
-										<groupbox id="gpbxVtaVueltaMapa" closable="false" mold="3d" width="100%" height="210px">
-											<caption label="SELECCIÓN DE ASIENTO(S) DE VUELTA" style="color: #ffffff;"/>
-										
+										<groupbox id="gpbxVtaVueltaMapa" closable="false" mold="3d" width="100%" height="200px">
+											<caption label="SELECCIÓN DE ASIENTO(S) DE VUELTA" style="color: #ffffff;"/>										
 										</groupbox>
 									</tabpanel>
 								</tabpanels>	
 							</tabbox>
 							<vbox>
-								<grid width="250px" height="138px" style="margin-top:22px">
+								<grid width="250px" height="129px" style="margin-top:22px">
 									<columns><column align="center"/></columns>
 									<rows>	
 										<row><separator height="10px"/></row>					
@@ -168,9 +168,8 @@
 												<label id="lblVtaNumeroComprobante" sclass="label-size11-bold" style="font-size:14px !important"/>
 												<label id="lblVtaInfoTipoOperacion" sclass="label-size12-bold-alert" style="font-size:16px !important;"/>
 											</vbox>
-										</row>
-										<row><separator/></row>
-										<row><separator/></row>
+										</row>							
+										<row><separator height="15px"/></row>
 										<row>
 											<checkbox id="chbxVtaUpdateMapAuto" label="Actualizar Mapa automáticamente" />
 										</row>
@@ -213,25 +212,24 @@
 								</row>
 							</rows>			
 						</grid>
-						<separator height="3px"/>
 						<hbox>
 							<vbox>
 								<grid id="gridVtaInfoViajeIda">
 									<columns>
-										<column label="INFORMACIÓN DEL VIAJE DE IDA" style="padding:40x;background:#4285F4;color:#FFFFFF"/>
+										<column id="columnVtaInfoViajeIda" style="padding:40x;background:#4285F4;color:#FFFFFF">
+											<label/>
+										</column>
 									</columns>
 									<rows>
 										<row>
 											<grid style="border:none">
 												<columns>
-<!-- 													<column width="40px"/> -->
 													<column width="240px"/>
 													<column width="70px"/>
 													<column/>
 												</columns>
 												<rows>
 													<row>
-<!-- 														<label value="DEST :"/> -->
 														<label id="lblVtaIdaDestino_fecha" sclass="label-size11-bold" style="font-size:14px !important;color:red" tooltiptext="Destino del Viaje de Ida"/>
 														<label value="EMBARQUE :"/>
 														<hbox align="center">
@@ -254,20 +252,20 @@
 								</grid>
 								<grid id="gridVtaInfoViajeVuelta">
 									<columns>
-										<column label="INFORMACIÓN DEL VIAJE DE VUELTA" style="background:#4285F4;color:#FFFFFF" visible="true"/>
+										<column id="columnVtaInfoViajeVuelta" style="background:#4285F4;color:#FFFFFF" visible="true">
+											<label/>
+										</column>
 									</columns>
 									<rows>
 										<row>
 											<grid style="border:none">
 												<columns>
-<!-- 													<column width="40px"/> -->
 													<column width="240px"/>
 													<column width="70px"/>
 													<column/>
 												</columns>
 												<rows>
 													<row>
-<!-- 														<label value="DEST :"/> -->
 														<label id="lblVtaVueltaDestino_fecha" sclass="label-size11-bold" style="font-size:14px !important;color:red" tooltiptext="Destino del Viaje de Ida"/>
 														<label value="EMBARQUE :"/>
 														<hbox align="center">
@@ -292,7 +290,7 @@
 								</grid>
 							</vbox>
 						</hbox>
-						<separator height="3px"/>
+<!-- 						<separator height="3px"/> -->
 						<hbox>
 							<grid width="220px">
 								<columns></columns>
