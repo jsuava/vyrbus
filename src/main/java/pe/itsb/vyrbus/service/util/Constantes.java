@@ -34,13 +34,13 @@ public class Constantes {
 	public static final String SYSTEM_VERSION = "Versión 3.4.1";
 
 	/**
-	 * Constante para la Acciï¿½n Nuevo
+	 * Constante para la Accion Nuevo
 	 * @see WndOpcionesMantenimiento#onCancel(int)
 	 * @see WndOpcionesMantenimiento#onSave(int)
 	 */
 	public static final int ACTION_NEW = 0;
 	/**
-	 * Constante para la Acciï¿½n Modificar
+	 * Constante para la Accion Modificar
 	 * @see WndOpcionesMantenimiento#onCancel(int)
 	 * @see WndOpcionesMantenimiento#onSave(int)
 	 */
@@ -305,12 +305,12 @@ public class Constantes {
 	public static final int FORMATO_IMPRESION_A4 = 2;
 
 	/* Crados para la integracion del l os web service de Cruz del sur y civa*/
-	public static final String RUC_CRUZ_DEL_SUR="20100227461";
-	public static final String RUC_CIVA="20102427891";
-	public static final String RUC_TEPSA="20502324927";
-	public static final String RUC_TRANSMAR="20501622819";
-	public static final String OPERADO_POR_CRUZ_DEL_SUR="CRUZ DEL SUR";
-	public static final String OPERADO_CIVA="EXCLUCIVA";
+//	public static final String RUC_CRUZ_DEL_SUR="20100227461";
+//	public static final String RUC_CIVA="20102427891";
+//	public static final String RUC_TEPSA="20502324927";
+//	public static final String RUC_TRANSMAR="20501622819";
+//	public static final String OPERADO_POR_CRUZ_DEL_SUR="CRUZ DEL SUR";
+//	public static final String OPERADO_CIVA="EXCLUCIVA";
 
 	/**/
 	public static final Double MONTO_MINIMO_EXCESO = 5.0;
