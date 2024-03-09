@@ -58,6 +58,7 @@ import pe.itsb.vyrbus.service.util.Messages;
 import pe.itsb.vyrbus.service.util.MyTime;
 import pe.itsb.vyrbus.service.util.Util;
 import pe.itsb.vyrbus.service.util.UtilData;
+import pe.itsb.vyrbus.service.util.UtilFlag;
 import pe.itsb.vyrbus.service.util.WSFE;
 import pe.itsb.vyrbus.view.tuentrada.LiquidacionTuentrada;
 import pe.itsb.vyrbus.view.ui.DlgMessage;
@@ -224,7 +225,7 @@ public class WndCierreCaja extends WndBase {
 			item.appendChild(cell);
 			cell = new Listcell();
 			if (liquidacion.getestadoLiquidacion().equals(Constantes.LIQUI_ESTA_CERRADO)){
-				cell.setLabel(Constantes.FORMAT_LONG.format(liquidacion.getFechaModificacion()));
+				cell.setLabel(liquidacion.getFechaModificacion()!=null? Constantes.FORMAT_LONG.format(liquidacion.getFechaModificacion()):"");
 				cell.setStyle("font-size:11px !important");
 			}
 			item.appendChild(cell);
@@ -251,13 +252,16 @@ public class WndCierreCaja extends WndBase {
 					}else{
 //						boolean isReimprecion=liquidacion.getestadoLiquidacion().intValue()!=Constantes.TRUE_VALUE?true:false;
 //						CreateDocument.creaLiquidacion(liquidacion, liquidacion.getUsuario(), isReimprecion);
-//							preliminar(liquidacion);
-
-						//Busca las liquidaciones de CARGA
-						//23/06/2023
-//						Liquidacion liquidacionCarga = UtilData.buscarLiquidacionCarga(liquidacion);
-//						liquidacion.setLiquidacionCarga(liquidacionCarga);
-						//****
+						//preliminar(liquidacion);
+						
+						//Valida la conexión con transcar
+						boolean isConnectionTranscar = UtilFlag.isConeccionTranscar();
+						if(isConnectionTranscar) {							
+							//Busca las liquidaciones de CARGA
+							//23/06/2023
+							Liquidacion liquidacionCarga = UtilData.buscarLiquidacionCarga(liquidacion);
+							liquidacion.setLiquidacionCarga(liquidacionCarga);
+						}
 						String nameFile = CreateDocument.creaRptLiquidacionByEspecieValorada(liquidacion, true);
 						String src=Constantes.URL_FORMATOS_LIQUIDACION +Constantes.CLAVE_PAHT+ nameFile;
 						/*Carga el iframe*/
@@ -324,7 +328,7 @@ public class WndCierreCaja extends WndBase {
 			toolbarbutton =new Toolbarbutton();
 			toolbarbutton.setAttribute(ATRIBUTTE_LIQUIDACION, liquidacion);
 			toolbarbutton.setImage("/resources/windows/window_aperturaCaja.png");
-			toolbarbutton.setTooltiptext("Reaperturar liquidaci�n.");
+			toolbarbutton.setTooltiptext("Reaperturar liquidación.");
 			toolbarbutton.setAutodisable("self");
 			toolbarbutton.setDisabled(true);
 			/*Valida si es rol admin. punto venta y la fecha de la liquidacion es la misma al dia actual*/
@@ -344,24 +348,30 @@ public class WndCierreCaja extends WndBase {
 						public void onEvent(Event e) throws Exception {
 							if(e.getName().equals("onYes")){
 								try {
-									/*********************************************************************************************/
-									//Primero apertura la liquidacion de carga
-									TranscarLiquidacionTurno liquidacionTurnoCarga= new TranscarLiquidacionTurno();
-									liquidacionTurnoCarga.setFechaApertura(liquidacion.getFechaLiquidacion());
-									TranscarUsuarioPersonal usuarioPersonal = ServiceLocator.getTranscarWebManager().buscarUsuario(liquidacion.getUsuario().getLogin());
-									if(usuarioPersonal==null) {
-										DlgMessage.information("No se puede reaperturar la liqudiaci�n de Carga, debido a que el usuario "+getUsuario().getLogin()+" no existe en el sistema de carga.");
-										return;
-									}
+									
+									//Valida la conexión con transcar
+									boolean isConnectionTranscar = UtilFlag.isConeccionTranscar();
+									if(isConnectionTranscar) {
+										/*********************************************************************************************/
+										//Primero apertura la liquidacion de carga
+										TranscarLiquidacionTurno liquidacionTurnoCarga= new TranscarLiquidacionTurno();
+										liquidacionTurnoCarga.setFechaApertura(liquidacion.getFechaLiquidacion());
+										TranscarUsuarioPersonal usuarioPersonal = ServiceLocator.getTranscarWebManager().buscarUsuario(liquidacion.getUsuario().getLogin());
+										if(usuarioPersonal==null) {
+											DlgMessage.information("No se puede reaperturar la liqudiación de Carga, debido a que el usuario "+getUsuario().getLogin()+" no existe en el sistema en Transcar.");
+											return;
+										}
 
-									liquidacionTurnoCarga.setTranscarUsuarioPersonal(usuarioPersonal);
-									liquidacionTurnoCarga.setAgenciaId(liquidacion.getAgencia().getId());
-									UtilData.auditarRegistro(liquidacionTurnoCarga, true, getUsuario(), Executions.getCurrent());
-									String messageError = ServiceLocator.getTranscarWebManager().aperturarLiquidacion(liquidacionTurnoCarga, true);
-									if (messageError!=null) {
-										DlgMessage.information(messageError+" - TRANSCAR");
-										return;
+										liquidacionTurnoCarga.setTranscarUsuarioPersonal(usuarioPersonal);
+										liquidacionTurnoCarga.setAgenciaId(liquidacion.getAgencia().getId());
+										UtilData.auditarRegistro(liquidacionTurnoCarga, true, getUsuario(), Executions.getCurrent());
+										String messageError = ServiceLocator.getTranscarWebManager().aperturarLiquidacion(liquidacionTurnoCarga, true);
+										if (messageError!=null) {
+											DlgMessage.information(messageError+" - TRANSCAR");
+											return;
+										}
 									}
+									
 
 //									openWindowSolicitaPassword(liquidacion);
 									//Reapertura la liquidacion - vyrbus
@@ -425,7 +435,7 @@ public class WndCierreCaja extends WndBase {
 		listhead.appendChild(listheader);
 		lbxVerificaCorrelativos.appendChild(listhead);
 		listheader= new Listheader();
-		listheader.setLabel("N�MERO FALTANTES");
+		listheader.setLabel("NUMERO FALTANTES");
 		listhead.appendChild(listheader);
 		lbxVerificaCorrelativos.appendChild(listhead);
 
@@ -533,7 +543,7 @@ public class WndCierreCaja extends WndBase {
 	private Window createWindowCortes(Listbox listbox, final Liquidacion liquidacion){
 		final Window window = new Window("BOLETOS FALTANTES", "none", true);
 		window.setWidth("450px");
-		Label label= new Label("Se a encontrado Boletos faltantes dentro de la liquidaci�n, si desea omitirlos pulse el bot�n Continuar, caso contrario Cancelar.");
+		Label label= new Label("Se a encontrado Boletos faltantes dentro de la liquidación, si desea omitirlos pulse el botón Continuar, caso contrario Cancelar.");
 		label.setStyle("font-size:11px !important; font-weight: bold");
 		window.appendChild(label);
 		window.appendChild(new Separator());
@@ -592,7 +602,7 @@ public class WndCierreCaja extends WndBase {
 	@SuppressWarnings("deprecation")
 	private Window createWindowSolicitaPassword(final Liquidacion liquidacion){
 		final Window window = new Window();
-		window.setTitle("::: Identificaci�n del Usuario :::");
+		window.setTitle("::: Identificación del Usuario :::");
 		window.setBorder(true);
 		window.setWidth("350px");
 
@@ -773,7 +783,7 @@ public class WndCierreCaja extends WndBase {
 	@SuppressWarnings("deprecation")
 	private Window createWindowPrintLiquidacion(final Liquidacion liquidacion){
 		final Window window = new Window();
-		window.setTitle("::: Impresi�n :::");
+		window.setTitle("::: Impresión :::");
 		window.setBorder(true);
 		window.setWidth("350px");
 
@@ -795,13 +805,13 @@ public class WndCierreCaja extends WndBase {
 		grid.appendChild(columns);
 
 		final Radiogroup radiogroup= new Radiogroup();
-		Radio radioTermico = new Radio("T�rmico");
+		Radio radioTermico = new Radio("Térmico");
 		radioTermico.setChecked(true);
 		final Radio radioMatrical = new Radio("Matricial");
 		radiogroup.appendChild(radioTermico);
 		radiogroup.appendChild(radioMatrical);
 
-		Label label= new Label("Tipo de impresi�n (*) :");
+		Label label= new Label("Tipo de impresión (*) :");
 		label.setSclass("label-size11");
 		row=new Row();
 		row.appendChild(label);
@@ -897,7 +907,7 @@ public class WndCierreCaja extends WndBase {
 	private  Window createWindowIngresMonto(final Liquidacion liquidacion) throws Exception {
 		final Window window = new Window();
 		window.setWidth("350px");
-		window.setTitle("::: Cierre Liquidaci�n de Turno :::");
+		window.setTitle("::: Cierre Liquidación de Turno :::");
 //		window.setWidth("350px");
 		window.setBorder(true);
 
@@ -1041,19 +1051,24 @@ public class WndCierreCaja extends WndBase {
 		/* Procesa cierre de caja*/
 		UtilData.procesaCierreCaja(liquidacion, montoIngresado, getUsuario(), montoIngresadoDolares);
 
-		/* Procesa el cierre de caja en Carga*/
-		try {
-			TranscarUsuarioPersonal transcarUsuarioPersonal = ServiceLocator.getTranscarWebManager().buscarUsuario(liquidacion.getUsuario().getLogin());
-			int agenciaIdCargo = 0;
-			String fechaLiquidacion =Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
-			if(transcarUsuarioPersonal!=null ) {//&& liquidacion.getAgencia().getCodigo()!=null){
-				agenciaIdCargo = liquidacion.getAgencia().getId();  //ServiceLocator.getTranscarManager().buscarIdAgenciaByCodigoAgenciaPasajes(liquidacion.getAgencia().getId().toString());
-//				ServiceLocator.getTranscarWebManager().cerrarLiquidacion(transcarUsuarioPersonal.getId(), agenciaIdCargo, fechaLiquidacion, fechaLiquidacion);
-				ServiceLocator.getTranscarWebManager().cerrarLiquidacion(transcarUsuarioPersonal.getId(), agenciaIdCargo, fechaLiquidacion, .00, .00);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		/**********************************************************************************************************************/
+		//Valida la conexión con transcar
+		boolean isConnectionTranscar = UtilFlag.isConeccionTranscar();
+		if(isConnectionTranscar) {
+			/* Procesa el cierre de caja en Carga*/
+			try {
+				TranscarUsuarioPersonal transcarUsuarioPersonal = ServiceLocator.getTranscarWebManager().buscarUsuario(liquidacion.getUsuario().getLogin());
+				int agenciaIdCargo = 0;
+				String fechaLiquidacion =Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
+				if(transcarUsuarioPersonal!=null ) {
+					agenciaIdCargo = liquidacion.getAgencia().getId(); 
+					ServiceLocator.getTranscarWebManager().cerrarLiquidacion(transcarUsuarioPersonal.getId(), agenciaIdCargo, fechaLiquidacion, .00, .00);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}	
 		}
+		
 
 
 
@@ -1087,9 +1102,13 @@ public class WndCierreCaja extends WndBase {
 	 * @throws Exception
 	 */
 	public void imprimirLiquidacion(Liquidacion liquidacion) throws Exception{
-		//Busca las liquidaciones de CARGA
-		Liquidacion liquidacionCarga = UtilData.buscarLiquidacionCarga(liquidacion);
-		liquidacion.setLiquidacionCarga(liquidacionCarga);
+		//Valida la conexión con transcar
+		boolean isConnectionTranscar = UtilFlag.isConeccionTranscar();
+		if(isConnectionTranscar) {
+			//Busca las liquidaciones de CARGA
+			Liquidacion liquidacionCarga = UtilData.buscarLiquidacionCarga(liquidacion);
+			liquidacion.setLiquidacionCarga(liquidacionCarga);	
+		}		
 		String nameFile = CreateDocument.creaRptLiquidacionByEspecieValorada(liquidacion, true);
 		File file = new File(Constantes.DIRECTORY_LIQUIDACION + Constantes.CLAVE_PAHT +nameFile);
 		Util.descargarArchivo(file);

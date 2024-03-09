@@ -55,10 +55,10 @@
 									</rows>
 								</grid>								
 								<separator height="10px"/>
-								<combobox id="cmbBusqOrigen" placeholder="ORIGEN" width="99%"  autocomplete="true" autodrop="true"/>						
+								<combobox id="cmbBusqOrigen" placeholder="ORIGEN" width="99%"  autocomplete="true" autodrop="true" tooltiptext="Origen"/>						
 							</vbox>
 							<separator/>
-							<listbox id="ltbxBusqDestinos" height="140px" width="140px"/>							
+							<listbox id="ltbxBusqDestinos" height="140px" width="140px" tooltiptext="Destino"/>							
 						</hbox>	
 						<separator orient="vertical" />					
 						<vbox>

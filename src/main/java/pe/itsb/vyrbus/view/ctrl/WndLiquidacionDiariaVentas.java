@@ -73,6 +73,7 @@ import pe.itsb.vyrbus.service.util.Messages;
 import pe.itsb.vyrbus.service.util.RESTCiva;
 import pe.itsb.vyrbus.service.util.Util;
 import pe.itsb.vyrbus.service.util.UtilData;
+import pe.itsb.vyrbus.service.util.UtilFlag;
 import pe.itsb.vyrbus.service.util.WSCruzdelsur;
 import pe.itsb.vyrbus.service.util.WSFE;
 import pe.itsb.vyrbus.view.ui.DlgMessage;
@@ -149,13 +150,16 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 											"DEVOLUCIONES", "CORTESIAS", "CREDITO", //"EQUIPAJES (PCE)",
 											"PREPAGADOS", "RECIBOS DE CAJA", "TARJETA MASTERCARD", "TARJETA VISA", "VENTAS"};
 
-
+	private boolean isConnectionTranscar = false;
 
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.WndBase#onCreate()
 	 */
 	@Override
 	public void onCreate() throws Exception {
+		//Valida la conexión con transcar
+		isConnectionTranscar = UtilFlag.isConeccionTranscar();
+		
 //		super.onCreate();
 		UtilData.cargarAgenciaXtipoAgencia(cmbAgencia, Constantes.ID_TIPAGE_TEPSA, true);
 //		UtilData.cargarDataCombo(cmbAgencia, Agencia.class, true);
@@ -167,6 +171,14 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 		onSelectDefaultAgencia();
 		onLoadCounters();
 		onLoadTipoMovimiento();
+		
+		rubroCarga.setDisabled(!isConnectionTranscar);
+		rubroAmbos.setDisabled(!isConnectionTranscar);
+		if(!rubroAmbos.isDisabled())
+			rubroAmbos.setChecked(true);
+		else
+			rubroPasajes.setChecked(true);
+			
 
 		//RESTRICCION PARA EL ACCESO A LA SELECCION DE AGENCIAS.
 		//MAOE 07/01/2023: ESTOS ROLES TIENEN ACCESO A ESTOS CONTROLES
@@ -299,43 +311,44 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 
 	private void onCheck_rubroCarga() {
 		try {
-			Util.limpiarListbox(lbxVentas);
-//			Util.limpiarCombobox(cmbAgencia);
-			Util.limpiarCombobox(cmbCounter);
-			clearTotals();
+			if(isConnectionTranscar) {
+				Util.limpiarListbox(lbxVentas);
+//				Util.limpiarCombobox(cmbAgencia);
+				Util.limpiarCombobox(cmbCounter);
+				clearTotals();
 
 
-			//Ya no es necesario - se fucion� las agencias del vyrbus con transcarweb
-//			List<Agencia> result = ServiceLocator.getTranscarManager().buscarAgencias();
-//			UtilData.cargarGenericData(cmbAgencia, true);
-//			for(Agencia agencia: result) {
-//				Comboitem comboitem= new Comboitem();
-//				comboitem.setLabel(agencia.getDenominacion());
-//				comboitem.setValue(agencia);
-//				cmbAgencia.appendChild(comboitem);
-//
-//				if(agencia.getCodigo()!=null && agencia.getCodigo().equals(getAgencia().getCodigo()))
-//					cmbAgencia.setSelectedItem(comboitem);
-//			}
-//			if(cmbAgencia.getSelectedIndex()<0)
-//				cmbAgencia.setSelectedIndex(0);
+				//Ya no es necesario - se fucion� las agencias del vyrbus con transcarweb
+//				List<Agencia> result = ServiceLocator.getTranscarManager().buscarAgencias();
+//				UtilData.cargarGenericData(cmbAgencia, true);
+//				for(Agencia agencia: result) {
+//					Comboitem comboitem= new Comboitem();
+//					comboitem.setLabel(agencia.getDenominacion());
+//					comboitem.setValue(agencia);
+//					cmbAgencia.appendChild(comboitem);
+	//
+//					if(agencia.getCodigo()!=null && agencia.getCodigo().equals(getAgencia().getCodigo()))
+//						cmbAgencia.setSelectedItem(comboitem);
+//				}
+//				if(cmbAgencia.getSelectedIndex()<0)
+//					cmbAgencia.setSelectedIndex(0);
 
+				
+				String fechaInicio = Constantes.FORMAT_DATE.format(dtbxFechaInicio.getValue());
+				String fechaFin = Constantes.FORMAT_DATE.format(dtbxFechaFin.getValue());
+				List<Usuario> resultUsuariosCarga = ServiceLocator.getTranscarWebManager().buscarUsuariosByVenta(null, fechaInicio, fechaFin);
+				UtilData.cargarGenericData(cmbCounter, true);
+				for(Usuario usuario : resultUsuariosCarga) {
+					Comboitem comboitem= new Comboitem(usuario.toString());
+					comboitem.setValue(usuario);
+					cmbCounter.appendChild(comboitem);
 
-			String fechaInicio = Constantes.FORMAT_DATE.format(dtbxFechaInicio.getValue());
-			String fechaFin = Constantes.FORMAT_DATE.format(dtbxFechaFin.getValue());
-			List<Usuario> resultUsuarios = ServiceLocator.getTranscarWebManager().buscarUsuariosByVenta(null, fechaInicio, fechaFin);
-			UtilData.cargarGenericData(cmbCounter, true);
-			for(Usuario usuario : resultUsuarios) {
-				Comboitem comboitem= new Comboitem(usuario.toString());
-				comboitem.setValue(usuario);
-				cmbCounter.appendChild(comboitem);
-
-				if(usuario.getLogin()!=null && usuario.getLogin().equals(getUsuario().getLogin()))
-					cmbCounter.setSelectedItem(comboitem);
+					if(usuario.getLogin()!=null && usuario.getLogin().equals(getUsuario().getLogin()))
+						cmbCounter.setSelectedItem(comboitem);
+				}
+				if(cmbCounter.getItems().size()>0 && cmbCounter.getSelectedIndex()<0)
+					cmbCounter.setSelectedIndex(0);
 			}
-			if(cmbCounter.getItems().size()>0 && cmbCounter.getSelectedIndex()<0)
-				cmbCounter.setSelectedIndex(0);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -452,13 +465,13 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 				criterio = cmbTipoMovimiento.getSelectedIndex();
 
 			TranscarUsuarioPersonal usuarioPersonal = null;
-			if(rubroAmbos.isChecked()) {
+			if(rubroAmbos.isChecked() && isConnectionTranscar) {
 				//Pasajes
 				List<VentaPasaje> lstVentas = ServiceLocator.getVentaPasajesManager().buscarDetalladoVentas(idAgencia, idUsuario, fechaInicio, fechaFin, criterio);
 				loadVentas(lstVentas, false);
 
 				//Carga
-				//MAOE 23/06/2023
+				//MAOE 23/06/2023			
 				Integer idAgencia_transcar = null;
 				if(cmbAgencia.getSelectedItem().getValue() instanceof Agencia)
 					idAgencia_transcar = ((Agencia)cmbAgencia.getSelectedItem().getValue()).getId();
@@ -472,7 +485,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 			}else if(rubroPasajes.isChecked()) {
 				List<VentaPasaje> lstVentas = ServiceLocator.getVentaPasajesManager().buscarDetalladoVentas(idAgencia, idUsuario, fechaInicio, fechaFin, criterio);
 				loadVentas(lstVentas, false);
-			}else if(rubroCarga.isChecked()) {
+			}else if(rubroCarga.isChecked() && isConnectionTranscar) {
 				List<VentaPasaje> lstVentas  =ServiceLocator.getTranscarWebManager().buscarDetalleVentas(usuarioPersonal, idAgencia, fechaInicio, fechaFin);
 				loadVentas(lstVentas, true);
 			}

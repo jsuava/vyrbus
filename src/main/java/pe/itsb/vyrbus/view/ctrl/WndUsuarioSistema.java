@@ -45,6 +45,7 @@ import pe.itsb.vyrbus.service.util.Constantes;
 import pe.itsb.vyrbus.service.util.Messages;
 import pe.itsb.vyrbus.service.util.Util;
 import pe.itsb.vyrbus.service.util.UtilData;
+import pe.itsb.vyrbus.service.util.UtilFlag;
 import pe.itsb.vyrbus.view.ui.DlgMessage;
 import pe.itsb.vyrbus.view.ui.Events;
 import pe.itsb.vyrbus.view.ui.WndFiltrarParametros;
@@ -100,7 +101,7 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 	private List<String> criteriosOrdenar = null;
 
 	public static String base = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@!#$";
-
+	private boolean isConnectionTranscar = false;
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.view.ui.IBase#initComponents()
@@ -144,6 +145,9 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 	 */
 	@Override
 	public void onCreate() throws Exception {
+		//Valida la conexión con transcar
+		isConnectionTranscar = UtilFlag.isConeccionTranscar();
+				
 		UtilData.cargarDataCombo(cmbAgencia, Agencia.class, false);
 		Comboitem cboItem = new Comboitem("NO ES PERSONAL DE EMPRESA");
 		cmbPersonal.appendChild(cboItem);
@@ -166,6 +170,8 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 
 
 		lblRolesSeleccionadosCarga.setValue("0");
+		
+		
 	}
 
 	/*
@@ -486,9 +492,10 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 
 			//Guarda usuario rol
 			onSave_usuarioRol(usuarioSistema, action);
-
+			
 			//Guarda el usuario en carga
-			ServiceLocator.getTranscarWebManager().guardarUsuario(transcarUsuarioPersonal, idsRolesUsuarioCarga, isNewUserCargo);
+			if(isConnectionTranscar)
+				ServiceLocator.getTranscarWebManager().guardarUsuario(transcarUsuarioPersonal, idsRolesUsuarioCarga, isNewUserCargo);
 
 
 
@@ -830,27 +837,30 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 
 
 		//Buscar el usuario en la db de carga
-		 transcarUsuarioPersonal = ServiceLocator.getTranscarWebManager().buscarUsuario(usuarioSistema.getLogin());
-		 if(transcarUsuarioPersonal!=null) {
-			 List<TranscarRolUsuario> result = ServiceLocator.getTranscarWebManager().buscarRolesUsuario(transcarUsuarioPersonal.getId());
-			 if(result.size()>0) {
-				 TranscarUsuarioPersonal _usuarioPersonal= result.get(0).getTranscarUsuarioPersonal();
-				 if(_usuarioPersonal.getAutorizaEntregaSinVerificarUsuario()!=null)
-					 chbxAutorizaEntregaSinVerificarUsuario.setChecked(_usuarioPersonal.getAutorizaEntregaSinVerificarUsuario()==Constantes.TRUE_VALUE?true:false);
-				 if(_usuarioPersonal.getPermiteVentaOtrasAgencias()!=null)
-					 chbxIngresaComprobanteOtraAgencia.setChecked(_usuarioPersonal.getPermiteVentaOtrasAgencias()==Constantes.TRUE_VALUE?true:false);
+		if(isConnectionTranscar) {
+			 transcarUsuarioPersonal = ServiceLocator.getTranscarWebManager().buscarUsuario(usuarioSistema.getLogin());
+			 if(transcarUsuarioPersonal!=null) {
+				 List<TranscarRolUsuario> result = ServiceLocator.getTranscarWebManager().buscarRolesUsuario(transcarUsuarioPersonal.getId());
+				 if(result.size()>0) {
+					 TranscarUsuarioPersonal _usuarioPersonal= result.get(0).getTranscarUsuarioPersonal();
+					 if(_usuarioPersonal.getAutorizaEntregaSinVerificarUsuario()!=null)
+						 chbxAutorizaEntregaSinVerificarUsuario.setChecked(_usuarioPersonal.getAutorizaEntregaSinVerificarUsuario()==Constantes.TRUE_VALUE?true:false);
+					 if(_usuarioPersonal.getPermiteVentaOtrasAgencias()!=null)
+						 chbxIngresaComprobanteOtraAgencia.setChecked(_usuarioPersonal.getPermiteVentaOtrasAgencias()==Constantes.TRUE_VALUE?true:false);
 
-				 chbxSoloRolesSeleccionadosCarga.setChecked(true);
-			 }
-			 for(Listitem item: lbxRolesCarga.getItems()) {
-				 TranscarRolUsuario rolUsuario= item.getValue();
-				 for(TranscarRolUsuario _rolUsuario: result) {
-					if(rolUsuario.getId().intValue()==_rolUsuario.getId().intValue())
-						item.setSelected(true);
+					 chbxSoloRolesSeleccionadosCarga.setChecked(true);
+				 }
+				 for(Listitem item: lbxRolesCarga.getItems()) {
+					 TranscarRolUsuario rolUsuario= item.getValue();
+					 for(TranscarRolUsuario _rolUsuario: result) {
+						if(rolUsuario.getId().intValue()==_rolUsuario.getId().intValue())
+							item.setSelected(true);
+					 }
 				 }
 			 }
-		 }
-		 lblRolesSeleccionadosCarga.setValue(String.valueOf(lbxRolesCarga.getSelectedItems().size()));
+			 lblRolesSeleccionadosCarga.setValue(String.valueOf(lbxRolesCarga.getSelectedItems().size()));
+		}
+		
 
 		 soloRolesSeleccionados();
 	}
@@ -1065,24 +1075,26 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 	 * Carga los roles de Carga
 	 */
 	private void cargarRolesCarga() throws Exception {
-		Util.limpiarListbox(lbxRolesCarga);
-		List<TranscarRolUsuario> result = ServiceLocator.getTranscarWebManager().buscarRolesUsuario();
+		if(isConnectionTranscar) {
+			Util.limpiarListbox(lbxRolesCarga);
+			List<TranscarRolUsuario> result = ServiceLocator.getTranscarWebManager().buscarRolesUsuario();
 
-		for(TranscarRolUsuario rolUsuario:result){
-			Listitem item = new Listitem();
-			Listcell cell = new Listcell(rolUsuario.getNombre());
-			item.appendChild(cell);
-			item.setValue(rolUsuario);
+			for(TranscarRolUsuario rolUsuario:result){
+				Listitem item = new Listitem();
+				Listcell cell = new Listcell(rolUsuario.getNombre());
+				item.appendChild(cell);
+				item.setValue(rolUsuario);
 
-			lbxRolesCarga.addEventListener(Events.ON_SELECT,new EventListener<Event>() {
-				@Override
-				public void onEvent(Event event) throws Exception {
-					lblRolesSeleccionadosCarga.setValue(String.valueOf(lbxRolesCarga.getSelectedItems().size()));
-				}
-			});
+				lbxRolesCarga.addEventListener(Events.ON_SELECT,new EventListener<Event>() {
+					@Override
+					public void onEvent(Event event) throws Exception {
+						lblRolesSeleccionadosCarga.setValue(String.valueOf(lbxRolesCarga.getSelectedItems().size()));
+					}
+				});
 
-			lbxRolesCarga.appendChild(item);
-		}
+				lbxRolesCarga.appendChild(item);
+			}
+		}		
 	}
 
 

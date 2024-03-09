@@ -51,6 +51,7 @@ import pe.itsb.vyrbus.service.util.Messages;
 import pe.itsb.vyrbus.service.util.MyTime;
 import pe.itsb.vyrbus.service.util.Util;
 import pe.itsb.vyrbus.service.util.UtilData;
+import pe.itsb.vyrbus.service.util.UtilFlag;
 import pe.itsb.vyrbus.view.ui.DlgMessage;
 import pe.itsb.vyrbus.view.ui.WndOpcionesMantenimiento;
 
@@ -333,7 +334,11 @@ public class WndGasto extends WndOpcionesMantenimiento {
 			Double totalVentasEfectivo_vyr = ServiceLocator.getVentaPasajesManager().buscaTotalVentasEfectivo(getUsuario().getId(), getAgencia().getId(), Constantes.FORMAT_DATE.format(dbFecha.getValue()));
 
 			//Ventas en efectivo - transcar
-			Double totalVentasEfectivo_transcarweb = ServiceLocator.getTranscarWebManager().buscaTotalVentasEfectivo(getUsuario().getLogin(), getAgencia().getId(), Constantes.FORMAT_DATE.format(dbFecha.getValue()));
+			Double totalVentasEfectivo_transcarweb = .00;
+			//Valida la conexión con transcar
+			boolean isConnectionTranscar = UtilFlag.isConeccionTranscar();
+			if(isConnectionTranscar)
+				totalVentasEfectivo_transcarweb = ServiceLocator.getTranscarWebManager().buscaTotalVentasEfectivo(getUsuario().getLogin(), getAgencia().getId(), Constantes.FORMAT_DATE.format(dbFecha.getValue()));
 
 			//Total Gastos registrados
 			Double totalGastos=ServiceLocator.getGastoManager().BuscarTotalGastos(Constantes.FORMAT_DATE.format(dbFecha.getValue()), getUsuario().getId(), getAgencia().getId());

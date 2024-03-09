@@ -41,6 +41,7 @@ import pe.itsb.vyrbus.service.util.CreateDocument;
 import pe.itsb.vyrbus.service.util.Messages;
 import pe.itsb.vyrbus.service.util.Util;
 import pe.itsb.vyrbus.service.util.UtilData;
+import pe.itsb.vyrbus.service.util.UtilFlag;
 import pe.itsb.vyrbus.view.ui.DlgMessage;
 import pe.itsb.vyrbus.view.ui.Events;
 import pe.itsb.vyrbus.view.ui.WndBase;
@@ -71,6 +72,7 @@ public class WndRptLiquidacionVentas extends WndBase{
 	private String fechaInicial = null;
 	private String fechaFinal = null;
 	private Integer agenciaId = null;
+	private boolean isConnectionTranscar  = false;
 
 	/* (non-Javadoc)
 	 * @see pe.itsb.vyrbus.view.ui.WndBase#initComponents()
@@ -128,6 +130,9 @@ public class WndRptLiquidacionVentas extends WndBase{
 		// TODO Auto-generated method stub
 		super.onCreate();
 
+		//Valida la conexión con transcar
+		isConnectionTranscar = UtilFlag.isConeccionTranscar();
+		
 		dtbxFechaInicio.setValue(new Date());
 		dtbxFechaFin.setValue(new Date());
 		UtilData.cargarDataCombo(cmbAgencia, Agencia.class, true);
@@ -165,7 +170,9 @@ public class WndRptLiquidacionVentas extends WndBase{
 			List<Liquidacion> resultPasajes = ServiceLocator.getLiquidacionManager().buscarLiquidacion(fechaInicial, fechaFinal, agenciaId, null, null);
 
 			//Busca las liquidaciones de CARGA
-			TreeMap<String, Liquidacion> resultCarga = ServiceLocator.getTranscarWebManager().buscarLiquidacionCounter(fechaInicial, fechaFinal, agenciaId, null);
+			TreeMap<String, Liquidacion> resultCarga = null;
+			if(isConnectionTranscar)
+				resultCarga = ServiceLocator.getTranscarWebManager().buscarLiquidacionCounter(fechaInicial, fechaFinal, agenciaId, null);
 
 			//Carga el listado de liquidaciones
 			cargarListaLiquidaciones(resultPasajes, resultCarga);
@@ -353,35 +360,37 @@ public class WndRptLiquidacionVentas extends WndBase{
 		ArrayList<String> lstAgencias = new ArrayList<>();
 
 		//Cuando no existe liquidacion en pasajes pero si en transcar
-		for(Entry<String,Liquidacion> liquidacionTranscar : liquidacionesTranscar.entrySet()) {
-			boolean createLiqPasajes = true;
-			for(Liquidacion liquidacion: liquidacionesVyr) {
-				Integer agencia_idtranscar = UtilData.getAgencia_Idtranscarweb(liquidacion.getAgencia().getId());
-				String key_vyr = Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
-				key_vyr += (agencia_idtranscar!=null?agencia_idtranscar.toString():"");
-				key_vyr += liquidacion.getUsuario().getLogin();
+		if(liquidacionesTranscar!=null) {
+			for(Entry<String,Liquidacion> liquidacionTranscar : liquidacionesTranscar.entrySet()) {
+				boolean createLiqPasajes = true;
+				for(Liquidacion liquidacion: liquidacionesVyr) {
+					Integer agencia_idtranscar = UtilData.getAgencia_Idtranscarweb(liquidacion.getAgencia().getId());
+					String key_vyr = Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
+					key_vyr += (agencia_idtranscar!=null?agencia_idtranscar.toString():"");
+					key_vyr += liquidacion.getUsuario().getLogin();
 
-				if(key_vyr.equals(liquidacionTranscar.getKey())) {
-					liquidacion.setLiquidacionCarga(liquidacionTranscar.getValue());
-					createLiqPasajes = false;
-					break;
+					if(key_vyr.equals(liquidacionTranscar.getKey())) {
+						liquidacion.setLiquidacionCarga(liquidacionTranscar.getValue());
+						createLiqPasajes = false;
+						break;
+					}
 				}
-			}
 
-			//Crea una liquidacion ficticia para pasajes, cuando un usuario tiene una liquidacion en carga y no en pasajes.
-			if(createLiqPasajes) {
-				Liquidacion _liquidacionTranscar = liquidacionTranscar.getValue();
-				Long agencia_idvyr = UtilData.getAgencia_Idvyrbus(_liquidacionTranscar.getAgencia().getId()).longValue();
-				Agencia agenciavyr = ServiceLocator.getAgenciaManager().buscarPorId(agencia_idvyr);
-				Usuario usuariovyr = ServiceLocator.getUsuarioManager().buscarUsuarioPorLogin(_liquidacionTranscar.getUsuario().getLogin(), null);
-				Liquidacion _liquidacionVyr = new Liquidacion();
-				_liquidacionVyr.setAgencia(agenciavyr);
-				_liquidacionVyr.setFechaLiquidacion(_liquidacionTranscar.getFechaLiquidacion());
-				_liquidacionVyr.setLiquidacionCarga(liquidacionTranscar.getValue());
-				_liquidacionVyr.setUsuario(usuariovyr);
-				liquidacionesVyr.add(_liquidacionVyr);
-			}
+				//Crea una liquidacion ficticia para pasajes, cuando un usuario tiene una liquidacion en carga y no en pasajes.
+				if(createLiqPasajes) {
+					Liquidacion _liquidacionTranscar = liquidacionTranscar.getValue();
+					Long agencia_idvyr = UtilData.getAgencia_Idvyrbus(_liquidacionTranscar.getAgencia().getId()).longValue();
+					Agencia agenciavyr = ServiceLocator.getAgenciaManager().buscarPorId(agencia_idvyr);
+					Usuario usuariovyr = ServiceLocator.getUsuarioManager().buscarUsuarioPorLogin(_liquidacionTranscar.getUsuario().getLogin(), null);
+					Liquidacion _liquidacionVyr = new Liquidacion();
+					_liquidacionVyr.setAgencia(agenciavyr);
+					_liquidacionVyr.setFechaLiquidacion(_liquidacionTranscar.getFechaLiquidacion());
+					_liquidacionVyr.setLiquidacionCarga(liquidacionTranscar.getValue());
+					_liquidacionVyr.setUsuario(usuariovyr);
+					liquidacionesVyr.add(_liquidacionVyr);
+				}
 
+			}
 		}
 
 		String keyBusqueda;

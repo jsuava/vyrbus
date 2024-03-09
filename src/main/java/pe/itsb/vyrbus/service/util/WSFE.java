@@ -524,30 +524,36 @@ public class WSFE implements Serializable{
 					cantidadCredito ++;
 				}
 			}
-
+			String fechaLiquidacion =Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
+			
 			/****Carga - resumen especies valoradas*/
 			/************************************************/
-			TranscarUsuarioPersonal transcarUsuarioPersonal = ServiceLocator.getTranscarWebManager().buscarUsuario(liquidacion.getUsuario().getLogin());
-			int agenciaIdCargo = liquidacion.getAgencia().getId();
-			String fechaLiquidacion =Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
-			if(transcarUsuarioPersonal!=null && liquidacion.getAgencia().getCodigo()!=null){
-//				agenciaIdCargo = ServiceLocator.getTranscarWebManager().buscarIdAgenciaByCodigoAgenciaPasajes(liquidacion.getAgencia().getId().toString());
-				List<Liquidacion>listResumenEspeciesValoradas = ServiceLocator.getTranscarWebManager().buscarLiquidacionTurnoResumenEspVal(transcarUsuarioPersonal.getId(), agenciaIdCargo, fechaLiquidacion, fechaLiquidacion);
-				for(Liquidacion _liquidacion: listResumenEspeciesValoradas){
-					XmlItemIngresoVentaLiquidacion itemIngresoVentaLiquidacion = new XmlItemIngresoVentaLiquidacion();
-					itemIngresoVentaLiquidacion.setV1_comprobante(_liquidacion.getComprobante());
-					itemIngresoVentaLiquidacion.setV2_serie(_liquidacion.getSerie()!=null?_liquidacion.getSerie():"");
-					itemIngresoVentaLiquidacion.setV3_detalle(_liquidacion.getBoletoInicial()+" - "+_liquidacion.getboletoFinal());
-					itemIngresoVentaLiquidacion.setV4_cantidad(_liquidacion.getCantidadBoletos().toString());
-					itemIngresoVentaLiquidacion.setV5_monto(_liquidacion.getImporte().toString());
-					lstItemIngresosVenta.add(itemIngresoVentaLiquidacion);
+			//Valida la conexión con transcar
+			boolean isConnectionTranscar = UtilFlag.isConeccionTranscar();
+			TranscarUsuarioPersonal transcarUsuarioPersonal = null;
+			int agenciaIdCargo = -1;
+			if(isConnectionTranscar) {
+				transcarUsuarioPersonal = ServiceLocator.getTranscarWebManager().buscarUsuario(liquidacion.getUsuario().getLogin());
+				agenciaIdCargo = liquidacion.getAgencia().getId();				
+				if(transcarUsuarioPersonal!=null && liquidacion.getAgencia().getCodigo()!=null){
+//					agenciaIdCargo = ServiceLocator.getTranscarWebManager().buscarIdAgenciaByCodigoAgenciaPasajes(liquidacion.getAgencia().getId().toString());
+					List<Liquidacion>listResumenEspeciesValoradas = ServiceLocator.getTranscarWebManager().buscarLiquidacionTurnoResumenEspVal(transcarUsuarioPersonal.getId(), agenciaIdCargo, fechaLiquidacion, fechaLiquidacion);
+					for(Liquidacion _liquidacion: listResumenEspeciesValoradas){
+						XmlItemIngresoVentaLiquidacion itemIngresoVentaLiquidacion = new XmlItemIngresoVentaLiquidacion();
+						itemIngresoVentaLiquidacion.setV1_comprobante(_liquidacion.getComprobante());
+						itemIngresoVentaLiquidacion.setV2_serie(_liquidacion.getSerie()!=null?_liquidacion.getSerie():"");
+						itemIngresoVentaLiquidacion.setV3_detalle(_liquidacion.getBoletoInicial()+" - "+_liquidacion.getboletoFinal());
+						itemIngresoVentaLiquidacion.setV4_cantidad(_liquidacion.getCantidadBoletos().toString());
+						itemIngresoVentaLiquidacion.setV5_monto(_liquidacion.getImporte().toString());
+						lstItemIngresosVenta.add(itemIngresoVentaLiquidacion);
 
-					totalEfectivo += _liquidacion.getImporte();
-					cantidadEfectivo ++;
+						totalEfectivo += _liquidacion.getImporte();
+						cantidadEfectivo ++;
 
-					if(_liquidacion.getTipoComprobante().getId().intValue()==Constantes.TRANSCARWEB_ID_TIPCOM_PCE) {
-						totalCredito += _liquidacion.getImporte();
-						cantidadCredito ++;
+						if(_liquidacion.getTipoComprobante().getId().intValue()==Constantes.TRANSCARWEB_ID_TIPCOM_PCE) {
+							totalCredito += _liquidacion.getImporte();
+							cantidadCredito ++;
+						}
 					}
 				}
 			}

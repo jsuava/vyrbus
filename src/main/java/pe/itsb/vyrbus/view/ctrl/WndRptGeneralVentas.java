@@ -40,6 +40,7 @@ import pe.itsb.vyrbus.service.mappers.ResumenVentas;
 import pe.itsb.vyrbus.service.util.Constantes;
 import pe.itsb.vyrbus.service.util.Util;
 import pe.itsb.vyrbus.service.util.UtilData;
+import pe.itsb.vyrbus.service.util.UtilFlag;
 import pe.itsb.vyrbus.view.ui.DlgMessage;
 import pe.itsb.vyrbus.view.ui.WndBase;
 
@@ -614,13 +615,18 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 		//select to_char(max(rv.d_fecven+1), 'dd/MM/yyyy') fechaventa from vrhresven rv where rv.n_rubro=2;
 
 //		recuperar las ventas de encomiendas
-
-		List<ResumenVentas> lstEncomiendas = ServiceLocator.getTranscarWebManager().buscarResumenVentas(fechaDesde, fechaHasta);
-		if(lstEncomiendas.size() <= 0){
-			DlgMessage.information("No se encontr� informacion para la informaci�n brindada.");
-			dtbxFecFinBus.focus();
-			return;
+		List<ResumenVentas> lstEncomiendas = new ArrayList<ResumenVentas>();
+		//Valida la conexión con transcar
+		boolean isConnectionTranscar = UtilFlag.isConeccionTranscar();
+		if(isConnectionTranscar) {
+			lstEncomiendas = ServiceLocator.getTranscarWebManager().buscarResumenVentas(fechaDesde, fechaHasta);
+			if(lstEncomiendas.size() <= 0){
+				DlgMessage.information("No se encontró información para la información brindada.");
+				dtbxFecFinBus.focus();
+				return;
+			}	
 		}
+		
 		ArrayList<ResumenVentas> lstEncomiendasCambiadas = new ArrayList<>();
 
 //		cambiar los ids de agencia en la data de encomiendas por la del vyrbus

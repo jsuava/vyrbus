@@ -1035,38 +1035,44 @@ public class CreateDocument implements Serializable {
 				bw.write(linea+NEWLINE);
 			}
 
-			/**CARGA - RESUMEN ESPECIES VALORADAS*/
-			TranscarUsuarioPersonal transcarUsuario = ServiceLocator.getTranscarWebManager().buscarUsuario(liquidacion.getUsuario().getLogin());
-			int agenciaIdCargo = 0;
 			String fechaLiquidacion =Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion());
+			
+			/**CARGA - RESUMEN ESPECIES VALORADAS*/
+			TranscarUsuarioPersonal transcarUsuario = null;
+			int agenciaIdCargo = 0;
+			//Valida la conexión con transcar
+			boolean isConnectionTranscar = UtilFlag.isConeccionTranscar();
+			if(isConnectionTranscar) {
+				transcarUsuario = ServiceLocator.getTranscarWebManager().buscarUsuario(liquidacion.getUsuario().getLogin());				
+				if(transcarUsuario!=null){ // && liquidacion.getAgencia().getCodigo()!=null){
+					agenciaIdCargo = liquidacion.getAgencia().getId();
+					List<Liquidacion> listLiquidacionCarga = ServiceLocator.getTranscarWebManager().buscarLiquidacionTurnoResumenEspVal(transcarUsuario.getId(), agenciaIdCargo, fechaLiquidacion, fechaLiquidacion);
+					for(Liquidacion _liquidacion : listLiquidacionCarga) {
+						longitud_C=_liquidacion.getComprobante().toString().length();
+						String strSerie = (_liquidacion.getSerie()!=null?_liquidacion.getSerie():"");
+						String desde = _liquidacion.getBoletoInicial();
+						String hasta = _liquidacion.getboletoFinal();
+						linea = tabular(3)+_liquidacion.getComprobante()+tabular(19-longitud_C)+strSerie;
 
-			if(transcarUsuario!=null){ // && liquidacion.getAgencia().getCodigo()!=null){
-				agenciaIdCargo = liquidacion.getAgencia().getId();
-				List<Liquidacion> listLiquidacionCarga = ServiceLocator.getTranscarWebManager().buscarLiquidacionTurnoResumenEspVal(transcarUsuario.getId(), agenciaIdCargo, fechaLiquidacion, fechaLiquidacion);
-				for(Liquidacion _liquidacion : listLiquidacionCarga) {
-					longitud_C=_liquidacion.getComprobante().toString().length();
-					String strSerie = (_liquidacion.getSerie()!=null?_liquidacion.getSerie():"");
-					String desde = _liquidacion.getBoletoInicial();
-					String hasta = _liquidacion.getboletoFinal();
-					linea = tabular(3)+_liquidacion.getComprobante()+tabular(19-longitud_C)+strSerie;
+						longitud_C = desde.length();
+						linea += tabular(5)+tabular(1-longitud_C+1)+desde;
+						longitud_C = hasta.length();
+						linea += tabular(5)+tabular(1-longitud_C+1)+hasta;
 
-					longitud_C = desde.length();
-					linea += tabular(5)+tabular(1-longitud_C+1)+desde;
-					longitud_C = hasta.length();
-					linea += tabular(5)+tabular(1-longitud_C+1)+hasta;
-
-					longitud_C=_liquidacion.getCantidadBoletos().toString().length();
-					linea += tabular(5)+tabular(1-longitud_C+1)+_liquidacion.getCantidadBoletos();
-					longitud_M=(int) _liquidacion.getImporte().intValue();
-					longitud_M = longitud_M.toString().length();
-					if (longitud_M==4)
-						longitud_M += +1;
-					else if (longitud_M==5)
-						longitud_M += +2;
-					linea += tabular(11-longitud_M)+Util.toNumberFormat(_liquidacion.getImporte(),2);
-					bw.write(linea+NEWLINE);
+						longitud_C=_liquidacion.getCantidadBoletos().toString().length();
+						linea += tabular(5)+tabular(1-longitud_C+1)+_liquidacion.getCantidadBoletos();
+						longitud_M=(int) _liquidacion.getImporte().intValue();
+						longitud_M = longitud_M.toString().length();
+						if (longitud_M==4)
+							longitud_M += +1;
+						else if (longitud_M==5)
+							longitud_M += +2;
+						linea += tabular(11-longitud_M)+Util.toNumberFormat(_liquidacion.getImporte(),2);
+						bw.write(linea+NEWLINE);
+					}
 				}
 			}
+			
 
 
 //			for (Liquidacion especiesValorada: list ){
