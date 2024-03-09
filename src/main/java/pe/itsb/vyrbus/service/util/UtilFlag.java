@@ -29,10 +29,22 @@ public class UtilFlag {
 	final static int FLAG_IDTIEMPO_POSTERGACION = 10;
 	final static int FLAG_IDTIEMPO_POSTERGACION_FA = 11;
 	final static int FLAG_IDTIEMPO_CAMBIO_NOMBRE = 12;
+	final static int FLAG_IDCONECTION_TRANSCAR = 13;
 
 	final static String LLAVE_ENABLED = "S";
 	final static String LLAVE_DISABLED = "N";
 
+	/**
+	 * Valida si esta activo el flag para la coneción con transcar web
+	 * @return
+	 * @throws Exception
+	 */
+	public static boolean isConeccionTranscar()throws Exception{
+				
+		boolean estado = getConfigFlagById(FLAG_IDCONECTION_TRANSCAR);
+		
+		return estado;
+	}
 	
 	/**
 	 * Obtiene el tiempo, expresado en minutos para la postergación, antes de la salida

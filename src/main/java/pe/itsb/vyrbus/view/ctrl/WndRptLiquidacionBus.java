@@ -24,6 +24,7 @@ import pe.itsb.vyrbus.service.locator.ServiceLocator;
 import pe.itsb.vyrbus.service.util.Constantes;
 import pe.itsb.vyrbus.service.util.Util;
 import pe.itsb.vyrbus.service.util.UtilData;
+import pe.itsb.vyrbus.service.util.UtilFlag;
 import pe.itsb.vyrbus.view.ui.DlgMessage;
 import pe.itsb.vyrbus.view.ui.WndBase;
 
@@ -90,7 +91,11 @@ public class WndRptLiquidacionBus extends WndBase {
 			List<Manifiesto> resultPasajes = ServiceLocator.getVentaPasajesManager().buscarLiquidacionBus(fechaInicio, fechaFin, codigoBus);
 
 			//Buscar en Carga (Transcar)
-			TreeMap<String, Manifiesto> resultCarga = ServiceLocator.getTranscarWebManager().buscarLiquidacionBus(fechaInicio, fechaFin, codigoBus);
+			TreeMap<String, Manifiesto> resultCarga = null;
+			//Valida la conexión con transcar
+			boolean isConnectionTranscar = UtilFlag.isConeccionTranscar();
+			if(isConnectionTranscar)
+				resultCarga = ServiceLocator.getTranscarWebManager().buscarLiquidacionBus(fechaInicio, fechaFin, codigoBus);
 
 			for(Manifiesto manifiesto : resultPasajes){
 				Listitem item = new Listitem();
@@ -117,7 +122,7 @@ public class WndRptLiquidacionBus extends WndBase {
 
 				Double totalSolesCarga = .00;
 				String key = Constantes.FORMAT_DATE.format(manifiesto.getItinerario().getFechaPartida()) + "-" +manifiesto.getBus().getCodigo();
-				Manifiesto manifiestoCarga = resultCarga.get(key);
+				Manifiesto manifiestoCarga = (resultCarga!=null?resultCarga.get(key):null);
 				if(manifiestoCarga!=null)
 					totalSolesCarga = manifiestoCarga.getImporte();
 				cell = new Listcell(Util.toNumberFormat(totalSolesCarga, 2));

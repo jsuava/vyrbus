@@ -27,6 +27,7 @@ import pe.itsb.vyrbus.service.locator.ServiceLocator;
 import pe.itsb.vyrbus.service.mappers.VentasPiloto;
 import pe.itsb.vyrbus.service.util.Constantes;
 import pe.itsb.vyrbus.service.util.Util;
+import pe.itsb.vyrbus.service.util.UtilFlag;
 import pe.itsb.vyrbus.view.ui.DlgMessage;
 import pe.itsb.vyrbus.view.ui.WndBase;
 
@@ -45,6 +46,7 @@ public class WndRptRegistroVentas extends WndBase  {
 	private Radio rdEncomiendas;
 	private Radio rdPasajeros;
 	private Radio rdAmbos;
+	private boolean isConnectionTranscar = false;
 
 	private static String[] tipoComprobante = {Constantes.COMBO_LABEL_TODOS, "BOLETA ELECTRONICA",
 			"FACTURA ELECTRONICA"};
@@ -55,10 +57,15 @@ public class WndRptRegistroVentas extends WndBase  {
 	@Override
 	public void onCreate() throws Exception {
 		// TODO Auto-generated method stub
+		//Valida la conexión con transcar
+		isConnectionTranscar = UtilFlag.isConeccionTranscar();
 		dtbxFechaInicio.setValue(new Date());
 		dtbxFechaFin.setValue(new Date());
 		onLoadTipoComprobante();
-
+		rdPasajeros.setChecked(true);
+		rdEncomiendas.setDisabled(!isConnectionTranscar);
+		rdAmbos.setDisabled(!isConnectionTranscar);
+		
 	}
 
 	@Override

@@ -21,6 +21,7 @@ import pe.itsb.vyrbus.service.util.Messages;
 import pe.itsb.vyrbus.service.util.MyTime;
 import pe.itsb.vyrbus.service.util.Util;
 import pe.itsb.vyrbus.service.util.UtilData;
+import pe.itsb.vyrbus.service.util.UtilFlag;
 import pe.itsb.vyrbus.view.ui.DlgMessage;
 import pe.itsb.vyrbus.view.ui.WndBase;
 
@@ -108,7 +109,7 @@ public class WndTipoOperacion extends WndBase{
 							}
 						}
 
-						//Valida que la fecha de la liquidaci�n no se a mayor a la actual
+						//Valida que la fecha de la liquidación no se a mayor a la actual
 						Date fechaActual=new Date();
 						fechaActual.setHours(0);
 						fechaActual.setMinutes(0);
@@ -122,34 +123,32 @@ public class WndTipoOperacion extends WndBase{
 							return;
 						}
 
+						//Valida la conexión con transcar
+						boolean isConnectionTranscar = UtilFlag.isConeccionTranscar();
+						if(isConnectionTranscar) {
+							/*********************************************************************************************/
+							//Primero apertura la liquidacion de carga
+							TranscarLiquidacionTurno liquidacionTurnoCarga= new TranscarLiquidacionTurno();
+							liquidacionTurnoCarga.setOperacion(1);
+							liquidacionTurnoCarga.setFechaApertura(fechaLiquidacion);
+							//MAOE 23/06/2023
+							TranscarUsuarioPersonal usuarioPersonal = ServiceLocator.getTranscarWebManager().buscarUsuario(getUsuario().getLogin());
+							if(usuarioPersonal==null) {
+								DlgMessage.information("No se puede aperturar la liqudiación de Carga, debido a que el usuario "+getUsuario().getLogin()+" no existe en el sistema en Transcar.");
+								return;
+							}
 
-						/*********************************************************************************************/
-						//Primero apertura la liquidacion de carga
-						TranscarLiquidacionTurno liquidacionTurnoCarga= new TranscarLiquidacionTurno();
-						liquidacionTurnoCarga.setOperacion(1);
-						liquidacionTurnoCarga.setFechaApertura(fechaLiquidacion);
-						//MAOE 23/06/2023
-						TranscarUsuarioPersonal usuarioPersonal = ServiceLocator.getTranscarWebManager().buscarUsuario(getUsuario().getLogin());
-						if(usuarioPersonal==null) {
-							DlgMessage.information("No se puede aperturar la liqudiaci�n de Carga, debido a que el usuario "+getUsuario().getLogin()+" no existe en el sistema de carga.");
-							return;
+							//MAOE 23/06/2023
+							liquidacionTurnoCarga.setTranscarUsuarioPersonal(usuarioPersonal);
+							liquidacionTurnoCarga.setAgenciaId(getAgencia().getId());
+							UtilData.auditarRegistro(liquidacionTurnoCarga, getUsuario(), Executions.getCurrent());
+							String messageError = ServiceLocator.getTranscarWebManager().aperturarLiquidacion(liquidacionTurnoCarga, false);
+							if (messageError!=null) {
+								DlgMessage.information(messageError+" - TRANSCAR");
+								return;
+							}
 						}
-
-//						Integer agenciaId = ServiceLocator.getTranscarWebManager().buscarIdAgenciaByCodigoAgenciaPasajes(getAgencia().getId().toString());
-//						if(agenciaId ==null) {
-//							DlgMessage.information("No se puede aperturar la liqudiaci�n de Carga, debido a que la agencia "+getAgencia().getDenominacion()+" no existe en el sistema de carga.");
-//							return;
-//						}
-
-						//MAOE 23/06/2023
-						liquidacionTurnoCarga.setTranscarUsuarioPersonal(usuarioPersonal);
-						liquidacionTurnoCarga.setAgenciaId(getAgencia().getId());
-						UtilData.auditarRegistro(liquidacionTurnoCarga, getUsuario(), Executions.getCurrent());
-						String messageError = ServiceLocator.getTranscarWebManager().aperturarLiquidacion(liquidacionTurnoCarga, false);
-						if (messageError!=null) {
-							DlgMessage.information(messageError+" - TRANSCAR");
-							return;
-						}
+						
 
 						/*********************************************************************************************/
 						//Segundo apertura la de pasajes
