@@ -140,9 +140,9 @@ public class WndLogin extends WndBase {
 //			txtPassword.setText("Ant@res1091");
 //			txtImagen.setText(cpaImagen.getValue());
 			
-			txtLogin.setText("abanto");
-			txtPassword.setText("123");
-			txtImagen.setText(cpaImagen.getValue());
+//			txtLogin.setText("abanto");
+//			txtPassword.setText("123");
+//			txtImagen.setText(cpaImagen.getValue());
 //
 //			onAccess();
 		} catch (Exception e) {
@@ -538,9 +538,9 @@ public class WndLogin extends WndBase {
 		} catch (UsuarioHardwareNullException uhnex){
 			Executions.sendRedirect("invalidAccess.zul");
 		} catch (UsuarioNullException unex){
-			DlgMessage.information("Nombre de usuario o contraseï¿½a incorrectos");
+			DlgMessage.information("Nombre de usuario o contraseña incorrectos");
 		}catch (LoginException lex){
-			DlgMessage.information("Nombre de usuario o contraseï¿½a incorrectos");
+			DlgMessage.information("Nombre de usuario o contraseña incorrectos");
 		}catch (UsuarioRolNullException urne){
 			DlgMessage.information(Messages.getString("WndLogin.information.usuarioSinRol"));
 		}catch(LoginNullException lnex){
@@ -550,7 +550,7 @@ public class WndLogin extends WndBase {
 				DlgMessage.information(Messages.getString("WndLogin.information.password"));
 				txtPassword.setFocus(true);
 			}else if(cp.getTipo()==PasswordException.PASSWORD_INCOREC){
-				DlgMessage.information("Nombre de usuario o contraseï¿½a incorrectos");
+				DlgMessage.information("Nombre de usuario o contraseña incorrectos");
 			}
 		}catch(CaptchaNullException cnex){
 			if(cnex.getLevel().intValue()==0)
