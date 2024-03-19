@@ -1,13 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
-<<<<<<< HEAD
- * Descripciï¿½n	: Clase que centraliza las Constantes que se usa en todo el sistema.
- * Autor		: Josï¿½ Avalos
-=======
  * Descripcion	: Clase que centraliza las Constantes que se usa en todo el sistema.
  * Autor		: Jose Avalos
->>>>>>> 0766780c1964b82a8491cee81ab816d3a1f43dc2
  * Fecha		: 08/04/2012
  */
 package pe.itsb.vyrbus.service.util;
@@ -31,7 +26,7 @@ public class Constantes {
 	 * Vension actual del Sistema
 	 */
 
-	public static final String SYSTEM_VERSION = "Versión 3.4.2";
+	public static final String SYSTEM_VERSION = "Versión 3.4.3";
 
 	/**
 	 * Constante para la Accion Nuevo
