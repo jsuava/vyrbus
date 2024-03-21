@@ -186,6 +186,7 @@ public class WndVentaReservaNew  extends WndBase {
 	private Tab tabVtaVueltaMapa;
 	private Groupbox gpbxVtaIdaMapa;
 	private Caption capVtaIdaMapa;
+	private Caption capVtaRetornoMapa;
 	private Groupbox gpbxVtaVueltaMapa;
 	private Label lblVtaTipoComprobante;
 	private Label lblVtaNumeroComprobante;
@@ -446,6 +447,7 @@ public class WndVentaReservaNew  extends WndBase {
 			tabVtaVueltaMapa =  (Tab)this.getFellow("tabVtaVueltaMapa");
 			gpbxVtaIdaMapa = (Groupbox)this.getFellow("gpbxVtaIdaMapa");
 			capVtaIdaMapa = (Caption)this.getFellow("capVtaIdaMapa");
+			capVtaRetornoMapa = (Caption)this.getFellow("capVtaRetornoMapa");
 			gpbxVtaVueltaMapa = (Groupbox)this.getFellow("gpbxVtaVueltaMapa");
 			lblVtaTipoComprobante = (Label)this.getFellow("lblVtaTipoComprobante");
 			lblVtaNumeroComprobante = (Label)this.getFellow("lblVtaNumeroComprobante");
@@ -1749,11 +1751,18 @@ public class WndVentaReservaNew  extends WndBase {
 		lblVtainfoViajeEmpresaIda.setSclass("label-size11-bold");
 		lblVtainfoViajeEmpresaIda.setStyle("font-size:13px !important");
 		columnVtaInfoViajeIda.appendChild(lblVtainfoViajeEmpresaIda);
+		capVtaIdaMapa.getChildren().clear();
 		capVtaIdaMapa.setLabel("SELECCION DE ASIENTO(S)");
+		if(detalleItinerarioIda.getItinerario().getBus()!=null)
+			loadDatosBusMapa(detalleItinerarioIda.getItinerario().getBus(), capVtaIdaMapa);
 		
 		if(isVtaIdaVuelta) {
 			columnVtaInfoViajeIda.setLabel("INFORMACION DEL VIAJE DE IDA ::: ");
 			capVtaIdaMapa.setLabel("SELECCION DE ASIENTO(S) DE IDA");
+			capVtaRetornoMapa.getChildren().clear();
+			capVtaRetornoMapa.setLabel("SELECCION DE ASIENTO(S) DE VUELTA");
+			if(detalleItinerarioVuelta.getItinerario().getBus()!=null)
+				loadDatosBusMapa(detalleItinerarioVuelta.getItinerario().getBus(), capVtaRetornoMapa);
 			columnVtaInfoViajeVuelta.setLabel("INFORMACION DEL VIAJE DE VUELTA :::: ");
 			columnVtaInfoViajeVuelta.getChildren().clear();
 			Label lblVtainfoViajeEmpresaVuelta = new Label(detalleItinerarioVuelta.getItinerario().getEmpresa().getNombreCorto());
@@ -2194,6 +2203,24 @@ public class WndVentaReservaNew  extends WndBase {
 				habilitarOpcionCambioNombre(asiento.getVentaPasaje());
 			}
 		}
+	}
+	
+	/**
+	 * Carga datos del Bus programado, para mostrarlos en los mapas
+	 * @param bus: Instancia de la Class Bus
+	 * @param capVtaMapa: Instancia de la class Caption en donde se va mostrar los datos del bus.
+	 * @throws Exception
+	 */
+	private void loadDatosBusMapa(Bus bus, Caption capVtaMapa)throws Exception{
+		capVtaMapa.getChildren().clear();
+		
+		String datosBus = bus.getCodigo();
+		datosBus += " ("+bus.getNumeroPlaca()+")";			
+		Label lblDatosBus = new Label(datosBus);
+		lblDatosBus.setSclass("label-size11-bold");
+		lblDatosBus.setStyle("font-size:14px !important;");
+		capVtaMapa.appendChild(lblDatosBus);
+		
 	}
 	
 	/**
@@ -7031,6 +7058,13 @@ public class WndVentaReservaNew  extends WndBase {
 						//Actualiza el itinerario con el identificacion del bus.
 						ServiceLocator.getProgramacionServiciosManager().updateItinerarioBus(itinerario.getId(), programacionServicio.getBus().getId().longValue());
 						
+						//Actualiza los datos del bus que se muestra en el mapa
+						if(itinerario.getId().longValue()==detalleItinerarioIda.getItinerario().getId().longValue())
+							loadDatosBusMapa(programacionServicio.getBus(), capVtaIdaMapa);
+						else if(isVtaIdaVuelta && itinerario.getId().longValue()==detalleItinerarioVuelta.getItinerario().getId().longValue())
+							loadDatosBusMapa(programacionServicio.getBus(), capVtaRetornoMapa);
+						
+						//
 						disabledControlsPb(true);
 						disabled_btnModificar(btnPbEditar, false);
 						disabled_btnGuardar(btnPbGuardar, true);
@@ -7085,15 +7119,36 @@ public class WndVentaReservaNew  extends WndBase {
 			@Override
 			public void onEvent(Event e) throws Exception {
 				if(e.getName().equals("onYes")){
+					//Anula la programación
 					programacionServicio.setEstadoRegistro(Constantes.VALUE_INACTIVO);
 					UtilData.auditarRegistro(programacionServicio,true, getUsuario(), Executions.getCurrent());
 					ServiceLocator.getProgramacionServiciosManager().actualizar(programacionServicio);
+					
+					//Actualiza el itinerario
+					Itinerario itinerario = ServiceLocator.getItinerarioManager().buscarPorId(programacionServicio.getItinerario().getId());
+					itinerario.setBus(null);
+					UtilData.auditarRegistro(itinerario,true, getUsuario(), Executions.getCurrent());
+					ServiceLocator.getItinerarioManager().actualizar(itinerario);
+					
+					//Actualiza los datos del bus que se muestra en el mapa
+					if(itinerario.getId().longValue()==detalleItinerarioIda.getItinerario().getId().longValue())
+						capVtaIdaMapa.getChildren().clear();
+					else if(isVtaIdaVuelta && itinerario.getId().longValue()==detalleItinerarioVuelta.getItinerario().getId().longValue())
+						capVtaRetornoMapa.getChildren().clear();
+					
+					//
 					programacionServicio = null;
 					disabledControlsPb(false);
 					cleanDatosPb();
 					disabled_btnModificar(btnPbEditar, true);
 					disabled_btnGuardar(btnPbGuardar, false);
 					disabled_btnAnular(btnPbAnular, true);
+					
+					//Actualiza la busqueda de los itinerarios, 
+					if(divPaso_1.isVisible())
+						onClick_btnBuscar();					
+					
+					
 					cmbPbBus.setFocus(true);
 				}
 			}
@@ -7254,7 +7309,7 @@ public class WndVentaReservaNew  extends WndBase {
 	
 	
 	/**
-	 * Carga listado de buses para la Programación de Buses.
+	 * Carga listado de buses para la Programaci	ón de Buses.
 	 * @param cmbBus
 	 * @param empresa
 	 * @throws Exception
