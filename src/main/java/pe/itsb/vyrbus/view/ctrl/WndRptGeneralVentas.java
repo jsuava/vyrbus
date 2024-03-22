@@ -202,7 +202,7 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 				ensamblarResumenVentas(lstResumen);
 		}
 		else{
-			DlgMessage.information("No se encontr� infotrmacion para la informaci�n brindada.");
+			DlgMessage.information("No se encontraron resultados para la informaci\\u00F3n brindada.");
 			cmbAgencias.focus();
 			return;
 		}
