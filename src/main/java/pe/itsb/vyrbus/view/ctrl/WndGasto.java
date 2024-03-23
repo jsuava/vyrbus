@@ -375,7 +375,7 @@ public class WndGasto extends WndOpcionesMantenimiento {
 			gasto.setNombrePiloto(txtNombrePiloto.getText().trim().toUpperCase());
 			if(cmbBus.getSelectedItem().getValue() instanceof Bus)
 				gasto.setCodigoBus(((Bus)cmbBus.getSelectedItem().getValue()).getCodigo());
-
+			
 			gasto.setConsignado(txtConsignado.getText().trim().toUpperCase());
 			gasto.setObservacion(txtObservacion.getText().trim().toUpperCase());
 			gasto.setNroCtacte(txtNroCtacte.getText().trim().toUpperCase());

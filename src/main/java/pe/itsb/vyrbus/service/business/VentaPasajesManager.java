@@ -437,9 +437,10 @@ public interface VentaPasajesManager {
 	/**
 	 * Busca el historial de viajes del pasajero.
 	 * @param idPasajero	: Identificador del pasajero.
+	 * @param numeroBoleto : Número de Boleto
 	 * @return Lista de viajes.
 	 */
-	public List<VentaPasaje> buscarVentasByPasajero(Long idPasajero)throws Exception;
+	public List<VentaPasaje> buscarVentasByPasajero(Long idPasajero, String numeroBoleto, Boolean incluirReservas)throws Exception;
 	/**
 	 * Busca datos del boleto a liberar del manifiesto de pasajeros.
 	 * @param numeroboleto	: N�mero de Boleto a buscar.

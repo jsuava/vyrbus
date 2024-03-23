@@ -2748,29 +2748,47 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarVentasByPasajero(java.lang.Long)
 	 */
 	@Override
-	public List<VentaPasaje> buscarVentasByPasajero(Long idPasajero){
-		String hql = "SELECT vp FROM VentaPasaje AS vp JOIN vp.pasajero AS p WHERE vp.tipoComprobante.id IN ("+
-				  Constantes.ID_TIPCOM_BOLETO_VIAJE+","+
-				  Constantes.ID_TIPCOM_RECIBO_CAJA+","+
-				  Constantes.ID_TIPCOM_BOLETA_VENTA+","+
-				  Constantes.ID_TIPCOM_FACTURA+") AND "
-				+ "vp.tipoMovimiento.id NOT IN (5,11,13) AND vp.numeroBoleto IS NOT NULL AND vp.pasajero.id="+idPasajero+" "
-				+ "ORDER BY vp.fechaPartida desc ";
+	public List<VentaPasaje> buscarVentasByPasajero(Long idPasajero, String numeroBoleto, Boolean incluirReservas){
+		String hql = "SELECT vp "
+				   + "FROM VentaPasaje AS vp JOIN vp.pasajero AS p "
+                   + "WHERE vp.tipoComprobante.id IN ("+ Constantes.ID_TIPCOM_BOLETA_VENTA+","+ Constantes.ID_TIPCOM_FACTURA+") ";
+		if(incluirReservas!=null && incluirReservas)
+			hql += "AND vp.tipoTransaccion IN ('1','2') AND vp.tipoMovimiento.id NOT IN (5,13)";
+		else
+			hql += "AND vp.tipoTransaccion IN ('1') AND vp.tipoMovimiento.id NOT IN (5,11,13)";
+		if(idPasajero!=null)
+			hql +="AND vp.pasajero.id="+ idPasajero +" ";
+		if(numeroBoleto!=null)
+			hql +="AND vp.numeroBoleto='"+numeroBoleto+"' ";
+		hql += "ORDER BY vp.fechaPartida desc ";
+				
+//                   	  +"AND vp.tipoMovimiento.id NOT IN (5,11,13) "
+//					  +(incluirReservas!=null && incluirReservas?"AND vp.tipoTransaccion in ('1','2') ":"AND vp.tipoTransaccion in ('1') ")
+//                   	  +(idPasajero!=null?" AND vp.pasajero.id="+idPasajero+" ":"")
+//                   	  +(numeroBoleto!=null?" AND vp.numeroBoleto='"+numeroBoleto+"' ":"")
+//				   + "ORDER BY vp.fechaPartida desc ";
 
-		log.info(hql);
+		log.info("buscarVentasByPasajero:"+ hql);
 		List<?> result = getSession().createQuery(hql).list();
 		List<VentaPasaje>lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
-//			Object[] obj = (Object[])result.get(i);
 			VentaPasaje ventaPasaje = (VentaPasaje)result.get(i);
 			VentaPasaje venta = new VentaPasaje();
+			venta.setId(ventaPasaje.getId());
 			venta.setNumeroBoleto(ventaPasaje.getNumeroBoleto());
 			venta.setNumeroBoletoAnterior(ventaPasaje.getNumeroBoletoAnterior());
+			venta.setFechaLiquidacion(ventaPasaje.getFechaLiquidacion());
+			venta.setTipoTransaccion(ventaPasaje.getTipoTransaccion());
 			if(venta.getCliente()!=null){
 				Cliente cliente = new Cliente();
 				cliente.setRazonSocial(ventaPasaje.getCliente().getRazonSocial());
 				venta.setCliente(cliente);
 			}
+			Empresa empresa = new Empresa();
+			empresa.setId(ventaPasaje.getEmpresa().getId());
+			empresa.setRazonSocial(ventaPasaje.getEmpresa().getRazonSocial());
+			empresa.setNombreCorto(ventaPasaje.getEmpresa().getNombreCorto());
+			venta.setEmpresa(empresa);
 			Servicio servicio = new Servicio();
 			servicio.setDenominacion(ventaPasaje.getServicio().getDenominacion());
 			venta.setServicio(servicio);
@@ -2779,20 +2797,35 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			ruta.setDestino(ventaPasaje.getRuta().getDestino());
 			venta.setRuta(ruta);
 			venta.setFechaPartida(ventaPasaje.getFechaPartida());
-			TipoFormaPago tipoFormaPago = new TipoFormaPago();
-			tipoFormaPago.setDenominacion(ventaPasaje.getTipoFormaPago().getDenominacion());
-			venta.setTipoFormaPago(tipoFormaPago);
-			venta.setNumeroAsiento(ventaPasaje.getNumeroAsiento());
+			venta.setHoraPartida(ventaPasaje.getHoraPartida()!=null?ventaPasaje.getHoraPartida():null);
+			if(ventaPasaje.getTipoFormaPago()!=null) {
+				TipoFormaPago tipoFormaPago = new TipoFormaPago();
+				tipoFormaPago.setDenominacion(ventaPasaje.getTipoFormaPago().getDenominacion());
+				venta.setTipoFormaPago(tipoFormaPago);	
+			}
+			venta.setFechaCaducidad(ventaPasaje.getFechaCaducidad()!=null?ventaPasaje.getFechaCaducidad():null);
+			venta.setFechaExpiracionReserva(ventaPasaje.getFechaExpiracionReserva()!=null?ventaPasaje.getFechaExpiracionReserva():null);
+			venta.setNumeroAsiento(ventaPasaje.getNumeroAsiento()!=null?ventaPasaje.getNumeroAsiento():null);
 			venta.setImportePagado(ventaPasaje.getImportePagado());
 			venta.setFechaInsercion(ventaPasaje.getFechaInsercion());
 			TipoMovimiento tipoMovimiento = new TipoMovimiento();
+			tipoMovimiento.setId(ventaPasaje.getTipoMovimiento().getId());
 			tipoMovimiento.setDenominacion(ventaPasaje.getTipoMovimiento().getDenominacion());
 			venta.setTipoMovimiento(tipoMovimiento);
 			Usuario usuario = new Usuario();
 			usuario.setNombre(ventaPasaje.getUsuario().getNombre());
 			usuario.setApellidoPaterno(ventaPasaje.getUsuario().getApellidoPaterno());
 			usuario.setApellidoMaterno(ventaPasaje.getUsuario().getApellidoMaterno());
+			usuario.setLogin(ventaPasaje.getUsuario().getLogin());
 			venta.setUsuario(usuario);
+			Pasajero pasajero = new Pasajero();
+			pasajero.setId(ventaPasaje.getPasajero().getId());
+			pasajero.setNumeroDocumento(ventaPasaje.getPasajero().getNumeroDocumento());
+			pasajero.setNombre(ventaPasaje.getPasajero().getNombre());
+			pasajero.setApellidoPaterno(ventaPasaje.getPasajero().getApellidoPaterno());
+			pasajero.setApellidoMaterno(ventaPasaje.getPasajero().getApellidoMaterno()!=null?ventaPasaje.getPasajero().getApellidoMaterno():null);
+			pasajero.setNombresApellidos(ventaPasaje.getPasajero().getNombresApellidos()!=null?ventaPasaje.getPasajero().getNombresApellidos():null);
+			venta.setPasajero(pasajero);
 			lstResult.add(venta);
 		}
 		return lstResult;

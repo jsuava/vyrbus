@@ -1202,7 +1202,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 
 		Window window = null;
 		try{
-			List<VentaPasaje> lstVentas = ServiceLocator.getVentaPasajesManager().buscarVentasByPasajero(Long.valueOf(idPasajero));
+			List<VentaPasaje> lstVentas = ServiceLocator.getVentaPasajesManager().buscarVentasByPasajero(Long.valueOf(idPasajero), null, false);
 
 			Caption caption = null;
 			Listbox listbox = null;

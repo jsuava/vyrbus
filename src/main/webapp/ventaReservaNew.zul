@@ -20,25 +20,13 @@
 					<column/>			
 				</columns>
 				<rows>
-					<row spans="6">
-						<listbox id="ltbxBusqComprobantesPax">
-							<listhead>
-								<listheader width="70px" label="TIPO" style="color: #ffffff;"/>
-								<listheader width="70px" label="FECHA" align="center" style="color: #ffffff;"/>
-								<listheader width="90px" label="COMPROBANTE" align="center" style="color: #ffffff;"/>
-								<listheader width="250px" label="PASAJERO" style="color: #ffffff;"/>
-								<listheader width="130px" label="RUTA" style="color: #ffffff;"/>
-								<listheader width="90px" label="FECHA VIAJE" align="center" tooltiptext="Fecha de Viaje" style="color: #ffffff;"/>
-								<listheader width="110px" label="FECHA CADUCIDAD" align="center" tooltiptext="Fecha/Hora caducidad" style="color: #ffffff;"/>
-								<listheader width="100px"/>
-								<listheader/>
-							</listhead>
-						</listbox>
-					</row>
 					<row>
 						<hbox align="center">
 							<vbox align="center">
-								<textbox id="txtBusqBy" width="175px" placeholder="DNI PASAJERO / N° COMPROBANTE" />
+								<hbox align="center">
+									<textbox id="txtBusqBy" onFocus="self.select();" style="font-size:13px !important" width="135px" placeholder="DNI/COMPROBANTE" />
+									<button id="btnBusqBy" autodisable="self" image="/resources/mp_buscarEnabled.png" style="margin-left:2px" />
+								</hbox>								
 								<grid width="180px">
 									<columns><column/></columns>
 									<auxhead >
@@ -54,7 +42,7 @@
 										</row>
 									</rows>
 								</grid>								
-								<separator height="10px"/>
+								<separator height="7px"/>
 								<combobox id="cmbBusqOrigen" placeholder="ORIGEN" width="99%"  autocomplete="true" autodrop="true" tooltiptext="Origen"/>						
 							</vbox>
 							<separator/>

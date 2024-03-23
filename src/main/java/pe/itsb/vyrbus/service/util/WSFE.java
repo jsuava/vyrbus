@@ -1016,7 +1016,7 @@ public class WSFE implements Serializable{
 	 * @return Full Path
 	 * @throws Exception
 	 */
-	private static String getPathFormatPrintByEmpresa(String rucEmpresa, String nameFile)throws Exception{
+	public static String getPathFormatPrintByEmpresa(String rucEmpresa, String nameFile)throws Exception{
 		File directoryFormatTicket = new File(Constantes.DIRECTORY_FORMAT_TICKET);
 		if(directoryFormatTicket.exists()) {
 			File[] listFiles = directoryFormatTicket.listFiles();
@@ -1114,7 +1114,7 @@ public class WSFE implements Serializable{
 						}
 						
 						if(pathRpt ==null)
-							new Exception("No se pudo realizar la impresión, debido a que no se ha encontrado el formato de impresión para el tipo de comprobante emitido");
+							new Exception(Messages.getString("WndVentaReservaNew.information.noFormatPrint"));
 						
 						Path path = Paths.get(pathRpt);
 						byte[] contenido = java.nio.file.Files.readAllBytes(path);
