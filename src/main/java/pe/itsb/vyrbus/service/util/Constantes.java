@@ -26,7 +26,7 @@ public class Constantes {
 	 * Vension actual del Sistema
 	 */
 
-	public static final String SYSTEM_VERSION = "Versión 3.4.3";
+	public static final String SYSTEM_VERSION = "Versión 3.4.4";
 
 	/**
 	 * Constante para la Accion Nuevo
