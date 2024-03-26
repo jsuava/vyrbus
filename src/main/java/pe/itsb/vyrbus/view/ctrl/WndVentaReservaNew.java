@@ -162,9 +162,10 @@ public class WndVentaReservaNew  extends WndBase {
 	
 	private Window wndVentaReservaNew;
 	private Div divPaso_1;
-	private Listbox ltbxBusqComprobantesPax;
-//	private Textbox txtBusqBy;
-	private Radio rdBusqIda;
+//	private Listbox ltbxBusqComprobantesPax;
+	private Textbox txtBusqBy;
+	private Button btnBusqBy;
+	private Radio rdBusqIda;	
 	private Radio rdBusqIdaVuelta;
 	private Combobox cmbBusqOrigen;
 	private Listbox ltbxBusqDestinos;
@@ -281,6 +282,7 @@ public class WndVentaReservaNew  extends WndBase {
 	private Map<String, Asiento> mapaAsientosRetorno = null;	
 	private Timer timerRefreshMapa = null;
 	private boolean isVtaIdaVuelta = false;
+	private int minutosEdicionAsiento;
 	
 	private DetalleItinerario detalleItinerarioIda = null;
 	private DetalleItinerario detalleItinerarioVuelta = null;
@@ -288,6 +290,16 @@ public class WndVentaReservaNew  extends WndBase {
 	private Cliente cliente = null;
 	private CanalVenta canalVenta = null;
 	private VentaPasaje ventaPasaje = null;
+	
+	//Historial compras pasajero
+	private Radio rdHpTodos;
+	private Radio rdHpViajesVigentes;
+	private Radio rdHpReservas;
+	private Radio rdHpFechaAbierta;
+	private Button btnHpReimprimir;
+	private Button btnHpEditar;
+	private Button btnHpCancelar;
+	private Listbox ltbxHp;
 	
 	//Controles para la postergacion
 	private Combobox cmbPostEmpresa;
@@ -357,7 +369,7 @@ public class WndVentaReservaNew  extends WndBase {
 			super.onCreate();
 			
 			divPaso_2.setVisible(false);
-			ltbxBusqComprobantesPax.setVisible(false);
+//			ltbxBusqComprobantesPax.setVisible(false);
 			vboxCalendarVuelta.setVisible(false);
 			rdBusqIda.setChecked(true);
 			
@@ -424,8 +436,9 @@ public class WndVentaReservaNew  extends WndBase {
 			
 			wndVentaReservaNew = (Window)this.getFellow("wndVentaReservaNew");
 			divPaso_1 = (Div)this.getFellow("divPaso_1");
-			ltbxBusqComprobantesPax = (Listbox)this.getFellow("ltbxBusqComprobantesPax");
-//			txtBusqBy = (Textbox)this.getFellow("txtBusqBy");
+//			ltbxBusqComprobantesPax = (Listbox)this.getFellow("ltbxBusqComprobantesPax");
+			txtBusqBy = (Textbox)this.getFellow("txtBusqBy");
+			btnBusqBy = (Button)this.getFellow("btnBusqBy");
 			rdBusqIda = (Radio)this.getFellow("rdBusqIda");
 			rdBusqIdaVuelta = (Radio)this.getFellow("rdBusqIdaVuelta");
 			cmbBusqOrigen = (Combobox)this.getFellow("cmbBusqOrigen");
@@ -530,6 +543,36 @@ public class WndVentaReservaNew  extends WndBase {
 			
 			
 			///EVENTS
+			txtBusqBy.addEventListener(Events.ON_OK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					try {
+						
+						onOk_txtBusqBy();
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
+			btnBusqBy.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					try {
+						
+						onOk_txtBusqBy();
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
 			cmbBusqOrigen.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event event) throws Exception {
@@ -1153,6 +1196,448 @@ public class WndVentaReservaNew  extends WndBase {
 			log.error(ex);
 			DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
 		}				
+	}
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	private void onOk_txtBusqBy()throws Exception{
+		if(!txtBusqBy.getText().trim().isEmpty()) {
+			String datoBusq = txtBusqBy.getText().trim().toUpperCase();
+//			int ix = datoBusq.indexOf("B");
+			boolean isComprobante = ((datoBusq.indexOf("B")==0 || datoBusq.indexOf("F")==0) && datoBusq.indexOf("-")==4);
+			Long pasajeroId = null;
+			String numeroComprobante = null;
+			if(isComprobante)
+				numeroComprobante = datoBusq;
+			else {
+				TreeMap<String, Object>criteriosBusqueda = new TreeMap<String, Object>();
+				criteriosBusqueda.put("numeroDocumento", datoBusq);
+				criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);				
+				List<Pasajero> resultPax = ServiceLocator.getPasajeroManager().buscarPorX(criteriosBusqueda, null);
+				if(resultPax.size()>0)
+					pasajeroId = resultPax.get(0).getId();
+				else {					
+					DlgMessage.information(Messages.getString("WndVentaReservaNew.information.busqVtaPax.noExistDoctPax"), txtBusqBy);
+					return;
+				}					
+			}
+			
+			List<VentaPasaje> resultVentasPax = ServiceLocator.getVentaPasajesManager().buscarVentasByPasajero(pasajeroId, numeroComprobante, true);
+			if(resultVentasPax.size()==0) {
+				DlgMessage.information(Messages.getString("WndVouchers.information.noRegistros"), txtBusqBy);
+				return;
+			}
+			
+			minutosEdicionAsiento = UtilFlag.getTiempoPostergacion();
+			wndModal = createWindowHistoriaPasajero(resultVentasPax, minutosEdicionAsiento);
+			wndVentaReservaNew.appendChild(wndModal);
+			wndModal.setMode("modal");	
+			//Selecciona el primer item de la lista
+			if(ltbxHp.getItemCount()>0) {
+				ltbxHp.setSelectedIndex(0);
+				ltbxHp.setFocus(true);
+				habilitarOperacionHp();
+			}else
+				btnHpCancelar.setFocus(true);		
+		}
+	}
+	
+	/**
+	 * crea una venta para mostrar las ventas del Pasajero.
+	 * @param listVentasPax: Lista de ventas
+	 * @return
+	 * @throws Exception
+	 */
+	private Window createWindowHistoriaPasajero(List<VentaPasaje> listVentasPax, int minutosEdicionAsiento)throws Exception{		
+		try {
+			Window win = new Window("HISTORIAL COMPRAS PASAJERO", "normal", true);
+			win.setWidth("920px");
+						
+			Pasajero pasajero = listVentasPax.get(0).getPasajero();			
+			
+			Groupbox groupbox = new Groupbox();
+			groupbox.setMold("3d");
+			groupbox.setClosable(false);
+			groupbox.appendChild(new Caption("DATOS DEL PASAJERO"));
+			Grid grid = new Grid();
+			grid.setStyle("border:none");
+			Columns columns = new Columns();
+			Column column = new Column(null, null, "110px");
+			column.setAlign("right");
+			columns.appendChild(column);
+			columns.appendChild(new Column());
+			grid.appendChild(columns);
+			Rows rows =new Rows();
+			Row row = new Row();
+			row.appendChild(new Label("NRO. DOCUMENTO : "));
+			Label label = new Label(pasajero.getNumeroDocumento());
+			label.setSclass("label-size11-bold");
+			label.setStyle("font-size:13px !important");
+			row.appendChild(label);
+			rows.appendChild(row);
+			row = new Row();
+			row.appendChild(new Label("NOMBRES : "));
+			label = new Label(pasajero.toString());
+			label.setSclass("label-size11-bold");
+			label.setStyle("font-size:13px !important");
+			row.appendChild(label);
+			rows.appendChild(row);
+			row = new Row();
+			row.appendChild(new Separator());
+			Hbox hbox = new Hbox();
+			hbox.setAlign("center");
+			Radiogroup radiogroup = new Radiogroup();
+			radiogroup.setId("rdg");
+			rdHpTodos = new Radio("TODOS");
+			rdHpTodos.setStyle("margin-right:20px;color:blue");
+			radiogroup.appendChild(rdHpTodos);
+			rdHpViajesVigentes = new Radio("VIGENTES");
+			rdHpViajesVigentes.setStyle("margin-right:20px;color:blue");
+			rdHpViajesVigentes.setChecked(true);
+			radiogroup.appendChild(rdHpViajesVigentes);
+			rdHpReservas = new Radio("RESERVAS");
+			rdHpReservas.setStyle("margin-right:20px;color:blue");
+			radiogroup.appendChild(rdHpReservas);
+			rdHpFechaAbierta = new Radio("FECHA ABIERTA");
+			rdHpFechaAbierta.setStyle("margin-right:20px;color:blue");
+			radiogroup.appendChild(rdHpFechaAbierta);
+			
+			hbox.appendChild(radiogroup);
+			row.appendChild(hbox);
+			rows.appendChild(row);
+			grid.appendChild(rows);			
+			groupbox.appendChild(grid);			
+			win.appendChild(groupbox);
+			
+			ltbxHp = new Listbox();
+			ltbxHp.setHeight("300px");
+			Listhead listhead = new Listhead();		
+			Listheader listheader=null;
+			listheader = new Listheader("EMPRESA", null, "120px");
+			listheader.setAlign("center");
+			listheader.setSort("auto");
+			listhead.appendChild(listheader);
+			listheader = new Listheader("TIPO MOVIMIENTO", null, "110px");
+			listheader.setAlign("center");
+			listheader.setSort("auto");
+			listhead.appendChild(listheader);
+			listheader = new Listheader("F.VIAJE", null, "70px");
+			listheader.setAlign("center");
+			listheader.setTooltiptext("Fecha de Viaje");
+			listheader.setSort("auto");
+			listhead.appendChild(listheader);
+			listheader = new Listheader("H.VIAJE", null, "60px");
+			listheader.setAlign("center");
+			listheader.setTooltiptext("Hora de Viaje");
+			listheader.setSort("auto");
+			listhead.appendChild(listheader);
+			listheader = new Listheader("SERVICIO", null, "120px");
+			listheader.setSort("auto");
+			listhead.appendChild(listheader);
+			listhead.appendChild(new Listheader("RUTA", null, "120px"));
+			listheader = new Listheader("ASIENTO", null, "50px");
+			listheader.setAlign("center");
+			listheader.setSort("auto");
+			listhead.appendChild(listheader);
+			listheader = new Listheader("COMPROBANTE", null, "100px");
+			listheader.setAlign("center");
+			listheader.setSort("auto");
+			listhead.appendChild(listheader);			
+			listheader = new Listheader("F.CADUCIDAD", null, "130px");
+			listheader.setAlign("center");			
+			listheader.setTooltiptext("Fecha/hora de caducidad");
+			listheader.setSort("auto");
+			listhead.appendChild(listheader);
+			listheader = new Listheader("F.EMISION", null, "70px");
+			listheader.setAlign("center");
+			listheader.setSort("auto");
+			listheader.setTooltiptext("Fecha Emisión");
+			listhead.appendChild(listheader);
+			listheader = new Listheader("USUARIO", null, "100px");
+			listheader.setSort("auto");
+			listheader.setTooltiptext("Usuario Emisión");
+			listhead.appendChild(listheader);			
+			listhead.appendChild(new Listheader());			
+			ltbxHp.appendChild(listhead);
+			win.appendChild(ltbxHp);
+			
+			grid = new Grid();
+			columns = new Columns();
+			column = new Column();
+			column.setAlign("right");
+			columns.appendChild(column);
+			grid.appendChild(columns);
+			rows = new Rows();
+			row = new Row();
+			hbox = new Hbox();
+			hbox.setAlign("center");
+			btnHpReimprimir = new Button();
+			btnHpReimprimir.setDisabled(true);
+			btnHpReimprimir.setLabel("Reimprimir");
+			btnHpReimprimir.setImage("resources/buttons/mp_print-termico.png");
+			btnHpReimprimir.setStyle("margin-right:525px");
+			btnHpReimprimir.setAutodisable("self");
+			hbox.appendChild(btnHpReimprimir);
+			
+			btnHpEditar = new Button();
+			btnHpEditar.setLabel("Editar");			
+			btnHpEditar.setSclass("btnCommandL");
+			btnHpEditar.setAutodisable("self");
+			disabled_btnModificar(btnHpEditar, true);
+			hbox.appendChild(btnHpEditar);
+			
+			btnHpCancelar = new Button();
+			btnHpCancelar.setLabel("Cancelar");
+			btnHpCancelar.setSclass("btnCommandL");
+			btnHpCancelar.setImage("resources/mp_cerrar.png");
+			btnHpCancelar.setStyle("margin-left:15px");
+		    btnHpCancelar.setAutodisable("self");
+			hbox.appendChild(btnHpCancelar);			
+			
+			row.appendChild(hbox);
+			rows.appendChild(row);
+			grid.appendChild(rows);
+			win.appendChild(grid);
+			
+			buscarTipoVentaHpInListbox(listVentasPax);
+			
+			ltbxHp.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					try {
+						habilitarOperacionHp();
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
+			ltbxHp.addEventListener(Events.ON_OK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					btnHpEditar.setFocus(btnHpEditar.isVisible());
+				}
+			});
+			ltbxHp.addEventListener(Events.ON_CANCEL, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					win.onClose();
+				}
+			});
+			rdHpTodos.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					buscarTipoVentaHpInListbox(listVentasPax);
+				}
+			});
+			rdHpViajesVigentes.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					buscarTipoVentaHpInListbox(listVentasPax);
+				}
+			});
+			rdHpReservas.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					buscarTipoVentaHpInListbox(listVentasPax);
+				}
+			});
+			rdHpFechaAbierta.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					buscarTipoVentaHpInListbox(listVentasPax);
+				}
+			});
+			btnHpReimprimir.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					try {
+						
+						VentaPasaje _ventaPasaje =ltbxHp.getSelectedItem().getValue();
+						
+						List<VentaPasaje> listVentasReimpresion = new ArrayList<VentaPasaje>();
+						listVentasReimpresion.add(_ventaPasaje);
+						
+						Messagebox.show(Messages.getString("WndVentaReservaNew.question.reimpresion"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+							@Override
+							public void onEvent(Event e){
+								try{
+									if(e.getName().equals("onYes")){
+										
+										WSFE.reimprimirComprobante(listVentasReimpresion, wndVentaReservaNew, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
+									}
+								}catch(Exception ex) {
+									ex.printStackTrace();
+									log.error(ex);
+									DlgMessage.error(ex.getMessage());
+								}
+							}
+						});
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
+			btnHpCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					win.onClose();
+				}
+			});
+			
+			return win;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			log.error(ex);
+			DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+			return null;
+		}			
+	}
+	
+	/**
+	 * Valida el estado de la compra del pasajero
+	 * @param ventaPasaje
+	 * @param btnEditar
+	 * @param minutosEdicionAsiento
+	 * @throws Exception
+	 */
+	private void habilitarBtnHpEditar(VentaPasaje ventaPasaje, Button btnEditar, int minutosEdicionAsiento)throws Exception{
+		disabled_btnModificar(btnEditar, true);
+		if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA)) {
+			btnEditar.setLabel("Confirmar");
+			disabled_btnModificar(btnEditar, false);
+		}else {
+			int tipoMovimientoId = ventaPasaje.getTipoMovimiento().getId();
+			if(tipoMovimientoId==Constantes.ID_TIPMOV_FECHA_ABIERTA || tipoMovimientoId==Constantes.ID_TIPMOV_POSTERGACION_FA) {				
+				disabled_btnModificar(btnEditar, false);
+				btnEditar.setLabel("Confirmar");
+			}else {
+				btnEditar.setLabel("Editar");
+				if(validarEdicionAsiento(ventaPasaje, minutosEdicionAsiento))				
+					disabled_btnModificar(btnEditar, false);
+			}
+		}	
+	}
+	
+	/**
+	 * Habilita las operaciones permitidas en la compra del pasajero (Historial Pasajero)
+	 * @throws Exception
+	 */
+	private void habilitarOperacionHp()throws Exception{		
+		VentaPasaje _ventaPasaje = ltbxHp.getSelectedItem().getValue();
+		habilitarBtnHpEditar(_ventaPasaje, btnHpEditar, minutosEdicionAsiento);
+		habilitarBtnReimpresion(_ventaPasaje, btnHpReimprimir);		
+	}
+	
+	/**
+	 * Busca el tipo de venta del pasajero, en funcion de los resgitros contenidos en el listbox
+	 * @throws Exception
+	 */
+	private void buscarTipoVentaHpInListbox(List<VentaPasaje> listVentasPax)throws Exception{
+		Util.limpiarListbox(ltbxHp);
+		disabled_btnModificar(btnHpEditar, true);
+		btnHpReimprimir.setDisabled(true);
+		
+		final Date fechaActual = Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date()));
+		
+		if(rdHpTodos.isChecked())
+			addItemListHp(listVentasPax);
+		else if(rdHpViajesVigentes.isChecked()) {
+			//Considera las Fechas Abiertas, Reservas y los con fecha de partida mayor o igual a la fecha actual
+			List<VentaPasaje> result = listVentasPax.stream()
+					.filter(vta -> ((vta.getTipoMovimiento().getId()==Constantes.ID_TIPMOV_FECHA_ABIERTA || vta.getTipoMovimiento().getId()==Constantes.ID_TIPMOV_POSTERGACION_FA) 
+							      || (vta.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA) && vta.getFechaExpiracionReserva().getTime()>=fechaActual.getTime() )
+							      || (vta.getFechaPartida()!=null && vta.getFechaPartida().getTime()>=fechaActual.getTime())))
+					.collect(Collectors.toList());
+			
+			addItemListHp(result);
+		}else if(rdHpReservas.isChecked()) {
+			List<VentaPasaje> result = listVentasPax.stream()
+					.filter(vta -> (vta.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA) && vta.getFechaExpiracionReserva().getTime()>=fechaActual.getTime()))
+					.collect(Collectors.toList());
+			
+			addItemListHp(result);			
+		}else if(rdHpFechaAbierta.isChecked()) {
+			List<VentaPasaje> result = listVentasPax.stream()
+					.filter(vta -> (vta.getTipoMovimiento().getId()==Constantes.ID_TIPMOV_FECHA_ABIERTA || vta.getTipoMovimiento().getId()==Constantes.ID_TIPMOV_POSTERGACION_FA))
+					.collect(Collectors.toList());
+			
+			addItemListHp(result);
+			
+		}
+		
+		
+		if(ltbxHp.getItemCount()>0) {
+			ltbxHp.setSelectedIndex(0);
+			habilitarOperacionHp();
+		}
+		
+	}
+	
+	/**
+	 * 
+	 * @param listVentas
+	 * @throws Exception
+	 */
+	private void addItemListHp(List<VentaPasaje> listVentasPax)throws Exception{
+		
+		for(VentaPasaje ventaPasaje: listVentasPax) {
+			Listitem item = new Listitem();
+			Listcell cell = new Listcell(ventaPasaje.getEmpresa().getNombreCorto());
+			cell.setStyle("text-align:left");
+			item.appendChild(cell);
+			cell = new Listcell(ventaPasaje.getTipoMovimiento().getDenominacion());
+			cell.setStyle("text-align:left");
+			item.appendChild(cell);
+			cell = new Listcell(ventaPasaje.getFechaPartida()!=null? Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida()):"-");
+			cell.setStyle("font-size:12px !important");
+			item.appendChild(cell);
+			cell = new Listcell(ventaPasaje.getHoraPartida()!=null? ventaPasaje.getHoraPartida():"-");
+			cell.setStyle("font-size:12px !important");
+			item.appendChild(cell);
+			cell = new Listcell(ventaPasaje.getServicio().getDenominacion());
+			cell.setStyle("text-align:left");
+			item.appendChild(cell);
+			cell = new Listcell(ventaPasaje.getRuta().toString());
+			item.appendChild(cell);
+			cell = new Listcell(ventaPasaje.getNumeroAsiento()!=null?ventaPasaje.getNumeroAsiento().toString():"-");
+			cell.setStyle("font-size:12px !important");
+			item.appendChild(cell);
+			cell = new Listcell(ventaPasaje.getNumeroBoleto()!=null?ventaPasaje.getNumeroBoleto():"");
+			cell.setStyle("font-size:12px !important");
+			item.appendChild(cell);								
+			cell = new Listcell("-");
+			if(ventaPasaje.getFechaExpiracionReserva()!=null)
+				cell.setLabel(Constantes.FORMAT_DATE_TIME_24H.format(ventaPasaje.getFechaExpiracionReserva()));
+			else if(ventaPasaje.getFechaCaducidad()!=null)
+				cell.setLabel(Constantes.FORMAT_DATE_TIME_24H.format(ventaPasaje.getFechaCaducidad()));				
+			cell.setStyle("font-size:12px !important");
+			item.appendChild(cell);
+			cell = new Listcell(ventaPasaje.getFechaLiquidacion()!=null?Constantes.FORMAT_DATE.format(ventaPasaje.getFechaLiquidacion()):"-");
+			cell.setStyle("font-size:12px !important;text-align:center");
+			item.appendChild(cell);			
+			cell = new Listcell(ventaPasaje.getUsuario().getLogin());
+			item.appendChild(cell);
+			
+			item.setValue(ventaPasaje);
+			ltbxHp.appendChild(item);
+		}	
+		
 	}
 	
 	
@@ -1793,7 +2278,7 @@ public class WndVentaReservaNew  extends WndBase {
 		habilitarBtnProgramacionBus();
 		habilitarBtnManifiestoPasajeros();
 		habilitarBtnCarpetaDespacho();
-		habilitarBtnReimpresion();
+		habilitarBtnReimpresion(null, btnVtaReimpresion);
 		habilitarBtnAnulacion();
 
 		//**********************************************************************
@@ -2188,7 +2673,8 @@ public class WndVentaReservaNew  extends WndBase {
 			
 			//Habilita la reimpresión
 			if(estadoAsiento==Constantes.ASIENTO_VENDIDO && fechaPartida.getTime() >= fechaActual.getTime())
-				btnVtaReimpresion.setDisabled(false);
+				habilitarBtnReimpresion(asiento.getVentaPasaje(), btnVtaReimpresion);
+//				btnVtaReimpresion.setDisabled(false);
 			
 			//Habilita la anulación
 			if((estadoAsiento==Constantes.ASIENTO_VENDIDO || estadoAsiento==Constantes.ASIENTO_RESERVADO) && getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO)
@@ -2679,6 +3165,7 @@ public class WndVentaReservaNew  extends WndBase {
 		divPaso_2.setVisible(false);
 		divPaso_1.setVisible(true);		
 		tabBusqIda.setSelected(true);
+		txtBusqBy.setText("");
 		onClick_btnBuscar();
 	}
 	
@@ -4794,7 +5281,6 @@ public class WndVentaReservaNew  extends WndBase {
 	 * @param listPasajero: Instancia con la lista de pasajeros
 	 * @throws Exception
 	 */
-	@SuppressWarnings("deprecation")
 	private Window createWindowListPasajero(List<Object> listResultados)throws Exception{
 		try {
 			final Window window = new Window("Lista de registros", "normal", true);
@@ -4853,18 +5339,18 @@ public class WndVentaReservaNew  extends WndBase {
 			row = new Row();
 			Hbox hbox = new Hbox();
 			hbox.setAlign("center");
+			Button btnAceptar = new Button();
+			btnAceptar.setLabel("Aceptar");
+			btnAceptar.setImage("resources/mp_aceptarEnabled.png");			
+			btnAceptar.setSclass("btnCommandL");
+			hbox.appendChild(btnAceptar);
+			
 			Button btnCancelar = new Button();
 			btnCancelar.setLabel("Cancelar");
 			btnCancelar.setSclass("btnCommandL");
-			btnCancelar.setSrc("resources/mp_cerrar.png");
+			btnCancelar.setImage("resources/mp_cerrar.png");
+			btnCancelar.setStyle("margin-left:15px");
 			hbox.appendChild(btnCancelar);
-			
-			Button btnAceptar = new Button();
-			btnAceptar.setLabel("Aceptar");
-			btnAceptar.setSrc("resources/mp_aceptarEnabled.png");
-			btnAceptar.setStyle("margin-left:15px");
-			btnAceptar.setSclass("btnCommandL");
-			hbox.appendChild(btnAceptar);
 			
 			row.appendChild(hbox);
 			rows.appendChild(row);
@@ -5203,8 +5689,17 @@ public class WndVentaReservaNew  extends WndBase {
 	 * @return (true) Desabilita, (false) habilita
 	 * @throws Exception
 	 */
-	private void habilitarBtnReimpresion()throws Exception{
-		
+	private void habilitarBtnReimpresion(VentaPasaje ventaPasaje, Button btnReimpresion)throws Exception{
+		btnReimpresion.setDisabled(true);
+		if(ventaPasaje!=null && ventaPasaje.getNumeroBoleto()!=null && !ventaPasaje.getNumeroBoleto().trim().isEmpty()){
+			if(ventaPasaje.getFechaPartida()!=null) {
+				Date fechaPartida = ventaPasaje.getFechaPartida();
+				Date fechaActual = Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date()));
+				if(fechaPartida.getTime()>=fechaActual.getTime())
+					btnReimpresion.setDisabled(false);	
+			}else //son los F.A.
+				btnReimpresion.setDisabled(false);			
+		}
 		
 	}
 	
@@ -7816,7 +8311,15 @@ public class WndVentaReservaNew  extends WndBase {
 						rdManPaxPrintMatricial.setDisabled(false);
 						rdManPaxPrintMatricial.setChecked(true);
 						
-						DlgMessage.information(Messages.getString("WndManifiesto.information.exitoEmisionManifiesto").replace("@manifiesto", manifiesto.getNumeroManifiesto()));
+						
+						Messagebox.show(Messages.getString("WndManifiesto.information.exitoEmisionManifiesto").replace("@manifiesto", manifiesto.getNumeroManifiesto()), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_OK, Messagebox.INFORMATION, new EventListener<Event>() {
+							@Override
+							public void onEvent(Event e) throws Exception {
+								wndModal.onClose();
+								onClick_btnVtaManifiestoPasajeros();
+							}
+						});						
+												
 					}catch(ManifiestoDuplicateException md){
 						DlgMessage.information(Messages.getString("WndManifiesto.information.DuplicateManifiesto"));
 					}
@@ -7900,70 +8403,76 @@ public class WndVentaReservaNew  extends WndBase {
 			listXmlManifiesto.add(xmlManifiesto_trans);
 			listXmlManifiesto.add(xmlManifiesto_archivo);
 
+			Empresa empresa = ServiceLocator.getEmpresaManager().buscarPorId(manifiesto.getItinerario().getEmpresa().getId().longValue());
 			//.RPT
-			String pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"Manifiesto.rpt";
-			Path path = Paths.get(pathRpt);
-			byte[] contenido = java.nio.file.Files.readAllBytes(path);
-			String cryptoRptFormat=new BASE64Encoder().encode(contenido);
+//			String pathRpt= Constantes.DIRECTORY_FORMAT_TICKET+"Manifiesto.rpt";
+			String pathRpt = WSFE.getPathFormatPrintByEmpresa(empresa.getNumeroDocumento(), Constantes.FORMAT_PRINT_MANIFIESTO);
+			if(pathRpt!=null) {
+				Path path = Paths.get(pathRpt);
+				byte[] contenido = java.nio.file.Files.readAllBytes(path);
+				String cryptoRptFormat=new BASE64Encoder().encode(contenido);
 
-			XmlPrintLaser xmlPrintLaser= new XmlPrintLaser();
-			xmlPrintLaser.setZ_rpt(cryptoRptFormat);
-			xmlPrintLaser.setXmlManifiesto(listXmlManifiesto);
+				XmlPrintLaser xmlPrintLaser= new XmlPrintLaser();
+				xmlPrintLaser.setZ_rpt(cryptoRptFormat);
+				xmlPrintLaser.setXmlManifiesto(listXmlManifiesto);
 
-			/*Zippea crea y zippea el archivo xml*/
-			String path_sunat=Util.createFileXmlToZipper(xmlPrintLaser, wndModal);
+				/*Zippea crea y zippea el archivo xml*/
+				String path_sunat=Util.createFileXmlToZipper(xmlPrintLaser, wndModal);
 
 
-			//************************************************************************************
-			//Consulta la version de impresi�n configurada para la agencia - jabanto 16/11/2022
-			Agencia oagencia = (Agencia)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
+				//************************************************************************************
+				//Consulta la version de impresi�n configurada para la agencia - jabanto 16/11/2022
+				Agencia oagencia = (Agencia)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
 
-			if(UtilFlag.isFormatPrintViewPdfManifiesto(oagencia.getId())) {
-				int len = path_sunat.length();
-				int pos = path_sunat.indexOf("PRNTLSR-");
-				String nameFileZip = path_sunat.substring(pos,len);
-				File file= new File(path_sunat);
-				byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
-//				int x = 0;
-				byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, true);
-				if(filePdfZip !=null) {
-					String urlViewPdf = UtilFlag.getUrlView_pdf();
-					if(urlViewPdf !=null) {
-						String crypto = new BASE64Encoder().encode(filePdfZip);
-						Executions.getCurrent().sendRedirect(urlViewPdf+"?vl="+crypto, "_blank");
+				if(UtilFlag.isFormatPrintViewPdfManifiesto(oagencia.getId())) {
+					int len = path_sunat.length();
+					int pos = path_sunat.indexOf("PRNTLSR-");
+					String nameFileZip = path_sunat.substring(pos,len);
+					File file= new File(path_sunat);
+					byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
+//					int x = 0;
+					byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, true);
+					if(filePdfZip !=null) {
+						String urlViewPdf = UtilFlag.getUrlView_pdf();
+						if(urlViewPdf !=null) {
+							String crypto = new BASE64Encoder().encode(filePdfZip);
+							Executions.getCurrent().sendRedirect(urlViewPdf+"?vl="+crypto, "_blank");
+						}
 					}
-				}
 
-			}else if(UtilFlag.isFormatPrintDownload(oagencia.getId())) {
-				int len = path_sunat.length();
-				int pos = path_sunat.indexOf("PRNTLSR-");
-				String nameFileZip = path_sunat.substring(pos,len);
-				File file= new File(path_sunat);
-				byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
+				}else if(UtilFlag.isFormatPrintDownload(oagencia.getId())) {
+					int len = path_sunat.length();
+					int pos = path_sunat.indexOf("PRNTLSR-");
+					String nameFileZip = path_sunat.substring(pos,len);
+					File file= new File(path_sunat);
+					byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
 
-				byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, false);
-				if(filePdfZip !=null)
-					Filedownload.save(filePdfZip, "multipart/form-data", nameFileZip);
+					byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, false);
+					if(filePdfZip !=null)
+						Filedownload.save(filePdfZip, "multipart/form-data", nameFileZip);
 
-			}else if(UtilFlag.isFormatPrintViewPdf(oagencia.getId())) {
-				int len = path_sunat.length();
-				int pos = path_sunat.indexOf("PRNTLSR-");
-				String nameFileZip = path_sunat.substring(pos,len);
-				File file= new File(path_sunat);
-				byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
-//				int x = 0;
-				byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, true);
-				if(filePdfZip !=null) {
-					String urlViewPdf = UtilFlag.getUrlView_pdf();
-					if(urlViewPdf !=null) {
-						String crypto = new BASE64Encoder().encode(filePdfZip);
-						Executions.getCurrent().sendRedirect(urlViewPdf+"?vl="+crypto, "_blank");
+				}else if(UtilFlag.isFormatPrintViewPdf(oagencia.getId())) {
+					int len = path_sunat.length();
+					int pos = path_sunat.indexOf("PRNTLSR-");
+					String nameFileZip = path_sunat.substring(pos,len);
+					File file= new File(path_sunat);
+					byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
+//					int x = 0;
+					byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, true);
+					if(filePdfZip !=null) {
+						String urlViewPdf = UtilFlag.getUrlView_pdf();
+						if(urlViewPdf !=null) {
+							String crypto = new BASE64Encoder().encode(filePdfZip);
+							Executions.getCurrent().sendRedirect(urlViewPdf+"?vl="+crypto, "_blank");
+						}
 					}
+				}else {
+					/*Descarga el archivo .xml*/
+					Filedownload.save(new File(path_sunat), "application/zip");
 				}
-			}else {
-				/*Descarga el archivo .xml*/
-				Filedownload.save(new File(path_sunat), "application/zip");
-			}
+				
+			}else
+				DlgMessage.information(Messages.getString("WndVentaReservaNew.information.noFormatPrint"));
 		}
 	}
 	
@@ -7989,73 +8498,77 @@ public class WndVentaReservaNew  extends WndBase {
 		}else{
 			 XmlCarpetaDespacho xmlCarpetaDespacho= createXmlPrintLaserCarDes(_itinerario);
 
+			 Empresa empresa = ServiceLocator.getEmpresaManager().buscarPorId(itinerario.getEmpresa().getId().longValue());
 			//.RPT
-			String pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"CarpetaDespacho.rpt";
-			Path path = Paths.get(pathRpt);
-			byte[] contenido = java.nio.file.Files.readAllBytes(path);
-			String cryptoRptFormat=new BASE64Encoder().encode(contenido);
+//			String pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"CarpetaDespacho.rpt";
+			String pathRpt = WSFE.getPathFormatPrintByEmpresa(empresa.getNumeroDocumento(), Constantes.FORMAT_PRINT_CARPETA_DESPACHO);
+			if(pathRpt!=null) {
+				Path path = Paths.get(pathRpt);
+				byte[] contenido = java.nio.file.Files.readAllBytes(path);
+				String cryptoRptFormat=new BASE64Encoder().encode(contenido);
 
-			XmlPrintLaser xmlPrintLaser= new XmlPrintLaser();
-//			xmlPrintLaser.setA_configPrint(xmlConfigPrint);
-			xmlPrintLaser.setZ_rpt(cryptoRptFormat);
-			xmlPrintLaser.setXmlCarpetaDespacho(xmlCarpetaDespacho);
+				XmlPrintLaser xmlPrintLaser= new XmlPrintLaser();
+//				xmlPrintLaser.setA_configPrint(xmlConfigPrint);
+				xmlPrintLaser.setZ_rpt(cryptoRptFormat);
+				xmlPrintLaser.setXmlCarpetaDespacho(xmlCarpetaDespacho);
 
-			/*Zippea crea y zip el archivo xml*/
-			String path_sunat=Util.createFileXmlToZipper(xmlPrintLaser, wndModal);
+				/*Zippea crea y zip el archivo xml*/
+				String path_sunat=Util.createFileXmlToZipper(xmlPrintLaser, wndModal);
 
 
-			//************************************************************************************
-			//Consulta la version de impresi�n configurada para la agencia - jabanto 16/11/2022
-			Agencia oagencia = (Agencia)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
+				//************************************************************************************
+				//Consulta la version de impresi�n configurada para la agencia - jabanto 16/11/2022
+				Agencia oagencia = (Agencia)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
 
-			if(UtilFlag.isFormatPrintViewPdfCarpetaDespacho(oagencia.getId())) {
-				int len = path_sunat.length();
-				int pos = path_sunat.indexOf("PRNTLSR-");
-				String nameFileZip = path_sunat.substring(pos,len);
-				File file= new File(path_sunat);
-				byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
+				if(UtilFlag.isFormatPrintViewPdfCarpetaDespacho(oagencia.getId())) {
+					int len = path_sunat.length();
+					int pos = path_sunat.indexOf("PRNTLSR-");
+					String nameFileZip = path_sunat.substring(pos,len);
+					File file= new File(path_sunat);
+					byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
 
-				byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, true);
-				if(filePdfZip !=null) {
-					String urlViewPdf = UtilFlag.getUrlView_pdf();
-					if(urlViewPdf !=null) {
-						String crypto = new BASE64Encoder().encode(filePdfZip);
-						Executions.getCurrent().sendRedirect(urlViewPdf+"?vl="+crypto, "_blank");
+					byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, true);
+					if(filePdfZip !=null) {
+						String urlViewPdf = UtilFlag.getUrlView_pdf();
+						if(urlViewPdf !=null) {
+							String crypto = new BASE64Encoder().encode(filePdfZip);
+							Executions.getCurrent().sendRedirect(urlViewPdf+"?vl="+crypto, "_blank");
+						}
 					}
-				}
 
-			}else if(UtilFlag.isFormatPrintDownload(oagencia.getId())) {
-				int len = path_sunat.length();
-				int pos = path_sunat.indexOf("PRNTLSR-");
-				String nameFileZip = path_sunat.substring(pos,len);
-				File file= new File(path_sunat);
-				byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
+				}else if(UtilFlag.isFormatPrintDownload(oagencia.getId())) {
+					int len = path_sunat.length();
+					int pos = path_sunat.indexOf("PRNTLSR-");
+					String nameFileZip = path_sunat.substring(pos,len);
+					File file= new File(path_sunat);
+					byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
 
-				byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, false);
-				if(filePdfZip !=null)
-					Filedownload.save(filePdfZip, "multipart/form-data", nameFileZip);
+					byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, false);
+					if(filePdfZip !=null)
+						Filedownload.save(filePdfZip, "multipart/form-data", nameFileZip);
 
-			}else if(UtilFlag.isFormatPrintViewPdf(oagencia.getId())) {
-				int len = path_sunat.length();
-				int pos = path_sunat.indexOf("PRNTLSR-");
-				String nameFileZip = path_sunat.substring(pos,len);
-				File file= new File(path_sunat);
-				byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
+				}else if(UtilFlag.isFormatPrintViewPdf(oagencia.getId())) {
+					int len = path_sunat.length();
+					int pos = path_sunat.indexOf("PRNTLSR-");
+					String nameFileZip = path_sunat.substring(pos,len);
+					File file= new File(path_sunat);
+					byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
 
-				byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, true);
-				if(filePdfZip !=null) {
-					String urlViewPdf = UtilFlag.getUrlView_pdf();
-					if(urlViewPdf !=null) {
-						String crypto = new BASE64Encoder().encode(filePdfZip);
-						Executions.getCurrent().sendRedirect(urlViewPdf+"?vl="+crypto, "_blank");
+					byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, true);
+					if(filePdfZip !=null) {
+						String urlViewPdf = UtilFlag.getUrlView_pdf();
+						if(urlViewPdf !=null) {
+							String crypto = new BASE64Encoder().encode(filePdfZip);
+							Executions.getCurrent().sendRedirect(urlViewPdf+"?vl="+crypto, "_blank");
+						}
 					}
+
+				}else {
+					/*Descarga el archivo .xml*/
+					Filedownload.save(new File(path_sunat), "application/zip");
 				}
-
-			}else {
-				/*Descarga el archivo .xml*/
-				Filedownload.save(new File(path_sunat), "application/zip");
-			}
-
+			}else
+				DlgMessage.information(Messages.getString("WndVentaReservaNew.information.noFormatPrint"));
 		}
 		
 	}

@@ -2307,8 +2307,8 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	 * @see com.tepsa.sisvyr.service.business.VentaPasajesManager#buscarVentasByPasajero(java.lang.Long)
 	 */
 	@Override
-	public List<VentaPasaje> buscarVentasByPasajero(Long idPasajero)throws Exception{
-		return getVentaPasajesDAO().buscarVentasByPasajero(idPasajero);
+	public List<VentaPasaje> buscarVentasByPasajero(Long idPasajero, String numeroBoleto, Boolean incluirReservas)throws Exception{
+		return getVentaPasajesDAO().buscarVentasByPasajero(idPasajero, numeroBoleto, incluirReservas);
 	}
 	/* (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaPasajesManager#buscarBoletoLiberarManifiesto(java.lang.String)
